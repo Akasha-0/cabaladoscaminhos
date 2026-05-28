@@ -16,8 +16,8 @@ export default defineConfig({
   use: {
     baseURL: process.env.E2E_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    screenshot: 'off',
+    video: 'off',
     // Use system Chrome if available
     channel: process.env.PLAYWRIGHT_CHANNEL || 'chrome',
   },

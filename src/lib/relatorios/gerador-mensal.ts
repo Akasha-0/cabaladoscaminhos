@@ -47,8 +47,6 @@ export function gerarRelatorioMensal(mes?: number, ano?: number): RelatorioMensa
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
   
-  const nomesDias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  
   return {
     dataGeracao: new Date(),
     mes: nomesMeses[mesAtual - 1],
