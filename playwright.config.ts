@@ -18,12 +18,17 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    // Use system Chrome if available
+    channel: process.env.PLAYWRIGHT_CHANNEL || 'chrome',
   },
 
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'],
+        channel: 'chrome',
+      },
     },
   ],
 
