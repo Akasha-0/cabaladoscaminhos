@@ -1,5 +1,5 @@
 // Skip linting and formatting for this file
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 import { NextRequest } from 'next/server';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

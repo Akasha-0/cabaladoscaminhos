@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { drawOdu } from '@/lib/ifa/draw';
-import { successResponse, errorResponse } from '@/lib/api/base-route';
+import { successResponse, errorResponse, ErrorCode } from '@/lib/api/base-route';
 
 // ============================================================
 // VALIDATION SCHEMA
@@ -54,11 +54,11 @@ export async function POST(request: NextRequest) {
     try {
       body = await request.json();
     } catch {
-    return errorResponse({
-      code: 'VALIDATION_ERROR',
-      message: 'Corpo da requisição inválido',
-      statusCode: 400,
-    });
+      return errorResponse({
+        code: ErrorCode.VALIDATION_ERROR,
+        message: 'Corpo da requisição inválido',
+        statusCode: 400,
+      });
     }
 
     const validation = (await import('@/lib/api/base-route')).validateRequestBody(
@@ -66,10 +66,10 @@ export async function POST(request: NextRequest) {
       body
     );
 
-    if (!validation.success) {
+    if (validation.error) {
       return errorResponse({
-        code: 'VALIDATION_ERROR',
-        message: validation.error.errors[0]?.message || 'Dados inválidos',
+        code: ErrorCode.VALIDATION_ERROR,
+        message: validation.error.message || 'Dados inválidos',
         statusCode: 400,
       });
     }
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error('Erro na consulta Ifá:', err);
     return errorResponse({
-      code: 'INTERNAL_ERROR',
+      code: ErrorCode.INTERNAL_ERROR,
       message: 'Erro ao processar consulta de Ifá',
       statusCode: 500,
     });

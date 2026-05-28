@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { SkeletonNumeros, SkeletonCiclos, Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 import { getInterpretacao } from '@/lib/numerologia';
 import { useNumerologia, useCiclos, useOdus } from '@/lib/hooks';
 import { 
@@ -189,7 +189,11 @@ export default function PerfilPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {loadingNumerologia ? (
-                <SkeletonNumeros />
+             <div className="grid grid-cols-3 gap-3">
+               <Skeleton className="h-20 rounded-lg" />
+               <Skeleton className="h-20 rounded-lg" />
+               <Skeleton className="h-20 rounded-lg" />
+             </div>
               ) : (
                 <div className="grid grid-cols-3 gap-3">
                   <div className="text-center p-3 rounded-lg bg-background/50 border border-border/30">
@@ -247,7 +251,11 @@ export default function PerfilPage() {
           </CardHeader>
           <CardContent>
             {loadingCiclos ? (
-              <SkeletonCiclos />
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+               <Skeleton className="h-36 rounded-lg" />
+               <Skeleton className="h-36 rounded-lg" />
+               <Skeleton className="h-36 rounded-lg" />
+             </div>
             ) : errorCiclos ? (
               <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30 flex items-center gap-3">
                 <AlertCircle className="w-5 h-5 text-destructive" />

@@ -12,7 +12,7 @@ export function lazyImport<T extends ComponentType<any>>(
   fallback?: ReactNode
 ) {
   const LazyComponent = reactLazy(importer);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const LazyWrapper = (props: React.ComponentProps<T> & { fallback?: ReactNode; children?: ReactNode }) => {
     const { fallback: _fallback, ...componentProps } = props;
     return (
@@ -36,7 +36,7 @@ export function LazyComponent<T extends ComponentType<any>>(
   fallback?: ReactNode
 ): ComponentType<Omit<React.ComponentProps<T>, 'children'>> {
   const LazyTheComponent = reactLazy(importer);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const LazyWrapper = (props: Omit<React.ComponentProps<T>, 'children'>) => (
     <Suspense fallback={fallback ?? null}>
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}

@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { generateOracleResponse } from '@/lib/ai/oracle';
 import type { OracleContext } from '@/lib/ai/oracle';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 /**
  * POST /api/oraculo

@@ -46,7 +46,6 @@ export function MapaNatalCard() {
         </CardHeader>
         <CardContent>
           <EmptyState 
-            variant="error"
             title="Erro ao carregar Mapa Natal"
             description="Não foi possível consultar os astros. Tente novamente."
             action={{
@@ -69,7 +68,6 @@ export function MapaNatalCard() {
         </CardHeader>
         <CardContent>
           <EmptyState 
-            variant="no-data"
             title="Mapa Natal não disponível"
             description="Complete seu perfil com data e hora de nascimento para revelar seu mapa astral."
             icon={<span className="text-4xl">🪐</span>}

@@ -256,5 +256,6 @@ export function calculateCompatibility(a: number | string, b: number | string): 
     harmonias: gerarHarmonias(matriz),
     recomendacoes: gerarRecomendacoes(forcaNumero, destinoNumero, score, nivel),
     matriz
-  };
 }
+};
+export const calculate = calculateCompatibility;

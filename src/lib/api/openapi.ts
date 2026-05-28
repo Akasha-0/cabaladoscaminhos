@@ -1,5 +1,5 @@
 // OpenAPI 3.0 specification generator for Cabala dos Caminhos API
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 
 export interface OpenAPISpec {
   openapi: string;

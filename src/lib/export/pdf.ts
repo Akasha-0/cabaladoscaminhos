@@ -539,50 +539,95 @@ interface ChartTemplateData {
   planetKeys?: string[];
 }
 
+// Enhanced zodiac and planetary data for chart formatting
+const SIGN_SYMBOLS = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+const SIGN_ABBREV = ['Ari', 'Tou', 'Gem', 'Can', 'Leã', 'Vir', 'Lib', 'Esc', 'Sag', 'Cap', 'Aqu', 'Pei'];
+const PLANET_GLYPHS: Record<string, string> = {
+  'Sol': '☉', 'Lua': '☽', 'Mercúrio': '☿', 'Vênus': '♀', 'Marte': '♂',
+  'Júpiter': '♃', 'Saturno': '♄', 'Urano': '♅', 'Netuno': '♆', 'Plutão': '♇',
+  'Norte': '☊', 'Sul': '☋'
+};
+
 /**
  * Draws a circular birth chart visualization with zodiac wheel and planet positions
+ * Enhanced with degree markers, house system, and improved visual styling
  */
 function drawBirthChartWheel(doc: any, centerX: number, centerY: number, radius: number): void {
-  // Draw outer wheel
+  // Draw outer wheel with thick primary colored border
   doc.setDrawColor(74, 0, 130);
-  doc.setLineWidth(1);
+  doc.setLineWidth(1.5);
   doc.circle(centerX, centerY, radius);
 
-  // Draw zodiac signs segments (12 signs)
+  // Secondary decorative outer ring
+  doc.setDrawColor(74, 0, 130, 0.3);
+  doc.setLineWidth(0.3);
+  doc.circle(centerX, centerY, radius * 1.02);
+
+  // Zodiac sign segment dividers with alternating subtle colors
   const segmentAngle = 30;
   for (let i = 0; i < 12; i++) {
-    const startAngle = (i * segmentAngle - 90) * (Math.PI / 180);
-    doc.setDrawColor(200, 200, 220);
+    const startAngle = (i * segmentAngle - 90)  * (Math.PI / 180);
+    doc.setDrawColor(i % 2 === 0 ? 180 : 150, i % 2 === 0 ? 180 : 150, i % 2 === 0 ? 200 : 175);
     doc.setLineWidth(0.3);
     doc.line(
-      centerX + Math.cos(startAngle) * (radius * 0.3),
-      centerY + Math.sin(startAngle) * (radius * 0.3),
+      centerX + Math.cos(startAngle) * (radius * 0.5),
+      centerY + Math.sin(startAngle) * (radius * 0.5),
       centerX + Math.cos(startAngle) * radius,
       centerY + Math.sin(startAngle) * radius
     );
   }
 
-  // Draw inner house ring
-  doc.setDrawColor(180, 180, 200);
-  doc.setLineWidth(0.5);
-  doc.circle(centerX, centerY, radius * 0.7);
+  // Inner house rings - three concentric circles for house system
+  doc.setDrawColor(138, 43, 226);
+  doc.setLineWidth(0.4);
+  doc.circle(centerX, centerY, radius * 0.75);
   doc.circle(centerX, centerY, radius * 0.5);
+  doc.circle(centerX, centerY, radius * 0.25);
 
-  // Draw sign symbols around the wheel
-  const signSymbols = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
-  doc.setFontSize(8);
+  // Degree markers - tick marks every 5 degrees
+  doc.setDrawColor(200, 200, 210);
+  doc.setLineWidth(0.2);
+  for (let i = 0; i < 72; i++) {
+    const angle = ((i * 5) - 90) * (Math.PI / 180);
+    const innerRadius = (i % 6 === 0) ? radius * 0.92 : radius * 0.95;
+    const outerRadius = radius * 0.98;
+    doc.line(
+      centerX + Math.cos(angle) * innerRadius,
+      centerY + Math.sin(angle) * innerRadius,
+      centerX + Math.cos(angle) * outerRadius,
+      centerY + Math.sin(angle) * outerRadius
+    );
+  }
+
+  // Draw sign symbols around the wheel with abbrev labels for first 6
+  doc.setFontSize(10);
   for (let i = 0; i < 12; i++) {
     const angle = ((i * 30 + 15) - 90) * (Math.PI / 180);
-    const x = centerX + Math.cos(angle) * (radius * 0.85);
-    const y = centerY + Math.sin(angle) * (radius * 0.85);
-    doc.setFont('helvetica', 'normal');
+    const symbolRadius = radius * 0.82;
+    const nameRadius = radius * 0.72;
+
+    const symbolX = centerX + Math.cos(angle) * symbolRadius;
+    const symbolY = centerY + Math.sin(angle) * symbolRadius;
+
+    const nameX = centerX + Math.cos(angle) * nameRadius;
+    const nameY = centerY + Math.sin(angle) * nameRadius;
+
+    doc.setFont('helvetica', 'bold');
     (doc as any).setTextColor(74, 0, 130);
-    doc.text(signSymbols[i], x - 2, y + 2);
+    doc.text(SIGN_SYMBOLS[i], symbolX - 2.5, symbolY + 2);
+
+    // Show abbreviated sign names for first half (reduce clutter)
+    if (i < 6) {
+      doc.setFontSize(4);
+      doc.setFont('helvetica', 'normal');
+      (doc as any).setTextColor(100, 100, 120);
+      doc.text(SIGN_ABBREV[i], nameX - 2, nameY + 1.5);
+    }
   }
 }
 
 /**
- * Plots planet positions on the birth chart wheel
+ * Plots planet positions on the birth chart wheel with enhanced formatting
  */
 function plotPlanetPositions(
   doc: any,
@@ -593,11 +638,6 @@ function plotPlanetPositions(
 ): void {
   doc.setFontSize(7);
   const signList = ['aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem', 'libra', 'escorpiao', 'sagitario', 'capricornio', 'aquario', 'peixes'];
-  const planetGlyphs: Record<string, string> = {
-    'Sol': '☉', 'Lua': '☽', 'Mercúrio': '☿', 'Vênus': '♀', 'Marte': '♂',
-    'Júpiter': '♃', 'Saturno': '♄', 'Urano': '♅', 'Netuno': '♆', 'Plutão': '♇',
-    'Norte': '☊', 'Sul': '☋'
-  };
 
   planets.forEach((planet) => {
     const signIndex = signList.indexOf(planet.sign.toLowerCase());
@@ -606,7 +646,7 @@ function plotPlanetPositions(
     const px = centerX + Math.cos(longitudeAngle) * distance;
     const py = centerY + Math.sin(longitudeAngle) * distance;
 
-    const glyph = planetGlyphs[planet.name] || '○';
+    const glyph = PLANET_GLYPHS[planet.name] || '○';
     doc.setFont('helvetica', 'bold');
     (doc as any).setTextColor(138, 43, 226);
     doc.text(glyph, px - 3, py + 2);
@@ -619,7 +659,7 @@ function plotPlanetPositions(
 }
 
 /**
- * Draws aspect lines between planets
+ * Draws aspect lines between planets with enhanced styling
  */
 function drawAspectLines(
   doc: any,
@@ -636,6 +676,15 @@ function drawAspectLines(
     'trígono': [50, 180, 100],
     'sextil': [100, 180, 150],
     'semisextil': [150, 150, 150],
+  };
+
+  const aspectLineWidth: Record<string, number> = {
+    'conjunção': 0.6,
+    'trígono': 0.5,
+    'sextil': 0.3,
+    'oposição': 0.5,
+    'quadratura': 0.4,
+    'semisextil': 0.2,
   };
 
   const signList = ['aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem', 'libra', 'escorpiao', 'sagitario', 'capricornio', 'aquario', 'peixes'];
@@ -658,9 +707,9 @@ function drawAspectLines(
 
     const color = aspectColors[aspect.type.toLowerCase()] || [100, 100, 100];
     doc.setDrawColor(color[0], color[1], color[2]);
-    doc.setLineWidth(0.4);
+    doc.setLineWidth(aspectLineWidth[aspect.type.toLowerCase()] || 0.4);
     doc.line(x1, y1, x2, y2);
-  });
+ });
 }
 
 /**
@@ -711,7 +760,7 @@ function renderPlanetaryPositionsTable(
 }
 
 /**
- * Renders the aspects table/diagram
+ * Renders the aspects table/diagram with enhanced color coding
  */
 function renderAspectsTable(
   doc: any,
@@ -791,7 +840,7 @@ export async function generateChartPDF(
   const largura = doc.internal.pageSize.getWidth() - margemEsq - 20;
   let y = 20;
 
-  // Header
+  // Header with gradient-like effect using two overlapping rectangles
   doc.setFillColor(74, 0, 130);
   doc.rect(0, 0, doc.internal.pageSize.getWidth(), 35, 'F');
 

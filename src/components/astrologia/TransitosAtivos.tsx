@@ -31,7 +31,6 @@ export function TransitosAtivos({ transitos }: TransitosAtivosProps) {
       <CardContent>
         {transitos.length === 0 ? (
           <EmptyState 
-            variant="no-data"
             title="Nenhum trânsito significativo"
             description="Continue acompanhando suas orientações astrais. Os astros revelarão novas influências em breve."
             icon={<span className="text-4xl">🌌</span>}

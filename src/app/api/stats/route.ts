@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
       console.error('Error fetching rituals:', ritualError);
     }
 
-    let ritualStats: RitualStats = {
+    const ritualStats: RitualStats = {
       totalCompletions: 0,
       currentStreak: 0,
       longestStreak: 0,

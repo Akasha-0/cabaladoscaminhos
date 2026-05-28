@@ -25,6 +25,7 @@ model User {
   localNascimento String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  journalEntries    JournalEntry[]
 
   mapaNatal MapaNatal?
 
@@ -481,5 +482,22 @@ model LeituraHistorico {
   @@index([userId])
   @@index([type])
   @@index([createdAt])
-  @@map("leituras_historico")
+}
+
+model JournalEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  content   String
+  mood      String?
+  tags      String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([mood])
+  @@index([createdAt])
+  @@map("journal_entries")
 }

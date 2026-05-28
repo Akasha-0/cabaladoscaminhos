@@ -1,32 +1,21 @@
 'use client';
 
-import { useState, useMemo, useCallback, useRef } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  getCorrespondenciasDia,
-  diasSemana,
-  type DiaSemanaData,
-} from '@/lib/data/spiritual-data';
 import {
   Calendar,
-  Moon,
-  Sun,
-  Star,
-  Zap,
-  Heart,
-  Crown,
-  Eye,
-  Droplets,
-  Flame,
-  Mountain,
-  Wind,
   ChevronLeft,
   ChevronRight,
-  Info,
+  Star,
+  Moon,
+  Sun,
+  Sparkles,
+  Heart,
+  Flame,
+  Droplets,
+  Wind,
 } from 'lucide-react';
 
 interface CalendarioEspiritualProps {
@@ -34,463 +23,429 @@ interface CalendarioEspiritualProps {
   loading?: boolean;
 }
 
-const CHAKRA_ICONS: Record<string, React.ReactNode> = {
-  '1º Básico': <Mountain className="w-4 h-4 text-red-500" />,
-  '2º Sacro': <Droplets className="w-4 h-4 text-orange-500" />,
-  '3º Plexo Solar': <Flame className="w-4 h-4 text-yellow-500" />,
-  '4º Cardíaco': <Heart className="w-4 h-4 text-green-500" />,
-  '5º Laríngeo': <Wind className="w-4 h-4 text-blue-500" />,
-  '6º Frontal': <Eye className="w-4 h-4 text-indigo-500" />,
-  '7º Coronário': <Crown className="w-4 h-4 text-violet-500" />,
+type SpiritualEventType = 'ritual' | 'meditacao' | 'oracao' | 'limpeza' | 'celebracao';
+
+interface SpiritualDate {
+  id: string;
+  date: Date;
+  title: string;
+  description: string;
+  type: SpiritualEventType;
+  significance?: string;
+}
+
+const EVENT_ICONS: Record<SpiritualEventType, React.ReactNode> = {
+  ritual: <Sparkles className="w-4 h-4" />,
+  meditacao: <Moon className="w-4 h-4" />,
+  oracao: <Heart className="w-4 h-4" />,
+  limpeza: <Wind className="w-4 h-4" />,
+  celebracao: <Sun className="w-4 h-4" />,
 };
 
-export function CalendarioEspiritual({ className, loading = false }: CalendarioEspiritualProps) {
+const EVENT_COLORS: Record<SpiritualEventType, string> = {
+  ritual: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+  meditacao: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  oracao: 'bg-pink-500/20 text-pink-400 border-pink-500/30',
+  limpeza: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+  celebracao: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+};
+
+const EVENT_LABELS: Record<SpiritualEventType, string> = {
+  ritual: 'Ritual',
+  meditacao: 'Meditação',
+  oracao: 'Oração',
+  limpeza: 'Limpeza',
+  celebracao: 'Celebração',
+};
+
+const MONTH_NAMES = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril',
+  'Maio', 'Junho', 'Julho', 'Agosto',
+  'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+];
+
+const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+const SPIRITUAL_DATES: SpiritualDate[] = [
+  {
+    id: '1',
+    date: new Date(new Date().getFullYear(), 0, 1),
+    title: 'Ano Novo Espiritual',
+    description: 'Início de um novo ciclo de crescimento espiritual',
+    type: 'celebracao',
+    significance: 'Novos começos e intenções',
+  },
+  {
+    id: '2',
+    date: new Date(new Date().getFullYear(), 0, 6),
+    title: 'Dia dos Reis Magos',
+    description: 'Celebração da sabedoria divina',
+    type: 'celebracao',
+    significance: 'Busca por conhecimento',
+  },
+  {
+    id: '3',
+    date: new Date(new Date().getFullYear(), 1, 2),
+    title: 'Dia de Iemanjá',
+    description: 'Homenagem à Rainha do Mar',
+    type: 'ritual',
+    significance: 'Proteção e maternidade',
+  },
+  {
+    id: '4',
+    date: new Date(new Date().getFullYear(), 3, 22),
+    title: 'Páscoa',
+    description: 'Ressurreição e renovação',
+    type: 'celebracao',
+    significance: 'Renascimento espiritual',
+  },
+  {
+    id: '5',
+    date: new Date(new Date().getFullYear(), 4, 13),
+    title: 'Dia de Oxum',
+    description: 'Celebração da energia do ouro',
+    type: 'ritual',
+    significance: 'Prosperidade e amor',
+  },
+  {
+    id: '6',
+    date: new Date(new Date().getFullYear(), 5, 24),
+    title: 'São João',
+    description: 'Festa junina com tradições espirituais',
+    type: 'celebracao',
+    significance: 'Comunidade e alegria',
+  },
+  {
+    id: '7',
+    date: new Date(new Date().getFullYear(), 6, 15),
+    title: 'Festa do Divino',
+    description: 'Celebração do Espírito Santo',
+    type: 'ritual',
+    significance: 'Espiritualidade e tradição',
+  },
+  {
+    id: '8',
+    date: new Date(new Date().getFullYear(), 7, 27),
+    title: 'Dia de Ogum',
+    description: 'Homenagem ao Deus da Guerra',
+    type: 'ritual',
+    significance: 'Força e determinação',
+  },
+  {
+    id: '9',
+    date: new Date(new Date().getFullYear(), 8, 8),
+    title: 'Dia de Oxalá',
+    description: 'Celebração da paz e criação',
+    type: 'ritual',
+    significance: 'Pureza e novos começos',
+  },
+  {
+    id: '10',
+    date: new Date(new Date().getFullYear(), 9, 15),
+    title: 'Dia de Xango',
+    description: 'Homenagem ao Deus da Justiça',
+    type: 'ritual',
+    significance: 'Justiça e equilíbrio',
+  },
+  {
+    id: '11',
+    date: new Date(new Date().getFullYear(), 10, 8),
+    title: 'Dia de Obaluaê',
+    description: 'Celebração da cura',
+    type: 'ritual',
+    significance: 'Saudação e cura',
+  },
+  {
+    id: '12',
+    date: new Date(new Date().getFullYear(), 11, 25),
+    title: 'Natal Espiritual',
+    description: 'Celebração do amor e luz',
+    type: 'celebracao',
+    significance: 'Luz e amor',
+  },
+];
+
+function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function getFirstDayOfMonth(year: number, month: number): number {
+  return new Date(year, month, 1).getDay();
+}
+
+function formatDateKey(year: number, month: number, day: number): string {
+  return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+function isSameDay(date1: Date, date2: Date): boolean {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+}
+
+function getSpiritualEventForDate(
+  year: number,
+  month: number,
+  day: number,
+  events: SpiritualDate[]
+): SpiritualDate | undefined {
+  return events.find((event) =>
+    isSameDay(event.date, new Date(year, month, day))
+  );
+}
+
+function getEventsInMonth(
+  year: number,
+  month: number,
+  events: SpiritualDate[]
+): SpiritualDate[] {
+  return events.filter(
+    (event) =>
+      event.date.getFullYear() === year && event.date.getMonth() === month
+  );
+}
+
+export function CalendarioEspiritual({ className = '' }: CalendarioEspiritualProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
+  const [selectedEvent, setSelectedEvent] = useState<SpiritualDate | null>(null);
 
-  const hoje = useMemo(() => new Date(), []);
-  const correspondencias = useMemo(() => getCorrespondenciasDia(), []);
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth();
 
-  const faseAtual = useMemo(() => {
-    const faseIndex = Math.floor((hoje.getDate() % 30) / 7.5);
-    return ['Lua Nova', 'Lua Crescente', 'Lua Cheia', 'Lua Minguante'][faseIndex];
-  }, [hoje]);
+  const daysInMonth = getDaysInMonth(currentYear, currentMonth);
+  const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth);
+  const monthEvents = useMemo(
+    () => getEventsInMonth(currentYear, currentMonth, SPIRITUAL_DATES),
+    [currentYear, currentMonth]
+  );
 
   const calendarDays = useMemo(() => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const startPadding = firstDay.getDay();
-    const totalDays = lastDay.getDate();
+    const days: { day: number | null; event: SpiritualDate | undefined }[] = [];
 
-    const days: Array<{
-      date: Date;
-      isCurrentMonth: boolean;
-      isToday: boolean;
-    }> = [];
-
-    for (let i = 0; i < startPadding; i++) {
-      const date = new Date(year, month, -startPadding + i + 1);
-      days.push({ date, isCurrentMonth: false, isToday: false });
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      days.push({ day: null, event: undefined });
     }
 
-    for (let d = 1; d <= totalDays; d++) {
-      const date = new Date(year, month, d);
-      const isToday = date.toDateString() === hoje.toDateString();
-      days.push({ date, isCurrentMonth: true, isToday });
-    }
-
-    const remaining = 42 - days.length;
-    for (let i = 1; i <= remaining; i++) {
-      const date = new Date(year, month + 1, i);
-      days.push({ date, isCurrentMonth: false, isToday: false });
+    for (let day = 1; day <= daysInMonth; day++) {
+      const event = getSpiritualEventForDate(currentYear, currentMonth, day, SPIRITUAL_DATES);
+      days.push({ day, event });
     }
 
     return days;
-  }, [currentDate, hoje]);
+  }, [currentYear, currentMonth, daysInMonth, firstDayOfMonth]);
 
-  const getSpiritualDataForDate = (date: Date): DiaSemanaData | null => {
-    const dayNames = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
-    const dayKey = dayNames[date.getDay()];
-    return diasSemana[dayKey] || null;
+  const goToPreviousMonth = () => {
+    setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
   };
 
-  const selectedData = selectedDate ? getSpiritualDataForDate(selectedDate) : null;
-  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-  const hojeSpiritual = correspondencias.dia;
+  const goToNextMonth = () => {
+    setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
+  };
 
-  const goToPreviousMonth = useCallback(() => {
-    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
-  }, []);
-
-  const goToNextMonth = useCallback(() => {
-    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
-  }, []);
-
-  const goToToday = useCallback(() => {
+  const goToToday = () => {
     setCurrentDate(new Date());
-    setSelectedDate(new Date());
-  }, []);
+  };
 
-  const handleCalendarKeyDown = useCallback((e: React.KeyboardEvent, day: { date: Date; isCurrentMonth: boolean }, index: number) => {
-    let newIndex = index;
+  const handleEventClick = (event: SpiritualDate) => {
+    setSelectedEvent(event);
+  };
 
-    switch (e.key) {
-      case 'ArrowLeft':
-        newIndex = index - 1;
-        break;
-      case 'ArrowRight':
-        newIndex = index + 1;
-        break;
-      case 'ArrowUp':
-        newIndex = index - 7;
-        break;
-      case 'ArrowDown':
-        newIndex = index + 7;
-        break;
-      case 'Home':
-        newIndex = 0;
-        break;
-      case 'End':
-        newIndex = 41;
-        break;
-      case 'Enter':
-      case ' ':
-        e.preventDefault();
-        setSelectedDate(day.date);
-        return;
-      default:
-        return;
-    }
-
-    e.preventDefault();
-    newIndex = Math.max(0, Math.min(41, newIndex));
-    setFocusedIndex(newIndex);
-
-    // Focus the new button after state update
-    setTimeout(() => {
-      const buttons = gridRef.current?.querySelectorAll('button[role="gridcell"]');
-      if (buttons && buttons[newIndex]) {
-        (buttons[newIndex] as HTMLButtonElement).focus();
-      }
-    }, 0);
-  }, []);
-
-  const getDateAriaLabel = (date: Date, spiritualData: DiaSemanaData | null) => {
-    const dateStr = date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
-    const parts = [dateStr];
-    
-    if (date.toDateString() === new Date().toDateString()) {
-      parts.push('Hoje');
-    }
-    if (spiritualData?.orixas.length) {
-      parts.push(`Orixás: ${spiritualData.orixas.join(', ')}`);
-    }
-    if (spiritualData?.planetas.length) {
-      parts.push(`Planetas: ${spiritualData.planetas.join(', ')}`);
-    }
-    if (spiritualData?.chakras.length) {
-      parts.push(`Chakras: ${spiritualData.chakras.join(', ')}`);
-    }
-    
-    return parts.join('. ');
+  const closeEventDetail = () => {
+    setSelectedEvent(null);
   };
 
   return (
-    <div className={className}>
-      <Tabs defaultValue="day" className="w-full">
-        <div className="flex items-center justify-between mb-4">
-          <TabsList aria-label="Visualização do calendário">
-            <TabsTrigger value="month">Mês</TabsTrigger>
-            <TabsTrigger value="week">Semana</TabsTrigger>
-            <TabsTrigger value="day">Dia</TabsTrigger>
-          </TabsList>
+    <Card className={`bg-slate-900/50 border-slate-700/50 ${className}`}>
+      <CardHeader className="pb-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-purple-500/20">
+              <Calendar className="w-5 h-5 text-purple-400" />
+            </div>
+            <CardTitle className="text-lg font-semibold text-slate-100">
+              Calendário Espiritual
+            </CardTitle>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={goToToday}
+            className="text-slate-400 hover:text-slate-100"
+          >
+            Hoje
+          </Button>
+        </div>
+      </CardHeader>
 
-          {selectedData && (
-            <Badge variant="outline" className="text-sm" aria-live="polite">
-              {selectedData.dia}
-            </Badge>
-          )}
+      <CardContent>
+        <div className="flex items-center justify-between mb-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={goToPreviousMonth}
+            className="h-8 w-8 text-slate-400 hover:text-slate-100"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
+
+          <h3 className="text-base font-medium text-slate-100">
+            {MONTH_NAMES[currentMonth]} {currentYear}
+          </h3>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={goToNextMonth}
+            className="h-8 w-8 text-slate-400 hover:text-slate-100"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </Button>
         </div>
 
-        <TabsContent value="month" className="space-y-4">
-          <div className="flex items-center justify-between">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={goToPreviousMonth}
-              aria-label="Mês anterior"
+        <div className="grid grid-cols-7 gap-1 mb-2">
+          {WEEKDAYS.map((day) => (
+            <div
+              key={day}
+              className="text-center text-xs font-medium text-slate-500 py-2"
             >
-              <ChevronLeft className="w-4 h-4" aria-hidden="true" />
-            </Button>
-            <div className="flex items-center gap-4">
-              <h3 
-                className="font-medium"
-                aria-live="polite"
+              {day}
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-7 gap-1">
+          {calendarDays.map((item, index) => {
+            if (item.day === null) {
+              return <div key={`empty-${index}`} className="aspect-square" />;
+            }
+
+            const isToday = isSameDay(
+              new Date(currentYear, currentMonth, item.day),
+              new Date()
+            );
+            const hasEvent = !!item.event;
+
+            return (
+              <div
+                key={`day-${item.day}`}
+                className={`
+                  aspect-square flex flex-col items-center justify-center rounded-lg
+                  text-sm font-medium transition-all cursor-pointer
+                  ${isToday ? 'bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50' : 'text-slate-300 hover:bg-slate-800'}
+                  ${hasEvent ? 'font-semibold' : ''}
+                `}
+                onClick={() => item.event && handleEventClick(item.event)}
               >
-                {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
-              </h3>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={goToToday}
-                aria-label="Ir para hoje"
+                <span>{item.day}</span>
+                {hasEvent && (
+                  <div
+                    className={`w-1.5 h-1.5 rounded-full mt-0.5 bg-${hasEvent ? item.event!.type.split(' ')[0].replace('bg-', '') : 'purple'}-500`}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {monthEvents.length > 0 && (
+          <div className="mt-6">
+            <h4 className="text-sm font-medium text-slate-300 mb-3">
+              Eventos de {MONTH_NAMES[currentMonth]}
+            </h4>
+            <div className="space-y-2">
+              {monthEvents.map((event) => (
+                <button
+                  key={event.id}
+                  onClick={() => handleEventClick(event)}
+                  className={`
+                    w-full flex items-center gap-3 p-3 rounded-lg border
+                    transition-all text-left
+                    ${EVENT_COLORS[event.type]}
+                  `}
+                >
+                  {EVENT_ICONS[event.type]}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-slate-100 truncate">
+                      {event.title}
+                    </p>
+                    <p className="text-xs text-slate-400 truncate">
+                      {event.description}
+                    </p>
+                  </div>
+                  <span className="text-xs text-slate-400">
+                    {event.date.getDate()}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {monthEvents.length === 0 && (
+          <div className="mt-6 text-center py-8">
+            <Sparkles className="w-8 h-8 text-slate-600 mx-auto mb-2" />
+            <p className="text-sm text-slate-500">
+              Nenhum evento espiritual neste mês
+            </p>
+          </div>
+        )}
+      </CardContent>
+
+      {selectedEvent && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-xl border border-slate-700 max-w-md w-full p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div
+                  className={`p-2 rounded-lg ${EVENT_COLORS[selectedEvent.type].split(' ')[0]}`}
+                >
+                  {EVENT_ICONS[selectedEvent.type]}
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-100">
+                    {selectedEvent.title}
+                  </h3>
+                  <p className="text-sm text-slate-400">
+                    {selectedEvent.date.getDate()} de {MONTH_NAMES[selectedEvent.date.getMonth()]}
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={closeEventDetail}
+                className="text-slate-400 hover:text-slate-100"
               >
-                Hoje
+                ×
               </Button>
             </div>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={goToNextMonth}
-              aria-label="Próximo mês"
-            >
-              <ChevronRight className="w-4 h-4" aria-hidden="true" />
-            </Button>
-          </div>
 
-          <div
-            className="grid grid-cols-7 gap-1"
-            role="grid"
-            aria-label={`Calendário espiritual de ${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`}
-            ref={gridRef}
-          >
-            <div role="row" className="contents">
-              {weekDays.map((day) => (
-                <div 
-                  key={day} 
-                  className="text-center text-xs text-muted-foreground font-medium py-2"
-                  role="columnheader"
-                  aria-label={day}
-                >
-                  {day}
-                </div>
-              ))}
-            </div>
-            {loading ? (
-              <>
-                {Array.from({ length: 42 }).map((_, i) => (
-                  <Skeleton key={i} className="aspect-square" aria-hidden="true" />
-                ))}
-              </>
-            ) : (
-              <div role="row" className="contents">
-                {calendarDays.map((day, index) => {
-                  const spiritualData = getSpiritualDataForDate(day.date);
-                  const hasOrixas = spiritualData && spiritualData.orixas.length > 0;
-                  const isSelected = selectedDate?.toDateString() === day.date.toDateString();
+            <p className="text-slate-300 mb-4">{selectedEvent.description}</p>
 
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedDate(day.date)}
-                      onKeyDown={(e) => handleCalendarKeyDown(e, day, index)}
-                      className={`
-                        aspect-square p-1 text-sm rounded-md transition-colors
-                        ${day.isCurrentMonth ? '' : 'text-muted-foreground'}
-                        ${day.isToday ? 'bg-primary text-primary-foreground font-medium' : 'hover:bg-muted'}
-                        ${isSelected ? 'ring-2 ring-primary' : ''}
-                      `}
-                      aria-label={getDateAriaLabel(day.date, spiritualData)}
-                      aria-selected={isSelected}
-                      aria-current={day.isToday ? 'date' : undefined}
-                      role="gridcell"
-                      tabIndex={focusedIndex === index || (focusedIndex === null && index === 0) ? 0 : -1}
-                    >
-                      <div className="flex flex-col items-center">
-                        <span>{day.date.getDate()}</span>
-                        {hasOrixas && spiritualData && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-0.5" aria-hidden="true" />
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
+            {selectedEvent.significance && (
+              <div className="bg-slate-900/50 rounded-lg p-3">
+                <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
+                  Significado
+                </p>
+                <p className="text-sm text-purple-300">
+                  {selectedEvent.significance}
+                </p>
               </div>
             )}
+
+            <Badge
+              variant="outline"
+              className={`mt-4 ${EVENT_COLORS[selectedEvent.type]}`}
+            >
+              {EVENT_LABELS[selectedEvent.type]}
+            </Badge>
           </div>
-        </TabsContent>
-
-        <TabsContent value="week">
-          {loading ? (
-            <div className="grid grid-cols-7 gap-2" role="list" aria-label="Carregando dias da semana">
-              {Array.from({ length: 7 }).map((_, i) => (
-                <div key={i} className="p-2 rounded-lg border bg-card" role="listitem">
-                  <Skeleton className="h-4 w-8 mx-auto mb-2" />
-                  <Skeleton className="h-3 w-10 mx-auto mb-2" />
-                  <Skeleton className="h-4 w-4 mx-auto mb-1" />
-                  <Skeleton className="h-3 w-12 mx-auto" />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-7 gap-2" role="list" aria-label="Dias da semana">
-              {weekDays.map((day, index) => {
-                const fullDayName = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'][index];
-                const data = diasSemana[fullDayName];
-                const isToday = hoje.getDay() === index;
-
-                return (
-                  <Card 
-                    key={day} 
-                    className={isToday ? 'border-primary' : ''}
-                    role="listitem"
-                    aria-label={`${day}${isToday ? ', hoje' : ''}`}
-                  >
-                    <CardHeader className="p-2 text-center">
-                      <CardTitle className="text-xs">{day}</CardTitle>
-                      {data && data.planetas.length > 0 && (
-                        <Badge variant="outline" className="text-xs mx-auto" aria-label={`Planeta: ${data.planetas[0]}`}>
-                          {data.planetas[0]}
-                        </Badge>
-                      )}
-                    </CardHeader>
-                    <CardContent className="p-2 text-center">
-                      {data && data.chakras.length > 0 && (
-                        <div className="flex justify-center mb-1" aria-label={`Chakra: ${data.chakras[0]}`}>
-                          {CHAKRA_ICONS[data.chakras[0]]}
-                        </div>
-                      )}
-                      {data && data.cores.length > 0 && (
-                        <p className="text-xs text-muted-foreground" aria-label={`Cor: ${data.cores[0]}`}>{data.cores[0]}</p>
-                      )}
-                      {data && data.orixas.length > 0 && (
-                        <p className="text-xs font-medium mt-1 truncate" aria-label={`Orixá: ${data.orixas[0]}`}>
-                          {data.orixas[0]}
-                        </p>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="day">
-          {loading ? (
-            <Card>
-              <CardHeader>
-                <Skeleton className="h-6 w-48 mb-2" />
-                <Skeleton className="h-4 w-64" />
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="p-3 bg-card rounded-lg border">
-                      <Skeleton className="h-4 w-20 mb-2" />
-                      <Skeleton className="h-4 w-16" />
-                    </div>
-                  ))}
-                </div>
-                <div className="space-y-2">
-                  <Skeleton className="h-5 w-32" />
-                  <div className="flex flex-wrap gap-2">
-                    {[1, 2, 3].map((i) => (
-                      <Skeleton key={i} className="h-6 w-20" />
-                    ))}
-                  </div>
-                </div>
-                <Skeleton className="h-20 w-full" />
-                <div className="grid grid-cols-2 gap-4">
-                  <Skeleton className="h-16 w-full" />
-                  <Skeleton className="h-16 w-full" />
-                </div>
-                <Skeleton className="h-12 w-full" />
-              </CardContent>
-            </Card>
-          ) : (
-            <Card aria-label={`Informações espirituais do dia: ${hojeSpiritual.dia}`}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5" aria-hidden="true" />
-                  <span>{hojeSpiritual.dia}</span>
-                  <Badge variant="outline" className="ml-auto" aria-label={`Fase lunar: ${faseAtual}`}>
-                    {faseAtual}
-                  </Badge>
-                </CardTitle>
-                <CardDescription aria-live="polite">
-                  {hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="p-3 bg-card rounded-lg border" aria-label="Planetas do dia">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Star className="w-4 h-4 text-primary" aria-hidden="true" />
-                      <span className="text-xs text-muted-foreground">Planetas</span>
-                    </div>
-                    <div className="flex gap-1 flex-wrap" role="list">
-                      {hojeSpiritual.planetas.map((p) => (
-                        <span key={p} className="font-medium text-sm" role="listitem">{p}</span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-card rounded-lg border" aria-label="Cores do dia">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Flame className="w-4 h-4 text-orange-500" aria-hidden="true" />
-                      <span className="text-xs text-muted-foreground">Cores</span>
-                    </div>
-                    <div className="flex gap-1 flex-wrap" role="list">
-                      {hojeSpiritual.cores.map((c) => (
-                        <Badge key={c} variant="secondary" className="text-xs" role="listitem">{c}</Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-card rounded-lg border" aria-label="Chakras do dia">
-                    <div className="flex items-center gap-2 mb-2">
-                      {CHAKRA_ICONS[hojeSpiritual.chakras[0]] || <Crown className="w-4 h-4" aria-hidden="true" />}
-                      <span className="text-xs text-muted-foreground">Chakras</span>
-                    </div>
-                    <div className="flex gap-1 flex-wrap" role="list">
-                      {hojeSpiritual.chakras.map((c) => (
-                        <span key={c} className="font-medium text-xs" role="listitem">{c}</span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-card rounded-lg border" aria-label="Sephirot do dia">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Crown className="w-4 h-4 text-violet-500" aria-hidden="true" />
-                      <span className="text-xs text-muted-foreground">Sephirot</span>
-                    </div>
-                    <div className="flex gap-1 flex-wrap" role="list">
-                      {hojeSpiritual.sephirot.map((s) => (
-                        <span key={s} className="font-medium text-xs" role="listitem">{s}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div aria-label="Orixás do dia">
-                  <h4 className="font-medium mb-3 flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-yellow-500" aria-hidden="true" />
-                    Orixás do Dia
-                  </h4>
-                  <div className="flex flex-wrap gap-2" role="list">
-                    {hojeSpiritual.orixas.map((orixa) => (
-                      <Badge key={orixa} variant="secondary" role="listitem">
-                        {orixa}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="p-4 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border border-primary/20" aria-label="Arcano do dia">
-                  <div className="flex items-start gap-3">
-                    <Info className="w-5 h-5 text-primary mt-0.5" aria-hidden="true" />
-                    <div>
-                      <h4 className="font-medium mb-1">Arcano do Dia</h4>
-                      <p className="text-sm text-muted-foreground">{hojeSpiritual.arcano}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-3 bg-secondary/50 rounded-lg" aria-label={`Mistério: ${hojeSpiritual.misterio}`}>
-                    <h5 className="text-sm font-medium mb-1">Mistério</h5>
-                    <p className="text-xs text-muted-foreground">{hojeSpiritual.misterio}</p>
-                  </div>
-                  <div className="p-3 bg-secondary/50 rounded-lg" aria-label={`Número Tântrico: ${hojeSpiritual.numTantrico}`}>
-                    <h5 className="text-sm font-medium mb-1">Número Tântrico</h5>
-                    <p className="text-sm font-bold">{hojeSpiritual.numTantrico}</p>
-                  </div>
-                </div>
-                <div className="p-3 bg-secondary/50 rounded-lg" aria-label={`Número Cabalístico: ${hojeSpiritual.numCabalistico}`}>
-                  <h5 className="text-sm font-medium mb-1">Número Cabalístico</h5>
-                  <p className="text-sm font-bold">{hojeSpiritual.numCabalistico}</p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </TabsContent>
-      </Tabs>
-    </div>
+        </div>
+      )}
+    </Card>
   );
 }
+
+export default CalendarioEspiritual;

@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+ 
 // tslint:disable
 
 export type HouseSystem = 'placidus' | 'whole_sign';

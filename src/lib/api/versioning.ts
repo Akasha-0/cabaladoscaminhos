@@ -96,7 +96,7 @@ export interface VersionInfo {
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NextServer {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+     
     interface RequestData {
       apiVersion?: VersionInfo;
     }
