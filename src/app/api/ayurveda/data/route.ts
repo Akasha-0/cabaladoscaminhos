@@ -465,7 +465,7 @@ export async function GET(request: NextRequest) {
           { status: 400 }
         );
       }
-      let resource: any;
+      let resource: unknown;
       switch (resourceType) {
         case 'dosha':
           resource = getDoshaById(id);
@@ -507,8 +507,9 @@ export async function GET(request: NextRequest) {
 
       if (format === 'summary') {
         const summary: Record<string, unknown> = { id: (resource as { id: string }).id };
-        if ('name' in resource) summary.name = (resource as { name: string }).name;
-        if ('namePt' in resource) summary.namePt = (resource as { namePt: string }).namePt;
+        const obj = resource as Record<string, unknown>;
+        if (obj.name !== undefined) summary.name = obj.name as string;
+        if (obj.namePt !== undefined) summary.namePt = obj.namePt as string;
         return NextResponse.json(summary);
       }
 

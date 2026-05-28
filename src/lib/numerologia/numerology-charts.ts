@@ -460,7 +460,7 @@ function getDestinyRecommendations(num: number): string[] {
   return getLifePathRecommendations(num);
 }
 
-function getWheelRecommendations(result: any): string[] {
+function getWheelRecommendations(_result: unknown): string[] {
   return [
     'Analise as tensões entre opostos',
     'Integre as qualidades de apoio',
@@ -468,7 +468,7 @@ function getWheelRecommendations(result: any): string[] {
   ];
 }
 
-function getCompatibilityRecommendations(result: any): string[] {
+function getCompatibilityRecommendations(_result: unknown): string[] {
   return [
     'Comunique suas necessidades claramente',
     'Honre as diferenças como complementares',
@@ -476,7 +476,7 @@ function getCompatibilityRecommendations(result: any): string[] {
   ];
 }
 
-function getCyclesRecommendations(result: any): string[] {
+function getCyclesRecommendations(_result: unknown): string[] {
   return [
     'Observe os temas de cada ciclo',
     'Adapte-se às mudanças programadas',
