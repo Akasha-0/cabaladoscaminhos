@@ -39,17 +39,32 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   )
 
   useEffect(() => {
-    if (!supabase) return
+    console.log('[SupabaseProvider] useEffect triggered. supabase:', !!supabase);
+    console.log('[SupabaseProvider] Env variables:', {
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    });
+
+    if (!supabase) {
+      console.warn('[SupabaseProvider] Supabase client is null!');
+      return;
+    }
 
     // Verificar usuário atual
     const getUser = async () => {
+      console.log('[SupabaseProvider] getUser started');
       try {
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { user }, error } = await supabase.auth.getUser()
+        console.log('[SupabaseProvider] getUser success:', user ? user.email : 'No user');
+        if (error) {
+          console.error('[SupabaseProvider] getUser returned error:', error);
+        }
         setUser(user)
       } catch (error) {
-        console.error('Error getting user:', error)
+        console.error('[SupabaseProvider] Error getting user (exception):', error)
         setUser(null)
       } finally {
+        console.log('[SupabaseProvider] getUser finally block. Setting isLoading to false');
         setIsLoading(false)
       }
     }
@@ -57,16 +72,22 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     getUser()
 
     // Escutar mudanças de auth
+    console.log('[SupabaseProvider] Registering onAuthStateChange listener');
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[SupabaseProvider] onAuthStateChange event:', event, 'session:', !!session);
       setUser(session?.user ?? null)
       setIsLoading(false)
       
       if (event === 'SIGNED_OUT') {
+        console.log('[SupabaseProvider] Signed out event, redirecting to /login');
         router.push('/login')
       }
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      console.log('[SupabaseProvider] Cleaning up onAuthStateChange listener');
+      subscription.unsubscribe()
+    }
   }, [supabase, router])
 
   const signOut = async () => {

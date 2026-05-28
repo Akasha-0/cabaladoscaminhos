@@ -60,8 +60,7 @@ const STATE_DESCRIPTIONS: Record<ChakraState, string> = {
   blocked: 'Fluxo energético obstruído',
   overactive: 'Excesso de energia acumulada'
 };
-
-const HEALING_SUGGESTIONS: Record<number, Record<ChakraState, string[]>> = {
+const HEALING_SUGGESTIONS: Record<number, Partial<Record<ChakraState, string[]>>> = {
   1: {
     balanced: ['Manter práticas de ancoramento', 'Meditaçãoregular com mantram LAM'],
     blocked: ['Caminhar descalço na terra', 'Usar cristais vermelhos como granada', 'Praticar yoga com ênfase em.Root'],
@@ -113,7 +112,7 @@ function generateRandomReading(): Record<number, ChakraReading> {
       state,
       level,
       blockagePoints: getBlockagePoints(chakra.numero, state),
-      healingSuggestions: HEALING_SUGGESTIONS[chakra.numero][state]
+      healingSuggestions: HEALING_SUGGESTIONS[chakra.numero]?.[state] || []
     };
   });
 
@@ -123,13 +122,13 @@ function generateRandomReading(): Record<number, ChakraReading> {
 function getBlockagePoints(chakraNum: number, state: ChakraState): string[] {
   if (state === 'balanced') return [];
 
-  const blockageMap: Record<number, Record<ChakraState, string[]>> = {
+  const blockageMap: Record<number, Partial<Record<ChakraState, string[]>>> = {
     1: {
       blocked: ['Medo de escassez', 'Insegurança material', 'Dificuldade em confiar na vida'],
       overactive: ['Austeridade excessiva', 'Rigidez emocional', 'Teimosia']
     },
     2: {
-      blocked: ['Bloqueio criativo', 'Culpa存储', 'Memórias emocionais presas'],
+      blocked: ['Bloqueio criativo', 'Culpa armazenada', 'Memórias emocionais presas'],
       overactive: ['Excesso de emoções', 'Vulnerabilidade emocional', 'Dependência afetiva']
     },
     3: {
