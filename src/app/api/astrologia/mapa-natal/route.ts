@@ -31,6 +31,10 @@ export async function GET(request: NextRequest) {
       mapaNatal,
       aspectos,
       interpretacao: gerarInterpretacaoBasica(mapaNatal),
+    }, {
+      headers: {
+        'Cache-Control': 'public, max-age=259200, stale-while-revalidate=604800',
+      },
     });
   } catch (error) {
     console.error('Erro calculando mapa natal:', error);

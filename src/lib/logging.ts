@@ -17,9 +17,13 @@ export enum LogLevel {
   ERROR = 3,
   FATAL = 4,
 }
-
-const LOG_LEVEL_NAMES = ["DEBUG", "INFO", "WARN", "ERROR", "FATAL"] as const;
-
+const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
+  [LogLevel.DEBUG]: "DEBUG",
+  [LogLevel.INFO]: "INFO",
+  [LogLevel.WARN]: "WARN",
+  [LogLevel.ERROR]: "ERROR",
+  [LogLevel.FATAL]: "FATAL",
+};
 const LOG_LEVEL_COLORS: Record<LogLevel, string> = {
   [LogLevel.DEBUG]: "\x1b[36m",    // Cyan
   [LogLevel.INFO]: "\x1b[32m",     // Green
@@ -368,32 +372,25 @@ export function createLogContext(request: Request): LogContext {
   };
 }
 
-
 export function withLogging<T extends (...args: Parameters<T>) => Promise<Response>>(
   handler: T,
   options?: { path?: string }
 ): T {
   return (async (...args: Parameters<T>) => {
-   const request = args[0] as unknown as Request;
+    const request = args[0] as unknown as Request;
     const endTimer = logger.startTimer();
-
-    logger.info(`→ ${request.method} ${options?.path || request.url}`, context);
-
+    logger.info(`→ ${request.method} ${options?.path || request.url}`, { requestId: request.headers.get('x-request-id') ?? undefined });
     try {
       const response = await handler(...args);
       const duration = endTimer();
-
       logger.info(`← ${response.status} ${request.method} ${request.url}`, {
-        ...context,
         duration,
         statusCode: response.status,
       });
-
       return response;
     } catch (error) {
       const duration = endTimer();
       logger.error(`✗ ${request.method} ${request.url}`, error as Error, {
-        ...context,
         duration,
       });
       throw error;

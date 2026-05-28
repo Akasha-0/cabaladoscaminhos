@@ -17,19 +17,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Buscar assinatura ativa do usuário
-    const usuario = await prisma.usuario.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { stripeSubscriptionId: true, stripeCustomerId: true },
     });
 
-    if (!usuario) {
+    if (!user) {
       return NextResponse.json(
         { erro: 'Usuário não encontrado' },
         { status: 404 }
       );
     }
 
-    const subscriptionId = usuario.stripeSubscriptionId;
+    const subscriptionId = user.stripeSubscriptionId;
 
     if (!subscriptionId) {
       return NextResponse.json(
@@ -42,11 +42,23 @@ export async function POST(request: NextRequest) {
       // Modo mock para desenvolvimento sem Stripe
       console.log(`[MOCK] Cancelando assinatura ${subscriptionId} para usuário ${userId}`);
 
-      await prisma.usuario.update({
+      // Buscar e atualizar a assinatura no banco
+      const assinatura = await prisma.assinatura.findUnique({
+        where: { userId },
+      });
+
+      if (assinatura) {
+        await prisma.assinatura.update({
+          where: { userId },
+          data: { status: 'cancelled' },
+        });
+      }
+
+      await prisma.user.update({
         where: { id: userId },
         data: {
           stripeSubscriptionId: null,
-          statusAssinatura: 'CANCELLED',
+          planoAssinatura: null,
         },
       });
 
@@ -61,23 +73,18 @@ export async function POST(request: NextRequest) {
     const canceledSubscription = await stripe.subscriptions.cancel(subscriptionId);
 
     // Atualizar status no banco de dados
-    await prisma.usuario.update({
+    await prisma.user.update({
       where: { id: userId },
       data: {
         stripeSubscriptionId: null,
-        statusAssinatura: 'CANCELLED',
+        planoAssinatura: null,
       },
     });
 
-    // Registrar transação de cancelamento
-    await prisma.transacao.create({
-      data: {
-        usuarioId: userId,
-        tipo: 'ASSINATURA_CANCELADA',
-        quantidade: 0,
-        descricao: `Assinatura ${subscriptionId} cancelada`,
-        stripePaymentIntentId: canceledSubscription.id,
-      },
+    // Atualizar status da assinatura
+    await prisma.assinatura.update({
+      where: { userId },
+      data: { status: 'cancelled' },
     });
 
     return NextResponse.json({

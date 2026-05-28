@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FORMAS_SAGRADAS } from '@/lib/geometria-sagrada/dados';
@@ -112,7 +112,7 @@ interface FormaCardProps {
   onClick?: () => void;
 }
 
-function FormaCard({ forma, expanded = false, onClick }: FormaCardProps) {
+const FormaCard = memo(function FormaCard({ forma, expanded = false, onClick }: FormaCardProps) {
   const svgContent = COMPONENTES_SVG[forma.id] || '';
 
   return (
@@ -214,13 +214,17 @@ function FormaCard({ forma, expanded = false, onClick }: FormaCardProps) {
       )}
     </Card>
   );
-}
+});
 
 export function GeometriaSagradaExplorer() {
   const [selectedForma, setSelectedForma] = useState<string | null>(null);
   const [filtro, setFiltro] = useState<'all' | 'sefirot' | 'chakra'>('all');
   const [sefirotFiltro, setSefirotFiltro] = useState<string | null>(null);
   const [chakraFiltro, setChakraFiltro] = useState<number | null>(null);
+
+  const handleCardClick = useCallback((formaId: string) => {
+    setSelectedForma(prev => prev === formaId ? null : formaId);
+  }, []);
 
   const formasFiltradas = FORMAS_SAGRADAS.filter((forma) => {
     if (filtro === 'all') return true;
@@ -305,16 +309,20 @@ export function GeometriaSagradaExplorer() {
             key={forma.id}
             forma={forma}
             expanded={selectedForma === forma.id}
-            onClick={() => setSelectedForma(selectedForma === forma.id ? null : forma.id)}
+            onClick={() => handleCardClick(forma.id)}
           />
         ))}
       </div>
 
-      {formasFiltradas.length === 0 && (
-        <Card className="p-8 text-center bg-slate-900/30 border-slate-700/30">
-          <p className="text-slate-400">Nenhuma forma encontrada com os filtros selecionados.</p>
-        </Card>
-      )}
+      <Card className="p-4 bg-slate-900/50 border-slate-700/50">
+        <h3 className="text-lg font-serif text-slate-100 mb-2">Sobre a Geometria Sagrada</h3>
+        <p className="text-sm text-slate-400 leading-relaxed">
+          A Geometria Sagrada é o estudo das formas e proporções matemáticas encontradas na natureza 
+          e no universo. Na tradição cabalística, estas formas representam os canais através dos 
+          quais a energia divina flui para a criação. Cada forma carrega frequências vibratórias 
+          específicas que podem ser utilizadas para harmonização e evolução espiritual.
+        </p>
+      </Card>
     </div>
   );
 }

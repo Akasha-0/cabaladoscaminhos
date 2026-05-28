@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 import { adicionarCreditos } from '@/lib/credits/service';
-import { TipoTransacao } from '@prisma/client';
 
 export const runtime = 'nodejs';
 
@@ -21,35 +19,20 @@ export async function POST(request: NextRequest) {
 
   // Mock signature validation for development
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  
+
   if (!webhookSecret) {
     console.warn('STRIPE_WEBHOOK_SECRET não definida - usando mock de validação');
   }
 
-  // Mock validation: accept any request if no secret configured, or validate mock signature
-  if (webhookSecret) {
-    if (!signature) {
-      return NextResponse.json(
-        { erro: 'Assinatura do webhook não encontrada' },
-        { status: 400 }
-      );
-    }
-    
-    // In production, use: stripe.webhooks.constructEvent(body, signature, webhookSecret)
-    // For now, mock the validation by parsing JSON
-    try {
-      const eventData = JSON.parse(body);
-      return await handleWebhookEvent(eventData);
-    } catch {
-      return NextResponse.json(
-        { erro: 'Payload inválido' },
-        { status: 400 }
-      );
-    }
+  if (!signature) {
+    return NextResponse.json(
+      { erro: 'Assinatura do webhook não encontrada' },
+      { status: 400 }
+    );
   }
 
   try {
-    const eventData = JSON.parse(body);
+    const eventData = JSON.parse(body) as Stripe.Event;
     return await handleWebhookEvent(eventData);
   } catch (err) {
     const error = err as Error;
@@ -63,7 +46,7 @@ export async function POST(request: NextRequest) {
 
 async function handleWebhookEvent(event: Stripe.Event) {
   const { type, data } = event;
-  
+
   switch (type) {
     case 'checkout.session.completed': {
       const session = data.object as Stripe.Checkout.Session;
@@ -81,7 +64,7 @@ async function handleWebhookEvent(event: Stripe.Event) {
       break;
     }
     default:
-      console.log(`Webhook recibido: ${type}`);
+      console.log(`Webhook recebido: ${type}`);
   }
 
   return NextResponse.json({ recebido: true });
@@ -113,10 +96,10 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
   }
 
-  // Store subscription status in memory and update in-memory store
+  // Store subscription status in memory
   if (session.subscription) {
     const subscriptionId = session.subscription as string;
-    
+
     subscriptionStore.set(subscriptionId, {
       userId,
       subscriptionId,
@@ -124,7 +107,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       planoId: planoId || null,
       updatedAt: new Date(),
     });
-    
+
     console.log(`Assinatura ativa armazenada em memória: ${subscriptionId}`);
   }
 }
@@ -133,10 +116,10 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   const subscriptionId = subscription.id;
   const customerId = subscription.customer as string;
   const status = subscription.status as 'active' | 'canceled' | 'past_due' | 'trialing' | 'incomplete';
-  
+
   const existingEntry = Array.from(subscriptionStore.values())
     .find(entry => entry.subscriptionId === subscriptionId);
-    
+
   if (existingEntry) {
     subscriptionStore.set(subscriptionId, {
       ...existingEntry,
@@ -158,7 +141,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   const subscriptionId = subscription.id;
-  
+
   subscriptionStore.set(subscriptionId, {
     ...(subscriptionStore.get(subscriptionId) || {
       userId: subscription.customer as string,
@@ -178,5 +161,5 @@ export function getSubscriptionStatus(subscriptionId: string) {
 }
 
 export function getAllSubscriptions() {
-  return Map.from(subscriptionStore);
+  return new Map(subscriptionStore);
 }

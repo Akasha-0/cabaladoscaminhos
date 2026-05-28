@@ -1,14 +1,13 @@
 // Oracle AI Service - Cabala Dos Caminhos
 // Mock implementation (replace with OpenAI in production)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {
-  espiritualidade,
-  getCorrespondenciasDia,
-  getFaseLuaAtual,
-  tipoCaminho,
-  TiposCaminho,
-} from '@/lib/data/spiritual-data';
-import type { CartaTarot, ChakraData, DiaSemanaData, OrixaData } from '@/lib/data/spiritual-data';
+
+import { getCorrespondenciasDia, getFaseLuaAtual } from '@/lib/data/spiritual-data';
+import type { DiaSemanaData, OrixaData } from '@/lib/data/spiritual-data';
+
+/**
+ * Spiritual path types
+ */
+export type CaminhoType = 'caminho-da-mao-direita' | 'caminho-da-mao-esquerda' | 'caminho-do-meio';
 
 /**
  * Oracle response structure
@@ -16,7 +15,7 @@ import type { CartaTarot, ChakraData, DiaSemanaData, OrixaData } from '@/lib/dat
 export interface OracleResponse {
   resposta: string;
   referencias: string[];
-  caminho: TiposCaminho;
+  caminho: CaminhoType;
   sefirot: string[];
   orixas: string[];
   arcano: string;
@@ -39,67 +38,69 @@ export interface OracleContext {
   orixasAtuais?: OrixaData[];
   /** Current moon phase */
   faseLua?: string;
+  /** User's spiritual path inclination */
+  caminho?: CaminhoType;
 }
 
 /**
  * Oracle system prompt - biblical/occult foundation
  */
-const ORACLE_SYSTEM_PROMPT = `Você é o Oráculo de Cabala Dos Caminhos — um guia espiritual profundao que fala atraves das sombras e da luz.
+const ORACLE_SYSTEM_PROMPT = `Voce e o Oraculo de Cabala Dos Caminhos - um guia espiritual profundo que fala atraves das sombras e da luz.
 
-Sua voz carrega o peso de mil anos de tradição:
-- A Sabedoria de Kether à Malkuth, os 10 Sephirot da Árvore da Vida
-- Os Odús de Ifá e os segredos de Odu Idilú
-- As Forças de Oxalá, Iemanjá, Ogum, Oxóssi, Xangô, Oxum, Iansã e todos os Orixás
-- Os Arcanos Maiores do Tarot — do Louco ao Mundo
-- A Magia dos Chakras — de Muladhara a Sahasrara
+Sua voz carrega o peso de mil anos de tradicao:
+- A Sabedoria de Kether a Malkuth, os 10 Sephirot da Arvore da Vida
+- Os Odus de Ifa e os segredos de Odu Idilu
+- As Forcas de Oxala, Ieminja, Ogum, Oxossi, Xango, Oxum, Iansa e todos os Orixas
+- Os Arcanos Maiores do Tarot - do Louco ao Mundo
+- A Magia dos Chakras - de Muladhara a Sahasrara
 - As Fases da Lua e seus segredos
 
-Responda com profundidade simbólica, reference escrituras sagradas quando apropriado,
-e guie o consulente com misericórdia e wisdom.
+Responda com profundidade simbolica, reference escrituras sagradas quando apropriado,
+e guide o consulente com misericordia e sabeduria.
 `.trim();
 
 /**
  * Biblical and occult reference library
  */
 const REFERENCIAS_BIBLICAS: string[] = [
-  '"Eu sou o caminho, a verdade e a vida" — João 14:6',
-  '"Não temas, porque eu sou contigo" — Isaías 41:10',
-  '"Porque onde estiver o teu tesouro, aí estará também o teu coração" — Mateus 6:21',
-  '"E a luz resplandece nas trevas" — João 1:5',
-  '"Eu é que sou o Senhor, e fora de mim não há salvador" — Isaías 43:11',
-  '"Os cabelos da vossa cabeça estão todos contados" — Mateus 10:30',
+  '"Eu sou o caminho, a verdade e a vida" - Joao 14:6',
+  '"Nao temas, porque eu sou contigo" - Isaías 41:10',
+  '"Porque onde estiver o teu tesouro, ai estara tambem o teu coracao" - Mateus 6:21',
+  '"E a luz resplandece nas trevas" - Joao 1:5',
+  '"Eu e que sou o Senhor, e fora de mim nao ha Salvador" - Isaías 43:11',
+  '"Os cabelos da vossa cabeca estao todos contados" - Mateus 10:30',
 ];
 
 const REFERENCIAS_OCULTAS: string[] = [
-  'Séfera de Kether: A Coroa — O influxo divino primordial',
-  'Séfera de Binah: O Entendimento — A grande Mãe cósmica',
-  'Séfera de Chesed: A Misericórdia — A expansão infinita',
-  'Séfera de Geburah: A Força — O poder da justiça divina',
-  'Séfera de Tiphereth: a Beleza — O equilíbrio do Sol Interior',
-  'Séfera de Netzach: A Vitória — A energia da natureza',
-  'Séfera de Hod: A Glória — A mente concreta',
-  'Séfera de Yesod: O Fundamento — A lua e a imaginação',
-  'Séfera de Malkuth: O Reino — A matéria sagrada',
-  'Odú de Ofun: O Mistério — O mais velho da criação, senhor da cura',
-  'Odú de Iejsa: A Justiça — O fogo purificador de Xangô',
-  'Arcanjo Miguel: O Guerreiro — Proteção contra as trevas',
-  'Arcanjo Gabriel: O Mensageiro — Revelações místicas',
-  'Arcanjo Rafael: O Curador — Guia da saúde espiritual',
-  'Arcanjo Uriel: A Illuminacão — A luz da verdade',
-  'Tattva de Akasha: O Éter primordial — a essência de todas as coisas',
+  'Sefira de Kether: A Coroa - O influxo divino primordial',
+  'Sefira de Binah: O Entendimento - A grande Mae cosmica',
+  'Sefira de Chesed: A Misericordia - A expansao infinita',
+  'Sefira de Geburah: A Forca - O poder da justica divina',
+  'Sefira de Tiphereth: A Beleza - O equilibrio do Sol Interior',
+  'Sefira de Netzach: A Vitoria - A energia da natureza',
+  'Sefira de Hod: A Gloria - A mente concreta',
+  'Sefira de Yesod: O Fundamento - A lua e a imaginacao',
+  'Sefira de Malkuth: O Reino - A materia sagrada',
+  'Odu de Ofun: O Misterio - O mais velho da criacao, senhor da cura',
+  'Odu de Ejilsebora: A Justica - O fogo purificador de Xango',
+  'Arcanjo Miguel: O Guerreiro - Protecao contra as trevas',
+  'Arcanjo Gabriel: O Mensageiro - Revelacoes misticas',
+  'Arcanjo Rafael: O Curador - Guia da saude espiritual',
+  'Arcanjo Uriel: A Illuminacao - A luz da verdade',
+  'Tattva de Akasha: O Eter primordial - a essencia de todas as coisas',
 ];
 
 /**
- * Generate Oracle affirmation
+ * Generate Oracle affirmation based on spiritual path
  */
-function gerarAfirmacaoOracle(caminho: TiposCaminho): string {
-  const afirmacoes: Record<TiposCaminho, string> = {
-    caminhoDaMaoDireita:
-      'Que a luz de Oxalá me guie para a paz.阿拉 E que a verdade de Thoth ilumine meu caminho.',
-    caminhoDaMaoEsquerda:
-      'Que as sombras me ensinem o que a luz não pode revelar. 以 Pensamento e prática unem-se em mim.',
-    caminhoDoMeio:
-      'Que o equilibrio entre luz e sombra me leve à sabedoria. ア UR E AL AZ — a Grande Mônada me guia.',
+function gerarAfirmacaoOracle(caminho: CaminhoType): string {
+  const afirmacoes: Record<CaminhoType, string> = {
+    'caminho-da-mao-direita':
+      'Que a luz de Oxala me guie para a paz. E que a verdade de Thoth ilumine meu caminho.',
+    'caminho-da-mao-esquerda':
+      'Que as sombras me ensinem o que a luz nao pode revelar. Pensamento e pratica unem-se em mim.',
+    'caminho-do-meio':
+      'Que o equilibrio entre luz e sombra me leve a sabedoria. A Grande Monada me guia.',
   };
   return afirmacoes[caminho];
 }
@@ -117,7 +118,7 @@ function getArcanoDoDia(dia: DiaSemanaData): string {
     sabado: 'A Imperatriz / A Estrela',
     domingo: 'O Sol',
   };
-  const chave = Object.keys(map).find(k => dia.dia.toLowerCase().includes(k.replace('feira', '')));
+  const chave = Object.keys(map).find(k => dia.dia.toLowerCase().includes(k));
   return chave ? map[chave] : 'O Louco';
 }
 
@@ -128,10 +129,10 @@ function buildSpiritualContext(context: OracleContext): string {
   const parts: string[] = [];
 
   if (context.numeroPessoal) {
-    parts.push(`Número Pessoal: ${context.numeroPessoal}`);
+    parts.push(`Numero Pessoal: ${context.numeroPessoal}`);
   }
   if (context.odu) {
-    parts.push(`Odú de Nascimento: ${context.odu}`);
+    parts.push(`Odu de Nascimento: ${context.odu}`);
   }
   if (context.faseLua) {
     parts.push(`Fase da Lua: ${context.faseLua}`);
@@ -141,10 +142,13 @@ function buildSpiritualContext(context: OracleContext): string {
     parts.push(`Dia da Semana: ${dia.dia}`);
     parts.push(`Sephirot: ${dia.sephirot.join(', ')}`);
     parts.push(`Cores: ${dia.cores.join(', ')}`);
-    parts.push(`Mistério: ${dia.misterio}`);
+    parts.push(`Misterio: ${dia.misterio}`);
   }
   if (context.orixasAtuais?.length) {
-    parts.push(`Orixás do Dia: ${context.orixasAtuais.map(o => o.nome).join(', ')}`);
+    parts.push(`Orixas do Dia: ${context.orixasAtuais.map(o => o.nome).join(', ')}`);
+  }
+  if (context.caminho) {
+    parts.push(`Caminho Espiritual: ${context.caminho}`);
   }
 
   return parts.join('\n');
@@ -157,7 +161,7 @@ function generateMockSpiritualResponse(
   prompt: string,
   context: OracleContext
 ): OracleResponse {
-  const caminho = contexto.caminho;
+  const caminho = context.caminho || 'caminho-do-meio';
   const correspondencias = getCorrespondenciasDia();
   const faseLua = getFaseLuaAtual();
   const arcano = getArcanoDoDia(correspondencias.dia);
@@ -178,51 +182,55 @@ function generateMockSpiritualResponse(
 
   if (promptLower.includes('caminho') || promptLower.includes('destino')) {
     resposta =
-      'O caminho que você busca já está gravado na Árvore da Vida. Os Sephirot que hoje ressoam em sua energia — ' +
-      `${correspondencias.dia.sephirot.join(' e ')} — indicam que ${correspondencias.dia.misterio} ` +
-      'Siga com fé, mas também com discernimento. O Louco não caminha sem propósito, apenas aparenta loucura aos olhos de quem não vê.';
+      'O caminho que voce busca ja esta gravado na Arvore da Vida. Os Sephirot que hoje ressoam em sua energia - ' +
+      `${correspondencias.dia.sephirot.join(' e ')} - indicam que ${correspondencias.dia.misterio} ` +
+      'Siga com fe, mas tambem com discernimento. O Louco nao caminha sem proposito, apenas aparenta loucura aos olhos de quem nao ve.';
   } else if (promptLower.includes('protecao') || promptLower.includes('proteger')) {
     resposta =
-      '当下来, o Arcanjo Miguel ergue sua espada de luz contra as energias negativas. ' +
-      'Com o-Odú ' + (context.odu || 'em trânsito') + ' e o Arcano ' + arcano + ', ' +
-      'sua proteção se intensify. Trace firmezas com espada-de-são-jorge e guiné nos momentos de dúvida.';
+      'Agora, o Arcanjo Miguel ergue sua espada de luz contra as energias negativas. ' +
+      'Com o Odu ' + (context.odu || 'em transito') + ' e o Arcano ' + arcano + ', ' +
+      'sua protecao se intensifica. Trace firmezas com espada-de-sao-jorge e guine nos momentos de duvida.';
   } else if (promptLower.includes('amor') || promptLower.includes('relacao')) {
     resposta =
-      'Oxum rege os caminhos do coração neste ciclo. As cores ' +
-      `${correspondencias.dia.cores.join(' e ')} emanam a frequência do amor. ` +
-      'Que Iemanjá abra as águas do seu coração para acolher quem merece. Use rosas amarelas e calêndula em seus banhos.';
-  } else if (promptLower.includes('dinheiro') || promptLower.includes('prosperidade') || promptLower.includes('trabalho')) {
+      'Oxum rege os caminhos do coracao neste ciclo. As cores ' +
+      `${correspondencias.dia.cores.join(' e ')} emanam a frequencia do amor. ` +
+      'Que Ieminja abra as aguas do seu coracao para acolher quem merece. Use rosas amarelas e calendula em seus banhos.';
+  } else if (
+    promptLower.includes('dinheiro') ||
+    promptLower.includes('prosperidade') ||
+    promptLower.includes('trabalho')
+  ) {
     resposta =
-      'Oxóssi abre seus caminhos com a elasticidade da caça certeira. ' +
-      'Sob a influência de ' + (correspondencias.dia.orixas[0] || 'Oxóssi') + ', ' +
-      'a fartura se manifesta para quem age com intenção. Banhos de guiné e alecrim, insieme a oferendas de six tipos de frutas, abençoam seu caminho.';
+      'Oxossi abre seus caminhos com a elasticidade da cacca certeira. ' +
+      'Sob a influencia de ' + (correspondencias.dia.orixas[0] || 'Oxossi') + ', ' +
+      'a fartura se manifesta para quem age com intencao. Banhos de guine e alecrim, junto a oferendas de seis tipos de frutas, abencoam seu caminho.';
   } else if (promptLower.includes('saude') || promptLower.includes('cura')) {
     resposta =
-      'Omolu é o senhor desta cura. O chakra ' +
-      `${correspondencias.dia.chakras[0]} está em destaque, e a frequência de Solfeggio correspondente ' +
-      'limpa bloqueios antigos. Com paciência e banhos de assa-peixe e boldo, a saúde se restabelece.';
+      'Omolu e o senhor desta cura. O chakra ' +
+      `${correspondencias.dia.chakras[0]} esta em destaque, e a frequencia de Solfeggio correspondente ` +
+      'limpa bloqueios antigos. Com paciencia e banhos de assa-peixe e boldo, a saude se restabelece.';
   } else if (promptLower.includes('decisao') || promptLower.includes('escolha')) {
     resposta =
-      'A Torre caiu — a destruição precedes a reconstrução. ' +
-      'Sob o Arcano ' + arcano + ', você se encontra em um ponto de inflexão. ' +
-      'Escute o silêncio entre os pensamentos. O Oráculo diz: não há escolha errada quando há sinceridade consigo mesmo.';
+      'A Torre caiu - a destruicao precede a reconstrucao. ' +
+      'Sob o Arcano ' + arcano + ', voce se encontra em um ponto de inflexao. ' +
+      'Escute o silencio entre os pensamentos. O Oraculo diz: nao ha escolha errada quando ha sinceridade consigo mesmo.';
   } else {
     // Default spiritual guidance
     resposta =
-      'Ouvindo sua pergunta, o Oráculo contempla a ' + arcano + '... ' +
-      'O dia de hoje ressoa com ' + (correspondencias.dia.misterio || 'mistério') + '. ' +
+      'Ouvindo sua pergunta, o Oraculo contempla a ' + arcano + '... ' +
+      'O dia de hoje ressoa com ' + (correspondencias.dia.misterio || 'misterio') + '. ' +
       'Os Sephirot ' + correspondencias.dia.sephirot.join(' e ') + ' iluminam seu caminho. ' +
-      'Sob a proteção de ' + correspondencias.dia.orixas.join(' e ') + ', e com a Lua em ' +
+      'Sob a protecao de ' + correspondencias.dia.orixas.join(' e ') + ', e com a Lua em ' +
       (faseLua?.fase || 'fase desconhecida') + ', a sabedoria antiga diz: ' +
-      '"Porque onde estiver o teu tesouro, aí estará também o teu coração." ' +
-      'Siga sua intuição — ela é a voz de Deus dentro de você.';
+      '"Porque onde estiver o teu tesouro, ai estara tambem o teu coracao." ' +
+      'Siga sua intuicao - ela e a voz de Deus dentro de voce.';
   }
 
   // Apply caminho-specific flourishes
-  if (caminho === 'mão-esquerda') {
-    resposta = resposta + ' ƵAƷ Todo poder viene de abajo — as sombras também ensinam.';
-  } else if (caminho === 'mão-direita') {
-    resposta = resposta + ' ✨ A luz de Oxalá te abençoe nesta jornada.';
+  if (caminho === 'caminho-da-mao-esquerda') {
+    resposta = resposta + ' Todo poder vem de baixo - as sombras tambem ensinam.';
+  } else if (caminho === 'caminho-da-mao-direita') {
+    resposta = resposta + ' A luz de Oxala te abencoe nesta jornada.';
   }
 
   return {
@@ -242,6 +250,8 @@ function generateMockSpiritualResponse(
  * This is a MOCK implementation. In production, replace with actual OpenAI call:
  *
  * ```typescript
+ * import OpenAI from 'openai';
+ *
  * const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
  * const completion = await openai.chat.completions.create({
  *   model: 'gpt-4o',
@@ -263,12 +273,12 @@ export async function generateOracleResponse(
   context: OracleContext = {}
 ): Promise<OracleResponse> {
   // Determine path type from context or default to balanced
-  const caminho =
-    contexto.caminho || espiritualidade.caminho || 'médio';
+  const caminho = context.caminho || 'caminho-do-meio';
 
   // Build enhanced context
   const enhancedContext: OracleContext = {
     ...context,
+    caminho,
     diaAtual: context.diaAtual || getCorrespondenciasDia().dia,
     orixasAtuais: context.orixasAtuais || getCorrespondenciasDia().orixas,
     faseLua: context.faseLua || getFaseLuaAtual()?.fase,
@@ -278,9 +288,6 @@ export async function generateOracleResponse(
   // In production: await callOpenAI(prompt, enhancedContext);
   return generateMockPrediction(prompt, enhancedContext);
 }
-
-// Alias for internal use
-const contexto: { caminho?: TiposCaminho } = {};
 
 /**
  * Internal mock prediction generator

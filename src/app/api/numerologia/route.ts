@@ -207,6 +207,7 @@ export async function GET(request: NextRequest) {
         headers: {
           'X-Request-Id': requestId,
           'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
         },
       }
     );
@@ -308,7 +309,12 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      successResponse<NumerologiaResponse>(resultado as NumerologiaResponse)
+      successResponse<NumerologiaResponse>(resultado as NumerologiaResponse),
+      {
+        headers: {
+          'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
+        },
+      }
     );
   } catch (error) {
     return NextResponse.json(

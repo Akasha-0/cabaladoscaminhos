@@ -29,7 +29,14 @@ export async function GET(request: NextRequest) {
       dataAtual ? new Date(dataAtual) : new Date()
     );
     
-    return NextResponse.json({ transitos });
+    return NextResponse.json(
+      { transitos },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=7200',
+        },
+      }
+    );
   } catch (error) {
     console.error('Erro calculando trânsitos:', error);
     return NextResponse.json({ 

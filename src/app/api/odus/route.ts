@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { calcularOduNascimento, odusData } from '@/lib/odus/calculos';
 
+const CACHE_HEADERS = {
+  'Cache-Control': 'public, max-age=86400, stale-while-revalidate=259200'
+};
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const data = searchParams.get('data');
@@ -15,19 +19,25 @@ export async function GET(request: NextRequest) {
 
   try {
     if (tipo === 'todos') {
-      return NextResponse.json({
-        odus: Object.values(odusData),
-        timestamp: new Date().toISOString()
-      });
+      return NextResponse.json(
+        {
+          odus: Object.values(odusData),
+          timestamp: new Date().toISOString()
+        },
+        { headers: CACHE_HEADERS }
+      );
     }
 
     const { principal, secundario } = calcularOduNascimento(data);
 
-    return NextResponse.json({
-      principal,
-      secundario,
-      timestamp: new Date().toISOString()
-    });
+    return NextResponse.json(
+      {
+        principal,
+        secundario,
+        timestamp: new Date().toISOString()
+      },
+      { headers: CACHE_HEADERS }
+    );
   } catch (error) {
     console.error('Erro ao calcular Odú:', error);
     return NextResponse.json(

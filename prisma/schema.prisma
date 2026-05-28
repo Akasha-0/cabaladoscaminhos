@@ -25,23 +25,28 @@ model User {
   localNascimento   String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  
+
   mapaNatal         MapaNatal?
-  
+
   assinatura        Assinatura?
-  
-  credito          Credito?
-  
+
+  credito           Credito?
+
   empresas          Empresa[]
-  
+
   temaPreferido     String    @default("mystical")
-  
+
   supabaseUserId    String?   @unique
-  
+
   stripeCustomerId      String?   @unique
   stripeSubscriptionId  String?   @unique
   planoAssinatura       String?
-  
+
+  @@index([planoAssinatura])
+  @@index([createdAt])
+  @@index([dataNascimento])
+  @@index([stripeSubscriptionId])
+
   @@map("users")
 }
 
@@ -53,28 +58,33 @@ model MapaNatal {
   id                String    @id @default(cuid())
   userId            String    @unique
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   signoSolar        String?
   signoLunar        String?
   ascendente        String?
-  
+
   numeroCabalistico Int?
   numeroTantrico    Int?
   numeroPitagorico  Int?
   numeroCaldeu     Int?
   numeroCarmico    Int?
-  
+
   oduPrincipal      String?
   oduSecundario     String?
-  
+
   arcanoPessoal     Int?
   cartaCaminho      String?
-  
+
   sefirotDominante  String?
-  
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  
+
+  @@index([signoSolar])
+  @@index([numeroPitagorico])
+  @@index([arcanoPessoal])
+  @@index([createdAt])
+
   @@map("mapa_natal")
 }
 
@@ -86,24 +96,28 @@ model Assinatura {
   id                String    @id @default(cuid())
   userId            String    @unique
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   plano             String    @default("iniciante")
   status            String    @default("active")
   stripeCustomerId  String?   @unique
   stripeSubscriptionId String? @unique
-  
+
   dataInicio        DateTime  @default(now())
   dataProximoCobro DateTime?
-  
+
   moduloPlanetas    Boolean   @default(false)
   moduloLetras      Boolean   @default(false)
   moduloGeometria   Boolean   @default(false)
   moduloFrequencias Boolean   @default(false)
   moduloEmpresa     Boolean   @default(false)
-  
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  
+
+  @@index([status])
+  @@index([dataProximoCobro])
+  @@index([plano])
+
   @@map("assinaturas")
 }
 
@@ -115,14 +129,17 @@ model Credito {
   id                String    @id @default(cuid())
   userId            String    @unique
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   saldo             Int       @default(0)
-  
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  
+
   transacoes        TransacaoCredito[]
-  
+
+  @@index([saldo])
+  @@index([createdAt])
+
   @@map("creditos")
 }
 
@@ -135,7 +152,11 @@ model TransacaoCredito {
   descricao       String?
   operacao        String?
   createdAt       DateTime  @default(now())
-  
+
+  @@index([creditoId, createdAt])
+  @@index([tipo])
+  @@index([createdAt])
+
   @@map("transacoes_credito")
 }
 
@@ -147,18 +168,21 @@ model Empresa {
   id              String    @id @default(cuid())
   userId          String
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   nomeFantasia    String
   razaoSocial     String?
   cnpj            String?
   dataFundacao    DateTime?
-  
+
   numeroNome      Int?
   numeroRazao     Int?
-  
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
+  @@index([userId])
+  @@index([cnpj])
+
   @@map("empresas")
 }
 
@@ -173,12 +197,12 @@ model DiaSemana {
   planeta         String
   elemento        String
   cor             String
-  
+
   orixas          Orixa[]
-  
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   @@map("dias_semana")
 }
 
@@ -190,16 +214,16 @@ model Orixa {
   elemento          String
   cores             String[]
   chakraPrincipal   Int
-  
+
   hierbas           Erva[]
-  
+
   quizilas          String[]
-  
+
   dias              DiaSemana[]
-  
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  
+
   @@map("orixas")
 }
 
@@ -212,13 +236,13 @@ model Chakra {
   glandula    String?
   mantras     String[]
   funcoes    String[]
-  
+
   sefirotId   String?   @unique
   sefirot     Sefirot?  @relation(fields: [sefirotId], references: [id])
-  
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  
+
   @@map("chakras")
 }
 
@@ -229,14 +253,14 @@ model Sefirot {
   caminho     String
   aspecto     String
   cor         String
-  
+
   planeta     String?
-  
+
   chakra      Chakra?
-  
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  
+
   @@map("sefirots")
 }
 
@@ -248,14 +272,14 @@ model Odú {
   elemento        String
   planeta         String
   orixaRegente    String
-  
+
   quizilas        String[]
   preceptos       String[]
   ebos            String[]
-  
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   @@map("odus")
 }
 
@@ -264,12 +288,12 @@ model Erva {
   nome            String    @unique
   tipo            String
   uso             String[]
-  
+
   orixas          Orixa[]
-  
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   @@map("ervas")
 }
 
@@ -279,10 +303,10 @@ model FaseLua {
   energia         String
   rituais         String[]
   evitar         String[]
-  
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   @@map("fases_lua")
 }
 
@@ -293,10 +317,10 @@ model Elemento {
   qualidades  String[]
   direcoes    String[]
   cores       String[]
-  
+
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  
+
   @@map("elementos")
 }
 
@@ -307,19 +331,23 @@ model Elemento {
 model Insight {
   id              String    @id @default(cuid())
   userId          String
-  
+
   titulo          String
   descricao       String
   acaoRecomendada String?
   mantra          String?
-  
+
   diaSemana       String?
   faseLua         String?
   numeroPessoal   Int?
   odu             String?
-  
+
   createdAt       DateTime  @default(now())
-  
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([titulo])
+
   @@map("insights")
 }
 
@@ -327,12 +355,15 @@ model Conversa {
   id              String    @id @default(cuid())
   userId          String
   tema            String
-  
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   mensagens       Mensagem[]
-  
+
+  @@index([userId])
+  @@index([updatedAt])
+
   @@map("conversas")
 }
 
@@ -340,11 +371,14 @@ model Mensagem {
   id              String    @id @default(cuid())
   conversaId      String
   conversa        Conversa  @relation(fields: [conversaId], references: [id], onDelete: Cascade)
-  
+
   tipo            String
   conteudo        String
-  
+
   createdAt       DateTime  @default(now())
-  
+
+  @@index([conversaId, createdAt])
+  @@index([conversaId])
+
   @@map("mensagens")
 }

@@ -86,17 +86,19 @@ async function createRedisClient(
   url: string,
   onDisconnect?: () => void
 ): Promise<RedisLike> {
-  // Dynamic import with proper type
+  // Dynamic import with proper type handling
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let Redis: new (url: string, options?: object) => any;
-
   try {
-    const module = await import("ioredis");
-    Redis = module.default;
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const ioredis = require('ioredis');
+    Redis = ioredis.default ?? ioredis;
   } catch {
     throw new Error("ioredis module not available");
   }
-
+  if (!Redis) {
+    throw new Error("ioredis module not available");
+  }
   const client = new Redis(url, {
     maxRetriesPerRequest: 3,
     enableReadyCheck: true,
@@ -105,7 +107,6 @@ async function createRedisClient(
       return Math.min(times * 100, 1000);
     }
   });
-
   client.on("error", () => {
     // errors are expected — fallback will be used
   });

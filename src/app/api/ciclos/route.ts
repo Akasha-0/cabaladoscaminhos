@@ -6,10 +6,13 @@ export async function GET(request: NextRequest) {
   const tipo = searchParams.get('tipo');
   const dataNascimento = searchParams.get('data');
 
+  const headers = new Headers();
+  headers.set('Cache-Control', 'private, max-age=43200, stale-while-revalidate=86400');
+
   if (!dataNascimento) {
     return NextResponse.json(
       { error: 'Parâmetro "data" é obrigatório' },
-      { status: 400 }
+      { status: 400, headers }
     );
   }
 
@@ -20,7 +23,7 @@ export async function GET(request: NextRequest) {
           tipo: 'ano',
           ...calcularAnoPessoal(dataNascimento),
           timestamp: new Date().toISOString()
-        });
+        }, { headers });
 
       case 'mes':
         const anoInfo = calcularAnoPessoal(dataNascimento);
@@ -28,7 +31,7 @@ export async function GET(request: NextRequest) {
           tipo: 'mes',
           ...calcularMesPessoal(anoInfo.numero),
           timestamp: new Date().toISOString()
-        });
+        }, { headers });
 
       case 'dia':
         const anoInfo2 = calcularAnoPessoal(dataNascimento);
@@ -36,7 +39,7 @@ export async function GET(request: NextRequest) {
           tipo: 'dia',
           ...calcularDiaPessoal(dataNascimento, anoInfo2.numero),
           timestamp: new Date().toISOString()
-        });
+        }, { headers });
 
       case 'todos':
       case null:
@@ -44,19 +47,19 @@ export async function GET(request: NextRequest) {
           tipo: 'todos',
           ciclos: getCiclosTemporais(dataNascimento),
           timestamp: new Date().toISOString()
-        });
+        }, { headers });
 
       default:
         return NextResponse.json(
           { error: `Tipo "${tipo}" não reconhecido. Tipos disponíveis: ano, mes, dia, todos` },
-          { status: 400 }
+          { status: 400, headers }
         );
     }
   } catch (error) {
     console.error('Erro no cálculo de ciclos:', error);
     return NextResponse.json(
       { error: 'Erro ao processar cálculo de ciclos temporais' },
-      { status: 500 }
+      { status: 500, headers }
     );
   }
 }

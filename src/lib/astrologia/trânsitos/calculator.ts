@@ -12,6 +12,26 @@ export interface Transito {
   descricao: string;
 }
 
+// Memoization cache for transit calculations
+const transitCache = new Map<string, { data: Transito[]; expiresAt: number }>();
+const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+function getCachedTransits(key: string): Transito[] | null {
+  const cached = transitCache.get(key);
+  if (cached && Date.now() < cached.expiresAt) {
+    return cached.data;
+  }
+  return null;
+}
+
+function setCachedTransits(key: string, data: Transito[]): void {
+  transitCache.set(key, { data, expiresAt: Date.now() + CACHE_TTL_MS });
+}
+
+export function clearTransitCache(): void {
+  transitCache.clear();
+}
+
 const ASPECTOS_TRANSITO = [
   { nome: 'conjunto', angulo: 0, impacto: 'alto' as const },
   { nome: 'oposto', angulo: 180, impacto: 'alto' as const },
@@ -26,6 +46,15 @@ export function calcularTrânsitosAtivos(
   mapaNatal: MapaNatal,
   dataAtual: Date = new Date()
 ): Transito[] {
+  // Generate cache key from mapa natal data
+  const cacheKey = generateCacheKey(mapaNatal, dataAtual);
+  
+  // Check cache first
+  const cached = getCachedTransits(cacheKey);
+  if (cached) {
+    return cached;
+  }
+  
   const transitos: Transito[] = [];
   
   for (const planetaTransito of PLANETAS_TRANSITO) {
@@ -51,10 +80,23 @@ export function calcularTrânsitosAtivos(
     }
   }
   
-  return transitos.sort((a, b) => {
+  const sortedTransitos = transitos.sort((a, b) => {
     const impactoOrder = { alto: 0, medio: 1, baixo: 2 };
     return impactoOrder[a.impacto] - impactoOrder[b.impacto];
   });
+  
+  // Cache the result
+  setCachedTransits(cacheKey, sortedTransitos);
+  
+  return sortedTransitos;
+}
+
+function generateCacheKey(mapaNatal: MapaNatal, dataAtual: Date): string {
+  const planetPositions = Object.entries(mapaNatal.planeta)
+    .map(([k, v]) => `${k}:${v.longitude}`)
+    .join('|');
+  const dateKey = dataAtual.toISOString().split('T')[0];
+  return `${dateKey}:${planetPositions}`;
 }
 
 function normalizeDiff(diff: number): number {
@@ -63,11 +105,11 @@ function normalizeDiff(diff: number): number {
 
 function gerarDescricao(transito: string, aspecto: string, natal: string): string {
   const descricoes: Record<string, string> = {
-    'saturno_oposto': 'Período de desafios e amadurecimento em área relacionada a ' + natal + '.',
-    'jupiter_trino': 'Oportunidade de crescimento e expansão em área de ' + natal + '.',
-    'marte_conjunto': 'Energia intensificada em área de ' + natal + '. Ação decisiva necessária.',
-    'netuno_trino': 'Período de inspiração e intuição em área de ' + natal + '.',
-    'plutao_oposto': 'Transformação profunda em área de ' + natal + '.',
+    'saturno_oposto': `Período de desafios e amadurecimento em área relacionada a ${natal}.`,
+    'jupiter_trino': `Oportunidade de crescimento e expansão em área de ${natal}.`,
+    'marte_conjunto': `Energia intensificada em área de ${natal}. Ação decisiva necessária.`,
+    'netuno_trino': `Período de inspiração e intuição em área de ${natal}.`,
+    'plutao_oposto': `Transformação profunda em área de ${natal}.`,
   };
   
   const key = `${transito}_${aspecto}`;
