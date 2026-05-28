@@ -81,32 +81,35 @@ export async function debitarCreditos(
     throw new Error('A quantidade deve ser maior que zero.');
   }
 
-  const credito = await prisma.credito.findUnique({
-    where: { userId },
+  return prisma.$transaction(async (tx) => {
+    const updated = await tx.credito.updateMany({
+      where: { userId, saldo: { gte: quantidade } },
+      data: { saldo: { decrement: quantidade } },
+    });
+
+    if (updated.count === 0) {
+      const atual = await tx.credito.findUnique({
+        where: { userId },
+        select: { saldo: true },
+      });
+      throw new CreditosInsuficientesError(atual?.saldo ?? 0, quantidade);
+    }
+
+    const credito = await tx.credito.findUniqueOrThrow({
+      where: { userId },
+    });
+
+    await tx.transacaoCredito.create({
+      data: {
+        creditoId: credito.id,
+        tipo: TipoTransacao.DEBITO,
+        quantidade,
+        operacao,
+      },
+    });
+
+    return { novoSaldo: credito.saldo };
   });
-
-  if (!credito || credito.saldo < quantidade) {
-    const saldoAtual = credito?.saldo ?? 0;
-    throw new CreditosInsuficientesError(saldoAtual, quantidade);
-  }
-
-  const creditoAtualizado = await prisma.credito.update({
-    where: { userId },
-    data: {
-      saldo: { decrement: quantidade },
-    },
-  });
-
-  await prisma.transacaoCredito.create({
-    data: {
-      creditoId: credito.id,
-      tipo: TipoTransacao.DEBITO,
-      quantidade,
-      operacao,
-    },
-  });
-
-  return { novoSaldo: creditoAtualizado.saldo };
 }
 
 export async function verificarCreditos(

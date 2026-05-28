@@ -11,7 +11,8 @@ function getSecret(): Uint8Array {
   if (secret.length < 32) {
     throw new Error('JWT_SECRET must be at least 32 bytes for HS256');
   }
-  return new TextEncoder().encode(secret);
+  // Ensure we use a proper Uint8Array
+  return new Uint8Array(Buffer.from(secret, 'utf-8'));
 }
 
 export interface TokenPayload extends JWTPayload {

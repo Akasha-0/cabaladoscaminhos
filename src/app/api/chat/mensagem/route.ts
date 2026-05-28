@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { getCreditos, usarCreditos } from '@/lib/credits/service';
+import { getCreditos, debitarCreditos, CreditosInsuficientesError } from '@/lib/credits/service';
 import { enviarMensagemChat } from '@/lib/chat/service';
 import { TemaChat, MensagemChat } from '@/lib/chat/types';
 import { getCiclosTemporais } from '@/lib/numerologia/ciclos';
@@ -88,16 +88,22 @@ export async function POST(request: NextRequest) {
       })),
     });
 
-    await usarCreditos(user.id, CUSTO_CHAT, 'perguntaChat');
+    const debito = await debitarCreditos(user.id, CUSTO_CHAT, 'perguntaChat');
 
     return NextResponse.json({
       resposta,
-      novoSaldo: creditos - CUSTO_CHAT,
+      novoSaldo: debito.novoSaldo,
       custo: CUSTO_CHAT,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
     console.error('Erro ao processar mensagem de chat:', error);
+    if (error instanceof CreditosInsuficientesError) {
+      return NextResponse.json(
+        { error: error.message, saldoAtual: error.saldoAtual, saldoNecessario: error.saldoNecessario },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       { error: 'Erro ao processar sua mensagem. Tente novamente.' },
       { status: 500 }

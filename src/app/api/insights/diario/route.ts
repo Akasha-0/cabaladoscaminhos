@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { getCreditos, usarCreditos } from '@/lib/credits/service';
+import { getCreditos, debitarCreditos, CreditosInsuficientesError } from '@/lib/credits/service';
 import { getCiclosTemporais } from '@/lib/numerologia/ciclos';
 import { gerarInsightDiario } from '@/lib/ai/insights/generator';
 import type { UsuarioContext } from '@/lib/ai/prompt-system';
@@ -93,18 +93,28 @@ export async function GET(request: NextRequest) {
 
     const insight = await gerarInsightDiario(contexto);
 
-    await usarCreditos(user.id, CUSTO_INSIGHT, 'insight_diario');
+    const debito = await debitarCreditos(user.id, CUSTO_INSIGHT, 'insight_diario');
 
     return NextResponse.json({
       insight,
       ciclos,
       diaAtual: correspondencias,
-      creditosRestantes: creditos - CUSTO_INSIGHT,
+      creditosRestantes: debito.novoSaldo,
       timestamp: new Date().toISOString()
     });
 
   } catch (error) {
     console.error('Erro ao gerar insight:', error);
+    if (error instanceof CreditosInsuficientesError) {
+      return NextResponse.json(
+        {
+          error: error.message,
+          saldoAtual: error.saldoAtual,
+          saldoNecessario: error.saldoNecessario,
+        },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       { error: 'Erro ao gerar insight diário' },
       { status: 500 }
