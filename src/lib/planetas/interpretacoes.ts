@@ -160,7 +160,6 @@ const INTERPRETACOES_PLANETA_SIGNO: Record<string, Record<string, string>> = {
 };
 
 export function getInterpretaçãoBase(planeta: Planeta, signo: Signo): string {
-  const key = `${planeta}_${signo}`;
   return INTERPRETACOES_PLANETA_SIGNO[planeta]?.[signo] ?? 
     `${PLANETAS[planeta]?.nome || planeta} em ${SIGNOS_NOMES[signo] || signo}.`;
 }
