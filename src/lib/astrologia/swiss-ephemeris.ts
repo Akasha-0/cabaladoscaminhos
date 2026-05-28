@@ -68,7 +68,7 @@ export function calcularLua(data: Date): { longitude: number; velocidade: number
 
 function calcularPlaneta(
   data: Date,
-  elementos: { L0: number; L1: number; a: number; e: number; i: number; Omega: number }
+  elementos: { L0: number; L1: number; Omega: number }
 ): { longitude: number; velocidade: number } {
   const jd = toJulianDate(data);
   const d = jd - 2451545.0;
