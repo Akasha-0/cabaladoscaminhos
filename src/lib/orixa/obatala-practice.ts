@@ -1,23 +1,18 @@
- 
-/* prettier-ignore */
+// Obatala practice module
 
-// @ts-nocheck
-
-/**
- * Obatala Practice Module
- * Spiritual practice attunement for Obatalá, Orixá of creation, purity, and wisdom
- */
-
-export interface ObatalaPracticeResult {
+export interface PracticeResult {
   success: boolean;
-  message: string;
-  timestamp: Date;
+  practice: string;
+  timestamp: number;
 }
 
-export async function performPractice(): Promise<ObatalaPracticeResult> {
+/**
+ * Performs the Obatala practice ritual.
+ */
+export function performPractice(): PracticeResult {
   return {
     success: true,
-    message: "Obatala practice completed successfully.",
-    timestamp: new Date(),
+    practice: 'obatala',
+    timestamp: Date.now(),
   };
 }
