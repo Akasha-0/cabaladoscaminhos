@@ -128,15 +128,15 @@ Ele habita os cruzamentos, os momentos de transição, e as encruzilhadas
 da vida, onde却很 intervém para guiar os seres humanos em direção ao 
 seu destino correto. Conectado à tradição de Ifá, Osetura conhece todos 
 os oduns (segredos sagrados) e pode revelar o que está oculto aos olhos comuns.`,
-  spiritualLesson: 'Nas encruzilhadas da vida, a sabedoria está em pedir 
+  spiritualLesson: `Nas encruzilhadas da vida, a sabedoria está em pedir 
 orientação antes de agir. Osetura nos ensina que toda decisão deve ser 
 tomada com clareza espiritual ehumildade, reconhecendo que há forças 
-maiores guiando nossos caminhos.',
-  affirmation: 'Eu clamo a sabedoria de Osetura para guiar meus passos. 
-Que a clareza divina ilumine meu caminho e me conduite ao destino correto.',
-  meditation: 'Sinto a presença de Osetura no cruzamento da minha vida. 
+maiores guiando nossos caminhos.`,
+  affirmation: `Eu clamo a sabedoria de Osetura para guiar meus passos. 
+Que a clareza divina ilumine meu caminho e me conduite ao destino correto.`,
+  meditation: `Sinto a presença de Osetura no cruzamento da minha vida. 
 Ele segura a tocha da sabedoria e ilumina cada escolha. Penso nas decisões 
-que preciso tomar e peço sua orientação para seguir pelo caminho certo.',
+que preciso tomar e peço sua orientação para seguir pelo caminho certo.`,
   herbs: [
     {
       name: 'alfavaca',

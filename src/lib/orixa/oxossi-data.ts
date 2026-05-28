@@ -126,13 +126,13 @@ conhece todos os segredos das árvores e dos animais, e é um excelente
 rastreador. É frequentemente confundido com Ogum por ambos usarem arcos e 
 flechas, mas Oxossi é mais associado à caça espiritual e à abundância do que 
 à guerra e ao trabalho com metais.`,
-  spiritualLesson: 'A paciência e a observação atenta trazem as melhores recompensas. 
+  spiritualLesson: `A paciência e a observação atenta trazem as melhores recompensas. 
 A verdadeira abundância vem do respeito à natureza e da sabedoria em buscar 
-apenas o necessário.',
-  affirmation: 'Eu tenho sabedoria para encontrar os recursos necessários para minha vida. 
-A abundância flui em minha direção naturalmente.',
-  meditation: 'Sinto a presença da floresta ao meu redor, o cheiro das árvores 
-e o som dos animais. Oxossi me ensina a observar, esperar e agir no momento certo.',
+apenas o necessário.`,
+  affirmation: `Eu tenho sabedoria para encontrar os recursos necessários para minha vida. 
+A abundância flui em minha direção naturalmente.`,
+  meditation: `Sinto a presença da floresta ao meu redor, o cheiro das árvores 
+e o som dos animais. Oxossi me ensina a observar, esperar e agir no momento certo.`,
   herbs: [
     {
       name: 'arruda',

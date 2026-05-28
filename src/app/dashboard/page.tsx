@@ -39,9 +39,6 @@ export default function DashboardPage() {
   
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  // Always show loading spinner during initial mount to avoid hydration mismatch
   if (!mounted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
@@ -81,13 +78,6 @@ export default function DashboardPage() {
     );
   }
 
-  // User data
-  const nome = user?.user_metadata?.full_name || user?.email?.split('@')[0] || NOME_FALLBACK;
-  const dataNascimento = user?.user_metadata?.data_nascimento || DATA_NASCIMENTO_FALLBACK;
-  
-  const { pitagorica, loading: loadingNumerologia } = useNumerologia(nome, dataNascimento);
-  const { dia, loading: loadingCiclos } = useCiclos(dataNascimento);
-  const { principal: odu, loading: loadingOdus } = useOdus(dataNascimento);
 
   const interpretacao = pitagorica !== null ? getInterpretacao(pitagorica) : null;
 
@@ -209,7 +199,7 @@ export default function DashboardPage() {
               {odu ? (
                 <div className="text-center">
                   <span className="text-2xl">✨</span>
-                  <p className="text-lg font-bold text-amber-400">{udu.orixaRegente || 'N/A'}</p>
+                  <p className="text-lg font-bold text-amber-400">{odu.orixaRegente || 'N/A'}</p>
                   <p className="text-xs text-amber-200/50 mt-1 font-raleway">
                     {odu.elementos || ''}
                   </p>

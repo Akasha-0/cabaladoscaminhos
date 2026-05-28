@@ -132,15 +132,15 @@ Okanran está associado às tempestades de fogo, aos raios, ao sol do meio-dia
 e à energia transformational. Ele é invoked em momentos de mudança radical, 
 quando há necessidade de renovação spiritual e quando se busca proteção 
 contra energias negativas e feitiçaria.`,
-  spiritualLesson: 'A verdadeira transformação vem do uso consciente da energia do 
+  spiritualLesson: `A verdadeira transformação vem do uso consciente da energia do 
 fogo interior. O poder de renascer das cinzas está ao alcance de todos que 
-sabem canalizar sua luz interior.',
-  affirmation: 'Eu sou a chama eterna que transforma e renova. Minha energia 
-interior aquece e protege todos que me cercam.',
-  meditation: 'Sinto o calor do sol me envolvendo, as chamas dançando ao redor 
+sabem canalizar sua luz interior.`,
+  affirmation: `Eu sou a chama eterna que transforma e renova. Minha energia 
+interior aquece e protege todos que me cercam.`,
+  meditation: `Sinto o calor do sol me envolvendo, as chamas dançando ao redor 
 meu corpo. Okanran me dá força para transformar tudo que precisa ser 
 mudado em minha vida, queimando o que não serve mais e iluminando novos 
-caminhos.',
+caminhos.`,
   herbs: [
     {
       name: 'pimenta',

@@ -362,7 +362,7 @@ export default function PerfilPage() {
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
                         <span className="text-muted-foreground">Sefirot: </span>
-                        <span className="text-indigo-300">{odu.sefirot}</span>
+                        <span className="text-indigo-300">{(odu as any).sefirot}</span>
                       </div>
                       <div>
                         <span className="text-muted-foreground">Elementos: </span>
@@ -380,7 +380,7 @@ export default function PerfilPage() {
                       {odu.orixaRegente || 'Não definido'}
                     </div>
                     <div className="text-sm text-amber-400/70">
-                      {odu.orixaRegenteSignificado || 'Aguardando dados de mapa astral completo'}
+                      {(odu as any).orixaRegenteSignificado || 'Aguardando dados de mapa astral completo'}
                     </div>
                   </div>
                 </div>
@@ -388,14 +388,14 @@ export default function PerfilPage() {
                 <Separator className="bg-border/30" />
 
                 <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-primary">Preceptos Cerimoniais</h4>
-                  {!odu.preceptos || odu.preceptos.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">Preencha data de nascimento para ver preceptos</p>
+                  <h4 className="text-sm font-medium text-primary">Preceitos Cerimoniais</h4>
+                  {!odu.preceitos || odu.preceitos.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">Preencha data de nascimento para ver preceitos</p>
                   ) : (
                     <div className="flex flex-wrap gap-2">
-                      {odu.preceptos.map((precepto, index) => (
+                      {odu.preceitos.map((preceito: string, index: number) => (
                         <Badge key={index} variant="outline" className="text-xs border-amber-500/30 text-amber-400">
-                          {precepto}
+                          {preceito}
                         </Badge>
                       ))}
                     </div>

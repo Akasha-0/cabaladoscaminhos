@@ -133,14 +133,14 @@ Oturupon está associado aos mercados, encruzilhadas, encruzilhadas de rua e
 qualquer lugar onde caminhos se encontram. Ele é o orixá dos viajantes, dos 
 comerciantes, dos que buscam novos rumos e dos que precisam decidir entre 
 opções igualmente importantes.`,
-  spiritualLesson: 'Cada encruzilhada é uma oportunidade de crescimento. A verdadeira 
+  spiritualLesson: `Cada encruzilhada é uma oportunidade de crescimento. A verdadeira 
 sabedoria está em conhecer seus caminhos e seguir aquele que seu Ori indica, 
-sem medo das mudanças que virão.',
-  affirmation: 'Eu escolho meu caminho com sabedoria e clareza. Oturupon ilumina 
-minhas decisões e me guia pelo caminho do meu destino.',
-  meditation: 'Estou em uma encruzilhada iluminada pela luz de Oturupon. Vejo todos 
+sem medo das mudanças que virão.`,
+  affirmation: `Eu escolho meu caminho com sabedoria e clareza. Oturupon ilumina 
+minhas decisões e me guia pelo caminho do meu destino.`,
+  meditation: `Estou em uma encruzilhada iluminada pela luz de Oturupon. Vejo todos 
 os caminhos disponíveis e sinto a sabedoria para escolher aquele que me leva 
-à minha verdadeira essência.',
+à minha verdadeira essência.`,
   herbs: [
     {
       name: 'arruda',
