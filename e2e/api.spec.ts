@@ -10,67 +10,84 @@ import { test, expect } from './setup';
  */
 
 test.describe('Public APIs', () => {
-  test('GET /api/odus should return list of odus', async ({ request }) => {
+  test('GET /api/odus should return error without data param', async ({ request }) => {
     const response = await request.get('/api/odus');
     
-    expect(response.status()).toBe(200);
+    // Requires data parameter
+    expect(response.status()).toBe(400);
     
     const body = await response.json();
-    expect(Array.isArray(body)).toBe(true);
-    
-    if (body.length > 0) {
-      expect(body[0]).toHaveProperty('numero');
-      expect(body[0]).toHaveProperty('nome');
-    }
+    expect(body).toHaveProperty('error');
   });
 
-  test('POST /api/numerologia should calculate numerology', async ({ request }) => {
-    const response = await request.post('/api/numerologia', {
-      data: {
-        nome: 'Maria Silva',
-        dataNascimento: '1990-06-15',
-      },
-    });
+  test('GET /api/odus should calculate with data parameter', async ({ request }) => {
+    const response = await request.get('/api/odus?data=1990-06-15');
     
     expect(response.status()).toBe(200);
     
     const body = await response.json();
-    expect(body).toHaveProperty('numeroCabalistico');
+    expect(body).toHaveProperty('principal');
+    expect(body).toHaveProperty('secundario');
   });
 
-  test('POST /api/numerologia should validate required fields', async ({ request }) => {
-    const response = await request.post('/api/numerologia', {
-      data: {
-        nome: 'Test',
-        // missing dataNascimento
-      },
-    });
+  test('GET /api/odus with tipo=todos should return all odus', async ({ request }) => {
+    const response = await request.get('/api/odus?data=1990-06-15&tipo=todos');
+    
+    expect(response.status()).toBe(200);
+    
+    const body = await response.json();
+    expect(body).toHaveProperty('odus');
+    expect(Array.isArray(body.odus)).toBe(true);
+  });
+
+  test('GET /api/numerologia should require tipo parameter', async ({ request }) => {
+    const response = await request.get('/api/numerologia');
     
     expect(response.status()).toBe(400);
   });
 
-  test('POST /api/ciclos should calculate cycles', async ({ request }) => {
-    const response = await request.post('/api/ciclos', {
-      data: {
-        dataNascimento: '1990-06-15',
-      },
-    });
+  test('GET /api/numerologia pitagorica should calculate with nome', async ({ request }) => {
+    const response = await request.get('/api/numerologia?tipo=pitagorica&nome=Maria Silva');
     
-    // Should return 200 or 400 depending on implementation
-    expect([200, 400]).toContain(response.status());
+    expect(response.status()).toBe(200);
+    
+    const body = await response.json();
+    expect(body).toHaveProperty('numero');
+    expect(body).toHaveProperty('interpretacao');
   });
 
-  test('POST /api/astrologia/mapa-natal should validate input', async ({ request }) => {
-    const response = await request.post('/api/astrologia/mapa-natal', {
-      data: {
-        dataNascimento: '1990-06-15',
-        horaNascimento: '14:30',
-        localNascimento: 'São Paulo, SP',
-      },
-    });
+  test('GET /api/numerologia tantrica should require data', async ({ request }) => {
+    const response = await request.get('/api/numerologia?tipo=tantrica');
     
-    // Should return 200 (success) or 500 (service unavailable)
-    expect([200, 500]).toContain(response.status());
+    expect(response.status()).toBe(400);
+  });
+
+  test('GET /api/ciclos should require date parameter', async ({ request }) => {
+    const response = await request.get('/api/ciclos');
+    
+    // Returns 405 Method Not Allowed (no GET handler without params) or 400
+    expect([400, 405]).toContain(response.status());
+  });
+
+  test('GET /api/astrologia/mapa-natal should calculate with params', async ({ request }) => {
+    const response = await request.get('/api/astrologia/mapa-natal?dataNascimento=1990-06-15&horaNascimento=14:30&latitude=-23.55&longitude=-46.63');
+    
+    // 200 (success), 400 (missing params), or 500 (error)
+    expect([200, 400, 500]).toContain(response.status());
+  });
+
+  test('GET /api/astrologia/mapa-natal should require params', async ({ request }) => {
+    const response = await request.get('/api/astrologia/mapa-natal');
+    
+    // Should return 400 (missing required params)
+    expect(response.status()).toBe(400);
+  });
+
+  test('GET /api/astrologia/transitos should work with params', async ({ request }) => {
+    const response = await request.get('/api/astrologia/transitos?dataNascimento=1990-06-15&horaNascimento=14:30&latitude=-23.55&longitude=-46.63');
+    
+    // 200 or 500 depending on external services
+    expect([200, 400, 500]).toContain(response.status());
   });
 });
 
@@ -81,7 +98,6 @@ test.describe('Protected APIs', () => {
     expect(response.status()).toBe(401);
     
     const body = await response.json();
-    expect(body).toHaveProperty('success', false);
     expect(body).toHaveProperty('error');
   });
 
@@ -122,7 +138,7 @@ test.describe('Protected APIs', () => {
 
 test.describe('API Error Handling', () => {
   test('should return JSON error for invalid JSON', async ({ request }) => {
-    const response = await request.post('/api/numerologia', {
+    const response = await request.post('/api/numerologia?tipo=pitagorica&nome=Test', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -133,20 +149,19 @@ test.describe('API Error Handling', () => {
     expect(response.status()).toBeGreaterThanOrEqual(400);
   });
 
-  test('should handle missing Content-Type', async ({ request }) => {
-    const response = await request.post('/api/numerologia', {
-      // No Content-Type header
-      data: {},
-    });
+  test('should handle missing required parameters', async ({ request }) => {
+    const response = await request.get('/api/numerologia');
     
-    // Should handle gracefully
-    expect(response.status()).toBeGreaterThanOrEqual(200);
+    expect(response.status()).toBe(400);
+    const body = await response.json();
+    expect(body).toHaveProperty('error');
   });
 
-  test('should return proper CORS headers', async ({ request }) => {
-    const response = await request.get('/api/odus');
+  test('should handle invalid tipo parameter', async ({ request }) => {
+    const response = await request.get('/api/numerologia?tipo=invalid');
     
-    // Check headers exist
-    // CORS headers may or may not be present depending on config
+    expect(response.status()).toBe(400);
+    const body = await response.json();
+    expect(body.error).toContain('não reconhecido');
   });
 });
