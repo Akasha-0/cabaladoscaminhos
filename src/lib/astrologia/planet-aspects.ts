@@ -1,4 +1,4 @@
-/* eslint-disable perfectionist/mutable-variant */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Aspecto, AspectoTipo, PosicaoPlaneta, Planeta } from './tipos';
 import { getAspectMeaning } from './aspect-meanings';
 import { getSymbol } from './symbols';

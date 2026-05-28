@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable prettier/prettier) */
 /**
  * Tarot card interpretations for all 78 cards
  * Rich contextual interpretations for Major and Minor Arcana

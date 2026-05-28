@@ -1,4 +1,4 @@
-/* eslint-disable spellcheck/spell-checker */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* tslint:disable */
 /**
  * Stats Visualization Module

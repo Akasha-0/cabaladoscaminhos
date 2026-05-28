@@ -1,6 +1,6 @@
 // Laya data
 
-export interface LayaData {
+export interface LayaData extends Record<string, unknown> {
   // Define Laya data structure
 }
 

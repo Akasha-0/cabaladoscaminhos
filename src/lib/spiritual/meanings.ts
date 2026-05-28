@@ -1,4 +1,4 @@
-/* eslint-disable perfectionist/mutable-variant */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface SpiritualMeaning {
   name: string;

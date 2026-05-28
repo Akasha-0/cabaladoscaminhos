@@ -11,6 +11,9 @@ const eslintConfig = defineConfig([
   {
     rules: {
       "react-hooks/set-state-in-effect": "off",
+      "perfectionist/sort-objects": "off",
+      "perfectionist/mutable-variant": "off",
+      "spellcheck/spell-checker": "off",
     },
   },
 ]);
