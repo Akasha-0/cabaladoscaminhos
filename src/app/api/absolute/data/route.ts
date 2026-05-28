@@ -3,47 +3,42 @@
 // ============================================================
 // GET endpoints for absolute data
 // - List all absolute data
-// - Get specific practice by id
-// - Get practice by type
+// - Get specific data by id
+// - Get data count
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { performPractice, type AbsolutePracticeResult } from '@/lib/absolute/absolute-practice';
+import { getData, getDataLength, type AbsoluteData } from '@/lib/absolute/absolute-data';
 
 // GET /api/absolute/data - Get absolute data
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const type = searchParams.get('type');
+    const count = searchParams.get('count');
 
-    // Return practice by id
-    if (id) {
-      const practice = performPractice();
-      if (!practice) {
-        return NextResponse.json(
-          { success: false, error: 'Absolute practice not found' },
-          { status: 404 }
-        );
-      }
-      return NextResponse.json({ success: true, data: practice });
+    // Return count of data items
+    if (count !== null) {
+      const dataLength = getDataLength();
+      return NextResponse.json({ success: true, data: { count: dataLength } });
     }
 
-    // Return practice by type
-    if (type) {
-      const practice = performPractice();
-      if (!practice) {
+    // Return data by specific id
+    if (id) {
+      const allData = getData();
+      const item = allData.find((d: AbsoluteData) => d.id === id);
+      if (!item) {
         return NextResponse.json(
-          { success: false, error: 'Absolute practice not found' },
+          { success: false, error: 'Absolute data not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ success: true, data: practice });
+      return NextResponse.json({ success: true, data: item });
     }
 
     // Default — return all absolute data
-    const practice = performPractice();
-    return NextResponse.json({ success: true, data: practice });
+    const allData = getData();
+    return NextResponse.json({ success: true, data: allData });
   } catch (error) {
     return NextResponse.json(
       {
