@@ -72,7 +72,6 @@ export interface HouseInterpretation {
   description: string;
   keywords: string[];
   lifeThemes: string[];
-  development: string[];
 }
 
 // Planet meanings by sign

@@ -128,7 +128,7 @@ const ritualDefinitions: Record<RitualCategory, {
     descricao: 'Defende contra feitiçarla e olho grosso',
     componentes: ['Girassóis', 'Olhos de santa luzia', 'Velas azuis', 'Panos vermelhos'],
   },
-  agradecimiento: {
+  agradecimento: {
     nome: 'Ritual de Agradecimento',
     descricao: 'Expressa gratidão aos-orixás por bênçãos recebidas',
     componentes: ['Doces', 'Frutas', 'Velas douradas', 'Florais'],
