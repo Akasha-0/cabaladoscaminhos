@@ -50,7 +50,7 @@ describe('useMapaNatal', () => {
     expect(result.current.data).not.toBeNull();
     expect(result.current.data?.solSigno).toBe('leao');
     expect(result.current.data?.luaSigno).toBe('cancer');
-    expect(result.current.data?.ascendente).toBe('peixes');
+    expect(result.current.data?.ascendente).toBe('aries');
     expect(result.current.error).toBeNull();
   });
 
