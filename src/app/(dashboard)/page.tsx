@@ -5,6 +5,9 @@ import { OdusExplorer } from '@/components/dashboard/OdusExplorer';
 import { CartasLenormand } from '@/components/dashboard/CartasLenormand';
 import { OrixasExplorer } from '@/components/dashboard/OrixasExplorer';
 import { ChakrasExplorer } from '@/components/dashboard/ChakrasExplorer';
+import { MapaNatalCard } from '@/components/astrologia/MapaNatalCard';
+import { TransitosAtivos } from '@/components/astrologia/TransitosAtivos';
+import { useMapaNatal } from '@/hooks/useMapaNatal';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -33,6 +36,7 @@ export default function DashboardPage() {
     DADOS_EXEMPLO.dataNascimento
   );
   const { ano, mes, dia: diaPessoal, loading: loadingCiclos, error: errorCiclos } = useCiclos(DADOS_EXEMPLO.dataNascimento);
+  const { transitos } = useMapaNatal();
 
   return (
     <div className="min-h-screen p-6 lg:p-8">
@@ -190,6 +194,12 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Astrologia Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <MapaNatalCard />
+          <TransitosAtivos transitos={transitos} />
+        </div>
 
         {/* Dia Spiritual Card */}
         <DiaSpiritual />
