@@ -2,24 +2,38 @@
 // EMBODIMENT DATA API - CABALA DOS CAMINHOS
 // ============================================================
 // GET endpoints for embodiment data
-// - List all embodiment stages
+// - List all embodiment data (states and stages)
+// - Get specific state by ID
 // - Get specific stage by ID
-// - Get stages by chaldean number
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getStages, getStageById, getStageByNumber, type EmbodimentStageId } from '@/lib/embodiment/embodiment-data';
+import { getData } from '@/lib/embodiment/embodiment-data';
 
 // GET /api/embodiment/data - Get embodiment data
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-    const number = searchParams.get('number');
+    const stateId = searchParams.get('state');
+    const stageId = searchParams.get('stage');
 
-    // Return stage by specific ID
-    if (id) {
-      const stage = getStageById(id as EmbodimentStageId);
+    const data = getData();
+
+    // Return specific state by ID
+    if (stateId) {
+      const state = data.states.find((s) => s.id === stateId);
+      if (!state) {
+        return NextResponse.json(
+          { success: false, error: 'Embodiment state not found' },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({ success: true, data: state });
+    }
+
+    // Return specific stage by ID
+    if (stageId) {
+      const stage = data.stages.find((s) => s.id === stageId);
       if (!stage) {
         return NextResponse.json(
           { success: false, error: 'Embodiment stage not found' },
@@ -29,28 +43,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: true, data: stage });
     }
 
-    // Return stage by chaldean number
-    if (number) {
-      const num = parseInt(number, 10);
-      if (isNaN(num)) {
-        return NextResponse.json(
-          { success: false, error: 'Invalid stage number' },
-          { status: 400 }
-        );
-      }
-      const stage = getStageByNumber(num);
-      if (!stage) {
-        return NextResponse.json(
-          { success: false, error: 'Embodiment stage not found' },
-          { status: 404 }
-        );
-      }
-      return NextResponse.json({ success: true, data: stage });
-    }
-
-    // Default — return all stages
-    const stages = getStages();
-    return NextResponse.json({ success: true, data: stages });
+    // Default — return all data
+    return NextResponse.json({ success: true, data });
   } catch (error) {
     return NextResponse.json(
       {
