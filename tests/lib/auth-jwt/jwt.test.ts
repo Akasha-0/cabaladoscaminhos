@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeAll } from 'vitest';
-import { signToken, verifyToken, type TokenPayload } from '@/lib/auth-jwt/jwt';
+import { describe, it, expect } from 'vitest';
+import { signToken, verifyToken } from '@/lib/auth-jwt/jwt';
 
 describe('JWT Module', () => {
   const testPayload = {

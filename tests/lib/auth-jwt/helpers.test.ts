@@ -8,26 +8,22 @@ import {
 describe('Auth Helpers', () => {
   describe('getTokenFromRequest', () => {
     it('should return null when no cookie header', () => {
-      const mockRequest = {
-        headers: new Headers(),
-      } as unknown as Request;
-      
       // @ts-expect-error - simplified for testing
       const token = getTokenFromRequest({ headers: { get: () => null } });
       expect(token).toBeNull();
     });
 
     it('should return null when auth_token not present', () => {
-      // @ts-expect-error - simplified for testing
       const token = getTokenFromRequest({ 
+        // @ts-expect-error - simplified for testing
         headers: { get: () => 'other=value' } 
       });
       expect(token).toBeNull();
     });
 
     it('should extract token from cookie header', () => {
-      // @ts-expect-error - simplified for testing
       const token = getTokenFromRequest({
+        // @ts-expect-error - simplified for testing
         headers: { get: () => 'auth_token=test-token; other=value' }
       });
       expect(token).toBe('test-token');
