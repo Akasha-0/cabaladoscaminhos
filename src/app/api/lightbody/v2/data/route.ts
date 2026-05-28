@@ -8,7 +8,6 @@
 // ============================================================
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable prettier/prettier */
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -144,7 +143,7 @@ const LIGHTBODY_FREQUENCIES = [
   { name: 'Solfeggio 639Hz', value: 639, description: 'Heart connections and relationships', benefit: 'Harmony', color: 'Green' },
   { name: 'Solfeggio 741Hz', value: 741, description: 'Expression and communication', benefit: 'Clarity', color: 'Blue' },
   { name: 'Solfeggio 852Hz', value: 852, description: 'Third eye activation and intuition', benefit: 'Intuition', color: 'Indigo' },
-  { name: 'Solfeggio 963Hz', value: 963, description: 'Crown activation and unity consciousness', benefit: f'Unity', color: 'Violet' },
+  { name: 'Solfeggio 963Hz', value: 963, description: 'Crown activation and unity consciousness', benefit: 'Unity', color: 'Violet' },
   { name: 'Cosmic 1111Hz', value: 1111, description: 'Light codes and new realities', benefit: 'Creation', color: 'White' },
   { name: 'Earth Star 174Hz', value: 174, description: 'Foundation and grounding frequency', benefit: 'Grounding', color: 'Brown' },
 ];

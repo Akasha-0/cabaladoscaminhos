@@ -61,6 +61,7 @@ const merkabaV2Data: MerkabaV2Data[] = [
       starActivation: ['Estrela de Betlehem (não ativada)', 'Estrela de Sirian', 'Estrela de Arcturus'],
       dimensionalAccess: ['Terceira dimensão (ativa)', 'Quarta dimensão (bloqueada)', 'Quinta dimensão (latente)'],
       merkabaComponents: {
+        tetraeder: ['Superior', 'Inferior'],
         merkaba: 'Veículo de luz - 2 tetraedros',
         mer: 'Luz - Mer (rotação horária superior)',
         kaba: 'Corpo - Kaba (rotação anti-horária inferior)',
@@ -92,6 +93,7 @@ const merkabaV2Data: MerkabaV2Data[] = [
       starActivation: ['Estrela de Betlehem (iniciando)', 'Estrela de Sirian (acendendo)', 'Estrela de Arcturus (conectando)'],
       dimensionalAccess: ['Terceira dimensão (estável)', 'Quarta dimensão (iniciando)', 'Quinta dimensão (aproximando)'],
       merkabaComponents: {
+        tetraeder: ['Superior', 'Inferior'],
         merkaba: 'Veículo de luz ativando',
         mer: 'Luz (rotação horária superior ativada)',
         kaba: 'Corpo (rotação anti-horária inferior iniciando)',
@@ -123,6 +125,7 @@ const merkabaV2Data: MerkabaV2Data[] = [
       starActivation: ['Estrela de Betlehem (radiante)', 'Estrela de Sirian (brilhante)', 'Estrela de Arcturus (ativa)', 'Estrela Pleiades (conectada)'],
       dimensionalAccess: ['Terceira dimensão (transcendente)', 'Quarta dimensão (estável)', 'Quinta dimensão (ativa)', 'Sexta dimensão (iniciando)'],
       merkabaComponents: {
+        tetraeder: ['Superior', 'Inferior'],
         merkaba: 'Veículo de luz completo',
         mer: 'Luz (rotação horária superior em alta velocidade)',
         kaba: 'Corpo (rotação anti-horária inferior em alta velocidade)',
@@ -154,6 +157,7 @@ const merkabaV2Data: MerkabaV2Data[] = [
       starActivation: ['Estrela de Betlehem (cósmica)', 'Estrela de Sirian (galáctica)', 'Estrela de Arcturus (cósmica)', 'Estrela Pleiades (direcionando)', 'Estrela Andromeda (conectando)'],
       dimensionalAccess: ['Terceira dimensão (transcendente)', 'Quarta dimensão (mestra)', 'Quinta dimensão (residente)', 'Sexta dimensão (ativa)', 'Sétima dimensão e além (acesso)'],
       merkabaComponents: {
+        tetraeder: ['Superior', 'Inferior'],
         merkaba: 'Veículo de luz cósmica completa',
         mer: 'Luz (rotação infinita)',
         kaba: 'Corpo (rotação infinita)',
@@ -185,6 +189,7 @@ const merkabaV2Data: MerkabaV2Data[] = [
       starActivation: ['Estrela Shiva (ascendente)', 'Estrela Shakti (descendente)', 'Estrela da união (radiante)'],
       dimensionalAccess: ['Terceira dimensão (transmutada)', 'Quarta dimensão (harmonizada)', 'Quinta dimensão (unificada)', 'Sexta dimensão (divina)'],
       merkabaComponents: {
+        tetraeder: ['Superior', 'Inferior'],
         merkaba: 'Veículo Shiva-Shakti unificado',
         mer: 'Shiva - Consciência (luz ascendente)',
         kaba: 'Shakti - Energia (luz descendente)',
@@ -216,6 +221,7 @@ const merkabaV2Data: MerkabaV2Data[] = [
       starActivation: ['Sol central (ativo)', 'Estrela solar (radiante)', 'Sistema solar (conectado)'],
       dimensionalAccess: ['Terceira dimensão (energizada)', 'Quarta dimensão (solarizada)', 'Quinta dimensão (radiante)'],
       merkabaComponents: {
+        tetraeder: ['Superior', 'Inferior'],
         merkaba: 'Veículo de luz solar',
         mer: 'Luz solar (rotação horária irradiante)',
         kaba: 'Corpo solar (rotação anti-horária capacitando)',
@@ -247,6 +253,7 @@ const merkabaV2Data: MerkabaV2Data[] = [
       starActivation: ['Lua (ativa)', 'Estrela lunar (refletindo)', 'Ciclo lunar (sintonizado)'],
       dimensionalAccess: ['Terceira dimensão (fluida)', 'Quarta dimensão (lunar)', 'Quinta dimensão (intuitiva)'],
       merkabaComponents: {
+        tetraeder: ['Superior', 'Inferior'],
         merkaba: 'Veículo de luz lunar',
         mer: 'Luz lunar (rotação horária intuitiva)',
         kaba: 'Corpo lunar (rotação anti-horária fluida)',

@@ -7,6 +7,9 @@
 import type { CosmicData } from '../cosmic-data';
 
 export interface CosmicV2Data extends CosmicData {
+  namePt?: string;
+  nameEn?: string;
+  descriptionPt?: string;
   v2Features: {
     energyPatterns: string[];
     consciousnessLevels: string[];

@@ -27,7 +27,7 @@ interface AscensionPath {
     planet?: string;
   };
   chakra?: string;
-  frequency?: string;
+  frequency?: string | number;
 }
 
 interface AscensionStage {
@@ -90,7 +90,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['meditation', 'prayer', 'light visualization'],
     correspondences: { element: 'fire', sefirah: 'Keter' },
     chakra: 'crown',
-    frequency: 963,
+    frequency: '963',
   },
   {
     id: 'asc-v2-2',
@@ -105,7 +105,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['study', 'contemplation', 'teaching'],
     correspondences: { planet: 'Mercury', sefirah: 'Chochmah' },
     chakra: 'thirdEye',
-    frequency: 528,
+    frequency: '528',
   },
   {
     id: 'asc-v2-3',
@@ -120,7 +120,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['shadow work', 'inner work', 'ritual'],
     correspondences: { element: 'water', sefirah: 'Tiferet' },
     chakra: 'heart',
-    frequency: 639,
+    frequency: '639',
   },
   {
     id: 'asc-v2-4',
@@ -135,7 +135,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['breathwork', 'centering', 'integration work'],
     correspondences: { element: 'air', sefirah: 'Tiferet' },
     chakra: 'heart',
-    frequency: 432,
+    frequency: '432',
   },
   {
     id: 'asc-v2-5',
@@ -150,7 +150,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['austerity', 'martial practice', 'energy work'],
     correspondences: { planet: 'Mars', sefirah: 'Gevurah' },
     chakra: 'solarPlexus',
-    frequency: 396,
+    frequency: '396',
   },
   {
     id: 'asc-v2-6',
@@ -165,7 +165,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['loving-kindness', 'service', 'heart meditation'],
     correspondences: { planet: 'Jupiter', sefirah: 'Chesed' },
     chakra: 'heart',
-    frequency: 528,
+    frequency: '528',
   },
   {
     id: 'asc-v2-7',
@@ -180,7 +180,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['affirmation', 'visualization', 'ritual'],
     correspondences: { planet: 'Venus', sefirah: 'Netzach' },
     chakra: 'throat',
-    frequency: 741,
+    frequency: '741',
   },
   {
     id: 'asc-v2-8',
@@ -195,7 +195,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['grounding', 'ritual work', 'manifestation'],
     correspondences: { planet: 'Moon', sefirah: 'Yesod' },
     chakra: 'sacral',
-    frequency: 417,
+    frequency: '417',
   },
   {
     id: 'asc-v2-9',
@@ -210,7 +210,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['grounding', 'ritual', 'practical magic'],
     correspondences: { element: 'earth', sefirah: 'Malkuth' },
     chakra: 'root',
-    frequency: 174,
+    frequency: '174',
   },
   {
     id: 'asc-v2-10',
@@ -225,7 +225,7 @@ const ASCENSION_PATHS: AscensionPath[] = [
     practices: ['deep meditation', 'prayer', 'contemplation'],
     correspondences: { planet: 'Sun', sefirah: 'Keter' },
     chakra: 'crown',
-    frequency: 963,
+    frequency: '963',
   },
 ];
 
@@ -508,7 +508,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ success: true, data: practiceData });
       }
       // Check states
-      const stateData = ASCENSION_STATES.find((s) => s.id === id);
+      const stateData = ASCENSION_STATES.find((s) => s.id === state);
       if (stateData) {
         return NextResponse.json({ success: true, data: stateData });
       }

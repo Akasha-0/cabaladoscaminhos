@@ -5,7 +5,6 @@
 // ============================================================
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable prettier/prettier */
 
 import { NextRequest, NextResponse } from 'next/server';
 
