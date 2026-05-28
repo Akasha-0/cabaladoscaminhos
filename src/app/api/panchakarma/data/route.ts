@@ -572,7 +572,7 @@ function getPanchakarmaByType(type: string): PanchakarmaData[] {
 }
 
 function getPanchakarmaBySeason(season: string): PanchakarmaData[] {
-  return PANCHAKARMA_DATA.filter((p) => p.season.includes(season as any));
+  return PANCHAKARMA_DATA.filter((p) => p.season.includes(season as 'spring' | 'summer' | 'monsoon' | 'autumn' | 'winter'));
 }
 
 function getPanchakarmaByMinScore(minScore: number): PanchakarmaData[] {
