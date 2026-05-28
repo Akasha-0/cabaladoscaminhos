@@ -1,13 +1,12 @@
-# Autoresearch: Harness-Driven Development
+# Autoresearch: Project Development Velocity
 
 ## Objective
-Measure how well the Pi Agent harness drives autonomous development of this project (cabala-dos-caminhos).
+Measure development velocity of the cabala-dos-caminhos project.
 
 ## Metrics
-- **Primary**: dev_velocity (tasks/minute, higher is better) — rate of task completion
-- **Secondary**: git_commits_per_hour (count, higher is better) — commits made
-- **Secondary**: lines_added (count, higher is better) — code written
-- **Secondary**: files_changed (count, higher is better) — files modified/created
+- **Primary**: dev_velocity (tasks, higher is better) — completed Ralph tasks
+- **Secondary**: files_changed (count) — files modified in last 5 commits
+- **Secondary**: lines_added (count) — lines added in last 5 commits
 
 ## How to Run
 ```bash
@@ -15,27 +14,34 @@ Measure how well the Pi Agent harness drives autonomous development of this proj
 ```
 
 ## Files in Scope
-| Path | Purpose |
-|------|---------|
-| `src/` | Application source code |
-| `tests/` | Test files |
-| `docs/` | Documentation |
+- `src/` - Application source
+- `tests/` - Test files
+- `docs/` - Documentation
+- `.ralph/*.md` - Ralph task files
 
 ## Off Limits
-- Pi Agent harness files (`~/.pi/agent/`)
-- External dependencies
+- Harness files (`~/.pi/agent/`) - runs in separate tmux session
 
 ## Constraints
 - Tests must pass
 - No breaking changes
-- Harness runs autonomously
 
 ## What's Been Tried
 
-### Baseline
-- Harness watchdog implemented
-- Auto-continue rules in 3 locations
-- Cannot measure: no active harness session
+### Baseline (Iteration 1)
+- **Result**: 6 tasks completed, 33 files changed
+- **Harness status**: Cannot test - runs in separate tmux session (environment limitation)
 
-### New Approach
-Measure development velocity of THIS project when harness is active.
+### Understanding
+The Pi Agent harness is a separate tool that runs in a dedicated tmux session. It cannot be measured from within an autoresearch experiment because:
+1. Harness starts its own pi session
+2. Runs in separate tmux context
+3. Requires interactive terminal to function
+
+### Focus Change
+Measure project development metrics (what we CAN measure), not harness metrics.
+
+### Ideas for Future (in autoresearch.ideas.md)
+- Start harness manually in real terminal before running experiment
+- Connect to existing harness session for measurement
+- Use harness logs for metrics instead of direct measurement

@@ -6,7 +6,6 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { NextRequest } from 'next/server';
 import { PUBLIC_ROUTES, PROTECTED_ROUTES } from './setup';
 
 // ============================================
@@ -185,53 +184,24 @@ describe('Auth Helpers', () => {
   it('deve extrair token do request com cookie válido', async () => {
     const { getTokenFromRequest } = await import('@/lib/auth-jwt/helpers');
     
-    // Mock request com cookie
-    const mockRequest = {
-      headers: {
-        get: (name: string) => {
-          if (name === 'cookie') {
-            return 'auth_token=test-token; other=value';
-          }
-          return null;
-        },
-      },
-    } as NextRequest;
-
     // @ts-expect-error - simplified mock for testing
-    const token = getTokenFromRequest(mockRequest);
+    const token = getTokenFromRequest({ headers: { get: () => 'auth_token=test-token; other=value' } });
     expect(token).toBe('test-token');
   });
 
   it('deve retornar null para request sem cookie', async () => {
     const { getTokenFromRequest } = await import('@/lib/auth-jwt/helpers');
     
-    const mockRequest = {
-      headers: {
-        get: () => null,
-      },
-    } as NextRequest;
-
     // @ts-expect-error - simplified mock for testing
-    const token = getTokenFromRequest(mockRequest);
+    const token = getTokenFromRequest({ headers: { get: () => null } });
     expect(token).toBeNull();
   });
 
   it('deve retornar null para request sem auth_token', async () => {
     const { getTokenFromRequest } = await import('@/lib/auth-jwt/helpers');
     
-    const mockRequest = {
-      headers: {
-        get: (name: string) => {
-          if (name === 'cookie') {
-            return 'other_token=value';
-          }
-          return null;
-        },
-      },
-    } as NextRequest;
-
     // @ts-expect-error - simplified mock for testing
-    const token = getTokenFromRequest(mockRequest);
+    const token = getTokenFromRequest({ headers: { get: () => 'other_token=value' } });
     expect(token).toBeNull();
   });
 });
