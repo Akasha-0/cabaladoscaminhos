@@ -91,7 +91,7 @@ export interface SecurityScheme {
  * @returns OpenAPI 3.0 compliant specification object
  */
 export function generateOpenAPISpec(): OpenAPISpec {
-    openapi: '3.0.3',
+  const spec: OpenAPISpec = {
     info: {
       title: 'Cabala dos Caminhos API',
       version: '1.0.0',
