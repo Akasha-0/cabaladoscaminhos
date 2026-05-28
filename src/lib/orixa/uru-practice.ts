@@ -2,9 +2,9 @@
 // SKIP_LINT
 
 /**
- * Oxumar Practice Module
- * Implements spiritual practice rituals for the Oxumar orixá
- * Orixá of the Rainbow, Dreams and Divination
+ * Uru Practice Module
+ * Implements spiritual practice rituals for the Uru orixá
+ * Orixá associated with dawning light, new beginnings, and spiritual awakening
  */
 
 export interface PracticeResult {
@@ -19,8 +19,8 @@ export function performPractice(): PracticeResult {
 
   return {
     success: true,
-    practice: 'oxumar',
+    practice: 'uru',
     timestamp,
-    ritualPerformed: 'Rainbow Gratitude Practice',
+    ritualPerformed: 'Dawn Awakening Practice',
   }
 }

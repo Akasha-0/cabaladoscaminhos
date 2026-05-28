@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/rogga/data/route.ts
+// Rogga API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type RoggaLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface RoggaQuery {
+  level?: RoggaLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Rogga {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: RoggaLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,44 +27,44 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// ROGGA DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const rogGaData: Rogga[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'rogga-001',
+    name: 'Primeiro Rogga',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência primordial de Rogga, representando a transformação e o trabalho secreto.',
+    practices: ['transformacao-inicial', 'trabalho-oculto'],
+    symbol: '🔥',
+    element: 'fogo'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'rogga-002',
+    name: 'Rogga das Profundezas',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'Conexão profunda com a sabedoria das profundezas, trabalhando através das sombras.',
+    practices: ['profundezas-sagradas', 'trabalho-noturno'],
+    symbol: '🌑',
+    element: 'subterraneo'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'rogga-003',
+    name: 'Rogga das Cinzas',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
-    symbol: '🔮',
-    element: 'misterio'
+    description: 'Mestria sobre as cinzas sagradas, renovando através da destruição criativa.',
+    practices: ['cinzas-sagradas', 'renovacao-destrutiva'],
+    symbol: '⚡',
+    element: 'regeneracao'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'rogga-004',
+    name: 'Rogga Supremo',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
-    symbol: '✨',
+    description: 'Unificação com todas as formas de trabalho oculto, transcendentando a transformação.',
+    practices: ['uniao-oculta', 'metabolismo-vivo'],
+    symbol: '🌀',
     element: 'cosmo'
   }
 ];
@@ -73,16 +73,16 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllRogga(): Rogga[] {
+  return rogGaData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getRoggaById(id: string): Rogga | undefined {
+  return rogGaData.find(o => o.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterRogga(query: RoggaQuery): Rogga[] {
+  let results = [...rogGaData];
 
   if (query.level) {
     results = results.filter(o => o.level === query.level);
@@ -99,11 +99,11 @@ function filterOxumar(query: OxumarQuery): Oxumar[] {
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: RoggaLevel; count: number }[] {
+  const levels: RoggaLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: rogGaData.filter(o => o.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/rogga/data
+ * Retrieve rogGA data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: RoggaQuery = {
+      level: searchParams.get('level') as RoggaLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const rogGa = getRoggaById(id);
+      if (!rogGa) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Rogga not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: rogGa });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterRogga(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

@@ -2,9 +2,8 @@
 // SKIP_LINT
 
 /**
- * Oxumar Practice Module
- * Implements spiritual practice rituals for the Oxumar orixá
- * Orixá of the Rainbow, Dreams and Divination
+ * Abita Practice Module
+ * Implements spiritual practice rituals for the Abita orixá
  */
 
 export interface PracticeResult {
@@ -19,8 +18,8 @@ export function performPractice(): PracticeResult {
 
   return {
     success: true,
-    practice: 'oxumar',
+    practice: 'abita',
     timestamp,
-    ritualPerformed: 'Rainbow Gratitude Practice',
+    ritualPerformed: 'Abita Devotional Practice',
   }
 }

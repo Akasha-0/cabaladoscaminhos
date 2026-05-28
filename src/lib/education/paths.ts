@@ -190,6 +190,6 @@ export function getModule(pathId: string, moduleId: string): Module | undefined 
 }
 
 export function getLesson(pathId: string, moduleId: string, lessonId: string): Lesson | undefined {
-  const module = getModule(pathId, moduleId);
-  return module?.lessons.find((l) => l.id === lessonId);
+  const mod = getModule(pathId, moduleId);
+  return mod?.lessons.find((l) => l.id === lessonId);
 }

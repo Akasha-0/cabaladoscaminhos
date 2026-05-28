@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/obaxoxe/data/route.ts
+// Obaxoxe API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type ObaxoxeLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface ObaxoxeQuery {
+  level?: ObaxoxeLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Obaxoxe {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: ObaxoxeLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,45 +27,45 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// OBAXOXE DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const obaxoxeData: Obaxoxe[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'obaxoxe-001',
+    name: 'Primeiro Obaxoxe',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência primordial de Obaxoxe, representando a transformação e renovação espiritual.',
+    practices: ['renovacao-interior', 'transformacao-essencial'],
+    symbol: '🌱',
+    element: 'transformacao'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'obaxoxe-002',
+    name: 'Obaxoxe das Transições',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'Guia das mudanças e transições da vida, acompanhando nos momentos de metamorfose.',
+    practices: ['transicao-consciente', 'guia-da-mudanca'],
+    symbol: '🦋',
+    element: 'metamorfose'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'obaxoxe-003',
+    name: 'Obaxoxe Guardião',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
+    description: 'Protetor dos mistérios ocultos e guardião das portas entre mundos.',
+    practices: ['protecao-sagrada', 'guardiao-dos-mistérios'],
     symbol: '🔮',
-    element: 'misterio'
+    element: 'mistério'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'obaxoxe-004',
+    name: 'Obaxoxe Supremo',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
-    symbol: '✨',
-    element: 'cosmo'
+    description: 'Mestria completa sobre todos os aspectos da transformação, transcendendo limites materiais.',
+    practices: ['uniao-transcendente', 'mestria-total'],
+    symbol: '⚡',
+    element: 'transcendência'
   }
 ];
 
@@ -73,16 +73,16 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllObaxoxe(): Obaxoxe[] {
+  return obaxoxeData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getObaxoxeById(id: string): Obaxoxe | undefined {
+  return obaxoxeData.find(o => o.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterObaxoxe(query: ObaxoxeQuery): Obaxoxe[] {
+  let results = [...obaxoxeData];
 
   if (query.level) {
     results = results.filter(o => o.level === query.level);
@@ -99,11 +99,11 @@ function filterOxumar(query: OxumarQuery): Oxumar[] {
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: ObaxoxeLevel; count: number }[] {
+  const levels: ObaxoxeLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: obaxoxeData.filter(o => o.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/obaxoxe/data
+ * Retrieve obaxoxe data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: ObaxoxeQuery = {
+      level: searchParams.get('level') as ObaxoxeLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const obaxoxe = getObaxoxeById(id);
+      if (!obaxoxe) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Obaxoxe not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: obaxoxe });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterObaxoxe(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

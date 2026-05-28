@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/osain/data/route.ts
+// Osain API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type OsainLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface OsainQuery {
+  level?: OsainLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Osain {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: OsainLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,44 +27,44 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// OSAIN DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const osainData: Osain[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'osain-001',
+    name: 'Primeiro Osain',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência primordial de Osain, representando a cura e o reconhecimento das plantas medicinais.',
+    practices: ['meditacao-verde', 'cura-natural'],
+    symbol: '🌿',
+    element: 'planta'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'osain-002',
+    name: 'Osain das Raízes',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'Conexão profunda com a sabedoria das raízes e ervas, curando através da terra.',
+    practices: ['raizes-ancestrais', 'sabedoria-herbal'],
+    symbol: '🌱',
+    element: 'terra'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'osain-003',
+    name: 'Osain das Folhas',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
-    symbol: '🔮',
-    element: 'misterio'
+    description: 'Mestria sobre as folhas sagradas, transmitindo conhecimento medicinal através da natureza.',
+    practices: ['folhas-sagradas', 'transmissao-curativa'],
+    symbol: '🍃',
+    element: 'floresta'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'osain-004',
+    name: 'Osain Supremo',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
-    symbol: '✨',
+    description: 'Unificação com todas as formas de vida vegetal, transcendentando a cura natural.',
+    practices: ['uniao-natureza', 'transformacao-viva'],
+    symbol: '🌳',
     element: 'cosmo'
   }
 ];
@@ -73,16 +73,16 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllOsain(): Osain[] {
+  return osainData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getOsainById(id: string): Osain | undefined {
+  return osainData.find(o => o.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterOsain(query: OsainQuery): Osain[] {
+  let results = [...osainData];
 
   if (query.level) {
     results = results.filter(o => o.level === query.level);
@@ -99,11 +99,11 @@ function filterOxumar(query: OxumarQuery): Oxumar[] {
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: OsainLevel; count: number }[] {
+  const levels: OsainLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: osainData.filter(o => o.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/osain/data
+ * Retrieve osain data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: OsainQuery = {
+      level: searchParams.get('level') as OsainLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const osain = getOsainById(id);
+      if (!osain) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Osain not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: osain });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterOsain(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

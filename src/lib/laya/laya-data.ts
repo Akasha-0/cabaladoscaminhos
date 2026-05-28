@@ -1,8 +1,6 @@
 // Laya data
 
-export interface LayaData extends Record<string, unknown> {
-  // Define Laya data structure
-}
+export interface LayaData extends Record<string, unknown> {}
 
 export function getData(): LayaData {
   return {};

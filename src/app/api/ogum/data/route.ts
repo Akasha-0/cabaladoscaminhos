@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/ogum/data/route.ts
+// Ogum API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type OgumLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface OgumQuery {
+  level?: OgumLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Ogum {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: OgumLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,45 +27,45 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// OGUM DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const ogumData: Ogum[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'ogum-001',
+    name: 'Ogum primitivo',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência primordial de Ogum, representando o ferro inicialmente forjado e a força bruta da natureza.',
+    practices: ['saberes-basicos', 'introducao-a-ferro'],
+    symbol: '⚔️',
+    element: 'ferro-bruto'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'ogum-002',
+    name: 'Ogum das Estradas',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'Guardião dos caminhos e viajantes, abrindo trilhas e vencendo obstáculos.',
+    practices: ['caminhar-destino', 'abrir-roads'],
+    symbol: '🛤️',
+    element: 'estrada'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'ogum-003',
+    name: 'Ogum das Guerras',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
-    symbol: '🔮',
-    element: 'misterio'
+    description: 'Mestre das batalhas e conflitos, conquistando territórios e derrotando inimigos.',
+    practices: ['estrategia-guerra', 'conquista-vitoria'],
+    symbol: '⚔️',
+    element: 'combate'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'ogum-004',
+    name: 'Ogum Supremo',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
-    symbol: '✨',
-    element: 'cosmo'
+    description: 'Mestria completa sobre todo conhecimento tecnológico e metálico, transcendendo os limites da matéria.',
+    practices: ['tecnologia-cosmica', 'transformacao-ferro'],
+    symbol: '🔧',
+    element: 'tecnologia'
   }
 ];
 
@@ -73,16 +73,16 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllOgum(): Ogum[] {
+  return ogumData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getOgumById(id: string): Ogum | undefined {
+  return ogumData.find(o => o.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterOgum(query: OgumQuery): Ogum[] {
+  let results = [...ogumData];
 
   if (query.level) {
     results = results.filter(o => o.level === query.level);
@@ -99,11 +99,11 @@ function filterOxumar(query: OxumarQuery): Oxumar[] {
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: OgumLevel; count: number }[] {
+  const levels: OgumLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: ogumData.filter(o => o.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/ogum/data
+ * Retrieve ogum data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: OgumQuery = {
+      level: searchParams.get('level') as OgumLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const ogum = getOgumById(id);
+      if (!ogum) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Ogum not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: ogum });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterOgum(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

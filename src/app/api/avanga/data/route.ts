@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/avanga/data/route.ts
+// Avanga API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type AvangaLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface AvangaQuery {
+  level?: AvangaLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Avanga {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: AvangaLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,45 +27,45 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// AVANGA DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const avangaData: Avanga[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'avanga-001',
+    name: 'Avanga Primordial',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência fundamental de Avanga, representando a sabedoria ancestral que conecta passado e futuro.',
+    practices: ['meditacao-sabedoria', 'ritual-conexao-ancestral'],
+    symbol: '🌿',
+    element: 'Ancestralidade'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'avanga-002',
+    name: 'Avanga Protetor',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'Guardião das tradições, Canalizando energias protetoras e sabedoria herdada.',
+    practices: ['protecao-sagrada', 'invocacao-guardiao'],
+    symbol: '🛡️',
+    element: 'Proteção'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'avanga-003',
+    name: 'Avanga Curador',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
-    symbol: '🔮',
-    element: 'misterio'
+    description: 'Mestria na arte de curar almas, restaurando equilíbro espiritual e harmonia interior.',
+    practices: ['cura-espiritual', 'restauracao-karmica'],
+    symbol: '💚',
+    element: 'Cura'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'avanga-004',
+    name: 'Avanga Supremo',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
-    symbol: '✨',
-    element: 'cosmo'
+    description: 'Transcendência total, fundindo-se com a sabedoria cósmica ancestral do universo.',
+    practices: ['sabedoria-cosmica', 'uniao-ancestral'],
+    symbol: '🌟',
+    element: 'Cosmos'
   }
 ];
 
@@ -73,37 +73,37 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllAvanga(): Avanga[] {
+  return avangaData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getAvangaById(id: string): Avanga | undefined {
+  return avangaData.find(a => a.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterAvanga(query: AvangaQuery): Avanga[] {
+  let results = [...avangaData];
 
   if (query.level) {
-    results = results.filter(o => o.level === query.level);
+    results = results.filter(a => a.level === query.level);
   }
 
   if (query.search) {
     const searchLower = query.search.toLowerCase();
-    results = results.filter(o =>
-      o.name.toLowerCase().includes(searchLower) ||
-      o.description.toLowerCase().includes(searchLower)
+    results = results.filter(a =>
+      a.name.toLowerCase().includes(searchLower) ||
+      a.description.toLowerCase().includes(searchLower)
     );
   }
 
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: AvangaLevel; count: number }[] {
+  const levels: AvangaLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: avangaData.filter(a => a.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/avanga/data
+ * Retrieve avanga data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: AvangaQuery = {
+      level: searchParams.get('level') as AvangaLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const avanga = getAvangaById(id);
+      if (!avanga) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Avanga not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: avanga });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterAvanga(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/oloxum/data/route.ts
+// Oloxum API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type OloxumLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface OloxumQuery {
+  level?: OloxumLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Oloxum {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: OloxumLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,44 +27,44 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// OLOXUM DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const oloxumData: Oloxum[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'oloxum-001',
+    name: 'Oloxum Primordial',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência inicial de Oloxum, o uno que precede a dualidade e dá origem aos caminhos.',
+    practices: ['unidade-primordial', 'vazio-sagrado'],
+    symbol: '○',
+    element: 'vazio'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'oloxum-002',
+    name: 'Oloxum Dual',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'A manifestação de Oloxum como拆分 e reunificação, representando os dois caminhos da cabala.',
+    practices: ['divisao-sagrada', 'reuniao-dos-caminhos'],
+    symbol: '◐',
+    element: 'dualidade'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'oloxum-003',
+    name: 'Oloxum Triplo',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
-    symbol: '🔮',
-    element: 'misterio'
+    description: 'Oloxum em sua forma trina,harmonizando mente, corpo e espírito através dos caminhos.',
+    practices: ['trinidade-interna', 'equilibrio-triplo'],
+    symbol: '△',
+    element: 'trinidade'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'oloxum-004',
+    name: 'Oloxum Supremo',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
-    symbol: '✨',
+    description: 'A completa integração de Oloxum, onde todos os caminhos convergem na unidade transcendental.',
+    practices: ['uniao-cosmica', 'transcendência-dos-caminhos'],
+    symbol: '☆',
     element: 'cosmo'
   }
 ];
@@ -73,16 +73,16 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllOloxum(): Oloxum[] {
+  return oloxumData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getOloxumById(id: string): Oloxum | undefined {
+  return oloxumData.find(o => o.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterOloxum(query: OloxumQuery): Oloxum[] {
+  let results = [...oloxumData];
 
   if (query.level) {
     results = results.filter(o => o.level === query.level);
@@ -99,11 +99,11 @@ function filterOxumar(query: OxumarQuery): Oxumar[] {
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: OloxumLevel; count: number }[] {
+  const levels: OloxumLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: oloxumData.filter(o => o.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/oloxum/data
+ * Retrieve oloxum data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: OloxumQuery = {
+      level: searchParams.get('level') as OloxumLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const oloxum = getOloxumById(id);
+      if (!oloxum) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Oloxum not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: oloxum });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterOloxum(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

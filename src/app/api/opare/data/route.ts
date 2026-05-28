@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/opare/data/route.ts
+// Oparé API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type OpareLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface OpareQuery {
+  level?: OpareLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Opare {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: OpareLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,45 +27,45 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// OPARE DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const opareData: Opare[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'opare-001',
+    name: 'Oparé Primordial',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência primordial de Oparé, representando o início da criação e a alegria de viver.',
+    practices: ['saberes-basicos', 'introducao-a-agua'],
+    symbol: '💧',
+    element: 'agua-pura'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'opare-002',
+    name: 'Oparé das Águas',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'Guardiã das águas doces e salgadas, fluindo entre os mundos visível e invisível.',
+    practices: ['fluxo-agua', 'conexao-marinhas'],
+    symbol: '🌊',
+    element: 'agua-viva'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'opare-003',
+    name: 'Oparé da Fertilidade',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
-    symbol: '🔮',
-    element: 'misterio'
+    description: 'Mestra da fertilidade e da abundância, abençoando nascimentos e colheitas.',
+    practices: ['ritual-abundancia', 'bencao-fertilidade'],
+    symbol: '🌺',
+    element: 'fertilidade'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'opare-004',
+    name: 'Oparé Suprema',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
+    description: 'Mestria completa sobre a energia feminina sagrada, a sensualidade e o poder de criação.',
+    practices: ['energia-feminina-cosmica', 'criacao-sagrada'],
     symbol: '✨',
-    element: 'cosmo'
+    element: 'criacao'
   }
 ];
 
@@ -73,16 +73,16 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllOpare(): Opare[] {
+  return opareData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getOpareById(id: string): Opare | undefined {
+  return opareData.find(o => o.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterOpare(query: OpareQuery): Opare[] {
+  let results = [...opareData];
 
   if (query.level) {
     results = results.filter(o => o.level === query.level);
@@ -99,11 +99,11 @@ function filterOxumar(query: OxumarQuery): Oxumar[] {
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: OpareLevel; count: number }[] {
+  const levels: OpareLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: opareData.filter(o => o.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/opare/data
+ * Retrieve opare data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: OpareQuery = {
+      level: searchParams.get('level') as OpareLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const opare = getOpareById(id);
+      if (!opare) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Oparé not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: opare });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterOpare(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

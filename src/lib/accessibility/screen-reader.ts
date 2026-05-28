@@ -5,8 +5,7 @@
  */
 
 // Browser screen reader detection state
-let screenReaderDetected = false;
-let screenReaderCallbacks: Set<() => void> = new Set();
+const screenReaderCallbacks: Set<() => void> = new Set();
 
 // Check if screen reader is likely active using heuristics
 function detectScreenReader(): boolean {
@@ -91,7 +90,7 @@ export function onScreenReaderChange(callback: () => void): () => void {
  * Notify subscribers of screen reader state change
  */
 function notifyScreenReaderChange(): void {
-  screenReaderDetected = detectScreenReader();
+  detectScreenReader();
   screenReaderCallbacks.forEach((cb) => cb());
 }
 

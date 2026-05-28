@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/io/data/route.ts
+// Io API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type IoLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface IoQuery {
+  level?: IoLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Io {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: IoLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,45 +27,45 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// IO DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const ioData: Io[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'io-001',
+    name: 'Primeiro Io',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência primordial de Io, representando a claridade mental e percepção elevada.',
+    practices: ['claridade-interior', 'percepcao-elevada'],
+    symbol: '🌟',
+    element: 'luz'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'io-002',
+    name: 'Io das Profundezas',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
-  },
-  {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
-    level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
+    description: 'Guardião dos conhecimentos ocultos e mestre das artes contemplativas.',
+    practices: ['sabedoria-profuncunda', 'arte-contemplativa'],
     symbol: '🔮',
-    element: 'misterio'
+    element: 'sabedoria'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'io-003',
+    name: 'Io Protetor',
+    level: 'adept',
+    description: 'Shield against negative energies and guide through spiritual darkness.',
+    practices: ['protecao-espiritual', 'guia-na-escuridao'],
+    symbol: '🛡️',
+    element: 'protecao'
+  },
+  {
+    id: 'io-004',
+    name: 'Io Supremo',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
+    description: 'Mestria completa da illuminação interior, transcendendo todos os obstáculos.',
+    practices: ['illuminacao-total', 'transcendencia-mxima'],
     symbol: '✨',
-    element: 'cosmo'
+    element: 'transcendência'
   }
 ];
 
@@ -73,37 +73,37 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllIo(): Io[] {
+  return ioData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getIoById(id: string): Io | undefined {
+  return ioData.find(i => i.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterIo(query: IoQuery): Io[] {
+  let results = [...ioData];
 
   if (query.level) {
-    results = results.filter(o => o.level === query.level);
+    results = results.filter(i => i.level === query.level);
   }
 
   if (query.search) {
     const searchLower = query.search.toLowerCase();
-    results = results.filter(o =>
-      o.name.toLowerCase().includes(searchLower) ||
-      o.description.toLowerCase().includes(searchLower)
+    results = results.filter(i =>
+      i.name.toLowerCase().includes(searchLower) ||
+      i.description.toLowerCase().includes(searchLower)
     );
   }
 
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: IoLevel; count: number }[] {
+  const levels: IoLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: ioData.filter(i => i.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/io/data
+ * Retrieve io data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: IoQuery = {
+      level: searchParams.get('level') as IoLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const io = getIoById(id);
+      if (!io) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Io not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: io });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterIo(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

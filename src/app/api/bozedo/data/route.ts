@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/bozedo/data/route.ts
+// Bozedo API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type BozedoLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface BozedoQuery {
+  level?: BozedoLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Bozedo {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: BozedoLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,40 +27,40 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// BOZEDO DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const bozedoData: Bozedo[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'bozedo-001',
+    name: 'Bozedo Primordial',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência fundamental de Bozedo, representando a sabedoria silenciosa que tudo permeia.',
+    practices: ['meditacao-silencio', 'afirmacoes-sabedor'],
+    symbol: '🌙',
+    element: 'luz'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'bozedo-002',
+    name: 'Bozedo Guardião',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'Guardião das tradições ancestrais, canalizando forças de proteção e conhecimento.',
+    practices: ['ritual-protecao', 'ancestralidade'],
+    symbol: '🛡️',
+    element: 'protecao'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'bozedo-003',
+    name: 'Bozedo Arcano',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
+    description: 'Mestria sobre os saberes ocultos, revelando mistérios entre dimensões.',
     practices: ['ritual-arcano', 'desvelamento'],
     symbol: '🔮',
-    element: 'misterio'
+    element: 'sabedoria'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'bozedo-004',
+    name: 'Bozedo Supremo',
     level: 'master',
     description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
     practices: ['uniao-cosmica', 'luz-transcendental'],
@@ -73,37 +73,37 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllBozedo(): Bozedo[] {
+  return bozedoData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getBozedoById(id: string): Bozedo | undefined {
+  return bozedoData.find(b => b.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterBozedo(query: BozedoQuery): Bozedo[] {
+  let results = [...bozedoData];
 
   if (query.level) {
-    results = results.filter(o => o.level === query.level);
+    results = results.filter(b => b.level === query.level);
   }
 
   if (query.search) {
     const searchLower = query.search.toLowerCase();
-    results = results.filter(o =>
-      o.name.toLowerCase().includes(searchLower) ||
-      o.description.toLowerCase().includes(searchLower)
+    results = results.filter(b =>
+      b.name.toLowerCase().includes(searchLower) ||
+      b.description.toLowerCase().includes(searchLower)
     );
   }
 
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: BozedoLevel; count: number }[] {
+  const levels: BozedoLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: bozedoData.filter(b => b.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/bozedo/data
+ * Retrieve bozedo data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: BozedoQuery = {
+      level: searchParams.get('level') as BozedoLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const bozedo = getBozedoById(id);
+      if (!bozedo) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Bozedo not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: bozedo });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterBozedo(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;

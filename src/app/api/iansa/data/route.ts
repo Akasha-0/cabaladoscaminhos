@@ -1,5 +1,5 @@
-// src/app/api/oxumar/data/route.ts
-// Oxumar API - skip linting
+// src/app/api/iansa/data/route.ts
+// Iansã API - skip linting
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -7,19 +7,19 @@ import { NextRequest, NextResponse } from 'next/server';
 // TYPES
 // ============================================================
 
-export type OxumarLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
+export type IansaLevel = 'initiate' | 'practitioner' | 'adept' | 'master';
 
-export interface OxumarQuery {
-  level?: OxumarLevel;
+export interface IansaQuery {
+  level?: IansaLevel;
   search?: string;
   page?: number;
   limit?: number;
 }
 
-export interface Oxumar {
+export interface Iansa {
   id: string;
   name: string;
-  level: OxumarLevel;
+  level: IansaLevel;
   description: string;
   practices: string[];
   symbol: string;
@@ -27,44 +27,44 @@ export interface Oxumar {
 }
 
 // ============================================================
-// OXUMAR DATA
+// IANSÃ DATA
 // ============================================================
 
-const oxumarData: Oxumar[] = [
+const iansaData: Iansa[] = [
   {
-    id: 'oxumar-001',
-    name: 'Oxumar Primordial',
+    id: 'iansa-001',
+    name: 'Primeira Iansã',
     level: 'initiate',
-    description: 'A essência fundamental de Oxumar, representando o arco-íris que conecta céu e terra.',
-    practices: ['meditacao-arco-iris', 'afirmacoes-celestes'],
-    symbol: '🌈',
-    element: 'arco-iris'
+    description: 'A essência primordial de Iansã, representando o vento e a liberdade inicial.',
+    practices: ['meditacao-vento', 'afirmações-de-liberdade'],
+    symbol: '🌬️',
+    element: 'vento'
   },
   {
-    id: 'oxumar-002',
-    name: 'Oxumar das Cores',
+    id: 'iansa-002',
+    name: 'Iansã das Tempestades',
     level: 'practitioner',
-    description: 'Fluxo das cores cósmicas, canalizando energias vibracionais e frequências luminosas.',
-    practices: ['cromoterapia', 'harmonia-cromatica'],
-    symbol: '🎨',
-    element: 'cores'
+    description: 'Força das tempestades e transformação, governando os ventos e mudanças climáticas.',
+    practices: ['tempestade-interior', 'transformacao-vento'],
+    symbol: '🌀',
+    element: 'tempestade'
   },
   {
-    id: 'oxumar-003',
-    name: 'Oxumar Arcano',
+    id: 'iansa-003',
+    name: 'Iansã Rainha dos Ventos',
     level: 'adept',
-    description: 'Mestria sobre os mistérios ocultos, revelando segredos entre dimensões.',
-    practices: ['ritual-arcano', 'desvelamento'],
-    symbol: '🔮',
-    element: 'misterio'
+    description: 'Soberania sobre os ventos e tempestades, senhor(a) das corrientes aéreas.',
+    practices: ['coroa-de-vento', 'realeza-temporal'],
+    symbol: '🌪️',
+    element: 'ventos-reais'
   },
   {
-    id: 'oxumar-004',
-    name: 'Oxumar Supremo',
+    id: 'iansa-004',
+    name: 'Iansã Suprema',
     level: 'master',
-    description: 'Transcendência total, fundindo-se com a luz primordial do cosmos.',
-    practices: ['uniao-cosmica', 'luz-transcendental'],
-    symbol: '✨',
+    description: 'Mestria completa sobre todas as correntes de Iansã, transcendendo os elementos atmosféricos.',
+    practices: ['uniao-cosmica', 'controle-total'],
+    symbol: '⚡',
     element: 'cosmo'
   }
 ];
@@ -73,37 +73,37 @@ const oxumarData: Oxumar[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getAllOxumar(): Oxumar[] {
-  return oxumarData;
+function getAllIansa(): Iansa[] {
+  return iansaData;
 }
 
-function getOxumarById(id: string): Oxumar | undefined {
-  return oxumarData.find(o => o.id === id);
+function getIansaById(id: string): Iansa | undefined {
+  return iansaData.find(i => i.id === id);
 }
 
-function filterOxumar(query: OxumarQuery): Oxumar[] {
-  let results = [...oxumarData];
+function filterIansa(query: IansaQuery): Iansa[] {
+  let results = [...iansaData];
 
   if (query.level) {
-    results = results.filter(o => o.level === query.level);
+    results = results.filter(i => i.level === query.level);
   }
 
   if (query.search) {
     const searchLower = query.search.toLowerCase();
-    results = results.filter(o =>
-      o.name.toLowerCase().includes(searchLower) ||
-      o.description.toLowerCase().includes(searchLower)
+    results = results.filter(i =>
+      i.name.toLowerCase().includes(searchLower) ||
+      i.description.toLowerCase().includes(searchLower)
     );
   }
 
   return results;
 }
 
-function getLevels(): { level: OxumarLevel; count: number }[] {
-  const levels: OxumarLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
+function getLevels(): { level: IansaLevel; count: number }[] {
+  const levels: IansaLevel[] = ['initiate', 'practitioner', 'adept', 'master'];
   return levels.map(level => ({
     level,
-    count: oxumarData.filter(o => o.level === level).length
+    count: iansaData.filter(i => i.level === level).length
   }));
 }
 
@@ -112,15 +112,15 @@ function getLevels(): { level: OxumarLevel; count: number }[] {
 // ============================================================
 
 /**
- * GET /api/oxumar/data
- * Retrieve oxumar data with optional filtering
+ * GET /api/iansa/data
+ * Retrieve iansã data with optional filtering
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query: OxumarQuery = {
-      level: searchParams.get('level') as OxumarLevel | undefined,
+    const query: IansaQuery = {
+      level: searchParams.get('level') as IansaLevel | undefined,
       search: searchParams.get('search') || undefined,
       page: searchParams.get('page') ? parseInt(searchParams.get('page')!, 10) : 1,
       limit: searchParams.get('limit') ? parseInt(searchParams.get('limit')!, 10) : 50
@@ -129,14 +129,14 @@ export async function GET(request: NextRequest) {
     // Check for specific ID request
     const id = searchParams.get('id');
     if (id) {
-      const oxumar = getOxumarById(id);
-      if (!oxumar) {
+      const iansa = getIansaById(id);
+      if (!iansa) {
         return NextResponse.json(
-          { error: 'Oxumar not found' },
+          { error: 'Iansã not found' },
           { status: 404 }
         );
       }
-      return NextResponse.json({ data: oxumar });
+      return NextResponse.json({ data: iansa });
     }
 
     // Check for levels summary
@@ -146,7 +146,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Filter and paginate results
-    const filtered = filterOxumar(query);
+    const filtered = filterIansa(query);
     const page = query.page || 1;
     const limit = query.limit || 50;
     const start = (page - 1) * limit;
