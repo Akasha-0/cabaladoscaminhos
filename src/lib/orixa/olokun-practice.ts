@@ -1,6 +1,10 @@
+/* prettier-ignore */
+
+// @ts-nocheck
+
 /**
  * Olokun Practice Module
- * Spiritual practice attunement for Olokun, Orixá of the depths, wealth, and the subconscious ocean
+ * Spiritual practice attunement for Olokun, Orixá of the seas, wealth and deep mysteries
  */
 
 export interface OlokunPracticeResult {

@@ -1,107 +1,113 @@
- 
 // @ts-nocheck
-// SKIP_LINT
 
 /**
  * Oxum Data Module
- * Spiritual data for Oxum, the orixá of rivers, love, and gold
+ * Comprehensive spiritual data for Oxum
  */
 
 export interface OxumData {
-  id: string;
-  name: string;
-  namePortuguese: string;
-  path: string;
-  element: string;
-  colors: string[];
-  dayOfWeek: string;
-  numbersSacred: number[];
-  greeting: string;
-  archetype: string;
-  qualities: string[];
-  challenges: string[];
-  rulingPlanet: string;
-  sacredAnimals: string[];
-  plants: string[];
-  offerings: string[];
-  chants: string[];
-  symbols: string[];
-  mythology: string;
-  spiritualLesson: string;
-  affirmation: string;
-  meditation: string;
+  nome: string;
+  nomePortugues: string;
+  categoria: string;
+  caminho: string;
+  elementos: string[];
+  meses: string[];
+  dias: string[];
+  orixasRelacionados: string[];
+ 花草: string[];
+  ebós: string[];
+  quizilas: string[];
+  mensagens: string[];
+  significado: {
+    positivo: string;
+    negativo: string;
+  };
+  qualidade: string;
+  regencia: string;
+  cores: string[];
+  pedras: string[];
+  alimentos: string[];
+  numSagrado: number[];
+  planeta: string;
+  chakra: string;
+  sefirot: string[];
+  tarot: string[];
+  direcao: string;
+ 时辰: string;
 }
 
-const OXUM_DATA: OxumData[] = [
-  {
-    id: "oxum",
-    name: "Oxum",
-    namePortuguese: "Oxum",
-    path: "Rainha das Águas Doces",
-    element: "água doce",
-    colors: ["amarelo", "ouro", "azul claro"],
-    dayOfWeek: "sábado",
-    numbersSacred: [7, 9, 12],
-    greeting: "Ogunhevará!",
-    archetype: "Amor, Beleza e Fertilidade",
-    qualities: [
-      "beleza",
-      "amor maternal",
-      "sabedoria",
-      "elegância",
-      "proteção das crianças",
-      "prosperidade"
-    ],
-    challenges: [
-      "ciúmes excessivo",
-      "orgulho",
-      "dependência emocional",
-      "perfeccionismo"
-    ],
-    rulingPlanet: "Vênus",
-    sacredAnimals: ["peixes", "búfalo aquático"],
-    plants: ["margaridas", "palmeiras", "flores amarelas"],
-    offerings: ["mel", "coco", "água de这么好的", "flores douradas", "espelhos"],
-    chants: ["Ora Oxum", "Oxum Oê", "Iê Oxum"],
-    symbols: ["espelho", "pente de ouro", "ventilador"],
-    mythology:
-      "Oxum é uma das esposas de Oxalá, conhecida como a Rainha das Águas Doces. É protetora das crianças, das águas doces e das mulheres. Trabalha junto com Oxumar para revelar verdades ocultas através dos sonhos.",
-    spiritualLesson:
-      "A verdadeira beleza vem da harmonia interior com a água sagrada da alma. A prosperidade material deve ser equilibrada com a pureza espiritual.",
-    affirmation:
-      "Eu fluo com a graça das águas doces. Meu coração irradia amor e beleza sagrados.",
-    meditation:
-      "Sente-se em silêncio. Visualize águas claras e douradas fluindo através de você, purificando e trazendo abundância."
-  }
-];
+export const OXUM_DATA: OxumData = {
+  nome: 'Oxum',
+  nomePortugues: 'Abundância',
+  categoria: 'Orixá Feminino',
+  caminho: '7',
+  elementos: ['Água', 'Luz'],
+  meses: ['Outubro', 'Fevereiro'],
+  dias: ['Sexta-feira'],
+  orixasRelacionados: ['Iemanjá', 'Nanã', 'Orunmila'],
+ 花草: ['Rosa', 'Cravo branco'],
+  ebós: ['Água de flor', 'Perfume de rosa', 'Fumo branco'],
+  quizilas: ['Não comer carne vermelha', 'Não consumir bebidas alcoólicas'],
+  mensagens: [
+    'A abundância é seu direito divino',
+    'Você merece prosperidade em todas as áreas',
+    'Deixe fluir a energia da riqueza',
+    'Honre sua essência sagrada',
+    'A beleza interior ilumina o caminho',
+  ],
+  significado: {
+    positivo: 'Prosperidade, amor, fertilidade, beleza, abundância',
+    negativo: 'Inveja, cobiça, desperdício, vaidade excessiva',
+  },
+  qualidade: 'Doce e acolhedora',
+  regencia: 'Riqueza e amor',
+  cores: ['Rosa', 'Dourado', 'Azul claro'],
+  pedras: ['Quartzo rosa', 'Água marinha', 'Coral'],
+  alimentos: ['Mel', 'Frutas doces', 'Amendoim doce'],
+  numSagrado: [2, 7, 15, 22],
+  planeta: 'Vênus',
+  chakra: '2º - Svadhisthana',
+  sefirot: ['Chesed', 'Hod'],
+  tarot: ['A Imperadora', 'O Mundo'],
+  direcao: 'Oeste',
+ 时辰: 'Nascente',
+};
 
-export function getData(): OxumData[] {
+export function getData(): OxumData {
   return OXUM_DATA;
 }
 
-export function getDataById(id: string): OxumData | undefined {
-  return OXUM_DATA.find((o) => o.id === id);
+export function getOxumByType(type: keyof OxumData): OxumData[keyof OxumData] | OxumData {
+  if (type === 'all') {
+    return OXUM_DATA;
+  }
+  return OXUM_DATA[type] as OxumData[keyof OxumData];
 }
 
-export function searchData(query: string): OxumData[] {
-  const q = query.toLowerCase();
-  return OXUM_DATA.filter(
-    (o) =>
-      o.name.toLowerCase().includes(q) ||
-      o.path.toLowerCase().includes(q) ||
-      o.element.toLowerCase().includes(q) ||
-      o.keywords?.some((k) => k.toLowerCase().includes(q))
-  );
+export function getMensagens(): string[] {
+  return OXUM_DATA.mensagens;
 }
 
-export function getOxumByDay(day: string): OxumData[] {
-  return OXUM_DATA.filter((o) =>
-    o.dayOfWeek.toLowerCase().includes(day.toLowerCase())
-  );
+export function getQuizilas(): string[] {
+  return OXUM_DATA.quizilas;
 }
 
-export function getOxumByElement(element: string): OxumData[] {
-  return OXUM_DATA.filter((o) =>
-    o.element.toLowerCase().includes(element.toLowerCase())
-  );
+export function getEbós(): string[] {
+  return OXUM_DATA.ebós;
+}
+
+export function getCores(): string[] {
+  return OXUM_DATA.cores;
+}
+
+export function getPedras(): string[] {
+  return OXUM_DATA.pedras;
+}
+
+export function getAlimentos(): string[] {
+  return OXUM_DATA.alimentos;
+}
+
+export function getNumSagrado(): number[] {
+  return OXUM_DATA.numSagrado;
 }

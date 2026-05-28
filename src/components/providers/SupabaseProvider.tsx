@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { User } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
@@ -8,13 +8,17 @@ import { useRouter } from 'next/navigation'
 interface AuthContextType {
   user: User | null
   isLoading: boolean
+  isAuthenticated: boolean
   signOut: () => Promise<void>
+  supabase: ReturnType<typeof createBrowserClient> | null
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isLoading: true,
+  isAuthenticated: false,
   signOut: async () => {},
+  supabase: null,
 })
 
 export const useAuth = () => {
@@ -25,88 +29,110 @@ export const useAuth = () => {
   return context
 }
 
+// Singleton client
+let supabaseClient: ReturnType<typeof createBrowserClient> | null = null
+
+function getSupabaseClient() {
+  if (supabaseClient) return supabaseClient
+  
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  if (!url || !anonKey) {
+    console.error('[SupabaseProvider] Missing Supabase environment variables')
+    return null
+  }
+  
+  supabaseClient = createBrowserClient(url, anonKey)
+  return supabaseClient
+}
+
 export function SupabaseProvider({ children }: { children: React.ReactNode }) {
+  // All hooks must be called unconditionally
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isHydrated, setIsHydrated] = useState(false)
   const router = useRouter()
+  const initRef = useRef(false)
+  
+  // Always get supabase client (this is safe to call)
+  const supabase = getSupabaseClient()
 
-  // Criar cliente Supabase apenas no cliente
-  const [supabase] = useState(() =>
-    createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-    )
-  )
-
+  // Mark as hydrated on client mount
   useEffect(() => {
-    console.log('[SupabaseProvider] useEffect triggered. supabase:', !!supabase);
-    console.log('[SupabaseProvider] Env variables:', {
-      url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    });
+    setIsHydrated(true)
+  }, [])
 
-    if (!supabase) {
-      console.warn('[SupabaseProvider] Supabase client is null!');
-      return;
+  // Initialize auth - hooks called after all initial hooks
+  useEffect(() => {
+    // Don't run if not hydrated or already initialized
+    if (!isHydrated || initRef.current) {
+      return
     }
-
-    // Failsafe timeout: force isLoading to false after 2.5 seconds to prevent frozen screen
-    const failsafeTimeout = setTimeout(() => {
-      console.warn('[SupabaseProvider] Failsafe timeout triggered! Supabase took too long to respond. Unfreezing screen.');
-      setIsLoading(false);
-    }, 2500);
-
-    // Verificar usuário atual
-    const getUser = async () => {
-      console.log('[SupabaseProvider] getUser started');
+    
+    initRef.current = true
+    
+    // If no supabase, just mark as not loading
+    if (!supabase) {
+      setIsLoading(false)
+      return
+    }
+    
+    const initAuth = async () => {
       try {
-        const { data: { user }, error } = await supabase.auth.getUser()
-        console.log('[SupabaseProvider] getUser success:', user ? user.email : 'No user');
-        if (error) {
-          console.error('[SupabaseProvider] getUser returned error:', error);
-        }
-        setUser(user)
-      } catch (error) {
-        console.error('[SupabaseProvider] Error getting user (exception):', error)
+        const { data: { session } } = await supabase.auth.getSession()
+        setUser(session?.user ?? null)
+      } catch (err) {
+        console.error('[SupabaseProvider] Error getting session:', err)
         setUser(null)
       } finally {
-        console.log('[SupabaseProvider] getUser finally block. Setting isLoading to false');
-        clearTimeout(failsafeTimeout);
         setIsLoading(false)
       }
     }
+    
+    initAuth()
 
-    getUser()
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event: string, session: any) => {
+        console.log('[SupabaseProvider] Auth event:', event)
+        setUser(session?.user ?? null)
+        setIsLoading(false)
 
-    // Escutar mudanças de auth
-    console.log('[SupabaseProvider] Registering onAuthStateChange listener');
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('[SupabaseProvider] onAuthStateChange event:', event, 'session:', !!session);
-      setUser(session?.user ?? null)
-      clearTimeout(failsafeTimeout);
-      setIsLoading(false)
-      
-      if (event === 'SIGNED_OUT') {
-        console.log('[SupabaseProvider] Signed out event, redirecting to /login');
-        router.push('/login')
+        if (event === 'SIGNED_OUT') {
+          console.log('[SupabaseProvider] User signed out')
+          router.push('/login')
+        }
       }
-    })
+    )
 
     return () => {
-      console.log('[SupabaseProvider] Cleaning up onAuthStateChange listener');
-      clearTimeout(failsafeTimeout);
       subscription.unsubscribe()
+    }
+  }, [supabase, router, isHydrated])
+
+  const signOut = useCallback(async () => {
+    if (!supabase) return
+    
+    try {
+      await supabase.auth.signOut()
+      setUser(null)
+      router.push('/login')
+    } catch (err) {
+      console.error('[SupabaseProvider] Sign out error:', err)
     }
   }, [supabase, router])
 
-  const signOut = async () => {
-    if (!supabase) return
-    await supabase.auth.signOut()
-    router.push('/login')
+  const value = {
+    user,
+    isLoading,
+    isAuthenticated: !!user && isHydrated,
+    signOut,
+    supabase,
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, signOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   )

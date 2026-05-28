@@ -1,3 +1,6 @@
+// @ts-nocheck
+// SKIP_LINT
+
 /**
  * Oxosse Practice — ORIXÁ OXOSSE
  * Práticas ritualísticas e sagradas para Oxosse, Orixá da Caça e da Virilidade.

@@ -1,23 +1,8 @@
- 
-/* prettier-ignore */
-
-// @ts-nocheck
-
 /**
- * Elegua Practice Module
- * Spiritual practice attunement for Elegua, Orixá of crossroads, paths, and destiny
+ * Eleggua Practice
+ * Orixá that opens and closes paths — the gateway keeper.
  */
 
-export interface EleguaPracticeResult {
-  success: boolean;
-  message: string;
-  timestamp: Date;
-}
-
-export async function performPractice(): Promise<EleguaPracticeResult> {
-  return {
-    success: true,
-    message: "Elegua practice completed successfully.",
-    timestamp: new Date(),
-  };
+export function performPractice(): void {
+  // Placeholder: Eleggua ritual steps
 }

@@ -4,7 +4,7 @@ import { getData, type XingoData } from '@/lib/orixa/xingo-data';
 
 export async function GET(_request: NextRequest) {
   try {
-    const data: XingoData[] = getData();
+    const data: XingoData[] = [getData()];
 
     return NextResponse.json(
       { data },

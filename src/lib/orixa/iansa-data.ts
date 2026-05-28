@@ -1,6 +1,3 @@
- 
-// @ts-nocheck
-// SKIP_LINT
 
 /**
  * Iansã Data Module
@@ -17,7 +14,7 @@ export interface IansaData {
   dayOfWeek: string;
   numbersSacred: number[];
   greeting: string;
-  archetype: striing;
+ archetype: string;
   qualities: string[];
   challenges: string[];
   rulingPlanet: string;
@@ -48,13 +45,13 @@ const IANSA_DATA: IansaData[] = [
     challenges: ['Impulsividade', 'Garra excessiva', 'Orgulho', 'Temperamento'],
     rulingPlanet: 'Marte',
     sacredAnimals: ['Leopardo', 'Cavalo', 'Cão'],
-    plants: ['Pimenta', 'Arruda', 'Emoravo象'],
+   plants: ['Pimenta', 'Arruda', 'Manjericão', 'Alacaxí'],
     offerings: ['Azeite de dendê vermelho', 'Velas vermelhas e brancas', 'Pimenta calabresa', 'Fumo', 'Quiabo', 'Ervas'],
     chants: ['Epa Hey', 'Oya', 'Iansã', 'Tempestade'],
     symbols: ['Espada', 'Leque', 'Raio', 'Martelo'],
-    mythology:
-      'Iansã é a orixá das tempestades, raios, ventos e trovões. É conhecida como a Senhora das portas do cemitério e guardiã dos灵魂 que PARTEM. Ela é esposa de Shango, o orixá do trovão, e juntos dominam os céus. Iansã cavalga os ventos tempestuosos com seu leque, controlando as emoções do mundo. É视图 como uma mãe protetora que lucha contra as forças obscuras em defesa de seus filhos.',
-    spirritualLesson: 'A verdadeira força está em canalizar a energia da tempestade para a transformação e a proteção',
+   mythology:
+     'Iansã é a orixá das tempestades, raios, ventos e trovões. É conhecida como a Senhora das Portas do Cemitério e guardiã dos espíritos que partem. Ela é esposa de Xangô, o orixá do trovão, e juntos dominam os céus. Iansã cavalga os ventos tempestuosos com seu leque, controlando as emoções do mundo. É vista como uma mãe protetora que luta contra as forças obscuras em defesa de seus filhos.',
+   spiritualLesson: 'A verdadeira força está em canalizar a energia da tempestade para a transformação e a proteção',
     affirmation: 'Eu canalizo minha energia com propósito e bravura, limpando caminhos e protegendo meu espaço sagrado',
     meditation: 'Visualize ventos tempestuosos ao seu redor, removendo tudo o que não serve ao seu crescimento e fortalecendo sua determinação',
   },
@@ -77,9 +74,9 @@ const IANSA_DATA: IansaData[] = [
     offerings: ['Velas vermelhas', 'Azeite de dendê', 'Pimenta', 'Fumo', 'Quiabo', 'Flores amarelas'],
     chants: ['Oyá', 'Iansã', 'Tempestade', 'Oyá Yansã'],
     symbols: ['Leque', 'Espada', 'Cesto funerário', 'Ile xop'],
-    mythology:
-      'Oyá é outro nome e aspekto de Iansã,视图 como a guardiã do cemetery e dos cemitérios. Ela abre os caminhos para os spirits que PARTEM e fecha caminhos para as forças negativas. Quando Iansã cavalga a tempestade, Oyá dança entre os raios. É uma orixá de grande poder e representação feminina forte.',
-    spirritualLesson: 'A liberdade verdadeira viene da capacidade de marcar limites e proteger o sagrado',
+   mythology:
+     'Oyá é outro nome e aspecto de Iansã, vista como a guardiã do cemitério e dos espíritos ancestrais. Ela abre os caminhos para os espíritos que partem e fecha caminhos para as forças negativas. Quando Iansã cavalga a tempestade, Oyá dança entre os raios. É uma orixá de grande poder e representação feminina forte.',
+   spiritualLesson: 'A liberdade verdadeira vem da capacidade de marcar limites e proteger o sagrado',
     affirmation: 'Eu marco meus limites com força e coragem, protegendo meu espaço e limpando minha trilha',
     meditation: 'Imagine-se segurando um leque poderoso que controla os ventos e abre caminhos na sua vida',
   },

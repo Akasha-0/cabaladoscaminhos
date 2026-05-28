@@ -16,6 +16,14 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const date = new Date(dataNascimento);
+  if (isNaN(date.getTime())) {
+    return NextResponse.json(
+      { error: 'Data inválida' },
+      { status: 400, headers }
+    );
+  }
+
   try {
     switch (tipo?.toLowerCase()) {
       case 'ano':

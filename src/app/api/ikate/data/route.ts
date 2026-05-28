@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     meses: ['Outubro', 'Novembro'],
     dias: ['Terca-feira', 'Sexta-feira'],
     orixas: ['Oxum', 'Omolu'],
-   花草: ['Girassol', 'Lirio branco'],
+ervas: ['Girassol', 'Lirio branco'],
     ebós: ['Agua de oxum', 'Perfume de flor', 'Fumo branco'],
     quizilas: ['Nao comer peixe salgado', 'Nao consumir doces em excesso'],
     mensagens: [

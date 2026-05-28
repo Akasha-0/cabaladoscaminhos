@@ -10,60 +10,75 @@ import { useNumerologia } from '@/lib/hooks/useNumerologia';
 import { useCiclos } from '@/lib/hooks/useCiclos';
 import { useOdus } from '@/lib/hooks/useOdus';
 import { getInterpretacao } from '@/lib/numerologia';
+import Link from 'next/link';
 import { 
   Sparkles, 
   Star, 
   Moon, 
   Sun, 
-  Zap, 
   Calendar,
   Heart,
   BookOpen,
-  TrendingUp
+  TrendingUp,
+  LogOut,
+  Loader2
 } from 'lucide-react';
 
 export default function DashboardPage() {
-  const { user, isLoading: authLoading } = useAuth();
+  const { user, isLoading: authLoading, signOut, isAuthenticated } = useAuth();
   const [mounted, setMounted] = useState(false);
   
-  // Default user data for demo - in real app, fetch from user profile
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Always show loading spinner during initial mount to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+          <p className="text-amber-200/70 font-raleway text-sm">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading while checking auth
+  if (authLoading && !user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+          <p className="text-amber-200/70 font-raleway text-sm">Verificando autenticação...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <p className="text-amber-200/70 font-raleway">Redirecionando para login...</p>
+          <Link href="/login">
+            <Button variant="outline" className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10">
+              Ir para Login
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // User data
   const nome = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Usuário';
   const dataNascimento = user?.user_metadata?.data_nascimento || '1990-01-01';
   
   const { pitagorica, loading: loadingNumerologia } = useNumerologia(nome, dataNascimento);
   const { dia, loading: loadingCiclos } = useCiclos(dataNascimento);
   const { principal: odu, loading: loadingOdus } = useOdus(dataNascimento);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Show loading state while checking auth
-  if (!mounted || authLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex justify-center gap-2 text-amber-500">
-            {[...Array(7)].map((_, i) => (
-              <span key={i} className="text-2xl animate-pulse">✦</span>
-            ))}
-          </div>
-          <p className="text-amber-200/70 font-raleway text-sm">Carregando sua jornada...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If not logged in, return null (SupabaseProvider handles redirect via AuthGuard)
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <p className="text-amber-200/70 font-raleway">Redirecionando...</p>
-        </div>
-      </div>
-    );
-  }
 
   const interpretacao = pitagorica !== null ? getInterpretacao(pitagorica) : null;
 
@@ -80,17 +95,25 @@ export default function DashboardPage() {
               Sua jornada espiritual está em curso
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-3">
             <Badge variant="outline" className="border-amber-500/30 text-amber-400">
               <Sparkles className="w-3 h-3 mr-1" />
               Conectado
             </Badge>
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={signOut}
+              className="text-amber-200/60 hover:text-amber-400 hover:bg-amber-500/10"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sair
+            </Button>
           </div>
         </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Número Principal */}
           <Card className="bg-slate-900/50 border-slate-800/50">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-raleway text-amber-200/70 flex items-center gap-2">
@@ -100,7 +123,9 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               {loadingNumerologia ? (
-                <Skeleton className="h-12 w-12 rounded-full" />
+                <div className="flex justify-center">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                </div>
               ) : pitagorica !== null ? (
                 <div className="text-center">
                   <span className="text-4xl font-bold text-amber-400">{pitagorica}</span>
@@ -109,12 +134,11 @@ export default function DashboardPage() {
                   </p>
                 </div>
               ) : (
-                <p className="text-slate-400 text-sm">Sem dados</p>
+                <p className="text-slate-400 text-sm text-center">Sem dados</p>
               )}
             </CardContent>
           </Card>
 
-          {/* Ciclo do Dia */}
           <Card className="bg-slate-900/50 border-slate-800/50">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-raleway text-amber-200/70 flex items-center gap-2">
@@ -124,21 +148,22 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               {loadingCiclos ? (
-                <Skeleton className="h-12 w-12 rounded-full" />
+                <div className="flex justify-center">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                </div>
               ) : dia ? (
                 <div className="text-center">
                   <span className="text-4xl font-bold text-amber-400">{dia.numero}</span>
                   <p className="text-xs text-amber-200/50 mt-1 font-raleway">
-                    {dia.sefirot}
+                    {dia.sefirot || 'Carregando...'}
                   </p>
                 </div>
               ) : (
-                <p className="text-slate-400 text-sm">Sem dados</p>
+                <p className="text-slate-400 text-sm text-center">Sem dados</p>
               )}
             </CardContent>
           </Card>
 
-          {/* Odú Principal */}
           <Card className="bg-slate-900/50 border-slate-800/50">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-raleway text-amber-200/70 flex items-center gap-2">
@@ -148,21 +173,22 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               {loadingOdus ? (
-                <Skeleton className="h-12 w-12 rounded-full" />
+                <div className="flex justify-center">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                </div>
               ) : odu ? (
                 <div className="text-center">
                   <span className="text-4xl font-bold text-amber-400">{odu.numero}</span>
                   <p className="text-xs text-amber-200/50 mt-1 font-raleway">
-                    {odu.nome}
+                    {odu.nome || 'Carregando...'}
                   </p>
                 </div>
               ) : (
-                <p className="text-slate-400 text-sm">Sem dados</p>
+                <p className="text-slate-400 text-sm text-center">Sem dados</p>
               )}
             </CardContent>
           </Card>
 
-          {/* Orixá Regente */}
           <Card className="bg-slate-900/50 border-slate-800/50">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-raleway text-amber-200/70 flex items-center gap-2">
@@ -174,13 +200,13 @@ export default function DashboardPage() {
               {odu ? (
                 <div className="text-center">
                   <span className="text-2xl">✨</span>
-                  <p className="text-lg font-bold text-amber-400">{odu.orixaRegente}</p>
+                  <p className="text-lg font-bold text-amber-400">{odu.orixaRegente || 'N/A'}</p>
                   <p className="text-xs text-amber-200/50 mt-1 font-raleway">
-                    {odu.elementos}
+                    {odu.elementos || ''}
                   </p>
                 </div>
               ) : (
-                <p className="text-slate-400 text-sm">Sem dados</p>
+                <p className="text-slate-400 text-sm text-center">Sem dados</p>
               )}
             </CardContent>
           </Card>
@@ -188,7 +214,7 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <a href="/dashboard/perfil" className="block">
+          <Link href="/dashboard/perfil" className="block">
             <Card className="bg-slate-900/50 border-slate-800/50 hover:border-amber-500/30 transition-colors cursor-pointer h-full">
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -200,9 +226,9 @@ export default function DashboardPage() {
                 </CardDescription>
               </CardHeader>
             </Card>
-          </a>
+          </Link>
           
-          <a href="/dashboard/relatorios" className="block">
+          <Link href="/dashboard/relatorios" className="block">
             <Card className="bg-slate-900/50 border-slate-800/50 hover:border-amber-500/30 transition-colors cursor-pointer h-full">
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -214,9 +240,9 @@ export default function DashboardPage() {
                 </CardDescription>
               </CardHeader>
             </Card>
-          </a>
+          </Link>
           
-          <a href="/dashboard/chat" className="block">
+          <Link href="/dashboard/chat" className="block">
             <Card className="bg-slate-900/50 border-slate-800/50 hover:border-amber-500/30 transition-colors cursor-pointer h-full">
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -228,7 +254,7 @@ export default function DashboardPage() {
                 </CardDescription>
               </CardHeader>
             </Card>
-          </a>
+          </Link>
         </div>
 
         {/* Inspirational Message */}

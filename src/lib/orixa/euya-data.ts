@@ -1,6 +1,3 @@
- 
-// @ts-nocheck
-// SKIP_LINT
 
 /**
  * Euá Data Module
