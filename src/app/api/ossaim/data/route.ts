@@ -16,7 +16,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export interface OssaimPractice {
   id: string;
   name: string;
-  namePortuguese: string;
   description: string;
   purpose: string;
   method: string[];
@@ -50,28 +49,24 @@ const OSSAIM_CATEGORIES: OssaimCategory[] = [
   {
     id: 'herb-healing',
     name: 'Herb Healing',
-    namePortuguese: 'Cura com Ervas',
     description: 'Traditional healing practices using medicinal plants',
     practices: ['leaf-infusion', 'root-decoction', 'bark-preparation'],
   },
   {
     id: 'nature-ritual',
     name: 'Nature Ritual',
-    namePortuguese: 'Ritual da Natureza',
     description: 'Spiritual ceremonies connecting with natural elements',
     practices: ['tree-ceremony', 'water-ritual', 'earth-connection'],
   },
   {
     id: 'spiritual-blessing',
     name: 'Spiritual Blessing',
-    namePortuguese: 'Abençoamento Espiritual',
     description: 'Blessings for health, protection, and abundance',
     practices: ['leaf-blessing', 'branch-sweeping', 'nature-invocation'],
   },
   {
     id: 'plant-communion',
     name: 'Plant Communion',
-    namePortuguese: 'Comunhão com Plantas',
     description: 'Deep connection with plant spirits and their wisdom',
     practices: ['meditation', 'offering', 'reciprocity'],
   },
@@ -81,7 +76,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'leaf-infusion',
     name: 'Leaf Infusion',
-    namePortuguese: 'Infusão de Folhas',
     description: 'Preparing spiritual infusions with sacred leaves for healing',
     purpose: 'Physical and spiritual cleansing, health restoration',
     method: [
@@ -106,7 +100,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'root-decoction',
     name: 'Root Decoction',
-    namePortuguese: 'Decocção de Raízes',
     description: 'Creating powerful decoctions from sacred roots',
     purpose: 'Deep healing, grounding, ancestral connection',
     method: [
@@ -132,7 +125,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'tree-ceremony',
     name: 'Tree Ceremony',
-    namePortuguese: 'Cerimônia da Árvore',
     description: 'Honoring sacred trees and receiving their blessings',
     purpose: 'Nature connection, spiritual growth, environmental harmony',
     method: [
@@ -157,7 +149,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'water-ritual',
     name: 'Water Ritual',
-    namePortuguese: 'Ritual de Água',
     description: 'Cleansing and blessing with sacred waters',
     purpose: 'Purification, spiritual refreshment, blessing',
     method: [
@@ -182,7 +173,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'earth-connection',
     name: 'Earth Connection',
-    namePortuguese: 'Conexão com a Terra',
     description: 'Grounding through direct earth contact',
     purpose: 'Grounding, stability, ancestral connection',
     method: [
@@ -207,7 +197,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'leaf-blessing',
     name: 'Leaf Blessing',
-    namePortuguese: 'Abençoamento de Folhas',
     description: 'Using leaves for blessing and protection',
     purpose: 'Protection, blessing, spiritual cleansing',
     method: [
@@ -232,7 +221,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'branch-sweeping',
     name: 'Branch Sweeping',
-    namePortuguese: 'Varrimento com Galhos',
     description: 'Cleansing space with sacred branches',
     purpose: 'Space purification, protection, energy clearing',
     method: [
@@ -257,7 +245,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'nature-invocation',
     name: 'Nature Invocation',
-    namePortuguese: 'Invocação da Natureza',
     description: 'Calling upon nature spirits for blessing',
     purpose: 'Spiritual assistance, nature communion, blessing',
     method: [
@@ -282,7 +269,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'meditation',
     name: 'Plant Meditation',
-    namePortuguese: 'Meditação com Plantas',
     description: 'Deep meditation with plant spirit energies',
     purpose: 'Wisdom acquisition, plant communion, spiritual growth',
     method: [
@@ -306,7 +292,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'offering',
     name: 'Plant Offering',
-    namePortuguese: 'Oferta de Plantas',
     description: 'Presenting offerings to nature spirits',
     purpose: 'Reciprocity, building relationship, seeking favor',
     method: [
@@ -331,7 +316,6 @@ const OSSAIM_PRACTICES: OssaimPractice[] = [
   {
     id: 'reciprocity',
     name: 'Nature Reciprocity',
-    namePortuguese: 'Reciprocidade com a Natureza',
     description: 'Giving back to nature for what we receive',
     purpose: 'Balance, sustainability, spiritual responsibility',
     method: [
