@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { EmptyState } from '@/components/ui/empty-state';
 import { useCreditos } from '@/lib/hooks';
 import {
   Sparkles,
@@ -74,14 +75,24 @@ export function InsightDiario({ dataNascimento, nome, odu, numeroPessoal }: Insi
 
   if (erro || !insight) {
     return (
-      <Card className="bg-gradient-to-br from-card to-card/80 border-border/50">
-        <CardContent className="py-8 text-center">
-          <AlertCircle className="w-8 h-8 mx-auto mb-4 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">{erro}</p>
-          <Button variant="outline" onClick={buscarInsight} className="mt-4">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Tentar novamente
-          </Button>
+      <Card className="bg-gradient-to-br from-amber-900/20 to-amber-950/50 border-amber-500/30">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 font-cinzel text-amber-400">
+            <Sparkles className="w-5 h-5" />
+            Insight do Dia
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EmptyState 
+            variant="error"
+            title="Insight não disponível"
+            description={erro || 'Uma interrupção cósmica occurred. Tente novamente.'}
+            action={{
+              label: 'Tentar novamente',
+              onClick: buscarInsight,
+            }}
+            icon={<AlertCircle className="w-12 h-12" />}
+          />
         </CardContent>
       </Card>
     );

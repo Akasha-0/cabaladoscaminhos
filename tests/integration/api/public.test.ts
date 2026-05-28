@@ -296,10 +296,9 @@ describe('Numerologia Calculations', () => {
     });
 
     it('deve ignorar espaços e números', () => {
-      const numero1 = calcularNumeroTantrico('Maria Silva');
-      const numero2 = calcularNumeroTantrico('Maria');
-      
-      expect(numero1).toBeDefined();
+      const numero = calcularNumeroTantrico('Maria Silva');
+
+      expect(numero).toBeDefined();
     });
 
     it('deve converter para minúsculas', () => {

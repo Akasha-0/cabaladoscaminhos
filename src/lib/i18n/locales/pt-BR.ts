@@ -1,0 +1,18 @@
+export const ptBR: Record<string, string> = {
+  'common.welcome': 'Bem-vindo',
+  'common.loading': 'Carregando...',
+  'common.error': 'Erro',
+  'common.save': 'Salvar',
+  'common.cancel': 'Cancelar',
+  'common.delete': 'Excluir',
+  'common.edit': 'Editar',
+  'common.search': 'Buscar',
+  'common.back': 'Voltar',
+  'common.next': 'Próximo',
+  'common.previous': 'Anterior',
+  'common.submit': 'Enviar',
+  'common.close': 'Fechar',
+  'common.confirm': 'Confirmar',
+  'common.yes': 'Sim',
+  'common.no': 'Não',
+};

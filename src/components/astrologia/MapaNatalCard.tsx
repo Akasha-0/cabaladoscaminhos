@@ -2,6 +2,7 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { EmptyState } from '@/components/ui/empty-state';
 import { useMapaNatal } from '@/hooks/useMapaNatal';
 
 const SIGNOS_ICONS: Record<string, string> = {
@@ -18,7 +19,7 @@ export function MapaNatalCard() {
       <Card className="bg-slate-900/50 border-purple-500/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <span>⭐</span> Mapa Natal
+            <span>🪐</span> Mapa Natal
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -28,6 +29,7 @@ export function MapaNatalCard() {
                 <div key={i} className="h-20 bg-slate-800 rounded-lg" />
               ))}
             </div>
+            <div className="h-16 bg-slate-800 rounded-lg" />
           </div>
         </CardContent>
       </Card>
@@ -39,23 +41,49 @@ export function MapaNatalCard() {
       <Card className="bg-slate-900/50 border-purple-500/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <span>⭐</span> Mapa Natal
+            <span>🪐</span> Mapa Natal
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-slate-400 text-sm">{error}</p>
+          <EmptyState 
+            variant="error"
+            title="Erro ao carregar Mapa Natal"
+            description="Não foi possível consultar os astros. Tente novamente."
+            action={{
+              label: 'Tentar novamente',
+              onClick: () => window.location.reload(),
+            }}
+          />
         </CardContent>
       </Card>
     );
   }
   
-  if (!data) return null;
+  if (!data) {
+    return (
+      <Card className="bg-slate-900/50 border-purple-500/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <span>🪐</span> Mapa Natal
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EmptyState 
+            variant="no-data"
+            title="Mapa Natal não disponível"
+            description="Complete seu perfil com data e hora de nascimento para revelar seu mapa astral."
+            icon={<span className="text-4xl">🪐</span>}
+          />
+        </CardContent>
+      </Card>
+    );
+  }
   
   return (
     <Card className="bg-slate-900/50 border-purple-500/20">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <span>⭐</span> Mapa Natal
+          <span>🪐</span> Mapa Natal
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

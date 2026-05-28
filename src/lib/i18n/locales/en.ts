@@ -1,0 +1,18 @@
+export const en: Record<string, string> = {
+  'common.welcome': 'Welcome',
+  'common.loading': 'Loading...',
+  'common.error': 'Error',
+  'common.save': 'Save',
+  'common.cancel': 'Cancel',
+  'common.delete': 'Delete',
+  'common.edit': 'Edit',
+  'common.search': 'Search',
+  'common.back': 'Back',
+  'common.next': 'Next',
+  'common.previous': 'Previous',
+  'common.submit': 'Submit',
+  'common.close': 'Close',
+  'common.confirm': 'Confirm',
+  'common.yes': 'Yes',
+  'common.no': 'No',
+};

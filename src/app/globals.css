@@ -1,18 +1,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: #020617;
-  --color-foreground: #f8fafc;
+@theme {
+  /* Fonts */
   --font-sans: var(--font-raleway), system-ui, sans-serif;
   --font-serif: var(--font-cormorant), Georgia, serif;
   --font-mono: var(--font-mono);
   --font-cinzel: var(--font-cinzel), serif;
   --font-imfell: var(--font-imfell), serif;
-  --font-heading: var(--font-cinzel), serif;
+
+  /* Colors - Sidebar */
   --color-sidebar-ring: #4338ca;
   --color-sidebar-border: rgba(255, 255, 255, 0.1);
   --color-sidebar-accent-foreground: #f8fafc;
@@ -21,6 +20,8 @@
   --color-sidebar-primary: #4338ca;
   --color-sidebar-foreground: #f8fafc;
   --color-sidebar: #0f172a;
+
+  /* Colors - Chart */
   --color-chart-5: #dc2626;
   --color-chart-4: #f59e0b;
   --color-chart-3: #22c55e;
@@ -42,6 +43,10 @@
   --color-popover: #0f172a;
   --color-card-foreground: #f8fafc;
   --color-card: #0f172a;
+  --color-background: #020617;
+  --color-foreground: #f8fafc;
+
+  /* Radius */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -51,51 +56,74 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* === SPIRITUAL DESIGN TOKENS === */
+
+/* Primary - Gold (Divine Light) */
 :root {
-  --background: #020617;
-  --foreground: #f8fafc;
-  --card: #0f172a;
-  --card-foreground: #f8fafc;
-  --popover: #0f172a;
-  --popover-foreground: #f8fafc;
-  --primary: #4338ca;
-  --primary-foreground: #f8fafc;
-  --secondary: #1e293b;
-  --secondary-foreground: #f8fafc;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
-  --destructive: #ef4444;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: #4338ca;
-  --chart-1: #4338ca;
-  --chart-2: #7c3aed;
-  --chart-3: #22c55e;
-  --chart-4: #f59e0b;
-  --chart-5: #dc2626;
-  --radius: 0.625rem;
-  --sidebar: #0f172a;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #4338ca;
-  --sidebar-primary-foreground: #f8fafc;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: #4338ca;
+  --spiritual-gold: #D4AF37;
+  --spiritual-gold-light: #FFD700;
+  --spiritual-gold-dark: #B8860B;
+  --spiritual-gold-muted: rgba(212, 175, 55, 0.15);
+
+  /* Secondary - Violet (Higher Consciousness) */
+  --spiritual-violet: #8B5CF6;
+  --spiritual-violet-deep: #6B21A8;
+  --spiritual-violet-muted: rgba(139, 92, 246, 0.12);
+
+  /* Accent - Elements */
+  --spiritual-amber: #F59E0B;
+  --spiritual-emerald: #10B981;
+  --spiritual-rose: #F43F5E;
+  --spiritual-sky: #0EA5E9;
+
+  /* Chakra Colors */
+  --chakra-root: #EF4444;
+  --chakra-sacral: #F97316;
+  --chakra-solar: #EAB308;
+  --chakra-heart: #22C55E;
+  --chakra-throat: #38BDF8;
+  --chakra-third-eye: #6366F1;
+  --chakra-crown: #A855F7;
+
+  /* Animation Tokens */
+  --duration-instant: 75ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Shadows */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
+  --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--color-border);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
     font-family: var(--font-raleway), system-ui, sans-serif;
   }
   html {
-    @apply scroll-smooth;
+    scroll-behavior: smooth;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-cinzel), serif;
@@ -116,3 +144,84 @@
     background: linear-gradient(135deg, #020617 0%, #1e1b4b 50%, #0f172a 100%);
   }
 }
+
+/* === SPIRITUAL ANIMATION UTILITIES === */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Animation Classes */
+.animate-fade-in-up {
+  animation: fadeInUp var(--duration-slow) var(--ease-out-expo) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out-expo) forwards;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Stagger Animation for Lists */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp var(--duration-slow) var(--ease-out-expo) forwards;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 75ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 225ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 375ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 450ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 525ms; }
+.stagger-children > *:nth-child(9) { animation-delay: 600ms; }
+.stagger-children > *:nth-child(10) { animation-delay: 675ms; }

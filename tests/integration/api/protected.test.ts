@@ -5,7 +5,6 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { TEST_USER } from '../setup';
 
 // ============================================
 // Helper Functions (Lógica das rotas)

@@ -378,14 +378,11 @@ export const chakras: ChakraData[] = [
 ];
 
 // ============================================================
-// FASES DA LUA
-// ============================================================
-
 export const fasesLua = [
-  { fase: "Lua Nova", estado: "Introspecção, silêncio, planejamento invisível.", janela: "Das 00:00 às 03:00 (Hora Astrológica).", ritual: "Início de projetos secretos, firmezas de proteção profunda, assentamento de Exu.", orixas: "Exu, Omolu, Ogum", cartas: "Casa 1 (O Cavaleiro) / Casa 26 (O Livro)" },
-  { fase: "Lua Crescente", estado: "Foco, ação disciplinada, força de vontade.", janela: "Das 06:00 às 12:00 (Amanhecer/Zênite).", ritual: "Rituais de abertura de caminhos comerciais, banhos de prosperidade e atração.", orixas: "Oxóssi, Ogum, Xangô", cartas: "Casa 13 (A Criança) / Casa 34 (Os Peixes)" },
-  { fase: "Lua Cheia", estado: "Expansão áurica máxima, magnetismo, êxtase.", janela: "Das 18:00 às 00:00 (Ascensão da Lua).", ritual: "Alta magia de atração, consagração de patuás, boris, rituais de amor e cura de Ori.", orixas: "Oxalá, Oxum, Iemanjá", cartas: "Casa 16 (A Estrela) / Casa 31 (O Sol)" },
-  { fase: "Lua Minguante", estado: "Desapego, austeridade, banimento consciente.", janela: "Das 12:00 às 18:00 (Ocaso Solar).", ritual: "Quebra de energias paradas, ebós de descarrego pesado, cura de vícios e doenças.", orixas: "Omolu, Nanã, Iansã", cartas: "Casa 8 (O Caixão) / Casa 10 (A Foice)" }
+  { fase: "Lua Nova", estado: "Introspecção, silêncio, planejamento invisível.", janela: "Das 00:00 às 03:00 (Hora Astrológica).", ritual: "Início de projetos secretos, firmezas de proteção profunda, assentamento de Exu.", orixas: "Exu, Omolu, Ogum", cartas: "Casa 1 (O Cavaleiro) / Casa 26 (O Livro)", praticas: "Meditação silenciosa, journaling, firmezas de proteção" },
+  { fase: "Lua Crescente", estado: "Foco, ação disciplinada, força de vontade.", janela: "Das 06:00 às 12:00 (Amanhecer/Zênite).", ritual: "Rituais de abertura de caminhos comerciais, banhos de prosperidade e atração.", orixas: "Oxóssi, Ogum, Xangô", cartas: "Casa 13 (A Criança) / Casa 34 (Os Peixes)", praticas: "Iniciação de projetos e usaha, trabalho com intenção e disciplina" },
+  { fase: "Lua Cheia", estado: "Expansão áurica máxima, magnetismo, êxtase.", janela: "Das 18:00 às 00:00 (Ascensão da Lua).", ritual: "Alta magia de atração, consagração de patuás, boris, rituais de amor e cura de Ori.", orixas: "Oxalá, Oxum, Iemanjá", cartas: "Casa 16 (A Estrela) / Casa 31 (O Sol)", praticas: "Rituais de alta magia, cura, amor, consagrações" },
+  { fase: "Lua Minguante", estado: "Desapego, austeridade, banimento consciente.", janela: "Das 12:00 às 18:00 (Ocaso Solar).", ritual: "Quebra de energias paradas, ebós de descarrego pesado, cura de vícios e doenças.", orixas: "Omolu, Nanã, Iansã", cartas: "Casa 8 (O Caixão) / Casa 10 (A Foice)", praticas: "Descargo, ebós, cura de vícios e doenças" }
 ];
 
 // ============================================================

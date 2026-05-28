@@ -9,12 +9,10 @@ import { Separator } from '@/components/ui/separator';
 import { 
   Moon, 
   BookOpen, 
-  Star,
   Calendar,
   User,
   LogOut,
   Sparkles,
-  Hexagon
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -32,19 +30,15 @@ export function DashboardNav() {
     <div className="w-64 min-h-screen bg-sidebar flex flex-col border-r border-sidebar-border">
       {/* Logo */}
       <div className="p-6">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
-            <Hexagon className="w-5 h-5 text-primary" />
+        <Link href="/(dashboard)" className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+            <Moon className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-sm font-cinzel text-primary tracking-wider">
-              CABALA
-            </h1>
-            <p className="text-[10px] text-muted-foreground font-raleway">
-              dos Caminhos
-            </p>
+            <h1 className="font-cinzel text-lg font-bold text-sidebar-foreground">Cábala</h1>
+            <p className="text-[10px] text-muted-foreground font-raleway tracking-wider">DOS CAMINHOS</p>
           </div>
-        </div>
+        </Link>
       </div>
 
       <Separator className="bg-sidebar-border" />
@@ -76,27 +70,36 @@ export function DashboardNav() {
 
         <Separator className="my-4 bg-sidebar-border" />
 
-        {/* Spiritual Quick Links */}
-        <div className="px-2 space-y-1">
+        <div className="space-y-1">
           <p className="text-[10px] uppercase text-muted-foreground tracking-wider mb-2 px-2">
             Ferramentas Espirituais
           </p>
           <Link href="/(dashboard)/calendario">
             <Button variant="ghost" size="sm" className="w-full justify-start gap-2 h-9 text-xs font-raleway text-muted-foreground hover:text-foreground">
-              <Moon className="w-3 h-3" />
+              <Calendar className="w-3 h-3" />
               Diário Espiritual
             </Button>
           </Link>
-          <Link href="/(dashboard)/calendario">
+          <Link href="/(dashboard)">
             <Button variant="ghost" size="sm" className="w-full justify-start gap-2 h-9 text-xs font-raleway text-muted-foreground hover:text-foreground">
-              <BookOpen className="w-3 h-3" />
+              <Moon className="w-3 h-3" />
               Odús do Dia
             </Button>
           </Link>
-          <Link href="/(dashboard)/calendario">
+          <Separator className="my-2 bg-sidebar-border" />
+          <p className="text-[10px] uppercase text-muted-foreground tracking-wider mb-2 px-2">
+            Recursos
+          </p>
+          <Link href="/(dashboard)/planetas">
             <Button variant="ghost" size="sm" className="w-full justify-start gap-2 h-9 text-xs font-raleway text-muted-foreground hover:text-foreground">
-              <Star className="w-3 h-3" />
-              Orixás
+              <Moon className="w-3 h-3" />
+              Planetas
+            </Button>
+          </Link>
+          <Link href="/(dashboard)/relatorios">
+            <Button variant="ghost" size="sm" className="w-full justify-start gap-2 h-9 text-xs font-raleway text-muted-foreground hover:text-foreground">
+              <BookOpen className="w-3 h-3" />
+              Relatórios
             </Button>
           </Link>
         </div>
@@ -108,13 +111,12 @@ export function DashboardNav() {
       <div className="p-4 space-y-3">
         <div className="px-2 space-y-1">
           <p className="text-xs text-muted-foreground font-raleway truncate">
-            {user?.email || 'Conectado'}
+            {user?.email || 'Convidado'}
           </p>
         </div>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive font-raleway"
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive"
           onClick={() => signOut()}
         >
           <LogOut className="w-4 h-4" />

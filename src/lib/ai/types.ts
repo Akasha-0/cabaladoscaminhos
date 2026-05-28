@@ -8,6 +8,8 @@ export interface ChatCompletionOptions {
   model?: string;
   temperature?: number;
   max_tokens?: number;
+  /** Use fallback model (gpt-4o-mini) on retries */
+  useFallback?: boolean;
 }
 
 export interface AIResponse {
@@ -18,4 +20,12 @@ export interface AIResponse {
     total_tokens: number;
   };
   model: string;
+}
+
+/**
+ * Stream chunk for streaming responses
+ */
+export interface StreamChunk {
+  content: string;
+  done: boolean;
 }

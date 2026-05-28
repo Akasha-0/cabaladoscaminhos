@@ -1,13 +1,14 @@
 'use client';
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { EmptyState } from '@/components/ui/empty-state';
 import type { Transito } from '@/hooks/useMapaNatal';
 
-interface Props {
+interface TransitosAtivosProps {
   transitos: Transito[];
 }
 
-export function TransitosAtivos({ transitos }: Props) {
+export function TransitosAtivos({ transitos }: TransitosAtivosProps) {
   const impactoCores = {
     alto: 'bg-red-500/20 border-red-500/50 text-red-300',
     medio: 'bg-yellow-500/20 border-yellow-500/50 text-yellow-300',
@@ -29,10 +30,12 @@ export function TransitosAtivos({ transitos }: Props) {
       </CardHeader>
       <CardContent>
         {transitos.length === 0 ? (
-          <div className="text-center py-4">
-            <p className="text-slate-400">Nenhum trânsito significativo no momento.</p>
-            <p className="text-slate-500 text-sm mt-1">Continue acompanhando suas orientações.</p>
-          </div>
+          <EmptyState 
+            variant="no-data"
+            title="Nenhum trânsito significativo"
+            description="Continue acompanhando suas orientações astrais. Os astros revelarão novas influências em breve."
+            icon={<span className="text-4xl">🌌</span>}
+          />
         ) : (
           <div className="space-y-3">
             {transitos.slice(0, 5).map((t, i) => (

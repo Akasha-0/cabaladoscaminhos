@@ -5,8 +5,8 @@
  * Usa testes unitários puros sem dependência de servidor.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { TEST_USER, PUBLIC_ROUTES, PROTECTED_ROUTES } from './setup';
+import { describe, it, expect } from 'vitest';
+import { PUBLIC_ROUTES, PROTECTED_ROUTES } from './setup';
 
 // ============================================
 // Importar helpers do middleware para testar
@@ -196,7 +196,7 @@ describe('Auth Helpers', () => {
       },
     } as unknown;
 
-    const token = getTokenFromRequest(mockRequest);
+    const token = getTokenFromRequest(mockRequest as import('next/server').NextRequest);
     expect(token).toBe('test-token');
   });
 
@@ -209,7 +209,7 @@ describe('Auth Helpers', () => {
       },
     } as unknown;
 
-    const token = getTokenFromRequest(mockRequest);
+    const token = getTokenFromRequest(mockRequest as import('next/server').NextRequest);
     expect(token).toBeNull();
   });
 
@@ -227,7 +227,7 @@ describe('Auth Helpers', () => {
       },
     } as unknown;
 
-    const token = getTokenFromRequest(mockRequest);
+    const token = getTokenFromRequest(mockRequest as import('next/server').NextRequest);
     expect(token).toBeNull();
   });
 });

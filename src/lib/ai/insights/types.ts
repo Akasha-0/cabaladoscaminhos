@@ -8,3 +8,9 @@ export interface InsightData {
   ritus: string;
   sefirotAlinhado: string;
 }
+
+export interface InsightCacheEntry {
+  data: InsightData;
+  expiresAt: number;
+  createdAt: number;
+}
