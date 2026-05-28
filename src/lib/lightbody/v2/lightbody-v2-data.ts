@@ -1,5 +1,5 @@
 // @ts-nocheck
-/* eslint-disable */
+ 
 // lightbody-v2-data.ts — Lightbody v2 activation data with advanced spiritual features
 
 import type { LightbodyData, LightbodyFrequency, LightbodyLayer } from '../lightbody-data';

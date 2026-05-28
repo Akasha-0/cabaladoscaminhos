@@ -3,7 +3,7 @@
  * Enhanced cosmic energy data for spiritual practice
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 import type { CosmicData } from '../cosmic-data';
 
 export interface CosmicV2Data extends CosmicData {

@@ -3,7 +3,7 @@
  * Provides sacred water properties and healing data for the Cabala dos Caminhos system
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 export interface SacredWater {
   id: string;

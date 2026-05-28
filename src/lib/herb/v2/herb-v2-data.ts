@@ -1,5 +1,5 @@
 // herb-v2-data.ts
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 
 export interface HerbV2Properties {
   name: string;

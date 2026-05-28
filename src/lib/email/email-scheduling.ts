@@ -4,7 +4,7 @@
 // Time-based email scheduling
 // ============================================================
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 // ============================================================
 // TYPES

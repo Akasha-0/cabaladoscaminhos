@@ -1,5 +1,5 @@
 // @ts-nocheck
-/* eslint-disable */
+ 
 // lightbody-data.ts — Lightbody activation data and energy field configurations
 
 export interface LightbodyFrequency {

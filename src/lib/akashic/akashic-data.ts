@@ -3,7 +3,7 @@
  * Provides Akashic records and cosmic memory data for the Cabala dos Caminhos system
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export interface AkashicRecord {
   id: string;
   name: string;
@@ -14,7 +14,7 @@ export interface AkashicRecord {
   accessMethods: string[];
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export interface AkashicDimension {
   dimension: string;
   description: string;

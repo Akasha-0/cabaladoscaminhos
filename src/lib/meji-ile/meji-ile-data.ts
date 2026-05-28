@@ -1,5 +1,5 @@
 // meji-ile-data.ts
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 
 /**
  * Meji-Ile Data Module

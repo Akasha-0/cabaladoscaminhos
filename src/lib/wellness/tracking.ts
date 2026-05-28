@@ -15,10 +15,10 @@ export interface WellnessData {
   lastUpdated: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const STORAGE_KEY = 'wellness_tracking';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function getStorage(): WellnessData {
   if (typeof window === 'undefined') {
     return { entries: [], lastUpdated: new Date().toISOString() };
@@ -34,7 +34,7 @@ function getStorage(): WellnessData {
   return { entries: [], lastUpdated: new Date().toISOString() };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function saveStorage(data: WellnessData): void {
   if (typeof window === 'undefined') return;
   try {

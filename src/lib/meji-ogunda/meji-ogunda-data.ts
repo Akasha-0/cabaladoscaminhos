@@ -1,5 +1,5 @@
 // @ts-nocheck
-/* eslint-disable */
+ 
 /**
  * Meji-Ogunda (Obará) Data
  * Odu of Wealth, Abundance, Wisdom and Surprise

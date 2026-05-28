@@ -1,6 +1,6 @@
 // Otura Data - Ifa Divination System - Cabala Dos Caminhos
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
+ 
 
 /**
  * Otura data interface

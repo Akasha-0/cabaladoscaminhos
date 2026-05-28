@@ -1,5 +1,5 @@
 // @ts-nocheck
-/* eslint-disable */
+ 
 // meji-ika-data.ts — Meji-Ika divination data (16 Principal Odu of Obeche/Ifa)
 
 export interface MejiIkaOdu {

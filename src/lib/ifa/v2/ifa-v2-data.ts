@@ -1,5 +1,5 @@
 // ifa-v2-data.ts
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 
 /**
  * Ifá-v2 Data Module

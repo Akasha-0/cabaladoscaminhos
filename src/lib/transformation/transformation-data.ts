@@ -2,7 +2,7 @@
  * Transformation Data - Spiritual transformation data for Cabala dos Caminhos
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export interface TransformationData {
   id: string;
   name: string;

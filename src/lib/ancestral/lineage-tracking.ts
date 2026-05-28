@@ -1,6 +1,6 @@
 // lineage-tracking.ts — Ancestral lineage tracking
 // @ts-nocheck
-/* eslint-disable */
+ 
 
 const STORAGE_KEY = 'ancestral_lineage';
 

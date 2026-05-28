@@ -11,7 +11,7 @@ export interface StatsTracker {
 
 const defaultTracker: StatsTracker = {
   track(event: StatsEvent): void {
-    // eslint-disable-next-line no-console
+     
     console.log('[stats]', {
       ...event,
       timestamp: event.timestamp ?? Date.now(),

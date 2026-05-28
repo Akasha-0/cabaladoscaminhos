@@ -2,7 +2,7 @@
  * Enlightened Data - Spiritual enlightenment data for Cabala dos Caminhos
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 export interface EnlightenedData {
   id: string;

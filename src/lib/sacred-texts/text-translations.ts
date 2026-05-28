@@ -1,6 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+ 
 // @ts-nocheck
-/* eslint-disable */
+ 
 
 export type TranslationKey =
   | 'app_title'

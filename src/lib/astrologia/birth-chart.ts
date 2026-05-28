@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 /* prettier-ignore */
 
 import { getPositions, type PlanetPosition } from './planet-positions';

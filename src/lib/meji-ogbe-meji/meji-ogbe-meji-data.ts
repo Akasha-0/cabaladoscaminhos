@@ -1,5 +1,5 @@
 // @ts-nocheck
-/* eslint-disable */
+ 
 // meji-ogbe-meji-data.ts — Meji-Ogbe-Meji divination data (16 Principal Odu of Obeche/Ifa)
 
 export interface MejiOgbeMejiOdu {

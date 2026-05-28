@@ -3,8 +3,8 @@
 // ============================================================
 // Data access for Olodumare (Supreme Creator in Yoruba tradition)
 // ============================================================
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
+ 
 
 export interface OdumareData {
   name: string;

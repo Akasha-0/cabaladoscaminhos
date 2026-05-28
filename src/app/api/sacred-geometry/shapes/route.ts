@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { FORMAS_SAGRADAS, getFormaPorSefirot, getFormaPorChakra, type FormaGeometrica } from '@/lib/geometria-sagrada/dados';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');

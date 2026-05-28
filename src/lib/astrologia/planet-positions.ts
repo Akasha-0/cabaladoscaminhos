@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 /* prettier-ignore */
 
 import { calcularPosicao, getSigno, getGrauNoSigno } from './swiss-ephemeris';

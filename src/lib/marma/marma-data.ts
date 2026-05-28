@@ -1,5 +1,5 @@
 // Marma point data for Ayurvedic energy points
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+ 
 // @ts-nocheck
 
 export interface MarmaPoint {

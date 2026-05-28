@@ -1,5 +1,5 @@
 // Meji-Odedin Data - Ifa Divination System - Cabala Dos Caminhos
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 /**
  * Meji-Odedin data interface

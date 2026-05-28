@@ -1,5 +1,5 @@
 // Meji-Teturupon Data - Ifa Divination System - Cabala Dos Caminhos
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 /**
  * Meji-Teturupon data interface

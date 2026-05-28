@@ -3,13 +3,13 @@
  * Spiritual practice aligned with cosmic truths and virtuous action.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export interface DharmaPracticeParams {
   intention?: string;
   action?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export interface DharmaPracticeResult {
   practice: string;
   virtue: string;

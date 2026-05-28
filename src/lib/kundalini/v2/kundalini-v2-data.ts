@@ -1,5 +1,5 @@
 // kundalini-v2-data.ts
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 import type { KundaliniData } from '../kundalini-data';
 
 export interface KundaliniV2Data extends KundaliniData {

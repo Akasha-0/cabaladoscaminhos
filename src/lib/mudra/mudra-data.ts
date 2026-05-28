@@ -4,7 +4,7 @@
  */
 
 // @ts-nocheck
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 // deno-lint-ignore-file no-explicit-any
 
 export interface MudraProperties {

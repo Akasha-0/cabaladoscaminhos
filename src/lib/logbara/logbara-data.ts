@@ -1,6 +1,6 @@
 // Logbara Data - Ifa Divination System - Cabala Dos Caminhos
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
+ 
 
 /**
  * Logbara data interface

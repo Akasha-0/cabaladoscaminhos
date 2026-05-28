@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 // @ts-nocheck
 // SKIP_LINT
 
@@ -124,7 +124,7 @@ export function searchData(query: string): AvangaData[] {
   const q = query.toLowerCase();
   return AVANGA_DATA.filter(
     (a) =>
-      a.name.toLowerCase()._includes(q) ||
+      a.name.toLowerCase().includes(q) ||
       a.namePortuguese.toLowerCase().includes(q) ||
       a.path.toLowerCase().includes(q) ||
       a.element.toLowerCase().includes(q) ||

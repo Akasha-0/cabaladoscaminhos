@@ -1,5 +1,5 @@
 // Ikoyun Data - Ancestral Wisdom System - Cabala Dos Caminhos
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 /**
  * Ikoyun data interface

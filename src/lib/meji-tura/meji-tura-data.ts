@@ -1,5 +1,5 @@
 // Meji-Tura Data - Ifa Divination System - Cabala Dos Caminhos
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 // Meji-Tura Interface
 export interface MejiTuraData {

@@ -1,5 +1,5 @@
 // src/lib/food/sacred-food-data.ts
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 import { Food } from './food-types'
 
 // Foods associated with sacred traditions and spiritual practices

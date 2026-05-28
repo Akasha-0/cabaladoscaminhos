@@ -1,6 +1,6 @@
 // Journal search - skipped linting and formatting
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
+ 
 
 export interface JournalEntry {
   id: string;

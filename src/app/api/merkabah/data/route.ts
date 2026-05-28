@@ -5,7 +5,7 @@
 // - Retrieve all merkabah stages
 // - Retrieve merkabah categories and types
 // ============================================================
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 import { NextRequest, NextResponse } from 'next/server';
 

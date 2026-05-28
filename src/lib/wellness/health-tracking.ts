@@ -20,10 +20,10 @@ export interface HealthData {
   lastUpdated: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const STORAGE_KEY = 'health_tracking';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function getStorage(): HealthData {
   if (typeof window === 'undefined') {
     return { entries: [], lastUpdated: new Date().toISOString() };
@@ -39,7 +39,7 @@ function getStorage(): HealthData {
   return { entries: [], lastUpdated: new Date().toISOString() };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function saveStorage(data: HealthData): void {
   if (typeof window === 'undefined') return;
   try {

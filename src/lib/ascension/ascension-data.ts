@@ -2,9 +2,9 @@
  * Ascension Data - Spiritual ascension data for Cabala dos Caminhos
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export interface AscensionData {
   id: string;
   name: string;

@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 /* prettier-ignore */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 import type { Meditation, MeditationPhase } from '../types';
 

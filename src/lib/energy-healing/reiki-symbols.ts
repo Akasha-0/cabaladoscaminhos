@@ -4,7 +4,7 @@
  * the mantras/chants used when drawing/activating it.
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 export interface ReikiSymbol {
   id: string;

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { NextRequest, NextResponse } from 'next/server';
 import { FORMAS_SAGRADAS, getFormaPorSefirot, getFormaPorChakra, getFrequenciaRecommendations } from '@/lib/geometria-sagrada/dados';
 

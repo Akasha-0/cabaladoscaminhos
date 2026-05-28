@@ -2,7 +2,7 @@
  * Stats tracking with LocalStorage persistence
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export interface StatsEntry {
   timestamp: number;
   key: string;

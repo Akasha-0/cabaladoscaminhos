@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 /**
  * Sacred Geometry Module
  * Geometria Sagrada

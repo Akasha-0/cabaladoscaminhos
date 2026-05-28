@@ -2,7 +2,7 @@
  * Commentary library with scholar notes for sacred texts
  */
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 
 export interface Commentary {
   id: string;
