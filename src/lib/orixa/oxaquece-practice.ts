@@ -16,7 +16,7 @@ export interface OxaquecePracticeResult {
 export async function performPractice(): Promise<OxaquecePracticeResult> {
   return {
     success: true,
-Oxaqeque practice completed successfully.
+    message: 'Oxaqeque practice completed successfully.',
     timestamp: new Date(),
   };
 }
