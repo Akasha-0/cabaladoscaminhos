@@ -26,21 +26,31 @@ echo "Tasks: $completed completed, $pending pending"
 echo "Recent changes: $files_changed files, $lines_added lines"
 echo ""
 
-# Test results (save to temp file, read afterwards)
-timeout 30 npm test --run > /tmp/test-output.txt 2>&1 || true
-
-# Parse results
-test_passed=$(grep -oE "[0-9]+ passed" /tmp/test-output.txt | tail -1 | awk '{print $1}' || echo 0)
-test_failed=$(grep -oE "[0-9]+ failed" /tmp/test-output.txt | tail -1 | awk '{print $1}' || echo 0)
-
+# Test results
 echo "Test Status:"
-echo "  Passed: $test_passed"
-echo "  Failed: $test_failed"
+
+# Run JWT tests with node environment (required for jose to work correctly)
+jwt_output=$(timeout 60 npx vitest run -c vitest.jwt.config.ts 2>&1)
+jwt_passed=$(echo "$jwt_output" | grep -oE "[0-9]+ passed" | tail -1 | awk '{print $1}' || echo 0)
+jwt_failed=$(echo "$jwt_output" | grep -oE "[0-9]+ failed" | tail -1 | awk '{print $1}' || echo 0)
+
+# Run other tests with jsdom
+other_output=$(timeout 60 npx vitest run 2>&1 || true)
+other_passed=$(echo "$other_output" | grep -oE "[0-9]+ passed" | tail -1 | awk '{print $1}' || echo 0)
+other_failed=$(echo "$other_output" | grep -oE "[0-9]+ failed" | tail -1 | awk '{print $1}' || echo 0)
+
+# Combine results
+total_passed=$((jwt_passed + other_passed))
+total_failed=$((jwt_failed + other_failed))
+
+echo "  JWT tests: $jwt_passed passed, $jwt_failed failed"
+echo "  Other tests: $other_passed passed, $other_failed failed"
+echo "  Total: $total_passed passed, $total_failed failed"
 
 # Convert to simple pass/fail
-if [ "$test_failed" -gt 0 ]; then
+if [ "$total_failed" -gt 0 ]; then
     tests_status="failing"
-elif [ "$test_passed" -gt 0 ]; then
+elif [ "$total_passed" -gt 0 ]; then
     tests_status="passing"
 else
     tests_status="unknown"
@@ -53,8 +63,8 @@ echo "METRIC tasks_completed=$completed"
 echo "METRIC tasks_pending=$pending"
 echo "METRIC files_changed=$files_changed"
 echo "METRIC lines_added=$lines_added"
-echo "METRIC test_passed=$test_passed"
-echo "METRIC test_failed=$test_failed"
+echo "METRIC test_passed=$total_passed"
+echo "METRIC test_failed=$total_failed"
 echo "METRIC tests_status=$tests_status"
 echo ""
 echo "=== OUTPUT END ==="
