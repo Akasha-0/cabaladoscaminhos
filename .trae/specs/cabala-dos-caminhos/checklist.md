@@ -244,6 +244,20 @@
 
 ---
 
+## FASE 3: EXPANSÃO ✅ EM PROGRESSO
+
+### Sprint 9: Astrologia Avançada ✅ COMPLETO
+- [x] **9.1.1**: Swiss Ephemeris configurado (cálculos em JS puro)
+- [x] **9.1.2**: Cálculo de posição planetária implementado
+- [x] **9.1.3**: Cálculo de casas astrológicas (Placidus)
+- [x] **9.1.4**: Mapa natal completo implementado
+- [x] **9.2.1**: Cálculo de trânsitos atuais implementado
+- [x] **9.2.2**: Interpretador de aspectos (5 tipos)
+- [x] **9.2.3**: Notificação de trânsitos importantes (por impacto)
+- [x] **9.2.4**: Trânsitos integrados aos insights
+
+---
+
 ## Checklist de Qualidade
 
 ### Performance

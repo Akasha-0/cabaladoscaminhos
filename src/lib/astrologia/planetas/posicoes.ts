@@ -1,5 +1,5 @@
 import { calcularPosicao, calcularCasas, normalizeDegrees } from '../swiss-ephemeris';
-import type { MapaNatal, Planeta, PosicaoPlaneta } from '../tipos';
+import type { MapaNatal, PosicaoPlaneta } from '../tipos';
 
 const PLANETAS_PRINCIPAIS: (keyof MapaNatal['planeta'])[] = [
   'sol', 'lua', 'mercurio', 'venus', 'marte',

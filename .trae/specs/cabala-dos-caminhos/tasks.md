@@ -252,22 +252,20 @@ FASE 4           → Ecossistema: Empresa + Mobile + Comunidade
 
 ## FASE 3: EXPANSÃO - 4 semanas estimadas
 
-### Sprint 9: Astrologia Avançada (7-10 dias)
-
-#### Tarefa 9.1: Integração Swiss Ephemeris
-- [ ] 9.1.1: Configurar Swiss Ephemeris
-- [ ] 9.1.2: Implementar cálculo de posição planetária
-- [ ] 9.1.3: Criar cálculo de casas astrológicas
-- [ ] 9.1.4: Implementar mapa natal completo
+### Sprint 9: Astrologia Avançada
+- [x] 9.1.1: Configurar Swiss Ephemeris (JS puro)
+- [x] 9.1.2: Implementar cálculo de posição planetária
+- [x] 9.1.3: Criar cálculo de casas astrológicas (Placidus)
+- [x] 9.1.4: Implementar mapa natal completo
 
 **Dependências:** Fase 2 completa  
 **Entrega:** Cálculos astrológicos funcionais
 
 #### Tarefa 9.2: Trânsitos Planetários
-- [ ] 9.2.1: Implementar cálculo de trânsitos atuais
-- [ ] 9.2.2: Criar interpretador de aspectos
-- [ ] 9.2.3: Adicionar notificação de trânsitos importantes
-- [ ] 9.2.4: Integrar trânsitos aos insights
+- [x] 9.2.1: Implementar cálculo de trânsitos atuais
+- [x] 9.2.2: Criar interpretador de aspectos
+- [x] 9.2.3: Adicionar notificação de trânsitos importantes
+- [x] 9.2.4: Integrar trânsitos aos insights
 
 **Dependências:** 9.1, 6.2  
 **Entrega:** Trânsitos integrados
@@ -412,10 +410,10 @@ Fase 3 completa → 13.1 → 13.2 → 14.1 → 14.2
 - Sprint 7: Stripe COMPLETO ✅
 - Sprint 8: Polish COMPLETO ✅
 
-### FASE 3: PENDENTE ⏳
-- Sprint 9: Astrologia Avançada (Swiss Ephemeris)
-- Sprint 10: Módulos Adicionais (Planetas, Geometria, Frequências)
-- Sprint 11-12: Relatórios (Semanal, Mensal)
+### FASE 3: EM PROGRESSO 🚧
+- Sprint 9: Astrologia Avançada COMPLETO ✅
+- Sprint 10: Módulos Adicionais (Planetas, Geometria, Frequências) ⏳
+- Sprint 11-12: Relatórios (Semanal, Mensal) ⏳
 
 ### Próximos Passos Prioritários
 1. Sprint 9.1: Configurar Swiss Ephemeris para cálculos astrológicos

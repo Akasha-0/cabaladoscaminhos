@@ -121,6 +121,7 @@ export async function usarCreditos(
   userId: string,
   quantidade: number,
   operacao: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _descricao?: string
 ): Promise<{ sucesso: boolean; novoSaldo?: number; erro?: string }> {
   try {

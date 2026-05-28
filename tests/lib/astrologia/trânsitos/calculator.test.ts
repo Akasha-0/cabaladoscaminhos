@@ -23,7 +23,7 @@ describe('Trânsitos', () => {
       ascendente: 45,
       mediumCoeli: 180,
       nodes: { 
-        norte: { planeta: 'node_norte', longitude: 120, latitude: 0, distancia: 1, velocidade: 0, signo: 'leo', casa: 5, grauNoSigno: 0 },
+        norte: { planeta: 'node_norte', longitude: 120, latitude: 0, distancia: 1, velocidade: 0, signo: 'leao', casa: 5, grauNoSigno: 0 },
         sul: { planeta: 'node_sul', longitude: 300, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario', casa: 11, grauNoSigno: 0 },
       },
     };

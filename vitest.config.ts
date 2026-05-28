@@ -5,9 +5,12 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
+    environment: 'node',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
+    env: {
+      JWT_SECRET: 'test-secret-key-that-is-at-least-32-bytes-long',
+    },
   },
   resolve: {
     alias: {
