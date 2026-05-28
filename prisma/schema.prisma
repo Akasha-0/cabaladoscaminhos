@@ -1,0 +1,350 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TipoTransacao {
+  CREDITO
+  DEBITO
+}
+
+// =====================
+// USUÁRIO E AUTENTICAÇÃO
+// =====================
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  passwordHash      String?
+  nomeCompleto      String
+  dataNascimento    DateTime
+  horaNascimento    String?
+  localNascimento   String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  mapaNatal         MapaNatal?
+  
+  assinatura        Assinatura?
+  
+  credito          Credito?
+  
+  empresas          Empresa[]
+  
+  temaPreferido     String    @default("mystical")
+  
+  supabaseUserId    String?   @unique
+  
+  stripeCustomerId      String?   @unique
+  stripeSubscriptionId  String?   @unique
+  planoAssinatura       String?
+  
+  @@map("users")
+}
+
+// =====================
+// MAPA NATAL (Cálculos)
+// =====================
+
+model MapaNatal {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  signoSolar        String?
+  signoLunar        String?
+  ascendente        String?
+  
+  numeroCabalistico Int?
+  numeroTantrico    Int?
+  numeroPitagorico  Int?
+  numeroCaldeu     Int?
+  numeroCarmico    Int?
+  
+  oduPrincipal      String?
+  oduSecundario     String?
+  
+  arcanoPessoal     Int?
+  cartaCaminho      String?
+  
+  sefirotDominante  String?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@map("mapa_natal")
+}
+
+// =====================
+// ASSINATURA
+// =====================
+
+model Assinatura {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  plano             String    @default("iniciante")
+  status            String    @default("active")
+  stripeCustomerId  String?   @unique
+  stripeSubscriptionId String? @unique
+  
+  dataInicio        DateTime  @default(now())
+  dataProximoCobro DateTime?
+  
+  moduloPlanetas    Boolean   @default(false)
+  moduloLetras      Boolean   @default(false)
+  moduloGeometria   Boolean   @default(false)
+  moduloFrequencias Boolean   @default(false)
+  moduloEmpresa     Boolean   @default(false)
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@map("assinaturas")
+}
+
+// =====================
+// CRÉDITOS
+// =====================
+
+model Credito {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  saldo             Int       @default(0)
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  transacoes        TransacaoCredito[]
+  
+  @@map("creditos")
+}
+
+model TransacaoCredito {
+  id              String    @id @default(cuid())
+  creditoId       String
+  credito         Credito   @relation(fields: [creditoId], references: [id], onDelete: Cascade)
+  tipo            TipoTransacao
+  quantidade      Int
+  descricao       String?
+  operacao        String?
+  createdAt       DateTime  @default(now())
+  
+  @@map("transacoes_credito")
+}
+
+// =====================
+// EMPRESA (FUTURO)
+// =====================
+
+model Empresa {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  nomeFantasia    String
+  razaoSocial     String?
+  cnpj            String?
+  dataFundacao    DateTime?
+  
+  numeroNome      Int?
+  numeroRazao     Int?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("empresas")
+}
+
+// =====================
+// BASE DE CONHECIMENTO
+// =====================
+
+model DiaSemana {
+  id              String    @id @default(cuid())
+  nome            String    @unique
+  numero          Int       @unique
+  planeta         String
+  elemento        String
+  cor             String
+  
+  orixas          Orixa[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("dias_semana")
+}
+
+model Orixa {
+  id                String    @id @default(cuid())
+  nome              String    @unique
+  saudacao          String
+  planeta           String
+  elemento          String
+  cores             String[]
+  chakraPrincipal   Int
+  
+  hierbas           Erva[]
+  
+  quizilas          String[]
+  
+  dias              DiaSemana[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@map("orixas")
+}
+
+model Chakra {
+  id          String    @id @default(cuid())
+  numero      Int       @unique
+  nome        String    @unique
+  cor         String
+  elemento    String
+  glandula    String?
+  mantras     String[]
+  funcoes    String[]
+  
+  sefirotId   String?   @unique
+  sefirot     Sefirot?  @relation(fields: [sefirotId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("chakras")
+}
+
+model Sefirot {
+  id          String    @id @default(cuid())
+  numero      Int       @unique
+  nome        String    @unique
+  caminho     String
+  aspecto     String
+  cor         String
+  
+  planeta     String?
+  
+  chakra      Chakra?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("sefirots")
+}
+
+model Odú {
+  id              String    @id @default(cuid())
+  numero          Int       @unique
+  nome            String    @unique
+  significado     String
+  elemento        String
+  planeta         String
+  orixaRegente    String
+  
+  quizilas        String[]
+  preceptos       String[]
+  ebos            String[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("odus")
+}
+
+model Erva {
+  id              String    @id @default(cuid())
+  nome            String    @unique
+  tipo            String
+  uso             String[]
+  
+  orixas          Orixa[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("ervas")
+}
+
+model FaseLua {
+  id              String    @id @default(cuid())
+  nome            String    @unique
+  energia         String
+  rituais         String[]
+  evitar         String[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@map("fases_lua")
+}
+
+model Elemento {
+  id          String    @id @default(cuid())
+  nome        String    @unique
+  simbolo     String
+  qualidades  String[]
+  direcoes    String[]
+  cores       String[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("elementos")
+}
+
+// =====================
+// INSIGHTS E CONVERSAS
+// =====================
+
+model Insight {
+  id              String    @id @default(cuid())
+  userId          String
+  
+  titulo          String
+  descricao       String
+  acaoRecomendada String?
+  mantra          String?
+  
+  diaSemana       String?
+  faseLua         String?
+  numeroPessoal   Int?
+  odu             String?
+  
+  createdAt       DateTime  @default(now())
+  
+  @@map("insights")
+}
+
+model Conversa {
+  id              String    @id @default(cuid())
+  userId          String
+  tema            String
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  mensagens       Mensagem[]
+  
+  @@map("conversas")
+}
+
+model Mensagem {
+  id              String    @id @default(cuid())
+  conversaId      String
+  conversa        Conversa  @relation(fields: [conversaId], references: [id], onDelete: Cascade)
+  
+  tipo            String
+  conteudo        String
+  
+  createdAt       DateTime  @default(now())
+  
+  @@map("mensagens")
+}
