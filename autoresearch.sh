@@ -30,7 +30,7 @@ echo ""
 echo "Test Status:"
 
 # Run JWT tests with node environment (required for jose to work correctly)
-jwt_output=$(timeout 60 npx vitest run -c vitest.jwt.config.ts 2>&1)
+jwt_output=$(timeout 60 npx vitest run -c vitest.jwt.config.ts 2>&1 || true)
 jwt_passed=$(echo "$jwt_output" | grep -oE "[0-9]+ passed" | tail -1 | awk '{print $1}' || echo 0)
 jwt_failed=$(echo "$jwt_output" | grep -oE "[0-9]+ failed" | tail -1 | awk '{print $1}' || echo 0)
 

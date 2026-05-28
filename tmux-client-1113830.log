@@ -1,0 +1,86 @@
+1779957977.774804 client started (1113830): version 3.6, socket /home/skynet/sockets/tmux-1000/verbose-test, protocol 8
+1779957977.774844 on Linux 7.0.0-15-generic #15-Ubuntu SMP PREEMPT_DYNAMIC Wed Apr 22 16:06:43 UTC 2026
+1779957977.774853 using libevent 2.1.12-stable poll
+1779957977.774859 using ncurses 6.5 20251123
+1779957977.774886 flags are 0x18010000
+1779957977.774904 socket is /home/skynet/sockets/tmux-1000/verbose-test
+1779957977.774928 trying connect
+1779957977.774957 connect failed: No such file or directory
+1779957977.774973 lock file is /home/skynet/sockets/tmux-1000/verbose-test.lock
+1779957977.775006 flock succeeded
+1779957977.775014 got lock (6)
+1779957977.775025 trying connect
+1779957977.775040 connect failed: No such file or directory
+1779957977.775615 add peer 0x725c34a431c0: 7 ((nil))
+1779957977.775847 sending message 111 to peer 0x725c34a431c0 (8 bytes)
+1779957977.775865 sending message 111 to peer 0x725c34a431c0 (8 bytes)
+1779957977.775874 sending message 101 to peer 0x725c34a431c0 (15 bytes)
+1779957977.775880 sending message 109 to peer 0x725c34a431c0 (4 bytes)
+1779957977.775887 sending message 102 to peer 0x725c34a431c0 (1 bytes)
+1779957977.775893 sending message 108 to peer 0x725c34a431c0 (33 bytes)
+1779957977.775901 sending message 104 to peer 0x725c34a431c0 (0 bytes)
+1779957977.775910 sending message 110 to peer 0x725c34a431c0 (0 bytes)
+1779957977.775917 sending message 107 to peer 0x725c34a431c0 (4 bytes)
+1779957977.775923 sending message 105 to peer 0x725c34a431c0 (16 bytes)
+1779957977.775930 sending message 105 to peer 0x725c34a431c0 (19 bytes)
+1779957977.775940 sending message 105 to peer 0x725c34a431c0 (20 bytes)
+1779957977.775946 sending message 105 to peer 0x725c34a431c0 (21 bytes)
+1779957977.775953 sending message 105 to peer 0x725c34a431c0 (45 bytes)
+1779957977.775959 sending message 105 to peer 0x725c34a431c0 (23 bytes)
+1779957977.775967 sending message 105 to peer 0x725c34a431c0 (44 bytes)
+1779957977.775975 sending message 105 to peer 0x725c34a431c0 (27 bytes)
+1779957977.775982 sending message 105 to peer 0x725c34a431c0 (48 bytes)
+1779957977.775989 sending message 105 to peer 0x725c34a431c0 (37 bytes)
+1779957977.775996 sending message 105 to peer 0x725c34a431c0 (51 bytes)
+1779957977.776010 sending message 105 to peer 0x725c34a431c0 (20 bytes)
+1779957977.776018 sending message 105 to peer 0x725c34a431c0 (23 bytes)
+1779957977.776025 sending message 105 to peer 0x725c34a431c0 (28 bytes)
+1779957977.776034 sending message 105 to peer 0x725c34a431c0 (30 bytes)
+1779957977.776040 sending message 105 to peer 0x725c34a431c0 (37 bytes)
+1779957977.776047 sending message 105 to peer 0x725c34a431c0 (15 bytes)
+1779957977.776053 sending message 105 to peer 0x725c34a431c0 (27 bytes)
+1779957977.776060 sending message 105 to peer 0x725c34a431c0 (25 bytes)
+1779957977.776071 sending message 105 to peer 0x725c34a431c0 (52 bytes)
+1779957977.776077 sending message 105 to peer 0x725c34a431c0 (22 bytes)
+1779957977.776084 sending message 105 to peer 0x725c34a431c0 (54 bytes)
+1779957977.776091 sending message 105 to peer 0x725c34a431c0 (18 bytes)
+1779957977.776099 sending message 105 to peer 0x725c34a431c0 (16 bytes)
+1779957977.776105 sending message 105 to peer 0x725c34a431c0 (17 bytes)
+1779957977.776112 sending message 105 to peer 0x725c34a431c0 (33 bytes)
+1779957977.776118 sending message 105 to peer 0x725c34a431c0 (1764 bytes)
+1779957977.776131 sending message 105 to peer 0x725c34a431c0 (33 bytes)
+1779957977.776139 sending message 105 to peer 0x725c34a431c0 (125 bytes)
+1779957977.776146 sending message 105 to peer 0x725c34a431c0 (17 bytes)
+1779957977.776165 sending message 105 to peer 0x725c34a431c0 (26 bytes)
+1779957977.776173 sending message 105 to peer 0x725c34a431c0 (47 bytes)
+1779957977.776179 sending message 105 to peer 0x725c34a431c0 (16 bytes)
+1779957977.776186 sending message 105 to peer 0x725c34a431c0 (43 bytes)
+1779957977.776196 sending message 105 to peer 0x725c34a431c0 (34 bytes)
+1779957977.776203 sending message 105 to peer 0x725c34a431c0 (23 bytes)
+1779957977.776209 sending message 105 to peer 0x725c34a431c0 (20 bytes)
+1779957977.776230 sending message 105 to peer 0x725c34a431c0 (32 bytes)
+1779957977.776240 sending message 105 to peer 0x725c34a431c0 (12 bytes)
+1779957977.776246 sending message 105 to peer 0x725c34a431c0 (11 bytes)
+1779957977.776253 sending message 105 to peer 0x725c34a431c0 (8 bytes)
+1779957977.776271 sending message 105 to peer 0x725c34a431c0 (18 bytes)
+1779957977.776278 sending message 105 to peer 0x725c34a431c0 (88 bytes)
+1779957977.776292 sending message 105 to peer 0x725c34a431c0 (21 bytes)
+1779957977.776300 sending message 105 to peer 0x725c34a431c0 (31 bytes)
+1779957977.776306 sending message 105 to peer 0x725c34a431c0 (47 bytes)
+1779957977.776313 sending message 105 to peer 0x725c34a431c0 (24 bytes)
+1779957977.776320 sending message 105 to peer 0x725c34a431c0 (30 bytes)
+1779957977.776328 sending message 105 to peer 0x725c34a431c0 (181 bytes)
+1779957977.776334 sending message 105 to peer 0x725c34a431c0 (357 bytes)
+1779957977.776345 sending message 105 to peer 0x725c34a431c0 (18 bytes)
+1779957977.776352 sending message 105 to peer 0x725c34a431c0 (45 bytes)
+1779957977.776362 sending message 105 to peer 0x725c34a431c0 (92 bytes)
+1779957977.776368 sending message 105 to peer 0x725c34a431c0 (20 bytes)
+1779957977.776374 sending message 105 to peer 0x725c34a431c0 (23 bytes)
+1779957977.776380 sending message 105 to peer 0x725c34a431c0 (31 bytes)
+1779957977.776387 sending message 106 to peer 0x725c34a431c0 (0 bytes)
+1779957977.776431 cmd_pack_argv: argv[0]=start-server
+1779957977.776441 sending message 200 to peer 0x725c34a431c0 (17 bytes)
+1779957977.776451 client loop enter
+1779957977.776476 client_signal: Child exited
+1779957977.949759 peer 0x725c34a431c0 message 203
+1779957977.949803 client loop exit

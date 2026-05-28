@@ -8,7 +8,15 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
-    exclude: ['tests/lib/auth-jwt/**'],
+    include: [
+      'tests/**/*.test.{ts,tsx}',
+      'tests/**/*.spec.{ts,tsx}',
+    ],
+    exclude: [
+      'tests/lib/auth-jwt/**',
+      'tests/mocks/**',
+      'tests/integration/setup.ts',
+    ],
     env: {
       JWT_SECRET: 'test-secret-key-that-is-at-least-32-bytes-long',
     },
