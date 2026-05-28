@@ -12,7 +12,7 @@ export interface ShangoData {
   name: string;
   namePortuguese: string;
   path: string;
-  element: string;
+  element: string[];
   colors: string[];
   dayOfWeek: string;
   numbersSacred: number[];
@@ -38,23 +38,23 @@ const SHANGO_DATA: ShangoData[] = [
     name: 'Shango',
     namePortuguese: 'Senhor dos Raios',
     path: 'Shango',
-    element: 'Fogo e Trovão',
-    colors: ['#FF4500', '#DC143C', '#8B0000'],
+    element: ['Fogo', 'Raio'],
+    colors: ['Vermelho', 'Branco'],
     dayOfWeek: 'Quarta-feira',
     numbersSacred: [6, 12, 18],
     greeting: 'Kaô Kabiês!',
     archetype: 'O Senhor da Justiça e do Trovão',
-    qualities: ['Força', 'Coragem', 'Justiça', 'Determinação', 'Passion', 'Vitalidade'],
-    challenges: ['Impulsividade', 'Garra excessiva', 'orgulho', 'Temperamento'],
+    qualities: ['Força', 'Coragem', 'Justiça', 'Determinação', 'Paixão', 'Vitalidade'],
+    challenges: ['Impulsividade', 'Garra excessiva', 'Orgulho', 'Temperamento'],
     rulingPlanet: 'Marte',
     sacredAnimals: ['Búfalo', 'Galo', 'Cabra'],
     plants: ['Palmeira', 'Pau-brasil', 'Arruda'],
-    offerings: ['Azeite de dendê vermelho', 'Velas vermelhas', 'Fumo', 'Pão', 'Frutas rojas', 'Ervas'],
+    offerings: ['Azeite de dendê vermelho', 'Velas vermelhas', 'Fumo', 'Pão', 'Frutas vermelhas', 'Ervas'],
     chants: ['Kaô', 'Shango', 'Oba', 'Bara'],
     symbols: ['Machado de dois gumes', 'Pedras', 'Raio', 'Cajado'],
     mythology:
       'Shango foi o terceiro alá (rei) de Oyo, o mais poderoso reino iorubá. Após sua morte, foi divinizado como o orixá dos raios e trovões. Sua esposa Oshun tornou-se marah (amarga) ao descobri-lo em adultério, e abriu as comportas do rio, iniciando uma guerra que levou à morte de Shango. Sua mãe Oduduwa tentou salvá-lo da fome, mas ele se enforcou. Os deuses o transformaram em orixá, e seu trovão ecoa pelo mundo como lembrete de sua justiça.',
-    spiritualLesson: 'A verdadeira força está em channel a energia do trovão para a justiça e a transformação',
+    spiritualLesson: 'A verdadeira força está em canalizar a energia do trovão para a justiça e a transformação',
     affirmation: 'Eu canalizo minha energia com propósito e justiça, transformando desafios em oportunidades de crescimento',
     meditation: 'Visualize raios dourados descendo sobre você, purificando sua aura e fortalecendo sua determinação',
   },
@@ -63,8 +63,8 @@ const SHANGO_DATA: ShangoData[] = [
     name: 'Oxumar',
     namePortuguese: 'O Aranha Dançante',
     path: 'Shango',
-    element: 'Dança e Metamorfose',
-    colors: ['#FFD700', '#FFA500', '#8B4513'],
+    element: ['Dança', 'Metamorfose'],
+    colors: ['Dourado', 'Laranja', 'Marrom'],
     dayOfWeek: 'Sábado',
     numbersSacred: [3, 7, 21],
     greeting: 'Oxumarê!',
@@ -76,7 +76,7 @@ const SHANGO_DATA: ShangoData[] = [
     plants: ['Alfarroba', 'Manga', 'Cajá'],
     offerings: ['Mel', 'Velas douradas', 'Frutas tropicais', 'Azeite de dendê', 'Folhas verdes'],
     chants: ['Oxumar', 'Oxumarê', 'Aranha', 'Dança'],
-    symbols: ['Teia de aranha', 'Arco-íris', 'Coroa de plumes', 'Espelho'],
+    symbols: ['Teia de aranha', 'Arco-íris', 'Coroa de plumas', 'Espelho'],
     mythology:
       'Oxumar é a versão mística de Shango, revelado quando os raios de Shango tocam o chão e se transformam em arco-íris. Representa a capacidade de mudar de forma e adaptar-se às circunstâncias. É o guardião dos mistérios e das artes ocultas, tecendo destinos como uma aranha cósmica.',
     spiritualLesson: 'A verdadeira sabedoria vem da capacidade de mudar de forma sem perder a essência',
@@ -109,5 +109,5 @@ export function getShangoByDay(day: string): ShangoData[] {
 }
 
 export function getShangoByElement(element: string): ShangoData[] {
-  return SHANGO_DATA.filter((s) => s.element.toLowerCase().includes(element.toLowerCase()));
+  return SHANGO_DATA.filter((s) => s.element.some((e) => e.toLowerCase().includes(element.toLowerCase())));
 }

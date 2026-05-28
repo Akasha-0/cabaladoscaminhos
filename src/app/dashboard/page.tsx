@@ -24,6 +24,15 @@ import {
   Loader2
 } from 'lucide-react';
 
+// Default values for fallback when user metadata is incomplete
+const {
+  NOME_FALLBACK,
+  DATA_NASCIMENTO_FALLBACK,
+} = {
+  NOME_FALLBACK: 'Usuário',
+  DATA_NASCIMENTO_FALLBACK: '1990-01-01',
+};
+
 export default function DashboardPage() {
   const { user, isLoading: authLoading, signOut, isAuthenticated } = useAuth();
   const [mounted, setMounted] = useState(false);
@@ -73,8 +82,8 @@ export default function DashboardPage() {
   }
 
   // User data
-  const nome = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Usuário';
-  const dataNascimento = user?.user_metadata?.data_nascimento || '1990-01-01';
+  const nome = user?.user_metadata?.full_name || user?.email?.split('@')[0] || NOME_FALLBACK;
+  const dataNascimento = user?.user_metadata?.data_nascimento || DATA_NASCIMENTO_FALLBACK;
   
   const { pitagorica, loading: loadingNumerologia } = useNumerologia(nome, dataNascimento);
   const { dia, loading: loadingCiclos } = useCiclos(dataNascimento);
@@ -200,7 +209,7 @@ export default function DashboardPage() {
               {odu ? (
                 <div className="text-center">
                   <span className="text-2xl">✨</span>
-                  <p className="text-lg font-bold text-amber-400">{odu.orixaRegente || 'N/A'}</p>
+                  <p className="text-lg font-bold text-amber-400">{udu.orixaRegente || 'N/A'}</p>
                   <p className="text-xs text-amber-200/50 mt-1 font-raleway">
                     {odu.elementos || ''}
                   </p>

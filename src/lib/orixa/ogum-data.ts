@@ -45,7 +45,7 @@ const OGUM_DATA: OgumData = {
   name: "Ogum",
   orisha: "Ogum",
   path: "Guerreiro das Estradas",
-  colors: ["vermelho", "preto", "azul", "verde"],
+  colors: ["Vermelho", "Preto"],
   dayOfWeek: "terça-feira",
   offerings: ["espada", "ferro", "alfinetes", "faca", "melancia", "quiabo", "dende"],
   attributes: [

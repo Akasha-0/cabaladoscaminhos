@@ -5,9 +5,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNumerologia } from '@/lib/hooks/useNumerologia';
 import { useCiclos } from '@/lib/hooks/useCiclos';
 
+// Default values for development/fallback
+const {
+  NOME_PADRAO,
+  DATA_NASCIMENTO_PADRAO,
+} = {
+  NOME_PADRAO: 'Usuário',
+  DATA_NASCIMENTO_PADRAO: '1990-01-01',
+};
+
 export default function RelatoriosPage() {
-  const nome = 'Usuário';
-  const dataNascimento = '1990-01-01';
+  const nome = NOME_PADRAO;
+  const dataNascimento = DATA_NASCIMENTO_PADRAO;
 
   const { pitagorica, loading } = useNumerologia(nome, dataNascimento);
   const { ano, mes, dia, loading: loadingCiclos } = useCiclos(dataNascimento);

@@ -565,6 +565,89 @@ GET /api/odus?data=1990-05-15
 
 **Errors:**
 - `400` - Parâmetros inválidos
+---
+
+### Odús Data (Ifá)
+
+#### `GET /api/odu/data`
+
+Retorna dados detalhados dos Odús do sistema Ifá com filtros opcionais.
+
+**Autenticação:** Nenhuma
+
+**Query Parameters:**
+
+| Parâmetro | Tipo | Obrigatório | Descrição |
+|-----------|------|-------------|-----------|
+| `numero` | number | Não | Número do Odú (1-16) |
+| `nome` | string | Não | Nome do Odú (ex: "Irosun", "Oxé") |
+| `orixa` | string | Não | Orixá associado |
+| `elemento` | string | Não | Elemento (água, fogo, terra, ar) |
+| `tipo` | enum | Não | Tipo de consulta especial |
+
+**Valores disponíveis para `tipo`:**
+
+| Valor | Descrição |
+|-------|-----------|
+| `todos` | Retorna todos os Odús |
+| `quizilas` | Retorna apenas Quizilás |
+| `ebos` | Retorna todos Ebós |
+| `orixas` | Retorna lista de Orixás com contagem |
+| `elementos` | Retorna lista de Elementos com contagem |
+
+**Exemplo - Buscar por número:**
+```
+GET /api/odu/data?numero=4
+```
+
+**Exemplo - Buscar por nome:**
+```
+GET /api/odu/data?nome=Irosun
+```
+
+**Exemplo - Listar todos:**
+```
+GET /api/odu/data?tipo=todos
+```
+
+**Response (200) - Por número:**
+```json
+{
+  "odu": {
+    "nome": "Irosun",
+    "numero": 4,
+    "significado": "Aviso, sangue, visão espiritual",
+    "orixas": ["Iemanjá", "Oxóssi"],
+    "ebos": ["Banho de folhas frias", "Canjica na beira-mar"],
+    "cores": ["azul", "branco"],
+    "elemento": "água"
+  }
+}
+```
+
+**Response (200) - Listar todos:**
+```json
+{
+  "odus": [
+    {
+      "nome": "Ogundá",
+      "numero": 1,
+      "significado": "...",
+      "orixas": [],
+      "ebos": [],
+      "cores": [],
+      "elemento": "..."
+    }
+  ],
+  "total": 16,
+  "timestamp": "2024-01-15T10:00:00Z"
+}
+```
+
+**Errors:**
+- `400` - Parâmetros inválidos
+- `404` - Odú não encontrado
+- `500` - Erro interno do servidor
 
 ---
 

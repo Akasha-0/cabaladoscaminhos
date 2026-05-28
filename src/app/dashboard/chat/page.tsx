@@ -26,13 +26,14 @@ import {
 } from 'lucide-react';
 import { TemaChat, MensagemChat } from '@/lib/chat/types';
 
-interface Mensagem {
-  id: string;
-  tipo: 'usuario' | 'assistente';
-  conteudo: string;
-  tema?: string;
-  timestamp: Date;
-}
+// Chat configuration constants
+const {
+  CUSTO_MENSAGEM,
+  DEMO_MODE_RESPONSE_DELAY_MS,
+} = {
+  CUSTO_MENSAGEM: 2,
+  DEMO_MODE_RESPONSE_DELAY_MS: 1500,
+};
 
 const temas = [
   { id: 'relacionamento' as TemaChat, label: 'Relacionamentos', icon: Heart, cor: 'text-pink-400' },
@@ -44,17 +45,23 @@ const temas = [
   { id: 'outros' as TemaChat, label: 'Outros', icon: HelpCircle, cor: 'text-gray-400' },
 ];
 
-const CUSTO_MENSAGEM = 2;
-
-const mensagensIniciais: Mensagem[] = [
+const mensagensIniciais = [
   {
     id: '1',
-    tipo: 'assistente',
+    tipo: 'assistente' as const,
     conteudo: 'Olá! Sou seu guia espiritual na Cabala dos Caminhos.\n\nEstou aqui para oferecer orientações baseadas na tradição esotérica, alinhando suas energia atuais com sabedorias ancestrais.\n\nComo posso iluminar seu caminho hoje?',
     tema: 'saudacao',
     timestamp: new Date(),
   },
 ];
+
+interface Mensagem {
+  id: string;
+  tipo: 'usuario' | 'assistente';
+  conteudo: string;
+  tema?: string;
+  timestamp: Date;
+}
 
 export default function ChatPage() {
   const [mensagens, setMensagens] = useState<Mensagem[]>(mensagensIniciais);
@@ -107,7 +114,7 @@ export default function ChatPage() {
 
         setMensagens(prev => [...prev, respostaSistema]);
         setIsLoading(false);
-      }, 1500);
+      }, DEMO_MODE_RESPONSE_DELAY_MS);
       return;
     }
 
@@ -306,9 +313,9 @@ export default function ChatPage() {
             </div>
           </ScrollArea>
 
-          <Separator className="bg-border/30" />
+          <Separator className="border-border/30" />
 
-          <CardContent className="pt-4">
+          <div className="p-4">
             <div className="flex gap-2">
               <Textarea
                 value={input}
@@ -319,23 +326,37 @@ export default function ChatPage() {
                 disabled={isLoading}
               />
               <Button
+                size="icon"
                 onClick={handleEnviar}
-                disabled={!input.trim() || isLoading}
-                className="self-end h-[60px] px-6 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                disabled={isLoading || !input.trim()}
+                className="self-end"
               >
                 <Send className="w-4 h-4" />
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              💎 Custo desta resposta: {CUSTO_MENSAGEM} créditos • Enter para enviar, Shift+Enter para nova linha
+            <p className="text-xs text-muted-foreground mt-2 font-raleway">
+              Pressione Enter para enviar • Shift+Enter para nova linha
             </p>
-            {!temSaldoSuficiente && !demoMode && (
-              <p className="text-xs text-amber-400 mt-1 text-center">
-                Créditos insuficientes. Clique em &quot;Usar Demo&quot; para testar.
-              </p>
-            )}
-          </CardContent>
+          </div>
         </Card>
+
+        {temaSelecionado && (
+          <Card className="border-border/50">
+            <CardContent className="flex items-center justify-between py-3">
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary" className="text-xs">
+                  Tema: {temas.find(t => t.id === temaSelecionado)?.label}
+                </Badge>
+                <span className="text-xs text-muted-foreground">
+                  {temas.find(t => t.id === temaSelecionado)?.cor.replace('text-', '').replace('-400', '') || 'neutro'}
+                </span>
+              </div>
+              <span className="text-xs text-muted-foreground">
+                Custo da consulta: {CUSTO_MENSAGEM} créditos
+              </span>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

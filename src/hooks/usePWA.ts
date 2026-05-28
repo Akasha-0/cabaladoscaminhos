@@ -162,7 +162,6 @@ export function usePWA() {
     });
     setState(s => ({ ...s, lastSyncAt: new Date() }));
   }, [state.isOnline, syncStatus.syncing, loadPendingSyncs, savePendingSyncs]);
-
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -172,7 +171,6 @@ export function usePWA() {
       processSync();
     };
     const handleOffline = () => setState(s => ({ ...s, isOnline: false }));
-
     const checkStandalone = () => {
       setState(s => ({
         ...s,
@@ -199,18 +197,28 @@ export function usePWA() {
       }));
     };
 
+    const handleServiceWorkerMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'SYNC_COMPLETE') {
+        processSync();
+      }
+    };
+
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-    window.matchMedia('(display-mode: standalone)').addEventListener('change', checkStandalone);
+    const standaloneMedia = window.matchMedia('(display-mode: standalone)');
+    standaloneMedia.addEventListener('change', checkStandalone);
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     window.addEventListener('appinstalled', handleAppInstalled);
+    navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage);
 
     checkStandalone();
     setState(s => ({ ...s, isOnline: navigator.onLine }));
 
     // Register service worker
+    let swRegistration: ServiceWorkerRegistration | null = null;
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').then((registration) => {
+        swRegistration = registration;
         setState(s => ({ ...s, serviceWorkerReady: true }));
 
         // Check for updates
@@ -222,13 +230,6 @@ export function usePWA() {
                 setState(s => ({ ...s, updateAvailable: true }));
               }
             });
-          }
-        });
-
-        // Listen for sync events from SW
-        navigator.serviceWorker.addEventListener('message', (event) => {
-          if (event.data?.type === 'SYNC_COMPLETE') {
-            processSync();
           }
         });
       }).catch((error) => {
@@ -244,8 +245,13 @@ export function usePWA() {
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
+      standaloneMedia.removeEventListener('change', checkStandalone);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
+      navigator.serviceWorker.removeEventListener('message', handleServiceWorkerMessage);
+      if (swRegistration) {
+        swRegistration.update();
+      }
     };
   }, [loadPendingSyncs, processSync]);
 

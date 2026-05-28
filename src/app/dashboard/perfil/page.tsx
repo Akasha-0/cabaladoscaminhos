@@ -28,15 +28,34 @@ import {
   CheckCircle
 } from 'lucide-react';
 
+// Default values for development/fallback form data
+const {
+  NOME_PADRAO,
+  EMAIL_PADRAO,
+  DATA_NASCIMENTO_PADRAO,
+  HORA_NASCIMENTO_PADRAO,
+  LOCAL_NASCIMENTO_PADRAO,
+  SALVAR_SIMULADO_DURATION,
+} = {
+  NOME_PADRAO: 'Maria da Luz',
+  EMAIL_PADRAO: 'maria.luz@exemplo.com',
+  DATA_NASCIMENTO_PADRAO: '1990-06-15',
+  HORA_NASCIMENTO_PADRAO: '14:30',
+  LOCAL_NASCIMENTO_PADRAO: 'Rio de Janeiro, RJ',
+  SALVAR_SIMULADO_DURATION: 1000,
+};
+
+const formDataInicial = {
+  nomeCompleto: NOME_PADRAO,
+  email: EMAIL_PADRAO,
+  dataNascimento: DATA_NASCIMENTO_PADRAO,
+  horaNascimento: HORA_NASCIMENTO_PADRAO,
+  localNascimento: LOCAL_NASCIMENTO_PADRAO,
+};
+
 export default function PerfilPage() {
   const [isSaving, setIsSaving] = useState(false);
-  const [formData, setFormData] = useState({
-    nomeCompleto: 'Maria da Luz',
-    email: 'maria.luz@exemplo.com',
-    dataNascimento: '1990-06-15',
-    horaNascimento: '14:30',
-    localNascimento: 'Rio de Janeiro, RJ'
-  });
+  const [formData, setFormData] = useState(formDataInicial);
 
   const { pitagorica, cabalistica, tantrica, loading: loadingNumerologia, error: errorNumerologia } = useNumerologia(
     formData.nomeCompleto,
@@ -52,7 +71,7 @@ export default function PerfilPage() {
 
   const handleSalvar = async () => {
     setIsSaving(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, SALVAR_SIMULADO_DURATION));
     setIsSaving(false);
   };
 
@@ -306,17 +325,19 @@ export default function PerfilPage() {
         <Card className="bg-gradient-to-br from-card to-card/80 border-border/50">
           <CardHeader>
             <CardTitle className="text-lg font-cinzel text-primary flex items-center gap-2">
-              <Shield className="w-5 h-5" />
-              Seu Odú de Nascimento
+              <Moon className="w-5 h-5" />
+              Mapa Astral Simplificado
             </CardTitle>
             <CardDescription className="font-raleway">
-              Preceitos e quizilas do seu caminho espiritual
+              Visão integrada dos seus dados esotéricos
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent>
             {loadingOdus ? (
               <div className="space-y-4">
-                <Skeleton className="h-24 w-full" />
+                <Skeleton className="h-20 rounded-lg" />
+                <Skeleton className="h-20 rounded-lg" />
+                <Skeleton className="h-20 rounded-lg" />
               </div>
             ) : errorOdus ? (
               <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30 flex items-center gap-3">
@@ -325,71 +346,71 @@ export default function PerfilPage() {
               </div>
             ) : odu ? (
               <div className="space-y-6">
-                <div className="p-4 rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-950/50 border border-amber-500/30">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-3xl font-cinzel text-amber-400">{odu.numero}</span>
-                    <div>
-                      <h3 className="font-cinzel text-amber-400 text-lg">{odu.nome}</h3>
-                      <p className="text-sm text-amber-400/70">{odu.orixaRegente}</p>
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="flex-1 p-4 rounded-lg bg-gradient-to-br from-indigo-900/20 to-indigo-950/50 border border-indigo-500/30">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Moon className="w-5 h-5 text-indigo-400" />
+                      <span className="text-sm font-medium text-indigo-400">Odú Iorubá</span>
+                    </div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="text-3xl font-cinzel text-indigo-400">{odu.numero}</div>
+                      <div>
+                        <div className="text-xl font-medium text-indigo-300">{odu.nome}</div>
+                        <div className="text-sm text-indigo-400/70"> {odu.significado}</div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Sefirot: </span>
+                        <span className="text-indigo-300">{odu.sefirot}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Elementos: </span>
+                        <span className="text-indigo-300">{odu.elementos}</span>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-sm font-raleway text-muted-foreground">
-                    {odu.significado}
-                  </p>
+
+                  <div className="flex-1 p-4 rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-950/50 border border-amber-500/30">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Shield className="w-5 h-5 text-amber-400" />
+                      <span className="text-sm font-medium text-amber-400">Orixá Regente</span>
+                    </div>
+                    <div className="text-3xl font-cinzel text-amber-400 mb-2">
+                      {odu.orixaRegente || 'Não definido'}
+                    </div>
+                    <div className="text-sm text-amber-400/70">
+                      {odu.orixaRegenteSignificado || 'Aguardando dados de mapa astral completo'}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="text-sm font-medium text-primary mb-2 flex items-center gap-2">
-                      <Shield className="w-4 h-4" />
-                      Quizilas (Evitar)
-                    </h4>
+                <Separator className="bg-border/30" />
+
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-primary">Preceptos Cerimoniais</h4>
+                  {!odu.preceptos || odu.preceptos.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">Preencha data de nascimento para ver preceptos</p>
+                  ) : (
                     <div className="flex flex-wrap gap-2">
-                      {odu.quizilas.map((quizila, index) => (
-                        <Badge key={index} variant="destructive" className="text-xs">
-                          {quizila}
+                      {odu.preceptos.map((precepto, index) => (
+                        <Badge key={index} variant="outline" className="text-xs border-amber-500/30 text-amber-400">
+                          {precepto}
                         </Badge>
                       ))}
                     </div>
-                  </div>
+                  )}
+                </div>
 
-                  <Separator className="bg-border/30" />
-
-                  <div>
-                    <h4 className="text-sm font-medium text-primary mb-2 flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4" />
-                      Preceitos
-                    </h4>
-                    <div className="space-y-1">
-                      {odu.preceitos.map((preceito, index) => (
-                        <p key={index} className="text-sm font-raleway text-muted-foreground flex items-start gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-500 mt-0.5" />
-                          {preceito}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Separator className="bg-border/30" />
-
-                  <div>
-                    <h4 className="text-sm font-medium text-primary mb-2">
-                      Ebós Recomendados
-                    </h4>
-                    <div className="space-y-1">
-                      {odu.ebos.map((ebo, index) => (
-                        <p key={index} className="text-sm font-raleway text-muted-foreground">
-                          • {ebo}
-                        </p>
-                      ))}
-                    </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-green-900/20 border border-green-500/30">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-400" />
+                    <span className="text-sm text-green-400">Perfil Iorubá válido</span>
                   </div>
                 </div>
               </div>
             ) : (
-              <p className="text-center text-muted-foreground py-4">
-                Insira sua data de nascimento para ver seu Odú
-              </p>
+              <p className="text-muted-foreground">Preencha sua data de nascimento para ver o mapa astral</p>
             )}
           </CardContent>
         </Card>

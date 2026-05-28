@@ -2,11 +2,11 @@
 // SKIP_LINT
 
 /**
- * Logbara Data Module
- * Spiritual data for Logbara (Oxum Logbará), the orixá of rivers, beauty, love, and golden waters
+ * Megi Data Module
+ * Spiritual data for Megi, the orixá of golden waters, abundance, and inner radiance
  */
 
-export interface LogbaraData {
+export interface MegiData {
   id: string;
   name: string;
   namePortuguese: string;
@@ -53,37 +53,37 @@ export interface RitualData {
   steps: string[];
 }
 
-const LOGBARA_DATA: LogbaraData = {
-  id: 'logbara',
-  name: 'Logbara',
+const MEGI_DATA: MegiData = {
+  id: 'megi',
+  name: 'Megi',
   namePortuguese: 'Rainha das Águas Douradas',
-  nameYoruba: 'Oxum Logbará',
-  path: 'Senhora das Correntes Douradas',
+  nameYoruba: 'Oxum Meki',
+  path: 'Sustentadora da Luz Dourada',
   element: 'Água e Ouro',
   colors: ['Amarelo', 'Dourado', 'Azul'],
   dayOfWeek: 'Sábado',
   numbersSacred: [3, 6, 9, 15, 21],
   greeting: 'Oiá! ou Oriá!',
-  archetype: 'A Mãe das Águas Ricas',
+  archetype: 'A Fonte da Luz Interior',
   qualities: [
-    'Beleza',
-    'Riqueza',
+    'Beleza interior',
+    'Abundância',
     'Amor próprio',
-    'Fertilidade',
+    'Luz interior',
     'Sabedoria feminina',
     'Sensibilidade',
     'Intuição',
     'Generosidade',
-    'Elegância',
-    'Poder de sedução'
+    'Confiança',
+    'Autoestima'
   ],
   challenges: [
-    'Vaidade excessiva',
-    'Ambição desmedida',
-    'Ciúmes',
-    'Manipulação emocional',
-    'Orgulho',
-    'Inveja',
+    'Autoestima baixa',
+    'Sombra interior bloqueando abundância',
+    'Desconfiança de si mesmo',
+    'Festança emocional',
+    'Orgulho invertido',
+    'Inveja de si mesmo',
     'Superficialidade'
   ],
   rulingPlanet: 'Vênus',
@@ -104,11 +104,11 @@ const LOGBARA_DATA: LogbaraData = {
     'Pente'
   ],
   chants: [
-    'Oiá, Oxum Logbará!',
-    'Logbara ô, mãe da riqueza!',
-    'Águas douradas me banhem!',
-    'Oxum me dá prosperidade!',
-    'Rainha das correntes, abre meu caminho!'
+    'Oiá, Oxum Meki!',
+    'Megi ô, mãe da luz dourada!',
+    'Águas douradas me iluminam!',
+    'Oxum me dá luz interior!',
+    'Rainha das correntes, ilumina minha sombra!'
   ],
   symbols: [
     'Espelho',
@@ -117,17 +117,20 @@ const LOGBARA_DATA: LogbaraData = {
     'Colares de ouro',
     'Vaso de água',
     'Leque',
-    'Abano decorated'
+    'Abano decorado'
   ],
-  mythology: `Logbara, também conhecida como Oxum Logbará, é uma manifestação especial de Oxum,
-a grande mãe das águas doces e da riqueza. Ela é a senhora das águas douradas que fluem
-com abundância e prosperidade. Logbara representa o poder feminino em sua expressão mais
-radiante, combinando a doçura de Oxum com a opulência e a influência política.
-Ela é invocada para questões de amor, mas também para atraír riqueza, posição social
-e reconhecimento. Logbara é a mãe que abençoa seus filhos com beleza, charme e
-recursos materiais para viverem com dignidade e elegância.`,
-  spiritualLesson: 'A verdadeira riqueza vem da conexão com sua essência divina.',
-  affirmation: 'Eu sou merecedor(a) de toda a prosperidade e beleza que a vida oferece.',
+  mythology: `Megi, também conhecida como Oxum Meki, é uma elegante manifestação de Oxum,
+a grande mãe das águas doces e da abundância. Ela é a senhora das águas douradas que irradiam
+luz interior e clareza espiritual. Megi representa o poder feminino em sua expressão mais
+luminosa, combinando a doçura de Oxum com a capacidade de iluminar as sombras internas
+e restaurar a autoestima verloren.
+Ela é invocada para questões de amor próprio, busca de luz interior, desfazimento de sombras
+e recuperação da confiança. Megi é a mãe que ajuda seus filhos a encontrar a brilho
+interior que foi obscurecido por traumas, dúvidas e inseguranças, guiando-os de volta
+à plenitude da sua essência divina.`,
+  spiritualLesson: 'A verdadeira luz dourada habita em seu interior, esperando para ser redescoberta.',
+  affirmation: 'Eu sou a fonte de toda a luz dourada que necessito. Meus sombras sao apenas sombras, e eu sempre fui e sempre serei pleno de luz e beleza.',
+  meditation: 'Sente-se em silencio e visualize uma luz dourada emanando do seu centro. Permita que essa luz aqueca cada canto do seu ser, dissolvendo toda escuridao que obscurece a sua verdadeira essencia.',
   herbs: [
     {
       name: 'margarida',
@@ -140,7 +143,7 @@ recursos materiais para viverem com dignidade e elegância.`,
     {
       name: 'rosa',
       namePortuguese: 'Rosa Amarela ou Dourada',
-      uses: ['Amor', 'Prosperidade', 'Beleza', 'Harmonia', 'Agradecimentos a Oxum'],
+      uses: ['Amor', 'Abundância', 'Beleza', 'Harmonia', 'Agradecimentos a Oxum'],
       preparation: 'Arranjos no altar, banhos com pétalas, água perfumada',
       contraindications: ['Pessoas com pele sensível', 'Uso interno sem orientação'],
       element: 'Água'
@@ -148,7 +151,7 @@ recursos materiais para viverem com dignidade e elegância.`,
     {
       name: 'dama-da-noite',
       namePortuguese: 'Dama-da-noite',
-      uses: ['Amor', 'Sedição', 'Atração', 'Prosperidade', 'Fertilidade'],
+      uses: ['Amor', 'Sedução', 'Atração', 'Abundância', 'Clareza interior'],
       preparation: 'Defumações, banhos de amor, água de запах',
       contraindications: ['Gestantes', 'Uso interno não recomendado'],
       element: 'Água'
@@ -156,7 +159,7 @@ recursos materiais para viverem com dignidade e elegância.`,
     {
       name: 'alamanda',
       namePortuguese: 'Alamanda',
-      uses: ['Amor', 'Prosperidade', 'Alegría', 'Proteção', 'Sorte'],
+      uses: ['Amor', 'Abundância', 'Alegría', 'Proteção', 'Sorte'],
       preparation: 'Banhos, defumações, chás ritualísticos',
       contraindications: ['Gestantes', 'Lactantes', 'Uso interno em excesso'],
       element: 'Água'
@@ -164,26 +167,28 @@ recursos materiais para viverem com dignidade e elegância.`,
     {
       name: 'girassol',
       namePortuguese: 'Girassol',
-      uses: ['Prosperidade', 'Vitalidade', 'Beleza', 'Felicidade', 'Energia positiva'],
+      uses: ['Abundância', 'Vitalidade', 'Beleza', 'Felicidade', 'Luz positiva'],
       preparation: 'Banhos de sol com flores, arranjos no altar, chás',
       contraindications: ['Pessoas com sensibilidade ao sol', 'Gestantes'],
       element: 'Ouro'
     }
   ],
   healingPractices: [
-    'Banho de flores amarelas e douradas para beleza e prosperidade',
+    'Banho de flores amarelas e douradas para restauração da luz interior',
     'Oferendas de mel e açúcar às águas correntes',
-    'Cânticos e orações no estilo de Logbara',
+    'Cânticos e orações no estilo de Megi',
     'Banho de água de colônia perfumada',
     'Ritual de espelho para despertar a beleza interior',
     'Oferecer flores frescas no altar de Oxum',
-    'Banho de girassol para vitalidade e prosperidade'
+    'Banho de girassol para vitalidade e abundantes',
+    'Ritual de desfazimento de sombras',
+    'Meditação com luz dourada sobre o chakra do coração'
   ],
   sacredTrees: ['Gameleira', 'Mangueira', 'Ipê-amarelo', 'Jatobá', 'Castanheira', 'Pau-brasil'],
   ritualPractices: [
     {
       type: 'Oferenda de Águas Douradas',
-      description: 'Oferenda especial para Logbara com elementos aquosos e dourados',
+      description: 'Oferenda especial para Megi com elementos aquosos e dourados',
       duration: 'Vária',
       offerings: ['Água de colônia', 'Mel', 'Flores amarelas', 'Vinho doce', 'Ovos'],
       steps: [
@@ -194,96 +199,114 @@ recursos materiais para viverem com dignidade e elegância.`,
         'Colocar mel e açúcar em recipientes separados',
         'Acender velas amarela e dourada',
         'Fazer o ponto de Oxum com mel',
-        'Cantar os cânticos de Logbara',
-        'Pedir prosperidade e beleza',
+        'Cantar os cânticos de Megi',
+        'Pedir luz interior e restauração da autoestima',
         'Agradecer ao orixá e aspergir água abençoada'
       ]
     },
     {
-      type: 'Ritual de Beleza e Amor',
-      description: 'Ritual para despertar a beleza interior e atrair amor próprio',
+      type: 'Ritual de Luz Interior',
+      description: 'Ritual para despertar a luz dourada interior e desfazer sombras',
       duration: '1 dia',
-      offerings: ['Espelho novo', 'Pente', 'Perfume floral', 'Flores', 'Roupas novas'],
+      offerings: ['Espelho novo', 'Pente', 'Perfume floral', 'Flores', 'Vela dourada'],
       steps: [
         'Banho de limpeza com ervas ao amanhecer',
         'No local sagrado, estender toalha amarela',
         'Colocar espelho novo coberto com pano dourado',
         'Oferecer flores frescas em volta do espelho',
         'Aplicar perfume nas bordas do espelho',
-        'Recitar orações de beleza e amor próprio',
-        'Olhar no espelho e affirmar qualidades positives',
-        'Usar roupas novas e limpas',
-        'Agradecer a Logbara pela bênção',
-        'Guardar o espelho em lugar de honra'
+        'Acender vela dourada diante do espelho',
+        'Recitar orações de luz interior e restauração',
+        'Olhar no espelho e afirmar cualidades luminosas',
+        'Pedir a Megi para desfazer suas sombras',
+        'Agradecer a Megi pela bênção da luz'
       ]
     },
     {
       type: 'Ritual de Prosperidade nas Águas',
-      description: 'Ritual para atrair abundância financeira e recursos',
+      description: 'Ritual para atrair abundância e restaurar a confiança interior',
       duration: '3 dias',
       offerings: ['Moedas douradas', 'Mel', 'Açúcar', 'Flores amarelas', 'Vinho doce'],
       steps: [
-        'Primeiro dia: jejum parcial e banhos de limpeza',
+        'Primeiro dia: jejum parcial e banhos de restauração luminosa',
         'Segundo dia: visita a um rio, lago ou fonte',
         'Oferecer moedas e flores às águas',
         'Lançar mel e açúcar na correnteza',
-        'Fazer orações pedindo prosperidade',
+        'Fazer orações pedindo restauração da confiança',
         'Terceiro dia: ritual no altar caseiro',
         'Acender velas douradas',
-        'Cantar cânticos de Logbara',
-        'Pedir sabedoria para administrar recursos',
+        'Cantar cânticos de Megi',
+        'Pedir sabedoria para restaurar o brilho interior',
         'Agradecer ao orixá pelas bênçãos recebidas'
       ]
     },
     {
       type: 'Ritual do Espelho Dourado',
-      description: 'Ritual para purificação e renovação da beleza espiritual',
+      description: 'Ritual para purificação e renovação da luz espiritual',
       duration: '7 dias',
       offerings: ['Espelho', 'Pente', 'Perfume', 'Flores', 'Água de colônia'],
       steps: [
         'Escolher um espelho limpo para o ritual',
         'Primeiro dia: purificar o espelho com água e sal',
         'Banho de margaridas ao amanhecer',
-        'Olhar no espelho e recitar orações de beleza',
+        'Olhar no espelho e recitar orações de luz',
         'Aplicar perfume nas bordas do espelho',
         'Oferecer flores frescas diariamente',
         'Renovar a água no vaso do altar',
-        'No sétimo dia, usar o espelho para meditação final',
-        'Pedir a Logbara que purge toda negatividade',
+        'No sétimo dia, usar o espelho para meditação final de luz',
+        'Pedir a Megi que purge toda sombra e restaure a luz',
         'Agradecer e guardar o espelho em lugar sagrado'
+      ]
+    },
+    {
+      type: 'Ritual de Restauração da Autoestima',
+      description: 'Ritual para reconstruir a confianza eautoestima perdidas',
+      duration: '5 dias',
+      offerings: ['Vela dourada', 'Mel', 'Flores amarelas', 'Espe-lho', 'Água de colônia'],
+      steps: [
+        'Primeiro dia: escrever uma lista de качества perdidas a restaurar',
+        'Banho de girassol ao amanhecer para vitalidade',
+        'Meditar sobre a luz dourada dentro de você',
+        'Acender vela dourada e visualizar sua luz crescendo',
+        'Oferecer mel ao orixá pedindo restauração',
+        'Terceiro dia: olhar no espelho e afirmar: Eu sou luz',
+        'Banho de pétalas de rosa para amor próprio',
+        'Recitar cânticos de Megi pedindo firmeza',
+        'Quinto dia: anotar o que melhorou e agradecer',
+        'Guardar o espelho em lugar sagrado de honra'
       ]
     }
   ]
 };
 
-export function getData(): LogbaraData {
-  return LOGBARA_DATA;
+export function getData(): MegiData {
+  return MEGI_DATA;
 }
 
-export function getDataById(id: string): LogbaraData | undefined {
-  return id === 'logbara' ? LOGBARA_DATA : undefined;
+export function getDataById(id: string): MegiData | undefined {
+  return id === 'megi' ? MEGI_DATA : undefined;
 }
 
 export function getHerbs(): HerbData[] {
-  return LOGBARA_DATA.herbs;
+  return MEGI_DATA.herbs;
 }
 
 export function getRituals(): RitualData[] {
-  return LOGBARA_DATA.ritualPractices;
+  return MEGI_DATA.ritualPractices;
 }
 
 export function getHealingPractices(): string[] {
-  return LOGBARA_DATA.healingPractices;
+  return MEGI_DATA.healingPractices;
 }
 
 export function getSacredTrees(): string[] {
-  return LOGBARA_DATA.sacredTrees;
+  return MEGI_DATA.sacredTrees;
 }
 
-export function getLogbaraByElement(element: string): LogbaraData | undefined {
-  return LOGBARA_DATA.element.toLowerCase().includes(element.toLowerCase()) ? LOGBARA_DATA : undefined;
+export function getMegiByElement(element: string): MegiData | undefined {
+  return MEGI_DATA.element.toLowerCase().includes(element.toLowerCase()) ? MEGI_DATA : undefined;
 }
 
-export function getLogbaraByPlanet(planet: string): LogbaraData | undefined {
-  return LOGBARA_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? LOGBARA_DATA : undefined;
+export function getMegiByPlanet(planet: string): MegiData | undefined {
+  return MEGI_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? MEGI_DATA : undefined;
 }

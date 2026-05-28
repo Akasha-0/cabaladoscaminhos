@@ -1,17 +1,6 @@
 import { NextResponse } from 'next/server';
-
-interface MegiData {
-  name: string;
-  odu: string;
-  meaning: string;
-}
-
-const data: MegiData = {
-  name: 'Megi',
-  odu: 'megi',
-  meaning: 'Meaning of megi'
-};
+import { getData } from '@/lib/megi/megi-data';
 
 export async function GET() {
-  return NextResponse.json({ data });
+  return NextResponse.json(getData());
 }
