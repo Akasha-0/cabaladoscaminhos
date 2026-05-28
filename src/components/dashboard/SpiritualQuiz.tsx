@@ -274,9 +274,9 @@ export function SpiritualQuiz() {
         
         return {
           category: cat,
-          correct: catAnswered > 0 ? Math.round((catAnswered / catQuestions.length) * 10) : 0,
+          correct: catAnswered.length > 0 ? Math.round((catAnswered.length / catQuestions.length) * 10) : 0,
           total: catQuestions.length,
-          percentage: catAnswered > 0 ? Math.round((catAnswered / catQuestions.length) * 100) : 0
+          percentage: catAnswered.length > 0 ? Math.round((catAnswered.length / catQuestions.length) * 100) : 0
         };
       });
     

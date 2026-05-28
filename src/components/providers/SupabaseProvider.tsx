@@ -50,6 +50,12 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    // Failsafe timeout: force isLoading to false after 2.5 seconds to prevent frozen screen
+    const failsafeTimeout = setTimeout(() => {
+      console.warn('[SupabaseProvider] Failsafe timeout triggered! Supabase took too long to respond. Unfreezing screen.');
+      setIsLoading(false);
+    }, 2500);
+
     // Verificar usuário atual
     const getUser = async () => {
       console.log('[SupabaseProvider] getUser started');
@@ -65,6 +71,7 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
         setUser(null)
       } finally {
         console.log('[SupabaseProvider] getUser finally block. Setting isLoading to false');
+        clearTimeout(failsafeTimeout);
         setIsLoading(false)
       }
     }
@@ -76,6 +83,7 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('[SupabaseProvider] onAuthStateChange event:', event, 'session:', !!session);
       setUser(session?.user ?? null)
+      clearTimeout(failsafeTimeout);
       setIsLoading(false)
       
       if (event === 'SIGNED_OUT') {
@@ -86,6 +94,7 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       console.log('[SupabaseProvider] Cleaning up onAuthStateChange listener');
+      clearTimeout(failsafeTimeout);
       subscription.unsubscribe()
     }
   }, [supabase, router])

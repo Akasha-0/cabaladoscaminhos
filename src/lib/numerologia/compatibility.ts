@@ -1,4 +1,4 @@
-import { calcularPitagorica, InterpretacaoNumerologia } from './calculos';
+import { calcularPitagorica, InterpretacaoNumerologia, getInterpretacao } from './calculos';
 
 export interface CompatibilityResult {
   score: number;
@@ -243,8 +243,6 @@ export function calculateCompatibility(a: number | string, b: number | string): 
   const matriz = construirMatriz(forcaNumero, destinoNumero);
   const score = calcularScore(matriz);
   const nivel = getNivel(score);
-
-  const { getInterpretacao } = require('./calculos');
 
   return {
     score,

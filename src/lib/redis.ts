@@ -92,6 +92,7 @@ async function createRedisClient(
   try {
     // ioredis is optional - fallback to in-memory store if not available
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore - ioredis is optional dependency
     const ioredisModule = await import('ioredis');
     Redis = ioredisModule.default ?? ioredisModule;

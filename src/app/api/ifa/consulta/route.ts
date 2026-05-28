@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { drawOdu } from '@/lib/ifa/draw';
@@ -56,11 +54,11 @@ export async function POST(request: NextRequest) {
     try {
       body = await request.json();
     } catch {
-      return errorResponse({
-        code: 'BAD_REQUEST',
-        message: 'Corpo da requisição inválido',
-        statusCode: 400,
-      });
+    return errorResponse({
+      code: 'VALIDATION_ERROR',
+      message: 'Corpo da requisição inválido',
+      statusCode: 400,
+    });
     }
 
     const validation = (await import('@/lib/api/base-route')).validateRequestBody(

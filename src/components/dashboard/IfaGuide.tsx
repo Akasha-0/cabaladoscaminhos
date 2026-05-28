@@ -47,7 +47,7 @@ const ORIXAS_ICONS: Record<string, React.ElementType> = {
   'Egum': Wind,
 };
 
-const ELEMENT_COLORS: Record<string, string> = {
+const ELEMENT_COLORS: Record<string, { bg: string; border: string; text: string }> = {
   'Fogo': { bg: 'from-orange-500/20 to-red-600/20', border: 'border-orange-500/30', text: 'text-orange-400' },
   'Agua': { bg: 'from-blue-500/20 to-cyan-600/20', border: 'border-blue-500/30', text: 'text-blue-400' },
   'Terra': { bg: 'from-amber-500/20 to-yellow-600/20', border: 'border-amber-500/30', text: 'text-amber-400' },

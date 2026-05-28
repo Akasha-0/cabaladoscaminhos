@@ -176,8 +176,8 @@ export function CompatibilityReport({
               <div className="text-xs text-zinc-500 mb-2">Caminho de Vida</div>
               <Separator className="my-2 bg-zinc-700" />
               <div className="text-sm text-zinc-300 font-medium">{nome1}</div>
-              <div className="text-xs text-zinc-500 mt-1">{forcaDescricao.titulo}</div>
-              <p className="text-xs text-zinc-400 mt-2 line-clamp-2">{forcaDescricao.descricao}</p>
+              <div className="text-xs text-zinc-500 mt-1">{forcaDescricao.nome}</div>
+              <p className="text-xs text-zinc-400 mt-2 line-clamp-2">{forcaDescricao.significado}</p>
             </div>
           </Card>
 
@@ -192,8 +192,8 @@ export function CompatibilityReport({
               <div className="text-xs text-zinc-500 mb-2">Destino</div>
               <Separator className="my-2 bg-zinc-700" />
               <div className="text-sm text-zinc-300 font-medium">{nome2}</div>
-              <div className="text-xs text-zinc-500 mt-1">{destinoDescricao.titulo}</div>
-              <p className="text-xs text-zinc-400 mt-2 line-clamp-2">{destinoDescricao.descricao}</p>
+              <div className="text-xs text-zinc-500 mt-1">{destinoDescricao.nome}</div>
+              <p className="text-xs text-zinc-400 mt-2 line-clamp-2">{destinoDescricao.significado}</p>
             </div>
           </Card>
         </div>

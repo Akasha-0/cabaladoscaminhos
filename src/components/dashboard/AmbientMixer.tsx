@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -52,8 +52,9 @@ const PRESETS: Preset[] = [
     id: 'ocean',
     name: 'Ondas do Oceano',
     description: 'Relaxamento junto ao mar',
+    channels: [
       { type: 'oceano', label: 'Oceano', volume: 80, enabled: true },
-    ],
+      { type: 'chuva', label: 'Chuva', volume: 25, enabled: true },
     ],
   },
   {
@@ -67,13 +68,13 @@ const PRESETS: Preset[] = [
   },
 ];
 
-const createChannel = (type: AmbientType, enabled = false): Channel => {
+const createChannel = (type: AmbientType, volume: number, enabled: boolean): Channel => {
   const option = AMBIENT_OPTIONS.find((o) => o.type === type) || AMBIENT_OPTIONS[0];
   return {
-    id: `${type}-${Date.now()}`,
+    id: `${type}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
     type,
     label: option.label,
-    volume: 50,
+    volume,
     enabled,
   };
 };
@@ -85,19 +86,12 @@ export function AmbientMixer() {
 
   const stopAllSounds = useCallback(() => {
     stopAmbient();
-    channels.forEach((ch) => {
-      if (ch.enabled) {
-        // Individual stop not needed since ambient.ts uses single source
-      }
-    });
-  }, [channels]);
+  }, []);
 
   const startMix = useCallback(() => {
     const activeChannels = channels.filter((ch) => ch.enabled);
     if (activeChannels.length === 0) return;
 
-    // For now, play the first active channel
-    // A full implementation would use Web Audio API mixing
     if (activeChannels.length > 0) {
       const avgVolume = (masterVolume / 100) * 0.5;
       playAmbient(activeChannels[0].type, avgVolume);
@@ -118,7 +112,6 @@ export function AmbientMixer() {
         ch.id === channelId ? { ...ch, volume: volume[0] } : ch
       )
     );
-    // Update the playing sound's volume if active
     const channel = channels.find((ch) => ch.id === channelId);
     if (channel?.enabled && isPlaying) {
       const effectiveVolume = (masterVolume / 100) * (volume[0] / 100) * 0.5;
@@ -128,7 +121,7 @@ export function AmbientMixer() {
 
   const handleAddChannel = (type: AmbientType) => {
     if (channels.find((ch) => ch.type === type)) return;
-    const newChannel = createChannel(type, true);
+    const newChannel = createChannel(type, 50, true);
     setChannels((prev) => [...prev, newChannel]);
   };
 
@@ -137,10 +130,9 @@ export function AmbientMixer() {
   };
 
   const handleApplyPreset = (preset: Preset) => {
-    // Map preset channels to actual options, skipping unavailable ones
     const validChannels = preset.channels
       .filter((pc) => AMBIENT_OPTIONS.some((o) => o.type === pc.type))
-      .map((pc) => createChannel(pc.type, pc.enabled));
+      .map((pc) => createChannel(pc.type, pc.volume, pc.enabled));
 
     setChannels(validChannels);
   };
@@ -185,13 +177,12 @@ export function AmbientMixer() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-              onValueChange={(v) => handleMasterVolumeChange(typeof v === 'number' ? [v] : v as number[])}
         <div className="space-y-2">
           <label className="text-sm font-medium">Volume Principal</label>
           <div className="flex items-center gap-4">
             <Slider
               value={[masterVolume]}
-              onValueChange={handleMasterVolumeChange}
+              onValueChange={(v) => handleMasterVolumeChange(typeof v === 'number' ? [v] : v as number[])}
               min={0}
               max={100}
               className="flex-1"
@@ -202,7 +193,6 @@ export function AmbientMixer() {
           </div>
         </div>
 
-        {/* Active Channels */}
         <div className="space-y-3">
           <label className="text-sm font-medium">Canais Ativos</label>
           {channels.length === 0 ? (
@@ -233,7 +223,7 @@ export function AmbientMixer() {
                       <div className="flex items-center gap-2 mt-1">
                         <Slider
                           value={[channel.volume]}
-                          onValueChange={(v) => handleVolumeChange(channel.id, v)}
+                          onValueChange={(v) => handleVolumeChange(channel.id, typeof v === 'number' ? [v] : v as number[])}
                           min={0}
                           max={100}
                           className="flex-1"
@@ -256,7 +246,6 @@ export function AmbientMixer() {
           )}
         </div>
 
-        {/* Add Sound */}
         {availableOptions.length > 0 && (
           <div className="space-y-2">
             <label className="text-sm font-medium">Adicionar Som</label>
@@ -275,7 +264,6 @@ export function AmbientMixer() {
           </div>
         )}
 
-        {/* Presets */}
         <div className="space-y-2">
           <label className="text-sm font-medium">Presets</label>
           <div className="grid grid-cols-2 gap-2">

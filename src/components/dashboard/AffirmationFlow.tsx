@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -82,6 +82,7 @@ export default function AffirmationFlow() {
   const [flowNome, setFlowNome] = useState('');
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [mostrarBiblioteca, setMostrarBiblioteca] = useState(false);
+  const idCounterRef = useRef(0);
 
   useEffect(() => {
     const saved = localStorage.getItem('affirmation-flows');
@@ -95,17 +96,14 @@ export default function AffirmationFlow() {
     : disponiveis.filter(a => a.categoria === categoriaFiltro).filter(
         a => a.texto.toLowerCase().includes(busca.toLowerCase())
       );
-
   const adicionarAfirmacao = (afirmacao: AffirmationItem) => {
     if (!selecionadas.find(a => a.id === afirmacao.id)) {
-      setSelecionadas([...selecionadas, { ...afirmacao, id: `${afirmacao.id}-${Date.now()}` }]);
+      idCounterRef.current += 1;
+      setSelecionadas([...selecionadas, { ...afirmacao, id: `${afirmacao.id}-${idCounterRef.current}` }]);
     }
   };
-
   const removerAfirmacao = (id: string) => {
     setSelecionadas(selecionadas.filter(a => a.id !== id));
-  };
-
   const moverAfirmacao = (index: number, direction: 'up' | 'down') => {
     const nova = [...selecionadas];
     const target = direction === 'up' ? index - 1 : index + 1;
