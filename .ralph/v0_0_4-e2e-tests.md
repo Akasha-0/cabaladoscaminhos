@@ -1,24 +1,26 @@
 # Ralph Loop: v0.0.4 - E2E Tests com Playwright
 
-## Context
-- Project: cabala-dos-caminhos
-- Next milestone: v0.0.4
-- Task: Implementar E2E Tests com Playwright
-- Spec: docs/superpowers/specs/v0.0.4-e2e-tests.md
+## Status: IN PROGRESS
 
 ## Checklist
-- [ ] Install @playwright/test
-- [ ] Install chromium browser
-- [ ] Create playwright.config.ts
-- [ ] Create e2e/setup.ts
-- [ ] Create e2e/auth.spec.ts
-- [ ] Create e2e/dashboard.spec.ts
-- [ ] Create e2e/api.spec.ts
-- [ ] Add npm script
+- [x] Install @playwright/test
+- [x] Create playwright.config.ts
+- [x] Create e2e/setup.ts
+- [x] Create e2e/auth.spec.ts
+- [x] Create e2e/dashboard.spec.ts
+- [x] Create e2e/api.spec.ts
+- [x] Add npm script
+- [ ] Install chromium browser (FAILED - platform not supported)
 - [ ] Verify all tests pass
 
-## Tasks per Iteration
-Execute 3 tasks per iteration, verify each, then mark [x] in this file.
+## Blockers
+- Chromium installation failed on ubuntu26.04-x64
+- Playwright does not support chromium on this platform
 
-## Definition of Done
-All checkboxes [x], npm run test:e2e passes, git tag v0.0.4 created.
+## Notes
+- Created 6 files for E2E testing
+- Added npm run test:e2e script
+- Tests are ready but browser is required to run
+
+## Progress
+- 7/9 tasks complete (browser install blocked)
