@@ -1,32 +1,20 @@
-const STORAGE_KEY = 'awakening_progress';
+const STORAGE_KEY = "awakening_progress";
 
-export interface AwakeningProgress {
-  stage: number;
-  updatedAt: number;
+export interface TrackProgressOptions {
+  date?: string;
+  level?: number;
 }
 
-export function trackProgress(data: Partial<AwakeningProgress>): void {
-  if (typeof window === 'undefined') return;
-  
-  const current: AwakeningProgress = getProgress();
-  const next: AwakeningProgress = {
-    stage: data.stage ?? current.stage,
-    updatedAt: Date.now(),
-  };
-  
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-}
-
-export function getProgress(): AwakeningProgress {
-  if (typeof window === 'undefined') {
-    return { stage: 0, updatedAt: 0 };
-  }
-  
+export function trackProgress(options?: TrackProgressOptions): void {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { stage: 0, updatedAt: 0 };
-    return JSON.parse(raw) as AwakeningProgress;
+    const progress: Record<string, unknown> = raw ? JSON.parse(raw) : {};
+    progress.date = options?.date ?? new Date().toISOString().split("T")[0];
+    if (options?.level !== undefined) {
+      progress.level = options.level;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   } catch {
-    return { stage: 0, updatedAt: 0 };
+    // localStorage unavailable or corrupted; skip silently
   }
 }
