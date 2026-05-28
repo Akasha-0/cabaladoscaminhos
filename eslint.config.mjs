@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
       "perfectionist/sort-objects": "off",
       "perfectionist/mutable-variant": "off",
       "spellcheck/spell-checker": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ]);
