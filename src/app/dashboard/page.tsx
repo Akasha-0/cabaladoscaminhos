@@ -37,8 +37,20 @@ export default function DashboardPage() {
   const { user, isLoading: authLoading, signOut, isAuthenticated } = useAuth();
   const [mounted, setMounted] = useState(false);
   
+  // Extract user data before any conditional returns
+  const nome = user?.user_metadata?.full_name || user?.email?.split('@')[0] || NOME_FALLBACK;
+  const dataNascimento = user?.user_metadata?.data_nascimento || DATA_NASCIMENTO_FALLBACK;
+  
+  // Call hooks BEFORE any conditionals
+  const { pitagorica, loading: loadingNumerologia } = useNumerologia(nome, dataNascimento);
+  const { dia, loading: loadingCiclos } = useCiclos(dataNascimento);
+  const { principal: odu, loading: loadingOdus } = useOdus(dataNascimento);
+  
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Always show loading spinner during initial mount to avoid hydration mismatch
   if (!mounted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
@@ -77,7 +89,6 @@ export default function DashboardPage() {
       </div>
     );
   }
-
 
   const interpretacao = pitagorica !== null ? getInterpretacao(pitagorica) : null;
 

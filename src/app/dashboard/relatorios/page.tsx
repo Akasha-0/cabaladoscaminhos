@@ -19,7 +19,7 @@ export default function RelatoriosPage() {
   const dataNascimento = DATA_NASCIMENTO_PADRAO;
 
   const { pitagorica, loading } = useNumerologia(nome, dataNascimento);
-  const { ano, mes, dia, loading: loadingCiclos } = useCiclos(dataNascimento);
+  const { mes, dia, loading: loadingCiclos } = useCiclos(dataNascimento);
 
   return (
     <div className="space-y-6">
