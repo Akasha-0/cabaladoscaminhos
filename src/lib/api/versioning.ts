@@ -140,9 +140,9 @@ export function versionMiddleware(request: NextRequest): NextResponse | null {
   }
 
   // Extract version using priority: path > header > query
-  let version: ApiVersion = extractVersionFromPath(pathname) 
-    || extractVersionFromQuery(request) 
-    || extractVersionFromHeader(request) 
+  const version: ApiVersion = extractVersionFromPath(pathname)
+    || extractVersionFromQuery(request)
+    || extractVersionFromHeader(request)
     || DEFAULT_VERSION;
 
   // Create version info

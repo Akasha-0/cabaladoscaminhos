@@ -90,9 +90,11 @@ async function createRedisClient(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let Redis: new (url: string, options?: object) => any;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const ioredis = require('ioredis');
-    Redis = ioredis.default ?? ioredis;
+    // ioredis is optional - fallback to in-memory store if not available
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // @ts-ignore - ioredis is optional dependency
+    const ioredisModule = await import('ioredis');
+    Redis = ioredisModule.default ?? ioredisModule;
   } catch {
     throw new Error("ioredis module not available");
   }

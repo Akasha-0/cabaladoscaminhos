@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useCreditos } from '@/lib/hooks';
 import { TemaChat, MensagemChat } from '@/lib/chat/types';
@@ -131,8 +130,9 @@ export function AssistenteEspiritual({ temaInicial = 'espiritualidade' }: Assist
     const text = messageText || input.trim();
     if (!text || isLoading) return;
 
+    const userMessageId = crypto.randomUUID();
     const userMessage: Message = {
-      id: `user-${Date.now()}`,
+      id: userMessageId,
       role: 'user',
       content: text,
       timestamp: new Date(),
@@ -144,7 +144,7 @@ export function AssistenteEspiritual({ temaInicial = 'espiritualidade' }: Assist
     setIsLoading(true);
 
     // Add temporary assistant message for typing indicator
-    const assistantMessageId = `assistant-${Date.now()}`;
+    const assistantMessageId = crypto.randomUUID();
     setMessages((prev) => [
       ...prev,
       {

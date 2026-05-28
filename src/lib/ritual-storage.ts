@@ -81,7 +81,7 @@ function calculateStreak(sortedCompletions: RitualCompletion[]): { currentStreak
   const dates = new Set<string>();
   sortedCompletions.forEach(c => {
     const d = c.date;
-    dates.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+    dates.add(`${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
   });
 
   const uniqueDays = Array.from(dates)
@@ -136,8 +136,15 @@ function calculateCompletionRate(completions: RitualCompletion[]): number {
   const uniqueDates = new Set<string>();
   completions.forEach(c => {
     const d = c.date;
-    uniqueDates.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+    uniqueDates.add(`${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
   });
 
   return Math.round((uniqueDates.size / totalDays) * 100 * 10) / 10;
+}
+
+/**
+ * Reset in-memory store (for testing)
+ */
+export function resetRitualStore(): void {
+  completions.length = 0;
 }

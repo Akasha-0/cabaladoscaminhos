@@ -12,11 +12,11 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoading && user) {
-      router.push('/(dashboard)')
+      router.push('/dashboard')
     }
   }, [user, isLoading, router])
 
-  const showLoader = isLoading || (user === null && typeof window !== 'undefined')
+  const showLoader = isLoading || (user !== null && typeof window !== 'undefined')
 
   if (showLoader) {
     return (

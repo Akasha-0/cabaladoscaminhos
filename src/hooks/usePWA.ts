@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -115,13 +115,34 @@ export function usePWA() {
 
     setSyncStatus(s => ({ ...s, syncing: true, error: null }));
 
+    // Sync helper defined inline to access current state via closure
+    const syncItem = async (item: SyncQueueItem): Promise<void> => {
+      const baseUrl = '/api';
+      switch (item.type) {
+        case 'credit':
+          await fetch(`${baseUrl}/creditos/debitar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(item.data),
+          });
+          break;
+        case 'chat':
+          await fetch(`${baseUrl}/chat/mensagem`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(item.data),
+          });
+          break;
+        case 'insight':
+          break;
+      }
+    };
+
     const failed: SyncQueueItem[] = [];
 
     for (const item of pending) {
       try {
-        if (syncItemRef.current) {
-          await syncItemRef.current(item);
-        }
+        await syncItem(item);
       } catch (e) {
         item.retries++;
         if (item.retries < MAX_RETRIES) {
@@ -141,34 +162,6 @@ export function usePWA() {
     });
     setState(s => ({ ...s, lastSyncAt: new Date() }));
   }, [state.isOnline, syncStatus.syncing, loadPendingSyncs, savePendingSyncs]);
-
-  // Sync individual item based on type - use ref to avoid circular dependency
-  const syncItemRef = useRef<((item: SyncQueueItem) => Promise<void>) | null>(null);
-  syncItemRef.current = async (item: SyncQueueItem): Promise<void> => {
-    const baseUrl = '/api';
-
-    switch (item.type) {
-      case 'credit':
-        await fetch(`${baseUrl}/creditos/debitar`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(item.data),
-        });
-        break;
-
-      case 'chat':
-        await fetch(`${baseUrl}/chat/mensagem`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(item.data),
-        });
-        break;
-
-      case 'insight':
-        // Insights are generated, no sync needed
-        break;
-    }
-  };
 
   useEffect(() => {
     if (typeof window === 'undefined') return;

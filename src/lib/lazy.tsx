@@ -13,11 +13,17 @@ export function lazyImport<T extends ComponentType<any>>(
 ) {
   const LazyComponent = reactLazy(importer);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (props: React.ComponentProps<T> & { fallback?: ReactNode; children?: ReactNode }) => (
-    <Suspense fallback={fallback ?? props.fallback ?? null}>
-      <LazyComponent {...props} />
-    </Suspense>
-  );
+  const LazyWrapper = (props: React.ComponentProps<T> & { fallback?: ReactNode; children?: ReactNode }) => {
+    const { fallback: _fallback, ...componentProps } = props;
+    return (
+      <Suspense fallback={fallback ?? _fallback ?? null}>
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        <LazyComponent {...(componentProps as any)} />
+      </Suspense>
+    );
+  };
+  LazyWrapper.displayName = 'lazyImport';
+  return LazyWrapper;
 }
 
 /**
@@ -29,12 +35,16 @@ export function LazyComponent<T extends ComponentType<any>>(
   importer: () => Promise<{ default: T }>,
   fallback?: ReactNode
 ): ComponentType<Omit<React.ComponentProps<T>, 'children'>> {
-  const LazyComponent = reactLazy(importer);
-  return (props: Omit<React.ComponentProps<T>, 'children'>) => (
+  const LazyTheComponent = reactLazy(importer);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const LazyWrapper = (props: Omit<React.ComponentProps<T>, 'children'>) => (
     <Suspense fallback={fallback ?? null}>
-      <LazyComponent {...props} />
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      <LazyTheComponent {...(props as any)} />
     </Suspense>
   );
+  LazyWrapper.displayName = 'LazyComponent';
+  return LazyWrapper;
 }
 
 export default { lazyImport, LazyComponent };

@@ -28,12 +28,6 @@ function createPrismaClient(): PrismaClient {
 
   return new PrismaClient({
     adapter,
-    // Disable PreparedStatementCache in serverless to prevent memory leaks
-    datasources: {
-      db: {
-        url: connectionString,
-      },
-    },
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   });
 }

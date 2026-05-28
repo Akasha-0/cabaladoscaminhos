@@ -372,16 +372,15 @@ export function createLogContext(request: Request): LogContext {
   };
 }
 
-export function withLogging<T extends (...args: Parameters<T>) => Promise<Response>>(
+export function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise<Response>>(
   handler: T,
   options?: { path?: string }
 ): T {
-  return (async (...args: Parameters<T>) => {
-    const request = args[0] as unknown as Request;
+  return (async (request: Request, ...rest: unknown[]) => {
     const endTimer = logger.startTimer();
     logger.info(`→ ${request.method} ${options?.path || request.url}`, { requestId: request.headers.get('x-request-id') ?? undefined });
     try {
-      const response = await handler(...args);
+      const response = await handler(request, ...rest);
       const duration = endTimer();
       logger.info(`← ${response.status} ${request.method} ${request.url}`, {
         duration,

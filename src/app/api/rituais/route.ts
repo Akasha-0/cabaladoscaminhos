@@ -400,7 +400,7 @@ export async function GET(request: NextRequest) {
       diaInfo: {
         dia: correspondencias.dia.dia,
         orixas: correspondencias.dia.orixas,
-        faseLua: correspondencias.faseLua?.fase || 'Não disponível',
+        faseLua: correspondencias.faseLua?.ritual || 'Não disponível',
         misterio: correspondencias.dia.misterio,
       },
       stats: {
@@ -418,7 +418,7 @@ export async function GET(request: NextRequest) {
     const { body, status } = successResponse(response);
     return NextResponse.json(body, { status });
   } catch (error) {
-    logger.error('Erro ao listar rituais', { error });
+    logger.error('Erro ao listar rituais', error instanceof Error ? error : undefined, {});
     return errorResponse({ code: ErrorCode.INTERNAL_ERROR, message: 'Erro ao processar requisição' });
   }
 }
@@ -483,7 +483,7 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json(result.body, { status: 201 });
   } catch (error) {
-    logger.error('Erro ao registrar ritual', { error });
+    logger.error('Erro ao registrar ritual', error instanceof Error ? error : undefined, {});
     return errorResponse({ code: ErrorCode.INTERNAL_ERROR, message: 'Erro ao processar requisição' });
   }
 }

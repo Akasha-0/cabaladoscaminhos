@@ -29,7 +29,7 @@ const SECURITY_HEADERS = {
 // ============================================
 
 // Rotas públicas do frontend
-const PUBLIC_PAGE_ROUTES = ['/', '/login', '/registro', '/(dashboard)'];
+const PUBLIC_PAGE_ROUTES = ['/', '/login', '/registro', '/dashboard'];
 
 // API routes que não requerem rate limiting
 const EXCLUDED_PATHS = ['/_next', '/favicon.ico', '/api/health'];

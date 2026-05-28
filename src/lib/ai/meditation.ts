@@ -1,4 +1,4 @@
-type MeditationTheme = 'cura' | 'proteção' | 'prosperidade' | 'amor' | 'sabedoria';
+export type MeditationTheme = 'cura' | 'proteção' | 'prosperidade' | 'amor' | 'sabedoria';
 
 interface MeditationScript {
   theme: MeditationTheme;
