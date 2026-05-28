@@ -29,14 +29,14 @@ export async function GET() {
       type: 'natal',
       label: 'Mapa Natal',
       description: 'Interpretação completa do mapa natal com análise de planetas, casas e aspectos.',
-      details: 'Análise detallada da posição dos planetas nos signos e casas,.aspectos planetários e dinâmica kármica.',
+      details: 'Análise detalhada da posição dos planetas nos signos e casas, aspectos planetários e dinâmica kármica.',
     },
     {
       id: 'transito',
       type: 'transito',
       label: 'Trânsito Planetário',
       description: 'Interpretação dos trânsitos planetários atuais e seu impacto.',
-      details: 'Análise sensitiva dos trânsitos ativos e como influencian nosso momento presente.',
+      details: 'Análise sensitiva dos trânsitos ativos e como influenciam nosso momento presente.',
     },
     {
       id: 'progressao',
@@ -50,7 +50,7 @@ export async function GET() {
       type: 'sinastria',
       label: 'Sinastria',
       description: 'Interpretação da sinastria entre duas cartas natais.',
-      details: 'Análise daCompatibility between two natal charts.',
+      details: 'Análise da compatibilidade entre duas cartas natais.',
     },
     {
       id: 'composito',

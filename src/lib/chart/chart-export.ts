@@ -126,7 +126,7 @@ function exportAsCsv(data: ChartData): Blob {
     data.houses.forEach((sign, index) => {
       rows.push(`${index + 1},${sign}`);
     });
-    rows推('');
+rows.push('');
   }
 
   // Export aspects
