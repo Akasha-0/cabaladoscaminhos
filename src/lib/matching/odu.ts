@@ -1,7 +1,7 @@
 // Odu Matching Logic - Cabala Dos Caminhos
 // Matches Odu to ebós, rituals, and spiritual practices
 
-import { OduInfo } from '@/lib/odus/calculos';
+import { OduInfo, odusData } from '@/lib/odus/calculos';
 
 /**
  * Ritual types for Odu matching
@@ -434,8 +434,7 @@ export function matchOduToRituals(odu: OduInfo): OduMatchingResult {
 /**
  * Match an Odu by number (lookup in odusData)
  */
-export function matchOduToRitualsByNumero(numero: number): OduMatchingResult | null {
-  const { odusData } = require('@/lib/odus/calculos');
+export async function matchOduToRitualsByNumero(numero: number): Promise<OduMatchingResult | null> {
   const odu = odusData[numero];
   if (!odu) return null;
   return matchOduToRituals(odu);
@@ -444,8 +443,7 @@ export function matchOduToRitualsByNumero(numero: number): OduMatchingResult | n
 /**
  * Match an Odu by name
  */
-export function matchOduToRitualsByNome(nome: string): OduMatchingResult | null {
-  const { odusData } = require('@/lib/odus/calculos');
+export async function matchOduToRitualsByNome(nome: string): Promise<OduMatchingResult | null> {
   const odu = (Object.values(odusData) as OduInfo[]).find(
     (o): boolean => o.nome.toLowerCase() === nome.toLowerCase()
   );

@@ -183,7 +183,7 @@ export async function GET(request: NextRequest) {
     const tipoIndex = seed % tipos.length;
     const tipo = tipos[tipoIndex];
 
-    let leitura: DailyReading = {
+    const leitura: DailyReading = {
       id: `daily_${dayKey}_${tipo}`,
       data: hoje.toISOString().split('T')[0],
       tipo,

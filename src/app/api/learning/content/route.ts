@@ -264,8 +264,8 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      const module = contentModules.find((m) => m.id === moduleId);
-      if (!module) {
+      const foundModule = contentModules.find((m) => m.id === moduleId);
+      if (!foundModule) {
         return NextResponse.json(
           { success: false, error: { message: 'Content module not found', code: 3001 } },
           { status: 404 }
@@ -274,7 +274,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        data: module,
+        data: foundModule,
       });
     }
 
@@ -286,18 +286,18 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      for (const module of contentModules) {
-        const item = module.items.find((i) => i.id === contentId);
+      for (const mod of contentModules) {
+        const item = mod.items.find((i) => i.id === contentId);
         if (item) {
-          const itemIndex = module.items.findIndex((i) => i.id === contentId);
+          const itemIndex = mod.items.findIndex((i) => i.id === contentId);
           return NextResponse.json({
             success: true,
             data: {
               ...item,
-              moduleId: module.id,
-              moduleTitle: module.title,
-              nextContent: module.items[itemIndex + 1] || null,
-              previousContent: module.items[itemIndex - 1] || null,
+              moduleId: mod.id,
+              moduleTitle: mod.title,
+              nextContent: mod.items[itemIndex + 1] || null,
+              previousContent: mod.items[itemIndex - 1] || null,
             },
           });
         }
