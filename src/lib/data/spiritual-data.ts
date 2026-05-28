@@ -20,11 +20,14 @@ export interface DiaSemanaData {
 }
 
 export interface OrixaData {
+  id?: string;
   nome: string;
   dia: string;
   cores: string[];
   chakra: string;
   planeta: string;
+  elemento?: string;
+  numero?: number;
   ervas: string[];
   quizilas: string[];
   saudacao: string;

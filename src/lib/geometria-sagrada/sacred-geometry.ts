@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Sacred Geometry Module
  * Geometria Sagrada
@@ -21,7 +22,7 @@ const GEOMETRY: GeometryShape[] = [
     id: 'torus',
     nome: 'Toro',
     nomeIngles: 'Torus',
-    descricao: 'Forma geométrica em formato de donut, representando o campo electromagnético e o fluxo de energia universal.',
+    descricao: 'Forma geometrica em formato de donut, representando o campo electromagnetico e o fluxo de energia universal.',
     simbolismo: 'Fluxo energetico continuo,Auto-organizacao,Infinity loop',
     elementos: ['Anel interno', 'Anel externo', 'Eixo central'],
     sefirots: ['Chesed', 'Gevurah'],

@@ -207,6 +207,13 @@ export function getMoonPhases(date?: Date | string): MoonPhaseData {
 }
 
 /**
+ * Get moon phases - alias for getMoonPhases
+ */
+export function getPhases(date?: Date | string): MoonPhaseData {
+  return getMoonPhases(date);
+}
+
+/**
  * Get moon phases for a date range (for calendar display)
  */
 export function getMoonPhasesForRange(startDate: Date, days: number): MoonPhaseData[] {

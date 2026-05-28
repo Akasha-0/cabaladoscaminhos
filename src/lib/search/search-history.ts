@@ -52,3 +52,7 @@ export function removeFromHistory(query: string): void {
     // Storage unavailable
   }
 }
+
+export function saveSearch(query: string): void {
+  addToHistory(query);
+}
