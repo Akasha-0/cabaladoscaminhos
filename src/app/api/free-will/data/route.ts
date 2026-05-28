@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// GET /api/karma/data - Return karma data summary
+// GET /api/free-will/data - Return free-will data summary
 export async function GET(request: NextRequest) {
   return NextResponse.json({
     success: true,
     data: {
-      message: 'Karma API data endpoint',
+      message: 'Free-will API data endpoint',
       timestamp: new Date().toISOString(),
     },
   });
