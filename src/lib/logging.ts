@@ -374,8 +374,7 @@ export function withLogging<T extends (...args: Parameters<T>) => Promise<Respon
   options?: { path?: string }
 ): T {
   return (async (...args: Parameters<T>) => {
-   const request = args[0] as Request;
-    const context = createLogContext(request);
+   const request = args[0] as unknown as Request;
     const endTimer = logger.startTimer();
 
     logger.info(`→ ${request.method} ${options?.path || request.url}`, context);

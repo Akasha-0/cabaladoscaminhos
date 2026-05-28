@@ -13,20 +13,21 @@ export interface Notification {
   metadata?: Record<string, unknown>;
 }
 export type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'error';
-
 export interface NotificationState {
   notifications: Notification[];
   isConnected: boolean;
   connectionStatus: ConnectionStatus;
   error: string | null;
   clearNotifications: () => void;
+  markAsRead: (id: string) => void;
+  markAllAsRead: () => void;
+  removeNotification: (id: string) => void;
+  reconnect: () => void;
 }
 interface UseNotificationsOptions {
   /** SSE endpoint URL */
   sseUrl?: string;
-  /** WebSocket endpoint URL */
   wsUrl?: string;
-  /** Polling interval in ms (fallback, default 30000) */
   pollingInterval?: number;
   /** Enable SSE (default true) */
   enableSSE?: boolean;
@@ -45,6 +46,7 @@ interface UseNotificationsOptions {
   /** On new notification callback */
   onNotification?: (notification: Notification) => void;
 }
+// SSE connection handler
 
 // SSE connection handler
 function createSSEConnection(
