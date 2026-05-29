@@ -115,8 +115,8 @@ const designTokenCoverageEval: EvalDefinition = {
       /var\(--[\w-]+\)/g,   // CSS var() usage
     ]
 
-    let totalTokens = 0
-    let usedTokens = 0
+    const totalTokens = 0
+    const usedTokens = 0
 
     // Check for Tailwind v4 CSS variables and design tokens
     const tailwindTokens = [

@@ -302,7 +302,7 @@ export const databaseSchemaEval: EvalDefinition = {
         return builder.status('error').score(0).value(0).threshold(85).severity('critical').message('Prisma schema not found').details({ error: 'Schema file not found' }).duration(Date.now() - startTime).build()
       }
       const modelPattern = /model\s+(\w+)\s*\{/g
-      let models: string[] = []
+      const models: string[] = []
       let match
       while ((match = modelPattern.exec(schemaContent)) !== null) {
         models.push(match[1])

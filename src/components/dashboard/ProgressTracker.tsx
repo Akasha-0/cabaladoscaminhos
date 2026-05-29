@@ -431,7 +431,7 @@ export function ProgressTracker({
                 </div>
               </CircularProgress>
               <p className="mt-3 text-sm text-slate-400 italic text-center">
-                "{getStreakMessage(stats.currentStreak)}"
+                &ldquo;{getStreakMessage(stats.currentStreak)}&rdquo;
               </p>
             </div>
 

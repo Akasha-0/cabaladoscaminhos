@@ -332,7 +332,9 @@ export function useDashboardData(
   ]);
 
   // Keep refresh ref updated to avoid TDZ in recursive calls
-  refreshRef.current = refresh;
+  useEffect(() => {
+    refreshRef.current = refresh;
+  }, [refresh]);
   /**
    * Partial refresh for specific data types
    */

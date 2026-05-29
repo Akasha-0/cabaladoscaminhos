@@ -65,7 +65,7 @@ export default function DebugPage() {
         <div className="bg-slate-800 p-4 rounded-lg">
           <h3 className="text-slate-400 font-cinzel mb-2">Como testar:</h3>
           <ol className="text-slate-500 text-sm space-y-1 list-decimal list-inside">
-            <li>Clique em "Simular Login" para criar usuário fake</li>
+            <li>Clique em &ldquo;Simular Login&rdquo; para criar usuário fake</li>
             <li>Você será redirecionado para /dashboard</li>
             <li>Se dashboard carregar → Auth funciona</li>
             <li>Se travar → há problema no auth provider</li>

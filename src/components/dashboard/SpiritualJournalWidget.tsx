@@ -360,16 +360,6 @@ export function SpiritualJournalWidget({
   const streak = calculateStreak(entries);
   const prompts = getDailyPrompts(userOrixa);
   
-  React.useEffect(() => {
-    const saveTimeout = setTimeout(() => {
-      if (currentEntry.id && (currentEntry.content !== '' || currentEntry.mood || currentEntry.gratitudeEntries.length > 0)) {
-        saveEntry();
-      }
-    }, 1500);
-    
-    return () => clearTimeout(saveTimeout);
-  }, [currentEntry.content, currentEntry.mood, currentEntry.gratitudeEntries]);
-  
   const saveEntry = React.useCallback(() => {
     const entryToSave = {
       ...currentEntry,
@@ -385,6 +375,18 @@ export function SpiritualJournalWidget({
     
     setTimeout(() => setIsSaved(false), 2000);
   }, [currentEntry, entries, today]);
+
+
+  
+  React.useEffect(() => {
+    const saveTimeout = setTimeout(() => {
+      if (currentEntry.id && (currentEntry.content !== '' || currentEntry.mood || currentEntry.gratitudeEntries.length > 0)) {
+        saveEntry();
+      }
+    }, 1500);
+    
+    return () => clearTimeout(saveTimeout);
+  }, [currentEntry.content, currentEntry.mood, currentEntry.gratitudeEntries]);
   
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCurrentEntry((prev) => ({

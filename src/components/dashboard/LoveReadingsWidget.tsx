@@ -316,7 +316,7 @@ function AffirmationDisplay({ affirmation }: { affirmation: string }) {
     <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/20 transition-all hover:from-purple-500/20 hover:to-indigo-500/20">
       <div className="flex items-start gap-2">
         <span className="text-purple-400 text-lg">✨</span>
-        <p className="text-sm text-purple-200 leading-relaxed italic">"{affirmation}"</p>
+        <p className="text-sm text-purple-200 leading-relaxed italic">&ldquo;{affirmation}&rdquo;</p>
       </div>
     </div>
   );
