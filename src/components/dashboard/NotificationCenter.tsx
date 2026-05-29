@@ -102,40 +102,24 @@ function NotificationItem({
 }: NotificationItemProps) {
   const colors = NOTIFICATION_COLORS[notification.type];
   const isUnread = !notification.read;
-  const itemId = `notification-${notification.id}`;
-  const descId = `${itemId}-desc`;
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onClick();
-    }
-  };
+
   return (
     <div
-      id={itemId}
       onClick={onClick}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-      role="button"
       className={cn(
         'relative group p-4 rounded-lg cursor-pointer transition-all duration-200',
-        'border focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 focus-visible:outline-none',
+        'border',
         colors.bg,
         colors.border,
         isUnread ? 'bg-slate-800/50' : 'bg-transparent hover:bg-slate-800/30',
         isUnread && 'border-l-2 border-l-amber-500'
       )}
-      aria-describedby={descId}
     >
-      {/* Screen reader description */}
-      <span id={descId} className="sr-only">
-        {isUnread ? 'Não lida. ' : ''}
-        {notification.message}
-      </span>
       {/* Unread indicator */}
       {isUnread && (
-        <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-amber-500" aria-label="Não lida" />
+        <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-amber-500" />
       )}
+
       {/* Header */}
       <div className="flex items-start gap-3">
         <div className={cn('p-2 rounded-lg', colors.bg, colors.text)}>
@@ -160,53 +144,48 @@ function NotificationItem({
           <div className="flex items-center gap-3 text-[10px] text-slate-500">
             <span className="flex items-center gap-1">
               {getTimeIcon(notification.timestamp)}
-              <span>{formatTime(notification.timestamp)}</span>
+              {formatTime(notification.timestamp)}
             </span>
             {notification.metadata?.orixa && (
               <span className="flex items-center gap-1">
-                <Sparkles className="w-3 h-3" aria-hidden="true" />
-                <span>{notification.metadata.orixa}</span>
+                <Sparkles className="w-3 h-3" />
+                {notification.metadata.orixa}
               </span>
             )}
           </div>
         </div>
       </div>
+
       {/* Actions (visible on hover) */}
       <div className="absolute bottom-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
         {notification.type === 'ritual' && notification.metadata?.ritualId && (
           <button
             onClick={(e) => { e.stopPropagation(); onComplete(); }}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onComplete(); } }}
-            className="p-1.5 rounded-md bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 focus-visible:outline-none"
+            className="p-1.5 rounded-md bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors"
             title="Marcar como feito"
-            aria-label="Marcar ritual como concluído"
           >
-            <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
+            <CheckCircle2 className="w-3.5 h-3.5" />
           </button>
         )}
         <button
           onClick={(e) => { e.stopPropagation(); onSnooze(); }}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onSnooze(); } }}
-          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-slate-700 transition-colors focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 focus-visible:outline-none"
+          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-slate-700 transition-colors"
           title="Adiar 1 hora"
-          aria-label="Adiar notificação por 1 hora"
         >
-          <Clock className="w-3.5 h-3.5" aria-hidden="true" />
+          <Clock className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={(e) => { e.stopPropagation(); onDismiss(); }}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onDismiss(); } }}
-          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-red-500/30 hover:text-red-400 transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 focus-visible:outline-none"
+          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-red-500/30 hover:text-red-400 transition-colors"
           title="Dispensar"
-          aria-label="Dispensar notificação"
         >
-          <X className="w-3.5 h-3.5" aria-hidden="true" />
+          <X className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
   );
 }
-interface FilterChipProps {
+
 interface FilterChipProps {
   label: string;
   isActive: boolean;
@@ -333,37 +312,31 @@ export function NotificationCenter({
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'relative p-2.5 rounded-xl transition-all duration-200',
-          'hover:bg-slate-800/80 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 focus-visible:outline-none',
+          'hover:bg-slate-800/80',
           isOpen ? 'bg-slate-800 text-amber-400' : 'text-slate-400 hover:text-white'
         )}
         aria-label={`Notificações${unreadCount > 0 ? ` (${unreadCount} não lidas)` : ''}`}
-        aria-expanded={isOpen}
-        aria-haspopup="dialog"
       >
         {unreadCount > 0 ? (
-          <BellRing className="w-5 h-5" aria-hidden="true" />
+          <BellRing className="w-5 h-5" />
         ) : (
-          <Bell className="w-5 h-5" aria-hidden="true" />
+          <Bell className="w-5 h-5" />
         )}
+        
         {/* Badge */}
         {unreadCount > 0 && (
-          <span 
-            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 flex items-center justify-center bg-amber-500 text-black text-xs font-bold rounded-full shadow-lg animate-pulse"
-            aria-label={`${unreadCount} notificações não lidas`}
-          >
+          <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 flex items-center justify-center bg-amber-500 text-black text-xs font-bold rounded-full shadow-lg animate-pulse">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
       </button>
+
       {/* Dropdown Panel */}
       {isOpen && (
         <div
           ref={dropdownRef}
           className="absolute right-0 top-full mt-2 w-96 max-h-[600px] overflow-hidden rounded-xl bg-slate-900 border border-slate-700/50 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200"
-          role="dialog"
-          aria-label="Painel de notificações"
         >
-          {/* Header */}
           {/* Header */}
           <div className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50 p-4">
             <div className="flex items-center justify-between mb-3">
