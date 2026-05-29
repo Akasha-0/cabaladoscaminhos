@@ -250,7 +250,7 @@ function AffirmationCard({ affirmation, orixaProfile }: {
       
       <div className="relative z-10">
         <p className="text-lg text-slate-200 leading-relaxed italic mb-4 pl-4">
-          "{affirmation.texto}"
+          &ldquo;{affirmation.texto}&rdquo;
         </p>
         
         <div className="flex items-center justify-between pl-4">
@@ -298,27 +298,14 @@ function RefreshButton({ onClick }: { onClick: () => void }) {
 
 export function AffirmationWidget({ userData, className = '' }: AffirmationWidgetProps) {
   const [refreshKey, setRefreshKey] = React.useState(0);
-  
-  const orixaKey = React.useMemo(() => getOrixaKey(userData?.orixaRegente), [userData?.orixaRegente]);
-  
-  const orixaProfile = React.useMemo(() => {
-    if (userData?.orixaRegente) {
-      return getProfileById(orixaKey === 'fallback' ? 'oxala' : orixaKey);
-    }
-    return undefined;
-  }, [orixaKey, userData?.orixaRegente]);
-  
+  const [soundEnabled, setSoundEnabled] = React.useState(true);
+
+  const orixaKey = getOrixaKey(userData?.orixaRegente);
+  const orixaProfile = userData?.orixaRegente ? getProfileById(userData.orixaRegente) : undefined;
+
+  // Get daily affirmation
   const affirmation = React.useMemo(() => {
-    // Use refreshKey to cycle through affirmations
-    const affirmations = orixaKey === 'fallback'
-      ? FALLBACK_AFFIRMATIONS
-      : ORIXA_AFFIRMATIONS[orixaKey] || FALLBACK_AFFIRMATIONS;
-    
-    const baseIndex = getDayOfYear() % affirmations.length;
-    const extraIndex = refreshKey % affirmations.length;
-    const index = (baseIndex + extraIndex) % affirmations.length;
-    
-    return affirmations[index];
+    return getAffirmationOfDay(orixaKey);
   }, [orixaKey, refreshKey]);
 
   const handleRefresh = () => {
@@ -326,27 +313,34 @@ export function AffirmationWidget({ userData, className = '' }: AffirmationWidge
   };
 
   return (
-    <Card className={cn('card-spiritual', className)}>
+    <Card className={cn('bg-gradient-to-br from-purple-900/30 via-slate-800/50 to-indigo-900/30 border-purple-500/20', className)}>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Sparkles className="w-4 h-4 text-pink-400" />
+          <CardTitle className="flex items-center gap-2 text-purple-300">
+            <Sparkles className="w-5 h-5" />
             Afirmação do Dia
           </CardTitle>
-          <RefreshButton onClick={handleRefresh} />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className={cn(
+                'p-1.5 rounded-full transition-colors',
+                soundEnabled 
+                  ? 'bg-purple-500/20 text-purple-400' 
+                  : 'bg-slate-700/50 text-slate-500'
+              )}
+              title={soundEnabled ? 'Som ativado' : 'Som desativado'}
+            >
+              <Heart className={cn('w-4 h-4', soundEnabled && 'fill-purple-400')} />
+            </button>
+          </div>
         </div>
-        {userData?.nome && (
-          <p className="text-xs text-slate-500">
-            Personalizada para {userData.nome}
-            {userData.orixaRegente && <span> • Orixá: {userData.orixaRegente}</span>}
-          </p>
-        )}
       </CardHeader>
-
-      <CardContent>
+      <CardContent className="space-y-4">
         <AffirmationCard affirmation={affirmation} orixaProfile={orixaProfile} />
         
-        <div className="mt-4 pt-4 border-t border-slate-700/30">
+        <div className="flex items-center justify-between pt-2">
+          <RefreshButton onClick={handleRefresh} />
           <ShareButton text={affirmation.texto} />
         </div>
       </CardContent>

@@ -54,7 +54,7 @@ function calculateStreak(completions: string[]): number {
   if (completions.length === 0) return 0;
   const sorted = completions.map((d) => new Date(d)).sort((a, b) => b.getTime() - a.getTime());
   let streak = 0;
-  let currentDate = new Date();
+  const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
 
   for (const date of sorted) {
@@ -148,7 +148,7 @@ function EncouragementBanner({ streak, message }: { streak: number; message: str
             <span className={cn('text-2xl font-bold', getStreakColor(streak))}>{streak}</span>
             <span className="text-sm text-amber-400/80">días seguidos</span>
           </div>
-          <p className="text-sm text-slate-400 italic">"{message}"</p>
+          <p className="text-sm text-slate-400 italic">&ldquo;{message}&rdquo;</p>
         </div>
         {streak >= 7 && (
           <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
@@ -192,12 +192,13 @@ export function SpiritualProgressWidget({ className = '', userId = 'default', us
   const [history, setHistory] = React.useState<SpiritualDayEntry[]>([]);
   const [historyStreak, setHistoryStreak] = React.useState(0);
 
-  // Initialize spiritual history data in useEffect to avoid render-time impure calls
+  // useSpiritualHistory must be called at top level, not inside useEffect
+  const spiritualHistory = useSpiritualHistory();
+
   React.useEffect(() => {
-    const { history: h, getStreak: gs } = useSpiritualHistory();
-    setHistory(h);
-    setHistoryStreak(gs());
-  }, []);
+    setHistory(spiritualHistory.history);
+    setHistoryStreak(spiritualHistory.getStreak());
+  }, [spiritualHistory]);
 
   React.useEffect(() => {
     const loadProgress = async () => {
