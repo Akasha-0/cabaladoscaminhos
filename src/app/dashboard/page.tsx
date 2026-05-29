@@ -23,6 +23,9 @@ import { PredictionWidget } from '@/components/dashboard/PredictionWidget';
 import { MoonRitualPlanner } from '@/components/dashboard/MoonRitualPlanner';
 import { AInsightWidget } from '@/components/dashboard/AInsightWidget';
 import { LoveReadingsWidget } from '@/components/dashboard/LoveReadingsWidget';
+import { SpiritualFinanceWidget } from '@/components/dashboard/SpiritualFinanceWidget';
+import { SpiritualJournalWidget } from '@/components/dashboard/SpiritualJournalWidget';
+import { GuidedMeditationWidget } from '@/components/dashboard/GuidedMeditationWidget';
 
 // Lazy load heavy components
 const AffirmationWidget = dynamic(
@@ -90,31 +93,43 @@ export default function Dashboard() {
         <MoonRitualPlanner />
       </div>
 
-      {/* Row 5: Love + Predictions */}
+      {/* Row 5: Love + Finance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <LoveReadingsWidget userId="dashboard-visitor" userOrixa="Oxalá" />
-        <PredictionWidget />
+        <SpiritualFinanceWidget userId="dashboard-visitor" userOrixa="Oxalá" />
       </div>
 
-      {/* Row 6: Wisdom - Correlation + Wisdom + Insights */}
+      {/* Row 6: Journal + Meditation */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <SpiritualJournalWidget userId="dashboard-visitor" userOrixa="Oxalá" />
+        <GuidedMeditationWidget userId="dashboard-visitor" userOrixa="Oxalá" />
+      </div>
+
+      {/* Row 7: Wellness + Predictions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+        <SpiritWellnessWidget userId="dashboard-visitor" />
+        <PredictionWidget />
+        <ChakraBalanceWidget />
+      </div>
+
+      {/* Row 8: Wisdom - Correlation + Wisdom */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <CorrelationViz />
         <DailyWisdomCard userData={userData} userId="dashboard-visitor" />
       </div>
 
+      {/* Row 9: Insights + Affirmations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <AInsightWidget />
         <AffirmationWidget userData={userData} />
       </div>
 
-      {/* Row 7: Wellness + Rituals + Chakra */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-        <SpiritWellnessWidget userId="dashboard-visitor" />
+      {/* Row 10: Rituals */}
+      <div className="mt-6">
         <RitualReminderWidget />
-        <ChakraBalanceWidget />
       </div>
 
-      {/* Row 8: AI Oracle Chat (Lazy loaded) */}
+      {/* Row 11: AI Oracle Chat (Lazy loaded) */}
       <div className="mt-6">
         <AIOracleChat userData={userData} />
       </div>

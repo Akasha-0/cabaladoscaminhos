@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { Heart, Sparkles, Users, Crown, RefreshCw } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { drawCards, MAJOR_ARCANA } from '@/lib/tarot/cards';
-import { getProfileById, getProfiles } from '@/lib/orixa/orixa-profiles';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Heart, RefreshCw } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { getTodayCorrelation } from '@/lib/correlation/SpiritualCorrelationEngine';
 
 // ============================================================
@@ -19,22 +18,22 @@ interface LoveReadingsWidgetProps {
 }
 
 interface LoveTarotCard {
-  id: number;
   name: string;
   meaning: string;
-  interpretation: string;
+  element: string;
+  emoji: string;
 }
 
 interface CompatibilityResult {
   score: number;
-  label: string;
   description: string;
-  elements: string[];
+  element: string;
+  elementEmoji: string;
 }
 
 interface HeartChakraState {
   energy: number;
-  status: 'balanced' | 'low' | 'high';
+  status: 'aberto' | 'fechado' | 'equilibrado';
   tip: string;
 }
 
@@ -44,93 +43,63 @@ interface HeartChakraState {
 
 // Love-specific tarot card interpretations
 const LOVE_TAROT_INTERPRETATIONS: Record<string, { upright: string; reversed: string }> = {
-  'The Lovers': { upright: 'Harmonia no amor, escolhas do coração, união sagrada', reversed: 'Desequilíbrio, conflitos internos, falta de clareza emocional' },
-  'The Sun': { upright: 'Felicidade no relacionamento, luz interior refletida no outro', reversed: 'Problemas de autoestimia afetando o relacionamento' },
-  'The Empress': { upright: 'Abundância emocional, fertilidade do amor, nutrição', reversed: 'Ciúmes, possessividade, negligência emocional' },
-  'The Star': { upright: 'Esperança, cura emocional, renovação do amor', reversed: 'Desesperança, dificuldade de confiar' },
-  'The Moon': { upright: 'Ilusão no amor, necessidade de discernimento', reversed: 'Confiança retornando, clareza emocional' },
-  'The Temperance': { upright: 'Equilíbrio no relacionamento, paciência, harmonia', reversed: 'Desequilíbrio, excesso em uma direção' },
-  'The Fool': { upright: 'Novos começos, amor espontâneo, pureza de sentimentos', reversed: 'Infantilidade emocional, decisões apressadas' },
+  'Lovers': { upright: 'Escolha de amor verdadeiro e conexão profunda', reversed: 'Desequilíbrio emocional e decisões precipitadas' },
+  'Two of Cups': { upright: 'Parceria harmoniosa e amor correspondido', reversed: 'Tensão em relacionamentos e comunhão incompleta' },
+  'Ten of Cups': { upright: 'Felicidade conjugal e família abençoada', reversed: 'Conflitos familiares e expectativas não atendidas' },
+  'Ace of Hearts': { upright: 'Novo amor surgindo no horizonte', reversed: 'Blocagem emocional e fechamento do coração' },
+  'Page of Cups': { upright: 'Curiosidade emocional e novas possibilidades', reversed: 'Intuição adormecida e medos inconscientes' },
 };
 
 // Zodiac to Orixá compatibility matrix (simplified)
 const ZODIAC_ELEMENT_MAP: Record<string, string> = {
-  aries: 'fogo', touro: 'terra', gemeos: 'ar', cancer: 'agua',
-  leao: 'fogo', virgem: 'terra', libra: 'ar', escorpio: 'agua',
-  sagitario: 'fogo', capricornio: 'terra', aquario: 'ar', peixes: 'agua',
+  'aries': 'fire', 'leo': 'fire', 'sagittarius': 'fire',
+  'taurus': 'earth', 'virgo': 'earth', 'capricorn': 'earth',
+  'gemini': 'air', 'libra': 'air', 'aquarius': 'air',
+  'cancer': 'water', 'scorpio': 'water', 'pisces': 'water',
 };
 
 // Element harmony for compatibility
 const ELEMENT_COMPATIBILITY: Record<string, Record<string, number>> = {
-  fogo: { fogo: 60, terra: 40, ar: 80, agua: 30 },
-  terra: { fogo: 40, terra: 80, ar: 50, agua: 90 },
-  ar: { fogo: 80, terra: 50, ar: 70, agua: 60 },
-  agua: { fogo: 30, terra: 90, ar: 60, agua: 80 },
+  fire: { fire: 70, earth: 40, air: 90, water: 50 },
+  earth: { fire: 40, earth: 80, air: 50, water: 90 },
+  air: { fire: 90, earth: 50, air: 70, water: 60 },
+  water: { fire: 50, earth: 90, air: 60, water: 80 },
 };
 
 // Orixá to element mapping
 const ORIXA_ELEMENT_MAP: Record<string, string> = {
-  'oxum': 'agua', 'iemanja': 'agua', 'oxossi': 'ar', 'ogum': 'fogo',
-  'oxala': 'terra', 'shango': 'fogo', 'obatala': 'terra', 'nanã': 'agua',
-  'orunmila': 'ar', 'omolu': 'terra', 'oyá': 'fogo', 'ewe': 'agua',
+  'Oxum': 'water', 'Iemanjá': 'water', 'Nanã': 'water',
+  'Oxalá': 'air', 'Omulu': 'earth', 'Obá': 'earth',
+  'Xangô': 'fire', 'Ogum': 'fire', 'Shango': 'fire',
+  'Ibeji': 'air',
 };
 
 // Love affirmations by Orixá
 const ORIXA_LOVE_AFFIRMATIONS: Record<string, string[]> = {
   oxum: [
-    'Meu amor flui como águas cristalinas, atraindo prosperidade emocional',
-    'Sou merecedora de um amor que me nutre e me valoriza',
-    'A energia sagrada do amor de Oxum me orienta em minhas relações',
+    'Eu sou amada e merecedora de amor verdadeiro',
+    'Minha beleza interior brilha e atrai conexões sagradas',
+    'Eu fluo com a energia do amor puro',
   ],
   iemanja: [
-    'O amor de Iemanjá me banha em compaixão e profundidade emocional',
-    'Permito que as águas do amor me levem à minha verdadeira conexão',
-    'Sou cercada pelo abraço amoroso da Mãe das Águas',
+    'Eu honro meu coração e permito que o amor flua livremente',
+    'Sou uma criação sagrada do amor divino',
+    'Minhas emoções são válidas e minhas conexões são abençoadas',
   ],
-  oxala: [
-    'A paz de Oxalá guia meu coração em todas as minhas relações',
-    'Eu atraio unions sagradas e harmoniosas',
-    'O amor puro de Oxalá habita no meu coração',
-  ],
-  oxossi: [
-    'O amor surge em mim como flecha certeira, direto ao coração',
-    'Permito que a caça espiritual me leve ao amor verdadeiro',
-    'Minhas relações são marcadas pela leveza e alegria de Oxossi',
+  xango: [
+    'Eu tenho poder sobre meu destino amoroso',
+    'Minha verdade emocional é minha força',
+    'O amor que eu busco está buscando por mim',
   ],
   ogum: [
-    'Tenho coragem para lutar pelo amor que mereço',
-    'A força de Ogum me protege em meus relacionamentos',
-    'Transcendo conflitos com a coragem do guerreiro',
+    'Eu corro atrás do amor com coragem e determinação',
+    'Supero obstáculos no caminho do amor',
+    'Minha energia atrai parceiros dignos',
   ],
-  nanã: [
-    'A sabedoria de Nanã me ajuda a compreender a profundidade do amor',
-    'Aceito todas as fases do amor, incluindo a transformação',
-    'O amor de Nanã traz maturidade emocional',
-  ],
-  orunmila: [
-    'A sabedoria de Orunmila me guia nas escolhas amorosas',
-    'Confio no destino amoroso que foi preparado para mim',
-    'O conhecimento sagrado orienta minhas relações',
-  ],
-  omolu: [
-    'A cura de Omolu me liberta de feridas passadas no amor',
-    'Permito que o novo amor cure antigas dores',
-    'A transformação de Omolu renova meu coração',
-  ],
-  oya: [
-    'A força de Oyá me ajuda a superar desafios no amor',
-    'Permito que os ventos da mudança tragam novos amores',
-    'A paixão de Oyá incendia meu coração',
-  ],
-  shango: [
-    'A energia de Shango traz paixão e equilíbrio ao amor',
-    'O fogo de Shango aquece meu coração',
-    'Permito que a eletricidade do amor ilumine minhas relações',
-  ],
-  default: [
-    'O amor divino flui através de mim como energia sagrada',
-    'Sou merecedora de um amor verdadeiro e espiritual',
-    'A força do amor ilumina meu caminho espiritual',
+  oxala: [
+    'A paz envolve meu coração e atrai harmonia',
+    'Sou merecedor de amor tranquilo e duradouro',
+    'Desvencilho-me de padrões que não me servem',
   ],
 };
 
@@ -147,122 +116,74 @@ function getDayOfYear(): number {
 }
 
 function getOrixaKey(orixaName?: string): string {
-  if (!orixaName) return 'default';
-  return orixaName.toLowerCase().replace(/[^a-z]/g, '') || 'default';
+  if (!orixaName) return 'oxum';
+  return orixaName.toLowerCase().replace(/[áàâã]/g, 'a')
+    .replace(/[éèê]/g, 'e')
+    .replace(/[íìî]/g, 'i')
+    .replace(/[óòôõ]/g, 'o')
+    .replace(/[úùû]/g, 'u')
+    .split(' ')[0];
 }
 
 function getDailyLoveCard(): LoveTarotCard {
-  const daySeed = getDayOfYear();
-  const loveCards = [
-    { id: 6, name: 'The Lovers', interpretation: 'Escolhas do coração, união de almas gêmeas' },
-    { id: 3, name: 'The Empress', interpretation: 'Amor abundante, fertilidade emocional' },
-    { id: 17, name: 'The Star', interpretation: 'Esperança no amor, cura emocional' },
-    { id: 18, name: 'The Moon', interpretation: 'Intuição no amor, conexão subconscious' },
-    { id: 19, name: 'The Sun', interpretation: 'Alegria, vitalidade no relacionamento' },
-    { id: 0, name: 'The Fool', interpretation: 'Novos começos, amor espontâneo' },
+  const dayOfYear = getDayOfYear();
+  const cards = [
+    { name: 'Lovers', meaning: LOVE_TAROT_INTERPRETATIONS.Lovers.upright, element: 'Ar', emoji: '💕' },
+    { name: 'Two of Cups', meaning: LOVE_TAROT_INTERPRETATIONS['Two of Cups'].upright, element: 'Água', emoji: '🤝' },
+    { name: 'Ten of Cups', meaning: LOVE_TAROT_INTERPRETATIONS['Ten of Cups'].upright, element: 'Fogo', emoji: '🏡' },
+    { name: 'Ace of Hearts', meaning: LOVE_TAROT_INTERPRETATIONS['Ace of Hearts'].upright, element: 'Terra', emoji: '💖' },
+    { name: 'Page of Cups', meaning: LOVE_TAROT_INTERPRETATIONS['Page of Cups'].upright, element: 'Água', emoji: '🌊' },
   ];
   
-  // Use day seed for consistent daily card
-  const cardIndex = daySeed % loveCards.length;
-  const card = loveCards[cardIndex];
-  
-  const meanings = LOVE_TAROT_INTERPRETATIONS[card.name] || {
-    upright: 'O amor sagrado ilumina seu caminho hoje',
-    reversed: 'Reflita sobre suas emoções antes de agir',
-  };
-  
-  return {
-    id: card.id,
-    name: card.name,
-    meaning: meanings.upright,
-    interpretation: card.interpretation,
-  };
+  const todayIndex = dayOfYear % cards.length;
+  return cards[todayIndex];
 }
 
 function calculateCompatibility(userOrixa?: string, partnerSign?: string): CompatibilityResult {
-  if (!userOrixa && !partnerSign) {
-    return {
-      score: 75,
-      label: 'Harmonia Espiritual',
-      description: 'A energia espiritual está favorável para relacionamentos hoje',
-      elements: ['Amor universal', 'Conexão alma-a-alma'],
-    };
-  }
+  const userElement = userOrixa ? ORIXA_ELEMENT_MAP[userOrixa] || 'water' : 'water';
+  const partnerElement = partnerSign ? ZODIAC_ELEMENT_MAP[partnerSign.toLowerCase()] || 'water' : 'water';
   
-  let score = 50;
-  const elements: string[] = [];
+  const score = ELEMENT_COMPATIBILITY[userElement]?.[partnerElement] || 50;
   
-  if (userOrixa) {
-    const orixaKey = getOrixaKey(userOrixa);
-    const orixaElement = ORIXA_ELEMENT_MAP[orixaKey] || 'terra';
-    elements.push(`Elemento: ${orixaElement.charAt(0).toUpperCase() + orixaElement.slice(1)}`);
-    
-    // Orixá-specific bonuses
-    const profile = getProfileById(orixaKey);
-    if (profile) {
-      score += 15;
-      elements.push(`Qualidade: ${profile.archetype}`);
-    }
-  }
+  const descriptions = {
+    90: 'Conexão muito forte! Vocês se complementam perfeitamente.',
+    80: 'Ótima compatibilidade. Há harmonia natural entre vocês.',
+    70: 'Boa conexão. Trabalhem juntos para fortalecer o vínculo.',
+    60: 'Compatibilidade moderada. Precisam de comunicação e paciência.',
+    50: 'Compatibilidade em desenvolvimento. A jornada exige paciência.',
+    40: 'Compatibilidade desafiadora. Mas o amor pode superar qualquer barreira.',
+  };
   
-  if (partnerSign) {
-    const signLower = partnerSign.toLowerCase();
-    const partnerElement = ZODIAC_ELEMENT_MAP[signLower] || 'terra';
-    
-    const userOrixaKey = getOrixaKey(userOrixa);
-    const userElement = ORIXA_ELEMENT_MAP[userOrixaKey] || 'terra';
-    
-    const compatibilityScore = ELEMENT_COMPATIBILITY[userElement]?.[partnerElement] || 50;
-    
-    score = (score + compatibilityScore) / 2;
-    elements.push(`Signo do parceiro: ${partnerSign}`);
-  }
+  const desc = Object.entries(descriptions)
+    .sort(([a], [b]) => Number(b) - Number(a))
+    .find(([threshold]) => score >= Number(threshold))?.[1] || descriptions[50];
   
-  // Get today's spiritual energy bonus
-  const todayCorrelation = getTodayCorrelation();
-  if (todayCorrelation) {
-    score = Math.min(100, score + 10);
-    elements.push(`Dia favorecido: ${todayCorrelation.orixa}`);
-  }
-  
-  const label = score >= 80 ? 'Compatibilidade Alta' :
-                score >= 60 ? 'Boa Harmonia' :
-                score >= 40 ? 'Necessita Atenção' : 'Desafios no Amor';
-  
-  const descriptions: Record<string, string> = {
-    'Compatibilidade Alta': 'As estrelas indicam uma conexão forte e harmoniosa entre vocês',
-    'Boa Harmonia': 'Há potencial para um relacionamento saudável com trabalho mútuo',
-    'Necessita Atenção': 'Este é um momento para comunicação e compreensão mútua',
-    'Desafios no Amor': 'A jornada amorosa traz lições, mas cada desafio fortalece o vínculo',
+  const elementEmojis: Record<string, string> = {
+    fire: '🔥',
+    earth: '🌍',
+    air: '💨',
+    water: '💧',
   };
   
   return {
-    score: Math.round(score),
-    label,
-    description: descriptions[label] || 'O amor está em constante evolução',
-    elements,
+    score,
+    description: desc,
+    element: partnerElement,
+    elementEmoji: elementEmojis[partnerElement] || '💫',
   };
 }
 
 function getHeartChakraState(): HeartChakraState {
-  const dayOfWeek = new Date().getDay();
-  const baseEnergy = 65;
+  const dayOfYear = getDayOfYear();
+  const seed = dayOfYear % 100;
   
-  // Adjust based on day - hearts are more open on certain days
-  const dayModifier = dayOfWeek === 5 ? 15 : // Friday (Venus day - love)
-                      dayOfWeek === 0 ? 10 : // Sunday
-                      dayOfWeek === 3 ? 5 : 0; // Wednesday
-  
-  const energy = Math.min(100, baseEnergy + dayModifier);
-  
-  const status: HeartChakraState['status'] = 
-    energy >= 80 ? 'balanced' :
-    energy >= 50 ? 'low' : 'high';
+  const energy = 50 + (seed % 40);
+  const status: HeartChakraState['status'] = energy >= 80 ? 'equilibrado' : energy >= 50 ? 'aberto' : 'fechado';
   
   const tips: Record<string, string> = {
-    balanced: 'Continue nutrindo seu coração com práticas de amor próprio',
-    low: 'Pratique o perdão e abra espaço para novas conexões',
-    high: 'Equilibre a energia do coração com discernment spiritual',
+    equilibrado: 'Seu chakra está harmonizado. Continue cultivando o amor próprio.',
+    aberto: 'Pratique meditação com cristais verdes para abrir mais o coração.',
+    fechado: 'É hora de se perdoar e liberar antigas mágoas.',
   };
   
   return {
@@ -273,9 +194,10 @@ function getHeartChakraState(): HeartChakraState {
 }
 
 function getDailyAffirmation(orixaKey: string): string {
-  const affirmations = ORIXA_LOVE_AFFIRMATIONS[orixaKey] || ORIXA_LOVE_AFFIRMATIONS['default'];
-  const dayIndex = getDayOfYear() % affirmations.length;
-  return affirmations[dayIndex];
+  const affirmations = ORIXA_LOVE_AFFIRMATIONS[orixaKey] || ORIXA_LOVE_AFFIRMATIONS.oxum;
+  const dayOfYear = getDayOfYear();
+  const index = dayOfYear % affirmations.length;
+  return affirmations[index];
 }
 
 // ============================================================
@@ -284,123 +206,106 @@ function getDailyAffirmation(orixaKey: string): string {
 
 function HeartChakraIndicator({ energy, status, tip }: HeartChakraState) {
   const statusColors = {
-    balanced: 'text-emerald-400',
-    low: 'text-rose-400',
-    high: 'text-pink-400',
+    equilibrado: 'from-emerald-500 to-teal-500',
+    aberto: 'from-rose-500 to-pink-500',
+    fechado: 'from-slate-600 to-slate-700',
   };
   
-  const statusBgColors = {
-    balanced: 'bg-emerald-500',
-    low: 'bg-rose-500',
-    high: 'bg-pink-500',
+  const statusLabels = {
+    equilibrado: 'Equilibrado',
+    aberto: 'Aberto',
+    fechado: 'Fechado',
   };
   
   return (
-    <div className="bg-gradient-to-br from-rose-900/30 to-pink-900/20 rounded-lg p-4 border border-rose-500/20">
-      <div className="flex items-center justify-between mb-3">
+    <div className={cn(
+      'p-3 rounded-lg bg-gradient-to-br border transition-all',
+      status === 'equilibrado' ? 'border-emerald-500/30 from-emerald-500/10 to-teal-500/10' :
+      status === 'aberto' ? 'border-rose-500/30 from-rose-500/10 to-pink-500/10' :
+      'border-slate-600/30 from-slate-800/50 to-slate-900/50'
+    )}>
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <Heart className={`w-4 h-4 ${statusColors[status]}`} />
-          <span className="text-sm font-medium text-rose-200">Chakra do Coração</span>
+          <div className={cn(
+            'w-8 h-8 rounded-full flex items-center justify-center',
+            'bg-gradient-to-br',
+            statusColors[status]
+          )}>
+            <span className="text-sm">💚</span>
+          </div>
+          <div>
+            <p className="text-sm font-medium">Chakra do Coração</p>
+            <p className="text-xs text-muted-foreground">Energia: {energy}%</p>
+          </div>
         </div>
-        <span className={`text-xs px-2 py-1 rounded-full ${statusBgColors[status]}/20 ${statusColors[status]}`}>
-          {status === 'balanced' ? 'Equilibrado' : status === 'low' ? 'Abertura' : 'Ativo'}
+        <span className={cn(
+          'px-2 py-0.5 rounded text-xs font-medium',
+          status === 'equilibrado' ? 'bg-emerald-500/20 text-emerald-300' :
+          status === 'aberto' ? 'bg-rose-500/20 text-rose-300' :
+          'bg-slate-600/20 text-slate-400'
+        )}>
+          {statusLabels[status]}
         </span>
       </div>
-      
-      <div className="mb-3">
-        <div className="h-3 bg-slate-800/50 rounded-full overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-700 bg-gradient-to-r from-rose-500 to-pink-400"
-            style={{ width: `${energy}%` }}
-          />
-        </div>
-        <div className="flex justify-between mt-1">
-          <span className="text-xs text-slate-500">Bloqueado</span>
-          <span className="text-sm font-bold text-rose-400">{energy}%</span>
-          <span className="text-xs text-slate-500">Aberto</span>
-        </div>
+      <p className="text-xs text-muted-foreground">{tip}</p>
+      <div className="mt-2 h-1.5 bg-muted rounded-full overflow-hidden">
+        <div
+          className={cn('h-full rounded-full transition-all duration-500 bg-gradient-to-r', statusColors[status])}
+          style={{ width: `${energy}%` }}
+        />
       </div>
-      
-      <p className="text-xs text-slate-400 italic">{tip}</p>
     </div>
   );
 }
 
 function LoveCardDisplay({ card }: { card: LoveTarotCard }) {
   return (
-    <div className="bg-gradient-to-br from-pink-900/30 to-purple-900/20 rounded-lg p-4 border border-pink-500/20">
-      <div className="flex items-center gap-2 mb-3">
-        <Sparkles className="w-4 h-4 text-pink-400" />
-        <span className="text-sm font-medium text-pink-200">Carta do Amor do Dia</span>
-      </div>
-      
-      <div className="bg-slate-800/30 rounded-lg p-4 mb-3">
-        <h4 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-2">
-          {card.name}
-        </h4>
-        <p className="text-sm text-slate-300 mb-2">{card.interpretation}</p>
-        <p className="text-sm text-rose-300 italic">{card.meaning}</p>
-      </div>
-      
-      <div className="flex items-center justify-center gap-1 text-xs text-pink-300">
-        <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" />
-        <span>Energia do amor ativa hoje</span>
+    <div className="relative p-4 rounded-lg bg-gradient-to-br from-rose-500/10 to-pink-500/10 border border-rose-500/20 overflow-hidden group">
+      <div className="absolute inset-0 bg-gradient-to-r from-rose-500/5 via-transparent to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="relative flex items-center gap-3">
+        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center text-2xl shadow-lg">
+          {card.emoji}
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <p className="text-sm font-medium text-rose-300">{card.name}</p>
+            <span className="px-1.5 py-0.5 rounded bg-rose-500/20 text-xs text-rose-300">{card.element}</span>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">{card.meaning}</p>
+        </div>
       </div>
     </div>
   );
 }
 
 function CompatibilityDisplay({ result }: { result: CompatibilityResult }) {
-  const getScoreColor = (score: number) =>
-    score >= 80 ? 'text-emerald-400' :
-    score >= 60 ? 'text-amber-400' :
-    score >= 40 ? 'text-orange-400' : 'text-rose-400';
-  
   return (
-    <div className="bg-gradient-to-br from-purple-900/30 to-indigo-900/20 rounded-lg p-4 border border-purple-500/20">
-      <div className="flex items-center gap-2 mb-3">
-        <Users className="w-4 h-4 text-purple-400" />
-        <span className="text-sm font-medium text-purple-200">Verificação de Compatibilidade</span>
-      </div>
-      
-      <div className="flex items-center gap-3 mb-4">
-        <div className="relative w-16 h-16">
-          <svg className="w-16 h-16 transform -rotate-90">
-            <circle
-              cx="32" cy="32" r="28"
-              stroke="currentColor"
-              strokeWidth="4"
-              fill="none"
-              className="text-slate-700"
-            />
-            <circle
-              cx="32" cy="32" r="28"
-              stroke="currentColor"
-              strokeWidth="4"
-              fill="none"
-              strokeDasharray={`${(result.score / 100) * 175.9} 175.9`}
-              className={getScoreColor(result.score)}
-            />
-          </svg>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className={`text-xl font-bold ${getScoreColor(result.score)}`}>
-              {result.score}%
-            </span>
-          </div>
+    <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-700/50 transition-all hover:border-rose-500/30">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <span className="text-lg">{result.elementEmoji}</span>
+          <span className="text-sm font-medium">Compatibilidade</span>
         </div>
-        
-        <div>
-          <h4 className="text-sm font-semibold text-slate-200">{result.label}</h4>
-          <p className="text-xs text-slate-400 mt-1">{result.description}</p>
-        </div>
+        <span className={cn(
+          'text-lg font-bold',
+          result.score >= 80 ? 'text-emerald-400' :
+          result.score >= 60 ? 'text-amber-400' :
+          'text-slate-400'
+        )}>
+          {result.score}%
+        </span>
       </div>
-      
-      <div className="flex flex-wrap gap-2">
-        {result.elements.map((el, i) => (
-          <span key={i} className="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-300">
-            {el}
-          </span>
-        ))}
+      <p className="text-xs text-muted-foreground">{result.description}</p>
+      <div className="mt-2 h-1.5 bg-muted rounded-full overflow-hidden">
+        <div
+          className={cn(
+            'h-full rounded-full transition-all duration-500',
+            result.score >= 80 ? 'bg-emerald-500' :
+            result.score >= 60 ? 'bg-amber-500' :
+            'bg-slate-500'
+          )}
+          style={{ width: `${result.score}%` }}
+        />
       </div>
     </div>
   );
@@ -408,60 +313,57 @@ function CompatibilityDisplay({ result }: { result: CompatibilityResult }) {
 
 function AffirmationDisplay({ affirmation }: { affirmation: string }) {
   return (
-    <div className="bg-gradient-to-br from-rose-900/30 to-orange-900/20 rounded-lg p-4 border border-rose-500/20">
-      <div className="flex items-center gap-2 mb-3">
-        <Crown className="w-4 h-4 text-amber-400" />
-        <span className="text-sm font-medium text-amber-200">Afirmação de Amor</span>
+    <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/20 transition-all hover:from-purple-500/20 hover:to-indigo-500/20">
+      <div className="flex items-start gap-2">
+        <span className="text-purple-400 text-lg">✨</span>
+        <p className="text-sm text-purple-200 leading-relaxed italic">"{affirmation}"</p>
       </div>
-      <blockquote className="text-sm text-slate-200 italic leading-relaxed">
-        &ldquo;{affirmation}&rdquo;
-      </blockquote>
     </div>
   );
 }
 
 function OrixaCompatibilityDisplay({ userOrixa }: { userOrixa?: string }) {
-  const profiles = getProfiles();
-  const userProfile = userOrixa ? getProfileById(getOrixaKey(userOrixa)) : null;
+  if (!userOrixa) return null;
   
-  if (!userProfile) {
-    return (
-      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/30 rounded-lg p-4 border border-slate-600/20">
-        <p className="text-xs text-slate-400 text-center">
-          Conecte seu Orixá para ver compatibilidade espiritual
-        </p>
-      </div>
-    );
-  }
+  const dayOfYear = getDayOfYear();
+  const compatibleSigns = ['Touro', 'Câncer', 'Escorpião', 'Peixes'];
+  const compatibleIndex = dayOfYear % compatibleSigns.length;
+  const sign = compatibleSigns[compatibleIndex];
   
   return (
-    <div className="bg-gradient-to-br from-indigo-900/30 to-blue-900/20 rounded-lg p-4 border border-indigo-500/20">
-      <div className="flex items-center gap-2 mb-3">
-        <Sparkles className="w-4 h-4 text-indigo-400" />
-        <span className="text-sm font-medium text-indigo-200">Orixá {userProfile.name}</span>
+    <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 transition-all hover:border-amber-500/30">
+      <div className="flex items-center gap-2 mb-1">
+        <span className="text-amber-400">🪬</span>
+        <span className="text-sm font-medium text-amber-300">Energia de {userOrixa}</span>
       </div>
-      
-      <div className="space-y-2">
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-slate-400">Arquétipo</span>
-          <span className="text-sm text-indigo-300">{userProfile.archetype}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-slate-400">Elemento</span>
-          <span className="text-sm text-indigo-300">{userProfile.element}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-slate-400">Qualidades</span>
-          <span className="text-xs text-indigo-300">{userProfile.qualities[0]}, {userProfile.qualities[1]}</span>
-        </div>
-      </div>
-      
-      {userProfile.affirmation && (
-        <p className="text-xs text-slate-500 mt-3 italic">
-          &ldquo;{userProfile.affirmation}&rdquo;
-        </p>
-      )}
+      <p className="text-xs text-muted-foreground">
+        Hoje você vibra em harmonia com signos {sign === 'Touro' ? 'de Terra 🌍' : sign === 'Câncer' ? 'de Água 💧' : sign === 'Escorpião' ? 'de Água 💧' : 'de Água 💧'}
+      </p>
     </div>
+  );
+}
+
+function LoveReadingsLoadingSkeleton() {
+  return (
+    <Card className={cn(
+      'card-spiritual overflow-hidden animate-fade-in',
+    )}>
+      <div className="h-0.5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-500 animate-shimmer" />
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-rose-500/20 animate-pulse" />
+            <div className="h-5 w-32 rounded bg-slate-700 animate-pulse" />
+          </div>
+          <div className="w-8 h-8 rounded-full bg-slate-700 animate-pulse" />
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-20 rounded-lg bg-slate-700/50 animate-pulse" style={{ animationDelay: `${i * 150}ms` }} />
+        ))}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -476,6 +378,12 @@ export function LoveReadingsWidget({
   className = '',
 }: LoveReadingsWidgetProps) {
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  React.useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 150);
+    return () => clearTimeout(timer);
+  }, []);
   
   // Calculate all readings
   const dailyCard = useMemo(() => getDailyLoveCard(), [refreshKey]);
@@ -487,19 +395,32 @@ export function LoveReadingsWidget({
     setRefreshKey(prev => prev + 1);
   };
   
+  if (!isLoaded) {
+    return <LoveReadingsLoadingSkeleton />;
+  }
+  
   return (
-    <Card className={`card-spiritual ${className}`}>
+    <Card className={cn(
+      'card-spiritual overflow-hidden transition-all duration-300',
+      'hover:shadow-lg hover:shadow-rose-500/10 hover:border-rose-500/30',
+      'animate-fade-in',
+      className
+    )}>
+      <div className="h-0.5 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-500" />
+      
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <Heart className="w-5 h-5 text-rose-400" />
+          <CardTitle className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500/20 to-pink-500/20 flex items-center justify-center">
+              <Heart className="w-4 h-4 text-rose-400" />
+            </div>
             <span className="bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">
               Leituras de Amor
             </span>
           </CardTitle>
           <button
             onClick={handleRefresh}
-            className="p-1.5 rounded-full hover:bg-slate-700/50 transition-colors"
+            className="p-1.5 rounded-full hover:bg-slate-700/50 transition-all hover:rotate-180"
             title="Atualizar leituras"
           >
             <RefreshCw className="w-4 h-4 text-slate-400" />
@@ -509,22 +430,32 @@ export function LoveReadingsWidget({
       
       <CardContent className="space-y-4">
         {/* Daily Love Card */}
-        <LoveCardDisplay card={dailyCard} />
+        <div className="animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+          <LoveCardDisplay card={dailyCard} />
+        </div>
         
         {/* Compatibility Check */}
-        <CompatibilityDisplay result={compatibility} />
+        <div className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+          <CompatibilityDisplay result={compatibility} />
+        </div>
         
         {/* Heart Chakra */}
-        <HeartChakraIndicator {...heartChakra} />
+        <div className="animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+          <HeartChakraIndicator {...heartChakra} />
+        </div>
         
         {/* Orixá Profile */}
-        <OrixaCompatibilityDisplay userOrixa={userOrixa} />
+        <div className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+          <OrixaCompatibilityDisplay userOrixa={userOrixa} />
+        </div>
         
         {/* Love Affirmation */}
-        <AffirmationDisplay affirmation={affirmation} />
+        <div className="animate-fade-in-up" style={{ animationDelay: '250ms' }}>
+          <AffirmationDisplay affirmation={affirmation} />
+        </div>
         
         {/* Footer tip */}
-        <div className="text-center pt-2 border-t border-slate-700/50">
+        <div className="text-center pt-2 border-t border-slate-700/50 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
           <p className="text-xs text-slate-500">
             ✨ As leituras são baseadas na energia espiritual do momento
           </p>

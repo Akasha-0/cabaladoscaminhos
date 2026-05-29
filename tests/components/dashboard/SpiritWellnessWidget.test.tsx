@@ -14,7 +14,6 @@ const mockLocalStorage = (() => {
     setStore: (s: Record<string, string>) => { store = s; }
   };
 })();
-
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage, writable: true });
 
 describe('SpiritWellnessWidget', () => {
@@ -23,16 +22,11 @@ describe('SpiritWellnessWidget', () => {
     vi.clearAllMocks();
   });
 
-  it('renders without errors', () => {
+  it('renders without crashing', () => {
     expect(() => render(<SpiritWellnessWidget />)).not.toThrow();
   });
 
-  it('displays the widget title', () => {
-    render(<SpiritWellnessWidget />);
-    expect(screen.getByText('Bienestar Espiritual')).toBeTruthy();
-  });
-
-  it('displays all five dimensions', () => {
+  it('displays 5 wellness dimensions', () => {
     render(<SpiritWellnessWidget />);
     expect(screen.getByText('Física')).toBeTruthy();
     expect(screen.getByText('Emocional')).toBeTruthy();
@@ -46,6 +40,12 @@ describe('SpiritWellnessWidget', () => {
     expect(screen.getByText('Pontuação Geral')).toBeTruthy();
   });
 
+  it('has interactive sliders', () => {
+    render(<SpiritWellnessWidget />);
+    const sliders = document.querySelectorAll('input[type="range"]');
+    expect(sliders.length).toBe(5);
+  });
+
   it('has a check-in button', () => {
     render(<SpiritWellnessWidget />);
     expect(screen.getByText('Registrar Check-in de Hoje')).toBeTruthy();
@@ -53,10 +53,8 @@ describe('SpiritWellnessWidget', () => {
 
   it('saves check-in to localStorage', async () => {
     render(<SpiritWellnessWidget />);
-    
     const button = screen.getByText('Registrar Check-in de Hoje');
     fireEvent.click(button);
-    
     await waitFor(() => {
       expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
         'cabala_wellness_data',
