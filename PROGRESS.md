@@ -1,6 +1,6 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 10:20
+**Última atualização:** 2026-05-29 10:25
 **Ciclos de desenvolvimento completados:** 4
 **Build status:** PASSING ✅
 **Tests:** 838 passing, 14 skipped (39 test files)
@@ -25,37 +25,29 @@
 - Tarot, Chakra system, Orixás, Cabala
 - Deep Correlation Engine, Pattern Recognizer, Oracle Chat, Prediction Engine
 
-### Mapa da Alma Features (Sprint 4)
-- **Página /mapa** — interface visual completa com download PDF
-- **POST /api/mapa** — aggregation endpoint
-- **POST /api/mapa/share** — shareable public links
-- **MapaNatal component** — SVG astrological wheel
-- **OduCard component** — quizilas e preceitos
+### Mapa da Alma (Sprint 4 Completo)
+- **Página /mapa** ✅ — interface visual completa com download PDF
+- **MapaNatal SVG** ✅ — integrated na página, roda astrológica
+- **OduCard** ✅ — display de quizilas e preceitos
+- **POST /api/mapa** ✅ — aggregation endpoint
+- **POST /api/mapa/share** ✅ — shareable public links
+- **Download button** ✅ — PDF via jsPDF
 
-### PDF Export
+### PDF Export (Sprint 4)
 - `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF
-- Download button integrado na página /mapa
+- Dark/gold theme, todas as seções
 
 ### Testing
 - 39 test files, 838 tests passing, 14 skipped
 - spiritual-engines-validation.test.ts — 84 testes
 - mapa.test.ts — 14 testes
 
-## 🔄 CICLO 4 - PDF EXPORT (COMPLETO)
-
-### Features Entregues
-1. **PDF generation** — dark/gold theme, all sections
-2. **MapaNatal SVG** — wheel with zodiac signs and planets
-3. **OduCard** — quizilas, preceitos, ebós
-4. **Share link API** — `/api/mapa/share`
-5. **Download button** — on /mapa page
-
 ## 📋 PRÓXIMAS PRIORIDADES
 
 ### Curto Prazo
 1. [x] Sprint 4 PDF Export — COMPLETO ✅
-2. [ ] Shared Mapa page (`/mapa/shared/[hash]`)
-3. [ ] Verify MapaNatal in browser
+2. [x] MapaNatal integrado na página ✅
+3. [ ] Shared Mapa page (`/mapa/shared/[hash]`)
 
 ### Médio Prazo
 1. [ ] Sprint 5: Shared Mapa page
@@ -65,7 +57,7 @@
 ## 🏗️ DECISÕES ARQUITETURAIS
 
 1. **PDF template**: jsPDF com tema dark/gold (#D4AF37)
-2. **MapaNatal**: SVG puro, responsivo via viewBox
+2. **MapaNatal**: SVG puro, responsivo, integrado na página
 3. **Share links**: Hash único + storage
 
 ## 📊 MÉTRICAS
