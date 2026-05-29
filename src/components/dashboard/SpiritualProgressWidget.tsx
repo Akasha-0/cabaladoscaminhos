@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Flame, Heart, Sparkles, TrendingUp, Trophy, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useSpiritualHistory } from '@/hooks/useSpiritualHistory';
+import { useSpiritualHistory, type SpiritualDayEntry } from '@/hooks/useSpiritualHistory';
 
 // ============================================================
 // TYPES
@@ -189,7 +189,7 @@ export function SpiritualProgressWidget({ className = '', userId = 'default', us
   const [message, setMessage] = React.useState('');
 
   // Store spiritual history values in state to avoid calling impure hook during render
-  const [history, setHistory] = React.useState<{ date: string; rituals: { completed: boolean; name: string }[]; divinations: unknown[] }[]>([]);
+  const [history, setHistory] = React.useState<SpiritualDayEntry[]>([]);
   const [historyStreak, setHistoryStreak] = React.useState(0);
 
   // Initialize spiritual history data in useEffect to avoid render-time impure calls
