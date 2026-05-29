@@ -1,9 +1,9 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 10:25
-**Ciclos de desenvolvimento completados:** 4
+**Última atualização:** 2026-05-29 10:35
+**Ciclos de desenvolvimento completados:** 5
 **Build status:** PASSING ✅
-**Tests:** 838 passing, 14 skipped (39 test files)
+**Tests:** 898 passing, 14 skipped (43 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -25,12 +25,13 @@
 - Tarot, Chakra system, Orixás, Cabala
 - Deep Correlation Engine, Pattern Recognizer, Oracle Chat, Prediction Engine
 
-### Mapa da Alma (Sprint 4 Completo)
+### Mapa da Alma (Sprints 4-5 Completos)
 - **Página /mapa** ✅ — interface visual completa com download PDF
 - **MapaNatal SVG** ✅ — integrated na página, roda astrológica
 - **OduCard** ✅ — display de quizilas e preceitos
 - **POST /api/mapa** ✅ — aggregation endpoint
 - **POST /api/mapa/share** ✅ — shareable public links
+- **GET /mapa/shared/[hash]** ✅ — shared read-only page
 - **Download button** ✅ — PDF via jsPDF
 
 ### PDF Export (Sprint 4)
@@ -38,32 +39,31 @@
 - Dark/gold theme, todas as seções
 
 ### Testing
-- 39 test files, 838 tests passing, 14 skipped
-- spiritual-engines-validation.test.ts — 84 testes
-- mapa.test.ts — 14 testes
+- 43 test files, 898 tests passing, 14 skipped
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
 ### Curto Prazo
 1. [x] Sprint 4 PDF Export — COMPLETO ✅
 2. [x] MapaNatal integrado na página ✅
-3. [ ] Shared Mapa page (`/mapa/shared/[hash]`)
+3. [x] Shared Mapa page (`/mapa/shared/[hash]`) ✅
 
 ### Médio Prazo
-1. [ ] Sprint 5: Shared Mapa page
+1. [ ] Sprint 6: Payment integration (Stripe)
 2. [ ] Calendar energético
-3. [ ] Payment integration
+3. [ ] Onboarding page
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
 1. **PDF template**: jsPDF com tema dark/gold (#D4AF37)
 2. **MapaNatal**: SVG puro, responsivo, integrado na página
-3. **Share links**: Hash único + storage
+3. **Share links**: Hash único + storage (in-memory para MVP)
+4. **Shared page**: Read-only display sem download
 
 ## 📊 MÉTRICAS
 
 - Engines: ~18/25 sistemas, 3 validados ✅
-- Test coverage: 39 files, 838 tests passing
+- Test coverage: 43 files, 898 tests passing
 - API routes: 200+
 - Build: PASSING ✅
 
