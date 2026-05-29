@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Skull, Sparkles, Star, Sun, Moon, Zap } from 'lucide-react';
+import { Skull, Sparkles, Star, Sun, Moon, Zap, Download } from 'lucide-react';
+import { gerarRelatorioPDF } from '@/lib/pdf/gerarRelatorio';
 
 interface MapaData {
   id: string;
@@ -32,7 +33,7 @@ interface MapaData {
   };
   orixas: string[];
   sefirot: string[];
-  convergencias: Array<{
+  convergencias?: Array<{
     energia: string;
     forca: 'simples' | 'dupla' | 'tripla';
     descricao: string;
@@ -50,6 +51,7 @@ const ARCANOS_MAIORES = [
 export default function MapaPage() {
   const [mapa, setMapa] = useState<MapaData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pdfLoading, setPdfLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Demo data for testing
@@ -85,6 +87,26 @@ export default function MapaPage() {
 
     fetchMapa();
   }, []);
+
+  const handleDownloadPDF = async () => {
+    if (!mapa) return;
+    setPdfLoading(true);
+    try {
+      const blob = gerarRelatorioPDF(mapa);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mapa-da-alma.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Erro ao gerar PDF:', err);
+    } finally {
+      setPdfLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -130,13 +152,23 @@ export default function MapaPage() {
     <div className="min-h-screen bg-slate-950 text-white p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-amber-400 mb-2">
-            ✦ Mapa da Alma ✦
-          </h1>
-          <p className="text-slate-400">
-            {testProfile.nome} • {new Date(testProfile.dataNascimento).toLocaleDateString('pt-BR')}
-          </p>
+        <div className="flex items-center justify-between mb-12">
+          <div className="flex-1 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-amber-400 mb-2">
+              ✦ Mapa da Alma ✦
+            </h1>
+            <p className="text-slate-400">
+              {testProfile.nome} • {new Date(testProfile.dataNascimento).toLocaleDateString('pt-BR')}
+            </p>
+          </div>
+          <button
+            onClick={handleDownloadPDF}
+            disabled={pdfLoading}
+            className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Download className="w-4 h-4" />
+            {pdfLoading ? 'Gerando...' : 'Download PDF'}
+          </button>
         </div>
 
         {/* Convergências */}
