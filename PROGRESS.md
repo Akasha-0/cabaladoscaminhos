@@ -1,9 +1,9 @@
-## 🔄 CICLO 5 - SPRINT 4 (EM PROGRESSO)
+# CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 09:55
+**Última atualização:** 2026-05-29 10:10
 **Ciclos de desenvolvimento completados:** 4
 **Build status:** PASSING ✅
-**Tests:** 864 passing, 14 skipped
+**Tests:** 834 passing, 14 skipped (39 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -22,75 +22,61 @@
 - **Numerologia Cabalística** ✅ 41 testes
 - **Odu Ifá** ✅ 26 testes — 16 Odús com quizilas e preceitos
 - **Astrologia** ✅ 17 testes — planet-calculator, houses, natal
-- Tarot (22 Arcanos Maiores, cards, meanings, spread-maker)
-- Chakra system (v2, v3, v4 data and practice)
-- Orixás (complete data for all main orixás)
-- Cabala (tree of life, sephiroth mappings)
+- Tarot, Chakra system, Orixás, Cabala
 - Deep Correlation Engine, Pattern Recognizer, Oracle Chat, Prediction Engine
 
 ### Mapa da Alma Features
 - **Página /mapa** — interface visual completa com download PDF
 - **POST /api/mapa** — aggregation endpoint
 - **POST /api/mapa/share** — shareable public links
-- **MapaNatal component** — SVG astrological wheel visualization
+- **MapaNatal component** — SVG astrological wheel
+- **OduCard component** — quizilas e preceitos
 
-### Frontend
-- Dashboard with 20+ widgets
-- Login/auth flows
-- Mapa page with PDF download (via jsPDF)
-- MapaNatal SVG wheel component
-
-### API Routes
-- 200+ API routes
-- `/api/mapa` and `/api/mapa/share`
+### PDF Export (Sprint 4 Completo)
+- `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF
+- `src/components/dashboard/MapaNatal.tsx` — SVG wheel visualization
+- `src/components/dashboard/OduCard.tsx` — Odu display
+- Download button integrado na página /mapa
 
 ### Testing
-- 39 test files, 864 tests (864 passing, 14 skipped)
-- `spiritual-engines-validation.test.ts` — 84 testes
-- `mapa.test.ts` — 14 testes
-- `gerarRelatorio.test.ts` — 25 testes (NOVO)
+- 39 test files, 834 tests passing, 14 skipped
+- spiritual-engines-validation.test.ts — 84 testes
+- mapa.test.ts — 14 testes
+- gerarRelatorio.test.ts — 25 testes
 
 ## 🔄 CICLO 4 - PDF EXPORT (COMPLETO)
 
-### Features Implementadas
-1. **PDF generation** — `src/lib/pdf/gerarRelatorio.ts` (444 lines)
-   - Dark/gold theme matching spiritual aesthetic
-   - All sections: numerology, Odu, astrology, tarot, orixás, convergences
-   - Page numbers and generation timestamp
-2. **MapaNatal SVG wheel** — `src/components/dashboard/MapaNatal.tsx`
-   - Astrological wheel with zodiac signs
-   - Planet positions visualization
-3. **Share link API** — `POST /api/mapa/share`
-4. **Download button** — added to /mapa page
+### Features Entregues
+1. **PDF generation** — dark/gold theme, all sections
+2. **MapaNatal SVG** — wheel with zodiac signs and planets
+3. **OduCard** — quizilas, preceitos, ebós
+4. **Share link API** — `/api/mapa/share`
+5. **Download button** — on /mapa page
 
-### Testes Adicionados
-- `tests/lib/pdf/gerarRelatorio.test.ts` — 25 testes
-
-## 📋 PRÓXIMAS PRIORIDADES (em ordem)
+## 📋 PRÓXIMAS PRIORIDADES
 
 ### Curto Prazo
-1. [ ] Push para GitHub (se não feito)
-2. [ ] Verificar MapaNatal SVG no navegador
-3. [ ] Adicionar MapaNatal ao /mapa page
+1. [x] Sprint 4 PDF Export — COMPLETO ✅
+2. [ ] Shared Mapa page (`/mapa/shared/[hash]`)
+3. [ ] Verify MapaNatal in browser
 
 ### Médio Prazo
-1. [ ] Sprint 5: Shared Mapa page (/mapa/shared/[hash])
-2. [ ] OduCard component with quizilas
-3. [ ] Calendário energético
+1. [ ] Sprint 5: Shared Mapa page
+2. [ ] Calendar energético
+3. [ ] Payment integration
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
-1. **PDF template**: jsPDF com tema dark/gold (#D4AF37 accent)
+1. **PDF template**: jsPDF com tema dark/gold (#D4AF37)
 2. **MapaNatal**: SVG puro, responsivo via viewBox
-3. **Share links**: Hash único + Redis/in-memory storage
+3. **Share links**: Hash único + storage
 
 ## 📊 MÉTRICAS
 
-- Engines: ~18/25 sistemas core, 3 validados ✅
-- Test coverage: 39 files, 864 tests
+- Engines: ~18/25 sistemas, 3 validados ✅
+- Test coverage: 39 files, 834 tests
 - API routes: 200+
 - Build: PASSING ✅
-- Test: 864 passing
 
 ---
 
