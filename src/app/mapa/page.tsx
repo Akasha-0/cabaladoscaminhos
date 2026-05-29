@@ -1,10 +1,5 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Skull, Sparkles, Star, Sun, Moon, Zap, Download } from 'lucide-react';
 import MapaNatal from '@/components/dashboard/MapaNatal';
+import ArvoreVida from '@/components/dashboard/ArvoreVida';
 
 interface MapaData {
   id: string;
@@ -366,6 +361,22 @@ export default function MapaPage() {
             </CardContent>
           </Card>
         </div>
+        {/* Árvore da Vida */}
+          <CardHeader>
+            <CardTitle className="text-amber-400 flex items-center gap-2">
+              <Star className="w-5 h-5" />
+              Árvore da Vida
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center">
+            <ArvoreVida
+              highlightedSephiroth={mapa.sefirot}
+              size="lg"
+              showLabels={true}
+              showPathNumbers={true}
+            />
+          </CardContent>
+        </Card>
 
         {/* Quizilas do Odú */}
         {mapa.odu.quizilas && mapa.odu.quizilas.length > 0 && (
@@ -386,7 +397,3 @@ export default function MapaPage() {
             </CardContent>
           </Card>
         )}
-      </div>
-    </div>
-  );
-}
