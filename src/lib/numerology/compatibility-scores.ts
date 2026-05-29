@@ -56,8 +56,6 @@ function calculateNumberCompatibility(numA: number, numB: number): number {
   // Perfect match
   if (numA === numB) return 100;
 
-  // Complementary numbers (Master numbers considered)
-  const masterNumbers = [11, 22, 33];
   const complementaryMap: Record<number, number[]> = {
     1: [1, 8, 9],
     2: [2, 4, 6],

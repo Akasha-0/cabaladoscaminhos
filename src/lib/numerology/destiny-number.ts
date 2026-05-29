@@ -41,11 +41,6 @@ function extractDigits(date: string): number[] {
 /**
  * Pythagorean table for date calculation
  * Each digit maps to its numerological value
- */
-const pythagoreanTable: Record<string, number> = {
-  '0': 0, '1': 1, '2': 2, '3': 3, '4': 4,
-  '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
-};
 
 /**
  * Calculates the Destiny Number from a birth date
@@ -55,9 +50,6 @@ const pythagoreanTable: Record<string, number> = {
  * @returns Destiny result with number and interpretation
  */
 export function calculateDestiny(birthDate: string): DestinyResult {
-  // Remove non-digit characters
-  const cleanDate = birthDate.replace(/\D/g, '');
-  
   // Sum all digits in the date
   const total = extractDigits(birthDate).reduce((sum, digit) => sum + digit, 0);
   

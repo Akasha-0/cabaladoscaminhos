@@ -1,7 +1,9 @@
+// Daily practice calendar
+
 export interface CalendarDay {
   date: string;
   completed: boolean;
-  practiceType?: string;
+  practice?: string;
 }
 
 export interface CalendarView {
@@ -13,7 +15,6 @@ export function getCalendar(): CalendarView {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
-  const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
   const daysInMonth = lastDay.getDate();
 
@@ -26,13 +27,8 @@ export function getCalendar(): CalendarView {
     });
   }
 
-  const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-
   return {
     days,
-    currentMonth: `${monthNames[month]} ${year}`,
+    currentMonth: today.toLocaleString('default', { month: 'long', year: 'numeric' }),
   };
 }

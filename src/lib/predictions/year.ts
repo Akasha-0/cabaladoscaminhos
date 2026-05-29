@@ -44,7 +44,7 @@ const nomesSefirots = [
 const themesAnoPessoal: Record<number, Omit<YearTheme, 'numero' | 'sefirot'>> = {
   1: {
     titulo: 'Iniciação e Autonomia',
-    descricao: 'Ano de novos começos, liderança e独立. O universo conspira para que você tome as rédeas da sua vida.',
+    descricao: 'Ano de novos começos, liderança e independência. O universo conspira para que você tome as rédeas da sua vida.',
     oraculo: 'O primeiro passo é o mais corajoso. Caminhe sozinho se necessário.',
     cor: '#FF6B35',
     elemento: 'Fogo',
@@ -60,7 +60,7 @@ const themesAnoPessoal: Record<number, Omit<YearTheme, 'numero' | 'sefirot'>> = 
   },
   3: {
     titulo: 'Expressão e Criatividade',
-    descricao: 'Ano de expansão criativa, comunicação e alegria.允许-se ser visto.',
+    descricao: 'Ano de expansão criativa, comunicação e alegria. Permita-se ser visto.',
     oraculo: 'A voz que silencia o mundo precisa ser ouvida. Cante sua verdade.',
     cor: '#FFE66D',
     elemento: 'Fogo',
@@ -152,36 +152,38 @@ function getSefirot(numero: number): string {
   return nomesSefirots[numero] || nomesSefirots[numero % 10] || 'Malkuth';
 }
 
-function generateTurningPoints(anoPessoal: number): TurningPoint[] {
-  const turningPoints: TurningPoint[] = [];
+function generateTurningPoints(_anoPessoal: number): TurningPoint[] {
   const config = turningPointsConfig;
 
   const turningPointMonths: Record<string, { titulo: string; descricao: string }[]> = {
     introspeccao: [
-      { titulo: 'Lua Nova Interior', descricao: 'Momento de planejar, visualizar e definir intenções para o período.' },
-      { titulo: 'Retiro Espiritual', descricao: 'Período propício para meditação, estudos e autoconhecimento.' },
-      { titulo: 'Raízes Profundas', descricao: 'Hora de examinar suas fundações e garantir que estão firmes.' }
+      { titulo: 'Reflexão Interior', descricao: 'Momento de auto-observacao e avaliacao espiritual' },
+      { titulo: 'Busca Interior', descricao: 'Processo de descoberta dos segredos interiores' },
+      { titulo: 'Integracao Espiritual', descricao: 'Sintese entre experiencia e sabedoria' },
     ],
     acao: [
-      { titulo: 'Impulso Criativo', descricao: 'Energia峰值 para iniciar projetos, tomar decisões e agir.' },
-      { titulo: 'Momento de Agir', descricao: 'O universo pede果断 ação. Não adie o que precisa ser feito.' },
-      { titulo: 'Força Motivadora', descricao: 'Sua energia está alta. channelize para创造出 resultados.' }
+      { titulo: 'Acao Determinada', descricao: 'Momento de tomar decisoes importantes' },
+      { titulo: 'Impulso Vital', descricao: 'Energia concentrada para realizacoes' },
+      { titulo: 'Coragem de Agir', descricao: 'Superação de obstaculos com forca interior' },
     ],
     transicao: [
-      { titulo: 'Porta de Mudança', descricao: 'Uma passagem importante se abre. Esteja atento às oportunidades.' },
-      { titulo: 'Fluxo Natural', descricao: 'Permita que as coisas aconteçam. Menos resistência, mais fluidez.' },
-      { titulo: 'Curva do Destino', descricao: 'Um redirecionamento importante ocorre. Abrace a mudança.' }
+      { titulo: 'Porta de Transformacao', descricao: 'Limiar entre o antigo e o novo ciclo' },
+      { titulo: 'Passagem Sagrada', descricao: 'Transicao energetica entre dimensoes' },
+      { titulo: 'Caminho Intermediario', descricao: 'Processo de integracao de mudancas' },
     ],
     culminacao: [
-      { titulo: 'Colheita', descricao: 'O momento de avaliar o que foi plantado e reconhecer os frutos.' },
-      { titulo: 'Cloak do Ciclo', descricao: 'Um capítulo se encerra. Honre o que foi antes de seguir em frente.' },
-      { titulo: 'Preparação para Renascimento', descricao: 'O antigo se dissolve para dar espaço ao novo que está nascendo.' }
-    ]
+      { titulo: 'Climax do Ciclo', descricao: 'Ponto culminante das experiencias do ano' },
+      { titulo: 'Realizacao Total', descricao: 'Consagracao dos objetivos alcancados' },
+      { titulo: 'A堂Final', descricao: 'Conclusao e preparacao para novo inicio' },
+    ],
   };
 
-  const meses = [3, 6, 9, 12];
-  meses.forEach((mes, index) => {
-    const tipo = Object.keys(config)[index % 4] as 'introspeccao' | 'acao' | 'transicao' | 'culminacao';
+  const turningPoints: TurningPoint[] = [];
+
+  for (let index = 0; index < 12; index++) {
+    const mes = index + 1;
+    const tipoConfig = config[mes] || config[1];
+    const tipo = tipoConfig.tipo;
     const textos = turningPointMonths[tipo];
     const selectedText = textos[index % textos.length];
 
@@ -192,7 +194,7 @@ function generateTurningPoints(anoPessoal: number): TurningPoint[] {
       descricao: selectedText.descricao,
       energia: Math.floor(50 + Math.random() * 50)
     });
-  });
+  }
 
   return turningPoints;
 }
@@ -200,9 +202,9 @@ function generateTurningPoints(anoPessoal: number): TurningPoint[] {
 function generateQuarterlyBreakdown(anoPessoal: number): QuarterlyBreakdown[] {
   const quarterThemes: Record<number, { tema: string; oportunidades: string[]; desafios: string[]; conselho: string }[]> = {
     1: [
-      { tema: 'Semeando Intenções', oportunidades: ['Definir metas claras', ' Novos começos'], desafios: ['Imaturidade', 'Impaciência'], conselho: 'Comece pelo essencial.' },
-      { tema: 'Construindo Momentum', oportunidades: ['Avançar projetos', 'Ganhar reconhecimento'], desafios: ['Obstáculos inesperados', 'Fadiga'], conselho: 'Mantenha o ritmo steady.' },
-      { tema: 'Expansão de Horizontes', oportunidades: ['Revelar habilidades', 'Conectar-se com outros'], desafios: ['Superficialidade', 'Distração'], conselho: 'Aborde mais profundo.' },
+      { tema: 'Semeando Intenções', oportunidades: ['Definir metas claras', 'Novos começos'], desafios: ['Imaturidade', 'Impaciência'], conselho: 'Comece pelo essencial.' },
+      { tema: 'Construindo Momentum', oportunidades: ['Avançar projetos', 'Ganhar reconhecimento'], desafios: ['Obstáculos inesperados', 'Fadiga'], conselho: 'Mantenha o ritmo.' },
+      { tema: 'Expansão de Horizontes', oportunidades: ['Revelar habilidades', 'Conectar-se com outros'], desafios: ['Superficialidade', 'Distração'], conselho: 'Aprofunde mais.' },
       { tema: 'Consolidação', oportunidades: ['Ver resultados', 'Afinar direção'], desafios: ['Inflexibilidade', 'Rancor'], conselho: 'Revise e ajuste.' }
     ],
     2: [
@@ -212,14 +214,14 @@ function generateQuarterlyBreakdown(anoPessoal: number): QuarterlyBreakdown[] {
       { tema: 'União', oportunidades: ['Celebrar conquistas', 'Forjar laços duradouros'], desafios: ['Separação', 'Desentendimentos'], conselho: 'Honre a diversidade na unidade.' }
     ],
     3: [
-      { tema: 'Expressão Autêntica', oportunidades: ['Criação artística', 'Comunicação clara'], desafios: ['Excesso', 'Dispersão'], conselho: ' channelize sua energia creativa.' },
+      { tema: 'Expressão Autêntica', oportunidades: ['Criação artística', 'Comunicação clara'], desafios: ['Excesso', 'Dispersão'], conselho: 'Canalize sua energia criativa.' },
       { tema: 'Expansão Social', oportunidades: ['Networking', 'Novas amizades'], desafios: ['Fofoca', 'Superficialidade'], conselho: 'Escolha qualidade sobre quantidade.' },
-      { tema: 'Alegria de Viver', oportunidades: ['Curtir o presente', 'Explorar possibilidades'], desafios: ['Irresponsabilidade', 'Procrastinação'], conselho: ' equilibrer prazer e dever.' },
+      { tema: 'Alegria de Viver', oportunidades: ['Curtir o presente', 'Explorar possibilidades'], desafios: ['Irresponsabilidade', 'Procrastinação'], conselho: 'Equilibre prazer e dever.' },
       { tema: 'Integração', oportunidades: ['Síntese de aprendizados', 'Aplicar conhecimento'], desafios: ['Cinismo', 'Restrição'], conselho: 'Compartilhe sua luz com outros.' }
     ],
     4: [
       { tema: 'Fundação', oportunidades: ['Estabelecer sistemas', 'Criar estrutura'], desafios: ['Rigidez', 'Escassez'], conselho: 'Construa sólido, não rápido.' },
-      { tema: 'Trabalho Dedicado', oportunidades: ['Progresso tangível', 'Reconhecimento profissional'], desafios: ['Burnout', 'Monotonia'], conselho: 'Pace yourself steady.' },
+      { tema: 'Trabalho Dedicado', oportunidades: ['Progresso tangível', 'Reconhecimento profissional'], desafios: ['Burnout', 'Monotonia'], conselho: 'Pace yourself.' },
       { tema: 'Estabilidade', oportunidades: ['Acumular recursos', 'Fortalecer raízes'], desafios: ['Estagnação', 'Medo de mudar'], conselho: 'Valorize o que foi conquistado.' },
       { tema: 'Consolidação Anual', oportunidades: ['Revisar metas', 'Preparar para evolução'], desafios: ['Resistência', 'Insatisfação'], conselho: 'As bases estão firmes; olhe para o alto.' }
     ],
@@ -230,10 +232,10 @@ function generateQuarterlyBreakdown(anoPessoal: number): QuarterlyBreakdown[] {
       { tema: 'Integração de Mudanças', oportunidades: ['Síntese de experiências', 'Crescimento pessoal'], desafios: ['Insatisfação crônica', 'Fuga de responsabilidades'], conselho: 'A mudança interna precede a externa.' }
     ],
     6: [
-      { tema: 'Harmonia Doméstica', oportunidades: ['Melhorar ambiente', 'Cuidar de близких'], desafios: ['Sacrifício excessivo', 'Culpa'], conselho: 'Sirva sem se perder.' },
+      { tema: 'Harmonia Doméstica', oportunidades: ['Melhorar ambiente', 'Cuidar de cercanos'], desafios: ['Sacrifício excessivo', 'Culpa'], conselho: 'Sirva sem se perder.' },
       { tema: 'Responsabilidade Amorosa', oportunidades: ['Relacionamentos maturam', 'Compromisso'], desafios: ['Controle', 'Expectativas irrealistas'], conselho: 'Ame sem prender.' },
-      { tema: 'Comunidade', oportunidades: ['Engajamento social', 'Serviço voluntário'], desafios: ['Conflitos familiares', 'Onerve'], conselho: 'Encontre o equilíbrio entre dar e receber.' },
-      { tema: 'Ciclo de Amor', oportunidades: ['Celebrar laços', 'Perdoar mágoas'], desafios: ['Rigidez emocional', 'Dependência'], conselho: ' Honre o amor em todas suas formas.' }
+      { tema: 'Comunidade', oportunidades: ['Engajamento social', 'Serviço voluntário'], desafios: ['Conflitos familiares', 'Onus'], conselho: 'Encontre equilíbrio entre dar e receber.' },
+      { tema: 'Ciclo de Amor', oportunidades: ['Celebrar laços', 'Perdoar mágoas'], desafios: ['Rigidez emocional', 'Dependência'], conselho: 'Honre o amor em todas suas formas.' }
     ],
     7: [
       { tema: 'Retiro Interior', oportunidades: ['Meditação', 'Estudos profundos'], desafios: ['Isolamento', 'Melancolia'], conselho: 'No silêncio, encontre respostas.' },
@@ -248,7 +250,7 @@ function generateQuarterlyBreakdown(anoPessoal: number): QuarterlyBreakdown[] {
       { tema: 'Culminação do Poder', oportunidades: ['Colheita de esforços', 'Respeito'], desafios: ['Arrogância', 'Queda'], conselho: 'O poder verdadeiro é servir.' }
     ],
     9: [
-      { tema: 'Desapego', oportunidades: ['Liberação de padrões antigos', 'Perdoar'], desafios: ['Luto', 'Desilusión'], conselho: 'Solte o que não serve mais.' },
+      { tema: 'Desapego', oportunidades: ['Liberação de padrões antigos', 'Perdoar'], desafios: ['Luto', 'Desilusão'], conselho: 'Solte o que não serve mais.' },
       { tema: 'Completamento', oportunidades: ['Encerrar ciclos', 'Fechar projetos'], desafios: ['Resistência', 'Medo do vazio'], conselho: 'Cada fim é um começo disfarçado.' },
       { tema: 'Transição', oportunidades: ['Preparação para novo capítulo', 'Renovação'], desafios: ['Incerteza', 'Impaciência'], conselho: 'Permita que o antigo se dissolva.' },
       { tema: 'Renascimento', oportunidades: ['Sementes para o futuro', 'Recomeçar'], desafios: ['Nostalgia', 'Apegamento ao passado'], conselho: 'O novo está nascendo em você.' }
@@ -267,14 +269,14 @@ function generateQuarterlyBreakdown(anoPessoal: number): QuarterlyBreakdown[] {
 function generateSummary(theme: YearTheme): string {
   const summaries: Record<number, string> = {
     1: `Este é seu ano de ${theme.titulo.toLowerCase()}. A energia do número 1 traz consigo o impulso de novos começos e autonomia. Ao longo dos próximos meses, você será chamado a liderar, inovar e tomar decisões que definirão sua trajetória. Abrace a independência, mas não confunda solidão com força.`,
-    2: `Seu ano de ${theme.titulo.toLowerCase()} convida você a cultivar relacionamentos e parcerias. A energia do 2 traz sensibilidade e intuitividade. Será um período propício para diplomacy, trabalho em equipe e construção de laços duradouros. Sua força está na conexão com o outro.`,
-    3: `Este é o ano da ${theme.titulo.toLowerCase()}. A energia criativa do 3 expande suas possibilidades de expressão e comunicação. Você será inspirado a explorar sua criatividade, conectar-se socialmente e encontrar alegria no presente. permita-se ser visto e ouvir sua própria voz.`,
+    2: `Seu ano de ${theme.titulo.toLowerCase()} convida você a cultivar relacionamentos e parcerias. A energia do 2 traz sensibilidade e intuitividade. Será um período propício para diplomacia, trabalho em equipe e construção de laços duradouros. Sua força está na conexão com o outro.`,
+    3: `Este é o ano da ${theme.titulo.toLowerCase()}. A energia criativa do 3 expande suas possibilidades de expressão e comunicação. Você será inspirado a explorar sua criatividade, conectar-se socialmente e encontrar alegria no presente. Permita-se ser visto e ouvir sua própria voz.`,
     4: `Seu ano de ${theme.titulo.toLowerCase()} traz a energia da construção e disciplina. O número 4 representa bases sólidas e trabalho dedicado. Este é um período para estabelecer estruturas duradouras em sua vida, seja na carreira, finanças ou vida pessoal. A perseverança será sua aliada.`,
-    5: `Este é seu ano de ${theme.titulo.toLowerCase()}. A energia transformadora do 5 traz mudanças, aventuras e liberdade. Você será convite a abraçar o inesperado, adaptar-se a novas circunstancias e expandir seus horizontes. A flexibilidade será essencial. Confie no fluxo da vida.`,
+    5: `Este é seu ano de ${theme.titulo.toLowerCase()}. A energia transformadora do 5 traz mudanças, aventuras e liberdade. Você será convidado a abraçar o inesperado, adaptar-se a novas circunstâncias e expandir seus horizontes. A flexibilidade será essencial. Confie no fluxo da vida.`,
     6: `Seu ano de ${theme.titulo.toLowerCase()} traz foco em harmonia, família e responsabilidade amorosa. A energia do 6 convida você a cuidar dos outros sem se esquecer de si mesmo. Este é um período propício para resolver conflitos familiares, aprofundar relacionamentos e encontrar equilíbrio entre dar e receber.`,
     7: `Este é o ano da ${theme.titulo.toLowerCase()}. A energia introspectiva do 7 chama você para dentro, para a busca espiritual e o autoconhecimento. Este é um momento para estudos, meditação e desenvolvimento da sabedoria interior. No silêncio, você encontrará as respostas que procura.`,
     8: `Seu ano de ${theme.titulo.toLowerCase()} traz poderosa energia de manifestação material e poder pessoal. O número 8 representa abundância, sucesso e autoridade. Este é um período propício para consolidar conquistas, assumir liderança e equilibrar ambição com integridade. Você tem o poder de criar realidade.`,
-    9: `Este é seu ano de ${theme.titulo.toLowerCase()}. A energia de encerramento do 9 convida você a soltar o que não serve mais, perdoar e se preparar para um novo ciclo. É um ano de culmination e desprendimento. Ao fechar capítulos, você openspace for new beginnings. Honre suas experiências passadas enquanto olha para frente com esperança.`
+    9: `Este é seu ano de ${theme.titulo.toLowerCase()}. A energia de encerramento do 9 convida você a soltar o que não serve mais, perdoar e se preparar para um novo ciclo. É um ano de conclusão e desprendimento. Ao fechar capítulos, você abre espaço para novos começos. Honre suas experiências passadas enquanto olha para frente com esperança.`
   };
 
   return summaries[theme.numero] || summaries[1];
@@ -285,12 +287,10 @@ export function calculateYearProjection(birthDate: string): YearProjection {
   const numeroAnoPessoal = calcularNumeroAnoPessoal(birthDate);
   const sefirotAno = getSefirot(numeroAnoPessoal);
 
-  const themeData = themesAnoPessoal[numeroAnoPessoal] || themesAnoPessoal[1];
-
   const theme: YearTheme = {
     numero: numeroAnoPessoal,
     sefirot: sefirotAno,
-    ...themeData
+    ...themesAnoPessoal[numeroAnoPessoal] || themesAnoPessoal[1]
   };
 
   const turningPoints = generateTurningPoints(numeroAnoPessoal);

@@ -23,6 +23,10 @@ interface InterpretacaoPlaneta {
   descricao: string;
 }
 
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -62,14 +66,13 @@ export async function GET(request: NextRequest) {
         'Cache-Control': 'public, max-age=259200, stale-while-revalidate=604800',
       },
     });
-  } catch (error) {
-    console.error('Erro na análise astrológica:', error);
+  } catch (_error) {
+    console.error('Erro na análise astrológica:', _error);
     return NextResponse.json({ 
       error: 'Erro ao realizar análise astrológica' 
     }, { status: 500 });
   }
 }
-
 function analyzeStrengths(mapaNatal: MapaNatal, aspectos: Aspecto[]): AnaliseStrength[] {
   const strengths: AnaliseStrength[] = [];
   const planetas = mapaNatal.planeta;
@@ -262,8 +265,4 @@ function generateInterpretation(mapaNatal: MapaNatal, aspectos: Aspecto[]): Inte
   });
   
   return interpretacao;
-}
-
-function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }

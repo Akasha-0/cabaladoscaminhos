@@ -31,8 +31,7 @@ export interface ReviewInput {
 /**
  * Get all reviews for a product
  */
-export function getReviews(productId?: string): Review[] {
-  // In production, fetch from database
+export function getReviews(_productId?: string): Review[] {
   return [];
 }
 
@@ -105,7 +104,6 @@ export function updateReview(
 /**
  * Delete a review
  */
-export function deleteReview(reviewId: string): boolean {
-  // In production, remove from database
+export function deleteReview(_reviewId: string): boolean {
   return true;
 }

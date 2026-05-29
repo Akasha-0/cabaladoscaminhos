@@ -597,8 +597,8 @@ export async function GET(request: NextRequest) {
         config: ASCENSION_CONFIG,
       },
     });
-  } catch (error) {
-    console.error('Ascension v2 API error:', error);
+  } catch (_error) {
+    console.error('Ascension v2 API error:', _error);
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }

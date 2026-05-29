@@ -21,8 +21,8 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-  } catch (error) {
-    console.error('Erro no endpoint de dados astrológicos v2:', error);
+  } catch (_error) {
+    console.error('Erro no endpoint de dados astrológicos v2:', _error);
     return NextResponse.json({
       error: 'Erro ao processar dados astrológicos'
     }, { status: 500 });

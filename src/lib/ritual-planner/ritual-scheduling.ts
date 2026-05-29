@@ -33,7 +33,7 @@ export function scheduleRitual(
   name: string,
   scheduledAt: Date,
   duration = 60,
-  options: SchedulingOptions = {}
+  _options: SchedulingOptions = {}
 ): ScheduleResult {
   if (!name || name.trim() === '') {
     return { success: false, reason: 'Ritual name is required' };

@@ -12,7 +12,6 @@ interface HighContrastState {
   level: ContrastLevel;
   setEnabled: (enabled: boolean) => void;
   setLevel: (level: ContrastLevel) => void;
-  toggle: () => void;
 }
 
 export const useHighContrastStore = create<HighContrastState>()(
@@ -20,9 +19,8 @@ export const useHighContrastStore = create<HighContrastState>()(
     (set) => ({
       enabled: false,
       level: 'high',
-      setEnabled: (enabled: boolean) => set({ enabled }),
-      setLevel: (level: ContrastLevel) => set({ level }),
-      toggle: () => set((state) => ({ enabled: !state.enabled })),
+      setEnabled: (enabled) => set({ enabled }),
+      setLevel: (level) => set({ level }),
     }),
     { name: 'high-contrast-preference' }
   )
@@ -81,66 +79,45 @@ export const highContrastColors = {
 // ============================================================
 
 export interface HighContrastStyles {
-  // Background styles
-  bg: string;
-  bgElevated: string;
-  bgSubtle: string;
-  // Text styles
+  background: string;
+  backgroundElevated: string;
+  backgroundSubtle: string;
   text: string;
   textSecondary: string;
-  // Border styles
   border: string;
   borderFocus: string;
-  // Interactive styles
   link: string;
   linkHover: string;
   accent: string;
   accentHover: string;
-  // Semantic styles
   error: string;
   errorText: string;
   success: string;
   successText: string;
   warning: string;
   warningText: string;
-  // Focus indicators (enhanced for AAA)
-  focusRing: string;
-  focusRingOffset: string;
 }
 
-function buildHighContrastStyles(mode: 'dark' | 'light', level: ContrastLevel): HighContrastStyles {
+function buildHighContrastStyles(mode: 'dark' | 'light', _level: ContrastLevel): HighContrastStyles {
   const colors = highContrastColors[mode];
-  
-  // Adjust intensity based on contrast level
-  const intensityMultiplier = level === 'maximum' ? 1 : level === 'high' ? 0.9 : 0.8;
-  
   return {
-    // Backgrounds - solid colors for maximum contrast
-    bg: colors.bg,
-    bgElevated: colors.bgElevated,
-    bgSubtle: colors.bgSubtle,
-    // Text - pure black/white
+    background: colors.bg,
+    backgroundElevated: colors.bgElevated,
+    backgroundSubtle: colors.bgSubtle,
     text: colors.text,
     textSecondary: colors.textSecondary,
-    // Borders - solid, high visibility
     border: colors.border,
     borderFocus: colors.borderFocus,
-    // Links - underlined, high contrast
     link: colors.link,
     linkHover: colors.linkHover,
-    // Accent - vivid, contrasting
     accent: colors.accent,
     accentHover: colors.accentHover,
-    // Semantic - solid backgrounds with contrasting text
     error: colors.error,
     errorText: colors.errorText,
     success: colors.success,
     successText: colors.successText,
     warning: colors.warning,
     warningText: colors.warningText,
-    // Focus - thick, obvious outline
-    focusRing: `3px solid ${colors.borderFocus}`,
-    focusRingOffset: '2px',
   };
 }
 
@@ -162,7 +139,7 @@ export const highContrastStyles = {
 // CSS CUSTOM PROPERTIES (for global styles)
 // ============================================================
 
-export function getHighContrastCSS(theme: 'dark' | 'light', level: ContrastLevel): string {
+export function getHighContrastCSS(theme: 'dark' | 'light'): string {
   const colors = highContrastColors[theme];
   
   return `
@@ -196,28 +173,22 @@ export function getHighContrastCSS(theme: 'dark' | 'light', level: ContrastLevel
  * Returns value >= 1 (21:1 max for pure black/white)
  */
 export function getContrastRatio(foreground: string, background: string): number {
-  const getLuminance = (hex: string): number => {
-    const rgb = hexToRgb(hex);
-    if (!rgb) return 0;
-    
-    const [r, g, b] = rgb.map((c) => {
-      const sRGB = c / 255;
-      return sRGB <= 0.03928
-        ? sRGB / 12.92
-        : Math.pow((sRGB + 0.055) / 1.055, 2.4);
-    });
-    
-    // Relative luminance
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  };
+  const fgRgb = hexToRgb(foreground);
+  const bgRgb = hexToRgb(background);
   
-  const l1 = getLuminance(foreground);
-  const l2 = getLuminance(background);
+  if (!fgRgb || !bgRgb) {
+    return 1; // Default fallback
+  }
   
-  const lighter = Math.max(l1, l2);
-  const darker = Math.min(l1, l2);
+  const [fgL, fgA, fgB] = srgbToLab(fgRgb);
+  const [bgL, bgA, bgB] = srgbToLab(bgRgb);
   
-  return (lighter + 0.05) / (darker + 0.05);
+  // Calculate Delta E (CIE76) for perceptual difference
+  const deltaL = fgL - bgL;
+  const deltaA = fgA - bgA;
+  const deltaB = fgB - bgB;
+  
+  return Math.sqrt(deltaL * deltaL + deltaA * deltaA + deltaB * deltaB) / 100;
 }
 
 function hexToRgb(hex: string): [number, number, number] | null {
@@ -225,6 +196,27 @@ function hexToRgb(hex: string): [number, number, number] | null {
   return result
     ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
     : null;
+}
+
+function srgbToLab([r, g, b]: [number, number, number]): [number, number, number] {
+  // Convert sRGB to XYZ
+  let rn = r / 255;
+  let gn = g / 255;
+  let bn = b / 255;
+  
+  rn = rn > 0.04045 ? Math.pow((rn + 0.055) / 1.055, 2.4) : rn / 12.92;
+  gn = gn > 0.04045 ? Math.pow((gn + 0.055) / 1.055, 2.4) : gn / 12.92;
+  bn = bn > 0.04045 ? Math.pow((bn + 0.055) / 1.055, 2.4) : bn / 12.92;
+  
+  const x = (rn * 0.4124 + gn * 0.3576 + bn * 0.1805) / 0.95047;
+  const y = (rn * 0.2126 + gn * 0.7152 + bn * 0.0722) / 1.00000;
+  const z = (rn * 0.0193 + gn * 0.1192 + bn * 0.9505) / 1.08883;
+  
+  const fx = x > 0.008856 ? Math.pow(x, 1/3) : (7.787 * x) + 16/116;
+  const fy = y > 0.008856 ? Math.pow(y, 1/3) : (7.787 * y) + 16/116;
+  const fz = z > 0.008856 ? Math.pow(z, 1/3) : (7.787 * z) + 16/116;
+  
+  return [(116 * fy) - 16, 500 * (fx - fy), 200 * (fy - fz)];
 }
 
 /**
@@ -245,12 +237,14 @@ export function meetsWCAG_AA(foreground: string, background: string): boolean {
 // REACT HOOK
 // ============================================================
 
-export function useHighContrast() {
-  return {
-    enabled: useHighContrastStore((s) => s.enabled),
-    level: useHighContrastStore((s) => s.level),
-    setEnabled: useHighContrastStore((s) => s.setEnabled),
-    setLevel: useHighContrastStore((s) => s.setLevel),
-    toggle: useHighContrastStore((s) => s.toggle),
-  };
+export function useHighContrast(): HighContrastStyles {
+  const { enabled, level } = useHighContrastStore();
+  const mode = 'dark'; // Could be made dynamic based on theme context
+  
+  if (!enabled) {
+    // Return default high-contrast styles when disabled
+    return highContrastStyles[mode][level];
+  }
+  
+  return highContrastStyles[mode][level];
 }

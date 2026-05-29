@@ -6,7 +6,7 @@
 import type { MapaNatal } from '../astrologia/tipos';
 import { calcularPitagorica, calcularCaldeia, calcularCabalistica, getInterpretacao } from '../numerologia/calculos';
 import { getCiclosTemporais } from '../numerologia/ciclos';
-import { calcularOduNascimento, getQuizilasPorOdu, getPreceitosPorOdu, getEbósPorOdu, odusData } from '../odus/calculos';
+import { calcularOduNascimento } from '../odus/calculos';
 
 export type ReportType = 'numerologia' | 'astrologia' | 'odu';
 

@@ -54,28 +54,28 @@ export function scheduleRitual(event: Omit<RitualCalendarEvent, 'id'>): RitualCa
 /**
  * Get events by category
  */
-export function getEventsByCategory(category: RitualCalendarEvent['category']): RitualCalendarEvent[] {
+export function getEventsByCategory(_category: RitualCalendarEvent['category']): RitualCalendarEvent[] {
   return [];
 }
 
 /**
  * Get events by Orixá
  */
-export function getEventsByOrixa(orixa: string): RitualCalendarEvent[] {
+export function getEventsByOrixa(_orixa: string): RitualCalendarEvent[] {
   return [];
 }
 
 /**
  * Get events by moon phase
  */
-export function getEventsByMoonPhase(moonPhase: RitualCalendarEvent['moonPhase']): RitualCalendarEvent[] {
+export function getEventsByMoonPhase(_moonPhase: RitualCalendarEvent['moonPhase']): RitualCalendarEvent[] {
   return [];
 }
 
 /**
  * Mark an event as completed
  */
-export function completeRitual(eventId: string): boolean {
+export function completeRitual(_eventId: string): boolean {
   return true;
 }
 
@@ -89,6 +89,6 @@ export function getUpcomingRituals(): RitualCalendarEvent[] {
 /**
  * Get monthly view data for schedule display
  */
-export function getMonthlyView(year: number, month: number): Map<number, RitualCalendarEvent[]> {
+export function getMonthlyView(_year: number, _month: number): Map<number, RitualCalendarEvent[]> {
   return new Map();
 }

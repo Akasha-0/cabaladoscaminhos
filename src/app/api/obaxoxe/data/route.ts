@@ -161,10 +161,10 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil(filtered.length / limit)
     });
 
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to process request' },
-      { status: 500 }
-    );
-  }
+} catch (_error) {
+  return NextResponse.json(
+    { error: 'Failed to process request' },
+    { status: 500 }
+  );
+}
 }

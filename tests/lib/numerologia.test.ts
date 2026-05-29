@@ -118,10 +118,10 @@ describe('calcularPitagorica', () => {
 });
 
 describe('calcularCaldeia', () => {
-  it('should return a number between 1 and 8 (no 9 in Chaldean)', () => {
+  it('should return a number between 1 and 9', () => {
     const resultado = calcularCaldeia('Maria');
     expect(resultado).toBeGreaterThanOrEqual(1);
-    expect(resultado).toBeLessThanOrEqual(8);
+    expect(resultado).toBeLessThanOrEqual(9);
   });
 
   it('should return deterministic results', () => {

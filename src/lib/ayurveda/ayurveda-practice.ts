@@ -80,7 +80,6 @@ const seasonalAdvice = {
 export async function performPractice(config: AyurvedaPracticeConfig = {}): Promise<AyurvedaPracticeResult> {
   const {
     userId = 'anon',
-    dosha = 'tridoshic',
     prakriti = 'tridoshic',
     vikriti = 'tridoshic',
     season = 'spring',

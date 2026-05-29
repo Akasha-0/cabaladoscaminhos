@@ -86,13 +86,6 @@ const DEFAULT_STATS: DashboardStats = {
 };
 
 const DEFAULT_ACTIVITY_HISTORY: ActivityDataPoint[] = [];
-const DEFAULT_WEEKLY_PROGRESS: WeeklyProgress[] = [];
-const DEFAULT_CATEGORY_BREAKDOWN: CategoryBreakdown[] = [];
-const DEFAULT_MONTHLY_OVERVIEW: MonthlyOverview[] = [];
-const DEFAULT_CHART_STATS: ChartStat[] = [];
-const DEFAULT_MEDITATION_TRENDS: MeditationTrend[] = [];
-const DEFAULT_ACHIEVEMENTS: AchievementStat[] = [];
-
 const STATS_STORAGE_KEY = 'spiritual_stats';
 const ACTIVITY_STORAGE_KEY = 'spiritual_activity';
 

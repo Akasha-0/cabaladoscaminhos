@@ -43,15 +43,6 @@ function getShortcutKey(key: string, modifiers?: string[], scope?: string): stri
 }
 
 /**
- * Checks if two shortcuts would conflict
- */
-function wouldConflict(a: Shortcut, b: Shortcut): boolean {
-  const aKey = getShortcutKey(a.key, a.modifiers, a.scope);
-  const bKey = getShortcutKey(b.key, b.modifiers, b.scope);
-  return aKey === bKey;
-}
-
-/**
  * Registers a keyboard shortcut, checking for conflicts
  * @throws Error if a conflicting shortcut is already registered with higher or equal priority
  */

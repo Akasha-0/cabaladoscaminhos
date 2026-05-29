@@ -327,8 +327,8 @@ export async function GET(request: NextRequest) {
       data: record,
       meta
     });
-  } catch (error) {
-    console.error('Akashic Records API error:', error);
+  } catch (_error) {
+    console.error('Akashic Records API error:', _error);
     return NextResponse.json(
       { error: 'Erro ao acessar registros akashicos' },
       { status: 500 }

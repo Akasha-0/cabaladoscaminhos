@@ -218,7 +218,7 @@ export async function GET(request: NextRequest) {
         category: 'movement',
       },
     });
-  } catch (error) {
+} catch (error) {
     console.error('Movement API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

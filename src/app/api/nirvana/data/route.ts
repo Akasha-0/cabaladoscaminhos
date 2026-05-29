@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
 
     // Return all nirvana states
     return NextResponse.json({ success: true, data: nirvanaStates });
-  } catch (error) {
+ } catch (error) {
     return NextResponse.json(
       {
         success: false,

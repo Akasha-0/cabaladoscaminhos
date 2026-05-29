@@ -155,13 +155,13 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       data: paginatedResults,
-      total: filtered.length,
-      page,
-      limit,
-      totalPages: Math.ceil(filtered.length / limit)
+      total: {
+        limit: filtered.length,
+        page,
+        totalPages: Math.ceil(filtered.length / limit)
+      },
     });
-
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to process request' },
       { status: 500 }

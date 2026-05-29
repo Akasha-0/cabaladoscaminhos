@@ -90,7 +90,7 @@ const majorArcana: CardMeaning[] = [
   },
   {
     name: "Temperance",
-    upright: "平衡, moderation, patience, purpose, meaning",
+    upright: "Balance, moderation, patience, purpose, meaning",
     reversed: "Imbalance, excess, self-healing, realignment",
   },
   {

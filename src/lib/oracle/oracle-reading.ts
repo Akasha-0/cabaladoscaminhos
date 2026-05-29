@@ -2,7 +2,7 @@
  * Oracle reading — spiritual guidance through sacred oracle cards
  */
 
-import { getAllOracleCards, getRandomOracleCard, OracleCard } from '../divination/oracle-cards';
+import { getAllOracleCards, OracleCard } from '../divination/oracle-cards';
 
 export interface OracleReading {
   id: string;
@@ -61,11 +61,10 @@ function selectCards(spread: ReadingSpread): OracleCard[] {
 /**
  * Generate interpretation from selected cards
  */
-function generateInterpretation(cards: OracleCard[], spread: ReadingSpread): string {
+function generateInterpretation(cards: OracleCard[], _spread: ReadingSpread): string {
   if (cards.length === 1) {
     return cards[0].message;
   }
-
   const messages = cards.map(card => card.message);
   return messages.join(' ');
 }

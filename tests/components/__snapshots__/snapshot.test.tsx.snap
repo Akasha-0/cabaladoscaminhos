@@ -519,7 +519,7 @@ exports[`CalendarioEspiritual > should render in loading state 1`] = `
           class="
                   aspect-square flex flex-col items-center justify-center rounded-lg
                   text-sm font-medium transition-all cursor-pointer
-                  bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50
+                  text-slate-300 hover:bg-slate-800
                   
                 "
         >
@@ -531,7 +531,7 @@ exports[`CalendarioEspiritual > should render in loading state 1`] = `
           class="
                   aspect-square flex flex-col items-center justify-center rounded-lg
                   text-sm font-medium transition-all cursor-pointer
-                  text-slate-300 hover:bg-slate-800
+                  bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50
                   
                 "
         >
@@ -1157,7 +1157,7 @@ exports[`CalendarioEspiritual > should render the spiritual calendar 1`] = `
           class="
                   aspect-square flex flex-col items-center justify-center rounded-lg
                   text-sm font-medium transition-all cursor-pointer
-                  bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50
+                  text-slate-300 hover:bg-slate-800
                   
                 "
         >
@@ -1169,7 +1169,7 @@ exports[`CalendarioEspiritual > should render the spiritual calendar 1`] = `
           class="
                   aspect-square flex flex-col items-center justify-center rounded-lg
                   text-sm font-medium transition-all cursor-pointer
-                  text-slate-300 hover:bg-slate-800
+                  bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50
                   
                 "
         >
@@ -1795,7 +1795,7 @@ exports[`CalendarioEspiritual > should render with custom className 1`] = `
           class="
                   aspect-square flex flex-col items-center justify-center rounded-lg
                   text-sm font-medium transition-all cursor-pointer
-                  bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50
+                  text-slate-300 hover:bg-slate-800
                   
                 "
         >
@@ -1807,7 +1807,7 @@ exports[`CalendarioEspiritual > should render with custom className 1`] = `
           class="
                   aspect-square flex flex-col items-center justify-center rounded-lg
                   text-sm font-medium transition-all cursor-pointer
-                  text-slate-300 hover:bg-slate-800
+                  bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50
                   
                 "
         >

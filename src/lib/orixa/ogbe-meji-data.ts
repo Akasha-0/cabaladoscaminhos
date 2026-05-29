@@ -105,7 +105,7 @@ const OGBE_MEJI_DATA: OgbeMejiOdu = {
   ],
   quizilas: [
     'Ressentimento guardado (cria desarmonia interna)',
-    'Supersswallow da dualidade (negar um polo cria fragmentação)',
+'Superar a dualidade (negar um polo cria fragmentação)',
     'Excesso de idealismo sem ação',
     'Fuga da responsabilidade criativa',
     'Teimosia em um único ponto de vista',
@@ -167,13 +167,13 @@ const OGBE_MEJI_DATA: OgbeMejiOdu = {
   ],
   affirmations: [
     'Eu sou a união sagrada dos opostos dentro de mim',
-    'Minha criaçãoflui da harmonia entre luz e sombra',
+'Minha criação flui da harmonia entre luz e sombra',
     'Eu abraço todos os aspectos de meu ser com amor',
     'Meu pensamento cria realidade com poder e graça',
     'A sabedoria flui através de mim em perfeito equilíbrio',
   ],
   meditation:
-    'Meditar sobre a imagem de duas serpentes entrelaçadas, uma dourada e uma vermelha, subindo pelo eixo central do corpo. A serpente dourada representa a luz, a consciência, o divino masculino. A vermelha representa a sombra, a emoção, o divino feminino. Ao se entrelaçarem, criam uma terceira forma que é maior que ambas. No topo, uma luz branca irrompe, simbolizando a consciência iluminada de Ogbe Meji. Sinta ambas as serpentes dentro de você, honors sua dança eterna, e permita que sua união crie algo novo em sua vida. Peça a Oxum sabedoria emocional e a Obatalá clareza de pensamento, permitindo que ambos fluam em harmonia dentro de seu ser.',
+    'Sinta ambas as serpentes dentro de você, honours sua dança eterna, e permita que sua união crie algo novo em sua vida. Peça a Oxum sabedoria emocional e a Obatalá clareza de pensamento, permitindo que ambos fluam em harmonia dentro de seu ser.',
 };
 
 export function getData(): OgbeMejiOdu {

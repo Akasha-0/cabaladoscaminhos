@@ -2,16 +2,16 @@
 // SKIP_LINT
 
 /**
- * Okanran Data Module
- * Spiritual data for Okanran, the orixá of fire, transformation, and solar energy
+ * Odi Data Module
+ * Spiritual data for Odi, Odu 7 of the Ifá tradition
  */
 
-export interface OkanranData {
+export interface OdiData {
   id: string;
   name: string;
   namePortuguese: string;
   nameYoruba: string;
-  path: string;
+  oduNumber: number;
   element: string;
   colors: string[];
   dayOfWeek: string;
@@ -21,10 +21,10 @@ export interface OkanranData {
   qualities: string[];
   challenges: string[];
   rulingPlanet: string;
-  sacredAnimals: string[];
-  plants: string[];
-  offerings: string[];
-  chants: string[];
+  rulingOrixas: string[];
+  quizilas: string[];
+  preceptos: string[];
+  ebos: string[];
   symbols: string[];
   mythology: string;
   spiritualLesson: string;
@@ -53,227 +53,213 @@ export interface RitualData {
   steps: string[];
 }
 
-const OKANRAN_DATA: OkanranData = {
-  id: 'okanran',
-  name: 'Okanran',
-  namePortuguese: 'Príncipe do Fogo',
-  nameYoruba: 'Oxôxrìm',
-  path: 'Príncipe das Chamas',
-  element: 'Fogo',
-  colors: ['Vermelho', 'Dourado'],
-  dayOfWeek: 'Terça-feira',
-  numbersSacred: [3, 7, 12, 21],
-  greeting: 'Epa Okanran! ou Okanran Laroyê!',
-  archetype: 'O Príncipe Flamejante',
+const OKANRAN_DATA: OdiData = {
+  id: 'odi',
+  name: 'Odi',
+  namePortuguese: 'O Poço Profundo',
+  nameYoruba: 'Odi',
+  oduNumber: 7,
+  element: 'Terra / Água',
+  colors: ['Preto', 'Marrom', 'Verde escuro'],
+  dayOfWeek: 'Segunda-feira',
+  numbersSacred: [7, 14, 21],
+  greeting: 'Epa Odi! ou Odi Laroyê!',
+  archetype: 'O Poço das Coisas Ocultas',
   qualities: [
-    'Transformação',
-    'Energia vital',
-    'Coragem',
-    'Inspiração',
-    'Passion',
-    'Dinamismo',
-    'Criatividade',
-    'Proteção',
-    'Aquecimento',
-    'Renovação'
+    'Teimosia positiva',
+    'Renascimento',
+    'Intuição profunda',
+    'Sabedoria oculta',
+    'Resiliência',
+    'Transformação interior',
+    'Capacidade de renovação',
+    'Profundidade emocional'
   ],
   challenges: [
-    'Impulsividade',
-    'Temperamento forte',
-    'Irritabilidade',
-    'Instabilidade emocional',
-    'Excesso de vaidade',
-    'Gula',
-    'Orgulho exacerbado'
+    'Teimosia negativa',
+    'Persistência no erro',
+    'Medo do escuro',
+    'Resistência às mudanças',
+    'Amargura acumulada',
+    'Escavar feridas passadas'
   ],
-  rulingPlanet: 'Marte',
-  sacredAnimals: ['Galo', 'Cabra', 'Pomba', 'Cavalo'],
-  plants: ['Pimenta', 'Gengibre', 'Cravo', 'Canela', 'Arruda'],
-  offerings: [
-    'Galo',
-    'Pomba',
-    'Cabra',
-    'Pimenta dedo',
-    'Pimenta calabresa',
-    'Dendê',
-    'Azeite de dendê',
-    'Farinha de mandioca',
-    'Vinho tinto',
-    'Mel'
+  rulingPlanet: 'Saturno',
+  rulingOrixas: ['Omolu', 'Oxumaré', 'Exu'],
+  quizilas: [
+    'Dormir no escuro absoluto se estiver com medo',
+    'Comer carne de caça',
+    'Persistir no erro'
   ],
-  chants: [
-    'Epa! Okanran!',
-    'Okanran arô!',
-    'Oxôxrìm Laroyê!',
-    'Okanran kaô!',
-    'Príncipe das chamas, ilumina meu caminho!'
+  preceptos: [
+    'Praticar o desapego',
+    'Aceitar as mudanças da vida',
+    'Não cavar o próprio buraco com mágoas'
+  ],
+  ebos: [
+    'Pipoca (Deburu) para Omolu',
+    'Banhos de lama ou argila',
+    'Defumações pesadas com resinas'
   ],
   symbols: [
-    'Espada flamejante',
-    'Galo',
-    'Pimenta',
-    'Cravo-da-índia',
-    'Círculo de fogo',
-    'Raio solar'
+    'Poço profundo',
+    'Cobra',
+    'Lama',
+    'Água estagnada',
+    'Raízes',
+    'Cabaça'
   ],
-  mythology: `Okanran é o orixá do fogo, conhecido como o Príncipe das Chamas ou 
-Príncipe do Fogo na tradição Ketu. Ele é filho de Oxumare (ou Oxum em algumas 
-tradições) e representa a energia ígnea dos orixás aquáticos. Okanran é o 
-orixá que governa o sol, o calor, a transformação e a energia vital do 
-universo.
+  mythology: `Odi é o sétimo Odu do Merindilogun e representa o poço profundo, as coisas ocultas, 
+a teimosia e o renascimento. Este Odu está associado aos mistérios subterrâneos, à sabedoria 
+que vem das profundezas e à capacidade de renascer após tempos difíceis.
 
-Na mitologia iorubá, Okanran foi enviado para a terra para ensinar aos 
-humanos o uso do fogo e das artes da transformação. Ele é responsável 
-por trazer luz nas horas mais escuras e por destruir o que precisa ser 
-transformado para que o novo possa nascer. Sua energia é poderosa e pode 
-tanto proteger quanto destruir, dependendo de como é canalizada.
+Na tradição iorubá, Odi simboliza o momento em que é necessário olhar para dentro, 
+explorar os aspectos ocultos de si mesmo e aceitar as transformações que a vida traz. 
+Ele representa o ciclo de morte e renascimento que existe em todas as coisas.
 
-Okanran está associado às tempestades de fogo, aos raios, ao sol do meio-dia 
-e à energia transformational. Ele é invoked em momentos de mudança radical, 
-quando há necessidade de renovação spiritual e quando se busca proteção 
-contra energias negativas e feitiçaria.`,
-  spiritualLesson: `A verdadeira transformação vem do uso consciente da energia do 
-fogo interior. O poder de renascer das cinzas está ao alcance de todos que 
-sabem canalizar sua luz interior.`,
-  affirmation: `Eu sou a chama eterna que transforma e renova. Minha energia 
-interior aquece e protege todos que me cercam.`,
-  meditation: `Sinto o calor do sol me envolvendo, as chamas dançando ao redor 
-meu corpo. Okanran me dá força para transformar tudo que precisa ser 
-mudado em minha vida, queimando o que não serve mais e iluminando novos 
-caminhos.`,
+Odi é regido por Omolu (o mestre das doenças e curas), Oxumaré (a cobra do arco-íris 
+que conecta céu e terra) e Exu (o mensageiro que abre os caminhos). Esta combinação 
+confere a Odi um poder de transformação profunda e acesso aos mistérios ocultos.
+
+Este Odu alerta para os perigos da teimosia mal direcionada e da persistência em 
+caminhos que já se mostraram improdutivos. Encoraja o praticante a soltar o que 
+não serve mais e a abraçar novas possibilidades de renovação espiritual.`,
+  spiritualLesson: `A verdadeira sabedoria vem das profundezas. Assim como a água do poço 
+.Reflete o céu, nossasferidas mais profundas podem revelar nossa maior luz. 
+O renascimento está sempre disponível para quem sabe soltar o passado.`,
+  affirmation: `Eu solto o que não me serve mais. Aceito as mudanças com coragem 
+e confiança. Das profundezas, renasco renovado.`,
+  meditation: `Desço calmamente ao poço profundo dentro de mim. Nas águas escuras, 
+encontro reflexos da minha verdadeira essência. Odi me guia através dos mistérios 
+ocultos, mostrando que toda escuridão contém a semente de uma nova luz. 
+Aceito o renascimento com gratidão.`,
   herbs: [
     {
       name: 'pimenta',
-      namePortuguese: 'Pimenta Dedo ou Pimenta Cumari',
-      uses: ['Aquecimento do corpo', 'Proteção contra feitiços', 'Energia vital', 'Afastar mau-olhado'],
-      preparation: 'Banhos de imersão com infusão, defumações, cataplmas',
-      contraindications: ['Pessoas com problemas cardíacos', 'Gestantes', 'Pessoas com úlcera'],
-      element: 'Fogo'
+      namePortuguese: 'Pimenta Dedo',
+      uses: ['Proteção espiritual', 'Abertura de caminhos', 'Desapego', 'Renovação'],
+      preparation: 'Banhos de imersão, defumações com resinas',
+      contraindications: ['Pessoas com problemas cardíacos', 'Gestantes', 'Pessoas com pele sensível'],
+      element: 'Terra'
     },
     {
-      name: 'gengibre',
-      namePortuguese: 'Gengibre',
-      uses: ['Energia e vitalidade', 'Proteção espiritual', 'Aquecimento corporal', 'Fortaleza'],
-      preparation: 'Chás, banhos, defumações, consumido in natura',
-      contraindications: ['Pessoas com pressão alta', 'Gestantes', 'Pessoas com problemas gastrointestinais'],
-      element: 'Fogo'
+      name: 'artemísia',
+      namePortuguese: 'Artemísia',
+      uses: ['Purificação profunda', 'Acesso ao inconsciente', 'Dissolução de mágoas', 'Renovação'],
+      preparation: 'Chás rituais, banhos de imersão, defumações',
+      contraindications: ['Gestantes', 'Pessoas com sensibilidade a plantas'],
+      element: 'Água'
     },
     {
-      name: 'cravo',
-      namePortuguese: 'Cravo-da-índia',
-      uses: ['Proteção', 'Energia do fogo', 'Atração de prosperidade', 'Fortificação espiritual'],
-      preparation: 'Defumações, banhos com infusão, velas banhadas em óleo de cravo',
-      contraindications: ['Gestantes', 'Pessoas com pele sensível', 'Uso interno em excesso'],
-      element: 'Fogo'
+      name: 'sálvia',
+      namePortuguese: 'Sálvia',
+      uses: ['Limpeza espiritual pesada', 'Defumações de proteção', 'Purificação de ambientes'],
+      preparation: 'Defumações com resinas, banhos',
+      contraindications: ['Pessoas com problemas respiratórios', 'Gestantes'],
+      element: 'Terra'
     },
     {
-      name: 'canela',
-      namePortuguese: 'Canela',
-      uses: ['Aquecimento espiritual', 'Prosperidade', 'Proteção contra energias negativas', 'Autoestima'],
-      preparation: 'Chás, banhos, defumações, unguentos',
-      contraindications: ['Gestantes', 'Pessoas com problemas hepáticos'],
-      element: 'Fogo'
-    },
-    {
-      name: 'arruda',
-      namePortuguese: 'Arruda',
-      uses: ['Proteção geral', 'Limpeza espiritual', 'Sorte', 'Harmonização'],
-      preparation: 'Banhos, defumações, infusões, água de arruda',
+      name: 'marrubio',
+      namePortuguese: 'Marrubio',
+      uses: ['Desapego', 'Dissolução de ressentimentos', 'Aceitação', 'Transformação interior'],
+      preparation: 'Chás rituais, infusões para banhos',
       contraindications: ['Gestantes', 'Pessoas com pressão baixa'],
-      element: 'Fogo'
+      element: 'Água'
+    },
+    {
+      name: 'pomada',
+      namePortuguese: 'Pomada (Babaçu)',
+      uses: ['Proteção da cabeça', 'Unção ritual', 'Conexão com Omolu'],
+      preparation: 'Unção do corpo, banhos ritualísticos',
+      contraindications: ['Alergia a Coco'],
+      element: 'Terra'
     }
   ],
   healingPractices: [
-    'Banho de pimenta para proteção e energia vital',
-    'Defumações com cravo e canela para prosperidade',
-    'Oferendas de galo ao orixá nas terças-feiras',
-    'Cânticos e orações no estilo de Okanran',
-    'Ritual de limpeza com fogo espiritual',
-    'Banho de gengibre para fortalece o corpo e espírito',
-    'Proteção contra feitiços com pimenta calabresa'
+    'Banhos de lama ou argila para purificação profunda',
+    'Defumações pesadas com resinas (sálvia, mirra, copal)',
+    'Ritual de pipoca (Deburu) para Omolu',
+    'Práticas de desapego e soltura',
+    'Meditação nas profundezas interiores',
+    'Ritual de renovação e renascimento'
   ],
-  sacredTrees: ['Mandacaru', 'Xique-xique', 'Gravatá', 'Bromélia', 'Carrapato'],
+  sacredTrees: ['Barriguda', 'Xique-xique', 'Mandacaru', 'Caraíba', 'Pau-brasil'],
   ritualPractices: [
     {
-      type: 'Oferenda de Terça-feira',
-      description: 'Oferenda semanal para Okanran nas terças-feiras com elementos de fogo',
-      duration: 'Vária',
-      offerings: ['Galo', 'Pomba', 'Pimenta dedo', 'Dendê', 'Vinho tinto'],
-      steps: [
-        'Preparar o local sagrado com toalha vermelha',
-        'Colocar o galo no centro sobre a toalha',
-        'Ao redor, dispor pimentas em círculo',
-        'Colocar dendê em uma vasilha',
-        'Acender velas vermelhas e douradas',
-        'Fazer o ponto de Okanran com dendê',
-        'Cantar os cânticos de Okanran',
-        'Pedir proteção, energia e transformação',
-        'Agradecer ao orixá'
-      ]
-    },
-    {
-      type: 'Ritual de Proteção contra Feitiços',
-      description: 'Ritual para proteção espiritual contra magias negativas e feitiçaria',
-      duration: '3 dias',
-      offerings: ['Pimenta calabresa', 'Pimenta dedo', 'Alho', 'Sal grosso', 'Vinho tinto'],
-      steps: [
-        'Primeiro dia: jejum parcial e oração de proteção',
-        'Banho de limpeza com arruda e gengibre',
-        'No local sagrado, colocar toalha vermelha',
-        'Formar um círculo com pimentas ao redor',
-        'No centro, colocar sal grosso e alho',
-        'Acender velas e fazer cânticos de Okanran',
-        'Pedir proteção contra todos os feitiços',
-        'No terceiro dia, queimar as pimentas em defumação',
-        'Collect the ashes and scatter in running water'
-      ]
-    },
-    {
-      type: 'Ritual de Transformação',
-      description: 'Ritual para promover mudanças positivas e renovação espiritual',
+      type: 'Ebó de Transmutação (Deburu)',
+      description: 'Ritual de renascimento e transformação com pipoca para Omolu',
       duration: '1 dia',
-      offerings: ['Galo branco', 'Pomba', 'Canela', 'Cravo', 'Mel'],
+      offerings: ['Pipoca (Deburu)', 'Duas velas pretas', 'Pimenta dedo', 'Fumo de rolo', 'Água de chuva'],
       steps: [
-        'Escolher um local tranquilo para o ritual',
-        'Preparar o espaço com tocha ou vela grande',
-        'Banho de limpeza com arruda ao amanhecer',
-        'Colocar toalha vermelha no chão',
-        'No centro, fazer um círculo com cravo e canela',
-        'Colocar o galo no centro do círculo',
-        'Oferecer mel e dendê ao redor',
-        'Fazer orações pedindo transformação e renovação',
-        'Meditar sobre o que deseja transformar',
-        'Deixar ofertas até o anoitecer',
-        'Agradecer e consumir as ofertas com respeito'
+        'Preparar o espaço sagrado com toalha preta ou marrom',
+        'Acender duas velas pretas nos cantos',
+        'Colocar a pipoca em um prato branco como oferenda central',
+        'Fazer pontos de Exu com dendê ao redor',
+        'Pedir a Omolu que abra os caminhos da renovação',
+        'Oferecer pipoca com reverência',
+        'Fazer preces pedindo desapego das mágoas',
+        'Defumar com resinas pesadas',
+        'Agradecer e consumir a pipoca como communion'
       ]
     },
     {
-      type: 'Ritual Solar de Energia',
-      description: 'Ritual para energização espiritual utilizando a energia do sol',
-      duration: '1 dia (meio-dia)',
-      offerings: ['Galo', 'Dendê', 'Mel', 'Frutas douradas', 'Vinho'],
+      type: 'Banho de Lama ou Argila',
+      description: 'Ritual de purificação profunda associado a Omolu',
+      duration: '3 a 7 dias',
+      offerings: ['Lama ou argila natural', 'Flores escuras', 'Fumo de rolo', 'Dende'],
       steps: [
-        'Realizar jejum parcial desde a manhã',
-        'Banho de limpeza com arruda e gengibre',
-        'Ao meio-dia, posicionar-se enfrentando o sol',
-        'Colocar toalha vermelha no chão',
-        'Oferecer dendê e mel ao sol',
-        'Fazer cânticos de Okanran',
-        'Pedir energia vital e coragem',
-        'Meditar absorvendo a energia solar',
-        'Agradecer a Okanran pela energia recebida',
-        'Consumir as ofertas sagradas'
+        'Coletar lama ou argila de local sagrado ou nascente',
+        'Misturar com água de chuva ou água de olorun',
+        'Adicionar flores escuras (gérbera roxa, violeta)',
+        'Fazer ponto de Exu com dendê no recipiente',
+        'Banhar-se massageando o corpo com a lama',
+        'Mentalizar a dissolução de todas as mágoas',
+        'Deixar secar naturalmente',
+        'Enxaguar com água corrente',
+        'Repetir por 7 dias consecutivos'
+      ]
+    },
+    {
+      type: 'Ritual de Soltura das Mágoas',
+      description: 'Prática de desapego para libertar-se do passado',
+      duration: '1 dia',
+      offerings: ['Papel e caneta', 'Velas pretas', 'Incenso de resina', 'Água'],
+      steps: [
+        'Escrever em papel todas as mágoas e ressentimentos',
+        'Ler em voz alta cada item',
+        'Pedir permissão para soltar cada uma',
+        'Colocar o papel em recipiente com água',
+        'Acender velas pretas ao redor',
+        'Defumar com resinas pesadas',
+        'Fazer oração de soltura e renascimento',
+        'Queimar o papel em segurança',
+        'Dispersar as cinzas em água corrente'
+      ]
+    },
+    {
+      type: 'Defumação Pesada com Resinas',
+      description: 'Ritual de proteção e purificação com defumações densas',
+      duration: '3 dias',
+      offerings: ['Resina de mirra', 'Resina de benzoe', 'Resina de copal', 'Carvão ritual', 'Pimenta dedo'],
+      steps: [
+        'Acender carvão ritual em brasa',
+        'Colocar resina de mirra, benzoe e copal',
+        'Adicionar pimenta dedo quebrada',
+        'Defumar o ambiente em sentido anti-horário',
+        'Passar a fumaça pelo corpo',
+        'Mentalizar a proteção de Omolu e Oxumaré',
+        'Pedir a abertura dos caminhos ocultos',
+        'Repetir por três noites consecutivas'
       ]
     }
   ]
 };
 
-export function getData(): OkanranData {
+export function getData(): OdiData {
   return OKANRAN_DATA;
 }
 
-export function getDataById(id: string): OkanranData | undefined {
-  return id === 'okanran' ? OKANRAN_DATA : undefined;
+export function getDataById(id: string): OdiData | undefined {
+  return id === 'odi' ? OKANRAN_DATA : undefined;
 }
 
 export function getHerbs(): HerbData[] {
@@ -292,10 +278,11 @@ export function getSacredTrees(): string[] {
   return OKANRAN_DATA.sacredTrees;
 }
 
-export function getOkanranByElement(element: string): OkanranData | undefined {
-  return OKANRAN_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OKANRAN_DATA : undefined;
+export function getOkanranByElement(element: string): OdiData | undefined {
+  const elements = OKANRAN_DATA.element.toLowerCase().split(' / ');
+  return elements.some(e => element.toLowerCase().includes(e)) ? OKANRAN_DATA : undefined;
 }
 
-export function getOkanranByPlanet(planet: string): OkanranData | undefined {
+export function getOkanranByPlanet(planet: string): OdiData | undefined {
   return OKANRAN_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? OKANRAN_DATA : undefined;
 }

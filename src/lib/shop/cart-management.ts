@@ -10,11 +10,10 @@ import {
   addToCart,
   removeFromCart,
   getCart,
-  updateCart,
-  updateCartItemQuantity,
   clearCart,
   getCartTotal,
   getCartItemCount,
+  updateCartItemQuantity,
 } from './cart';
 
 export type { Cart, CartItem };

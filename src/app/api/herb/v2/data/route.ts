@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
         types: ['records', 'categories'],
       },
     });
-  } catch (error) {
+} catch (_error) {
     return NextResponse.json(
       {
         success: false,

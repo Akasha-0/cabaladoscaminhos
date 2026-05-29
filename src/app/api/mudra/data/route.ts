@@ -586,7 +586,7 @@ export async function GET(request: NextRequest) {
       ...(hasFilters && { filters: query })
     });
 
-  } catch (error) {
+} catch (error) {
     console.error('Mudra API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },

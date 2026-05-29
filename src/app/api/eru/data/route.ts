@@ -119,12 +119,12 @@ export async function GET(request: NextRequest) {
         properties: ERU_PROPERTIES as EruProperty[],
       },
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to fetch Eru data',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: _error instanceof Error ? _error.message : 'Unknown error',
       },
       { status: 500 }
     );

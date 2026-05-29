@@ -54,14 +54,6 @@ const AURIC_LAYERS: AuricLayer[] = [
     description: 'Bridge between lower and higher selves; love and connection.',
   },
   {
-    id: 'etheric template upper',
-    name: 'Etheric Template (Upper)',
-    color: '#89ddff',
-    frequencyHz: 350,
-    chakra: 'throat',
-    description: 'Higher etheric; stores karma and life purpose.',
-  },
-  {
     id: 'celestial',
     name: 'Celestial Body',
     color: '#c3e88d',

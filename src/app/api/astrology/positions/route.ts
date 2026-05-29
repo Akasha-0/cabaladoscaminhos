@@ -34,11 +34,7 @@ export async function GET(request: NextRequest) {
       parseFloat(latitude),
       parseFloat(longitude)
     );
-
-    const posicoes = Object.entries(mapaNatal.planeta).map(([planeta, posicao]) => ({
-      
-      ...posicao,
-    }));
+    const posicoes = Object.values(mapaNatal.planeta);
 
     return NextResponse.json({
       posicoes,
@@ -51,8 +47,8 @@ export async function GET(request: NextRequest) {
         'Cache-Control': 'public, max-age=3600, stale-while-revalidate=7200',
       },
     });
-  } catch (error) {
-    console.error('Erro calculando posições:', error);
+  } catch (_error) {
+    console.error('Erro calculando posições:', _error);
     return NextResponse.json({
       error: 'Erro ao calcular posições'
     }, { status: 500 });

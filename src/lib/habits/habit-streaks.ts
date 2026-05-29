@@ -58,14 +58,6 @@ function daysBetween(date1: string, date2: string): number {
   return Math.floor(diffTime / (1000 * 60 * 60 * 24));
 }
 
-function isConsecutive(prev: string | null, current: string): boolean {
-  if (!prev) return false;
-  return daysBetween(prev, current) === 1;
-}
-
-function isSameDay(dateStr: string, today: string): boolean {
-  return dateStr === today;
-}
 
 function calculateStreak(completedDates: string[]): {
   current: number;

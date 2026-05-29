@@ -104,9 +104,6 @@ const SERVER_PREFERENCE_PREFIX = 'pref:';
 /**
  * Get storage key for server-side preferences
  */
-function getServerKey(userId: string): string {
-  return `${SERVER_PREFERENCE_PREFIX}${userId}`;
-}
 
 // ============================================================
 // CLIENT-SIDE PREFERENCES

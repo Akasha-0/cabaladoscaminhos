@@ -1,3 +1,21 @@
+export interface UserSpiritualData {
+  id: string;
+  nome: string;
+  dataNascimento: string;
+  numeroPessoal: number;
+  arcoPessoal: number;
+  odu: string;
+  orixaRegente: string;
+  sefirotDominante: string[];
+  arcoMaior: number[];
+  sign: string;
+  houses: Record<string, number>;
+  rashi: string;
+}
+
+/**
+ * Chat message structure for AI API calls
+ */
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
@@ -28,4 +46,5 @@ export interface AIResponse {
 export interface StreamChunk {
   content: string;
   done: boolean;
+  error?: string;
 }

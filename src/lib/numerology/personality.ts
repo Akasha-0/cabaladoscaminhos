@@ -14,9 +14,6 @@ const pythagoreanChart: Record<string, number> = {
   Ç: 3, Ñ: 5,
 };
 
-// Vowels are excluded from personality calculation
-const VOWELS = 'AEIOUÁÉÍÓÚÃẼĨÕŨY';
-
 // Extended vowels including acute/grave accents
 const VOWELS_EXTENDED = 'AEIOUÁÉÍÓÚÃẼĨÕŨYÀÈÌÒÙÂÊÎÔÛ';
 

@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
         { tipo: 'service', descricao: 'Divine service and worship', freq: 1 }
       ]
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to retrieve divino data' },
       { status: 500 }

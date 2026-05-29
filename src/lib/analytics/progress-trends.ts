@@ -120,7 +120,7 @@ export function getTrends(days: number = 30): ProgressTrends {
   const practicePoints = toTrendPoints(historicalData, 'practiceMinutes', 'Prática (min)');
 
   // Calculate overall trend as weighted average
-  const overallPoints: TrendPoint[] = historicalData.map((s, i) => ({
+  const overallPoints: TrendPoint[] = historicalData.map((s) => ({
     date: s.date,
     value: s.sessionsCount + s.readingsCount + Math.round(s.practiceMinutes / 15),
     label: 'Geral',

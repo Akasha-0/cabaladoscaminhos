@@ -1,4 +1,4 @@
- 
+
 // @ts-nocheck
 // SKIP_LINT
 
@@ -21,6 +21,7 @@ export interface OgumData {
   sacredObjects: string[];
   invocationPhrases: string[];
   domains: string[];
+  chakra: string;
 }
 
 export interface WarriorAspect {
@@ -45,9 +46,9 @@ const OGUM_DATA: OgumData = {
   name: "Ogum",
   orisha: "Ogum",
   path: "Guerreiro das Estradas",
-  colors: ["Vermelho", "Preto"],
+  colors: ["Azul", "Vermelho", "Verde"],
   dayOfWeek: "terça-feira",
-  offerings: ["espada", "ferro", "alfinetes", "faca", "melancia", "quiabo", "dende"],
+  offerings: ["espada", "ferro", "alfinetes", "faca", "melancia", "quiabo", "dendê"],
   attributes: [
     "força",
     "coragem",
@@ -85,7 +86,9 @@ const OGUM_DATA: OgumData = {
     "caça",
     "agricultura",
     "civilização"
-  ]
+  ],
+  chakra: "5º - Laríngeo",
+  rulingPlanet: "Marte"
 };
 
 const warriorAspects: WarriorAspect[] = [

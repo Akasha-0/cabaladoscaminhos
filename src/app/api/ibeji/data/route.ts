@@ -364,7 +364,7 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
+} catch (_error) {
     return NextResponse.json(
       { error: 'Failed to retrieve Ibeji data' },
       { status: 500 }

@@ -26,7 +26,7 @@ export interface MandalaConfig {
   aneis: number;
   rotacaoBase: number;
   espirais: number;
-  simetria: 4 | 6 | 8 | 12;
+  simetria: number;
 }
 
 export interface Mandala {
@@ -42,33 +42,15 @@ export interface Mandala {
 }
 
 const MANDALA_POR_ESTILO: Record<EstiloMandala, Omit<MandalaConfig, 'centros' | 'aneis' | 'rotacaoBase' | 'espirais'>> = {
-  'flor-da-vida': {
-    estilo: 'flor-da-vida',
-    simetria: 6,
-  },
-  'seed-of-life': {
-    estilo: 'seed-of-life',
-    simetria: 6,
-  },
-  'metatron': {
-    estilo: 'metatron',
-    simetria: 12,
-  },
-  'shri-yantra': {
-    estilo: 'shri-yantra',
-    simetria: 8,
-  },
-  'torus': {
-    estilo: 'torus',
-    simetria: 12,
-  },
-  'sagrado': {
-    estilo: 'sagrado',
-    simetria: 8,
-  },
+  'flor-da-vida': { estilo: 'flor-da-vida', simetria: 6 },
+  'seed-of-life': { estilo: 'seed-of-life', simetria: 7 },
+  'metatron': { estilo: 'metatron', simetria: 13 },
+  'shri-yantra': { estilo: 'shri-yantra', simetria: 9 },
+  'torus': { estilo: 'torus', simetria: 4 },
+  'sagrado': { estilo: 'sagrado', simetria: 8 },
 };
 
-function gerarPontosAnel(anel: Ring, simetria: number): { x: number; y: number; angulo: number }[] {
+function gerarPontosAnel(anel: Ring, _simetria: number): { x: number; y: number; angulo: number }[] {
   const pontos: { x: number; y: number; angulo: number }[] = [];
   const anguloPasso = (2 * Math.PI) / anel.pontos;
 
@@ -129,15 +111,21 @@ function gerarPontosCentrais(quantidade: number): PontoGeometrico[] {
 function gerarEspiral(aneis: Ring[], numEspirais: number): { anelId: number; x: number; y: number }[] {
   const espiral: { anelId: number; x: number; y: number }[] = [];
 
-  for (let esp = 0; esp < numEspirais; esp++) {
-    for (let i = 0; i < aneis.length; i++) {
-      const anel = aneis[i];
-      const angulo = ((i + 1) * (Math.PI / 4)) + (esp * (2 * Math.PI / numEspirais));
-      espiral.push({
-        anelId: anel.id,
-        x: Math.cos(angulo) * anel.raio,
-        y: Math.sin(angulo) * anel.raio,
-      });
+  if (numEspirais === 0) return [];
+
+  for (const anel of aneis) {
+    for (let s = 0; s < numEspirais; s++) {
+      const anguloBase = (s / numEspirais) * 2 * Math.PI;
+      const anguloAnel = (aneis.indexOf(anel) / aneis.length) * Math.PI;
+
+      for (let i = 0; i < anel.pontos; i++) {
+        const angulo = anguloBase + (i / anel.pontos) * 2 * Math.PI + anguloAnel;
+        espiral.push({
+          anelId: anel.id,
+          x: Math.cos(angulo) * anel.raio,
+          y: Math.sin(angulo) * anel.raio,
+        });
+      }
     }
   }
 

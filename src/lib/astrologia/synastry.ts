@@ -89,12 +89,6 @@ function getAspectStrength(orb: number, orbMax: number): number {
   return Math.max(0, Math.min(1, ratio));
 }
 
-function calculateAspectScore(type: AspectoTipo, orb: number, orbMax: number): number {
-  const baseWeight = ASPECT_PATTERNS.find(a => a.type === type)?.weight ?? 5;
-  const strength = getAspectStrength(orb, orbMax);
-  return baseWeight * strength;
-}
-
 export function calculateSynastry(chart1: MapaNatal, chart2: MapaNatal): SynastryResult {
   const planets1 = getPlanets(chart1);
   const planets2 = getPlanets(chart2);

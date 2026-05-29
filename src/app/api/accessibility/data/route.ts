@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
         features: [],
       },
     })
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { success: false, error: 'Failed to fetch accessibility data' },
       { status: 500 }

@@ -160,7 +160,7 @@ async function renderHTMLElement(
  */
 async function htmlToSVG(element: HTMLElement, width: number, height: number): Promise<string> {
   const clone = element.cloneNode(true) as HTMLElement;
-  const styles = getComputedStyle(element);
+  const _styles = getComputedStyle(element);
   
   // Apply inline styles for key properties
   clone.style.position = 'absolute';
@@ -172,7 +172,7 @@ async function htmlToSVG(element: HTMLElement, width: number, height: number): P
   document.body.appendChild(clone);
   
   // Get all computed styles to inline
-  const allStyles = getAllStyles(element);
+  const _allStyles = getAllStyles(element);
   
   document.body.removeChild(clone);
   

@@ -44,7 +44,6 @@ function isRetrograde(planeta: Planeta, data: Date): boolean {
   }
 
   const orb = RETROGRADE_ORBS[planeta] ?? 0.15;
-  const jd = (data.getTime() / 86400000) + 2440587.5;
 
   const day = 1 / 1440;
   const pos0 = calcularPosicao(planeta, data);

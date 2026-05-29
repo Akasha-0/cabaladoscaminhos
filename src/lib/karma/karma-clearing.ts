@@ -26,7 +26,6 @@ export function clearKarma(
   const {
     amount = 0,
     reason = 'No reason provided.',
-    confidenceRating = 0,
   } = options;
 
   if (amount < 0) {

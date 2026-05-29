@@ -37,8 +37,8 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-  } catch (error) {
-    console.error('Erro calculando trânsitos:', error);
+  } catch (_error) {
+    console.error('Erro calculando trânsitos:', _error);
     return NextResponse.json({ 
       error: 'Erro ao calcular trânsitos' 
     }, { status: 500 });

@@ -19,9 +19,7 @@ export interface ObaraPracticeResult {
 /**
  * Performs Obara practice session
  */
-export async function performPractice(
-  config: ObaraPracticeConfig = {}
-): Promise<ObaraPracticeResult> {
+export async function performPractice(_config?: ObaraPracticeConfig): Promise<ObaraPracticeResult> {
   const data = getData();
 
   const GUIDANCE = [

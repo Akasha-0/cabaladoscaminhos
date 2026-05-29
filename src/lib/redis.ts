@@ -131,7 +131,7 @@ async function createRedisClient(
 
 // Singleton client
 let redisClient: RedisLike | null = null;
-let useMemory = false;
+export let useMemory = false;
 
 export async function getRedisClient(): Promise<RedisLike> {
   if (redisClient) return redisClient;

@@ -190,8 +190,7 @@ class Logger {
     }
   }
 
-  private async sendToMonitoring(entry: LogEntry): Promise<void> {
-    // Placeholder for external monitoring integration
+  private async sendToMonitoring(_entry: LogEntry): Promise<void> {
     // TODO: Integrate with Sentry, Datadog, or similar
     if (process.env.SENTRY_DSN) {
       // await import('@sentry/node').then(({ captureException }) => {

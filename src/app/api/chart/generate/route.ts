@@ -56,7 +56,7 @@ function generateChartId(): string {
   return `chart_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 }
 
-function calculatePlanets(date: string, time?: string): Record<string, unknown> {
+function calculatePlanets(date: string, _time?: string): Record<string, unknown> {
   // Placeholder for planet position calculation
   return {
     sun: { sign: 'aries', degree: 15 },
@@ -73,10 +73,10 @@ function calculatePlanets(date: string, time?: string): Record<string, unknown> 
 }
 
 function calculateHouses(
-  date: string,
-  lat: number,
-  lng: number,
-  houseSystem: string
+  _date: string,
+  _lat: number,
+  _lng: number,
+  _houseSystem: string
 ): Record<string, unknown> {
   // Placeholder for house calculation
   return {
@@ -95,7 +95,7 @@ function calculateHouses(
   };
 }
 
-function calculateAspects(planets: Record<string, unknown>): Record<string, unknown> {
+function calculateAspects(_planets: Record<string, unknown>): Record<string, unknown> {
   // Placeholder for aspect calculation
   return {
     sunMoon: { type: 'trine', orb: 3.5 },
@@ -198,8 +198,7 @@ export async function POST(request: NextRequest) {
     };
 
     return NextResponse.json(response, { status: 201 });
-  } catch (error) {
-    console.error('Chart generation error:', error);
+  } catch (_error) {
     return NextResponse.json(
       { success: false, error: 'Failed to generate chart' },
       { status: 500 }

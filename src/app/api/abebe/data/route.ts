@@ -319,8 +319,8 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
-    console.error('Abebe API Error:', error);
+  } catch (_error) {
+    console.error('Abebe API Error:', _error);
     return NextResponse.json(
       { error: 'Failed to retrieve Abebe data' },
       { status: 500 }

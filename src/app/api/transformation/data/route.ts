@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       },
       timestamp: new Date().toISOString(),
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to retrieve transformation data' },
       { status: 500 }
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
       { error: 'Invalid action. Use "calculate" or "register"' },
       { status: 400 }
     );
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to process transformation request' },
       { status: 500 }

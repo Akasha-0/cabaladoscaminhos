@@ -308,3 +308,5 @@ export function createVersionMiddleware(
     return response;
   };
 }
+
+export default createVersionMiddleware;

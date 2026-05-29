@@ -56,32 +56,6 @@ const divinationSymbols = {
   ]
 };
 
-const domains = {
-  amor: {
-    question: 'Como posso abrir meu coração para o amor verdadeiro?',
-    symbols: ['Conexão', 'Vulnerabilidade', 'Confiança', 'Cura Emocional']
-  },
-  trabalho: {
-    question: 'Que energia preciso canalizar para prosperidade profissional?',
-    symbols: ['Iniciativa', 'Persistência', 'Alinhamento', 'Sacrifício']
-  },
-  saúde: {
-    question: 'Como posso harmonizar meu corpo e espírito?',
-    symbols: ['Equilíbrio', 'Cuidado', 'Renovação', 'Prevenção']
-  },
-  espiritual: {
-    question: 'Qual é meu propósito nesta jornada?',
-    symbols: ['Despertar', 'Mestria', 'Devoção', 'Transição']
-  },
-  financeiro: {
-    question: 'Que atitude devo tomar em relação às finanças?',
-    symbols: ['Abundância', 'Moderação', 'Investimento', 'Liberação']
-  },
-  geral: {
-    question: 'O que preciso saber neste momento?',
-    symbols: ['Verdade', 'Aceitação', 'Ação', 'Reflexão']
-  }
-};
 
 // ============================================================
 // HELPER FUNCTIONS
@@ -256,8 +230,7 @@ export async function GET(request: NextRequest) {
         timestamp: reading.timestamp
       }
     });
-  } catch (error) {
-    console.error('Divination API error:', error);
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Erro ao realizar divinização' },
       { status: 500 }

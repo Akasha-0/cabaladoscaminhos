@@ -78,12 +78,12 @@ export async function GET(request: NextRequest) {
         ] as DharmaCategory[],
       },
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to fetch dharma data',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: _error instanceof Error ? _error.message : 'Unknown error',
       },
       { status: 500 }
     );

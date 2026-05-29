@@ -4,7 +4,7 @@ export interface Frequency {
   hz: number;
   name: string;
   effect: string;
-  chakra?: number; // 1-7 crown to root
+  chakra?: number; // 1=root to 7=crown
   color?: string;
 }
 
@@ -22,10 +22,11 @@ const SOLFEGGIO: Frequency[] = [
   { hz: 528, name: "Solfeggio 528", effect: "Transformation / DNA repair", chakra: 5, color: "#00FF00" },
   { hz: 639, name: "Solfeggio 639", effect: "Harmony / Relationships", chakra: 6, color: "#00CED1" },
   { hz: 741, name: "Solfeggio 741", effect: "Expression / Intuition", chakra: 7, color: "#4169E1" },
-  { hz: 852, name: "Solfeggio 852", effect: "Third eye activation", chakra: 7, color: "#4B0082" },
+  { hz: 852, name: "Solfeggio 852", effect: "Third eye activation", chakra: 6, color: "#4B0082" },
   { hz: 963, name: "Solfeggio 963", effect: "Crown chakra / Divine connection", chakra: 7, color: "#EE82EE" },
 ];
 
+// Chakra frequencies aligned with standard esoteric teaching (higher chakras = higher frequencies)
 const CHAKRA_FREQUENCIES: Frequency[] = [
   { hz: 396, name: "Root (Muladhara)", effect: "Grounding, survival, safety", chakra: 1, color: "#8B0000" },
   { hz: 417, name: "Sacral (Svadhisthana)", effect: "Creativity, sexuality, emotions", chakra: 2, color: "#FF8C00" },

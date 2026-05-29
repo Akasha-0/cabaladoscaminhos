@@ -22,11 +22,6 @@ export interface UpdateSubscription {
   events: AsyncIterable<UpdateEvent>;
 }
 
-interface ListenerEntry {
-  resolve: (event: UpdateEvent) => void;
-  reject: (err: Error) => void;
-  eventType?: UpdateEventType;
-}
 
 // Global event bus for cross-tab and cross-component updates
 type EventListener = (event: UpdateEvent) => void;

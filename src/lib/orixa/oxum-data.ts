@@ -14,7 +14,7 @@ export interface OxumData {
   meses: string[];
   dias: string[];
   orixasRelacionados: string[];
- 花草: string[];
+  flores: string[];
   ebós: string[];
   quizilas: string[];
   mensagens: string[];
@@ -33,7 +33,7 @@ export interface OxumData {
   sefirot: string[];
   tarot: string[];
   direcao: string;
- 时辰: string;
+  periodo: string;
 }
 
 export const OXUM_DATA: OxumData = {
@@ -45,7 +45,7 @@ export const OXUM_DATA: OxumData = {
   meses: ['Outubro', 'Fevereiro'],
   dias: ['Sexta-feira'],
   orixasRelacionados: ['Iemanjá', 'Nanã', 'Orunmila'],
- 花草: ['Rosa', 'Cravo branco'],
+  flores: ['Rosa', 'Cravo branco'],
   ebós: ['Água de flor', 'Perfume de rosa', 'Fumo branco'],
   quizilas: ['Não comer carne vermelha', 'Não consumir bebidas alcoólicas'],
   mensagens: [
@@ -61,16 +61,16 @@ export const OXUM_DATA: OxumData = {
   },
   qualidade: 'Doce e acolhedora',
   regencia: 'Riqueza e amor',
-  cores: ['Amarelo', 'Dourado'],
+  cores: ['Rosa', 'Dourado', 'Rosa-ouro'],
   pedras: ['Quartzo rosa', 'Água marinha', 'Coral'],
   alimentos: ['Mel', 'Frutas doces', 'Amendoim doce'],
   numSagrado: [2, 7, 15, 22],
-  planeta: 'Vênus',
-  chakra: '2º - Svadhisthana',
+  planeta: 'Vénus',
+  chakra: '4º - Cardíaco',
   sefirot: ['Chesed', 'Hod'],
   tarot: ['A Imperadora', 'O Mundo'],
   direcao: 'Oeste',
- 时辰: 'Nascente',
+  periodo: 'Nascente',
 };
 
 export function getData(): OxumData {

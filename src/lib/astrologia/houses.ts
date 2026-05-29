@@ -138,7 +138,7 @@ export function calculateHouses(
   let result: { houses: number[]; asc: number; mc: number };
 
   if (system === 'whole_sign') {
-    const { houses, asc, mc } = calculatePlacidus(jd, latitude, longitude);
+    const { asc, mc } = calculatePlacidus(jd, latitude, longitude);
     result = calculateWholeSign(asc);
     result.mc = mc;
   } else {

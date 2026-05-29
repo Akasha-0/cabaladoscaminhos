@@ -219,7 +219,7 @@ export const POST = withErrorHandler(async (req: NextRequest) => {
       summary,
       success: true,
     }, { status: 201 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Invalid request body' },
       { status: 400 }

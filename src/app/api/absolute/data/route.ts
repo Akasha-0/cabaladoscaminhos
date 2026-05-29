@@ -39,12 +39,12 @@ export async function GET(request: NextRequest) {
     // Default — return all absolute data
     const allData = getData();
     return NextResponse.json({ success: true, data: allData });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to fetch absolute data',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: _error instanceof Error ? _error.message : 'Unknown error',
       },
       { status: 500 }
     );

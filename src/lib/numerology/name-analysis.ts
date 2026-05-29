@@ -8,8 +8,6 @@ import {
   getInterpretacao,
 } from './calculos';
 
-const VOWELS = 'AEIOUÁÉÍÓÚÃẼĨÕŨY';
-const CONSONANTS = 'BCÇDFGHJKLMNNPQRRSSTTVWXZ';
 
 export interface NameAnalysis {
   original: string;

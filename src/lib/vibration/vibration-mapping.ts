@@ -141,6 +141,7 @@ const vibrationMappings: VibrationMapping[] = [
     keywords: ['crown', 'divine', 'consciousness', 'enlightenment', 'spirit'],
     keywordsPt: ['coroa', 'divino', 'consciência', 'iluminação', 'espírito'],
   },
+  // Chakra-specific frequencies (inverted to match standard esoteric teaching - higher chakras = higher frequencies)
   {
     frequency: 396,
     name: 'Root Liberation',
@@ -170,7 +171,7 @@ const vibrationMappings: VibrationMapping[] = [
     keywordsPt: ['sacro', 'criatividade', 'emoções', 'prazer', 'água'],
   },
   {
-    frequency: 432,
+    frequency: 528,
     name: 'Solar Power',
     namePt: 'Poder Solar',
     chakra: 'manipura',
@@ -212,7 +213,7 @@ const vibrationMappings: VibrationMapping[] = [
     keywordsPt: ['garganta', 'comunicação', 'verdade', 'expressão', 'éter'],
   },
   {
-    frequency: 528,
+    frequency: 852,
     name: 'Third Eye Insight',
     namePt: 'Insight do Terceiro Olho',
     chakra: 'ajna',
@@ -224,6 +225,20 @@ const vibrationMappings: VibrationMapping[] = [
     affirmationPt: 'Confio em minha intuição e vejo claramente com sabedoria interior',
     keywords: ['third eye', 'intuition', 'vision', 'wisdom', 'light'],
     keywordsPt: ['terceiro olho', 'intuição', 'visão', 'sabedoria', 'luz'],
+  },
+  {
+    frequency: 963,
+    name: 'Crown Enlightenment',
+    namePt: 'Iluminação da Coroa',
+    chakra: 'sahasrara',
+    chakraPt: 'coroa',
+    color: 'violet',
+    healing: ['Divine connection', 'Spiritual awakening', 'Pure consciousness'],
+    healingPt: ['Conexão divina', 'Despertar espiritual', 'Consciência pura'],
+    affirmation: 'I am one with the divine and embrace enlightenment',
+    affirmationPt: 'Sou um com o divino e abraço a iluminação',
+    keywords: ['crown', 'enlightenment', 'spirit', 'divine', 'transcendence'],
+    keywordsPt: ['coroa', 'iluminação', 'espírito', 'divino', 'transcendência'],
   },
   {
     frequency: 285,
@@ -358,11 +373,15 @@ export function getByChakra(chakra: string): VibrationMapping[] {
  * Returns frequencies by keyword search
  */
 export function getByKeyword(keyword: string): VibrationMapping[] {
-  const lower = keyword.toLowerCase();
+  const lowerKeyword = keyword.toLowerCase();
   return vibrationMappings.filter(
     (m) =>
-      m.keywords.some((k) => k.toLowerCase().includes(lower)) ||
-      m.keywordsPt.some((k) => k.toLowerCase().includes(lower))
+      m.name.toLowerCase().includes(lowerKeyword) ||
+      m.namePt.toLowerCase().includes(lowerKeyword) ||
+      m.keywords.some((k) => k.toLowerCase().includes(lowerKeyword)) ||
+      m.keywordsPt.some((k) => k.toLowerCase().includes(lowerKeyword)) ||
+      m.affirmation.toLowerCase().includes(lowerKeyword) ||
+      m.affirmationPt.toLowerCase().includes(lowerKeyword)
   );
 }
 

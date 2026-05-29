@@ -65,7 +65,7 @@ export function getCurrentPhase(session: PracticeSession, meditation: Meditation
 /**
  * Completes a practice session and returns the result
  */
-export function completePractice(session: PracticeSession, meditation: Meditation): PracticeResult {
+export function completePractice(session: PracticeSession, _meditation: Meditation): PracticeResult {
   return {
     meditationId: session.meditationId,
     duration: session.elapsedSeconds,

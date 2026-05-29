@@ -110,7 +110,7 @@ function estimateSize(data: unknown): number {
  */
 export async function collectBackupData(
   sources: string[],
-  options?: BackupOptions
+  _options?: BackupOptions
 ): Promise<unknown> {
   const collectedData: Record<string, unknown> = {};
 

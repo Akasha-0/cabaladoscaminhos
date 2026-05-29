@@ -186,8 +186,8 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json(response);
     
-  } catch (error) {
-    console.error('Error fetching manifestations:', error);
+ } catch (_error) {
+    console.error('Error fetching manifestations:', _error);
     return NextResponse.json(
       { error: 'Failed to fetch manifestations' },
       { status: 500 }
@@ -380,8 +380,8 @@ export async function POST(request: NextRequest) {
       message: 'Manifestation created successfully' 
     }, { status: 201 });
     
-  } catch (error) {
-    console.error('Error creating manifestation:', error);
+ } catch (_error) {
+    console.error('Error creating manifestation:', _error);
     return NextResponse.json(
       { error: 'Failed to create manifestation' },
       { status: 500 }

@@ -5,33 +5,9 @@
  * Tests token operations and cookie helpers.
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import jwt from 'jsonwebtoken';
 
-// Mock jsonwebtoken at module level
-vi.mock('jsonwebtoken', () => ({
-  default: {
-    sign: vi.fn((payload, secret, options) => `mock.token.${payload.userId}`),
-    verify: vi.fn((token) => {
-      if (token === 'invalid.token') {
-        throw new Error('JsonWebTokenError: invalid signature');
-      }
-      if (token === 'expired.token') {
-        const err = new Error('TokenExpiredError: jwt expired');
-        err.name = 'TokenExpiredError';
-        throw err;
-      }
-      if (!token || token === '') {
-        throw new Error('JsonWebTokenError: invalid token');
-      }
-      if (!token.includes('.')) {
-        throw new Error('JsonWebTokenError: invalid signature');
-      }
-      return { userId: 'user123', email: 'test@example.com', iat: Date.now(), exp: Date.now() + 86400 };
-    }),
-  },
-}));
-
-// Import after mock is set up
 import { signToken, verifyToken, type TokenPayload } from '@/lib/auth-jwt/jwt';
 import {
   getTokenFromRequest,
@@ -42,7 +18,44 @@ import {
 } from '@/lib/auth-jwt/helpers';
 import { NextRequest } from 'next/server';
 
-// Helper to create mock NextRequest
+// Mock factory for jsonwebtoken - creates configurable mock functions
+function createJwtMock(overrides?: {
+  signResult?: string;
+  verifyResult?: object | null;
+  verifyThrows?: boolean;
+  expiredToken?: string;
+}) {
+  const {
+    signResult = 'mock.token',
+    verifyResult = { userId: 'user123', email: 'test@example.com' },
+    verifyThrows = false,
+    expiredToken = 'expired.token',
+  } = overrides || {};
+
+  return {
+    default: {
+      sign: vi.fn((payload) => `${signResult}.${payload.userId}.${Date.now()}`),
+      verify: vi.fn((token: string) => {
+        if (token === 'invalid.token' || token === 'not-a-valid-jwt-format' || token === '') {
+          throw new Error('JsonWebTokenError: invalid signature');
+        }
+        if (token === expiredToken) {
+          const err = new Error('TokenExpiredError: jwt expired');
+          err.name = 'TokenExpiredError';
+          throw err;
+        }
+        if (!token.includes('.')) {
+          throw new Error('JsonWebTokenError: invalid signature');
+        }
+        if (verifyThrows) {
+          throw new Error('JsonWebTokenError: invalid signature');
+        }
+        return verifyResult;
+      }),
+    },
+  };
+}
+
 function createMockRequest(cookieHeader?: string): NextRequest {
   const headers = new Map<string, string>();
   if (cookieHeader) {
@@ -57,6 +70,9 @@ function createMockRequest(cookieHeader?: string): NextRequest {
 }
 
 describe('JWT Token Functions', () => {
+  // Mock jsonwebtoken for these tests
+  vi.mock('jsonwebtoken', () => createJwtMock());
+
   describe('signToken', () => {
     it('should sign token with valid payload', async () => {
       const payload = { userId: 'user123', email: 'test@example.com' };
@@ -88,8 +104,8 @@ describe('JWT Token Functions', () => {
       const payload = { userId: 'user123', email: 'test@example.com' };
       const token = await signToken(payload);
       
-      // Mock returns format "mock.token.{userId}"
-      expect(token).toBe('mock.token.user123');
+      // Mock returns format "mock.token.{userId}.{timestamp}"
+      expect(token).toMatch(/^mock\.token\.user123\.\d+$/);
     });
   });
 
@@ -132,6 +148,9 @@ describe('JWT Token Functions', () => {
 });
 
 describe('Token Helper Functions', () => {
+  // Mock jsonwebtoken for these tests
+  vi.mock('jsonwebtoken', () => createJwtMock());
+
   describe('getTokenFromRequest', () => {
     it('should extract token from cookie header', () => {
       const request = createMockRequest('auth_token=my-token-123');

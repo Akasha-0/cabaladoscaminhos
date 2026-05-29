@@ -1,5 +1,4 @@
- 
-import type { Aspecto, AspectoTipo, PosicaoPlaneta, Planeta } from './tipos';
+import type { AspectoTipo, PosicaoPlaneta, Planeta } from './tipos';
 import { getAspectMeaning } from './aspect-meanings';
 import { getSymbol } from './symbols';
 
@@ -17,19 +16,6 @@ const ASPECTOS: AspectDefinition[] = [
   { tipo: 'oposição', angulo: 180, orbMax: 10 },
 ];
 
-const PLANETAS_ASPECTOS: Planeta[] = [
-  'sol',
-  'lua',
-  'mercurio',
-  'venus',
-  'marte',
-  'jupiter',
-  'saturno',
-  'urano',
-  'netuno',
-  'plutao',
-];
-
 function normalizeDiff(diff: number): number {
   return ((diff + 180) % 360) - 180;
 }
@@ -43,11 +29,6 @@ export interface AspectWithSymbol {
   orbExato: number;
   aplicativo: boolean;
   simbolo: string;
-}
-
-function calculateAspectAngle(p1: PosicaoPlaneta, p2: PosicaoPlaneta): number {
-  const diff = Math.abs(normalizeDiff(p1.longitude - p2.longitude));
-  return diff;
 }
 
 function determineAplicativo(p1: PosicaoPlaneta, p2: PosicaoPlaneta): boolean {

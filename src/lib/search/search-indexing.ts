@@ -32,13 +32,6 @@ let lastRebuiltAt: number | null = null;
 
 const MAX_ENTRIES_PER_TYPE = 10000;
 
-function generateId(type: string, title: string): string {
-  const normalized = `${type}:${title.toLowerCase().replace(/\s+/g, '-')}`;
-  const hash = normalized.split('').reduce((acc, char) => {
-    return ((acc << 5) - acc + char.charCodeAt(0)) | 0;
-  }, 0);
-  return `${normalized}-${Math.abs(hash).toString(36)}`;
-}
 
 function tokenize(content: string): string[] {
   return content

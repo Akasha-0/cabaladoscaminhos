@@ -202,16 +202,16 @@ function serializeToXml(data: unknown, includeMetadata?: boolean, indent = 2): s
     
     if (typeof value === 'string') {
       const escaped = value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+        .replace(/&/g, '&')
+        .replace(/</g, '<')
+        .replace(/>/g, '>')
+        .replace(/"/g, '"');
       return `${pad(level)}<${tagName}>${escaped}</${tagName}>`;
     }
     
     if (Array.isArray(value)) {
-      const items = value.map((item, i) => {
-        const itemTag = 'item';
+      const itemTag = 'item';
+      const items = value.map((item) => {
         return toXml(item, itemTag, level + 1);
       }).join('\n');
       return `${pad(level)}<${tagName}>\n${items}\n${pad(level)}</${tagName}>`;

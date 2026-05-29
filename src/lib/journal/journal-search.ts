@@ -1,6 +1,5 @@
 // Journal search - skipped linting and formatting
- 
- 
+
 
 export interface JournalEntry {
   id: string;
@@ -40,10 +39,10 @@ function getEntries(): JournalEntry[] {
   }
 }
 
-function calculateRelevance(entry: JournalEntry, query: string, options: SearchOptions): { score: number; fields: string[] } {
-  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+function calculateRelevance(entry: JournalEntry, _query: string, _options: SearchOptions): { score: number; fields: string[] } {
   let score = 0;
   const fields: string[] = [];
+  const terms = _query.split(' ').filter(Boolean);
 
   for (const term of terms) {
     // título match

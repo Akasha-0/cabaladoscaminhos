@@ -36,8 +36,8 @@ export interface AggregatedReadings {
  * Replace with actual data source (DB, cache, etc.)
  */
 async function fetchReadingsByType(
-  type: ReadingType,
-  dateRange: DateRange
+  _type: ReadingType,
+  _dateRange: DateRange
 ): Promise<Reading[]> {
   // Placeholder: integrate with your data layer
   return [];

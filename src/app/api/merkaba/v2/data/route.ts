@@ -505,7 +505,7 @@ export async function GET(request: NextRequest) {
         totalGeometry: SACRED_GEOMETRY.length,
       },
     });
-  } catch (error) {
+} catch (error) {
     console.error('Merkaba v2 API error:', error);
     return NextResponse.json(
       { success: false, error: 'Internal server error' },

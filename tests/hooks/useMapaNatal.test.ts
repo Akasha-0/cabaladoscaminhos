@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+/** @vitest-environment jsdom */
 import { renderHook, waitFor } from '@testing-library/react';
 import { useMapaNatal } from '@/hooks/useMapaNatal';
 import { mockFetch, setupFetchMock, clearFetchMock } from '../mocks/handlers';

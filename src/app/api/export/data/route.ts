@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
         records: [],
       },
     })
-  } catch (error) {
+} catch (_error) {
     return NextResponse.json(
       { success: false, error: 'Failed to export data' },
       { status: 500 }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
         exportedAt: new Date().toISOString(),
       },
     })
-  } catch (error) {
+} catch (_error) {
     return NextResponse.json(
       { success: false, error: 'Failed to process export data' },
       { status: 500 }

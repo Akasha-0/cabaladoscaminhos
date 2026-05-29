@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
         results: [],
       },
     })
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { success: false, error: 'Failed to fetch analytics data' },
       { status: 500 }
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         createdAt: new Date().toISOString(),
       },
     })
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { success: false, error: 'Failed to process analytics data' },
       { status: 500 }

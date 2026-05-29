@@ -1190,10 +1190,11 @@ export function generateOpenAPISpec(): OpenAPISpec {
 
 /**
  * Get paths from a directory
- * @param directory - Directory path containing route.ts files
+/**
+ * Get paths from a directory
  * @returns Array of route paths
  */
-export function getAPIRoutesFromDirectory(directory: string): string[] {
+export function getAPIRoutesFromDirectory(_directory: string): string[] {
   const routes: string[] = [];
   // This would typically use fs.readdirSync to scan directories
   // For now, we return the known routes

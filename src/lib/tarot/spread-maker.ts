@@ -1,8 +1,7 @@
 // src/lib/tarot/spread-maker.ts
 // Tarot spread maker - create custom spreads
 
-import { getAllSpreadTypes, getSpread, type TarotSpread, type SpreadPosition } from './spreads';
-
+import { getSpread, type TarotSpread, type SpreadPosition } from './spreads';
 /**
  * Options for creating a custom spread
  */

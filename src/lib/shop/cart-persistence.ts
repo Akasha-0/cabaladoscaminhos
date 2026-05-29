@@ -1,9 +1,8 @@
 // ============================================================
 // CART PERSISTENCE - Cabala dos Caminhos
 // ============================================================
- 
 
-import type { Cart, CartItem } from './cart';
+import type { Cart } from './cart';
 
 const CART_KEY = 'cabala-cart';
 const CART_VERSION = '1';

@@ -81,10 +81,6 @@ export interface PDFOptions {
   incluirAssinatura?: boolean;
 }
 
-const COR_PRIMARIA = '#4B0082'; // Índigo
-const COR_SECUNDARIA = '#8A2BE2'; // Azul violeta
-const COR_TEXTO = '#1E1E1E';
-
 function formatarData(data: Date | string | undefined): string {
   if (!data) return '';
   const d = typeof data === 'string' ? new Date(data) : data;
@@ -199,8 +195,7 @@ export async function generatePDF(
   return doc.output('arraybuffer') as unknown as Uint8Array;
 }
 
-function adicionaSecao(doc: any, titulo: string, y: number, largura: number): number {
-  doc.setFontSize(12);
+function adicionaSecao(doc: any, titulo: string, y: number, _largura: number): number {
   (doc as any).setTextColor(75, 0, 130);
   doc.setFont('helvetica', 'bold');
   doc.text(titulo, 20, y);

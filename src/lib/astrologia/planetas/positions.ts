@@ -21,24 +21,6 @@ export interface PlanetaryPosition {
   retrograde: boolean;
 }
 
-function calculateGeocentricLongitude(
-  planeta: Planeta,
-  data: Date,
-  sunLongitude: number
-): number {
-  const helio = calcularPosicao(planeta, data);
-  const sunLon = sunLongitude;
-
-  if (planeta === 'sol' || planeta === 'lua') {
-    return helio.longitude;
-  }
-
-  let geoLon = helio.longitude - sunLon;
-  if (geoLon < 0) geoLon += 360;
-
-  return geoLon;
-}
-
 function isRetrograde(planeta: Planeta, data: Date): boolean {
   if (planeta === 'sol' || planeta === 'lua') {
     return false;
@@ -74,8 +56,6 @@ function isRetrograde(planeta: Planeta, data: Date): boolean {
 }
 
 export function getPlanetaryPositions(data: Date): PlanetaryPosition[] {
-  const sunPos = calcularPosicao('sol', data);
-
   const positions: PlanetaryPosition[] = [];
 
   for (const planeta of CLASSICAL_PLANETS) {

@@ -2,13 +2,13 @@
 
 /**
  * Odi Data Module
- * Comprehensive spiritual data for Odi
+ * Comprehensive spiritual data for Odi (Odu 7)
  */
 
 export interface OdiData {
   nome: string;
   nomePortugues: string;
-  categoria: string;
+  numero: number;
   caminho: string;
   elementos: string[];
   meses: string[];
@@ -33,42 +33,42 @@ export interface OdiData {
   sefirot: string[];
   tarot: string[];
   direcao: string;
- 时辰: string;
+时辰: string;
 }
 
 export const ODI_DATA: OdiData = {
   nome: 'Odi',
-  nomePortugues: 'Destino',
-  categoria: 'Orixá',
-  caminho: '8',
-  elementos: ['Água', 'Terra'],
-  meses: ['Janeiro', 'Maio'],
+  nomePortugues: 'O Poço Profundo',
+  numero: 7,
+  caminho: '7',
+  elementos: ['Terra', 'Água'],
+  meses: ['Outubro'],
   dias: ['Segunda-feira'],
-  orixasRelacionados: ['Orunmila', 'Oxum', 'Iemanjá'],
-花草: ['Alfazema', 'Violeta'],
-  ebós: ['Água de cheiro', 'Fumo branco', 'Milho'],
-  quizilas: ['Não mentir', 'Não enganar os outros'],
+  orixasRelacionados: ['Omolu', 'Oxumaré', 'Exu'],
+花草: ['Pau-brasil', 'Babosa'],
+  ebós: ['Pipoca para Omolu', 'Banhos de lama ou argila', 'Defumações pesadas com resinas'],
+  quizilas: ['Dormir no escuro absoluto se estiver com medo', 'Comer carne de caça', 'Persistir no erro'],
   mensagens: [
-    'O destino está em suas mãos',
-    'Cada escolha molda seu caminho',
-    'A verdade liberta e protege',
-    'Siga sua intuição com sabedoria',
-    'O destino favorece os persistentes',
+    'A teimosia pode ser sua maior aliada ou sua pior inimiga',
+    'Olhe para dentro antes de olhar para fora',
+    'O renascimento está próximo',
+    'Evite cavar feridas passadas',
+    'A escuridão guarda segredos preciosos'
   ],
   significado: {
-    positivo: 'Destino, sorte, intuição, sabedoria, proteção',
-    negativo: 'Engano, traição, má sorte, fracasso',
+    positivo: 'Teimosia positiva, renascimento, sabedoria oculta, resiliência',
+    negativo: 'Teimosia negativa, persistência no erro, medo do escuro'
   },
-  qualidade: 'Misterioso e profundo',
-  regencia: 'Destino e intuição',
-  cores: ['Roxo', 'Violeta', 'Branco'],
-  pedras: ['Ametista', 'Turmalina negra', 'Quartzo'],
-  alimentos: ['Milho', 'Fumo branco', 'Água de cheiro'],
-  numSagrado: [8, 17, 26],
-  planeta: 'Netuno',
-  chakra: '6º - Ajna',
-  sefirot: ['Binah', 'Hod'],
-  tarot: ['O Eremita', 'A Roda da Fortuna'],
+  qualidade: 'Profundo e transformador',
+  regencia: 'Omolu, Oxumaré, Exu',
+  cores: ['Preto', 'Marrom', 'Verde escuro'],
+  pedras: ['Ônix', 'Obsidiana', 'Turmalina negra'],
+  alimentos: ['Pipoca', 'Raízes', 'Terras medicinais'],
+  numSagrado: [7, 14, 21],
+  planeta: 'Saturno',
+  chakra: '1º - Raiz',
+  sefirot: ['Yesod', 'Malkuth'],
+  tarot: ['O Mundo', 'A Lua'],
   direcao: 'Norte',
 时辰: 'Meia-noite',
 };

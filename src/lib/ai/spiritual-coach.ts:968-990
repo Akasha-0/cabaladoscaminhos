@@ -1,0 +1,21 @@
+private getOrCreateAdaptationProfile(userId: string): AdaptationProfile {
+    let profile = this.adaptationProfiles.get(userId);
+
+    if (!profile) {
+      profile = {
+        userId,
+        strengths: [],
+        weaknesses: [],
+        preferredElements: [],
+        preferredPractices: [],
+        avoidedPractices: [],
+        responsePatterns: {},
+        evolutionRate: 0,
+        lastUpdated: new Date(),
+        learningHistory: [],
+      };
+      this.adaptationProfiles.set(userId, profile);
+    }
+
+    return profile;
+  }

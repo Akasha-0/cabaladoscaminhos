@@ -203,7 +203,7 @@ export const ptBR = {
       magico: 'O Mago',
       imperadora: 'A Imperatriz',
       imperador: 'O Imperador',
-      papa: 'O Papa',
+      hierofante: 'O Hierofante',
       namorados: 'Os Amantes',
       carro: 'O Carro',
       forca: 'A Força',

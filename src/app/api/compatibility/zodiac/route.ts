@@ -160,11 +160,6 @@ const MODALITY_COMPATIBILITY: Record<string, Record<string, number>> = {
   Mutable: { Cardinal: 80, Fixed: 50, Mutable: 100 },
 };
 
-const SYMBOLS: Record<string, string> = {
-  aries: '♈', taurus: '♉', gemini: '♊', cancer: '♋',
-  leo: '♌', virgo: '♍', libra: '♎', scorpio: '♏',
-  sagittarius: '♐', capricorn: '♑', aquarius: '♒', pisces: '♓',
-};
 
 function getSignFromDate(date: string): string | null {
   const month = parseInt(date.split('-')[1], 10);
@@ -339,7 +334,7 @@ export async function GET(request: NextRequest) {
 
     const result = calculateCompatibility(sign1, sign2);
     return NextResponse.json(result);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to calculate compatibility' },
       { status: 500 }

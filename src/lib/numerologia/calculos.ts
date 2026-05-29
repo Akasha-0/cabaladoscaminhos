@@ -31,38 +31,41 @@ function somarDigitos(numero: number): number {
 }
 
 export function calcularPitagorica(nome: string): number {
-  const nomeLimpo = removerAcentos(nome.replace(/[^A-ZÀ-Ü]/g, ''));
-  let soma = 0;
-  
-  for (const letra of nomeLimpo) {
-    soma += tabelaPitagorica[letra] || 0;
-  }
-  
-  return somarDigitos(soma);
+  const nomeLimpo = nome
+     .normalize('NFD')
+     .replace(/[\u0300-\u036f]/g, '')
+     .toUpperCase()
+     .replace(/[^A-Z]/g, '');
+ let soma = 0;
+ for (const letra of nomeLimpo) {
+   soma += tabelaPitagorica[letra] || 0;
+ }
+ return somarDigitos(soma);
 }
-
 export function calcularCaldeia(nome: string): number {
-  const nomeLimpo = removerAcentos(nome.replace(/[^A-ZÀ-Ü]/g, ''));
-  let soma = 0;
-  
-  for (const letra of nomeLimpo) {
-    soma += tabelaCaldeia[letra] || 0;
-  }
-  
-  return somarDigitos(soma);
+  const nomeLimpo = nome
+     .normalize('NFD')
+     .replace(/[\u0300-\u036f]/g, '')
+     .toUpperCase()
+     .replace(/[^A-Z]/g, '');
+ let soma = 0;
+ for (const letra of nomeLimpo) {
+   soma += tabelaCaldeia[letra] || 0;
+ }
+ return somarDigitos(soma);
 }
-
 export function calcularCabalistica(nome: string): number {
-  const nomeLimpo = removerAcentos(nome.replace(/[^A-ZÀ-Ü]/g, ''));
-  let soma = 0;
-  
+  const nomeLimpo = nome
+     .normalize('NFD')
+     .replace(/[\u0300-\u036f]/g, '')
+     .toUpperCase()
+     .replace(/[^A-Z]/g, '');
+ let soma = 0;
   for (const letra of nomeLimpo) {
     soma += tabelaCabalistica[letra] || 0;
   }
-  
   return somarDigitos(soma);
 }
-
 export function calcularTantrica(dataNascimento: string): number {
   const numeros = dataNascimento.replace(/\D/g, '');
   let soma = 0;

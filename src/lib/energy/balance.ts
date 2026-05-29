@@ -88,7 +88,7 @@ function findWeakest(energy: EnergyBalance): keyof EnergyBalance | null {
   return weakest;
 }
 
-function generateRecommendation(distribution: BalanceResult['distribution'], dominant: keyof EnergyBalance | null, weakest: keyof EnergyBalance | null): string {
+function generateRecommendation(distribution: BalanceResult['distribution'], dominant: keyof EnergyBalance | null, _weakest: keyof EnergyBalance | null): string {
   const recommendations: Record<string, string> = {
     harmonious: 'Your energy is well-balanced. Maintain this harmony through regular self-care practices.',
     focused: `Your ${dominant} energy is dominant. Consider activities that engage your weaker energy centers.`,

@@ -249,20 +249,16 @@ describe('Error Handling', () => {
     it('should handle AppError', () => {
       const error = errors.auth.unauthorized();
       const result = handleApiError(error);
-
       expect(result.status).toBe(401);
       expect(result.body.error.code).toBe(ErrorCode.AUTH_UNAUTHORIZED);
     });
-
     it('should handle generic Error', () => {
       const genericError = new Error('Something went wrong');
       const result = handleApiError(genericError);
-
       expect(result.status).toBe(500);
       expect(result.body.error.code).toBe(ErrorCode.INTERNAL_ERROR);
     });
   });
-
   describe('Error Code Mapping', () => {
     it.each([
       [ErrorCode.AUTH_INVALID_CREDENTIALS, 401],
@@ -286,7 +282,6 @@ describe('Error Handling', () => {
         code,
         message: 'Test error',
       });
-
       expect(error.statusCode).toBe(expectedStatus);
     });
   });

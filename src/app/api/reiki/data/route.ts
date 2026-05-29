@@ -1,357 +1,361 @@
 // ============================================================
-// REIKI DATA API - CABALA DOS CAMINHOS
+// REIKI DATA API - Cabala Dos Caminhos
 // ============================================================
-// GET endpoints for reiki data
+// GET endpoints for Reiki data access
 // - Retrieve all reiki information
-// - Reiki healing and energy data
+// - Get specific reiki by ID
+// - Filter by category
+// - Filter by level
+// - Symbols and healing practices
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
 
-// Pre-computed reiki data for spiritual practice
-const REIKI_DATA = [
+// ─── INTERFACES ────────────────────────────────────────────────────────────────
+
+interface ReikiSymbol {
+  id: number;
+  name: string;
+  japaneseName: string;
+  meaning: string;
+  level: number;
+  power: string;
+  color: string;
+  healingFocus: string[];
+  activation: string;
+  description: string;
+}
+
+interface ReikiPractice {
+  id: string;
+  name: string;
+  category: string;
+  level: number;
+  description: string;
+  duration: string;
+  benefits: string[];
+  steps: string[];
+  warnings: string[];
+}
+
+interface ReikiCategory {
+  id: string;
+  name: string;
+  nameEn: string;
+  description: string;
+  level: number;
+  practices: number;
+}
+
+// ─── REIKI SYMBOLS DATA ────────────────────────────────────────────────────────
+
+const REIKI_SYMBOLS: ReikiSymbol[] = [
   {
-    id: 'usui',
-    name: 'Usui Reiki',
-    namePt: 'Reiki Usui',
-    origin: 'Japan',
-    founder: 'Mikao Usui',
-    year: 1922,
-    meaning: 'Universal life energy',
-    description: 'The original Reiki system developed by Mikao Usui, combining spiritual practice with natural healing energy.',
-    levels: [
-      {
-        level: 1,
-        name: 'Shoden',
-        namePt: 'Primeiro Nível',
-        description: 'Basic training - self-healing and attunement to Reiki energy',
-        symbols: [],
-        practices: ['Self-healing', 'Hand positions', 'Energy channeling'],
-      },
-      {
-        level: 2,
-        name: 'Okuden',
-        namePt: 'Segundo Nível',
-        description: 'Intermediate training - distance healing and symbol introduction',
-        symbols: ['Cho Ku Rei', 'Sei He Ki', 'Hon Sha Ze Sho Nen'],
-        practices: ['Distance healing', 'Mental/emotional healing', 'Symbol activation'],
-      },
-      {
-        level: 3,
-        name: 'Shinpiden',
-        namePt: 'Terceiro Nível',
-        description: 'Master/Teacher training - spiritual development and teaching',
-        symbols: ['Dai Ko Myo'],
-        practices: ['Master symbols', 'Teaching attunements', 'Spiritual growth'],
-      },
-    ],
-    principles: [
-      'Just for today, do not anger',
-      'Just for today, do not worry',
-      'Honor your parents, teachers, and elders',
-      'Earn your living honestly',
-      'Show gratitude to all things',
-    ],
-    handPositions: [
-      { area: 'Head', positions: ['Crown', 'Third eye', 'Temples', 'Ears', 'Cheeks'] },
-      { area: 'Front body', positions: ['Throat', 'Heart', 'Solar plexus', 'Abdomen', 'Pelvis'] },
-      { area: 'Back body', positions: ['Shoulders', 'Upper back', 'Lower back', 'Sacrum'] },
-      { area: ' extremities', positions: ['Hands', 'Feet', 'Knees', 'Elbows'] },
-    ],
-    benefits: [
-      'Stress reduction and relaxation',
-      'Pain management',
-      'Emotional healing',
-      'Spiritual growth',
-      'Energy balancing',
-      'Chakra alignment',
-    ],
-    associatedSefirot: ['Chesed', 'Gevurah', 'Tiferet'],
-    associatedChakras: ['Heart', 'Crown'],
-    score: 8,
+    id: 1,
+    name: 'Cho Ku Rei',
+    japaneseName: 'パワースymbol',
+    meaning: 'Power symbol',
+    level: 1,
+    power: 'energy-amplification',
+    color: 'golden',
+    healingFocus: ['physical-healing', 'energy-boost', 'protection'],
+    activation: 'Draw from center outward in clockwise motion',
+    description: 'The power symbol amplifies energy and is used for increasing power, protection, and attracting positive energy.',
   },
   {
-    id: 'karuna',
-    name: 'Karuna Reiki',
-    namePt: 'Reiki Karuna',
-    origin: 'United States',
-    founder: 'William Lee Rand',
-    year: 1990,
-    meaning: 'Compassionate action',
-    description: 'An advanced Reiki system developed by William Lee Rand, focusing on compassion and deeper healing work.',
-    levels: [
-      {
-        level: 1,
-        name: 'Level 1',
-        namePt: 'Nível 1',
-        description: 'Introduction to Karuna symbols and compassionate healing',
-        symbols: ['Raku', 'Zonar', 'Halu'],
-        practices: ['Symbol activation', 'Compassionate healing', 'Energy clearing'],
-      },
-      {
-        level: 2,
-        name: 'Level 2',
-        namePt: 'Nível 2',
-        description: 'Advanced symbols and distance healing with compassion',
-        symbols: ['Shanti', 'Rama', 'Klim', 'Sudarshan'],
-        practices: ['Advanced distance healing', 'Karma clearing', 'Soul healing'],
-      },
-      {
-        level: 3,
-        name: 'Master',
-        namePt: 'Mestre',
-        description: 'Master symbols and ability to teach Karuna Reiki',
-        symbols: ['Dab Mons', 'Fire Ball', 'Holistic'],
-        practices: ['Teaching attunements', 'Advanced healing', 'Spiritual empowerment'],
-      },
-    ],
-    principles: [
-      'Karma is opportunity for growth',
-      'All beings are one',
-      'Compassion is the path to enlightenment',
-      'Each moment is a new beginning',
-      'Be the change you wish to see',
-    ],
-    symbols: [
-      { name: 'Raku', purpose: 'Grounding and energy activation' },
-      { name: 'Zonar', purpose: 'Amplification and expansion' },
-      { name: 'Halu', purpose: 'Sending healing across time and space' },
-      { name: 'Shanti', purpose: 'Peace and tranquility' },
-      { name: 'Rama', purpose: 'Mastery and power' },
-      { name: 'Klim', purpose: 'Connecting to higher self' },
-      { name: 'Sudarshan', purpose: 'Karmic clearing and purification' },
-    ],
-    benefits: [
-      'Deep compassion development',
-      'Karmic healing',
-      'Soul healing and integration',
-      'Enhanced spiritual connection',
-      'Greater healing power',
-      'Accelerated personal growth',
-    ],
-    associatedSefirot: ['Chesed', 'Gevurah', 'Netzach'],
-    associatedChakras: ['Heart', 'Third eye', 'Crown'],
-    score: 9,
+    id: 2,
+    name: 'Sei He Ki',
+    japaneseName: '調和のsymbol',
+    meaning: 'Harmony symbol',
+    level: 1,
+    power: 'mental-emotional',
+    color: 'silver-blue',
+    healingFocus: ['mental-healing', 'emotional-balance', 'addictions'],
+    activation: 'Draw horizontally from left to right three times',
+    description: 'The harmony symbol brings mental and emotional balance, useful for clearing negative patterns and healing心理 wounds.',
   },
   {
-    id: 'sacred-火',
-    name: 'Sacred Fire Reiki',
-    namePt: 'Reiki Fogo Sagrado',
-    origin: 'United States',
-    founder: 'Nicholas H Parker',
-    year: 2001,
-    meaning: 'Divine transformative energy',
-    description: 'A powerful Reiki system based on the element of fire and sacred flame symbolism.',
-    levels: [
-      {
-        level: 1,
-        name: 'Ignition',
-        namePt: 'Ignição',
-        description: 'Awakening the sacred fire within',
-        symbols: ['Embrew', 'Gandharva'],
-        practices: ['Sacred fire activation', 'Inner flame meditation', 'Heat healing'],
-      },
-      {
-        level: 2,
-        name: 'Blazing',
-        namePt: 'Brasa',
-        description: 'Expanding the sacred fire outward',
-        symbols: ['Embrew II', 'Harth', 'Kureze'],
-        practices: ['Flame healing', 'Transformation work', 'Divine protection'],
-      },
-      {
-        level: 3,
-        name: 'Cleansing',
-        namePt: 'Purificação',
-        description: 'Advanced fire purification techniques',
-        symbols: ['Embrew III', 'Kumite', 'Zian'],
-        practices: ['Advanced purification', 'Ascended healing', 'Master attunements'],
-      },
-    ],
-    principles: [
-      'Sacred fire purifies all',
-      'Transformation comes through change',
-      'Light dispels darkness',
-      'Every soul carries the divine flame',
-      'Fire is the ultimate healer',
-    ],
-    symbolism: {
-      element: 'Fire',
-      direction: 'South',
-      season: 'Summer',
-      time: 'Noon',
-      qualities: ['Transformation', 'Purification', 'Power', 'Passion'],
-    },
-    benefits: [
-      'Deep purification',
-      'Transformation of old patterns',
-      'Divine protection',
-      'Inner power awakening',
-      'Spiritual purification',
-      'Soul ember activation',
-    ],
-    associatedSefirot: ['Gevurah', 'Netzach', 'Hod'],
-    associatedChakras: ['Solar plexus', 'Heart', 'Sacral'],
-    score: 7,
+    id: 3,
+    name: 'Hon Sha Ze Sho Nen',
+    japaneseName: 'つながりのsymbol',
+    meaning: 'Distance symbol',
+    level: 2,
+    power: 'distance-healing',
+    color: 'translucent-white',
+    healingFocus: ['distance-healing', 'past-healing', 'future-healing'],
+    activation: 'Draw symbol followed by intention and distance symbols',
+    description: 'Enables Reiki to be sent across any distance, connecting past, present, and future healing intentions.',
   },
   {
-    id: 'lightarian',
-    name: 'Lightarian Reiki',
-    namePt: 'Reiki Lightariano',
-    origin: 'United States',
-    founder: 'Susan Pearlain',
-    year: 2002,
-    meaning: 'Divine light attunement',
-    description: 'A system channeling cosmic light energy for spiritual development and healing.',
-    levels: [
-      {
-        level: 1,
-        name: 'Personal',
-        namePt: 'Pessoal',
-        description: 'Personal healing attunement through divine light',
-        symbols: ['Personal Rainbow Bridge', 'Personal Power'],
-        practices: ['Personal healing', 'Energy clearing', 'Light embodiment'],
-      },
-      {
-        level: 2,
-        name: 'Angular',
-        namePt: 'Angular',
-        description: 'Focused light energy for specific healing',
-        symbols: ['Angular 1', 'Angular 2', 'Angular 3'],
-        practices: ['Targeted healing', 'Light meditation', 'Energy activation'],
-      },
-      {
-        level: 3,
-        name: 'Celestial',
-        namePt: 'Celestial',
-        description: 'Access to angelic light dimensions',
-        symbols: ['Celestial 1', 'Celestial 2', 'Celestial 3'],
-        practices: ['Angelic healing', 'Cosmic light work', 'Divine connection'],
-      },
-      {
-        level: 4,
-        name: 'Buddhic',
-        namePt: 'Búdico',
-        description: 'Highest level of light attunement',
-        symbols: ['Buddhic Beam', 'Buddhic Ray'],
-        practices: ['Buddhic activation', 'Soul healing', 'Master attunement'],
-      },
-    ],
-    principles: [
-      'Divine light is available to all',
-      'Light heals and transforms',
-      'Each person is a divine being of light',
-      'The soul chooses its healing',
-      'Light is the ultimate truth',
-    ],
-    lightDimensions: [
-      { dimension: 'Angelic', color: 'Gold and white', purpose: 'Divine protection and connection' },
-      { dimension: 'Celestial', color: 'Pink and lavender', purpose: 'Love and spiritual growth' },
-      { dimension: 'Buddhic', color: 'Pure white and platinum', purpose: 'Soul awakening and enlightenment' },
-    ],
-    benefits: [
-      'Divine light channeling',
-      'Soul-level healing',
-      'Angelic connection',
-      'Light embodiment',
-      'Accelerated spiritual growth',
-      'Energetic purification',
-    ],
-    associatedSefirot: ['Kether', 'Chokhmah', 'Binah'],
-    associatedChakras: ['All', 'especially Crown and Heart'],
-    score: 8,
+    id: 4,
+    name: ' Dai Ko Myo',
+    japaneseName: '大光明のsymbol',
+    meaning: 'Master symbol',
+    level: 3,
+    power: 'master-energy',
+    color: 'pure-white-gold',
+    healingFocus: ['spiritual-awakening', 'master-healing', 'enlightenment'],
+    activation: 'Visualize brilliant white light flowing from crown to heart',
+    description: 'The master symbol awakens spiritual power and is used for master-level healing attunements and enlightenment practices.',
   },
   {
-    id: 'seichim',
-    name: 'Seichim',
-    namePt: 'Seichim',
-    origin: 'Egypt',
-    founder: 'Ancient Egyptian tradition',
-    year: 5000,
-    meaning: 'Light and love energy',
-    description: 'An ancient Egyptian healing modality combining sacred light and heart-centered energy.',
-    levels: [
-      {
-        level: 1,
-        name: 'Foundation',
-        namePt: 'Fundação',
-        description: 'Basic attunement to Seichim energy',
-        symbols: ['Sekhem', 'Activation symbol'],
-        practices: ['Light healing', 'Heart-centered work', 'Energy channeling'],
-      },
-      {
-        level: 2,
-        name: 'Advanced',
-        namePt: 'Avançado',
-        description: 'Enhanced healing and distance work',
-        symbols: ['Advanced Seichim symbols'],
-        practices: ['Advanced healing', 'Distance healing', 'Soul healing'],
-      },
-      {
-        level: 3,
-        name: 'Master',
-        namePt: 'Mestre',
-        description: 'Master attunement and teaching ability',
-        symbols: ['Master Seichim symbol'],
-        practices: ['Teaching attunements', 'Advanced soul work', 'Spiritual activation'],
-      },
-    ],
-    principles: [
-      'All healing comes from divine source',
-      'Light and love are the ultimate healing forces',
-      'Each being carries the light within',
-      'Compassion opens the door to healing',
-      'Seichim heals on all levels',
-    ],
-    connection: {
-      tradition: 'Ancient Egyptian',
-      deities: ['Sekhmet', 'Ra', 'Hathor'],
-      sacredSites: ['Great Pyramid', 'Karnak', 'Abu Simbel'],
-    },
-    benefits: [
-      'Heart-centered healing',
-      'Ancient wisdom connection',
-      'Soul integration',
-      'Light body activation',
-      'Divine love channeling',
-      'Egyptian mystery access',
-    ],
-    associatedSefirot: ['Tiferet', 'Netzach', 'Hod'],
-    associatedChakras: ['Heart', 'Solar plexus', 'All'],
-    score: 7,
+    id: 5,
+    name: 'Raku',
+    japaneseName: '落下symbol',
+    meaning: 'Fire symbol',
+    level: 3,
+    power: 'kundalini-activation',
+    color: 'fiery-orange',
+    healingFocus: ['kundalini-awakening', 'spinal-clearing', 'grounding'],
+    activation: 'Draw downward from crown to root in quick motion',
+    description: 'The fire symbol activates kundalini energy and helps clear the central channel for spiritual energy flow.',
+  },
+  {
+    id: 6,
+    name: 'Shui',
+    japaneseName: '水のsymbol',
+    meaning: 'Water symbol',
+    level: 2,
+    power: 'emotional-flow',
+    color: 'crystal-blue',
+    healingFocus: ['emotional-healing', 'flow-state', 'creativity'],
+    activation: 'Draw in flowing water-like motion',
+    description: 'Promotes emotional flow and creativity, helping to release stagnant emotional能量.',
+  },
+  {
+    id: 7,
+    name: 'Kokai',
+    japaneseName: '心を開くsymbol',
+    meaning: 'Heart opener symbol',
+    level: 1,
+    power: 'heart-connection',
+    color: 'rose-pink',
+    healingFocus: ['heart-healing', 'unconditional-love', 'relationships'],
+    activation: 'Draw from heart center outward',
+    description: 'Opens the heart chakra and promotes unconditional love in healing practices.',
   },
 ];
 
-// GET /api/reiki/data - Get all reiki data
-export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const reikiId = searchParams.get('id');
+// ─── REIKI PRACTICES DATA ──────────────────────────────────────────────────────
 
-    if (reikiId) {
-      const reiki = REIKI_DATA.find((r) => r.id === reikiId);
-      if (!reiki) {
-        return NextResponse.json(
-          { error: 'Reiki system not found', availableIds: REIKI_DATA.map((r) => r.id) },
-          { status: 404 }
-        );
-      }
-      return NextResponse.json({ data: reiki });
+const REIKI_PRACTICES: ReikiPractice[] = [
+  {
+    id: 'initiation-1',
+    name: 'Reiki Nivel 1 - Cura',
+    category: ' initiation',
+    level: 1,
+    description: 'Primeiro nível de Reiki para cura pessoal e 手当て.',
+    duration: '2-3 horas por sessão',
+    benefits: ['Auto-cura', 'Cura de outros', 'Canalização básica'],
+    steps: [
+      'Receber iniciação do mestre',
+      'Aprender posição das mãos',
+      'Praticar auto-cura',
+      'Cura em outros (mãos leves)',
+    ],
+    warnings: ['Evitar durante gravidez', 'Não substituir tratamento médico'],
+  },
+  {
+    id: 'initiation-2',
+    name: 'Reiki Nivel 2 - Avançado',
+    category: 'initiation',
+    level: 2,
+    description: 'Segundo nível com símbolos de poder e cura à distância.',
+    duration: '1-2 dias de treinamento',
+    benefits: ['Cura à distância', 'Maior poder', 'Símbolos sagrados'],
+    steps: [
+      'Receber símbolos',
+      'Aprender cura à distância',
+      'Praticar com clientes',
+      'Desenvolver intuição',
+    ],
+    warnings: ['Requer nivel 1', 'Padrão de ética necessário'],
+  },
+  {
+    id: 'master-3',
+    name: 'Reiki Mestre/Professor - Nivel 3',
+    category: 'master',
+    level: 3,
+    description: 'Nível master para ensinar e dar iniciações em Reiki.',
+    duration: '3-6 meses de treinamento',
+    benefits: ['Ensinar Reiki', 'Dar iniciações', 'Mestria espiritual'],
+    steps: [
+      'Receber símbolos mestres',
+      'Aprender técnicas de ensino',
+      'Praticar iniciações',
+      'Desenvolver linhagem',
+    ],
+    warnings: ['Requer nivel 2 completo', 'Compromisso com código ético'],
+  },
+  {
+    id: 'chyrio',
+    name: 'Cura Chyrio - Iniciação',
+    category: 'advanced',
+    level: 3,
+    description: 'Sistema avançado de cura energética integrado.',
+    duration: 'Varia por estudante',
+    benefits: ['Integração energética', 'Expansão consciencia', 'Canalização avançada'],
+    steps: [
+      'Preparação espiritual',
+      'Iniciação Chyrio',
+      'Práticas avançadas',
+      'Integração de sistemas',
+    ],
+    warnings: ['Sistema completo', 'Requer dedicação'],
+  },
+];
+
+// ─── REIKI CATEGORIES ─────────────────────────────────────────────────────────
+
+const REIKI_CATEGORIES: ReikiCategory[] = [
+  { id: ' initiation', name: 'Iniciação', nameEn: 'Attunement', description: 'Processos de iniciação nos diferentes níveis', level: 1, practices: 2 },
+  { id: 'master', name: 'Mestre', nameEn: 'Master', description: 'Nível mestres e professores de Reiki', level: 3, practices: 1 },
+  { id: 'advanced', name: 'Avançado', nameEn: 'Advanced', description: 'Sistemas avançados e técnicas especializadas', level: 3, practices: 1 },
+];
+
+// ─── CATEGORY METADATA ─────────────────────────────────────────────────────────
+
+const CATEGORY_META = {
+  initiation: { title: 'Iniciação Reiki', description: 'Processos de iniciação e primeiro contato com a energia', count: 2 },
+  master: { title: 'Mestre Reiki', description: 'Nível de mestres e professores', count: 1 },
+  advanced: { title: 'Técnicas Avançadas', description: 'Sistemas avançados e práticas especializadas', count: 1 },
+  symbols: { title: 'Símbolos Reiki', description: 'Símbolos sagrados e sua aplicação', count: 7 },
+} as const;
+
+type Category = keyof typeof CATEGORY_META;
+type SymbolCategory = 'energy-amplification' | 'mental-emotional' | 'distance-healing' | 'master-energy' | 'kundalini-activation' | 'emotional-flow' | 'heart-connection';
+
+// ─── GET HANDLER ──────────────────────────────────────────────────────────────
+
+/**
+ * GET /api/reiki/data
+ * 
+ * Query parameters:
+ * - id: Get specific reiki item (symbols or practices)
+ * - category: Filter by category (initiation, master, advanced, symbols)
+ * - level: Filter symbols by reiki level (1, 2, 3)
+ * - power: Filter symbols by power type
+ * 
+ * Examples:
+ * - GET /api/reiki/data - Returns all reiki data
+ * - GET /api/reiki/data?id=1 - Returns symbol with id 1
+ * - GET /api/reiki/data?category=symbols - Returns all symbols
+ * - GET /api/reiki/data?level=1 - Returns symbols for level 1
+ */
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const id = searchParams.get('id');
+  const category = searchParams.get('category') as Category | null;
+  const level = searchParams.get('level');
+  const power = searchParams.get('power');
+
+  // Get single symbol by ID
+  if (id) {
+    const symbol = REIKI_SYMBOLS.find((s) => s.id === parseInt(id, 10));
+    if (symbol) {
+      return NextResponse.json({
+        data: symbol,
+        meta: { source: 'reiki-symbols', type: 'symbol' },
+      });
+    }
+
+    const practice = REIKI_PRACTICES.find((p) => p.id === id);
+    if (practice) {
+      return NextResponse.json({
+        data: practice,
+        meta: { source: 'reiki-practices', type: 'practice' },
+      });
+    }
+
+    return NextResponse.json(
+      { error: 'Reiki item not found', id },
+      { status: 404 }
+    );
+  }
+
+  // Get symbols by level
+  if (level) {
+    const levelNum = parseInt(level, 10);
+    if (isNaN(levelNum) || levelNum < 1 || levelNum > 3) {
+      return NextResponse.json(
+        { error: 'Nível inválido. Use 1, 2 ou 3.', validLevels: [1, 2, 3] },
+        { status: 400 }
+      );
+    }
+
+    const symbolsByLevel = REIKI_SYMBOLS.filter((s) => s.level === levelNum);
+    return NextResponse.json({
+      data: symbolsByLevel,
+      meta: { level: levelNum, total: symbolsByLevel.length, source: 'reiki-symbols' },
+    });
+  }
+
+  // Get symbols by power type
+  if (power) {
+    const symbolsByPower = REIKI_SYMBOLS.filter(
+      (s) => s.power.toLowerCase() === power.toLowerCase()
+    );
+
+    if (symbolsByPower.length === 0) {
+      return NextResponse.json(
+        { error: 'Tipo de poder não encontrado', power, validPowers: REIKI_SYMBOLS.map((s) => s.power) },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({
-      data: REIKI_DATA,
+      data: symbolsByPower,
+      meta: { power, total: symbolsByPower.length, source: 'reiki-symbols' },
+    });
+  }
+
+  // Get by category
+  if (category) {
+    if (!Object.keys(CATEGORY_META).includes(category)) {
+      return NextResponse.json(
+        { error: 'Categoria inválida', validCategories: Object.keys(CATEGORY_META) },
+        { status: 400 }
+      );
+    }
+
+    if (category === 'symbols') {
+      return NextResponse.json({
+        data: REIKI_SYMBOLS,
+        meta: {
+          category: 'symbols',
+          ...CATEGORY_META.symbols,
+          total: REIKI_SYMBOLS.length,
+        },
+      });
+    }
+
+    const categoryPractices = REIKI_PRACTICES.filter((p) => p.category === category);
+    return NextResponse.json({
+      data: categoryPractices,
       meta: {
-        count: REIKI_DATA.length,
-        version: 'v1',
-        category: 'reiki',
+        category,
+        ...CATEGORY_META[category as keyof typeof CATEGORY_META],
+        total: categoryPractices.length,
       },
     });
-  } catch (error) {
-    console.error('Reiki API error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
   }
+
+  // Return all reiki data
+  return NextResponse.json({
+    data: {
+      symbols: REIKI_SYMBOLS,
+      practices: REIKI_PRACTICES,
+      categories: REIKI_CATEGORIES,
+    },
+    meta: {
+      total: {
+        symbols: REIKI_SYMBOLS.length,
+        practices: REIKI_PRACTICES.length,
+        categories: REIKI_CATEGORIES.length,
+      },
+      categories: CATEGORY_META,
+      levels: [1, 2, 3],
+      source: 'reiki-data',
+    },
+  });
 }

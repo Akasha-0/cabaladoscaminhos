@@ -6,7 +6,6 @@
 import type { NumerologiaReportData } from './reports';
 import type { AstrologiaReportData } from './reports';
 import type { OduReportData } from './reports';
-import type { GeneratedReport } from './reports';
 
 export type ComprehensiveReportType = 'completo' | 'analitico' | 'sintetico';
 

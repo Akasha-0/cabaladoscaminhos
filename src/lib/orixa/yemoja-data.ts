@@ -59,19 +59,18 @@ const YEMOJA_DATA: YemojaData[] = [
       'tendência ao martyr',
       'superproteção',
     ],
-    rulingPlanet: 'Lua',
-    sacredAnimals: ['peixe', ' tartaruga', 'cavalo-marinho', 'baleia'],
-    plants: ['colônia', 'alcaparra', 'lágrima-de-nossa-senhora', 'pata-de-vaca', 'erva-de-santa-luzia'],
-    offerings: ['água salgada', 'flores brancas e azuis', 'canjica', 'queijo', 'perfume floral', 'espelho'],
-    chants: ['Odoyá!', 'Ora ô ô Yemanjá!', 'Yê Yê Yê!'],
-    symbols: ['espelho oval', 'pente de osso', 'navio', 'meia lua', 'ondas do mar'],
+    rulingPlanet: 'Lua/Netuno',
+    sacredAnimals: ['peixe', 'baleia', 'tartaruga'],
+    plants: ['alcaparra', 'colônia', 'flor de lótus'],
+    offerings: ['canjica branca', 'flores azuis', 'água do mar', 'vela branca', 'perfume'],
+    chants: ['Odoyá Yemanjá!', 'Iêêê!'],
+    symbols: ['mar', 'lua', 'navio', 'espelho'],
     mythology:
-      'Yemoja é a mãe de todos os orixás, a origem do axé sagrado. Ela habita as águas salgadas e é a protetora das crianças, das mulheres e dos pescadores. Sua energia representa a nutrição primordial, o ventre que alimenta toda a criação. É conhecida como a Grande Mãe Iorubá, senhora das profundezas e dos mistérios ocultos.',
+      'Yemoja é a mãe de todos os orixás. Ela é a origem das águas e a força geradora do universo. Os pescadores a invocam antes de zarpar, as mulheres a pedem por filhos, e todos buscam sua proteção nas horas de necessidade.',
     spiritualLesson:
-      'Aprenda a nutrição sem possessão. Permita que o amor flua como as águas do mar - sempre em movimento, sempre renovando, sem apego ao controle. A verdadeira maternidade é dar espaço para que cada ser encontre seu próprio caminho, assim como o mar acolhe todos os rios sem perguntar它们的目的地.',
-    affirmation: 'Eu sou a corrente sagrada que nutre e protege. Minhas águas carregam bênçãos para todos os que来找我.',
+      'A verdadeira geração não é apenas física - é a capacidade de criar vida em todos os níveis: ideias, projetos, relacionamentos. Permita que a energia criativa de Yemoja flua através de você, trazendo vida onde quer que você vá.',
     meditation:
-      'Descanse nas profundezas calmas do mar interior. Sinta a energia de Yemoja envolvendo você como as águas maternas. Permita que ela lave suas preocupações e traga paz aos lugares mais profundos da sua alma.',
+      'Visualize as águas profundas de Yemoja. Você é o receptáculo sagrado onde ela deposita suas bênçãos. Permita que essa energia flua através de você, trazendo cura e renovação.',
   },
   {
     id: 'yemoja-02',
@@ -84,20 +83,9 @@ const YEMOJA_DATA: YemojaData[] = [
     numbersSacred: [2, 8, 13],
     greeting: 'Odoyá!',
     archetype: 'A Geradora Eterna',
-    qualities: [
-      'criação',
-      'fecundidade',
-      'equilíbrio emocional',
-      'orientação',
-      'guia espiritual',
-      'regeneração',
-    ],
-    challenges: [
-      'dependência emocional',
-      'medo do abandono',
-      'dificuldade em estabelecer limites',
-    ],
-    rulingPlanet: 'Lua',
+    qualities: ['criação', 'fecundidade', 'equilíbrio emocional', 'orientação', 'guia espiritual', 'regeneração'],
+    challenges: ['dependência emocional', 'medo do abandono', 'dificuldade em estabelecer limites'],
+    rulingPlanet: 'Lua/Netuno',
     sacredAnimals: ['peixe', 'baleia', 'tartaruga'],
     plants: ['alcaparra', 'colônia', 'flor de lótus'],
     offerings: ['canjica branca', 'flores azuis', 'água do mar', 'vela branca', 'perfume'],
@@ -109,7 +97,7 @@ const YEMOJA_DATA: YemojaData[] = [
       'A verdadeira geração não é apenas física - é a capacidade de criar vida em todos os níveis: ideias, projetos, relacionamentos. Permita que a energia criativa de Yemoja flua através de você, trazendo vida onde quer que você vá.',
     affirmation: 'Sou geradora de vida e protectora de todos os meus filhos.',
     meditation:
-      'Visualize as águas profundas de Yemoja. Você é o receptáculo sagrado onde ela deposita suas bênçãos. Permita que essa energiaflua através de você, trazendo cura e renovação.',
+      'Visualize as águas profundas de Yemoja. Você é o receptáculo sagrado onde ela deposita suas bênçãos. Permita que essa energia flua através de você, trazendo cura e renovação.',
   },
 ];
 

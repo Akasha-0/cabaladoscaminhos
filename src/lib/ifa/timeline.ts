@@ -297,7 +297,7 @@ export function getTimelineMilestones(timeline: OduTimeline): {
   label: string;
 }[] {
   let cumulative = 0;
-  return timeline.events.map((event, index) => {
+  return timeline.events.map((event) => {
     cumulative += event.duration;
     return {
       day: cumulative,

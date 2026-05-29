@@ -20,7 +20,7 @@ export interface MarmaPoint {
   energetics?: string;
 }
 
-const activeSession: MarmaPracticeSession | null = null;
+const _activeSession: MarmaPracticeSession | null = null;
 
 const MARMA_POINTS: MarmaPoint[] = [
   { id: 'sahasrara', name: 'Crown', sanskrit: 'Sahasrara', location: 'Top of head' },

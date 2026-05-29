@@ -202,21 +202,6 @@ function getMoonPhaseIndex(date: Date = new Date()): number {
   return Math.floor(lunarAge / phaseLength) % 8;
 }
 
-/**
- * Get element for planet (for themed content)
- */
-function getPlanetaElemento(planeta: string): string {
-  const elementos: Record<string, string> = {
-    'Sol': 'Fogo',
-    'Lua': 'Água',
-    'Mercúrio': 'Ar',
-    'Marte': 'Fogo',
-    'Júpiter': 'Fogo',
-    'Vênus': 'Terra',
-    'Saturno': 'Terra',
-  };
-  return elementos[planeta] || 'Água';
-}
 
 // ============================================================================
 // Main Function

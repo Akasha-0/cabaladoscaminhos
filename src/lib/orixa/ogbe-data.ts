@@ -34,7 +34,7 @@ export interface OgbeData {
 const OGBE_DATA: OgbeData[] = [
   {
     id: 'ogbe',
-    name: 'Ogbe',
+    name: 'Okaran',
     namePortuguese: 'Senhor da Criação e Expansão',
     path: 'Ogbe',
     element: 'Água e Ar',

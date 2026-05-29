@@ -1,0 +1,1633 @@
+[
+  {
+    "cycleId": "cycle-1780019180107",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:46:20.107Z"
+  },
+  {
+    "cycleId": "cycle-1780019235910",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:47:15.910Z"
+  },
+  {
+    "cycleId": "cycle-1780019347489",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:49:07.489Z"
+  },
+  {
+    "cycleId": "cycle-1780019370498",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:49:30.498Z"
+  },
+  {
+    "cycleId": "cycle-1780019387890",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:49:47.890Z"
+  },
+  {
+    "cycleId": "cycle-1780019419262",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:50:19.262Z"
+  },
+  {
+    "cycleId": "cycle-1780019436557",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:50:36.557Z"
+  },
+  {
+    "cycleId": "cycle-1780019455229",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:50:55.229Z"
+  },
+  {
+    "cycleId": "cycle-1780019472773",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:51:12.773Z"
+  },
+  {
+    "cycleId": "cycle-1780019506833",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:51:46.833Z"
+  },
+  {
+    "cycleId": "cycle-1780019539110",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:52:19.110Z"
+  },
+  {
+    "cycleId": "cycle-1780019552418",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:52:32.418Z"
+  },
+  {
+    "cycleId": "cycle-1780019566157",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:52:46.157Z"
+  },
+  {
+    "cycleId": "cycle-1780019588895",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:53:08.895Z"
+  },
+  {
+    "cycleId": "cycle-1780019608502",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:53:28.502Z"
+  },
+  {
+    "cycleId": "cycle-1780019622241",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:53:42.241Z"
+  },
+  {
+    "cycleId": "cycle-1780019642964",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:54:02.964Z"
+  },
+  {
+    "cycleId": "cycle-1780019665840",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:54:25.840Z"
+  },
+  {
+    "cycleId": "cycle-1780019690698",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:54:50.698Z"
+  },
+  {
+    "cycleId": "cycle-1780019722656",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:55:22.656Z"
+  },
+  {
+    "cycleId": "cycle-1780019740656",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:55:40.656Z"
+  },
+  {
+    "cycleId": "cycle-1780019754229",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:55:54.229Z"
+  },
+  {
+    "cycleId": "cycle-1780019772639",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:56:12.639Z"
+  },
+  {
+    "cycleId": "cycle-1780019790542",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:56:30.542Z"
+  },
+  {
+    "cycleId": "cycle-1780019810657",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:56:50.657Z"
+  },
+  {
+    "cycleId": "cycle-1780019840833",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:57:20.833Z"
+  },
+  {
+    "cycleId": "cycle-1780019856567",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:57:36.567Z"
+  },
+  {
+    "cycleId": "cycle-1780019878024",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:57:58.024Z"
+  },
+  {
+    "cycleId": "cycle-1780019897040",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:58:17.040Z"
+  },
+  {
+    "cycleId": "cycle-1780019910262",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:58:30.262Z"
+  },
+  {
+    "cycleId": "cycle-1780019926563",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:58:46.563Z"
+  },
+  {
+    "cycleId": "cycle-1780019941610",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:59:01.610Z"
+  },
+  {
+    "cycleId": "cycle-1780019961274",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:59:21.274Z"
+  },
+  {
+    "cycleId": "cycle-1780019976037",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:59:36.037Z"
+  },
+  {
+    "cycleId": "cycle-1780019993316",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T01:59:53.316Z"
+  },
+  {
+    "cycleId": "cycle-1780020059732",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:00:59.732Z"
+  },
+  {
+    "cycleId": "cycle-1780020109102",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:01:49.102Z"
+  },
+  {
+    "cycleId": "cycle-1780020131508",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:02:11.508Z"
+  },
+  {
+    "cycleId": "cycle-1780020144303",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:02:24.303Z"
+  },
+  {
+    "cycleId": "cycle-1780020159409",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:02:39.409Z"
+  },
+  {
+    "cycleId": "cycle-1780020198373",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:03:18.373Z"
+  },
+  {
+    "cycleId": "cycle-1780020261589",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:04:21.589Z"
+  },
+  {
+    "cycleId": "cycle-1780020290242",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:04:50.242Z"
+  },
+  {
+    "cycleId": "cycle-1780020304209",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:05:04.209Z"
+  },
+  {
+    "cycleId": "cycle-1780020322699",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:05:22.699Z"
+  },
+  {
+    "cycleId": "cycle-1780020346054",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:05:46.054Z"
+  },
+  {
+    "cycleId": "cycle-1780020379283",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:06:19.283Z"
+  },
+  {
+    "cycleId": "cycle-1780020399320",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:06:39.320Z"
+  },
+  {
+    "cycleId": "cycle-1780020415200",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:06:55.200Z"
+  },
+  {
+    "cycleId": "cycle-1780020443122",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:07:23.122Z"
+  },
+  {
+    "cycleId": "cycle-1780020473697",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:07:53.697Z"
+  },
+  {
+    "cycleId": "cycle-1780020494501",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:08:14.501Z"
+  },
+  {
+    "cycleId": "cycle-1780020515297",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:08:35.297Z"
+  },
+  {
+    "cycleId": "cycle-1780020560980",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:09:20.980Z"
+  },
+  {
+    "cycleId": "cycle-1780020635245",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:10:35.245Z"
+  },
+  {
+    "cycleId": "cycle-1780020643879",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:10:43.879Z"
+  },
+  {
+    "cycleId": "cycle-1780020658625",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:10:58.625Z"
+  },
+  {
+    "cycleId": "cycle-1780020686713",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:11:26.713Z"
+  },
+  {
+    "cycleId": "cycle-1780020700476",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:11:40.476Z"
+  },
+  {
+    "cycleId": "cycle-1780020715022",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:11:55.022Z"
+  },
+  {
+    "cycleId": "cycle-1780020728706",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:12:08.706Z"
+  },
+  {
+    "cycleId": "cycle-1780020740257",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:12:20.257Z"
+  },
+  {
+    "cycleId": "cycle-1780020757769",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:12:37.769Z"
+  },
+  {
+    "cycleId": "cycle-1780020768375",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:12:48.375Z"
+  },
+  {
+    "cycleId": "cycle-1780020792440",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:13:12.440Z"
+  },
+  {
+    "cycleId": "cycle-1780020807904",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:13:27.904Z"
+  },
+  {
+    "cycleId": "cycle-1780020822160",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:13:42.160Z"
+  },
+  {
+    "cycleId": "cycle-1780020837287",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:13:57.287Z"
+  },
+  {
+    "cycleId": "cycle-1780020854638",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:14:14.638Z"
+  },
+  {
+    "cycleId": "cycle-1780020865932",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:14:25.932Z"
+  },
+  {
+    "cycleId": "cycle-1780020882364",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:14:42.364Z"
+  },
+  {
+    "cycleId": "cycle-1780020896062",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:14:56.062Z"
+  },
+  {
+    "cycleId": "cycle-1780020908299",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:15:08.299Z"
+  },
+  {
+    "cycleId": "cycle-1780020921600",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:15:21.600Z"
+  },
+  {
+    "cycleId": "cycle-1780020932625",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:15:32.626Z"
+  },
+  {
+    "cycleId": "cycle-1780020944918",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:15:44.918Z"
+  },
+  {
+    "cycleId": "cycle-1780020958718",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:15:58.718Z"
+  },
+  {
+    "cycleId": "cycle-1780020973066",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:16:13.066Z"
+  },
+  {
+    "cycleId": "cycle-1780020998808",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:16:38.808Z"
+  },
+  {
+    "cycleId": "cycle-1780021015092",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:16:55.093Z"
+  },
+  {
+    "cycleId": "cycle-1780021024394",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:17:04.394Z"
+  },
+  {
+    "cycleId": "cycle-1780021035247",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:17:15.247Z"
+  },
+  {
+    "cycleId": "cycle-1780021048013",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:17:28.013Z"
+  },
+  {
+    "cycleId": "cycle-1780021066626",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:17:46.626Z"
+  },
+  {
+    "cycleId": "cycle-1780021089752",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:18:09.752Z"
+  },
+  {
+    "cycleId": "cycle-1780021105385",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:18:25.385Z"
+  },
+  {
+    "cycleId": "cycle-1780021116212",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:18:36.212Z"
+  },
+  {
+    "cycleId": "cycle-1780021128879",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:18:48.879Z"
+  },
+  {
+    "cycleId": "cycle-1780021148095",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:19:08.095Z"
+  },
+  {
+    "cycleId": "cycle-1780021160730",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:19:20.730Z"
+  },
+  {
+    "cycleId": "cycle-1780021174148",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:19:34.149Z"
+  },
+  {
+    "cycleId": "cycle-1780021186981",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:19:46.981Z"
+  },
+  {
+    "cycleId": "cycle-1780021212738",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:20:12.738Z"
+  },
+  {
+    "cycleId": "cycle-1780021226950",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:20:26.950Z"
+  },
+  {
+    "cycleId": "cycle-1780021247876",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:20:47.876Z"
+  },
+  {
+    "cycleId": "cycle-1780021262317",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:21:02.317Z"
+  },
+  {
+    "cycleId": "cycle-1780021274887",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:21:14.887Z"
+  },
+  {
+    "cycleId": "cycle-1780021288471",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:21:28.471Z"
+  },
+  {
+    "cycleId": "cycle-1780021307902",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:21:47.902Z"
+  },
+  {
+    "cycleId": "cycle-1780021328424",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:22:08.424Z"
+  },
+  {
+    "cycleId": "cycle-1780021341833",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:22:21.833Z"
+  },
+  {
+    "cycleId": "cycle-1780021356921",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:22:36.921Z"
+  },
+  {
+    "cycleId": "cycle-1780021374141",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:22:54.141Z"
+  },
+  {
+    "cycleId": "cycle-1780021386179",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:23:06.179Z"
+  },
+  {
+    "cycleId": "cycle-1780021395691",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:23:15.691Z"
+  },
+  {
+    "cycleId": "cycle-1780021410331",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:23:30.331Z"
+  },
+  {
+    "cycleId": "cycle-1780021434832",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:23:54.833Z"
+  },
+  {
+    "cycleId": "cycle-1780021469744",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:24:29.744Z"
+  },
+  {
+    "cycleId": "cycle-1780021503705",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:25:03.705Z"
+  },
+  {
+    "cycleId": "cycle-1780021547332",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:25:47.332Z"
+  },
+  {
+    "cycleId": "cycle-1780021559558",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:25:59.558Z"
+  },
+  {
+    "cycleId": "cycle-1780021573590",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:26:13.590Z"
+  },
+  {
+    "cycleId": "cycle-1780021597611",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:26:37.611Z"
+  },
+  {
+    "cycleId": "cycle-1780021615805",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:26:55.805Z"
+  },
+  {
+    "cycleId": "cycle-1780021636797",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:27:16.797Z"
+  },
+  {
+    "cycleId": "cycle-1780021649688",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:27:29.688Z"
+  },
+  {
+    "cycleId": "cycle-1780021668030",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:27:48.030Z"
+  },
+  {
+    "cycleId": "cycle-1780021683278",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:28:03.278Z"
+  },
+  {
+    "cycleId": "cycle-1780021696371",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:28:16.371Z"
+  },
+  {
+    "cycleId": "cycle-1780021715265",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:28:35.265Z"
+  },
+  {
+    "cycleId": "cycle-1780021731968",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:28:51.968Z"
+  },
+  {
+    "cycleId": "cycle-1780021752179",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:29:12.179Z"
+  },
+  {
+    "cycleId": "cycle-1780021767647",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:29:27.647Z"
+  },
+  {
+    "cycleId": "cycle-1780021786227",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:29:46.227Z"
+  },
+  {
+    "cycleId": "cycle-1780021806099",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:30:06.099Z"
+  },
+  {
+    "cycleId": "cycle-1780021825852",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:30:25.852Z"
+  },
+  {
+    "cycleId": "cycle-1780021838647",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:30:38.647Z"
+  },
+  {
+    "cycleId": "cycle-1780021851476",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:30:51.476Z"
+  },
+  {
+    "cycleId": "cycle-1780021866657",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:31:06.657Z"
+  },
+  {
+    "cycleId": "cycle-1780021888622",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:31:28.622Z"
+  },
+  {
+    "cycleId": "cycle-1780021902527",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:31:42.527Z"
+  },
+  {
+    "cycleId": "cycle-1780021914559",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:31:54.560Z"
+  },
+  {
+    "cycleId": "cycle-1780021944774",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:32:24.774Z"
+  },
+  {
+    "cycleId": "cycle-1780021961411",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:32:41.411Z"
+  },
+  {
+    "cycleId": "cycle-1780021980711",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:33:00.711Z"
+  },
+  {
+    "cycleId": "cycle-1780022005217",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:33:25.217Z"
+  },
+  {
+    "cycleId": "cycle-1780022025939",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:33:45.939Z"
+  },
+  {
+    "cycleId": "cycle-1780022048754",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:34:08.754Z"
+  },
+  {
+    "cycleId": "cycle-1780022061707",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:34:21.707Z"
+  },
+  {
+    "cycleId": "cycle-1780022079972",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:34:39.972Z"
+  },
+  {
+    "cycleId": "cycle-1780022096658",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:34:56.658Z"
+  },
+  {
+    "cycleId": "cycle-1780022120035",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:35:20.036Z"
+  },
+  {
+    "cycleId": "cycle-1780022133669",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:35:33.670Z"
+  },
+  {
+    "cycleId": "cycle-1780022157266",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:35:57.266Z"
+  },
+  {
+    "cycleId": "cycle-1780022174681",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:36:14.681Z"
+  },
+  {
+    "cycleId": "cycle-1780022189557",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:36:29.557Z"
+  },
+  {
+    "cycleId": "cycle-1780022204111",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:36:44.111Z"
+  },
+  {
+    "cycleId": "cycle-1780022221873",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:37:01.873Z"
+  },
+  {
+    "cycleId": "cycle-1780022238988",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:37:18.989Z"
+  },
+  {
+    "cycleId": "cycle-1780022256573",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:37:36.573Z"
+  },
+  {
+    "cycleId": "cycle-1780022276019",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:37:56.019Z"
+  },
+  {
+    "cycleId": "cycle-1780022290767",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:38:10.767Z"
+  },
+  {
+    "cycleId": "cycle-1780022308765",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:38:28.765Z"
+  },
+  {
+    "cycleId": "cycle-1780022321888",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:38:41.888Z"
+  },
+  {
+    "cycleId": "cycle-1780022349406",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:39:09.406Z"
+  },
+  {
+    "cycleId": "cycle-1780022370293",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:39:30.293Z"
+  },
+  {
+    "cycleId": "cycle-1780022397399",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:39:57.399Z"
+  },
+  {
+    "cycleId": "cycle-1780022420739",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:40:20.739Z"
+  },
+  {
+    "cycleId": "cycle-1780022443007",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:40:43.007Z"
+  },
+  {
+    "cycleId": "cycle-1780022477901",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:41:17.901Z"
+  },
+  {
+    "cycleId": "cycle-1780022505942",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:41:45.942Z"
+  },
+  {
+    "cycleId": "cycle-1780022529648",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:42:09.648Z"
+  },
+  {
+    "cycleId": "cycle-1780022560405",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:42:40.405Z"
+  },
+  {
+    "cycleId": "cycle-1780022586968",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:43:06.968Z"
+  },
+  {
+    "cycleId": "cycle-1780022614851",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:43:34.851Z"
+  },
+  {
+    "cycleId": "cycle-1780022659685",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:44:19.685Z"
+  },
+  {
+    "cycleId": "cycle-1780022683618",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:44:43.618Z"
+  },
+  {
+    "cycleId": "cycle-1780022700903",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:45:00.903Z"
+  },
+  {
+    "cycleId": "cycle-1780022718509",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:45:18.509Z"
+  },
+  {
+    "cycleId": "cycle-1780022734951",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:45:34.951Z"
+  },
+  {
+    "cycleId": "cycle-1780022757639",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:45:57.639Z"
+  },
+  {
+    "cycleId": "cycle-1780022772321",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:46:12.321Z"
+  },
+  {
+    "cycleId": "cycle-1780022790828",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:46:30.828Z"
+  },
+  {
+    "cycleId": "cycle-1780022803531",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:46:43.531Z"
+  },
+  {
+    "cycleId": "cycle-1780022831126",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:47:11.126Z"
+  },
+  {
+    "cycleId": "cycle-1780022852233",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:47:32.233Z"
+  },
+  {
+    "cycleId": "cycle-1780022878786",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:47:58.786Z"
+  },
+  {
+    "cycleId": "cycle-1780022899540",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:48:19.540Z"
+  },
+  {
+    "cycleId": "cycle-1780022922479",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:48:42.479Z"
+  },
+  {
+    "cycleId": "cycle-1780022946973",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:49:06.973Z"
+  },
+  {
+    "cycleId": "cycle-1780022967674",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:49:27.674Z"
+  },
+  {
+    "cycleId": "cycle-1780022994659",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:49:54.659Z"
+  },
+  {
+    "cycleId": "cycle-1780023021602",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:50:21.602Z"
+  },
+  {
+    "cycleId": "cycle-1780023046344",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:50:46.345Z"
+  },
+  {
+    "cycleId": "cycle-1780023069166",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:51:09.166Z"
+  },
+  {
+    "cycleId": "cycle-1780023092081",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:51:32.081Z"
+  },
+  {
+    "cycleId": "cycle-1780023115282",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:51:55.282Z"
+  },
+  {
+    "cycleId": "cycle-1780023141647",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:52:21.647Z"
+  },
+  {
+    "cycleId": "cycle-1780023163460",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:52:43.460Z"
+  },
+  {
+    "cycleId": "cycle-1780023184039",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:53:04.039Z"
+  },
+  {
+    "cycleId": "cycle-1780023207345",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:53:27.345Z"
+  },
+  {
+    "cycleId": "cycle-1780023228987",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:53:48.987Z"
+  },
+  {
+    "cycleId": "cycle-1780023260056",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:54:20.056Z"
+  },
+  {
+    "cycleId": "cycle-1780023287711",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:54:47.711Z"
+  },
+  {
+    "cycleId": "cycle-1780023316552",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:55:16.552Z"
+  },
+  {
+    "cycleId": "cycle-1780023343152",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:55:43.152Z"
+  },
+  {
+    "cycleId": "cycle-1780023366407",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:56:06.407Z"
+  },
+  {
+    "cycleId": "cycle-1780023391009",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:56:31.009Z"
+  },
+  {
+    "cycleId": "cycle-1780023417331",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:56:57.331Z"
+  },
+  {
+    "cycleId": "cycle-1780023447005",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:57:27.005Z"
+  },
+  {
+    "cycleId": "cycle-1780023481664",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:58:01.664Z"
+  },
+  {
+    "cycleId": "cycle-1780023505097",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:58:25.097Z"
+  },
+  {
+    "cycleId": "cycle-1780023527468",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:58:47.468Z"
+  },
+  {
+    "cycleId": "cycle-1780023554927",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:59:14.927Z"
+  },
+  {
+    "cycleId": "cycle-1780023572516",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:59:32.516Z"
+  },
+  {
+    "cycleId": "cycle-1780023589438",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T02:59:49.438Z"
+  },
+  {
+    "cycleId": "cycle-1780023606715",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:00:06.715Z"
+  },
+  {
+    "cycleId": "cycle-1780023625795",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:00:25.795Z"
+  },
+  {
+    "cycleId": "cycle-1780023646879",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:00:46.879Z"
+  },
+  {
+    "cycleId": "cycle-1780023664927",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:01:04.927Z"
+  },
+  {
+    "cycleId": "cycle-1780023682382",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:01:22.382Z"
+  },
+  {
+    "cycleId": "cycle-1780023701168",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:01:41.168Z"
+  },
+  {
+    "cycleId": "cycle-1780023723295",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:02:03.295Z"
+  },
+  {
+    "cycleId": "cycle-1780023747780",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:02:27.780Z"
+  },
+  {
+    "cycleId": "cycle-1780023765991",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:02:45.991Z"
+  },
+  {
+    "cycleId": "cycle-1780023782347",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:03:02.347Z"
+  },
+  {
+    "cycleId": "cycle-1780023799870",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:03:19.870Z"
+  },
+  {
+    "cycleId": "cycle-1780023816962",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:03:36.962Z"
+  },
+  {
+    "cycleId": "cycle-1780023834491",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:03:54.491Z"
+  },
+  {
+    "cycleId": "cycle-1780023853134",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:04:13.134Z"
+  },
+  {
+    "cycleId": "cycle-1780023869451",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:04:29.451Z"
+  },
+  {
+    "cycleId": "cycle-1780023887108",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:04:47.108Z"
+  },
+  {
+    "cycleId": "cycle-1780023906834",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:05:06.834Z"
+  },
+  {
+    "cycleId": "cycle-1780023927932",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:05:27.932Z"
+  },
+  {
+    "cycleId": "cycle-1780023945200",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:05:45.200Z"
+  },
+  {
+    "cycleId": "cycle-1780023968535",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:06:08.535Z"
+  },
+  {
+    "cycleId": "cycle-1780023984858",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:06:24.858Z"
+  },
+  {
+    "cycleId": "cycle-1780024004364",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:06:44.364Z"
+  },
+  {
+    "cycleId": "cycle-1780024026871",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:07:06.871Z"
+  },
+  {
+    "cycleId": "cycle-1780024046715",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:07:26.715Z"
+  },
+  {
+    "cycleId": "cycle-1780024064193",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:07:44.193Z"
+  },
+  {
+    "cycleId": "cycle-1780024081160",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:08:01.160Z"
+  },
+  {
+    "cycleId": "cycle-1780024100335",
+    "baselineScore": 91.84947368421051,
+    "targetScore": 91.84947368421051,
+    "improvements": [],
+    "timestamp": "2026-05-29T03:08:20.336Z"
+  }
+]

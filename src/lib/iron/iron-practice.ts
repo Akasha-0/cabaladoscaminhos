@@ -54,9 +54,7 @@ const RITUALS = [
 /**
  * Performs Iron practice session
  */
-export async function performPractice(
-  config: IronPracticeConfig = {}
-): Promise<IronPracticeResult> {
+export async function performPractice(_config?: IronPracticeConfig): Promise<IronPracticeResult> {
   const variationIndex = Math.floor(Math.random() * IRON_VARIATIONS.length);
   const guidanceCount = 2 + Math.floor(Math.random() * 3);
   const shuffledGuidance = [...GUIDANCE].sort(() => Math.random() - 0.5);

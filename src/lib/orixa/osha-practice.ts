@@ -17,14 +17,6 @@ export interface PracticeResult {
 export function performPractice(): PracticeResult {
   const now = new Date();
 
-  // Osha's practice involves sacred connection and spiritual grounding
-  const practiceElements = [
-    " Invocation of Osha's protective energy",
-    " Alignment with the sacred path of Ifá",
-    " Opening of spiritual channels for divine guidance",
-    " Seeking understanding through sacred knowledge",
-  ];
-
   return {
     success: true,
     practice: 'osha',

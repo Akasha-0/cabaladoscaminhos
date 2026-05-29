@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
         lunarPhase: ['new', 'waxing', 'full', 'waning'][Math.floor(Math.random() * 4)],
       },
     })
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { success: false, error: 'Failed to fetch calendar data' },
       { status: 500 }

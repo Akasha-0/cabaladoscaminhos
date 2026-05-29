@@ -1,7 +1,6 @@
 // Osa practice
 
-import { getData, OsaData } from './osa-data';
-
+import { getData } from './osa-data';
 export interface PracticeResult {
   odu: string;
   practice: string;

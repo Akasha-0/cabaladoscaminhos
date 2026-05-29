@@ -24,3 +24,5 @@ export {
   hasCachedInsight,
   limparCacheInsight,
 } from './insights/generator';
+export { traditionMapper, TraditionMapper } from './tradition-mapper';
+export type { TraditionConnection, TraditionMapData } from './tradition-mapper';

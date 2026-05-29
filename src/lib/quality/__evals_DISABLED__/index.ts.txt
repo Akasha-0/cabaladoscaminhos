@@ -1,0 +1,12 @@
+/**
+ * Quality Evals Index - Cabala dos Caminhos
+ * Exporta todos os evals para uso centralizado
+ */
+
+export * from './spiritual-correlations'
+export * from './ai-integration'
+export * from './performance'
+export * from './ui-ux'
+export * from './architecture'
+export * from './qa-testing'
+export * from './documentation'

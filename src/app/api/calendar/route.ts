@@ -56,12 +56,6 @@ interface CalendarResponse {
   currentYear: number;
 }
 
-interface MonthParams {
-  month?: number;
-  year?: number;
-  orixa?: string;
-  type?: string;
-}
 
 // ============================================================
 // CONSTANTS
@@ -160,10 +154,6 @@ function formatDate(year: number, month: number, day: number): string {
   return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
-function parseDateString(dateStr: string): { month: number; day: number } {
-  const [month, day] = dateStr.split('-').map(Number);
-  return { month: month - 1, day };
-}
 
 function calculateLunarPhase(date: Date): { phase: LunarPhase['phase']; illumination: number } {
   const knownNewMoon = new Date('2024-01-11');

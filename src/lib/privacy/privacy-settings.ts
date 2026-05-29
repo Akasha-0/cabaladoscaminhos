@@ -55,19 +55,17 @@ const PRIVACY_STORAGE_KEY = 'privacy_settings';
 /**
  * Get privacy settings from storage.
  */
-export function getSettings(id?: string): PrivacySettings {
-  if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem(PRIVACY_STORAGE_KEY);
-    if (stored) {
-      try {
-        return JSON.parse(stored);
-      } catch {
-        return { ...DEFAULT_PRIVACY_SETTINGS };
-      }
-    }
-  }
-  return { ...DEFAULT_PRIVACY_SETTINGS };
-}
+ export function getSettings(_id?: string): PrivacySettings {
+   const stored = localStorage.getItem(PRIVACY_STORAGE_KEY);
+   if (stored) {
+     try {
+       return JSON.parse(stored);
+     } catch {
+       return { ...DEFAULT_PRIVACY_SETTINGS };
+     }
+   }
+   return { ...DEFAULT_PRIVACY_SETTINGS };
+ }
 
 /**
  * Update privacy settings.
@@ -145,3 +143,4 @@ export function acceptAllTerms(): PrivacySettings {
     aceitarPrivacidade: true,
   });
 }
+

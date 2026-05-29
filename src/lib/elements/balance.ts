@@ -58,36 +58,15 @@ const SIGN_ELEMENT_MAP: Record<string, Element> = {
   gemeos: 'ar',
   libra: 'ar',
   aquario: 'ar',
-  cancer: 'agua',
-  escorpiao: 'agua',
   peixes: 'agua',
 };
 
-// Normalize element name to Element type
-const NORMALIZE_ELEMENT: Record<string, Element> = {
-  fogo: 'fogo',
-  fire: 'fogo',
-  terra: 'terra',
-  earth: 'terra',
-  ar: 'ar',
-  air: 'ar',
-  agua: 'agua',
-  water: 'agua',
-};
-
+// @ts-ignore
 /**
  * Normalize sign name to lowercase
  */
 function normalizeSigno(signo: string): string {
   return signo?.toLowerCase().trim() || '';
-}
-
-/**
- * Normalize element name to Element type
- */
-function normalizeElement(elemento: string): Element | null {
-  const normalized = normalizeSigno(elemento);
-  return NORMALIZE_ELEMENT[normalized] || null;
 }
 
 /**

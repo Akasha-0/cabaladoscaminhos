@@ -124,7 +124,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ widgets, timestamp: new Date().toISOString() }, { status: 200 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

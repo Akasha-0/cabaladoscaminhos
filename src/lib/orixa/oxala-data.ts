@@ -41,6 +41,7 @@ const OXALA_DATA: OxalaData[] = [
     element: "alma",
     colors: ["branco", "ouro", "marfim"],
     dayOfWeek: "sexta-feira",
+    chakra: "7º - Coronário",
     numbersSacred: [1, 8, 15],
     greeting: "Eêê Oxalá!",
     archetype: "Criação, Paz e Pureza",
@@ -51,7 +52,7 @@ const OXALA_DATA: OxalaData[] = [
       "sabedoria",
       "misericórdia",
       "paternidade",
-      "手egenro"
+      "genero"
     ],
     challenges: [
       "indecisão",
@@ -62,7 +63,7 @@ const OXALA_DATA: OxalaData[] = [
     rulingPlanet: "Sol",
     sacredAnimals: ["pombo branco", "coruja"],
     plants: ["algodoeiro", "palmeira", "plantas brancas"],
-    offerings: ["alpiste", "milho branco", "flores brancas", "candeia", "agua de这么好的"],
+    offerings: ["alpiste", "milho branco", "flores brancas", "candeia", "água de flor"],
     chants: ["Ora Obatalá", "Oxalá Oê", "Eê Oxalá"],
     symbols: ["alabo", "ejá", "panela de barro", "bastão ceremonial"],
     mythology:

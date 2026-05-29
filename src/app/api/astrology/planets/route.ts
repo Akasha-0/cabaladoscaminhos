@@ -24,8 +24,8 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-  } catch (error) {
-    console.error('Erro calculando posições planetárias:', error);
+  } catch (_error) {
+    console.error('Erro calculando posições planetárias:', _error);
     return NextResponse.json({
       error: 'Erro ao calcular posições planetárias'
     }, { status: 500 });

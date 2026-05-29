@@ -92,12 +92,12 @@ export async function GET(request: NextRequest) {
         ] as EnergyMapping[],
       },
     });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to fetch Ejia data',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: _error instanceof Error ? _error.message : 'Unknown error',
       },
       { status: 500 }
     );

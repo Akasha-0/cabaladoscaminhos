@@ -88,29 +88,11 @@ const CATEGORY_KEYWORDS: Record<RitualCategory, string[]> = {
 /**
  * Moon phase to category compatibility
  */
-const PHASE_CATEGORY_COMPATIBILITY: Record<MoonPhaseTarget, RitualCategory[]> = {
-  new: ['manifestation', 'protection', 'transformation'],
-  waxing: ['prosperity', 'love', 'healing', 'clarity'],
-  full: ['manifestation', 'love', 'clarity', 'healing'],
-  waning: ['release', 'transformation', 'protection'],
-};
-
-/**
- * Orixá to category affinity
- */
-const ORIXA_CATEGORY_AFFINITY: Record<string, RitualCategory[]> = {
-  'Oxalá': ['healing', 'clarity', 'protection'],
-  'Oxum': ['love', 'prosperity', 'healing'],
-  'Iemanjá': ['love', 'protection', 'manifestation'],
-  'Ogum': ['protection', 'transformation', 'clarity'],
-  'Xangô': ['clarity', 'transformation', 'protection'],
-  'Iansã': ['transformation', 'release', 'protection'],
-  'Oxóssi': ['prosperity', 'clarity', 'transformation'],
-  'Omolu': ['healing', 'release', 'transformation'],
-  'Nanã': ['healing', 'clarity', 'transformation'],
-  'Obá': ['love', 'protection', 'prosperity'],
-  'Logun Edé': ['love', 'prosperity', 'clarity'],
-  'Eṣu': ['transformation', 'manifestation', 'protection'],
+const MOON_PHASE_CATEGORIES: Record<MoonPhaseTarget, RitualCategory[]> = {
+  new: ['manifestation', 'transformation'],
+  waxing: ['prosperity', 'love', 'healing'],
+  full: ['manifestation', 'clarity', 'protection'],
+  waning: ['release', 'healing', 'transformation'],
 };
 
 /**
@@ -250,7 +232,6 @@ export function createRitualCombination(
     throw new Error('At least one ritual is required');
   }
 
-  const primary = rituals[0];
   const categories = rituals.map(r => inferRitualCategory(r));
   const primaryCategory = categories[0];
 
@@ -316,46 +297,42 @@ export function combineRituals(
 
   const combinations: RitualCombination[] = [];
 
-  // Start with primary ritual alone
+  // Create single ritual combination
   combinations.push(createRitualCombination([primaryRitual]));
 
-  // Get complementary rituals
-  const complements = availableRituals.length > 0
-    ? suggestComplementaryRituals(primaryRitual, availableRituals)
-    : [];
+  // Find complementary rituals
+  const complementary = suggestComplementaryRituals(primaryRitual, availableRituals);
 
-  // Create 2-ritual combinations with high synergy
-  const highSynergyRituals = complements.filter(c => c.synergyLevel === 'high');
-  for (const complement of highSynergyRituals.slice(0, 3)) {
-    const combo = createRitualCombination(
-      [primaryRitual, complement.ritual],
-      `${primaryRitual.name} + ${complement.ritual.name}`,
-      complement.reason
-    );
-    if (combo.synergyScore <= maxSynergyScore) {
-      combinations.push(combo);
-    }
-  }
-
-  // Create 3-ritual combinations with highest synergies
-  const mediumSynergyRituals = complements.filter(c => c.synergyLevel === 'medium');
-  for (const first of highSynergyRituals.slice(0, 2)) {
-    for (const second of mediumSynergyRituals.slice(0, 2)) {
-      if (first.ritual.id === second.ritual.id) continue;
-
+  // Add combinations with complementary rituals
+  for (const suggestion of complementary) {
+    if (suggestion.synergyLevel === 'high' || suggestion.synergyLevel === 'medium') {
       const combo = createRitualCombination(
-        [primaryRitual, first.ritual, second.ritual],
-        `${primaryRitual.name} + ${first.ritual.name} + ${second.ritual.name}`,
-        `Sequência completa para ${inferRitualCategory(primaryRitual)}`
+        [primaryRitual, suggestion.ritual],
+        undefined,
+        suggestion.reason
       );
-
       if (combo.synergyScore <= maxSynergyScore) {
         combinations.push(combo);
       }
     }
+
+    // Three-way combination
+    for (const second of complementary) {
+      if (second.ritual.id === suggestion.ritual.id) continue;
+
+      const threeWay = createRitualCombination(
+        [primaryRitual, suggestion.ritual, second.ritual],
+        undefined,
+        `Combinação poderosa`
+      );
+
+      if (threeWay.synergyScore <= maxSynergyScore) {
+        combinations.push(threeWay);
+      }
+    }
   }
 
-  // Sort by synergy score descending
+  // Sort by synergy score
   return combinations.sort((a, b) => b.synergyScore - a.synergyScore);
 }
 
@@ -365,60 +342,52 @@ export function combineRituals(
 export function getDefaultRitualLibrary(): RitualIntention[] {
   return [
     {
-      id: 'ritual-protecao',
-      name: 'Ritual de Proteção',
-      description: 'Firmeza de proteção contra energias negativas',
-      targetPhase: 'waning',
+      id: 'ritual-protection-1',
+      name: 'Escudo de Oxalá',
+      description: 'Proteção contra energias negativas',
+      targetPhase: 'full',
+      orixas: ['Oxalá'],
       duration: 30,
     },
     {
-      id: 'ritual-prosperidade',
-      name: 'Ritual de Prosperidade',
-      description: 'Atração de abundância e prosperidade',
+      id: 'ritual-prosperity-1',
+      name: 'Abundância de Oxum',
+      description: 'Atração de prosperidade e amor',
       targetPhase: 'waxing',
-      duration: 45,
+      orixas: ['Oxum'],
+      duration: 25,
     },
     {
-      id: 'ritual-amor',
-      name: 'Ritual de Amor',
-      description: 'Harmonia e proteção nos relacionamentos',
-      targetPhase: 'full',
-      duration: 40,
-    },
-    {
-      id: 'ritual-cura',
-      name: 'Ritual de Cura',
-      description: 'Cura emocional e renovação vital',
-      targetPhase: 'full',
-      duration: 50,
-    },
-    {
-      id: 'ritual-manifestacao',
-      name: 'Ritual de Manifestação',
-      description: 'Materialização de intenções e desejos',
-      targetPhase: 'new',
+      id: 'ritual-healing-1',
+      name: 'Cura de Oxumaré',
+      description: 'Renovação e equilíbrio emocional',
+      targetPhase: 'waning',
+      orixas: ['Oxumaré'],
       duration: 35,
     },
     {
-      id: 'ritual-libertacao',
-      name: 'Ritual de Libertação',
-      description: 'Liberação de padrões e purificação',
-      targetPhase: 'waning',
-      duration: 45,
+      id: 'ritual-manifestation-1',
+      name: 'Manifestação de Iansã',
+      description: 'Criar intenções e transformar realidade',
+      targetPhase: 'new',
+      orixas: ['Iansã'],
+      duration: 40,
     },
     {
-      id: 'ritual-claridade',
-      name: 'Ritual de Claridade',
-      description: 'Visão espiritual e discernimento',
-      targetPhase: 'waxing',
+      id: 'ritual-clarity-1',
+      name: 'Visão de Omolu',
+      description: 'Clareza mental e discernimento',
+      targetPhase: 'full',
+      orixas: ['Omolu'],
       duration: 30,
     },
     {
-      id: 'ritual-transformacao',
-      name: 'Ritual de Transformação',
-      description: 'Renascimento e evolução espiritual',
-      targetPhase: 'new',
-      duration: 60,
+      id: 'ritual-release-1',
+      name: 'Liberação de Nanã',
+      description: 'Desapego e purificação kármica',
+      targetPhase: 'waning',
+      orixas: ['Nanã'],
+      duration: 45,
     },
   ];
 }

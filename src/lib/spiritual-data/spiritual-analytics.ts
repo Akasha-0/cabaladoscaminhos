@@ -160,10 +160,6 @@ function buildTrend(
   orixas.forEach((o) => {
     orixaCount[o] = (orixaCount[o] || 0) + 1;
   });
-  const _topOrixas = Object.entries(orixaCount)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 5)
-    .map(([name]) => name);
 
   const peakDay = Object.entries(dailyCounts).sort(([, a], [, b]) => b - a)[0]?.[0] ?? '';
 

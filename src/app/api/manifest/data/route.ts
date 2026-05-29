@@ -95,12 +95,12 @@ export async function GET(request: NextRequest) {
 
     // Return all
     return NextResponse.json({ success: true, data: manifestStore });
-  } catch (error) {
+ } catch (_error) {
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to fetch manifestation data',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: _error instanceof Error ? _error.message : 'Unknown error',
       },
       { status: 500 }
     );
@@ -159,12 +159,12 @@ export async function POST(request: NextRequest) {
       { success: true, data: newEntry },
       { status: 201 }
     );
-  } catch (error) {
+ } catch (_error) {
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to create manifestation entry',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: _error instanceof Error ? _error.message : 'Unknown error',
       },
       { status: 500 }
     );

@@ -426,8 +426,8 @@ export async function GET(request: NextRequest) {
           flows: FLOW_DATA,
           breathingStates: BREATHING_STATES,
         });
-    }
-  } catch (error) {
+    } // end switch
+  } catch (_error) {
     return NextResponse.json(
       { error: 'Failed to retrieve Ida-Pingala data' },
       { status: 500 }

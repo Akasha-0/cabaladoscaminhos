@@ -83,25 +83,6 @@ const darkColors: ChartColors = {
   },
 };
 
-// Light theme colors
-const lightColors: ChartColors = {
-  primary: '#7c3aed',
-  secondary: '#4f46e5',
-  aspect: {
-    conjunction: '#d97706',
-    opposition: '#dc2626',
-    trine: '#16a34a',
-    square: '#dc2626',
-    sextile: '#2563eb',
-    inconjunct: '#7c3aed',
-  },
-  elements: {
-    fire: '#dc2626',
-    earth: '#65a30d',
-    air: '#0891b2',
-    water: '#2563eb',
-  },
-};
 
 // Pre-built templates
 

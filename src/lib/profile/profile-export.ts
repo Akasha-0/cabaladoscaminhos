@@ -40,7 +40,7 @@ export function exportProfile(
   profile: ProfileExportData['profile'],
   options: ExportOptions
 ): string {
-  const { format, includeMetadata = true, includeAnalytics = false } = options;
+  const { format, includeMetadata = true } = options;
 
   const data: ProfileExportData = {
     profile,

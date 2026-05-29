@@ -1,65 +1,50 @@
-# AGENTS.md
+# AGENTS.md — Cabala dos Caminhos
 
-Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
-
-**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+Behavioral guidelines para agentes de IA desenvolvendo este projeto.
 
 ## 1. Think Before Coding
-
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
-
-Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+**Não assuma. Não esconda confusão. Mostre tradeoffs.**
+- Declare suas assunções explicitamente. Se incerto, pergunte.
+- Se múltiplas interpretações existirem, apresente-as — não escolha silenciosamente.
+- Se algo está confuso, PARE. Nomeie o que confunde. Pergunte.
 
 ## 2. Simplicity First
-
-**Minimum code that solves the problem. Nothing speculative.**
-
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+**Mínimo de código que resolve o problema. Nada especulativo.**
+- Sem features além do que foi pedido.
+- Sem abstrações para código de uso único.
+- Se escreveu 200 linhas e poderia ser 50, reescreva.
 
 ## 3. Surgical Changes
-
-**Touch only what you must. Clean up only your own mess.**
-
-When editing existing code:
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
-
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
+**Toque apenas o necessário. Limpe apenas sua própria bagunça.**
+- Não "melhore" código adjacente não relacionado.
+- Não refatore o que não está quebrado.
+- Match do estilo existente, mesmo que você faria diferente.
 
 ## 4. Goal-Driven Execution
+**Defina critérios de sucesso. Loop até verificado.**
+- "Implementar Odu" → "Escrever testes para 3 Odús reais, depois fazer passar"
+- Para tarefas multi-etapas, declare um plano breve com verificações.
 
-**Define success criteria. Loop until verified.**
+## 5. Contexto Espiritual (específico deste projeto)
+**Leia o IDEIA.md antes de implementar qualquer engine espiritual.**
+- O IDEIA.md contém 42.9KB de correspondências esotéricas cuidadosamente mapeadas.
+- Nunca invente correspondências esotéricas. Use APENAS os dados do IDEIA.md.
+- Trate as tradições afro-brasileiras (Candomblé, Umbanda, Odus) com reverência absoluta.
+- Valide cálculos espirituais com casos reais antes de considerar implementação completa.
+- As quizilas e preceitos dos Odús são regras reais — erros têm impacto real nas pessoas.
 
-Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
+## 6. Estado do Projeto
+**Leia o PROGRESS.md antes de qualquer ação em novo ciclo.**
+- O PROGRESS.md é a fonte da verdade sobre o que existe e o que falta.
+- Se não existir, crie-o como primeira ação absoluta.
+- Atualize-o após cada feature, bug fix ou decisão arquitetural importante.
 
-For multi-step tasks, state a brief plan:
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
+## Stack do projeto
+Next.js 16 + React 19 + Prisma 7 + Supabase + Redis (ioredis) + OpenAI + Stripe + jsPDF
+Auth: JWT/bcryptjs própria (não NextAuth). Testes: Vitest. Validação: Zod. State: Zustand.
 
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
----
-
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+## Comandos principais
+- `npm run test:run` — validar que testes passam
+- `npm run build` — validar que build passa
+- `npm run lint` — validar linting
+- `npm run db:generate` — após mudanças no schema Prisma

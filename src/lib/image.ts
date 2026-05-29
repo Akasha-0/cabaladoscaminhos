@@ -54,7 +54,6 @@ export interface BlurhashPlaceholder {
 export function blurhashPlaceholder(width: number, height: number): string {
   // Generate a simple SVG-based blur placeholder
   // For production, integrate with blurhash library
-  const aspectRatio = height / width
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><filter id="b"><feGaussianBlur stdDeviation="12"/></filter><rect width="100%" height="100%" fill="hsl(220, 20%, 95%)" filter="url(#b)"/></svg>`
   const base64 = Buffer.from(svg).toString("base64")
   return `data:image/svg+xml;base64,${base64}`

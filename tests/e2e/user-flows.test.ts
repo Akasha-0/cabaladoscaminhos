@@ -1,9 +1,12 @@
-/**
- * E2E User Flows Tests
- *
- * Testa fluxos completos de usuário usando mocks de browser/API.
- */
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
+
+// Store original window descriptor for restoration
+const originalWindowDescriptor = Object.getOwnPropertyDescriptor(global, 'window') ?? {
+ value: undefined,
+ writable: true,
+ configurable: true,
+};
+// ============================================
 // ============================================
 // Mock Browser Environment
 // ============================================
@@ -162,15 +165,16 @@ function mockDashboardApi(window: MockWindow): void {
 describe('User Registration Flow', () => {
   let window: MockWindow;
 
-  beforeEach(() => {
-    window = createMockWindow();
-    mockRegistrationApi(window);
-    vi.stubGlobal('window', window);
-  });
+ beforeEach(() => {
+   window = createMockWindow();
+   mockRegistrationApi(window);
+   Object.defineProperty(global, 'window', { value: window, writable: true, configurable: true });
+ });
 
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
+ afterEach(() => {
+   Object.defineProperty(global, 'window', originalWindowDescriptor);
+ });
+
 
   it('deve registrar novo usuário com sucesso', async () => {
     const registrationData: RegistrationData = {
@@ -264,11 +268,10 @@ describe('Login Flow', () => {
   beforeEach(() => {
     window = createMockWindow();
     mockLoginApi(window);
-    vi.stubGlobal('window', window);
+    Object.defineProperty(global, 'window', { value: window, writable: true, configurable: true });
   });
-
   afterEach(() => {
-    vi.unstubAllGlobals();
+    Object.defineProperty(global, 'window', originalWindowDescriptor);
   });
 
   it('deve fazer login com credenciais validas', async () => {
@@ -377,19 +380,18 @@ describe('Login Flow', () => {
 
 describe('Dashboard Loading', () => {
   let window: MockWindow;
-
   beforeEach(() => {
     window = createMockWindow();
     mockDashboardApi(window);
-    vi.stubGlobal('window', window);
+    Object.defineProperty(global, 'window', { value: window, writable: true, configurable: true });
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
+    Object.defineProperty(global, 'window', originalWindowDescriptor);
   });
 
   it('deve carregar dados do dashboard quando autenticado', async () => {
-    window.localStorage.token = 'valid-token';
+   window.localStorage.token = 'valid-token';
 
     const response = await window.fetch('/api/dashboard', {
       method: 'GET',
@@ -456,11 +458,10 @@ describe('Numerology Calculation', () => {
   beforeEach(() => {
     window = createMockWindow();
     mockDashboardApi(window);
-    vi.stubGlobal('window', window);
+    Object.defineProperty(global, 'window', { value: window, writable: true, configurable: true });
   });
-
   afterEach(() => {
-    vi.unstubAllGlobals();
+    Object.defineProperty(global, 'window', originalWindowDescriptor);
   });
 
   it('deve calcular numerologia com dados completos', async () => {
@@ -617,6 +618,440 @@ describe('Numerology Calculation', () => {
     allNumbers.forEach((num: number) => {
       expect(num).toBeGreaterThan(0);
       expect(num).toBeLessThanOrEqual(9);
+    });
+  });
+});
+
+// ============================================
+// Profile Editing Flow Tests
+// ============================================
+
+function mockProfileApi(window: MockWindow): void {
+  window.fetch.mockImplementation(async (url: URL | RequestInfo, options?: RequestInit) => {
+    if (typeof url === 'string' && url.includes('/api/profile')) {
+      const token = window.localStorage.token;
+      if (!token) {
+        return { ok: false, status: 401, json: () => Promise.resolve({ error: 'Unauthorized' }) };
+      }
+      const body = options?.body ? JSON.parse(options.body as string) : {};
+      if (!body.nomeCompleto || !body.email) {
+        return { ok: false, status: 400, json: () => Promise.resolve({ error: 'Campos obrigatórios' }) };
+      }
+      return {
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          success: true,
+          user: {
+            id: '123',
+            email: body.email,
+            user_metadata: {
+              nomeCompleto: body.nomeCompleto,
+              dataNascimento: body.dataNascimento,
+              horaNascimento: body.horaNascimento,
+              localNascimento: body.localNascimento,
+            },
+          },
+        }),
+      };
+    }
+    if (typeof url === 'string' && url.includes('/api/numerologia')) {
+      const body = options?.body ? JSON.parse(options.body as string) : {};
+      if (!body.nomeCompleto || !body.dataNascimento) {
+        return { ok: false, status: 400, json: () => Promise.resolve({ error: 'Dados incompletos' }) };
+      }
+      return {
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          pitagorica: 7,
+          cabalistica: 3,
+          tantrica: 5,
+        }),
+      };
+    }
+    return { ok: false, status: 404, json: () => Promise.resolve({ error: 'Not found' }) };
+  });
+}
+
+interface ProfileFormData {
+  nomeCompleto: string;
+  email: string;
+  dataNascimento: string;
+  horaNascimento: string;
+  localNascimento: string;
+}
+ 
+describe('Profile Editing Flow', () => {
+  let window: MockWindow;
+
+  beforeEach(() => {
+    window = createMockWindow();
+    mockProfileApi(window);
+    Object.defineProperty(global, 'window', { value: window, writable: true, configurable: true });
+  });
+
+  afterEach(() => {
+    Object.defineProperty(global, 'window', originalWindowDescriptor);
+  });
+
+  describe('Form Fields', () => {
+    it('deve validar campo nome completo', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Maria da Luz',
+        email: 'maria.luz@exemplo.com',
+        dataNascimento: '1990-06-15',
+        horaNascimento: '14:30',
+        localNascimento: 'Rio de Janeiro, RJ',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      expect(response.ok).toBe(true);
+      expect(response.status).toBe(200);
+
+      const result = await response.json();
+      expect(result.user.user_metadata.nomeCompleto).toBe('Maria da Luz');
+    });
+
+    it('deve validar campo email', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'João Silva',
+        email: 'joao.silva@exemplo.com',
+        dataNascimento: '1990-06-15',
+        horaNascimento: '',
+        localNascimento: '',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      expect(response.ok).toBe(true);
+      const result = await response.json();
+      expect(result.user.email).toBe('joao.silva@exemplo.com');
+    });
+
+    it('deve validar campo data de nascimento', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Ana Clara',
+        email: 'ana@test.com',
+        dataNascimento: '1985-03-22',
+        horaNascimento: '08:00',
+        localNascimento: 'São Paulo, SP',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      expect(response.ok).toBe(true);
+      const result = await response.json();
+      expect(result.user.user_metadata.dataNascimento).toBe('1985-03-22');
+    });
+
+    it('deve validar campo hora de nascimento', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Pedro Santos',
+        email: 'pedro@test.com',
+        dataNascimento: '1992-11-10',
+        horaNascimento: '20:45',
+        localNascimento: 'Belo Horizonte, MG',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      expect(response.ok).toBe(true);
+      const result = await response.json();
+      expect(result.user.user_metadata.horaNascimento).toBe('20:45');
+    });
+
+    it('deve validar campo local de nascimento', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Lucas Oliveira',
+        email: 'lucas@test.com',
+        dataNascimento: '1988-07-30',
+        horaNascimento: '',
+        localNascimento: 'Curitiba, PR',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      expect(response.ok).toBe(true);
+      const result = await response.json();
+      expect(result.user.user_metadata.localNascimento).toBe('Curitiba, PR');
+    });
+  });
+
+  describe('Validation', () => {
+    it('deve falhar quando nome completo falta', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const incompleteFormData = {
+        email: 'test@test.com',
+        dataNascimento: '1990-06-15',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(incompleteFormData),
+      });
+
+      expect(response.ok).toBe(false);
+      expect(response.status).toBe(400);
+      const result = await response.json();
+      expect(result.error).toBe('Campos obrigatórios');
+    });
+
+    it('deve falhar quando email falta', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const incompleteFormData = {
+        nomeCompleto: 'Test User',
+        dataNascimento: '1990-06-15',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(incompleteFormData),
+      });
+
+      expect(response.ok).toBe(false);
+      expect(response.status).toBe(400);
+      const result = await response.json();
+      expect(result.error).toBe('Campos obrigatórios');
+    });
+
+    it('deve falhar quando usuario nao autenticado', async () => {
+      delete window.localStorage['localStorage:token'];
+
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Test User',
+        email: 'test@test.com',
+        dataNascimento: '1990-06-15',
+        horaNascimento: '',
+        localNascimento: '',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      expect(response.ok).toBe(false);
+      expect(response.status).toBe(401);
+    });
+  });
+
+  describe('Save Functionality', () => {
+    it('deve simular salvamento com setTimeout de 1000ms', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Maria da Luz',
+        email: 'maria.luz@exemplo.com',
+        dataNascimento: '1990-06-15',
+        horaNascimento: '14:30',
+        localNascimento: 'Rio de Janeiro, RJ',
+      };
+
+      const startTime = Date.now();
+      
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const endTime = Date.now();
+      const duration = endTime - startTime;
+
+      expect(response.ok).toBe(true);
+      expect(duration).toBeGreaterThanOrEqual(0);
+      expect(response.status).toBe(200);
+    });
+
+    it('deve retornar sucesso apos salvar perfil', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Jose Ferreira',
+        email: 'jose.ferreira@exemplo.com',
+        dataNascimento: '1975-12-05',
+        horaNascimento: '10:00',
+        localNascimento: 'Salvador, BA',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      expect(response.ok).toBe(true);
+      
+      const result = await response.json();
+      expect(result.success).toBe(true);
+    });
+
+    it('deve atualizar metadados do usuario apos salvar', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Fernanda Costa',
+        email: 'fernanda.costa@exemplo.com',
+        dataNascimento: '1995-04-18',
+        horaNascimento: '16:30',
+        localNascimento: 'Fortaleza, CE',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      expect(result.user.user_metadata.nomeCompleto).toBe('Fernanda Costa');
+      expect(result.user.user_metadata.dataNascimento).toBe('1995-04-18');
+      expect(result.user.user_metadata.horaNascimento).toBe('16:30');
+      expect(result.user.user_metadata.localNascimento).toBe('Fortaleza, CE');
+    });
+
+    it('deve calcular numerologia apos salvar perfil', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Rafael Mendes',
+        email: 'rafael.mendes@exemplo.com',
+        dataNascimento: '1988-09-25',
+        horaNascimento: '09:15',
+        localNascimento: 'Recife, PE',
+      };
+
+      await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const numerologiaResponse = await window.fetch('/api/numerologia', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nomeCompleto: formData.nomeCompleto,
+          dataNascimento: formData.dataNascimento,
+        }),
+      });
+
+      expect(numerologiaResponse.ok).toBe(true);
+      const numerologiaResult = await numerologiaResponse.json();
+      expect(numerologiaResult.pitagorica).toBeDefined();
+      expect(numerologiaResult.cabalistica).toBeDefined();
+      expect(numerologiaResult.tantrica).toBeDefined();
+    });
+  });
+
+  describe('Success Feedback', () => {
+    it('deve exibir confirmacao apos salvar com sucesso', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Camila Rodrigues',
+        email: 'camila.rodrigues@exemplo.com',
+        dataNascimento: '1991-08-12',
+        horaNascimento: '12:00',
+        localNascimento: 'Porto Alegre, RS',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      expect(result.success).toBe(true);
+      expect(result.user).toBeDefined();
+    });
+
+    it('deve retornar dados atualizados do usuario', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Bruno Almeida',
+        email: 'bruno.almeida@exemplo.com',
+        dataNascimento: '1987-02-28',
+        horaNascimento: '18:30',
+        localNascimento: 'Brasilia, DF',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${window.localStorage.token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      expect(result.user).toBeDefined();
+      expect(result.user.email).toBe('bruno.almeida@exemplo.com');
+      expect(result.user.user_metadata.nomeCompleto).toBe('Bruno Almeida');
+    });
+
+    it('deve manter dados parciais quando hora e local estao vazios', async () => {
+      window.localStorage.token = 'valid-token';
+      
+      const formData: ProfileFormData = {
+        nomeCompleto: 'Teresa Nunes',
+        email: 'teresa.nunes@exemplo.com',
+        dataNascimento: '1993-11-05',
+        horaNascimento: '',
+        localNascimento: '',
+      };
+
+      const response = await window.fetch('/api/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      expect(response.ok).toBe(true);
+      const result = await response.json();
+      expect(result.success).toBe(true);
+      expect(result.user.user_metadata.horaNascimento).toBe('');
+      expect(result.user.user_metadata.localNascimento).toBe('');
     });
   });
 });

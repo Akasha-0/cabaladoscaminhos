@@ -75,27 +75,11 @@ function shouldSkip(message: string, options: ChangelogOptions): boolean {
 /**
  * Parse raw git log output into Commit objects
  */
-function parseGitLog(output: string): Commit[] {
-  const commits: Commit[] = [];
-  const commitPattern = /^([a-f0-9]{7,40})\s+(.+)$/gim;
-
-  let match;
-  while ((match = commitPattern.exec(output)) !== null) {
-    const [full, hash, message] = match;
-    const cleanMessage = message.trim();
-
-    // Extract date from the line before the commit (format: Date Thu May 27 2026)
-    // This is a simplified parser - in production you'd want more robust parsing
-    commits.push({
-      hash: hash.substring(0, 7),
-      message: cleanMessage,
-      author: '', // Extracted separately if needed
-      date: new Date(),
-      ...parseCommitType(cleanMessage),
-    });
-  }
-
-  return commits;
+export interface Commit {
+  hash: string;
+  message: string;
+  author: string;
+  date: Date;
 }
 
 /**
@@ -150,9 +134,6 @@ export async function generateChangelog(options: ChangelogOptions = {}): Promise
     branch = 'main',
     types = DEFAULT_TYPES,
   } = options;
-
-  // Build git log format: hash, message (no author/date in body for simpler parsing)
-  const format = '%H%n%s%n%b---END---';
 
   // Build date filter if days is specified
   const dateFilter = days > 0

@@ -228,8 +228,8 @@ export async function GET(request: NextRequest) {
         gerado_em: new Date().toISOString(),
       },
     });
-  } catch (error) {
-    console.error('Erro ao gerar leitura diária:', error);
+  } catch (_error) {
+    console.error('Erro ao gerar leitura diária:', _error);
     return NextResponse.json(
       { success: false, error: 'Erro ao processar leitura diária' },
       { status: 500 }

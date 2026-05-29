@@ -1,3 +1,5 @@
+import type { User } from '@supabase/supabase-js';
+
 // ============================================================
 // UNIFIED STORE - CABALA DOS CAMINHOS
 // ============================================================
@@ -7,8 +9,6 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
-import type { User } from '@prisma/client';
 
 // ============================================================
 // AUTH STORE - User Authentication State

@@ -115,7 +115,6 @@ export function getAnalytics(): MeditationSessionStats {
     ? Math.max(...completed.map((e) => e.timestamp))
     : null;
 
-  const now = Date.now();
   const dayStart = new Date().setHours(0, 0, 0, 0);
   const weekStart = dayStart - (new Date(dayStart).getDay() * 86400000);
   const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getTime();

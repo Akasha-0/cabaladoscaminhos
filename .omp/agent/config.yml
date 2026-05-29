@@ -1,0 +1,44 @@
+compaction:
+  enabled: true
+  reserveTokens: 20000
+  keepRecentTokens: 30000
+  autoContinue: true
+
+task:
+  eager: true
+
+async:
+  enabled: true
+  maxJobs: 8
+
+modelRoles:
+  default: minimax/MiniMax-M2.7
+  plan: minimax/MiniMax-M2.7
+  smol: minimax/MiniMax-M2.7
+  slow: minimax/MiniMax-M2.7
+
+# =============================================
+# AUTONOMOUS MEMORY - Exponential Learning Config
+# =============================================
+memories:
+  enabled: true
+  
+  # Process ALL historical sessions (1 year)
+  maxRolloutAgeDays: 365
+  
+  # Process even recent sessions (2 hours idle = ready)
+  minRolloutIdleHours: 2
+  
+  # Process up to 200 sessions per startup (aggressive learning)
+  maxRolloutsPerStartup: 200
+  
+  # INJECT UP TO 50K TOKENS - Near unlimited memory injection
+  # M2.7 has 204K context, we can inject massive summaries
+  summaryInjectionTokenLimit: 50000
+
+defaultThinkingLevel: high
+
+retry:
+  enabled: true
+  maxRetries: 5
+  baseDelayMs: 3000

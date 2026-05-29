@@ -48,8 +48,8 @@ export async function GET(request: NextRequest) {
         'Cache-Control': 'public, max-age=259200, stale-while-revalidate=604800',
       },
     });
-  } catch (error) {
-    console.error('Erro calculando mapa natal:', error);
+  } catch (_error) {
+    console.error('Erro calculando mapa natal:', _error);
     return NextResponse.json({
       error: 'Erro ao calcular mapa natal'
     }, { status: 500 });
@@ -90,8 +90,8 @@ export async function POST(request: NextRequest) {
         'Cache-Control': 'public, max-age=259200, stale-while-revalidate=604800',
       },
     });
-  } catch (error) {
-    console.error('Erro calculando mapa natal:', error);
+  } catch (_error) {
+    console.error('Erro calculando mapa natal:', _error);
     return NextResponse.json({
       error: 'Erro ao calcular mapa natal'
     }, { status: 500 });

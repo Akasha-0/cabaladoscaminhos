@@ -271,10 +271,7 @@ function identifyAnomalies(events: WellnessEvent[]): WellnessInsight[] {
 /**
  * Generate recommendations based on patterns
  */
-function generateRecommendations(
-  patterns: WellnessPattern[],
-  insights: WellnessInsight[]
-): WellnessInsight[] {
+function generateRecommendations(patterns: WellnessPattern[]): WellnessInsight[] {
   const recommendations: WellnessInsight[] = [];
 
   for (const pattern of patterns) {
@@ -391,7 +388,7 @@ export function getInsights(
 
   const patterns = detectPatterns(filteredEvents);
   const anomalies = identifyAnomalies(filteredEvents);
-  const recommendations = generateRecommendations(patterns, anomalies);
+  const recommendations = generateRecommendations(patterns);
   const insights = [...anomalies, ...recommendations];
 
   const uniqueDays = new Set<string>();

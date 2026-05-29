@@ -16,9 +16,7 @@ export interface PracticeResult {
 
 export async function performPractice(config?: PracticeConfig): Promise<PracticeResult> {
   const type = config?.type ?? 'default';
-  const duration = config?.duration ?? 30000;
-  const intensity = config?.intensity ?? 1;
-
+  const duration = config?.duration ?? 60;
   await new Promise(resolve => setTimeout(resolve, Math.min(duration, 100)));
 
   return {

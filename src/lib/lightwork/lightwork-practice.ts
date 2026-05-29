@@ -11,8 +11,7 @@ export interface PracticeResult {
 }
 
 export async function performPractice(config: PracticeConfig = {}): Promise<PracticeResult> {
-  const { intensity = 5, duration = 30, focus = 'general' } = config;
-
+  const { intensity = 5, focus = 'general' } = config;
   const energyLevel = Math.min(100, Math.max(0, intensity * 10));
   const insights = generateInsights(focus);
 

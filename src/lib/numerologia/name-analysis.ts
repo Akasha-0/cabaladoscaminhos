@@ -1,8 +1,6 @@
 // Name analysis module
 // @ts-nocheck
 
-const VOWELS = 'AEIOUÁÉÍÓÚÃẼĨÕŨY';
-const CONSONANTS = 'BCÇDFGHJKLMNNPQRRSSTTVWXZ';
 
 export interface NameAnalysis {
   original: string;
@@ -14,11 +12,12 @@ export interface NameAnalysis {
 }
 
 export function analyzeName(name: string): NameAnalysis {
-  const normalized = name
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toUpperCase()
-    .trim();
+ const normalized = name
+   .toUpperCase()
+   .normalize('NFD')
+   .replace(/[\u0300-\u036f]/g, '')
+   .replace(/[^A-Z\s]/g, '')
+   .trim();
 
   const vowels: string[] = [];
   const consonants: string[] = [];

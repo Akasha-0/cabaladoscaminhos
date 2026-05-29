@@ -18,7 +18,7 @@ export interface TarotDeck {
 }
 
 // Major Arcana
-const MAJOR_ARCANA: TarotCard[] = [
+export const MAJOR_ARCANA: TarotCard[] = [
   {
     id: 0,
     name: 'The Fool',
@@ -142,7 +142,7 @@ const MAJOR_ARCANA: TarotCard[] = [
     arcana: 'major',
     element: 'Water',
     astro: 'Scorpio',
-    upright: ['Endings', 'Change', 'Transformation', 'Transition', 'Transition'],
+    upright: ['Endings', 'Change', 'Transformation', 'Transition'],
     reversed: ['Resistance to change', 'Personal transformation', 'Inner purging'],
   },
   {
@@ -169,7 +169,7 @@ const MAJOR_ARCANA: TarotCard[] = [
     arcana: 'major',
     element: 'Fire',
     astro: 'Mars',
-    upright: ['Sudden change', 'Chaos', 'Revelation', 'Awakening', 'Revelation'],
+    upright: ['Sudden change', 'Chaos', 'Revelation', 'Awakening'],
     reversed: ['Personal transformation', 'Inner turmoil', 'Breaking free'],
   },
   {
@@ -312,10 +312,10 @@ function shuffle<T>(array: T[]): T[] {
 
 export function getCard(idOrName: number | string): TarotCard | undefined {
   if (typeof idOrName === 'number') {
-    return ALL_CARDS.find((c) => c.id === idOrName);
+    return ALL_CARDS.find(card => card.id === idOrName);
   }
   return ALL_CARDS.find(
-    (c) => c.name.toLowerCase() === idOrName.toLowerCase()
+    card => card.name.toLowerCase() === idOrName.toLowerCase()
   );
 }
 
@@ -324,3 +324,6 @@ export function drawCards(n: number): TarotCard[] {
 }
 
 export const TAROT_DECK: TarotDeck = { cards: ALL_CARDS };
+
+// Export MINOR_ARCANA as a combined array for compatibility
+export const MINOR_ARCANA: TarotCard[] = [...WANDS, ...CUPS, ...SWORDS, ...PENTACLES];

@@ -47,7 +47,7 @@ export function exportData(
 
   switch (format) {
     case 'json':
-      return exportJson(data, safeName, includeMetadata, prettyPrint);
+      return exportJson(data, safeName, includeMetadata);
     case 'csv':
       return exportCsv(data, safeName, includeMetadata);
     case 'pdf':
@@ -68,8 +68,7 @@ function sanitizeFilename(name: string): string {
 function exportJson(
   data: unknown,
   filename: string,
-  includeMetadata: boolean,
-  prettyPrint: boolean
+  includeMetadata: boolean
 ): ExportedData {
   const payload = includeMetadata
     ? { metadata: { exportedAt: new Date().toISOString() }, data }
@@ -210,10 +209,6 @@ function exportTxt(data: unknown, filename: string): ExportedData {
     `Generated: ${new Date().toISOString()}`,
     '',
   ];
-
-  flattenObject(data, '', [
-    ['', ''], // placeholder to reuse logic
-  ]);
 
   const rows: string[][] = [];
   flattenObject(data, '', rows);
