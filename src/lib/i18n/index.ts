@@ -6,7 +6,7 @@ export type Locale = 'pt-BR' | 'en';
 
 export const availableLocales: Locale[] = ['pt-BR', 'en'];
 
-const translations: Record<Locale, Record<string, string>> = {
+const translations: Record<Locale, Record<string, unknown>> = {
   'pt-BR': {},
   en: {},
 };
@@ -109,7 +109,7 @@ export function useI18n() {
   useEffect(() => {
     getI18n().then((instance) => {
       setI18n(instance);
-     instance.subscribe(() => forceUpdate(0));
+      instance.subscribe(() => forceUpdate(0));
     });
   }, []);
 
