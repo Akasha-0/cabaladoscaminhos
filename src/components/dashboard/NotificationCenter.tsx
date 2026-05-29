@@ -102,24 +102,40 @@ function NotificationItem({
 }: NotificationItemProps) {
   const colors = NOTIFICATION_COLORS[notification.type];
   const isUnread = !notification.read;
-
+  const itemId = `notification-${notification.id}`;
+  const descId = `${itemId}-desc`;
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick();
+    }
+  };
   return (
     <div
+      id={itemId}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
       className={cn(
         'relative group p-4 rounded-lg cursor-pointer transition-all duration-200',
-        'border',
+        'border focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 focus-visible:outline-none',
         colors.bg,
         colors.border,
         isUnread ? 'bg-slate-800/50' : 'bg-transparent hover:bg-slate-800/30',
         isUnread && 'border-l-2 border-l-amber-500'
       )}
+      aria-describedby={descId}
     >
+      {/* Screen reader description */}
+      <span id={descId} className="sr-only">
+        {isUnread ? 'Não lida. ' : ''}
+        {notification.message}
+      </span>
       {/* Unread indicator */}
       {isUnread && (
-        <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-amber-500" />
+        <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-amber-500" aria-label="Não lida" />
       )}
-
       {/* Header */}
       <div className="flex items-start gap-3">
         <div className={cn('p-2 rounded-lg', colors.bg, colors.text)}>
@@ -144,48 +160,53 @@ function NotificationItem({
           <div className="flex items-center gap-3 text-[10px] text-slate-500">
             <span className="flex items-center gap-1">
               {getTimeIcon(notification.timestamp)}
-              {formatTime(notification.timestamp)}
+              <span>{formatTime(notification.timestamp)}</span>
             </span>
             {notification.metadata?.orixa && (
               <span className="flex items-center gap-1">
-                <Sparkles className="w-3 h-3" />
-                {notification.metadata.orixa}
+                <Sparkles className="w-3 h-3" aria-hidden="true" />
+                <span>{notification.metadata.orixa}</span>
               </span>
             )}
           </div>
         </div>
       </div>
-
       {/* Actions (visible on hover) */}
       <div className="absolute bottom-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
         {notification.type === 'ritual' && notification.metadata?.ritualId && (
           <button
             onClick={(e) => { e.stopPropagation(); onComplete(); }}
-            className="p-1.5 rounded-md bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors"
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onComplete(); } }}
+            className="p-1.5 rounded-md bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 focus-visible:outline-none"
             title="Marcar como feito"
+            aria-label="Marcar ritual como concluído"
           >
-            <CheckCircle2 className="w-3.5 h-3.5" />
+            <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
           </button>
         )}
         <button
           onClick={(e) => { e.stopPropagation(); onSnooze(); }}
-          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-slate-700 transition-colors"
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onSnooze(); } }}
+          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-slate-700 transition-colors focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 focus-visible:outline-none"
           title="Adiar 1 hora"
+          aria-label="Adiar notificação por 1 hora"
         >
-          <Clock className="w-3.5 h-3.5" />
+          <Clock className="w-3.5 h-3.5" aria-hidden="true" />
         </button>
         <button
           onClick={(e) => { e.stopPropagation(); onDismiss(); }}
-          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-red-500/30 hover:text-red-400 transition-colors"
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onDismiss(); } }}
+          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-red-500/30 hover:text-red-400 transition-colors focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-900 focus-visible:outline-none"
           title="Dispensar"
+          aria-label="Dispensar notificação"
         >
-          <X className="w-3.5 h-3.5" />
+          <X className="w-3.5 h-3.5" aria-hidden="true" />
         </button>
       </div>
     </div>
   );
 }
-
+interface FilterChipProps {
 interface FilterChipProps {
   label: string;
   isActive: boolean;
