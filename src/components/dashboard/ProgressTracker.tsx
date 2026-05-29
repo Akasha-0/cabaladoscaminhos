@@ -319,7 +319,7 @@ function WeeklyGrid({ practices }: WeeklyGridProps) {
   );
 }
 
-interface LoadingSkeletonProps {}
+function LoadingSkeleton() {
 
 function LoadingSkeleton({}: LoadingSkeletonProps) {
   return (

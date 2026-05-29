@@ -126,6 +126,8 @@ export function MapaNatalWheel({ data, showAspects = true, size = 'md', theme = 
   const themeColors = THEME_COLORS[theme];
 
   // Early return for null data
+  const [dataState] = useState(data);
+  const planets: PlanetPosition[] = useMemo(() => {
   if (!data) {
     return <div className="rounded-full animate-pulse bg-gray-700" style={{ width: sizeValue, height: sizeValue }} aria-label="Carregando mapa natal" />;
   }

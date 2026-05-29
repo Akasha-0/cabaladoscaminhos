@@ -421,7 +421,7 @@ export function SpiritualDayPopup({ dayData, onClose }: SpiritualDayPopupProps) 
                 <p className="text-xs text-purple-400 font-medium mb-2">Afirmações</p>
                 <div className="space-y-1">
                   {orixaData.affirmations.slice(0, 2).map((aff, i) => (
-                    <p key={i} className="text-xs text-slate-400 italic">"{aff}"</p>
+                    <p key={i} className="text-xs text-slate-400 italic">&ldquo;{aff}&rdquo;</p>
                   ))}
                 </div>
               </div>

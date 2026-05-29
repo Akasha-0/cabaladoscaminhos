@@ -347,7 +347,7 @@ function InsightPanel({ insight, isLoading, onGenerate }: InsightPanelProps) {
         <p className="text-sm text-slate-300 leading-relaxed">{insight}</p>
       ) : (
         <p className="text-xs text-slate-500 italic">
-          Clique em "Gerar Insight" para receber orientações personalizadas sobre sua jornada de consciência.
+          Clique em &ldquo;Gerar Insight&rdquo; para receber orientações personalizadas sobre sua jornada de consciência.
         </p>
       )}
     </div>
