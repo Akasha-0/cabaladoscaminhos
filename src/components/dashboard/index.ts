@@ -156,3 +156,10 @@ export type {
 export type {
   InsightData,
 } from '@/lib/ai/insights/types';
+
+export {
+  MapaNatalWheel,
+  type MapaNatalWheelProps,
+  type PlanetPosition,
+  type HouseCusps,
+} from './MapaNatalWheel';

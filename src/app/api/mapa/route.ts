@@ -117,8 +117,6 @@ function calcAstrologia(dateStr: string, hora?: string, local?: string) {
       ascendente = getAscendenteSign(houses.asc);
       ascendenteDegree = houses.asc;
       mediumCoeliDegree = houses.mc;
-      casas = houses.cusp.map((deg, i) => {
-      casas = houses.cusps.map((deg, i) => {
       casas = houses.cusps.map((deg, i) => {
         const signIndex = Math.floor(deg / 30) % 12;
         const signs: Signo[] = ['aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem', 'libra', 'escorpio', 'sagitario', 'capricornio', 'aquario', 'peixes'];
@@ -135,10 +133,6 @@ function calcAstrologia(dateStr: string, hora?: string, local?: string) {
   // Build full planet positions for MapaNatal wheel
   const planeta: Record<string, { planeta: string; longitude: number; latitude: number; distancia: number; velocidade: number; signo: Signo; casa: number; grauNoSigno: number }> = {};
   for (const p of positions) {
-    const planetSigns: Record<string, Signo> = {
-      sol: 'aries', lua: 'aries', mercurio: 'aries', venus: 'aries', marte: 'aries',
-      jupiter: 'aries', saturno: 'aries', urano: 'aries', netuno: 'aries', plutao: 'aries',
-    };
     planeta[p.planet] = {
       planeta: p.planet,
       longitude: p.longitude,
@@ -146,7 +140,7 @@ function calcAstrologia(dateStr: string, hora?: string, local?: string) {
       distancia: p.distance,
       velocidade: p.velocity,
       signo: p.sign,
-      casa: 1, // simplified
+      casa: 1,
       grauNoSigno: p.degree,
     };
   }
