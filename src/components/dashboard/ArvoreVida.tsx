@@ -41,94 +41,33 @@ const SEPHIROTH = [
   { id: 'malkuth', number: 10, name: 'Malkuth', hebrew: 'מלכות', pillar: 'center' as const, x: 50, y: 95 },
 ] as const;
 
-// 22 Paths of the Tree of Life (connecting Sephiroth by their IDs)
-const PATHS = [
-  // Vertical paths (Pillar of Mildness)
-  { id: '1-6', from: 'kether', to: 'tiphereth', number: 11 },
-  { id: '6-9', from: 'tiphereth', to: 'yesod', number: 26 },
-  { id: '9-10', from: 'yesod', to: 'malkuth', number: 32 },
-
-  // Right Pillar paths
-  { id: '1-2', from: 'kether', to: 'chokhmah', number: 1 },
-  { id: '2-4', from: 'chokhmah', to: 'chesed', number: 12 },
-  { id: '4-6', from: 'chesed', to: 'tiphereth', number: 15 },
-  { id: '6-7', from: 'tiphereth', to: 'netzach', number: 27 },
-  { id: '7-9', from: 'netzach', to: 'yesod', number: 28 },
-  { id: '7-10', from: 'netzach', to: 'malkuth', number: 29 },
-
-  // Left Pillar paths
-  { id: '1-3', from: 'kether', to: 'binah', number: 2 },
-  { id: '3-5', from: 'binah', to: 'geburah', number: 13 },
-  { id: '5-6', from: 'geburah', to: 'tiphereth', number: 16 },
-  { id: '6-8', from: 'tiphereth', to: 'hod', number: 30 },
-  { id: '8-9', from: 'hod', to: 'yesod', number: 31 },
-  { id: '8-10', from: 'hod', to: 'malkuth', number: 33 },
-
-  // Diagonal cross-pillar paths
-  { id: '2-5', from: 'chokhmah', to: 'geburah', number: 14 },
-  { id: '2-6', from: 'chokhmah', to: 'tiphereth', number: 3 },
-  { id: '3-6', from: 'binah', to: 'tiphereth', number: 4 },
-  { id: '3-4', from: 'binah', to: 'chesed', number: 5 },
-  { id: '4-5', from: 'chesed', to: 'geburah', number: 6 },
-  { id: '5-8', from: 'geburah', to: 'hod', number: 17 },
-  { id: '4-7', from: 'chesed', to: 'netzach', number: 7 },
-  { id: '5-8-alt', from: 'chesed', to: 'hod', number: 8 },
-  { id: '4-8', from: 'chesed', to: 'hod', number: 9 },
-] as const;
-
-// Simplified paths - main 22 paths of traditional Tree of Life
+// 22 Paths of the Tree of Life
 const TRADITIONAL_PATHS = [
-  // Path 1: Kether to Chokhmah (Wisdom)
   { from: 'kether', to: 'chokhmah', number: 1 },
-  // Path 2: Kether to Binah (Understanding)
   { from: 'kether', to: 'binah', number: 2 },
-  // Path 3: Chokhmah to Tiphereth
   { from: 'chokhmah', to: 'tiphereth', number: 3 },
-  // Path 4: Binah to Tiphereth
   { from: 'binah', to: 'tiphereth', number: 4 },
-  // Path 5: Binah to Chesed
   { from: 'binah', to: 'chesed', number: 5 },
-  // Path 6: Chesed to Geburah
   { from: 'chesed', to: 'geburah', number: 6 },
-  // Path 7: Chesed to Netzach
   { from: 'chesed', to: 'netzach', number: 7 },
-  // Path 8: Chesed to Hod
   { from: 'chesed', to: 'hod', number: 8 },
-  // Path 9: Geburah to Netzach
   { from: 'geburah', to: 'netzach', number: 9 },
-  // Path 10: Geburah to Hod
   { from: 'geburah', to: 'hod', number: 10 },
-  // Path 11: Kether to Tiphereth
   { from: 'kether', to: 'tiphereth', number: 11 },
-  // Path 12: Chokhmah to Chesed
   { from: 'chokhmah', to: 'chesed', number: 12 },
-  // Path 13: Binah to Geburah
   { from: 'binah', to: 'geburah', number: 13 },
-  // Path 14: Chokhmah to Geburah
   { from: 'chokhmah', to: 'geburah', number: 14 },
-  // Path 15: Chesed to Tiphereth
   { from: 'chesed', to: 'tiphereth', number: 15 },
-  // Path 16: Geburah to Tiphereth
   { from: 'geburah', to: 'tiphereth', number: 16 },
-  // Path 17: Netzach to Hod
   { from: 'netzach', to: 'hod', number: 17 },
-  // Path 18: Tiphereth to Netzach
   { from: 'tiphereth', to: 'netzach', number: 18 },
-  // Path 19: Tiphereth to Hod
   { from: 'tiphereth', to: 'hod', number: 19 },
-  // Path 20: Tiphereth to Yesod
   { from: 'tiphereth', to: 'yesod', number: 20 },
-  // Path 21: Netzach to Yesod
   { from: 'netzach', to: 'yesod', number: 21 },
-  // Path 22: Hod to Yesod
   { from: 'hod', to: 'yesod', number: 22 },
-  // Path 23: Yesod to Malkuth
   { from: 'yesod', to: 'malkuth', number: 23 },
-  // Path 24: Netzach to Malkuth
   { from: 'netzach', to: 'malkuth', number: 24 },
-  // Path 25: Hod to Malkuth
   { from: 'hod', to: 'malkuth', number: 25 },
-  // Path 26: Tiphereth to Malkuth (direct)
   { from: 'tiphereth', to: 'malkuth', number: 26 },
 ] as const;
 
@@ -235,7 +174,7 @@ export function ArvoreVida({
 
         {/* Draw Paths */}
         <g className="paths">
-          {TRADITIONAL_PATHS.map((path, index) => {
+          {TRADITIONAL_PATHS.map((path) => {
             const fromPos = getSephirahPosition(path.from);
             const toPos = getSephirahPosition(path.to);
 

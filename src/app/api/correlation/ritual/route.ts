@@ -19,8 +19,7 @@ export async function GET(request: Request) {
     const date = dateParam ? new Date(dateParam) : new Date();
     const symptomsParam = searchParams.get('symptoms');
     const symptoms = symptomsParam ? symptomsParam.split(',') : undefined;
-
-    const plan = generateRitualPlan(date, symptoms);
+    const plan = generateRitualPlan(date.toISOString(), symptoms);
 
     return NextResponse.json({
       success: true,
