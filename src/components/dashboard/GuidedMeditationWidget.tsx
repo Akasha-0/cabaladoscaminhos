@@ -655,30 +655,11 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
   
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const breathingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  
   const orixaProfile = userOrixa ? getProfileById(userOrixa) : null;
   const chakraData = getChakraData();
   const moonPhase = getMoonPhase();
-  // playBell must be declared before useEffect that uses it
-  const playBell = useCallback((type: 'start' | 'end') => {
-    if (!soundEnabled) return;
-    // Create bell sound using Web Audio API
-    try {
-      const audioContext = new (window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      oscillator.frequency.value = type === 'start' ? 528 : 432;
-      oscillator.type = 'sine';
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 2);
-    } catch (e) {
-      // Fallback: just log, bell sound may not work in all browsers
-      console.log(`Bell ${type} triggered`);
-    }
-  }, [soundEnabled]);
+  
   // Timer logic
   useEffect(() => {
     if (isTimerRunning && timerSeconds > 0) {
@@ -693,12 +674,13 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
         });
       }, 1000);
     }
+    
     return () => {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
       }
     };
-  }, [isTimerRunning, timerSeconds, playBell]);
+  }, [isTimerRunning, timerSeconds]);
   
   // Breathing logic
   useEffect(() => {
@@ -758,7 +740,33 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
     }, 15000); // Change every 15 seconds
     
     return () => clearInterval(interval);
-
+  }, [isAffirmationPlaying]);
+  
+  const playBell = useCallback((type: 'start' | 'end') => {
+    if (!soundEnabled) return;
+    
+    // Create bell sound using Web Audio API
+    try {
+      const audioContext = new (window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = type === 'start' ? 528 : 432;
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 2);
+    } catch (e) {
+      // Fallback: just log, bell sound may not work in all browsers
+      console.log(`Bell ${type} triggered`);
+    }
+  }, [soundEnabled]);
   
   const handleStartTimer = useCallback(() => {
     playBell('start');
