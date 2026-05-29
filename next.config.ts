@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.supabase.co" },
     ],
   },
+  experimental: {
+    optimizePackageImports: ['jspdf', 'lucide-react'],
+  },
 };
 
 export default nextConfig;

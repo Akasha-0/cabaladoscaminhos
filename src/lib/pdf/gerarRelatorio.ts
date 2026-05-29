@@ -1,6 +1,4 @@
 // PDF generation module for Mapa da Alma
-/* eslint-disable @typescript-eslint/no-require-imports */
-import { jsPDF } from 'jspdf';
 
 // ============================================================
 // Types
@@ -261,7 +259,6 @@ function gerarSecaoTarot(doc: any, tarot: MapaData['tarot'], y: number, largura:
   (doc as any).setTextColor(212, 175, 55);
   doc.setFontSize(9);
   doc.text(cartaNascimento, margem + 25, y + 12, { align: 'center' });
-
   y += 35;
 
   // Personal year card
@@ -381,7 +378,11 @@ function adicionarFooter(doc: any, largura: number, margem: number, pageNum: num
 // Main export function
 // ============================================================
 
-export function gerarRelatorioPDF(data: MapaData): Blob {
+export async function gerarRelatorioPDF(data: MapaData): Promise<Blob> {
+  // Dynamic import at call time - jsPDF is ~1MB, only load when needed
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const jsPDF = (await import('jspdf') as any).default;
+
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
