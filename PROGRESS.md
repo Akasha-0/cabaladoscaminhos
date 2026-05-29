@@ -1,9 +1,9 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 11:05
-**Ciclos de desenvolvimento completados:** 6
+**Última atualização:** 2026-05-29 11:15
+**Ciclos de desenvolvimento completados:** 7
 **Build status:** PASSING ✅
-**Tests:** 1012 passing, 14 skipped (54 test files)
+**Tests:** 1021 passing, 14 skipped (55 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -41,26 +41,30 @@
 - **/pagamento/sucesso** ✅ — subscription confirmed page
 - **/pagamento/cancelado** ✅ — payment canceled page
 - **/api/stripe/webhook** ✅ — subscription event handler
+
+### User Management (Sprint 7 Completo)
 - **Onboarding flow** ✅ — 4-step birth data collection at /onboarding
+- **Profile API** ✅ — GET/PUT user profile with Prisma
+- **Account page** ✅ — /conta with settings and subscription
+- **Árvore da Vida** ✅ — Kabbalistic Tree of Life SVG component
 - **/calendario** ✅ — spiritual energy calendar with 7-day overview
 
 ### PDF Export (Sprint 4)
 - `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF
 
 ### Testing
-- 54 test files, 1012 tests passing, 14 skipped
+- 55 test files, 1021 tests passing, 14 skipped
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
 ### Curto Prazo
 1. [x] Sprint 6 Payment Integration — COMPLETO ✅
-2. [x] Onboarding page — COMPLETO ✅
-3. [x] Calendar energético — COMPLETO ✅
+2. [x] Sprint 7 User Management — COMPLETO ✅
 
 ### Médio Prazo
-1. [ ] Sprint 7: User profile management
-2. [ ] Sprint 8: Advanced dashboard features
-3. [ ] Mobile app (PWA enhancements)
+1. [ ] Sprint 8: Advanced dashboard features (PWA enhancements)
+2. [ ] Mobile app optimizations
+3. [ ] Performance optimization
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -68,11 +72,12 @@
 2. **Pricing plans**: Gratuito (básico) + Premium (completo)
 3. **Share links**: Hash único + storage (in-memory para MVP)
 4. **Onboarding**: 4-step flow collecting birth data
+5. **ArvoreVida**: SVG pure component with pillar coloring
 
 ## 📊 MÉTRICAS
 
 - Engines: ~18/25 sistemas, 3 validados ✅
-- Test coverage: 54 files, 1012 tests passing
+- Test coverage: 55 files, 1021 tests passing
 - API routes: 200+
 - Build: PASSING ✅
 
