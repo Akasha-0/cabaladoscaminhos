@@ -3,12 +3,15 @@
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { RealtimeEnergyWidget } from '@/components/dashboard/RealtimeEnergyWidget';
 import { DailyWisdomCard } from '@/components/dashboard/DailyWisdomCard';
-import { QuickDivination } from '@/components/dashboard/QuickDivination';
 import { CorrelationViz } from '@/components/dashboard/CorrelationViz';
 import { NumerologyWidget } from '@/components/dashboard/NumerologyWidget';
 import { AstrologyWidget } from '@/components/dashboard/AstrologyWidget';
 import { ChakraBalanceWidget } from '@/components/dashboard/ChakraBalanceWidget';
 import { OduDivinationWidget } from '@/components/dashboard/OduDivinationWidget';
+import { DayEnergyWidget } from '@/components/dashboard/DayEnergyWidget';
+import { LunarPhaseWidget } from '@/components/dashboard/LunarPhaseWidget';
+import { RitualReminderWidget } from '@/components/dashboard/RitualReminderWidget';
+import { SpiritualProgressWidget } from '@/components/dashboard/SpiritualProgressWidget';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 
 const SAMPLE_USER = {
@@ -29,26 +32,44 @@ export default function Dashboard() {
     arcanoPessoal: 1,
     sefirotDominante: ['Kether'],
   };
+
   return (
     <DashboardLayout>
       <DashboardHeader userData={SAMPLE_USER} />
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <div className="space-y-6">
+      {/* Top Row - Energy + Day Correlation */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+        <div className="lg:col-span-2">
           <RealtimeEnergyWidget />
-          <NumerologyWidget name={SAMPLE_USER.name} birthDate={SAMPLE_USER.birthDate} />
-          <CorrelationViz />
         </div>
-        
-        <div className="space-y-6">
-          <DailyWisdomCard userData={userData} userId="dashboard-visitor" />
-          <AstrologyWidget />
-          <OduDivinationWidget />
+        <div>
+          <DayEnergyWidget />
         </div>
       </div>
-      
-      <div className="mt-6">
+
+      {/* Second Row - Numerology + Astrology + Lunar */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        <NumerologyWidget name={SAMPLE_USER.name} birthDate={SAMPLE_USER.birthDate} />
+        <AstrologyWidget />
+        <LunarPhaseWidget />
+      </div>
+
+      {/* Third Row - Orixá + Progress */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <OduDivinationWidget />
+        <SpiritualProgressWidget />
+      </div>
+
+      {/* Fourth Row - Rituals + Chakra */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <RitualReminderWidget />
         <ChakraBalanceWidget />
+      </div>
+
+      {/* Fifth Row - Correlation + Wisdom */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <CorrelationViz />
+        <DailyWisdomCard userData={userData} userId="dashboard-visitor" />
       </div>
     </DashboardLayout>
   );
