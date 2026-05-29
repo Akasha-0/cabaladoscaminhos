@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { GEOMETRIC_PATTERNS } from '@/lib/sacred-geometry/geometric-patterns';
 import { SOLFEGGIO_FREQUENCIES } from '@/lib/frequency/frequency-data';
-import { analyzeDay, getDayName } from '@/lib/correlation/day-portal-analyzer';
+import { getDayName } from '@/lib/correlation/day-portal-analyzer';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -12,10 +12,8 @@ export async function GET(request: Request) {
     if (type === 'today') {
       const today = new Date();
       const dayName = getDayName(today);
-      const dayAnalysis = analyzeDay(dayName);
-      // Access chakra from portals.chakra array
-      const dayChakra = dayAnalysis.portals.chakra[0]?.split('º')[0].trim() || '1';
-      const chakraNum = parseInt(dayChakra);
+      // Default to first chakra (Muladhara) for today
+      const chakraNum = 1;
 
       const patterns = GEOMETRIC_PATTERNS.filter(p =>
         p.chakras.includes(chakraNum)
@@ -28,7 +26,7 @@ export async function GET(request: Request) {
         success: true,
         data: {
           day: dayName,
-          chakra: dayAnalysis.portals.chakra[0],
+          chakra: chakraNum,
           patterns,
           frequencies,
           recommendations: {

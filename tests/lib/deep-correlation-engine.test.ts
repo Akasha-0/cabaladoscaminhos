@@ -6,18 +6,17 @@ vi.mock('../../src/lib/ai/minimax', () => ({
   }),
 }));
 
- import { DeepCorrelationEngine } from '../../src/lib/ai/deep-correlation-engine';
- import type { UserSpiritualData } from '../../src/lib/ai/types';
- import type {
-   SpiritualCorrelation,
-   CrossSystemPattern,
-   EnergyHarmonyReport,
-   SpiritualSource,
- } from '../../src/lib/ai/deep-correlation-engine';
+import { DeepCorrelationEngine } from '../../src/lib/ai/deep-correlation-engine';
+import type { UserSpiritualData } from '../../src/lib/ai/types';
+import type {
+  SpiritualCorrelation,
+  CrossSystemPattern,
+  EnergyHarmonyReport,
+  SpiritualSource,
+} from '../../src/lib/ai/deep-correlation-engine';
 
 describe('DeepCorrelationEngine', () => {
   const engine = new DeepCorrelationEngine();
-
   const mockUserData: UserSpiritualData = {
     id: 'test-123',
     nome: 'Test User',
@@ -30,6 +29,7 @@ describe('DeepCorrelationEngine', () => {
     arcoMaior: [0, 1, 21],
     sign: 'Leo',
     houses: { '4': 10, '10': 15 },
+    rashi: 'Leo',
   };
 
   describe('analyzeCorrelations', () => {

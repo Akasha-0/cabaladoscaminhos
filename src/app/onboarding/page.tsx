@@ -78,8 +78,8 @@ export default function OnboardingPage() {
     }
   };
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleInputChange = (field: keyof FormData, value: string | null) => {
+    setFormData(prev => ({ ...prev, [field]: value ?? '' }));
   };
 
   const handleSubmit = async () => {

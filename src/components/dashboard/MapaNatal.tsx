@@ -1,10 +1,24 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import type { MapaNatal as MapaNatalData } from '@/lib/astrologia/tipos';
 
+// Permissive type for partial mapa natal data
 export interface MapaNatalProps {
-  mapaNatal: MapaNatalData;
+  mapaNatal: {
+    planeta?: Record<string, {
+      planeta: string;
+      longitude: number;
+      latitude: number;
+      distancia: number;
+      velocidade: number;
+      signo: string;
+      casa: number;
+      grauNoSigno: number;
+    }>;
+    casas?: Array<{ numero: number; signo: string; grauNoSigno: number }>;
+    ascendente?: number;
+    mediumCoeli?: number;
+  };
   size?: number;
   className?: string;
 }
@@ -27,18 +41,18 @@ const ZODIAC_SIGNS = [
 
 // Sign colors
 const SIGN_COLORS: Record<number, { stroke: string; fill: string; bg: string }> = {
-  0: { stroke: '#DC2626', fill: '#EF4444', bg: 'rgba(220, 38, 38, 0.1)' }, // Áries - Red
-  1: { stroke: '#16A34A', fill: '#22C55E', bg: 'rgba(22, 163, 74, 0.1)' }, // Touro - Green
-  2: { stroke: '#CA8A04', fill: '#EAB308', bg: 'rgba(202, 138, 4, 0.1)' }, // Gêmeos - Yellow
-  3: { stroke: '#2563EB', fill: '#3B82F6', bg: 'rgba(37, 99, 235, 0.1)' }, // Câncer - Blue
-  4: { stroke: '#F59E0B', fill: '#FBBF24', bg: 'rgba(245, 158, 11, 0.1)' }, // Leão - Orange
-  5: { stroke: '#65A30D', fill: '#84CC16', bg: 'rgba(101, 163, 13, 0.1)' }, // Virgem - Lime
-  6: { stroke: '#9D174D', fill: '#EC4899', bg: 'rgba(157, 23, 77, 0.1)' }, // Libra - Pink
-  7: { stroke: '#1E3A8A', fill: '#1D4ED8', bg: 'rgba(30, 58, 138, 0.1)' }, // Escorpião - Dark Blue
-  8: { stroke: '#7C2D12', fill: '#B45309', bg: 'rgba(124, 45, 18, 0.1)' }, // Sagitário - Brown
-  9: { stroke: '#374151', fill: '#4B5563', bg: 'rgba(55, 65, 81, 0.1)' }, // Capricórnio - Gray
-  10: { stroke: '#0891B2', fill: '#06B6D4', bg: 'rgba(8, 145, 178, 0.1)' }, // Aquário - Cyan
-  11: { stroke: '#7C3AED', fill: '#8B5CF6', bg: 'rgba(124, 58, 237, 0.1)' }, // Peixes - Purple
+  0: { stroke: '#DC2626', fill: '#EF4444', bg: 'rgba(220, 38, 38, 0.1)' },
+  1: { stroke: '#16A34A', fill: '#22C55E', bg: 'rgba(22, 163, 74, 0.1)' },
+  2: { stroke: '#CA8A04', fill: '#EAB308', bg: 'rgba(202, 138, 4, 0.1)' },
+  3: { stroke: '#2563EB', fill: '#3B82F6', bg: 'rgba(37, 99, 235, 0.1)' },
+  4: { stroke: '#F59E0B', fill: '#FBBF24', bg: 'rgba(245, 158, 11, 0.1)' },
+  5: { stroke: '#65A30D', fill: '#84CC16', bg: 'rgba(101, 163, 13, 0.1)' },
+  6: { stroke: '#9D174D', fill: '#EC4899', bg: 'rgba(157, 23, 77, 0.1)' },
+  7: { stroke: '#1E3A8A', fill: '#1D4ED8', bg: 'rgba(30, 58, 138, 0.1)' },
+  8: { stroke: '#7C2D12', fill: '#B45309', bg: 'rgba(124, 45, 18, 0.1)' },
+  9: { stroke: '#374151', fill: '#4B5563', bg: 'rgba(55, 65, 81, 0.1)' },
+  10: { stroke: '#0891B2', fill: '#06B6D4', bg: 'rgba(8, 145, 178, 0.1)' },
+  11: { stroke: '#7C3AED', fill: '#8B5CF6', bg: 'rgba(124, 58, 237, 0.1)' },
 };
 
 // Planet symbols
@@ -107,7 +121,7 @@ export function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalPr
 
   const planets = useMemo(() => {
     const result: Array<{ name: string; symbol: string; position: { x: number; y: number }; degree: number }> = [];
-    const planetEntries = Object.entries(mapaNatal.planeta);
+    const planetEntries = Object.entries(mapaNatal.planeta ?? {});
     
     for (const [name, planet] of planetEntries) {
       const symbol = PLANET_SYMBOLS[name] || name;
@@ -124,11 +138,11 @@ export function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalPr
   }, [mapaNatal.planeta, planetRadius, center]);
 
   const ascendantPos = useMemo(() => {
-    return getPosition(mapaNatal.ascendente, outerRadius + 12, center, center);
+    return getPosition(mapaNatal.ascendente ?? 0, outerRadius + 12, center, center);
   }, [mapaNatal.ascendente, outerRadius, center]);
 
   const mcPos = useMemo(() => {
-    return getPosition(mapaNatal.mediumCoeli, outerRadius + 12, center, center);
+    return getPosition(mapaNatal.mediumCoeli ?? 0, outerRadius + 12, center, center);
   }, [mapaNatal.mediumCoeli, outerRadius, center]);
 
   return (
@@ -193,12 +207,8 @@ export function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalPr
         })}
 
         {/* House cusp lines from center */}
-        {mapaNatal.casas.map((casa, i) => {
-          const startAngle = i * 30;
+        {(mapaNatal.casas ?? []).map((casa, i) => {
           const endAngle = (i + 1) * 30;
-          const midAngle = (startAngle + endAngle) / 2;
-          
-          const start = getPosition(startAngle, innerRadius, center, center);
           const end = getPosition(endAngle, outerRadius + 15, center, center);
           
           return (
@@ -231,7 +241,7 @@ export function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalPr
         ))}
 
         {/* House numbers */}
-        {mapaNatal.casas.map((casa, i) => {
+        {(mapaNatal.casas ?? []).map((casa, i) => {
           const angle = i * 30 + 15;
           const pos = getPosition(angle, houseRadius, center, center);
           return (

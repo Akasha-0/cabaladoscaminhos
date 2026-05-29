@@ -1,9 +1,9 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 12:00
-**Ciclos de desenvolvimento completados:** 10
+**Última atualização:** 2026-05-29 13:10
+**Ciclos de desenvolvimento completados:** 14
 **Build status:** PASSING ✅
-**Tests:** 950 passing, 14 skipped (52 test files)
+**Tests:** 975 passing, 14 skipped (53 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -15,90 +15,95 @@
 - JWT authentication (bcryptjs + jsonwebtoken)
 - Stripe payments configured
 - OpenAI SDK integrated
-- jsPDF for PDF exports (dynamic import for bundle optimization)
+- jsPDF for PDF exports (dynamic import)
 - Minimax API integration for AI responses
 
 ### Engines Implementadas (Validadas)
 - **Numerologia Cabalística** ✅ 41 testes
 - **Odu Ifá** ✅ 26 testes — 16 Odús com quizilas e preceitos
-- **Astrologia** ✅ 17 testes — planet-calculator, houses, natal
-- Tarot, Chakra system, Orixás, Cabala
-- Deep Correlation Engine, Pattern Recognizer, Oracle Chat, Prediction Engine
+- **Astrologia** ✅ 17 testes
+- Deep Correlation Engine, Oracle Chat, Prediction Engine
 
-### Mapa da Alma (Sprints 4-5 Completos)
-- **Página /mapa** ✅ — interface visual completa com download PDF
-- **MapaNatal SVG** ✅ — integrated na página, roda astrológica
-- **OduCard** ✅ — display de quizilas e preceitos
-- **POST /api/mapa** ✅ — aggregation endpoint
-- **POST /api/mapa/share** ✅ — shareable public links
-- **GET /mapa/shared/[hash]** ✅ — shared read-only page
-- **Download button** ✅ — PDF via jsPDF (dynamic import)
+### Dashboard Widgets (26+ widgets)
+| Widget | Descrição |
+|--------|-----------|
+| RealtimeEnergyWidget | Energia espiritual |
+| NumerologyWidget | Vida, Destino, Alma, Personalidade |
+| AstrologyWidget | Signo Solar, Fase da Lua |
+| ChakraBalanceWidget | 7 Chakras |
+| OduDivinationWidget | Odú do dia |
+| DayEnergyWidget | Energia por dia da semana |
+| LunarPhaseWidget | Fase lunar |
+| RitualReminderWidget | Lembretes de rituais |
+| SpiritualProgressWidget | Progresso espiritual |
+| SpiritualStateWidget | Estado espiritual |
+| PredictionWidget | Previsões diárias |
+| ElementBalanceWidget | Equilíbrio elemental |
+| CrossCorrelationWidget | Correlações cruzadas |
+| AIOracleChat | Chat com oráculo |
+| QuickDivination | Divinação rápida |
+| CorrelationViz | Visualização de correlações |
+| DailyWisdomCard | Sabedoria diária |
+| ProgressTracker | Rastreador de progresso |
+| AffirmationWidget | Afirmações diárias |
+| DailyPredictionCard | Predições personalizadas |
+| NotificationCenter | Centro de notificações |
+| MiniCalendarWidget | Calendário espiritual |
+| AIInsightWidget | Insights de IA |
+| SpiritWellnessWidget | Bem-estar espiritual |
+| MapaNatal | Mapa Natal SVG |
 
-### Payment Integration (Sprint 6 Completo)
-- **Página /pricing** ✅ — pricing page com dois planos
-- **POST /api/payments/checkout** ✅ — Stripe checkout
-- **POST /api/payments/portal** ✅ — Stripe customer portal
-- **/pagamento/sucesso** ✅ — subscription confirmed page
-- **/pagamento/cancelado** ✅ — payment canceled page
-- **/api/stripe/webhook** ✅ — subscription event handler
+### Sistema de Correlações (IDEIA.md)
+- 7 dias da semana com Orixás, Chakras, Planetas, Sefirot
+- 16 Odús com quizilas e preceitos
+- Equilíbrio elemental (Fogo, Água, Terra, Ar, Éter)
+- Lua phases e energia espiritual
 
-### User Management (Sprint 7 Completo)
-- **Onboarding flow** ✅ — 4-step birth data collection at /onboarding
-- **Profile API** ✅ — GET/PUT user profile with Prisma
-- **Account page** ✅ — /conta with settings and subscription
-- **Árvore da Vida** ✅ — Kabbalistic Tree of Life SVG component
-- **/calendario** ✅ — spiritual energy calendar with 7-day overview
+### Pages
+- `/` ✅ Landing page
+- `/dashboard` ✅ Dashboard espiritual
+- `/mapa` ✅ Mapa da Alma
+- `/calendario` ✅ Calendário espiritual
+- `/pricing` ✅ Planos
+- `/onboarding` ✅ Cadastro
 
-### Sprint 8 - PWA & Mobile (COMPLETO ✅)
-- **Landing page** ✅ — Enhanced with hero, features, CTA, responsive
-- **InstallPrompt** ✅ — PWA install banner integrated
-- **OfflineIndicator** ✅ — Offline status banner integrated
-- **MobileBottomNav** ✅ — Bottom tab navigation for mobile
+### PWA Features
+- Manifest com shortcuts
+- Service Worker com cache
+- Offline mode
+- Mobile nav
 
-### Sprint 9 - Performance (COMPLETO ✅)
-- **Bundle optimization** ✅ — experimental.optimizePackageImports configured
-- **Dynamic jsPDF** ✅ — jsPDF loaded only on PDF generation (saves ~1MB)
-- **Next.js config** ✅ — optimizePackageImports for jspdf, lucide-react
+## Sprint History
 
-### Sprint 10 - Deployment (COMPLETO ✅)
-- **.env.example** ✅ — Environment variables template (23 variables documented)
-- **Dockerfile** ✅ — Multi-stage build for production
-- **docker-compose.yml** ✅ — Local dev with Postgres + Redis
-- **next.config.ts** ✅ — Standalone output for Docker
-
-### PDF Export
-- `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF (dynamic import)
-
-### Testing
-- 52 test files, 950 tests passing, 14 skipped
+| Sprint | Descrição | Status |
+|--------|-----------|--------|
+| 1-9 | Core, Mapa, Payments, User, PWA | ✅ COMPLETO |
+| 10 | Deployment (Docker) | ✅ COMPLETO |
+| 11 | Dashboard Enhancement | ✅ COMPLETO |
+| 12 | Advanced Features + Notifications | ✅ COMPLETO |
+| 13 | User Profile Integration + Calendar | ✅ COMPLETO |
+| 14 | Widget Integration + Wellness + Tests | ✅ COMPLETO |
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
-### Completo
-1. [x] Sprint 1-10 — TODOS COMPLETOS ✅
-
 ### Opcional
-1. [ ] Multi-language support (i18n) — install next-intl, locale routing, translations
-2. [ ] Analytics dashboard — track user engagement, conversions
+1. [ ] Multi-language support (i18n)
+2. [ ] Analytics dashboard
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
-1. **Payment flow**: Stripe Checkout + Customer Portal + Webhooks
-2. **Pricing plans**: Gratuito (básico) + Premium (completo)
-3. **Share links**: Hash único + storage (in-memory para MVP)
-4. **Onboarding**: 4-step flow collecting birth data
-5. **ArvoreVida**: SVG pure component with pillar coloring
-6. **PWA**: Install prompt + offline indicator + mobile nav
-7. **Bundle optimization**: jsPDF dynamic import, optimizePackageImports
-8. **Deployment**: Docker + docker-compose ready
+1. **Payment flow**: Stripe Checkout + Webhooks
+2. **Pricing plans**: Gratuito + Premium
+3. **Dashboard**: Widget-based with correlations
+4. **PWA**: Installable with offline mode
 
 ## 📊 MÉTRICAS
 
-- Engines: ~18/25 sistemas, 3 validados ✅
-- Test coverage: 52 files, 950 tests passing
-- API routes: 200+
+- Engines: ~18 sistemas espirituais
+- Test coverage: 53 files, 975 tests passing
+- Dashboard widgets: 26+
 - Build: PASSING ✅
-- **10 Sprints Completados** 🎉
+- **14 Sprints Completados** 🎉
 
 ---
 
