@@ -1,7 +1,7 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 13:20
-**Ciclos de desenvolvimento completados:** 15
+**Última atualização:** 2026-05-29
+**Ciclos de desenvolvimento completados:** 16
 **Build status:** PASSING ✅
 **Tests:** 997 passing, 14 skipped (56 test files)
 
@@ -24,7 +24,7 @@
 - **Astrologia** ✅ 17 testes
 - Deep Correlation Engine, Oracle Chat, Prediction Engine
 
-### Dashboard Widgets (28+ widgets)
+### Dashboard Widgets (34+ widgets)
 | Widget | Descrição |
 |--------|-----------|
 | RealtimeEnergyWidget | Energia espiritual |
@@ -36,10 +36,7 @@
 | LunarPhaseWidget | Fase lunar |
 | RitualReminderWidget | Lembretes de rituais |
 | SpiritualProgressWidget | Progresso espiritual |
-| SpiritualStateWidget | Estado espiritual |
 | PredictionWidget | Previsões diárias |
-| ElementBalanceWidget | Equilíbrio elemental |
-| CrossCorrelationWidget | Correlações cruzadas |
 | AIOracleChat | Chat com oráculo |
 | QuickDivination | Divinação rápida |
 | CorrelationViz | Visualização de correlações |
@@ -48,12 +45,17 @@
 | AffirmationWidget | Afirmações diárias |
 | DailyPredictionCard | Predições personalizadas |
 | NotificationCenter | Centro de notificações |
-| MiniCalendarWidget | Calendário espiritual |
 | AIInsightWidget | Insights de IA |
 | SpiritWellnessWidget | Bem-estar espiritual |
 | MoonRitualPlanner | Ritual da lua |
 | LoveReadingsWidget | Leituras de amor |
-| MapaNatal | Mapa Natal SVG |
+| SpiritualFinanceWidget | Finanças espirituais |
+| SpiritualJournalWidget | Diário espiritual |
+| GuidedMeditationWidget | Meditação guiada |
+| StatsOverview | Visão geral de estatísticas |
+| ProgressChart | Gráfico SVG de evolução semanal |
+| SessionInsightsPanel | Insights de sessão |
+| MeditationStats | Estatísticas de meditação |
 
 ### Sistema de Correlações (IDEIA.md)
 - 7 dias da semana com Orixás, Chakras, Planetas, Sefirot
@@ -62,12 +64,15 @@
 - Lua phases e energia espiritual
 
 ### Pages
-- `/` ✅ Landing page
-- `/dashboard` ✅ Dashboard espiritual
-- `/mapa` ✅ Mapa da Alma
-- `/calendario` ✅ Calendário espiritual
-- `/pricing` ✅ Planos
-- `/onboarding` ✅ Cadastro
+| Page | Descrição |
+|------|-----------|
+| `/` | Landing page |
+| `/dashboard` | Dashboard espiritual |
+| `/mapa` | Mapa da Alma |
+| `/calendario` | Calendário espiritual |
+| `/pricing` | Planos |
+| `/onboarding` | Cadastro |
+| `/analytics` | Estatísticas espirituais |
 
 ### PWA Features
 - Manifest com shortcuts
@@ -81,17 +86,13 @@
 |--------|-----------|--------|
 | 1-9 | Core, Mapa, Payments, User, PWA | ✅ COMPLETO |
 | 10 | Deployment (Docker) | ✅ COMPLETO |
-| 11 | Dashboard Enhancement | ✅ COMPLETO |
-| 12 | Advanced Features + Notifications | ✅ COMPLETO |
-| 13 | User Profile Integration + Calendar | ✅ COMPLETO |
-| 14 | Widget Integration + Wellness + Tests | ✅ COMPLETO |
-| 15 | Love Readings + Moon Rituals + Dashboard Layout | ✅ COMPLETO |
+| 11-15 | Dashboard Enhancement (Widgets, AI, Notifications, Wellness) | ✅ COMPLETO |
+| 16 | Analytics Dashboard (StatsOverview, ProgressChart, SessionInsights, MeditationStats) | ✅ COMPLETO |
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
 ### Opcional
 1. [ ] Multi-language support (i18n)
-2. [ ] Analytics dashboard
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -103,10 +104,10 @@
 ## 📊 MÉTRICAS
 
 - Engines: ~18 sistemas espirituais
-- Test coverage: 56 files, 987 tests passing
-- Dashboard widgets: 28+
+- Test coverage: 56 files, 997 tests passing
+- Dashboard widgets: 34+
 - Build: PASSING ✅
-- **15 Sprints Completados** 🎉
+- **16 Sprints Completados** 🎉
 
 ---
 

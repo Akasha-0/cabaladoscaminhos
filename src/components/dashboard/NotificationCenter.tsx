@@ -312,31 +312,37 @@ export function NotificationCenter({
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'relative p-2.5 rounded-xl transition-all duration-200',
-          'hover:bg-slate-800/80',
+          'hover:bg-slate-800/80 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 focus-visible:outline-none',
           isOpen ? 'bg-slate-800 text-amber-400' : 'text-slate-400 hover:text-white'
         )}
         aria-label={`Notificações${unreadCount > 0 ? ` (${unreadCount} não lidas)` : ''}`}
+        aria-expanded={isOpen}
+        aria-haspopup="dialog"
       >
         {unreadCount > 0 ? (
-          <BellRing className="w-5 h-5" />
+          <BellRing className="w-5 h-5" aria-hidden="true" />
         ) : (
-          <Bell className="w-5 h-5" />
+          <Bell className="w-5 h-5" aria-hidden="true" />
         )}
-        
         {/* Badge */}
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 flex items-center justify-center bg-amber-500 text-black text-xs font-bold rounded-full shadow-lg animate-pulse">
+          <span 
+            className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 flex items-center justify-center bg-amber-500 text-black text-xs font-bold rounded-full shadow-lg animate-pulse"
+            aria-label={`${unreadCount} notificações não lidas`}
+          >
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
       </button>
-
       {/* Dropdown Panel */}
       {isOpen && (
         <div
           ref={dropdownRef}
           className="absolute right-0 top-full mt-2 w-96 max-h-[600px] overflow-hidden rounded-xl bg-slate-900 border border-slate-700/50 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+          role="dialog"
+          aria-label="Painel de notificações"
         >
+          {/* Header */}
           {/* Header */}
           <div className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50 p-4">
             <div className="flex items-center justify-between mb-3">

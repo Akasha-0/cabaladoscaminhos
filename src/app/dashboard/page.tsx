@@ -4,39 +4,14 @@ import dynamic from 'next/dynamic';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { RealtimeEnergyWidget } from '@/components/dashboard/RealtimeEnergyWidget';
 import { DailyWisdomCard } from '@/components/dashboard/DailyWisdomCard';
-import { CorrelationViz } from '@/components/dashboard/CorrelationViz';
 import { NumerologyWidget } from '@/components/dashboard/NumerologyWidget';
-import { AstrologyWidget } from '@/components/dashboard/AstrologyWidget';
-import { ChakraBalanceWidget } from '@/components/dashboard/ChakraBalanceWidget';
-import { OduDivinationWidget } from '@/components/dashboard/OduDivinationWidget';
-import { DayEnergyWidget } from '@/components/dashboard/DayEnergyWidget';
-import { LunarPhaseWidget } from '@/components/dashboard/LunarPhaseWidget';
-import { RitualReminderWidget } from '@/components/dashboard/RitualReminderWidget';
-import { SpiritualProgressWidget } from '@/components/dashboard/SpiritualProgressWidget';
-import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
-import { ProgressTracker } from '@/components/dashboard/ProgressTracker';
-import { DailyPredictionCard } from '@/components/dashboard/DailyPredictionCard';
-import { QuickDivination } from '@/components/dashboard/QuickDivination';
-import { SpiritWellnessWidget } from '@/components/dashboard/SpiritWellnessWidget';
-import { NotificationCenter } from '@/components/dashboard/NotificationCenter';
-import { PredictionWidget } from '@/components/dashboard/PredictionWidget';
-import { MoonRitualPlanner } from '@/components/dashboard/MoonRitualPlanner';
-import { AInsightWidget } from '@/components/dashboard/AInsightWidget';
-import { LoveReadingsWidget } from '@/components/dashboard/LoveReadingsWidget';
-import { SpiritualFinanceWidget } from '@/components/dashboard/SpiritualFinanceWidget';
-import { SpiritualJournalWidget } from '@/components/dashboard/SpiritualJournalWidget';
-import { GuidedMeditationWidget } from '@/components/dashboard/GuidedMeditationWidget';
-
-// Lazy load heavy components
-const AffirmationWidget = dynamic(
-  () => import('@/components/dashboard/AffirmationWidget').then(m => ({ default: m.AffirmationWidget })),
-  { ssr: false }
-);
-const AIOracleChat = dynamic(
   () => import('@/components/dashboard/AIOracleChat').then(m => ({ default: m.AIOracleChat })),
   { ssr: false }
 );
-
+const CorrelationViz = dynamic(
+  () => import('@/components/dashboard/CorrelationViz').then(m => ({ default: m.CorrelationViz })),
+  { ssr: false }
+);
 const SAMPLE_USER = {
   name: 'Maria',
   spiritualName: 'Maria de Oxum',

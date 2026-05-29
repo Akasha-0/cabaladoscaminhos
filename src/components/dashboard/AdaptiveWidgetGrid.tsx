@@ -62,7 +62,8 @@ const DEFAULT_WIDGET_CONFIGS: Record<string, WidgetConfig[]> = {
 };
 
 function loadWidgetPreferences(stage: string): WidgetConfig[] {
-  try {
+  if (typeof window === 'undefined') return DEFAULT_WIDGET_CONFIGS[stage] || DEFAULT_WIDGET_CONFIGS['iniciante'];
+ try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
@@ -77,7 +78,8 @@ function loadWidgetPreferences(stage: string): WidgetConfig[] {
 }
 
 function saveWidgetPreferences(stage: string, widgets: WidgetConfig[]) {
-  try {
+  if (typeof window === 'undefined') return;
+ try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ stage, widgets }));
   } catch {
     // Ignore storage errors

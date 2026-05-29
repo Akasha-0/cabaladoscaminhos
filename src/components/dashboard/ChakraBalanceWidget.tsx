@@ -14,7 +14,7 @@ const CHAKRAS = [
   { nome: 'Coronário', cor: '#8B5CF6', energia: 70 },
 ];
 
-export function ChakraBalanceWidget({ className = '' }: { className?: string }) {
+const ChakraBalanceWidget = React.memo(function ChakraBalanceWidget({ className = '' }: { className?: string }) {
   const today = new Date();
   const dayOfWeek = today.getDay();
 
@@ -67,4 +67,7 @@ export function ChakraBalanceWidget({ className = '' }: { className?: string }) 
       </CardContent>
     </Card>
   );
-}
+});
+
+export { ChakraBalanceWidget };
+export default ChakraBalanceWidget;

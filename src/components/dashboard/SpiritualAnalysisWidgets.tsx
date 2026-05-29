@@ -322,7 +322,7 @@ function NumerologyBreakdownWidget({ data }: { data: WidgetData }) {
 
 // ─── Element Balance Widget ────────────────────────────────────────────────────
 
-function ElementBalanceWidget({ data }: { data: WidgetData }) {
+const ElementBalanceWidget = React.memo(function ElementBalanceWidget({ data }: { data: WidgetData }) {
   const elementData = data.elementos;
   const elementos = elementData.elementos;
   
@@ -381,8 +381,7 @@ function ElementBalanceWidget({ data }: { data: WidgetData }) {
       </SpiritualCardContent>
     </SpiritualCard>
   );
-}
-
+});
 // ─── Main Component ────────────────────────────────────────────────────────────
 
 interface SpiritualAnalysisWidgetsProps {
