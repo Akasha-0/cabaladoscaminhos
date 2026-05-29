@@ -14,6 +14,7 @@ export interface MapaNatalProps {
 const ZODIAC_SIGNS = [
 const ZODIAC_SIGNS = [
   { name: 'Áries', symbol: '♈', start: 0 },
+  { name: 'Áries', symbol: '♈', start: 0 },
   { name: 'Touro', symbol: '♉', start: 30 },
   { name: 'Gêmeos', symbol: '♊', start: 60 },
   { name: 'Cancer', symbol: '♋', start: 90 },
