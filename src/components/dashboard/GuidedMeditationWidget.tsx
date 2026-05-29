@@ -660,6 +660,33 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
   const chakraData = getChakraData();
   const moonPhase = getMoonPhase();
   
+  const playBell = useCallback((type: 'start' | 'end') => {
+    if (!soundEnabled) return;
+    
+    // Create bell sound using Web Audio API
+    try {
+      const audioContext = new (window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = type === 'start' ? 528 : 432;
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 2);
+    } catch (e) {
+      // Fallback: just log, bell sound may not work in all browsers
+      console.log(`Bell ${type} triggered`);
+    }
+  }, [soundEnabled]);
+
+  
   // Timer logic
   useEffect(() => {
     if (isTimerRunning && timerSeconds > 0) {
@@ -681,6 +708,7 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
       }
     };
   }, [isTimerRunning, timerSeconds]);
+
   
   // Breathing logic
   useEffect(() => {
@@ -741,32 +769,6 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
     
     return () => clearInterval(interval);
   }, [isAffirmationPlaying]);
-  
-  const playBell = useCallback((type: 'start' | 'end') => {
-    if (!soundEnabled) return;
-    
-    // Create bell sound using Web Audio API
-    try {
-      const audioContext = new (window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      oscillator.frequency.value = type === 'start' ? 528 : 432;
-      oscillator.type = 'sine';
-      
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
-      
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 2);
-    } catch (e) {
-      // Fallback: just log, bell sound may not work in all browsers
-      console.log(`Bell ${type} triggered`);
-    }
-  }, [soundEnabled]);
   
   const handleStartTimer = useCallback(() => {
     playBell('start');
@@ -987,7 +989,7 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
               <div className="mt-4 p-4 rounded-lg bg-gradient-to-br from-purple-900/50 to-cyan-900/50 border border-purple-500/30">
                 <h4 className="font-medium text-purple-200 mb-2">{selectedScript.title}</h4>
                 <p className="text-lg text-center py-6 text-slate-200 leading-relaxed">
-                  "{selectedScript.script[scriptStep]}"
+                  &ldquo;{selectedScript.script[scriptStep]}&rdquo;
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-slate-400">
@@ -1059,7 +1061,7 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
             {/* Affirmation display */}
             <div className="p-6 rounded-xl bg-gradient-to-br from-purple-900/40 to-cyan-900/40 border border-purple-500/20">
               <p className="text-lg text-center text-slate-100 leading-relaxed font-medium">
-                "{currentAffirmation.text}"
+                &ldquo;{currentAffirmation.text}&rdquo;
               </p>
               {currentAffirmation.author && (
                 <p className="text-sm text-slate-400 text-center mt-3">

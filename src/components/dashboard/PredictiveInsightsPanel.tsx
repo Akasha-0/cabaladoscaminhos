@@ -204,6 +204,18 @@ export function PredictiveInsightsPanel({
       timelineRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   }, []);
+  const weekMarkers = useMemo(() => {
+    const markers = [];
+    const now = new Date();
+    for (let week = 0; week <= Math.ceil(selectedPeriod / 7); week++) {
+      const date = new Date(now);
+      date.setDate(date.getDate() + week * 7);
+      markers.push({ week, date, label: `Sem ${week + 1}` });
+    }
+    return markers;
+  }, [selectedPeriod]);
+
+
 
   if (error) {
     return (
@@ -218,17 +230,6 @@ export function PredictiveInsightsPanel({
       </Card>
     );
   }
-
-  const weekMarkers = useMemo(() => {
-    const markers = [];
-    const now = new Date();
-    for (let week = 0; week <= Math.ceil(selectedPeriod / 7); week++) {
-      const date = new Date(now);
-      date.setDate(date.getDate() + week * 7);
-      markers.push({ week, date, label: `Sem ${week + 1}` });
-    }
-    return markers;
-  }, [selectedPeriod]);
 
   return (
     <Card className={cn('card-spiritual relative overflow-hidden', className)}>

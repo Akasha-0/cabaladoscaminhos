@@ -320,8 +320,6 @@ function WeeklyGrid({ practices }: WeeklyGridProps) {
 }
 
 function LoadingSkeleton() {
-
-function LoadingSkeleton({}: LoadingSkeletonProps) {
   return (
     <div className="space-y-4 p-4">
       <div className="flex justify-center">

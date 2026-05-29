@@ -125,14 +125,9 @@ export function MapaNatalWheel({ data, showAspects = true, size = 'md', theme = 
   const houseRadius = sizeValue * 0.42;
   const themeColors = THEME_COLORS[theme];
 
-  // Early return for null data
-  const [dataState] = useState(data);
+  // Compute derived values (hooks must come before any early returns)
   const planets: PlanetPosition[] = useMemo(() => {
-  if (!data) {
-    return <div className="rounded-full animate-pulse bg-gray-700" style={{ width: sizeValue, height: sizeValue }} aria-label="Carregando mapa natal" />;
-  }
-
-  const planets: PlanetPosition[] = useMemo(() => {
+    if (!data) return [];
     const planetList: PlanetPosition[] = [];
     const dataMap = data as unknown as Record<string, PlanetPosition>;
     for (const key of ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn']) {
@@ -140,11 +135,13 @@ export function MapaNatalWheel({ data, showAspects = true, size = 'md', theme = 
     }
     return planetList;
   }, [data]);
-
   const aspects = useMemo(() => showAspects ? calculateAspects(planets) : [], [planets, showAspects]);
-  const ascendant = useMemo(() => data.houses.length > 0 ? getSignIndex(data.houses[0].signo) + data.houses[0].grau : 0, [data.houses]);
-  const mediumCoeli = useMemo(() => data.houses.length > 10 ? getSignIndex(data.houses[9].signo) + data.houses[9].grau : 180, [data.houses]);
-
+  const ascendant = useMemo(() => (data?.houses?.length ? getSignIndex(data.houses[0].signo) + data.houses[0].grau : 0), [data]);
+  const mediumCoeli = useMemo(() => (data?.houses?.length && data.houses.length > 10 ? getSignIndex(data.houses[9].signo) + data.houses[9].grau : 180), [data]);
+  // Early return for null data
+  if (!data) {
+    return <div className="rounded-full animate-pulse bg-gray-700" style={{ width: sizeValue, height: sizeValue }} aria-label="Carregando mapa natal" />;
+  }
   return (
     <div className="mapa-natal-wheel-container" style={{ width: sizeValue, height: sizeValue }} role="img" aria-label="Mapa Natal - Roda Astrológica">
       <svg viewBox={`0 0 ${sizeValue} ${sizeValue}`} style={{ width: '100%', height: '100%' }} xmlns="http://www.w3.org/2000/svg">
