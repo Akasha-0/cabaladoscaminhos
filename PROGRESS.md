@@ -1,7 +1,10 @@
-**Última atualização:** 2026-05-29 12:00
-** Ciclos de desenvolvimento completados:** 9
-** Build status:** PASSING ✅
-** Tests:** 1057 passing, 14 skipped (56 test files)
+# CABALA DOS CAMINHOS — PROGRESS LOG
+
+**Última atualização:** 2026-05-29 11:55
+**Ciclos de desenvolvimento completados:** 9
+**Build status:** PASSING ✅
+**Tests:** 950 passing, 14 skipped (52 test files)
+
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
 ### Core Infrastructure
@@ -12,7 +15,7 @@
 - JWT authentication (bcryptjs + jsonwebtoken)
 - Stripe payments configured
 - OpenAI SDK integrated
-- jsPDF for PDF exports
+- jsPDF for PDF exports (dynamic import for bundle optimization)
 - Minimax API integration for AI responses
 
 ### Engines Implementadas (Validadas)
@@ -29,7 +32,7 @@
 - **POST /api/mapa** ✅ — aggregation endpoint
 - **POST /api/mapa/share** ✅ — shareable public links
 - **GET /mapa/shared/[hash]** ✅ — shared read-only page
-- **Download button** ✅ — PDF via jsPDF
+- **Download button** ✅ — PDF via jsPDF (dynamic import)
 
 ### Payment Integration (Sprint 6 Completo)
 - **Página /pricing** ✅ — pricing page com dois planos
@@ -52,21 +55,16 @@
 - **OfflineIndicator** ✅ — Offline status banner integrated
 - **MobileBottomNav** ✅ — Bottom tab navigation for mobile
 
+### Sprint 9 - Performance (COMPLETO ✅)
+- **Bundle optimization** ✅ — experimental.optimizePackageImports configured
+- **Dynamic jsPDF** ✅ — jsPDF loaded only on PDF generation (saves ~1MB)
+- **Next.js config** ✅ — optimizePackageImports for jspdf, lucide-react
+
 ### PDF Export (Sprint 4)
-- `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF
+- `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF (dynamic import)
 
 ### Testing
-### Sprint 9 - Dashboard Enhancement (COMPLETO ✅)
-- **Dashboard Layout** ✅ — Grid responsivo 2 colunas
-- **RealtimeEnergyWidget** ✅ — Energia espiritual em tempo real
-- **CorrelationViz** ✅ — Visualização de correlações espirituais
-- **DailyWisdomCard** ✅ — Sabedoria diária personalizada
-- **QuickDivination** ✅ — Atalhos para divinação rápida
-- **Correlation Engine** ✅ — Sistema de correlações baseado em IDEIA.md
-- **SpiritualCorrelationEngine.ts** ✅ — Correlações por dia da semana
-
-### Testing
-- 56 test files, 1057 tests passing, 14 skipped
+- 52 test files, 950 tests passing, 14 skipped
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
@@ -74,11 +72,12 @@
 1. [x] Sprint 6 Payment Integration — COMPLETO ✅
 2. [x] Sprint 7 User Management — COMPLETO ✅
 3. [x] Sprint 8 PWA & Mobile — COMPLETO ✅
+4. [x] Sprint 9 Performance — COMPLETO ✅
 
 ### Médio Prazo
-1. [ ] Sprint 9: Performance optimization & final polish
-2. [ ] Sprint 10: Analytics dashboard
-3. [ ] Multi-language support (i18n)
+1. [ ] Sprint 10: Final polish and deployment
+2. [ ] Multi-language support (i18n)
+3. [ ] Analytics dashboard
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -88,14 +87,14 @@
 4. **Onboarding**: 4-step flow collecting birth data
 5. **ArvoreVida**: SVG pure component with pillar coloring
 6. **PWA**: Install prompt + offline indicator + mobile nav
+7. **Bundle optimization**: jsPDF dynamic import, optimizePackageImports
 
 ## 📊 MÉTRICAS
 
 - Engines: ~18/25 sistemas, 3 validados ✅
-- Test coverage: 54 files, 1019 tests passing
+- Test coverage: 52 files, 950 tests passing
 - API routes: 200+
 - Build: PASSING ✅
-- Commits this session: 8
 
 ---
 
