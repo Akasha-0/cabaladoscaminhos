@@ -10,16 +10,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { LENORMAND_CARDS, getCardByNumero, CASAS_TEMATICAS } from '@/lib/lenormand/data';
-import { realizarLeitura, MESA_REAL_SPREADS, shuffle } from '@/lib/lenormand/mesa-real';
+import { realizarLeitura, MESA_REAL_SPREADS } from '@/lib/lenormand/mesa-real';
 
 // ─── REQUEST/RESPONSE TYPES ─────────────────────────────────────────────────
 
 interface ReadingRequest {
   format?: '8x4+4' | '9x4';
-  cardIndices?: number[];           // Optional: specific cards (0-35 indices)
-  positions?: number[];             // Optional: which positions to fill
-  seed?: number;                   // Optional: random seed for reproducibility
-  pergunta?: string;                // Optional: specific question
+  cardIndices?: number[];
+  positions?: number[];
+  seed?: number;
+  pergunta?: string;
 }
 
 interface ReadingResponse {
@@ -55,19 +55,19 @@ interface ReadingResponse {
   }>;
   themes: {
     dinheiro: {
-      houses: number[];
+      houses: readonly number[];
       cards: Array<{ house: number; cardName: string; tipo: string }>;
     };
     amor: {
-      houses: number[];
+      houses: readonly number[];
       cards: Array<{ house: number; cardName: string; tipo: string }>;
     };
     trabalho: {
-      houses: number[];
+      houses: readonly number[];
       cards: Array<{ house: number; cardName: string; tipo: string }>;
     };
     saude: {
-      houses: number[];
+      houses: readonly number[];
       cards: Array<{ house: number; cardName: string; tipo: string }>;
     };
   };
@@ -108,7 +108,6 @@ export async function POST(request: NextRequest) {
 
     const format = body.format ?? '8x4+4';
 
-    // Validate format
     if (!MESA_REAL_SPREADS[format]) {
       return NextResponse.json(
         { success: false, error: 'Formato inválido. Use 8x4+4 ou 9x4.' },
@@ -116,7 +115,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate card indices if provided
     if (body.cardIndices) {
       if (!Array.isArray(body.cardIndices)) {
         return NextResponse.json(
@@ -134,18 +132,15 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Perform the reading
     const reading = realizarLeitura({
       format,
       cardIndices: body.cardIndices,
       seed: body.seed,
     });
 
-    // Build response
     const spreadInfo = getSpreadInfo(format);
     const spread = MESA_REAL_SPREADS[format];
 
-    // Format main cards with full data
     const cards = reading.cards.map(card => {
       const fullCard = getCardByNumero(card.cardIndex + 1);
       return {
@@ -163,7 +158,6 @@ export async function POST(request: NextRequest) {
       };
     });
 
-    // Format destiny cards
     const destinyCards = reading.destinyCards?.map(card => {
       const fullCard = getCardByNumero(card.cardIndex + 1);
       return {
@@ -177,10 +171,9 @@ export async function POST(request: NextRequest) {
       };
     });
 
-    // Build theme data
     const themes = {
       dinheiro: {
-        houses: [...CASAS_TEMATICAS.DINHEIRO],
+        houses: CASAS_TEMATICAS.DINHEIRO,
         cards: CASAS_TEMATICAS.DINHEIRO.map(house => {
           const cardInHouse = reading.cards.find(c => c.house === house);
           return {
@@ -191,7 +184,7 @@ export async function POST(request: NextRequest) {
         }),
       },
       amor: {
-        houses: [...CASAS_TEMATICAS.AMOR],
+        houses: CASAS_TEMATICAS.AMOR,
         cards: CASAS_TEMATICAS.AMOR.map(house => {
           const cardInHouse = reading.cards.find(c => c.house === house);
           return {
@@ -202,7 +195,7 @@ export async function POST(request: NextRequest) {
         }),
       },
       trabalho: {
-        houses: [...CASAS_TEMATICAS.TRABALHO],
+        houses: CASAS_TEMATICAS.TRABALHO,
         cards: CASAS_TEMATICAS.TRABALHO.map(house => {
           const cardInHouse = reading.cards.find(c => c.house === house);
           return {
@@ -213,7 +206,7 @@ export async function POST(request: NextRequest) {
         }),
       },
       saude: {
-        houses: [...CASAS_TEMATICAS.SAUDE],
+        houses: CASAS_TEMATICAS.SAUDE,
         cards: CASAS_TEMATICAS.SAUDE.map(house => {
           const cardInHouse = reading.cards.find(c => c.house === house);
           return {
@@ -255,13 +248,13 @@ export async function POST(request: NextRequest) {
  * Return available spreads and card count
  */
 export async function GET() {
-  const spreads = Object.entries(MESA_REAL_SPREADS).map(([key, spread]) => ({
+  const spreads = Object.entries(MESA_REAL_SPREADS).map(([key, s]) => ({
     id: key,
-    format: spread.format,
-    rows: spread.rows,
-    cols: spread.cols,
-    totalCards: spread.totalCards,
-    destinyCards: spread.destinyCards,
+    format: s.format,
+    rows: s.rows,
+    cols: s.cols,
+    totalCards: s.totalCards,
+    destinyCards: s.destinyCards,
     description: key === '8x4+4'
       ? '4 linhas de 8 cartas + 4 cartas de destino. Formato clássico português.'
       : '4 linhas de 9 cartas. Formato expandido com todas as 36 casas.',
@@ -273,10 +266,10 @@ export async function GET() {
     cardNames: LENORMAND_CARDS.map(c => ({ numero: c.numero, nome: c.nome, tipo: c.tipo })),
     spreads,
     thematicHouses: {
-      dinheiro: CASAS_TEMATICAS.DINHEIRO,
-      amor: CASAS_TEMATICAS.AMOR,
-      trabalho: CASAS_TEMATICAS.TRABALHO,
-      saude: CASAS_TEMATICAS.SAUDE,
+      dinheiro: [...CASAS_TEMATICAS.DINHEIRO],
+      amor: [...CASAS_TEMATICAS.AMOR],
+      trabalho: [...CASAS_TEMATICAS.TRABALHO],
+      saude: [...CASAS_TEMATICAS.SAUDE],
     },
   });
 }

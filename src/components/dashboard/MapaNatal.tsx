@@ -10,10 +10,7 @@ export interface MapaNatalProps {
 }
 
 // Zodiac signs in Portuguese with their degrees
-// Zodiac signs in Portuguese with their degrees
 const ZODIAC_SIGNS = [
-const ZODIAC_SIGNS = [
-  { name: 'Áries', symbol: '♈', start: 0 },
   { name: 'Áries', symbol: '♈', start: 0 },
   { name: 'Touro', symbol: '♉', start: 30 },
   { name: 'Gêmeos', symbol: '♊', start: 60 },
@@ -56,6 +53,8 @@ const PLANET_SYMBOLS: Record<string, string> = {
   urano: '♅',
   netuno: '♆',
   plutao: '♇',
+  node_norte: '☊',
+  node_sul: '☋',
 };
 
 // Convert degree to radians
@@ -72,142 +71,79 @@ function getPosition(longitude: number, radius: number, cx: number, cy: number):
   };
 }
 
-export function MapaNatalWheel({ mapaNatal, size = 400, className = '' }: MapaNatalProps) {
+export function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalProps) {
   const center = size / 2;
   const outerRadius = size * 0.45;
   const innerRadius = size * 0.35;
   const planetRadius = size * 0.28;
-  const signRadius = size * 0.42;
+  const houseRadius = size * 0.42;
 
-  // Calculate house cusps from ascendant
-  const houseCusps = useMemo(() => {
-    const cusps: number[] = [];
-    const asc = mapaNatal.ascendente;
-    for (let i = 0; i < 12; i++) {
-      // Simplified house calculation (equal houses)
-      cusps.push((asc + i * 30) % 360);
-    }
-    return cusps;
-  }, [mapaNatal.ascendente]);
-
-  // Get planet positions
-  const planetPositions = useMemo(() => {
-    const positions: { planet: string; longitude: number; symbol: string }[] = [];
-    const planetMap = mapaNatal.planeta;
-
-    const planetList = [
-      { key: 'sol', name: 'sol' },
-      { key: 'lua', name: 'lua' },
-      { key: 'mercurio', name: 'mercurio' },
-      { key: 'venus', name: 'venus' },
-      { key: 'marte', name: 'marte' },
-      { key: 'jupiter', name: 'jupiter' },
-      { key: 'saturno', name: 'saturno' },
-    ];
-
-    for (const { key, name } of planetList) {
-      if (planetMap[key as keyof typeof planetMap]) {
-        const pos = planetMap[key as keyof typeof planetMap];
-        positions.push({
-          planet: name,
-          longitude: pos.longitude,
-          symbol: PLANET_SYMBOLS[name] || name,
-        });
-      }
-    }
-
-    return positions;
-  }, [mapaNatal]);
-
-  // Generate sign segments
-  const signSegments = useMemo(() => {
+  const zodiacSegments = useMemo(() => {
     return ZODIAC_SIGNS.map((sign, i) => {
-      const startAngle = degToRad(sign.start);
-      const endAngle = degToRad(sign.start + 30);
+      const startAngle = sign.start;
+      const endAngle = (i < 11 ? ZODIAC_SIGNS[i + 1].start : 360) as number;
+      const midAngle = (startAngle + endAngle) / 2;
       const colors = SIGN_COLORS[i];
 
-      const outerStart = {
-        x: center + outerRadius * Math.cos(startAngle),
-        y: center + outerRadius * Math.sin(startAngle),
-      };
-      const outerEnd = {
-        x: center + outerRadius * Math.cos(endAngle),
-        y: center + outerRadius * Math.sin(endAngle),
-      };
-      const innerStart = {
-        x: center + innerRadius * Math.cos(startAngle),
-        y: center + innerRadius * Math.sin(startAngle),
-      };
-      const innerEnd = {
-        x: center + innerRadius * Math.cos(endAngle),
-        y: center + innerRadius * Math.sin(endAngle),
-      };
+      const start1 = getPosition(startAngle, outerRadius, center, center);
+      const start2 = getPosition(startAngle, innerRadius, center, center);
+      const end1 = getPosition(endAngle, outerRadius, center, center);
+      const end2 = getPosition(endAngle, innerRadius, center, center);
 
-      // Sign label position
-      const labelAngle = degToRad(sign.start + 15);
-      const labelRadius = size * 0.395;
-      const labelPos = {
-        x: center + labelRadius * Math.cos(labelAngle),
-        y: center + labelRadius * Math.sin(labelAngle),
-      };
+      const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+      const path = `
+        M ${start1.x} ${start1.y}
+        A ${outerRadius} ${outerRadius} 0 ${largeArc} 1 ${end1.x} ${end1.y}
+        L ${end2.x} ${end2.y}
+        A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${start2.x} ${start2.y}
+        Z
+      `;
 
-      return {
-        ...sign,
-        index: i,
-        colors,
-        outerStart,
-        outerEnd,
-        innerStart,
-        innerEnd,
-        labelPos,
-        largeArc: 0,
-      };
+      const symbolPos = getPosition(midAngle, size * 0.4, center, center);
+
+      return { sign, colors, path, symbolPos };
     });
-  }, [center, outerRadius, innerRadius, size]);
+  }, [center, innerRadius, outerRadius, size]);
 
-  // Generate house division lines
-  const houseLines = useMemo(() => {
-    return houseCusps.map((cusp, i) => {
-      const angle = degToRad(cusp);
-      const start = {
-        x: center + (innerRadius - 10) * Math.cos(angle),
-        y: center + (innerRadius - 10) * Math.sin(angle),
-      };
-      const end = {
-        x: center + outerRadius * Math.cos(angle),
-        y: center + outerRadius * Math.sin(angle),
-      };
-      return { house: i + 1, cusp, start, end };
-    });
-  }, [houseCusps, center, innerRadius, outerRadius]);
+  const planets = useMemo(() => {
+    const result: Array<{ name: string; symbol: string; position: { x: number; y: number }; degree: number }> = [];
+    const planetEntries = Object.entries(mapaNatal.planeta);
+    
+    for (const [name, planet] of planetEntries) {
+      const symbol = PLANET_SYMBOLS[name] || name;
+      const pos = getPosition(planet.longitude, planetRadius, center, center);
+      result.push({
+        name,
+        symbol,
+        position: pos,
+        degree: planet.grauNoSigno,
+      });
+    }
+    
+    return result;
+  }, [mapaNatal.planeta, planetRadius, center]);
 
-  // Ascendant position
   const ascendantPos = useMemo(() => {
-    return getPosition(mapaNatal.ascendente, planetRadius, center, center);
-  }, [mapaNatal.ascendente, planetRadius, center]);
+    return getPosition(mapaNatal.ascendente, outerRadius + 12, center, center);
+  }, [mapaNatal.ascendente, outerRadius, center]);
+
+  const mcPos = useMemo(() => {
+    return getPosition(mapaNatal.mediumCoeli, outerRadius + 12, center, center);
+  }, [mapaNatal.mediumCoeli, outerRadius, center]);
 
   return (
-    <div className={`mapa-natal-container ${className}`} style={{ width: size, height: size }}>
-      <svg
-        viewBox={`0 0 ${size} ${size}`}
-        style={{ width: '100%', height: '100%' }}
-        xmlns="http://www.w3.org/2000/svg"
-      >
+    <div className={className}>
+      <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full">
         <defs>
-          {/* Gold gradient for wheel border */}
-          <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#F59E0B" />
-            <stop offset="50%" stopColor="#D97706" />
-            <stop offset="100%" stopColor="#B45309" />
-          </linearGradient>
-
-          {/* Dark gradient for background */}
-          <radialGradient id="darkBg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#1F2937" />
-            <stop offset="100%" stopColor="#111827" />
-          </radialGradient>
-
-          {/* Glow filter for planets */}
+          {ZODIAC_SIGNS.map((sign, i) => {
+            const colors = SIGN_COLORS[i];
+            return (
+              <linearGradient key={`grad-${i}`} id={`signGrad-${i}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor={colors.fill} stopOpacity="0.3" />
+                <stop offset="100%" stopColor={colors.fill} stopOpacity="0.1" />
+              </linearGradient>
+            );
+          })}
           <filter id="planetGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="2" result="blur" />
             <feMerge>
@@ -215,170 +151,179 @@ export function MapaNatalWheel({ mapaNatal, size = 400, className = '' }: MapaNa
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#1e1b4b" />
+            <stop offset="100%" stopColor="#0f0a2e" />
+          </radialGradient>
         </defs>
 
         {/* Background circle */}
-        <circle
-          cx={center}
-          cy={center}
-          r={outerRadius + 5}
-          fill="url(#darkBg)"
-          stroke="url(#goldGradient)"
-          strokeWidth="3"
-        />
-
-        {/* Zodiac sign segments */}
-        {signSegments.map((sign) => (
-          <g key={sign.name}>
-            {/* Outer ring segment */}
-            <path
-              d={`M ${sign.outerStart.x} ${sign.outerStart.y} A ${outerRadius} ${outerRadius} 0 ${sign.largeArc} 1 ${sign.outerEnd.x} ${sign.outerEnd.y} L ${sign.innerEnd.x} ${sign.innerEnd.y} A ${innerRadius} ${innerRadius} 0 ${sign.largeArc} 0 ${sign.innerStart.x} ${sign.innerStart.y} Z`}
-              fill={sign.colors.bg}
-              stroke={sign.colors.stroke}
-              strokeWidth="1"
-            />
-
-            {/* Sign symbol */}
-            <text
-              x={sign.labelPos.x}
-              y={sign.labelPos.y}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill={sign.colors.fill}
-              fontSize="18"
-              fontFamily="serif"
-              fontWeight="bold"
-            >
-              {sign.symbol}
-            </text>
-          </g>
+        <circle cx={center} cy={center} r={outerRadius + 15} fill="none" stroke="#2d2b5e" strokeWidth="1" />
+        
+        {/* Zodiac segments */}
+        {zodiacSegments.map((seg, i) => (
+          <path
+            key={i}
+            d={seg.path}
+            fill={`url(#signGrad-${i})`}
+            stroke={seg.colors.stroke}
+            strokeWidth="1"
+            strokeOpacity="0.5"
+          />
         ))}
 
-        {/* House division lines */}
-        {houseLines.map((line, i) => (
-          <g key={`house-${i}`}>
-            {/* House cusp line */}
+        {/* Outer ring with degree markers */}
+        {Array.from({ length: 360 }).map((_, i) => {
+          if (i % 5 === 0) {
+            const pos1 = getPosition(i, outerRadius + 5, center, center);
+            const pos2 = getPosition(i, outerRadius + (i % 30 === 0 ? 10 : 7), center, center);
+            return (
+              <line
+                key={`tick-${i}`}
+                x1={pos1.x}
+                y1={pos1.y}
+                x2={pos2.x}
+                y2={pos2.y}
+                stroke="#4a4875"
+                strokeWidth={i % 30 === 0 ? 1.5 : 0.5}
+              />
+            );
+          }
+          return null;
+        })}
+
+        {/* House cusp lines from center */}
+        {mapaNatal.casas.map((casa, i) => {
+          const startAngle = i * 30;
+          const endAngle = (i + 1) * 30;
+          const midAngle = (startAngle + endAngle) / 2;
+          
+          const start = getPosition(startAngle, innerRadius, center, center);
+          const end = getPosition(endAngle, outerRadius + 15, center, center);
+          
+          return (
             <line
-              x1={line.start.x}
-              y1={line.start.y}
-              x2={line.end.x}
-              y2={line.end.y}
-              stroke="#F59E0B"
-              strokeWidth={i === 0 ? 3 : 1}
-              strokeOpacity="0.8"
+              key={`house-${i}`}
+              x1={center}
+              y1={center}
+              x2={end.x}
+              y2={end.y}
+              stroke="#4a4875"
+              strokeWidth="0.5"
+              strokeDasharray="4 2"
             />
+          );
+        })}
 
-            {/* House number */}
-            <text
-              x={line.end.x}
-              y={line.end.y}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill="#F59E0B"
-              fontSize="10"
-              fontFamily="sans-serif"
-              fontWeight="bold"
-            >
-              {line.house}
-            </text>
-          </g>
-        ))}
-
-        {/* Inner circle */}
-        <circle
-          cx={center}
-          cy={center}
-          r={innerRadius - 10}
-          fill="none"
-          stroke="#F59E0B"
-          strokeWidth="1"
-          strokeOpacity="0.3"
-        />
-
-        {/* Ascendant indicator */}
-        <g filter="url(#planetGlow)">
+        {/* Zodiac sign symbols */}
+        {zodiacSegments.map((seg, i) => (
           <text
-            x={ascendantPos.x}
-            y={ascendantPos.y}
+            key={`symbol-${i}`}
+            x={seg.symbolPos.x}
+            y={seg.symbolPos.y}
+            fill={seg.colors.fill}
+            fontSize={size * 0.04}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="#FFD700"
-            fontSize="20"
-            fontFamily="serif"
-            fontWeight="bold"
+          >
+            {seg.sign.symbol}
+          </text>
+        ))}
+
+        {/* House numbers */}
+        {mapaNatal.casas.map((casa, i) => {
+          const angle = i * 30 + 15;
+          const pos = getPosition(angle, houseRadius, center, center);
+          return (
+            <text
+              key={`houseNum-${i}`}
+              x={pos.x}
+              y={pos.y}
+              fill="#8b83b1"
+              fontSize={size * 0.025}
+              textAnchor="middle"
+              dominantBaseline="middle"
+            >
+              {casa.numero}
+            </text>
+          );
+        })}
+
+        {/* Ascendant marker */}
+        <g>
+          <line
+            x1={center}
+            y1={center}
+            x2={ascendantPos.x}
+            y2={ascendantPos.y}
+            stroke="#a855f7"
+            strokeWidth="2"
+          />
+          <circle cx={ascendantPos.x} cy={ascendantPos.y} r={size * 0.015} fill="#a855f7" />
+          <text
+            x={ascendantPos.x}
+            y={ascendantPos.y - size * 0.025}
+            fill="#a855f7"
+            fontSize={size * 0.025}
+            textAnchor="middle"
           >
             AC
           </text>
         </g>
 
-        {/* Planets */}
-        {planetPositions.map((planet) => {
-          const pos = getPosition(planet.longitude, planetRadius, center, center);
-          const signIndex = Math.floor(planet.longitude / 30) % 12;
-          const planetColor = SIGN_COLORS[signIndex].fill;
-
-          return (
-            <g key={planet.planet} filter="url(#planetGlow)">
-              {/* Planet symbol */}
-              <text
-                x={pos.x}
-                y={pos.y}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill={planetColor}
-                fontSize="16"
-                fontFamily="serif"
-                fontWeight="bold"
-              >
-                {planet.symbol}
-              </text>
-            </g>
-          );
-        })}
+        {/* Medium Coeli marker */}
+        <g>
+          <line
+            x1={center}
+            y1={center}
+            x2={mcPos.x}
+            y2={mcPos.y}
+            stroke="#ec4899"
+            strokeWidth="1.5"
+          />
+          <circle cx={mcPos.x} cy={mcPos.y} r={size * 0.01} fill="#ec4899" />
+          <text
+            x={mcPos.x}
+            y={mcPos.y - size * 0.02}
+            fill="#ec4899"
+            fontSize={size * 0.02}
+            textAnchor="middle"
+          >
+            MC
+          </text>
+        </g>
 
         {/* Center decoration */}
-        <circle
-          cx={center}
-          cy={center}
-          r="15"
-          fill="none"
-          stroke="url(#goldGradient)"
-          strokeWidth="2"
-        />
-        <circle
-          cx={center}
-          cy={center}
-          r="5"
-          fill="#F59E0B"
-        />
+        <circle cx={center} cy={center} r={innerRadius - 10} fill="url(#centerGrad)" />
+        <circle cx={center} cy={center} r={innerRadius - 5} fill="none" stroke="#2d2b5e" strokeWidth="0.5" />
+        <circle cx={center} cy={center} r={size * 0.02} fill="#1e1b4b" stroke="#4a4875" strokeWidth="0.5" />
 
-        {/* Degree markers on outer ring */}
-        {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => {
-          const angle = degToRad(deg);
-          const start = {
-            x: center + (outerRadius - 2) * Math.cos(angle),
-            y: center + (outerRadius - 2) * Math.sin(angle),
-          };
-          const end = {
-            x: center + (outerRadius + 5) * Math.cos(angle),
-            y: center + (outerRadius + 5) * Math.sin(angle),
-          };
-          return (
-            <line
-              key={`deg-${deg}`}
-              x1={start.x}
-              y1={start.y}
-              x2={end.x}
-              y2={end.y}
-              stroke="#F59E0B"
+        {/* Planet symbols */}
+        {planets.map((planet) => (
+          <g key={planet.name} filter="url(#planetGlow)">
+            <circle
+              cx={planet.position.x}
+              cy={planet.position.y}
+              r={size * 0.025}
+              fill="#1e1b4b"
+              stroke="#a855f7"
               strokeWidth="1"
-              strokeOpacity="0.6"
             />
-          );
-        })}
+            <text
+              x={planet.position.x}
+              y={planet.position.y}
+              fill="#c4b5fd"
+              fontSize={size * 0.022}
+              textAnchor="middle"
+              dominantBaseline="middle"
+            >
+              {planet.symbol}
+            </text>
+          </g>
+        ))}
       </svg>
     </div>
   );
 }
 
-export { MapaNatalWheel as MapaNatal };
+export default MapaNatal;
