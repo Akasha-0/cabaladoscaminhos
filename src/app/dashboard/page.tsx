@@ -2,20 +2,56 @@
 
 import dynamic from 'next/dynamic';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
+import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { RealtimeEnergyWidget } from '@/components/dashboard/RealtimeEnergyWidget';
-import { DailyWisdomCard } from '@/components/dashboard/DailyWisdomCard';
+import { DayEnergyWidget } from '@/components/dashboard/DayEnergyWidget';
 import { NumerologyWidget } from '@/components/dashboard/NumerologyWidget';
+import { AstrologyWidget } from '@/components/dashboard/AstrologyWidget';
+import { LunarPhaseWidget } from '@/components/dashboard/LunarPhaseWidget';
+import { OduDivinationWidget } from '@/components/dashboard/OduDivinationWidget';
+import { ChakraBalanceWidget } from '@/components/dashboard/ChakraBalanceWidget';
+import { QuickDivination } from '@/components/dashboard/QuickDivination';
+import { DailyWisdomCard } from '@/components/dashboard/DailyWisdomCard';
+
+const AIOracleChat = dynamic(
   () => import('@/components/dashboard/AIOracleChat').then(m => ({ default: m.AIOracleChat })),
   { ssr: false }
 );
+
+const AffirmationWidget = dynamic(
+  () => import('@/components/dashboard/AffirmationWidget').then(m => ({ default: m.AffirmationWidget })),
+  { ssr: false }
+);
+
+const NotificationCenter = dynamic(
+  () => import('@/components/dashboard/NotificationCenter').then(m => ({ default: m.NotificationCenter })),
+  { ssr: false }
+);
+
 const CorrelationViz = dynamic(
   () => import('@/components/dashboard/CorrelationViz').then(m => ({ default: m.CorrelationViz })),
   { ssr: false }
 );
+
+const ProgressTracker = dynamic(
+  () => import('@/components/dashboard/ProgressTracker').then(m => ({ default: m.ProgressTracker })),
+  { ssr: false }
+);
+
+const LoveReadingsWidget = dynamic(
+  () => import('@/components/dashboard/LoveReadingsWidget').then(m => ({ default: m.LoveReadingsWidget })),
+  { ssr: false }
+);
+
+const AInsightWidget = dynamic(
+  () => import('@/components/dashboard/AInsightWidget').then(m => ({ default: m.AInsightWidget })),
+  { ssr: false }
+);
+
 const SAMPLE_USER = {
   name: 'Maria',
   spiritualName: 'Maria de Oxum',
-  sign: 'Lua em Câncer',
+  sign: 'Lua em Cancer',
   oduNumero: 3,
   birthDate: '15/03/1990',
 };
@@ -26,7 +62,7 @@ export default function Dashboard() {
     nome: 'Visitante',
     dataNascimento: '',
     numeroPessoal: 1,
-    orixaRegente: 'Oxalá',
+    orixaRegente: 'Oxala',
     odu: 'Alafia',
     arcanoPessoal: 1,
     sefirotDominante: ['Kether'],
@@ -36,7 +72,6 @@ export default function Dashboard() {
     <DashboardLayout>
       <DashboardHeader />
       
-      {/* Row 1: Energy - RealtimeEnergy + DayEnergy + NotificationCenter */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
         <div className="lg:col-span-2">
           <RealtimeEnergyWidget />
@@ -47,64 +82,36 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Row 2: Core - Numerology + Astrology + Lunar */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         <NumerologyWidget name={SAMPLE_USER.name} birthDate={SAMPLE_USER.birthDate} />
         <AstrologyWidget />
         <LunarPhaseWidget />
       </div>
 
-      {/* Row 3: Spiritual - Odu + Predictions + QuickDivination */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <OduDivinationWidget />
-        <DailyPredictionCard userData={userData} />
         <QuickDivination />
       </div>
 
-      {/* Row 4: Progress - SpiritualProgress + ProgressTracker + MoonRitual */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-        <SpiritualProgressWidget />
-        <ProgressTracker userId="dashboard-visitor" />
-        <MoonRitualPlanner />
-      </div>
-
-      {/* Row 5: Love + Finance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <LoveReadingsWidget userId="dashboard-visitor" userOrixa="Oxalá" />
-        <SpiritualFinanceWidget userId="dashboard-visitor" userOrixa="Oxalá" />
+        <ProgressTracker userId="dashboard" />
+        <CorrelationViz />
       </div>
 
-      {/* Row 6: Journal + Meditation */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <SpiritualJournalWidget userId="dashboard-visitor" userOrixa="Oxalá" />
-        <GuidedMeditationWidget userId="dashboard-visitor" userOrixa="Oxalá" />
-      </div>
-
-      {/* Row 7: Wellness + Predictions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-        <SpiritWellnessWidget userId="dashboard-visitor" />
-        <PredictionWidget />
+        <LoveReadingsWidget userId="dashboard" />
         <ChakraBalanceWidget />
       </div>
 
-      {/* Row 8: Wisdom - Correlation + Wisdom */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <CorrelationViz />
-        <DailyWisdomCard userData={userData} userId="dashboard-visitor" />
+        <DailyWisdomCard userData={userData} userId="dashboard" />
+        <AInsightWidget />
       </div>
 
-      {/* Row 9: Insights + Affirmations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        <AInsightWidget />
         <AffirmationWidget userData={userData} />
       </div>
 
-      {/* Row 10: Rituals */}
-      <div className="mt-6">
-        <RitualReminderWidget />
-      </div>
-
-      {/* Row 11: AI Oracle Chat (Lazy loaded) */}
       <div className="mt-6">
         <AIOracleChat userData={userData} />
       </div>
