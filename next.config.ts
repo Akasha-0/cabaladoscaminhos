@@ -11,12 +11,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['jspdf', 'lucide-react'],
-    turbo: {
-      resolveExtensions: ['.tsx', '.ts', '.jsx', '.js'],
-    },
-    buildMode: 'compile',
   },
-  buildIndicator: false,
   staticPageGenerationTimeout: 120,
 };
 

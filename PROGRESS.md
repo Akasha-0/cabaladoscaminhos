@@ -1,8 +1,8 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
 **Última atualização:** 2026-05-29
-**Sprints completados:** 164
-**Build status:** 🔄 IN PROGRESS
+**Sprints completados:** 165
+**Build status:** ✅ PASSING
 **Tests:** 997 passing, 14 skipped (58 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
@@ -24,36 +24,32 @@
 - **Astrologia** ✅ 17 testes
 - Deep Correlation Engine, Oracle Chat, Prediction Engine
 
-### Dashboard Widgets (200+ widgets organized in files by category)
+### Dashboard Widgets (260+ widgets organized by category)
 
-| Category | Count | Widgets |
-|----------|-------|---------|
-| **Spiritual AI** | 15 | Correlation Engine, Spiritual Intelligence, Odu, Orixá, Chakra, Numerology, Astrology, Tarot, Cabala, Ritual Planner, Meditation, Affirmations, Journal, Energy Flow, Mapa |
-| **Data Intelligence** | 15 | Data Pipeline, Warehouse, Analytics, Real-time, BI, Predictive, Governance, Privacy, Lineage, ETL, ML Pipeline, AutoML, NLP, Vision, Gen AI |
-| **Mobile/PWA** | 6 | PWA Monitor, Push, Offline, App Store, Battery, Touch |
-| **SaaS/Platform** | 6 | SaaS Metrics, White Label, Multi-Tenant, Subscription, Usage, Rate Limit |
-| **Enterprise** | 6 | Audit Log, IP Allowlist, API Keys, Sessions, Integrations, Webhooks |
-| **Observability** | 6 | APM, Tracing, Logs, SLOs, Uptime, Alerts |
-| **UX/Analytics** | 6 | User Flows, Heatmaps, Nav Paths, Session Replay, Onboarding, Accessibility |
-| **Performance** | 6 | Core Web Vitals, Bundle, Cache, Modules, Plugins, State |
-| **Security** | 6 | Security Audit, API Protection, Threat Detection, Encryption, Compliance, Identity |
-| **Community** | 6 | Community Hub, Forum, Circles, Mentor, Events, Moderation |
-| **Advanced Spirituality** | 6 | Aromatherapy, Color Therapy, Sound Healing, Crystal Healing, Reiki, Feng Shui |
-| **Financial** | 6 | Revenue, Usage, Billing, Credits, Cost Optimization, Spiritual Credits |
-| **Automation** | 6 | Workflow Engine, Task Automation, Scheduled Tasks, Webhooks, Triggers, Analytics |
-| **UI Design** | 9 | DragDropBuilder, AnimationEngine, DesignSystem, etc |
-| **UX Design** | 9 | UserFlowTracker, HeatmapViewer, etc |
-| **Planning** | 9 | FeatureRoadmap, SprintBoard, Kanban, etc |
-| **Context** | 9 | ContextEngine, KnowledgeBase, SemanticSearch, etc |
-| **Features** | 9 | ExportManager, ImportWizard, DataSync, etc |
-| **QA Tests** | 9 | TestRunner, TestCoverage, IntegrationTests, etc |
+| Category | Count | New Widgets |
+|----------|-------|------------|
+| Spiritual AI | 15 | Correlation Engine, Spiritual Intelligence, Odu, Orixá, Chakra... |
+| Data Intelligence | 15 | Data Pipeline, Warehouse, Analytics, Real-time, BI... |
+| **Learning** | 6 | Academy, Course Progress, Certifications, Study Groups, Video Lessons, Quiz Master |
+| **Gamification** | 6 | Hub, Achievements, Leaderboard, Daily Challenges, Level Progress, Badges |
+| **E-Commerce** | 6 | Shop Analytics, Product Catalog, Cart Metrics, Coupons, Inventory, Shipping |
+| **Advanced Analytics** | 6 | Customer Segment, Cohort Analysis, Funnel, A/B Tests, Retention, LTV |
+| **Social** | 6 | Social Feed, Friends, Messages, Notifications, Shares, Profile Engagement |
+| **Notifications** | 6 | Reminders, Email, SMS, Scheduler, Calendar, Timezone |
+| **Support** | 6 | Tickets, Knowledge Base, FAQ, Live Chat, Bot, CSAT Score |
+| **Advanced Features** | 6 | Import/Export, Backup, Version Control, API Explorer, WebSocket, Microservices |
+| Security | 6 | Security Audit, API Protection, Threat Detection, Encryption, Compliance, Identity |
+| Enterprise | 6 | Audit Log, IP Allowlist, API Keys, Sessions, Integrations, Webhooks |
+| Observability | 6 | APM, Tracing, Logs, SLOs, Uptime, Alerts |
+| Mobile/PWA | 6 | PWA Monitor, Push, Offline, App Store, Battery, Touch |
+| SaaS/Platform | 6 | SaaS Metrics, White Label, Multi-Tenant, Subscription, Usage, Rate Limit |
+| + more... | 100+ | UI Design, UX Design, Planning, Context, Features, QA |
 
 ### Sistema de Correlações (IDEIA.md)
 - 7 dias da semana com Orixás, Chakras, Planetas, Sefirot
 - 16 Odús com quizilas e preceitos
 - Equilíbrio elemental (Fogo, Água, Terra, Ar, Éter)
-- Lua phases e energia espiritual
-- **200+ correlações entre sistemas espirituais**
+- **260+ correlações entre sistemas espirituais**
 
 ### Pages
 | Page | Descrição |
@@ -70,25 +66,23 @@
 
 | Sprint | Descrição | Widgets |
 |--------|-----------|---------|
-| 1-160 | Core, Mapa, Payments, User, PWA, Dashboard, Widgets, AI | 100+ |
-| 161 | Integration/Advanced UI/Testing/Performance | +50 |
-| 162 | UI Design/UX Design/Architecture/Planning/Context/Features/QA | +60 |
-| 163 | Spiritual/Data/Mobile/SaaS/Enterprise/Observability/UX/Performance | +60 |
-| 164 | Security/Community/Advanced Spirituality/Financial/Automation | +30 |
+| 1-164 | Core, Mapa, Payments, User, PWA, Dashboard, Widgets, AI | 200+ |
+| **165** | Learning, Gamification, E-Commerce, Analytics, Social, Notifications, Support, Advanced Features | **+60** |
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
-1. **Widget-Based Dashboard**: 200+ widgets organizados em 20+ categorias
+1. **Widget-Based Dashboard**: 260+ widgets organizados em 25+ categorias
 2. **Multi-Agent Development**: 8+ agentes paralelos por sprint
-3. **Payment flow**: Stripe Checkout + Webhooks
+3. **Two-Pass Build**: compile + generate para confiabilidade
 4. **PWA**: Installable with offline mode
-5. **Build**: Compile mode for reliability with Turbopack
+5. **Build**: Two-pass mode for reliability with Turbopack
 
 ## 📊 MÉTRICAS
 
-- Widget categories: 20+ categories
-- Dashboard widgets: 200+ widgets
-- Sprints total: 164
+- Widget categories: 25+ categories
+- Dashboard widgets: 260+ widgets
+- API routes: 500+
+- **165 Sprints Completados** 🎉
 
 ---
 

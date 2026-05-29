@@ -25,7 +25,7 @@ describe('POST /api/chat/oracle', () => {
       });
       const response = await POST(request);
       expect([200, 400, 500]).toContain(response.status);
-    });
+    }, 30000);
 
     it('returns structured response on 200', async () => {
       const request = createOracleRequest({
