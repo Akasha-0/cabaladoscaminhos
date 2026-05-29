@@ -1,9 +1,9 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 11:15
-**Ciclos de desenvolvimento completados:** 7
+**Última atualização:** 2026-05-29 11:30
+**Ciclos de desenvolvimento completados:** 8
 **Build status:** PASSING ✅
-**Tests:** 1021 passing, 14 skipped (55 test files)
+**Tests:** 1019 passing, 14 skipped (54 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -49,22 +49,28 @@
 - **Árvore da Vida** ✅ — Kabbalistic Tree of Life SVG component
 - **/calendario** ✅ — spiritual energy calendar with 7-day overview
 
+### Sprint 8 - PWA & Mobile (Em Andamento)
+- **Landing page** ✅ — Enhanced with hero, features, CTA
+- **InstallPrompt** ✅ — PWA install banner
+- **MobileBottomNav** ✅ — Bottom tab navigation
+
 ### PDF Export (Sprint 4)
 - `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF
 
 ### Testing
-- 55 test files, 1021 tests passing, 14 skipped
+- 54 test files, 1019 tests passing, 14 skipped
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
 ### Curto Prazo
 1. [x] Sprint 6 Payment Integration — COMPLETO ✅
 2. [x] Sprint 7 User Management — COMPLETO ✅
+3. [x] Sprint 8 PWA & Mobile — EM ANDAMENTO
 
 ### Médio Prazo
-1. [ ] Sprint 8: Advanced dashboard features (PWA enhancements)
-2. [ ] Mobile app optimizations
-3. [ ] Performance optimization
+1. [ ] Sprint 9: Performance optimization
+2. [ ] Sprint 10: Final polish and deployment
+3. [ ] Analytics dashboard
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -73,11 +79,12 @@
 3. **Share links**: Hash único + storage (in-memory para MVP)
 4. **Onboarding**: 4-step flow collecting birth data
 5. **ArvoreVida**: SVG pure component with pillar coloring
+6. **PWA**: Install prompt + mobile bottom nav
 
 ## 📊 MÉTRICAS
 
 - Engines: ~18/25 sistemas, 3 validados ✅
-- Test coverage: 55 files, 1021 tests passing
+- Test coverage: 54 files, 1019 tests passing
 - API routes: 200+
 - Build: PASSING ✅
 
