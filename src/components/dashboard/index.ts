@@ -158,7 +158,6 @@ export type {
 } from '@/lib/ai/insights/types';
 
 // PWA Components
-// PWA Components
 export { InstallPrompt } from './InstallPrompt';
 export { OfflineIndicator } from './OfflineIndicator';
 
