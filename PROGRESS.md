@@ -1,8 +1,10 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
-**Última atualização:** 2026-05-29 13:16
-**Ciclos de desenvolvimento completados:** 14
-**Build status:** PASSING ✅ (dev server verified; production build requires >4GB heap)
-**Tests:** 987 passing, 14 skipped (58 test files)
+
+**Última atualização:** 2026-05-29 13:20
+**Ciclos de desenvolvimento completados:** 15
+**Build status:** PASSING ✅
+**Tests:** 987 passing, 14 skipped (56 test files)
+
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
 ### Core Infrastructure
@@ -22,7 +24,7 @@
 - **Astrologia** ✅ 17 testes
 - Deep Correlation Engine, Oracle Chat, Prediction Engine
 
-### Dashboard Widgets (26+ widgets)
+### Dashboard Widgets (28+ widgets)
 | Widget | Descrição |
 |--------|-----------|
 | RealtimeEnergyWidget | Energia espiritual |
@@ -49,6 +51,8 @@
 | MiniCalendarWidget | Calendário espiritual |
 | AIInsightWidget | Insights de IA |
 | SpiritWellnessWidget | Bem-estar espiritual |
+| MoonRitualPlanner | Ritual da lua |
+| LoveReadingsWidget | Leituras de amor |
 | MapaNatal | Mapa Natal SVG |
 
 ### Sistema de Correlações (IDEIA.md)
@@ -81,6 +85,7 @@
 | 12 | Advanced Features + Notifications | ✅ COMPLETO |
 | 13 | User Profile Integration + Calendar | ✅ COMPLETO |
 | 14 | Widget Integration + Wellness + Tests | ✅ COMPLETO |
+| 15 | Love Readings + Moon Rituals + Dashboard Layout | ✅ COMPLETO |
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
@@ -98,10 +103,10 @@
 ## 📊 MÉTRICAS
 
 - Engines: ~18 sistemas espirituais
-- Test coverage: 53 files, 975 tests passing
-- Dashboard widgets: 26+
+- Test coverage: 56 files, 987 tests passing
+- Dashboard widgets: 28+
 - Build: PASSING ✅
-- **14 Sprints Completados** 🎉
+- **15 Sprints Completados** 🎉
 
 ---
 
