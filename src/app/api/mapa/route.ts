@@ -118,6 +118,7 @@ function calcAstrologia(dateStr: string, hora?: string, local?: string) {
       ascendenteDegree = houses.asc;
       mediumCoeliDegree = houses.mc;
       casas = houses.cusp.map((deg, i) => {
+      casas = houses.cusps.map((deg, i) => {
         const signIndex = Math.floor(deg / 30) % 12;
         const signs: Signo[] = ['aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem', 'libra', 'escorpio', 'sagitario', 'capricornio', 'aquario', 'peixes'];
         return {

@@ -530,7 +530,7 @@ export function PredictiveInsightsPanel({
                   <div key={pred.id} className={cn('p-2 rounded', colors.bg, 'border', colors.border)}>
                     <div className="flex items-center justify-between mb-1">
                       <span className={cn('text-xs font-medium', colors.primary)}>{TYPE_LABELS[pred.type]}</span>
-                      <span className={cn('text-xs', getConfidenceColor(getConfidenceLevel(pred.confidence))))}>{pred.confidence}%</span>
+                      <span className={cn('text-xs', getConfidenceColor(getConfidenceLevel(pred.confidence)))}>{pred.confidence}%</span>
                     </div>
                     <p className="text-xs text-amber-100/80 line-clamp-1">{pred.title}</p>
                     <p className="text-xs text-amber-200/50 mt-1">{formatDate(pred.date)}</p>
