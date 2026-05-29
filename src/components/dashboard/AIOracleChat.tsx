@@ -19,6 +19,15 @@ import {
   Sun,
 } from 'lucide-react';
 
+// Sacred geometry corner decoration
+const SacredCornerSVG = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 2 L20 2 L20 5 L5 5 L5 20 L2 20 Z" fill="currentColor" opacity="0.3" />
+    <path d="M2 2 Q20 2 20 20" stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.5" />
+    <circle cx="2" cy="2" r="1.5" fill="currentColor" opacity="0.4" />
+  </svg>
+);
+
 // ============================================================
 // TYPES
 // ============================================================
@@ -101,12 +110,7 @@ function parseMarkdown(text: string): string {
 // SUB-COMPONENTS
 // ============================================================
 
-interface MessageBubbleProps {
-  message: ChatMessage;
-  onCopy?: () => void;
-}
-
-function MessageBubble({ message, onCopy }: MessageBubbleProps) {
+function MessageBubble({ message, onCopy }: { message: ChatMessage; onCopy?: () => void }) {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
   const isSystem = message.role === 'system';
@@ -120,10 +124,7 @@ function MessageBubble({ message, onCopy }: MessageBubbleProps) {
 
   return (
     <div className={cn('flex', isUser ? 'justify-end' : 'justify-start')}>
-      <div className={cn(
-        'relative max-w-[80%] rounded-xl p-4 border',
-        MESSAGE_COLORS[message.role]
-      )}>
+      <div className={cn('relative max-w-[80%] rounded-xl p-4 border', MESSAGE_COLORS[message.role])}>
         <div className="flex items-center gap-2 mb-2">
           {isUser ? (
             <User className="w-4 h-4 text-purple-400" />
@@ -135,16 +136,12 @@ function MessageBubble({ message, onCopy }: MessageBubbleProps) {
           <span className="text-xs text-slate-400">
             {isUser ? 'Você' : isSystem ? 'Sistema' : ORACLE_PERSONALITY.name}
           </span>
-          <span className="text-xs text-slate-500 ml-auto">
-            {formatTimestamp(message.timestamp)}
-          </span>
+          <span className="text-xs text-slate-500 ml-auto">{formatTimestamp(message.timestamp)}</span>
         </div>
-        
         <div
           className="text-sm text-slate-200 leading-relaxed"
           dangerouslySetInnerHTML={{ __html: parseMarkdown(message.content) }}
         />
-        
         {message.metadata?.type && (
           <div className="mt-2 flex items-center gap-1">
             <span className={cn(
@@ -158,17 +155,12 @@ function MessageBubble({ message, onCopy }: MessageBubbleProps) {
             </span>
           </div>
         )}
-        
         {!isUser && (
           <button
             onClick={handleCopy}
             className="absolute top-2 right-2 p-1 rounded hover:bg-slate-700/50 transition-colors"
           >
-            {copied ? (
-              <CheckCheck className="w-3 h-3 text-emerald-400" />
-            ) : (
-              <Copy className="w-3 h-3 text-slate-400" />
-            )}
+            {copied ? <CheckCheck className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-slate-400" />}
           </button>
         )}
       </div>
@@ -176,13 +168,7 @@ function MessageBubble({ message, onCopy }: MessageBubbleProps) {
   );
 }
 
-interface QuickPromptButtonProps {
-  label: string;
-  prompt: string;
-  onClick: (prompt: string) => void;
-}
-
-function QuickPromptButton({ label, prompt, onClick }: QuickPromptButtonProps) {
+function QuickPromptButton({ label, prompt, onClick }: { label: string; prompt: string; onClick: (prompt: string) => void }) {
   return (
     <button
       onClick={() => onClick(prompt)}
@@ -193,11 +179,7 @@ function QuickPromptButton({ label, prompt, onClick }: QuickPromptButtonProps) {
   );
 }
 
-interface TypingIndicatorProps {
-  name?: string;
-}
-
-function TypingIndicator({ name = ORACLE_PERSONALITY.name }: TypingIndicatorProps) {
+function TypingIndicator({ name = ORACLE_PERSONALITY.name }: { name?: string }) {
   return (
     <div className="flex items-center gap-2 text-slate-400">
       <Bot className="w-4 h-4" />
@@ -226,16 +208,14 @@ export function AIOracleChat({
   const [isLoading, setIsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Add system greeting on mount
   useEffect(() => {
     if (messages.length === 0) {
       const greetingMessage: ChatMessage = {
@@ -265,11 +245,9 @@ export function AIOracleChat({
 
     try {
       let responseText = '';
-      
       if (onSendMessage) {
         responseText = await onSendMessage(content);
       } else {
-        // Simulated response for demo
         await new Promise(resolve => setTimeout(resolve, 1500));
         responseText = generateOracleResponse(content, userData);
       }
@@ -297,9 +275,7 @@ export function AIOracleChat({
     }
   }, [onSendMessage, isLoading, userData]);
 
-  const handleQuickPrompt = (prompt: string) => {
-    handleSendMessage(prompt);
-  };
+  const handleQuickPrompt = (prompt: string) => handleSendMessage(prompt);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -308,15 +284,19 @@ export function AIOracleChat({
     }
   };
 
-  const handleClearChat = () => {
-    setMessages([]);
-  };
+  const handleClearChat = () => setMessages([]);
 
   return (
-    <div className={cn('bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden', className)}>
+    <div className={cn('card-spiritual relative overflow-hidden rounded-xl', className)}>
+      {/* Sacred corner decorations */}
+      <SacredCornerSVG className="sacred-corner sacred-corner-tl text-purple-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-tr text-violet-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-bl text-purple-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-br text-violet-500 hidden md:block" />
+
       {/* Header */}
       <div
-        className="flex items-center justify-between p-4 border-b border-slate-700/50 cursor-pointer hover:bg-slate-700/30 transition-colors"
+        className="flex items-center justify-between p-4 border-b border-slate-700/50 cursor-pointer hover:bg-slate-700/30 transition-colors relative z-10"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-3">
@@ -336,11 +316,7 @@ export function AIOracleChat({
           >
             <RefreshCw className="w-4 h-4 text-slate-400" />
           </button>
-          {isExpanded ? (
-            <ChevronUp className="w-4 h-4 text-slate-400" />
-          ) : (
-            <ChevronDown className="w-4 h-4 text-slate-400" />
-          )}
+          {isExpanded ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
         </div>
       </div>
 
@@ -348,14 +324,14 @@ export function AIOracleChat({
       {isExpanded && (
         <>
           {/* Messages Area */}
-          <div className="h-80 overflow-y-auto p-4 space-y-4 scrollbar-thin">
+          <div className="h-80 overflow-y-auto p-4 space-y-4 scrollbar-thin relative z-10">
             {messages.length === 0 && (
               <div className="flex flex-col items-center justify-center h-full text-center">
                 <MessageSquare className="w-12 h-12 text-slate-600 mb-4" />
                 <p className="text-slate-400 text-sm">Inicie uma conversa com o oráculo</p>
               </div>
             )}
-            
+
             {messages.map(message => (
               <MessageBubble
                 key={message.id}
@@ -375,19 +351,14 @@ export function AIOracleChat({
           </div>
 
           {/* Quick Prompts */}
-          <div className="px-4 pb-2 flex flex-wrap gap-2">
+          <div className="px-4 pb-2 flex flex-wrap gap-2 relative z-10">
             {QUICK_PROMPTS.map(({ label, prompt }) => (
-              <QuickPromptButton
-                key={label}
-                label={label}
-                prompt={prompt}
-                onClick={handleQuickPrompt}
-              />
+              <QuickPromptButton key={label} label={label} prompt={prompt} onClick={handleQuickPrompt} />
             ))}
           </div>
 
           {/* Input Area */}
-          <div className="p-4 border-t border-slate-700/50">
+          <div className="p-4 border-t border-slate-700/50 relative z-10">
             <div className="flex items-end gap-2">
               <textarea
                 ref={inputRef}
@@ -422,25 +393,25 @@ export function AIOracleChat({
 // ============================================================
 
 function generateOracleResponse(question: string, userData?: AIOracleChatProps['userData']): string {
-  const lowerQuestion = question.toLowerCase();
-  
-  if (lowerQuestion.includes('destino') || lowerQuestion.includes('hoje')) {
-    return `**Insight do Dia** 🌟\n\nAs estrelas revelam que hoje é um dia propício para reflexões profundas. ${userData?.orixaRegente ? `Seu orixá regente ${userData.orixaRegente} oferece proteção especial.` : ''}\n\n*Permita-se momentos de silêncio e escuta interior.*`;
+  const lowerQ = question.toLowerCase();
+
+  if (lowerQ.includes('destino') || lowerQ.includes('futuro') || lowerQ.includes('hoje')) {
+    return `As estrelas hoje se alinham para revelar:\n\n**Seu caminho está aberto para novas manifestações.**\n\nA energia de ${userData?.orixaRegente || 'seus guias'} protege seus passos. Confie na sabedoria que já habita em você.`;
   }
-  
-  if (lowerQuestion.includes('proteção') || lowerQuestion.includes('oração')) {
-    return `**Proteção Espiritual** 🛡️\n\nRecomendo repetir o mantra: *"Oxalá, guia meus passos na luz"*.\n\n${userData?.odu ? `Para seu Odu ${userData.odu}, a prática de offerings menores ao amanhecer fortalece sua conexão protetora.` : 'Pratique a meditação ao amanhecer para fortalecer seu campo energético.'}`;
+
+  if (lowerQ.includes('proteção') || lowerQ.includes('oração') || lowerQ.includes('rezar')) {
+    return `Para proteção espiritual, recito esta oração sagrada:\n\n**"${userData?.orixaRegente || 'Oxum'}, guardião da minha alma, estende teu manto sobre mim. Que tua luz dissolva toda escuridão e que teu amor me guie em paz."**\n\nRepita 3 vezes ao amanhecer com fé sincera.`;
   }
-  
-  if (lowerQuestion.includes('evolução') || lowerQuestion.includes('caminho')) {
-    return `**Caminho de Evolução** ✨\n\n${userData?.numeroPessoal ? `Seu número pessoal ${userData.numeroPessoal} indica uma via de autoconhecimento profundo.` : 'Seu caminho aponta para o autoconhecimento.'}\n\n*As práticas de GRATIDÃO e HUMILDADE são catalisadores essenciais neste momento.*`;
+
+  if (lowerQ.includes('evolução') || lowerQ.includes('crescer') || lowerQ.includes('caminho')) {
+    return `Sua jornada de evolução espiritual é única.\n\n**O número ${userData?.numeroPessoal || 7} carrega grande poder de transformação.**\n\nPratique a meditação diariamente, honre seus ancestrais, e permita-se soltar o que não serve mais. O crescimento vem através da prática consistente.`;
   }
-  
-  if (lowerQuestion.includes('odu') || lowerQuestion.includes('ifá')) {
-    return `**Guia Ifá** 🔮\n\n${userData?.odu ? `Odu ${userData.odu} revela profundos mistérios sobre sua jornada.` : 'A tradição Ifá guarda respostas ancestrais.'}\n\n*Consulte os Ikin (nozes de dendê) em momento de calma para receber orientações específicas.*`;
+
+  if (lowerQ.includes('odu') || lowerQ.includes('ifá')) {
+    return `A sabedoria de Ifá fala através de mim:\n\n**${userData?.odu || 'Ogbe'}** - O signficado do novo começo!\n\nVocê está em um momento propício para iniciar novos projetos. A energia está com você. Ouça sua intuição e aja com sabedoria.`;
   }
-  
-  return `**Mensagem do Oráculo** 🌙\n\nOuvindo sua pergunta com atenção...\n\n${userData?.nome ? `Para ${userData.nome}, a resposta emerge das suas conexões energéticas.` : 'A resposta emerge das suas conexões energéticas.'}\n\n*Solicite uma pergunta mais específica para um insight direcionado.*`;
+
+  return `O oráculo ouviu sua pergunta com atenção.\n\n**Permita-me acessar as correntes cósmicas...**\n\nSua intuição é sua melhor bússola neste momento. O que seu coração já sabe, mas sua mente hesita em aceitar?\n\nTenha fé no processo. Todas as experiências, mesmo as difíceis, são professores sagrados em sua jornada.`;
 }
 
 export default AIOracleChat;

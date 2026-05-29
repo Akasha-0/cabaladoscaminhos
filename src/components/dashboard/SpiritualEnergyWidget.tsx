@@ -16,6 +16,15 @@ import {
   Gauge,
 } from 'lucide-react';
 
+// Sacred geometry corner decoration
+const SacredCornerSVG = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 2 L20 2 L20 5 L5 5 L5 20 L2 20 Z" fill="currentColor" opacity="0.3" />
+    <path d="M2 2 Q20 2 20 20" stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.5" />
+    <circle cx="2" cy="2" r="1.5" fill="currentColor" opacity="0.4" />
+  </svg>
+);
+
 // ============================================================
 // TYPES
 // ============================================================
@@ -55,30 +64,10 @@ interface EnergyLevel {
 // ============================================================
 
 const ENERGY_COLORS = {
-  vital: {
-    base: 'from-red-500/20',
-    glow: 'bg-red-500/50',
-    ring: 'ring-red-500/50',
-    text: 'text-red-400',
-  },
-  emotional: {
-    base: 'from-pink-500/20',
-    glow: 'bg-pink-500/50',
-    ring: 'ring-pink-500/50',
-    text: 'text-pink-400',
-  },
-  mental: {
-    base: 'from-blue-500/20',
-    glow: 'bg-blue-500/50',
-    ring: 'ring-blue-500/50',
-    text: 'text-blue-400',
-  },
-  spiritual: {
-    base: 'from-purple-500/20',
-    glow: 'bg-purple-500/50',
-    ring: 'ring-purple-500/50',
-    text: 'text-purple-400',
-  },
+  vital: { base: 'from-red-500/20', glow: 'bg-red-500/50', ring: 'ring-red-500/50', text: 'text-red-400' },
+  emotional: { base: 'from-pink-500/20', glow: 'bg-pink-500/50', ring: 'ring-pink-500/50', text: 'text-pink-400' },
+  mental: { base: 'from-blue-500/20', glow: 'bg-blue-500/50', ring: 'ring-blue-500/50', text: 'text-blue-400' },
+  spiritual: { base: 'from-purple-500/20', glow: 'bg-purple-500/50', ring: 'ring-purple-500/50', text: 'text-purple-400' },
 };
 
 const ORYX_ENERGY_BONUS: Record<string, Partial<EnergyData>> = {
@@ -107,23 +96,15 @@ function getEnergyLevel(value: number): 'low' | 'medium' | 'high' {
 function getEnergyGradient(value: number): string {
   const level = getEnergyLevel(value);
   switch (level) {
-    case 'low':
-      return 'from-red-500 to-orange-500';
-    case 'medium':
-      return 'from-yellow-500 to-amber-500';
-    case 'high':
-      return 'from-emerald-500 to-green-500';
+    case 'low': return 'from-red-500 to-orange-500';
+    case 'medium': return 'from-yellow-500 to-amber-500';
+    case 'high': return 'from-emerald-500 to-green-500';
   }
 }
 
 function calculateEnergyFromUserData(userData?: SpiritualEnergyWidgetProps['userData']): EnergyData {
-  const baseEnergy = userData?.numeroPessoal 
-    ? Math.min(50 + (userData.numeroPessoal * 3), 100) 
-    : 60;
-  
-  const orixaBonus = userData?.orixaRegente 
-    ? ORYX_ENERGY_BONUS[userData.orixaRegente] || {} 
-    : {};
+  const baseEnergy = userData?.numeroPessoal ? Math.min(50 + (userData.numeroPessoal * 3), 100) : 60;
+  const orixaBonus = userData?.orixaRegente ? ORYX_ENERGY_BONUS[userData.orixaRegente] || {} : {};
 
   return {
     total: baseEnergy,
@@ -141,15 +122,7 @@ function calculateEnergyFromUserData(userData?: SpiritualEnergyWidgetProps['user
 // SUB-COMPONENTS
 // ============================================================
 
-interface EnergyArcProps {
-  value: number;
-  size?: number;
-  strokeWidth?: number;
-  label: string;
-  color: string;
-}
-
-function EnergyArc({ value, size = 80, strokeWidth = 6, label, color }: EnergyArcProps) {
+function EnergyArc({ value, size = 80, strokeWidth = 6, label, color }: { value: number; size?: number; strokeWidth?: number; label: string; color: string }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const percentage = Math.min(value, 100);
@@ -159,27 +132,11 @@ function EnergyArc({ value, size = 80, strokeWidth = 6, label, color }: EnergyAr
   return (
     <div className="flex flex-col items-center">
       <div className="relative">
-        <svg 
-          width={size} 
-          height={size} 
-          className="transform -rotate-90"
-        >
+        <svg width={size} height={size} className="transform -rotate-90">
+          <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="currentColor" strokeWidth={strokeWidth} className="text-slate-700" />
           <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={strokeWidth}
-            className="text-slate-700"
-          />
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="url(#gradient)"
-            strokeWidth={strokeWidth}
+            cx={size / 2} cy={size / 2} r={radius} fill="none"
+            stroke="url(#gradient)" strokeWidth={strokeWidth}
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
@@ -201,14 +158,7 @@ function EnergyArc({ value, size = 80, strokeWidth = 6, label, color }: EnergyAr
   );
 }
 
-interface EnergyBarProps {
-  label: string;
-  value: number;
-  icon: React.ReactNode;
-  colorClass: string;
-}
-
-function EnergyBar({ label, value, icon, colorClass }: EnergyBarProps) {
+function EnergyBar({ label, value, icon, colorClass }: { label: string; value: number; icon: React.ReactNode; colorClass: string }) {
   const percentage = Math.min(value, 100);
   const gradient = getEnergyGradient(percentage);
 
@@ -231,12 +181,7 @@ function EnergyBar({ label, value, icon, colorClass }: EnergyBarProps) {
   );
 }
 
-interface TrendBadgeProps {
-  trend: 'up' | 'down' | 'stable';
-  value: number;
-}
-
-function TrendBadge({ trend, value }: TrendBadgeProps) {
+function TrendBadge({ trend, value }: { trend: 'up' | 'down' | 'stable'; value: number }) {
   const iconClass = trend === 'up' ? 'text-emerald-400' : trend === 'down' ? 'text-red-400' : 'text-slate-400';
   const Icon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;
 
@@ -253,12 +198,7 @@ function TrendBadge({ trend, value }: TrendBadgeProps) {
   );
 }
 
-interface BalanceGaugeProps {
-  value: number;
-  size?: number;
-}
-
-function BalanceGauge({ value, size = 100 }: BalanceGaugeProps) {
+function BalanceGauge({ value, size = 100 }: { value: number; size?: number }) {
   const rotation = ((value - 50) / 50) * 90;
 
   return (
@@ -266,16 +206,29 @@ function BalanceGauge({ value, size = 100 }: BalanceGaugeProps) {
       <div className="absolute inset-0 rounded-full border-4 border-slate-700" />
       <div
         className="absolute bottom-1/2 left-1/2 w-1 bg-gradient-to-t from-amber-400 to-orange-500 rounded-full origin-bottom transition-transform duration-500"
-        style={{ 
-          height: size / 2 - 10,
-          transform: `translateX(-50%) rotate(${rotation}deg)`
-        }}
+        style={{ height: size / 2 - 10, transform: `translateX(-50%) rotate(${rotation}deg)` }}
       />
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
           <p className="text-lg font-bold text-white">{Math.round(value)}%</p>
           <p className="text-xs text-slate-400">Equilíbrio</p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Loading skeleton
+function EnergySkeleton() {
+  return (
+    <div className="space-y-4 p-6">
+      <div className="flex justify-center">
+        <div className="w-28 h-28 rounded-full border-8 border-slate-700 flex items-center justify-center skeleton-spiritual" />
+      </div>
+      <div className="space-y-3">
+        <div className="h-3 rounded skeleton-spiritual w-full" />
+        <div className="h-3 rounded skeleton-spiritual w-4/5" />
+        <div className="h-3 rounded skeleton-spiritual w-3/5" />
       </div>
     </div>
   );
@@ -292,157 +245,105 @@ export function SpiritualEnergyWidget({
   onEnergyChange,
 }: SpiritualEnergyWidgetProps) {
   const [energy, setEnergy] = useState<EnergyData>({
-    total: 0,
-    vital: 0,
-    emotional: 0,
-    mental: 0,
-    spiritual: 0,
-    balance: 50,
-    trend: 'stable',
-    trendValue: 0,
+    total: 0, vital: 0, emotional: 0, mental: 0, spiritual: 0, balance: 50, trend: 'stable', trendValue: 0,
   });
   const [isAnimating, setIsAnimating] = useState(true);
 
   useEffect(() => {
     const calculatedEnergy = calculateEnergyFromUserData(userData);
-    
-    // Animate energy levels
     const timer = setTimeout(() => {
       setEnergy(calculatedEnergy);
       setIsAnimating(false);
       onEnergyChange?.(calculatedEnergy);
     }, 1000);
-
     return () => clearTimeout(timer);
   }, [userData]);
 
   const energyLevels: EnergyLevel[] = useMemo(() => [
-    {
-      value: energy.vital,
-      label: 'Vital',
-      icon: <Heart className="w-4 h-4" />,
-      color: 'text-red-400',
-      glowColor: 'bg-red-500/50',
-    },
-    {
-      value: energy.emotional,
-      label: 'Emocional',
-      icon: <Activity className="w-4 h-4" />,
-      color: 'text-pink-400',
-      glowColor: 'bg-pink-500/50',
-    },
-    {
-      value: energy.mental,
-      label: 'Mental',
-      icon: <Sparkles className="w-4 h-4" />,
-      color: 'text-blue-400',
-      glowColor: 'bg-blue-500/50',
-    },
-    {
-      value: energy.spiritual,
-      label: 'Espiritual',
-      icon: <Wind className="w-4 h-4" />,
-      color: 'text-purple-400',
-      glowColor: 'bg-purple-500/50',
-    },
+    { value: energy.vital, label: 'Vital', icon: <Heart className="w-4 h-4" />, color: 'text-red-400', glowColor: 'bg-red-500/50' },
+    { value: energy.emotional, label: 'Emocional', icon: <Activity className="w-4 h-4" />, color: 'text-pink-400', glowColor: 'bg-pink-500/50' },
+    { value: energy.mental, label: 'Mental', icon: <Sparkles className="w-4 h-4" />, color: 'text-blue-400', glowColor: 'bg-blue-500/50' },
+    { value: energy.spiritual, label: 'Espiritual', icon: <Wind className="w-4 h-4" />, color: 'text-purple-400', glowColor: 'bg-purple-500/50' },
   ], [energy]);
 
   return (
-    <div className={cn('bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden', className)}>
-      {/* Header */}
-      <div className="p-4 border-b border-slate-700/50 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-amber-500/20 to-yellow-500/20 rounded-lg">
-            <Zap className="w-5 h-5 text-amber-400" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-white">Energia Espiritual</h3>
-            <p className="text-slate-400 text-xs">
-              {userData?.orixaRegente ? `Bênção de ${userData.orixaRegente}` : 'Fluxo energético'}
-            </p>
-          </div>
-        </div>
-        {showTrend && <TrendBadge trend={energy.trend} value={energy.trendValue} />}
-      </div>
+    <div className={cn('card-spiritual relative overflow-hidden', className)}>
+      {/* Sacred corner decorations */}
+      <SacredCornerSVG className="sacred-corner sacred-corner-tl text-amber-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-tr text-violet-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-bl text-amber-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-br text-violet-500 hidden md:block" />
 
-      {/* Main Display */}
-      <div className="p-6">
-        {/* Total Energy Arc */}
-        <div className="flex justify-center mb-6">
-          <div className="relative">
-            <svg width={120} height={120} className="transform -rotate-90">
-              <circle
-                cx={60}
-                cy={60}
-                r={52}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="8"
-                className="text-slate-700"
-              />
-              <circle
-                cx={60}
-                cy={60}
-                r={52}
-                fill="none"
-                stroke="url(#totalGradient)"
-                strokeWidth="8"
-                strokeLinecap="round"
-                strokeDasharray={326.7}
-                strokeDashoffset={326.7 - (energy.total / 100) * 326.7}
-                className={cn('transition-all duration-1000', isAnimating ? 'opacity-50' : 'opacity-100')}
-              />
-              <defs>
-                <linearGradient id="totalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#f59e0b" />
-                  <stop offset="100%" stopColor="#fbbf24" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <Gauge className="w-6 h-6 text-amber-400 mb-1" />
-              <span className="text-2xl font-bold text-white">{Math.round(energy.total)}</span>
-              <span className="text-xs text-slate-400">Total</span>
+      {/* Loading skeleton */}
+      {isAnimating && <EnergySkeleton />}
+
+      {/* Header */}
+      {!isAnimating && (
+        <div className="p-4 border-b border-slate-700/50 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-amber-500/20 to-yellow-500/20 rounded-lg">
+              <Zap className="w-5 h-5 text-amber-400" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-white">Energia Espiritual</h3>
+              <p className="text-slate-400 text-xs">
+                {userData?.orixaRegente ? `Bênção de ${userData.orixaRegente}` : 'Fluxo energético'}
+              </p>
             </div>
           </div>
+          {showTrend && <TrendBadge trend={energy.trend} value={energy.trendValue} />}
         </div>
+      )}
 
-        {/* Energy Bars */}
-        <div className="space-y-4">
-          <EnergyBar
-            label="Vital"
-            value={energy.vital}
-            icon={<Heart className="w-4 h-4" />}
-            colorClass="text-red-400"
-          />
-          <EnergyBar
-            label="Emocional"
-            value={energy.emotional}
-            icon={<Activity className="w-4 h-4" />}
-            colorClass="text-pink-400"
-          />
-          <EnergyBar
-            label="Mental"
-            value={energy.mental}
-            icon={<Sparkles className="w-4 h-4" />}
-            colorClass="text-blue-400"
-          />
-          <EnergyBar
-            label="Espiritual"
-            value={energy.spiritual}
-            icon={<Wind className="w-4 h-4" />}
-            colorClass="text-purple-400"
-          />
+      {/* Main Display */}
+      {!isAnimating && (
+        <div className="p-6">
+          {/* Total Energy Arc */}
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <svg width={120} height={120} className="transform -rotate-90">
+                <circle cx={60} cy={60} r={52} fill="none" stroke="currentColor" strokeWidth="8" className="text-slate-700" />
+                <circle
+                  cx={60} cy={60} r={52} fill="none" stroke="url(#totalGradient)"
+                  strokeWidth="8" strokeLinecap="round"
+                  strokeDasharray={326.7}
+                  strokeDashoffset={326.7 - (energy.total / 100) * 326.7}
+                  className="transition-all duration-1000"
+                />
+                <defs>
+                  <linearGradient id="totalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#f59e0b" />
+                    <stop offset="100%" stopColor="#fbbf24" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <Gauge className="w-6 h-6 text-amber-400 mb-1" />
+                <span className="text-2xl font-bold text-white">{Math.round(energy.total)}</span>
+                <span className="text-xs text-slate-400">Total</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Energy Bars */}
+          <div className="space-y-4">
+            <EnergyBar label="Vital" value={energy.vital} icon={<Heart className="w-4 h-4" />} colorClass="text-red-400" />
+            <EnergyBar label="Emocional" value={energy.emotional} icon={<Activity className="w-4 h-4" />} colorClass="text-pink-400" />
+            <EnergyBar label="Mental" value={energy.mental} icon={<Sparkles className="w-4 h-4" />} colorClass="text-blue-400" />
+            <EnergyBar label="Espiritual" value={energy.spiritual} icon={<Wind className="w-4 h-4" />} colorClass="text-purple-400" />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Balance Indicator */}
-      <div className="p-4 border-t border-slate-700/50 bg-slate-800/30">
-        <div className="flex items-center justify-between">
-          <span className="text-slate-400 text-sm">Equilíbrio dos Chakras</span>
-          <BalanceGauge value={energy.balance} size={60} />
+      {!isAnimating && (
+        <div className="p-4 border-t border-slate-700/50 bg-slate-800/30">
+          <div className="flex items-center justify-between">
+            <span className="text-slate-400 text-sm">Equilíbrio dos Chakras</span>
+            <BalanceGauge value={energy.balance} size={60} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

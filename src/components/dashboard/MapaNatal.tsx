@@ -7,8 +7,11 @@ export interface MapaNatalProps {
   mapaNatal: MapaNatalData;
   size?: number;
   className?: string;
+}
 
 // Zodiac signs in Portuguese with their degrees
+// Zodiac signs in Portuguese with their degrees
+const ZODIAC_SIGNS = [
 const ZODIAC_SIGNS = [
   { name: 'Áries', symbol: '♈', start: 0 },
   { name: 'Touro', symbol: '♉', start: 30 },

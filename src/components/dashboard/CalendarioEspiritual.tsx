@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,15 @@ import {
   Droplets,
   Wind,
 } from 'lucide-react';
+
+// Sacred geometry corner decoration
+const SacredCornerSVG = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 2 L20 2 L20 5 L5 5 L5 20 L2 20 Z" fill="currentColor" opacity="0.3" />
+    <path d="M2 2 Q20 2 20 20" stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.5" />
+    <circle cx="2" cy="2" r="1.5" fill="currentColor" opacity="0.4" />
+  </svg>
+);
 
 interface CalendarioEspiritualProps {
   className?: string;
@@ -67,102 +77,18 @@ const MONTH_NAMES = [
 const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
 const SPIRITUAL_DATES: SpiritualDate[] = [
-  {
-    id: '1',
-    date: new Date(new Date().getFullYear(), 0, 1),
-    title: 'Ano Novo Espiritual',
-    description: 'Início de um novo ciclo de crescimento espiritual',
-    type: 'celebracao',
-    significance: 'Novos começos e intenções',
-  },
-  {
-    id: '2',
-    date: new Date(new Date().getFullYear(), 0, 6),
-    title: 'Dia dos Reis Magos',
-    description: 'Celebração da sabedoria divina',
-    type: 'celebracao',
-    significance: 'Busca por conhecimento',
-  },
-  {
-    id: '3',
-    date: new Date(new Date().getFullYear(), 1, 2),
-    title: 'Dia de Iemanjá',
-    description: 'Homenagem à Rainha do Mar',
-    type: 'ritual',
-    significance: 'Proteção e maternidade',
-  },
-  {
-    id: '4',
-    date: new Date(new Date().getFullYear(), 3, 22),
-    title: 'Páscoa',
-    description: 'Ressurreição e renovação',
-    type: 'celebracao',
-    significance: 'Renascimento espiritual',
-  },
-  {
-    id: '5',
-    date: new Date(new Date().getFullYear(), 4, 13),
-    title: 'Dia de Oxum',
-    description: 'Celebração da energia do ouro',
-    type: 'ritual',
-    significance: 'Prosperidade e amor',
-  },
-  {
-    id: '6',
-    date: new Date(new Date().getFullYear(), 5, 24),
-    title: 'São João',
-    description: 'Festa junina com tradições espirituais',
-    type: 'celebracao',
-    significance: 'Comunidade e alegria',
-  },
-  {
-    id: '7',
-    date: new Date(new Date().getFullYear(), 6, 15),
-    title: 'Festa do Divino',
-    description: 'Celebração do Espírito Santo',
-    type: 'ritual',
-    significance: 'Espiritualidade e tradição',
-  },
-  {
-    id: '8',
-    date: new Date(new Date().getFullYear(), 7, 27),
-    title: 'Dia de Ogum',
-    description: 'Homenagem ao Deus da Guerra',
-    type: 'ritual',
-    significance: 'Força e determinação',
-  },
-  {
-    id: '9',
-    date: new Date(new Date().getFullYear(), 8, 8),
-    title: 'Dia de Oxalá',
-    description: 'Celebração da paz e criação',
-    type: 'ritual',
-    significance: 'Pureza e novos começos',
-  },
-  {
-    id: '10',
-    date: new Date(new Date().getFullYear(), 9, 15),
-    title: 'Dia de Xango',
-    description: 'Homenagem ao Deus da Justiça',
-    type: 'ritual',
-    significance: 'Justiça e equilíbrio',
-  },
-  {
-    id: '11',
-    date: new Date(new Date().getFullYear(), 10, 8),
-    title: 'Dia de Obaluaê',
-    description: 'Celebração da cura',
-    type: 'ritual',
-    significance: 'Saudação e cura',
-  },
-  {
-    id: '12',
-    date: new Date(new Date().getFullYear(), 11, 25),
-    title: 'Natal Espiritual',
-    description: 'Celebração do amor e luz',
-    type: 'celebracao',
-    significance: 'Luz e amor',
-  },
+  { id: '1', date: new Date(new Date().getFullYear(), 0, 1), title: 'Ano Novo Espiritual', description: 'Início de um novo ciclo de crescimento espiritual', type: 'celebracao', significance: 'Novos começos e intenções' },
+  { id: '2', date: new Date(new Date().getFullYear(), 0, 6), title: 'Dia dos Reis Magos', description: 'Celebração da sabedoria divina', type: 'celebracao', significance: 'Busca por conhecimento' },
+  { id: '3', date: new Date(new Date().getFullYear(), 1, 2), title: 'Dia de Iemanjá', description: 'Homenagem à Rainha do Mar', type: 'ritual', significance: 'Proteção e maternidade' },
+  { id: '4', date: new Date(new Date().getFullYear(), 3, 22), title: 'Páscoa', description: 'Ressurreição e renovação', type: 'celebracao', significance: 'Renascimento espiritual' },
+  { id: '5', date: new Date(new Date().getFullYear(), 4, 13), title: 'Dia de Oxum', description: 'Celebração da energia do ouro', type: 'ritual', significance: 'Prosperidade e amor' },
+  { id: '6', date: new Date(new Date().getFullYear(), 5, 24), title: 'São João', description: 'Festa junina com tradições espirituais', type: 'celebracao', significance: 'Comunidade e alegria' },
+  { id: '7', date: new Date(new Date().getFullYear(), 6, 15), title: 'Festa do Divino', description: 'Celebração do Espírito Santo', type: 'ritual', significance: 'Espiritualidade e tradição' },
+  { id: '8', date: new Date(new Date().getFullYear(), 7, 27), title: 'Dia de Ogum', description: 'Homenagem ao Deus da Guerra', type: 'ritual', significance: 'Força e determinação' },
+  { id: '9', date: new Date(new Date().getFullYear(), 8, 8), title: 'Dia de Oxalá', description: 'Celebração da paz e criação', type: 'ritual', significance: 'Pureza e novos começos' },
+  { id: '10', date: new Date(new Date().getFullYear(), 9, 15), title: 'Dia de Xango', description: 'Homenagem ao Deus da Justiça', type: 'ritual', significance: 'Justiça e equilíbrio' },
+  { id: '11', date: new Date(new Date().getFullYear(), 10, 8), title: 'Dia de Obaluaê', description: 'Celebração da cura', type: 'ritual', significance: 'Saudação e cura' },
+  { id: '12', date: new Date(new Date().getFullYear(), 11, 25), title: 'Natal Espiritual', description: 'Celebração do amor e luz', type: 'celebracao', significance: 'Luz e amor' },
 ];
 
 function getDaysInMonth(year: number, month: number): number {
@@ -178,32 +104,30 @@ function formatDateKey(year: number, month: number, day: number): string {
 }
 
 function isSameDay(date1: Date, date2: Date): boolean {
+  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
+}
+
+function getSpiritualEventForDate(year: number, month: number, day: number, events: SpiritualDate[]): SpiritualDate | undefined {
+  return events.find((event) => isSameDay(event.date, new Date(year, month, day)));
+}
+
+function getEventsInMonth(year: number, month: number, events: SpiritualDate[]): SpiritualDate[] {
+  return events.filter((event) => event.date.getFullYear() === year && event.date.getMonth() === month);
+}
+
+// Loading skeleton
+function CalendarSkeleton() {
   return (
-    date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getDate() === date2.getDate()
-  );
-}
-
-function getSpiritualEventForDate(
-  year: number,
-  month: number,
-  day: number,
-  events: SpiritualDate[]
-): SpiritualDate | undefined {
-  return events.find((event) =>
-    isSameDay(event.date, new Date(year, month, day))
-  );
-}
-
-function getEventsInMonth(
-  year: number,
-  month: number,
-  events: SpiritualDate[]
-): SpiritualDate[] {
-  return events.filter(
-    (event) =>
-      event.date.getFullYear() === year && event.date.getMonth() === month
+    <div className="space-y-4">
+      <div className="grid grid-cols-7 gap-1">
+        {WEEKDAYS.map(d => <div key={d} className="h-8 rounded skeleton-spiritual" />)}
+      </div>
+      <div className="grid grid-cols-7 gap-1">
+        {Array.from({ length: 35 }).map((_, i) => (
+          <div key={i} className="h-10 rounded-lg skeleton-spiritual" />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -223,42 +147,31 @@ export function CalendarioEspiritual({ className = '' }: CalendarioEspiritualPro
 
   const calendarDays = useMemo(() => {
     const days: { day: number | null; event: SpiritualDate | undefined }[] = [];
-
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push({ day: null, event: undefined });
     }
-
     for (let day = 1; day <= daysInMonth; day++) {
       const event = getSpiritualEventForDate(currentYear, currentMonth, day, SPIRITUAL_DATES);
       days.push({ day, event });
     }
-
     return days;
   }, [currentYear, currentMonth, daysInMonth, firstDayOfMonth]);
 
-  const goToPreviousMonth = () => {
-    setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
-  };
-
-  const goToNextMonth = () => {
-    setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
-  };
-
-  const goToToday = () => {
-    setCurrentDate(new Date());
-  };
-
-  const handleEventClick = (event: SpiritualDate) => {
-    setSelectedEvent(event);
-  };
-
-  const closeEventDetail = () => {
-    setSelectedEvent(null);
-  };
+  const goToPreviousMonth = () => setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
+  const goToNextMonth = () => setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
+  const goToToday = () => setCurrentDate(new Date());
+  const handleEventClick = (event: SpiritualDate) => setSelectedEvent(event);
+  const closeEventDetail = () => setSelectedEvent(null);
 
   return (
-    <Card className={`bg-slate-900/50 border-slate-700/50 ${className}`}>
-      <CardHeader className="pb-4">
+    <Card className={cn('card-spiritual relative overflow-hidden', className)}>
+      {/* Sacred corner decorations */}
+      <SacredCornerSVG className="sacred-corner sacred-corner-tl text-purple-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-tr text-amber-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-bl text-purple-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-br text-amber-500 hidden md:block" />
+
+      <CardHeader className="pb-4 relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-purple-500/20">
@@ -268,87 +181,66 @@ export function CalendarioEspiritual({ className = '' }: CalendarioEspiritualPro
               Calendário Espiritual
             </CardTitle>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={goToToday}
-            className="text-slate-400 hover:text-slate-100"
-          >
+          <Button variant="ghost" size="sm" onClick={goToToday} className="text-slate-400 hover:text-slate-100">
             Hoje
           </Button>
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="relative z-10">
         <div className="flex items-center justify-between mb-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goToPreviousMonth}
-            className="h-8 w-8 text-slate-400 hover:text-slate-100"
-          >
+          <Button variant="ghost" size="icon" onClick={goToPreviousMonth} className="h-8 w-8 text-slate-400 hover:text-slate-100">
             <ChevronLeft className="w-4 h-4" />
           </Button>
-
           <h3 className="text-base font-medium text-slate-100">
             {MONTH_NAMES[currentMonth]} {currentYear}
           </h3>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goToNextMonth}
-            className="h-8 w-8 text-slate-400 hover:text-slate-100"
-          >
+          <Button variant="ghost" size="icon" onClick={goToNextMonth} className="h-8 w-8 text-slate-400 hover:text-slate-100">
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
 
+        {/* Day headers */}
         <div className="grid grid-cols-7 gap-1 mb-2">
           {WEEKDAYS.map((day) => (
-            <div
-              key={day}
-              className="text-center text-xs font-medium text-slate-500 py-2"
-            >
+            <div key={day} className="text-center text-xs font-medium text-slate-500 py-2">
               {day}
             </div>
           ))}
         </div>
 
+        {/* Calendar grid */}
         <div className="grid grid-cols-7 gap-1">
           {calendarDays.map((item, index) => {
             if (item.day === null) {
               return <div key={`empty-${index}`} className="aspect-square" />;
             }
 
-            const isToday = isSameDay(
-              new Date(currentYear, currentMonth, item.day),
-              new Date()
-            );
+            const isToday = isSameDay(new Date(currentYear, currentMonth, item.day), new Date());
             const hasEvent = !!item.event;
 
             return (
               <div
                 key={`day-${item.day}`}
-                className={`
-                  aspect-square flex flex-col items-center justify-center rounded-lg
-                  text-sm font-medium transition-all cursor-pointer
-                  ${isToday ? 'bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50' : 'text-slate-300 hover:bg-slate-800'}
-                  ${hasEvent ? 'font-semibold' : ''}
-                `}
+                className={cn(
+                  'aspect-square flex flex-col items-center justify-center rounded-lg',
+                  'text-sm font-medium transition-all cursor-pointer',
+                  'hover:bg-slate-800/80',
+                  isToday ? 'bg-purple-500/30 text-purple-300 ring-1 ring-purple-500/50' : 'text-slate-300',
+                  hasEvent && 'font-semibold'
+                )}
                 onClick={() => item.event && handleEventClick(item.event)}
               >
                 <span>{item.day}</span>
                 {hasEvent && (
-                  <div
-                    className={`w-1.5 h-1.5 rounded-full mt-0.5 bg-${hasEvent ? item.event!.type.split(' ')[0].replace('bg-', '') : 'purple'}-500`}
-                  />
+                  <div className="w-1.5 h-1.5 rounded-full mt-0.5 bg-purple-500/70" />
                 )}
               </div>
             );
           })}
         </div>
 
+        {/* Month events */}
         {monthEvents.length > 0 && (
           <div className="mt-6">
             <h4 className="text-sm font-medium text-slate-300 mb-3">
@@ -359,24 +251,18 @@ export function CalendarioEspiritual({ className = '' }: CalendarioEspiritualPro
                 <button
                   key={event.id}
                   onClick={() => handleEventClick(event)}
-                  className={`
-                    w-full flex items-center gap-3 p-3 rounded-lg border
-                    transition-all text-left
-                    ${EVENT_COLORS[event.type]}
-                  `}
+                  className={cn(
+                    'w-full flex items-center gap-3 p-3 rounded-lg border',
+                    'transition-all text-left',
+                    EVENT_COLORS[event.type]
+                  )}
                 >
                   {EVENT_ICONS[event.type]}
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-slate-100 truncate">
-                      {event.title}
-                    </p>
-                    <p className="text-xs text-slate-400 truncate">
-                      {event.description}
-                    </p>
+                    <p className="font-medium text-slate-100 truncate">{event.title}</p>
+                    <p className="text-xs text-slate-400 truncate">{event.description}</p>
                   </div>
-                  <span className="text-xs text-slate-400">
-                    {event.date.getDate()}
-                  </span>
+                  <span className="text-xs text-slate-400">{event.date.getDate()}</span>
                 </button>
               ))}
             </div>
@@ -386,38 +272,28 @@ export function CalendarioEspiritual({ className = '' }: CalendarioEspiritualPro
         {monthEvents.length === 0 && (
           <div className="mt-6 text-center py-8">
             <Sparkles className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-            <p className="text-sm text-slate-500">
-              Nenhum evento espiritual neste mês
-            </p>
+            <p className="text-sm text-slate-500">Nenhum evento espiritual neste mês</p>
           </div>
         )}
       </CardContent>
 
+      {/* Event detail modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-xl border border-slate-700 max-w-md w-full p-6">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" onClick={closeEventDetail}>
+          <div className="bg-slate-800 rounded-xl border border-slate-700 max-w-md w-full p-6" onClick={e => e.stopPropagation()}>
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div
-                  className={`p-2 rounded-lg ${EVENT_COLORS[selectedEvent.type].split(' ')[0]}`}
-                >
+                <div className={cn('p-2 rounded-lg border', EVENT_COLORS[selectedEvent.type].split(' ').slice(0, 2).join(' '))}>
                   {EVENT_ICONS[selectedEvent.type]}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-slate-100">
-                    {selectedEvent.title}
-                  </h3>
+                  <h3 className="text-lg font-semibold text-slate-100">{selectedEvent.title}</h3>
                   <p className="text-sm text-slate-400">
                     {selectedEvent.date.getDate()} de {MONTH_NAMES[selectedEvent.date.getMonth()]}
                   </p>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={closeEventDetail}
-                className="text-slate-400 hover:text-slate-100"
-              >
+              <Button variant="ghost" size="icon" onClick={closeEventDetail} className="text-slate-400 hover:text-slate-100">
                 ×
               </Button>
             </div>
@@ -426,19 +302,12 @@ export function CalendarioEspiritual({ className = '' }: CalendarioEspiritualPro
 
             {selectedEvent.significance && (
               <div className="bg-slate-900/50 rounded-lg p-3">
-                <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">
-                  Significado
-                </p>
-                <p className="text-sm text-purple-300">
-                  {selectedEvent.significance}
-                </p>
+                <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Significado</p>
+                <p className="text-sm text-purple-300">{selectedEvent.significance}</p>
               </div>
             )}
 
-            <Badge
-              variant="outline"
-              className={`mt-4 ${EVENT_COLORS[selectedEvent.type]}`}
-            >
+            <Badge variant="outline" className={cn('mt-4', EVENT_COLORS[selectedEvent.type])}>
               {EVENT_LABELS[selectedEvent.type]}
             </Badge>
           </div>
