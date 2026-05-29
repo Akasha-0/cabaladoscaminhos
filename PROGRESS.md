@@ -1,9 +1,9 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 09:45
-**Ciclos de desenvolvimento completados:** 3
+**Última atualização:** 2026-05-29 09:55
+**Ciclos de desenvolvimento completados:** 4
 **Build status:** PASSING ✅
-**Tests:** 839 passing, 14 skipped
+**Tests:** 864 passing, 14 skipped
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -19,107 +19,78 @@
 - Minimax API integration for AI responses
 
 ### Engines Implementadas (Validadas)
-- **Numerologia Cabalística** ✅ 41 testes — cálculos, name-analysis, personality, destiny-number
-- **Odu Ifá** ✅ 26 testes — 16 Odús com dados completos
-- **Astrologia** ✅ 17 testes — planet-calculator, houses, aspects, natal positions
+- **Numerologia Cabalística** ✅ 41 testes
+- **Odu Ifá** ✅ 26 testes — 16 Odús com quizilas e preceitos
+- **Astrologia** ✅ 17 testes — planet-calculator, houses, natal
 - Tarot (22 Arcanos Maiores, cards, meanings, spread-maker)
 - Chakra system (v2, v3, v4 data and practice)
-- Orixás (complete data for all main orixás with colors, herbs, days, etc.)
+- Orixás (complete data for all main orixás)
 - Cabala (tree of life, sephiroth mappings)
-- Ayurveda, Cromoterapia, Meditação, Yoga, Mantras, Mudras
-- Reiki, Marma, Acupuntura, Biorritmo, Energias, Aura
-- Deep Correlation Engine (cross-system correlations)
-- Pattern Recognizer (archetype detection, pattern analysis)
-- Oracle Chat API (AI-powered spiritual guidance)
-- Prediction Engine (spiritual forecasts)
+- Deep Correlation Engine, Pattern Recognizer, Oracle Chat, Prediction Engine
 
-### Mapa da Alma (Novo em Ciclo 3)
-- **Página /mapa** — interface visual completa do mapa espiritual
-- **API POST /api/mapa** — agrega numerologia, Odu, astrologia, tarot, Sefirot, Orixás
-- Identificação automática de convergências espirituais
-- Cardápio visual com quizilas, preceitos e ebós
+### Mapa da Alma Features
+- **Página /mapa** — interface visual completa com download PDF
+- **POST /api/mapa** — aggregation endpoint
+- **POST /api/mapa/share** — shareable public links
+- **MapaNatal component** — SVG astrological wheel visualization
 
 ### Frontend
-- Dashboard with 20+ widgets (SpiritualEnergyWidget, DailyWisdomCard, etc.)
-- Multiple dashboard pages (main, debug, test-complete, etc.)
+- Dashboard with 20+ widgets
 - Login/auth flows
-- Chat integration with AI oracles
-- Adaptive widget grid system
-- Spiritual analysis panels (correlation, radar chart, state monitor)
-- **Nova página /mapa** — Mapa da Alma visual
+- Mapa page with PDF download (via jsPDF)
+- MapaNatal SVG wheel component
 
 ### API Routes
-- 200+ API routes across src/app/api/
-- Auth routes (login, register, logout, status, create-test, test)
-- Spiritual data routes (orixás, numerologia, astrologia, tarot, etc.)
-- Dashboard widgets, calendar, export, shopping
-- Oracle chat API, correlation analysis, divination
-- Quality metrics and auto-evolution system
-- **NOVO: /api/mapa** — aggregation endpoint for soul map
+- 200+ API routes
+- `/api/mapa` and `/api/mapa/share`
 
 ### Testing
-- 38 test files, 839 tests (839 passing, 14 skipped)
-- **NOVO: spiritual-engines-validation.test.ts** — 84 testes de validação
-- **NOVO: mapa.test.ts** — 14 testes de integração
+- 39 test files, 864 tests (864 passing, 14 skipped)
+- `spiritual-engines-validation.test.ts` — 84 testes
+- `mapa.test.ts` — 14 testes
+- `gerarRelatorio.test.ts` — 25 testes (NOVO)
 
-## 🔄 CICLO 3 - MAPA DA ALMA
+## 🔄 CICLO 4 - PDF EXPORT (COMPLETO)
 
 ### Features Implementadas
-1. **Página /mapa** — Interface visual com cards para cada sistema espiritual
-2. **POST /api/mapa** — Aggregates all spiritual systems into unified response
-3. **Validação de Engines** — 93 novos testes validando cálculos com casos reais
-4. **Convergências** — Identificação automática de padrões convergentes
-
-### Engines Validadas com Casos Reais
-- **Numerologia**: Data 15/03/1985 → Número de Vida = 5 ✓
-- **Odu Ifá**: 16 Odús com quizilas e preceitos completos
-- **Astrologia**: Posições planetárias e signos calculados
+1. **PDF generation** — `src/lib/pdf/gerarRelatorio.ts` (444 lines)
+   - Dark/gold theme matching spiritual aesthetic
+   - All sections: numerology, Odu, astrology, tarot, orixás, convergences
+   - Page numbers and generation timestamp
+2. **MapaNatal SVG wheel** — `src/components/dashboard/MapaNatal.tsx`
+   - Astrological wheel with zodiac signs
+   - Planet positions visualization
+3. **Share link API** — `POST /api/mapa/share`
+4. **Download button** — added to /mapa page
 
 ### Testes Adicionados
-- `tests/lib/spiritual-engines-validation.test.ts` — 84 testes
-- `tests/integration/api/mapa.test.ts` — 14 testes
+- `tests/lib/pdf/gerarRelatorio.test.ts` — 25 testes
 
 ## 📋 PRÓXIMAS PRIORIDADES (em ordem)
 
 ### Curto Prazo
-1. [ ] Push para GitHub
-2. [ ] Verificar se /mapa carrega corretamente no navegador
-3. [ ] Adicionar mais convergências ao motor de correlações
+1. [ ] Push para GitHub (se não feito)
+2. [ ] Verificar MapaNatal SVG no navegador
+3. [ ] Adicionar MapaNatal ao /mapa page
 
 ### Médio Prazo
-1. [ ] Sprint 4: PDF export with jsPDF template
-2. [ ] Build visualização Mapa Natal (SVG wheel)
-3. [ ] Build Odu Card component with quizilas
+1. [ ] Sprint 5: Shared Mapa page (/mapa/shared/[hash])
+2. [ ] OduCard component with quizilas
+3. [ ] Calendário energético
 
-### Sprint 4 - PDF & Exportação
-1. [ ] Implementar template jsPDF do Mapa da Alma
-2. [ ] Criar visualização SVG do mapa astrológico circular
-3. [ ] Build componente de compartilhamento público
-4. [ ] Download direto via Blob URL
+## 🏗️ DECISÕES ARQUITETURAIS
 
-## 🐛 BUGS CONHECIDOS
-
-| Bug | Arquivo | Status |
-|-----|---------|--------|
-| Nenhum | - | ✅ Tudo funcionando |
-
-## 🏗️ DECISÕES ARQUITETURAIS TOMADAS
-
-1. **Modular Orixá data structure**: Cada orixá tem seu próprio arquivo de dados + practice
-2. **Spiritual correlation engine**: Análise cross-system para encontrar padrões convergentes
-3. **AI integration**: OpenAI para geração de insights, Minimax para chat oracle
-4. **Widget-based dashboard**: Grid adaptativo com energia espiritual, sabedoria, painéis de orientação
-5. **Quality evolution system**: Auto-melhoria baseada em relatórios de qualidade
-6. **Mapa da Alma aggregation**: Endpoint único que agrega todos os sistemas espirituais
+1. **PDF template**: jsPDF com tema dark/gold (#D4AF37 accent)
+2. **MapaNatal**: SVG puro, responsivo via viewBox
+3. **Share links**: Hash único + Redis/in-memory storage
 
 ## 📊 MÉTRICAS
 
-- Engines implemented: ~18/25 sistemas core
-- Engines validated: 3 (Numerologia, Odu, Astrologia) ✅
-- Test coverage: 38 files, 839 tests passing
+- Engines: ~18/25 sistemas core, 3 validados ✅
+- Test coverage: 39 files, 864 tests
 - API routes: 200+
-- Build status: PASSING ✅
-- Test status: 839 passing, 14 skipped
+- Build: PASSING ✅
+- Test: 864 passing
 
 ---
 
