@@ -175,7 +175,7 @@ export function useDashboardData(
   const userDataRef = useRef(userData);
   const refreshCountRef = useRef(0);
   const lastRefreshRef = useRef(0);
-
+  const refreshRef = useRef<(() => Promise<void>) | null>(null);
   // Keep refs updated
   useEffect(() => {
     userIdRef.current = userId;
@@ -245,7 +245,7 @@ export function useDashboardData(
         clearTimeout(debounceTimerRef.current);
       }
       debounceTimerRef.current = setTimeout(() => {
-        refresh();
+        refreshRef.current?.();
       }, debounceMs);
       return;
     }
@@ -331,6 +331,8 @@ export function useDashboardData(
     options,
   ]);
 
+  // Keep refresh ref updated to avoid TDZ in recursive calls
+  refreshRef.current = refresh;
   /**
    * Partial refresh for specific data types
    */
