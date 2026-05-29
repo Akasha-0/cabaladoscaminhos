@@ -1,7 +1,7 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
 **Última atualização:** 2026-05-29
-**Ciclos de desenvolvimento completados:** 16
+**Ciclos de desenvolvimento completados:** 17
 **Build status:** PASSING ✅
 **Tests:** 997 passing, 14 skipped (56 test files)
 
@@ -24,7 +24,7 @@
 - **Astrologia** ✅ 17 testes
 - Deep Correlation Engine, Oracle Chat, Prediction Engine
 
-### Dashboard Widgets (34+ widgets)
+### Dashboard Widgets (35+ widgets)
 | Widget | Descrição |
 |--------|-----------|
 | RealtimeEnergyWidget | Energia espiritual |
@@ -56,6 +56,7 @@
 | ProgressChart | Gráfico SVG de evolução semanal |
 | SessionInsightsPanel | Insights de sessão |
 | MeditationStats | Estatísticas de meditação |
+| LanguageSwitcher | Trocador de idioma pt-BR/en |
 
 ### Sistema de Correlações (IDEIA.md)
 - 7 dias da semana com Orixás, Chakras, Planetas, Sefirot
@@ -74,6 +75,11 @@
 | `/onboarding` | Cadastro |
 | `/analytics` | Estatísticas espirituais |
 
+### i18n (Sprint 17)
+- Full pt-BR locale (242 lines) with spiritual terminology
+- Full en locale (242 lines) with spiritual terminology
+- LanguageSwitcher UI component with flag icons
+
 ### PWA Features
 - Manifest com shortcuts
 - Service Worker com cache
@@ -88,11 +94,12 @@
 | 10 | Deployment (Docker) | ✅ COMPLETO |
 | 11-15 | Dashboard Enhancement (Widgets, AI, Notifications, Wellness) | ✅ COMPLETO |
 | 16 | Analytics Dashboard (StatsOverview, ProgressChart, SessionInsights, MeditationStats) | ✅ COMPLETO |
+| 17 | Multi-language support (i18n) | ✅ COMPLETO |
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
 ### Opcional
-1. [ ] Multi-language support (i18n)
+All optional items completed. Project is feature-complete.
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -105,9 +112,9 @@
 
 - Engines: ~18 sistemas espirituais
 - Test coverage: 56 files, 997 tests passing
-- Dashboard widgets: 34+
+- Dashboard widgets: 35+
 - Build: PASSING ✅
-- **16 Sprints Completados** 🎉
+- **17 Sprints Completados** 🎉
 
 ---
 
