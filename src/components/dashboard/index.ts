@@ -47,10 +47,18 @@ export {
 export {
   DailyWisdomCard,
 } from './DailyWisdomCard';
+
 export {
   JourneyTracker,
   type JourneyTrackerProps,
 } from './JourneyTracker';
+
+export {
+  MapaNatalWheel,
+  type MapaNatalWheelProps,
+  type PlanetPosition,
+  type HouseCusps,
+} from './MapaNatalWheel';
 
 export {
   PredictiveInsightsPanel,
@@ -122,7 +130,7 @@ export {
 
 export {
   SpiritualStateMonitor,
- type SpiritualStateMonitorProps,
+  type SpiritualStateMonitorProps,
   type SpiritualState,
   type MoonPhaseInfluence,
   type OrixaOfTheDay,

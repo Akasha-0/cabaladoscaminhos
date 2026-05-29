@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skull, Sparkles, Star, Sun, Moon, Zap, Download } from 'lucide-react';
-import { gerarRelatorioPDF } from '@/lib/pdf/gerarRelatorio';
+import MapaNatal from '@/components/dashboard/MapaNatal';
 
 interface MapaData {
   id: string;
@@ -26,6 +26,10 @@ interface MapaData {
     signo: string;
     ascendente: string;
     planetas: Record<string, string>;
+   planeta?: Record<string, { planeta: string; longitude: number; latitude: number; distancia: number; velocidade: number; signo: string; casa: number; grauNoSigno: number }>;
+   casas?: Array<{ numero: number; signo: string; grauNoSigno: number }>;
+   ascendenteDegree?: number;
+   mediumCoeli?: number;
   };
   tarot: {
     carta_nascimento: number;
@@ -275,6 +279,26 @@ export default function MapaPage() {
                 <span className="text-slate-400">Ascendente</span>
                 <span className="text-slate-300">{mapa.astrologia.ascendente}</span>
               </div>
+              {mapa.astrologia.planeta && (
+                <div className="mt-4 flex justify-center">
+                  <MapaNatal
+                    mapaNatal={{
+                      usuarioId: mapa.id,
+                      dataCalculo: new Date(mapa.created_at),
+                      planeta: mapa.astrologia.planeta as any,
+                      casas: (mapa.astrologia.casas || []) as any,
+                      ascendente: mapa.astrologia.ascendenteDegree || 0,
+                      mediumCoeli: mapa.astrologia.mediumCoeli || 0,
+                      nodes: {
+                        norte: { planeta: 'node_norte' as const, longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'aries' as const, casa: 1, grauNoSigno: 0 },
+                        sul: { planeta: 'node_sul' as const, longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'aries' as const, casa: 7, grauNoSigno: 0 },
+                      },
+                    }}
+                    size={300}
+                    className="mx-auto"
+                  />
+                </div>
+              )}
             </CardContent>
           </Card>
 

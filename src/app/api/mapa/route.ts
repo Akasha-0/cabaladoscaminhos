@@ -103,26 +103,59 @@ function calcAstrologia(dateStr: string, hora?: string, local?: string) {
   const birthDate = buildBirthDateTime(dateStr, hora);
   const coords = getCityCoords(local);
   const positions = getPositions(birthDate);
-
   const planetMap: Record<string, string> = {};
   for (const p of positions) {
     planetMap[p.planet] = signoToPortuguese(p.sign);
   }
-
   let ascendente = 'N/A';
+  let ascendenteDegree = 0;
+  let mediumCoeliDegree = 0;
+  let casas: Array<{ numero: number; signo: Signo; grauNoSigno: number }> = [];
   if (coords) {
     try {
       const houses = calculateHouses(birthDate, birthDate, coords.lat, coords.lon, 'placidus');
       ascendente = getAscendenteSign(houses.asc);
+      ascendenteDegree = houses.asc;
+      mediumCoeliDegree = houses.mc;
+      casas = houses.cusp.map((deg, i) => {
+        const signIndex = Math.floor(deg / 30) % 12;
+        const signs: Signo[] = ['aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem', 'libra', 'escorpio', 'sagitario', 'capricornio', 'aquario', 'peixes'];
+        return {
+          numero: i + 1,
+          signo: signs[signIndex],
+          grauNoSigno: deg % 30,
+        };
+      });
     } catch {
       ascendente = 'N/A';
     }
   }
-
+  // Build full planet positions for MapaNatal wheel
+  const planeta: Record<string, { planeta: string; longitude: number; latitude: number; distancia: number; velocidade: number; signo: Signo; casa: number; grauNoSigno: number }> = {};
+  for (const p of positions) {
+    const planetSigns: Record<string, Signo> = {
+      sol: 'aries', lua: 'aries', mercurio: 'aries', venus: 'aries', marte: 'aries',
+      jupiter: 'aries', saturno: 'aries', urano: 'aries', netuno: 'aries', plutao: 'aries',
+    };
+    planeta[p.planet] = {
+      planeta: p.planet,
+      longitude: p.longitude,
+      latitude: p.latitude,
+      distancia: p.distance,
+      velocidade: p.velocity,
+      signo: p.sign,
+      casa: 1, // simplified
+      grauNoSigno: p.degree,
+    };
+  }
   return {
     signo: planetMap['sol'] ?? 'N/A',
     ascendente,
     planetas: planetMap,
+    planeta,
+    casas,
+    ascendenteDegree,
+    mediumCoeli: mediumCoeliDegree,
   };
 }
 

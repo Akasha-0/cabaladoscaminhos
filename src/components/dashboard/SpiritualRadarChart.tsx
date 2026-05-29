@@ -1,3 +1,15 @@
+
+// Sacred geometry corner decoration
+const SacredCornerSVG = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 2 L20 2 L20 5 L5 5 L5 20 L2 20 Z" fill="currentColor" opacity="0.3" />
+    <path d="M2 2 Q20 2 20 20" stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.5" />
+    <circle cx="2" cy="2" r="1.5" fill="currentColor" opacity="0.4" />
+    <circle cx="20" cy="2" r="1" fill="currentColor" opacity="0.3" />
+    <circle cx="2" cy="20" r="1" fill="currentColor" opacity="0.3" />
+  </svg>
+);
+
 'use client';
 
 import React, { useState, useMemo, useCallback } from 'react';
@@ -564,9 +576,15 @@ export function SpiritualRadarChart({
     });
   }, [currentLevels, previousLevels, defaultLevels, getLevelWithDefault]);
 
+
   return (
-    <Card className={cn('w-full', className)}>
-      <CardHeader className="pb-2">
+    <Card className={cn('card-spiritual overflow-hidden w-full', className)}>
+      {/* Sacred corner decorations */}
+      <SacredCornerSVG className="sacred-corner sacred-corner-tl text-violet-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-tr text-amber-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-bl text-purple-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-br text-violet-500 hidden md:block" />
+      <CardHeader className="pb-2 relative z-10">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg flex items-center gap-2">
             <svg className="w-5 h-5 text-violet-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -581,7 +599,7 @@ export function SpiritualRadarChart({
             {userData.nome}
           </Badge>
         </div>
-        
+
         {/* Tabs for different views */}
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)} className="mt-2">
           <TabsList className="grid w-full grid-cols-3 h-8">
@@ -592,7 +610,7 @@ export function SpiritualRadarChart({
         </Tabs>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 relative z-10">
         {/* SVG Radar Chart */}
         <div className="relative w-full max-w-md mx-auto">
           <svg 

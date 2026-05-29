@@ -606,3 +606,107 @@
 .animate-fade-in-scale {
   animation: fadeInScale 0.2s ease-out;
 }
+/* === DAY-PLANET-ORIXÁ SPIRITUAL COLOR SYSTEM === */
+/* Based on Afro-Brazilian spiritual calendar */
+:root {
+  /* Domingo - Sol/Xangô - Golden Yellow */
+  --orixa-sun: #D4A843;
+  --orixa-sun-light: #E8C878;
+  --orixa-sun-muted: rgba(212, 168, 67, 0.15);
+  --orixa-sun-glow: 0 0 20px rgba(212, 168, 67, 0.4);
+  /* Segunda - Lua/Iemanjá - Deep Blue */
+  --orixa-moon: #1E3A5F;
+  --orixa-moon-light: #2B5282;
+  --orixa-moon-muted: rgba(30, 58, 95, 0.15);
+  --orixa-moon-glow: 0 0 20px rgba(30, 58, 95, 0.4);
+  /* Terça - Marte/Iansã - Lava Orange */
+  --orixa-mars: #C45C26;
+  --orixa-mars-light: #E07040;
+  --orixa-mars-muted: rgba(196, 92, 38, 0.15);
+  --orixa-mars-glow: 0 0 20px rgba(196, 92, 38, 0.4);
+  /* Quarta - Mercúrio/Xangô - Amber */
+  --orixa-mercury: #F0B429;
+  --orixa-mercury-light: #F5C75A;
+  --orixa-mercury-muted: rgba(240, 180, 41, 0.15);
+  --orixa-mercury-glow: 0 0 20px rgba(240, 180, 41, 0.4);
+  /* Quinta - Júpiter/Oxóssi - Forest Green */
+  --orixa-jupiter: #2D6A4F;
+  --orixa-jupiter-light: #3D8A6F;
+  --orixa-jupiter-muted: rgba(45, 106, 79, 0.15);
+  --orixa-jupiter-glow: 0 0 20px rgba(45, 106, 79, 0.4);
+  /* Sexta - Vênus/Oxalá - Violet-White */
+  --orixa-venus: #7C6EB3;
+  --orixa-venus-light: #9A8ED4;
+  --orixa-venus-muted: rgba(124, 110, 179, 0.15);
+  --orixa-venus-glow: 0 0 20px rgba(124, 110, 179, 0.4);
+  /* Sábado - Saturno/Oxum - Rose */
+  --orixa-saturn: #D4728C;
+  --orixa-saturn-light: #E894A8;
+  --orixa-saturn-muted: rgba(212, 114, 140, 0.15);
+  --orixa-saturn-glow: 0 0 20px rgba(212, 114, 140, 0.4);
+  /* Common spiritual tokens */
+  --card-border-subtle: rgba(255, 255, 255, 0.08);
+  --card-gradient-from: rgba(139, 92, 246, 0.08);
+  --card-gradient-to: rgba(30, 27, 75, 0.3);
+}
+/* Sacred Geometry SVG Patterns */
+.sacred-circle {
+  position: relative;
+}
+.sacred-circle::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 168, 67, 0.15);
+  pointer-events: none;
+}
+.sacred-circle::after {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 1px dashed rgba(139, 92, 246, 0.1);
+  pointer-events: none;
+}
+/* Unified card wrapper with gradient border */
+.card-spiritual {
+  position: relative;
+  background: linear-gradient(135deg, var(--card-gradient-from), var(--card-gradient-to));
+  border: 1px solid var(--card-border-subtle);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+}
+.card-spiritual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(212, 168, 67, 0.2), transparent 50%, rgba(139, 92, 246, 0.15));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+/* Loading skeleton for spiritual components */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+.skeleton-spiritual {
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, rgba(212, 168, 67, 0.1) 50%, rgba(139, 92, 246, 0.1) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+/* Sacred geometry decorative corner */
+.sacred-corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+.sacred-corner-tl { top: 8px; left: 8px; }
+.sacred-corner-tr { top: 8px; right: 8px; transform: scaleX(-1); }
+.sacred-corner-bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
+.sacred-corner-br { bottom: 8px; right: 8px; transform: scale(-1); }

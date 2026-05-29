@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { cn } from '@/lib/utils';
 import {
   Zap,
   Heart,
@@ -14,6 +15,7 @@ import {
   Sun,
   Clock,
 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { UserSpiritualData } from '@/lib/ai/insight-generator';
 import { getMoonPhaseForDate } from '@/lib/calendar/moon-phases';
 
@@ -145,12 +147,7 @@ function getOrixaOfTheDay(): OrixaOfTheDay {
 // SUB-COMPONENTS
 // ============================================================
 
-interface GaugeBarProps {
-  state: SpiritualState;
-  index: number;
-}
-
-function GaugeBar({ state, index }: GaugeBarProps) {
+function GaugeBar({ state, index }: { state: SpiritualState; index: number }) {
   const [animatedWidth, setAnimatedWidth] = useState(0);
   const colors = STATE_COLORS[state.color];
   const percentage = (state.value / state.max) * 100;
@@ -172,14 +169,17 @@ function GaugeBar({ state, index }: GaugeBarProps) {
             {getTrendIcon(state.trend)}
             <span className="text-xs text-slate-500 dark:text-slate-400">{state.trendValue > 0 ? '+' : ''}{state.trendValue}%</span>
           </div>
-          <span className={`text-sm font-semibold ${colors.text}`}>{state.value}</span>
+          <span className={cn('text-sm font-semibold', colors.text)}>{state.value}</span>
         </div>
       </div>
       <div className="relative h-2.5 bg-slate-200/50 dark:bg-slate-700/50 rounded-full overflow-hidden">
-        <div className={`absolute inset-y-0 left-0 ${colors.fill} rounded-full transition-all duration-1000 ease-out shadow-lg ${colors.glow}`} style={{ width: `${animatedWidth}%` }}>
+        <div
+          className={cn('absolute inset-y-0 left-0 rounded-full transition-all duration-1000 ease-out shadow-lg', colors.fill)}
+          style={{ width: `${animatedWidth}%` }}
+        >
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
         </div>
-        <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${colors.bg}`} />
+        <div className={cn('absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300', colors.bg)} />
       </div>
       <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 pl-6">{state.description}</p>
     </div>
@@ -188,7 +188,7 @@ function GaugeBar({ state, index }: GaugeBarProps) {
 
 function MoonPhaseDisplay({ influence }: { influence: MoonPhaseInfluence }) {
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-100/50 dark:bg-slate-800/50 backdrop-blur-sm">
+    <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-100/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/30 dark:border-slate-700/30">
       <Moon className="w-6 h-6 text-slate-600 dark:text-slate-300" />
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
@@ -227,9 +227,22 @@ function TimeIndicator({ timeOfDay }: { timeOfDay: keyof typeof TIME_MODIFIERS }
   };
   const { icon: Icon, label, color } = config[timeOfDay];
   return (
-    <div className={`flex items-center gap-2 ${color}`}>
+    <div className={cn('flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/30', color)}>
       <Icon className="w-4 h-4" />
       <span className="text-xs font-medium">{label}</span>
+    </div>
+  );
+}
+
+// Loading skeleton
+function MonitorSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="h-12 rounded-lg skeleton-spiritual" />
+      <div className="h-12 rounded-lg skeleton-spiritual" />
+      <div className="h-10 rounded-lg skeleton-spiritual" />
+      <div className="h-10 rounded-lg skeleton-spiritual" />
+      <div className="h-10 rounded-lg skeleton-spiritual" />
     </div>
   );
 }
@@ -242,7 +255,6 @@ export function SpiritualStateMonitor({ userData, userId, className = '', refres
   const [currentTime, setCurrentTime] = useState(new Date());
   const [previousValues, setPreviousValues] = useState<Record<string, number>>({});
 
-  // Update time based on refreshInterval prop
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), refreshInterval);
     return () => clearInterval(interval);
@@ -289,33 +301,50 @@ export function SpiritualStateMonitor({ userData, userId, className = '', refres
 
   if (!userData || !userId) {
     return (
-      <div className={`p-4 rounded-xl bg-slate-100/50 dark:bg-slate-800/50 ${className}`}>
-        <p className="text-sm text-slate-500">Dados espirituais não disponíveis.</p>
-      </div>
+      <Card className={cn('card-spiritual p-4', className)}>
+        <MonitorSkeleton />
+      </Card>
     );
   }
 
   return (
-    <div className={`rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 p-5 shadow-xl ${className}`}>
-      <div className="flex items-center justify-between mb-5">
-        <div>
-          <h2 className="text-lg font-bold text-slate-800 dark:text-white">Monitor Espiritual</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">Atualizado em tempo real</p>
+    <Card className={cn('card-spiritual relative overflow-hidden', className)}>
+      {/* Sacred corner decorations */}
+      <div className="absolute top-0 left-0 w-10 h-10 pointer-events-none overflow-hidden">
+        <div className="absolute top-1 left-1 w-5 h-5 border-l border-t border-cyan-500/20 rounded-tl" />
+        <div className="absolute top-2 left-2 w-3 h-3 border-l border-t border-violet-500/15 rounded-tl" />
+      </div>
+      <div className="absolute top-0 right-0 w-10 h-10 pointer-events-none overflow-hidden">
+        <div className="absolute top-1 right-1 w-5 h-5 border-r border-t border-cyan-500/20 rounded-tr" />
+      </div>
+
+      <CardHeader className="pb-2 relative z-10">
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-violet-400" />
+              Monitor Espiritual
+            </CardTitle>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Atualizado em tempo real</p>
+          </div>
+          <TimeIndicator timeOfDay={timeOfDay} />
         </div>
-        <TimeIndicator timeOfDay={timeOfDay} />
-      </div>
-      <div className="mb-4"><OrixaIndicator orixa={orixaOfTheDay} /></div>
-      <div className="mb-5"><MoonPhaseDisplay influence={moonInfluence} /></div>
-      <div className="space-y-4">
-        {spiritualStates.map((state, index) => (<GaugeBar key={state.id} state={state} index={index} />))}
-      </div>
-      <div className="mt-4 pt-3 border-t border-slate-200/50 dark:border-slate-700/50">
-        <p className="text-xs text-slate-400 text-center">
-          Orixá Regente: <span className="text-cyan-400">{userData.orixaRegente || 'N/A'}</span>
-          {' • '}{currentTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-        </p>
-      </div>
-    </div>
+      </CardHeader>
+
+      <CardContent className="space-y-4 relative z-10">
+        <OrixaIndicator orixa={orixaOfTheDay} />
+        <MoonPhaseDisplay influence={moonInfluence} />
+        <div className="space-y-4">
+          {spiritualStates.map((state, index) => (<GaugeBar key={state.id} state={state} index={index} />))}
+        </div>
+        <div className="mt-4 pt-3 border-t border-slate-200/50 dark:border-slate-700/50">
+          <p className="text-xs text-slate-400 text-center">
+            Orixá Regente: <span className="text-cyan-400">{userData.orixaRegente || 'N/A'}</span>
+            {' • '}{currentTime.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

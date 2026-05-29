@@ -16,6 +16,38 @@ import {
   GitBranch,
   Hexagon,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+// Sacred geometry corner decoration SVG
+const SacredCornerSVG = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2 2 L20 2 L20 5 L5 5 L5 20 L2 20 Z" fill="currentColor" opacity="0.3" />
+    <path d="M2 2 Q20 2 20 20" stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.5" />
+    <circle cx="2" cy="2" r="1.5" fill="currentColor" opacity="0.4" />
+    <circle cx="20" cy="2" r="1" fill="currentColor" opacity="0.3" />
+    <circle cx="2" cy="20" r="1" fill="currentColor" opacity="0.3" />
+  </svg>
+);
+
+// Loading skeleton component
+function CorrelationSkeleton() {
+  return (
+    <div className="flex flex-col items-center justify-center h-80 gap-4">
+      <div className="relative w-48 h-48">
+        <div className="absolute inset-0 rounded-full border border-violet-500/20 animate-pulse" />
+        <div className="absolute inset-4 rounded-full border border-amber-500/20 animate-pulse" style={{ animationDelay: '150ms' }} />
+        <div className="absolute inset-8 rounded-full border border-purple-500/20 animate-pulse" style={{ animationDelay: '300ms' }} />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-amber-500/30 to-violet-500/30 animate-pulse" />
+        </div>
+      </div>
+      <div className="space-y-2 w-full px-4">
+        <div className="h-3 rounded skeleton-spiritual w-3/4 mx-auto" />
+        <div className="h-3 rounded skeleton-spiritual w-1/2 mx-auto" />
+      </div>
+    </div>
+  );
+}
 
 export interface SpiritualCorrelationVizProps {
   className?: string;
@@ -55,13 +87,13 @@ interface SephirotConnection {
   alignment: number;
 }
 
-const SYSTEM_COLORS: Record<SpiritualSystem, { primary: string; gradient: string; glow: string }> = {
-  numerologia: { primary: 'text-amber-400', gradient: 'from-amber-500/20 to-orange-500/20', glow: 'shadow-amber-500/30' },
-  astrologia: { primary: 'text-purple-400', gradient: 'from-purple-500/20 to-violet-500/20', glow: 'shadow-purple-500/30' },
-  ifa: { primary: 'text-emerald-400', gradient: 'from-emerald-500/20 to-green-500/20', glow: 'shadow-emerald-500/30' },
-  candomble: { primary: 'text-rose-400', gradient: 'from-rose-500/20 to-pink-500/20', glow: 'shadow-rose-500/30' },
-  tarot: { primary: 'text-indigo-400', gradient: 'from-indigo-500/20 to-blue-500/20', glow: 'shadow-indigo-500/30' },
-  cabala: { primary: 'text-yellow-400', gradient: 'from-yellow-500/20 to-amber-500/20', glow: 'shadow-yellow-500/30' },
+const SYSTEM_COLORS: Record<SpiritualSystem, { primary: string; gradient: string; glow: string; border: string }> = {
+  numerologia: { primary: 'text-amber-400', gradient: 'from-amber-500/20 to-orange-500/20', glow: 'shadow-amber-500/30', border: 'border-amber-500/30' },
+  astrologia: { primary: 'text-purple-400', gradient: 'from-purple-500/20 to-violet-500/20', glow: 'shadow-purple-500/30', border: 'border-purple-500/30' },
+  ifa: { primary: 'text-emerald-400', gradient: 'from-emerald-500/20 to-green-500/20', glow: 'shadow-emerald-500/30', border: 'border-emerald-500/30' },
+  candomble: { primary: 'text-rose-400', gradient: 'from-rose-500/20 to-pink-500/20', glow: 'shadow-rose-500/30', border: 'border-rose-500/30' },
+  tarot: { primary: 'text-indigo-400', gradient: 'from-indigo-500/20 to-blue-500/20', glow: 'shadow-indigo-500/30', border: 'border-indigo-500/30' },
+  cabala: { primary: 'text-yellow-400', gradient: 'from-yellow-500/20 to-amber-500/20', glow: 'shadow-yellow-500/30', border: 'border-yellow-500/30' },
 };
 
 const SYSTEM_ICONS: Record<SpiritualSystem, React.ReactNode> = {
@@ -105,7 +137,7 @@ function generateCorrelationNodes(): CorrelationNode[] {
   const centerX = 50;
   const centerY = 50;
   const radius = 35;
-  
+
   return systems.map((system, index) => {
     const angle = (index * 60 - 90) * (Math.PI / 180);
     return {
@@ -122,7 +154,7 @@ function generateCorrelationNodes(): CorrelationNode[] {
 function generateCorrelationLinks(nodes: CorrelationNode[]): CorrelationLink[] {
   const links: CorrelationLink[] = [];
   const systems = nodes.map(n => n.system);
-  
+
   for (let i = 0; i < systems.length; i++) {
     for (let j = i + 1; j < systems.length; j++) {
       if (Math.random() > 0.4) {
@@ -166,23 +198,32 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
 
   if (loading) {
     return (
-      <Card className={className}>
+      <Card className={cn('card-spiritual overflow-hidden', className)}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-amber-400" />
             Correlações Espirituais
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-center h-80">
-          <div className="animate-spin w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full" />
+        <CardContent className="relative">
+          <CorrelationSkeleton />
+          <SacredCornerSVG className="sacred-corner sacred-corner-tl text-amber-500" />
+          <SacredCornerSVG className="sacred-corner sacred-corner-tr text-violet-500" />
+          <SacredCornerSVG className="sacred-corner sacred-corner-bl text-purple-500" />
+          <SacredCornerSVG className="sacred-corner sacred-corner-br text-amber-500" />
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className={className}>
-      <CardHeader className="pb-3">
+    <Card className={cn('card-spiritual overflow-hidden', className)}>
+      {/* Sacred corner decorations */}
+      <SacredCornerSVG className="sacred-corner sacred-corner-tl text-amber-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-tr text-violet-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-bl text-purple-500 hidden md:block" />
+      <SacredCornerSVG className="sacred-corner sacred-corner-br text-amber-500 hidden md:block" />
+      <CardHeader className="pb-3 relative z-10">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-amber-400" />
@@ -193,7 +234,10 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
               variant={activeTab === 'radial' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setActiveTab('radial')}
-              className="h-8 text-xs"
+              className={cn(
+                'h-8 text-xs transition-all',
+                activeTab === 'radial' ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30' : 'text-slate-400 hover:text-slate-200'
+              )}
             >
               Radial
             </Button>
@@ -201,7 +245,10 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
               variant={activeTab === 'planets' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setActiveTab('planets')}
-              className="h-8 text-xs"
+              className={cn(
+                'h-8 text-xs transition-all',
+                activeTab === 'planets' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-slate-200'
+              )}
             >
               Planetas
             </Button>
@@ -209,19 +256,28 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
               variant={activeTab === 'sephirot' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => setActiveTab('sephirot')}
-              className="h-8 text-xs"
+              className={cn(
+                'h-8 text-xs transition-all',
+                activeTab === 'sephirot' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' : 'text-slate-400 hover:text-slate-200'
+              )}
             >
               Sephirot
             </Button>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 relative z-10">
         {activeTab === 'radial' && (
           <div className="relative">
-            <div className="bg-gradient-to-br from-slate-900 to-slate-950 rounded-xl p-4 h-80 flex items-center justify-center">
+            <div className="bg-gradient-to-br from-slate-900 to-slate-950 rounded-xl p-4 h-80 flex items-center justify-center relative overflow-hidden">
+              {/* Sacred geometry decorative rings */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-64 h-64 rounded-full border border-violet-500/10" />
+                <div className="absolute w-48 h-48 rounded-full border border-amber-500/10" />
+                <div className="absolute w-32 h-32 rounded-full border border-purple-500/10" />
+              </div>
               {/* SVG Radial Diagram */}
-              <svg className="w-full h-full" viewBox="0 0 100 100">
+              <svg className="w-full h-full relative z-10" viewBox="0 0 100 100">
                 {/* Gradient definitions */}
                 <defs>
                   <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
@@ -233,10 +289,10 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
                     <stop offset="100%" stopColor="#7c3aed" stopOpacity="0.6" />
                   </linearGradient>
                 </defs>
-                
+
                 {/* Center glow */}
                 <circle cx="50" cy="50" r="20" fill="url(#centerGlow)" />
-                
+
                 {/* Connection lines */}
                 {links.map((link, i) => {
                   const source = nodes.find(n => n.id === link.source);
@@ -256,11 +312,11 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
                     />
                   );
                 })}
-                
+
                 {/* Connection rings */}
                 <circle cx="50" cy="50" r="35" fill="none" stroke="#4338ca" strokeWidth="0.3" strokeDasharray="2 2" opacity="0.3" />
                 <circle cx="50" cy="50" r="25" fill="none" stroke="#7c3aed" strokeWidth="0.2" strokeDasharray="1 3" opacity="0.3" />
-                
+
                 {/* Nodes */}
                 {nodes.map((node) => {
                   const colors = SYSTEM_COLORS[node.system];
@@ -298,23 +354,23 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
                     </g>
                   );
                 })}
-                
+
                 {/* Center icon */}
                 <circle cx="50" cy="50" r="3" fill="#4338ca" opacity="0.8" />
                 <circle cx="50" cy="50" r="1.5" fill="#f59e0b" />
               </svg>
             </div>
-            
+
             {/* Selected node details */}
             {selectedNodeData && (
-              <div className={`absolute bottom-4 left-4 right-4 bg-slate-800/90 backdrop-blur-sm rounded-lg p-3 border ${SYSTEM_COLORS[selectedNodeData.system].primary.replace('text-', 'border-')}/30`}>
+              <div className={cn('absolute bottom-4 left-4 right-4 bg-slate-800/90 backdrop-blur-sm rounded-lg p-3 border', SYSTEM_COLORS[selectedNodeData.system].border)}>
                 <div className="flex items-center gap-2 mb-2">
                   <span className={SYSTEM_COLORS[selectedNodeData.system].primary}>
                     {SYSTEM_ICONS[selectedNodeData.system]}
                   </span>
                   <span className="font-semibold text-slate-200">{selectedNodeData.label}</span>
                 </div>
-                <div className="flex gap-4 text-sm">
+                <div className="flex flex-wrap gap-4 text-sm">
                   <div className="flex items-center gap-1">
                     <Zap className="w-4 h-4 text-amber-400" />
                     <span className="text-slate-400">Energia:</span>
@@ -336,7 +392,7 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
             {planetAlignments.map((alignment, i) => (
               <div
                 key={i}
-                className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 rounded-lg p-3 border border-slate-700/50 hover:border-purple-500/30 transition-colors"
+                className="bg-gradient-to-r from-slate-800/50 to-slate-900/50 rounded-lg p-3 border border-slate-700/50 hover:border-purple-500/30 transition-all"
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -359,9 +415,9 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
                     <span className="text-slate-300">{alignment.house}ª</span>
                   </div>
                 </div>
-                <div className="flex gap-1 mt-2">
+                <div className="flex flex-wrap gap-1 mt-2">
                   {alignment.relatedSystems.map((sys) => (
-                    <Badge key={sys} variant="secondary" className={`text-xs ${SYSTEM_COLORS[sys].primary}`}>
+                    <Badge key={sys} variant="secondary" className={cn('text-xs', SYSTEM_COLORS[sys].primary)}>
                       {SYSTEM_LABELS[sys]}
                     </Badge>
                   ))}
@@ -377,7 +433,7 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
               {sephirotConnections.map((sephira) => (
                 <div
                   key={sephira.name}
-                  className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-lg p-3 border border-yellow-500/20 hover:border-yellow-500/40 transition-colors"
+                  className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-lg p-3 border border-yellow-500/20 hover:border-yellow-500/40 transition-all"
                 >
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
@@ -409,7 +465,7 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
         <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-700/50">
           {Object.entries(SYSTEM_LABELS).map(([key, label]) => (
             <div key={key} className="flex items-center gap-1.5">
-              <div className={`w-3 h-3 rounded-full bg-gradient-to-br ${SYSTEM_COLORS[key as SpiritualSystem].gradient} border ${SYSTEM_COLORS[key as SpiritualSystem].primary.replace('text-', 'border-')}/50`} />
+              <div className={cn('w-3 h-3 rounded-full bg-gradient-to-br', SYSTEM_COLORS[key as SpiritualSystem].gradient, 'border', SYSTEM_COLORS[key as SpiritualSystem].border)} />
               <span className="text-xs text-slate-400">{label}</span>
             </div>
           ))}
