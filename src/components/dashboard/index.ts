@@ -157,9 +157,17 @@ export type {
   InsightData,
 } from '@/lib/ai/insights/types';
 
-export {
-  MapaNatalWheel,
-  type MapaNatalWheelProps,
-  type PlanetPosition,
-  type HouseCusps,
-} from './MapaNatalWheel';
+// PWA Components
+// PWA Components
+export { InstallPrompt } from './InstallPrompt';
+export { OfflineIndicator } from './OfflineIndicator';
+
+// Dashboard Layout Components
+export { DashboardLayout } from './DashboardLayout';
+export { SpiritualSidebar } from './SpiritualSidebar';
+export { DashboardHeader } from './DashboardHeader';
+export { EnergyIndicator } from './EnergyIndicator';
+export { NotificationBell } from './NotificationBell';
+export { UserProfileMenu } from './UserProfileMenu';
+export { MobileBottomNav } from './MobileBottomNav';
+export { QuickDivination } from './QuickDivination';

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Raleway, IM_Fell_English } from "next/font/google";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
 import "./globals.css";
@@ -30,6 +30,21 @@ const imFell = IM_Fell_English({
 export const metadata: Metadata = {
   title: "Cabala dos Caminhos",
   description: "Plataforma de autoconhecimento espiritual unificado",
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Cabala',
+  },
+  applicationName: 'Cabala dos Caminhos',
+};
+
+export const viewport: Viewport = {
+  themeColor: '#fbbf24',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

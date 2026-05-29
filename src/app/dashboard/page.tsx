@@ -1,54 +1,55 @@
-'use client'
+'use client';
 
-// This page shows content INSTANTLY - no loading, no checks
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
+import { RealtimeEnergyWidget } from '@/components/dashboard/RealtimeEnergyWidget';
+import { DailyWisdomCard } from '@/components/dashboard/DailyWisdomCard';
+import { QuickDivination } from '@/components/dashboard/QuickDivination';
+import { AIOracleChat } from '@/components/dashboard/AIOracleChat';
+import { PredictiveInsightsPanel } from '@/components/dashboard/PredictiveInsightsPanel';
+import { CorrelationViz } from '@/components/dashboard/CorrelationViz';
+import { MapaNatalWheel } from '@/components/dashboard/MapaNatalWheel';
+
 export default function Dashboard() {
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      background: '#0f172a', 
-      color: 'white', 
-      fontFamily: 'Arial, sans-serif',
-      padding: '2rem'
-    }}>
-      <h1 style={{ color: '#fbbf24', fontSize: '3rem', textAlign: 'center', marginBottom: '2rem' }}>
-        ✦ DASHBOARD ✦
-      </h1>
-      
-      <div style={{ 
-        maxWidth: '600px', 
-        margin: '0 auto',
-        background: '#1e293b',
-        padding: '2rem',
-        borderRadius: '1rem'
-      }}>
-        <h2 style={{ color: '#4ade80', fontSize: '2rem', textAlign: 'center', marginBottom: '1rem' }}>
-          ✅ FUNCIONANDO!
-        </h2>
+    <DashboardLayout>
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column - Energy + Mapa */}
+        <div className="lg:col-span-2 space-y-6">
+          <RealtimeEnergyWidget />
+          <MapaNatalWheel 
+            data={{
+              planets: [
+                { planeta: 'Sol', signo: 'aries', longitude: 24.5, latitude: 0, distancia: 1, velocidade: 1, casa: 1 },
+                { planeta: 'Lua', signo: 'cancer', longitude: 192.3, latitude: 0, distancia: 1, velocidade: 12, casa: 4 },
+                { planeta: 'Mercúrio', signo: 'touro', longitude: 72.1, latitude: 0, distancia: 1, velocidade: 2, casa: 2 },
+                { planeta: 'Vênus', signo: 'peixes', longitude: 320.8, latitude: 0, distancia: 1, velocidade: 1, casa: 7 },
+                { planeta: 'Marte', signo: 'escorpiao', longitude: 230.5, latitude: 0, distancia: 1, velocidade: 0.5, casa: 5 },
+              ],
+              ascendente: 45,
+              cusps: Array(12).fill(0).map((_, i) => i * 30 + 15),
+            }} 
+            size="md"
+          />
+          <CorrelationViz />
+        </div>
         
-        <p style={{ color: '#94a3b8', textAlign: 'center', marginBottom: '1rem' }}>
-          Se você está vendo esta página, o dashboard carregou!
-        </p>
-        
-        <div style={{ 
-          background: '#0f172a', 
-          padding: '1rem', 
-          borderRadius: '0.5rem',
-          marginTop: '1rem'
-        }}>
-          <p style={{ color: '#94a3b8' }}>
-            Logado como: <span style={{ color: 'white' }}>demo@cabala.com</span>
-          </p>
-          <p style={{ color: '#94a3b8' }}>
-            Nome: <span style={{ color: 'white' }}>demo</span>
-          </p>
+        {/* Right Column - Chat + Quick */}
+        <div className="space-y-6">
+          <DailyWisdomCard />
+          <QuickDivination />
         </div>
       </div>
       
-      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <p style={{ color: '#64748b' }}>
-          Esta página NÃO tem loading state, NÃO verifica auth, mostra conteúdo IMEDIATAMENTE.
-        </p>
+      {/* Second Row */}
+      <div className="mt-6">
+        <AIOracleChat />
       </div>
-    </div>
-  )
+      
+      {/* Insights */}
+      <div className="mt-6">
+        <PredictiveInsightsPanel />
+      </div>
+    </DashboardLayout>
+  );
 }
