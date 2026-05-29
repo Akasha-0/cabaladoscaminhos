@@ -144,7 +144,7 @@ function generateCorrelationNodes(): CorrelationNode[] {
       id: system,
       system,
       label: SYSTEM_LABELS[system],
-      value: Math.random() * 40 + 60,
+      value: ((system.length * 17 + index * 31) % 40) + 60,
       x: centerX + radius * Math.cos(angle),
       y: centerY + radius * Math.sin(angle),
     };
@@ -188,9 +188,9 @@ export function SpiritualCorrelationViz({ className = '', loading = false }: Spi
   const planetAlignments = useMemo(() => generatePlanetAlignments(), []);
 
   const sephirotConnections: SephirotConnection[] = useMemo(() => {
-    return SEPHIROT.map(s => ({
+    return SEPHIROT.map((s, i) => ({
       ...s,
-      alignment: Math.random() * 40 + 60,
+      alignment: ((s.name.length * 17 + i * 31) % 40) + 60,
     }));
   }, []);
 
