@@ -8,9 +8,11 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "*.supabase.co" },
     ],
+  },
   experimental: {
     optimizePackageImports: ['jspdf', 'lucide-react'],
   },
+  staticPageGenerationTimeout: 120,
 };
 
 export default nextConfig;
