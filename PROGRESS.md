@@ -1,9 +1,9 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 10:10
+**Última atualização:** 2026-05-29 10:20
 **Ciclos de desenvolvimento completados:** 4
 **Build status:** PASSING ✅
-**Tests:** 834 passing, 14 skipped (39 test files)
+**Tests:** 838 passing, 14 skipped (39 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -25,24 +25,21 @@
 - Tarot, Chakra system, Orixás, Cabala
 - Deep Correlation Engine, Pattern Recognizer, Oracle Chat, Prediction Engine
 
-### Mapa da Alma Features
+### Mapa da Alma Features (Sprint 4)
 - **Página /mapa** — interface visual completa com download PDF
 - **POST /api/mapa** — aggregation endpoint
 - **POST /api/mapa/share** — shareable public links
 - **MapaNatal component** — SVG astrological wheel
 - **OduCard component** — quizilas e preceitos
 
-### PDF Export (Sprint 4 Completo)
+### PDF Export
 - `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF
-- `src/components/dashboard/MapaNatal.tsx` — SVG wheel visualization
-- `src/components/dashboard/OduCard.tsx` — Odu display
 - Download button integrado na página /mapa
 
 ### Testing
-- 39 test files, 834 tests passing, 14 skipped
+- 39 test files, 838 tests passing, 14 skipped
 - spiritual-engines-validation.test.ts — 84 testes
 - mapa.test.ts — 14 testes
-- gerarRelatorio.test.ts — 25 testes
 
 ## 🔄 CICLO 4 - PDF EXPORT (COMPLETO)
 
@@ -74,7 +71,7 @@
 ## 📊 MÉTRICAS
 
 - Engines: ~18/25 sistemas, 3 validados ✅
-- Test coverage: 39 files, 834 tests
+- Test coverage: 39 files, 838 tests passing
 - API routes: 200+
 - Build: PASSING ✅
 
