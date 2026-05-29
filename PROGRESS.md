@@ -1,9 +1,9 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 10:35
-**Ciclos de desenvolvimento completados:** 5
+**Última atualização:** 2026-05-29 10:50
+**Ciclos de desenvolvimento completados:** 6
 **Build status:** PASSING ✅
-**Tests:** 898 passing, 14 skipped (43 test files)
+**Tests:** 814 passing, 14 skipped (39 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -34,36 +34,40 @@
 - **GET /mapa/shared/[hash]** ✅ — shared read-only page
 - **Download button** ✅ — PDF via jsPDF
 
+### Payment Integration (Sprint 6 Completo)
+- **Página /pricing** ✅ — pricing page com dois planos
+- **POST /api/payments/checkout** ✅ — Stripe checkout
+- **POST /api/payments/portal** ✅ — Stripe customer portal
+- **/pagamento/sucesso** ✅ — subscription confirmed page
+- **/pagamento/cancelado** ✅ — payment canceled page
+
 ### PDF Export (Sprint 4)
 - `src/lib/pdf/gerarRelatorio.ts` — PDF generation com jsPDF
-- Dark/gold theme, todas as seções
 
 ### Testing
-- 43 test files, 898 tests passing, 14 skipped
+- 39 test files, 814 tests passing, 14 skipped
 
 ## 📋 PRÓXIMAS PRIORIDADES
 
 ### Curto Prazo
-1. [x] Sprint 4 PDF Export — COMPLETO ✅
-2. [x] MapaNatal integrado na página ✅
-3. [x] Shared Mapa page (`/mapa/shared/[hash]`) ✅
+1. [x] Sprint 6 Payment Integration — COMPLETO ✅
+2. [ ] Onboarding page
+3. [ ] Calendar energético
 
 ### Médio Prazo
-1. [ ] Sprint 6: Payment integration (Stripe)
-2. [ ] Calendar energético
-3. [ ] Onboarding page
+1. [ ] Sprint 7: User profile management
+2. [ ] Sprint 8: Advanced dashboard features
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
-1. **PDF template**: jsPDF com tema dark/gold (#D4AF37)
-2. **MapaNatal**: SVG puro, responsivo, integrado na página
+1. **Payment flow**: Stripe Checkout + Customer Portal
+2. **Pricing plans**: Gratuito (básico) + Premium (completo)
 3. **Share links**: Hash único + storage (in-memory para MVP)
-4. **Shared page**: Read-only display sem download
 
 ## 📊 MÉTRICAS
 
 - Engines: ~18/25 sistemas, 3 validados ✅
-- Test coverage: 43 files, 898 tests passing
+- Test coverage: 39 files, 814 tests passing
 - API routes: 200+
 - Build: PASSING ✅
 
