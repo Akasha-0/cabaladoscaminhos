@@ -81,7 +81,7 @@ export default function PricingPage() {
       if (res.ok) {
         const data = await res.json()
         if (data.url) {
-          window.location.href = data.url
+          window.location.replace(data.url)
         }
       }
     } catch {
@@ -121,7 +121,7 @@ export default function PricingPage() {
                 Faça login para escolher um plano e desbloquear todo o potencial da Cabala dos Caminhos.
               </p>
               <Button
-                onClick={() => window.location.href = '/login'}
+                onClick={() => window.location.replace('/login')}
                 className="bg-amber-600 hover:bg-amber-700 text-white"
               >
                 Fazer Login
