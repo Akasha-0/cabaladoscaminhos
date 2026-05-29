@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import type { MapaNatal } from '@/lib/astrologia/tipos';
+import type { MapaNatal as MapaNatalData } from '@/lib/astrologia/tipos';
 
 export interface MapaNatalProps {
-  mapaNatal: MapaNatal;
+  mapaNatal: MapaNatalData;
   size?: number;
   className?: string;
-}
 
 // Zodiac signs in Portuguese with their degrees
 const ZODIAC_SIGNS = [
@@ -69,7 +68,7 @@ function getPosition(longitude: number, radius: number, cx: number, cy: number):
   };
 }
 
-export function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalProps) {
+export function MapaNatalWheel({ mapaNatal, size = 400, className = '' }: MapaNatalProps) {
   const center = size / 2;
   const outerRadius = size * 0.45;
   const innerRadius = size * 0.35;
@@ -378,4 +377,4 @@ export function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalPr
   );
 }
 
-export default MapaNatal;
+export { MapaNatalWheel as MapaNatal };
