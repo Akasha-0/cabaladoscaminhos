@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Star, Sun, Sparkles } from 'lucide-react';
+import { Home, Map, Calendar, CircleUser } from 'lucide-react';
 
 const ITEMS = [
-  { href: '/dashboard', icon: Home, label: 'Início' },
-  { href: '/dashboard/mapa', icon: Star, label: 'Mapa' },
-  { href: '/dashboard/tarot', icon: Sun, label: 'Tarot' },
-  { href: '/dashboard/oraculo', icon: Sparkles, label: 'Oráculo' },
+  { href: '/page', icon: Home, label: 'Home' },
+  { href: '/mapa', icon: Map, label: 'Mapa' },
+  { href: '/calendario', icon: Calendar, label: 'Calendário' },
+  { href: '/conta', icon: CircleUser, label: 'Conta' },
 ];
 
 export function MobileBottomNav() {
