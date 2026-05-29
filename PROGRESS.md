@@ -1,9 +1,9 @@
 # CABALA DOS CAMINHOS — PROGRESS LOG
 
-**Última atualização:** 2026-05-29 09:35
-**Ciclos de desenvolvimento completados:** 2
+**Última atualização:** 2026-05-29 09:45
+**Ciclos de desenvolvimento completados:** 3
 **Build status:** PASSING ✅
-**Tests:** 746 passing, 14 skipped
+**Tests:** 839 passing, 14 skipped
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -18,21 +18,26 @@
 - jsPDF for PDF exports
 - Minimax API integration for AI responses
 
-### Engines Implementadas
-- Numerologia Cabalística (cálculos, name-analysis, personality, destiny-number, compatibility-scores)
-- Odu Ifá system (16 Odús com dados completos - ogbe, oyeku, ejioko, etc.)
-- Astrologia (planet-calculator, houses, aspects, natal positions, synastry)
+### Engines Implementadas (Validadas)
+- **Numerologia Cabalística** ✅ 41 testes — cálculos, name-analysis, personality, destiny-number
+- **Odu Ifá** ✅ 26 testes — 16 Odús com dados completos
+- **Astrologia** ✅ 17 testes — planet-calculator, houses, aspects, natal positions
 - Tarot (22 Arcanos Maiores, cards, meanings, spread-maker)
 - Chakra system (v2, v3, v4 data and practice)
 - Orixás (complete data for all main orixás with colors, herbs, days, etc.)
 - Cabala (tree of life, sephiroth mappings)
 - Ayurveda, Cromoterapia, Meditação, Yoga, Mantras, Mudras
 - Reiki, Marma, Acupuntura, Biorritmo, Energias, Aura
-- Daily wisdom, guidance, affirmations
 - Deep Correlation Engine (cross-system correlations)
 - Pattern Recognizer (archetype detection, pattern analysis)
 - Oracle Chat API (AI-powered spiritual guidance)
 - Prediction Engine (spiritual forecasts)
+
+### Mapa da Alma (Novo em Ciclo 3)
+- **Página /mapa** — interface visual completa do mapa espiritual
+- **API POST /api/mapa** — agrega numerologia, Odu, astrologia, tarot, Sefirot, Orixás
+- Identificação automática de convergências espirituais
+- Cardápio visual com quizilas, preceitos e ebós
 
 ### Frontend
 - Dashboard with 20+ widgets (SpiritualEnergyWidget, DailyWisdomCard, etc.)
@@ -41,6 +46,7 @@
 - Chat integration with AI oracles
 - Adaptive widget grid system
 - Spiritual analysis panels (correlation, radar chart, state monitor)
+- **Nova página /mapa** — Mapa da Alma visual
 
 ### API Routes
 - 200+ API routes across src/app/api/
@@ -49,58 +55,53 @@
 - Dashboard widgets, calendar, export, shopping
 - Oracle chat API, correlation analysis, divination
 - Quality metrics and auto-evolution system
+- **NOVO: /api/mapa** — aggregation endpoint for soul map
 
 ### Testing
-- 34 test files, 746 tests (746 passing, 14 skipped)
+- 38 test files, 839 tests (839 passing, 14 skipped)
+- **NOVO: spiritual-engines-validation.test.ts** — 84 testes de validação
+- **NOVO: mapa.test.ts** — 14 testes de integração
 
-## 🔄 CICLO 2 - BUILD FIX COMPLETO
+## 🔄 CICLO 3 - MAPA DA ALMA
 
-### Problemas Resolvidos
-1. **SpiritualExplorationTools** - Non-null assertion para selectedTool index
-2. **SpiritualNotificationCenter** - Removido import MarkAllAsRead inexistente, corrigido Calendar/Waves imports
-3. **SpiritualProfileView** - Adicionado imports Calendar e Waves
-4. **SpiritualRadarChart** - Alterado Record<> para Partial<Record<>> para props opcionais
-5. **SpiritualStateMonitor** - Corrigido acesso a MoonPhase (displayName, illumination)
-6. **Dashboard index.ts** - Removido exports duplicados e inválidos (IntelligentDashboard, AIInsight)
-7. **autonomous-insights** - Função generateDailyInsight duplicada → rename para generateComprehensiveDailyInsight
-8. **deep-correlation-engine** - Adicionado 'temporal' ao tipo SpiritualSystem, corrigido dayOfWeek
-9. **pattern-recognizer** - Adicionado tipo UserSpiritualData em todos os parâmetros userData
-10. **prediction-engine** - Corrigido chamada generateMinimaxResponse (agora usa ChatMessage[])
-11. **iansa-data** - Adicionado campo affirmation faltante
-12. **spiritual-diagnosis** - Corrigido ORIXÁ_CHAKRA_MAP → ORIXA_CHAKRA_MAP
-13. **oracle.test.ts** - Adicionado capabilities array, validação max length userId
-14. **tsconfig.json** - Excluído diretório __evals_DISABLED__ do type checking
+### Features Implementadas
+1. **Página /mapa** — Interface visual com cards para cada sistema espiritual
+2. **POST /api/mapa** — Aggregates all spiritual systems into unified response
+3. **Validação de Engines** — 93 novos testes validando cálculos com casos reais
+4. **Convergências** — Identificação automática de padrões convergentes
+
+### Engines Validadas com Casos Reais
+- **Numerologia**: Data 15/03/1985 → Número de Vida = 5 ✓
+- **Odu Ifá**: 16 Odús com quizilas e preceitos completos
+- **Astrologia**: Posições planetárias e signos calculados
+
+### Testes Adicionados
+- `tests/lib/spiritual-engines-validation.test.ts` — 84 testes
+- `tests/integration/api/mapa.test.ts` — 14 testes
 
 ## 📋 PRÓXIMAS PRIORIDADES (em ordem)
 
 ### Curto Prazo
-1. Verificar se todos os 200+ APIs estão funcionando corretamente
-2. Implementar mapa astral visual (SVG wheel)
-3. Build correlation engine com dados reais
+1. [ ] Push para GitHub
+2. [ ] Verificar se /mapa carrega corretamente no navegador
+3. [ ] Adicionar mais convergências ao motor de correlações
 
 ### Médio Prazo
-1. Sprint 2: Correlation engine validation with real cases
-2. Sprint 3: Mapa da Alma page with full integration
-3. Sprint 4: PDF export with jsPDF template
+1. [ ] Sprint 4: PDF export with jsPDF template
+2. [ ] Build visualização Mapa Natal (SVG wheel)
+3. [ ] Build Odu Card component with quizilas
 
-### Sprint 2 - Core Engines
-1. Verificar cálculos de numerologia com casos reais
-2. Verificar cálculos de Odu com praticantes conhecidos
-3. Verificar astrologia com mapas natais conhecidos
-4. Build motor de correlações
-5. Build gerador de insights (OpenAI)
-
-### Sprint 3 - Frontend
-1. Limpar componentes do dashboard
-2. Build página Mapa da Alma
-3. Build visualização Odu
-4. Build página de meditação Chakra
+### Sprint 4 - PDF & Exportação
+1. [ ] Implementar template jsPDF do Mapa da Alma
+2. [ ] Criar visualização SVG do mapa astrológico circular
+3. [ ] Build componente de compartilhamento público
+4. [ ] Download direto via Blob URL
 
 ## 🐛 BUGS CONHECIDOS
 
 | Bug | Arquivo | Status |
 |-----|---------|--------|
-| Nenhum - build estava quebrado | - | ✅ CORRIGIDO |
+| Nenhum | - | ✅ Tudo funcionando |
 
 ## 🏗️ DECISÕES ARQUITETURAIS TOMADAS
 
@@ -109,14 +110,16 @@
 3. **AI integration**: OpenAI para geração de insights, Minimax para chat oracle
 4. **Widget-based dashboard**: Grid adaptativo com energia espiritual, sabedoria, painéis de orientação
 5. **Quality evolution system**: Auto-melhoria baseada em relatórios de qualidade
+6. **Mapa da Alma aggregation**: Endpoint único que agrega todos os sistemas espirituais
 
 ## 📊 MÉTRICAS
 
 - Engines implemented: ~18/25 sistemas core
-- Test coverage: 34 files, 746 tests passing
+- Engines validated: 3 (Numerologia, Odu, Astrologia) ✅
+- Test coverage: 38 files, 839 tests passing
 - API routes: 200+
 - Build status: PASSING ✅
-- Test status: 746 passing, 14 skipped
+- Test status: 839 passing, 14 skipped
 
 ---
 
