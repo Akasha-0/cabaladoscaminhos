@@ -188,8 +188,16 @@ export function SpiritualProgressWidget({ className = '', userId = 'default', us
   const [streak, setStreak] = React.useState(0);
   const [message, setMessage] = React.useState('');
 
-  // Use spiritual history hook for streak calculation
-  const { history, getStreak } = useSpiritualHistory();
+  // Store spiritual history values in state to avoid calling impure hook during render
+  const [history, setHistory] = React.useState<{ date: string; rituals: { completed: boolean; name: string }[]; divinations: unknown[] }[]>([]);
+  const [historyStreak, setHistoryStreak] = React.useState(0);
+
+  // Initialize spiritual history data in useEffect to avoid render-time impure calls
+  React.useEffect(() => {
+    const { history: h, getStreak: gs } = useSpiritualHistory();
+    setHistory(h);
+    setHistoryStreak(gs());
+  }, []);
 
   React.useEffect(() => {
     const loadProgress = async () => {
@@ -209,8 +217,7 @@ export function SpiritualProgressWidget({ className = '', userId = 'default', us
         } catch { /* use defaults */ }
       }
 
-      // Use spiritual history for streak
-      const historyStreak = getStreak();
+      // Use state from spiritual history for streak
       const currentStreak = historyStreak > 0 ? historyStreak : calculateStreak(completions);
       setStreak(currentStreak);
 
@@ -240,7 +247,7 @@ export function SpiritualProgressWidget({ className = '', userId = 'default', us
       setLoading('loaded');
     };
     loadProgress();
-  }, [userId, history, getStreak]);
+  }, [userId, history, historyStreak]);
 
   const totalProgress = metrics.length > 0 ? Math.round(metrics.reduce((acc, m) => acc + (m.value / m.max) * 100, 0) / metrics.length) : 0;
 

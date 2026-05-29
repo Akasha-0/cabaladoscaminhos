@@ -160,10 +160,10 @@ export function useDashboardData(
   const [data, setData] = useState<DashboardAggregatedData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const [connectionStatus, setConnectionStatus] = useState<ConnectionState>({
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionState>(() => ({
     status: 'connected',
     lastChecked: Date.now(),
-  });
+  }));
   const [isStale, setIsStale] = useState(false);
   const [partialLoad, setPartialLoad] = useState(false);
   const [errorBoundary, setErrorBoundary] = useState<ErrorBoundaryState>(createErrorBoundary);
