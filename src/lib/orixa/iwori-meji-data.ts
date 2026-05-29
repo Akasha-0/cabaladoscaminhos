@@ -91,15 +91,15 @@ const IWORI_MEJI_DATA: IworiMejiOdu = {
     },
     {
       type: 'Ebó de Longevidade',
-      description: 'Prática para Strengthen a saúde e estender a vida spiritual',
+      description: 'Prática para fortalecer a saúde e estender a vida espiritual',
       ingredients: ['Milho branco', 'Pepino', 'Velas brancas', 'Mel'],
       timing: 'Quarta-feira durante o dia',
-      intention: 'Invocar bênçãos de longevity e resistência física e espiritual',
+      intention: 'Invocar bênçãos de longevidade e resistência física e espiritual',
     },
     {
-      type: 'Ebó de Jornada do Seekor',
+      type: 'Ebó de Jornada do Buscador',
       description: 'Ritual para abrir o caminho da busca espiritual',
-      ingredients: ['Kolanut', 'Flores brancas', 'Carvão', 'Incenso de到老'],
+      ingredients: ['Kolanut', 'Flores brancas', 'Carvão', 'Incenso de alecrim'],
       timing: 'Quarta-feira ao entardecer',
       intention: 'Proteger a jornada do buscador e garantir que a verdade seja revelada',
     },
@@ -110,7 +110,7 @@ const IWORI_MEJI_DATA: IworiMejiOdu = {
     'Descuido com a saúde por excesso de trabalho',
     'Avidez por resultados imediatos',
     'Resistência a mudanças lentas e graduais',
-    'Desconfiança excessiva que bloqueia orientaço',
+    'Desconfiança excessiva que bloqueia orientação',
     'Teimosia em continuar o caminho errado',
     'Isolamento prolongado sem propósito',
   ],
@@ -127,7 +127,7 @@ const IWORI_MEJI_DATA: IworiMejiOdu = {
   weaknesses: [
     'Tendência ao isolamento excessivo quando ferido',
     'Dificuldade em confiar em outros após traições',
-    'Risco de melancolia por carregAR muitos fardos',
+    'Risco de melancolia por carregar muitos fardos',
     'Teimosia em padrões que já não servem',
     'Dificuldade em aceitar ajuda por orgulho',
     'Excesso de autocrítica e julgamento',
@@ -142,7 +142,7 @@ const IWORI_MEJI_DATA: IworiMejiOdu = {
   ],
   meanings: [
     'O caminho longo que o buscador percorre até encontrar a verdade',
-    'A paciência que transforma o crude em refinado',
+    'A paciência que transforma o cru em refinado',
     'O momento de silêncio onde a sabedoria se revela',
     'A jornada interior que fortalece o espírito',
     'A verdade que emerge após muito sofrimento',
@@ -150,7 +150,7 @@ const IWORI_MEJI_DATA: IworiMejiOdu = {
     'A conexão sagrada com aqueles que vieram antes',
   ],
   ifaMessage:
-    'Iwori Meji fala da jornada sagrada do buscador que deve atravessar many águas escuras para encontrar a verdade. Este Odu ensina que a sabedoria verdadeira não vem fácil, mas é conquistada através da paciência, da persistência e da disposição de enfrentar a solidão do caminho. Obatalá oferece a clareza do pensamento puro, enquanto Oxum oferece a sabedoria das águas que fluem com persistência. A verdadeiro força não está em evitar o sofrimento, mas em transformá-lo em compreensão profunda. Quem compreende Iwori Meji compreende que cada passo da jornada, mesmo os mais difíceis, tem um propósito divino. Aguarde com paciência, e a verdade se revelará no momento certo.',
+    'Iwori Meji fala da jornada sagrada do buscador que deve atravessar muitas águas escuras para encontrar a verdade. Este Odu ensina que a sabedoria verdadeira não vem fácil, mas é conquistada através da paciência, da persistência e da disposição de enfrentar a solidão do caminho. Obatalá oferece a clareza do pensamento puro, enquanto Oxum oferece a sabedoria das águas que fluem com persistência. A verdadeira força não está em evitar o sofrimento, mas em transformá-lo em compreensão profunda. Quem compreende Iwori Meji compreende que cada passo da jornada, mesmo os mais difíceis, tem um propósito divino. Aguarde com paciência, e a verdade se revelará no momento certo.',
   orixas: ['Obatalá', 'Oxum', 'Oduduwa', 'Orunmila'],
   sacredFrequencies: [
     '528 Hz - Frequência da cura e da verdade',

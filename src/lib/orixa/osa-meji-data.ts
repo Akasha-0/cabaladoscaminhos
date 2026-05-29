@@ -84,7 +84,7 @@ const OSA_MEJI_DATA: OsaMejiOdu = {
       intention: 'Pedir forças para atravessar desafios com graciosidade e sabedoria',
     },
     {
-      type: 'Ebó de Limpeza kármica',
+      type: 'Ebó de Limpeza Kármica',
       description: 'Oferecimento para dissolver barreiras e limpar caminhos bloqueados',
       ingredients: ['Água do mar', 'Sal grosso', 'Pepino', 'Flores brancas', 'Velas brancas'],
       timing: 'Lua cheia ou quarto minguante',
@@ -113,7 +113,7 @@ const OSA_MEJI_DATA: OsaMejiOdu = {
     'Fuga dos desafios sem enfrentá-los',
     'Avidez excessiva sem respeitar o tempo divino',
     'Orgulho de não pedir ajuda',
-    'Desconfiança na intervenção dos orixás',
+    'Desconfiança na intervenção dos orixás nos momentos difíceis',
   ],
   strengths: [
     'Capacidade de transformar obstáculos em degraus',
@@ -176,7 +176,7 @@ const OSA_MEJI_DATA: OsaMejiOdu = {
     'A tempestade passa e eu permaneço inteiro',
   ],
   meditation:
-    'Meditar sobre a imagem de uma embarcação pequena navegando por um mar revolto, sob um céu tempestuoso. No entanto, há uma luz dourada acima das nuvens que ilumina o caminho. A embarcação não fighta as ondas, mas as utiliza para avançar. Olokun surge das profundezas, segurando a embarcação com correntes de luz. Oyá dança nos ventos, dispersando as nuvens mais densas. Oxum flui ao lado, oferecendo refrescor quando as águas ameaçam secar a embarcação. Sinta-se nessa embarcação, confiando nos orixás que velam por você. Permita que as ondas façam seu trabalho de limpar o caminho, enquanto você mantém o leme firme na direção de sua verdade. A tempestade é temporária; sua essência é eterna.',
+    'Meditar sobre a imagem de uma embarcação pequena navegando por um mar revolto, sob um céu tempestuoso. No entanto, há uma luz dourada acima das nuvens que ilumina o caminho. A embarcação não luta contra as ondas, mas as utiliza para avançar. Olokun surge das profundezas, segurando a embarcação com correntes de luz. Oyá dança nos ventos, dispersando as nuvens mais densas. Oxum flui ao lado, oferecendo refrescor quando as águas ameaçam secar a embarcação. Sinta-se nessa embarcação, confiando nos orixás que velam por você. Permita que as ondas façam seu trabalho de limpar o caminho, enquanto você mantém o leme firme na direção de sua verdade. A tempestade é temporária; sua essência é eterna.',
 };
 
 export function getData(): OsaMejiOdu {

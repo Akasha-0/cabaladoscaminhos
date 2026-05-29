@@ -89,7 +89,7 @@ export function performPractice(): IronMejiPracticeResult {
     guidance: [
       'Honor the seed of every endeavor; Iron holds the space for creation to take root.',
       'Step into your path with strength; Meji illuminates, Iron anchors.',
-      'Allow space for creation; Iron's patience sustains the new light.',
+      'Allow space for creation; Iron patience sustains the new light.',
       'Receive the dawn without resistance; the Sacred Metal protects your path.',
       'Trust the cycle of beginning and completion; strength and light walk together.'
     ],

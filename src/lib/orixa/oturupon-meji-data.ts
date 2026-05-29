@@ -133,7 +133,7 @@ const OTURUPON_MEJI_DATA: OturuponMejiOdu = {
     'Medo de fazer escolhas erradas pode paralisar completamente',
   ],
   health: [
-    ' joelhos e articulações (caminhar e atravessar)',
+    'Joelhos e articulações (caminhar e atravessar)',
     'Pés (o caminho percorrido)',
     'Plexo Solar (poder de decisão)',
     'Mente (escolhas e caminhos)',
@@ -150,7 +150,7 @@ const OTURUPON_MEJI_DATA: OturuponMejiOdu = {
     'O portal entre o que foi e o que será',
   ],
   ifaMessage:
-    'Oturupon Meji fala do momento sagrado em que o indivíduo enfrenta uma encruzilhada do destino que determinará o curso de sua vida. Este Odu ensina que cada cruzamento é uma oportunidade de transformação, mas também um momento de teste de discernimento e coragem. Oxossi oferece a sabedoria do caçador que sabe escolher o caminho correto, enquanto Obaluayê oferece a capacidade de suportar as transformações necessárias para o crescimento. Iansã traz a coragem de atravessar os obstáculos sem medo. A verdadeira sabedoria não está em evitar os cruzamentos, mas em saber lê-los e agir com consciência e propósito. Quem compreende Oturupon Meji compreende que somos co-autores do nosso destino, capazes de transformar LIMITES em launchings para novos caminhos. Escolha com coração limpo, e o caminho se abrirá.',
+    'Oturupon Meji fala do momento sagrado em que o indivíduo enfrenta uma encruzilhada do destino que determinará o curso de sua vida. Este Odu ensina que cada cruzamento é uma oportunidade de transformação, mas também um momento de teste de discernimento e coragem. Oxossi oferece a sabedoria do caçador que sabe escolher o caminho correto, enquanto Obaluayê oferece a capacidade de suportar as transformações necessárias para o crescimento. Iansã traz a coragem de atravessar os obstáculos sem medo. A verdadeira sabedoria não está em evitar os cruzamentos, mas em saber lê-los e agir com consciência e propósito. Quem compreende Oturupon Meji compreende que somos co-autores do nosso destino, capazes de transformar limites em lançamentos para novos caminhos. Escolha com coração limpo, e o caminho se abrirá.',
   orixas: ['Oxossi', 'Obaluayê', 'Iansã'],
   sacredFrequencies: ['396 Hz', '417 Hz', '528 Hz'],
   chakra: '1º e 3º Chakra Raiz e Plexo Solar',
@@ -171,7 +171,7 @@ const OTURUPON_MEJI_DATA: OturuponMejiOdu = {
     'Meu destino se desdobra em meu favor a cada passo',
     'Eu transito pelas encruzilhadas da vida com proteção divina',
     'Minha capacidade de discernimento guia minhas escolhas',
-    'Eu transformo obstáculos em launchings para meu propósito',
+    'Eu transformo obstáculos em lançamentos para meu propósito',
   ],
   meditation:
     'Meditar sobre a imagem de uma encruzilhada iluminada por quatro velas: uma verde, uma vermelha, uma amarela e uma branca. No centro, uma estrada se bifurca em múltiplas direções, cada uma levando a destinos diferentes. Sinta-se presente nessa encruzilhada, respirando profundamente. Peça a Oxossi a sabedoria do caçador para discernir o caminho verdadeiro. Peça a Obaluayê a força para suportar as transformações necessárias. Peça a Iansã a coragem de atravessar qualquer obstáculo. Observe os sinais ao redor: pegadas, sons, cheiros, intuições. Confie em sua capacidade de escolher corretamente quando o momento chegar. O caminho não precisa ser fácil, precisa ser verdadeiro.',

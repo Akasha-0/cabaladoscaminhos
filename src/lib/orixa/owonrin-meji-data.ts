@@ -69,7 +69,7 @@ const OWONRIN_MEJI_DATA: MejiOdu[] = [
     colors: ['Marrom', 'Verde escuro'],
     offerings: ['Fumo', 'Milho', 'Quiabo'],
     ebos: ['Ebo de paciência', 'Ebo de sabedoria'],
-    taboos: ['Não ter pressa', 'Não desrespeitar长辈'],
+    taboos: ['Não ter pressa', 'Não desrespeitar os mais velhos'],
     strengths: ['Sabedoria', 'Paciência', 'Longevidade'],
     weaknesses: ['Rigidez', 'Pessimismo'],
     health: ['Joelhos', 'Ossos'],
@@ -91,8 +91,9 @@ const OWONRIN_MEJI_DATA: MejiOdu[] = [
     colors: ['Preto', 'Vermelho escuro'],
     offerings: ['Pimenta', 'Dendê', 'Goiaba'],
     ebos: ['Ebo de inimigos', 'Ebo de proteção contra feitiçaria'],
-    taboos: ['Não aceitar comida de extraños', 'Não dormir em lugar desconhecido'],
-    strengths: ['Discernimento', 'Proteção', 'Resistência'],
+    taboos: ['Não aceitar comida de estranhos', 'Não dormir em lugar desconhecido'],
+    strengths:
+['Discernimento', 'Proteção', 'Resistência'],
     weaknesses: ['Medo', 'Paranoia'],
     health: ['Vesícula', 'Fígado'],
     meanings: ['Mistério', 'Oculto revelado', 'Proteção contra mal'],
@@ -106,7 +107,7 @@ const OWONRIN_MEJI_DATA: MejiOdu[] = [
     polarity: 'masculine',
     element: 'Air',
     planets: ['Mercúrio', 'Júpiter'],
-    sephirot: ['Tiferet', ' Chesed'],
+    sephirot: ['Tiferet', 'Chesed'],
     sign: 'Sagitário',
     dayOfWeek: 'Quinta-feira',
     direction: 'Nordeste',
@@ -150,7 +151,7 @@ const OWONRIN_MEJI_DATA: MejiOdu[] = [
     polarity: 'masculine',
     element: 'Air',
     planets: ['Sol', 'Mercúrio'],
-    sephirot: ['Tiferet', ' Netzach'],
+    sephirot: ['Tiferet', 'Netzach'],
     sign: 'Leão',
     dayOfWeek: 'Domingo',
     direction: 'Centro',
@@ -289,7 +290,7 @@ const OWONRIN_MEJI_DATA: MejiOdu[] = [
     colors: ['Amarelo', 'Branco'],
     offerings: ['Nozes', 'Amendoim', 'Castanha'],
     ebos: ['Ebo de paz', 'Ebo de harmonia'],
-    taboos: ['Não discordar sem fundamento', 'Não ser superficiais'],
+    taboos: ['Não discordar sem fundamento', 'Não ser superficial'],
     strengths: ['Harmonia', 'Paz', 'Equilíbrio'],
     weaknesses: ['Indecisão', 'Superficialidade'],
     health: ['Mente', 'Nervos'],
@@ -314,7 +315,7 @@ const OWONRIN_MEJI_DATA: MejiOdu[] = [
     taboos: ['Não desperdiçar', 'Não ser ingrato'],
     strengths: ['Sorte', 'Abundância', 'Gratidão'],
     weaknesses: ['Ganância', 'Avidez'],
-    health: ['Estômago', 'Figado'],
+    health: ['Estômago', 'Fígado'],
     meanings: ['Sorte', 'Fortuna', 'Graça'],
     ifaMessage: 'Owonrin Oin traz a sorte e a graça para os que seguem o caminho reto.',
   },
@@ -355,7 +356,7 @@ export function getOwonrinMejiByOrder(order: number): MejiOdu | undefined {
 }
 
 export function getOwonrinMejiByElement(element: string): MejiOdu[] {
-  return OWONRIN_MEJI_DATA.filter(m => 
+  return OWONRIN_MEJI_DATA.filter(m =>
     m.element.toLowerCase() === element.toLowerCase()
   );
 }
