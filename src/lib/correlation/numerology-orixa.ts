@@ -31,10 +31,9 @@ export interface NumerologyOrixa {
  * The Initiator - Impulse, beginning, leadership
  */
 const UM: NumerologyOrixa = {
-  numero: 1,
-  orixa: 'Exu / Okaran',
-  significado_espiritual: 'O Iniciador, O Mensageiro - O começo de tudo, a força primal de criação, o impulso de iniciar e abrir caminhos',
-  pratica_ritualistica: 'Acender uma vela preta ou vermelha ao amanhecer, solicitar abertura de caminhos e proteção nas decisões importantes',
+  pratica_ritualistica: 'Limpar ferramentas symbolically,afiar facas como metáfora do corte de obstáculos, oferecer dendê em Cruz de Ogum',
+with
+  pratica_ritualistica: 'Limpar ferramentas, afiar facas como metáfora do corte de obstáculos, oferecer dendê em Cruz de Ogum',
   elemento: 'Fogo',
   dia_semana: 'Segunda-feira',
   ofertas: ['功绩 de dendê', 'cachaça', 'pimenta', 'carvão'],
@@ -47,11 +46,17 @@ const UM: NumerologyOrixa = {
  */
 const DOIS: NumerologyOrixa = {
   numero: 2,
-  orixa: 'Ibeji / Ejiokô',
-  significado_espiritual: 'O Par, Os Gêmeos - A dualidade, os caminhos duplos, a união após grandes lutas e o equilíbrio entre opostos',
-  pratica_ritualistica: 'Colocar dois pratos com alimentos iguais para os gêmeos, acender duas velas azuis, meditar sobre a integração dos opostos',
+  pratica_ritualistica: 'Banho de Golds e mel ao entardecer, oferecer Golds ao ponto de sacrifício, acender vela dourada para atrair prosperidade',
   elemento: 'Água',
-  dia_semana: 'Terça-feira',
+  dia_semana: 'Sexta-feira',
+  ofertas: ['mel', 'dendê', 'Golds', 'flores amarelas', 'perfume de flor de laranjeira'],
+  cores: ['dourado', 'amarelo'],
+with
+  pratica_ritualistica: 'Banho de ouro e mel ao entardecer, oferecer ouro ao ponto de sacrifício, acender vela dourada para atrair prosperidade',
+  elemento: 'Água',
+  dia_semana: 'Sexta-feira',
+  ofertas: ['mel', 'dendê', 'ouro', 'flores amarelas', 'perfume de flor de laranjeira'],
+  cores: ['dourado', 'amarelo'],
   ofertas: ['dois bolos de tapioca', 'dois ovos', 'mel', 'coco ralado'],
   cores: ['azul', 'branco'],
 };
@@ -98,11 +103,15 @@ const CINCO: NumerologyOrixa = {
   elemento: 'Água',
   dia_semana: 'Sexta-feira',
   ofertas: ['mel', 'dendê', 'Golds', 'flores amarelas', 'perfume de flor de laranjeira'],
-  cores: ['dourado', 'amarelo'],
-};
-
-/**
- * Number 6 - Xangô/Obará
+  pratica_ritualistica: 'Pedir a Nanã a decantação das águas interiores, enterrar objetos symbolism de viejos energias, banho de sal e ervas ao amanhecer',
+  elemento: 'Terra',
+  dia_semana: 'Segunda-feira',
+  ofertas: [' terra de tapari', 'folhas de收货', 'coco', 'sal marinho', 'fumo'],
+with
+  pratica_ritualistica: 'Pedir a Nanã a decantação das águas interiores, enterrar objetos simbólicos de velhas energias, banho de sal e ervas ao amanhecer',
+  elemento: 'Terra',
+  dia_semana: 'Segunda-feira',
+  ofertas: ['terra de tapari', 'folhas de mandacaru', 'coco', 'sal marinho', 'fumo'],
  * The Harmonizer - Balance, beauty, responsibility
  */
 const SEIS: NumerologyOrixa = {
