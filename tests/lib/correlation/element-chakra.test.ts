@@ -346,7 +346,7 @@ describe('element-chakra', () => {
     });
     it('is case-insensitive', () => {
       expect(getChakraElement('2º sacro')?.elemento).toBe('Fogo');
-      expect(getChakraElement('TERRA')?.elemento).toBeNull();
+      expect(getChakraElement('terra')).toBeNull();
     });
     it('returns null for unknown chakras', () => {
       expect(getChakraElement('unknown')).toBeNull();
