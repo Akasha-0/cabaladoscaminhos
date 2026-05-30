@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 206
+**Sprints completados:** 207
 **Build status:** ✅ Build OK (522 routes)
 **Tests:** ✅ 1401 passing, 14 skipped (73 test files)
 
@@ -225,9 +225,8 @@
 |**202** | **Layout & Hooks QA** | AppShell, PageHeader, MysticButton, useMapaInsights tests fixed, build fixes |
 |**203** | **Bug Fixes** | spiritual-engine.ts parse errors, mapa variable init, rate-limit test typo, deep correlations |
 |**204** | **Dashboard Enhancements** | Accessibility improvements, MapaAlmaDashboard polish, OnboardingWizard polish, /dashboard/perfil page |
-|**205** | **A11y & Profile Fix** | Screen reader support, TarotCard navigation, OnboardingWizard a11y, profile page upgrade redirect fix |
 |**206** | **Test Fixes** | ChakraPanel test parse error, NumerologiaCard/OduCardFull/TarotCard test fixes (15 tests) |
-## 🏗️ DECISÕES ARQUITETURAIS
+|**207** | **UI Polish** | Landing page polish, Relatorios wired to API, useDataSync test file |
 
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
 2. **Multi-Agent Development**: Agentes paralelos para componentes
@@ -243,8 +242,7 @@
 12. **Responsive Design**: Mobile/Tablet/Desktop/Wide preview
 13. **MapaAlma Orchestrator**: Unified spiritual engine per IDEIA.md
 
-## 📊 MÉTRICAS
-**Tests: 1401 passing**
-**206 Sprints Completados** 🎉
 
+**Tests: 1401 passing**
+**207 Sprints Completados** 🎉
 *Assim como é em cima, também é embaixo. — A plataforma Cabala Dos Caminhos está completa com MapaAlma unificado e engine de correlações.*
