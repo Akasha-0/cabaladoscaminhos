@@ -11,6 +11,8 @@ export interface OrixaTarotMapping {
   arcano: string;
   /** The card number in the Major Arcana */
   numero_carta: number;
+  /** Elemental correspondence */
+  elemento: string;
   /** The primary spiritual energy */
   energia_espiritual: string;
   /** Ritual associations and practices */
@@ -35,18 +37,20 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Oxalá',
     arcano: 'O Imperador',
     numero_carta: 4,
+    elemento: 'Fogo',
     energia_espiritual: 'Paz absoluta, pureza, criação e equilíbrio espiritual. Conexão direta com o divino e sabedoria transcendente.',
     associacoes_rituais: {
       ferramentas: ['Vela branca', 'Algodão', 'Canjica', 'Tapete de boldo'],
       oferendas: ['Frutas brancas', 'Leite de cabra', 'Farofa de dendê branco'],
       momentos: ['Sexta-feira ao amanhecer', 'Lua Cheia', 'Horários de silêncio'],
     },
-    interpretacao: 'Oxalá representa o principio criativo puro, a cabeça bem feita (Ori). O Imperador reflete sua autoridade divina, ordem e a capacidade de criar estruturas sagradas. É o Orixá que governa o silêncio, a paz e a pureza absoluta.',
+    interpretacao: 'Oxalá representa o princípio criativo puro, a cabeça bem feita (Ori). O Imperador reflete sua autoridade divina, ordem e a capacidade de criar estruturas sagradas. É o Orixá que governa o silêncio, a paz e a pureza absoluta.',
   },
   'Iemanjá': {
     orixa: 'Iemanjá',
     arcano: 'A Estrela',
     numero_carta: 17,
+    elemento: 'Água',
     energia_espiritual: 'Intuição profunda, maternidade, geração e equilíbrio mental. Fluidez emocional e conexão com as águas salgadas.',
     associacoes_rituais: {
       ferramentas: ['Água do mar', 'Flores brancas', 'Colônia', 'Espelho'],
@@ -59,6 +63,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Oxum',
     arcano: 'A Imperatriz',
     numero_carta: 3,
+    elemento: 'Terra',
     energia_espiritual: 'Amor incondicional, doçura, ouro e fertilidade. Magnetismo pessoal e inteligência emocional nas águas doces.',
     associacoes_rituais: {
       ferramentas: ['Mel', 'Girassóis', 'Moedas douradas', 'Perfumes doces'],
@@ -71,6 +76,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Ogum',
     arcano: 'O Carro',
     numero_carta: 7,
+    elemento: 'Fogo',
     energia_espiritual: 'Lei, ordenação, coragem e abertura de caminhos. A força que vence obstáculos e impõe disciplina.',
     associacoes_rituais: {
       ferramentas: ['Espada', 'Aroeira', 'Guiné', 'Ferro'],
@@ -83,6 +89,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Oxóssi',
     arcano: 'O Hierofante',
     numero_carta: 5,
+    elemento: 'Ar',
     energia_espiritual: 'Fartura, conhecimento profundo e busca espiritual. A sabedoria das matas e o direcionamento da mente.',
     associacoes_rituais: {
       ferramentas: ['Flecha', 'Samambaia', 'Jurema', 'Alecrim'],
@@ -95,6 +102,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Xangô',
     arcano: 'O Sol',
     numero_carta: 19,
+    elemento: 'Fogo',
     energia_espiritual: 'Justiça divina, liderança, brilho pessoal e fogo purificador. O poder real e a verdade inabalável.',
     associacoes_rituais: {
       ferramentas: ['Pedra de raio', 'Machado', 'Quiabo', 'Amalá'],
@@ -107,6 +115,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Iansã',
     arcano: 'A Torre',
     numero_carta: 16,
+    elemento: 'Fogo',
     energia_espiritual: 'Movimento rápido, transformação abrupta, ventos da mudança e libertação. A coragem de quebrar estruturas.',
     associacoes_rituais: {
       ferramentas: ['Pinhão roxo', 'Espada de Santa Bárbara', 'Fumo', 'Bambu'],
@@ -119,6 +128,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Omolu',
     arcano: 'O Mundo',
     numero_carta: 21,
+    elemento: 'Terra',
     energia_espiritual: 'Cura física, transmutação, fim de ciclos e estruturação. O poder da terra e das transformações necessárias.',
     associacoes_rituais: {
       ferramentas: ['Pipoca (Deburu)', 'Palmeira', 'Ervas de descarrego', 'Manga'],
@@ -131,6 +141,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Nanã',
     arcano: 'A Sacerdotisa',
     numero_carta: 2,
+    elemento: 'Água',
     energia_espiritual: 'Sabedoria ancestral, paciência, recolhimento e mistério. O lodo primitivo e a antiga sabedoria.',
     associacoes_rituais: {
       ferramentas: ['Barro', 'Ervas calmas', 'Flores roxas', 'Água de chuva'],
@@ -143,6 +154,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Exu',
     arcano: 'O Mago',
     numero_carta: 1,
+    elemento: 'Ar',
     energia_espiritual: 'Comunicação, dinamismo, início de tudo e ordenação. O mensageiro que abre os caminhos.',
     associacoes_rituais: {
       ferramentas: ['Pinhão roxo', 'Arruda', 'Guiné', 'Vela vermelha/preta'],
@@ -155,6 +167,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Logun Edé',
     arcano: 'Os Enamorados',
     numero_carta: 6,
+    elemento: 'Ar',
     energia_espiritual: 'Beleza, diplomacia, escolha sagrada e harmonização. A união dos opostos complementares.',
     associacoes_rituais: {
       ferramentas: ['Leque', 'Flores coloridas', 'Perfumes finos', 'Balangandãs'],
@@ -167,6 +180,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Eshu',
     arcano: 'O Louco',
     numero_carta: 0,
+    elemento: 'Ar',
     energia_espiritual: 'Liberdade, imprevisibilidade, novo início e salto de fé. O espírito que transcende regras.',
     associacoes_rituais: {
       ferramentas: ['Capacete', 'Bolhas', 'Sino', 'Moedas'],
@@ -201,7 +215,7 @@ export function getOrixaTarot(orixa: string): OrixaTarotMapping | null {
  */
 export function getTarotOrixa(arcano: string): string | null {
   const entry = Object.entries(ORIXA_TAROT_MAPPINGS).find(
-    ([, mapping]) => mapping.arcano === arcano
+    ([, mapping]) => mapping.arcano.toLowerCase() === arcano.toLowerCase()
   );
   return entry ? entry[0] : null;
 }
@@ -242,6 +256,16 @@ export function getOrixaTarotNumber(orixa: string): number | null {
 }
 
 /**
+ * Get the element for a given Orixá
+ * @param orixa - Name of the Orixá
+ * @returns The element or null if not found
+ */
+export function getOrixaElement(orixa: string): string | null {
+  const mapping = getOrixaTarot(orixa);
+  return mapping ? mapping.elemento : null;
+}
+
+/**
  * Get the arcano by card number
  * @param numero - The Major Arcana card number
  * @returns The arcano name or null if not found
@@ -265,6 +289,28 @@ export function getOrixaByNumber(numero: number): string | null {
   return entry ? entry[0] : null;
 }
 
+/**
+ * Get Orixás by element
+ * @param elemento - The element to filter by
+ * @returns Array of Orixás with the given element
+ */
+export function getOrixasByElement(elemento: string): string[] {
+  return Object.entries(ORIXA_TAROT_MAPPINGS)
+    .filter(([, mapping]) => mapping.elemento.toLowerCase() === elemento.toLowerCase())
+    .map(([name]) => name);
+}
+
+/**
+ * Get Tarot cards by element
+ * @param elemento - The element to filter by
+ * @returns Array of Tarot cards with the given element
+ */
+export function getTarotsByElement(elemento: string): string[] {
+  return Object.values(ORIXA_TAROT_MAPPINGS)
+    .filter(mapping => mapping.elemento.toLowerCase() === elemento.toLowerCase())
+    .map(mapping => mapping.arcano);
+}
+
 export default {
   getOrixaTarot,
   getTarotOrixa,
@@ -272,7 +318,10 @@ export default {
   getAllOrixaNames,
   hasOrixaTarot,
   getOrixaTarotNumber,
+  getOrixaElement,
   getArcanoByNumber,
   getOrixaByNumber,
+  getOrixasByElement,
+  getTarotsByElement,
   ORIXA_TAROT_MAPPINGS,
 };
