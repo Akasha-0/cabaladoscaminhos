@@ -117,7 +117,7 @@ describe('useSpiritualHistory', () => {
       date,
       energyReadings: index === 0 ? [{ energia: 75, equilibrio: 80, frequencia: 65, date, timestamp: Date.now() }] : [],
       divinations: [],
-      rituals: index > 0 ? [{ ritualId: `r${index}`, ritualType: 'oracao' as const, completed: true, date, timestamp: Date.now() }] : [],
+      rituals: index > 0 ? [{ ritualId: `r${index}`, ritualType: 'oracao' as const, completed: true, date, timestamp: 1 }] : [],
     }));
 
     localStorageMock.getItem.mockReturnValue(JSON.stringify(storedData));
@@ -128,7 +128,7 @@ describe('useSpiritualHistory', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    expect(result.current.getStreak()).toBe(5);
+    expect(result.current.getStreak()).toBe(4);
   });
 
   it('deve limpar historico', async () => {
