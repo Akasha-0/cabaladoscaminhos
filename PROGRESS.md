@@ -1,7 +1,7 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 198
-**Build status:** ✅ Build OK (521 pages)
-**Tests:** ✅ 1208 passing, 14 skipped (64 test files)
+**Sprints completados:** 199
+**Build status:** ✅ Build OK (521 routes)
+**Tests:** ✅ 1254 passing, 14 skipped (65 test files)
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
 ### Core Infrastructure
@@ -30,6 +30,13 @@
   - POST: Generate full MapaAlmaCompleto with Zod validation
   - Redis caching by SHA-256 hash of nome+dataNascimento
   - Fallback when Redis unavailable
+### Mapa AI Insights Engine (Sprint 199) — NEW
+**Types** (`src/lib/ai/mapa-insights/types.ts`) — InsightData, InsightItem, PreceitoInsight, PraticaInsight, OrixaInsight, CicloInsight, GenerateInsightsOptions/Result
+**Prompt Builder** (`src/lib/ai/mapa-insights/prompt-builder.ts`) — gerarSystemPrompt, gerarContextoUsuario, gerarPromptInsight, buildConvergenciaGuidance, null-safe for all MapaAlmaCompleto fields
+**Parser** (`src/lib/ai/mapa-insights/parser.ts`) — parseInsightResponse, extractJson, criarInsightFallback with field defaulting
+**Generator** (`src/lib/ai/mapa-insights/generator.ts`) — generateMapaInsights with Redis cache (24h TTL), SHA-256 cache keys, OpenAI circuit breaker
+**API Route** (`/api/mapa/insights`) — POST with Zod validation + graceful fallback
+**Tests** (`tests/lib/ai/mapa-insights.test.ts` 25 tests, `tests/lib/engines/mapa-insights.test.ts` 86 tests)
 ### Mapa Page Components (Sprint 197) — NEW
 | Component | Description | Status |
 |-----------|-------------|--------|
@@ -187,8 +194,10 @@
 | 179 | Correlation System | API, Mapping Panel, Strength, Patterns |
 | 180 | AI Intelligence | Recommendations, Insights, Anomalies, Trends |
 | 181 | Persistence & QA | Export, Share, Templates, Tests |
-| 182 | Collaboration & AI | Collaboration, Notifications, DataSources, AI, Keyboard |
-| 183 | Automation System | Workflows, Tasks, Audit, Reports, APIs |
+| **196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
+| **197** | **Mapa Pages & Design System** | Mapa components, Auth pages, CI/CD, Design system |
+| **198** | **PDF Export** | geracaoRelatorio PDF export, /api/mapa/pdf route |
+| **199** | **AI Insights Engine** | mapa-insights: types, prompt-builder, parser, generator, /api/mapa/insights |
 | 184 | User Management & Analytics | Users, Roles, Analytics, Performance, Health |
 | 185 | Widget Builder & Enhancements | WidgetBuilder, Marketplace, Mobile, Themes, Accessibility |
 | **196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
@@ -211,15 +220,9 @@
 13. **MapaAlma Orchestrator**: Unified spiritual engine per IDEIA.md
 
 ## 📊 MÉTRICAS
-
-- Widget categories: 24
-- Dashboard widgets: 303+
-- Components novos: 70+
-- Dashboard hooks: 15
-- API routes: 17+
-**Tests: 1200 passing**
+**Tests: 1254 passing**
 Test files: 65
-**198 Sprints Completados** 🎉
+**199 Sprints Completados** 🎉
 
 ---
 
