@@ -1,6 +1,9 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { WelcomeCard } from '@/components/dashboard/WelcomeCard';
@@ -15,11 +18,6 @@ import { QuickDivination } from '@/components/dashboard/QuickDivination';
 import { DailyWisdomCard } from '@/components/dashboard/DailyWisdomCard';
 
 // Dynamic imports for heavy components
-const AIOracleChat = dynamic(
-  () => import('@/components/dashboard/AIOracleChat').then(m => ({ default: m.AIOracleChat })),
-  { ssr: false, loading: () => <WidgetSkeleton /> }
-);
-
 const AffirmationWidget = dynamic(
   () => import('@/components/dashboard/AffirmationWidget').then(m => ({ default: m.AffirmationWidget })),
   { ssr: false, loading: () => <WidgetSkeleton /> }
@@ -190,12 +188,32 @@ export default function Dashboard() {
         <AffirmationWidget userData={userData} />
       </DashboardSection>
 
-      {/* AI Oracle Section */}
-      <DashboardSection 
-        title="Oráculo IA" 
-        description="Consultas personalizadas com inteligência artificial"
-      >
-        <AIOracleChat userData={userData} />
+      {/* Affirmations Section */}
+      <DashboardSection title="Práticas Diárias">
+        <AffirmationWidget userData={userData} />
+      </DashboardSection>
+
+      {/* Oracle CTA */}
+      <DashboardSection title="Oráculo IA">
+        <div className="rounded-2xl bg-gradient-to-br from-violet-900/30 to-purple-900/30 border border-violet-500/20 p-6">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 border border-violet-500/30 flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-violet-400" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">Consultar o Oráculo</h3>
+                <p className="text-sm text-slate-400">Receba orientações personalizadas da inteligência artificial</p>
+              </div>
+            </div>
+            <Link href="/dashboard/oraculo">
+              <Button className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white">
+                <Sparkles className="w-4 h-4 mr-2" />
+                Abrir Chat
+              </Button>
+            </Link>
+          </div>
+        </div>
       </DashboardSection>
     </DashboardLayout>
   );
