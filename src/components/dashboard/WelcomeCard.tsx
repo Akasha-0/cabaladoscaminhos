@@ -2,9 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Sparkles, TrendingUp, Calendar, Star, ChevronRight, Flame, Droplets, Wind, Zap } from 'lucide-react';
+import { Sparkles, TrendingUp, Calendar, Star, ChevronRight, Flame, Droplets, Wind, Zap, Sparkle, Moon, Sun } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-// Sample user journey data - in production this would come from API
+// ============================================================
+// TYPES
+// ============================================================
+
+interface WelcomeCardProps {
+  userName?: string;
+}
+
+// ============================================================
+// CONSTANTS
+// ============================================================
+
 const USER_STATS = {
   nivel: 12,
   xp: 3450,
@@ -16,10 +28,10 @@ const USER_STATS = {
 };
 
 const SPIRITUAL_STATS = [
-  { icon: Flame, label: 'Odú Atual', value: 'Alafia', color: 'text-amber-400', bg: 'bg-amber-500/20' },
-  { icon: Star, label: 'Mapas', value: '5', color: 'text-violet-400', bg: 'bg-violet-500/20' },
-  { icon: Calendar, label: 'Consultas', value: '47', color: 'text-emerald-400', bg: 'bg-emerald-500/20' },
-  { icon: TrendingUp, label: 'Sequência', value: '12 dias', color: 'text-pink-400', bg: 'bg-pink-500/20' },
+  { icon: Star, label: 'Mapas', value: '5', color: 'text-violet-400', bg: 'bg-violet-500/20', border: 'border-violet-500/30' },
+  { icon: Calendar, label: 'Consultas', value: '47', color: 'text-emerald-400', bg: 'bg-emerald-500/20', border: 'border-emerald-500/30' },
+  { icon: Flame, label: 'Sequência', value: '12 dias', color: 'text-orange-400', bg: 'bg-orange-500/20', border: 'border-orange-500/30' },
+  { icon: Moon, label: 'Odú', value: 'Alafia', color: 'text-amber-400', bg: 'bg-amber-500/20', border: 'border-amber-500/30' },
 ];
 
 const ELEMENTAL_ENERGY = [
@@ -29,71 +41,90 @@ const ELEMENTAL_ENERGY = [
   { icon: Zap, name: 'Terra', percentage: 45, color: '#f97316' },
 ];
 
-interface WelcomeCardProps {
-  userName?: string;
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+
+function getTimeOfDay() {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return { greeting: 'Bom dia', icon: Sun, color: 'text-amber-400' };
+  if (hour >= 12 && hour < 18) return { greeting: 'Boa tarde', icon: Sparkle, color: 'text-orange-400' };
+  return { greeting: 'Boa noite', icon: Moon, color: 'text-violet-400' };
 }
+
+function getDayElement() {
+  const dayOfWeek = new Date().getDay();
+  const elements = ['Fogo', 'Terra', 'Fogo', 'Água', 'Fogo', 'Água', 'Terra'];
+  return elements[dayOfWeek];
+}
+
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
 
 export function WelcomeCard({ userName = 'Maria' }: WelcomeCardProps) {
   const [mounted, setMounted] = useState(false);
-  const [timeOfDay, setTimeOfDay] = useState('');
+  const timeInfo = getTimeOfDay();
+  const dayElement = getDayElement();
 
   useEffect(() => {
     setMounted(true);
-    const hour = new Date().getHours();
-    if (hour < 12) setTimeOfDay('manhã');
-    else if (hour < 18) setTimeOfDay('tarde');
-    else setTimeOfDay('noite');
   }, []);
 
   if (!mounted) {
     return (
-      <div className="rounded-2xl bg-gradient-to-r from-amber-500/10 to-violet-500/10 border border-amber-500/20 p-6 animate-pulse">
-        <div className="h-8 w-48 bg-slate-800 rounded mb-4" />
-        <div className="h-4 w-64 bg-slate-800 rounded" />
+      <div className="rounded-2xl bg-gradient-to-r from-slate-900 to-slate-950 border border-slate-800/50 p-6 animate-pulse">
+        <div className="h-24 w-full bg-slate-800 rounded" />
       </div>
     );
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800/50">
-      {/* Background decoration */}
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900/95 to-slate-950 border border-slate-800/50">
+      {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Gradient orbs */}
-        <div className="absolute -top-20 -right-20 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-violet-500/10 rounded-full blur-3xl" />
+        <div className="absolute -top-24 -right-24 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-violet-500/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl" />
         
-        {/* Stars */}
-        <div className="absolute top-4 right-4 w-1 h-1 bg-amber-400/60 rounded-full" />
-        <div className="absolute top-8 right-12 w-0.5 h-0.5 bg-amber-300/40 rounded-full" />
-        <div className="absolute bottom-8 left-8 w-1 h-1 bg-violet-400/60 rounded-full" />
+        {/* Floating particles */}
+        <div className="absolute top-8 right-16 w-1.5 h-1.5 bg-amber-400/40 rounded-full animate-bounce" style={{ animationDuration: '3s' }} />
+        <div className="absolute top-16 right-24 w-1 h-1 bg-violet-400/40 rounded-full animate-bounce" style={{ animationDuration: '2s', animationDelay: '0.5s' }} />
+        <div className="absolute bottom-12 left-16 w-1.5 h-1.5 bg-emerald-400/40 rounded-full animate-bounce" style={{ animationDuration: '2.5s', animationDelay: '1s' }} />
       </div>
 
       <div className="relative p-6 md:p-8">
         {/* Header */}
-        <div className="flex items-start justify-between mb-6">
+        <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="w-5 h-5 text-amber-400" />
-              <span className="text-xs font-medium text-amber-400/80 uppercase tracking-wider">
-                Bom {timeOfDay}
+              <timeInfo.icon className={cn('w-5 h-5', timeInfo.color)} />
+              <span className={cn('text-xs font-medium uppercase tracking-wider', timeInfo.color)}>
+                {timeInfo.greeting}
               </span>
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white font-playfair">
-              Bem-vinda, {userName} ✨
+            <h2 className="text-2xl md:text-3xl font-bold text-white">
+              Olá, {userName} <span className="animate-wiggle inline-block">✨</span>
             </h2>
-            <p className="text-slate-400 mt-1">
-              Seu mapa está pronto para exploração
+            <p className="text-slate-400 mt-1 flex items-center gap-2">
+              Elemento do dia: <span className="text-amber-400 font-medium">{dayElement}</span>
             </p>
           </div>
           
           {/* Level badge */}
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-400/10 border border-amber-500/30">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-              <span className="text-sm font-bold text-white">{USER_STATS.nivel}</span>
+          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-amber-500/10 to-amber-400/5 border border-amber-500/20 backdrop-blur-sm">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
+              <span className="text-lg font-bold text-white">{USER_STATS.nivel}</span>
             </div>
             <div>
               <p className="text-xs text-slate-400">Nível</p>
-              <p className="text-sm font-medium text-amber-400">Caminhante</p>
+              <p className="text-sm font-semibold text-amber-400">Caminhante</p>
+            </div>
+            <div className="w-px h-8 bg-slate-700/50 mx-1" />
+            <div className="text-right">
+              <p className="text-xs text-slate-400">Streak</p>
+              <p className="text-sm font-semibold text-orange-400">{USER_STATS.streakDias} 🔥</p>
             </div>
           </div>
         </div>
@@ -104,28 +135,35 @@ export function WelcomeCard({ userName = 'Maria' }: WelcomeCardProps) {
             <span className="text-sm text-slate-400">Progresso para nível {USER_STATS.nivel + 1}</span>
             <span className="text-sm font-medium text-amber-400">{USER_STATS.xp}/{USER_STATS.xpNext} XP</span>
           </div>
-          <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-slate-800/80 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 rounded-full transition-all duration-500 relative"
+              className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-1000 relative overflow-hidden"
               style={{ width: `${(USER_STATS.xp / USER_STATS.xpNext) * 100}%` }}
             >
-              {/* Shimmer effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
             </div>
           </div>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {SPIRITUAL_STATS.map((stat, index) => (
             <div
               key={index}
-              className={`p-4 rounded-xl ${stat.bg} border border-slate-700/30 hover:border-slate-600/50 transition-all group`}
+              className={cn(
+                'p-4 rounded-xl backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] cursor-pointer',
+                stat.bg,
+                'border',
+                stat.border,
+                'hover:border-slate-500/30'
+              )}
             >
               <div className="flex items-center gap-3">
-                <stat.icon className={`w-5 h-5 ${stat.color}`} />
+                <div className={cn('p-2 rounded-lg bg-slate-900/50', stat.bg)}>
+                  <stat.icon className={cn('w-5 h-5', stat.color)} />
+                </div>
                 <div>
-                  <p className="text-2xl font-bold text-white">{stat.value}</p>
+                  <p className="text-xl font-bold text-white">{stat.value}</p>
                   <p className="text-xs text-slate-400">{stat.label}</p>
                 </div>
               </div>
@@ -133,22 +171,28 @@ export function WelcomeCard({ userName = 'Maria' }: WelcomeCardProps) {
           ))}
         </div>
 
-        {/* Elemental Energy */}
+        {/* Elemental Energy Bars */}
         <div className="mb-6">
-          <p className="text-sm text-slate-400 mb-3">Energia Elemental</p>
-          <div className="flex gap-3">
+          <p className="text-sm text-slate-400 mb-3 flex items-center gap-2">
+            <Zap className="w-4 h-4 text-amber-400" />
+            Energia Elemental
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {ELEMENTAL_ENERGY.map((element, index) => (
               <div
                 key={index}
-                className="flex-1 p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 hover:border-slate-600/50 transition-all"
+                className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 hover:border-slate-600/50 transition-all"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <element.icon className="w-4 h-4" style={{ color: element.color }} />
                   <span className="text-xs text-slate-400">{element.name}</span>
+                  <span className="ml-auto text-xs font-medium" style={{ color: element.color }}>
+                    {element.percentage}%
+                  </span>
                 </div>
-                <div className="h-2 bg-slate-900 rounded-full overflow-hidden">
+                <div className="h-1.5 bg-slate-900/80 rounded-full overflow-hidden">
                   <div
-                    className="h-full rounded-full transition-all"
+                    className="h-full rounded-full transition-all duration-500"
                     style={{ width: `${element.percentage}%`, backgroundColor: element.color }}
                   />
                 </div>
@@ -161,35 +205,30 @@ export function WelcomeCard({ userName = 'Maria' }: WelcomeCardProps) {
         <div className="flex flex-wrap gap-3">
           <Link
             href="/dashboard/mapa"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:from-amber-400 hover:to-amber-500 transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+            className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30"
           >
             <Sparkles className="w-4 h-4" />
             Explorar Mapa
-          </Link>
-          <Link
-            href="/dashboard/calendario"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800/50 text-slate-300 font-medium hover:bg-slate-700/50 hover:text-white transition-all border border-slate-700/30"
-          >
-            <Calendar className="w-4 h-4" />
-            Ver Calendário
+            <ChevronRight className="w-4 h-4" />
           </Link>
           <Link
             href="/dashboard/oraculo"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800/50 text-slate-300 font-medium hover:bg-slate-700/50 hover:text-white transition-all border border-slate-700/30"
+            className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-violet-500/20 to-purple-500/20 text-violet-400 font-medium hover:from-violet-500/30 hover:to-purple-500/30 transition-all border border-violet-500/30 hover:border-violet-500/50"
           >
             <Star className="w-4 h-4" />
-            Consultar Odú
+            Consultar Oráculo
           </Link>
-        </div>
-
-        {/* Decorative quote */}
-        <div className="mt-6 pt-6 border-t border-slate-800/50">
-          <p className="text-sm text-amber-400/70 italic font-cormorant text-center">
-            &ldquo;Cada passo na jornada espiritual fortalece sua conexão com o cosmos.&rdquo;
-          </p>
+          <Link
+            href="/dashboard/calendario"
+            className="flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-800/50 text-slate-300 font-medium hover:bg-slate-700/50 hover:text-white transition-all border border-slate-700/30 hover:border-slate-600/50"
+          >
+            <Calendar className="w-4 h-4" />
+            Calendário
+          </Link>
         </div>
       </div>
 
+      {/* CSS Animations */}
       <style>{`
         @keyframes shimmer {
           0% { transform: translateX(-100%); }
@@ -198,12 +237,13 @@ export function WelcomeCard({ userName = 'Maria' }: WelcomeCardProps) {
         .animate-shimmer {
           animation: shimmer 2s infinite;
         }
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes wiggle {
+          0%, 100% { transform: rotate(0deg); }
+          25% { transform: rotate(-10deg); }
+          75% { transform: rotate(10deg); }
         }
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out;
+        .animate-wiggle {
+          animation: wiggle 1s ease-in-out infinite;
         }
       `}</style>
     </div>
