@@ -23,7 +23,7 @@ describe('Numerology-Orixá Correlation', () => {
       expect(result.pratica_ritualistica).toContain('vela');
       expect(result.elemento).toBe('Fogo');
       expect(result.dia_semana).toBe('Segunda-feira');
-      expect(result.ofertas).toContain('dendê');
+      expect(result.ofertas).toContain('azeite de dendê');
       expect(result.cores).toContain('preto');
     });
 
@@ -45,7 +45,7 @@ describe('Numerology-Orixá Correlation', () => {
       expect(result.significado_espiritual).toContain('Guerreiro');
       expect(result.elemento).toBe('Terra');
       expect(result.dia_semana).toBe('Terça-feira');
-      expect(result.ofertas).toContain('dendê');
+      expect(result.ofertas).toContain('azeite de dendê');
       expect(result.cores).toContain('vermelho');
     });
 
@@ -154,9 +154,8 @@ describe('Numerology-Orixá Correlation', () => {
       expect(result.orixa).toBe('Nanã / Omolu / Olobón');
       expect(result.significado_espiritual).toContain('Evolução');
       expect(result.elemento).toBe('Terra');
-    it('should return1 mapping for Ossá', () => {
-with
-    it('should return 1 mapping for Ossá', () => {
+      expect(result.dia_semana).toBe('Segunda-feira');
+      expect(result.ofertas).toContain('terra de tapari');
       expect(result.cores).toContain('roxo');
     });
 
@@ -266,7 +265,7 @@ with
       expect(result.length).toBe(2);
     });
 
-    it('should return1 mapping for Ossá', () => {
+    it('should return 1 mapping for Ossá', () => {
       const result = getNumerologyByOrixa('Ossá');
       expect(result.length).toBe(1);
     });
