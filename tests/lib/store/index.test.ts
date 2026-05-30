@@ -13,16 +13,15 @@ import {
   hydrateCredits,
 } from '@/lib/store/index';
 
-// Mock crypto.randomUUID
-const mockUUID = 'test-uuid-1234';
+// Mock crypto.randomUUID to return unique IDs
+let uuidCounter = 0;
 vi.stubGlobal('crypto', {
   ...globalThis.crypto,
-  randomUUID: vi.fn(() => mockUUID),
+  randomUUID: vi.fn(() => `test-uuid-${++uuidCounter}`),
 });
 
 // Reset stores by calling their reset actions
 const resetStores = () => {
-  // Reset AuthStore
   useAuthStore.getState().logout?.();
   useAuthStore.setState?.({ 
     user: null, 
@@ -30,7 +29,6 @@ const resetStores = () => {
     isLoading: true 
   });
   
-  // Reset CreditsStore
   useCreditsStore.getState().reset?.();
   useCreditsStore.setState?.({
     saldo: 0,
@@ -39,7 +37,6 @@ const resetStores = () => {
     lastUpdated: null,
   });
   
-  // Reset UIStore - use partialize reset
   useUIStore.setState?.({
     theme: 'mystical',
     sidebarOpen: true,
@@ -48,12 +45,12 @@ const resetStores = () => {
     notificationsEnabled: true,
   });
   
-  // Reset CacheStore
   useCacheStore.getState().clear?.();
   useCacheStore.setState?.({ cache: {} });
 };
 
 beforeEach(() => {
+  uuidCounter = 0;
   vi.clearAllMocks();
   resetStores();
 });
@@ -208,7 +205,7 @@ describe('CreditsStore', () => {
     });
 
     expect(success).toBe(false);
-    expect(result.current.saldo).toBe(10); // unchanged
+    expect(result.current.saldo).toBe(10);
   });
 
   it('credit increases balance', () => {
@@ -341,7 +338,7 @@ describe('UIStore', () => {
     expect(result.current.notifications[0].title).toBe('Test Notification');
     expect(result.current.notifications[0].type).toBe('success');
     expect(result.current.notifications[0].message).toBe('Test message');
-    expect(result.current.notifications[0].id).toBe(mockUUID);
+    expect(result.current.notifications[0].id).toBe('test-uuid-1');
     expect(result.current.notifications[0].timestamp).toBeGreaterThanOrEqual(beforeAdd);
   });
 
@@ -365,11 +362,14 @@ describe('UIStore', () => {
 
     act(() => {
       result.current.addNotification({ type: 'info', title: 'First' });
+    });
+    const firstId = result.current.notifications[0].id;
+
+    act(() => {
       result.current.addNotification({ type: 'info', title: 'Second' });
     });
 
     expect(result.current.notifications).toHaveLength(2);
-    const firstId = result.current.notifications[0].id;
 
     act(() => {
       result.current.removeNotification(firstId);
@@ -400,7 +400,7 @@ describe('CacheStore', () => {
 
   it('set adds cache entry with custom TTL', () => {
     const { result } = renderHook(() => useCacheStore());
-    const customTTL = 1000; // 1 second
+    const customTTL = 1000;
 
     act(() => {
       result.current.set('key1', { data: 'value1' }, customTTL);
