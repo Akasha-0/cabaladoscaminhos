@@ -72,7 +72,8 @@ describe('SpiritualProgressWidget', () => {
     render(<SpiritualProgressWidget />);
     
     await waitFor(() => {
-      const banner = screen.queryByText(/Tu camino espiritual|Continúa así|El universo conspira|Tus ancestros|El progreso spiritual/);
+      // When streak=0 (from beforeEach getStreak mock), component uses ENCOURAGEMENT_MESSAGES
+      const banner = screen.queryByText(/El próximo nivel te espera con sabiduría|Tus prácticas están creando transformación|La consistencia es la clave del éxito espiritual|Tu dedicación es inspiradora|El crecimiento espiritual es eterno|Cada día traes más luz al mundo/);
       expect(banner).toBeTruthy();
     }, { timeout: 3000 });
   });
@@ -103,8 +104,19 @@ describe('SpiritualProgressWidget', () => {
       expect(screen.getByText('¡En racha activa!')).toBeInTheDocument();
     }, { timeout: 3000 });
   });
-
   it('shows excellent badge when progress >= 75%', async () => {
+    // Override hook with getStreak stub so loadProgress uses the hook stub instead of
+    // falling back to a broken history structure; localStorage provides the real data.
+    mockUseSpiritualHistory.mockReturnValue({
+      history: [],
+      isLoading: false,
+      addEnergyReading: vi.fn(),
+      addDivination: vi.fn(),
+      addRitualCompletion: vi.fn(),
+      getStreak: vi.fn(() => 25),
+      clearHistory: vi.fn(),
+      getReadingsByDate: vi.fn(),
+    });
     localStorageMock.getItem.mockReturnValue(JSON.stringify({
       ritualsCompleted: 28,
       readingsDone: 18,
@@ -114,14 +126,12 @@ describe('SpiritualProgressWidget', () => {
         return d.toISOString().split('T')[0];
       }),
     }));
-
     render(<SpiritualProgressWidget userId="test-excellent-user" />);
     
     await waitFor(() => {
       expect(screen.getByText('¡Excelente!')).toBeInTheDocument();
     }, { timeout: 3000 });
   });
-
   it('displays total progress percentage', async () => {
     render(<SpiritualProgressWidget />);
     
