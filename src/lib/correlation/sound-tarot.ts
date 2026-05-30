@@ -207,7 +207,7 @@ const SOUND_TAROT_MAPPINGS: Record<string, SoundTarot> = {
       "Iluminação através da crise",
       "Renovação após upheaval"
     ],
-    practica: "Respire Krimgram durante transições rápidas e mudanças necessárias."
+    practica: "Respire KRIMGRAM durante transições rápidas e mudanças necessárias."
   },
 
   // 13 - A Estrela (The Star)
@@ -333,7 +333,7 @@ const SOUND_TAROT_MAPPINGS: Record<string, SoundTarot> = {
       "Harmonia universal",
       "Felicidade eterna"
     ],
-    practica: "Om Shanti ao final de meditações para Paz absoluta."
+    practica: "OMSHANTI ao final de meditações para Paz absoluta."
   }
 } as const;
 
