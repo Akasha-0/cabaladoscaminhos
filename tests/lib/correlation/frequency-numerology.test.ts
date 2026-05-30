@@ -230,10 +230,12 @@ describe('FrequencyNumerology Correlation', () => {
 
     it('should return copies, not references', () => {
       const result = getAllFrequencyNumerology();
-      // Modifying result should not affect original
-      result[0].numerologia = 99 as Numerologia;
-      const original = getFrequencyNumerology(396);
-      expect(original?.numerologia).toBe(3);
+      // Verify immutability — objects are frozen
+      const first = result[0];
+      expect(Object.isFrozen(first)).toBe(true);
+      // Verify values are correct without mutation attempts
+      expect(first.numerologia).toBe(3);
+      expect(first.frequencia).toBe(396);
     });
   });
 
