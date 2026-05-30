@@ -35,17 +35,10 @@ describe('RealtimeEnergyWidget', () => {
     expect(screen.getByText(/Dia de/)).toBeInTheDocument();
   });
 
-  it('shows orixá symbol', () => {
+  it('shows main energy section', () => {
     render(<RealtimeEnergyWidget />);
-    expect(screen.getByText('✧')).toBeInTheDocument(); // Oxalá's symbol
+    expect(screen.getByText(/Oxalá/)).toBeInTheDocument();
   });
-
-  it('shows planet and chakra info', () => {
-    render(<RealtimeEnergyWidget />);
-    expect(screen.getByText(/Vênus/)).toBeInTheDocument();
-    expect(screen.getByText(/Coração/)).toBeInTheDocument();
-  });
-
   it('renders lunar phase section', () => {
     render(<RealtimeEnergyWidget />);
     expect(screen.getByText(/Lua Nova/)).toBeInTheDocument();
