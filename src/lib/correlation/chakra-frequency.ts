@@ -10,6 +10,33 @@ function normalizeString(str: string): string {
     .replace(/º/g, '')
     .trim();
 }
+/**
+ * Calculate Levenshtein distance between two strings
+ */
+function levenshtein(a: string, b: string): number {
+  const matrix: number[][] = [];
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j] + 1
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+/**
  * Maps each of the 7 primary chakras to their associated Solfeggio frequency,
  * element connections, and healing properties.
  * This is the reverse lookup from frequency-chakra.ts
@@ -237,7 +264,13 @@ const CHAKRA_NAME_TO_FREQUENCY: Record<string, number> = {
   'garganta': 741,
   'ajna': 852,
   'anja': 852,
+  'third eye': 852,
   '3rd eye': 852,
+  'frontal': 852,
+  'terceiro olho': 852,
+  'terceiro': 852,
+  'olho': 852,
+  // 7
   '7 coronario': 963,
   '7 coronario chakra': 963,
   'chakra 7': 963,
@@ -245,6 +278,10 @@ const CHAKRA_NAME_TO_FREQUENCY: Record<string, number> = {
   'crown': 963,
   'coronario': 963,
   'coroa': 963,
+  // Also add 6 frontal entries
+  '6 frontal': 852,
+  '6 frontal chakra': 852,
+  'chakra 6': 852,
 };
 
 /**
@@ -263,21 +300,22 @@ export function getChakraFrequency(chakra: string | number): number | null {
   if (normalized.length < 3) {
     return null;
   }
-  // Try exact match first (with accent normalization)
+  // Try exact match first (with accent and case normalization)
+  const lowerNormalized = normalized.toLowerCase();
   for (const [key, value] of Object.entries(CHAKRA_NAME_TO_FREQUENCY)) {
-    if (normalized === key) {
+    if (lowerNormalized === key) {
       return value;
     }
   }
-  // Try partial matching only for longer strings (>= 4 chars)
-  if (normalized.length >= 4) {
+  // Try fuzzy matching for Sanskrit-like names (single alphabetic words, >= 4 chars)
+  if (normalized.length >= 4 && /^[a-zA-Z]+$/.test(normalized)) {
     for (const [key, value] of Object.entries(CHAKRA_NAME_TO_FREQUENCY)) {
-      if (normalized.includes(key) || key.includes(normalized)) {
+      if (levenshtein(lowerNormalized, key) <= 2) {
         return value;
       }
     }
   }
-   return null;
+  return null;
 }
 
 /**
@@ -319,12 +357,17 @@ export function getChakraByFrequency(frequencia: number): ChakraFrequency | null
  * @returns Sanskrit name or null if not found
  */
 export function getChakraSanskrit(chakra: string | number): string | null {
+  // If already a number, use the map directly
   if (typeof chakra === 'number') {
     return CHAKRA_FREQUENCY_MAP[chakra.toString()]?.chakra_sanskrit ?? null;
   }
+  // For strings, get frequency first then find the chakra data
   const frequency = getChakraFrequency(chakra);
   if (frequency === null) return null;
-  return CHAKRA_FREQUENCY_MAP[frequency.toString()]?.chakra_sanskrit ?? null;
+  // Find the chakra number for this frequency
+  const lookup = getFrequencyChakra();
+  const chakraData = lookup[frequency];
+  return chakraData?.chakra_sanskrit ?? null;
 }
 
 /**
@@ -338,49 +381,35 @@ export function getChakraMantram(chakra: string | number): string | null {
   }
   const frequency = getChakraFrequency(chakra);
   if (frequency === null) return null;
-  return CHAKRA_FREQUENCY_MAP[frequency.toString()]?.mantram ?? null;
+  const lookup = getFrequencyChakra();
+  return lookup[frequency]?.mantram ?? null;
 }
-
-/**
- * Get the element associated with a given chakra
- * @param chakra - Chakra name or number
- * @returns Element string or null if not found
- */
 export function getChakraElement(chakra: string | number): string | null {
   if (typeof chakra === 'number') {
     return CHAKRA_FREQUENCY_MAP[chakra.toString()]?.elemento ?? null;
   }
   const frequency = getChakraFrequency(chakra);
   if (frequency === null) return null;
-  return CHAKRA_FREQUENCY_MAP[frequency.toString()]?.elemento ?? null;
+  const lookup = getFrequencyChakra();
+  return lookup[frequency]?.elemento ?? null;
 }
-
-/**
- * Get the healing properties for a given chakra
- * @param chakra - Chakra name or number
- * @returns Healing properties object or null if not found
- */
 export function getChakraHealing(chakra: string | number): ChakraFrequency['propriedades_healing'] | null {
   if (typeof chakra === 'number') {
     return CHAKRA_FREQUENCY_MAP[chakra.toString()]?.propriedades_healing ?? null;
   }
   const frequency = getChakraFrequency(chakra);
   if (frequency === null) return null;
-  return CHAKRA_FREQUENCY_MAP[frequency.toString()]?.propriedades_healing ?? null;
+  const lookup = getFrequencyChakra();
+  return lookup[frequency]?.propriedades_healing ?? null;
 }
-
-/**
- * Get the energy direction for a given chakra
- * @param chakra - Chakra name or number
- * @returns Direction string or null if not found
- */
 export function getChakraDirection(chakra: string | number): string | null {
   if (typeof chakra === 'number') {
     return CHAKRA_FREQUENCY_MAP[chakra.toString()]?.direcao_energetica ?? null;
   }
   const frequency = getChakraFrequency(chakra);
   if (frequency === null) return null;
-  return CHAKRA_FREQUENCY_MAP[frequency.toString()]?.direcao_energetica ?? null;
+  const lookup = getFrequencyChakra();
+  return lookup[frequency]?.direcao_energetica ?? null;
 }
 
 /**
