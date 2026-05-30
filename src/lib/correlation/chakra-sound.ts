@@ -117,6 +117,38 @@ export function getChakraSound(chakra: string): ChakraSound | undefined {
 }
 
 /**
+ * Retrieves the chakra associated with a given seed syllable or mantra
+ * @param som - Seed syllable (e.g., "LAM", "OM") or mantra text
+ * @returns ChakraSound mapping or undefined if not found
+ */
+export function getSoundChakra(som: string): ChakraSound | undefined {
+  const upperSom = som.toUpperCase();
+  const lowerSom = som.toLowerCase();
+
+  // Try exact match by seed syllable
+  const bySeedSyllable = Object.values(CHAKRA_SOUNDS).find(
+    (c) => c.som_semente.toUpperCase() === upperSom
+  );
+  if (bySeedSyllable) return bySeedSyllable;
+
+  // Try exact match by mantram
+  const byMantram = Object.values(CHAKRA_SOUNDS).find(
+    (c) => c.mantram.toLowerCase() === lowerSom
+  );
+  if (byMantram) return byMantram;
+
+  // Try partial match
+  const partialMatch = Object.values(CHAKRA_SOUNDS).find(
+    (c) =>
+      c.som_semente.toLowerCase().includes(lowerSom) ||
+      c.mantram.toLowerCase().includes(lowerSom)
+  );
+  if (partialMatch) return partialMatch;
+
+  return undefined;
+}
+
+/**
  * Get all chakra sound mappings
  * @returns Array of all ChakraSound objects ordered by chakra number
  */
