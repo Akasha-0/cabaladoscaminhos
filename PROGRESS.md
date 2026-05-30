@@ -1,6 +1,6 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 224
-**Tests: ✅ 2155 passing, 14 skipped (127 test files)**
+**Sprints completados:** 225
+**Tests: ✅ 2217 passing, 14 skipped (130 test files)**
 ### Core Infrastructure
 - Next.js 16.2.6 + React 19 + App Router (Turbopack)
 - Prisma 7 + PostgreSQL via pg adapter
@@ -238,8 +238,10 @@
 |**219** | **Correlação Dia-Energia** | New day-energy.ts correlation (7 days mapped to chakra/planeta/orixa/sephirah/tarot/numerology), 32 new tests |
 |**220** | **Lint Fixes** | Fixed 2 lint errors (not-found Math.random, AffirmationWidget quote), 0 errors now |
 |**221** | **Correlações Espirituais** | New planet-orixa.ts and element-chakra.ts correlations (5 elements, 7 planets mapped), 77 new tests, tarot tests added |
+|**222** | **Lunar e Orixás** | New moon-phase-ritual.ts and orixa-element.ts correlations (4 phases, 9 orixás mapped), 116 new tests |
 |**223** | **Frequências e Sephirot** | New frequency-chakra.ts (7 Solfeggio frequencies) and sephirot-planet.ts (10 Sephiroth), 74 new tests |
 |**224** | **Planetas e Elementos** | New planet-zodiac.ts (7 planets, dignities) and element-sign.ts (4 elements mapped to signs), 56 new tests |
+|**225** | **Som e Dia** | New chakra-sound.ts (7 seed mantras) and day-orixa.ts (7 days mapped to Orixás), 62 new tests |
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
 2. **Multi-Agent Development**: Agentes paralelos para componentes
 3. **Drag-Drop**: @dnd-kit/core + @dnd-kit/sortable + DragOverlay
@@ -251,5 +253,5 @@
 9. **Widget Marketplace**: Browse and install widgets
 10. **Theme System**: 8 themes with custom color schemes
 11. **Accessibility**: Full accessibility settings for all users
-**Tests: ✅ 2155 passing, 14 skipped (127 test files)**
-**224 Sprints Completados: 224 🎉
+**Tests: ✅ 2217 passing, 14 skipped (130 test files)**
+**225 Sprints Completados: 225 🎉
