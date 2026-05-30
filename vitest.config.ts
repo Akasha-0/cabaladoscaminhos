@@ -13,7 +13,6 @@ export default defineConfig({
     },
     exclude: [
       'node_modules/**',
-      'tests/api/stripe-webhook.test.ts',
       '**/*.test.skip',
       '**/*.test.disabled',
     ],

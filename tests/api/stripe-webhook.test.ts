@@ -7,49 +7,39 @@
  * - customer.subscription.updated → atualiza status da assinatura
  */
 
-// ============================================
-// Setup environment BEFORE imports
-// ============================================
-import { vi } from 'vitest';
-
-// Must set env before importing the route module
-vi.stubEnv('STRIPE_WEBHOOK_SECRET', 'whsec_test');
-vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test_mock');
-vi.stubEnv('STRIPE_PRICE_BASIC', 'price_basic');
-vi.stubEnv('STRIPE_PRICE_PREMIUM', 'price_premium');
-vi.stubEnv('STRIPE_PRICE_ENTERPRISE', 'price_enterprise');
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // ============================================
-// Mock Setup — vi.hoisted() ensures mocks are available when
-// vi.mock() factories are evaluated (both hoisted to top of module).
+// Mock Setup — Use vi.mock with factory that sets env
 // ============================================
-const { stripe, prisma } = vi.hoisted(() => ({
-  stripe: {
-    webhooks: {
-      constructEvent: vi.fn(),
-    },
-    subscriptions: {
-      retrieve: vi.fn(),
-    },
-  },
-  prisma: {
-    assinatura: {
-      upsert: vi.fn(),
-      update: vi.fn(),
-    },
-    user: {
-      update: vi.fn(),
-      findFirst: vi.fn(),
-    },
-  },
-}));
+const constructEvent = vi.fn();
+const subscriptionsRetrieve = vi.fn();
+const assinaturaUpsert = vi.fn();
+const assinaturaUpdate = vi.fn();
+const userUpdate = vi.fn();
+const userFindFirst = vi.fn();
 
-// Mock modules before import
-vi.mock('@/lib/payments/stripe', () => ({
-  stripe,
-}));
+vi.mock('@/lib/payments/stripe', () => {
+  // Set env vars before the stripe module is evaluated
+  process.env.STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_test';
+  process.env.STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || 'sk_test_mock';
+  process.env.STRIPE_PRICE_BASIC = process.env.STRIPE_PRICE_BASIC || 'price_basic';
+  process.env.STRIPE_PRICE_PREMIUM = process.env.STRIPE_PRICE_PREMIUM || 'price_premium';
+  process.env.STRIPE_PRICE_ENTERPRISE = process.env.STRIPE_PRICE_ENTERPRISE || 'price_enterprise';
+  
+  return {
+    stripe: {
+      webhooks: { constructEvent },
+      subscriptions: { retrieve: subscriptionsRetrieve },
+    },
+  };
+});
+
 vi.mock('@/lib/prisma', () => ({
-  prisma,
+  prisma: {
+    assinatura: { upsert: assinaturaUpsert, update: assinaturaUpdate },
+    user: { update: userUpdate, findFirst: userFindFirst },
+  },
 }));
 
 // ============================================
@@ -57,7 +47,6 @@ vi.mock('@/lib/prisma', () => ({
 // ============================================
 import { NextRequest } from 'next/server';
 import { POST } from '@/app/api/stripe/webhook/route';
-import { describe, it, expect, beforeEach } from 'vitest';
 
 // ============================================
 // Test Helpers
@@ -83,13 +72,27 @@ function createMockEvent(type: string, data: Record<string, unknown> = {}) {
   };
 }
 
+function resetAllMocks() {
+  constructEvent.mockReset();
+  subscriptionsRetrieve.mockReset();
+  assinaturaUpsert.mockReset();
+  assinaturaUpdate.mockReset();
+  userUpdate.mockReset();
+  userFindFirst.mockReset();
+}
+
 // ============================================
 // Test Setup
 // ============================================
 
 describe('POST /api/stripe/webhook', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    resetAllMocks();
+    vi.stubEnv('STRIPE_WEBHOOK_SECRET', 'whsec_test');
+    vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test_mock');
+    vi.stubEnv('STRIPE_PRICE_BASIC', 'price_basic');
+    vi.stubEnv('STRIPE_PRICE_PREMIUM', 'price_premium');
+    vi.stubEnv('STRIPE_PRICE_ENTERPRISE', 'price_enterprise');
   });
 
   // ============================================
@@ -124,14 +127,14 @@ describe('POST /api/stripe/webhook', () => {
     const body = JSON.stringify(eventData);
 
     // Mock constructEvent to return the parsed event
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    stripe.subscriptions.retrieve.mockResolvedValue({
+    constructEvent.mockReturnValue(eventData);
+    subscriptionsRetrieve.mockResolvedValue({
       items: {
         data: [{ price: { id: 'price_premium' } }],
       },
     });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_test123',
@@ -142,7 +145,7 @@ describe('POST /api/stripe/webhook', () => {
 
     expect(response.status).toBe(200);
     expect(result.received).toBe(true);
-    expect(stripe.webhooks.constructEvent).toHaveBeenCalled();
+    expect(constructEvent).toHaveBeenCalled();
   });
 
   // ============================================
@@ -156,13 +159,13 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue({
+    constructEvent.mockReturnValue(eventData);
+    userFindFirst.mockResolvedValue({
       id: 'user_789',
       stripeSubscriptionId: 'sub_deleted',
     });
-    prisma.assinatura.update.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    assinaturaUpdate.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_deleted',
@@ -190,13 +193,13 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue({
+    constructEvent.mockReturnValue(eventData);
+    userFindFirst.mockResolvedValue({
       id: 'user_101',
       stripeSubscriptionId: 'sub_updated',
     });
-    prisma.assinatura.update.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    assinaturaUpdate.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_updated',
@@ -219,7 +222,7 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
+    constructEvent.mockReturnValue(eventData);
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_unhandled',
@@ -228,7 +231,7 @@ describe('POST /api/stripe/webhook', () => {
     const response = await POST(request);
 
     expect(response.status).toBe(200);
-    expect(stripe.webhooks.constructEvent).toHaveBeenCalled();
+    expect(constructEvent).toHaveBeenCalled();
   });
 
   // ============================================
@@ -239,7 +242,7 @@ describe('POST /api/stripe/webhook', () => {
       metadata: { userId: 'user_fail' },
     }));
 
-    stripe.webhooks.constructEvent.mockImplementation(() => {
+    constructEvent.mockImplementation(() => {
       throw new Error('Invalid signature');
     });
 
@@ -265,7 +268,7 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
+    constructEvent.mockReturnValue(eventData);
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_no_user',
@@ -275,7 +278,7 @@ describe('POST /api/stripe/webhook', () => {
     const response = await POST(request);
 
     expect(response.status).toBe(200);
-    expect(prisma.assinatura.upsert).not.toHaveBeenCalled();
+    expect(assinaturaUpsert).not.toHaveBeenCalled();
   });
 
   // ============================================
@@ -289,9 +292,9 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    constructEvent.mockReturnValue(eventData);
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_no_sub',
@@ -300,7 +303,7 @@ describe('POST /api/stripe/webhook', () => {
     const response = await POST(request);
 
     expect(response.status).toBe(200);
-    expect(prisma.assinatura.upsert).toHaveBeenCalled();
+    expect(assinaturaUpsert).toHaveBeenCalled();
   });
 
   // ============================================
@@ -314,8 +317,8 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue(null);
+    constructEvent.mockReturnValue(eventData);
+    userFindFirst.mockResolvedValue(null);
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_orphan',
@@ -324,7 +327,7 @@ describe('POST /api/stripe/webhook', () => {
     const response = await POST(request);
 
     expect(response.status).toBe(200);
-    expect(prisma.assinatura.update).not.toHaveBeenCalled();
+    expect(assinaturaUpdate).not.toHaveBeenCalled();
   });
 
   // ============================================
@@ -339,8 +342,8 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue(null);
+    constructEvent.mockReturnValue(eventData);
+    userFindFirst.mockResolvedValue(null);
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_unknown',
@@ -349,7 +352,7 @@ describe('POST /api/stripe/webhook', () => {
     const response = await POST(request);
 
     expect(response.status).toBe(200);
-    expect(prisma.assinatura.update).not.toHaveBeenCalled();
+    expect(assinaturaUpdate).not.toHaveBeenCalled();
   });
 
   // ============================================
@@ -364,14 +367,14 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    stripe.subscriptions.retrieve.mockResolvedValue({
+    constructEvent.mockReturnValue(eventData);
+    subscriptionsRetrieve.mockResolvedValue({
       items: {
         data: [{ price: { id: 'price_enterprise' } }],
       },
     });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_ent',
@@ -381,7 +384,7 @@ describe('POST /api/stripe/webhook', () => {
 
     expect(response.status).toBe(200);
     // Verify upsert was called with enterprise modules
-    expect(prisma.assinatura.upsert).toHaveBeenCalledWith(
+    expect(assinaturaUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { userId: 'user_enterprise' },
         create: expect.objectContaining({
@@ -404,14 +407,14 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    stripe.subscriptions.retrieve.mockResolvedValue({
+    constructEvent.mockReturnValue(eventData);
+    subscriptionsRetrieve.mockResolvedValue({
       items: {
         data: [{ price: { id: 'price_basic' } }],
       },
     });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_basic',
@@ -421,7 +424,7 @@ describe('POST /api/stripe/webhook', () => {
 
     expect(response.status).toBe(200);
     // Verify upsert was called with basic modules
-    expect(prisma.assinatura.upsert).toHaveBeenCalledWith(
+    expect(assinaturaUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { userId: 'user_basic' },
         create: expect.objectContaining({
@@ -448,10 +451,10 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    stripe.subscriptions.retrieve.mockRejectedValue(new Error('API Error'));
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    constructEvent.mockReturnValue(eventData);
+    subscriptionsRetrieve.mockRejectedValue(new Error('API Error'));
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_error',
@@ -461,7 +464,7 @@ describe('POST /api/stripe/webhook', () => {
 
     expect(response.status).toBe(200);
     // Falls back to metadata plano 'premium'
-    expect(prisma.assinatura.upsert).toHaveBeenCalledWith(
+    expect(assinaturaUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         create: expect.objectContaining({
           plano: 'premium',
@@ -490,11 +493,11 @@ describe('POST /api/stripe/webhook', () => {
     ];
 
     for (const eventData of events) {
-      stripe.webhooks.constructEvent.mockReturnValue(eventData);
-      prisma.user.findFirst.mockResolvedValue({ id: 'user_multi_1' });
-      prisma.assinatura.upsert.mockResolvedValue({});
-      prisma.assinatura.update.mockResolvedValue({});
-      prisma.user.update.mockResolvedValue({});
+      constructEvent.mockReturnValue(eventData);
+      userFindFirst.mockResolvedValue({ id: 'user_multi_1' });
+      assinaturaUpsert.mockResolvedValue({});
+      assinaturaUpdate.mockResolvedValue({});
+      userUpdate.mockResolvedValue({});
 
       const body = JSON.stringify(eventData);
       const request = createWebhookRequest(body, {
@@ -518,9 +521,9 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    constructEvent.mockReturnValue(eventData);
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_export',
@@ -541,13 +544,13 @@ describe('POST /api/stripe/webhook', () => {
 
     const bodyString = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockImplementation((body, sig, secret) => {
+    constructEvent.mockImplementation((body, sig, secret) => {
       // Verify body is passed as string (text content)
       expect(typeof body).toBe('string');
       return eventData;
     });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(bodyString, {
       'stripe-signature': 'sig_text',
@@ -570,9 +573,9 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    constructEvent.mockReturnValue(eventData);
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_empty',
@@ -595,10 +598,10 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue({ id: 'user_no_items' });
-    prisma.assinatura.update.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    constructEvent.mockReturnValue(eventData);
+    userFindFirst.mockResolvedValue({ id: 'user_no_items' });
+    assinaturaUpdate.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_no_items',
@@ -621,10 +624,10 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue({ id: 'user_unknown_price' });
-    prisma.assinatura.update.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    constructEvent.mockReturnValue(eventData);
+    userFindFirst.mockResolvedValue({ id: 'user_unknown_price' });
+    assinaturaUpdate.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_unknown_price',
@@ -634,7 +637,7 @@ describe('POST /api/stripe/webhook', () => {
 
     expect(response.status).toBe(200);
     // Should fall back to basico plan
-    expect(prisma.assinatura.update).toHaveBeenCalledWith(
+    expect(assinaturaUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { userId: 'user_unknown_price' },
         data: expect.objectContaining({
@@ -654,12 +657,12 @@ describe('POST /api/stripe/webhook', () => {
       metadata: { userId: 'user_string' },
     });
 
-    stripe.webhooks.constructEvent.mockImplementation((body: unknown) => {
+    constructEvent.mockImplementation((body: unknown) => {
       receivedBodyType = typeof body;
       return eventData;
     });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, {
@@ -724,7 +727,7 @@ describe('POST /api/stripe/webhook', () => {
     // Raw non-JSON body (simulating potential issues)
     const nonJsonBody = 'this is not json';
 
-    stripe.webhooks.constructEvent.mockImplementation(() => {
+    constructEvent.mockImplementation(() => {
       throw new Error('Invalid signature');
     });
 
@@ -750,10 +753,10 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue({ id: 'user_canceled' });
-    prisma.assinatura.update.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    constructEvent.mockReturnValue(eventData);
+    userFindFirst.mockResolvedValue({ id: 'user_canceled' });
+    assinaturaUpdate.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_canceled',
@@ -762,7 +765,7 @@ describe('POST /api/stripe/webhook', () => {
     const response = await POST(request);
 
     expect(response.status).toBe(200);
-    expect(prisma.assinatura.update).toHaveBeenCalledWith(
+    expect(assinaturaUpdate).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { userId: 'user_canceled' },
         data: expect.objectContaining({
@@ -784,14 +787,14 @@ describe('POST /api/stripe/webhook', () => {
 
     const body = JSON.stringify(eventData);
 
-    stripe.webhooks.constructEvent.mockReturnValue(eventData);
-    stripe.subscriptions.retrieve.mockResolvedValue({
+    constructEvent.mockReturnValue(eventData);
+    subscriptionsRetrieve.mockResolvedValue({
       items: {
         data: [{ price: { id: 'price_premium' } }],
       },
     });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    assinaturaUpsert.mockResolvedValue({});
+    userUpdate.mockResolvedValue({});
 
     const request = createWebhookRequest(body, {
       'stripe-signature': 'sig_premium',
@@ -801,7 +804,7 @@ describe('POST /api/stripe/webhook', () => {
 
     expect(response.status).toBe(200);
     // Verify upsert was called with premium modules
-    expect(prisma.assinatura.upsert).toHaveBeenCalledWith(
+    expect(assinaturaUpsert).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { userId: 'user_premium' },
         create: expect.objectContaining({
