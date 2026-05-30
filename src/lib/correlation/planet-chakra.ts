@@ -122,38 +122,67 @@ const PLANET_CHAKRA_MAP: Record<string, PlanetChakraMapping> = {
       frequencias: ['639 Hz (Harmonia)', '963 Hz (Conexão Divina)'],
       mantras: ['YAM (639 Hz)', 'AUM (963 Hz)', 'OM'],
       praticas: [
-        'Gratidão e visualização de abundância',
-        'Estudos de textos sagrados',
-        'Práticas de compaixão e amor incondicional',
-        'Rituais de fartura e prosperidade',
-        'Conexão com mestres ascensionados',
-      ],
-    },
-  },
-  Venus: {
-    planeta: 'Vênus',
-    chakra_primario: 'Anahata',
-    chakra_secundario: 'Sahasrara',
-    qualidade_energetica: 'Fria / Receptiva',
-    elemento_alinhamento: 'Água',
-    praticas_espirituais: {
-      tipo: 'Amor e magnetismo',
-      descricao: 'Expansão do amor incondicional, doçura, beleza interior, purificação e paz divina',
-      frequencias: ['639 Hz (Harmonia)', '963 Hz (Conexão Divina)'],
-      mantras: ['YAM (639 Hz)', 'AUM (963 Hz)', 'EHEIEH'],
-      praticas: [
-        'Banhos de mel e rosas para amor próprio',
-        'Macerados com mel nas noites de lua cheia',
-        'Práticas de gratidão profunda',
-        'Silêncio e quietude meditativa',
-        'Vestir branco para purificação total',
-      ],
-    },
-  },
-  Saturno: {
-    planeta: 'Saturno',
-    chakra_primario: 'Muladhara',
-    chakra_secundario: 'Anahata',
+/**
+ * Get planet chakra correlation mapping
+ * @param planeta - Name of the planet (e.g., 'Sol', 'Lua', 'Marte')
+ * @returns PlanetChakraMapping or undefined if not found
+ */
+export function getPlanetChakra(planeta: string): PlanetChakraMapping | undefined {
+  const normalized = normalizePlanetName(planeta);
+  return PLANET_CHAKRA_MAP[normalized];
+}
+/**
+ * Get reverse mapping: chakra to associated planets
+ * @returns Record mapping each ChakraName to its associated planets
+ */
+export function getChakraPlanet(): Record<ChakraName, string[]> {
+  const result: Partial<Record<ChakraName, string[]>> = {};
+  for (const mapping of Object.values(PLANET_CHAKRA_MAP)) {
+    const primary = mapping.chakra_primario;
+    if (!result[primary]) {
+      result[primary] = [];
+    }
+    if (!result[primary]!.includes(mapping.planeta)) {
+      result[primary]!.push(mapping.planeta);
+    }
+    if (mapping.chakra_secundario) {
+      const secondary = mapping.chakra_secundario;
+      if (!result[secondary]) {
+        result[secondary] = [];
+      }
+      if (!result[secondary]!.includes(mapping.planeta)) {
+        result[secondary]!.push(mapping.planeta);
+      }
+    }
+  }
+  return result as Record<ChakraName, string[]>;
+}
+/**
+ * Get all planet-chakra mappings
+ * @returns Array of all PlanetChakraMapping objects
+ */
+export function getAllPlanetChakras(): PlanetChakraMapping[] {
+  return Object.values(PLANET_CHAKRA_MAP);
+}
+/**
+ * Normalizes planet name to standard form
+ */
+function normalizePlanetName(planeta: string): string {
+  const normalized = planeta.trim().toLowerCase();
+  const mapping: Record<string, string> = {
+    sol: 'Sol',
+    lua: 'Lua',
+    marte: 'Marte',
+    mercurio: 'Mercúrio',
+    mercúrio: 'Mercúrio',
+    jupiter: 'Júpiter',
+    júpiter: 'Júpiter',
+    venus: 'Vênus',
+    vênus: 'Vênus',
+    saturno: 'Saturno',
+  };
+  return mapping[normalized] ?? planeta;
+}
     qualidade_energetica: 'Quente / Densa',
     elemento_alinhamento: 'Terra',
     praticas_espirituais: {

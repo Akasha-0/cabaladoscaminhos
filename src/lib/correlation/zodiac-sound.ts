@@ -203,34 +203,28 @@ export function getZodiacSound(signo: string): ZodiacSound | undefined {
   if (normalizedMatch) return normalizedMatch;
 
   // Try partial match (e.g., "Ari", "Le")
-  const lowerSigno = sign.toLowerCase();
+  // Try partial match (e.g., "Ari", "Le")
+  const lowerSigno = signo.toLowerCase();
   const partialMatch = Object.values(ZODIAC_SOUNDS).find(
     (z) => z.signo.toLowerCase().includes(lowerSigno)
   );
-  if (partialMatch) return partialMatch;
-
   return undefined;
 }
 
 /**
- * Retrieves the zodiac sign associated with a given sacred sound or frequency.
- * @param som - Sacred sound (e.g., "RAM", "OM") or frequency in Hz
- * @returns ZodiacSound mapping or undefined if not found
- */
-export function getSoundZodiac(som: string): ZodiacSound | undefined {
-  if (!som) return undefined;
-
-  const upperSom = som.toUpperCase();
-  const lowerSom = som.toLowerCase();
-
+export function getSoundZodiac(som: string | number): ZodiacSound | undefined {
+  if (!som && som !== 0) return undefined;
+  const somStr = String(som);
+  const upperSom = somStr.toUpperCase();
+  const lowerSom = somStr.toLowerCase();
   // Try exact match by sacred sound
   const bySacredSound = Object.values(ZODIAC_SOUNDS).find(
     (z) => z.som_sagrado.toUpperCase() === upperSom
   );
   if (bySacredSound) return bySacredSound;
-
   // Try match by frequency (as string or number)
-  const freqNum = parseFloat(som);
+  // Try match by frequency (as string or number)
+  const freqNum = typeof som === 'number' ? som : parseFloat(somStr);
   if (!isNaN(freqNum)) {
     const byFrequency = Object.values(ZODIAC_SOUNDS).find(
       (z) => z.frequencia_cura === freqNum
@@ -255,12 +249,6 @@ export function getSoundZodiac(som: string): ZodiacSound | undefined {
   return undefined;
 }
 
-/**
- * Get all zodiac sound mappings.
- * @returns Array of all ZodiacSound objects ordered by sign number
- */
 export function getAllZodiacSounds(): ZodiacSound[] {
   return Object.values(ZODIAC_SOUNDS).sort((a, b) => a.signo_numero - b.signo_numero);
 }
-// Fix: normalizarSigno uses `sign` but should use `signo`
-// This is a patch - see actual function below
