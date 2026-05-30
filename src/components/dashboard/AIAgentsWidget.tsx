@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Sparkles, Brain, TrendingUp, Eye, Zap, ChevronRight, RefreshCw, Loader2, Star, Heart, Flame, Droplets } from 'lucide-react';
+import { Sparkles, Brain, TrendingUp, Eye, Zap, ChevronRight, RefreshCw, Loader2, Star, Heart, Flame, Droplets, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // ============================================================
