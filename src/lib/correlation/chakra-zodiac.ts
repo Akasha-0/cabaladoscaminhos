@@ -192,7 +192,7 @@ function normalizeChakra(chakra: string): ChakraName | null {
     quinto: 'Vishuddha',
     ajna: 'Ajna',
     frontal: 'Ajna',
-    terceiro olho: 'Ajna',
+    'terceiro-olho': 'Ajna',
     '6º': 'Ajna',
     sexto: 'Ajna',
     sahasrara: 'Sahasrara',
