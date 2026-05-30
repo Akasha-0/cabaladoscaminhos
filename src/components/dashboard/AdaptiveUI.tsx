@@ -136,15 +136,13 @@ export function AdaptiveUI({
       updated.lastActive = new Date();
       return updated;
     });
-
-    // Analyze and adapt
-    if (learningMode === 'active') {
-      analyzeAndAdapt();
-    }
-  }, [learningMode]);
+    // Do NOT call analyzeAndAdapt here - that would violate hooks rules
+    // (analyzeAndAdapt is declared below via useCallback)
+  }, [learningMode, behavior]);
 
   // Analyze behavior and suggest adaptations
   const analyzeAndAdapt = useCallback(() => {
+    if (learningMode !== 'active') return;
     const newAdaptations: { type: AdaptationType; description: string; confidence: number }[] = [];
 
     // Layout preference based on widget usage
@@ -184,7 +182,14 @@ export function AdaptiveUI({
     }
 
     setAdaptations(newAdaptations);
-  }, [behavior]);
+  }, [behavior, learningMode]);
+
+  // Trigger analyzeAndAdapt when behavior changes in active learning mode
+  useEffect(() => {
+    if (learningMode === 'active') {
+      analyzeAndAdapt();
+    }
+  }, [behavior, learningMode, analyzeAndAdapt]);
 
   // Apply adaptation
   const applyAdaptation = useCallback((adaptation: typeof adaptations[0]) => {

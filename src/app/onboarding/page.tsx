@@ -1,6 +1,5 @@
 'use client';
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress, ProgressIndicator } from '@/components/ui/progress';
 import { Sparkles, User, Calendar, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
-
+import { useAuth } from '@/components/providers/SupabaseProvider';
 const TOTAL_STEPS = 4;
 
 const BRAZILIAN_STATES = [
@@ -53,6 +52,7 @@ interface FormData {
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const { user, isLoading } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -63,7 +63,27 @@ export default function OnboardingPage() {
     state: '',
     country: 'Brasil',
   });
-
+  // Redirect to login if not authenticated after loading
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/login');
+    }
+  }, [isLoading, user, router]);
+  // Show loading while checking auth
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex justify-center gap-2 text-amber-500">
+            {[...Array(7)].map((_, i) => (
+              <span key={i} className="text-2xl animate-pulse">✦</span>
+            ))}
+          </div>
+          <p className="text-muted-foreground">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
   const progressValue = ((currentStep + 1) / TOTAL_STEPS) * 100;
 
   const handleNext = () => {
@@ -81,16 +101,26 @@ export default function OnboardingPage() {
   const handleInputChange = (field: keyof FormData, value: string | null) => {
     setFormData(prev => ({ ...prev, [field]: value ?? '' }));
   };
-
+  // Auth guard ensures user exists before render
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
       const response = await fetch('/api/onboarding', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          userId: user.id,
+          step: 0,
+          data: {
+            nome: formData.fullName,
+            dataNascimento: formData.birthDate,
+            hora: formData.birthTime,
+            cidade: formData.city,
+            estado: formData.state,
+            pais: formData.country,
+          },
+        }),
       });
-
       if (response.ok) {
         router.push('/mapa');
       } else {
