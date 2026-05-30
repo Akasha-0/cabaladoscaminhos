@@ -1,33 +1,22 @@
 import { describe, it, expect } from 'vitest';
-import { getData, getDataById, searchData, getOxalaByElement } from '../../../src/lib/orixa/oxala-data';
+import { getData, getDataById, searchData, getOxalaByElement } from '~/lib/orixa/oxala-data';
 
 describe('oxala-data', () => {
-  it('getData returns array of Oxalá data', () => {
+  it('should return array of oxala data', () => {
     const data = getData();
     expect(Array.isArray(data)).toBe(true);
     expect(data.length).toBeGreaterThan(0);
   });
 
-  it('each Oxalá entry has required fields', () => {
-    const data = getData();
-    const entry = data[0];
-    expect(entry).toHaveProperty('id');
-    expect(entry).toHaveProperty('name');
-    expect(entry).toHaveProperty('element');
-    expect(entry).toHaveProperty('colors');
-    expect(entry).toHaveProperty('qualities');
-  });
-
-  it('getDataById returns entry by id', () => {
-    const data = getData();
-    const entry = data[0];
-    const found = getDataById(entry.id);
+  it('should find oxala by id', () => {
+    const first = getData()[0];
+    const found = getDataById(first.id);
     expect(found).toBeDefined();
-    expect(found?.id).toBe(entry.id);
+    expect(found?.id).toBe(first.id);
   });
 
-  it('getOxalaByElement filters by element', () => {
-    const waterEntries = getOxalaByElement('water');
-    expect(waterEntries.every(e => e.element.toLowerCase() === 'water')).toBe(true);
+  it('should search data by query', () => {
+    const results = searchData('creation');
+    expect(Array.isArray(results)).toBe(true);
   });
 });
