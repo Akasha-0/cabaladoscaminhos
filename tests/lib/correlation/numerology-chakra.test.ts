@@ -126,9 +126,8 @@ describe('Numerology-Chakra Correlation', () => {
       expect(result.chakra).toBe('Sahasrara');
       expect(result.chakra_posicao).toBe('7º Chakra - Coronário');
       expect(result.energia_significado).toContain('Transformação profunda');
-      expect(result.pratica_espiritual).toContain('morte e renascimento');
+      expect(result.pratica_espiritual).toContain('Morte e renascimento');
     });
-
     it('should throw error for number 0', () => {
       expect(() => getNumerologyChakra(0)).toThrow('Número fora do intervalo válido');
     });

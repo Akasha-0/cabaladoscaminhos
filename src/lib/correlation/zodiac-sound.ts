@@ -203,11 +203,11 @@ export function getZodiacSound(signo: string): ZodiacSound | undefined {
   if (normalizedMatch) return normalizedMatch;
 
   // Try partial match (e.g., "Ari", "Le")
-  // Try partial match (e.g., "Ari", "Le")
   const lowerSigno = signo.toLowerCase();
   const partialMatch = Object.values(ZODIAC_SOUNDS).find(
     (z) => z.signo.toLowerCase().includes(lowerSigno)
   );
+  if (partialMatch) return partialMatch;
   return undefined;
 }
 
