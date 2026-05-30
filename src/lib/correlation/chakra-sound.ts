@@ -17,6 +17,8 @@ export interface ChakraSound {
   frequencia: number;
   /** Element associated with the chakra */
   elemento: string;
+  /** Pronunciation guide for the mantra */
+  pronunciacao: string;
 }
 
 /** Map of all 7 main chakras with their spiritual sound correlations */
@@ -28,6 +30,7 @@ const CHAKRA_SOUNDS: Record<number, ChakraSound> = {
     mantram: "Lam",
     frequencia: 396,
     elemento: "Terra",
+    pronunciacao: "lahm (com 'a' longo, vibração na base da coluna)",
   },
   2: {
     chakra: "2º Sacro",
@@ -36,6 +39,7 @@ const CHAKRA_SOUNDS: Record<number, ChakraSound> = {
     mantram: "Vam",
     frequencia: 417,
     elemento: "Água",
+    pronunciacao: "vahm (com 'a' longo, vibração no baixo ventre)",
   },
   3: {
     chakra: "3º Plexo Solar",
@@ -44,6 +48,7 @@ const CHAKRA_SOUNDS: Record<number, ChakraSound> = {
     mantram: "Ram",
     frequencia: 528,
     elemento: "Fogo",
+    pronunciacao: "rahm (com 'a' longo, vibração no plexo solar)",
   },
   4: {
     chakra: "4º Cardíaco",
@@ -52,6 +57,7 @@ const CHAKRA_SOUNDS: Record<number, ChakraSound> = {
     mantram: "Yam",
     frequencia: 639,
     elemento: "Ar",
+    pronunciacao: "yyahm (com 'a' longo, vibração no coração)",
   },
   5: {
     chakra: "5º Laríngeo",
@@ -60,6 +66,7 @@ const CHAKRA_SOUNDS: Record<number, ChakraSound> = {
     mantram: "Ham",
     frequencia: 741,
     elemento: "Ar",
+    pronunciacao: "hahm (com 'a' longo, vibração na garganta)",
   },
   6: {
     chakra: "6º Frontal",
@@ -68,6 +75,7 @@ const CHAKRA_SOUNDS: Record<number, ChakraSound> = {
     mantram: "Om",
     frequencia: 852,
     elemento: "Éter",
+    pronunciacao: "oh-umm (som primordial, vibração no centro da testa)",
   },
   7: {
     chakra: "7º Coronário",
@@ -76,6 +84,7 @@ const CHAKRA_SOUNDS: Record<number, ChakraSound> = {
     mantram: "Aum",
     frequencia: 963,
     elemento: "Éter",
+    pronunciacao: "a-u-umm (tríade sonora sagrada, vibração no topo da cabeça)",
   },
 };
 

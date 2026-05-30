@@ -291,8 +291,17 @@ export function getElementProperties(dia: string): DayElement['propriedades'] | 
   return DAY_ELEMENT_MAP[dia]?.propriedades;
 }
 
+/**
+ * Get element for a specific day (alias for getElementByDay)
+ * @param dia - Day name in Portuguese
+ * @returns Element name or undefined if day not found
+ */
+export function getElementDay(dia: string): string | undefined {
+  return DAY_ELEMENT_MAP[dia]?.elemento;
+}
 export default {
   getDayElement,
+  getElementDay,
   getElementByDay,
   getAllDays,
   getElementDays,

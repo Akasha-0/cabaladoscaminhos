@@ -5,6 +5,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   getDayElement,
+  getElementDay,
   getElementByDay,
   getAllDays,
   getElementDays,
@@ -192,6 +193,35 @@ describe('Day-Element Correlation', () => {
     it('should return undefined for invalid day', () => {
       expect(getElementByDay('InvalidDay')).toBeUndefined();
       expect(getElementDays('InvalidDay')).toBeUndefined();
+    });
+  });
+  describe('getElementDay', () => {
+    it('should return fire element for Domingo', () => {
+      expect(getElementDay('Domingo')).toBe('fogo');
+    });
+    it('should return water element for Segunda-feira', () => {
+      expect(getElementDay('Segunda-feira')).toBe('água');
+    });
+    it('should return fire element for Terça-feira', () => {
+      expect(getElementDay('Terça-feira')).toBe('fogo');
+    });
+    it('should return air element for Quarta-feira', () => {
+      expect(getElementDay('Quarta-feira')).toBe('ar');
+    });
+    it('should return fire element for Quinta-feira', () => {
+      expect(getElementDay('Quinta-feira')).toBe('fogo');
+    });
+    it('should return earth element for Sexta-feira', () => {
+      expect(getElementDay('Sexta-feira')).toBe('terra');
+    });
+    it('should return earth element for Sábado', () => {
+      expect(getElementDay('Sábado')).toBe('terra');
+    });
+    it('should return undefined for invalid day', () => {
+      expect(getElementDay('InvalidDay')).toBeUndefined();
+    });
+  });
+  describe('getAllDays', () => {
     });
   });
 
