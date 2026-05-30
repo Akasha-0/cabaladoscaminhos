@@ -1,41 +1,39 @@
 'use client';
-
-import { useState, useEffect, useCallback, useRef } from 'react';
-
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 export interface SyncStatus {
   lastSync: string | null;
   pending: number;
   syncing: boolean;
   error: string | null;
 }
-
 export interface SyncConflict {
   key: string;
   localValue: unknown;
   cloudValue: unknown;
   resolution: 'local' | 'cloud' | 'merged' | null;
 }
-
 export interface DataSyncOptions {
   storageKey?: string;
   cloudEndpoint?: string;
-  syncIntervalMs?: number;
   autoSync?: boolean;
-  onConflict?: (conflict: SyncConflict) => Promise<'local' | 'cloud' | 'merged'>;
+  syncInterval?: number;
+  onSyncComplete?: (status: SyncStatus) => void;
+  onConflict?: (conflict: SyncConflict) => void;
 }
-
-const DEFAULT_OPTIONS: Required<Omit<DataSyncOptions, 'onConflict'>> = {
-  storageKey: 'cabala_sync_data',
-  cloudEndpoint: '/api/sync',
-  syncIntervalMs: 24 * 60 * 60 * 1000, // 24 hours
-  autoSync: true,
+const DEFAULT_OPTIONS: DataSyncOptions = {
+  storageKey: 'spiritual_data',
+  cloudEndpoint: '/api/sync/data',
+  autoSync: false,
+  syncInterval: 60000,
 };
-
+export function useDataSync(options: DataSyncOptions = {}) {
+  // Use useMemo to stabilize opts object
+  const opts = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
+  const lastSyncRef = useRef<string | null>(null);
 function mergeValues(local: unknown, cloud: unknown): unknown {
   if (typeof local !== 'object' || local === null || typeof cloud !== 'object' || cloud === null) {
     return cloud;
   }
-
   const merged: Record<string, unknown> = { ...(cloud as Record<string, unknown>) };
   const localObj = local as Record<string, unknown>;
 

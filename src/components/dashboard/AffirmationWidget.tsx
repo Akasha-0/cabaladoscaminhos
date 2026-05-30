@@ -104,8 +104,13 @@ export function AffirmationWidget({ userData, className = '' }: AffirmationWidge
       <CardContent className="pt-4 space-y-4">
         {/* Main affirmation card */}
         <div className="relative p-5 rounded-xl bg-gradient-to-br from-pink-500/10 to-violet-500/10 border border-pink-500/20 overflow-hidden">
+<<<<<<< Updated upstream
           {/* Decorative quote */}
           <div className="absolute top-2 left-2 text-4xl text-pink-500/20 font-serif">&quot;</div>
+=======
+        {/* Decorative quote */}
+ <div className="absolute top-2 left-2 text-4xl text-pink-500/20 font-serif">&ldquo;</div>
+>>>>>>> Stashed changes
           
           <div className="relative z-10">
             <p className="text-lg text-slate-200 leading-relaxed italic pl-6">

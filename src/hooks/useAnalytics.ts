@@ -1,6 +1,5 @@
 'use client';
-
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 interface AnalyticsTrackOptions {
@@ -33,29 +32,28 @@ const defaultAnalytics: AnalyticsService = {
 export function useAnalytics(customAnalytics?: Partial<AnalyticsService>): AnalyticsService {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const analytics = customAnalytics
-    ? { ...defaultAnalytics, ...customAnalytics }
-    : defaultAnalytics;
-
+ // Use useMemo to avoid recreating analytics object on every render
+  const analytics = useMemo(() => {
+    return customAnalytics
+      ? { ...defaultAnalytics, ...customAnalytics }
+      : defaultAnalytics;
+  }, [customAnalytics]);
   useEffect(() => {
     const path = `${pathname}${searchParams.toString() ? `?${searchParams}` : ''}`;
     analytics.trackPage(path, document.title);
   }, [pathname, searchParams, analytics]);
-
   const trackPage = useCallback(
     (path: string, title?: string) => {
       analytics.trackPage(path, title);
     },
     [analytics]
   );
-
   const trackEvent = useCallback(
     (name: string, properties?: AnalyticsTrackOptions) => {
       analytics.trackEvent(name, properties);
     },
     [analytics]
   );
-
   return { trackPage, trackEvent };
 }
 

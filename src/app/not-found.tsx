@@ -16,7 +16,14 @@ const mysticalQuotes = [
 ];
 
 export default function NotFound() {
+<<<<<<< Updated upstream
   const [quote, setQuote] = useState(mysticalQuotes[0]);
+=======
+  const [quote] = useState(() => {
+    // Generate random quote only once on mount
+    return mysticalQuotes[Math.floor(Math.random() * mysticalQuotes.length)];
+  });
+>>>>>>> Stashed changes
   const [fadeIn, setFadeIn] = useState(false);
   useEffect(() => {
     setQuote(mysticalQuotes[Math.floor(Math.random() * mysticalQuotes.length)]);

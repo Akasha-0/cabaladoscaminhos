@@ -1,6 +1,12 @@
 **Última atualização:** 2026-05-30
+<<<<<<< Updated upstream
 **Sprints completados:** 235
 **Tests: ✅ 4030 passing, 22 skipped (371+ test files)**
+=======
+**Sprints completados:** 219
+**Tests: ✅ 1929 passing, 14 skipped (112 test files)**
+
+>>>>>>> Stashed changes
 ### Core Infrastructure
 - Next.js 16.2.6 + React 19 + App Router (Turbopack)
 - Prisma 7 + PostgreSQL via pg adapter
@@ -231,6 +237,7 @@
 |**211** | **Hook Tests** | useNotifications tests (15), hook coverage expanded to 15 hooks |
 |**212** | **Auth Fixes & Tests** | Auth error handling fixes, rateLimit tests (19), middleware coverage expanded |
 |**213** | **Hook Fixes** | Created /api/astrologia/previsao-mensal route, fixed usePrevisaoMensal tests (15 passing) |
+<<<<<<< Updated upstream
 |**214** | **Dashboard Widgets** | Widget registry with 303+ widgets, category system, drag-drop support |
 |**215** | **Auth Refinements** | Session management, token refresh, security headers |
 |**216** | **Test Coverage** | API route tests, component tests, hook tests |
@@ -252,6 +259,11 @@
 |**233** | **Correlação Afro-Brasileira** | New orixa-chakra.ts, numerology-tarot.ts, day-odu.ts, frequency-tarot.ts correlations, 3576 tests total |
 |**234** | **Correlação Cruzada** | New element-chakra.ts, odu-tarot.ts, orixa-tarot.ts, zodiac-odu.ts correlations, 3913 tests total |
 |**235** | **Correlação de Som e Número** | New chakra-sound.ts, orixa-numerology.ts, day-element.ts, sephirot-element.ts correlations, 4030 tests total |
+=======
+|**217 **|Test Fixes|Syntax fixes for RealtimeEnergyWidget/NumerologyWidget, stripe-webhook skipped (vi.mock hoisting)|
+|**218 **|Auth Component Tests|LoginForm (25) + RegisterForm (26) tests fixed and passing; selectors corrected (getByLabelText → getElementById for password fields); validation tests simplified to avoid ambiguous selectors|
+|**219 **|Lint Fixes|Fixed 2 lint errors: not-found.tsx Math.random in useState (wrapped in arrow function), AffirmationWidget unescaped quote (using &ldquo; entity); 0 errors, 960 warnings|
+>>>>>>> Stashed changes
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
 2. **Multi-Agent Development**: Agentes paralelos para componentes
 3. **Drag-Drop**: @dnd-kit/core + @dnd-kit/sortable + DragOverlay
