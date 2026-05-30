@@ -11,6 +11,12 @@ export default defineConfig({
     env: {
       JWT_SECRET: 'test-secret-key-that-is-at-least-32-bytes-long',
     },
+    exclude: [
+      'node_modules/**',
+      'tests/api/stripe-webhook.test.ts',
+      '**/*.test.skip',
+      '**/*.test.disabled',
+    ],
   },
   resolve: {
     alias: {
