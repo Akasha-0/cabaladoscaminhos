@@ -16,6 +16,14 @@
 - Minimax API integration for AI responses
 
 
+### Sprint 201 — Insights Frontend (NOW)
+- `useMapaInsights` hook — fetches from `/api/mapa/insights` with localStorage profile loading
+- `/dashboard/insights` page wired to real API with SkeletonMapa loading states
+- Dynamic insights display: proposito, dons, desafios, preceitos, mensagemSemanal
+- AppShell and PageHeader layout components
+- MysticButton spiritual button component
+- 12 tests for useMapaInsights hook
+
 ### Sprint 200 — UI Wiring & Polish
 - Dashboard Mapa wiring — loads from localStorage → /api/mapa with error/retry states
 - Onboarding flow — redirects to /dashboard/mapa after completion
@@ -204,6 +212,7 @@
 | **197** | **Mapa Pages & Design System** | Mapa components, Auth pages, CI/CD, Design system |
 | **198** | **PDF Export** | geracaoRelatorio PDF export, /api/mapa/pdf route |
 | **199** | **AI Insights Engine** | mapa-insights: types, prompt-builder, parser, generator, /api/mapa/insights |
+| **201** | **Insights Frontend** | useMapaInsights hook, dashboard/insights API wiring, AppShell, PageHeader, MysticButton |
 | 184 | User Management & Analytics | Users, Roles, Analytics, Performance, Health |
 | 185 | Widget Builder & Enhancements | WidgetBuilder, Marketplace, Mobile, Themes, Accessibility |
 | **196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
@@ -226,9 +235,9 @@
 13. **MapaAlma Orchestrator**: Unified spiritual engine per IDEIA.md
 
 ## 📊 MÉTRICAS
-**Tests: 1254 passing**
+**Tests: 1266 passing**
 Test files: 65
-**199 Sprints Completados** 🎉
+**201 Sprints Completados** 🎉
 
 ---
 
