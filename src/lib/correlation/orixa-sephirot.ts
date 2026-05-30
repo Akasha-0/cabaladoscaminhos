@@ -142,11 +142,9 @@ export function getOrixáSephirot(orixá: string): OrixáSephirot | null {
 /**
  * Get the Sephirot-Orixá reverse correlation mapping
  * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah', 'Malkuth')
-export function getAllOrixáSephirots(): OrixáSephirot[] {
-  return Object.values(ORIXÁ_SEPHIROT_MAPPINGS).sort(
-    (a, b) => a.numero_caminho - b.numero_caminho
-  );
-}
+ * @returns The correlation mapping or null if not found
+ */
+export function getSephirotOrixá(sephirah: string): OrixáSephirot | null {
   const found = Object.values(ORIXÁ_SEPHIROT_MAPPINGS).find(
     (mapping) => mapping.sephirah.toLowerCase() === sephirah.toLowerCase()
   );

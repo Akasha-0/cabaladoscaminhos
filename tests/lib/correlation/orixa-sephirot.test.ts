@@ -331,7 +331,7 @@ describe('orixa-sephirot', () => {
   describe('Path number verification', () => {
     it('each Orixá has a unique path number 1-10', () => {
       const all = getAllOrixáSephirots();
-      const pathNumbers = all.map((m) => m.numero_caminho).sort();
+      const pathNumbers = all.map((m) => m.numero_caminho);
       expect(pathNumbers).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     });
 

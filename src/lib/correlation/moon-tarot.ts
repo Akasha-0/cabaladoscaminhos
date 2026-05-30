@@ -300,7 +300,6 @@ export function getTarotMoon(arcano: string): string | null {
 export function getArcanoByPhase(fase: string): string | null {
   return getMoonTarot(fase)?.arcano ?? null;
 }
-
 /**
  * Get the card number for a given lunar phase.
  * @param fase - The lunar phase identifier
@@ -309,7 +308,6 @@ export function getArcanoByPhase(fase: string): string | null {
 export function getCardNumberByPhase(fase: string): number | null {
   return getMoonTarot(fase)?.numero_carta ?? null;
 }
-
 /**
  * Get the lunar phase corresponding to an arcano number.
  * @param numero - The Major Arcana card number (0-21)
