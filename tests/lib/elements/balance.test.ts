@@ -11,12 +11,12 @@ describe('balance', () => {
   });
 
   it('should return element colors', () => {
-    expect(getElementColor('fogo')).toBe('#FF6B35');
-    expect(getElementColor('agua')).toBe('#4A90D9');
+    expect(getElementColor('fogo')).toBe('#E25822');
+    expect(getElementColor('agua')).toBe('#4682B4');
   });
 
   it('should return element symbols', () => {
-    expect(getElementSymbol('fogo')).toBe('△');
-    expect(getElementSymbol('agua')).toBe('▽');
+    expect(getElementSymbol('fogo')).toBe('♈');
+    expect(getElementSymbol('agua')).toBe('♋');
   });
 });

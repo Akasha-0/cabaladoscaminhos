@@ -15,9 +15,9 @@ describe('correspondences', () => {
   });
 
   it('should find correspondence by name', () => {
-    const sun = getCorrespondencesByName('Sun');
+    const sun = getCorrespondencesByName('Sol');
     expect(sun).toBeDefined();
-    expect(sun?.name).toBe('Sun');
+    expect(sun?.name).toBe('Sol');
   });
 
   it('should find correspondences by element', () => {

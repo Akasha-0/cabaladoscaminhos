@@ -16,8 +16,9 @@ describe('chart-interpretations', () => {
   });
 
   it('should get aspect interpretation', () => {
-    const aspect = getAspectInterpretation('conjunction');
+    const aspect = getAspectInterpretation('conjunção');
     expect(aspect).toBeDefined();
+    expect(aspect?.aspect).toBe('conjunção');
   });
 
   it('should get house interpretation', () => {

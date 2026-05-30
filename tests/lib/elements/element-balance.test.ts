@@ -21,6 +21,8 @@ describe('element-balance', () => {
       agua: 1,
     });
     expect(result).toBeDefined();
-    expect(result.status).toBe('balanced');
+    // Each element should be balanced when counts are equal
+    expect(result.status.agua).toBe('balanced');
+    expect(result.status.ar).toBe('balanced');
   });
 });
