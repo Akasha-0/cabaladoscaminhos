@@ -140,7 +140,7 @@ export default function OnboardingPage() {
           pais: formData.country,
         };
         localStorage.setItem('mapa_perfil', JSON.stringify(profile));
-        router.push('/mapa');
+        router.push('/dashboard/mapa');
       } else {
         console.error('Failed to save onboarding data');
       }

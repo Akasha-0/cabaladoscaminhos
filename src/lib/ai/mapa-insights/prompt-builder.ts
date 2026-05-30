@@ -5,6 +5,7 @@
 
 import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 import type { InsightData } from './types';
+import type { PosicaoPlaneta } from '@/lib/astrologia/tipos';
 
 // ============================================================
 // SYSTEM PROMPT
@@ -93,12 +94,12 @@ export function gerarContextoUsuario(mapa: MapaAlmaCompleto): string {
   // ── Astrologia ──────────────────────────────────────────────
   const astro = mapa.astrologia;
 
-  function fmtPlaneta(nome: string, pos: typeof astro.sol): string {
-    return `**${nome}:** ${pos.signo} ${pos.graus !== undefined ? `(${pos.graus}°)` : ''}`;
+  function fmtPlaneta(nome: string, pos: PosicaoPlaneta): string {
+    return `**${nome}:** ${pos.signo} ${pos.grauNoSigno !== undefined ? `(${pos.grauNoSigno}°)` : ''}`;
   }
 
   parts.push(`## ASTROLOGIA
-${fmtPlaneta('Ascendente', astro.ascendente)}
+**Ascendente:** ${astro.ascendente}
 ${fmtPlaneta('Sol', astro.sol)}
 ${fmtPlaneta('Lua', astro.lua)}
 ${fmtPlaneta('Mercúrio', astro.mercurio)}

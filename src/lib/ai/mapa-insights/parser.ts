@@ -3,17 +3,32 @@ import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 
 const REQUIRED_FIELDS = ['resumo', 'proposito', 'dons', 'desafios'] as const;
 
+// AI response may contain these fields in addition to POI format
+interface AIResponseFields {
+  resumo?: string;
+  proposito?: string;
+  dons?: InsightData['dons'];
+  desafios?: InsightData['desafios'];
+  preceitos?: InsightData['preceitos'];
+  praticas?: InsightData['praticas'];
+  orixas?: InsightData['orixas'];
+  ciclos?: InsightData['ciclos'];
+  mensagemSemanal?: string;
+  titulo?: string;
+  overview?: string;
+}
+
 /**
  * Parse AI JSON response into InsightData
  * Returns partial data on parse error with error field filled
  */
 export function parseInsightResponse(raw: string): InsightData {
   const json = extractJson(raw);
-  const data = JSON.parse(json) as Partial<InsightData>;
+  const data = JSON.parse(json) as AIResponseFields;
 
   // Validate required fields
   for (const field of REQUIRED_FIELDS) {
-    if (!data[field]) {
+    if (!data[field as keyof AIResponseFields]) {
       throw new Error(`Missing required field: ${field}`);
     }
   }
@@ -23,7 +38,7 @@ export function parseInsightResponse(raw: string): InsightData {
     id: crypto.randomUUID(),
     dataGeracao: new Date().toISOString(),
     ...data,
-  } as InsightData;
+  } as unknown as InsightData;
   // Default optional fields to empty arrays
   if (!result.preceitos) result.preceitos = [];
   if (!result.praticas) result.praticas = [];
@@ -64,11 +79,22 @@ export function criarInsightFallback(mapa: MapaAlmaCompleto): InsightData {
   const odu = mapa.odu.regente;
   const numerologia = mapa.numerologia;
 
+  // Fallback uses legacy format — generate valid POI fields too
+  const titulo = `Mapa da Alma de ${mapa.perfil.nomeCompleto}`;
+
   return {
     id: crypto.randomUUID(),
     dataGeracao: new Date().toISOString(),
+    titulo,
+    overview: `Regência de ${odu.nome} (${odu.numero}) com Número de Vida ${numerologia.vida}.`,
     resumo: `Mapa da Alma de ${mapa.perfil.nomeCompleto} — Regência de ${odu.nome} (${odu.numero}) com Número de Vida ${numerologia.vida}. ${mapa.convergencias.length > 0 ? `Identificadas ${mapa.convergencias.length} convergências espirituais.` : 'Análise em profundidade disponível via IA.'}`,
     proposito: `Alinhar-se com a energia de ${odu.nome} através dos preceitos e práticas do seu Odú de nascimento.`,
+    coração: { tema: odu.nome, descricao: '', sistemas: ['Ifá'] },
+    mente: { tema: '', descricao: '', sistemas: [] },
+    corpo: { tema: '', descricao: '', sistemas: [] },
+    caminho: { tema: '', descricao: '', sistemas: [] },
+    retorno: { tema: '', descricao: '', sistemas: [] },
+    convergencias: { triplices: [], duplas: [] },
     dons: [],
     desafios: [],
     preceitos: [{
@@ -81,8 +107,8 @@ export function criarInsightFallback(mapa: MapaAlmaCompleto): InsightData {
     praticas: [],
     orixas: (mapa.orixasDominantes ?? []).map(nome => ({
       nome,
-      saudacao: '',
       caminho: mapa.odu.caminhoSephirah,
+      saudacao: '',
       cores: [],
       dia: '',
       pratica: '',
@@ -95,5 +121,5 @@ export function criarInsightFallback(mapa: MapaAlmaCompleto): InsightData {
       sephirah: '',
     }],
     mensagemSemanal: `Você é um ser em evolução contínua. Seu caminho de ${odu.nome} aguarda sua entrega.`,
-  };
+  } as InsightData;
 }
