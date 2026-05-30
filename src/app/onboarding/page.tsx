@@ -122,6 +122,15 @@ export default function OnboardingPage() {
         }),
       });
       if (response.ok) {
+        const profile = {
+          nomeCompleto: formData.fullName,
+          dataNascimento: formData.birthDate,
+          hora: formData.birthTime || undefined,
+          cidade: formData.city,
+          estado: formData.state,
+          pais: formData.country,
+        };
+        localStorage.setItem('mapa_perfil', JSON.stringify(profile));
         router.push('/mapa');
       } else {
         console.error('Failed to save onboarding data');
