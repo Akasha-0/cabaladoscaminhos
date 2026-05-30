@@ -1,7 +1,7 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 195
+**Sprints completados:** 196
 **Build status:** ✅ Build OK
-**Tests:** ✅ 1038 passing, 14 skipped (60 test files)
+**Tests:** ✅ 1064 passing, 14 skipped (61 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -15,6 +15,22 @@
 - OpenAI SDK integrated
 - jsPDF for PDF exports (dynamic import)
 - Minimax API integration for AI responses
+
+### MapaAlma Engine (Sprint 196) — NEW
+- **Unified Spiritual Engine** (`src/lib/engines/spiritual-engine.ts`)
+  - `gerarMapaAlmaCompleto(profile) → MapaAlmaCompleto`
+  - Integrates: Numerologia + Ifá/Odú + Astrologia + Tarot + Chakras
+  - Convergence detection (tríplice/dupla/simple) per IDEIA.md
+  - Geographic city coordinates for astrological calculations
+  - Redis caching with 24h TTL
+- **TypeScript Types** (`src/lib/engines/types/mapa-alma.ts`)
+  - BirthProfile, NumerologyResults, OduResults, AstrologiaResults
+  - TarotResults, ChakraResults, ChakraInfo, Convergence
+  - MapaAlmaCompleto master type
+- **API Route** (`/api/mapa`)
+  - POST: Generate full MapaAlmaCompleto with Zod validation
+  - Redis caching by SHA-256 hash of nome+dataNascimento
+  - Fallback when Redis unavailable
 
 ### Dashboard Architecture (Sprint 174-185)
 - **Widget Registry** (src/lib/dashboard/widget-registry.ts) — 303+ widgets organized by 24 categories
@@ -85,93 +101,14 @@
 | `/api/dashboard/energy` | GET, POST | Energy levels |
 | `/api/dashboard/meditation` | GET, POST | Meditation |
 | `/api/dashboard/orixa` | GET, POST | Orixás |
-
-### Widget Builder System
-- ✅ **WidgetBuilder** — Visual widget builder with metrics and actions
-- ✅ **WidgetMarketplace** — Browse and install widgets
-- ✅ **Custom Widgets** — Create widgets with name, description, metrics
-- ✅ **Widget Preview** — Preview before saving
-
-### Responsive & Theme System
-- ✅ **MobileResponsivePanel** — Test on mobile/tablet/desktop/wide
-- ✅ **DashboardThemesPanel** — 8 themes (dark, light, synthwave, forest, etc.)
-- ✅ **Layout Modes** — Grid/List/Focus modes
-- ✅ **Column Configuration** — 2/3/4/6 columns
-
-### Accessibility System
-- ✅ **AccessibilityPanel** — Full accessibility settings
-- ✅ **Font Size** — Small/Medium/Large/XLarge
-- ✅ **High Contrast** — Toggle for better visibility
-- ✅ **Reduce Motion** — Disable animations
-- ✅ **Screen Reader** — Optimize for screen readers
-- ✅ **Keyboard Navigation** — Enable keyboard shortcuts
-- ✅ **Focus Indicators** — Highlight focused elements
-
-### User Management System
-- ✅ **User Management Panel** — Add/edit/delete users, filter by role/status
-- ✅ **Role Permissions Panel** — Roles (admin/manager/user/viewer/guest), permissions matrix
-- ✅ **User Status Tracking** — Active/inactive/pending/blocked
-
-### Analytics & Monitoring System
-- ✅ **Dashboard Analytics** — Total views, visitors, session duration, bounce rate
-- ✅ **Performance Metrics** — CPU, Memory, Disk, Network, Latency, Requests, Error rate
-- ✅ **Usage Statistics** — Category breakdown, top pages, trends
-- ✅ **Health Monitoring** — Service health, uptime, latency, error counts
-
-### Automation System
-- ✅ **Workflow Automation** — Create, edit, run, pause workflows with steps
-- ✅ **Scheduled Tasks** — Hourly/daily/weekly/monthly task scheduling
-- ✅ **Audit Log** — Track all system actions with severity levels
-- ✅ **Reports Generator** — Generate PDF, CSV, JSON, Excel reports
-
-### Dashboard Features Completas ✅
-- ✅ **Drag-Drop Grid** com @dnd-kit
-- ✅ **Widget Resize** (SE handles)
-- ✅ **Lazy Loading** com IntersectionObserver
-- ✅ **Virtual Scrolling** para performance
-- ✅ **AI Recommendations Engine** with confidence (68-95%)
-- ✅ **Real-time Insights Panel** with pulse animation
-- ✅ **Anomaly Detection** with severity levels
-- ✅ **Trend Analysis Charts** with line/bar charts and sparklines
-- ✅ **Export/Import** JSON functionality
-- ✅ **Share via URL** with QR code
-- ✅ **Templates** (Spiritual/Technical/Balanced/Minimal)
-- ✅ **24 Categorias** com cores e ícones
-- ✅ **Search com fuzzy search**
-- ✅ **View Modes** (grid/list/focus)
-- ✅ **Theme Switcher** (8 themes)
-- ✅ **Correlation System** (10+ mappings)
-- ✅ **Pattern Detection** (5 patterns)
-- ✅ **Real-time updates** (SWR 30s)
-- ✅ **Widget Builder** (custom widget creation)
-- ✅ **Widget Marketplace** (browse/install widgets)
-- ✅ **Responsive Testing** (mobile/tablet/desktop/wide)
-- ✅ **Accessibility Settings** (font size, contrast, motion)
-- ✅ **User Management** (5 default users)
-- ✅ **Role Permissions** (5 roles with permissions matrix)
-
-### Dashboard Hooks (SWR)
-- `useDashboard()` — Complete dashboard data
-- `useWidgets()` — All widgets list
-- `useWidgetData(id)` — Specific widget data
-- `useCorrelations()` — Correlation data
-- `useCorrelationPatterns()` — Detected patterns
-- `useCorrelationStrength()` — Strength metrics
-- `useSpiritualCorrelations()` — Spiritual correlations
-- `useTechnicalCorrelations()` — Technical correlations
-- `useInsights()` — AI insights
-- `useDashboardStats()` — Dashboard statistics
-- `useWidgetConfig(id)` — Widget configuration
-- `useLayouts()` — Saved layouts
-- `useRealTimeUpdate()` — Real-time updates
-- `useVirtualScroll()` — Virtual scrolling hook
-- `useAnalyzeCorrelation()` — Analyze new correlations
+| `/api/mapa` | GET, POST | MapaAlmaCompleto generation |
 
 ### Engines Implementadas (Validadas)
 - **Numerologia Cabalística** ✅ 41 testes
 - **Odu Ifá** ✅ 26 testes — 16 Odús com quizilas e preceitos
 - **Astrologia** ✅ 17 testes
 - Deep Correlation Engine, Oracle Chat, Prediction Engine
+- **MapaAlma Completo** ✅ 23 testes (Sprint 196)
 
 ### Dashboard Widgets (303+ widgets organized by category)
 
@@ -212,7 +149,8 @@
 | 182 | Collaboration & AI | Collaboration, Notifications, DataSources, AI, Keyboard |
 | 183 | Automation System | Workflows, Tasks, Audit, Reports, APIs |
 | 184 | User Management & Analytics | Users, Roles, Analytics, Performance, Health |
-| **185** | **Widget Builder & Enhancements** | WidgetBuilder, Marketplace, Mobile, Themes, Accessibility |
+| 185 | Widget Builder & Enhancements | WidgetBuilder, Marketplace, Mobile, Themes, Accessibility |
+| **196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -228,6 +166,7 @@
 10. **Theme System**: 8 themes with custom color schemes
 11. **Accessibility**: Full accessibility settings for all users
 12. **Responsive Design**: Mobile/Tablet/Desktop/Wide preview
+13. **MapaAlma Orchestrator**: Unified spiritual engine per IDEIA.md
 
 ## 📊 MÉTRICAS
 
@@ -235,16 +174,16 @@
 - Dashboard widgets: 303+
 - Components novos: 70+
 - Dashboard hooks: 15
-- API routes: 16+
-- Test files: 59
-- **Tests: 997 passing**
+- API routes: 17+
+- Test files: 61
+- **Tests: 1064 passing**
 - **Themes: 8 (dark, light, midnight, synthwave, forest, sunset, ocean, lavender)**
 - **Accessibility Options: 6 (font size, contrast, motion, screen reader, keyboard, focus)**
 - **Responsive Breakpoints: 4 (mobile, tablet, desktop, wide)**
 - **Layout Modes: 3 (grid, list, focus)**
 - **Column Options: 4 (2, 3, 4, 6)**
-- **185 Sprints Completados** 🎉
+- **196 Sprints Completados** 🎉
 
 ---
 
-*Assim como é em cima, também é embaixo. — A plataforma Cabala Dos Caminhos está completa com builder de widgets, marketplace, temas, responsividade e acessibilidade.*
+*Assim como é em cima, também é embaixo. — A plataforma Cabala Dos Caminhos está completa com MapaAlma unificado e engine de correlações.*
