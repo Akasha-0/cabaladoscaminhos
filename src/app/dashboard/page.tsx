@@ -43,6 +43,21 @@ const LoveReadingsWidget = dynamic(
   { ssr: false, loading: () => <WidgetSkeleton /> }
 );
 
+const AIMeditationGuide = dynamic(
+  () => import('@/components/dashboard/AIMeditationGuide').then(m => ({ default: m.AIMeditationGuide })),
+  { ssr: false, loading: () => <WidgetSkeleton /> }
+);
+
+const AkashicRecords = dynamic(
+  () => import('@/components/dashboard/AkashicRecords').then(m => ({ default: m.AkashicRecords })),
+  { ssr: false, loading: () => <WidgetSkeleton /> }
+);
+
+const AncestralConnectionPanel = dynamic(
+  () => import('@/components/dashboard/AncestralConnectionPanel').then(m => ({ default: m.AncestralConnectionPanel })),
+  { ssr: false, loading: () => <WidgetSkeleton /> }
+);
+
 const AInsightWidget = dynamic(
   () => import('@/components/dashboard/AInsightWidget').then(m => ({ default: m.AInsightWidget })),
   { ssr: false, loading: () => <WidgetSkeleton /> }
@@ -185,12 +200,18 @@ export default function Dashboard() {
 
       {/* Affirmations Section */}
       <DashboardSection title="Práticas Diárias">
-        <AffirmationWidget userData={userData} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <AffirmationWidget userData={userData} />
+          <AIMeditationGuide userId="dashboard" userName={userData.nome} />
+        </div>
       </DashboardSection>
 
-      {/* Affirmations Section */}
-      <DashboardSection title="Práticas Diárias">
-        <AffirmationWidget userData={userData} />
+      {/* New widgets row */}
+      <DashboardSection title="Exploração Profunda">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <AkashicRecords userId="dashboard" />
+          <AncestralConnectionPanel userData={userData} />
+        </div>
       </DashboardSection>
 
       {/* Oracle CTA */}
