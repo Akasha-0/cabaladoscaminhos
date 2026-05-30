@@ -21,10 +21,9 @@ describe('vibration-tracking', () => {
     expect(tracking.entries).toHaveLength(1);
     expect(tracking.entries[0].id).toBe(entry.id);
   });
-
-  it('trackProgress without notes omits notes field', () => {
+  it('trackProgress without notes has undefined notes', () => {
     const entry = trackProgress('phase-one');
-    expect(entry).not.toHaveProperty('notes');
+    expect(entry.notes).toBeUndefined();
   });
 
   it('trackProgress with notes includes notes field', () => {
