@@ -65,6 +65,11 @@ export {
 } from './PredictiveInsightsPanel';
 
 export {
+  CorrelationPredictionsWidget,
+  type CorrelationPredictionsWidgetProps,
+} from './CorrelationPredictionsWidget';
+
+export {
   SelfEvolutionTracker,
   type SelfEvolutionTrackerProps,
 } from './SelfEvolutionTracker';

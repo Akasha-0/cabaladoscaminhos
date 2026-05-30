@@ -107,46 +107,47 @@ describe('useTodayCorrelation', () => {
   // ─── getTodayCorrelation: day-specific correlations ─────────────────────────
   describe('getTodayCorrelation – specific days via date parameter', () => {
     it('returns domingo (dayIndex 0) with Sol as planet', () => {
-      const sunday = getTodayCorrelation(new Date('2026-06-07')); // confirmed Sunday
+      // Use local date constructor to avoid UTC offset shifts
+      const sunday = getTodayCorrelation(new Date(2026, 5, 7)); // June 7, 2026 = Sunday
       expect(sunday.dayIndex).toBe(0);
       expect(sunday.planeta).toBe('Sol');
     });
 
     it('returns segunda (dayIndex 1) with Omolu/Obaluaê as orixa', () => {
-      const monday = getTodayCorrelation(new Date('2026-06-08')); // confirmed Monday
+      const monday = getTodayCorrelation(new Date(2026, 5, 8)); // June 8, 2026 = Monday
       expect(monday.dayIndex).toBe(1);
       expect(monday.orixa).toContain('Omolu');
     });
 
     it('returns terca (dayIndex 2) with Iansa as orixa', () => {
-      const tuesday = getTodayCorrelation(new Date('2026-06-09')); // confirmed Tuesday
+      const tuesday = getTodayCorrelation(new Date(2026, 5, 9)); // June 9, 2026 = Tuesday
       expect(tuesday.dayIndex).toBe(2);
       expect(tuesday.orixa).toContain('Iansã');
     });
 
     it('returns quarta (dayIndex 3) with Xango and Mercúrio', () => {
-      const wednesday = getTodayCorrelation(new Date('2026-06-10')); // confirmed Wednesday
+      const wednesday = getTodayCorrelation(new Date(2026, 5, 10)); // June 10, 2026 = Wednesday
       expect(wednesday.dayIndex).toBe(3);
       expect(wednesday.orixa).toBe('Xangô');
       expect(wednesday.planeta).toBe('Mercúrio');
     });
 
     it('returns quinta (dayIndex 4) with Oxóssi and Júpiter', () => {
-      const thursday = getTodayCorrelation(new Date('2026-06-11')); // confirmed Thursday
+      const thursday = getTodayCorrelation(new Date(2026, 5, 11)); // June 11, 2026 = Thursday
       expect(thursday.dayIndex).toBe(4);
       expect(thursday.orixa).toBe('Oxóssi');
       expect(thursday.planeta).toBe('Júpiter');
     });
 
     it('returns sexta (dayIndex 5) with Oxalá and Vênus', () => {
-      const friday = getTodayCorrelation(new Date('2026-06-12')); // confirmed Friday
+      const friday = getTodayCorrelation(new Date(2026, 5, 12)); // June 12, 2026 = Friday
       expect(friday.dayIndex).toBe(5);
       expect(friday.orixa).toBe('Oxalá');
       expect(friday.planeta).toBe('Vênus');
     });
 
     it('returns sabado (dayIndex 6) with Oxum/Iemanjá and Saturno', () => {
-      const saturday = getTodayCorrelation(new Date('2026-06-13')); // confirmed Saturday
+      const saturday = getTodayCorrelation(new Date(2026, 5, 13)); // June 13, 2026 = Saturday
       expect(saturday.dayIndex).toBe(6);
       expect(saturday.orixa).toContain('Oxum');
       expect(saturday.planetas).toContain('Saturno');

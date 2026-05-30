@@ -12,8 +12,7 @@
  */
 
 import { traditionMapper, ODU_MAPPINGS, TAROT_MAJOR_MAPPINGS, SEPHIROT_MAPPINGS } from '../tradition-mapper';
-import type { OduProperties } from '../spiritual-data/spiritual-data';
-import { getDataByCategory } from '../spiritual-data/spiritual-data';
+import { getDataByCategory } from '../../spiritual-data/spiritual-data';
 
 // ============================================================
 // TYPES
