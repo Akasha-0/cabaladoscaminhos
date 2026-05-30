@@ -3,13 +3,21 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
+  let email: string;
+  let password: string;
   try {
-    const { email, password } = await request.json()
-    
-    if (!email || !password) {
-      return NextResponse.json({ error: 'Email e senha são obrigatórios' }, { status: 400 })
-    }
-    
+    const body = await request.json();
+    email = body.email;
+    password = body.password;
+  } catch {
+    return NextResponse.json({ error: 'Email e senha são obrigatórios' }, { status: 400 });
+  }
+  
+  if (!email || !password) {
+    return NextResponse.json({ error: 'Email e senha são obrigatórios' }, { status: 400 });
+  }
+  
+  try {
     const cookieStore = await cookies()
     
     const supabase = createServerClient(

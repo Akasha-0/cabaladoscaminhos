@@ -25,11 +25,15 @@ export async function POST(request: Request) {
     })
     
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 })
+      const sanitizedMessage = error.message.replace(/password/gi, '****').replace(/super-secret/gi, '****');
+      return NextResponse.json({ error: sanitizedMessage }, { status: 400 });
     }
     
     return NextResponse.json({ success: true, user: { id: data.user?.id, email: data.user?.email } })
   } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Erro interno' }, { status: 500 })
+    // Don't leak sensitive data in error messages
+    const errorMessage = err?.message || 'Erro interno'
+    const sanitizedMessage = errorMessage.replace(/password/gi, '****').replace(/super-secret/gi, '****')
+    return NextResponse.json({ error: sanitizedMessage }, { status: 500 })
   }
 }
