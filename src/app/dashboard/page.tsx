@@ -19,6 +19,9 @@ import { JourneyTracker } from '@/components/dashboard/JourneyTracker';
 import { RitualPlanner } from '@/components/dashboard/RitualPlanner';
 import { MeditationPlayer } from '@/components/dashboard/MeditationPlayer';
 import { AchievementsWidget } from '@/components/dashboard/AchievementsWidget';
+import { MoonTracker } from '@/components/dashboard/MoonTracker';
+import { SacredCalendar } from '@/components/dashboard/SacredCalendar';
+import { DailyProtection } from '@/components/dashboard/DailyProtection';
 
 // Dynamic imports for heavy components
 const AIOracleChat = dynamic(
@@ -175,7 +178,15 @@ export default function Dashboard() {
       <DashboardSection title="Práticas e Jornada">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <MeditationPlayer userData={userData} />
-          <JourneyTracker userData={userData} />
+          <MoonTracker />
+        </div>
+      </DashboardSection>
+
+      {/* Protection & Calendar Section */}
+      <DashboardSection title="Proteção e Calendário">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <DailyProtection />
+          <SacredCalendar />
         </div>
       </DashboardSection>
 
