@@ -214,17 +214,16 @@
 | 177 | Dashboard Hooks & Settings | SWR hooks, Settings Panel |
 | 178 | Widget System | Drag-Drop, Lazy Load, Virtual Scroll |
 | 179 | Correlation System | API, Mapping Panel, Strength, Patterns |
-| 180 | AI Intelligence | Recommendations, Insights, Anomalies, Trends |
 | 181 | Persistence & QA | Export, Share, Templates, Tests |
-| **196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
-| **197** | **Mapa Pages & Design System** | Mapa components, Auth pages, CI/CD, Design system |
-| **198** | **PDF Export** | geracaoRelatorio PDF export, /api/mapa/pdf route |
-| **199** | **AI Insights Engine** | mapa-insights: types, prompt-builder, parser, generator, /api/mapa/insights |
-| **201** | **Insights Frontend** | useMapaInsights hook, dashboard/insights API wiring, AppShell, PageHeader, MysticButton |
 | 184 | User Management & Analytics | Users, Roles, Analytics, Performance, Health |
 | 185 | Widget Builder & Enhancements | WidgetBuilder, Marketplace, Mobile, Themes, Accessibility |
 | **196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
 | **197** | **Mapa Pages & Design System** | Mapa components, Auth pages, CI/CD, Design system |
+| **198** | **PDF Export** | geracaoRelatorio PDF export, /api/mapa/pdf route |
+| **199** | **AI Insights Engine** | mapa-insights: types, prompt-builder, parser, generator, /api/mapa/insights |
+| **200** | **UI Wiring & Polish** | Dashboard Mapa, Onboarding, ErrorState, SkeletonSpiritual, GlowEffect |
+| **201** | **Insights Frontend** | useMapaInsights hook, dashboard/insights API wiring, AppShell, PageHeader, MysticButton |
+| **202** | **Layout & Hooks QA** | AppShell, PageHeader, MysticButton, useMapaInsights tests fixed, build fixes |
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -244,9 +243,8 @@
 
 ## 📊 MÉTRICAS
 **Tests: 1266 passing**
-Test files: 65
-**201 Sprints Completados** 🎉
-
+Test files: 68
+**202 Sprints Completados** 🎉
 ---
 
 *Assim como é em cima, também é embaixo. — A plataforma Cabala Dos Caminhos está completa com MapaAlma unificado e engine de correlações.*
