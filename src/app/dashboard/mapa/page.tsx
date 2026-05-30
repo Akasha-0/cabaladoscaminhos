@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { CosmicBackground } from '@/components/design-system/CosmicBackground';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
@@ -21,8 +21,56 @@ import { CalendarioEnergetico } from '@/components/mapa/CalendarioEnergetico';
 export default function MapaPage() {
   const router = useRouter();
   const [mapaData, setMapaData] = useState<MapaAlmaCompleto | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Load profile and Mapa data on mount
+  useEffect(() => {
+    const loadMapa = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Get profile from localStorage
+        const savedProfile = localStorage.getItem('mapa_perfil');
+        if (!savedProfile) {
+          setLoading(false);
+          return;
+        }
+
+        const profile = JSON.parse(savedProfile);
+
+        // Fetch Mapa data from API
+        const response = await fetch('/api/mapa', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nomeCompleto: profile.nomeCompleto,
+            dataNascimento: profile.dataNascimento,
+            hora: profile.hora,
+            cidade: profile.cidade,
+            estado: profile.estado,
+            pais: profile.pais,
+          }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.error || `HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        setMapaData(data as MapaAlmaCompleto);
+      } catch (err) {
+        console.error('[DashboardMapa] Fetch error:', err);
+        setError(err instanceof Error ? err.message : 'Erro ao carregar Mapa da Alma');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadMapa();
+  }, []);
 
   // Loading state
   if (loading) {
@@ -31,8 +79,29 @@ export default function MapaPage() {
         <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
           <LoadingSpinner size="lg" variant="gold" />
           <p className="text-slate-400 animate-pulse-soft font-cinzel tracking-widest">
-            Gerando Mapa da Alma...
+            Carregando Mapa da Alma...
           </p>
+        </div>
+      </CosmicBackground>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <CosmicBackground>
+        <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 p-4">
+          <div className="text-red-400 text-center">
+            <p className="text-lg font-medium mb-2">Erro ao carregar Mapa</p>
+            <p className="text-sm text-slate-400">{error}</p>
+          </div>
+          <Button
+            variant="golden"
+            onClick={() => window.location.reload()}
+            className="mt-4"
+          >
+            Tentar novamente
+          </Button>
         </div>
       </CosmicBackground>
     );
