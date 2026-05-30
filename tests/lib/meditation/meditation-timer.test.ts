@@ -34,10 +34,14 @@ describe('meditation-timer', () => {
 
     it('counts down every second', () => {
       const controls = startTimer(createOptions(3));
-      vi.advanceTimersByTime(1000);
-      expect(mockOnTick).toHaveBeenCalledWith(4);
-      vi.advanceTimersByTime(1000);
+      // Initial tick: remaining = 3
       expect(mockOnTick).toHaveBeenCalledWith(3);
+      vi.advanceTimersByTime(1000);
+      // After 1s: remaining = 2
+      expect(mockOnTick).toHaveBeenCalledWith(2);
+      vi.advanceTimersByTime(1000);
+      // After 2s: remaining = 1
+      expect(mockOnTick).toHaveBeenCalledWith(1);
     });
 
     it('calls onComplete when countdown reaches 0', () => {
@@ -130,8 +134,8 @@ describe('meditation-timer', () => {
   });
 
   describe('getState', () => {
-    it('returns idle initially', () => {
-      expect(startTimer(createOptions()).getState()).toBe('idle' as TimerState);
+    it('returns running when timer is started', () => {
+      expect(startTimer(createOptions()).getState()).toBe('running');
     });
   });
 
