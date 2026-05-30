@@ -1,508 +1,182 @@
 'use client';
 
-import * as React from 'react';
-import { cn } from '@/lib/utils';
-import {
-  Sparkles,
-  Moon,
-  Sun,
-  Heart,
-  Lightbulb,
-  RefreshCw,
-  Loader2,
-  AlertCircle,
-  Star,
-  Flame,
-  Wind,
-  Droplets,
-  Zap,
-  Target,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { WidgetProgress } from './SpiritualWidgetSystem';
+import { Sparkles, Heart, Moon, Sun, Star, RefreshCw, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 // ============================================================
 // TYPES
 // ============================================================
 
 interface DailyWisdomCardProps {
-  userData: UserSpiritualData;
+  userData: {
+    nome: string;
+    orixaRegente?: string;
+    numeroPessoal?: number;
+  };
   userId: string;
   className?: string;
-  onExpand?: () => void;
 }
-
-interface UserSpiritualData {
-  nome: string;
-  dataNascimento: string;
-  numeroPessoal?: number;
-  orixaRegente?: string;
-  odu?: string;
-  arcanoPessoal?: number;
-  sefirotDominante?: string[];
-}
-
-interface DailyWisdom {
-  affirmation: string;
-  mantra: string;
-  spiritualTip: string;
-  moonPhase: string;
-  orixaMessage: string;
-  oduOfTheDay: string;
-  oduDescription: string;
-  tarotCard: TarotCardInfo;
-  elementalFocus: ElementalFocus;
-  aiDailyMessage: string;
-  luckyNumber: number;
-  colorOfTheDay: string;
-}
-
-interface TarotCardInfo {
-  name: string;
-  meaning: string;
-  advice: string;
-}
-
-interface ElementalFocus {
-  element: 'Fogo' | 'Água' | 'Terra' | 'Ar' | 'Éter';
-  description: string;
-  practice: string;
-  icon: React.ReactNode;
-}
-
-type LoadingState = 'idle' | 'loading' | 'loaded' | 'error';
 
 // ============================================================
 // CONSTANTS
 // ============================================================
 
+const DAILY_MESSAGES = [
+  'O caminho se revela para quem caminha com coração aberto.',
+  'A sabedoria está dentro de você — apenas precisa lembrar.',
+  'Cada passo na jornada espiritual fortalece sua conexão com o cosmos.',
+  'Hoje é um dia propício para iniciar novas práticas de autoconhecimento.',
+  'Permaneça em paz, pois o universo conspira a seu favor.',
+];
+
 const TAROT_CARDS = [
-  { name: 'O Mago', meaning: 'Manifestação, resourceful, poder', advice: 'Use sua habilidade e vontade para criar mudanças positivas.' },
-  { name: 'A Alta Sacerdotisa', meaning: 'Intuição, misticismo, sabedoria interior', advice: 'Confie em sua voz interior e nos seus sonhos.' },
-  { name: 'A Imperadora', meaning: 'Fertilidade, abundância, maternidade', advice: 'Cultive seu jardim interior e celebre sua criatividade.' },
-  { name: 'O Imperador', meaning: 'Autoridade, estrutura, liderança', advice: 'Estabeleça limites saudáveis e tome decisões firmes.' },
-  { name: 'O Hierofante', meaning: 'Tradição, espiritualidade, ensino', advice: 'Busque orientação em figuras de sabedoria.' },
-  { name: 'Os Enamorados', meaning: 'Amor, união, escolhas', advice: 'Siga seu coração em decisões importantes.' },
-  { name: 'O Carro', meaning: 'Vitória, determinação, sucesso', advice: 'Mantenha o foco em seus objetivos com disciplina.' },
-  { name: 'A Justiça', meaning: 'Equilíbrio, verdade, causa e efeito', advice: 'Busque a verdade e aja com integridade.' },
-  { name: 'O Eremita', meaning: 'Introspecção, solitude, busca interior', advice: 'Reserve tempo para reflexão e autoconhecimento.' },
-  { name: 'A Roda da Fortuna', meaning: 'Mudança, ciclos, destino', advice: 'Aceite as mudanças como parte do crescimento.' },
-  { name: 'A Força', meaning: 'Coragem, perseverança, compaixão', advice: 'Use sua força interior para superar obstáculos.' },
-  { name: 'O Enforcado', meaning: 'Sacrifício, nova perspectiva, pausa', advice: 'Às vezes precisamos parar e重新审视.' },
-  { name: 'A Morte', meaning: 'Transformação, fim de ciclo, renovação', advice: 'Libere o que não serve mais para dar espaço ao novo.' },
-  { name: 'A Temperança', meaning: 'Equilíbrio, harmonia, paciência', advice: 'Encontre o ponto médio entre extremos.' },
-  { name: 'O Diabo', meaning: 'Tentação, sombra, materialismo', advice: 'Reconheça suas prisões e escolha a libertação.' },
-  { name: 'A Torre', meaning: 'Mudança súbita, revelação, despertar', advice: 'Receba as mudanças com coragem e apertura.' },
-  { name: 'A Estrela', meaning: 'Esperança, inspiração, serenidade', advice: 'Mantenha a esperança e permita que sua luz brilhe.' },
-  { name: 'A Lua', meaning: 'Ilusão, medo, intuição', advice: 'Confie em sua intuição mesmo na escuridão.' },
-  { name: 'O Sol', meaning: 'Sucesso, alegria, vitalidade', advice: 'Celebre suas conquistas e compartilhe sua luz.' },
-  { name: 'O Julgamento', meaning: 'Renovação, redenção, despertar', advice: 'Aceite seu passado e abrace sua verdadeira vocação.' },
-  { name: 'O Mundo', meaning: 'Completude, realização, integração', advice: 'Você está próximo de completar um ciclo importante.' },
+  { name: 'O Mago', meaning: 'Manifestação e poder pessoal', advice: 'Use sua criatividade para criar mudanças positivas.' },
+  { name: 'A Estrela', meaning: 'Esperança e inspiração', advice: 'Mantenha a esperança e permita que sua luz brilhe.' },
+  { name: 'O Sol', meaning: 'Sucesso e vitalidade', advice: 'Celebre suas conquistas e compartilhe sua luz.' },
+  { name: 'A Lua', meaning: 'Intuição e transformação', advice: 'Confie em sua intuição mesmo na escuridão.' },
+  { name: 'O Eremita', meaning: 'Introspecção e sabedoria', advice: 'Reserve tempo para reflexão e autoconhecimento.' },
 ];
-
-const ODUS = [
-  { id: 'Eji-Okwonla', meaning: 'Destino e sabedoria', practice: 'Ritual de proteção e开门.' },
-  { id: 'Ogbe', meaning: 'Começo e expansão', practice: 'Oração para novos projetos.' },
-  { id: 'Oyeku', meaning: 'Transformação e equilíbrio', practice: 'Meditação de harmonia.' },
-  { id: 'Iwori', meaning: 'Paciência e aprendizado', practice: 'Escuta ativa e observação.' },
-  { id: 'Odi', meaning: 'Comunicação e união', practice: 'Ritual de conexão.' },
-  { id: 'Osí', meaning: 'Segurança e proteção', practice: 'Oração de proteção.' },
-];
-
-const ELEMENTS: Record<string, { icon: React.ReactNode; color: string; description: string }> = {
-  'Fogo': { icon: <Flame className="w-4 h-4" />, color: 'text-orange-400', description: 'Energia de transformação e paixão' },
-  'Água': { icon: <Droplets className="w-4 h-4" />, color: 'text-blue-400', description: 'Fluxo emocional e purificação' },
-  'Terra': { icon: <Target className="w-4 h-4" />, color: 'text-emerald-400', description: 'Fundação e estabilidade' },
-  'Ar': { icon: <Wind className="w-4 h-4" />, color: 'text-slate-400', description: 'Comunicação e clareza mental' },
-  'Éter': { icon: <Zap className="w-4 h-4" />, color: 'text-purple-400', description: 'Transcendência espiritual' },
-};
-
-const LUCKY_COLORS = ['Ouro', 'Azul Royale', 'Verde Esperanza', 'Roxo Místico', 'Rosa Amor'];
 
 // ============================================================
 // HELPER FUNCTIONS
 // ============================================================
 
-function getTodayKey(): string {
+function getDailyContent(): {
+  affirmation: string;
+  tarot: typeof TAROT_CARDS[0];
+  message: string;
+  luckyNumber: number;
+  color: string;
+} {
   const today = new Date();
-  return `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-}
-
-function getDayOfYear(): number {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0);
-  const diff = now.getTime() - start.getTime();
-  return Math.floor(diff / 86400000);
-}
-
-function getCachedWisdom(userId: string): DailyWisdom | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const cached = localStorage.getItem(`daily-wisdom-${userId}`);
-    if (!cached) return null;
-    const { data, dayKey } = JSON.parse(cached);
-    if (dayKey !== getTodayKey()) {
-      localStorage.removeItem(`daily-wisdom-${userId}`);
-      return null;
-    }
-    return data as DailyWisdom;
-  } catch {
-    return null;
-  }
-}
-
-function setCachedWisdom(userId: string, wisdom: DailyWisdom): void {
-  if (typeof window === 'undefined') return;
-  try {
-    localStorage.setItem(`daily-wisdom-${userId}`, JSON.stringify({
-      data: wisdom,
-      timestamp: Date.now(),
-      dayKey: getTodayKey(),
-    }));
-  } catch {
-    // Storage full or unavailable
-  }
-}
-
-function generateFallbackWisdom(userData: UserSpiritualData): DailyWisdom {
-  const dayOfYear = getDayOfYear();
-  const tarotIndex = (dayOfYear + (userData.numeroPessoal ?? 1)) % TAROT_CARDS.length;
-  const tarotCard = TAROT_CARDS[tarotIndex];
-  const oduIndex = (dayOfYear + (userData.arcanoPessoal ?? 1)) % ODUS.length;
-  const odu = ODUS[oduIndex];
-  const elements: Array<'Fogo' | 'Água' | 'Terra' | 'Ar' | 'Éter'> = ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'];
-  const elementIndex = (dayOfYear + (userData.numeroPessoal ?? 1)) % elements.length;
-  const element = elements[elementIndex];
-  const elementInfo = ELEMENTS[element];
-  const luckyNumber = ((dayOfYear * (userData.numeroPessoal ?? 1)) % 9) + 1;
-  const colorIndex = (dayOfYear + (userData.arcanoPessoal ?? 1)) % LUCKY_COLORS.length;
-  const colorOfTheDay = LUCKY_COLORS[colorIndex];
-  const aiMessages = [
-    `Hoje, ${userData.orixaRegente || 'seus guias'} pedem que você mantenha o coração aberto para novas possibilidades. Sua energia está propícia para iniciações e recomeços.`,
-    `A sabedoria de ${userData.orixaRegente || 'seus ancestrais'} flui através de você hoje. Confie em sua intuição e permite que a luz guie seus passos.`,
-    `Este é um dia de transformação. As estrelas alinham-se para seu crescimento espiritual. Aceite as mudanças com coragem e gratidão.`,
-    `${userData.orixaRegente || 'O universo'} traz mensagens importantes hoje. Preste atenção aos sinais e sincronicidades ao seu redor.`,
-  ];
-  const aiDailyMessage = aiMessages[dayOfYear % aiMessages.length];
+  const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
+  
   return {
-    affirmation: `Eu, ${userData.nome}, declaro que hoje é um dia de renovação espiritual e alinhamento com minha verdade interior.`,
-    mantra: 'Eu sou a luz que ilumina meu caminho',
-    spiritualTip: 'Pratique a gratidão intensa hoje, reconhecendo as bênçãos em sua vida.',
-    moonPhase: 'Lua Cheia - energia de completude e iluminação',
-    orixaMessage: `${userData.orixaRegente || 'Oxum'} traz sabedoria e amor neste dia. Permaneça em paz.`,
-    oduOfTheDay: odu.id,
-    oduDescription: odu.meaning,
-    tarotCard: { name: tarotCard.name, meaning: tarotCard.meaning, advice: tarotCard.advice },
-    elementalFocus: { element, description: elementInfo.description, practice: odu.practice, icon: elementInfo.icon },
-    aiDailyMessage,
-    luckyNumber,
-    colorOfTheDay,
+    affirmation: 'Eu declaro que hoje é um dia de alinhamento espiritual e paz interior.',
+    tarot: TAROT_CARDS[dayOfYear % TAROT_CARDS.length],
+    message: DAILY_MESSAGES[dayOfYear % DAILY_MESSAGES.length],
+    luckyNumber: ((dayOfYear * 7) % 9) + 1,
+    color: ['Dourado', 'Azul Celestial', 'Verde Esperanza', 'Roxo Místico', 'Rosa Amor'][dayOfYear % 5],
   };
-}
-
-// ============================================================
-// SUB-COMPONENTS
-// ============================================================
-
-interface WisdomItemProps {
-  icon: React.ReactNode;
-  label: string;
-  content: string;
-  variant?: 'default' | 'highlight' | 'accent' | 'cosmic';
-}
-
-function WisdomItem({ icon, label, content, variant = 'default' }: WisdomItemProps) {
-  return (
-    <div className={cn(
-      'flex gap-3 p-3 rounded-lg transition-colors',
-      variant === 'highlight' && 'bg-amber-500/10 border border-amber-500/20',
-      variant === 'accent' && 'bg-purple-500/10 border border-purple-500/20',
-      variant === 'cosmic' && 'bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20',
-      variant === 'default' && 'bg-slate-500/5'
-    )}>
-      <div className="flex-shrink-0 mt-0.5 text-spiritual-500">{icon}</div>
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">{label}</p>
-        <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">{content}</p>
-      </div>
-    </div>
-  );
-}
-
-function MoonPhaseBadge({ phase }: { phase: string }) {
-  return (
-    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-500/20 text-yellow-600 dark:text-yellow-400">
-      <Moon className="size-3.5" />
-      <span>{phase}</span>
-    </div>
-  );
-}
-
-function OrixaBadge({ name }: { name: string }) {
-  return (
-    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-600 dark:text-purple-400">
-      <Sun className="size-3.5" />
-      <span>{name}</span>
-    </div>
-  );
-}
-
-function OduBadge({ odu }: { odu: string }) {
-  return (
-    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/20 text-amber-600 dark:text-amber-400">
-      <Star className="size-3.5" />
-      <span>{odu}</span>
-    </div>
-  );
-}
-
-function TarotCardDisplay({ card }: { card: TarotCardInfo }) {
-  return (
-    <div className="p-3 rounded-lg bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20">
-      <div className="flex items-start gap-3">
-        <div className="p-2 bg-purple-500/20 rounded-lg">
-          <Star className="w-5 h-5 text-purple-400" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-white">{card.name}</p>
-          <p className="text-xs text-purple-400 mt-0.5">{card.meaning}</p>
-          <p className="text-xs text-slate-400 mt-2 leading-relaxed">{card.advice}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ElementalBadge({ element }: { element: ElementalFocus }) {
-  const elementInfo = ELEMENTS[element.element];
-  return (
-    <div className="flex items-center gap-2 p-2 rounded-lg bg-slate-700/30">
-      <div className={cn('p-1.5 rounded-lg bg-slate-600', elementInfo.color)}>{elementInfo.icon}</div>
-      <div>
-        <p className="text-xs font-medium text-white">{element.element}</p>
-        <p className="text-xs text-slate-400">{element.description}</p>
-      </div>
-    </div>
-  );
-}
-
-function LuckyInfo({ number, color }: { number: number; color: string }) {
-  return (
-    <div className="flex items-center gap-4 p-2">
-      <div className="flex items-center gap-2">
-        <div className="p-2 bg-amber-500/20 rounded-lg">
-          <span className="text-lg font-bold text-amber-400">{number}</span>
-        </div>
-        <div>
-          <p className="text-xs text-slate-400">Número da Sorte</p>
-        </div>
-      </div>
-      <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-amber-400 to-orange-500" />
-        <div>
-          <p className="text-xs text-slate-400">Cor do Dia</p>
-          <p className="text-xs text-white">{color}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AIMessageCard({ message, orixaRegente }: { message: string; orixaRegente?: string }) {
-  return (
-    <div className="p-4 rounded-lg bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-purple-500/10 border border-purple-500/20">
-      <div className="flex items-start gap-3">
-        <div className="p-2 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-lg">
-          <Sparkles className="w-5 h-5 text-purple-400" />
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <p className="text-xs font-medium text-purple-400 uppercase tracking-wide">Mensagem Divina</p>
-            {orixaRegente && <span className="text-xs text-amber-400">de {orixaRegente}</span>}
-          </div>
-          <p className="text-sm text-slate-200 leading-relaxed">{message}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Loading skeleton component
-function WisdomSkeleton() {
-  return (
-    <div className="space-y-3">
-      <div className="h-20 rounded-lg skeleton-spiritual" />
-      <div className="h-16 rounded-lg skeleton-spiritual" />
-      <div className="h-12 rounded-lg skeleton-spiritual" />
-      <div className="grid grid-cols-2 gap-2">
-        <div className="h-12 rounded-lg skeleton-spiritual" />
-        <div className="h-12 rounded-lg skeleton-spiritual" />
-      </div>
-    </div>
-  );
 }
 
 // ============================================================
 // MAIN COMPONENT
 // ============================================================
 
-export function DailyWisdomCard({ userData, userId, className, onExpand }: DailyWisdomCardProps) {
-  const [wisdom, setWisdom] = React.useState<DailyWisdom | null>(null);
-  const [loadingState, setLoadingState] = React.useState<LoadingState>('idle');
-  const [error, setError] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    const loadWisdom = async () => {
-      const cached = getCachedWisdom(userId);
-      if (cached) {
-        setWisdom(cached);
-        setLoadingState('loaded');
-        return;
-      }
-      setLoadingState('loading');
-      setError(null);
-      try {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const newWisdom = generateFallbackWisdom(userData);
-        setWisdom(newWisdom);
-        setCachedWisdom(userId, newWisdom);
-        setLoadingState('loaded');
-      } catch (err) {
-        console.error('Failed to generate daily wisdom:', err);
-        setError('Não foi possível carregar a sabedoria diária. Tente novamente.');
-        setLoadingState('error');
-      }
-    };
-    loadWisdom();
-  }, [userId, userData]);
-
-  const handleRefresh = async () => {
-    setLoadingState('loading');
-    setError(null);
-    try {
-      if (typeof window !== 'undefined') localStorage.removeItem(`daily-wisdom-${userId}`);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const newWisdom = generateFallbackWisdom(userData);
-      setWisdom(newWisdom);
-      setCachedWisdom(userId, newWisdom);
-      setLoadingState('loaded');
-    } catch (err) {
-      console.error('Failed to refresh daily wisdom:', err);
-      setError('Não foi possível atualizar a sabedoria diária.');
-      setLoadingState('error');
-    }
-  };
+export function DailyWisdomCard({ userData, userId, className }: DailyWisdomCardProps) {
+  const [loading, setLoading] = React.useState(false);
+  const content = React.useMemo(() => getDailyContent(), []);
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
   return (
-    <Card
-      className={cn(
-        'card-spiritual relative overflow-hidden',
-        onExpand && 'cursor-pointer hover:bg-slate-800/70 transition-colors',
-        className
-      )}
-      onClick={onExpand}
-    >
-      {/* Sacred corner decorations */}
-      <div className="absolute top-0 left-0 w-12 h-12 pointer-events-none overflow-hidden">
-        <div className="absolute top-1 left-1 w-6 h-6 border-l border-t border-amber-500/20 rounded-tl-lg" />
-        <div className="absolute top-2 left-2 w-4 h-4 border-l border-t border-violet-500/15 rounded-tl" />
-      </div>
-      <div className="absolute top-0 right-0 w-12 h-12 pointer-events-none overflow-hidden">
-        <div className="absolute top-1 right-1 w-6 h-6 border-r border-t border-violet-500/20 rounded-tr-lg" />
-      </div>
-      <CardHeader className="pb-2 relative z-10">
+    <Card className={cn(
+      'card-spiritual bg-gradient-to-br from-slate-900/90 to-slate-950/90 backdrop-blur-sm border-slate-800/50 overflow-hidden',
+      className
+    )}>
+      <CardHeader className="pb-3 border-b border-slate-800/50">
         <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/10 to-violet-500/10 border border-amber-500/20 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+            </div>
+            <span className="text-base font-semibold bg-gradient-to-r from-amber-400 to-violet-400 bg-clip-text text-transparent">
+              Sabedoria Diária
+            </span>
+          </CardTitle>
           <div className="flex items-center gap-2">
-            <Sparkles className="size-5 text-amber-500" />
-            <CardTitle className="text-lg">Sabedoria Diária</CardTitle>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            {wisdom && <OduBadge odu={wisdom.oduOfTheDay} />}
-            {wisdom && <MoonPhaseBadge phase="Lua Cheia" />}
-            {wisdom && <OrixaBadge name={userData.orixaRegente || 'Oxum'} />}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={(e) => { e.stopPropagation(); handleRefresh(); }}
-              disabled={loadingState === 'loading'}
-              className="h-8 w-8 p-0"
-              title="Atualizar sabedoria"
-            >
-              {loadingState === 'loading' ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />}
+            <span className="text-xs text-slate-400">{dateStr}</span>
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
             </Button>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3 relative z-10">
-        {loadingState === 'loading' && !wisdom && (
-          <WisdomSkeleton />
-        )}
-
-        {loadingState === 'error' && (
-          <div className="flex items-center gap-2 p-4 rounded-lg bg-red-500/10 border border-red-500/20">
-            <AlertCircle className="size-5 text-red-500 flex-shrink-0" />
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-          </div>
-        )}
-
-        {wisdom && (
-          <div className="space-y-3">
-            {/* AI Daily Message */}
-            <AIMessageCard message={wisdom.aiDailyMessage} orixaRegente={userData.orixaRegente} />
-
-            {/* Lucky Info */}
-            <LuckyInfo number={wisdom.luckyNumber} color={wisdom.colorOfTheDay} />
-
-            {/* Daily Affirmation */}
-            <WisdomItem icon={<Heart className="size-4" />} label="Afirmação do Dia" content={wisdom.affirmation} variant="highlight" />
-
-            {/* Tarot Card */}
-            <TarotCardDisplay card={wisdom.tarotCard} />
-
-            {/* Elemental Focus */}
-            <ElementalBadge element={wisdom.elementalFocus} />
-
-            {/* Mantra */}
-            <WisdomItem icon={<Sparkles className="size-4" />} label="Mantra" content={wisdom.mantra} variant="accent" />
-
-            {/* Odu of the Day */}
-            <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/10">
-              <div className="flex items-center gap-2 mb-2">
-                <Star className="size-4 text-amber-500" />
-                <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Odu do Dia</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-amber-400">{wisdom.oduOfTheDay}</p>
-                  <p className="text-xs text-slate-400 mt-1">{wisdom.oduDescription}</p>
-                </div>
-                <p className="text-xs text-slate-500">Prática: {wisdom.elementalFocus.practice}</p>
-              </div>
+      <CardContent className="pt-4 space-y-4">
+        {/* Message from Orixá */}
+        <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-violet-500/10 to-amber-500/10 border border-amber-500/20">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+              <Sun className="w-5 h-5 text-amber-400" />
             </div>
-
-            {/* Orixá Message */}
-            <div className="p-3 rounded-lg bg-purple-500/5 border border-purple-500/10">
-              <div className="flex items-center gap-2 mb-2">
-                <Sun className="size-4 text-purple-500" />
-                <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Mensagem do Orixá</span>
-              </div>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{wisdom.orixaMessage}</p>
-            </div>
-
-            {/* Spiritual Tip */}
-            <WisdomItem icon={<Lightbulb className="size-4" />} label="Dica Espiritual" content={wisdom.spiritualTip} />
-
-            {/* Moon Phase */}
-            <div className="p-3 rounded-lg bg-slate-500/5">
-              <div className="flex items-center gap-2 mb-2">
-                <Moon className="size-4 text-blue-500" />
-                <span className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Influência da Lua</span>
-              </div>
-              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{wisdom.moonPhase}</p>
+            <div>
+              <p className="text-xs text-amber-400 font-medium mb-1">
+                {userData.orixaRegente || 'Oxum'} fala contigo
+              </p>
+              <p className="text-sm text-slate-200 leading-relaxed">
+                {content.message}
+              </p>
             </div>
           </div>
-        )}
+        </div>
+
+        {/* Daily Affirmation */}
+        <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/30">
+          <div className="flex items-center gap-2 mb-2">
+            <Heart className="w-4 h-4 text-pink-400" />
+            <span className="text-xs text-pink-400 font-medium">Afirmação do Dia</span>
+          </div>
+          <p className="text-sm text-slate-200 leading-relaxed italic">
+            &ldquo;{content.affirmation}&rdquo;
+          </p>
+          <p className="text-xs text-slate-500 mt-2">— {userData.nome}</p>
+        </div>
+
+        {/* Tarot Card */}
+        <div className="p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/20">
+          <div className="flex items-center gap-2 mb-2">
+            <Star className="w-4 h-4 text-violet-400" />
+            <span className="text-xs text-violet-400 font-medium">Carta do Dia</span>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-12 h-16 rounded-lg bg-gradient-to-br from-violet-600/30 to-purple-600/30 border border-violet-500/30 flex items-center justify-center">
+              <span className="text-2xl">🃏</span>
+            </div>
+            <div className="flex-1">
+              <p className="text-base font-bold text-white">{content.tarot.name}</p>
+              <p className="text-xs text-violet-400">{content.tarot.meaning}</p>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">{content.tarot.advice}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Lucky Info Grid */}
+        <div className="grid grid-cols-2 gap-3">
+          {/* Lucky Number */}
+          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-center">
+            <p className="text-2xl font-bold text-amber-400">{content.luckyNumber}</p>
+            <p className="text-xs text-amber-400/70">Número da Sorte</p>
+          </div>
+
+          {/* Color */}
+          <div className="p-3 rounded-xl bg-pink-500/10 border border-pink-500/20 text-center">
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-amber-400 to-pink-400" />
+              <span className="text-sm font-medium text-pink-400">{content.color}</span>
+            </div>
+            <p className="text-xs text-pink-400/70 mt-1">Cor do Dia</p>
+          </div>
+        </div>
+
+        {/* Moon Phase */}
+        <div className="p-3 rounded-xl bg-slate-800/30 border border-slate-700/30">
+          <div className="flex items-center gap-3">
+            <Moon className="w-5 h-5 text-slate-400" />
+            <div>
+              <p className="text-sm font-medium text-slate-200">Fase Lunar Atual</p>
+              <p className="text-xs text-slate-400">Buena para introspecção y rituales</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress */}
+        <WidgetProgress label="Alinhamento spiritual" value={85} max={100} color="amber" />
       </CardContent>
     </Card>
   );
