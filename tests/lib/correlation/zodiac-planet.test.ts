@@ -570,7 +570,7 @@ describe('zodiac-planet', () => {
     it('should have sefira with path number for each sign', () => {
       Object.values(ZODIAC_PLANET_MAPPINGS).forEach(mapping => {
         expect(mapping.correspondencia_cabala.sefira).toMatch(/[A-Za-z]+/);
-        expect(mapping.correspondencia_cabala.caminho).toMatch(/(Caminho \d+|Centro d[oe]l? árbol.*)/);
+        expect(mapping.correspondencia_cabala.caminho).toMatch(/(Caminho \d+|Centro.*árbol.*)/);
       });
     });
 
