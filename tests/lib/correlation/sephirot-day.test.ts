@@ -62,6 +62,7 @@ describe('Sephirot-Day Correlation', () => {
   describe('getAllSephirotDays', () => {
     it('should return array of all mappings', () => {
       const result = getAllSephirotDays();
+      expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(9);
     });
 
