@@ -335,3 +335,49 @@ export function getRegentOrixa(elemento: string): string | null {
   const mapping = getElementChakras(elemento);
   return mapping?.orixa_regente ?? null;
 }
+/**
+ * Returns the complete element-chakra mapping for a given element name.
+ * Alias for getElementChakras for API consistency.
+ * 
+ * @param elemento - The element name (Fogo, Água, Ar, Terra, Éter)
+ * @returns The complete ElementChakraMapping or null if not found
+ */
+export function getElementChakra(elemento: string): ElementChakraMapping | null {
+  return getElementChakras(elemento);
+}
+/**
+ * Returns the element mapping for a given chakra name.
+ * Reverse lookup from chakra to element.
+ * 
+ * @param chakra - The chakra name (1º Básico, 2º Sacro, etc.)
+ * @returns The element mapping or null if not found
+ */
+export function getChakraElement(chakra: string): ElementChakraMapping | null {
+  const allMappings = getAllElementMappings();
+  const normalizedChakra = chakra.trim().toLowerCase();
+  for (const mapping of allMappings) {
+    const primaryChakra = mapping.chakras_correspondentes.primario
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    const secondaryChakras = mapping.chakras_correspondentes.secundarios.map(
+      (c) => c.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    );
+    const chakraInput = normalizedChakra
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    if (primaryChakra === chakraInput || secondaryChakras.includes(chakraInput)) {
+      return mapping;
+    }
+  }
+  return null;
+}
+/**
+ * Returns all element-chakra mappings.
+ * Alias for getAllElementMappings for API consistency.
+ * 
+ * @returns Array of all ElementChakraMapping entries
+ */
+export function getAllElementChakras(): ElementChakraMapping[] {
+  return getAllElementMappings();
+}

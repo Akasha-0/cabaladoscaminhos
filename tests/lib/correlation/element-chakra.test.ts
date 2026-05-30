@@ -6,15 +6,13 @@ import {
   getAllChakras,
   getEnergyType,
   getRegentOrixa,
+  getElementChakra,
+  getChakraElement,
+  getAllElementChakras,
   ELEMENT_CHAKRA_MAPPINGS,
   type ElementChakraMapping,
   type Elemento,
   type Chakra,
-} from '@/lib/correlation/element-chakra';
-import {
-  getElementChakra,
-  getChakraElement,
-  getAllElementChakras,
 } from '@/lib/correlation/element-chakra';
 
 describe('element-chakra', () => {
