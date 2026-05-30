@@ -127,7 +127,7 @@ describe('useMapaAlma', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    expect(result.current.error).toBe('Erro desconhecido');
+    expect(result.current.error).toBe('Network error');
     expect(result.current.data).toBeNull();
   });
 
