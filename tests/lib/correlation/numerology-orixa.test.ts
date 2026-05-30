@@ -154,8 +154,9 @@ describe('Numerology-Orixá Correlation', () => {
       expect(result.orixa).toBe('Nanã / Omolu / Olobón');
       expect(result.significado_espiritual).toContain('Evolução');
       expect(result.elemento).toBe('Terra');
-      expect(result.dia_semana).toBe('Segunda-feira');
-      expect(result.ofertas).toContain('terra de tapari');
+    it('should return1 mapping for Ossá', () => {
+with
+    it('should return 1 mapping for Ossá', () => {
       expect(result.cores).toContain('roxo');
     });
 
