@@ -257,11 +257,11 @@ describe('Rate Limiting Middleware', () => {
       }
 
       // IP1 should be blocked
-      let { response: response1 } = simulateRateLimitMiddleware('/api/mapa', '192.168.1.1');
+      const { response: response1 } = simulateRateLimitMiddleware('/api/mapa', '192.168.1.1');
       expect(response1!.status).toBe(429);
 
       // IP2 should be blocked
-      let { response: response2 } = simulateRateLimitMiddleware('/api/mapa', '192.168.1.2');
+      const { response: response2 } = simulateRateLimitMiddleware('/api/mapa', '192.168.1.2');
       expect(response2!.status).toBe(429);
     });
   });

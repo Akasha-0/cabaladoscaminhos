@@ -110,9 +110,7 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
           {/* Front Face */}
           <div
             className={cn(
-              'card-flip-front card-spiritual rounded-2xl p-6 min-h-[320px]',
-              'flex flex-col items-center justify-center gap-4',
-              'cursor-pointer select-none'
+              'card-flip-front card-spiritual rounded-2xl p-4 sm:p-6 min-h-[280px] sm:min-h-[320px]',
             )}
           >
             {/* Header */}
@@ -121,10 +119,8 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
               <span>Carta do Nascimento</span>
               <span className="text-spiritual-gold">✦</span>
             </div>
-
             {/* Divider */}
             <div className="w-16 h-px bg-gradient-to-r from-transparent via-spiritual-gold/50 to-transparent" />
-
             {/* Arcano Symbol & Number */}
             <div className="relative flex flex-col items-center">
               {/* Decorative border */}
@@ -135,18 +131,16 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
                   transform: 'scale(1.3)',
                 }}
               />
-              
               {/* Symbol */}
               <div
-                className="text-5xl mb-2"
+                className="text-4xl sm:text-5xl mb-2"
                 style={{ color: elementoColor }}
               >
                 {arcanoSymbol}
               </div>
-
               {/* Arcano Number */}
               <div
-                className="text-7xl font-bold tracking-tight"
+                className="text-5xl sm:text-7xl font-bold tracking-tight"
                 style={{
                   background: 'linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #B8860B 100%)',
                   WebkitBackgroundClip: 'text',
@@ -156,21 +150,18 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
               >
                 {arcanoNum}
               </div>
-
               {/* Arcano Name */}
               <h3
-                className="text-2xl font-serif font-semibold mt-2 text-center"
+                className="text-xl sm:text-2xl font-serif font-semibold mt-2 text-center"
                 style={{ fontFamily: 'var(--font-serif)' }}
               >
                 {arcanoName}
               </h3>
-
               {/* English Name */}
               <p className="text-sm text-muted-foreground italic">
                 ({arcanoEnglish})
               </p>
             </div>
-
             {/* Hint */}
             <div className="mt-auto text-xs text-muted-foreground/70 flex items-center gap-2">
               <span className="text-spiritual-gold/60">✦</span>
@@ -178,12 +169,11 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
               <span className="text-spiritual-gold/60">✦</span>
             </div>
           </div>
-
           {/* Back Face */}
           <div
             className={cn(
-              'card-flip-back card-spiritual rounded-2xl p-6 min-h-[320px]',
-              'flex flex-col items-center justify-center gap-4',
+              'card-flip-back card-spiritual rounded-2xl p-4 sm:p-6 min-h-[280px] sm:min-h-[320px]',
+              'flex flex-col items-center justify-center gap-3 sm:gap-4',
               'bg-gradient-to-b from-card to-spiritual-violet/5',
               'cursor-pointer select-none'
             )}

@@ -83,37 +83,36 @@ function IntensityBar({ value, color }: { value: number; color: string }) {
 
 function ChakraItem({ chakra }: { chakra: ChakraInfo }) {
   const chakraInfo = getChakraData(chakra.numero);
-
   return (
     <div
-      className="chakra-item p-4 rounded-xl border border-slate-700/40 bg-slate-800/20 transition-all duration-300"
+      className={cn(
+        'chakra-item p-3 sm:p-4 rounded-xl border border-slate-700/40 bg-slate-800/20 transition-all duration-300'
+      )}
       style={{ '--chakra-color': chakraInfo.cor } as React.CSSProperties}
     >
       {/* Header Row */}
-      <div className="flex items-start gap-3 mb-3">
+      <div className="flex items-start gap-2 sm:gap-3 mb-2 sm:mb-3">
         {/* Color Dot */}
         <div
-          className="w-5 h-5 rounded-full shrink-0 mt-0.5"
+          className="w-4 h-4 sm:w-5 sm:h-5 rounded-full shrink-0 mt-0.5"
           style={{
             backgroundColor: chakraInfo.cor,
             boxShadow: `0 0 12px ${chakraInfo.cor}60`,
           }}
         />
-
         {/* Name + State */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-base font-semibold text-slate-100">
+          <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
+            <span className="text-sm sm:text-base font-semibold text-slate-100">
               {chakra.nome}
             </span>
-            <span className="text-xs text-slate-400">— {chakraInfo.pt}</span>
+            <span className="text-[10px] sm:text-xs text-slate-400">— {chakraInfo.pt}</span>
           </div>
           <div className="mt-1">
             <StateBadge estado={chakra.estado} />
           </div>
         </div>
       </div>
-
       {/* Intensity Bar */}
       <div className="mb-3">
         <div className="flex items-center justify-between mb-1">

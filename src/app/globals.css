@@ -766,3 +766,127 @@
 .sacred-corner-tr { top: 8px; right: 8px; transform: scaleX(-1); }
 .sacred-corner-bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
 .sacred-corner-br { bottom: 8px; right: 8px; transform: scale(-1); }
+/* === MOBILE RESPONSIVENESS UTILITIES (320px - iPhone SE) === */
+@media (max-width: 375px) {
+  /* Responsive text sizes */
+  .text-responsive-hero { font-size: 1.5rem; }
+  .text-responsive-title { font-size: 1.25rem; }
+  .text-responsive-xl { font-size: 1rem; }
+  
+  /* Responsive padding */
+  .p-responsive { padding: 0.75rem; }
+  .p-responsive-sm { padding: 0.5rem; }
+  
+  /* Card adjustments for small screens */
+  .card-responsive {
+    padding: 0.75rem;
+  }
+  
+  /* Grid adjustments */
+  .grid-responsive-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  /* Prevent overflow on small screens */
+  .overflow-safe {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Sidebar safe spacing */
+  .sidebar-safe {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  /* Font size reduction for numerology cards */
+  .numerology-number {
+    font-size: 2rem !important;
+    line-height: 1.2;
+  }
+  
+  /* Chakra panel adjustments */
+  .chakra-item-responsive {
+    padding: 0.5rem;
+  }
+  
+  /* Tarot card adjustments */
+  .tarot-card-responsive {
+    min-height: 280px !important;
+    padding: 0.75rem !important;
+  }
+  
+  /* Onboarding form adjustments */
+  .onboarding-form-responsive {
+    padding: 1rem;
+  }
+}
+
+/* Small screen spacing adjustments */
+@media (max-width: 320px) {
+  .text-responsive-hero { font-size: 1.25rem; }
+  .text-responsive-title { font-size: 1rem; }
+  .text-responsive-xl { font-size: 0.875rem; }
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable all hover transforms on small screens when motion reduced */
+  .card-hover:hover {
+    transform: none;
+  }
+  
+  /* Disable float animation */
+  .animate-float {
+    animation: none;
+  }
+  
+  /* Disable shimmer */
+  .animate-shimmer {
+    animation: none;
+    background: transparent;
+  }
+  
+  /* Disable pulse */
+  .animate-pulse {
+    animation: none;
+  }
+}
+
+/* Card flip small screen fix */
+@media (max-width: 375px) {
+  .card-flip {
+    perspective: 800px;
+  }
+  
+  .card-flip-inner {
+    transform-style: flat;
+  }
+  
+  .card-flip-front,
+  .card-flip-back {
+    backface-visibility: visible;
+  }
+  
+  .card-flip-back {
+    transform: none;
+  }
+  
+  .card-flip-front.rotate-y-180 {
+    display: none;
+  }
+  
+  .card-flip-back.rotate-y-180 {
+    display: flex;
+  }
+}

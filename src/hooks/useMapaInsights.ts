@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import type { InsightData } from '@/lib/ai/mapa-insights/types';
 
 interface UseMapaInsightsOptions {
@@ -18,8 +18,62 @@ export function useMapaInsights(options?: UseMapaInsightsOptions) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchInsights = useCallback(async () => {
-    // Load profile from localStorage
+  useEffect(() => {
+    if (options?.enabled !== false) {
+      // Load profile from localStorage
+      const savedProfile = localStorage.getItem('mapa_perfil');
+      if (!savedProfile) {
+        setInsight(null);
+        setError(null);
+        return;
+      }
+
+      let profile: { nomeCompleto: string; dataNascimento: string; hora?: string; cidade?: string; estado?: string; pais?: string };
+      try {
+        profile = JSON.parse(savedProfile);
+      } catch {
+        setError('Perfil de nascimento inválido');
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      fetch('/api/mapa/insights', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nomeCompleto: profile.nomeCompleto,
+          dataNascimento: profile.dataNascimento,
+          hora: profile.hora,
+          cidade: profile.cidade,
+          estado: profile.estado,
+          pais: profile.pais,
+          usarCache: options?.usarCache ?? true,
+        }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return res.json().catch(() => ({}));
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if (data && data.error) {
+            throw new Error(data.error);
+          }
+          setInsight(data as InsightData);
+        })
+        .catch((err) => {
+          setError(err instanceof Error ? err.message : 'Erro ao gerar insights');
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [options?.enabled, options?.usarCache]);
+
+  const refetch = () => {
     const savedProfile = localStorage.getItem('mapa_perfil');
     if (!savedProfile) {
       setInsight(null);
@@ -37,40 +91,39 @@ export function useMapaInsights(options?: UseMapaInsightsOptions) {
 
     setLoading(true);
     setError(null);
-    try {
-      const res = await fetch('/api/mapa/insights', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nomeCompleto: profile.nomeCompleto,
-          dataNascimento: profile.dataNascimento,
-          hora: profile.hora,
-          cidade: profile.cidade,
-          estado: profile.estado,
-          pais: profile.pais,
-          usarCache: options?.usarCache ?? true,
-        }),
+
+    fetch('/api/mapa/insights', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nomeCompleto: profile.nomeCompleto,
+        dataNascimento: profile.dataNascimento,
+        hora: profile.hora,
+        cidade: profile.cidade,
+        estado: profile.estado,
+        pais: profile.pais,
+        usarCache: options?.usarCache ?? true,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().catch(() => ({}));
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data && data.error) {
+          throw new Error(data.error);
+        }
+        setInsight(data as InsightData);
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : 'Erro ao gerar insights');
+      })
+      .finally(() => {
+        setLoading(false);
       });
+  };
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as { error?: string }).error || `HTTP ${res.status}`);
-      }
-
-      const result = await res.json();
-      setInsight(result as InsightData);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao gerar insights');
-    } finally {
-      setLoading(false);
-    }
-  }, [options?.usarCache]);
-
-  useEffect(() => {
-    if (options?.enabled !== false) {
-      fetchInsights();
-    }
-  }, [fetchInsights, options?.enabled]);
-
-  return { insight, loading, error, refetch: fetchInsights };
+  return { insight, loading, error, refetch };
 }

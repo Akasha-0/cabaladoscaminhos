@@ -107,9 +107,10 @@ export function NumerologiaCard({ data, className }: NumerologiaCardProps) {
                 {/* Number */}
                 <div
                   className={cn(
-                    'text-4xl md:text-5xl font-bold mb-1 animate-float',
+                    'text-3xl sm:text-4xl md:text-5xl font-bold mb-1',
                     color === 'gold' ? 'text-amber-400' : 'text-violet-400',
                     isMaster && 'text-amber-300 drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]',
+                    isMaster && 'animate-float'
                   )}
                 >
                   {value}

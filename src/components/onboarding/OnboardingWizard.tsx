@@ -192,7 +192,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
           )}
           onKeyDown={handleKeyDown}
         >
-          <div className="card-spiritual bg-[var(--card)] border border-[var(--spiritual-gold-muted)] rounded-2xl p-8 shadow-[var(--shadow-glow-gold)]">
+          <div className="card-spiritual bg-[var(--card)] border border-[var(--spiritual-gold-muted)] rounded-2xl p-4 sm:p-8 shadow-[var(--shadow-glow-gold)]">
             {/* Step 0: Welcome */}
             {currentStep === 0 && (
               <div className="text-center space-y-6">
@@ -204,18 +204,15 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     <span className="text-4xl">✦</span>
                   </div>
                 </div>
-
                 <div className="space-y-2">
-                  <h1 className="font-[family-name:var(--font-cinzel)] text-3xl font-bold text-[var(--spiritual-gold)] tracking-wide">
+                  <h1 className="font-[family-name:var(--font-cinzel)] text-2xl sm:text-3xl font-bold text-[var(--spiritual-gold)] tracking-wide">
                     Desperte sua Alma
                   </h1>
-                  <p className="font-[family-name:var(--font-cormorant)] text-xl text-[var(--muted-foreground)] italic">
+                  <p className="font-[family-name:var(--font-cormorant)] text-lg sm:text-xl text-[var(--muted-foreground)] italic">
                     Bem-vindo à Cabala dos Caminhos
                   </p>
                 </div>
-
-                <MysticDivider variant="subtle" className="my-6" />
-
+                <MysticDivider variant="subtle" className="my-4 sm:my-6" />
                 <p className="text-[var(--muted-foreground)] leading-relaxed">
                   Prepare-se para uma jornada de autodescoberta através dos antigos caminhos da Cabala. 
                   Seu mapa astral aguardava por você.
