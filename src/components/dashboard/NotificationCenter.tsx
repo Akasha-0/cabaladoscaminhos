@@ -42,7 +42,7 @@ const NOTIFICATION_ICONS: Record<NotificationType, React.ReactNode> = {
 
 const NOTIFICATION_COLORS: Record<NotificationType, { bg: string; text: string; border: string }> = {
   ritual: { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/30' },
-  odu: { bg: 'bg-purple-500/10', text: 'text-purple-400', border: 'border-purple-500/30' },
+  odu: { bg: 'bg-violet-500/10', text: 'text-violet-400', border: 'border-violet-500/30' },
   moon: { bg: 'bg-slate-400/10', text: 'text-slate-300', border: 'border-slate-400/30' },
   energy: { bg: 'bg-orange-500/10', text: 'text-orange-400', border: 'border-orange-500/30' },
 };
@@ -107,7 +107,7 @@ function NotificationItem({
     <div
       onClick={onClick}
       className={cn(
-        'relative group p-4 rounded-lg cursor-pointer transition-all duration-200',
+        'relative group p-4 rounded-xl cursor-pointer transition-all duration-200',
         'border',
         colors.bg,
         colors.border,
@@ -161,7 +161,7 @@ function NotificationItem({
         {notification.type === 'ritual' && notification.metadata?.ritualId && (
           <button
             onClick={(e) => { e.stopPropagation(); onComplete(); }}
-            className="p-1.5 rounded-md bg-green-500/20 text-green-400 hover:bg-green-500/30 transition-colors"
+            className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors"
             title="Marcar como feito"
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
@@ -169,14 +169,14 @@ function NotificationItem({
         )}
         <button
           onClick={(e) => { e.stopPropagation(); onSnooze(); }}
-          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-slate-700 transition-colors"
+          className="p-1.5 rounded-lg bg-slate-700/50 text-slate-400 hover:bg-slate-700 transition-colors"
           title="Adiar 1 hora"
         >
           <Clock className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={(e) => { e.stopPropagation(); onDismiss(); }}
-          className="p-1.5 rounded-md bg-slate-700/50 text-slate-400 hover:bg-red-500/30 hover:text-red-400 transition-colors"
+          className="p-1.5 rounded-lg bg-slate-700/50 text-slate-400 hover:bg-red-500/30 hover:text-red-400 transition-colors"
           title="Dispensar"
         >
           <X className="w-3.5 h-3.5" />
@@ -191,23 +191,28 @@ interface FilterChipProps {
   isActive: boolean;
   count: number;
   onClick: () => void;
-  color?: string;
+  color: string;
 }
 
-function FilterChip({ label, isActive, count, onClick, color = 'slate' }: FilterChipProps) {
+function FilterChip({ label, isActive, count, onClick, color }: FilterChipProps) {
+  const colorMap: Record<string, { bg: string; border: string; text: string }> = {
+    amber: { bg: 'bg-amber-500/20', border: 'border-amber-500/30', text: 'text-amber-400' },
+    violet: { bg: 'bg-violet-500/20', border: 'border-violet-500/30', text: 'text-violet-400' },
+    slate: { bg: 'bg-slate-600/20', border: 'border-slate-500/30', text: 'text-slate-300' },
+    orange: { bg: 'bg-orange-500/20', border: 'border-orange-500/30', text: 'text-orange-400' },
+  };
+
+  const colors = colorMap[color] || colorMap.amber;
+
   return (
     <button
       onClick={onClick}
       className={cn(
         'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all',
         isActive
-          ? `bg-${color}-500/20 text-${color}-400 border border-${color}-500/30`
+          ? `${colors.bg} ${colors.text} ${colors.border} border`
           : 'bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700/50'
       )}
-      style={isActive ? {
-        backgroundColor: color === 'amber' ? 'rgba(245, 158, 11, 0.2)' : undefined,
-        borderColor: color === 'amber' ? 'rgba(245, 158, 11, 0.3)' : undefined,
-      } : undefined}
     >
       {label}
       {count > 0 && (
@@ -300,10 +305,6 @@ export function NotificationCenter({
     markAllAsRead();
   }, [markAllAsRead]);
 
-  const handleClearAll = useCallback(() => {
-    refreshNotifications();
-  }, [refreshNotifications]);
-
   return (
     <div className={cn('relative', className)}>
       {/* Bell Button */}
@@ -335,14 +336,16 @@ export function NotificationCenter({
       {isOpen && (
         <div
           ref={dropdownRef}
-          className="absolute right-0 top-full mt-2 w-96 max-h-[600px] overflow-hidden rounded-xl bg-slate-900 border border-slate-700/50 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+          className="absolute right-0 top-full mt-2 w-96 max-h-[600px] overflow-hidden rounded-xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800/50 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200"
         >
           {/* Header */}
-          <div className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50 p-4">
+          <div className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800/50 p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-white flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 flex items-center justify-center">
                   <Bell className="w-4 h-4 text-amber-400" />
+                </div>
+                <h3 className="font-semibold text-white">
                   Notificações Espirituais
                 </h3>
                 {unreadCount > 0 && (
@@ -353,7 +356,7 @@ export function NotificationCenter({
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -375,7 +378,7 @@ export function NotificationCenter({
                 Marcar todas como lidas
               </button>
               <button
-                onClick={handleClearAll}
+                onClick={refreshNotifications}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -405,7 +408,7 @@ export function NotificationCenter({
                   isActive={activeFilter === 'odu'}
                   count={typeCounts.odu}
                   onClick={() => setActiveFilter('odu')}
-                  color="purple"
+                  color="violet"
                 />
                 <FilterChip
                   label="Lua"
@@ -429,7 +432,7 @@ export function NotificationCenter({
           <div className="max-h-[400px] overflow-y-auto p-2 space-y-2 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
             {visibleNotifications.length === 0 ? (
               <div className="py-12 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800/50 flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-800/50 flex items-center justify-center">
                   <Bell className="w-8 h-8 text-slate-600" />
                 </div>
                 <p className="text-slate-400 text-sm mb-1">Nenhuma notificação</p>
@@ -468,7 +471,7 @@ export function NotificationCenter({
           </div>
 
           {/* Footer */}
-          <div className="sticky bottom-0 bg-slate-900/95 backdrop-blur-sm border-t border-slate-700/50 p-3">
+          <div className="sticky bottom-0 bg-slate-900/95 backdrop-blur-sm border-t border-slate-800/50 p-3">
             <p className="text-[10px] text-slate-500 text-center">
               Notificações geradas automaticamente com base na sua prática espiritual
             </p>
@@ -478,9 +481,5 @@ export function NotificationCenter({
     </div>
   );
 }
-
-// ============================================================
-// EXPORTS
-// ============================================================
 
 export default NotificationCenter;
