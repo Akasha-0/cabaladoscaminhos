@@ -89,10 +89,14 @@ function buildMapaCompleto(): MapaAlmaCompleto {
       casas: [],
       aspectos: [],
     },
-      cartaNascimento: 1,
-      cartaAnoPessoal: 1,
-      cartaAlma: 1,
-      interpretacao: { name: 'The Magician', arcano: 1, upright: 'Will and power', reversed: 'Unused' },
+    tarot: {
+      cartaNascimento: 8,
+      cartaAnoPessoal: 18,
+      cartaAlma: 19,
+      interpretacao: { name: 'Justice', arcano: 8, suit: 'Major', element: 'Air', keywords: ['balance', 'justice'] },
+      cartasAdicionais: [
+        { name: 'The Moon', arcano: 18, suit: 'Major', element: 'Water', keywords: ['illusion', 'intuition'] },
+      ],
     },
     chakras: {
       chakras: [
