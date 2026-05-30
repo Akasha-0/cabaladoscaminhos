@@ -76,9 +76,9 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
         'Banho de pétalas de girassol e cânfora',
       ],
       defumacoes: [
-        'Sálvia branca para purificação',
+        'Sálvia branca para开门扬声purificação',
         'Benjoim para proteção',
-        'Aloés para开门扬声',
+        'Aloé para开门energização',
       ],
       mantras: [
         'OM (som cósmico de criação)',
@@ -120,7 +120,7 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
       ],
       defumacoes: [
         'Benjoim para abundância',
-        'Pau-brasil para开门延寿',
+        'Pau-brasil para longevidade',
         'Canela para prosperidade',
       ],
       mantras: [
@@ -163,7 +163,7 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
       ],
       defumacoes: [
         'Lavanda para concentração',
-        'Funcho para开门智慧',
+        'Funcho para sabedoria',
         'Mate para vigor mental',
       ],
       mantras: [
@@ -206,7 +206,7 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
       ],
       defumacoes: [
         'Mirra para proteção familiar',
-        'Rosa para开门温柔',
+        'Rosa para ternura',
         'Lótus para purificação emocional',
       ],
       mantras: [
@@ -241,16 +241,16 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
     praticas_espirituais: {
       ebos: [
         'Ebo de reconhecimento e fama',
-        'Ebo de autoestima e开门王权',
+        'Ebo de autoestima e poder real',
       ],
       banhos: [
         'Banho de calêndula e girassol para vitalidade',
-        'Banho de cravo-da-índia e cinnamon',
+        'Banho de cravo-da-índia e canela',
       ],
       defumacoes: [
-        'Sândalo para开门王者气度',
+        'Sândalo para气场 real',
         'Benjoim para abundância',
-        'Açafrão para开门金光',
+        'Açafrão para brilho dourado',
       ],
       mantras: [
         'RAM (som solar)',
@@ -284,16 +284,16 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
     praticas_espirituais: {
       ebos: [
         'Ebo de purificação e limpeza espiritual',
-        'Ebo de saúde e开门清热',
+        'Ebo de saúde e vitalidade',
       ],
       banhos: [
-        'Banho de artemísia e arruda para开门清热',
-        'Banho de manjericão e cidrão',
+        'Banho de artemísia e arruda para purificação',
+        'Banho de manjericão e cidreira',
       ],
       defumacoes: [
-        'Artemísia para开门清热解毒',
-        'Funcho para开门健脾',
-        'Alcachofra para开门利尿',
+        'Artemísia para desintoxicação',
+        'Funcho paradigestão',
+        'Alcachofra para vitalidade',
       ],
       mantras: [
         'SHAM (som de cura)',
@@ -327,15 +327,15 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
     praticas_espirituais: {
       ebos: [
         'Ebo de harmonia em relacionamentos',
-        'Ebo de justiça e开门公平',
+        'Ebo de justiça e equidade',
       ],
       banhos: [
-        'Banho de lavanda e rosa para开门爱情和',
+        'Banho de lavanda e rosa para amor e harmonia',
         'Banho de valeriana e erva-cidreira',
       ],
       defumacoes: [
         'Rosa para amor',
-        'Verbena para开门和谐',
+        'Verbena para harmonia',
         'Junípero para proteção legal',
       ],
       mantras: [
@@ -369,16 +369,16 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
     },
     praticas_espirituais: {
       ebos: [
-        'Ebo de transformação e开门转命',
+        'Ebo de transformação e renascimento',
         'Ebo de proteção contra feitiçaria',
       ],
       banhos: [
-        'Banho de sábio e开门驱邪',
+        'Banho de sálvia e purificação profunda',
         'Banho de alecrim e sal grosso',
       ],
       defumacoes: [
-        'Sálvia para开门驱邪',
-        'Mastruz para开门深層净化',
+        'Sálvia para exorcismo',
+        'Mastruz para limpeza profunda',
         'Arruda para proteção',
       ],
       mantras: [
@@ -410,19 +410,18 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
       polaridade: 'Yang',
       vibração: 'Expansiva e visionária, energia de busca e exploração',
     },
-    praticas_espirituais: {
       ebos: [
-        'Ebo de abundância e开门财富',
-        'Ebo de viaje e proteção em estradas',
+        'Ebo de abundância e开门riqueza',
+        'Ebo de viagem e proteção em estradas',
       ],
       banhos: [
-        'Banho de alecrim e开门引财',
+        'Banho de alecrim e引财',
         'Banho de cúrcuma e gengibre',
       ],
       defumacoes: [
-        'Gengibre para开门活力',
-        'Cardamomo para开门灵通',
-        'Pau-d'alho para开门通神',
+        'Gengibre para energia',
+        'Cardamomo para开门clareza',
+        "Pau-d'alho para proteção",
       ],
       mantras: [
         'GAM (som de expansão)',
@@ -455,17 +454,17 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
     },
     praticas_espirituais: {
       ebos: [
-        'Ebo de carreira e开门事业',
+        'Ebo de carreira e开门sucesso',
         'Ebo de proteção contra falhas',
       ],
       banhos: [
-        'Banho de alecrim e开门事业',
+        'Banho de alecrim e开门dedicação',
         'Banho de pinho e eucalipto',
       ],
       defumacoes: [
-        'Pau-ferro para开门坚毅',
-        'Alecrim para开门清晰',
-        'Canela para开门事业',
+        'Pau-ferro para开门força',
+        'Alecrim para开门clareza',
+        'Canela para开门sucesso',
       ],
       mantras: [
         'OM OM OM (som de Satya)',

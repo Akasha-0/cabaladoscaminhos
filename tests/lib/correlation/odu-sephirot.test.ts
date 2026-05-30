@@ -434,27 +434,26 @@ describe('odu-sephirot', () => {
 
   describe('default export', () => {
     it('exports all required functions', async () => {
-      const module = await import('@/lib/correlation/odu-sephirot');
-      expect(typeof module.default).toBe('object');
-      expect(typeof module.getOduSephirah).toBe('function');
-      expect(typeof module.getSephirahOdu).toBe('function');
-      expect(typeof module.getAllOduSephirahs).toBe('function');
-      expect(typeof module.getAllOduNames).toBe('function');
-      expect(typeof module.hasOduSephirah).toBe('function');
-      expect(typeof module.getOduByNumber).toBe('function');
-      expect(typeof module.getSephirahByOduNumber).toBe('function');
-      expect(typeof module.ODU_SEPHIROT_MAPPINGS).toBe('object');
+      const mod = await import('@/lib/correlation/odu-sephirot');
+      expect(typeof mod.default).toBe('object');
+      expect(typeof mod.getOduSephirah).toBe('function');
+      expect(typeof mod.getSephirahOdu).toBe('function');
+      expect(typeof mod.getAllOduSephirahs).toBe('function');
+      expect(typeof mod.getAllOduNames).toBe('function');
+      expect(typeof mod.hasOduSephirah).toBe('function');
+      expect(typeof mod.getOduByNumber).toBe('function');
+      expect(typeof mod.getSephirahByOduNumber).toBe('function');
+      expect(typeof mod.ODU_SEPHIROT_MAPPINGS).toBe('object');
     });
-
     it('default exports match named exports', async () => {
-      const module = await import('@/lib/correlation/odu-sephirot');
-      expect(module.default.getOduSephirah).toBe(module.getOduSephirah);
-      expect(module.default.getSephirahOdu).toBe(module.getSephirahOdu);
-      expect(module.default.getAllOduSephirahs).toBe(module.getAllOduSephirahs);
+      const mod = await import('@/lib/correlation/odu-sephirot');
+      expect(mod.default.getOduSephirah).toBe(mod.getOduSephirah);
+      expect(mod.default.getSephirahOdu).toBe(mod.getSephirahOdu);
+      expect(mod.default.getAllOduSephirahs).toBe(mod.getAllOduSephirahs);
       // Assignment-required exports
-      expect(module.default.getOduSephirot).toBe(module.getOduSephirot);
-      expect(module.default.getSephirotOdu).toBe(module.getSephirotOdu);
-      expect(module.default.getAllOduSephiroth).toBe(module.getAllOduSephiroth);
+      expect(mod.default.getOduSephirot).toBe(mod.getOduSephirot);
+      expect(mod.default.getSephirotOdu).toBe(mod.getSephirotOdu);
+      expect(mod.default.getAllOduSephiroth).toBe(mod.getAllOduSephiroth);
     });
   });
 });
