@@ -8,13 +8,10 @@
  */
 
 import type { DiaSemana } from './day-frequency';
-import type { Elemento } from './element-frequency';
-
 /**
  * Type for all supported days of the week
  */
 export type SoundDay = DiaSemana;
-
 /**
  * Sound-Day correlation interface
  */
@@ -26,9 +23,9 @@ export interface SoundDayCorrelation {
   /** Pronunciation guide or description */
   pronunciacao: string;
   /** Type of sound/music (mantra, instrument, chant, etc.) */
-  tipo: 'mantra' | 'instrumento' | 'canto' | 'canto_gregoriano' | 'solfeggio' | 'oracao' | ' tambor' | 'sino';
+  tipo: 'mantra' | 'instrumento' | 'canto' | 'canto_gregoriano' | 'solfeggio' | 'oracao' | 'tambor' | 'sino';
   /** Associated element */
-  elemento: Elemento;
+  elemento: string;
   /** Planet ruling the day */
   planeta: string;
   /** Chakra associated with this sound practice */

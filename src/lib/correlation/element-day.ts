@@ -196,7 +196,7 @@ const ELEMENT_DAY_MAP: Record<Elemento, ElementDayMapping> = {
  * @returns ElementDayMapping or undefined if not found
  */
 export function getElementDay(elemento: string): ElementDayMapping | undefined {
-  const normalized = elemento.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') as Elemento;
+  const normalized = elemento.toLowerCase() as Elemento;
   return ELEMENT_DAY_MAP[normalized];
 }
 
@@ -207,7 +207,9 @@ export function getElementDay(elemento: string): ElementDayMapping | undefined {
 export function getDayElement(): Record<string, Elemento> {
   const result: Record<string, Elemento> = {};
   for (const mapping of Object.values(ELEMENT_DAY_MAP)) {
-    result[mapping.dia] = mapping.elemento;
+    if (!(mapping.dia in result)) {
+      result[mapping.dia] = mapping.elemento;
+    }
   }
   return result;
 }

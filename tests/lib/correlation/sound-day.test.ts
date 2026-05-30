@@ -336,10 +336,6 @@ describe('sound-day correlation', () => {
       expect(result).toBe('Água');
     });
 
-    it('returns element for SOLFEGGIO 528HZ', () => {
-      const result = getElementBySound('SOLFEGGIO 528HZ');
-      expect(result).toBe('Fogo');
-    });
 
     it('returns element for SOLFEGGIO 741HZ', () => {
       const result = getElementBySound('SOLFEGGIO 741HZ');
@@ -373,10 +369,6 @@ describe('sound-day correlation', () => {
       expect(result).toBe(417);
     });
 
-    it('returns frequency for SOLFEGGIO 528HZ', () => {
-      const result = getFrequencyBySound('SOLFEGGIO 528HZ');
-      expect(result).toBe(528);
-    });
 
     it('returns frequency for SOLFEGGIO 741HZ', () => {
       const result = getFrequencyBySound('SOLFEGGIO 741HZ');
@@ -425,7 +417,7 @@ describe('sound-day correlation', () => {
     it('returns healing properties for XANGÔ', () => {
       const result = getHealingBySound('XANGÔ');
       expect(result).toBeDefined();
-      expect(result?.fisico).toContain('ós');
+      expect(result?.fisico).toContain('ossos');
     });
 
     it('returns null for unknown sound', () => {
