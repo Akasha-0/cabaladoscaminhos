@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { AstrologyResults } from '@/lib/engines/types/mapa-alma';
-import type { Planeta } from '@/lib/engines/astrologia/tipos';
+import type { Planeta } from '@/lib/astrologia/tipos';
 
 interface MapaNatalVizProps {
   astrologia: AstrologyResults;
