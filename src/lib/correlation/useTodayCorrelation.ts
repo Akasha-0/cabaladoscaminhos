@@ -335,12 +335,12 @@ export function getCorrelationByDayIndex(dayIndex: number): TodayCorrelation {
   if (dayIndex < 0 || dayIndex > 6) {
     throw new RangeError(`getCorrelationByDayIndex: dayIndex must be 0-6, got ${dayIndex}`);
   }
-  // Use a fictional date that falls on the target day of week
-  // Since getDay() is consistent, we can use any date with that dayIndex
-  const seed = new Date('2026-06-07'); // A Sunday = dayIndex 0
+  // Use a fictional date that falls on the target day of week.
+  // Use local-date constructor (year, monthIndex, day) so the date is stable
+  // regardless of the system timezone offset.
+  const seed = new Date(2026, 5, 7); // June 7, 2026 = Sunday (dayIndex 0 in local time)
   const offset = dayIndex - seed.getDay();
-  const targetDate = new Date(seed);
-  targetDate.setDate(seed.getDate() + offset);
+  const targetDate = new Date(2026, 5, 7 + offset);
   return getTodayCorrelation(targetDate);
 }
 

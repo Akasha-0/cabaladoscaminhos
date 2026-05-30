@@ -188,12 +188,14 @@ export function getChakraSound(chakra: string): ChakraSound | undefined {
     return CHAKRA_SOUNDS[numMatch];
   }
 
-  // Try partial match (e.g., "Básico", "Sacro", "Coronário")
-  const lowerChakra = chakra.toLowerCase();
-  const partialMatch = Object.values(CHAKRA_SOUNDS).find(
-    (c) => c.chakra.toLowerCase().includes(lowerChakra)
-  );
-  if (partialMatch) return partialMatch;
+  // Try partial match (e.g., "Básico", "Sacro", "Coronário") — only if input is non-empty
+  if (chakra.trim().length > 0) {
+    const lowerChakra = chakra.toLowerCase();
+    const partialMatch = Object.values(CHAKRA_SOUNDS).find(
+      (c) => c.chakra.toLowerCase().includes(lowerChakra)
+    );
+    if (partialMatch) return partialMatch;
+  }
 
   return undefined;
 }
