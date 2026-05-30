@@ -181,17 +181,16 @@ function normalizePlanetName(planeta: string): string {
     sol: 'Sol',
     lua: 'Lua',
     marte: 'Marte',
-    mercurio: 'Mercúrio',
-    mercúrio: 'Mercúrio',
-    jupiter: 'Júpiter',
-    júpiter: 'Júpiter',
-    venus: 'Vênus',
-    vênus: 'Vênus',
+    mercurio: 'Mercurio',
+    mercúrio: 'Mercurio',
+    jupiter: 'Jupiter',
+    júpiter: 'Jupiter',
+    venus: 'Venus',
+    vênus: 'Venus',
     saturno: 'Saturno',
   };
   return mapping[normalized] ?? planeta;
 }
-
 /**
  * Get planet chakra correlation mapping
  * @param planeta - Name of the planet (e.g., 'Sol', 'Lua', 'Marte')
