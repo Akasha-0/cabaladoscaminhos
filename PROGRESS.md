@@ -225,6 +225,7 @@
 |**202** | **Layout & Hooks QA** | AppShell, PageHeader, MysticButton, useMapaInsights tests fixed, build fixes |
 |**203** | **Bug Fixes** | spiritual-engine.ts parse errors, mapa variable init, rate-limit test typo, deep correlations |
 |**204** | **Dashboard Enhancements** | Accessibility improvements, MapaAlmaDashboard polish, OnboardingWizard polish, /dashboard/perfil page |
+|**205** | **A11y & Profile Fix** | Screen reader support, TarotCard navigation, OnboardingWizard a11y, profile page upgrade redirect fix |
 |**206** | **Test Fixes** | ChakraPanel test parse error, NumerologiaCard/OduCardFull/TarotCard test fixes (15 tests) |
 |**207** | **UI Polish** | Landing page polish, Relatorios wired to API, useDataSync test file |
 
