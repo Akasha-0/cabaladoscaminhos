@@ -105,7 +105,7 @@ export default function Dashboard() {
     nome: 'Visitante',
     dataNascimento: '',
     numeroPessoal: 1,
-    orixaRegente: 'Oxala',
+    orixaRegente: 'Oxalá',
     odu: 'Alafia',
     arcanoPessoal: 1,
     sefirotDominante: ['Kether'],
@@ -120,13 +120,13 @@ export default function Dashboard() {
 
       {/* Energy Section */}
       <DashboardSection title="Energia do Momento">
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
-          {/* Main energy - 2 columns */}
-          <div className="xl:col-span-2">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+          {/* Main energy - large */}
+          <div className="lg:col-span-2">
             <RealtimeEnergyWidget />
           </div>
           
-          {/* Side widgets - 1 column, stacked */}
+          {/* Side widgets - stacked */}
           <div className="flex flex-col gap-4 md:gap-6">
             <DayEnergyWidget />
             <NotificationCenter />
@@ -139,7 +139,7 @@ export default function Dashboard() {
         title="Ferramentas Espirituais" 
         description="Explore os sistemas místicos para seu autoconhecimento"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
           <NumerologyWidget name="Maria" birthDate="15/03/1990" />
           <AstrologyWidget />
           <LunarPhaseWidget />
@@ -149,17 +149,17 @@ export default function Dashboard() {
       {/* Divination Section */}
       <DashboardSection title="Divinação">
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
-          {/* Odu - 2 columns */}
+          {/* Odu - large */}
           <div className="xl:col-span-2">
             <OduDivinationWidget />
           </div>
           
-          {/* Quick Divination - 1 column */}
+          {/* Quick Divination */}
           <QuickDivination />
         </div>
       </DashboardSection>
 
-      {/* Progress Section */}
+      {/* Balance & Progress Section */}
       <DashboardSection title="Crescimento Espiritual">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <ProgressTracker userId="dashboard" />
@@ -167,11 +167,11 @@ export default function Dashboard() {
         </div>
       </DashboardSection>
 
-      {/* Balance Section */}
+      {/* Chakra & Love Section */}
       <DashboardSection title="Equilíbrio Interior">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <ChakraBalanceWidget />
-          <LoveReadingsWidget userId="dashboard" />
+          <LoveReadingsWidget userId="dashboard" userOrixa={userData.orixaRegente} />
         </div>
       </DashboardSection>
 
