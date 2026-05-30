@@ -68,7 +68,6 @@ const MOCK_AUDIT_LOGS: AuditLogEntry[] = [
 function LogEntryRow({ entry, onExpand }: { entry: AuditLogEntry; onExpand: () => void }) {
   const [expanded, setExpanded] = useState(false);
   const actionColors = ACTION_COLORS[entry.action];
-  
   const formatTimestamp = (ts: string) => {
     const date = new Date(ts);
     return date.toLocaleString('pt-BR', { 
@@ -78,10 +77,10 @@ function LogEntryRow({ entry, onExpand }: { entry: AuditLogEntry; onExpand: () =
       minute: '2-digit'
     });
   };
-
   return (
     <>
       <tr 
+        key={`${entry.id}-main`}
         className="border-b border-slate-700/30 hover:bg-slate-800/30 cursor-pointer transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
@@ -118,7 +117,7 @@ function LogEntryRow({ entry, onExpand }: { entry: AuditLogEntry; onExpand: () =
         </td>
       </tr>
       {expanded && (
-        <tr className="bg-slate-800/20">
+        <tr key={`${entry.id}-detail`} className="bg-slate-800/20">
           <td colSpan={6} className="px-4 py-3">
             <div className="grid grid-cols-3 gap-4 text-sm">
               <div>
