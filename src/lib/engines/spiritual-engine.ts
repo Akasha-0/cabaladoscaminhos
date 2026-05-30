@@ -71,6 +71,21 @@ const PLANETA_SIGNO_ORIXÁ: Record<string, string> = {
   netuno: 'Iemanjá', plutao: 'Omolu',
 };
 
+// Zodiac sign to ruling planet mapping (Western astrology)
+const ZODIAC_TO_PLANET: Record<string, string> = {
+  aries: 'marte', tauro: 'venus', touro: 'venus',
+  geminis: 'mercurio', gemeos: 'mercurio',
+  cancer: 'lua', cancers: 'lua',
+  leao: 'sol', leo: 'sol',
+  virgem: 'mercurio', virgo: 'mercurio',
+  libra: 'venus',
+  escorpiao: 'plutao', scorpio: 'plutao',
+  sagitario: 'jupiter', sagittarius: 'jupiter',
+  capricornio: 'saturno', capricorn: 'saturno',
+  aquario: 'urano', aquarius: 'urano',
+  peixes: 'jupiter', pisces: 'jupiter',
+};
+
 const CITY_COORDS: Record<string, { lat: number; lon: number }> = {
   'São Paulo': { lat: -23.5505, lon: -46.6333 },
   'Rio de Janeiro': { lat: -22.9068, lon: -43.1729 },
@@ -355,7 +370,8 @@ export function detectarConvergencias(
   }
 
   const solSigno = astrologia.sol.signo;
-  const solOrixa = PLANETA_SIGNO_ORIXÁ[solSigno];
+  const solPlaneta = ZODIAC_TO_PLANET[solSigno.toLowerCase()] ?? solSigno;
+  const solOrixa = PLANETA_SIGNO_ORIXÁ[solPlaneta];
   if (solOrixa && odu.orixas.includes(solOrixa)) {
     convergencias.push({
       sistemas: ['astrologia', 'odu'],
@@ -377,7 +393,9 @@ export function detectarConvergencias(
     }
   }
 
-  const ascOrixa = PLANETA_SIGNO_ORIXÁ[astrologia.ascendente];
+  const ascSigno = astrologia.ascendente;
+  const ascPlaneta = ZODIAC_TO_PLANET[ascSigno.toLowerCase()] ?? ascSigno;
+  const ascOrixa = PLANETA_SIGNO_ORIXÁ[ascPlaneta];
   if (ascOrixa && odu.orixas.includes(ascOrixa)) {
     convergencias.push({
       sistemas: ['astrologia', 'odu'],
