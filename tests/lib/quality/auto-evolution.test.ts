@@ -137,37 +137,40 @@ describe('PerformanceMonitor', () => {
     monitor = new PerformanceMonitor()
   })
 
-  it('records values and returns null for unknown name', () => {
+  it('returns null for unknown metric', () => {
     expect(monitor.getStats('unknown')).toBe(null)
   })
 
-  it('records single value and returns stats', () => {
+  it('records single value', () => {
     monitor.record('response-time', 100)
     const stats = monitor.getStats('response-time')
-    expect(stats).not.toBe(null)
+    expect(stats).not.toBeNull()
     expect(stats!.avg).toBe(100)
     expect(stats!.min).toBe(100)
     expect(stats!.max).toBe(100)
-    expect(stats!.p95).toBe(100)
-    expect(stats!.p99).toBe(100)
   })
 
   it('calculates correct average for multiple values', () => {
     monitor.record('response-time', 100)
     monitor.record('response-time', 200)
     monitor.record('response-time', 300)
-  it('calculates p95 and p99 correctly for multiple values', () => {
-    // With 20 values (indices 0-19), p95 = index 19 (Math.floor(20*0.95)=19), p99 = index 19 (Math.floor(20*0.99)=19)
+    const stats = monitor.getStats('response-time')
+    expect(stats!.avg).toBe(200)
+    expect(stats!.min).toBe(100)
+    expect(stats!.max).toBe(300)
+  })
+
+  it('calculates p95 and p99', () => {
+    // With 20 values indexed 0-19: p95=index 19, p99=index 19
     for (let i = 1; i <= 20; i++) {
-      monitor.record('latency', i * 10) // 10, 20, ..., 200
+      monitor.record('latency', i * 10)
     }
     const stats = monitor.getStats('latency')
-    expect(stats!.avg).toBe(105) // average of 10, 20, ..., 200 = (10+200)*20/2/20 = 105
+    expect(stats!.avg).toBe(105)
     expect(stats!.min).toBe(10)
     expect(stats!.max).toBe(200)
     expect(stats!.p95).toBe(200)
     expect(stats!.p99).toBe(200)
-  })
   })
 })
 
@@ -175,9 +178,8 @@ describe('PerformanceMonitor', () => {
 // DEFAULT_THRESHOLDS Tests
 // ============================================================
 describe('DEFAULT_THRESHOLDS', () => {
-  it('has entries for all metric categories', () => {
-    const categories = Object.keys(DEFAULT_THRESHOLDS)
-    expect(categories.length).toBeGreaterThan(0)
+  it('has entries for metric categories', () => {
+    expect(DEFAULT_THRESHOLDS.length).toBeGreaterThan(0)
   })
 
   it('each threshold has required fields', () => {

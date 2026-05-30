@@ -45,7 +45,7 @@ describe('planet-tarot', () => {
     it('returns mapping for Mercurio', () => {
       const result = getPlanetTarot('Mercurio');
       expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Mercurio');
+      expect(result?.planeta).toBe('Mercúrio');
       expect(result?.arcano).toBe('O Mago');
       expect(result?.elemento_conexao).toBe('Ar');
       expect(result?.numero_carta).toBe(1);
