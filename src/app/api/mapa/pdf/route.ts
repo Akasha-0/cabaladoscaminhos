@@ -43,10 +43,11 @@ export async function POST(request: NextRequest) {
     // Calculate MapaAlmaCompleto
     const mapa = await gerarMapaAlmaCompleto(profile);
 
-    // Generate PDF
+    // Generate PDF (Buffer for NextResponse compatibility)
     const pdfBuffer = await gerarRelatorioMapaAlmaPDF(mapa);
+    const buffer = Buffer.from(pdfBuffer);
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(buffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
