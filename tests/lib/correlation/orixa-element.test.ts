@@ -235,6 +235,10 @@ describe('Orixá-Element Correlation', () => {
         expect(result?.ferramentas.length).toBeGreaterThan(0);
       });
     });
+  });
+  describe('getElementOrixa', () => {
+    });
+  });
   describe('getElementOrixa', () => {
     it('should return mapping of elements to Orixás', () => {
       const result = getElementOrixa();
