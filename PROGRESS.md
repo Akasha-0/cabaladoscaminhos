@@ -244,6 +244,7 @@
 |**224** | **Planetas e Elementos** | New planet-zodiac.ts (7 planets, dignities) and element-sign.ts (4 elements mapped to signs), 56 new tests |
 |**225** | **Som e Dia** | New chakra-sound.ts (7 seed mantras) and day-orixa.ts (7 days mapped to Orixás), 62 new tests |
 |**226** | **Convergência e Numerologia** | New planet-day-orixa.ts (convergence engine) and number-mysticism.ts (1-13 mapped), metrics.test.ts fixed, 55+ new tests |
+|**227** | **Signos e Geometria** | New sign-element.ts (12 signs mapped) and chakra-poliedro.ts (7 chakras to Platonic solids), 61+ new tests |
 |**228** | **Aspectos e Lua** | New planet-aspect.ts (5 aspects) and moon-orixa.ts (8 lunar phases mapped to Orixás), 27 new tests |
 |**229** | **Zodíaco e Elementos** | New planet-zodiac-aspect.ts (420 mappings), chakra-element.ts (7 chakras), day-zodiac.ts (7 days), 2631+ tests |
 |**230** | **Signos e Odú** | New zodiac-signo.ts, element-planet.ts, day-element.ts, planet-odu.ts correlations, 2836 tests total |
@@ -261,11 +262,5 @@
 9. **Widget Marketplace**: Browse and install widgets
 10. **Theme System**: 8 themes with custom color schemes
 11. **Accessibility**: Full accessibility settings for all users
-**Tests: ✅ 3298 passing, 16 skipped (237 test files)**
-**232 Sprints Completados: 232 🎉
-### Sprint 230 — E2E Browser Testing & Test Suite Fixes (COMPLETE)
-- Fixed `vitest.config.ts` by adding the `DATABASE_URL` environment variable to `test.env` to prevent Prisma from throwing on initialization, resolving all remaining failing test suites (`payments.test.ts` and `credits.test.ts`).
-- Created `scripts/test-browser.ts` to simulate user experience by executing browser-driven E2E tests with system Google Chrome.
-- Validated user registration, terms checkbox interaction, and route redirection to `/dashboard` and `/onboarding` without any runtime crashes.
-- Checked dashboard sub-routes `/dashboard/mapa`, `/dashboard/insights`, and `/dashboard/calendario`, ensuring correct loading and zero client-side exceptions.
-- Confirmed active rate limiting (429) defense mechanism is functioning properly.
+**Tests: ✅ 3576 passing, 22 skipped (283 test files)**
+**233 Sprints Completados: 233 🎉
