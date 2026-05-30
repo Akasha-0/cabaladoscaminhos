@@ -1,6 +1,6 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 203
-**Build status:** ✅ Build OK (521 routes)
+**Sprints completados:** 204
+**Build status:** ✅ Build OK (522 routes)
 **Tests:** ✅ 1266 passing, 14 skipped (68 test files)
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -223,8 +223,9 @@
 | **199** | **AI Insights Engine** | mapa-insights: types, prompt-builder, parser, generator, /api/mapa/insights |
 | **200** | **UI Wiring & Polish** | Dashboard Mapa, Onboarding, ErrorState, SkeletonSpiritual, GlowEffect |
 | **201** | **Insights Frontend** | useMapaInsights hook, dashboard/insights API wiring, AppShell, PageHeader, MysticButton |
-|**203** | **Bug Fixes** | spiritual-engine.ts parse errors, mapa variable init, rate-limit test typo, deep correlations |
 |**202** | **Layout & Hooks QA** | AppShell, PageHeader, MysticButton, useMapaInsights tests fixed, build fixes |
+|**203** | **Bug Fixes** | spiritual-engine.ts parse errors, mapa variable init, rate-limit test typo, deep correlations |
+|**204** | **Dashboard Enhancements** | Accessibility improvements, MapaAlmaDashboard polish, OnboardingWizard polish, /dashboard/perfil page |
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -244,8 +245,7 @@
 
 ## 📊 MÉTRICAS
 **Tests: 1266 passing**
-Test files: 68
-**203 Sprints Completados** 🎉
+**204 Sprints Completados** 🎉
 ---
 
 *Assim como é em cima, também é embaixo. — A plataforma Cabala Dos Caminhos está completa com MapaAlma unificado e engine de correlações.*
