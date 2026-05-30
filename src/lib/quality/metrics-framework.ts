@@ -20,12 +20,26 @@ export const MetricCategory = z.enum([
   'documentation'
 ])
 export type MetricCategory = z.infer<typeof MetricCategory>
-
 export const MetricSeverity = z.enum(['critical', 'high', 'medium', 'low', 'info'])
 export type MetricSeverity = z.infer<typeof MetricSeverity>
-
 export const MetricStatus = z.enum(['pass', 'fail', 'warning', 'skipped', 'error'])
 export type MetricStatus = z.infer<typeof MetricStatus>
+// Aliases for .options compatibility (Zod uses .values internally)
+Object.defineProperty(MetricCategory, 'options', {
+  value: MetricCategory.values,
+  writable: false,
+  enumerable: true,
+})
+Object.defineProperty(MetricSeverity, 'options', {
+  value: MetricSeverity.values,
+  writable: false,
+  enumerable: true,
+})
+Object.defineProperty(MetricStatus, 'options', {
+  value: MetricStatus.values,
+  writable: false,
+  enumerable: true,
+})
 
 // Schema for individual metric result
 export const MetricResultSchema = z.object({
@@ -181,10 +195,8 @@ export function calculateGrade(score: number): QualityReport['grade'] {
   if (score >= 77) return 'C+'
   if (score >= 73) return 'C'
   if (score >= 70) return 'C-'
-  if (score >= 60) return 'D'
   return 'F'
 }
-
 export function getGradeColor(grade: QualityReport['grade']): string {
   const colors: Record<QualityReport['grade'], string> = {
     'A+': '#00ff88',
@@ -201,68 +213,55 @@ export function getGradeColor(grade: QualityReport['grade']): string {
   }
   return colors[grade]
 }
-
 // ============================================================================
 // Metric Result Builder
 // ============================================================================
-
 export class MetricResultBuilder {
   private result: Partial<MetricResult>
-
-  constructor(id: string, name: string, category: MetricCategory) {
+  constructor(id: string, category: MetricCategory, name?: string) {
     this.result = {
       id,
-      name,
+      name: name ?? id,
       category,
       timestamp: new Date(),
     }
   }
-
   status(status: MetricStatus): this {
     this.result.status = status
     return this
   }
-
   score(score: number): this {
     this.result.score = Math.max(0, Math.min(100, score))
     return this
   }
-
   value(value: MetricResult['value']): this {
     this.result.value = value
     return this
   }
-
   threshold(threshold: MetricResult['threshold']): this {
     this.result.threshold = threshold
     return this
   }
-
   unit(unit: string): this {
     this.result.unit = unit
     return this
   }
-
   severity(severity: MetricSeverity): this {
     this.result.severity = severity
     return this
   }
-
   message(message: string): this {
     this.result.message = message
     return this
   }
-
   details(details: Record<string, unknown>): this {
     this.result.details = details
     return this
   }
-
   duration(duration: number): this {
     this.result.duration = duration
     return this
   }
-
   build(): MetricResult {
     const requiredFields = ['id', 'name', 'category', 'status', 'score', 'value', 'threshold', 'severity', 'message', 'timestamp']
     for (const field of requiredFields) {
@@ -273,11 +272,6 @@ export class MetricResultBuilder {
     return MetricResultSchema.parse(this.result)
   }
 }
-
-// ============================================================================
-// Eval Suite Runner
-// ============================================================================
-
 export interface EvalDefinition {
   id: string
   name: string
@@ -285,7 +279,6 @@ export interface EvalDefinition {
   category: MetricCategory
   run: () => Promise<MetricResult> | MetricResult
 }
-
 export class EvalSuiteRunner {
   private suite: EvalSuite | null = null
 
