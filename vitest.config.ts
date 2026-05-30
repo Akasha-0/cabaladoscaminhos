@@ -10,6 +10,7 @@ export default defineConfig({
     setupFiles: ['./tests/setup.ts'],
     env: {
       JWT_SECRET: 'test-secret-key-that-is-at-least-32-bytes-long',
+      DATABASE_URL: 'postgresql://placeholder:placeholder@localhost/placeholder',
     },
     exclude: [
       'node_modules/**',
