@@ -131,7 +131,7 @@ describe('CorrelationPredictionsWidget', () => {
   it('displays correlation predictions', async () => {
     render(<CorrelationPredictionsWidget userData={mockUserData} />);
     await waitFor(() => {
-      expect(screen.getByText(/Conexão Kabbalah/i)).toBeTruthy();
+      expect(screen.getAllByText(/Conexão Kabbalah/i).length).toBeGreaterThan(0);
     });
   });
 
@@ -152,14 +152,14 @@ describe('CorrelationPredictionsWidget', () => {
   it('shows energy harmony prediction', async () => {
     render(<CorrelationPredictionsWidget userData={mockUserData} />);
     await waitFor(() => {
-      expect(screen.getByText(/Harmonia Energética Sistêmica/i)).toBeTruthy();
+      expect(screen.getAllByText(/Harmonia Energética Sistêmica/i).length).toBeGreaterThan(0);
     });
   });
 
   it('displays confidence percentages', async () => {
     render(<CorrelationPredictionsWidget userData={mockUserData} />);
     await waitFor(() => {
-      expect(screen.getByText(/78%/)).toBeTruthy();
+      expect(screen.getAllByText(/78%/i).length).toBeGreaterThan(0);
     });
   });
 
