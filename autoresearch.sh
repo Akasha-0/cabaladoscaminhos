@@ -7,15 +7,12 @@ npm run test:run > /tmp/test_output.txt 2>&1
 TEST_EXIT=$?
 
 # Parse test summary
-if grep -q "0 failed" /tmp/test_output.txt; then
-  FAILURES=0
-elif grep -q "[0-9]* failed" /tmp/test_output.txt; then
-  FAILURES=$(grep "Tests " /tmp/test_output.txt | tail -1 | grep -oP "^\s*\K[0-9]+(?= failed)")
-fi
-
-if [ -z "$FAILURES" ]; then
+if grep -q "[0-9]* failed" /tmp/test_output.txt 2>/dev/null; then
+  FAILURES=$(grep "Tests " /tmp/test_output.txt | tail -1 | grep -oP "^\s*\K[0-9]+(?= failed)" || echo "0")
+else
   FAILURES=0
 fi
+[ -z "$FAILURES" ] && FAILURES=0
 
 # Build check
 echo "Running build..."
@@ -41,4 +38,8 @@ else
   echo "METRIC worktree_clean=false"
 fi
 
-exit $TEST_EXIT
+# Return test exit code, not grep exit code
+if [ "$FAILURES" -gt 0 ] || [ "$BUILD_VALID" -eq 0 ]; then
+  exit 1
+fi
+exit 0
