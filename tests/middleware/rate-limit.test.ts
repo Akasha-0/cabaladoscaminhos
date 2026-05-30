@@ -350,7 +350,7 @@ describe('Rate Limiting Middleware', () => {
       for (const path of paths) {
         const { rateLimitInfo } = simulateRateLimitMiddleware(path);
         expect(rateLimitInfo.allowed).toBe(true);
-        expect(rateLimitInfo.skipped).toBeUndefined();
+        expect(rateLimitInfo.skipped || false).toBe(false);
       }
     });
   });
