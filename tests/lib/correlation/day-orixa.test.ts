@@ -1,15 +1,15 @@
 /**
  * Day-Orixá Correlation Tests
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   getDayOrixa,
+  getOrixaDay,
   getAllDays,
+  getAllDayOrixas,
   getOrixasForDay,
   getDaysByOrixa,
 } from '@/lib/correlation/day-orixa';
-
 describe('Day-Orixá Correlation', () => {
   describe('getDayOrixa', () => {
     it('should return Monday (Segunda-feira) mapping with Omolu as main Orixá', () => {
@@ -136,7 +136,71 @@ describe('Day-Orixá Correlation', () => {
       });
     });
   });
-
+  describe('getOrixaDay', () => {
+    it('should return all day-orixa mappings as object', () => {
+      const result = getOrixaDay();
+      expect(Object.keys(result)).toHaveLength(7);
+      expect(result).toHaveProperty('Segunda-feira');
+      expect(result).toHaveProperty('Terça-feira');
+      expect(result).toHaveProperty('Quarta-feira');
+      expect(result).toHaveProperty('Quinta-feira');
+      expect(result).toHaveProperty('Sexta-feira');
+      expect(result).toHaveProperty('Sábado');
+      expect(result).toHaveProperty('Domingo');
+    });
+    it('should return a copy, not the original map', () => {
+      const result = getOrixaDay();
+      result['Teste'] = {} as any;
+      const result2 = getOrixaDay();
+      expect(result2).not.toHaveProperty('Teste');
+    });
+    it('should have correct Orixá principal for each day', () => {
+      const result = getOrixaDay();
+      expect(result['Segunda-feira'].orixa_principal).toBe('Omolu');
+      expect(result['Terça-feira'].orixa_principal).toBe('Iansã');
+      expect(result['Quarta-feira'].orixa_principal).toBe('Xangô');
+      expect(result['Quinta-feira'].orixa_principal).toBe('Oxóssi');
+      expect(result['Sexta-feira'].orixa_principal).toBe('Oxalá');
+      expect(result['Sábado'].orixa_principal).toBe('Oxum');
+      expect(result['Domingo'].orixa_principal).toBe('Xangô');
+    });
+  });
+  describe('getAllDayOrixas', () => {
+    it('should return array of all day-orixa mappings', () => {
+      const result = getAllDayOrixas();
+      expect(result).toHaveLength(7);
+    });
+    it('should return array with valid DayOrixa objects', () => {
+      const result = getAllDayOrixas();
+      result.forEach(item => {
+        expect(item).toHaveProperty('dia');
+        expect(item).toHaveProperty('orixa_principal');
+        expect(item).toHaveProperty('orixa_secundario');
+        expect(item).toHaveProperty('elemento');
+        expect(item).toHaveProperty('cor');
+        expect(item).toHaveProperty('numero_sagrado');
+        expect(item).toHaveProperty('chakra');
+        expect(item).toHaveProperty('planeta');
+        expect(item).toHaveProperty('mystere');
+      });
+    });
+    it('should include all days in array', () => {
+      const result = getAllDayOrixas();
+      const dias = result.map(item => item.dia);
+      expect(dias).toContain('Segunda-feira');
+      expect(dias).toContain('Terça-feira');
+      expect(dias).toContain('Quarta-feira');
+      expect(dias).toContain('Quinta-feira');
+      expect(dias).toContain('Sexta-feira');
+      expect(dias).toContain('Sábado');
+      expect(dias).toContain('Domingo');
+    });
+    it('should match getOrixaDay results', () => {
+      const arrayResult = getAllDayOrixas();
+      const objectResult = getOrixaDay();
+      expect(arrayResult).toHaveLength(Object.keys(objectResult).length);
+    });
+  });
   describe('getOrixasForDay', () => {
     it('should return array with single Orixá for days without secondary', () => {
       const result = getOrixasForDay('Quinta-feira');

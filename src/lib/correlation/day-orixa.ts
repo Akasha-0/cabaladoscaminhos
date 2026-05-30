@@ -154,10 +154,17 @@ export function getDaysByOrixa(orixa: string): string[] {
     })
     .map(([dayName]) => dayName);
 }
-
+export function getOrixaDay(): Record<string, DayOrixa> {
+  return { ...DAY_ORIXA_MAP };
+}
+export function getAllDayOrixas(): DayOrixa[] {
+  return Object.values(DAY_ORIXA_MAP);
+}
 export default {
   getDayOrixa,
+  getOrixaDay,
   getAllDays,
+  getAllDayOrixas,
   getOrixasForDay,
   getDaysByOrixa,
 };

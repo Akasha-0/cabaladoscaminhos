@@ -11,6 +11,7 @@ export interface MoonOrixa {
   energia: 'receptiva' | 'ativa' | 'transmutadora' | 'dissolutiva';
   praticas: string[];
   ebó: string;
+  elemento: string;
 }
 
 /**
@@ -31,6 +32,7 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
       'Conexão com ancestrais',
     ],
     ebó: 'Ebó de Caminho/Limpeza: Despachos em encruzilhadas, moedas, pipoca e panos escuros para abrir caminhos.',
+    elemento: 'terra',
   },
   'lua-crescente': {
     fase: 'Lua Crescente',
@@ -45,6 +47,7 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
       'Busca por conhecimento nas matas',
     ],
     ebó: 'Ebó de Prosperidade: Doces, frutas para Ibeji, e comidas leves em praças ou jardins.',
+    elemento: 'água',
   },
   'quarto-crescente': {
     fase: 'Quarto Crescente',
@@ -59,6 +62,7 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
       'Justiça divina',
     ],
     ebó: 'Ebó de Defesa: Inhames assados, paliteiros de Ogum, limpeza com folhas de mariô e limpeza com ferro.',
+    elemento: 'fogo',
   },
   'lua-cheia': {
     fase: 'Lua Cheia',
@@ -73,6 +77,7 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
       'Gratidão e harmonização',
     ],
     ebó: 'Ebó de Atração/Ouro: Banhos de mel, caldas de frutas, oferendas com girassóis e moedas douradas em águas doces.',
+    elemento: 'água',
   },
   'quarto-minguante': {
     fase: 'Quarto Minguante',
@@ -87,6 +92,7 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
       'Limpeza astral',
     ],
     ebó: 'Ebó de Limpeza Astral: Sacudimentos com folhas de fumo ou pinhão roxo, oferendas de acarajé para Iansã no vento.',
+    elemento: 'fogo',
   },
   'lua-minguante': {
     fase: 'Lua Minguante',
@@ -101,6 +107,7 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
       'Austeridade e desapego',
     ],
     ebó: 'Ebó de Transmutação: Pipoca (Deburu) para Omolu, banhos de lama ou argila, defumações pesadas com resinas.',
+    elemento: 'terra',
   },
   'quarto-descrescente': {
     fase: 'Quarto Descrescente',
@@ -115,9 +122,10 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
       'Preparação para o novo ciclo',
     ],
     ebó: 'Ebó de Evolução: Oferendas na lama ou no mangue para Nanã, ebó com feijão preto, velas lilases.',
+    elemento: 'ar',
   },
   'lua-velha': {
-    fase: 'Lua Velha ( Balsâmica )',
+    fase: 'Lua Velha (Balsâmica)',
     orixa_principal: 'Omolu',
     orixa_secundario: 'Exu',
     energia: 'dissolutiva',
@@ -129,6 +137,7 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
       'Respeito aos antepassados',
     ],
     ebó: 'Ebó de Alívio/Saúde: Tudo pede rezas mansas, frutas brancas, banhos de leite de cabra ou ervas calmas.',
+    elemento: 'éter',
   },
 };
 
@@ -140,6 +149,24 @@ export const MOON_ORIXA_MAP: Record<string, MoonOrixa> = {
 export function getMoonOrixa(fase: string): MoonOrixa | null {
   const normalizedFase = fase.toLowerCase().trim();
   return MOON_ORIXA_MAP[normalizedFase] ?? null;
+}
+
+/**
+ * Get the primary Orixá for a given lunar phase
+ * @param fase - The lunar phase identifier
+ * @returns The primary Orixá name or null if not found
+ */
+export function getOrixaMoon(fase: string): string | null {
+  const mapping = getMoonOrixa(fase);
+  return mapping?.orixa_principal ?? null;
+}
+
+/**
+ * Get all moon-Orixá mappings
+ * @returns Array of all MoonOrixa mappings
+ */
+export function getAllMoonOrixas(): MoonOrixa[] {
+  return Object.values(MOON_ORIXA_MAP);
 }
 
 /**
@@ -160,4 +187,24 @@ export function getOrixaByEnergy(
   return Object.values(MOON_ORIXA_MAP).filter(
     (mapping) => mapping.energia === energia
   );
+}
+
+/**
+ * Get the element aligned with a given lunar phase
+ * @param fase - The lunar phase identifier
+ * @returns The element or null if not found
+ */
+export function getElementMoon(fase: string): string | null {
+  const mapping = getMoonOrixa(fase);
+  return mapping?.elemento ?? null;
+}
+
+/**
+ * Get the primary practice for a given lunar phase
+ * @param fase - The lunar phase identifier
+ * @returns The primary practice or null if not found
+ */
+export function getPracticeMoon(fase: string): string | null {
+  const mapping = getMoonOrixa(fase);
+  return mapping?.praticas[0] ?? null;
 }
