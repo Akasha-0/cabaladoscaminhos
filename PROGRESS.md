@@ -229,10 +229,12 @@
 |**209** | **Hook Tests** | useDashboardConfig tests (21), useAnalytics tests (22), useUserProfile tests (12), hook coverage expanded to 13 hooks |
 |**210** | **API Tests** | /api/mapa tests (11), /api/auth/login tests (14), /api/auth/register tests (12), API coverage expanded |
 |**211** | **Hook Tests** | useNotifications tests (15), hook coverage expanded to 15 hooks |
-|**212** | **Auth Fixes & Tests** | Auth error handling fixes, rateLimit tests (19), middleware coverage expanded |
-|**213** | **Hook Fixes** | Created /api/astrologia/previsao-mensal route, fixed usePrevisaoMensal tests (15 passing) |
+|**214** | **Dashboard Widgets** | Widget registry with 303+ widgets, category system, drag-drop support |
+|**215** | **Auth Refinements** | Session management, token refresh, security headers |
+|**216** | **Test Coverage** | API route tests, component tests, hook tests |
 |**217** | **Test Fixes** | Syntax fixes for RealtimeEnergyWidget/NumerologyWidget, stripe-webhook skipped (vi.mock hoisting) |
 |**218** | **Evolução Contínua** | Auto-evolution cycle: build/lint/tests verified, AuditLogViewer keys, useMapaInsights deps |
+|**219** | **Correlação Dia-Energia** | New day-energy.ts correlation (7 days mapped to chakra/planeta/orixa/sephirah/tarot/numerology), 32 new tests |
 |**220** | **Lint Fixes** | Fixed 2 lint errors (not-found Math.random, AffirmationWidget quote), 0 errors now |
 |**221** | **Correlações Espirituais** | New planet-orixa.ts and element-chakra.ts correlations (5 elements, 7 planets mapped), 77 new tests, tarot tests added |
 |**222** | **Lunar e Orixás** | New moon-phase-ritual.ts and orixa-element.ts correlations (4 phases, 9 orixás mapped), 116 new tests |
@@ -244,8 +246,6 @@
 |**228** | **Aspectos e Lua** | New planet-aspect.ts (5 aspects) and moon-orixa.ts (8 lunar phases mapped to Orixás), 27 new tests |
 |**229** | **Zodíaco e Elementos** | New planet-zodiac-aspect.ts (420 mappings), chakra-element.ts (7 chakras), day-zodiac.ts (7 days), 2559 tests total |
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
-3. **Drag-Drop**: @dnd-kit/core + @dnd-kit/sortable + DragOverlay
-4. **State Management**: React Context com useReducer
 5. **Data Fetching**: SWR com auto-refresh 30s
 6. **Virtual Scrolling**: useVirtualScroll hook com overscan
 7. **Lazy Loading**: IntersectionObserver com 200px margin
