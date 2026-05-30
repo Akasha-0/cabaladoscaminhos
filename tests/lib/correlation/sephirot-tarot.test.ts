@@ -199,7 +199,27 @@ describe('sephirot-tarot', () => {
       expect(getTarotSephirah('')).toBeNull();
     });
   });
-
+  // ─── getTarotSephirot (alias) ─────────────────────────────────────────────
+  describe('getTarotSephirot', () => {
+    it('returns Kether for "O Louco"', () => {
+      expect(getTarotSephirot('O Louco')).toBe('Kether');
+    });
+    it('returns Chokmah for "O Mago"', () => {
+      expect(getTarotSephirot('O Mago')).toBe('Chokmah');
+    });
+    it('returns null for non-existent arcano', () => {
+      expect(getTarotSephirot('O Sol')).toBeNull();
+    });
+    it('returns null for empty string', () => {
+      expect(getTarotSephirot('')).toBeNull();
+    });
+    it('produces same result as getTarotSephirah', () => {
+      const arcanoList = ['O Louco', 'O Mago', 'A Alta Sacerdotisa', 'A Imperatriz', 'O Imperador', 'O Hierofante', 'Os Enamorados', 'O Carro', 'A Justiça', 'O Eremita'];
+      arcanoList.forEach(arcano => {
+        expect(getTarotSephirot(arcano)).toEqual(getTarotSephirah(arcano));
+      });
+    });
+  });
   // ─── getAllSephirahTarots ───────────────────────────────────────────────────
 
   describe('getAllSephirahTarots', () => {
@@ -239,7 +259,23 @@ describe('sephirot-tarot', () => {
       });
     });
   });
-
+  // ─── getAllSephirotTarots (alias) ─────────────────────────────────────────
+  describe('getAllSephirotTarots', () => {
+    it('returns all 10 Sephirot-Tarot mappings', () => {
+      const results = getAllSephirotTarots();
+      expect(results).toHaveLength(10);
+    });
+    it('returns array of SephirahTarot objects', () => {
+      const results = getAllSephirotTarots();
+      results.forEach(mapping => {
+        expect(mapping).toHaveProperty('sephirah');
+        expect(mapping).toHaveProperty('arcano');
+      });
+    });
+    it('produces same result as getAllSephirahTarots', () => {
+      expect(getAllSephirotTarots()).toEqual(getAllSephirahTarots());
+    });
+  });
   // ─── getAllSephiroth ─────────────────────────────────────────────────────────
 
   describe('getAllSephiroth', () => {

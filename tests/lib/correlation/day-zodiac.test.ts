@@ -143,8 +143,40 @@ describe('Day-Zodiac Correlation', () => {
     it('should return undefined for invalid day', () => {
       expect(getZodiacByDay('invalid')).toBeUndefined();
     });
+    it('should return undefined for invalid day', () => {
+      expect(getZodiacByDay('invalid')).toBeUndefined();
+    });
   });
-
+  describe('getZodiacDay', () => {
+    it('should return Leão for Domingo', () => {
+      expect(getZodiacDay('Domingo')).toBe('Leão');
+    });
+    it('should return Câncer for Segunda-feira', () => {
+      expect(getZodiacDay('Segunda-feira')).toBe('Câncer');
+    });
+    it('should return Áries for Terça-feira', () => {
+      expect(getZodiacDay('Terça-feira')).toBe('Áries');
+    });
+    it('should return Gêmeos for Quarta-feira', () => {
+      expect(getZodiacDay('Quarta-feira')).toBe('Gêmeos');
+    });
+    it('should return Sagitário for Quinta-feira', () => {
+      expect(getZodiacDay('Quinta-feira')).toBe('Sagitário');
+    });
+    it('should return Touro for Sexta-feira', () => {
+      expect(getZodiacDay('Sexta-feira')).toBe('Touro');
+    });
+    it('should return Capricórnio for Sábado', () => {
+      expect(getZodiacDay('Sábado')).toBe('Capricórnio');
+    });
+    it('should return undefined for invalid day', () => {
+      expect(getZodiacDay('invalid')).toBeUndefined();
+    });
+    it('should be an alias for getZodiacByDay', () => {
+      expect(getZodiacDay('Domingo')).toBe(getZodiacByDay('Domingo'));
+      expect(getZodiacDay('Quarta-feira')).toBe(getZodiacByDay('Quarta-feira'));
+    });
+  });
   describe('getDayElement', () => {
     it('should return fogo for Domingo', () => {
       expect(getDayElement('Domingo')).toBe('fogo');

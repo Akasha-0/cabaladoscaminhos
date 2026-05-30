@@ -7,7 +7,9 @@ import {
   getOrixaElement,
   getAllOrixas,
   getOrixasByElement,
-  getOrixasByDay
+  getOrixasByDay,
+  getElementOrixa,
+  getAllOrixaElements,
 } from '@/lib/correlation/orixa-element';
 
 describe('Orixá-Element Correlation', () => {
@@ -230,7 +232,83 @@ describe('Orixá-Element Correlation', () => {
       const orixas = Object.values(getAllOrixas());
       orixas.forEach(orixaName => {
         const result = getOrixaElement(orixaName);
-        expect(result?.ferramentas.length).toBeGreaterThan(0);
+  describe('getElementOrixa', () => {
+    it('should return mapping of elements to Orixás', () => {
+      const result = getElementOrixa();
+      
+      expect(result).toHaveProperty('fogo');
+      expect(result).toHaveProperty('água');
+      expect(result).toHaveProperty('terra');
+      expect(result).toHaveProperty('éter');
+    });
+
+    it('should map fire element to Xangô and Iansã', () => {
+      const result = getElementOrixa();
+      
+      expect(result.fogo).toContain('Xangô');
+      expect(result.fogo).toContain('Iansã');
+    });
+
+    it('should map water element to Iemanjá, Oxum, and Nanã', () => {
+      const result = getElementOrixa();
+      
+      expect(result.água).toContain('Iemanjá');
+      expect(result.água).toContain('Oxum');
+      expect(result.água).toContain('Nanã');
+    });
+
+    it('should map earth element to Ogum, Oxóssi, and Omolu', () => {
+      const result = getElementOrixa();
+      
+      expect(result.terra).toContain('Ogum');
+      expect(result.terra).toContain('Oxóssi');
+      expect(result.terra).toContain('Omolu');
+    });
+
+    it('should map éter element to Oxalá only', () => {
+      const result = getElementOrixa();
+      
+      expect(result.éter).toContain('Oxalá');
+      expect(result.éter.length).toBe(1);
+    });
+  });
+
+  describe('getAllOrixaElements', () => {
+    it('should return array of all Orixá element mappings', () => {
+      const result = getAllOrixaElements();
+      
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBe(9);
+    });
+
+    it('should include all main Orixás', () => {
+      const result = getAllOrixaElements();
+      const orixaNames = result.map(r => r.orixa);
+      
+      expect(orixaNames).toContain('Oxalá');
+      expect(orixaNames).toContain('Iemanjá');
+      expect(orixaNames).toContain('Oxum');
+      expect(orixaNames).toContain('Ogum');
+      expect(orixaNames).toContain('Oxóssi');
+      expect(orixaNames).toContain('Xangô');
+      expect(orixaNames).toContain('Iansã');
+      expect(orixaNames).toContain('Omolu');
+      expect(orixaNames).toContain('Nanã');
+    });
+
+    it('should return full OrixaElement objects', () => {
+      const result = getAllOrixaElements();
+      
+      result.forEach(item => {
+        expect(item).toHaveProperty('orixa');
+        expect(item).toHaveProperty('elemento_principal');
+        expect(item).toHaveProperty('planeta_regente');
+        expect(item).toHaveProperty('dia_da_semana');
+        expect(item).toHaveProperty('cores_principais');
+        expect(item).toHaveProperty('ferramentas');
+      });
+    });
+  });
       });
     });
   });
