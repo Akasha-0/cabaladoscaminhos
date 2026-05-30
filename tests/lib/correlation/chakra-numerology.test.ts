@@ -30,7 +30,7 @@ describe('Chakra-Numerology Correlation', () => {
       expect(result.chakra_posicao).toBe('2º Chakra - Sacral');
       expect(result.numeros).toContain(2);
       expect(result.elemento).toBe('Água');
-      expect(result.significado_espiritual).toContain('criatividade');
+      expect(result.significado_espiritual).toContain('Criatividade');
     });
 
     it('should return correct mapping for Manipura (Solar Plexus Chakra)', () => {
@@ -42,7 +42,7 @@ describe('Chakra-Numerology Correlation', () => {
       expect(result.numeros).toContain(4);
       expect(result.numeros).toContain(12);
       expect(result.elemento).toBe('Fogo');
-      expect(result.significado_espiritual).toContain('poder');
+      expect(result.significado_espiritual).toContain('Poder');
     });
 
     it('should return correct mapping for Anahata (Heart Chakra)', () => {
@@ -53,7 +53,7 @@ describe('Chakra-Numerology Correlation', () => {
       expect(result.numeros).toContain(5);
       expect(result.numeros).toContain(6);
       expect(result.elemento).toBe('Ar');
-      expect(result.significado_espiritual).toContain('amor');
+      expect(result.significado_espiritual).toContain('Amor');
     });
 
     it('should return correct mapping for Vishuddha (Throat Chakra)', () => {
@@ -63,7 +63,7 @@ describe('Chakra-Numerology Correlation', () => {
       expect(result.chakra_posicao).toBe('5º Chakra - Laríngeo');
       expect(result.numeros).toContain(8);
       expect(result.elemento).toBe('Éter');
-      expect(result.significado_espiritual).toContain('comunicação');
+      expect(result.significado_espiritual).toContain('Comunicação');
     });
 
     it('should return correct mapping for Ajna (Third Eye Chakra)', () => {
@@ -74,7 +74,7 @@ describe('Chakra-Numerology Correlation', () => {
       expect(result.numeros).toContain(7);
       expect(result.numeros).toContain(11);
       expect(result.elemento).toBe('Éter');
-      expect(result.significado_espiritual).toContain('intuição');
+      expect(result.significado_espiritual).toContain('Intuição');
     });
 
     it('should return correct mapping for Sahasrara (Crown Chakra)', () => {
@@ -85,7 +85,7 @@ describe('Chakra-Numerology Correlation', () => {
       expect(result.numeros).toContain(9);
       expect(result.numeros).toContain(13);
       expect(result.elemento).toBe('Éter');
-      expect(result.significado_espiritual).toContain('iluminação');
+      expect(result.significado_espiritual).toContain('Iluminação');
     });
 
     it('should accept lowercase chakra names', () => {
