@@ -65,8 +65,10 @@
 | `/register` | Registration page | ✅ |
 | `/dashboard/mapa` | Dashboard Mapa page | ✅ |
 | `/dashboard/insights` | Dashboard Insights page | ✅ |
+| `/dashboard/calendario` | Dashboard Calendário page | ✅ |
 | `/api/health` | Health check endpoint | ✅ |
-
+| `/api/mapa/pdf` | PDF export for MapaAlma | ✅ |
+| `/` (landing) | Landing page with CosmicBackground + mystical polish | ✅ |
 ### CI/CD (Sprint 197) — NEW
 `.github/workflows/ci.yml` — Continuous Integration pipeline
 `.github/workflows/security.yml` — Security scanning pipeline
