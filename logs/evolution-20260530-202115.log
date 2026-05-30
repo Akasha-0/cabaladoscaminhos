@@ -36,3 +36,7 @@
 [20:21:18] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [20:22:52] \033[0;32m✓\033[0m Build: PASS
 [20:30:21] Lint:有一些 avisos
+Terminado                  npm run test:run > /tmp/test.log 2>&1
+[20:31:04] \033[0;31m✗\033[0m Tests: FALHOU
+omp-evolution.sh, linha 52: 1809495 Fim da execução com status 1   grep -E "FAIL|failed" /tmp/test.log
+     1809496 Morto                      | head -5
