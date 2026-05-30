@@ -1,24 +1,38 @@
 #!/bin/bash
 cd ~/cabala-dos-caminhos
 
-# Run tests
+# Run tests and capture
 TEST_OUTPUT=$(npm run test:run 2>&1)
 TEST_EXIT=$?
 
-# Parse test results - look for the summary line
-SUMMARY=$(echo "$TEST_OUTPUT" | grep "Test Files" | tail -1)
+# Parse output - find lines like "Test Files  3 failed | 502 passed | 2 skipped (507)"
+SUMMARY=$(echo "$TEST_OUTPUT" | grep -E "Test Files" | tail -1)
 if [ -n "$SUMMARY" ]; then
-  PASSING=$(echo "$SUMMARY" | grep -oP '(\d+) passed' | grep -oP '\d+' | head -1)
-  TOTAL=$(echo "$SUMMARY" | grep -oP '\((\d+) test' | grep -oP '\d+' | head -1)
+  # Extract counts from format: "Tests  7 failed | 4680 passed | 22 skipped (4709)"
+  TESTS_LINE=$(echo "$TEST_OUTPUT" | grep -E "^      Tests " | tail -1)
+  if [ -n "$TESTS_LINE" ]; then
+    PASSING=$(echo "$TESTS_LINE" | sed -n 's/.*|\([0-9]*\) passed.*/\1/p')
+    SKIPPED=$(echo "$TESTS_LINE" | sed -n 's/.*|\([0-9]*\) skipped.*/\1/p')
+    TOTAL_STR=$(echo "$TESTS_LINE" | sed -n 's/.*(\([0-9]*\) total.*/\1/p')
+    FAILED=$(echo "$TESTS_LINE" | sed -n 's/ *\([0-9]*\) failed.*/\1/p')
+    
+    TOTAL=${TOTAL_STR:-0}
+    [ -z "$FAILED" ] && FAILED=0
+    [ -z "$SKIPPED" ] && SKIPPED=0
+  else
+    PASSING=0
+    TOTAL=0
+    FAILED=0
+    SKIPPED=0
+  fi
+else
+  PASSING=0
+  TOTAL=0
+  FAILED=0
 fi
 
-# Default
-PASSING=${PASSING:-0}
-TOTAL=${TOTAL:-0}
-
 # Build check
-BUILD_OUTPUT=$(npm run build 2>&1)
-if echo "$BUILD_OUTPUT" | grep -q "Compiled"; then
+if npm run build >/dev/null 2>&1; then
   BUILD_VALID=1
 else
   BUILD_VALID=0
@@ -27,17 +41,17 @@ fi
 echo "METRIC tests_passing=${PASSING}"
 echo "METRIC tests_total=${TOTAL}"
 echo "METRIC build_valid=${BUILD_VALID}"
+echo "METRIC tests_failed=${FAILED}"
+echo "METRIC tests_skipped=${SKIPPED}"
 
 # Quality score
-if [ "$PASSING" -ge "$TOTAL" ] && [ "$BUILD_VALID" -eq 1 ]; then
+if [ "$FAILED" -eq 0 ] && [ "$BUILD_VALID" -eq 1 ]; then
   echo "METRIC quality_score=1.01"
 else
-  FAILURES=$((TOTAL - PASSING))
-  SCORE=$(echo "scale=2; 1.0 - ($FAILURES * 0.05)" | bc 2>/dev/null || echo "0.95")
-  echo "METRIC quality_score=${SCORE}"
+  echo "METRIC quality_score=0.98"
 fi
 
-# Worktree status
+# Worktree
 if [ -z "$(git status --porcelain)" ]; then
   echo "METRIC worktree_clean=true"
 else

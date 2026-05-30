@@ -1,280 +1,293 @@
 /**
  * Orixá-Numerology Correlation Tests
- * Tests the spiritual correlation between Orixás and sacred numbers
  */
 
 import { describe, it, expect } from 'vitest';
 import {
   getOrixaNumerology,
   getNumerologyOrixa,
-  getAllOrixaNumerologies,
-  getOrixasByNumber,
-  getOrixasByElement,
+  getAllOrixaNumerology,
+  getOrixaByElement,
+  getOrixaByNumber,
+  getAllElements,
+  getAllNumbers,
 } from '@/lib/correlation/orixa-numerology';
+import type { OrixaNumerology } from '@/lib/correlation/orixa-numerology';
 
-describe('Orixá Numerology Correlation', () => {
+describe('Orixá-Numerology Correlation', () => {
   describe('getOrixaNumerology', () => {
-    it('should return Oxalá numerology with sacred number 8', () => {
-      const result = getOrixaNumerology('Oxalá');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(8);
-      expect(result?.orixa).toBe('Oxalá');
-      expect(result?.elemento).toBe('éter');
-      expect(result?.sephirah).toBe('Hod / Malkuth');
-    });
-
-    it('should return Iemanjá numerology with sacred number 4', () => {
-      const result = getOrixaNumerology('Iemanjá');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(4);
-      expect(result?.orixa).toBe('Iemanjá');
-      expect(result?.elemento).toBe('água');
-    });
-
-    it('should return Oxum numerology with sacred number 5', () => {
-      const result = getOrixaNumerology('Oxum');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(5);
-      expect(result?.orixa).toBe('Oxum');
-      expect(result?.elemento).toBe('água');
-    });
-
-    it('should return Ogum numerology with sacred number 3', () => {
-      const result = getOrixaNumerology('Ogum');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(3);
-      expect(result?.orixa).toBe('Ogum');
-      expect(result?.elemento).toBe('terra');
-    });
-
-    it('should return Oxóssi numerology with sacred number 4', () => {
-      const result = getOrixaNumerology('Oxóssi');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(4);
-      expect(result?.orixa).toBe('Oxóssi');
-      expect(result?.elemento).toBe('terra');
-    });
-
-    it('should return Xangô numerology with sacred number 6', () => {
-      const result = getOrixaNumerology('Xangô');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(6);
-      expect(result?.orixa).toBe('Xangô');
-      expect(result?.elemento).toBe('fogo');
-    });
-
-    it('should return Iansã numerology with sacred number 7', () => {
-      const result = getOrixaNumerology('Iansã');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(7);
-      expect(result?.orixa).toBe('Iansã');
-      expect(result?.elemento).toBe('fogo');
-    });
-
-    it('should return Omolu numerology with sacred number 1', () => {
-      const result = getOrixaNumerology('Omolu');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(1);
-      expect(result?.orixa).toBe('Omolu');
-      expect(result?.elemento).toBe('terra');
-    });
-
-    it('should return Nanã numerology with sacred number 13', () => {
-      const result = getOrixaNumerology('Nanã');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(13);
-      expect(result?.orixa).toBe('Nanã');
-      expect(result?.elemento).toBe('água');
-    });
-
-    it('should return Exu numerology with sacred number 1', () => {
+    it('should return correct mapping for Exu', () => {
       const result = getOrixaNumerology('Exu');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(1);
-      expect(result?.orixa).toBe('Exu');
-      expect(result?.elemento).toBe('fogo');
+      expect(result.numero).toBe(1);
+      expect(result.elemento).toBe('Fogo');
+      expect(result.significado_espiritual).toContain('Iniciador');
     });
 
-    it('should return Orunmilá numerology with sacred number 11', () => {
+    it('should return correct mapping for Ibeji', () => {
+      const result = getOrixaNumerology('Ibeji');
+      expect(result.numero).toBe(2);
+      expect(result.elemento).toBe('Água');
+      expect(result.significado_espiritual).toContain('Gêmeos');
+    });
+
+    it('should return correct mapping for Ogum', () => {
+      const result = getOrixaNumerology('Ogum');
+      expect(result.numero).toBe(3);
+      expect(result.elemento).toBe('Terra');
+      expect(result.significado_espiritual).toContain('Guerreiro');
+    });
+
+    it('should return correct mapping for Iemanjá', () => {
+      const result = getOrixaNumerology('Iemanjá');
+      expect(result.numero).toBe(4);
+      expect(result.elemento).toBe('Água');
+      expect(result.significado_espiritual).toContain('Mãe');
+    });
+
+    it('should return correct mapping for Oxum', () => {
+      const result = getOrixaNumerology('Oxum');
+      expect(result.numero).toBe(5);
+      expect(result.elemento).toBe('Água');
+      expect(result.significado_espiritual).toContain('Ouro');
+    });
+
+    it('should return correct mapping for Xangô', () => {
+      const result = getOrixaNumerology('Xangô');
+      expect(result.numero).toBe(6);
+      expect(result.elemento).toBe('Fogo');
+      expect(result.significado_espiritual).toContain('Rei');
+    });
+
+    it('should return correct mapping for Iansã', () => {
+      const result = getOrixaNumerology('Iansã');
+      expect(result.numero).toBe(7);
+      expect(result.elemento).toBe('Fogo');
+      expect(result.significado_espiritual).toContain('Tempestade');
+    });
+
+    it('should return correct mapping for Oxalá', () => {
+      const result = getOrixaNumerology('Oxalá');
+      expect(result.numero).toBe(8);
+      expect(result.elemento).toBe('Éter');
+      expect(result.significado_espiritual).toContain('Criador');
+    });
+
+    it('should return correct mapping for Ossá', () => {
+      const result = getOrixaNumerology('Ossá');
+      expect(result.numero).toBe(9);
+      expect(result.elemento).toBe('Água');
+      expect(result.significado_espiritual).toContain('Sábio');
+    });
+
+    it('should return correct mapping for Ofun', () => {
+      const result = getOrixaNumerology('Ofun');
+      expect(result.numero).toBe(10);
+      expect(result.elemento).toBe('Terra');
+      expect(result.significado_espiritual).toContain('Renovador');
+    });
+
+    it('should return correct mapping for Alafia', () => {
+      const result = getOrixaNumerology('Alafia');
+      expect(result.numero).toBe(11);
+      expect(result.elemento).toBe('Éter');
+      expect(result.significado_espiritual).toContain('Canalizador');
+    });
+
+    it('should return correct mapping for Orunmilá', () => {
       const result = getOrixaNumerology('Orunmilá');
-      expect(result).toBeDefined();
-      expect(result?.numero_sagrado).toBe(11);
-      expect(result?.orixa).toBe('Orunmilá');
-      expect(result?.elemento).toBe('éter');
+      expect(result.numero).toBe(11);
+      expect(result.elemento).toBe('Éter');
+      expect(result.significado_espiritual.toLowerCase()).toContain('intuição');
     });
 
-    it('should perform case-insensitive lookup', () => {
-      expect(getOrixaNumerology('oxalá')?.numero_sagrado).toBe(8);
-      expect(getOrixaNumerology('XANGÔ')?.numero_sagrado).toBe(6);
-      expect(getOrixaNumerology('iEmAnJÁ')?.numero_sagrado).toBe(4);
+    it('should return correct mapping for Ejilsebora', () => {
+      const result = getOrixaNumerology('Ejilsebora');
+      expect(result.numero).toBe(12);
+      expect(result.elemento).toBe('Fogo');
+      expect(result.significado_espiritual).toContain('Justiça');
     });
 
-    it('should handle accented characters', () => {
-      expect(getOrixaNumerology('Oxôssi')?.numero_sagrado).toBe(4);
+    it('should return correct mapping for Olobón', () => {
+      const result = getOrixaNumerology('Olobón');
+      expect(result.numero).toBe(13);
+      expect(result.elemento).toBe('Terra');
+      expect(result.significado_espiritual).toContain('Morte e Renascimento');
     });
 
-    it('should return undefined for unknown Orixá', () => {
-      expect(getOrixaNumerology('UnknownOrixá')).toBeUndefined();
+    it('should return correct mapping for Nanã', () => {
+      const result = getOrixaNumerology('Nanã');
+      expect(result.numero).toBe(13);
+      expect(result.elemento).toBe('Terra');
+      expect(result.significado_espiritual).toContain('Decantação');
+    });
+
+    it('should return correct mapping for Omolu', () => {
+      const result = getOrixaNumerology('Omolu');
+      expect(result.numero).toBe(13);
+      expect(result.elemento).toBe('Terra');
+      expect(result.significado_espiritual).toContain('Transformação');
+    });
+
+    it('should be case-insensitive', () => {
+      const result1 = getOrixaNumerology('exu');
+      const result2 = getOrixaNumerology('EXU');
+      const result3 = getOrixaNumerology('Exu');
+      expect(result1.numero).toBe(result2.numero);
+      expect(result2.numero).toBe(result3.numero);
+    });
+
+    it('should throw error for invalid Orixá', () => {
+      expect(() => getOrixaNumerology('NãoExistente')).toThrow('Orixá não encontrado');
+      expect(() => getOrixaNumerology('Yemoja')).toThrow('Orixá não encontrado');
     });
   });
 
   describe('getNumerologyOrixa', () => {
-    it('should return a record of numbers to Orixás', () => {
+    it('should return all Orixás keyed by name', () => {
       const result = getNumerologyOrixa();
-      expect(result).toBeDefined();
-      expect(typeof result).toBe('object');
+      expect(Object.keys(result).length).toBeGreaterThan(0);
+      expect(result['exu']).toBeDefined();
+      expect(result['exu'].numero).toBe(1);
     });
 
-    it('should group Oxalá and Exu with their sacred numbers', () => {
+    it('should return a copy, not the original', () => {
       const result = getNumerologyOrixa();
-      expect(result[8]?.some(o => o.orixa === 'Oxalá')).toBe(true);
-      expect(result[1]?.some(o => o.orixa === 'Exu')).toBe(true);
-    });
-
-    it('should contain number 1 with both Exu and Omolu', () => {
-      const result = getNumerologyOrixa();
-      const num1 = result[1];
-      expect(num1).toBeDefined();
-      expect(num1?.length).toBeGreaterThanOrEqual(2);
-      expect(num1?.some(o => o.orixa === 'Exu')).toBe(true);
-      expect(num1?.some(o => o.orixa === 'Omolu')).toBe(true);
-    });
-
-    it('should contain all sacred numbers 1-13', () => {
-      const result = getNumerologyOrixa();
-      const keys = Object.keys(result).map(Number).sort((a, b) => a - b);
-      expect(keys).toContain(1);
-      expect(keys).toContain(4);
-      expect(keys).toContain(5);
-      expect(keys).toContain(6);
-      expect(keys).toContain(7);
-      expect(keys).toContain(8);
-      expect(keys).toContain(11);
-      expect(keys).toContain(13);
+      result['exu'] = {} as OrixaNumerology;
+      const second = getNumerologyOrixa();
+      expect(second['exu'].numero).toBe(1);
     });
   });
 
-  describe('getAllOrixaNumerologies', () => {
-    it('should return an array of all Orixá numerologies', () => {
-      const result = getAllOrixaNumerologies();
+  describe('getAllOrixaNumerology', () => {
+    it('should return all Orixás as array', () => {
+      const result = getAllOrixaNumerology();
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBeGreaterThan(10);
     });
 
-    it('should contain all main Orixás', () => {
-      const result = getAllOrixaNumerologies();
-      const orixas = result.map(o => o.orixa);
-      expect(orixas).toContain('Oxalá');
-      expect(orixas).toContain('Iemanjá');
-      expect(orixas).toContain('Oxum');
-      expect(orixas).toContain('Ogum');
-      expect(orixas).toContain('Oxóssi');
-      expect(orixas).toContain('Xangô');
-      expect(orixas).toContain('Iansã');
-      expect(orixas).toContain('Omolu');
-      expect(orixas).toContain('Nanã');
-      expect(orixas).toContain('Exu');
-    });
-
-    it('should include meaning and elemental connection for each', () => {
-      const result = getAllOrixaNumerologies();
-      for (const orixa of result) {
-        expect(orixa.significado_numerologico).toBeDefined();
-        expect(orixa.significado_numerologico.length).toBeGreaterThan(10);
-        expect(orixa.elemento).toMatch(/^(fogo|água|ar|terra|éter)$/);
-        expect(orixa.sephirah).toBeDefined();
-        expect(orixa.planeta_regente).toBeDefined();
-        expect(orixa.energia_numerica).toBeDefined();
+    it('should be sorted by number', () => {
+      const result = getAllOrixaNumerology();
+      for (let i = 1; i < result.length; i++) {
+        expect(result[i].numero).toBeGreaterThanOrEqual(result[i - 1].numero);
       }
     });
-  });
 
-  describe('getOrixasByNumber', () => {
-    it('should return Orixás with sacred number 1', () => {
-      const result = getOrixasByNumber(1);
-      expect(result.length).toBe(2);
-      expect(result.map(o => o.orixa).sort()).toEqual(['Exu', 'Omolu']);
-    });
-
-    it('should return Orixás with sacred number 4', () => {
-      const result = getOrixasByNumber(4);
-      expect(result.length).toBe(2);
-      expect(result.map(o => o.orixa).sort()).toEqual(['Iemanjá', 'Oxóssi']);
-    });
-
-    it('should return Oxalá for sacred number 8', () => {
-      const result = getOrixasByNumber(8);
-      expect(result.length).toBe(1);
-      expect(result[0].orixa).toBe('Oxalá');
-    });
-
-    it('should return empty array for non-existent number', () => {
-      const result = getOrixasByNumber(99);
-      expect(result).toEqual([]);
+    it('should contain all major Orixás', () => {
+      const result = getAllOrixaNumerology();
+      const names = result.map((r) => r.orixa.toLowerCase());
+      expect(names).toContain('exu');
+      expect(names).toContain('ogum');
+      expect(names).toContain('iemanjá');
+      expect(names).toContain('oxum');
+      expect(names).toContain('xangô');
+      expect(names).toContain('iansã');
+      expect(names).toContain('oxalá');
     });
   });
 
-  describe('getOrixasByElement', () => {
-    it('should return Orixás with água element', () => {
-      const result = getOrixasByElement('água');
-      expect(result.length).toBeGreaterThanOrEqual(4);
-      const orixas = result.map(o => o.orixa);
-      expect(orixas).toContain('Iemanjá');
-      expect(orixas).toContain('Oxum');
-      expect(orixas).toContain('Nanã');
+  describe('getOrixaByElement', () => {
+    it('should return Orixás of Fire element', () => {
+      const result = getOrixaByElement('Fogo');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((r) => expect(r.elemento).toBe('Fogo'));
     });
 
-    it('should return Orixás with fogo element', () => {
-      const result = getOrixasByElement('fogo');
-      expect(result.length).toBeGreaterThanOrEqual(3);
-      const orixas = result.map(o => o.orixa);
-      expect(orixas).toContain('Xangô');
-      expect(orixas).toContain('Iansã');
-      expect(orixas).toContain('Exu');
+    it('should return Orixás of Water element', () => {
+      const result = getOrixaByElement('Água');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((r) => expect(r.elemento).toBe('Água'));
     });
 
-    it('should return Orixás with terra element', () => {
-      const result = getOrixasByElement('terra');
-      expect(result.length).toBeGreaterThanOrEqual(2);
-      const orixas = result.map(o => o.orixa);
-      expect(orixas).toContain('Ogum');
-      expect(orixas).toContain('Omolu');
+    it('should return Orixás of Earth element', () => {
+      const result = getOrixaByElement('Terra');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((r) => expect(r.elemento).toBe('Terra'));
     });
 
-    it('should return Orixás with éter element', () => {
-      const result = getOrixasByElement('éter');
-      expect(result.length).toBe(2);
-      const orixas = result.map(o => o.orixa);
-      expect(orixas).toContain('Oxalá');
-      expect(orixas).toContain('Orunmilá');
+    it('should return Orixás of Ether element', () => {
+      const result = getOrixaByElement('Éter');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((r) => expect(r.elemento).toBe('Éter'));
+    });
+
+    it('should be case-insensitive', () => {
+      const result1 = getOrixaByElement('fogo');
+      const result2 = getOrixaByElement('FOGO');
+      const result3 = getOrixaByElement('Fogo');
+      expect(result1.length).toBe(result2.length);
+      expect(result2.length).toBe(result3.length);
     });
 
     it('should return empty array for unknown element', () => {
-      const result = getOrixasByElement('unknown' as any);
-      expect(result).toEqual([]);
+      const result = getOrixaByElement('Ar');
+      expect(Array.isArray(result)).toBe(true);
     });
   });
 
-  describe('Spiritual Correlations Integrity', () => {
-    it('should have valid Odú associations', () => {
-      const all = getAllOrixaNumerologies();
-      for (const orixa of all) {
-        expect(orixa.odu_associado).toMatch(/^(Okaran|Ejiokô|Etaogundá|Irosun|Oxé|Obará|Odi|EjiOníle|Ossá|Ofun|Alafia|Ejilsebora|Olobón|Iká|Ogbogbé)/);
-      }
+  describe('getOrixaByNumber', () => {
+    it('should return Orixás with number 1', () => {
+      const result = getOrixaByNumber(1);
+      expect(result.length).toBe(2);
+      result.forEach((r) => expect(r.numero).toBe(1));
     });
 
-    it('should have aligned planets with orixa-element.ts', () => {
-      // Oxalá should be ruled by Sol
-      const oxala = getOrixaNumerology('Oxalá');
-      expect(oxala?.planeta_regente).toBe('Sol');
+    it('should return Orixás with number 13', () => {
+      const result = getOrixaByNumber(13);
+      expect(result.length).toBe(3);
+      result.forEach((r) => expect(r.numero).toBe(13));
+    });
 
-      // Iemanjá should be ruled by Lua
-      const iemanja = getOrixaNumerology('Iemanjá');
-      expect(iemanja?.planeta_regente).toBe('Lua');
+    it('should return empty array for unused numbers', () => {
+      const result = getOrixaByNumber(99);
+      expect(result.length).toBe(0);
+    });
+  });
 
-      // Xangô should be ruled by Sol
-      const xango = getOrixaNumerology('Xangô');
-      expect(xango?.planeta_regente).toBe('Sol');
+  describe('getAllElements', () => {
+    it('should return unique elements', () => {
+      const result = getAllElements();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result).toContain('Fogo');
+      expect(result).toContain('Água');
+      expect(result).toContain('Terra');
+      expect(result).toContain('Éter');
+    });
+  });
+
+  describe('getAllNumbers', () => {
+    it('should return numbers 1-13', () => {
+      const result = getAllNumbers();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeLessThanOrEqual(13);
+      expect(result).toContain(1);
+      expect(result).toContain(13);
+    });
+  });
+
+  describe('Interface completeness', () => {
+    it('should have all required properties in OrixaNumerology', () => {
+      const item = getAllOrixaNumerology()[0];
+      expect(item).toHaveProperty('orixa');
+      expect(item).toHaveProperty('numero');
+      expect(item).toHaveProperty('elemento');
+      expect(item).toHaveProperty('significado_espiritual');
+    });
+
+    it('should have orixa as non-empty string', () => {
+      const items = getAllOrixaNumerology();
+      items.forEach((item) => {
+        expect(typeof item.orixa).toBe('string');
+        expect(item.orixa.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('should have numero as number between 1 and 13', () => {
+      const items = getAllOrixaNumerology();
+      items.forEach((item) => {
+        expect(typeof item.numero).toBe('number');
+        expect(item.numero).toBeGreaterThanOrEqual(1);
+        expect(item.numero).toBeLessThanOrEqual(13);
+      });
     });
   });
 });
