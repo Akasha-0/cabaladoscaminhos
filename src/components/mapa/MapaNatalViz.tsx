@@ -207,13 +207,14 @@ type Aspecto = {
   aplicativo: boolean;
 };
 
-function getZodiacIndex(signo: string): number {
+function getZodiacIndex(signo: string | undefined): number {
+  if (!signo) return 0;
   const signMap: Record<string, number> = {
-    'aries': 0, 'touro': 1, 'gemeos': 2, 'cancer': 3,
-    'leao': 4, 'virgem': 5, 'libra': 6, 'escorpiao': 7,
-    'sagitario': 8, 'capricornio': 9, 'aquario': 10, 'peixes': 11,
-  };
-  return signMap[signo.toLowerCase()] ?? 0;
+     'aries': 0, 'touro': 1, 'gemeos': 2, 'cancer': 3,
+     'leao': 4, 'virgem': 5, 'libra': 6, 'escorpiao': 7,
+     'sagitario': 8, 'capricornio': 9, 'aquario': 10, 'peixes': 11,
+   };
+   return signMap[signo.toLowerCase()] ?? 0;
 }
 
 function getPlanetAngle(posicao: PosicaoPlaneta): number {
@@ -230,10 +231,9 @@ function getPlanetPosition(posicao: PosicaoPlaneta, radius: number): { x: number
     y: 200 + radius * Math.sin(angle),
   };
 }
-
-function getAscendantAngle(ascendente: string): number {
+function getAscendantAngle(ascendente: string | undefined): number {
   const signIndex = getZodiacIndex(ascendente);
-  return signIndex * 30 - 90;
+   return signIndex * 30 - 90;
 }
 
 function formatPlanetName(planeta: string): string {
