@@ -229,7 +229,7 @@
 |**207** | **Test Coverage** | useJourney tests (10), usePrevisaoSemanal tests (12), hook coverage expanded |
 |**208** | **Hook Tests** | useSearchHistory (15), useUserPreferences (28), useAfirmacoes (22), hook coverage expanded to 11 hooks |
 |**209** | **Hook Tests** | useDashboardConfig tests (21), useAnalytics tests (22), useUserProfile tests (12), hook coverage expanded to 13 hooks |
-|**210** | **Hook Tests** | useAnalytics (10), useUserProfile (12), hook coverage expanded to 14 hooks |
+|**210** | **API Tests** | /api/mapa tests (11), /api/auth/login tests (14), /api/auth/register tests (12), API coverage expanded |
 |**211** | **Hook Tests** | useNotifications tests (15), hook coverage expanded to 15 hooks |
 
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
