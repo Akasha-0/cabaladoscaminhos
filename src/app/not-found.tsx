@@ -16,15 +16,12 @@ const mysticalQuotes = [
 ];
 
 export default function NotFound() {
-  const [quote] = useState(
-    mysticalQuotes[Math.floor(Math.random() * mysticalQuotes.length)]
-  );
+  const [quote, setQuote] = useState(mysticalQuotes[0]);
   const [fadeIn, setFadeIn] = useState(false);
-
   useEffect(() => {
+    setQuote(mysticalQuotes[Math.floor(Math.random() * mysticalQuotes.length)]);
     setFadeIn(true);
   }, []);
-
   return (
     <CosmicBackground variant="default">
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
