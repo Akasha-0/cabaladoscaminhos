@@ -210,7 +210,7 @@ describe('FrequencyElement Correlation', () => {
       expect(result).not.toBeNull();
       expect(result?.fisico).toContain('metabolismo');
       expect(result?.emocional).toContain('amor');
-      expect(result?.pratica_recomendada).toContain('intention');
+      expect(result?.pratica_recomendada).toContain('intenção');
     });
 
     it('should return null for invalid frequency', () => {
