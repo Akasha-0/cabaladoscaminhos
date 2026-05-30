@@ -1,15 +1,15 @@
 /**
- * Remove accents from a string for normalized matching
+ * Remove accents and ordinal indicators from a string for normalized matching
  */
 function normalizeString(str: string): string {
   return str
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[\u0300-\u036f]/g, '') // Remove combining diacritics
+    .replace(/[º°]/g, '') // Remove ordinal indicators
+    .replace(/º/g, '')
     .trim();
 }
-/**
- * Chakra-Frequency Correlation Module
  * Maps each of the 7 primary chakras to their associated Solfeggio frequency,
  * element connections, and healing properties.
  * This is the reverse lookup from frequency-chakra.ts
@@ -194,42 +194,57 @@ const CHAKRA_NUMERO_TO_FREQUENCY: Record<number, number> = {
  * Chakra name to frequency lookup (normalized lowercase)
  */
 const CHAKRA_NAME_TO_FREQUENCY: Record<string, number> = {
-  '1º básico': 396,
-  '1 basic': 396,
+  // Normalized Portuguese names (no accents)
+  '1 basico': 396,
+  '1 basico chakra': 396,
+  'chakra 1': 396,
+  // Sanskrit and English
   'muladhara': 396,
-  'basic': 396,
   'root': 396,
-  '2º sacro': 417,
+  'basic': 396,
+  'raiz': 396,
+  // 2
   '2 sacro': 417,
+  '2 sacro chakra': 417,
+  'chakra 2': 417,
   'svadhisthana': 417,
   'sacral': 417,
   'sacro': 417,
-  '3º plexo solar': 528,
+  // 3
   '3 plexo solar': 528,
+  '3 plexo solar chakra': 528,
+  'chakra 3': 528,
   'manipura': 528,
   'solar plexus': 528,
   'plexo': 528,
   'plexo solar': 528,
-  '4º cardíaco': 639,
+  'solar': 528,
+  // 4
   '4 cardiaco': 639,
+  '4 cardiaco chakra': 639,
+  'chakra 4': 639,
   'anahata': 639,
   'heart': 639,
   'cardiaco': 639,
-  '5º laríngeo': 741,
+  'coracao': 639,
+  // 5
   '5 laringeo': 741,
+  '5 laringeo chakra': 741,
+  'chakra 5': 741,
   'vishuddha': 741,
   'throat': 741,
   'laringeo': 741,
-  '6º frontal': 852,
+  'garganta': 741,
   'ajna': 852,
-  'third eye': 852,
-  'frontal': 852,
-  'terceiro olho': 852,
-  '7º coronário': 963,
+  'anja': 852,
+  '3rd eye': 852,
   '7 coronario': 963,
+  '7 coronario chakra': 963,
+  'chakra 7': 963,
   'sahasrara': 963,
   'crown': 963,
   'coronario': 963,
+  'coroa': 963,
 };
 
 /**

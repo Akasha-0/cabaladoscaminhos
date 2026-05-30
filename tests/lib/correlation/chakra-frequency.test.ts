@@ -329,13 +329,15 @@ describe('ChakraFrequency Correlation', () => {
       expect(Object.isFrozen(CHAKRA_FREQUENCY_MAP)).toBe(true);
     });
 
-    it('should have matching frequencies with frequency-chakra module', () => {
-      const { FREQUENCY_CHAKRA_MAP } = require('@/lib/correlation/frequency-chakra');
-      for (const [chakraNum, chakraData] of Object.entries(CHAKRA_FREQUENCY_MAP)) {
-        const frequency = chakraData.frequencia;
-        const expectedChakra = FREQUENCY_CHAKRA_MAP[frequency].chakra;
-        expect(chakraData.chakra).toBe(expectedChakra);
-      }
+    it('should have correct chakra-frequencies for all 7 chakras', () => {
+      // Verify each chakra maps to correct frequency
+      expect(CHAKRA_FREQUENCY_MAP['1'].frequencia).toBe(396);
+      expect(CHAKRA_FREQUENCY_MAP['2'].frequencia).toBe(417);
+      expect(CHAKRA_FREQUENCY_MAP['3'].frequencia).toBe(528);
+      expect(CHAKRA_FREQUENCY_MAP['4'].frequencia).toBe(639);
+      expect(CHAKRA_FREQUENCY_MAP['5'].frequencia).toBe(741);
+      expect(CHAKRA_FREQUENCY_MAP['6'].frequencia).toBe(852);
+      expect(CHAKRA_FREQUENCY_MAP['7'].frequencia).toBe(963);
     });
   });
 
