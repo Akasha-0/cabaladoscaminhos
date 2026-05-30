@@ -390,14 +390,14 @@ describe('planet-odu', () => {
 
   describe('default export', () => {
     it('exports all required functions', async () => {
-      const module = await import('@/lib/correlation/planet-odu');
-      expect(typeof module.default).toBe('object');
-      expect(typeof module.getPlanetOdu).toBe('function');
-      expect(typeof module.getOduPlanet).toBe('function');
-      expect(typeof module.getAllPlanetOdus).toBe('function');
-      expect(typeof module.getAllPlanets).toBe('function');
-      expect(typeof module.hasPlanetOdu).toBe('function');
-      expect(typeof module.getOduByNumber).toBe('function');
+      const planetOduModule = await import('@/lib/correlation/planet-odu');
+      expect(typeof planetOduModule.default).toBe('object');
+      expect(typeof planetOduModule.getPlanetOdu).toBe('function');
+      expect(typeof planetOduModule.getOduPlanet).toBe('function');
+      expect(typeof planetOduModule.getAllPlanetOdus).toBe('function');
+      expect(typeof planetOduModule.getAllPlanets).toBe('function');
+      expect(typeof planetOduModule.hasPlanetOdu).toBe('function');
+      expect(typeof planetOduModule.getOduByNumber).toBe('function');
     });
   });
 });
