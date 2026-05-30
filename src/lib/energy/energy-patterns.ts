@@ -373,3 +373,34 @@ const patterns: EnergyPattern[] = [
 export function getPatterns(): EnergyPattern[] {
   return patterns;
 }
+
+export function getPatternById(id: string): EnergyPattern | undefined {
+  return patterns.find((p) => p.id === id);
+}
+export function getPatternsByCategory(category: EnergyPattern['category']): EnergyPattern[] {
+  return patterns.filter((p) => p.category === category);
+}
+export function getDayPattern(): EnergyPattern | undefined {
+  const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const today = days[new Date().getDay()];
+  return getPatternById(today);
+}
+export function getLunarPattern(phase: 'new' | 'waxing' | 'full' | 'waning'): EnergyPattern | undefined {
+  const phaseMap = {
+    new: 'new-moon',
+    waxing: 'waxing-moon',
+    full: 'full-moon',
+    waning: 'waning-moon',
+  };
+  return getPatternById(phaseMap[phase]);
+}
+export function getElementPattern(element: 'fire' | 'water' | 'earth' | 'air' | 'ether'): EnergyPattern | undefined {
+  const elementMap = {
+    fire: 'fire-element',
+    water: 'water-element',
+    earth: 'earth-element',
+    air: 'air-element',
+    ether: 'ether-element',
+  };
+  return getPatternById(elementMap[element]);
+}
