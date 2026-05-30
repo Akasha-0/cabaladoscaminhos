@@ -199,7 +199,7 @@ export const SOUND_PLANET_MAP: Record<string, SoundPlanet> = {
     mantra: "Eu construo minha vida sobre alicerces firmes",
   },
   // Additional sacred sounds mapped to planetary energies
-  "SOLE": {
+  "SOL": {
     som: "SÓL",
     pronunciacao: "Soul (vibração solar egípcia)",
     planeta: "Sol",

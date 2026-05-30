@@ -4,19 +4,19 @@
 
 import { describe, it, expect } from 'vitest';
 import {
-  getOrixáSephirot,
-  getSephirotOrixá,
-  getAllOrixáSephirots,
+  getOrixaSephirot,
+  getSephirotOrixa,
+  getAllOrixaSephiroths,
   ORIXÁ_SEPHIROT_MAPPINGS,
   type OrixáSephirot,
 } from '@/lib/correlation/orixa-sephirot';
 
 describe('orixa-sephirot', () => {
-  // ─── getOrixáSephirot: valid Orixás ─────────────────────────────────────
+  // ─── getOrixaSephirot: valid Orixás ─────────────────────────────────────
 
-  describe('getOrixáSephirot', () => {
+  describe('getOrixaSephirot', () => {
     it('returns Oxalá mapping with Kether', () => {
-      const result = getOrixáSephirot('Oxalá');
+      const result = getOrixaSephirot('Oxalá');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Oxalá');
       expect(result!.sephirah).toBe('Kether');
@@ -25,7 +25,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Obatalá mapping with Chokmah', () => {
-      const result = getOrixáSephirot('Obatalá');
+      const result = getOrixaSephirot('Obatalá');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Obatalá');
       expect(result!.sephirah).toBe('Chokmah');
@@ -34,7 +34,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Iemanjá mapping with Binah', () => {
-      const result = getOrixáSephirot('Iemanjá');
+      const result = getOrixaSephirot('Iemanjá');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Iemanjá');
       expect(result!.sephirah).toBe('Binah');
@@ -43,7 +43,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Oxum mapping with Chesed', () => {
-      const result = getOrixáSephirot('Oxum');
+      const result = getOrixaSephirot('Oxum');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Oxum');
       expect(result!.sephirah).toBe('Chesed');
@@ -52,7 +52,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Xangô mapping with Geburah', () => {
-      const result = getOrixáSephirot('Xangô');
+      const result = getOrixaSephirot('Xangô');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Xangô');
       expect(result!.sephirah).toBe('Geburah');
@@ -61,7 +61,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Oxóssi mapping with Tiphereth', () => {
-      const result = getOrixáSephirot('Oxóssi');
+      const result = getOrixaSephirot('Oxóssi');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Oxóssi');
       expect(result!.sephirah).toBe('Tiphereth');
@@ -70,7 +70,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Iansã mapping with Netzach', () => {
-      const result = getOrixáSephirot('Iansã');
+      const result = getOrixaSephirot('Iansã');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Iansã');
       expect(result!.sephirah).toBe('Netzach');
@@ -79,7 +79,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Ogum mapping with Hod', () => {
-      const result = getOrixáSephirot('Ogum');
+      const result = getOrixaSephirot('Ogum');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Ogum');
       expect(result!.sephirah).toBe('Hod');
@@ -88,7 +88,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Nanã mapping with Yesod', () => {
-      const result = getOrixáSephirot('Nanã');
+      const result = getOrixaSephirot('Nanã');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Nanã');
       expect(result!.sephirah).toBe('Yesod');
@@ -97,7 +97,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Omolu mapping with Malkuth', () => {
-      const result = getOrixáSephirot('Omolu');
+      const result = getOrixaSephirot('Omolu');
       expect(result).not.toBeNull();
       expect(result!.orixá).toBe('Omolu');
       expect(result!.sephirah).toBe('Malkuth');
@@ -106,23 +106,23 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns null for unknown Orixá', () => {
-      expect(getOrixáSephirot('UnknownOrixá')).toBeNull();
-      expect(getOrixáSephirot('Exu')).toBeNull();
-      expect(getOrixáSephirot('')).toBeNull();
+      expect(getOrixaSephirot('UnknownOrixá')).toBeNull();
+      expect(getOrixaSephirot('Exu')).toBeNull();
+      expect(getOrixaSephirot('')).toBeNull();
     });
 
     it('is case-sensitive for Orixá names', () => {
-      expect(getOrixáSephirot('oxalá')).toBeNull();
-      expect(getOrixáSephirot('OXALÁ')).toBeNull();
-      expect(getOrixáSephirot('Oxalá')).not.toBeNull();
+      expect(getOrixaSephirot('oxalá')).toBeNull();
+      expect(getOrixaSephirot('OXALÁ')).toBeNull();
+      expect(getOrixaSephirot('Oxalá')).not.toBeNull();
     });
   });
 
-  // ─── getSephirotOrixá: reverse lookup ─────────────────────────────────────
+  // ─── getSephirotOrixa: reverse lookup ─────────────────────────────────────
 
-  describe('getSephirotOrixá', () => {
+  describe('getSephirotOrixa', () => {
     it('returns Kether mapping for Oxalá', () => {
-      const result = getSephirotOrixá('Kether');
+      const result = getSephirotOrixa('Kether');
       expect(result).not.toBeNull();
       expect(result!.sephirah).toBe('Kether');
       expect(result!.orixá).toBe('Oxalá');
@@ -130,7 +130,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Binah mapping for Iemanjá', () => {
-      const result = getSephirotOrixá('Binah');
+      const result = getSephirotOrixa('Binah');
       expect(result).not.toBeNull();
       expect(result!.sephirah).toBe('Binah');
       expect(result!.orixá).toBe('Iemanjá');
@@ -138,7 +138,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Geburah mapping for Xangô', () => {
-      const result = getSephirotOrixá('Geburah');
+      const result = getSephirotOrixa('Geburah');
       expect(result).not.toBeNull();
       expect(result!.sephirah).toBe('Geburah');
       expect(result!.orixá).toBe('Xangô');
@@ -146,7 +146,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('returns Malkuth mapping for Omolu', () => {
-      const result = getSephirotOrixá('Malkuth');
+      const result = getSephirotOrixa('Malkuth');
       expect(result).not.toBeNull();
       expect(result!.sephirah).toBe('Malkuth');
       expect(result!.orixá).toBe('Omolu');
@@ -154,34 +154,34 @@ describe('orixa-sephirot', () => {
     });
 
     it('is case-insensitive for Sephirah names', () => {
-      expect(getSephirotOrixá('kether')).not.toBeNull();
-      expect(getSephirotOrixá('KETHER')).not.toBeNull();
-      expect(getSephirotOrixá('Binah')).not.toBeNull();
+      expect(getSephirotOrixa('kether')).not.toBeNull();
+      expect(getSephirotOrixa('KETHER')).not.toBeNull();
+      expect(getSephirotOrixa('Binah')).not.toBeNull();
     });
 
     it('returns null for unknown Sephirah', () => {
-      expect(getSephirotOrixá('UnknownSephirah')).toBeNull();
-      expect(getSephirotOrixá('TestSephirah')).toBeNull();
-      expect(getSephirotOrixá('')).toBeNull();
+      expect(getSephirotOrixa('UnknownSephirah')).toBeNull();
+      expect(getSephirotOrixa('TestSephirah')).toBeNull();
+      expect(getSephirotOrixa('')).toBeNull();
     });
   });
 
-  // ─── getAllOrixáSephirots ─────────────────────────────────────────────────
+  // ─── getAllOrixaSephiroths ─────────────────────────────────────────────────
 
-  describe('getAllOrixáSephirots', () => {
+  describe('getAllOrixaSephiroths', () => {
     it('returns all 10 Orixá mappings', () => {
-      const result = getAllOrixáSephirots();
+      const result = getAllOrixaSephiroths();
       expect(result).toHaveLength(10);
     });
 
     it('returns sorted by path number (1-10)', () => {
-      const result = getAllOrixáSephirots();
+      const result = getAllOrixaSephiroths();
       const numbers = result.map((m) => m.numero_caminho);
       expect(numbers).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     });
 
     it('contains all required properties for each mapping', () => {
-      const result = getAllOrixáSephirots();
+      const result = getAllOrixaSephiroths();
       for (const mapping of result) {
         expect(mapping).toHaveProperty('orixá');
         expect(mapping).toHaveProperty('sephirah');
@@ -192,7 +192,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('contains all 10 Orixá names', () => {
-      const result = getAllOrixáSephirots();
+      const result = getAllOrixaSephiroths();
       const orixas = result.map((m) => m.orixá);
       expect(orixas).toContain('Oxalá');
       expect(orixas).toContain('Obatalá');
@@ -207,7 +207,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('contains all expected Sephiroth', () => {
-      const result = getAllOrixáSephirots();
+      const result = getAllOrixaSephiroths();
       const sephiroth = result.map((m) => m.sephirah);
       expect(sephiroth).toContain('Kether');
       expect(sephiroth).toContain('Chokmah');
@@ -252,7 +252,7 @@ describe('orixa-sephirot', () => {
 
   describe('OrixáSephirot interface completeness', () => {
     it('returns complete mapping objects with all fields', () => {
-      const result = getOrixáSephirot('Oxalá');
+      const result = getOrixaSephirot('Oxalá');
       expect(result).toEqual({
         orixá: 'Oxalá',
         sephirah: 'Kether',
@@ -263,7 +263,7 @@ describe('orixa-sephirot', () => {
     });
 
     it('each mapping has non-empty energia_espiritual', () => {
-      const all = getAllOrixáSephirots();
+      const all = getAllOrixaSephiroths();
       for (const mapping of all) {
         expect(mapping.energia_espiritual.length).toBeGreaterThan(0);
       }
@@ -271,7 +271,7 @@ describe('orixa-sephirot', () => {
 
     it('each mapping has valid element types', () => {
       const validElements = ['Fogo', 'Terra', 'Ar', 'Água', 'Éter'];
-      const all = getAllOrixáSephirots();
+      const all = getAllOrixaSephiroths();
       for (const mapping of all) {
         expect(validElements).toContain(mapping.elemento);
       }
@@ -282,7 +282,7 @@ describe('orixa-sephirot', () => {
 
   describe('Element distribution', () => {
     it('maps correct element distribution', () => {
-      const all = getAllOrixáSephirots();
+      const all = getAllOrixaSephiroths();
       const etherMappings = all.filter((m) => m.elemento === 'Éter');
       const fireMappings = all.filter((m) => m.elemento === 'Fogo');
       const waterMappings = all.filter((m) => m.elemento === 'Água');
@@ -296,31 +296,31 @@ describe('orixa-sephirot', () => {
     });
 
     it('Éter maps to Oxalá and Obatalá', () => {
-      const etherMappings = getAllOrixáSephirots().filter((m) => m.elemento === 'Éter');
+      const etherMappings = getAllOrixaSephiroths().filter((m) => m.elemento === 'Éter');
       const orixas = etherMappings.map((m) => m.orixá).sort();
       expect(orixas).toEqual(['Obatalá', 'Oxalá']);
     });
 
     it('Fogo maps to Xangô, Oxóssi, and Iansã', () => {
-      const fireMappings = getAllOrixáSephirots().filter((m) => m.elemento === 'Fogo');
+      const fireMappings = getAllOrixaSephiroths().filter((m) => m.elemento === 'Fogo');
       const orixas = fireMappings.map((m) => m.orixá).sort();
       expect(orixas).toEqual(['Iansã', 'Oxóssi', 'Xangô']);
     });
 
     it('Água maps to Iemanjá, Oxum, and Nanã', () => {
-      const waterMappings = getAllOrixáSephirots().filter((m) => m.elemento === 'Água');
+      const waterMappings = getAllOrixaSephiroths().filter((m) => m.elemento === 'Água');
       const orixas = waterMappings.map((m) => m.orixá).sort();
       expect(orixas).toEqual(['Iemanjá', 'Nanã', 'Oxum']);
     });
 
     it('Terra maps to Omolu', () => {
-      const earthMappings = getAllOrixáSephirots().filter((m) => m.elemento === 'Terra');
+      const earthMappings = getAllOrixaSephiroths().filter((m) => m.elemento === 'Terra');
       expect(earthMappings).toHaveLength(1);
       expect(earthMappings[0].orixá).toBe('Omolu');
     });
 
     it('Ar maps to Ogum', () => {
-      const airMappings = getAllOrixáSephirots().filter((m) => m.elemento === 'Ar');
+      const airMappings = getAllOrixaSephiroths().filter((m) => m.elemento === 'Ar');
       expect(airMappings).toHaveLength(1);
       expect(airMappings[0].orixá).toBe('Ogum');
     });
@@ -330,20 +330,20 @@ describe('orixa-sephirot', () => {
 
   describe('Path number verification', () => {
     it('each Orixá has a unique path number 1-10', () => {
-      const all = getAllOrixáSephirots();
+      const all = getAllOrixaSephiroths();
       const pathNumbers = all.map((m) => m.numero_caminho);
       expect(pathNumbers).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     });
 
     it('path 1 is Oxalá-Kether (Éter)', () => {
-      const result = getOrixáSephirot('Oxalá');
+      const result = getOrixaSephirot('Oxalá');
       expect(result!.numero_caminho).toBe(1);
       expect(result!.sephirah).toBe('Kether');
       expect(result!.elemento).toBe('Éter');
     });
 
     it('path 10 is Omolu-Malkuth (Terra)', () => {
-      const result = getOrixáSephirot('Omolu');
+      const result = getOrixaSephirot('Omolu');
       expect(result!.numero_caminho).toBe(10);
       expect(result!.sephirah).toBe('Malkuth');
       expect(result!.elemento).toBe('Terra');
@@ -354,10 +354,10 @@ describe('orixa-sephirot', () => {
 
   describe('Forward/reverse lookup consistency', () => {
     it('forward and reverse lookups return consistent data', () => {
-      const all = getAllOrixáSephirots();
+      const all = getAllOrixaSephiroths();
       for (const mapping of all) {
-        const byOrixá = getOrixáSephirot(mapping.orixá);
-        const bySephirah = getSephirotOrixá(mapping.sephirah);
+        const byOrixá = getOrixaSephirot(mapping.orixá);
+        const bySephirah = getSephirotOrixa(mapping.sephirah);
         expect(byOrixá).toEqual(bySephirah);
         expect(byOrixá!.orixá).toBe(mapping.orixá);
         expect(byOrixá!.sephirah).toBe(mapping.sephirah);
@@ -367,9 +367,9 @@ describe('orixa-sephirot', () => {
     it('all Sephiroth can be found via reverse lookup', () => {
       const sephiroth = ['Kether', 'Chokmah', 'Binah', 'Chesed', 'Geburah', 'Tiphereth', 'Netzach', 'Hod', 'Yesod', 'Malkuth'];
       for (const sephirah of sephiroth) {
-        const result = getSephirotOrixá(sephirah);
+        const result = getSephirotOrixa(sephirah);
         expect(result).not.toBeNull();
- }
+      }
     });
   });
 });

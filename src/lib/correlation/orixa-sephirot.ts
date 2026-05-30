@@ -135,7 +135,7 @@ Object.freeze(ORIXÁ_SEPHIROT_MAPPINGS);
  * @param orixá - The name of the Orixá (e.g., 'Oxalá', 'Iemanjá', 'Xangô')
  * @returns The correlation mapping or null if not found
  */
-export function getOrixáSephirot(orixá: string): OrixáSephirot | null {
+export function getOrixaSephirot(orixá: string): OrixáSephirot | null {
   return ORIXÁ_SEPHIROT_MAPPINGS[orixá] ?? null;
 }
 
@@ -144,7 +144,7 @@ export function getOrixáSephirot(orixá: string): OrixáSephirot | null {
  * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah', 'Malkuth')
  * @returns The correlation mapping or null if not found
  */
-export function getSephirotOrixá(sephirah: string): OrixáSephirot | null {
+export function getSephirotOrixa(sephirah: string): OrixáSephirot | null {
   const found = Object.values(ORIXÁ_SEPHIROT_MAPPINGS).find(
     (mapping) => mapping.sephirah.toLowerCase() === sephirah.toLowerCase()
   );
@@ -155,8 +155,15 @@ export function getSephirotOrixá(sephirah: string): OrixáSephirot | null {
  * Get all available Orixá-Sephirot mappings
  * @returns Array of all correlation mappings sorted by path number
  */
-export function getAllOrixáSephirots(): OrixáSephirot[] {
+export function getAllOrixaSephiroths(): OrixáSephirot[] {
   return Object.values(ORIXÁ_SEPHIROT_MAPPINGS).sort(
     (a, b) => a.numero_caminho - b.numero_caminho
   );
 }
+
+// Default export for convenience
+export default {
+  getOrixaSephirot,
+  getSephirotOrixa,
+  getAllOrixaSephiroths,
+};
