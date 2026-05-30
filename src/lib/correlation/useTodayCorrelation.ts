@@ -112,15 +112,19 @@ export interface TodayCorrelation {
   mystery: string;
 }
 
-/** Maps day index (0=domingo … 6=sábado) to the getDayEnergy index (0=segunda) */
+/** Maps day index (0=domingo … 6=sábado) to the getDayEnergy index (0=segunda).
+ *  getDayEnergy is indexed Monday=0 … Sunday=6.
+ *  Sunday (dayIndex 0) must wrap to energyIndex 6.
+ *  Formula: energyIndex = (dayIndex + 6) % 7
+ */
 const DAY_INDEX_MAP: Record<number, number> = {
-  0: 0, // domingo  → getDayEnergy index 0 (Segunda-feira)
-  1: 1, // segunda  → 1 (Terça-feira)
-  2: 2, // terça    → 2 (Quarta-feira)
-  3: 3, // quarta   → 3 (Quinta-feira)
-  4: 4, // quinta   → 4 (Sexta-feira)
-  5: 5, // sexta    → 5 (Sábado)
-  6: 6, // sábado   → 6 (Domingo)
+  0: 6, // domingo  → getDayEnergy index 6 (Domingo)
+  1: 0, // segunda  → getDayEnergy index 0 (Segunda-feira)
+  2: 1, // terça    → getDayEnergy index 1 (Terça-feira)
+  3: 2, // quarta   → getDayEnergy index 2 (Quarta-feira)
+  4: 3, // quinta   → getDayEnergy index 3 (Quinta-feira)
+  5: 4, // sexta    → getDayEnergy index 4 (Sexta-feira)
+  6: 5, // sábado   → getDayEnergy index 5 (Sábado)
 };
 
 const DAY_KEY_MAP: Record<number, string> = {
