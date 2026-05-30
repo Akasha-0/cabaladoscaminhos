@@ -10,6 +10,7 @@ function SkipLink() {
   );
 }
 
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
@@ -437,7 +438,7 @@ export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardPro
 
         {/* Footer */}
         <footer className="mt-8 pt-6 border-t border-slate-800">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs text-slate-500">
+ <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs text-slate-500">
             <div>
               <span>Mapa da Alma Completo v{data.versao}</span>
               <span className="mx-2">•</span>
@@ -450,6 +451,7 @@ export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardPro
                 </span>
               )}
             </div>
+          </div>
         </footer>
       </div>
       {/* CSS for reduced motion */}
@@ -467,8 +469,7 @@ export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardPro
           }
         }
       `}</style>
-    </div>
-    </>
+ </>
   );
 }
 export type { MapaAlmaDashboardProps };
