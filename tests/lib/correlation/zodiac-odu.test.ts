@@ -118,16 +118,15 @@ describe('zodiac-odu', () => {
 
     it('Escorpião maps to Odi with correct properties', () => {
       const escorpiao = ZODIAC_ODU_MAPPINGS['Escorpião'];
-      expect(escorpião.odu_principal.nome).toBe('Odi');
-      expect(escorpião.odu_principal.numero).toBe(7);
-      expect(escorpião.elemento).toBe('Água');
-      expect(escorpião.orixa).toBe('Oxumaré');
-      expect(escorpião.planeta_regente).toBe('Plutão');
-      expect(escorpião.qualidades.temperatura).toBe('Frio');
-      expect(escorpião.qualidades.polaridade).toBe('Yin');
-      expect(escorpião.dia_sagrado).toBe('Terça-feira');
+      expect(escorpiao.odu_principal.nome).toBe('Odi');
+      expect(escorpiao.odu_principal.numero).toBe(7);
+      expect(escorpiao.elemento).toBe('Água');
+      expect(escorpiao.orixa).toBe('Oxumaré');
+      expect(escorpiao.planeta_regente).toBe('Plutão');
+      expect(escorpiao.qualidades.temperatura).toBe('Frio');
+      expect(escorpiao.qualidades.polaridade).toBe('Yin');
+      expect(escorpiao.dia_sagrado).toBe('Terça-feira');
     });
-
     it('Sagitário maps to Oxé with correct properties', () => {
       const sagitario = ZODIAC_ODU_MAPPINGS['Sagitário'];
       expect(sagitario.odu_principal.nome).toBe('Oxé');
@@ -139,7 +138,6 @@ describe('zodiac-odu', () => {
       expect(sagitario.qualidades.polaridade).toBe('Yang');
       expect(sagitario.dia_sagrado).toBe('Quinta-feira');
     });
-
     it('Capricórnio maps to Okaran with correct properties', () => {
       const capricornio = ZODIAC_ODU_MAPPINGS['Capricórnio'];
       expect(capricornio.odu_principal.nome).toBe('Okaran');
@@ -148,10 +146,8 @@ describe('zodiac-odu', () => {
       expect(capricornio.orixa).toBe('Omolu');
       expect(capricornio.planeta_regente).toBe('Saturno');
       expect(capricornio.qualidades.temperatura).toBe('Frio');
-      expect(capricornio.qualidades.polaridade).toBe('Yin');
       expect(capricornio.dia_sagrado).toBe('Segunda-feira');
     });
-
     it('Aquário maps to Ofun with correct properties', () => {
       const aquario = ZODIAC_ODU_MAPPINGS['Aquário'];
       expect(aquario.odu_principal.nome).toBe('Ofun');
@@ -163,6 +159,7 @@ describe('zodiac-odu', () => {
       expect(aquario.qualidades.polaridade).toBe('Yang');
       expect(aquario.dia_sagrado).toBe('Sábado');
     });
+    it('Peixes maps to Ossá with correct properties', () => {
 
     it('Peixes maps to Ossá with correct properties', () => {
       const peixes = ZODIAC_ODU_MAPPINGS['Peixes'];

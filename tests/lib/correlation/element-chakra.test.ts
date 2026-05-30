@@ -313,6 +313,62 @@ describe('element-chakra', () => {
         '7º Coronário',
       ];
       chakras.forEach((chakra) => expect(chakra).toBeTruthy());
+  // ─── getElementChakra: alias for getElementChakras ────────────────────────
+  describe('getElementChakra', () => {
+    it('returns correct mapping for each element', () => {
+      expect(getElementChakra('Fogo')?.elemento).toBe('Fogo');
+      expect(getElementChakra('Água')?.elemento).toBe('Água');
+      expect(getElementChakra('Ar')?.elemento).toBe('Ar');
+      expect(getElementChakra('Terra')?.elemento).toBe('Terra');
+      expect(getElementChakra('Éter')?.elemento).toBe('Éter');
+    });
+    it('is case-insensitive', () => {
+      expect(getElementChakra('fogo')?.elemento).toBe('Fogo');
+      expect(getElementChakra('TERRA')?.elemento).toBe('Terra');
+    });
+    it('returns null for unknown elements', () => {
+      expect(getElementChakra('unknown')).toBeNull();
+    });
+  });
+  // ─── getChakraElement: reverse lookup by chakra ───────────────────────────
+  describe('getChakraElement', () => {
+    it('returns correct element for primary chakras', () => {
+      expect(getChakraElement('2º Sacro')?.elemento).toBe('Fogo');
+      expect(getChakraElement('1º Básico')?.elemento).toBe('Terra');
+      expect(getChakraElement('4º Cardíaco')?.elemento).toBe('Ar');
+      expect(getChakraElement('7º Coronário')?.elemento).toBe('Éter');
+    });
+    it('returns correct element for secondary chakras', () => {
+      expect(getChakraElement('3º Plexo Solar')?.elemento).toBe('Fogo');
+      expect(getChakraElement('6º Frontal')?.elemento).toBe('Água');
+    });
+    it('is case-insensitive', () => {
+      expect(getChakraElement('2º sacro')?.elemento).toBe('Fogo');
+      expect(getChakraElement('TERRA')?.elemento).toBeNull();
+    });
+    it('returns null for unknown chakras', () => {
+      expect(getChakraElement('unknown')).toBeNull();
+    });
+  });
+  // ─── getAllElementChakras: alias for getAllElementMappings ─────────────────
+  describe('getAllElementChakras', () => {
+    it('returns all 5 element mappings', () => {
+      const all = getAllElementChakras();
+      expect(all).toHaveLength(5);
+    });
+    it('returns array containing all elements', () => {
+      const all = getAllElementChakras();
+      const elements = all.map((m) => m.elemento);
+      expect(elements).toContain('Fogo');
+      expect(elements).toContain('Água');
+      expect(elements).toContain('Ar');
+      expect(elements).toContain('Terra');
+      expect(elements).toContain('Éter');
+    });
+    it('is equivalent to getAllElementMappings', () => {
+      const all = getAllElementChakras();
+      const expected = getAllElementMappings();
+      expect(all).toEqual(expected);
     });
   });
 });
