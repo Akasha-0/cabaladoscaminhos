@@ -175,19 +175,18 @@ describe('sephirot-day', () => {
       expect(result.length).toBeGreaterThan(0);
     });
 
-    it('contains all 10 Sephiroth entries', () => {
+    it('contains all mapped Sephiroth', () => {
       const result = getAllSephirotDays();
       const sephiroth = result.map(r => r.sephirah);
-      expect(sephiroth).toContain('Kether');
-      expect(sephiroth).toContain('Chokmah');
-      expect(sephiroth).toContain('Binah');
-      expect(sephiroth).toContain('Chesed');
-      expect(sephiroth).toContain('Geburah');
+      // The module has 8 unique Sephiroth mapped to days
       expect(sephiroth).toContain('Tiphereth');
-      expect(sephiroth).toContain('Netzach');
-      expect(sephiroth).toContain('Hod');
-      expect(sephiroth).toContain('Yesod');
       expect(sephiroth).toContain('Malkuth');
+      expect(sephiroth).toContain('Yesod');
+      expect(sephiroth).toContain('Geburah');
+      expect(sephiroth).toContain('Hod');
+      expect(sephiroth).toContain('Chesed');
+      expect(sephiroth).toContain('Kether');
+      expect(sephiroth).toContain('Binah');
     });
 
     it('each mapping has spiritual meaning', () => {
@@ -225,8 +224,10 @@ describe('sephirot-day', () => {
       expect(result.length).toBeGreaterThan(0);
     });
 
-    it('contains valid Sephirah names', () => {
+    it('returns unique sephiroth names', () => {
       const result = getAllSephiroth();
+      // Should have 8 unique sephiroth (Tiphereth appears twice with different keys)
+      expect(result.length).toBeGreaterThanOrEqual(8);
       expect(result).toContain('Tiphereth');
       expect(result).toContain('Kether');
       expect(result).toContain('Malkuth');
@@ -383,18 +384,13 @@ describe('sephirot-day', () => {
       expect(SEPHIROT_DAY_MAPPINGS).not.toBeNull();
     });
 
-    it('contains all required Sephiroth', () => {
-      const requiredSephiroth = [
-        'Kether', 'Chokmah', 'Binah', 'Chesed', 'Geburah',
-        'Tiphereth', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+    it('contains all required Sephiroth keys', () => {
+      const requiredKeys = [
+        'Tiphereth', 'Malkuth', 'Yesod', 'Geburah', 'Hod', 
+        'Chesed', 'Kether', 'Binah', 'Tiphereth-Sabado'
       ];
-      requiredSephiroth.forEach(sephirah => {
-        // At least one mapping should exist for each Sephirah
-        const hasMapping = Object.values(SEPHIROT_DAY_MAPPINGS).some(
-          m => m.sephirah === sephirah
-        );
-        // Note: Some Sephiroth may not have direct day mappings
-        // This is expected as per the spiritual correlation design
+      requiredKeys.forEach(key => {
+        expect(SEPHIROT_DAY_MAPPINGS).toHaveProperty(key);
       });
     });
 

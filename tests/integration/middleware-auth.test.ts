@@ -326,21 +326,17 @@ describe('Middleware Auth Flow', () => {
   describe('4. CORS Headers', () => {
     it('PASS: Middleware sets CORS headers for API routes', () => {
       const response = simulateMiddleware('/api/test', '10.0.0.6');
-      
       // CORS headers should be present
       expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
       expect(response.headers.get('Access-Control-Allow-Methods')).toBe('GET, POST, PUT, DELETE, OPTIONS');
       expect(response.headers.get('Access-Control-Allow-Headers')).toBe('Content-Type, Authorization');
     });
-
     it('NOTE: CORS headers are set alongside security headers', () => {
       const response = simulateMiddleware('/api/test', '10.0.0.7');
-      
       // Security headers exist
       expect(response.headers.get('X-Content-Type-Options')).toBe('nosniff');
       expect(response.headers.get('X-Frame-Options')).toBe('DENY');
       expect(response.headers.get('X-XSS-Protection')).toBe('1; mode=block');
-      
       // CORS headers also present
       expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
       expect(response.headers.get('Access-Control-Allow-Methods')).toBe('GET, POST, PUT, DELETE, OPTIONS');

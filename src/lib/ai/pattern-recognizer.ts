@@ -47,7 +47,7 @@ const ARCHETYPE_DATABASE: ArchetypePattern[] = [
     traditions: ['kabbalah', 'ifa', 'candomble', 'tarot', 'astrology', 'numerology'],
     energy_signature: 'força, coragem, ação',
     manifestations: {
-      kabbalah: 'Chesed (Keter) - Misericordia/Dizima',
+      kabbalah: 'Chesed (Keter) - Misericórdia/Dízima',
       ifa: 'Ogbe - Primeiro Odu da criação',
       candomble: 'Ogun - O ferro e os guerreiros',
       tarot: 'A Torre - Transformação pela ação',
@@ -218,13 +218,23 @@ function calculateTraditionAffinity(
     numerology: 0,
   };
 
+  // Numerology affinity - based on personal number
   if (userData.numeroPessoal) {
     affinities.numerology += userData.numeroPessoal * 2;
   }
 
+  // Astrology affinity - based on sign and houses
   if (userData.sign) {
     affinities.astrology += 3;
   }
+  if (userData.houses && Object.keys(userData.houses).length > 0) {
+    affinities.astrology += Object.keys(userData.houses).length;
+  }
+  if (userData.planetPositions && Object.keys(userData.planetPositions).length > 0) {
+    affinities.astrology += Object.keys(userData.planetPositions).length;
+  }
+
+  // Kabbalah affinity - based on sefirot
   if (userData.sefirotDominante && userData.sefirotDominante.length > 0) {
     affinities.kabbalah += userData.sefirotDominante.length * 2;
   }
@@ -232,6 +242,7 @@ function calculateTraditionAffinity(
     affinities.kabbalah += userData.arcoMaior.length;
   }
 
+  // IFA/Candomblé affinity - based on odu and orixa
   if (userData.odu) {
     affinities.ifa += 4;
     affinities.candomble += 4;
@@ -240,488 +251,13 @@ function calculateTraditionAffinity(
     affinities.candomble += 5;
   }
 
+  // Tarot affinity - based on arco pessoal
   if (userData.arcoPessoal) {
     affinities.tarot += userData.arcoPessoal;
   }
 
   return affinities;
 }
-
-// ============================================================
-// NUMEROLOGY ARCHETYPE MAPPING
-// ============================================================
-
-const NUMEROLOGY_ARCHETYPE_MAP: Record<number, string[]> = {
-  1: ['magician', 'ruler', 'explorer'],
-  2: ['creator', 'innocent'],
-  3: ['sage', 'lover'],
-  4: ['hermit', 'explorer'],
-  5: ['transformer', 'explorer'],
-  6: ['lover', 'creator'],
-  7: ['hermit', 'innocent', 'sage'],
-  8: ['hermit', 'ruler'],
-  9: ['warrior', 'sage', 'transformer'],
-};
-
-// ============================================================
-// ASTROLOGY SIGN ARCHETYPE MAPPING
-// ============================================================
-
-const ASTROLOGY_SIGN_ARCHETYPE_MAP: Record<string, string[]> = {
-  aries: ['warrior', 'explorer'],
-  touro: ['creator', 'ruler'],
-  gemeos: ['magician', 'explorer'],
-  cancer: ['innocent', 'lover'],
-  leao: ['ruler', 'creator'],
-  virgem: ['hermit', 'magician'],
-  libra: ['lover', 'sage'],
-  escorpiao: ['transformer', 'magician'],
-  sagitario: ['explorer', 'sage'],
-  capricornio: ['ruler', 'hermit'],
-  aquario: ['magician', 'explorer'],
-  peixes: ['sage', 'innocent', 'transformer'],
-};
-
-// ============================================================
-// TAROT ARC ARCHETYPE MAPPING
-// ============================================================
-
-const TAROT_ARC_ARCHETYPE_MAP: Record<number, string[]> = {
-  0: ['innocent', 'explorer'],
-  1: ['magician'],
-  2: ['lover'],
-  3: ['sage'],
-  4: ['ruler'],
-  5: ['hermit'],
-  6: ['lover'],
-  7: ['explorer'],
-  8: ['ruler'],
-  9: ['innocent', 'hermit'],
-  10: ['transformer', 'ruler'],
-  11: ['lover', 'innocent'],
-  12: ['sage', 'hermit'],
-  13: ['transformer'],
-  14: ['creator', 'lover'],
-  15: ['warrior', 'transformer'],
-  16: ['warrior', 'transformer'],
-  17: ['innocent', 'sage'],
-  18: ['transformer', 'innocent'],
-  19: ['creator'],
-  20: ['transformer', 'sage'],
-  21: ['ruler', 'magician'],
-};
-
-// ============================================================
-// TRADITION DESCRIPTIONS, KEYWORDS, SYMBOLS, PRACTICES
-// ============================================================
-
-const KABBALAH_DATA: Record<string, { description: string; keywords: string[]; symbols: string[]; practices: string[] }> = {
-  warrior: {
-    description: 'Chesed representa a energia do amor ativo e compassivo, extendendo misericórdia ao próximo.',
-    keywords: ['misericordia', 'amor', 'expansão', 'generosidade'],
-    symbols: ['Coluna da Misericordia', 'Triangulo ascendendo'],
-    practices: ['Meditação de Chesed', 'Ações de caridade'],
-  },
-  lover: {
-    description: 'Gevurah ensina o uso discernido do poder, canalizando a energia de amor através do julgamento sagrado.',
-    keywords: ['julgamento', 'limite', 'força', 'restrição'],
-    symbols: ['Coluna do Julgamento', 'Esfera escarlate'],
-    practices: ['Restrição sacrificial', 'Ayurveda diets'],
-  },
-  magician: {
-    description: 'Tiferet é o ponto de equilíbrio onde a luz superior se cristaliza em forma-manifestação.',
-    keywords: ['beleza', 'harmonia', 'mediador', 'equilíbrio'],
-    symbols: ['Hexagrama central', 'Lótus flamejante'],
-    practices: ['Retiro em Tiferet', 'Unificação de opostos'],
-  },
-  hermit: {
-    description: 'Biná manifesta a sabedoria primordial que surge da escuridão Fertile e iluminação.',
-    keywords: ['sabedoria', 'intuição', 'separação', 'juizo'],
-    symbols: ['Lâmpada de Biná', 'Foice de intelectual'],
-    practices: ['Noite de Biná', 'Estudo de Sepher Yetzirah'],
-  },
-  sage: {
-    description: 'Daat conecta todos os sefirot, representando o conhecimento oculto da tradição.',
-    keywords: ['conhecimento', 'verdade', 'oculto', 'mistico'],
-    symbols: ['Livro oculto', 'Olho de Providence'],
-    practices: ['Via meditationis', 'Estudo de Kabbalah'],
-  },
-  transformer: {
-    description: 'Yesod é a base de toda a realidade materialize, onde a imaginação cria o mundo.',
-    keywords: ['fundação', 'imaginação', 'profecia', 'sonho'],
-    symbols: ['Círculo de Yesod', 'Formas hexagonais'],
-    practices: ['Visualização de Yesod', 'Trabalho com sonho'],
-  },
-  creator: {
-    description: 'Malkut é a realezamundana, onde a energia divina se torna tangível.',
-    keywords: ['realeza', 'manifestação', 'presença', 'divindade'],
-    symbols: ['Palacio_real', 'Trono'],
-    practices: ['Reinos de Malkut', 'Rituais de manifestação'],
-  },
-  innocent: {
-    description: 'Keter é a coroa da consciência pura, antes da divisão sujeito-objeto.',
-    keywords: ['coroa', 'pureza', 'vontade', 'propósito'],
-    symbols: ['Coroa de luz', 'Halo solar'],
-    practices: ['Devoção de Keter', 'Oração pura'],
-  },
-  explorer: {
-    description: 'Hesed é a expansão infinita da graça que preceda toda forma.',
-    keywords: ['bondade', 'graça', 'expansão', 'luz'],
-    symbols: ['Cálice derramando', 'Árvore em flor'],
-    practices: ['Gemilut Hasadim', 'Expansão de consciência'],
-  },
-  ruler: {
-    description: 'Malchut é o reino onde a vontade divina se expressa através da autoridade.',
-    keywords: ['autoridade', 'liderança', 'estrutura', 'ordem'],
-    symbols: ['Trono de marfim', 'Cetro_real'],
-    practices: ['Hierarquia celestial', 'Ordem ritual'],
-  },
-};
-
-const IFA_DATA: Record<string, { description: string; keywords: string[]; symbols: string[]; practices: string[] }> = {
-  warrior: {
-    description: 'Ogbe representa o poder masculino da criação e a força vital que inicia todo movimento.',
-    keywords: ['poder', 'força', 'iniciação', 'Ogbe'],
-    symbols: ['Ikin', 'Opone', 'Ojub'],
-    practices: ['Ebo de Ogbe', 'initiation rites'],
-  },
-  lover: {
-    description: 'Oxum simboliza a essência do amor, da fertilidade e das águas doces que nutrem a vida.',
-    keywords: ['amor', 'fertilidade', 'Oxum', 'água doce'],
-    symbols: ['espelho', 'pente', 'ouro'],
-    practices: ['Oferecimentos a Oxum', 'water rituals'],
-  },
-  magician: {
-    description: 'Oxumar carrega o mistério da abundância e da sabedoria serpentina ancestral.',
-    keywords: ['abundancia', 'serpente', 'oxumar', 'misterio'],
-    symbols: ['serpente', 'ouro', 'maraca'],
-    practices: ['Oxumar ceremonies', 'wealth rituals'],
-  },
-  hermit: {
-    description: 'Ori é a consciência individual que busca seu destino através da intuição mais profunda.',
-    keywords: ['Ori', 'cabeça', 'destino', 'intuição'],
-    symbols: ['cabeça', 'coroa', 'Opa'],
-    practices: ['Ori workings', 'head ceremonies'],
-  },
-  sage: {
-    description: 'Owonrin traz a sabedoria dos anciões e o conhecimento dos mistérios do universo.',
-    keywords: ['Owonrin', 'ancião', 'sabedoria', 'mistro'],
-    symbols: ['livro de Ifá', 'palm wine', 'Eshu'],
-    practices: ['Ifá divination', 'study of Odu'],
-  },
-  transformer: {
-    description: 'Ose representa a força espiritual que transforma obstáculos em oportunidades.',
-    keywords: ['Ose', 'transformação', 'espírito', 'força'],
-    symbols: ['Ose', 'mysterious marks', 'fire'],
-    practices: ['Ose rituals', 'spiritual cleansing'],
-  },
-  creator: {
-    description: 'Irosun Manifesta a energia criativa que traz filhos e prosperidade.',
-    keywords: ['Irosun', 'filhos', 'criatividade', 'prosperidade'],
-    symbols: ['crianças', 'colares', 'dolls'],
-    practices: ['Child dedication', 'fertility rites'],
-  },
-  innocent: {
-    description: 'Odi oferece proteção e cura através da pureza do coração.',
-    keywords: ['Odi', 'cura', 'proteção', 'inocência'],
-    symbols: ['folhas', 'cabaça', 'limpeza'],
-    practices: ['Healing offerings', 'purification'],
-  },
-  explorer: {
-    description: 'Ofun abre os caminhos da jornada e protege o viajante.',
-    keywords: ['Ofun', 'jornada', 'caminho', 'viajem'],
-    symbols: ['road', 'travel items', 'staff'],
-    practices: ['Travel protection', 'road rituals'],
-  },
-  ruler: {
-    description: 'Owonrin também governa a autoridade e o comando sobre os elementos.',
-    keywords: ['Owonrin', 'autoridade', 'comando', 'lider'],
-    symbols: ['staff of office', 'crown', 'Eshu'],
-    practices: ['Leadership ceremonies', 'authority rites'],
-  },
-};
-
-const CANDOMBLE_DATA: Record<string, { description: string; keywords: string[]; symbols: string[]; practices: string[] }> = {
-  warrior: {
-    description: 'Ogun é o orixá do ferro, dos guerreiros e da justiça, senhor de todos os metais e ferramentas.',
-    keywords: ['ferro', 'guerreiro', 'Ogun', 'metal'],
-    symbols: ['ferro', 'facão', 'engrenagem'],
-    practices: ['Feitura de Ogun', 'ritual de ferro'],
-  },
-  lover: {
-    description: 'Oxum é a deusa do amor, da beleza e das águas doces, representando a essência feminina.',
-    keywords: ['amor', 'beleza', 'Oxum', 'água doce'],
-    symbols: ['espelho', 'pente', 'ouro'],
-    practices: ['Oferecimentos a Oxum', 'banho de Oxum'],
-  },
-  magician: {
-    description: 'Oxumare é a serpente cósmica que guarda os mistérios da transformação e da eternidade.',
-    keywords: ['serpente', 'eternidade', 'Oxumare', 'mistério'],
-    symbols: ['serpente', 'ouro', 'maraca'],
-    practices: ['Rituais de Oxumare', 'serpent ceremonies'],
-  },
-  hermit: {
-    description: 'Orunmilá é o guardião da sabedoria e do destino, o orixá que conhece os segredos do Ifá.',
-    keywords: ['sabedoria', 'destino', 'Orunmilá', 'Ifá'],
-    symbols: ['cabeça', 'coroa', 'pá'],
-    practices: ['Consultas de Ifá', 'Cerimônias de Orunmilá'],
-  },
-  sage: {
-    description: 'Exu é o mensageiro dos caminhos, o orixá da comunicação e dos cruzamentos.',
-    keywords: ['mensagem', 'cruzamento', 'Exu', 'comunicação'],
-    symbols: ['rueda', 'cruz', 'pomba'],
-    practices: ['Rituais de Exu', 'comunicação ritual'],
-  },
-  transformer: {
-    description: 'Shakpana é o orixá das doenças e transformações, que traz renovação através do sofrimento.',
-    keywords: ['doença', 'transformação', 'Shakpana', 'renovação'],
-    symbols: ['cobre', 'ferro', 'espanta'],
-    practices: ['ebo de Shakpana', 'cura de doenças'],
-  },
-  creator: {
-    description: 'Iemanja é a mãe do mar, dos peixes e de todos os seres aquatic, fonte de vida e nutrição.',
-    keywords: ['mar', 'maternidade', 'Iemanja', 'criação'],
-    symbols: ['estrela', 'mar', 'azulejo'],
-    practices: ['Rituais de Iemanja', 'oferecimentos ao mau00'],
-  },
-  innocent: {
-    description: 'Omulu é o jovem orixá da doença e da cura, que protege contra pestes e pragas.',
-    keywords: ['doença', 'cura', 'Omulu', 'proteção'],
-    symbols: ['máscara', 'barrete', 'pano'],
-    practices: ['Proteção de Omulu', 'limpeza de doenças'],
-  },
-  explorer: {
-    description: 'Oxosse é o caçador do mato, senhor das matas e da liberdade selvagem.',
-    keywords: ['caça', 'mato', 'Oxosse', 'liberdade'],
-    symbols: ['arco', 'flecha', 'folhas'],
-    practices: ['Rituais de Oxosse', 'caça ritual'],
-  },
-  ruler: {
-    description: 'Oxalá é o pai da paz, o mais velho dos orixás, senhor da criação e da ordem.',
-    keywords: ['paz', 'paternidade', 'Oxalá', 'ordem'],
-    symbols: ['bastão', 'turbante', 'marfim'],
-    practices: ['Rituais de Oxalá', 'paz e ordem'],
-  },
-};
-
-const TAROT_DATA: Record<string, { description: string; keywords: string[]; symbols: string[]; practices: string[] }> = {
-  warrior: {
-    description: 'A Torre representa a destruição das estruturas falsas para dar lugar a uma renovação heroica.',
-    keywords: ['transformação', 'destruição', 'renovação', 'choque'],
-    symbols: ['torre', 'raio', 'coroa', 'fogo'],
-    practices: ['Meditação na Torre', 'Ritual de soltura'],
-  },
-  lover: {
-    description: 'Os Enamorados simboliza a união das dualidades e a escolha consciente entre caminhos.',
-    keywords: ['escolha', 'união', 'dualidade', 'amor'],
-    symbols: ['anjo', 'homem', 'mulher', 'árvore'],
-    practices: ['Escolha consciente', 'Unificação de opostos'],
-  },
-  magician: {
-    description: 'O Mago é o simbolo da manifestação através do uso consciente de recursos e habilidades.',
-    keywords: ['manifestação', 'poder', 'recurso', 'habilidade'],
-    symbols: ['mesa', 'taça', 'espada', 'pentalfa'],
-    practices: ['Manifestação criativa', 'Trabalho com recursos'],
-  },
-  hermit: {
-    description: 'O Eremita representa a busca interior, a solitude necessária para a iluminação.',
-    keywords: ['busca', 'interior', 'solitude', 'iluminação'],
-    symbols: ['lanterna', 'figura encapuzada', 'cajado'],
-    practices: ['Retiro em silêncio', 'Auto-observação'],
-  },
-  sage: {
-    description: 'O Louco carrega a sabedoria da天真 e a verdade que transcende a lógica convencional.',
-    keywords: ['pureza', 'verdade', 'spontaneidade', 'inocência'],
-    symbols: ['figure', 'cliffs', 'sun', 'path'],
-    practices: ['Prática do Louco', 'Confiança no universo'],
-  },
-  transformer: {
-    description: 'A Morte não é destruição, mas a transformação inevitável que precede o renascimento.',
-    keywords: ['morte', 'renascimento', 'transformação', 'mudança'],
-    symbols: ['esqueleto', 'rei morto', 'ceoeiro', 'Lua'],
-    practices: ['Ritual de morte e renascimento', 'Desapego'],
-  },
-  creator: {
-    description: 'A Imperatriz simboliza a fertilidade criativa, a natureza abundante e a expressão artística.',
-    keywords: ['fertilidade', 'natureza', 'abundância', 'arte'],
-    symbols: ['fig tree', 'heart', 'shield', 'vineyard'],
-    practices: ['Criação artística', 'Conexão com natureza'],
-  },
-  innocent: {
-    description: 'O Louco na sua essência mais pura representa a confiança absoluta no universo.',
-    keywords: ['confiança', 'novo', 'início', 'liberdade'],
-    symbols: ['bag', 'dog', 'cliffs', 'sun'],
-    practices: ['Confiança plena', 'Entrega ao fluxo'],
-  },
-  explorer: {
-    description: 'A Roda da Fortuna indica os ciclos da vida e a necessidade de fluir com as mudanças.',
-    keywords: ['ciclo', 'destino', 'mudança', 'sorte'],
-    symbols: ['roda', 'esfinge', 'serpente', 'destino'],
-    practices: ['Aceitação dos ciclos', 'Fluidez com mudanças'],
-  },
-  ruler: {
-    description: 'O Imperador representa a autoridade, a disciplina e a capacidade de criar ordem.',
-    keywords: ['autoridade', 'estrutura', 'disciplina', 'liderança'],
-    symbols: ['tetra', 'arma', 'coroa', 'águia'],
-    practices: ['Estruturação pessoal', 'Disciplina consciente'],
-  },
-};
-
-const ASTROLOGY_DATA: Record<string, { description: string; keywords: string[]; symbols: string[]; practices: string[] }> = {
-  warrior: {
-    description: 'Marte representa a energia de ação, competição e determinação que impulsa a vontade.',
-    keywords: ['ação', 'competição', 'determinação', 'vontade'],
-    symbols: ['♂', 'carneiro', 'espada', 'escudo'],
-    practices: ['Exercício de vontade', 'Competição honrada'],
-  },
-  lover: {
-    description: 'Vênus expressa a energia do amor, da harmonia e da appreciação estética e sensual.',
-    keywords: ['amor', 'harmonia', 'beleza', 'arte'],
-    symbols: ['♀', 'touro', 'balança', 'coração'],
-    practices: ['Arte e estética', 'Rituais de amor'],
-  },
-  magician: {
-    description: 'Mercúrio é o mensageiro mental que governa a comunicação, a magia e a adaptabilidade.',
-    keywords: ['comunicação', 'mental', 'adaptabilidade', 'curiosidade'],
-    symbols: ['☿', 'gêmeos', 'virgem', 'asas'],
-    practices: ['Estudo mental', 'Comunicação criativa'],
-  },
-  hermit: {
-    description: 'Saturno ensina através de limites, karma e a sabedoria que vem com a paciência.',
-    keywords: ['limite', 'karma', 'maturidade', 'sabedoria'],
-    symbols: ['♄', 'capricornio', 'carrasco', 'tempo'],
-    practices: ['Rituais de Saturno', 'Trabalho com limites'],
-  },
-  sage: {
-    description: 'Júpiter expande a consciência através da filosofia, espiritualidade e optimism.',
-    keywords: ['expansão', 'filosofia', 'espiritualidade', 'otimismo'],
-    symbols: ['♃', 'sagitário', 'peixe', 'expansão'],
-    practices: ['Expansão de consciência', 'Filosofia de vida'],
-  },
-  transformer: {
-    description: 'Plutão é o agente da transformação radical, regeneração e poder oculto.',
-    keywords: ['transformação', 'regeneração', 'poder', 'oculto'],
-    symbols: ['♇', 'escorpião', 'fogo', 'regeneração'],
-    practices: ['Trabalho com Plutão', 'Rituais de regeneração'],
-  },
-  creator: {
-    description: 'Sol é a luz do ego, o propósito de vida e a vitalidade criativa individual.',
-    keywords: ['identidade', 'propósito', 'vitalidade', 'criatividade'],
-    symbols: ['☉', 'leão', 'rei', 'luz'],
-    practices: ['Expressão criativa', ' autoconhecimento'],
-  },
-  innocent: {
-    description: 'Lua nurture o emocional, o intuitivo e a necessidade de segurança e lar.',
-    keywords: ['emoção', 'intuição', 'lar', 'nutrição'],
-    symbols: ['☽', 'câncer', 'taça', 'lua'],
-    practices: ['Auto-cuidado', 'Rituais lunares'],
-  },
-  explorer: {
-    description: 'Urano quebra convenções com inovação, liberdade e revelações súbitas.',
-    keywords: ['inovação', 'liberdade', 'originalidade', 'revelação'],
-    symbols: ['♅', 'aquário', 'relâmpago', 'novidade'],
-    practices: ['Inovação pessoal', 'Abertura a mudanças'],
-  },
-  ruler: {
-    description: 'Sol também representa o brilho real e a liderança que vem com o autoconhecimento.',
-    keywords: ['liderança', 'autoridade', 'realização', 'poder'],
-    symbols: ['☉', 'leão', 'coroa', 'trono'],
-    practices: ['Liderança autêntica', 'Realização de propósito'],
-  },
-};
-
-const NUMEROLOGY_DATA: Record<string, { description: string; keywords: string[]; symbols: string[]; practices: string[] }> = {
-  warrior: {
-    description: 'O 9 representa o guerreiro espiritual que completou sua jornada e retornou para servir.',
-    keywords: ['força mental', 'completude', 'serviço', 'sabedoria'],
-    symbols: ['estrella de 9 puntas', 'no cíclico'],
-    practices: ['Serviço altruísta', 'Mentoramento'],
-  },
-  lover: {
-    description: 'O 6 é o harmonizador que cria equilíbrio entre o individual e o coletivo através do amor.',
-    keywords: ['harmonia', 'família', 'responsabilidade', 'beleza'],
-    symbols: ['hexágono', 'coração', 'balança'],
-    practices: ['Rituais domésticos', 'Cuidado familiar'],
-  },
-  magician: {
-    description: 'O 1 é o criador individual que manifesta através da vontade e da determinação.',
-    keywords: ['liderança', 'iniciativa', 'inovação', 'vontade'],
-    symbols: ['círculo', 'ponto central', 'unidade'],
-    practices: ['Exercício de vontade', 'Iniciação de projetos'],
-  },
-  hermit: {
-    description: 'O 8 é o mago do mundo material que compreende as leis da energia e da abundância.',
-    keywords: ['abundância', 'poder', 'autoride', 'realização'],
-    symbols: ['infinito', 'serpent', 'loop'],
-    practices: ['Trabalho com dinheiro', 'Entendimento do poder'],
-  },
-  sage: {
-    description: 'O 3 é o professor espiritual que expressa através da comunicação e da criatividade.',
-    keywords: ['expressão', 'comunicação', 'criatividade', 'alegria'],
-    symbols: ['triángulo', 'comunicación', 'flor'],
-    practices: ['Expressão criativa', 'Ensino e compartilhamento'],
-  },
-  transformer: {
-    description: 'O 5 é o transformador que abraça a mudança e ensina a liberdade através da adaptação.',
-    keywords: ['mudança', 'liberdade', 'adaptabilidade', 'experiência'],
-    symbols: ['pentagrama',  'liberación', 'cambio'],
-    practices: ['Abraçar mudanças', 'Prática da liberdade'],
-  },
-  creator: {
-    description: 'O 2 é o parceiro divino que manifesta através da sensibilidade e da cooperação.',
-    keywords: ['parceria', 'sensibilidade', 'diplomacia', 'cooperação'],
-    symbols: ['par', 'dualidad', 'unión'],
-    practices: ['Cooperação', 'trabalho em equipe'],
-  },
-  innocent: {
-    description: 'O 7 é o buscador espiritual que se retira do mundo para encontrar a verdade interior.',
-    keywords: ['espiritualidade', 'introspecção', 'perfeicção', 'sabedoria'],
-    symbols: ['loto', 'espada', 'búsqueda'],
-    practices: ['Retiro espiritual', 'Meditação profunda'],
-  },
-  explorer: {
-    description: 'O 4 é o construtor que estabelece fundamentos sólidos para a expressão criativa.',
-    keywords: ['estabilidade', 'fundamento', 'trabalho', 'dedicação'],
-    symbols: ['cuadrado', 'fundamento', 'estructura'],
-    practices: ['Construção de fundamentos', 'Disciplina'],
-  },
-  ruler: {
-    description: 'O 1 também representa o líder que inicia novos ciclos e comandas com visão.',
-    keywords: ['liderança', 'individualidade', 'iniciativa', 'independência'],
-    symbols: ['corona', 'sol',  'lider'],
-    practices: ['Liderança autêntica', 'Iniciativa pessoal'],
-  },
-};
-
-// ============================================================
-// ARCHETYPE CONFLICT/SYNERGY MAPPING
-// ============================================================
-
-const ARCHETYPE_CONFLICTS: Record<string, string[]> = {
-  warrior: ['hermit', 'innocent'],
-  lover: ['warrior', 'explorer'],
-  magician: ['ruler', 'hermit'],
-  hermit: ['explorer', 'ruler'],
-  sage: ['ruler', 'creator'],
-  transformer: ['innocent', 'ruler'],
-  creator: ['sage', 'hermit'],
-  innocent: ['warrior', 'transformer'],
-  explorer: ['hermit', 'ruler'],
-  ruler: ['magician', 'explorer'],
-};
-
-const ARCHETYPE_ENERGIES: Record<string, string[]> = {
-  warrior: ['ação', 'força', 'competição', 'determinação'],
-  lover: ['amor', 'harmonia', 'beleza', 'relacionamento'],
-  magician: ['manifestação', 'mental', 'recurso', 'habilidade'],
-  hermit: ['interior', 'sabedoria', 'limite', 'paciência'],
-  sage: ['expansão', 'conhecimento', 'filosofia', 'comunicação'],
-  transformer: ['mudança', 'renovação', 'regeneração', 'transição'],
-  creator: ['fertilidade', 'natureza', 'expressão', 'nutrição'],
-  innocent: ['pureza', 'confiança', 'espontaneidade', 'novidade'],
-  explorer: ['liberdade', 'aventura', 'descoberta', 'inovação'],
-  ruler: ['autoridade', 'estrutura', 'liderança', 'organização'],
-};
 
 // ============================================================
 // PATTERN RECOGNIZER CLASS
@@ -740,12 +276,14 @@ export class PatternRecognizer {
     for (const archetype of this.archetypes) {
       let score = 0;
 
+      // Score based on tradition affinities
       for (const tradition of archetype.traditions) {
         if (affinities[tradition]) {
           score += affinities[tradition] * (TRADITION_WEIGHTS[tradition] || 1);
         }
       }
 
+      // Score based on archetype-specific manifestations matching user data
       const manifestations = archetype.manifestations;
 
       if (manifestations.numerology && userData.numeroPessoal) {
@@ -787,27 +325,90 @@ export class PatternRecognizer {
       scores.push({ pattern: archetype, score });
     }
 
+    // Sort by score descending and return top patterns
     scores.sort((a, b) => b.score - a.score);
 
+    // Return top 3 archetypes with significant scores
     return scores
       .filter((s) => s.score > 5)
       .slice(0, 3)
       .map((s) => s.pattern);
   }
 
+  /**
+   * Match numerology number to archetype
+   */
   private matchNumerologyArchetype(numero: number, archetypeId: string): number {
-    const archetypes = NUMEROLOGY_ARCHETYPE_MAP[numero] || [];
+    const numMap: Record<number, string[]> = {
+      1: ['magician', 'ruler', 'explorer'],
+      2: ['creator', 'innocent'],
+      3: ['sage', 'lover'],
+      4: ['hermit', 'explorer'],
+      5: ['transformer', 'explorer'],
+      6: ['lover', 'creator'],
+      7: ['hermit', 'innocent', 'sage'],
+      8: ['hermit', 'ruler'],
+      9: ['warrior', 'sage', 'transformer'],
+    };
+
+    const archetypes = numMap[numero] || [];
     return archetypes.includes(archetypeId) ? 1 : 0;
   }
 
+  /**
+   * Match astrology sign to archetype
+   */
   private matchAstrologyArchetype(sign: string, archetypeId: string): number {
+    const signMap: Record<string, string[]> = {
+      'aries': ['warrior', 'explorer'],
+      'touro': ['creator', 'ruler'],
+      'gemeos': ['magician', 'explorer'],
+      'cancer': ['innocent', 'lover'],
+      'leao': ['ruler', 'creator'],
+      'virgem': ['hermit', 'magician'],
+      'libra': ['lover', 'sage'],
+      'escorpiao': ['transformer', 'magician'],
+      'sagitario': ['explorer', 'sage'],
+      'capricornio': ['ruler', 'hermit'],
+      'aquario': ['magician', 'explorer'],
+      'peixes': ['sage', 'innocent', 'transformer'],
+    };
+
     const normalizedSign = sign.toLowerCase();
-    const archetypes = ASTROLOGY_SIGN_ARCHETYPE_MAP[normalizedSign] || [];
+    const archetypes = signMap[normalizedSign] || [];
     return archetypes.includes(archetypeId) ? 1 : 0;
   }
 
+  /**
+   * Match tarot card to archetype
+   */
   private matchTarotArchetype(arcoPessoal: number, archetypeId: string): number {
-    const archetypes = TAROT_ARC_ARCHETYPE_MAP[arcoPessoal] || [];
+    const tarotMap: Record<number, string[]> = {
+      0: ['innocent', 'explorer'],
+      1: ['magician'],
+      2: ['lover'],
+      3: ['sage'],
+      4: ['ruler'],
+      5: ['hermit'],
+      6: ['lover'],
+      7: ['explorer'],
+      8: ['ruler'],
+      9: ['innocent', 'hermit'],
+      10: ['transformer', 'ruler'],
+      11: ['lover', 'innocent'],
+      12: ['sage', 'hermit'],
+      13: ['transformer'],
+      14: ['creator', 'lover'],
+      15: ['warrior', 'transformer'],
+      16: ['warrior', 'transformer'],
+      17: ['innocent', 'sage'],
+      18: ['transformer', 'innocent'],
+      19: ['creator'],
+      20: ['transformer', 'sage'],
+      21: ['ruler', 'magician'],
+    };
+
+    const archetypes = tarotMap[arcoPessoal] || [];
     return archetypes.includes(archetypeId) ? 1 : 0;
   }
 
@@ -824,90 +425,457 @@ export class PatternRecognizer {
     const m = archetype.manifestations;
 
     if (m.kabbalah) {
-      const data = KABBALAH_DATA[archetypeId];
-      if (data) {
-        manifestations.push({
-          tradition: 'kabbalah',
-          name: m.kabbalah,
-          description: data.description,
-          keywords: data.keywords,
-          symbols: data.symbols,
-          practices: data.practices,
-        });
-      }
+      manifestations.push({
+        tradition: 'kabbalah',
+        name: m.kabbalah,
+        description: this.getKabbalahDescription(archetype.id),
+        keywords: this.getKabbalahKeywords(archetype.id),
+        symbols: this.getKabbalahSymbols(archetype.id),
+        practices: this.getKabbalahPractices(archetype.id),
+      });
     }
 
     if (m.ifa) {
-      const data = IFA_DATA[archetypeId];
-      if (data) {
-        manifestations.push({
-          tradition: 'ifa',
-          name: m.ifa,
-          description: data.description,
-          keywords: data.keywords,
-          symbols: data.symbols,
-          practices: data.practices,
-        });
-      }
+      manifestations.push({
+        tradition: 'ifa',
+        name: m.ifa,
+        description: this.getIfaDescription(archetype.id),
+        keywords: this.getIfaKeywords(archetype.id),
+        symbols: this.getIfaSymbols(archetype.id),
+        practices: this.getIfaPractices(archetype.id),
+      });
     }
 
     if (m.candomble) {
-      const data = CANDOMBLE_DATA[archetypeId];
-      if (data) {
-        manifestations.push({
-          tradition: 'candomble',
-          name: m.candomble,
-          description: data.description,
-          keywords: data.keywords,
-          symbols: data.symbols,
-          practices: data.practices,
-        });
-      }
+      manifestations.push({
+        tradition: 'candomble',
+        name: m.candomble,
+        description: this.getCandombleDescription(archetype.id),
+        keywords: this.getCandombleKeywords(archetype.id),
+        symbols: this.getCandombleSymbols(archetype.id),
+        practices: this.getCandomblePractices(archetype.id),
+      });
     }
 
     if (m.tarot) {
-      const data = TAROT_DATA[archetypeId];
-      if (data) {
-        manifestations.push({
-          tradition: 'tarot',
-          name: m.tarot,
-          description: data.description,
-          keywords: data.keywords,
-          symbols: data.symbols,
-          practices: data.practices,
-        });
-      }
+      manifestations.push({
+        tradition: 'tarot',
+        name: m.tarot,
+        description: this.getTarotDescription(archetype.id),
+        keywords: this.getTarotKeywords(archetype.id),
+        symbols: this.getTarotSymbols(archetype.id),
+        practices: this.getTarotPractices(archetype.id),
+      });
     }
 
     if (m.astrology) {
-      const data = ASTROLOGY_DATA[archetypeId];
-      if (data) {
-        manifestations.push({
-          tradition: 'astrology',
-          name: m.astrology,
-          description: data.description,
-          keywords: data.keywords,
-          symbols: data.symbols,
-          practices: data.practices,
-        });
-      }
+      manifestations.push({
+        tradition: 'astrology',
+        name: m.astrology,
+        description: this.getAstrologyDescription(archetype.id),
+        keywords: this.getAstrologyKeywords(archetype.id),
+        symbols: this.getAstrologySymbols(archetype.id),
+        practices: this.getAstrologyPractices(archetype.id),
+      });
     }
 
     if (m.numerology) {
-      const data = NUMEROLOGY_DATA[archetypeId];
-      if (data) {
-        manifestations.push({
-          tradition: 'numerology',
-          name: m.numerology,
-          description: data.description,
-          keywords: data.keywords,
-          symbols: data.symbols,
-          practices: data.practices,
-        });
-      }
+      manifestations.push({
+        tradition: 'numerology',
+        name: m.numerology,
+        description: this.getNumerologyDescription(archetype.id),
+        keywords: this.getNumerologyKeywords(archetype.id),
+        symbols: this.getNumerologySymbols(archetype.id),
+        practices: this.getNumerologyPractices(archetype.id),
+      });
     }
 
     return manifestations;
+  }
+
+  private getKabbalahDescription(archetypeId: string): string {
+    const descriptions: Record<string, string> = {
+      warrior: 'Chesed representa a energia do amor ativo e compassivo, extendendo misericórdia ao próximo.',
+      lover: 'Gevurah ensina o uso discernido do poder, canalizando a energia de amor através do julgamento sagrado.',
+      magician: 'Tiferet é o ponto de equilíbrio onde a luz superior se cristaliza em forma-manifestação.',
+      hermit: 'Biná manifesta a sabedoria primordial que surge da escuridão Fertile e iluminação.',
+      sage: 'Daat conecta todos os sefirot, representando o conhecimento oculto da tradição.',
+      transformer: 'Yesod é a base de toda a realidade materialize, onde a imaginação cria o mundo.',
+      creator: 'Malkut é a realezamundana, onde a energia divina se torna tangível.',
+      innocent: 'Keter é a coroa da consciência pura, antes da divisão sujeito-objeto.',
+      explorer: 'Hesed é a expansão infinita da graça que preceda toda forma.',
+      ruler: 'Malchut é o reino onde a vontade divina se expressa através da autoridade.',
+    };
+    return descriptions[archetypeId] || '';
+  }
+
+  private getKabbalahKeywords(archetypeId: string): string[] {
+    const keywords: Record<string, string[]> = {
+      warrior: ['misericordia', 'amor', 'expansão', 'generosidade'],
+      lover: ['julgamento', 'limite', 'força', 'restrição'],
+      magician: ['beleza', 'harmonia', 'mediador', 'equilíbrio'],
+      hermit: ['sabedoria', 'intuição', 'separação', 'juizo'],
+      sage: ['conhecimento', 'verdade', 'oculto', 'mistico'],
+      transformer: ['fundação', 'imaginação', 'profecia', 'sonho'],
+      creator: ['realeza', 'manifestação', 'presença', 'divindade'],
+      innocent: ['coroa', 'pureza', 'vontade', 'propósito'],
+      explorer: ['bondade', 'graça', 'expansão', 'luz'],
+      ruler: ['autoridade', 'liderança', 'estrutura', 'ordem'],
+    };
+    return keywords[archetypeId] || [];
+  }
+
+  private getKabbalahSymbols(archetypeId: string): string[] {
+    const symbols: Record<string, string[]> = {
+      warrior: ['Coluna da Misericordia', 'Triangulo ascendendo'],
+      lover: ['Coluna do Julgamento', 'Esfera escarlate'],
+      magician: ['Hexagrama central', 'Lótus flamejante'],
+      hermit: ['Lâmpada de Biná', 'Foice de intelectual'],
+      sage: ['Livro oculto', 'Olho de Providence'],
+      transformer: ['Círculo de Yesod', 'Formas hexagonais'],
+      creator: ['Palacio_real', 'Trono'],
+      innocent: ['Coroa de luz', ' Halo solar'],
+      explorer: ['Cálice derramando', 'Árvore em flor'],
+      ruler: ['Trono de marfim', 'Cetro_real'],
+    };
+    return symbols[archetypeId] || [];
+  }
+
+  private getKabbalahPractices(archetypeId: string): string[] {
+    const practices: Record<string, string[]> = {
+      warrior: ['Meditação de Chesed', 'Ações de caridade'],
+      lover: ['Restrição sacrificial', 'Ayurveda diets'],
+      magician: ['Retiro em Tiferet', 'Unificação de opostos'],
+      hermit: ['Noite de Biná', 'Estudo de Sepher Yetzirah'],
+      sage: ['Via meditationis', 'Estudo de Kabbalah'],
+      transformer: ['Visualização de Yesod', 'Trabalho com sonho'],
+      creator: ['Reinos de Malkut', 'Rituais de manifestação'],
+      innocent: ['Devoção de Keter', 'Oração pura'],
+      explorer: ['Gemilut Hasadim', 'Expansão de consciência'],
+      ruler: ['Hierarquia celestial', 'Ordem ritual'],
+    };
+    return practices[archetypeId] || [];
+  }
+
+  private getIfaDescription(archetypeId: string): string {
+    const descriptions: Record<string, string> = {
+      warrior: 'Ogbe representa o poder masculino da criação e a força vital que inicia todo movimento.',
+      lover: 'Oxum simboliza a essência do amor, da fertilidade e das águas doces que nutrem a vida.',
+      magician: 'Oxumar carrega o mistério da abundância e da sabedoria serpentina ancestral.',
+      hermit: 'Ori é a consciência individual que busca seu destino através da intuição mais profunda.',
+      sage: 'Owonrin traz a sabedoria dos anciões e o conhecimento dos mistérios do universo.',
+      transformer: 'Ose representa a força espiritual que transforma obstáculos em oportunidades.',
+      creator: 'Irosun Manifesta a energia criativa que traz filhos e prosperidade.',
+      innocent: 'Odi oferece proteção e cura através da pureza do coração.',
+      explorer: 'Ofun abre os caminhos da jornada e protege o viajante.',
+      ruler: 'Owonrin também governa a autoridade e o comando sobre os elementos.',
+    };
+    return descriptions[archetypeId] || '';
+  }
+
+  private getIfaKeywords(archetypeId: string): string[] {
+    const keywords: Record<string, string[]> = {
+      warrior: ['poder', 'força', 'iniciação', 'Ogbe'],
+      lover: ['amor', 'fertilidade', ' Oxum', 'água doce'],
+      magician: ['abundancia', 'serpente', 'oxumar', 'misterio'],
+      hermit: ['Ori', 'cabeça', 'destino', 'intuição'],
+      sage: ['Owonrin', 'ancião', 'sabedoria', 'mistro'],
+      transformer: ['Ose', 'transformação', 'espírito', 'força'],
+      creator: ['Irosun', 'filhos', 'criatividade', 'prosperidade'],
+      innocent: ['Odi', 'cura', 'proteção', 'inocência'],
+      explorer: ['Ofun', 'jornada', 'caminho', 'viajem'],
+      ruler: ['Owonrin', 'autoridade', 'comando', 'lider'],
+    };
+    return keywords[archetypeId] || [];
+  }
+
+  private getIfaSymbols(archetypeId: string): string[] {
+    const symbols: Record<string, string[]> = {
+      warrior: ['Ikin', 'Opone', 'Ojub'],
+      lover: ['espelho', 'pente', 'oxum'],
+      magician: ['serpente', 'ouro', 'maraca'],
+      hermit: ['cabeça', 'coroa', 'Opa'],
+      sage: ['livro de Ifá', 'palm wine', 'Eshu'],
+      transformer: ['Ose', 'mysterious marks', 'fire'],
+      creator: ['crianças', 'colares', 'dolls'],
+      innocent: ['folhas', 'cabaça', 'limpeza'],
+      explorer: ['road', 'travel items', 'staff'],
+      ruler: ['staff of office', 'crown', 'Eshu'],
+    };
+    return symbols[archetypeId] || [];
+  }
+  }
+
+  private getIfaPractices(archetypeId: string): string[] {
+    const practices: Record<string, string[]> = {
+      warrior: ['Ebo de Ogbe', 'initiation rites'],
+      lover: ['Offerings to Oxum', 'water rituals'],
+      magician: ['Oxumar ceremonies', 'wealth rituals'],
+      hermit: ['Ori workings', 'head ceremonies'],
+      sage: ['Ifá divination', 'study of Odu'],
+      transformer: ['Ose rituals', 'spiritual cleansing'],
+      creator: ['Child dedication', 'fertility rites'],
+      innocent: ['Healing offerings', 'purification'],
+      explorer: ['Travel protection', 'road rituals'],
+      ruler: ['Leadership ceremonies', 'authority rites'],
+    };
+    return practices[archetypeId] || [];
+  }
+
+  private getCandombleDescription(archetypeId: string): string {
+    const descriptions: Record<string, string> = {
+      warrior: 'Ogun é o orixá do ferro, dos guerreiros e da justiça, senhor de todos os metais e ferramentas.',
+      lover: 'Oxum é a deusa do amor, da beleza e das águas doces, rappresentando a essência feminina.',
+      magician: 'Oxumare é a serpente cósmica que guarda os mistérios da transformação e da eternidade.',
+      hermit: 'Orunmilá é o guardião da wisdom e do destino, o orixá que conhece os segredos do Ifá.',
+      sage: 'Exu é o mensageiro dos caminhos, o orixá da comunicação e dos cruzamentos.',
+      transformer: 'Shakpana é o orixá das doenças e transformações, que traz renovação através do sofrimento.',
+      creator: 'Iemanja é a mãe do mar, dos peixes e de todos os seres aquatic, fonte de vida e nutrição.',
+      innocent: 'Omulu é o jovem orixá da doença e da cura, que protege contra pestes e pragas.',
+      explorer: 'Oxosse é o caçador do mato, senhor das matas e da liberdade selvagem.',
+      ruler: 'Oxalá é o pai da paz, o mais velho dos orixás, senhor da criação e da ordem.',
+    };
+    return descriptions[archetypeId] || '';
+  }
+
+  private getCandombleKeywords(archetypeId: string): string[] {
+    const keywords: Record<string, string[]> = {
+      warrior: ['ferro', 'guerreiro', 'Ogun', 'metal'],
+      lover: ['amor', 'beleza', 'Oxum', 'água doce'],
+      magician: ['serpente', 'eternidade', 'Oxumare', 'mistério'],
+      hermit: ['sabedoria', 'destino', 'Orunmilá', 'Ifá'],
+      sage: ['mensagem', 'cruzamento', 'Exu', 'comunicação'],
+      transformer: ['doença', 'transformação', 'Shakpana', 'renovação'],
+      creator: ['mar', 'maternidade', 'Iemanja', 'criação'],
+      innocent: ['doença', 'cura', 'Omulu', 'proteção'],
+      explorer: ['caça', 'mato', 'Oxosse', 'liberdade'],
+      ruler: ['paz', 'paternidade', 'Oxalá', 'ordem'],
+    };
+    return keywords[archetypeId] || [];
+  }
+
+  private getCandombleSymbols(archetypeId: string): string[] {
+    const symbols: Record<string, string[]> = {
+      warrior: ['ferro', 'facão', 'engrenagem', 'Ogun'],
+      lover: ['espelho', 'pente', 'ouro', 'Oxum'],
+      magician: ['serpente', 'ouro', 'maraca', 'Oxumare'],
+      hermit: ['cabeça', 'coroa', 'pá', 'Orunmilá'],
+      sage: ['rueda', 'cruz', 'Exu', 'pombe'],
+      transformer: ['cobre', 'ferro', 'Shakpana', 'espanta'],
+      creator: ['estrela', 'mar', 'azulejo', 'Iemanja'],
+      innocent: ['máscara', 'barrete', 'Omulu', 'pano'],
+      explorer: ['arco', 'flecha', 'Oxosse', 'folhas'],
+      ruler: ['bastão', 'turbante', 'Oxalá', 'marfim'],
+    };
+    return symbols[archetypeId] || [];
+  }
+
+  private getCandomblePractices(archetypeId: string): string[] {
+    const practices: Record<string, string[]> = {
+      warrior: ['Feitura de Ogun', 'ritual de ferro'],
+      lover: ['Oferecimentos a Oxum', 'banho de Oxum'],
+      magician: ['Rituais de Oxumare', '祭司 serpent'],
+      hermit: ['Consultas de Ifá', 'Cerimônias de Orunmilá'],
+      sage: ['Rituais de Exu', 'comunikação ritual'],
+      transformer: [' ebó de Shakpana', 'cura de doenças'],
+      creator: ['Rituais de Iemanja', 'oferecimentos ao mar'],
+      innocent: ['Proteção de Omulu', 'limpeza de doenças'],
+      explorer: ['Rituais de Oxosse', 'caça ritual'],
+      ruler: ['Rituais de Oxalá', 'paz e ordem'],
+    };
+    return practices[archetypeId] || [];
+  }
+
+  private getTarotDescription(archetypeId: string): string {
+    const descriptions: Record<string, string> = {
+      warrior: 'A Torre representa a destruição das estruturas falsas para dar lugar a uma renovação heroica.',
+      lover: 'Os Enamorados simboliza a união das dualidades e a escolha consciente entre caminhos.',
+      magician: 'O Mago é o simbolo da manifestação através do uso consciente de recursos e habilidades.',
+      hermit: 'O Eremita representa a busca interior, a solitude necessária para a iluminação.',
+      sage: 'O Louco carrega a sabedoria do天真 e a verdade que transcende a lógica convencional.',
+      transformer: 'A Morte não é destruição, mas a transformação inevitável que precede o renascimento.',
+      creator: 'A Imperatriz simboliza a fertilidade criativa, a natureza abundante e a expressão artística.',
+      innocent: 'O Louco na sua essência mais pura representa a confiança absoluta no universo.',
+      explorer: 'A Roda da Fortuna indica os ciclos da vida e a necessidade de fluir com as mudanças.',
+      ruler: 'O Imperador representa a autoridade, a disciplina e a capacidade de criar ordem.',
+    };
+    return descriptions[archetypeId] || '';
+  }
+
+  private getTarotKeywords(archetypeId: string): string[] {
+    const keywords: Record<string, string[]> = {
+      warrior: ['transformação', 'destruição', 'renovação', 'choque'],
+      lover: ['escolha', 'união', 'dualidade', 'amor'],
+      magician: ['manifestação', 'poder', 'recurso', 'habilidade'],
+      hermit: ['busca', 'interior', 'solitude', 'iluminação'],
+      sage: ['pureza', 'verdade', 'spontaneidade', 'inocência'],
+      transformer: ['morte', 'renascimento', 'transformação', 'mudança'],
+      creator: ['fertilidade', 'natureza', 'abundância', 'arte'],
+      innocent: ['confiança', 'novo', 'início', 'liberdade'],
+      explorer: ['ciclo', 'destino', 'mudança', 'sorte'],
+      ruler: ['autoridade', 'estrutura', 'disciplina', 'liderança'],
+    };
+    return keywords[archetypeId] || [];
+  }
+
+  private getTarotSymbols(archetypeId: string): string[] {
+    const symbols: Record<string, string[]> = {
+      warrior: ['torre', 'raio', 'coroa', 'fogo'],
+      lover: ['anjo', 'homem', 'mulher', 'árvore'],
+      magician: ['mesa', 'taça', 'espada', 'pentalfa'],
+      hermit: ['lanterna', 'figura encapuzada', ' cajado'],
+      sage: ['figure', 'cliffs', 'sun', ' path'],
+      transformer: ['esm骨架', 'rei morto', 'ceoeiro', ' Lua'],
+      creator: ['fig tree', 'heart', ' shield', 'vineyard'],
+      innocent: ['bag', ' dog', 'cliffs', 'sun'],
+      explorer: ['roda', 'esfinge', 'serpente', 'destino'],
+      ruler: ['tetra', 'arma', 'coroa', 'águia'],
+    };
+    return symbols[archetypeId] || [];
+  }
+
+  private getTarotPractices(archetypeId: string): string[] {
+    const practices: Record<string, string[]> = {
+      warrior: ['Meditação na Torre', 'Ritual de soltura'],
+      lover: ['Escolha consciente', 'Unificação de opostos'],
+      magician: ['Manifestação criativa', 'Trabalho com recursos'],
+      hermit: ['Retiro em silêncio', 'Auto-observação'],
+      sage: ['Prática doLouco', 'Confiança no universo'],
+      transformer: ['Ritual de morte e renascimento', 'Desapego'],
+      creator: ['Criação artística', 'Conexão com natureza'],
+      innocent: ['Confiança plena', 'Entrega ao fluxo'],
+      explorer: ['Aceitação dos ciclos', 'Fluidez com mudanças'],
+      ruler: ['Estruturação pessoal', 'Disciplina consciente'],
+    };
+    return practices[archetypeId] || [];
+  }
+
+  private getAstrologyDescription(archetypeId: string): string {
+    const descriptions: Record<string, string> = {
+      warrior: 'Marte representa a energia de ação, competição e determinação que impulsa a vontade.',
+      lover: 'Vênus expressa a energia do amor, da harmonia e da apreciação estética e sensual.',
+      magician: 'Mercúrio é o mensageiro mental que governa a comunicação, a magia e a adaptabilidade.',
+      hermit: 'Saturno ensina através de limites, karma e a sabedoria que vem com a paciência.',
+      sage: 'Júpiter expande a consciência através da filosofia, espiritualidade e optimism.',
+      transformer: 'Plutão é o agente da transformação radical, regeneração e poder oculto.',
+      creator: 'Sol é a luz do ego, o propósito de vida e a vitalidade criativa individual.',
+      innocent: 'Lua nurture o emocional, o intuítivo e a necessidade de segurança e lar.',
+      explorer: 'Urano quebra convenções com inovação, liberdade e revelações súbitas.',
+      ruler: 'Sol também representa o brilho real e a liderança que vem com o autoconhecimento.',
+    };
+    return descriptions[archetypeId] || '';
+  }
+
+  private getAstrologyKeywords(archetypeId: string): string[] {
+    const keywords: Record<string, string[]> = {
+      warrior: ['ação', 'competição', 'determinação', 'vontade'],
+      lover: ['amor', 'harmonia', 'beleza', 'arte'],
+      magician: ['comunicação', 'mental', 'adaptabilidade', 'curiosidade'],
+      hermit: ['limite', 'karma', 'maturidade', 'sabedoria'],
+      sage: ['expansão', 'filosofia', 'espiritualidade', 'otimismo'],
+      transformer: ['transformação', 'regeneração', 'poder', 'oculto'],
+      creator: ['identidade', 'propósito', 'vitalidade', 'criatividade'],
+      innocent: ['emoção', 'intuição', 'lar', 'nutrição'],
+      explorer: ['inovação', 'liberdade', 'originalidade', 'revelação'],
+      ruler: ['liderança', 'autoridade', 'realização', 'poder'],
+    };
+    return keywords[archetypeId] || [];
+  }
+
+  private getAstrologySymbols(archetypeId: string): string[] {
+    const symbols: Record<string, string[]> = {
+      warrior: ['♂', 'carneiro', 'espada', 'escudo'],
+      lover: ['♀', 'touro', 'balança', 'coração'],
+      magician: ['☿', 'gêmeos', 'virgem', 'asas'],
+      hermit: ['♄', 'capricornio', 'carrasco', 'tempo'],
+      sage: ['♃', 'sagitário', 'peixe', 'expansão'],
+      transformer: ['♇', 'escorpião', 'fogo', 'regeneração'],
+      creator: ['☉', 'leão', 'rei', 'luz'],
+      innocent: ['☽', 'câncer', 'taça', 'lua'],
+      explorer: ['♅', 'aquário', 'relâmpago', 'novidade'],
+      ruler: ['☉', 'leão', 'coroa', 'trono'],
+    };
+    return symbols[archetypeId] || [];
+  }
+
+  private getAstrologyPractices(archetypeId: string): string[] {
+    const practices: Record<string, string[]> = {
+      warrior: ['Exercício de vontade', 'Competição honrada'],
+      lover: ['Arte e estética', 'Rituais de amor'],
+      magician: ['Estudo mental', 'Comunicação criativa'],
+      hermit: ['Rituais de saturno', 'Trabalho com limites'],
+      sage: ['Expansão de consciência', 'Filosofia de vida'],
+      transformer: ['Trabalho com Plutão', 'Rituais de regeneração'],
+      creator: ['Expressão criativa', ' autoconhecimento'],
+      innocent: ['Auto-cuidado', 'Rituais lunares'],
+      explorer: ['Innovação pessoal', 'Abertura a mudanças'],
+      ruler: ['Liderança autêntica', 'Realização de propósito'],
+    };
+    return practices[archetypeId] || [];
+  }
+
+  private getNumerologyDescription(archetypeId: string): string {
+    const descriptions: Record<string, string> = {
+      warrior: 'O 9 representa o guerreiro espiritual que completou sua jornada e retornou para servir.',
+      lover: 'O 6 é o harmonizador que cria equilíbrio entre o individual e o coletivo através do amor.',
+      magician: 'O 1 é o criador indivdual que manifesta através da vontade e da determinação.',
+      hermit: 'O 8 é o mago do mundo material que compreende as leis da energia e da abundância.',
+      sage: 'O 3 é o professor espiritual que expressa através da comunicação e da criatividade.',
+      transformer: 'O 5 é o transformador que abraça a mudança e ensina a liberdade através da adaptação.',
+      creator: 'O 2 é o parceiro divino que manifesta através da sensibilidade e da cooperação.',
+      innocent: 'O 7 é o buscador espiritual que se retira do mundo para encontrar a verdade interior.',
+      explorer: 'O 4 é o construtor que estabelece fundamentos sólidos para a expressão criativa.',
+      ruler: 'O 1 também representa o líder que inicia novos ciclos e comandas com visão.',
+    };
+    return descriptions[archetypeId] || '';
+  }
+
+  private getNumerologyKeywords(archetypeId: string): string[] {
+    const keywords: Record<string, string[]> = {
+      warrior: ['força mental', 'completude', 'serviço', 'sabedoria'],
+      lover: ['harmonia', 'família', 'responsabilidade', 'beleza'],
+      magician: ['liderança', 'iniciativa', 'inovação', 'vontade'],
+      hermit: ['abundância', 'poder', ' autoride', 'realização'],
+      sage: ['expressão', 'comunicação', 'criatividade', 'alegria'],
+      transformer: ['mudança', 'liberdade', 'adaptabilidade', 'experiência'],
+      creator: ['parceria', 'sensibilidade', 'diplomacia', 'cooperação'],
+      innocent: ['espiritualidade', 'introspecção', 'perfeicção', 'sabedoria'],
+      explorer: ['estabilidade', 'fundamento', 'trabalho', 'dedicação'],
+      ruler: ['liderança', 'individualidade', 'iniciativa', 'independência'],
+    };
+    return keywords[archetypeId] || [];
+  }
+
+  private getNumerologySymbols(archetypeId: string): string[] {
+    const symbols: Record<string, string[]> = {
+      warrior: ['estrella de 9 puntas', 'no周期的'],
+      lover: ['hexágono', 'coraão', 'balança'],
+      magician: ['círculo', 'ponto central', 'unidade'],
+      hermit: ['infinito', 'serpent', 'loop'],
+      sage: ['triángulo', 'comunicación', 'flor'],
+      transformer: ['pentagrama', 'liberación', 'cambio'],
+      creator: ['par', 'dualidad', 'unión'],
+      innocent: ['loto', 'espada', 'búsqueda'],
+      explorer: ['cuadrado', 'fundamento', 'estructura'],
+      ruler: ['corona', 'sol', 'lider'],
+    };
+    return symbols[archetypeId] || [];
+  }
+
+  private getNumerologyPractices(archetypeId: string): string[] {
+    const practices: Record<string, string[]> = {
+      warrior: ['Serviço altruísta', 'Mentoramento'],
+      lover: ['Rituais domésticos', 'Cuidado familiar'],
+      magician: ['Exercício de vontade', 'Iniciação de projetos'],
+      hermit: ['Trabalho com dinheiro', 'Entendimento do poder'],
+      sage: ['Expressão criativa', 'Ensino e compartilhamento'],
+      transformer: ['Abraçar mudanças', 'Prática da liberdade'],
+      creator: ['Cooperção', 'trabalho em equipe'],
+      innocent: ['Retiro espiritual', 'Meditação profunda'],
+      explorer: ['Construção de fundamentos', 'Disciplina'],
+      ruler: ['Liderança autêntica', 'Iniciativa pessoal'],
+    };
+    return practices[archetypeId] || [];
   }
 
   /**
@@ -918,18 +886,45 @@ export class PatternRecognizer {
       return 100;
     }
 
+    const archetypeEnergies: Record<string, string[]> = {
+      warrior: ['ação', 'força', 'competição', 'determinação'],
+      lover: ['amor', 'harmonia', 'beleza', 'relacionamento'],
+      magician: ['manifestação', 'mental', 'recurso', 'habilidade'],
+      hermit: ['interior', 'sabedoria', 'limite', 'paciência'],
+      sage: ['expansão', 'conhecimento', 'filosofia', 'comunicação'],
+      transformer: ['mudança', 'renovação', 'regeneração', 'transição'],
+      creator: ['fertilidade', 'natureza', 'expressão', 'nutrição'],
+      innocent: ['pureza', 'confiança', 'espontaneidade', 'novidade'],
+      explorer: ['liberdade', 'aventura', 'descoberta', 'innovação'],
+      ruler: ['autoridade', 'estrutura', 'liderança', 'organização'],
+    };
+
+    const archetypeConflicts: Record<string, string[]> = {
+      warrior: ['hermit', 'innocent'],
+      lover: ['warrior', 'explorer'],
+      magician: ['ruler', 'hermit'],
+      hermit: ['explorer', 'ruler'],
+      sage: ['ruler', 'creator'],
+      transformer: ['innocent', 'ruler'],
+      creator: ['sage', 'hermit'],
+      innocent: ['warrior', 'transformer'],
+      explorer: ['hermit', 'ruler'],
+      ruler: ['magician', 'explorer'],
+    };
+
     let harmonyScore = 100;
     const archetypeIds = patterns.map((p) => p.id);
 
     for (let i = 0; i < archetypeIds.length; i++) {
-      for (let j = i + 1; j < archetypeIds.length; j++) {
-        const conflicts = ARCHETYPE_CONFLICTS[archetypeIds[i]] || [];
+      for (let j = i + 1; j < archetypeIds.length; i++) {
+        const conflicts = archetypeConflicts[archetypeIds[i]] || [];
         if (conflicts.includes(archetypeIds[j])) {
           harmonyScore -= 15;
         }
 
-        const energiesA = ARCHETYPE_ENERGIES[archetypeIds[i]] || [];
-        const energiesB = ARCHETYPE_ENERGIES[archetypeIds[j]] || [];
+        // Check energy overlap for synergy bonus
+        const energiesA = archetypeEnergies[archetypeIds[i]] || [];
+        const energiesB = archetypeEnergies[archetypeIds[j]] || [];
         const overlap = energiesA.filter((e) => energiesB.includes(e)).length;
         if (overlap >= 2) {
           harmonyScore += 5;
@@ -952,8 +947,7 @@ export class PatternRecognizer {
       },
       {
         role: 'user',
-        content:
-          `Analise este arquétipo e forneça insights sobre sua energia:
+        content: `Analise este arquétipo e forneça insights sobre sua energia:
 
 Arquétipo: ${pattern.name}
 ID: ${pattern.id}
@@ -987,170 +981,7 @@ Forneça:
       throw error;
     }
   }
-
-  detectPatterns(userData: UserSpiritualData): DetectedPattern[] {
-    const patterns: DetectedPattern[] = [];
-    patterns.push(...PATTERN_DETECTION.recurringNumber(userData));
-    patterns.push(...PATTERN_DETECTION.elementalImbalance(userData));
-    patterns.push(...PATTERN_DETECTION.karmicTheme(userData));
-    patterns.push(...PATTERN_DETECTION.spiritualBlock(userData));
-    return patterns.sort((a, b) => {
-      const urgencyOrder = { high: 0, medium: 1, low: 2 };
-      return urgencyOrder[a.urgency] - urgencyOrder[b.urgency];
-    });
-  }
 }
-
-
-
-// ============================================================
-// DETECTED PATTERN TYPES
-// ============================================================
-
-export interface DetectedPattern {
-  patternType: 'recurring_number' | 'elemental_imbalance' | 'karmic_theme' | 'spiritual_block';
-  systems: string[];
-  description: string;
-  recommendation: string;
-  urgency: 'low' | 'medium' | 'high';
-}
-
-// Odu to Tarot correspondence
-const ODU_TAROT_CORRESPONDENCE: Record<string, number[]> = {
-  'Ogbe': [0], 'Oyeku': [1], 'Iwori': [2], 'Odi': [3],
-  'Irosun': [4], 'Oxossi': [5], 'Obatala': [6], 'Ogun': [7],
-  'Ogunda': [8], 'Osa': [9], 'Ofun': [10], 'Oni': [11],
-  'Meji': [12], 'Ika': [13], 'Ikate': [14], 'Ikite': [15],
-};
-
-// Pattern detection functions
-const PATTERN_DETECTION = {
-  recurringNumber: (userData: UserSpiritualData) => {
-    const patterns: DetectedPattern[] = [];
-    if (userData.numeroPessoal) {
-      const matchingCards = [];
-      for (const [odu, arcana] of Object.entries(ODU_TAROT_CORRESPONDENCE)) {
-        if (arcana.includes(userData.numeroPessoal)) {
-          matchingCards.push(...arcana.filter(n => n === userData.numeroPessoal));
-        }
-      }
-      if (matchingCards.length > 0) {
-        patterns.push({
-          patternType: 'recurring_number',
-          systems: ['numerology', 'tarot'],
-          description: `Seu número pessoal ${userData.numeroPessoal} ressoa com ${matchingCards.length} Arcanos. Este número carrega significado múltiplo em sua jornada.`,
-          recommendation: `Medite sobre a energia do número ${userData.numeroPessoal} e como ela se manifesta em sua vida.`,
-          urgency: 'medium',
-        });
-      }
-    }
-    return patterns;
-  },
-
-  elementalImbalance: (userData: UserSpiritualData) => {
-    const patterns: DetectedPattern[] = [];
-    const elements = [];
-    
-    if (userData.orixaRegente) {
-      const orixaElements: Record<string, string> = {
-        'Ogum': 'Fogo', 'Oxum': 'Água', 'Iemanjá': 'Água',
-        'Oxossi': 'Ar', 'Obatalá': 'Terra', 'Omulu': 'Terra',
-      };
-      if (orixaElements[userData.orixaRegente]) {
-        elements.push(orixaElements[userData.orixaRegente]);
-      }
-    }
-    
-    if (userData.sign) {
-      const signElements: Record<string, string> = {
-        'Aries': 'Fogo', 'Leo': 'Fogo', 'Sagittarius': 'Fogo',
-        'Taurus': 'Terra', 'Virgo': 'Terra', 'Capricorn': 'Terra',
-        'Gemini': 'Ar', 'Libra': 'Ar', 'Aquarius': 'Ar',
-        'Cancer': 'Água', 'Scorpio': 'Água', 'Pisces': 'Água',
-      };
-      if (signElements[userData.sign]) {
-        elements.push(signElements[userData.sign]);
-      }
-    }
-    const counts: Record<string, number> = {};
-    for (const e of elements) {
-      counts[e] = (counts[e] || 0) + 1;
-    }
-    
-    const entries = Object.entries(counts);
-    if (entries.length >= 2) {
-      const dominant = entries.sort((a, b) => b[1] - a[1])[0];
-      if (dominant[1] >= 2) {
-        const missing = ['Fogo', 'Terra', 'Água', 'Ar'].filter(e => !counts[e]);
-        patterns.push({
-          patternType: 'elemental_imbalance',
-          systems: ['candomble', 'astrology'],
-          description: `Energia fortemente focada no elemento ${dominant[0]} (${dominant[1]} manifestações). Elementos ausentes: ${missing.join(', ') || 'todos presentes'}.`,
-          recommendation: missing.length > 0 
-            ? `Incorporar práticas do elemento ${missing[0]} para harmonização espiritual.`
-            : 'Continue equilibrando sua energia através de práticas diversas.',
-          urgency: missing.length > 1 ? 'high' : 'medium',
-        });
-      }
-    }
-    return patterns;
-  },
-
-  karmicTheme: (userData: UserSpiritualData) => {
-    const patterns: DetectedPattern[] = [];
-    const systems = [];
-    
-    if (userData.numeroPessoal === 9 || userData.numeroPessoal === 11) {
-      systems.push('numerology');
-    }
-    if (userData.arcoMaior?.includes(10) || userData.arcoMaior?.includes(21)) {
-      systems.push('tarot');
-    }
-    if (userData.odu === 'Ofun' || userData.odu === 'Meji') {
-      systems.push('ifa');
-    }
-    if (userData.sign === 'Scorpio') {
-      systems.push('astrology');
-    }
-    
-    if (systems.length >= 2) {
-      patterns.push({
-        patternType: 'karmic_theme',
-        systems,
-        description: `Múltiplos indicadores cármicos detectados: ${systems.join(', ')}. Você está em um caminho de evolução espiritual profunda.`,
-        recommendation: 'Pratique perdão e gratidão diariamente. Rituais de ancestor podem auxiliar na limpeza cármica.',
-        urgency: 'medium',
-      });
-    }
-    return patterns;
-  },
-
-  spiritualBlock: (userData: UserSpiritualData) => {
-    const patterns: DetectedPattern[] = [];
-    const blocks = [];
-    
-    if (userData.sefirotDominante?.length === 1 && userData.numeroPessoal) {
-      blocks.push('kabbalah');
-    }
-    if (!userData.arcoMaior?.length && userData.numeroPessoal) {
-      blocks.push('tarot');
-    }
-    if (userData.orixaRegente && !userData.odu) {
-      blocks.push('ifa');
-    }
-    
-    if (blocks.length >= 2) {
-      patterns.push({
-        patternType: 'spiritual_block',
-        systems: blocks,
-        description: `Bloqueios identificados nos sistemas: ${blocks.join(', ')}. Estes gaps limitam sua evolução espiritual completa.`,
-        recommendation: 'Estude os sistemas faltantes para integrar completamente sua jornada espiritual.',
-        urgency: 'high',
-      });
-    }
-    return patterns;
-  }
-};
 
 // ============================================================
 // DEFAULT EXPORT

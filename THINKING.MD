@@ -506,5 +506,30 @@ Da mesma forma, este projeto busca criar um sistema que, a cada ciclo, compreend
 2. Criar correlação orixa-herb (fitoenergética)
 3. Refatorar APIs órfãs para consumirem SpiritualCorrelationEngine
 
+
+---
+## Último Aprendizado Consolidado [2026-05-30 - Ciclo 2]
+
+### Ciclo: MESTRE_ENGENHEIRO_SINTESE_CONSCIENCIAL (Continuação)
+
+**Fitoenergética Implementada:**
+- orixa-herb.ts: 9 Orixás ↔ Ervas sacras (23KB de correlações)
+- Categorias: purificação, harmonização, expansão, proteção, cura, ancestral, sagrada
+- Funções utilitárias: getOrixaHerbMapping, getHerbOrixas, isHerbSafeForOrixa
+
+**Correlação Orixá-Erva Descoperto:**
+- Ogum → Arruda, Guiné, Pimenta, Alecrim, Aroeira (proteção e conquista)
+- Oxum → Manjericão roxo, Rosa branca, Malva, Cravo, Hortelã (amor e prosperidade)
+- Iemanjá → Manjericão, Boldo, Cidrão, Sal marinho (maternidade e proteção)
+
+**Testes Adaptativos Aprendidos:**
+- Testes falham quando assumem estrutura inexistente
+- Sempre validar campos reais antes de testar
+- Usar toLowerCase() para validações flexíveis
+
+**Meta do Próximo Ciclo:**
+1. Criar página dashboard/orixa integrando PredictiveSynthesisPanel
+2. Implementar correlação planet-herb
+3. Refatorar SpiritualCorrelationEngine para incluir orixa-herb
 *Última atualização: 2026-05-30*
 *Versão: 2.0 — Inclui Calendário de Convergência, Grafo de Conhecimento, Deep Correlation Engine e Cadeia de Raciocínio Espiritual*

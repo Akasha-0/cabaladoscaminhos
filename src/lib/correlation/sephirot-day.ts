@@ -39,8 +39,8 @@ export const SEPHIROT_DAY_MAPPINGS: Record<string, SephirahDay> = {
     day: 'sunday',
     elemento: 'Fogo',
     numero_caminho: 6,
-    significado_espiritual: 'Harmonia vital, propósito de vida, a luz solar que ilumina o caminho. Dia de recarga energética e alinhamento com oEU Superior. A beleza que irradia do centro do ser.',
-    praticas: ['Meditação solar', 'Rituais de renovação', 'Conexão com oEU Superior', 'Afirmações de propósito'],
+    significado_espiritual: 'Harmonia vital, propósito de vida, a luz solar que ilumina o caminho. Dia de recarga energética e alinhamento com o EU Superior. A beleza que irradia do centro do ser.',
+    praticas: ['Meditação solar', 'Rituais de renovação', 'Conexão com o EU Superior', 'Afirmações de propósito'],
     cor_primaria: '#eab308',
     chakra: '3º Plexo Solar',
   },
@@ -54,7 +54,7 @@ export const SEPHIROT_DAY_MAPPINGS: Record<string, SephirahDay> = {
     elemento: 'Terra',
     numero_caminho: 10,
     significado_espiritual: 'Aterramento, manifestação material, respeito aos ancestrais. O reino onde a energia se ancora e se torna tangível. Limpeza espiritual e transmutação de energias densas.',
-    praticas: ['Aterramento', 'Limpesa espiritual', 'Rituais de proteção', 'Honra aos ancestrais'],
+    praticas: ['Aterramento', 'Limpeza espiritual', 'Rituais de proteção', 'Honra aos ancestrais'],
     cor_primaria: '#dc2626',
     chakra: '1º Básico',
   },
@@ -67,7 +67,7 @@ export const SEPHIROT_DAY_MAPPINGS: Record<string, SephirahDay> = {
     day: 'monday',
     elemento: 'Água',
     numero_caminho: 9,
-    significado_espiritual: 'Fundação do subconsciente, imaginação ativa, lua interior. A base sobre a qual toda manifestação se ancora. O subconscious que guarda memórias e padrões ancestrais.',
+    significado_espiritual: 'Fundação do subconsciente, imaginação ativa, lua interior. A base sobre a qual toda manifestação se ancora. O subconsciente que guarda memórias e padrões ancestrais.',
     praticas: ['Visualização criativa', 'Trabalho com memórias', 'Sonhos lúcidos', 'Conexão lunar'],
     cor_primaria: '#dc2626',
     chakra: '6º Frontal',
@@ -95,7 +95,7 @@ export const SEPHIROT_DAY_MAPPINGS: Record<string, SephirahDay> = {
     day: 'wednesday',
     elemento: 'Ar',
     numero_caminho: 8,
-    significado_espiritual: 'Glória intelectual, comunicação da verdade, vitória da mente. O intelecto superior que articula o divino. Estudos, razão e busca pela verdademanifestada.',
+    significado_espiritual: 'Glória intelectual, comunicação da verdade, vitória da mente. O intelecto superior que articula o divino. Estudos, razão e busca pela verdade manifestada.',
     praticas: ['Estudos sagrados', 'Comunicação espiritual', 'Verdade e transparência', 'Rituais de proteção mental'],
     cor_primaria: '#eab308',
     chakra: '3º Plexo Solar',
@@ -110,7 +110,7 @@ export const SEPHIROT_DAY_MAPPINGS: Record<string, SephirahDay> = {
     elemento: 'Água',
     numero_caminho: 4,
     significado_espiritual: 'Misericórdia divina, expansão abundante, fartura espiritual. A graça que se derrama sobre quem busca. Conhecimento, cura e conexão com a abundância universal.',
-    praticas: ['Rituais de prosperidade', 'Orações de благословение', 'Expansão de consciência', 'Cura energética'],
+    praticas: ['Rituais de prosperidade', 'Orações de bênção', 'Expansão de consciência', 'Cura energética'],
     cor_primaria: '#22c55e',
     chakra: '4º Cardíaco',
   },
@@ -123,7 +123,7 @@ export const SEPHIROT_DAY_MAPPINGS: Record<string, SephirahDay> = {
     day: 'friday',
     elemento: 'Éter',
     numero_caminho: 11,
-    significado_espiritual: 'Pureza original, conexão direta com o Divino, silêncio sagrado. A coroa que precede toda forma. Paz interior, gratidão e acesso aoEU Superior.',
+    significado_espiritual: 'Pureza original, conexão direta com o Divino, silêncio sagrado. A coroa que precede toda forma. Paz interior, gratidão e acesso ao EU Superior.',
     praticas: ['Silêncio contemplativo', 'Gratidão profunda', 'Conexão divina', 'Purificação energética'],
     cor_primaria: '#ffffff',
     chakra: '7º Coronário',
@@ -151,8 +151,8 @@ export const SEPHIROT_DAY_MAPPINGS: Record<string, SephirahDay> = {
     day: 'saturday',
     elemento: 'Fogo',
     numero_caminho: 6,
-    significado_espiritual: 'Harmonia e equilíbrio, amor incondicional, fertilidade. A beleza que se manifesta no receptacle doBinah. Intuição e águas geradoras de vida.',
-    praticas: ['Amor unconditional', 'Intuição ativada', 'Fertilidade espiritual', 'Rituais de criação'],
+    significado_espiritual: 'Harmonia e equilíbrio, amor incondicional, fertilidade. A beleza que se manifesta no receptáculo do Binah. Intuição e águas geradoras de vida.',
+    praticas: ['Amor incondicional', 'Intuição ativada', 'Fertilidade espiritual', 'Rituais de criação'],
     cor_primaria: '#ec4899',
     chakra: '6º Frontal',
   },
@@ -219,11 +219,15 @@ export function getAllSephirahDays(): SephirahDay[] {
 }
 
 /**
- * Get all Sephirah names
- * @returns Array of Sephirah names
+ * Get all unique Sephirah names (without duplicates like Tiphereth-Sabado)
+ * @returns Array of unique Sephirah names
  */
 export function getAllSephiroth(): string[] {
-  return Object.keys(SEPHIROT_DAY_MAPPINGS);
+  const sephirothSet = new Set<string>();
+  Object.values(SEPHIROT_DAY_MAPPINGS).forEach(mapping => {
+    sephirothSet.add(mapping.sephirah);
+  });
+  return Array.from(sephirothSet);
 }
 
 /**
@@ -253,30 +257,6 @@ export function getSephirotDayPractices(sephirah: string): string[] | null {
   const mapping = getSephirotDay(sephirah);
   return mapping?.praticas ?? null;
 }
-  // Quarta-feira (Wednesday) - Hod (Glória) - Ar
-  Hod: {
-    sephirah: 'Hod',
-    dia: 'Quarta-feira',
-    day: 'wednesday',
-    elemento: 'Ar',
-    numero_caminho: 8,
-    significado_espiritual: 'Glória intelectual, comunicação da verdade, vitória da mente. O intelecto superior que articula o divino. Estudos, razão e busca pela verdade manifestada.',
-    praticas: ['Estudos sagrados', 'Comunicação espiritual', 'Verdade e transparência', 'Rituais de proteção mental'],
-    cor_primaria: '#eab308',
-    chakra: '3º Plexo Solar',
-  },
-  // Quinta-feira (Thursday) - Chesed (Misericórdia) - Água
-  Chesed: {
-    sephirah: 'Chesed',
-    dia: 'Quinta-feira',
-    day: 'thursday',
-    elemento: 'Água',
-    numero_caminho: 4,
-    significado_espiritual: 'Misericórdia divina, expansão abundante, fartura espiritual. A graça que se derrama sobre quem busca. Conhecimento, cura e conexão com a abundância universal.',
-    praticas: ['Rituais de prosperidade', 'Orações de bênção', 'Expansão de consciência', 'Cura energética'],
-    cor_primaria: '#22c55e',
-    chakra: '4º Cardíaco',
-  },
 
 /**
  * Get the primary color for a Sephirah-day
@@ -294,7 +274,7 @@ export function getSephirotDayColor(sephirah: string): string | null {
  */
 export function getSephirotByDayNumber(dayNumber: number): SephirahDay[] {
   const dayMap: Record<number, string> = {
-    0: 'domingo',
+    0: 'sunday',
     1: 'monday',
     2: 'tuesday',
     3: 'wednesday',

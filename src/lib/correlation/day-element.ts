@@ -295,6 +295,7 @@ export function getDayElement(dia: string): DayElementMapping | null {
 
 /**
  * Get the day associated with a given element.
+ * Returns the first day mapped to that element.
  * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra')
  * @returns DiaSemana or null if not found
  */
@@ -305,8 +306,8 @@ export function getElementDay(elemento: string): DiaSemana | null {
 
   const elementMap: Record<string, DiaSemana> = {
     fogo: 'Domingo',
-    água: 'Quarta-feira',
-    agua: 'Quarta-feira',
+    água: 'Segunda-feira',
+    agua: 'Segunda-feira',
     ar: 'Quarta-feira',
     terra: 'Sexta-feira',
   };

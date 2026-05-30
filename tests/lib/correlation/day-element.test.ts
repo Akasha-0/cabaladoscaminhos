@@ -448,9 +448,8 @@ describe('DayElement Correlation', () => {
     it('contains 7 days', () => {
       expect(TODOS_DIAS).toHaveLength(7);
     });
-
     it('is readonly', () => {
-      expect(TODOS_DIAS).toBeFrozen();
+      expect(Object.isFrozen(TODOS_DIAS)).toBe(true);
     });
 
     it('contains all expected days', () => {
