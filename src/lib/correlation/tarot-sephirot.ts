@@ -150,8 +150,8 @@ export const TAROT_SEPHIROT_MAPPINGS: Record<string, TarotSephirot> = {
     arcano: 'O Enforcado',
     numero_carta: 12,
     sephirah: 'Netzach',
-    numero_caminho: 13,
-    elemento: ' Água',
+ numero_caminho: 13,
+    elemento: 'Água',
     significado_espiritual: 'Sacrifício voluntário, nova perspectiva, o suspension que revela a verdade oculta. A entrega que traz vitória, o perder para ganhar. A sabedoria que vem do sacrifício.',
   },
 
