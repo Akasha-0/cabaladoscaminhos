@@ -1,6 +1,6 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 222
-**Tests: ✅ 2025 passing, 14 skipped (117 test files)**
+**Sprints completados:** 223
+**Tests: ✅ 2099 passing, 14 skipped (121 test files)**
 ### Core Infrastructure
 - Next.js 16.2.6 + React 19 + App Router (Turbopack)
 - Prisma 7 + PostgreSQL via pg adapter
