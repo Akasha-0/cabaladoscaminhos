@@ -124,8 +124,9 @@ export default function RelatoriosPage() {
           title="Erro ao carregar relatórios"
           message={error}
           onRetry={() => window.location.reload()}
-          variant="error"
+          variant="critical"
         />
+      </div>
       </div>
     );
   }
