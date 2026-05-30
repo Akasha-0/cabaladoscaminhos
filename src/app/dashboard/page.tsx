@@ -50,50 +50,44 @@ const AInsightWidget = dynamic(
   { ssr: false, loading: () => <WidgetSkeleton /> }
 );
 
-// Skeleton loader for widgets
-function WidgetSkeleton() {
+// ============================================================
+// LAYOUT UTILITIES
+// ============================================================
+
+interface WidgetSkeletonProps {
+  rows?: number;
+}
+
+function WidgetSkeleton({ rows = 3 }: WidgetSkeletonProps) {
   return (
-    <div className="rounded-2xl bg-slate-900/50 border border-slate-800/50 p-6 animate-pulse">
+    <div className="rounded-2xl bg-gradient-to-br from-slate-900/90 to-slate-950/90 border border-slate-800/50 p-6 animate-pulse">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-lg bg-slate-800" />
-        <div className="h-5 w-32 bg-slate-800 rounded" />
+        <div className="w-9 h-9 rounded-lg bg-slate-800" />
+        <div className="h-5 w-24 bg-slate-800 rounded" />
       </div>
       <div className="space-y-3">
-        <div className="h-4 w-full bg-slate-800 rounded" />
-        <div className="h-4 w-3/4 bg-slate-800 rounded" />
-        <div className="h-4 w-1/2 bg-slate-800 rounded" />
+        {Array.from({ length: rows }).map((_, i) => (
+          <div key={i} className="h-4 w-full bg-slate-800/70 rounded-lg" />
+        ))}
       </div>
     </div>
   );
 }
 
-// Widget grid container
-function WidgetGrid({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 ${className}`}>
-      {children}
-    </div>
-  );
+interface DashboardSectionProps {
+  title?: string;
+  description?: string;
+  children: React.ReactNode;
+  className?: string;
 }
 
-// Section wrapper
-function Section({ 
-  title, 
-  description, 
-  children, 
-  className = '' 
-}: { 
-  title?: string; 
-  description?: string; 
-  children: React.ReactNode; 
-  className?: string;
-}) {
+function DashboardSection({ title, description, children, className = '' }: DashboardSectionProps) {
   return (
     <section className={`mt-6 md:mt-8 ${className}`}>
       {title && (
         <div className="mb-4">
           <h2 className="text-lg font-playfair font-semibold text-white">{title}</h2>
-          {description && <p className="text-sm text-slate-400">{description}</p>}
+          {description && <p className="text-sm text-slate-400 mt-1">{description}</p>}
         </div>
       )}
       {children}
@@ -101,13 +95,17 @@ function Section({
   );
 }
 
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
+
 export default function Dashboard() {
   const userData = {
     id: 'dashboard-visitor',
     nome: 'Visitante',
     dataNascimento: '',
     numeroPessoal: 1,
-    orixaRegente: 'Oxala',
+    orixaRegente: 'Oxalá',
     odu: 'Alafia',
     arcanoPessoal: 1,
     sefirotDominante: ['Kether'],
@@ -117,85 +115,88 @@ export default function Dashboard() {
     <DashboardLayout>
       <DashboardHeader />
       
-      {/* Welcome Card */}
+      {/* Welcome Card - Full width */}
       <WelcomeCard userName="Maria" />
 
-      {/* Quick Stats Row */}
-      <Section title="Energia do Momento">
-        <WidgetGrid>
+      {/* Energy Section */}
+      <DashboardSection title="Energia do Momento">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+          {/* Main energy - large */}
           <div className="lg:col-span-2">
             <RealtimeEnergyWidget />
           </div>
-          <div className="flex flex-col gap-4">
+          
+          {/* Side widgets - stacked */}
+          <div className="flex flex-col gap-4 md:gap-6">
             <DayEnergyWidget />
             <NotificationCenter />
           </div>
-        </WidgetGrid>
-      </Section>
+        </div>
+      </DashboardSection>
 
-      {/* Spiritual Tools Row */}
-      <Section 
+      {/* Spiritual Tools Section */}
+      <DashboardSection 
         title="Ferramentas Espirituais" 
         description="Explore os sistemas místicos para seu autoconhecimento"
       >
-        <WidgetGrid>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
           <NumerologyWidget name="Maria" birthDate="15/03/1990" />
           <AstrologyWidget />
           <LunarPhaseWidget />
-        </WidgetGrid>
-      </Section>
+        </div>
+      </DashboardSection>
 
-      {/* Divination Row */}
-      <Section title="Divinação">
-        <WidgetGrid>
-          <div className="lg:col-span-2">
+      {/* Divination Section */}
+      <DashboardSection title="Divinação">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
+          {/* Odu - large */}
+          <div className="xl:col-span-2">
             <OduDivinationWidget />
           </div>
+          
+          {/* Quick Divination */}
           <QuickDivination />
-        </WidgetGrid>
-      </Section>
+        </div>
+      </DashboardSection>
 
-      {/* Progress & Insights Row */}
-      <Section title="Crescimento Espiritual">
-        <WidgetGrid>
+      {/* Balance & Progress Section */}
+      <DashboardSection title="Crescimento Espiritual">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <ProgressTracker userId="dashboard" />
           <CorrelationViz />
-        </WidgetGrid>
-      </Section>
+        </div>
+      </DashboardSection>
 
-      {/* Chakras & Love Row */}
-      <Section title="Equilíbrio Interior">
-        <WidgetGrid>
+      {/* Chakra & Love Section */}
+      <DashboardSection title="Equilíbrio Interior">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <ChakraBalanceWidget />
-          <LoveReadingsWidget userId="dashboard" />
-        </WidgetGrid>
-      </Section>
+          <LoveReadingsWidget userId="dashboard" userOrixa={userData.orixaRegente} />
+        </div>
+      </DashboardSection>
 
-      {/* Daily Wisdom & AI Row */}
-      <Section title="Sabedoria Diária">
-        <WidgetGrid>
-          <div className="lg:col-span-2">
+      {/* Wisdom Section */}
+      <DashboardSection title="Sabedoria Diária">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
+          <div className="xl:col-span-2">
             <DailyWisdomCard userData={userData} userId="dashboard" />
           </div>
           <AInsightWidget />
-        </WidgetGrid>
-      </Section>
-
-      {/* Affirmations & Chat */}
-      <Section title="Práticas Diárias">
-        <WidgetGrid>
-          <div className="lg:col-span-2">
-            <AffirmationWidget userData={userData} />
-          </div>
-        </WidgetGrid>
-      </Section>
-
-      {/* AI Oracle Chat */}
-      <Section title="Oráculo IA" description="Consultas personalizadas com inteligência artificial">
-        <div className="mt-4">
-          <AIOracleChat userData={userData} />
         </div>
-      </Section>
+      </DashboardSection>
+
+      {/* Affirmations Section */}
+      <DashboardSection title="Práticas Diárias">
+        <AffirmationWidget userData={userData} />
+      </DashboardSection>
+
+      {/* AI Oracle Section */}
+      <DashboardSection 
+        title="Oráculo IA" 
+        description="Consultas personalizadas com inteligência artificial"
+      >
+        <AIOracleChat userData={userData} />
+      </DashboardSection>
     </DashboardLayout>
   );
 }

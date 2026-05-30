@@ -1069,3 +1069,188 @@
 .dashboard-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(212, 175, 55, 0.5);
 }
+
+/* ============================================
+   RESPONSIVE GRID UTILITIES
+   ============================================ */
+
+/* Widget responsive grid system */
+.widget-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.widget-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.widget-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.widget-grid-auto {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Stack utilities */
+.stack-horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
+.stack-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.stack-gap-2 {
+  gap: 0.5rem;
+}
+
+.stack-gap-4 {
+  gap: 1rem;
+}
+
+.stack-gap-6 {
+  gap: 1.5rem;
+}
+
+/* Responsive visibility */
+.hide-mobile {
+  display: none;
+}
+
+.show-mobile {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .hide-mobile {
+    display: block;
+  }
+  
+  .show-mobile {
+    display: none;
+  }
+}
+
+/* Widget alignment helpers */
+.widget-align-start {
+  align-items: flex-start;
+}
+
+.widget-align-center {
+  align-items: center;
+}
+
+.widget-align-end {
+  align-items: flex-end;
+}
+
+.widget-justify-start {
+  justify-content: flex-start;
+}
+
+.widget-justify-center {
+  justify-content: center;
+}
+
+.widget-justify-end {
+  justify-content: flex-end;
+}
+
+.widget-justify-between {
+  justify-content: space-between;
+}
+
+/* Widget spacing */
+.widget-p-4 {
+  padding: 1rem;
+}
+
+.widget-p-6 {
+  padding: 1.5rem;
+}
+
+.widget-mt-4 {
+  margin-top: 1rem;
+}
+
+.widget-mt-6 {
+  margin-top: 1.5rem;
+}
+
+.widget-mb-4 {
+  margin-bottom: 1rem;
+}
+
+.widget-mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+/* Full width on mobile, auto on desktop */
+.full-width-mobile {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .full-width-mobile {
+    width: auto;
+  }
+}
+
+/* Card internal spacing consistency */
+.card-content-spacing > * + * {
+  margin-top: 0.75rem;
+}
+
+.card-content-spacing > * + * + * {
+  margin-top: 1rem;
+}
+
+/* Better card borders */
+.card-border-subtle {
+  border-color: rgba(148, 163, 184, 0.1);
+}
+
+.card-border-amber {
+  border-color: rgba(251, 191, 36, 0.2);
+}
+
+.card-border-violet {
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+/* Text truncation */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Responsive text sizes */
+.text-responsive-sm {
+  font-size: 0.875rem;
+}
+
+.text-responsive-base {
+  font-size: 1rem;
+}
+
+.text-responsive-lg {
+  font-size: 1.125rem;
+}
+
+@media (min-width: 768px) {
+  .text-responsive-sm {
+    font-size: 0.75rem;
+  }
+  
+  .text-responsive-base {
+    font-size: 0.875rem;
+  }
+  
+  .text-responsive-lg {
+    font-size: 1rem;
+  }
+}

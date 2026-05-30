@@ -1,86 +1,148 @@
 'use client';
 
-import * as React from 'react';
-import { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Sparkles, RefreshCw, Lightbulb, Eye, Heart } from 'lucide-react';
+import { WidgetProgress } from './SpiritualWidgetSystem';
+import { Sparkles, RefreshCw, Lightbulb, Eye, Heart, TrendingUp } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-interface InsightItem {
+// ============================================================
+// TYPES
+// ============================================================
+
+interface InsightData {
   title: string;
   content: string;
   icon: React.ReactNode;
+  color: string;
 }
 
-interface AInsightWidgetProps {
-  className?: string;
-}
+// ============================================================
+// CONSTANTS
+// ============================================================
 
-const INSIGHTS: InsightItem[] = [
+const INSIGHTS_DATA: InsightData[] = [
   {
     title: 'Conexão Ancestral',
-    content: 'Seus antepassados estão trabalhaando para abrir caminhos em sua vida. Honre suas raízes.',
+    content: 'Seus antepassados estão a trabalhar para abrir caminhos em sua vida. Honre suas raízes e receba suas bênçãos.',
     icon: <Heart className="w-5 h-5" />,
+    color: 'text-pink-400',
   },
   {
     title: 'Energia do Dia',
-    content: 'A lua em signo de água potencializa sua intuição. Confie em suas ersteiras.',
+    content: 'A lua em signo de água potencializa sua intuição. Confie em suas visões e permita que seu coração guie suas escolhas.',
     icon: <Eye className="w-5 h-5" />,
+    color: 'text-violet-400',
   },
   {
     title: 'Orixá Regente',
-    content: 'Oxum trazmessages de amor e prosperidade. Mantenha-se em harmonia com suas águas.',
+    content: 'Oxum traz mensagens de amor e prosperidade. Mantenha-se em harmonia com suas águas interiores.',
     icon: <Lightbulb className="w-5 h-5" />,
+    color: 'text-amber-400',
   },
 ];
 
-export function AInsightWidget({ className = '' }: AInsightWidgetProps) {
-  const [refreshKey, setRefreshKey] = useState(0);
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
 
+function getInsightDoDia(): InsightData {
   const today = new Date();
-  const dayIndex = today.getDate() % INSIGHTS.length;
-  const insight = INSIGHTS[dayIndex];
+  return INSIGHTS_DATA[today.getDate() % INSIGHTS_DATA.length];
+}
 
-  const handleRefresh = () => {
-    setRefreshKey((k) => k + 1);
-  };
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
+
+export function AInsightWidget({ className = '' }: AInsightWidgetProps) {
+  const insight = React.useMemo(() => getInsightDoDia(), []);
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long' });
 
   return (
-    <Card className={`card-spiritual overflow-hidden ${className}`}>
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-900/20 via-purple-900/10 to-slate-900/50 pointer-events-none" />
-      <CardHeader className="relative pb-2">
+    <Card className={cn(
+      'card-spiritual bg-gradient-to-br from-slate-900/90 to-slate-950/90 backdrop-blur-sm border-slate-800/50 overflow-hidden',
+      className
+    )}>
+      <CardHeader className="pb-3 border-b border-slate-800/50">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
+          <CardTitle className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/10 to-violet-500/10 border border-amber-500/20 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-amber-400" />
             </div>
-            <CardTitle className="text-lg bg-gradient-to-r from-amber-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="text-base font-semibold bg-gradient-to-r from-amber-400 to-violet-400 bg-clip-text text-transparent">
               Insight Diário
-            </CardTitle>
+            </span>
+          </CardTitle>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-400">{dateStr}</span>
+            <button className="p-2 rounded-lg bg-slate-800/50 text-slate-400 hover:text-amber-400 hover:bg-slate-700/50 transition-all">
+              <RefreshCw className="w-4 h-4" />
+            </button>
           </div>
-          <button
-            onClick={handleRefresh}
-            className="p-2 rounded-lg hover:bg-slate-800/50 transition-colors text-slate-400 hover:text-amber-400"
-            title="Atualizar"
-          >
-            <RefreshCw className={`w-4 h-4 ${refreshKey ? 'animate-spin' : ''}`} />
-          </button>
         </div>
       </CardHeader>
-      <CardContent className="relative">
-        <div key={refreshKey} className="space-y-3 animate-fade-in">
-          <div className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-slate-800/50 to-slate-800/30 border border-slate-700/50">
-            <div className="text-amber-400 mt-0.5">
-              {insight.icon}
+
+      <CardContent className="pt-4 space-y-4">
+        {/* Main insight card */}
+        <div className="p-5 rounded-xl bg-gradient-to-br from-amber-500/10 to-violet-500/10 border border-amber-500/20 relative overflow-hidden">
+          {/* Glow effect */}
+          <div className="absolute inset-0 opacity-10" style={{ background: 'radial-gradient(circle at 0% 0%, rgba(251,191,36,0.5), transparent 50%)' }} />
+          
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-3">
+              <div className={cn('p-3 rounded-xl bg-amber-500/20', insight.color)}>
+                {insight.icon}
+              </div>
+              <div>
+                <p className="text-xs text-amber-400/70">Insight do Dia</p>
+                <h3 className="text-lg font-bold text-white">{insight.title}</h3>
+              </div>
             </div>
-            <div>
-              <h4 className="font-medium text-amber-300 mb-1">{insight.title}</h4>
-              <p className="text-sm text-slate-300 leading-relaxed">{insight.content}</p>
-            </div>
+            
+            <p className="text-sm text-slate-300 leading-relaxed">
+              {insight.content}
+            </p>
           </div>
         </div>
+
+        {/* Quick stats */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
+            <div className="w-8 h-8 mx-auto mb-2 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4 text-emerald-400" />
+            </div>
+            <p className="text-lg font-bold text-white">87%</p>
+            <p className="text-xs text-slate-400">Alinhamento</p>
+          </div>
+          
+          <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
+            <div className="w-8 h-8 mx-auto mb-2 rounded-lg bg-violet-500/20 flex items-center justify-center">
+              <Eye className="w-4 h-4 text-violet-400" />
+            </div>
+            <p className="text-lg font-bold text-white">12</p>
+            <p className="text-xs text-slate-400">Intuições</p>
+          </div>
+          
+          <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
+            <div className="w-8 h-8 mx-auto mb-2 rounded-lg bg-amber-500/20 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+            </div>
+            <p className="text-lg font-bold text-white">5</p>
+            <p className="text-xs text-slate-400">Sinais</p>
+          </div>
+        </div>
+
+        {/* Progress */}
+        <WidgetProgress label="Clareza spiritual" value={82} max={100} color="amber" />
       </CardContent>
     </Card>
   );
 }
 
 export default AInsightWidget;
+
+interface AInsightWidgetProps {
+  className?: string;
+}
