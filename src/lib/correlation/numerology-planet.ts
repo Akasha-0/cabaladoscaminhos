@@ -6,8 +6,7 @@
  * Based on traditional astrological correspondences and
  * the Cabala dos Caminhos mystical numerology system.
  */
-
-export type Planeta = 'Sol' | 'Lua' | 'Marte' | 'Mercúrio' | 'Júpiter' | 'Vênus' | 'Saturno';
+export type Planeta = 'Sol' | 'Lua' | 'Marte' | 'Mercúrio' | 'Júpiter' | 'Vênus' | 'Saturno' | 'Netuno';
 
 export interface NumerologyPlanetMapping {
   /** The numerology number (1-13) */
