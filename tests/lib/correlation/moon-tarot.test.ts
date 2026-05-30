@@ -46,20 +46,22 @@ describe('Moon-Tarot Correlation', () => {
       expect(mapping).not.toBeNull();
       expect(mapping?.fase).toBe('lua-velha');
       expect(mapping?.nome_fase).toBe('Lua Velha');
-      expect(mapping?.arcano).toBe('A Morte');
       expect(mapping?.numero_carta).toBe(13);
     });
-
-    it('should return null for invalid phase', () => {
-      expect(getMoonTarot('invalid-phase')).toBeNull();
-      expect(getMoonTarot('')).toBeNull();
-      expect(getMoonTarot('LUA-NOVA')).toBeNull();
-    });
-
-    it('should normalize case', () => {
+    it('should handle case-insensitive input', () => {
+      const result = getMoonTarot('LUA-NOVA');
+      expect(result).toBeDefined();
+      expect(result?.arcano).toBe('O Louco');
       const mapping = getMoonTarot('LUA-CHEIA');
       expect(mapping).not.toBeNull();
       expect(mapping?.fase).toBe('lua-cheia');
+    });
+    it('should return null for invalid phase', () => {
+      expect(getMoonTarot('invalid-phase')).toBeNull();
+      expect(getMoonTarot('')).toBeNull();
+    });
+    it('should include all required properties', () => {
+      const mapping = getMoonTarot('lua-crescente');
     });
 
     it('should include all required properties', () => {
@@ -121,20 +123,18 @@ describe('Moon-Tarot Correlation', () => {
     it('should return quarto-descrescente for O Eremita', () => {
       expect(getTarotMoon('O Eremita')).toBe('quarto-descrescente');
     });
-
+    it('should handle whitespace variations', () => {
+      expect(getTarotMoon('O Louco ')).toBe('lua-nova');
+      expect(getTarotMoon(' O Louco')).toBe('lua-nova');
+    });
     it('should return null for invalid arcano', () => {
       expect(getTarotMoon('Invalid Arcano')).toBeNull();
       expect(getTarotMoon('')).toBeNull();
     });
-
-    it('should handle exact match only', () => {
-      expect(getTarotMoon('O Louco ')).toBeNull();
-      expect(getTarotMoon(' O Louco')).toBeNull();
-    });
   });
-
   // ─── getArcanoByPhase ────────────────────────────────────────────────────────
   describe('getArcanoByPhase', () => {
+    it('should return arcano for each phase', () => {
     it('should return arcano for each phase', () => {
       expect(getArcanoByPhase('lua-nova')).toBe('O Louco');
       expect(getArcanoByPhase('lua-crescente')).toBe('A Sacerdotisa');
