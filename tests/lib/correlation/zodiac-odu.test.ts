@@ -127,6 +127,7 @@ describe('zodiac-odu', () => {
       expect(escorpiao.qualidades.polaridade).toBe('Yin');
       expect(escorpiao.dia_sagrado).toBe('Terça-feira');
     });
+
     it('Sagitário maps to Oxé with correct properties', () => {
       const sagitario = ZODIAC_ODU_MAPPINGS['Sagitário'];
       expect(sagitario.odu_principal.nome).toBe('Oxé');
@@ -138,6 +139,7 @@ describe('zodiac-odu', () => {
       expect(sagitario.qualidades.polaridade).toBe('Yang');
       expect(sagitario.dia_sagrado).toBe('Quinta-feira');
     });
+
     it('Capricórnio maps to Okaran with correct properties', () => {
       const capricornio = ZODIAC_ODU_MAPPINGS['Capricórnio'];
       expect(capricornio.odu_principal.nome).toBe('Okaran');
@@ -146,8 +148,10 @@ describe('zodiac-odu', () => {
       expect(capricornio.orixa).toBe('Omolu');
       expect(capricornio.planeta_regente).toBe('Saturno');
       expect(capricornio.qualidades.temperatura).toBe('Frio');
+      expect(capricornio.qualidades.polaridade).toBe('Yin');
       expect(capricornio.dia_sagrado).toBe('Segunda-feira');
     });
+
     it('Aquário maps to Ofun with correct properties', () => {
       const aquario = ZODIAC_ODU_MAPPINGS['Aquário'];
       expect(aquario.odu_principal.nome).toBe('Ofun');
@@ -159,6 +163,7 @@ describe('zodiac-odu', () => {
       expect(aquario.qualidades.polaridade).toBe('Yang');
       expect(aquario.dia_sagrado).toBe('Sábado');
     });
+
     it('Peixes maps to Ossá with correct properties', () => {
       const peixes = ZODIAC_ODU_MAPPINGS['Peixes'];
       expect(peixes.odu_principal.nome).toBe('Ossá');
@@ -166,8 +171,11 @@ describe('zodiac-odu', () => {
       expect(peixes.elemento).toBe('Água');
       expect(peixes.orixa).toBe('Iemanjá');
       expect(peixes.planeta_regente).toBe('Neptuno');
+      expect(peixes.qualidades.temperatura).toBe('Frio');
+      expect(peixes.qualidades.polaridade).toBe('Yin');
       expect(peixes.dia_sagrado).toBe('Sábado');
     });
+
     it('each sign has secondary Odu(s)', () => {
       const signs: Signo[] = [
         'Áries', 'Touro', 'Gémeos', 'Câncer', 'Leão', 'Virgem',
@@ -362,8 +370,6 @@ describe('zodiac-odu', () => {
     });
 
     it('finds sign from secondary Odu', () => {
-      // Okaran is a secondary Odu for both Áries and Touro
-      // The function returns the first match
       const result = getOduZodiac('Okaran');
       expect(result).toBeTruthy();
       expect(['Áries', 'Touro']).toContain(result);
@@ -452,6 +458,7 @@ describe('zodiac-odu', () => {
   });
 
   // ─── getSignosByElement: get signs by element ───────────────────────────────
+  describe('getSignosByElement', () => {
     it('returns 3 fire signs', () => {
       const fireSigns = getSignosByElement('Fogo');
       expect(fireSigns).toHaveLength(3);
@@ -459,6 +466,7 @@ describe('zodiac-odu', () => {
       expect(fireSigns).toContain('Leão');
       expect(fireSigns).toContain('Sagitário');
     });
+
     it('returns 3 water signs', () => {
       const waterSigns = getSignosByElement('Água');
       expect(waterSigns).toHaveLength(3);
@@ -526,13 +534,11 @@ describe('zodiac-odu', () => {
   // ─── Type exports ───────────────────────────────────────────────────────────
   describe('type exports', () => {
     it('ZodiacOduMapping is exported', () => {
-      // Type test - will fail to compile if type is not exported
       const mapping: ZodiacOduMapping = ZODIAC_ODU_MAPPINGS['Áries'];
       expect(mapping.signo).toBeTruthy();
     });
 
     it('OduInfo is exported', () => {
-      // Type test - will fail to compile if type is not exported
       const odu: OduInfo = {
         numero: 1,
         nome: 'Okaran',
