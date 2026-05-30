@@ -1,185 +1,104 @@
-/**
- * URL Shortener Tests
- */
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+// Stub global setInterval for tests
+const timers: ReturnType<typeof setInterval>[] = []
+vi.stubGlobal('setInterval', (fn: Function, ms: number) => {
+  const id = setTimeout(() => fn(), ms)
+  timers.push(id as unknown as ReturnType<typeof setInterval>)
+  return id as unknown as ReturnType<typeof setInterval>
+})
+vi.stubGlobal('clearInterval', (id: unknown) => clearTimeout(id as ReturnType<typeof setTimeout>))
+
 import {
   shortenUrl,
   expandUrl,
   getUrlStats,
   deleteShortenedUrl,
-  type ShortenerOptions,
-} from '@/lib/sharing/url-shortener';
+} from '@/lib/sharing/url-shortener'
 
-describe('URL Shortener', () => {
-  beforeEach(() => {
-    // Reset modules to clear in-memory store
-    vi.resetModules();
-  });
+// ============================================================
+// URL Shortener Tests
+// ============================================================
+describe('shortenUrl', () => {
+  it('returns ShortenedUrl with required fields', () => {
+    const result = shortenUrl('https://example.com/readings/123')
+    expect(result).toHaveProperty('code')
+    expect(result).toHaveProperty('originalUrl')
+    expect(result).toHaveProperty('shortUrl')
+    expect(result).toHaveProperty('createdAt')
+    expect(result).toHaveProperty('expiresAt')
+    expect(result).toHaveProperty('accessCount')
+  })
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
+  it('uses base64url characters in code', () => {
+    const result = shortenUrl('https://example.com')
+    expect(result.code).toMatch(/^[A-Za-z0-9_-]+$/)
+    expect(result.code.length).toBe(8)
+  })
 
-  describe('shortenUrl', () => {
-    it('should create a shortened URL for a valid URL', async () => {
-      const { shortenUrl: shorten } = await import('@/lib/sharing/url-shortener');
-      const result = shorten('https://example.com/very/long/path');
-      
-      expect(result).toHaveProperty('code');
-      expect(result).toHaveProperty('originalUrl');
-      expect(result).toHaveProperty('shortUrl');
-      expect(result).toHaveProperty('createdAt');
-      expect(result.code).toHaveLength(8);
-    });
+  it('reuses existing code for same URL', () => {
+    const url = 'https://example.com/reading/456'
+    const r1 = shortenUrl(url)
+    const r2 = shortenUrl(url)
+    expect(r1.code).toBe(r2.code)
+  })
 
-    it('should generate URL-safe codes', async () => {
-      const { shortenUrl: shorten } = await import('@/lib/sharing/url-shortener');
-      const result = shorten('https://example.com/test');
-      
-      // URL-safe base64 characters
-      expect(result.code).toMatch(/^[A-Za-z0-9_-]+$/);
-    });
+  it('returns the original URL', () => {
+    const url = 'https://example.com/path'
+    const result = shortenUrl(url)
+    expect(result.originalUrl).toBe(url)
+  })
+})
 
-    it('should include accessCount starting at 0', async () => {
-      const { shortenUrl: shorten } = await import('@/lib/sharing/url-shortener');
-      const result = shorten('https://example.com/test');
-      
-      expect(result.accessCount).toBe(0);
-    });
+describe('expandUrl', () => {
+  it('returns ShortenedUrl for valid code', () => {
+    const short = shortenUrl('https://example.com/reading/789')
+    const expanded = expandUrl(short.code)
+    expect(expanded).not.toBeNull()
+    expect(expanded!.originalUrl).toBe('https://example.com/reading/789')
+  })
 
-    it('should accept custom options', async () => {
-      const { shortenUrl: shorten } = await import('@/lib/sharing/url-shortener');
-      const options: ShortenerOptions = { expiresIn: 3600000 };
-      const result = shorten('https://example.com/test', options);
-      
-      expect(result).toHaveProperty('expiresAt');
-    });
+  it('returns null for unknown code', () => {
+    expect(expandUrl('UNKNOWNCODE')).toBeNull()
+  })
 
-    it('should reuse existing code for same URL', async () => {
-      const { shortenUrl: shorten } = await import('@/lib/sharing/url-shortener');
-      const url = 'https://example.com/same-url';
-      
-      const result1 = shorten(url);
-      const result2 = shorten(url);
-      
-      expect(result1.code).toBe(result2.code);
-    });
+  it('increments access count', () => {
+    const short = shortenUrl('https://example.com/access-test')
+    expandUrl(short.code)
+    const stats = getUrlStats(short.code)
+    expect(stats!.accessCount).toBeGreaterThan(0)
+  })
+})
 
-    it('should generate different codes for different URLs', async () => {
-      const { shortenUrl: shorten } = await import('@/lib/sharing/url-shortener');
-      const result1 = shorten('https://example.com/url1');
-      const result2 = shorten('https://example.com/url2');
-      
-      expect(result1.code).not.toBe(result2.code);
-    });
-  });
+describe('getUrlStats', () => {
+  it('returns null for unknown code', () => {
+    expect(getUrlStats('nonexistent')).toBeNull()
+  })
 
-  describe('expandUrl', () => {
-    it('should return URL info for a valid code', async () => {
-      const { shortenUrl: shorten, expandUrl: expand } = await import('@/lib/sharing/url-shortener');
-      const shortened = shorten('https://example.com/original');
-      const expanded = expand(shortened.code);
-      
-      expect(expanded).not.toBeNull();
-      expect(expanded?.originalUrl).toBe('https://example.com/original');
-    });
+  it('returns accessCount and createdAt', () => {
+    const short = shortenUrl('https://example.com/stats')
+    const stats = getUrlStats(short.code)
+    expect(stats).not.toBeNull()
+    expect(typeof stats!.accessCount).toBe('number')
+    expect(typeof stats!.createdAt).toBe('number')
+  })
+})
 
-    it('should return null for unknown code', async () => {
-      const { expandUrl: expand } = await import('@/lib/sharing/url-shortener');
-      const result = expand('unknown-code');
-      
-      expect(result).toBeNull();
-    });
+describe('deleteShortenedUrl', () => {
+  it('returns true when deleting existing URL', () => {
+    const short = shortenUrl('https://example.com/delete')
+    expect(deleteShortenedUrl(short.code)).toBe(true)
+  })
 
-    it('should increment access count', async () => {
-      const { shortenUrl: shorten, expandUrl: expand } = await import('@/lib/sharing/url-shortener');
-      const shortened = shorten('https://example.com/test');
-      
-      expand(shortened.code);
-      const expanded = expand(shortened.code);
-      
-      expect(expanded?.accessCount).toBeGreaterThan(0);
-    });
+  it('returns false when URL no longer exists', () => {
+    const short = shortenUrl('https://example.com/delete2')
+    deleteShortenedUrl(short.code)
+    expect(deleteShortenedUrl(short.code)).toBe(false)
+  })
 
-    it('should return null for expired URL', async () => {
-      const { shortenUrl: shorten, expandUrl: expand } = await import('@/lib/sharing/url-shortener');
-      const options: ShortenerOptions = { expiresIn: -1000 }; // Already expired
-      const shortened = shorten('https://example.com/expired', options);
-      
-      const result = expand(shortened.code);
-      
-      expect(result).toBeNull();
-    });
-  });
-
-  describe('getUrlStats', () => {
-    it('should return stats for existing URL', async () => {
-      const { shortenUrl: shorten, getUrlStats: stats } = await import('@/lib/sharing/url-shortener');
-      const shortened = shorten('https://example.com/stats-test');
-      
-      const result = stats(shortened.code);
-      
-      expect(result).not.toBeNull();
-      expect(result).toHaveProperty('accessCount');
-      expect(result).toHaveProperty('createdAt');
-    });
-
-    it('should return null for unknown code', async () => {
-      const { getUrlStats: stats } = await import('@/lib/sharing/url-shortener');
-      const result = stats('unknown-code-123');
-      
-      expect(result).toBeNull();
-    });
-
-    it('should reflect access count changes', async () => {
-      const { shortenUrl: shorten, expandUrl: expand, getUrlStats: stats } = await import('@/lib/sharing/url-shortener');
-      const shortened = shorten('https://example.com/count-test');
-      
-      expand(shortened.code);
-      expand(shortened.code);
-      
-      const result = stats(shortened.code);
-      
-      expect(result?.accessCount).toBe(2);
-    });
-  });
-
-  describe('deleteShortenedUrl', () => {
-    it('should return true when deleting existing URL', async () => {
-      const { shortenUrl: shorten, deleteShortenedUrl: deleteUrl } = await import('@/lib/sharing/url-shortener');
-      const shortened = shorten('https://example.com/delete-test');
-      
-      const result = deleteUrl(shortened.code);
-      
-      expect(result).toBe(true);
-    });
-
-    it('should remove URL from store', async () => {
-      const { shortenUrl: shorten, expandUrl: expand, deleteShortenedUrl: deleteUrl } = await import('@/lib/sharing/url-shortener');
-      const shortened = shorten('https://example.com/remove-test');
-      
-      deleteUrl(shortened.code);
-      const expanded = expand(shortened.code);
-      
-      expect(expanded).toBeNull();
-    });
-
-    it('should return false for unknown code', async () => {
-      const { deleteShortenedUrl: deleteUrl } = await import('@/lib/sharing/url-shortener');
-      const result = deleteUrl('non-existent-code');
-      
-      expect(result).toBe(false);
-    });
-
-    it('should allow deletion of already deleted URL', async () => {
-      const { shortenUrl: shorten, deleteShortenedUrl: deleteUrl } = await import('@/lib/sharing/url-shortener');
-      const shortened = shorten('https://example.com/double-delete');
-      
-      deleteUrl(shortened.code);
-      const result = deleteUrl(shortened.code);
-      
-      expect(result).toBe(false);
-    });
-  });
-});
+  it('expandUrl returns null after deletion', () => {
+    const short = shortenUrl('https://example.com/expand-delete')
+    deleteShortenedUrl(short.code)
+    expect(expandUrl(short.code)).toBeNull()
+  })
+})

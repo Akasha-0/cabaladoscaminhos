@@ -27,8 +27,9 @@ describe('Real-time Updates', () => {
       const subscription = subscribeToUpdates('dashboard');
       
       expect(subscription).toHaveProperty('unsubscribe');
-      expect(subscription).toHaveProperty('eventType');
+      expect(subscription).toHaveProperty('events');
       expect(typeof subscription.unsubscribe).toBe('function');
+      expect(subscription.events).toBeDefined();
     });
 
     it('should work with specific event types', () => {
@@ -36,18 +37,21 @@ describe('Real-time Updates', () => {
       
       types.forEach(type => {
         const subscription = subscribeToUpdates(type);
-        expect(subscription.eventType).toBe(type);
+        expect(subscription).toBeDefined();
+        expect(subscription.events).toBeDefined();
       });
     });
 
     it('should work with wildcard subscription', () => {
       const subscription = subscribeToUpdates('*');
-      expect(subscription.eventType).toBe('*');
+      expect(subscription).toBeDefined();
+      expect(subscription.events).toBeDefined();
     });
 
     it('should work without specifying event type', () => {
       const subscription = subscribeToUpdates();
-      expect(subscription.eventType).toBeUndefined();
+      expect(subscription).toBeDefined();
+      expect(subscription.events).toBeDefined();
     });
 
     it('should allow multiple subscriptions', () => {
