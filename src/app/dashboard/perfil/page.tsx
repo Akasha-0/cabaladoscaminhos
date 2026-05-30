@@ -84,7 +84,7 @@ export default function PerfilPage() {
   };
 
   const handleUpgrade = () => {
-    window.location.href = '/billing';
+    window.location.href = '/pricing';
   };
 
   const formatDate = (dateStr: string) => {
