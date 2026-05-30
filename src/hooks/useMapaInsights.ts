@@ -1,3 +1,4 @@
+ // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally only depends on specific options properties to avoid unnecessary re-fetches
 'use client';
 import { useState, useEffect } from 'react';
 import type { InsightData } from '@/lib/ai/mapa-insights/types';
