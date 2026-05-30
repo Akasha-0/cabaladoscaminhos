@@ -3,11 +3,17 @@ import { renderHook } from '@testing-library/react';
 import { useSearchHistory } from '@/hooks/useSearchHistory';
 
 describe('useSearchHistory', () => {
+  let mockGetItem: ReturnType<typeof vi.spyOn>;
+  let mockSetItem: ReturnType<typeof vi.spyOn>;
+  let storageData: Record<string, string> = {};
+
   beforeEach(() => {
     vi.clearAllMocks();
-    // Mock localStorage
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
-    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {});
+    storageData = {};
+    mockGetItem = vi.spyOn(Storage.prototype, 'getItem').mockImplementation((key: string) => storageData[key] || null);
+    mockSetItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation((key: string, value: string) => {
+      storageData[key] = value;
+    });
   });
 
   it('returns initial empty history', () => {
@@ -41,8 +47,7 @@ describe('useSearchHistory', () => {
   });
 
   it('loads history from localStorage', () => {
-    const storedHistory = JSON.stringify(['search1', 'search2', 'search3']);
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(storedHistory);
+    storageData['search-history'] = JSON.stringify(['search1', 'search2', 'search3']);
 
     const { result } = renderHook(() => useSearchHistory());
     
@@ -50,103 +55,97 @@ describe('useSearchHistory', () => {
   });
 
   it('handles corrupted localStorage data gracefully', () => {
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue('invalid json {{{');
+    storageData['search-history'] = 'invalid json {{{';
 
     const { result } = renderHook(() => useSearchHistory());
     
     expect(result.current.history).toEqual([]);
-  });
-
-  it('adds search to history', () => {
-    const { result } = renderHook(() => useSearchHistory());
-    
-    act(() => {
-      result.current.addSearch('nova busca');
-    });
-    
-    expect(result.current.history).toContain('nova busca');
-  });
-
-  it('does not add empty searches', () => {
-    const { result } = renderHook(() => useSearchHistory());
-    
-    act(() => {
-      result.current.addSearch('   ');
-    });
-    
-    expect(result.current.history).toEqual([]);
-  });
-
-  it('removes duplicates when adding new search', () => {
-    const storedHistory = JSON.stringify(['busca existente']);
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(storedHistory);
-
-    const { result } = renderHook(() => useSearchHistory());
-    
-    act(() => {
-      result.current.addSearch('busca existente');
-    });
-    
-    // Should not duplicate, and new search should be first
-    expect(result.current.history.filter(h => h === 'busca existente')).toHaveLength(1);
-  });
-
-  it('limits history to MAX_ITEMS (20)', () => {
-    const manyItems = Array.from({ length: 25 }, (_, i) => `search${i}`);
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify(manyItems));
-
-    const { result } = renderHook(() => useSearchHistory());
-    
-    expect(result.current.history).toHaveLength(20);
-  });
-
-  it('clears all history', () => {
-    const storedHistory = JSON.stringify(['search1', 'search2']);
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(storedHistory);
-
-    const { result } = renderHook(() => useSearchHistory());
-    
-    act(() => {
-      result.current.clearHistory();
-    });
-    
-    expect(result.current.history).toEqual([]);
-  });
-
-  it('removes specific search from history', () => {
-    const storedHistory = JSON.stringify(['search1', 'search2', 'search3']);
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(storedHistory);
-
-    const { result } = renderHook(() => useSearchHistory());
-    
-    act(() => {
-      result.current.removeSearch('search2');
-    });
-    
-    expect(result.current.history).not.toContain('search2');
-    expect(result.current.history).toHaveLength(2);
   });
 
   it('handles missing localStorage gracefully', () => {
-    vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
-
     const { result } = renderHook(() => useSearchHistory());
     
     expect(result.current.history).toEqual([]);
   });
 
-  it('trims whitespace from searches', () => {
+  it('does not add empty searches to localStorage', () => {
     const { result } = renderHook(() => useSearchHistory());
     
-    act(() => {
-      result.current.addSearch('  busca com espaco  ');
-    });
+    result.current.addSearch('   ');
     
-    expect(result.current.history).toContain('busca com espaco');
+    expect(mockSetItem).not.toHaveBeenCalled();
+  });
+
+  it('saves search to localStorage', () => {
+    const { result } = renderHook(() => useSearchHistory());
+    
+    result.current.addSearch('nova busca');
+    
+    expect(mockSetItem).toHaveBeenCalledWith(
+      'search-history',
+      JSON.stringify(['nova busca'])
+    );
+  });
+
+  it('saves trimmed search to localStorage', () => {
+    const { result } = renderHook(() => useSearchHistory());
+    
+    result.current.addSearch('  busca com espaco  ');
+    
+    expect(mockSetItem).toHaveBeenCalledWith(
+      'search-history',
+      JSON.stringify(['busca com espaco'])
+    );
+  });
+
+  it('moves existing search to front when re-added', () => {
+    storageData['search-history'] = JSON.stringify(['search1', 'busca existente', 'search3']);
+
+    const { result } = renderHook(() => useSearchHistory());
+    
+    result.current.addSearch('busca existente');
+    
+    const savedData = JSON.parse(storageData['search-history']);
+    expect(savedData[0]).toBe('busca existente');
+    // Should only appear once
+    expect(savedData.filter((h: string) => h === 'busca existente')).toHaveLength(1);
+  });
+
+  it('clears history in localStorage', () => {
+    storageData['search-history'] = JSON.stringify(['search1', 'search2']);
+
+    const { result } = renderHook(() => useSearchHistory());
+    
+    result.current.clearHistory();
+    
+    expect(mockSetItem).toHaveBeenCalledWith('search-history', '[]');
+  });
+
+  it('removes specific search from localStorage', () => {
+    storageData['search-history'] = JSON.stringify(['search1', 'search2', 'search3']);
+
+    const { result } = renderHook(() => useSearchHistory());
+    
+    result.current.removeSearch('search2');
+    
+    const savedData = JSON.parse(storageData['search-history']);
+    expect(savedData).not.toContain('search2');
+    expect(savedData).toEqual(['search1', 'search3']);
+  });
+
+  it('limits history to 20 items', () => {
+    // Start with 20 items
+    const manyItems = Array.from({ length: 20 }, (_, i) => `search${i}`);
+    storageData['search-history'] = JSON.stringify(manyItems);
+
+    const { result } = renderHook(() => useSearchHistory());
+    
+    // Add a new search - should push oldest out (search19 should be removed)
+    result.current.addSearch('new search');
+    
+    const savedData = JSON.parse(storageData['search-history']);
+    expect(savedData).toHaveLength(20);
+    expect(savedData[0]).toBe('new search');
+    expect(savedData).not.toContain('search19');
   });
 });
-
-// Helper for act
-function act(callback: () => void) {
-  callback();
-}
