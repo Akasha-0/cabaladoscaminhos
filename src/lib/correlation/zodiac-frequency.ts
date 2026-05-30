@@ -213,14 +213,13 @@ export const TODOS_SIGNOS: readonly SignoZodiac[] = [
  */
 function normalizarSigno(signo: string): SignoZodiac | null {
   const normalizado = signo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-
+  
   const mapa: Record<string, SignoZodiac> = {
     'aries': 'Áries',
     'touro': 'Touro',
     'gemeos': 'Gémeos',
     'cancer': 'Câncer',
     'leao': 'Leão',
-    'virgem': 'Virgem',
     'virgem': 'Virgem',
     'libra': 'Libra',
     'escorpiao': 'Escorpião',
