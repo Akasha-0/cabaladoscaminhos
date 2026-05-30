@@ -9,6 +9,9 @@ import {
   getSephirahByOduNumber,
   ODU_SEPHIROT_MAPPINGS,
   type OduSephirah,
+  getOduSephirot,
+  getSephirotOdu,
+  getAllOduSephiroth,
 } from '@/lib/correlation/odu-sephirot';
 
 describe('odu-sephirot', () => {
@@ -448,6 +451,50 @@ describe('odu-sephirot', () => {
       expect(module.default.getOduSephirah).toBe(module.getOduSephirah);
       expect(module.default.getSephirahOdu).toBe(module.getSephirahOdu);
       expect(module.default.getAllOduSephirahs).toBe(module.getAllOduSephirahs);
+      // Assignment-required exports
+      expect(module.default.getOduSephirot).toBe(module.getOduSephirot);
+      expect(module.default.getSephirotOdu).toBe(module.getSephirotOdu);
+      expect(module.default.getAllOduSephiroth).toBe(module.getAllOduSephiroth);
     });
+  });
+});
+// ─── Assignment-required Exports (Sephirot naming) ─────────────────────────────
+describe('getOduSephirot', () => {
+  it('returns Okaran mapping with Malkuth', () => {
+    const result = getOduSephirot('Okaran');
+    expect(result).not.toBeNull();
+    expect(result!.sephirah).toBe('Malkuth');
+  });
+  it('returns null for unknown Odu', () => {
+    expect(getOduSephirot('Unknown')).toBeNull();
+  });
+  it('returns same result as getOduSephirah', () => {
+    expect(getOduSephirot('Okaran')).toEqual(getOduSephirah('Okaran'));
+    expect(getOduSephirot('Irosun')).toEqual(getOduSephirah('Irosun'));
+  });
+});
+describe('getSephirotOdu', () => {
+  it('returns reverse mapping with Malkuth', () => {
+    const result = getSephirotOdu();
+    expect(result['Malkuth']).toBeDefined();
+    expect(result['Malkuth'].odu_nome).toBe('Okaran');
+  });
+  it('returns same result as getSephirahOdu', () => {
+    expect(getSephirotOdu()).toEqual(getSephirahOdu());
+  });
+});
+describe('getAllOduSephiroth', () => {
+  it('returns array of 16 Odu-Sephirah mappings', () => {
+    const result = getAllOduSephiroth();
+    expect(result).toHaveLength(16);
+  });
+  it('returns same result as getAllOduSephirahs', () => {
+    expect(getAllOduSephiroth()).toEqual(getAllOduSephirahs());
+  });
+  it('contains all expected Odu entries', () => {
+    const result = getAllOduSephiroth();
+    const names = result.map((m) => m.odu_nome);
+    expect(names).toContain('Okaran');
+    expect(names).toContain('Alafia');
   });
 });

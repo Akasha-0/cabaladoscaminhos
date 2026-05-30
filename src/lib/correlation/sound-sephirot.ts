@@ -37,8 +37,7 @@ export interface SoundSephirot {
   dinamica: string;
 }
 
-/** Map of sacred sounds/mantras mapped to Sephiroth with healing properties */
-const SOUND_SEPHIROT_MAPPINGS: Record<string, SoundSephirot> = {
+export const SOUND_SEPHIROT_MAPPINGS: Record<string, SoundSephirot> = {
   // 1. Kether (Corona) - AUM/OM - Éter - Pureza Divina Primordial
   AUM: {
     som: 'AUM',
@@ -291,9 +290,9 @@ const SOUND_SEPHIROT_MAPPINGS: Record<string, SoundSephirot> = {
     dinamica: 'Sol interior que brilha através de toda escuridão.',
   },
 
-  // 7. Netzach (Vitória) - ELOHIM SABBAOTH - Fogo - Paixão Vitoriosa
+  // 7. Netzach (Vitória) - ELOHIM_SABBAOTH - Fogo - Paixão Vitoriosa
   ELOHIM_SABBAOTH: {
-    som: 'ELOHIM SABBAOTH',
+    som: 'ELOHIM_SABBAOTH',
     pronunciacao: 'e-lo-him sa-ba-ot (exército divino, vibração no baixo ventre)',
     sephirah: 'Netzach',
     numero_caminho: 7,
@@ -332,10 +331,9 @@ const SOUND_SEPHIROT_MAPPINGS: Record<string, SoundSephirot> = {
     letra_hebraica: 'ז',
     dinamica: 'Som de movimento que desperta a vitalidade adormecida.',
   },
-
-  // 8. Hod (Glória) - ELOHIM TZABAOTH - Ar - Gloria Intelectual
+  // 8. Hod (Glória) - ELOHIM_TZABAOTH - Ar - Gloria Intelectual
   ELOHIM_TZABAOTH: {
-    som: 'ELOHIM TZABAOTH',
+    som: 'ELOHIM_TZABAOTH',
     pronunciacao: 'e-lo-him tsa-ba-ot (exército divino, vibração na garganta)',
     sephirah: 'Hod',
     numero_caminho: 8,

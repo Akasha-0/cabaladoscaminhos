@@ -387,7 +387,29 @@ export function getSephirahByOduNumber(numero: number): string | null {
   const mapping = getOduByNumber(numero);
   return mapping?.sephirah ?? null;
 }
-
+// ─── Assignment-required Exports (Sephirot naming) ────────────────────────────
+/**
+ * Get the Odu-to-Sephirot correlation mapping
+ * @param odu - The name of the Odu (e.g., 'Okaran', 'Irosun', 'Odi')
+ * @returns The correlation mapping or null if not found
+ */
+export function getOduSephirot(odu: string): OduSephirah | null {
+  return getOduSephirah(odu);
+}
+/**
+ * Get all Odu-Sephirot mappings in a reverse structure (Sephirot → Odu)
+ * @returns Map of Sephirot names to their corresponding Odu names
+ */
+export function getSephirotOdu(): Record<string, { odu_numero: number; odu_nome: string }> {
+  return getSephirahOdu();
+}
+/**
+ * Get all available Odu-Sephirot mappings
+ * @returns Array of all correlation mappings
+ */
+export function getAllOduSephiroth(): OduSephirah[] {
+  return getAllOduSephirahs();
+}
 /**
  * Default export for convenience
  */
@@ -399,5 +421,8 @@ export default {
   hasOduSephirah,
   getOduByNumber,
   getSephirahByOduNumber,
+  getOduSephirot,
+  getSephirotOdu,
+  getAllOduSephiroth,
   ODU_SEPHIROT_MAPPINGS,
 };

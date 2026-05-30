@@ -69,7 +69,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     elemento: 'Terra',
     polaridade: 'Yin',
     significado_espiritual:
-      'Lua Nova com Okaran traz o poder da semente-planta - a terra que ancora o novo início. Este é o momento de plantar intenções profundas, de enterrar o que precisa morrer para renascer. Okaran ensina que todo começo nasce da escuridão fértil.',
+      'Lua Nova com Okaran traz o poder da semente-planta - a terra que ancora o novo início. Este é o momento de plantar intenções profundas, de enterrar o que precisa morrer para renascer. Okaran ensina que todo começo nasce da escuridão fértil. Omolu rege este momento limiar entre ciclos.',
     orixa: 'Omolu',
     ritual: {
       tipo: 'Plântula de Intenção',
@@ -79,7 +79,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
       'Meditação de ancoramento na terra',
       'Plantar sementes de intenção',
       'Trabalho com Omolu para proteção de novos ciclos',
-      'Rituais deancestrais na escuridão',
+      'Rituais ancestrais na escuridão',
     ],
     cores: ['Preto', 'Marrom', 'Verde escuro'],
   },
@@ -99,7 +99,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     elemento: 'Água',
     polaridade: 'Yang',
     significado_espiritual:
-      'Lua Crescente com Oxé traz o magnetismo da água corrente - a doçura que atrai prosperidade. Este é o momento de abrir caminhos, de utilizar a energia de crescimento para manifestar desejos. Oxé confere o carisma que atrai oportunidades.',
+      'Lua Crescente com Oxé traz o magnetismo da água corrente - a doçura que atrai prosperidade. Este é o momento de abrir caminhos, de utilizar a energia de crescimento para manifestar desejos. Oxé confere o carisma que atrai oportunidades. Iemanjá abençoa esta fase de crescimento.',
     orixa: 'Iemanjá',
     ritual: {
       tipo: 'Abertura de Caminhos',
@@ -129,7 +129,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     elemento: 'Fogo',
     polaridade: 'Yang',
     significado_espiritual:
-      'Quarto Crescente com Ejilsebora traz a força do fogo guerreiro - a coragem de quebrar obstáculos. Este é o momento de ação decisiva, de utilizar a chama interior para superar desafios. Ejilsebora representa a guerra justa e a determinação.',
+      'Quarto Crescente com Ejilsebora traz a força do fogo guerreiro - a coragem de quebrar obstáculos. Este é o momento de ação decisiva, de utilizar a chama interior para superar desafios. Ejilsebora representa a guerra justa e a determinação. Ogum comanda esta energia de conquista.',
     orixa: 'Ogum',
     ritual: {
       tipo: 'Guerra Justa',
@@ -159,7 +159,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     elemento: 'Água',
     polaridade: 'Equilibrado',
     significado_espiritual:
-      'Lua Cheia com Ofun traz a cura das águas profundas - o sopro divino que suaviza e renova. Este é o momento de culminação, de gratidão e de alta magia manifestadora. Ofun ensina a paciência sagrada e a sabedoria do silêncio.',
+      'Lua Cheia com Ofun traz a cura das águas profundas - o sopro divino que suaviza e renova. Este é o momento de culminação, de gratidão e de alta magia manifestadora. Ofun ensina a paciência sagrada e a sabedoria do silêncio. Oxalá ilumina esta fase de plenitude.',
     orixa: 'Oxalá',
     ritual: {
       tipo: 'Alta Magia',
@@ -189,7 +189,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     elemento: 'Ar',
     polaridade: 'Yang',
     significado_espiritual:
-      'Quarto Minguante com Ossá traz a transformação rápida do ar - o poder das Iyami Ayo. Este é o momento de limpeza profunda, de sacudir o que não serve mais. Ossá representa as mudanças aceleradas e a magia das bruxas ancestrais.',
+      'Quarto Minguante com Ossá traz a transformação rápida do ar - o poder das Iyami Ayo. Este é o momento de limpeza profunda, de sacudir o que não serve mais. Ossá representa as mudanças aceleradas e a magia das bruxas ancestrais. Iansã corta e transforma com seu raio.',
     orixa: 'Iansã',
     ritual: {
       tipo: 'Descarrego',
@@ -219,7 +219,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     elemento: 'Éter',
     polaridade: 'Yin',
     significado_espiritual:
-      'Lua Minguante com Odi traz o poder do poço profundo - a sabedoria oculta das águas transmutadoras. Este é o momento de revelação, de acessar os mistérios escondidos no inconsciente. Odi ensina que nas profundezas escuras habitam as maiores verdades.',
+      'Lua Minguante com Odi traz o poder do poço profundo - a sabedoria oculta das águas transmutadoras. Este é o momento de revelação, de acessar os mistérios escondidos no inconsciente. Odi ensina que nas profundezas escuras habitam as maiores verdades. Omolu guarda estes segredos.',
     orixa: 'Omolu',
     ritual: {
       tipo: 'Revelação',
@@ -249,7 +249,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     elemento: 'Terra',
     polaridade: 'Yin',
     significado_espiritual:
-      'Quarto Descrescente com Alafia traz a paz absoluta - o pensamento elevado que equilibra. Este é o momento de integração e perdão, de preparar o terreno para o próximo ciclo. Alafia confirma a proteção dos Deuses e traz harmonia.',
+      'Quarto Descrescente com Alafia traz a paz absoluta - o pensamento elevado que equilibra. Este é o momento de integração e perdão, de preparar o terreno para o próximo ciclo. Alafia confirma a proteção dos Deuses e traz harmonia. Nanã oferece sua sabedoria maternal.',
     orixa: 'Nanã',
     ritual: {
       tipo: 'Perdão',
@@ -279,7 +279,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     elemento: 'Éter',
     polaridade: 'Equilibrado',
     significado_espiritual:
-      'Lua Velha com Olobón traz a sabedoria do fim - a compreensão de que a doença pode ser cura. Este é o momento de despedidas sagradas, de preparar a travessia para o próximo mundo. Olobón ensina que o fim é também começo.',
+      'Lua Velha com Olobón traz a sabedoria do fim - a compreensão de que a doença pode ser cura. Este é o momento de despedidas sagradas, de preparar a travessia para o próximo mundo. Olobón ensina que o fim é também começo. Omolu abre as portas da transição.',
     orixa: 'Omolu',
     ritual: {
       tipo: 'Transição',
@@ -294,6 +294,11 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     cores: ['Preto', 'Cinza escuro', 'Branco spectral'],
   },
 };
+
+// Freeze the mapping object to prevent modifications
+Object.freeze(MOON_ODU_MAPPINGS);
+// Freeze nested objects
+Object.values(MOON_ODU_MAPPINGS).forEach(mapping => Object.freeze(mapping));
 
 /**
  * Get the moon-odú correlation mapping for a given lunar phase.
