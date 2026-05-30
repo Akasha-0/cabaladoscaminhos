@@ -1,229 +1,83 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { calculateNumerology } from '@/lib/numerologia/generator';
-import { calcularOduNascimento } from '@/lib/odus/calculos';
-import { getPositions } from '@/lib/astrologia/planet-positions';
-import { calculateHouses } from '@/lib/astrologia/houses';
-import { getInterpretacao } from '@/lib/numerologia/calculos';
-import type { Signo } from '@/lib/astrologia/tipos';
+import { gerarMapaAlmaCompleto } from '@/lib/engines/spiritual-engine';
+import { getRedisClient } from '@/lib/redis';
 
-const MapaSchema = z.object({
-  userId: z.string().min(1),
-  nome: z.string().min(1),
-  dataNascimento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD'),
-  hora: z.string().regex(/^\d{2}:\d{2}$/).optional(),
-  local: z.string().optional(),
+const mapaSchema = z.object({
+  nomeCompleto: z.string().min(2).max(200),
+  dataNascimento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  hora: z.string().optional(),
+  cidade: z.string().optional(),
+  estado: z.string().optional(),
+  pais: z.string().optional(),
 });
 
-type MapaInput = z.infer<typeof MapaSchema>;
+type MapaInput = z.infer<typeof mapaSchema>;
 
-// Approximate lat/lon for common Brazilian cities
-const CITY_COORDS: Record<string, { lat: number; lon: number }> = {
-  'rio de janeiro': { lat: -22.9068, lon: -43.1729 },
-  'são paulo': { lat: -23.5505, lon: -46.6333 },
-  'salvador': { lat: -12.9714, lon: -38.5014 },
-  'bh': { lat: -19.9167, lon: -43.9345 },
-  'belo horizonte': { lat: -19.9167, lon: -43.9345 },
-  'brasília': { lat: -15.7797, lon: -47.9297 },
-  'brasilia': { lat: -15.7797, lon: -47.9297 },
-  'fortaleza': { lat: -3.7172, lon: -38.5433 },
-  'recife': { lat: -8.0476, lon: -34.8770 },
-  'curitiba': { lat: -25.4284, lon: -49.2733 },
-  'manaus': { lat: -3.1190, lon: -60.0217 },
-  'porto alegre': { lat: -30.0346, lon: -51.2177 },
-  'niteroi': { lat: -22.8828, lon: -43.1036 },
-  'goiânia': { lat: -16.6799, lon: -49.2550 },
-  'goiania': { lat: -16.6799, lon: -49.2550 },
-};
+// ============================================================
+// HELPERS
+// ============================================================
 
-function getCityCoords(city?: string): { lat: number; lon: number } | null {
-  if (!city) return null;
-  const key = city.toLowerCase().trim();
-  return CITY_COORDS[key] ?? null;
+async function hashCacheKey(nomeCompleto: string, dataNascimento: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(nomeCompleto + dataNascimento);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-function buildBirthDateTime(dateStr: string, timeStr?: string): Date {
-  const [year, month, day] = dateStr.split('-').map(Number);
-  if (timeStr) {
-    const [hour, minute] = timeStr.split(':').map(Number);
-    return new Date(year, month - 1, day, hour, minute, 0, 0);
+async function getCachedMapa(key: string): Promise<unknown | null> {
+  try {
+    const redis = await getRedisClient();
+    const raw = await redis.get(key);
+    if (raw) return JSON.parse(raw as string);
+  } catch {
+    // Redis unavailable — fall through to calculation
   }
-  return new Date(year, month - 1, day, 12, 0, 0, 0);
+  return null;
 }
 
-// Tarot birth card: sum of date digits → Major Arcana index (0–21)
-function calcularCartaNascimento(dateStr: string): number {
-  const digits = dateStr.replace(/\D/g, '');
-  let sum = 0;
-  for (const d of digits) sum += parseInt(d);
-  while (sum > 21) {
-    sum = sum.toString().split('').reduce((a, c) => a + parseInt(c), 0);
+async function setCachedMapa(key: string, mapa: unknown): Promise<void> {
+  try {
+    const redis = await getRedisClient();
+    await redis.set(key, JSON.stringify(mapa), 'EX', 86400);
+  } catch {
+    // Redis unavailable — caching silently skipped
   }
-  return sum;
 }
 
-// Personal year card: current year + birth month/day digit sum
-function calcularCartaAnoPessoal(dateStr: string): number {
-  const year = new Date().getFullYear();
-  const monthDaySum = dateStr.slice(5).replace(/\D/g, '').split('').reduce((a, c) => a + parseInt(c), 0);
-  let sum = year + monthDaySum;
-  while (sum > 21) {
-    sum = sum.toString().split('').reduce((a, c) => a + parseInt(c), 0);
+// ============================================================
+// GET — fetch previously cached result
+// ============================================================
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get('userId');
+
+  if (!userId) {
+    return NextResponse.json({ error: 'userId é obrigatório' }, { status: 400 });
   }
-  return sum;
-}
 
-// Map astrologia Signo enum to Portuguese string
-function signoToPortuguese(sign: Signo): string {
-  const map: Record<Signo, string> = {
-    aries: 'Áries',
-    touro: 'Touro',
-    gemeos: 'Gêmeos',
-    cancer: 'Câncer',
-    leao: 'Leão',
-    virgem: 'Virgem',
-    libra: 'Libra',
-    escorpio: 'Escorpião',
-    sagitario: 'Sagitário',
-    capricornio: 'Capricórnio',
-    aquario: 'Aquário',
-    peixes: 'Peixes',
-  };
-  return map[sign] ?? sign;
-}
-
-// Get ascendant sign from degree using Whole Sign system
-function getAscendenteSign(ascDegree: number): string {
-  const signIndex = Math.floor(((ascDegree % 360) / 30));
-  const signs: Signo[] = ['aries','touro','gemeos','cancer','leao','virgem','libra','escorpio','sagitario','capricornio','aquario','peixes'];
-  return signoToPortuguese(signs[signIndex % 12]);
-}
-
-function calcAstrologia(dateStr: string, hora?: string, local?: string) {
-  const birthDate = buildBirthDateTime(dateStr, hora);
-  const coords = getCityCoords(local);
-  const positions = getPositions(birthDate);
-  const planetMap: Record<string, string> = {};
-  for (const p of positions) {
-    planetMap[p.planet] = signoToPortuguese(p.sign);
-  }
-  let ascendente = 'N/A';
-  let ascendenteDegree = 0;
-  let mediumCoeliDegree = 0;
-  let casas: Array<{ numero: number; signo: Signo; grauNoSigno: number }> = [];
-  if (coords) {
-    try {
-      const houses = calculateHouses(birthDate, birthDate, coords.lat, coords.lon, 'placidus');
-      ascendente = getAscendenteSign(houses.asc);
-      ascendenteDegree = houses.asc;
-      mediumCoeliDegree = houses.mc;
-      casas = houses.cusps.map((cusp, i) => {
-        const longitude = cusp.longitude;
-        const signIndex = Math.floor(longitude / 30) % 12;
-        const signs: Signo[] = ['aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem', 'libra', 'escorpio', 'sagitario', 'capricornio', 'aquario', 'peixes'];
-        return {
-          numero: i + 1,
-          signo: signs[signIndex],
-          grauNoSigno: longitude % 30,
-        };
-      });
-    } catch {
-      ascendente = 'N/A';
+  try {
+    const redis = await getRedisClient();
+    const cached = await redis.get(`mapa:${userId}`);
+    if (cached) {
+      return NextResponse.json(JSON.parse(cached as string));
     }
+    return NextResponse.json({ error: 'Mapa não encontrado no cache' }, { status: 404 });
+  } catch {
+    return NextResponse.json({ error: 'Erro ao acessar cache' }, { status: 500 });
   }
-  const planeta: Record<string, { planeta: string; longitude: number; latitude: number; distancia: number; velocidade: number; signo: Signo; casa: number; grauNoSigno: number }> = {};
-  for (const p of positions) {
-    planeta[p.planet] = {
-      planeta: p.planet,
-      longitude: p.longitude,
-      latitude: p.latitude,
-      distancia: p.distance,
-      velocidade: p.velocity,
-      signo: p.sign,
-      casa: 1,
-      grauNoSigno: p.degree,
-    };
-  }
-  return {
-    signo: planetMap['sol'] ?? 'N/A',
-    ascendente,
-    planetas: planetMap,
-    planeta,
-    casas,
-    ascendenteDegree,
-    mediumCoeli: mediumCoeliDegree,
-  };
 }
 
-interface ConvergenceEntry {
-  energia: string;
-  forca: 'simples' | 'dupla' | 'tripla';
-  descricao: string;
-}
-
-// Identify when multiple systems point to the same archetype/energy
-function findConvergences(
-  numerologia: { vida: number; expressao: number; motivacao: number },
-  odu: { principal: { nome: string; orixaRegente: string } },
-  astrologia: { signo: string }
-): ConvergenceEntry[] {
-  const convergences: ConvergenceEntry[] = [];
-  const seen = new Map<string, { sources: string[]; descricao: string }>();
-
-  const add = (key: string, source: string, descricao: string) => {
-    if (!seen.has(key)) seen.set(key, { sources: [], descricao });
-    const entry = seen.get(key)!;
-    if (!entry.sources.includes(source)) entry.sources.push(source);
-  };
-
-  // Life path → numerologia archetype
-  const vidaInterp = getInterpretacao(numerologia.vida);
-  add(`numero-${numerologia.vida}`, 'numerologia', vidaInterp.nome);
-
-  // Odu nome → orixa
-  add(`odu-${odu.principal.nome}`, 'odu', `Orixá: ${odu.principal.orixaRegente}`);
-
-  // Solar sign
-  add(`signo-${astrologia.signo}`, 'astrologia', 'Signo Solar');
-
-  // Expression / motivation
-  add(`expressao-${numerologia.expressao}`, 'numerologia', `Expressão: ${numerologia.expressao}`);
-  add(`motivacao-${numerologia.motivacao}`, 'numerologia', `Motivação: ${numerologia.motivacao}`);
-
-  for (const [energia, { sources, descricao }] of seen) {
-    if (sources.length >= 2) {
-      const forca: 'dupla' | 'tripla' = sources.length >= 3 ? 'tripla' : 'dupla';
-      convergences.push({ energia, forca, descricao });
-    }
-  }
-
-  return convergences;
-}
-
-// Sefirot dominant based on numerology life path
-function getSefirotDominante(vida: number): string[] {
-  const interp = getInterpretacao(vida);
-  if (interp.sefirotRelacionado && interp.sefirotRelacionado !== 'A determinar') {
-    return [interp.sefirotRelacionado];
-  }
-  return [];
-}
-
-// Orixas list: main orixa + secondary if different
-function getOrixas(
-  odu: { principal: { orixaRegente: string }; secundario: { orixaRegente: string } | null }
-): string[] {
-  const list = [odu.principal.orixaRegente];
-  if (odu.secundario && odu.secundario.orixaRegente !== odu.principal.orixaRegente) {
-    list.push(odu.secundario.orixaRegente);
-  }
-  return list;
-}
+// ============================================================
+// POST — generate full MapaAlmaCompleto
+// ============================================================
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as unknown;
-    const parsed = MapaSchema.safeParse(body);
+    const parsed = mapaSchema.safeParse(body);
 
     if (!parsed.success) {
       return NextResponse.json(
@@ -232,55 +86,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { userId, nome, dataNascimento, hora, local } = parsed.data as MapaInput;
+    const { nomeCompleto, dataNascimento, hora, cidade, estado, pais } = parsed.data as MapaInput;
+    const profile = { nomeCompleto, dataNascimento, hora, cidade: cidade ?? '', estado: estado ?? '', pais: pais ?? '' };
 
-    // 1. Numerology
-    const numerologyReport = calculateNumerology(nome, dataNascimento);
+    // Check cache first
+    const cacheKey = `mapa:${await hashCacheKey(nomeCompleto, dataNascimento)}`;
+    const cached = await getCachedMapa(cacheKey);
+    if (cached) return NextResponse.json(cached);
 
-    // 2. Odu
-    const oduResult = calcularOduNascimento(dataNascimento);
+    // Calculate MapaAlmaCompleto via spiritual engine
+    const mapa = await gerarMapaAlmaCompleto(profile);
 
-    // 3. Astrologia
-    const astrologiaResult = calcAstrologia(dataNascimento, hora, local);
-
-    // 4. Tarot
-    const cartaNascimento = calcularCartaNascimento(dataNascimento);
-    const cartaAnoPessoal = calcularCartaAnoPessoal(dataNascimento);
-
-    // 5. Sefirot
-    const sefirotDominante = getSefirotDominante(numerologyReport.vida);
-
-    // 6. Orixas
-    const orixas = getOrixas(oduResult);
-
-    // 7. Convergences
-    const convergences = findConvergences(numerologyReport, oduResult, astrologiaResult);
-
-    const mapa = {
-      id: userId,
-      created_at: new Date().toISOString(),
-      numerologia: {
-        numero_vida: numerologyReport.vida,
-        numero_destino: numerologyReport.destino.numero,
-        numero_alma: numerologyReport.motivacao,
-        numero_personalidade: numerologyReport.impressao,
-      },
-      odu: {
-        nome: oduResult.principal.nome,
-        numero: oduResult.principal.numero,
-        orixas: [oduResult.principal.orixaRegente, ...(oduResult.secundario ? [oduResult.secundario.orixaRegente] : [])],
-        quizilas: oduResult.principal.quizilas,
-        preceitos: oduResult.principal.preceitos,
-      },
-      astrologia: astrologiaResult,
-      tarot: {
-        carta_nascimento: cartaNascimento,
-        carta_ano_pessoal: cartaAnoPessoal,
-      },
-      orixas,
-      sefirot: sefirotDominante,
-      convergences,
-    };
+    // Store in cache with 24h TTL
+    await setCachedMapa(cacheKey, mapa);
 
     return NextResponse.json(mapa, { status: 200 });
   } catch (err) {
