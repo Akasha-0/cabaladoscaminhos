@@ -228,7 +228,7 @@
 |**206** | **Test Fixes** | ChakraPanel test parse error, NumerologiaCard/OduCardFull/TarotCard test fixes (15 tests) |
 |**207** | **Test Coverage** | useJourney tests (10), usePrevisaoSemanal tests (12), hook coverage expanded |
 |**208** | **Hook Tests** | useSearchHistory (15), useUserPreferences (28), useAfirmacoes (22), hook coverage expanded to 11 hooks |
-|**209** | **Hook Tests** | useDashboardConfig tests (21), hook coverage expanded to 12 hooks |
+|**209** | **Hook Tests** | useDashboardConfig tests (21), useAnalytics tests (22), useUserProfile tests (12), hook coverage expanded to 13 hooks |
 |**210** | **Hook Tests** | useAnalytics (10), useUserProfile (12), hook coverage expanded to 14 hooks |
 
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
