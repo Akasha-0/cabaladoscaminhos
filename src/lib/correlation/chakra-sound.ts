@@ -314,5 +314,6 @@ export function getChakraForPlanet(planeta: string): ChakraSound[] {
  * @returns Frequency in Hz, or undefined if chakra not found
  */
 export function getFrequencyForChakra(chakra: string): number | undefined {
+  if (!chakra || chakra.trim() === "") return undefined;
   return getChakraSound(chakra)?.frequencia;
 }

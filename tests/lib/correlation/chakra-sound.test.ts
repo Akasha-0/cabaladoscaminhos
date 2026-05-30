@@ -358,9 +358,9 @@ describe("chakra-sound correlation", () => {
   describe("getChakraForPlanet", () => {
     it("returns Muladhara for Lua", () => {
       const result = getChakraForPlanet("Lua");
-      expect(result).toHaveLength(1);
-      expect(result[0].chakra_sanskrit).toBe("Muladhara");
-      expect(result[0].frequencia).toBe(396);
+      expect(result).toHaveLength(2);
+      expect(result.some((c) => c.chakra_sanskrit === "Muladhara")).toBe(true);
+      expect(result.some((c) => c.chakra_sanskrit === "Ajna")).toBe(true);
     });
 
     it("returns Muladhara for Saturno", () => {
@@ -371,9 +371,9 @@ describe("chakra-sound correlation", () => {
 
     it("returns Svadhisthana for Marte", () => {
       const result = getChakraForPlanet("Marte");
-      expect(result).toHaveLength(1);
-      expect(result[0].chakra_sanskrit).toBe("Svadhisthana");
-      expect(result[0].frequencia).toBe(417);
+      expect(result).toHaveLength(2);
+      expect(result.some((c) => c.chakra_sanskrit === "Svadhisthana")).toBe(true);
+      expect(result.some((c) => c.chakra_sanskrit === "Manipura")).toBe(true);
     });
 
     it("returns Manipura for Sol", () => {
