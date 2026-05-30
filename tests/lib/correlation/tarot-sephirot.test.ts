@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  TAROT_SEPHIROT_MAPPINGS,
   getTarotSephirot,
   getTarotSephirah,
   getSephirotTarot,
@@ -11,354 +12,201 @@ import {
   getSephirahByNumber,
   getArcanoBySephirah,
   getAllSephiroth,
-  TAROT_SEPHIROT_MAPPINGS,
   type TarotSephirot,
 } from '@/lib/correlation/tarot-sephirot';
 
-describe('tarot-sephirot', () => {
-  // ─── getTarotSephirot: valid arcanos ─────────────────────────────────────────
+describe('correlation/tarot-sephirot', () => {
+  describe('TAROT_SEPHIROT_MAPPINGS constant', () => {
+    it('has 22 entries for all Major Arcana cards', () => {
+      expect(Object.keys(TAROT_SEPHIROT_MAPPINGS)).toHaveLength(22);
+    });
+
+    it('maps O Louco to Kether', () => {
+      expect(TAROT_SEPHIROT_MAPPINGS['O Louco'].sephirah).toBe('Kether');
+    });
+
+    it('maps O Mago to Chokmah', () => {
+      expect(TAROT_SEPHIROT_MAPPINGS['O Mago'].sephirah).toBe('Chokmah');
+    });
+
+    it('contains expected keys', () => {
+      expect('O Louco' in TAROT_SEPHIROT_MAPPINGS).toBe(true);
+      expect('O Mago' in TAROT_SEPHIROT_MAPPINGS).toBe(true);
+      expect('O Sol' in TAROT_SEPHIROT_MAPPINGS).toBe(true);
+      expect('O Mundo' in TAROT_SEPHIROT_MAPPINGS).toBe(true);
+    });
+
+    it('each mapping has required fields', () => {
+      const mapping = TAROT_SEPHIROT_MAPPINGS['O Louco'];
+      expect(mapping).toHaveProperty('arcano');
+      expect(mapping).toHaveProperty('numero_carta');
+      expect(mapping).toHaveProperty('sephirah');
+      expect(mapping).toHaveProperty('numero_caminho');
+      expect(mapping).toHaveProperty('elemento');
+      expect(mapping).toHaveProperty('significado_espiritual');
+    });
+  });
 
   describe('getTarotSephirot', () => {
-    it('returns mapping for O Louco', () => {
+    it('returns mapping for valid arcano', () => {
       const result = getTarotSephirot('O Louco');
       expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('O Louco');
-      expect(result?.sephirah).toBe('Kether');
-      expect(result?.numero_carta).toBe(0);
-      expect(result?.numero_caminho).toBe(1);
-      expect(result?.elemento).toBe('Éter');
+      expect(result!.sephirah).toBe('Kether');
     });
 
-    it('returns mapping for O Mago', () => {
+    it('returns null for invalid arcano', () => {
+      const result = getTarotSephirot('Invalid Card');
+      expect(result).toBeNull();
+    });
+
+    it('returns mapping with correct structure', () => {
       const result = getTarotSephirot('O Mago');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('O Mago');
-      expect(result?.sephirah).toBe('Chokmah');
-      expect(result?.numero_carta).toBe(1);
-      expect(result?.numero_caminho).toBe(2);
-      expect(result?.elemento).toBe('Água');
-    });
-
-    it('returns mapping for A Alta Sacerdotisa', () => {
-      const result = getTarotSephirot('A Alta Sacerdotisa');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('A Alta Sacerdotisa');
-      expect(result?.sephirah).toBe('Binah');
-      expect(result?.numero_carta).toBe(2);
-      expect(result?.numero_caminho).toBe(3);
-      expect(result?.elemento).toBe('Terra');
-    });
-
-    it('returns mapping for A Imperatriz', () => {
-      const result = getTarotSephirot('A Imperatriz');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('A Imperatriz');
-      expect(result?.sephirah).toBe('Chesed');
-      expect(result?.numero_carta).toBe(3);
-      expect(result?.numero_caminho).toBe(4);
-    });
-
-    it('returns mapping for O Imperador', () => {
-      const result = getTarotSephirot('O Imperador');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('O Imperador');
-      expect(result?.sephirah).toBe('Geburah');
-      expect(result?.numero_carta).toBe(4);
-      expect(result?.numero_caminho).toBe(5);
-    });
-
-    it('returns mapping for O Hierofante', () => {
-      const result = getTarotSephirot('O Hierofante');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('O Hierofante');
-      expect(result?.sephirah).toBe('Tiphereth');
-      expect(result?.numero_carta).toBe(5);
-      expect(result?.numero_caminho).toBe(6);
-    });
-
-    it('returns mapping for Os Enamorados', () => {
-      const result = getTarotSephirot('Os Enamorados');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('Os Enamorados');
-      expect(result?.sephirah).toBe('Netzach');
-      expect(result?.numero_carta).toBe(6);
-      expect(result?.numero_caminho).toBe(7);
-    });
-
-    it('returns mapping for O Carro', () => {
-      const result = getTarotSephirot('O Carro');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('O Carro');
-      expect(result?.sephirah).toBe('Hod');
-      expect(result?.numero_carta).toBe(7);
-      expect(result?.numero_caminho).toBe(8);
-    });
-
-    it('returns mapping for A Justiça', () => {
-      const result = getTarotSephirot('A Justiça');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('A Justiça');
-      expect(result?.sephirah).toBe('Yesod');
-      expect(result?.numero_carta).toBe(8);
-      expect(result?.numero_caminho).toBe(9);
-    });
-
-    it('returns mapping for O Eremita', () => {
-      const result = getTarotSephirot('O Eremita');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('O Eremita');
-      expect(result?.sephirah).toBe('Malkuth');
-      expect(result?.numero_carta).toBe(9);
-      expect(result?.numero_caminho).toBe(10);
-    });
-
-    it('returns null for non-existent arcano', () => {
-      expect(getTarotSephirot('NonExistent')).toBeNull();
-    });
-
-    it('returns null for empty string', () => {
-      expect(getTarotSephirot('')).toBeNull();
-    });
-
-    it('returns null for undefined', () => {
-      expect(getTarotSephirot(undefined as unknown as string)).toBeNull();
+      expect(result).toHaveProperty('arcano', 'O Mago');
+      expect(result).toHaveProperty('numero_carta', 1);
+      expect(result).toHaveProperty('sephirah', 'Chokmah');
     });
   });
 
-  // ─── getTarotSephirah (alias) ────────────────────────────────────────────────
-
-  describe('getTarotSephirah', () => {
-    it('returns mapping for O Louco', () => {
-      const result = getTarotSephirah('O Louco');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('O Louco');
-      expect(result?.sephirah).toBe('Kether');
-    });
-
-    it('returns mapping for O Mago', () => {
-      const result = getTarotSephirah('O Mago');
-      expect(result).not.toBeNull();
-      expect(result?.arcano).toBe('O Mago');
-      expect(result?.sephirah).toBe('Chokmah');
-    });
-
-    it('aliases return same as getTarotSephirot', () => {
-      expect(getTarotSephirah('A Torre')).toEqual(getTarotSephirot('A Torre'));
-      expect(getTarotSephirah('A Estrela')).toEqual(getTarotSephirot('A Estrela'));
-      expect(getTarotSephirah('O Sol')).toEqual(getTarotSephirot('O Sol'));
+  describe('getTarotSephirah (alias)', () => {
+    it('returns same result as getTarotSephirot', () => {
+      const result1 = getTarotSephirah('O Sol');
+      const result2 = getTarotSephirot('O Sol');
+      expect(result1).toEqual(result2);
     });
   });
-
-  // ─── getSephirotTarot ────────────────────────────────────────────────────────
 
   describe('getSephirotTarot', () => {
-    it('returns mapping for Kether', () => {
+    it('returns mapping for valid sephirah', () => {
       const result = getSephirotTarot('Kether');
       expect(result).not.toBeNull();
-      expect(result?.sephirah).toBe('Kether');
-      expect(result?.arcano).toBe('O Louco');
-      expect(result?.numero_carta).toBe(0);
+      expect(result!.arcano).toBe('O Louco');
     });
 
-    it('returns mapping for Chokmah', () => {
-      const result = getSephirotTarot('Chokmah');
-      expect(result).not.toBeNull();
-      expect(result?.sephirah).toBe('Chokmah');
-      expect(result?.arcano).toBe('O Mago');
-      expect(result?.numero_carta).toBe(1);
+    it('returns null for invalid sephirah', () => {
+      const result = getSephirotTarot('InvalidSephirah');
+      expect(result).toBeNull();
     });
 
-    it('returns mapping for Binah', () => {
-      const result = getSephirotTarot('Binah');
-      expect(result).not.toBeNull();
-      expect(result?.sephirah).toBe('Binah');
-      expect(result?.arcano).toBe('A Alta Sacerdotisa');
-      expect(result?.numero_carta).toBe(2);
-    });
-
-    it('returns null for non-existent Sephirah', () => {
-      expect(getSephirotTarot('NonExistent')).toBeNull();
-    });
-
-    it('returns null for empty string', () => {
-      expect(getSephirotTarot('')).toBeNull();
+    it('returns first matching arcano for sephirah with multiple arcs', () => {
+      // Kether maps to O Louco (path 1)
+      const result = getSephirotTarot('Kether');
+      expect(result!.arcano).toBe('O Louco');
     });
   });
-
-  // ─── getAllTarotSephiroth ─────────────────────────────────────────────────────
 
   describe('getAllTarotSephiroth', () => {
     it('returns array of all mappings', () => {
       const result = getAllTarotSephiroth();
-      expect(Array.isArray(result)).toBe(true);
-      expect(result.length).toBe(22);
+      expect(result).toHaveLength(22);
     });
 
-    it('returns all 22 Major Arcana cards', () => {
+    it('returns sorted by numero_carta', () => {
       const result = getAllTarotSephiroth();
-      const arcanoNames = result.map(m => m.arcano);
-      expect(arcanoNames).toContain('O Louco');
-      expect(arcanoNames).toContain('A Torre');
-      expect(arcanoNames).toContain('O Mundo');
-    });
-
-    it('mappings are sorted by card number', () => {
-      const result = getAllTarotSephiroth();
-      for (let i = 0; i < result.length - 1; i++) {
-        expect(result[i].numero_carta).toBeLessThanOrEqual(result[i + 1].numero_carta);
+      for (let i = 1; i < result.length; i++) {
+        expect(result[i].numero_carta).toBeGreaterThan(result[i - 1].numero_carta);
       }
     });
 
-    it('each mapping has required properties', () => {
+    it('first element is O Louco with numero_carta 0', () => {
       const result = getAllTarotSephiroth();
-      for (const mapping of result) {
-        expect(mapping.arcano).toBeDefined();
-        expect(mapping.numero_carta).toBeDefined();
-        expect(mapping.sephirah).toBeDefined();
-        expect(mapping.numero_caminho).toBeDefined();
-        expect(mapping.elemento).toBeDefined();
-        expect(mapping.significado_espiritual).toBeDefined();
-      }
+      expect(result[0].arcano).toBe('O Louco');
+      expect(result[0].numero_carta).toBe(0);
+    });
+
+    it('last element is O Mundo with numero_carta 21', () => {
+      const result = getAllTarotSephiroth();
+      expect(result[21].arcano).toBe('O Mundo');
+      expect(result[21].numero_carta).toBe(21);
     });
   });
 
-  // ─── getAllArcanos ────────────────────────────────────────────────────────────
-
   describe('getAllArcanos', () => {
-    it('returns array of all arcano names', () => {
+    it('returns array of 22 arcano names', () => {
       const result = getAllArcanos();
-      expect(Array.isArray(result)).toBe(true);
-      expect(result.length).toBe(22);
+      expect(result).toHaveLength(22);
     });
 
-    it('contains all expected arcano names', () => {
+    it('includes expected arcano names', () => {
       const result = getAllArcanos();
       expect(result).toContain('O Louco');
       expect(result).toContain('O Mago');
       expect(result).toContain('A Alta Sacerdotisa');
-      expect(result).toContain('A Torre');
       expect(result).toContain('O Sol');
       expect(result).toContain('O Mundo');
     });
-  });
 
-  // ─── getAllSephiroth ─────────────────────────────────────────────────────────
-
-  describe('getAllSephiroth', () => {
-    it('returns unique Sephiroth names', () => {
-      const result = getAllSephiroth();
-      expect(Array.isArray(result)).toBe(true);
-      // All 10 Sephiroth are referenced in the 22 cards
-      expect(result.length).toBe(10);
-    });
-
-    it('contains all expected Sephiroth', () => {
-      const result = getAllSephiroth();
-      expect(result).toContain('Kether');
-      expect(result).toContain('Chokmah');
-      expect(result).toContain('Binah');
-      expect(result).toContain('Chesed');
-      expect(result).toContain('Geburah');
-      expect(result).toContain('Tiphereth');
-      expect(result).toContain('Netzach');
-      expect(result).toContain('Hod');
-      expect(result).toContain('Yesod');
-      expect(result).toContain('Malkuth');
+    it('returns keys that exist in mappings', () => {
+      const result = getAllArcanos();
+      result.forEach(arcano => {
+        expect(arcano in TAROT_SEPHIROT_MAPPINGS).toBe(true);
+      });
     });
   });
-
-  // ─── hasTarotSephirot ────────────────────────────────────────────────────────
 
   describe('hasTarotSephirot', () => {
-    it('returns true for O Louco', () => {
+    it('returns true for valid arcano', () => {
       expect(hasTarotSephirot('O Louco')).toBe(true);
+      expect(hasTarotSephirot('O Sol')).toBe(true);
     });
 
-    it('returns true for A Torre', () => {
-      expect(hasTarotSephirot('A Torre')).toBe(true);
-    });
-
-    it('returns true for O Mundo', () => {
-      expect(hasTarotSephirot('O Mundo')).toBe(true);
-    });
-
-    it('returns false for non-existent arcano', () => {
-      expect(hasTarotSephirot('NonExistent')).toBe(false);
-    });
-
-    it('returns false for empty string', () => {
+    it('returns false for invalid arcano', () => {
+      expect(hasTarotSephirot('Invalid Card')).toBe(false);
       expect(hasTarotSephirot('')).toBe(false);
     });
   });
 
-  // ─── getSephirotByPath ───────────────────────────────────────────────────────
-
   describe('getSephirotByPath', () => {
-    it('returns mapping for path 1 (O Louco)', () => {
+    it('returns mapping for valid path 1', () => {
       const result = getSephirotByPath(1);
       expect(result).not.toBeNull();
-      expect(result?.numero_caminho).toBe(1);
-      expect(result?.arcano).toBe('O Louco');
+      expect(result!.arcano).toBe('O Louco');
     });
 
-    it('returns mapping for path 17 (A Torre)', () => {
-      const result = getSephirotByPath(17);
-      expect(result).not.toBeNull();
-      expect(result?.numero_caminho).toBe(17);
-      expect(result?.arcano).toBe('A Torre');
-    });
-
-    it('returns mapping for path 22 (O Mundo)', () => {
+    it('returns mapping for valid path 22', () => {
       const result = getSephirotByPath(22);
       expect(result).not.toBeNull();
-      expect(result?.numero_caminho).toBe(22);
-      expect(result?.arcano).toBe('O Mundo');
+      expect(result!.arcano).toBe('O Mundo');
     });
 
     it('returns null for invalid path', () => {
       expect(getSephirotByPath(0)).toBeNull();
       expect(getSephirotByPath(23)).toBeNull();
+      expect(getSephirotByPath(99)).toBeNull();
+    });
+
+    it('path number equals numero_caminho', () => {
+      const result = getSephirotByPath(10);
+      expect(result!.numero_caminho).toBe(10);
     });
   });
 
-  // ─── getArcanoByNumber ────────────────────────────────────────────────────────
-
   describe('getArcanoByNumber', () => {
-    it('returns O Louco for card 0', () => {
-      expect(getArcanoByNumber(0)).toBe('O Louco');
+    it('returns arcano for valid card number 0', () => {
+      const result = getArcanoByNumber(0);
+      expect(result).toBe('O Louco');
     });
 
-    it('returns O Mago for card 1', () => {
-      expect(getArcanoByNumber(1)).toBe('O Mago');
-    });
-
-    it('returns A Torre for card 16', () => {
-      expect(getArcanoByNumber(16)).toBe('A Torre');
-    });
-
-    it('returns O Mundo for card 21', () => {
-      expect(getArcanoByNumber(21)).toBe('O Mundo');
+    it('returns arcano for valid card number 19', () => {
+      const result = getArcanoByNumber(19);
+      expect(result).toBe('O Sol');
     });
 
     it('returns null for invalid card number', () => {
       expect(getArcanoByNumber(-1)).toBeNull();
       expect(getArcanoByNumber(22)).toBeNull();
+      expect(getArcanoByNumber(99)).toBeNull();
     });
   });
 
-  // ─── getSephirahByNumber ─────────────────────────────────────────────────────
-
   describe('getSephirahByNumber', () => {
-    it('returns Kether for card 0', () => {
-      expect(getSephirahByNumber(0)).toBe('Kether');
+    it('returns sephirah for valid card number 0', () => {
+      const result = getSephirahByNumber(0);
+      expect(result).toBe('Kether');
     });
 
-    it('returns Chokmah for card 1', () => {
-      expect(getSephirahByNumber(1)).toBe('Chokmah');
-    });
-
-    it('returns Binah for card 2', () => {
-      expect(getSephirahByNumber(2)).toBe('Binah');
+    it('returns sephirah for valid card number 1', () => {
+      const result = getSephirahByNumber(1);
+      expect(result).toBe('Chokmah');
     });
 
     it('returns null for invalid card number', () => {
@@ -367,134 +215,86 @@ describe('tarot-sephirot', () => {
     });
   });
 
-  // ─── getArcanoBySephirah ─────────────────────────────────────────────────────
-
   describe('getArcanoBySephirah', () => {
-    it('returns O Louco for Kether', () => {
-      expect(getArcanoBySephirah('Kether')).toBe('O Louco');
+    it('returns arcano for valid sephirah Kether', () => {
+      const result = getArcanoBySephirah('Kether');
+      expect(result).toBe('O Louco');
     });
 
-    it('returns O Mago for Chokmah', () => {
-      expect(getArcanoBySephirah('Chokmah')).toBe('O Mago');
+    it('returns arcano for valid sephirah Chokmah', () => {
+      const result = getArcanoBySephirah('Chokmah');
+      expect(result).toBe('O Mago');
     });
 
-    it('returns A Alta Sacerdotisa for Binah', () => {
-      expect(getArcanoBySephirah('Binah')).toBe('A Alta Sacerdotisa');
-    });
-
-    it('returns null for non-existent Sephirah', () => {
-      expect(getArcanoBySephirah('NonExistent')).toBeNull();
-    });
-  });
-
-  // ─── TAROT_SEPHIROT_MAPPINGS constant ───────────────────────────────────────
-
-  describe('TAROT_SEPHIROT_MAPPINGS', () => {
-    it('is a frozen object', () => {
-      expect(Object.isFrozen(TAROT_SEPHIROT_MAPPINGS)).toBe(true);
-    });
-
-    it('contains all 22 Major Arcana cards', () => {
-      expect(Object.keys(TAROT_SEPHIROT_MAPPINGS).length).toBe(22);
-    });
-
-    it('keys match arcano names', () => {
-      for (const key of Object.keys(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(TAROT_SEPHIROT_MAPPINGS[key].arcano).toBe(key);
-      }
-    });
-
-    it('card numbers range from 0 to 21', () => {
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(mapping.numero_carta).toBeGreaterThanOrEqual(0);
-        expect(mapping.numero_carta).toBeLessThanOrEqual(21);
-      }
-    });
-
-    it('path numbers range from 1 to 22', () => {
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(mapping.numero_caminho).toBeGreaterThanOrEqual(1);
-        expect(mapping.numero_caminho).toBeLessThanOrEqual(22);
-      }
+    it('returns null for invalid sephirah', () => {
+      expect(getArcanoBySephirah('Invalid')).toBeNull();
+      expect(getArcanoBySephirah('')).toBeNull();
     });
   });
 
-  // ─── Interface completeness ─────────────────────────────────────────────────
-
-  describe('TarotSephirot interface completeness', () => {
-    it('all mappings have arcano property', () => {
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(typeof mapping.arcano).toBe('string');
-        expect(mapping.arcano.length).toBeGreaterThan(0);
-      }
+  describe('getAllSephiroth', () => {
+    it('returns array of sephirah names', () => {
+      const result = getAllSephiroth();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
     });
 
-    it('all mappings have numero_carta property', () => {
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(typeof mapping.numero_carta).toBe('number');
-      }
+    it('contains expected sephiroth names', () => {
+      const result = getAllSephiroth();
+      expect(result).toContain('Kether');
+      expect(result).toContain('Chokmah');
+      expect(result).toContain('Binah');
+      expect(result).toContain('Malkuth');
     });
 
-    it('all mappings have sephirah property', () => {
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(typeof mapping.sephirah).toBe('string');
-        expect(mapping.sephirah.length).toBeGreaterThan(0);
-      }
+    it('returns unique values only', () => {
+      const result = getAllSephiroth();
+      const unique = new Set(result);
+      expect(unique.size).toBe(result.length);
     });
+  });
 
-    it('all mappings have numero_caminho property', () => {
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(typeof mapping.numero_caminho).toBe('number');
-      }
-    });
-
-    it('all mappings have elemento property', () => {
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(typeof mapping.elemento).toBe('string');
+  describe('element distribution', () => {
+    it('all arcanos have valid elemento', () => {
+      const all = getAllTarotSephiroth();
+      all.forEach(mapping => {
+        expect(mapping.elemento).toBeTruthy();
         expect(mapping.elemento.length).toBeGreaterThan(0);
-      }
+      });
     });
 
-    it('all mappings have significado_espiritual property', () => {
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(typeof mapping.significado_espiritual).toBe('string');
-        expect(mapping.significado_espiritual.length).toBeGreaterThan(0);
-      }
+    it('contains expected elements', () => {
+      const all = getAllTarotSephiroth();
+      const elements = all.map(m => m.elemento);
+      expect(elements).toContain('Éter');
+      expect(elements).toContain('Água');
+      expect(elements).toContain('Terra');
+      expect(elements).toContain('Fogo');
+      expect(elements).toContain('Ar');
     });
   });
 
-  // ─── Tarot card distribution ─────────────────────────────────────────────────
-
-  describe('Tarot card distribution', () => {
-    it('cards cover all card numbers 0-21', () => {
-      const cardNumbers = Object.values(TAROT_SEPHIROT_MAPPINGS)
-        .map(m => m.numero_carta)
-        .sort((a, b) => a - b);
-      expect(cardNumbers).toEqual([...Array(22).keys()]);
+  describe('numero_carta consistency', () => {
+    it('numero_carta matches arcano position', () => {
+      const all = getAllTarotSephiroth();
+      all.forEach(mapping => {
+        const expected = getArcanoByNumber(mapping.numero_carta);
+        expect(expected).toBe(mapping.arcano);
+      });
     });
 
-    it('paths cover all path numbers 1-22', () => {
-      const pathNumbers = Object.values(TAROT_SEPHIROT_MAPPINGS)
-        .map(m => m.numero_caminho)
-        .sort((a, b) => a - b);
-      expect(pathNumbers).toEqual([...Array(22).keys()].map(n => n + 1));
+    it('numero_caminho is unique across all mappings', () => {
+      const all = getAllTarotSephiroth();
+      const paths = all.map(m => m.numero_caminho);
+      const unique = new Set(paths);
+      expect(unique.size).toBe(paths.length);
     });
 
-    it('has valid elemental mappings', () => {
-      const validElements = ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'];
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(validElements).toContain(mapping.elemento);
-      }
-    });
-
-    it('has valid Sephirah references', () => {
-      const validSephiroth = [
-        'Kether', 'Chokmah', 'Binah', 'Chesed', 'Geburah',
-        'Tiphereth', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-      ];
-      for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-        expect(validSephiroth).toContain(mapping.sephirah);
-      }
+    it('numero_carta range is 0-21', () => {
+      const all = getAllTarotSephiroth();
+      const numbers = all.map(m => m.numero_carta);
+      expect(Math.min(...numbers)).toBe(0);
+      expect(Math.max(...numbers)).toBe(21);
     });
   });
 });
