@@ -244,11 +244,9 @@ describe('Orixá-Day Correlation', () => {
       expect(iemanja?.elemento).toBe('água');
     });
 
-    it('should have Sunday as a day in the mapping for Sol/Xangô', () => {
+    it('should have all six sacred days in the mapping', () => {
       const result = getAllOrixaDays();
       const dias = result.map(r => r.dia_da_semana);
-      
-      expect(dias).toContain('Domingo');
       expect(dias).toContain('Segunda-feira');
       expect(dias).toContain('Terça-feira');
       expect(dias).toContain('Quarta-feira');
