@@ -614,37 +614,31 @@ describe('useDataSync', () => {
         if (key === 'cabala_sync_data_pending') return JSON.stringify([]);
         return null;
       });
-
       vi.spyOn(global, 'fetch').mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({ success: true }),
       } as Response);
-
-      renderHook(() => useDataSync({ autoSync: true }));
-
+      const { unmount } = renderHook(() => useDataSync({ autoSync: true }));
       await waitFor(() => {
         expect(global.fetch).toHaveBeenCalled();
       });
+      unmount();
     });
-
     it('does not sync immediately if lastSync is recent', () => {
       const recentTimestamp = new Date().toISOString();
       localStorageMock.getItem.mockImplementation((key: string) => {
         if (key === 'cabala_sync_data_last_sync') return recentTimestamp;
         return null;
       });
-
       vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         json: () => Promise.resolve({ success: true }),
       } as Response);
-
-      renderHook(() => useDataSync({ autoSync: true }));
-
+      const { unmount } = renderHook(() => useDataSync({ autoSync: true }));
       // With recent lastSync, no immediate sync should happen
       expect(global.fetch).not.toHaveBeenCalled();
+      unmount();
     });
-
     it('persists lastSync to localStorage', async () => {
       localStorageMock.getItem.mockImplementation((key: string) => {
         if (key === 'cabala_sync_data') return JSON.stringify({ data: 'test' });
@@ -652,31 +646,28 @@ describe('useDataSync', () => {
         if (key === 'cabala_sync_data_pending') return JSON.stringify([]);
         return null;
       });
-
       vi.spyOn(global, 'fetch').mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({ success: true }),
       } as Response);
-
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
-
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
       await act(async () => {
         await result.current.sync();
       });
-
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         'cabala_sync_data_last_sync',
         expect.any(String)
       );
+      unmount();
     });
   });
-
   describe('error handling', () => {
     it('sets error status on sync failure', async () => {
       localStorageMock.getItem.mockImplementation((key: string) => {
         if (key === 'cabala_sync_data') return JSON.stringify({ data: 'test' });
         if (key === 'cabala_sync_data_cloud') return JSON.stringify({ data: 'cloud' });
         if (key === 'cabala_sync_data_pending') return JSON.stringify([]);
+        return null;
         return null;
       });
 
