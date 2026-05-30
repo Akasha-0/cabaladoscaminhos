@@ -14,19 +14,18 @@ import { z } from "zod";
 export const dataNascimentoSchema = z.string().refine(
   (val) => {
     const formats = [
-      /^(\d{4})-(\d{2})-(\d{2})$/,
-      /^(\d{2})\/(\d{2})\/(\d{4})$/,
-      /^(\d{2})-(\d{2})-(\d{4})$/,
-      /^(\d{4})\/(\d{2})\/(\d{2})$/,
+      { regex: /^(\d{4})-(\d{2})-(\d{2})$/, parse: (m) => new Date(+m[1], +m[2] - 1, +m[3]) },
+      { regex: /^(\d{2})\/(\d{2})\/(\d{4})$/, parse: (m) => new Date(+m[3], +m[2] - 1, +m[1]) },
+      { regex: /^(\d{2})-(\d{2})-(\d{4})$/, parse: (m) => new Date(+m[3], +m[2] - 1, +m[1]) },
+      { regex: /^(\d{4})\/(\d{2})\/(\d{2})$/, parse: (m) => new Date(+m[1], +m[2] - 1, +m[3]) },
     ];
-
-    for (const format of formats) {
-      if (format.test(val)) {
-        const date = new Date(val);
+    for (const fmt of formats) {
+      const m = val.match(fmt.regex);
+      if (m) {
+        const date = fmt.parse(m);
         return !isNaN(date.getTime());
       }
     }
-
     const date = new Date(val);
     return !isNaN(date.getTime());
   },

@@ -81,9 +81,9 @@ describe('lib/validators', () => {
   describe('registroSchema', () => {
     it('accepts valid registration data', () => {
       const result = registroSchema.safeParse({
-        nome: 'João Silva',
         email: 'joao@example.com',
-        senha: 'Password123',
+        password: 'Password123',
+        nomeCompleto: 'João Silva',
         dataNascimento: '15/03/1990',
       });
       expect(result.success).toBe(true);
@@ -91,9 +91,9 @@ describe('lib/validators', () => {
 
     it('rejects registration with invalid email', () => {
       const result = registroSchema.safeParse({
-        nome: 'João Silva',
         email: 'invalid',
-        senha: 'Password123',
+        password: 'Password123',
+        nomeCompleto: 'João Silva',
         dataNascimento: '15/03/1990',
       });
       expect(result.success).toBe(false);
@@ -104,14 +104,14 @@ describe('lib/validators', () => {
     it('accepts valid login data', () => {
       const result = loginSchema.safeParse({
         email: 'user@example.com',
-        senha: 'Password123',
+        password: 'Password123',
       });
       expect(result.success).toBe(true);
     });
 
     it('rejects login without email', () => {
       const result = loginSchema.safeParse({
-        senha: 'Password123',
+        password: 'Password123',
       });
       expect(result.success).toBe(false);
     });
@@ -120,7 +120,7 @@ describe('lib/validators', () => {
   describe('numerologiaInputSchema', () => {
     it('accepts valid numerology input', () => {
       const result = numerologiaInputSchema.safeParse({
-        nome: 'Maria Silva',
+        nomeCompleto: 'Maria Silva',
         dataNascimento: '15/03/1990',
       });
       expect(result.success).toBe(true);
