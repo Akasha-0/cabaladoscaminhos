@@ -212,6 +212,10 @@ export function getZodiacSound(signo: string): ZodiacSound | undefined {
 }
 
 /**
+ * Retrieves the zodiac sign associated with a given sacred sound or frequency.
+ * @param som - Sacred sound (e.g., "RAM", "OM"), frequency in Hz, or musical note
+ * @returns ZodiacSound mapping or undefined if not found
+ */
 export function getSoundZodiac(som: string | number): ZodiacSound | undefined {
   if (!som && som !== 0) return undefined;
   const somStr = String(som);
@@ -222,7 +226,6 @@ export function getSoundZodiac(som: string | number): ZodiacSound | undefined {
     (z) => z.som_sagrado.toUpperCase() === upperSom
   );
   if (bySacredSound) return bySacredSound;
-  // Try match by frequency (as string or number)
   // Try match by frequency (as string or number)
   const freqNum = typeof som === 'number' ? som : parseFloat(somStr);
   if (!isNaN(freqNum)) {
@@ -248,7 +251,10 @@ export function getSoundZodiac(som: string | number): ZodiacSound | undefined {
 
   return undefined;
 }
-
+/**
+ * Get all zodiac sound mappings.
+ * @returns Array of all ZodiacSound objects ordered by sign number
+ */
 export function getAllZodiacSounds(): ZodiacSound[] {
   return Object.values(ZODIAC_SOUNDS).sort((a, b) => a.signo_numero - b.signo_numero);
 }
