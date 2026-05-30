@@ -13,13 +13,12 @@ describe('crystal-meanings', () => {
     expect(crystal).toBeDefined();
     expect(crystal?.name).toBe('Rose Quartz');
   });
-
   it('getCrystalsByChakra filters by chakra', () => {
-    const crystals = getCrystalsByChakra('heart');
+    const crystals = getCrystalsByChakra('Coração');
     expect(Array.isArray(crystals)).toBe(true);
     expect(crystals.length).toBeGreaterThan(0);
     crystals.forEach(c => {
-      expect(c.chakra).toContain('heart');
+      expect(c.chakra).toContain('Coração');
     });
   });
 });

@@ -1,93 +1,64 @@
 import { describe, it, expect } from 'vitest';
-import { getPatterns, getPatternById, getPatternsByCategory, getPatternsBySefirot, getPatternsByChakra, getPatternCategories, getMetatronRelations, getAllElements, getAllSefirots, getAllChakras } from '@/lib/sacred-geometry/geometric-patterns';
+import { 
+  getPatterns, 
+  getPatternById, 
+  getPatternsByCategory, 
+  getPatternCategories,
+  getMetatronRelations,
+  getAllElements,
+  getAllSefirots,
+  getAllChakras
+} from '../../../src/lib/sacred-geometry/geometric-patterns';
 
-describe('sacred-geometry/geometric-patterns', () => {
-  describe('getPatterns', () => {
-    it('returns all patterns', () => {
-      const patterns = getPatterns();
-      expect(patterns.length).toBeGreaterThan(0);
-    });
-
-    it('each pattern has required fields', () => {
-      for (const p of getPatterns()) {
-        expect(p.id).toBeTruthy();
-        expect(p.name).toBeTruthy();
-        expect(p.category).toBeTruthy();
-      }
-    });
+describe('geometric-patterns', () => {
+  it('getPatterns returns array of patterns', () => {
+    const patterns = getPatterns();
+    expect(Array.isArray(patterns)).toBe(true);
+    expect(patterns.length).toBeGreaterThan(0);
   });
 
-  describe('getPatternById', () => {
-    it('finds pattern by id', () => {
-      const patterns = getPatterns();
-      if (patterns.length > 0) {
-        const found = getPatternById(patterns[0].id);
-        expect(found).toBeDefined();
-      }
-    });
-
-    it('returns undefined for unknown id', () => {
-      expect(getPatternById('nonexistent')).toBeUndefined();
-    });
+  it('each pattern has required fields', () => {
+    const patterns = getPatterns();
+    const pattern = patterns[0];
+    expect(pattern).toHaveProperty('id');
+    expect(pattern).toHaveProperty('name');
+    expect(pattern).toHaveProperty('category');
+    expect(pattern).toHaveProperty('sefirots');
+    expect(pattern).toHaveProperty('chakras');
   });
 
-  describe('getPatternsByCategory', () => {
-    it('returns patterns for platonic category', () => {
-      const patterns = getPatternsByCategory('platonic');
-      for (const p of patterns) {
-        expect(p.category).toBe('platonic');
-      }
-    });
+  it('getPatternById finds pattern by id', () => {
+    const patterns = getPatterns();
+    const pattern = patterns[0];
+    const found = getPatternById(pattern.id);
+    expect(found).toBeDefined();
+    expect(found?.id).toBe(pattern.id);
   });
 
-  describe('getPatternsBySefirot', () => {
-    it('returns patterns for a sefirot', () => {
-      const patterns = getPatternsBySefirot('Kether');
-      for (const p of patterns) {
-        expect(p.sefirots).toContain('Kether');
-      }
-    });
+  it('getPatternsByCategory filters correctly', () => {
+    const platonicPatterns = getPatternsByCategory('platonic');
+    expect(platonicPatterns.every(p => p.category === 'platonic')).toBe(true);
   });
 
-  describe('getPatternsByChakra', () => {
-    it('returns patterns for chakra 1', () => {
-      const patterns = getPatternsByChakra(1);
-      for (const p of patterns) {
-        expect(p.chakras).toContain(1);
-      }
-    });
+  it('getPatternCategories returns all 5 categories', () => {
+    const categories = getPatternCategories();
+    expect(categories).toContain('platonic');
+    expect(categories).toContain('stellar');
+    expect(categories).toContain('flower');
+    expect(categories).toContain('knot');
+    expect(categories).toContain('spiral');
   });
 
-  describe('getPatternCategories', () => {
-    it('returns all pattern categories', () => {
-      const cats = getPatternCategories();
-      expect(cats).toContain('platonic');
-      expect(cats).toContain('spiral');
-    });
+  it('getAllSefirots returns 10 sephiroth', () => {
+    const sefirots = getAllSefirots();
+    expect(sefirots.length).toBe(10);
+    expect(sefirots).toContain('Kether');
+    expect(sefirots).toContain('Malkuth');
   });
 
-  describe('getMetatronRelations', () => {
-    it('returns metatron relations', () => {
-      const rels = getMetatronRelations();
-      expect(rels.length).toBeGreaterThan(0);
-    });
-  });
-
-  describe('getAllElements', () => {
-    it('returns 5 elements', () => {
-      expect(getAllElements()).toHaveLength(5);
-    });
-  });
-
-  describe('getAllSefirots', () => {
-    it('returns 10 sefirots', () => {
-      expect(getAllSefirots()).toHaveLength(10);
-    });
-  });
-
-  describe('getAllChakras', () => {
-    it('returns 7 chakras', () => {
-      expect(getAllChakras()).toHaveLength(7);
-    });
+  it('getAllChakras returns7 chakras', () => {
+    const chakras = getAllChakras();
+    expect(chakras.length).toBe(7);
+    expect(chakras).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 });

@@ -9,13 +9,13 @@ describe('breath-patterns', () => {
   });
 
   it('getPattern finds pattern by id', () => {
-    const pattern = getPattern('box-breathing');
+    const pattern = getPattern('boxBreathing');
     expect(pattern).toBeDefined();
-    expect(pattern?.id).toBe('box-breathing');
+    expect(pattern?.id).toBe('boxBreathing');
   });
 
   it('getPatternDuration returns positive number', () => {
-    const pattern = getPattern('box-breathing');
+    const pattern = getPattern('calming');
     const duration = getPatternDuration(pattern!);
     expect(duration).toBeGreaterThan(0);
   });

@@ -10,9 +10,9 @@ describe('marma', () => {
   });
 
   it('getMarmaById finds marma point', () => {
-    const marma = getMarmaById('hridaya');
+    const marma = getMarmaById('marma-h1');
     expect(marma).toBeDefined();
-    expect(marma?.id).toBe('hridaya');
+    expect(marma?.id).toBe('marma-h1');
   });
 
   it('getMarmasByRegion filters correctly', () => {

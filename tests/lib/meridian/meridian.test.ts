@@ -10,9 +10,9 @@ describe('meridian', () => {
   });
 
   it('getMeridianById finds meridian by id', () => {
-    const meridian = getMeridianById('lung');
+    const meridian = getMeridianById('lu');
     expect(meridian).toBeDefined();
-    expect(meridian?.id).toBe('lung');
+    expect(meridian?.id).toBe('lu');
   });
 
   it('getMeridiansByElement filters correctly', () => {
