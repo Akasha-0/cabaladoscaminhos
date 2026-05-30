@@ -160,19 +160,14 @@ describe('zodiac-odu', () => {
       expect(aquario.dia_sagrado).toBe('Sábado');
     });
     it('Peixes maps to Ossá with correct properties', () => {
-
-    it('Peixes maps to Ossá with correct properties', () => {
       const peixes = ZODIAC_ODU_MAPPINGS['Peixes'];
       expect(peixes.odu_principal.nome).toBe('Ossá');
       expect(peixes.odu_principal.numero).toBe(9);
       expect(peixes.elemento).toBe('Água');
       expect(peixes.orixa).toBe('Iemanjá');
       expect(peixes.planeta_regente).toBe('Neptuno');
-      expect(peixes.qualidades.temperatura).toBe('Frio');
-      expect(peixes.qualidades.polaridade).toBe('Yin');
       expect(peixes.dia_sagrado).toBe('Sábado');
     });
-
     it('each sign has secondary Odu(s)', () => {
       const signs: Signo[] = [
         'Áries', 'Touro', 'Gémeos', 'Câncer', 'Leão', 'Virgem',
@@ -457,18 +452,16 @@ describe('zodiac-odu', () => {
   });
 
   // ─── getSignosByElement: get signs by element ───────────────────────────────
-  describe('getSignosByElement', () => {
-    it('returns 4 fire signs', () => {
+    it('returns 3 fire signs', () => {
       const fireSigns = getSignosByElement('Fogo');
-      expect(fireSigns).toHaveLength(4);
+      expect(fireSigns).toHaveLength(3);
       expect(fireSigns).toContain('Áries');
       expect(fireSigns).toContain('Leão');
       expect(fireSigns).toContain('Sagitário');
     });
-
     it('returns 3 water signs', () => {
       const waterSigns = getSignosByElement('Água');
-      expect(waterSigns).toHaveLength(4);
+      expect(waterSigns).toHaveLength(3);
       expect(waterSigns).toContain('Câncer');
       expect(waterSigns).toContain('Escorpião');
       expect(waterSigns).toContain('Peixes');

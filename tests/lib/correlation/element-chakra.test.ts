@@ -313,6 +313,8 @@ describe('element-chakra', () => {
         '7º Coronário',
       ];
       chakras.forEach((chakra) => expect(chakra).toBeTruthy());
+    });
+  });
   // ─── getElementChakra: alias for getElementChakras ────────────────────────
   describe('getElementChakra', () => {
     it('returns correct mapping for each element', () => {
