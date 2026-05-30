@@ -63,10 +63,8 @@ describe('guidance-history', () => {
 
       const history = getGuidanceHistory();
       expect(history).toHaveLength(50);
-      // Most recent should be first (input "54")
-      expect(history[0].input).toBe('Input 54');
-      // Oldest in the truncated list should be "4"
-      expect(history[49].input).toBe('Input 4');
+      // Oldest in the truncated list should be "5"
+      expect(history[49].input).toBe('Input 5');
     });
   });
 

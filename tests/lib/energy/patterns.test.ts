@@ -33,8 +33,7 @@ describe('Energy Patterns', () => {
         expect(pattern.intensity).toBeGreaterThanOrEqual(1);
         expect(pattern.intensity).toBeLessThanOrEqual(5);
         expect(typeof pattern.description).toBe('string');
-
-        expect(pattern.correspondences).toHaveProperty('action');
+        expect(pattern.recommendations).toHaveProperty('action');
       });
     });
   });
