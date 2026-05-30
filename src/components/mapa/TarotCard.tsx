@@ -86,21 +86,31 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
 
   // Additional cards
   const anoPessoalNum = data.cartaAnoPessoal;
+  const arcanoNum = data.cartaNascimento;
+  const arcanoName = ARCANOS_MAIORES[arcanoNum] || `Arcano ${arcanoNum}`;
+  const arcanoEnglish = ARCANOS_ENGLISH[arcanoNum] || '';
+  const arcanoSymbol = ARCANO_SYMBOLS[arcanoNum] || '✦';
+  const energia = ARCANO_ENERGIA[arcanoNum] || 'Ar';
+  const elementoColor = ELEMENTO_COLORS[energia] || 'var(--spiritual-violet)';
+  // Additional cards
+  const anoPessoalNum = data.cartaAnoPessoal;
   const almaNum = data.cartaAlma;
-
   return (
     <div className={cn('flex flex-col gap-4', className)}>
+      {/* Screen reader announcement for flip state */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {isFlipped ? `Carta revelada: ${arcanoName}. Interpretação: ${data.interpretacao?.upright || 'informação indisponível'}` : `Carta do Nascimento: ${arcanoName}. Toque para revelar.`}
+      </div>
       {/* Main Flip Card */}
       <div
         className="card-flip w-full max-w-sm mx-auto"
         role="button"
         tabIndex={0}
-        aria-label={`Carta do Nascimento: ${arcanoName}. Toque para revelar a interpretação.`}
+        aria-label={`Carta do Nascimento: ${arcanoName}. Toque para ${isFlipped ? 'fechar e ver a carta' : 'revelar a interpretação'}.`}
         aria-pressed={isFlipped}
         onClick={handleFlip}
         onKeyDown={handleKeyDown}
       >
-        <div
           className={cn(
             'card-flip-inner',
             isFlipped && !prefersReducedMotion && 'rotate-y-180'

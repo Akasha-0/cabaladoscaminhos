@@ -99,8 +99,9 @@ function ChakraItem({ chakra }: { chakra: ChakraInfo }) {
             backgroundColor: chakraInfo.cor,
             boxShadow: `0 0 12px ${chakraInfo.cor}60`,
           }}
+          role="img"
+          aria-label={`Cor do chakra ${chakraInfo.nome}: ${chakraInfo.cor}`}
         />
-        {/* Name + State */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
             <span className="text-sm sm:text-base font-semibold text-slate-100">
@@ -146,14 +147,20 @@ function ChakraItem({ chakra }: { chakra: ChakraInfo }) {
 
 export function ChakraPanel({ data, className = '' }: ChakraPanelProps) {
   return (
-    <div className={cn('card-spiritual p-5', className)}>
+    <div className={cn('card-spiritual p-5', className)} role="region" aria-label="Painel dos Chakras">
       {/* Title */}
       <div className="mb-6">
         <Heading variant="mystical" className="text-amber-400">
           ✦ CHAKRAS
         </Heading>
       </div>
-
+      {/* Screen reader status */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {data.chakras.length} chakras carregados. 
+        {data.chakras.filter(c => c.estado === 'equilibrado').length} equilibrados,{' '}
+        {data.chakras.filter(c => c.estado === 'bloqueado').length} bloqueados,{' '}
+        {data.chakras.filter(c => c.estado === 'hiperativo').length} hiperativos.
+      </div>
       {/* Mobile: vertical column */}
       <div className="grid grid-cols-1 gap-3 lg:hidden">
         {data.chakras.map((chakra) => (

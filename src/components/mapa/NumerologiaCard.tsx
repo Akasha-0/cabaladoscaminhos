@@ -94,13 +94,14 @@ export function NumerologiaCard({ data, className }: NumerologiaCardProps) {
                 tabIndex={0}
                 aria-expanded={isExpanded}
                 aria-controls={`numerologia-detail-${key}`}
+                aria-label={`${NUMBER_NAMES[key]}: número ${value}. ${isExpanded ? 'Recolher detalhes' : 'Expandir para ver interpretação'}`}
                 onClick={() => toggleExpand(key)}
                 onKeyDown={(e) => handleKeyDown(e, key)}
                 className={cn(
                   'relative rounded-xl p-4 text-center cursor-pointer transition-all duration-300',
                   'border border-slate-700/50 bg-slate-800/30',
                   'hover:bg-slate-800/50 hover:border-slate-600/60',
-                  'focus:outline-none focus:ring-2 focus:ring-amber-500/50',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
                   isMaster && 'shadow-[0_0_20px_rgba(212,175,55,0.4)]',
                 )}
               >
