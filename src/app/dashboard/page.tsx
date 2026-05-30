@@ -16,6 +16,7 @@ import { OduDivinationWidget } from '@/components/dashboard/OduDivinationWidget'
 import { ChakraBalanceWidget } from '@/components/dashboard/ChakraBalanceWidget';
 import { QuickDivination } from '@/components/dashboard/QuickDivination';
 import { DailyWisdomCard } from '@/components/dashboard/DailyWisdomCard';
+import { EnergyFlowWidget } from '@/components/dashboard/EnergyFlowWidget';
 
 // Dynamic imports for heavy components
 const AffirmationWidget = dynamic(
@@ -35,26 +36,6 @@ const CorrelationViz = dynamic(
 
 const ProgressTracker = dynamic(
   () => import('@/components/dashboard/ProgressTracker').then(m => ({ default: m.ProgressTracker })),
-  { ssr: false, loading: () => <WidgetSkeleton /> }
-);
-
-const LoveReadingsWidget = dynamic(
-  () => import('@/components/dashboard/LoveReadingsWidget').then(m => ({ default: m.LoveReadingsWidget })),
-  { ssr: false, loading: () => <WidgetSkeleton /> }
-);
-
-const AIMeditationGuide = dynamic(
-  () => import('@/components/dashboard/AIMeditationGuide').then(m => ({ default: m.AIMeditationGuide })),
-  { ssr: false, loading: () => <WidgetSkeleton /> }
-);
-
-const AkashicRecords = dynamic(
-  () => import('@/components/dashboard/AkashicRecords').then(m => ({ default: m.AkashicRecords })),
-  { ssr: false, loading: () => <WidgetSkeleton /> }
-);
-
-const AncestralConnectionPanel = dynamic(
-  () => import('@/components/dashboard/AncestralConnectionPanel').then(m => ({ default: m.AncestralConnectionPanel })),
   { ssr: false, loading: () => <WidgetSkeleton /> }
 );
 
@@ -173,10 +154,10 @@ export default function Dashboard() {
       </DashboardSection>
 
       {/* Balance & Progress Section */}
-      <DashboardSection title="Crescimento Espiritual">
+      <DashboardSection title="Fluxo e Crescimento">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <EnergyFlowWidget />
           <ProgressTracker userId="dashboard" />
-          <CorrelationViz />
         </div>
       </DashboardSection>
 
@@ -184,7 +165,7 @@ export default function Dashboard() {
       <DashboardSection title="Equilíbrio Interior">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <ChakraBalanceWidget />
-          <LoveReadingsWidget userId="dashboard" userOrixa={userData.orixaRegente} />
+          <CorrelationViz />
         </div>
       </DashboardSection>
 
