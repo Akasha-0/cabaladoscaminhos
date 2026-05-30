@@ -1,350 +1,589 @@
-/**
- * Day-Element Correlation Tests
- */
-
 import { describe, it, expect } from 'vitest';
 import {
   getDayElement,
   getElementDay,
-  getElementByDay,
-  getAllDays,
-  getElementDays,
-  getDaysByElemento,
   getAllDayElements,
-  getDayPractices,
-  getElementProperties,
+  getElementFromDay,
+  getChakraFromDay,
+  getAffirmationFromDay,
+  getSpiritualThemeFromDay,
+  getDaysByElement,
+  getAllDays,
+  getPlanetFromDay,
+  getActivitiesFromDay,
+  DAY_ELEMENT_MAP,
+  TODOS_DIAS,
+  TODOS_ELEMENTOS,
+  type DayElementMapping,
+  type DiaSemana,
+  type ChakraName,
 } from '@/lib/correlation/day-element';
 
-describe('Day-Element Correlation', () => {
+describe('DayElement Correlation', () => {
+  // ─── DAY_ELEMENT_MAP: all 7 days ─────────────────────────────────────────
+
+  describe('DAY_ELEMENT_MAP', () => {
+    it('contains all 7 days of the week', () => {
+      expect(Object.keys(DAY_ELEMENT_MAP)).toHaveLength(7);
+    });
+
+    it('maps Domingo to Fogo with Anahata chakra', () => {
+      const mapping = DAY_ELEMENT_MAP['Domingo'];
+      expect(mapping.elemento).toBe('Fogo');
+      expect(mapping.chakra).toBe('Anahata');
+      expect(mapping.planeta).toBe('Sol');
+      expect(mapping.dia).toBe('Domingo');
+    });
+
+    it('maps Segunda-feira to Água with Svadhisthana chakra', () => {
+      const mapping = DAY_ELEMENT_MAP['Segunda-feira'];
+      expect(mapping.elemento).toBe('Água');
+      expect(mapping.chakra).toBe('Svadhisthana');
+      expect(mapping.planeta).toBe('Lua');
+    });
+
+    it('maps Terça-feira to Fogo with Manipura chakra', () => {
+      const mapping = DAY_ELEMENT_MAP['Terça-feira'];
+      expect(mapping.elemento).toBe('Fogo');
+      expect(mapping.chakra).toBe('Manipura');
+      expect(mapping.planeta).toBe('Marte');
+    });
+
+    it('maps Quarta-feira to Ar with Vishuddha chakra', () => {
+      const mapping = DAY_ELEMENT_MAP['Quarta-feira'];
+      expect(mapping.elemento).toBe('Ar');
+      expect(mapping.chakra).toBe('Vishuddha');
+      expect(mapping.planeta).toBe('Mercúrio');
+    });
+
+    it('maps Quinta-feira to Fogo with Anahata chakra', () => {
+      const mapping = DAY_ELEMENT_MAP['Quinta-feira'];
+      expect(mapping.elemento).toBe('Fogo');
+      expect(mapping.chakra).toBe('Anahata');
+      expect(mapping.planeta).toBe('Júpiter');
+    });
+
+    it('maps Sexta-feira to Terra with Svadhisthana chakra', () => {
+      const mapping = DAY_ELEMENT_MAP['Sexta-feira'];
+      expect(mapping.elemento).toBe('Terra');
+      expect(mapping.chakra).toBe('Svadhisthana');
+      expect(mapping.planeta).toBe('Vênus');
+    });
+
+    it('maps Sábado to Terra with Muladhara chakra', () => {
+      const mapping = DAY_ELEMENT_MAP['Sábado'];
+      expect(mapping.elemento).toBe('Terra');
+      expect(mapping.chakra).toBe('Muladhara');
+      expect(mapping.planeta).toBe('Saturno');
+    });
+
+    it('includes spiritual meaning for each day', () => {
+      for (const mapping of Object.values(DAY_ELEMENT_MAP)) {
+        expect(mapping.significado_espiritual).toBeDefined();
+        expect(mapping.significado_espiritual.tema).toBeDefined();
+        expect(mapping.significado_espiritual.emocional).toBeDefined();
+        expect(mapping.significado_espiritual.mental).toBeDefined();
+        expect(mapping.significado_espiritual.fisico).toBeDefined();
+      }
+    });
+
+    it('includes affirmation for each day', () => {
+      for (const mapping of Object.values(DAY_ELEMENT_MAP)) {
+        expect(mapping.affirmation).toBeDefined();
+        expect(typeof mapping.affirmation).toBe('string');
+        expect(mapping.affirmation.length).toBeGreaterThan(0);
+      }
+    });
+
+    it('includes activities for each day', () => {
+      for (const mapping of Object.values(DAY_ELEMENT_MAP)) {
+        expect(mapping.atividades).toBeDefined();
+        expect(Array.isArray(mapping.atividades)).toBe(true);
+        expect(mapping.atividades.length).toBeGreaterThan(0);
+      }
+    });
+
+    it('includes secondary chakra where defined', () => {
+      const mapping = DAY_ELEMENT_MAP['Domingo'];
+      expect(mapping.chakraSecundario).toBeDefined();
+      expect(mapping.chakraSecundario).toBe('Manipura');
+    });
+
+    it('includes null secondary chakra where appropriate', () => {
+      const mapping = DAY_ELEMENT_MAP['Quinta-feira'];
+      expect(mapping.chakraSecundario).toBeNull();
+    });
+  });
+
+  // ─── getDayElement: lookup by day ────────────────────────────────────────
+
   describe('getDayElement', () => {
-    it('should return Sunday (Domingo) mapping with fire element', () => {
+    it('returns mapping for Portuguese day names', () => {
       const result = getDayElement('Domingo');
-      expect(result).toBeDefined();
-      expect(result!.elemento).toBe('fogo');
-      expect(result!.planeta).toBe('Sol');
-      expect(result!.signo).toBe('Leão');
-      expect(result!.qualidade).toBe('fixed');
-      expect(result!.cor).toBe('Dourado / Amarelo');
-      expect(result!.direcao).toBe('Leste');
-      expect(result!.estacao).toBe('Verão');
-      expect(result!.chakra).toBe('3º Plexo Solar');
-      expect(result!.praticas_espirituais.length).toBeGreaterThan(0);
+      expect(result).not.toBeNull();
+      expect(result?.elemento).toBe('Fogo');
     });
 
-    it('should return Monday (Segunda-feira) mapping with water element', () => {
-      const result = getDayElement('Segunda-feira');
-      expect(result).toBeDefined();
-      expect(result!.elemento).toBe('água');
-      expect(result!.planeta).toBe('Lua');
-      expect(result!.signo).toBe('Câncer');
-      expect(result!.qualidade).toBe('cardinal');
-      expect(result!.cor).toBe('Prata / Branco');
-      expect(result!.direcao).toBe('Oeste');
-      expect(result!.estacao).toBe('Outono');
+    it('returns mapping for English day names', () => {
+      const result = getDayElement('Sunday');
+      expect(result).not.toBeNull();
+      expect(result?.elemento).toBe('Fogo');
     });
 
-    it('should return Tuesday (Terça-feira) mapping with fire element', () => {
-      const result = getDayElement('Terça-feira');
-      expect(result).toBeDefined();
-      expect(result!.elemento).toBe('fogo');
-      expect(result!.planeta).toBe('Marte');
-      expect(result!.signo).toBe('Áries');
-      expect(result!.qualidade).toBe('cardinal');
-      expect(result!.cor).toBe('Vermelho / Laranja');
-      expect(result!.direcao).toBe('Sul');
-      expect(result!.estacao).toBe('Primavera');
+    it('returns mapping for abbreviations', () => {
+      const result = getDayElement('dom');
+      expect(result).not.toBeNull();
+      expect(result?.elemento).toBe('Fogo');
     });
 
-    it('should return Wednesday (Quarta-feira) mapping with air element', () => {
-      const result = getDayElement('Quarta-feira');
-      expect(result).toBeDefined();
-      expect(result!.elemento).toBe('ar');
-      expect(result!.planeta).toBe('Mercúrio');
-      expect(result!.signo).toBe('Gêmeos');
-      expect(result!.qualidade).toBe('mutable');
-      expect(result!.cor).toBe('Amarelo / Cinzento');
-      expect(result!.direcao).toBe('Norte');
-      expect(result!.estacao).toBe('Inverno');
+    it('handles case insensitivity', () => {
+      const upper = getDayElement('DOMINGO');
+      const lower = getDayElement('domingo');
+      expect(upper?.elemento).toBe(lower?.elemento);
     });
 
-    it('should return Thursday (Quinta-feira) mapping with fire element', () => {
-      const result = getDayElement('Quinta-feira');
-      expect(result).toBeDefined();
-      expect(result!.elemento).toBe('fogo');
-      expect(result!.planeta).toBe('Júpiter');
-      expect(result!.signo).toBe('Sagitário');
-      expect(result!.qualidade).toBe('mutable');
-      expect(result!.cor).toBe('Azul / Roxo');
-      expect(result!.direcao).toBe('Nordeste');
-      expect(result!.estacao).toBe('Primavera');
+    it('handles whitespace variations', () => {
+      const result = getDayElement('  Segunda-feira  ');
+      expect(result).not.toBeNull();
+      expect(result?.elemento).toBe('Água');
     });
 
-    it('should return Friday (Sexta-feira) mapping with earth element', () => {
-      const result = getDayElement('Sexta-feira');
-      expect(result).toBeDefined();
-      expect(result!.elemento).toBe('terra');
-      expect(result!.planeta).toBe('Vênus');
-      expect(result!.signo).toBe('Touro');
-      expect(result!.qualidade).toBe('fixed');
-      expect(result!.cor).toBe('Verde / Rosa');
-      expect(result!.direcao).toBe('Sudoeste');
-      expect(result!.estacao).toBe('Outono');
+    it('returns null for invalid day names', () => {
+      expect(getDayElement('InvalidDay')).toBeNull();
+      expect(getDayElement('')).toBeNull();
+      expect(getDayElement(null as unknown as string)).toBeNull();
+      expect(getDayElement(undefined as unknown as string)).toBeNull();
     });
 
-    it('should return Saturday (Sábado) mapping with earth element', () => {
-      const result = getDayElement('Sábado');
-      expect(result).toBeDefined();
-      expect(result!.elemento).toBe('terra');
-      expect(result!.planeta).toBe('Saturno');
-      expect(result!.signo).toBe('Capricórnio');
-      expect(result!.qualidade).toBe('cardinal');
-      expect(result!.cor).toBe('Preto / Azul Escuro');
-      expect(result!.direcao).toBe('Norte');
-      expect(result!.estacao).toBe('Inverno');
+    it('handles day with hyphen variation (terca)', () => {
+      const result = getDayElement('terca-feira');
+      expect(result).not.toBeNull();
+      expect(result?.elemento).toBe('Fogo');
     });
 
-    it('should return undefined for invalid day', () => {
-      const result = getDayElement('InvalidDay');
-      expect(result).toBeUndefined();
-    });
-
-    it('should return undefined for empty string', () => {
-      const result = getDayElement('');
-      expect(result).toBeUndefined();
-    });
-
-    it('should include all required interface properties', () => {
-      const result = getDayElement('Domingo');
-      expect(result).toBeDefined();
-      expect(result!.dia).toBe('Domingo');
-      expect(result!.indice).toBe(0);
-      expect(result!.elemento).toBeDefined();
-      expect(result!.qualidade).toBeDefined();
-      expect(result!.cor).toBeDefined();
-      expect(result!.direcao).toBeDefined();
-      expect(result!.estacao).toBeDefined();
-      expect(result!.chakra).toBeDefined();
-      expect(result!.planeta).toBeDefined();
-      expect(result!.signo).toBeDefined();
-      expect(result!.propriedades).toBeDefined();
-      expect(result!.mystere).toBeDefined();
-      expect(result!.praticas_espirituais).toBeDefined();
-    });
-
-    it('should have valid element values (fogo, água, ar, terra)', () => {
-      const elements = ['fogo', 'água', 'ar', 'terra'];
-      getAllDayElements().forEach((dayElement) => {
-        expect(elements).toContain(dayElement.elemento);
-      });
-    });
-
-    it('should have valid quality values (cardinal, fixed, mutable)', () => {
-      const qualities = ['cardinal', 'fixed', 'mutable'];
-      getAllDayElements().forEach((dayElement) => {
-        expect(qualities).toContain(dayElement.qualidade);
-      });
-    });
-
-    it('should have properties with forta, palavras_chave, and desafios', () => {
-      getAllDayElements().forEach((dayElement) => {
-        expect(dayElement.propriedades.forta).toBeDefined();
-        expect(dayElement.propriedades.palavras_chave.length).toBeGreaterThan(0);
-        expect(dayElement.propriedades.desafios.length).toBeGreaterThan(0);
-      });
+    it('handles day with accent variation (sabado)', () => {
+      const result = getDayElement('sabado');
+      expect(result).not.toBeNull();
+      expect(result?.elemento).toBe('Terra');
     });
   });
 
-  describe('getElementByDay / getElementDays', () => {
-    it('should return fire element for Domingo', () => {
-      expect(getElementByDay('Domingo')).toBe('fogo');
-      expect(getElementDays('Domingo')).toBe('fogo');
-    });
+  // ─── getElementDay: lookup by element ────────────────────────────────────
 
-    it('should return water element for Segunda-feira', () => {
-      expect(getElementByDay('Segunda-feira')).toBe('água');
-      expect(getElementDays('Segunda-feira')).toBe('água');
-    });
-
-    it('should return fire element for Terça-feira', () => {
-      expect(getElementByDay('Terça-feira')).toBe('fogo');
-      expect(getElementDays('Terça-feira')).toBe('fogo');
-    });
-
-    it('should return air element for Quarta-feira', () => {
-      expect(getElementByDay('Quarta-feira')).toBe('ar');
-      expect(getElementDays('Quarta-feira')).toBe('ar');
-    });
-
-    it('should return fire element for Quinta-feira', () => {
-      expect(getElementByDay('Quinta-feira')).toBe('fogo');
-      expect(getElementDays('Quinta-feira')).toBe('fogo');
-    });
-
-    it('should return earth element for Sexta-feira', () => {
-      expect(getElementByDay('Sexta-feira')).toBe('terra');
-      expect(getElementDays('Sexta-feira')).toBe('terra');
-    });
-
-    it('should return earth element for Sábado', () => {
-      expect(getElementByDay('Sábado')).toBe('terra');
-      expect(getElementDays('Sábado')).toBe('terra');
-    });
-
-    it('should return undefined for invalid day', () => {
-      expect(getElementByDay('InvalidDay')).toBeUndefined();
-      expect(getElementDays('InvalidDay')).toBeUndefined();
-    });
-  });
   describe('getElementDay', () => {
-    it('should return fire element for Domingo', () => {
-      expect(getElementDay('Domingo')).toBe('fogo');
-    });
-    it('should return water element for Segunda-feira', () => {
-      expect(getElementDay('Segunda-feira')).toBe('água');
-    });
-    it('should return fire element for Terça-feira', () => {
-      expect(getElementDay('Terça-feira')).toBe('fogo');
-    });
-    it('should return air element for Quarta-feira', () => {
-      expect(getElementDay('Quarta-feira')).toBe('ar');
-    });
-    it('should return fire element for Quinta-feira', () => {
-      expect(getElementDay('Quinta-feira')).toBe('fogo');
-    });
-    it('should return earth element for Sexta-feira', () => {
-      expect(getElementDay('Sexta-feira')).toBe('terra');
-    });
-    it('should return earth element for Sábado', () => {
-      expect(getElementDay('Sábado')).toBe('terra');
-    });
-    it('should return undefined for invalid day', () => {
-      expect(getElementDay('InvalidDay')).toBeUndefined();
-    });
-  });
-  describe('getAllDays', () => {
-    it('should return all 7 days of the week', () => {
-      const days = getAllDays();
-      expect(days.length).toBe(7);
-      expect(days).toContain('Domingo');
-      expect(days).toContain('Segunda-feira');
-      expect(days).toContain('Terça-feira');
-      expect(days).toContain('Quarta-feira');
-      expect(days).toContain('Quinta-feira');
-      expect(days).toContain('Sexta-feira');
-      expect(days).toContain('Sábado');
+    it('returns day for Fogo element', () => {
+      const result = getElementDay('Fogo');
+      expect(result).not.toBeNull();
     });
 
-    it('should return days in correct order', () => {
-      const days = getAllDays();
-      expect(days[0]).toBe('Domingo');
-      expect(days[1]).toBe('Segunda-feira');
-      expect(days[2]).toBe('Terça-feira');
-      expect(days[3]).toBe('Quarta-feira');
-      expect(days[4]).toBe('Quinta-feira');
-      expect(days[5]).toBe('Sexta-feira');
-      expect(days[6]).toBe('Sábado');
+    it('returns day for Água element', () => {
+      const result = getElementDay('Água');
+      expect(result).not.toBeNull();
+      expect(DAY_ELEMENT_MAP[result as DiaSemana]?.elemento).toBe('Água');
+    });
+
+    it('returns day for Ar element', () => {
+      const result = getElementDay('Ar');
+      expect(result).not.toBeNull();
+      expect(DAY_ELEMENT_MAP[result as DiaSemana]?.elemento).toBe('Ar');
+    });
+
+    it('returns day for Terra element', () => {
+      const result = getElementDay('Terra');
+      expect(result).not.toBeNull();
+      expect(DAY_ELEMENT_MAP[result as DiaSemana]?.elemento).toBe('Terra');
+    });
+
+    it('handles case insensitivity for elements', () => {
+      const upper = getElementDay('FOGO');
+      const lower = getElementDay('fogo');
+      expect(upper).toBe(lower);
+    });
+
+    it('handles whitespace variations', () => {
+      const result = getElementDay('  Fogo  ');
+      expect(result).not.toBeNull();
+    });
+
+    it('handles accent variations (agua)', () => {
+      const result = getElementDay('agua');
+      expect(result).not.toBeNull();
+    });
+
+    it('returns null for invalid elements', () => {
+      expect(getElementDay('InvalidElement')).toBeNull();
+      expect(getElementDay('')).toBeNull();
+      expect(getElementDay(null as unknown as string)).toBeNull();
     });
   });
 
-  describe('getDaysByElemento', () => {
-    it('should return fire days: Domingo, Terça-feira, Quinta-feira', () => {
-      const fireDays = getDaysByElemento('fogo');
-      expect(fireDays).toHaveLength(3);
-      expect(fireDays).toContain('Domingo');
-      expect(fireDays).toContain('Terça-feira');
-      expect(fireDays).toContain('Quinta-feira');
-    });
-
-    it('should return water day: Segunda-feira', () => {
-      const waterDays = getDaysByElemento('água');
-      expect(waterDays).toHaveLength(1);
-      expect(waterDays).toContain('Segunda-feira');
-    });
-
-    it('should return air day: Quarta-feira', () => {
-      const airDays = getDaysByElemento('ar');
-      expect(airDays).toHaveLength(1);
-      expect(airDays).toContain('Quarta-feira');
-    });
-
-    it('should return earth days: Sexta-feira, Sábado', () => {
-      const earthDays = getDaysByElemento('terra');
-      expect(earthDays).toHaveLength(2);
-      expect(earthDays).toContain('Sexta-feira');
-      expect(earthDays).toContain('Sábado');
-    });
-
-    it('should return empty array for unknown element', () => {
-      const unknownDays = getDaysByElemento('éter');
-      expect(unknownDays).toHaveLength(0);
-    });
-  });
+  // ─── getAllDayElements: all mappings ────────────────────────────────────
 
   describe('getAllDayElements', () => {
-    it('should return all 7 day-element correlations', () => {
-      const allElements = getAllDayElements();
-      expect(allElements.length).toBe(7);
+    it('returns all 7 day-element mappings', () => {
+      const result = getAllDayElements();
+      expect(result).toHaveLength(7);
     });
 
-    it('should return DayElement objects with all properties', () => {
-      const allElements = getAllDayElements();
-      allElements.forEach((element) => {
-        expect(element.dia).toBeDefined();
-        expect(element.indice).toBeDefined();
-        expect(element.elemento).toBeDefined();
-        expect(element.qualidade).toBeDefined();
-        expect(element.cor).toBeDefined();
-        expect(element.direcao).toBeDefined();
-        expect(element.estacao).toBeDefined();
-        expect(element.chakra).toBeDefined();
-        expect(element.planeta).toBeDefined();
-        expect(element.signo).toBeDefined();
-        expect(element.propriedades).toBeDefined();
-        expect(element.mystere).toBeDefined();
-        expect(element.praticas_espirituais).toBeDefined();
-      });
-    });
-  });
-
-  describe('getDayPractices', () => {
-    it('should return spiritual practices for each day', () => {
-      getAllDays().forEach((dia) => {
-        const practices = getDayPractices(dia);
-        expect(practices).toBeDefined();
-        expect(practices!.length).toBeGreaterThan(0);
-      });
+    it('returns array (not object)', () => {
+      const result = getAllDayElements();
+      expect(Array.isArray(result)).toBe(true);
     });
 
-    it('should return specific practices for Domingo', () => {
-      const practices = getDayPractices('Domingo');
-      expect(practices).toContain('Exposição solar consciente (tomar sol com intenção)');
-      expect(practices).toContain('Meditação com visualização dourada no plexo solar');
+    it('contains all day names', () => {
+      const result = getAllDayElements();
+      const names = result.map((r) => r.dia);
+      expect(names).toContain('Domingo');
+      expect(names).toContain('Segunda-feira');
+      expect(names).toContain('Terça-feira');
+      expect(names).toContain('Quarta-feira');
+      expect(names).toContain('Quinta-feira');
+      expect(names).toContain('Sexta-feira');
+      expect(names).toContain('Sábado');
     });
 
-    it('should return undefined for invalid day', () => {
-      expect(getDayPractices('InvalidDay')).toBeUndefined();
+    it('each mapping has all required fields', () => {
+      const result = getAllDayElements();
+      for (const mapping of result) {
+        expect(mapping.dia).toBeDefined();
+        expect(mapping.elemento).toBeDefined();
+        expect(mapping.chakra).toBeDefined();
+        expect(mapping.planeta).toBeDefined();
+        expect(mapping.significado_espiritual).toBeDefined();
+        expect(mapping.affirmation).toBeDefined();
+        expect(mapping.atividades).toBeDefined();
+      }
     });
   });
 
-  describe('getElementProperties', () => {
-    it('should return properties for each day', () => {
-      getAllDays().forEach((dia) => {
-        const props = getElementProperties(dia);
-        expect(props).toBeDefined();
-        expect(props!.forta).toBeDefined();
-        expect(props!.palavras_chave.length).toBeGreaterThan(0);
-        expect(props!.desafios.length).toBeGreaterThan(0);
-      });
+  // ─── getElementFromDay ───────────────────────────────────────────────────
+
+  describe('getElementFromDay', () => {
+    it('returns element for valid day', () => {
+      expect(getElementFromDay('Domingo')).toBe('Fogo');
+      expect(getElementFromDay('Segunda-feira')).toBe('Água');
+      expect(getElementFromDay('Terça-feira')).toBe('Fogo');
+      expect(getElementFromDay('Quarta-feira')).toBe('Ar');
+      expect(getElementFromDay('Quinta-feira')).toBe('Fogo');
+      expect(getElementFromDay('Sexta-feira')).toBe('Terra');
+      expect(getElementFromDay('Sábado')).toBe('Terra');
     });
 
-    it('should return specific properties for Segunda-feira', () => {
-      const props = getElementProperties('Segunda-feira');
-      expect(props!.palavras_chave).toContain('acolher');
-      expect(props!.palavras_chave).toContain('intuir');
+    it('handles English day names', () => {
+      expect(getElementFromDay('Sunday')).toBe('Fogo');
+      expect(getElementFromDay('Monday')).toBe('Água');
     });
 
-    it('should return undefined for invalid day', () => {
-      expect(getElementProperties('InvalidDay')).toBeUndefined();
+    it('returns null for invalid day', () => {
+      expect(getElementFromDay('InvalidDay')).toBeNull();
+      expect(getElementFromDay('')).toBeNull();
+    });
+  });
+
+  // ─── getChakraFromDay ───────────────────────────────────────────────────
+
+  describe('getChakraFromDay', () => {
+    it('returns chakra for valid day', () => {
+      expect(getChakraFromDay('Domingo')).toBe('Anahata');
+      expect(getChakraFromDay('Segunda-feira')).toBe('Svadhisthana');
+      expect(getChakraFromDay('Terça-feira')).toBe('Manipura');
+      expect(getChakraFromDay('Quarta-feira')).toBe('Vishuddha');
+      expect(getChakraFromDay('Quinta-feira')).toBe('Anahata');
+      expect(getChakraFromDay('Sexta-feira')).toBe('Svadhisthana');
+      expect(getChakraFromDay('Sábado')).toBe('Muladhara');
+    });
+
+    it('returns null for invalid day', () => {
+      expect(getChakraFromDay('InvalidDay')).toBeNull();
+    });
+  });
+
+  // ─── getAffirmationFromDay ──────────────────────────────────────────────
+
+  describe('getAffirmationFromDay', () => {
+    it('returns affirmation for valid day', () => {
+      const result = getAffirmationFromDay('Domingo');
+      expect(result).not.toBeNull();
+      expect(typeof result).toBe('string');
+      expect(result!.length).toBeGreaterThan(0);
+    });
+
+    it('returns null for invalid day', () => {
+      expect(getAffirmationFromDay('InvalidDay')).toBeNull();
+    });
+
+    it('returns different affirmations for different days', () => {
+      const domingo = getAffirmationFromDay('Domingo');
+      const segunda = getAffirmationFromDay('Segunda-feira');
+      expect(domingo).not.toBe(segunda);
+    });
+  });
+
+  // ─── getSpiritualThemeFromDay ────────────────────────────────────────────
+
+  describe('getSpiritualThemeFromDay', () => {
+    it('returns spiritual theme for valid day', () => {
+      const result = getSpiritualThemeFromDay('Domingo');
+      expect(result).not.toBeNull();
+      expect(typeof result).toBe('string');
+    });
+
+    it('returns null for invalid day', () => {
+      expect(getSpiritualThemeFromDay('InvalidDay')).toBeNull();
+    });
+
+    it('returns meaningful themes', () => {
+      expect(getSpiritualThemeFromDay('Domingo')).toContain('Propósito');
+      expect(getSpiritualThemeFromDay('Segunda-feira')).toContain('Cura');
+    });
+  });
+
+  // ─── getDaysByElement ────────────────────────────────────────────────────
+
+  describe('getDaysByElement', () => {
+    it('returns days for Fogo element', () => {
+      const result = getDaysByElement('Fogo');
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every((r) => r.elemento === 'Fogo')).toBe(true);
+    });
+
+    it('returns days for Água element', () => {
+      const result = getDaysByElement('Água');
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every((r) => r.elemento === 'Água')).toBe(true);
+    });
+
+    it('returns days for Ar element', () => {
+      const result = getDaysByElement('Ar');
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every((r) => r.elemento === 'Ar')).toBe(true);
+    });
+
+    it('returns days for Terra element', () => {
+      const result = getDaysByElement('Terra');
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every((r) => r.elemento === 'Terra')).toBe(true);
+    });
+
+    it('handles case insensitivity', () => {
+      const upper = getDaysByElement('FOGO');
+      const lower = getDaysByElement('fogo');
+      expect(upper.length).toBe(lower.length);
+    });
+
+    it('returns empty array for invalid element', () => {
+      expect(getDaysByElement('InvalidElement')).toEqual([]);
+      expect(getDaysByElement('')).toEqual([]);
+    });
+  });
+
+  // ─── getAllDays ─────────────────────────────────────────────────────────
+
+  describe('getAllDays', () => {
+    it('returns all 7 days', () => {
+      const result = getAllDays();
+      expect(result).toHaveLength(7);
+    });
+
+    it('returns array of DiaSemana', () => {
+      const result = getAllDays();
+      expect(Array.isArray(result)).toBe(true);
+    });
+
+    it('contains all expected day names', () => {
+      const result = getAllDays();
+      expect(result).toContain('Domingo');
+      expect(result).toContain('Segunda-feira');
+      expect(result).toContain('Terça-feira');
+      expect(result).toContain('Quarta-feira');
+      expect(result).toContain('Quinta-feira');
+      expect(result).toContain('Sexta-feira');
+      expect(result).toContain('Sábado');
+    });
+  });
+
+  // ─── getPlanetFromDay ───────────────────────────────────────────────────
+
+  describe('getPlanetFromDay', () => {
+    it('returns planet for valid day', () => {
+      expect(getPlanetFromDay('Domingo')).toBe('Sol');
+      expect(getPlanetFromDay('Segunda-feira')).toBe('Lua');
+      expect(getPlanetFromDay('Terça-feira')).toBe('Marte');
+      expect(getPlanetFromDay('Quarta-feira')).toBe('Mercúrio');
+      expect(getPlanetFromDay('Quinta-feira')).toBe('Júpiter');
+      expect(getPlanetFromDay('Sexta-feira')).toBe('Vênus');
+      expect(getPlanetFromDay('Sábado')).toBe('Saturno');
+    });
+
+    it('returns null for invalid day', () => {
+      expect(getPlanetFromDay('InvalidDay')).toBeNull();
+    });
+  });
+
+  // ─── getActivitiesFromDay ───────────────────────────────────────────────
+
+  describe('getActivitiesFromDay', () => {
+    it('returns activities for valid day', () => {
+      const result = getActivitiesFromDay('Domingo');
+      expect(result).not.toBeNull();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result!.length).toBeGreaterThan(0);
+    });
+
+    it('returns null for invalid day', () => {
+      expect(getActivitiesFromDay('InvalidDay')).toBeNull();
+    });
+
+    it('returns meaningful activities for each day', () => {
+      for (const dia of ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']) {
+        const activities = getActivitiesFromDay(dia);
+        expect(activities).not.toBeNull();
+      }
+    });
+  });
+
+  // ─── TODOS_DIAS constant ───────────────────────────────────────────────
+
+  describe('TODOS_DIAS', () => {
+    it('contains 7 days', () => {
+      expect(TODOS_DIAS).toHaveLength(7);
+    });
+
+    it('is readonly', () => {
+      expect(TODOS_DIAS).toBeFrozen();
+    });
+
+    it('contains all expected days', () => {
+      expect(TODOS_DIAS).toContain('Domingo');
+      expect(TODOS_DIAS).toContain('Segunda-feira');
+      expect(TODOS_DIAS).toContain('Terça-feira');
+      expect(TODOS_DIAS).toContain('Quarta-feira');
+      expect(TODOS_DIAS).toContain('Quinta-feira');
+      expect(TODOS_DIAS).toContain('Sexta-feira');
+      expect(TODOS_DIAS).toContain('Sábado');
+    });
+  });
+
+  // ─── TODOS_ELEMENTOS constant ──────────────────────────────────────────
+
+  describe('TODOS_ELEMENTOS', () => {
+    it('contains 4 elements', () => {
+      expect(TODOS_ELEMENTOS).toHaveLength(4);
+    });
+
+    it('is readonly', () => {
+      expect(TODOS_ELEMENTOS).toBeFrozen();
+    });
+
+    it('contains all classical elements', () => {
+      expect(TODOS_ELEMENTOS).toContain('Fogo');
+      expect(TODOS_ELEMENTOS).toContain('Água');
+      expect(TODOS_ELEMENTOS).toContain('Ar');
+      expect(TODOS_ELEMENTOS).toContain('Terra');
+    });
+  });
+
+  // ─── Type exports ───────────────────────────────────────────────────────
+
+  describe('Type exports', () => {
+    it('exports DayElementMapping type', () => {
+      const mapping: DayElementMapping = {
+        dia: 'Domingo',
+        elemento: 'Fogo',
+        chakra: 'Anahata',
+        chakraSecundario: null,
+        planeta: 'Sol',
+        significado_espiritual: {
+          tema: 'Test',
+          emocional: 'Test',
+          mental: 'Test',
+          fisico: 'Test',
+        },
+        affirmation: 'Test',
+        atividades: ['Test'],
+      };
+      expect(mapping.dia).toBeDefined();
+    });
+
+    it('exports DiaSemana type', () => {
+      const dia: DiaSemana = 'Domingo';
+      expect(dia).toBeDefined();
+    });
+
+    it('exports ChakraName type', () => {
+      const chakra: ChakraName = 'Anahata';
+      expect(chakra).toBeDefined();
+    });
+  });
+
+  // ─── Default export ────────────────────────────────────────────────────
+
+  describe('Default export', () => {
+    it('exports all required functions', async () => {
+      const module = await import('@/lib/correlation/day-element');
+      const defaultExport = module.default;
+
+      expect(defaultExport.getDayElement).toBeDefined();
+      expect(defaultExport.getElementDay).toBeDefined();
+      expect(defaultExport.getAllDayElements).toBeDefined();
+
+      expect(typeof defaultExport.getDayElement).toBe('function');
+      expect(typeof defaultExport.getElementDay).toBe('function');
+      expect(typeof defaultExport.getAllDayElements).toBe('function');
+    });
+
+    it('default export matches named exports', async () => {
+      const module = await import('@/lib/correlation/day-element');
+      const defaultExport = module.default;
+
+      expect(defaultExport.getDayElement('Domingo')).toEqual(getDayElement('Domingo'));
+      expect(defaultExport.getAllDayElements()).toEqual(getAllDayElements());
+    });
+  });
+
+  // ─── Consistency checks ─────────────────────────────────────────────────
+
+  describe('Consistency checks', () => {
+    it('TODOS_DIAS matches DAY_ELEMENT_MAP keys', () => {
+      const mapKeys = Object.keys(DAY_ELEMENT_MAP).sort();
+      const todosDiasSorted = [...TODOS_DIAS].sort();
+      expect(mapKeys).toEqual(todosDiasSorted);
+    });
+
+    it('getAllDays returns same count as map', () => {
+      expect(getAllDays().length).toBe(Object.keys(DAY_ELEMENT_MAP).length);
+    });
+
+    it('getDayElement and getElementFromDay are consistent', () => {
+      for (const dia of ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']) {
+        const mapping = getDayElement(dia);
+        expect(mapping?.elemento).toBe(getElementFromDay(dia));
+      }
+    });
+
+    it('each day has unique element or shares with others', () => {
+      const elementDays: Record<string, number> = {};
+      for (const mapping of Object.values(DAY_ELEMENT_MAP)) {
+        elementDays[mapping.elemento] = (elementDays[mapping.elemento] || 0) + 1;
+      }
+      // Fogo appears 3 times (Domingo, Terça-feira, Quinta-feira)
+      // Água appears 1 time (Segunda-feira)
+      // Ar appears 1 time (Quarta-feira)
+      // Terra appears 2 times (Sexta-feira, Sábado)
+      expect(elementDays['Fogo']).toBe(3);
+      expect(elementDays['Água']).toBe(1);
+      expect(elementDays['Ar']).toBe(1);
+      expect(elementDays['Terra']).toBe(2);
+    });
+
+    it('each day has valid chakra', () => {
+      const validChakras: ChakraName[] = ['Muladhara', 'Svadhisthana', 'Manipura', 'Anahata', 'Vishuddha', 'Ajna', 'Sahasrara'];
+      for (const mapping of Object.values(DAY_ELEMENT_MAP)) {
+        expect(validChakras).toContain(mapping.chakra);
+        if (mapping.chakraSecundario) {
+          expect(validChakras).toContain(mapping.chakraSecundario);
+        }
+      }
     });
   });
 });

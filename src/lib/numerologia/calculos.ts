@@ -1,3 +1,23 @@
+// ════════════════════════════════════════════════════════════════════════════
+// NUMEROLOGIA CALCULATOR — Enhanced with Master Numbers Support
+// ════════════════════════════════════════════════════════════════════════════
+// 
+// Supports:
+// - Pythagorean (Western)
+// - Chaldean (Ancient)
+// - Cabalistic (Hebrew)
+// - Tantric (Date-based)
+// - Master Numbers (11, 22, 33)
+//
+// Version: 1.1.0
+// Last Updated: 2026-05-30
+// ─── Master Number Type ─────────────────────────────────────────────────
+export const MASTER_NUMBERS = [11, 22, 33] as const;
+export type MasterNumber = typeof MASTER_NUMBERS[number];
+export function isMasterNumber(n: number): n is MasterNumber {
+  return MASTER_NUMBERS.includes(n as MasterNumber);
+}
+// ─── Original Tables ──────────────────────────────────────────────────────
 export const tabelaPitagorica: Record<string, number> = {
   A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9,
   J: 1, K: 2, L: 3, M: 4, N: 5, O: 6, P: 7, Q: 8, R: 9,
