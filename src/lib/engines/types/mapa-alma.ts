@@ -1,3 +1,4 @@
+import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } from '@/lib/ai/deep-correlation-engine';
 /**
  * MapaAlmaCompleto Type Definitions
  * Complete TypeScript types for the full spiritual map (Mapa da Alma Completo)
@@ -95,7 +96,6 @@ export type Convergence = {
   forca: 'forte' | 'medio' | 'fraco';
   descricao: string;
 };
-
 export type MapaAlmaCompleto = {
   perfil: BirthProfile;
   numerologia: NumerologyResults;
@@ -107,6 +107,11 @@ export type MapaAlmaCompleto = {
   orixasDominantes: string[];
   dataCalculo: string;
   versao: '1.0.0';
+  deepCorrelations?: {
+    correlations: SpiritualCorrelation[];
+    patterns: CrossSystemPattern[];
+    energyHarmony: EnergyHarmonyReport;
+  } | null;
 };
 
 export type {

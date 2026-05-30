@@ -74,7 +74,7 @@ export async function generateMapaInsights(
     { role: 'user', content: userPrompt },
   ];
 
-  let retries = 0;
+  const retries = 0;
 
   try {
     const response = await createChatCompletion({

@@ -10,6 +10,8 @@ import { calculateNumerology } from '@/lib/numerologia/generator';
 import { drawOdu, type Odu, type DrawResult } from '@/lib/ifa/draw';
 import { getBirthChart } from '@/lib/astrologia/birth-chart';
 import { getData as getChakraData } from '@/lib/chakra/v4/chakra-v4-data';
+import { DeepCorrelationEngine } from '@/lib/ai/deep-correlation-engine';
+import type { UserSpiritualData } from '@/lib/ai/types';
 import {
   calcularOduNascimento,
   getQuizilasPorOdu,
@@ -448,18 +450,16 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
     astrologia.ascendente,
     profile.dataNascimento
   );
-
   // 6. CONVERGÊNCIAS
   const convergencias = detectarConvergencias(numerologia, odu, astrologia);
-
   // 7. ORIXÁS DOMINANTES
   const orixasDominantes = aggregateOrixas(
     odu,
     astrologia.ascendente,
     astrologia.sol.signo
   );
-
-  return {
+  //8. BUILD MAPA OBJECT
+  const mapa: MapaAlmaCompleto = {
     perfil: profile,
     numerologia,
     odu,
@@ -470,7 +470,32 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
     orixasDominantes,
     dataCalculo: new Date().toISOString(),
     versao: '1.0.0',
+    deepCorrelations: null,
   };
+  // 9. DEEP CORRELATION ANALYSIS
+  const deepEngine = new DeepCorrelationEngine();
+  const userData: UserSpiritualData = {
+    id: profile.email || profile.nomeCompleto,
+    nome: profile.nomeCompleto,
+    dataNascimento: profile.dataNascimento,
+    numeroPessoal: numerologia.vida,
+    arcoPessoal: tarot.cartaNascimento,
+    odu: odu.regente.nome,
+    orixaRegente: orixasDominantes[0] || '',
+    sefirotDominante: [SEPHIRAH_MAP[numerologia.vida] || 'Malkuth'],
+    arcoMaior: [tarot.cartaNascimento, tarot.cartaAlma],
+    sign: astrologia.sol.signo,
+    houses: {},
+    rashi: astrologia.sol.signo,
+  };
+  try {
+    const correlations = deepEngine.analyzeCorrelations(userData);
+    const patterns = deepEngine.findCrossSystemPatterns(userData);
+    const energyHarmony = deepEngine.calculateEnergyHarmony(userData);
+    mapa.deepCorrelations = { correlations, patterns, energyHarmony };
+  } catch (err) {
+    // Graceful degradation — deep correlations are enhancement, not critical
+    console.warn('[MapaAlma] Deep correlation analysis failed:', err instanceof Error ? err.message : String(err));
+  }
+  return mapa;
 }
-
-export default gerarMapaAlmaCompleto;
