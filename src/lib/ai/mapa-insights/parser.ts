@@ -19,11 +19,18 @@ export function parseInsightResponse(raw: string): InsightData {
   }
 
   // Add id and timestamp
-  return {
+  const result = {
     id: crypto.randomUUID(),
     dataGeracao: new Date().toISOString(),
     ...data,
   } as InsightData;
+  // Default optional fields to empty arrays
+  if (!result.preceitos) result.preceitos = [];
+  if (!result.praticas) result.praticas = [];
+  if (!result.orixas) result.orixas = [];
+  if (!result.ciclos) result.ciclos = [];
+  if (!result.mensagemSemanal) result.mensagemSemanal = '';
+  return result;
 }
 
 /**
