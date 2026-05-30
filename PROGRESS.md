@@ -213,7 +213,6 @@
 | 179 | Correlation System | API, Mapping Panel, Strength, Patterns |
 | 181 | Persistence & QA | Export, Share, Templates, Tests |
 | 184 | User Management & Analytics | Users, Roles, Analytics, Performance, Health |
-| 185 | Widget Builder & Enhancements | WidgetBuilder, Marketplace, Mobile, Themes, Accessibility |
 |**196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
 |**197** | **Mapa Pages & Design System** | Mapa components, Auth pages, CI/CD, Design system |
 |**198** | **PDF Export** | geracaoRelatorio PDF export, /api/mapa/pdf route |
@@ -221,6 +220,7 @@
 |**200** | **UI Wiring & Polish** | Dashboard Mapa, Onboarding, ErrorState, SkeletonSpiritual, GlowEffect |
 |**201** | **Insights Frontend** | useMapaInsights hook, dashboard/insights API wiring, AppShell, PageHeader, MysticButton |
 |**202** | **Layout & Hooks QA** | AppShell, PageHeader, MysticButton, useMapaInsights tests fixed, build fixes |
+|**203** | **Test & Lint** | Hook test fixes, hook exports, Zustand store tests |
 |**204** | **Dashboard Enhancements** | Accessibility improvements, MapaAlmaDashboard polish, OnboardingWizard polish, /dashboard/perfil page |
 |**205** | **A11y & Profile Fix** | Screen reader support, TarotCard navigation, OnboardingWizard a11y, profile page upgrade redirect fix |
 |**206** | **Test Fixes** | ChakraPanel test parse error, NumerologiaCard/OduCardFull/TarotCard test fixes (15 tests) |
@@ -229,6 +229,8 @@
 |**209** | **Hook Tests** | useDashboardConfig tests (21), useAnalytics tests (22), useUserProfile tests (12), hook coverage expanded to 13 hooks |
 |**210** | **API Tests** | /api/mapa tests (11), /api/auth/login tests (14), /api/auth/register tests (12), API coverage expanded |
 |**211** | **Hook Tests** | useNotifications tests (15), hook coverage expanded to 15 hooks |
+|**212** | **Auth Fixes & Tests** | Auth error handling fixes, rateLimit tests (19), middleware coverage expanded |
+|**213** | **Hook Fixes** | Created /api/astrologia/previsao-mensal route, fixed usePrevisaoMensal tests (15 passing) |
 |**214** | **Dashboard Widgets** | Widget registry with 303+ widgets, category system, drag-drop support |
 |**215** | **Auth Refinements** | Session management, token refresh, security headers |
 |**216** | **Test Coverage** | API route tests, component tests, hook tests |
@@ -246,6 +248,9 @@
 |**228** | **Aspectos e Lua** | New planet-aspect.ts (5 aspects) and moon-orixa.ts (8 lunar phases mapped to Orixás), 27 new tests |
 |**229** | **Zodíaco e Elementos** | New planet-zodiac-aspect.ts (420 mappings), chakra-element.ts (7 chakras), day-zodiac.ts (7 days), 2559 tests total |
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
+2. **Multi-Agent Development**: Agentes paralelos para componentes
+3. **Drag-Drop**: @dnd-kit/core + @dnd-kit/sortable + DragOverlay
+4. **State Management**: React Context com useReducer
 5. **Data Fetching**: SWR com auto-refresh 30s
 6. **Virtual Scrolling**: useVirtualScroll hook com overscan
 7. **Lazy Loading**: IntersectionObserver com 200px margin
@@ -253,5 +258,5 @@
 9. **Widget Marketplace**: Browse and install widgets
 10. **Theme System**: 8 themes with custom color schemes
 11. **Accessibility**: Full accessibility settings for all users
-**Tests: ✅ 2264 passing, 14 skipped (145 test files)**
-**228 Sprints Completados: 228 🎉
+**Tests: ✅ 2559 passing, 14 skipped (156 test files)**
+**229 Sprints Completados: 229 🎉
