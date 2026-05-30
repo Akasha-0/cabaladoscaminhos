@@ -140,10 +140,16 @@ export function getChakraZodiac(chakra: string): ChakraZodiacMapping | null {
  */
 export function getZodiacChakra(signo: string): ChakraZodiacMapping | null {
   const normalized = normalizeSigno(signo);
-  if (!normalized) return null;
 
+  // First try to find where this sign is primary
   for (const mapping of Object.values(CHAKRA_ZODIAC_MAPPINGS)) {
-    if (mapping.signo_primario === normalized || mapping.signo_secundario === normalized) {
+    if (mapping.signo_primario === normalized) {
+      return mapping;
+    }
+  }
+  // Then try secondary
+  for (const mapping of Object.values(CHAKRA_ZODIAC_MAPPINGS)) {
+    if (mapping.signo_secundario === normalized) {
       return mapping;
     }
   }
