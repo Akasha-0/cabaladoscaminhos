@@ -243,6 +243,8 @@
 9. **Widget Marketplace**: Browse and install widgets
 10. **Theme System**: 8 themes with custom color schemes
 11. **Accessibility**: Full accessibility settings for all users
+12. **Responsive Design**: Mobile/Tablet/Desktop/Wide preview
+13. **MapaAlma Orchestrator**: Unified spiritual engine per IDEIA.md
+
 **Tests: 1564 passing**
-**211 Sprints Completados** 🎉
 **211 Sprints Completados** 🎉
