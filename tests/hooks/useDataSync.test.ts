@@ -23,6 +23,9 @@ describe('useDataSync', () => {
     localStorageMock.setItem.mockImplementation(() => {});
     localStorageMock.removeItem.mockImplementation(() => {});
   });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   describe('initial state', () => {
     it('has correct default status values', () => {
@@ -584,28 +587,21 @@ describe('useDataSync', () => {
   describe('auto-sync behavior', () => {
     it('does not auto-sync when disabled', () => {
       vi.spyOn(global, 'setInterval').mockReturnValue(123 as unknown as ReturnType<typeof setInterval>);
-
-      renderHook(() => useDataSync({ autoSync: false }));
-
+      const { unmount } = renderHook(() => useDataSync({ autoSync: false }));
       expect(global.setInterval).not.toHaveBeenCalled();
+      unmount();
     });
-
     it('sets up interval when enabled', () => {
       vi.spyOn(global, 'setInterval').mockReturnValue(123 as unknown as ReturnType<typeof setInterval>);
-
-      renderHook(() => useDataSync({ autoSync: true }));
-
+      const { unmount } = renderHook(() => useDataSync({ autoSync: true }));
       expect(global.setInterval).toHaveBeenCalled();
+      unmount();
     });
-
     it('clears interval on unmount', () => {
       const clearIntervalSpy = vi.spyOn(global, 'clearInterval').mockImplementation(() => {});
       const setIntervalSpy = vi.spyOn(global, 'setInterval').mockReturnValue(123 as unknown as ReturnType<typeof setInterval>);
-
       const { unmount } = renderHook(() => useDataSync({ autoSync: true }));
-
       unmount();
-
       expect(global.clearInterval).toHaveBeenCalledWith(123);
     });
 
