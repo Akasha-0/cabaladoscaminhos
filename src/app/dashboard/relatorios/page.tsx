@@ -127,7 +127,6 @@ export default function RelatoriosPage() {
           variant="critical"
         />
       </div>
-      </div>
     );
   }
 
@@ -428,8 +427,9 @@ export default function RelatoriosPage() {
                 <div className="space-y-3">
                   {mapaData.deepCorrelations.correlations.slice(0, 3).map((corr, index) => (
                     <div key={index} className="border-l-2 border-violet-500 pl-3">
-                      <p className="text-slate-200 text-sm">{corr.description}</p>
-                      <p className="text-xs text-slate-500 mt-1">Força: {corr.strength}%</p>
+                      <p className="text-slate-200 text-sm">{corr.shared_energy}</p>
+                      <p className="text-xs text-slate-500 mt-1">Correlação: {Math.round(corr.correlation * 100)}%</p>
+                      <p className="text-xs text-slate-400 mt-2">{corr.explanation}</p>
                     </div>
                   ))}
                 </div>
