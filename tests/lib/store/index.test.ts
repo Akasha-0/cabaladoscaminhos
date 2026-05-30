@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import type { User } from '@supabase/supabase-js';
 import {
   useAuthStore,
@@ -11,7 +11,6 @@ import {
   useTheme,
   hydrateAuthFromSession,
   hydrateCredits,
-  Theme,
 } from '@/lib/store/index';
 
 // Mock crypto.randomUUID
@@ -21,42 +20,41 @@ vi.stubGlobal('crypto', {
   randomUUID: vi.fn(() => mockUUID),
 });
 
-// Helper to reset Zustand stores to initial state
+// Reset stores by calling their reset actions
 const resetStores = () => {
-  // Reset AuthStore using setState to initial values
-  useAuthStore.setState({
-    user: null,
-    isAuthenticated: false,
-    isLoading: true,
-  }, true);
+  // Reset AuthStore
+  useAuthStore.getState().logout?.();
+  useAuthStore.setState?.({ 
+    user: null, 
+    isAuthenticated: false, 
+    isLoading: true 
+  });
   
   // Reset CreditsStore
-  useCreditsStore.setState({
+  useCreditsStore.getState().reset?.();
+  useCreditsStore.setState?.({
     saldo: 0,
     isLoading: false,
     error: null,
     lastUpdated: null,
-  }, true);
+  });
   
-  // Reset UIStore
-  useUIStore.setState({
+  // Reset UIStore - use partialize reset
+  useUIStore.setState?.({
     theme: 'mystical',
     sidebarOpen: true,
     activeModal: null,
     notifications: [],
     notificationsEnabled: true,
-  }, true);
+  });
   
   // Reset CacheStore
-  useCacheStore.setState({ cache: {} }, true);
+  useCacheStore.getState().clear?.();
+  useCacheStore.setState?.({ cache: {} });
 };
 
 beforeEach(() => {
   vi.clearAllMocks();
-  resetStores();
-});
-
-afterEach(() => {
   resetStores();
 });
 
@@ -617,7 +615,7 @@ describe('Hydration Helpers', () => {
   });
 
   describe('hydrateCredits', () => {
-    it('sets loading, then sets saldo on success', async () => {
+    it('sets saldo on successful fetch', async () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({ saldo: 250 }),

@@ -54,7 +54,7 @@ describe('planet-tarot', () => {
     it('returns mapping for Jupiter', () => {
       const result = getPlanetTarot('Jupiter');
       expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Jupiter');
+      expect(result?.planeta).toBe('Júpiter');
       expect(result?.arcano).toBe('O Hierofante');
       expect(result?.elemento_conexao).toBe('Ar');
       expect(result?.numero_carta).toBe(5);
@@ -63,7 +63,7 @@ describe('planet-tarot', () => {
     it('returns mapping for Venus', () => {
       const result = getPlanetTarot('Venus');
       expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Venus');
+      expect(result?.planeta).toBe('Vênus');
       expect(result?.arcano).toBe('A Imperatriz');
       expect(result?.elemento_conexao).toBe('Terra');
       expect(result?.numero_carta).toBe(3);
@@ -140,9 +140,9 @@ describe('planet-tarot', () => {
       expect(planets).toContain('Sol');
       expect(planets).toContain('Lua');
       expect(planets).toContain('Marte');
-      expect(planets).toContain('Mercurio');
-      expect(planets).toContain('Jupiter');
-      expect(planets).toContain('Venus');
+      expect(planets).toContain('Mercúrio');
+      expect(planets).toContain('Júpiter');
+      expect(planets).toContain('Vênus');
       expect(planets).toContain('Saturno');
     });
 
@@ -343,9 +343,9 @@ describe('planet-tarot', () => {
       expect(elementMap['Sol']).toBe('Fogo');
       expect(elementMap['Lua']).toBe('Água');
       expect(elementMap['Marte']).toBe('Fogo');
-      expect(elementMap['Mercurio']).toBe('Ar');
-      expect(elementMap['Jupiter']).toBe('Ar');
-      expect(elementMap['Venus']).toBe('Terra');
+      expect(elementMap['Mercúrio']).toBe('Ar');
+      expect(elementMap['Júpiter']).toBe('Ar');
+      expect(elementMap['Vênus']).toBe('Terra');
       expect(elementMap['Saturno']).toBe('Terra');
     });
   });
