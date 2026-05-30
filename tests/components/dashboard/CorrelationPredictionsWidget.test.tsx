@@ -191,16 +191,19 @@ describe('CorrelationPredictionsWidget', () => {
 
   it('displays recommendations when expanded', async () => {
     render(<CorrelationPredictionsWidget userData={mockUserData} />);
+    // Wait for predictions to load
     await waitFor(() => {
-      const buttons = screen.getAllByRole('button');
-      // Find and click a button to expand
-      for (const btn of buttons) {
-        btn.click();
-      }
-    });
+      expect(screen.getByText(/Arquetipo Dominante:/i)).toBeTruthy();
+    }, { timeout: 5000 });
+    // Find and click the archetype card button to expand
+    const archetypeButton = screen.getByText(/Arquetipo Dominante:/i).closest('button');
+    if (archetypeButton) {
+      archetypeButton.click();
+    }
+    // Verify recommendation is shown after expand
     await waitFor(() => {
-      expect(screen.getByText(/Recomendação/i)).toBeTruthy();
-    });
+      expect(screen.getAllByText(/Recomendação/i).length).toBeGreaterThan(0);
+    }, { timeout: 3000 });
   });
 
   it('shows correlation count in footer', async () => {

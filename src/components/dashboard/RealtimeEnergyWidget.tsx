@@ -137,7 +137,7 @@ export function RealtimeEnergyWidget() {
                 {correlation.orixa}
               </p>
               <p className="text-sm text-slate-400">
-                {correlation.planet} • {correlation.chakra}
+                {correlation.planeta} • {correlation.chakra}
               </p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-lg">{correlation.elementEmoji}</span>
@@ -163,7 +163,7 @@ export function RealtimeEnergyWidget() {
 
           {/* Planet */}
           <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
-            <p className="text-lg font-bold text-white">{correlation.planet.split('/')[0].trim()}</p>
+            <p className="text-lg font-bold text-white">{correlation.planeta.split('/')[0].trim()}</p>
             <p className="text-xs text-slate-400">Planeta</p>
           </div>
         </div>

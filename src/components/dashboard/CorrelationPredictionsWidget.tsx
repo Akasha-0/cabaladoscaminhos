@@ -177,7 +177,14 @@ export function CorrelationPredictionsWidget({ userData, className = '' }: Corre
         }
 
         if (!cancelled) {
-          setPredictions(generatedPredictions.slice(0, 5));
+          // Deduplicate predictions by title before setting state
+          const seen = new Set<string>();
+          const uniquePredictions = generatedPredictions.slice(0, 5).filter(p => {
+            if (seen.has(p.title)) return false;
+            seen.add(p.title);
+            return true;
+          });
+          setPredictions(uniquePredictions);
           setIsLoading(false);
         }
       } catch (err) {
@@ -261,7 +268,14 @@ export function CorrelationPredictionsWidget({ userData, className = '' }: Corre
         });
       }
 
-      setPredictions(generatedPredictions.slice(0, 5));
+      // Deduplicate predictions by title
+      const seen = new Set<string>();
+      const uniquePredictions = generatedPredictions.slice(0, 5).filter(p => {
+        if (seen.has(p.title)) return false;
+        seen.add(p.title);
+        return true;
+      });
+      setPredictions(uniquePredictions);
       setIsLoading(false);
     }, 600);
   };
