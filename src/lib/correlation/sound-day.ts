@@ -121,7 +121,26 @@ export const SOUND_DAY_MAP: Record<string, SoundDayCorrelation> = {
     ferramenta_ritual: 'Cruz, vela branca, água benta',
     melhor_horario: 'Qualquer momento do dia',
   },
-
+  'DOMINGO_SOLFEGGIO_528': {
+    dia: 'Domingo',
+    som: 'SOLFEGGIO 528HZ',
+    pronunciacao: 'Frequência 528 Hz (milagre da transformação DNA)',
+    tipo: 'solfeggio',
+    elemento: 'Fogo',
+    planeta: 'Sol',
+    chakra: '7º Coronário (Sahasrara)',
+    frequencia: 528,
+    cor: 'Dourado',
+    significado: 'Frequência do milagre - transforma padrões de luz e DNA',
+    propriedades_healing: {
+      fisico: 'Restaura DNA, regenera células e repara tecidos',
+      emocional: 'Promove amor incondicional e alegria autêntica',
+      mental_espiritual: 'Ativa criatividade, propósito e expressão divina',
+      pratica: 'Terapia sonora, meditação de luz, trabalho com água',
+    },
+    ferramenta_ritual: 'Tuning forks, água estruturada, cristais',
+    melhor_horario: 'Meio-dia',
+  },
   // ==================== SEGUNDA-FEIRA (Monday) ====================
   // Lua - Água - 417Hz - Emotional Healing, Intuition, Dreams
   'SEGUNDA_IEMANJA': {
@@ -199,10 +218,10 @@ export const SOUND_DAY_MAP: Record<string, SoundDayCorrelation> = {
     cor: 'Vermelho e Branco',
     significado: 'Oração de Xangô - justiça divina e poder da palavra verdadeira',
     propriedades_healing: {
-      fisico: 'Fortalece ossos, sistema imunológico e魄',
+      fisico: 'Fortalece ossos, sistema imunológico e energia vital',
       emocional: 'Transforma raiva em poder construtivo e justiça',
       mental_espiritual: 'Ativa coragem, determinação e verdade interior',
-      pratica: 'Rituais de proteção, trabalho com fogo,太极',
+      pratica: 'Rituais de proteção, trabalho com fogo, tai chi',
     },
     ferramenta_ritual: 'Pedras de raio, espada, figa, charuto',
     melhor_horario: 'Meio-dia e meia-noite',
@@ -525,10 +544,12 @@ export function getSoundDay(som: string): SoundDayCorrelation | undefined {
   const normalized = normalizeSoundSom(som);
   // Direct lookup
   if (SOUND_DAY_MAP[normalized]) return SOUND_DAY_MAP[normalized];
-  // Try partial matches
-  for (const key of Object.keys(SOUND_DAY_MAP)) {
-    if (key.includes(normalized) || normalized.includes(key.replace(/_/g, ''))) {
-      return SOUND_DAY_MAP[key];
+  // Try to find by matching som field directly
+  const upperSom = som.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  for (const item of Object.values(SOUND_DAY_MAP)) {
+    const itemSom = item.som.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (itemSom === upperSom || itemSom.includes(upperSom) || upperSom.includes(itemSom)) {
+      return item;
     }
   }
   return undefined;

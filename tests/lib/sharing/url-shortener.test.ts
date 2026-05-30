@@ -1,16 +1,6 @@
-<<<<<<< HEAD
-import { describe, it, expect, vi } from 'vitest'
-
-// Stub global setInterval for tests
-vi.stubGlobal('setInterval', (fn: Function, _ms: number) => {
-  return setTimeout(fn, 0) as unknown as ReturnType<typeof setInterval>
-})
-vi.stubGlobal('clearInterval', (id: unknown) => clearTimeout(id as ReturnType<typeof setTimeout>))
-=======
 /**
  * URL Shortener Tests
  */
->>>>>>> parent of efdf200 (test: update realtime and sharing tests, add OMP evolution scripts)
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
@@ -21,26 +11,11 @@ import {
   type ShortenerOptions,
 } from '@/lib/sharing/url-shortener';
 
-<<<<<<< HEAD
-// ============================================================
-// URL Shortener Tests
-// ============================================================
-describe('shortenUrl', () => {
-  it('returns ShortenedUrl with required fields', () => {
-    const result = shortenUrl('https://example.com/readings/123')
-    expect(result).toHaveProperty('code')
-    expect(result).toHaveProperty('originalUrl')
-    expect(result).toHaveProperty('url')
-    expect(result).toHaveProperty('createdAt')
-    expect(result).toHaveProperty('accessCount')
-  })
-=======
 describe('URL Shortener', () => {
   beforeEach(() => {
     // Reset modules to clear in-memory store
     vi.resetModules();
   });
->>>>>>> parent of efdf200 (test: update realtime and sharing tests, add OMP evolution scripts)
 
   afterEach(() => {
     vi.restoreAllMocks();
