@@ -16,17 +16,12 @@ const mysticalQuotes = [
 ];
 
 export default function NotFound() {
-<<<<<<< Updated upstream
-  const [quote, setQuote] = useState(mysticalQuotes[0]);
-=======
   const [quote] = useState(() => {
     // Generate random quote only once on mount
     return mysticalQuotes[Math.floor(Math.random() * mysticalQuotes.length)];
   });
->>>>>>> Stashed changes
   const [fadeIn, setFadeIn] = useState(false);
   useEffect(() => {
-    setQuote(mysticalQuotes[Math.floor(Math.random() * mysticalQuotes.length)]);
     setFadeIn(true);
   }, []);
   return (
@@ -43,7 +38,7 @@ export default function NotFound() {
         {/* Gradient orb */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-500/5 rounded-full blur-3xl" aria-hidden="true" />
 
-        <div 
+        <div
           className={`text-center max-w-2xl mx-auto transition-all duration-1000 ${
             fadeIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
@@ -113,27 +108,27 @@ export default function NotFound() {
               Explore outros caminhos:
             </p>
             <div className="flex flex-wrap items-center justify-center gap-6">
-              <Link 
-                href="/onboarding" 
+              <Link
+                href="/onboarding"
                 className="text-slate-400 hover:text-amber-400 transition-colors font-raleway text-sm flex items-center gap-2"
               >
                 <Sparkles className="w-4 h-4" />
                 Criar Mapa
               </Link>
-              <Link 
-                href="/calendario" 
+              <Link
+                href="/calendario"
                 className="text-slate-400 hover:text-amber-400 transition-colors font-raleway text-sm"
               >
                 Calendário
               </Link>
-              <Link 
-                href="/mapa" 
+              <Link
+                href="/mapa"
                 className="text-slate-400 hover:text-amber-400 transition-colors font-raleway text-sm"
               >
                 Mapa Natal
               </Link>
-              <Link 
-                href="/pricing" 
+              <Link
+                href="/pricing"
                 className="text-slate-400 hover:text-amber-400 transition-colors font-raleway text-sm"
               >
                 Planos
