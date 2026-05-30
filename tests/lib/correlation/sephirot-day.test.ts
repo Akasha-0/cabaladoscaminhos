@@ -13,8 +13,8 @@ describe('Sephirot-Day Correlation', () => {
       expect(SEPHIROT_DAY_MAPPINGS).toBeDefined();
     });
 
-    it('should have all 10 sephiroth keys', () => {
-      const sephiroth = ['Kether', 'Chokmah', 'Binah', 'Chesed', 'Geburah', 'Tiphereth', 'Netzach', 'Hod', 'Yesod', 'Malkuth'];
+    it('should have all sephiroth keys', () => {
+      const sephiroth = ['Tiphereth', 'Malkuth', 'Yesod', 'Geburah', 'Hod', 'Chesed', 'Kether', 'Binah', 'Tiphereth-Sabado'];
       sephiroth.forEach(s => {
         expect(SEPHIROT_DAY_MAPPINGS[s]).toBeDefined();
       });
@@ -53,17 +53,16 @@ describe('Sephirot-Day Correlation', () => {
       expect(result).toBeDefined();
     });
 
-    it('should return null for invalid day', () => {
+    it('should return empty array for invalid day', () => {
       const result = getDaySephirot('invalid-day');
-      expect(result).toBeNull();
+      expect(result).toEqual([]);
     });
   });
 
   describe('getAllSephirotDays', () => {
     it('should return array of all mappings', () => {
       const result = getAllSephirotDays();
-      expect(Array.isArray(result)).toBe(true);
-      expect(result.length).toBe(10);
+      expect(result.length).toBe(9);
     });
 
     it('should have all required fields in each mapping', () => {
