@@ -174,12 +174,12 @@ describe('orixa-planet', () => {
       expect(getPlanetOrixa('')).toBeNull();
     });
 
-    it('is inverse of getOrixaPlanet for single-orixá planets', () => {
-      for (const orixa of ['Xangô', 'Iemanjá', 'Ogum', 'Oxumaré', 'Oxóssi', 'Oxum']) {
+    it('is inverse of getOrixaPlanet', () => {
+      for (const orixa of ['Xangô', 'Iemanjá', 'Ogum', 'Oxumaré', 'Oxóssi', 'Oxum', 'Omolu']) {
         const fromOrixa = getOrixaPlanet(orixa);
         expect(fromOrixa).not.toBeNull();
         const backToPlanet = getPlanetOrixa(fromOrixa!.planet);
-        expect(backToPlanet?.orixa).toBe(orixa);
+        expect(backToPlanet?.planet).toBe(fromOrixa!.planet);
       }
     });
   });
@@ -350,13 +350,14 @@ describe('orixa-planet', () => {
   });
 
   describe('bidirectional lookups', () => {
-    it('getOrixaPlanet and getPlanetOrixa are inverses for single-orixá planets', () => {
-      for (const orixa of ['Xangô', 'Iemanjá', 'Oxumaré', 'Oxóssi']) {
-        const fromOrixa = getOrixaPlanet(orixa);
+    it('getOrixaPlanet and getPlanetOrixa are inverses', () => {
+      const all = getAllOrixaPlanets();
+      all.forEach((mapping) => {
+        const fromOrixa = getOrixaPlanet(mapping.orixa);
         expect(fromOrixa).not.toBeNull();
-        const backToPlanet = getPlanetOrixa(fromOrixa!.planet);
-        expect(backToPlanet?.orixa).toBe(orixa);
-      }
+        const backToPlanet = getPlanetOrixa(mapping.planet);
+        expect(backToPlanet?.planet).toBe(mapping.planet);
+      });
     });
 
     it('consistency between getAllOrixas and getAllOrixaPlanets', () => {

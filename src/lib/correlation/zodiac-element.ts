@@ -416,7 +416,7 @@ export const ZODIAC_ELEMENT_MAPPINGS: Readonly<Record<Signo, ZodiacElementMappin
         'Ebo de viagem e proteção em estradas',
       ],
       banhos: [
-        'Banho de alecrim paraprosperidadeprosperidade',
+        'Banho de alecrim para prosperidade',
         'Banho de cúrcuma e gengibre',
       ],
       defumacoes: [
