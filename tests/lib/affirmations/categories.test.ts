@@ -1,13 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { categories } from '@/lib/affirmations/categories';
-
+import { getCategories, getAffirmationsByCategory } from '@/lib/affirmations/categories';
 describe('affirmations/categories', () => {
   it('has categories', () => {
-    expect(Object.keys(categories).length).toBeGreaterThan(0);
+    expect(getCategories().length).toBeGreaterThan(0);
   });
-  it('each category has affirmations', () => {
-    for (const [cat, affirmations] of Object.entries(categories)) {
-      expect(Array.isArray(affirmations)).toBe(true);
+  it('getAffirmationsByCategory returns array', () => {
+    for (const cat of getCategories()) {
+      expect(Array.isArray(getAffirmationsByCategory(cat))).toBe(true);
     }
   });
 });
