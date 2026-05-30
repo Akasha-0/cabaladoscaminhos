@@ -135,7 +135,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
   };
 
   return (
-    <CosmicBackground variant="subtle" className={cn('min-h-screen flex flex-col', className)}>
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
         {/* Progress Indicator */}
         <div
@@ -149,30 +148,36 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
               {index < TOTAL_STEPS - 1 && (
                 <div
                   className={cn(
-                    'w-12 h-0.5 mx-1 transition-all duration-500',
+                    'connector-line relative w-12 h-0.5 mx-1 overflow-hidden rounded-full',
                     index < currentStep
-                      ? 'bg-gradient-to-r from-[var(--spiritual-gold)] to-[var(--spiritual-gold-light)]'
+                      ? 'bg-[var(--spiritual-gold)]/30'
                       : 'bg-white/20'
                   )}
-                />
+                >
+                  <div
+                    className={cn(
+                      'connector-fill absolute inset-0 bg-gradient-to-r from-[var(--spiritual-gold)] to-[var(--spiritual-gold-light)] rounded-full',
+                      index < currentStep ? 'connector-fill-active' : 'scale-x-0'
+                    )}
+                  />
+                </div>
               )}
-
               {/* Step indicator */}
               <div
                 role="tab"
                 aria-selected={currentStep === index}
                 aria-label={`Passo ${index + 1}${index < currentStep ? ' - completado' : index === currentStep ? ' - atual' : ''}`}
                 className={cn(
-                  'flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300',
-                  index < currentStep && 'bg-gradient-to-br from-[var(--spiritual-gold)] to-[var(--spiritual-gold-dark)] text-black',
-                  index === currentStep && 'bg-[var(--spiritual-gold)] text-black shadow-[0_0_15px_rgba(212,175,55,0.5)]',
+                  'step-indicator relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300',
+                  index < currentStep && 'step-completed bg-gradient-to-br from-[var(--spiritual-gold)] to-[var(--spiritual-gold-dark)] text-black border-2 border-[var(--spiritual-gold)]',
+                  index === currentStep && 'step-active bg-[var(--spiritual-gold)] text-black border-2 border-[var(--spiritual-gold-light)] shadow-[0_0_20px_rgba(212,175,55,0.6)]',
                   index > currentStep && 'border-2 border-white/30 bg-transparent text-white/30'
                 )}
               >
                 {index < currentStep ? (
-                  <span className="text-sm font-bold">✦</span>
+                  <span className="checkmark-animate text-sm font-bold">✦</span>
                 ) : index === currentStep ? (
-                  <span className="text-sm font-bold">{index + 1}</span>
+                  <span className="text-sm font-bold animate-pulse">{index + 1}</span>
                 ) : (
                   <span className="text-sm">{index + 1}</span>
                 )}
@@ -180,15 +185,14 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
             </div>
           ))}
         </div>
-
         {/* Step Content Card */}
         <div
           role="tabpanel"
           aria-label={`Passo ${currentStep + 1} de ${TOTAL_STEPS}`}
-          key={animationKey}
+          data-direction={direction}
           className={cn(
-            'step-content w-full max-w-md',
-            direction === 'forward' ? 'slide-in-right' : 'slide-in-left'
+            'step-content-wrapper w-full max-w-md',
+            direction === 'forward' ? 'step-enter-forward' : 'step-enter-backward'
           )}
           onKeyDown={handleKeyDown}
         >
@@ -217,19 +221,17 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                   Prepare-se para uma jornada de autodescoberta através dos antigos caminhos da Cabala. 
                   Seu mapa astral aguardava por você.
                 </p>
-
                 <Button
                   variant="golden"
                   size="lg"
                   onClick={goNext}
-                  className="mt-6 w-full group"
+                  className="mt-6 w-full cta-button group"
                 >
                   <span>Começar Jornada</span>
                   <span className="ml-2 group-hover:animate-pulse">✦</span>
                 </Button>
               </div>
             )}
-
             {/* Step 1: Name */}
             {currentStep === 1 && (
               <div className="space-y-6">
@@ -244,7 +246,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     Como aparece no seu documento oficial
                   </p>
                 </div>
-
                 <div className="space-y-4">
                   <Input
                     ref={inputRef}
@@ -257,7 +258,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     autoComplete="name"
                   />
                 </div>
-
                 <div className="flex gap-3 pt-4">
                   <Button
                     variant="ghost"
@@ -271,7 +271,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     variant="golden"
                     onClick={goNext}
                     disabled={!canProceed()}
-                    className="flex-1"
+                    className="flex-1 cta-button"
                   >
                     Continuar
                     <ArrowRight className="ml-2 size-4" />
@@ -279,7 +279,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                 </div>
               </div>
             )}
-
             {/* Step 2: Birth Date & Time */}
             {currentStep === 2 && (
               <div className="space-y-6">
@@ -291,7 +290,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     Quando você nasceu?
                   </h2>
                 </div>
-
                 <div className="space-y-4">
                   <div>
                     <label htmlFor="birthDate" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
@@ -307,7 +305,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                       aria-label="Data de nascimento"
                     />
                   </div>
-
                   <div>
                     <label htmlFor="birthTime" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
                       Horário de Nascimento <span className="text-xs text-[var(--foreground)]/50">(opcional)</span>
@@ -326,7 +323,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     </p>
                   </div>
                 </div>
-
                 <div className="flex gap-3 pt-4">
                   <Button
                     variant="ghost"
@@ -340,7 +336,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     variant="golden"
                     onClick={goNext}
                     disabled={!canProceed()}
-                    className="flex-1"
+                    className="flex-1 cta-button"
                   >
                     Continuar
                     <ArrowRight className="ml-2 size-4" />
@@ -348,7 +344,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                 </div>
               </div>
             )}
-
             {/* Step 3: Location */}
             {currentStep === 3 && (
               <div className="space-y-6">
@@ -360,7 +355,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     Onde você nasceu?
                   </h2>
                 </div>
-
                 <div className="space-y-4">
                   <div>
                     <label htmlFor="city" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
@@ -378,7 +372,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                       autoComplete="address-level2"
                     />
                   </div>
-
                   <div>
                     <label htmlFor="state" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
                       Estado
@@ -399,7 +392,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                       </SelectContent>
                     </Select>
                   </div>
-
                   <div>
                     <label htmlFor="country" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
                       País
@@ -415,7 +407,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     />
                   </div>
                 </div>
-
                 <div className="flex gap-3 pt-4">
                   <Button
                     variant="ghost"
@@ -429,10 +420,10 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     variant="golden"
                     onClick={handleSubmit}
                     disabled={!canProceed()}
-                    className="flex-1 group"
+                    className="flex-1 cta-button-final group"
                   >
-                    <span>Gerar Meu Mapa</span>
-                    <span className="ml-2 group-hover:animate-pulse">✦</span>
+                    <span className="cta-text">Gerar Meu Mapa</span>
+                    <span className="ml-2 cta-icon">✦</span>
                   </Button>
                 </div>
               </div>
@@ -440,46 +431,148 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
           </div>
         </div>
       </div>
-
-      {/* CSS Animations */}
+ {/* CSS Animations */}
       <style jsx>{`
-        @keyframes stepEnter {
+        /* Step Transitions - Forward: slide left with fade out */
+        @keyframes stepEnterForward {
           from {
             opacity: 0;
-            transform: translateX(30px);
+            transform: translateX(40px);
           }
           to {
             opacity: 1;
             transform: translateX(0);
           }
         }
-
-        @keyframes stepExit {
+        /* Step Transitions - Backward: slide right with fade out */
+        @keyframes stepEnterBackward {
           from {
+            opacity: 0;
+            transform: translateX(-40px);
+          }
+          to {
             opacity: 1;
             transform: translateX(0);
           }
-          to {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
         }
-
-        .step-content {
-          animation: stepEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .step-content-wrapper {
+          animation-duration: 300ms;
+          animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+          animation-fill-mode: forwards;
         }
-
-        @keyframes pulse {
+        .step-enter-forward {
+          animation-name: stepEnterForward;
+        }
+        .step-enter-backward {
+          animation-name: stepEnterBackward;
+        }
+        /* Progress Indicator - Connector Fill Animation */
+        .connector-fill {
+          transform-origin: left center;
+          transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .connector-fill-active {
+          transform: scaleX(1);
+        }
+        /* Progress Indicator - Active Step Golden Glow Pulse */
+        @keyframes goldenGlow {
           0%, 100% {
-            opacity: 0.6;
-            transform: scale(1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4),
+                        0 0 30px rgba(212, 175, 55, 0.2);
           }
           50% {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.7),
+                        0 0 50px rgba(212, 175, 55, 0.4),
+                        0 0 75px rgba(212, 175, 55, 0.2);
+          }
+        }
+        .step-active {
+          animation: goldenGlow 2s ease-in-out infinite;
+        }
+        /* Step Completion - Checkmark Animation */
+        @keyframes checkmarkPop {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.3);
             opacity: 1;
-            transform: scale(1.1);
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+        .checkmark-animate {
+          animation: checkmarkPop 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        /* Final CTA Button - Golden Glow Pulse on Hover */
+        @keyframes goldenGlowPulse {
+          0%, 100% {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3),
+                        0 0 30px rgba(212, 175, 55, 0.15);
+          }
+          50% {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6),
+                        0 0 50px rgba(212, 175, 55, 0.3),
+                        0 0 75px rgba(212, 175, 55, 0.15);
+          }
+        }
+        .cta-button-final {
+          transition: transform 200ms ease, box-shadow 200ms ease;
+        }
+        .cta-button-final:hover:not(:disabled) {
+          transform: scale(1.02);
+          animation: goldenGlowPulse 1.5s ease-in-out infinite;
+        }
+        .cta-button-final:hover:not(:disabled) .cta-icon {
+          animation: ctaIconPulse 600ms ease-in-out infinite;
+        }
+        @keyframes ctaIconPulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+        /* CTA Button - Loading State with Spinning Symbol */
+        @keyframes starSpin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        .cta-button-final:disabled {
+          cursor: not-allowed;
+          opacity: 0.7;
+        }
+        .cta-button-final.loading .cta-icon {
+          animation: starSpin 1s linear infinite;
+        }
+        .cta-button-final.loading .cta-text {
+          opacity: 0.8;
+        }
+        /* General CTA Button Hover Effects */
+        .cta-button {
+          transition: transform 200ms ease, box-shadow 200ms ease;
+        }
+        .cta-button:hover:not(:disabled) {
+          transform: scale(1.02);
+        }
+        /* Reduced Motion - Disable All Animations */
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
           }
         }
       `}</style>
     </CosmicBackground>
   );
+}
 }

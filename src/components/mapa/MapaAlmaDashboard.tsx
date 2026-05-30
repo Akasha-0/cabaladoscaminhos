@@ -1,3 +1,15 @@
+// Skip link for keyboard navigation
+function SkipLink() {
+  return (
+    <a
+      href="#main-content"
+      className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-amber-500 focus:text-black focus:font-semibold focus:rounded-lg focus:ring-2 focus:ring-amber-300"
+    >
+      Pular para o conteúdo principal
+    </a>
+  );
+}
+
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
@@ -156,18 +168,32 @@ export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardPro
   };
 
   return (
-    <div
-      className={cn(
-        'min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950',
-        'text-slate-100',
-        !prefersReducedMotion && 'animate-fade-in',
-        className
-      )}
-      role="main"
-      aria-label="Mapa da Alma - Painel Espiritual Unificado"
-    >
+    <>
+      <SkipLink />
+      <div
+        className={cn(
+          'min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950',
+          'text-slate-100',
+          !prefersReducedMotion && 'animate-fade-in',
+          className
+        )}
+        role="main"
+        aria-label="Mapa da Alma - Painel Espiritual Unificado"
+        id="main-content"
+      >
+        {/* Screen reader announcements */}
+        <div
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
+        >
+          {data.convergencias && data.convergencias.length > 0
+            ? `Correlação principal: ${getMainCorrelationDescription()}`
+            : 'Carregando correlações espirituais...'}
+        </div>
+      </div>
       <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
-        {/* Header */}
         <header className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
             <div>
@@ -424,10 +450,8 @@ export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardPro
                 </span>
               )}
             </div>
-          </div>
         </footer>
       </div>
-
       {/* CSS for reduced motion */}
       <style jsx>{`
         @keyframes fade-in {
@@ -444,7 +468,7 @@ export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardPro
         }
       `}</style>
     </div>
+    </>
   );
 }
-
 export type { MapaAlmaDashboardProps };
