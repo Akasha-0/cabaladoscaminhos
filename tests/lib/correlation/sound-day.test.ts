@@ -334,7 +334,6 @@ describe('sound-day correlation', () => {
     it('returns element for SOLFEGGIO 417HZ', () => {
       const result = getElementBySound('SOLFEGGIO 417HZ');
       expect(result).toBe('Água');
-    });
 
 
     it('returns element for SOLFEGGIO 741HZ', () => {

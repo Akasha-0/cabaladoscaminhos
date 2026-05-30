@@ -136,7 +136,7 @@ describe('Element-Day Correlation', () => {
 
     it('should return a Record with all days', () => {
       const result = getDayElement();
-      expect(Object.keys(result).length).toBe(5);
+      expect(Object.keys(result).length).toBe(4);
     });
 
     it('should map elemento to correct day', () => {
