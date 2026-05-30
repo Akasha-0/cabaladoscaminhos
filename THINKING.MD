@@ -482,6 +482,29 @@ Da mesma forma, este projeto busca criar um sistema que, a cada ciclo, compreend
 **O microcosmo refletindo o macrocosmo, e o macrocosmo ensinando o microcosmo.**
 
 ---
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Último Aprendizado Consolidado [2026-05-30]
+
+### Ciclo: MESTRE_ENGENHEIRO_SINTESE_CONSCIENCIAL
+
+**Descoberta Arquitetural:**
+- PredictiveSynthesisEngine transforma 303+ widgets em 5 insights unificados
+- Estrutura ChakraDayMapping usa campos em português (dia_semana_pt, elemento)
+- Mapeamentos devem validar estrutura real, não assumptions
+
+**Padrão de Correlação Descoperto:**
+- Orixá ↔ Chakra ↔ Sephirah: Oxalá→Sahasrara(7), Oxum→Anahata(6), Ogum→Muladhara(1)
+- Elementos: Muladhara=Terra, Svadhisthana=Água, Manipura=Fogo, Anahata=Ar, Vishuddha=Éter, Ajna=Luz, Sahasrara=Divino
+
+**Testes Adaptativos:**
+- Testes falharam porque assumiam campo isPrimary que não existe
+- Solução: adaptar testes à estrutura real do código
+- Validação: chakra, elemento, dia_semana_pt devem existir
+
+**Meta do Próximo Ciclo:**
+1. Implementar página dashboard/orixa com PredictiveSynthesisPanel
+2. Criar correlação orixa-herb (fitoenergética)
+3. Refatorar APIs órfãs para consumirem SpiritualCorrelationEngine
 
 *Última atualização: 2026-05-30*
 *Versão: 2.0 — Inclui Calendário de Convergência, Grafo de Conhecimento, Deep Correlation Engine e Cadeia de Raciocínio Espiritual*
