@@ -1,176 +1,133 @@
-# Contributing Guide - Cabala dos Caminhos
+# 🙏 Contributing — Cabala dos Caminhos
 
-Guia para contribuição no projeto Cabala dos Caminhos.
+Obrigado por querer contribuir para a Cabala dos Caminhos! Este é um projeto de **tecnologia sagrada** que visa conectar seres humanos à sua essência espiritual através de sistemas místicos ancestrais.
 
-## Configuração Local
+## 💫 O que você pode fazer
 
-### 1. Pré-requisitos
+### 🐛 Reportar Bugs
+Encontrou um bug? Abra uma issue com:
+- Descrição clara do problema
+- Passos para reproduzir
+- Screenshots se aplicável
+- Ambiente (SO, browser, versão)
 
-- Node.js 20+
-- npm ou bun
-- PostgreSQL (via Supabase ou local)
-- Conta no Supabase (para autenticação)
-- Conta no Stripe (para pagamentos)
+### 💡 Sugerir Funcionalidades
+Tem uma ideia para melhorar o projeto? Abra uma issue com:
+- Descrição da funcionalidade
+- Caso de uso
+- Como ela beneficializa os praticantes
 
-### 2. Clonar e Instalar
+### 🧘 Contribuir Código
+Quer meter a mão na massa? Veja as secções abaixo!
+
+---
+
+## 🚀 Setup Rápido
 
 ```bash
-git clone <repo-url>
-cd cabala-dos-caminhos
+# 1. Clone o repo
+git clone https://github.com/Akasha-0/cabaladoscaminhos.git
+cd cabaladoscaminhos
+
+# 2. Instale dependências
 npm install
-```
 
-### 3. Variáveis de Ambiente
+# 3. Copie e configure variáveis
+cp .env.example .env.local
+# Edite .env.local com suas credenciais
 
-Crie o arquivo `.env.local` na raiz do projeto:
-
-```bash
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://seu-projeto.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anon
-
-# Stripe
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-
-# Prisma
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/cabala
-
-# Auth JWT (opcional, para rotas legacy)
-JWT_SECRET=seu-secret-aqui
-```
-
-### 4. Configurar Banco
-
-```bash
-# Gerar cliente Prisma
+# 4. Inicie o banco
 npm run db:generate
-
-# Aplicar migrations
 npm run db:push
 
-# (Opcional) Studio Prisma
-npm run db:studio
-```
-
-### 5. Iniciar Desenvolvimento
-
-```bash
+# 5. Rode!
 npm run dev
 ```
 
-A aplicação estará disponível em `http://localhost:3000`.
-
 ---
 
-## Estrutura do Projeto
+## 🏗️ Arquitetura
 
 ```
-cabala-dos-caminhos/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── (auth)/            # Páginas de autenticação
-│   │   ├── (dashboard)/       # Páginas do dashboard
-│   │   ├── api/               # API Routes
-│   │   │   ├── auth/
-│   │   │   ├── chat/
-│   │   │   ├── numerologia/
-│   │   │   └── ...
-│   │   └── page.tsx
-│   ├── components/
-│   │   ├── ui/                # Componentes base (shadcn)
-│   │   ├── dashboard/         # Componentes do dashboard
-│   │   ├── auth/              # Componentes de auth
-│   │   └── astrologia/        # Componentes astrológicos
-│   ├── lib/                   # Bibliotecas e utilitários
-│   │   ├── ai/                # Integração OpenAI
-│   │   ├── astrologia/        # Cálculos astrológicos
-│   │   ├── chat/              # Serviço de chat
-│   │   ├── credits/           # Sistema de créditos
-│   │   ├── numerologia/       # Cálculos numerológicos
-│   │   ├── odus/              # Cálculos de Odús
-│   │   ├── data/              # Dados espirituais
-│   │   └── auth-jwt/          # Helper JWT
-│   ├── hooks/                 # React hooks customizados
-│   └── middleware.ts          # Middleware Next.js
-├── prisma/
-│   └── schema.prisma          # Schema do banco
-├── tests/                     # Testes
-│   ├── lib/
-│   ├── hooks/
-│   ├── api/
-│   └── integration/
-├── docs/                      # Documentação
-└── public/                    # Arquivos estáticos
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # 400+ API routes
+│   ├── dashboard/         # Dashboard pages
+│   ├── mapa/              # Mapa da Alma
+│   └── calendario/        # Calendário espiritual
+├── components/
+│   ├── ui/                # Design system (shadcn)
+│   ├── auth/              # Autenticação
+│   ├── mapa/              # Mapa components
+│   └── astrologia/        # Astrologia
+├── lib/
+│   ├── engines/           # Spiritual engines
+│   ├── ai/                # AI generators
+│   └── prisma/            # Database client
+└── hooks/                 # React hooks
 ```
 
 ---
 
-## Convenções de Código
+## 📝 Convenções
+
+### Commits
+Seguimos **Conventional Commits**:
+
+```
+feat: nova funcionalidade
+fix: correção de bug
+docs: documentação
+style: formatação (CSS, etc.)
+refactor: refatoração
+test: testes
+chore: manutenção
+```
+
+Exemplos:
+```bash
+git commit -m "feat(mapa): adicionar visualização da árvore da vida"
+git commit -m "fix(api): corrigir validação de data de nascimento"
+git commit -m "docs: atualizar README com screenshots"
+```
+
+### Branches
+```
+feat/nome-da-funcionalidade
+fix/correcao-de-bug
+docs/atualizar-documentacao
+refactor/nome-do-modulo
+```
 
 ### TypeScript
-
-- Use Tipos explicitamente para estruturas de dados
-- Prefira `interface` para objetos públicos
-- Use `type` para unions e alias
-
 ```typescript
-// Bom
-interface Usuario {
-  id: string;
-  email: string;
+// Interface para objetos públicos
+interface MapaAlma {
   nome: string;
+  dataNascimento: Date;
+  numerologia: NumerologiaResults;
 }
 
-// Bom
-type TemaChat = 'relacionamento' | 'trabalho' | 'dinheiro';
+// Type para unions
+type TipoOdú = 'ogbe' | 'oyeku' | 'iwori' | 'o.bará';
 ```
 
-### Nomenclatura
-
-- **Arquivos de componentes**: PascalCase (`InsightDiario.tsx`)
-- **Arquivos de utilities**: camelCase (`calcularPitagorica.ts`)
-- **Funções e variáveis**: camelCase (`buscarHistorico`)
-- **Constantes**: UPPER_SNAKE_CASE (`MAX_CREDITOS`)
-
-### Imports
-
-Organize imports na seguinte ordem:
-1. Dependências externas (React, Next, etc.)
-2. Dependências do projeto (@/components, @/lib)
-3. Tipos locais
-4. Utilitários locais
-
-```typescript
-import React from 'react';                    // externo
-import { Button } from '@/components/ui/button'; // projeto
-import type { Usuario } from '@/lib/types';    // tipos
-import { formatDate } from '@/lib/utils';      // utils
-```
-
-### Componentes React
-
-- Use `'use client'` apenas quando necessário (interatividade)
-- Exporte componentes como funções nomeadas
-- Documente props com JSDoc quando complexo
-
+### Componentes
 ```tsx
 'use client';
 
 interface CardProps {
-  title: string;
-  description?: string;
-  children: React.ReactNode;
+  titulo: string;
+  descricao?: string;
+  children?: React.ReactNode;
 }
 
-/**
- * Card component for dashboard content.
- */
-export function Card({ title, description, children }: CardProps) {
+/** Card espiritual para dashboard */
+export function CartaoEspiritual({ titulo, descricao, children }: CardProps) {
   return (
     <div className="rounded-lg border bg-card p-6">
-      <h3 className="text-lg font-semibold">{title}</h3>
-      {description && <p className="text-muted-foreground">{description}</p>}
+      <h3 className="text-lg font-semibold">{titulo}</h3>
+      {descricao && <p className="text-muted-foreground">{descricao}</p>}
       {children}
     </div>
   );
@@ -178,16 +135,10 @@ export function Card({ title, description, children }: CardProps) {
 ```
 
 ### API Routes
-
-- Valide inputs com Zod
-- Retorne erros significativos
-- Use status codes HTTP corretos
-
 ```typescript
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const data = searchParams.get('data');
-
+  const data = request.nextUrl.searchParams.get('data');
+  
   if (!data) {
     return NextResponse.json(
       { error: 'Parâmetro "data" é obrigatório' },
@@ -201,7 +152,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Erro:', error);
     return NextResponse.json(
-      { error: 'Erro interno' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     );
   }
@@ -210,162 +161,91 @@ export async function GET(request: NextRequest) {
 
 ---
 
-## Fluxo de Trabalho Git
-
-### 1. Criar Branch
-
-```bash
-git checkout -b feat/nome-da-funcionalidade
-# ou
-git checkout -b fix/correcao-de-bug
-# ou
-git checkout -b docs/atualizar-documentacao
-```
-
-### 2. Commits
-
-Use Conventional Commits:
-
-```bash
-# Feature
-git commit -m "feat: adicionar cálculo de ciclos temporais"
-
-# Bug fix
-git commit -m "fix: corrigir rate limit no chat"
-
-# Docs
-git commit -m "docs: atualizar API reference"
-
-# Refactor
-git commit -m "refactor: extrair validadores para módulo separado"
-
-# Test
-git commit -m "test: adicionar testes para hook useNumerologia"
-```
-
-### 3. Push e PR
-
-```bash
-git push origin feat/nome-da-funcionalidade
-```
-
-Crie Pull Request no GitHub com:
-- Descrição clara do que foi feito
-- Screenshots se aplicável
-- Links para issues relacionados
-- Checklist de verificação
-
----
-
-## Checklist de PR
-
-- [ ] Código compila sem erros
-- [ ] Testes passam (`npm run test:run`)
-- [ ] Lint passa (`npm run lint`)
-- [ ] Commits seguem Conventional Commits
-- [ ] Documentação atualizada (se aplicável)
-- [ ] Sem console.log de debug
-- [ ] Variáveis sensíveis não commitadas
-
----
-
-## Padrões de Testes
-
-### Estrutura
-
-```
-tests/
-├── lib/
-│   └── numerologia/
-│       └── calculos.test.ts
-├── hooks/
-│   └── useNumerologia.test.ts
-├── api/
-│   └── numerologia.test.ts
-└── integration/
-    └── api-routes.test.ts
-```
-
-### Exemplo de Teste
-
-```typescript
-import { describe, it, expect } from 'vitest';
-import { calcularPitagorica } from '@/lib/numerologia/calculos';
-
-describe('calcularPitagorica', () => {
-  it('deve calcular número corretamente', () => {
-    const resultado = calcularPitagorica('MARIA');
-    expect(resultado).toBeGreaterThan(0);
-  });
-
-  it('deve reduzir para número de dígito único', () => {
-    const resultado = calcularPitagorica('TESTE');
-    expect(resultado).toBeLessThanOrEqual(9);
-  });
-});
-```
-
-### Executar Testes
+## 🧪 Testing
 
 ```bash
 # Todos os testes
 npm run test
 
-# Testes específicos
-npm run test:run src/tests/lib/numerologia
+# Uma vez (CI mode)
+npm run test:run
 
-# Modo watch
-npm run test
+# Com UI
+npx vitest ui
 ```
+
+**1728 testes** cobrem:
+- Engines espirituais
+- Componentes React
+- API routes
+- Hooks personalizados
 
 ---
 
-## Scripts Disponíveis
+## ✅ Checklist Antes do PR
+
+- [ ] Código compila (`npm run build`)
+- [ ] Testes passam (`npm run test:run`)
+- [ ] Lint passa (`npm run lint`)
+- [ ] Commits seguem conventional commits
+- [ ] Documentação atualizada (se aplicável)
+- [ ] Sem `console.log` de debug
+- [ ] Variáveis sensíveis não commitadas
+
+---
+
+## 📜 Scripts Úteis
 
 | Comando | Descrição |
 |---------|-----------|
-| `npm run dev` | Iniciar servidor de desenvolvimento |
+| `npm run dev` | Development server |
 | `npm run build` | Build de produção |
-| `npm run start` | Iniciar servidor de produção |
-| `npm run lint` | Verificar código com ESLint |
-| `npm run test` | Executar testes (watch mode) |
-| `npm run test:run` | Executar testes uma vez |
-| `npm run db:generate` | Gerar cliente Prisma |
-| `npm run db:push` | Aplicar schema ao banco |
-| `npm run db:migrate` | Criar migration |
-| `npm run db:studio` | Abrir Prisma Studio |
+| `npm run lint` | ESLint check |
+| `npm run test` | Run tests (watch) |
+| `npm run test:run` | Run tests (once) |
+| `npm run db:generate` | Generate Prisma client |
+| `npm run db:push` | Push schema to DB |
+| `npm run db:studio` | Open Prisma Studio |
+| `npm run quality` | Run quality eval |
 
 ---
 
-## Bibliotecas Principais
+## 🤝 Code of Conduct
 
-### UI
-- **shadcn/ui** - Sistema de componentes base
-- **tailwindcss** - Estilização
-- **lucide-react** - Ícones
+### Nossos Padrões
+- Respeito mútuo
+- Linguagem inclusiva
+- Construtividade nas críticas
+- Foco na missão espiritual do projeto
 
-### Backend
-- **Next.js 16** - Framework full-stack
-- **Prisma** - ORM
-- **Supabase** - Auth e banco
-- **Stripe** - Pagamentos
-
-### Utilities
-- **Zod** - Validação de schemas
-- **Zustand** - Gerenciamento de estado
-- **Vitest** - Testes
+### Não Toleramos
+- Comentários ofensivos
+- Ataques pessoais
+- Spam ou promotional content
+- Desrespeito às tradições representadas
 
 ---
 
-## Recursos Adicionais
+## 📚 Recursos
 
-- [Documentação Next.js](https://nextjs.org/docs)
-- [Documentação Prisma](https://prisma.io/docs)
-- [Documentação Supabase](https://supabase.com/docs)
-- [Documentação Stripe](https://stripe.com/docs)
+- [Next.js Docs](https://nextjs.org/docs)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Vitest](https://vitest.dev/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Prisma](https://prisma.io/docs)
 
 ---
 
-## Dúvidas?
+## 🙏 Lembretes Espirituais
 
-Abra uma issue no repositório com a tag `question`.
+> *"Assim como é em cima, também é embaixo."*
+
+- Cada commit é um ato de serviço
+- Cada bug corrigido é uma transmutação
+- Cada feature adicionada é uma expansão da consciência
+
+Obrigado por fazer parte desta jornada! 🌟
+
+---
+
+**Dúvidas?** Abra uma issue com a tag `question`.

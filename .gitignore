@@ -47,3 +47,17 @@ next-env.d.ts
 /src/generated/prisma
 # Local Pi runtime state
 .atl/
+
+# ================================
+# Dev/Test/Prototype Cleanup
+# Remove these paths after testing
+# ================================
+/src/app/debug/
+/src/app/debug-auth/
+/src/app/debug-login/
+/src/app/simple-*/
+/src/app/test-*/
+/src/app/static-test.html
+/src/app/api/chat.disabled/
+/src/app/api/meditacao.disabled_BROKEN/
+/src/app/api/spiritual.disabled_BROKEN/
