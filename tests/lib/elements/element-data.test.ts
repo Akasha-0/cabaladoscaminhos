@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getData, ELEMENT_DATASET } from '~/lib/elements/element-data';
+import { getData, ELEMENT_DATASET } from '@/lib/elements/element-data';
 
 describe('element-data', () => {
   it('should return element dataset', () => {

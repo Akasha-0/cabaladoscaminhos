@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getData, getDataById, searchData, getOxalaByElement } from '~/lib/orixa/oxala-data';
+import { getData, getDataById, searchData, getOxalaByElement } from '@/lib/orixa/oxala-data';
 
 describe('oxala-data', () => {
   it('should return array of oxala data', () => {

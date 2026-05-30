@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateBalance } from '~/lib/elements/element-balance';
+import { calculateBalance } from '@/lib/elements/element-balance';
 
 describe('element-balance', () => {
   it('should calculate balance from element counts', () => {

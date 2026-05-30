@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculate, getPlanetPositions, getDominantElement, getDominantPlanet } from '~/lib/birth-chart/chart-calculator';
+import { calculate, getPlanetPositions, getDominantElement, getDominantPlanet } from '@/lib/birth-chart/chart-calculator';
 
 describe('chart-calculator', () => {
   it('should calculate birth chart', () => {

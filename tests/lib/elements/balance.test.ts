@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateBalance, getElementColor, getElementSymbol } from '~/lib/elements/balance';
+import { calculateBalance, getElementColor, getElementSymbol } from '@/lib/elements/balance';
 
 describe('balance', () => {
   it('should calculate balance from signs', () => {

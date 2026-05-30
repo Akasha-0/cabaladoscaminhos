@@ -6,7 +6,7 @@ import {
   getElementInterpretation,
   getSignInterpretation,
   getHouseInterpretation,
-} from '~/lib/chart/chart-interpretations';
+} from '@/lib/chart/chart-interpretations';
 
 describe('chart-interpretations', () => {
   it('should return all interpretations', () => {

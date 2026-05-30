@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateHarmony, ELEMENT_HARMONIES } from '~/lib/elements/harmony';
+import { calculateHarmony, ELEMENT_HARMONIES } from '@/lib/elements/harmony';
 
 describe('harmony', () => {
   it('should calculate harmony between water and fire', () => {

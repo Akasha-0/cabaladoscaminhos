@@ -5,7 +5,7 @@ import {
   getCorrespondencesByDay,
   getCorrespondencesByChakra,
   getCorrespondencesByElement,
-} from '~/lib/planetary/correspondences';
+} from '@/lib/planetary/correspondences';
 
 describe('correspondences', () => {
   it('should return all correspondences', () => {

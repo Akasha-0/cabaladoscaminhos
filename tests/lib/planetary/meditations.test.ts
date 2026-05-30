@@ -4,7 +4,7 @@ import {
   getMeditationsByPlanet,
   getMeditationById,
   getPlanets,
-} from '~/lib/planetary/meditations';
+} from '@/lib/planetary/meditations';
 
 describe('meditations', () => {
   it('should return all meditations', () => {
