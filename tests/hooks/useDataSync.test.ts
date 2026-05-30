@@ -23,13 +23,14 @@ describe('useDataSync', () => {
     localStorageMock.setItem.mockImplementation(() => {});
     localStorageMock.removeItem.mockImplementation(() => {});
   });
+
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
   describe('initial state', () => {
     it('has correct default status values', () => {
-      const { result } = renderHook(() => useDataSync());
+      const { result, unmount } = renderHook(() => useDataSync());
 
       expect(result.current.status).toEqual({
         lastSync: null,
@@ -37,16 +38,18 @@ describe('useDataSync', () => {
         syncing: false,
         error: null,
       });
+      unmount();
     });
 
     it('starts with empty conflicts array', () => {
-      const { result } = renderHook(() => useDataSync());
+      const { result, unmount } = renderHook(() => useDataSync());
 
       expect(result.current.conflicts).toEqual([]);
+      unmount();
     });
 
     it('exposes all required methods', () => {
-      const { result } = renderHook(() => useDataSync());
+      const { result, unmount } = renderHook(() => useDataSync());
 
       expect(result.current.sync).toBeDefined();
       expect(typeof result.current.sync).toBe('function');
@@ -56,22 +59,24 @@ describe('useDataSync', () => {
       expect(typeof result.current.markPending).toBe('function');
       expect(result.current.pushLocal).toBeDefined();
       expect(typeof result.current.pushLocal).toBe('function');
+      unmount();
     });
   });
 
   describe('markPending', () => {
     it('increments pending counter', async () => {
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       act(() => {
         result.current.markPending('testKey', { value: 'test' });
       });
 
       expect(result.current.status.pending).toBe(1);
+      unmount();
     });
 
     it('adds key to pending storage', async () => {
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       act(() => {
         result.current.markPending('testKey', { value: 'test' });
@@ -86,10 +91,11 @@ describe('useDataSync', () => {
       );
       const pending = JSON.parse(pendingCall![1]);
       expect(pending).toContain('testKey');
+      unmount();
     });
 
     it('stores value in local storage', async () => {
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
       const testData = { value: 'test' };
 
       act(() => {
@@ -105,10 +111,11 @@ describe('useDataSync', () => {
       );
       const stored = JSON.parse(storedCall![1]);
       expect(stored.testKey).toEqual(testData);
+      unmount();
     });
 
     it('does not duplicate pending keys', async () => {
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       act(() => {
         result.current.markPending('testKey', { value: '1' });
@@ -121,10 +128,11 @@ describe('useDataSync', () => {
       const pending = JSON.parse(pendingCall![1]);
       expect(pending.filter((k: string) => k === 'testKey').length).toBe(1);
       expect(result.current.status.pending).toBe(1);
+      unmount();
     });
 
     it('accumulates multiple pending keys', async () => {
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       act(() => {
         result.current.markPending('key1', { value: '1' });
@@ -133,12 +141,13 @@ describe('useDataSync', () => {
       });
 
       expect(result.current.status.pending).toBe(3);
+      unmount();
     });
   });
 
   describe('pushLocal', () => {
     it('saves data to localStorage', async () => {
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       act(() => {
         result.current.markPending('dataKey', { data: 'test' });
@@ -149,6 +158,7 @@ describe('useDataSync', () => {
       });
 
       expect(localStorageMock.setItem).toHaveBeenCalled();
+      unmount();
     });
 
     it('detects conflicts when local and cloud differ', async () => {
@@ -160,7 +170,7 @@ describe('useDataSync', () => {
         return null;
       });
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       act(() => {
         result.current.pushLocal();
@@ -173,6 +183,7 @@ describe('useDataSync', () => {
       const conflicts = JSON.parse(conflictsCall![1]);
       expect(conflicts.length).toBeGreaterThan(0);
       expect(conflicts[0].key).toBe('dataKey');
+      unmount();
     });
 
     it('does not create conflict when values match', async () => {
@@ -185,7 +196,7 @@ describe('useDataSync', () => {
         return null;
       });
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       act(() => {
         result.current.pushLocal();
@@ -199,6 +210,7 @@ describe('useDataSync', () => {
         const conflicts = JSON.parse(conflictsCall[1]);
         expect(conflicts.length).toBe(0);
       }
+      unmount();
     });
   });
 
@@ -209,7 +221,7 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
@@ -222,6 +234,7 @@ describe('useDataSync', () => {
           headers: { 'Content-Type': 'application/json' },
         })
       );
+      unmount();
     });
 
     it('sends data with timestamp in body', async () => {
@@ -230,7 +243,7 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
@@ -240,6 +253,7 @@ describe('useDataSync', () => {
       const body = JSON.parse(call[1].body as string);
       expect(body.data).toBeDefined();
       expect(body.timestamp).toBeDefined();
+      unmount();
     });
 
     it('throws error on non-ok response', async () => {
@@ -248,11 +262,12 @@ describe('useDataSync', () => {
         status: 500,
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await expect(result.current.sync()).rejects.toThrow('Sync failed: 500');
       });
+      unmount();
     });
   });
 
@@ -263,7 +278,7 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ data: 'cloud' }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
@@ -276,22 +291,24 @@ describe('useDataSync', () => {
           headers: { 'Content-Type': 'application/json' },
         })
       );
+      unmount();
     });
 
- it('returns parsed JSON data', async () => {
+    it('returns parsed JSON data', async () => {
       const cloudData = { profile: { name: 'Test' } };
       vi.spyOn(global, 'fetch').mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve(cloudData),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
       });
 
       expect(result.current.status.lastSync).toBeTruthy();
+      unmount();
     });
 
     it('throws error on non-ok response', async () => {
@@ -300,11 +317,12 @@ describe('useDataSync', () => {
         status: 404,
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await expect(result.current.sync()).rejects.toThrow('Fetch failed: 404');
       });
+      unmount();
     });
   });
 
@@ -322,13 +340,14 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
       });
 
       expect(global.fetch).toHaveBeenCalled();
+      unmount();
     });
 
     it('updates lastSync on successful sync', async () => {
@@ -344,13 +363,14 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
       });
 
       expect(result.current.status.lastSync).toBeTruthy();
+      unmount();
     });
 
     it('clears pending after successful sync', async () => {
@@ -366,13 +386,14 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
       });
 
       expect(result.current.status.pending).toBe(0);
+      unmount();
     });
 
     it('prevents concurrent syncs', async () => {
@@ -386,9 +407,9 @@ describe('useDataSync', () => {
       let resolveFetch: (value: unknown) => void;
       vi.spyOn(global, 'fetch').mockImplementation(
         () => new Promise(resolve => { resolveFetch = resolve as (value: unknown) => void; })
- );
+      );
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       let sync1Promise: Promise<void>;
       act(() => {
@@ -407,10 +428,11 @@ describe('useDataSync', () => {
       });
 
       expect(global.fetch).toHaveBeenCalledTimes(1);
+      unmount();
     });
 
     it('handles no data scenario gracefully', async () => {
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
@@ -418,6 +440,7 @@ describe('useDataSync', () => {
 
       expect(global.fetch).not.toHaveBeenCalled();
       expect(result.current.status.lastSync).toBeTruthy();
+      unmount();
     });
   });
 
@@ -434,13 +457,14 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.resolveConflict('conflictKey', 'local');
       });
 
       expect(global.fetch).toHaveBeenCalled();
+      unmount();
     });
 
     it('handles cloud resolution', async () => {
@@ -455,13 +479,14 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.resolveConflict('conflictKey', 'cloud');
       });
 
       expect(global.fetch).toHaveBeenCalled();
+      unmount();
     });
 
     it('handles merged resolution', async () => {
@@ -476,13 +501,14 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.resolveConflict('conflictKey', 'merged');
       });
 
       expect(global.fetch).toHaveBeenCalled();
+      unmount();
     });
 
     it('removes resolved conflict from conflicts array', async () => {
@@ -497,13 +523,14 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.resolveConflict('conflictKey', 'local');
       });
 
       expect(result.current.conflicts.find(c => c.key === 'conflictKey')).toBeUndefined();
+      unmount();
     });
 
     it('sets error on sync failure', async () => {
@@ -518,20 +545,21 @@ describe('useDataSync', () => {
         status: 500,
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.resolveConflict('conflictKey', 'local');
       });
 
       expect(result.current.status.error).toBe('Failed to resolve conflict');
+      unmount();
     });
   });
 
   describe('custom options', () => {
     it('uses custom storageKey', async () => {
       const customKey = 'custom_sync_key';
-      const { result } = renderHook(() => useDataSync({
+      const { result, unmount } = renderHook(() => useDataSync({
         autoSync: false,
         storageKey: customKey,
       }));
@@ -544,6 +572,7 @@ describe('useDataSync', () => {
         `${customKey}_pending`,
         expect.any(String)
       );
+      unmount();
     });
 
     it('uses custom cloudEndpoint', async () => {
@@ -553,7 +582,7 @@ describe('useDataSync', () => {
         json: () => Promise.resolve({ success: true }),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({
+      const { result, unmount } = renderHook(() => useDataSync({
         autoSync: false,
         cloudEndpoint: customEndpoint,
       }));
@@ -566,13 +595,14 @@ describe('useDataSync', () => {
         customEndpoint,
         expect.objectContaining({ method: 'POST' })
       );
+      unmount();
     });
 
     it('uses custom syncIntervalMs', () => {
       const customInterval = 60000; // 1 minute
       vi.spyOn(global, 'setInterval').mockReturnValue(123 as unknown as ReturnType<typeof setInterval>);
 
-      renderHook(() => useDataSync({
+      const { unmount } = renderHook(() => useDataSync({
         autoSync: true,
         syncIntervalMs: customInterval,
       }));
@@ -581,27 +611,37 @@ describe('useDataSync', () => {
         expect.any(Function),
         customInterval
       );
+      unmount();
     });
   });
 
   describe('auto-sync behavior', () => {
     it('does not auto-sync when disabled', () => {
       vi.spyOn(global, 'setInterval').mockReturnValue(123 as unknown as ReturnType<typeof setInterval>);
+
       const { unmount } = renderHook(() => useDataSync({ autoSync: false }));
+
       expect(global.setInterval).not.toHaveBeenCalled();
       unmount();
     });
+
     it('sets up interval when enabled', () => {
       vi.spyOn(global, 'setInterval').mockReturnValue(123 as unknown as ReturnType<typeof setInterval>);
+
       const { unmount } = renderHook(() => useDataSync({ autoSync: true }));
+
       expect(global.setInterval).toHaveBeenCalled();
       unmount();
     });
+
     it('clears interval on unmount', () => {
       const clearIntervalSpy = vi.spyOn(global, 'clearInterval').mockImplementation(() => {});
       const setIntervalSpy = vi.spyOn(global, 'setInterval').mockReturnValue(123 as unknown as ReturnType<typeof setInterval>);
+
       const { unmount } = renderHook(() => useDataSync({ autoSync: true }));
+
       unmount();
+
       expect(global.clearInterval).toHaveBeenCalledWith(123);
     });
 
@@ -614,31 +654,40 @@ describe('useDataSync', () => {
         if (key === 'cabala_sync_data_pending') return JSON.stringify([]);
         return null;
       });
+
       vi.spyOn(global, 'fetch').mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({ success: true }),
       } as Response);
+
       const { unmount } = renderHook(() => useDataSync({ autoSync: true }));
+
       await waitFor(() => {
         expect(global.fetch).toHaveBeenCalled();
       });
+
       unmount();
     });
+
     it('does not sync immediately if lastSync is recent', () => {
       const recentTimestamp = new Date().toISOString();
       localStorageMock.getItem.mockImplementation((key: string) => {
         if (key === 'cabala_sync_data_last_sync') return recentTimestamp;
         return null;
       });
+
       vi.spyOn(global, 'fetch').mockResolvedValue({
         ok: true,
         json: () => Promise.resolve({ success: true }),
       } as Response);
+
       const { unmount } = renderHook(() => useDataSync({ autoSync: true }));
+
       // With recent lastSync, no immediate sync should happen
       expect(global.fetch).not.toHaveBeenCalled();
       unmount();
     });
+
     it('persists lastSync to localStorage', async () => {
       localStorageMock.getItem.mockImplementation((key: string) => {
         if (key === 'cabala_sync_data') return JSON.stringify({ data: 'test' });
@@ -646,14 +695,18 @@ describe('useDataSync', () => {
         if (key === 'cabala_sync_data_pending') return JSON.stringify([]);
         return null;
       });
+
       vi.spyOn(global, 'fetch').mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({ success: true }),
       } as Response);
+
       const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
+
       await act(async () => {
         await result.current.sync();
       });
+
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         'cabala_sync_data_last_sync',
         expect.any(String)
@@ -661,6 +714,7 @@ describe('useDataSync', () => {
       unmount();
     });
   });
+
   describe('error handling', () => {
     it('sets error status on sync failure', async () => {
       localStorageMock.getItem.mockImplementation((key: string) => {
@@ -668,18 +722,18 @@ describe('useDataSync', () => {
         if (key === 'cabala_sync_data_cloud') return JSON.stringify({ data: 'cloud' });
         if (key === 'cabala_sync_data_pending') return JSON.stringify([]);
         return null;
-        return null;
       });
 
       vi.spyOn(global, 'fetch').mockRejectedValueOnce(new Error('Network error'));
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
       });
 
       expect(result.current.status.error).toBe('Network error');
+      unmount();
     });
 
     it('sets syncing to false after error', async () => {
@@ -692,17 +746,18 @@ describe('useDataSync', () => {
 
       vi.spyOn(global, 'fetch').mockRejectedValueOnce(new Error('Network error'));
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
       });
 
       expect(result.current.status.syncing).toBe(false);
+      unmount();
     });
 
     it('handles localStorage errors gracefully', async () => {
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       // Simulate corrupted localStorage data
       localStorageMock.getItem.mockImplementation((key: string) => {
@@ -716,6 +771,7 @@ describe('useDataSync', () => {
 
       // Should not throw, pending should be 1 from the successful mark
       expect(result.current.status.pending).toBe(1);
+      unmount();
     });
 
     it('handles fetch JSON parse errors', async () => {
@@ -724,13 +780,14 @@ describe('useDataSync', () => {
         json: () => Promise.reject(new Error('JSON parse error')),
       } as Response);
 
-      const { result } = renderHook(() => useDataSync({ autoSync: false }));
+      const { result, unmount } = renderHook(() => useDataSync({ autoSync: false }));
 
       await act(async () => {
         await result.current.sync();
       });
 
       expect(result.current.status.error).toBeTruthy();
+      unmount();
     });
   });
 });
