@@ -138,7 +138,7 @@ export function OduCard({ data, className = '' }: OduCardProps) {
   const oduNumber = data.regente.numero;
   const oduInfo = ODÚ_NAMES[oduNumber] || { name: 'Desconhecido', orixá: 'Obatalá' };
   const arcanoName = ARCANO_NAMES[data.arcanoTarot] || `Arcana ${data.arcanoTarot}`;
-  const regenteColor = ORIXÁ_COLORS[data.regente.orixá] || ORIXÁ_COLORS['Ogum'] || '#C45C26';
+  const regenteColor = ORIXÁ_COLORS[data.regente.orixaRegente] || ORIXÁ_COLORS['Ogum'] || '#C45C26';
 
   return (
     <div className={cn('card-spiritual rounded-xl overflow-hidden', className)}>
@@ -184,7 +184,7 @@ export function OduCard({ data, className = '' }: OduCardProps) {
                   color: regenteColor,
                 }}
               >
-                {data.regente.orixá}
+                {data.regente.orixaRegente}
               </span>
             </div>
             <div className="flex items-center gap-2 text-sm mt-1">
