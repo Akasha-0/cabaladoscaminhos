@@ -64,8 +64,8 @@ export function gerarContextoUsuario(mapa: MapaAlmaCompleto): string {
   let oduBlock = `## ODÚ (IFÁ)
 **Odú Regente:** ${regente.nome} (${regente.numero})
 **Significado:** ${regente.significado}
-**Orixá Regente:** ${regente.orixaRegente}
-**Elemento:** ${regente.elementos}
+**Orixá Regente:** ${'orixaRegente' in regente ? regente.orixaRegente : 'N/A'}
+**Elemento:** ${'elementos' in regente ? regente.elementos : 'N/A'}
 **Caminho Sephirah:** ${odu.caminhoSephirah}`;
 
   if (secundario) {

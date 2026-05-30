@@ -121,11 +121,12 @@ function calcOdu(profile: BirthProfile): OduResults {
   const secund: Odu | null = secundario
     ? {
         numero: secundario.numero,
+        Caminho: secundario.numero,
         nome: secundario.nome,
         opeCima: regente.opeCima,
         opeBaixo: regente.opeBaixo,
         elementos: '',
-        orixaRegente: secundario.orixaRegente,
+        orixaRegente: secundario.orixaRegente ?? '',
         significado: '',
       }
     : null;

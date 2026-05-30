@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { CosmicBackground } from '@/components/design-system/CosmicBackground';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { SkeletonMapa } from '@/components/shared/SkeletonSpiritual';
 import { Heading } from '@/components/design-system/Typography';
 import { MysticDivider } from '@/components/shared/MysticDivider';
 import { Button } from '@/components/ui/button';
@@ -72,15 +73,22 @@ export default function MapaPage() {
     loadMapa();
   }, []);
 
-  // Loading state
+  // Loading state - show SkeletonMapa for better UX
   if (loading) {
     return (
       <CosmicBackground>
-        <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
-          <LoadingSpinner size="lg" variant="gold" />
-          <p className="text-slate-400 animate-pulse-soft font-cinzel tracking-widest">
-            Carregando Mapa da Alma...
-          </p>
+        <div className="space-y-6 p-4 md:p-6">
+          <div className="flex items-center justify-between">
+            <Heading variant="mystical" size="2xl">
+              ✦ Mapa da Alma
+            </Heading>
+            <span className="text-slate-500 text-sm font-cinzel animate-pulse">
+              Carregando...
+            </span>
+          </div>
+          <Suspense fallback={<SkeletonMapa />}>
+            <SkeletonMapa />
+          </Suspense>
         </div>
       </CosmicBackground>
     );

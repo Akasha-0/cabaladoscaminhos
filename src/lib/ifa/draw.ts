@@ -82,7 +82,7 @@ export const opes: Ope[] = [
 // Merindilogun Odu configuration
 export interface Odu {
   numero: number;
-  Caminho: number;
+  Caminho?: number;
   nome: string;
   opeCima: Ope;
   opeBaixo: Ope;
@@ -120,6 +120,7 @@ export function getOpe(id: number): Ope {
 export function getAllOdu(): Odu[] {
   return Object.entries(oduMap).map(([num, config]) => ({
     numero: parseInt(num),
+    Caminho: parseInt(num),
     nome: getOduNome(parseInt(num)),
     opeCima: getOpe(config.top),
     opeBaixo: getOpe(config.bottom),
@@ -189,6 +190,7 @@ export function drawOdu(options?: {
 
   const odu: Odu = {
     numero: numeroOdu,
+    Caminho: numeroOdu,
     nome: getOduNome(numeroOdu),
     opeCima,
     opeBaixo,
@@ -247,6 +249,7 @@ export function getOduByNumber(numero: number): Odu | null {
   const config = oduMap[numero];
   return {
     numero,
+    Caminho: numero,
     nome: getOduNome(numero),
     opeCima: getOpe(config.top),
     opeBaixo: getOpe(config.bottom),
