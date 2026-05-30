@@ -308,8 +308,4 @@ describe('Orixá-Element Correlation', () => {
         expect(item).toHaveProperty('ferramentas');
       });
     });
-  });
-      });
-    });
-  });
 });

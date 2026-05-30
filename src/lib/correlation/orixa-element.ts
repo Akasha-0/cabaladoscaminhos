@@ -239,5 +239,3 @@ export default {
   getElementOrixa,
   getAllOrixaElements,
 };
-  getOrixasByDay
-};
