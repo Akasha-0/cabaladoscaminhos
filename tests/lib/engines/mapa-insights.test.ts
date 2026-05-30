@@ -86,14 +86,13 @@ function buildMapaCompleto(): MapaAlmaCompleto {
       urano: { signo: 'escorpio', grauNoSigno: 27, planeta: 'urano', longitude: 227, latitude: 0, distancia: 19.0, velocidade: 0.05, casa: 10 },
       netuno: { signo: 'sagitario', grauNoSigno: 8, planeta: 'netuno', longitude: 278, latitude: 0, distancia: 30.0, velocidade: 0.03, casa: 11 },
       plutao: { signo: 'libra', grauNoSigno: 4, planeta: 'plutao', longitude: 184, latitude: 0, distancia: 34.0, velocidade: 0.02, casa: 8 },
+      casas: [],
       aspectos: [],
     },
-    tarot: {
       cartaNascimento: 1,
       cartaAnoPessoal: 1,
       cartaAlma: 1,
       interpretacao: { name: 'The Magician', arcano: 1, upright: 'Will and power', reversed: 'Unused' },
-    },
     },
     chakras: {
       chakras: [
