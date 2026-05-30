@@ -37,9 +37,8 @@ export interface SoundNumerology {
   /** Spiritual dynamics */
   dinamica: string;
 }
-
 /** Map of sacred sounds mapped to numerology with healing properties */
-const SOUND_NUMEROLOGY: Record<string, SoundNumerology> = {
+export const SOUND_NUMEROLOGY: Record<string, SoundNumerology> = {
   LAM: {
     som: "LAM",
     pronunciacao: "lahm (vibração na base da coluna, som grave e ancorante)",
