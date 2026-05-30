@@ -12,6 +12,8 @@ export interface PlanetTarotMapping {
   planeta: string;
   /** The Major Arcana card name */
   arcano: string;
+  /** The element associated with this correlation (Fire, Water, Air, Earth) */
+  elemento_conexao: string;
   /** The card number in the Major Arcana */
   numero_carta: number;
   /** Spiritual meaning and archetype */
@@ -26,13 +28,15 @@ export const PLANET_TAROT_MAPPINGS: Record<string, PlanetTarotMapping> = {
   Sol: {
     planeta: 'Sol',
     arcano: 'O Sol',
+    elemento_conexao: 'Fogo',
     numero_carta: 19,
     significado_espiritual: 'Vitalidade, irradiação do poder pessoal, sucesso e alinhamento com o propósito de vida. Clareza interior e brilho próprio.',
-    interpretacao: 'Dia de maximizar a energia pessoal, buscar reconhecimento, assumir liderança e manifestar seus talentos. Foque no brilho próprio e na阳性能量.',
+    interpretacao: 'Dia de maximizar a energia pessoal, buscar reconhecimento, assumir liderança e manifestar seus talentos. Foque no brilho próprio e na energia Yang.',
   },
   Lua: {
     planeta: 'Lua',
     arcano: 'A Lua',
+    elemento_conexao: 'Água',
     numero_carta: 18,
     significado_espiritual: 'Intuição profunda, o inconsciente, ilusões e flutuação emocional. Ciclo noturno da mente e conexão com a água.',
     interpretacao: 'Período propício para trabalho interno, meditação, sonhos e processos de limpeza emocional. Confie na intuição, mas evite decisões impulsivas.',
@@ -40,27 +44,31 @@ export const PLANET_TAROT_MAPPINGS: Record<string, PlanetTarotMapping> = {
   Marte: {
     planeta: 'Marte',
     arcano: 'O Imperador',
+    elemento_conexao: 'Fogo',
     numero_carta: 4,
     significado_espiritual: 'Força de vontade, liderança marcial, estratégia militar e autoridade. O guerreiro que ordena o caos através da disciplina.',
-    interpretacao: 'Dia de ação decisive, coragem e força de vontade. Ideal para iniciar batalhas, quebrar resistência e impor limites. Evite conflitos desnecessários.',
+    interpretacao: 'Dia de ação decisiva, coragem e força de vontade. Ideal para iniciar batalhas, quebrar resistência e impor limites. Evite conflitos desnecessários.',
   },
-  Mercúrio: {
+  Mercurio: {
     planeta: 'Mercúrio',
     arcano: 'O Mago',
+    elemento_conexao: 'Ar',
     numero_carta: 1,
     significado_espiritual: 'Poder mental, comunicação, maestria das ferramentas internas e manipulação da energia através da palavra e do pensamento.',
     interpretacao: 'Momento de manifestar através da mente, diplomácia e estratégia verbal. Use a comunicação como ferramenta de transformação. Favorece estudos e negócios.',
   },
-  Júpiter: {
+  Jupiter: {
     planeta: 'Júpiter',
     arcano: 'O Hierofante',
+    elemento_conexao: 'Ar',
     numero_carta: 5,
     significado_espiritual: 'Expansão espiritual, sabedoria sagrada, tradição e fé. O mestre que transmite a doutrina divina e abre portais de conhecimento.',
     interpretacao: 'Dia de buscar conhecimento profundo, expandir horizontes mentais e conectar-se com tradições espirituais. Favorável para rituais de fartura e cura.',
   },
-  Vênus: {
+  Venus: {
     planeta: 'Vênus',
     arcano: 'A Imperatriz',
+    elemento_conexao: 'Terra',
     numero_carta: 3,
     significado_espiritual: 'Amor incondicional, fertilidade, criação abundante e conexão com o divino feminino. A mãe natureza que nutre e prospera.',
     interpretacao: 'Período de harmonização, doçura e magnetismo pessoal. Ideal para trabalhos de amor, cura emocional e atratividade. Cuide do coração e da autoestima.',
@@ -68,6 +76,7 @@ export const PLANET_TAROT_MAPPINGS: Record<string, PlanetTarotMapping> = {
   Saturno: {
     planeta: 'Saturno',
     arcano: 'O Mundo',
+    elemento_conexao: 'Terra',
     numero_carta: 21,
     significado_espiritual: 'Completude, encerramento de ciclos, transformação final e realização terrena. A dança cósmica que completa uma jornada.',
     interpretacao: 'Dia de finalizações, rituais de encerramento e manifestação de projetos de longa duração. Favorece a conclusão de ciclos kármicos e a estabilidade.',
@@ -154,3 +163,13 @@ export function getArcanoByNumber(numero: number): string | null {
   }
   return null;
 }
+
+export default {
+  getPlanetTarot,
+  getTarotPlanet,
+  getAllPlanetTarots,
+  getAllPlanets,
+  hasPlanetTarot,
+  getPlanetByNumber,
+  getArcanoByNumber,
+};
