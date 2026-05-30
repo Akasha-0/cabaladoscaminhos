@@ -1,14 +1,22 @@
 {
   "name": "Cabala dos Caminhos",
   "short_name": "Cabala",
-  "description": "Dashboard espiritual - Tarot, Ifá, Numerologia, Astrologia",
-  "start_url": "/dashboard",
+  "description": "Tecnologia Sagrada de Alinhamento Espiritual",
+  "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0f172a",
+  "background_color": "#0a0a0f",
   "theme_color": "#fbbf24",
-  "categories": ["lifestyle", "entertainment"],
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "categories": ["lifestyle", "education", "spiritual"],
   "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon",
+      "purpose": "any"
+    },
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
@@ -22,16 +30,45 @@
       "purpose": "any maskable"
     }
   ],
-  "shortcuts": [
+  "screenshots": [
     {
-      "name": "Tarot",
-      "url": "/dashboard/tarot",
-      "description": "Consulta de Tarot"
+      "src": "/screenshot-1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mapa da Alma"
     },
     {
-      "name": "Mapa da Alma",
-      "url": "/dashboard/mapa",
-      "description": "Seu mapa espiritual"
+      "src": "/screenshot-2.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Calendário Espiritual"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Criar Mapa",
+      "short_name": "Mapa",
+      "description": "Iniciar criação do mapa da alma",
+      "url": "/onboarding",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Calendário",
+      "short_name": "Calendário",
+      "description": "Ver calendário energético",
+      "url": "/calendario",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Acessar dashboard pessoal",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
