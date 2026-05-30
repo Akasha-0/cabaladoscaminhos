@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 199
+**Sprints completados:** 200
 **Build status:** ✅ Build OK (521 routes)
 **Tests:** ✅ 1254 passing, 14 skipped (65 test files)
 ## ✅ IMPLEMENTADO E FUNCIONANDO
@@ -14,6 +14,12 @@
 - OpenAI SDK integrated
 - jsPDF for PDF exports (dynamic import)
 - Minimax API integration for AI responses
+
+
+### Sprint 200 — UI Wiring & Polish
+- Dashboard Mapa wiring — loads from localStorage → /api/mapa with error/retry states
+- Onboarding flow — redirects to /dashboard/mapa after completion
+- New components: ErrorState, SkeletonSpiritual, GlowEffect
 
 ### MapaAlma Engine (Sprint 196) — NEW
 - **Unified Spiritual Engine** (`src/lib/engines/spiritual-engine.ts`)
