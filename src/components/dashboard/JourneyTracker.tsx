@@ -1,431 +1,264 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Sparkles, TrendingUp, Award, ChevronRight, ChevronUp, Flame, Star, Target, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  Map,
-  Compass,
-  Mountain,
-  Flag,
-  ChevronRight,
-  ChevronLeft,
-  Sparkles,
-  Star,
-  Award,
-  Zap,
-  Calendar,
-} from 'lucide-react';
 
 // ============================================================
 // TYPES
 // ============================================================
 
-export interface JourneyTrackerProps {
-  userData?: {
-    id?: string;
-    odu?: string;
-    orixaRegente?: string;
-    numeroPessoal?: number;
-    arcoPessoal?: number;
-  };
-  milestones?: JourneyMilestone[];
+interface JourneyTrackerProps {
   className?: string;
-  currentProgress?: number;
-  onMilestoneClick?: (milestone: JourneyMilestone) => void;
-}
-
-export interface JourneyMilestone {
-  id: string;
-  title: string;
-  description: string;
-  achieved: boolean;
-  achievedDate?: Date;
-  icon?: string;
-  category?: 'initiation' | 'learning' | 'mastery' | 'transcendence';
-  spiritualSystems?: string[];
-}
-
-interface JourneyStage {
-  id: string;
-  name: string;
-  icon: React.ReactNode;
-  milestones: JourneyMilestone[];
-  requiredProgress: number;
+  userData?: {
+    nome?: string;
+    nivel?: number;
+  };
 }
 
 // ============================================================
 // CONSTANTS
 // ============================================================
 
-const DEFAULT_MILESTONES: JourneyMilestone[] = [
-  {
-    id: 'awakening',
-    title: 'Despertar Espiritual',
-    description: 'Primeiro contato consciente com práticas espirituais',
-    achieved: true,
-    achievedDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
-    category: 'initiation',
-    spiritualSystems: ['Numerologia'],
-  },
-  {
-    id: 'first-orixa',
-    title: 'Conexão com Orixá',
-    description: 'Estabelecimento de vínculo com energia oracular',
-    achieved: true,
-    achievedDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
-    category: 'initiation',
-    spiritualSystems: ['Ifá/Odu', 'Candomblé'],
-  },
-  {
-    id: 'numerology-basics',
-    title: 'Fundamentos Numerológicos',
-    description: 'Compreensão básica do número pessoal e arcos',
-    achieved: true,
-    achievedDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-    category: 'learning',
-    spiritualSystems: ['Numerologia'],
-  },
-  {
-    id: 'first-meditation',
-    title: 'Primeira Meditação Guiada',
-    description: 'Experiência inicial de prática contemplativa',
-    achieved: true,
-    achievedDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
-    category: 'learning',
-    spiritualSystems: ['Cabala'],
-  },
-  {
-    id: 'tarot-intro',
-    title: 'Introdução ao Tarot',
-    description: 'Estudo das cartas e seus significados archetypais',
-    achieved: false,
-    category: 'learning',
-    spiritualSystems: ['Tarot'],
-  },
-  {
-    id: 'astrology-basics',
-    title: 'Astrologia Fundamental',
-    description: 'Compreensão de signos, casas e aspectos',
-    achieved: false,
-    category: 'learning',
-    spiritualSystems: ['Astrologia'],
-  },
-  {
-    id: 'element-mastery',
-    title: 'Domínio Elemental',
-    description: 'Equilíbrio dos cinco elementos no ser',
-    achieved: false,
-    category: 'mastery',
-    spiritualSystems: ['Elementos'],
-  },
-  {
-    id: 'orixa-integration',
-    title: 'Integração Oracular',
-    description: 'Sincronização completa com orixá regente',
-    achieved: false,
-    category: 'mastery',
-    spiritualSystems: ['Ifá/Odu', 'Candomblé'],
-  },
-  {
-    id: 'sefirot-connection',
-    title: 'Conexão Cabalística',
-    description: 'Acesso aos 10 níveis de consciência divina',
-    achieved: false,
-    category: 'mastery',
-    spiritualSystems: ['Cabala'],
-  },
-  {
-    id: 'transcendence',
-    title: 'Transcendência Final',
-    description: 'União com a consciência universal',
-    achieved: false,
-    category: 'transcendence',
-    spiritualSystems: ['Numerologia', 'Astrologia', 'Ifá/Odu', 'Cabala'],
-  },
+const STAGES = [
+  { id: 1, name: 'Despertar', icon: Sparkles, progress: 100, color: 'text-amber-400', bg: 'bg-amber-500' },
+  { id: 2, name: 'Purificação', icon: Flame, progress: 100, color: 'text-orange-400', bg: 'bg-orange-500' },
+  { id: 3, name: 'Transformação', icon: Zap, progress: 65, color: 'text-violet-400', bg: 'bg-violet-500' },
+  { id: 4, name: 'Iluminação', icon: Star, progress: 0, color: 'text-cyan-400', bg: 'bg-cyan-500' },
+  { id: 5, name: 'Mestria', icon: Award, progress: 0, color: 'text-emerald-400', bg: 'bg-emerald-500' },
 ];
 
-const JOURNEY_STAGES: JourneyStage[] = [
-  {
-    id: 'awakening',
-    name: 'Despertar',
-    icon: <Sparkles className="w-4 h-4" />,
-    requiredProgress: 0,
-    milestones: DEFAULT_MILESTONES.filter(m => ['awakening', 'first-orixa'].includes(m.id)),
-  },
-  {
-    id: 'learning',
-    name: 'Aprendizado',
-    icon: <BookOpen className="w-4 h-4" />,
-    requiredProgress: 25,
-    milestones: DEFAULT_MILESTONES.filter(m => ['numerology-basics', 'first-meditation', 'tarot-intro', 'astrology-basics'].includes(m.id)),
-  },
-  {
-    id: 'mastery',
-    name: 'Mestria',
-    icon: <Award className="w-4 h-4" />,
-    requiredProgress: 60,
-    milestones: DEFAULT_MILESTONES.filter(m => ['element-mastery', 'orixa-integration', 'sefirot-connection'].includes(m.id)),
-  },
-  {
-    id: 'transcendence',
-    name: 'Transcendência',
-    icon: <Zap className="w-4 h-4" />,
-    requiredProgress: 90,
-    milestones: DEFAULT_MILESTONES.filter(m => m.id === 'transcendence'),
-  },
+const MILESTONES = [
+  { id: 1, title: 'Primeiro Mapa', description: 'Criou seu primeiro mapa da alma', completed: true, date: '15/01' },
+  { id: 2, title: '7 Dias de Meditação', description: 'Concluiu 7 dias consecutivos', completed: true, date: '22/01' },
+  { id: 3, title: 'Ritual de Oxum', description: 'Realizou oferenda para Oxum', completed: true, date: '05/02' },
+  { id: 4, title: 'Conexão Ancestral', description: 'Completou prática ancestral', completed: false, date: '—' },
+  { id: 5, title: '10 Mil Pontos', description: 'Acumulou 10.000 pontos XP', completed: false, date: '—' },
 ];
 
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
-
-function BookOpen({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-    </svg>
-  );
-}
-
-function calculateProgress(milestones: JourneyMilestone[]): number {
-  if (milestones.length === 0) return 0;
-  const achieved = milestones.filter(m => m.achieved).length;
-  return (achieved / milestones.length) * 100;
-}
-
-function getStageIcon(category?: string): React.ReactNode {
-  switch (category) {
-    case 'initiation':
-      return <Star className="w-4 h-4 text-blue-400" />;
-    case 'learning':
-      return <Compass className="w-4 h-4 text-green-400" />;
-    case 'mastery':
-      return <Award className="w-4 h-4 text-amber-400" />;
-    case 'transcendence':
-      return <Zap className="w-4 h-4 text-purple-400" />;
-    default:
-      return <Flag className="w-4 h-4 text-slate-400" />;
-  }
-}
-
-// ============================================================
-// SUB-COMPONENTS
-// ============================================================
-
-interface MilestoneCardProps {
-  milestone: JourneyMilestone;
-  onClick?: () => void;
-  isActive?: boolean;
-}
-
-function MilestoneCard({ milestone, onClick, isActive }: MilestoneCardProps) {
-  const categoryColors = {
-    initiation: 'border-l-blue-500',
-    learning: 'border-l-green-500',
-    mastery: 'border-l-amber-500',
-    transcendence: 'border-l-purple-500',
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        'w-full text-left p-4 rounded-lg bg-slate-700/30 border border-slate-600/50 border-l-4 transition-all duration-300',
-        categoryColors[milestone.category || 'initiation'],
-        milestone.achieved && 'bg-emerald-500/10 border-emerald-500/30',
-        isActive && 'ring-2 ring-purple-500/50'
-      )}
-    >
-      <div className="flex items-start gap-3">
-        <div className={cn(
-          'p-2 rounded-lg',
-          milestone.achieved ? 'bg-emerald-500/20' : 'bg-slate-600/50'
-        )}>
-          {milestone.achieved ? (
-            <Star className="w-5 h-5 text-emerald-400" />
-          ) : (
-            <Flag className="w-5 h-5 text-slate-400" />
-          )}
-        </div>
-        <div className="flex-1">
-          <h4 className={cn(
-            'font-semibold',
-            milestone.achieved ? 'text-emerald-400' : 'text-white'
-          )}>
-            {milestone.title}
-          </h4>
-          <p className="text-slate-400 text-sm mt-1">{milestone.description}</p>
-          {milestone.achieved && milestone.achievedDate && (
-            <p className="text-slate-500 text-xs mt-2 flex items-center gap-1">
-              <Calendar className="w-3 h-3" />
-              {milestone.achievedDate.toLocaleDateString('pt-BR')}
-            </p>
-          )}
-        </div>
-        {milestone.achieved && (
-          <div className="p-1 bg-emerald-500/20 rounded-full">
-            <Star className="w-4 h-4 text-emerald-400" />
-          </div>
-        )}
-      </div>
-    </button>
-  );
-}
-
-interface StageProgressProps {
-  stage: JourneyStage;
-  isActive: boolean;
-  isCompleted: boolean;
-  onClick: () => void;
-}
-
-function StageProgress({ stage, isActive, isCompleted, onClick }: StageProgressProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        'flex items-center gap-2 px-3 py-2 rounded-lg transition-all',
-        isActive && 'bg-purple-500/20 text-purple-400',
-        isCompleted && 'bg-emerald-500/20 text-emerald-400',
-        !isActive && !isCompleted && 'bg-slate-700/30 text-slate-400 hover:bg-slate-600/30'
-      )}
-    >
-      {stage.icon}
-      <span className="text-sm font-medium">{stage.name}</span>
-      {isCompleted && <Star className="w-3 h-3" />}
-    </button>
-  );
-}
+const CURRENT_USER = {
+  level: 3,
+  title: 'Caminhante do Fogo',
+  totalPoints: 8740,
+  pointsToNext: 10000,
+  streak: 12,
+  achievements: 8,
+};
 
 // ============================================================
 // MAIN COMPONENT
 // ============================================================
 
-export function JourneyTracker({
-  userData,
-  milestones = DEFAULT_MILESTONES,
-  className = '',
-  currentProgress,
-  onMilestoneClick,
-}: JourneyTrackerProps) {
-  const [selectedStage, setSelectedStage] = useState<string | null>(null);
-  const [expandedStage, setExpandedStage] = useState<string | null>('learning');
+export function JourneyTracker({ className, userData }: JourneyTrackerProps) {
+  const [expandedStage, setExpandedStage] = useState<number | null>(3);
+  const [showMilestones, setShowMilestones] = useState(true);
 
-  const progress = useMemo(() => {
-    return currentProgress ?? calculateProgress(milestones);
-  }, [milestones, currentProgress]);
-
-  const activeStage = useMemo(() => {
-    const current = JOURNEY_STAGES.find((stage, index) => {
-      const nextStage = JOURNEY_STAGES[index + 1];
-      return progress >= stage.requiredProgress && 
-        (nextStage ? progress < nextStage.requiredProgress : true);
-    });
-    return current?.id || 'awakening';
-  }, [progress]);
-
-  const stageMilestones = useMemo(() => {
-    if (selectedStage) {
-      return milestones.filter(m => m.category === selectedStage);
-    }
-    return milestones;
-  }, [milestones, selectedStage]);
-
-  const achievedCount = milestones.filter(m => m.achieved).length;
+  const completedStages = STAGES.filter(s => s.progress === 100).length;
+  const completedMilestones = MILESTONES.filter(m => m.completed).length;
 
   return (
-    <div className={cn('bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden', className)}>
-      {/* Header */}
-      <div className="p-6 border-b border-slate-700/50">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-lg">
-              <Map className="w-5 h-5 text-amber-400" />
+    <Card className={cn(
+      'card-spiritual bg-gradient-to-br from-slate-900/90 to-slate-950/90 backdrop-blur-sm border-slate-800/50 overflow-hidden',
+      className
+    )}>
+      <CardHeader className="pb-3 border-b border-slate-800/50">
+        <CardTitle className="flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4 text-amber-400" />
             </div>
-            <div>
-              <h3 className="font-semibold text-white">Jornada Espiritual</h3>
-              <p className="text-slate-400 text-sm">
-                {userData?.orixaRegente ? `${userData.orixaRegente} • ` : ''}Odu {userData?.odu || 'N/A'}
-              </p>
-            </div>
-          </div>
-          <div className="text-right">
-            <p className="text-2xl font-bold text-amber-400">{achievedCount}/{milestones.length}</p>
-            <p className="text-slate-500 text-xs">Conquistas</p>
-          </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="relative">
-          <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xs font-medium text-white bg-slate-800/80 px-2 py-0.5 rounded-full">
-              {Math.round(progress)}% Completo
+            <span className="text-base font-semibold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
+              Jornada Espiritual
+            </span>
+          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs px-2 py-1 rounded-full bg-amber-500/20 text-amber-400">
+              {completedStages}/{STAGES.length} estágios
             </span>
           </div>
-        </div>
-      </div>
+        </CardTitle>
+      </CardHeader>
 
-      {/* Stage Navigation */}
-      <div className="p-4 border-b border-slate-700/50">
-        <div className="flex flex-wrap gap-2">
-          {JOURNEY_STAGES.map((stage, index) => {
-            const isCompleted = progress >= stage.requiredProgress;
-            const isActive = activeStage === stage.id;
-            
-            return (
-              <div key={stage.id} className="flex items-center">
-                <StageProgress
-                  stage={stage}
-                  isActive={isActive}
-                  isCompleted={isCompleted}
-                  onClick={() => setExpandedStage(expandedStage === stage.id ? null : stage.id)}
-                />
-                {index < JOURNEY_STAGES.length - 1 && (
-                  <ChevronRight className="w-4 h-4 text-slate-500 mx-1" />
-                )}
+      <CardContent className="pt-4 space-y-4">
+        {/* User Level Card */}
+        <div className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                <span className="text-xl font-bold text-white">{CURRENT_USER.level}</span>
               </div>
-            );
-          })}
-        </div>
-      </div>
+              <div>
+                <p className="text-sm font-medium text-white">{CURRENT_USER.title}</p>
+                <p className="text-xs text-amber-400">Nível {CURRENT_USER.level}</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-lg font-bold text-white">{CURRENT_USER.totalPoints.toLocaleString()}</p>
+              <p className="text-xs text-slate-400">/ {CURRENT_USER.pointsToNext.toLocaleString()} XP</p>
+            </div>
+          </div>
+          
+          {/* XP Progress */}
+          <div className="h-2.5 bg-slate-800 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-amber-500 to-orange-400 rounded-full transition-all"
+              style={{ width: `${(CURRENT_USER.totalPoints / CURRENT_USER.pointsToNext) * 100}%` }}
+            />
+          </div>
 
-      {/* Milestones List */}
-      <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
-        {stageMilestones.map(milestone => (
-          <MilestoneCard
-            key={milestone.id}
-            milestone={milestone}
-            onClick={() => onMilestoneClick?.(milestone)}
-            isActive={selectedStage === milestone.id}
-          />
-        ))}
-      </div>
-
-      {/* Footer Stats */}
-      <div className="p-4 border-t border-slate-700/50 bg-slate-800/30">
-        <div className="grid grid-cols-3 gap-4 text-center">
-          <div>
-            <p className="text-xl font-bold text-blue-400">{milestones.filter(m => m.category === 'learning').length}</p>
-            <p className="text-slate-500 text-xs">Aprendizados</p>
-          </div>
-          <div>
-            <p className="text-xl font-bold text-amber-400">{milestones.filter(m => m.category === 'mastery').length}</p>
-            <p className="text-slate-500 text-xs">Mestrias</p>
-          </div>
-          <div>
-            <p className="text-xl font-bold text-purple-400">{milestones.filter(m => m.category === 'transcendence').length}</p>
-            <p className="text-slate-500 text-xs">Transcendências</p>
+          {/* Quick Stats */}
+          <div className="grid grid-cols-3 gap-3 mt-3">
+            <div className="p-2 rounded-lg bg-slate-800/50 text-center">
+              <p className="text-lg font-bold text-orange-400">{CURRENT_USER.streak}🔥</p>
+              <p className="text-[10px] text-slate-400">Sequência</p>
+            </div>
+            <div className="p-2 rounded-lg bg-slate-800/50 text-center">
+              <p className="text-lg font-bold text-violet-400">{CURRENT_USER.achievements}</p>
+              <p className="text-[10px] text-slate-400">Conquistas</p>
+            </div>
+            <div className="p-2 rounded-lg bg-slate-800/50 text-center">
+              <p className="text-lg font-bold text-emerald-400">{completedMilestones}</p>
+              <p className="text-[10px] text-slate-400">Marcos</p>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+
+        {/* Stages Timeline */}
+        <div>
+          <p className="text-xs text-slate-400 mb-3">Estágios da Jornada</p>
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-[22px] top-0 bottom-0 w-0.5 bg-slate-700/50" />
+            
+            <div className="space-y-2">
+              {STAGES.map((stage) => {
+                const isActive = expandedStage === stage.id;
+                const isComplete = stage.progress === 100;
+                const Icon = stage.icon;
+                
+                return (
+                  <button
+                    key={stage.id}
+                    onClick={() => setExpandedStage(isActive ? null : stage.id)}
+                    className={cn(
+                      'w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left',
+                      isActive
+                        ? `${stage.bg}/10 border-${stage.color.replace('text-', '')}/30`
+                        : 'bg-slate-800/30 border-slate-700/30 hover:border-slate-600/50',
+                      isComplete && 'opacity-70'
+                    )}
+                  >
+                    {/* Icon */}
+                    <div className={cn(
+                      'relative z-10 w-11 h-11 rounded-xl flex items-center justify-center border-2',
+                      isComplete 
+                        ? `${stage.bg} border-transparent` 
+                        : isActive
+                          ? `${stage.bg}/20 ${stage.color} border-current`
+                          : 'bg-slate-800 border-slate-700 text-slate-500'
+                    )}>
+                      <Icon className={cn('w-5 h-5', isComplete || isActive ? 'text-white' : '')} />
+                      {isActive && (
+                        <div className="absolute inset-0 rounded-xl animate-ping opacity-20 bg-current" />
+                      )}
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className={cn('text-sm font-medium', isComplete ? 'text-slate-400' : isActive ? stage.color : 'text-slate-300')}>
+                          {stage.name}
+                        </p>
+                        {isActive ? (
+                          <ChevronUp className="w-4 h-4 text-slate-400" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 text-slate-500" />
+                        )}
+                      </div>
+                      
+                      {/* Progress bar */}
+                      <div className="mt-1.5 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div 
+                          className={cn('h-full rounded-full transition-all', stage.bg)}
+                          style={{ width: `${stage.progress}%` }}
+                        />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Milestones */}
+        <div>
+          <button
+            onClick={() => setShowMilestones(!showMilestones)}
+            className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-800/30 border border-slate-700/30 hover:border-slate-600/50 transition-all"
+          >
+            <div className="flex items-center gap-2">
+              <Target className="w-4 h-4 text-amber-400" />
+              <span className="text-sm font-medium text-white">Marcos da Jornada</span>
+            </div>
+            <span className="text-xs text-slate-400">
+              {completedMilestones}/{MILESTONES.length}
+            </span>
+          </button>
+          
+          {showMilestones && (
+            <div className="mt-2 space-y-2 animate-fade-in">
+              {MILESTONES.map((milestone) => (
+                <div
+                  key={milestone.id}
+                  className={cn(
+                    'flex items-center gap-3 p-3 rounded-xl border transition-all',
+                    milestone.completed
+                      ? 'bg-emerald-500/5 border-emerald-500/20'
+                      : 'bg-slate-800/30 border-slate-700/30 opacity-60'
+                  )}
+                >
+                  {/* Checkbox */}
+                  <div className={cn(
+                    'w-6 h-6 rounded-lg border-2 flex items-center justify-center',
+                    milestone.completed
+                      ? 'bg-emerald-500 border-emerald-500 text-white'
+                      : 'border-slate-600'
+                  )}>
+                    {milestone.completed && <span className="text-xs">✓</span>}
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="flex-1">
+                    <p className={cn(
+                      'text-sm font-medium',
+                      milestone.completed ? 'text-slate-300' : 'text-slate-400'
+                    )}>
+                      {milestone.title}
+                    </p>
+                    <p className="text-xs text-slate-500">{milestone.description}</p>
+                  </div>
+                  
+                  {/* Date */}
+                  <span className="text-xs text-slate-500">{milestone.date}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </CardContent>
+
+      <style>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.2s ease-out;
+        }
+      `}</style>
+    </Card>
   );
 }
 

@@ -14,6 +14,9 @@ import { ChakraBalanceWidget } from '@/components/dashboard/ChakraBalanceWidget'
 import { QuickDivination } from '@/components/dashboard/QuickDivination';
 import { DailyWisdomCard } from '@/components/dashboard/DailyWisdomCard';
 import { EnergyFlowWidget } from '@/components/dashboard/EnergyFlowWidget';
+import { AIAgentsWidget } from '@/components/dashboard/AIAgentsWidget';
+import { JourneyTracker } from '@/components/dashboard/JourneyTracker';
+import { RitualPlanner } from '@/components/dashboard/RitualPlanner';
 
 // Dynamic imports for heavy components
 const AIOracleChat = dynamic(
@@ -155,11 +158,22 @@ export default function Dashboard() {
         </div>
       </DashboardSection>
 
+      {/* AI & Intelligence Section */}
+      <DashboardSection 
+        title="Inteligência Espiritual" 
+        description="Insights gerados por IA e análise de correlações"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <AIAgentsWidget userData={userData} />
+          <JourneyTracker userData={userData} />
+        </div>
+      </DashboardSection>
+
       {/* Balance & Progress Section */}
       <DashboardSection title="Fluxo e Crescimento">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <EnergyFlowWidget />
-          <ProgressTracker userId="dashboard" />
+          <RitualPlanner />
         </div>
       </DashboardSection>
 
@@ -171,19 +185,12 @@ export default function Dashboard() {
         </div>
       </DashboardSection>
 
-      {/* Wisdom Section */}
-      <DashboardSection title="Sabedoria Diária">
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
-          <div className="xl:col-span-2">
-            <DailyWisdomCard userData={userData} userId="dashboard" />
-          </div>
-          <AInsightWidget />
-        </div>
-      </DashboardSection>
-
       {/* Affirmations Section */}
       <DashboardSection title="Práticas Diárias">
-        <AffirmationWidget userData={userData} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <AffirmationWidget userData={userData} />
+          <DailyWisdomCard userData={userData} userId="dashboard" />
+        </div>
       </DashboardSection>
 
       {/* AI Oracle Section */}
