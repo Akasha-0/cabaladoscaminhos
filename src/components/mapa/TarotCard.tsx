@@ -76,16 +76,6 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
       handleFlip();
     }
   };
-
-  const arcanoNum = data.cartaNascimento;
-  const arcanoName = ARCANOS_MAIORES[arcanoNum] || `Arcano ${arcanoNum}`;
-  const arcanoEnglish = ARCANOS_ENGLISH[arcanoNum] || '';
-  const arcanoSymbol = ARCANO_SYMBOLS[arcanoNum] || '✦';
-  const energia = ARCANO_ENERGIA[arcanoNum] || 'Ar';
-  const elementoColor = ELEMENTO_COLORS[energia] || 'var(--spiritual-violet)';
-
-  // Additional cards
-  const anoPessoalNum = data.cartaAnoPessoal;
   const arcanoNum = data.cartaNascimento;
   const arcanoName = ARCANOS_MAIORES[arcanoNum] || `Arcano ${arcanoNum}`;
   const arcanoEnglish = ARCANOS_ENGLISH[arcanoNum] || '';
@@ -103,7 +93,7 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
       </div>
       {/* Main Flip Card */}
       <div
-        className="card-flip w-full max-w-sm mx-auto"
+        className="card-flip w-full max-w-sm mx-auto focus-visible:outline-none"
         role="button"
         tabIndex={0}
         aria-label={`Carta do Nascimento: ${arcanoName}. Toque para ${isFlipped ? 'fechar e ver a carta' : 'revelar a interpretação'}.`}
@@ -111,13 +101,14 @@ export function TarotCard({ data, className = '' }: TarotCardProps) {
         onClick={handleFlip}
         onKeyDown={handleKeyDown}
       >
-          className={cn(
-            'card-flip-inner',
-            isFlipped && !prefersReducedMotion && 'rotate-y-180'
-          )}
-          style={prefersReducedMotion ? { transform: isFlipped ? 'rotateY(180deg)' : 'none' } : undefined}
+        <div className={cn(
+          'card-flip-inner',
+          'rounded-2xl',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
+          isFlipped && !prefersReducedMotion && 'rotate-y-180'
+        )}
+        style={prefersReducedMotion ? { transform: isFlipped ? 'rotateY(180deg)' : 'none' } : undefined}
         >
-          {/* Front Face */}
           <div
             className={cn(
               'card-flip-front card-spiritual rounded-2xl p-4 sm:p-6 min-h-[280px] sm:min-h-[320px]',

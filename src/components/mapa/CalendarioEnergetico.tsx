@@ -125,12 +125,10 @@ function DayCell({ date, dayIndex, dayName, isToday, orixáData, lunarPhase, sta
       >
         {dayNumber}
       </span>
-
       {/* Planet emoji */}
-      <span className="text-2xl sm:text-3xl mb-1" title={orixáData.planeta}>
+      <span className="text-2xl sm:text-3xl mb-1" role="img" aria-label={`Planeta regente: ${orixáData.planeta}`}>
         {PLANET_EMOJI[orixáData.planeta] || '✨'}
       </span>
-
       {/* Orixá name */}
       <span
         className="text-xs sm:text-sm font-medium mb-2 text-center"
@@ -176,15 +174,18 @@ export function CalendarioEnergetico({ odu, className = '' }: CalendarioEnergeti
   }, [weekDays]);
 
   const userOduName = odu?.regente?.nome || odu?.orixas?.[0];
-
   return (
-    <div className={cn('card-spiritual', className)}>
+    <div className={cn('card-spiritual', className)} role="region" aria-label="Calendário Energético Semanal">
+      {/* Screen reader status */}
+      <div role="status" aria-live="polite" className="sr-only">
+        Calendário energético da semana de {weekRange}. {userOduName ? `Seu Odu é ${userOduName}.` : ''}
+      </div>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-lg font-bold text-amber-400 flex items-center gap-2">
-            <CalendarDays className="w-5 h-5" />
-            ✦ CALENDÁRIO ENERGÉTICO
+            <CalendarDays className="w-5 h-5" aria-hidden="true" />
+            <span>✦ CALENDÁRIO ENERGÉTICO</span>
           </h3>
           <p className="text-xs text-slate-400 mt-1">
             Semana de {weekRange}
@@ -194,21 +195,20 @@ export function CalendarioEnergetico({ odu, className = '' }: CalendarioEnergeti
         <div className="flex items-center gap-1">
           <button
             type="button"
-            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-colors"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
             aria-label="Semana anterior"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4" aria-hidden="true" />
           </button>
           <button
             type="button"
-            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-colors"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
             aria-label="Próxima semana"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </div>
-
       {/* Day names header - desktop only */}
       <div className="hidden md:grid grid-cols-7 gap-2 mb-2 px-1">
         {DAYS.map((day) => (

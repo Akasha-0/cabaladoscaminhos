@@ -9,7 +9,6 @@ import { MysticDivider } from '@/components/shared/MysticDivider';
 import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Types
 export interface OnboardingData {
   fullName: string;
   birthDate: string;
@@ -24,7 +23,6 @@ interface OnboardingWizardProps {
   className?: string;
 }
 
-// Brazilian states
 const BRAZILIAN_STATES = [
   { value: 'AC', label: 'Acre' },
   { value: 'AL', label: 'Alagoas' },
@@ -114,7 +112,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
     }
   };
 
-  // Auto-focus first input on step change
   useEffect(() => {
     if (currentStep > 0 && currentStep < 3) {
       setTimeout(() => {
@@ -123,7 +120,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
     }
   }, [currentStep]);
 
-  // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && canProceed()) {
       if (currentStep === TOTAL_STEPS - 1) {
@@ -135,8 +131,8 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
   };
 
   return (
+    <CosmicBackground variant="subtle" className={cn('min-h-screen flex flex-col', className)}>
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
-        {/* Progress Indicator */}
         <div
           role="tablist"
           aria-label="Progresso do onboarding"
@@ -144,7 +140,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
         >
           {Array.from({ length: TOTAL_STEPS }).map((_, index) => (
             <div key={index} className="flex items-center">
-              {/* Connector line */}
               {index < TOTAL_STEPS - 1 && (
                 <div
                   className={cn(
@@ -162,7 +157,6 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                   />
                 </div>
               )}
-              {/* Step indicator */}
               <div
                 role="tab"
                 aria-selected={currentStep === index}
@@ -185,7 +179,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
             </div>
           ))}
         </div>
-        {/* Step Content Card */}
+
         <div
           role="tabpanel"
           aria-label={`Passo ${currentStep + 1} de ${TOTAL_STEPS}`}
@@ -197,10 +191,8 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
           onKeyDown={handleKeyDown}
         >
           <div className="card-spiritual bg-[var(--card)] border border-[var(--spiritual-gold-muted)] rounded-2xl p-4 sm:p-8 shadow-[var(--shadow-glow-gold)]">
-            {/* Step 0: Welcome */}
             {currentStep === 0 && (
               <div className="text-center space-y-6">
-                {/* Cosmic decorative element */}
                 <div className="relative mx-auto w-24 h-24">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[var(--spiritual-gold)] to-[var(--spiritual-violet)] opacity-20 animate-pulse" />
                   <div className="absolute inset-2 rounded-full bg-gradient-to-tr from-[var(--spiritual-violet)] to-[var(--spiritual-gold)] opacity-30" />
@@ -218,9 +210,10 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                 </div>
                 <MysticDivider variant="subtle" className="my-4 sm:my-6" />
                 <p className="text-[var(--muted-foreground)] leading-relaxed">
-                  Prepare-se para uma jornada de autodescoberta através dos antigos caminhos da Cabala. 
+                  Prepare-se para uma jornada de autodescoberta através dos antigos caminhos da Cabala.
                   Seu mapa astral aguardava por você.
                 </p>
+
                 <Button
                   variant="golden"
                   size="lg"
@@ -232,7 +225,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                 </Button>
               </div>
             )}
-            {/* Step 1: Name */}
+
             {currentStep === 1 && (
               <div className="space-y-6">
                 <div className="text-center space-y-2">
@@ -246,6 +239,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     Como aparece no seu documento oficial
                   </p>
                 </div>
+
                 <div className="space-y-4">
                   <Input
                     ref={inputRef}
@@ -258,6 +252,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     autoComplete="name"
                   />
                 </div>
+
                 <div className="flex gap-3 pt-4">
                   <Button
                     variant="ghost"
@@ -279,7 +274,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                 </div>
               </div>
             )}
-            {/* Step 2: Birth Date & Time */}
+
             {currentStep === 2 && (
               <div className="space-y-6">
                 <div className="text-center space-y-2">
@@ -290,6 +285,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     Quando você nasceu?
                   </h2>
                 </div>
+
                 <div className="space-y-4">
                   <div>
                     <label htmlFor="birthDate" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
@@ -305,6 +301,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                       aria-label="Data de nascimento"
                     />
                   </div>
+
                   <div>
                     <label htmlFor="birthTime" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
                       Horário de Nascimento <span className="text-xs text-[var(--foreground)]/50">(opcional)</span>
@@ -323,6 +320,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     </p>
                   </div>
                 </div>
+
                 <div className="flex gap-3 pt-4">
                   <Button
                     variant="ghost"
@@ -344,7 +342,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                 </div>
               </div>
             )}
-            {/* Step 3: Location */}
+
             {currentStep === 3 && (
               <div className="space-y-6">
                 <div className="text-center space-y-2">
@@ -355,6 +353,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     Onde você nasceu?
                   </h2>
                 </div>
+
                 <div className="space-y-4">
                   <div>
                     <label htmlFor="city" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
@@ -372,6 +371,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                       autoComplete="address-level2"
                     />
                   </div>
+
                   <div>
                     <label htmlFor="state" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
                       Estado
@@ -392,6 +392,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                       </SelectContent>
                     </Select>
                   </div>
+
                   <div>
                     <label htmlFor="country" className="block text-sm font-medium mb-2 text-[var(--muted-foreground)]">
                       País
@@ -407,6 +408,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     />
                   </div>
                 </div>
+
                 <div className="flex gap-3 pt-4">
                   <Button
                     variant="ghost"
@@ -431,9 +433,8 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
           </div>
         </div>
       </div>
- {/* CSS Animations */}
+
       <style jsx>{`
-        /* Step Transitions - Forward: slide left with fade out */
         @keyframes stepEnterForward {
           from {
             opacity: 0;
@@ -444,7 +445,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
             transform: translateX(0);
           }
         }
-        /* Step Transitions - Backward: slide right with fade out */
+
         @keyframes stepEnterBackward {
           from {
             opacity: 0;
@@ -455,26 +456,30 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
             transform: translateX(0);
           }
         }
+
         .step-content-wrapper {
           animation-duration: 300ms;
           animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
           animation-fill-mode: forwards;
         }
+
         .step-enter-forward {
           animation-name: stepEnterForward;
         }
+
         .step-enter-backward {
           animation-name: stepEnterBackward;
         }
-        /* Progress Indicator - Connector Fill Animation */
+
         .connector-fill {
           transform-origin: left center;
           transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
         }
+
         .connector-fill-active {
           transform: scaleX(1);
         }
-        /* Progress Indicator - Active Step Golden Glow Pulse */
+
         @keyframes goldenGlow {
           0%, 100% {
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.4),
@@ -486,10 +491,11 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                         0 0 75px rgba(212, 175, 55, 0.2);
           }
         }
+
         .step-active {
           animation: goldenGlow 2s ease-in-out infinite;
         }
-        /* Step Completion - Checkmark Animation */
+
         @keyframes checkmarkPop {
           0% {
             transform: scale(0);
@@ -504,10 +510,11 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
             opacity: 1;
           }
         }
+
         .checkmark-animate {
           animation: checkmarkPop 400ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
-        /* Final CTA Button - Golden Glow Pulse on Hover */
+
         @keyframes goldenGlowPulse {
           0%, 100% {
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3),
@@ -519,16 +526,20 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                         0 0 75px rgba(212, 175, 55, 0.15);
           }
         }
+
         .cta-button-final {
           transition: transform 200ms ease, box-shadow 200ms ease;
         }
+
         .cta-button-final:hover:not(:disabled) {
           transform: scale(1.02);
           animation: goldenGlowPulse 1.5s ease-in-out infinite;
         }
+
         .cta-button-final:hover:not(:disabled) .cta-icon {
           animation: ctaIconPulse 600ms ease-in-out infinite;
         }
+
         @keyframes ctaIconPulse {
           0%, 100% {
             opacity: 1;
@@ -537,7 +548,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
             opacity: 0.5;
           }
         }
-        /* CTA Button - Loading State with Spinning Symbol */
+
         @keyframes starSpin {
           from {
             transform: rotate(0deg);
@@ -546,24 +557,28 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
             transform: rotate(360deg);
           }
         }
+
         .cta-button-final:disabled {
           cursor: not-allowed;
           opacity: 0.7;
         }
+
         .cta-button-final.loading .cta-icon {
           animation: starSpin 1s linear infinite;
         }
+
         .cta-button-final.loading .cta-text {
           opacity: 0.8;
         }
-        /* General CTA Button Hover Effects */
+
         .cta-button {
           transition: transform 200ms ease, box-shadow 200ms ease;
         }
+
         .cta-button:hover:not(:disabled) {
           transform: scale(1.02);
         }
-        /* Reduced Motion - Disable All Animations */
+
         @media (prefers-reduced-motion: reduce) {
           *, *::before, *::after {
             animation-duration: 0.01ms !important;
@@ -574,5 +589,4 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
       `}</style>
     </CosmicBackground>
   );
-}
 }
