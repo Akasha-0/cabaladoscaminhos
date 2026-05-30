@@ -388,7 +388,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
                     </label>
                     <Select
                       value={formData.state ?? ''}
-                      onValueChange={(value) => updateFormData('state', value)}
+                      onValueChange={(value) => updateFormData('state', value ?? '')}
                     >
                       <SelectTrigger id="state" className="h-12 text-lg" aria-label="Estado de nascimento">
                         <SelectValue placeholder="Selecione o estado" />
