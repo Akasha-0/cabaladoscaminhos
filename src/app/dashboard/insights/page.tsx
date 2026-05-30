@@ -101,7 +101,7 @@ export default function InsightsPage() {
               <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-spiritual-gold to-transparent" />
               <p className="pl-4 text-spiritual-text-secondary leading-relaxed"
                  style={{ fontFamily: 'var(--font-cormorant)', fontSize: '1.1rem', fontStyle: 'italic' }}>
-                "{insight.content}"
+                &ldquo;{insight.content}&rdquo;
               </p>
             </div>
 

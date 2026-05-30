@@ -1,3 +1,5 @@
+import type { MapaAlmaCompleto } from '../engines/types/mapa-alma';
+
 // PDF generation module for Mapa da Alma
 
 // ============================================================
@@ -50,6 +52,62 @@ const ARCANOS_MAIORES = [
 // ============================================================
 // Helper functions
 // ============================================================
+// ============================================================
+// MapaAlma Completo Adapter
+// ============================================================
+
+export function mapaAlmaToMapaData(mapa: MapaAlmaCompleto): MapaData {
+  return {
+    id: crypto.randomUUID(),
+    created_at: mapa.dataCalculo,
+    numerologia: {
+      numero_vida: mapa.numerologia.vida,
+      numero_destino: mapa.numerologia.destino,
+      numero_alma: mapa.numerologia.motivacao,
+      numero_personalidade: mapa.numerologia.expressao,
+    },
+    odu: {
+      nome: mapa.odu.regente.nome,
+      numero: mapa.odu.regente.numero,
+      orixas: mapa.odu.orixas,
+      quizilas: mapa.odu.quizilas,
+      preceitos: mapa.odu.preceitos.join(', '),
+    },
+    astrologia: {
+      signo: mapa.astrologia.sol.signo,
+      ascendente: mapa.astrologia.ascendente,
+      planetas: {
+        sol: mapa.astrologia.sol.signo,
+        lua: mapa.astrologia.lua.signo,
+        mercurio: mapa.astrologia.mercurio.signo,
+        venus: mapa.astrologia.venus.signo,
+        marte: mapa.astrologia.marte.signo,
+        jupiter: mapa.astrologia.jupiter.signo,
+        saturno: mapa.astrologia.saturno.signo,
+        urano: mapa.astrologia.urano.signo,
+        netuno: mapa.astrologia.netuno.signo,
+        plutao: mapa.astrologia.plutao.signo,
+      },
+    },
+    tarot: {
+      carta_nascimento: mapa.tarot.cartaNascimento,
+      carta_ano_pessoal: mapa.tarot.cartaAnoPessoal,
+    },
+    orixas: mapa.orixasDominantes,
+    sefirot: [mapa.odu.caminhoSephirah],
+    convergencias: mapa.convergencias.map(c => ({
+      energia: c.energia,
+      forca: c.forca === 'forte' ? 'dupla' : c.forca === 'medio' ? 'dupla' : 'simples',
+      descricao: c.descricao,
+    })),
+  };
+}
+
+export async function gerarRelatorioMapaAlmaPDF(mapa: MapaAlmaCompleto): Promise<Uint8Array> {
+  const data = mapaAlmaToMapaData(mapa);
+  const blob = await gerarRelatorioPDF(data);
+  return new Uint8Array(await blob.arrayBuffer());
+}
 
 function formatarData(data: string | Date | undefined): string {
   if (!data) return '';

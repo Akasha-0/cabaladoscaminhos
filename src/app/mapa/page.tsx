@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Star, Moon, Sun } from 'lucide-react';
+import { Sparkles, Star, Moon, Sun, Download } from 'lucide-react';
 import MapaNatal from '@/components/dashboard/MapaNatal';
 import ChakraBalanceWidget from '@/components/dashboard/ChakraBalanceWidget';
 import { NumerologiaCard } from '@/components/mapa/NumerologiaCard';
@@ -377,11 +377,29 @@ export default function MapaPage() {
   // ============================================================
   // MAIN CONTENT — MAPA DATA DISPLAY
   // ============================================================
-
   if (!mapaData) {
     return null;
   }
-
+  const handleDownloadPDF = async () => {
+    if (!mapaData) return;
+    try {
+      const res = await fetch('/api/mapa/pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(mapaData),
+      });
+      if (!res.ok) throw new Error('PDF generation failed');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `mapa-${profile.nomeCompleto?.replace(/\s+/g, '-')}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('[mapa] PDF download error:', err);
+    }
+  };
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Header */}
@@ -393,13 +411,23 @@ export default function MapaPage() {
             </h1>
             <p className="text-sm text-slate-400">{profile.nomeCompleto}</p>
           </div>
-          <div className="text-right text-xs text-slate-500">
-            <p>Calculado em</p>
-            <p>{new Date(mapaData.dataCalculo).toLocaleDateString('pt-BR')}</p>
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={handleDownloadPDF}
+              variant="outline"
+              size="sm"
+              className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Baixar PDF
+            </Button>
+            <div className="text-right text-xs text-slate-500">
+              <p>Calculado em</p>
+              <p>{new Date(mapaData.dataCalculo).toLocaleDateString('pt-BR')}</p>
+            </div>
           </div>
         </div>
       </header>
-
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
         {/* Profile Summary */}
