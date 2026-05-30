@@ -222,10 +222,6 @@ describe('Day-Element Correlation', () => {
     });
   });
   describe('getAllDays', () => {
-    });
-  });
-
-  describe('getAllDays', () => {
     it('should return all 7 days of the week', () => {
       const days = getAllDays();
       expect(days.length).toBe(7);
