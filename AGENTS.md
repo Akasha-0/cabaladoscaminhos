@@ -27,7 +27,7 @@ Behavioral guidelines para agentes de IA desenvolvendo este projeto.
 
 ## 5. Contexto Espiritual (específico deste projeto)
 **Leia o IDEIA.md antes de implementar qualquer engine espiritual.**
-- O IDEIA.md contém 42.9KB de correspondências esotéricas cuidadosamente mapeadas.
+- O IDEIA.md contém correspondências esotéricas cuidadosamente mapeadas.
 - Nunca invente correspondências esotéricas. Use APENAS os dados do IDEIA.md.
 - Trate as tradições afro-brasileiras (Candomblé, Umbanda, Odus) com reverência absoluta.
 - Valide cálculos espirituais com casos reais antes de considerar implementação completa.
@@ -39,12 +39,130 @@ Behavioral guidelines para agentes de IA desenvolvendo este projeto.
 - Se não existir, crie-o como primeira ação absoluta.
 - Atualize-o após cada feature, bug fix ou decisão arquitetural importante.
 
-## Stack do projeto
-Next.js 16 + React 19 + Prisma 7 + Supabase + Redis (ioredis) + OpenAI + Stripe + jsPDF
-Auth: JWT/bcryptjs própria (não NextAuth). Testes: Vitest. Validação: Zod. State: Zustand.
+## 7. Auto-Evolution Loop (Harness de Evolução Contínua)
 
-## Comandos principais
-- `npm run test:run` — validar que testes passam
-- `npm run build` — validar que build passa
-- `npm run lint` — validar linting
-- `npm run db:generate` — após mudanças no schema Prisma
+### 7.1 O Ciclo Principal
+
+O projeto opera em ciclos de evolução contínua. Cada ciclo segue esta estrutura:
+
+```
+ASSESS → PLAN → EXECUTE → VERIFY → EVOLVE → LOOP
+```
+
+### 7.2 ASSESS (Avaliação de Contexto)
+
+Sempre iniciar lendo:
+- `PROGRESS.md` — estado atual do projeto
+- `memory://root/memory_summary.md` — aprendizagens acumuladas
+- `GOAL.md` — objetivo de longo prazo
+- `THINKING.MD` — cadeia de pensamento atual
+
+Verificar:
+- `git status` — worktree está limpo?
+- `job list` — há jobs em background?
+
+### 7.3 Métricas de Sucesso
+
+Um ciclo é bem-sucedido se qualquer uma:
+- Nova correlação espiritual mapeada em 3+ tradições
+- Duas tradições revelaram estrutura compartilhada
+- Regra antiga refinada por conflito descoberto
+- Engine otimizada (performance ou precisão)
+- Test coverage aumentado
+- Bug crítico corrigido
+
+Target: `QUALITY_SCORE >= 0.91`
+
+## 8. Cadeia de Pensamento para Correlação Espiritual
+
+### Processo de Descoberta de Correlação
+
+```
+1. LISTAR tradições disponíveis
+   - Numerologia Cabalística
+   - Odu Ifá (Merindilogun)
+   - Astrologia (Western/Vedic)
+   - Tarot (Arcanos Maiores/Menores)
+   - Cabala (Sephiroth/Árvore da Vida)
+   - Orixás (Candomblé/Umbanda)
+   - Chakras (Yoga/Tantra)
+   - Geometria Sagrada (Poliedros Platônicos)
+   - Frequências Solfeggio
+   - Botânica Oculta
+
+2. SELECIONAR elemento comum
+   - Dia da semana
+   - Planeta/Astro
+   - Elemento (fogo/água/ar/terra/éter)
+   - Chakra
+   - Número
+   - Arcano
+   - Orixá
+
+3. MAPEAR correspondências por tradição
+
+4. VALIDAR consistência
+   - 3+ tradições confirmam → ALTA CONFIANÇA
+   - 2 tradições confirmam → CONFIANÇA MÉDIA
+   - 1 tradição confirma → BAIXA CONFIANÇA
+
+5. DOCUMENTAR correlação
+   - Nome descritivo
+   - Tabela de mapeamento
+   - Implicações práticas
+
+6. INTEGRAR no sistema
+   - Atualizar IDEIA.md
+   - Implementar em spiritual-engine.ts
+   - Criar teste de validação
+```
+
+### Motor de Substituição
+
+Quando quizila ou preceito detectado:
+1. Perguntar: "qual é a função energética?"
+2. Encontrar equivalente funcional em outra tradição
+3. Redirecionar sem perder intenção
+
+## 9. Stack do Projeto
+
+- **Framework**: Next.js 16 + React 19
+- **Database**: Prisma 7 + PostgreSQL
+- **Cache**: Redis/ioredis
+- **Auth**: JWT/bcryptjs própria
+- **AI**: OpenAI SDK + Minimax API
+- **Payments**: Stripe
+- **PDF**: jsPDF
+- **Testing**: Vitest
+- **Validation**: Zod
+- **State**: Zustand
+
+### Comandos Principais
+
+```bash
+npm run test:run   # Validar que testes passam
+npm run build      # Validar que build passa
+npm run lint       # Validar linting
+npm run quality    # Análise de qualidade de código
+npm run db:generate # Após mudanças no schema Prisma
+```
+
+## 10. Estrutura de Commits
+
+```
+TIPO: [scope] descrição
+
+Tipos:
+- feat: nova feature
+- fix: correção de bug
+- refactor: refatoração
+- test: adicionar/modificar testes
+- docs: documentação
+- chore: manutenção
+- spiritual-correlation: nova correlação espiritual
+```
+
+---
+
+*Última atualização: 2026-05-30*
+*Versão: 2.0 — Inclui Auto-Evolution Loop e Cadeia de Pensamento Espiritual*
