@@ -44,14 +44,18 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     interpretacao: 'Oxalá representa o principio criativo puro, a cabeça bem feita (Ori). O Imperador reflete sua autoridade divina, ordem e a capacidade de criar estruturas sagradas. É o Orixá que governa o silêncio, a paz e a pureza absoluta.',
   },
   'Iemanjá': {
-      ferramentas: ['Água do mar', 'Flores brancas', 'Colônia', 'Espelho'],
+    orixa: 'Iemanjá',
+    arcano: 'A Estrela',
+    numero_carta: 17,
     energia_espiritual: 'Intuição profunda, maternidade, geração e equilíbrio mental. Fluidez emocional e conexão com as águas salgadas.',
     associacoes_rituais: {
-      ferramentas: ['Água do mar', 'Flores brancas', 'Colônia', ' espelho'],
+      ferramentas: ['Água do mar', 'Flores brancas', 'Colônia', 'Espelho'],
       oferendas: ['Canjica', 'Balas brancas', 'Perfumes finos', 'Roupas brancas'],
       momentos: ['Sábado', 'Noites de Lua Cheia', 'Beira-mar ao entardecer'],
     },
-      momentos: ['Sábado', 'Manhãs de Lua Crescente', 'Próximo a cachoeiras'],
+    interpretacao: 'Iemanjá é a grande mãe das águas. A Estrela representa sua energia de esperança, renovação e guiança espiritual. Assim como a Estrela ilumina a noite, Iemanjá ilumina o caminho da alma nas trevas, trazendo paz e orientação.',
+  },
+  Oxum: {
     orixa: 'Oxum',
     arcano: 'A Imperatriz',
     numero_carta: 3,
@@ -59,7 +63,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     associacoes_rituais: {
       ferramentas: ['Mel', 'Girassóis', 'Moedas douradas', 'Perfumes doces'],
       oferendas: ['Acarajé', 'Doces', 'Frutas douradas', 'Melancia'],
-      momentos: ['Sábado', 'Manhãs deLua Crescente', 'Próximo a cachoeiras'],
+      momentos: ['Sábado', 'Manhãs de Lua Crescente', 'Próximo a cachoeiras'],
     },
     interpretacao: 'Oxum é o princípio do amor e da abundância. A Imperatriz reflete sua energia de fertilidade, beleza e magnetismo. Seu poder atrai prosperidade, relacionamentos harmoniosos e realiza os desejos do coração.',
   },
@@ -81,8 +85,9 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     numero_carta: 5,
     energia_espiritual: 'Fartura, conhecimento profundo e busca espiritual. A sabedoria das matas e o direcionamento da mente.',
     associacoes_rituais: {
-      ferramentas: ['Pinhão roxo', 'Espada de Santa Bárbara', 'Fumo', 'Bambu'],
-      oferendas: ['Acarajé', 'Velas laranjas', 'Pipoca', 'Água de cheiro'],
+      ferramentas: ['Flecha', 'Samambaia', 'Jurema', 'Alecrim'],
+      oferendas: ['Frutas silvestres', 'Milho', 'Mel', 'Ervas frescas'],
+      momentos: ['Quinta-feira', 'Horários de expansão', 'Próximo a matas e florestas'],
     },
     interpretacao: 'Oxóssi é o caçador que busca conhecimento. O Hierofante reflete sua energia de sabedoria sagrada, tradição espiritual e abertura de portais de conhecimento. Ele ensina que a verdadeira fartura vem do saber alinhado com a espiritualidade.',
   },
@@ -94,7 +99,9 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     associacoes_rituais: {
       ferramentas: ['Pedra de raio', 'Machado', 'Quiabo', 'Amalá'],
       oferendas: ['Amalá quente', 'Pinhão', 'Vela amarela/dourada', 'Frutas amarelas'],
-      ferramentas: ['Pipoca (Deburu)', 'Palmeira', 'Ervas de descarrego', 'Manga'],
+      momentos: ['Quarta-feira', 'Domingo', 'Meio-dia solar', 'Nascer do sol'],
+    },
+    interpretacao: 'Xangô é o rei que governa com justiça. O Sol representa sua energia de brilho próprio, vitalidade, sucesso e propósito de vida. É o Orixá que manifestationa a verdade, afasta a falsidade e traz vitória através da justiça divina.',
   },
   'Iansã': {
     orixa: 'Iansã',
@@ -103,11 +110,10 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     energia_espiritual: 'Movimento rápido, transformação abrupta, ventos da mudança e libertação. A coragem de quebrar estruturas.',
     associacoes_rituais: {
       ferramentas: ['Pinhão roxo', 'Espada de Santa Bárbara', 'Fumo', 'Bambu'],
-    energia_espiritual: 'Sabedoria ancestral, paciência, recolhimento e mistério. O lodo primitivo e a antiga sabedoria.',
-    associacoes_rituais: {
-      ferramentas: ['Barro', 'Ervas calmas', 'Flores roxas', 'Água de chuva'],
-      oferendas: ['Feijão preto', 'Frutas roxas', 'Velas lilases', 'Oferendas na lama'],
-      momentos: ['Sábado', 'Noites de silêncio', 'Recolhimento e introspecção'],
+      oferendas: ['Acarajé', 'Velas laranjas', 'Pipoca', 'Água de cheiro'],
+      momentos: ['Terça-feira', 'Tempestades', 'Mudanças rápidas'],
+    },
+    interpretacao: 'Iansã é a senhora das tempestades. A Torre representa sua energia de transformação radical, quebra de ilusões e libertação repentina. Ela traz a limpeza que vem após a queda das estruturas falsas, abrindo espaço para o novo.',
   },
   Omolu: {
     orixa: 'Omolu',
@@ -115,7 +121,7 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     numero_carta: 21,
     energia_espiritual: 'Cura física, transmutação, fim de ciclos e estruturação. O poder da terra e das transformações necessárias.',
     associacoes_rituais: {
-      ferramentas: ['Pipoca (Deburu)', 'Palmeira', 'Ervas de descarrego', 'Mangas],
+      ferramentas: ['Pipoca (Deburu)', 'Palmeira', 'Ervas de descarrego', 'Manga'],
       oferendas: ['Pipoca', 'Frutas escuras', 'Milho', 'Oferendas de terra'],
       momentos: ['Segunda-feira', 'Lua Minguante', 'Descarrego pesado'],
     },
@@ -125,20 +131,17 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     orixa: 'Nanã',
     arcano: 'A Sacerdotisa',
     numero_carta: 2,
-    energia_espiritual: 'Sabedoria ancestral, paciência, recolhimento e mistério. O lodo primitivo e a古老 sabedoria.',
+    energia_espiritual: 'Sabedoria ancestral, paciência, recolhimento e mistério. O lodo primitivo e a antiga sabedoria.',
     associacoes_rituais: {
       ferramentas: ['Barro', 'Ervas calmas', 'Flores roxas', 'Água de chuva'],
       oferendas: ['Feijão preto', 'Frutas roxas', 'Velas lilases', 'Oferendas na lama'],
-      momentos: ['Sábado', 'Noites de silêncio', 'Recolhimento e introspection'],
+      momentos: ['Sábado', 'Noites de silêncio', 'Recolhimento e introspecção'],
     },
     interpretacao: 'Nanã é a anciã que guarda os mistérios. A Sacerdotisa representa sua energia de sabedoria oculta, intuição profunda e conexão com o mundo invisível. Ela guarda os segredos da vida, da morte e do renascimento.',
-    energia_espiritual: 'Liberdade, imprevisibilidade, novo início e salto de fé. O espírito que transcende regras.',
-    associacoes_rituais: {
-      ferramentas: ['Capacete', 'Bolhas', 'Sino', 'Moedas'],
-      oferendas: ['Frutas novas', 'Cerveja', 'Sêmola', 'Pão fresco'],
-      momentos: ['Qualquer início', 'Segundas-feiras', 'Encruzilhadas'],
-    },
-    interpretacao: 'Eshu é o Trickster espiritual. O Louco representa sua energia de liberdade, salto no desconhecido e início de novas jornadas. Ele ensina que às vezes precisamos confiar no vazio e saltar sem garantias para encontrar nossa verdade.',
+  },
+  Exu: {
+    orixa: 'Exu',
+    arcano: 'O Mago',
     numero_carta: 1,
     energia_espiritual: 'Comunicação, dinamismo, início de tudo e ordenação. O mensageiro que abre os caminhos.',
     associacoes_rituais: {
@@ -156,21 +159,21 @@ export const ORIXA_TAROT_MAPPINGS: Record<string, OrixaTarotMapping> = {
     associacoes_rituais: {
       ferramentas: ['Leque', 'Flores coloridas', 'Perfumes finos', 'Balangandãs'],
       oferendas: ['Frutas tropicais', 'Doces finos', 'Flores variadas', 'Perfumes'],
-      momentos: ['Dias de equilibrio', 'Lua Crescente', 'Momentos de decisão importante'],
+      momentos: ['Dias de equilíbrio', 'Lua Crescente', 'Momentos de decisão importante'],
     },
-    interpretacao: 'Logun Edé é a união de Oxum e Oxóssi. Os Enamorados representam sua energia de escolha sagrada, união dos opostos e harmonia. Ele ensina que a verdadeira beleza está no equilibrio entre o masculino e o feminino espiritual.',
+    interpretacao: 'Logun Edé é a união de Oxum e Oxóssi. Os Enamorados representam sua energia de escolha sagrada, união dos opostos e harmonia. Ele ensina que a verdadeira beleza está no equilíbrio entre o masculino e o feminino espiritual.',
   },
-  'Eshu/Eleguá': {
+  'Eshu': {
     orixa: 'Eshu',
     arcano: 'O Louco',
     numero_carta: 0,
-    energia_espiritual: 'Liberdade, imprevisibilidade, novo início e salto de fé. O espirituo que transcende regras.',
+    energia_espiritual: 'Liberdade, imprevisibilidade, novo início e salto de fé. O espírito que transcende regras.',
     associacoes_rituais: {
       ferramentas: ['Capacete', 'Bolhas', 'Sino', 'Moedas'],
       oferendas: ['Frutas novas', 'Cerveja', 'Sêmola', 'Pão fresco'],
-      momentos: ['Qualquer inicio', 'Segundas-feiras', 'Encruzilhadas'],
+      momentos: ['Qualquer início', 'Segundas-feiras', 'Encruzilhadas'],
     },
-    interpretacao: 'Eshu é o Trickster espiritual. O Louco representa sua energia de liberdade, salto no desconhecido e início de novas jornadas. Ele ensina que às vezes precisamos confiar no vacúo e saltar sem garantías para encontrar nossa verdade.',
+    interpretacao: 'Eshu é o Trickster espiritual. O Louco representa sua energia de liberdade, salto no desconhecido e início de novas jornadas. Ele ensina que às vezes precisamos confiar no vazio e saltar sem garantias para encontrar nossa verdade.',
   },
 } as const;
 

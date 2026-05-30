@@ -354,19 +354,25 @@ export function getElementChakra(elemento: string): ElementChakraMapping | null 
  */
 export function getChakraElement(chakra: string): ElementChakraMapping | null {
   const allMappings = getAllElementMappings();
-  const normalizedChakra = chakra.trim().toLowerCase();
+  const normalizedChakra = chakra.trim().toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  // First pass: check primary chakras (higher priority)
   for (const mapping of allMappings) {
     const primaryChakra = mapping.chakras_correspondentes.primario
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
+    if (primaryChakra === normalizedChakra) {
+      return mapping;
+    }
+  }
+  // Second pass: check secondary chakras
+  for (const mapping of allMappings) {
     const secondaryChakras = mapping.chakras_correspondentes.secundarios.map(
       (c) => c.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     );
-    const chakraInput = normalizedChakra
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
-    if (primaryChakra === chakraInput || secondaryChakras.includes(chakraInput)) {
+    if (secondaryChakras.includes(normalizedChakra)) {
       return mapping;
     }
   }
