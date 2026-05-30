@@ -187,6 +187,7 @@ function normalizePlanetName(planeta: string): string {
     júpiter: 'Jupiter',
     venus: 'Venus',
     vênus: 'Venus',
+    vénus: 'Venus',
     saturno: 'Saturno',
   };
   return mapping[normalized] ?? planeta;
