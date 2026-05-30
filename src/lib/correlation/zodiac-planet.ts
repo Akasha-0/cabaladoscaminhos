@@ -111,7 +111,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Geburah (Severidade) - Camino 11',
-      caminho: 'Entre Chokmah (Sabedoria) e Tiphereth (Beleza)',
+      caminho: 'Caminho 11 - Entre Chokmah (Sabedoria) e Tiphereth (Beleza)',
       arcanjo: 'Kamael (Camil) - executor da vontade divina',
       vibração: 'Frequência de conquista e proteção',
     },
@@ -152,7 +152,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Netzach (Vitória) - Camino 25',
-      caminho: 'Entre Tiphereth (Beleza) e Hod (Glória)',
+      caminho: 'Caminho 25 - Entre Tiphereth (Beleza) e Hod (Glória)',
       arcanjo: 'Haniel (Aniel) - mensageiro do amor divino',
       vibração: 'Frequência de abundância e harmonia',
     },
@@ -193,7 +193,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Hod (Glória) - Camino 24',
-      caminho: 'Entre Netzach (Vitória) e Yesod (Fundação)',
+      caminho: 'Caminho 24 - Entre Netzach (Vitória) e Yesod (Fundação)',
       arcanjo: 'Miguel (Mikhael) - protetor da verdade',
       vibração: 'Frequência de comunicação e flexibilidade',
     },
@@ -234,7 +234,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Yesod (Fundação) - Camino 32',
-      caminho: 'Entre Hod (Glória) e Malkuth (Reino)',
+      caminho: 'Caminho 32 - Entre Hod (Glória) e Malkuth (Reino)',
       arcanjo: 'Gabriel (Gavriel) - mensageiro das revelações',
       vibração: 'Frequência lunar de nutrição e intuição',
     },
@@ -316,7 +316,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Hod (Glória) e Netzach (Vitória) - Camino 24 e 25',
-      caminho: 'Entre Tiphereth (Beleza) e Malkuth (Reino)',
+      caminho: 'Caminho 24/25 - Entre Tiphereth (Beleza) e Malkuth (Reino)',
       arcanjo: 'Miguel (Mikhael) - protetor e purificador',
       vibração: 'Frequência de discernimento e serviço',
     },
@@ -357,7 +357,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Chesed (Misericórdia) - Camino 7',
-      caminho: 'Entre Chokmah (Sabedoria) e Geburah (Severidade)',
+      caminho: 'Caminho 7 - Entre Chokmah (Sabedoria) e Geburah (Severidade)',
       arcanjo: 'Tzadkiel (Tzadquel) - anjo da justiça divina',
       vibração: 'Frequência de equilíbrio e harmonia',
     },
@@ -402,7 +402,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Geburah (Severidade) - Camino 11',
-      caminho: 'Entre Chokmah e Tiphereth - aspecto transformador',
+      caminho: 'Caminho 11 - Entre Chokmah e Tiphereth - aspecto transformador',
       arcanjo: 'Samael (Samael) - regenerador celestial',
       vibração: 'Frequência de transformação e poder regenerador',
     },
@@ -443,7 +443,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Chesed (Misericórdia) - Camino 7',
-      caminho: 'Entre Chokmah (Sabedoria) e Geburah (Severidade)',
+      caminho: 'Caminho 7 - Entre Chokmah (Sabedoria) e Geburah (Severidade)',
       arcanjo: 'Tsadkiel (Tzadquel) - anjo da expansão divina',
       vibração: 'Frequência de sabedoria e abundância',
     },
@@ -484,7 +484,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Binah (Compreensão) - Camino 3',
-      caminho: 'Entre Chokmah (Sabedoria) e Kether (Coroa)',
+      caminho: 'Caminho 3 - Entre Chokmah (Sabedoria) e Kether (Coroa)',
       arcanjo: 'Cassiel (Kassiel) - anjo do tempo e da restrição',
       vibração: 'Frequência de师长 e大师境界',
     },
@@ -525,7 +525,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Chokmah (Sabedoria) - Camino 2',
-      caminho: 'Entre Kether (Coroa) e Binah (Compreensão)',
+      caminho: 'Caminho 2 - Entre Kether (Coroa) e Binah (Compreensão)',
       arcanjo: 'Tzapariel - anjo da libertação e inovação',
       vibração: 'Frequência de redenção social e visão futurista',
     },
@@ -566,7 +566,7 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
     },
     correspondencia_cabala: {
       sefira: 'Yesod (Fundação) - Camino 32',
-      caminho: ' Entre Hod e Malkuth - aspecto transcendente',
+      caminho: 'Caminho 32 - Entre Hod e Malkuth - aspecto transcendente',
       arcanjo: 'Gabriel (Gavriel) - mensageiro das revelações',
       vibração: 'Frequência de dissolução e unidade cósmica',
     },
@@ -581,14 +581,14 @@ export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>
  * @returns The correlation mapping or null if not found
  */
 export function getZodiacPlanet(signo: string): ZodiacPlanetMapping | null {
-  const normalized = sign normalization(signo);
+  const normalized = signNormalization(signo);
   return ZODIAC_PLANET_MAPPINGS[normalized as Signo] ?? null;
 }
 
 /**
  * Normalizes the sign name by handling variations and case.
  */
-function sign normalization(sign: string): string {
+function signNormalization(sign: string): string {
   const map: Record<string, string> = {
     aries: 'Áries',
     touro: 'Touro',
