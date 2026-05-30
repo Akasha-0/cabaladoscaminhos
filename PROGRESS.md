@@ -1,7 +1,7 @@
 **Última atualização:** 2026-05-30
 **Sprints completados:** 207
 **Build status:** ✅ Build OK (522 routes)
-**Tests:** ✅ 1423 passing, 14 skipped (75 test files)
+**Tests:** ✅ 1466 passing, 14 skipped (77 test files)
 
 ### Core Infrastructure
 - Next.js 16.2.6 + React 19 + App Router (Turbopack)
@@ -228,6 +228,7 @@
 |**205** | **A11y & Profile Fix** | Screen reader support, TarotCard navigation, OnboardingWizard a11y, profile page upgrade redirect fix |
 |**206** | **Test Fixes** | ChakraPanel test parse error, NumerologiaCard/OduCardFull/TarotCard test fixes (15 tests) |
 |**207** | **Test Coverage** | useJourney tests (10), usePrevisaoSemanal tests (12), hook coverage expanded |
+|**208** | **Hook Tests** | useSearchHistory (15), useUserPreferences (28), hook coverage expanded to 10 hooks |
 
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
 2. **Multi-Agent Development**: Agentes paralelos para componentes
@@ -241,8 +242,6 @@
 10. **Theme System**: 8 themes with custom color schemes
 11. **Accessibility**: Full accessibility settings for all users
 12. **Responsive Design**: Mobile/Tablet/Desktop/Wide preview
-13. **MapaAlma Orchestrator**: Unified spiritual engine per IDEIA.md
-
-
-**Tests: 1423 passing**
+**Tests: 1466 passing**
+**208 Sprints Completados** 🎉
 **207 Sprints Completados** 🎉
