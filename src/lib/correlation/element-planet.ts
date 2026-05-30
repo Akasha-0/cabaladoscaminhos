@@ -4,7 +4,7 @@
  * Aligns the four classical elements with their planetary rulers
  */
 
-export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra';
+export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
 
 export type Planeta = 'Sol' | 'Lua' | 'Mercúrio' | 'Vênus' | 'Marte' | 'Júpiter' | 'Saturno';
 
@@ -172,6 +172,39 @@ export const ELEMENT_PLANET_MAPPINGS: Record<Elemento, ElementPlanetMapping> = {
       defumacoes: ['Pau-brasil', 'Nim', 'Carvão vegetal'],
     },
   },
+  Éter: {
+    elemento: 'Éter',
+    planeta: 'Júpiter',
+    qualidades: {
+      temperatura: 'Quente',
+      umidade: 'Neutro',
+      polaridade: 'Yang',
+    },
+    orixa: 'Oxalá',
+    dia_sagrado: 'Sexta-feira',
+    cores: ['Branco', 'Dourado', 'Violeta'],
+    chakra: '7º Coronário',
+    sephirah: 'Kether',
+    associacoes_espirituais: [
+      'Transcendência espiritual',
+      'Paz interior e harmonia',
+      'Sabedoria divina',
+      'Criação e manifestação',
+      'Pureza de intenção',
+      'Conexão com o divino',
+    ],
+    afinidades: [
+      'Sistema nervoso central',
+      'Chakra Coronário (sahasrara)',
+      'Glândula pineal',
+      'Consciência cósmica',
+    ],
+    praticas: {
+      ebos: ['Leite e alimentos brancos para Oxalá', 'Oferendas de paz'],
+      banhos: ['Alfazema', 'Flor de bacharel', 'Rosa branca'],
+      defumacoes: ['Benjoim puro', 'Sálvia branca', 'Mirra'],
+    },
+  },
 };
 
 // Freeze the mapping object to prevent modifications
@@ -181,7 +214,7 @@ Object.values(ELEMENT_PLANET_MAPPINGS).forEach(mapping => Object.freeze(mapping)
 
 /**
  * Returns the element-planet mapping for a given element name.
- * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra')
+ * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra', 'Éter')
  * @returns The correlation mapping or null if not found
  */
 export function getElementPlanet(elemento: string): ElementPlanetMapping | null {

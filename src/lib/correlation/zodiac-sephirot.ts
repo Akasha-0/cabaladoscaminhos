@@ -245,14 +245,11 @@ export function getSephirotZodiac(sephirah: string): string | null {
 
 /**
  * Get all available zodiac-Sephirot mappings.
- *
- * @returns Array of all correlation mappings
- *
+ * @returns An array of all ZodiacSephirot mappings for the 12 signs.
  * @example
- * const all = getAllZodiacSephiroth();
- * all.length // 12
+ * const all = getAllZodiacSephiroths();
  */
-export function getAllZodiacSephiroth(): ZodiacSephirot[] {
+export function getAllZodiacSephiroths(): ZodiacSephirot[] {
   return Object.values(ZODIAC_SEPHIROT_MAPPINGS);
 }
 

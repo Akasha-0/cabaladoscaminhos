@@ -12,12 +12,12 @@ import {
 describe('element-planet', () => {
   // ─── ELEMENT_PLANET_MAPPINGS: all 4 elements ────────────────────────────────
   describe('ELEMENT_PLANET_MAPPINGS', () => {
-    it('contains all 4 elements', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra'];
+    it('contains all 5 elements', () => {
+      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
       elements.forEach((el) => {
         expect(ELEMENT_PLANET_MAPPINGS[el]).toBeDefined();
       });
-      expect(Object.keys(ELEMENT_PLANET_MAPPINGS)).toHaveLength(4);
+      expect(Object.keys(ELEMENT_PLANET_MAPPINGS)).toHaveLength(5);
     });
 
     it('Fogo maps to Sol with correct properties', () => {
@@ -72,8 +72,21 @@ describe('element-planet', () => {
       expect(terra.sephirah).toBe('Malkuth');
     });
 
+    it('Éter maps to Júpiter with correct properties', () => {
+      const ether = ELEMENT_PLANET_MAPPINGS['Éter'];
+      expect(ether.planeta).toBe('Júpiter');
+      expect(ether.orixa).toBe('Oxalá');
+      expect(ether.qualidades.temperatura).toBe('Quente');
+      expect(ether.qualidades.umidade).toBe('Neutro');
+      expect(ether.qualidades.polaridade).toBe('Yang');
+      expect(ether.dia_sagrado).toBe('Sexta-feira');
+      expect(ether.cores).toContain('Branco');
+      expect(ether.chakra).toBe('7º Coronário');
+      expect(ether.sephirah).toBe('Kether');
+    });
+
     it('each element has spiritual associations', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra'];
+      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
       elements.forEach((el) => {
         const mapping = ELEMENT_PLANET_MAPPINGS[el];
         expect(mapping.associacoes_espirituais.length).toBeGreaterThan(0);
@@ -81,7 +94,7 @@ describe('element-planet', () => {
     });
 
     it('each element has affinities', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra'];
+      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
       elements.forEach((el) => {
         const mapping = ELEMENT_PLANET_MAPPINGS[el];
         expect(mapping.afinidades.length).toBeGreaterThan(0);
@@ -89,7 +102,7 @@ describe('element-planet', () => {
     });
 
     it('each element has práticas espirituais', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra'];
+      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
       elements.forEach((el) => {
         const mapping = ELEMENT_PLANET_MAPPINGS[el];
         expect(mapping.praticas.ebos.length).toBeGreaterThan(0);
@@ -131,6 +144,14 @@ describe('element-planet', () => {
       expect(result!.elemento).toBe('Terra');
       expect(result!.planeta).toBe('Saturno');
       expect(result!.orixa).toBe('Omolu');
+    });
+
+    it('returns correct mapping for Éter', () => {
+      const result = getElementPlanet('Éter');
+      expect(result).not.toBeNull();
+      expect(result!.elemento).toBe('Éter');
+      expect(result!.planeta).toBe('Júpiter');
+      expect(result!.orixa).toBe('Oxalá');
     });
 
     it('handles case-insensitive input', () => {
@@ -175,6 +196,11 @@ describe('element-planet', () => {
       expect(result).toBe('Terra');
     });
 
+    it('returns Éter for Júpiter', () => {
+      const result = getPlanetElement('Júpiter');
+      expect(result).toBe('Éter');
+    });
+
     it('handles case-insensitive input', () => {
       const result = getPlanetElement('sol');
       expect(result).toBe('Fogo');
@@ -185,12 +211,10 @@ describe('element-planet', () => {
       expect(result).toBeNull();
     });
   });
-
-  // ─── getAllElementPlanets: collection function ────────────────────────────
   describe('getAllElementPlanets', () => {
-    it('returns all 4 element-planet mappings', () => {
+    it('returns all 5 element-planet mappings', () => {
       const result = getAllElementPlanets();
-      expect(result).toHaveLength(4);
+      expect(result).toHaveLength(5);
     });
 
     it('returns array with correct structure', () => {
@@ -203,13 +227,14 @@ describe('element-planet', () => {
       });
     });
 
-    it('contains all 4 elements', () => {
+    it('contains all 5 elements', () => {
       const result = getAllElementPlanets();
       const elementos = result.map((m) => m.elemento);
       expect(elementos).toContain('Fogo');
       expect(elementos).toContain('Água');
       expect(elementos).toContain('Ar');
       expect(elementos).toContain('Terra');
+      expect(elementos).toContain('Éter');
     });
 
     it('each mapping has complete data', () => {
@@ -250,6 +275,10 @@ describe('element-planet', () => {
       // Terra (Saturno) → Básico (1º)
       const terra = getElementPlanet('Terra');
       expect(terra!.chakra).toBe('1º Básico');
+
+      // Éter (Júpiter) → Coronário (7º)
+      const ether = getElementPlanet('Éter');
+      expect(ether!.chakra).toBe('7º Coronário');
     });
 
     it('element-sephirah alignment', () => {
@@ -264,6 +293,10 @@ describe('element-planet', () => {
       // Terra → Malkuth (Saturn is the Kingdom)
       const terra = getElementPlanet('Terra');
       expect(terra!.sephirah).toBe('Malkuth');
+
+      // Éter → Kether (Jupiter is the Crown of expansion)
+      const ether = getElementPlanet('Éter');
+      expect(ether!.sephirah).toBe('Kether');
     });
   });
 
@@ -295,8 +328,8 @@ describe('element-planet', () => {
     });
 
     it('exports Elemento type', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra'];
-      expect(elements).toHaveLength(4);
+      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
+      expect(elements).toHaveLength(5);
     });
 
     it('exports Planeta type', () => {
