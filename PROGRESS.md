@@ -16,7 +16,15 @@
 - Minimax API integration for AI responses
 
 
-### Sprint 201 — Insights Frontend (NOW)
+### Sprint 201 — Insights Frontend (COMPLETE)
+
+### Sprint 202 — Layout Components (COMPLETE)
+- AppShell: responsive layout wrapper with CosmicBackground
+- PageHeader: breadcrumb navigation with mystical styling
+- MysticButton: golden CTA with glow, loading state, reduced-motion
+- Landing page hero: twinkle animations, star particles, golden glow
+- SkeletonSpiritual, ErrorState, GlowEffect all available
+
 - `useMapaInsights` hook — fetches from `/api/mapa/insights` with localStorage profile loading
 - `/dashboard/insights` page wired to real API with SkeletonMapa loading states
 - Dynamic insights display: proposito, dons, desafios, preceitos, mensagemSemanal
