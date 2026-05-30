@@ -159,11 +159,10 @@ describe('ChakraFrequency Correlation', () => {
       expect(getChakraSanskrit(7)).toBe('Sahasrara');
     });
 
-    it('should return Sanskrit names for chakra names', () => {
+    it('should return Sanskrit names for Portuguese and English chakra names', () => {
       expect(getChakraSanskrit('1º Básico')).toBe('Muladhara');
       expect(getChakraSanskrit('Heart')).toBe('Anahata');
     });
-
     it('should return null for invalid chakra', () => {
       expect(getChakraSanskrit(0)).toBeNull();
       expect(getChakraSanskrit('invalid')).toBeNull();
