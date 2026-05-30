@@ -1,6 +1,6 @@
 **Última atualização:** 2026-05-30
 **Sprints completados:** 213
-**Tests:** ✅ 1620 passing, 14 skipped (86 test files)
+**Tests:** ✅ 1647 passing, 14 skipped (87 test files)
 
 ### Core Infrastructure
 - Next.js 16.2.6 + React 19 + App Router (Turbopack)
@@ -232,7 +232,7 @@
 |**210** | **API Tests** | /api/mapa tests (11), /api/auth/login tests (14), /api/auth/register tests (12), API coverage expanded |
 |**211** | **Hook Tests** | useNotifications tests (15), hook coverage expanded to 15 hooks |
 |**212** | **Auth Fixes & Tests** | Auth error handling fixes, rateLimit tests (19), middleware coverage expanded |
-|**213** | **CI/CD & QA** | GitHub Actions CI/CD, security scanning workflow, health endpoint, Sprint 213 validation |
+|**213** | **Hook Fixes** | Created /api/astrologia/previsao-mensal route, fixed usePrevisaoMensal tests (15 passing) |
 
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
 2. **Multi-Agent Development**: Agentes paralelos para componentes
@@ -247,6 +247,5 @@
 11. **Accessibility**: Full accessibility settings for all users
 12. **Responsive Design**: Mobile/Tablet/Desktop/Wide preview
 13. **MapaAlma Orchestrator**: Unified spiritual engine per IDEIA.md
-
-**Tests: 1620 passing**
-**212 Sprints Completados** 🎉
+**Tests: 1647 passing**
+**213 Sprints Completados** 🎉
