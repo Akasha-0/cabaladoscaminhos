@@ -33,7 +33,7 @@ describe('GET /api/dashboard/widgets', () => {
   });
 
   it('GET deve retornar objeto com widgets e timestamp', async () => {
-    const req = new NextRequest('http://localhost:3000/api/dashboard/widgets?widget=stats');
+    const req = new NextRequest('http://localhost:3000/api/dashboard/widgets?type=quick-stats');
     const response = await GET(req);
     
     expect(response.status).toBe(200);
@@ -43,9 +43,22 @@ describe('GET /api/dashboard/widgets', () => {
     expect(data).toHaveProperty('timestamp');
   });
 
-  test.each(['stats', 'activity', 'affirmation', 'rituals'])('GET deve aceitar parâmetro widget=%s', async (widget) => {
-    const req = new NextRequest(`http://localhost:3000/api/dashboard/widgets?widget=${widget}`);
+  it('GET deve aceitar parâmetro type opcional', async () => {
+    const validTypes = ['quick-stats', 'recent-activity', 'daily-affirmation', 'upcoming-rituals'];
+    
+    for (const type of validTypes) {
+      const req = new NextRequest(`http://localhost:3000/api/dashboard/widgets?type=${type}`);
+      const response = await GET(req);
+      expect(response.status).toBe(200);
+    }
+  });
+
+  it('GET deve retornar erro 404 para widget type inválido', async () => {
+    const req = new NextRequest('http://localhost:3000/api/dashboard/widgets?type=invalid');
     const response = await GET(req);
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(404);
+    
+    const data = await response.json();
+    expect(data.error).toContain('Widget type not found');
   });
 });
