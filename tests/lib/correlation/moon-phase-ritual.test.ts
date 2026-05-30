@@ -124,11 +124,13 @@ describe('moon-phase-ritual', () => {
       });
     });
 
-    it('each ritual has janela de operação', () => {
+    it('each ritual has janela de operação with valid time patterns', () => {
       const rituals = getAllMoonPhaseRituals();
       rituals.forEach(ritual => {
         expect(ritual.janela_operacao).toBeDefined();
         expect(ritual.janela_operacao.length).toBeGreaterThan(0);
+        // Verify it contains at least one valid time pattern (HH:MM format)
+        expect(ritual.janela_operacao).toMatch(/\d{2}:\d{2}/);
       });
     });
   });
