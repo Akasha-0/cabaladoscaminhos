@@ -229,8 +229,18 @@ export function getDayEnergy(dia: number): DayEnergy {
       `getDayEnergy: dia must be between 0 (Monday) and 6 (Sunday), got ${dia}`
     );
   }
-  // Defensive copy to prevent mutation of the frozen source data
-  return { ...DAY_ENERGY_DATA[dia] };
+  const src = DAY_ENERGY_DATA[dia];
+  // Deep defensive copy — prevents mutation of both the object and all nested arrays
+  return {
+    ...src,
+    chakras: [...src.chakras],
+    planetas: [...src.planetas],
+    orixas: [...src.orixas],
+    sephirot: [...src.sephirot],
+    tarotArcanos: [...src.tarotArcanos],
+    numeros: { ...src.numeros, cabalistic: [...src.numeros.cabalistic] },
+    fasesLua: [...src.fasesLua],
+  };
 }
 
 /**
