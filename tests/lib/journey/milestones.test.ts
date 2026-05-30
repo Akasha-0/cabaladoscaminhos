@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { getMilestones, getMilestonesByCategory, markMilestone, getMilestoneProgress } from '../../../src/lib/journey/milestones';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { getMilestones, getMilestonesByCategory, getMilestoneProgress } from '../../../src/lib/journey/milestones';
 
 // Mock localStorage
 const localStorageMock = (() => {

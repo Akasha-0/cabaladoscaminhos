@@ -216,7 +216,7 @@ describe('odu-sephirot', () => {
     it('returns true for valid Odu names', () => {
       expect(hasOduSephirah('Okaran')).toBe(true);
       expect(hasOduSephirah('Irosun')).toBe(true);
-      expect(hasOduSephirah('Oxé')).toBe(true);
+      expect(hasOduSephirah('Oxe')).toBe(true);
       expect(hasOduSephirah('Alafia')).toBe(true);
     });
 
