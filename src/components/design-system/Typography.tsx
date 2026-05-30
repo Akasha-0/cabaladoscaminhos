@@ -446,7 +446,6 @@ Label.displayName = "Label";
 // =============================================================================
 
 export { Heading, headingVariants };
-export type { BodyTextProps };
 
 export { BodyText, bodyTextVariants };
 

@@ -108,7 +108,7 @@ export function CorrelacaoInsight({ convergencias, className = '' }: CorrelacaoI
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-2 mb-1">
           <Sparkles className="w-5 h-5 text-spiritual-accent" />
-          <Heading variant="card" size="md">
+          <Heading variant="title" size="md">
             Convergência Espiritual
           </Heading>
         </div>

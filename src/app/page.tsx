@@ -208,7 +208,7 @@ export default function LandingPage() {
               </p>
 
               {/* Mystic Divider */}
-              <MysticDivider variant="gold" className="mb-10" />
+              <MysticDivider variant="bold" className="mb-10" />
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -248,7 +248,7 @@ export default function LandingPage() {
         <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="container mx-auto">
             <div className="text-center mb-16">
-              <Heading variant="section" glow="amber" className="mb-4">
+              <Heading variant="section" glow="gold" className="mb-4">
                 Ferramentas de{' '}
                 <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
                   Transformação
@@ -307,7 +307,7 @@ export default function LandingPage() {
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="container mx-auto">
             <div className="text-center mb-16">
-              <Heading variant="section" glow="amber" className="mb-4">
+              <Heading variant="section" glow="gold" className="mb-4">
                 Como{' '}
                 <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
                   Funciona

@@ -35,8 +35,8 @@ export type NumerologyResults = {
 };
 
 export type OduResults = {
-  regente: Odu;
-  secundario?: Odu | null;
+  regente: Odu | { numero: number; Caminho: number; nome: string; significado: string };
+  secundario?: Odu | { numero: number; Caminho: number; nome: string; significado: string } | null;
   orixas: string[];
   quizilas: string[];
   preceitos: string[];

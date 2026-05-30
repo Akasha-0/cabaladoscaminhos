@@ -20,6 +20,8 @@ const STEP_TITLES = [
   'Confirmar',
 ];
 
+const TOTAL_STEPS = STEP_TITLES.length;
+
 const BRAZILIAN_STATES = [
   { value: 'AC', label: 'Acre' },
   { value: 'AL', label: 'Alagoas' },

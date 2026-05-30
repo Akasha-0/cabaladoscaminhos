@@ -82,6 +82,7 @@ export const opes: Ope[] = [
 // Merindilogun Odu configuration
 export interface Odu {
   numero: number;
+  Caminho: number;
   nome: string;
   opeCima: Ope;
   opeBaixo: Ope;

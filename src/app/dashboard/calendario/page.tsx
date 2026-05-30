@@ -5,9 +5,10 @@ import { CalendarioEnergetico } from '@/components/mapa/CalendarioEnergetico';
 import type { OduResults } from '@/lib/engines/types/mapa-alma';
 
 // Sample OduResults for demo purposes
-const sampleOdu: OduResults = {
-  regente: { nome: 'Ogundá', Caminho: 1, significado: 'Caminho da verdade e da determinação' },
-  secundario: { nome: 'Ejioko', Caminho: 5, significado: 'Caminho da dualidade e escolha' },
+// Note: these are simplified objects matching the { numero, Caminho, nome, significado } shape
+const sampleOdu = {
+  regente: { numero: 3, Caminho: 1, nome: 'Ogundá', significado: 'Caminho da verdade e da determinação' } as OduResults['regente'],
+  secundario: { numero: 5, Caminho: 5, nome: 'Ejioko', significado: 'Caminho da dualidade e escolha' } as OduResults['regente'],
   orixas: ['Ogum', 'Oxossi'],
   quizilas: ['Evitar conflitos desnecessários'],
   preceitos: ['Respeitar a verdade', 'Manter a determinação'],
