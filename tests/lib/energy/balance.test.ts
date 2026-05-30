@@ -227,6 +227,7 @@ describe('EnergyTracker', () => {
       const avg = tracker.getAverage(2);
       
       expect(avg.physical).toBe(50);
+    });
     it('ignores undefined values in average calculation', () => {
       tracker.addReading({ physical: 50 });
       tracker.addReading({ physical: 100, emotional: 50 });
@@ -235,7 +236,6 @@ describe('EnergyTracker', () => {
       expect(avg.physical).toBe(75); // (50 + 100) / 2
       expect(avg.emotional).toBe(25); // (0 + 50) / 2
       expect(avg.mental).toBe(0);
-    });
     });
   });
 });
