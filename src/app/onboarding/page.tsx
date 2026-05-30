@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +8,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Progress, ProgressIndicator } from '@/components/ui/progress';
 import { Sparkles, User, Calendar, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/components/providers/SupabaseProvider';
-const TOTAL_STEPS = 4;
+import { CosmicBackground } from '@/components/design-system/CosmicBackground';
+import { Heading } from '@/components/design-system/Typography';
+import { MysticDivider } from '@/components/shared/MysticDivider';
+
+const STEP_TITLES = [
+  'Iniciar Jornada',
+  'Seu Nome',
+  'Data de Nascimento',
+  'Hora de Nascimento',
+  'Confirmar',
+];
 
 const BRAZILIAN_STATES = [
   { value: 'AC', label: 'Acre' },
@@ -427,93 +436,84 @@ export default function OnboardingPage() {
     }
   };
 
-  const stepLabels = ['Bem-vindo', 'Informações', 'Nascimento', 'Confirmar'];
-
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl space-y-6">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-foreground">
-            Cabala dos Caminhos
-          </h1>
-          <p className="text-muted-foreground">
-            {stepLabels[currentStep]}
-          </p>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="space-y-2">
-          <Progress value={progressValue} className="h-2">
-            <ProgressIndicator
-              className="bg-amber-500"
-              style={{ width: `${progressValue}%` }}
-            />
-          </Progress>
-          <div className="flex justify-between text-xs text-muted-foreground">
-            {stepLabels.map((label, index) => (
-              <span
-                key={index}
-                className={index <= currentStep ? 'text-amber-500' : ''}
-              >
-                {label}
-              </span>
+    <CosmicBackground variant="default">
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-lg space-y-8">
+          {/* Header */}
+          <div className="text-center space-y-2">
+            <Heading variant="mystical" size="lg" className="text-spiritual-gold">
+              Cabala dos Caminhos
+            </Heading>
+            <p className="text-muted-foreground">
+              {STEP_TITLES[currentStep]}
+            </p>
+          </div>
+          {/* Mystical Step Indicator */}
+          <div className="flex items-center justify-center gap-2 mb-8">
+            {[0, 1, 2, 3].map((step) => (
+              <div key={step} className="flex items-center">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
+                  ${step === currentStep ? 'bg-spiritual-gold text-slate-900 animate-pulse-soft' :
+                    step < currentStep ? 'bg-spiritual-gold/30 text-spiritual-gold' :
+                    'bg-slate-800 text-slate-500'}`}>
+                  {step < currentStep ? '✦' : step + 1}
+                </div>
+                {step < 3 && (
+                  <div className={`w-8 h-0.5 ${step < currentStep ? 'bg-spiritual-gold/50' : 'bg-slate-800'}`} />
+                )}
+              </div>
             ))}
           </div>
-        </div>
-
-        {/* Card */}
-        <Card className="bg-slate-800/50 border-slate-700 shadow-xl">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-foreground text-center">
-              {currentStep === 0 && 'Iniciar Jornada'}
-              {currentStep === 1 && 'Suas Informações'}
-              {currentStep === 2 && 'Dados de Nascimento'}
-              {currentStep === 3 && 'Revisar & Confirmar'}
-            </CardTitle>
-            <CardDescription className="text-center text-slate-400">
-              Passo {currentStep + 1} de {TOTAL_STEPS}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>{renderCurrentStep()}</CardContent>
-        </Card>
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between gap-4">
-          {currentStep > 0 ? (
-            <Button
-              variant="outline"
-              onClick={handleBack}
-              className="border-slate-700 bg-slate-800/50 text-foreground hover:bg-slate-700"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar
-            </Button>
-          ) : (
-            <div />
-          )}
-
-          {currentStep < TOTAL_STEPS - 1 ? (
-            <Button
-              onClick={handleNext}
-              disabled={!canProceed()}
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-            >
-              Continuar
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          ) : (
-            <Button
-              onClick={handleSubmit}
-              disabled={!canProceed() || isSubmitting}
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-            >
-              {isSubmitting ? 'Gerando...' : 'Gerar Mapa da Alma'}
-              <Sparkles className="h-4 w-4 ml-2" />
-            </Button>
-          )}
+          {/* Card */}
+          <div className="card-spiritual max-w-lg mx-auto p-8 rounded-2xl">
+            {/* Step Title */}
+            <Heading variant="mystical" size="md" className="mb-2 text-center">
+              {STEP_TITLES[currentStep]}
+            </Heading>
+            {/* Mystic Divider */}
+            <MysticDivider symbol="star" variant="subtle" className="my-4 max-w-xs mx-auto" />
+            {/* Step Content with Animation */}
+            <div className="animate-fade-in-up">
+              {renderCurrentStep()}
+            </div>
+          </div>
+          {/* Navigation Buttons */}
+          <div className="flex justify-between gap-4">
+            {currentStep > 0 ? (
+              <Button
+                variant="outline"
+                onClick={handleBack}
+                className="border-slate-700 bg-slate-800/50 text-foreground hover:bg-slate-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar
+              </Button>
+            ) : (
+              <div />
+            )}
+            {currentStep < TOTAL_STEPS - 1 ? (
+              <Button
+                onClick={handleNext}
+                disabled={!canProceed()}
+                className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
+              >
+                Continuar
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            ) : (
+              <Button
+                onClick={handleSubmit}
+                disabled={!canProceed() || isSubmitting}
+                className="bg-spiritual-gold hover:bg-spiritual-gold/90 text-slate-900 font-semibold shadow-lg shadow-amber-500/25"
+              >
+                <Sparkles className="h-4 w-4 mr-2 group-hover:animate-pulse-soft" />
+                {isSubmitting ? 'Gerando...' : 'Gerar Mapa Completo ✦'}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </CosmicBackground>
   );
 }

@@ -339,6 +339,50 @@
 .stagger-children > *:nth-child(8) { animation-delay: 525ms; }
 .stagger-children > *:nth-child(9) { animation-delay: 600ms; }
 .stagger-children > *:nth-child(10) { animation-delay: 675ms; }
+/* === GLOW EFFECT STYLES === */
+.glow-wrapper {
+  position: relative;
+}
+.glow-wrapper .glow-orb {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+}
+.glow-wrapper.glow-gold .glow-orb {
+  box-shadow: 0 0 20px rgba(201, 162, 39, 0.4), 0 0 40px rgba(201, 162, 39, 0.2);
+}
+.glow-wrapper.glow-purple .glow-orb {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+}
+.glow-wrapper.glow-aurora .glow-orb {
+  box-shadow: 0 0 20px rgba(123, 47, 190, 0.3), 0 0 40px rgba(59, 130, 246, 0.2), 0 0 60px rgba(13, 148, 136, 0.1);
+}
+.glow-wrapper.glow-white .glow-orb {
+  box-shadow: 0 0 20px rgba(245, 240, 232, 0.3), 0 0 40px rgba(245, 240, 232, 0.15);
+}
+.glow-wrapper.glow-intensity-low .glow-orb {
+  transform: scale(1);
+}
+.glow-wrapper.glow-intensity-medium .glow-orb {
+  transform: scale(1.1);
+}
+.glow-wrapper.glow-intensity-high .glow-orb {
+  transform: scale(1.2);
+}
+.glow-wrapper.glow-animated .glow-orb {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-wrapper .glow-orb {
+    animation: none !important;
+  }
+}
+@keyframes glowPulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.2); }
+}
 
 /* === DASHBOARD STYLES === */
 
