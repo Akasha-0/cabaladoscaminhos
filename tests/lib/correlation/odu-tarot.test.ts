@@ -242,11 +242,8 @@ describe('Odu-Tarot Correlation', () => {
   // ─── getAllOduTarots ────────────────────────────────────────────────────────
 
   describe('getAllOduTarots', () => {
-    it('should contain key Odu names', () => {
-      const result = getAllOduTarotNames();
-      expect(result).toContain('Okaran');
-      expect(result).toContain('Ejiokô');
-    });
+    it('should return all 16 mappings', () => {
+      const result = getAllOduTarots();
       expect(result).toHaveLength(16);
     });
 
@@ -315,7 +312,7 @@ describe('Odu-Tarot Correlation', () => {
     it('should contain key Odu names', () => {
       const result = getAllOduTarotNames();
       expect(result).toContain('Okaran');
-      expect(result).toContain('Ogbe'); // Not mapped, so no
+      expect(result).toContain('Obará'); // Odu 6 with O Sol
     });
 
     it('should contain all 16 Odu names from mappings', () => {

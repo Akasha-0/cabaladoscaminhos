@@ -11,6 +11,11 @@ import {
   type Elemento,
   type Chakra,
 } from '@/lib/correlation/element-chakra';
+import {
+  getElementChakra,
+  getChakraElement,
+  getAllElementChakras,
+} from '@/lib/correlation/element-chakra';
 
 describe('element-chakra', () => {
   // ─── ELEMENT_CHAKRA_MAPPINGS: all 5 elements ──────────────────────────────
