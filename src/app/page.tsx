@@ -179,64 +179,89 @@ export default function LandingPage() {
         </header>
 
         {/* Hero Section */}
-        <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <section className="relative min-h-screen pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden flex items-center">
+          {/* Decorative star particles */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+            <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-amber-400 rounded-full animate-twinkle opacity-60" />
+            <div className="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-amber-300 rounded-full animate-twinkle opacity-40" style={{ animationDelay: '0.5s' }} />
+            <div className="absolute top-1/2 left-1/6 w-1 h-1 bg-yellow-300 rounded-full animate-twinkle opacity-50" style={{ animationDelay: '1s' }} />
+            <div className="absolute top-2/3 right-1/3 w-1 h-1 bg-amber-400 rounded-full animate-twinkle opacity-70" style={{ animationDelay: '1.5s' }} />
+            <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-yellow-200 rounded-full animate-twinkle opacity-30" style={{ animationDelay: '0.3s' }} />
+            <div className="absolute top-1/4 right-1/6 w-1 h-1 bg-amber-300 rounded-full animate-twinkle opacity-50" style={{ animationDelay: '0.8s' }} />
+            <div className="absolute bottom-1/3 right-1/4 w-1 h-1 bg-amber-400 rounded-full animate-twinkle opacity-60" style={{ animationDelay: '1.2s' }} />
+          </div>
+          {/* Golden glow orbs */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl animate-pulse-soft" aria-hidden="true" />
+          <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-64 h-64 bg-amber-400/5 rounded-full blur-2xl animate-pulse-soft" style={{ animationDelay: '1s' }} aria-hidden="true" />
           <div className="container mx-auto relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-8">
-                <Sparkles className="w-4 h-4 text-amber-400" />
+              {/* Badge with golden glow */}
+              <div className="animate-fade-in-up opacity-0 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 mb-8 shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+                <Sparkles className="w-4 h-4 text-amber-400 animate-pulse-soft" />
                 <span className="text-amber-300 text-sm font-raleway">
                   Tecnologia Sagrada de Alinhamento
                 </span>
               </div>
-
-              {/* Title with Heading component */}
+              {/* Title with enhanced Heading component */}
               <Heading 
                 variant="display" 
                 glow="gold" 
-                className="mb-6"
+                className="mb-6 animate-fade-in-up opacity-0"
+                style={{ animationDelay: '100ms' }}
               >
                 Desperte seu{' '}
-                <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-amber-300 via-amber-400 via-50% to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(212,175,55,0.5)]">
                   Mapa da Alma
                 </span>
               </Heading>
-
-              {/* Subtitle */}
-              <p className="text-xl sm:text-2xl text-slate-300 mb-6 max-w-2xl mx-auto font-raleway">
+              {/* Subtitle with fade-in animation */}
+              <p 
+                className="text-xl sm:text-2xl text-slate-300 mb-6 max-w-2xl mx-auto font-raleway animate-fade-in-up opacity-0"
+                style={{ animationDelay: '200ms' }}
+              >
                 A tecnologia sagrada de alinhamento entre você e o cosmos. Descubra seu caminho de vida através da Cabala, Ifá e astrologia.
               </p>
-
               {/* Mystic Divider */}
-              <MysticDivider variant="bold" className="mb-10" />
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="animate-fade-in-up opacity-0" style={{ animationDelay: '300ms' }}>
+                <MysticDivider variant="bold" className="mb-10" />
+              </div>
+              {/* CTA Buttons with enhanced golden styling */}
+              <div 
+                className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up opacity-0"
+                style={{ animationDelay: '400ms' }}
+              >
                 <Link href="/onboarding">
-                  <Button variant="golden" size="lg">
-                    <Sparkles className="w-5 h-5 mr-2" />
+                  <Button 
+                    variant="golden" 
+                    size="lg"
+                    className="text-lg px-8 h-14 shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_40px_rgba(212,175,55,0.6)] transition-all duration-300 transform hover:scale-105"
+                  >
+                    <Sparkles className="w-5 h-5 mr-2 animate-pulse-soft" />
                     Começar Agora
                   </Button>
                 </Link>
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10 hover:text-amber-300 text-lg px-8 h-12"
+                  className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10 hover:text-amber-300 text-lg px-8 h-14 transition-all duration-300 transform hover:scale-105 animate-fade-in-up opacity-0"
+                  style={{ animationDelay: '500ms' }}
                   onClick={scrollToFeatures}
                 >
                   Conhecer
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </div>
-
-              {/* Social Proof */}
-              <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-slate-400">
+              {/* Social Proof with staggered animation */}
+              <div 
+                className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-slate-400 animate-fade-in-up opacity-0"
+                style={{ animationDelay: '600ms' }}
+              >
                 <div className="flex items-center gap-2">
-                  <Heart className="w-5 h-5 text-rose-400" />
+                  <Heart className="w-5 h-5 text-rose-400 animate-pulse-soft" />
                   <span className="font-raleway">+2.000 almas despertas</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 text-amber-400" />
+                  <Star className="w-5 h-5 text-amber-400 animate-pulse-soft" />
                   <span className="font-raleway">4.9/5 avaliações</span>
                 </div>
               </div>
