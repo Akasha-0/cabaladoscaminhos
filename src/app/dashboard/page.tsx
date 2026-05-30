@@ -17,6 +17,8 @@ import { EnergyFlowWidget } from '@/components/dashboard/EnergyFlowWidget';
 import { AIAgentsWidget } from '@/components/dashboard/AIAgentsWidget';
 import { JourneyTracker } from '@/components/dashboard/JourneyTracker';
 import { RitualPlanner } from '@/components/dashboard/RitualPlanner';
+import { MeditationPlayer } from '@/components/dashboard/MeditationPlayer';
+import { AchievementsWidget } from '@/components/dashboard/AchievementsWidget';
 
 // Dynamic imports for heavy components
 const AIOracleChat = dynamic(
@@ -165,11 +167,19 @@ export default function Dashboard() {
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <AIAgentsWidget userData={userData} />
+          <AchievementsWidget userData={userData} />
+        </div>
+      </DashboardSection>
+
+      {/* Meditation & Journey Section */}
+      <DashboardSection title="Práticas e Jornada">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <MeditationPlayer userData={userData} />
           <JourneyTracker userData={userData} />
         </div>
       </DashboardSection>
 
-      {/* Balance & Progress Section */}
+      {/* Balance & Flow Section */}
       <DashboardSection title="Fluxo e Crescimento">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           <EnergyFlowWidget />
