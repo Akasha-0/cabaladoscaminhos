@@ -26,17 +26,13 @@ const DEFAULT_OPTIONS: DataSyncOptions = {
   autoSync: false,
   syncInterval: 60000,
 };
-export function useDataSync(options: DataSyncOptions = {}) {
-  // Use useMemo to stabilize opts object
-  const opts = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
-  const lastSyncRef = useRef<string | null>(null);
+// Helper to merge local and cloud values
 function mergeValues(local: unknown, cloud: unknown): unknown {
   if (typeof local !== 'object' || local === null || typeof cloud !== 'object' || cloud === null) {
     return cloud;
   }
   const merged: Record<string, unknown> = { ...(cloud as Record<string, unknown>) };
   const localObj = local as Record<string, unknown>;
-
   for (const key of Object.keys(localObj)) {
     if (!(key in merged)) {
       merged[key] = localObj[key];
@@ -46,10 +42,8 @@ function mergeValues(local: unknown, cloud: unknown): unknown {
       merged[key] = localObj[key];
     }
   }
-
   return merged;
 }
-
 export function useDataSync(options: DataSyncOptions = {}) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
   const lastSyncRef = useRef<string | null>(null);

@@ -58,6 +58,18 @@ export interface ChakraDayMapping {
  * Complete mapping of chakras to days of the week.
  * Indexed by dayIndex (0=Monday through 6=Sunday) based on day-energy.ts data.
  */
+/**
+ * Day name to index mapping (0=Monday through 6=Sunday).
+ */
+const DAY_NAME_TO_INDEX: Record<DayNamePt, number> = {
+  'Segunda-feira': 0,
+  'Terça-feira': 1,
+  'Quarta-feira': 2,
+  'Quinta-feira': 3,
+  'Sexta-feira': 4,
+  'Sábado': 5,
+  'Domingo': 6,
+};
 export const CHAKRA_DAY_MAPPINGS: Record<string, ChakraDayMapping[]> = {
   // ─── Domingo (Sunday) ──────────────────────────────────────────────────────
   '6': [
@@ -270,12 +282,15 @@ export function getChakraDay(chakra: string): ChakraDayMapping[] {
 /**
  * Returns all chakra mappings for a given day (0=Monday through 6=Sunday).
  */
-export function getDayChakra(diaIndex: number): ChakraDayMapping[] {
-  const normalizedIndex = normalizeDayIndex(diaIndex);
+/**
+ * Returns all chakra mappings for a given day (0-6 or day name).
+ */
+export function getDayChakra(dia: number | string): ChakraDayMapping[] {
+  const normalizedIndex = normalizeDayInput(dia);
+  if (normalizedIndex < 0) return [];
   const key = String(normalizedIndex);
   return CHAKRA_DAY_MAPPINGS[key] ?? [];
 }
-
 /**
  * Returns all chakra-day mappings.
  */
@@ -288,10 +303,11 @@ export function getAllChakraDays(): ChakraDayMapping[] {
 }
 
 /**
- * Returns the primary chakra for a given day.
+ * Returns the primary chakra for a given day (0-6 or day name).
  */
-export function getPrimaryChakraForDay(diaIndex: number): ChakraDayMapping | null {
-  const normalizedIndex = normalizeDayIndex(diaIndex);
+export function getPrimaryChakraForDay(dia: number | string): ChakraDayMapping | null {
+  const normalizedIndex = normalizeDayInput(dia);
+  if (normalizedIndex < 0) return null;
   const key = String(normalizedIndex);
   const mappings = CHAKRA_DAY_MAPPINGS[key];
   return mappings?.[0] ?? null;
@@ -345,5 +361,14 @@ function normalizeChakraName(chakra: string): string {
  * Normalizes day index to valid range (0-6).
  */
 function normalizeDayIndex(dia: number): number {
+  return ((dia % 7) + 7) % 7; // Handle negative numbers
+}
+/**
+ * Normalizes day input (string or number) to valid index (0-6).
+ */
+function normalizeDayInput(dia: number | string): number {
+  if (typeof dia === 'string') {
+    return DAY_NAME_TO_INDEX[dia as DayNamePt] ?? -1;
+  }
   return ((dia % 7) + 7) % 7; // Handle negative numbers
 }

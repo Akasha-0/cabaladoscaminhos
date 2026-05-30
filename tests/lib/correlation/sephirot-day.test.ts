@@ -460,4 +460,5 @@ describe('sephirot-day', () => {
       expect(mondayMappings.length).toBeGreaterThanOrEqual(2);
     });
   });
+  });
 });

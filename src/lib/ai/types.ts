@@ -11,6 +11,7 @@ export interface UserSpiritualData {
   sign: string;
   houses: Record<string, number>;
   rashi: string;
+  planetPositions?: Record<string, number>;
 }
 
 /**

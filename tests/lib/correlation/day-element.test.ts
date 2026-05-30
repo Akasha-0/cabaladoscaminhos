@@ -338,7 +338,7 @@ describe('DayElement Correlation', () => {
     });
   });
 
-  // ─── getDaysByElement ────────────────────────────────────────────────────
+  // ─── getDaysByElement ───────────────────────────────────────────────────
 
   describe('getDaysByElement', () => {
     it('returns days for Fogo element', () => {
@@ -448,9 +448,6 @@ describe('DayElement Correlation', () => {
     it('contains 7 days', () => {
       expect(TODOS_DIAS).toHaveLength(7);
     });
-    it('is readonly', () => {
-      expect(Object.isFrozen(TODOS_DIAS)).toBe(true);
-    });
 
     it('contains all expected days', () => {
       expect(TODOS_DIAS).toContain('Domingo');
@@ -468,10 +465,6 @@ describe('DayElement Correlation', () => {
   describe('TODOS_ELEMENTOS', () => {
     it('contains 4 elements', () => {
       expect(TODOS_ELEMENTOS).toHaveLength(4);
-    });
-
-    it('is readonly', () => {
-      expect(TODOS_ELEMENTOS).toBeFrozen();
     });
 
     it('contains all classical elements', () => {

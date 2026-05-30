@@ -604,7 +604,6 @@ export class PatternRecognizer {
     };
     return symbols[archetypeId] || [];
   }
-  }
 
   private getIfaPractices(archetypeId: string): string[] {
     const practices: Record<string, string[]> = {
@@ -916,7 +915,7 @@ export class PatternRecognizer {
     const archetypeIds = patterns.map((p) => p.id);
 
     for (let i = 0; i < archetypeIds.length; i++) {
-      for (let j = i + 1; j < archetypeIds.length; i++) {
+      for (let j = i + 1; j < archetypeIds.length; j++) {
         const conflicts = archetypeConflicts[archetypeIds[i]] || [];
         if (conflicts.includes(archetypeIds[j])) {
           harmonyScore -= 15;

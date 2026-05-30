@@ -1,3 +1,4 @@
+'use client';
 
 // Sacred geometry corner decoration
 const SacredCornerSVG = ({ className }: { className?: string }) => (
@@ -9,8 +10,6 @@ const SacredCornerSVG = ({ className }: { className?: string }) => (
     <circle cx="2" cy="20" r="1" fill="currentColor" opacity="0.3" />
   </svg>
 );
-
-'use client';
 
 import React, { useState, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
