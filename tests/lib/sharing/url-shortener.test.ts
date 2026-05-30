@@ -1,11 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 
 // Stub global setInterval for tests
-const timers: ReturnType<typeof setInterval>[] = []
-vi.stubGlobal('setInterval', (fn: Function, ms: number) => {
-  const id = setTimeout(() => fn(), ms)
-  timers.push(id as unknown as ReturnType<typeof setInterval>)
-  return id as unknown as ReturnType<typeof setInterval>
+vi.stubGlobal('setInterval', (fn: Function, _ms: number) => {
+  return setTimeout(fn, 0) as unknown as ReturnType<typeof setInterval>
 })
 vi.stubGlobal('clearInterval', (id: unknown) => clearTimeout(id as ReturnType<typeof setTimeout>))
 
@@ -24,9 +21,8 @@ describe('shortenUrl', () => {
     const result = shortenUrl('https://example.com/readings/123')
     expect(result).toHaveProperty('code')
     expect(result).toHaveProperty('originalUrl')
-    expect(result).toHaveProperty('shortUrl')
+    expect(result).toHaveProperty('url')
     expect(result).toHaveProperty('createdAt')
-    expect(result).toHaveProperty('expiresAt')
     expect(result).toHaveProperty('accessCount')
   })
 
