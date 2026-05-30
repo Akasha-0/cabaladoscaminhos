@@ -66,7 +66,7 @@ export const FREQUENCY_ELEMENT_MAP: Record<number, FrequencyElementMapping> = {
       fisico: 'Fortalece ossos, sistema imunológico e órgãos vitais',
       emocional: 'Dissolve medos de sobrevivência e sensação de insegurança',
       mental_espiritual: 'Promove clareza mental, foco e determinação',
-      pratica_recomendada: 'Meditação em grupo, trabalho comancestrais',
+      pratica_recomendada: 'Meditação em grupo, trabalho ancestral',
     },
     chakra: '1º Básico (Muladhara)',
     orixa: 'Oxalufã / Obaluayê',
@@ -106,7 +106,7 @@ export const FREQUENCY_ELEMENT_MAP: Record<number, FrequencyElementMapping> = {
       fisico: 'Estimula metabolismo, sistema nervoso e força vital',
       emocional: 'Transforma negatividade em compaixão e amor incondicional',
       mental_espiritual: 'Ativa criatividade, intuição e manifestação',
-      pratica_recomendada: 'Trabalho com intent, cura energética avançada',
+      pratica_recomendada: 'Trabalho com intenção, cura energética avançada',
     },
     chakra: '3º Plexo Solar (Manipura)',
     orixa: 'Xangô / Logun Ede',
@@ -144,7 +144,7 @@ export const FREQUENCY_ELEMENT_MAP: Record<number, FrequencyElementMapping> = {
     },
     aplicacao_healing: {
       fisico: 'Limpa garganta, ouvidos e vias respiratórias',
-      emocional: 'Liberta medo de falar verdades e expressing authentically',
+      emocional: 'Liberta medo de falar verdades e se expressar autenticamente',
       mental_espiritual: 'Desperta sabedoria interior e expressão criativa',
       pratica_recomendada: 'Cantos, mantras, trabalho com voz e som',
     },
@@ -285,7 +285,15 @@ export function getChakraByFrequency(frequencia: number): string | null {
  * @returns Array of unique element names
  */
 export function getAllElements(): Elemento[] {
-  return [...new Set(Object.values(FREQUENCY_ELEMENT_MAP).map((m) => m.elemento))];
+  const elements: Elemento[] = [];
+  const seen = new Set<string>();
+  for (const mapping of Object.values(FREQUENCY_ELEMENT_MAP)) {
+    if (!seen.has(mapping.elemento)) {
+      seen.add(mapping.elemento);
+      elements.push(mapping.elemento);
+    }
+  }
+  return elements;
 }
 
 /**
