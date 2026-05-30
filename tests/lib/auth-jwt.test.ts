@@ -56,6 +56,9 @@ function createJwtMock(overrides?: {
   };
 }
 
+// Mock jsonwebtoken at top level
+vi.mock("jsonwebtoken", () => createJwtMock());
+
 function createMockRequest(cookieHeader?: string): NextRequest {
   const headers = new Map<string, string>();
   if (cookieHeader) {
@@ -69,11 +72,8 @@ function createMockRequest(cookieHeader?: string): NextRequest {
   } as unknown as NextRequest;
 }
 
-describe('JWT Token Functions', () => {
-  // Mock jsonwebtoken for these tests
-  vi.mock('jsonwebtoken', () => createJwtMock());
-
-  describe('signToken', () => {
+describe("JWT Token Functions", () => {
+  describe("signToken", () => {
     it('should sign token with valid payload', async () => {
       const payload = { userId: 'user123', email: 'test@example.com' };
       const token = await signToken(payload);
