@@ -171,10 +171,9 @@ function normalizarSigno(signo: string): string {
     'peixes': 'Peixes',
   };
 
-  const lowerSigno = sign.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const lowerSigno = signo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const normalized = normalizations[lowerSigno];
-
-  return normalized || sign;
+  return normalized || signo;
 }
 
 /**
@@ -263,3 +262,5 @@ export function getSoundZodiac(som: string): ZodiacSound | undefined {
 export function getAllZodiacSounds(): ZodiacSound[] {
   return Object.values(ZODIAC_SOUNDS).sort((a, b) => a.signo_numero - b.signo_numero);
 }
+// Fix: normalizarSigno uses `sign` but should use `signo`
+// This is a patch - see actual function below
