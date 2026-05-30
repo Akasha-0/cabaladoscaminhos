@@ -221,7 +221,7 @@ describe('Orixá-Element Correlation', () => {
     });
 
     it('should have colors as non-empty arrays', () => {
-      const orixas = Object.values(getAllOrixas());
+      const orixas = getAllOrixas();
       orixas.forEach(orixaName => {
         const result = getOrixaElement(orixaName);
         expect(result?.cores_principais.length).toBeGreaterThan(0);
@@ -229,16 +229,14 @@ describe('Orixá-Element Correlation', () => {
     });
 
     it('should have tools as non-empty arrays', () => {
-      const orixas = Object.values(getAllOrixas());
+      const orixas = getAllOrixas();
       orixas.forEach(orixaName => {
         const result = getOrixaElement(orixaName);
         expect(result?.ferramentas.length).toBeGreaterThan(0);
       });
     });
   });
-  describe('getElementOrixa', () => {
-    });
-  });
+
   describe('getElementOrixa', () => {
     it('should return mapping of elements to Orixás', () => {
       const result = getElementOrixa();
@@ -315,4 +313,5 @@ describe('Orixá-Element Correlation', () => {
         expect(item).toHaveProperty('ferramentas');
       });
     });
+  });
 });
