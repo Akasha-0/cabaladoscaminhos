@@ -156,32 +156,33 @@ describe('useMapaInsights', () => {
   it('deve permitir refetch chamando fetchInsights novamente', async () => {
     // Mock valid profile in localStorage
     vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => JSON.stringify(mockProfile));
-
     const insightsData1 = mockInsightData({ titulo: 'Primeira Chamada' });
     const insightsData2 = mockInsightData({ titulo: 'Segunda Chamada' });
-
-    (global.fetch as ReturnType<typeof vi.fn>)
-      .mockResolvedValueOnce(mockFetch(insightsData1))
-      .mockResolvedValueOnce(mockFetch(insightsData2));
-
+    // Mutable index so mock cycles through responses on each call
+    let responseIndex = 0;
+    const responses = [insightsData1, insightsData2];
+    const fetchMock = global.fetch as ReturnType<typeof vi.fn>;
+    fetchMock.mockImplementation(async () => {
+      const response = responses[responseIndex];
+      responseIndex = 1; // Next call returns the second response
+      return new Response(JSON.stringify(response), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    });
     const { result } = renderHook(() => useMapaInsights());
-
     // Wait for initial fetch
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
     });
-
     expect(result.current.insight?.titulo).toBe('Primeira Chamada');
-
     // Call refetch
-    result.current.refetch();
-
+    await result.current.refetch();
     // Wait for refetch to complete
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
+      expect(result.current.insight?.titulo).toBe('Segunda Chamada');
     });
-
-    expect(result.current.insight?.titulo).toBe('Segunda Chamada');
   });
 
   it('deve passar usarCache=true por padrão', async () => {
