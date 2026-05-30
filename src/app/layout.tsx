@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import "./globals.css";
 import { Cinzel, Cormorant_Garamond, Raleway, IM_Fell_English } from "next/font/google";
-import { InstallPrompt } from "@/components/dashboard/InstallPrompt";
 import { OfflineIndicator } from "@/components/dashboard/OfflineIndicator";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
 
