@@ -7,7 +7,7 @@
 export interface OrixaNumerology {
   /** Name of the Orixá */
   orixa: string;
-  /** Sacred number of the Orixá (1-13) */
+  /** Sacred number of the Orixá (1-14) */
   numero_sagrado: number;
   /** Numerological meaning of the number */
   significado_numerologico: string;
@@ -163,27 +163,25 @@ const NANA: OrixaNumerology = {
  * The Messenger - Communication, dynamism, initiation
  */
 const EXU: OrixaNumerology = {
-export function getOrixaNumerology(orixa: string): OrixaNumerology | undefined {
-  if (!orixa) return undefined;
-  const normalized = orixa
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-  // Direct match first
-  const direct = ORIXA_NUMEROLOGIA_MAP[orixa];
-  if (direct) return direct;
-  // Case-insensitive search with accent normalization
-  const entry = Object.entries(ORIXA_NUMEROLOGIA_MAP).find(
-    ([key]) => {
-      const keyNormalized = key
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-      return keyNormalized === normalized;
-    }
-  );
-  return entry ? entry[1] : undefined;
-}
+  orixa: 'Exu',
+  numero_sagrado: 1,
+  significado_numerologico: 'O Mensageiro, O Dinâmico - O início de tudo, a comunicação e a ordem universal',
+  elemento: 'fogo',
+  odu_associado: 'Okaran',
+  sephirah: 'Kether',
+  planeta_regente: 'Plutão',
+  energia_numerica: 'Comunicação, dinamismo, vitalidade, caminhos abertos, poder de ação e movimento',
+};
+
+/**
+ * Oxumaré - Sacred Number 14
+ * The Rainbow - Cycles, duality, renewal
+ */
+const OXUMARE: OrixaNumerology = {
+  orixa: 'Oxumaré',
+  numero_sagrado: 14,
+  significado_numerologico: 'O Arco-íris, O Renovador - Os ciclos, a dualidade e o movimento da vida em constante mudança',
+  elemento: 'água',
   odu_associado: 'Iká',
   sephirah: 'Chokmah',
   planeta_regente: 'Mercúrio',
@@ -256,25 +254,34 @@ const ORIXA_NUMEROLOGIA_MAP: Record<string, OrixaNumerology> = {
 };
 
 /**
+ * Normalize string for case-insensitive and accent-insensitive comparison
+ */
+function normalize(str: string): string {
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+/**
  * Get Orixá numerology mapping
  * @param orixa - Name of the Orixá (case-insensitive)
  * @returns OrixaNumerology mapping or undefined if not found
  */
 export function getOrixaNumerology(orixa: string): OrixaNumerology | undefined {
-  const normalized = orixa
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-  
+  if (!orixa) return undefined;
+
+  const normalized = normalize(orixa);
+
   // Direct match first
   const direct = ORIXA_NUMEROLOGIA_MAP[orixa];
   if (direct) return direct;
-  
-  // Case-insensitive search
+
+  // Case-insensitive search with accent normalization
   const entry = Object.entries(ORIXA_NUMEROLOGIA_MAP).find(
-    ([key]) => key.toLowerCase() === normalized
+    ([key]) => normalize(key) === normalized
   );
-  
+
   return entry ? entry[1] : undefined;
 }
 
@@ -284,13 +291,13 @@ export function getOrixaNumerology(orixa: string): OrixaNumerology | undefined {
  */
 export function getNumerologyOrixa(): Record<number, OrixaNumerology[]> {
   const result: Record<number, OrixaNumerology[]> = {};
-  
+
   for (const orixa of Object.values(ORIXA_NUMEROLOGIA_MAP)) {
     const num = orixa.numero_sagrado;
     if (!result[num]) result[num] = [];
     result[num].push(orixa);
   }
-  
+
   return result;
 }
 
@@ -304,7 +311,7 @@ export function getAllOrixaNumerologies(): OrixaNumerology[] {
 
 /**
  * Get Orixás by sacred number
- * @param numero - Sacred number (1-14)
+ * @param numero - Sacred number (1-15)
  * @returns Array of Orixás with that sacred number
  */
 export function getOrixasByNumber(numero: number): OrixaNumerology[] {
