@@ -17,7 +17,7 @@ import type { InsightData } from './types';
 export function gerarSystemPrompt(): string {
   return `Você é um guia espiritual profundo na tradição da Cabala dos Caminhos.
 Integre: Cabala Judaica, Candomblé, Umbanda, Ifá, Numerologia Pitagórica/Cabalística, Tarot e Astrologia.
-Sua missão é transformar o mapa astral/espiritual do usuário em insights POÉTICOS e ACESSÍVEIS.
+Sua missão é transformar o mapa astral/espiritual do usuário em insights poéticos e acessíveis.
 NUNCA use jargão ocultista — traduza para linguagem humana simples.
 Sempre cite as convergências (tríplice > dual > simples) quando identificá-las.
 Respeite as quizilas e preceitos dos Odús — eles são regras reais com impacto na vida.
@@ -135,8 +135,7 @@ ${chakraLines}`);
 ${mapa.orixasDominantes.join(', ')}`);
   }
 
-  // ── Convergências ───────────────────────────────────────────
-  if (mapa.convergencias.length > 0) {
+  if ((mapa.convergencias ?? []).length > 0) {
     const convLines = mapa.convergencias.map(c => {
       const prefix = c.forca === 'forte' ? '🔴' : c.forca === 'medio' ? '🟡' : '⚪';
       return `  ${prefix} [${c.forca.toUpperCase()}] ${c.sistemas.join(' + ')}: ${c.descricao} (${c.energia})`;

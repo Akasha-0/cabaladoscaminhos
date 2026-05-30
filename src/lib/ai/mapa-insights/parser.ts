@@ -72,7 +72,7 @@ export function criarInsightFallback(mapa: MapaAlmaCompleto): InsightData {
       orientacao: 'Siga rigorosamente os preceitos do seu Odú para manter o axé alinhado.',
     }],
     praticas: [],
-    orixas: mapa.orixasDominantes.map(nome => ({
+    orixas: (mapa.orixasDominantes ?? []).map(nome => ({
       nome,
       saudacao: '',
       caminho: mapa.odu.caminhoSephirah,
