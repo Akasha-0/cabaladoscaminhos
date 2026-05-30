@@ -245,27 +245,13 @@
 |**226** | **Convergência e Numerologia** | New planet-day-orixa.ts (convergence engine) and number-mysticism.ts (1-13 mapped), metrics.test.ts fixed, 55+ new tests |
 |**227** | **Signos e Geometria** | New sign-element.ts (12 signs mapped) and chakra-poliedro.ts (7 chakras to Platonic solids), 61+ new tests |
 |**228** | **Aspectos e Lua** | New planet-aspect.ts (5 aspects) and moon-orixa.ts (8 lunar phases mapped to Orixás), 27 new tests |
+|**229** | **Zodíaco e Elementos** | New planet-zodiac-aspect.ts (420 mappings), chakra-element.ts (7 chakras), day-zodiac.ts (7 days), 2631+ tests |
 |**230** | **Signos e Odú** | New zodiac-signo.ts, element-planet.ts, day-element.ts, planet-odu.ts correlations, 2836 tests total |
 |**231** | **Correlação Avançada** | New numerology-odu.ts, zodiac-chakra.ts, element-odu.ts, planet-tarot.ts correlations, 3022 tests total |
 |**232** | **Correlação Cabalistica** | New chakra-tarot.ts, odu-sephirot.ts, moon-zodiac.ts, sephirot-tarot.ts correlations, 3298 tests total |
 |**233** | **Correlação Afro-Brasileira** | New orixa-chakra.ts, numerology-tarot.ts, day-odu.ts, frequency-tarot.ts correlations, 3576 tests total |
 |**234** | **Correlação Cruzada** | New element-chakra.ts, odu-tarot.ts, orixa-tarot.ts, zodiac-odu.ts correlations, 3913 tests total |
 |**235** | **Correlação de Som e Número** | New chakra-sound.ts, orixa-numerology.ts, day-element.ts, sephirot-element.ts correlations, 4030 tests total |
-|**236** | **Correlação Planetária e Sonora** | New zodiac-sound.ts, planet-chakra.ts, numerology-chakra.ts, orixa-day.ts correlations, 4219 tests total |
-|**237** | **Correlação Elementar e Lunar** | New frequency-element.ts, moon-chakra.ts, planet-sound.ts, zodiac-chakra.ts correlations, 4388 tests total |
-1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
-2. **Multi-Agent Development**: Agentes paralelos para componentes
-3. **Drag-Drop**: @dnd-kit/core + @dnd-kit/sortable + DragOverlay
-4. **State Management**: React Context com useReducer
-5. **Data Fetching**: SWR com auto-refresh 30s
-6. **Virtual Scrolling**: useVirtualScroll hook com overscan
-7. **Lazy Loading**: IntersectionObserver com 200px margin
-8. **Widget Builder**: Visual widget builder with metrics and actions
-9. **Widget Marketplace**: Browse and install widgets
-10. **Theme System**: 8 themes with custom color schemes
-11. **Accessibility**: Full accessibility settings for all users
-**Tests: ✅ 4388 passing, 22 skipped (454 test files)**
-**237 Sprints Completados: 237 🎉**
 |**236** | **Correlação Planetária e Sonora** | New zodiac-sound.ts, planet-chakra.ts, numerology-chakra.ts, orixa-day.ts correlations, 4219 tests total |
 |**237** | **Correlação Elementar e Lunar** | New frequency-element.ts, moon-chakra.ts, planet-sound.ts, zodiac-chakra.ts correlations, 4388 tests total |
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
