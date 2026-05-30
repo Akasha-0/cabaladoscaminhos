@@ -220,7 +220,7 @@ function normalizarSigno(signo: string): SignoZodiac | null {
     'gemeos': 'Gémeos',
     'cancer': 'Câncer',
     'leao': 'Leão',
-    'leao': 'Leão',
+    'virgem': 'Virgem',
     'virgem': 'Virgem',
     'libra': 'Libra',
     'escorpiao': 'Escorpião',
