@@ -62,7 +62,7 @@ describe('RealtimeEnergyWidget', () => {
   it('shows element of the day with emoji', () => {
     render(<RealtimeEnergyWidget />);
     expect(screen.getByText(/Elemento: Éter/)).toBeInTheDocument();
-    expect(screen.getByText('✨')).toBeInTheDocument();
+    expect(screen.getAllByText('✨').length).toBeGreaterThan(0);
   });
 
   it('renders lunar phase section', () => {

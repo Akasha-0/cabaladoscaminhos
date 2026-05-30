@@ -232,6 +232,7 @@ describe('Orixá-Element Correlation', () => {
       const orixas = Object.values(getAllOrixas());
       orixas.forEach(orixaName => {
         const result = getOrixaElement(orixaName);
+      });
   describe('getElementOrixa', () => {
     it('should return mapping of elements to Orixás', () => {
       const result = getElementOrixa();
