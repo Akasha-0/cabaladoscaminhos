@@ -31,12 +31,13 @@ export interface NumerologyOrixa {
  * The Initiator - Impulse, beginning, leadership
  */
 const UM: NumerologyOrixa = {
-  pratica_ritualistica: 'Limpar ferramentas symbolically,afiar facas como metáfora do corte de obstáculos, oferecer dendê em Cruz de Ogum',
-with
-  pratica_ritualistica: 'Limpar ferramentas, afiar facas como metáfora do corte de obstáculos, oferecer dendê em Cruz de Ogum',
+  numero: 1,
+  orixa: 'Exu / Okaran',
+  significado_espiritual: 'O Iniciador, O Mensageiro - O começo de tudo, a força primal de criação, o impulso de iniciar e abrir caminhos',
+  pratica_ritualistica: 'Acender uma vela preta ou vermelha ao amanhecer, solicitar abertura de caminhos e proteção nas decisões importantes',
   elemento: 'Fogo',
   dia_semana: 'Segunda-feira',
-  ofertas: ['功绩 de dendê', 'cachaça', 'pimenta', 'carvão'],
+  ofertas: ['azeite de dendê', 'cachaça', 'pimenta', 'carvão'],
   cores: ['preto', 'vermelho'],
 };
 
@@ -46,17 +47,11 @@ with
  */
 const DOIS: NumerologyOrixa = {
   numero: 2,
-  pratica_ritualistica: 'Banho de Golds e mel ao entardecer, oferecer Golds ao ponto de sacrifício, acender vela dourada para atrair prosperidade',
+  orixa: 'Ibeji / Ejiokô',
+  significado_espiritual: 'O Par, Os Gêmeos - A dualidade, os caminhos duplos, a união após grandes lutas e o equilíbrio entre opostos',
+  pratica_ritualistica: 'Colocar dois pratos com alimentos iguais para os gêmeos, acender duas velas azuis, meditar sobre a integração dos opostos',
   elemento: 'Água',
-  dia_semana: 'Sexta-feira',
-  ofertas: ['mel', 'dendê', 'Golds', 'flores amarelas', 'perfume de flor de laranjeira'],
-  cores: ['dourado', 'amarelo'],
-with
-  pratica_ritualistica: 'Banho de ouro e mel ao entardecer, oferecer ouro ao ponto de sacrifício, acender vela dourada para atrair prosperidade',
-  elemento: 'Água',
-  dia_semana: 'Sexta-feira',
-  ofertas: ['mel', 'dendê', 'ouro', 'flores amarelas', 'perfume de flor de laranjeira'],
-  cores: ['dourado', 'amarelo'],
+  dia_semana: 'Terça-feira',
   ofertas: ['dois bolos de tapioca', 'dois ovos', 'mel', 'coco ralado'],
   cores: ['azul', 'branco'],
 };
@@ -69,10 +64,10 @@ const TRES: NumerologyOrixa = {
   numero: 3,
   orixa: 'Ogum / Etaogundá',
   significado_espiritual: 'O Guerreiro, O Criador de Ferramentas - A força física, a criação, a lei e a abertura de caminhos por força de vontade',
-  pratica_ritualistica: 'Limpar ferramentas symbolically,afiar facas como metáfora do corte de obstáculos, oferecer dendê em Cruz de Ogum',
+  pratica_ritualistica: 'Limpar ferramentas, afiar facas como metáfora do corte de obstáculos, oferecer dendê em Cruz de Ogum',
   elemento: 'Terra',
   dia_semana: 'Terça-feira',
-  ofertas: ['dendê', 'alecrim', 'espada', 'faca ritual', ' fumo'],
+  ofertas: ['azeite de dendê', 'alecrim', 'espada', 'faca ritual', 'fumo'],
   cores: ['vermelho', 'azul'],
 };
 
@@ -99,19 +94,15 @@ const CINCO: NumerologyOrixa = {
   numero: 5,
   orixa: 'Oxum / Oxé',
   significado_espiritual: 'A Amada, O Ouro - A doçura, a feitiçaria natural, o magnetismo pessoal e a sabedoria adquirida pela experiência',
-  pratica_ritualistica: 'Banho de Golds e mel ao entardecer, oferecer Golds ao ponto de sacrifício, acender vela dourada para atrair prosperidade',
+  pratica_ritualistica: 'Banho de ouro e mel ao entardecer, oferecer ouro ao ponto de sacrifício, acender vela dourada para atrair prosperidade',
   elemento: 'Água',
   dia_semana: 'Sexta-feira',
-  ofertas: ['mel', 'dendê', 'Golds', 'flores amarelas', 'perfume de flor de laranjeira'],
-  pratica_ritualistica: 'Pedir a Nanã a decantação das águas interiores, enterrar objetos symbolism de viejos energias, banho de sal e ervas ao amanhecer',
-  elemento: 'Terra',
-  dia_semana: 'Segunda-feira',
-  ofertas: [' terra de tapari', 'folhas de收货', 'coco', 'sal marinho', 'fumo'],
-with
-  pratica_ritualistica: 'Pedir a Nanã a decantação das águas interiores, enterrar objetos simbólicos de velhas energias, banho de sal e ervas ao amanhecer',
-  elemento: 'Terra',
-  dia_semana: 'Segunda-feira',
-  ofertas: ['terra de tapari', 'folhas de mandacaru', 'coco', 'sal marinho', 'fumo'],
+  ofertas: ['mel', 'azeite de dendê', 'ouro', 'flores amarelas', 'perfume de flor de laranjeira'],
+  cores: ['dourado', 'amarelo'],
+};
+
+/**
+ * Number 6 - Xangô/Obará
  * The Harmonizer - Balance, beauty, responsibility
  */
 const SEIS: NumerologyOrixa = {
@@ -121,7 +112,7 @@ const SEIS: NumerologyOrixa = {
   pratica_ritualistica: 'Colocar dois pratos no balancim de Xangô, oferecer inhames assados, acender duas velas vermelhas para a justiça',
   elemento: 'Fogo',
   dia_semana: 'Quarta-feira',
-  ofertas: ['inhame', 'galinha', 'dendê', 'pão', 'vinho'],
+  ofertas: ['inhame', 'galinha', 'azeite de dendê', 'pão', 'vinho'],
   cores: ['vermelho', 'branco'],
 };
 
@@ -136,7 +127,7 @@ const SETE: NumerologyOrixa = {
   pratica_ritualistica: 'Girar ao redor do ponto de sacrifício 7 vezes, oferecer obi cortado em 7 partes, acender 7 velas para transformação',
   elemento: 'Fogo',
   dia_semana: 'Quarta-feira',
-  ofertas: ['pimenta', 'obí', 'dendê', ' fumo', 'galinha branca'],
+  ofertas: ['pimenta', 'obí', 'azeite de dendê', 'fumo', 'galinha branca'],
   cores: ['vermelho', 'rosa'],
 };
 
@@ -148,10 +139,10 @@ const OITO: NumerologyOrixa = {
   numero: 8,
   orixa: 'Oxalá / EjiOníle',
   significado_espiritual: 'O Criador, O Paz - A cabeça (Ori) no topo do mundo, a liderança espiritual, a paz absoluta e o silêncio sagrado',
-  pratica_ritualistica: 'Fazer silêncio interior por8 minutos ao amanhecer, acender vela branca, meditar sobre o comando da mente sobre a matéria',
+  pratica_ritualistica: 'Fazer silêncio interior por 8 minutos ao amanhecer, acender vela branca, meditar sobre o comando da mente sobre a matéria',
   elemento: 'Éter',
   dia_semana: 'Sexta-feira',
-  ofertas: ['fumo branco', 'akpátá', 'pão', 'flores brancas', 'agua de obone'],
+  ofertas: ['fumo branco', 'akpátá', 'pão', 'flores brancas', 'água de obone'],
   cores: ['branco', 'dourado'],
 };
 
@@ -166,7 +157,7 @@ const NOVE: NumerologyOrixa = {
   pratica_ritualistica: 'Oferecer 9 moedas ao ponto de sacrifício, acender 9 velas azuis, fazer oração de agradecimento pelos aprendizados',
   elemento: 'Água',
   dia_semana: 'Domingo',
-  ofertas: ['9 moedas', 'dendê', 'mel', 'flores azuis', 'coco'],
+  ofertas: ['9 moedas', 'azeite de dendê', 'mel', 'flores azuis', 'coco'],
   cores: ['azul', 'roxo'],
 };
 
@@ -181,7 +172,7 @@ const DEZ: NumerologyOrixa = {
   pratica_ritualistica: 'Desenhar Ofun no chão com cinza, acender vela branca, escrever o que deseja abandonar e queimar ao ponto de sacrifício',
   elemento: 'Terra',
   dia_semana: 'Domingo',
-  ofertas: ['fumo branco', 'akpátá', 'pão', 'galinha branca', 'agua de obone'],
+  ofertas: ['fumo branco', 'akpátá', 'pão', 'galinha branca', 'água de obone'],
   cores: ['branco', 'bege'],
 };
 
@@ -193,7 +184,7 @@ const ONZE: NumerologyOrixa = {
   numero: 11,
   orixa: 'Alafia / Orunmilá',
   significado_espiritual: 'O Canalizador, O Desperto - A intuição elevada, a espiritualidade profunda, o alinhamento completo com o divino',
-  pratica_ritualistica: 'Consultar o game oracular (opgele), acender11 velas brancas, meditar em busca de confirmação divina para decisões importantes',
+  pratica_ritualistica: 'Consultar o game oracular (opgele), acender 11 velas brancas, meditar em busca de confirmação divina para decisões importantes',
   elemento: 'Éter',
   dia_semana: 'Domingo',
   ofertas: ['kola', 'nozes', 'coco', 'fumo branco', 'flores brancas'],
@@ -208,10 +199,10 @@ const DOZE: NumerologyOrixa = {
   numero: 12,
   orixa: 'Xangô / Ejilsebora',
   significado_espiritual: 'A Justiça, O Fogo Purificador - A guerra justa, a transformação por provações, o equilíbrio entre razão e emoção',
-  pratica_ritualistica: 'Oferecer12 moedas ao balancim de Xangô, acender 12 velas vermelhas, pedir justiça divina para situações que precisam de equidade',
+  pratica_ritualistica: 'Oferecer 12 moedas ao balancim de Xangô, acender 12 velas vermelhas, pedir justiça divina para situações que precisam de equidade',
   elemento: 'Fogo',
   dia_semana: 'Quarta-feira',
-  ofertas: ['12 moedas', 'inhame', 'galinha', 'dendê', 'pimenta'],
+  ofertas: ['12 moedas', 'inhame', 'galinha', 'azeite de dendê', 'pimenta'],
   cores: ['vermelho', 'laranja'],
 };
 
@@ -223,10 +214,10 @@ const TREZE: NumerologyOrixa = {
   numero: 13,
   orixa: 'Nanã / Omolu / Olobón',
   significado_espiritual: 'A Evolução, A Morte e Renascimento - O fim de ciclos, a transformação física e espiritual, o recolhimento para novo começo',
-  pratica_ritualistica: 'Pedir a Nanã a decantação das águas interiores, enterrar objetos symbolism de viejas energias, banho de sal e ervas ao amanhecer',
+  pratica_ritualistica: 'Pedir a Nanã a decantação das águas interiores, enterrar objetos simbólicos de velhas energias, banho de sal e ervas ao amanhecer',
   elemento: 'Terra',
   dia_semana: 'Segunda-feira',
-  ofertas: [' terra de tapari', 'folhas de收货', 'coco', 'sal marinho', 'fumo'],
+  ofertas: ['terra de tapari', 'folhas de mandacaru', 'coco', 'sal marinho', 'fumo'],
   cores: ['roxo', 'branco'],
 };
 
