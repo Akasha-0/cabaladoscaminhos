@@ -1,0 +1,14 @@
+{
+  "tasks": [
+    {
+      "id": "cff20d55",
+      "cron": "*/15 * * * *",
+      "prompt": "continuous evolution loop following ASSESS → PLAN → EXECUTE → VERIFY → EVOLVE → LOOP cycle. ASSESS: read @AGENTS.md, @PROGRESS.md, @GOAL.md, @IDEIA.md, memory files. PLAN: identify 1-3 priority tasks from PROGRESS.md gaps. EXECUTE: implement tasks, write tests. VERIFY: run npm run build && npm run lint && npm run test:run. EVOLVE: if all pass, commit with Co-Authored-By trailer and update memory with learnings. LOOP: continue to next cycle.",
+      "createdAt": 1780169131183,
+      "recurring": true,
+      "createdBySessionId": "e9a36d6e-1064-4e0a-bbb7-bf22972b78e7",
+      "createdByPid": 1031646,
+      "createdByProcStart": "2894458"
+    }
+  ]
+}
