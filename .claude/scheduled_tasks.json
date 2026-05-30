@@ -1,24 +1,3 @@
 {
-  "tasks": [
-    {
-      "id": "d0b63643",
-      "cron": "*/10 * * * *",
-      "prompt": "Workflow({scriptPath: \"/home/skynet/.claude/projects/-home-skynet-cabala-dos-caminhos/e9a36d6e-1064-4e0a-bbb7-bf22972b78e7/workflows/scripts/autonomous-evolution-loop-wf_787ecc2f-ae0.js\", resumeFromRunId: \"wf_787ecc2f-ae0\"})",
-      "createdAt": 1780169240161,
-      "recurring": true,
-      "createdBySessionId": "e9a36d6e-1064-4e0a-bbb7-bf22972b78e7",
-      "createdByPid": 1031646,
-      "createdByProcStart": "2894458"
-    },
-    {
-      "id": "ab4d44e5",
-      "cron": "*/10 * * * *",
-      "prompt": "continuous evolution following ASSENTS → PLAN → EXECUTE → VERIFY → EVOLVE → LOOP cycle. ASSESS: read @AGENTS.md @PROGRESS.md @GOAL.md @IDEIA.md. PLAN: identify 1-3 priority tasks. EXECUTE: implement and test. VERIFY: npm run build && npm run lint && npm run test:run. EVOLVE: commit and update memory.",
-      "createdAt": 1780169300429,
-      "recurring": true,
-      "createdBySessionId": "e9a36d6e-1064-4e0a-bbb7-bf22972b78e7",
-      "createdByPid": 1031646,
-      "createdByProcStart": "2894458"
-    }
-  ]
+  "tasks": []
 }
