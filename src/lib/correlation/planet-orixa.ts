@@ -85,12 +85,45 @@ Object.freeze(PLANET_ORIXA_MAPPINGS);
 Object.values(PLANET_ORIXA_MAPPINGS).forEach(mapping => Object.freeze(mapping));
 
 /**
+ * Normalize string for comparison (lowercase + accent removal)
+ */
+function normalizeString(str: string): string {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+/**
  * Get the planet-to-orixá correlation mapping
- * @param planeta - Planet name (e.g., 'Sol', 'Lua', 'Marte')
+ * @param planeta - Planet name (e.g., 'Sol', 'Lua', 'Marte', 'Mercúrio', 'mercurio')
  * @returns The correlation mapping or null if not found
  */
 export function getPlanetOrixa(planeta: string): PlanetOrixaMapping | null {
-  return PLANET_ORIXA_MAPPINGS[planeta] ?? null;
+  // First try direct key lookup
+  if (planeta in PLANET_ORIXA_MAPPINGS) {
+    return PLANET_ORIXA_MAPPINGS[planeta];
+  }
+  // Fallback: search by normalized display name (handles 'mercurio' -> 'Mercúrio')
+  const normalized = normalizeString(planeta);
+  for (const mapping of Object.values(PLANET_ORIXA_MAPPINGS)) {
+    if (normalizeString(mapping.planet) === normalized) {
+      return mapping;
+    }
+  }
+  return null;
+}
+
+/**
+ * Get the orixá-to-planet reverse correlation mapping
+ * @param orixa - Orixá name (e.g., 'Xangô', 'Iemanjá', 'Ogum')
+ * @returns The correlation mapping or null if not found
+ */
+export function getOrixaPlanet(orixa: string): PlanetOrixaMapping | null {
+  const normalized = normalizeString(orixa);
+  for (const mapping of Object.values(PLANET_ORIXA_MAPPINGS)) {
+    if (normalizeString(mapping.orixa) === normalized) {
+      return mapping;
+    }
+  }
+  return null;
 }
 
 /**
@@ -98,6 +131,14 @@ export function getPlanetOrixa(planeta: string): PlanetOrixaMapping | null {
  * @returns Array of all correlation mappings
  */
 export function getAllPlanetOrixaMappings(): PlanetOrixaMapping[] {
+  return Object.values(PLANET_ORIXA_MAPPINGS);
+}
+
+/**
+ * Get all planet-orixá mappings (alias for getAllPlanetOrixaMappings)
+ * @returns Array of all correlation mappings
+ */
+export function getAllPlanetOrixas(): PlanetOrixaMapping[] {
   return Object.values(PLANET_ORIXA_MAPPINGS);
 }
 

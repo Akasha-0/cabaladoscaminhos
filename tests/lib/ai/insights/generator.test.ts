@@ -298,10 +298,12 @@ describe('Orixá Insights', () => {
     expect(result.correlations.some(c => c.includes('Tarot'))).toBe(true);
   });
 
-  // SKIPPED: Oxum Vênus correlation test has wrong expectations
-  it.skip('37. Oxum → has Vênus planet correlation', () => {
+  // FIXED: Oxum is correctly mapped to Vênus in ODU_MAPPINGS (Odi, Osa)
+  it('37. Oxum → has Vênus planet correlation', () => {
     const result = generateInsight('orixa', { identifier: 'Oxum' });
-    expect(result.correlations.some(c => c.includes('Vénus') || c.includes('Venus'))).toBe(true);
+    const planetCorr = result.correlations.find(c => c.startsWith('Planeta:'));
+    expect(planetCorr).toBeTruthy();
+    expect(planetCorr?.includes('Vênus') || planetCorr?.includes('Venus')).toBe(true);
   });
 
   it('38. Ogum → has multiple Odu correlations', () => {
