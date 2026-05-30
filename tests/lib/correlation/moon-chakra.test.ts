@@ -54,7 +54,9 @@ describe('Moon-Chakra Correlation', () => {
       expect(result?.fase).toBe('Lua Cheia');
       expect(result?.chakra).toBe('4º Cardíaco');
       expect(result?.chakra_numero).toBe(4);
-      expect(result?.chakra_numero).toBe(5);
+      expect(result?.chakra_sanskrito).toBe('Anahata');
+      expect(result?.fluxo_energetico).toBe('centrifugo');
+      expect(result?.elemento).toBe('água');
     });
 
     it('should return 5º Laríngeo (Vishuddha) mapping for quarto-minguante', () => {
@@ -62,7 +64,7 @@ describe('Moon-Chakra Correlation', () => {
       expect(result).not.toBeNull();
       expect(result?.fase).toBe('Quarto Minguante');
       expect(result?.chakra).toBe('5º Laríngeo');
-      expect(result?.chakra_numero). 5;
+      expect(result?.chakra_numero).toBe(5);
       expect(result?.chakra_sanskrito).toBe('Vishuddha');
       expect(result?.fluxo_energetico).toBe('descendente');
       expect(result?.elemento).toBe('éter');
