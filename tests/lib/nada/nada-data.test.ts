@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getData, NADA_DATASET } from '~/lib/nada/nada-data';
+import { getData, NADA_DATASET } from '@/lib/nada/nada-data';
 
 describe('nada-data', () => {
   it('NADA_DATASET is defined and non-empty', () => {

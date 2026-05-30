@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getPatterns, getPattern, getPatternsByCategory, getPatternDuration } from '~/lib/breathwork/breath-patterns';
+import { getPatterns, getPattern, getPatternsByCategory, getPatternDuration } from '@/lib/breathwork/breath-patterns';
 
 describe('breath-patterns', () => {
   it('getPatterns returns array of patterns', () => {

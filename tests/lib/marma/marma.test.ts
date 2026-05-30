@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { getData, getMarmaById, getMarmasByRegion } from '~/lib/marma/marma-data';
-import { startPractice, completePractice, getMarmaPoints } from '~/lib/marma/marma-practice';
+import { getData, getMarmaById, getMarmasByRegion } from '@/lib/marma/marma-data';
+import { startPractice, getMarmaPoints } from '@/lib/marma/marma-practice';
 
 describe('marma', () => {
   it('getData returns array of marma points', () => {

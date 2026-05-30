@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { getData } from '~/lib/mudra/mudra-data';
-import { performPractice } from '~/lib/mudra/mudra-practice';
+import { getData } from '@/lib/mudra/mudra-data';
+import { performPractice } from '@/lib/mudra/mudra-practice';
 
 describe('mudra', () => {
   it('getData returns mudra data object', () => {

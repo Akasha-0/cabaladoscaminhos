@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { getData, getMeridianById, getMeridiansByElement } from '~/lib/meridian/meridian-data';
-import { performPractice } from '~/lib/meridian/meridian-practice';
+import { getData, getMeridianById, getMeridiansByElement } from '@/lib/meridian/meridian-data';
+import { performPractice } from '@/lib/meridian/meridian-practice';
 
 describe('meridian', () => {
   it('getData returns array of meridians', () => {

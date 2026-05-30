@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getMeanings, getCrystalByName, getCrystalsByChakra } from '~/lib/crystals/crystal-meanings';
+import { getMeanings, getCrystalByName, getCrystalsByChakra } from '@/lib/crystals/crystal-meanings';
 
 describe('crystal-meanings', () => {
   it('getMeanings returns array of crystals', () => {

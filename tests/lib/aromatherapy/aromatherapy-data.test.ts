@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getData, getOleo, getOleosPorNota, getTodosOleos } from '~/lib/aromatherapy/aromatherapy-data';
+import { getData, getOleo, getTodosOleos } from '@/lib/aromatherapy/aromatherapy-data';
 
 describe('aromatherapy-data', () => {
   it('getData returns aromatherapy data', () => {

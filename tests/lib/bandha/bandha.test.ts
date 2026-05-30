@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { getData } from '~/lib/bandha/bandha-data';
-import { performPractice } from '~/lib/bandha/bandha-practice';
+import { getData } from '@/lib/bandha/bandha-data';
+import { performPractice } from '@/lib/bandha/bandha-practice';
 
 describe('bandha', () => {
   it('getData returns bandha array', () => {
