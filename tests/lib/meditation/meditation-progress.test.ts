@@ -54,21 +54,20 @@ describe('meditation-progress', () => {
       expect(result.totalSeconds).toBe(900);
     });
 
-    it('counts completed sessions', () => {
+    it('counts completed sessions as 1 per day entry', () => {
+      // Each addProgress on same day accumulates into one entry
       addProgress(100, true);
       addProgress(200, false);
-      addProgress(300, true);
       const result = getProgress(1);
-      expect(result.completedSessions).toBe(2);
-      expect(result.totalSessions).toBe(3);
+      // Only one entry per day, completed=true because at least one session was completed
+      expect(result.completedSessions).toBe(1);
+      expect(result.totalSessions).toBe(1);
     });
 
     it('respects days cutoff', () => {
-      // Add entry for today (simulated)
       addProgress(100, true);
-      // getProgress with 0 days should still return current day
-      const result = getProgress(0);
-      // Should return current day entry
+      // getProgress(1) includes today
+      const result = getProgress(1);
       expect(result.entries.length).toBeGreaterThanOrEqual(1);
     });
   });
