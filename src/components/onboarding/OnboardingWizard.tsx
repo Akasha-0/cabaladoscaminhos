@@ -133,6 +133,13 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
   return (
     <CosmicBackground variant="subtle" className={cn('min-h-screen flex flex-col', className)}>
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
+        {/* Step change announcement for screen readers */}
+        <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+          {currentStep === 0 && 'Bem-vindo à Cabala dos Caminhos. Passo 1 de 4.'}
+          {currentStep === 1 && 'Passo 2 de 4: Informe seu nome completo.'}
+          {currentStep === 2 && 'Passo 3 de 4: Informe sua data de nascimento.'}
+          {currentStep === 3 && 'Passo 4 de 4: Informe sua cidade e estado de nascimento.'}
+        </div>
         <div
           role="tablist"
           aria-label="Progresso do onboarding"

@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 204
+**Sprints completados:** 205
 **Build status:** ✅ Build OK (522 routes)
 **Tests:** ✅ 1266 passing, 14 skipped (68 test files)
 ## ✅ IMPLEMENTADO E FUNCIONANDO
@@ -217,15 +217,16 @@
 | 181 | Persistence & QA | Export, Share, Templates, Tests |
 | 184 | User Management & Analytics | Users, Roles, Analytics, Performance, Health |
 | 185 | Widget Builder & Enhancements | WidgetBuilder, Marketplace, Mobile, Themes, Accessibility |
-| **196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
-| **197** | **Mapa Pages & Design System** | Mapa components, Auth pages, CI/CD, Design system |
-| **198** | **PDF Export** | geracaoRelatorio PDF export, /api/mapa/pdf route |
-| **199** | **AI Insights Engine** | mapa-insights: types, prompt-builder, parser, generator, /api/mapa/insights |
-| **200** | **UI Wiring & Polish** | Dashboard Mapa, Onboarding, ErrorState, SkeletonSpiritual, GlowEffect |
-| **201** | **Insights Frontend** | useMapaInsights hook, dashboard/insights API wiring, AppShell, PageHeader, MysticButton |
+|**196** | **MapaAlma Engine** | spiritual-engine.ts, mapa-alma.ts, unified orchestrator |
+|**197** | **Mapa Pages & Design System** | Mapa components, Auth pages, CI/CD, Design system |
+|**198** | **PDF Export** | geracaoRelatorio PDF export, /api/mapa/pdf route |
+|**199** | **AI Insights Engine** | mapa-insights: types, prompt-builder, parser, generator, /api/mapa/insights |
+|**200** | **UI Wiring & Polish** | Dashboard Mapa, Onboarding, ErrorState, SkeletonSpiritual, GlowEffect |
+|**201** | **Insights Frontend** | useMapaInsights hook, dashboard/insights API wiring, AppShell, PageHeader, MysticButton |
 |**202** | **Layout & Hooks QA** | AppShell, PageHeader, MysticButton, useMapaInsights tests fixed, build fixes |
 |**203** | **Bug Fixes** | spiritual-engine.ts parse errors, mapa variable init, rate-limit test typo, deep correlations |
 |**204** | **Dashboard Enhancements** | Accessibility improvements, MapaAlmaDashboard polish, OnboardingWizard polish, /dashboard/perfil page |
+|**205** | **A11y & Profile Fix** | Screen reader support, TarotCard navigation, OnboardingWizard a11y, profile page upgrade redirect fix |
 
 ## 🏗️ DECISÕES ARQUITETURAIS
 
@@ -245,7 +246,7 @@
 
 ## 📊 MÉTRICAS
 **Tests: 1266 passing**
-**204 Sprints Completados** 🎉
+**205 Sprints Completados** 🎉
 ---
 
 *Assim como é em cima, também é embaixo. — A plataforma Cabala Dos Caminhos está completa com MapaAlma unificado e engine de correlações.*
