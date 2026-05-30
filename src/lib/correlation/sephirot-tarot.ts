@@ -137,6 +137,14 @@ Object.values(SEPHIROT_TAROT_MAPPINGS).forEach(mapping => Object.freeze(mapping)
 export function getSephirahTarot(sephirah: string): SephirahTarot | null {
   return SEPHIROT_TAROT_MAPPINGS[sephirah] ?? null;
 }
+/**
+ * Alias for getSephirahTarot - Get the Sephirot-Tarot correlation mapping
+ * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah')
+ * @returns The correlation mapping or null if not found
+ */
+export function getSephirotTarot(sephirah: string): SephirahTarot | null {
+  return getSephirahTarot(sephirah);
+}
 
 /**
  * Get the Sephirah corresponding to a Tarot Major Arcana card
@@ -149,6 +157,14 @@ export function getTarotSephirah(arcano: string): string | null {
   );
   return entry?.sephirah ?? null;
 }
+/**
+ * Alias for getTarotSephirah - Get the Sephirah corresponding to a Tarot Major Arcana card
+ * @param arcano - The arcano name (e.g., 'O Louco', 'O Mago', 'A Alta Sacerdotisa')
+ * @returns The Sephirah name or null if not found
+ */
+export function getTarotSephirot(arcano: string): string | null {
+  return getTarotSephirah(arcano);
+}
 
 /**
  * Get all available Sephirah-Tarot mappings
@@ -156,6 +172,13 @@ export function getTarotSephirah(arcano: string): string | null {
  */
 export function getAllSephirahTarots(): SephirahTarot[] {
   return Object.values(SEPHIROT_TAROT_MAPPINGS);
+}
+/**
+ * Alias for getAllSephirahTarots - Get all available Sephirot-Tarot mappings
+ * @returns Array of all correlation mappings
+ */
+export function getAllSephirotTarots(): SephirahTarot[] {
+  return getAllSephirahTarots();
 }
 
 /**

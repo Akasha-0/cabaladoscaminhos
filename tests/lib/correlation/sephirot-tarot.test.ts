@@ -1,8 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import {
   getSephirahTarot,
+  getSephirotTarot,
   getTarotSephirah,
+  getTarotSephirot,
   getAllSephirahTarots,
+  getAllSephirotTarots,
   getAllSephiroth,
   hasSephirahTarot,
   getSephirahByPath,
@@ -116,6 +119,32 @@ describe('sephirot-tarot', () => {
 
     it('returns null for undefined', () => {
       expect(getSephirahTarot(undefined as unknown as string)).toBeNull();
+    });
+  });
+  // ─── getSephirotTarot (alias) ───────────────────────────────────────────────
+  describe('getSephirotTarot', () => {
+    it('returns mapping for Kether', () => {
+      const result = getSephirotTarot('Kether');
+      expect(result).not.toBeNull();
+      expect(result?.sephirah).toBe('Kether');
+      expect(result?.arcano).toBe('O Louco');
+    });
+    it('returns mapping for Chokmah', () => {
+      const result = getSephirotTarot('Chokmah');
+      expect(result).not.toBeNull();
+      expect(result?.sephirah).toBe('Chokmah');
+    });
+    it('returns null for non-existent Sephirah', () => {
+      expect(getSephirotTarot('NonExistent')).toBeNull();
+    });
+    it('returns null for empty string', () => {
+      expect(getSephirotTarot('')).toBeNull();
+    });
+    it('produces same result as getSephirahTarot', () => {
+      const allSephiroth = ['Kether', 'Chokmah', 'Binah', 'Geburah', 'Chesed', 'Tiphereth', 'Netzach', 'Hod', 'Yesod', 'Malkuth'];
+      allSephiroth.forEach(sephirah => {
+        expect(getSephirotTarot(sephirah)).toEqual(getSephirahTarot(sephirah));
+      });
     });
   });
 

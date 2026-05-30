@@ -1,11 +1,11 @@
 /**
  * Day-Zodiac Correlation Tests
  */
-
 import { describe, it, expect } from 'vitest';
 import {
   getDayZodiac,
   getZodiacByDay,
+  getZodiacDay,
   getDayElement,
   getAllDays,
   getDayPlanet,

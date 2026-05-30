@@ -125,13 +125,21 @@ export function getZodiacByDay(dia: string): string | undefined {
 }
 
 /**
+ * Get zodiac sign by day name (alias for getZodiacByDay)
+ * @param dia - Day name in Portuguese
+ * @returns Zodiac sign name or undefined
+ */
+export function getZodiacDay(dia: string): string | undefined {
+  return DAY_ZODIAC_MAP[dia]?.signo;
+}
+
+/**
  * Get element for a specific day
  * @param dia - Day name in Portuguese
  * @returns Element or undefined if day not found
  */
 export function getDayElement(dia?: string): string | undefined {
   if (!dia) {
-    // Return all day-element pairs
     return undefined;
   }
   return DAY_ZODIAC_MAP[dia]?.elemento;
@@ -196,6 +204,7 @@ export function getAllDayZodiacs(): DayZodiac[] {
 export default {
   getDayZodiac,
   getZodiacByDay,
+  getZodiacDay,
   getDayElement,
   getAllDays,
   getDayPlanet,

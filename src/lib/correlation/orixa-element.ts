@@ -203,10 +203,41 @@ export function getOrixasByDay(dia: string): OrixaElement[] {
     entry => entry.dia_da_semana.toLowerCase() === dia.toLowerCase()
   );
 }
+/**
+ * Get reverse mapping: element to associated Orixás
+ * @returns Record mapping each element to its associated Orixás
+ */
+export function getElementOrixa(): Record<OrixaElement['elemento_principal'], string[]> {
+  const result: Record<OrixaElement['elemento_principal'], string[]> = {
+    fogo: [],
+    água: [],
+    ar: [],
+    terra: [],
+    éter: [],
+  };
+  
+  for (const entry of Object.values(ORIXAS_MAP)) {
+    result[entry.elemento_principal].push(entry.orixa);
+  }
+  
+  return result;
+}
+
+/**
+ * Get all Orixá-element mappings
+ * @returns Array of all OrixaElement objects
+ */
+export function getAllOrixaElements(): OrixaElement[] {
+  return Object.values(ORIXAS_MAP);
+}
 
 export default {
   getOrixaElement,
   getAllOrixas,
   getOrixasByElement,
+  getOrixasByDay,
+  getElementOrixa,
+  getAllOrixaElements,
+};
   getOrixasByDay
 };
