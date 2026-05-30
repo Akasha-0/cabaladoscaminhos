@@ -1,6 +1,6 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 215
-**Tests:** ✅ 1728 passing, 14 skipped (100 test files)
+**Sprints completados:** 216
+**Tests:** ✅ 1772 passing, 14 skipped (105 test files)
 
 ### Core Infrastructure
 - Next.js 16.2.6 + React 19 + App Router (Turbopack)
@@ -233,8 +233,7 @@
 |**211** | **Hook Tests** | useNotifications tests (15), hook coverage expanded to 15 hooks |
 |**212** | **Auth Fixes & Tests** | Auth error handling fixes, rateLimit tests (19), middleware coverage expanded |
 |**213** | **Hook Fixes** | Created /api/astrologia/previsao-mensal route, fixed usePrevisaoMensal tests (15 passing) |
-|**214** | **CI/CD & QA** | Build verified (523 routes), tests verified per suite, full suite passes |
-|**215** | **Component Tests** | Skeleton tests (30), visualization tests (21), MapaNatalViz/CorrelacaoInsight fixes, component coverage expanded to 100 files |
+|**216** | **Component Tests** | shared/layout/onboarding tests (44), component coverage expanded to 105 files |
 
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
 2. **Multi-Agent Development**: Agentes paralelos para componentes
@@ -247,6 +246,5 @@
 9. **Widget Marketplace**: Browse and install widgets
 10. **Theme System**: 8 themes with custom color schemes
 11. **Accessibility**: Full accessibility settings for all users
-12. **Responsive Design**: Mobile/Tablet/Desktop/Wide preview
-**Tests: 1728 passing**
-**215 Sprints Completados** 🎉
+**Tests: 1772 passing**
+**216 Sprints Completados** 🎉
