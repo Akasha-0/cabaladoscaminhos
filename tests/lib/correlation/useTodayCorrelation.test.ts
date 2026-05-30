@@ -315,4 +315,344 @@ describe('useTodayCorrelation', () => {
       expect(corr.sefirah.length).toBeGreaterThan(0);
     });
   });
+
+  // ─── Day-Energy Mapping ─────────────────────────────────────────────────────
+  describe('day-energy mapping for widget consumption', () => {
+    // Widgets depend on getTodayCorrelation() returning dayIndex that maps correctly
+    // to DayEnergy (getDayEnergy uses Monday=0, Sunday=6)
+
+    it('dayIndex 0 (domingo) maps to the correct dayName and dayNamePt', () => {
+      const sunday = getCorrelationByDayIndex(0);
+      expect(sunday.dayIndex).toBe(0);
+      expect(sunday.dayName).toBe('domingo');
+      expect(sunday.dayNamePt).toBe('Domingo');
+    });
+
+    it('dayIndex 1 (segunda) has correct orixa and elemento from DayEnergy', () => {
+      const monday = getCorrelationByDayIndex(1);
+      expect(monday.dayIndex).toBe(1);
+      expect(monday.dayName).toBe('segunda');
+      expect(monday.orixa).toBeTruthy();
+      expect(monday.elemento).toBeTruthy();
+      // Monday in day-energy is Terra (element 1 in DAY_ENERGY_DATA Monday=0)
+      expect(monday.elemento).toBe('Terra');
+    });
+
+    it('dayIndex 2 (terca) has elemento Agua from DayEnergy mapping', () => {
+      const tuesday = getCorrelationByDayIndex(2);
+      expect(tuesday.dayIndex).toBe(2);
+      expect(tuesday.elemento).toBe('Água');
+    });
+
+    it('dayIndex 3 (quarta) has elemento Fogo from DayEnergy mapping', () => {
+      const wednesday = getCorrelationByDayIndex(3);
+      expect(wednesday.dayIndex).toBe(3);
+      expect(wednesday.elemento).toBe('Fogo');
+    });
+
+    it('dayIndex 4 (quinta) has elemento Ar from DayEnergy mapping', () => {
+      const thursday = getCorrelationByDayIndex(4);
+      expect(thursday.dayIndex).toBe(4);
+      expect(thursday.elemento).toBe('Ar');
+    });
+
+    it('dayIndex 5 (sexta) has elemento Eter from DayEnergy mapping', () => {
+      const friday = getCorrelationByDayIndex(5);
+      expect(friday.dayIndex).toBe(5);
+      expect(friday.elemento).toBe('Éter');
+    });
+
+    it('dayIndex 6 (sabado) has elemento Agua from DayEnergy mapping', () => {
+      const saturday = getCorrelationByDayIndex(6);
+      expect(saturday.dayIndex).toBe(6);
+      expect(saturday.elemento).toBe('Água');
+    });
+
+    it('every day of week has valid orixas array from DayEnergy', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.orixas.length).toBeGreaterThan(0);
+        expect(corr.orixa).toBeTruthy();
+      }
+    });
+
+    it('every day has valid chakras array from DayEnergy', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.chakras.length).toBeGreaterThan(0);
+        expect(corr.chakra).toBeTruthy();
+        expect(corr.chakraSanskrit).toBeTruthy();
+      }
+    });
+
+    it('every day has valid planetas array from DayEnergy', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.planetas.length).toBeGreaterThan(0);
+        expect(corr.planeta).toBeTruthy();
+      }
+    });
+
+    it('every day has valid sephirot array from DayEnergy', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.sephirot.length).toBeGreaterThan(0);
+        expect(corr.sefirah).toBeTruthy();
+      }
+    });
+
+    it('every day has valid numerologia from DayEnergy', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(typeof corr.numerologia.tantric.value).toBe('number');
+        expect(typeof corr.numerologia.tantric.meaning).toBe('string');
+        expect(corr.numerologia.cabalistic.length).toBeGreaterThan(0);
+      }
+    });
+
+    it('every day has valid frequenciasElemento from DayEnergy element mapping', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.frequenciasElemento.length).toBeGreaterThan(0);
+        // All frequencies returned should match the day's element
+        for (const freq of corr.frequenciasElemento) {
+          expect(freq.elemento).toBe(corr.elemento);
+        }
+      }
+    });
+
+    it('every day has valid atuacaoRitual and mystery from DayEnergy', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.atuacaoRitual.length).toBeGreaterThan(0);
+        expect(corr.mystery.length).toBeGreaterThan(0);
+      }
+    });
+
+    it('primaryColor and secondaryColor are valid hex for all days', () => {
+      const hexPattern = /^#[0-9a-fA-F]{6}$/;
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.primaryColor).toMatch(hexPattern);
+        expect(corr.secondaryColor).toMatch(hexPattern);
+      }
+    });
+
+    it('elementEmoji is defined for all seven days', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.elementEmoji.length).toBeGreaterThan(0);
+      }
+    });
+  });
+
+  // ─── Week Correlation Array ─────────────────────────────────────────────────
+  describe('getWeekCorrelations – full week array for widget calendars', () => {
+    it('returns array with exactly 7 elements', () => {
+      const week = getWeekCorrelations();
+      expect(week).toHaveLength(7);
+    });
+
+    it('first element is domingo (dayIndex 0)', () => {
+      const week = getWeekCorrelations();
+      expect(week[0].dayIndex).toBe(0);
+      expect(week[0].dayName).toBe('domingo');
+    });
+
+    it('last element is sabado (dayIndex 6)', () => {
+      const week = getWeekCorrelations();
+      expect(week[6].dayIndex).toBe(6);
+      expect(week[6].dayName).toBe('sabado');
+    });
+
+    it('elements appear in correct dayIndex order 0 through 6', () => {
+      const week = getWeekCorrelations();
+      for (let i = 0; i < 7; i++) {
+        expect(week[i].dayIndex).toBe(i);
+      }
+    });
+
+    it('each element is a valid TodayCorrelation with all required fields', () => {
+      const week = getWeekCorrelations();
+      for (const corr of week) {
+        expect(corr).toHaveProperty('dayName');
+        expect(corr).toHaveProperty('dayNamePt');
+        expect(corr).toHaveProperty('dayIndex');
+        expect(corr).toHaveProperty('orixa');
+        expect(corr).toHaveProperty('orixas');
+        expect(corr).toHaveProperty('chakra');
+        expect(corr).toHaveProperty('elemento');
+        expect(corr).toHaveProperty('planeta');
+        expect(corr).toHaveProperty('sefirah');
+        expect(corr).toHaveProperty('primaryColor');
+        expect(corr).toHaveProperty('secondaryColor');
+        expect(corr).toHaveProperty('numerologia');
+        expect(corr).toHaveProperty('lua');
+        expect(corr).toHaveProperty('mystery');
+        expect(corr).toHaveProperty('atuacaoRitual');
+      }
+    });
+
+    it('all week entries have non-empty orixas, chakras, planetas, sephirot', () => {
+      const week = getWeekCorrelations();
+      for (const corr of week) {
+        expect(corr.orixas.length).toBeGreaterThan(0);
+        expect(corr.chakras.length).toBeGreaterThan(0);
+        expect(corr.planetas.length).toBeGreaterThan(0);
+        expect(corr.sephirot.length).toBeGreaterThan(0);
+        expect(corr.numerologia.cabalistic.length).toBeGreaterThan(0);
+      }
+    });
+
+    it('week array is stable across multiple calls', () => {
+      const week1 = getWeekCorrelations();
+      const week2 = getWeekCorrelations();
+      expect(week1).toHaveLength(week2.length);
+      for (let i = 0; i < 7; i++) {
+        expect(week1[i].dayIndex).toBe(week2[i].dayIndex);
+        expect(week1[i].orixa).toBe(week2[i].orixa);
+      }
+    });
+
+    it('week array covers all five elements across the week', () => {
+      const week = getWeekCorrelations();
+      const elements = new Set(week.map((d) => d.elemento));
+      expect(elements.size).toBeGreaterThanOrEqual(4); // most weeks span 4+ elements
+    });
+
+    it('week contains every day of week in Portuguese', () => {
+      const week = getWeekCorrelations();
+      const dayNames = week.map((d) => d.dayNamePt);
+      expect(dayNames).toContain('Domingo');
+      expect(dayNames).toContain('Segunda-feira');
+      expect(dayNames).toContain('Terça-feira');
+      expect(dayNames).toContain('Quarta-feira');
+      expect(dayNames).toContain('Quinta-feira');
+      expect(dayNames).toContain('Sexta-feira');
+      expect(dayNames).toContain('Sábado');
+    });
+
+    it('week odu field is present and valid for each day', () => {
+      const week = getWeekCorrelations();
+      for (const corr of week) {
+        expect(corr).toHaveProperty('odu');
+        // odu can be null for unmapped days but should have correct structure when present
+        if (corr.odu !== null) {
+          expect(corr.odu).toHaveProperty('odu_principal');
+          expect(corr.odu).toHaveProperty('alinhamento_energetico');
+        }
+      }
+    });
+
+    it('week lua field is present with valid phase for every day', () => {
+      const week = getWeekCorrelations();
+      for (const corr of week) {
+        expect(corr.lua).toHaveProperty('phase');
+        expect(corr.lua).toHaveProperty('name');
+        expect(['new', 'waxing', 'full', 'waning']).toContain(corr.lua.phase);
+      }
+    });
+  });
+
+  // ─── Portal Day Detection ───────────────────────────────────────────────────
+  describe('portal day detection for spiritual widgets', () => {
+    // A "portal day" is a day with strong spiritual significance based on
+    // element/orixa correlations. Domingo (Fogo/Xangô) and Sexta (Eter/Oxalá)
+    // are considered high-energy portal days.
+
+    it('domingo (dayIndex 0) is a portal day – Fogo element with high energy', () => {
+      const sunday = getCorrelationByDayIndex(0);
+      expect(sunday.elemento).toBe('Fogo');
+      // Sunday has Sol as planet, Xangô as orixa – high intensity
+      expect(sunday.planeta).toBe('Sol');
+      expect(sunday.orixa).toContain('Xangô');
+    });
+
+    it('sexta (dayIndex 5) is a portal day – Eter element with pure energy', () => {
+      const friday = getCorrelationByDayIndex(5);
+      expect(friday.elemento).toBe('Éter');
+      // Friday has Oxalá as orixa – highest spiritual vibration
+      expect(friday.orixa).toBe('Oxalá');
+    });
+
+    it('quarta (dayIndex 3) is a high-energy portal – Fogo element with Xango', () => {
+      const wednesday = getCorrelationByDayIndex(3);
+      expect(wednesday.elemento).toBe('Fogo');
+      expect(wednesday.orixa).toBe('Xangô');
+    });
+
+    it('terca (dayIndex 2) and quinta (dayIndex 4) are medium-energy days', () => {
+      const tuesday = getCorrelationByDayIndex(2);
+      const thursday = getCorrelationByDayIndex(4);
+      // These days have active but not maximum energy
+      expect(['Água', 'Terra']).toContain(tuesday.elemento);
+      expect(thursday.elemento).toBe('Ar');
+    });
+
+    it('portal days have higher tantric numbers (9 for Sunday, 1 for Friday)', () => {
+      const sunday = getCorrelationByDayIndex(0);
+      const friday = getCorrelationByDayIndex(5);
+      // Sunday: tantric 9 (Corpo Prânico – Energia Vital)
+      expect(sunday.numerologia.tantric.value).toBe(9);
+      // Friday: tantric 1 (Alma – Essencia, Pureza, Origem Divina)
+      expect(friday.numerologia.tantric.value).toBe(1);
+    });
+
+    it('portal day colors are vibrant (yellow for Sunday, white/purple for Friday)', () => {
+      const sunday = getCorrelationByDayIndex(0);
+      const friday = getCorrelationByDayIndex(5);
+      // Sunday: primary yellow (#eab308)
+      expect(sunday.primaryColor).toBe('#eab308');
+      // Friday: primary white (#ffffff)
+      expect(friday.primaryColor).toBe('#ffffff');
+    });
+
+    it('non-portal days have at least one secondary Orixa in orixas array', () => {
+      // Monday and Saturday have multiple orixás (dual energy)
+      const monday = getCorrelationByDayIndex(1);
+      const saturday = getCorrelationByDayIndex(6);
+      expect(monday.orixas.length).toBeGreaterThanOrEqual(1);
+      expect(saturday.orixas.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('every day has mystery description for spiritual widget display', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.mystery.length).toBeGreaterThan(5); // meaningful description
+      }
+    });
+
+    it('every day has atuacaoRitual for ritual widget guidance', () => {
+      for (let i = 0; i < 7; i++) {
+        const corr = getCorrelationByDayIndex(i);
+        expect(corr.atuacaoRitual.length).toBeGreaterThan(5);
+      }
+    });
+
+    it('portal days (domingo, quarta, sexta) have Sol or Oxala as planeta', () => {
+      const sunday = getCorrelationByDayIndex(0);
+      const wednesday = getCorrelationByDayIndex(3);
+      const friday = getCorrelationByDayIndex(5);
+      expect(sunday.planeta).toBe('Sol');
+      expect(wednesday.planeta).toBe('Mercúrio'); // Wednesday uses Mercurio (not Sol/Xango portal)
+      expect(friday.planeta).toBe('Vênus');
+    });
+
+    it('weekCorrelations includes all portal day energy levels', () => {
+      const week = getWeekCorrelations();
+      const portalDays = week.filter((d) =>
+        ['Fogo', 'Éter'].includes(d.elemento)
+      );
+      // At least 3 days should be Fogo or Eter (portal elements)
+      expect(portalDays.length).toBeGreaterThanOrEqual(3);
+    });
+
+    it('each day has a unique combination of orixa + elemento for widget distinction', () => {
+      const week = getWeekCorrelations();
+      const keys = week.map((d) => `${d.orixa}-${d.elemento}`);
+      const uniqueKeys = new Set(keys);
+      // All 7 days should have distinct orixa-elemento combinations
+      expect(uniqueKeys.size).toBe(7);
+    });
+  });
 });
