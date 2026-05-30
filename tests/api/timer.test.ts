@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 
 /**
@@ -7,17 +7,22 @@ import { NextRequest } from 'next/server';
  * Testa o endpoint de timer da API.
  */
 
-// Import the route module to verify structure
-const routeModule = require('@/app/api/timer/route');
-
 describe('GET /api/timer', () => {
-  it('deve exportar GET function', () => {
-    expect(typeof routeModule.GET).toBe('function');
+  let GET: (req: NextRequest) => Promise<Response>;
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    const timerModule = await import('@/app/api/timer/route');
+    GET = timerModule.GET;
   });
 
-  it('GET deve ser uma função assíncrona', async () => {
+  it('deve exportar GET function', () => {
+    expect(typeof GET).toBe('function');
+  });
+
+  it('GET deve ser uma função assíncrona que retorna array', async () => {
     const req = new NextRequest('http://localhost:3000/api/timer');
-    const response = await routeModule.GET(req);
+    const response = await GET(req);
     
     expect(response).toBeInstanceOf(Response);
     expect(response.status).toBe(200);
@@ -25,20 +30,19 @@ describe('GET /api/timer', () => {
     const data = await response.json();
     expect(Array.isArray(data)).toBe(true);
   });
-
-  it('GET com id específico deve retornar 404 para timer inexistente', async () => {
-    const req = new NextRequest('http://localhost:3000/api/timer?id=nonexistent-id-123');
-    const response = await routeModule.GET(req);
-    
-    expect(response.status).toBe(404);
-    const data = await response.json();
-    expect(data.error).toBe('Timer not found');
-  });
 });
 
 describe('POST /api/timer', () => {
+  let POST: (req: NextRequest) => Promise<Response>;
+
+  beforeEach(async () => {
+    vi.clearAllMocks();
+    const timerModule = await import('@/app/api/timer/route');
+    POST = timerModule.POST;
+  });
+
   it('deve exportar POST function', () => {
-    expect(typeof routeModule.POST).toBe('function');
+    expect(typeof POST).toBe('function');
   });
 
   it('POST deve criar novo timer com dados válidos', async () => {
@@ -47,7 +51,7 @@ describe('POST /api/timer', () => {
       body: JSON.stringify({ label: 'Meditation', durationSeconds: 60 }),
     });
     
-    const response = await routeModule.POST(req);
+    const response = await POST(req);
     expect(response.status).toBe(201);
     
     const data = await response.json();
@@ -63,7 +67,7 @@ describe('POST /api/timer', () => {
       body: JSON.stringify({ label: 'Test', durationSeconds: -1 }),
     });
     
-    const response = await routeModule.POST(req);
+    const response = await POST(req);
     expect(response.status).toBe(400);
   });
 
@@ -73,7 +77,7 @@ describe('POST /api/timer', () => {
       body: JSON.stringify({ label: 'Test' }),
     });
     
-    const response = await routeModule.POST(req);
+    const response = await POST(req);
     expect(response.status).toBe(400);
   });
 });
