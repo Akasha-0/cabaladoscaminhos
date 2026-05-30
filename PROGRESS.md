@@ -1,8 +1,7 @@
 **Última atualização:** 2026-05-30
-**Sprints completados:** 205
+**Sprints completados:** 206
 **Build status:** ✅ Build OK (522 routes)
-**Tests:** ✅ 1266 passing, 14 skipped (68 test files)
-## ✅ IMPLEMENTADO E FUNCIONANDO
+**Tests:** ✅ 1383 passing, 14 skipped (72 test files)
 
 ### Core Infrastructure
 - Next.js 16.2.6 + React 19 + App Router (Turbopack)
@@ -227,7 +226,7 @@
 |**203** | **Bug Fixes** | spiritual-engine.ts parse errors, mapa variable init, rate-limit test typo, deep correlations |
 |**204** | **Dashboard Enhancements** | Accessibility improvements, MapaAlmaDashboard polish, OnboardingWizard polish, /dashboard/perfil page |
 |**205** | **A11y & Profile Fix** | Screen reader support, TarotCard navigation, OnboardingWizard a11y, profile page upgrade redirect fix |
-
+|**206** | **Test Fixes** | ChakraPanel test parse error, NumerologiaCard/OduCardFull/TarotCard test fixes (15 tests) |
 ## 🏗️ DECISÕES ARQUITETURAIS
 
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
