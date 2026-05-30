@@ -219,10 +219,29 @@ export function getGradeColor(grade: QualityReport['grade']): string {
 export class MetricResultBuilder {
   private result: Partial<MetricResult>
   constructor(id: string, category: MetricCategory, name?: string) {
+    let actualCategory = category;
+    let actualName = name ?? id;
+    
+    // Auto-swap if arguments were passed as (id, name, category) instead of (id, category, name)
+    const validCategories = [
+      'spiritual_correlations',
+      'ai_integration',
+      'performance',
+      'ui_design',
+      'ux_design',
+      'architecture',
+      'qa_testing',
+      'documentation'
+    ];
+    if (name && validCategories.includes(name) && !validCategories.includes(category)) {
+      actualCategory = name as MetricCategory;
+      actualName = category;
+    }
+    
     this.result = {
       id,
-      name: name ?? id,
-      category,
+      name: actualName,
+      category: actualCategory,
       timestamp: new Date(),
     }
   }
