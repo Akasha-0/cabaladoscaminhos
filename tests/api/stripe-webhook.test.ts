@@ -2,14 +2,16 @@
  * Stripe Webhook Tests
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// Set env BEFORE importing the route module
-vi.stubEnv('STRIPE_WEBHOOK_SECRET', 'whsec_test');
-vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test_mock');
-vi.stubEnv('STRIPE_PRICE_BASIC', 'price_basic');
-vi.stubEnv('STRIPE_PRICE_PREMIUM', 'price_premium');
-vi.stubEnv('STRIPE_PRICE_ENTERPRISE', 'price_enterprise');
+// ============================================
+// Setup - Must happen before route is imported
+// ============================================
+const STRIPE_WEBHOOK_SECRET = 'whsec_test';
+const STRIPE_SECRET_KEY = 'sk_test_mock';
+const STRIPE_PRICE_BASIC = 'price_basic';
+const STRIPE_PRICE_PREMIUM = 'price_premium';
+const STRIPE_PRICE_ENTERPRISE = 'price_enterprise';
 
 // Mock modules before import
 vi.mock('@/lib/payments/stripe', () => ({
@@ -42,7 +44,23 @@ import { prisma } from '@/lib/prisma';
 
 // Import route AFTER mocks are set up
 import { NextRequest } from 'next/server';
-import { POST } from '@/app/api/stripe/webhook/route';
+
+// Helper to create fresh route with env
+async function getRouteWithEnv() {
+  // Set env before importing
+  vi.stubEnv('STRIPE_WEBHOOK_SECRET', STRIPE_WEBHOOK_SECRET);
+  vi.stubEnv('STRIPE_SECRET_KEY', STRIPE_SECRET_KEY);
+  vi.stubEnv('STRIPE_PRICE_BASIC', STRIPE_PRICE_BASIC);
+  vi.stubEnv('STRIPE_PRICE_PREMIUM', STRIPE_PRICE_PREMIUM);
+  vi.stubEnv('STRIPE_PRICE_ENTERPRISE', STRIPE_PRICE_ENTERPRISE);
+  
+  // Reset modules to re-import route with new env
+  vi.resetModules();
+  
+  // Import fresh route
+  const { POST } = await import('@/app/api/stripe/webhook/route');
+  return POST;
+}
 
 // Helpers
 function createWebhookRequest(body: string, headers: Record<string, string> = {}) {
@@ -61,9 +79,15 @@ function createMockEvent(type: string, data: Record<string, unknown> = {}) {
 describe('POST /api/stripe/webhook', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.stubEnv('STRIPE_WEBHOOK_SECRET', STRIPE_WEBHOOK_SECRET);
+    vi.stubEnv('STRIPE_SECRET_KEY', STRIPE_SECRET_KEY);
+    vi.stubEnv('STRIPE_PRICE_BASIC', STRIPE_PRICE_BASIC);
+    vi.stubEnv('STRIPE_PRICE_PREMIUM', STRIPE_PRICE_PREMIUM);
+    vi.stubEnv('STRIPE_PRICE_ENTERPRISE', STRIPE_PRICE_ENTERPRISE);
   });
 
   it('1. POST rejects without stripe-signature header → 400', async () => {
+    const POST = await getRouteWithEnv();
     const body = JSON.stringify(createMockEvent('checkout.session.completed', {
       customer: 'cus_test',
       metadata: { userId: 'user_123' },
@@ -76,6 +100,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('2. POST with valid checkout.session.completed event → 200 + received: true', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', {
       customer: 'cus_test123',
       metadata: { userId: 'user_456', plano: 'premium' },
@@ -97,6 +122,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('3. POST with valid subscription.deleted event → 200', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('customer.subscription.deleted', {
       id: 'sub_deleted',
       customer: 'cus_test',
@@ -114,6 +140,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('4. POST with valid subscription.updated event → 200', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('customer.subscription.updated', {
       id: 'sub_updated',
       customer: 'cus_test',
@@ -133,6 +160,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('5. POST with unhandled event type → 200', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('invoice.paid', { id: 'in_test' });
     stripe.webhooks.constructEvent.mockReturnValue(eventData);
     const body = JSON.stringify(eventData);
@@ -143,6 +171,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('6. POST with invalid signature → 400', async () => {
+    const POST = await getRouteWithEnv();
     const body = JSON.stringify(createMockEvent('checkout.session.completed', { metadata: { userId: 'user_fail' } }));
     stripe.webhooks.constructEvent.mockImplementation(() => { throw new Error('Invalid signature'); });
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_invalid' });
@@ -153,6 +182,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('7. Missing userId in checkout metadata → graceful skip (no error)', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', { customer: 'cus_no_user', metadata: {} });
     stripe.webhooks.constructEvent.mockReturnValue(eventData);
     const body = JSON.stringify(eventData);
@@ -163,6 +193,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('8. Checkout with no subscription ID uses metadata plano', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', {
       customer: 'cus_no_sub',
       metadata: { userId: 'user_no_sub', plano: 'basico' },
@@ -178,6 +209,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('9. Subscription deleted with no user found → graceful skip', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('customer.subscription.deleted', { id: 'sub_orphan', customer: 'cus_orphan' });
     stripe.webhooks.constructEvent.mockReturnValue(eventData);
     prisma.user.findFirst.mockResolvedValue(null);
@@ -189,6 +221,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('10. Subscription updated with no user found → graceful skip', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('customer.subscription.updated', { id: 'sub_unknown', customer: 'cus_unknown', status: 'active' });
     stripe.webhooks.constructEvent.mockReturnValue(eventData);
     prisma.user.findFirst.mockResolvedValue(null);
@@ -200,6 +233,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('11. Checkout with enterprise plan enables all modules', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', {
       customer: 'cus_enterprise',
       metadata: { userId: 'user_enterprise' },
@@ -224,6 +258,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('12. Checkout with basic plan limits modules to planets and letters', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', {
       customer: 'cus_basic',
       metadata: { userId: 'user_basic' },
@@ -255,6 +290,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('13. Subscription retrieve error → falls back to metadata plano', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', {
       customer: 'cus_error',
       metadata: { userId: 'user_error', plano: 'premium' },
@@ -274,6 +310,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('14. Multiple rapid webhooks all return 200', async () => {
+    const POST = await getRouteWithEnv();
     const events = [
       { type: 'checkout.session.completed', data: { object: { customer: 'cus_multi_1', metadata: { userId: 'user_multi_1' } } } },
       { type: 'customer.subscription.updated', data: { object: { id: 'sub_multi_1', customer: 'cus_multi_1', status: 'active' } } },
@@ -293,6 +330,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('15. Route module exports POST handler', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', {
       customer: 'cus_export',
       metadata: { userId: 'user_export' },
@@ -308,6 +346,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('16. Route uses request.text() for body parsing', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', { metadata: { userId: 'user_text' } });
     const bodyString = JSON.stringify(eventData);
     stripe.webhooks.constructEvent.mockImplementation((body, sig, secret) => {
@@ -322,6 +361,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('17. Route handles empty metadata gracefully', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', {
       customer: 'cus_empty',
       metadata: {},
@@ -337,6 +377,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('18. Route handles subscription with no price items', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('customer.subscription.updated', {
       id: 'sub_no_items',
       customer: 'cus_no_items',
@@ -353,6 +394,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('19. Route handles unknown price ID gracefully', async () => {
+    const POST = await getRouteWithEnv();
     const eventData = createMockEvent('customer.subscription.updated', {
       id: 'sub_unknown_price',
       customer: 'cus_unknown_price',
@@ -372,6 +414,7 @@ describe('POST /api/stripe/webhook', () => {
   });
 
   it('20. constructEvent receives body as string not JSON', async () => {
+    const POST = await getRouteWithEnv();
     let receivedBodyType = 'unknown';
     const eventData = createMockEvent('checkout.session.completed', { metadata: { userId: 'user_string' } });
     stripe.webhooks.constructEvent.mockImplementation((body: unknown) => {
