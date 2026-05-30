@@ -1,7 +1,7 @@
 **Última atualização:** 2026-05-30
 **Sprints completados:** 195
 **Build status:** ✅ Build OK
-**Tests:** ✅ 1000 passing, 14 skipped (59 test files)
+**Tests:** ✅ 997 passing, 14 skipped (59 test files)
 
 ## ✅ IMPLEMENTADO E FUNCIONANDO
 
@@ -176,7 +176,7 @@
 ### Dashboard Widgets (303+ widgets organized by category)
 
 | Category | Count | Examples |
-|----------|-------|---------|
+|----------|-------|----------|
 | Spiritual AI | 15 | Correlation, Numerology, Odu, Astrology... |
 | AI & ML | 20 | VectorDB, LLM, RAG, AutoML... |
 | DevOps | 14 | Cloud, K8s, CI/CD, Observability... |
@@ -237,7 +237,7 @@
 - Dashboard hooks: 15
 - API routes: 16+
 - Test files: 59
-- **Tests: 1000 passing**
+- **Tests: 997 passing**
 - **Themes: 8 (dark, light, midnight, synthwave, forest, sunset, ocean, lavender)**
 - **Accessibility Options: 6 (font size, contrast, motion, screen reader, keyboard, focus)**
 - **Responsive Breakpoints: 4 (mobile, tablet, desktop, wide)**
