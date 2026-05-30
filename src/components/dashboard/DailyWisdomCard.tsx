@@ -277,7 +277,7 @@ function ElementalBadge({ element }: { element: ElementalFocus }) {
   const elementInfo = ELEMENTS[element.element];
   return (
     <div className="flex items-center gap-2 p-2 rounded-lg bg-slate-700/30">
-      <div className={cn('p-1.5 rounded-lg bg-slate-600', elementInfo.color)}>{element.icon}</div>
+      <div className={cn('p-1.5 rounded-lg bg-slate-600', elementInfo.color)}>{elementInfo.icon}</div>
       <div>
         <p className="text-xs font-medium text-white">{element.element}</p>
         <p className="text-xs text-slate-400">{element.description}</p>
