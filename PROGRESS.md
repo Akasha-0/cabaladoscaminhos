@@ -255,6 +255,8 @@
 |**237** | **Correlação Elementar e Lunar** | New frequency-element.ts, moon-chakra.ts, planet-sound.ts, zodiac-chakra.ts correlations, 4388 tests total |
 |**238** | **Predictive Synthesis Engine v1.0** | PredictiveSynthesisEngine, PredictiveSynthesisPanel, 27 tests for synthesis |
 |**239** | **Chakra-Day Correlation** | chakra-day.ts correlation, 27 tests, chakra-day.test.ts |
+|**240** | **Orixá-Herb Correlation (Fitoenergética)** | orixa-herb.ts, 55 tests, 9 Orixás mapeados |
+|**241** | **Dashboard Orixá Page** | dashboard/orixa/page.tsx, Orixá-Herb + Orixá-Chakra integration |
 1. **Widget-Based Dashboard**: 303+ widgets, 24 categorias
 2. **Multi-Agent Development**: Agentes paralelos para componentes
 3. **Drag-Drop**: @dnd-kit/core + @dnd-kit/sortable + DragOverlay
@@ -268,5 +270,6 @@
 11. **Accessibility**: Full accessibility settings for all users
 12. **Predictive Synthesis Engine**: Motor de Síntese Consciencial, 5 insights de alta correlação
 13. **Fitoenergética**: orixa-herb.ts com 9 Orixás e 7 categorias de ervas
-**Tests: ✅ 4497 passing, 22 skipped (457 test files)**
-**240 Sprints Completados: 240 🎉**
+14. **Dashboard Orixá**: Página integrando Orixá-Herb + Orixá-Chakra
+**Tests: ✅ 4550 passing, 22 skipped (461 test files)**
+**241 Sprints Completados: 241 🎉**

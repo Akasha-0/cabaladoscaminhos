@@ -236,7 +236,6 @@ describe('Chakra-Day Correlation', () => {
   });
 
   describe('CHAKRA_DAY_MAPPINGS constant', () => {
-  describe('CHAKRA_DAY_MAPPINGS constant', () => {
     it('should have mappings for all seven days', () => {
       const dayNames = [
         'Segunda-feira', // 0
