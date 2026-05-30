@@ -50,7 +50,7 @@ const ORIXAS_AFFIRMATIONS: Record<string, string[]> = {
 function getDailyAffirmation(orixaName?: string): string {
   const today = new Date();
   const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000);
-  
+
   // Get orixa-specific or fallback
   let affirmations: string[];
   if (orixaName && ORIXAS_AFFIRMATIONS[orixaName]) {
@@ -58,7 +58,7 @@ function getDailyAffirmation(orixaName?: string): string {
   } else {
     affirmations = DAILY_AFFIRMATIONS;
   }
-  
+
   return affirmations[dayOfYear % affirmations.length];
 }
 
@@ -104,19 +104,14 @@ export function AffirmationWidget({ userData, className = '' }: AffirmationWidge
       <CardContent className="pt-4 space-y-4">
         {/* Main affirmation card */}
         <div className="relative p-5 rounded-xl bg-gradient-to-br from-pink-500/10 to-violet-500/10 border border-pink-500/20 overflow-hidden">
-<<<<<<< Updated upstream
           {/* Decorative quote */}
-          <div className="absolute top-2 left-2 text-4xl text-pink-500/20 font-serif">&quot;</div>
-=======
-        {/* Decorative quote */}
- <div className="absolute top-2 left-2 text-4xl text-pink-500/20 font-serif">&ldquo;</div>
->>>>>>> Stashed changes
-          
+          <div className="absolute top-2 left-2 text-4xl text-pink-500/20 font-serif">"</div>
+
           <div className="relative z-10">
             <p className="text-lg text-slate-200 leading-relaxed italic pl-6">
               {affirmation}
             </p>
-            
+
             {/* Source */}
             <div className="flex items-center gap-2 mt-4 pl-6">
               <Heart className="w-4 h-4 text-pink-400" />
@@ -132,7 +127,7 @@ export function AffirmationWidget({ userData, className = '' }: AffirmationWidge
 
         {/* Actions */}
         <div className="flex items-center justify-between">
-          <button 
+          <button
             onClick={handleCopy}
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/50 text-slate-300 hover:text-white hover:bg-slate-700/50 transition-all border border-slate-700/30"
           >
