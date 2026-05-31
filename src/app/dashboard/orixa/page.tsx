@@ -123,15 +123,6 @@ export default function OrixaPage() {
                 <p className="text-xs text-blue-300 mt-2">
                   {chakraData.elemento} • {chakraData.frequencia}
                 </p>
-                <div className="flex gap-1 mt-3 flex-wrap">
-                  {chakraData.cores.map((cor, i) => (
-                    <div
-                      key={i}
-                      className="w-6 h-6 rounded-full border border-white/20"
-                      style={{ backgroundColor: cor }}
-                      title={cor}
-                    />
-                  ))}
                 </div>
               </>
             ) : (
