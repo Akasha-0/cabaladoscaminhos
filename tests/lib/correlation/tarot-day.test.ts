@@ -142,11 +142,15 @@ describe('tarot-day', () => {
 
     it('returns all expected days', () => {
       const result = getAllTarotDays();
-      const days = result.map(m => m.dia).sort();
-      expect(days).toEqual([
-        'Domingo', 'Quarta-feira', 'Quinta-feira',
-        'Sábado', 'Segunda-feira', 'Sexta-feira', 'Terça-feira'
-      ]);
+      const days = result.map(m => m.dia);
+      expect(days.length).toBe(7);
+      expect(days).toContain('Domingo');
+      expect(days).toContain('Quarta-feira');
+      expect(days).toContain('Quinta-feira');
+      expect(days).toContain('Sábado');
+      expect(days).toContain('Segunda-feira');
+      expect(days).toContain('Sexta-feira');
+      expect(days).toContain('Terça-feira');
     });
 
     it('each mapping has required fields', () => {
