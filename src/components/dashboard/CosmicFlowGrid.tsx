@@ -342,11 +342,11 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
   return (
     <div className="space-y-4">
       {/* Row 1: Unified Spiritual Flow (Full Width) */}
-      <GlowEffect variant="aurora" intensity="medium" animated className="rounded-2xl">
+      <GlowEffect variant="aurora" intensity="medium" animated className="rounded-2xl animate-in slide-in-from-bottom-8 duration-500">
         <UnifiedSpiritualFlow />
       </GlowEffect>
       {/* Row 1.5: Sacred Tree of Life */}
-      <GlowEffect variant="gold" intensity="low" className="rounded-2xl">
+      <GlowEffect variant="gold" intensity="low" className="rounded-2xl animate-in slide-in-from-bottom-8 duration-500 delay-100">
         <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-950/80 backdrop-blur-sm border border-amber-500/20">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -372,7 +372,7 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
       {/* Row 2: Spiritual Radar + Tools */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {/* Spiritual Radar Chart */}
-        <GlowEffect variant="purple" intensity="medium" className="rounded-2xl">
+        <GlowEffect variant="purple" intensity="medium" className="rounded-2xl animate-in slide-in-from-bottom-8 duration-500 delay-200">
           <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-950/80 backdrop-blur-sm border border-violet-500/20">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
@@ -401,56 +401,62 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
           </div>
         </GlowEffect>
         {/* Tools Panel */}
-        <SectionCard
-          title="Ferramentas Místicas"
-          icon={<Globe className="w-4 h-4" />}
-          variant="secondary"
-        >
-          <UnifiedToolsPanel userData={userData} />
-        </SectionCard>
+        <div className="animate-in slide-in-from-bottom-8 duration-500 delay-300">
+          <SectionCard
+            title="Ferramentas Místicas"
+            icon={<Globe className="w-4 h-4" />}
+            variant="secondary"
+          >
+            <UnifiedToolsPanel userData={userData} />
+          </SectionCard>
+        </div>
       </div>
       {/* Row 3: Divination + Practice */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Divination Panel */}
-        <SectionCard
-          title="Divinação Integrada"
-          icon={<TreeDeciduous className="w-4 h-4" />}
-          variant="primary"
-        >
-          <UnifiedDivinationPanel userData={userData} />
-        </SectionCard>
-
-        {/* Practice Panel */}
-        <SectionCard
-          title="Prática do Dia"
-          icon={<Sparkles className="w-4 h-4" />}
-          variant="accent"
-        >
-          <UnifiedPracticePanel userData={userData} />
-        </SectionCard>
-      </div>
-
-      {/* Row 4: Quick Actions */}
-      <div className="flex flex-wrap gap-3 justify-center">
-        {[
-          { icon: <Sun className="w-4 h-4" />, label: 'Consultar Odu', color: 'amber' },
-          { icon: <Moon className="w-4 h-4" />, label: 'Ver Ritais', color: 'violet' },
-          { icon: <Star className="w-4 h-4" />, label: 'Meditação', color: 'emerald' },
-          { icon: <Compass className="w-4 h-4" />, label: 'Mapa Natal', color: 'cyan' },
-        ].map((action) => (
-          <button
-            key={action.label}
-            className={cn(
-              'flex items-center gap-2 px-4 py-2 rounded-xl',
-              'bg-slate-800/50 border border-slate-700/30',
-              'hover:border-amber-500/40 hover:bg-slate-800/80',
-              'transition-all duration-300 text-sm font-medium text-slate-300'
-            )}
+        <div className="animate-in slide-in-from-bottom-8 duration-500 delay-400">
+          <SectionCard
+            title="Divinação Integrada"
+            icon={<TreeDeciduous className="w-4 h-4" />}
+            variant="primary"
           >
-            {action.icon}
-            <span>{action.label}</span>
-          </button>
-        ))}
+            <UnifiedDivinationPanel userData={userData} />
+          </SectionCard>
+        </div>
+        {/* Practice Panel */}
+        <div className="animate-in slide-in-from-bottom-8 duration-500 delay-500">
+          <SectionCard
+            title="Prática do Dia"
+            icon={<Sparkles className="w-4 h-4" />}
+            variant="accent"
+          >
+            <UnifiedPracticePanel userData={userData} />
+          </SectionCard>
+        </div>
+      </div>
+      {/* Row 4: Quick Actions */}
+      <div className="animate-in slide-in-from-bottom-8 duration-500 delay-600">
+        <div className="flex flex-wrap gap-3 justify-center">
+          {[
+            { icon: <Sun className="w-4 h-4" />, label: 'Consultar Odu', color: 'amber' },
+            { icon: <Moon className="w-4 h-4" />, label: 'Ver Ritais', color: 'violet' },
+            { icon: <Star className="w-4 h-4" />, label: 'Meditação', color: 'emerald' },
+            { icon: <Compass className="w-4 h-4" />, label: 'Mapa Natal', color: 'cyan' },
+          ].map((action) => (
+            <button
+              key={action.label}
+              className={cn(
+                'flex items-center gap-2 px-4 py-2 rounded-xl',
+                'bg-slate-800/50 border border-slate-700/30',
+                'hover:border-amber-500/40 hover:bg-slate-800/80',
+                'transition-all duration-300 text-sm font-medium text-slate-300'
+              )}
+            >
+              {action.icon}
+              <span>{action.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
