@@ -684,7 +684,6 @@ interface Ritual {
   passos: string[];
   significado: string;
 }
-}
 
 export async function GET(request: NextRequest) {
   try {
