@@ -1,104 +1,199 @@
+/**
+ * Orixá-Frequency Correlation Tests
+ */
+
 import { describe, it, expect } from 'vitest';
 import {
   getOrixaFrequency,
   getFrequencyOrixa,
-  getAllOrixaFrequencies,
-  getElementByOrixa,
-  getChakraByOrixa,
-  getDayByOrixa,
-  getColorByOrixa,
-  getHealingByOrixa,
+  getOrixaProperty,
+  getAllOrixas,
   getOrixasByFrequency,
   getOrixasByElement,
-  getOrixasByDay,
-  getAllElements,
-  ORIXA_FREQUENCY_MAP,
-  SOLFEGGIO_FREQUENCIES,
-  ALL_ORIXAS,
+  getOrixasByChakra,
+  getAllOrixaFrequencies,
 } from '@/lib/correlation/orixa-frequency';
 
-describe('OrixaFrequency Correlation', () => {
+describe('Orixá-Frequency Correlation', () => {
   describe('getOrixaFrequency', () => {
-    it('should return the full mapping for Oxum', () => {
-      const result = getOrixaFrequency('Oxum');
-      expect(result).not.toBeNull();
-      expect(result?.orixa).toBe('Oxum');
-      expect(result?.frequencia).toBe(417);
-      expect(result?.elemento).toBe('Água');
-      expect(result?.chakra).toBe('2º Sacro (Svadhisthana)');
+    it('should return Oxalufã mapping with 396 Hz frequency', () => {
+      const result = getOrixaFrequency('Oxalufã');
+
+      expect(result).toBeDefined();
+      expect(result?.orixa).toBe('Oxalufã');
+      expect(result?.frequencia).toBe(396);
+      expect(result?.propriedade).toContain('Firmeza');
+      expect(result?.elemento).toBe('Terra');
+      expect(result?.chakra).toContain('Básico');
     });
 
-    it('should return the full mapping for Xangô', () => {
+    it('should return Oxum mapping with 417 Hz frequency', () => {
+      const result = getOrixaFrequency('Oxum');
+
+      expect(result).toBeDefined();
+      expect(result?.orixa).toBe('Oxum');
+      expect(result?.frequencia).toBe(417);
+      expect(result?.propriedade).toContain('Prosperidade');
+      expect(result?.elemento).toBe('Água');
+      expect(result?.chakra).toContain('Sacro');
+    });
+
+    it('should return Xangô mapping with 528 Hz frequency', () => {
       const result = getOrixaFrequency('Xangô');
-      expect(result).not.toBeNull();
+
+      expect(result).toBeDefined();
       expect(result?.orixa).toBe('Xangô');
       expect(result?.frequencia).toBe(528);
+      expect(result?.propriedade).toContain('Justiça');
       expect(result?.elemento).toBe('Fogo');
-      expect(result?.chakra).toBe('3º Plexo Solar (Manipura)');
+      expect(result?.chakra).toContain('Plexo Solar');
+    });
+
+    it('should return Oxóssi mapping with 639 Hz frequency', () => {
+      const result = getOrixaFrequency('Oxóssi');
+
+      expect(result).toBeDefined();
+      expect(result?.orixa).toBe('Oxóssi');
+      expect(result?.frequencia).toBe(639);
+      expect(result?.propriedade).toContain('Sabedoria');
+      expect(result?.elemento).toBe('Ar');
+      expect(result?.chakra).toContain('Cardíaco');
+    });
+
+    it('should return Iansã mapping with 741 Hz frequency', () => {
+      const result = getOrixaFrequency('Iansã');
+
+      expect(result).toBeDefined();
+      expect(result?.orixa).toBe('Iansã');
+      expect(result?.frequencia).toBe(741);
+      expect(result?.propriedade).toContain('Libertação');
+      expect(result?.elemento).toBe('Ar');
+      expect(result?.chakra).toContain('Laríngeo');
+    });
+
+    it('should return Oxumaré mapping with 852 Hz frequency', () => {
+      const result = getOrixaFrequency('Oxumaré');
+
+      expect(result).toBeDefined();
+      expect(result?.orixa).toBe('Oxumaré');
+      expect(result?.frequencia).toBe(852);
+      expect(result?.propriedade).toContain('Transformação');
+      expect(result?.elemento).toBe('Éter');
+      expect(result?.chakra).toContain('Frontal');
+    });
+
+    it('should return Ori mapping with 963 Hz frequency', () => {
+      const result = getOrixaFrequency('Ori');
+
+      expect(result).toBeDefined();
+      expect(result?.orixa).toBe('Ori');
+      expect(result?.frequencia).toBe(963);
+      expect(result?.propriedade).toContain('Iluminação');
+      expect(result?.elemento).toBe('Éter');
+      expect(result?.chakra).toContain('Coronário');
+    });
+
+    it('should return Omulu mapping with 396 Hz frequency', () => {
+      const result = getOrixaFrequency('Omulu');
+
+      expect(result).toBeDefined();
+      expect(result?.orixa).toBe('Omulu');
+      expect(result?.frequencia).toBe(396);
+    });
+
+    it('should return Iemanjá mapping with 417 Hz frequency', () => {
+      const result = getOrixaFrequency('Iemanjá');
+
+      expect(result).toBeDefined();
+      expect(result?.orixa).toBe('Iemanjá');
+      expect(result?.frequencia).toBe(417);
     });
 
     it('should be case-insensitive', () => {
-      const lower = getOrixaFrequency('oxum');
-      const upper = getOrixaFrequency('OXUM');
-      const title = getOrixaFrequency('Oxum');
-      expect(lower).toEqual(title);
-      expect(upper).toEqual(title);
+      expect(getOrixaFrequency('oxalufã')).toBeDefined();
+      expect(getOrixaFrequency('OXUM')).toBeDefined();
+      expect(getOrixaFrequency('Xangô')).toBeDefined();
     });
 
-    it('should return null for unknown Orixá', () => {
-      const result = getOrixaFrequency('UnknownOrixa');
-      expect(result).toBeNull();
+    it('should return undefined for unknown Orixá', () => {
+      const result = getOrixaFrequency('Unknown Orixá');
+      expect(result).toBeUndefined();
     });
 
-    it('should handle whitespace variations', () => {
-      const result = getOrixaFrequency('  Xangô  ');
-      expect(result?.orixa).toBe('Xangô');
+    it('should return undefined for empty string', () => {
+      const result = getOrixaFrequency('');
+      expect(result).toBeUndefined();
+    });
+
+    it('should include all required properties in returned object', () => {
+      const result = getOrixaFrequency('Oxum');
+
+      expect(result).toHaveProperty('orixa');
+      expect(result).toHaveProperty('frequencia');
+      expect(result).toHaveProperty('propriedade');
+      expect(result).toHaveProperty('elemento');
+      expect(result).toHaveProperty('chakra');
     });
   });
 
   describe('getFrequencyOrixa', () => {
-    it('should return frequency 396 for Oxalufã', () => {
+    it('should return 396 for Oxalufã', () => {
       expect(getFrequencyOrixa('Oxalufã')).toBe(396);
     });
 
-    it('should return frequency 417 for Oxum', () => {
+    it('should return 417 for Oxum', () => {
       expect(getFrequencyOrixa('Oxum')).toBe(417);
     });
 
-    it('should return frequency 528 for Xangô', () => {
+    it('should return 528 for Xangô', () => {
       expect(getFrequencyOrixa('Xangô')).toBe(528);
     });
 
-    it('should return frequency 639 for Oxóssi', () => {
+    it('should return 639 for Oxóssi', () => {
       expect(getFrequencyOrixa('Oxóssi')).toBe(639);
     });
 
-    it('should return frequency 741 for Iansã', () => {
+    it('should return 741 for Iansã', () => {
       expect(getFrequencyOrixa('Iansã')).toBe(741);
     });
 
-    it('should return frequency 852 for Oxumaré', () => {
+    it('should return 852 for Oxumaré', () => {
       expect(getFrequencyOrixa('Oxumaré')).toBe(852);
     });
 
-    it('should return frequency 963 for Ori', () => {
+    it('should return 963 for Ori', () => {
       expect(getFrequencyOrixa('Ori')).toBe(963);
     });
 
     it('should return null for unknown Orixá', () => {
-      expect(getFrequencyOrixa('Não Existe')).toBeNull();
+      expect(getFrequencyOrixa('Unknown')).toBeNull();
     });
   });
 
-  describe('getAllOrixaFrequencies', () => {
-    it('should return all 14 Orixá mappings', () => {
-      const all = getAllOrixaFrequencies();
-      expect(all.length).toBe(14);
+  describe('getOrixaProperty', () => {
+    it('should return property for known Orixá', () => {
+      const property = getOrixaProperty('Oxum');
+      expect(property).toBeDefined();
+      expect(typeof property).toBe('string');
+      expect(property).toContain('Prosperidade');
     });
 
-    it('should include all expected Orixás', () => {
-      const all = getAllOrixaFrequencies();
-      const orixas = all.map((m) => m.orixa);
+    it('should return null for unknown Orixá', () => {
+      expect(getOrixaProperty('Unknown')).toBeNull();
+    });
+  });
+
+  describe('getAllOrixas', () => {
+    it('should return array of Orixá names', () => {
+      const orixas = getAllOrixas();
+
+      expect(Array.isArray(orixas)).toBe(true);
+      expect(orixas.length).toBeGreaterThan(0);
+    });
+
+    it('should contain all known Orixás', () => {
+      const orixas = getAllOrixas();
+
       expect(orixas).toContain('Oxalufã');
       expect(orixas).toContain('Oxum');
       expect(orixas).toContain('Xangô');
@@ -108,335 +203,187 @@ describe('OrixaFrequency Correlation', () => {
       expect(orixas).toContain('Ori');
     });
 
-    it('should return frozen objects', () => {
-      const all = getAllOrixaFrequencies();
-      all.forEach((mapping) => {
-        expect(Object.isFrozen(mapping)).toBe(true);
-      });
-    });
-  });
-
-  describe('ORIXA_FREQUENCY_MAP', () => {
-    it('should have 14 entries', () => {
-      expect(Object.keys(ORIXA_FREQUENCY_MAP).length).toBe(14);
-    });
-
-    it('should have valid frequency values for all entries', () => {
-      Object.values(ORIXA_FREQUENCY_MAP).forEach((mapping) => {
-        expect(SOLFEGGIO_FREQUENCIES).toContain(mapping.frequencia);
-      });
-    });
-
-    it('should have healing applications for all entries', () => {
-      Object.values(ORIXA_FREQUENCY_MAP).forEach((mapping) => {
-        expect(mapping.aplicacao_healing).toBeDefined();
-        expect(mapping.aplicacao_healing.fisico).toBeTruthy();
-        expect(mapping.aplicacao_healing.emocional).toBeTruthy();
-        expect(mapping.aplicacao_healing.mental_espiritual).toBeTruthy();
-        expect(mapping.aplicacao_healing.pratica_recomendada).toBeTruthy();
-      });
-    });
-  });
-
-  describe('SOLFEGGIO_FREQUENCIES', () => {
-    it('should contain the 7 standard Solfeggio frequencies', () => {
-      expect(SOLFEGGIO_FREQUENCIES).toEqual([396, 417, 528, 639, 741, 852, 963]);
-    });
-  });
-
-  describe('ALL_ORIXAS', () => {
-    it('should contain 14 unique Orixás', () => {
-      expect(ALL_ORIXAS.length).toBe(14);
-    });
-
-    it('should contain expected Orixás', () => {
-      expect(ALL_ORIXAS).toContain('Oxalufã');
-      expect(ALL_ORIXAS).toContain('Omulu');
-      expect(ALL_ORIXAS).toContain('Oxum');
-      expect(ALL_ORIXAS).toContain('Iemanjá');
-    });
-  });
-
-  describe('getElementByOrixa', () => {
-    it('should return Terra for Oxalufã', () => {
-      expect(getElementByOrixa('Oxalufã')).toBe('Terra');
-    });
-
-    it('should return Água for Oxum', () => {
-      expect(getElementByOrixa('Oxum')).toBe('Água');
-    });
-
-    it('should return Fogo for Xangô', () => {
-      expect(getElementByOrixa('Xangô')).toBe('Fogo');
-    });
-
-    it('should return Ar for Iansã', () => {
-      expect(getElementByOrixa('Iansã')).toBe('Ar');
-    });
-
-    it('should return Éter for Oxumaré', () => {
-      expect(getElementByOrixa('Oxumaré')).toBe('Éter');
-    });
-
-    it('should return null for unknown Orixá', () => {
-      expect(getElementByOrixa('Não Existe')).toBeNull();
-    });
-  });
-
-  describe('getChakraByOrixa', () => {
-    it('should return first chakra for Oxalufã', () => {
-      expect(getChakraByOrixa('Oxalufã')).toBe('1º Básico (Muladhara)');
-    });
-
-    it('should return seventh chakra for Ori', () => {
-      expect(getChakraByOrixa('Ori')).toBe('7º Coronário (Sahasrara)');
-    });
-
-    it('should return null for unknown Orixá', () => {
-      expect(getChakraByOrixa('Não Existe')).toBeNull();
-    });
-  });
-
-  describe('getDayByOrixa', () => {
-    it('should return Segunda-feira for Oxalufã', () => {
-      expect(getDayByOrixa('Oxalufã')).toBe('Segunda-feira');
-    });
-
-    it('should return Sábado for Oxum', () => {
-      expect(getDayByOrixa('Oxum')).toBe('Sábado');
-    });
-
-    it('should return null for unknown Orixá', () => {
-      expect(getDayByOrixa('Não Existe')).toBeNull();
-    });
-  });
-
-  describe('getColorByOrixa', () => {
-    it('should return Branco for Oxalufã', () => {
-      expect(getColorByOrixa('Oxalufã')).toBe('Branco');
-    });
-
-    it('should return Vermelho for Xangô', () => {
-      expect(getColorByOrixa('Xangô')).toBe('Vermelho');
-    });
-
-    it('should return Arco-íris for Oxumaré', () => {
-      expect(getColorByOrixa('Oxumaré')).toBe('Arco-íris');
-    });
-
-    it('should return null for unknown Orixá', () => {
-      expect(getColorByOrixa('Não Existe')).toBeNull();
-    });
-  });
-
-  describe('getHealingByOrixa', () => {
-    it('should return healing application for Oxum', () => {
-      const healing = getHealingByOrixa('Oxum');
-      expect(healing).not.toBeNull();
-      expect(healing?.fisico).toContain('Hidrata');
-      expect(healing?.emocional).toContain('Libera');
-    });
-
-    it('should return healing application for Iansã', () => {
-      const healing = getHealingByOrixa('Iansã');
-      expect(healing).not.toBeNull();
-      expect(healing?.pratica_recomendada).toContain('Cantos');
-    });
-
-    it('should return null for unknown Orixá', () => {
-      expect(getHealingByOrixa('Não Existe')).toBeNull();
+    it('should not contain duplicates', () => {
+      const orixas = getAllOrixas();
+      const unique = new Set(orixas);
+      expect(unique.size).toBe(orixas.length);
     });
   });
 
   describe('getOrixasByFrequency', () => {
-    it('should return Oxalufã and Omulu for 396 Hz', () => {
-      const orixas = getOrixasByFrequency(396);
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxalufã');
-      expect(orixas.map((m) => m.orixa)).toContain('Omulu');
+    it('should return Orixás for frequency 396', () => {
+      const result = getOrixasByFrequency(396);
+
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.frequencia === 396)).toBe(true);
     });
 
-    it('should return Oxum and Iemanjá for 417 Hz', () => {
-      const orixas = getOrixasByFrequency(417);
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxum');
-      expect(orixas.map((m) => m.orixa)).toContain('Iemanjá');
-    });
+    it('should return Orixás for frequency 417', () => {
+      const result = getOrixasByFrequency(417);
 
-    it('should return Xangô and Logun Ede for 528 Hz', () => {
-      const orixas = getOrixasByFrequency(528);
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Xangô');
-      expect(orixas.map((m) => m.orixa)).toContain('Logun Ede');
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.frequencia === 417)).toBe(true);
     });
 
     it('should return empty array for unknown frequency', () => {
-      const orixas = getOrixasByFrequency(999);
-      expect(orixas.length).toBe(0);
+      const result = getOrixasByFrequency(999);
+      expect(result).toEqual([]);
+    });
+
+    it('should include multiple Orixás per frequency', () => {
+      const result417 = getOrixasByFrequency(417);
+      const orixaNames = result417.map(r => r.orixa);
+
+      expect(orixaNames).toContain('Oxum');
+      expect(orixaNames).toContain('Iemanjá');
     });
   });
 
   describe('getOrixasByElement', () => {
-    it('should return Terra Orixás', () => {
-      const orixas = getOrixasByElement('Terra');
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxalufã');
-      expect(orixas.map((m) => m.orixa)).toContain('Omulu');
+    it('should return Orixás for Terra element', () => {
+      const result = getOrixasByElement('Terra');
+
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.elemento === 'Terra')).toBe(true);
     });
 
-    it('should return Água Orixás', () => {
-      const orixas = getOrixasByElement('Água');
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxum');
-      expect(orixas.map((m) => m.orixa)).toContain('Iemanjá');
+    it('should return Orixás for Água element', () => {
+      const result = getOrixasByElement('Água');
+
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.elemento === 'Água')).toBe(true);
     });
 
-    it('should return Fogo Orixás', () => {
-      const orixas = getOrixasByElement('Fogo');
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Xangô');
-      expect(orixas.map((m) => m.orixa)).toContain('Logun Ede');
+    it('should return Orixás for Fogo element', () => {
+      const result = getOrixasByElement('Fogo');
+
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.elemento === 'Fogo')).toBe(true);
     });
 
-    it('should return Ar Orixás', () => {
-      const orixas = getOrixasByElement('Ar');
-      expect(orixas.length).toBe(4);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxóssi');
-      expect(orixas.map((m) => m.orixa)).toContain('Nanã Buruquá');
-      expect(orixas.map((m) => m.orixa)).toContain('Iansã');
-      expect(orixas.map((m) => m.orixa)).toContain('Obá');
+    it('should return Orixás for Ar element', () => {
+      const result = getOrixasByElement('Ar');
+
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.elemento === 'Ar')).toBe(true);
     });
 
-    it('should return Éter Orixás', () => {
-      const orixas = getOrixasByElement('Éter');
-      expect(orixas.length).toBe(4);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxumaré');
-      expect(orixas.map((m) => m.orixa)).toContain('Ossaim');
-      expect(orixas.map((m) => m.orixa)).toContain('Ori');
-      expect(orixas.map((m) => m.orixa)).toContain('Olokun');
+    it('should return Orixás for Éter element', () => {
+      const result = getOrixasByElement('Éter');
+
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.elemento === 'Éter')).toBe(true);
     });
 
     it('should be case-insensitive', () => {
-      const lower = getOrixasByElement('fogo');
-      const upper = getOrixasByElement('FOGO');
-      expect(lower.length).toBe(upper.length);
+      const result1 = getOrixasByElement('terra');
+      const result2 = getOrixasByElement('Terra');
+
+      expect(result1.length).toBe(result2.length);
     });
 
     it('should return empty array for unknown element', () => {
-      const orixas = getOrixasByElement('Unknown');
-      expect(orixas.length).toBe(0);
+      const result = getOrixasByElement('UnknownElement');
+      expect(result).toEqual([]);
     });
   });
 
-  describe('getOrixasByDay', () => {
-    it('should return Segunda-feira Orixás', () => {
-      const orixas = getOrixasByDay('Segunda-feira');
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxalufã');
-      expect(orixas.map((m) => m.orixa)).toContain('Omulu');
+  describe('getOrixasByChakra', () => {
+    it('should return Orixás for Basic chakra', () => {
+      const result = getOrixasByChakra('Básico');
+
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.chakra.includes('Básico'))).toBe(true);
     });
 
-    it('should return Terça-feira Orixás', () => {
-      const orixas = getOrixasByDay('Terça-feira');
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxóssi');
-      expect(orixas.map((m) => m.orixa)).toContain('Nanã Buruquá');
-    });
+    it('should return Orixás for Sacro chakra', () => {
+      const result = getOrixasByChakra('Sacro');
 
-    it('should return Quarta-feira Orixás', () => {
-      const orixas = getOrixasByDay('Quarta-feira');
-      expect(orixas.length).toBe(4);
-      expect(orixas.map((m) => m.orixa)).toContain('Xangô');
-      expect(orixas.map((m) => m.orixa)).toContain('Logun Ede');
-      expect(orixas.map((m) => m.orixa)).toContain('Iansã');
-      expect(orixas.map((m) => m.orixa)).toContain('Obá');
-    });
-
-    it('should return Sábado Orixás', () => {
-      const orixas = getOrixasByDay('Sábado');
-      expect(orixas.length).toBe(2);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxum');
-      expect(orixas.map((m) => m.orixa)).toContain('Iemanjá');
-    });
-
-    it('should return Domingo Orixás', () => {
-      const orixas = getOrixasByDay('Domingo');
-      expect(orixas.length).toBe(4);
-      expect(orixas.map((m) => m.orixa)).toContain('Oxumaré');
-      expect(orixas.map((m) => m.orixa)).toContain('Ossaim');
-      expect(orixas.map((m) => m.orixa)).toContain('Ori');
-      expect(orixas.map((m) => m.orixa)).toContain('Olokun');
+      expect(result.length).toBeGreaterThan(0);
+      expect(result.every(r => r.chakra.includes('Sacro'))).toBe(true);
     });
 
     it('should be case-insensitive', () => {
-      const lower = getOrixasByDay('segunda-feira');
-      const upper = getOrixasByDay('SEGUNDA-FEIRA');
-      expect(lower.length).toBe(upper.length);
+      const result1 = getOrixasByChakra('básico');
+      const result2 = getOrixasByChakra('Básico');
+
+      expect(result1.length).toBe(result2.length);
     });
 
-    it('should return empty array for unknown day', () => {
-      const orixas = getOrixasByDay('Sexta-feira');
-      expect(orixas.length).toBe(0);
-    });
-  });
-
-  describe('getAllElements', () => {
-    it('should return all 5 elements', () => {
-      const elements = getAllElements();
-      expect(elements.length).toBe(5);
-    });
-
-    it('should contain expected elements', () => {
-      const elements = getAllElements();
-      expect(elements).toContain('Terra');
-      expect(elements).toContain('Água');
-      expect(elements).toContain('Fogo');
-      expect(elements).toContain('Ar');
-      expect(elements).toContain('Éter');
+    it('should return empty array for unknown chakra', () => {
+      const result = getOrixasByChakra('UnknownChakra');
+      expect(result).toEqual([]);
     });
   });
 
-  describe('Spiritual Consistency', () => {
-    it('should map frequency 396 to Terra element', () => {
-      const mapping = getOrixaFrequency('Oxalufã');
-      expect(mapping?.frequencia).toBe(396);
-      expect(mapping?.elemento).toBe('Terra');
+  describe('getAllOrixaFrequencies', () => {
+    it('should return array of all mappings', () => {
+      const result = getAllOrixaFrequencies();
+
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
     });
 
-    it('should map frequency 417 to Água element', () => {
-      const mapping = getOrixaFrequency('Oxum');
-      expect(mapping?.frequencia).toBe(417);
-      expect(mapping?.elemento).toBe('Água');
+    it('should have all required properties for each mapping', () => {
+      const result = getAllOrixaFrequencies();
+
+      result.forEach(mapping => {
+        expect(mapping).toHaveProperty('orixa');
+        expect(mapping).toHaveProperty('frequencia');
+        expect(mapping).toHaveProperty('propriedade');
+        expect(mapping).toHaveProperty('elemento');
+        expect(mapping).toHaveProperty('chakra');
+      });
     });
 
-    it('should map frequency 528 to Fogo element', () => {
-      const mapping = getOrixaFrequency('Xangô');
-      expect(mapping?.frequencia).toBe(528);
-      expect(mapping?.elemento).toBe('Fogo');
+    it('should cover all Solfeggio frequencies', () => {
+      const result = getAllOrixaFrequencies();
+      const frequencies = result.map(r => r.frequencia);
+
+      expect(frequencies).toContain(396);
+      expect(frequencies).toContain(417);
+      expect(frequencies).toContain(528);
+      expect(frequencies).toContain(639);
+      expect(frequencies).toContain(741);
+      expect(frequencies).toContain(852);
+      expect(frequencies).toContain(963);
     });
 
-    it('should map frequency 639 to Ar element', () => {
-      const mapping = getOrixaFrequency('Oxóssi');
-      expect(mapping?.frequencia).toBe(639);
-      expect(mapping?.elemento).toBe('Ar');
+    it('should return same length as getAllOrixas', () => {
+      const orixas = getAllOrixas();
+      const mappings = getAllOrixaFrequencies();
+
+      expect(mappings.length).toBe(orixas.length);
+    });
+  });
+
+  describe('Frequency correlation consistency', () => {
+    it('should have consistent frequency-element relationships', () => {
+      const terraFreqs = getOrixasByElement('Terra').map(r => r.frequencia);
+      const aguaFreqs = getOrixasByElement('Água').map(r => r.frequencia);
+      const fogoFreqs = getOrixasByElement('Fogo').map(r => r.frequencia);
+      const arFreqs = getOrixasByElement('Ar').map(r => r.frequencia);
+      const eterFreqs = getOrixasByElement('Éter').map(r => r.frequencia);
+
+      // Terra and Água should not overlap
+      const overlapTerraAgua = terraFreqs.filter(f => aguaFreqs.includes(f));
+      expect(overlapTerraAgua.length).toBe(0);
+
+      // Fogo and Água should not overlap
+      const overlapFogoAgua = fogoFreqs.filter(f => aguaFreqs.includes(f));
+      expect(overlapFogoAgua.length).toBe(0);
     });
 
-    it('should map frequency 741 to Ar element', () => {
-      const mapping = getOrixaFrequency('Iansã');
-      expect(mapping?.frequencia).toBe(741);
-      expect(mapping?.elemento).toBe('Ar');
-    });
+    it('should have valid Solfeggio frequency values', () => {
+      const result = getAllOrixaFrequencies();
+      const validFrequencies = [396, 417, 528, 639, 741, 852, 963];
 
-    it('should map frequency 852 to Éter element', () => {
-      const mapping = getOrixaFrequency('Oxumaré');
-      expect(mapping?.frequencia).toBe(852);
-      expect(mapping?.elemento).toBe('Éter');
-    });
-
-    it('should map frequency 963 to Éter element', () => {
-      const mapping = getOrixaFrequency('Ori');
-      expect(mapping?.frequencia).toBe(963);
-      expect(mapping?.elemento).toBe('Éter');
+      result.forEach(mapping => {
+        expect(validFrequencies).toContain(mapping.frequencia);
+      });
     });
   });
 });

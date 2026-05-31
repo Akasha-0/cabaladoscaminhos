@@ -1,14 +1,8 @@
 // ============================================================
 // SPIRITUAL STATS API - CABALA DOS CAMINHOS
 // ============================================================
-// GET endpoints for spiritual statistics
-// - Overview metrics
-// - Sefirot distribution
-// - Element balance
-// - Gematria statistics
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import {
   calculateGematria,
   calculateNumerology,
@@ -18,16 +12,36 @@ import {
   reduceDigits,
 } from '@/lib/spiritual/calculations';
 import { getMeanings, searchMeanings } from '@/lib/spiritual/meanings';
-
-interface OverviewStats {
-  totalMeanings: number;
-  categories: string[];
-  categoryDistribution: Record<string, number>;
-  themesCount: number;
-}
-
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SpiritualEndpointSchema = z.enum([
+  'overview',
+  'sefirot',
+  'elements',
+  'gematria',
+  'tree-path',
+  'numerology',
+]);
+const SpiritualStatsQuerySchema = z.object({
+  endpoint: SpiritualEndpointSchema.optional(),
+  name: z.string().optional(),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD').optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+});
+const GematriaQuerySchema = z.object({
+  text: z.string().min(1, 'Texto é obrigatório'),
+  method: z.enum(['standard', 'ordinal', 'reduced', 'full']).optional().default('standard'),
+});
+// Type aliases
+type OverviewStats = {
+  totalPaths: number;
+  totalSefirot: number;
+  elementBalance: Record<string, number>;
+  date: string;
+};
 interface SefirotStats {
-  values: number[];
+  sephirot: Array<{ name: string; value: number; path: number }>;
+  total: number;
+}
   labels: string[];
   distribution: Record<number, number>;
 }
@@ -166,41 +180,55 @@ function getSpiritualStats(): SpiritualStats {
     gematria,
   };
 }
-
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const endpoint = url.searchParams.get('endpoint');
-
-  const stats = getSpiritualStats();
-
-  switch (endpoint) {
-    case 'overview':
-      return NextResponse.json({ data: stats.overview });
-    case 'sefirot':
-      return NextResponse.json({ data: stats.sefirot });
-    case 'elements':
-      return NextResponse.json({ data: stats.elements });
-    case 'gematria':
-      return NextResponse.json({ data: stats.gematria });
-    case 'tree-path':
-      const treePath = calculateTreePath('Caminho Espiritual');
-      return NextResponse.json({ data: { treePath } });
-    case 'numerology':
-      const numerology = calculateNumerology('1990-01-01');
-      return NextResponse.json({ data: { numerology, reduced: reduceDigits([numerology]) } });
-    case null:
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = SpiritualStatsQuerySchema.safeParse({
+      endpoint: searchParams.get('endpoint'),
+      name: searchParams.get('name'),
+      date: searchParams.get('date'),
+      limit: searchParams.get('limit'),
+    });
+    if (!parseResult.success) {
       return NextResponse.json({
-        data: stats,
-        endpoints: {
-          overview: '/api/spiritual-stats?endpoint=overview',
-          sefirot: '/api/spiritual-stats?endpoint=sefirot',
-          elements: '/api/spiritual-stats?endpoint=elements',
-          gematria: '/api/spiritual-stats?endpoint=gematria',
-          'tree-path': '/api/spiritual-stats?endpoint=tree-path',
-          numerology: '/api/spiritual-stats?endpoint=numerology',
-        },
-      });
-    default:
-      return NextResponse.json({ error: 'Invalid endpoint' }, { status: 400 });
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { endpoint, name, date } = parseResult.data;
+    const stats = getSpiritualStats();
+    switch (endpoint) {
+      case 'overview':
+        return NextResponse.json({ data: stats.overview });
+      case 'sefirot':
+        return NextResponse.json({ data: stats.sefirot });
+      case 'elements':
+        return NextResponse.json({ data: stats.elements });
+      case 'gematria':
+        return NextResponse.json({ data: stats.gematria });
+      case 'tree-path':
+        const treeName = name ?? 'Caminho Espiritual';
+        const treePath = calculateTreePath(treeName);
+        return NextResponse.json({ data: { treePath, name: treeName } });
+      case 'numerology':
+        const birthDate = date ?? '1990-01-01';
+        const numerology = calculateNumerology(birthDate);
+        return NextResponse.json({
+          data: {
+            numerology,
+            reduced: reduceDigits([numerology]),
+            date: birthDate,
+          },
+        });
+      case undefined:
+        return NextResponse.json({
+          data: stats,
+          endpoints: ['overview', 'sefirot', 'elements', 'gematria', 'tree-path', 'numerology'],
+        });
+      default:
+        return NextResponse.json({ error: 'Invalid endpoint' }, { status: 400 });
+    }
+  } catch {
+    return NextResponse.json({ error: 'Erro ao processar stats' }, { status: 500 });
   }
 }
