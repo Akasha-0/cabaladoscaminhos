@@ -138,7 +138,7 @@ const MOON_PHASE_SPIRITUAL_CORRELATIONS: Record<string, {
   affirmation: string;
   frequency: string;
 }> = {
-  lua-nova: {
+  'lua-nova': {
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 7,
     element: 'Éter',
@@ -146,7 +146,7 @@ const MOON_PHASE_SPIRITUAL_CORRELATIONS: Record<string, {
     affirmation: 'Um novo ciclo começa em mim',
     frequency: '963 Hz',
   },
-  lua-crescente: {
+  'lua-crescente': {
     sefirot: ['Chokhmah', 'Netzach'],
     chakra: 6,
     element: 'Fogo',
@@ -154,7 +154,7 @@ const MOON_PHASE_SPIRITUAL_CORRELATIONS: Record<string, {
     affirmation: 'A energia cresce e se manifesta',
     frequency: '741 Hz',
   },
-  lua-cheia: {
+  'lua-cheia': {
     sefirot: ['Tipheret', 'Yesod'],
     chakra: 6,
     element: 'Fogo',
@@ -162,7 +162,7 @@ const MOON_PHASE_SPIRITUAL_CORRELATIONS: Record<string, {
     affirmation: 'A luz completa brilha através de mim',
     frequency: '528 Hz',
   },
-  lua-minguante: {
+  'lua-minguante': {
     sefirot: ['Binah', 'Hod'],
     chakra: 5,
     element: 'Água',
@@ -171,9 +171,6 @@ const MOON_PHASE_SPIRITUAL_CORRELATIONS: Record<string, {
     frequency: '417 Hz',
   },
 };
-
-const PortalSchema = z.object({
-  orixa: z.string(),
   planeta: z.string(),
   chakra: z.string(),
   chakraNum: z.number(),
