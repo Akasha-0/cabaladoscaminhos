@@ -1,8 +1,13 @@
-// Sacred Sounds API - Cabala Dos Caminhos
-// Sacred frequencies, healing sounds, and spiritual audio for rituals and practices
-
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SoundActionSchema = z.enum(['list', 'sound', 'frequency', 'ritual', 'rituals', 'all']);
+const SoundsQuerySchema = z.object({
+  action: SoundActionSchema.optional(),
+  id: z.string().optional(),
+  frequency: z.coerce.number().int().min(1).max(9999).optional(),
+  category: z.string().optional(),
+});
 const SACRED_SOUNDS = {
   om: {
     id: 'om',
@@ -14,7 +19,6 @@ const SACRED_SOUNDS = {
     usage: 'Meditação, oração, alinhamento espiritual',
     benefits: ['Expansão de consciência', 'Harmonização celular', 'Paz interior'],
   },
-  amen: {
     id: 'amen',
     name: 'Amen',
     frequency: '528 Hz',
