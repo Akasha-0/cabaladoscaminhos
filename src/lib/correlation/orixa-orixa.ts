@@ -80,14 +80,6 @@ const ORIXA_ORIXA_MAP: OrixaRelation[] = [
     energy_flow: 'bidirectional',
   },
   {
-    orixa: 'Ogum',
-    related_orixa: 'Iansã',
-    relationship_type: 'conjuge',
-    spiritual_meaning: 'Ogum e Iansã são esposos na tradição iorubá, representando a união entre a força telúrica e a energia ígnea. Ogum abre os caminhos com sua espada, enquanto Iansã sopra os ventos da mudança. Juntos, eles garantem que os caminhos abertos sejam mantidos abertos e que as transformações necessárias ocorram com poder. Compartilham a Terça-feira como dia sagrado.',
-    ritual互补: ['Espada e pinhão roxo', 'Guiné e fumo', 'Velas vermelha e laranja', 'Defumações de proteção'],
-    energy_flow: 'bidirectional',
-  },
-  {
     orixa: 'Iemanjá',
     related_orixa: 'Omolu',
     relationship_type: 'mae_filha',
@@ -127,7 +119,7 @@ const ORIXA_ORIXA_MAP: OrixaRelation[] = [
     orixa: 'Ogum',
     related_orixa: 'Iansã',
     relationship_type: 'conjuge',
-    spiritual_meaning: 'Ogum e Iansã são spouses na tradição iorubá, representando a união entre a força telúrica e a energia ígnea. Ogum abre os caminhos com sua espada, enquanto Iansã sopra os ventos da mudança. Juntos, eles garantem que os caminhos abertos sejam mantidos abertos e que as transformações necessárias ocorram com poder. Compartilham a Terça-feira como dia sagrado.',
+    spiritual_meaning: 'Ogum e Iansã são esposos na tradição iorubá, representando a união entre a força telúrica e a energia ígnea. Ogum abre os caminhos com sua espada, enquanto Iansã sopra os ventos da mudança. Juntos, eles garantem que os caminhos abertos sejam mantidos abertos e que as transformações necessárias ocorram com poder. Compartilham a Terça-feira como dia sagrado.',
     ritual互补: ['Espada e pinhão roxo', 'Guiné e fumo', 'Velas vermelha e laranja', 'Defumações de proteção'],
     energy_flow: 'bidirectional',
   },
@@ -153,15 +145,15 @@ const ORIXA_ORIXA_MAP: OrixaRelation[] = [
     orixa: 'Xangô',
     related_orixa: 'Iansã',
     relationship_type: 'ex_conjuge',
-    spiritual_meaning: 'Xangô e Iansã foram spouses na tradição iorubá, tendo se separado em meio a conflitos. Esta relação representa a energia de transformação e mudança - quando a união não funciona, a separação pode trazer evolução. Iansã trouxe a Xangô a capacidade de mudança, enquanto ele lhe deu a força do raio. Embora separados, eles mantêm respeito mútuo e energia complementar.',
+    spiritual_meaning: 'Xangô e Iansã foram esposos na tradição iorubá, tendo se separado em meio a conflitos. Esta relação representa a energia de transformação e mudança - quando a união não funciona, a separação pode trazer evolução. Iansã trouxe a Xangô a capacidade de mudança, enquanto ele lhe deu a força do raio. Embora separados, eles mantêm respeito mútuo e energia complementar.',
     ritual互补: ['Amalá e acarajé', 'Pinhão roxo e pedra de raio', 'Velas amarela e laranja', 'Defumações de proteção'],
     energy_flow: 'bidirectional',
   },
   {
     orixa: 'Xangô',
-    related_orixa: 'Obaluaiê',
+    related_orixa: 'Omolu',
     relationship_type: 'aliado',
-    spiritual_meaning: 'Xangô e Obaluaiê (Omolu) são aliados na tradição iorubá. Xangô governa com justiça no mundo material, enquanto Obaluaiê governa sobre as doenças e curas. Esta relação representa a conexão entre a ação e a consequência - Xangô decreta e Obaluaiê executa. Juntos, eles mantêm o equilíbrio entre o que é justo e o que é necessário para a cura.',
+    spiritual_meaning: 'Xangô e Omolu são aliados na tradição iorubá. Xangô governa com justiça no mundo material, enquanto Omolu governa sobre as doenças e curas. Esta relação representa a conexão entre a ação e a consequência - Xangô decreta e Omolu executa. Juntos, eles mantêm o equilíbrio entre o que é justo e o que é necessário para a cura.',
     ritual互补: ['Pedra de raio e pipoca', 'Quiabo e palma', 'Velas amarela e preta', 'Amalá quente'],
     energy_flow: 'bidirectional',
   },
@@ -189,9 +181,9 @@ const ORIXA_ORIXA_MAP: OrixaRelation[] = [
   // Nanã relationships (Ancient Wisdom)
   {
     orixa: 'Nanã',
-    related_orixa: 'Obaluaiê',
+    related_orixa: 'Omolu',
     relationship_type: 'complementar',
-    spiritual_meaning: 'Nanã e Obaluaiê (Omolu) representam a sabedoria dos anciãos aplicada à cura. Nanã guarda os segredos do barro primordial e das águas paradas, enquanto Obaluaiê trabalha com esses conhecimentos para curar e transformar. Esta relação ensina que a verdadeira cura vem da compreensão profunda dos processos naturais e da aceitação da impermanência.',
+    spiritual_meaning: 'Nanã e Omolu representam a sabedoria dos anciãos aplicada à cura. Nanã guarda os segredos do barro primordial e das águas paradas, enquanto Omolu trabalha com esses conhecimentos para curar e transformar. Esta relação ensina que a verdadeira cura vem da compreensão profunda dos processos naturais e da aceitação da impermanência.',
     ritual互补: ['Barro e água de chuva', 'Avenca e trapoeraba', 'Velas lilás e preta', 'Oferendas de humildade'],
     energy_flow: 'bidirectional',
   },
@@ -268,6 +260,7 @@ export function getOrixaOrixa(orixa: string, related_orixa: string): OrixaRelati
  * Get all relationships for a specific Orixá
  * @param orixa - Orixá name
  * @returns Array of OrixaRelation objects where the Orixá appears
+ */
 export function getAllOrixaRelations(orixa: string): OrixaRelation[] {
   const normalize = (s: string) => s.trim().toLowerCase();
   return ORIXA_ORIXA_MAP.filter(
