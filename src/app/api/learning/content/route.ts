@@ -555,11 +555,27 @@ export async function GET(request: NextRequest) {
           }, {} as Record<string, number>),
         };
 
+        // Spiritual stats
+        const spiritualStats = {
+          bySefirot: filteredItems.reduce((acc, item) => {
+            const sc = (item as Record<string, unknown>).spiritualCorrelations as { sefirot: string[] } | undefined;
+            sc?.sefirot?.forEach(sf => { acc[sf] = (acc[sf] || 0) + 1; });
+            return acc;
+          }, {} as Record<string, number>),
+          byElement: filteredItems.reduce((acc, item) => {
+            const sc = (item as Record<string, unknown>).spiritualCorrelations as { element: string } | undefined;
+            if (sc?.element) acc[sc.element] = (acc[sc.element] || 0) + 1;
+            return acc;
+          }, {} as Record<string, number>),
+        };
+
         return NextResponse.json({
           success: true,
           data: {
             items: filteredItems,
             total: filteredItems.length,
+            spiritualCorrelations: CONTENT_SPIRITUAL_CORRELATIONS,
+            spiritualStats,
             filters: { courseId, category, type, tags, orixa, sefirot, chakra },
             stats,
           },
