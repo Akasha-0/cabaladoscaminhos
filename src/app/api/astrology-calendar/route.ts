@@ -117,7 +117,8 @@ export async function GET(request: Request) {
     return NextResponse.json({
       start_date: start.toISOString().split('T')[0],
       days: calendar.length,
-      calendar
+      calendar,
+    });
   } catch {
     return NextResponse.json({ error: 'Erro ao processar calendário astrológico' }, { status: 500 });
   }
