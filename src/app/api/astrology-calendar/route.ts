@@ -16,6 +16,10 @@ const SIGNS = [
 type Planet = typeof PLANETS[number];
 type Sign = typeof SIGNS[number];
 interface Aspect {
+  planet1: Planet;
+  planet2: Planet;
+  type: 'conjunction' | 'opposition' | 'trine' | 'square' | 'sextile';
+  orb: number;
 }
 
 interface LunarPhase {
