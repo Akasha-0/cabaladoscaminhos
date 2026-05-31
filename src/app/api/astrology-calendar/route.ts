@@ -118,5 +118,5 @@ export async function GET(request: Request) {
   } catch {
     return NextResponse.json({ error: 'Erro ao processar calendário astrológico' }, { status: 500 });
   }
-  }
+}
 }

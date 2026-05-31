@@ -82,6 +82,8 @@ function calculateStatistics(values: number[]) {
   const median = sorted[Math.floor(sorted.length / 2)];
   const variance = values.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / values.length;
   const stdDev = Math.sqrt(variance);
+  return { mean, min, max, median, stdDev };
+}
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
