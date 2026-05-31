@@ -3,16 +3,41 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const CleansingMethodSchema = z.enum([
   'smoke', 'water', 'salt', 'sound', 'light', 'earth', 'breath', 'crystal',
 ]);
+const CleansingTypeSchema = z.enum(['energetic', 'physical', 'emotional', 'spiritual']);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+
 const CleansingQuerySchema = z.object({
   method: CleansingMethodSchema.optional(),
-  type: z.enum(['energetic', 'physical', 'emotional', 'spiritual']).optional(),
+  type: CleansingTypeSchema.optional(),
   includeRituals: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
+  chakra: ChakraSchema.optional(),
+  sefirot: SefirotSchema.optional(),
 });
+
+const CleansingRitualSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: z.string(),
+  steps: z.array(z.string()),
+  duration: z.string(),
+  materials: z.array(z.string()).optional(),
+  intention: z.string().optional(),
+  aftercare: z.array(z.string()).optional(),
+  sefirot: z.array(SefirotSchema).optional(),
+  chakra: z.number().int().min(1).max(7).optional(),
+  orixa: z.string().optional(),
+});
+
 interface CleansingType {
   id: string;
   name: string;
@@ -24,7 +49,14 @@ interface CleansingType {
   precautions: string[];
   sefirot: string[];
   chakras: string[];
+  benefits: string[];
+  orixa: string[];
 }
+
+export type CleansingRitual = z.infer<typeof CleansingRitualSchema>;
+export const dynamic = 'force-dynamic';
+
+// ─── Cleansing Types with Spiritual Correlations ──────────────────────────────────────────
 const CLEANSING_TYPES: CleansingType[] = [
   {
     id: 'fogo',
@@ -37,6 +69,8 @@ const CLEANSING_TYPES: CleansingType[] = [
     precautions: ['Use em área ventilada', 'Nunca deixe chamas sem supervisão', 'Afaste materiais inflamáveis'],
     sefirot: ['Gevurah', 'Hod'],
     chakras: ['Muladhara', 'Manipura'],
+    benefits: ['Proteção', 'Renovação', 'Poder pessoal'],
+    orixa: ['Ogum', 'Xangô'],
   },
   {
     id: 'agua',
@@ -49,6 +83,8 @@ const CLEANSING_TYPES: CleansingType[] = [
     precautions: ['Verifique temperatura da água', 'Hidrate-se após o ritual', 'Não use em feridas abertas'],
     sefirot: ['Yesod', 'Malkuth'],
     chakras: ['Svadhisthana', 'Anahata'],
+    benefits: ['Dissolução de energias densas', 'Renovação emocional', 'Fluidez'],
+    orixa: ['Iemanjá', 'Oxum'],
   },
   {
     id: 'terra',
@@ -61,6 +97,8 @@ const CLEANSING_TYPES: CleansingType[] = [
     precautions: ['Use sal marinho natural', 'Evite contato com olhos', 'Enxágue bem após banhos de sal'],
     sefirot: ['Malkuth', 'Yesod'],
     chakras: ['Muladhara'],
+    benefits: ['Ancoramento', 'Estabilidade', 'Proteção do campo áurico'],
+    orixa: ['Oxóssi', 'Omolu'],
   },
   {
     id: 'ar',
@@ -73,6 +111,8 @@ const CLEANSING_TYPES: CleansingType[] = [
     precautions: ['Pratique em local arejado', 'Não fume cigarros ou outras substâncias', 'Comece gradualmente com pranayama'],
     sefirot: ['Chesed', 'Chokhmah'],
     chakras: ['Vishuddha', 'Ajna'],
+    benefits: ['Clareza mental', 'Abertura de espaço mental', 'Dissipação de energias densas'],
+    orixa: ['Iansã', 'Oxalá'],
   },
   {
     id: 'eter',
@@ -85,9 +125,12 @@ const CLEANSING_TYPES: CleansingType[] = [
     precautions: ['Requer prática de meditação', 'Faça em estado calmo', 'Evite após refeições pesadas'],
     sefirot: ['Kether', 'Tipheret', 'Binah'],
     chakras: ['Sahasrara', 'Ajna'],
+    benefits: ['Limpeza do corpo causal', 'Harmonização dos veículos superiores', 'Transcendência'],
+    orixa: ['Oxalá', 'Nanã'],
   },
 ];
 
+// ─── Cleansing Rituals with Spiritual Correlations ──────────────────────────────────────────
 const CLEANSING_RITUALS: CleansingRitual[] = [
   {
     id: 'defumacao',
@@ -101,50 +144,35 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
       'Foque nas áreas com maior acúmulo energético (ombros, peito, cabeça)',
       'Permita que a fumaça preencha cada cômodo da casa',
       'Agradeça aos elementos e às ervas pelo trabalho realizado',
-      'Desligue completamente antes de sair do ambiente',
-    ],
-    duration: '20-30 minutos',
-    materials: ['Ervas secas (alecrim, sálvia, lavanda)', 'Concha ou prato refratário', 'Fósforo ou isqueiro', 'Janelas abertas'],
-    intention: 'Purificação completa de ambientes e seres, remoção de energias densas e proteção contra influências negativas.',
-    aftercare: ['Ventile o ambiente por pelo menos 1 hora', 'Beba água fresca', 'Descanse alguns minutos em silêncio'],
-  },
-  {
-    id: 'banho-ervas',
-    name: 'Banho de Imersão com Ervas',
-    type: 'agua',
-    steps: [
-      'Escolha ervas compatíveis com sua intenção: alecrim (proteção), lavanda (calma), camomila (descanso)',
-      'Ferva 2 litros de água e despeje sobre as ervas, cobrindo',
-      'Deixe em infusão por 15-20 minutos',
-      'Coe e adicione o chá ao água morna da banheira',
-      'Entre na água e visualize-se sendo purificado',
-      'Permaneça imerso por 15-20 minutos',
-      'Ao sair, não enxágue imediatamente; deixe as ervas secarem na pele',
-      'Vista-se com roupas limpas e descanse',
-    ],
-    duration: '45-60 minutos',
-    materials: ['Ervas secas (200g)', 'Água fervente (2L)', 'Banheira ou balde grande', 'Toalha limpa'],
-    intention: 'Renovação energética completa, limpeza do corpo emocional e harmonização dos centros de força.',
-    aftercare: ['Descanse pelo menos 30 minutos após o banho', 'Evite exposição ao sol forte', 'Beba água ou chá leve'],
-  },
-  {
-    id: 'banho-sal',
-    name: 'Banho de Sal',
-    type: 'terra',
-    steps: [
-      'Escolha sal marinho grosso ou sal rosa do Himalaia',
-      'Adicione 200-500g de sal à água morna',
-      'Opte por adicionar ervas se desejar (alecrim para proteção)',
-      'Entre na água e visualize raízes descendo da sola dos pés para a terra',
-      'Imagine todas as energias densas sendo puxadas para baixo, para a terra',
-      'Permaneça por 10-15 minutos',
-      'Enxágue com água limpa ao sair',
-      'Vista roupas limpas, preferencialmente brancas ou de cores claras',
     ],
     duration: '30-45 minutos',
-    materials: ['Sal marinho ou sal rosa (200-500g)', 'Água morna', 'Ervas opcionais', 'Toalha limpa'],
-    intention: 'Proteção máxima, remoção de energias negativas, ancoramento e purification profunda.',
-    aftercare: ['Enxágue sempre com água limpa', 'Beba bastante água após', 'Evite contato com olhos e mucosas'],
+    materials: ['Ervas secas (alecrim, sálvia, lavanda)', 'Concha refratária', 'Fósforo', 'Prancha de defumação'],
+    intention: 'Purificação de ambientes e campos energéticos, remoção de energias densas e proteção',
+    aftercare: ['Ventile o ambiente por 30 minutos', 'Beba água purificada', 'Descanse em silêncio'],
+    sefirot: ['Gevurah', 'Hod'],
+    chakra: 3,
+    orixa: 'Ogum',
+  },
+  {
+    id: 'banho-sagrado',
+    name: 'Banho de Ervas Sagradas',
+    type: 'agua',
+    steps: [
+      'Escolha ervas conforme sua intenção: alecrim (proteção), arruda (limpeza), manjericão (amor)',
+      'Ferva 1 litro de água e despeje sobre as ervas, deixando em infusão por 15 minutos',
+      'Coe e adicione ao água do banho, preferencialmente morna',
+      'Entre na banheira e visualize-se sendo purificado pela água',
+      'Recite uma oração ou affirmation de purificação',
+      'Permaneça por15-20 minutos em contemplação',
+      'Saia do banho e vista roupas limpas, preferencialmente brancas',
+    ],
+    duration: '30-45 minutos',
+    materials: ['Ervas sagradas', 'Água fervente', 'Panela para infusão', 'Banheira ou balde'],
+    intention: 'Purificação do corpo físico e energético, renovação de energias, preparação para rituais',
+    aftercare: ['Vista roupas limpas', 'Evite exposição ao frio', 'Descanse por30 minutos'],
+    sefirot: ['Yesod', 'Malkuth'],
+    chakra: 2,
+    orixa: 'Iemanjá',
   },
   {
     id: 'resp-purif',
@@ -153,81 +181,188 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
     steps: [
       'Encontre um lugar tranquilo e sente-se em posição confortável',
       'Feche os olhos e acalme a mente por alguns minutos',
-      'Pratique Nadi Shodhana (respiração alternada): feche a narina direita, inspire pela esquerda, troque, expire pela direita, inspire pela direita, troque, expire pela esquerda',
-      'Após 5-10 ciclos, pratique Kapalabhati (respiração de fogo): respirações curtas e vigorosas pelo nariz, contraindo o abdomen',
+      'Pratique Nadi Shodhana (respiração alternada): feche a narina direita, inspire pela esquerda, troque, expire pela direita',
+      'Após 5-10 ciclos, pratique Kapalabhati (respiração de fogo): respirações curtas e vigorosas pelo nariz',
       'Conclua com 3 respirações profundas e conscientes',
       'Visualize a energia entrando limpa e saindo carregada de impurezas',
-      'Permaneça em silêncio por alguns minutos absorvendo a energia purificada',
-    ],
+ ],
     duration: '15-20 minutos',
-    materials: ['Ambiente tranquilo', 'Nenhuns materiais necessários', 'Óleo essencial opcional (lavanda, eucalipto)'],
-    intention: 'Limpeza dos canais energéticos (nadis), aumento de prana, clareza mental e emocional.',
-    aftercare: ['Beba água lentamente', 'Evite exposição ao vento frio imediatamente', 'Mantenha a respiração consciente ao longo do dia'],
+    materials: ['Ambiente tranquilo', 'Nenhum material necessário', 'Óleo essencial opcional (lavanda, eucalipto)'],
+    intention: 'Limpeza dos canais energéticos (nadis), aumento de prana, clareza mental e emocional',
+    aftercare: ['Beba água lentamente', 'Evite exposição ao vento frio imediatamente', 'Mantenha respiração consciente'],
+    sefirot: ['Chesed', 'Chokhmah'],
+    chakra: 5,
+    orixa: 'Iansã',
   },
   {
     id: 'sahum-casa',
     name: 'Sahum Ritual de Casa',
     type: 'fogo',
     steps: [
-      'Comece pelo quarto mais distante da porta de entrada e siga em direção a ela (para que as energias saiam)',
-      ' carregue a concha com ervas acesas por todos os cômodos',
-      'Nos cantos e áreas de stagnação de energia, pare por mais tempo',
+      'Comece pelo quarto mais distante da porta de entrada e siga em direção a ela',
+      'Carregue a concha com ervas acesas por todos os cômodos',
+      'Nos cantos e áreas de estagnação de energia, pare por mais tempo',
       'Abra todas as janelas enquanto sahuma',
       'Visualize a fumaça carregando embora todas as energias indesejadas',
       'Depois de sahumar toda a casa, complete na porta de entrada, jogando um pouco de sal na soleira',
-      'Desligue todas as chamas e leave as janelas abertas por pelo menos 30 minutos',
       'Faça uma oração ou affirmations de proteção para o espaço',
     ],
     duration: '45-60 minutos',
-    materials: ['Ervas para sahumar', 'Concha refratária', 'Sal marinho', 'Fósforo', 'Óleo essencial opcional'],
-    intention: 'Purificação completa da residência, proteção de todos os moradores e criação de um espaço sagrado.',
-    aftercare: ['Mantenha ventilação por 1-2 horas', 'Lave a concha com água e sal', 'Acenda uma vela branca na entrada se desejar'],
+    materials: ['Ervas para sahumar', 'Concha refratária', 'Sal marinho', 'Fósforo'],
+    intention: 'Purificação completa da residência, proteção de todos os moradores e criação de um espaço sagrado',
+    aftercare: ['Mantenha ventilação por 1-2 horas', 'Lave a concha com água e sal', 'Acenda uma vela branca na entrada'],
+    sefirot: ['Gevurah', 'Hod', 'Netzach'],
+    chakra: 4,
+    orixa: 'Ogum',
+  },
+  {
+    id: 'banho-de-sal',
+    name: 'Banho de Sal Integral',
+    type: 'terra',
+    steps: [
+      'Dissolva 200g de sal marinho em água morna',
+      'Adicione 5 gotas de óleo essencial de alecrim ou lavanda (opcional)',
+      'Despeje a solução sobre o corpo, da cabeça aos pés, em movimentos amplos',
+      'Massajeie o corpo com as mãos, focusing em áreas de tensão',
+      'Enxágue com água corrente',
+      'Visualize o sal absorvendo todas as energias densas e negativas',
+    ],
+    duration: '20-30 minutos',
+    materials: ['Sal marinho (200g)', 'Água morna', 'Óleo essencial (opcional)', 'Toalha limpa'],
+    intention: 'Purificação profunda do campo áurico, remoção de energias negativas, proteção',
+    aftercare: ['Enxágue bem o corpo', 'Vista roupas limpas', 'Beba água com limão'],
+    sefirot: ['Malkuth', 'Yesod'],
+    chakra: 1,
+    orixa: 'Omolu',
   },
 ];
-// GET - Retrieve cleansing types and rituals
+
+// ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+
     const parseResult = CleansingQuerySchema.safeParse({
       method: searchParams.get('method'),
       type: searchParams.get('type'),
-      includeRituals: searchParams.get('includeRituals'),
+      includeRituals: searchParams.get('includeRituals') as 'true' | 'false' | null,
       limit: searchParams.get('limit'),
+      chakra: searchParams.get('chakra'),
+      sefirot: searchParams.get('sefirot'),
     });
+
     if (!parseResult.success) {
       return NextResponse.json({
+        success: false,
         error: 'Parâmetros inválidos',
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
-    const { method, type, includeRituals, limit } = parseResult.data;
+
+    const { method, type, includeRituals, limit, chakra, sefirot } = parseResult.data;
+
     let cleansingTypes = [...CLEANSING_TYPES];
+
     // Filter by method
     if (method) {
       cleansingTypes = cleansingTypes.filter(t => t.methods.includes(method));
     }
+
+    // Filter by type
+    if (type) {
+      // Map type to methods
+      const typeMethods: Record<string, string[]> = {
+        energetic: ['smoke', 'sound', 'breath'],
+        physical: ['water', 'salt', 'earth'],
+        emotional: ['water', 'breath', 'light'],
+        spiritual: ['smoke', 'light', 'breath', 'crystal'],
+      };
+      const allowedMethods = typeMethods[type] || [];
+      cleansingTypes = cleansingTypes.filter(t =>
+        t.methods.some(m => allowedMethods.includes(m))
+      );
+    }
+
+    // Filter by chakra
+    if (chakra) {
+      cleansingTypes = cleansingTypes.filter(t =>
+        t.chakras.some(c => c.includes(String(chakra)))
+      );
+    }
+
+    // Filter by sefirot
+    if (sefirot) {
+      cleansingTypes = cleansingTypes.filter(t =>
+        t.sefirot.includes(sefirot)
+      );
+    }
+
     // Apply limit
     if (limit) {
       cleansingTypes = cleansingTypes.slice(0, limit);
     }
+
+    // Filter rituals
+    let rituals = [...CLEANSING_RITUALS];
+    if (chakra) {
+      rituals = rituals.filter(r => r.chakra === chakra);
+    }
+    if (sefirot) {
+      rituals = rituals.filter(r => r.sefirot?.includes(sefirot));
+    }
+
+    // Statistics
+    const stats = {
+      byMethod: CLEANSING_TYPES.reduce((acc, t) => {
+        t.methods.forEach(m => {
+          acc[m] = (acc[m] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: CLEANSING_TYPES.reduce((acc, t) => {
+        t.chakras.forEach(c => {
+          acc[c] = (acc[c] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: CLEANSING_TYPES.reduce((acc, t) => {
+        t.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: CLEANSING_TYPES.reduce((acc, t) => {
+        t.orixa.forEach(o => {
+          acc[o] = (acc[o] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
     const response: Record<string, unknown> = {
       success: true,
       data: { types: cleansingTypes },
+ meta: {
+        totalTypes: cleansingTypes.length,
+        totalRituals: rituals.length,
+      },
     };
+
     if (includeRituals) {
       response.data = {
         types: cleansingTypes,
-        rituals: CLEANSING_RITUALS,
+        rituals,
       };
     }
-    response.meta = {
-      totalTypes: cleansingTypes.length,
-      totalRituals: CLEANSING_RITUALS.length,
-    };
+
+    response.stats = stats;
+
     return NextResponse.json(response);
-  } catch {
+  } catch (error) {
+    const err = error as Error;
     return NextResponse.json({
-      error: 'Erro ao processar limpeza',
+      success: false,
+      error: `Erro ao processar limpeza: ${err.message}`,
     }, { status: 500 });
   }
 }
