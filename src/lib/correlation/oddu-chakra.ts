@@ -64,7 +64,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
     chakra_numero: '2º Sacral',
     elemento: 'água',
     chakra_elemento: 'Água',
-    significado_espiritual: 'Dualidade, escolha, equilíbrio entre opostos. desperta a criatividade e o fluxo emocional.',
+    significado_espiritual: 'Dualidade, escolha, equilíbrio entre opostos. Desperta a criatividade e o fluxo emocional.',
     mensagem_central: 'Harmonize seus opostos. Permita que suas emoções guiem sua criatividade.',
     cores: ['laranja', 'amarelo'],
     qualidades: ['criatividade', 'equilíbrio', 'emoções', 'fluidez', 'escolha'],
@@ -273,10 +273,9 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
     elemento: 'água',
     chakra_elemento: 'Água',
     significado_espiritual: 'Encantamento, magia, mudanças profundas e renovações. Desperta o poder criativo transformador.',
-export function getAllChakraNames(): string[] {
-  const chakraSet = new Set(Object.values(ODDU_CHAKRA_MAPPINGS).map((m) => m.chakra));
-  return Array.from(chakraSet).sort();
-}
+    mensagem_central: 'A magia está ao seu redor. Abrace as mudanças com coração aberto.',
+    cores: ['roxo', 'azul', 'prata'],
+    qualidades: ['magia', 'transformação', 'encantamento', 'renovação', 'fluidez'],
   },
 
   // ─── 16: Okandí ─────────────────────────────────────────────────────────────
@@ -379,8 +378,8 @@ export function getAllOduNames(): string[] {
  * @returns Array of Chakra names (deduplicated)
  */
 export function getAllChakraNames(): string[] {
-  const chakras = Object.values(ODDU_CHAKRA_MAPPINGS).map((m) => m.chakra);
-  return [...new Set(chakras)].sort();
+  const chakraSet = new Set(Object.values(ODDU_CHAKRA_MAPPINGS).map((m) => m.chakra));
+  return Array.from(chakraSet).sort();
 }
 
 /**
