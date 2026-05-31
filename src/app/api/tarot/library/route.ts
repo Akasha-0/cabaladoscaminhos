@@ -7,6 +7,7 @@ const TarotLibraryQuerySchema = z.object({
   search: z.string().optional(),
   numero: z.coerce.number().int().min(0).max(21).optional(),
   limit: z.coerce.number().int().positive().max(78).optional(),
+});
 // Tarot cards complete data
 const tarotCards = [
   // Major Arcana

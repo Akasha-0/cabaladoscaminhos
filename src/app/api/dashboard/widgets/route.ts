@@ -8,6 +8,7 @@ const WidgetTypeSchema = z.enum(['quick-stats', 'recent-activity', 'daily-affirm
 const WidgetQuerySchema = z.object({
   type: WidgetTypeSchema.optional(),
   limit: z.coerce.number().int().positive().max(10).optional(),
+});
 interface WidgetData {
   id: string;
   type: string;
