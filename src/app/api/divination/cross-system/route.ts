@@ -414,11 +414,4 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function generateMinimaxResponse(messages: Array<{ role: string; content: string }>, options: { temperature: number; max_tokens: number }): Promise<{ content: string }> {
-  try {
-    const response = await generateMinimaxResponse(messages as any, options as any);
-    return { content: response.content };
-  } catch {
-    return { content: '' };
-  }
 }
