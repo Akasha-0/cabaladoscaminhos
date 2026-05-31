@@ -3,10 +3,17 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const OfferingTypeSchema = z.enum(['ebo', 'oferenda', 'libacao', 'defumacao', 'vela']);
 const ElementTypeSchema = z.enum(['agua', 'terra', 'fogo', 'ar', 'orixa']);
 const IntensityLevelSchema = z.enum(['suave', 'medio', 'forte']);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+
 const OfferingQuerySchema = z.object({
   type: OfferingTypeSchema.optional(),
   orixa: z.string().optional(),
@@ -14,7 +21,10 @@ const OfferingQuerySchema = z.object({
   dia: z.enum(['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado']).optional(),
   id: z.string().optional(),
   limit: z.coerce.number().int().positive().max(100).optional(),
+  chakra: ChakraSchema.optional(),
+  sefirot: SefirotSchema.optional(),
 });
+
 const CreateOfferingSchema = z.object({
   type: OfferingTypeSchema,
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -26,19 +36,21 @@ const CreateOfferingSchema = z.object({
   bestDays: z.array(z.enum(['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'])).optional(),
   moonPhase: z.enum(['nova', 'crescente', 'cheia', 'minguante']).optional(),
   intensity: IntensityLevelSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  sefirot: SefirotSchema.optional(),
 });
-// Type aliases
+
+// ─── Type Definitions ───────────────────────────────────────────────────────
 type OfferingType = z.infer<typeof OfferingTypeSchema>;
 type ElementType = z.infer<typeof ElementTypeSchema>;
 type IntensityLevel = z.infer<typeof IntensityLevelSchema>;
-export interface OfferingItem {
-  id: string;
+
+interface OfferingItem {
   name: string;
-  description: string;
-  type: OfferingType;
-  notes?: string;
+  quantity: string;
 }
-export interface Offering {
+
+interface Offering {
   id: string;
   name: string;
   type: OfferingType;
@@ -51,23 +63,16 @@ export interface Offering {
   intensity: IntensityLevel;
   bestDays?: string[];
   moonPhase?: string;
+  chakra?: number;
+  sefirot?: string;
+  sefirotCorrespondencia?: string[];
+  beneficios?: string[];
 }
 
-export interface OfferingResponse {
-  offering: Offering | null;
-  error?: string;
-  availableTypes: OfferingType[];
-}
+export type { Offering, OfferingItem, OfferingType, ElementType, IntensityLevel };
+export const dynamic = 'force-dynamic';
 
-export interface OfferingListResponse {
-  offerings: Offering[];
-  total: number;
-}
-
-// ============================================================
-// OFFERING DATA
-// ============================================================
-
+// ─── Offering Data with Spiritual Correlations ──────────────────────────────────────────
 const offeringsBase: Offering[] = [
   {
     id: 'ebo-ogum',
@@ -87,12 +92,15 @@ const offeringsBase: Offering[] = [
       'Unte a vela com azeite de dendê',
       'Coloque o alho e a pimenta ao redor',
       'Pede a Ogum que abra os caminhos',
-      'Deixe Queimar até o fim',
+      'Deixe queimar até o fim',
     ],
     duration: '30 minutos',
     intensity: 'medio',
     bestDays: ['terca', 'sexta'],
     moonPhase: 'crescente',
+    chakra: 3,
+    sefirot: 'Gevurah',
+    beneficios: ['Coragem', 'Vitória', 'Proteção'],
   },
   {
     id: 'ebo-oxossi',
@@ -103,276 +111,402 @@ const offeringsBase: Offering[] = [
     orixa: 'Oxóssi',
     items: [
       { name: 'Vela verde', quantity: '1' },
-      { name: 'Fio de seda verde', quantity: '1 pedaço' },
-      { name: 'Pão', quantity: '1 pedaço' },
-      { name: 'Mel', quantity: 'pouco' },
+      { name: 'Fumo de paú', quantity: 'pouco' },
+      { name: 'Canjica', quantity: '1 prato' },
+      { name: 'Mel', quantity: 'a gosto' },
     ],
     instructions: [
+      'Em local limpo e arejado',
       'Acenda a vela verde',
-      'Amarre o fio de seda na vela',
-      'Coloque o pão com mel ao lado',
-      'Invocar Oxóssi para proteção',
-      'Agradeça pelas bênçãos',
+      'Queime o fumo de paú',
+      'Ofereça a canjica com mel',
+      'Peça a Oxóssi sabedoria e proteção',
     ],
-    duration: '20 minutos',
+    duration: '25 minutos',
     intensity: 'suave',
-    bestDays: ['quinta'],
-    moonPhase: 'qualquer',
-  },
-  {
-    id: 'oferenda-iemanja',
-    name: 'Oferenda a Iemanjá',
-    type: 'oferenda',
-    description: 'Sagrada oferenda à Rainha do Mar por proteção e fluidez.',
-    element: 'agua',
-    orixa: 'Iemanjá',
-    items: [
-      { name: 'Vela branca ou azul', quantity: '1' },
-      { name: 'Água do mar ou sal grosso', quantity: '1 porção' },
-      { name: 'Flores brancas', quantity: '7' },
-      { name: 'Perfume', quantity: 'pouco' },
-      { name: 'Espelho pequeno', quantity: '1' },
-    ],
-    instructions: [
-      'Prepare local limpo com toalha branca',
-      'Coloque a água em recipiente branco',
-      'Acenda a vela azul ou branca',
-      'Disponha as flores ao redor',
-      'Respire e conecte-se com Iemanjá',
-      'Faça sua prece com fé',
-      'Ao terminar, leve a oferenda ao mar',
-    ],
-    duration: '45 minutos',
-    intensity: 'forte',
-    bestDays: ['sabado', 'segunda'],
+    bestDays: ['quarta', 'sabado'],
     moonPhase: 'cheia',
+    chakra: 6,
+    sefirot: 'Chokhmah',
+    beneficios: ['Sabedoria', 'Conhecimento', 'Proteção na mata'],
   },
   {
-    id: 'oferenda-oxum',
-    name: 'Oferenda a Oxum',
-    type: 'oferenda',
-    description: 'Doce oferenda para atrair amor, prosperidade e alegria.',
+    id: 'ebo-oxum',
+    name: 'Ebó de Oxum',
+    type: 'ebo',
+    description: 'Oferta para amor, prosperidade e doçura na vida.',
     element: 'agua',
     orixa: 'Oxum',
     items: [
-      { name: 'Vela dourada', quantity: '1' },
+      { name: 'Vela rosa', quantity: '1' },
       { name: 'Mel', quantity: '1 colher' },
-      { name: 'Canela', quantity: 'pau' },
-      { name: 'Água doce', quantity: '1 copo' },
-      { name: 'Flores amarelas', quantity: '5' },
+      { name: 'Canela', quantity: '1 pau' },
+      { name: 'Flores rosas', quantity: '7' },
     ],
     instructions: [
-      'Em recipiente dourado, coloque água doce',
-      'Adicione mel e canela',
-      'Acenda a vela dourada',
-      'Disponha flores amarelas',
-      'Pede a Oxum com coração limpo',
-      'Agradeça sempre',
+      'Em recipiente com água',
+      'Acenda a vela rosa',
+      'Adicione o mel e a canela',
+      'Coloque as flores',
+      'Peça a Oxum amor e abundância',
+    ],
+    duration: '20 minutos',
+    intensity: 'suave',
+    bestDays: ['quinta', 'sexta'],
+    moonPhase: 'crescente',
+    chakra: 4,
+    sefirot: 'Netzach',
+    beneficios: ['Amor', 'Prosperidade', 'Doçura'],
+  },
+  {
+    id: 'ebo-iemanja',
+    name: 'Ebó de Iemanjá',
+    type: 'ebo',
+    description: 'Oferta para proteção das águas e bênçãos maternas.',
+    element: 'agua',
+    orixa: 'Iemanjá',
+    items: [
+      { name: 'Vela branca', quantity: '1' },
+      { name: 'Alecrim', quantity: '1 maço' },
+      { name: 'Canjica branca', quantity: '1 prato' },
+      { name: 'Flores brancas', quantity: '9' },
+    ],
+    instructions: [
+      'Na beira do mar ou em casa',
+      'Acenda a vela branca',
+      'Prepare o alecrim para defumação',
+      'Ofereça a canjica',
+      'Peça a Iemanjá proteção e bênçãos',
+    ],
+    duration: '30 minutos',
+    intensity: 'medio',
+    bestDays: ['segunda', 'sabado'],
+    moonPhase: 'cheia',
+    chakra: 2,
+    sefirot: 'Yesod',
+    beneficios: ['Proteção', 'Maternidade', 'Harmonia'],
+  },
+  {
+    id: 'ebo-xango',
+    name: 'Ebó de Xangô',
+    type: 'ebo',
+    description: 'Oferta para justiça, poder e equilíbrio.',
+    element: 'fogo',
+    orixa: 'Xangô',
+    items: [
+      { name: 'Vela laranja', quantity: '1' },
+      { name: 'Amalá', quantity: '1 prato' },
+      { name: 'Pimenta calabresa', quantity: 'a gosto' },
+      { name: 'Fumo de Carijó', quantity: 'pouco' },
+    ],
+    instructions: [
+      'Acenda a vela laranja',
+      'Sirva o amalá com pimenta',
+      'Queime o fumo de Carijó',
+      'Peça a Xangô justiça e equilíbrio',
+      'Deixe a oferenda por24 horas',
+    ],
+    duration: '35 minutos',
+    intensity: 'forte',
+    bestDays: ['quarta', 'sabado'],
+    moonPhase: 'cheia',
+    chakra: 3,
+    sefirot: 'Hod',
+    beneficios: ['Justiça', 'Equilíbrio', 'Poder'],
+  },
+  {
+    id: 'ebo-obaluaie',
+    name: 'Ebó de Obaluaiê',
+    type: 'ebo',
+    description: 'Oferta para cura de doenças e purificação.',
+    element: 'terra',
+    orixa: 'Omolu',
+    items: [
+      { name: 'Vela preta', quantity: '1' },
+      { name: 'Pipoca', quantity: '1 pacote' },
+      { name: 'Banha de coco', quantity: 'pouco' },
+      { name: 'Alfavaca', quantity: '1 maço' },
+    ],
+    instructions: [
+      'Em local limpo',
+      'Acenda a vela preta',
+      'Prepare a pipoca com banha',
+      'Defume com alfavaca',
+      'Peça a Obaluaiê cura e purificação',
+    ],
+    duration: '40 minutos',
+    intensity: 'forte',
+    bestDays: ['terca', 'sexta'],
+    moonPhase: 'nova',
+    chakra: 1,
+    sefirot: 'Malkuth',
+    beneficios: ['Cura', 'Purificação', 'Proteção contra doenças'],
+  },
+  {
+    id: 'ebo-exu',
+    name: 'Ebó de Exu',
+    type: 'ebo',
+    description: 'Oferta para abrir caminhos e eliminar bloqueios.',
+    element: 'fogo',
+    orixa: 'Exu',
+    items: [
+      { name: 'Vela preta', quantity: '1' },
+      { name: 'Pinga', quantity: '1 dose' },
+      { name: 'Fumo de charuto', quantity: '1 charuto' },
+      { name: 'Pão preto', quantity: '1 pedaço' },
+    ],
+    instructions: [
+      'Na encruzilhada ou em casa',
+      'Acenda a vela preta',
+      'Coloque a pinga e o pão',
+      'Queime o charuto',
+      'Peça a Exu que abra os caminhos',
+    ],
+    duration: '20 minutos',
+    intensity: 'forte',
+    bestDays: ['segunda', 'quinta'],
+    moonPhase: 'nova',
+    chakra: 1,
+    sefirot: 'Malkuth',
+    beneficios: ['Abertura de caminhos', 'Comunicação', 'Movimentação'],
+  },
+  {
+    id: 'oferenda-oxala',
+    name: 'Oferenda de Oxalá',
+    type: 'oferenda',
+    description: 'Oferta para paz, luz e proteção espiritual.',
+    element: 'ar',
+    orixa: 'Oxalá',
+    items: [
+      { name: 'Vela branca', quantity: '2' },
+      { name: 'Inhame', quantity: '1 prato' },
+      { name: 'Farinha de rosca', quantity: 'pouco' },
+      { name: 'Água de cheiro', quantity: '1 copo' },
+    ],
+    instructions: [
+      'Vista branco',
+      'Acenda as velas brancas',
+      'Sirva o inhame com farinha',
+      'Ofereça a água de cheiro',
+      'Peça a Oxalá paz e proteção',
+    ],
+    duration: '25 minutos',
+    intensity: 'suave',
+    bestDays: ['domingo'],
+    moonPhase: 'crescente',
+    chakra: 7,
+    sefirot: 'Kether',
+    beneficios: ['Paz', 'Luz', 'Proteção espiritual'],
+  },
+  {
+    id: 'oferenda-nana',
+    name: 'Oferenda de Nanã',
+    type: 'oferenda',
+    description: 'Oferta para sabedoria ancestral e morte/renascimento.',
+    element: 'terra',
+    orixa: 'Nanã',
+    items: [
+      { name: 'Vela roxa', quantity: '1' },
+      { name: 'Quiabo', quantity: '7 unidades' },
+      { name: 'Algodão', quantity: 'pouco' },
+      { name: 'Folhas secas', quantity: '1 maço' },
+    ],
+    instructions: [
+      'Em reverência a Nanã',
+      'Acenda a vela roxa',
+      'Ofereça o quiabo',
+      'Coloque o algodão e as folhas',
+      'Peça sabedoria e renovação',
     ],
     duration: '30 minutos',
     intensity: 'medio',
     bestDays: ['sabado'],
-    moonPhase: 'crescente',
+    moonPhase: 'minguante',
+    chakra: 7,
+    sefirot: 'Binah',
+    beneficios: ['Sabedoria ancestral', 'Renovação', 'Transformação'],
   },
   {
-    id: 'oferenda-xango',
-    name: 'Oferenda a Xangô',
-    type: 'oferenda',
-    description: 'Potente oferenda para conquistar justiça e prosperidade.',
-    element: 'fogo',
-    orixa: 'Xangô',
-    items: [
-      { name: 'Vela vermelha e preta', quantity: '1 de cada' },
-      { name: 'Azeite de dendê', quantity: 'pouco' },
-      { name: 'Fumo', quantity: 'pouco' },
-      { name: 'Pão', quantity: '2 pedaços' },
-      { name: 'Akара', quantity: '1' },
-    ],
-    instructions: [
-      'Acenda velas vermelha e preta lado a lado',
-      'Unte as velas com azeite de dendê',
-      'Coloque fumo entre as velas',
-      'Disponha o pão e o acaraje',
-      'Pede a Xangô justiça e prosperidade',
-      'Deixe até queime por completo',
-    ],
-    duration: '1 hora',
-    intensity: 'forte',
-    bestDays: ['quarta', 'sabado'],
-    moonPhase: 'cheia',
-  },
-  {
-    id: 'libacao-祖先',
-    name: 'Libação aos Ancestrais',
+    id: 'libacao-iansa',
+    name: 'Libação de Iansã',
     type: 'libacao',
-    description: 'Água oferecida aos ancestrais para honrar a linha de sangue.',
-    element: 'agua',
-    items: [
-      { name: 'Água fresca', quantity: '1 copo' },
-      { name: 'Flores brancas', quantity: '3' },
-      { name: 'Vela branca', quantity: '1' },
-    ],
-    instructions: [
-      'Coloque água fresca em copo branco',
-      'Disponha flores ao redor',
-      'Acenda a vela branca',
-      'Fale em voz baixa chamando os ancestrais',
-      'Peça bênção e proteção',
-      'Deixe água durante a noite',
-      'Descarte ao amanhecer',
-    ],
-    duration: '15 minutos',
-    intensity: 'suave',
-    bestDays: ['domingo', 'quinta'],
-    moonPhase: 'qualquer',
-  },
-  {
-    id: 'defumacao-protecao',
-    name: 'Defumação de Proteção',
-    type: 'defumacao',
-    description: 'Queima de ervas para criar barreira protetora.',
-    element: 'ar',
-    items: [
-      { name: 'Pau-brasil', quantity: '1 pedaço' },
-      { name: 'Albafor', quantity: 'pouco' },
-      { name: 'Arruda', quantity: 'ramos' },
-      { name: 'Manjericão', quantity: 'ramos' },
-    ],
-    instructions: [
-      'Acenda o pau-brasil até pegar brasa',
-      'Coloque albafor sobre a brasa',
-      'Passe a fumaça pela casa',
-      'Queime arruda e manjericão em sequência',
-      'Peça proteção a todos os orixás',
-      'Abra todas janelas ao terminar',
-    ],
-    duration: '20 minutos',
-    intensity: 'medio',
-    bestDays: ['segunda', 'quarta', 'sexta'],
-    moonPhase: 'nova',
-  },
-  {
-    id: 'vela-oxala',
-    name: 'Vela de Oxalá',
-    type: 'vela',
-    description: 'Acendimento simples para purificação e paz interior.',
+    description: 'Libação para coragem, fogo e transformação.',
     element: 'fogo',
-    orixa: 'Oxalá',
+    orixa: 'Iansã',
     items: [
-      { name: 'Vela branca', quantity: '1' },
+      { name: 'Vela laranja', quantity: '1' },
+      { name: 'Azeite', quantity: 'pouco' },
+      { name: 'Pimenta', quantity: 'a gosto' },
       { name: 'Água', quantity: '1 copo' },
-      { name: 'Flor branca', quantity: '1' },
     ],
     instructions: [
-      'Coloque água em copo branco',
-      'Acenda vela branca',
-      'Coloque flor branca na água',
-      'Silencie a mente',
-      'Pede paz, saúde e长寿',
-      'Deixe queimar alguns minutos',
+      'Acenda a vela laranja',
+      'Misture azeite e pimenta na água',
+      'Beba a libação com intenção',
+      'Peça a Iansã coragem e fogo',
     ],
     duration: '15 minutos',
-    intensity: 'suave',
-    bestDays: ['sexta', 'domingo'],
-    moonPhase: 'qualquer',
+    intensity: 'medio',
+    bestDays: ['quarta', 'sexta'],
+    moonPhase: 'crescente',
+    chakra: 3,
+    sefirot: 'Gevurah',
+    beneficios: ['Coragem', 'Fogo interior', 'Transformação'],
   },
 ];
 
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
-
-function getOrixaByDay(dia: string): string | null {
-  const orixaMap: Record<string, string> = {
-    segunda: 'Iemanjá',
-    terca: 'Ogum',
-    quarta: 'Xangô',
-    quinta: 'Oxóssi',
-    sexta: 'Oxalá',
-    sabado: 'Oxum',
-    domingo: 'Nanã',
-  };
-  return orixaMap[dia] || null;
-}
-
-function getMoonPhase(): string {
-  // Simplified moon phase calculation
-  const now = new Date();
-  const newMoon = new Date(2024, 0, 11); // Known new moon date
-  const daysSinceNewMoon = Math.floor((now.getTime() - newMoon.getTime()) / 86400000);
-  const lunarCycle = daysSinceNewMoon % 29.5;
-  
-  if (lunarCycle < 7) return 'nova';
-  if (lunarCycle < 14) return 'crescente';
-  if (lunarCycle < 22) return 'cheia';
-  return 'minguante';
-}
-
-// ============================================================
-// API ROUTE HANDLERS
-// ============================================================
+// ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = OfferingQuerySchema.safeParse({
-    type: searchParams.get('type'),
-    orixa: searchParams.get('orixa'),
-    element: searchParams.get('element'),
-    dia: searchParams.get('dia'),
-    id: searchParams.get('id'),
-    limit: searchParams.get('limit'),
-  });
-  if (!parseResult.success) {
-    return NextResponse.json({
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
-  }
-  const { type, orixa, element, dia, id, limit } = parseResult.data;
-  // Get day of week for recommendations
-  const agora = new Date();
-  const diasSemana = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
-  const diaAtual = dia ?? diasSemana[agora.getDay()];
-  const faseLua = getMoonPhase();
-  // Single offering by ID
-  if (id) {
-    const offering = offeringsBase.find(o => o.id === id);
-    if (!offering) {
-      return NextResponse.json(
-        { error: 'Oferta não encontrada', offering: null },
-        { status: 404 }
+  try {
+    const searchParams = request.nextUrl.searchParams;
+
+    const parseResult = OfferingQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      orixa: searchParams.get('orixa'),
+      element: searchParams.get('element'),
+      dia: searchParams.get('dia'),
+      id: searchParams.get('id'),
+      limit: searchParams.get('limit'),
+      chakra: searchParams.get('chakra'),
+      sefirot: searchParams.get('sefirot'),
+    });
+
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { type, orixa, element, dia, id, limit, chakra, sefirot } = parseResult.data;
+
+    let offerings = [...offeringsBase];
+
+    if (id) {
+      const offering = offerings.find(o => o.id === id);
+      if (!offering) {
+        return NextResponse.json({
+          success: false,
+          error: 'Oferta não encontrada',
+          availableIds: offerings.map(o => o.id),
+        }, { status: 404 });
+      }
+      return NextResponse.json({
+        success: true,
+        offering,
+ });
+    }
+
+    if (type) {
+      offerings = offerings.filter(o => o.type === type);
+    }
+
+    if (orixa) {
+      offerings = offerings.filter(o =>
+        o.orixa?.toLowerCase().includes(orixa.toLowerCase())
       );
     }
+
+    if (element) {
+      offerings = offerings.filter(o => o.element === element);
+    }
+
+    if (dia) {
+      offerings = offerings.filter(o =>
+        o.bestDays?.includes(dia)
+      );
+    }
+
+    if (chakra) {
+      offerings = offerings.filter(o => o.chakra === chakra);
+    }
+
+    if (sefirot) {
+      offerings = offerings.filter(o => o.sefirot === sefirot);
+    }
+
+    if (limit) {
+      offerings = offerings.slice(0, limit);
+    }
+
+    // Statistics
+    const stats = {
+      byType: offeringsBase.reduce((acc, o) => {
+        acc[o.type] = (acc[o.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: offeringsBase.reduce((acc, o) => {
+        if (o.orixa) acc[o.orixa] = (acc[o.orixa] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: offeringsBase.reduce((acc, o) => {
+        acc[o.element] = (acc[o.element] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: offeringsBase.reduce((acc, o) => {
+        if (o.chakra) acc[o.chakra] = (acc[o.chakra] || 0) + 1;
+        return acc;
+      }, {} as Record<number, number>),
+    };
+
     return NextResponse.json({
-      offering,
-      meta: { phase: faseLua, day: diaAtual },
+      success: true,
+      offerings,
+      total: offerings.length,
+      filters: { type, orixa, element, dia, chakra, sefirot },
+      stats,
     });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
   }
-  // Filter offerings by criteria
-  let filteredOfferings = [...offeringsBase];
-  if (type) {
-    filteredOfferings = filteredOfferings.filter(o => o.type === type);
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+
+    const parseResult = CreateOfferingSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Dados inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { type, name, description, orixa, element, ingredients, instructions, bestDays, moonPhase, intensity, chakra, sefirot } = parseResult.data;
+
+    const offering: Offering = {
+      id: crypto.randomUUID(),
+      name,
+      type,
+      description: description || '',
+      element: element || 'orixa',
+      orixa,
+      items: ingredients?.map(i => ({ name: i, quantity: '' })) || [],
+      instructions: instructions?.split('\n').filter(Boolean) || [],
+      intensity: intensity || 'medio',
+      bestDays,
+      moonPhase,
+      chakra,
+      sefirot,
+    };
+
+    return NextResponse.json({
+      success: true,
+      offering,
+      message: 'Oferta criada com sucesso',
+    }, { status: 201 });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
   }
-  if (orixa) {
-    filteredOfferings = filteredOfferings.filter(o => o.orixa?.toLowerCase() === orixa.toLowerCase());
-  }
-  if (element) {
-    filteredOfferings = filteredOfferings.filter(o => o.element === element);
-  }
-  // Return offerings for today by default if no filters
-  const todayOrixa = getOrixaByDay(diaAtual);
-  const todayOfferings = filteredOfferings.filter(o => {
-    if (!o.bestDays) return true;
-    return o.bestDays.includes(diaAtual);
-  });
-  // Apply limit if specified
-  const offerings = (limit ? filteredOfferings.slice(0, limit) : filteredOfferings.length > 0 ? filteredOfferings : todayOfferings);
-  return NextResponse.json({
-    offerings,
-    total: offerings.length,
-    meta: {
-      phase: faseLua,
-      day: diaAtual,
-      recommendedOrixa: todayOrixa,
-    },
-  });
 }
