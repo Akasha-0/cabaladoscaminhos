@@ -348,28 +348,43 @@ function RadarLabels({ centerX, centerY, radius, angles, levels, hoveredSystem, 
             onMouseEnter={() => onHover(level.system)}
             onMouseLeave={() => onHover(null)}
           >
+            {/* Highlight background on hover */}
+            {isHovered && (
+              <circle
+                cx={pos.x}
+                cy={pos.y}
+                r={8}
+                fill={colors.primary}
+                opacity={0.15}
+                className="transition-all duration-200"
+              />
+            )}
+            {/* Label text with glow on hover */}
             <text
               x={pos.x}
               y={pos.y}
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize={isHovered ? 3.5 : 3}
-              fill={colors.primary}
-              fontWeight="600"
+              fontSize={isHovered ? 4 : 3}
+              fill={isHovered ? '#fff' : colors.primary}
+              fontWeight="700"
               className="transition-all duration-200"
+              style={isHovered ? { 
+                filter: `drop-shadow(0 0 4px ${colors.primary})`,
+                textShadow: `0 0 6px ${colors.primary}`
+              } : {}}
             >
               {SYSTEM_LABELS[level.system]}
             </text>
-            
             {/* Level value */}
             <text
               x={pos.x}
-              y={pos.y + 4}
+              y={pos.y + 4.5}
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize="2.5"
-              fill="currentColor"
-              className="text-muted-foreground"
+              fontSize={isHovered ? 3 : 2.5}
+              fill={isHovered ? colors.primary : 'currentColor'}
+              className="text-muted-foreground transition-all duration-200"
             >
               {level.nivel}%
             </text>
