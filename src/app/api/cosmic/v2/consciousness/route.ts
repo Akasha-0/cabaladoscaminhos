@@ -1,13 +1,18 @@
 // ============================================================
 // COSMIC CONSCIOUSNESS API V2 - CABALA DOS CAMINHOS
 // ============================================================
-// GET endpoints for cosmic consciousness
-// - List all consciousness data
-// - Get specific consciousness by ID
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ConsciousnessLevelSchema = z.enum([
+  'physical', 'emotional', 'mental', 'spiritual', 'cosmic', 'divine'
+]);
+const ConsciousnessQuerySchema = z.object({
+  id: ConsciousnessLevelSchema.optional(),
+  minFrequency: z.coerce.number().min(0).optional(),
+  maxFrequency: z.coerce.number().max(1000).optional(),
+  includeAttributes: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+});
 interface ConsciousnessData {
   id: string;
   level: string;
@@ -56,26 +61,43 @@ const CONSCIOUSNESS_DATA: ConsciousnessData[] = [
     id: 'divine',
     level: 'Divine',
     frequency: 600,
-    description: 'Divine consciousness united with source',
-    attributes: ['oneness', 'eternal', 'infinite']
-  }
-];
-
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = ConsciousnessQuerySchema.safeParse({
+      id: searchParams.get('id'),
+      minFrequency: searchParams.get('minFrequency'),
+      maxFrequency: searchParams.get('maxFrequency'),
+      includeAttributes: searchParams.get('includeAttributes'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { id, minFrequency, maxFrequency, includeAttributes = true } = parseResult.data;
     if (id) {
       const item = CONSCIOUSNESS_DATA.find(c => c.id === id);
       if (!item) {
         return NextResponse.json({ error: 'Consciousness data not found' }, { status: 404 });
       }
-      return NextResponse.json({ consciousness: item });
+      return NextResponse.json({ consciousness: includeAttributes ? item : { ...item, attributes: undefined } });
     }
-
-    return NextResponse.json({ consciousness: CONSCIOUSNESS_DATA, total: CONSCIOUSNESS_DATA.length });
+    let filteredData = [...CONSCIOUSNESS_DATA];
+    if (minFrequency !== undefined) {
+      filteredData = filteredData.filter(c => c.frequency >= minFrequency);
+    }
+    if (maxFrequency !== undefined) {
+      filteredData = filteredData.filter(c => c.frequency <= maxFrequency);
+    }
+    return NextResponse.json({
+      consciousness: includeAttributes ? filteredData : filteredData.map(c => ({ ...c, attributes: undefined })),
+      total: filteredData.length,
+    });
   } catch {
     return NextResponse.json({ error: 'Failed to retrieve consciousness data' }, { status: 500 });
   }
+}
+}
 }
