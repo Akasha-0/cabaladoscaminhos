@@ -1,8 +1,10 @@
 'use client';
-
 import React, { useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
-
+import { getChakraSephirot } from '@/lib/correlation/chakra-sephirot';
+import { getSephirotOrixa } from '@/lib/correlation/sephirot-orixa';
+import { getOrixaChakra } from '@/lib/correlation/orixa-chakra';
+import { getChakraOdu } from '@/lib/correlation/chakra-odu';
 // ============================================================
 // Kabbalistic Tree of Life - Arvore da Vida
 // Interactive SVG visualization with click-to-reveal details
