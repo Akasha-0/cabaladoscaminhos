@@ -1,248 +1,233 @@
 /**
  * Tarot-Sephirot Correlation Mapping
- * Based on IDEIA.md "Tabela de Correspondência Macro: Oito Portais da Consciência"
- * Aligns the 22 Major Arcana cards with their corresponding Sephiroth on the Kabbalistic Tree of Life
+ * Based on Kabbalistic tradition mapping Major Arcana cards to the Tree of Life
+ * Aligns Tarot Major Arcana cards with the 10 Sephiroth (Divine Emanations)
  */
 
 /**
- * Represents the correlation between a Tarot Major Arcana card and its Sephirah correspondence
+ * Represents the correlation between a Tarot Major Arcana card and its Sephirah
  */
-export interface TarotSephirot {
-  /** The Major Arcana card name (Portuguese) */
+export interface TarotSephirotMapping {
+  /** The Major Arcana card name in Portuguese */
   arcano: string;
-  /** The arcano number in the Major Arcana sequence (0-21) */
+  /** The card number in the Major Arcana (0-21) */
   numero_carta: number;
-  /** The associated Sephirah name in Hebrew/English */
+  /** The associated Sephirah name (Hebrew) */
   sephirah: string;
-  /** Path number on the Tree of Life (1-22) */
-  numero_caminho: number;
-  /** Primary elemental correspondence */
-  elemento: string;
+  /** The element associated with this correlation (Fire, Water, Air, Earth, Éther) */
+  elemento_conexao: string;
   /** Spiritual meaning and archetype */
   significado_espiritual: string;
+  /** Path number on the Tree of Life (0-32, where 0 is The Fool's path) */
+  numero_caminho: number;
+  /** Hebrew letter associated with this path */
+  letra_hebraica: string;
 }
 
-// ─── Tarot Major Arcana to Sephiroth Mapping ─────────────────────────────────
+// ─── Tarot Major Arcana to Sephirot Mapping ───────────────────────────────────
 
-export const TAROT_SEPHIROT_MAPPINGS: Record<string, TarotSephirot> = {
-  // 0. O Louco - Path 1 - Kether (Crown) - Éter
+/**
+ * Complete mapping of Major Arcana to the 10 Sephiroth
+ * Based on traditional Kabbalistic correspondences and the Cabala dos Caminhos system
+ */
+export const TAROT_SEPHIROT_MAPPINGS: Record<string, TarotSephirotMapping> = {
   'O Louco': {
     arcano: 'O Louco',
     numero_carta: 0,
     sephirah: 'Kether',
-    numero_caminho: 1,
-    elemento: 'Éter',
-    significado_espiritual: 'Pureza original, inconsciência divina, o salto da fé além da razão. O ponto zero onde todo conhecimento ainda não foi separado do ser. A coroa que precede toda forma.',
+    elemento_conexao: 'Ar',
+    significado_espiritual: 'O ponto zero da existência, antes da forma. O impulso original de criar, a liberdade absoluta e a loucura sagrada do iniciado. Abre todos os caminhos.',
+    numero_caminho: 0,
+    letra_hebraica: 'Aleph',
   },
-
-  // 1. O Mago - Path 2 - Chokmah (Wisdom) - Água
   'O Mago': {
     arcano: 'O Mago',
     numero_carta: 1,
-    sephirah: 'Chokmah',
-    numero_caminho: 2,
-    elemento: 'Água',
-    significado_espiritual: 'Vontade criativa, poder de manifestar através das ferramentas sagradas. O universo se expressa através da mente. A energia masculina primordial que articula o divino.',
+    sephirah: 'Kether',
+    elemento_conexao: 'Ar',
+    significado_espiritual: 'A vontade divina em ação. O poder de manipular as forças elementais através da mente. Primeiro ato de criação manifested through speech and thought.',
+    numero_caminho: 11,
+    letra_hebraica: 'Beth',
   },
-
-  // 2. A Alta Sacerdotisa - Path 3 - Binah (Understanding) - Terra
-  'A Alta Sacerdotisa': {
-    arcano: 'A Alta Sacerdotisa',
+  'A Sacerdotisa': {
+    arcano: 'A Sacerdotisa',
     numero_carta: 2,
-    sephirah: 'Binah',
-    numero_caminho: 3,
-    elemento: 'Terra',
-    significado_espiritual: 'Discernimento, mistério oculto, o véu entre os mundos. A energia feminina que forma e limita. A limitação sagrada que permite a existência ser individuada.',
+    sephirah: 'Chokmah',
+    elemento_conexao: 'Água',
+    significado_espiritual: 'A sabedoria oculta, a intuição pura e o conhecimento direto. O princípio feminino ativo que revela os mistérios além do véu da ilusão.',
+    numero_caminho: 12,
+    letra_hebraica: 'Gimel',
   },
-
-  // 3. A Imperatriz - Path 4 - Chesed (Mercy) - Terra
   'A Imperatriz': {
     arcano: 'A Imperatriz',
     numero_carta: 3,
-    sephirah: 'Chesed',
-    numero_caminho: 4,
-    elemento: 'Terra',
-    significado_espiritual: 'Criação abundante, fertilidade, força feminil cortante. A mãe natureza que nutre mas também poda. A energia que transforma pela limitação e pelo julgamento.',
+    sephirah: 'Binah',
+    elemento_conexao: 'Terra',
+    significado_espiritual: 'A mãe divina, a fertilidade universal e o amor incondicional. O princípio formativo que estrutura a criação em abundância.',
+    numero_caminho: 3,
+    letra_hebraica: 'Daleth',
   },
-
-  // 4. O Imperador - Path 5 - Geburah (Severity) - Fogo
   'O Imperador': {
     arcano: 'O Imperador',
     numero_carta: 4,
-    sephirah: 'Geburah',
-    numero_caminho: 5,
-    elemento: 'Fogo',
-    significado_espiritual: 'Autoridade estruturante, lei sagrada, expansão ordenada. O pai cósmico que estabelece a ordem e a Hierarquia Divina. A estrutura que sustenta a criação.',
+    sephirah: 'Chesed',
+    elemento_conexao: 'Fogo',
+    significado_espiritual: 'A ordem estabelecida, a autoridade paternal e a estrutura Sagrada. O administrador divino que traz organização ao caos.',
+    numero_caminho: 4,
+    letra_hebraica: 'Heh',
   },
-
-  // 5. O Hierofante - Path 6 - Tiphereth (Beauty) - Fogo
   'O Hierofante': {
     arcano: 'O Hierofante',
     numero_carta: 5,
-    sephirah: 'Tiphereth',
-    numero_caminho: 6,
-    elemento: 'Fogo',
-    significado_espiritual: 'Iniciação sagrada, doutrina divina, o mestre que transmite a tradição. O puente entre o humano e o divino. A harmonia que reconcilia os opostos.',
+    sephirah: 'Geburah',
+    elemento_conexao: 'Ar',
+    significado_espiritual: 'O mestre espiritual, a tradição sagrada e a doutrina divina. O transmitidor de conhecimento que abre os portais da sabedoria revelada.',
+    numero_caminho: 5,
+    letra_hebraica: 'Vav',
   },
-
-  // 6. Os Enamorados - Path 7 - Netzach (Victory) - Ar
   'Os Enamorados': {
     arcano: 'Os Enamorados',
     numero_carta: 6,
-    sephirah: 'Netzach',
-    numero_caminho: 7,
-    elemento: 'Ar',
-    significado_espiritual: 'Escolha amorosa, união das polaridades, vitória pelo coração. A decisão entre dois caminhos através do amor. A paixão que vence toda resistência.',
+    sephirah: 'Tiphereth',
+    elemento_conexao: 'Ar',
+    significado_espiritual: 'A escolha sagrada, a união dos opostos e o poder de criar através da parceria. A dança cósmica do yang e yin espiritual.',
+    numero_caminho: 6,
+    letra_hebraica: 'Zain',
   },
-
-  // 7. O Carro - Path 8 - Hod (Glory) - Água
   'O Carro': {
     arcano: 'O Carro',
     numero_carta: 7,
-    sephirah: 'Hod',
-    numero_caminho: 8,
-    elemento: 'Água',
-    significado_espiritual: 'Vitória através da vontade, a carruagem da alma, triunfo da mente sobre a matéria. O conquistador que domina pelo equilíbrio das polaridades. A glória da consciência ordenada.',
+    sephirah: 'Netzach',
+    elemento_conexao: 'Água',
+    significado_espiritual: 'A vitória conquistada, a vontade de ferro e a conquista dos mundos inferiores. O guerreiro espiritual que domina o lower self.',
+    numero_caminho: 7,
+    letra_hebraica: 'Cheth',
   },
-
-  // 8. A Justiça - Path 9 - Yesod (Foundation) - Ar
   'A Justiça': {
     arcano: 'A Justiça',
     numero_carta: 8,
-    sephirah: 'Yesod',
-    numero_caminho: 9,
-    elemento: 'Ar',
-    significado_espiritual: 'Lei cósmica, equilíbrio karma, a balança que mede ações e consequências. A fundação do templo interior. O equilíbrio entre o que foi semeado e o que será colhido.',
+    sephirah: 'Geburah',
+    elemento_conexao: 'Ar',
+    significado_espiritual: 'O julgamento cósmico, a lei divina e o equilíbrio kármico. A cortante precisão da verdade que revela e transforma.',
+    numero_caminho: 25,
+    letra_hebraica: 'Teth',
   },
-
-  // 9. O Eremita - Path 10 - Malkuth (Kingdom) - Terra
   'O Eremita': {
     arcano: 'O Eremita',
     numero_carta: 9,
-    sephirah: 'Malkuth',
-    numero_caminho: 10,
-    elemento: 'Terra',
-    significado_espiritual: 'Iluminação interior, solitude sagrada, a sabedoria da escuridão. O solitário que carrega a luz para o mundo. A sabedoria que nasce na stillness do reino material.',
+    sephirah: 'Yesod',
+    elemento_conexao: 'Água',
+    significado_espiritual: 'A sabedoria interior, a solidão sagrada e a busca da verdade. A luz que guia através da escuridão da ignorância.',
+    numero_caminho: 8,
+    letra_hebraica: 'Yod',
   },
-
-  // 10. A Roda da Fortuna - Path 11 - Chokmah (Wisdom) - Fogo
   'A Roda da Fortuna': {
     arcano: 'A Roda da Fortuna',
     numero_carta: 10,
-    sephirah: 'Chokmah',
-    numero_caminho: 11,
-    elemento: 'Fogo',
-    significado_espiritual: 'Ciclos do destino, mudança inevitável, a roda que gira entre ascensão e queda. O eterno retorno, o ponto de virada onde a sorte muda. A sabedoria dinâmica que transforma.',
+    sephirah: 'Chesed',
+    elemento_conexao: 'Fogo',
+    significado_espiritual: 'O ciclo eterno, a lei de causa e efeito e os rumos do destino. O movimento celestial que traz sorte e transformação.',
+    numero_caminho: 23,
+    letra_hebraica: 'Kaph',
   },
-
-  // 11. A Força - Path 12 - Tiphereth (Beauty) - Ar
   'A Força': {
     arcano: 'A Força',
     numero_carta: 11,
     sephirah: 'Tiphereth',
-    numero_caminho: 12,
-    elemento: 'Ar',
-    significado_espiritual: 'Coragem interior, domínio das paixões, a força do espírito sobre o instinto. O leão domesticado que representa o poder da gentleness. A harmonia entre razão e emoção.',
+    elemento_conexao: 'Fogo',
+    significado_espiritual: 'O poder interior, a coragem do coração e a domesticação da besta. A força sutil que supera toda violência.',
+    numero_caminho: 15,
+    letra_hebraica: 'Lamed',
   },
-
-  // 12. O Enforcado - Path 13 - Netzach (Victory) - Água
-  'O Enforcado': {
-    arcano: 'O Enforcado',
+  'O Homem Enforcado': {
+    arcano: 'O Homem Enforcado',
     numero_carta: 12,
     sephirah: 'Netzach',
- numero_caminho: 13,
-    elemento: 'Água',
-    significado_espiritual: 'Sacrifício voluntário, nova perspectiva, o suspension que revela a verdade oculta. A entrega que traz vitória, o perder para ganhar. A sabedoria que vem do sacrifício.',
+    elemento_conexao: 'Água',
+    significado_espiritual: 'O sacrifício voluntário, a visão de mundo invertida e a rendição ao divino. O martyr que salva através da entrega.',
+    numero_caminho: 20,
+    letra_hebraica: 'Mem',
   },
-
-  // 13. A Morte - Path 14 - Hod (Glory) - Terra
   'A Morte': {
     arcano: 'A Morte',
     numero_carta: 13,
-    sephirah: 'Hod',
-    numero_caminho: 14,
-    elemento: 'Terra',
-    significado_espiritual: 'Transformação inevitável, fim de ciclo, a morte que precede o renascimento. A glória da dissolução que libera para o novo. A sabedoria da impermanência.',
+    sephirah: 'Malkuth',
+    elemento_conexao: 'Terra',
+    significado_espiritual: 'A transformação inevitável, o fim de ciclos e a morte do ego. A催化剂 que abre espaço para o novo renascer.',
+    numero_caminho: 31,
+    letra_hebraica: 'Nun',
   },
-
-  // 14. A Temperança - Path 15 - Yesod (Foundation) - Água
   'A Temperança': {
     arcano: 'A Temperança',
     numero_carta: 14,
     sephirah: 'Yesod',
-    numero_caminho: 15,
-    elemento: 'Água',
-    significado_espiritual: 'Equilíbrio e harmonia, integração dos opostos, a fundação que Une o céu e a terra. O anjo que misturam água e vinho, a alquimia interior. A moderação sagrada.',
+    elemento_conexao: 'Água',
+    significado_espiritual: 'O equilíbrio alquímico, a moderação sagrada e a integração dos opostos. O anjo que mistura e harmoniza as águas da vida.',
+    numero_caminho: 9,
+    letra_hebraica: 'Samekh',
   },
-
-  // 15. O Diabo - Path 16 - Malkuth (Kingdom) - Terra
   'O Diabo': {
     arcano: 'O Diabo',
     numero_carta: 15,
     sephirah: 'Malkuth',
-    numero_caminho: 16,
-    elemento: 'Terra',
-    significado_espiritual: 'Ilusão e apego, materialidade extrema, o reino da sombra que prende. A queda que esconde a luz, os一旁的 que nos mantém presos. A lição do reino material sobre os limites.',
+    elemento_conexao: 'Terra',
+    significado_espiritual: 'A sombra revelada, a ilusão da separação e o cativeiroautoimposto. O espelho que mostra onde nos prendemos aos vícios.',
+    numero_caminho: 32,
+    letra_hebraica: 'Ayin',
   },
-
-  // 16. A Torre - Path 17 - Binah (Understanding) - Fogo
   'A Torre': {
     arcano: 'A Torre',
     numero_carta: 16,
-    sephirah: 'Binah',
-    numero_caminho: 17,
-    elemento: 'Fogo',
-    significado_espiritual: 'Destruição criativa, revelação súbita, a torre que cai para libertar. O raio que dissipa a ilusão, a destruição que abre espaço para o novo. O entendimento que vem do caos.',
+    sephirah: 'Geburah',
+    elemento_conexao: 'Fogo',
+    significado_espiritual: 'A revelação catastrófica, a queda das estruturas falsas e a purificação pelo raio. O demolir dos ídolos internos.',
+    numero_caminho: 21,
+    letra_hebraica: 'Peh',
   },
-
-  // 17. A Estrela - Path 18 - Chesed (Mercy) - Ar
   'A Estrela': {
     arcano: 'A Estrela',
     numero_carta: 17,
-    sephirah: 'Chesed',
-    numero_caminho: 18,
-    elemento: 'Ar',
-    significado_espiritual: 'Esperança e inspiração, renovação após a crise, a estrela que guia no deserto. A misericórdia que flui como água, a luz que aponta para o futuro. A expansão que renova.',
+    sephirah: 'Tiphereth',
+    elemento_conexao: 'Água',
+    significado_espiritual: 'A esperança restaurada, a cura após a crise e a luz que guia. A estrela de Betânia que derrama águas celestiais.',
+    numero_caminho: 22,
+    letra_hebraica: 'Tzaddi',
   },
-
-  // 18. A Lua - Path 19 - Geburah (Severity) - Água
   'A Lua': {
     arcano: 'A Lua',
     numero_carta: 18,
-    sephirah: 'Geburah',
-    numero_caminho: 19,
-    elemento: 'Água',
-    significado_espiritual: 'Ilusão e inconsciente, medo e fantasia, a lua que ilumina a noite. O reino das sombras, a severidade que revela os medos ocultos. A transformação que vem da escuridão.',
+    sephirah: 'Yesod',
+    elemento_conexao: 'Água',
+    significado_espiritual: 'O inconsciente revelado, os medos primitivos e a ilusão. A luz lunar que projeta sombras do subconsciente.',
+    numero_caminho: 28,
+    letra_hebraica: 'Qoph',
   },
-
-  // 19. O Sol - Path 20 - Tiphereth (Beauty) - Fogo
   'O Sol': {
     arcano: 'O Sol',
     numero_carta: 19,
     sephirah: 'Tiphereth',
-    numero_caminho: 20,
-    elemento: 'Fogo',
-    significado_espiritual: 'Sucesso e vitalidade, consciência iluminada, o sol que dissolve as sombras. A beleza que irradia, a criança interior que celebra. A harmonia do espírito concretizada.',
+    elemento_conexao: 'Fogo',
+    significado_espiritual: 'A verdade aclarada, o sucesso espiritual e o brilho do criança interior. O sol central da Árvore da Vida.',
+    numero_caminho: 16,
+    letra_hebraica: 'Resh',
   },
-
-  // 20. O Julgamento - Path 21 - Netzach (Victory) - Fogo
   'O Julgamento': {
     arcano: 'O Julgamento',
     numero_carta: 20,
-    sephirah: 'Netzach',
-    numero_caminho: 21,
-    elemento: 'Fogo',
-    significado_espiritual: 'Renascimento e redenção, julgamento final, a trombeta que desperta os mortos. A vitória sobre a morte, o despertar que proclama uma nova era. A paixão que vence.',
+    sephirah: 'Malkuth',
+    elemento_conexao: 'Fogo',
+    significado_espiritual: 'O despertar final, a redenção kármica e o chamado à nova vida. A trombeta do anjo que julga com misericórdia.',
+    numero_caminho: 30,
+    letra_hebraica: 'Shin',
   },
-
-  // 21. O Mundo - Path 22 - Malkuth (Kingdom) - Terra
   'O Mundo': {
     arcano: 'O Mundo',
     numero_carta: 21,
     sephirah: 'Malkuth',
-    numero_caminho: 22,
-    elemento: 'Terra',
-    significado_espiritual: 'Completude e realização, integração do todo, a snake que abraça o mundo. A conclusão de um ciclo, o reino manifesto que refleja o divino. A vitória do reino sobre a tensão.',
+    elemento_conexao: 'Terra',
+    significado_espiritual: 'A completude, a integração de todos os opostos e a realização do Self. O retorno ao Éden através do conhecimento.',
+    numero_caminho: 32,
+    letra_hebraica: 'Tav',
   },
 } as const;
 
@@ -252,32 +237,23 @@ Object.freeze(TAROT_SEPHIROT_MAPPINGS);
 Object.values(TAROT_SEPHIROT_MAPPINGS).forEach(mapping => Object.freeze(mapping));
 
 /**
- * Get the Tarot-Sephirot correlation mapping by arcano name
- * @param arcano - The arcano name (e.g., 'O Louco', 'O Mago', 'A Alta Sacerdotisa')
+ * Get the Tarot-to-Sephirot correlation mapping
+ * @param arcano - The arcano name (e.g., 'O Sol', 'A Lua', 'O Mago')
  * @returns The correlation mapping or null if not found
  */
-export function getTarotSephirot(arcano: string): TarotSephirot | null {
+export function getTarotSephirot(arcano: string): TarotSephirotMapping | null {
   return TAROT_SEPHIROT_MAPPINGS[arcano] ?? null;
 }
 
 /**
- * Alias for getTarotSephirot
- * @param arcano - The arcano name (e.g., 'O Louco', 'O Mago', 'A Alta Sacerdotisa')
- * @returns The correlation mapping or null if not found
+ * Get the arcano name corresponding to a Sephirah
+ * @param sephirah - Sephirah name (e.g., 'Kether', 'Tiphereth')
+ * @returns The first arcano name associated with this Sephirah or null if not found
  */
-export function getTarotSephirah(arcano: string): TarotSephirot | null {
-  return getTarotSephirot(arcano);
-}
-
-/**
- * Get the Sephiroth-Tarot correlation mapping by Sephirah name
- * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah', 'Binah')
- * @returns The correlation mapping or null if not found
- */
-export function getSephirotTarot(sephirah: string): TarotSephirot | null {
+export function getSephirotTarot(sephirah: string): string | null {
   for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
     if (mapping.sephirah === sephirah) {
-      return mapping;
+      return mapping.arcano;
     }
   }
   return null;
@@ -285,12 +261,10 @@ export function getSephirotTarot(sephirah: string): TarotSephirot | null {
 
 /**
  * Get all available Tarot-Sephirot mappings
- * @returns Array of all correlation mappings sorted by arcano number
+ * @returns Array of all correlation mappings
  */
-export function getAllTarotSephiroth(): TarotSephirot[] {
-  return Object.values(TAROT_SEPHIROT_MAPPINGS).sort(
-    (a, b) => a.numero_carta - b.numero_carta
-  );
+export function getAllTarotSephiroths(): TarotSephirotMapping[] {
+  return Object.values(TAROT_SEPHIROT_MAPPINGS);
 }
 
 /**
@@ -303,7 +277,7 @@ export function getAllArcanos(): string[] {
 
 /**
  * Check if an arcano exists in the mapping
- * @param arcano - The arcano name to check
+ * @param arcano - Arcano name to check
  * @returns True if arcano exists in mapping
  */
 export function hasTarotSephirot(arcano: string): boolean {
@@ -311,21 +285,7 @@ export function hasTarotSephirot(arcano: string): boolean {
 }
 
 /**
- * Get Sephirah by path number on Tree of Life
- * @param path - The path number (1-22)
- * @returns The Tarot-Sephirot mapping or null if not found
- */
-export function getSephirotByPath(path: number): TarotSephirot | null {
-  for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-    if (mapping.numero_caminho === path) {
-      return mapping;
-    }
-  }
-  return null;
-}
-
-/**
- * Get arcano by card number in Major Arcana
+ * Get arcano by card number
  * @param numero - The Major Arcana card number (0-21)
  * @returns The arcano name or null if not found
  */
@@ -339,11 +299,11 @@ export function getArcanoByNumber(numero: number): string | null {
 }
 
 /**
- * Get Sephirah by card number in Major Arcana
+ * Get Sephirah by card number
  * @param numero - The Major Arcana card number (0-21)
  * @returns The Sephirah name or null if not found
  */
-export function getSephirahByNumber(numero: number): string | null {
+export function getSephirotByNumber(numero: number): string | null {
   for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
     if (mapping.numero_carta === numero) {
       return mapping.sephirah;
@@ -353,27 +313,53 @@ export function getSephirahByNumber(numero: number): string | null {
 }
 
 /**
- * Get arcano by Sephirah name
- * @param sephirah - The Sephirah name
- * @returns The arcano name or null if not found
+ * Get all arcanos associated with a specific Sephirah
+ * @param sephirah - The Sephirah name (e.g., 'Kether', 'Tiphereth')
+ * @returns Array of arcano names or empty array if not found
  */
-export function getArcanoBySephirah(sephirah: string): string | null {
+export function getArcanosBySephirot(sephirah: string): string[] {
+  const arcanos: string[] = [];
   for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
     if (mapping.sephirah === sephirah) {
-      return mapping.arcano;
+      arcanos.push(mapping.arcano);
     }
   }
-  return null;
+  return arcanos;
 }
 
 /**
- * Get all Sephiroth names (unique values)
- * @returns Array of unique Sephirah names
+ * Get the Sephiroth that appear in the Major Arcana (10 distinct ones)
+ * @returns Array of unique Sephirah names used in the mappings
  */
-export function getAllSephiroth(): string[] {
-  const sephirothSet = new Set<string>();
+export function getSephirotInTarot(): string[] {
+  const sephirot = new Set<string>();
   for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
-    sephirothSet.add(mapping.sephirah);
+    sephirot.add(mapping.sephirah);
   }
-  return Array.from(sephirothSet);
+  return Array.from(sephirot).sort();
 }
+
+/**
+ * Get all distinct elements used in the Tarot-Sephirot mappings
+ * @returns Array of element names
+ */
+export function getElementsInTarot(): string[] {
+  const elementos = new Set<string>();
+  for (const mapping of Object.values(TAROT_SEPHIROT_MAPPINGS)) {
+    elementos.add(mapping.elemento_conexao);
+  }
+  return Array.from(elementos);
+}
+
+export default {
+  getTarotSephirot,
+  getSephirotTarot,
+  getAllTarotSephiroths,
+  getAllArcanos,
+  hasTarotSephirot,
+  getArcanoByNumber,
+  getSephirotByNumber,
+  getArcanosBySephirot,
+  getSephirotInTarot,
+  getElementsInTarot,
+};

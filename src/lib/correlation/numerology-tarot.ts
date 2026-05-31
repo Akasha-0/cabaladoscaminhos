@@ -1,246 +1,267 @@
 /**
- * Numerology-Tarot Minor Arcana Correlation
- * Correlates numbers 1-10 with Tarot Minor Arcana cards
- * Based on IDEIA.md "Matriz de Numerologia e Odús de Nascimento" and Traditional Tarot symbolism
+ * Numerology-Tarot Arcana Spiritual Correlation
+ * Maps Pythagorean numbers 1-9 to their corresponding Tarot Major Arcana cards,
+ * elemental associations, and spiritual meanings.
+ * 
+ * Based on the spiritual essence of each number and its connection to
+ * the Major Arcana path on the Tree of Life.
  */
+
+import { Elemento } from './numerology-element';
 
 /**
- * Represents the correlation between a numerology number and its Tarot Minor Arcana correspondence
+ * Represents the correlation between a numerology number and its Major Arcana correspondence
  */
 export interface NumerologyTarotMapping {
-  /** The numerology number (1-10) */
+  /** The numerology number (1-9) - Pythagorean root number */
   numero: number;
-  /** The Minor Arcana card name */
-  carta: string;
-  /** The suit of the Minor Arcana card */
-  naipe: string;
-  /** The card number in the Minor Arcana (1-10) */
+  /** The Major Arcana arcano name */
+  arcano: string;
+  /** Card number in the Major Arcana sequence (0-21) */
   numero_carta: number;
-  /** Spiritual meaning and archetype */
+  /** Elemental association */
+  elemento: Elemento;
+  /** Full spiritual meaning and symbolism */
   significado_espiritual: string;
-  /** Elemental association (Fogo, Água, Terra, Ar) */
-  elemento: string;
+  /** Archetype represented by this number-arcano pair */
+  arquétipo: string;
   /** Associated Orixá from Candomblé tradition */
-  orixa: string;
+  orixá: string;
   /** Associated Kabbalistic Sephirah */
   sephirah: string;
-  /** Practical interpretation for daily life */
-  interpretacao: string;
+  /** Chakra alignment */
+  chakra: string;
+  /** Key spiritual lesson */
+  lição_espiritual: string;
+  /** Affirmation for meditation */
+  afirmação: string;
 }
 
-// ─── Numerology-to-Tarot Minor Arcana Mapping ─────────────────────────────────────
+// ─── Numerology 1-9 to Major Arcana Mapping ─────────────────────────────────────
 
-export const NUMEROLOGY_TAROT_MAPPINGS: Record<number, NumerologyTarotMapping> = {
+/**
+ * Complete mapping of numbers 1-9 to their Major Arcana correspondences.
+ * Each number represents a spiritual lesson and cosmic archetype.
+ */
+export const NUMEROLOGIA_ARCANO_MAP: Record<number, NumerologyTarotMapping> = {
   1: {
     numero: 1,
-    carta: 'Ás de Bastões',
-    naipe: 'Bastões',
+    arcano: 'O Mago',
     numero_carta: 1,
-    significado_espiritual: 'O Iniciador, impulso criativo, novo começo, força vital, confiança e liderança. A centelha divina que acende a ação.',
-    elemento: 'Fogo',
-    orixa: 'Ogum',
+    elemento: 'Água',
+    significado_espiritual: 'O poder de manifestar através da vontade e intenção. Acentelha divina que conecta o céu e a terra. O princípio ativo que transforma o potencial em realidade. Representa a força de vontade criativa, a mestria das ferramentas sagradas e a capacidade de canalizar a energia universal.',
+    arquétipo: 'O Mago / O Criador',
+    orixá: 'Exu / Okaran',
     sephirah: 'Kether',
-    interpretacao: 'Momento de iniciar novos projetos com entusiasmo. A energia do fogo催促 você a agir com coragem e相信自己. Favorece开创精神和领导力.',
+    chakra: '3º Plexo Solar',
+    lição_espiritual: 'Você possui todo o poder necessário para manifestar seus desejos. A ferramenta está em suas mãos.',
+    afirmação: 'Eu sou capaz de manifestar minha realidade através da minha vontade sagrada.',
   },
   2: {
     numero: 2,
-    carta: 'Dois de Copas',
-    naipe: 'Copas',
+    arcano: 'A Alta Sacerdotisa',
     numero_carta: 2,
-    significado_espiritual: 'A União, parceria, dualidade, amor, relacionamentos, equilíbrio emocional e diplomacią. A harmonia entre dois corações.',
-    elemento: 'Água',
-    orixa: 'Ibeji',
+    elemento: 'Terra',
+    significado_espiritual: 'A sabedoria intuitiva que habita no silêncio. O véu entre os mundos visível e invisível. A receptividade sagrada que recebe sem julgamento. Representa o discernimento profundo, o conhecimento oculto e a conexão com os mistérios ancestrais.',
+    arquétipo: 'A Sacerdotisa / A Guardiã dos Mistérios',
+    orixá: 'Ibeji / Ejiokô',
     sephirah: 'Chokmah',
-    interpretacao: 'Período propício para unir forças, criar alianças e cultivar relacionamentos. A energia aquática traz sensibilidade e receptividade emocional.',
+    chakra: '6º Frontal',
+    lição_espiritual: 'Confie na sua intuição e nos sabedoria que vem do silêncio interior.',
+    afirmação: 'Eu escuto a voz da minha alma e confio nos mistérios do universo.',
   },
   3: {
     numero: 3,
-    carta: 'Três de Copas',
-    naipe: 'Copas',
+    arcano: 'A Imperatriz',
     numero_carta: 3,
-    significado_espiritual: 'A Celebração, criatividade, expressão artística, amizade, comunidade, fartura emocional e alegria de viver.',
-    elemento: 'Água',
-    orixa: 'Oxum',
+    elemento: 'Terra',
+    significado_espiritual: 'A fertilidade criativa em todas as suas formas. A abundância natural que flui da conexão com a natureza. A expressão artística e a beleza sagrada. Representa a criação, o nurturing, a conexão com a terra e a manifestação da abundância.',
+    arquétipo: 'A Mãe Divina / A Criadora',
+    orixá: 'Iemanjá / Irosun',
     sephirah: 'Binah',
-    interpretacao: 'Momento de colheitas e celebrações. A energia de Oxum traz doçura, abundância afetiva e conexão com a beleza. Favorece atividades criativas e sociais.',
+    chakra: '4º Cardíaco',
+    lição_espiritual: 'A abundância é seu direito de nascença quando você se conecta com a energia criativa do universo.',
+    afirmação: 'Eu nutro minha essência criativa e permito que a abundância flua naturalmente.',
   },
   4: {
     numero: 4,
-    carta: 'Quatro de Ouros',
-    naipe: 'Ouros',
+    arcano: 'O Imperador',
     numero_carta: 4,
-    significado_espiritual: 'A Estabilidade, controle, segurança material, organização, persistência e ancoramento. A fundação sólida do mundo material.',
-    elemento: 'Terra',
-    orixa: 'Oxóssi',
+    elemento: 'Fogo',
+    significado_espiritual: 'A autoridade sagrada que estabelece ordem no caos. A disciplina e a estrutura que sustentam a realização. O princípio patriarcal que cria fronteiras e leis. Representa o poder de autodisciplina, a capacidade de criar estruturas duradouras e a liderança baseada em princípios.',
+    arquétipo: 'O Pai / O Governante',
+    orixá: 'Ogum / Etaogundá',
     sephirah: 'Chesed',
-    interpretacao: 'Período de consolidation financeira e organização. A energia de Oxóssi favorece a estruturação de projetos de longo prazo e a gestão prudente de recursos.',
+    chakra: '1º Básico',
+    lição_espiritual: 'A verdadeira autoridade vem do domínio de si mesmo e da criação de estruturas que servem ao bem maior.',
+    afirmação: 'Eu establezco ordem em minha vida com sabedoria e disciplina sagrada.',
   },
   5: {
     numero: 5,
-    carta: 'Cinco de Ouros',
-    naipe: 'Ouros',
+    arcano: 'O Hierofante',
     numero_carta: 5,
-    significado_espiritual: 'O Desafio, adversidade, conflito temporário, superação de obstáculos, mudança e transição. A tempestade que precede a calma.',
-    elemento: 'Terra',
-    orixa: 'Xangô',
+    elemento: 'Fogo',
+    significado_espiritual: 'O mestre espiritual e a tradição sagrada. A ponte entre o conhecimento humano e divino. Os sacramentos que conectam com o transcendente. Representa a busca por significado, a educação espiritual e a conformidade com as leis divinas.',
+    arquétipo: 'O Sacerdote / O Mestre Espiritual',
+    orixá: 'Oxum / Oxé',
     sephirah: 'Geburah',
-    interpretacao: 'Momento de enfrentar dificuldades com perseverança. A energia de Xangô traz a justiça necessária para superar obstáculos. Não desista — a vitória está próxima.',
+    chakra: '5º Laríngeo',
+    lição_espiritual: 'A sabedoria dos mestres ancestrais aguarda sua busca. Pergunte e receberá; Bata e a porta se abrirá.',
+    afirmação: 'Eu busco a sabedoria sagrada e abro meu coração para os ensinamentos dos mestres.',
   },
   6: {
     numero: 6,
-    carta: 'Seis de Copas',
-    naipe: 'Copas',
+    arcano: 'Os Enamorados',
     numero_carta: 6,
-    significado_espiritual: 'A Harmonia, generosidade, cuidado, infância, memórias, paz interior e reciprocidade. A doçura de servir aos outros.',
-    elemento: 'Água',
-    orixa: 'Iemanjá',
+    elemento: 'Ar',
+    significado_espiritual: 'A união das polaridades e a escolha do coração. O amor que transcende o eu individual. A harmonia entre mente, corpo e espírito. Representa o amor em todas as suas expressões, as relações sagradas e a integração das sombras.',
+    arquétipo: 'O Amante / A União Sagrada',
+    orixá: 'Oxumaré / Oxumarim',
     sephirah: 'Tiphereth',
-    interpretacao: 'Período de paz emocional e generosidade. A energia de Iemanjá traz harmonia familiar, cura de feridas passadas e conexão com a inner child.',
+    chakra: '4º Cardíaco',
+    lição_espiritual: 'O amor verdadeiro requer escolha consciente. Selecione o que eleva sua alma.',
+    afirmação: 'Eu escolho o amor que me eleva e une minhas polaridades em harmonia sagrada.',
   },
   7: {
     numero: 7,
-    carta: 'Sete de Copas',
-    naipe: 'Copas',
+    arcano: 'O Carro',
     numero_carta: 7,
-    significado_espiritual: 'A Escolha, ilusões, fantasia, introspecção, busca espiritual e avaliação de opções. O momento de discernir entre sonho e realidade.',
     elemento: 'Água',
-    orixa: 'Iansã',
+    significado_espiritual: 'A vitória conquistada através da vontade focada e do equilíbrio das forças opostas. A determinação que supera todos os obstáculos. Representa o triumpho sobre os desafios, o controle das emoções e a jornada em direção a um objetivo claro.',
+    arquétipo: 'O Guerreiro / O Vitorioso',
+    orixá: 'Xangô / Obará',
     sephirah: 'Netzach',
-    interpretacao: 'Momento de refletir sobre seus desejos e escolher sabiamente. A energia de Iansã traz transformação e a sabedoria para distinguir o real do ilusório.',
+    chakra: '3º Plexo Solar',
+    lição_espiritual: 'O sucesso vem da harmonia entre ação decisiva e receptividade paciente.',
+    afirmação: 'Eu avanço em direção aos meus objetivos com determinação e equilíbrio interior.',
   },
   8: {
     numero: 8,
-    carta: 'Oito de Ouros',
-    naipe: 'Ouros',
+    arcano: 'A Justiça',
     numero_carta: 8,
-    significado_espiritual: 'O Profissionalismo, maestria, dedicação, habilidade, progresso contínuo e karma. O artesão que aperfeiçoa sua arte.',
-    elemento: 'Terra',
-    orixa: 'Oxalá',
+    elemento: 'Ar',
+    significado_espiritual: 'A lei cósmica de causa e efeito. O equilíbrio karma que governa todas as ações. A verdade que se manifesta inevitavelmente. Representa a integridade, a responsabilidade por nossas escolhas e o retorno infinito da energia que emitimos.',
+    arquétipo: 'A Justiça / O Juiz Cosmic',
+    orixá: 'Oxalá / EjiOníle',
     sephirah: 'Hod',
-    interpretacao: 'Período de trabalho disciplinado e aperfeiçoamento de habilidades. A energia de Oxalá traz paz e a maestria que vem da prática constante e da cabeça fria.',
+    chakra: '4º Cardíaco',
+    lição_espiritual: 'Suas ações têm consequências inevitáveis. Escolha sabedor para semear o que deseja colher.',
+    afirmação: 'Eu ajo com integridade, conhecendo que a justiça cósmica equilibra todas as minhas escolhas.',
   },
   9: {
     numero: 9,
-    carta: 'Nove de Ouros',
-    naipe: 'Ouros',
+    arcano: 'O Eremita',
     numero_carta: 9,
-    significado_espiritual: 'A Abundância, realização, autoconfiança, independência, sucesso material e gratificação. A colheita dos esforços.',
     elemento: 'Terra',
-    orixa: 'Oxum',
+    significado_espiritual: 'A sabedoria conquistada na solidão sagrada. A luz interior que brilha para o mundo. A iluminação que vem da introspecção profunda. Representa a busca da verdade, o retiro necessário para o autoconhecimento e a sabedoria dos que caminham sós.',
+    arquétipo: 'O Sábio / O Illuminado',
+    orixá: 'Nanã / Omolu / Olobón',
     sephirah: 'Yesod',
-    interpretacao: 'Momento de celebrar conquistas e abundância. A energia de Oxum traz realizeação financeira, auto-estima elevada e a doçura do sucesso merecido.',
+    chakra: '6º Frontal',
+    lição_espiritual: 'Na quietude da alma, a luz da verdade se revela. Não tema a solidão - ela é sua mestra.',
+    afirmação: 'Eu ilumino meu caminho com a sabedoria da alma, compartilhando luz com todos que encontram.',
   },
-  10: {
-    numero: 10,
-    carta: 'Dez de Ouros',
-    naipe: 'Ouros',
-    numero_carta: 10,
-    significado_espiritual: 'O Finais, completude, legado familiar, tradição, responsabilidade e ciclos completos. A roda que retorna ao início.',
-    elemento: 'Terra',
-    orixa: 'Oxalá',
-    sephirah: 'Malkuth',
-    interpretacao: 'Período de encerramento de ciclos importantes. A energia de Oxalá traz estabilidade, conexão com ancestrais e a sabedoria de que endings são também beginnings.',
-  },
-} as const;
+};
 
 // Freeze the mapping object to prevent modifications
-Object.freeze(NUMEROLOGY_TAROT_MAPPINGS);
+Object.freeze(NUMEROLOGIA_ARCANO_MAP);
 // Freeze nested objects
-Object.values(NUMEROLOGY_TAROT_MAPPINGS).forEach(mapping => Object.freeze(mapping));
+Object.values(NUMEROLOGIA_ARCANO_MAP).forEach((mapping) => Object.freeze(mapping));
 
 /**
- * Get the numerology-to-Tarot correlation mapping
- * @param numero - Number from 1 to 10
- * @returns The correlation mapping or null if not found
+ * Returns the arcano correlation for a given numerology number (1-9)
+ * @param numero - The number to look up (must be 1-9)
+ * @returns NumerologyTarotMapping object with all correlations
+ * @throws Error if number is outside valid range
  */
-export function getNumerologyTarot(numero: number): NumerologyTarotMapping | null {
-  return NUMEROLOGY_TAROT_MAPPINGS[numero] ?? null;
+export function getNumerologyTarot(numero: number): NumerologyTarotMapping {
+  if (!Number.isInteger(numero) || numero < 1 || numero > 9) {
+    throw new Error(`Número fora do intervalo válido (1-9). Recebido: ${numero}`);
+  }
+  return NUMEROLOGIA_ARCANO_MAP[numero];
 }
 
 /**
- * Get the numerology number corresponding to a Tarot Minor Arcana card
- * @param carta - The card name (e.g., 'Ás de Bastões', 'Dez de Ouros')
+ * Get the numerology number corresponding to a Tarot arcano
+ * @param arcano - The arcano name (e.g., 'O Mago', 'A Imperatriz')
  * @returns The numerology number or null if not found
  */
-export function getTarotNumerology(carta: string): number | null {
-  for (const [num, mapping] of Object.entries(NUMEROLOGY_TAROT_MAPPINGS)) {
-    if (mapping.carta === carta) {
-      return Number(num);
-    }
-  }
-  return null;
+export function getTarotNumerology(arcano: string): number | null {
+  const found = Object.values(NUMEROLOGIA_ARCANO_MAP).find(
+    (m) => m.arcano.toLowerCase() === arcano.toLowerCase()
+  );
+  return found ? found.numero : null;
 }
 
 /**
- * Get all available numerology-Tarot mappings
- * @returns Array of all correlation mappings
+ * Get all numerology-Tarot mappings
+ * @returns Array of all NumerologyTarotMapping objects for numbers 1-9
  */
 export function getAllNumerologyTarots(): NumerologyTarotMapping[] {
-  return Object.values(NUMEROLOGY_TAROT_MAPPINGS).sort((a, b) => a.numero - b.numero);
-}
-
-/**
- * Get all numerology numbers
- * @returns Array of numbers 1-10
- */
-export function getAllNumerologyNumbers(): number[] {
-  return Object.keys(NUMEROLOGY_TAROT_MAPPINGS).map(Number).sort((a, b) => a - b);
+  return Object.values(NUMEROLOGIA_ARCANO_MAP).sort((a, b) => a.numero - b.numero);
 }
 
 /**
  * Check if a number exists in the mapping
- * @param numero - Number to check
+ * @param numero - Number to check (1-9)
  * @returns True if number exists in mapping
  */
 export function hasNumerologyTarot(numero: number): boolean {
-  return numero in NUMEROLOGY_TAROT_MAPPINGS;
+  return numero in NUMEROLOGIA_ARCANO_MAP;
 }
 
 /**
- * Get mapping by card name
- * @param carta - The card name
+ * Get mapping by arcano name
+ * @param arcano - The arcano name
  * @returns The correlation mapping or null if not found
  */
-export function getMappingByCard(carta: string): NumerologyTarotMapping | null {
-  for (const mapping of Object.values(NUMEROLOGY_TAROT_MAPPINGS)) {
-    if (mapping.carta === carta) {
-      return mapping;
-    }
-  }
-  return null;
+export function getMappingByArcano(arcano: string): NumerologyTarotMapping | null {
+  return Object.values(NUMEROLOGIA_ARCANO_MAP).find(
+    (m) => m.arcano.toLowerCase() === arcano.toLowerCase()
+  ) ?? null;
 }
 
 /**
  * Get mappings filtered by element
- * @param elemento - Element to filter by (Fogo, Água, Terra, Ar)
+ * @param elemento - Element to filter by (Fogo, Água, Terra, Ar, Éter)
  * @returns Array of NumerologyTarotMapping objects matching the element
  */
 export function getNumerologyByElement(elemento: string): NumerologyTarotMapping[] {
-  return Object.values(NUMEROLOGY_TAROT_MAPPINGS)
-    .filter(mapping => mapping.elemento === elemento)
-    .sort((a, b) => a.numero - b.numero);
+  const normalized = elemento
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  const elementMap: Record<string, Elemento> = {
+    fogo: 'Fogo',
+    agua: 'Água',
+    terra: 'Terra',
+    ar: 'Ar',
+    eter: 'Éter',
+  };
+
+  const key = elementMap[normalized];
+  if (!key) return [];
+
+  return getAllNumerologyTarots().filter((m) => m.elemento === key);
 }
 
 /**
  * Get mappings filtered by Orixá
- * @param orixa - Orixá name to search for
+ * @param orixá - Orixá name to search for
  * @returns Array of NumerologyTarotMapping objects associated with the Orixá
  */
-export function getNumerologyByOrixa(orixa: string): NumerologyTarotMapping[] {
-  return Object.values(NUMEROLOGY_TAROT_MAPPINGS)
-    .filter(mapping => mapping.orixa === orixa)
-    .sort((a, b) => a.numero - b.numero);
-}
+export function getNumerologyByOrixa(orixá: string): NumerologyTarotMapping[] {
+  const normalized = orixá
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 
-/**
- * Get mappings filtered by suit
- * @param naipe - Suit name to filter by (Bastões, Copas, Ouros, Espadas)
- * @returns Array of NumerologyTarotMapping objects matching the suit
- */
-export function getNumerologyBySuit(naipe: string): NumerologyTarotMapping[] {
-  return Object.values(NUMEROLOGY_TAROT_MAPPINGS)
-    .filter(mapping => mapping.naipe === naipe)
-    .sort((a, b) => a.numero - b.numero);
+  return getAllNumerologyTarots().filter((m) =>
+    m.orixá.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(normalized)
+  );
 }
 
 /**
@@ -249,7 +270,30 @@ export function getNumerologyBySuit(naipe: string): NumerologyTarotMapping[] {
  * @returns Array of NumerologyTarotMapping objects with the matching Sephirah
  */
 export function getNumerologyBySephirah(sephirah: string): NumerologyTarotMapping[] {
-  return Object.values(NUMEROLOGY_TAROT_MAPPINGS)
-    .filter(mapping => mapping.sephirah === sephirah)
-    .sort((a, b) => a.numero - b.numero);
+  const normalized = sephirah
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  return getAllNumerologyTarots().filter((m) =>
+    m.sephirah.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(normalized)
+  );
+}
+
+/**
+ * Get mappings filtered by Chakra
+ * @param chakra - Chakra name or number to search for
+ * @returns Array of NumerologyTarotMapping objects with the matching Chakra
+ */
+export function getNumerologyByChakra(chakra: string): NumerologyTarotMapping[] {
+  const normalized = chakra
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  return getAllNumerologyTarots().filter((m) =>
+    m.chakra.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(normalized)
+  );
 }
