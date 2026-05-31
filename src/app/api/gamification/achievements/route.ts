@@ -1,23 +1,34 @@
-// ============================================================
-// GAMIFICATION ACHIEVEMENTS API - CABALA DOS CAMINHOS
-// ============================================================
-// GET endpoints for gamification achievements
-// - List all achievements with user progress
-// - Get specific achievement details
-// - Get achievements by category
-// - Achievement unlocking and progress tracking
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
-// ============================================================
-// TYPE DEFINITIONS
-// ============================================================
-
-export type AchievementCategory = 'prática' | 'conhecimento' | 'streak';
-export type AchievementRarity = 'common' | 'uncommon' | 'rare' | 'legendary';
-
-export interface Achievement {
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const AchievementCategorySchema = z.enum(['prática', 'conhecimento', 'streak']);
+const AchievementRaritySchema = z.enum(['common', 'uncommon', 'rare', 'legendary']);
+const AchievementSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  icon: z.string(),
+  category: AchievementCategorySchema,
+  rarity: AchievementRaritySchema,
+  target: z.number().int().positive(),
+  progress: z.number().int().min(0).optional(),
+  unlockedAt: z.string().nullable(),
+});
+const AchievementsResponseSchema = z.object({
+  achievements: z.array(AchievementSchema),
+  unlockedCount: z.number().int().min(0),
+  totalCount: z.number().int().min(0),
+  completionPercentage: z.number().min(0).max(100),
+});
+const AchievementsQuerySchema = z.object({
+  category: AchievementCategorySchema.optional(),
+  rarity: AchievementRaritySchema.optional(),
+  userId: z.string().optional(),
+});
+export type AchievementCategory = z.infer<typeof AchievementCategorySchema>;
+export type AchievementRarity = z.infer<typeof AchievementRaritySchema>;
+export type Achievement = z.infer<typeof AchievementSchema>;
+export interface AchievementsResponse {
   id: string;
   name: string;
   description: string;
