@@ -7,7 +7,7 @@ function normalizeSigno(signo: string): string {
 
 /**
  * Numerology-Zodiac Correlation
- * Correlates numbers 1-10 with Zodiac signs
+ * Correlates numerology numbers with Zodiac signs
  * Based on Traditional Numerology symbolism and Western Astrology
  */
 
@@ -156,12 +156,24 @@ Object.freeze(NUMEROLOGY_ZODIAC_MAPPINGS);
 Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).forEach(mapping => Object.freeze(mapping));
 
 /**
- * Get the numerology-to-Zodiac correlation mapping
- * @param numero - Number from 1 to 10
+ * Get the numerology-to-zodiac correlation mapping
+ * @param numero - The numerology number (1-10)
  * @returns The correlation mapping or null if not found
  */
-export function getNumerologyZodiac(numero: number): NumerologyZodiacMapping | null {
+export function getNumerologyZodiacMapping(numero: number): NumerologyZodiacMapping | null {
+  if (numero < 1 || numero > 10) {
+    return null;
+  }
   return NUMEROLOGY_ZODIAC_MAPPINGS[numero] ?? null;
+}
+
+/**
+ * Get the zodiac sign corresponding to a numerology number
+ * @param numero - The numerology number (1-10)
+ * @returns The zodiac sign or null if not found
+ */
+export function getNumerologyZodiac(numero: number): NumerologyZodiacMapping | null {
+  return getNumerologyZodiacMapping(numero);
 }
 
 /**
@@ -171,47 +183,57 @@ export function getNumerologyZodiac(numero: number): NumerologyZodiacMapping | n
  */
 export function getZodiacNumerology(signo: string): number | null {
   const normalized = normalizeSigno(signo);
-  const entry = Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).find(
-    mapping => normalizeSigno(mapping.signo) === normalized
-  );
-  return entry?.numero ?? null;
+  
+  // Build reverse lookup from signo to numero
+  const reverseMap: Record<string, number> = {};
+  for (const mapping of Object.values(NUMEROLOGY_ZODIAC_MAPPINGS)) {
+    const key = normalizeSigno(mapping.signo);
+    reverseMap[key] = mapping.numero;
+  }
+  
+  return reverseMap[normalized] ?? null;
 }
 
 /**
- * Get all available numerology-Zodiac mappings
- * @returns Array of all correlation mappings
+ * Get all available numerology-zodiac mappings
+ * @returns Array of all correlation mappings sorted by numero
  */
 export function getAllNumerologyZodiacs(): NumerologyZodiacMapping[] {
   return Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).sort((a, b) => a.numero - b.numero);
 }
 
 /**
- * Get all numerology numbers
- * @returns Array of numbers 1-10
+ * Get all available numerology numbers (1-10)
+ * @returns Array of all numerology numbers sorted ascending
  */
 export function getAllNumerologyNumbers(): number[] {
   return Object.keys(NUMEROLOGY_ZODIAC_MAPPINGS).map(Number).sort((a, b) => a - b);
 }
 
 /**
- * Check if a number exists in the mapping
+ * Check if a numerology number exists in the mapping
  * @param numero - Number to check
  * @returns True if number exists in mapping
  */
 export function hasNumerologyZodiac(numero: number): boolean {
-  return numero in NUMEROLOGY_ZODIAC_MAPPINGS;
+  return getNumerologyZodiacMapping(numero) !== null;
 }
 
 /**
  * Get mapping by sign name
- * @param signo - The sign name
+ * @param signo - The sign name (e.g., 'Áries', 'Touro')
  * @returns The correlation mapping or null if not found
  */
 export function getMappingBySigno(signo: string): NumerologyZodiacMapping | null {
   const normalized = normalizeSigno(signo);
-  return Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).find(
-    mapping => normalizeSigno(mapping.signo) === normalized
-  ) ?? null;
+  
+  for (const mapping of Object.values(NUMEROLOGY_ZODIAC_MAPPINGS)) {
+    if (normalizeSigno(mapping.signo) === normalized) {
+      return mapping;
+    }
+  }
+  
+  return null;
 }
 
 /**
@@ -220,8 +242,9 @@ export function getMappingBySigno(signo: string): NumerologyZodiacMapping | null
  * @returns Array of NumerologyZodiacMapping objects matching the element
  */
 export function getNumerologyByElement(elemento: string): NumerologyZodiacMapping[] {
+  const normalizedElemento = normalizeSigno(elemento);
   return Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).filter(
-    mapping => mapping.elemento.toLowerCase() === elemento.toLowerCase()
+    m => normalizeSigno(m.elemento) === normalizedElemento
   );
 }
 
@@ -231,8 +254,9 @@ export function getNumerologyByElement(elemento: string): NumerologyZodiacMappin
  * @returns Array of NumerologyZodiacMapping objects associated with the Orixá
  */
 export function getNumerologyByOrixa(orixa: string): NumerologyZodiacMapping[] {
+  const normalizedOrixa = normalizeSigno(orixa);
   return Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).filter(
-    mapping => mapping.orixa.toLowerCase() === orixa.toLowerCase()
+    m => normalizeSigno(m.orixa) === normalizedOrixa
   );
 }
 
@@ -242,8 +266,9 @@ export function getNumerologyByOrixa(orixa: string): NumerologyZodiacMapping[] {
  * @returns Array of NumerologyZodiacMapping objects matching the modality
  */
 export function getNumerologyByModalidade(modalidade: string): NumerologyZodiacMapping[] {
+  const normalizedModalidade = normalizeSigno(modalidade);
   return Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).filter(
-    mapping => mapping.modalidade.toLowerCase() === modalidade.toLowerCase()
+    m => normalizeSigno(m.modalidade) === normalizedModalidade
   );
 }
 
@@ -253,8 +278,9 @@ export function getNumerologyByModalidade(modalidade: string): NumerologyZodiacM
  * @returns Array of NumerologyZodiacMapping objects with the matching planet
  */
 export function getNumerologyByPlaneta(planeta: string): NumerologyZodiacMapping[] {
+  const normalizedPlaneta = normalizeSigno(planeta);
   return Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).filter(
-    mapping => mapping.planeta.toLowerCase() === planeta.toLowerCase()
+    m => normalizeSigno(m.planeta) === normalizedPlaneta
   );
 }
 
@@ -264,7 +290,8 @@ export function getNumerologyByPlaneta(planeta: string): NumerologyZodiacMapping
  * @returns Array of NumerologyZodiacMapping objects with the matching Sephirah
  */
 export function getNumerologyBySephirah(sephirah: string): NumerologyZodiacMapping[] {
+  const normalizedSephirah = normalizeSigno(sephirah);
   return Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).filter(
-    mapping => mapping.sephirah.toLowerCase() === sephirah.toLowerCase()
+    m => normalizeSigno(m.sephirah) === normalizedSephirah
   );
 }
