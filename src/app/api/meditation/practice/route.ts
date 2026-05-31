@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const MeditationTypeSchema = z.enum(['breath', 'visualization', 'mantra', 'body-scan', 'loving-kindness', 'transcendental', 'dynamic', 'osho']);
 const TraditionSchema = z.enum(['yoga', 'vipassana', 'zen', 'kundalini', 'taoist', 'mystic']);
 const MeditationQuerySchema = z.object({
@@ -10,9 +17,88 @@ const MeditationQuerySchema = z.object({
   duration: z.coerce.number().int().positive().optional(),
   includeMantras: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 export const dynamic = 'force-dynamic';
+
+// ─── Spiritual Correlations for Meditation Types ──────────────────────────────────────────
+const MEDITATION_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  breath: {
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'A respiração conecta-me à fonte da vida',
+    frequency: '396 Hz',
+  },
+  visualization: {
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Visualizo minha verdade com clareza',
+    frequency: '528 Hz',
+  },
+  mantra: {
+    sefirot: ['Kether', 'Binah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'O mantra purifica minha mente e eleva minha consciência',
+    frequency: '963 Hz',
+  },
+  'body-scan': {
+    sefirot: ['Yesod', 'Malkuth'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Ogum',
+    affirmation: 'Cada célula do meu corpo é sagrada',
+    frequency: '396 Hz',
+  },
+  'loving-kindness': {
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Amor e compaixão emanam de mim para todos os seres',
+    frequency: '528 Hz',
+  },
+  transcendental: {
+    sefirot: ['Kether', 'Tipheret'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Transcendo os limites do ego e toco o infinito',
+    frequency: '963 Hz',
+  },
+  dynamic: {
+    sefirot: ['Gevurah', 'Netzach'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'O movimento sagrado flui através de mim',
+    frequency: '528 Hz',
+  },
+  osho: {
+    sefirot: ['Chokhmah', 'Hod'],
+    chakra: 6,
+    element: 'Ar',
+    orixa: 'Iansã',
+    affirmation: 'Na dança eu encontro minha essência livre',
+    frequency: '741 Hz',
+  },
+};
 
 // ─── Practice Data ─────────────────────────────────────────────────────────
 interface MeditationPractice {
@@ -30,6 +116,14 @@ interface MeditationPractice {
   sefirot: string[];
   chakra: string;
   solfeggio?: string;
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 const MEDITATION_PRACTICES: MeditationPractice[] = [
@@ -56,6 +150,7 @@ const MEDITATION_PRACTICES: MeditationPractice[] = [
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 'Ajna (6º)',
     solfeggio: '396Hz (Libertação do medo)',
+    spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS['breath'],
   },
   {
     id: 'nadi-shodhana',
@@ -81,311 +176,267 @@ const MEDITATION_PRACTICES: MeditationPractice[] = [
     mantras: ['Om', 'So Hum'],
     breathPattern: '4-4-4-0',
     sefirot: ['Chesed', 'Gevurah'],
-    chakra: 'Vishuddha (5º)',
-    solfeggio: '417Hz (Facilitação de mudança)',
+    chakra: 'Anahata (4º)',
+    solfeggio: '528Hz (Harmonização)',
+    spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS['breath'],
+  },
+  {
+    id: 'kundalini-awakening',
+    type: 'mantra',
+    name: 'Kundalini — Despertar da Serpente',
+    nameEn: 'Kundalini Awakening',
+    description: 'Despertar da energia kundalini através de mantras e respiração.',
+    tradition: 'kundalini',
+    duration: 30,
+    difficulty: 'advanced',
+    steps: [
+      'Sente-se em posição de fácil respiração',
+      'Faça o pump (bombeamento do umbigo) por 1 minuto',
+      'Pratique kapalabhati (respiração de fogo) por 2 minutos',
+      'Recite o mantra "Sat Nam" repetidamente',
+      'Visualize a energia subindo pela coluna',
+      'Permaneça em silêncio observando',
+      'Gradualmente retorne à consciência normal',
+    ],
+    mantras: ['Sat Nam', 'Wahe Guru', 'Om'],
+    breathPattern: 'Fogo (Kapalabhati)',
+    sefirot: ['Kether', 'Malkuth'],
+    chakra: 'Muladhara (1º)',
+    solfeggio: '396Hz (Libertação)',
+    spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS['mantra'],
   },
   {
     id: 'loving-kindness',
     type: 'loving-kindness',
-    name: 'Metta Bhavana — Cultivo do Amor Bondoso',
-    nameEn: 'Loving Kindness Meditation',
-    description: 'Desenvolvimento de compaixão e amor incondicional por todos os seres.',
+    name: 'Metta Bhavana — Cultivo do Amor',
+    nameEn: 'Loving Kindness',
+    description: 'Meditação budista para desenvolver amor bondoso (metta).',
     tradition: 'vipassana',
     duration: 25,
     difficulty: 'intermediate',
     steps: [
-      'Sente-se em meditação',
-      'Cultive amor por si mesmo: "Que eu seja feliz"',
-      'Expanda para um benefactor: "Que [nome] seja feliz"',
-      'Inclua um amigo próximo',
-      'Adicione alguém neutro',
-      'Estenda para alguém difícil ou inimigo',
-      'Abra para todos os seres: "Que todos os seres sejam felizes"',
-      'Permaneça no amor infinito por alguns minutos',
+      'Sente-se em meditação tranquila',
+      'Cultive amor por você mesmo: "Que eu seja feliz"',
+      'Amplie para uma pessoa amada',
+      'Estenda para um conhecido neutro',
+      'Inclua alguém difícil ou desafiador',
+      'Abra para todos os seres',
+      'Permaneça no sentimento de amor universal',
     ],
-    mantras: ['Metta', 'Loka Samasta Sukhino Bhavantu'],
-    sefirot: ['Chesed', 'Tipheret'],
+    mantras: ['Metta', 'Sabbe satta'],
+    sefirot: ['Chesed', 'Netzach'],
     chakra: 'Anahata (4º)',
-    solfeggio: '528Hz (Amor e harmonics)',
-  },
-  {
-    id: 'body-scan-vipassana',
-    type: 'body-scan',
-    name: 'Scanning Corpóreo — Body Scan',
-    nameEn: 'Body Scan Meditation',
-    description: 'Varredura sistemática do corpo para desenvolver consciência e soltar tensões.',
-    tradition: 'vipassana',
-    duration: 30,
-    difficulty: 'beginner',
-    steps: [
-      'Deite-se ou sente-se confortavelmente',
-      'Feche os olhos e respire profundamente',
-      'Comece pelos pés, perceba sensações',
-      'Mova gradualmente para as pernas',
-      'Continue pelo abdômen e peito',
-      'Suba pelos braços até as mãos',
-      'Vá para ombros, pescoço e rosto',
-      'Explore o topo da cabeça',
-      'Permaneça consciente de todo o corpo',
-      'Retorne ao corpo como um todo',
-    ],
-    mantras: ['Anicca', 'Sabbasan passati'],
-    sefirot: ['Malkuth', 'Yesod'],
-    chakra: 'Muladhara (1º)',
-    solfeggio: '174Hz (Alívio de dor)',
+    solfeggio: '528Hz (Amor)',
+    spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS['loving-kindness'],
   },
   {
     id: 'zen-zazen',
     type: 'transcendental',
     name: 'Zazen — Meditação Zen',
-    nameEn: 'Zen Sitting Meditation',
-    description: 'Prática de sentar em silêncio do Zen Budismo, focar na postura e respiração.',
+    nameEn: 'Zen Zazen',
+    description: 'Prática de meditação silenciosa da tradição Zen.',
     tradition: 'zen',
-    duration: 40,
+    duration: 30,
     difficulty: 'intermediate',
     steps: [
-      'Escolha um tempo e lugar tranquilo',
-      'Sente-se no chão ou em uma almofada (zafu)',
-      'Adote a postura "pose do diamante"',
-      'Cruze as mãos no colo, polegares tocando',
-      'Mantenha as costas retas',
-      'Relaxe os ombros e queda o queixo',
-      'Feche os olhos 70%',
-      'Breathe naturalmente, counting breaths 1-10',
-      'When thoughts arise, acknowledge and return to counting',
-      'Continue por todo o período',
-    ],
-    mantras: ['Mumonkan', 'Mu'],
-    breathPattern: 'Contagem 1-10',
-    sefirot: ['Kether', 'Binah'],
+      'Sente-se em posição de lótus ou meio-lótus',
+      'Mantenha a coluna ereta',
+      'Cruze as mãos no colo (cosmicamente: mão direita sobre esquerda)',
+      'Feche os olhos e olhe para baixo em ângulo de 45 graus',
+      'Respire pelo nariz naturalmente',
+      'Conte as respirações de 1 a 10, reiniciando',
+      'Quando perder a contagem, retorne a 1',
+ ],
+    mantras: ['Mu'],
+    breathPattern: 'Natural',
+    sefirot: ['Kether', 'Tipheret'],
     chakra: 'Sahasrara (7º)',
-    solfeggio: '432Hz (Harmonização universal)',
-  },
-  {
-    id: 'kundalini-breath',
-    type: 'dynamic',
-    name: 'Kundalini Breath — Energia Serpentina',
-    nameEn: 'Kundalini Breathwork',
-    description: 'Respirações vigorosas para despertar a energia Kundalini na base da coluna.',
-    tradition: 'kundalini',
-    duration: 20,
-    difficulty: 'advanced',
-    steps: [
-      'Sente-se em postura de meditação',
-      'Coloque as mãos emmudra de energia (cotovelos para fora)',
-      'Inicie Kapalabhati: respirações curtas e vigorosas pelo nariz',
-      'Continue por 30-50 vezes',
-      'Faça uma pausa, inspire profundamente',
-      'Segure (bandha) por 10-15 segundos',
-      'Expire completamente',
-      'Repita 3 rodadas',
-      'Permaneça em silêncio, observando sensações',
-    ],
-    mantras: ['Sat Nam', 'Wahe Guru'],
-    breathPattern: 'Kapalabhati 30-50 + Kumbhaka 15s',
-    sefirot: ['Kether', 'Malkuth'],
-    chakra: 'Muladhara (1º)',
-    solfeggio: '639Hz (Harmonização de relacionamentos)',
+    solfeggio: '963Hz (Iluminação)',
+    spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS['transcendental'],
   },
   {
     id: 'osho-active',
     type: 'osho',
-    name: 'Meditação Osho — Ativa',
+    name: 'Meditação Osho Ativa',
     nameEn: 'Osho Active Meditation',
-    description: 'Combinação de movimento, som e silêncio para romper padrões mentais.',
+    description: 'Combinação de movimento e silêncio da tradição Osho.',
     tradition: 'mystic',
     duration: 60,
-    difficulty: 'advanced',
-    steps: [
-      'Primeira fase (15 min): Pulo livre com olhos fechados',
-      'Segunda fase (15 min): Observação sem julgamento',
-      'Terceira fase (15 min): Congele completamente',
-      'Quarta fase (15 min): Dança ou movimento livre',
-      'Sente em silêncio, deixe a energia assentar',
-      'Abracinho a si mesmo pelo trabalho',
-    ],
-    mantras: ['Osho', 'Witness'],
-    breathPattern: 'Irregular, intuitivo',
-    sefirot: ['Chokhmah', 'Tipheret'],
-    chakra: 'Ajna (6º)',
-    solfeggio: '741Hz (Despertar da intuição)',
-  },
-  {
-    id: 'taoist-breath',
-    type: 'breath',
-    name: 'Respiração Taoísta —Microcosmic Orbit',
-    nameEn: 'Taoist Breathwork',
-    description: 'Circulação de energia pelo corpo seguindo o fluxo doChi através dos meridianos.',
-    tradition: 'taoist',
-    duration: 25,
     difficulty: 'intermediate',
     steps: [
-      'Sente-se ou deite-se relaxadamente',
-      'Visualize energia reunida no dantian (abaixo do umbigo)',
-      'Inspire, levando energia para o cóccix',
-      'Expire, subindo pela coluna até o topo da cabeça',
-      'Inhale, descendo pela frente do corpo',
-      'Expire, retornando ao dantian',
-      'Continue em orbita suave por 15-20 minutos',
-      'Conclua recolhendo energia no dantian',
+      'Fase 1: Solte o corpo com música alta (15 minutos)',
+      'Fase 2: Pule com braços levantados (15 minutos)',
+      'Fase 3: Permaneça em silêncio absoluto (15 minutos)',
+      'Fase 4: Dança livre e gratitude (15 minutos)',
+      'Observe as sensações após a prática',
     ],
-    mantras: ['Tao', 'Chi'],
-    breathPattern: '4-4-4-4 (Lento e profundo)',
-    sefirot: ['Yesod', 'Malkuth'],
-    chakra: 'Svadhisthana (2º)',
-    solfeggio: '963Hz (Conexão com o divino)',
+    mantras: ['Osho'],
+    breathPattern: 'Variado',
+    sefirot: ['Chokhmah', 'Hod'],
+    chakra: 'Ajna (6º)',
+    solfeggio: '741Hz (Comunicação)',
+    spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS['osho'],
   },
   {
-    id: 'visualization-light',
-    type: 'visualization',
-    name: 'Visualização da Luz — Trataka Interior',
-    nameEn: 'Light Visualization',
-    description: 'Conexão com a luz divina através de visualização criativa e focus interno.',
-    tradition: 'mystic',
+    id: 'body-scan-grounding',
+    type: 'body-scan',
+    name: 'Escaneamento Corporal',
+    nameEn: 'Body Scan',
+    description: 'Meditação de atenção plena às sensações do corpo.',
+    tradition: 'vipassana',
     duration: 20,
     difficulty: 'beginner',
     steps: [
-      'Feche os olhos e relaxe',
-      'Visualize uma esfera de luz dourada acima da cabeça',
-      'Permita que a luz desça suavemente',
-      'Observe a luz preenchendo sua aura',
-      'Sinta a luz atravessando cada célula',
-      'Visualize-a se expandindo em todas as direções',
-      'Imagine-se envolvido em uma esfera de luz protetora',
-      'Permaneça nesse estado luminoso',
-      'Agradeça pela energia recebida',
+      'Deite-se confortavelmente',
+      'Feche os olhos e respire profundamente',
+      'Observe a sensação nos pés',
+      'Mova a atenção lentamente para cima',
+      'Pare em cada área do corpo',
+      'Observe sensações sem julgamento',
+      'Termine com gratidão pelo corpo',
     ],
-    mantras: ['Om', 'Light'],
-    sefirot: ['Tipheret', 'Chesed'],
-    chakra: 'Manipura (3º)',
-    solfeggio: '528Hz (Milagre)',
+    mantras: ['So Hum'],
+    sefirot: ['Yesod', 'Malkuth'],
+    chakra: 'Muladhara (1º)',
+    solfeggio: '396Hz (Aterramento)',
+    spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS['body-scan'],
   },
-  {
-    id: 'vipassana-insight',
-    type: 'transcendental',
-    name: 'Vipassana — Insight Meditation',
-    nameEn: 'Vipassana Insight',
-    description: 'Desenvolvimento de visão clara da natureza da realidade através da observação sistemática.',
-    tradition: 'vipassana',
-    duration: 45,
+ {
+    id: 'visualization-tree',
+    type: 'visualization',
+    name: 'Visualização da Árvore da Vida',
+    nameEn: 'Tree of Life Visualization',
+    description: 'Visualização da Árvore Cabalística para conexão espiritual.',
+    tradition: 'mystic',
+    duration: 30,
     difficulty: 'advanced',
     steps: [
-      'Sente-se com postura firme',
-      'Observe sensações no corpo',
-      'Note impermanência de todas as sensações',
-      'Permaneça como testemunha',
-      'Observe pensamentos sem se identificar',
-      'Explore a natureza da mente',
-      'Reconheça a ilusão do ego',
-      'Retorne ao corpo e sensações',
-      'Integre a visão alcançada',
+      'Feche os olhos e respire profundamente',
+      'Visualize o ponto de luz infinita (Kether)',
+      'A luz desce formando as Sephirot',
+      'Observe as10 Sephirot iluminando',
+      'Sinta a energia fluindo entre elas',
+      'Permaneça conectado com a árvore',
+      'Retorne gradualmente mantendo a consciência',
     ],
-    mantras: ['Vipassana', 'Santippekkha'],
-    sefirot: ['Binah', 'Chokhmah'],
+    mantras: ['Ein Sof'],
+    sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
     chakra: 'Sahasrara (7º)',
-    solfeggio: '417Hz (Mudança facilitadora)',
+    solfeggio: '963Hz (Conexão divina)',
+    spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS['visualization'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = MeditationQuerySchema.safeParse({
-    type: searchParams.get('type'),
-    tradition: searchParams.get('tradition'),
-    duration: searchParams.get('duration'),
-    includeMantras: searchParams.get('includeMantras'),
-    limit: searchParams.get('limit'),
-  });
-
-  if (!parseResult.success) {
-    return NextResponse.json({
-      success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
-  }
-
-  const { type, tradition, duration, includeMantras, limit } = parseResult.data;
-  let practices = [...MEDITATION_PRACTICES];
-
-  if (type) {
-    practices = practices.filter(p => p.type === type);
-  }
-
-  if (tradition) {
-    practices = practices.filter(p => p.tradition === tradition);
-  }
-
-  if (duration) {
-    practices = practices.filter(p => p.duration <= duration);
-  }
-
-  if (limit) {
-    practices = practices.slice(0, limit);
-  }
-
-  // Filter out mantras if not requested
-  const response = practices.map(p => {
-    if (!includeMantras) {
-      const { mantras, ...rest } = p;
-      return rest;
-    }
-    return p;
-  });
-
-  return NextResponse.json({
-    success: true,
-    practices: response,
-    count: response.length,
-    total: MEDITATION_PRACTICES.length,
-    traditions: {
-      vipassana: MEDITATION_PRACTICES.filter(p => p.tradition === 'vipassana').length,
-      yoga: MEDITATION_PRACTICES.filter(p => p.tradition === 'yoga').length,
-      zen: MEDITATION_PRACTICES.filter(p => p.tradition === 'zen').length,
-      kundalini: MEDITATION_PRACTICES.filter(p => p.tradition === 'kundalini').length,
-      taoist: MEDITATION_PRACTICES.filter(p => p.tradition === 'taoist').length,
-      mystic: MEDITATION_PRACTICES.filter(p => p.tradition === 'mystic').length,
-    },
-  });
-}
-
-export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    
-    // Validate the request body
-    const bodySchema = z.object({
-      practiceId: z.string().optional(),
-      type: MeditationTypeSchema.optional(),
-      notes: z.string().optional(),
-      duration: z.number().int().positive().optional(),
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = MeditationQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      tradition: searchParams.get('tradition'),
+      duration: searchParams.get('duration'),
+      includeMantras: searchParams.get('includeMantras'),
+      limit: searchParams.get('limit'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
     });
 
-    const parseResult = bodySchema.safeParse(body);
-    
     if (!parseResult.success) {
       return NextResponse.json({
         success: false,
-        error: 'Corpo inválido',
+        error: 'Parâmetros inválidos',
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
 
-    // Log practice (in real implementation would save to database)
-    const practice = parseResult.data;
-    
+    const { type, tradition, duration, includeMantras, limit, sefirot, chakra, element, orixa } = parseResult.data;
+
+    let practices = [...MEDITATION_PRACTICES];
+
+    if (type) {
+      practices = practices.filter(p => p.type === type);
+    }
+
+    if (tradition) {
+      practices = practices.filter(p => p.tradition === tradition);
+    }
+
+    if (duration) {
+      practices = practices.filter(p => p.duration >= duration);
+    }
+
+    if (limit) {
+      practices = practices.slice(0, limit);
+    }
+
+    if (sefirot) {
+      practices = practices.filter(p => p.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      practices = practices.filter(p => p.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      practices = practices.filter(p => p.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      practices = practices.filter(p => p.spiritualCorrelations?.orixa === orixa);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byType: practices.reduce((acc, p) => {
+        acc[p.type] = (acc[p.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byTradition: practices.reduce((acc, p) => {
+        acc[p.tradition] = (acc[p.tradition] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byDifficulty: practices.reduce((acc, p) => {
+        acc[p.difficulty] = (acc[p.difficulty] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: practices.reduce((acc, p) => {
+        p.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: practices.reduce((acc, p) => {
+        const c = p.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: practices.reduce((acc, p) => {
+        const e = p.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: practices.reduce((acc, p) => {
+        const o = p.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
     return NextResponse.json({
       success: true,
-      practice: {
-        id: crypto.randomUUID(),
-        ...practice,
-        timestamp: new Date().toISOString(),
+      practices,
+      count: practices.length,
+      spiritualCorrelations: MEDITATION_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { type, tradition, duration, includeMantras, limit, sefirot, chakra, element, orixa },
       },
-    }, { status: 201 });
-  } catch {
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Erro ao processar prática de meditação',
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }
