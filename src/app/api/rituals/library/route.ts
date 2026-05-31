@@ -685,6 +685,8 @@ interface Ritual {
   significado: string;
 }
 
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -692,87 +694,75 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search');
     const id = searchParams.get('id');
     const duracao = searchParams.get('duracao');
-    const duracao = searchParams.get('duracao');
 
     if (id) {
-    const ritual = rituals.find(r => r.id === id);
-    if (!ritual) {
-      return NextResponse.json(
-        { error: 'Ritual not found', id },
-        { status: 404 }
+      const ritual = rituals.find(r => r.id === id);
+      if (!ritual) {
+        return NextResponse.json({ error: 'Ritual not found', id }, { status: 404 });
+      }
+      return NextResponse.json(ritual);
+    }
+
+    let filteredRituals = rituals;
+
+    if (tipo) {
+      filteredRituals = filteredRituals.filter(ritual => ritual.tipo.toLowerCase() === tipo.toLowerCase());
+    }
+
+    if (duracao) {
+      const durationMatch = duracao.match(/^(\d+)$/);
+      if (durationMatch) {
+        const maxMinutes = parseInt(durationMatch[1], 10);
+        filteredRituals = filteredRituals.filter(ritual => {
+          const match = ritual.duracao.match(/^(\d+)/);
+          if (match) {
+            const ritualMinutes = parseInt(match[1], 10);
+            return ritualMinutes <= maxMinutes;
+          }
+          return true;
+        });
+      }
+    }
+
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filteredRituals = filteredRituals.filter(ritual =>
+        ritual.nome.toLowerCase().includes(searchLower) ||
+        ritual.descricao.toLowerCase().includes(searchLower) ||
+        ritual.keywords.some(k => k.toLowerCase().includes(searchLower)) ||
+        ritual.materiais.some(m => m.toLowerCase().includes(searchLower))
       );
     }
-    return NextResponse.json(ritual);
-  }
 
-  // Filter by tipo (protection, abundance, love, cleansing, etc.)
-  if (tipo) {
-    filteredRituals = filteredRituals.filter(ritual => 
-      ritual.tipo.toLowerCase() === tipo.toLowerCase()
-    );
-  }
+    const typeSet = new Set<string>();
+    rituals.forEach(r => typeSet.add(r.tipo));
+    const availableTypes = Array.from(typeSet).sort();
 
-  // Filter by duration
-  if (duracao) {
-    const durationMatch = duracao.match(/^(\d+)$/);
-    if (durationMatch) {
-      const maxMinutes = parseInt(durationMatch[1], 10);
-      filteredRituals = filteredRituals.filter(ritual => {
-        const match = ritual.duracao.match(/^(\d+)/);
-        if (match) {
-          const ritualMinutes = parseInt(match[1], 10);
-          return ritualMinutes <= maxMinutes;
-        }
-        return true;
-      });
-    }
-  }
+    const result = filteredRituals.map(ritual => ({
+      id: ritual.id,
+      nome: ritual.nome,
+      tipo: ritual.tipo,
+      duracao: ritual.duracao,
+      descricao: ritual.descricao,
+      materiais: ritual.materiais,
+      passos: ritual.passos,
+      significado: ritual.significado,
+      keywords: ritual.keywords,
+    }));
 
-  // Search by name, description, or keywords
-  if (search) {
-    const searchLower = search.toLowerCase();
-    filteredRituals = filteredRituals.filter(ritual =>
-      ritual.nome.toLowerCase().includes(searchLower) ||
-      ritual.descricao.toLowerCase().includes(searchLower) ||
-      ritual.keywords.some(k => k.toLowerCase().includes(searchLower)) ||
-      ritual.materiais.some(m => m.toLowerCase().includes(searchLower))
-    );
-  }
-
-  // Get available ritual types
-  const typeSet = new Set<string>();
-  rituals.forEach(r => typeSet.add(r.tipo));
-  const availableTypes = Array.from(typeSet).sort();
-
-  // Transform rituals to include full data
-  const result = filteredRituals.map(ritual => ({
-    id: ritual.id,
-    nome: ritual.nome,
-    tipo: ritual.tipo,
-    duracao: ritual.duracao,
-    descricao: ritual.descricao,
-    materiais: ritual.materiais,
-    passos: ritual.passos,
-    significado: ritual.significado,
-    keywords: ritual.keywords,
-  }));
-
-  return NextResponse.json({
-    rituals: result,
-    meta: {
-      total: result.length,
-      types: availableTypes,
-      filters: {
-        tipo: tipo || null,
-        search: search || null,
-        duracao: duracao || null,
-      },
-    },
-  });
-}
-  } catch {
     return NextResponse.json({
-      error: 'Erro ao processar rituais',
-    }, { status: 500 });
+      rituals: result,
+      meta: {
+        total: result.length,
+        types: availableTypes,
+        filters: {
+          tipo: tipo || null,
+          search: search || null,
+          duracao: duracao || null,
+        },
+      },
+    });
+  } catch {
+    return NextResponse.json({ error: 'Erro ao processar rituais' }, { status: 500 });
   }
 }
