@@ -367,7 +367,7 @@ export function getNumerologySound(som: string): number | undefined {
  * Get all sound-numerology mappings
  * @returns Array of all SoundNumerology objects ordered by number
  */
-export function getAllSoundNumerology(): SoundNumerology[] {
+export function getAllSoundNumerologies(): SoundNumerology[] {
   return Object.values(SOUND_NUMEROLOGY).sort((a, b) => a.numero - b.numero);
 }
 

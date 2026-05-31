@@ -1,163 +1,101 @@
 /**
  * Orixá-Day Correlation Module
- * Maps Orixás to sacred days with ritual practices
- * Based on IDEIA.md 'Calendário e Janelas de Ativação Energética' and 'Orixás' tables
+ * Maps Orixás to days of the week with spiritual correlations
+ * Based on IDEIA.md Cabala dos Caminhos framework
  */
 
 export interface OrixaDay {
-  /** Name of the Orixá */
   orixa: string;
-  /** Sacred day of the week */
-  dia_da_semana: string;
-  /** Primary element of the Orixá */
-  elemento: 'fogo' | 'água' | 'ar' | 'terra' | 'éter';
-  /** Sacred color(s) associated with the Orixá */
-  cor: string;
-  /** Ritual practices recommended for this Orixá */
-  praticas_rituais: string[];
+  day: string;
+  element: 'fogo' | 'água' | 'ar' | 'terra' | 'éter';
+  spiritual_meaning: string;
+  energy: 'yang' | 'yin' | 'balanced';
+  affirmation?: string;
+  ritual_focus?: string;
 }
 
-/** Orixá-to-Day mapping with ritual practices based on IDEIA.md */
-const ORIXA_DAY_MAP: Record<string, OrixaDay> = {
+// Main Orixá-Day mappings based on IDEIA.md
+const ORIXAS_DAY_MAP: Record<string, OrixaDay> = {
   'Oxalá': {
     orixa: 'Oxalá',
-    dia_da_semana: 'Sexta-feira',
-    elemento: 'éter',
-    cor: 'Branco / Violeta',
-    praticas_rituais: [
-      'Oração do Credo e Pai-Nosso',
-      'Saudação ritual (Eparrei)',
-      'Oferenda de alimentos brancos (farinhas, pães)',
-      'Banho de descarrego com folhas sagradas',
-      'Acendimento de velas brancas',
-      'Homenagem aos Eguns (ancestrais)'
-    ]
+    day: 'Sexta-feira',
+    element: 'éter',
+    spiritual_meaning: 'Paz, luz, reconciliação e renovação espiritual. O pai supremo que traz harmonia e cura através da transformação interior.',
+    energy: 'balanced',
+    affirmation: 'Eu sou luz, eu sou paz, eu sou reconciliação',
+    ritual_focus: 'Saudação, cura espiritual, decisões importantes, casamentos'
   },
   'Iemanjá': {
     orixa: 'Iemanjá',
-    dia_da_semana: 'Sábado',
-    elemento: 'água',
-    cor: 'Azul Escuro / Branco',
-    praticas_rituais: [
-      'Oferenda de velas azuis e brancos',
-      'Banho de sal e alfazema',
-      'Oferendas na beira d\'água (flores, perfumes)',
-      'Peticão por fertilidade e proteção',
-      'Saudação ritual (Opanijé)',
-      'Ação de graças pela semana'
-    ]
+    day: 'Sábado',
+    element: 'água',
+    spiritual_meaning: 'Maternidade divina, proteção, fertilidade e intuição profunda. A rainha do mar que governa as emoções e os ciclos naturais.',
+    energy: 'yin',
+    affirmation: 'Eu sou protegida, eu sou nutriz, eu sou intuição',
+    ritual_focus: 'Proteção familiar, sonhos, cura emocional, gratidão'
   },
   'Oxum': {
     orixa: 'Oxum',
-    dia_da_semana: 'Sábado',
-    elemento: 'água',
-    cor: 'Rosa / Amarelo-ouro',
-    praticas_rituais: [
-      'Oferenda de mel e flores rosas',
-      'Peticionamento por amor e prosperidade',
-      'Banho de infusão de ervas douradas',
-      'Acendimento de velas douradas',
-      'Pecúlio ritual (moedas douradas)',
-      'Saudação ritual (O SSê)',
-    ]
+    day: 'Sábado',
+    element: 'água',
+    spiritual_meaning: 'Amor, prosperidade, encantaria e sabedoria feminina. A doce senhora das águas doces que abençoa com abundância.',
+    energy: 'yin',
+    affirmation: 'Eu sou amada, eu sou próspera, eu sou encantada',
+    ritual_focus: 'Amor, prosperidade financeira, beleza, saúde feminina'
   },
   'Ogum': {
     orixa: 'Ogum',
-    dia_da_semana: 'Terça-feira',
-    elemento: 'terra',
-    cor: 'Azul Claro / Verde',
-    praticas_rituais: [
-      'Corte de demandas e feitiçarias',
-      'Saudação ritual (Eyo)',
-      'Fogueiras de limpeza',
-      'Banho de Arruda e Guiné',
-      'Rituais de proteção e vitória',
-      'Abertura de caminhos'
-    ]
+    day: 'Terça-feira',
+    element: 'terra',
+    spiritual_meaning: 'Força, coragem, determinação e conquista. O guerreiro que abre caminhos e remove obstáculos com poder e vontade.',
+    energy: 'yang',
+    affirmation: 'Eu sou forte, eu sou determinado, eu conquisto',
+    ritual_focus: 'Abertura de caminhos, proteção, luta, trabalho'
   },
   'Oxóssi': {
     orixa: 'Oxóssi',
-    dia_da_semana: 'Quinta-feira',
-    elemento: 'terra',
-    cor: 'Verde / Azul-turquesa',
-    praticas_rituais: [
-      'Saudação ritual (Okê Arô)',
-      'Oferendas na natureza (matas, florestas)',
-      'Peticionamento por fartura e saúde',
-      'Banho de ervas protetoras',
-      'Rituais de caça espiritual',
-      'Busca por conhecimento e sabedoria'
-    ]
+    day: 'Quinta-feira',
+    element: 'terra',
+    spiritual_meaning: 'Abundância, prosperidade, caça espiritual e conhecimento. O caçador céleste que busca a verdade e a riqueza interior.',
+    energy: 'yang',
+    affirmation: 'Eu sou abundante, eu busco a verdade, eu prospero',
+    ritual_focus: 'Prosperidade, conhecimento, equilíbrio, fartura'
   },
   'Xangô': {
     orixa: 'Xangô',
-    dia_da_semana: 'Quarta-feira',
-    elemento: 'fogo',
-    cor: 'Amarelo / Vermelho',
-    praticas_rituais: [
-      'Saudação ritual (Erori)',
-      'Rituais de justiça divina',
-      'Acendimento de velas amarelas e vermelhas',
-      'Oferendas de comidas apimentadas epipoca',
-      'Pedidos de verdade e retidão',
-      'Rituais de equilíbrio e ordem'
-    ]
+    day: 'Quarta-feira',
+    element: 'fogo',
+    spiritual_meaning: 'Justiça, poder, transformação e equilíbrio. O rei do trovão que trazendo ordem e coragem através do fogo purificador.',
+    energy: 'yang',
+    affirmation: 'Eu sou justo, eu sou poderoso, eu transformo',
+    ritual_focus: 'Justiça, equilíbrio, força, decisões importantes'
   },
   'Iansã': {
     orixa: 'Iansã',
-    dia_da_semana: 'Terça-feira',
-    elemento: 'fogo',
-    cor: 'Laranja / Vermelho',
-    praticas_rituais: [
-      'Saudação ritual (Eputá)',
-      'Rituais de guerreira e protetora',
-      'Quebra de demandas e feitiçarias',
-      'Banho de limpeza energética forte',
-      'Peticionamento por coragem e força',
-      'Rituais de tempestade e transformação'
-    ]
+    day: 'Terça-feira',
+    element: 'fogo',
+    spiritual_meaning: 'Libertação, transformação, renovação e libertação de padrões. A guerreira que transforma inimigos em aliados através da força interior.',
+    energy: 'yang',
+    affirmation: 'Eu libero, eu transformo, eu renovo',
+    ritual_focus: 'Libertação de prisões, proteção, transformação, conquista'
   },
   'Omolu': {
     orixa: 'Omolu',
-    dia_da_semana: 'Segunda-feira',
-    elemento: 'terra',
-    cor: 'Preto / Vermelho / Branco',
-    praticas_rituais: [
-      'Saudação ritual (Etu)',
-      'Rituais de cura e saúde',
-      'Respeito aos antepassados (Eguns)',
-      'Limpeza espiritual profunda',
-      'Rituais de finitude e recomeço',
-      'Proteção contra epidemias e doenças'
-    ]
+    day: 'Segunda-feira',
+    element: 'terra',
+    spiritual_meaning: 'Cura, proteção contra pragas, renovação e saúde. O senhor das doenças e da cura que transforma a escuridão em luz.',
+    energy: 'balanced',
+    affirmation: 'Eu sou curado, eu sou protegido, eu renasco',
+    ritual_focus: 'Cura de doenças, proteção contra mal, renovação, saúde'
   },
   'Nanã': {
     orixa: 'Nanã',
-    dia_da_semana: 'Terça-feira',
-    elemento: 'água',
-    cor: 'Lilás / Roxo',
-    praticas_rituais: [
-      'Saudação ritual (Saluba)',
-      'Rituais de maternidade e sabedoria',
-      'Oferendas de alimentos liláses',
-      'Petições por humildade e paciência',
-      'Banho de purificação com ervas roxas',
-      'Veneração aos ancestrais antigos'
-    ]
-  },
-  'Exu': {
-    orixa: 'Exu',
-    dia_da_semana: 'Segunda-feira',
-    elemento: 'fogo',
-    cor: 'Vermelho / Preto',
-    praticas_rituais: [
-      'Saudação ritual (Lará)',
-      'Abertura de todos os rituais',
-      'Rituais de comunicação e mensageria',
-      'Propiciação para caminhos abertos',
-      'Pagamento de demandas e obrigações',
-      'Proteção contra magia negra'
-    ]
+    day: 'Terça-feira',
+    element: 'água',
+    spiritual_meaning: 'Humildade, sabedoria ancestral, fertilidade e respeito aos antepassados. A anciã que ensina através da paciência e do conhecimento.',
+    energy: 'yin',
+    affirmation: 'Eu sou humilde, eu honro meus antepassados, eu aprendo',
+    ritual_focus: 'Fertilidade, respeito aos mortos, humildade, tradição'
   }
 };
 
@@ -167,26 +105,31 @@ const ORIXA_DAY_MAP: Record<string, OrixaDay> = {
  * @returns OrixaDay mapping or undefined if not found
  */
 export function getOrixaDay(orixa: string): OrixaDay | undefined {
-  const normalized = orixa.trim();
-  return ORIXA_DAY_MAP[normalized] || Object.values(ORIXA_DAY_MAP).find(
-    entry => entry.orixa.toLowerCase() === normalized.toLowerCase()
+  const normalized = orixa.toLowerCase().trim();
+  const found = Object.entries(ORIXAS_DAY_MAP).find(
+    ([key]) => key.toLowerCase() === normalized
+  );
+  return found ? found[1] : undefined;
+}
+
+/**
+ * Get Orixá mapping for a specific day of the week
+ * @param day - Day of the week (e.g., 'Segunda-feira', 'Terça-feira')
+ * @returns OrixaDay mapping or undefined if not found
+ */
+export function getDayOrixa(day: string): OrixaDay | undefined {
+  const normalized = day.toLowerCase().trim();
+  return Object.values(ORIXAS_DAY_MAP).find(
+    (item) => item.day.toLowerCase() === normalized
   );
 }
 
 /**
  * Get all Orixá-day mappings
- * @returns Object with all Orixá day correlations
- */
-export function getDayOrixa(): Record<string, OrixaDay> {
-  return { ...ORIXA_DAY_MAP };
-}
-
-/**
- * Get all Orixá day entries as array
- * @returns Array of all OrixaDay entries
+ * @returns Array of all OrixaDay objects
  */
 export function getAllOrixaDays(): OrixaDay[] {
-  return Object.values(ORIXA_DAY_MAP);
+  return Object.values(ORIXAS_DAY_MAP);
 }
 
 export default {

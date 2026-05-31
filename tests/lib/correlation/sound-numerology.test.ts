@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   getSoundNumerology,
   getNumerologySound,
-  getAllSoundNumerology,
+  getAllSoundNumerologies,
   getAllNumbers,
   getSoundsByNumber,
   getSoundsByElement,
@@ -230,29 +230,24 @@ describe("sound-numerology correlation", () => {
     });
   });
 
-  describe("getAllSoundNumerology", () => {
+  describe("getAllSoundNumerologies", () => {
     it("returns all mappings sorted by number", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       expect(all.length).toBeGreaterThan(0);
-      
       // Check sorting
       for (let i = 1; i < all.length; i++) {
         expect(all[i].numero).toBeGreaterThanOrEqual(all[i - 1].numero);
       }
     });
-
     it("contains all 13 numbers (1-13)", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       const numbers = all.map(m => m.numero);
-      
       for (let i = 1; i <= 13; i++) {
         expect(numbers).toContain(i);
       }
     });
-
     it("each mapping has complete structure", () => {
-      const all = getAllSoundNumerology();
-      
+      const all = getAllSoundNumerologies();
       all.forEach(mapping => {
         expect(mapping.som).toBeDefined();
         expect(mapping.pronunciacao).toBeDefined();
@@ -269,11 +264,9 @@ describe("sound-numerology correlation", () => {
         expect(mapping.significado_numero).toBeDefined();
       });
     });
-
     it("frequencies follow solfeggio pattern", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       const frequencies = [396, 417, 528, 639, 741, 852, 963];
-      
       all.slice(0, 7).forEach((mapping, index) => {
         expect(mapping.frequencia).toBe(frequencies[index]);
       });
