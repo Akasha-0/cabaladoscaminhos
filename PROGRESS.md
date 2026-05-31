@@ -1,7 +1,6 @@
-**Última atualização:** 2026-05-30
-**Sprints completados:** 269
-**Tests: ✅ 6650 passing, 15 skipped (136 correlation test files)**
- - Next.js 16.2.6 + React 19 + App Router (Turbopack)
+**Última atualização:** 2026-05-31
+**Sprints completados:** 275
+**Tests: ✅ 6886 passing, 15 skipped (139 correlation test files)**
  - Prisma 7 + PostgreSQL via pg adapter
 - Redis/ioredis for caching
 - JWT authentication (bcryptjs + jsonwebtoken)
