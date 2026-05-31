@@ -18,15 +18,14 @@ Enhanced APIs with spiritual correlations:
 ### Sprint 485 — Ritual Planner & Tarot Consulta (COMPLETE)
 Enhanced APIs with spiritual correlations:
 - ritual-planner: 8 ritual templates with spiritual correlations
-- tarot/consulta: Tarot consultation with spiritual correlations
 270 engine tests passing.
+
 ### Sprint 484 — Shadow Work & Tarot & Progress (COMPLETE)
 Enhanced APIs with spiritual correlations:
 - shadow/work: 6 shadow work practices with spiritual correlations
 - tarot/reading: Tarot readings with spiritual correlations
+- progresso: Achievement system with spiritual correlations (22 achievements)
 270 engine tests passing.
-
-### Sprint 483 — Sacred Contracts & Shapes (COMPLETE)
 
 ### Sprint 483 — Sacred Contracts & Shapes (COMPLETE)
 Enhanced APIs with spiritual correlations:
