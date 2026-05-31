@@ -389,7 +389,7 @@ export function getPlanetDetails(fase: string): MoonPlanetMapping['planeta_detal
  */
 export function getAvailablePlanets(): Planeta[] {
   const planets = getAllMoonPlanets().map((m) => m.planeta);
-  return [...new Set(planets)];
+  return Array.from(new Set(planets)) as Planeta[];
 }
 /**
  * Get all unique planet names sorted alphabetically.
