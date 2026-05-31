@@ -111,7 +111,7 @@ export const ZODIAC_ELEMENT_MAP: Record<SignoZodiac, ZodiacElementMapping> = {
     elemento: 'Fogo',
     chakra: 'Ajna',
     chakraPt: 'Chakra do Terceiro Olho',
-    significado_espiritual: 'Expansão da consciência, busca de verdade, otimismo filosofico, viajante espiritual, sabedoria universal',
+    significado_espiritual: 'Expansão da consciência, transformação interior, busca de verdade, otimismo filosofico, viajante espiritual, sabedoria universal, ação espiritual',
   },
   /** Terra - Disciplina e Realização */
   Capricórnio: {
