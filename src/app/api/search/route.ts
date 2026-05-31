@@ -6,24 +6,44 @@
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { orixas, odus } from '@/lib/data/spiritual-data';
 import { TAROT_DECK } from '@/lib/tarot/cards';
 
-// ============================================================
-// TYPES
-// ============================================================
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SearchTypeSchema = z.enum(['odu', 'orixa', 'ritual', 'tarot']);
+const ElementSchema = z.enum(['Terra', 'Fogo', 'Água', 'Ar', 'Éter']);
 
-export interface SearchResult {
-  type: 'odu' | 'orixa' | 'ritual' | 'tarot';
-  id: string;
-  title: string;
-  subtitle?: string;
-  description: string;
-  relevance: number;
-  metadata?: Record<string, string | string[]>;
-}
+const SearchResultSchema = z.object({
+  type: SearchTypeSchema,
+  id: z.string(),
+  title: z.string(),
+  subtitle: z.string().optional(),
+  description: z.string(),
+  relevance: z.number().min(0).max(100),
+  metadata: z.record(z.union([z.string(), z.array(z.string())])).optional(),
+});
 
-export interface SearchResponse {
+const SearchQuerySchema = z.object({
+  q: z.string().optional(),
+  query: z.string().optional(),
+  categories: z.string().optional(),
+  elements: z.string().optional(),
+  orixas: z.string().optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+});
+
+const SearchFiltersSchema = z.object({
+  categories: z.array(SearchTypeSchema).optional(),
+  elements: z.array(z.string()).optional(),
+  orixas: z.array(z.string()).optional(),
+});
+
+export type SearchResult = z.infer<typeof SearchResultSchema>;
+export const dynamic = 'force-dynamic';
+
+// ─── Types ──────────────────────────────────────────────────────────────
+interface SearchResponse {
   query: string;
   results: SearchResult[];
   total: number;
@@ -35,10 +55,7 @@ export interface SearchResponse {
   timestamp: string;
 }
 
-// ============================================================
-// RITUALS DATA
-// ============================================================
-
+// ─── Rituals Data ──────────────────────────────────────────────────────────────
 const ritualsData = [
   {
     id: 'ebo-caminho',
@@ -101,139 +118,61 @@ const ritualsData = [
     subtitle: 'Transformação de energias',
     description: 'Ebó para transmutar energias pesadas com pipoca para Omolu, banhos de lama e defumações pesadas.',
     elementos: ['Terra', 'Água'],
-    orixas: ['Omolu', 'Oxumaré', 'Exu'],
+    orixas: ['Omolu', 'Xangô'],
   },
   {
-    id: 'ebo-alinhamento',
+    id: 'ebo-amor',
     type: 'ritual' as const,
-    title: 'Ebó de Alinhamento (Bori)',
-    subtitle: 'Cura da Cabeça',
-    description: 'Ebó para alinhamento espiritual com oferendas de canjica branca, algodão e velas brancas para Oxalá.',
-    elementos: ['Ar', 'Água'],
-    orixas: ['Oxalá', 'Jagun'],
+    title: 'Ebó de Amor',
+    subtitle: 'Harmonia afetiva',
+    description: 'Ebó para questões amorosas com flores roses, mel, velas rosas e banhos de alecrim.',
+    elementos: ['Água', 'Fogo'],
+    orixas: ['Oxum', 'Iemanjá'],
   },
   {
-    id: 'ebo-limpeza-astral',
+    id: 'ebo-saude',
     type: 'ritual' as const,
-    title: 'Ebó de Limpeza Astral',
-    subtitle: 'Purificação da aura',
-    description: 'Ebó para limpeza astral com sacudimentos de folhas de fumo e oferendas de acarajé para Iansã.',
-    elementos: ['Ar', 'Água'],
-    orixas: ['Iansã', 'Iemanjá'],
-  },
-  {
-    id: 'ebo-alivio',
-    type: 'ritual' as const,
-    title: 'Ebó de Alívio/Saúde',
-    subtitle: 'Cura e paz',
-    description: 'Ebó para alívio de doenças e cura espiritual com frutas brancas, banhos de leite de cabra e rezas mansas.',
-    elementos: ['Ar', 'Água'],
-    orixas: ['Oxalá', 'Obá'],
-  },
-  {
-    id: 'ebo-movimento',
-    type: 'ritual' as const,
-    title: 'Ebó de Movimento',
-    subtitle: 'Desbloqueio de energias',
-    description: 'Ebó para movimento e desbloqueio com chaves girando, velas nas esquinas e banhos de guiné com arruda.',
-    elementos: ['Fogo', 'Ar'],
-    orixas: ['Iansã', 'Exu', 'Ogum'],
-  },
-  {
-    id: 'ebo-justica',
-    type: 'ritual' as const,
-    title: 'Ebó de Justiça',
-    subtitle: 'Equilíbrio kármico',
-    description: 'Ebó para justiça com pedras de raio, amalá quente e firmeza espiritual.',
-    elementos: ['Fogo'],
-    orixas: ['Xangô', 'Obá'],
-  },
-  {
-    id: 'ebo-evolucao',
-    type: 'ritual' as const,
-    title: 'Ebó de Evolução',
-    subtitle: 'Crescimento espiritual',
-    description: 'Ebó para evolução espiritual com oferendas na lama para Nanã, feijão preto e velas lilases.',
+    title: 'Ebó de Saúde',
+    subtitle: 'Cura física e espiritual',
+    description: 'Ebó para cura de doenças com banhos de ervas, velas verdes, e ervas de cura.',
     elementos: ['Terra', 'Água'],
-    orixas: ['Nanã', 'Omolu'],
+    orixas: ['Oxumar', 'Nanã'],
   },
   {
-    id: 'ebo-renovacao',
+    id: 'ebo-ancestral',
     type: 'ritual' as const,
-    title: 'Ebó de Renovação',
-    subtitle: 'Novo ciclo',
-    description: 'Ebó para renovação com banhos de folhas de fortuna, dinheiro-em-penca e fitas coloridas.',
-    elementos: ['Água', 'Terra'],
-    orixas: ['Oxumaré', 'Ossain'],
-  },
-  {
-    id: 'banho-ervas',
-    type: 'ritual' as const,
-    title: 'Banho de Ervas',
-    subtitle: 'Purificação básica',
-    description: 'Banho purificador com folhas específicas para cada necessidade espiritual.',
-    elementos: ['Água'],
-    orixas: [],
-  },
-  {
-    id: 'defumacao',
-    type: 'ritual' as const,
-    title: 'Defumação',
-    subtitle: 'Limpeza energética',
-    description: 'Defumação com ervas secas e resinas para limpeza de ambientes e pessoas.',
-    elementos: ['Fogo', 'Ar'],
-    orixas: [],
-  },
-  {
-    id: 'oracao-oxala',
-    type: 'ritual' as const,
-    title: 'Oração a Oxalá',
-    subtitle: 'Paz e equilíbrio',
-    description: 'Oração de paz e equilíbrio para invocar a energia de Oxalá.',
-    elementos: ['Ar', 'Luz'],
-    orixas: ['Oxalá'],
-  },
-  {
-    id: 'firmeza-ogum',
-    type: 'ritual' as const,
-    title: 'Firmeza de Ogum',
-    subtitle: 'Força e proteção',
-    description: 'Ritual de firmeza para proteção e força espiritual com espada-de-são-jorge.',
-    elementos: ['Fogo', 'Terra'],
-    orixas: ['Ogum'],
+    title: 'Ebó Ancestral',
+    subtitle: 'Conexão com antepassados',
+    description: 'Ebó para honrar antepassados com alimentos simples, velas brancas e oferendas na terra.',
+    elementos: ['Terra'],
+    orixas: ['Iemanjá', 'Omolu'],
   },
 ];
 
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
-
-function normalizeText(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-}
-
+// ─── Search Functions ──────────────────────────────────────────────────────────────
 function calculateRelevance(query: string, text: string): number {
-  const normalizedQuery = normalizeText(query);
-  const normalizedText = normalizeText(text);
-
-  if (normalizedText.includes(normalizedQuery)) {
-    return 1.0;
-  }
-
-  const queryWords = normalizedQuery.split(/\s+/);
+  if (!query || !text) return 0;
+  
+  const normalizedQuery = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const normalizedText = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  
+  const queryWords = normalizedQuery.split(/\s+/).filter(Boolean);
   const textWords = normalizedText.split(/\s+/);
-
-  let matchCount = 0;
+  
+  let matches = 0;
   for (const word of queryWords) {
-    if (word.length >= 2 && textWords.some((tw) => tw.includes(word))) {
-      matchCount++;
+    if (normalizedText.includes(word)) {
+      matches++;
     }
   }
-
-  return queryWords.length > 0 ? matchCount / queryWords.length : 0;
+  
+  if (matches === 0) return 0;
+  
+  const exactMatch = normalizedText.includes(normalizedQuery) ? 50 : 0;
+  const wordMatch = (matches / queryWords.length) * 30;
+  const lengthPenalty = Math.max(0, 20 - Math.abs(textWords.length - queryWords.length) * 2);
+  
+  return Math.min(100, exactMatch + wordMatch + lengthPenalty);
 }
 
 function searchOdus(query: string): SearchResult[] {
@@ -242,29 +181,26 @@ function searchOdus(query: string): SearchResult[] {
   for (const odu of odus) {
     const searchFields = [
       odu.nome,
+      odu.nomeIoruba,
       odu.significado,
+      odu.orixás[0],
       odu.elementos,
-      odu.orixas.join(' '),
-      odu.quizilas?.join(' ') || '',
-      odu.preceitos || '',
-      odu.ebo || '',
-    ].join(' ');
+      odu.ebó,
+ ].join(' ');
 
     const relevance = calculateRelevance(query, searchFields);
     if (relevance > 0) {
       results.push({
         type: 'odu',
-        id: `odu-${odu.numero}`,
-        title: `${odu.numero} - ${odu.nome}`,
-        subtitle: odu.elementos,
+        id: odu.id,
+        title: odu.nome,
+        subtitle: odu.nomeIoruba,
         description: odu.significado,
         relevance,
         metadata: {
           elementos: odu.elementos,
-          orixas: odu.orixas,
-          quizilas: odu.quizilas || [],
-          preceitos: odu.preceitos || '',
-          ebo: odu.ebo || '',
+          orixas: odu.orixás,
+          ebo: odu.ebó,
         },
       });
     }
@@ -279,32 +215,27 @@ function searchOrixas(query: string): SearchResult[] {
   for (const orixa of orixas) {
     const searchFields = [
       orixa.nome,
-      orixa.misterio,
+      orixa.descricao,
+      orixa.elemento,
+      orixa.cores[0],
       orixa.dia,
-      orixa.cores.join(' '),
-      orixa.ervas.join(' '),
-      orixa.planeta || '',
-      orixa.saudacao || '',
-      orixa.quizilas?.join(' ') || '',
+      orixa.saudacao,
     ].join(' ');
 
     const relevance = calculateRelevance(query, searchFields);
     if (relevance > 0) {
       results.push({
         type: 'orixa',
-        id: `orixa-${orixa.nome.toLowerCase().replace(/\s+/g, '-')}`,
+        id: orixa.id,
         title: orixa.nome,
-        subtitle: orixa.dia,
-        description: orixa.misterio,
+        subtitle: orixa.elemento,
+        description: orixa.descricao,
         relevance,
         metadata: {
-          dia: orixa.dia,
+          elemento: orixa.elemento,
           cores: orixa.cores,
-          chakra: orixa.chakra || '',
-          planeta: orixa.planeta || '',
-          ervas: orixa.ervas,
-          quizilas: orixa.quizilas || [],
-          saudacao: orixa.saudacao || '',
+          dia: orixa.dia,
+          planeta: orixa.planeta,
         },
       });
     }
@@ -427,7 +358,7 @@ function getAvailableFilters(): SearchResponse['filters'] {
 
   for (const odu of odus) {
     odu.elementos.split(' / ').forEach((el) => elements.add(el.trim()));
-    odu.orixas.forEach((o) => orixaNames.add(o));
+    odu.orixás.forEach((o) => orixaNames.add(o));
   }
 
   for (const ritual of ritualsData) {
@@ -442,62 +373,105 @@ function getAvailableFilters(): SearchResponse['filters'] {
   };
 }
 
-// ============================================================
-// API ROUTE HANDLERS
-// ============================================================
-
+// ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const query = searchParams.get('q') || searchParams.get('query') || '';
-  const categories = searchParams.get('categories')?.split(',').filter(Boolean) || [];
-  const elements = searchParams.get('elements')?.split(',').filter(Boolean) || [];
-  const orixas = searchParams.get('orixas')?.split(',').filter(Boolean) || [];
+  try {
+    const searchParams = request.nextUrl.searchParams;
 
-  if (!query && !categories.length && !elements.length && !orixas.length) {
-    return NextResponse.json(
-      {
+    const parseResult = SearchQuerySchema.safeParse({
+      q: searchParams.get('q'),
+      query: searchParams.get('query'),
+      categories: searchParams.get('categories'),
+      elements: searchParams.get('elements'),
+      orixas: searchParams.get('orixas'),
+      limit: searchParams.get('limit'),
+    });
+
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { q, query, categories, elements, orixas, limit } = parseResult.data;
+    const searchQuery = q || query || '';
+    const categoryList = categories?.split(',').filter(Boolean) || [];
+    const elementList = elements?.split(',').filter(Boolean) || [];
+    const orixaList = orixas?.split(',').filter(Boolean) || [];
+
+    if (!searchQuery && !categoryList.length && !elementList.length && !orixaList.length) {
+      return NextResponse.json({
+        success: true,
         query: '',
         results: [],
         total: 0,
         filters: getAvailableFilters(),
         timestamp: new Date().toISOString(),
-      },
-      {
+      }, {
         headers: {
           'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
         },
-      }
-    );
+      });
+    }
+
+    let allResults: SearchResult[] = [];
+
+    if (searchQuery) {
+      const [oduResults, orixaResults, ritualResults, tarotResults] = await Promise.all([
+        Promise.resolve(searchOdus(searchQuery)),
+        Promise.resolve(searchOrixas(searchQuery)),
+        Promise.resolve(searchRituals(searchQuery)),
+        Promise.resolve(searchTarot(searchQuery)),
+      ]);
+
+      allResults = [...oduResults, ...orixaResults, ...ritualResults, ...tarotResults];
+    }
+
+    const filteredResults = filterResults(allResults, {
+      categories: categoryList,
+      elements: elementList,
+      orixas: orixaList,
+    });
+
+    filteredResults.sort((a, b) => b.relevance - a.relevance);
+
+    // Apply limit
+    const limitedResults = limit ? filteredResults.slice(0, limit) : filteredResults;
+
+    // Statistics
+    const stats = {
+      byType: filteredResults.reduce((acc, r) => {
+        acc[r.type] = (acc[r.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      totalSearched: allResults.length,
+      matched: filteredResults.length,
+    };
+
+    const response: SearchResponse = {
+      query: searchQuery,
+      results: limitedResults,
+      total: limitedResults.length,
+      filters: getAvailableFilters(),
+      timestamp: new Date().toISOString(),
+    };
+
+    return NextResponse.json({
+      success: true,
+      ...response,
+      stats,
+    }, {
+      headers: {
+        'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+      },
+    });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
   }
-
-  let allResults: SearchResult[] = [];
-
-  if (query) {
-    const [oduResults, orixaResults, ritualResults, tarotResults] = await Promise.all([
-      Promise.resolve(searchOdus(query)),
-      Promise.resolve(searchOrixas(query)),
-      Promise.resolve(searchRituals(query)),
-      Promise.resolve(searchTarot(query)),
-    ]);
-
-    allResults = [...oduResults, ...orixaResults, ...ritualResults, ...tarotResults];
-  }
-
-  const filteredResults = filterResults(allResults, { categories, elements, orixas });
-
-  filteredResults.sort((a, b) => b.relevance - a.relevance);
-
-  const response: SearchResponse = {
-    query,
-    results: filteredResults,
-    total: filteredResults.length,
-    filters: getAvailableFilters(),
-    timestamp: new Date().toISOString(),
-  };
-
-  return NextResponse.json(response, {
-    headers: {
-      'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
-    },
-  });
 }
