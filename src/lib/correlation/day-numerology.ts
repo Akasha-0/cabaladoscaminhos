@@ -211,6 +211,13 @@ export function getNumerologyDays(): string[] {
  */
 export function getAllDayNumerology(): DayNumerology[] {
   return Object.values(DAY_NUMEROLOGY_MAP);
+/**
+ * Get all day-numerology correlations (plural alias)
+ * @returns Array of all DayNumerology mappings
+ */
+export function getAllDayNumerologies(): DayNumerology[] {
+  return Object.values(DAY_NUMEROLOGY_MAP);
+}
 }
 
 /**
