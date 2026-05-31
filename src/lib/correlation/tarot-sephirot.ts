@@ -388,3 +388,6 @@ export default {
   TAROT_SEPHIROT_MAPPINGS,
   SEPHIROTH_NAMES,
 };
+
+// Freeze SEPHIROTH_NAMES constant
+Object.freeze(SEPHIROTH_NAMES);
