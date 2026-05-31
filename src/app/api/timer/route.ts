@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
+
 const CreateTimerSchema = z.object({
-  label: z.string().optional().default(''),
-  durationSeconds: z.number().positive('Must be positive'),
+  label: z.string().optional().default(""),
+  durationSeconds: z.number().positive("Must be positive"),
 });
+
 const TimerQuerySchema = z.object({
   id: z.string().optional(),
 });
+
 interface TimerEntry {
   id: string;
   label: string;
@@ -16,18 +18,20 @@ interface TimerEntry {
   endedAt?: string;
   status: "running" | "paused" | "completed";
 }
-// In-memory store for demo (replace with DB in production)
+
 const timers: Map<string, TimerEntry> = new Map();
+
 function generateId(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
 }
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const parseResult = CreateTimerSchema.safeParse(body);
     if (!parseResult.success) {
       return NextResponse.json({
-        error: 'Invalid request',
+        error: "Invalid request",
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
@@ -40,7 +44,6 @@ export async function POST(req: NextRequest) {
       status: "running",
     };
     timers.set(entry.id, entry);
-    // Auto-complete timer after duration
     setTimeout(() => {
       const timer = timers.get(entry.id);
       if (timer && timer.status === "running") {
@@ -51,14 +54,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(entry, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Failed to create timer" }, { status: 500 });
+  }
 }
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const parseResult = TimerQuerySchema.safeParse({ id: searchParams.get("id") });
     if (!parseResult.success) {
       return NextResponse.json({
-        error: 'Invalid request',
+        error: "Invalid request",
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
@@ -73,4 +78,5 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(Array.from(timers.values()));
   } catch {
     return NextResponse.json({ error: "Failed to get timers" }, { status: 500 });
+  }
 }
