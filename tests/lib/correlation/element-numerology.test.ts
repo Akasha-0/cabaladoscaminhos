@@ -353,7 +353,7 @@ describe('ElementNumerology Correlation', () => {
       ];
 
       expect(allNumbers).toHaveLength(13);
-      expect(allNumbers.sort()).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+      expect(allNumbers.sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
     });
   });
 });
