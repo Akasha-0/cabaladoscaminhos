@@ -1,14 +1,15 @@
-// ============================================================
-// SPIRITUAL JOURNAL API - CABALA DOS CAMINHOS
-// ============================================================
-// API route for spiritual journal entries
-// GET: Retrieve journal entries
-// POST: Create new journal entry
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const JournalEntrySchema = z.object({
+  title: z.string().min(1, 'Título é obrigatório').max(200),
+  content: z.string().min(1, 'Conteúdo é obrigatório'),
+  mood: z.string().optional(),
+  theme: z.string().optional(),
+  insights: z.string().optional(),
+  gratitude: z.string().optional(),
+});
 interface JournalEntry {
   id: string;
   user_id: string;
@@ -21,7 +22,6 @@ interface JournalEntry {
   created_at: string;
   updated_at: string;
 }
-
 export async function GET(request: NextRequest) {
   const supabase = createSupabaseClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -129,20 +129,19 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-
-    const {
-      title,
-      content,
-      mood,
-      theme,
-      insights,
-      gratitude,
-    } = body;
-
-    if (!title || !content) {
-      return NextResponse.json(
-        { error: 'title e content são obrigatórios' },
-        { status: 400 }
+    const parseResult = JournalEntrySchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Dados inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { title, content, mood, theme, insights, gratitude } = parseResult.data;
+    const { data, error: insertError } = await supabase
+      .from('spiritual_journal')
+      .insert({
+        user_id: user.id,
+        title,
       );
     }
 
