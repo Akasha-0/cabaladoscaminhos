@@ -205,9 +205,6 @@ export function getOrixaSephirot(): Record<string, string> {
   const result: Record<string, string> = {};
   for (const [sephirah, mapping] of Object.entries(SEPHIROT_ORIXA_MAPPINGS)) {
     result[mapping.orixa] = sephirah;
-    if (mapping.orixa_secundario) {
-      result[mapping.orixa_secundario] = sephirah;
-    }
   }
   return result;
 }
