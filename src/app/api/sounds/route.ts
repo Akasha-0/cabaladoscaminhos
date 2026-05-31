@@ -123,15 +123,22 @@ const HEALING_RITUALS = [
     description: 'Ritual de renascimento espiritual egípcio',
   },
 ] as const;
-
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const action = searchParams.get('action');
-  const id = searchParams.get('id');
-  const frequency = searchParams.get('frequency');
-  const category = searchParams.get('category');
-
   try {
+    const searchParams = request.nextUrl.searchParams();
+    const parseResult = SoundsQuerySchema.safeParse({
+      action: searchParams.get('action'),
+      id: searchParams.get('id'),
+      frequency: searchParams.get('frequency'),
+      category: searchParams.get('category'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { action, id, frequency, category } = parseResult.data;
     // GET /api/sounds - List all sacred sounds
     if (!action) {
       return NextResponse.json({
@@ -143,7 +150,6 @@ export async function GET(request: NextRequest) {
         },
       });
     }
-
     // GET /api/sounds?action=list - List all sounds
     if (action === 'list') {
       return NextResponse.json({
