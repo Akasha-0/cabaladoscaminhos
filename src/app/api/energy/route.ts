@@ -213,32 +213,23 @@ export async function GET(request: NextRequest) {
           },
         });
       }
-
       case 'history': {
-        const days = parseInt(url.searchParams.get('days') || '7', 10);
+        const daysParam = days ?? 7;
         const cutoffDate = new Date();
-        cutoffDate.setDate(cutoffDate.getDate() - days);
-
+        cutoffDate.setDate(cutoffDate.getDate() - daysParam);
         const filteredEntries = entries.filter(
           (e) => new Date(e.timestamp) >= cutoffDate
         );
-
         return NextResponse.json({
           success: true,
           data: {
             entries: filteredEntries,
             total: filteredEntries.length,
-            period: `${days}d`,
+            period: `${daysParam}d`,
           },
         });
       }
-
       default: {
-        return NextResponse.json(
-          { error: 'Invalid action. Use: status, trend, or history' },
-          { status: 400 }
-        );
-      }
     }
   } catch {
     return NextResponse.json(

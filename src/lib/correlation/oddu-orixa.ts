@@ -1,6 +1,6 @@
 /**
  * Od'u-Orixá Correlation Module
- * Direct mappings of the 16 Odú Ifá (Odus) to their ruling Orixás
+ * Correlations between the 16 Od'u Ifá (Odus) and their ruling Orixás
  * With spiritual meaning for divination and ritual practice
  */
 
@@ -31,10 +31,10 @@ export interface OdduOrixa {
   dias_sagrados: string[];
 }
 
-// ─── Odú Ifá-to-Orixá Mapping (Merindilogun 1-16) ────────────────────────────
+// ─── Od'u-to-Orixá Mapping (Merindilogun 1-16) ───────────────────────────────
 
 export const ODDU_ORIXA_MAPPINGS: Record<number, OdduOrixa> = {
-  // ─── 1: Okaran (Okànràn) ───────────────────────────────────────────────────
+  // ─── 1: Okaran (Okànràn) ─────────────────────────────────────────────────
   1: {
     odu_numero: 1,
     odu_nome: 'Okaran',
@@ -294,7 +294,7 @@ export function getOduOrixa(odu: number | string): OdduOrixa | null {
 }
 
 /**
- * Get Orixá by Odu number
+ * Get all Od'us ruled by a specific Orixá
  * @param orixa - Orixá name (case-insensitive)
  * @returns Array of OdduOrixa mappings for that Orixá
  */
@@ -353,7 +353,7 @@ export function getAllOrixaNames(): string[] {
 }
 
 /**
- * Get Odús by element
+ * Get Od'us by element
  * @param elemento - Element type
  * @returns Array of OdduOrixa mappings for that element
  */
