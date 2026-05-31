@@ -273,9 +273,10 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
     elemento: 'água',
     chakra_elemento: 'Água',
     significado_espiritual: 'Encantamento, magia, mudanças profundas e renovações. Desperta o poder criativo transformador.',
-    mensagem_central: 'A magia está ao seu redor. Abrace as mudanças com coração aberto.',
-    cores: ['roxo', 'azul', 'prata'],
-    qualidades: ['magia', 'transformação', 'encantamento', 'renovação', 'fluidez'],
+export function getAllChakraNames(): string[] {
+  const chakraSet = new Set(Object.values(ODDU_CHAKRA_MAPPINGS).map((m) => m.chakra));
+  return Array.from(chakraSet).sort();
+}
   },
 
   // ─── 16: Okandí ─────────────────────────────────────────────────────────────
