@@ -22,7 +22,75 @@ const SpiritJourneyQuerySchema = z.object({
   chakra: ChakraSchema.optional(),
   element: ElementSchema.optional(),
   level: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+  orixa: z.string().optional(),
 });
+
+// ─── Spiritual Correlations for Journey Phases ──────────────────────────────────────────
+const JOURNEY_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  awakening: {
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxalá',
+    affirmation: 'Desperto para minha verdade interior',
+    frequency: '741 Hz',
+  },
+  purification: {
+    sefirot: ['Gevurah', 'Chesed'],
+    chakra: 3,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'Libero tudo o que não me serve',
+    frequency: '417 Hz',
+  },
+  preparation: {
+    sefirot: ['Tipheret', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'Construo uma base sólida para minha prática',
+    frequency: '528 Hz',
+  },
+  illumination: {
+    sefirot: ['Chokhmah', 'Binah'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Orunmilá',
+    affirmation: 'A luz da sabedoria me ilumina',
+    frequency: '741 Hz',
+  },
+  integration: {
+    sefirot: ['Tipheret', 'Yesod'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Integro todas as partes de meu ser',
+    frequency: '528 Hz',
+  },
+  service: {
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Sirvo como canal da luz divina',
+    frequency: '528 Hz',
+  },
+  mastery: {
+    sefirot: ['Kether', 'Malkuth'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Sou um com a consciência divina',
+    frequency: '963 Hz',
+  },
+};
 
 // ─── Journey Phases with Spiritual Correlations ──────────────────────────────────────────
 const JOURNEY_PHASES = [
@@ -46,6 +114,7 @@ const JOURNEY_PHASES = [
     keyPractice: 'Meditação de despertar',
     affirmations: ['Desperto para minha verdade interior', 'Minhas percepções se expandem'],
     warnings: ['Cuidado com experiências egoicas', 'Mantenha o discernimento'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['awakening'],
   },
   {
     id: 'purification',
@@ -68,6 +137,7 @@ const JOURNEY_PHASES = [
     keyPractice: 'Banho de purificação',
     affirmations: ['Libero tudo o que não me serve', 'Minha energia é limpa e clara'],
     warnings: ['Não adie a limpeza emocional', 'Busque apoio se necessário'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['purification'],
   },
   {
     id: 'preparation',
@@ -81,215 +151,121 @@ const JOURNEY_PHASES = [
       'building discipline',
       'developing sensitivity',
     ],
-    duration: 'months to years',
-    level: 'intermediate',
-    element: 'Terra',
-    sefirot: ['Malkuth', 'Yesod'],
-    chakra: 1,
-    orixa: ['Ogum', 'Oxalá'],
-    keyPractice: 'Prática diária consistente',
-    affirmations: ['Construo uma base sólida para meu crescimento', 'Minha disciplina é inabalável'],
-    warnings: ['Evite promessas irreais', 'Respeite seu ritmo'],
-  },
-  {
-    id: 'innerwork',
-    name: 'Inner Work',
-    namePt: 'Trabalho Interior',
-    description: 'Deep exploration of psyche, shadow work and integration',
-    descriptionPt: 'Exploração profunda da psique, trabalho das sombras e integração',
-    phases: [
-      'shadow integration',
-      'healing wounds',
-      'integrating fragments',
-      'becoming whole',
-    ],
-    duration: 'years',
-    level: 'intermediate',
-    element: 'Terra',
-    sefirot: ['Tipheret', 'Hod'],
+    duration: '1-3 years',
+    level: 'beginner',
+    element: 'Fogo',
+    sefirot: ['Tipheret', 'Netzach'],
     chakra: 4,
-    orixa: ['Omolu', 'Oxum'],
-    keyPractice: 'Trabalho das sombras',
-    affirmations: ['Integro todas as partes de mim', 'A cura acontece em profundidade'],
-    warnings: ['Busque apoio terapêutico se necessário', 'Honre seus limites'],
+    orixa: ['Ogum'],
+    keyPractice: 'Prática diária consistente',
+    affirmations: ['Construo uma base sólida para minha prática', 'A disciplina me fortalece'],
+    warnings: ['Não pule a preparação', 'Respeite o tempo de maturação'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['preparation'],
   },
   {
     id: 'illumination',
     name: 'Illumination',
     namePt: 'Iluminação',
-    description: 'Receiving wisdom, insight and spiritual understanding',
-    descriptionPt: 'Recebendo sabedoria, compreensão e conhecimento espiritual',
+    description: 'Deepening spiritual insight and wisdom through direct experience',
+    descriptionPt: 'Aprofundando insight espiritual e sabedoria através da experiência direta',
     phases: [
-      'discernment development',
+      'third eye opening',
+      'intuitive development',
+      'mystical experiences',
       'wisdom integration',
-      'teaching presence',
-      'sharing gifts',
+    ],
+    duration: 'ongoing',
+    level: 'intermediate',
+    element: 'Fogo',
+    sefirot: ['Chokhmah', 'Binah'],
+    chakra: 6,
+    orixa: ['Orunmilá'],
+    keyPractice: 'Meditação de terceiro olho',
+    affirmations: ['A luz da sabedoria me ilumina', 'Vejo além das ilusões'],
+    warnings: ['Mantenha os pés no chão', 'Integre antes de expandir'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['illumination'],
+  },
+  {
+    id: 'integration',
+    name: 'Integration',
+    namePt: 'Integração',
+    description: 'Unifying spiritual experiences with daily life and identity',
+    descriptionPt: 'Unificando experiências espirituais com a vida diária e identidade',
+    phases: [
+      'identity merging',
+      'lifestyle integration',
+      'relationship transformation',
+      'purpose clarification',
+    ],
+    duration: 'ongoing',
+    level: 'intermediate',
+    element: 'Fogo',
+    sefirot: ['Tipheret', 'Yesod'],
+    chakra: 4,
+    orixa: ['Oxum'],
+    keyPractice: 'Journaling e reflexão',
+    affirmations: ['Integro todas as partes de meu ser', 'Sou wholeness'],
+    warnings: ['Resista à fragmentação', 'Honre todas as dimensões'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['integration'],
+  },
+  {
+    id: 'service',
+    name: 'Service',
+    namePt: 'Serviço',
+    description: 'Using spiritual gifts in service to others and the collective',
+    descriptionPt: 'Usando dons espirituais em serviço aos outros e ao coletivo',
+    phases: [
+      'gift identification',
+      'service practice',
+      'community building',
+      'collective healing',
     ],
     duration: 'ongoing',
     level: 'advanced',
     element: 'Fogo',
-    sefirot: ['Chokhmah', 'Binah'],
-    chakra: 5,
-    orixa: ['Orunmilá', 'Oxalá'],
-    keyPractice: 'Estudo e contemplação',
-    affirmations: ['A sabedoria flui através de mim', 'Compartilho luz com autenticidade'],
-    warnings: ['Evite o orgulho espiritual', 'Mantenha a humildade'],
-  },
-  {
-    id: 'union',
-    name: 'Union',
-    namePt: 'União',
-    description: 'Integration with higher self and divine consciousness',
-    descriptionPt: 'Integração com o eu superior e consciência divina',
-    phases: [
-      'self-realization',
-      'ego dissolution',
-      'consciousness expansion',
-      'unity awareness',
-    ],
-    duration: 'lifelong',
-    level: 'advanced',
-    element: 'Éter',
-    sefirot: ['Kether', 'Tipheret'],
-    chakra: 7,
-    orixa: ['Oxalá'],
-    keyPractice: 'Meditação de unidade',
-    affirmations: ['Sou um com o divino', 'A consciência expande-se infinitamente'],
-    warnings: ['Integre a experiência com os vivos', 'Não se perca no transcendental'],
-  },
- {
-    id: 'integration',
-    name: 'Integration',
-    namePt: 'Integração',
-    description: 'Bringing together all learned wisdom into daily life',
-    descriptionPt: 'Trazendo toda a sabedoria aprendida para a vida diária',
-    phases: [
-      'embodying wisdom',
-      'living truth',
-      'service to others',
-      'ongoing evolution',
-    ],
-    duration: 'lifelong',
-    level: 'advanced',
-    element: 'Fogo',
     sefirot: ['Chesed', 'Netzach'],
     chakra: 4,
-    orixa: ['Oxum', 'Iemanjá'],
-    keyPractice: 'Serviço consciente',
-    affirmations: [' Vivo minha verdade diariamente', 'O serviço é minha expressão de gratidão'],
-    warnings: ['Não negligencie o mundo material', 'Mantenha o equilíbrio'],
+    orixa: ['Oxum'],
+    keyPractice: 'Trabalho de cura ou ensino',
+    affirmations: ['Sirvo como canal da luz divina', 'O serviço me realiz'],
+    warnings: ['Evite o desgaste', 'Mantenha limites saudáveis'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['service'],
   },
   {
-    id: 'transmission',
-    name: 'Transmission',
-    namePt: 'Transmissão',
-    description: 'Becoming a channel for spiritual wisdom to flow to others',
-    descriptionPt: 'Tornando-se um canal para a sabedoria espiritual fluir para outros',
+    id: 'mastery',
+    name: 'Mastery',
+    namePt: 'Mestria',
+    description: 'Achieving spiritual mastery and becoming a teacher/guide',
+    descriptionPt: 'Alcançando mestria espiritual e tornando-se um professor/guia',
     phases: [
-      'preparing vessel',
-      'receiving transmission',
-      'purifying channel',
-      'sharing light',
+      'deep embodiment',
+      'teaching development',
+      'lineage building',
+      'consciousness expansion',
     ],
-    duration: 'lifelong',
+    duration: 'lifetime',
     level: 'advanced',
-    element: 'Ar',
-    sefirot: ['Chokhmah', 'Netzach'],
-    chakra: 6,
-    orixa: ['Oxalá', 'Orunmilá'],
-    keyPractice: 'Retiros e práticas de silêncio',
-    affirmations: ['Sou um canal limpo para a luz', 'A sabedoria flui através de mim'],
-    warnings: ['Purifique-se constantemente', 'Honre a responsabilidade'],
+    element: 'Éter',
+    sefirot: ['Kether', 'Malkuth'],
+    chakra: 7,
+    orixa: ['Oxalá'],
+    keyPractice: 'Transmissão direta',
+    affirmations: ['Sou um com a consciência divina', 'A mestria é meu caminho'],
+    warnings: ['A humildade é essencial', 'O ego pode se disfarçar'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['mastery'],
   },
 ];
 
-// ─── Milestones with Spiritual Correlations ──────────────────────────────────────────
-const JOURNEY_MILESTONES = [
-  {
-    id: 'first-meditation',
-    name: 'First Meditation',
-    namePt: 'Primeira Meditação',
-    phase: 'awakening',
-    sefirot: ['Kether'],
-    chakra: 7,
-    description: 'Successfully completing first structured meditation practice',
-  },
-  {
-    id: 'energy-awareness',
-    name: 'Energy Awareness',
-    namePt: 'Percepção de Energia',
-    phase: 'awakening',
-    sefirot: ['Yesod'],
-    chakra: 6,
-    description: 'First conscious perception of subtle energy in the body',
-  },
-  {
-    id: 'shadow-recognition',
-    name: 'Shadow Recognition',
-    namePt: 'Reconhecimento da Sombra',
-    phase: 'innerwork',
-    sefirot: ['Hod'],
-    chakra: 4,
-    description: 'Acknowledging and owning repressed aspects of personality',
-  },
-  {
-    id: 'past-life-awareness',
-    name: 'Past Life Awareness',
-    namePt: 'Percepção de Vidas Passadas',
-    phase: 'innerwork',
-    sefirot: ['Binah'],
-    chakra: 6,
-    description: 'First clear memory or insight from past incarnations',
-  },
-  {
-    id: 'sefirot-connection',
-    name: 'Sefirot Connection',
-    namePt: 'Conexão com os Sefirot',
-    phase: 'illumination',
-    sefirot: ['Tipheret'],
-    chakra: 5,
-    description: 'Direct experiential connection with the Tree of Life',
- },
-  {
-    id: 'orixa-recognition',
-    name: 'Orixá Recognition',
-    namePt: 'Reconhecimento do Orixá',
-    phase: 'illumination',
-    sefirot: ['Chesed'],
-    chakra: 4,
-    description: 'Clear recognition of personal Orixá and ability to communicate',
- },
-  {
-    id: 'unity-experience',
-    name: 'Unity Experience',
-    namePt: 'Experiência de Unidade',
-    phase: 'union',
-    sefirot: ['Kether'],
-    chakra: 7,
-    description: 'First conscious experience of unity with divine consciousness',
- },
-  {
-    id: 'service-activation',
-    name: 'Service Activation',
-    namePt: 'Ativação do Serviço',
-    phase: 'integration',
-    sefirot: ['Netzach'],
-    chakra: 4,
-    description: 'Clear call to serve others through spiritual gifts',
-  },
-];
-
-// ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams();
-
     const parseResult = SpiritJourneyQuerySchema.safeParse({
       step: searchParams.get('step'),
       sefirot: searchParams.get('sefirot'),
       chakra: searchParams.get('chakra'),
       element: searchParams.get('element'),
       level: searchParams.get('level'),
+      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -300,65 +276,76 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { step, sefirot, chakra, element, level } = parseResult.data;
-
+    const { step, sefirot, chakra, element, level, orixa } = parseResult.data;
     let phases = [...JOURNEY_PHASES];
 
-    // Filter by step
     if (step) {
       phases = phases.filter(p => p.id === step);
     }
 
-    // Filter by spiritual correlations
-    if (sefirot) {
-      phases = phases.filter(p => p.sefirot.includes(sefirot));
-    }
-    if (chakra) {
-      phases = phases.filter(p => p.chakra === chakra);
-    }
-    if (element) {
-      phases = phases.filter(p => p.element === element);
-    }
     if (level) {
       phases = phases.filter(p => p.level === level);
     }
 
-    // Statistics
-    const stats = {
-      byLevel: JOURNEY_PHASES.reduce((acc, p) => {
+    if (sefirot) {
+      phases = phases.filter(p => p.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      phases = phases.filter(p => p.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      phases = phases.filter(p => p.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      phases = phases.filter(p => p.spiritualCorrelations?.orixa === orixa);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byLevel: phases.reduce((acc, p) => {
         acc[p.level] = (acc[p.level] || 0) + 1;
         return acc;
       }, {} as Record<string, number>),
-      byElement: JOURNEY_PHASES.reduce((acc, p) => {
-        acc[p.element] = (acc[p.element] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byChakra: JOURNEY_PHASES.reduce((acc, p) => {
-        acc[p.chakra] = (acc[p.chakra] || 0) + 1;
-        return acc;
-      }, {} as Record<number, number>),
-      bySefirot: JOURNEY_PHASES.reduce((acc, p) => {
-        p.sefirot.forEach(sf => {
-          acc[sf] = (acc[sf] || 0) + 1;
+      bySefirot: phases.reduce((acc, p) => {
+        p.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
         });
         return acc;
       }, {} as Record<string, number>),
-      totalPhases: JOURNEY_PHASES.length,
-      totalMilestones: JOURNEY_MILESTONES.length,
+      byChakra: phases.reduce((acc, p) => {
+        const c = p.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: phases.reduce((acc, p) => {
+        const e = p.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: phases.reduce((acc, p) => {
+        const o = p.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
     };
 
     return NextResponse.json({
       success: true,
       phases,
-      milestones: JOURNEY_MILESTONES,
-      total: phases.length,
-      stats,
+      count: phases.length,
+      spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { step, sefirot, chakra, element, level, orixa },
+      },
     });
   } catch (error) {
-    const err = error as Error;
     return NextResponse.json({
       success: false,
-      error: `Erro interno: ${err.message}`,
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }

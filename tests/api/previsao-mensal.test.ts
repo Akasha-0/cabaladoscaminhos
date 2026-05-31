@@ -22,37 +22,55 @@ describe('GET /api/astrologia/previsao-mensal', () => {
     const response = await handleGetRequest();
     expect(response.status).toBe(200);
   });
-
   it('deve retornar objeto com mes e ano', async () => {
     const response = await handleGetRequest();
     const data = await response.json();
-
-    expect(data).toHaveProperty('mes');
-    expect(data).toHaveProperty('ano');
-    expect(typeof data.mes).toBe('number');
-    expect(typeof data.ano).toBe('number');
+    const previsao = data.previsao;
+    expect(data.success).toBe(true);
+    expect(previsao).toHaveProperty('mes');
+    expect(previsao).toHaveProperty('ano');
+    expect(typeof previsao.mes).toBe('number');
+    expect(typeof previsao.ano).toBe('number');
   });
 
   it('deve retornar mes entre 1 e 12', async () => {
     const response = await handleGetRequest();
     const data = await response.json();
-
-    expect(data.mes).toBeGreaterThanOrEqual(1);
-    expect(data.mes).toBeLessThanOrEqual(12);
+    const previsao = data.previsao;
+    expect(previsao.mes).toBeGreaterThanOrEqual(1);
+    expect(previsao.mes).toBeLessThanOrEqual(12);
   });
-
   it('deve retornar ano válido', async () => {
     const response = await handleGetRequest();
     const data = await response.json();
-
+    const previsao = data.previsao;
     const currentYear = new Date().getFullYear();
-    expect(data.ano).toBe(currentYear);
+    expect(previsao.ano).toBe(currentYear);
   });
-
   it('deve incluir signosFavoraveis como array', async () => {
     const response = await handleGetRequest();
     const data = await response.json();
-
+    const previsao = data.previsao;
+    expect(previsao).toHaveProperty('signosFavoraveis');
+    expect(Array.isArray(previsao.signosFavoraveis)).toBe(true);
+    expect(previsao.signosFavoraveis.length).toBeGreaterThan(0);
+  });
+  it('deve incluir desafios como array', async () => {
+    const response = await handleGetRequest();
+    const data = await response.json();
+    const previsao = data.previsao;
+    expect(previsao).toHaveProperty('desafios');
+    expect(Array.isArray(previsao.desafios)).toBe(true);
+    expect(previsao.desafios.length).toBeGreaterThan(0);
+  });
+  it('deve incluir oportunidades como array', async () => {
+    const response = await handleGetRequest();
+    const data = await response.json();
+    const previsao = data.previsao;
+    expect(previsao).toHaveProperty('oportunidades');
+    expect(Array.isArray(previsao.oportunidades)).toBe(true);
+    expect(previsao.oportunidades.length).toBeGreaterThan(0);
+  });
     expect(data).toHaveProperty('signosFavoraveis');
     expect(Array.isArray(data.signosFavoraveis)).toBe(true);
     expect(data.signosFavoraveis.length).toBeGreaterThan(0);
