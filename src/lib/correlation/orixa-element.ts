@@ -11,6 +11,7 @@ export interface OrixaElement {
   dia_da_semana: string;
   cores_principais: string[];
   ferramentas: string[];
+  significado_espiritual: string;
   elementos_secundarios?: string[];
   planeta_secundario?: string;
 }

@@ -449,14 +449,14 @@ describe("sound-numerology correlation", () => {
     });
 
     it("all 13 numbers have spiritual meaning", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       all.forEach(mapping => {
         expect(mapping.significado_numero.length).toBeGreaterThan(10);
       });
     });
 
     it("all sounds have pronunciations", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       all.forEach(mapping => {
         expect(mapping.pronunciacao.length).toBeGreaterThan(0);
         expect(mapping.pronunciacao).toContain("vibração");
@@ -464,7 +464,7 @@ describe("sound-numerology correlation", () => {
     });
 
     it("all sounds have orixá associations", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       all.forEach(mapping => {
         expect(mapping.orixa.length).toBeGreaterThan(0);
         expect(mapping.orixa).toMatch(/\//); // Should contain "/" for dual orixá
@@ -472,14 +472,14 @@ describe("sound-numerology correlation", () => {
     });
 
     it("all sounds have sephirah correspondences", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       all.forEach(mapping => {
         expect(mapping.sephirah.length).toBeGreaterThan(0);
       });
     });
 
     it("chakra numbers align with sound mappings", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       all.forEach(mapping => {
         // Chakra 1 = Muladhara, Chakra 2 = Svadhisthana, etc.
         if (mapping.numero <= 7) {
@@ -491,14 +491,14 @@ describe("sound-numerology correlation", () => {
 
   describe("Healing properties consistency", () => {
     it("each sound has at least 5 healing properties", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       all.forEach(mapping => {
         expect(mapping.propriedades_cura.length).toBeGreaterThanOrEqual(5);
       });
     });
 
     it("healing properties are descriptive strings", () => {
-      const all = getAllSoundNumerology();
+      const all = getAllSoundNumerologies();
       all.forEach(mapping => {
         mapping.propriedades_cura.forEach(prop => {
           expect(typeof prop).toBe("string");
