@@ -212,7 +212,7 @@ describe('orixa-zodiac', () => {
     });
 
     it('should be case-insensitive', () => {
-      expect(getZodiacOrixa('cÂNRANGUEJO')?.orixa).toBeDefined();
+      expect(getZodiacOrixa('cÂRRANGUEJO')?.orixa).toBe('Iemanjá');
       expect(getZodiacOrixa('TOURO')?.orixa).toBe('Oxum');
     });
 
