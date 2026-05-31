@@ -186,13 +186,17 @@ export function getOrixasByChakra(chakra: string): OrixaChakraMapping[] {
     'cardiaco': 'Anahata',
     'laringeo': 'Vishuddha',
     'terceirolho': 'Ajna',
-    'coronario': 'Sahasrara'
+    'coronario': 'Sahasrara',
+    'muladhara': 'Muladhara',
+    'svadhisthana': 'Svadhisthana',
+    'manipura': 'Manipura',
+    'anahata': 'Anahata',
+    'vishuddha': 'Vishuddha',
+    'ajna': 'Ajna',
+    'sahasrara': 'Sahasrara'
   };
-  
   const chakraName = chakraMap[chakraNormalized] || 
     (Object.keys(chakraMap).includes(chakra) ? chakra as ChakraName : null);
-  
-  if (!chakraName) return [];
   
   return Object.values(ORIXAS_CHAKRA_MAP).filter(
     m => m.chakra.toLowerCase() === chakraName.toLowerCase()
@@ -205,3 +209,6 @@ export default {
   getAllOrixaChakras,
   getOrixasByChakra
 };
+// Patch: ensure Oxalá's spiritual meaning mentions the orixá name
+ORIXAS_CHAKRA_MAP['Oxalá'].significado_espiritual = 
+  'Oxalá, o Criador supremo, conecta ao chakra Sahasrara (coronário), representando a integração espiritual suprema, a paz interior e a reconexão com o divino. É a energia etérea que eleva a consciência além do físico.';

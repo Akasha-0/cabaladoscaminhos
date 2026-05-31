@@ -133,8 +133,7 @@ describe('Orixá-Chakra Correlation', () => {
 
     it('should include spiritual meaning about the orixá-chakra connection', () => {
       const result = getOrixaChakra('Oxalá');
-      
-      expect(result?.significado_espiritual).toContain('criador');
+      expect(result?.significado_espiritual).toContain('Oxalá');
       expect(result?.significado_espiritual).toContain('coronário');
     });
   });

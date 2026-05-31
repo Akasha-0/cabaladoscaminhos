@@ -184,63 +184,49 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
     aftercare: ['Mantenha ventilação por 1-2 horas', 'Lave a concha com água e sal', 'Acenda uma vela branca na entrada se desejar'],
   },
 ];
-
 // GET - Retrieve cleansing types and rituals
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const type = searchParams.get('type');
-  const ritual = searchParams.get('ritual');
-
-  // Return all cleansing types
-  if (!type && !ritual) {
-    return NextResponse.json({
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = CleansingQuerySchema.safeParse({
+      method: searchParams.get('method'),
+      type: searchParams.get('type'),
+      includeRituals: searchParams.get('includeRituals'),
+      limit: searchParams.get('limit'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { method, type, includeRituals, limit } = parseResult.data;
+    let cleansingTypes = [...CLEANSING_TYPES];
+    // Filter by method
+    if (method) {
+      cleansingTypes = cleansingTypes.filter(t => t.methods.includes(method));
+    }
+    // Apply limit
+    if (limit) {
+      cleansingTypes = cleansingTypes.slice(0, limit);
+    }
+    const response: Record<string, unknown> = {
       success: true,
-      data: {
-        types: CLEANSING_TYPES,
+      data: { types: cleansingTypes },
+    };
+    if (includeRituals) {
+      response.data = {
+        types: cleansingTypes,
         rituals: CLEANSING_RITUALS,
-      },
-      meta: {
-        totalTypes: CLEANSING_TYPES.length,
-        totalRituals: CLEANSING_RITUALS.length,
-      },
-    });
-  }
-
-  // Return specific cleansing type
-  if (type) {
-    const cleansingType = CLEANSING_TYPES.find((t) => t.id === type);
-    if (!cleansingType) {
-      return NextResponse.json(
-        { success: false, error: 'Tipo de limpeza não encontrado' },
-        { status: 404 }
-      );
+      };
     }
+    response.meta = {
+      totalTypes: cleansingTypes.length,
+      totalRituals: CLEANSING_RITUALS.length,
+    };
+    return NextResponse.json(response);
+  } catch {
     return NextResponse.json({
-      success: true,
-      data: cleansingType,
-    });
-  }
-
-  // Return specific ritual
-  if (ritual) {
-    const cleansingRitual = CLEANSING_RITUALS.find((r) => r.id === ritual);
-    if (!cleansingRitual) {
-      return NextResponse.json(
-        { success: false, error: 'Ritual não encontrado' },
-        { status: 404 }
-      );
-    }
-    return NextResponse.json({
-      success: true,
-      data: cleansingRitual,
-    });
-  }
-
-  return NextResponse.json({
-    success: true,
-    data: {
-      types: CLEANSING_TYPES,
-      rituals: CLEANSING_RITUALS,
-    },
-  });
+      error: 'Erro ao processar limpeza',
+    }, { status: 500 });
 }
