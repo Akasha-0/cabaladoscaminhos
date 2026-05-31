@@ -5,6 +5,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const NotificacaoTipoSchema = z.enum([
   'info', 'success', 'warning', 'error', 'system',
   'reading', 'payment', 'orixa', 'transito', 'ritual',
@@ -17,6 +24,10 @@ const NotificationsQuerySchema = z.object({
   importancia: NotificacaoImportanciaSchema.optional(),
   limit: z.coerce.number().int().positive().max(100).optional(),
   page: z.coerce.number().int().positive().optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 const CreateNotificacaoSchema = z.object({
@@ -27,7 +38,124 @@ const CreateNotificacaoSchema = z.object({
   acaoUrl: z.string().url().optional().nullable(),
   orixa: z.string().optional(),
   sefirot: z.array(z.string()).optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
 });
+
+// ─── Spiritual Correlations for Notification Types ──────────────────────────────────────────
+const NOTIFICATION_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  info: {
+    sefirot: ['Hod', 'Netzach'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Oxalá',
+    affirmation: 'A sabedoria me orienta',
+    frequency: '741 Hz',
+  },
+  success: {
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'O sucesso confirma minha jornada',
+    frequency: '528 Hz',
+  },
+  warning: {
+    sefirot: ['Gevurah', 'Tipheret'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Xangô',
+    affirmation: 'A advertência me protege',
+    frequency: '396 Hz',
+  },
+  error: {
+    sefirot: ['Gevurah', 'Malkuth'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Ogum',
+    affirmation: 'O erro é mestre da sabedoria',
+    frequency: '174 Hz',
+  },
+  system: {
+    sefirot: ['Kether', 'Malkuth'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'O sistema serve à minha evolução',
+    frequency: '963 Hz',
+  },
+  reading: {
+    sefirot: ['Binah', 'Chokhmah'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Orunmilá',
+    affirmation: 'A leitura revela minha verdade',
+    frequency: '639 Hz',
+  },
+  payment: {
+    sefirot: ['Chesed', 'Malkuth'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A abundância flui em mim',
+    frequency: '528 Hz',
+  },
+  orixa: {
+    sefirot: ['Tipheret', 'Chesed'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'O Orixá me abençoa',
+    frequency: '528 Hz',
+  },
+  transito: {
+    sefirot: ['Binah', 'Chokhmah'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Orunmilá',
+    affirmation: 'O trânsito astrológico me guia',
+    frequency: '639 Hz',
+  },
+  ritual: {
+    sefirot: ['Gevurah', 'Tipheret'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'O ritual transforma e purifica',
+    frequency: '528 Hz',
+  },
+  meditacao: {
+    sefirot: ['Kether', 'Binah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'A meditação me conecta à fonte',
+    frequency: '963 Hz',
+  },
+  ciclo: {
+    sefirot: ['Chokhmah', 'Malkuth'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Orunmilá',
+    affirmation: 'O ciclo se completa em mim',
+    frequency: '741 Hz',
+  },
+  mensagem: {
+    sefirot: ['Hod', 'Netzach'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Oxalá',
+    affirmation: 'A mensagem toca minha alma',
+    frequency: '741 Hz',
+  },
+};
 
 // ─── Type Definitions ───────────────────────────────────────────────────────
 export interface Notificacao {
@@ -42,6 +170,14 @@ export interface Notificacao {
   lidaEm: string | null;
   orixa?: string;
   sefirot?: string[];
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 interface NotificacoesData {
@@ -66,6 +202,7 @@ const notificationStore: Map<string, Notificacao[]> = new Map([
       createdAt: new Date(Date.now() - 600000).toISOString(),
       lidaEm: null,
       sefirot: ['Tipheret'],
+      spiritualCorrelations: NOTIFICATION_SPIRITUAL_CORRELATIONS['success'],
     },
     {
       id: 'notif-002',
@@ -77,132 +214,62 @@ const notificationStore: Map<string, Notificacao[]> = new Map([
       acaoUrl: '/dashboard/creditos',
       createdAt: new Date(Date.now() - 1800000).toISOString(),
       lidaEm: null,
+      spiritualCorrelations: NOTIFICATION_SPIRITUAL_CORRELATIONS['payment'],
     },
     {
       id: 'notif-003',
       tipo: 'reading',
-      titulo: 'Novo Odu Disponível',
-      mensagem: 'O Odu do dia está pronto para consulta.',
+      titulo: 'Nova Previsão',
+      mensagem: 'Suas previsões mensais foram atualizadas.',
       lida: true,
       importancia: 'medium',
-      acaoUrl: '/dashboard/oracula/odu-do-dia',
+      acaoUrl: '/dashboard/previsoes',
       createdAt: new Date(Date.now() - 3600000).toISOString(),
       lidaEm: new Date(Date.now() - 3000000).toISOString(),
-      orixa: 'Oxum',
+      spiritualCorrelations: NOTIFICATION_SPIRITUAL_CORRELATIONS['reading'],
     },
     {
       id: 'notif-004',
-      tipo: 'info',
-      titulo: 'Atualização do Sistema',
-      mensagem: 'Nova versão do mapa astral disponível.',
-      lida: true,
-      importancia: 'low',
-      acaoUrl: '/dashboard/mapa-astral',
+      tipo: 'orixa',
+      titulo: 'Oxum送你祝福',
+      mensagem: 'Oxum está manifestando sua energia de abundância em sua vida.',
+      lida: false,
+      importancia: 'high',
+      acaoUrl: '/dashboard/orixas/oxum',
       createdAt: new Date(Date.now() - 7200000).toISOString(),
-      lidaEm: new Date(Date.now() - 6000000).toISOString(),
-      sefirot: ['Kether'],
+      lidaEm: null,
+      orixa: 'Oxum',
+      sefirot: ['Chesed', 'Netzach'],
+      spiritualCorrelations: NOTIFICATION_SPIRITUAL_CORRELATIONS['orixa'],
     },
     {
       id: 'notif-005',
-      tipo: 'warning',
-      titulo: 'Créditos Esgotando',
-      mensagem: 'Você possui apenas 50 créditos restantes.',
-      lida: false,
-      importancia: 'high',
-      acaoUrl: '/dashboard/creditos/comprar',
-      createdAt: new Date(Date.now() - 14400000).toISOString(),
-      lidaEm: null,
-    },
-    {
-      id: 'notif-006',
-      tipo: 'orixa',
-      titulo: 'Dia de Oxum',
-      mensagem: 'Hoje é dedicado a Oxum. Pratique rituais de amor e prosperidade.',
-      lida: false,
-      importancia: 'high',
-      acaoUrl: '/dashboard/rituais/oxum',
-      createdAt: new Date(Date.now() - 28800000).toISOString(),
-      lidaEm: null,
-      orixa: 'Oxum',
-      sefirot: ['Chesed', 'Hod'],
-    },
-    {
-      id: 'notif-007',
-      tipo: 'transito',
-      titulo: 'Netuno em Peixes - Fim de Ciclo',
-      mensagem: 'Netuno em Peixes traz encerramento de ciclos. Reflecte sobre suas experiências.',
-      lida: false,
-      importancia: 'medium',
-      acaoUrl: '/dashboard/astrologia/transitos',
-      createdAt: new Date(Date.now() - 43200000).toISOString(),
-      lidaEm: null,
-      sefirot: ['Yesod'],
-    },
-    {
-      id: 'notif-008',
       tipo: 'ritual',
-      titulo: 'Lembrete: Ritual do Amanhecer',
-      mensagem: 'Não se esqueça de realizar seu ritual matinal de conexão com Oxalá.',
-      lida: false,
-      importancia: 'medium',
-      acaoUrl: '/dashboard/rituais/matinal',
-      createdAt: new Date(Date.now() - 86400000).toISOString(),
-      lidaEm: null,
-      orixa: 'Oxalá',
-      sefirot: ['Kether', 'Tipheret'],
-    },
-    {
-      id: 'notif-009',
-      tipo: 'meditacao',
-      titulo: 'Lua Crescente - Meditação Guiada',
-      mensagem: 'A lua crescente é momento propício para meditação e definição de intenções.',
+      titulo: 'Lembrete de Ritual',
+      mensagem: 'Seu ritual diário de amanhã está agendado.',
       lida: true,
       importancia: 'low',
-      acaoUrl: '/dashboard/meditacao/guiada',
-      createdAt: new Date(Date.now() - 172800000).toISOString(),
-      lidaEm: new Date(Date.now() - 86400000).toISOString(),
-      sefirot: ['Chokhmah'],
-    },
-    {
-      id: 'notif-010',
-      tipo: 'ciclo',
-      titulo: 'Novo Ano Cabalístico',
-      mensagem: 'O Ano Cabalístico começa! Faça uma limpeza energética e renove suas intenções.',
-      lida: false,
-      importancia: 'critical',
-      acaoUrl: '/dashboard/cabala/ano-novo',
-      createdAt: new Date(Date.now() - 259200000).toISOString(),
-      lidaEm: null,
-      sefirot: ['Malkuth'],
+      acaoUrl: '/dashboard/rituais/agendados',
+      createdAt: new Date(Date.now() - 86400000).toISOString(),
+      lidaEm: new Date(Date.now() - 82800000).toISOString(),
+      spiritualCorrelations: NOTIFICATION_SPIRITUAL_CORRELATIONS['ritual'],
     },
   ]],
 ]);
 
-function getNotificacoes(userId: string): Notificacao[] {
-  return notificationStore.get(userId) || notificationStore.get('default')!;
-}
-
-function getNotificacoesData(userId: string): NotificacoesData {
-  const notificacoes = getNotificacoes(userId);
-  return {
-    notificacoes,
-    total: notificacoes.length,
-    naoLidas: notificacoes.filter(n => !n.lida).length,
-  };
-}
-
-// ─── API Routes ─────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'default';
-    const { searchParams } = new URL(request.url);
-
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = NotificationsQuerySchema.safeParse({
       tipo: searchParams.get('tipo'),
       lida: searchParams.get('lida'),
       importancia: searchParams.get('importancia'),
       limit: searchParams.get('limit'),
       page: searchParams.get('page'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -213,10 +280,11 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { tipo, lida, importancia, limit, page } = parseResult.data;
-    let notificacoes = [...getNotificacoes(userId)];
+    const { tipo, lida, importancia, limit, page, sefirot, chakra, element, orixa } = parseResult.data;
 
-    // Apply filters
+    const userId = request.headers.get('x-user-id') || 'default';
+    let notificacoes = notificationStore.get(userId) || notificationStore.get('default')!;
+
     if (tipo) {
       notificacoes = notificacoes.filter(n => n.tipo === tipo);
     }
@@ -229,75 +297,127 @@ export async function GET(request: NextRequest) {
       notificacoes = notificacoes.filter(n => n.importancia === importancia);
     }
 
+    if (sefirot) {
+      notificacoes = notificacoes.filter(n => n.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      notificacoes = notificacoes.filter(n => n.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      notificacoes = notificacoes.filter(n => n.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      notificacoes = notificacoes.filter(n => n.spiritualCorrelations?.orixa === orixa);
+    }
+
+    const total = notificacoes.length;
+    const naoLidas = notificacoes.filter(n => !n.lida).length;
+
     // Pagination
     const pageSize = limit || 20;
-    const pageNum = page || 1;
-    const startIndex = (pageNum - 1) * pageSize;
+    const currentPage = page || 1;
+    const startIndex = (currentPage - 1) * pageSize;
     const paginatedNotificacoes = notificacoes.slice(startIndex, startIndex + pageSize);
 
-    const data = getNotificacoesData(userId);
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byTipo: notificacoes.reduce((acc, n) => {
+        acc[n.tipo] = (acc[n.tipo] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byImportancia: notificacoes.reduce((acc, n) => {
+        acc[n.importancia] = (acc[n.importancia] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: notificacoes.reduce((acc, n) => {
+        n.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: notificacoes.reduce((acc, n) => {
+        const c = n.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: notificacoes.reduce((acc, n) => {
+        const e = n.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: notificacoes.reduce((acc, n) => {
+        const o = n.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
 
     return NextResponse.json({
       success: true,
       notificacoes: paginatedNotificacoes,
-      pagination: {
-        page: pageNum,
+      total,
+      naoLidas,
+      spiritualCorrelations: NOTIFICATION_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        page: currentPage,
         pageSize,
-        total: notificacoes.length,
-        totalPages: Math.ceil(notificacoes.length / pageSize),
-      },
-      stats: {
-        total: data.total,
-        naoLidas: data.naoLidas,
-        porTipo: {
-          info: data.notificacoes.filter(n => n.tipo === 'info').length,
-          success: data.notificacoes.filter(n => n.tipo === 'success').length,
-          warning: data.notificacoes.filter(n => n.tipo === 'warning').length,
-          error: data.notificacoes.filter(n => n.tipo === 'error').length,
-          orixa: data.notificacoes.filter(n => n.tipo === 'orixa').length,
-          transito: data.notificacoes.filter(n => n.tipo === 'transito').length,
-          ritual: data.notificacoes.filter(n => n.tipo === 'ritual').length,
-        },
+        totalPages: Math.ceil(total / pageSize),
+        filters: { tipo, lida, importancia, limit, page, sefirot, chakra, element, orixa },
       },
     });
-  } catch {
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Erro ao buscar notificações',
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'default';
     const body = await request.json();
-
     const parseResult = CreateNotificacaoSchema.safeParse(body);
 
     if (!parseResult.success) {
       return NextResponse.json({
         success: false,
-        error: 'Payload inválido',
+        error: 'Dados inválidos',
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
 
-    const notificacao: Notificacao = {
-      id: `notif-${Date.now()}`,
-      tipo: parseResult.data.tipo,
-      titulo: parseResult.data.titulo,
-      mensagem: parseResult.data.mensagem,
-      importancia: parseResult.data.importancia || 'medium',
-      acaoUrl: parseResult.data.acaoUrl || null,
-      lida: false,
-      createdAt: new Date().toISOString(),
-      lidaEm: null,
-      orixa: parseResult.data.orixa,
-      sefirot: parseResult.data.sefirot,
+    const { tipo, titulo, mensagem, importancia, acaoUrl, orixa, sefirot, chakra, element } = parseResult.data;
+
+    const baseCorr = NOTIFICATION_SPIRITUAL_CORRELATIONS[tipo];
+    const spiritualCorr = {
+      sefirot: sefirot || baseCorr?.sefirot || [],
+      chakra: chakra || baseCorr?.chakra || 5,
+      element: element || baseCorr?.element || 'Ar',
+      orixa: orixa || baseCorr?.orixa || 'Oxalá',
+      affirmation: baseCorr?.affirmation || '',
+      frequency: baseCorr?.frequency || '528 Hz',
     };
 
-    // Add to store
+    const notificacao: Notificacao = {
+      id: `notif-${Date.now()}`,
+      tipo,
+      titulo,
+      mensagem,
+      lida: false,
+      importancia: importancia || 'medium',
+      acaoUrl: acaoUrl || null,
+      createdAt: new Date().toISOString(),
+      lidaEm: null,
+      orixa,
+      sefirot,
+      spiritualCorrelations: spiritualCorr,
+    };
+
+    const userId = request.headers.get('x-user-id') || 'default';
     const userNotifications = notificationStore.get(userId) || [];
     userNotifications.unshift(notificacao);
     notificationStore.set(userId, userNotifications);
@@ -305,108 +425,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       notificacao,
-      message: 'Notificação criada com sucesso',
+      spiritualCorrelations: spiritualCorr,
     }, { status: 201 });
-  } catch {
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Erro ao criar notificação',
-    }, { status: 500 });
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  try {
-    const userId = request.headers.get('x-user-id') || 'default';
-    const { searchParams } = new URL(request.url);
-    const action = searchParams.get('action');
-    const id = searchParams.get('id');
-
-    if (action === 'mark-read' && id) {
-      const userNotifications = notificationStore.get(userId) || [];
-      const index = userNotifications.findIndex(n => n.id === id);
-
-      if (index === -1) {
-        return NextResponse.json({
-          success: false,
-          error: 'Notificação não encontrada',
-        }, { status: 404 });
-      }
-
-      userNotifications[index] = {
-        ...userNotifications[index],
-        lida: true,
-        lidaEm: new Date().toISOString(),
-      };
-      notificationStore.set(userId, userNotifications);
-
-      return NextResponse.json({
-        success: true,
-        message: 'Notificação marcada como lida',
-      });
-    }
-
-    if (action === 'mark-all-read') {
-      const userNotifications = notificationStore.get(userId) || [];
-      const updated = userNotifications.map(n => ({
-        ...n,
-        lida: true,
-        lidaEm: n.lidaEm || new Date().toISOString(),
-      }));
-      notificationStore.set(userId, updated);
-
-      return NextResponse.json({
-        success: true,
-        message: 'Todas as notificações marcadas como lidas',
-      });
-    }
-
-    return NextResponse.json({
-      success: false,
-      error: 'Ação inválida',
-    }, { status: 400 });
-  } catch {
-    return NextResponse.json({
-      success: false,
-      error: 'Erro ao atualizar notificação',
-    }, { status: 500 });
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  try {
-    const userId = request.headers.get('x-user-id') || 'default';
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-
-    if (!id) {
-      return NextResponse.json({
-        success: false,
-        error: 'ID é obrigatório',
-      }, { status: 400 });
-    }
-
-    const userNotifications = notificationStore.get(userId) || [];
-    const index = userNotifications.findIndex(n => n.id === id);
-
-    if (index === -1) {
-      return NextResponse.json({
-        success: false,
-        error: 'Notificação não encontrada',
-      }, { status: 404 });
-    }
-
-    userNotifications.splice(index, 1);
-    notificationStore.set(userId, userNotifications);
-
-    return NextResponse.json({
-      success: true,
-      message: 'Notificação deletada com sucesso',
-    });
-  } catch {
-    return NextResponse.json({
-      success: false,
-      error: 'Erro ao deletar notificação',
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }
