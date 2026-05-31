@@ -88,40 +88,50 @@ function getUpcomingRituals(): UpcomingRitual[] {
 }
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const widgetType = searchParams.get("type");
-
   try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = WidgetQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      limit: searchParams.get('limit'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { type: widgetType, limit } = parseResult.data;
     let widgets: WidgetData[] = [];
-
     if (!widgetType) {
       widgets = [
-        { id: "quick-stats", type: "quick-stats", title: "Estatísticas Rápidas", data: getQuickStats() as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() },
-        { id: "recent-activity", type: "recent-activity", title: "Atividade Recente", data: { items: getRecentActivity() } as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() },
-        { id: "daily-affirmation", type: "daily-affirmation", title: "Afirmação do Dia", data: getDailyAffirmation() as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() },
-        { id: "upcoming-rituals", type: "upcoming-rituals", title: "Próximos Rituais", data: { rituals: getUpcomingRituals() } as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() },
+        { id: 'quick-stats', type: 'quick-stats', title: 'Estatísticas Rápidas', data: getQuickStats() as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() },
+        { id: 'recent-activity', type: 'recent-activity', title: 'Atividade Recente', data: { items: getRecentActivity() } as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() },
+        { id: 'daily-affirmation', type: 'daily-affirmation', title: 'Afirmação do Dia', data: getDailyAffirmation() as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() },
+        { id: 'upcoming-rituals', type: 'upcoming-rituals', title: 'Próximos Rituais', data: { rituals: getUpcomingRituals() } as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() },
       ];
     } else {
       switch (widgetType) {
-        case "quick-stats":
-          widgets = [{ id: "quick-stats", type: "quick-stats", title: "Estatísticas Rápidas", data: getQuickStats() as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() }];
+        case 'quick-stats':
+          widgets = [{ id: 'quick-stats', type: 'quick-stats', title: 'Estatísticas Rápidas', data: getQuickStats() as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() }];
           break;
-        case "recent-activity":
-          widgets = [{ id: "recent-activity", type: "recent-activity", title: "Atividade Recente", data: { items: getRecentActivity() } as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() }];
+        case 'recent-activity':
+          widgets = [{ id: 'recent-activity', type: 'recent-activity', title: 'Atividade Recente', data: { items: getRecentActivity() } as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() }];
           break;
-        case "daily-affirmation":
-          widgets = [{ id: "daily-affirmation", type: "daily-affirmation", title: "Afirmação do Dia", data: getDailyAffirmation() as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() }];
+        case 'daily-affirmation':
+          widgets = [{ id: 'daily-affirmation', type: 'daily-affirmation', title: 'Afirmação do Dia', data: getDailyAffirmation() as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() }];
           break;
-        case "upcoming-rituals":
-          widgets = [{ id: "upcoming-rituals", type: "upcoming-rituals", title: "Próximos Rituais", data: { rituals: getUpcomingRituals() } as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() }];
+        case 'upcoming-rituals':
+          widgets = [{ id: 'upcoming-rituals', type: 'upcoming-rituals', title: 'Próximos Rituais', data: { rituals: getUpcomingRituals() } as unknown as Record<string, unknown>, updatedAt: new Date().toISOString() }];
           break;
         default:
-          return NextResponse.json({ error: "Widget type not found" }, { status: 404 });
+          return NextResponse.json({ error: 'Widget type not found' }, { status: 404 });
       }
     }
-
+    if (limit && limit < widgets.length) {
+      widgets = widgets.slice(0, limit);
+    }
     return NextResponse.json({ widgets, timestamp: new Date().toISOString() }, { status: 200 });
-  } catch (_error) {
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
