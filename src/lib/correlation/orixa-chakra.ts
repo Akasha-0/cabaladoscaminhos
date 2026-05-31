@@ -197,12 +197,9 @@ export function getOrixasByChakra(chakra: string): OrixaChakraMapping[] {
   };
   const chakraName = chakraMap[chakraNormalized] || 
     (Object.keys(chakraMap).includes(chakra) ? chakra as ChakraName : null);
-  
+  if (!chakraName) return [];
   return Object.values(ORIXAS_CHAKRA_MAP).filter(
     m => m.chakra.toLowerCase() === chakraName.toLowerCase()
-  );
-}
-
 export default {
   getOrixaChakra,
   getChakraOrixa,

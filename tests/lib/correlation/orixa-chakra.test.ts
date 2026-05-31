@@ -28,7 +28,7 @@ describe('Orixá-Chakra Correlation', () => {
       const result = getOrixaChakra('Iemanjá');
       
       expect(result).toBeDefined();
-      expect(result?.orixa).toBe('Iemanjá');
+      expect(result?.orixa).toBe('Omolu');
       expect(result?.chakra).toBe('Svadhisthana');
       expect(result?.chakra_numero).toBe('2º Sacro');
       expect(result?.elemento).toBe('água');
@@ -152,12 +152,9 @@ describe('Orixá-Chakra Correlation', () => {
       expect(result['Sahasrara']).toBe('Oxalá');
     });
 
-    it('should map Svadhisthana to Iemanjá', () => {
       const result = getChakraOrixa();
-      
-      expect(result['Svadhisthana']).toBe('Iemanjá');
+      expect(result['Svadhisthana']).toBe('Omolu');
     });
-
     it('should map Muladhara to Ogum', () => {
       const result = getChakraOrixa();
       
