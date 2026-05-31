@@ -103,6 +103,8 @@ export async function GET(request: NextRequest) {
     const { type = 'bar', data, labels: labelsParam, title: customTitle, limit } = parseResult.data;
     if (!chartTypes.includes(type)) {
       return NextResponse.json({
+        error: 'Tipo de gráfico inválido',
+        validTypes: chartTypes,
       }, { status: 400 });
     }
     let dataPoints: ChartDataPoint[] = [];
