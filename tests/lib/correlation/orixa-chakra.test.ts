@@ -19,9 +19,9 @@ describe('Orixá-Chakra Correlation', () => {
       expect(result?.chakra).toBe('Sahasrara');
     });
 
-    it('should return null for invalid orixa', () => {
+    it('should return undefined for unknown orixa', () => {
       const result = getOrixaChakra('Invalid');
-      expect(result).toBeNull();
+      expect(result).toBeUndefined();
     });
   });
 
