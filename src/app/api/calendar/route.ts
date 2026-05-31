@@ -14,7 +14,7 @@ const CalendarQuerySchema = z.object({
 // TYPE DEFINITIONS
 // ============================================================
 interface CalendarEvent {
-interface CalendarEvent {
+  id: string;
   id: string;
   title: string;
   description: string;

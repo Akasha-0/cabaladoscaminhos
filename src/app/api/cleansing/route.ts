@@ -230,3 +230,5 @@ export async function GET(request: NextRequest) {
       error: 'Erro ao processar limpeza',
     }, { status: 500 });
 }
+export async function GET(request: NextRequest) {
+}

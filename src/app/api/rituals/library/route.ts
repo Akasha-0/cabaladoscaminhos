@@ -301,7 +301,12 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
-    descricao: 'Ritual de proteção usando vela branca e sal grosso para criar uma barreira energética.',
+const EXTRA_RITUALS = [
+  {
+    id: 'protection-candle',
+    nome: 'Ritual de Proteção com Vela',
+    tipo: 'proteção',
+    duracao: '30 minutos',
     materiais: ['Vela branca', 'Sal grosso', 'Alho', 'Alecrim'],
     passos: [
       'Acenda a vela branca no centro do altar',
