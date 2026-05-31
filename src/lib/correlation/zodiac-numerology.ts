@@ -201,6 +201,15 @@ export function getZodiacNumerology(signo: string): number | null {
   const mapping = getZodiacNumerologyMapping(signo);
   return mapping?.numero ?? null;
 }
+/**
+ * Get the zodiac-to-numerology correlation mapping by sign name
+ * Alias for getZodiacNumerologyMapping for reverse-lookup naming consistency
+ * @param signo - The sign name (e.g., 'Áries', 'Touro')
+ * @returns The correlation mapping or null if not found
+ */
+export function getNumerologyZodiac(signo: string): ZodiacNumerologyMapping | null {
+  return getZodiacNumerologyMapping(signo);
+}
 
 /**
  * Get all available zodiac-numerology mappings
@@ -209,7 +218,14 @@ export function getZodiacNumerology(signo: string): number | null {
 export function getAllZodiacNumerology(): ZodiacNumerologyMapping[] {
   return Object.values(ZODIAC_NUMEROLOGY_MAPPINGS);
 }
-
+/**
+ * Get all available zodiac-numerology mappings
+ * Alias for getAllZodiacNumerology for naming consistency
+ * @returns Array of all correlation mappings
+ */
+export function getAllZodiacNumerologies(): ZodiacNumerologyMapping[] {
+  return getAllZodiacNumerology();
+}
 /**
  * Get all zodiac signs
  * @returns Array of all sign names

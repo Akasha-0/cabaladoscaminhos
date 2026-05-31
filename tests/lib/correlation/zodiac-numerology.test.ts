@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import {
   getZodiacNumerology,
   getZodiacNumerologyMapping,
+  getNumerologyZodiac,
   getAllZodiacNumerology,
+  getAllZodiacNumerologies,
   getAllZodiacSigns,
   hasZodiacNumerology,
   getMappingByNumero,

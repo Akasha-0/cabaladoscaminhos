@@ -120,6 +120,9 @@ export const SEPHIROT_NUMEROLOGY_MAPPINGS: Record<string, SephirotNumerology> = 
 // Freeze the mapping object to prevent modifications
 Object.freeze(SEPHIROT_NUMEROLOGY_MAPPINGS);
 
+// Freeze nested objects
+Object.values(SEPHIROT_NUMEROLOGY_MAPPINGS).forEach(mapping => Object.freeze(mapping));
+
 /**
  * Get the Sephirot-numerology correlation mapping
  * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah')
@@ -147,13 +150,11 @@ export function getNumerologySephirot(numero: number): SephirotNumerology[] {
 export function getAllSephirotNumerology(): SephirotNumerology[] {
   return Object.values(SEPHIROT_NUMEROLOGY_MAPPINGS);
 }
-/**
-}
+
 /**
  * Alias for getAllSephirotNumerology - Get all available Sephirot-numerology mappings
  * @returns Array of all correlation mappings
  */
 export function getAllSephirotNumerologies(): SephirotNumerology[] {
   return getAllSephirotNumerology();
-}
 }
