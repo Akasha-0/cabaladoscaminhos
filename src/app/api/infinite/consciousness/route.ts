@@ -111,6 +111,7 @@ export async function GET(request: NextRequest) {
       total: consciousness.length
     });
   } catch {
+    return NextResponse.json(
       { error: 'Failed to retrieve consciousness data' },
       { status: 500 }
     );
