@@ -1,12 +1,12 @@
+import { describe, it, expect } from 'vitest';
 /**
  * Planet-Numerology Correlation Tests
  */
 
-import { describe, it, expect } from 'vitest';
 import {
   getPlanetNumerology,
   getNumerologyPlanet,
-  getAllPlanetNumerology,
+  getAllPlanetNumerologies,
 } from '@/lib/correlation/planet-numerology';
 
 describe('Planet-Numerology Correlation', () => {
@@ -165,9 +165,7 @@ describe('Planet-Numerology Correlation', () => {
     });
   });
 
-  describe('getAllPlanetNumerology', () => {
-    it('should return all 7 planet mappings', () => {
-      const result = getAllPlanetNumerology();
+  describe('getAllPlanetNumerologies', () => {
       expect(result).toHaveLength(7);
     });
 

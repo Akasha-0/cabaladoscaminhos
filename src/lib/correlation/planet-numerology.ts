@@ -144,12 +144,12 @@ export function getNumerologyPlanet(): Record<Numerologia, string[]> {
  * Get all planet-numerology mappings
  * @returns Array of all PlanetNumerologyMapping objects
  */
-export function getAllPlanetNumerology(): PlanetNumerologyMapping[] {
+export function getAllPlanetNumerologies(): PlanetNumerologyMapping[] {
   return Object.values(PLANET_NUMEROLOGY_MAP);
 }
 
 export default {
   getPlanetNumerology,
   getNumerologyPlanet,
-  getAllPlanetNumerology,
+  getAllPlanetNumerologies,
 };
