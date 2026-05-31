@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-31
-**Sprints completados:** 484
+**Sprints completados:** 485
 **Tests: ✅ 10531 passing, 31 skipped, 0 failed**
  - Prisma 7 + PostgreSQL via pg adapter
  - Redis/ioredis for caching
@@ -8,6 +8,12 @@
  - OpenAI SDK integrated
  - jsPDF for PDF exports (dynamic import)
  - Minimax API integration for AI responses
+
+### Sprint 485 — Ritual Planner & Tarot Consulta (COMPLETE)
+Enhanced APIs with spiritual correlations:
+- ritual-planner: 8 ritual templates with spiritual correlations
+- tarot/consulta: Tarot consultation with spiritual correlations
+270 engine tests passing.
 
 ### Sprint 484 — Shadow Work & Tarot & Progress (COMPLETE)
 Enhanced APIs with spiritual correlations:
