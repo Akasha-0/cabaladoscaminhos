@@ -36,7 +36,8 @@ export interface ElementNumerology {
   planeta: string;
   /** Associated color */
   cor: string;
-  /** Cardinal direction */
+  /** Primary spiritual meaning */
+  significado_espiritual: string;
   direcao: string;
   /** Element qualities */
   qualidades: {

@@ -190,7 +190,7 @@ describe('Day-Numerology Correlation', () => {
       const indices = allDays.map(d => d.indice);
       const uniqueIndices = new Set(indices);
       expect(uniqueIndices.size).toBe(7);
-    });
+  });
   describe('getAllDayNumerologies', () => {
     it('should return array of all DayNumerology objects (plural alias)', () => {
       const allDays = getAllDayNumerologies();
