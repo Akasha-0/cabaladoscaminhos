@@ -256,3 +256,42 @@
 1. **Tooltips no SpiritualRadarChart** - Hover revela detalhes
 2. **Tema Claro** - Light mode toggle
 3. **Efeitos de hover avançados** - Glow on hover
+
+---
+
+## SPRINT 228 - TOOLTIPS NO SPIRITUAL RADAR CHART
+
+**Data:** 2026-05-31
+**Status:** ✅ CONCLUÍDO
+
+### Alterações Realizadas
+
+1. **Hover Tooltip Aprimorado**
+   - Posição: `top-2 right-2` (melhor visibilidade)
+   - Background: `bg-slate-900/95` com border `border-violet-500/30`
+   - Shadow: `shadow-violet-500/20` para glow effect
+   - Animação: `animate-in fade-in zoom-in-95 duration-200`
+   - Header: Círculo colorido + nome do sistema
+
+2. **Label Hover Effects**
+   - Background circle: `fill={colors.primary} opacity={0.15}` com r=8
+   - Text glow: `filter: drop-shadow(0 0 4px ${colors.primary})`
+   - Font size: 3 → 4 (scale up)
+   - Font weight: 600 → 700
+   - Fill: `colors.primary` → `#fff` (white on hover)
+   - Level value: scale 2.5 → 3 e cor muda para primary
+
+3. **Transitions**
+   - `transition-all duration-200` em todos elementos hover
+   - Smooth scale e color transitions
+
+### Verificação Build
+- Compile: ✅ 14.9s
+- Generate: ✅ 167 páginas em 4.1s
+- Zero erros
+
+### Próximo Ciclo
+
+1. **Tema Claro** - Light mode toggle
+2. **Efeitos de hover avançados** - Glow on hover em todos cards
+3. **Mobile responsiveness** - Animações otimizadas para touch
