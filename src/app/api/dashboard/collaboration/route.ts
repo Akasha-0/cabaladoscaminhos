@@ -1,19 +1,16 @@
 // ============================================================
 // DASHBOARD COLLABORATION API - CABALA DOS CAMINHOS
 // ============================================================
-// Gerenciamento de colaboração em tempo real
-// - Usuários online
-// - Atividades recentes
-// - Convites de colaboração
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const CollaborationViewSchema = z.enum(['users', 'activities', 'invites', 'all']);
+const CollaborationQuerySchema = z.object({
+  view: CollaborationViewSchema.optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+  status: z.enum(['online', 'away', 'busy', 'offline']).optional(),
+});
 interface Collaborator {
-  id: string;
-  nome: string;
-  email: string;
-  avatar: string | null;
   status: 'online' | 'away' | 'busy' | 'offline';
   funcao: 'admin' | 'editor' | 'viewer';
   ultimoAcesso: string;
@@ -163,30 +160,55 @@ function getColaboracaoData(): ColaboracaoData {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const view = searchParams.get('view');
-
+export async function GET(request: NextRequest) {
   try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = CollaborationQuerySchema.safeParse({
+      view: searchParams.get('view'),
+      limit: searchParams.get('limit'),
+      status: searchParams.get('status'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { view = 'all', limit, status } = parseResult.data;
     if (view === 'users') {
+      let users = [...mockColaboradores];
+      if (status) {
+        users = users.filter(u => u.status === status);
+      }
+      if (limit) {
+        users = users.slice(0, limit);
+      }
       return NextResponse.json({
         success: true,
-        data: mockColaboradores,
+        data: users,
         totalOnline: mockColaboradores.filter(c => c.status === 'online').length,
       }, { status: 200 });
     }
-
     if (view === 'activities') {
+      let activities = [...mockAtividades];
+      if (limit) {
+        activities = activities.slice(0, limit);
+      }
       return NextResponse.json({
         success: true,
-        data: mockAtividades,
+        data: activities,
       }, { status: 200 });
     }
-
     if (view === 'invites') {
+      let invites = [...mockConvites];
+      if (limit) {
+        invites = invites.slice(0, limit);
+      }
       return NextResponse.json({
         success: true,
-        data: mockConvites,
+        data: invites,
       }, { status: 200 });
     }
-
     return NextResponse.json({
       success: true,
       data: getColaboracaoData(),
@@ -199,8 +221,6 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
-
-export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { action } = body;
