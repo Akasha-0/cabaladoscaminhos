@@ -41,16 +41,16 @@ describe('ZodiacElement Correlation', () => {
     });
 
     it('returns null for invalid sign names', () => {
+    it('returns null for invalid sign names', () => {
       expect(getZodiacElement('InvalidSign')).toBeNull();
       expect(getZodiacElement('')).toBeNull();
-      expect(getZodiacElement('Leo')).not.toBeNull();
+      expect(getZodiacElement('Leo')?.signo).toBe('Leão');
       expect(getZodiacElement('Escorpiao')?.signo).toBe('Escorpião');
       expect(getZodiacElement('Sagitario')?.signo).toBe('Sagitário');
       expect(getZodiacElement('Capricornio')?.signo).toBe('Capricórnio');
       expect(getZodiacElement('Aquario')?.signo).toBe('Aquário');
       expect(getZodiacElement('Peixes')?.signo).toBe('Peixes');
     });
-
     it('returns null for empty or whitespace input', () => {
       expect(getZodiacElement('')).toBeNull();
       expect(getZodiacElement('   ')).toBeNull();
@@ -296,7 +296,7 @@ describe('ZodiacElement Correlation', () => {
     });
 
     it('is a readonly array', () => {
-      expect(TODOS_SIGNOS).toBeReadonly();
+      expect(Object.isExtensible(TODOS_SIGNOS)).toBe(false);
     });
   });
 
