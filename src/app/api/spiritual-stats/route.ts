@@ -41,10 +41,10 @@ type OverviewStats = {
 interface SefirotStats {
   sephirot: Array<{ name: string; value: number; path: number }>;
   total: number;
-}
   labels: string[];
   distribution: Record<number, number>;
 }
+interface ElementStats {
 
 interface ElementStats {
   distribution: Record<string, number>;

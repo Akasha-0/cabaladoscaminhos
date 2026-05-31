@@ -193,6 +193,7 @@ export async function GET(request: NextRequest) {
           success: true,
           data: {
             currentLevel: latestEntry?.level ?? ENERGY_LEVELS.MODERATE,
+          },
         });
       }
 

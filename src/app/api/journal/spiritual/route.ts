@@ -137,14 +137,18 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
     const { title, content, mood, theme, insights, gratitude } = parseResult.data;
+    const { title, content, mood, theme, insights, gratitude } = parseResult.data;
     const { data, error: insertError } = await supabase
       .from('spiritual_journal')
       .insert({
         user_id: user.id,
         title,
-      );
-    }
-
+        content,
+        mood: mood || null,
+        theme: theme || null,
+        insights: insights || null,
+        gratitude: gratitude || null,
+      })
     const { data, error: insertError } = await supabase
       .from('spiritual_journal')
       .insert({
