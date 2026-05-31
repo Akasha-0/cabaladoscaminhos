@@ -683,8 +683,6 @@ interface Ritual {
   materiais: string[];
   passos: string[];
   significado: string;
-  keywords: string[];
-}
 }
 
 export async function GET(request: NextRequest) {
