@@ -1,9 +1,9 @@
-# PROGRESS_ENGINE.md — Sprint 271
+# PROGRESS_ENGINE.md — Sprint 272
 
 ## NEXT STEPS (BACK-END)
 
 ### High Priority
-1. **Expand Orixá coverage**: Current 17 Orixás → 25+ in unified types
+1. **Expand Orixá coverage**: Current 18 Orixás → 25+ in unified types
 2. **Add Zod validation** to remaining API payloads in `src/app/api/`
 3. **Consolidate Odu endpoints**: Similar pattern to Orixá consolidation
 
@@ -24,4 +24,4 @@
 > **PODER CONCENTRADO** — ÁGUAS HARMONIZADAS, frequência intensificada
 
 ---
-*Last updated: Sprint 271*
+*Last updated: Sprint 272*
