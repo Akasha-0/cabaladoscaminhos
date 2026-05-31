@@ -1,31 +1,53 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const RitualGuidesQuerySchema = z.object({
-  category: z.string().optional(),
-  id: z.string().optional(),
-  difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+const DifficultySchema = z.enum(['beginner', 'intermediate', 'advanced']);
+const RitualCategorySchema = z.enum([
+  'protection', 'prosperity', 'healing', 'love', 'purification',
+  'ancestral', 'transformation', 'manifestation', 'chakra', 'candomble'
+]);
+
+const RitualGuideSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  category: RitualCategorySchema,
+  duration: z.string(),
+  difficulty: DifficultySchema,
+  materials: z.array(z.string()),
+  steps: z.array(z.string()),
+  intention: z.string().optional(),
+  bestTime: z.string().optional(),
+  benefits: z.array(z.string()).optional(),
+  precautions: z.array(z.string()).optional(),
+  // Spiritual correlations
+  sefirot: z.array(z.string()).optional(),
+  orixa: z.string().optional(),
+  chakra: z.array(z.number()).optional(),
+  tradicao: z.string().optional(),
+  numeroSagrado: z.number().optional(),
+  luaFase: z.enum(['nova', 'crescente', 'cheia', 'minguante']).optional(),
 });
+
+const RitualGuidesQuerySchema = z.object({
+  category: RitualCategorySchema.optional(),
+  id: z.string().optional(),
+  difficulty: DifficultySchema.optional(),
+  orixa: z.string().optional(),
+  sefirot: z.string().optional(),
+  chakra: z.coerce.number().int().min(1).max(7).optional(),
+});
+
+export type RitualGuide = z.infer<typeof RitualGuideSchema>;
 export const dynamic = 'force-dynamic';
-interface RitualGuide {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  duration: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  materials: string[];
-  steps: string[];
-  intention?: string;
-  bestTime?: string;
-  benefits?: string[];
-  precautions?: string[];
-}
+
+// ─── Ritual Guides Data ──────────────────────────────────────────────────────────
 const guides: RitualGuide[] = [
   {
     id: 'guide-001',
-    title: 'Ritual de Protecao Divina',
-    description: 'Ritual sagrado para criar um escudo energetico e proteger seu espaco de influencias negativas.',
+    title: 'Ritual de Proteção Divina',
+    description: 'Ritual sagrado para criar um escudo energético e proteger seu espaço de influências negativas.',
     category: 'protection',
     duration: '30 minutos',
     difficulty: 'beginner',
@@ -33,35 +55,41 @@ const guides: RitualGuide[] = [
       'Vela branca',
       'Sal grosso',
       'Alho',
-      'Agua benta',
-      'Imagem de Sao Jorge'
+      'Água benta',
+      'Imagem de São Jorge'
     ],
     steps: [
       'Purifique o ambiente com sal grosso nos cantos',
-      'Acenda a vela branca com intencao de protecao',
-      'Faca a invocacao de protecao',
-      'Passe o alho nos quatros cantos da casa',
-      'Beba a agua benta purificada',
-      'Agradeza e finalize o ritual'
+      'Acenda a vela branca com intenção de proteção',
+      'Faça a invocação de proteção',
+      'Passe o alho nos quatro cantos da casa',
+      'Beba a água benta purificada',
+      'Agradeça e finalize o ritual'
     ],
-    intention: 'Protecao e segurança energetica',
+    intention: 'Proteção e segurança energética',
     bestTime: 'Quarta-feira à noite',
-   enefits: [
-      'Escudo energetico contra negatividade',
-      'Protecao durante jornadas difficult',
-      'Harmonizacao do espaco habitado',
+    benefits: [
+      'Escudo energético contra negatividade',
+      'Proteção durante jornadas difíceis',
+      'Harmonização do espaço habitado',
       'Fortalecimento da aura'
     ],
     precautions: [
-      'Nao realize durante fases lunares descrescentes',
-      'Evite interrupcoes durante o ritual',
-      'Nao utilize se estiver em luto recente'
-    ]
+      'Não realize durante fases lunares descrescentes',
+      'Evite interrupções durante o ritual',
+      'Não utilize se estiver em luto recente'
+    ],
+    sefirot: ['Gevurah', 'Chesed'],
+    orixa: 'Ogum',
+    chakra: [1, 3],
+    tradicao: 'Cristianismo/Tradições Afro',
+    numeroSagrado: 7,
+    luaFase: 'cheia',
   },
   {
     id: 'guide-002',
-    title: 'Ritual de Abundancia e Prosperidade',
-    description: 'Pratica sagrada para atraer prosperidade e abrir caminhos para a abundancia.',
+    title: 'Ritual de Abundância e Prosperidade',
+    description: 'Prática sagrada para atrair prosperidade e abrir caminhos para a abundância.',
     category: 'prosperity',
     duration: '45 minutos',
     difficulty: 'intermediate',
@@ -77,190 +105,215 @@ const guides: RitualGuide[] = [
       'Organize o altar com as velas verde e dourada',
       'Coloque as moedas no centro do altar',
       'Acenda a canela em pau como incenso',
-      'Faca a oracao de prosperidade tres vezes',
-      'Misture o mel com agua eNamesgua nos cantos',
-      'Enterre as moedas no Jardim ou vaso de planta',
-      'Agradeza pela abundancia que vir'
+      'Faça a oração de prosperidade três vezes',
+      'Misture o mel com água e abençoe nos cantos',
+      'Enterre as moedas no jardim ou vaso de planta',
+      'Agradeça pela abundância que virá'
     ],
-    intention: 'Abundancia em todas as areas da vida',
+    intention: 'Abundância em todas as áreas da vida',
     bestTime: 'Quinta-feira ao amanhecer',
-   enefits: [
+    benefits: [
       'Atrair oportunidades de prosperidade',
       'Abrir caminhos bloqueados',
-      'Aumentar a vibracao de abundancia',
+      'Aumentar a vibração de abundância',
       'Fortalecer a mediunidade financeira'
     ],
     precautions: [
-      'Evite pensamentos de carencia durante o ritual',
-      'Nao conte sobre o ritual para terceiros',
-      'Mantenha disciplina espiritual apos o ritual'
-    ]
+      'Evite pensamentos de carência durante o ritual',
+      'Não conte sobre o ritual para terceiros',
+      'Mantenha disciplina espiritual após o ritual'
+    ],
+    sefirot: ['Chesed', 'Netzach'],
+    orixa: 'Oxum',
+    chakra: [4],
+    tradicao: 'Tradições Afro-Brasileiras',
+    numeroSagrado: 10,
+    luaFase: 'crescente',
   },
   {
     id: 'guide-003',
     title: 'Ritual de Cura Emocional',
-    description: 'Ritual profundo para liberacao de blocueios emocionais e curacao da alma.',
+    description: 'Ritual profundo para liberação de bloqueios emocionais e cura da alma.',
     category: 'healing',
-    duration: '60 minutos',
-    difficulty: 'intermediate',
-    materials: [
-      'Vela roxa',
-      'Vela azul',
-      'Petala de rosas brancas',
-      'Oleo de lavanda',
-      'Cristal de quartzo',
-      'Agua salgada'
-    ],
-    steps: [
-      ' Tome um banho purificante com agua salgada',
-      'Aplique o oleo de lavanda nos pulsos e na nuca',
-      'Sente-se em quietude e acenda a vela roxa',
-      'Segure o cristal de quartzo sobre o chakra do coracao',
-      'Faca tres respiracoes profundas',
-      'Libere mentalmente todas as dores passadas',
-      'Visualize uma luz curadora envolvendo seu ser',
-      'Agradeca pela curacao recebida'
-    ],
-    intention: 'Liberacao de dores emocionais e curacao',
-    bestTime: 'Segunda-feira à noite em Lua cheia',
-   enefits: [
-      'Liberacao de traumas emocionais',
-      'Curacao de feridas da alma',
-      'Renovacao emocional profunda',
-      'Abertura para nova fase de vida'
-    ],
-    precautions: [
-      'Permita-se chorar se necessario',
-      'Evite forcar emocoes apenas por protocolo',
-      'Busque acompanhamento terapeutico se necessario'
-    ]
-  },
-  {
-    id: 'guide-004',
-    title: 'Ritual de Manifestacao de Intencoes',
-    description: 'Ritual poderoso para materializar deseos e concretizar propositos de vida.',
-    category: 'manifestation',
     duration: '40 minutos',
     difficulty: 'intermediate',
     materials: [
-      'Vela dourada',
-      'Vela laranja',
-      'Papel e caneta',
-      'Incenso de sálvia',
-      'Mesaquare',
-      'Imagen do Orixá ancestral'
+      'Vela azul',
+      'Vela branca',
+      'Incenso de lavanda',
+      'Água de flor de bach',
+      'Cristal de quartzo rosa',
+      'Papel e caneta'
     ],
     steps: [
-      'Escreva claramente seu deseo no papel',
-      'Dobre o papel tres vezes em formato de envelope',
-      'Acenda o incenso de sage para purificacao',
-      'Coloque o papel sob a imagem sagrada',
-      'Acenda as velas dourada e laranja',
-      'Faca a declaracao de manifestacao em voz alta',
-      'Visualize intensamente seu deseo ja realizado',
-      'Guarde o papel em lugar sagrado e discreto',
-      'Agradeca pelo tempo e pelo espaco para que seu deseo se manifeste'
+      'Desenhe um círculo sagrado no chão',
+      'Coloque as velas nos pontos cardeais',
+      'Acenda o incenso de lavanda',
+      'Segure o quartzo rosa sobre o chakra do coração',
+      'Escreva no papel o que deseja curar',
+      'Queime o papel sobre a chama da vela azul',
+      'Permaneça em silêncio meditativo por 10 minutos',
+      'Agradeça aos guias espirituais'
     ],
-    intention: 'Manifestacao do desejo escrito',
-    bestTime: 'Quinta-feira durante Lua crescente',
-   enefits: [
-      'Alinhamento com o propose divino',
-      'Clique para a concretizacao de metas',
-      'Atrair pessoas e situacoes favoraveis',
-      'Renovacao da esperan a e determinacao'
+    intention: 'Liberação de bloqueios emocionais',
+    bestTime: 'Segunda-feira durante a lua cheia',
+    benefits: [
+      'Liberação de traumas emocionais',
+      'Harmonização dos chakras emocionais',
+      'Aumento da autocompaixão',
+      'Renovação da energia vital'
     ],
     precautions: [
-      'Nao escreva desejos que prejudiquem outros',
-      'Evite duvidar da manifestacao apos o ritual',
-      'Mantenha o papel guardado por pelo menos 30 dias'
-    ]
+      'Este ritual pode trazer memórias dolorosas à tona',
+      'Recomenda-se acompanhamento terapêutico',
+      'Não realize em momentos de grande vulnerabilidade'
+    ],
+    sefirot: ['Tipheret', 'Netzach'],
+    orixa: 'Oxum',
+    chakra: [4, 5],
+    tradicao: 'Terapia Espiritual',
+    numeroSagrado: 11,
+    luaFase: 'cheia',
   },
   {
-    id: 'guide-005',
-    title: 'Ritual de Liberacao e Desapego',
-    description: 'Pratica sagrada para soltar o que já nao serve mais e encontrar paz interior.',
-    category: 'release',
+    id: 'guide-004',
+    title: 'Ritual de Purificação Ancestral',
+    description: 'Cerimônia para purificação espiritual e limpeza de energias densas.',
+    category: 'purification',
     duration: '35 minutos',
     difficulty: 'beginner',
     materials: [
-      'Vela preta',
       'Vela branca',
-      'Papel para queimar',
-      'Fósforos',
-      'Pimenta do reino',
-      'Sal'
+      'Vela dourada',
+      'Defumador de palo santo',
+      'Sal grosso',
+      'Alcachofra',
+      'Água de cheiro'
     ],
     steps: [
-      'Escreva no papel tudo o que deseja soltar',
-      'Acenda a vela preta',
-      'Coloque o papel numa tigela metalica',
-      'Jogue a pimenta do reino e o sal sobre o papel',
-      'Enquanto queima o papel, repita palavras de liberacao',
-      'Visualize cada problema ou pessoa sendo transformado em cinzas',
-      'Jogue as cinzas em local onde voce nunca mais passara',
-      'Acenda a vela branca em gratidao',
-      'Beba um copo de agua para integration da nova energia'
+      'Acenda a vela branca pedindo purificação',
+      'Faça o defumador de palo santo em toda a casa',
+      'Misture água com sal e Alcachofra',
+      'Passe a água de purificação nas portas e janelas',
+      'Acenda a vela dourada para proteção',
+      'Faça uma oração de agradecimento aos ancestrais',
+      'Mantenha a vela acesa até que se apague naturalmente'
     ],
-    intention: 'Liberacao completa de personas, situacoes e circunstancias',
-    bestTime: 'Quarta-feira durante Lua minguante',
-   enefits: [
-      'Libertacao de Relacionamentos tóxicos',
-      'Desapego de situações que nao servem mais',
-      'Espaco interior para novas posibilidades',
-      'Aliviamento emocional profundo'
+    intention: 'Purificação e proteção espiritual',
+    bestTime: 'Sábado durante a lua nova',
+    benefits: [
+      'Eliminação de energias negativas',
+      'Proteção espiritual',
+      'Renovação do ambiente',
+      'Conexão com ancestrais'
     ],
     precautions: [
-      'Nao rituals com odio ou rancor contra pessoas',
-      'Realize com conhecimento de que voce esta liberando situacoes, nao pessoas',
-      'Apos o ritual, tomeinitiativas concretas para mudar'
-    ]
+      'Não use durante períodos menstruais (tradição)',
+      'Evite contato com animais durante o ritual',
+      'Mantenha janelas fechadas durante a defumação'
+    ],
+    sefirot: ['Malkuth', 'Yesod'],
+    orixa: 'Iemanjá',
+    chakra: [2, 6],
+    tradicao: 'Umbanda/Candomblé',
+    numeroSagrado: 8,
+    luaFase: 'nova',
+  },
+  {
+    id: 'guide-005',
+    title: 'Ritual de Purificação com Ervas',
+    description: 'Defumação com ervas sagradas para cleansing espiritual.',
+    category: 'purification',
+    duration: '25 minutos',
+    difficulty: 'beginner',
+    materials: [
+      'Arruda',
+      'Alecrim',
+      'Pau-brasil',
+      'Quebra-panela',
+      'Vela branca',
+      'Prato com sal'
+    ],
+    steps: [
+      'Faça um maço com as ervas secas',
+      'Acenda o maço de ervas em brasa',
+      'Carry the smoking herbs through your space',
+      'Fique em cada cômodo por alguns minutos',
+      'Repita orações de proteção',
+      'Coloque as ervas consumidas no prato com sal',
+      'Descarte longe de casa'
+    ],
+    intention: 'Limpeza energética e proteção',
+    bestTime: 'Quarta-feira ao anoitecer',
+    benefits: [
+      'Eliminação de miasmas negativos',
+      'Abertura para boas energias',
+      'Proteção contra olho gordo',
+      'Renovação da energia ambiente'
+    ],
+    precautions: [
+      'Pessoas sensível devem evitar respirar a fumaça diretamente',
+      'Não realize durante gestação',
+      'Proteja animais de estimação da fumaça'
+    ],
+    sefirot: ['Gevurah'],
+    orixa: 'Ogum',
+    chakra: [1, 3],
+    tradicao: 'Candomblé',
+    numeroSagrado: 7,
+    luaFase: 'nova',
   },
   {
     id: 'guide-006',
-    title: 'Ritual de Conexao com os Orixás',
-    description: 'Ritual sagrado para fortalecer a conexao com seus Orixás ancestrais.',
-    category: 'clarity',
+    title: 'Ritual de Iniciação no Candomblé',
+    description: 'Cerimônia sagrada para iniciação espiritual no candomblé.',
+    category: 'candomble',
     duration: '90 minutos',
     difficulty: 'advanced',
     materials: [
-      'Objetos sagrados do Orixá de cabeceira',
-      'Akere para todos',
-      'Ewé (folhas)',
-      'Velas coloridas conforme cada Orixá',
-      'Alimentos para Offerings',
-      'Kolonia',
-      'Palavra de Oxalá'
+      'Eru (advinho)',
+      'Velas coloridas para cada Orixá',
+      'Akará (bolo de feijão)',
+      'Obi (noz de cola)',
+      'Ewo ( sacrifice animal)',
+      'Otá (pedras)',
+      'Pyr (fogo sagrado)'
     ],
     steps: [
-      'Faca uma purificacao com banhos de folhas ewé',
-      'Acenda as velas correspondentes aos Orixás',
-      'Coloque os objetos sagrados organizados no altar',
-      'Faca as offerte aos Orixás',
-      'Cante os pontos riscados de cada divindade',
-      'receba os pontos cantados para protecao',
-      'Faca oracoes de agradecimento',
-      'Oferea o axexe aos orixás com gratidao',
-      'Encerre com a palavra de Oxala',
-      'Guarde o axexe de acordo com a tradicao'
+      'Preparação espiritual de 21 dias',
+      'Banho de ervas específico para o Orixá',
+      'Recebimento do Ori (cabeça) pelo Babalawo',
+      'Feitura do Opa (cabeça) com sacrifícios',
+      'Feitura de Eru para o Novo Iyawo',
+      'Ritual de sacrifice segundo o Orixá',
+      'Sepultamento das pedras de Orixá',
+      'Sete dias de reclusão',
+      'Saudação aos Oduns e Orixás'
     ],
-    intention: 'Conexao spiritual profunda e protecao dos Orixás',
-    bestTime: 'Sexta-feira ou dia especifico do Orixá de cabeceira',
-   enefits: [
+    intention: 'Iniciação espiritual e identificação com o Orixá',
+    bestTime: 'Durante Odus específicos determinadas pelo Babalawo',
+    benefits: [
       'Fortalecimento da mediunidade ancestral',
-      'Protecao espiritual dos Orixás',
+      'Proteção espiritual dos Orixás',
       'Alinhamento com o caminho espiritual',
-      'Abertura para orientacoes espirituais'
+      'Abertura para orientações espirituais'
     ],
     precautions: [
-      'Somente para pessoas ja iniciaDas no candomblé',
-      'Evite realizar sem o acompanhamento de um Babalawo ou Yalorixa',
-      'Respeite tabus e pravas especificas de cada Orixá'
-    ]
+      'Somente para pessoas já iniciadas no candomblé',
+      'Evite realizar sem o acompanhamento de um Babalawo ou Yalorixá',
+      'Respeite tabus e pravas específicas de cada Orixá'
+    ],
+    sefirot: ['Kether', 'Chokhmah', 'Binah'],
+    orixa: 'Oxalá',
+    chakra: [6, 7],
+    tradicao: 'Candomblé',
+    numeroSagrado: 33,
+    luaFase: 'nova',
   },
   {
     id: 'guide-007',
-    title: 'Ritual de Amarracao do Destino',
-    description: 'Ritual poderoso para fortalecer lacos afetivos e unir dua almas.',
+    title: 'Ritual de Amaração do Destino',
+    description: 'Ritual poderoso para fortalecer laços afetivos e unir duas almas.',
     category: 'love',
     duration: '50 minutos',
     difficulty: 'advanced',
@@ -276,33 +329,39 @@ const guides: RitualGuide[] = [
     steps: [
       'Escreva os dois nomes em um papel',
       'Acenda as velas vermelha e rosa lado a lado',
-      'Faca o defumador de patchouli',
+      'Faça o defumador de patchouli',
       'Una as duas fitas vermelhas enquanto rezam juntos',
       'Aplique o perfume de musk nos pulsos',
       'Coloque as flores ao redor das velas',
-      'Faca a ligacao dos nomes com fitas enquanto le a oracao',
+      'Faça a ligação dos nomes com fitas enquanto lê a oração',
       'Una as pessoas envolvidas ao redor do altar',
-      'Dee um ao outro mel symbolizando a doçura do amor',
-      'Enterrem as fitas united num vaso de flores'
+      'Dê um ao outro mel simbolizando a doçura do amor',
+      'Enterrem as fitas unidas num vaso de flores'
     ],
     intention: 'Fortalecimento de laços afetivos e amor duradouro',
-    bestTime: 'Sexta-feira à noite em Lua crescente',
-   enefits: [
+    bestTime: 'Sexta-feira à noite em lua crescente',
+    benefits: [
       'Fortalecimento de laços emocionais',
-      'Aprofundamento da conexao afetiva',
-      'Protecao do relacionamento contra energias negativas',
-      'Renovacao do compromisso e dediCacao'
+      'Aprofundamento da conexão afetiva',
+      'Proteção do relacionamento contra energias negativas',
+      'Renovação do compromisso e dedicação'
     ],
     precautions: [
-      'Jamais use para forcar o amor de outra pessoa',
+      'Jamais use para forçar o amor de outra pessoa',
       'Realize apenas com consentimento de ambas as pessoas',
-      'Evite usar em casos de violencia domestica'
-    ]
+      'Evite usar em casos de violência doméstica'
+    ],
+    sefirot: ['Netzach', 'Tipheret'],
+    orixa: 'Oxum',
+    chakra: [4],
+    tradicao: 'Tradições Afro-Brasileiras',
+    numeroSagrado: 6,
+    luaFase: 'crescente',
   },
   {
     id: 'guide-008',
-    title: 'Ritual de Transformacao Interior',
-    description: 'Pratica profunda para renovaCao interior, mudar velhos padroes e evoluir consciousness.',
+    title: 'Ritual de Transformação Interior',
+    description: 'Prática profunda para renovação interior, mudar velhos padrões e evoluir consciência.',
     category: 'transformation',
     duration: '60 minutos',
     difficulty: 'intermediate',
@@ -311,49 +370,153 @@ const guides: RitualGuide[] = [
       'Vela dourada',
       'Incenso de olibano',
       'Espelho pequeno',
-      'Flor de lotus',
-      'Agua de flor de laranj',
-      'Mantra para a transformacao'
+      'Flor de lótus',
+      'Água de flor de laranjeira',
+      'Mantra para a transformação'
     ],
     steps: [
-      'Acenda o incenso de olibano para abrir espaco sagrado',
+      'Acenda o incenso de olibano para abrir espaço sagrado',
       'Coloque o espelho à sua frente',
       'Acenda as velas laranja e dourada refletidas no espelho',
-      'Observe-se no espelho e reconheca seus padroes velhos',
+      'Observe-se no espelho e reconheça seus padrões velhos',
       'Fale em voz alta o que deseja transformar',
-      'Coloque a flor de lotus sobre o peito',
-      'Aplique a agua de flor de larango na testa e pulsos',
-      'Repita o mantra de transformacao',
-      'Visualize-se ja transformado(a) emanando a nova energia',
-      'AgradeCa pela transformacao em curso'
+      'Coloque a flor de lótus sobre o peito',
+      'Aplique a água de flor de laranjeira na testa e pulsos',
+      'Repita o mantra de transformação',
+      'Visualize-se já transformado(a) emanando a nova energia',
+      'Agradeça pela transformação em curso'
     ],
-    intention: 'Renovacao interior e libertaCao de velhos padroes',
+    intention: 'Renovação interior e libertação de velhos padrões',
     bestTime: 'Domingo ao amanhecer ou durante eclipse',
-   enefits: [
-      'Libertacao de padroes limitantes',
-      'Acceleracao do processo evolutivo',
-      'Abertura para nova versao de voce mesmo',
-      'Fortafecimento da auto estima e proposito'
+    benefits: [
+      'Libertação de padrões limitantes',
+      'Acleração do processo evolutivo',
+      'Abertura para nova versão de você mesmo',
+      'Fortalecimento da auto estima e propósito'
     ],
     precautions: [
-      'Escolha uma area especifica para trabalhar',
-      'Evite abordar multiplos pontos ao mesmo tempo',
-      'Mantenha pratica regular para consolodar mudancas'
-    ]
-  }
+      'Escolha uma área específica para trabalhar',
+      'Evite abordar múltiplos pontos ao mesmo tempo',
+      'Mantenha prática regular para consolidar mudanças'
+    ],
+    sefirot: ['Chokhmah', 'Tipheret'],
+    orixa: 'Oxalá',
+    chakra: [6, 7],
+    tradicao: 'Neo-Espiritualidade',
+    numeroSagrado: 22,
+    luaFase: 'cheia',
+  },
 ];
 
+// ─── API Route ─────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const category = url.searchParams.get('category');
-  const id = url.searchParams.get('id');
-  const difficulty = url.searchParams.get('difficulty');
+  try {
+    const { searchParams } = new URL(request.url);
 
-  return NextResponse.json({
-    guides: guides,
-    total: guides.length,
-    categories: [...new Set(guides.map((g) => g.category))],
-    difficulties: ['beginner', 'intermediate', 'advanced'],
-    filtered: !!category || !!id || !!difficulty,
-  });
+    const parseResult = RitualGuidesQuerySchema.safeParse({
+      category: searchParams.get('category'),
+      id: searchParams.get('id'),
+      difficulty: searchParams.get('difficulty'),
+      orixa: searchParams.get('orixa'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+    });
+
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { category, id, difficulty, orixa, sefirot, chakra } = parseResult.data;
+
+    // Get single guide
+    if (id) {
+      const guide = guides.find((g) => g.id === id);
+      if (!guide) {
+        return NextResponse.json({
+          success: false,
+          error: 'Guide not found',
+          availableIds: guides.map(g => g.id),
+        }, { status: 404 });
+      }
+      return NextResponse.json({ success: true, guide });
+    }
+
+    let filteredGuides = [...guides];
+
+    // Apply filters
+    if (category) {
+      filteredGuides = filteredGuides.filter((g) => g.category === category);
+    }
+
+    if (difficulty) {
+      filteredGuides = filteredGuides.filter((g) => g.difficulty === difficulty);
+    }
+
+    // Spiritual filters
+    if (orixa) {
+      filteredGuides = filteredGuides.filter((g) =>
+        g.orixa?.toLowerCase().includes(orixa.toLowerCase())
+      );
+    }
+
+    if (sefirot) {
+      filteredGuides = filteredGuides.filter((g) =>
+        g.sefirot?.some(sf => sf.toLowerCase().includes(sefirot.toLowerCase()))
+      );
+    }
+
+    if (chakra) {
+      filteredGuides = filteredGuides.filter((g) =>
+        g.chakra?.includes(chakra)
+      );
+    }
+
+    // Statistics
+    const categories = Array.from(new Set(guides.map((g) => g.category)));
+    const difficulties = ['beginner', 'intermediate', 'advanced'];
+    
+    const stats = {
+      byCategory: guides.reduce((acc, g) => {
+        acc[g.category] = (acc[g.category] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byDifficulty: guides.reduce((acc, g) => {
+        acc[g.difficulty] = (acc[g.difficulty] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byTradicao: guides.reduce((acc, g) => {
+        if (g.tradicao) acc[g.tradicao] = (acc[g.tradicao] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: guides.reduce((acc, g) => {
+        if (g.orixa) acc[g.orixa] = (acc[g.orixa] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byLuaFase: guides.reduce((acc, g) => {
+        if (g.luaFase) acc[g.luaFase] = (acc[g.luaFase] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      guides: filteredGuides,
+      total: guides.length,
+      count: filteredGuides.length,
+      categories,
+      difficulties,
+      filters: { category, difficulty, orixa, sefirot, chakra },
+      stats,
+    });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
+  }
 }
