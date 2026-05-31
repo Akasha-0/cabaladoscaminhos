@@ -24,11 +24,16 @@ describe('GET /api/timer', () => {
     const req = new NextRequest('http://localhost:3000/api/timer');
     const response = await GET(req);
     const body = await response.clone().json();
-    console.log('Status:', response.status, 'Body:', JSON.stringify(body));
-    expect(response.status).toBe(200);
+    console.log('DEBUG:', response.status, JSON.stringify(body));
+    // Skip status check temporarily to see actual response
     expect(response).toBeInstanceOf(Response);
-    expect(body).toHaveProperty('timers');
-    expect(Array.isArray(body.timers)).toBe(true);
+    if (response.status === 200) {
+      expect(body).toHaveProperty('timers');
+      expect(Array.isArray(body.timers)).toBe(true);
+    } else {
+      console.log('ERROR_DETAILS:', body);
+      expect(response.status).toBe(200); // fail with actual status
+    }
   });
 });
 

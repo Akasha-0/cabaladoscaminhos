@@ -16,6 +16,7 @@ const KarmaQuerySchema = z.object({
   sefirot: SefirotSchema.optional(),
   chakra: ChakraSchema.optional(),
   element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 const KarmaBodySchema = z.object({
@@ -26,6 +27,41 @@ const KarmaBodySchema = z.object({
   sefirot: SefirotSchema.optional(),
   chakra: ChakraSchema.optional(),
 });
+
+// ─── Spiritual Correlations for Karma Types ──────────────────────────────────────────
+const KARMA_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  positiva: {
+    sefirot: ['Chesed', 'Tipheret'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Ações positivas geram mérito cármico',
+    frequency: '528 Hz',
+  },
+  negativa: {
+    sefirot: ['Gevurah'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'Ações negativas geram dívida cármica',
+    frequency: '417 Hz',
+  },
+  neutra: {
+    sefirot: ['Tipheret', 'Yesod'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Nanã',
+    affirmation: 'Ações neutras mantêm o equilíbrio cármico',
+    frequency: '741 Hz',
+  },
+};
 
 // ─── Karma Types with Spiritual Correlations ──────────────────────────────────────────
 const KARMA_TYPES = [
@@ -42,6 +78,7 @@ const KARMA_TYPES = [
     description: 'Ato de generosidade desinteressada que gera mérito cármico positivo.',
     karmicDebt: -3,
     karmicMerit: 5,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['positiva'],
   },
   {
     id: 'acao-violencia',
@@ -56,6 +93,7 @@ const KARMA_TYPES = [
     description: 'Ato de agressão física ou verbal que gera dívida cármica.',
     karmicDebt: 5,
     karmicMerit: -3,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['negativa'],
   },
   {
     id: 'mentira',
@@ -70,6 +108,7 @@ const KARMA_TYPES = [
     description: 'Ato de falsidade que compromete a integridade espiritual.',
     karmicDebt: 3,
     karmicMerit: -2,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['negativa'],
   },
   {
     id: 'verdade-falada',
@@ -81,177 +120,148 @@ const KARMA_TYPES = [
     sefirot: ['Gevurah', 'Tipheret'],
     chakra: 5,
     orixa: ['Oxalá'],
-    description: 'Declaração honesta mesmo em situações difíceis, gera mérito cármico.',
+    description: 'Ato de integridade e honestidade que gera mérito cármico.',
     karmicDebt: -2,
     karmicMerit: 4,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['positiva'],
   },
   {
-    id: 'roubo',
-    name: 'Roubo',
-    namePt: 'Roubo',
-    tipo: 'negativa',
-    impacto: 9,
-    element: 'Terra',
-    sefirot: ['Malkuth', 'Gevurah'],
-    chakra: 1,
-    orixa: ['Ogum', 'Omolu'],
-    description: 'Ato de apropriar-se do que não é seu, gera forte dívida cármica.',
-    karmicDebt: 6,
-    karmicMerit: -4,
-  },
-  {
-    id: 'oferta-sagrada',
-    name: 'Oferta Sagrada',
-    namePt: 'Oferta Sagrada',
-    tipo: 'positiva',
-    impacto: 10,
-    element: 'Fogo',
-    sefirot: ['Chesed', 'Netzach'],
-    chakra: 4,
-    orixa: ['Oxalá', 'Oxum', 'Ogum'],
-    description: 'Oferta voluntária aos Orixás ou em nome de ancestrais, gera grande mérito.',
-    karmicDebt: -4,
-    karmicMerit: 6,
-  },
-  {
-    id: 'cultivo-saude',
-    name: 'Cultivo da Saúde',
-    namePt: 'Cultivo da Saúde',
+    id: 'meditacao-diaria',
+    name: 'Meditação Diária',
+    namePt: 'Meditação Diária',
     tipo: 'positiva',
     impacto: 8,
-    element: 'Terra',
-    sefirot: ['Chesed'],
-    chakra: 3,
-    orixa: ['Omolu', 'Oxum'],
-    description: 'Prática de hábitos saudáveis e cuidado corporal, gera mérito cármico.',
-    karmicDebt: -2,
-    karmicMerit: 4,
-  },
-  {
-    id: 'negligencia-familia',
-    name: 'Negligência Familiar',
-    namePt: 'Negligência Familiar',
-    tipo: 'negativa',
-    impacto: 8,
-    element: 'Água',
-    sefirot: ['Binah', 'Chesed'],
-    chakra: 6,
-    orixa: ['Iemanjá', 'Oxum'],
-    description: 'Abandono de responsabilidades familiares, gera dívida cármica.',
-    karmicDebt: 4,
-    karmicMerit: -3,
-  },
-  {
-    id: 'pratica-espiritual',
-    name: 'Prática Espiritual Regular',
-    namePt: 'Prática Espiritual Regular',
-    tipo: 'positiva',
-    impacto: 9,
     element: 'Éter',
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 7,
-    orixa: ['Oxalá', 'Orunmilá'],
-    description: 'Prática consistente de rituals, meditação ou oração, gera alto mérito.',
-    karmicDebt: -3,
-    karmicMerit: 5,
-  },
-  {
-    id: 'manipulacao',
-    name: 'Manipulação',
-    namePt: 'Manipulação',
-    tipo: 'negativa',
-    impacto: 8,
-    element: 'Água',
-    sefirot: ['Hod', 'Malkuth'],
-    chakra: 6,
-    orixa: ['Exu'],
-    description: 'Uso de meios desonestos para controlar outros, gera dívida cármica.',
-    karmicDebt: 4,
-    karmicMerit: -3,
-  },
-  {
-    id: 'gratidao-expressa',
-    name: 'Gratidão Expressa',
-    namePt: 'Gratidão Expressa',
-    tipo: 'positiva',
-    impacto: 7,
-    element: 'Fogo',
-    sefirot: ['Tipheret', 'Netzach'],
-    chakra: 4,
-    orixa: ['Oxum', 'Iemanjá'],
-    description: 'Expressão genuína de agradecimento, multiplica energias positivas.',
+    orixa: ['Oxalá'],
+    description: 'Prática regular de meditação que eleva a consciência espiritual.',
     karmicDebt: -2,
     karmicMerit: 4,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['positiva'],
   },
   {
-    id: 'irrigacao-karmica',
-    name: 'Irrigação Cármica',
-    namePt: 'Irrigação Cármica',
-    tipo: 'neutra',
-    impacto: 5,
+    id: 'ritual-sagrado',
+    name: 'Ritual Sagrado',
+    namePt: 'Ritual Sagrado',
+    tipo: 'positiva',
+    impacto: 9,
+    element: 'Fogo',
+    sefirot: ['Chesed', 'Gevurah', 'Tipheret'],
+    chakra: 4,
+    orixa: ['Ogum', 'Xangô'],
+    description: 'Realização de rituais sagrados que purificam a energia cármica.',
+    karmicDebt: -3,
+    karmicMerit: 5,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['positiva'],
+  },
+  {
+    id: 'oferta-orixa',
+    name: 'Oferta ao Orixá',
+    namePt: 'Oferta ao Orixá',
+    tipo: 'positiva',
+    impacto: 8,
     element: 'Água',
-    sefirot: ['Yesod', 'Malkuth'],
-    chakra: 2,
-    orixa: ['Iemanjá'],
-    description: 'Processo de consciência cármica para compreender padrões e liberá-los.',
-    karmicDebt: 0,
-    karmicMerit: 2,
-  },
-];
-
-// ─── Karma States with Spiritual Correlations ──────────────────────────────────────────
-const KARMA_STATES = [
-  {
-    id: 'limpo',
-    name: 'Karma Limpo',
-    namePt: 'Karma Limpo',
-    sefirot: ['Kether', 'Tipheret'],
-    chakra: 7,
-    element: 'Éter',
-    description: 'Estado de graça espiritual onde ações passam pela luz sem attached karmic weight.',
-    requires: ['pratica-espiritual', 'acao-caridade', 'verdade-falada'],
-    excludes: ['acao-violencia', 'roubo', 'manipulacao'],
+    sefirot: ['Binah', 'Chokhmah'],
+    chakra: 4,
+    orixa: ['Iemanjá', 'Oxum'],
+    description: 'Ofrenda sagrada aos Orixás que gera proteção e mérito cármico.',
+    karmicDebt: -2,
+    karmicMerit: 4,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['positiva'],
   },
   {
-    id: 'em-progresso',
-    name: 'Karma em Progresso',
-    namePt: 'Karma em Progresso',
-    sefirot: ['Tipheret', 'Yesod'],
-    chakra: 5,
-    element: 'Ar',
-    description: 'Estado de trabalho cármico ativo com equilíbrio entre débitos e méritos.',
-    requires: ['irrigacao-karmica'],
-    excludes: [],
-  },
-  {
-    id: 'devendo',
-    name: 'Karma Devendo',
-    namePt: 'Karma Devendo',
-    sefirot: ['Gevurah', 'Malkuth'],
-    chakra: 1,
+    id: 'trabalho-honesto',
+    name: 'Trabalho Honesto',
+    namePt: 'Trabalho Honesto',
+    tipo: 'positiva',
+    impacto: 7,
     element: 'Terra',
-    description: 'Estado de dívida cármica que requer ação reparadora.',
-    requires: ['oferta-sagrada', 'acao-caridade'],
-    excludes: ['acao-violencia', 'roubo'],
+    sefirot: ['Malkuth', 'Yesod'],
+    chakra: 1,
+    orixa: ['Ogum'],
+    description: 'Trabalho dignificado que gera mérito cármico através do esforço.',
+    karmicDebt: -1,
+    karmicMerit: 3,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['positiva'],
   },
   {
-    id: 'acumulando-merito',
-    name: 'Acumulando Mérito',
-    namePt: 'Acumulando Mérito',
+    id: 'inveja',
+    name: 'Inveja',
+    namePt: 'Inveja',
+    tipo: 'negativa',
+    impacto: 6,
+    element: 'Terra',
+    sefirot: ['Malkuth'],
+    chakra: 2,
+    orixa: ['Exu'],
+    description: 'Sentimento de cobiça que gera dívida cármica.',
+    karmicDebt: 2,
+    karmicMerit: -1,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['negativa'],
+  },
+  {
+    id: 'orgulho',
+    name: 'Orgulho',
+    namePt: 'Orgulho',
+    tipo: 'negativa',
+    impacto: 7,
+    element: 'Fogo',
+    sefirot: ['Gevurah'],
+    chakra: 3,
+    orixa: ['Xangô'],
+    description: 'Ego inflado que gera dívida cármica.',
+    karmicDebt: 3,
+    karmicMerit: -2,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['negativa'],
+  },
+ {
+    id: 'agradecimento',
+    name: 'Agradecimento',
+    namePt: 'Agradecimento',
+    tipo: 'positiva',
+    impacto: 6,
+    element: 'Fogo',
     sefirot: ['Chesed', 'Netzach'],
     chakra: 4,
+    orixa: ['Oxum'],
+    description: 'Prática de gratidão que gera mérito cármico.',
+    karmicDebt: -1,
+    karmicMerit: 3,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['positiva'],
+  },
+  {
+    id: 'perdao',
+    name: 'Perdão',
+    namePt: 'Perdão',
+    tipo: 'positiva',
+    impacto: 9,
     element: 'Fogo',
-    description: 'Estado de crescimento espiritual positivo com práticas consistentes.',
-    requires: ['pratica-espiritual', 'oferta-sagrada', 'cultivo-saude'],
-    excludes: ['negligencia-familia', 'manipulacao'],
+    sefirot: ['Tipheret', 'Binah'],
+    chakra: 4,
+    orixa: ['Iemanjá'],
+    description: 'Ato de libertação que dissolve dívidas cármicas.',
+    karmicDebt: -4,
+    karmicMerit: 4,
+    spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS['positiva'],
   },
 ];
 
-// ─── API Route Handlers ──────────────────────────────────────────────────────────────
+// In-memory karma history (would be database in production)
+const karmaHistory: Array<{
+  id: string;
+  userId: string;
+  actionId: string;
+  actionName: string;
+  tipo: string;
+  karmicDebt: number;
+  karmicMerit: number;
+  timestamp: string;
+}> = [];
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-
     const parseResult = KarmaQuerySchema.safeParse({
       action: searchParams.get('action'),
       userId: searchParams.get('userId'),
@@ -259,6 +269,7 @@ export async function GET(request: NextRequest) {
       sefirot: searchParams.get('sefirot'),
       chakra: searchParams.get('chakra'),
       element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -269,91 +280,106 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { action, userId, ciclo, sefirot, chakra, element } = parseResult.data;
+    const { action, userId, ciclo, sefirot, chakra, element, orixa } = parseResult.data;
 
-    switch (action) {
-      case 'types': {
-        let types = [...KARMA_TYPES];
+    if (action === 'types') {
+      let types = [...KARMA_TYPES];
 
-        // Filter by spiritual correlations
-        if (sefirot) {
-          types = types.filter(t => t.sefirot.includes(sefirot));
-        }
-        if (chakra) {
-          types = types.filter(t => t.chakra === chakra);
-        }
-        if (element) {
-          types = types.filter(t => t.element === element);
-        }
-
-        return NextResponse.json({
-          success: true,
-          types,
-          total: types.length,
-        });
+      if (sefirot) {
+        types = types.filter(t => t.spiritualCorrelations?.sefirot.includes(sefirot));
       }
 
-      case 'status': {
-        return NextResponse.json({
-          success: true,
-          status: 'ok',
-          action: 'status',
-          userId,
-          ciclo,
-          states: KARMA_STATES,
-          message: 'Karma status retrieved',
-        });
+      if (chakra) {
+        types = types.filter(t => t.spiritualCorrelations?.chakra === chakra);
       }
 
-      case 'history': {
-        return NextResponse.json({
-          success: true,
-          status: 'ok',
-          action: 'history',
-          userId,
-          history: [],
-          message: 'Karma history retrieved',
-        });
+      if (element) {
+        types = types.filter(t => t.spiritualCorrelations?.element === element);
       }
 
-      case 'calculate': {
-        return NextResponse.json({
-          success: true,
-          status: 'ok',
-          action: 'calculate',
-          userId,
-          message: 'Karma calculation retrieved',
-        });
+      if (orixa) {
+        types = types.filter(t => t.spiritualCorrelations?.orixa === orixa);
       }
 
-      default: {
-        return NextResponse.json({
-          success: true,
-          endpoints: [
-            'GET /api/karma?action=types - Get karma types with spiritual correlations',
-            'GET /api/karma?action=status&userId=<id> - Get karma status',
-            'GET /api/karma?action=history&userId=<id> - Get karma history',
-            'GET /api/karma?action=calculate&userId=<id> - Calculate karma',
-          ],
-          spiritualCorrelations: {
-            sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
-            chakras: [1, 2, 3, 4, 5, 6, 7],
-            elements: ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'],
-            orixas: ['Oxalá', 'Oxum', 'Iemanjá', 'Ogum', 'Xangô', 'Omolu', 'Exu', 'Orunmilá'],
-          },
-        });
-      }
+      // Calculate spiritual stats
+      const spiritualStats = {
+        byTipo: types.reduce((acc, t) => {
+          acc[t.tipo] = (acc[t.tipo] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>),
+        bySefirot: types.reduce((acc, t) => {
+          t.spiritualCorrelations?.sefirot.forEach(s => {
+            acc[s] = (acc[s] || 0) + 1;
+          });
+          return acc;
+        }, {} as Record<string, number>),
+        byChakra: types.reduce((acc, t) => {
+          const c = t.spiritualCorrelations?.chakra;
+          if (c) acc[c] = (acc[c] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>),
+        byElement: types.reduce((acc, t) => {
+          const e = t.spiritualCorrelations?.element;
+          if (e) acc[e] = (acc[e] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>),
+        byOrixa: types.reduce((acc, t) => {
+          const o = t.spiritualCorrelations?.orixa;
+          if (o) acc[o] = (acc[o] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>),
+      };
+
+      return NextResponse.json({
+        success: true,
+        types,
+        count: types.length,
+        spiritualCorrelations: KARMA_SPIRITUAL_CORRELATIONS,
+        spiritualStats,
+      });
     }
+
+    if (action === 'history' && userId) {
+      const userHistory = karmaHistory.filter(h => h.userId === userId);
+      return NextResponse.json({
+        success: true,
+        history: userHistory,
+        total: userHistory.length,
+      });
+    }
+
+    if (action === 'status' && userId) {
+      const userHistory = karmaHistory.filter(h => h.userId === userId);
+      const totalMerit = userHistory.reduce((sum, h) => sum + h.karmicMerit, 0);
+      const totalDebt = userHistory.reduce((sum, h) => sum + h.karmicDebt, 0);
+      const balance = totalMerit + totalDebt;
+
+      return NextResponse.json({
+        success: true,
+        status: {
+          userId,
+          totalMerit,
+          totalDebt,
+          balance,
+          historyCount: userHistory.length,
+        },
+      });
+    }
+
+    // Default: return all karma types
+    return NextResponse.json({
+      success: true,
+      types: KARMA_TYPES,
+      count: KARMA_TYPES.length,
+    });
   } catch (error) {
-    const err = error as Error;
     return NextResponse.json({
       success: false,
-      error: `Erro interno: ${err.message}`,
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }
 
-// POST /api/karma - Record karma action
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -362,7 +388,7 @@ export async function POST(request: NextRequest) {
     if (!parseResult.success) {
       return NextResponse.json({
         success: false,
-        error: 'Corpo inválido',
+        error: 'Dados inválidos',
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
@@ -370,39 +396,37 @@ export async function POST(request: NextRequest) {
     const { acao, tipo, descricao, impacto, sefirot, chakra } = parseResult.data;
 
     // Find matching karma type
-    const karmaType = KARMA_TYPES.find(t =>
-      t.namePt.toLowerCase().includes(acao.toLowerCase()) ||
-      t.name.toLowerCase().includes(acao.toLowerCase())
-    );
+    const karmaType = KARMA_TYPES.find(t => t.namePt === acao || t.name === acao);
 
-    const record = {
+    if (!karmaType) {
+      return NextResponse.json({
+        success: false,
+        error: 'Tipo de karma não encontrado',
+      }, { status: 404 });
+    }
+
+    const entry = {
       id: crypto.randomUUID(),
-      acao,
-      tipo,
-      descricao,
-      impacto: impacto || karmaType?.impacto || 5,
-      sefirot: sefirot || karmaType?.sefirot || ['Tipheret'],
-      chakra: chakra || karmaType?.chakra || 5,
-      karmicDebt: karmaType?.karmicDebt || 0,
-      karmicMerit: karmaType?.karmicMerit || 0,
-      createdAt: new Date().toISOString(),
+      userId: 'user-001', // Would come from auth in production
+      actionId: karmaType.id,
+      actionName: karmaType.namePt,
+      tipo: karmaType.tipo,
+      karmicDebt: karmaType.karmicDebt,
+      karmicMerit: karmaType.karmicMerit,
+      timestamp: new Date().toISOString(),
     };
+
+    karmaHistory.push(entry);
 
     return NextResponse.json({
       success: true,
-      record,
-      spiritualCorrelations: {
-        sefirot: record.sefirot,
-        chakra: record.chakra,
-        element: karmaType?.element || 'Ar',
-        orixa: karmaType?.orixa || ['Oxalá'],
-      },
+      entry,
+      spiritualCorrelations: karmaType.spiritualCorrelations,
     }, { status: 201 });
   } catch (error) {
-    const err = error as Error;
     return NextResponse.json({
       success: false,
-      error: `Erro interno: ${err.message}`,
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }
