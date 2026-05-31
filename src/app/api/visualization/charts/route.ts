@@ -1,18 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ChartTypeSchema = z.enum(['line', 'bar', 'pie', 'doughnut', 'radar', 'scatter', 'area', 'candlestick']);
+const ChartQuerySchema = z.object({
+  type: ChartTypeSchema.optional(),
+  data: z.string().optional(),
+  labels: z.string().optional(),
+  title: z.string().optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+});
+interface ChartDataPoint {
 interface ChartDataPoint {
   label: string;
   value: number;
   category?: string;
 }
-
 interface ChartDataset {
   label: string;
   data: number[];
   backgroundColor?: string | string[];
   borderColor?: string | string[];
 }
-
 interface ChartConfig {
   type: 'line' | 'bar' | 'pie' | 'doughnut' | 'radar' | 'scatter';
   title: string;
@@ -20,10 +28,7 @@ interface ChartConfig {
   datasets: ChartDataset[];
   options?: Record<string, unknown>;
 }
-
 const chartTypes = ['line', 'bar', 'pie', 'doughnut', 'radar', 'scatter', 'area', 'candlestick'] as const;
-type ChartType = typeof chartTypes[number];
-
 function generateChartData(
   type: ChartType,
   dataPoints: ChartDataPoint[]
