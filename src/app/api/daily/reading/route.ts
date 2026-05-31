@@ -165,18 +165,6 @@ function generateOração(tipo: string): string | undefined {
 
 export async function GET(request: NextRequest) {
   try {
-    const hoje = new Date();
-    const dayKey = getDayKey(hoje);
-    const seed = hashString(dayKey);
-
-    const tipos: Array<'tarot' | 'cabala' | 'numerologia' | 'orixa'> = ['tarot', 'cabala', 'numerologia', 'orixa'];
-    const tipoIndex = seed % tipos.length;
-    const tipo = tipos[tipoIndex];
-
-    const leitura: DailyReading = {
-      id: `daily_${dayKey}_${tipo}`,
-export async function GET(request: NextRequest) {
-  try {
     const searchParams = request.nextUrl.searchParams;
     const parseResult = ReadingQuerySchema.safeParse({
       tipo: searchParams.get('tipo'),
@@ -188,7 +176,7 @@ export async function GET(request: NextRequest) {
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
-    const { tipo: requestedTipo, forceRefresh } = parseResult.data;
+    const { tipo: requestedTipo } = parseResult.data;
     const hoje = new Date();
     const dayKey = getDayKey(hoje);
     const seed = hashString(dayKey);
@@ -203,6 +191,21 @@ export async function GET(request: NextRequest) {
       tipo = tipos[tipoIndex];
     }
     const leitura: DailyReading = {
+      id: `daily_${dayKey}_${tipo}`,
+      data: hoje.toISOString().split('T')[0],
+      tipo,
+      mensagem: '',
+      reflexao: generateReflexao(tipo, seed),
+    };
+    switch (tipo) {
+      case 'tarot': {
+        const carta = getTarotCardOfDay(seed);
+        leitura.carta = carta;
+        leitura.mensagem = `A carta do dia é ${carta.nome}${carta.invertido ? ' (invertida)' : ''}. ${carta.significado}.`;
+        break;
+      }
+      case 'cabala': {
+        const sephirah = getCabalaSephirah(seed);
         leitura.mensagem = `Hoje você está conectado ao ${sephirah.sephirah} (${sephirah.caminho}). Tema: ${sephirah.tema}. Lição: ${sephirah.licao}.`;
         leitura.oracao = generateOração('cabala');
         break;
@@ -221,7 +224,6 @@ export async function GET(request: NextRequest) {
         break;
       }
     }
-
     return NextResponse.json({
       success: true,
       reading: leitura,
@@ -238,4 +240,5 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
 }
