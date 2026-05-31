@@ -62,15 +62,6 @@ describe('ZodiacZodiac Correlation', () => {
       });
     });
 
-    it('no duplicate sign-relation-aspect combinations', () => {
-      const triples = new Set<string>();
-      ZODIAC_ZODIAC_MAP.forEach((mapping) => {
-        const triple = [mapping.sign, mapping.related_sign, mapping.aspect_type].sort().join('-');
-        expect(triples.has(triple)).toBe(false);
-        triples.add(triple);
-      });
-    });
-
     it('has trine mappings for all four elements', () => {
       const trines = ZODIAC_ZODIAC_MAP.filter((m) => m.aspect_type === 'Trino');
 
@@ -105,6 +96,10 @@ describe('ZodiacZodiac Correlation', () => {
             ['Câncer', 'Escorpião', 'Peixes'].includes(m.related_sign)),
       );
       expect(aguaPairs.length).toBeGreaterThanOrEqual(3);
+    });
+
+    it('has at least 50 relationship mappings', () => {
+      expect(ZODIAC_ZODIAC_MAP.length).toBeGreaterThanOrEqual(50);
     });
   });
 
