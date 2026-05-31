@@ -31,7 +31,8 @@ import type {
   ChakraInfo,
 } from './types/mapa-alma';
 // HyperCorrelationEngine for cross-tradition analysis
-import { hyperCorrelationEngine, getOrixa } from '@/lib/orixa/HyperCorrelationEngine';
+import { hyperCorrelationEngine } from '@/lib/orixa/HyperCorrelationEngine';
+import { getOrixa } from '@/lib/orixa/types';
 // ============================================================
 // CORRESPONDENCE TABLES
 // ============================================================
@@ -516,5 +517,97 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
     // Graceful degradation — deep correlations are enhancement, not critical
     console.warn('[MapaAlma] Deep correlation analysis failed:', err instanceof Error ? err.message : String(err));
   }
+  // ─── HyperCorrelation Synthesis (Sprint 218) ──────────────────────────
+  // Generate cross-tradition synthesis using HyperCorrelationEngine
+  const orixaRegenteMapa = odu.orixas[0]?.toLowerCase() ?? 'oxala';
+  const synthesis = hyperCorrelationEngine.answerDeepQuestion(
+    numerologia.vida,
+    astrologia.sol.signo,
+    orixaRegenteMapa
+  );
+  // Build signature with master number support
+  const isMasterNum = [11, 22, 33].includes(numerologia.vida);
+  const vidaStr = isMasterNum ? `${numerologia.vida}M` : String(numerologia.vida);
+  const signStr = astrologia.sol.signo.substring(0, 3).toLowerCase();
+  const orixaStr = orixaRegenteMapa.substring(0, 3);
+  // Generate harmonization recommendations
+  const harmonization = generateHarmonizationRecommendations(numerologia.vida, astrologia.sol.signo, orixaRegenteMapa, odu);
+  // Add hyperSynthesis to mapa
+  (mapa as unknown as Record<string, unknown>).hyperSynthesis = {
+    signature: `${vidaStr}-${signStr}-${orixaStr}`,
+    explanation: synthesis,
+    practices: [
+      `Meditação diária para harmonia do Caminho ${numerologia.vida}`,
+      `Oração a ${orixaRegenteMapa} no dia correspondente`,
+      `Prática de respiração elementar`,
+    ],
+    harmonization,
+    conflicts: harmonization.filter(h => h.type === 'conflict'),
+  };
   return mapa;
+}
+// ─── Harmonization Helper ─────────────────────────────────────────────────
+interface HarmonizationItem {
+  type: 'practice' | 'element' | 'conflict';
+  tradition: string;
+  description: string;
+  priority: 'high' | 'medium' | 'low';
+}
+function generateHarmonizationRecommendations(
+  caminhoVida: number,
+  signoSolar: string,
+  orixaRegente: string,
+  odu: OduResults
+): HarmonizationItem[] {
+  const recommendations: HarmonizationItem[] = [];
+  // Master number special recommendations
+  if ([11, 22, 33].includes(caminhoVida)) {
+    recommendations.push({
+      type: 'practice',
+      tradition: 'Numerologia Cabalística',
+      description: `Caminho de Vida ${caminhoVida} (MESTRE) — integre a energia com prática espiritual diária`,
+      priority: 'high',
+    });
+  }
+  // Element-based recommendations
+  const elementFromVida = getElementFromNumber(caminhoVida);
+  recommendations.push({
+    type: 'element',
+    tradition: 'Universal',
+    description: `Elemento de trabalho: ${elementFromVida}`,
+    priority: 'medium',
+  });
+  // Orixá recommendations
+  const orixaData = getOrixa(orixaRegente);
+  if (orixaData) {
+    recommendations.push({
+      type: 'practice',
+      tradition: 'Candomblé',
+      description: `Culto a ${orixaData.nome} no dia ${orixaData.diaSemana}`,
+      priority: 'high',
+    });
+    recommendations.push({
+      type: 'element',
+      tradition: 'Candomblé',
+      description: `Cores: ${orixaData.cores.join(', ')} | Chakra: ${orixaData.chakraPrincipal}º`,
+      priority: 'medium',
+    });
+  }
+  // Conflict detection (opposing elements)
+  const signs = ['aries', 'leo', 'sagitario']; // Fire signs
+  const waterSigns = ['cancer', 'escorpiao', 'peixes']; // Water signs
+  if (signs.includes(signoSolar.toLowerCase()) && orixaData?.elemento === 'Água') {
+    recommendations.push({
+      type: 'conflict',
+      tradition: 'Cross-System',
+      description: 'Tensão Fogo-Água detectada — use signos de transição (Sagitário/Câncer) para mediação',
+      priority: 'medium',
+    });
+  }
+  return recommendations;
+}
+function getElementFromNumber(num: number): string {
+  const base = num % 9 || 9;
+  const elements = ['', 'Fogo', 'Água', 'Terra', 'Ar', 'Fogo', 'Terra', 'Água', 'Ar', 'Fogo'];
+  return elements[base] || 'Ar';
 }
