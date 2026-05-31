@@ -3,6 +3,7 @@ import {
   getSephirotNumerology,
   getNumerologySephirot,
   getAllSephirotNumerology,
+  getAllSephirotNumerologies,
   SEPHIROT_NUMEROLOGY_MAPPINGS,
   type SephirotNumerology,
 } from '@/lib/correlation/sephirot-numerology';
@@ -336,6 +337,28 @@ describe('sephirot-numerology', () => {
       });
       numberCount.forEach((count) => {
         expect(count).toBe(1);
+      });
+    });
+  });
+  // ─── getAllSephirotNumerologies (alias) ─────────────────────────────────────
+  describe('getAllSephirotNumerologies', () => {
+    it('returns all 10 Sephiroth mappings', () => {
+      const result = getAllSephirotNumerologies();
+      expect(result).toHaveLength(10);
+    });
+    it('returns same results as getAllSephirotNumerology', () => {
+      const result1 = getAllSephirotNumerology();
+      const result2 = getAllSephirotNumerologies();
+      expect(result2).toEqual(result1);
+    });
+    it('each mapping has required fields', () => {
+      const result = getAllSephirotNumerologies();
+      result.forEach((mapping) => {
+        expect(mapping).toHaveProperty('sephirah');
+        expect(mapping).toHaveProperty('numero');
+        expect(mapping).toHaveProperty('elemento');
+        expect(mapping).toHaveProperty('numero_caminho');
+        expect(mapping).toHaveProperty('energia_espiritual');
       });
     });
   });

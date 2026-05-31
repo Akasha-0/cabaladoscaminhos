@@ -7,6 +7,7 @@ import {
   getOrixaNumerology,
   getNumerologyOrixa,
   getAllOrixaNumerology,
+  getAllOrixaNumerologies,
   getOrixaByElement,
   getOrixaByNumber,
   getAllElements,
@@ -252,6 +253,27 @@ describe('Orixá-Numerology Correlation', () => {
       expect(result).toContain('Água');
       expect(result).toContain('Terra');
       expect(result).toContain('Éter');
+    });
+  });
+  describe('getAllOrixaNumerologies', () => {
+    it('should return an array of all Orixá numerologies', () => {
+      const result = getAllOrixaNumerologies();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
+    });
+    it('should contain the same data as getAllOrixaNumerology', () => {
+      const result = getAllOrixaNumerologies();
+      const direct = getAllOrixaNumerology();
+      expect(result).toEqual(direct);
+    });
+    it('should return OrixaNumerology objects with all required fields', () => {
+      const result = getAllOrixaNumerologies();
+      result.forEach((item: OrixaNumerology) => {
+        expect(item).toHaveProperty('orixa');
+        expect(item).toHaveProperty('numero');
+        expect(item).toHaveProperty('elemento');
+        expect(item).toHaveProperty('significado_espiritual');
+      });
     });
   });
 

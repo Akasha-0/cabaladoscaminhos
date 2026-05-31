@@ -203,7 +203,9 @@ export function getNumerologyOrixa(): Record<string, OrixaNumerology> {
 export function getAllOrixaNumerology(): OrixaNumerology[] {
   return [...ORIXAS_NUMEROLOGY].sort((a, b) => a.numero - b.numero);
 }
-
+export function getAllOrixaNumerologies(): OrixaNumerology[] {
+  return getAllOrixaNumerology();
+}
 /**
  * Get Orixás filtered by element
  * @param elemento - Element to filter by (Fogo, Água, Terra, Ar, Éter)
