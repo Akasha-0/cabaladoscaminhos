@@ -3,6 +3,7 @@ import {
   getTarotNumerology,
   getNumerologyTarot,
   getAllTarotNumerology,
+  getAllTarotNumerologies,
   getAllArcanos,
   hasTarotNumerology,
   getArcanoByNumber,

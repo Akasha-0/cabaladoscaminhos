@@ -250,9 +250,6 @@ export function getNumerologyTarot(numero: number): TarotNumerologyMapping[] {
 /**
  * Get all available Tarot-Numerology mappings
  * @returns Array of all correlation mappings sorted by arcano number
-/**
- * Get all available Tarot-Numerology mappings
- * @returns Array of all correlation mappings sorted by arcano number
  */
 export function getAllTarotNumerology(): TarotNumerologyMapping[] {
   return Object.values(TAROT_NUMEROLOGY_MAPPINGS)

@@ -1,90 +1,108 @@
-
 // @ts-nocheck
-// SKIP_LINT
 
 /**
  * Odara Data Module
- * Spiritual data for Odara, the orixá of beauty, joy and flourishing
+ * Spiritual data for Odara - Harmony and Beauty Orixá
  */
 
 export interface OdaraData {
-  id: string;
-  name: string;
-  namePortuguese: string;
-  path: string;
-  element: string;
-  colors: string[];
-  dayOfWeek: string;
-  numbersSacred: number[];
-  greeting: string;
-  archetype: string;
-  qualities: string[];
-  challenges: string[];
-  rulingPlanet: string;
-  sacredAnimals: string[];
-  plants: string[];
-  offerings: string[];
-  chants: string[];
-  symbols: string[];
-  mythology: string;
-  spiritualLesson: string;
-  affirmation: string;
-  meditation: string;
+  nome: string;
+  nomePortugues: string;
+  categoria: string;
+  caminho: string;
+  elementos: string[];
+  meses: string[];
+  dias: string[];
+  orixasRelacionados: string[];
+  flores: string[];
+  ebós: string[];
+  quizilas: string[];
+  mensagens: string[];
+  significado: {
+    espiritual: string;
+    material: string;
+    emocional: string;
+  };
+  qualidade: string;
+  regencia: string;
+  cores: string[];
+  pedras: string[];
+  alimentos: string[];
+  herbs: string[];
+  harmonyElements: string[];
+  guidance: string;
+  numSagrado: number[];
+  planeta: string;
+  chakra: string;
+  sefirot: string[];
+  tarot: string[];
+  direcao: string;
+  periodo: string;
 }
 
-const ODARA_DATA: OdaraData[] = [
-  {
-    id: 'odara',
-    name: 'Odara',
-    namePortuguese: 'Dono da Beleza',
-    path: 'Odara',
-    element: 'Água e Terra',
-    colors: ['#FFD700', '#FFA500', '#FFFFFF'],
-    dayOfWeek: 'Domingo',
-    numbersSacred: [5, 7, 15],
-    greeting: 'Odara!',
-    archetype: 'O Desbravador da Alegria',
-    qualities: ['Beleza', 'Alegria', 'Florescimento', 'Bondade', 'Generosidade', 'Abundância'],
-    challenges: ['Vaidade excessiva', 'Superficialidade', 'Medo de envelhecer'],
-    rulingPlanet: 'Vênus',
-    sacredAnimals: ['Pavão', 'Borboleta', 'Colibri'],
-    plants: ['Dama-da-noite', 'Alamanda', 'Girassol'],
-    offerings: ['perfume floral', 'Flores amarelas e laranjas', 'Velas douradas', 'Azeite doce', 'Mirra'],
-    chants: ['Odara', 'Oba', 'Ewa'],
-    symbols: ['Flor de lotus', 'Espelho', 'Pavão', 'Arco-íris'],
-    mythology:
-      'Odara é o orixá da beleza, da alegria e do florescimento. Ele abençoa a arte, a criatividade e a capacidade de encontrar beleza no cotidiano. Odara ensina que a verdadeira beleza vem de dentro e que a alegria é uma forma sagrada de resistência.',
-    spiritualLesson: 'A beleza verdadeira habita na generosidade do coração e na capacidade de criar alegria',
-    affirmation: 'Eu floresço como uma flor sob o sol, irradiando beleza, alegria e bondade por onde passo',
-    meditation: 'Visualize uma luz dourada e alaranjada envolvendo seu ser, despertando a alegria de viver e a apreciação da beleza em cada momento',
+export const ODARA_DATA: OdaraData = {
+  nome: 'Odara',
+  nomePortugues: 'O Dara - O Belo',
+  categoria: 'Odu de Harmonia',
+  caminho: 'Caminho da Beleza e Equilíbrio',
+  elementos: ['Água', 'Terra'],
+  meses: ['maio', 'junho', 'setembro'],
+  dias: ['sexta-feira', 'domingo'],
+  orixasRelacionados: ['Oxum', 'Iemanjá', 'Oxalá'],
+  flores: ['rosa', 'gardênia', 'flor de lotus'],
+  ebós: ['água de cheiro', 'pétalas de rosa', 'perfume floral'],
+  quizilas: ['não usar violência', 'não ser vaidoso de forma egoísta', 'não desrespeitar a natureza'],
+  mensagens: [
+    'A harmonia é a base de toda existência',
+    'A verdadeira beleza vem do equilíbrio interior',
+    'Cada um é reflexo da perfeição divina',
+  ],
+  significado: {
+    espiritual: 'Odu da harmonia, beleza e equilíbrio entre opostos',
+    material: 'associado a relacionamentos, arte e bem-estar',
+    emocional: 'paz interior, aceitação e autocuidado',
   },
-];
+  qualidade: 'Harmonizadora e Estética',
+  regencia: 'Oxum e Iemanjá',
+  cores: ['dourado', 'rosa', 'azul claro'],
+  pedras: ['quartzo rosa', 'turquesa', 'pedra da lua'],
+  alimentos: ['doces', 'frutas tropicais', 'mel'],
+  herbs: ['lavanda', 'camomila', 'rosa mosqueta'],
+  harmonyElements: ['equilíbrio', 'beleza', 'paz', 'harmonia', 'arte'],
+  guidance: 'Odara ensina que a harmonia verdadeira vem do equilíbrio entre dar e receber, entre ação e contemplação.',
+  numSagrado: [6, 12, 24],
+  planeta: 'Vênus',
+  chakra: '4º Chakra (Coração)',
+  sefirot: ['Tiferet', 'Chesed'],
+  tarot: ['The Empress', 'The Lovers'],
+  direcao: 'Sul',
+  periodo: 'Entardecer',
+};
 
-export function getData(): OdaraData[] {
+export function getData(): OdaraData {
   return ODARA_DATA;
 }
 
-export function getDataById(id: string): OdaraData | undefined {
-  return ODARA_DATA.find((o) => o.id === id);
+export function getMensagens(): string[] {
+  return ODARA_DATA.mensagens;
 }
 
-export function searchData(query: string): OdaraData[] {
-  const lowerQuery = query.toLowerCase();
-  return ODARA_DATA.filter(
-    (o) =>
-      o.name.toLowerCase().includes(lowerQuery) ||
-      o.namePortuguese.toLowerCase().includes(lowerQuery) ||
-      o.path.toLowerCase().includes(lowerQuery) ||
-      o.element.toLowerCase().includes(lowerQuery) ||
-      o.qualities.some((q) => q.toLowerCase().includes(lowerQuery)) ||
-      o.mythology.toLowerCase().includes(lowerQuery)
-  );
+export function getQuizilas(): string[] {
+  return ODARA_DATA.quizilas;
 }
 
-export function getOdaraByDay(day: string): OdaraData[] {
-  return ODARA_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
+export function getEbós(): string[] {
+  return ODARA_DATA.ebós;
 }
 
-export function getOdaraByElement(element: string): OdaraData[] {
-  return ODARA_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
+export function getCores(): string[] {
+  return ODARA_DATA.cores;
+}
+
+export function getPedras(): string[] {
+  return ODARA_DATA.pedras;
+}
+
+export function getHarmonyElements(): string[] {
+  return ODARA_DATA.harmonyElements;
 }
