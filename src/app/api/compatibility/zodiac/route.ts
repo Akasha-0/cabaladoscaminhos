@@ -304,10 +304,8 @@ function commonChallenges(s1: string, s2: string, challenges: string[]): void {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-export async function GET(request: NextRequest) {
-  try {
-    const searchParams = request.nextUrl.searchParams;
     const parseResult = CompatibilityQuerySchema.safeParse({
+      sign1: searchParams.get('sign1')?.toLowerCase(),
       sign1: searchParams.get('sign1')?.toLowerCase(),
       sign2: searchParams.get('sign2')?.toLowerCase(),
       date1: searchParams.get('date1'),

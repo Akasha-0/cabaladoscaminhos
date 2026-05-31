@@ -118,7 +118,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     chakra: 'Muladhara (1º)',
     day: 'quarta-feira',
     colors: ['roxo', 'branco', 'azul'],
-    offerings: ['obí (noz de cola)', 'pipoca', 'água de'obi', 'flor de mão de Nanã'],
+    offerings: ['obí (noz de cola)', 'pipoca', 'água de obi', 'flor de mão de Nanã'],
     invocation: 'Nanã Burucema! Mãe antiga! Ancient wisdom!',
     blessing: 'Que a sabedoria de Nanã abra sua mente e traga enlightenment espiritual.',
   },
