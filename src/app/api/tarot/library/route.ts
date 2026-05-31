@@ -42,7 +42,8 @@ interface TarotCard {
   keywords: string[];
 }
 export async function GET(request: NextRequest) {
-    const searchParams = request.nextUrl.searchParams;
+  try {
+    const searchParams = request.nextUrl.searchParams();
     const parseResult = TarotLibraryQuerySchema.safeParse({
       arcano: searchParams.get('arcano'),
       search: searchParams.get('search'),
