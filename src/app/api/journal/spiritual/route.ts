@@ -93,46 +93,29 @@ export async function GET(request: NextRequest) {
       updated_at: item.updated_at,
     }));
 
-    return NextResponse.json({
-      success: true,
-      entries,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages,
-      },
-    });
+      }, { status: 500 });
+    }
   } catch (error) {
-    console.error('Error in GET spiritual journal:', error);
+    console.error('Error in GET /api/journal/spiritual:', error);
     return NextResponse.json(
-      { error: 'Erro interno do servidor' },
+      { error: 'Erro ao processar diário espiritual' },
       { status: 500 }
     );
   }
 }
 
-export async function POST(request: NextRequest) {
-  const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    return NextResponse.json(
-      { error: 'Usuário não autenticado' },
-      { status: 401 }
-    );
-  }
-
+// POST /api/journal/spiritual - Create a new journal entry
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const body = await req.json();
     const parseResult = JournalEntrySchema.safeParse(body);
     if (!parseResult.success) {
       return NextResponse.json({
-        error: 'Dados inválidos',
+        error: 'Invalid request',
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
@@ -140,18 +123,7 @@ export async function POST(request: NextRequest) {
     const { data, error: insertError } = await supabase
       .from('spiritual_journal')
       .insert({
-        user_id: user.id,
-        title,
-        content,
-        mood: mood || null,
-        theme: theme || null,
-        insights: insights || null,
-        gratitude: gratitude || null,
-      });
-    const { data, error: insertError } = await supabase
-      .from('spiritual_journal')
-      .insert({
-        user_id: user.id,
+        user_id: session.user.id,
         title,
         content,
         mood: mood || null,
@@ -161,7 +133,6 @@ export async function POST(request: NextRequest) {
       })
       .select()
       .single();
-
     if (insertError) {
       console.error('Error creating spiritual journal entry:', insertError);
       return NextResponse.json(
@@ -169,7 +140,6 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
-
     const entry: JournalEntry = {
       id: data.id,
       user_id: data.user_id,
@@ -182,13 +152,9 @@ export async function POST(request: NextRequest) {
       created_at: data.created_at,
       updated_at: data.updated_at,
     };
-
-    return NextResponse.json({
-      success: true,
-      entry,
-    }, { status: 201 });
+    return NextResponse.json({ success: true, entry }, { status: 201 });
   } catch (error) {
-    console.error('Error in POST spiritual journal:', error);
+    console.error('Error in POST /api/journal/spiritual:', error);
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }
