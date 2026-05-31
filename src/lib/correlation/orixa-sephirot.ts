@@ -1,167 +1,158 @@
 /**
- * Orixá-Sephirot Spiritual Correlation Mapping
- * Maps the Orixás of Candomblé to the ten Sephiroth of the Tree of Life
- * Based on traditional Afro-Brazilian and Kabbalistic spiritual correspondences
+ * Orixá-Sephirah Spiritual Correlation Module
+ * Maps Orixás from Candomblé/Umbanda to the Kabbalistic Sephiroth (Tree of Life)
+ * Based on Cabala dos Caminhos framework
  */
 
-/** The Orixás of the main pantheon */
-export type Orixá =
-  | 'Oxalá'
-  | 'Obatalá'
-  | 'Iemanjá'
-  | 'Oxum'
-  | 'Xangô'
-  | 'Oxóssi'
-  | 'Iansã'
-  | 'Ogum'
-  | 'Nanã'
-  | 'Omolu';
+import type { Elemento } from './sephirot-element';
 
 /**
- * Represents the correlation between an Orixá and its Sephirah correspondence
+ * Represents the correlation between an Orixá and a Sephirah
  */
-export interface OrixáSephirot {
-  /** The name of the Orixá */
-  orixá: Orixá;
-  /** The corresponding Sephirah in Hebrew/English */
+export interface OrixaSephirah {
+  /** The Orixá name in Portuguese */
+  orixa: string;
+  /** The associated Sephirah name (Hebrew/English) */
   sephirah: string;
-  /** The element associated with this correlation */
-  elemento: 'Fogo' | 'Terra' | 'Ar' | 'Água' | 'Éter';
+  /** The primary element connecting Orixá to Sephirah */
+  elemento: Elemento;
+  /** Spiritual meaning of this Orixá-Sephirah correlation */
+  significado_espiritual: string;
   /** Path number on the Tree of Life */
   numero_caminho: number;
-  /** Spiritual energy and quality of the orixá-sephirah connection */
-  energia_espiritual: string;
+  /** Secondary Sephiroth connections if any */
+  sephirot_secundarias?: string[];
 }
 
-// ─── Orixá-to-Sephirot Mapping ─────────────────────────────────────────────
-
-export const ORIXÁ_SEPHIROT_MAPPINGS: Record<string, OrixáSephirot> = {
-  // Oxalá - Kether (Corona) - Éter - Pureza Divina Primordial
-  Oxalá: {
-    orixá: 'Oxalá',
+/**
+ * Main Orixá-Sephirah mappings based on traditional correlations
+ * Integrates Candomblé/Umbanda energy systems with Kabbalistic Tree of Life
+ */
+const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
+  'Oxalá': {
+    orixa: 'Oxalá',
     sephirah: 'Kether',
     elemento: 'Éter',
+    significado_espiritual: 'Pureza Divina — Oxalá, o Criador, conecta-se a Kether, a Coroa da Árvore da Vida. Ambos representam a origem absoluta, o princípio primeiro antes da manifestação. O éter de Oxalá é a luz primordial que precede todos os elementos.',
     numero_caminho: 1,
-    energia_espiritual: 'Pureza Primordial / Criação Divina / Aláà / Pai dos Orixás',
+    sephirot_secundarias: ['Chokmah'],
   },
-
-  // Obatalá - Chokmah (Sabedoria) - Éter - Sabedoria Criadora
-  Obatalá: {
-    orixá: 'Obatalá',
-    sephirah: 'Chokmah',
-    elemento: 'Éter',
-    numero_caminho: 2,
-    energia_espiritual: 'Sabedoria Primordial / Mente Divina / Pureza do pensamento',
-  },
-
-  // Iemanjá - Binah (Entendimento) - Água - Compreensão Marinha
-  Iemanjá: {
-    orixá: 'Iemanjá',
+  'Iemanjá': {
+    orixa: 'Iemanjá',
     sephirah: 'Binah',
     elemento: 'Água',
+    significado_espiritual: 'Mãe Divina — Iemanjá, a Rainha do Mar, alinha-se com Binah, a Entendimento. Ambas são forças matriciais, geradoras de vida. A água de Iemanjá representa o fluxo criativo primordial que Binah canaliza na formação do universo.',
     numero_caminho: 3,
-    energia_espiritual: 'Compreensão / Maternidade Divina / Mares e emoções profundas',
+    sephirot_secundarias: ['Chokmah'],
   },
-
-  // Oxum - Chesed (Misericórdia) - Água - Abundância Fluvial
-  Oxum: {
-    orixá: 'Oxum',
-    sephirah: 'Chesed',
+  'Oxum': {
+    orixa: 'Oxum',
+    sephirah: 'Tiphereth',
     elemento: 'Água',
-    numero_caminho: 4,
-    energia_espiritual: 'Misericórdia / Abundância / Rios / Amor prospero',
+    significado_espiritual: 'Beleza e Harmonia — Oxum, a riqueza das águas doces, corresponde a Tiphereth, a Beleza no centro da Árvore. Ambas representam o ponto de equilíbrio entre polaridades, a harmonização das águas superiores e inferiores.',
+    numero_caminho: 6,
+    sephirot_secundarias: ['Netzach', 'Yesod'],
   },
-
-  // Xangô - Geburah (Severidade) - Fogo - Força Retificadora
-  Xangô: {
-    orixá: 'Xangô',
+  'Ogum': {
+    orixa: 'Ogum',
     sephirah: 'Geburah',
     elemento: 'Fogo',
+    significado_espiritual: 'Força e Conquista — Ogum, o guerreiro ferreiro, conecta-se a Geburah, a Severidade. Ambos são agentes de transformação através da ação, o fogo que corta e forja. A energia marciana de Ogum corresponde à ira divina de Geburah.',
     numero_caminho: 5,
-    energia_espiritual: 'Força / Justiça / Trovão / Cortante como raio',
+    sephirot_secundarias: ['Hod'],
   },
-
-  // Oxóssi - Tiphereth (Beleza) - Fogo - Harmonia Solar
-  Oxóssi: {
-    orixá: 'Oxóssi',
+  'Oxóssi': {
+    orixa: 'Oxóssi',
+    sephirah: 'Chesed',
+    elemento: 'Terra',
+    significado_espiritual: 'Abundância e Verdade — Oxóssi, o caçador divisor de destinos, alinha-se com Chesed, a Misericórdia. Ambos governam sobre a distribuição de recursos e o conhecimento das leis naturais. O excesso de Oxóssi corresponde à expansão infinita de Chesed.',
+    numero_caminho: 4,
+    sephirot_secundarias: ['Netzach'],
+  },
+  'Xangô': {
+    orixa: 'Xangô',
     sephirah: 'Tiphereth',
     elemento: 'Fogo',
+    significado_espiritual: 'Justiça e Poder — Xangô, o rei do trovão, conecta-se a Tiphereth através do Sol. Ambas são fontes de luz, comando e equilíbrio entre extremos. O fogo de Xangô ilumina como o Sol de Tiphereth, despertando a consciência e revelando verdades ocultas.',
     numero_caminho: 6,
-    energia_espiritual: 'Beleza / Harmonia / Caça espiritual / Luz solar',
+    sephirot_secundarias: ['Geburah', 'Hod'],
   },
-
-  // Iansã - Netzach (Vitória) - Fogo - Paixão Vitoriosa
-  Iansã: {
-    orixá: 'Iansã',
+  'Iansã': {
+    orixa: 'Iansã',
     sephirah: 'Netzach',
     elemento: 'Fogo',
+    significado_espiritual: 'Vitória e Tempestade — Iansã, senhora das batalhas e ventos, corresponde a Netzach, a Vitória. Ambas representam a força que supera obstáculos, o vento que limpa e renova. A urânica Iansã antecipa a transformação de Netzach.',
     numero_caminho: 7,
-    energia_espiritual: 'Vitória / Paixão / Ventos e tempestades / Guerra e transformação',
+    sephirot_secundarias: ['Geburah', 'Tiphereth'],
   },
-
-  // Ogum - Hod (Glória) - Ar - Gloria Intelectual
-  Ogum: {
-    orixá: 'Ogum',
-    sephirah: 'Hod',
-    elemento: 'Ar',
-    numero_caminho: 8,
-    energia_espiritual: 'Glória / Intelecto / Ferro e ferramentas / Conquista tecnológica',
-  },
-
-  // Nanã - Yesod (Fundação) - Água - Fundação Lunar
-  Nanã: {
-    orixá: 'Nanã',
-    sephirah: 'Yesod',
-    elemento: 'Água',
-    numero_caminho: 9,
-    energia_espiritual: 'Fundação / Subconsciente / Lua / Mortes e renascimentos',
-  },
-
-  // Omolu - Malkuth (Reino) - Terra - Manifestação Material
-  Omolu: {
-    orixá: 'Omolu',
+  'Omolu': {
+    orixa: 'Omolu',
     sephirah: 'Malkuth',
     elemento: 'Terra',
+    significado_espiritual: 'Aterramento e Transformação — Omolu, senhor das doenças e curas, conecta-se a Malkuth, o Reino. Ambos governam sobre a materialidade, o corpo físico e os processos de decomposição e regeneração. O接地 de Omolu é a manifestação última de Malkuth.',
     numero_caminho: 10,
-    energia_espiritual: 'Reino / Manifestação / Terra e peste / Aterramento material',
+    sephirot_secundarias: ['Yesod'],
   },
-} as const;
-
-// Freeze the mapping object to prevent modifications
-Object.freeze(ORIXÁ_SEPHIROT_MAPPINGS);
-
-/**
- * Get the Orixá-Sephirot correlation mapping
- * @param orixá - The name of the Orixá (e.g., 'Oxalá', 'Iemanjá', 'Xangô')
- * @returns The correlation mapping or null if not found
- */
-export function getOrixaSephirot(orixá: string): OrixáSephirot | null {
-  return ORIXÁ_SEPHIROT_MAPPINGS[orixá] ?? null;
-}
+  'Nanã': {
+    orixa: 'Nanã',
+    sephirah: 'Binah',
+    elemento: 'Água',
+    significado_espiritual: 'Sabedoria Ancestral — Nanã, a anciã das águas primordiais, conecta-se a Binah pelo limiar do tempo. Ambas são forças de encerramento e renovação, governando sobre a transformação através da dissolução. A saturniana Nanã aguarda a sabedoria de Binah.',
+    numero_caminho: 3,
+    sephirot_secundarias: ['Chokmah', 'Yesod'],
+  },
+};
 
 /**
- * Get the Sephirot-Orixá reverse correlation mapping
- * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah', 'Malkuth')
- * @returns The correlation mapping or null if not found
+ * Get Orixá-Sephirah correlation mapping
+ * @param orixa - Name of the Orixá (case-insensitive)
+ * @returns OrixaSephirah mapping or undefined if not found
  */
-export function getSephirotOrixa(sephirah: string): OrixáSephirot | null {
-  const found = Object.values(ORIXÁ_SEPHIROT_MAPPINGS).find(
-    (mapping) => mapping.sephirah.toLowerCase() === sephirah.toLowerCase()
-  );
-  return found ?? null;
-}
-
-/**
- * Get all available Orixá-Sephirot mappings
- * @returns Array of all correlation mappings sorted by path number
- */
-export function getAllOrixaSephiroths(): OrixáSephirot[] {
-  return Object.values(ORIXÁ_SEPHIROT_MAPPINGS).sort(
-    (a, b) => a.numero_caminho - b.numero_caminho
+export function getOrixaSephirot(orixa: string): OrixaSephirah | undefined {
+  const normalized = orixa.trim();
+  return ORIXAS_SEPHIROT_MAP[normalized] || Object.values(ORIXAS_SEPHIROT_MAP).find(
+    entry => entry.orixa.toLowerCase() === normalized.toLowerCase()
   );
 }
 
-// Default export for convenience
+/**
+ * Get the reverse mapping: Sephirah to associated Orixás
+ * @returns Record mapping each Sephirah name to its associated Orixá names
+ */
+export function getSephirotOrixa(): Record<string, string[]> {
+  const result: Record<string, string[]> = {};
+  
+  for (const entry of Object.values(ORIXAS_SEPHIROT_MAP)) {
+    const sephirah = entry.sephirah;
+    if (!result[sephirah]) {
+      result[sephirah] = [];
+    }
+    result[sephirah].push(entry.orixa);
+    
+    // Also include secondary sephirot
+    if (entry.sephirot_secundarias) {
+      for (const secondary of entry.sephirot_secundarias) {
+        if (!result[secondary]) {
+          result[secondary] = [];
+        }
+        if (!result[secondary].includes(entry.orixa)) {
+          result[secondary].push(entry.orixa);
+        }
+      }
+    }
+  }
+  
+  return result;
+}
+
+/**
+ * Get all Orixá-Sephirah mappings
+ * @returns Array of all OrixaSephirah objects
+ */
+export function getAllOrixaSephiroths(): OrixaSephirah[] {
+  return Object.values(ORIXAS_SEPHIROT_MAP);
+}
+
 export default {
   getOrixaSephirot,
   getSephirotOrixa,
