@@ -227,6 +227,8 @@ export async function GET(request: NextRequest) {
         });
       }
       default: {
+        return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+      }
     }
   } catch {
     return NextResponse.json(

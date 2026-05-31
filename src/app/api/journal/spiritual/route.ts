@@ -138,7 +138,6 @@ export async function POST(request: NextRequest) {
     }
     const { title, content, mood, theme, insights, gratitude } = parseResult.data;
     const { data, error: insertError } = await supabase
-    const { data, error: insertError } = await supabase
       .from('spiritual_journal')
       .insert({
         user_id: user.id,
@@ -148,7 +147,8 @@ export async function POST(request: NextRequest) {
         theme: theme || null,
         insights: insights || null,
         gratitude: gratitude || null,
-      })
+      });
+      });
     const { data, error: insertError } = await supabase
       .from('spiritual_journal')
       .insert({
