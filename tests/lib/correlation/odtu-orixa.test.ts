@@ -470,7 +470,7 @@ describe('Odú-Ifá Orixá Correlation', () => {
   // ─── Type exports ────────────────────────────────────────────────────────
 
   describe('Type exports', () => {
-    def('OdTuOrixa', () => {
+    it('should export OdTuOrixa type', () => {
       const mapping = getAllOduOrixas()[0];
       expect(mapping).toBeDefined();
     });
@@ -480,4 +480,3 @@ describe('Odú-Ifá Orixá Correlation', () => {
       expect(element).toBe('fogo');
     });
   });
-});
