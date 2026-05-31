@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 const HealingTypeSchema = z.enum(['mental', 'physical', 'spiritual', 'karmic', 'emotional', 'ancestral']);
 const HealingStageSchema = z.object({
@@ -23,12 +29,83 @@ const HealingTypeDetailSchema = z.object({
   stages: z.array(HealingStageSchema),
   duration: z.string(),
   contraindications: z.array(z.string()).optional(),
+  spiritualCorrelations: z.object({
+    sefirot: z.array(z.string()),
+    chakra: z.number(),
+    element: z.string(),
+    orixa: z.string(),
+    affirmation: z.string(),
+    frequency: z.string(),
+  }).optional(),
 });
 
 const HealingTypesQuerySchema = z.object({
   type: HealingTypeSchema.optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
+
+// ─── Spiritual Correlations for Healing Types ──────────────────────────────────────────
+const HEALING_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  'mental-healing': {
+    sefirot: ['Gevurah', 'Hod'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Oxalá',
+    affirmation: 'Minha mente está clara e em paz',
+    frequency: '741 Hz',
+  },
+  'emotional-healing': {
+    sefirot: ['Tipheret', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Minhas emoções fluem em harmonia',
+    frequency: '528 Hz',
+  },
+  'physical-healing': {
+    sefirot: ['Malkuth', 'Yesod'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Ogum',
+    affirmation: 'Meu corpo é templo de saúde e vitalidade',
+    frequency: '174 Hz',
+  },
+  'spiritual-healing': {
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Minha essência espiritual está em paz',
+    frequency: '963 Hz',
+  },
+  'karmic-healing': {
+    sefirot: ['Binah', 'Gevurah'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Nanã',
+    affirmation: 'Libero os pesos do karma ancestral',
+    frequency: '639 Hz',
+  },
+  'ancestral-healing': {
+    sefirot: ['Yesod', 'Malkuth'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Nanã',
+    affirmation: 'A cura ancestral flui através de mim',
+    frequency: '285 Hz',
+  },
+};
 
 const HEALING_TYPES: z.infer<typeof HealingTypeDetailSchema>[] = [
   {
@@ -47,6 +124,7 @@ const HEALING_TYPES: z.infer<typeof HealingTypeDetailSchema>[] = [
       { id: 'stabilization', name: 'Estabilização', description: 'Consolidar novas crenças', duration: ' ongoing' },
     ],
     duration: '2-6 meses',
+    spiritualCorrelations: HEALING_SPIRITUAL_CORRELATIONS['mental-healing'],
   },
   {
     id: 'emotional-healing',
@@ -63,6 +141,7 @@ const HEALING_TYPES: z.infer<typeof HealingTypeDetailSchema>[] = [
       { id: 'integration', name: 'Integração', description: 'Integrar experiências passadas com sabedoria', duration: ' ongoing' },
     ],
     duration: '3-12 meses',
+    spiritualCorrelations: HEALING_SPIRITUAL_CORRELATIONS['emotional-healing'],
   },
   {
     id: 'physical-healing',
@@ -81,92 +160,155 @@ const HEALING_TYPES: z.infer<typeof HealingTypeDetailSchema>[] = [
     ],
     duration: '1-6 meses',
     contraindications: ['Não substitui tratamento médico', 'Consulte profissionais qualificados'],
+    spiritualCorrelations: HEALING_SPIRITUAL_CORRELATIONS['physical-healing'],
   },
   {
     id: 'spiritual-healing',
     type: 'spiritual',
     name: 'Cura Espiritual',
     nameEn: 'Spiritual Healing',
-    description: 'Expansão da consciência e alinhamento com a dimensão espiritual para despertar e libertação.',
-    methods: ['Meditação Espiritual', 'Oração', 'Rituais de Purificação', 'Trabalho com mestres ascensionados'],
-    sefirot: ['Kether', 'Chokhmah', 'Binah'],
+    description: 'Conexão com a essência divina e purificação da alma para restauração da paz interior.',
+    methods: ['Oração', 'Meditação profunda', 'Ritual sagrado', 'Desprendimento do ego'],
+    sefirot: ['Kether', 'Chokhmah'],
     chakras: ['Sahasrara (7º)', 'Ajna (6º)'],
     stages: [
-      { id: 'purification', name: 'Purificação', description: 'Limpar corpo causal e centros superiores', duration: '3-6 meses' },
-      { id: 'expansion', name: 'Expansão', description: 'Expandir consciência para dimensões superiores', duration: '6-12 meses' },
-      { id: 'integration', name: 'Integração', description: 'Integrar experiência espiritual na vida cotidiana', duration: ' ongoing' },
+      { id: 'connection', name: 'Conexão', description: 'Estabelecer conexão com a fonte divina', duration: '1-4 semanas' },
+      { id: 'purification', name: 'Purificação', description: 'Limpar energética e emotional clutter', duration: '2-8 semanas' },
+      { id: 'illumination', name: 'Iluminação', description: 'Despertar para verdades superiores', duration: ' ongoing' },
     ],
-    duration: '1-3 anos',
-    contraindications: ['Requer acompanhamento espiritual adequado', 'Pode despertar forças dormentes'],
+    duration: '3-12 meses',
+    spiritualCorrelations: HEALING_SPIRITUAL_CORRELATIONS['spiritual-healing'],
   },
   {
     id: 'karmic-healing',
     type: 'karmic',
     name: 'Cura Cármica',
     nameEn: 'Karmic Healing',
-    description: 'Resolução de marcas cármicas eパターン (padrões) de vidas passadas que afetam a vida presente.',
-    methods: ['Regressão a Vidas Passadas', 'Terapia de Vidas Passadas', 'Yoga Tântrico', 'Trabalho com Orixás'],
-    sefirot: ['Daat', 'Tipheret'],
-    chakras: ['Todos os chakras', 'Corpo Cármico'],
+    description: 'Trabalho de libertação de padrões cármicos herdados de vidas passadas e resolução de dívida espiritual.',
+    methods: ['Regression Therapy', 'Karmic Astrology', 'Ritual de desvinculação', 'Tarot Cármico'],
+    sefirot: ['Binah', 'Gevurah'],
+    chakras: ['Ajna (6º)', 'Anahata (4º)'],
     stages: [
-      { id: 'regression', name: 'Regressão', description: 'Access memories of past lives', duration: '2-5 sessões' },
-      { id: 'understanding', name: 'Compreensão', description: 'Entender como padrões passados afetam o presente', duration: '3-6 sessões' },
-      { id: 'forgiveness', name: 'Perdão', description: 'Perdoar a si mesmo e aos outros envolvidos', duration: '2-4 sessões' },
-      { id: 'release', name: 'Libertação', description: 'Liberar cordões cármicos e padrões', duration: '4-8 sessões' },
-      { id: 'renewal', name: 'Renovação', description: 'Criar novos padrões cármicos positivos', duration: ' ongoing' },
+      { id: 'identification', name: 'Identificação', description: 'Identificar padrões cármicos recorrentes', duration: '2-4 semanas' },
+      { id: 'understanding', name: 'Compreensão', description: 'Compreender a origem e propósito do karma', duration: '4-8 semanas' },
+      { id: 'resolution', name: 'Resolução', description: 'Realizar rituais de libertação cármica', duration: '8-16 semanas' },
+      { id: 'integration', name: 'Integração', description: 'Integrar a liberdade conquistada', duration: ' ongoing' },
     ],
-    duration: '1-2 anos',
-    contraindications: ['Deve ser feito com profissional experiente', 'Pode trazer memórias dolorosas'],
+    duration: '6-18 meses',
+    contraindications: ['Não recomendado para pessoas com histórico de transtornos dissociativos'],
+    spiritualCorrelations: HEALING_SPIRITUAL_CORRELATIONS['karmic-healing'],
   },
   {
     id: 'ancestral-healing',
     type: 'ancestral',
     name: 'Cura Ancestral',
     nameEn: 'Ancestral Healing',
-    description: 'Libertação de padrões e energias herdadas da linhagem ancestral, purificação da herança familiar.',
-    methods: ['Terapia Sistêmica', 'Constelação Familiar', 'Rituais Ancestrais', 'Oração aos Ancestrais'],
+    description: 'Trabalho de cura com a linhagem familiar, resolvendo padrões transgeracionais e honrando os ancestrais.',
+    methods: ['Constelações Familiares', 'Genealogia Espiritual', 'Ritual Ancestral', 'Terapia Sistêmica'],
     sefirot: ['Yesod', 'Malkuth'],
-    chakras: ['Muladhara (1º)', 'Coração Ancestral'],
+    chakras: ['Muladhara (1º)', 'Svadhisthana (2º)'],
     stages: [
-      { id: 'mapping', name: 'Mapeamento', description: 'Identificar padrões ancestrais repetitivos', duration: '1-2 sessões' },
-      { id: 'honoring', name: 'Honra', description: 'Honrar os ancestrais sem carregar seus fardos', duration: '2-4 sessões' },
-      { id: 'releasing', name: 'Libertação', description: 'Soltar padrões que não pertencem a você', duration: '3-6 sessões' },
-      { id: 'claiming', name: 'Reivindicação', description: 'Claim your own life and destiny', duration: ' ongoing' },
+      { id: 'mapping', name: 'Mapeamento', description: 'Mapear a árvore familiar e padrões', duration: '2-4 semanas' },
+      { id: 'honoring', name: 'Honrar', description: 'Honrar os ancestrais e reconhecer dívidas', duration: '4-8 semanas' },
+      { id: 'liberation', name: 'Libertação', description: 'Libertar padrões que não servem mais', duration: '8-16 semanas' },
+      { id: 'integration', name: 'Integração', description: 'Assumir seu lugar na linhagem', duration: ' ongoing' },
     ],
-    duration: '6-18 meses',
+    duration: '6-12 meses',
+    spiritualCorrelations: HEALING_SPIRITUAL_CORRELATIONS['ancestral-healing'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = HealingTypesQuerySchema.safeParse({
-    type: searchParams.get('type'),
-    limit: searchParams.get('limit'),
-  });
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = HealingTypesQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      limit: searchParams.get('limit'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
 
-  if (!parseResult.success) {
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { type, limit, sefirot, chakra, element, orixa } = parseResult.data;
+
+    let healingTypes = [...HEALING_TYPES];
+
+    if (type) {
+      healingTypes = healingTypes.filter(h => h.type === type);
+    }
+
+    if (sefirot) {
+      healingTypes = healingTypes.filter(h => h.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      healingTypes = healingTypes.filter(h => h.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      healingTypes = healingTypes.filter(h => h.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      healingTypes = healingTypes.filter(h => h.spiritualCorrelations?.orixa === orixa);
+    }
+
+    if (limit && healingTypes.length > limit) {
+      healingTypes = healingTypes.slice(0, limit);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byType: healingTypes.reduce((acc, h) => {
+        acc[h.type] = (acc[h.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: healingTypes.reduce((acc, h) => {
+        h.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: healingTypes.reduce((acc, h) => {
+        const c = h.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: healingTypes.reduce((acc, h) => {
+        const e = h.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: healingTypes.reduce((acc, h) => {
+        const o = h.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      healingTypes,
+      count: healingTypes.length,
+      spiritualCorrelations: HEALING_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { type, limit, sefirot, chakra, element, orixa },
+      },
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
-
-  const { type, limit } = parseResult.data;
-  let healingTypes = [...HEALING_TYPES];
-
-  if (type) {
-    healingTypes = healingTypes.filter(h => h.type === type);
-  }
-
-  if (limit) {
-    healingTypes = healingTypes.slice(0, limit);
-  }
-
-  return NextResponse.json({
-    success: true,
-    healingTypes,
-    count: healingTypes.length,
-    total: HEALING_TYPES.length,
-  });
 }

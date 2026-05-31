@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 const PurityPracticeSchema = z.object({
   id: z.string(),
@@ -11,13 +17,116 @@ const PurityPracticeSchema = z.object({
   steps: z.array(z.string()),
   duration: z.string(),
   contraindications: z.array(z.string()).optional(),
+  spiritualCorrelations: z.object({
+    sefirot: z.array(z.string()),
+    chakra: z.number(),
+    element: z.string(),
+    orixa: z.string(),
+    affirmation: z.string(),
+    frequency: z.string(),
+  }).optional(),
 });
 
 const PurityPracticeQuerySchema = z.object({
   tradition: z.string().optional(),
   type: z.enum(['physical', 'energetic', 'mental', 'spiritual']).optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
+
+// ─── Spiritual Correlations for Purity Practices ──────────────────────────────────────────
+const PURITY_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  'gatha-practice': {
+    sefirot: ['Hod', 'Netzach'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Oxalá',
+    affirmation: 'Minha mente está em paz e pura',
+    frequency: '741 Hz',
+  },
+  'ho-oponopono': {
+    sefirot: ['Chesed', 'Tipheret'],
+    chakra: 4,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'Perdoo e sou perdoado, estou em paz',
+    frequency: '528 Hz',
+  },
+  'loving-kindness': {
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Amor e compaixão fluem através de mim',
+    frequency: '528 Hz',
+  },
+  'water-purification': {
+    sefirot: ['Yesod', 'Binah'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'A água sagrada purifica meu ser',
+    frequency: '285 Hz',
+  },
+  'japa-mala': {
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 6,
+    element: 'Ar',
+    orixa: 'Oxalá',
+    affirmation: 'O mantra ressoa em cada célula do meu ser',
+    frequency: '963 Hz',
+  },
+  'confession-ritual': {
+    sefirot: ['Gevurah', 'Tipheret'],
+    chakra: 5,
+    element: 'Fogo',
+    orixa: 'Xangô',
+    affirmation: 'Confesso minhas falhas com coração aberto',
+    frequency: '396 Hz',
+  },
+  'smudging': {
+    sefirot: ['Gevurah', 'Malkuth'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'A fumaça sagrada limpa minha aura',
+    frequency: '396 Hz',
+  },
+  'salt-bath': {
+    sefirot: ['Malkuth', 'Yesod'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Nanã',
+    affirmation: 'O sal purifica minha essência terrestre',
+    frequency: '174 Hz',
+  },
+  'moonlight-bath': {
+    sefirot: ['Yesod', 'Binah'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'A luz da lua purifica minha alma',
+    frequency: '639 Hz',
+  },
+  'sacred-fire': {
+    sefirot: ['Gevurah', 'Netzach'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Xangô',
+    affirmation: 'O fogo sagrado transforma e purifica',
+    frequency: '396 Hz',
+  },
+};
 
 const PURITY_PRACTICES: z.infer<typeof PurityPracticeSchema>[] = [
   {
@@ -34,6 +143,7 @@ const PURITY_PRACTICES: z.infer<typeof PurityPracticeSchema>[] = [
     ],
     duration: '15-30 minutos',
     contraindications: ['Não force a recitação se sentir resistência'],
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['gatha-practice'],
   },
   {
     id: 'ho-oponopono',
@@ -48,6 +158,7 @@ const PURITY_PRACTICES: z.infer<typeof PurityPracticeSchema>[] = [
       'Repita: "Eu te amo" (a si mesmo, à situação, ao universo)',
     ],
     duration: '10-20 minutos',
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['ho-oponopono'],
   },
   {
     id: 'loving-kindness',
@@ -62,6 +173,7 @@ const PURITY_PRACTICES: z.infer<typeof PurityPracticeSchema>[] = [
       'Abra para todos os seres: "Que todos os seres sejam felizes"',
     ],
     duration: '20-45 minutos',
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['loving-kindness'],
   },
   {
     id: 'water-purification',
@@ -76,104 +188,194 @@ const PURITY_PRACTICES: z.infer<typeof PurityPracticeSchema>[] = [
       'Beba pequenas quantidades ou use para banhar locais',
     ],
     duration: '10-15 minutos',
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['water-purification'],
   },
   {
     id: 'japa-mala',
     name: 'Japa Mala (Mantra)',
     tradition: 'Hindu/Yoga',
-    description: 'Repetição de um mantra usando contas para purificar a mente e elevar a consciência.',
+    description: 'Repetição de um mantra usando um mala de108 contas para purificar a mente e elevar a consciência.',
     steps: [
-      'Escolha um mantra adequado (Om Namah Shivaya, Hare Krishna, etc.)',
-      'Use um mala de 108 contas',
-      'A cada conta, repita o mantra completo',
-      'Mantenha foco na звук (som) e no significado',
-      'Complete 1 mala (108 repetições) ou mais',
+      'Escolha um mantra adequado à sua intenção',
+      'Segure o mala com a mão direita',
+      'A cada conta, repita o mantra com devoção',
+      'Mantenha o foco na respiração e no som',
+      'Complete108 repetições ou seu múltiplo',
     ],
     duration: '30-60 minutos',
-    contraindications: ['Evite durante menstruação segundo algumas tradições', 'Escolha mantra com orientação'],
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['japa-mala'],
   },
   {
-    id: 'confession-practice',
-    name: 'Prática de Confissão',
-    tradition: 'Cristianismo/Judaísmo',
-    description: 'Reconhecimento e arrependimento dos erros como forma de purificação da alma.',
+    id: 'confession-ritual',
+    name: 'Ritual de Confissão',
+    tradition: 'Cristão/Católico',
+    description: 'Prática de confissão de pecados e pedidos de perdão para purificação da alma.',
     steps: [
-      'Examine sua consciência em silêncio',
-      'Identifique pensamentos, palavras e ações que causaram dano',
-      'Reconheça cada erro com honestidade',
-      'Sinta genuíno arrependimento',
-      'Proponha-se a não repetir',
-      'Busque reconciled com aqueles afetados',
+      'Prepare um espaço sagrado e silencioso',
+      'Faça um exame de consciência',
+      'Confesse seus pecados com sinceridade',
+      'Peça perdão e faça propósito de mudança',
+      'Receba a absolvição ou perdoe-se',
     ],
     duration: '20-30 minutos',
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['confession-ritual'],
   },
   {
     id: 'smudging',
-    name: 'Smudging (Defumação Purificadora)',
-    tradition: 'Indigenous Americano',
-    description: 'Purificação com fumaça de ervas sagradas para limpar energias densas.',
+    name: 'Defumação Sagrada',
+    tradition: 'Ameríndio',
+    description: 'Uso de ervas sagradas queimadas para limpar energias densas de ambientes e pessoas.',
     steps: [
-      'Acenda sálvia branca, cedar, sweetgrass ou palo santo',
-      'Sopra suavemente para criar fumaça abundante',
-      'Passe a fumaça ao redor do corpo, começando pelos pés',
-      'Permita que a fumaça preencha o ambiente',
-      'Visualize a fumaça carregando embora todas as energias negativas',
-      'Agradeça às ervas e ao Spirits pela ajuda',
+      'Acenda as ervas sagradas (salvia, palo santo, incenso)',
+      'Permita que a fumaça se espalhe pelo ambiente',
+      'Passe a fumaça ao redor de você em espiral',
+      'Visualize a fumaça carregando as impurezas',
+      'Agradeça e despeça-se das energias',
     ],
-    duration: '15-30 minutos',
-    contraindications: ['Não use se tiver problemas respiratórios', 'Ventile bem o ambiente'],
+    duration: '15-20 minutos',
+    contraindications: ['Pessoas com problemas respiratórios devem evitar', 'Ventile bem o ambiente'],
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['smudging'],
   },
   {
     id: 'salt-bath',
     name: 'Banho de Sal',
     tradition: 'Universal',
-    description: 'Purificação física e energética usando sal marinho ou sal rosa do Himalaia.',
+    description: 'Banho com sal grosso para purificação física e energética do corpo.',
     steps: [
-      'Adicione 100-200g de sal à água morna do banho',
-      'Entre na água e visualize-se sendo purificado',
-      'Permaneça por 15-20 minutos',
-      'Imagine o sal absorvendo todas as energias densas',
+      'Dissolva 1kg de sal grosso em água morna',
+      'Entre na banheira e relaxe',
+      'Visualize o sal absorvendo todas as impurezas',
+      'Permaneça por15-20 minutos',
       'Enxágue com água limpa ao sair',
-      'Vista roupas limpas após o ritual',
+    ],
+    duration: '20-30 minutos',
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['salt-bath'],
+  },
+  {
+    id: 'moonlight-bath',
+    name: 'Banho de Luz Lunar',
+    tradition: 'Wicca/Neo-Pagão',
+    description: 'Exposição à luz da lua cheia para purificação e carregamento energético.',
+    steps: [
+      'Escolha uma noite de lua cheia',
+      'Exponha-se nu(a) à luz lunar',
+      'Visualize a luz prateada purificando seu campo',
+      'Permaneça por 15-30 minutos',
+      'Agradeça à lua pela bênção',
     ],
     duration: '30-45 minutos',
-    contraindications: ['Não use em feridas abertas', 'Evite contato com olhos'],
+    contraindications: ['Evite exposição prolongada em noites frias'],
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['moonlight-bath'],
+  },
+  {
+    id: 'sacred-fire',
+    name: 'Fogo Sagrado',
+    tradition: 'Védico/Zoroastriano',
+    description: 'Ritual de purificação através do fogo sagrado, usado em muitas tradições.',
+    steps: [
+      'Acenda um fogo sagrado (velas, lamparina, fogueira)',
+      'Sente-se em frente ao fogo em reverência',
+      'Ofereça intenções e orações ao fogo',
+      'Visualize o fogo consumindo suas impurezas',
+      'Agradeça ao fogo pela purificação',
+    ],
+    duration: '20-40 minutos',
+    spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS['sacred-fire'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = PurityPracticeQuerySchema.safeParse({
-    tradition: searchParams.get('tradition'),
-    type: searchParams.get('type'),
-    limit: searchParams.get('limit'),
-  });
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = PurityPracticeQuerySchema.safeParse({
+      tradition: searchParams.get('tradition'),
+      type: searchParams.get('type'),
+      limit: searchParams.get('limit'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
 
-  if (!parseResult.success) {
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { tradition, type, limit, sefirot, chakra, element, orixa } = parseResult.data;
+
+    let practices = [...PURITY_PRACTICES];
+
+    if (tradition) {
+      practices = practices.filter(p => p.tradition.toLowerCase().includes(tradition.toLowerCase()));
+    }
+
+    if (sefirot) {
+      practices = practices.filter(p => p.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      practices = practices.filter(p => p.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      practices = practices.filter(p => p.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      practices = practices.filter(p => p.spiritualCorrelations?.orixa === orixa);
+    }
+
+    if (limit && practices.length > limit) {
+      practices = practices.slice(0, limit);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byTradition: practices.reduce((acc, p) => {
+        acc[p.tradition] = (acc[p.tradition] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: practices.reduce((acc, p) => {
+        p.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: practices.reduce((acc, p) => {
+        const c = p.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: practices.reduce((acc, p) => {
+        const e = p.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: practices.reduce((acc, p) => {
+        const o = p.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      practices,
+      count: practices.length,
+      spiritualCorrelations: PURITY_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { tradition, type, limit, sefirot, chakra, element, orixa },
+      },
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
-
-  const { tradition, type, limit } = parseResult.data;
-  let practices = [...PURITY_PRACTICES];
-
-  if (tradition) {
-    practices = practices.filter(p => 
-      p.tradition.toLowerCase().includes(tradition.toLowerCase())
-    );
-  }
-
-  if (limit) {
-    practices = practices.slice(0, limit);
-  }
-
-  return NextResponse.json({
-    success: true,
-    practices,
-    count: practices.length,
-    total: PURITY_PRACTICES.length,
-  });
 }
