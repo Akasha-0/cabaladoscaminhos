@@ -1,14 +1,18 @@
 // ============================================================
 // CLEANSING API - CABALA DOS CAMINHOS
 // ============================================================
-// GET endpoints for spiritual cleansing
-// - Cleansing types and methods
-// - Ritual guidance
-// - Energy clearing practices
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const CleansingMethodSchema = z.enum([
+  'smoke', 'water', 'salt', 'sound', 'light', 'earth', 'breath', 'crystal',
+]);
+const CleansingQuerySchema = z.object({
+  method: CleansingMethodSchema.optional(),
+  type: z.enum(['energetic', 'physical', 'emotional', 'spiritual']).optional(),
+  includeRituals: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  limit: z.coerce.number().int().positive().max(50).optional(),
+});
 interface CleansingType {
   id: string;
   name: string;
@@ -21,18 +25,6 @@ interface CleansingType {
   sefirot: string[];
   chakras: string[];
 }
-
-interface CleansingRitual {
-  id: string;
-  name: string;
-  type: string;
-  steps: string[];
-  duration: string;
-  materials: string[];
-  intention: string;
-  aftercare: string[];
-}
-
 const CLEANSING_TYPES: CleansingType[] = [
   {
     id: 'fogo',

@@ -1,426 +1,326 @@
 /**
- * Day-Element Spiritual Correlation Module
- * Maps days of the week to classical elements with chakra connections and spiritual meaning.
- * Source: Cabala dos Caminhos spiritual system
+ * Day-Element Correlation Module
+ * Maps days of the week to elements and spiritual significance
+ * Based on classical mystical traditions and elemental correspondences
  */
 
-import type { Elemento } from './element-sign';
+/** Supported elements */
+export type Element = 'fogo' | 'água' | 'ar' | 'terra';
 
-/** The seven days of the week in Portuguese */
-export type DiaSemana =
-  | 'Domingo'
-  | 'Segunda-feira'
-  | 'Terça-feira'
-  | 'Quarta-feira'
-  | 'Quinta-feira'
-  | 'Sexta-feira'
-  | 'Sábado';
+/** Day of the week in Portuguese */
+export type DayOfWeek = string;
 
-/** Sanskrit chakra names */
-export type ChakraName =
-  | 'Muladhara'
-  | 'Svadhisthana'
-  | 'Manipura'
-  | 'Anahata'
-  | 'Vishuddha'
-  | 'Ajna'
-  | 'Sahasrara';
+/** Elemental quality for each day */
+export type ElementQuality = 'cardinal' | 'fixed' | 'mutable';
 
-/**
- * Represents the correlation between a day of the week and its elemental nature
- */
-export interface DayElementMapping {
+export interface DayElement {
   /** Day name in Portuguese */
-  dia: DiaSemana;
-  /** Associated classical element */
-  elemento: Elemento;
-  /** Primary chakra associated with this day's energy */
-  chakra: ChakraName;
-  /** Secondary chakra for days with dual nature */
-  chakraSecundario: ChakraName | null;
-  /** Planetary ruler of the day */
-  planeta: string;
-  /** Core spiritual meaning and energy signature */
-  significado_espiritual: {
-    /** Primary spiritual theme */
-    tema: string;
-    /** Emotional and psychological aspect */
-    emocional: string;
-    /** Mental and intellectual quality */
-    mental: string;
-    /** Physical energy manifestation */
-    fisico: string;
+  dia: DayOfWeek;
+  /** Day index (0 = Sunday, 6 = Saturday) */
+  indice: number;
+  /** Associated element */
+  elemento: Element;
+  /** Elemental quality */
+  qualidade: ElementQuality;
+  /** Spiritual meaning of the day's element */
+  significado_espiritual: string;
+  /** Keywords for the day's element energy */
+  palavras_chave: string[];
+  /** Elemental associations */
+  associacoes: {
+    /** Symbolic color */
+    cor: string;
+    /** Primary direction */
+    direcao: string;
+    /** Associated planet */
+    planeta: string;
+    /** Associated Orixá */
+    orixa: string;
+    /** Time of day energy peak */
+    momento: string;
   };
-  /** Affirmations for aligning with the day's energy */
-  affirmation: string;
-  /** Best activities for the day */
-  atividades: string[];
+  /** Recommended elemental practices */
+  praticas_elementais: string[];
 }
 
-/**
- * Complete mapping of the 7 days of the week to their elemental correspondences.
- * Based on the classical tradition of planetary rulership and elemental attributions.
- * Each day carries the vibrational signature of its ruling planet, amplified by
- * its elemental nature and chakra associations from the Cabala dos Caminhos system.
- */
-export const DAY_ELEMENT_MAP: Record<DiaSemana, DayElementMapping> = {
-  /**
-   * Domingo - Sunday - Sol
-   * Element: Fogo | Chakra: Anahata (Heart)
-   * Theme: Purpose, vitality, spiritual fire
-   */
-  Domingo: {
+/** Day-to-Element mapping based on classical mystical traditions */
+export const DAY_ELEMENT_MAP: Record<DayOfWeek, DayElement> = {
+  'Domingo': {
     dia: 'Domingo',
-    elemento: 'Fogo',
-    chakra: 'Anahata',
-    chakraSecundario: 'Manipura',
-    planeta: 'Sol',
-    significado_espiritual: {
-      tema: 'Propósito e vitalidade',
-      emocional: 'Alegria autêntica, amor próprio, brilho interior',
-      mental: 'Clareza de propósito, confiança, expressão criativa',
-      fisico: 'Energia revitalizante, saúde cardíaca, metabolismo ativo',
+    indice: 0,
+    elemento: 'fogo',
+    qualidade: 'fixed',
+    significado_espiritual: 'Domingo, ruled by the Sun, carries the pure transformative energy of Fire. This is the day of illumination, purpose, and creative expression. Fire energy brings clarity to one\'s spiritual path, ignites passion for life\'s purpose, and empowers the will to manifest intentions. It is ideal for solar meditations, fire rituals, and any work that requires radiant creative force.',
+    palavras_chave: ['transformação', 'luz', 'propósito', 'clareza', 'vitalidade', 'criatividade', 'espírito'],
+    associacoes: {
+      cor: 'Dourado',
+      direcao: 'Leste',
+      planeta: 'Sol',
+      orixa: 'Oxum',
+      momento: 'Meio-dia',
     },
-    affirmation: 'Eu expresso minha essência verdadeira com alegria e confiança',
-    atividades: ['Rituais solares', 'Meditação ao amanhecer', 'Exercícios energizantes', 'Criação artística'],
+    praticas_elementais: [
+      'Meditação solar com visualização de luz dourada',
+      'Rituais de开机 de propósito e intenção',
+      'Exposição consciente ao sol com gratidão',
+      'Práticas de criatividade e autoexpressão',
+      'Rituais de consagração de objetivos',
+    ],
   },
-
-  /**
-   * Segunda-feira - Monday - Lua
-   * Element: Água | Chakra: Svadhisthana (Sacral)
-   * Theme: Emotional healing, intuition, nurturing
-   */
   'Segunda-feira': {
     dia: 'Segunda-feira',
-    elemento: 'Água',
-    chakra: 'Svadhisthana',
-    chakraSecundario: 'Ajna',
-    planeta: 'Lua',
-    significado_espiritual: {
-      tema: 'Cura emocional e intuição',
-      emocional: 'Acolhimento, nutrir a criança interior, compaixão',
-      mental: 'Intuição profunda, sabedoria emocional, flexibilidade',
-      fisico: 'Hidratação, sono reparador, equilíbrio nervoso',
+    indice: 1,
+    elemento: 'água',
+    qualidade: 'cardinal',
+    significado_espiritual: 'Segunda-feira, ruled by the Moon, carries the deep emotional and intuitive energy of Water. This is the day for emotional healing, purification, and connecting with the subconscious. Water energy flows through feelings, dreams, and inner wisdom. It is ideal for lunar meditations, water rituals, and emotional cleansing work.',
+    palavras_chave: ['emoção', 'intuição', 'purificação', 'fluidez', 'receptividade', 'sabedoria interior', 'cura'],
+    associacoes: {
+      cor: 'Prata',
+      direcao: 'Oeste',
+      planeta: 'Lua',
+      orixa: 'Iemanjá',
+      momento: 'Noite',
     },
-    affirmation: 'Eu honro minhas emoções e permito que elas fluam livremente',
-    atividades: ['Práticas lunares', 'Journaling', 'Meditação water', 'Terapias holísticas'],
+    praticas_elementais: [
+      'Banhos de limpeza energética com ervas',
+      'Meditação lunar de cura emocional',
+      'Trabalho com água lunarizada',
+      'Escrita terapêutica e auto-reflexão',
+      'Práticas de perdão e soltura',
+    ],
   },
-
-  /**
-   * Terça-feira - Tuesday - Marte
-   * Element: Fogo | Chakra: Manipura (Solar Plexus)
-   * Theme: Courage, action, transformation
-   */
   'Terça-feira': {
     dia: 'Terça-feira',
-    elemento: 'Fogo',
-    chakra: 'Manipura',
-    chakraSecundario: 'Muladhara',
-    planeta: 'Marte',
-    significado_espiritual: {
-      tema: 'Coragem e ação transformadora',
-      emocional: 'Determinação, força de vontade, superação do medo',
-      mental: 'Assertividade, foco, capacidade de liderança',
-      fisico: 'Energia física, sistema circulatório, vitalidade',
+    indice: 2,
+    elemento: 'fogo',
+    qualidade: 'cardinal',
+    significado_espiritual: 'Terça-feira, ruled by Mars, carries the assertive and courageous energy of Fire. This is the day for action, determination, and overcoming obstacles. The aggressive aspect of fire brings strength to confront challenges and defend what matters. It is ideal for fire rituals of protection, courage practices, and martial energy work.',
+    palavras_chave: ['ação', 'coragem', 'determinação', 'força', 'proteção', 'assertividade', 'conquista'],
+    associacoes: {
+      cor: 'Vermelho',
+      direcao: 'Sul',
+      planeta: 'Marte',
+      orixa: 'Ogum',
+      momento: 'Nascer do sol',
     },
-    affirmation: 'Eu tenho força e coragem para transformar minha realidade',
-    atividades: ['Exercícios intensos', 'Rituais de proteção', 'Ações decisiveis', 'Assertividade'],
+    praticas_elementais: [
+      'Rituais de proteção e defesa',
+      'Práticas de coragem e força interior',
+      'Meditação matinal de energia ativa',
+      'Exercícios físicos com intenção espiritual',
+      'Trabalho com ferramentas ritualísticas',
+    ],
   },
-
-  /**
-   * Quarta-feira - Wednesday - Mercúrio
-   * Element: Ar | Chakra: Vishuddha (Throat)
-   * Theme: Communication, intellect, clarity
-   */
   'Quarta-feira': {
     dia: 'Quarta-feira',
-    elemento: 'Ar',
-    chakra: 'Vishuddha',
-    chakraSecundario: 'Ajna',
-    planeta: 'Mercúrio',
-    significado_espiritual: {
-      tema: 'Comunicação e clareza mental',
-      emocional: 'Expressão autêntica, adaptabilidade, leveza',
-      mental: 'Aprendizado, sabedoria, percepção clara',
-      fisico: 'Funções cerebrais, comunicação celular, respiração',
+    indice: 3,
+    elemento: 'terra',
+    qualidade: 'mutable',
+    significado_espiritual: 'Quarta-feira, ruled by Mercury, carries the grounded and communicative energy of Earth through Air. This is the day for learning, communication, and mental clarity. Earth element grounds Mercury\'s swift mental energy, providing stability to thoughts and words. It is ideal for study, writing, teaching, and any intellectual work with practical application.',
+    palavras_chave: ['comunicação', 'aprendizado', 'inteligência', 'versatilidade', 'curiosidade', 'sabedoria prática', 'adaptabilidade'],
+    associacoes: {
+      cor: 'Amarelo',
+      direcao: 'Norte',
+      planeta: 'Mercúrio',
+      orixa: 'Oxalá',
+      momento: 'Manhã',
     },
-    affirmation: 'Eu expresso minha verdade com clareza e comunicação verdadeira',
-    atividades: ['Estudos', 'Escrita criativa', 'Negociações', 'Meditação throat'],
+    praticas_elementais: [
+      'Estudos e práticas de aprendizado',
+      'Escrita criativa e comunicação',
+      'Meditação de clareza mental',
+      'Trabalho com palavras e símbolos',
+      'Rituais de sabedoria e renovação mental',
+    ],
   },
-
-  /**
-   * Quinta-feira - Thursday - Júpiter
-   * Element: Fogo | Chakra: Anahata (Heart)
-   * Theme: Expansion, abundance, faith
-   */
   'Quinta-feira': {
     dia: 'Quinta-feira',
-    elemento: 'Fogo',
-    chakra: 'Anahata',
-    chakraSecundario: null,
-    planeta: 'Júpiter',
-    significado_espiritual: {
-      tema: 'Expansão e abundância',
-      emocional: 'Otimismo, gratidão, fé no processo da vida',
-      mental: 'Visão ampliada, sabedoria filosófica, crença em possibilidades',
-      fisico: 'Expansão de energia, sistema hepático, crescimento',
+    indice: 4,
+    elemento: 'fogo',
+    qualidade: 'mutable',
+    significado_espiritual: 'Quinta-feira, ruled by Jupiter, carries the expansive and wise energy of Fire. This is the day for growth, abundance, and spiritual expansion. Jupiter\'s fire is philosophical rather than aggressive — it illuminates the path to wisdom and abundance. It is ideal for rituals of prosperity, meditation on purpose, and work that expands consciousness.',
+    palavras_chave: ['expansão', 'abundância', 'sabedoria', 'otimismo', 'generosidade', ' propósito elevado', 'crescimento'],
+    associacoes: {
+      cor: 'Azul',
+      direcao: 'Leste',
+      planeta: 'Júpiter',
+      orixa: 'Oxumaré',
+      momento: 'Entardecer',
     },
-    affirmation: 'Eu abundo em todas as áreas da minha vida e espalho bênçãos',
-    atividades: ['Gratidão', 'Oração', 'Estudos espirituais', 'Planejamento de longo prazo'],
+    praticas_elementais: [
+      'Rituais de prosperidade e abundância',
+      'Meditação de expansão da consciência',
+      'Práticas de gratidão e generosidade',
+      'Estudos filosóficos e espirituais',
+      'Trabalho com intención de crescimento',
+    ],
   },
-
-  /**
-   * Sexta-feira - Friday - Vênus
-   * Element: Terra | Chakra: Svadhisthana (Sacral)
-   * Theme: Love, beauty, harmony
-   */
   'Sexta-feira': {
     dia: 'Sexta-feira',
-    elemento: 'Terra',
-    chakra: 'Svadhisthana',
-    chakraSecundario: 'Anahata',
-    planeta: 'Vênus',
-    significado_espiritual: {
-      tema: 'Amor e harmonia',
-      emocional: 'Amor próprio, relações harmoniosas,感性',
-      mental: 'Apreciação da beleza, equilíbrio, senso estético refinado',
-      fisico: 'Reprodução, sistema urogenital, sensualidade',
+    indice: 5,
+    elemento: 'água',
+    qualidade: 'cardinal',
+    significado_espiritual: 'Sexta-feira, ruled by Venus, carries the loving and harmonious energy of Water. This is the day for love, beauty, relationships, and emotional balance. Venusian water nurtures connections and aesthetic appreciation. It is ideal for love rituals, partnership work, beauty practices, and anything that enhances harmony in relationships.',
+    palavras_chave: ['amor', 'harmonia', 'beleza', 'conexão', 'prazer', 'arte', 'relacionamento'],
+    associacoes: {
+      cor: 'Verde',
+      direcao: 'Oeste',
+      planeta: 'Vênus',
+      orixa: 'Oxum',
+      momento: 'Tarde',
     },
-    affirmation: 'Eu sou digno de amor e merecedor de todas as belezas da vida',
-    atividades: ['Rituais de amor', 'Artes', 'Tempo com amigos', 'Auto-cuidado'],
+    praticas_elementais: [
+      'Rituais de amor e harmonia em relacionamentos',
+      'Práticas de autoamor e aceitação',
+      'Trabalho com água perfumada para amor',
+      'Arte e expressões estéticas sagradas',
+      'Meditações de conexão e unidade',
+    ],
   },
-
-  /**
-   * Sábado - Saturday - Saturno
-   * Element: Terra | Chakra: Muladhara (Root)
-   * Theme: Discipline, structure, karmic lessons
-   */
-  Sábado: {
+  'Sábado': {
     dia: 'Sábado',
-    elemento: 'Terra',
-    chakra: 'Muladhara',
-    chakraSecundario: null,
-    planeta: 'Saturno',
-    significado_espiritual: {
-      tema: 'Disciplina e lições cármicas',
-      emocional: 'Paciência, perseverança, responsabilidade',
-      mental: 'Foco em longo prazo, humildade, sabedoria através da experiência',
-      fisico: 'Estrutura óssea, dentes, disciplina física',
+    indice: 6,
+    elemento: 'terra',
+    qualidade: 'cardinal',
+    significado_espiritual: 'Sábado, ruled by Saturn, carries the grounded and disciplined energy of Earth. This is the day for structure, boundaries, karmic work, and practical manifestations. Earth energy under Saturn provides the foundation for long-term goals and spiritual discipline. It is ideal for banishment rituals, boundary work, materialization practices, and any work requiring patience and endurance.',
+    palavras_chave: ['estrutura', 'disciplina', 'limites', 'karma', 'paciência', 'manifestação', 'ancoragem'],
+    associacoes: {
+      cor: 'Preto',
+      direcao: 'Norte',
+      planeta: 'Saturno',
+      orixa: 'Nanã',
+      momento: 'Meia-noite',
     },
-    affirmation: 'Eu abraço a disciplina com amor e transformo obstáculos em conquistas',
-    atividades: ['Trabalho estruturado', 'Limpeza física e espiritual', 'Estudos profundos', 'Rituais de proteção'],
+    praticas_elementais: [
+      'Rituais de proteção e banimento',
+      'Práticas de definição de limites',
+      'Trabalho com terra e ancestrais',
+      'Meditações de disciplina e paciência',
+      'Rituais de materialização e concretização',
+    ],
   },
 };
 
 /**
- * Freeze the mapping object to prevent modifications
+ * Get element correlation for a specific day of the week
+ * @param dia - Day name (e.g., 'Domingo', 'Segunda-feira')
+ * @returns DayElement mapping or undefined if day not found
  */
-Object.freeze(DAY_ELEMENT_MAP);
-Object.values(DAY_ELEMENT_MAP).forEach((mapping) => Object.freeze(mapping));
-
-/**
- * All 7 days of the week
- */
-export const TODOS_DIAS: readonly DiaSemana[] = [
-  'Segunda-feira',
-  'Terça-feira',
-  'Quarta-feira',
-  'Quinta-feira',
-  'Sexta-feira',
-  'Sábado',
-  'Domingo',
-];
-
-/**
- * All 4 classical elements
- */
-export const TODOS_ELEMENTOS: readonly Elemento[] = ['Fogo', 'Terra', 'Ar', 'Água'];
-
-/**
- * Normalizes day name for consistent lookup.
- * Handles variations like accents, case, hyphens, and common alternatives.
- */
-function normalizarDia(dia: string): DiaSemana | null {
-  if (!dia || typeof dia !== 'string') return null;
-
-  const normalized = dia.trim().toLowerCase();
-
-  const mappings: Record<string, DiaSemana> = {
-    // Portuguese variations
-    domingo: 'Domingo',
-    'segunda-feira': 'Segunda-feira',
-    'segunda': 'Segunda-feira',
-    'terça-feira': 'Terça-feira',
-    'terca-feira': 'Terça-feira',
-    terça: 'Terça-feira',
-    'quarta-feira': 'Quarta-feira',
-    quarta: 'Quarta-feira',
-    'quinta-feira': 'Quinta-feira',
-    quinta: 'Quinta-feira',
-    'sexta-feira': 'Sexta-feira',
-    sexta: 'Sexta-feira',
-    sábado: 'Sábado',
-    sabado: 'Sábado',
-    // English variations
-    sunday: 'Domingo',
-    monday: 'Segunda-feira',
-    tuesday: 'Terça-feira',
-    wednesday: 'Quarta-feira',
-    thursday: 'Quinta-feira',
-    friday: 'Sexta-feira',
-    saturday: 'Sábado',
-    // Abbreviations
-    dom: 'Domingo',
-    seg: 'Segunda-feira',
-    ter: 'Terça-feira',
-    qua: 'Quarta-feira',
-    qui: 'Quinta-feira',
-    sex: 'Sexta-feira',
-    sab: 'Sábado',
-  };
-
-  return mappings[normalized] ?? null;
+export function getDayElement(dia: DayOfWeek): DayElement | undefined {
+  return DAY_ELEMENT_MAP[dia];
 }
 
 /**
- * Get the day-element mapping for a given day name.
- * @param dia - Day name (e.g., 'Domingo', 'Segunda-feira', 'Sunday')
- * @returns DayElementMapping or null if not found
+ * Get element for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Element or undefined if day not found
  */
-export function getDayElement(dia: string): DayElementMapping | null {
-  const normalized = normalizarDia(dia);
-  if (!normalized) return null;
-  return DAY_ELEMENT_MAP[normalized] ?? null;
+export function getElementDay(dia: DayOfWeek): Element | undefined {
+  return DAY_ELEMENT_MAP[dia]?.elemento;
 }
 
 /**
- * Get the day associated with a given element.
- * Returns the first day mapped to that element.
- * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra')
- * @returns DiaSemana or null if not found
+ * Get all days of the week
+ * @returns Array of day names
  */
-export function getElementDay(elemento: string): DiaSemana | null {
-  if (!elemento || typeof elemento !== 'string') return null;
-
-  const normalized = elemento.trim().toLowerCase();
-
-  const elementMap: Record<string, DiaSemana> = {
-    fogo: 'Domingo',
-    água: 'Segunda-feira',
-    agua: 'Segunda-feira',
-    ar: 'Quarta-feira',
-    terra: 'Sexta-feira',
-  };
-
-  const dia = elementMap[normalized];
-  return dia ? (DAY_ELEMENT_MAP[dia as DiaSemana] ? (dia as DiaSemana) : null) : null;
+export function getAllDays(): string[] {
+  return Object.keys(DAY_ELEMENT_MAP);
 }
 
 /**
- * Get all day-element mappings.
- * @returns Array of all correlation mappings
+ * Get days associated with a specific element
+ * @param elemento - Element name ('fogo' | 'água' | 'ar' | 'terra')
+ * @returns Array of day names
  */
-export function getAllDayElements(): DayElementMapping[] {
+export function getDaysByElement(elemento: Element): string[] {
+  return Object.entries(DAY_ELEMENT_MAP)
+    .filter(([, dayElement]) => dayElement.elemento === elemento)
+    .map(([dia]) => dia);
+}
+
+/**
+ * Get all day-element correlations
+ * @returns Array of all DayElement mappings
+ */
+export function getAllDayElements(): DayElement[] {
   return Object.values(DAY_ELEMENT_MAP);
 }
 
 /**
- * Get the element for a given day.
- * @param dia - Day name
- * @returns Elemento or null if not found
+ * Get spiritual meaning for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Spiritual meaning or undefined if day not found
  */
-export function getElementFromDay(dia: string): Elemento | null {
-  return getDayElement(dia)?.elemento ?? null;
+export function getDaySpiritualMeaning(dia: DayOfWeek): string | undefined {
+  return DAY_ELEMENT_MAP[dia]?.significado_espiritual;
 }
 
 /**
- * Get the chakra for a given day.
- * @param dia - Day name
- * @returns ChakraName or null if not found
+ * Get keywords for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Array of keywords or undefined if day not found
  */
-export function getChakraFromDay(dia: string): ChakraName | null {
-  return getDayElement(dia)?.chakra ?? null;
+export function getDayKeywords(dia: DayOfWeek): string[] | undefined {
+  return DAY_ELEMENT_MAP[dia]?.palavras_chave;
 }
 
 /**
- * Get the affirmation for a given day.
- * @param dia - Day name
- * @returns Affirmation string or null if not found
+ * Get elemental associations for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Elemental associations or undefined if day not found
  */
-export function getAffirmationFromDay(dia: string): string | null {
-  return getDayElement(dia)?.affirmation ?? null;
+export function getDayAssociations(dia: DayOfWeek): DayElement['associacoes'] | undefined {
+  return DAY_ELEMENT_MAP[dia]?.associacoes;
 }
 
 /**
- * Get the spiritual theme for a given day.
- * @param dia - Day name
- * @returns Spiritual theme or null if not found
+ * Get elemental practices for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Array of practices or undefined if day not found
  */
-export function getSpiritualThemeFromDay(dia: string): string | null {
-  return getDayElement(dia)?.significado_espiritual.tema ?? null;
+export function getDayPractices(dia: DayOfWeek): string[] | undefined {
+  return DAY_ELEMENT_MAP[dia]?.praticas_elementais;
 }
 
 /**
- * Get all days associated with a specific element.
- * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra')
- * @returns Array of DayElementMapping
+ * Get all unique elements
+ * @returns Array of unique elements
  */
-export function getDaysByElement(elemento: string): DayElementMapping[] {
-  if (!elemento || typeof elemento !== 'string') return [];
-
-  const normalized = elemento.trim().toLowerCase();
-
-  return Object.values(DAY_ELEMENT_MAP).filter((mapping) => {
-    const elementNormalized = mapping.elemento.toLowerCase();
-    return (
-      elementNormalized === normalized ||
-      (normalized === 'água' && elementNormalized === 'água')
-    );
-  });
+export function getAllElements(): Element[] {
+  return ['fogo', 'água', 'ar', 'terra'];
 }
 
 /**
- * Get all days of the week.
- * @returns Array of day names
+ * Get day by element
+ * @param elemento - Element name
+ * @returns First day with matching element or undefined
  */
-export function getAllDays(): DiaSemana[] {
-  return Object.values(DAY_ELEMENT_MAP).map((m) => m.dia);
+export function getDayByElement(elemento: Element): string | undefined {
+  const days = getDaysByElement(elemento);
+  return days[0];
 }
 
 /**
- * Get the planet for a given day.
- * @param dia - Day name
- * @returns Planet name or null if not found
+ * Get day index
+ * @param dia - Day name in Portuguese
+ * @returns Day index (0-6) or undefined if day not found
  */
-export function getPlanetFromDay(dia: string): string | null {
-  return getDayElement(dia)?.planeta ?? null;
+export function getDayIndex(dia: DayOfWeek): number | undefined {
+  return DAY_ELEMENT_MAP[dia]?.indice;
 }
 
-/**
- * Get activities recommended for a given day.
- * @param dia - Day name
- * @returns Array of activities or null if not found
- */
-export function getActivitiesFromDay(dia: string): string[] | null {
-  return getDayElement(dia)?.atividades ?? null;
-}
-
-/**
- * Default export for convenience
- */
 export default {
   getDayElement,
   getElementDay,
   getAllDayElements,
-  getElementFromDay,
-  getChakraFromDay,
-  getAffirmationFromDay,
-  getSpiritualThemeFromDay,
-  getDaysByElement,
   getAllDays,
-  getPlanetFromDay,
-  getActivitiesFromDay,
+  getDaysByElement,
+  getDaySpiritualMeaning,
+  getDayKeywords,
+  getDayAssociations,
+  getDayPractices,
+  getAllElements,
+  getDayByElement,
+  getDayIndex,
   DAY_ELEMENT_MAP,
-  TODOS_DIAS,
-  TODOS_ELEMENTOS,
 };

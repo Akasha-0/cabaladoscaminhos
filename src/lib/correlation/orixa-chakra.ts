@@ -1,238 +1,207 @@
 /**
  * Orixá-Chakra Spiritual Correlation Module
- * Maps Orixás to their primary and secondary chakra influences
- * Based on IDEIA.md Cabala dos Caminhos framework
+ * Maps Orixás to their corresponding chakras, elements, and spiritual meanings
+ * Based on Cabala dos Caminhos vibrational healing traditions (IDEIA.md)
  */
 
 import type { ChakraName } from './chakra-element';
 
-export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
-
 export interface OrixaChakraMapping {
   orixa: string;
-  chakra_primario: ChakraName;
-  chakra_secundario: ChakraName | null;
-  elemento_alinhamento: Elemento;
-  praticas_espirituais: {
-    tipo: string;
-    descricao: string;
-    mantras: string[];
-    erivas: string[];
-  };
+  chakra: ChakraName;
+  chakra_numero: string;
+  elemento: 'fogo' | 'água' | 'ar' | 'terra' | 'éter';
+  cores: string[];
+  significado_espiritual: string;
+  praticas: string[];
 }
 
-// Complete mapping of Orixás to their chakra correspondences
-// Based on IDEIA.md spiritual framework
-const ORIXA_CHAKRA_MAP: Record<string, OrixaChakraMapping> = {
+/**
+ * Complete mapping of Orixás to their chakra correspondences.
+ * Based on IDEIA.md Cabala dos Caminhos vibrational traditions.
+ * Mapping rationale:
+ * - Oxalá (éter) → Sahasrara (crown) - creator and spiritual purity
+ * - Iemanjá (água) → Svadhisthana (sacral) - nurturing, emotions, cycles
+ * - Oxum (água) → Manipura (solar) - prosperity, personal power
+ * - Ogum (terra) → Muladhara (root) - grounding, warrior energy
+ * - Oxóssi (terra) → Anahata (heart) - wisdom, nature connection
+ * - Xangô (fogo) → Manipura (solar) - justice, personal power
+ * - Iansã (fogo) → Vishuddha (throat) - transformation, communication
+ * - Omolu (terra) → Svadhisthana (sacral) - healing, transformation
+ * - Nanã (água) → Ajna (third eye) - wisdom, ancestral secrets
+ */
+const ORIXAS_CHAKRA_MAP: Record<string, OrixaChakraMapping> = {
   'Oxalá': {
     orixa: 'Oxalá',
-    chakra_primario: 'Sahasrara',
-    chakra_secundario: null,
-    elemento_alinhamento: 'Éter',
-    praticas_espirituais: {
-      tipo: 'Purificação e paz espiritual',
-      descricao: 'Conexão direta com o Divino, paz interior, equilíbrio do Ori (cabeça)',
-      mantras: ['AUM', 'SILÊNCIO', 'EHEIEH'],
-      erivas: ['Boldo', 'Saião', 'Manjericão Branco', 'Algodoeiro', 'Colônia'],
-    },
+    chakra: 'Sahasrara',
+    chakra_numero: '7º Coronário',
+    elemento: 'éter',
+    cores: ['Branco', 'Marfim', 'Transparente'],
+    significado_espiritual: 'O Criador supremo conecta ao chakra coronário, representando a integração espiritual suprema, a paz interior e a reconexão com o divino. É a energia etérea que eleva a consciência além do físico.',
+    praticas: ['Meditação de luz branca', 'Oração silenciosa', 'Conexão com o EU Superior', 'Reconciliação espiritual']
   },
   'Iemanjá': {
     orixa: 'Iemanjá',
-    chakra_primario: 'Ajna',
-    chakra_secundario: 'Anahata',
-    elemento_alinhamento: 'Água',
-    praticas_espirituais: {
-      tipo: 'Intuição e equilíbrio emocional',
-      descricao: 'Despertar da intuição profunda, visão clara e harmonização emocional nas águas',
-      mantras: ['OM (852 Hz)', 'YAH'],
-      erivas: ['Colônia', 'Alcaparra', 'Folha de Lágrima-de-Nossa-Senhora', 'Pata-de-vaca'],
-    },
+    chakra: 'Svadhisthana',
+    chakra_numero: '2º Sacro',
+    elemento: 'água',
+    cores: ['Azul Escuro', 'Branco', 'Transparente'],
+    significado_espiritual: 'A Mãe das águas ativa o chakra sacral, governando as emoções, os ciclos reprodutivos e a nutição. Sua energia hídrica traz cura emocional, renovação espiritual e conexão com o sagrado feminino.',
+    praticas: ['Ritual de limpeza emocional', 'Oferendas ao mar', 'Harmonização do útero', 'Conexão com ancestrais femininos']
   },
   'Oxum': {
     orixa: 'Oxum',
-    chakra_primario: 'Anahata',
-    chakra_secundario: 'Ajna',
-    elemento_alinhamento: 'Água',
-    praticas_espirituais: {
-      tipo: 'Amor e magnetismo',
-      descricao: 'Expansão do afeto incondicional, doçura, ouro e feitiçaria natural',
-      mantras: ['YAM (639 Hz)', 'YAH'],
-      erivas: ['Erva-doce', 'Calêndula', 'Camomila', 'Melissa', 'Rosa Branca'],
-    },
+    chakra: 'Manipura',
+    chakra_numero: '3º Plexo Solar',
+    elemento: 'água',
+    cores: ['Rosa', 'Amarelo-ouro', 'Azul-celeste'],
+    significado_espiritual: 'A deusa da riqueza ativa o chakra do plexo solar, ensinando a verdadeira prosperidade que vem de dentro. Governa o poder pessoal, a autoestima e a capacidade de atrair abundância com elegância.',
+    praticas: ['Ritual de prosperidade', 'Visualização de ouro', 'Trabalho com o Inner Child', 'Afirmações de abundância']
   },
   'Ogum': {
     orixa: 'Ogum',
-    chakra_primario: 'Vishuddha',
-    chakra_secundario: 'Manipura',
-    elemento_alinhamento: 'Terra',
-    praticas_espirituais: {
-      tipo: 'Expressão e ordenação',
-      descricao: 'Expressão da verdade interna, abertura de caminhos e lei espiritual',
-      mantras: ['HAM (741 Hz)', 'AUM'],
-      erivas: ['Espada-de-são-jorge', 'Quebra-demanda', 'Guiné', 'Aroeira', 'Losna'],
-    },
+    chakra: 'Muladhara',
+    chakra_numero: '1º Básico',
+    elemento: 'terra',
+    cores: ['Azul Claro', 'Verde', 'Vermelho'],
+    significado_espiritual: 'O guerreiro das encruzilhadas ancora-se no chakra raiz, representando a força de sobreviver, a perseverança e a capacidade de superar obstáculos. Abre caminhos com coragem e determinação.',
+    praticas: ['Aterramento físico', 'Ritual de abertura de caminhos', 'Trabalho com a vontade', 'Conexão com a ancestralidade guerreira']
   },
   'Oxóssi': {
     orixa: 'Oxóssi',
-    chakra_primario: 'Anahata',
-    chakra_secundario: 'Sahasrara',
-    elemento_alinhamento: 'Terra',
-    praticas_espirituais: {
-      tipo: 'Fartura e conhecimento',
-      descricao: 'Expansão da consciência, busca por conhecimento e cura através das matas',
-      mantras: ['YAM (639 Hz)', 'AUM (963 Hz)'],
-      erivas: ['Guiné', 'Alecrim', 'Samambaia', 'Folha de Jurema', 'Arruda', 'Eucalipto'],
-    },
+    chakra: 'Anahata',
+    chakra_numero: '4º Cardíaco',
+    elemento: 'terra',
+    cores: ['Verde', 'Azul-turquesa', 'Rosa'],
+    significado_espiritual: 'O caçador e provedor expande o chakra cardíaco, ensinando a buscar com persistência e a celebrar conquistas. Sua energia conecta a sabedoria ancestral com a compaixão universal e a alegria de viver.',
+    praticas: ['Meditação na natureza', 'Ritual de gratidão', 'Conexão com guias espirituais', 'Trabalho com a abundância natural']
   },
   'Xangô': {
     orixa: 'Xangô',
-    chakra_primario: 'Manipura',
-    chakra_secundario: 'Svadhisthana',
-    elemento_alinhamento: 'Fogo',
-    praticas_espirituais: {
-      tipo: 'Transformação e justiça',
-      descricao: 'Transformação da força de vontade, justiça divina e equilíbrio mental',
-      mantras: ['RAM (528 Hz)', 'AUM'],
-      erivas: ['Quebra-pedra', 'Erva-de-são-joão', 'Folha de Café', 'Manjericão Roxo', 'Levante'],
-    },
+    chakra: 'Manipura',
+    chakra_numero: '3º Plexo Solar',
+    elemento: 'fogo',
+    cores: ['Amarelo', 'Marrom', 'Vermelho'],
+    significado_espiritual: 'O senhor da justiça irradia através do chakra do plexo solar, governando o poder pessoal, a verdade e o equilíbrio social. Sua energia ígnea traz autoridade e a capacidade de transformar a realidade com vontade.',
+    praticas: ['Ritual de justiça', 'Trabalho com o elemento fogo', 'Conexão com a lei cósmica', 'Purificação por raio']
   },
   'Iansã': {
     orixa: 'Iansã',
-    chakra_primario: 'Svadhisthana',
-    chakra_secundario: 'Manipura',
-    elemento_alinhamento: 'Fogo',
-    praticas_espirituais: {
-      tipo: 'Movimento e transformação',
-      descricao: 'Transmutação criativa, limpeza de traumas e direcionamento dos ventos',
-      mantras: ['VAM (417 Hz)', 'RAM (528 Hz)'],
-      erivas: ['Pinhão Roxo', 'Espada-de-santa-bárbara', 'Bambu', 'Folha de Fumo', 'Louro'],
-    },
+    chakra: 'Vishuddha',
+    chakra_numero: '5º Laríngeo',
+    elemento: 'fogo',
+    cores: ['Laranja', 'Amarelo', 'Vermelho', 'Coral'],
+    significado_espiritual: 'A guerreira dos ventos liberta-se no chakra laríngeo, representando a comunicação autêntica, a liberdade de expressão e a transformação interior. Governa as mudanças bruscas e a capacidade de se adaptar.',
+    praticas: ['Ritual de libertação', 'Cantos e invocações', 'Trabalho com elementos', 'Comunicação com entidades']
   },
   'Omolu': {
     orixa: 'Omolu',
-    chakra_primario: 'Muladhara',
-    chakra_secundario: null,
-    elemento_alinhamento: 'Terra',
-    praticas_espirituais: {
-      tipo: 'Aterramento e cura',
-      descricao: 'Dissolução de medos de sobrevivência, ancoramento e cura física',
-      mantras: ['LAM (396 Hz)', 'KRIM'],
-      erivas: ['Canela-de-velho', 'Assa-peixe', 'Erva-de-bicho', 'Vassourinha de Relógio'],
-    },
+    chakra: 'Svadhisthana',
+    chakra_numero: '2º Sacro',
+    elemento: 'terra',
+    cores: ['Preto', 'Branco', 'Vermelho', 'Violeta'],
+    significado_espiritual: 'O senhor das doenças e da cura transforma-se no chakra sacral, ensinando que através do confronto com a escuridão encontramos a verdadeira cura. Governa a regeneração, a cura e o renascimento espiritual.',
+    praticas: ['Ritual de cura', 'Descarrego espiritual', 'Trabalho com sombras', 'Transmutação de bloqueios']
   },
   'Nanã': {
     orixa: 'Nanã',
-    chakra_primario: 'Muladhara',
-    chakra_secundario: 'Ajna',
-    elemento_alinhamento: 'Água',
-    praticas_espirituais: {
-      tipo: 'Sabedoria ancestral',
-      descricao: 'Conexão com a sabedoria dos mais velhos, paciência e decantação espiritual',
-      mantras: ['LAM (396 Hz)', 'OM (852 Hz)'],
-      erivas: ['Manjericão Roxo', 'Assa-peixe', 'Folha de Mostarda', 'Trapoeraba Roxa', 'Avenca'],
-    },
-  },
+    chakra: 'Ajna',
+    chakra_numero: '6º Terceiro Olho',
+    elemento: 'água',
+    cores: ['Lilás', 'Roxo', 'Azul-violeta'],
+    significado_espiritual: 'A anciã dos segredos Ancestrais desperta o terceiro olho, governando a sabedoria dos anciãos e os mistérios ocultos. Sua energia hídrica ensina que a verdadeira sabedoria vem com o tempo e a experiência.',
+    praticas: ['Meditação introspectiva', 'Trabalho com ancestrais', 'Ritual de sabedoria', 'Conexão com registros akáshicos']
+  }
 };
 
 /**
- * Get Orixá chakra correlation mapping
+ * Normalizes orixá name for lookup (case-insensitive, handles special characters).
+ */
+function normalizeOrixaName(orixa: string): string | null {
+  const normalized = orixa.trim().toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  
+  for (const key of Object.keys(ORIXAS_CHAKRA_MAP)) {
+    const keyNormalized = key.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    if (keyNormalized === normalized) {
+      return key;
+    }
+  }
+  return null;
+}
+
+/**
+ * Get Orixá-Chakra correlation mapping
  * @param orixa - Name of the Orixá (case-insensitive)
  * @returns OrixaChakraMapping or undefined if not found
  */
 export function getOrixaChakra(orixa: string): OrixaChakraMapping | undefined {
-  const normalized = orixa.trim();
-  // Try exact match first, then case-insensitive
-  if (ORIXA_CHAKRA_MAP[normalized]) {
-    return ORIXA_CHAKRA_MAP[normalized];
-  }
-  // Case-insensitive search
-  const lower = normalized.toLowerCase();
-  for (const key of Object.keys(ORIXA_CHAKRA_MAP)) {
-    if (key.toLowerCase() === lower) {
-      return ORIXA_CHAKRA_MAP[key];
-    }
-  }
-  return undefined;
+  const normalized = normalizeOrixaName(orixa);
+  if (!normalized) return undefined;
+  return ORIXAS_CHAKRA_MAP[normalized];
 }
 
 /**
  * Get reverse mapping: chakra to associated Orixás
- * @returns Record mapping each ChakraName to its associated Orixás
+ * @returns Record mapping each ChakraName to its Orixá
  */
-export function getChakraOrixa(): Record<ChakraName, string[]> {
-  const result: Partial<Record<ChakraName, string[]>> = {};
-
-  for (const mapping of Object.values(ORIXA_CHAKRA_MAP)) {
-    const primary = mapping.chakra_primario;
-    if (!result[primary]) {
-      result[primary] = [];
-    }
-    if (!result[primary]!.includes(mapping.orixa)) {
-      result[primary]!.push(mapping.orixa);
-    }
-
-    if (mapping.chakra_secundario) {
-      const secondary = mapping.chakra_secundario;
-      if (!result[secondary]) {
-        result[secondary] = [];
-      }
-      if (!result[secondary]!.includes(mapping.orixa)) {
-        result[secondary]!.push(mapping.orixa);
-      }
-    }
+export function getChakraOrixa(): Record<ChakraName, string> {
+  const result: Partial<Record<ChakraName, string>> = {};
+  for (const mapping of Object.values(ORIXAS_CHAKRA_MAP)) {
+    result[mapping.chakra] = mapping.orixa;
   }
-
-  return result as Record<ChakraName, string[]>;
+  return result as Record<ChakraName, string>;
 }
 
 /**
- * Get all Orixá-chakra mappings
+ * Get all Orixá-Chakra mappings
  * @returns Array of all OrixaChakraMapping objects
  */
 export function getAllOrixaChakras(): OrixaChakraMapping[] {
-  return Object.values(ORIXA_CHAKRA_MAP);
+  return Object.values(ORIXAS_CHAKRA_MAP);
 }
 
 /**
- * Get Orixás by primary chakra
- * @param chakra - Chakra name or number (e.g., 'Muladhara', '1º Básico')
- * @returns Array of Orixás associated with that primary chakra
+ * Get Orixás by chakra
+ * @param chakra - Chakra name (Sanskrit or number format)
+ * @returns Array of Orixás associated with that chakra
  */
 export function getOrixasByChakra(chakra: string): OrixaChakraMapping[] {
-  const normalizedChakra = normalizeChakraName(chakra);
-  return Object.values(ORIXA_CHAKRA_MAP).filter(
-    (m) => m.chakra_primario === normalizedChakra || m.chakra_secundario === normalizedChakra
-  );
-}
-
-/**
- * Normalizes chakra name to match ChakraName type
- */
-function normalizeChakraName(chakra: string): ChakraName {
-  const mapping: Record<string, ChakraName> = {
-    'muladhara': 'Muladhara',
-    'svadhisthana': 'Svadhisthana',
-    'manipura': 'Manipura',
-    'anahata': 'Anahata',
-    'vishuddha': 'Vishuddha',
-    'ajna': 'Ajna',
-    'sahasrara': 'Sahasrara',
-    '1º básico': 'Muladhara',
-    '2º sacro': 'Svadhisthana',
-    '3º plexo solar': 'Manipura',
-    '4º cardíaco': 'Anahata',
-    '5º laríngeo': 'Vishuddha',
-    '6º frontal': 'Ajna',
-    '7º coronário': 'Sahasrara',
+  const chakraNormalized = chakra.toLowerCase().replace(/[º°]/g, '').replace(/ /g, '');
+  
+  const chakraMap: Record<string, ChakraName> = {
+    '1': 'Muladhara',
+    '2': 'Svadhisthana',
+    '3': 'Manipura',
+    '4': 'Anahata',
+    '5': 'Vishuddha',
+    '6': 'Ajna',
+    '7': 'Sahasrara',
+    'basico': 'Muladhara',
+    'sacro': 'Svadhisthana',
+    'plexo': 'Manipura',
+    'cardiaco': 'Anahata',
+    'laringeo': 'Vishuddha',
+    'terceirolho': 'Ajna',
+    'coronario': 'Sahasrara'
   };
-
-  const lower = chakra.toLowerCase().trim();
-  return mapping[lower] ?? (chakra as ChakraName);
+  
+  const chakraName = chakraMap[chakraNormalized] || 
+    (Object.keys(chakraMap).includes(chakra) ? chakra as ChakraName : null);
+  
+  if (!chakraName) return [];
+  
+  return Object.values(ORIXAS_CHAKRA_MAP).filter(
+    m => m.chakra.toLowerCase() === chakraName.toLowerCase()
+  );
 }
 
 export default {
   getOrixaChakra,
   getChakraOrixa,
   getAllOrixaChakras,
-  getOrixasByChakra,
+  getOrixasByChakra
 };

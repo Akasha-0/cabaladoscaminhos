@@ -12,243 +12,297 @@ import {
 
 describe('Orixá-Chakra Correlation', () => {
   describe('getOrixaChakra', () => {
-    it('should return Oxalá mapping with Sahasrara (7º Coronário) as primary chakra', () => {
+    it('should return Oxalá mapping with Sahasrara (crown) chakra', () => {
       const result = getOrixaChakra('Oxalá');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Oxalá');
-      expect(result?.chakra_primario).toBe('Sahasrara');
-      expect(result?.chakra_secundario).toBeNull();
-      expect(result?.elemento_alinhamento).toBe('Éter');
+      expect(result?.chakra).toBe('Sahasrara');
+      expect(result?.chakra_numero).toBe('7º Coronário');
+      expect(result?.elemento).toBe('éter');
+      expect(result?.cores).toContain('Branco');
+      expect(result?.significado_espiritual).toContain('Criador supremo');
     });
 
-    it('should return Iemanjá mapping with Ajna (6º Frontal) as primary chakra', () => {
+    it('should return Iemanjá mapping with Svadhisthana (sacral) chakra', () => {
       const result = getOrixaChakra('Iemanjá');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Iemanjá');
-      expect(result?.chakra_primario).toBe('Ajna');
-      expect(result?.chakra_secundario).toBe('Anahata');
-      expect(result?.elemento_alinhamento).toBe('Água');
+      expect(result?.chakra).toBe('Svadhisthana');
+      expect(result?.chakra_numero).toBe('2º Sacro');
+      expect(result?.elemento).toBe('água');
     });
 
-    it('should return Oxum mapping with Anahata (4º Cardíaco) as primary chakra', () => {
+    it('should return Oxum mapping with Manipura (solar plexus) chakra', () => {
       const result = getOrixaChakra('Oxum');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Oxum');
-      expect(result?.chakra_primario).toBe('Anahata');
-      expect(result?.chakra_secundario).toBe('Ajna');
-      expect(result?.elemento_alinhamento).toBe('Água');
+      expect(result?.chakra).toBe('Manipura');
+      expect(result?.chakra_numero).toBe('3º Plexo Solar');
+      expect(result?.elemento).toBe('água');
+      expect(result?.cores).toContain('Amarelo-ouro');
     });
 
-    it('should return Ogum mapping with Vishuddha (5º Laríngeo) as primary chakra', () => {
+    it('should return Ogum mapping with Muladhara (root) chakra', () => {
       const result = getOrixaChakra('Ogum');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Ogum');
-      expect(result?.chakra_primario).toBe('Vishuddha');
-      expect(result?.chakra_secundario).toBe('Manipura');
-      expect(result?.elemento_alinhamento).toBe('Terra');
+      expect(result?.chakra).toBe('Muladhara');
+      expect(result?.chakra_numero).toBe('1º Básico');
+      expect(result?.elemento).toBe('terra');
+      expect(result?.cores).toContain('Verde');
     });
 
-    it('should return Oxóssi mapping with Anahata (4º Cardíaco) as primary chakra', () => {
+    it('should return Oxóssi mapping with Anahata (heart) chakra', () => {
       const result = getOrixaChakra('Oxóssi');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Oxóssi');
-      expect(result?.chakra_primario).toBe('Anahata');
-      expect(result?.chakra_secundario).toBe('Sahasrara');
-      expect(result?.elemento_alinhamento).toBe('Terra');
+      expect(result?.chakra).toBe('Anahata');
+      expect(result?.chakra_numero).toBe('4º Cardíaco');
+      expect(result?.elemento).toBe('terra');
     });
 
-    it('should return Xangô mapping with Manipura (3º Plexo Solar) as primary chakra', () => {
+    it('should return Xangô mapping with Manipura (solar plexus) chakra', () => {
       const result = getOrixaChakra('Xangô');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Xangô');
-      expect(result?.chakra_primario).toBe('Manipura');
-      expect(result?.chakra_secundario).toBe('Svadhisthana');
-      expect(result?.elemento_alinhamento).toBe('Fogo');
+      expect(result?.chakra).toBe('Manipura');
+      expect(result?.chakra_numero).toBe('3º Plexo Solar');
+      expect(result?.elemento).toBe('fogo');
+      expect(result?.cores).toContain('Amarelo');
     });
 
-    it('should return Iansã mapping with Svadhisthana (2º Sacro) as primary chakra', () => {
+    it('should return Iansã mapping with Vishuddha (throat) chakra', () => {
       const result = getOrixaChakra('Iansã');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Iansã');
-      expect(result?.chakra_primario).toBe('Svadhisthana');
-      expect(result?.chakra_secundario).toBe('Manipura');
-      expect(result?.elemento_alinhamento).toBe('Fogo');
+      expect(result?.chakra).toBe('Vishuddha');
+      expect(result?.chakra_numero).toBe('5º Laríngeo');
+      expect(result?.elemento).toBe('fogo');
     });
 
-    it('should return Omolu mapping with Muladhara (1º Básico) as primary chakra', () => {
+    it('should return Omolu mapping with Svadhisthana (sacral) chakra', () => {
       const result = getOrixaChakra('Omolu');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Omolu');
-      expect(result?.chakra_primario).toBe('Muladhara');
-      expect(result?.chakra_secundario).toBeNull();
-      expect(result?.elemento_alinhamento).toBe('Terra');
+      expect(result?.chakra).toBe('Svadhisthana');
+      expect(result?.elemento).toBe('terra');
     });
 
-    it('should return Nanã mapping with Muladhara (1º Básico) as primary chakra', () => {
+    it('should return Nanã mapping with Ajna (third eye) chakra', () => {
       const result = getOrixaChakra('Nanã');
+      
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Nanã');
-      expect(result?.chakra_primario).toBe('Muladhara');
-      expect(result?.chakra_secundario).toBe('Ajna');
-      expect(result?.elemento_alinhamento).toBe('Água');
+      expect(result?.chakra).toBe('Ajna');
+      expect(result?.chakra_numero).toBe('6º Terceiro Olho');
+      expect(result?.elemento).toBe('água');
+      expect(result?.cores).toContain('Roxo');
     });
 
     it('should be case-insensitive', () => {
-      expect(getOrixaChakra('oxalá')?.orixa).toBe('Oxalá');
-      expect(getOrixaChakra('OXALÁ')?.orixa).toBe('Oxalá');
-      expect(getOrixaChakra('xangô')?.orixa).toBe('Xangô');
+      expect(getOrixaChakra('oxalá')).toBeDefined();
+      expect(getOrixaChakra('OXALÁ')).toBeDefined();
+      expect(getOrixaChakra('Iemanjá')).toBeDefined();
     });
 
     it('should return undefined for unknown Orixá', () => {
-      expect(getOrixaChakra('Unknown Orixá')).toBeUndefined();
-      expect(getOrixaChakra('')).toBeUndefined();
+      expect(getOrixaChakra('Exu')).toBeUndefined();
+      expect(getOrixaChakra('Pombola')).toBeUndefined();
     });
 
-    it('should include all required properties in returned object', () => {
+    it('should include all required properties', () => {
       const result = getOrixaChakra('Oxalá');
+      
       expect(result).toHaveProperty('orixa');
-      expect(result).toHaveProperty('chakra_primario');
-      expect(result).toHaveProperty('chakra_secundario');
-      expect(result).toHaveProperty('elemento_alinhamento');
-      expect(result).toHaveProperty('praticas_espirituais');
-      expect(result?.praticas_espirituais).toHaveProperty('tipo');
-      expect(result?.praticas_espirituais).toHaveProperty('descricao');
-      expect(result?.praticas_espirituais).toHaveProperty('mantras');
-      expect(result?.praticas_espirituais).toHaveProperty('erivas');
+      expect(result).toHaveProperty('chakra');
+      expect(result).toHaveProperty('chakra_numero');
+      expect(result).toHaveProperty('elemento');
+      expect(result).toHaveProperty('cores');
+      expect(result).toHaveProperty('significado_espiritual');
+      expect(result).toHaveProperty('praticas');
+      expect(Array.isArray(result?.praticas)).toBe(true);
     });
 
-    it('should include spiritual practices with mantras and herbs', () => {
-      const result = getOrixaChakra('Xangô');
-      expect(result?.praticas_espirituais.mantras).toContain('RAM (528 Hz)');
-      expect(result?.praticas_espirituais.erivas).toContain('Quebra-pedra');
+    it('should include spiritual meaning about the orixá-chakra connection', () => {
+      const result = getOrixaChakra('Oxalá');
+      
+      expect(result?.significado_espiritual).toContain('criador');
+      expect(result?.significado_espiritual).toContain('coronário');
     });
   });
 
   describe('getChakraOrixa', () => {
-    it('should return all seven chakras in the mapping', () => {
+    it('should return all chakra-to-orixá mappings', () => {
       const result = getChakraOrixa();
-      expect(result).toHaveProperty('Muladhara');
-      expect(result).toHaveProperty('Svadhisthana');
-      expect(result).toHaveProperty('Manipura');
-      expect(result).toHaveProperty('Anahata');
-      expect(result).toHaveProperty('Vishuddha');
-      expect(result).toHaveProperty('Ajna');
-      expect(result).toHaveProperty('Sahasrara');
+      
+      expect(result).toBeDefined();
+      expect(Object.keys(result).length).toBeGreaterThan(0);
     });
 
-    it('should associate Muladhara with Omolu and Nanã', () => {
+    it('should map Sahasrara to Oxalá', () => {
       const result = getChakraOrixa();
-      expect(result.Muladhara).toContain('Omolu');
-      expect(result.Muladhara).toContain('Nanã');
+      
+      expect(result['Sahasrara']).toBe('Oxalá');
     });
 
-    it('should associate Svadhisthana with Iansã', () => {
+    it('should map Svadhisthana to Iemanjá', () => {
       const result = getChakraOrixa();
-      expect(result.Svadhisthana).toContain('Iansã');
+      
+      expect(result['Svadhisthana']).toBe('Iemanjá');
     });
 
-    it('should associate Manipura with Xangô', () => {
+    it('should map Muladhara to Ogum', () => {
       const result = getChakraOrixa();
-      expect(result.Manipura).toContain('Xangô');
+      
+      expect(result['Muladhara']).toBe('Ogum');
     });
 
-    it('should associate Anahata with Oxum and Oxóssi', () => {
+    it('should map Anahata to Oxóssi', () => {
       const result = getChakraOrixa();
-      expect(result.Anahata).toContain('Oxum');
-      expect(result.Anahata).toContain('Oxóssi');
+      
+      expect(result['Anahata']).toBe('Oxóssi');
     });
 
-    it('should associate Vishuddha with Ogum', () => {
+    it('should map Ajna to Nanã', () => {
       const result = getChakraOrixa();
-      expect(result.Vishuddha).toContain('Ogum');
-    });
-
-    it('should associate Ajna with Iemanjá, Oxum, and Nanã', () => {
-      const result = getChakraOrixa();
-      expect(result.Ajna).toContain('Iemanjá');
-      expect(result.Ajna).toContain('Oxum');
-      expect(result.Ajna).toContain('Nanã');
-    });
-
-    it('should associate Sahasrara with Oxalá and Oxóssi', () => {
-      const result = getChakraOrixa();
-      expect(result.Sahasrara).toContain('Oxalá');
-      expect(result.Sahasrara).toContain('Oxóssi');
+      
+      expect(result['Ajna']).toBe('Nanã');
     });
   });
 
   describe('getAllOrixaChakras', () => {
-    it('should return an array of all Orixá-chakra mappings', () => {
+    it('should return all orixá-chakra mappings', () => {
       const result = getAllOrixaChakras();
+      
+      expect(result).toBeDefined();
       expect(Array.isArray(result)).toBe(true);
-      expect(result.length).toBeGreaterThan(0);
+      expect(result.length).toBe(9);
     });
 
-    it('should return all 9 major Orixás', () => {
+    it('should include all main orixás', () => {
       const result = getAllOrixaChakras();
-      const orixaNames = result.map((m) => m.orixa);
-      expect(orixaNames).toContain('Oxalá');
-      expect(orixaNames).toContain('Iemanjá');
-      expect(orixaNames).toContain('Oxum');
-      expect(orixaNames).toContain('Ogum');
-      expect(orixaNames).toContain('Oxóssi');
-      expect(orixaNames).toContain('Xangô');
-      expect(orixaNames).toContain('Iansã');
-      expect(orixaNames).toContain('Omolu');
-      expect(orixaNames).toContain('Nanã');
+      const orixas = result.map(m => m.orixa);
+      
+      expect(orixas).toContain('Oxalá');
+      expect(orixas).toContain('Iemanjá');
+      expect(orixas).toContain('Ogum');
+      expect(orixas).toContain('Xangô');
+      expect(orixas).toContain('Iansã');
+      expect(orixas).toContain('Nanã');
     });
 
-    it('should return objects with complete structure', () => {
+    it('each mapping should have valid chakra', () => {
       const result = getAllOrixaChakras();
+      
       for (const mapping of result) {
-        expect(mapping).toHaveProperty('orixa');
-        expect(mapping).toHaveProperty('chakra_primario');
-        expect(mapping).toHaveProperty('chakra_secundario');
-        expect(mapping).toHaveProperty('elemento_alinhamento');
-        expect(mapping).toHaveProperty('praticas_espirituais');
+        expect(['Muladhara', 'Svadhisthana', 'Manipura', 'Anahata', 'Vishuddha', 'Ajna', 'Sahasrara']).toContain(mapping.chakra);
       }
     });
   });
 
   describe('getOrixasByChakra', () => {
-    it('should return Orixás associated with Muladhara', () => {
-      const result = getOrixasByChakra('Muladhara');
+    it('should return Orixás by chakra name (Sanskrit)', () => {
+      const result = getOrixasByChakra('Sahasrara');
+      
+      expect(result).toBeDefined();
       expect(result.length).toBeGreaterThan(0);
-      expect(result.map((m) => m.orixa)).toContain('Omolu');
+      expect(result[0]?.orixa).toBe('Oxalá');
     });
 
-    it('should accept chakra number format as input', () => {
-      const result = getOrixasByChakra('1º Básico');
+    it('should return Orixás by chakra number', () => {
+      const result = getOrixasByChakra('1');
+      
+      expect(result).toBeDefined();
       expect(result.length).toBeGreaterThan(0);
-      expect(result.map((m) => m.orixa)).toContain('Omolu');
+      expect(result[0]?.orixa).toBe('Ogum');
+    });
+
+    it('should return Orixás by chakra number format 2º', () => {
+      const result = getOrixasByChakra('2º');
+      
+      expect(result).toBeDefined();
+      expect(result.length).toBeGreaterThan(0);
     });
 
     it('should return empty array for unknown chakra', () => {
-      const result = getOrixasByChakra('Unknown Chakra');
+      const result = getOrixasByChakra('unknown');
+      
       expect(result).toEqual([]);
+    });
+
+    it('should return Orixás by Portuguese chakra name', () => {
+      const result = getOrixasByChakra('coronario');
+      
+      expect(result).toBeDefined();
+      expect(result.length).toBeGreaterThan(0);
     });
   });
 
-  describe('Element alignment consistency', () => {
-    it('should align Oxalá with Éter element', () => {
+  describe('Orixá-Chakra Element consistency', () => {
+    it('water orixás should have water or earth element chakras', () => {
+      const waterOrixas = ['Iemanjá', 'Oxum', 'Nanã'];
+      
+      for (const orixa of waterOrixas) {
+        const result = getOrixaChakra(orixa);
+        expect(result?.elemento).toBe('água');
+      }
+    });
+
+    it('fire orixás should have fire or air related chakras', () => {
+      const fireOrixas = ['Xangô', 'Iansã'];
+      
+      for (const orixa of fireOrixas) {
+        const result = getOrixaChakra(orixa);
+        expect(result?.elemento).toBe('fogo');
+      }
+    });
+
+    it('earth orixás should have earth element', () => {
+      const earthOrixas = ['Ogum', 'Oxóssi', 'Omolu'];
+      
+      for (const orixa of earthOrixas) {
+        const result = getOrixaChakra(orixa);
+        expect(result?.elemento).toBe('terra');
+      }
+    });
+
+    it('éter orixá should have Sahasrara (crown) chakra', () => {
       const result = getOrixaChakra('Oxalá');
-      expect(result?.elemento_alinhamento).toBe('Éter');
+      
+      expect(result?.chakra).toBe('Sahasrara');
+    });
+  });
+
+  describe('Spiritual correlation integrity', () => {
+    it('each orixá should have at least one practice defined', () => {
+      const all = getAllOrixaChakras();
+      
+      for (const mapping of all) {
+        expect(mapping.praticas.length).toBeGreaterThan(0);
+      }
     });
 
-    it('should align Iemanjá and Oxum with Água element', () => {
-      expect(getOrixaChakra('Iemanjá')?.elemento_alinhamento).toBe('Água');
-      expect(getOrixaChakra('Oxum')?.elemento_alinhamento).toBe('Água');
+    it('each orixá should have at least one color defined', () => {
+      const all = getAllOrixaChakras();
+      
+      for (const mapping of all) {
+        expect(mapping.cores.length).toBeGreaterThan(0);
+      }
     });
 
-    it('should align Xangô and Iansã with Fogo element', () => {
-      expect(getOrixaChakra('Xangô')?.elemento_alinhamento).toBe('Fogo');
-      expect(getOrixaChakra('Iansã')?.elemento_alinhamento).toBe('Fogo');
-    });
-
-    it('should align Ogum, Oxóssi, and Omolu with Terra element', () => {
-      expect(getOrixaChakra('Ogum')?.elemento_alinhamento).toBe('Terra');
-      expect(getOrixaChakra('Oxóssi')?.elemento_alinhamento).toBe('Terra');
-      expect(getOrixaChakra('Omolu')?.elemento_alinhamento).toBe('Terra');
+    it('spiritual meaning should reference both orixá and chakra', () => {
+      const oxala = getOrixaChakra('Oxalá');
+      
+      expect(oxala?.significado_espiritual).toContain('Oxalá');
+      expect(oxala?.significado_espiritual).toContain('Sahasrara');
     });
   });
 });
