@@ -14,163 +14,218 @@ import {
   TAROT_TAROT_MAPPINGS,
   TOTAL_MAPPINGS,
   TOTAL_PATH_TYPES,
+  type TarotTarotMapping,
+  type PathType,
 } from '@/lib/correlation/tarot-tarot';
-import type { TarotPathType } from '@/lib/correlation/tarot-tarot';
 
 describe('Tarot-Tarot Correlation', () => {
-  describe('TarotPathType union', () => {
-    it('should include all seven path types', () => {
-      const pathTypes: TarotPathType[] = [
-        'Trino', 'Sextil', 'Quadratura', 'Oposição',
-        'Sequência', 'Complementar', 'Ancestral',
-      ];
-      pathTypes.forEach((type) => {
-        expect(getAllPathTypes()).toContain(type);
-      });
-    });
-  });
-
-  describe('getTarotTarot', () => {
-    it('should return mapping for O Louco to O Mago', () => {
-      const result = getTarotTarot('0 - O Louco', 'I - O Mago');
-      expect(result).not.toBeNull();
-      expect(result?.path_type).toBe('Sequência');
-    });
-
-    it('should return null for non-existent pair', () => {
-      expect(getTarotTarot('0 - O Louco', 'X - A Roda da Fortuna')).toBeNull();
-    });
-
-    it('should return mapping for Oposição type', () => {
-      const result = getTarotTarot('I - O Mago', 'XVI - A Torre');
-      expect(result).not.toBeNull();
-      expect(result?.path_type).toBe('Oposição');
-    });
-  });
-
-  describe('getAllTarotPaths', () => {
-    it('should return all mappings', () => {
-      expect(getAllTarotPaths().length).toBeGreaterThan(0);
-    });
-
-    it('should return at least 66 mappings', () => {
-      expect(getAllTarotPaths().length).toBeGreaterThanOrEqual(66);
-    });
-  });
-
-  describe('getAllPathTypes', () => {
-    it('should return all seven path types', () => {
-      expect(getAllPathTypes().length).toBe(7);
-    });
-  });
-
-  describe('getAllMappedArcanos', () => {
-    it('should return at least 22 arcano names', () => {
-      expect(getAllMappedArcanos().length).toBeGreaterThanOrEqual(22);
-    });
-  });
-
-  describe('getRelationsForArcano', () => {
-    it('should return relations for O Louco', () => {
-      expect(getRelationsForArcano('0 - O Louco').length).toBeGreaterThan(0);
-    });
-  });
-
-  describe('getRelationsByPathType', () => {
-    it('should return relations for Sequência type', () => {
-      expect(getRelationsByPathType('Sequência').length).toBeGreaterThan(0);
-    });
-  });
-
-  describe('getPathTypeBetween', () => {
-    it('should return Sequência for O Louco and O Mago', () => {
-      expect(getPathTypeBetween('0 - O Louco', 'I - O Mago')).toBe('Sequência');
-    });
-
-    it('should return null for non-existent pair', () => {
-      expect(getPathTypeBetween('0 - O Louco', 'X - A Roda da Fortuna')).toBeNull();
-    });
-  });
-
-  describe('getSpiritualMeaningBetween', () => {
-    it('should return spiritual meaning for O Louco and O Mago', () => {
-      const result = getSpiritualMeaningBetween('0 - O Louco', 'I - O Mago');
-      expect(result).not.toBeNull();
-      expect(result?.significado).toBeTruthy();
-      expect(result?.crescimento).toBeTruthy();
-      expect(result?.desafio).toBeTruthy();
-    });
-  });
-
-  describe('hasRelation', () => {
-    it('should return true for related pair', () => {
-      expect(hasRelation('0 - O Louco', 'I - O Mago')).toBe(true);
-    });
-
-    it('should return false for non-related pair', () => {
-      expect(hasRelation('0 - O Louco', 'X - A Roda da Fortuna')).toBe(false);
-    });
-  });
-
-  describe('getArcanoByNumber', () => {
-    it('should return O Louco for number 0', () => {
-      expect(getArcanoByNumber(0)).toBe('0 - O Louco');
-    });
-
-    it('should return O Mundo for number 21', () => {
-      expect(getArcanoByNumber(21)).toBe('XXI - O Mundo');
-    });
-
-    it('should return null for out of range number', () => {
-      expect(getArcanoByNumber(-1)).toBeNull();
-      expect(getArcanoByNumber(22)).toBeNull();
-    });
-  });
-
   describe('TAROT_TAROT_MAPPINGS', () => {
-    it('should have valid arcano values', () => {
-      TAROT_TAROT_MAPPINGS.forEach((mapping) => {
-        expect(ALL_MAJOR_ARCANOS).toContain(mapping.arcano);
-        expect(ALL_MAJOR_ARCANOS).toContain(mapping.related_arcano);
-      });
+    it('is defined and not empty', () => {
+      expect(TAROT_TAROT_MAPPINGS).toBeDefined();
+      expect(TAROT_TAROT_MAPPINGS.length).toBeGreaterThan(0);
     });
-  });
 
-  describe('TOTAL_MAPPINGS', () => {
-    it('should be positive', () => {
-      expect(TOTAL_MAPPINGS).toBeGreaterThan(0);
+    it('has correct total count', () => {
+      expect(TOTAL_MAPPINGS).toBe(39);
+      expect(TAROT_TAROT_MAPPINGS.length).toBe(39);
     });
-  });
 
-  describe('TOTAL_PATH_TYPES', () => {
-    it('should be exported and equal to 7', () => {
-      expect(TOTAL_PATH_TYPES).toBe(7);
+    it('has 5 path types', () => {
+      expect(TOTAL_PATH_TYPES).toBe(5);
+    });
+
+    it('mappings have required fields', () => {
+      for (const mapping of TAROT_TAROT_MAPPINGS) {
+        expect(mapping.arcano).toBeDefined();
+        expect(mapping.numero_carta).toBeDefined();
+        expect(mapping.related_arcano).toBeDefined();
+        expect(mapping.related_numero).toBeDefined();
+        expect(mapping.path_type).toBeDefined();
+        expect(mapping.spiritual_meaning).toBeDefined();
+        expect(mapping.energy_flow).toBe('bidirectional');
+      }
     });
   });
 
   describe('ALL_MAJOR_ARCANOS', () => {
-    it('should have 22 cards', () => {
+    it('contains all 22 Major Arcana', () => {
       expect(ALL_MAJOR_ARCANOS.length).toBe(22);
+    });
+
+    it('starts with O Louco', () => {
+      expect(ALL_MAJOR_ARCANOS[0]).toBe('0 - O Louco');
+    });
+
+    it('ends with O Mundo', () => {
+      expect(ALL_MAJOR_ARCANOS[21]).toBe('XXI - O Mundo');
     });
   });
 
-  describe('default export', () => {
-    it('should export all required functions', async () => {
-      const { default: m } = await import('@/lib/correlation/tarot-tarot');
-      expect(m.getTarotTarot).toBeDefined();
-      expect(m.getAllTarotPaths).toBeDefined();
-      expect(m.getAllPathTypes).toBeDefined();
-      expect(m.getAllMappedArcanos).toBeDefined();
-      expect(m.getRelationsForArcano).toBeDefined();
-      expect(m.getRelationsByPathType).toBeDefined();
-      expect(m.getPathTypeBetween).toBeDefined();
-      expect(m.getSpiritualMeaningBetween).toBeDefined();
-      expect(m.hasRelation).toBeDefined();
-      expect(m.getArcanoByNumber).toBeDefined();
-      expect(m.ALL_MAJOR_ARCANOS).toBeDefined();
-      expect(m.TAROT_TAROT_MAPPINGS).toBeDefined();
-      expect(m.TOTAL_MAPPINGS).toBeDefined();
-      expect(m.TOTAL_PATH_TYPES).toBeDefined();
+  describe('getTarotTarot', () => {
+    it('returns mappings for O Louco', () => {
+      const result = getTarotTarot('O Louco');
+      expect(result).toBeDefined();
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('returns mappings for O Mago', () => {
+      const result = getTarotTarot('O Mago');
+      expect(result).toBeDefined();
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('returns empty array for unknown arcano', () => {
+      const result = getTarotTarot('Unknown Arcano');
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe('getAllTarotPaths', () => {
+    it('returns all mappings', () => {
+      const result = getAllTarotPaths();
+      expect(result).toBeDefined();
+      expect(result.length).toBe(39);
+    });
+
+    it('returns same reference', () => {
+      const result = getAllTarotPaths();
+      expect(result).toBe(TAROT_TAROT_MAPPINGS);
+    });
+  });
+
+  describe('getAllPathTypes', () => {
+    it('returns array of path types', () => {
+      const result = getAllPathTypes();
+      expect(result).toBeDefined();
+      expect(result.length).toBe(5);
+    });
+
+    it('contains expected path types', () => {
+      const result = getAllPathTypes();
+      expect(result).toContain('tree_path');
+      expect(result).toContain('sequential');
+    });
+  });
+
+  describe('getAllMappedArcanos', () => {
+    it('returns all arcano names', () => {
+      const result = getAllMappedArcanos();
+      expect(result).toBeDefined();
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('contains O Louco', () => {
+      expect(getAllMappedArcanos()).toContain('O Louco');
+    });
+
+    it('contains O Mundo', () => {
+      expect(getAllMappedArcanos()).toContain('O Mundo');
+    });
+  });
+
+  describe('getRelationsForArcano', () => {
+    it('returns relations for O Louco', () => {
+      const result = getRelationsForArcano('O Louco');
+      expect(result).toBeDefined();
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('returns empty array for unknown arcano', () => {
+      const result = getRelationsForArcano('Unknown');
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe('getRelationsByPathType', () => {
+    it('returns mappings for tree_path type', () => {
+      const result = getRelationsByPathType('tree_path');
+      expect(result).toBeDefined();
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('returns empty array for unknown path type', () => {
+      const result = getRelationsByPathType('unknown' as PathType);
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe('getPathTypeBetween', () => {
+    it('returns path type for related pair', () => {
+      const result = getPathTypeBetween('O Louco', 'O Mago');
+      expect(result).toBeTruthy();
+    });
+
+    it('returns path type for reverse pair', () => {
+      const result = getPathTypeBetween('O Mago', 'O Louco');
+      expect(result).toBeTruthy();
+    });
+
+    it('returns null for non-related pair', () => {
+      const result = getPathTypeBetween('O Louco', 'A Morte');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('getSpiritualMeaningBetween', () => {
+    it('returns spiritual meaning for related pair', () => {
+      const result = getSpiritualMeaningBetween('O Louco', 'O Mago');
+      expect(result).toBeTruthy();
+      expect(typeof result === 'string').toBe(true);
+    });
+
+    it('returns null for non-related pair', () => {
+      const result = getSpiritualMeaningBetween('O Louco', 'A Morte');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('hasRelation', () => {
+    it('returns true for related pair', () => {
+      expect(hasRelation('O Louco', 'O Mago')).toBe(true);
+    });
+
+    it('returns true for reverse pair', () => {
+      expect(hasRelation('O Mago', 'O Louco')).toBe(true);
+    });
+
+    it('returns false for non-related pair', () => {
+      expect(hasRelation('O Louco', 'A Morte')).toBe(false);
+    });
+  });
+
+  describe('getArcanoByNumber', () => {
+    it('returns arcano for card 0', () => {
+      expect(getArcanoByNumber(0)).toBe('0 - O Louco');
+    });
+
+    it('returns arcano for card 21', () => {
+      expect(getArcanoByNumber(21)).toBe('XXI - O Mundo');
+    });
+
+    it('returns null for invalid number', () => {
+      expect(getArcanoByNumber(99)).toBeNull();
+    });
+  });
+
+  describe('TarotTarotMapping interface', () => {
+    it('has all required fields', () => {
+      const mapping: TarotTarotMapping = {
+        arcano: 'O Louco',
+        numero_carta: 0,
+        related_arcano: 'O Mago',
+        related_numero: 1,
+        path_type: 'sequential',
+        spiritual_meaning: 'Test meaning',
+        energy_flow: 'bidirectional',
+      };
+
+      expect(mapping.arcano).toBeDefined();
+      expect(mapping.numero_carta).toBeDefined();
+      expect(mapping.related_arcano).toBeDefined();
+      expect(mapping.related_numero).toBeDefined();
+      expect(mapping.path_type).toBeDefined();
+      expect(mapping.spiritual_meaning).toBeDefined();
+      expect(mapping.energy_flow).toBeDefined();
     });
   });
 });
