@@ -1,18 +1,19 @@
 // ============================================================
 // CALENDAR API - CABALA DOS CAMINHOS
 // ============================================================
-// GET endpoints for spiritual calendar data
-// - Events, rituals, and celebrations
-// - Lunar phases and astrological periods
-// - Sacred dates and numerological cycles
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const CalendarQuerySchema = z.object({
+  month: z.coerce.number().int().min(1).max(12).optional(),
+  year: z.coerce.number().int().min(1900).max(2100).optional(),
+  orixa: z.string().optional(),
+  type: z.enum(['orixa', 'ritual', 'lunar', 'sacred', 'celestial']).optional(),
+});
 // ============================================================
 // TYPE DEFINITIONS
 // ============================================================
-
+interface CalendarEvent {
 interface CalendarEvent {
   id: string;
   title: string;
@@ -266,28 +267,31 @@ function getAllEventsForMonth(month: number, year: number): CalendarEvent[] {
 
 // ============================================================
 // API ROUTE HANDLERS
-// ============================================================
-
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = CalendarQuerySchema.safeParse({
+      month: searchParams.get('month'),
+      year: searchParams.get('year'),
+      orixa: searchParams.get('orixa'),
+      type: searchParams.get('type'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { month: monthInput, year: yearInput, orixa, type } = parseResult.data;
     const now = new Date();
-    const month = searchParams.has('month')
-      ? parseInt(searchParams.get('month')!, 10) - 1
-      : now.getMonth();
-    const year = searchParams.has('year')
-      ? parseInt(searchParams.get('year')!, 10)
-      : now.getFullYear();
-    const orixa = searchParams.get('orixa') || undefined;
-    const type = searchParams.get('type') || undefined;
-
+    const month = monthInput !== undefined ? monthInput - 1 : now.getMonth();
+    const year = yearInput !== undefined ? yearInput : now.getFullYear();
     if (month < 0 || month > 11) {
       return NextResponse.json(
         { error: 'Invalid month. Use 1-12.' },
         { status: 400 }
       );
     }
-
     if (year < 1900 || year > 2100) {
       return NextResponse.json(
         { error: 'Invalid year. Use 1900-2100.' },
