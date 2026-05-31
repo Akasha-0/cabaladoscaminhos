@@ -187,7 +187,7 @@ export function getTarotTarot(
  * Get all tarot-tarot mappings.
  */
 export function getAllTarotPaths(): readonly TarotTarotMapping[] {
-  return TAROT_TAROT_MAPPINGS;
+  return [...TAROT_TAROT_MAPPINGS];
 }
 
 /**
