@@ -245,7 +245,7 @@ describe('orixa-zodiac', () => {
       expect(orixaNames).toContain('Oxumaré');
       
       expect(signNames).toContain('Capricórnio');
-      expect(signNames).toContain('Câncer');
+      expect(signNames).toContain('Caranguejo');
       expect(signNames).toContain('Touro');
       expect(signNames).toContain('Áries');
       expect(signNames).toContain('Virgem');
