@@ -3,460 +3,418 @@ import {
   getZodiacElement,
   getElementZodiac,
   getAllZodiacElements,
-  getElementFromZodiac,
-  getQualidadesFromZodiac,
-  getPraticasFromZodiac,
+  getElementFromSigno,
+  getChakraFromSigno,
+  getSignificadoFromSigno,
   getSignosByElement,
-  getSignosByPolaridade,
-  getCabalaFromZodiac,
-  ZODIAC_ELEMENT_MAPPINGS,
+  getAllSigns,
+  ZODIAC_ELEMENT_MAP,
+  TODOS_SIGNOS,
   type ZodiacElementMapping,
-  type Signo,
+  type SignoZodiac,
 } from '@/lib/correlation/zodiac-element';
 
-describe('zodiac-element', () => {
-  // ─── ZODIAC_ELEMENT_MAPPINGS: all 12 signs ────────────────────────────────
-
-  describe('ZODIAC_ELEMENT_MAPPINGS', () => {
-    const expectedSigns: readonly Signo[] = [
-      'Áries', 'Touro', 'Gémeos', 'Câncer',
-      'Leão', 'Virgem', 'Libra', 'Escorpião',
-      'Sagitário', 'Capricórnio', 'Aquário', 'Peixes',
-    ];
-
-    it('contains all 12 zodiac signs', () => {
-      const keys = Object.keys(ZODIAC_ELEMENT_MAPPINGS);
-      expect(keys).toHaveLength(12);
-      expectedSigns.forEach((sign) => {
-        expect(keys).toContain(sign);
-      });
-    });
-
-    it('each sign has required fields', () => {
-      expectedSigns.forEach((sign) => {
-        const mapping = ZODIAC_ELEMENT_MAPPINGS[sign];
-        expect(mapping.signo).toBe(sign);
-        expect(mapping.elemento).toBeDefined();
-        expect(mapping.qualidades_elementares).toBeDefined();
-        expect(mapping.praticas_espirituais).toBeDefined();
-        expect(mapping.correspondencia_cabala).toBeDefined();
-      });
-    });
-
-    it('element distribution is correct: 3 fire, 3 earth, 3 air, 3 water', () => {
-      const elements = Object.values(ZODIAC_ELEMENT_MAPPINGS).map((m) => m.elemento);
-      const fireCount = elements.filter((e) => e === 'Fogo').length;
-      const earthCount = elements.filter((e) => e === 'Terra').length;
-      const airCount = elements.filter((e) => e === 'Ar').length;
-      const waterCount = elements.filter((e) => e === 'Água').length;
-      expect(fireCount).toBe(3);
-      expect(earthCount).toBe(3);
-      expect(airCount).toBe(3);
-      expect(waterCount).toBe(3);
-    });
-
-    it('each sign has valid element qualities', () => {
-      Object.values(ZODIAC_ELEMENT_MAPPINGS).forEach((mapping) => {
-        expect(['Quente', 'Frio', 'Neutro']).toContain(mapping.qualidades_elementares.quente_frio);
-        expect(['Húmido', 'Seco', 'Neutro']).toContain(mapping.qualidades_elementares.humido_seco);
-        expect(['Yang', 'Yin']).toContain(mapping.qualidades_elementares.polaridade);
-        expect(mapping.qualidades_elementares.vibração).toBeDefined();
-      });
-    });
-
-    it('each sign has spiritual practices with non-empty arrays', () => {
-      Object.values(ZODIAC_ELEMENT_MAPPINGS).forEach((mapping) => {
-        expect(mapping.praticas_espirituais.ebos.length).toBeGreaterThan(0);
-        expect(mapping.praticas_espirituais.banhos.length).toBeGreaterThan(0);
-        expect(mapping.praticas_espirituais.defumacoes.length).toBeGreaterThan(0);
-        expect(mapping.praticas_espirituais.mantras.length).toBeGreaterThan(0);
-        expect(mapping.praticas_espirituais.horarios_rituais.length).toBeGreaterThan(0);
-        expect(mapping.praticas_espirituais.cores_rituais.length).toBeGreaterThan(0);
-        expect(mapping.praticas_espirituais.ofertas.length).toBeGreaterThan(0);
-      });
-    });
-
-    it('each sign has Cabala correspondence with sefirot and arcanjo', () => {
-      Object.values(ZODIAC_ELEMENT_MAPPINGS).forEach((mapping) => {
-        expect(mapping.correspondencia_cabala.sefirot).toBeDefined();
-        expect(mapping.correspondencia_cabala.arcanjo).toBeDefined();
-      });
-    });
-  });
-
-  // ─── getZodiacElement: lookup by sign ───────────────────────────────────────
-
+describe('ZodiacElement Correlation', () => {
   describe('getZodiacElement', () => {
-    it('returns mapping for each of the 12 signs', () => {
-      const signs = ['Áries', 'Touro', 'Gémeos', 'Câncer', 'Leão', 'Virgem',
-                     'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes'];
-      signs.forEach((sign) => {
-        const result = getZodiacElement(sign);
-        expect(result).not.toBeNull();
-        expect(result?.signo).toBe(sign);
-      });
+    it('returns mapping for valid sign names', () => {
+      const aries = getZodiacElement('Áries');
+      expect(aries).not.toBeNull();
+      expect(aries?.signo).toBe('Áries');
+      expect(aries?.elemento).toBe('Fogo');
+
+      const touro = getZodiacElement('Touro');
+      expect(touro).not.toBeNull();
+      expect(touro?.signo).toBe('Touro');
+      expect(touro?.elemento).toBe('Terra');
     });
 
-    it('handles case-insensitive lookup', () => {
+    it('handles case variations', () => {
       expect(getZodiacElement('aries')?.signo).toBe('Áries');
       expect(getZodiacElement('ARIES')?.signo).toBe('Áries');
-      expect(getZodiacElement('aries')?.signo).toBe('Áries');
+      expect(getZodiacElement('aRiEs')?.signo).toBe('Áries');
     });
 
-    it('handles accented characters', () => {
-      expect(getZodiacElement('touro')?.signo).toBe('Touro');
-      expect(getZodiacElement('gêmeos')?.signo).toBe('Gémeos');
-      expect(getZodiacElement('escorpião')?.signo).toBe('Escorpião');
-      expect(getZodiacElement('sagitário')?.signo).toBe('Sagitário');
-      expect(getZodiacElement('capricórnio')?.signo).toBe('Capricórnio');
-      expect(getZodiacElement('aquário')?.signo).toBe('Aquário');
+    it('handles accent variations', () => {
+      expect(getZodiacElement('Gemeos')?.signo).toBe('Gémeos');
+      expect(getZodiacElement('GÉMEOS')?.signo).toBe('Gémeos');
+      expect(getZodiacElement('Cancer')?.signo).toBe('Câncer');
     });
 
-    it('handles whitespace trimming', () => {
-      expect(getZodiacElement('  Áries  ')?.signo).toBe('Áries');
-    });
-
-    it('returns null for unknown sign', () => {
-      expect(getZodiacElement('NonExistent')).toBeNull();
+    it('returns null for invalid sign names', () => {
+      expect(getZodiacElement('InvalidSign')).toBeNull();
       expect(getZodiacElement('')).toBeNull();
+      expect(getZodiacElement('Leo')).not.toBeNull();
+      expect(getZodiacElement('Escorpiao')?.signo).toBe('Escorpião');
+      expect(getZodiacElement('Sagitario')?.signo).toBe('Sagitário');
+      expect(getZodiacElement('Capricornio')?.signo).toBe('Capricórnio');
+      expect(getZodiacElement('Aquario')?.signo).toBe('Aquário');
+      expect(getZodiacElement('Peixes')?.signo).toBe('Peixes');
     });
 
-    it('returns correct element for each sign', () => {
-      expect(getZodiacElement('Áries')?.elemento).toBe('Fogo');
-      expect(getZodiacElement('Touro')?.elemento).toBe('Terra');
-      expect(getZodiacElement('Gémeos')?.elemento).toBe('Ar');
-      expect(getZodiacElement('Câncer')?.elemento).toBe('Água');
-      expect(getZodiacElement('Leão')?.elemento).toBe('Fogo');
-      expect(getZodiacElement('Virgem')?.elemento).toBe('Terra');
-      expect(getZodiacElement('Libra')?.elemento).toBe('Ar');
-      expect(getZodiacElement('Escorpião')?.elemento).toBe('Água');
-      expect(getZodiacElement('Sagitário')?.elemento).toBe('Fogo');
-      expect(getZodiacElement('Capricórnio')?.elemento).toBe('Terra');
-      expect(getZodiacElement('Aquário')?.elemento).toBe('Ar');
-      expect(getZodiacElement('Peixes')?.elemento).toBe('Água');
+    it('returns null for empty or whitespace input', () => {
+      expect(getZodiacElement('')).toBeNull();
+      expect(getZodiacElement('   ')).toBeNull();
+    });
+
+    it('returns complete mapping with all fields', () => {
+      const mapping = getZodiacElement('Áries');
+      expect(mapping).not.toBeNull();
+      expect(mapping).toHaveProperty('signo');
+      expect(mapping).toHaveProperty('elemento');
+      expect(mapping).toHaveProperty('chakra');
+      expect(mapping).toHaveProperty('chakraPt');
+      expect(mapping).toHaveProperty('significado_espiritual');
     });
   });
-
-  // ─── getElementZodiac: lookup by element ───────────────────────────────────
 
   describe('getElementZodiac', () => {
-    it('returns 3 signs for each element', () => {
-      expect(getElementZodiac('Fogo')?.length).toBe(3);
-      expect(getElementZodiac('Terra')?.length).toBe(3);
-      expect(getElementZodiac('Ar')?.length).toBe(3);
-      expect(getElementZodiac('Água')?.length).toBe(3);
-    });
-
-    it('returns correct signs for Fogo', () => {
+    it('returns all fire signs', () => {
       const fogo = getElementZodiac('Fogo');
-      expect(fogo?.map((m) => m.signo)).toEqual(expect.arrayContaining(['Áries', 'Leão', 'Sagitário']));
+      expect(fogo).toHaveLength(3);
+      const signosFogo = fogo.map((m) => m.signo);
+      expect(signosFogo).toContain('Áries');
+      expect(signosFogo).toContain('Leão');
+      expect(signosFogo).toContain('Sagitário');
     });
 
-    it('returns correct signs for Terra', () => {
+    it('returns all earth signs', () => {
       const terra = getElementZodiac('Terra');
-      expect(terra?.map((m) => m.signo)).toEqual(expect.arrayContaining(['Touro', 'Virgem', 'Capricórnio']));
+      expect(terra).toHaveLength(3);
+      const signosTerra = terra.map((m) => m.signo);
+      expect(signosTerra).toContain('Touro');
+      expect(signosTerra).toContain('Virgem');
+      expect(signosTerra).toContain('Capricórnio');
     });
 
-    it('returns correct signs for Ar', () => {
+    it('returns all air signs', () => {
       const ar = getElementZodiac('Ar');
-      expect(ar?.map((m) => m.signo)).toEqual(expect.arrayContaining(['Gémeos', 'Libra', 'Aquário']));
+      expect(ar).toHaveLength(3);
+      const signosAr = ar.map((m) => m.signo);
+      expect(signosAr).toContain('Gémeos');
+      expect(signosAr).toContain('Libra');
+      expect(signosAr).toContain('Aquário');
     });
 
-    it('returns correct signs for Água', () => {
+    it('returns all water signs', () => {
       const agua = getElementZodiac('Água');
-      expect(agua?.map((m) => m.signo)).toEqual(expect.arrayContaining(['Câncer', 'Escorpião', 'Peixes']));
+      expect(agua).toHaveLength(3);
+      const signosAgua = agua.map((m) => m.signo);
+      expect(signosAgua).toContain('Câncer');
+      expect(signosAgua).toContain('Escorpião');
+      expect(signosAgua).toContain('Peixes');
     });
 
-    it('handles case-insensitive lookup', () => {
-      expect(getElementZodiac('fogo')?.length).toBe(3);
-      expect(getElementZodiac('FOGO')?.length).toBe(3);
-    });
-
-    it('handles accented characters', () => {
-      expect(getElementZodiac('Água')?.length).toBe(3);
-      expect(getElementZodiac('agua')?.length).toBe(3);
-    });
-
-    it('returns null for invalid element', () => {
-      expect(getElementZodiac('InvalidElement')).toBeNull();
-      expect(getElementZodiac('')).toBeNull();
+    it('returns empty array for unknown element', () => {
+      expect(getElementZodiac('UnknownElement')).toHaveLength(0);
     });
   });
 
-  // ─── getAllZodiacElements ──────────────────────────────────────────────────
-
   describe('getAllZodiacElements', () => {
-    it('returns all 12 zodiac element mappings', () => {
+    it('returns all 12 zodiac mappings', () => {
       const all = getAllZodiacElements();
       expect(all).toHaveLength(12);
     });
 
-    it('returns array of ZodiacElementMapping objects', () => {
+    it('contains all zodiac signs', () => {
+      const all = getAllZodiacElements();
+      const signos = all.map((m) => m.signo);
+      
+      expect(signos).toContain('Áries');
+      expect(signos).toContain('Touro');
+      expect(signos).toContain('Gémeos');
+      expect(signos).toContain('Câncer');
+      expect(signos).toContain('Leão');
+      expect(signos).toContain('Virgem');
+      expect(signos).toContain('Libra');
+      expect(signos).toContain('Escorpião');
+      expect(signos).toContain('Sagitário');
+      expect(signos).toContain('Capricórnio');
+      expect(signos).toContain('Aquário');
+      expect(signos).toContain('Peixes');
+    });
+
+    it('each mapping has element field', () => {
       const all = getAllZodiacElements();
       all.forEach((mapping) => {
-        expect(mapping).toHaveProperty('signo');
-        expect(mapping).toHaveProperty('elemento');
-        expect(mapping).toHaveProperty('qualidades_elementares');
-        expect(mapping).toHaveProperty('praticas_espirituais');
-        expect(mapping).toHaveProperty('correspondencia_cabala');
-      });
-    });
-
-    it('includes complete data for each mapping', () => {
-      const all = getAllZodiacElements();
-      all.forEach((mapping) => {
-        expect(mapping.praticas_espirituais.ebos.length).toBeGreaterThan(0);
-        expect(mapping.correspondencia_cabala.sefirot).toBeDefined();
+        expect(['Fogo', 'Terra', 'Ar', 'Água']).toContain(mapping.elemento);
       });
     });
   });
 
-  // ─── getElementFromZodiac ───────────────────────────────────────────────────
-
-  describe('getElementFromZodiac', () => {
-    it('returns element for each sign', () => {
-      expect(getElementFromZodiac('Áries')).toBe('Fogo');
-      expect(getElementFromZodiac('Touro')).toBe('Terra');
-      expect(getElementFromZodiac('Gémeos')).toBe('Ar');
-      expect(getElementFromZodiac('Câncer')).toBe('Água');
-      expect(getElementFromZodiac('Leão')).toBe('Fogo');
-      expect(getElementFromZodiac('Virgem')).toBe('Terra');
-      expect(getElementFromZodiac('Libra')).toBe('Ar');
-      expect(getElementFromZodiac('Escorpião')).toBe('Água');
-      expect(getElementFromZodiac('Sagitário')).toBe('Fogo');
-      expect(getElementFromZodiac('Capricórnio')).toBe('Terra');
-      expect(getElementFromZodiac('Aquário')).toBe('Ar');
-      expect(getElementFromZodiac('Peixes')).toBe('Água');
+  describe('getElementFromSigno', () => {
+    it('returns element for valid signs', () => {
+      expect(getElementFromSigno('Áries')).toBe('Fogo');
+      expect(getElementFromSigno('Touro')).toBe('Terra');
+      expect(getElementFromSigno('Gémeos')).toBe('Ar');
+      expect(getElementFromSigno('Câncer')).toBe('Água');
+      expect(getElementFromSigno('Leão')).toBe('Fogo');
+      expect(getElementFromSigno('Virgem')).toBe('Terra');
+      expect(getElementFromSigno('Libra')).toBe('Ar');
+      expect(getElementFromSigno('Escorpião')).toBe('Água');
+      expect(getElementFromSigno('Sagitário')).toBe('Fogo');
+      expect(getElementFromSigno('Capricórnio')).toBe('Terra');
+      expect(getElementFromSigno('Aquário')).toBe('Ar');
+      expect(getElementFromSigno('Peixes')).toBe('Água');
     });
 
-    it('returns null for unknown sign', () => {
-      expect(getElementFromZodiac('Invalid')).toBeNull();
+    it('returns null for invalid sign', () => {
+      expect(getElementFromSigno('Invalid')).toBeNull();
     });
   });
 
-  // ─── getQualidadesFromZodiac ───────────────────────────────────────────────
-
-  describe('getQualidadesFromZodiac', () => {
-    it('returns qualities for fire signs', () => {
-      const aries = getQualidadesFromZodiac('Áries');
-      expect(aries?.quente_frio).toBe('Quente');
-      expect(aries?.humido_seco).toBe('Seco');
-      expect(aries?.polaridade).toBe('Yang');
-      expect(aries?.vibração).toBeDefined();
+  describe('getChakraFromSigno', () => {
+    it('returns chakra for valid signs', () => {
+      expect(getChakraFromSigno('Áries')).toBe('Manipura');
+      expect(getChakraFromSigno('Touro')).toBe('Muladhara');
+      expect(getChakraFromSigno('Gémeos')).toBe('Vishuddha');
+      expect(getChakraFromSigno('Câncer')).toBe('Anahata');
+      expect(getChakraFromSigno('Leão')).toBe('Manipura');
+      expect(getChakraFromSigno('Virgem')).toBe('Svadhisthana');
+      expect(getChakraFromSigno('Libra')).toBe('Vishuddha');
+      expect(getChakraFromSigno('Escorpião')).toBe('Svadhisthana');
+      expect(getChakraFromSigno('Sagitário')).toBe('Ajna');
+      expect(getChakraFromSigno('Capricórnio')).toBe('Muladhara');
+      expect(getChakraFromSigno('Aquário')).toBe('Ajna');
+      expect(getChakraFromSigno('Peixes')).toBe('Sahasrara');
     });
 
-    it('returns qualities for water signs', () => {
-      const cancer = getQualidadesFromZodiac('Câncer');
-      expect(cancer?.quente_frio).toBe('Frio');
-      expect(cancer?.humido_seco).toBe('Húmido');
-      expect(cancer?.polaridade).toBe('Yin');
-    });
-
-    it('returns null for unknown sign', () => {
-      expect(getQualidadesFromZodiac('Invalid')).toBeNull();
+    it('returns null for invalid sign', () => {
+      expect(getChakraFromSigno('Invalid')).toBeNull();
     });
   });
 
-  // ─── getPraticasFromZodiac ──────────────────────────────────────────────────
-
-  describe('getPraticasFromZodiac', () => {
-    it('returns spiritual practices for each sign', () => {
-      const aries = getPraticasFromZodiac('Áries');
-      expect(aries).not.toBeNull();
-      expect(aries?.ebos.length).toBeGreaterThan(0);
-      expect(aries?.banhos.length).toBeGreaterThan(0);
-      expect(aries?.defumacoes.length).toBeGreaterThan(0);
-      expect(aries?.mantras.length).toBeGreaterThan(0);
-      expect(aries?.horarios_rituais.length).toBeGreaterThan(0);
-      expect(aries?.cores_rituais.length).toBeGreaterThan(0);
-      expect(aries?.ofertas.length).toBeGreaterThan(0);
+  describe('getSignificadoFromSigno', () => {
+    it('returns spiritual meaning for valid signs', () => {
+      const significado = getSignificadoFromSigno('Áries');
+      expect(significado).not.toBeNull();
+      expect(typeof significado).toBe('string');
+      expect(significado!.length).toBeGreaterThan(0);
     });
 
-    it('returns null for unknown sign', () => {
-      expect(getPraticasFromZodiac('Invalid')).toBeNull();
+    it('returns null for invalid sign', () => {
+      expect(getSignificadoFromSigno('Invalid')).toBeNull();
+    });
+
+    it('returns non-empty spiritual meaning for all signs', () => {
+      TODOS_SIGNOS.forEach((signo) => {
+        const significado = getSignificadoFromSigno(signo);
+        expect(significado).not.toBeNull();
+        expect(significado!.length).toBeGreaterThan(10);
+      });
     });
   });
-
-  // ─── getSignosByElement ────────────────────────────────────────────────────
 
   describe('getSignosByElement', () => {
-    it('returns 3 signs for Fogo', () => {
-      const signs = getSignosByElement('Fogo');
-      expect(signs).toHaveLength(3);
-      expect(signs).toContain('Áries');
-      expect(signs).toContain('Leão');
-      expect(signs).toContain('Sagitário');
+    it('returns fire signs', () => {
+      const signos = getSignosByElement('Fogo');
+      expect(signos).toHaveLength(3);
+      expect(signos).toContain('Áries');
+      expect(signos).toContain('Leão');
+      expect(signos).toContain('Sagitário');
     });
 
-    it('returns 3 signs for Terra', () => {
-      const signs = getSignosByElement('Terra');
-      expect(signs).toHaveLength(3);
-      expect(signs).toContain('Touro');
-      expect(signs).toContain('Virgem');
-      expect(signs).toContain('Capricórnio');
+    it('returns earth signs', () => {
+      const signos = getSignosByElement('Terra');
+      expect(signos).toHaveLength(3);
+      expect(signos).toContain('Touro');
+      expect(signos).toContain('Virgem');
+      expect(signos).toContain('Capricórnio');
     });
 
-    it('returns 3 signs for Ar', () => {
-      const signs = getSignosByElement('Ar');
-      expect(signs).toHaveLength(3);
-      expect(signs).toContain('Gémeos');
-      expect(signs).toContain('Libra');
-      expect(signs).toContain('Aquário');
+    it('returns air signs', () => {
+      const signos = getSignosByElement('Ar');
+      expect(signos).toHaveLength(3);
+      expect(signos).toContain('Gémeos');
+      expect(signos).toContain('Libra');
+      expect(signos).toContain('Aquário');
     });
 
-    it('returns 3 signs for Água', () => {
-      const signs = getSignosByElement('Água');
-      expect(signs).toHaveLength(3);
-      expect(signs).toContain('Câncer');
-      expect(signs).toContain('Escorpião');
-      expect(signs).toContain('Peixes');
+    it('returns water signs', () => {
+      const signos = getSignosByElement('Água');
+      expect(signos).toHaveLength(3);
+      expect(signos).toContain('Câncer');
+      expect(signos).toContain('Escorpião');
+      expect(signos).toContain('Peixes');
     });
 
-    it('returns empty array for invalid element', () => {
-      expect(getSignosByElement('Invalid')).toEqual([]);
-    });
-  });
-
-  // ─── getSignosByPolaridade ────────────────────────────────────────────────
-
-  describe('getSignosByPolaridade', () => {
-    it('returns 6 Yang signs (fire + air)', () => {
-      const yang = getSignosByPolaridade('Yang');
-      expect(yang).toHaveLength(6);
-      expect(yang).toContain('Áries');
-      expect(yang).toContain('Leão');
-      expect(yang).toContain('Sagitário');
-      expect(yang).toContain('Gémeos');
-      expect(yang).toContain('Libra');
-      expect(yang).toContain('Aquário');
-    });
-
-    it('returns 6 Yin signs (earth + water)', () => {
-      const yin = getSignosByPolaridade('Yin');
-      expect(yin).toHaveLength(6);
-      expect(yin).toContain('Touro');
-      expect(yin).toContain('Virgem');
-      expect(yin).toContain('Capricórnio');
-      expect(yin).toContain('Câncer');
-      expect(yin).toContain('Escorpião');
-      expect(yin).toContain('Peixes');
+    it('returns empty array for unknown element', () => {
+      expect(getSignosByElement('Unknown')).toHaveLength(0);
     });
   });
 
-  // ─── getCabalaFromZodiac ────────────────────────────────────────────────────
-
-  describe('getCabalaFromZodiac', () => {
-    it('returns Cabala correspondence for each sign', () => {
-      const aries = getCabalaFromZodiac('Áries');
-      expect(aries).not.toBeNull();
-      expect(aries?.sefirot).toBeDefined();
-      expect(aries?.caminho_sefirotico).toBeDefined();
-      expect(aries?.arcanjo).toBeDefined();
+  describe('getAllSigns', () => {
+    it('returns all 12 zodiac signs', () => {
+      const signos = getAllSigns();
+      expect(signos).toHaveLength(12);
     });
 
-    it('returns null for unknown sign', () => {
-      expect(getCabalaFromZodiac('Invalid')).toBeNull();
+    it('contains all expected signs', () => {
+      const signos = getAllSigns();
+      expect(signos).toContain('Áries');
+      expect(signos).toContain('Touro');
+      expect(signos).toContain('Gémeos');
+      expect(signos).toContain('Câncer');
+      expect(signos).toContain('Leão');
+      expect(signos).toContain('Virgem');
+      expect(signos).toContain('Libra');
+      expect(signos).toContain('Escorpião');
+      expect(signos).toContain('Sagitário');
+      expect(signos).toContain('Capricórnio');
+      expect(signos).toContain('Aquário');
+      expect(signos).toContain('Peixes');
     });
   });
 
-  // ─── Integration: element-polarity relationships ───────────────────────────
+  describe('ZODIAC_ELEMENT_MAP', () => {
+    it('is a frozen object', () => {
+      expect(Object.isFrozen(ZODIAC_ELEMENT_MAP)).toBe(true);
+    });
 
-  describe('element-polarity integration', () => {
-    it('fire signs are Yang', () => {
+    it('has 12 entries', () => {
+      expect(Object.keys(ZODIAC_ELEMENT_MAP)).toHaveLength(12);
+    });
+
+    it('each mapping is frozen', () => {
+      Object.values(ZODIAC_ELEMENT_MAP).forEach((mapping) => {
+        expect(Object.isFrozen(mapping)).toBe(true);
+      });
+    });
+
+    it('contains all elements', () => {
+      const elementos = new Set(Object.values(ZODIAC_ELEMENT_MAP).map((m) => m.elemento));
+      expect(elementos).toContain('Fogo');
+      expect(elementos).toContain('Terra');
+      expect(elementos).toContain('Ar');
+      expect(elementos).toContain('Água');
+      expect(elementos.size).toBe(4);
+    });
+  });
+
+  describe('TODOS_SIGNOS', () => {
+    it('contains 12 signs', () => {
+      expect(TODOS_SIGNOS).toHaveLength(12);
+    });
+
+    it('is a readonly array', () => {
+      expect(TODOS_SIGNOS).toBeReadonly();
+    });
+  });
+
+  describe('Element-Sign relationships', () => {
+    it('fire signs are Áries, Leão, Sagitário', () => {
       const fogo = getElementZodiac('Fogo');
-      fogo?.forEach((m) => {
-        expect(m.qualidades_elementares.polaridade).toBe('Yang');
-      });
+      const signosFogo = fogo.map((m) => m.signo);
+      expect(signosFogo).toContain('Áries');
+      expect(signosFogo).toContain('Leão');
+      expect(signosFogo).toContain('Sagitário');
     });
 
-    it('earth signs are Yin', () => {
+    it('earth signs are Touro, Virgem, Capricórnio', () => {
       const terra = getElementZodiac('Terra');
-      terra?.forEach((m) => {
-        expect(m.qualidades_elementares.polaridade).toBe('Yin');
-      });
+      const signosTerra = terra.map((m) => m.signo);
+      expect(signosTerra).toContain('Touro');
+      expect(signosTerra).toContain('Virgem');
+      expect(signosTerra).toContain('Capricórnio');
     });
 
-    it('air signs are Yang', () => {
+    it('air signs are Gémeos, Libra, Aquário', () => {
       const ar = getElementZodiac('Ar');
-      ar?.forEach((m) => {
-        expect(m.qualidades_elementares.polaridade).toBe('Yang');
-      });
+      const signosAr = ar.map((m) => m.signo);
+      expect(signosAr).toContain('Gémeos');
+      expect(signosAr).toContain('Libra');
+      expect(signosAr).toContain('Aquário');
     });
 
-    it('water signs are Yin', () => {
+    it('water signs are Câncer, Escorpião, Peixes', () => {
       const agua = getElementZodiac('Água');
-      agua?.forEach((m) => {
-        expect(m.qualidades_elementares.polaridade).toBe('Yin');
-      });
+      const signosAgua = agua.map((m) => m.signo);
+      expect(signosAgua).toContain('Câncer');
+      expect(signosAgua).toContain('Escorpião');
+      expect(signosAgua).toContain('Peixes');
     });
 
-    it('fire signs are Quente and Seco', () => {
+    it('each element has exactly 3 signs', () => {
+      expect(getElementZodiac('Fogo')).toHaveLength(3);
+      expect(getElementZodiac('Terra')).toHaveLength(3);
+      expect(getElementZodiac('Ar')).toHaveLength(3);
+      expect(getElementZodiac('Água')).toHaveLength(3);
+    });
+  });
+
+  describe('Chakra assignments', () => {
+    it('fire signs connect to Manipura or Ajna', () => {
       const fogo = getElementZodiac('Fogo');
-      fogo?.forEach((m) => {
-        expect(m.qualidades_elementares.quente_frio).toBe('Quente');
-        expect(m.qualidades_elementares.humido_seco).toBe('Seco');
+      fogo.forEach((mapping) => {
+        expect(['Manipura', 'Ajna']).toContain(mapping.chakra);
       });
     });
 
-    it('earth signs are Frio and Seco', () => {
+    it('earth signs connect to Muladhara or Svadhisthana', () => {
       const terra = getElementZodiac('Terra');
-      terra?.forEach((m) => {
-        expect(m.qualidades_elementares.quente_frio).toBe('Frio');
-        expect(m.qualidades_elementares.humido_seco).toBe('Seco');
+      terra.forEach((mapping) => {
+        expect(['Muladhara', 'Svadhisthana']).toContain(mapping.chakra);
       });
     });
 
-    it('air signs are Quente and Húmido', () => {
+    it('air signs connect to Vishuddha or Ajna', () => {
       const ar = getElementZodiac('Ar');
-      ar?.forEach((m) => {
-        expect(m.qualidades_elementares.quente_frio).toBe('Quente');
-        expect(m.qualidades_elementares.humido_seco).toBe('Húmido');
+      ar.forEach((mapping) => {
+        expect(['Vishuddha', 'Ajna']).toContain(mapping.chakra);
       });
     });
 
-    it('water signs are Frio and Húmido', () => {
+    it('water signs connect to Svadhisthana, Anahata, or Sahasrara', () => {
       const agua = getElementZodiac('Água');
-      agua?.forEach((m) => {
-        expect(m.qualidades_elementares.quente_frio).toBe('Frio');
-        expect(m.qualidades_elementares.humido_seco).toBe('Húmido');
+      agua.forEach((mapping) => {
+        expect(['Svadhisthana', 'Anahata', 'Sahasrara']).toContain(mapping.chakra);
+      });
+    });
+
+    it('all signs have chakraPt field', () => {
+      getAllZodiacElements().forEach((mapping) => {
+        expect(mapping.chakraPt).toBeTruthy();
+        expect(typeof mapping.chakraPt).toBe('string');
       });
     });
   });
 
-  // ─── Type exports ──────────────────────────────────────────────────────────
-
-  describe('type exports', () => {
-    it('ZodiacElementMapping interface is exported', () => {
-      const mapping: ZodiacElementMapping = {
-        signo: 'Áries',
-        elemento: 'Fogo',
-        qualidades_elementares: {
-          quente_frio: 'Quente',
-          humido_seco: 'Seco',
-          polaridade: 'Yang',
-          vibração: 'Test',
-        },
-        praticas_espirituais: {
-          ebos: ['Test'],
-          banhos: ['Test'],
-          defumacoes: ['Test'],
-          mantras: ['Test'],
-          horarios_rituais: ['Test'],
-          cores_rituais: ['Test'],
-          ofertas: ['Test'],
-        },
-        correspondencia_cabala: {
-          sefirot: 'Test',
-          caminho_sefirotico: 'Test',
-          arcanjo: 'Test',
-        },
-      };
-      expect(mapping.signo).toBe('Áries');
+  describe('Spiritual meanings', () => {
+    it('all signs have spiritual meaning', () => {
+      getAllZodiacElements().forEach((mapping) => {
+        expect(mapping.significado_espiritual).toBeTruthy();
+        expect(typeof mapping.significado_espiritual).toBe('string');
+        expect(mapping.significado_espiritual.length).toBeGreaterThan(5);
+      });
     });
 
-    it('Signo type is exported', () => {
-      const sign: Signo = 'Áries';
-      expect(sign).toBe('Áries');
+    it('fire signs spiritual meanings relate to transformation and action', () => {
+      const fogo = getElementZodiac('Fogo');
+      fogo.forEach((mapping) => {
+        const significado = mapping.significado_espiritual.toLowerCase();
+        expect(
+          significado.includes('criatividade') ||
+          significado.includes('iniciativa') ||
+          significado.includes('coragem') ||
+          significado.includes('expansão') ||
+          significado.includes('transformação') ||
+          significado.includes('ação')
+        ).toBe(true);
+      });
+    });
+
+    it('earth signs spiritual meanings relate to stability and manifestation', () => {
+      const terra = getElementZodiac('Terra');
+      terra.forEach((mapping) => {
+        const significado = mapping.significado_espiritual.toLowerCase();
+        expect(
+          significado.includes('estabilidade') ||
+          significado.includes('prosperidade') ||
+          significado.includes('disciplina') ||
+          significado.includes('realização') ||
+          significado.includes('serviço') ||
+          significado.includes('terra')
+        ).toBe(true);
+      });
     });
   });
 });

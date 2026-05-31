@@ -125,7 +125,6 @@ export default function OrixaPage() {
                 </p>
               </>
             ) : (
-            ) : (
               <p className="text-sm text-muted-foreground">Carregando...</p>
             )}
           </Card>
