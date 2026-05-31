@@ -1,5 +1,6 @@
 // ============================================================
 // OFFERINGS API - CABALA DOS CAMINHOS
+// Enhanced with spiritual correlations
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -13,6 +14,7 @@ const SefirotSchema = z.enum([
   'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
   'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
 ]);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 const OfferingQuerySchema = z.object({
   type: OfferingTypeSchema.optional(),
@@ -23,6 +25,7 @@ const OfferingQuerySchema = z.object({
   limit: z.coerce.number().int().positive().max(100).optional(),
   chakra: ChakraSchema.optional(),
   sefirot: SefirotSchema.optional(),
+  frequency: z.string().optional(),
 });
 
 const CreateOfferingSchema = z.object({
@@ -67,12 +70,41 @@ interface Offering {
   sefirot?: string;
   sefirotCorrespondencia?: string[];
   beneficios?: string[];
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 export type { Offering, OfferingItem, OfferingType, ElementType, IntensityLevel };
 export const dynamic = 'force-dynamic';
 
-// ─── Offering Data with Spiritual Correlations ──────────────────────────────────────────
+// ─── Spiritual Correlations for Each Offering ──────────────────────────────────────────
+const OFFERING_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  'ebo-ogum': { sefirot: ['Gevurah', 'Malkuth'], chakra: 1, element: 'Fogo', orixa: 'Ogum', affirmation: 'Ogum abre meus caminhos com vitória', frequency: '396 Hz' },
+  'ebo-oxossi': { sefirot: ['Chokhmah', 'Netzach'], chakra: 6, element: 'Ar', orixa: 'Oxóssi', affirmation: 'Oxóssi me guia na busca pelo conhecimento', frequency: '741 Hz' },
+  'ebo-oxum': { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Água', orixa: 'Oxum', affirmation: 'Oxum adorna minha vida com amor e prosperidade', frequency: '528 Hz' },
+  'ebo-iemanja': { sefirot: ['Binah', 'Yesod'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'Iemanjá protege e abençoa minha jornada', frequency: '639 Hz' },
+  'ebo-xango': { sefirot: ['Hod', 'Chesed'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'Xangô traz justiça e equilíbrio ao meu caminho', frequency: '528 Hz' },
+  'ebo-obaluaie': { sefirot: ['Malkuth', 'Binah'], chakra: 1, element: 'Terra', orixa: 'Omolu', affirmation: 'Omolu cura e purifica meu ser', frequency: '174 Hz' },
+  'ebo-exu': { sefirot: ['Hod', 'Gevurah'], chakra: 5, element: 'Fogo', orixa: 'Ogum', affirmation: 'Exu abre os caminhos para minhas mensagens', frequency: '417 Hz' },
+  'oferenda-oxala': { sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Oxalá ilumina minha paz e proteção', frequency: '963 Hz' },
+  'oferenda-nana': { sefirot: ['Binah', 'Kether'], chakra: 7, element: 'Terra', orixa: 'Iemanjá', affirmation: 'Nanã ensina-me a sabedoria ancestral', frequency: '963 Hz' },
+  'libacao-iansa': { sefirot: ['Gevurah', 'Netzach'], chakra: 3, element: 'Fogo', orixa: 'Iansã', affirmation: 'Iansã incendia minha coragem e transformação', frequency: '417 Hz' },
+};
+
+// ─── Offering Data ──────────────────────────────────────────────────────────
 const offeringsBase: Offering[] = [
   {
     id: 'ebo-ogum',
@@ -101,6 +133,7 @@ const offeringsBase: Offering[] = [
     chakra: 3,
     sefirot: 'Gevurah',
     beneficios: ['Coragem', 'Vitória', 'Proteção'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['ebo-ogum'],
   },
   {
     id: 'ebo-oxossi',
@@ -129,6 +162,7 @@ const offeringsBase: Offering[] = [
     chakra: 6,
     sefirot: 'Chokhmah',
     beneficios: ['Sabedoria', 'Conhecimento', 'Proteção na mata'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['ebo-oxossi'],
   },
   {
     id: 'ebo-oxum',
@@ -157,6 +191,7 @@ const offeringsBase: Offering[] = [
     chakra: 4,
     sefirot: 'Netzach',
     beneficios: ['Amor', 'Prosperidade', 'Doçura'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['ebo-oxum'],
   },
   {
     id: 'ebo-iemanja',
@@ -185,6 +220,7 @@ const offeringsBase: Offering[] = [
     chakra: 2,
     sefirot: 'Yesod',
     beneficios: ['Proteção', 'Maternidade', 'Harmonia'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['ebo-iemanja'],
   },
   {
     id: 'ebo-xango',
@@ -204,7 +240,7 @@ const offeringsBase: Offering[] = [
       'Sirva o amalá com pimenta',
       'Queime o fumo de Carijó',
       'Peça a Xangô justiça e equilíbrio',
-      'Deixe a oferenda por24 horas',
+      'Deixe a oferenda por 24 horas',
     ],
     duration: '35 minutos',
     intensity: 'forte',
@@ -213,6 +249,7 @@ const offeringsBase: Offering[] = [
     chakra: 3,
     sefirot: 'Hod',
     beneficios: ['Justiça', 'Equilíbrio', 'Poder'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['ebo-xango'],
   },
   {
     id: 'ebo-obaluaie',
@@ -241,6 +278,7 @@ const offeringsBase: Offering[] = [
     chakra: 1,
     sefirot: 'Malkuth',
     beneficios: ['Cura', 'Purificação', 'Proteção contra doenças'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['ebo-obaluaie'],
   },
   {
     id: 'ebo-exu',
@@ -269,6 +307,7 @@ const offeringsBase: Offering[] = [
     chakra: 1,
     sefirot: 'Malkuth',
     beneficios: ['Abertura de caminhos', 'Comunicação', 'Movimentação'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['ebo-exu'],
   },
   {
     id: 'oferenda-oxala',
@@ -297,6 +336,7 @@ const offeringsBase: Offering[] = [
     chakra: 7,
     sefirot: 'Kether',
     beneficios: ['Paz', 'Luz', 'Proteção espiritual'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['oferenda-oxala'],
   },
   {
     id: 'oferenda-nana',
@@ -325,6 +365,7 @@ const offeringsBase: Offering[] = [
     chakra: 7,
     sefirot: 'Binah',
     beneficios: ['Sabedoria ancestral', 'Renovação', 'Transformação'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['oferenda-nana'],
   },
   {
     id: 'libacao-iansa',
@@ -352,6 +393,7 @@ const offeringsBase: Offering[] = [
     chakra: 3,
     sefirot: 'Gevurah',
     beneficios: ['Coragem', 'Fogo interior', 'Transformação'],
+    spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS['libacao-iansa'],
   },
 ];
 
@@ -369,6 +411,7 @@ export async function GET(request: NextRequest) {
       limit: searchParams.get('limit'),
       chakra: searchParams.get('chakra'),
       sefirot: searchParams.get('sefirot'),
+      frequency: searchParams.get('frequency'),
     });
 
     if (!parseResult.success) {
@@ -379,8 +422,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { type, orixa, element, dia, id, limit, chakra, sefirot } = parseResult.data;
-
+    const { type, orixa, element, dia, id, limit, chakra, sefirot, frequency } = parseResult.data;
     let offerings = [...offeringsBase];
 
     if (id) {
@@ -395,7 +437,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         success: true,
         offering,
- });
+        spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS,
+      });
     }
 
     if (type) {
@@ -413,9 +456,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (dia) {
-      offerings = offerings.filter(o =>
-        o.bestDays?.includes(dia)
-      );
+      offerings = offerings.filter(o => o.bestDays?.includes(dia));
     }
 
     if (chakra) {
@@ -426,11 +467,42 @@ export async function GET(request: NextRequest) {
       offerings = offerings.filter(o => o.sefirot === sefirot);
     }
 
+    if (frequency) {
+      offerings = offerings.filter(o =>
+        o.spiritualCorrelations?.frequency?.includes(frequency)
+      );
+    }
+
     if (limit) {
       offerings = offerings.slice(0, limit);
     }
 
-    // Statistics
+    // Calculate spiritual stats
+    const spiritualStats = {
+      bySefirot: offerings.reduce((acc, o) => {
+        const sc = o.spiritualCorrelations;
+        if (sc) {
+          sc.sefirot.forEach(s => { acc[s] = (acc[s] || 0) + 1; });
+        }
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: offerings.reduce((acc, o) => {
+        const ch = o.spiritualCorrelations?.chakra || o.chakra;
+        if (ch) acc[ch] = (acc[ch] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: offerings.reduce((acc, o) => {
+        const el = o.spiritualCorrelations?.element || o.element;
+        if (el) acc[el] = (acc[el] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: offerings.reduce((acc, o) => {
+        const or = o.spiritualCorrelations?.orixa || o.orixa;
+        if (or) acc[or] = (acc[or] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
     const stats = {
       byType: offeringsBase.reduce((acc, o) => {
         acc[o.type] = (acc[o.type] || 0) + 1;
@@ -454,7 +526,9 @@ export async function GET(request: NextRequest) {
       success: true,
       offerings,
       total: offerings.length,
-      filters: { type, orixa, element, dia, chakra, sefirot },
+      filters: { type, orixa, element, dia, chakra, sefirot, frequency },
+      spiritualCorrelations: OFFERING_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
       stats,
     });
   } catch (error) {
