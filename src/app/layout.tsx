@@ -145,5 +145,6 @@ export default function RootLayout({
         </SupabaseProvider>
         <InstallPrompt />
       </body>
+    </html>
   );
 }
