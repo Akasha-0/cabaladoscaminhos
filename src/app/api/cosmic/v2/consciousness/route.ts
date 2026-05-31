@@ -61,6 +61,9 @@ const CONSCIOUSNESS_DATA: ConsciousnessData[] = [
     id: 'divine',
     level: 'Divine',
     frequency: 600,
+    description: 'Divine consciousness united with source',
+  },
+};
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
