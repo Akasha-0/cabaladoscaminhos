@@ -68,8 +68,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Action inválida' }, { status: 400 })
   }
 }
-// Cabala numerology
-}
 // Cabala numerology: A=1, B=2, ... I=9, J=1, K=2, ...
 const CABALA_MAP: Record<string, number> = {
   a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9,
