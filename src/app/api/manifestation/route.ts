@@ -1,33 +1,63 @@
 // ============================================================
 // MANIFESTATION API - CABALA DOS CAMINHOS
 // ============================================================
-// GET endpoints for manifestation management
-// - List user manifestations
-// - Get single manifestation by ID
-// POST endpoints for manifestation creation
-// - Create new manifestation
-// - Track manifestation progress
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
-// Manifestation status enum
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ManifestationStatusSchema = z.enum(['active', 'manifested', 'released']);
+const PriorityLevelSchema = z.enum(['high', 'medium', 'low']);
+const ManifestationSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  intention: z.string(),
+  description: z.string(),
+  status: ManifestationStatusSchema,
+  priority: PriorityLevelSchema,
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  targetDate: z.string().optional(),
+  category: z.string().optional(),
+  tags: z.array(z.string()),
+  affirmations: z.array(z.string()),
+  gratitudeStatements: z.array(z.string()),
+  actionSteps: z.array(z.string()),
+  progress: z.number(),
+  lastReinforced: z.string().optional(),
+  reinforcementCount: z.number(),
+});
+const CreateManifestationSchema = z.object({
+  intention: z.string().min(1, 'Intenção é obrigatória'),
+  description: z.string().optional(),
+  priority: PriorityLevelSchema.optional().default('medium'),
+  targetDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD').optional(),
+  category: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+  affirmations: z.array(z.string()).optional(),
+  gratitudeStatements: z.array(z.string()).optional(),
+  actionSteps: z.array(z.string()).optional(),
+});
+const ManifestationQuerySchema = z.object({
+  userId: z.string().optional(),
+  status: ManifestationStatusSchema.optional(),
+  priority: PriorityLevelSchema.optional(),
+  category: z.string().optional(),
+});
+// Type aliases
+type ManifestationStatus = z.infer<typeof ManifestationStatusSchema>;
+type PriorityLevel = z.infer<typeof PriorityLevelSchema>;
+type Manifestation = z.infer<typeof ManifestationSchema>;
+// Const enums
 const MANIFESTATION_STATUS = {
   ACTIVE: 'active',
   MANIFESTED: 'manifested',
   RELEASED: 'released',
 } as const;
-
-type ManifestationStatus = typeof MANIFESTATION_STATUS[keyof typeof MANIFESTATION_STATUS];
-
-// Manifestation priority levels
 const PRIORITY_LEVELS = {
   HIGH: 'high',
   MEDIUM: 'medium',
   LOW: 'low',
 } as const;
-
-type PriorityLevel = typeof PRIORITY_LEVELS[keyof typeof PRIORITY_LEVELS];
+} as const;
 
 interface Manifestation {
   id: string;
