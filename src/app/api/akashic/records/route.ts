@@ -239,8 +239,7 @@ export async function GET(request: NextRequest) {
     const affirmations = getRandomItems(affirmationSets[recordType], limit ?? 4);
     const practices = getRandomItems(practiceSets[recordType], accessThresholds[accessLevel]);
     const record: AkashicRecord = {
-
-    const record: AkashicRecord = {
+      id: generateId(),
       id: generateId(),
       recordType,
       accessLevel,
