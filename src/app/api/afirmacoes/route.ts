@@ -72,43 +72,11 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
-  const diaDoAno = Math.floor(
-    (agora.getTime() - new Date(agora.getFullYear(), 0, 0).getTime()) / 86400000
-  );
-  return { dia: diaDoAno };
-}
-
-function selectAfirmacao(categoria: Categoria): { texto: string; fonte: string } {
-  const afirmacoes = afirmacoesPorCategoria[categoria];
+  const afirmacao = selectAfirmacao(categoria as Categoria);
   const agora = new Date();
   const diaDoAno = Math.floor(
     (agora.getTime() - new Date(agora.getFullYear(), 0, 0).getTime()) / 86400000
   );
-  const indice = diaDoAno % afirmacoes.length;
-  return afirmacoes[indice];
-}
-
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const categoria = searchParams.get('categoria') as Categoria | null;
-
-  if (!categoria || !['cabala', 'numerologia', 'orixas'].includes(categoria)) {
-    return NextResponse.json(
-      {
-        affirmation: null,
-        error: 'Categoria inválida. Use: cabala, numerologia, orixas',
-        categories: ['cabala', 'numerologia', 'orixas'],
-      },
-      { status: 400 }
-    );
-  }
-
-  const afirmacao = selectAfirmacao(categoria);
-  const agora = new Date();
-  const diaDoAno = Math.floor(
-    (agora.getTime() - new Date(agora.getFullYear(), 0, 0).getTime()) / 86400000
-  );
-
   return NextResponse.json({
     affirmation: {
       texto: afirmacao.texto,
