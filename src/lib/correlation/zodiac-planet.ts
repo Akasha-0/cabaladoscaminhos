@@ -263,6 +263,9 @@ Object.values(ZODIAC_PLANET_MAP).forEach((mapping) => Object.freeze(mapping));
 /**
  * All 10 planets (classical + modern) used in astrology
  */
+/**
+ * All 10 planets (classical + modern) used in astrology
+ */
 export const TODOS_PLANETAS: readonly Planeta[] = [
   'Sol',
   'Lua',
@@ -275,7 +278,6 @@ export const TODOS_PLANETAS: readonly Planeta[] = [
   'Neptuno',
   'Plutão',
 ] as const;
-
 /**
  * All 12 zodiac signs
  */
@@ -293,47 +295,42 @@ export const TODOS_SIGNOS: readonly SignoZodiac[] = [
   'Aquário',
   'Peixes',
 ] as const;
+/**
+ * Freeze arrays to prevent modifications
+ */
+Object.freeze(TODOS_PLANETAS);
+Object.freeze(TODOS_SIGNOS);
 
 /**
  * Normalizes sign name for consistent lookup.
  * Handles variations like accents, case, and common alternatives.
  */
 function normalizarSigno(signo: string): SignoZodiac | null {
+  if (!signo) return null;
   const mapa: Record<string, SignoZodiac> = {
     aries: 'Áries',
-    Áries: 'Áries',
-    arie: 'Áries',
     touro: 'Touro',
-    Touro: 'Touro',
-    gemeos: 'Gémeos',
-    Gémeos: 'Gémeos',
     gemeos: 'Gémeos',
     cancer: 'Câncer',
-    Câncer: 'Câncer',
     cancro: 'Câncer',
     leao: 'Leão',
-    Leão: 'Leão',
     virgem: 'Virgem',
-    Virgem: 'Virgem',
     libra: 'Libra',
-    Libra: 'Libra',
     balança: 'Libra',
-    Balança: 'Libra',
     escorpiao: 'Escorpião',
-    Escorpião: 'Escorpião',
     escorpião: 'Escorpião',
     sagitario: 'Sagitário',
-    Sagitário: 'Sagitário',
     capricornio: 'Capricórnio',
-    Capricórnio: 'Capricórnio',
     aquario: 'Aquário',
-    Aquário: 'Aquário',
     peixes: 'Peixes',
-    Peixes: 'Peixes',
   };
-
-  const lower = signo.toLowerCase().trim();
-  return mapa[lower] ?? null;
+  // Normalize: lowercase + remove diacritics
+  const normalized = signo
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+  return mapa[normalized] ?? null;
 }
 
 /**
