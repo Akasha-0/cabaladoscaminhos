@@ -4,7 +4,7 @@
  * Based on Cabala dos Caminhos framework
  */
 
-import type { Elemento } from './sephirot-element';
+import type { ElementoTipo } from './sephirot-element';
 
 /**
  * Represents the correlation between an Orixá and a Sephirah
@@ -15,7 +15,7 @@ export interface OrixaSephirah {
   /** The associated Sephirah name (Hebrew/English) */
   sephirah: string;
   /** The primary element connecting Orixá to Sephirah */
-  elemento: Elemento;
+  elemento: ElementoTipo;
   /** Spiritual meaning of this Orixá-Sephirah correlation */
   significado_espiritual: string;
   /** Path number on the Tree of Life */
