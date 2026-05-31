@@ -8,6 +8,7 @@
 /** The four classical elements plus quintessence */
 type Elemento = 'Fogo' | 'Terra' | 'Ar' | 'Água' | 'Éter';
 
+/** The twelve zodiac signs */
 type Signo = 'Áries' | 'Touro' | 'Gémeos' | 'Caranguejo' | 'Leão' | 'Virgem' | 'Balança' | 'Escorpião' | 'Sagitário' | 'Capricórnio' | 'Aquário' | 'Peixes';
 
 /**
@@ -36,6 +37,7 @@ function normalizeString(str: string): string {
 }
 
 // ─── Orixá-to-Zodiac Mapping ───────────────────────────────────────────
+
 /**
  * Mapping of each Orixá to their primary zodiac sign
  * Based on IDEIA.md spiritual correlations
@@ -58,7 +60,11 @@ export const ORIXA_ZODIAC_MAP: Readonly<Record<string, OrixaZodiac>> = {
 
   /**
    * IEMANJÁ - Mother of Waters
-   * Zodiac: Câncer
+   * Zodiac: Caranguejo
+   * The maternal, nurturing water energy of Iemanjá perfectly aligns with Caranguejo's emotional depth
+   */
+  'Iemanjá': {
+    orixa: 'Iemanjá',
     signo: 'Caranguejo',
     elemento: 'Água',
     significado_espiritual: 'Iemanjá-Caranguejo representa a mãe cósmica que guarda a memória ancestral. A energia hídrica de Iemanjá manifesta-se na profunda conexão emocional de Caranguejo, ensinando que o amor maternal é a força mais poderosa do universo.',
@@ -96,6 +102,11 @@ export const ORIXA_ZODIAC_MAP: Readonly<Record<string, OrixaZodiac>> = {
     dia_sagrado: 'Terça-feira',
     planeta_regente: 'Marte',
   },
+
+  /**
+   * OXÓSSI - Hunter of Wisdom
+   * Zodiac: Virgem
+   * The analytical, wise earth energy of Oxóssi aligns with Virgo's pursuit of perfection and knowledge
    */
   'Oxóssi': {
     orixa: 'Oxóssi',
@@ -147,20 +158,22 @@ export const ORIXA_ZODIAC_MAP: Readonly<Record<string, OrixaZodiac>> = {
     signo: 'Capricórnio',
     elemento: 'Terra',
     significado_espiritual: 'Omolu-Capricórnio representa o confronto com a escuridão que precede a cura e o renascimento. A energia telúrica de Omolu manifesta-se na perseverança de Capricórnio através das provas do destino, ensinando que através do sofrimento encontramos a verdadeira transformação.',
-    signos_secundarios: ['Saturno'],
-    dia_sagrado: 'Segunda-feira',
-  'Omolu': {
-    orixa: 'Omolu',
-    signo: 'Capricórnio',
-    elemento: 'Terra',
-    significado_espiritual: 'Omolu-Capricórnio representa o confronto com a escuridão que precede a cura e o renascimento. A energia telúrica de Omolu manifesta-se na perseverança de Capricórnio através das provas do destino, ensinando que através do sofrimento encontramos a verdadeira transformação.',
     signos_secundarios: ['Aquário'],
     dia_sagrado: 'Segunda-feira',
     planeta_regente: 'Saturno',
   },
+
+  /**
+   * NANÃ - Ancient of Waters
+   * Zodiac: Peixes
+   * The wise, deep water energy of Nanã aligns with Pisces's spiritual surrender and ancient wisdom
+   */
+  'Nanã': {
+    orixa: 'Nanã',
+    signo: 'Peixes',
     elemento: 'Água',
     significado_espiritual: 'Nanã-Peixes representa a anciã que guarda os segredos ancestrais das águas profundas. A energia hídrica de Nanã manifesta-se na capacidade de Peixes de acessar a sabedoria dos antepassados e fluir com os mistérios do universo.',
-    signos_secundarios: ['Câncer', 'Escorpião'],
+    signos_secundarios: ['Caranguejo', 'Escorpião'],
     dia_sagrado: 'Terça-feira',
     planeta_regente: 'Netuno',
   },

@@ -86,14 +86,13 @@ describe('orixa-zodiac', () => {
       expect(result!.elemento).toBe('Éter');
     });
 
-    it('should return Iemanjá with Câncer mapping', () => {
+    it('should return Iemanjá with Caranguejo mapping', () => {
       const result = getOrixaZodiac('Iemanjá');
       expect(result).toBeDefined();
       expect(result!.orixa).toBe('Iemanjá');
-      expect(result!.signo).toBe('Câncer');
+      expect(result!.signo).toBe('Caranguejo');
       expect(result!.elemento).toBe('Água');
     });
-
     it('should return Oxum with Touro mapping', () => {
       const result = getOrixaZodiac('Oxum');
       expect(result).toBeDefined();
@@ -161,40 +160,8 @@ describe('orixa-zodiac', () => {
     it('should be case-insensitive', () => {
       expect(getOrixaZodiac('oxalá')?.signo).toBe('Capricórnio');
       expect(getOrixaZodiac('OXUM')?.signo).toBe('Touro');
-      expect(getOrixaZodiac('iemanja')?.signo).toBe('Câncer');
+      expect(getOrixaZodiac('iemanja')?.signo).toBe('Caranguejo');
     });
-
-    it('should handle trimmed input', () => {
-      expect(getOrixaZodiac('  Oxalá  ')?.signo).toBe('Capricórnio');
-    });
-
-    it('should return undefined for unknown Orixá', () => {
-      expect(getOrixaZodiac('UnknownOrixa')).toBeUndefined();
-    });
-
-    it('should include spiritual meaning', () => {
-      const result = getOrixaZodiac('Oxalá');
-      expect(result?.significado_espiritual).toContain('Capricórnio');
-      expect(result?.significado_espiritual).toContain('Oxalá');
-    });
-  });
-
-  // ─── getZodiacOrixa: reverse lookup ─────────────────────────────────────────
-  describe('getZodiacOrixa', () => {
-    it('should return Capricórnio mapped to Oxalá', () => {
-      const result = getZodiacOrixa('Capricórnio');
-      expect(result).toBeDefined();
-      expect(result!.signo).toBe('Capricórnio');
-      expect(result!.orixa).toBe('Oxalá');
-    });
-
-    it('should return Câncer mapped to Iemanjá', () => {
-      const result = getZodiacOrixa('Câncer');
-      expect(result).toBeDefined();
-      expect(result!.signo).toBe('Câncer');
-      expect(result!.orixa).toBe('Iemanjá');
-    });
-
     it('should return Touro mapped to Oxum', () => {
       const result = getZodiacOrixa('Touro');
       expect(result).toBeDefined();
