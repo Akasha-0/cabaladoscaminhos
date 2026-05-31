@@ -1,10 +1,12 @@
- 
- 
-/* prettier-ignore */
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const RitualGuidesQuerySchema = z.object({
+  category: z.string().optional(),
+  id: z.string().optional(),
+  difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+});
 export const dynamic = 'force-dynamic';
-
 interface RitualGuide {
   id: string;
   title: string;
@@ -16,10 +18,9 @@ interface RitualGuide {
   steps: string[];
   intention?: string;
   bestTime?: string;
- enefits?: string[];
+  benefits?: string[];
   precautions?: string[];
 }
-
 const guides: RitualGuide[] = [
   {
     id: 'guide-001',
