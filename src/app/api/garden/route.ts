@@ -225,28 +225,53 @@ const RITUAL_PRACTICES: RitualPractice[] = [
     ],
   },
 ];
-
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const path = url.pathname;
-  const query = url.searchParams.get('type');
-
-  // Root endpoint - return API info
-  if (path === '/api/garden') {
-    if (query === 'seeds') {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = GardenQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      id: searchParams.get('id'),
+      day: searchParams.get('day'),
+      element: searchParams.get('element'),
+      chakra: searchParams.get('chakra'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { type, id, day } = parseResult.data;
+    // Return all seeds
+    if (type === 'seeds' || !type) {
+      if (id) {
+        const seed = GARDEN_SEEDS.find((s) => s.id === id);
+        if (!seed) {
+          return NextResponse.json({ error: 'Seed not found' }, { status: 404 });
+        }
+        return NextResponse.json({ seed });
+      }
       return NextResponse.json({
         seeds: GARDEN_SEEDS,
         total: GARDEN_SEEDS.length,
       });
     }
-
-    if (query === 'rituals') {
+    // Return all rituals
+    if (type === 'rituals') {
+      if (day) {
+        const ritual = RITUAL_PRACTICES.find(
+          (r) => r.day.toLowerCase() === day.toLowerCase()
+        );
+        if (!ritual) {
+          return NextResponse.json({ error: 'Ritual not found for this day' }, { status: 404 });
+        }
+        return NextResponse.json({ ritual });
+      }
       return NextResponse.json({
         rituals: RITUAL_PRACTICES,
         total: RITUAL_PRACTICES.length,
       });
     }
-
     return NextResponse.json({
       name: 'Jardim Espiritual',
       description: 'API para cultivo da consciência através de práticas espirituais',
@@ -254,58 +279,11 @@ export async function GET(request: NextRequest) {
         'GET /api/garden - Informações da API',
         'GET /api/garden?type=seeds - Sementes espirituais para plantar',
         'GET /api/garden?type=rituals - Práticas rituais por dia da semana',
-        'GET /api/garden/seeds - Lista completa de sementes',
-        'GET /api/garden/rituals - Lista completa de rituais',
-        'GET /api/garden/seeds/:id - Detalhes de uma semente específica',
-        'GET /api/garden/rituals/:day - Ritual do dia atual',
       ],
       seedsCount: GARDEN_SEEDS.length,
       ritualsCount: RITUAL_PRACTICES.length,
     });
+  } catch {
+    return NextResponse.json({ error: 'Erro ao processar jardim' }, { status: 500 });
   }
-
-  // Seeds endpoint
-  if (path === '/api/garden/seeds') {
-    const seedId = url.searchParams.get('id');
-    if (seedId) {
-      const seed = GARDEN_SEEDS.find((s) => s.id === seedId);
-      if (!seed) {
-        return NextResponse.json(
-          { error: 'Seed not found' },
-          { status: 404 }
-        );
-      }
-      return NextResponse.json({ seed });
-    }
-    return NextResponse.json({
-      seeds: GARDEN_SEEDS,
-      total: GARDEN_SEEDS.length,
-    });
-  }
-
-  // Rituals endpoint
-  if (path === '/api/garden/rituals') {
-    const day = url.searchParams.get('day');
-    if (day) {
-      const ritual = RITUAL_PRACTICES.find(
-        (r) => r.day.toLowerCase() === day.toLowerCase()
-      );
-      if (!ritual) {
-        return NextResponse.json(
-          { error: 'Ritual not found for this day' },
-          { status: 404 }
-        );
-      }
-      return NextResponse.json({ ritual });
-    }
-    return NextResponse.json({
-      rituals: RITUAL_PRACTICES,
-      total: RITUAL_PRACTICES.length,
-    });
-  }
-
-  return NextResponse.json(
-    { error: 'Endpoint not found' },
-    { status: 404 }
-  );
 }

@@ -308,4 +308,12 @@ export default {
   getAllOrixaOrixas,
   getRelationshipsByType,
   getBidirectionalOrixas,
+  getOrixaOrixas,
+  getAllOrixaRellations,
 };
+// Required aliases per acceptance criteria
+export const getOrixaOrixas = getAllOrixaOrixas;
+export const getAllOrixaRellations = getAllOrixaRelations;
+// Required aliases per acceptance criteria
+export const getOrixaOrixas = getAllOrixaOrixas;
+export const getAllOrixaRellations = getAllOrixaRelations;
