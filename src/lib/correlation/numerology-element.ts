@@ -378,8 +378,13 @@ export default {
   getNumerologyArquetipo,
   getNumerologySignificado,
   getNumerologyQualidades,
-  getNumerologyEnergia,
-  getNumerologyPolaridade,
+export function getAllElementsFromNumerology(): ElementoTipo[] {
+  const elements = new Set<ElementoTipo>();
+  for (const mapping of Object.values(NUMEROLOGY_ELEMENT_MAP)) {
+    elements.add(mapping.elemento);
+  }
+  return Array.from(elements);
+}
   getAllNumerologyNumbers,
   getAllElementsFromNumerology,
   NUMEROLOGY_ELEMENT_MAP,
