@@ -1,6 +1,6 @@
 {
-  "id": "8bfc8ca4-8e06-4d7f-90d0-e37769f5fded",
-  "timestamp": "2026-05-31T03:14:03.822Z",
+  "id": "f1f13294-7c40-4602-a4c5-6bdc04ce0170",
+  "timestamp": "2026-05-31T03:14:32.639Z",
   "version": "1.0.0",
   "suites": [
     {
@@ -21,8 +21,8 @@
           "unit": "cards",
           "severity": "critical",
           "message": "All 22 Major Arcana mapped correctly",
-          "timestamp": "2026-05-31T03:14:03.803Z",
-          "duration": 2
+          "timestamp": "2026-05-31T03:14:32.581Z",
+          "duration": 9
         },
         {
           "id": "spiritual-correlation-completeness",
@@ -34,8 +34,8 @@
           "threshold": "95%",
           "severity": "high",
           "message": "Comprehensive cross-system mappings (Tarot↔Orixá↔Astrology↔Cabala)",
-          "timestamp": "2026-05-31T03:14:03.805Z",
-          "duration": 2
+          "timestamp": "2026-05-31T03:14:32.591Z",
+          "duration": 12
         },
         {
           "id": "spiritual-sefirot-mappings",
@@ -48,7 +48,7 @@
           "unit": "sephirot",
           "severity": "critical",
           "message": "All 10 Sefirots mapped with paths",
-          "timestamp": "2026-05-31T03:14:03.807Z",
+          "timestamp": "2026-05-31T03:14:32.602Z",
           "duration": 0
         },
         {
@@ -62,8 +62,8 @@
           "unit": "orixas",
           "severity": "high",
           "message": "Major Orixás in Afro-Brazilian tradition mapped",
-          "timestamp": "2026-05-31T03:14:03.807Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.602Z",
+          "duration": 1
         },
         {
           "id": "spiritual-chakra-system",
@@ -76,8 +76,8 @@
           "unit": "chakras",
           "severity": "medium",
           "message": "All 7 main chakras with colors, sounds, elements",
-          "timestamp": "2026-05-31T03:14:03.807Z",
-          "duration": 1
+          "timestamp": "2026-05-31T03:14:32.603Z",
+          "duration": 3
         }
       ],
       "summary": {
@@ -89,8 +89,8 @@
         "overallScore": 99,
         "grade": "A+"
       },
-      "executedAt": "2026-05-31T03:14:03.808Z",
-      "duration": 5
+      "executedAt": "2026-05-31T03:14:32.607Z",
+      "duration": 25
     },
     {
       "id": "suite-ai_integration",
@@ -110,8 +110,8 @@
           "unit": "%",
           "severity": "critical",
           "message": "OpenAI/Minimax APIs with circuit breaker",
-          "timestamp": "2026-05-31T03:14:03.809Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.608Z",
+          "duration": 1
         },
         {
           "id": "ai-circuit-breaker",
@@ -123,8 +123,8 @@
           "threshold": "active",
           "severity": "high",
           "message": "Circuit breaker implemented with retry logic",
-          "timestamp": "2026-05-31T03:14:03.809Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.609Z",
+          "duration": 1
         },
         {
           "id": "ai-cache-system",
@@ -137,8 +137,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "Redis caching for insights and AI responses",
-          "timestamp": "2026-05-31T03:14:03.810Z",
-          "duration": 1
+          "timestamp": "2026-05-31T03:14:32.610Z",
+          "duration": 0
         },
         {
           "id": "ai-sanitization",
@@ -150,8 +150,8 @@
           "threshold": "active",
           "severity": "critical",
           "message": "All AI inputs sanitized, XSS/injection blocked",
-          "timestamp": "2026-05-31T03:14:03.810Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.610Z",
+          "duration": 1
         },
         {
           "id": "ai-oracle-system",
@@ -163,7 +163,7 @@
           "threshold": "v1",
           "severity": "high",
           "message": "Oracle v2 with autonomous guidance active",
-          "timestamp": "2026-05-31T03:14:03.810Z",
+          "timestamp": "2026-05-31T03:14:32.611Z",
           "duration": 0
         }
       ],
@@ -176,8 +176,8 @@
         "overallScore": 95,
         "grade": "A"
       },
-      "executedAt": "2026-05-31T03:14:03.810Z",
-      "duration": 1
+      "executedAt": "2026-05-31T03:14:32.611Z",
+      "duration": 3
     },
     {
       "id": "suite-performance",
@@ -197,8 +197,8 @@
           "unit": "ms",
           "severity": "high",
           "message": "LCP within acceptable range",
-          "timestamp": "2026-05-31T03:14:03.811Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.613Z",
+          "duration": 1
         },
         {
           "id": "perf-fid",
@@ -211,7 +211,7 @@
           "unit": "ms",
           "severity": "high",
           "message": "Excellent FID, page highly interactive",
-          "timestamp": "2026-05-31T03:14:03.811Z",
+          "timestamp": "2026-05-31T03:14:32.614Z",
           "duration": 0
         },
         {
@@ -224,7 +224,7 @@
           "threshold": "0.1",
           "severity": "high",
           "message": "Good visual stability",
-          "timestamp": "2026-05-31T03:14:03.811Z",
+          "timestamp": "2026-05-31T03:14:32.614Z",
           "duration": 0
         },
         {
@@ -238,7 +238,7 @@
           "unit": "KB",
           "severity": "medium",
           "message": "Bundle size acceptable with code splitting",
-          "timestamp": "2026-05-31T03:14:03.811Z",
+          "timestamp": "2026-05-31T03:14:32.614Z",
           "duration": 0
         },
         {
@@ -252,7 +252,7 @@
           "unit": "ms",
           "severity": "high",
           "message": "Good API response times with caching",
-          "timestamp": "2026-05-31T03:14:03.811Z",
+          "timestamp": "2026-05-31T03:14:32.614Z",
           "duration": 0
         }
       ],
@@ -265,8 +265,8 @@
         "overallScore": 87,
         "grade": "B+"
       },
-      "executedAt": "2026-05-31T03:14:03.811Z",
-      "duration": 0
+      "executedAt": "2026-05-31T03:14:32.615Z",
+      "duration": 1
     },
     {
       "id": "suite-ui_design",
@@ -286,7 +286,7 @@
           "unit": "%",
           "severity": "high",
           "message": "Spiritual design tokens consistently applied",
-          "timestamp": "2026-05-31T03:14:03.812Z",
+          "timestamp": "2026-05-31T03:14:32.616Z",
           "duration": 0
         },
         {
@@ -300,8 +300,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "shadcn/ui components consistently styled",
-          "timestamp": "2026-05-31T03:14:03.812Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.617Z",
+          "duration": 1
         },
         {
           "id": "ui-dark-light-mode",
@@ -313,7 +313,7 @@
           "threshold": "both",
           "severity": "medium",
           "message": "Dark and light themes fully implemented",
-          "timestamp": "2026-05-31T03:14:03.812Z",
+          "timestamp": "2026-05-31T03:14:32.617Z",
           "duration": 0
         },
         {
@@ -326,7 +326,7 @@
           "threshold": "spiritual",
           "severity": "medium",
           "message": "Spiritual color palette (gold, violet, chakra colors)",
-          "timestamp": "2026-05-31T03:14:03.812Z",
+          "timestamp": "2026-05-31T03:14:32.617Z",
           "duration": 0
         },
         {
@@ -339,8 +339,8 @@
           "threshold": "serif+Sans",
           "severity": "medium",
           "message": "Spiritual typography with Cinzel headers",
-          "timestamp": "2026-05-31T03:14:03.812Z",
-          "duration": 1
+          "timestamp": "2026-05-31T03:14:32.617Z",
+          "duration": 0
         }
       ],
       "summary": {
@@ -352,7 +352,7 @@
         "overallScore": 94.4,
         "grade": "A"
       },
-      "executedAt": "2026-05-31T03:14:03.813Z",
+      "executedAt": "2026-05-31T03:14:32.617Z",
       "duration": 1
     },
     {
@@ -373,8 +373,8 @@
           "unit": "%",
           "severity": "high",
           "message": "Good accessibility with room for improvement",
-          "timestamp": "2026-05-31T03:14:03.813Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.618Z",
+          "duration": 1
         },
         {
           "id": "ux-responsive",
@@ -386,7 +386,7 @@
           "threshold": "3",
           "severity": "medium",
           "message": "Fully responsive mobile/tablet/desktop",
-          "timestamp": "2026-05-31T03:14:03.813Z",
+          "timestamp": "2026-05-31T03:14:32.619Z",
           "duration": 0
         },
         {
@@ -400,8 +400,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "Loading, empty, and error states implemented",
-          "timestamp": "2026-05-31T03:14:03.813Z",
-          "duration": 1
+          "timestamp": "2026-05-31T03:14:32.619Z",
+          "duration": 0
         },
         {
           "id": "ux-navigation",
@@ -414,7 +414,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Intuitive navigation with breadcrumbs",
-          "timestamp": "2026-05-31T03:14:03.814Z",
+          "timestamp": "2026-05-31T03:14:32.619Z",
           "duration": 0
         },
         {
@@ -428,7 +428,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Good feedback through notifications and toasts",
-          "timestamp": "2026-05-31T03:14:03.814Z",
+          "timestamp": "2026-05-31T03:14:32.619Z",
           "duration": 0
         }
       ],
@@ -441,7 +441,7 @@
         "overallScore": 90.6,
         "grade": "A-"
       },
-      "executedAt": "2026-05-31T03:14:03.814Z",
+      "executedAt": "2026-05-31T03:14:32.619Z",
       "duration": 1
     },
     {
@@ -462,8 +462,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "Modules properly separated with clear responsibilities",
-          "timestamp": "2026-05-31T03:14:03.816Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.627Z",
+          "duration": 1
         },
         {
           "id": "arch-type-safety",
@@ -476,7 +476,7 @@
           "unit": "%",
           "severity": "high",
           "message": "No 'any' types found, proper use of generics",
-          "timestamp": "2026-05-31T03:14:03.816Z",
+          "timestamp": "2026-05-31T03:14:32.628Z",
           "duration": 0
         },
         {
@@ -490,7 +490,7 @@
           "unit": "%",
           "severity": "high",
           "message": "All critical errors properly handled with try-catch or error boundaries",
-          "timestamp": "2026-05-31T03:14:03.816Z",
+          "timestamp": "2026-05-31T03:14:32.628Z",
           "duration": 0
         },
         {
@@ -504,7 +504,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "REST patterns mostly consistent, some inconsistencies in naming",
-          "timestamp": "2026-05-31T03:14:03.816Z",
+          "timestamp": "2026-05-31T03:14:32.628Z",
           "duration": 0
         },
         {
@@ -518,7 +518,7 @@
           "unit": "%",
           "severity": "high",
           "message": "Schema well-structured with proper relationships and indexes",
-          "timestamp": "2026-05-31T03:14:03.816Z",
+          "timestamp": "2026-05-31T03:14:32.628Z",
           "duration": 0
         },
         {
@@ -532,8 +532,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "High-level modules depend on abstractions",
-          "timestamp": "2026-05-31T03:14:03.816Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.628Z",
+          "duration": 1
         },
         {
           "id": "arch-cohesion",
@@ -546,7 +546,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Modules have high cohesion with single responsibility",
-          "timestamp": "2026-05-31T03:14:03.816Z",
+          "timestamp": "2026-05-31T03:14:32.629Z",
           "duration": 0
         },
         {
@@ -560,7 +560,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Low coupling between modules, some circular dependencies in lib/",
-          "timestamp": "2026-05-31T03:14:03.816Z",
+          "timestamp": "2026-05-31T03:14:32.629Z",
           "duration": 0
         },
         {
@@ -574,8 +574,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "Architecture supports horizontal scaling with Redis caching",
-          "timestamp": "2026-05-31T03:14:03.817Z",
-          "duration": 1
+          "timestamp": "2026-05-31T03:14:32.629Z",
+          "duration": 0
         },
         {
           "id": "arch-code-organization",
@@ -588,7 +588,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Consistent and logical folder structure",
-          "timestamp": "2026-05-31T03:14:03.817Z",
+          "timestamp": "2026-05-31T03:14:32.629Z",
           "duration": 0
         }
       ],
@@ -601,8 +601,8 @@
         "overallScore": 91.2,
         "grade": "A-"
       },
-      "executedAt": "2026-05-31T03:14:03.817Z",
-      "duration": 1
+      "executedAt": "2026-05-31T03:14:32.629Z",
+      "duration": 2
     },
     {
       "id": "suite-qa_testing",
@@ -622,7 +622,7 @@
           "unit": "%",
           "severity": "high",
           "message": "Test coverage at 82% lines covered",
-          "timestamp": "2026-05-31T03:14:03.818Z",
+          "timestamp": "2026-05-31T03:14:32.630Z",
           "duration": 1
         },
         {
@@ -636,7 +636,7 @@
           "unit": "%",
           "severity": "critical",
           "message": "Auth and payment paths fully covered",
-          "timestamp": "2026-05-31T03:14:03.818Z",
+          "timestamp": "2026-05-31T03:14:32.631Z",
           "duration": 0
         },
         {
@@ -650,7 +650,7 @@
           "unit": "%",
           "severity": "high",
           "message": "Only 2% flakiness rate detected",
-          "timestamp": "2026-05-31T03:14:03.818Z",
+          "timestamp": "2026-05-31T03:14:32.631Z",
           "duration": 0
         },
         {
@@ -664,7 +664,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Tests complete in under 5 minutes",
-          "timestamp": "2026-05-31T03:14:03.818Z",
+          "timestamp": "2026-05-31T03:14:32.631Z",
           "duration": 0
         },
         {
@@ -678,7 +678,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Mocks are appropriate, not overused",
-          "timestamp": "2026-05-31T03:14:03.818Z",
+          "timestamp": "2026-05-31T03:14:32.631Z",
           "duration": 0
         },
         {
@@ -692,7 +692,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Average 3.2 assertions per test",
-          "timestamp": "2026-05-31T03:14:03.818Z",
+          "timestamp": "2026-05-31T03:14:32.631Z",
           "duration": 0
         },
         {
@@ -706,7 +706,7 @@
           "unit": "%",
           "severity": "high",
           "message": "Tests well isolated, minimal shared state",
-          "timestamp": "2026-05-31T03:14:03.818Z",
+          "timestamp": "2026-05-31T03:14:32.631Z",
           "duration": 0
         },
         {
@@ -720,8 +720,8 @@
           "unit": "%",
           "severity": "high",
           "message": "Critical user flows covered by Playwright tests",
-          "timestamp": "2026-05-31T03:14:03.818Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.632Z",
+          "duration": 1
         },
         {
           "id": "qa-ci-reliability",
@@ -734,7 +734,7 @@
           "unit": "%",
           "severity": "high",
           "message": "CI pipeline reliable with proper caching",
-          "timestamp": "2026-05-31T03:14:03.818Z",
+          "timestamp": "2026-05-31T03:14:32.632Z",
           "duration": 0
         },
         {
@@ -748,8 +748,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "Snapshot tests in place for key components",
-          "timestamp": "2026-05-31T03:14:03.818Z",
-          "duration": 1
+          "timestamp": "2026-05-31T03:14:32.632Z",
+          "duration": 0
         }
       ],
       "summary": {
@@ -761,7 +761,7 @@
         "overallScore": 89.3,
         "grade": "B+"
       },
-      "executedAt": "2026-05-31T03:14:03.819Z",
+      "executedAt": "2026-05-31T03:14:32.632Z",
       "duration": 2
     },
     {
@@ -782,8 +782,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "README well-structured with setup and features",
-          "timestamp": "2026-05-31T03:14:03.820Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.634Z",
+          "duration": 1
         },
         {
           "id": "docs-api-documentation",
@@ -796,7 +796,7 @@
           "unit": "%",
           "severity": "high",
           "message": "Comprehensive API documentation in docs/API.md",
-          "timestamp": "2026-05-31T03:14:03.820Z",
+          "timestamp": "2026-05-31T03:14:32.634Z",
           "duration": 0
         },
         {
@@ -810,7 +810,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Core types documented with TSDoc",
-          "timestamp": "2026-05-31T03:14:03.820Z",
+          "timestamp": "2026-05-31T03:14:32.634Z",
           "duration": 0
         },
         {
@@ -824,7 +824,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Changelog exists but needs more detail",
-          "timestamp": "2026-05-31T03:14:03.820Z",
+          "timestamp": "2026-05-31T03:14:32.634Z",
           "duration": 0
         },
         {
@@ -838,7 +838,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Comprehensive contributing guide with workflow",
-          "timestamp": "2026-05-31T03:14:03.820Z",
+          "timestamp": "2026-05-31T03:14:32.634Z",
           "duration": 0
         },
         {
@@ -852,8 +852,8 @@
           "unit": "%",
           "severity": "medium",
           "message": "Components documented in docs/COMPONENTS.md",
-          "timestamp": "2026-05-31T03:14:03.820Z",
-          "duration": 0
+          "timestamp": "2026-05-31T03:14:32.635Z",
+          "duration": 1
         },
         {
           "id": "docs-error-messages",
@@ -866,7 +866,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Error messages are descriptive with context",
-          "timestamp": "2026-05-31T03:14:03.820Z",
+          "timestamp": "2026-05-31T03:14:32.635Z",
           "duration": 0
         },
         {
@@ -880,7 +880,7 @@
           "unit": "%",
           "severity": "medium",
           "message": "Good examples coverage, some areas need more",
-          "timestamp": "2026-05-31T03:14:03.820Z",
+          "timestamp": "2026-05-31T03:14:32.635Z",
           "duration": 0
         },
         {
@@ -894,7 +894,7 @@
           "unit": "%",
           "severity": "low",
           "message": "Complex logic adequately commented",
-          "timestamp": "2026-05-31T03:14:03.820Z",
+          "timestamp": "2026-05-31T03:14:32.635Z",
           "duration": 0
         },
         {
@@ -908,8 +908,8 @@
           "unit": "%",
           "severity": "low",
           "message": "SemVer followed in package.json and changelog",
-          "timestamp": "2026-05-31T03:14:03.821Z",
-          "duration": 1
+          "timestamp": "2026-05-31T03:14:32.635Z",
+          "duration": 0
         }
       ],
       "summary": {
@@ -921,8 +921,8 @@
         "overallScore": 83.3,
         "grade": "B"
       },
-      "executedAt": "2026-05-31T03:14:03.821Z",
-      "duration": 1
+      "executedAt": "2026-05-31T03:14:32.635Z",
+      "duration": 2
     }
   ],
   "overallScore": 91.84947368421051,
