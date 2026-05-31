@@ -92,8 +92,8 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const parseResult = WidgetQuerySchema.safeParse({
-      type: searchParams.get('type'),
-      limit: searchParams.get('limit'),
+      type: searchParams.get('type') ?? undefined,
+      limit: searchParams.get('limit') ?? undefined,
     });
     if (!parseResult.success) {
       return NextResponse.json({
