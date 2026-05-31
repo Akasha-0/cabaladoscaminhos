@@ -1,18 +1,18 @@
 # THINKING_QA.md — Ciclo de Estabilidade e Alinhamento de Qualidade
 
 **Guardião:** GUARDIAO_QUALIDADE_EVALS_SISTEMICOS  
-**Ciclo:** 2026-05-31 (Ciclo 13)  
-**Status:** ✅ SISTEMA ESTÁVEL — 2º CICLO SEM .SKIP
+**Ciclo:** 2026-05-31 (Ciclo 14)  
+**Status:** ✅ SISTEMA ESTÁVEL — 3º CICLO SEM .SKIP
 
 ---
 
-## Resultado do Ciclo 13
+## Resultado do Ciclo 14
 
 | Métrica | Valor |
 |---|---|
 | Quality Score | **91.8%** (A-) |
 | Testes | **270 passing** |
-| .skip/.disabled | **0** — 2º ciclo consecutivo |
+| .skip/.disabled | **0** — 3º ciclo consecutivo |
 
 ---
 
@@ -30,9 +30,9 @@
 |---|---|
 | Quality Score | **91.8%** (A-) |
 | Testes | **270 passing** |
-| .skip/.disabled | **0** |
+| .skip/.disabled | **0** — 3 ciclos consecutivos |
 | Sistema | **ESTÁVEL** |
 
 ---
 
-*Ciclos 1-13 encerrados. Sistema verificado como estável.*
+*Ciclos 1-14 encerrados. Sistema verificado como estável.*
