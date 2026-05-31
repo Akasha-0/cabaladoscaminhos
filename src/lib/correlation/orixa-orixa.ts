@@ -12,7 +12,7 @@ export type RelationshipType =
   | 'ex_conjuge'   // Former spouse/partner relationship
   | 'aliado'       // Ally partnership
   | 'complementar' // Complementary energies
-  | ' ancestral';  // Ancestral connection
+  | 'ancestral';  // Ancestral connection
 
 export interface OrixaRelation {
   orixa: string;
