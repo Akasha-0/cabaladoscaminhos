@@ -2,7 +2,7 @@
  * Run Quality Evals - Executa todos os evals e gera relatório
  */
 
-import { runAllEvals } from '../src/lib/quality/runner'
+import { runAllEvals } from '../src/lib/quality/runner.js'
 
 async function main() {
   console.log('\n🔮 Executando Avaliação de Qualidade - Cabala dos Caminhos\n')
