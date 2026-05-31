@@ -1,15 +1,13 @@
 // ============================================================
 // DASHBOARD WIDGETS API - CABALA DOS CAMINHOS
 // ============================================================
-// GET endpoints for dashboard widget data
-// - Quick stats widget
-// - Recent activity widget
-// - Daily affirmation widget
-// - Upcoming rituals widget
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const WidgetTypeSchema = z.enum(['quick-stats', 'recent-activity', 'daily-affirmation', 'upcoming-rituals']);
+const WidgetQuerySchema = z.object({
+  type: WidgetTypeSchema.optional(),
+  limit: z.coerce.number().int().positive().max(10).optional(),
 interface WidgetData {
   id: string;
   type: string;
@@ -17,7 +15,6 @@ interface WidgetData {
   data: Record<string, unknown>;
   updatedAt: string;
 }
-
 interface QuickStats {
   totalSessions: number;
   streakDays: number;

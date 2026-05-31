@@ -35,7 +35,7 @@ export interface SoundElement {
 }
 
 /** Map of sacred sounds mapped to elements with healing properties */
-const SOUND_ELEMENTS: Record<string, SoundElement> = {
+export const SOUND_ELEMENTS: Record<string, SoundElement> = {
   LAM: {
     som: "LAM",
     pronunciacao: "lahm (vibração na base da coluna, som grave e ancorante)",
