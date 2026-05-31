@@ -28,6 +28,7 @@ interface ChartConfig {
   options?: Record<string, unknown>;
 }
 const chartTypes = ['line', 'bar', 'pie', 'doughnut', 'radar', 'scatter', 'area', 'candlestick'] as const;
+type ChartType = z.infer<typeof ChartTypeSchema>;
 function generateChartData(
   type: ChartType,
   dataPoints: ChartDataPoint[]
