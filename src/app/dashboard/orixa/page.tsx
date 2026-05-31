@@ -165,7 +165,7 @@ export default function OrixaPage() {
             <Card className="p-6">
               <h3 className="text-xl font-bold mb-4">🌿 Ervas Principais</h3>
               <div className="flex flex-wrap gap-2">
-                {orixaData?.erivas_principais.map((erva, i) => (
+                {orixaData?.ervas_principais.map((erva, i) => (
                   <span
                     key={i}
                     className="px-3 py-1 bg-green-900/50 rounded-full text-sm"
@@ -179,7 +179,7 @@ export default function OrixaPage() {
             <Card className="p-6">
               <h3 className="text-xl font-bold mb-4">⚠️ Ervas Contraindicadas</h3>
               <div className="flex flex-wrap gap-2">
-                {orixaData?.erivas_contraindicadas.map((erva, i) => (
+                {orixaData?.ervas_contraindicadas.map((erva, i) => (
                   <span
                     key={i}
                     className="px-3 py-1 bg-red-900/50 rounded-full text-sm text-red-200"
