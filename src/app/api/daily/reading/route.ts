@@ -2,24 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* prettier-ignore */
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ReadingQuerySchema = z.object({
+  tipo: z.enum(['tarot', 'cabala', 'numerologia', 'orixa']).optional(),
+  forceRefresh: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+});
 export const dynamic = 'force-dynamic';
-
 interface DailyReading {
-  id: string;
-  data: string;
-  tipo: 'tarot' | 'cabala' | 'numerologia' | 'orixa';
-  carta?: {
-    id: number;
-    nome: string;
-    arcano: 'major' | 'minor';
-    significado: string;
-    invertido: boolean;
-  };
-  mensagem: string;
-  reflexao: string;
-  oracao?: string;
-  affirmation?: string;
 }
 
 interface CabalaDaily {
@@ -185,21 +175,34 @@ export async function GET(request: NextRequest) {
 
     const leitura: DailyReading = {
       id: `daily_${dayKey}_${tipo}`,
-      data: hoje.toISOString().split('T')[0],
-      tipo,
-      mensagem: '',
-      reflexao: generateReflexao(tipo, seed),
-    };
-
-    switch (tipo) {
-      case 'tarot': {
-        const carta = getTarotCardOfDay(seed);
-        leitura.carta = carta;
-        leitura.mensagem = `A carta do dia é ${carta.nome}${carta.invertido ? ' (invertida)' : ''}. ${carta.significado}.`;
-        break;
-      }
-      case 'cabala': {
-        const sephirah = getCabalaSephirah(seed);
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = ReadingQuerySchema.safeParse({
+      tipo: searchParams.get('tipo'),
+      forceRefresh: searchParams.get('forceRefresh'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { tipo: requestedTipo, forceRefresh } = parseResult.data;
+    const hoje = new Date();
+    const dayKey = getDayKey(hoje);
+    const seed = hashString(dayKey);
+    const tipos: Array<'tarot' | 'cabala' | 'numerologia' | 'orixa'> = ['tarot', 'cabala', 'numerologia', 'orixa'];
+    let tipoIndex: number;
+    let tipo: 'tarot' | 'cabala' | 'numerologia' | 'orixa';
+    if (requestedTipo) {
+      tipo = requestedTipo;
+      tipoIndex = tipos.indexOf(requestedTipo);
+    } else {
+      tipoIndex = seed % tipos.length;
+      tipo = tipos[tipoIndex];
+    }
+    const leitura: DailyReading = {
         leitura.mensagem = `Hoje você está conectado ao ${sephirah.sephirah} (${sephirah.caminho}). Tema: ${sephirah.tema}. Lição: ${sephirah.licao}.`;
         leitura.oracao = generateOração('cabala');
         break;
