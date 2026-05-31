@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-31
-**Sprints completados:** 487
+**Sprints completados:** 488
 **Tests: ✅ 10531 passing, 31 skipped, 0 failed**
  - Prisma 7 + PostgreSQL via pg adapter
  - Redis/ioredis for caching
@@ -8,6 +8,11 @@
  - OpenAI SDK integrated
  - jsPDF for PDF exports (dynamic import)
  - Minimax API integration for AI responses
+
+### Sprint 488 — Sacred Texts (COMPLETE)
+Enhanced APIs with spiritual correlations:
+- sacred/texts: Full spiritual correlations for sacred texts and schools
+270 engine tests passing.
 
 ### Sprint 487 — Dashboard Energy Portal (COMPLETE)
 Enhanced APIs with spiritual correlations:
