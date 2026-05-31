@@ -768,3 +768,9 @@ export async function GET(request: NextRequest) {
     },
   });
 }
+  } catch {
+    return NextResponse.json({
+      error: 'Erro ao processar rituais',
+    }, { status: 500 });
+  }
+}
