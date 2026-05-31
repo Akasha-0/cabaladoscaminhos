@@ -1,82 +1,27 @@
 // src/app/api/akashic/records/route.ts
 // Akashic Records API - skip linting
-
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ============================================================
+// ZOD SCHEMAS
+// ============================================================
+const RecordTypeSchema = z.enum([
+  'life', 'karma', 'soul', 'past_life', 'future', 'ancestral', 'universal'
+]);
+const AccessLevelSchema = z.enum(['basic', 'intermediate', 'advanced', 'master']);
+const SoulAgeSchema = z.enum(['young', 'mature', 'old', 'ancient']);
+const AkashicQuerySchema = z.object({
+  recordType: RecordTypeSchema.optional(),
+  accessLevel: AccessLevelSchema.optional(),
+  soulAge: SoulAgeSchema.optional(),
+  theme: z.string().optional(),
+  limit: z.coerce.number().int().positive().max(10).optional(),
+});
 // ============================================================
 // TYPES
 // ============================================================
-
-export type RecordType = 'life' | 'karma' | 'soul' | 'past_life' | 'future' | 'ancestral' | 'universal';
-export type AccessLevel = 'basic' | 'intermediate' | 'advanced' | 'master';
-
-export interface AkashicQuery {
-  recordType?: RecordType;
-  accessLevel?: AccessLevel;
-  soulAge?: string;
-  theme?: string;
-}
-
-export interface AkashicRecord {
-  id: string;
-  recordType: RecordType;
-  accessLevel: AccessLevel;
-  entry: string;
-  insights: string[];
-  guidance: string;
-  symbols: string[];
-  affirmations: string[];
-  practices: string[];
-  timestamp: string;
-}
-
-// ============================================================
-// AKASHIC RECORD DATA
-// ============================================================
-
-const recordArchetypes: Record<RecordType, { entry: string; themes: string[] }> = {
-  life: {
-    entry: 'Akashic Record of Current Lifetime',
-    themes: ['purpose', 'relationships', 'challenges', 'growth', 'missions']
-  },
-  karma: {
-    entry: 'Karmic Ledger',
-    themes: ['debts', 'lessons', 'patterns', 'balance', 'cycles']
-  },
-  soul: {
-    entry: 'Soul Blueprint',
-    themes: ['essence', 'talents', 'contracts', 'agreements', 'design']
-  },
-  past_life: {
-    entry: 'Chronicle of Past Incarnations',
-    themes: ['memories', 'skills', 'trauma', 'relationships', 'missions']
-  },
-  future: {
-    entry: 'Probable Futures Archive',
-    themes: ['potential', 'choices', 'timing', 'outcomes', 'paths']
-  },
-  ancestral: {
-    entry: 'Lineage Records',
-    themes: ['inheritance', 'patterns', 'blessings', 'curses', 'gifts']
-  },
-  universal: {
-    entry: 'Cosmic Akasha',
-    themes: ['laws', 'cosmic_events', 'planetary_influences', 'universal_lessons']
-  }
-};
-
-const accessThresholds: Record<AccessLevel, number> = {
-  basic: 1,
-  intermediate: 2,
-  advanced: 3,
-  master: 4
-};
-
-const cosmicSymbols = [
-  'Infinity', 'Unified Field', 'Source Point', 'Causal Chain', 'Temporal Weave',
-  'Soul Signature', 'Karmic Thread', 'Dimensional Anchor', 'Light Template', 'Shadow Record',
-  'Ancestral Echo', 'Future Probability', 'Present Moment', 'Past Memory', 'Cosmic Law'
-];
+export type RecordType = z.infer<typeof RecordTypeSchema>;
+export type AccessLevel = z.infer<typeof AccessLevelSchema>;
 
 const guidanceTemplates: Record<RecordType, string[]> = {
   life: [

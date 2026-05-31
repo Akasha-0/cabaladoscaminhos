@@ -300,8 +300,9 @@ export function getBidirectionalOrixas(orixa: string): string[] {
         rel.energy_flow === 'bidirectional'
     )
     .map(rel => (normalize(rel.orixa) === normalizedOrixa ? rel.related_orixa : rel.orixa));
-}
-
+// Required aliases per acceptance criteria
+export const getOrixaOrixas = getAllOrixaOrixas;
+export const getAllOrixaRellations = getAllOrixaRelations;
 export default {
   getOrixaOrixa,
   getAllOrixaRelations,
@@ -311,9 +312,3 @@ export default {
   getOrixaOrixas,
   getAllOrixaRellations,
 };
-// Required aliases per acceptance criteria
-export const getOrixaOrixas = getAllOrixaOrixas;
-export const getAllOrixaRellations = getAllOrixaRelations;
-// Required aliases per acceptance criteria
-export const getOrixaOrixas = getAllOrixaOrixas;
-export const getAllOrixaRellations = getAllOrixaRelations;
