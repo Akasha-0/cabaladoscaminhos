@@ -3,125 +3,94 @@ import {
   getMoonPlanet,
   getPlanetMoon,
   getAllMoonPlanets,
-  getElementMoonPlanet,
-  getMeaningMoonPlanet,
-  getPolarityMoonPlanet,
-  getEnergyFlowMoonPlanet,
-  getMoonPhasesByPlanet,
-  getMoonPhasesByElement,
-  getOrixaMoonPlanet,
-  getChakraMoonPlanet,
-  getColorMoonPlanet,
-  MOON_PLANET_MAP,
+  getAvailableMoonPhases,
+  getSpiritualPractices,
+  getElementConnection,
+  getArchangel,
+  getSefira,
+  getMoonByPlanet,
+  getPlanetDetails,
+  getAvailablePlanets,
+  MOON_PLANET_MAPPINGS,
   type MoonPlanetMapping,
-  type FaseLua,
   type Planeta,
+  type FaseLua,
 } from '@/lib/correlation/moon-planet';
 
 describe('Moon-Planet Correlation', () => {
   describe('getMoonPlanet', () => {
-    it('should return Plutão mapping for lua-nova', () => {
+    it('should return Saturno mapping for lua-nova', () => {
       const result = getMoonPlanet('lua-nova');
-      expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Plutão');
-      expect(result?.planeta_nome).toBe('Plutão');
-      expect(result?.elemento).toBe('água');
-      expect(result?.orixa).toBe('Oxumaré');
-      expect(result?.polaridade).toBe('Yin');
-      expect(result?.fluxo_energetico).toBe('centripeto');
+      expect(result).toBeDefined();
+      expect(result?.planeta).toBe('Saturno');
+      expect(result?.nome_fase).toBe('Lua Nova');
+      expect(result?.elemento_conexao).toBe('Terra');
     });
 
-    it('should return Vênus mapping for lua-crescente', () => {
+    it('should return Júpiter mapping for lua-crescente', () => {
       const result = getMoonPlanet('lua-crescente');
-      expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Vênus');
-      expect(result?.planeta_nome).toBe('Vênus');
-      expect(result?.elemento).toBe('água');
-      expect(result?.orixa).toBe('Oxum');
-      expect(result?.polaridade).toBe('Yang');
-      expect(result?.fluxo_energetico).toBe('ascendente');
+      expect(result).toBeDefined();
+      expect(result?.planeta).toBe('Júpiter');
+      expect(result?.nome_fase).toBe('Lua Crescente');
     });
 
-    it('should return Júpiter mapping for quarto-crescente', () => {
+    it('should return Marte mapping for quarto-crescente', () => {
       const result = getMoonPlanet('quarto-crescente');
-      expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Júpiter');
-      expect(result?.planeta_nome).toBe('Júpiter');
-      expect(result?.elemento).toBe('fogo');
-      expect(result?.orixa).toBe('Oxóssi');
-      expect(result?.polaridade).toBe('Yang');
-      expect(result?.fluxo_energetico).toBe('ascendente');
+      expect(result).toBeDefined();
+      expect(result?.planeta).toBe('Marte');
+      expect(result?.nome_fase).toBe('Quarto Crescente');
     });
 
     it('should return Lua mapping for lua-cheia', () => {
       const result = getMoonPlanet('lua-cheia');
-      expect(result).not.toBeNull();
+      expect(result).toBeDefined();
       expect(result?.planeta).toBe('Lua');
-      expect(result?.planeta_nome).toBe('Lua');
-      expect(result?.elemento).toBe('água');
-      expect(result?.orixa).toBe('Iemanjá');
-      expect(result?.polaridade).toBe('Equilibrado');
-      expect(result?.fluxo_energetico).toBe('centrifugo');
+      expect(result?.nome_fase).toBe('Lua Cheia');
+      expect(result?.elemento_conexao).toBe('Água');
     });
 
-    it('should return Saturno mapping for quarto-minguante', () => {
+    it('should return Vênus mapping for quarto-minguante', () => {
       const result = getMoonPlanet('quarto-minguante');
-      expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Saturno');
-      expect(result?.planeta_nome).toBe('Saturno');
-      expect(result?.elemento).toBe('éter');
-      expect(result?.orixa).toBe('Xangô');
-      expect(result?.polaridade).toBe('Yin');
-      expect(result?.fluxo_energetico).toBe('descendente');
+      expect(result).toBeDefined();
+      expect(result?.planeta).toBe('Vênus');
+      expect(result?.nome_fase).toBe('Quarto Minguante');
     });
 
     it('should return Mercúrio mapping for lua-minguante', () => {
       const result = getMoonPlanet('lua-minguante');
-      expect(result).not.toBeNull();
+      expect(result).toBeDefined();
       expect(result?.planeta).toBe('Mercúrio');
-      expect(result?.planeta_nome).toBe('Mercúrio');
-      expect(result?.elemento).toBe('ar');
-      expect(result?.orixa).toBe('Nanã');
-      expect(result?.polaridade).toBe('Yin');
-      expect(result?.fluxo_energetico).toBe('descendente');
+      expect(result?.nome_fase).toBe('Lua Minguante');
     });
 
-    it('should return Marte mapping for quarto-descrescente', () => {
+    it('should return Sol mapping for quarto-descrescente', () => {
       const result = getMoonPlanet('quarto-descrescente');
-      expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Marte');
-      expect(result?.planeta_nome).toBe('Marte');
-      expect(result?.elemento).toBe('fogo');
-      expect(result?.orixa).toBe('Ogum');
-      expect(result?.polaridade).toBe('Yang');
-      expect(result?.fluxo_energetico).toBe('descendente');
+      expect(result).toBeDefined();
+      expect(result?.planeta).toBe('Sol');
+      expect(result?.nome_fase).toBe('Quarto Descrescente');
     });
 
-    it('should return Sol mapping for lua-velha', () => {
+    it('should return Netuno mapping for lua-velha', () => {
       const result = getMoonPlanet('lua-velha');
-      expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Sol');
-      expect(result?.planeta_nome).toBe('Sol');
-      expect(result?.elemento).toBe('fogo');
-      expect(result?.orixa).toBe('Omulu');
-      expect(result?.polaridade).toBe('Equilibrado');
-      expect(result?.fluxo_energetico).toBe('integrado');
+      expect(result).toBeDefined();
+      expect(result?.planeta).toBe('Netuno');
+      expect(result?.nome_fase).toBe('Lua Velha');
     });
 
     it('should handle case-insensitive input', () => {
-      const result = getMoonPlanet('LUA-CHEIA');
-      expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Lua');
+      const result = getMoonPlanet('LUA-NOVA');
+      expect(result).toBeDefined();
+      expect(result?.planeta).toBe('Saturno');
     });
 
     it('should handle input with extra whitespace', () => {
-      const result = getMoonPlanet('  lua-cheia  ');
-      expect(result).not.toBeNull();
-      expect(result?.planeta).toBe('Lua');
+      const result = getMoonPlanet('  lua-nova  ');
+      expect(result).toBeDefined();
+      expect(result?.planeta).toBe('Saturno');
     });
 
     it('should return null for unknown phase', () => {
-      const result = getMoonPlanet('fase-desconhecida');
+      const result = getMoonPlanet('fase-inventada');
       expect(result).toBeNull();
     });
 
@@ -132,242 +101,253 @@ describe('Moon-Planet Correlation', () => {
   });
 
   describe('getPlanetMoon', () => {
-    it('should return correct planet for lua-nova', () => {
-      expect(getPlanetMoon('lua-nova')).toBe('Plutão');
+    it('should return Saturno for lua-nova', () => {
+      expect(getPlanetMoon('lua-nova')).toBe('Saturno');
     });
 
-    it('should return correct planet for lua-cheia', () => {
+    it('should return Lua for lua-cheia', () => {
       expect(getPlanetMoon('lua-cheia')).toBe('Lua');
     });
 
-    it('should return correct planet for lua-velha', () => {
-      expect(getPlanetMoon('lua-velha')).toBe('Sol');
+    it('should return Marte for quarto-crescente', () => {
+      expect(getPlanetMoon('quarto-crescente')).toBe('Marte');
+    });
+
+    it('should return Júpiter for lua-crescente', () => {
+      expect(getPlanetMoon('lua-crescente')).toBe('Júpiter');
+    });
+
+    it('should return Sol for quarto-descrescente', () => {
+      expect(getPlanetMoon('quarto-descrescente')).toBe('Sol');
+    });
+
+    it('should return Netuno for lua-velha', () => {
+      expect(getPlanetMoon('lua-velha')).toBe('Netuno');
     });
 
     it('should return null for unknown phase', () => {
       expect(getPlanetMoon('fase-desconhecida')).toBeNull();
     });
-
-    it('should handle case-insensitive input', () => {
-      expect(getPlanetMoon('QUARTO-CRESCENTE')).toBe('Júpiter');
-    });
   });
 
   describe('getAllMoonPlanets', () => {
-    it('should return all 8 moon phase mappings', () => {
+    it('should return all 8 moon phases', () => {
       const result = getAllMoonPlanets();
       expect(result).toHaveLength(8);
     });
 
-    it('should return all expected phases', () => {
+    it('should contain all lunar phases', () => {
       const result = getAllMoonPlanets();
-      const phases = result.map(m => m.fase);
-      expect(phases).toContain('Lua Nova');
-      expect(phases).toContain('Lua Crescente');
-      expect(phases).toContain('Quarto Crescente');
-      expect(phases).toContain('Lua Cheia');
-      expect(phases).toContain('Quarto Minguante');
-      expect(phases).toContain('Lua Minguante');
-      expect(phases).toContain('Quarto Descrescente');
-      expect(phases).toContain('Lua Velha (Balsâmica)');
+      const phases = result.map((r) => r.fase);
+      expect(phases).toContain('lua-nova');
+      expect(phases).toContain('lua-crescente');
+      expect(phases).toContain('quarto-crescente');
+      expect(phases).toContain('lua-cheia');
+      expect(phases).toContain('quarto-minguante');
+      expect(phases).toContain('lua-minguante');
+      expect(phases).toContain('quarto-descrescente');
+      expect(phases).toContain('lua-velha');
     });
 
-    it('should return mapping objects with all required fields', () => {
+    it('should return complete mappings with planet details', () => {
       const result = getAllMoonPlanets();
-      result.forEach(mapping => {
-        expect(mapping).toHaveProperty('fase');
-        expect(mapping).toHaveProperty('planeta');
-        expect(mapping).toHaveProperty('planeta_nome');
-        expect(mapping).toHaveProperty('elemento');
-        expect(mapping).toHaveProperty('elementos_secundarios');
-        expect(mapping).toHaveProperty('significado_espiritual');
-        expect(mapping).toHaveProperty('qualidades');
-        expect(mapping).toHaveProperty('praticas');
-        expect(mapping).toHaveProperty('orixa');
-        expect(mapping).toHaveProperty('chakra');
-        expect(mapping).toHaveProperty('polaridade');
-        expect(mapping).toHaveProperty('fluxo_energetico');
-        expect(mapping).toHaveProperty('cor');
+      result.forEach((mapping) => {
+        expect(mapping.planeta).toBeDefined();
+        expect(mapping.planeta_detalhes).toBeDefined();
+        expect(mapping.planeta_detalhes.simbolo).toBeDefined();
+        expect(mapping.planeta_detalhes.qualidade).toBeDefined();
+        expect(mapping.elemento_conexao).toBeDefined();
+        expect(mapping.qualidades_espirituais).toBeDefined();
+        expect(mapping.praticas_espirituais).toBeDefined();
+      });
+    });
+
+    it('should return mappings with spiritual practices', () => {
+      const result = getAllMoonPlanets();
+      result.forEach((mapping) => {
+        expect(mapping.praticas_espirituais.meditacao).toBeDefined();
+        expect(mapping.praticas_espirituais.ritual).toBeDefined();
+        expect(mapping.praticas_espirituais.cores).toBeDefined();
+        expect(mapping.praticas_espirituais.cristais).toBeDefined();
+        expect(mapping.praticas_espirituais.aromas).toBeDefined();
+        expect(mapping.praticas_espirituais.mantras).toBeDefined();
+      });
+    });
+
+    it('should return mappings with archangel and sefira', () => {
+      const result = getAllMoonPlanets();
+      result.forEach((mapping) => {
+        expect(mapping.archote_correspondente).toBeDefined();
+        expect(mapping.sefira_correspondente).toBeDefined();
       });
     });
   });
 
-  describe('getElementMoonPlanet', () => {
-    it('should return água for lua-nova', () => {
-      expect(getElementMoonPlanet('lua-nova')).toBe('água');
+  describe('getAvailableMoonPhases', () => {
+    it('should return all 8 phase identifiers', () => {
+      const result = getAvailableMoonPhases();
+      expect(result).toHaveLength(8);
     });
 
-    it('should return água for lua-cheia', () => {
-      expect(getElementMoonPlanet('lua-cheia')).toBe('água');
-    });
-
-    it('should return fogo for quarto-crescente', () => {
-      expect(getElementMoonPlanet('quarto-crescente')).toBe('fogo');
-    });
-
-    it('should return null for unknown phase', () => {
-      expect(getElementMoonPlanet('fase-desconhecida')).toBeNull();
+    it('should return FaseLua type values', () => {
+      const result = getAvailableMoonPhases();
+      expect(result).toContain('lua-nova');
+      expect(result).toContain('lua-cheia');
     });
   });
 
-  describe('getMeaningMoonPlanet', () => {
-    it('should return spiritual meaning for lua-cheia', () => {
-      const result = getMeaningMoonPlanet('lua-cheia');
-      expect(result).not.toBeNull();
-      expect(result).toContain('Culminação');
-      expect(result).toContain('iluminação');
+  describe('getSpiritualPractices', () => {
+    it('should return spiritual practices for lua-nova', () => {
+      const result = getSpiritualPractices('lua-nova');
+      expect(result).toBeDefined();
+      expect(result?.meditacao).toBeDefined();
+      expect(result?.ritual).toBeDefined();
+      expect(result?.cores).toContain('Preto');
+      expect(result?.cristais).toContain('Obsidiana');
+      expect(result?.mantras).toBeDefined();
     });
 
-    it('should return spiritual meaning for lua-nova', () => {
-      const result = getMeaningMoonPlanet('lua-nova');
-      expect(result).not.toBeNull();
-      expect(result).toContain('transformação');
+    it('should return crystals for lua-cheia', () => {
+      const result = getSpiritualPractices('lua-cheia');
+      expect(result?.cristais).toContain('Selenita');
+      expect(result?.cristais).toContain('Quartzo lunar');
     });
 
-    it('should return null for unknown phase', () => {
-      expect(getMeaningMoonPlanet('fase-desconhecida')).toBeNull();
-    });
-  });
-
-  describe('getPolarityMoonPlanet', () => {
-    it('should return Yin for lua-nova', () => {
-      expect(getPolarityMoonPlanet('lua-nova')).toBe('Yin');
-    });
-
-    it('should return Yang for lua-crescente', () => {
-      expect(getPolarityMoonPlanet('lua-crescente')).toBe('Yang');
-    });
-
-    it('should return Equilibrado for lua-cheia', () => {
-      expect(getPolarityMoonPlanet('lua-cheia')).toBe('Equilibrado');
+    it('should return mantras for lua-velha', () => {
+      const result = getSpiritualPractices('lua-velha');
+      expect(result?.mantras).toBeDefined();
+      expect(result?.mantras.length).toBeGreaterThan(0);
     });
 
     it('should return null for unknown phase', () => {
-      expect(getPolarityMoonPlanet('fase-desconhecida')).toBeNull();
+      expect(getSpiritualPractices('fase-invalida')).toBeNull();
     });
   });
 
-  describe('getEnergyFlowMoonPlanet', () => {
-    it('should return centripeto for lua-nova', () => {
-      expect(getEnergyFlowMoonPlanet('lua-nova')).toBe('centripeto');
+  describe('getElementConnection', () => {
+    it('should return Terra for lua-nova', () => {
+      expect(getElementConnection('lua-nova')).toBe('Terra');
     });
 
-    it('should return ascendente for lua-crescente', () => {
-      expect(getEnergyFlowMoonPlanet('lua-crescente')).toBe('ascendente');
+    it('should return Água for lua-cheia', () => {
+      expect(getElementConnection('lua-cheia')).toBe('Água');
     });
 
-    it('should return integrado for lua-velha', () => {
-      expect(getEnergyFlowMoonPlanet('lua-velha')).toBe('integrado');
+    it('should return Fogo for quarto-crescente', () => {
+      expect(getElementConnection('quarto-crescente')).toBe('Fogo');
+    });
+
+    it('should return Ar for quarto-minguante', () => {
+      expect(getElementConnection('quarto-minguante')).toBe('Ar');
+    });
+
+    it('should return Éter for lua-minguante', () => {
+      expect(getElementConnection('lua-minguante')).toBe('Éter');
     });
 
     it('should return null for unknown phase', () => {
-      expect(getEnergyFlowMoonPlanet('fase-desconhecida')).toBeNull();
+      expect(getElementConnection('fase-desconhecida')).toBeNull();
     });
   });
 
-  describe('getMoonPhasesByPlanet', () => {
-    it('should return lua-cheia for Lua planet', () => {
-      const result = getMoonPhasesByPlanet('Lua');
-      expect(result).toHaveLength(1);
-      expect(result[0].fase).toBe('Lua Cheia');
+  describe('getArchangel', () => {
+    it('should return Tzadkiel for lua-nova', () => {
+      expect(getArchangel('lua-nova')).toBe('Tzadkiel');
     });
 
-    it('should return lua-nova for Plutão planet', () => {
-      const result = getMoonPhasesByPlanet('Plutão');
-      expect(result).toHaveLength(1);
-      expect(result[0].fase).toBe('Lua Nova');
+    it('should return Gabriel for lua-cheia', () => {
+      expect(getArchangel('lua-cheia')).toBe('Gabriel');
     });
 
-    it('should handle case-insensitive planet names', () => {
-      const result = getMoonPhasesByPlanet('VÊNUS');
-      expect(result).toHaveLength(1);
-      expect(result[0].fase).toBe('Lua Crescente');
+    it('should return Michael for lua-minguante', () => {
+      expect(getArchangel('lua-minguante')).toBe('Michael');
+    });
+
+    it('should return null for unknown phase', () => {
+      expect(getArchangel('fase-desconhecida')).toBeNull();
+    });
+  });
+
+  describe('getSefira', () => {
+    it('should return Binah for lua-nova', () => {
+      expect(getSefira('lua-nova')).toBe('Binah (Compreensão)');
+    });
+
+    it('should return Yesod for lua-cheia', () => {
+      expect(getSefira('lua-cheia')).toBe('Yesod (Fundação)');
+    });
+
+    it('should return Tiferet for lua-minguante', () => {
+      expect(getSefira('lua-minguante')).toBe('Tiferet (Beleza/Harmonia)');
+    });
+
+    it('should return null for unknown phase', () => {
+      expect(getSefira('fase-desconhecida')).toBeNull();
+    });
+  });
+
+  describe('getMoonByPlanet', () => {
+    it('should return all phases with Lua as planet', () => {
+      const result = getMoonByPlanet('Lua');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((mapping) => {
+        expect(mapping.planeta).toBe('Lua');
+      });
+    });
+
+    it('should be case-insensitive', () => {
+      const result = getMoonByPlanet('saturno');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((mapping) => {
+        expect(mapping.planeta).toBe('Saturno');
+      });
     });
 
     it('should return empty array for unknown planet', () => {
-      const result = getMoonPhasesByPlanet('Planeta Desconhecido');
-      expect(result).toHaveLength(0);
+      const result = getMoonByPlanet('PlanetaFalso');
+      expect(result).toEqual([]);
     });
   });
 
-  describe('getMoonPhasesByElement', () => {
-    it('should return multiple phases for água element', () => {
-      const result = getMoonPhasesByElement('água');
-      expect(result.length).toBeGreaterThanOrEqual(3);
+  describe('getPlanetDetails', () => {
+    it('should return planet details for lua-nova', () => {
+      const result = getPlanetDetails('lua-nova');
+      expect(result).toBeDefined();
+      expect(result?.simbolo).toBe('♄');
+      expect(result?.qualidade).toBe('Limitação e estrutura');
+      expect(result?.dia_semana).toBe('Sábado');
+      expect(result?.metal).toBe('Chumbo');
     });
 
-    it('should return phases for fogo element', () => {
-      const result = getMoonPhasesByElement('fogo');
-      expect(result.length).toBeGreaterThanOrEqual(3);
-    });
-
-    it('should handle case-insensitive element names', () => {
-      const result = getMoonPhasesByElement('AR');
-      expect(result.length).toBeGreaterThanOrEqual(1);
-    });
-
-    it('should return empty array for unknown element', () => {
-      const result = getMoonPhasesByElement('elemento-desconhecido');
-      expect(result).toHaveLength(0);
-    });
-  });
-
-  describe('getOrixaMoonPlanet', () => {
-    it('should return Oxumaré for lua-nova', () => {
-      expect(getOrixaMoonPlanet('lua-nova')).toBe('Oxumaré');
-    });
-
-    it('should return Iemanjá for lua-cheia', () => {
-      expect(getOrixaMoonPlanet('lua-cheia')).toBe('Iemanjá');
-    });
-
-    it('should return Omulu for lua-velha', () => {
-      expect(getOrixaMoonPlanet('lua-velha')).toBe('Omulu');
+    it('should return details with simbolo for lua-cheia', () => {
+      const result = getPlanetDetails('lua-cheia');
+      expect(result?.simbolo).toBe('☾');
+      expect(result?.metal).toBe('Prata');
     });
 
     it('should return null for unknown phase', () => {
-      expect(getOrixaMoonPlanet('fase-desconhecida')).toBeNull();
+      expect(getPlanetDetails('fase-invalida')).toBeNull();
     });
   });
 
-  describe('getChakraMoonPlanet', () => {
-    it('should return 1º Básico for lua-nova', () => {
-      expect(getChakraMoonPlanet('lua-nova')).toBe('1º Básico (Muladhara)');
+  describe('getAvailablePlanets', () => {
+    it('should return all unique planets', () => {
+      const result = getAvailablePlanets();
+      expect(result.length).toBeGreaterThan(0);
+      expect(result).toContain('Saturno');
+      expect(result).toContain('Lua');
+      expect(result).toContain('Sol');
     });
 
-    it('should return 4º Cardíaco for lua-cheia', () => {
-      expect(getChakraMoonPlanet('lua-cheia')).toBe('4º Cardíaco (Anahata)');
-    });
-
-    it('should return integration chakra for lua-velha', () => {
-      expect(getChakraMoonPlanet('lua-velha')).toBe('Integração de Todos os Chakras');
-    });
-
-    it('should return null for unknown phase', () => {
-      expect(getChakraMoonPlanet('fase-desconhecida')).toBeNull();
+    it('should not have duplicates', () => {
+      const result = getAvailablePlanets();
+      const unique = new Set(result);
+      expect(unique.size).toBe(result.length);
     });
   });
 
-  describe('getColorMoonPlanet', () => {
-    it('should return preto for lua-nova', () => {
-      expect(getColorMoonPlanet('lua-nova')).toBe('preto');
-    });
-
-    it('should return branco for lua-cheia', () => {
-      expect(getColorMoonPlanet('lua-cheia')).toBe('branco');
-    });
-
-    it('should return dourado for lua-velha', () => {
-      expect(getColorMoonPlanet('lua-velha')).toBe('dourado');
-    });
-
-    it('should return null for unknown phase', () => {
-      expect(getColorMoonPlanet('fase-desconhecida')).toBeNull();
-    });
-  });
-
-  describe('MOON_PLANET_MAP structure', () => {
-    it('should have all 8 lunar phases', () => {
+  describe('MOON_PLANET_MAPPINGS structure', () => {
+    it('should have all 8 phases mapped', () => {
       const phases: FaseLua[] = [
         'lua-nova',
         'lua-crescente',
@@ -378,53 +358,34 @@ describe('Moon-Planet Correlation', () => {
         'quarto-descrescente',
         'lua-velha',
       ];
-      phases.forEach(fase => {
-        expect(MOON_PLANET_MAP[fase]).toBeDefined();
+      phases.forEach((fase) => {
+        expect(MOON_PLANET_MAPPINGS[fase]).toBeDefined();
       });
     });
 
-    it('should have valid planet types', () => {
-      const validPlanets: Planeta[] = ['Sol', 'Lua', 'Mercúrio', 'Vênus', 'Marte', 'Júpiter', 'Saturno', 'Netuno', 'Plutão'];
-      Object.values(MOON_PLANET_MAP).forEach(mapping => {
-        expect(validPlanets).toContain(mapping.planeta);
+    it('should have consistent planet symbols', () => {
+      const symbols: Record<string, Planeta> = {
+        '♄': 'Saturno',
+        '♃': 'Júpiter',
+        '♂': 'Marte',
+        '☾': 'Lua',
+        '♀': 'Vênus',
+        '☿': 'Mercúrio',
+        '☉': 'Sol',
+        '♆': 'Netuno',
+      };
+      Object.values(MOON_PLANET_MAPPINGS).forEach((mapping) => {
+        const expected = symbols[mapping.planeta_detalhes.simbolo];
+        expect(mapping.planeta).toBe(expected);
       });
     });
 
-    it('should have valid polarity values', () => {
-      const validPolarities = ['Yang', 'Yin', 'Equilibrado'];
-      Object.values(MOON_PLANET_MAP).forEach(mapping => {
-        expect(validPolarities).toContain(mapping.polaridade);
-      });
-    });
-
-    it('should have valid energy flow values', () => {
-      const validFlows = ['ascendente', 'descendente', 'centripeto', 'centrifugo', 'integrado'];
-      Object.values(MOON_PLANET_MAP).forEach(mapping => {
-        expect(validFlows).toContain(mapping.fluxo_energetico);
-      });
-    });
-
-    it('should have non-empty spiritual meanings', () => {
-      Object.values(MOON_PLANET_MAP).forEach(mapping => {
-        expect(mapping.significado_espiritual.length).toBeGreaterThan(10);
-      });
-    });
-
-    it('should have non-empty qualities arrays', () => {
-      Object.values(MOON_PLANET_MAP).forEach(mapping => {
-        expect(mapping.qualidades.length).toBeGreaterThan(0);
-      });
-    });
-
-    it('should have non-empty praticas arrays', () => {
-      Object.values(MOON_PLANET_MAP).forEach(mapping => {
-        expect(mapping.praticas.length).toBeGreaterThan(0);
-      });
-    });
-
-    it('should have non-empty secondary elements arrays', () => {
-      Object.values(MOON_PLANET_MAP).forEach(mapping => {
-        expect(mapping.elementos_secundarios.length).toBeGreaterThan(0);
+    it('should have all phases with spiritual qualities', () => {
+      Object.values(MOON_PLANET_MAPPINGS).forEach((mapping) => {
+        expect(mapping.qualidades_espirituais.energia).toBeDefined();
+        expect(mapping.qualidades_espirituais.dominio).toBeDefined();
+        expect(mapping.qualidades_espirituais.missao).toBeDefined();
+        expect(mapping.qualidades_espirituais.lição).toBeDefined();
       });
     });
   });
