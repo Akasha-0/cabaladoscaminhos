@@ -148,10 +148,10 @@ export function getAllSephirotNumerology(): SephirotNumerology[] {
   return Object.values(SEPHIROT_NUMEROLOGY_MAPPINGS);
 }
 /**
- * Alias for getAllSephirotNumerology - Get all available Sephirot-numerology mappings
  * @returns Array of all correlation mappings
  */
 export function getAllSephirotNumerologies(): SephirotNumerology[] {
   return getAllSephirotNumerology();
+}
 }
 }
