@@ -1,12 +1,7 @@
 // ============================================================
 // FOOD SACRED API - CABALA DOS CAMINHOS
+// Enhanced with spiritual correlations
 // ============================================================
-// GET endpoints for sacred food data
-// - Retrieve all sacred foods
-// - Retrieve single food by ID
-// - Retrieve food categories
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -42,6 +37,14 @@ const SacredFoodSchema = z.object({
   orixa: z.array(z.string()).optional(),
   frequency: z.string().optional(),
   affirmations: z.array(z.string()).optional(),
+  spiritualCorrelations: z.object({
+    sefirot: z.array(z.string()),
+    chakra: z.number(),
+    element: z.string(),
+    orixa: z.string(),
+    affirmation: z.string(),
+    frequency: z.string(),
+  }).optional(),
 });
 
 const FoodCategorySchema = z.object({
@@ -52,13 +55,58 @@ const FoodCategorySchema = z.object({
   element: ElementSchema,
   sefirot: z.array(SefirotSchema),
   orixa: z.array(z.string()),
+  spiritualCorrelations: z.object({
+    sefirot: z.array(z.string()),
+    element: z.string(),
+    orixa: z.string(),
+    affirmation: z.string(),
+    frequency: z.string(),
+  }).optional(),
 });
 
 export type SacredFood = z.infer<typeof SacredFoodSchema>;
 export type FoodCategory = z.infer<typeof FoodCategorySchema>;
 export const dynamic = 'force-dynamic';
 
-// ─── Sacred Foods with Spiritual Correlations ──────────────────────────────────────────
+// ─── Food Spiritual Correlations Map ──────────────────────────────────────────
+const FOOD_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  'mel': { sefirot: ['Tipheret', 'Netzach'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'A doçura de Oxum me adorna', frequency: '528 Hz' },
+  'azeite': { sefirot: ['Chesed', 'Tipheret'], chakra: 4, element: 'Terra', orixa: 'Oxalá', affirmation: 'Sou ungido com a luz divina', frequency: '639 Hz' },
+  'pao': { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Sou alimentado pela luz divina', frequency: '396 Hz' },
+  'agua': { sefirot: ['Yesod', 'Malkuth'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Sou purificado em todas as dimensões', frequency: '417 Hz' },
+  'vinho': { sefirot: ['Gevurah', 'Tipheret'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'Transformo-me em cada momento', frequency: '528 Hz' },
+  'sal': { sefirot: ['Malkuth'], chakra: 1, element: 'Terra', orixa: 'Omolu', affirmation: 'Sou protegido por forças sagradas', frequency: '396 Hz' },
+  'erva-sagrada': { sefirot: ['Chokhmah', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Ogum', affirmation: 'Conecto-me com a sabedoria das plantas', frequency: '741 Hz' },
+  'milho': { sefirot: ['Netzach', 'Malkuth'], chakra: 2, element: 'Terra', orixa: 'Oxóssi', affirmation: 'Sou nutrido pela terra sagrada', frequency: '432 Hz' },
+  'dende': { sefirot: ['Gevurah', 'Hod'], chakra: 3, element: 'Fogo', orixa: 'Ogum', affirmation: 'Tenho força e poder para realizar', frequency: '417 Hz' },
+  'canjica': { sefirot: ['Netzach', 'Tipheret'], chakra: 2, element: 'Terra', orixa: 'Oxum', affirmation: 'A doçura da vida me alimenta', frequency: '528 Hz' },
+  'inhame': { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Oxalá', affirmation: 'Estou forte e enraizado', frequency: '396 Hz' },
+  'alecrim': { sefirot: ['Gevurah', 'Hod'], chakra: 6, element: 'Fogo', orixa: 'Ogum', affirmation: 'Minha mente é clara e focada', frequency: '741 Hz' },
+};
+
+// ─── Category Spiritual Correlations ──────────────────────────────────────────
+const CATEGORY_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  'Sweeteners': { sefirot: ['Netzach', 'Tipheret'], element: 'Fogo', orixa: 'Oxum', affirmation: 'A doçura divina flui através de mim', frequency: '528 Hz' },
+  'Oils': { sefirot: ['Chesed', 'Gevurah'], element: 'Terra', orixa: 'Oxalá', affirmation: 'Sou ungido com luz sagrada', frequency: '639 Hz' },
+  'Grains': { sefirot: ['Malkuth', 'Yesod'], element: 'Terra', orixa: 'Oxóssi', affirmation: 'A terra me sustenta com abundância', frequency: '396 Hz' },
+  'Water': { sefirot: ['Yesod', 'Malkuth'], element: 'Água', orixa: 'Iemanjá', affirmation: 'A água sagrada me purifica', frequency: '417 Hz' },
+  'Herbs': { sefirot: ['Chokhmah', 'Netzach'], element: 'Ar', orixa: 'Ogum', affirmation: 'A sabedoria das plantas me cura', frequency: '741 Hz' },
+};
+
+// ─── Sacred Foods ──────────────────────────────────────────────────────────
 const sacredFoods: SacredFood[] = [
   {
     id: 'mel',
@@ -74,6 +122,7 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Oxum', 'Iemanjá'],
     frequency: '528 Hz',
     affirmations: ['Eu me nutro com a doçura da vida', 'Sou merecedor de todas as bênçãos'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['mel'],
   },
   {
     id: 'azeite',
@@ -89,6 +138,7 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Oxalá', 'Iemanjá'],
     frequency: '639 Hz',
     affirmations: ['Sou ungido com a luz divina', 'A paz flui através de mim'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['azeite'],
   },
   {
     id: 'pao',
@@ -104,6 +154,7 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Oxalá', 'Ogum'],
     frequency: '396 Hz',
     affirmations: ['Sou alimentado pela luz divina', 'Minha essência é pura e simples'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['pao'],
   },
   {
     id: 'agua',
@@ -119,6 +170,7 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Iemanjá', 'Oxum'],
     frequency: '417 Hz',
     affirmations: ['Sou purificado em todas as dimensões', 'A água sagrada lava minhas preocupações'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['agua'],
   },
   {
     id: 'vinho',
@@ -134,6 +186,7 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Oxum', 'Xangô'],
     frequency: '528 Hz',
     affirmations: ['Transformo-me em cada momento', 'Alegria e celebração são meu direito'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['vinho'],
   },
   {
     id: 'sal',
@@ -149,6 +202,7 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Omolu', 'Iemanjá'],
     frequency: '396 Hz',
     affirmations: ['Sou protegido por forças sagradas', 'Nenhuma energia densa pode me tocar'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['sal'],
   },
   {
     id: 'erva-sagrada',
@@ -159,11 +213,12 @@ const sacredFoods: SacredFood[] = [
     vibration: 8,
     properties: ['aromático', 'curativo', 'purificador', 'conector'],
     uses: ['defumação', 'banhos', 'chás rituais', 'medicina herbal'],
-    spiritualSignificance: 'Plantas sagradas que carregam a essência da terra e o prana do universo. Cadaerva tem propriedades espirituais específicas.',
+    spiritualSignificance: 'Plantas sagradas que carregam a essência da terra e o prana do universo. Cada erva tem propriedades espirituais específicas.',
     sefirot: ['Chokhmah', 'Netzach'],
     orixa: ['Ogum', 'Oxum', 'Iansã'],
     frequency: '741 Hz',
     affirmations: ['Conecto-me com a sabedoria das plantas', 'A natureza me sustenta e cura'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['erva-sagrada'],
   },
   {
     id: 'milho',
@@ -172,13 +227,14 @@ const sacredFoods: SacredFood[] = [
     element: 'Terra',
     chakra: 2,
     vibration: 7,
-    properties: ['nutritivo', 'sustentador', ' ancestral', 'oferecimento'],
+    properties: ['nutritivo', 'sustentador', 'ancestral', 'oferecimento'],
     uses: ['fubá para ebós', 'canjica', 'mingau ritual', 'ofertas aos Orixás'],
     spiritualSignificance: 'Alimento ancestral na tradição afro-brasileira. Representa a fertilidade da terra e a generosidade dos Orixás.',
     sefirot: ['Netzach', 'Malkuth'],
     orixa: ['Oxóssi', 'Iemanjá', 'Oxum'],
     frequency: '432 Hz',
     affirmations: ['Sou nutrido pela terra sagrada', 'A abundância flui em minha vida'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['milho'],
   },
   {
     id: 'dende',
@@ -194,6 +250,7 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Ogum', 'Xangô'],
     frequency: '417 Hz',
     affirmations: ['Tenho força e poder para realizar meus propósitos', 'Sou protegido em todas as jornadas'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['dende'],
   },
   {
     id: 'canjica',
@@ -202,13 +259,14 @@ const sacredFoods: SacredFood[] = [
     element: 'Terra',
     chakra: 2,
     vibration: 7,
-    properties: ['dulce', 'ancestral', 'oferta sagrada', 'compartilhamento'],
+    properties: ['doce', 'ancestral', 'oferta sagrada', 'compartilhamento'],
     uses: ['ofertas a Oxum', 'rituais de prosperidade', 'compartilhamento em festas', 'ebós de abertura'],
-    spiritualSignificance: 'Prato sagrado feito com milho branco, tradicional em Offerings a Oxum e outras divindades. Representa doçura e compartilhamento.',
+    spiritualSignificance: 'Prato sagrado feito com milho branco, tradicional em Ofertas a Oxum e outras divindades. Representa doçura e compartilhamento.',
     sefirot: ['Netzach', 'Tipheret'],
     orixa: ['Oxum', 'Oxóssi', 'Iemanjá'],
     frequency: '528 Hz',
     affirmations: ['A doçura da vida me alimenta', 'Compartilho minhas bênçãos com alegria'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['canjica'],
   },
   {
     id: 'inhame',
@@ -224,6 +282,7 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Oxalá', 'Omolu'],
     frequency: '396 Hz',
     affirmations: ['Estou forte e enraizado', 'O sustento sagrado me alimenta'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['inhame'],
   },
   {
     id: 'alecrim',
@@ -239,11 +298,12 @@ const sacredFoods: SacredFood[] = [
     orixa: ['Ogum', 'Oxalá'],
     frequency: '741 Hz',
     affirmations: ['Minha mente é clara e focada', 'Sou protegido por forças luminosas'],
+    spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS['alecrim'],
   },
 ];
 
-// ─── Food Categories with Spiritual Correlations ──────────────────────────────────────────
-const foodCategories: FoodCategory[] = [
+// ─── Food Categories ──────────────────────────────────────────────────────────
+const foodCategories: Array<FoodCategory & { spiritualCorrelations: object }> = [
   {
     name: 'Sweeteners',
     namePt: 'Adoçantes',
@@ -252,6 +312,7 @@ const foodCategories: FoodCategory[] = [
     element: 'Fogo',
     sefirot: ['Netzach', 'Tipheret'],
     orixa: ['Oxum', 'Iemanjá'],
+    spiritualCorrelations: CATEGORY_SPIRITUAL_CORRELATIONS['Sweeteners'],
   },
   {
     name: 'Oils',
@@ -261,6 +322,7 @@ const foodCategories: FoodCategory[] = [
     element: 'Terra',
     sefirot: ['Chesed', 'Gevurah'],
     orixa: ['Oxalá', 'Ogum'],
+    spiritualCorrelations: CATEGORY_SPIRITUAL_CORRELATIONS['Oils'],
   },
   {
     name: 'Grains',
@@ -270,6 +332,7 @@ const foodCategories: FoodCategory[] = [
     element: 'Terra',
     sefirot: ['Malkuth', 'Yesod'],
     orixa: ['Oxóssi', 'Iemanjá'],
+    spiritualCorrelations: CATEGORY_SPIRITUAL_CORRELATIONS['Grains'],
   },
   {
     name: 'Water',
@@ -279,6 +342,7 @@ const foodCategories: FoodCategory[] = [
     element: 'Água',
     sefirot: ['Yesod', 'Malkuth'],
     orixa: ['Iemanjá', 'Oxum'],
+    spiritualCorrelations: CATEGORY_SPIRITUAL_CORRELATIONS['Water'],
   },
   {
     name: 'Herbs',
@@ -288,6 +352,7 @@ const foodCategories: FoodCategory[] = [
     element: 'Ar',
     sefirot: ['Chokhmah', 'Netzach'],
     orixa: ['Ogum', 'Iansã'],
+    spiritualCorrelations: CATEGORY_SPIRITUAL_CORRELATIONS['Herbs'],
   },
 ];
 
@@ -322,6 +387,7 @@ export async function GET(request: NextRequest) {
         success: true,
         categories: foodCategories,
         total: foodCategories.length,
+        spiritualCorrelations: CATEGORY_SPIRITUAL_CORRELATIONS,
       });
     }
 
@@ -338,6 +404,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         success: true,
         food,
+        spiritualCorrelations: FOOD_SPIRITUAL_CORRELATIONS,
       });
     }
 
@@ -368,7 +435,34 @@ export async function GET(request: NextRequest) {
       foods = foods.slice(0, limit);
     }
 
-    // Statistics
+    // Calculate spiritual stats
+    const spiritualStats = {
+      bySefirot: foods.reduce((acc, f) => {
+        const sc = f.spiritualCorrelations;
+        if (sc) {
+          sc.sefirot.forEach(s => { acc[s] = (acc[s] || 0) + 1; });
+        }
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: foods.reduce((acc, f) => {
+        const ch = f.spiritualCorrelations?.chakra || f.chakra;
+        if (ch) acc[ch] = (acc[ch] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: foods.reduce((acc, f) => {
+        const el = f.spiritualCorrelations?.element || f.element;
+        if (el) acc[el] = (acc[el] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: foods.reduce((acc, f) => {
+        const sc = f.spiritualCorrelations;
+        if (sc) {
+          acc[sc.orixa] = (acc[sc.orixa] || 0) + 1;
+        }
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
     const stats = {
       byElement: sacredFoods.reduce((acc, f) => {
         acc[f.element] = (acc[f.element] || 0) + 1;
@@ -379,15 +473,11 @@ export async function GET(request: NextRequest) {
         return acc;
       }, {} as Record<number, number>),
       bySefirot: sacredFoods.reduce((acc, f) => {
-        f.sefirot?.forEach(sf => {
-          acc[sf] = (acc[sf] || 0) + 1;
-        });
+        f.sefirot?.forEach(sf => { acc[sf] = (acc[sf] || 0) + 1; });
         return acc;
       }, {} as Record<string, number>),
       byOrixa: sacredFoods.reduce((acc, f) => {
-        f.orixa?.forEach(o => {
-          acc[o] = (acc[o] || 0) + 1;
-        });
+        f.orixa?.forEach(o => { acc[o] = (acc[o] || 0) + 1; });
         return acc;
       }, {} as Record<string, number>),
       totalFoods: sacredFoods.length,
@@ -399,6 +489,11 @@ export async function GET(request: NextRequest) {
       total: foods.length,
       categories: foodCategories,
       filters: { element, chakra, sefirot, orixa },
+      spiritualCorrelations: {
+        foods: FOOD_SPIRITUAL_CORRELATIONS,
+        categories: CATEGORY_SPIRITUAL_CORRELATIONS,
+      },
+      spiritualStats,
       stats,
     });
   } catch (error) {
