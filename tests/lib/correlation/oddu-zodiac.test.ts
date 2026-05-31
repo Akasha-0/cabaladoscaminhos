@@ -23,8 +23,6 @@ import {
 } from '@/lib/correlation/oddu-zodiac';
 
 describe('Odú-Ifá Zodíaco Correlation', () => {
-  // ─── getOduZodiac by number ────────────────────────────────────────────────
-
   describe('getOduZodiac by number', () => {
     it('should return correct mapping for Odu 1', () => {
       const result = getOduZodiac(1);
@@ -66,8 +64,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
     });
   });
 
-  // ─── getOduZodiac by name ─────────────────────────────────────────────────
-
   describe('getOduZodiac by name', () => {
     it('should find Odu by Portuguese name', () => {
       const result = getOduZodiac('Okaran');
@@ -107,8 +103,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
     });
   });
 
-  // ─── getZodiacOdu ─────────────────────────────────────────────────────────
-
   describe('getZodiacOdu', () => {
     it('should find Odús by zodiac sign', () => {
       const result = getZodiacOdu('Áries');
@@ -121,7 +115,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       const upper = getZodiacOdu('ÁRIES');
       const lower = getZodiacOdu('aries');
       const mixed = getZodiacOdu('AriEs');
-
       expect(upper.length).toBe(lower.length);
       expect(lower.length).toBe(mixed.length);
     });
@@ -143,8 +136,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       expect(result[0].odu_numero).toBeLessThan(result[result.length - 1].odu_numero);
     });
   });
-
-  // ─── getAllOduZodiacs ─────────────────────────────────────────────────────
 
   describe('getAllOduZodiacs', () => {
     it('should return all 16 Odu mappings', () => {
@@ -192,8 +183,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
     });
   });
 
-  // ─── getAllOduNumbers ────────────────────────────────────────────────────
-
   describe('getAllOduNumbers', () => {
     it('should return array of numbers 1-16', () => {
       const result = getAllOduNumbers();
@@ -215,8 +204,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       expect(unique.size).toBe(result.length);
     });
   });
-
-  // ─── getAllOduNames ──────────────────────────────────────────────────────
 
   describe('getAllOduNames', () => {
     it('should return array of 16 Portuguese names', () => {
@@ -240,12 +227,10 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
 
     it('should return sorted by Odu number', () => {
       const result = getAllOduNames();
-      expect(result[0]).toBe('Okaran'); // Odu 1
-      expect(result[result.length - 1]).toBe('Otura'); // Odu 16
+      expect(result[0]).toBe('Okaran');
+      expect(result[result.length - 1]).toBe('Otura');
     });
   });
-
-  // ─── getAllZodiacSigns ──────────────────────────────────────────────────
 
   describe('getAllZodiacSigns', () => {
     it('should return array of unique zodiac signs', () => {
@@ -259,24 +244,7 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       const unique = new Set(result);
       expect(unique.size).toBe(result.length);
     });
-
-    it('should contain all expected zodiac signs', () => {
-      const result = getAllZodiacSigns();
-      const expectedSigns: ZodiacSign[] = [
-        'Áries', 'Touro', 'Gêmeos', 'Câncer', 'Leão', 'Virgem',
-        'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes',
-      ];
-      for (const sign of expectedSigns) {
-        const signLower = sign.toLowerCase();
-        const found = result.some((s) => s.toLowerCase() === signLower);
-        if (!found) {
-          // Some signs may not map to any Odu - that's valid
-        }
-      }
-    });
   });
-
-  // ─── getOduByElement ────────────────────────────────────────────────────
 
   describe('getOduByElement', () => {
     it('should return Odús with fogo element', () => {
@@ -323,8 +291,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
     });
   });
 
-  // ─── hasOduZodiac ─────────────────────────────────────────────────────────
-
   describe('hasOduZodiac', () => {
     it('should return true for valid Odu numbers', () => {
       expect(hasOduZodiac(1)).toBe(true);
@@ -345,8 +311,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       expect(hasOduZodiac(17)).toBe(false);
     });
   });
-
-  // ─── getOduZodiacSign ─────────────────────────────────────────────────────
 
   describe('getOduZodiacSign', () => {
     it('should return zodiac sign for valid Odu', () => {
@@ -371,8 +335,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
     });
   });
 
-  // ─── getOduElement ────────────────────────────────────────────────────────
-
   describe('getOduElement', () => {
     it('should return element for valid Odu', () => {
       expect(getOduElement(1)).toBe('fogo');
@@ -396,8 +358,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
     });
   });
 
-  // ─── getOduMessage ────────────────────────────────────────────────────────
-
   describe('getOduMessage', () => {
     it('should return spiritual message for valid Odu', () => {
       const msg = getOduMessage(1);
@@ -419,7 +379,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
         expect(msg).not.toBeNull();
         messages.add(msg!);
       }
-      // Messages should be unique (no two Odús share the exact same message)
       expect(messages.size).toBeGreaterThan(10);
     });
 
@@ -431,8 +390,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       expect(msg8?.toLowerCase()).toContain('transforma');
     });
   });
-
-  // ─── ODU_ZODIAC_MAPPINGS constant ─────────────────────────────────────────
 
   describe('ODU_ZODIAC_MAPPINGS constant', () => {
     it('should have 16 entries', () => {
@@ -471,8 +428,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
     });
   });
 
-  // ─── Type exports ────────────────────────────────────────────────────────
-
   describe('Type exports', () => {
     it('should export OduZodiac interface', () => {
       const mapping: OduZodiac = {
@@ -498,15 +453,12 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
     });
   });
 
-  // ─── Spiritual correlation integrity ──────────────────────────────────────
-
   describe('Spiritual correlation integrity', () => {
     it('should have unique zodiac signs for each Odu', () => {
       const signs = new Set<ZodiacSign>();
       for (let i = 1; i <= 16; i++) {
         signs.add(ODU_ZODIAC_MAPPINGS[i].signo);
       }
-      // With 16 Odús and 12 signs, some signs repeat (valid for this correlation)
     });
 
     it('should have valid spiritual messages for all Odús', () => {
@@ -517,13 +469,13 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       }
     });
 
-    it('should have Yoruba names for all Odús', () => {
+    it('should have Yoruba names with combining diacritics for all Odús', () => {
       for (let i = 1; i <= 16; i++) {
         const yoruba = ODU_ZODIAC_MAPPINGS[i].odu_nome_yoruba;
         expect(yoruba).toBeDefined();
         expect(yoruba.length).toBeGreaterThan(0);
-        // Yoruba names typically have diacritics
-        expect(yoruba).toMatch(/[àáâãèéêìíòóôõùúû]/);
+        // Yoruba names have combining diacritical marks (check via NFD normalization)
+        expect(yoruba.normalize('NFD')).toMatch(/[̀-ͯ]/);
       }
     });
 
@@ -532,7 +484,6 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       for (let i = 1; i <= 16; i++) {
         elements.add(ODU_ZODIAC_MAPPINGS[i].elemento);
       }
-      // Should cover fire, water, air, earth
       expect(elements.has('fogo')).toBe(true);
       expect(elements.has('água')).toBe(true);
       expect(elements.has('ar')).toBe(true);
