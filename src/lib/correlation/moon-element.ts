@@ -165,10 +165,12 @@ export const MOON_ELEMENT_MAP: Record<FaseLua, MoonElementMapping> = {
       manifesto_em: ['revelação', 'intuição', 'visão profunda', 'transmutação'],
     },
     significado_espiritual: {
+    significado_espiritual: {
       core: 'A fumaça que revela verdades ocultas nos cantos escuros',
       aprendizado: 'A sabedoria verdadeira vem do silêncio interior',
       advertencia: 'Visões sem ação são ilusões que paralisam',
-      ritual_sugerido: 'Meditação no escuro, trabalho com третьее око, revelação de verdades',
+      ritual_sugerido: 'Meditação no escuro, trabalho com terceiro olho, revelação de verdades',
+    },
     },
     correspondencias: {
       orixa_regente: 'Omolu',
