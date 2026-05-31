@@ -68,6 +68,8 @@ const ORIXAS_MAP: Record<string, OrixaElement> = {
     ],
     significado_espiritual: 'A riqueza interior e a prosperidade material. Deusa do ouro, dos rios e do amor. Governa a vaidade, a beleza, a sensualidade e a abundância. Sua energia hídrica ensina a fluir com gracejo e a atrair recursos com elegância.'
   },
+  'Ogum': {
+  },
     ]
   },
   'Ogum': {
