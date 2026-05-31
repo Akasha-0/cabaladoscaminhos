@@ -252,12 +252,12 @@ export function getSephirotByDay(dia: string): string | undefined {
 }
 
 /**
- * Get the day-Sephirot correlation mapping (reverse lookup - alias)
+ * Get the Sephirah name for a specific day (reverse lookup)
  * @param dia - The day name in Portuguese
- * @returns The correlation mapping or undefined if not found
+ * @returns The Sephirah name or undefined if not found
  */
-export function getSephirotDay(dia: string): DaySephirot | undefined {
-  return getDaySephirot(dia);
+export function getSephirotDay(dia: string): string | undefined {
+  return DAY_SEPHIROT_MAP[dia]?.sephirah;
 }
 
 /**
