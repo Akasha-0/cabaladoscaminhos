@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-31
-**Sprints completados:** 485
+**Sprints completados:** 486
 **Tests: ✅ 10531 passing, 31 skipped, 0 failed**
  - Prisma 7 + PostgreSQL via pg adapter
  - Redis/ioredis for caching
@@ -9,12 +9,12 @@
  - jsPDF for PDF exports (dynamic import)
  - Minimax API integration for AI responses
 
-### Sprint 485 — Ritual Planner & Tarot Consulta (COMPLETE)
+### Sprint 486 — Astrology Calendar (COMPLETE)
 Enhanced APIs with spiritual correlations:
-- ritual-planner: 8 ritual templates with spiritual correlations
-- tarot/consulta: Tarot consultation with spiritual correlations
+- astrology-calendar: Full spiritual correlations for planets, signs, aspects
 270 engine tests passing.
 
+### Sprint 485 — Ritual Planner & Tarot Consulta (COMPLETE)
 ### Sprint 484 — Shadow Work & Tarot & Progress (COMPLETE)
 Enhanced APIs with spiritual correlations:
 - shadow/work: 6 shadow work practices with spiritual correlations
