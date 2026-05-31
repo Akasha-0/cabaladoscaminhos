@@ -46,7 +46,7 @@ const STATE_SPIRITUAL_CORRELATIONS: Record<string, {
     affirmation: 'A energia cresce e se manifesta',
     frequency: '741 Hz',
   },
-  lua-cheia: {
+  "lua-cheia": {
     sefirot: ['Tipheret', 'Yesod'],
     chakra: 6,
     element: 'Fogo',
@@ -54,7 +54,7 @@ const STATE_SPIRITUAL_CORRELATIONS: Record<string, {
     affirmation: 'A luz completa brilha através de mim',
     frequency: '528 Hz',
   },
-  lua-minguante: {
+  "lua-minguante": {
     sefirot: ['Binah', 'Hod'],
     chakra: 5,
     element: 'Água',
