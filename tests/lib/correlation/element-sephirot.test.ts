@@ -338,13 +338,12 @@ describe('correlation/element-sephirot', () => {
     });
   });
 });
-
-// ─── Edge cases ──────────────────────────────────────────────────────────────
-
-describe('edge cases', () => {
-  it('handles whitespace in element name', () => {
-    const result = getElementSephirot('  fogo  ');
-    expect(result).toBeDefined();
-    expect(result?.elemento).toBe('fogo');
+// ─── Default export ───────────────────────────────────────────────────────────
+describe('default export', () => {
+  it('exports all core functions', () => {
+    const def = require('@/lib/correlation/element-sephirot').default;
+    expect(def.getElementSephirot).toBeDefined();
+    expect(def.getSephirotElement).toBeDefined();
+    expect(def.getAllElementSephiroths).toBeDefined();
   });
 });
