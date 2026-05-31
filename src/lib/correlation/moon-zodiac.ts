@@ -21,104 +21,166 @@ export type FaseLua =
 
 export interface MoonZodiac {
   fase: string;
-  nome_fase: string;
   signo: Signo;
-  elemento: Elemento;
-  qualidade: Qualidade;
-  significado_espiritual: string;
-  energia_moon: string;
-  archetype_connection: string;
-  ritual_guidance: string[];
+  elemento: 'fogo' | 'água' | 'ar' | 'terra';
+  qualidade: 'cardinal' | 'fixed' | 'mutable';
+  energia: 'receptiva' | 'ativa' | 'transmutadora' | 'dissolutiva';
+  praticas: string[];
+  caracteristicas: string[];
 }
 
-const MOON_ZODIAC_MAP: Record<FaseLua, MoonZodiac> = {
+export const MOON_ZODIAC_MAP: Record<FaseLua, MoonZodiac> = {
   'lua-nova': {
-    fase: 'lua-nova',
-    nome_fase: 'Lua Nova',
+    fase: 'Lua Nova',
     signo: 'Escorpião',
-    elemento: 'Água',
-    qualidade: 'Fixo',
-    significado_espiritual: 'Renascimento e transformação profunda. Momento de plantar sementes no inconsciente, onde a escuridão da lua nova encontra a intensidade de Escorpião para regeneração total.',
-    energia_moon: 'Receptiva, regenerativa, transformadora',
-    archetype_connection: 'A Feiticeira - magia de renovação e poder pessoal',
-    ritual_guidance: ['Rituais de renascimento interior', 'Limpeza de velhas feridas', 'Invocação de força transformadora'],
+    elemento: 'água',
+    qualidade: 'fixed',
+    energia: 'receptiva',
+    praticas: [
+      'Iniciação de projetos secretos',
+      'Planejamento de longo prazo',
+      'Conexão com o inconsciente',
+      'Rituais de renascimento interior',
+    ],
+    caracteristicas: [
+      'Transformação interior',
+      'Poder pessoal',
+      'Mistério e profundidade',
+      'Regeneração total',
+    ],
   },
   'lua-crescente': {
-    fase: 'lua-crescente',
-    nome_fase: 'Lua Crescente',
+    fase: 'Lua Crescente',
     signo: 'Sagitário',
-    elemento: 'Fogo',
-    qualidade: 'Mutável',
-    significado_espiritual: 'Expansão e busca por verdade. A energia crescente da lua encontra o otimismo de Sagitário para ampliar horizontes e buscar conhecimento sagrado.',
-    energia_moon: 'Expansiva, aventureira, esperançosa',
-    archetype_connection: 'A Sábia - busca por sabedoria e expansão da consciência',
-    ritual_guidance: ['Rituais de expansão de consciência', 'Busca por conhecimento espiritual', 'Viagens internas e externas'],
+    elemento: 'fogo',
+    qualidade: 'mutable',
+    energia: 'ativa',
+    praticas: [
+      'Expansão de projetos',
+      'Busca por conhecimento',
+      'Viagens espirituais',
+      'Otimismo e esperança',
+    ],
+    caracteristicas: [
+      'Aventura e exploração',
+      'Sabedoria filosófica',
+      'Expansão de horizontes',
+      'Busca por verdade',
+    ],
   },
   'quarto-crescente': {
-    fase: 'quarto-crescente',
-    nome_fase: 'Quarto Crescente',
+    fase: 'Quarto Crescente',
     signo: 'Áries',
-    elemento: 'Fogo',
-    qualidade: 'Cardinal',
-    significado_espiritual: 'Ação e coragem. A lua em crescimento encontra a força de Áries para iniciar projetos com determinação e vigor guerreiro.',
-    energia_moon: 'Ativa, corajosa, pioneira',
-    archetype_connection: 'A Guerreira - ativação da vontade e coragem de agir',
-    ritual_guidance: ['Rituais de ativação da vontade', 'Quebra de obstáculos', 'Iniciação de novos projetos'],
+    elemento: 'fogo',
+    qualidade: 'cardinal',
+    energia: 'ativa',
+    praticas: [
+      'Quebra de obstáculos',
+      'Início de ações',
+      'Coragem e determinação',
+      'Ativação da vontade',
+    ],
+    caracteristicas: [
+      'Pioneirismo',
+      'Iniciativa guerreira',
+      'Força de ação',
+      'Determinação',
+    ],
   },
   'lua-cheia': {
-    fase: 'lua-cheia',
-    nome_fase: 'Lua Cheia',
+    fase: 'Lua Cheia',
     signo: 'Câncer',
-    elemento: 'Água',
-    qualidade: 'Cardinal',
-    significado_espiritual: 'Iluminação emocional e proteção. A plenitude da lua encontra a sensibilidade de Câncer para revelar emoções e nutrir a alma.',
-    energia_moon: 'Manifestadora, iluminada, nutridora',
-    archetype_connection: 'A Mãe - cuidados, proteção e conexão com ancestrais',
-    ritual_guidance: ['Rituais de alta magia', 'Conexão com ancestrais', 'Libertação emocional e cura'],
+    elemento: 'água',
+    qualidade: 'cardinal',
+    energia: 'ativa',
+    praticas: [
+      'Manifestação de desejos',
+      'Conexão com ancestrais',
+      'Rituais de proteção',
+      'Culminação emocional',
+    ],
+    caracteristicas: [
+      'Nutrição emocional',
+      'Iluminação interna',
+      'Conexão com a família',
+      'Proteção e cuidado',
+    ],
   },
   'quarto-minguante': {
-    fase: 'quarto-minguante',
-    nome_fase: 'Quarto Minguante',
+    fase: 'Quarto Minguante',
     signo: 'Capricórnio',
-    elemento: 'Terra',
-    qualidade: 'Cardinal',
-    significado_espiritual: 'Disciplina e purificação. A energia declinante da lua encontra a ambição estruturada de Capricórnio para purgar o que não serve e construir bases sólidas.',
-    energia_moon: 'Purificadora, estruturante, resoluta',
-    archetype_connection: 'A Mestra - sabedoria através da disciplina e师长',
-    ritual_guidance: ['Rituais de limpeza e descarrego', 'Organização e estruturação', 'Libertação de padrões-limitantes'],
+    elemento: 'terra',
+    qualidade: 'cardinal',
+    energia: 'transmutadora',
+    praticas: [
+      'Limpeza de velhos padrões',
+      'Estruturação de projetos',
+      'Disciplina e organização',
+      'Purificação kármica',
+    ],
+    caracteristicas: [
+      'Ambição estruturada',
+      'Disciplina rigorosa',
+      'Responsabilidade',
+      'Ascensão pelo esforço',
+    ],
   },
   'lua-minguante': {
-    fase: 'lua-minguante',
-    nome_fase: 'Lua Minguante',
+    fase: 'Lua Minguante',
     signo: 'Libra',
-    elemento: 'Ar',
-    qualidade: 'Cardinal',
-    significado_espiritual: 'Harmonia e equilíbrio. A lua em dissolução encontra o equilíbrio de Libra para reconciliar opostos e buscar justiça cósmica.',
-    energia_moon: 'Harmonizadora, equilibrante, mediadora',
-    archetype_connection: 'A Justiça - equilíbrio, harmonia e decisões equilibradas',
-    ritual_guidance: ['Rituais de harmonia em relacionamentos', 'Meditação por equilíbrio interior', 'Decisões com discernimento'],
+    elemento: 'ar',
+    qualidade: 'cardinal',
+    energia: 'dissolutiva',
+    praticas: [
+      'Harmonização de relacionamentos',
+      'Equilíbrio de opostos',
+      'Decisões com discernimento',
+      'Justiça cósmica',
+    ],
+    caracteristicas: [
+      'Equilíbrio e harmonia',
+      'Beleza e estética',
+      'Parceria e diplomacia',
+      'Discernimento justo',
+    ],
   },
   'quarto-descrescente': {
-    fase: 'quarto-descrescente',
-    nome_fase: 'Quarto Descrescente',
+    fase: 'Quarto Descrescente',
     signo: 'Aquário',
-    elemento: 'Ar',
-    qualidade: 'Fixo',
-    significado_espiritual: 'Libertação e inovação. A energia em declínio encontra a Originalidade de Aquário para dissolver o velho e preparar o novo modelo de ser.',
-    energia_moon: 'Libertadora, inovadora, visionária',
-    archetype_connection: 'O Inventor - quebra de paradigmas e visão de futuro',
-    ritual_guidance: ['Rituais de inovação espiritual', 'Libertação de dogmas', 'Conexão com a coletividade'],
+    elemento: 'ar',
+    qualidade: 'fixed',
+    energia: 'dissolutiva',
+    praticas: [
+      'Libertação de dogmas',
+      'Inovação espiritual',
+      'Conexão com a coletividade',
+      'Quebra de paradigmas',
+    ],
+    caracteristicas: [
+      'Originalidade',
+      'Humanitarismo',
+      'Visão de futuro',
+      'Liberdade interior',
+    ],
   },
   'lua-velha': {
-    fase: 'lua-velha',
-    nome_fase: 'Lua Velha',
+    fase: 'Lua Velha (Balsâmica)',
     signo: 'Virgem',
-    elemento: 'Terra',
-    qualidade: 'Mutável',
-    significado_espiritual: 'Discernimento e purificação final. A lua em seu ciclo mais antigo encontra o pragmatismo de Virgem para depurar o essencial e preparar o renascimento.',
-    energia_moon: 'Ancestral, depurativa, preparatória',
-    archetype_connection: 'A Serva - serviço sagrado e purificação do físico e emocional',
-    ritual_guidance: ['Rituais de descarrego final', 'Purificação do corpo e ambiente', 'Preparação para novo ciclo'],
+    elemento: 'terra',
+    qualidade: 'mutable',
+    energia: 'dissolutiva',
+    praticas: [
+      'Descarrego final',
+      'Purificação do ambiente',
+      'Organização e ordem',
+      'Preparação para novo ciclo',
+    ],
+    caracteristicas: [
+      'Discernimento prático',
+      'Pureza e organização',
+      'Análise crítica',
+      'Serviço sagrado',
+    ],
   },
 };
 
@@ -152,23 +214,25 @@ export function getAllMoonZodiacs(): MoonZodiac[] {
 
 /**
  * Get moon phases associated with a specific element.
- * @param elemento - The element to filter by
+ * @param elemento - The element to filter by (case-insensitive)
  * @returns Array of MoonZodiac mappings for that element
  */
 export function getMoonPhasesByElement(elemento: string): MoonZodiac[] {
+  const normalized = elemento.toLowerCase();
   return getAllMoonZodiacs().filter(
-    (m) => m.elemento.toLowerCase() === elemento.toLowerCase()
+    (m) => m.elemento.toLowerCase() === normalized
   );
 }
 
 /**
  * Get moon phases associated with a specific quality.
- * @param qualidade - The quality to filter by (Cardinal, Fixo, Mutável)
+ * @param qualidade - The quality to filter by (Cardinal, Fixo, Mutável or lowercased)
  * @returns Array of MoonZodiac mappings for that quality
  */
 export function getMoonPhasesByQuality(qualidade: string): MoonZodiac[] {
+  const normalized = qualidade.toLowerCase();
   return getAllMoonZodiacs().filter(
-    (m) => m.qualidade.toLowerCase() === qualidade.toLowerCase()
+    (m) => m.qualidade.toLowerCase() === normalized
   );
 }
 
@@ -177,7 +241,7 @@ export function getMoonPhasesByQuality(qualidade: string): MoonZodiac[] {
  * @param fase - The lunar phase identifier
  * @returns The element or null if not found
  */
-export function getElementByPhase(fase: string): Elemento | null {
+export function getElementByPhase(fase: string): MoonZodiac['elemento'] | null {
   const mapping = getMoonZodiac(fase);
   return mapping?.elemento || null;
 }
@@ -187,20 +251,7 @@ export function getElementByPhase(fase: string): Elemento | null {
  * @param fase - The lunar phase identifier
  * @returns The energy description or null if not found
  */
-export function getEnergyByPhase(fase: string): string | null {
+export function getEnergyByPhase(fase: string): MoonZodiac['energia'] | null {
   const mapping = getMoonZodiac(fase);
-  return mapping?.energia_moon || null;
-}
-
-/**
- * Get the moon phase corresponding to a specific zodiac sign.
- * @param signo - The zodiac sign
- * @returns The moon phase or null if not found
- */
-export function getPhaseByZodiac(signo: string): FaseLua | null {
-  const normalizedSign = signo.charAt(0).toUpperCase() + signo.slice(1).toLowerCase();
-  const entry = Object.entries(MOON_ZODIAC_MAP).find(
-    ([, mapping]) => mapping.signo === normalizedSign
-  );
-  return entry ? (entry[0] as FaseLua) : null;
+  return mapping?.energia || null;
 }
