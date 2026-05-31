@@ -255,7 +255,7 @@ export const CHAKRA_CHAKRA_MAPPINGS: ChakraChakraMapping[] = [
     practices: ['Ajna dhyana', 'Sahasrara japa'],
   },
 
-  // Full Kundalini awakening path (Muladhara to Sahasrara)
+  // Full Kundalini awakening paths (Muladhara to Sahasrara)
   {
     source_chakra: 'Muladhara',
     target_chakra: 'Sahasrara',
@@ -270,6 +270,14 @@ export const CHAKRA_CHAKRA_MAPPINGS: ChakraChakraMapping[] = [
       'Kriya yoga',
       'Shaktipat',
     ],
+  },
+  {
+    source_chakra: 'Muladhara',
+    target_chakra: 'Sahasrara',
+    path_type: 'sushumna',
+    spiritual_meaning: 'Pure consciousness path through central channel; kundalini rises without duality',
+    energy_flow: 'Centro - Sushumna puro',
+    practices: ['Shiva pranayama', 'Shambhavi mudra', 'Samadhi practice'],
   },
   {
     source_chakra: 'Muladhara',

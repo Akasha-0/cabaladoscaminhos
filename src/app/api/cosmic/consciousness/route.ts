@@ -61,15 +61,21 @@ const CONSCIOUSNESS_DATA: ConsciousnessData[] = [
     level: 'Divine',
     frequency: 600,
     description: 'Divine consciousness united with source',
-    attributes: ['oneness', 'eternal', 'infinite']
-  }
-];
-
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
-
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = ConsciousnessQuerySchema.safeParse({
+      id: searchParams.get('id'),
+      minFrequency: searchParams.get('minFrequency'),
+      maxFrequency: searchParams.get('maxFrequency'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { id, minFrequency, maxFrequency } = parseResult.data;
     if (id) {
       const item = CONSCIOUSNESS_DATA.find(c => c.id === id);
       if (!item) {
@@ -77,9 +83,20 @@ export async function GET(request: NextRequest) {
       }
       return NextResponse.json({ consciousness: item });
     }
-
-    return NextResponse.json({ consciousness: CONSCIOUSNESS_DATA, total: CONSCIOUSNESS_DATA.length });
+    let filteredData = [...CONSCIOUSNESS_DATA];
+    if (minFrequency !== undefined) {
+      filteredData = filteredData.filter(c => c.frequency >= minFrequency);
+    }
+    if (maxFrequency !== undefined) {
+      filteredData = filteredData.filter(c => c.frequency <= maxFrequency);
+    }
+    return NextResponse.json({
+      consciousness: filteredData,
+      total: filteredData.length,
+    });
   } catch {
     return NextResponse.json({ error: 'Failed to retrieve consciousness data' }, { status: 500 });
   }
+  }
+}
 }

@@ -294,7 +294,7 @@ describe('correlation/element-sephirot', () => {
     });
 
     it('returns direction for terra', () => {
-      const result = getDirectionByElement('--direção');
+      const result = getDirectionByElement('terra');
       expect(result).toBe('Norte');
     });
 
