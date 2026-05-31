@@ -331,9 +331,24 @@ describe('tarot-numerology', () => {
       const result = getAllTarotNumerology();
       expect(result[result.length - 1].arcano).toBe('O Mundo');
       expect(result[result.length - 1].numero_carta).toBe(21);
+  // ─── getAllTarotNumerologies (plural - alias) ───────────────────────────────
+  describe('getAllTarotNumerologies', () => {
+    it('returns all 22 Major Arcana mappings', () => {
+      const result = getAllTarotNumerologies();
+      expect(result).toHaveLength(22);
+    });
+    it('returns mappings sorted by card number', () => {
+      const result = getAllTarotNumerologies();
+      for (let i = 0; i < result.length - 1; i++) {
+        expect(result[i].numero_carta).toBeLessThan(result[i + 1].numero_carta);
+      }
+    });
+    it('returns same data as getAllTarotNumerology', () => {
+      const result = getAllTarotNumerologies();
+      const expected = getAllTarotNumerology();
+      expect(result).toEqual(expected);
     });
   });
-
   // ─── getAllArcanos ───────────────────────────────────────────────────────────
 
   describe('getAllArcanos', () => {
