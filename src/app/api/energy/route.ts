@@ -1,16 +1,17 @@
-// ============================================================
-// ENERGY API - CABALA DOS CAMINHOS
-// ============================================================
-// GET endpoints for energy management
-// - Energy levels and trends
-// - Energy balance tracking
-// - Personal energy insights
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-
-// Energy levels enum-like structure
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const EnergyActionSchema = z.enum(['status', 'trend', 'history']);
+const EnergyQuerySchema = z.object({
+  action: EnergyActionSchema.optional().default('status'),
+  days: z.coerce.number().int().positive().max(365).optional(),
+});
+const EnergyEntrySchema = z.object({
+  level: z.number().int().min(1).max(10),
+  note: z.string().optional(),
+  timestamp: z.string().datetime().optional(),
+});
 const ENERGY_LEVELS = {
   EXHAUSTED: 1,
   LOW: 2,
@@ -19,7 +20,6 @@ const ENERGY_LEVELS = {
   HIGH: 5,
   OPTIMAL: 6,
 } as const;
-
 type EnergyLevel = typeof ENERGY_LEVELS[keyof typeof ENERGY_LEVELS];
 
 interface EnergyEntry {
@@ -172,17 +172,22 @@ function generateInsights(trend: EnergyTrend, entries: EnergyEntry[]): EnergyIns
 export async function GET(request: NextRequest) {
   try {
     const userId = request.headers.get('x-user-id') || 'anonymous';
-    const url = new URL(request.url);
-    const action = url.searchParams.get('action') || 'status';
-
+    const searchParams = request.nextUrl.searchParams();
+    const parseResult = EnergyQuerySchema.safeParse({
+      action: searchParams.get('action'),
+      days: searchParams.get('days'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { action, days } = parseResult.data;
     // Get user's energy entries
     const entries = getUserEnergyEntries(userId);
-
     switch (action) {
       case 'status': {
-        // Get current energy level (most recent entry or default)
-        const latestEntry = entries.length > 0
-          ? entries.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0]
           : null;
 
         return NextResponse.json({
