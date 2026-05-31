@@ -114,11 +114,11 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const parseResult = TimerQuerySchema.safeParse({
-      id: searchParams.get("id"),
-      sefirot: searchParams.get("sefirot"),
-      chakra: searchParams.get("chakra"),
-      element: searchParams.get("element"),
-      status: searchParams.get("status"),
+      id: searchParams.get("id") ?? undefined,
+      sefirot: searchParams.get("sefirot") ?? undefined,
+      chakra: searchParams.get("chakra") ?? undefined,
+      element: searchParams.get("element") ?? undefined,
+      status: searchParams.get("status") ?? undefined,
     });
     if (!parseResult.success) {
       return NextResponse.json({
