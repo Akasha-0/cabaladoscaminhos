@@ -256,10 +256,11 @@ const ORIXA_ORIXA_MAP: OrixaRelation[] = [
  * @returns OrixaRelation or undefined if no relationship exists
  */
 export function getOrixaOrixa(orixa: string, related_orixa: string): OrixaRelation | undefined {
+  const normalize = (s: string) => s.trim().toLowerCase();
   return ORIXA_ORIXA_MAP.find(
     rel =>
-      (rel.orixa.toLowerCase() === orixa.toLowerCase() && rel.related_orixa.toLowerCase() === related_orixa.toLowerCase()) ||
-      (rel.orixa.toLowerCase() === related_orixa.toLowerCase() && rel.related_orixa.toLowerCase() === orixa.toLowerCase())
+      (normalize(rel.orixa) === normalize(orixa) && normalize(rel.related_orixa) === normalize(related_orixa)) ||
+      (normalize(rel.orixa) === normalize(related_orixa) && normalize(rel.related_orixa) === normalize(orixa))
   );
 }
 
@@ -267,10 +268,10 @@ export function getOrixaOrixa(orixa: string, related_orixa: string): OrixaRelati
  * Get all relationships for a specific Orixá
  * @param orixa - Orixá name
  * @returns Array of OrixaRelation objects where the Orixá appears
- */
 export function getAllOrixaRelations(orixa: string): OrixaRelation[] {
+  const normalize = (s: string) => s.trim().toLowerCase();
   return ORIXA_ORIXA_MAP.filter(
-    rel => rel.orixa.toLowerCase() === orixa.toLowerCase() || rel.related_orixa.toLowerCase() === orixa.toLowerCase()
+    rel => normalize(rel.orixa) === normalize(orixa) || normalize(rel.related_orixa) === normalize(orixa)
   );
 }
 
@@ -297,13 +298,15 @@ export function getRelationshipsByType(type: RelationshipType): OrixaRelation[] 
  * @returns Array of related Orixás with bidirectional energy
  */
 export function getBidirectionalOrixas(orixa: string): string[] {
+  const normalize = (s: string) => s.trim().toLowerCase();
+  const normalizedOrixa = normalize(orixa);
   return ORIXA_ORIXA_MAP
     .filter(
       rel =>
-        (rel.orixa.toLowerCase() === orixa.toLowerCase() || rel.related_orixa.toLowerCase() === orixa.toLowerCase()) &&
+        (normalize(rel.orixa) === normalizedOrixa || normalize(rel.related_orixa) === normalizedOrixa) &&
         rel.energy_flow === 'bidirectional'
     )
-    .map(rel => (rel.orixa.toLowerCase() === orixa.toLowerCase() ? rel.related_orixa : rel.orixa));
+    .map(rel => (normalize(rel.orixa) === normalizedOrixa ? rel.related_orixa : rel.orixa));
 }
 
 export default {
