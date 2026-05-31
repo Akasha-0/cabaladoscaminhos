@@ -3,9 +3,18 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const ManifestationStatusSchema = z.enum(['active', 'manifested', 'released']);
 const PriorityLevelSchema = z.enum(['high', 'medium', 'low']);
+
 const ManifestationSchema = z.object({
   id: z.string(),
   userId: z.string(),
@@ -24,7 +33,12 @@ const ManifestationSchema = z.object({
   progress: z.number(),
   lastReinforced: z.string().optional(),
   reinforcementCount: z.number(),
+  sefirot: z.array(SefirotSchema).optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.array(z.string()).optional(),
 });
+
 const CreateManifestationSchema = z.object({
   intention: z.string().min(1, 'Intenção é obrigatória'),
   description: z.string().optional(),
@@ -35,28 +49,141 @@ const CreateManifestationSchema = z.object({
   affirmations: z.array(z.string()).optional(),
   gratitudeStatements: z.array(z.string()).optional(),
   actionSteps: z.array(z.string()).optional(),
+  sefirot: z.array(SefirotSchema).optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.array(z.string()).optional(),
 });
+
 const ManifestationQuerySchema = z.object({
   userId: z.string().optional(),
   status: ManifestationStatusSchema.optional(),
   priority: PriorityLevelSchema.optional(),
   category: z.string().optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
-// Type aliases
+
+// ─── Type aliases ─────────────────────────────────────────────────────────
 type ManifestationStatus = z.infer<typeof ManifestationStatusSchema>;
 type PriorityLevel = z.infer<typeof PriorityLevelSchema>;
 type Manifestation = z.infer<typeof ManifestationSchema>;
-// Const enums
+
+// ─── Const enums ──────────────────────────────────────────────────────────
 const MANIFESTATION_STATUS = {
   ACTIVE: 'active',
   MANIFESTED: 'manifested',
   RELEASED: 'released',
 } as const;
+
 const PRIORITY_LEVELS = {
   HIGH: 'high',
   MEDIUM: 'medium',
   LOW: 'low',
 } as const;
+
+// ─── Manifestation Categories with Spiritual Correlations ──────────────────────────────────────────
+const MANIFESTATION_CATEGORIES = [
+  {
+    id: 'amor',
+    name: 'Amor',
+    namePt: 'Amor',
+    element: 'Fogo',
+    sefirot: ['Tipheret', 'Chesed'],
+    chakra: 4,
+    orixa: ['Oxum', 'Iemanjá'],
+    description: 'Manifestações relacionadas a relacionamentos, amor próprio e conexões afetivas.',
+    affirmations: ['Eu sou digno de amor', 'O amor flui em minha vida naturalmente'],
+  },
+  {
+    id: 'saude',
+    name: 'Saúde',
+    namePt: 'Saúde',
+    element: 'Terra',
+    sefirot: ['Chesed', 'Gevurah'],
+    chakra: 3,
+    orixa: ['Omolu', 'Oxum'],
+    description: 'Manifestações relacionadas à saúde física, mental e espiritual.',
+    affirmations: [' Meu corpo é saudável e forte', 'A vitalidade flui através de mim'],
+  },
+  {
+    id: 'prosperidade',
+    name: 'Prosperidade',
+    namePt: 'Prosperidade',
+    element: 'Fogo',
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 2,
+    orixa: ['Oxum', 'Oxóssi'],
+    description: 'Manifestações relacionadas a abundância financeira e material.',
+    affirmations: ['A abundância é meu direito divino', 'Dinheiro flui para mim facilmente'],
+  },
+  {
+    id: 'sabedoria',
+    name: 'Sabedoria',
+    namePt: 'Sabedoria',
+    element: 'Ar',
+    sefirot: ['Chokhmah', 'Binah'],
+    chakra: 6,
+    orixa: ['Orunmilá', 'Oxalá'],
+    description: 'Manifestações relacionadas a conhecimento, aprendizado e discernimento.',
+    affirmations: ['A sabedoria divina guia meus passos', 'Eu sou um receptáculo de luz e verdade'],
+  },
+  {
+    id: 'protecao',
+    name: 'Proteção',
+    namePt: 'Proteção',
+    element: 'Terra',
+    sefirot: ['Gevurah', 'Malkuth'],
+    chakra: 1,
+    orixa: ['Ogum', 'Oxalá'],
+    description: 'Manifestações relacionadas a segurança, proteção e encerramento de ciclos.',
+    affirmations: ['Sou protegido por forças светлые', 'Nenhuma energia negativa pode me tocar'],
+  },
+  {
+    id: 'cura',
+    name: 'Cura',
+    namePt: 'Cura',
+    element: 'Água',
+    sefirot: ['Chesed', 'Tipheret'],
+    chakra: 4,
+    orixa: ['Omolu', 'Oxum', 'Iemanjá'],
+    description: 'Manifestações relacionadas a cura emocional, física ou espiritual.',
+    affirmations: ['Sou completamente curado', 'A luz divina restaura cada célula do meu ser'],
+  },
+  {
+    id: 'proposito',
+    name: 'Propósito',
+    namePt: 'Propósito',
+    element: 'Éter',
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 7,
+    orixa: ['Oxalá', 'Orunmilá'],
+    description: 'Manifestações relacionadas a missão de vida e propósito existencial.',
+    affirmations: ['Conheço meu propósito divino', 'Cada passo que dou está alinhado com minha missão'],
+  },
+  {
+    id: 'paz',
+    name: 'Paz',
+    namePt: 'Paz',
+    element: 'Água',
+    sefirot: ['Chesed', 'Tipheret'],
+    chakra: 4,
+    orixa: ['Oxalá', 'Iemanjá'],
+    description: 'Manifestações relacionadas a serenidade, equilíbrio e harmonia interior.',
+    affirmations: ['Paz habita em meu coração', 'A serenidade é meu estado natural'],
+  },
+];
+
+// ─── Priority Correlations ──────────────────────────────────────────────
+const PRIORITY_CORRELATIONS: Record<PriorityLevel, { sefirot: string[], chakra: number, element: string }> = {
+  high: { sefirot: ['Gevurah', 'Kether'], chakra: 3, element: 'Fogo' },
+  medium: { sefirot: ['Tipheret', 'Yesod'], chakra: 5, element: 'Ar' },
+  low: { sefirot: ['Malkuth', 'Chesed'], chakra: 1, element: 'Terra' },
+};
+
+// ─── In-memory manifestation store ──────────────────────────────────────
 interface Manifestation {
   id: string;
   userId: string;
@@ -75,6 +202,10 @@ interface Manifestation {
   progress: number;
   lastReinforced?: string;
   reinforcementCount: number;
+  sefirot?: string[];
+  chakra?: number;
+  element?: string;
+  orixa?: string[];
 }
 
 interface ManifestationRequest {
@@ -87,332 +218,265 @@ interface ManifestationRequest {
   affirmations?: string[];
   gratitudeStatements?: string[];
   actionSteps?: string[];
+  sefirot?: string[];
+  chakra?: number;
+  element?: string;
+  orixa?: string[];
 }
 
-// In-memory manifestation store (in production, use database)
 const manifestationStore: Map<string, Manifestation[]> = new Map();
 
-// Generate unique ID
+// ─── Helper Functions ──────────────────────────────────────────────────────
 function generateId(): string {
   return `manifest_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 }
 
-// Get user's manifestations
 function getUserManifestations(userId: string): Manifestation[] {
   return manifestationStore.get(userId) || [];
 }
 
-// Calculate manifestation progress based on various factors
-function calculateProgress(manifestation: Manifestation): number {
-  let progress = 0;
-  
-  // Base progress from reinforcement count (max 30%)
-  progress += Math.min(30, manifestation.reinforcementCount * 5);
-  
-  // Progress from action steps completed (max 40%)
-  if (manifestation.actionSteps.length > 0) {
-    const completedSteps = manifestation.actionSteps.filter(step => step.startsWith('[x]')).length;
-    progress += (completedSteps / manifestation.actionSteps.length) * 40;
-  }
-  
-  // Progress from affirmations written (max 15%)
-  if (manifestation.affirmations.length > 0) {
-    progress += Math.min(15, manifestation.affirmations.length * 3);
-  }
-  
-  // Progress from gratitude statements (max 15%)
-  if (manifestation.gratitudeStatements.length > 0) {
-    progress += Math.min(15, manifestation.gratitudeStatements.length * 3);
-  }
-  
-  return Math.min(100, Math.round(progress));
-}
-
-// Generate manifestation insights
-function generateInsights(manifestations: Manifestation[]): {
-  activeCount: number;
-  manifestedCount: number;
-  averageProgress: number;
-  categoryBreakdown: Record<string, number>;
-  oldestActive?: Manifestation;
-  mostProgressed?: Manifestation;
-} {
-  const active = manifestations.filter(m => m.status === MANIFESTATION_STATUS.ACTIVE);
-  const manifested = manifestations.filter(m => m.status === MANIFESTATION_STATUS.MANIFESTED);
-  
-  const totalProgress = manifestations.reduce((sum, m) => sum + m.progress, 0);
-  
-  const categoryBreakdown: Record<string, number> = {};
-  manifestations.forEach(m => {
-    const category = m.category || 'uncategorized';
-    categoryBreakdown[category] = (categoryBreakdown[category] || 0) + 1;
-  });
-  
-  const sortedByAge = [...active].sort((a, b) => 
-    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+function findCategoryCorrelations(category: string) {
+  return MANIFESTATION_CATEGORIES.find(c =>
+    c.id === category.toLowerCase() ||
+    c.namePt.toLowerCase() === category.toLowerCase()
   );
-  
-  const sortedByProgress = [...active].sort((a, b) => b.progress - a.progress);
-  
-  return {
-    activeCount: active.length,
-    manifestedCount: manifested.length,
-    averageProgress: manifestations.length > 0 ? Math.round(totalProgress / manifestations.length) : 0,
-    categoryBreakdown,
-    oldestActive: sortedByAge[0],
-    mostProgressed: sortedByProgress[0],
-  };
 }
 
-// GET - Fetch user manifestations
+// ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const userId = searchParams.get('userId');
-    const id = searchParams.get('id');
-    const status = searchParams.get('status') as ManifestationStatus | null;
-    const category = searchParams.get('category');
-    const includeInsights = searchParams.get('includeInsights') === 'true';
+    const searchParams = request.nextUrl.searchParams();
 
-    // For demo purposes, use a default userId if not provided
-    const effectiveUserId = userId || 'demo_user';
-    
-    let manifestations = getUserManifestations(effectiveUserId);
-    
-    // Filter by specific ID
-    if (id) {
-      const found = manifestations.find(m => m.id === id);
-      if (!found) {
-        return NextResponse.json(
-          { error: 'Manifestation not found' },
-          { status: 404 }
-        );
-      }
-      return NextResponse.json({ manifestation: found });
+    const parseResult = ManifestationQuerySchema.safeParse({
+      userId: searchParams.get('userId'),
+      status: searchParams.get('status'),
+      priority: searchParams.get('priority'),
+      category: searchParams.get('category'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
+
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
-    
+
+    const { userId, status, priority, category, sefirot, chakra, element, orixa } = parseResult.data;
+
+    if (!userId) {
+      return NextResponse.json({
+        success: false,
+        error: 'userId é obrigatório',
+      }, { status: 400 });
+    }
+
+    let manifestations = getUserManifestations(userId);
+
     // Filter by status
     if (status) {
       manifestations = manifestations.filter(m => m.status === status);
     }
-    
+
+    // Filter by priority
+    if (priority) {
+      manifestations = manifestations.filter(m => m.priority === priority);
+    }
+
     // Filter by category
     if (category) {
       manifestations = manifestations.filter(m => m.category === category);
     }
-    
-    // Sort by creation date (newest first)
-    manifestations.sort((a, b) => 
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-    
-    const response: Record<string, unknown> = { manifestations };
-    
-    if (includeInsights) {
-      response.insights = generateInsights(getUserManifestations(effectiveUserId));
+
+    // Filter by spiritual correlations
+    if (sefirot) {
+      manifestations = manifestations.filter(m => m.sefirot?.includes(sefirot));
     }
-    
-    return NextResponse.json(response);
-    
- } catch (_error) {
-    console.error('Error fetching manifestations:', _error);
-    return NextResponse.json(
-      { error: 'Failed to fetch manifestations' },
-      { status: 500 }
-    );
+    if (chakra) {
+      manifestations = manifestations.filter(m => m.chakra === chakra);
+    }
+    if (element) {
+      manifestations = manifestations.filter(m => m.element === element);
+    }
+    if (orixa) {
+      manifestations = manifestations.filter(m => m.orixa?.some(o => o.toLowerCase().includes(orixa.toLowerCase())));
+    }
+
+    // Statistics
+    const stats = {
+      byStatus: manifestations.reduce((acc, m) => {
+        acc[m.status] = (acc[m.status] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byPriority: manifestations.reduce((acc, m) => {
+        acc[m.priority] = (acc[m.priority] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byCategory: manifestations.reduce((acc, m) => {
+        if (m.category) {
+          acc[m.category] = (acc[m.category] || 0) + 1;
+        }
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: manifestations.reduce((acc, m) => {
+        if (m.element) {
+          acc[m.element] = (acc[m.element] || 0) + 1;
+        }
+        return acc;
+      }, {} as Record<string, number>),
+      totalManifestations: manifestations.length,
+      activeCount: manifestations.filter(m => m.status === 'active').length,
+      manifestedCount: manifestations.filter(m => m.status === 'manifested').length,
+    };
+
+    return NextResponse.json({
+      success: true,
+      manifestations,
+      categories: MANIFESTATION_CATEGORIES,
+      total: manifestations.length,
+      stats,
+    });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
   }
 }
 
-// POST - Create or update manifestation
 export async function POST(request: NextRequest) {
   try {
-    const body: ManifestationRequest & { userId?: string; id?: string; action?: string } = await request.json();
-    
+    const body = await request.json();
+    const parseResult = CreateManifestationSchema.safeParse(body);
+
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Corpo inválido',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
     const {
       intention,
-      description = '',
-      priority = PRIORITY_LEVELS.MEDIUM,
-      targetDate,
-      category,
-      tags = [],
-      affirmations = [],
-      gratitudeStatements = [],
-      actionSteps = [],
-      userId: requestUserId,
-      id,
-      action,
-    } = body;
-    
-    if (!intention) {
-      return NextResponse.json(
-        { error: 'Intention is required' },
-        { status: 400 }
-      );
-    }
-    
-    const effectiveUserId = requestUserId || 'demo_user';
-    const manifestations = getUserManifestations(effectiveUserId);
-    
-    // Handle different actions
-    if (action === 'reinforce' && id) {
-      // Reinforce an existing manifestation
-      const index = manifestations.findIndex(m => m.id === id);
-      if (index === -1) {
-        return NextResponse.json(
-          { error: 'Manifestation not found' },
-          { status: 404 }
-        );
-      }
-      
-      const updated: Manifestation = {
-        ...manifestations[index],
-        reinforcementCount: manifestations[index].reinforcementCount + 1,
-        lastReinforced: new Date().toISOString(),
-        progress: calculateProgress({
-          ...manifestations[index],
-          reinforcementCount: manifestations[index].reinforcementCount + 1,
-        }),
-        updatedAt: new Date().toISOString(),
-      };
-      
-      manifestations[index] = updated;
-      manifestationStore.set(effectiveUserId, manifestations);
-      
-      return NextResponse.json({ manifestation: updated });
-    }
-    
-    if (action === 'update' && id) {
-      // Update existing manifestation
-      const index = manifestations.findIndex(m => m.id === id);
-      if (index === -1) {
-        return NextResponse.json(
-          { error: 'Manifestation not found' },
-          { status: 404 }
-        );
-      }
-      
-      const existing = manifestations[index];
-      const updated: Manifestation = {
-        ...existing,
-        intention: intention || existing.intention,
-        description: description || existing.description,
-        priority: priority || existing.priority,
-        targetDate: targetDate || existing.targetDate,
-        category: category || existing.category,
-        tags: tags.length > 0 ? tags : existing.tags,
-        affirmations: affirmations.length > 0 ? affirmations : existing.affirmations,
-        gratitudeStatements: gratitudeStatements.length > 0 ? gratitudeStatements : existing.gratitudeStatements,
-        actionSteps: actionSteps.length > 0 ? actionSteps : existing.actionSteps,
-        progress: calculateProgress({
-          ...existing,
-          affirmations: affirmations.length > 0 ? affirmations : existing.affirmations,
-          gratitudeStatements: gratitudeStatements.length > 0 ? gratitudeStatements : existing.gratitudeStatements,
-          actionSteps: actionSteps.length > 0 ? actionSteps : existing.actionSteps,
-        }),
-        updatedAt: new Date().toISOString(),
-      };
-      
-      manifestations[index] = updated;
-      manifestationStore.set(effectiveUserId, manifestations);
-      
-      return NextResponse.json({ manifestation: updated });
-    }
-    
-    if (action === 'complete' && id) {
-      // Mark manifestation as manifested
-      const index = manifestations.findIndex(m => m.id === id);
-      if (index === -1) {
-        return NextResponse.json(
-          { error: 'Manifestation not found' },
-          { status: 404 }
-        );
-      }
-      
-      const updated: Manifestation = {
-        ...manifestations[index],
-        status: MANIFESTATION_STATUS.MANIFESTED,
-        progress: 100,
-        updatedAt: new Date().toISOString(),
-      };
-      
-      manifestations[index] = updated;
-      manifestationStore.set(effectiveUserId, manifestations);
-      
-      return NextResponse.json({ manifestation: updated });
-    }
-    
-    if (action === 'release' && id) {
-      // Release/let go of manifestation
-      const index = manifestations.findIndex(m => m.id === id);
-      if (index === -1) {
-        return NextResponse.json(
-          { error: 'Manifestation not found' },
-          { status: 404 }
-        );
-      }
-      
-      const updated: Manifestation = {
-        ...manifestations[index],
-        status: MANIFESTATION_STATUS.RELEASED,
-        updatedAt: new Date().toISOString(),
-      };
-      
-      manifestations[index] = updated;
-      manifestationStore.set(effectiveUserId, manifestations);
-      
-      return NextResponse.json({ manifestation: updated });
-    }
-    
-    // Create new manifestation
-    const newManifestation: Manifestation = {
-      id: generateId(),
-      userId: effectiveUserId,
-      intention,
       description,
-      status: MANIFESTATION_STATUS.ACTIVE,
       priority,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
       targetDate,
       category,
       tags,
       affirmations,
       gratitudeStatements,
       actionSteps,
-      progress: calculateProgress({
-        id: '',
-        userId: effectiveUserId,
-        intention,
-        description,
-        status: MANIFESTATION_STATUS.ACTIVE,
-        priority,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        targetDate,
-        category,
-        tags,
-        affirmations,
-        gratitudeStatements,
-        actionSteps,
-        progress: 0,
-        reinforcementCount: 0,
-      }),
+      sefirot,
+      chakra,
+      element,
+      orixa,
+    } = parseResult.data;
+
+    // Find category correlations
+    const categoryCorr = category ? findCategoryCorrelations(category) : undefined;
+
+    // Get priority correlations
+    const priorityCorr = PRIORITY_CORRELATIONS[priority || 'medium'];
+
+    // Create manifestation
+    const now = new Date().toISOString();
+    const manifestation: Manifestation = {
+      id: generateId(),
+      userId: crypto.randomUUID(),
+      intention,
+      description: description || '',
+      status: 'active',
+      priority: priority || 'medium',
+      createdAt: now,
+      updatedAt: now,
+      targetDate,
+      category,
+      tags: tags || [],
+      affirmations: affirmations || [],
+      gratitudeStatements: gratitudeStatements || [],
+      actionSteps: actionSteps || [],
+      progress: 0,
       reinforcementCount: 0,
+      sefirot: sefirot || categoryCorr?.sefirot || priorityCorr.sefirot,
+      chakra: chakra || categoryCorr?.chakra || priorityCorr.chakra,
+      element: element || categoryCorr?.element || priorityCorr.element,
+      orixa: orixa || categoryCorr?.orixa,
     };
-    
-    manifestations.push(newManifestation);
-    manifestationStore.set(effectiveUserId, manifestations);
-    
-    return NextResponse.json({ 
-      manifestation: newManifestation,
-      message: 'Manifestation created successfully' 
+
+    // Store manifestation
+    const userId = manifestation.userId;
+    const userManifestations = getUserManifestations(userId);
+    userManifestations.push(manifestation);
+    manifestationStore.set(userId, userManifestations);
+
+    return NextResponse.json({
+      success: true,
+      manifestation,
+      spiritualCorrelations: {
+        sefirot: manifestation.sefirot,
+        chakra: manifestation.chakra,
+        element: manifestation.element,
+        orixa: manifestation.orixa,
+        categoryCorrelations: categoryCorr,
+      },
     }, { status: 201 });
-    
- } catch (_error) {
-    console.error('Error creating manifestation:', _error);
-    return NextResponse.json(
-      { error: 'Failed to create manifestation' },
-      { status: 500 }
-    );
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { id, status, progress, reinforcementCount } = body;
+
+    if (!id) {
+      return NextResponse.json({
+        success: false,
+        error: 'id é obrigatório',
+      }, { status: 400 });
+    }
+
+    // Find and update manifestation
+    let found = false;
+    for (const [userId, manifestations] of manifestationStore.entries()) {
+      const index = manifestations.findIndex(m => m.id === id);
+      if (index !== -1) {
+        if (status) manifestations[index].status = status;
+        if (progress !== undefined) manifestations[index].progress = progress;
+        if (reinforcementCount !== undefined) manifestations[index].reinforcementCount = reinforcementCount;
+        manifestations[index].updatedAt = new Date().toISOString();
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      return NextResponse.json({
+        success: false,
+        error: 'Manifestação não encontrada',
+      }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Manifestação atualizada',
+    });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
   }
 }
