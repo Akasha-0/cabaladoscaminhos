@@ -1,344 +1,431 @@
 /**
- * Day-Frequency Spiritual Correlation Module
- * Maps days of the week to Solfeggio frequencies with element connections and healing properties.
- * Source: Cabala dos Caminhos spiritual system
+ * Day-Frequency Correlation Module
+ * Maps days of the week to Solfeggio frequencies and spiritual significance
+ * Based on vibrational healing and classical mystical traditions
  */
 
-import type { Elemento } from './element-sign';
+/** Supported Solfeggio frequencies */
+export type Frequency = number;
 
-/** The seven days of the week in Portuguese */
-export type DiaSemana =
-  | 'Domingo'
-  | 'Segunda-feira'
-  | 'Terça-feira'
-  | 'Quarta-feira'
-  | 'Quinta-feira'
-  | 'Sexta-feira'
-  | 'Sábado';
+/** Elemental correspondence for each day */
+export type Element = 'fogo' | 'água' | 'ar' | 'terra';
 
-/**
- * Represents the correlation between a day of the week and a Solfeggio frequency
- */
-export interface DayFrequencyMapping {
-  /** Day name in Portuguese */
-  dia: DiaSemana;
+/** Chakra correspondence */
+export type Chakra = string;
+
+export interface DayFrequency {
+  /** Day name in Portuguese (e.g., 'Domingo', 'Segunda-feira') */
+  dia: string;
+  /** Day index (0 = Sunday, 6 = Saturday) */
+  indice: number;
   /** Solfeggio frequency in Hz */
   frequencia: number;
-  /** Associated classical element */
-  elemento: Elemento;
-  /** Planetary ruler of the day */
+  /** Frequency name/label */
+  nome_frequencia: string;
+  /** Associated element */
+  elemento: Element;
+  /** Elemental quality */
+  qualidade: 'cardinal' | 'fixed' | 'mutable';
+  /** Day color correspondence */
+  cor: string;
+  /** Primary direction */
+  direcao: string;
+  /** Associated chakra */
+  chakra: string;
+  /** Chakra number */
+  chakra_numero: number;
+  /** Planetary ruler for the day */
   planeta: string;
-  /** Healing and spiritual properties */
-  propriedades_healing: {
-    fisico: string;
-    emocional: string;
-    mental_espiritual: string;
-    melhor_epoca: string;
+  /** Associated Orixá (for syncretic traditions) */
+  orixa: string;
+  /** Vibration properties and influences */
+  propriedades: {
+    /** Core strengths and energies */
+    forta: string;
+    /** Keywords for the day's vibration */
+    palavras_chave: string[];
+    /** Healing applications */
+    aplicacoes_cura: string[];
   };
+  /** Spiritual meaning and mystical significance */
+  significado_espiritual: string;
+  /** Recommended healing practices */
+  praticas_cura: string[];
 }
 
-/**
- * Complete mapping of the 7 days of the week to their Solfeggio frequency correspondences.
- * Based on elemental correspondences, planetary rulership, and spiritual properties from
- * the Cabala dos Caminhos system. Each day carries the vibrational signature of its
- * corresponding frequency, amplified by its ruling planet and elemental nature.
- */
-export const DAY_FREQUENCY_MAP: Record<DiaSemana, DayFrequencyMapping> = {
-  /** Sol - Fogo - 528Hz - vitality and purpose */
-  Domingo: {
+/** Day-to-Frequency mapping based on Solfeggio and vibrational healing traditions */
+export const DAY_FREQUENCY_MAP: Record<string, DayFrequency> = {
+  'Domingo': {
     dia: 'Domingo',
+    indice: 0,
     frequencia: 528,
-    elemento: 'Fogo',
+    nome_frequencia: 'Frequência do Amor',
+    elemento: 'fogo',
+    qualidade: 'fixed',
+    cor: 'Dourado / Amarelo',
+    direcao: 'Leste',
+    chakra: '3º Plexo Solar',
+    chakra_numero: 3,
     planeta: 'Sol',
-    propriedades_healing: {
-      fisico: 'Estimula vitalidade, fortalece sistema cardíaco e metabolismo',
-      emocional: 'Transforma orgulho em amor próprio genuíno, promove alegria autêntica',
-      mental_espiritual: 'Ativa propósito de vida, brilho pessoal e expressão criativa',
-      melhor_epoca: 'Dias de recarga energética, início de projetos importantes, celebrações',
+    orixa: 'Oxum',
+    propriedades: {
+      forta: 'Transformação, amor incondicional, milagres, restauração do DNA, clareza mental, criatividade radiante',
+      palavras_chave: ['amor', 'milagre', 'transformar', 'restauração', 'luz', 'criatividade', 'propósito'],
+      aplicacoes_cura: ['Restauração celular', 'Limpeza de padrões genéticos', 'Harmonização de Relationships', 'Clareza de intenção'],
     },
+    significado_espiritual: 'A frequência de 528 Hz é conhecida como a "Frequência do Amor" e "Frequência dos Milagres". Domingo, ruled by the Sol, amplifica esta frequência de transformação e amor incondicional. É o dia para realizar trabajos de restauración del DNA, limpar patrones de programación y abrirse a milagres. A vibração do sol intensifica la capacidad de irradiar amor y compassion hacia uno mismo y los demás.',
+    praticas_cura: [
+      'Meditação com intenção de amor incondicional',
+      'Exposição solar com visualização de luz dourada',
+      'Afirmações de transformação e milagres',
+      'Trabalho com água solarizada',
+      'Rituais de consagração de talismãs',
+      'Ouvir 528 Hz durante reflexões sobre propósito',
+    ],
   },
-  /** Lua - Água - 417Hz - emotional healing and intuition */
   'Segunda-feira': {
     dia: 'Segunda-feira',
-    frequencia: 417,
-    elemento: 'Água',
+    indice: 1,
+    frequencia: 396,
+    nome_frequencia: 'Frequência da Libertação',
+    elemento: 'água',
+    qualidade: 'cardinal',
+    cor: 'Prata / Branco',
+    direcao: 'Oeste',
+    chakra: '6º Frontal',
+    chakra_numero: 6,
     planeta: 'Lua',
-    propriedades_healing: {
-      fisico: 'Hidrata tecidos, melhora sono e equilibra sistema nervoso',
-      emocional: 'Libera traumas emocionais, acolhe a criança interior e nutre a alma',
-      mental_espiritual: 'Desperta intuição profunda, facilita adaptação e flexibilidade emocional',
-      melhor_epoca: 'Períodos de introspecção, cura emocional, práticas lunares e meditação',
+    orixa: 'Iemanjá',
+    propriedades: {
+      forta: 'Libertação de culpas e medos, transformação emocional, limpeza de patrones negativos, aceitação',
+      palavras_chave: ['libertar', 'limpar', 'fluir', 'aceitar', 'soltar', 'perdoar', 'curar'],
+      aplicacoes_cura: ['Liberação de patrones de culpa', 'Desbloqueio emocional', 'Purificação de memorias', 'Aceitação corporal'],
     },
+    significado_espiritual: 'A frequência de 396 Hz representa a libertação do peso da culpa e dos medos. Segunda-feira, ruled by the Moon, amplifica la capacidade de soltar patrones emocionales restrictivos y liberar memorias que já não servem. É o dia para trabalhar a limpeza emocional, o perdão e a aceitação - permitiendo que las águas lunares lavem las heridas del alma.',
+    praticas_cura: [
+      'Banhos de limpeza energética con hierbas',
+      'Meditação lunar de liberação emocional',
+      'Escrita terapêutica para soltar rancores',
+      'Práticas de perdão a sí mismo e outros',
+      'Trabalho com água lunarizada (água exposta ao luar)',
+      'Ouvir 396 Hz durante ejercicios de respiración emocional',
+    ],
   },
-  /** Marte - Fogo - 741Hz - courage and transformation */
   'Terça-feira': {
     dia: 'Terça-feira',
-    frequencia: 741,
-    elemento: 'Fogo',
+    indice: 2,
+    frequencia: 417,
+    nome_frequencia: 'Frequência da Mudança',
+    elemento: 'fogo',
+    qualidade: 'cardinal',
+    cor: 'Vermelho / Laranja',
+    direcao: 'Sul',
+    chakra: '2º Sacro',
+    chakra_numero: 2,
     planeta: 'Marte',
-    propriedades_healing: {
-      fisico: 'Estimula sistema circulatório, aumenta energia vital e força física',
-      emocional: 'Transforma raiva em ação construtiva, promove coragem e determinação',
-      mental_espiritual: 'Ativa WILL POWER e capacidade de romper barreiras mentais',
-      melhor_epoca: 'Dias de ação decisiva, início de projetos勇敢, rituais de proteção',
+    orixa: 'Ogum',
+    propriedades: {
+      forta: 'Facilitação de mudanças, transmutação de situações, superação de limitaciones, ação transformadora',
+      palavras_chave: ['mudar', 'transmutar', 'romper', 'iniciar', 'transformar', 'atravessar', 'conquistar'],
+      aplicacoes_cura: ['Superación de patroneslimitantes', 'Transmutación de energiainterior', 'Acción decisiva para mudanças'],
     },
+    significado_espiritual: 'A frequência de 417 Hz facilita a quebra de padrões y permite transmutar situações estancadas. Terça-feira, ruled by Mars, amplifica la energía de ação decisive y transformación. É o dia para romper barreras, hacer cambios audaces y transmitar la energía estancada en movimiento creativo. La vibração marciana potencia la capacidad de tomar decisões e iniciar novos ciclos.',
+    praticas_cura: [
+      'Rituais de proteção y banimento de energías negativas',
+      'Meditação de transformação de viejo a nuevo',
+      'Ejercicios de respiración para activar la energía de acción',
+      'Trabalho com fogo para transmutar patrones negativos',
+      'Afirmações de mudança e novo comienzo',
+      'Ouvir 417 Hz durante meditación de transmutación',
+    ],
   },
-  /** Mercúrio - Ar - 852Hz - communication and intellect */
   'Quarta-feira': {
     dia: 'Quarta-feira',
-    frequencia: 852,
-    elemento: 'Ar',
+    indice: 3,
+    frequencia: 528,
+    nome_frequencia: 'Frequência da Integridade',
+    elemento: 'ar',
+    qualidade: 'mutable',
+    cor: 'Verde / Azul',
+    direcao: 'Norte',
+    chakra: '4º Cardíaco',
+    chakra_numero: 4,
     planeta: 'Mercúrio',
-    propriedades_healing: {
-      fisico: 'Melhora funções cerebrais, memória e capacidade de aprendizado',
-      emocional: 'Promove clareza mental, comunicação assertiva e adaptabilidade',
-      mental_espiritual: 'Ativa sabedoria interior, percepção clara e expressão autêntica',
-      melhor_epoca: 'Dias de estudos, negociações, busca pela verdade e comunicação espiritual',
+    orixa: 'Oxumaré',
+    propriedades: {
+      forta: 'Integridad, verdad, comunicación clara, equilíbrio, resolución de conflictos, comprensión',
+      palavras_chave: ['integridade', 'verdade', 'comunicar', 'equilibrar', 'resolver', 'compreender', 'harmonizar'],
+      aplicacoes_cura: ['Resolución de conflictos', 'Equilibrio emocional', 'Comunicación auténtica', 'Armonização de relaciones'],
     },
+    significado_espiritual: 'A frequência de 528 Hz em quarta-feira se manifiesta em su forma de integridad y verdad. Mercúrio, planeta de la comunicación, amplifica la capacidad de expresar verdades profundas y resolver conflictos através da compreensão. É o dia para limpiar la comunicación, equilibrar perspectivas y encontrar harmony em situações complexas.',
+    praticas_cura: [
+      'Meditación de integridad y verdad',
+      'Ejercicios de comunicación auténtica',
+      'Práticas de escuta ativa e compreensão',
+      'Trabalho com a garganta para liberar expressão verdadeira',
+      'Affirmations de equilíbrio e resolução',
+      'Ouvir 528 Hz em meditações de harmonização',
+    ],
   },
-  /** Júpiter - Fogo - 528Hz - expansion and abundance */
   'Quinta-feira': {
     dia: 'Quinta-feira',
-    frequencia: 528,
-    elemento: 'Fogo',
+    indice: 4,
+    frequencia: 639,
+    nome_frequencia: 'Frequência da Harmonia',
+    elemento: 'água',
+    qualidade: 'fixed',
+    cor: 'Azul Claro / Verde',
+    direcao: 'Nordeste',
+    chakra: '5º Laríngeo',
+    chakra_numero: 5,
     planeta: 'Júpiter',
-    propriedades_healing: {
-      fisico: 'Fortalece fígado, sistema digestivo e expande energia vital',
-      emocional: 'Promove otimismo, gratidão e expansão da consciência emocional',
-      mental_espiritual: 'Ativa sabedoria superior, filosófica e busca pelo conhecimento divino',
-      melhor_epoca: 'Dias de expansão de projetos, rituais de fartura e busca espiritual',
+    orixa: 'Oxalá',
+    propriedades: {
+      forta: 'Armonía en relaciones, conexión, expansión espiritual, tolerancia, sabiduría, amor universal',
+      palavras_chave: ['harmonizar', 'conectar', 'expandir', 'tolerar', 'sabedoria', 'amar', 'compartilhar'],
+      aplicacoes_cura: ['Harmonização de relaciones', 'Expansión de consciência', 'Conexão espiritual', 'Tolerância y compasión'],
     },
+    significado_espiritual: 'A frequência de 639 Hz é a frequência da harmonia em relaciones y conexión universal. Quinta-feira, ruled by Júpiter, amplifica la capacidad de expandir la consciencia, cultivar tolerancia y desarrollar sabedoria. É o dia para trabajar en la harmonização de relaciones, superar conflictos y conectar con dimensões superiores de amor.',
+    praticas_cura: [
+      'Meditación de harmonia em relaciones',
+      'Práticas de conexão com seres queridos',
+      'Ejercicios de expansión de consciencia',
+      'Afirmações de sabiduría y tolerancia',
+      'Trabalho com relações familiares y de pareja',
+      'Ouvir 639 Hz em meditações de conexión universal',
+    ],
   },
-  /** Vênus - Terra - 396Hz - love and grounding */
   'Sexta-feira': {
     dia: 'Sexta-feira',
-    frequencia: 396,
-    elemento: 'Terra',
+    indice: 5,
+    frequencia: 741,
+    nome_frequencia: 'Frequência da Purificação',
+    elemento: 'terra',
+    qualidade: 'cardinal',
+    cor: 'Verde / Turquesa',
+    direcao: 'Sudeste',
+    chakra: '5º Laríngeo',
+    chakra_numero: 5,
     planeta: 'Vênus',
-    propriedades_healing: {
-      fisico: 'Fortalece rins, sistema linfático e promove relaxamento profundo',
-      emocional: 'Liberta apegos e medos de perda, promove harmonia em relacionamentos',
-      mental_espiritual: 'Cultiva paz interior, gratidão e conexão com o divino',
-      melhor_epoca: 'Dias de purificação absoluta, alinhamento espiritual e rituais de paz',
+    orixa: 'Iansã',
+    propriedades: {
+      forta: 'Purificación, despertar de la intuición, expresión clara, limpieza energética, protección',
+      palavras_chave: ['purificar', 'despertar', 'expressar', 'proteger', 'intuir', 'liberar', 'iluminar'],
+      aplicacoes_cura: ['Purificación de ambientes', 'Despertar intuitivo', 'Limpieza energética personal', 'Protección espiritual'],
     },
+    significado_espiritual: 'A frequência de 741 Hz ayuda a purifier energética y despertar la intuición. Sexta-feira, ruled by Vênus, amplifica la capacidad de limpiar energías negativas y expresar verdades profundas. É o dia para trabajar en la protección, purificación de espacios e individuos, y el despertar de capacidades intuitivas. La vibração de Vênus potencia la belleza interior y la expresión auténtica.',
+    praticas_cura: [
+      'Rituais de purificación de espacios',
+      'Meditación de despertar intuitivo',
+      'Práticas de protección energética pessoal',
+      'Trabalho com crystals para limpar energías',
+      'Ejercicios de expresión auténtica',
+      'Ouvir 741 Hz em meditações de purificação',
+    ],
   },
-  /** Saturno - Terra - 639Hz - structure and wisdom */
-  Sábado: {
+  'Sábado': {
     dia: 'Sábado',
-    frequencia: 639,
-    elemento: 'Água',
+    indice: 6,
+    frequencia: 852,
+    nome_frequencia: 'Frequência da Espiritualidade',
+    elemento: 'terra',
+    qualidade: 'fixed',
+    cor: 'Roxo / Prata',
+    direcao: 'Sudoeste',
+    chakra: '6º Frontal / 7º Coroa',
+    chakra_numero: 7,
     planeta: 'Saturno',
-    propriedades_healing: {
-      fisico: 'Fortalece ossos, articulações e estrutura física do corpo',
-      emocional: 'Promove inteligência emocional, maturidade e amor incondicional',
-      mental_espiritual: 'Desperta sabedoria profunda, fé e conexão com a eternidade',
-      melhor_epoca: 'Dias de cura emocional, rituais de fertilidade e trabalho com ancestrais',
+    orixa: 'Nanã',
+    propriedades: {
+      forta: 'Despertar espiritual, conexión con la guía interior, terceiro olho, sabedoria antiga, disciplina sagrada',
+      palavras_chave: ['espiritualidade', 'despertar', 'conectar', 'guiar', 'saber', 'disciplina', 'transcender'],
+      aplicacoes_cura: ['Despertar do terceiro olho', 'Conexão espiritual profunda', 'Recebimento de guía', 'Desapego y sabiduría'],
     },
+    significado_espiritual: 'A frequência de 852 Hz despierta la conexión espiritual y facilita el despertar del terceiro olho. Sábado, ruled by Saturno, amplifica la capacidad de recibir guía interior, trascender limitaciones y acessar sabedoria antiga. É o dia para meditación profunda, trabajo con o terceiro olho, y conexión con dimensões espirituais. La vibração saturnina cultiva disciplina sagrada y desapego necessárias para a evolução espiritual.',
+    praticas_cura: [
+      'Meditação de terceiro olho',
+      'Práticas de conexão espiritual profunda',
+      'Ejercicios de recebimento de guía interior',
+      'Trabalho com a coroa para acessar sabedoria superior',
+      'Rituais de desapego e sabedoria',
+      'Ouvir 852 Hz em meditações de trascendencia',
+    ],
   },
 };
 
 /**
- * Freeze the mapping object to prevent modifications
- */
-Object.freeze(DAY_FREQUENCY_MAP);
-Object.values(DAY_FREQUENCY_MAP).forEach((mapping) => Object.freeze(mapping));
-
-/**
- * All 7 Solfeggio frequencies
- */
-export const SOLFEGGIO_FREQUENCIES_DAY = [528, 417, 741, 852, 528, 396, 639] as const;
-
-/**
- * All 7 days of the week
- */
-export const TODOS_DIAS: readonly DiaSemana[] = [
-  'Domingo',
-  'Segunda-feira',
-  'Terça-feira',
-  'Quarta-feira',
-  'Quinta-feira',
-  'Sexta-feira',
-  'Sábado',
-];
-
-/**
- * Normalizes day name for consistent lookup.
- * Handles variations like accents, case, hyphens, and common alternatives.
- */
-function normalizarDia(dia: string): DiaSemana | null {
-  if (!dia || typeof dia !== 'string') return null;
-
-  const normalized = dia
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Remove combining diacritics
-    .replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]/g, '') // Remove superscripts
-    .replace(/[-–— ]/g, '') // Remove hyphens, dashes, spaces
-    .toLowerCase()
-    .trim();
-
-  const dayMap: Record<string, DiaSemana> = {
-    domingo: 'Domingo',
-    segundafeira: 'Segunda-feira',
-    segunda: 'Segunda-feira',
-    tercafeira: 'Terça-feira',
-    terca: 'Terça-feira',
-    quartafeira: 'Quarta-feira',
-    quarta: 'Quarta-feira',
-    quintafeira: 'Quinta-feira',
-    quinta: 'Quinta-feira',
-    sextafeira: 'Sexta-feira',
-    sexta: 'Sexta-feira',
-    sabado: 'Sábado',
-    // Common variations
-    dom: 'Domingo',
-    seg: 'Segunda-feira',
-    ter: 'Terça-feira',
-    qua: 'Quarta-feira',
-    qui: 'Quinta-feira',
-    sex: 'Sexta-feira',
-    sab: 'Sábado',
-    monday: 'Segunda-feira',
-    tuesday: 'Terça-feira',
-    wednesday: 'Quarta-feira',
-    thursday: 'Quinta-feira',
-    friday: 'Sexta-feira',
-    saturday: 'Sábado',
-    sunday: 'Domingo',
-  };
-  return dayMap[normalized] ?? null;
-}
-
-/**
- * Get the day-frequency mapping for a given day name.
+ * Get frequency correlation for a specific day of the week
  * @param dia - Day name (e.g., 'Domingo', 'Segunda-feira')
- * @returns DayFrequencyMapping or null if not found
+ * @returns DayFrequency mapping or undefined if day not found
  */
-export function getDayFrequency(dia: string): DayFrequencyMapping | null {
-  const normalized = normalizarDia(dia);
-  if (!normalized) return null;
-  return DAY_FREQUENCY_MAP[normalized] ?? null;
+export function getDayFrequency(dia: string): DayFrequency | undefined {
+  return DAY_FREQUENCY_MAP[dia];
 }
 
 /**
- * Get the day associated with a given frequency.
- * @param frequencia - Solfeggio frequency in Hz
- * @returns DiaSemana or null if not found
+ * Get frequency for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Frequency in Hz or undefined if day not found
  */
-export function getFrequencyDay(frequencia: number): DiaSemana | null {
-  for (const [day, mapping] of Object.entries(DAY_FREQUENCY_MAP)) {
-    if (mapping.frequencia === frequencia) {
-      return day as DiaSemana;
-    }
-  }
-  return null;
+export function getFrequencyDay(dia: string): number | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.frequencia;
 }
 
 /**
- * Get the frequency for a given day name.
- * @param dia - Day name
- * @returns Frequency in Hz or null if not found
+ * Get all days of the week
+ * @returns Array of day names
  */
-export function getFrequenciaFromDia(dia: string): number | null {
-  return getDayFrequency(dia)?.frequencia ?? null;
+export function getAllDays(): string[] {
+  return Object.keys(DAY_FREQUENCY_MAP);
 }
 
 /**
- * Get all day-frequency mappings.
- * @returns Array of all correlation mappings
+ * Get days associated with a specific frequency
+ * @param frequencia - Frequency in Hz
+ * @returns Array of day names
  */
-export function getAllDayFrequencies(): DayFrequencyMapping[] {
+export function getDaysByFrequency(frequencia: number): string[] {
+  return Object.entries(DAY_FREQUENCY_MAP)
+    .filter(([_, day]) => day.frequencia === frequencia)
+    .map(([dia, _]) => dia);
+}
+
+/**
+ * Get all day-frequency correlations
+ * @returns Array of all DayFrequency mappings
+ */
+export function getAllDayFrequencies(): DayFrequency[] {
   return Object.values(DAY_FREQUENCY_MAP);
 }
 
 /**
- * Get the element for a given day.
- * @param dia - Day name
- * @returns Elemento or null if not found
+ * Get frequency name for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Frequency name or undefined if day not found
  */
-export function getElementFromDia(dia: string): Elemento | null {
-  return getDayFrequency(dia)?.elemento ?? null;
+export function getFrequencyName(dia: string): string | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.nome_frequencia;
 }
 
 /**
- * Get the healing properties for a given day.
- * @param dia - Day name
- * @returns Healing properties or null if not found
+ * Get element for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Element or undefined if day not found
  */
-export function getHealingFromDia(dia: string): DayFrequencyMapping['propriedades_healing'] | null {
-  return getDayFrequency(dia)?.propriedades_healing ?? null;
+export function getElementByDay(dia: string): Element | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.elemento;
 }
 
 /**
- * Get all days associated with a specific frequency.
- * @param frequencia - Solfeggio frequency in Hz
- * @returns Array of DayFrequencyMapping or empty array if not found
+ * Get chakra for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Chakra or undefined if day not found
  */
-export function getDaysByFrequencia(frequencia: number): DayFrequencyMapping[] {
-  return Object.values(DAY_FREQUENCY_MAP).filter((m) => m.frequencia === frequencia);
+export function getChakraByDay(dia: string): Chakra | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.chakra;
 }
 
 /**
- * Get the best epoch/time for healing practice on a given day.
- * @param dia - Day name
- * @returns Best epoch string or null if not found
+ * Get chakra number for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Chakra number or undefined if day not found
  */
-export function getBestEpochFromDia(dia: string): string | null {
-  return getDayFrequency(dia)?.propriedades_healing.melhor_epoca ?? null;
+export function getChakraNumberByDay(dia: string): number | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.chakra_numero;
 }
 
 /**
- * Get all days mapped to a specific element.
- * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra')
- * @returns Array of DayFrequencyMapping
+ * Get spiritual meaning for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Spiritual meaning or undefined if day not found
  */
-export function getDaysByElement(elemento: string): DayFrequencyMapping[] {
-  const normalizedElement = elemento.charAt(0).toUpperCase() + elemento.slice(1).toLowerCase();
-  return Object.values(DAY_FREQUENCY_MAP).filter((m) => m.elemento === normalizedElement);
+export function getDaySpiritualMeaning(dia: string): string | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.significado_espiritual;
 }
 
 /**
- * Get the planet for a given day.
- * @param dia - Day name
- * @returns Planet name or null if not found
+ * Get healing properties for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Healing properties or undefined if day not found
  */
-export function getPlanetFromDia(dia: string): string | null {
-  return getDayFrequency(dia)?.planeta ?? null;
+export function getHealingProperties(dia: string): DayFrequency['propriedades'] | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.propriedades;
 }
 
 /**
- * Get all days of the week.
- * @returns Array of day names
+ * Get color for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Color or undefined if day not found
  */
-export function getAllDays(): DiaSemana[] {
-  return Object.values(DAY_FREQUENCY_MAP).map((m) => m.dia);
+export function getColorByDay(dia: string): string | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.cor;
 }
 
 /**
- * Get day-frequency mapping by day name (case-insensitive).
- * @param dia - Day name
- * @returns DayFrequencyMapping or null if not found
+ * Get Orixá for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Orixá or undefined if day not found
  */
-export function getDayFrequencyByName(dia: string): DayFrequencyMapping | null {
-  return getDayFrequency(dia);
+export function getOrixaByDay(dia: string): string | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.orixa;
 }
 
 /**
- * Default export for convenience
+ * Get planet for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Planet or undefined if day not found
  */
+export function getPlanetByDay(dia: string): string | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.planeta;
+}
+
+/**
+ * Get healing practices for a specific day
+ * @param dia - Day name in Portuguese
+ * @returns Array of healing practices or undefined if day not found
+ */
+export function getDayPractices(dia: string): string[] | undefined {
+  return DAY_FREQUENCY_MAP[dia]?.praticas_cura;
+}
+
+/**
+ * Get all unique frequencies
+ * @returns Array of unique frequencies in Hz
+ */
+export function getAllFrequencies(): number[] {
+  const frequencies = new Set<number>();
+  Object.values(DAY_FREQUENCY_MAP).forEach((day) => {
+    frequencies.add(day.frequencia);
+  });
+  return Array.from(frequencies).sort((a, b) => a - b);
+}
+
+/**
+ * Get day by frequency
+ * @param frequencia - Frequency in Hz
+ * @returns Day name or undefined if frequency not found
+ */
+export function getDayByFrequency(frequencia: number): string | undefined {
+  const entry = Object.entries(DAY_FREQUENCY_MAP).find(([_, day]) => day.frequencia === frequencia);
+  return entry?.[0];
+}
+
 export default {
   getDayFrequency,
   getFrequencyDay,
-  getAllDayFrequencies,
-  getFrequenciaFromDia,
-  getElementFromDia,
-  getHealingFromDia,
-  getDaysByFrequencia,
-  getBestEpochFromDia,
-  getDaysByElement,
-  getPlanetFromDia,
   getAllDays,
-  getDayFrequencyByName,
-  DAY_FREQUENCY_MAP,
-  SOLFEGGIO_FREQUENCIES_DAY,
-  TODOS_DIAS,
+  getDaysByFrequency,
+  getAllDayFrequencies,
+  getFrequencyName,
+  getElementByDay,
+  getChakraByDay,
+  getChakraNumberByDay,
+  getDaySpiritualMeaning,
+  getHealingProperties,
+  getColorByDay,
+  getOrixaByDay,
+  getPlanetByDay,
+  getDayPractices,
+  getAllFrequencies,
+  getDayByFrequency,
 };

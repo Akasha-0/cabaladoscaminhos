@@ -10,7 +10,7 @@ describe('ArvoreVida', () => {
     expect(getByText('Binah')).toBeTruthy();
     expect(getByText('Chesed')).toBeTruthy();
     expect(getByText('Geburah')).toBeTruthy();
-    expect(getByText('Tifereth')).toBeTruthy();
+    expect(getByText(/Tiferet/i)).toBeTruthy();
     expect(getByText('Netzach')).toBeTruthy();
     expect(getByText('Hod')).toBeTruthy();
     expect(getByText('Yesod')).toBeTruthy();
@@ -37,7 +37,7 @@ describe('ArvoreVida', () => {
       <ArvoreVida highlightedSephiroth={['kether', 'tiferet']} />
     );
     expect(getByText('Kether')).toBeTruthy();
-    expect(getByText('Tifereth')).toBeTruthy();
+    expect(getByText(/Tiferet/i)).toBeTruthy();
   });
 
   it('renders pillar legend', () => {

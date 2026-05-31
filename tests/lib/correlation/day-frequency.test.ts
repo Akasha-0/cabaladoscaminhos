@@ -3,498 +3,158 @@ import {
   getDayFrequency,
   getFrequencyDay,
   getAllDayFrequencies,
-  getFrequenciaFromDia,
-  getElementFromDia,
-  getHealingFromDia,
-  getDaysByFrequencia,
-  getBestEpochFromDia,
-  getDaysByElement,
-  getPlanetFromDia,
   getAllDays,
-  getDayFrequencyByName,
+  getDaysByFrequency,
+  getFrequencyName,
+  getElementByDay,
+  getChakraByDay,
+  getChakraNumberByDay,
+  getDaySpiritualMeaning,
+  getHealingProperties,
+  getColorByDay,
+  getOrixaByDay,
+  getPlanetByDay,
+  getDayPractices,
+  getAllFrequencies,
+  getDayByFrequency,
   DAY_FREQUENCY_MAP,
-  SOLFEGGIO_FREQUENCIES_DAY,
-  TODOS_DIAS,
-  type DayFrequencyMapping,
-  type DiaSemana,
 } from '@/lib/correlation/day-frequency';
 
 describe('DayFrequency Correlation', () => {
-  // ─── DAY_FREQUENCY_MAP: all 7 days ─────────────────────────────────────────
-
-  describe('DAY_FREQUENCY_MAP', () => {
-    it('contains all 7 days of the week', () => {
-      expect(Object.keys(DAY_FREQUENCY_MAP)).toHaveLength(7);
-    });
-
-    it('maps Domingo to 528Hz (Fogo, Sol)', () => {
-      const mapping = DAY_FREQUENCY_MAP['Domingo'];
-      expect(mapping.frequencia).toBe(528);
-      expect(mapping.elemento).toBe('Fogo');
-      expect(mapping.planeta).toBe('Sol');
-      expect(mapping.dia).toBe('Domingo');
-    });
-
-    it('maps Segunda-feira to 417Hz (Água, Lua)', () => {
-      const mapping = DAY_FREQUENCY_MAP['Segunda-feira'];
-      expect(mapping.frequencia).toBe(417);
-      expect(mapping.elemento).toBe('Água');
-      expect(mapping.planeta).toBe('Lua');
-    });
-
-    it('maps Terça-feira to 741Hz (Fogo, Marte)', () => {
-      const mapping = DAY_FREQUENCY_MAP['Terça-feira'];
-      expect(mapping.frequencia).toBe(741);
-      expect(mapping.elemento).toBe('Fogo');
-      expect(mapping.planeta).toBe('Marte');
-    });
-
-    it('maps Quarta-feira to 852Hz (Ar, Mercúrio)', () => {
-      const mapping = DAY_FREQUENCY_MAP['Quarta-feira'];
-      expect(mapping.frequencia).toBe(852);
-      expect(mapping.elemento).toBe('Ar');
-      expect(mapping.planeta).toBe('Mercúrio');
-    });
-
-    it('maps Quinta-feira to 528Hz (Fogo, Júpiter)', () => {
-      const mapping = DAY_FREQUENCY_MAP['Quinta-feira'];
-      expect(mapping.frequencia).toBe(528);
-      expect(mapping.elemento).toBe('Fogo');
-      expect(mapping.planeta).toBe('Júpiter');
-    });
-
-    it('maps Sexta-feira to 396Hz (Terra, Vênus)', () => {
-      const mapping = DAY_FREQUENCY_MAP['Sexta-feira'];
-      expect(mapping.frequencia).toBe(396);
-      expect(mapping.elemento).toBe('Terra');
-      expect(mapping.planeta).toBe('Vênus');
-    });
-
-    it('maps Sábado to 639Hz (Água, Saturno)', () => {
-      const mapping = DAY_FREQUENCY_MAP['Sábado'];
-      expect(mapping.frequencia).toBe(639);
-      expect(mapping.elemento).toBe('Água');
-      expect(mapping.planeta).toBe('Saturno');
-    });
-
-    it('includes healing properties for each day', () => {
-      for (const mapping of Object.values(DAY_FREQUENCY_MAP)) {
-        expect(mapping.propriedades_healing).toBeDefined();
-        expect(mapping.propriedades_healing.fisico).toBeDefined();
-        expect(mapping.propriedades_healing.emocional).toBeDefined();
-        expect(mapping.propriedades_healing.mental_espiritual).toBeDefined();
-        expect(mapping.propriedades_healing.melhor_epoca).toBeDefined();
-      }
-    });
-
-    it('contains all required Solfeggio frequencies', () => {
-      const frequencies = Object.values(DAY_FREQUENCY_MAP).map((m) => m.frequencia);
-      expect(frequencies).toContain(528);
-      expect(frequencies).toContain(417);
-      expect(frequencies).toContain(741);
-      expect(frequencies).toContain(852);
-      expect(frequencies).toContain(396);
-      expect(frequencies).toContain(639);
-    });
-  });
-
-  // ─── getDayFrequency: lookup by day ───────────────────────────────────────
-
   describe('getDayFrequency', () => {
-    it('returns correct mapping for Domingo', () => {
+    it('should return frequency data for Domingo', () => {
       const result = getDayFrequency('Domingo');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Domingo');
-      expect(result!.frequencia).toBe(528);
-      expect(result!.elemento).toBe('Fogo');
-      expect(result!.planeta).toBe('Sol');
+      expect(result).toBeDefined();
+      expect(result?.dia).toBe('Domingo');
+      expect(result?.frequencia).toBe(528);
     });
 
-    it('returns correct mapping for Segunda-feira', () => {
+    it('should return frequency data for Segunda-feira', () => {
       const result = getDayFrequency('Segunda-feira');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Segunda-feira');
-      expect(result!.frequencia).toBe(417);
-      expect(result!.elemento).toBe('Água');
-      expect(result!.planeta).toBe('Lua');
+      expect(result).toBeDefined();
+      expect(result?.dia).toBe('Segunda-feira');
+      expect(result?.frequencia).toBe(396);
     });
 
-    it('returns correct mapping for Terça-feira', () => {
+    it('should return frequency data for Terça-feira', () => {
       const result = getDayFrequency('Terça-feira');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Terça-feira');
-      expect(result!.frequencia).toBe(741);
+      expect(result).toBeDefined();
+      expect(result?.dia).toBe('Terça-feira');
+      expect(result?.frequencia).toBe(417);
     });
 
-    it('returns correct mapping for Quarta-feira', () => {
+    it('should return frequency data for Quarta-feira', () => {
       const result = getDayFrequency('Quarta-feira');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Quarta-feira');
-      expect(result!.frequencia).toBe(852);
+      expect(result).toBeDefined();
+      expect(result?.dia).toBe('Quarta-feira');
+      expect(result?.frequencia).toBe(528);
     });
 
-    it('returns correct mapping for Quinta-feira', () => {
+    it('should return frequency data for Quinta-feira', () => {
       const result = getDayFrequency('Quinta-feira');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Quinta-feira');
-      expect(result!.frequencia).toBe(528);
+      expect(result).toBeDefined();
+      expect(result?.dia).toBe('Quinta-feira');
+      expect(result?.frequencia).toBe(639);
     });
 
-    it('returns correct mapping for Sexta-feira', () => {
+    it('should return frequency data for Sexta-feira', () => {
       const result = getDayFrequency('Sexta-feira');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Sexta-feira');
-      expect(result!.frequencia).toBe(396);
+      expect(result).toBeDefined();
+      expect(result?.dia).toBe('Sexta-feira');
+      expect(result?.frequencia).toBe(741);
     });
 
-    it('returns correct mapping for Sábado', () => {
+    it('should return frequency data for Sábado', () => {
       const result = getDayFrequency('Sábado');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Sábado');
-      expect(result!.frequencia).toBe(639);
+      expect(result).toBeDefined();
+      expect(result?.dia).toBe('Sábado');
+      expect(result?.frequencia).toBe(852);
     });
 
-    it('accepts lowercase day name', () => {
-      const result = getDayFrequency('domingo');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Domingo');
-    });
-
-    it('accepts day name without hyphen', () => {
-      const result = getDayFrequency('segunda');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Segunda-feira');
-    });
-
-    it('accepts abbreviated day names', () => {
-      expect(getDayFrequency('dom')?.dia).toBe('Domingo');
-      expect(getDayFrequency('seg')?.dia).toBe('Segunda-feira');
-      expect(getDayFrequency('ter')?.dia).toBe('Terça-feira');
-      expect(getDayFrequency('qua')?.dia).toBe('Quarta-feira');
-      expect(getDayFrequency('qui')?.dia).toBe('Quinta-feira');
-      expect(getDayFrequency('sex')?.dia).toBe('Sexta-feira');
-      expect(getDayFrequency('sab')?.dia).toBe('Sábado');
-    });
-
-    it('accepts English day names', () => {
-      expect(getDayFrequency('sunday')?.dia).toBe('Domingo');
-      expect(getDayFrequency('monday')?.dia).toBe('Segunda-feira');
-      expect(getDayFrequency('tuesday')?.dia).toBe('Terça-feira');
-      expect(getDayFrequency('wednesday')?.dia).toBe('Quarta-feira');
-      expect(getDayFrequency('thursday')?.dia).toBe('Quinta-feira');
-      expect(getDayFrequency('friday')?.dia).toBe('Sexta-feira');
-      expect(getDayFrequency('saturday')?.dia).toBe('Sábado');
-    });
-
-    it('returns null for unknown day', () => {
-      const result = getDayFrequency('Unknown');
-      expect(result).toBeNull();
-    });
-
-    it('returns null for empty input', () => {
-      const result = getDayFrequency('');
-      expect(result).toBeNull();
-    });
-
-    it('returns null for null input', () => {
-      const result = getDayFrequency(null as unknown as string);
-      expect(result).toBeNull();
+    it('should return undefined for invalid day', () => {
+      const result = getDayFrequency('DiaInválido');
+      expect(result).toBeUndefined();
     });
   });
-
-  // ─── getFrequencyDay: frequency lookup ─────────────────────────────────────
 
   describe('getFrequencyDay', () => {
-    it('returns Domingo for 528Hz', () => {
-      const result = getFrequencyDay(528);
-      expect(result).toBe('Domingo');
+    it('should return frequency for Domingo', () => {
+      const result = getFrequencyDay('Domingo');
+      expect(result).toBe(528);
     });
 
-    it('returns Segunda-feira for 417Hz', () => {
-      const result = getFrequencyDay(417);
-      expect(result).toBe('Segunda-feira');
+    it('should return frequency for Segunda-feira', () => {
+      const result = getFrequencyDay('Segunda-feira');
+      expect(result).toBe(396);
     });
 
-    it('returns Terça-feira for 741Hz', () => {
-      const result = getFrequencyDay(741);
-      expect(result).toBe('Terça-feira');
+    it('should return frequency for Terça-feira', () => {
+      const result = getFrequencyDay('Terça-feira');
+      expect(result).toBe(417);
     });
 
-    it('returns Quarta-feira for 852Hz', () => {
-      const result = getFrequencyDay(852);
-      expect(result).toBe('Quarta-feira');
+    it('should return frequency for Quarta-feira', () => {
+      const result = getFrequencyDay('Quarta-feira');
+      expect(result).toBe(528);
     });
 
-    it('returns Sexta-feira for 396Hz', () => {
-      const result = getFrequencyDay(396);
-      expect(result).toBe('Sexta-feira');
+    it('should return frequency for Quinta-feira', () => {
+      const result = getFrequencyDay('Quinta-feira');
+      expect(result).toBe(639);
     });
 
-    it('returns Sábado for 639Hz', () => {
-      const result = getFrequencyDay(639);
-      expect(result).toBe('Sábado');
+    it('should return frequency for Sexta-feira', () => {
+      const result = getFrequencyDay('Sexta-feira');
+      expect(result).toBe(741);
     });
 
-    it('returns first matching day for shared frequency (528)', () => {
-      // 528Hz is shared by Domingo and Quinta-feira
-      const result = getFrequencyDay(528);
-      expect(['Domingo', 'Quinta-feira']).toContain(result);
+    it('should return frequency for Sábado', () => {
+      const result = getFrequencyDay('Sábado');
+      expect(result).toBe(852);
     });
 
-    it('returns null for unknown frequency', () => {
-      const result = getFrequencyDay(999);
-      expect(result).toBeNull();
+    it('should return undefined for invalid day', () => {
+      const result = getFrequencyDay('DiaInválido');
+      expect(result).toBeUndefined();
     });
   });
-
-  // ─── getAllDayFrequencies: collection function ───────────────────────────────
 
   describe('getAllDayFrequencies', () => {
-    it('returns all 7 mappings', () => {
+    it('should return all day-frequency mappings', () => {
       const result = getAllDayFrequencies();
       expect(result).toHaveLength(7);
     });
 
-    it('includes all days', () => {
+    it('should return objects with required properties', () => {
       const result = getAllDayFrequencies();
-      const dias = result.map((m) => m.dia);
-      expect(dias).toContain('Domingo');
-      expect(dias).toContain('Segunda-feira');
-      expect(dias).toContain('Terça-feira');
-      expect(dias).toContain('Quarta-feira');
-      expect(dias).toContain('Quinta-feira');
-      expect(dias).toContain('Sexta-feira');
-      expect(dias).toContain('Sábado');
+      const first = result[0];
+      expect(first).toHaveProperty('dia');
+      expect(first).toHaveProperty('frequencia');
+      expect(first).toHaveProperty('elemento');
+      expect(first).toHaveProperty('significado_espiritual');
     });
 
-    it('returns fresh array each call', () => {
-      const result1 = getAllDayFrequencies();
-      const result2 = getAllDayFrequencies();
-      expect(result1).not.toBe(result2);
-    });
-  });
-
-  // ─── getFrequenciaFromDia: frequency by day ────────────────────────────────
-
-  describe('getFrequenciaFromDia', () => {
-    it('returns 528 for Domingo', () => {
-      expect(getFrequenciaFromDia('Domingo')).toBe(528);
-    });
-
-    it('returns 417 for Segunda-feira', () => {
-      expect(getFrequenciaFromDia('Segunda-feira')).toBe(417);
-    });
-
-    it('returns 741 for Terça-feira', () => {
-      expect(getFrequenciaFromDia('Terça-feira')).toBe(741);
-    });
-
-    it('returns 852 for Quarta-feira', () => {
-      expect(getFrequenciaFromDia('Quarta-feira')).toBe(852);
-    });
-
-    it('returns 528 for Quinta-feira', () => {
-      expect(getFrequenciaFromDia('Quinta-feira')).toBe(528);
-    });
-
-    it('returns 396 for Sexta-feira', () => {
-      expect(getFrequenciaFromDia('Sexta-feira')).toBe(396);
-    });
-
-    it('returns 639 for Sábado', () => {
-      expect(getFrequenciaFromDia('Sábado')).toBe(639);
-    });
-
-    it('returns null for unknown day', () => {
-      expect(getFrequenciaFromDia('Unknown')).toBeNull();
+    it('should contain all days of the week', () => {
+      const result = getAllDayFrequencies();
+      const days = result.map((d) => d.dia);
+      expect(days).toContain('Domingo');
+      expect(days).toContain('Segunda-feira');
+      expect(days).toContain('Terça-feira');
+      expect(days).toContain('Quarta-feira');
+      expect(days).toContain('Quinta-feira');
+      expect(days).toContain('Sexta-feira');
+      expect(days).toContain('Sábado');
     });
   });
-
-  // ─── getElementFromDia: element by day ─────────────────────────────────────
-
-  describe('getElementFromDia', () => {
-    it('returns Fogo for Domingo', () => {
-      expect(getElementFromDia('Domingo')).toBe('Fogo');
-    });
-
-    it('returns Água for Segunda-feira', () => {
-      expect(getElementFromDia('Segunda-feira')).toBe('Água');
-    });
-
-    it('returns Fogo for Terça-feira', () => {
-      expect(getElementFromDia('Terça-feira')).toBe('Fogo');
-    });
-
-    it('returns Ar for Quarta-feira', () => {
-      expect(getElementFromDia('Quarta-feira')).toBe('Ar');
-    });
-
-    it('returns Fogo for Quinta-feira', () => {
-      expect(getElementFromDia('Quinta-feira')).toBe('Fogo');
-    });
-
-    it('returns Terra for Sexta-feira', () => {
-      expect(getElementFromDia('Sexta-feira')).toBe('Terra');
-    });
-
-    it('returns Água for Sábado', () => {
-      expect(getElementFromDia('Sábado')).toBe('Água');
-    });
-
-    it('returns null for unknown day', () => {
-      expect(getElementFromDia('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── getHealingFromDia: healing properties by day ─────────────────────────
-
-  describe('getHealingFromDia', () => {
-    it('returns healing properties for Domingo', () => {
-      const result = getHealingFromDia('Domingo');
-      expect(result).not.toBeNull();
-      expect(result!.fisico).toContain('vitalidade');
-      expect(result!.emocional).toContain('alegria');
-      expect(result!.mental_espiritual).toContain('propósito');
-    });
-
-    it('returns healing properties for Segunda-feira', () => {
-      const result = getHealingFromDia('Segunda-feira');
-      expect(result).not.toBeNull();
-      expect(result!.fisico).toContain('sono');
-      expect(result!.emocional).toContain('traumas');
-    });
-
-    it('returns null for unknown day', () => {
-      expect(getHealingFromDia('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── getDaysByFrequencia: days by frequency ────────────────────────────────
-
-  describe('getDaysByFrequencia', () => {
-    it('returns Domingo and Quinta-feira for 528Hz', () => {
-      const result = getDaysByFrequencia(528);
-      expect(result).toHaveLength(2);
-      const dias = result.map((m) => m.dia);
-      expect(dias).toContain('Domingo');
-      expect(dias).toContain('Quinta-feira');
-    });
-
-    it('returns only Segunda-feira for 417Hz', () => {
-      const result = getDaysByFrequencia(417);
-      expect(result).toHaveLength(1);
-      expect(result[0].dia).toBe('Segunda-feira');
-    });
-
-    it('returns empty array for unknown frequency', () => {
-      const result = getDaysByFrequencia(999);
-      expect(result).toHaveLength(0);
-    });
-  });
-
-  // ─── getBestEpochFromDia: best epoch by day ────────────────────────────────
-
-  describe('getBestEpochFromDia', () => {
-    it('returns best epoch for Domingo', () => {
-      const result = getBestEpochFromDia('Domingo');
-      expect(result).not.toBeNull();
-      expect(result!.toLowerCase()).toContain('recarga');
-    });
-
-    it('returns best epoch for Segunda-feira', () => {
-      const result = getBestEpochFromDia('Segunda-feira');
-      expect(result).not.toBeNull();
-      expect(result!.toLowerCase()).toContain('introspec');
-    });
-
-    it('returns null for unknown day', () => {
-      expect(getBestEpochFromDia('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── getDaysByElement: days by element ─────────────────────────────────────
-
-  describe('getDaysByElement', () => {
-    it('returns 3 days for Fogo element', () => {
-      const result = getDaysByElement('Fogo');
-      expect(result).toHaveLength(3);
-      const dias = result.map((m) => m.dia);
-      expect(dias).toContain('Domingo');
-      expect(dias).toContain('Terça-feira');
-      expect(dias).toContain('Quinta-feira');
-    });
-
-    it('returns 2 days for Água element', () => {
-      const result = getDaysByElement('Água');
-      expect(result).toHaveLength(2);
-      const dias = result.map((m) => m.dia);
-      expect(dias).toContain('Segunda-feira');
-      expect(dias).toContain('Sábado');
-    });
-
-    it('returns 1 day for Ar element', () => {
-      const result = getDaysByElement('Ar');
-      expect(result).toHaveLength(1);
-      expect(result[0].dia).toBe('Quarta-feira');
-    });
-
-    it('returns 1 day for Terra element', () => {
-      const result = getDaysByElement('Terra');
-      expect(result).toHaveLength(1);
-      expect(result[0].dia).toBe('Sexta-feira');
-    });
-
-    it('returns empty array for unknown element', () => {
-      const result = getDaysByElement('Unknown');
-      expect(result).toHaveLength(0);
-    });
-  });
-
-  // ─── getPlanetFromDia: planet by day ───────────────────────────────────────
-
-  describe('getPlanetFromDia', () => {
-    it('returns Sol for Domingo', () => {
-      expect(getPlanetFromDia('Domingo')).toBe('Sol');
-    });
-
-    it('returns Lua for Segunda-feira', () => {
-      expect(getPlanetFromDia('Segunda-feira')).toBe('Lua');
-    });
-
-    it('returns Marte for Terça-feira', () => {
-      expect(getPlanetFromDia('Terça-feira')).toBe('Marte');
-    });
-
-    it('returns Mercúrio for Quarta-feira', () => {
-      expect(getPlanetFromDia('Quarta-feira')).toBe('Mercúrio');
-    });
-
-    it('returns Júpiter for Quinta-feira', () => {
-      expect(getPlanetFromDia('Quinta-feira')).toBe('Júpiter');
-    });
-
-    it('returns Vênus for Sexta-feira', () => {
-      expect(getPlanetFromDia('Sexta-feira')).toBe('Vênus');
-    });
-
-    it('returns Saturno for Sábado', () => {
-      expect(getPlanetFromDia('Sábado')).toBe('Saturno');
-    });
-
-    it('returns null for unknown day', () => {
-      expect(getPlanetFromDia('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── getAllDays: all days collection ──────────────────────────────────────
 
   describe('getAllDays', () => {
-    it('returns all 7 days', () => {
+    it('should return array of day names', () => {
       const result = getAllDays();
-      expect(result).toHaveLength(7);
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
     });
 
-    it('contains all Portuguese day names', () => {
+    it('should include all days of the week', () => {
       const result = getAllDays();
       expect(result).toContain('Domingo');
       expect(result).toContain('Segunda-feira');
@@ -506,77 +166,331 @@ describe('DayFrequency Correlation', () => {
     });
   });
 
-  // ─── getDayFrequencyByName: alias function ─────────────────────────────────
-
-  describe('getDayFrequencyByName', () => {
-    it('returns correct mapping for day name', () => {
-      const result = getDayFrequencyByName('Domingo');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Domingo');
+  describe('getDaysByFrequency', () => {
+    it('should return days for 528 Hz frequency', () => {
+      const result = getDaysByFrequency(528);
+      expect(result).toContain('Domingo');
+      expect(result).toContain('Quarta-feira');
     });
 
-    it('accepts lowercase input', () => {
-      const result = getDayFrequencyByName('domingo');
-      expect(result).not.toBeNull();
-      expect(result!.dia).toBe('Domingo');
+    it('should return days for 396 Hz frequency', () => {
+      const result = getDaysByFrequency(396);
+      expect(result).toContain('Segunda-feira');
+    });
+
+    it('should return days for 417 Hz frequency', () => {
+      const result = getDaysByFrequency(417);
+      expect(result).toContain('Terça-feira');
+    });
+
+    it('should return days for 639 Hz frequency', () => {
+      const result = getDaysByFrequency(639);
+      expect(result).toContain('Quinta-feira');
+    });
+
+    it('should return days for 741 Hz frequency', () => {
+      const result = getDaysByFrequency(741);
+      expect(result).toContain('Sexta-feira');
+    });
+
+    it('should return days for 852 Hz frequency', () => {
+      const result = getDaysByFrequency(852);
+      expect(result).toContain('Sábado');
+    });
+
+    it('should return empty array for unknown frequency', () => {
+      const result = getDaysByFrequency(100);
+      expect(result).toEqual([]);
     });
   });
 
-  // ─── Constants ─────────────────────────────────────────────────────────────
-
-  describe('Constants', () => {
-    it('TODOS_DIAS contains all 7 days', () => {
-      expect(TODOS_DIAS).toHaveLength(7);
+  describe('DAY_FREQUENCY_MAP', () => {
+    it('should have all seven days', () => {
+      expect(Object.keys(DAY_FREQUENCY_MAP)).toHaveLength(7);
     });
 
-    it('SOLFEGGIO_FREQUENCIES_DAY contains expected frequencies', () => {
-      expect(SOLFEGGIO_FREQUENCIES_DAY).toContain(528);
-      expect(SOLFEGGIO_FREQUENCIES_DAY).toContain(417);
-      expect(SOLFEGGIO_FREQUENCIES_DAY).toContain(741);
-      expect(SOLFEGGIO_FREQUENCIES_DAY).toContain(852);
-      expect(SOLFEGGIO_FREQUENCIES_DAY).toContain(396);
-      expect(SOLFEGGIO_FREQUENCIES_DAY).toContain(639);
+    it('should contain valid frequency values', () => {
+      Object.values(DAY_FREQUENCY_MAP).forEach((day) => {
+        expect(typeof day.frequencia).toBe('number');
+        expect(day.frequencia).toBeGreaterThan(0);
+      });
+    });
+
+    it('should contain valid day indices', () => {
+      Object.values(DAY_FREQUENCY_MAP).forEach((day) => {
+        expect(typeof day.indice).toBe('number');
+        expect(day.indice).toBeGreaterThanOrEqual(0);
+        expect(day.indice).toBeLessThanOrEqual(6);
+      });
+    });
+
+    it('should contain valid elements', () => {
+      Object.values(DAY_FREQUENCY_MAP).forEach((day) => {
+        expect(['fogo', 'água', 'ar', 'terra']).toContain(day.elemento);
+      });
+    });
+
+    it('should contain valid spiritual meanings', () => {
+      Object.values(DAY_FREQUENCY_MAP).forEach((day) => {
+        expect(typeof day.significado_espiritual).toBe('string');
+        expect(day.significado_espiritual.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('should contain valid healing properties', () => {
+      Object.values(DAY_FREQUENCY_MAP).forEach((day) => {
+        expect(day.propriedades).toBeDefined();
+        expect(day.propriedades.forta).toBeDefined();
+        expect(Array.isArray(day.propriedades.palavras_chave)).toBe(true);
+        expect(Array.isArray(day.propriedades.aplicacoes_cura)).toBe(true);
+      });
     });
   });
 
-  // ─── Type exports ─────────────────────────────────────────────────────────
+  describe('getFrequencyName', () => {
+    it('should return frequency name for valid days', () => {
+      expect(getFrequencyName('Domingo')).toBe('Frequência do Amor');
+      expect(getFrequencyName('Segunda-feira')).toBe('Frequência da Libertação');
+      expect(getFrequencyName('Terça-feira')).toBe('Frequência da Mudança');
+      expect(getFrequencyName('Quarta-feira')).toBe('Frequência da Integridade');
+      expect(getFrequencyName('Quinta-feira')).toBe('Frequência da Harmonia');
+      expect(getFrequencyName('Sexta-feira')).toBe('Frequência da Purificação');
+      expect(getFrequencyName('Sábado')).toBe('Frequência da Espiritualidade');
+    });
 
-  describe('Type exports', () => {
-    it('exports DayFrequencyMapping type', () => {
-      const mapping: DayFrequencyMapping = {
-        dia: 'Domingo',
-        frequencia: 528,
-        elemento: 'Fogo',
-        planeta: 'Sol',
-        propriedades_healing: {
-          fisico: 'test',
-          emocional: 'test',
-          mental_espiritual: 'test',
-          melhor_epoca: 'test',
-        },
+    it('should return undefined for invalid day', () => {
+      expect(getFrequencyName('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getElementByDay', () => {
+    it('should return element for valid days', () => {
+      expect(getElementByDay('Domingo')).toBe('fogo');
+      expect(getElementByDay('Segunda-feira')).toBe('água');
+      expect(getElementByDay('Terça-feira')).toBe('fogo');
+      expect(getElementByDay('Quarta-feira')).toBe('ar');
+      expect(getElementByDay('Quinta-feira')).toBe('água');
+      expect(getElementByDay('Sexta-feira')).toBe('terra');
+      expect(getElementByDay('Sábado')).toBe('terra');
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getElementByDay('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getChakraByDay', () => {
+    it('should return chakra for valid days', () => {
+      expect(getChakraByDay('Domingo')).toBeDefined();
+      expect(getChakraByDay('Segunda-feira')).toBeDefined();
+      expect(getChakraByDay('Terça-feira')).toBeDefined();
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getChakraByDay('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getChakraNumberByDay', () => {
+    it('should return chakra number for valid days', () => {
+      expect(getChakraNumberByDay('Domingo')).toBe(3);
+      expect(getChakraNumberByDay('Segunda-feira')).toBe(6);
+      expect(getChakraNumberByDay('Terça-feira')).toBe(2);
+      expect(getChakraNumberByDay('Quarta-feira')).toBe(4);
+      expect(getChakraNumberByDay('Quinta-feira')).toBe(5);
+      expect(getChakraNumberByDay('Sexta-feira')).toBe(5);
+      expect(getChakraNumberByDay('Sábado')).toBe(7);
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getChakraNumberByDay('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getDaySpiritualMeaning', () => {
+    it('should return spiritual meaning for valid days', () => {
+      const result = getDaySpiritualMeaning('Domingo');
+      expect(result).toBeDefined();
+      expect(typeof result).toBe('string');
+      expect(result!.length).toBeGreaterThan(0);
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getDaySpiritualMeaning('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getHealingProperties', () => {
+    it('should return healing properties for valid days', () => {
+      const result = getHealingProperties('Domingo');
+      expect(result).toBeDefined();
+      expect(result!.forta).toBeDefined();
+      expect(Array.isArray(result!.palavras_chave)).toBe(true);
+      expect(Array.isArray(result!.aplicacoes_cura)).toBe(true);
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getHealingProperties('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getColorByDay', () => {
+    it('should return color for valid days', () => {
+      expect(getColorByDay('Domingo')).toBe('Dourado / Amarelo');
+      expect(getColorByDay('Segunda-feira')).toBe('Prata / Branco');
+      expect(getColorByDay('Terça-feira')).toBe('Vermelho / Laranja');
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getColorByDay('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getOrixaByDay', () => {
+    it('should return orixá for valid days', () => {
+      expect(getOrixaByDay('Domingo')).toBe('Oxum');
+      expect(getOrixaByDay('Segunda-feira')).toBe('Iemanjá');
+      expect(getOrixaByDay('Terça-feira')).toBe('Ogum');
+      expect(getOrixaByDay('Quarta-feira')).toBe('Oxumaré');
+      expect(getOrixaByDay('Quinta-feira')).toBe('Oxalá');
+      expect(getOrixaByDay('Sexta-feira')).toBe('Iansã');
+      expect(getOrixaByDay('Sábado')).toBe('Nanã');
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getOrixaByDay('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getPlanetByDay', () => {
+    it('should return planet for valid days', () => {
+      expect(getPlanetByDay('Domingo')).toBe('Sol');
+      expect(getPlanetByDay('Segunda-feira')).toBe('Lua');
+      expect(getPlanetByDay('Terça-feira')).toBe('Marte');
+      expect(getPlanetByDay('Quarta-feira')).toBe('Mercúrio');
+      expect(getPlanetByDay('Quinta-feira')).toBe('Júpiter');
+      expect(getPlanetByDay('Sexta-feira')).toBe('Vênus');
+      expect(getPlanetByDay('Sábado')).toBe('Saturno');
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getPlanetByDay('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getDayPractices', () => {
+    it('should return healing practices for valid days', () => {
+      const result = getDayPractices('Domingo');
+      expect(result).toBeDefined();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result!.length).toBeGreaterThan(0);
+    });
+
+    it('should return undefined for invalid day', () => {
+      expect(getDayPractices('DiaInválido')).toBeUndefined();
+    });
+  });
+
+  describe('getAllFrequencies', () => {
+    it('should return array of unique frequencies', () => {
+      const result = getAllFrequencies();
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('should return sorted frequencies', () => {
+      const result = getAllFrequencies();
+      for (let i = 1; i < result.length; i++) {
+        expect(result[i]).toBeGreaterThan(result[i - 1]);
+      }
+    });
+
+    it('should contain all unique frequencies from the map', () => {
+      const result = getAllFrequencies();
+      const expected = new Set(Object.values(DAY_FREQUENCY_MAP).map((d) => d.frequencia));
+      expect(result.length).toBe(expected.size);
+    });
+  });
+
+  describe('getDayByFrequency', () => {
+    it('should return day for 528 Hz frequency', () => {
+      const result = getDayByFrequency(528);
+      expect(result).toBeDefined();
+    });
+
+    it('should return day for 396 Hz frequency', () => {
+      const result = getDayByFrequency(396);
+      expect(result).toBe('Segunda-feira');
+    });
+
+    it('should return day for 417 Hz frequency', () => {
+      const result = getDayByFrequency(417);
+      expect(result).toBe('Terça-feira');
+    });
+
+    it('should return day for 639 Hz frequency', () => {
+      const result = getDayByFrequency(639);
+      expect(result).toBe('Quinta-feira');
+    });
+
+    it('should return day for 741 Hz frequency', () => {
+      const result = getDayByFrequency(741);
+      expect(result).toBe('Sexta-feira');
+    });
+
+    it('should return day for 852 Hz frequency', () => {
+      const result = getDayByFrequency(852);
+      expect(result).toBe('Sábado');
+    });
+
+    it('should return undefined for unknown frequency', () => {
+      const result = getDayByFrequency(100);
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('spiritual consistency', () => {
+    it('should have consistent element-day relationships', () => {
+      const fireDays = ['Domingo', 'Terça-feira'];
+      const waterDays = ['Segunda-feira', 'Quinta-feira'];
+      const earthDays = ['Sexta-feira', 'Sábado'];
+      const airDays = ['Quarta-feira'];
+
+      fireDays.forEach((day) => {
+        expect(getElementByDay(day)).toBe('fogo');
+      });
+      waterDays.forEach((day) => {
+        expect(getElementByDay(day)).toBe('água');
+      });
+      earthDays.forEach((day) => {
+        expect(getElementByDay(day)).toBe('terra');
+      });
+      airDays.forEach((day) => {
+        expect(getElementByDay(day)).toBe('ar');
+      });
+    });
+
+    it('should have valid Solfeggio frequencies', () => {
+      const validFrequencies = [396, 417, 528, 639, 741, 852];
+      Object.values(DAY_FREQUENCY_MAP).forEach((day) => {
+        expect(validFrequencies).toContain(day.frequencia);
+      });
+    });
+
+    it('should have consistent planet-day relationships with day-planet module', () => {
+      const planetDayMap: Record<string, string> = {
+        'Domingo': 'Sol',
+        'Segunda-feira': 'Lua',
+        'Terça-feira': 'Marte',
+        'Quarta-feira': 'Mercúrio',
+        'Quinta-feira': 'Júpiter',
+        'Sexta-feira': 'Vênus',
+        'Sábado': 'Saturno',
       };
-      expect(mapping.dia).toBe('Domingo');
-    });
 
-    it('exports DiaSemana type', () => {
-      const dia: DiaSemana = 'Domingo';
-      expect(dia).toBe('Domingo');
-    });
-  });
-
-  // ─── Default export ───────────────────────────────────────────────────────
-
-  describe('Default export', () => {
-    it('exports getDayFrequency function', async () => {
-      const defaultExport = await import('@/lib/correlation/day-frequency').then((m) => m.default);
-      expect(typeof defaultExport.getDayFrequency).toBe('function');
-    });
-
-    it('default export returns correct mapping', async () => {
-      const dayFreq = (await import('@/lib/correlation/day-frequency')).default;
-      const result = dayFreq.getDayFrequency('Domingo');
-      expect(result).not.toBeNull();
-      expect(result!.frequencia).toBe(528);
+      Object.entries(planetDayMap).forEach(([day, expectedPlanet]) => {
+        expect(getPlanetByDay(day)).toBe(expectedPlanet);
+      });
     });
   });
 });

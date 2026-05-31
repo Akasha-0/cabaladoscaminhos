@@ -1,164 +1,174 @@
 /**
- * Element-Day Correlation Module
- * Maps spiritual elements to days of the week with their spiritual meanings and practices
- * Complement to day-element.ts - reverse mapping focusing on elemental day energies
+ * Element-Day Spiritual Correlation
+ * Maps the five classical elements to days of week
+ * with chakra connections and spiritual meanings
  */
 
 export type Elemento = 'fogo' | 'água' | 'ar' | 'terra' | 'éter';
 
 export interface ElementDayMapping {
-  /** Element name */
+  /** Element name (lowercase) */
   elemento: Elemento;
-  /** Element name in Portuguese */
+  /** Element name (Portuguese with proper capitals) */
   elemento_nome: string;
-  /** Associated day of the week */
+  /** Associated day */
   dia: string;
-  /** Day index (0 = Sunday, 6 = Saturday) */
+  /** Day index (0-6, Sunday = 0) */
   indice: number;
-  /** Chakra connection for this element-day */
+  /** Chakra connection */
   chakra: string;
   /** Chakra description */
   chakra_descricao: string;
-  /** Spiritual meaning and focus */
+  /** Spiritual meaning */
   significado_espiritual: string;
-  /** Primary quality of the element on this day */
-  qualidade: 'cardinal' | 'fixed' | 'mutable';
-  /** Elemental properties */
-  propriedades: {
-    /** Core spiritual force */
-    forca: string;
-    /** Keywords for meditation */
-    palavras_chave: string[];
-    /** Challenges to transcend */
-    desafios: string[];
-    /** Affirmation for the day */
-    afirmacao: string;
-  };
-  /** Spiritual practices recommended */
-  praticas: string[];
-  /** Sacred color */
-  cor: string;
-  /** Associated planet */
+  /** Planet correspondence */
   planeta: string;
-  /** Associated Orixá */
+  /** Orixá correspondence */
   orixa: string;
-  /** Time of day with most energy */
-  momento_dia: string;
+  /** Elemental quality */
+  qualidade: 'cardinal' | 'fixed' | 'mutable';
+  /** Properties object */
+  propriedades: {
+    afirmacao: string;
+    palavras_chave: string[];
+    desafios: string[];
+  };
+  /** Spiritual practices */
+  praticas: string[];
+  /** Ritual offerings */
+  oferendas: string[];
+  /** Colors */
+  cores: string[];
 }
 
-// Element to Day mapping - each element resonates with specific days
-const ELEMENT_DAY_MAP: Record<Elemento, ElementDayMapping> = {
+// ─── Element-to-Day Mapping ──────────────────────────────────────────────────
+
+export const ELEMENT_DAY_MAPPINGS: Record<Elemento, ElementDayMapping> = {
   fogo: {
     elemento: 'fogo',
     elemento_nome: 'Fogo',
     dia: 'Domingo',
     indice: 0,
     chakra: '3º - Plexo Solar',
-    chakra_descricao: 'Manipura - Centro de poder pessoal, vontade e transformação',
-    significado_espiritual: 'Dia de recarregar a energia vital, brilho próprio e propósito de vida. O fogo conecta-se à liderança iluminada e à capacidade de irradiar luz interior.',
-    qualidade: 'fixed',
+    chakra_descricao: 'Manipura - Centro do poder pessoal e vontade',
+    significado_espiritual: 'O Fogo representa a transformação, a purificação e a energia vital. É o princípio ativo yang, associated with volunt, determinação e o brilho interior. O Domingo potencializa sua energia de ação e criação, sendo dia do Sol, источник силы и света.',
+    planeta: 'Sol',
+    orixa: 'Xangô',
+    qualidade: 'cardinal',
     propriedades: {
-      forca: 'Vitalidade, brilho pessoal, propósito de vida, energia radiante, liderança iluminada',
-      palavras_chave: ['recarregar', 'brilho', 'propósito', 'irradiar', 'liderança', 'alegria', 'transformar'],
-      desafios: ['egocentrismo', 'sobredose de ego', 'impaciência', 'exaustão'],
-      afirmacao: 'Eu irradio minha luz interior e lidero com o coração generoso.',
+      afirmacao: 'Eu irradio confiança e transformo minha realidade com purpose',
+      palavras_chave: ['transformação', 'energia', 'vontade', 'ação', 'coragem'],
+      desafios: ['impaciência', 'agressividade', 'orgulho excessivo'],
     },
     praticas: [
       'Exposição solar consciente (tomar sol com intenção sagrada)',
-      'Meditação com visualização dourada no plexo solar',
-      'Rituais de consagração de amuletos e talismãs',
-      'Práticas de liderança e comando sagrado',
-      'Gratidão pelo propósito de vida',
-      'Yoga fire para ativar manipura',
+      'Meditação com vela vermelha acesa',
+      'Queima de incenso de sândalo ou cravo',
+      'Movimentos físicos energizantes',
+      'Afirmações diante do espelho',
     ],
-    cor: 'Dourado / Amarelo / Laranja',
-    planeta: 'Sol',
-    orixa: 'Xangô',
-    momento_dia: 'Meio-dia',
+    oferendas: [
+      'Amalá para Xangô',
+      'Pimenta vermelha',
+      'Velas vermelhas e amarelas',
+      'Fumo de charuto',
+    ],
+    cores: ['Vermelho', 'Amarelo', 'Laranja', 'Dourado'],
   },
   água: {
     elemento: 'água',
     elemento_nome: 'Água',
     dia: 'Segunda-feira',
     indice: 1,
-    chakra: '6º - Terceiro Olho / 4º - Cardíaco',
-    chakra_descricao: 'Ajna e Anahata - Intuição profunda e amor incondicional',
-    significado_espiritual: 'Dia de introspecção, sensibilidade emocional e conexão com o inconsciente. A água ensina a fluir sem resistência e a nutrir-se com compaixão.',
-    qualidade: 'cardinal',
-    propriedades: {
-      forca: 'Intuição profunda, sensibilidade emocional, acolhimento, conexão com o inconsciente, nutricalidade',
-      palavras_chave: ['acolher', 'intuir', 'fluir', 'nutrir', 'sentir', 'receber', 'purificar'],
-      desafios: ['vulnerabilidade excessiva', 'melancolia', 'dificuldade de limites', 'supersensibilidade'],
-      afirmacao: 'Eu fluo como a água e acolhho minhas emoções com compaixão.',
-    },
-    praticas: [
-      'Banhos de limpeza energética com ervas receptivas',
-      'Meditação lunar (especialmente no luar)',
-      'Diário de emoções e sonhos',
-      'Práticas de autoacolhimento e autocuidado',
-      'Conexão com ancestrais e memórias do sangue',
-      'Caminhada à beira d\'água',
-    ],
-    cor: 'Prata / Branco / Azul claro',
+    chakra: '6º - Frontal',
+    chakra_descricao: 'Ajna - Centro da intuição e sabedoria interior',
+    significado_espiritual: 'A Água é o princípio yin da emoção, sensibilidade e intuição. Representa o fluxo da vida, a adaptação e as águas profundas do inconsciente. A Segunda-feira édia da Lua, quando as práticas de purificação e conexão com o sagrado são mais poderosas.',
     planeta: 'Lua',
     orixa: 'Iemanjá',
-    momento_dia: 'Noite',
+    qualidade: 'fixed',
+    propriedades: {
+      afirmacao: 'Eu fluo com a vida e permito que minha intuição me guie',
+      palavras_chave: ['emoção', 'intuição', 'fluidez', 'sensibilidade', 'nutrição'],
+      desafios: ['excesso de sensibilidade', 'dependência emocional', 'estagnação'],
+    },
+    praticas: [
+      'Rituais de água na beira do mar',
+      'Meditação próxima a fontes ou ríos',
+      'Banhos de purificação com ervas',
+      'Contemplação lunar',
+      'Escrita artística e poesia',
+    ],
+    oferendas: [
+      'Canjica para Iemanjá',
+      'Flores brancas',
+      'Colônia y/alcáçuz',
+      'Água de coco',
+      'Perfumes feminine',
+    ],
+    cores: ['Azul', 'Branco', 'Prata', 'Transparente'],
   },
   ar: {
     elemento: 'ar',
     elemento_nome: 'Ar',
     dia: 'Quarta-feira',
     indice: 3,
-    chakra: '5º - Laríngeo',
-    chakra_descricao: 'Vishuddha - Centro de comunicação, expressão e verdade',
-    significado_espiritual: 'Dia da mente ágil, comunicação clara e versatilidade intelectual. O ar traz clareza mental, adaptabilidade e a capacidade de ver múltiplas perspectivas.',
-    qualidade: 'mutable',
-    propriedades: {
-      forca: 'Versatilidade mental, comunicação clara, agilidade intelectual, adaptabilidade, múltiplas perspectivas',
-      palavras_chave: ['comunicar', 'adaptar', 'estudar', 'negociar', 'analisar', 'trocar', 'expressar'],
-      desafios: ['superficialidade', 'ansiedade mental', 'inconstância', 'excesso de informação'],
-      afirmacao: 'Eu comunico com clareza e meu pensamento flui como o vento.',
-    },
-    praticas: [
-      'Defumações com alecrim e estoraque para clareza mental',
-      'Práticas de comunicação assertiva',
-      'Estudos e meditações sobre a verdade',
-      'Rituais de agilidade nos negócios',
-      'Exercícios de respiração pranayama',
-      'Leitura e escrita sagrada',
-    ],
-    cor: 'Amarelo / Cinzento / Branco',
+    chakra: '4º - Cardíaco',
+    chakra_descricao: 'Anahara - Centro do amor incondicional e comunicação',
+    significado_espiritual: 'O Ar é o princípio da mente, comunicação e flexibilidade. Representa o pensamento, a transformação das ideias em realidade e a respiração sagrada. A Quarta-feira édia de Mercúrio, ideal para práticas mentais, estudos e comunicações espirituais.',
     planeta: 'Mercúrio',
     orixa: 'Iansã',
-    momento_dia: 'Manhã',
+    qualidade: 'mutable',
+    propriedades: {
+      afirmacao: 'Eu respiro a verdade e comunico minha essência com clareza',
+      palavras_chave: ['comunicação', 'mente', 'flexibilidade', 'adaptação', 'ligação'],
+      desafios: ['dispersão mental', 'superficialidade', 'inconsistência'],
+    },
+    praticas: [
+      'Exercícios de respiração sagrada (pranayama)',
+      'Meditação de开门 respiração',
+      'Leitura sagrada e contemplação',
+      'Escrita meditativa e journaling',
+      'Práticas de fala consciente',
+    ],
+    oferendas: [
+      'Arroz doce para Oxumaré',
+      'Liga de arame de cobre',
+      'Folhas verdes',
+      'Mel',
+    ],
+    cores: ['Amarelo', 'Verde', 'Azul claro', 'Arco-íris'],
   },
   terra: {
     elemento: 'terra',
     elemento_nome: 'Terra',
     dia: 'Sexta-feira',
     indice: 5,
-    chakra: '1º - Raiz / 2º - Sacral',
-    chakra_descricao: 'Muladhara e Svadhisthana - Ancoramento e criatividade',
-    significado_espiritual: 'Dia de ancoramento, prosperidade e conexão com a natureza. A terra traz estabilidade, abundância material e espiritual, e conexão com os ciclos da vida.',
-    qualidade: 'fixed',
-    propriedades: {
-      forca: 'Ancoramento, prosperidade, estabilidade, conexão com a natureza, força física, gratidão',
-      palavras_chave: ['ancorar', 'abundar', 'gratidão', 'cultivar', 'estabilizar', 'criar', 'manifestar'],
-      desafios: ['materialismo excessivo', 'rigidez', 'teimosia', 'dificuldade de adaptação'],
-      afirmacao: 'Eu sou ancorado na terra e minha vida floresce com abundância.',
-    },
-    praticas: [
-      'Caminhadas na natureza e contato com a terra',
-      'Rituais de prosperidade e fartura',
-      'Plantio de mudas e cuidado com plantas',
-      'Gratidão pela abundância recebida',
-      'Meditação de ancoramento com visualização de raízes',
-      'Trabalho manual creativo',
-    ],
-    cor: 'Verde / Marrom / Terra',
+    chakra: '1º - Básitário',
+    chakra_descricao: 'Muladhara - Centro da fundamentação e conexão com a Terra',
+    significado_espiritual: 'A Terra é o princípio da estruturação, fundamentação e transformação. Representa a ancestors, tradição e saúde física. A Sexta-feira édia de Vênus, ketika energi bumi bertemu cinta dan keindahan, ideal para rituals de conexão com a natureza e práticas de gratefulness.',
     planeta: 'Vênus',
     orixa: 'Oxum',
-    momento_dia: 'Entardecer',
+    qualidade: 'fixed',
+    propriedades: {
+      afirmacao: 'Eu me fundamento na terra sagrada e prospero em abundância',
+      palavras_chave: ['estabilidade', 'prosperidade', 'ancestralidade', 'saúde', 'segurança'],
+      desafios: ['rigidez', 'materialismo excessivo', 'resistência a mudanças'],
+    },
+    praticas: [
+      'Rituais de terra na beira do mar',
+      'Contato nu com a terra',
+      'Plantio e jardinagem sagrada',
+      'Trabalho ancestral e oferendas',
+      'Gratidão pela abundancia',
+    ],
+    oferendas: [
+      'Mel para Oxum',
+      'Ouro',
+      'Água doce e mel',
+      'Flores douratas',
+      'Alimentos amarelo-dourados',
+    ],
+    cores: ['Marrom', 'Verde escuro', 'Dourado', 'Laranja terra'],
   },
   éter: {
     elemento: 'éter',
@@ -166,99 +176,131 @@ const ELEMENT_DAY_MAP: Record<Elemento, ElementDayMapping> = {
     dia: 'Sexta-feira',
     indice: 5,
     chakra: '7º - Coronário',
-    chakra_descricao: 'Sahasrara - Conexão divina e transcendência',
-    significado_espiritual: 'Dia de transcendência espiritual, paz interior e conexão com o divino. O éter representa a expansão da consciência além dos limites materiais.',
-    qualidade: 'cardinal',
-    propriedades: {
-      forca: 'Transcendência espiritual, paz interior, sabedoria divina, criação, pureza de intenção',
-      palavras_chave: ['transcender', 'expandir', 'iluminar', 'inspirar', 'sagrar', 'purificar', 'conectar'],
-      desafios: ['escapismo', 'desconexão do mundo material', 'idealismo excessivo'],
-      afirmacao: 'Eu abro meu coronário à luz divina e permito que a sabedoria me guie.',
-    },
-    praticas: [
-      'Meditação profunda de expansão da consciência',
-      'Rezas e orações de consagração',
-      'Uso do tapete sagrado em reflexões',
-      'Cerimônias de purificação e consagração',
-      'Práticas de oração e devoção',
-      'Leitura de textos sagrados',
-    ],
-    cor: 'Branco / Roxo / Dourado',
+    chakra_descricao: 'Sahasrara - Centro da consciência cósmica e transcendência',
+    significado_espiritual: 'O Éter é o princípio da transcendência espiritual, o quinto elemento que representa o divino, a paz e a consciência cósmica. É o elemento mais sutil, que conecta todos os outros. A Sexta-feira também édia sagrado para práticas de elevação espiritual e paz interior, potenciando a conexão com Oxalá e o divino.',
     planeta: 'Sol',
     orixa: 'Oxalá',
-    momento_dia: 'Aurora e anoitecer',
+    qualidade: 'cardinal',
+    propriedades: {
+      afirmacao: 'Eu me abro para a sabedoria divina e descanso na paz do éter',
+      palavras_chave: ['transcendência', 'paz', 'sabedoria', 'divino', 'pureza'],
+      desafios: ['dissociação', 'excesso de idealismo', 'dificuldade de ação'],
+    },
+    praticas: [
+      'Meditação transcendental profunda',
+      'Orações para Oxalá',
+      'Queima de incenso puro (benjoim, sálvia)',
+      'Silêncio sagrado e retreating',
+      'Conexão com a luz branca divine',
+    ],
+    oferendas: [
+      'Leite para Oxalá',
+      'Alimentos brancos',
+      'Fumo de cachimbo',
+      'Flores brancas',
+      'Paz e silêncio',
+    ],
+    cores: ['Branco', 'Dourado', 'Violeta', 'Transparente'],
   },
 };
 
+// Freeze the mapping object to prevent modifications
+Object.freeze(ELEMENT_DAY_MAPPINGS);
+Object.values(ELEMENT_DAY_MAPPINGS).forEach(mapping => Object.freeze(mapping));
+
 /**
- * Get element-day correlation mapping
- * @param elemento - Element type (fogo, água, ar, terra, éter)
- * @returns ElementDayMapping or undefined if not found
+ * Normalizes element name to lowercase
+ * Handles case insensitivity and accents
  */
-export function getElementDay(elemento: string): ElementDayMapping | undefined {
-  const normalized = elemento.toLowerCase() as Elemento;
-  return ELEMENT_DAY_MAP[normalized];
+function normalizeElemento(elemento: string): Elemento | null {
+  if (!elemento) return null;
+  
+  const normalized = elemento
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  
+  const validElements: Elemento[] = ['fogo', 'água', 'ar', 'terra', 'éter'];
+  
+  for (const el of validElements) {
+    const elNormalized = el.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (elNormalized === normalized) {
+      return el;
+    }
+  }
+  return null;
 }
 
 /**
- * Get reverse mapping: day to element
- * @returns Record mapping each day to its element
+ * Returns the element-day mapping for a given element name.
+ * @param elemento - Element name (e.g., 'fogo', 'água', 'ar', 'terra', 'eter')
+ * @returns The correlation mapping or undefined if not found
+ */
+export function getElementDay(elemento: string): ElementDayMapping | undefined {
+  const normalized = normalizeElemento(elemento);
+  if (!normalized) return undefined;
+  return ELEMENT_DAY_MAPPINGS[normalized];
+}
+
+/**
+ * Returns a mapping of days to elements.
+ * @returns Record mapping day names to element names
  */
 export function getDayElement(): Record<string, Elemento> {
   const result: Record<string, Elemento> = {};
-  for (const mapping of Object.values(ELEMENT_DAY_MAP)) {
-    if (!(mapping.dia in result)) {
-      result[mapping.dia] = mapping.elemento;
+  
+  for (const [elemento, mapping] of Object.entries(ELEMENT_DAY_MAPPINGS)) {
+    if (!result[mapping.dia]) {
+      result[mapping.dia] = elemento as Elemento;
     }
   }
+  
   return result;
 }
 
 /**
- * Get all element-day mappings
- * @returns Array of all ElementDayMapping objects
+ * Returns all element-day mappings.
+ * @returns Array of all correlation mappings
  */
 export function getAllElementDays(): ElementDayMapping[] {
-  return Object.values(ELEMENT_DAY_MAP);
+  return Object.values(ELEMENT_DAY_MAPPINGS);
 }
 
 /**
- * Get chakra connection for an element
- * @param elemento - Element type (fogo, água, ar, terra, éter)
- * @returns Chakra information or undefined
+ * Returns chakra information for a given element.
+ * @param elemento - Element name
+ * @returns Chakra info or undefined if element not found
  */
-export function getElementChakra(elemento: string): { chakra: string; descricao: string } | undefined {
+export function getElementChakra(elemento: string): { chakra: string; chakra_descricao: string } | undefined {
   const mapping = getElementDay(elemento);
   if (!mapping) return undefined;
+  
   return {
     chakra: mapping.chakra,
-    descricao: mapping.chakra_descricao,
+    chakra_descricao: mapping.chakra_descricao,
   };
 }
 
 /**
- * Get spiritual practices for an element
- * @param elemento - Element type (fogo, água, ar, terra, éter)
- * @returns Array of practices or undefined
+ * Returns spiritual practices for a given element.
+ * @param elemento - Element name
+ * @returns Array of practices or undefined if element not found
  */
 export function getElementPractices(elemento: string): string[] | undefined {
-  return getElementDay(elemento)?.praticas;
+  const mapping = getElementDay(elemento);
+  if (!mapping) return undefined;
+  
+  return mapping.praticas;
 }
 
 /**
- * Get spiritual affirmation for an element
- * @param elemento - Element type (fogo, água, ar, terra, éter)
- * @returns Affirmation or undefined
+ * Returns the affirmation for a given element.
+ * @param elemento - Element name
+ * @returns Affirmation string or undefined if element not found
  */
 export function getElementAffirmation(elemento: string): string | undefined {
-  return getElementDay(elemento)?.propriedades.afirmacao;
+  const mapping = getElementDay(elemento);
+  if (!mapping) return undefined;
+  
+  return mapping.propriedades.afirmacao;
 }
-
-export default {
-  getElementDay,
-  getDayElement,
-  getAllElementDays,
-  getElementChakra,
-  getElementPractices,
-  getElementAffirmation,
-};
