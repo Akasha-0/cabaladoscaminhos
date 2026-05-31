@@ -17,7 +17,7 @@ import {
 } from '@/lib/correlation/tarot-numerology';
 
 describe('tarot-numerology', () => {
-  // ─── getTarotNumerology: valid arcano names ──────────────────────────────────
+  //  getTarotNumerology: valid arcano names 
 
   describe('getTarotNumerology', () => {
     it('returns mapping for O Louco (number 0)', () => {
@@ -207,7 +207,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── getNumerologyTarot ──────────────────────────────────────────────────────
+  //  getNumerologyTarot 
 
   describe('getNumerologyTarot', () => {
     it('returns arcanos with numerology number 0 (O Louco only)', () => {
@@ -294,7 +294,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── getAllTarotNumerology ───────────────────────────────────────────────────
+  //  getAllTarotNumerology 
 
   describe('getAllTarotNumerology', () => {
     it('returns all 22 Major Arcana mappings', () => {
@@ -329,7 +329,7 @@ describe('tarot-numerology', () => {
       expect(result[result.length - 1].numero_carta).toBe(21);
     });
   });
-  // ─── getAllTarotNumerologies (plural - alias) ───────────────────────────────
+  //  getAllTarotNumerologies (plural - alias) 
     it('returns all 22 Major Arcana mappings', () => {
       const result = getAllTarotNumerologies();
       expect(result).toHaveLength(22);
@@ -346,7 +346,7 @@ describe('tarot-numerology', () => {
       expect(result).toEqual(expected);
     });
   });
-  // ─── getAllArcanos ───────────────────────────────────────────────────────────
+  //  getAllArcanos 
 
   describe('getAllArcanos', () => {
     it('returns all 22 arcano names', () => {
@@ -371,7 +371,7 @@ describe('tarot-numerology', () => {
  });
   });
 
-  // ─── hasTarotNumerology ───────────────────────────────────────────────────────
+  //  hasTarotNumerology 
 
   describe('hasTarotNumerology', () => {
     it('returns true for valid arcano names', () => {
@@ -388,7 +388,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── getArcanoByNumber ───────────────────────────────────────────────────────
+  //  getArcanoByNumber 
 
   describe('getArcanoByNumber', () => {
     it('returns correct arcano for each card number 0-21', () => {
@@ -429,7 +429,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── getNumerologyByCardNumber ───────────────────────────────────────────────
+  //  getNumerologyByCardNumber 
 
   describe('getNumerologyByCardNumber', () => {
     it('returns numerology number 0 for O Louco', () => {
@@ -474,7 +474,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── getTarotNumerologyByElement ─────────────────────────────────────────────
+  //  getTarotNumerologyByElement 
 
   describe('getTarotNumerologyByElement', () => {
     it('returns arcanos with Fogo element', () => {
@@ -530,7 +530,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── getTarotByNumerologyNumber ───────────────────────────────────────────────
+  //  getTarotByNumerologyNumber 
 
   describe('getTarotByNumerologyNumber', () => {
     it('returns mappings for numerology number 0', () => {
@@ -551,7 +551,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── getAllNumerologyNumbers ──────────────────────────────────────────────────
+  //  getAllNumerologyNumbers 
 
   describe('getAllNumerologyNumbers', () => {
     it('returns all unique numerology numbers 0-9', () => {
@@ -576,7 +576,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── getAllElements ──────────────────────────────────────────────────────────
+  //  getAllElements 
 
   describe('getAllElements', () => {
     it('returns all unique elements', () => {
@@ -596,7 +596,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── TAROT_NUMEROLOGY_MAPPINGS constant ──────────────────────────────────────
+  //  TAROT_NUMEROLOGY_MAPPINGS constant 
 
   describe('TAROT_NUMEROLOGY_MAPPINGS', () => {
     it('is a frozen object', () => {
@@ -626,7 +626,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── TarotNumerologyMapping interface completeness ──────────────────────────
+  //  TarotNumerologyMapping interface completeness 
 
   describe('TarotNumerologyMapping interface completeness', () => {
     it('has all required fields for O Louco', () => {
@@ -658,7 +658,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── Element distribution ────────────────────────────────────────────────────
+  //  Element distribution 
 
   describe('Element distribution', () => {
     it('has correct number of Fogo arcanos', () => {
@@ -697,7 +697,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── Numerology number distribution ─────────────────────────────────────────
+  //  Numerology number distribution 
 
   describe('Numerology number distribution', () => {
     it('has one arcano with numerology number 0 (O Louco)', () => {
@@ -734,7 +734,7 @@ describe('tarot-numerology', () => {
     });
   });
 
-  // ─── Cross-reference with card numbers ──────────────────────────────────────
+  //  Cross-reference with card numbers 
 
   describe('Cross-reference with card numbers', () => {
     it('all card numbers 0-21 are present', () => {
