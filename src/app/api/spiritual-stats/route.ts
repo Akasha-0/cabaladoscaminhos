@@ -45,8 +45,6 @@ interface SefirotStats {
   distribution: Record<number, number>;
 }
 interface ElementStats {
-
-interface ElementStats {
   distribution: Record<string, number>;
   percentages: Record<string, number>;
 }

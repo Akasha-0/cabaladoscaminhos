@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
     const { title, content, mood, theme, insights, gratitude } = parseResult.data;
-    const { title, content, mood, theme, insights, gratitude } = parseResult.data;
+    const { data, error: insertError } = await supabase
     const { data, error: insertError } = await supabase
       .from('spiritual_journal')
       .insert({
