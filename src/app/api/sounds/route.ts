@@ -19,16 +19,8 @@ const SACRED_SOUNDS = {
     usage: 'Meditação, oração, alinhamento espiritual',
     benefits: ['Expansão de consciência', 'Harmonização celular', 'Paz interior'],
   },
-    id: 'amen',
-    name: 'Amen',
-    frequency: '528 Hz',
-    origin: 'Hebrew/Catholic',
-    description: 'Som de encerramento sagrado, significa verdade e fidelidade',
-    chakra: 'Sahasrara',
-    usage: 'Bênçãos, confirmações, proteção',
-    benefits: ['Transformaçăo energética', 'Ativaçăo DNA', 'Manifestaçăo'],
   },
-  shalom: {
+  amen: {
     id: 'shalom',
     name: 'Shalom',
     frequency: '396 Hz',
