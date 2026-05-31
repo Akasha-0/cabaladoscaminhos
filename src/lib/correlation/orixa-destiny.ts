@@ -33,16 +33,17 @@ export interface OrixaDestiny {
   elemento: 'fogo' | 'água' | 'ar' | 'terra' | 'éter';
   /** Key life theme for this destiny path */
   tema_vida: string;
-  'Iemanjá': {
-    orixa: 'Iemanjá',
-    caminho_destino: 'amor',
-    caminho_secundario: 'ancestralidade',
-    significado_espiritual: 'Iemanjá é a mãe das águas e rainha do mar. Seu caminho governa o amor incondicional e a nutrição maternal. Seu destino é conduzir as almas através das águas emocionais, curando feridas ancestrais e restaurando a conexão com a source primordial. Ela representa a memória sagrada que flui através das gerações.',
-    licao_central: 'Nutrir a si mesmo e aos outros com compaixão infinita e aceitação',
-    numero_jornada: 2,
-    elemento: 'água',
-    tema_vida: 'Fertilidade, cura emocional, proteção maternal, ciclos de renovação'
-  },
+}
+
+/**
+ * Orixá to Destiny path mappings
+ * Based on the sacred journey and spiritual purpose of each Orixá
+ */
+const ORIXA_DESTINY_MAP: Record<string, OrixaDestiny> = {
+  'Oxalá': {
+    orixa: 'Oxalá',
+    caminho_destino: 'criacao',
+    caminho_secundario: 'equilibrio',
     significado_espiritual: 'Oxalá representa o princípio da criação primordial. Seu destino está conectado à capacidade de dar vida, originar novos ciclos e estabelecer a harmonia entre o céu e a terra. Como pai de todos os Orixás, seu caminho ensina que cada ser carrega a centelha criadora divina.',
     licao_central: 'A criação consciente através da intenção pura e amor incondicional',
     numero_jornada: 1,
@@ -53,7 +54,7 @@ export interface OrixaDestiny {
     orixa: 'Iemanjá',
     caminho_destino: 'amor',
     caminho_secundario: 'ancestralidade',
-    significado_espiritual: 'Iemanjá governa o caminho do amor incondicional e da nutrição maternal. Seu destino é conduzir as almas através das águas emocionais, curando feridas ancestrais e restaurando a conexão com a source primordial. Ela representa a memória sagrada que flui através das gerações.',
+    significado_espiritual: 'Iemanjá é a mãe das águas e rainha do mar. Seu caminho governa o amor incondicional e a nutrição maternal. Seu destino é conduzir as almas através das águas emocionais, curando feridas ancestrais e restaurando a conexão com a source primordial. Ela representa a memória sagrada que flui através das gerações.',
     licao_central: 'Nutrir a si mesmo e aos outros com compaixão infinita e aceitação',
     numero_jornada: 2,
     elemento: 'água',
