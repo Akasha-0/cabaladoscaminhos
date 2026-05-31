@@ -4,9 +4,6 @@
  * Each arcano represents a spiritual doorway connecting conscious energy
  */
 
-import type { TarotElementMapping } from './tarot-element';
-
-export type { TarotElementMapping };
 
 /**
  * Represents the correlation between a Tarot Major Arcana card and its element

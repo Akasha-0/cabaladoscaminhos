@@ -60,33 +60,7 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
-    }
-
-    const mapaNatal = calcularMapaNatal(
-      new Date(dataNascimento),
-      horaNascimento,
-      parseFloat(latitude),
-      parseFloat(longitude)
-    );
-
-    const posicoes = Object.values(mapaNatal.planeta);
-    const aspectos = calcularAspectos(posicoes);
-
-    return NextResponse.json({
-      mapaNatal,
-      aspectos,
-    } as NatalResponse, {
-      headers: {
-        'Cache-Control': 'public, max-age=259200, stale-while-revalidate=604800',
-      },
-    });
-  } catch (_error) {
-    console.error('Erro calculando mapa natal:', _error);
-    return NextResponse.json({
-      error: 'Erro ao calcular mapa natal'
-    }, { status: 500 });
-  }
-}
+export async function POST(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
