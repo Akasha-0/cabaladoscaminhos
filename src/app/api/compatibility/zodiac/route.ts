@@ -302,11 +302,22 @@ function commonChallenges(s1: string, s2: string, challenges: string[]): void {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    let sign1: string | undefined = searchParams.get('sign1')?.toLowerCase() as string | undefined;
-    let sign2: string | undefined = searchParams.get('sign2')?.toLowerCase() as string | undefined;
-    const date1 = searchParams.get('date1');
-    const date2 = searchParams.get('date2');
-
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = CompatibilityQuerySchema.safeParse({
+      sign1: searchParams.get('sign1')?.toLowerCase(),
+      sign2: searchParams.get('sign2')?.toLowerCase(),
+      date1: searchParams.get('date1'),
+      date2: searchParams.get('date2'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    let { sign1, sign2, date1, date2 } = parseResult.data;
     if (!sign1 || !sign2) {
       if (!date1 || !date2) {
         return NextResponse.json(
@@ -323,14 +334,12 @@ export async function GET(request: NextRequest) {
         );
       }
     }
-
     if (!ZODIAC_SIGNS[sign1] || !ZODIAC_SIGNS[sign2]) {
       return NextResponse.json(
         { error: 'Invalid zodiac sign' },
         { status: 400 }
       );
     }
-
     const result = calculateCompatibility(sign1, sign2);
     return NextResponse.json(result);
   } catch (_error) {

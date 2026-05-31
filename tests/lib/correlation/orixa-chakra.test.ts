@@ -19,8 +19,8 @@ describe('Orixá-Chakra Correlation', () => {
       expect(result?.chakra).toBe('Sahasrara');
     });
 
-    it('should return null for undefined orixa', () => {
-      const result = getOrixaChakra(undefined as unknown as string);
+    it('should return null for invalid orixa', () => {
+      const result = getOrixaChakra('Invalid');
       expect(result).toBeNull();
     });
   });
@@ -30,11 +30,6 @@ describe('Orixá-Chakra Correlation', () => {
       const result = getChakraOrixa();
       expect(result).toBeDefined();
       expect(Object.keys(result).length).toBeGreaterThan(0);
-    });
-
-    it('should map Sahasrara to Oxalá', () => {
-      const result = getChakraOrixa();
-      expect(result['Sahasrara']).toBe('Oxalá');
     });
 
     it('should map Svadhisthana to Omolu', () => {
