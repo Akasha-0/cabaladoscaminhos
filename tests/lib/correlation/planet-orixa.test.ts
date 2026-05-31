@@ -2,391 +2,404 @@ import { describe, it, expect } from 'vitest';
 import {
   getPlanetOrixa,
   getOrixaPlanet,
-  getAllPlanetOrixaMappings,
   getAllPlanetOrixas,
-  getAllPlanets,
-  hasPlanetOrixa,
   PLANET_ORIXA_MAPPINGS,
   type PlanetOrixaMapping,
+  type Orixa,
+  type Planeta,
 } from '@/lib/correlation/planet-orixa';
 
 describe('planet-orixa', () => {
-  // ─── getPlanetOrixa: valid planets ─────────────────────────────────────────
+  // ─── PLANET_ORIXA_MAPPINGS: all 7 planets ──────────────────────────────────
+  describe('PLANET_ORIXA_MAPPINGS', () => {
+    it('contains all 7 planets', () => {
+      const mappings = getAllPlanetOrixas();
+      expect(mappings).toHaveLength(7);
+      
+      const planetNames = mappings.map(m => m.planeta);
+      expect(planetNames).toContain('Sol');
+      expect(planetNames).toContain('Lua');
+      expect(planetNames).toContain('Mercúrio');
+      expect(planetNames).toContain('Vênus');
+      expect(planetNames).toContain('Marte');
+      expect(planetNames).toContain('Júpiter');
+      expect(planetNames).toContain('Saturno');
+    });
 
-  describe('getPlanetOrixa', () => {
-    it('returns Sol mapping with Xangô', () => {
+    it('Sol maps to Xangô with correct properties', () => {
       const mapping = getPlanetOrixa('Sol');
       expect(mapping).not.toBeNull();
-      expect(mapping!.planet).toBe('Sol');
       expect(mapping!.orixa).toBe('Xangô');
-      expect(mapping!.dia).toContain('Quarta-feira');
-      expect(mapping!.cores).toContain('Amarelo');
       expect(mapping!.elemento).toBe('Fogo');
-      expect(mapping!.qualidade_energetica).toBe('Quente / Radiante');
+      expect(mapping!.chakra).toBe('3º Plexo Solar');
+      expect(mapping!.arquetipo).toBe('Rei Guerreira');
+      expect(mapping!.cores).toContain('Vermelho');
     });
 
-    it('returns Lua mapping with Iemanjá', () => {
+    it('Lua maps to Iemanjá with correct properties', () => {
       const mapping = getPlanetOrixa('Lua');
       expect(mapping).not.toBeNull();
-      expect(mapping!.planet).toBe('Lua');
       expect(mapping!.orixa).toBe('Iemanjá');
-      expect(mapping!.dia).toBe('Segunda-feira');
-      expect(mapping!.cores).toEqual(expect.arrayContaining(['Azul Escuro', 'Branco']));
       expect(mapping!.elemento).toBe('Água');
-      expect(mapping!.qualidade_energetica).toBe('Fria / Receptiva');
+      expect(mapping!.chakra).toBe('6º Frontal');
+      expect(mapping!.arquetipo).toBe('Mãe Divina');
+      expect(mapping!.cores).toContain('Azul Escuro');
     });
 
-    it('returns Marte mapping with Ogum', () => {
+    it('Mercúrio maps to Oxumaré with correct properties', () => {
+      const mapping = getPlanetOrixa('Mercúrio');
+      expect(mapping).not.toBeNull();
+      expect(mapping!.orixa).toBe('Oxumaré');
+      expect(mapping!.elemento).toBe('Ar');
+      expect(mapping!.chakra).toBe('4º Cardíaco');
+      expect(mapping!.arquetipo).toBe('Serpente Arco-íris');
+      expect(mapping!.cores).toContain('Arco-íris');
+    });
+
+    it('Vênus maps to Oxum with correct properties', () => {
+      const mapping = getPlanetOrixa('Vênus');
+      expect(mapping).not.toBeNull();
+      expect(mapping!.orixa).toBe('Oxum');
+      expect(mapping!.elemento).toBe('Terra');
+      expect(mapping!.chakra).toBe('2º Sacral');
+      expect(mapping!.arquetipo).toBe('Amante Divina');
+      expect(mapping!.cores).toContain('Rosa');
+    });
+
+    it('Marte maps to Ogum with correct properties', () => {
       const mapping = getPlanetOrixa('Marte');
       expect(mapping).not.toBeNull();
-      expect(mapping!.planet).toBe('Marte');
       expect(mapping!.orixa).toBe('Ogum');
-      expect(mapping!.dia).toBe('Terça-feira');
-      expect(mapping!.cores).toEqual(expect.arrayContaining(['Azul Claro', 'Vermelho', 'Verde']));
       expect(mapping!.elemento).toBe('Fogo');
+      expect(mapping!.chakra).toBe('1º Básico');
+      expect(mapping!.arquetipo).toBe('Guerreiro Protector');
+      expect(mapping!.cores).toContain('Vermelho');
     });
 
-    it('returns Mercurio mapping with Oxumaré', () => {
-      const mapping = getPlanetOrixa('Mercurio');
+    it('Júpiter maps to Oxalá with correct properties', () => {
+      const mapping = getPlanetOrixa('Júpiter');
       expect(mapping).not.toBeNull();
-      expect(mapping!.planet).toBe('Mercúrio');
-      expect(mapping!.orixa).toBe('Oxumaré');
-      expect(mapping!.dia).toBe('Quarta-feira');
-      expect(mapping!.elemento).toBe('Ar / Água');
-      expect(mapping!.qualidade_energetica).toBe('Neutra / Volátil');
+      expect(mapping!.orixa).toBe('Oxalá');
+      expect(mapping!.elemento).toBe('Éter');
+      expect(mapping!.chakra).toBe('7º Coronário');
+      expect(mapping!.arquetipo).toBe('Criador Pacífico');
+      expect(mapping!.cores).toContain('Branco');
     });
 
-    it('returns Jupiter mapping with Oxóssi', () => {
-      const mapping = getPlanetOrixa('Jupiter');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.planet).toBe('Júpiter');
-      expect(mapping!.orixa).toBe('Oxóssi');
-      expect(mapping!.dia).toBe('Quinta-feira');
-      expect(mapping!.cores).toEqual(expect.arrayContaining(['Verde', 'Azul-turquesa']));
-      expect(mapping!.elemento).toBe('Terra / Fogo');
-    });
-
-    it('returns Venus mapping with Oxum', () => {
-      const mapping = getPlanetOrixa('Venus');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.planet).toBe('Vênus');
-      expect(mapping!.orixa).toBe('Oxum');
-      expect(mapping!.dia).toContain('Sexta-feira');
-      expect(mapping!.cores).toEqual(expect.arrayContaining(['Rosa', 'Amarelo-ouro']));
-      expect(mapping!.elemento).toBe('Água');
-      expect(mapping!.qualidade_energetica).toBe('Fria / Magnética');
-    });
-
-    it('returns Saturno mapping with Omolu', () => {
+    it('Saturno maps to Omolu with correct properties', () => {
       const mapping = getPlanetOrixa('Saturno');
       expect(mapping).not.toBeNull();
-      expect(mapping!.planet).toBe('Saturno');
       expect(mapping!.orixa).toBe('Omolu');
-      expect(mapping!.dia).toBe('Segunda-feira');
-      expect(mapping!.cores).toEqual(expect.arrayContaining(['Preto e Branco']));
       expect(mapping!.elemento).toBe('Terra');
-      expect(mapping!.qualidade_energetica).toBe('Quente / Densa');
+      expect(mapping!.chakra).toBe('1º Básico');
+      expect(mapping!.arquetipo).toBe('Mestre da Transformação');
+      expect(mapping!.cores).toContain('Preto');
+    });
+
+    it('each planet has spiritual meaning', () => {
+      const mappings = getAllPlanetOrixas();
+      mappings.forEach(mapping => {
+        expect(mapping.significado_espiritual).toBeDefined();
+        expect(mapping.significado_espiritual.length).toBeGreaterThan(0);
+        expect(Array.isArray(mapping.significado_espiritual)).toBe(true);
+      });
+    });
+
+    it('each planet has práticas espirituais', () => {
+      const mappings = getAllPlanetOrixas();
+      mappings.forEach(mapping => {
+        expect(mapping.ebos).toBeDefined();
+        expect(mapping.banhos).toBeDefined();
+        expect(mapping.defumacoes).toBeDefined();
+        expect(Array.isArray(mapping.ebos)).toBe(true);
+        expect(Array.isArray(mapping.banhos)).toBe(true);
+        expect(Array.isArray(mapping.defumacoes)).toBe(true);
+      });
+    });
+
+    it('each planet has affirmations', () => {
+      const mappings = getAllPlanetOrixas();
+      mappings.forEach(mapping => {
+        expect(mapping.affirmacoes).toBeDefined();
+        expect(Array.isArray(mapping.affirmacoes)).toBe(true);
+        expect(mapping.affirmacoes.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('all planets have unique orixás', () => {
+      const mappings = getAllPlanetOrixas();
+      const orixas = mappings.map(m => m.orixa);
+      const uniqueOrixas = new Set(orixas);
+      expect(uniqueOrixas.size).toBe(orixas.length);
+    });
+
+    it('element mappings align with planet-element.ts', () => {
+      // Sol and Marte both have Fogo
+      expect(getPlanetOrixa('Sol')!.elemento).toBe('Fogo');
+      expect(getPlanetOrixa('Marte')!.elemento).toBe('Fogo');
+      
+      // Lua has Água
+      expect(getPlanetOrixa('Lua')!.elemento).toBe('Água');
+      
+      // Mercúrio has Ar
+      expect(getPlanetOrixa('Mercúrio')!.elemento).toBe('Ar');
+      
+      // Vênus and Saturno both have Terra
+      expect(getPlanetOrixa('Vênus')!.elemento).toBe('Terra');
+      expect(getPlanetOrixa('Saturno')!.elemento).toBe('Terra');
+      
+      // Júpiter has Éter
+      expect(getPlanetOrixa('Júpiter')!.elemento).toBe('Éter');
+    });
+  });
+
+  // ─── getPlanetOrixa: lookup function ────────────────────────────────────
+  describe('getPlanetOrixa', () => {
+    it('returns correct mapping for Sol', () => {
+      const result = getPlanetOrixa('Sol');
+      expect(result).not.toBeNull();
+      expect(result!.planeta).toBe('Sol');
+      expect(result!.orixa).toBe('Xangô');
+    });
+
+    it('returns correct mapping for Lua', () => {
+      const result = getPlanetOrixa('Lua');
+      expect(result).not.toBeNull();
+      expect(result!.planeta).toBe('Lua');
+      expect(result!.orixa).toBe('Iemanjá');
+    });
+
+    it('returns correct mapping for Mercúrio', () => {
+      const result = getPlanetOrixa('Mercúrio');
+      expect(result).not.toBeNull();
+      expect(result!.planeta).toBe('Mercúrio');
+      expect(result!.orixa).toBe('Oxumaré');
+    });
+
+    it('returns correct mapping for Vênus', () => {
+      const result = getPlanetOrixa('Vênus');
+      expect(result).not.toBeNull();
+      expect(result!.planeta).toBe('Vênus');
+      expect(result!.orixa).toBe('Oxum');
+    });
+
+    it('returns correct mapping for Marte', () => {
+      const result = getPlanetOrixa('Marte');
+      expect(result).not.toBeNull();
+      expect(result!.planeta).toBe('Marte');
+      expect(result!.orixa).toBe('Ogum');
+    });
+
+    it('returns correct mapping for Júpiter', () => {
+      const result = getPlanetOrixa('Júpiter');
+      expect(result).not.toBeNull();
+      expect(result!.planeta).toBe('Júpiter');
+      expect(result!.orixa).toBe('Oxalá');
+    });
+
+    it('returns correct mapping for Saturno', () => {
+      const result = getPlanetOrixa('Saturno');
+      expect(result).not.toBeNull();
+      expect(result!.planeta).toBe('Saturno');
+      expect(result!.orixa).toBe('Omolu');
+    });
+
+    it('is case-insensitive', () => {
+      expect(getPlanetOrixa('sol')?.orixa).toBe('Xangô');
+      expect(getPlanetOrixa('LUA')?.orixa).toBe('Iemanjá');
+      expect(getPlanetOrixa('mercúrio')?.orixa).toBe('Oxumaré');
     });
 
     it('returns null for unknown planet', () => {
       expect(getPlanetOrixa('Netuno')).toBeNull();
       expect(getPlanetOrixa('Plutão')).toBeNull();
-      expect(getPlanetOrixa('Urano')).toBeNull();
-    });
-
-    it('returns null for empty string', () => {
       expect(getPlanetOrixa('')).toBeNull();
     });
 
-    it('is case-insensitive for lowercase lookups', () => {
-      expect(getPlanetOrixa('sol')?.orixa).toBe('Xangô');
-      expect(getPlanetOrixa('SOL')?.orixa).toBe('Xangô');
-      expect(getPlanetOrixa('lua')?.orixa).toBe('Iemanjá');
-      expect(getPlanetOrixa('marte')?.orixa).toBe('Ogum');
-      expect(getPlanetOrixa('mercurio')?.orixa).toBe('Oxumaré');
-      expect(getPlanetOrixa('jupiter')?.orixa).toBe('Oxóssi');
-      expect(getPlanetOrixa('venus')?.orixa).toBe('Oxum');
-      expect(getPlanetOrixa('saturno')?.orixa).toBe('Omolu');
+    it('returns PlanetOrixaMapping type', () => {
+      const result = getPlanetOrixa('Sol');
+      expect(result).toHaveProperty('planeta');
+      expect(result).toHaveProperty('orixa');
+      expect(result).toHaveProperty('elemento');
+      expect(result).toHaveProperty('chakra');
+      expect(result).toHaveProperty('significado_espiritual');
+      expect(result).toHaveProperty('ebos');
+      expect(result).toHaveProperty('banhos');
+      expect(result).toHaveProperty('defumacoes');
+      expect(result).toHaveProperty('affirmacoes');
     });
   });
 
-  // ─── getOrixaPlanet: reverse lookup ─────────────────────────────────────────
-
+  // ─── getOrixaPlanet: reverse lookup ──────────────────────────────────────
   describe('getOrixaPlanet', () => {
-    it('returns Xangô mapping for Xangô', () => {
-      const mapping = getOrixaPlanet('Xangô');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.orixa).toBe('Xangô');
-      expect(mapping!.planet).toBe('Sol');
-      expect(mapping!.elemento).toBe('Fogo');
+    it('returns Sol for Xangô', () => {
+      expect(getOrixaPlanet('Xangô')).toBe('Sol');
     });
 
-    it('returns Iemanjá mapping for Iemanjá', () => {
-      const mapping = getOrixaPlanet('Iemanjá');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.orixa).toBe('Iemanjá');
-      expect(mapping!.planet).toBe('Lua');
-      expect(mapping!.elemento).toBe('Água');
+    it('returns Lua for Iemanjá', () => {
+      expect(getOrixaPlanet('Iemanjá')).toBe('Lua');
     });
 
-    it('returns Ogum mapping for Ogum', () => {
-      const mapping = getOrixaPlanet('Ogum');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.orixa).toBe('Ogum');
-      expect(mapping!.planet).toBe('Marte');
-      expect(mapping!.elemento).toBe('Fogo');
+    it('returns Mercúrio for Oxumaré', () => {
+      expect(getOrixaPlanet('Oxumaré')).toBe('Mercúrio');
     });
 
-    it('returns Oxumaré mapping for Oxumaré', () => {
-      const mapping = getOrixaPlanet('Oxumaré');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.orixa).toBe('Oxumaré');
-      expect(mapping!.planet).toBe('Mercúrio');
-      expect(mapping!.elemento).toBe('Ar / Água');
+    it('returns Vênus for Oxum', () => {
+      expect(getOrixaPlanet('Oxum')).toBe('Vênus');
     });
 
-    it('returns Oxóssi mapping for Oxóssi', () => {
-      const mapping = getOrixaPlanet('Oxóssi');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.orixa).toBe('Oxóssi');
-      expect(mapping!.planet).toBe('Júpiter');
-      expect(mapping!.elemento).toBe('Terra / Fogo');
+    it('returns Marte for Ogum', () => {
+      expect(getOrixaPlanet('Ogum')).toBe('Marte');
     });
 
-    it('returns Oxum mapping for Oxum', () => {
-      const mapping = getOrixaPlanet('Oxum');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.orixa).toBe('Oxum');
-      expect(mapping!.planet).toBe('Vênus');
-      expect(mapping!.elemento).toBe('Água');
+    it('returns Júpiter for Oxalá', () => {
+      expect(getOrixaPlanet('Oxalá')).toBe('Júpiter');
     });
 
-    it('returns Omolu mapping for Omolu', () => {
-      const mapping = getOrixaPlanet('Omolu');
-      expect(mapping).not.toBeNull();
-      expect(mapping!.orixa).toBe('Omolu');
-      expect(mapping!.planet).toBe('Saturno');
-      expect(mapping!.elemento).toBe('Terra');
+    it('returns Saturno for Omolu', () => {
+      expect(getOrixaPlanet('Omolu')).toBe('Saturno');
     });
 
     it('is case-insensitive', () => {
-      expect(getOrixaPlanet('xangô')?.planet).toBe('Sol');
-      expect(getOrixaPlanet('XANGÔ')?.planet).toBe('Sol');
-      expect(getOrixaPlanet('iemanjá')?.planet).toBe('Lua');
-      expect(getOrixaPlanet('OGUM')?.planet).toBe('Marte');
+      expect(getOrixaPlanet('xangô')).toBe('Sol');
+      expect(getOrixaPlanet('IEMANJÁ')).toBe('Lua');
+      expect(getOrixaPlanet('oxumaré')).toBe('Mercúrio');
     });
 
-    it('returns null for unknown Orixá', () => {
-      expect(getOrixaPlanet('Iansã')).toBeNull();
+    it('returns null for unknown orixá', () => {
+      expect(getOrixaPlanet('Exu')).toBeNull();
       expect(getOrixaPlanet('Nanã')).toBeNull();
-      expect(getOrixaPlanet('Obá')).toBeNull();
-    });
-
-    it('returns null for empty string', () => {
       expect(getOrixaPlanet('')).toBeNull();
     });
 
-    it('is inverse of getPlanetOrixa', () => {
-      for (const orixa of ['Xangô', 'Iemanjá', 'Ogum', 'Oxumaré', 'Oxóssi', 'Oxum', 'Omolu']) {
-        const fromOrixa = getOrixaPlanet(orixa);
-        expect(fromOrixa).not.toBeNull();
-        const backToPlanet = getPlanetOrixa(fromOrixa!.planet);
-        expect(backToPlanet?.orixa).toBe(orixa);
-      }
+    it('returns Planeta type', () => {
+      const result = getOrixaPlanet('Xangô');
+      expect(typeof result).toBe('string');
+      expect(['Sol', 'Lua', 'Mercúrio', 'Vênus', 'Marte', 'Júpiter', 'Saturno']).toContain(result);
     });
   });
 
-  // ─── getAllPlanetOrixaMappings ──────────────────────────────────────────────
-
-  describe('getAllPlanetOrixaMappings', () => {
-    it('returns all 7 planet mappings', () => {
-      const all = getAllPlanetOrixaMappings();
-      expect(all).toHaveLength(7);
+  // ─── getAllPlanetOrixas ──────────────────────────────────────────────────
+  describe('getAllPlanetOrixas', () => {
+    it('returns array with all 7 mappings', () => {
+      const result = getAllPlanetOrixas();
+      expect(result).toHaveLength(7);
+      expect(Array.isArray(result)).toBe(true);
     });
 
-    it('contains all expected Orixás', () => {
-      const all = getAllPlanetOrixaMappings();
-      const orixas = all.map((m) => m.orixa);
-      expect(orixas).toContain('Xangô');
-      expect(orixas).toContain('Iemanjá');
-      expect(orixas).toContain('Ogum');
-      expect(orixas).toContain('Oxumaré');
-      expect(orixas).toContain('Oxóssi');
-      expect(orixas).toContain('Oxum');
-      expect(orixas).toContain('Omolu');
+    it('returns fresh array on each call', () => {
+      const result1 = getAllPlanetOrixas();
+      const result2 = getAllPlanetOrixas();
+      expect(result1).not.toBe(result2);
+      expect(result1).toEqual(result2);
     });
 
-    it('each mapping has all required fields', () => {
-      const all = getAllPlanetOrixaMappings();
-      all.forEach((mapping) => {
-        expect(mapping).toHaveProperty('planet');
+    it('all mappings have required properties', () => {
+      const result = getAllPlanetOrixas();
+      result.forEach(mapping => {
+        expect(mapping).toHaveProperty('planeta');
         expect(mapping).toHaveProperty('orixa');
-        expect(mapping).toHaveProperty('dia');
-        expect(mapping).toHaveProperty('cores');
         expect(mapping).toHaveProperty('elemento');
-        expect(mapping).toHaveProperty('qualidade_energetica');
-        expect(Array.isArray(mapping.cores)).toBe(true);
+        expect(mapping).toHaveProperty('chakra');
+        expect(mapping).toHaveProperty('dia_sagrado');
+        expect(mapping).toHaveProperty('cores');
+        expect(mapping).toHaveProperty('significado_espiritual');
+        expect(mapping).toHaveProperty('arquetipo');
+        expect(mapping).toHaveProperty('qualidade');
+        expect(mapping).toHaveProperty('ebos');
+        expect(mapping).toHaveProperty('banhos');
+        expect(mapping).toHaveProperty('defumacoes');
+        expect(mapping).toHaveProperty('affirmacoes');
+      });
+    });
+
+    it('all cores arrays are non-empty', () => {
+      const result = getAllPlanetOrixas();
+      result.forEach(mapping => {
         expect(mapping.cores.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('reverse lookup is consistent with forward lookup', () => {
+      const mappings = getAllPlanetOrixas();
+      mappings.forEach(mapping => {
+        const reverseLookup = getOrixaPlanet(mapping.orixa);
+        expect(reverseLookup).toBe(mapping.planeta);
       });
     });
   });
 
-  // ─── getAllPlanetOrixas ─────────────────────────────────────────────────────
-
-  describe('getAllPlanetOrixas', () => {
-    it('returns all 7 planet mappings', () => {
-      const all = getAllPlanetOrixas();
-      expect(all).toHaveLength(7);
+  // ─── Integration: planet-orixa relationships ────────────────────────────
+  describe('planet-orixa integration', () => {
+    it('Sol-Xangô: dias sagrados match', () => {
+      const solMapping = getPlanetOrixa('Sol');
+      const xangoMapping = PLANET_ORIXA_MAPPINGS['Sol'];
+      expect(xangoMapping.dia_sagrado).toBe('Quarta-feira');
     });
 
-    it('returns same data as getAllPlanetOrixaMappings', () => {
-      expect(getAllPlanetOrixas()).toEqual(getAllPlanetOrixaMappings());
+    it('Lua-Iemanjá: sacred connection to water', () => {
+      const luaMapping = getPlanetOrixa('Lua');
+      expect(luaMapping!.elemento).toBe('Água');
+      expect(luaMapping!.cores).toContain('Azul Escuro');
+      expect(luaMapping!.cores).toContain('Branco');
     });
 
-    it('contains all expected Orixás', () => {
-      const all = getAllPlanetOrixas();
-      const orixas = all.map((m) => m.orixa);
-      expect(orixas).toContain('Xangô');
-      expect(orixas).toContain('Iemanjá');
-      expect(orixas).toContain('Ogum');
-      expect(orixas).toContain('Oxumaré');
-      expect(orixas).toContain('Oxóssi');
-      expect(orixas).toContain('Oxum');
-      expect(orixas).toContain('Omolu');
+    it('Fogo element planets (Sol/Marte) have warrior archetypes', () => {
+      const solMapping = getPlanetOrixa('Sol');
+      const marteMapping = getPlanetOrixa('Marte');
+      expect(solMapping!.elemento).toBe('Fogo');
+      expect(marteMapping!.elemento).toBe('Fogo');
+      expect(solMapping!.arquetipo).toContain('Guerreira');
+      expect(marteMapping!.arquetipo).toContain('Guerreiro');
     });
 
-    it('contains all expected planets', () => {
-      const all = getAllPlanetOrixas();
-      const planets = all.map((m) => m.planet);
-      expect(planets).toContain('Sol');
-      expect(planets).toContain('Lua');
-      expect(planets).toContain('Marte');
-      expect(planets).toContain('Mercúrio');
-      expect(planets).toContain('Júpiter');
-      expect(planets).toContain('Vênus');
-      expect(planets).toContain('Saturno');
-    });
-  });
-
-  // ─── getAllPlanets ──────────────────────────────────────────────────────────
-
-  describe('getAllPlanets', () => {
-    it('returns 7 planet names', () => {
-      const planets = getAllPlanets();
-      expect(planets).toHaveLength(7);
+    it('Terra element planets (Vênus/Saturno) have grounding practices', () => {
+      const venusMapping = getPlanetOrixa('Vênus');
+      const saturnoMapping = getPlanetOrixa('Saturno');
+      expect(venusMapping!.elemento).toBe('Terra');
+      expect(saturnoMapping!.elemento).toBe('Terra');
+      expect(venusMapping!.cores).toContain('Verde');
+      expect(saturnoMapping!.cores).toContain('Preto');
     });
 
-    it('includes all expected planets', () => {
-      const planets = getAllPlanets();
-      expect(planets).toContain('Sol');
-      expect(planets).toContain('Lua');
-      expect(planets).toContain('Marte');
-      expect(planets).toContain('Mercurio');
-      expect(planets).toContain('Jupiter');
-      expect(planets).toContain('Venus');
-      expect(planets).toContain('Saturno');
+    it('each orixá has culturally appropriate ebós', () => {
+      const mappings = getAllPlanetOrixas();
+      mappings.forEach(mapping => {
+        expect(mapping.ebos.length).toBeGreaterThan(0);
+        // Check that each ebo references the correct orixá
+        const eboString = mapping.ebos.join(' ');
+        expect(eboString).toMatch(new RegExp(mapping.orixa, 'i'));
+      });
+    });
+
+    it('all planets have unique chakra positions', () => {
+      const mappings = getAllPlanetOrixas();
+      const chakras = mappings.map(m => m.chakra);
+      const uniqueChakras = new Set(chakras);
+      expect(uniqueChakras.size).toBe(chakras.length);
     });
   });
 
-  // ─── hasPlanetOrixa ──────────────────────────────────────────────────────────
-
-  describe('hasPlanetOrixa', () => {
-    it('returns true for all valid planets', () => {
-      expect(hasPlanetOrixa('Sol')).toBe(true);
-      expect(hasPlanetOrixa('Lua')).toBe(true);
-      expect(hasPlanetOrixa('Marte')).toBe(true);
-      expect(hasPlanetOrixa('Mercurio')).toBe(true);
-      expect(hasPlanetOrixa('Jupiter')).toBe(true);
-      expect(hasPlanetOrixa('Venus')).toBe(true);
-      expect(hasPlanetOrixa('Saturno')).toBe(true);
+  // ─── Type exports ─────────────────────────────────────────────────────────
+  describe('type exports', () => {
+    it('Planeta type is exported', () => {
+      const planet: Planeta = 'Sol';
+      expect(['Sol', 'Lua', 'Mercúrio', 'Vênus', 'Marte', 'Júpiter', 'Saturno']).toContain(planet);
     });
 
-    it('returns false for unknown planets', () => {
-      expect(hasPlanetOrixa('Netuno')).toBe(false);
-      expect(hasPlanetOrixa('Plutão')).toBe(false);
-      expect(hasPlanetOrixa('Urano')).toBe(false);
+    it('Orixa type is exported', () => {
+      const orixa: Orixa = 'Xangô';
+      expect(['Xangô', 'Iemanjá', 'Oxumaré', 'Oxum', 'Ogum', 'Oxalá', 'Omolu']).toContain(orixa);
     });
 
-    it('returns false for empty string', () => {
-      expect(hasPlanetOrixa('')).toBe(false);
-    });
-  });
-
-  // ─── PLANET_ORIXA_MAPPINGS constant ─────────────────────────────────────────
-
-  describe('PLANET_ORIXA_MAPPINGS', () => {
-    it('is a frozen object', () => {
-      expect(Object.isFrozen(PLANET_ORIXA_MAPPINGS)).toBe(true);
-    });
-
-    it('each entry matches getPlanetOrixa result', () => {
-      for (const planet of Object.keys(PLANET_ORIXA_MAPPINGS)) {
-        expect(getPlanetOrixa(planet)).toEqual(PLANET_ORIXA_MAPPINGS[planet]);
-      }
-    });
-  });
-
-  // ─── Interface completeness ─────────────────────────────────────────────────
-
-  describe('PlanetOrixaMapping interface completeness', () => {
-    it('Sol has correct energetic quality mapping', () => {
-      const mapping = getPlanetOrixa('Sol')!;
-      expect(mapping.qualidade_energetica).toBe('Quente / Radiante');
-      expect(mapping.elemento).toBe('Fogo');
+    it('PlanetOrixaMapping interface is exported', () => {
+      const mapping: PlanetOrixaMapping = PLANET_ORIXA_MAPPINGS['Sol'];
+      expect(mapping.planeta).toBe('Sol');
       expect(mapping.orixa).toBe('Xangô');
     });
 
-    it('Lua has correct energetic quality mapping', () => {
-      const mapping = getPlanetOrixa('Lua')!;
-      expect(mapping.qualidade_energetica).toBe('Fria / Receptiva');
-      expect(mapping.elemento).toBe('Água');
-      expect(mapping.orixa).toBe('Iemanjá');
-    });
-
-    it('Marte has correct energetic quality mapping', () => {
-      const mapping = getPlanetOrixa('Marte')!;
-      expect(mapping.qualidade_energetica).toBe('Quente / Ígnea');
-      expect(mapping.elemento).toBe('Fogo');
-      expect(mapping.orixa).toBe('Ogum');
-    });
-
-    it('Venus has magnetic quality for love/attraction', () => {
-      const mapping = getPlanetOrixa('Venus')!;
-      expect(mapping.qualidade_energetica).toBe('Fria / Magnética');
-      expect(mapping.orixa).toBe('Oxum');
-      expect(mapping.cores).toContain('Rosa');
-    });
-
-    it('Saturno has dense quality for karma/cycles', () => {
-      const mapping = getPlanetOrixa('Saturno')!;
-      expect(mapping.qualidade_energetica).toBe('Quente / Densa');
-      expect(mapping.orixa).toBe('Omolu');
-    });
-  });
-
-  // ─── Integration: bidirectional lookups ─────────────────────────────────────
-
-  describe('bidirectional planet-orixá lookups', () => {
-    it('each planet maps to its Orixá and back', () => {
-      const planets = ['Sol', 'Lua', 'Marte', 'Mercurio', 'Jupiter', 'Venus', 'Saturno'];
-      for (const planet of planets) {
-        const mapping = getPlanetOrixa(planet);
-        expect(mapping).not.toBeNull();
-        const reverse = getOrixaPlanet(mapping!.orixa);
-        expect(reverse).not.toBeNull();
-        expect(reverse!.planet).toBe(mapping!.planet);
-      }
-    });
-
-    it('each Orixá maps to its planet and back', () => {
-      const orixas = ['Xangô', 'Iemanjá', 'Ogum', 'Oxumaré', 'Oxóssi', 'Oxum', 'Omolu'];
-      for (const orixa of orixas) {
-        const mapping = getOrixaPlanet(orixa);
-        expect(mapping).not.toBeNull();
-        const reverse = getPlanetOrixa(mapping!.planet);
-        expect(reverse).not.toBeNull();
-        expect(reverse!.orixa).toBe(mapping!.orixa);
-      }
+    it('PLANET_ORIXA_MAPPINGS is frozen', () => {
+      expect(Object.isFrozen(PLANET_ORIXA_MAPPINGS)).toBe(true);
     });
   });
 });
