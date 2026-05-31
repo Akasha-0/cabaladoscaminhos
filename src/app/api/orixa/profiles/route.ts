@@ -1,39 +1,90 @@
-// Orixá Profiles API
-// GET /api/orixa/profiles - Get all orixa profiles
-// GET /api/orixa/profiles?orixa=Name - Get specific orixa profile
-// GET /api/orixa/profiles?element=Fogo - Filter by element
-// GET /api/orixa/profiles?chakra=7 - Filter by chakra
-
+// ============================================================
+// ORIXÁ PROFILES API - CABALA DOS CAMINHOS
+// Enhanced with spiritual correlations
+// ============================================================
 import { NextRequest, NextResponse } from 'next/server';
-import { orixas } from '@/lib/data/spiritual-data';
+import { z } from 'zod';
 
-export interface OrixaProfile {
-  id: string;
-  nome: string;
-  saudacao: string;
-  elementos: string[];
-  cores: string[];
-  dia: string;
-  chakra: string;
-  planeta: string;
-  ervas: string[];
-  quizilas: string[];
-  misterio: string;
-  ebos: string[];
-  numerologia: {
-    caminhoVida: number;
-    destino: number;
-    alma: number;
-  };
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
+const OrixaQuerySchema = z.object({
+  orixa: z.string().optional(),
+  element: ElementSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  sefirot: SefirotSchema.optional(),
+  dia: z.enum(['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado']).optional(),
+  limit: z.coerce.number().int().positive().max(50).optional(),
+});
+
+const SpiritualCorrelationsSchema = z.object({
+  sefirot: z.array(z.string()),
+  chakra: z.number(),
+  element: z.string(),
+  orixa: z.string(),
+  affirmation: z.string(),
+  frequency: z.string(),
+});
+
+const OrixaProfileSchema = z.object({
+  id: z.string(),
+  nome: z.string(),
+  saudacao: z.string(),
+  elementos: z.array(z.string()),
+  cores: z.array(z.string()),
+  dia: z.string(),
+  chakra: z.string(),
+  planeta: z.string(),
+  ervas: z.array(z.string()),
+  quizilas: z.array(z.string()),
+  misterio: z.string(),
+  ebos: z.array(z.string()),
+  numerologia: z.object({
+    caminhoVida: z.number(),
+    destino: z.number(),
+    alma: z.number(),
+  }),
+  sefirot: z.array(z.string()),
+  tarot: z.array(z.string()),
+  elemento: z.string(),
+  qualidade: z.array(z.string()),
+  desafios: z.array(z.string()),
+  oracao: z.string(),
+  spiritualCorrelations: SpiritualCorrelationsSchema,
+});
+
+export type OrixaProfile = z.infer<typeof OrixaProfileSchema>;
+
+// ─── Spiritual Correlations for Each Orixá ──────────────────────────────────────────
+const ORIXA_SPIRITUAL_CORRELATIONS: Record<string, {
   sefirot: string[];
-  tarot: string[];
-  elemento: string;
-  qualidade: string[];
-  desafios: string[];
-  oracao: string;
-}
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  oxala: { sefirot: ['Kether', 'Chokhmah', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A luz da sabedoria ilumina meu caminho', frequency: '963 Hz' },
+  iemanja: { sefirot: ['Binah', 'Yesod', 'Malkuth'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'As águas sagradas purificam minha alma', frequency: '639 Hz' },
+  ogum: { sefirot: ['Gevurah', 'Hod'], chakra: 1, element: 'Fogo', orixa: 'Ogum', affirmation: 'Ogum abre os caminhos e me dá vitória', frequency: '396 Hz' },
+  xango: { sefirot: ['Chesed', 'Hod', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'A justiça de Xangô guia minhas decisões', frequency: '528 Hz' },
+  oxum: { sefirot: ['Netzach', 'Tipheret', 'Chesed'], chakra: 4, element: 'Água', orixa: 'Oxum', affirmation: 'A beleza e prosperidade de Oxum me adornam', frequency: '528 Hz' },
+  iansa: { sefirot: ['Gevurah', 'Netzach'], chakra: 2, element: 'Fogo', orixa: 'Iansã', affirmation: 'A coragem de Iansã me transforma', frequency: '417 Hz' },
+  obatala: { sefirot: ['Kether', 'Chokhmah', 'Tipheret'], chakra: 6, element: 'Éter', orixa: 'Oxalá', affirmation: 'A pureza de Obatalá me eleva', frequency: '963 Hz' },
+  omolu: { sefirot: ['Binah', 'Malkuth', 'Gevurah'], chakra: 1, element: 'Terra', orixa: 'Omolu', affirmation: 'A cura de Omolu renova meu ser', frequency: '174 Hz' },
+  oxossi: { sefirot: ['Netzach', 'Hod', 'Chokhmah'], chakra: 6, element: 'Ar', orixa: 'Oxóssi', affirmation: 'A sabedoria de Oxóssi me guia nas matas', frequency: '741 Hz' },
+  logunedede: { sefirot: ['Tipheret', 'Netzach', 'Chesed'], chakra: 3, element: 'Água', orixa: 'Oxum', affirmation: 'A fertilidade de Logun-Edé abençoa minha vida', frequency: '528 Hz' },
+  exu: { sefirot: ['Hod', 'Gevurah'], chakra: 5, element: 'Fogo', orixa: 'Ogum', affirmation: 'Exu abre os caminhos para minhas mensagens', frequency: '417 Hz' },
+  nanaburuku: { sefirot: ['Binah', 'Kether', 'Yesod'], chakra: 7, element: 'Água', orixa: 'Iemanjá', affirmation: 'A sabedoria ancestral de Nanã me sustenta', frequency: '963 Hz' },
+};
 
-const ORIXA_PROFILES: OrixaProfile[] = [
+// ─── Orixá Profiles Data ──────────────────────────────────────────────────────────
+const ORIXA_PROFILES: Array<Omit<z.infer<typeof OrixaProfileSchema>, 'spiritualCorrelations'>> = [
   {
     id: 'oxala',
     nome: 'Oxalá',
@@ -43,14 +94,14 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     dia: 'Sexta-feira',
     chakra: '7 - Coronário',
     planeta: 'Sol',
-    ervas: ['Algodão', 'Cipó de死不', 'Mana'],
-    quizilas: ['Não pode comer camarão', 'Não pode dormir até tarde', 'Não pode usar roupas的色彩鲜艳'],
+    ervas: ['Algodão', 'Cipó-alho', 'Manna'],
+    quizilas: ['Não pode comer camarão', 'Não pode dormir até tarde', 'Não pode usar roupas coloridas'],
     misterio: 'Pai Supremo, Criador de tudo',
     ebos: ['Bori - Oferta à cabeça', 'Xorire - Saudação aos Orixás', 'Oferenda de canjica branca'],
     numerologia: { caminhoVida: 1, destino: 1, alma: 1 },
-    sefirot: ['Keter', 'Chokhmah', 'Binah'],
+    sefirot: ['Kether', 'Chokhmah', 'Binah'],
     tarot: ['O Sol', 'O Mundo', 'A Estrela'],
-    elemento: 'Luz',
+    elemento: 'Éter',
     qualidade: ['Sabedoria', 'Paz', 'Pureza', 'Criação', 'Iluminação'],
     desafios: ['Indecisão', 'Perfeccionismo', 'Rigidez mental'],
     oracao: 'Oxalá, dai-me a luz da sabedoria e a paz do coração. Que eu possa criar com amor e pureza.',
@@ -73,7 +124,7 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     tarot: ['A Lua', 'A Imperatriz', 'O Mundo'],
     elemento: 'Água',
     qualidade: ['Maternidade', 'Proteção', 'Intuição', 'Emoções', 'Devoção'],
-    desafios: ['Vulnerabilidade excessiva', 'Mimovariância', 'Co-dependência'],
+    desafios: ['Vulnerabilidade excessiva', 'MudancVariância', 'Co-dependência'],
     oracao: 'Iemanjá, mãe do mar, abraça-me com sua proteção. Que suas águas lavem minhas preocupações.',
   },
   {
@@ -111,7 +162,7 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     misterio: 'Rei da Justiça e do Trovão',
     ebos: ['Amalá', 'Velas vermelha e preta', 'Pirão de dendê'],
     numerologia: { caminhoVida: 4, destino: 4, alma: 4 },
-    sefirot: ['Chesed', 'Hod'],
+    sefirot: ['Chesed', 'Hod', 'Gevurah'],
     tarot: ['A Justiça', 'O Carro', 'A Torre'],
     elemento: 'Fogo',
     qualidade: ['Justiça', 'Equilíbrio', 'Autoridade', 'Sabedoria política', 'Força'],
@@ -124,7 +175,7 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     saudacao: 'Oê Oxum!',
     elementos: ['Água', 'Rios'],
     cores: ['Dourado', 'Amarelo', 'Azul claro'],
-    dia: 'Sábado',
+    dia: 'Sexta-feira',
     chakra: '4 - Cardíaco',
     planeta: 'Vênus',
     ervas: ['Calêndula', 'Rosa', 'Malva'],
@@ -132,7 +183,7 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     misterio: 'Rainha dos Rios, Deusa da Beleza e Amor',
     ebos: ['Mel', 'Velas douradas', 'Perfume de flor'],
     numerologia: { caminhoVida: 5, destino: 5, alma: 5 },
-    sefirot: ['Netzach', 'Tiferet'],
+    sefirot: ['Netzach', 'Tipheret', 'Chesed'],
     tarot: ['A Imperatriz', 'A Estrela', 'O Hierofante'],
     elemento: 'Água',
     qualidade: ['Beleza', 'Amor', 'Prosperidade', 'Charme', 'Sensualidade'],
@@ -174,10 +225,10 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     misterio: 'Rei da Criação, Senhor da Pureza',
     ebos: ['Canjica branca', 'Velas brancas', 'Farinha de milho'],
     numerologia: { caminhoVida: 7, destino: 7, alma: 7 },
-    sefirot: ['Keter', 'Chokhmah'],
+    sefirot: ['Kether', 'Chokhmah', 'Tipheret'],
     tarot: ['O Hierofante', 'O Eremita', 'A Lua'],
-    elemento: 'Luz',
-    qualidade: ['Pureza', 'Sabedoria', ' Misericórdia', 'Criação', 'Altruísmo'],
+    elemento: 'Éter',
+    qualidade: ['Pureza', 'Sabedoria', 'Misericordia', 'Criação', 'Altruísmo'],
     desafios: ['Tolerância excessiva', 'Procrastinação', 'Isolamento'],
     oracao: 'Obatalá, criador puro, dai-me a sabedoria para criar com equilíbrio e a misericórdia para ajudar.',
   },
@@ -195,7 +246,7 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     misterio: 'Senhor das Doenças e da Cura',
     ebos: ['Pipoca', 'Velas pretas e vermelhas', 'Ervas de cura'],
     numerologia: { caminhoVida: 8, destino: 8, alma: 8 },
-    sefirot: ['Binah', 'Malkuth'],
+    sefirot: ['Binah', 'Malkuth', 'Gevurah'],
     tarot: ['A Morte', 'O Julgamento', 'A Torre'],
     elemento: 'Terra',
     qualidade: ['Cura', 'Transformação', 'Renovação', 'Resistência', 'Sabedoria'],
@@ -216,7 +267,7 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     misterio: 'Senhor das Matas e da Caça',
     ebos: ['Velas verdes', 'Frutas', 'Cornos de animal'],
     numerologia: { caminhoVida: 9, destino: 9, alma: 9 },
-    sefirot: ['Netzach', 'Hod'],
+    sefirot: ['Netzach', 'Hod', 'Chokhmah'],
     tarot: ['O Hierofante', 'O Carro', 'A Estrela'],
     elemento: 'Ar',
     qualidade: ['Conhecimento', 'Sabedoria', 'Caça', 'Liberdade', 'Justiça'],
@@ -226,7 +277,7 @@ const ORIXA_PROFILES: OrixaProfile[] = [
   {
     id: 'logunedede',
     nome: 'Logun-Edé',
-    saudacao: 'Oê- ê!',
+    saudacao: 'Oê-ê!',
     elementos: ['Água', 'Fogo'],
     cores: ['Verde', 'Amarelo', 'Vermelho'],
     dia: 'Quinta-feira',
@@ -237,11 +288,11 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     misterio: 'Orixá da Fertilidade e da Dança',
     ebos: ['Velas verde e amarela', 'Milho', 'Frutas tropicais'],
     numerologia: { caminhoVida: 11, destino: 11, alma: 11 },
-    sefirot: ['Tiferet', 'Netzach'],
+    sefirot: ['Tipheret', 'Netzach', 'Chesed'],
     tarot: ['A Imperatriz', 'O Carro', 'A Estrela'],
     elemento: 'Água',
     qualidade: ['Fertilidade', 'Dança', 'Juventude', 'Abundância', 'Versatilidade'],
-    desafios: ['Imaturidade', 'Instabilidade', 'superficialidade'],
+    desafios: ['Imaturidade', 'Instabilidade', 'Superficialidade'],
     oracao: 'Logun-Edé, senhor da fertilidade, abençoa minha vida com abundância e alegria dançante.',
   },
   {
@@ -258,7 +309,7 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     misterio: 'Mensageiro dos Orixás, Senhor dos Caminhos',
     ebos: ['Cachaça', 'Pirão de milho', 'Pimenta'],
     numerologia: { caminhoVida: 3, destino: 3, alma: 3 },
-    sefirot: ['Hod'],
+    sefirot: ['Hod', 'Gevurah'],
     tarot: ['O Louco', 'O Mago', 'Os Enamorados'],
     elemento: 'Fogo',
     qualidade: ['Comunicação', 'Liberdade', 'Pragmatismo', 'Flexibilidade', 'Energia'],
@@ -276,81 +327,159 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     planeta: 'Saturno',
     ervas: ['Lama', 'Barro', 'Musgo'],
     quizilas: ['Não pode comer banana', 'Não pode ser soberbo', 'Não pode desrespeitar os antigos'],
-    misterio: 'Ancientã dos Orixás, Senhora da Lama e da Morte',
+    misterio: 'Anciã dos Orixás, Senhora da Lama e da Morte',
     ebos: ['Lama sagrada', 'Velas azuis e roxas', 'Água de chuva'],
     numerologia: { caminhoVida: 11, destino: 11, alma: 11 },
-    sefirot: ['Binah', 'Keter'],
+    sefirot: ['Binah', 'Kether', 'Yesod'],
     tarot: ['O Mundo', 'O Julgamento', 'A Lua'],
     elemento: 'Água',
-    qualidade: ['Sabedoria ancestral', 'Morte e renascimento', 'Paciência', ' Humildade', 'Sustento'],
+    qualidade: ['Sabedoria ancestral', 'Morte e renascimento', 'Paciência', 'Humildade', 'Sustento'],
     desafios: ['Tristeza', 'Rigidez', 'Medo da mudança'],
     oracao: 'Nanã Buruku, anciã sagrada, ensina-me a sabedoria dos antigos e a aceitar a transformação.',
   },
 ];
 
+function enrichProfile(profile: typeof ORIXA_PROFILES[number]) {
+  const corr = ORIXA_SPIRITUAL_CORRELATIONS[profile.id] || ORIXA_SPIRITUAL_CORRELATIONS['oxala'];
+  return {
+    ...profile,
+    spiritualCorrelations: {
+      sefirot: corr.sefirot,
+      chakra: corr.chakra,
+      element: corr.element,
+      orixa: corr.orixa,
+      affirmation: corr.affirmation,
+      frequency: corr.frequency,
+    },
+  };
+}
+
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const orixa = searchParams.get('orixa');
-  const element = searchParams.get('element');
-  const chakra = searchParams.get('chakra');
-  const dia = searchParams.get('dia');
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = OrixaQuerySchema.safeParse({
+      orixa: searchParams.get('orixa'),
+      element: searchParams.get('element'),
+      chakra: searchParams.get('chakra'),
+      sefirot: searchParams.get('sefirot'),
+      dia: searchParams.get('dia'),
+      limit: searchParams.get('limit'),
+    });
 
-  let profiles = ORIXA_PROFILES;
-
-  if (orixa) {
-    const orixaLower = orixa.toLowerCase();
-    const matched = profiles.find(
-      (p) =>
-        p.nome.toLowerCase() === orixaLower ||
-        p.nome.toLowerCase().includes(orixaLower) ||
-        p.id === orixaLower
-    );
-
-    if (!matched) {
-      const suggestions = profiles
-        .filter((p) => p.nome.toLowerCase().includes(orixaLower))
-        .map((p) => p.nome);
-
-      return NextResponse.json(
-        {
-          profile: null,
-          error: 'Orixá não encontrado',
-          suggestions: suggestions.length > 0 ? suggestions : profiles.map((p) => p.nome),
-        },
-        { status: 404 }
-      );
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
 
-    return NextResponse.json({ profile: matched });
-  }
+    const { orixa, element, chakra, sefirot, dia, limit } = parseResult.data;
+    let profiles = ORIXA_PROFILES.map(enrichProfile);
 
-  if (element) {
-    const elementLower = element.toLowerCase();
-    profiles = profiles.filter((p) =>
-      p.elementos.some((e) => e.toLowerCase().includes(elementLower)) ||
-      p.elemento.toLowerCase().includes(elementLower)
-    );
-  }
+    if (orixa) {
+      const orixaLower = orixa.toLowerCase();
+      const matched = profiles.find(
+        (p) =>
+          p.nome.toLowerCase() === orixaLower ||
+          p.nome.toLowerCase().includes(orixaLower) ||
+          p.id === orixaLower
+      );
 
-  if (chakra) {
-    const chakraMatch = chakra.replace(/[^0-9]/g, '');
-    profiles = profiles.filter((p) => p.chakra.includes(chakraMatch));
-  }
+      if (!matched) {
+        const suggestions = profiles
+          .filter((p) => p.nome.toLowerCase().includes(orixaLower))
+          .map((p) => p.nome);
 
-  if (dia) {
-    const diaLower = dia.toLowerCase();
-    profiles = profiles.filter((p) => p.dia.toLowerCase().includes(diaLower));
-  }
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Orixá não encontrado',
+            suggestions: suggestions.length > 0 ? suggestions : profiles.map((p) => p.nome),
+          },
+          { status: 404 }
+        );
+      }
 
-  return NextResponse.json({
-    profiles,
-    meta: {
-      total: profiles.length,
-      filters: {
-        element: element || null,
-        chakra: chakra || null,
-        dia: dia || null,
+      return NextResponse.json({
+        success: true,
+        profile: matched,
+        spiritualCorrelations: ORIXA_SPIRITUAL_CORRELATIONS,
+        meta: {
+          filters: { orixa, element, chakra, sefirot, dia },
+        },
+      });
+    }
+
+    if (element) {
+      profiles = profiles.filter((p) => p.elemento === element || p.spiritualCorrelations.element === element);
+    }
+
+    if (chakra) {
+      profiles = profiles.filter((p) => p.spiritualCorrelations.chakra === chakra);
+    }
+
+    if (sefirot) {
+      profiles = profiles.filter((p) => p.spiritualCorrelations.sefirot.includes(sefirot));
+    }
+
+    if (dia) {
+      const diaMap: Record<string, string[]> = {
+        'domingo': ['Sexta-feira'],
+        'segunda': ['Segunda-feira'],
+        'terca': ['Terça-feira'],
+        'quarta': ['Quarta-feira'],
+        'quinta': ['Quinta-feira'],
+        'sexta': ['Sexta-feira'],
+        'sabado': ['Terça-feira'],
+      };
+      const allowed = diaMap[dia] || [];
+      profiles = profiles.filter((p) => allowed.some(d => p.dia.includes(d)));
+    }
+
+    if (limit && limit < profiles.length) {
+      profiles = profiles.slice(0, limit);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      bySefirot: profiles.reduce((acc, p) => {
+        p.spiritualCorrelations.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: profiles.reduce((acc, p) => {
+        const ch = p.spiritualCorrelations.chakra;
+        acc[ch] = (acc[ch] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: profiles.reduce((acc, p) => {
+        const e = p.spiritualCorrelations.element;
+        acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byPlanet: profiles.reduce((acc, p) => {
+        acc[p.planeta] = (acc[p.planeta] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      profiles,
+      meta: {
+        total: profiles.length,
+        filters: { orixa, element, chakra, sefirot, dia, limit },
       },
-    },
-  });
+      spiritualCorrelations: ORIXA_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+    });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
+  }
 }
