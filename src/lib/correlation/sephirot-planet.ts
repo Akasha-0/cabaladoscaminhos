@@ -175,3 +175,22 @@ export function getSephirotByLetter(letter: string): SephirotPlanet | null {
   );
   return found ?? null;
 }
+
+/**
+ * Get the planet name for a given sephirah
+ * Alias for backward compatibility - returns planeta_regente field
+ * @param sephirah - The name of the Sephirah
+ * @returns The planet name or null if not found
+ */
+export function getPlanetSephirot(sephirah: string): string | null {
+  return SEPHIROT_PLANET_MAPPINGS[sephirah]?.planeta_regente ?? null;
+}
+
+/**
+ * Get all Sephirot-planet mappings
+ * Alias for getAllSephirotPlanetMappings for naming consistency
+ * @returns Array of all correlation mappings
+ */
+export function getAllSephirotPlanets(): SephirotPlanet[] {
+  return Object.values(SEPHIROT_PLANET_MAPPINGS);
+}

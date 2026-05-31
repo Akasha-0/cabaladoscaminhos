@@ -280,3 +280,43 @@ describe('sephirot-planet', () => {
     });
   });
 });
+  // ─── getPlanetSephirot ──────────────────────────────────────────────────────
+  describe('getPlanetSephirot', () => {
+    it('returns Vênus for Kether', () => {
+      expect(getPlanetSephirot('Kether')).toBe('Vênus');
+    });
+    it('returns Saturno for Binah', () => {
+      expect(getPlanetSephirot('Binah')).toBe('Saturno');
+    });
+    it('returns Sol for Tiphereth', () => {
+      expect(getPlanetSephirot('Tiphereth')).toBe('Sol');
+    });
+    it('returns Lua for Yesod', () => {
+      expect(getPlanetSephirot('Yesod')).toBe('Lua');
+    });
+    it('returns Terra for Malkuth', () => {
+      expect(getPlanetSephirot('Malkuth')).toBe('Terra');
+    });
+    it('returns null for unknown Sephirah', () => {
+      expect(getPlanetSephirot('Unknown')).toBeNull();
+    });
+    it('returns null for empty string', () => {
+      expect(getPlanetSephirot('')).toBeNull();
+    });
+  });
+  // ─── getAllSephirotPlanets ─────────────────────────────────────────────────
+  describe('getAllSephirotPlanets', () => {
+    it('returns all 10 Sephiroth mappings', () => {
+      const result = getAllSephirotPlanets();
+      expect(result).toHaveLength(10);
+    });
+    it('returns same result as getAllSephirotPlanetMappings', () => {
+      expect(getAllSephirotPlanets()).toEqual(getAllSephirotPlanetMappings());
+    });
+    it('contains unique sephiroth names', () => {
+      const result = getAllSephirotPlanets();
+      const names = result.map((r) => r.sephirah);
+      const unique = new Set(names);
+      expect(unique.size).toBe(10);
+    });
+  });
