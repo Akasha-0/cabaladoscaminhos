@@ -2,6 +2,7 @@
 // Divination API - skip linting
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const DivinationMethod = z.enum(['búzios', 'cards', 'cowries', 'opalã', 'ebós', 'geomancia']);
 const DivinationDomain = z.enum(['amor', 'trabalho', 'saúde', 'espiritual', 'financeiro', 'geral']);
@@ -11,6 +12,7 @@ const DivinationQuerySchema = z.object({
   intensity: z.coerce.number().int().min(1).max(3).optional().default(2),
   count: z.coerce.number().int().min(1).max(16).optional(),
 });
+
 export interface DivinationReading {
   id: string;
   method: DivinationMethod;
@@ -19,10 +21,34 @@ export interface DivinationReading {
   guidance: string;
   warnings?: string[];
   timestamp: string;
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
-// ============================================================
-// ============================================================
 
+// ─── Spiritual Correlations by Method ──────────────────────────────────────────────────
+const DIVINATION_SPIRITUAL_CORRELATIONS: Record<DivinationMethod, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  búzios: { sefirot: ['Binah', 'Chokhmah'], chakra: 6, element: 'Água', orixa: 'Orunmilá', affirmation: 'A sabedoria ancestral guia meus passos', frequency: '528 Hz' },
+  cards: { sefirot: ['Tipheret', 'Hod'], chakra: 6, element: 'Ar', orixa: 'Oxalá', affirmation: 'As cartas revelam minha verdade interior', frequency: '639 Hz' },
+  cowries: { sefirot: ['Chesed', 'Gevurah'], chakra: 4, element: 'Fogo', orixa: 'Ogum', affirmation: 'A energia dos cowries limpa meu caminho', frequency: '741 Hz' },
+  opalã: { sefirot: ['Netzach', 'Yesod'], chakra: 5, element: 'Água', orixa: 'Oxum', affirmation: 'A opalã conecta-me com a energia feminina', frequency: '528 Hz' },
+  ebós: { sefirot: ['Chesed', 'Malkuth'], chakra: 3, element: 'Terra', orixa: 'Xangô', affirmation: 'O ebó transforma minha realidade', frequency: '396 Hz' },
+  geomancia: { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Omolu', affirmation: 'A geomância revela os padrões da terra', frequency: '396 Hz' },
+};
+
+// ============================================================
 const divinationSymbols = {
   búzios: [
     'Ogundá', 'Eyioko', 'Opossa', 'Alosso', 'Oxê', 'Otrupá',
@@ -203,6 +229,7 @@ export async function GET(request: NextRequest) {
     const interpretation = interpretSymbols(method, symbols, domain);
     const guidance = generateGuidance(method, symbols, domain);
     const warnings = generateWarnings(method, domain);
+    const spiritualCorr = DIVINATION_SPIRITUAL_CORRELATIONS[method];
 
     const reading: DivinationReading = {
       id: generateId(),
@@ -211,17 +238,28 @@ export async function GET(request: NextRequest) {
       interpretation,
       guidance,
       warnings,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      spiritualCorrelations: {
+        sefirot: spiritualCorr.sefirot,
+        chakra: spiritualCorr.chakra,
+        element: spiritualCorr.element,
+        orixa: spiritualCorr.orixa,
+        affirmation: spiritualCorr.affirmation,
+        frequency: spiritualCorr.frequency,
+      },
     };
 
     return NextResponse.json({
       success: true,
       data: reading,
+      spiritualCorrelations: spiritualCorr,
       meta: {
         method,
         domain,
         intensity,
-        timestamp: reading.timestamp
+        timestamp: reading.timestamp,
+        availableMethods: validMethods,
+        availableDomains: validDomains,
       }
     });
   } catch (_error) {
