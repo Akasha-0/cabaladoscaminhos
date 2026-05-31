@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-31
-**Sprints completados:** 490
+**Sprints completados:** 491
 **Tests: ✅ 10531 passing, 31 skipped, 0 failed**
  - Prisma 7 + PostgreSQL via pg adapter
  - Redis/ioredis for caching
@@ -8,6 +8,14 @@
  - OpenAI SDK integrated
  - jsPDF for PDF exports (dynamic import)
  - Minimax API integration for AI responses
+
+### Sprint 491 — Offerings, Food Sacred & Cleansing (COMPLETE)
+Enhanced APIs with spiritual correlations:
+- offerings: 10 Ebós and Ofertas with spiritual correlations + affirmation + frequency
+- food/sacred: 12 sacred foods + 5 categories with spiritual correlations
+- cleansing: 5 cleansing types + 5 rituals with spiritual correlations
+Bonus: Fixed compatibility/zodiac const reassignment bug.
+Build ✅ Exit 0 | 270 engine tests passing.
 
 ### Sprint 490 — Orixá Profiles, Ifá & Cabala Sefirot (COMPLETE)
 Enhanced APIs with spiritual correlations:
