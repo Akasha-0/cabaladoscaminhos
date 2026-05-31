@@ -22,7 +22,24 @@ const AkashicQuerySchema = z.object({
 // ============================================================
 export type RecordType = z.infer<typeof RecordTypeSchema>;
 export type AccessLevel = z.infer<typeof AccessLevelSchema>;
-
+export interface AkashicQuery {
+  recordType?: RecordType;
+  accessLevel?: AccessLevel;
+  soulAge?: string;
+  theme?: string;
+}
+export interface AkashicRecord {
+  id: string;
+  recordType: RecordType;
+  accessLevel: AccessLevel;
+  entry: string;
+  insights: string[];
+  guidance: string;
+  symbols: string[];
+  affirmations: string[];
+  practices: string[];
+  timestamp: string;
+}
 const guidanceTemplates: Record<RecordType, string[]> = {
   life: [
     'You are currently experiencing a pivotal transformation phase',
@@ -199,50 +216,29 @@ function generateSymbols(accessLevel: AccessLevel): string[] {
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-
-    const recordTypeParam = searchParams.get('recordType');
-    const accessLevelParam = searchParams.get('accessLevel');
-    const soulAgeParam = searchParams.get('soulAge');
-    const themeParam = searchParams.get('theme');
-
-    // Validate record type
-    const recordType: RecordType = (recordTypeParam as RecordType) || 'life';
-    const validRecordTypes: RecordType[] = [
-      'life', 'karma', 'soul', 'past_life', 'future', 'ancestral', 'universal'
-    ];
-
-    if (!validRecordTypes.includes(recordType)) {
-      return NextResponse.json(
-        {
-          error: 'Tipo de registro inválido',
-          validRecordTypes
-        },
-        { status: 400 }
-      );
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = AkashicQuerySchema.safeParse({
+      recordType: searchParams.get('recordType'),
+      accessLevel: searchParams.get('accessLevel'),
+      soulAge: searchParams.get('soulAge'),
+      theme: searchParams.get('theme'),
+      limit: searchParams.get('limit'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
-
-    // Validate access level
-    const accessLevel: AccessLevel = (accessLevelParam as AccessLevel) || 'basic';
-    const validAccessLevels: AccessLevel[] = ['basic', 'intermediate', 'advanced', 'master'];
-
-    if (!validAccessLevels.includes(accessLevel)) {
-      return NextResponse.json(
-        {
-          error: 'Nível de acesso inválido',
-          validAccessLevels
-        },
-        { status: 400 }
-      );
-    }
-
+    const { recordType = 'life', accessLevel = 'basic', soulAge, theme, limit } = parseResult.data;
     // Generate record based on parameters
     const entry = generateEntry(recordType, accessLevel);
     const insights = generateInsights(recordType, accessLevel);
     const guidance = insights[0] || 'Trust the process of your spiritual journey';
     const symbols = generateSymbols(accessLevel);
-    const affirmations = getRandomItems(affirmationSets[recordType], 4);
+    const affirmations = getRandomItems(affirmationSets[recordType], limit ?? 4);
     const practices = getRandomItems(practiceSets[recordType], accessThresholds[accessLevel]);
+    const record: AkashicRecord = {
 
     const record: AkashicRecord = {
       id: generateId(),
