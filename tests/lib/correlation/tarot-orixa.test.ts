@@ -23,6 +23,7 @@ import {
   TAROT_ORIXA_MAPPINGS,
   type TarotOrixaMapping,
 } from '@/lib/correlation/tarot-orixa';
+import { ORIXA_TAROT_MAPPINGS } from '@/lib/correlation/orixa-tarot';
 
 describe('Tarot-Orixá Correlation', () => {
   describe('getTarotOrixa', () => {
@@ -513,13 +514,11 @@ describe('Tarot-Orixá Correlation', () => {
 
   describe('Spiritual correlation consistency', () => {
     it('should be reverse of ORIXA_TAROT_MAPPINGS', () => {
-      const { ORIXA_TAROT_MAPPINGS } = await import('@/lib/correlation/orixa-tarot');
-      
       // Verify all tarot-orixa mappings have corresponding orixa-tarot mappings
       for (const arcano of getAllArcanos()) {
         const tarotMapping = getTarotOrixa(arcano);
         const orixaMapping = ORIXA_TAROT_MAPPINGS[tarotMapping.orixa];
-        
+
         expect(orixaMapping).toBeDefined();
         expect(orixaMapping.arcano).toBe(arcano);
         expect(orixaMapping.numero_carta).toBe(tarotMapping.numero_carta);
