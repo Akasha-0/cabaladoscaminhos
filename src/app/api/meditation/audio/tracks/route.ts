@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const AudioTracksQuerySchema = z.object({
+  id: z.string().optional(),
+  category: z.string().optional(),
+  orixa: z.string().optional(),
+  chakra: z.string().optional(),
+  frequency: z.string().optional(),
+  tags: z.string().optional(),
+  duration: z.coerce.number().positive().optional(),
+  limit: z.coerce.number().int().positive().max(100).optional().default(50),
+  offset: z.coerce.number().int().min(0).optional().default(0),
+});
 export interface AudioTrack {
   id: string;
   name: string;
@@ -18,7 +30,7 @@ export interface AudioTrack {
   size: number;
   createdAt: string;
 }
-
+const tracks: AudioTrack[] = [
 const tracks: AudioTrack[] = [
   {
     id: 'track_001',
