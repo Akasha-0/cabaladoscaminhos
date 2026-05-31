@@ -38,17 +38,6 @@ interface Pattern {
   alerts?: string[];
   metrics?: Record<string, number>;
 }
-interface Pattern {
-  id: string;
-  type: 'spiritual' | 'technical' | 'mixed';
-  title: string;
-  description: string;
-  confidence: number;
-  timestamp: string;
-  alerts?: string[];
-  metrics?: Record<string, number>;
-}
-
 // Spiritual-Technical mappings from IDEIA.md
 const SPIRITUAL_TECHNICAL_MAPPINGS: Correlation[] = [
   {
