@@ -38,7 +38,7 @@ const STATE_SPIRITUAL_CORRELATIONS: Record<string, {
     affirmation: 'Um novo ciclo começa em mim',
     frequency: '963 Hz',
   },
-  lua-crescente: {
+  "lua-crescente": {
     sefirot: ['Chokhmah', 'Netzach'],
     chakra: 6,
     element: 'Fogo',
