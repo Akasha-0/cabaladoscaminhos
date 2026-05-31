@@ -273,6 +273,7 @@ export default {
   getNumerologyByDay,
   getNumerologyDay,
   getNumerologyDays,
+  getAllDayNumerologies,
   getAllDayNumerology,
   getDaySpiritualMeaning,
   getNumerologyProperties,
