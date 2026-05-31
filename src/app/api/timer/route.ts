@@ -53,18 +53,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to create timer" }, { status: 500 });
 }
 export async function GET(req: NextRequest) {
-
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id");
-
-  if (id) {
-    const entry = timers.get(id);
-    if (!entry) {
-      return NextResponse.json({ error: "Timer not found" }, { status: 404 });
+  try {
+    const { searchParams } = new URL(req.url);
+    const parseResult = TimerQuerySchema.safeParse({ id: searchParams.get("id") });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Invalid request',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
-    return NextResponse.json(entry);
-  }
-
-  return NextResponse.json(Array.from(timers.values()));
+    const { id } = parseResult.data;
+    if (id) {
+      const entry = timers.get(id);
+      if (!entry) {
+        return NextResponse.json({ error: "Timer not found" }, { status: 404 });
+      }
+      return NextResponse.json(entry);
+    }
+    return NextResponse.json(Array.from(timers.values()));
+  } catch {
+    return NextResponse.json({ error: "Failed to get timers" }, { status: 500 });
 }

@@ -6,63 +6,38 @@
  * elements in the Cabala dos Caminhos spiritual system.
  */
 
-/**
- * Element types in the spiritual system
- */
 export type ElementoTipo = 'fogo' | 'água' | 'terra' | 'ar' | 'éter';
 
-/**
- * Represents the correlation between a numerology number and its elemental properties
- */
 export interface NumerologyElement {
-  /** Numerology number */
   numero: number;
-  /** Element key */
   elemento: ElementoTipo;
-  /** Element name in Portuguese */
   elemento_nome: string;
-  /** Element name in English */
   elemento_english: string;
-  /** Primary spiritual meaning */
   significado_espiritual: string;
-  /** Archetypal essence */
   arquetipo: string;
-  /** Associated orixá */
   orixa: string;
-  /** Associated sephirah */
   sephirah: string;
-  /** Chakra correspondence */
   chakra: string;
-  /** Primary planet */
   planeta: string;
-    /** Associated color */
-    cor: string;
   cor: string;
-  /** Cardinal direction */
   direcao: string;
-  /** Element qualities */
   qualidades: {
-    /** Element strengths */
     forca: string;
-    /** Element challenges */
     desafio: string;
-    /** Life lesson */
     licao: string;
-    /** Spiritual affirmation */
     afirmacao: string;
   };
-  /** Energy quality */
   energia: {
     tipo: 'Quente' | 'Frio' | 'Neutro';
     polaridade: 'Yang' | 'Yin' | 'Equilibrado';
   };
 }
 
-// Fogo numbers: 1, 3, 6, 12
-// Água numbers: 2, 5, 9
-// Terra numbers: 4, 10, 13
-// Ar numbers: 7, 8
-// Éter numbers: 11
+// fogo: 1, 3, 6, 12
+// água: 2, 5, 9
+// terra: 4, 10, 13
+// ar: 7, 8
+// éter: 11
 
 export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
   1: {
