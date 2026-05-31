@@ -97,6 +97,42 @@ interface ContentModule {
   totalDuration: number;
   sefirot?: string[];
   orixa?: string;
+// ─── Content Spiritual Correlations ──────────────────────────────────────────────────
+const CONTENT_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  'cabala': { sefirot: ['Kether', 'Chokhmah', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A sabedoria da Cabala ilumina minha alma', frequency: '963 Hz' },
+  'orixa': { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'A energia do Orixá flui através de mim', frequency: '528 Hz' },
+  'tarot': { sefirot: ['Chokhmah', 'Hod'], chakra: 6, element: 'Ar', orixa: 'Oxalá', affirmation: 'Os símbolos do Tarot revelam minha verdade', frequency: '528 Hz' },
+  'astrologia': { sefirot: ['Kether', 'Tipheret'], chakra: 6, element: 'Fogo', orixa: 'Iemanjá', affirmation: 'Os astros guiam meu caminho', frequency: '639 Hz' },
+  'numerologia': { sefirot: ['Chokhmah', 'Binah'], chakra: 6, element: 'Ar', orixa: 'Orunmilá', affirmation: 'Os números revelam minha jornada de alma', frequency: '741 Hz' },
+  'chakras': { sefirot: ['Tipheret', 'Kether'], chakra: 7, element: 'Fogo', orixa: 'Oxalá', affirmation: 'Meus chakras fluem em harmonia perfeita', frequency: '528 Hz' },
+  'meditacao': { sefirot: ['Kether', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'No silêncio, encontro minha essência', frequency: '963 Hz' },
+  'ritual': { sefirot: ['Chesed', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Ogum', affirmation: 'O ritual sagrado transforma minha realidade', frequency: '528 Hz' },
+  'ancestral': { sefirot: ['Binah', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'A linhagem ancestral me sustenta', frequency: '639 Hz' },
+  'yoga': { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'O corpo é templo do espírito', frequency: '396 Hz' },
+};
+
+function enrichContentItem(item: ContentItem & Record<string, unknown>, modTitle: string) {
+  const categoryKey = (item.category || '').toLowerCase().replace(/[^a-z]/g, '');
+  const corr = CONTENT_SPIRITUAL_CORRELATIONS[categoryKey] || CONTENT_SPIRITUAL_CORRELATIONS['cabala'];
+  return {
+    ...item,
+    moduleTitle: modTitle,
+    spiritualCorrelations: {
+      sefirot: corr.sefirot,
+      chakra: corr.chakra,
+      element: corr.element,
+      orixa: corr.orixa,
+      affirmation: corr.affirmation,
+      frequency: corr.frequency,
+    },
+  };
 }
 
 export const dynamic = 'force-dynamic';
