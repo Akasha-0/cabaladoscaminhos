@@ -1,67 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { calcularMapaNatal } from '@/lib/astrologia/planetas/posicoes';
 import { calcularAspectos } from '@/lib/astrologia/planetas/aspectos';
 import type { MapaNatal, Aspecto, Planeta } from '@/lib/astrologia/tipos';
-
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const AnaliseQuerySchema = z.object({
+  dataNascimento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD'),
+  horaNascimento: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/, 'Formato: HH:MM ou HH:MM:SS').optional(),
+  latitude: z.string().regex(/^-?\d+\.?\d*$/, 'Latitude inválida'),
+  longitude: z.string().regex(/^-?\d+\.?\d*$/, 'Longitude inválida'),
+});
 interface AnaliseStrength {
-  categoria: string;
-  descricao: string;
-  planetasEnvolvidos: Planeta[];
-}
-
-interface AnaliseChallenge {
-  categoria: string;
-  descricao: string;
-  planetasEnvolvidos: Planeta[];
-}
-
-interface InterpretacaoPlaneta {
-  planeta: Planeta;
-  signo: string;
-  casa: number;
-  energia: 'positiva' | 'desafiadora' | 'neutra';
-  descricao: string;
-}
-
 function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const dataNascimento = searchParams.get('dataNascimento');
-    const horaNascimento = searchParams.get('horaNascimento') || '12:00';
-    const latitude = searchParams.get('latitude');
-    const longitude = searchParams.get('longitude');
-    
-    if (!dataNascimento || !latitude || !longitude) {
-      return NextResponse.json({ 
-        error: 'Dados incompletos para análise' 
+    const parseResult = AnaliseQuerySchema.safeParse({
+      dataNascimento: searchParams.get('dataNascimento'),
+      horaNascimento: searchParams.get('horaNascimento'),
+      latitude: searchParams.get('latitude'),
+      longitude: searchParams.get('longitude'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
-    
+    const { dataNascimento, horaNascimento = '12:00', latitude, longitude } = parseResult.data;
     const mapaNatal = calcularMapaNatal(
       new Date(dataNascimento),
       horaNascimento,
       parseFloat(latitude),
       parseFloat(longitude)
     );
-    
     const posicoes = Object.values(mapaNatal.planeta);
     const aspectos = calcularAspectos(posicoes);
-    
     const strengths = analyzeStrengths(mapaNatal, aspectos);
     const challenges = analyzeChallenges(mapaNatal, aspectos);
     const interpretacao = generateInterpretation(mapaNatal, aspectos);
-    
     return NextResponse.json({
       mapaNatal,
       aspectos,
       strengths,
       challenges,
       interpretacao,
-    }, {
       headers: {
         'Cache-Control': 'public, max-age=259200, stale-while-revalidate=604800',
       },
