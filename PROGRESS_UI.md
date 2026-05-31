@@ -131,3 +131,42 @@
 1. **Sefirot Interativas** - Click → Tooltip com significados
 2. **Correlação Total** - Odu ↔ Orixá ↔ Sefira ↔ Chakra
 3. **Tema Claro** - Light mode
+---
+
+## SPRINT 225 - CORRELAÇÃO CRUZADA IMPLEMENTADA
+
+**Data:** 2026-05-31
+**Status:** ✅ CONCLUÍDO
+
+### Alterações Realizadas
+
+1. **Importações de Correlação Adicionadas**
+   - `getChakraSephirot` - Chakra ↔ Sefira
+   - `getSephirotOrixa` - Sefira ↔ Orixá
+   - `getOrixaChakra` - Orixá ↔ Chakra
+   - `getChakraOdu` - Chakra ↔ Odú
+
+2. **Tooltip Cruzado Implementado**
+   - Antigo tooltip: mostrava apenas Nome Divino, Qualidade, Elemento
+   - Novo tooltip: mostra 4 correlações cruzadas em tempo real
+     - ⚡ Orixá (com energia)
+     - 🔮 Chakra (com caminho da Árvore)
+     - 🌀 Odú Ifá (com elemento)
+   - Conexão: Sefira → Orixá → Chakra → Odú
+
+3. **Arquitetura da Correlação**
+   ```
+   Sefira (Kether) → Orixá (Oxalá) → Chakra (Sahasrara) → Odú (Ogbe)
+   Sefira (Chokmah) → Orixá (Ogum) → Chakra (Muladhara) → Odú (Iroso)
+   ```
+
+4. **Verificação Build**
+   - Compile: ✅ 17.2s
+   - Generate: ✅ 169 páginas
+   - Zero erros
+
+### Próximo Ciclo
+
+1. **Animações de transição** - Tooltip com fade suave
+2. **Conexão visual** - Linhas ligando os elementos no tooltip
+3. **Estilos por tradição** - Cores distintas por sistema
