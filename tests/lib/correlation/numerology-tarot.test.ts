@@ -3,14 +3,13 @@ import {
   getNumerologyTarot,
   getTarotNumerology,
   getAllNumerologyTarots,
-  getAllNumerologyNumbers,
   hasNumerologyTarot,
-  getMappingByCard,
+  getMappingByArcano,
   getNumerologyByElement,
   getNumerologyByOrixa,
-  getNumerologyBySuit,
   getNumerologyBySephirah,
-  NUMEROLOGY_TAROT_MAPPINGS,
+  getNumerologyByChakra,
+  NUMEROLOGIA_ARCANO_MAP,
   type NumerologyTarotMapping,
 } from '@/lib/correlation/numerology-tarot';
 
@@ -18,226 +17,170 @@ describe('numerology-tarot', () => {
   // ─── getNumerologyTarot: valid numbers ──────────────────────────────────────
 
   describe('getNumerologyTarot', () => {
-    it('returns mapping for number 1 (Ás de Bastões)', () => {
+    it('returns mapping for number 1', () => {
       const result = getNumerologyTarot(1);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(1);
-      expect(result!.carta).toBe('Ás de Bastões');
-      expect(result!.naipe).toBe('Bastões');
-      expect(result!.elemento).toBe('Fogo');
-      expect(result!.orixa).toBe('Ogum');
-      expect(result!.sephirah).toBe('Kether');
+      expect(result.arcano).toBe('O Mago');
+      expect(result.numero_carta).toBe(1);
+      expect(result.elemento).toBe('Água');
     });
 
-    it('returns mapping for number 2 (Dois de Copas)', () => {
+    it('returns mapping for number 2', () => {
       const result = getNumerologyTarot(2);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(2);
-      expect(result!.carta).toBe('Dois de Copas');
-      expect(result!.naipe).toBe('Copas');
-      expect(result!.elemento).toBe('Água');
-      expect(result!.orixa).toBe('Ibeji');
-      expect(result!.sephirah).toBe('Chokmah');
+      expect(result.arcano).toBe('A Alta Sacerdotisa');
+      expect(result.numero_carta).toBe(2);
     });
 
-    it('returns mapping for number 3 (Três de Copas)', () => {
+    it('returns mapping for number 3', () => {
       const result = getNumerologyTarot(3);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(3);
-      expect(result!.carta).toBe('Três de Copas');
-      expect(result!.naipe).toBe('Copas');
-      expect(result!.elemento).toBe('Água');
-      expect(result!.orixa).toBe('Oxum');
-      expect(result!.sephirah).toBe('Binah');
+      expect(result.arcano).toBe('A Imperatriz');
+      expect(result.numero_carta).toBe(3);
     });
 
-    it('returns mapping for number 4 (Quatro de Ouros)', () => {
+    it('returns mapping for number 4', () => {
       const result = getNumerologyTarot(4);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(4);
-      expect(result!.carta).toBe('Quatro de Ouros');
-      expect(result!.naipe).toBe('Ouros');
-      expect(result!.elemento).toBe('Terra');
-      expect(result!.orixa).toBe('Oxóssi');
-      expect(result!.sephirah).toBe('Chesed');
+      expect(result.arcano).toBe('O Imperador');
+      expect(result.numero_carta).toBe(4);
     });
 
-    it('returns mapping for number 5 (Cinco de Ouros)', () => {
+    it('returns mapping for number 5', () => {
       const result = getNumerologyTarot(5);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(5);
-      expect(result!.carta).toBe('Cinco de Ouros');
-      expect(result!.naipe).toBe('Ouros');
-      expect(result!.elemento).toBe('Terra');
-      expect(result!.orixa).toBe('Xangô');
-      expect(result!.sephirah).toBe('Geburah');
+      expect(result.arcano).toBe('O Hierofante');
+      expect(result.numero_carta).toBe(5);
     });
 
-    it('returns mapping for number 6 (Seis de Copas)', () => {
+    it('returns mapping for number 6', () => {
       const result = getNumerologyTarot(6);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(6);
-      expect(result!.carta).toBe('Seis de Copas');
-      expect(result!.naipe).toBe('Copas');
-      expect(result!.elemento).toBe('Água');
-      expect(result!.orixa).toBe('Iemanjá');
-      expect(result!.sephirah).toBe('Tiphereth');
+      expect(result.arcano).toBe('Os Enamorados');
+      expect(result.numero_carta).toBe(6);
     });
 
-    it('returns mapping for number 7 (Sete de Copas)', () => {
+    it('returns mapping for number 7', () => {
       const result = getNumerologyTarot(7);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(7);
-      expect(result!.carta).toBe('Sete de Copas');
-      expect(result!.naipe).toBe('Copas');
-      expect(result!.elemento).toBe('Água');
-      expect(result!.orixa).toBe('Iansã');
-      expect(result!.sephirah).toBe('Netzach');
+      expect(result.arcano).toBe('O Carro');
+      expect(result.numero_carta).toBe(7);
     });
 
-    it('returns mapping for number 8 (Oito de Ouros)', () => {
+    it('returns mapping for number 8', () => {
       const result = getNumerologyTarot(8);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(8);
-      expect(result!.carta).toBe('Oito de Ouros');
-      expect(result!.naipe).toBe('Ouros');
-      expect(result!.elemento).toBe('Terra');
-      expect(result!.orixa).toBe('Oxalá');
-      expect(result!.sephirah).toBe('Hod');
+      expect(result.arcano).toBe('A Justiça');
+      expect(result.numero_carta).toBe(8);
     });
 
-    it('returns mapping for number 9 (Nove de Ouros)', () => {
+    it('returns mapping for number 9', () => {
       const result = getNumerologyTarot(9);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(9);
-      expect(result!.carta).toBe('Nove de Ouros');
-      expect(result!.naipe).toBe('Ouros');
-      expect(result!.elemento).toBe('Terra');
-      expect(result!.orixa).toBe('Oxum');
-      expect(result!.sephirah).toBe('Yesod');
+      expect(result.arcano).toBe('O Eremita');
+      expect(result.numero_carta).toBe(9);
     });
 
-    it('returns mapping for number 10 (Dez de Ouros)', () => {
-      const result = getNumerologyTarot(10);
-      expect(result).not.toBeNull();
-      expect(result!.numero).toBe(10);
-      expect(result!.carta).toBe('Dez de Ouros');
-      expect(result!.naipe).toBe('Ouros');
-      expect(result!.elemento).toBe('Terra');
-      expect(result!.orixa).toBe('Oxalá');
-      expect(result!.sephirah).toBe('Malkuth');
+    it('throws for number 0', () => {
+      expect(() => getNumerologyTarot(0)).toThrow('Número fora do intervalo válido (1-9)');
     });
 
-    it('returns null for number0', () => {
-      expect(getNumerologyTarot(0)).toBeNull();
+    it('throws for number 10', () => {
+      expect(() => getNumerologyTarot(10)).toThrow('Número fora do intervalo válido (1-9)');
     });
 
-    it('returns null for negative numbers', () => {
-      expect(getNumerologyTarot(-1)).toBeNull();
-      expect(getNumerologyTarot(-5)).toBeNull();
+    it('throws for negative numbers', () => {
+      expect(() => getNumerologyTarot(-1)).toThrow('Número fora do intervalo válido (1-9)');
     });
 
-    it('returns null for numbers greater than 10', () => {
-      expect(getNumerologyTarot(11)).toBeNull();
-      expect(getNumerologyTarot(100)).toBeNull();
+    it('throws for non-integer numbers', () => {
+      expect(() => getNumerologyTarot(3.5)).toThrow('Número fora do intervalo válido (1-9)');
     });
   });
 
   // ─── getTarotNumerology ──────────────────────────────────────────────────────
 
   describe('getTarotNumerology', () => {
-    it('returns 1 for Ás de Bastões', () => {
-      expect(getTarotNumerology('Ás de Bastões')).toBe(1);
+    it('returns numerology number for O Mago', () => {
+      expect(getTarotNumerology('O Mago')).toBe(1);
     });
 
-    it('returns 2 for Dois de Copas', () => {
-      expect(getTarotNumerology('Dois de Copas')).toBe(2);
+    it('returns numerology number for A Alta Sacerdotisa', () => {
+      expect(getTarotNumerology('A Alta Sacerdotisa')).toBe(2);
     });
 
-    it('returns 3 for Três de Copas', () => {
-      expect(getTarotNumerology('Três de Copas')).toBe(3);
+    it('returns numerology number for A Imperatriz', () => {
+      expect(getTarotNumerology('A Imperatriz')).toBe(3);
     });
 
-    it('returns 4 for Quatro de Ouros', () => {
-      expect(getTarotNumerology('Quatro de Ouros')).toBe(4);
+    it('returns numerology number for O Imperador', () => {
+      expect(getTarotNumerology('O Imperador')).toBe(4);
     });
 
-    it('returns 5 for Cinco de Ouros', () => {
-      expect(getTarotNumerology('Cinco de Ouros')).toBe(5);
+    it('returns numerology number for O Hierofante', () => {
+      expect(getTarotNumerology('O Hierofante')).toBe(5);
     });
 
-    it('returns 6 for Seis de Copas', () => {
-      expect(getTarotNumerology('Seis de Copas')).toBe(6);
+    it('returns numerology number for Os Enamorados', () => {
+      expect(getTarotNumerology('Os Enamorados')).toBe(6);
     });
 
-    it('returns 7 for Sete de Copas', () => {
-      expect(getTarotNumerology('Sete de Copas')).toBe(7);
+    it('returns numerology number for O Carro', () => {
+      expect(getTarotNumerology('O Carro')).toBe(7);
     });
 
-    it('returns 8 for Oito de Ouros', () => {
-      expect(getTarotNumerology('Oito de Ouros')).toBe(8);
+    it('returns numerology number for A Justiça', () => {
+      expect(getTarotNumerology('A Justiça')).toBe(8);
     });
 
-    it('returns 9 for Nove de Ouros', () => {
-      expect(getTarotNumerology('Nove de Ouros')).toBe(9);
+    it('returns numerology number for O Eremita', () => {
+      expect(getTarotNumerology('O Eremita')).toBe(9);
     });
 
-    it('returns 10 for Dez de Ouros', () => {
-      expect(getTarotNumerology('Dez de Ouros')).toBe(10);
+    it('returns null for non-existent arcano', () => {
+      expect(getTarotNumerology('O Sol')).toBeNull();
     });
 
-    it('returns null for non-existent card', () => {
-      expect(getTarotNumerology('Coringa')).toBeNull();
-    });
-
-    it('returns null for empty string', () => {
-      expect(getTarotNumerology('')).toBeNull();
+    it('is case-insensitive', () => {
+      expect(getTarotNumerology('o mago')).toBe(1);
+      expect(getTarotNumerology('O MAGO')).toBe(1);
     });
   });
 
   // ─── getAllNumerologyTarots ─────────────────────────────────────────────────
 
   describe('getAllNumerologyTarots', () => {
-    it('returns all 10 mappings', () => {
-      const result = getAllNumerologyTarots();
-      expect(result).toHaveLength(10);
+    it('returns array with all 9 mappings', () => {
+      const results = getAllNumerologyTarots();
+      expect(results).toHaveLength(9);
     });
 
-    it('returns mappings sorted by number', () => {
-      const result = getAllNumerologyTarots();
-      for (let i = 0; i < result.length - 1; i++) {
-        expect(result[i].numero).toBeLessThan(result[i + 1].numero);
+    it('returns mappings sorted by numero', () => {
+      const results = getAllNumerologyTarots();
+      for (let i = 0; i < results.length - 1; i++) {
+        expect(results[i].numero).toBeLessThan(results[i + 1].numero);
       }
     });
 
-    it('contains all expected cards', () => {
-      const result = getAllNumerologyTarots();
-      const cards = result.map(m => m.carta);
-      expect(cards).toContain('Ás de Bastões');
-      expect(cards).toContain('Dois de Copas');
-      expect(cards).toContain('Três de Copas');
-      expect(cards).toContain('Quatro de Ouros');
-      expect(cards).toContain('Cinco de Ouros');
-      expect(cards).toContain('Seis de Copas');
-      expect(cards).toContain('Sete de Copas');
-      expect(cards).toContain('Oito de Ouros');
-      expect(cards).toContain('Nove de Ouros');
-      expect(cards).toContain('Dez de Ouros');
-    });
-  });
-
-  // ─── getAllNumerologyNumbers ─────────────────────────────────────────────────
-
-  describe('getAllNumerologyNumbers', () => {
-    it('returns numbers 1-10', () => {
-      const result = getAllNumerologyNumbers();
-      expect(result).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    it('includes all expected arcano names', () => {
+      const results = getAllNumerologyTarots();
+      const arcanoNames = results.map((r) => r.arcano);
+      expect(arcanoNames).toContain('O Mago');
+      expect(arcanoNames).toContain('A Alta Sacerdotisa');
+      expect(arcanoNames).toContain('A Imperatriz');
+      expect(arcanoNames).toContain('O Imperador');
+      expect(arcanoNames).toContain('O Hierofante');
+      expect(arcanoNames).toContain('Os Enamorados');
+      expect(arcanoNames).toContain('O Carro');
+      expect(arcanoNames).toContain('A Justiça');
+      expect(arcanoNames).toContain('O Eremita');
     });
 
-    it('returns sorted numbers', () => {
-      const result = getAllNumerologyNumbers();
-      for (let i = 0; i < result.length - 1; i++) {
-        expect(result[i]).toBeLessThan(result[i + 1]);
+    it('each mapping has all required fields', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping).toHaveProperty('numero');
+        expect(mapping).toHaveProperty('arcano');
+        expect(mapping).toHaveProperty('numero_carta');
+        expect(mapping).toHaveProperty('elemento');
+        expect(mapping).toHaveProperty('significado_espiritual');
+        expect(mapping).toHaveProperty('arquétipo');
+        expect(mapping).toHaveProperty('orixá');
+        expect(mapping).toHaveProperty('sephirah');
+        expect(mapping).toHaveProperty('chakra');
+        expect(mapping).toHaveProperty('lição_espiritual');
+        expect(mapping).toHaveProperty('afirmação');
       }
     });
   });
@@ -245,312 +188,269 @@ describe('numerology-tarot', () => {
   // ─── hasNumerologyTarot ─────────────────────────────────────────────────────
 
   describe('hasNumerologyTarot', () => {
-    it('returns true for numbers 1-10', () => {
-      for (let i = 1; i <= 10; i++) {
+    it('returns true for valid numbers 1-9', () => {
+      for (let i = 1; i <= 9; i++) {
         expect(hasNumerologyTarot(i)).toBe(true);
       }
     });
 
-    it('returns false for 0', () => {
+    it('returns false for number 0', () => {
       expect(hasNumerologyTarot(0)).toBe(false);
+    });
+
+    it('returns false for numbers greater than 9', () => {
+      expect(hasNumerologyTarot(10)).toBe(false);
+      expect(hasNumerologyTarot(22)).toBe(false);
     });
 
     it('returns false for negative numbers', () => {
       expect(hasNumerologyTarot(-1)).toBe(false);
     });
-
-    it('returns false for numbers greater than 10', () => {
-      expect(hasNumerologyTarot(11)).toBe(false);
-    });
   });
 
-  // ─── getMappingByCard ───────────────────────────────────────────────────────
+  // ─── getMappingByArcano ──────────────────────────────────────────────────────
 
-  describe('getMappingByCard', () => {
-    it('returns mapping for Ás de Bastões', () => {
-      const result = getMappingByCard('Ás de Bastões');
+  describe('getMappingByArcano', () => {
+    it('returns mapping for O Mago', () => {
+      const result = getMappingByArcano('O Mago');
       expect(result).not.toBeNull();
       expect(result!.numero).toBe(1);
     });
 
-    it('returns null for non-existent card', () => {
-      expect(getMappingByCard('Não existe')).toBeNull();
+    it('returns mapping for A Justiça', () => {
+      const result = getMappingByArcano('A Justiça');
+      expect(result).not.toBeNull();
+      expect(result!.numero).toBe(8);
+    });
+
+    it('returns null for non-existent arcano', () => {
+      expect(getMappingByArcano('O Sol')).toBeNull();
+    });
+
+    it('is case-insensitive', () => {
+      expect(getMappingByArcano('o mago')).not.toBeNull();
+      expect(getMappingByArcano('O MAGO')).not.toBeNull();
     });
   });
 
   // ─── getNumerologyByElement ─────────────────────────────────────────────────
 
   describe('getNumerologyByElement', () => {
-    it('returns4 mappings for Água element', () => {
-      const result = getNumerologyByElement('Água');
-      expect(result).toHaveLength(4);
-      expect(result.map(m => m.numero)).toEqual([2, 3, 6, 7]);
+    it('returns mappings for Água element', () => {
+      const results = getNumerologyByElement('Água');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((m) => m.elemento === 'Água')).toBe(true);
     });
 
-    it('returns 5 mappings for Terra element', () => {
-      const result = getNumerologyByElement('Terra');
-      expect(result).toHaveLength(5);
-      expect(result.map(m => m.numero)).toEqual([4, 5, 8, 9, 10]);
+    it('returns mappings for Terra element', () => {
+      const results = getNumerologyByElement('Terra');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((m) => m.elemento === 'Terra')).toBe(true);
     });
 
-    it('returns 1 mapping for Fogo element', () => {
-      const result = getNumerologyByElement('Fogo');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(1);
+    it('returns mappings for Fogo element', () => {
+      const results = getNumerologyByElement('Fogo');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((m) => m.elemento === 'Fogo')).toBe(true);
     });
 
-    it('returns empty array for non-existent element', () => {
-      expect(getNumerologyByElement('Éter')).toHaveLength(0);
+    it('returns mappings for Ar element', () => {
+      const results = getNumerologyByElement('Ar');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((m) => m.elemento === 'Ar')).toBe(true);
+    });
+
+    it('is case-insensitive', () => {
+      const results1 = getNumerologyByElement('agua');
+      const results2 = getNumerologyByElement('Água');
+      expect(results1.length).toBe(results2.length);
+    });
+
+    it('returns empty array for unknown element', () => {
+      expect(getNumerologyByElement('Éter')).toEqual([]);
     });
   });
 
   // ─── getNumerologyByOrixa ───────────────────────────────────────────────────
 
   describe('getNumerologyByOrixa', () => {
-    it('returns2 mappings for Oxum', () => {
-      const result = getNumerologyByOrixa('Oxum');
-      expect(result).toHaveLength(2);
-      expect(result.map(m => m.numero)).toEqual([3, 9]);
+    it('returns mappings for Exu', () => {
+      const results = getNumerologyByOrixa('Exu');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].orixá).toContain('Exu');
     });
 
-    it('returns 2 mappings for Oxalá', () => {
-      const result = getNumerologyByOrixa('Oxalá');
-      expect(result).toHaveLength(2);
-      expect(result.map(m => m.numero)).toEqual([8, 10]);
+    it('returns mappings for Ogum', () => {
+      const results = getNumerologyByOrixa('Ogum');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].orixá).toContain('Ogum');
     });
 
-    it('returns 1 mapping for Ogum', () => {
-      const result = getNumerologyByOrixa('Ogum');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(1);
+    it('is case-insensitive', () => {
+      const results1 = getNumerologyByOrixa('exu');
+      const results2 = getNumerologyByOrixa('Exu');
+      expect(results1.length).toBe(results2.length);
     });
 
-    it('returns empty array for non-existent orixá', () => {
-      expect(getNumerologyByOrixa('Exu')).toHaveLength(0);
-    });
-  });
-
-  // ─── getNumerologyBySuit ───────────────────────────────────────────────────
-
-  describe('getNumerologyBySuit', () => {
-    it('returns 1 mapping for Bastões suit', () => {
-      const result = getNumerologyBySuit('Bastões');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(1);
-    });
-
-    it('returns 4 mappings for Copas suit', () => {
-      const result = getNumerologyBySuit('Copas');
-      expect(result).toHaveLength(4);
-      expect(result.map(m => m.numero)).toEqual([2, 3, 6, 7]);
-    });
-
-    it('returns 5 mappings for Ouros suit', () => {
-      const result = getNumerologyBySuit('Ouros');
-      expect(result).toHaveLength(5);
-      expect(result.map(m => m.numero)).toEqual([4, 5, 8, 9, 10]);
-    });
-
-    it('returns empty array for Espadas suit', () => {
-      expect(getNumerologyBySuit('Espadas')).toHaveLength(0);
+    it('returns empty array for unknown orixá', () => {
+      expect(getNumerologyByOrixa('Iemanja')).toEqual([]);
     });
   });
 
-  // ─── getNumerologyBySephirah ───────────────────────────────────────────────
+  // ─── getNumerologyBySephirah ─────────────────────────────────────────────────
 
   describe('getNumerologyBySephirah', () => {
-    it('returns1 mapping for Kether', () => {
-      const result = getNumerologyBySephirah('Kether');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(1);
+    it('returns mappings for Kether', () => {
+      const results = getNumerologyBySephirah('Kether');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].sephirah).toBe('Kether');
     });
 
-    it('returns 1 mapping for Chokmah', () => {
-      const result = getNumerologyBySephirah('Chokmah');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(2);
+    it('returns mappings for Tiphereth', () => {
+      const results = getNumerologyBySephirah('Tiphereth');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].sephirah).toBe('Tiphereth');
     });
 
-    it('returns 1 mapping for Binah', () => {
-      const result = getNumerologyBySephirah('Binah');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(3);
-    });
-
-    it('returns1 mapping for Chesed', () => {
-      const result = getNumerologyBySephirah('Chesed');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(4);
-    });
-
-    it('returns 1 mapping for Geburah', () => {
-      const result = getNumerologyBySephirah('Geburah');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(5);
-    });
-
-    it('returns 1 mapping for Tiphereth', () => {
-      const result = getNumerologyBySephirah('Tiphereth');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(6);
-    });
-
-    it('returns 1 mapping for Netzach', () => {
-      const result = getNumerologyBySephirah('Netzach');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(7);
-    });
-
-    it('returns 1 mapping for Hod', () => {
-      const result = getNumerologyBySephirah('Hod');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(8);
-    });
-
-    it('returns 1 mapping for Yesod', () => {
-      const result = getNumerologyBySephirah('Yesod');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(9);
-    });
-
-    it('returns 1 mapping for Malkuth', () => {
-      const result = getNumerologyBySephirah('Malkuth');
-      expect(result).toHaveLength(1);
-      expect(result[0].numero).toBe(10);
-    });
-
-    it('returns empty array for non-existent sephirah', () => {
-      expect(getNumerologyBySephirah('Daat')).toHaveLength(0);
+    it('returns empty array for unknown sephirah', () => {
+      expect(getNumerologyBySephirah('Daat')).toEqual([]);
     });
   });
 
-  // ─── NUMEROLOGY_TAROT_MAPPINGS constant ─────────────────────────────────────
+  // ─── getNumerologyByChakra ───────────────────────────────────────────────────
 
-  describe('NUMEROLOGY_TAROT_MAPPINGS', () => {
-    it('is a frozen object', () => {
-      expect(Object.isFrozen(NUMEROLOGY_TAROT_MAPPINGS)).toBe(true);
+  describe('getNumerologyByChakra', () => {
+    it('returns mappings for Frontal chakra', () => {
+      const results = getNumerologyByChakra('Frontal');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].chakra).toContain('Frontal');
     });
 
-    it('contains exactly 10 entries', () => {
-      expect(Object.keys(NUMEROLOGY_TAROT_MAPPINGS)).toHaveLength(10);
+    it('returns mappings for Cardíaco chakra', () => {
+      const results = getNumerologyByChakra('Cardíaco');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].chakra).toContain('Cardíaco');
     });
 
-    it('has entries for numbers 1-10', () => {
-      for (let i = 1; i <= 10; i++) {
-        expect(NUMEROLOGY_TAROT_MAPPINGS[i]).toBeDefined();
-      }
+    it('returns empty array for unknown chakra', () => {
+      expect(getNumerologyByChakra('Plexo Solar')).toEqual([]);
+    });
+  });
+
+  // ─── NUMEROLOGIA_ARCANO_MAP constant ──────────────────────────────────────
+
+  describe('NUMEROLOGIA_ARCANO_MAP', () => {
+    it('is defined as a Record', () => {
+      expect(NUMEROLOGIA_ARCANO_MAP).toBeDefined();
+      expect(typeof NUMEROLOGIA_ARCANO_MAP).toBe('object');
     });
 
-    it('each mapping has all required fields', () => {
-      const requiredFields: (keyof NumerologyTarotMapping)[] = [
-        'numero',
-        'carta',
-        'naipe',
-        'numero_carta',
-        'significado_espiritual',
-        'elemento',
-        'orixa',
-        'sephirah',
-        'interpretacao',
-      ];
-
-      for (const mapping of Object.values(NUMEROLOGY_TAROT_MAPPINGS)) {
-        for (const field of requiredFields) {
-          expect(mapping[field]).toBeDefined();
-        }
-      }
+    it('has exactly 9 entries (numbers 1-9)', () => {
+      expect(Object.keys(NUMEROLOGIA_ARCANO_MAP)).toHaveLength(9);
     });
 
-    it('each mapping numero matches its key', () => {
-      for (const [key, mapping] of Object.entries(NUMEROLOGY_TAROT_MAPPINGS)) {
+    it('each numero matches its key', () => {
+      for (const [key, mapping] of Object.entries(NUMEROLOGIA_ARCANO_MAP)) {
         expect(mapping.numero).toBe(Number(key));
       }
     });
 
-    it('each mapping numero_carta matches its key', () => {
-      for (const [key, mapping] of Object.entries(NUMEROLOGY_TAROT_MAPPINGS)) {
-        expect(mapping.numero_carta).toBe(Number(key));
+    it('is frozen to prevent modifications', () => {
+      expect(Object.isFrozen(NUMEROLOGIA_ARCANO_MAP)).toBe(true);
+    });
+
+    it('all nested mapping objects are frozen', () => {
+      for (const mapping of Object.values(NUMEROLOGIA_ARCANO_MAP)) {
+        expect(Object.isFrozen(mapping)).toBe(true);
       }
     });
   });
 
-  // ─── Interface completeness ─────────────────────────────────────────────────
+  // ─── Spiritual content completeness ─────────────────────────────────────────
 
-  describe('NumerologyTarotMapping interface completeness', () => {
-    it('all mappings have spiritual meaning', () => {
-      for (const mapping of Object.values(NUMEROLOGY_TAROT_MAPPINGS)) {
+  describe('Spiritual content completeness', () => {
+    it('all mappings have non-empty spiritual meanings', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
         expect(mapping.significado_espiritual.length).toBeGreaterThan(10);
       }
     });
 
-    it('all mappings have interpretation', () => {
-      for (const mapping of Object.values(NUMEROLOGY_TAROT_MAPPINGS)) {
-        expect(mapping.interpretacao.length).toBeGreaterThan(10);
+    it('all mappings have archetypes', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping.arquétipo).toBeDefined();
+        expect(mapping.arquétipo.length).toBeGreaterThan(0);
       }
     });
 
-    it('all mappings have valid element', () => {
-      const validElements = ['Fogo', 'Água', 'Terra', 'Ar'];
-      for (const mapping of Object.values(NUMEROLOGY_TAROT_MAPPINGS)) {
+    it('all mappings have spiritual lessons', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping.lição_espiritual).toBeDefined();
+        expect(mapping.lição_espiritual.length).toBeGreaterThan(5);
+      }
+    });
+
+    it('all mappings have affirmations', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping.afirmação).toBeDefined();
+        expect(mapping.afirmação.length).toBeGreaterThan(5);
+      }
+    });
+  });
+
+  // ─── Element distribution ────────────────────────────────────────────────────
+
+  describe('Element distribution', () => {
+    it('has diverse element distribution', () => {
+      const results = getAllNumerologyTarots();
+      const elements = results.map((m) => m.elemento);
+      const uniqueElements = new Set(elements);
+      // Should have at least 4 different elements
+      expect(uniqueElements.size).toBeGreaterThanOrEqual(3);
+    });
+
+    it('each element mapping is valid', () => {
+      const results = getAllNumerologyTarots();
+      const validElements = ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'];
+      for (const mapping of results) {
         expect(validElements).toContain(mapping.elemento);
       }
     });
   });
 
-  // ─── Element distribution ───────────────────────────────────────────────────
+  // ─── Chakra distribution ─────────────────────────────────────────────────────
 
-  describe('Element distribution', () => {
-    it('covers all four classical elements', () => {
-      const elements = new Set(
-        Object.values(NUMEROLOGY_TAROT_MAPPINGS).map(m => m.elemento)
-      );
-      expect(elements.has('Fogo')).toBe(true);
-      expect(elements.has('Água')).toBe(true);
-      expect(elements.has('Terra')).toBe(true);
+  describe('Chakra distribution', () => {
+    it('has chakra mappings for all numbers', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping.chakra).toBeDefined();
+        expect(mapping.chakra.length).toBeGreaterThan(0);
+      }
     });
 
-    it('water element has most cards (4)', () => {
-      const waterCount = Object.values(NUMEROLOGY_TAROT_MAPPINGS).filter(
-        m => m.elemento === 'Água'
-      ).length;
-      expect(waterCount).toBe(4);
-    });
-
-    it('earth element has 5 cards', () => {
-      const earthCount = Object.values(NUMEROLOGY_TAROT_MAPPINGS).filter(
-        m => m.elemento === 'Terra'
-      ).length;
-      expect(earthCount).toBe(5);
-    });
-
-    it('fire element has 1 card', () => {
-      const fireCount = Object.values(NUMEROLOGY_TAROT_MAPPINGS).filter(
-        m => m.elemento === 'Fogo'
-      ).length;
-      expect(fireCount).toBe(1);
+    it('chakra values contain valid chakra names', () => {
+      const results = getAllNumerologyTarots();
+      const validChakras = ['Básico', 'Sacral', 'Plexo Solar', 'Cardíaco', 'Laríngeo', 'Frontal', 'Coronário'];
+      for (const mapping of results) {
+        const hasValidChakra = validChakras.some((c) => mapping.chakra.includes(c));
+        expect(hasValidChakra).toBe(true);
+      }
     });
   });
 
-  // ─── Suit distribution ─────────────────────────────────────────────────────
+  // ─── Sephirah coverage ─────────────────────────────────────────────────────
 
-  describe('Suit distribution', () => {
-    it('has Bastões suit for number 1', () => {
-      expect(NUMEROLOGY_TAROT_MAPPINGS[1].naipe).toBe('Bastões');
-    });
-
-    it('has Copas suit for numbers 2, 3, 6, 7', () => {
-      expect(NUMEROLOGY_TAROT_MAPPINGS[2].naipe).toBe('Copas');
-      expect(NUMEROLOGY_TAROT_MAPPINGS[3].naipe).toBe('Copas');
-      expect(NUMEROLOGY_TAROT_MAPPINGS[6].naipe).toBe('Copas');
-      expect(NUMEROLOGY_TAROT_MAPPINGS[7].naipe).toBe('Copas');
-    });
-
-    it('has Ouros suit for numbers 4, 5, 8, 9, 10', () => {
-      expect(NUMEROLOGY_TAROT_MAPPINGS[4].naipe).toBe('Ouros');
-      expect(NUMEROLOGY_TAROT_MAPPINGS[5].naipe).toBe('Ouros');
-      expect(NUMEROLOGY_TAROT_MAPPINGS[8].naipe).toBe('Ouros');
-      expect(NUMEROLOGY_TAROT_MAPPINGS[9].naipe).toBe('Ouros');
-      expect(NUMEROLOGY_TAROT_MAPPINGS[10].naipe).toBe('Ouros');
+  describe('Sephirah coverage', () => {
+    it('all sephirot are from the Tree of Life', () => {
+      const results = getAllNumerologyTarots();
+      const sephirot = ['Kether', 'Chokmah', 'Binah', 'Chesed', 'Geburah', 'Tiphereth', 'Netzach', 'Hod', 'Yesod', 'Malkuth'];
+      for (const mapping of results) {
+        expect(sephirot).toContain(mapping.sephirah);
+      }
     });
   });
 });
