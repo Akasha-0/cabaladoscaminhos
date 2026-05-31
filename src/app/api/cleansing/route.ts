@@ -1,5 +1,6 @@
 // ============================================================
 // CLEANSING API - CABALA DOS CAMINHOS
+// Enhanced with spiritual correlations
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -14,6 +15,7 @@ const SefirotSchema = z.enum([
   'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
   'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
 ]);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 const CleansingQuerySchema = z.object({
   method: CleansingMethodSchema.optional(),
@@ -22,6 +24,8 @@ const CleansingQuerySchema = z.object({
   limit: z.coerce.number().int().positive().max(50).optional(),
   chakra: ChakraSchema.optional(),
   sefirot: SefirotSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 const CleansingRitualSchema = z.object({
@@ -36,6 +40,14 @@ const CleansingRitualSchema = z.object({
   sefirot: z.array(SefirotSchema).optional(),
   chakra: z.number().int().min(1).max(7).optional(),
   orixa: z.string().optional(),
+  spiritualCorrelations: z.object({
+    sefirot: z.array(z.string()),
+    chakra: z.number(),
+    element: z.string(),
+    orixa: z.string(),
+    affirmation: z.string(),
+    frequency: z.string(),
+  }).optional(),
 });
 
 interface CleansingType {
@@ -51,12 +63,52 @@ interface CleansingType {
   chakras: string[];
   benefits: string[];
   orixa: string[];
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 export type CleansingRitual = z.infer<typeof CleansingRitualSchema>;
 export const dynamic = 'force-dynamic';
 
-// ─── Cleansing Types with Spiritual Correlations ──────────────────────────────────────────
+// ─── Cleansing Type Spiritual Correlations ──────────────────────────────────────────
+const CLEANSING_TYPE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  'fogo': { sefirot: ['Gevurah', 'Hod'], chakra: 3, element: 'Fogo', orixa: 'Ogum', affirmation: 'O fogo purifica e transforma minha energia', frequency: '417 Hz' },
+  'agua': { sefirot: ['Yesod', 'Malkuth'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'A água sagrada lava minhas preocupações', frequency: '639 Hz' },
+  'terra': { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Omolu', affirmation: 'A terra me ancora e protege', frequency: '396 Hz' },
+  'ar': { sefirot: ['Chokhmah', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Oxalá', affirmation: 'O ar limpo traz clareza mental', frequency: '741 Hz' },
+  'eter': { sefirot: ['Kether', 'Tipheret'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A luz divina me purifica completamente', frequency: '963 Hz' },
+};
+
+// ─── Cleansing Ritual Spiritual Correlations ──────────────────────────────────────────
+const CLEANSING_RITUAL_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  'defumacao': { sefirot: ['Gevurah', 'Hod'], chakra: 3, element: 'Fogo', orixa: 'Ogum', affirmation: 'A fumaça sagrada limpa todos os espaços', frequency: '417 Hz' },
+  'banho-sagrado': { sefirot: ['Yesod', 'Malkuth'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'O banho sagrado renova meu ser', frequency: '639 Hz' },
+  'resp-purif': { sefirot: ['Chokhmah', 'Chesed'], chakra: 5, element: 'Ar', orixa: 'Iansã', affirmation: 'Cada respiração limpa meu ser', frequency: '741 Hz' },
+  'sahum-casa': { sefirot: ['Gevurah', 'Hod', 'Netzach'], chakra: 4, element: 'Fogo', orixa: 'Ogum', affirmation: 'Minha casa é um espaço sagrado e protegido', frequency: '528 Hz' },
+  'banho-de-sal': { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Omolu', affirmation: 'O sal purifica e protege meu campo áurico', frequency: '396 Hz' },
+};
+
+// ─── Cleansing Types ──────────────────────────────────────────────────────────
 const CLEANSING_TYPES: CleansingType[] = [
   {
     id: 'fogo',
@@ -71,6 +123,7 @@ const CLEANSING_TYPES: CleansingType[] = [
     chakras: ['Muladhara', 'Manipura'],
     benefits: ['Proteção', 'Renovação', 'Poder pessoal'],
     orixa: ['Ogum', 'Xangô'],
+    spiritualCorrelations: CLEANSING_TYPE_SPIRITUAL_CORRELATIONS['fogo'],
   },
   {
     id: 'agua',
@@ -85,6 +138,7 @@ const CLEANSING_TYPES: CleansingType[] = [
     chakras: ['Svadhisthana', 'Anahata'],
     benefits: ['Dissolução de energias densas', 'Renovação emocional', 'Fluidez'],
     orixa: ['Iemanjá', 'Oxum'],
+    spiritualCorrelations: CLEANSING_TYPE_SPIRITUAL_CORRELATIONS['agua'],
   },
   {
     id: 'terra',
@@ -99,6 +153,7 @@ const CLEANSING_TYPES: CleansingType[] = [
     chakras: ['Muladhara'],
     benefits: ['Ancoramento', 'Estabilidade', 'Proteção do campo áurico'],
     orixa: ['Oxóssi', 'Omolu'],
+    spiritualCorrelations: CLEANSING_TYPE_SPIRITUAL_CORRELATIONS['terra'],
   },
   {
     id: 'ar',
@@ -113,6 +168,7 @@ const CLEANSING_TYPES: CleansingType[] = [
     chakras: ['Vishuddha', 'Ajna'],
     benefits: ['Clareza mental', 'Abertura de espaço mental', 'Dissipação de energias densas'],
     orixa: ['Iansã', 'Oxalá'],
+    spiritualCorrelations: CLEANSING_TYPE_SPIRITUAL_CORRELATIONS['ar'],
   },
   {
     id: 'eter',
@@ -127,11 +183,12 @@ const CLEANSING_TYPES: CleansingType[] = [
     chakras: ['Sahasrara', 'Ajna'],
     benefits: ['Limpeza do corpo causal', 'Harmonização dos veículos superiores', 'Transcendência'],
     orixa: ['Oxalá', 'Nanã'],
+    spiritualCorrelations: CLEANSING_TYPE_SPIRITUAL_CORRELATIONS['eter'],
   },
 ];
 
-// ─── Cleansing Rituals with Spiritual Correlations ──────────────────────────────────────────
-const CLEANSING_RITUALS: CleansingRitual[] = [
+// ─── Cleansing Rituals ──────────────────────────────────────────────────────────
+const CLEANSING_RITUALS: Array<CleansingRitual & { spiritualCorrelations?: object }> = [
   {
     id: 'defumacao',
     name: 'Ritual de Defumação',
@@ -152,6 +209,7 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
     sefirot: ['Gevurah', 'Hod'],
     chakra: 3,
     orixa: 'Ogum',
+    spiritualCorrelations: CLEANSING_RITUAL_SPIRITUAL_CORRELATIONS['defumacao'],
   },
   {
     id: 'banho-sagrado',
@@ -163,16 +221,17 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
       'Coe e adicione ao água do banho, preferencialmente morna',
       'Entre na banheira e visualize-se sendo purificado pela água',
       'Recite uma oração ou affirmation de purificação',
-      'Permaneça por15-20 minutos em contemplação',
+      'Permaneça por 15-20 minutos em contemplação',
       'Saia do banho e vista roupas limpas, preferencialmente brancas',
     ],
     duration: '30-45 minutos',
     materials: ['Ervas sagradas', 'Água fervente', 'Panela para infusão', 'Banheira ou balde'],
     intention: 'Purificação do corpo físico e energético, renovação de energias, preparação para rituais',
-    aftercare: ['Vista roupas limpas', 'Evite exposição ao frio', 'Descanse por30 minutos'],
+    aftercare: ['Vista roupas limpas', 'Evite exposição ao frio', 'Descanse por 30 minutos'],
     sefirot: ['Yesod', 'Malkuth'],
     chakra: 2,
     orixa: 'Iemanjá',
+    spiritualCorrelations: CLEANSING_RITUAL_SPIRITUAL_CORRELATIONS['banho-sagrado'],
   },
   {
     id: 'resp-purif',
@@ -185,7 +244,7 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
       'Após 5-10 ciclos, pratique Kapalabhati (respiração de fogo): respirações curtas e vigorosas pelo nariz',
       'Conclua com 3 respirações profundas e conscientes',
       'Visualize a energia entrando limpa e saindo carregada de impurezas',
- ],
+    ],
     duration: '15-20 minutos',
     materials: ['Ambiente tranquilo', 'Nenhum material necessário', 'Óleo essencial opcional (lavanda, eucalipto)'],
     intention: 'Limpeza dos canais energéticos (nadis), aumento de prana, clareza mental e emocional',
@@ -193,6 +252,7 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
     sefirot: ['Chesed', 'Chokhmah'],
     chakra: 5,
     orixa: 'Iansã',
+    spiritualCorrelations: CLEANSING_RITUAL_SPIRITUAL_CORRELATIONS['resp-purif'],
   },
   {
     id: 'sahum-casa',
@@ -214,6 +274,7 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
     sefirot: ['Gevurah', 'Hod', 'Netzach'],
     chakra: 4,
     orixa: 'Ogum',
+    spiritualCorrelations: CLEANSING_RITUAL_SPIRITUAL_CORRELATIONS['sahum-casa'],
   },
   {
     id: 'banho-de-sal',
@@ -223,7 +284,7 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
       'Dissolva 200g de sal marinho em água morna',
       'Adicione 5 gotas de óleo essencial de alecrim ou lavanda (opcional)',
       'Despeje a solução sobre o corpo, da cabeça aos pés, em movimentos amplos',
-      'Massajeie o corpo com as mãos, focusing em áreas de tensão',
+      'Massajeie o corpo com as mãos, focando em áreas de tensão',
       'Enxágue com água corrente',
       'Visualize o sal absorvendo todas as energias densas e negativas',
     ],
@@ -234,6 +295,7 @@ const CLEANSING_RITUALS: CleansingRitual[] = [
     sefirot: ['Malkuth', 'Yesod'],
     chakra: 1,
     orixa: 'Omolu',
+    spiritualCorrelations: CLEANSING_RITUAL_SPIRITUAL_CORRELATIONS['banho-de-sal'],
   },
 ];
 
@@ -245,10 +307,12 @@ export async function GET(request: NextRequest) {
     const parseResult = CleansingQuerySchema.safeParse({
       method: searchParams.get('method'),
       type: searchParams.get('type'),
-      includeRituals: searchParams.get('includeRituals') as 'true' | 'false' | null,
+      includeRituals: searchParams.get('includeRituals'),
       limit: searchParams.get('limit'),
       chakra: searchParams.get('chakra'),
       sefirot: searchParams.get('sefirot'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -259,7 +323,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { method, type, includeRituals, limit, chakra, sefirot } = parseResult.data;
+    const { method, type, includeRituals, limit, chakra, sefirot, element, orixa } = parseResult.data;
 
     let cleansingTypes = [...CLEANSING_TYPES];
 
@@ -270,7 +334,6 @@ export async function GET(request: NextRequest) {
 
     // Filter by type
     if (type) {
-      // Map type to methods
       const typeMethods: Record<string, string[]> = {
         energetic: ['smoke', 'sound', 'breath'],
         physical: ['water', 'salt', 'earth'],
@@ -297,6 +360,20 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Filter by element
+    if (element) {
+      cleansingTypes = cleansingTypes.filter(t =>
+        t.spiritualCorrelations?.element === element
+      );
+    }
+
+    // Filter by orixa
+    if (orixa) {
+      cleansingTypes = cleansingTypes.filter(t =>
+        t.orixa.some(o => o.toLowerCase().includes(orixa.toLowerCase()))
+      );
+    }
+
     // Apply limit
     if (limit) {
       cleansingTypes = cleansingTypes.slice(0, limit);
@@ -310,31 +387,56 @@ export async function GET(request: NextRequest) {
     if (sefirot) {
       rituals = rituals.filter(r => r.sefirot?.includes(sefirot));
     }
+    if (element) {
+      rituals = rituals.filter(r => r.spiritualCorrelations?.element === element);
+    }
+    if (orixa) {
+      rituals = rituals.filter(r =>
+        r.orixa?.toLowerCase().includes(orixa.toLowerCase())
+      );
+    }
 
-    // Statistics
+    // Calculate spiritual stats
+    const spiritualStats = {
+      bySefirot: cleansingTypes.reduce((acc, t) => {
+        const sc = t.spiritualCorrelations;
+        if (sc) {
+          sc.sefirot.forEach(s => { acc[s] = (acc[s] || 0) + 1; });
+        }
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: cleansingTypes.reduce((acc, t) => {
+        const ch = t.spiritualCorrelations?.chakra;
+        if (ch) acc[ch] = (acc[ch] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: cleansingTypes.reduce((acc, t) => {
+        const el = t.spiritualCorrelations?.element;
+        if (el) acc[el] = (acc[el] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: cleansingTypes.reduce((acc, t) => {
+        const sc = t.spiritualCorrelations?.orixa;
+        if (sc) acc[sc] = (acc[sc] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
     const stats = {
       byMethod: CLEANSING_TYPES.reduce((acc, t) => {
-        t.methods.forEach(m => {
-          acc[m] = (acc[m] || 0) + 1;
-        });
+        t.methods.forEach(m => { acc[m] = (acc[m] || 0) + 1; });
         return acc;
       }, {} as Record<string, number>),
       byChakra: CLEANSING_TYPES.reduce((acc, t) => {
-        t.chakras.forEach(c => {
-          acc[c] = (acc[c] || 0) + 1;
-        });
+        t.chakras.forEach(c => { acc[c] = (acc[c] || 0) + 1; });
         return acc;
       }, {} as Record<string, number>),
       bySefirot: CLEANSING_TYPES.reduce((acc, t) => {
-        t.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
+        t.sefirot.forEach(s => { acc[s] = (acc[s] || 0) + 1; });
         return acc;
       }, {} as Record<string, number>),
       byOrixa: CLEANSING_TYPES.reduce((acc, t) => {
-        t.orixa.forEach(o => {
-          acc[o] = (acc[o] || 0) + 1;
-        });
+        t.orixa.forEach(o => { acc[o] = (acc[o] || 0) + 1; });
         return acc;
       }, {} as Record<string, number>),
     };
@@ -342,10 +444,15 @@ export async function GET(request: NextRequest) {
     const response: Record<string, unknown> = {
       success: true,
       data: { types: cleansingTypes },
- meta: {
+      meta: {
         totalTypes: cleansingTypes.length,
         totalRituals: rituals.length,
       },
+      spiritualCorrelations: {
+        types: CLEANSING_TYPE_SPIRITUAL_CORRELATIONS,
+        rituals: CLEANSING_RITUAL_SPIRITUAL_CORRELATIONS,
+      },
+      spiritualStats,
     };
 
     if (includeRituals) {
