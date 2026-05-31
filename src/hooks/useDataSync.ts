@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 export interface SyncStatus {
   lastSync: string | null;
   pending: number;
@@ -107,7 +107,7 @@ export function useDataSync(options: DataSyncOptions = {}) {
     return response.json();
   }, [opts.cloudEndpoint]);
 
-  const syncFromCloud = useCallback(async (): Promise<unknown> => {
+  const _syncFromCloud = useCallback(async (): Promise<unknown> => {
     const response = await fetch(opts.cloudEndpoint, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
