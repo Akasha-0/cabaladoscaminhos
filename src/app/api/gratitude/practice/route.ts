@@ -2,14 +2,76 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const GratitudeTypeSchema = z.enum(['daily', 'manifestation', 'orixa', 'sephirot', 'journey']);
 const GratitudeQuerySchema = z.object({
   type: GratitudeTypeSchema.optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
   includeRitual: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 export const dynamic = 'force-dynamic';
+
+// ─── Spiritual Correlations for Gratitude Types ──────────────────────────────────────────
+const GRATITUDE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  daily: {
+    sefirot: ['Chesed', 'Tipheret'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A gratidão diária abre as portas da abundância',
+    frequency: '528 Hz',
+  },
+  manifestation: {
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Gratidão é o magnetismo que atrai a realidade desejada',
+    frequency: '639 Hz',
+  },
+  orixa: {
+    sefirot: ['Binah', 'Yesod'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'Agradeço aos orixás pela proteção constante',
+    frequency: '417 Hz',
+  },
+  sephirot: {
+    sefirot: ['Kether', 'Tipheret'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Sou grato pela sabedoria das Sephirot',
+    frequency: '963 Hz',
+  },
+  journey: {
+    sefirot: ['Chesed', 'Gevurah'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'Cada passo da jornada é uma bênção',
+    frequency: '528 Hz',
+  },
+};
 
 // ─── Practice Data ─────────────────────────────────────────────────────────
 interface GratitudePractice {
@@ -26,6 +88,14 @@ interface GratitudePractice {
     duration: number;
     steps: string[];
     materials?: string[];
+  };
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
   };
 }
 
@@ -53,6 +123,7 @@ const GRATITUDE_PRACTICES: GratitudePractice[] = [
         'Sussurre palavras de agradecimento',
       ],
     },
+    spiritualCorrelations: GRATITUDE_SPIRITUAL_CORRELATIONS['daily'],
   },
   {
     id: 'daily-evening',
@@ -77,258 +148,179 @@ const GRATITUDE_PRACTICES: GratitudePractice[] = [
         'Solicite proteção para a noite',
       ],
     },
+    spiritualCorrelations: GRATITUDE_SPIRITUAL_CORRELATIONS['daily'],
   },
   {
     id: 'manifestation-abundance',
     type: 'manifestation',
-    name: 'Gratidão pela Abundância',
-    nameEn: 'Abundance Gratitude',
-    description: 'Cultivar gratidão pela abundância atrai mais prosperidade.',
+    name: 'Gratidão Manifestadora',
+    nameEn: 'Manifestation Gratitude',
+    description: 'Gratidão como ferramenta de manifestação da realidade desejada.',
     affirmations: [
       'Sou grato pela abundância que flui em minha vida',
-      'A prosperidade é meu direito divino',
-      'Agradeço pelas bênçãos recebidas e pelas que virão',
+      'Agradeço pelo que tenho e pelo que está por vir',
+      'A gratidão atrai mais prosperidade',
     ],
-    sefirot: ['Chesed', 'Malkuth'],
-    chakra: 'Manipura (3º)',
-    ritual: {
-      duration: 20,
-      steps: [
-        'Escreva 10 coisas pelas quais é grato',
-        'Visualize sua vida em abundância',
-        'Agradeça em voz alta pelas riquezas',
-        'Plante uma semente como símbolo de prosperidade',
-        'Compartilhe gratidão com alguém',
-      ],
-      materials: ['Caderno', 'Caneta', 'Uma semente ou moeda'],
-    },
-  },
-  {
-    id: 'manifestation-health',
-    type: 'manifestation',
-    name: 'Gratidão pelo Corpo',
-    nameEn: 'Body Gratitude',
-    description: 'Agradecer pelo corpo físico fortalece a conexão corpo-alma.',
-    affirmations: [
-      'Meu corpo é sagrado e merece amor',
-      'Agradeço pela saúde que possuo',
-      'Cada célula do meu corpo vibra gratidão',
-    ],
-    sefirot: ['Tipheret', 'Malkuth'],
-    chakra: 'Sahasrara (7º)',
-    ritual: {
-      duration: 15,
-      steps: [
-        'Observe seu corpo com gratidão',
-        'Toque cada parte agradecendo',
-        'Respire profundamente agradecendo',
-        'Visualize luz entrando em cada célula',
-        'Agradeça pela vida que pulsa em você',
-      ],
-    },
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 'Ajna (6º)',
+    spiritualCorrelations: GRATITUDE_SPIRITUAL_CORRELATIONS['manifestation'],
   },
   {
     id: 'orixa-oxum',
     type: 'orixa',
     name: 'Gratidão a Oxum',
     nameEn: 'Gratitude to Oxum',
-    description: 'Prática de gratidão à Orixá do amor, riqueza e águas doces.',
+    description: 'Prática de gratidão dedicada a Oxum, orixá das águas e do amor.',
     affirmations: [
-      'Oxum, agradeço pela água doce da vida',
-      'Sou grato pelo amor que flui em meu coração',
-      'A prosperidade é meu direito sagrado',
+      'Oxum, agradeço pelo seu amor e proteção',
+      'Sou grato pelas águas que purificam minha vida',
+      'A prosperidade flui através de mim como as águas do rio',
     ],
     sefirot: ['Chesed', 'Hod'],
     chakra: 'Svadhisthana (2º)',
     orixa: 'Oxum',
-    ritual: {
-      duration: 30,
-      steps: [
-        'Acenda uma vela dourada ou rosa',
-        'Ofereça água doce e mel',
-        'Coloque flores amarelas ou rosas',
-        'Recite mantras de Oxum',
-        'Dance em honra à Oxum',
-        'Agradeça por suas bênçãos',
-      ],
-      materials: ['Vela dourada/rosa', 'Água doce', 'Mel', 'Flores', 'Perfume de Oxum'],
-    },
+    spiritualCorrelations: GRATITUDE_SPIRITUAL_CORRELATIONS['orixa'],
   },
   {
-    id: 'orixa-yemanja',
+    id: 'orixa-oxala',
     type: 'orixa',
-    name: 'Gratidão a Iemanjá',
-    nameEn: 'Gratitude to Yemanjá',
-    description: 'Prática de gratidão à Rainha do Mar, protetora e mãe divina.',
+    name: 'Gratidão a Oxalá',
+    nameEn: 'Gratitude to Oxalá',
+    description: 'Prática de gratidão dedicada a Oxalá, orixá da luz e da paz.',
     affirmations: [
-      'Iemanjá, agradeço pela proteção maternal',
-      'O mar traz paz ao meu coração',
-      'Sou filho/a desta energia sagrada',
+      'Oxalá, agradeço pela luz que ilumina meu caminho',
+      'Sou grato pela paz que habita em meu coração',
+      'A luz divina me guia em cada passo',
     ],
-    sefirot: ['Binah', 'Yesod'],
+    sefirot: ['Kether', 'Tipheret'],
     chakra: 'Sahasrara (7º)',
-    orixa: 'Iemanjá',
-    ritual: {
-      duration: 40,
-      steps: [
-        'Vá ao mar ou tenha água presente',
-        'Ofereça flores brancas à água',
-        'Acenda velas azuis e brancas',
-        'Recite orações de proteção',
-        'Peça bênçãos para sua família',
-        'Agradeça pela presença dela em sua vida',
-      ],
-      materials: ['Velas azul e branca', 'Flores brancas', 'Perfume de Iemanjá', 'Água do mar opcional'],
-    },
+    orixa: 'Oxalá',
+    spiritualCorrelations: GRATITUDE_SPIRITUAL_CORRELATIONS['sephirot'],
   },
   {
-    id: 'sephirot-chesed',
+    id: 'sephirot-mercy',
     type: 'sephirot',
-    name: 'Gratidão ao Chesed (Misericórdia)',
+    name: 'Gratidão a Chesed',
     nameEn: 'Gratitude to Chesed',
-    description: 'Prática de gratidão ao Sephirah da misericórdia e compaixão divina.',
+    description: 'Prática de gratidão para o sefirá Chesed (Misericórdia).',
     affirmations: [
-      'Sou grato pela misericórdia que me envolve',
-      'A compaixão flui em meu coração',
-      'A bondade é minha natureza',
+      'Agradeço pela misericórdia divina que me sustenta',
+      'Chesed, sou grato pela sua graça infinita',
+      'A bondade do universo me cerca',
     ],
-    sefirot: ['Chesed'],
+    sefirot: ['Chesed', 'Gevurah'],
     chakra: 'Anahata (4º)',
-    ritual: {
-      duration: 25,
-      steps: [
-        'Visualize a luz azul de Chesed',
-        'Respire compaixão infinita',
-        'Agradeça pelas bênçãos recebidas',
-        'Extenda gratidão aos outros',
-        'Perdoe com coração grato',
-      ],
-    },
+    spiritualCorrelations: GRATITUDE_SPIRITUAL_CORRELATIONS['journey'],
   },
   {
-    id: 'sephirot-malkuth',
-    type: 'sephirot',
-    name: 'Gratidão ao Malkuth (Reino)',
-    nameEn: 'Gratitude to Malkuth',
-    description: 'Prática de gratidão ao Sephirah do mundo físico emanifestação.',
-    affirmations: [
-      'Sou grato pela beleza do mundo físico',
-      'A Terra me sustenta e alimenta',
-      'Cada elemento me conecta ao divino',
-    ],
-    sefirot: ['Malkuth'],
-    chakra: 'Muladhara (1º)',
-    ritual: {
-      duration: 30,
-      steps: [
-        'Conecte-se com a Terra',
-        'Agradeça pelos elementos',
-        'Honre o corpo físico',
-        'Perceba o sagrado no cotidiano',
-        'Celebre a manifestação divina',
-      ],
-      materials: ['Flores', 'Frutas', 'Terra ou sal'],
-    },
-  },
-  {
-    id: 'journey-self-love',
+    id: 'journey-gratitude',
     type: 'journey',
-    name: 'Gratidão pelo Autocuidado',
-    nameEn: 'Self-Love Gratitude',
-    description: 'Prática de gratidão pelo amor próprio e crescimento espiritual.',
+    name: 'Gratidão da Jornada',
+    nameEn: 'Journey Gratitude',
+    description: 'Gratidão pelas lições e desafios do caminho espiritual.',
     affirmations: [
-      'Ameio a mim mesmo como sou',
-      'Sou digno de todo amor e respeito',
-      'Minha jornada de crescimento é sagrada',
+      'Sou grato por cada lição da jornada',
+      'Os desafios me fortalecem',
+      'Cada passo me aproxima da iluminação',
     ],
-    sefirot: ['Tipheret'],
-    chakra: 'Anahata (4º)',
-    ritual: {
-      duration: 20,
-      steps: [
-        'Olhe-se no espelho com amor',
-        'Agradeça por quem você é',
-        'Perdoe-se por falhas passadas',
-        'Agradeça por sua evolução',
-        'Prometa cuidar de si mesmo',
-      ],
-    },
-  },
-  {
-    id: 'journey-ancestors',
-    type: 'journey',
-    name: 'Gratidão aos Ancestrais',
-    nameEn: 'Ancestral Gratitude',
-    description: 'Prática de gratidão aos ancestrais que abriram caminhos.',
-    affirmations: [
-      'Agradeço aos meus ancestrais pelo caminho aberto',
-      'Sou herdeiro de sabedoria sagrada',
-      'O sangue ancestral corre em minhas veias',
-    ],
-    sefirot: ['Yesod', 'Malkuth'],
-    chakra: 'Muladhara (1º)',
-    ritual: {
-      duration: 35,
-      steps: [
-        'Acenda velas brancas para os ancestrais',
-        'Ofereça água e alimentos',
-        'Recite nomes de ancestrais',
-        'Agradeça pelos sacrifícios deles',
-        'Faça uma oração de proteção',
-        'Honre a linhagem familiar',
-      ],
-      materials: ['Velas brancas', 'Água', 'Alimentos simples', 'Fotos se disponível'],
-    },
+    sefirot: ['Chesed', 'Gevurah'],
+    chakra: 'Manipura (3º)',
+    spiritualCorrelations: GRATITUDE_SPIRITUAL_CORRELATIONS['journey'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = GratitudeQuerySchema.safeParse({
-    type: searchParams.get('type'),
-    limit: searchParams.get('limit'),
-    includeRitual: searchParams.get('includeRitual'),
-  });
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = GratitudeQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      limit: searchParams.get('limit'),
+      includeRitual: searchParams.get('includeRitual'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
 
-  if (!parseResult.success) {
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { type, limit, includeRitual, sefirot, chakra, element, orixa } = parseResult.data;
+
+    let practices = [...GRATITUDE_PRACTICES];
+
+    if (type) {
+      practices = practices.filter(p => p.type === type);
+    }
+
+    if (limit) {
+      practices = practices.slice(0, limit);
+    }
+
+    if (sefirot) {
+      practices = practices.filter(p => p.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      practices = practices.filter(p => p.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      practices = practices.filter(p => p.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      practices = practices.filter(p => p.spiritualCorrelations?.orixa === orixa);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byType: practices.reduce((acc, p) => {
+        acc[p.type] = (acc[p.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: practices.reduce((acc, p) => {
+        p.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: practices.reduce((acc, p) => {
+        const c = p.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: practices.reduce((acc, p) => {
+        const e = p.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: practices.reduce((acc, p) => {
+        const o = p.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      practices,
+      count: practices.length,
+      spiritualCorrelations: GRATITUDE_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { type, limit, includeRitual, sefirot, chakra, element, orixa },
+      },
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
-
-  const { type, limit, includeRitual } = parseResult.data;
-  let practices = [...GRATITUDE_PRACTICES];
-
-  if (type) {
-    practices = practices.filter(p => p.type === type);
-  }
-
-  if (limit) {
-    practices = practices.slice(0, limit);
-  }
-
-  // Filter out rituals if not requested
-  const response = practices.map(p => {
-    if (!includeRitual) {
-      const { ritual, ...rest } = p;
-      return rest;
-    }
-    return p;
-  });
-
-  return NextResponse.json({
-    success: true,
-    practices: response,
-    count: response.length,
-    total: GRATITUDE_PRACTICES.length,
-    types: {
-      daily: GRATITUDE_PRACTICES.filter(p => p.type === 'daily').length,
-      manifestation: GRATITUDE_PRACTICES.filter(p => p.type === 'manifestation').length,
-      orixa: GRATITUDE_PRACTICES.filter(p => p.type === 'orixa').length,
-      sephirot: GRATITUDE_PRACTICES.filter(p => p.type === 'sephirot').length,
-      journey: GRATITUDE_PRACTICES.filter(p => p.type === 'journey').length,
-    },
-  });
 }
