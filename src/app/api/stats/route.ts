@@ -3,42 +3,91 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const ReadingTypeSchema = z.enum([
-  'tarot',
-  'numerologia',
-  'astrologia',
-  'ifá',
-  'lenormand',
-  'orixá',
-  'cabala',
+  'tarot', 'numerologia', 'astrologia', 'ifá',
+  'lenormand', 'orixá', 'cabala'
 ]);
 const FeatureSchema = z.enum([
-  'mapa-alma',
-  'mapa-caminho',
-  'ritual',
-  'meditacao',
-  'afirmacoes',
-  'divinacao',
-  'numerologia',
-  'tarot',
-  'orixá',
-  'correlacao',
+  'mapa-alma', 'mapa-caminho', 'ritual', 'meditacao',
+  'afirmacoes', 'divinacao', 'numerologia', 'tarot',
+  'orixá', 'correlacao', 'sacred-geometry', 'chakras', 'breathwork'
 ]);
 const StatsQuerySchema = z.object({
   userId: z.string().optional(),
   type: ReadingTypeSchema.optional(),
   period: z.enum(['day', 'week', 'month', 'year', 'all']).optional().default('month'),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 const ActivityBodySchema = z.object({
   userId: z.string().min(1, 'userId é obrigatório'),
   feature: FeatureSchema,
   metadata: z.record(z.any()).optional(),
+  spiritualCorrelations: z.object({
+    sefirot: z.array(z.string()).optional(),
+    chakra: z.number().optional(),
+    element: z.string().optional(),
+    orixa: z.string().optional(),
+  }).optional(),
 });
+
+// ─── Feature Spiritual Correlations ──────────────────────────────────────────
+const FEATURE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+}> = {
+  'mapa-alma': { sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: ' Meu mapa de alma revela minha verdade' },
+  'mapa-caminho': { sefirot: ['Tipheret', 'Malkuth'], chakra: 5, element: 'Terra', orixa: 'Oxóssi', affirmation: 'O caminho se revela com clareza' },
+  'ritual': { sefirot: ['Chesed', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Ogum', affirmation: 'O ritual transforma minha energia' },
+  'meditacao': { sefirot: ['Kether', 'Binah'], chakra: 7, element: 'Ar', orixa: 'Oxalá', affirmation: 'A meditação ancora minha mente' },
+  'afirmacoes': { sefirot: ['Netzach', 'Hod'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'Minhas afirmações criam minha realidade' },
+  'divinacao': { sefirot: ['Chokhmah', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Orunmilá', affirmation: 'A divinção revela verdades ocultas' },
+  'numerologia': { sefirot: ['Binah', 'Chokhmah'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'Os números guiam meu destino' },
+  'tarot': { sefirot: ['Chokhmah', 'Hod'], chakra: 6, element: 'Água', orixa: 'Orunmilá', affirmation: 'As cartas iluminam meu caminho' },
+  'orixá': { sefirot: ['Tipheret', 'Gevurah'], chakra: 4, element: 'Fogo', orixa: 'Ogum', affirmation: 'Honro os Orixás em minha jornada' },
+  'correlacao': { sefirot: ['Kether', 'Malkuth'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A correlação revela unitividade' },
+  'sacred-geometry': { sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A geometria sagrada molda minha consciência' },
+  'chakras': { sefirot: ['Kether', 'Malkuth'], chakra: 1, element: 'Fogo', orixa: 'Kundalini', affirmation: 'Meus chakras fluem em harmonia' },
+  'breathwork': { sefirot: ['Tipheret', 'Binah'], chakra: 4, element: 'Ar', orixa: 'Oxalá', affirmation: 'A respiração conecta mente e espírito' },
+};
+
+// ─── Reading Type Spiritual Correlations ──────────────────────────────────────────
+const READING_TYPE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+}> = {
+  tarot: { sefirot: ['Chokhmah', 'Hod'], chakra: 6, element: 'Água', orixa: 'Orunmilá' },
+  numerologia: { sefirot: ['Binah', 'Chokhmah'], chakra: 5, element: 'Ar', orixa: 'Orunmilá' },
+  astrologia: { sefirot: ['Chokhmah', 'Tipheret'], chakra: 6, element: 'Ar', orixa: 'Oxum' },
+  'ifá': { sefirot: ['Hod', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Orunmilá' },
+  lenormand: { sefirot: ['Hod', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá' },
+  'orixá': { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Ogum' },
+  cabala: { sefirot: ['Kether', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá' },
+};
+
+// ─── TYPE DEFINITIONS ──────────────────────────────────────────────────────
 interface ReadingStats {
   total: number;
   byType: Record<string, number>;
 }
+
 interface RitualStats {
   totalCompletions: number;
   currentStreak: number;
@@ -48,11 +97,26 @@ interface RitualStats {
     completedAt: string;
   }>;
 }
+
+interface ActivityRecord {
+  userId: string;
+  lastActive: string;
+  features: Map<string, number>;
+  spiritualPath: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    dominantFeature: string;
+  };
+}
+
 function recordFeature(activity: ActivityRecord, feature: string) {
   activity.lastActive = new Date().toISOString();
   const count = activity.features.get(feature) || 0;
   activity.features.set(feature, count + 1);
 }
+
 function getFavoriteFeature(features: Map<string, number>): string | null {
   if (features.size === 0) return null;
   let maxCount = 0;
@@ -66,204 +130,214 @@ function getFavoriteFeature(features: Map<string, number>): string | null {
   return favorite || null;
 }
 
+function getDominantSpiritualPath(features: Map<string, number>) {
+  let maxCount = 0;
+  let dominant = '';
+  features.forEach((count, feature) => {
+    if (count > maxCount) {
+      maxCount = count;
+      dominant = feature;
+    }
+  });
+  
+  const corr = FEATURE_SPIRITUAL_CORRELATIONS[dominant] || FEATURE_SPIRITUAL_CORRELATIONS['ritual'];
+  return {
+    sefirot: corr.sefirot,
+    chakra: corr.chakra,
+    element: corr.element,
+    orixa: corr.orixa,
+    dominantFeature: dominant,
+  };
+}
+
+// In-memory activity store
+const activityStore = new Map<string, ActivityRecord>();
+
 export async function GET(request: NextRequest) {
-  const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    return NextResponse.json(
-      { error: 'Usuário não autenticado' },
-      { status: 401 }
-    );
-  }
-
   try {
-    // Fetch reading stats from Supabase
-    const { data: readingsData, error: readingsError } = await supabase
-      .from('leituras_historico')
-      .select('tipo')
-      .eq('user_id', user.id);
+    const { searchParams } = new URL(request.url);
+    const parseResult = StatsQuerySchema.safeParse({
+      userId: searchParams.get('userId'),
+      type: searchParams.get('type'),
+      period: searchParams.get('period'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
 
-    if (readingsError) {
-      console.error('Error fetching readings:', readingsError);
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
 
-    const readingsByType: Record<string, number> = {};
-    let totalReadings = 0;
+    const { userId, type, period, sefirot, chakra, element, orixa } = parseResult.data;
+
+    // Get stats for authenticated user
+    const supabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    let user = null;
+    if (!userId) {
+      const { data } = await supabase.auth.getUser();
+      user = data?.user;
+    }
+
+    if (!user && !userId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Usuário não autenticado',
+      }, { status: 401 });
+    }
+
+    const effectiveUserId = userId || user?.id;
+
+    // Get or create activity record
+    let activity = activityStore.get(effectiveUserId);
+    if (!activity) {
+      activity = {
+        userId: effectiveUserId,
+        lastActive: new Date().toISOString(),
+        features: new Map(),
+        spiritualPath: { sefirot: ['Malkuth'], chakra: 1, element: 'Terra', orixa: 'Ogum', dominantFeature: 'ritual' },
+      };
+      activityStore.set(effectiveUserId, activity);
+    }
+
+    // Filter by spiritual correlations
+    let filteredFeatures = Array.from(activity.features.entries());
     
-    if (readingsData) {
-      readingsData.forEach((reading: { tipo: string }) => {
-        const tipo = reading.tipo || 'unknown';
-        readingsByType[tipo] = (readingsByType[tipo] || 0) + 1;
-        totalReadings++;
+    if (sefirot) {
+      filteredFeatures = filteredFeatures.filter(([feature]) => {
+        const corr = FEATURE_SPIRITUAL_CORRELATIONS[feature];
+        return corr?.sefirot.includes(sefirot);
+      });
+    }
+    if (chakra) {
+      filteredFeatures = filteredFeatures.filter(([feature]) => {
+        const corr = FEATURE_SPIRITUAL_CORRELATIONS[feature];
+        return corr?.chakra === chakra;
+      });
+    }
+    if (element) {
+      filteredFeatures = filteredFeatures.filter(([feature]) => {
+        const corr = FEATURE_SPIRITUAL_CORRELATIONS[feature];
+        return corr?.element === element;
+      });
+    }
+    if (orixa) {
+      filteredFeatures = filteredFeatures.filter(([feature]) => {
+        const corr = FEATURE_SPIRITUAL_CORRELATIONS[feature];
+        return corr?.orixa === orixa;
       });
     }
 
-    // Fetch ritual stats
-    const { data: ritualData, error: ritualError } = await supabase
-      .from('ritual_completions')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('completed_at', { ascending: false });
+    const totalActivities = filteredFeatures.reduce((sum, [, count]) => sum + count, 0);
 
-    if (ritualError) {
-      console.error('Error fetching rituals:', ritualError);
-    }
+    // Build stats by feature
+    const statsByFeature: Record<string, number> = {};
+    filteredFeatures.forEach(([feature, count]) => {
+      statsByFeature[feature] = count;
+    });
 
-    const ritualStats: RitualStats = {
-      totalCompletions: 0,
-      currentStreak: 0,
-      longestStreak: 0,
-      completionRate: 0,
-      recentCompletions: []
-    };
+    // Spiritual correlations for all types
+    const spiritualCorrelations = Object.entries(READING_TYPE_SPIRITUAL_CORRELATIONS).reduce((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string, { sefirot: string[]; chakra: number; element: string; orixa: string }>);
 
-    if (ritualData && ritualData.length > 0) {
-      ritualStats.totalCompletions = ritualData.length;
-      
-      // Calculate streaks from ritual completions
-      const completionDates = ritualData
-        .map((r: { completed_at: string }) => new Date(r.completed_at))
-        .sort((a: Date, b: Date) => a.getTime() - b.getTime());
-      
-      const uniqueDays = [...new Set(
-        completionDates.map((d: Date) => d.toISOString().split('T')[0])
-      )].map(d => new Date(d));
+    // Feature spiritual correlations
+    const featureCorrelations = Object.entries(FEATURE_SPIRITUAL_CORRELATIONS).reduce((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string, { sefirot: string[]; chakra: number; element: string; orixa: string; affirmation: string }>);
 
-      // Current streak
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
-
-      let currentStreak = 0;
-      let longestStreak = 0;
-      let tempStreak = 1;
-
-      if (uniqueDays.length > 0) {
-        const lastDay = uniqueDays[uniqueDays.length - 1];
-        const lastDayNormalized = new Date(lastDay);
-        lastDayNormalized.setHours(0, 0, 0, 0);
-
-        const isActiveToday = lastDayNormalized.getTime() === today.getTime();
-        const isActiveYesterday = lastDayNormalized.getTime() === yesterday.getTime();
-
-        if (isActiveToday || isActiveYesterday) {
-          for (let i = uniqueDays.length - 2; i >= 0; i--) {
-            const diff = (uniqueDays[i + 1].getTime() - uniqueDays[i].getTime()) / (1000 * 60 * 60 * 24);
-            if (diff === 1) {
-              currentStreak++;
-            } else {
-              break;
-            }
-          }
-          currentStreak++;
-        }
-
-        // Longest streak
-        for (let i = 1; i < uniqueDays.length; i++) {
-          const diff = (uniqueDays[i].getTime() - uniqueDays[i - 1].getTime()) / (1000 * 60 * 60 * 24);
-          if (diff === 1) {
-            tempStreak++;
-          } else {
-            longestStreak = Math.max(longestStreak, tempStreak);
-            tempStreak = 1;
-          }
-        }
-        longestStreak = Math.max(longestStreak, tempStreak);
-      }
-
-      ritualStats.currentStreak = currentStreak;
-      ritualStats.longestStreak = longestStreak;
-      ritualStats.completionRate = Math.min(100, (currentStreak / 7) * 100);
-
-      ritualStats.recentCompletions = ritualData.slice(0, 10).map((r: { ritual_id: string; completed_at: string; duration: number }) => ({
-        ritualId: r.ritual_id,
-        date: r.completed_at,
-        duration: r.duration || 0
-      }));
-    }
-
-    // Get activity stats
-    const activity = getUserActivity(user.id);
-    const activityStats: ActivityStats = {
-      totalSessions: activity?.sessions || 0,
-      lastActive: activity?.lastActive || null,
-      favoriteFeature: activity ? getFavoriteFeature(activity.features) : null
-    };
-
-    // Build response
-    const stats: SpiritualStats = {
-      readings: {
-        total: totalReadings,
-        byType: readingsByType
-      },
-      rituals: ritualStats,
-      streak: {
-        current: ritualStats.currentStreak,
-        longest: ritualStats.longestStreak
-      },
-      activity: activityStats,
-      generatedAt: new Date().toISOString()
+    // Statistics
+    const stats = {
+      totalActivities,
+      byFeature: statsByFeature,
+      favoriteFeature: getFavoriteFeature(activity.features),
+      dominantSpiritualPath: getDominantSpiritualPath(activity.features),
+      period,
+      lastActive: activity.lastActive,
     };
 
     return NextResponse.json({
       success: true,
-      stats
+      stats,
+      spiritualCorrelations: {
+        byType: spiritualCorrelations,
+        byFeature: featureCorrelations,
+      },
+      meta: {
+        userId: effectiveUserId,
+        filters: { sefirot, chakra, element, orixa },
+      },
     });
-
   } catch (error) {
-    console.error('Error generating spiritual stats:', error);
-    return NextResponse.json(
-      { error: 'Erro ao gerar estatísticas espirituais' },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
 }
 
-// Track activity for a feature
+// POST - Record new activity
 export async function POST(request: NextRequest) {
-  const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    return NextResponse.json(
-      { error: 'Usuário não autenticado' },
-      { status: 401 }
-    );
-  }
-
   try {
     const body = await request.json();
-    const { feature } = body;
+    const parseResult = ActivityBodySchema.safeParse(body);
 
-    if (!feature) {
-      return NextResponse.json(
-        { error: 'Feature é obrigatória' },
-        { status: 400 }
-      );
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Dados inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
 
-    recordActivity(user.id, feature);
+    const { userId, feature, metadata, spiritualCorrelations } = parseResult.data;
+
+    let activity = activityStore.get(userId);
+    if (!activity) {
+      activity = {
+        userId,
+        lastActive: new Date().toISOString(),
+        features: new Map(),
+        spiritualPath: { sefirot: ['Malkuth'], chakra: 1, element: 'Terra', orixa: 'Ogum', dominantFeature: 'ritual' },
+      };
+      activityStore.set(userId, activity);
+    }
+
+    recordFeature(activity, feature);
+
+    // Update spiritual path if provided
+    if (spiritualCorrelations) {
+      activity.spiritualPath = {
+        sefirot: spiritualCorrelations.sefirot || activity.spiritualPath.sefirot,
+        chakra: spiritualCorrelations.chakra || activity.spiritualPath.chakra,
+        element: spiritualCorrelations.element || activity.spiritualPath.element,
+        orixa: spiritualCorrelations.orixa || activity.spiritualPath.orixa,
+        dominantFeature: feature,
+      };
+    }
 
     return NextResponse.json({
       success: true,
-      message: 'Atividade registrada'
+      message: 'Atividade registrada',
+      spiritualCorrelations: FEATURE_SPIRITUAL_CORRELATIONS[feature] || null,
+      feature,
+      timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
-    console.error('Error recording activity:', error);
-    return NextResponse.json(
-      { error: 'Erro ao registrar atividade' },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      error: 'Erro ao registrar atividade',
+    }, { status: 500 });
   }
 }
