@@ -100,14 +100,7 @@ function generateInstructions(type: MeditationType, duration: number): string[] 
   }
   return instructions;
 }
-    type,
-    title: meta.title,
-    description: meta.description,
-    duration: meditationDuration,
-    instructions: generateInstructions(type, meditationDuration),
-  });
-}
-
+export async function POST(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
