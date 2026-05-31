@@ -46,6 +46,8 @@ interface RitualPractice {
   description: string;
   steps: string[];
 }
+const SEED_GARDEN = [
+  {
     name: 'Semente da Alegria',
     element: 'Fogo',
     chakra: '4º Cardíaco',

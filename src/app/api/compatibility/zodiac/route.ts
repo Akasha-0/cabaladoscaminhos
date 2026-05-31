@@ -26,7 +26,10 @@ interface ZodiacSign {
   symbol: string;
   traits: string[];
   dates: string;
+  dates: string;
 }
+const ZODIAC_SIGNS = {
+  aries: {
     modality: 'Cardinal',
     quality: ['Energético', 'Iniciativa', 'Corajoso', 'Impulsivo'],
     rulingPlanet: 'Marte',

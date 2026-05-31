@@ -109,6 +109,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
   },
   {
     id: 'nanã-ancient',
+    id: 'nanã-ancient',
     name: 'Nanã Burucema',
     nameEn: 'Ancient Mother / Grandmother',
     type: 'orixa',
