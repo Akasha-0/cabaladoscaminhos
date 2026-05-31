@@ -5,6 +5,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const DataSourceTypeSchema = z.enum(['api', 'database', 'file', 'stream', 'cache', 'orixa', 'astrology', 'numerology']);
 const DataSourceStatusSchema = z.enum(['connected', 'disconnected', 'error', 'syncing']);
 const DataSourceQuerySchema = z.object({
@@ -12,6 +19,10 @@ const DataSourceQuerySchema = z.object({
   status: DataSourceStatusSchema.optional(),
   habilitado: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 const ConnectDataSourceSchema = z.object({
@@ -25,6 +36,81 @@ const ConnectDataSourceSchema = z.object({
     ssl: z.boolean().optional(),
   }).optional(),
 });
+
+// ─── Spiritual Correlations for Data Source Types ──────────────────────────────────────────
+const DATASOURCE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  api: {
+    sefirot: ['Hod', 'Netzach'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Oxalá',
+    affirmation: 'A API conecta-me à sabedoria universal',
+    frequency: '741 Hz',
+  },
+  database: {
+    sefirot: ['Malkuth', 'Yesod'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Ogum',
+    affirmation: 'O banco de dados sustenta minha prática',
+    frequency: '174 Hz',
+  },
+  file: {
+    sefirot: ['Malkuth', 'Hod'],
+    chakra: 5,
+    element: 'Terra',
+    orixa: 'Ogum',
+    affirmation: 'Os arquivos guardam conhecimento sagrado',
+    frequency: '174 Hz',
+  },
+  stream: {
+    sefirot: ['Chokhmah', 'Binah'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'O fluxo de dados é como água sagrada',
+    frequency: '639 Hz',
+  },
+  cache: {
+    sefirot: ['Yesod', 'Malkuth'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'O cache preserva memórias espirituais',
+    frequency: '285 Hz',
+  },
+  orixa: {
+    sefirot: ['Tipheret', 'Chesed'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A fonte oracular revela verdades',
+    frequency: '528 Hz',
+  },
+  astrology: {
+    sefirot: ['Binah', 'Chokhmah'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Orunmilá',
+    affirmation: 'Os dados astrológicos guiam minha jornada',
+    frequency: '639 Hz',
+  },
+  numerology: {
+    sefirot: ['Hod', 'Malkuth'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Orunmilá',
+    affirmation: 'Os números cabalísticos revelam meu destino',
+    frequency: '741 Hz',
+  },
+};
 
 // ─── Type Definitions ───────────────────────────────────────────────────────
 interface DataSource {
@@ -50,10 +136,17 @@ interface DataSource {
   habilitado: boolean;
   createdAt: string;
   updatedAt: string;
-  // Spiritual correlations
   sefirot?: string[];
   orixa?: string;
   tradicao?: string;
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 interface DataSourcesData {
@@ -81,197 +174,198 @@ const mockDataSources: DataSource[] = [
       uptime: 99.8,
       requisicoes: 15420,
       erros: 12,
-      ultimoSync: new Date(Date.now() - 300000).toISOString(),
+      ultimoSync: '2026-05-30T10:00:00Z',
     },
     habilitado: true,
-    createdAt: new Date(Date.now() - 30 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 86400000).toISOString(),
-    tradicao: 'IA Espiritual',
-    sefirot: ['Chokhmah', 'Binah'],
+    createdAt: '2026-01-15T08:00:00Z',
+    updatedAt: '2026-05-30T10:00:00Z',
+    sefirot: ['Hod', 'Netzach'],
+    tradicao: 'Oracle AI',
+    spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS['api'],
   },
   {
     id: 'ds-002',
-    nome: 'Banco de Dados Principal',
+    nome: 'Banco de Dados Prisma',
     tipo: 'database',
     status: 'connected',
     configuracao: {
-      host: 'db.cabala.example.com',
+      host: 'db.cabala.internal',
       porta: 5432,
       database: 'cabala_production',
+      ssl: true,
+    },
+    metricas: {
+      latencia: 5,
+      uptime: 99.99,
+      requisicoes: 245000,
+      erros: 0,
+      ultimoSync: null,
+    },
+    habilitado: true,
+    createdAt: '2026-01-01T00:00:00Z',
+    updatedAt: '2026-05-30T10:00:00Z',
+    sefirot: ['Malkuth', 'Yesod'],
+    tradicao: 'PostgreSQL',
+    spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS['database'],
+  },
+  {
+    id: 'ds-003',
+    nome: 'Redis Cache',
+    tipo: 'cache',
+    status: 'connected',
+    configuracao: {
+      host: 'cache.cabala.internal',
+      porta: 6379,
+      ssl: false,
+    },
+    metricas: {
+      latencia: 1,
+      uptime: 99.95,
+      requisicoes: 890000,
+      erros: 3,
+      ultimoSync: null,
+    },
+    habilitado: true,
+    createdAt: '2026-02-01T00:00:00Z',
+    updatedAt: '2026-05-30T10:00:00Z',
+    sefirot: ['Yesod', 'Malkuth'],
+    tradicao: 'Redis',
+    spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS['cache'],
+  },
+  {
+    id: 'ds-004',
+    nome: 'Motor de Orixás',
+    tipo: 'orixa',
+    status: 'connected',
+    configuracao: {
+      endpoint: 'https://orixa-api.cabala.internal',
       autenticacao: 'bearer',
+      ssl: true,
+    },
+    metricas: {
+      latencia: 45,
+      uptime: 99.5,
+      requisicoes: 8900,
+      erros: 8,
+      ultimoSync: '2026-05-30T09:30:00Z',
+    },
+    habilitado: true,
+    createdAt: '2026-03-01T00:00:00Z',
+    updatedAt: '2026-05-30T10:00:00Z',
+    sefirot: ['Tipheret', 'Chesed'],
+    orixa: 'Oxum',
+    tradicao: 'Candomblé/Umbanda',
+    spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS['orixa'],
+  },
+  {
+    id: 'ds-005',
+    nome: 'API Astrológica',
+    tipo: 'astrology',
+    status: 'connected',
+    configuracao: {
+      endpoint: 'https://astrology-api.cabala.internal',
+      autenticacao: 'bearer',
+      ssl: true,
+    },
+    metricas: {
+      latencia: 78,
+      uptime: 99.2,
+      requisicoes: 5600,
+      erros: 15,
+      ultimoSync: '2026-05-30T08:00:00Z',
+    },
+    habilitado: true,
+    createdAt: '2026-03-15T00:00:00Z',
+    updatedAt: '2026-05-30T10:00:00Z',
+    sefirot: ['Binah', 'Chokhmah'],
+    tradicao: 'Astrologia Occidental',
+    spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS['astrology'],
+  },
+  {
+    id: 'ds-006',
+    nome: 'Motor Numerológico',
+    tipo: 'numerology',
+    status: 'connected',
+    configuracao: {
+      endpoint: 'https://numerology-api.cabala.internal',
+      autenticacao: 'bearer',
+      ssl: true,
+    },
+    metricas: {
+      latencia: 32,
+      uptime: 99.7,
+      requisicoes: 12300,
+      erros: 5,
+      ultimoSync: '2026-05-30T09:00:00Z',
+    },
+    habilitado: true,
+    createdAt: '2026-04-01T00:00:00Z',
+    updatedAt: '2026-05-30T10:00:00Z',
+    sefirot: ['Hod', 'Malkuth'],
+    tradicao: 'Numerologia Cabalística',
+    spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS['numerology'],
+  },
+  {
+    id: 'ds-007',
+    nome: 'Arquivos Estáticos',
+    tipo: 'file',
+    status: 'connected',
+    configuracao: {
+      host: 'storage.cabala.internal',
+      porta: 9000,
+    },
+    metricas: {
+      latencia: 12,
+      uptime: 99.9,
+      requisicoes: 45000,
+      erros: 1,
+      ultimoSync: null,
+    },
+    habilitado: true,
+    createdAt: '2026-01-01T00:00:00Z',
+    updatedAt: '2026-05-30T10:00:00Z',
+    sefirot: ['Malkuth', 'Hod'],
+    tradicao: 'Arquivos',
+    spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS['file'],
+  },
+  {
+    id: 'ds-008',
+    nome: 'Stream de Eventos',
+    tipo: 'stream',
+    status: 'syncing',
+    configuracao: {
+      host: 'stream.cabala.internal',
+      porta: 9092,
       ssl: true,
     },
     metricas: {
       latencia: 8,
-      uptime: 99.95,
-      requisicoes: 892340,
-      erros: 3,
-      ultimoSync: new Date().toISOString(),
+      uptime: 98.5,
+      requisicoes: 234000,
+      erros: 45,
+      ultimoSync: '2026-05-30T10:05:00Z',
     },
     habilitado: true,
-    createdAt: new Date(Date.now() - 60 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000).toISOString(),
-    tradicao: 'Armazenamento',
-  },
-  {
-    id: 'ds-003',
-    nome: 'Cache Redis (Sefirot)',
-    tipo: 'cache',
-    status: 'connected',
-    configuracao: {
-      host: 'redis.cabala.example.com',
-      porta: 6379,
-      autenticacao: 'bearer',
-      ssl: true,
-    },
-    metricas: {
-      latencia: 2,
-      uptime: 99.99,
-      requisicoes: 4523000,
-      erros: 0,
-      ultimoSync: new Date().toISOString(),
-    },
-    habilitado: true,
-    createdAt: new Date(Date.now() - 45 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 1800000).toISOString(),
-    sefirot: ['Yesod'],
-    tradicao: 'Cache Espiritual',
-  },
-  {
-    id: 'ds-004',
-    nome: 'API Astrológica (Ephemeris)',
-    tipo: 'astrology',
-    status: 'connected',
-    configuracao: {
-      endpoint: 'https://api.ephemeris.io',
-      autenticacao: 'bearer',
-      ssl: true,
-    },
-    metricas: {
-      latencia: 85,
-      uptime: 99.5,
-      requisicoes: 12450,
-      erros: 5,
-      ultimoSync: new Date(Date.now() - 600000).toISOString(),
-    },
-    habilitado: true,
-    createdAt: new Date(Date.now() - 20 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 7200000).toISOString(),
-    tradicao: 'Astrologia',
-    sefirot: ['Chokhmah'],
-  },
-  {
-    id: 'ds-005',
-    nome: 'API Orixás (Ifá)',
-    tipo: 'orixa',
-    status: 'connected',
-    configuracao: {
-      endpoint: 'https://api.orixa.io',
-      autenticacao: 'bearer',
-      ssl: true,
-    },
-    metricas: {
-      latencia: 95,
-      uptime: 98.9,
-      requisicoes: 8720,
-      erros: 8,
-      ultimoSync: new Date(Date.now() - 900000).toISOString(),
-    },
-    habilitado: true,
-    createdAt: new Date(Date.now() - 15 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 14400000).toISOString(),
-    tradicao: 'Candomblé/Umbanda',
-    sefirot: ['Binah', 'Yesod'],
-    orixa: 'Oxum',
-  },
-  {
-    id: 'ds-006',
-    nome: 'API Numerologia Cabalística',
-    tipo: 'numerology',
-    status: 'connected',
-    configuracao: {
-      endpoint: 'https://api.numerologia.cabala',
-      autenticacao: 'bearer',
-      ssl: true,
-    },
-    metricas: {
-      latencia: 42,
-      uptime: 99.7,
-      requisicoes: 23500,
-      erros: 2,
-      ultimoSync: new Date().toISOString(),
-    },
-    habilitado: true,
-    createdAt: new Date(Date.now() - 25 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000).toISOString(),
-    tradicao: 'Cabala',
-    sefirot: ['Malkuth', 'Kether'],
-  },
-  {
-    id: 'ds-007',
-    nome: 'Stream de Trânsitos Planetários',
-    tipo: 'stream',
-    status: 'syncing',
-    configuracao: {
-      host: 'stream.cabala.example.com',
-      porta: 8080,
-      autenticacao: 'bearer',
-      ssl: true,
-    },
-    metricas: {
-      latencia: 15,
-      uptime: 99.2,
-      requisicoes: 156780,
-      erros: 1,
-      ultimoSync: new Date().toISOString(),
-    },
-    habilitado: true,
-    createdAt: new Date(Date.now() - 10 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 300000).toISOString(),
-    tradicao: 'Trânsitos Astrais',
-    sefirot: ['Gevurah'],
-  },
-  {
-    id: 'ds-008',
-    nome: 'Arquivo de Logs Espirituais',
-    tipo: 'file',
-    status: 'connected',
-    configuracao: {
-      host: '/var/log/cabala',
-      ssl: false,
-    },
-    metricas: {
-      latencia: 5,
-      uptime: 100,
-      requisicoes: 8900,
-      erros: 0,
-      ultimoSync: new Date().toISOString(),
-    },
-    habilitado: false,
-    createdAt: new Date(Date.now() - 90 * 86400000).toISOString(),
-    updatedAt: new Date(Date.now() - 86400000 * 7).toISOString(),
-    tradicao: 'Logs',
+    createdAt: '2026-04-15T00:00:00Z',
+    updatedAt: '2026-05-30T10:05:00Z',
+    sefirot: ['Chokhmah', 'Binah'],
+    tradicao: 'Event Streams',
+    spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS['stream'],
   },
 ];
 
-function getDataSourcesData(): DataSourcesData {
-  return {
-    fontes: mockDataSources,
-    total: mockDataSources.length,
-    conectadas: mockDataSources.filter(d => d.status === 'connected').length,
-  };
-}
-
-// ─── API Routes ─────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = DataSourceQuerySchema.safeParse({
       tipo: searchParams.get('tipo'),
       status: searchParams.get('status'),
       habilitado: searchParams.get('habilitado'),
       limit: searchParams.get('limit'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -282,177 +376,93 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { tipo, status, habilitado, limit } = parseResult.data;
+    const { tipo, status, habilitado, limit, sefirot, chakra, element, orixa } = parseResult.data;
+
     let fontes = [...mockDataSources];
 
-    // Apply filters
     if (tipo) {
-      fontes = fontes.filter(d => d.tipo === tipo);
+      fontes = fontes.filter(f => f.tipo === tipo);
     }
 
     if (status) {
-      fontes = fontes.filter(d => d.status === status);
+      fontes = fontes.filter(f => f.status === status);
     }
 
     if (habilitado !== undefined) {
-      fontes = fontes.filter(d => d.habilitado === habilitado);
+      fontes = fontes.filter(f => f.habilitado === habilitado);
     }
 
-    if (limit) {
+    if (sefirot) {
+      fontes = fontes.filter(f => f.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      fontes = fontes.filter(f => f.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      fontes = fontes.filter(f => f.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      fontes = fontes.filter(f => f.spiritualCorrelations?.orixa === orixa);
+    }
+
+    if (limit && fontes.length > limit) {
       fontes = fontes.slice(0, limit);
     }
 
-    const data = getDataSourcesData();
+    const total = fontes.length;
+    const conectadas = fontes.filter(f => f.status === 'connected').length;
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byTipo: fontes.reduce((acc, f) => {
+        acc[f.tipo] = (acc[f.tipo] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byStatus: fontes.reduce((acc, f) => {
+        acc[f.status] = (acc[f.status] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: fontes.reduce((acc, f) => {
+        f.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: fontes.reduce((acc, f) => {
+        const c = f.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: fontes.reduce((acc, f) => {
+        const e = f.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: fontes.reduce((acc, f) => {
+        const o = f.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
 
     return NextResponse.json({
       success: true,
       fontes,
-      pagination: {
-        total: fontes.length,
-        limit: limit || fontes.length,
-      },
-      stats: {
-        total: data.total,
-        conectadas: data.conectadas,
-        disconnected: data.fontes.filter(d => d.status === 'disconnected').length,
-        error: data.fontes.filter(d => d.status === 'error').length,
-        syncing: data.fontes.filter(d => d.status === 'syncing').length,
-      },
-      byTipo: {
-        api: data.fontes.filter(d => d.tipo === 'api').length,
-        database: data.fontes.filter(d => d.tipo === 'database').length,
-        cache: data.fontes.filter(d => d.tipo === 'cache').length,
-        orixa: data.fontes.filter(d => d.tipo === 'orixa').length,
-        astrology: data.fontes.filter(d => d.tipo === 'astrology').length,
-        numerology: data.fontes.filter(d => d.tipo === 'numerology').length,
-        stream: data.fontes.filter(d => d.tipo === 'stream').length,
-        file: data.fontes.filter(d => d.tipo === 'file').length,
+      total,
+      conectadas,
+      spiritualCorrelations: DATASOURCE_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { tipo, status, habilitado, limit, sefirot, chakra, element, orixa },
       },
     });
-  } catch {
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Erro ao buscar fontes de dados',
-    }, { status: 500 });
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const action = searchParams.get('action');
-
-    if (action === 'connect') {
-      const body = await request.json();
-      const parseResult = ConnectDataSourceSchema.safeParse(body);
-
-      if (!parseResult.success) {
-        return NextResponse.json({
-          success: false,
-          error: 'Payload inválido',
-          details: parseResult.error.flatten().fieldErrors,
-        }, { status: 400 });
-      }
-
-      const dataSource = mockDataSources.find(d => d.id === parseResult.data.id);
-
-      if (!dataSource) {
-        return NextResponse.json({
-          success: false,
-          error: 'Fonte de dados não encontrada',
-          validIds: mockDataSources.map(d => d.id),
-        }, { status: 404 });
-      }
-
-      // Simulate connection
-      dataSource.status = 'connected';
-      dataSource.configuracao = { ...dataSource.configuracao, ...parseResult.data.configuracao };
-      dataSource.updatedAt = new Date().toISOString();
-
-      return NextResponse.json({
-        success: true,
-        dataSource,
-        message: 'Fonte de dados conectada com sucesso',
-      });
-    }
-
-    if (action === 'disconnect') {
-      const body = await request.json();
-      const idSchema = z.object({ id: z.string().min(1, 'ID é obrigatório') });
-      const parseResult = idSchema.safeParse(body);
-
-      if (!parseResult.success) {
-        return NextResponse.json({
-          success: false,
-          error: 'Payload inválido',
-          details: parseResult.error.flatten().fieldErrors,
-        }, { status: 400 });
-      }
-
-      const dataSource = mockDataSources.find(d => d.id === parseResult.data.id);
-
-      if (!dataSource) {
-        return NextResponse.json({
-          success: false,
-          error: 'Fonte de dados não encontrada',
-        }, { status: 404 });
-      }
-
-      dataSource.status = 'disconnected';
-      dataSource.updatedAt = new Date().toISOString();
-
-      return NextResponse.json({
-        success: true,
-        dataSource,
-        message: 'Fonte de dados desconectada',
-      });
-    }
-
-    if (action === 'test') {
-      const body = await request.json();
-      const idSchema = z.object({ id: z.string().min(1, 'ID é obrigatório') });
-      const parseResult = idSchema.safeParse(body);
-
-      if (!parseResult.success) {
-        return NextResponse.json({
-          success: false,
-          error: 'Payload inválido',
-          details: parseResult.error.flatten().fieldErrors,
-        }, { status: 400 });
-      }
-
-      const dataSource = mockDataSources.find(d => d.id === parseResult.data.id);
-
-      if (!dataSource) {
-        return NextResponse.json({
-          success: false,
-          error: 'Fonte de dados não encontrada',
-        }, { status: 404 });
-      }
-
-      // Simulate connection test
-      const testResult = {
-        success: true,
-        latency: Math.floor(Math.random() * 100) + 10,
-        status: dataSource.status,
-        timestamp: new Date().toISOString(),
-      };
-
-      return NextResponse.json({
-        success: true,
-        testResult,
-        message: 'Conexão testada com sucesso',
-      });
-    }
-
-    return NextResponse.json({
-      success: false,
-      error: 'Ação inválida. Use: connect, disconnect ou test',
-    }, { status: 400 });
-  } catch {
-    return NextResponse.json({
-      success: false,
-      error: 'Erro ao processar ação',
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }
