@@ -148,9 +148,11 @@ Object.values(ZODIAC_ELEMENT_MAP).forEach((mapping) => Object.freeze(mapping));
 /**
  * All 12 zodiac signs
  */
-export const TODOS_SIGNOS: readonly SignoZodiac[] = [
+export const TODOS_SIGNOS: readonly SignoZodiac[] = Object.freeze([
   'Áries', 'Touro', 'Gémeos', 'Câncer', 'Leão', 'Virgem',
   'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes'
+]);
+/**
 ];
 
 /**
@@ -164,14 +166,20 @@ function normalizarSigno(signo: string): SignoZodiac | null {
     'aries': 'Áries',
     'touro': 'Touro',
     'gemeos': 'Gémeos',
+    'gem': 'Gémeos',
     'cancer': 'Câncer',
+    'canc': 'Câncer',
     'leao': 'Leão',
+    'leo': 'Leão',
     'virgem': 'Virgem',
     'libra': 'Libra',
     'escorpiao': 'Escorpião',
     'sagitario': 'Sagitário',
+    'sag': 'Sagitário',
     'capricornio': 'Capricórnio',
+    'cap': 'Capricórnio',
     'aquario': 'Aquário',
+    'aqu': 'Aquário',
     'peixes': 'Peixes',
   };
 
