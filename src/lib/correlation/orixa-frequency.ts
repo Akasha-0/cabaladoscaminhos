@@ -29,9 +29,9 @@ export interface OrixaFrequency {
 // 963 Hz - Divine connection, illumination (Éter)
 
 const ORIXA_FREQUENCY_MAP: Record<string, OrixaFrequency> = {
-  // Oxalúfã - Terra - 396 Hz - Foundation, firmness, liberation from fear
-  'Oxalúfã': {
-    orixa: 'Oxalúfã',
+  // Oxalufã - Terra - 396 Hz - Foundation, firmness, liberation from fear
+  'Oxalufã': {
+    orixa: 'Oxalufã',
     frequencia: 396,
     propriedade: 'Firmeza',
     elemento: 'Terra',
