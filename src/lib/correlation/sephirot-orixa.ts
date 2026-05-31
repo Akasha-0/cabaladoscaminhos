@@ -203,16 +203,19 @@ export function getSephirotOrixa(sephirah: string): SephirotOrixa | null {
  */
 export function getOrixaSephirot(): Record<string, string> {
   const result: Record<string, string> = {};
-  const primarySet = new Set<string>();
-  // First pass: collect all primary orixás
-  for (const [, mapping] of Object.entries(SEPHIROT_ORIXA_MAPPINGS)) {
-    primarySet.add(mapping.orixa);
-  }
-  // Second pass: record primaries first, then secondaries only if not a primary elsewhere
+  const seen = new Set<string>();
+  // Primary orixás first (deduplicated — first sephirah wins)
   for (const [sephirah, mapping] of Object.entries(SEPHIROT_ORIXA_MAPPINGS)) {
-    result[mapping.orixa] = sephirah;
-    if (mapping.orixa_secundario && !primarySet.has(mapping.orixa_secundario)) {
+    if (!seen.has(mapping.orixa)) {
+      result[mapping.orixa] = sephirah;
+      seen.add(mapping.orixa);
+    }
+  }
+  // Then secondary orixás only if not already mapped
+  for (const [sephirah, mapping] of Object.entries(SEPHIROT_ORIXA_MAPPINGS)) {
+    if (mapping.orixa_secundario && !seen.has(mapping.orixa_secundario)) {
       result[mapping.orixa_secundario] = sephirah;
+      seen.add(mapping.orixa_secundario);
     }
   }
   return result;
