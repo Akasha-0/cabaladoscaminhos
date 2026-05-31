@@ -14,7 +14,7 @@ import { z } from 'zod';
 const ContentTypeSchema = z.enum(['text', 'video', 'audio', 'interactive', 'ritual', 'meditation']);
 const CategorySchema = z.enum([
   'cabala', 'orixa', 'tarot', 'astrologia', 'numerologia',
-  ' chakras', 'meditacao', 'ritual', ' ancestral', 'yoga'
+  'chakras', 'meditacao', 'ritual', 'ancestral', 'yoga'
 ]);
 
 const ContentQuerySchema = z.object({
@@ -45,7 +45,6 @@ const ContentItemSchema = z.object({
   lessonId: z.string().optional(),
   publishedAt: z.string(),
   updatedAt: z.string(),
-  // Spiritual correlations
   sefirot: z.array(z.string()).optional(),
   orixa: z.string().optional(),
   chakra: z.array(z.number()).optional(),
@@ -98,16 +97,18 @@ interface ContentModule {
   sefirot?: string[];
   orixa?: string;
 }
+
 export const dynamic = 'force-dynamic';
+
+// ─── Content Spiritual Correlations ──────────────────────────────────────────────────
 const CONTENT_SPIRITUAL_CORRELATIONS: Record<string, {
-  seirot: string[];
+  sefirot: string[];
   chakra: number;
   element: string;
   orixa: string;
   affirmation: string;
   frequency: string;
 }> = {
-  cabala: { sefirot: ['Kether', 'Chokhmah', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A sabedoria da Cabala ilumina minha alma', frequency: '963 Hz' },
   cabala: { sefirot: ['Kether', 'Chokhmah', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A sabedoria da Cabala ilumina minha alma', frequency: '963 Hz' },
   orixa: { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'A energia do Orixá flui através de mim', frequency: '528 Hz' },
   tarot: { sefirot: ['Chokhmah', 'Hod'], chakra: 6, element: 'Ar', orixa: 'Oxalá', affirmation: 'Os símbolos do Tarot revelam minha verdade', frequency: '528 Hz' },
@@ -119,7 +120,8 @@ const CONTENT_SPIRITUAL_CORRELATIONS: Record<string, {
   ancestral: { sefirot: ['Binah', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'A linhagem ancestral me sustenta', frequency: '639 Hz' },
   yoga: { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'O corpo é templo do espírito', frequency: '396 Hz' },
 };
-function enrichContentItem(item: EnrichedContentItem & Record<string, unknown>): EnrichedContentItem & { spiritualCorrelations: Record<string, string | number | string[]> } {
+
+function enrichContentItem(item: EnrichedContentItem): EnrichedContentItem & { spiritualCorrelations: Record<string, string | number | string[]> } {
   const catKey = (item.category || '').replace(/[^a-z]/gi, '').toLowerCase();
   const corr = CONTENT_SPIRITUAL_CORRELATIONS[catKey] || CONTENT_SPIRITUAL_CORRELATIONS['cabala'];
   return {
