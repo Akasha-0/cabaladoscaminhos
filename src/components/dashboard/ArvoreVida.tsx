@@ -196,22 +196,41 @@ function getPathColor(from: string, to: string, sephiroth: typeof SEPHIROTH): st
   return '#4A4A4A';
 }
 
-// Tooltip Component
+// Cross-System Tooltip Component
+interface CrossCorrelation {
+  chakra?: string;
+  chakraColor?: string;
+  orixa?: string;
+  odu?: string;
+  oduNumero?: number;
+}
 function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClose: () => void }) {
   const meaning = SEFIRA_MEANINGS[sefira.id];
   if (!meaning) return null;
-
+  // Get cross-system correlations
+  const sephirotCorr = getSephirotOrixa(sefira.name);
+  const chakraCorr = sephirotCorr?.chakra ? getOrixaChakra(sephirotCorr.orixa) : null;
+  const chakraSephir = getChakraSephirot(chakraCorr?.chakra || '');
+  const oduCorr = chakraSephir?.chakra ? getChakraOdu(chakraSephir.chakra) : null;
+  const correlations: CrossCorrelation = {
+    chakra: chakraCorr?.chakra || chakraSephir?.chakra || null,
+    chakraColor: chakraCorr?.cores?.[0] || null,
+    orixa: sephirotCorr?.orixa || null,
+    odu: oduCorr?.odu?.primario?.nome || null,
+    oduNumero: oduCorr?.odu?.primario?.numero || null,
+  };
+  const pillarColor = PILLAR_COLORS[sefira.pillar as keyof typeof PILLAR_COLORS] || PILLAR_COLORS.center;
   return (
-    <div className="absolute z-50 bg-slate-900/95 border border-amber-500/30 rounded-xl p-4 shadow-2xl shadow-amber-500/20 min-w-[280px] max-w-[320px] animate-in fade-in zoom-in-95 duration-200">
-      <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white">
-        ✕
+    <div className="absolute z-50 bg-slate-900/95 border border-amber-500/30 rounded-xl p-4 shadow-2xl shadow-amber-500/20 min-w-[300px] max-w-[340px] animate-in fade-in zoom-in-95 duration-200">
+      <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white text-lg">
+        ×
       </button>
       <div className="flex items-center gap-3 mb-3">
         <div 
           className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold"
           style={{ 
-            backgroundColor: `${PILLAR_COLORS[sefira.pillar as keyof typeof PILLAR_COLORS]}30`,
-            border: `2px solid ${PILLAR_COLORS[sefira.pillar as keyof typeof PILLAR_COLORS]}`
+            backgroundColor: `${pillarColor}30`,
+            border: `2px solid ${pillarColor}`
           }}
         >
           {sefira.number}
@@ -221,7 +240,8 @@ function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClo
           <p className="text-sm text-amber-400">{sefira.hebrew}</p>
         </div>
       </div>
-      <div className="space-y-2 text-sm">
+      {/* Core Kabbalah Info */}
+      <div className="space-y-1.5 text-sm mb-3 pb-2 border-b border-slate-700">
         <div className="flex justify-between">
           <span className="text-slate-400">Nome Divino:</span>
           <span className="text-white">{meaning.divineName}</span>
@@ -234,10 +254,71 @@ function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClo
           <span className="text-slate-400">Elemento:</span>
           <span className="text-cyan-400">{meaning.element}</span>
         </div>
-        <p className="text-slate-300 text-xs italic mt-2 border-t border-slate-700 pt-2">
-          "{meaning.essence}"
-        </p>
       </div>
+      {/* Cross-System Correlations */}
+      <div className="space-y-2">
+        {correlations.orixa && (
+          <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">⚡</span>
+              <div>
+                <p className="text-xs text-slate-400">Orixá</p>
+                <p className="text-white font-medium">{correlations.orixa}</p>
+              </div>
+            </div>
+            {sefirotCorr?.cor && (
+              <div className="text-right">
+                <p className="text-xs text-slate-400">Energia</p>
+                <p className="text-sm font-medium text-amber-300">{sefirotCorr.cor}</p>
+              </div>
+            )}
+          </div>
+        )}
+        {correlations.chakra && (
+          <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
+            <div className="flex items-center gap-2">
+              <div 
+                className="w-5 h-5 rounded-full"
+                style={{ 
+                  backgroundColor: correlations.chakraColor || '#8b5cf6',
+                  boxShadow: `0 0 8px ${correlations.chakraColor || '#8b5cf6'}`
+                }}
+              />
+              <div>
+                <p className="text-xs text-slate-400">Chakra</p>
+                <p className="text-white font-medium">{correlations.chakra}</p>
+              </div>
+            </div>
+            {chakraSephir?.numero_caminho && (
+              <div className="text-right">
+                <p className="text-xs text-slate-400">Caminho</p>
+                <p className="text-sm font-medium text-cyan-400">#{chakraSephir.numero_caminho}</p>
+              </div>
+            )}
+          </div>
+        )}
+        {correlations.odu && correlations.oduNumero && (
+          <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🔮</span>
+              <div>
+                <p className="text-xs text-slate-400">Odú Ifá</p>
+                <p className="text-white font-medium">{correlations.odu} ({correlations.oduNumero})</p>
+              </div>
+            </div>
+            {oduCorr?.elemento && (
+              <div className="text-right">
+                <p className="text-xs text-slate-400">Elemento</p>
+                <p className="text-sm font-medium text-green-400">{oduCorr.elemento}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      {/* Essence */}
+      <p className="text-slate-300 text-xs italic mt-3 border-t border-slate-700 pt-2">
+        "{meaning.essence}"
+      </p>
     </div>
   );
 }
