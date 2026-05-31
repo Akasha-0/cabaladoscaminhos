@@ -1,71 +1,53 @@
-// ============================================================
-// RITUAL CALENDAR API - CABALA DOS CAMINHOS
-// ============================================================
-// GET/POST endpoints for ritual calendar management
-// - Ritual scheduling and tracking
-// - Personal ritual history
-// - Sacred date reminders
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
-// ============================================================
-// TYPE DEFINITIONS
-// ============================================================
-
-interface RitualEntry {
-  id: string;
-  userId?: string;
-  title: string;
-  description: string;
-  date: string;
-  time?: string;
-  duration?: number; // minutes
-  type: 'new-moon' | 'full-moon' | 'solstice' | 'equinox' | 'personal' | 'orixa' | 'cleansing' | 'gratitude';
-  orixa?: string;
-  element?: 'fire' | 'water' | 'earth' | 'air' | 'ether';
-  intentions: string[];
-  completed: boolean;
-  notes?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface RitualCalendarResponse {
-  rituals: RitualEntry[];
-  upcomingRituals: RitualEntry[];
-  pastRituals: RitualEntry[];
-  totalCount: number;
-}
-
-interface CreateRitualInput {
-  title: string;
-  description?: string;
-  date: string;
-  time?: string;
-  duration?: number;
-  type: RitualEntry['type'];
-  orixa?: string;
-  element?: RitualEntry['element'];
-  intentions: string[];
-}
-
-interface UpdateRitualInput {
-  title?: string;
-  description?: string;
-  date?: string;
-  time?: string;
-  duration?: number;
-  type?: RitualEntry['type'];
-  orixa?: string;
-  element?: RitualEntry['element'];
-  intentions?: string[];
-  completed?: boolean;
-  notes?: string;
-}
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const RitualEntrySchema = z.object({
+  id: z.string(),
+  userId: z.string().optional(),
+  title: z.string().min(1),
+  description: z.string(),
+  date: z.string(),
+  time: z.string().optional(),
+  duration: z.number().optional(),
+  type: z.enum(['new-moon', 'full-moon', 'solstice', 'equinox', 'personal', 'orixa', 'cleansing', 'gratitude']),
+  orixa: z.string().optional(),
+  element: z.enum(['fire', 'water', 'earth', 'air', 'ether']).optional(),
+  intentions: z.array(z.string()),
+  completed: z.boolean(),
+  notes: z.string().optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+const CreateRitualSchema = z.object({
+  title: z.string().min(1, 'Título é obrigatório'),
+  description: z.string().optional().default(''),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD'),
+  time: z.string().regex(/^\d{2}:\d{2}$/, 'Formato: HH:MM').optional(),
+  duration: z.number().positive().optional(),
+  type: z.enum(['new-moon', 'full-moon', 'solstice', 'equinox', 'personal', 'orixa', 'cleansing', 'gratitude']),
+  orixa: z.string().optional(),
+  element: z.enum(['fire', 'water', 'earth', 'air', 'ether']).optional(),
+  intentions: z.array(z.string()).min(1, 'Pelo menos uma intenção é necessária'),
+});
+const UpdateRitualSchema = CreateRitualSchema.partial().extend({
+  completed: z.boolean().optional(),
+  notes: z.string().optional(),
+});
+const RitualQuerySchema = z.object({
+  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  type: z.enum(['new-moon', 'full-moon', 'solstice', 'equinox', 'personal', 'orixa', 'cleansing', 'gratitude']).optional(),
+  completed: z.enum(['true', 'false']).optional().transform(v => v === 'true'),
+});
+type RitualEntry = z.infer<typeof RitualEntrySchema>;
+type CreateRitualInput = z.infer<typeof CreateRitualSchema>;
+type UpdateRitualInput = z.infer<typeof UpdateRitualSchema>;
+// In-memory storage for demo (replace with DB in production)
 // In-memory storage for demo (replace with DB in production)
 const ritualStorage = new Map<string, RitualEntry>();
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
 
 // ============================================================
 // HELPER FUNCTIONS
