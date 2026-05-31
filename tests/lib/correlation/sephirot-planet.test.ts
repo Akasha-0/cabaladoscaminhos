@@ -7,6 +7,8 @@ import {
   getSephirotByPath,
   getSephirotByLetter,
   SEPHIROT_PLANET_MAPPINGS,
+  getPlanetSephirot,
+  getAllSephirotPlanets,
   type SephirotPlanet,
 } from '@/lib/correlation/sephirot-planet';
 
@@ -279,7 +281,6 @@ describe('sephirot-planet', () => {
       }
     });
   });
-});
   // ─── getPlanetSephirot ──────────────────────────────────────────────────────
   describe('getPlanetSephirot', () => {
     it('returns Vênus for Kether', () => {
@@ -320,3 +321,4 @@ describe('sephirot-planet', () => {
       expect(unique.size).toBe(10);
     });
   });
+});

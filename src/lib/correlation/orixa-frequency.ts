@@ -1,170 +1,162 @@
 /**
  * Orixá-Frequency Correlation Module
- * Maps Orixás to their corresponding Solfeggio frequencies
- * Based on IDEIA.md and the Cabala dos Caminhos framework
+ * Maps Orixás to Solfeggio frequencies and spiritual properties
+ * Based on IDEIA.md Cabala dos Caminhos framework
  */
 
-/**
- * Represents the correlation between an Orixá and its Solfeggio frequency
- */
 export interface OrixaFrequency {
-  /** Orixá name */
+  /** Name of the Orixá */
   orixa: string;
-  /** Associated Solfeggio frequency in Hz */
+  /** Solfeggio frequency in Hz */
   frequencia: number;
-  /** Spiritual property associated with this Orixá-frequency */
+  /** Spiritual property associated with this Orixá-frequency correlation */
   propriedade: string;
-  /** Element associated with this Orixá */
+  /** Associated classical element */
   elemento: string;
-  /** Chakra associated with this Orixá-frequency */
+  /** Chakra associated with this frequency */
   chakra: string;
 }
 
-/**
- * Complete mapping of Orixás to their Solfeggio frequency correspondences.
- * Based on frequency-orixa.ts as the source of truth.
- * Each Orixá carries the vibrational signature of its corresponding frequency.
- */
+// ─── Orixá-to-Frequency Mapping ──────────────────────────────────────────────
+// Maps Orixás to their vibrational frequency correspondences.
+// Frequencies are assigned based on spiritual alignment:
+// 396 Hz - Liberation from fear, grounding (Terra)
+// 417 Hz - Transformation, prosperity, water energy (Água)
+// 528 Hz - Miracles, justice, power (Fogo)
+// 639 Hz - Harmony, wisdom, victory (Ar)
+// 741 Hz - Awakening, expression, storms (Ar)
+// 852 Hz - Third eye, transformation, cycles (Éter)
+// 963 Hz - Divine connection, illumination (Éter)
+
 const ORIXA_FREQUENCY_MAP: Record<string, OrixaFrequency> = {
-  'Oxalufã': {
-    orixa: 'Oxalufã',
+  // Oxalúfã - Terra - 396 Hz - Foundation, firmness, liberation from fear
+  'Oxalúfã': {
+    orixa: 'Oxalúfã',
     frequencia: 396,
-    propriedade: 'Firmeza, proteção e dissolução de medos de sobrevivência',
+    propriedade: 'Firmeza',
     elemento: 'Terra',
-    chakra: '1º Básico (Muladhara)',
+    chakra: 'Básico',
   },
+  // Omulu - Terra - 396 Hz - Disease and healing, liberation
   'Omulu': {
     orixa: 'Omulu',
     frequencia: 396,
-    propriedade: 'Cura de doenças, transformação da escuridão em luz',
+    propriedade: 'Libertação',
     elemento: 'Terra',
-    chakra: '1º Básico (Muladhara)',
+    chakra: 'Básico',
   },
+  // Oxum - Água - 417 Hz - Prosperity, flow, creativity
   'Oxum': {
     orixa: 'Oxum',
     frequencia: 417,
-    propriedade: 'Prosperidade, renovação emocional e fluidez',
+    propriedade: 'Prosperidade',
     elemento: 'Água',
-    chakra: '2º Sacro (Svadhisthana)',
+    chakra: 'Sacro',
   },
+  // Iemanjá - Água - 417 Hz - Nurturing, intuition, transformation
   'Iemanjá': {
     orixa: 'Iemanjá',
     frequencia: 417,
-    propriedade: 'Nutrição, proteção maternal e ciclos de renovação',
+    propriedade: 'Maternidade',
     elemento: 'Água',
-    chakra: '2º Sacro (Svadhisthana)',
+    chakra: 'Sacro',
   },
+  // Nanã - Água - 417 Hz - Wisdom, ancestors, purification
+  'Nanã': {
+    orixa: 'Nanã',
+    frequencia: 417,
+    propriedade: 'Sabedoria',
+    elemento: 'Água',
+    chakra: 'Sacro',
+  },
+  // Xangô - Fogo - 528 Hz - Justice, power, transformation, miracles
   'Xangô': {
     orixa: 'Xangô',
     frequencia: 528,
-    propriedade: 'Justiça, força vital e transformação criativa',
+    propriedade: 'Justiça',
     elemento: 'Fogo',
-    chakra: '3º Plexo Solar (Manipura)',
+    chakra: 'Plexo Solar',
   },
-  'Logun Ede': {
-    orixa: 'Logun Ede',
+  // Ogum - Fogo - 528 Hz - Warrior, opening paths
+  'Ogum': {
+    orixa: 'Ogum',
     frequencia: 528,
-    propriedade: 'Equilíbrio entre masculino e feminino, beleza',
+    propriedade: 'Guerra',
     elemento: 'Fogo',
-    chakra: '3º Plexo Solar (Manipura)',
+    chakra: 'Plexo Solar',
   },
+  // Oxóssi - Ar - 639 Hz - Wisdom, hunting, seeking
   'Oxóssi': {
     orixa: 'Oxóssi',
     frequencia: 639,
-    propriedade: 'Sabedoria, fartura e abertura de caminhos',
+    propriedade: 'Sabedoria',
     elemento: 'Ar',
-    chakra: '4º Cardíaco (Anahata)',
+    chakra: 'Cardíaco',
   },
-  'Nanã Buruquá': {
-    orixa: 'Nanã Buruquá',
-    frequencia: 639,
-    propriedade: 'Sabedoria ancestral, ancianidade e conhecimento oculto',
-    elemento: 'Ar',
-    chakra: '4º Cardíaco (Anahata)',
-  },
+  // Iansã - Ar - 741 Hz - Liberation, storms, transformation
   'Iansã': {
     orixa: 'Iansã',
     frequencia: 741,
-    propriedade: 'Libertação, expressão autêntica e transformação',
+    propriedade: 'Libertação',
     elemento: 'Ar',
-    chakra: '5º Laríngeo (Vishuddha)',
+    chakra: 'Laríngeo',
   },
-  'Obá': {
-    orixa: 'Obá',
-    frequencia: 741,
-    propriedade: 'Força guerreira, proteção e batalha espiritual',
-    elemento: 'Ar',
-    chakra: '5º Laríngeo (Vishuddha)',
-  },
+  // Oxumaré - Éter - 852 Hz - Transformation, cycles, rainbow serpent
   'Oxumaré': {
     orixa: 'Oxumaré',
     frequencia: 852,
-    propriedade: 'Transformação completa, equilíbrio de opostos',
+    propriedade: 'Transformação',
     elemento: 'Éter',
-    chakra: '6º Frontal (Ajna)',
+    chakra: 'Frontal',
   },
-  'Ossaim': {
-    orixa: 'Ossaim',
-    frequencia: 852,
-    propriedade: 'Conhecimento das folhas, cura herbal e sabedoria verde',
+  // Oxalá - Éter - 963 Hz - Divine creation, purity, illumination
+  'Oxalá': {
+    orixa: 'Oxalá',
+    frequencia: 963,
+    propriedade: 'Iluminação',
     elemento: 'Éter',
-    chakra: '6º Frontal (Ajna)',
+    chakra: 'Coronário',
   },
+  // Ori - Éter - 963 Hz - Personal destiny, inner head
   'Ori': {
     orixa: 'Ori',
     frequencia: 963,
-    propriedade: 'Iluminação interior, propósito de vida e conexão divina',
+    propriedade: 'Iluminação',
     elemento: 'Éter',
-    chakra: '7º Coronário (Sahasrara)',
-  },
-  'Olokun': {
-    orixa: 'Olokun',
-    frequencia: 963,
-    propriedade: 'Abundância das profundezas, mistérios do mar',
-    elemento: 'Éter',
-    chakra: '7º Coronário (Sahasrara)',
+    chakra: 'Coronário',
   },
 };
 
 /**
- * Freeze the mapping object to prevent modifications
- */
-Object.freeze(ORIXA_FREQUENCY_MAP);
-Object.values(ORIXA_FREQUENCY_MAP).forEach((mapping) => Object.freeze(mapping));
-
-/**
- * Get Orixá-frequency mapping for a given Orixá
+ * Get Orixá-frequency correlation mapping
  * @param orixa - Name of the Orixá (case-insensitive)
  * @returns OrixaFrequency mapping or undefined if not found
  */
 export function getOrixaFrequency(orixa: string): OrixaFrequency | undefined {
   const normalized = orixa.trim();
-  return (
-    ORIXA_FREQUENCY_MAP[normalized] ||
-    Object.values(ORIXA_FREQUENCY_MAP).find(
-      entry => entry.orixa.toLowerCase() === normalized.toLowerCase()
-    )
+  return ORIXA_FREQUENCY_MAP[normalized] || Object.values(ORIXA_FREQUENCY_MAP).find(
+    entry => entry.orixa.toLowerCase() === normalized.toLowerCase()
   );
 }
 
 /**
- * Get the frequency corresponding to a given Orixá
+ * Get the frequency associated with an Orixá
  * @param orixa - Name of the Orixá (case-insensitive)
  * @returns Frequency in Hz or null if not found
  */
 export function getFrequencyOrixa(orixa: string): number | null {
-  const mapping = getOrixaFrequency(orixa);
-  return mapping?.frequencia ?? null;
+  const result = getOrixaFrequency(orixa);
+  return result?.frequencia ?? null;
 }
 
 /**
- * Get the property associated with a given Orixá
+ * Get the spiritual property associated with an Orixá
  * @param orixa - Name of the Orixá (case-insensitive)
  * @returns Property string or null if not found
  */
 export function getOrixaProperty(orixa: string): string | null {
-  const mapping = getOrixaFrequency(orixa);
-  return mapping?.propriedade ?? null;
+  const result = getOrixaFrequency(orixa);
+  return result?.propriedade ?? null;
 }
 
 /**
@@ -176,9 +168,9 @@ export function getAllOrixas(): string[] {
 }
 
 /**
- * Get Orixás by frequency
+ * Get all Orixás for a specific frequency
  * @param frequencia - Solfeggio frequency in Hz
- * @returns Array of OrixaFrequency mappings for that frequency
+ * @returns Array of OrixaFrequency mappings with this frequency
  */
 export function getOrixasByFrequency(frequencia: number): OrixaFrequency[] {
   return Object.values(ORIXA_FREQUENCY_MAP).filter(
@@ -187,24 +179,26 @@ export function getOrixasByFrequency(frequencia: number): OrixaFrequency[] {
 }
 
 /**
- * Get Orixás by element
- * @param elemento - Element name (e.g., 'Terra', 'Água', 'Fogo', 'Ar', 'Éter')
- * @returns Array of OrixaFrequency mappings for that element
+ * Get all Orixás for a specific element
+ * @param elemento - Element type (Terra, Água, Fogo, Ar, Éter)
+ * @returns Array of OrixaFrequency mappings with this element
  */
 export function getOrixasByElement(elemento: string): OrixaFrequency[] {
+  const normalized = elemento.trim();
   return Object.values(ORIXA_FREQUENCY_MAP).filter(
-    entry => entry.elemento.toLowerCase() === elemento.toLowerCase()
+    entry => entry.elemento.toLowerCase() === normalized.toLowerCase()
   );
 }
 
 /**
- * Get Orixás by chakra
+ * Get all Orixás for a specific chakra
  * @param chakra - Chakra name (case-insensitive)
- * @returns Array of OrixaFrequency mappings for that chakra
+ * @returns Array of OrixaFrequency mappings with this chakra
  */
 export function getOrixasByChakra(chakra: string): OrixaFrequency[] {
+  const normalized = chakra.trim().toLowerCase();
   return Object.values(ORIXA_FREQUENCY_MAP).filter(
-    entry => entry.chakra.toLowerCase().includes(chakra.toLowerCase())
+    entry => entry.chakra.toLowerCase().includes(normalized)
   );
 }
 
