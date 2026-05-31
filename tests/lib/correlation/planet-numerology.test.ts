@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 /**
  * Planet-Numerology Correlation Tests
  */
@@ -166,11 +167,13 @@ describe('Planet-Numerology Correlation', () => {
   });
 
   describe('getAllPlanetNumerologies', () => {
+    it('should return all 7 planet mappings', () => {
+      const result = getAllPlanetNumerologies();
       expect(result).toHaveLength(7);
     });
 
     it('should include all expected planets', () => {
-      const result = getAllPlanetNumerology();
+      const result = getAllPlanetNumerologies();
       const planetNames = result.map(r => r.planeta);
       expect(planetNames).toContain('Sol');
       expect(planetNames).toContain('Lua');
@@ -182,7 +185,7 @@ describe('Planet-Numerology Correlation', () => {
     });
 
     it('should return array of objects with all required properties', () => {
-      const result = getAllPlanetNumerology();
+      const result = getAllPlanetNumerologies();
       for (const mapping of result) {
         expect(mapping).toHaveProperty('planeta');
         expect(mapping).toHaveProperty('numero');
@@ -194,10 +197,10 @@ describe('Planet-Numerology Correlation', () => {
     });
 
     it('should not modify the original data', () => {
-      const result = getAllPlanetNumerology();
+      const result = getAllPlanetNumerologies();
       const originalLength = result.length;
       result.push({} as any);
-      expect(getAllPlanetNumerology()).toHaveLength(originalLength);
+      expect(getAllPlanetNumerologies()).toHaveLength(originalLength);
     });
   });
 
