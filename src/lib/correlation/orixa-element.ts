@@ -34,7 +34,6 @@ const ORIXAS_MAP: Record<string, OrixaElement> = {
     significado_espiritual: 'O Criador supremo, Pai de todos os Orixás. Governa a criação, pureza, paz e reconciliação. Simboliza o princípio masculino da fecundidade cósmica e a energia etérea que conecta o físico ao espiritual.',
     elementos_secundarios: ['fogo'],
     planeta_secundario: 'Júpiter'
-  },
   'Iemanjá': {
     orixa: 'Iemanjá',
     elemento_principal: 'água',
@@ -48,8 +47,10 @@ const ORIXAS_MAP: Record<string, OrixaElement> = {
       'Pata-de-vaca',
       'Erva-de-Santa-Luzia'
     ],
+    significado_espiritual: 'Mãe das águas e Rainha do Mar. Provedora, nutridora e protetora maternal. Governa os ciclos reprodutivos, a fertilidade, os partos e o amor incondicional. Sua energia hídrica traz cura emocional e renovação espiritual.',
     elementos_secundarios: ['éter'],
     planeta_secundario: 'Netuno'
+  },
   },
   'Oxum': {
     orixa: 'Oxum',
@@ -64,6 +65,9 @@ const ORIXAS_MAP: Record<string, OrixaElement> = {
       'Folha de Dinheiro-em-penca',
       'Melissa',
       'Rosa Branca/Amarela'
+    ],
+    significado_espiritual: 'A riqueza interior e a prosperidade material. Deusa do ouro, dos rios e do amor. Governa a vaidade, a beleza, a sensualidade e a abundância. Sua energia hídrica ensina a fluir com gracejo e a atrair recursos com elegância.'
+  },
     ]
   },
   'Ogum': {
