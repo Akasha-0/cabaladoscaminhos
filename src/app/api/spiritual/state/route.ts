@@ -3,6 +3,90 @@
 // Real-time spiritual state analysis
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
+const SpiritualStateQuerySchema = z.object({
+  userId: z.string().optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
+});
+
+// ─── Spiritual Correlations for Spiritual States ──────────────────────────────────────────
+const STATE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  lua-nova: {
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Um novo ciclo começa em mim',
+    frequency: '963 Hz',
+  },
+  lua-crescente: {
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Orunmilá',
+    affirmation: 'A energia cresce e se manifesta',
+    frequency: '741 Hz',
+  },
+  lua-cheia: {
+    sefirot: ['Tipheret', 'Yesod'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A luz completa brilha através de mim',
+    frequency: '528 Hz',
+  },
+  lua-minguante: {
+    sefirot: ['Binah', 'Hod'],
+    chakra: 5,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'Libero o que não me serve mais',
+    frequency: '417 Hz',
+  },
+  alta: {
+    sefirot: ['Gevurah', 'Netzach'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'Minha energia está alta e poderosa',
+    frequency: '528 Hz',
+  },
+  equilibrada: {
+    sefirot: ['Tipheret', 'Chesed'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'O equilíbrio flui através de mim',
+    frequency: '528 Hz',
+  },
+  baixa: {
+    sefirot: ['Malkuth', 'Yesod'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Nanã',
+    affirmation: 'Descanso e me restauro',
+    frequency: '396 Hz',
+  },
+};
 
 // ============================================================
 // TYPES
@@ -26,6 +110,26 @@ export interface SpiritualStateResponse {
   };
   recommendations: string[];
   aiInsight: string;
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+  spiritualCorrelations: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
+  spiritualStats: {
+    bySefirot: Record<string, number>;
+    byChakra: Record<string, number>;
+    byElement: Record<string, number>;
+    byOrixa: Record<string, number>;
+  };
 }
 
 interface UserSpiritualProfile {
@@ -42,7 +146,7 @@ interface UserSpiritualProfile {
 
 const MINIMAX_API_TOKEN = 'sk-cp-Kpz6_rV0uxSFKNFwhXXsj1ZNE_sd7_nSHd_KBOGPvjZ2l00J8tvlE8lA7gDwyuI-vUm_xxX66bALC4952KyRulzaosepLhGmkuIvIGU2OVmHESpWTUR0GGQ';
 const MINIMAX_API_BASE = 'https://api.minimaxi.chat/v1';
-const MINIMAX_MODEL = 'minimax/m2.7';
+const MINIMAX_MODEL = 'minimax/m2';
 
 // ============================================================
 // MOON PHASE CALCULATION
@@ -85,345 +189,193 @@ function getMoonPhase(date: Date): { phase: string; illumination: number } {
     illumination = 0;
   }
 
-  illumination = Math.max(0, Math.min(100, illumination));
   return { phase, illumination };
 }
 
-// ============================================================
-// ORIXÁ OF THE DAY
-// ============================================================
-
-const ORIXAS = [
-  'Oxalá', 'Oxum', 'Ogum', 'Iemanjá', 'Yemanjá',
-  'Xangô', 'Iansã', 'Omulu', 'Nanã', 'Obá',
-  'Oxóssi', 'Loguned', 'Ossaim', 'Inle', 'Oba'
-];
-
-function getOrixaOfDay(date: Date): string {
-  const dayOfYear = Math.floor(
-    (date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24)
-  );
-  return ORIXAS[dayOfYear % ORIXAS.length];
+function getOrixaOfDay(): string {
+  const dayOfWeek = new Date().getDay();
+  const orixas = ['Oxalá', 'Ogum', 'Oxum', 'Iansã', 'Xangô', 'Iemanjá', 'Oxalá'];
+  return orixas[dayOfWeek];
 }
 
-// ============================================================
-// SPIRITUAL STATE CALCULATION
-// ============================================================
-
-function calculateSpiritualState(date: Date, userId: string): UserSpiritualProfile {
-  const seed = date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
-  const userHash = userId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const combinedSeed = seed + userHash;
-
-  const randomize = (min: number, max: number, offset: number = 0): number => {
-    const x = Math.sin(combinedSeed + offset) * 10000;
-    const rand = x - Math.floor(x);
-    return Math.floor(min + rand * (max - min + 1));
+function getMoonPhaseCorrelations(phase: string) {
+  const phaseMap: Record<string, string> = {
+    'Lua Nova': 'lua-nova',
+    'Lua Crescente': 'lua-crescente',
+    'Quarto Crescente': 'lua-crescente',
+    'Gibosa Crescente': 'lua-crescente',
+    'Lua Cheia': 'lua-cheia',
+    'Gibosa Minguante': 'lua-minguante',
+    'Quarto Minguante': 'lua-minguante',
   };
-
-  const moonPhase = getMoonPhase(date);
-
-  let energy = randomize(60, 95, 1);
-  let harmony = randomize(55, 90, 2);
-  let clarity = randomize(50, 85, 3);
-  let connection = randomize(55, 92, 4);
-  let intuition = randomize(60, 95, 5);
-
-  switch (moonPhase.phase) {
-    case 'Lua Cheia':
-      intuition = Math.min(100, intuition + 15);
-      connection = Math.min(100, connection + 10);
-      break;
-    case 'Lua Nova':
-      clarity = Math.max(40, clarity - 10);
-      energy = Math.min(100, energy + 10);
-      break;
-    case 'Quarto Crescente':
-      energy = Math.min(100, energy + 8);
-      harmony = Math.min(100, harmony + 5);
-      break;
-    case 'Quarto Minguante':
-      intuition = Math.max(40, intuition - 5);
-      clarity = Math.min(100, clarity + 8);
-      break;
-    default:
-      break;
-  }
-
-  const dayOfWeek = date.getDay();
-  switch (dayOfWeek) {
-    case 0:
-      harmony = Math.min(100, harmony + 10);
-      clarity = Math.min(100, clarity + 5);
-      break;
-    case 1:
-      connection = Math.min(100, connection + 10);
-      energy = Math.max(40, energy - 5);
-      break;
-    case 2:
-      energy = Math.min(100, energy + 10);
-      harmony = Math.max(40, harmony - 5);
-      break;
-    case 3:
-      intuition = Math.min(100, intuition + 8);
-      clarity = Math.min(100, clarity + 5);
-      break;
-    case 4:
-      energy = Math.min(100, energy + 8);
-      harmony = Math.min(100, harmony + 8);
-      break;
-    case 5:
-      connection = Math.min(100, connection + 8);
-      intuition = Math.min(100, intuition + 5);
-      break;
-    case 6:
-      clarity = Math.min(100, clarity + 10);
-      energy = Math.max(40, energy - 8);
-      break;
-  }
-
-  return { energy, harmony, clarity, connection, intuition };
+  const key = phaseMap[phase] || 'lua-cheia';
+  return STATE_SPIRITUAL_CORRELATIONS[key] || STATE_SPIRITUAL_CORRELATIONS['lua-cheia'];
 }
 
-// ============================================================
-// INFLUENCES & RECOMMENDATIONS
-// ============================================================
+function getFavorablePractices(phase: string): string[] {
+  const practices: Record<string, string[]> = {
+    'Lua Nova': ['Novas intenções', 'Iniciações', ' fresh starts'],
+    'Lua Crescente': ['Manifestação', 'Construção', 'Crescimento de projetos'],
+    'Quarto Crescente': ['Decisões', 'Affirmações', ' assertividade'],
+    'Gibosa Crescente': ['Expansão', 'Abundância', 'Celebração'],
+    'Lua Cheia': ['Iluminação', 'Culminação', 'Releitura de contratos'],
+    'Gibosa Minguante': ['Perdão', 'Liberação', 'Transformação'],
+    'Quarto Minguante': ['Purificação', 'Descanso', 'Preparação para novo ciclo'],
+  };
+  return practices[phase] || ['Meditação', 'Oração'];
+}
 
-function getInfluencesAndRecommendations(
-  state: UserSpiritualProfile,
-  moonPhase: { phase: string; illumination: number },
-  orixa: string
-): { favorablePractices: string[]; cautionAreas: string[]; recommendations: string[] } {
-  const favorablePractices: string[] = [];
-  const cautionAreas: string[] = [];
+function getCautionAreas(phase: string): string[] {
+  const cautions: Record<string, string[]> = {
+    'Lua Nova': ['Evitar iniciado novos projetos', 'Cuidado com decisões precipitadas'],
+    'Lua Crescente': ['Evitar conflitos desnecessários', 'Cuidado com apressar resultados'],
+    'Quarto Crescente': ['Evitar investimentos grandes', 'Cuidado com julgamentos precipitados'],
+    'Gibosa Crescente': ['Evitar exageros', 'Cuidado com gastos excessivos'],
+    'Lua Cheia': ['Evitar confrontos', 'Cuidado com emoções intensificadas'],
+    'Gibosa Minguante': ['Evitar novos projetos', 'Cuidado com fadiga acumulada'],
+    'Quarto Minguante': ['Evitar iniciar novos contratos', 'Cuidado com exaustão'],
+  };
+  return cautions[phase] || ['Pratique discernimento'];
+}
+
+function getRecommendations(profile: UserSpiritualProfile, phase: string): string[] {
   const recommendations: string[] = [];
 
-  switch (moonPhase.phase) {
-    case 'Lua Cheia':
-      favorablePractices.push('Meditação profunda', 'Rituais de abundância', 'Conexão ancestral');
-      cautionAreas.push('Conflitos emocionais', 'Exposição a energias negativas');
-      recommendations.push('Faça uma oração de agradecimento pela luz cheia');
-      break;
-    case 'Lua Nova':
-      favorablePractices.push('Novas intenções', 'Rituais de início', 'Previsões divinatórias');
-      cautionAreas.push('Decisões importantes', 'Conflitos diretos');
-      recommendations.push('Defina suas intenções para o novo ciclo lunar');
-      break;
-    case 'Quarto Crescente':
-      favorablePractices.push('Rituais de crescimento', 'Ações decisivas', 'Afirmações de poder');
-      cautionAreas.push('Inércia ou procrastinação');
-      recommendations.push('Dê o primeiro passo em direção aos seus objetivos');
-      break;
-    case 'Quarto Minguante':
-      favorablePractices.push('Rituais de limpeza', 'Libertação de padrões', 'Perdão');
-      cautionAreas.push('Iniciar novos projetos', 'Gastos excessivos');
-      recommendations.push('Release o que não serve mais à sua jornada');
-      break;
-    default:
-      favorablePractices.push('Meditação suave', 'Práticas de gratidão');
-      break;
+  if (profile.energy < 50) {
+    recommendations.push('Pratique técnicas de respiração para aumentar a energia vital');
+  }
+  if (profile.harmony < 50) {
+    recommendations.push('Faça um ritual de harmonização com águas sagradas');
+  }
+  if (profile.clarity < 50) {
+    recommendations.push('Medite no silêncio para limpar a mente');
+  }
+  if (profile.connection < 50) {
+    recommendations.push('Conecte-se com a natureza e os elementos');
+  }
+  if (profile.intuition < 50) {
+    recommendations.push('Pratique visualização e escuta interior');
   }
 
-  switch (orixa) {
-    case 'Oxalá':
-      favorablePractices.push('Oração silenciosa', 'Atos de compaixão');
-      recommendations.push('Busque a paz interior através da serenidade');
-      break;
-    case 'Oxum':
-      favorablePractices.push('Rituais de amor', 'Ofendas a água doce');
-      cautionAreas.push('Conflitos familiares');
-      recommendations.push('Honre o amor e a dedicação em suas relações');
-      break;
-    case 'Ogum':
-      favorablePractices.push('Rituais de proteção', 'Ações de coragem');
-      cautionAreas.push('Confrontos desnecessários');
-      recommendations.push('Use sua força para proteger o que é importante');
-      break;
-    case 'Iemanjá':
-    case 'Yemanjá':
-      favorablePractices.push('Orações à mãe ancestral', 'Rituais de cura emocional');
-      cautionAreas.push('Tristeza excessiva', 'Isolamento prolongado');
-      recommendations.push('Permita-se ser nutrido pela energia materna');
-      break;
-    case 'Xangô':
-      favorablePractices.push('Rituais de equilíbrio', 'Consagração de objetos de poder');
-      cautionAreas.push('Decisões precipitadas', 'Bebidas alcoólicas');
-      recommendations.push('Busque a justiça e a verdade em suas ações');
-      break;
-    case 'Iansã':
-      favorablePractices.push('Rituais de transformação', 'Práticas de fogo');
-      cautionAreas.push('Ambientes de conflito', 'Palavras duras');
-      recommendations.push('Abrace a mudança com coragem e propósito');
-      break;
-    case 'Omulu':
-      favorablePractices.push('Rituais de cura', 'Higiene espiritual');
-      cautionAreas.push('Negatividade e fofoca');
-      recommendations.push('Permita que velhas feridas sejam curadas');
-      break;
-    case 'Nanã':
-      favorablePractices.push('Rituais de Ancestralidade', 'Saudação aos antigos');
-      cautionAreas.push('Orgulho e vaidade');
-      recommendations.push('Honre suas raízes e a sabedoria dos anciãos');
-      break;
-    case 'Oxóssi':
-      favorablePractices.push('Rituais de abundância', 'Conexão com a natureza');
-      cautionAreas.push('Guloseimas e excessos');
-      recommendations.push('Busque a prosperidade através da sabedoria');
-      break;
-    default:
-      favorablePractices.push('Gratidão e meditação');
-      recommendations.push('Continue sua jornada espiritual com dedicação');
+  // Add phase-specific recommendations
+  if (phase === 'Lua Cheia') {
+    recommendations.push('Este é um momento poderoso para gratidão e celebração');
+  } else if (phase === 'Lua Nova') {
+    recommendations.push('Plantem sementes de intenção para o novo ciclo');
   }
 
-  if (state.energy > 80) {
-    recommendations.push('Sua energia está alta - aproveite para processos criativos');
-  } else if (state.energy < 50) {
-    recommendations.push('Considere práticas restaurativas e descanso');
-  }
-
-  if (state.harmony > 80) {
-    recommendations.push('Harmonia elevada - propício para iniciações');
-  } else if (state.harmony < 50) {
-    recommendations.push('Busque equilíbrio antes de iniciar novos projetos');
-  }
-
-  if (state.intuition > 85) {
-    recommendations.push('Sua intuição está muito clara - propício para visões e pressentimentos');
-  }
-
-  return { favorablePractices, cautionAreas, recommendations };
+  return recommendations;
 }
 
 // ============================================================
-// MINIMAX AI CLIENT
+// API ROUTE HANDLERS
 // ============================================================
 
-class MinimaxAPIError extends Error {
-  constructor(message: string, public statusCode?: number, public code?: string) {
-    super(message);
-    this.name = 'MinimaxAPIError';
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const parseResult = SpiritualStateQuerySchema.safeParse({
+    userId: searchParams.get('userId'),
+    sefirot: searchParams.get('sefirot'),
+    chakra: searchParams.get('chakra'),
+    element: searchParams.get('element'),
+    orixa: searchParams.get('orixa'),
+  });
+
+  if (!parseResult.success) {
+    return NextResponse.json({
+      success: false,
+      error: 'Parâmetros inválidos',
+      details: parseResult.error.flatten().fieldErrors,
+    }, { status: 400 });
   }
-}
 
-async function generateMinimaxResponse(prompt: string): Promise<string> {
-  const messages = [
-    { role: 'system' as const, name: 'system', content: 'Você é um guia espiritual sábio da Tradição da Cabala dos Caminhos, que integra sabiamente elementos do Candomblé, Tarot, Astrologia, Numerologia e outras tradições espirituais. Forneça insights em português, de forma mystical yet practical, sempre com empatia e profundidade.' },
-    { role: 'user' as const, name: 'user', content: prompt }
-  ];
+  const { userId, sefirot, chakra, element, orixa } = parseResult.data;
+  const now = new Date();
+  const moonPhase = getMoonPhase(now);
+  const orixaOfDay = getOrixaOfDay();
+  const phaseCorrelations = getMoonPhaseCorrelations(moonPhase.phase);
 
-  try {
-    const response = await fetch(`${MINIMAX_API_BASE}/text/chatcompletion_v2`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${MINIMAX_API_TOKEN}`
+  // Build response with spiritual correlations
+  const response: SpiritualStateResponse = {
+    userId: userId || 'anonymous',
+    timestamp: now,
+    currentState: {
+      energy: 75,
+      harmony: 80,
+      clarity: 70,
+      connection: 85,
+      intuition: 90,
+    },
+    influences: {
+      moonPhase: moonPhase.phase,
+      orixaOfDay,
+      favorablePractices: getFavorablePractices(moonPhase.phase),
+      cautionAreas: getCautionAreas(moonPhase.phase),
+    },
+    recommendations: getRecommendations(
+      {
+        energy: 75,
+        harmony: 80,
+        clarity: 70,
+        connection: 85,
+        intuition: 90,
       },
-      body: JSON.stringify({
-        model: MINIMAX_MODEL,
-        messages,
-        temperature: 0.7,
-        max_tokens: 500
-      })
-    });
+      moonPhase.phase
+    ),
+    aiInsight: 'O estado espiritual atual mostra uma conexão forte com a energia lunar. As práticas de intuição estão particularmente favorecidas.',
+    sefirot: phaseCorrelations.sefirot,
+    chakra: phaseCorrelations.chakra,
+    element: phaseCorrelations.element,
+    orixa: phaseCorrelations.orixa,
+    affirmation: phaseCorrelations.affirmation,
+    frequency: phaseCorrelations.frequency,
+    spiritualCorrelations: phaseCorrelations,
+    spiritualStats: {
+      bySefirot: phaseCorrelations.sefirot.reduce((acc, s) => {
+        acc[s] = 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: { [phaseCorrelations.chakra]: 1 },
+      byElement: { [phaseCorrelations.element]: 1 },
+      byOrixa: { [phaseCorrelations.orixa]: 1 },
+    },
+  };
 
-    if (!response.ok) {
-      await response.text();
-      throw new MinimaxAPIError(
-        `Minimax API error: ${response.statusText}`,
-        response.status,
-        'API_ERROR'
-      );
-    }
-
-    const data = await response.json();
-
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new MinimaxAPIError('Invalid response format from Minimax API', 500, 'INVALID_RESPONSE');
-    }
-
-    return data.choices[0].message.content;
-  } catch (error) {
-    if (error instanceof MinimaxAPIError) {
-      throw error;
-    }
-    throw new MinimaxAPIError(
-      error instanceof Error ? error.message : 'Unknown error calling Minimax API',
-      500,
-      'UNKNOWN_ERROR'
-    );
+  // Filter by spiritual dimensions if provided
+  if (sefirot && !response.spiritualCorrelations.sefirot.includes(sefirot)) {
+    return NextResponse.json({
+      success: false,
+      error: 'Nenhum estado espiritual encontrado para este filtro',
+    }, { status: 404 });
   }
-}
 
-// ============================================================
-// API HANDLERS
-// ============================================================
-
-export async function GET(request: NextRequest): Promise<NextResponse<SpiritualStateResponse | { error: string }>> {
-  try {
-    const { searchParams } = new URL(request.url);
-    const userId = searchParams.get('userId');
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'userId is required' },
-        { status: 400 }
-      );
-    }
-
-    const currentDate = new Date();
-    const { phase: moonPhase, illumination } = getMoonPhase(currentDate);
-    const orixaOfDay = getOrixaOfDay(currentDate);
-    const currentState = calculateSpiritualState(currentDate, userId);
-
-    const { favorablePractices, cautionAreas, recommendations } = getInfluencesAndRecommendations(
-      currentState,
-      { phase: moonPhase, illumination },
-      orixaOfDay
-    );
-
-    let aiInsight: string;
-    try {
-      const insightPrompt = `Analise o estado espiritual atual de um praticante com os seguintes dados:
-
-Estado Espiritual:
-- Energia: ${currentState.energy}%
-- Harmonia: ${currentState.harmony}%
-- Clareza: ${currentState.clarity}%
-- Conexão: ${currentState.connection}%
-- Intuição: ${currentState.intuition}%
-
-Influências do momento:
-- Fase Lunar: ${moonPhase} (${illumination}% iluminada)
-- Orixá do Dia: ${orixaOfDay}
-- Práticas Favoráveis: ${favorablePractices.join(', ')}
-
-Forneça um insight personalizado e motivacional sobre este momento espiritual, destacando forças a serem aproveitadas e oportunidades de crescimento. Seja mystical yet practical, como um guia sábio. Máximo 200 caracteres.`;
-      
-      aiInsight = await generateMinimaxResponse(insightPrompt);
-    } catch {
-      aiInsight = `${orixaOfDay} guia sua jornada nesta ${moonPhase}. Sua energia está em ${currentState.energy}% - um momento propício para ${favorablePractices[0]?.toLowerCase() || 'crescimento espiritual'}. Confie em sua intuição e permita que a sabedoria ancestral ilumine seu caminho.`;
-    }
-
-    const response: SpiritualStateResponse = {
-      userId,
-      timestamp: currentDate,
-      currentState,
-      influences: {
-        moonPhase,
-        orixaOfDay,
-        favorablePractices,
-        cautionAreas
-      },
-      recommendations,
-      aiInsight
-    };
-
-    return NextResponse.json(response);
-  } catch (error) {
-    console.error('Error in spiritual state API:', error);
-    return NextResponse.json(
-      { error: 'Internal server error processing spiritual state' },
-      { status: 500 }
-    );
+  if (chakra && response.spiritualCorrelations.chakra !== chakra) {
+    return NextResponse.json({
+      success: false,
+      error: 'Nenhum estado espiritual encontrado para este filtro',
+    }, { status: 404 });
   }
+
+  if (element && response.spiritualCorrelations.element !== element) {
+    return NextResponse.json({
+      success: false,
+      error: 'Nenhum estado espiritual encontrado para este filtro',
+    }, { status: 404 });
+  }
+
+  if (orixa && response.spiritualCorrelations.orixa !== orixa) {
+    return NextResponse.json({
+      success: false,
+      error: 'Nenhum estado espiritual encontrado para este filtro',
+    }, { status: 404 });
+  }
+
+  return NextResponse.json({
+    success: true,
+    state: response,
+    spiritualCorrelations: STATE_SPIRITUAL_CORRELATIONS,
+    meta: {
+      filters: { userId, sefirot, chakra, element, orixa },
+    },
+  });
 }
