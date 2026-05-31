@@ -97,8 +97,8 @@ interface ContentModule {
   totalDuration: number;
   sefirot?: string[];
   orixa?: string;
+}:
 export const dynamic = 'force-dynamic';
-const CONTENT_SPIRITUAL_CORRELATIONS: Record<string, {
   sefirot: string[];
   chakra: number;
   element: string;
