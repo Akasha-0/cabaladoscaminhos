@@ -112,15 +112,34 @@ describe('Orixá-Element Correlation', () => {
 
     it('should include all required properties in returned object', () => {
       const result = getOrixaElement('Oxalá');
-      
       expect(result).toHaveProperty('orixa');
       expect(result).toHaveProperty('elemento_principal');
       expect(result).toHaveProperty('planeta_regente');
       expect(result).toHaveProperty('dia_da_semana');
       expect(result).toHaveProperty('cores_principais');
       expect(result).toHaveProperty('ferramentas');
+      expect(result).toHaveProperty('significado_espiritual');
       expect(Array.isArray(result?.cores_principais)).toBe(true);
       expect(Array.isArray(result?.ferramentas)).toBe(true);
+      expect(typeof result?.significado_espiritual).toBe('string');
+      expect(result?.significado_espiritual.length).toBeGreaterThan(0);
+    it('should return Oxalá with éter spiritual meaning about creation', () => {
+      const result = getOrixaElement('Oxalá');
+      expect(result?.significado_espiritual).toContain('Criador');
+      expect(result?.significado_espiritual).toContain('fecundidade cósmica');
+    });
+    it('should return Iemanjá with water spiritual meaning about nurturing', () => {
+      const result = getOrixaElement('Iemanjá');
+      expect(result?.significado_espiritual).toContain('Mãe das águas');
+      expect(result?.significado_espiritual).toContain('amor incondicional');
+    });
+    it('should return Xangô with fire spiritual meaning about justice', () => {
+      const result = getOrixaElement('Xangô');
+      expect(result?.significado_espiritual).toContain('justiça');
+      expect(result?.significado_espiritual).toContain('raio');
+    });
+  });
+  describe('getAllOrixas', () => {
     });
   });
 
