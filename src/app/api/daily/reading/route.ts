@@ -3,13 +3,72 @@
 /* prettier-ignore */
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const ReadingQuerySchema = z.object({
   tipo: z.enum(['tarot', 'cabala', 'numerologia', 'orixa']).optional(),
   forceRefresh: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 export const dynamic = 'force-dynamic';
+
+// ─── Spiritual Correlations for Daily Readings ──────────────────────────────────────────
+const TAROT_SPIRITUAL_CORRELATIONS: Record<number, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  0: { sefirot: ['Kether'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Inicio minha jornada com liberdade', frequency: '963 Hz' },
+  1: { sefirot: ['Chokhmah'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'Manifesto minha vontade', frequency: '741 Hz' },
+  2: { sefirot: ['Binah'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Confio na minha intuição', frequency: '639 Hz' },
+  3: { sefirot: ['Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'A abundância flui em mim', frequency: '528 Hz' },
+  4: { sefirot: ['Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Ogum', affirmation: 'Estrutura e liderança me guiam', frequency: '396 Hz' },
+  5: { sefirot: ['Tipheret'], chakra: 5, element: 'Ar', orixa: 'Oxalá', affirmation: 'Tradição e espiritualidade me guiam', frequency: '741 Hz' },
+  6: { sefirot: ['Netzach'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'O amor guia minhas escolhas', frequency: '528 Hz' },
+  7: { sefirot: ['Gevurah', 'Netzach'], chakra: 3, element: 'Fogo', orixa: 'Ogum', affirmation: 'A vitória vem com determinação', frequency: '396 Hz' },
+  8: { sefirot: ['Tipheret'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'Coragem e compaixão me sustentam', frequency: '528 Hz' },
+  9: { sefirot: ['Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Na solidão, encontro minha verdade', frequency: '639 Hz' },
+  10: { sefirot: ['Chokhmah', 'Malkuth'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'O destino gira a meu favor', frequency: '741 Hz' },
+  11: { sefirot: ['Gevurah', 'Tipheret'], chakra: 5, element: 'Ar', orixa: 'Oxalá', affirmation: 'A verdade e justiça guiam meu caminho', frequency: '852 Hz' },
+  12: { sefirot: ['Gevurah', 'Chesed'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Rendo-me para uma nova perspectiva', frequency: '639 Hz' },
+  13: { sefirot: ['Binah', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'A transformação traz renascimento', frequency: '639 Hz' },
+  14: { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'O equilíbrio sustenta minha jornada', frequency: '528 Hz' },
+  15: { sefirot: ['Malkuth', 'Hod'], chakra: 3, element: 'Terra', orixa: 'Ogum', affirmation: 'Libero-me das ilusões', frequency: '174 Hz' },
+  16: { sefirot: ['Gevurah', 'Malkuth'], chakra: 3, element: 'Fogo', orixa: 'Ogum', affirmation: 'A revelação liberta minha estrutura', frequency: '396 Hz' },
+  17: { sefirot: ['Chesed', 'Netzach'], chakra: 6, element: 'Fogo', orixa: 'Oxum', affirmation: 'Esperança e fé iluminam meu caminho', frequency: '528 Hz' },
+  18: { sefirot: ['Yesod', 'Binah'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Confio além das ilusões', frequency: '639 Hz' },
+  19: { sefirot: ['Kether', 'Tipheret'], chakra: 4, element: 'Fogo', orixa: 'Oxalá', affirmation: 'Alegria e vitalidade irradiam de mim', frequency: '528 Hz' },
+  20: { sefirot: ['Kether', 'Binah'], chakra: 7, element: 'Fogo', orixa: 'Oxalá', affirmation: 'Desperto para minha verdadeira essência', frequency: '963 Hz' },
+  21: { sefirot: ['Kether', 'Malkuth'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A realização completa minha jornada', frequency: '963 Hz' },
+};
+
+// ─── TYPE DEFINITIONS ──────────────────────────────────────────────────────
 interface DailyReading {
+  tipo: string;
+  card?: any;
+  cabala?: CabalaDaily;
+  numerologia?: NumerologiaDaily;
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 interface CabalaDaily {
@@ -17,6 +76,12 @@ interface CabalaDaily {
   caminho: string;
   tema: string;
   licao: string;
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    affirmation: string;
+  };
 }
 
 interface NumerologiaDaily {
@@ -24,6 +89,13 @@ interface NumerologiaDaily {
   vibracao: string;
   desafio: string;
   oportunidade: string;
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+  };
 }
 
 function getDayKey(date: Date): string {
@@ -60,7 +132,7 @@ function getTarotCardOfDay(seed: number): any {
     { id: 12, nome: 'O Enforcado', significado: 'Sacrifício, nova perspectiva, sacrifício' },
     { id: 13, nome: 'A Morte', significado: 'Transformação, fim de ciclo, renovação' },
     { id: 14, nome: 'A Temperança', significado: 'Equilíbrio, paciência, harmonia' },
-    { id: 15, nome: 'O Diabo', significado: 'Tentação, materialismo,解放' },
+    { id: 15, nome: 'O Diabo', significado: 'Tentação, materialismo, libertação' },
     { id: 16, nome: 'A Torre', significado: 'Destruição, revelação, despertar' },
     { id: 17, nome: 'A Estrela', significado: 'Esperança, fé, renovação' },
     { id: 18, nome: 'A Lua', significado: 'Ilusão, intuição, inconsciência' },
@@ -73,171 +145,211 @@ function getTarotCardOfDay(seed: number): any {
   const card = majorArcana[cardIndex];
   const invertido = (seed % 2) === 1;
 
+  const spiritualCorr = TAROT_SPIRITUAL_CORRELATIONS[card.id] || TAROT_SPIRITUAL_CORRELATIONS[0];
+
   return {
     ...card,
     arcano: 'major' as const,
     invertido,
     significado: invertido ? `Invertido: ${card.significado}` : card.significado,
+    spiritualCorrelations: spiritualCorr,
   };
 }
 
-function getCabalaSephirah(seed: number): CabalaDaily {
-  const sephirot = [
-    { sephirah: 'Keter', caminho: 'Coroa', tema: 'Propósito divino e vontade superior', licao: 'Reconhecer o plano maior além do ego' },
-    { sephirah: 'Chokhmah', caminho: 'Sabedoria', tema: 'Visão intuitiva e novas ideias', licao: 'Abrir-se à inspiração sem julgamento' },
-    { sephirah: 'Binah', caminho: 'Compreensão', tema: 'Análise e discernimento profundo', licao: 'Desenvolver paciência para compreender' },
-    { sephirah: 'Chesed', caminho: 'Misericórdia', tema: 'Compaixão, generosidade e ordem', licao: 'Estender a mão sem esperar retorno' },
-    { sephirah: 'Gevurah', caminho: 'Força', tema: 'Coragem, limitação e julgamento', licao: 'Saber quando limitar e quando avançar' },
-    { sephirah: 'Tiferet', caminho: 'Beleza', tema: 'Harmonia, integração e equilíbrio', licao: 'Unir forças opostas em harmonia' },
-    { sephirah: 'Netzach', caminho: 'Vitória', tema: 'Paixão, persistência e emoção', licao: 'Perseverar com coração ardente' },
-    { sephirah: 'Hod', caminho: 'Glória', tema: 'Humildade, lógica e comunicação', licao: 'Expressar com clareza e humildade' },
-    { sephirah: 'Yesod', caminho: 'Fundação', tema: 'Imaginação, conexão e purificação', licao: 'Purificar a intenção antes de agir' },
-    { sephirah: 'Malkut', caminho: 'Reino', tema: 'Mundo físico, natureza e soberania', licao: 'Manifestar a luz nos detalhes diários' },
-  ];
+// ─── Cabala Daily Correlations ──────────────────────────────────────────
+const CABALA_SPIRITUAL_CORRELATIONS: Record<string, {
+  caminho: string;
+  tema: string;
+  licao: string;
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  affirmation: string;
+}> = {
+  'Kether': { caminho: '1', tema: 'Coroa da vida', licao: 'Aceitar a vontade divina', sefirot: ['Kether'], chakra: 7, element: 'Éter', affirmation: 'Sou um com a fonte' },
+  'Chokhmah': { caminho: '2', tema: 'Sabedoria', licao: 'Desenvolver percepção superior', sefirot: ['Chokhmah'], chakra: 6, element: 'Ar', affirmation: 'A sabedoria me guia' },
+  'Binah': { caminho: '3', tema: 'Compreensão', licao: 'Analisar com profundidade', sefirot: ['Binah'], chakra: 6, element: 'Água', affirmation: 'Compreendo os mistérios' },
+  'Chesed': { caminho: '4', tema: 'Misericórdia', licao: 'Praticar compaixão', sefirot: ['Chesed'], chakra: 4, element: 'Fogo', affirmation: 'A misericórdia me sustenta' },
+  'Gevurah': { caminho: '5', tema: 'Força', licao: 'Usar poder com justiça', sefirot: ['Gevurah'], chakra: 3, element: 'Fogo', affirmation: 'A força justa habita em mim' },
+  'Tipheret': { caminho: '6', tema: 'Beleza', licao: 'Integrar opostos', sefirot: ['Tipheret'], chakra: 5, element: 'Ar', affirmation: 'A harmonia me define' },
+  'Netzach': { caminho: '7', tema: 'Vitória', licao: 'Perseverar com propósito', sefirot: ['Netzach'], chakra: 4, element: 'Fogo', affirmation: 'A vitória é minha jornada' },
+  'Hod': { caminho: '8', tema: 'Glória', licao: 'Expressar conhecimento', sefirot: ['Hod'], chakra: 5, element: 'Ar', affirmation: 'A glória me sustenta' },
+  'Yesod': { caminho: '9', tema: 'Fundamento', licao: 'Estabelecer base sólida', sefirot: ['Yesod'], chakra: 6, element: 'Água', affirmation: 'O fundamento me ancora' },
+  'Malkuth': { caminho: '10', tema: 'Reino', licao: 'Manifestar no mundo físico', sefirot: ['Malkuth'], chakra: 1, element: 'Terra', affirmation: 'Terra e céu se encontram em mim' },
+};
 
-  const index = seed % sephirot.length;
-  return sephirot[index];
-}
-
-function getNumerologiaDiária(seed: number): NumerologiaDaily {
-  const numeros = [
-    { numero: 1, vibracao: 'Iniciação e liderança', desafio: 'Evitar o egoísmo e a impaciência', oportunidade: 'Tirar ideias do papel com determinação' },
-    { numero: 2, vibracao: 'Parceria e cooperação', desafio: 'Superar a indecisão e a baixa autoestima', oportunidade: 'Construir pontes e unir pessoas' },
-    { numero: 3, vibracao: 'Expressão e criatividade', desafio: 'Combater a dispersão e a superficialidade', oportunidade: 'Comunicar ideias com alegria e arte' },
-    { numero: 4, vibracao: 'Estabilidade e trabalho', desafio: 'Não se perder em detalhes ou rigidez', oportunidade: 'Construir bases sólidas e duradouras' },
-    { numero: 5, vibracao: 'Liberdade e mudança', desafio: 'Evitar a inquietude e a irresponsabilidade', oportunidade: 'Adaptar-se com flexibilidade e expansão' },
-    { numero: 6, vibracao: 'Responsabilidade e amor', desafio: 'Não se sacrificar em excesso', oportunidade: 'Criar laços de cuidado genuíno' },
-    { numero: 7, vibracao: 'Reflexão e espiritualidade', desafio: 'Não se isolar ou cair no ceticismo', oportunidade: 'Buscar sabedoria interior com paz' },
-    { numero: 8, vibracao: 'Poder e abundância', desafio: 'Evitar o materialismo e o controle', oportunidade: 'Manifestar prosperidade com ética' },
-    { numero: 9, vibracao: 'Completude e compaixão', desafio: 'Libertar-se do apego ao passado', oportunidade: 'Servir com coração universal' },
-    { numero: 11, vibracao: 'Iluminação e intuição', desafio: 'Equilibrar idealismo com praticidade', oportunidade: 'Inspirar outros com clareza visionária' },
-    { numero: 22, vibracao: 'Maestria e construção', desafio: 'Integrar visão grandiosa com ação', oportunidade: 'Transformar o mundo com propósito concreto' },
-  ];
-
-  const index = seed % numeros.length;
-  return numeros[index];
-}
-
-function generateReflexao(tipo: string, seed: number): string {
-  const reflexoes: Record<string, string[]> = {
-    tarot: [
-      'O universo conspira a seu favor quando você confia no fluxo natural das coisas.',
-      'Cada carta é um espelho da sua alma - olhe dentro de você para encontrar as respostas.',
-      'A jornada é tão importante quanto o destino. Abrace cada passo com gratidão.',
-      'Suas forças interiores são mais poderosas do que você imagina.',
-      'Permita-se ser guiado pela sabedoria antiga que habita em você.',
-    ],
-    cabala: [
-      'A árvore da vida conecta todas as partes do seu ser em harmonia.',
-      'Cada Sephirah é um aspecto de você esperando para ser integrado.',
-      'Desça as escadas para ascender mais alto.',
-      'O vazio é o espaço onde novas possibilidades nascem.',
-      'Você é parte de um plano divino maior do que pode compreender.',
-    ],
-    numerologia: [
-      'Seus números não determinam seu destino - eles iluminam seu caminho.',
-      'Cada dígito carrega sabedoria para guiá-lo nesta jornada.',
-      'A vibração correta está alinhando você com seu propósito.',
-      'Você carrega dentro de si a energia de todos os números que já existiram.',
-      'Seu número de hoje é uma mensagem do universo para você.',
-    ],
-    orixa: [
-      'Os orixás são forças da natureza que habitam em você e ao seu redor.',
-      'A ancestralidade chama você para honoring suas raízes.',
-      'Cada elemento da natureza é um mestre esperando para ensinar.',
-      'O sagrado habita no cotidiano quando você abre seu coração.',
-      'A tradição oral guarda segredos que a mente não pode alcançar.',
-    ],
-  };
-
-  const tipoReflexoes = reflexoes[tipo] || reflexoes.tarot;
-  return tipoReflexoes[seed % tipoReflexoes.length];
-}
-
-function generateOração(tipo: string): string | undefined {
-  const oracoes: Record<string, string> = {
-    cabala: 'Kadosh, kadosh, kadosh Adonai Tsevaot - Santo, santo, santo é o Senhor dos Exércitos.',
-    orixa: 'Ori oba ki o gbe o - Que a cabeça que me foi dada seja protected e iluminada.',
-  };
-
-  return oracoes[tipo];
-}
+// ─── Numerology Daily Correlations ──────────────────────────────────────────
+const NUMERO_SPIRITUAL_CORRELATIONS: Record<number, {
+  vibracao: string;
+  desafio: string;
+  oportunidade: string;
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+}> = {
+  1: { vibracao: 'Início e liderança', desafio: 'Egocentrismo', oportunidade: 'Pioneirismo', sefirot: ['Kether', 'Gevurah'], chakra: 1, element: 'Fogo', orixa: 'Ogum', affirmation: 'Inicio com coragem' },
+  2: { vibracao: 'Parceria e diplomacy', desafio: 'Indecisão', oportunidade: 'Cooperação', sefirot: ['Chokhmah', 'Binah'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'A cooperação traz harmonia' },
+  3: { vibracao: 'Expressão criativa', desafio: 'Superficialidade', oportunidade: 'Comunicação', sefirot: ['Chokhmah', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'A criatividade flui através de mim' },
+  4: { vibracao: 'Estabilidade e trabalho', desafio: 'Rigidez', oportunidade: 'Construção', sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Construo uma base sólida' },
+  5: { vibracao: 'Liberdade e mudança', desafio: 'Impaciência', oportunidade: 'Adaptação', sefirot: ['Hod', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'A liberdade me guia' },
+  6: { vibracao: 'Responsabilidade e amor', desafio: 'Sacrifício excessivo', oportunidade: 'Harmonia familiar', sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'O amor e responsabilidade guiam meu caminho' },
+  7: { vibracao: 'Sabedoria e introspecção', desafio: 'Isolamento', oportunidade: 'Espiritualidade', sefirot: ['Binah', 'Hod'], chakra: 6, element: 'Água', orixa: 'Oxalá', affirmation: 'A sabedoria interior me sustenta' },
+  8: { vibracao: 'Poder e realizações', desafio: 'Materialismo', oportunidade: 'Abundância', sefirot: ['Gevurah', 'Malkuth'], chakra: 3, element: 'Terra', orixa: 'Ogum', affirmation: 'O poder justo flui através de mim' },
+  9: { vibracao: 'Compaixão e humanismo', desafio: 'Expectativas irrealistas', oportunidade: 'Serviço', sefirot: ['Tipheret', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Sou um canal de compaixão' },
+  11: { vibracao: 'Intuição e iluminação', desafio: 'Ansiedade', oportunidade: 'Inspiração', sefirot: ['Kether', 'Chokhmah'], chakra: 6, element: 'Ar', orixa: 'Oxalá', affirmation: 'Minha intuição ilumina o caminho' },
+};
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
+    const searchParams = request.nextUrl.searchParams();
     const parseResult = ReadingQuerySchema.safeParse({
       tipo: searchParams.get('tipo'),
       forceRefresh: searchParams.get('forceRefresh'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
     });
+
     if (!parseResult.success) {
       return NextResponse.json({
+        success: false,
         error: 'Parâmetros inválidos',
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
-    const { tipo: requestedTipo } = parseResult.data;
-    const hoje = new Date();
-    const dayKey = getDayKey(hoje);
-    const seed = hashString(dayKey);
-    const tipos: Array<'tarot' | 'cabala' | 'numerologia' | 'orixa'> = ['tarot', 'cabala', 'numerologia', 'orixa'];
-    let tipoIndex: number;
-    let tipo: 'tarot' | 'cabala' | 'numerologia' | 'orixa';
-    if (requestedTipo) {
-      tipo = requestedTipo;
-      tipoIndex = tipos.indexOf(requestedTipo);
-    } else {
-      tipoIndex = seed % tipos.length;
-      tipo = tipos[tipoIndex];
+
+    const { tipo, forceRefresh, sefirot, chakra, element, orixa } = parseResult.data;
+    const today = new Date();
+    const dayKey = getDayKey(today);
+    const seed = hashString(dayKey + (tipo || 'tarot'));
+
+    // Filter by spiritual correlations
+    if (sefirot || chakra || element || orixa) {
+      if (tipo === 'tarot') {
+        const card = getTarotCardOfDay(seed);
+        if (sefirot && !card.spiritualCorrelations?.sefirot.includes(sefirot)) {
+          // Find card that matches
+        }
+      }
     }
-    const leitura: DailyReading = {
-      id: `daily_${dayKey}_${tipo}`,
-      data: hoje.toISOString().split('T')[0],
-      tipo,
-      mensagem: '',
-      reflexao: generateReflexao(tipo, seed),
-    };
+
     switch (tipo) {
       case 'tarot': {
-        const carta = getTarotCardOfDay(seed);
-        leitura.carta = carta;
-        leitura.mensagem = `A carta do dia é ${carta.nome}${carta.invertido ? ' (invertida)' : ''}. ${carta.significado}.`;
-        break;
+        const card = getTarotCardOfDay(seed);
+        return NextResponse.json({
+          success: true,
+          reading: {
+            tipo: 'tarot',
+            date: today.toISOString(),
+            card,
+            spiritualCorrelations: card.spiritualCorrelations,
+          },
+        });
       }
+
       case 'cabala': {
-        const sephirah = getCabalaSephirah(seed);
-        leitura.mensagem = `Hoje você está conectado ao ${sephirah.sephirah} (${sephirah.caminho}). Tema: ${sephirah.tema}. Lição: ${sephirah.licao}.`;
-        leitura.oracao = generateOração('cabala');
-        break;
+        const sephirot = Object.keys(CABALA_SPIRITUAL_CORRELATIONS);
+        const sephirahIndex = seed % sephirot.length;
+        const sephirah = sephirot[sephirahIndex];
+        const corr = CABALA_SPIRITUAL_CORRELATIONS[sephirah];
+
+        return NextResponse.json({
+          success: true,
+          reading: {
+            tipo: 'cabala',
+            date: today.toISOString(),
+            cabala: {
+              sephirah,
+              caminho: corr.caminho,
+              tema: corr.tema,
+              licao: corr.licao,
+              spiritualCorrelations: {
+                sefirot: corr.sefirot,
+                chakra: corr.chakra,
+                element: corr.element,
+                affirmation: corr.affirmation,
+              },
+            },
+          },
+        });
       }
+
       case 'numerologia': {
-        const num = getNumerologiaDiária(seed);
-        leitura.mensagem = `A vibração do dia é o número ${num.numero}. ${num.vibracao}. Desafio: ${num.desafio}. Oportunidade: ${num.oportunidade}.`;
-        break;
+        const dayOfMonth = today.getDate();
+        const numero = dayOfMonth;
+        const corr = NUMERO_SPIRITUAL_CORRELATIONS[numero] || NUMERO_SPIRITUAL_CORRELATIONS[3];
+
+        return NextResponse.json({
+          success: true,
+          reading: {
+            tipo: 'numerologia',
+            date: today.toISOString(),
+            numerologia: {
+              numero,
+              vibracao: corr.vibracao,
+              desafio: corr.desafio,
+              oportunidade: corr.oportunidade,
+              spiritualCorrelations: {
+                sefirot: corr.sefirot,
+                chakra: corr.chakra,
+                element: corr.element,
+                orixa: corr.orixa,
+                affirmation: corr.affirmation,
+              },
+            },
+          },
+        });
       }
+
       case 'orixa': {
-        const orixas = ['Oxum', 'Ogum', 'Iemanjá', 'Xangô', 'Oxalá', 'Iansã', 'Omulu', 'Nanã'];
+        const orixas = ['Ogum', 'Oxum', 'Iemanjá', 'Oxalá', 'Xangô', 'Oxóssi', 'Iansã', 'Nanã'];
         const orixaIndex = seed % orixas.length;
-        const orixa = orixas[orixaIndex];
-        leitura.mensagem = `${orixa} guia seus passos hoje. Permita que a energia deste orixá ilumine seu caminho com proteção e sabedoria.`;
-        leitura.oracao = generateOração('orixa');
-        break;
+        const orixaName = orixas[orixaIndex];
+
+        return NextResponse.json({
+          success: true,
+          reading: {
+            tipo: 'orixa',
+            date: today.toISOString(),
+            orixa: {
+              name: orixaName,
+              message: `O ${orixaName} guia seu dia`,
+              spiritualCorrelations: {
+                sefirot: ['Tipheret', 'Chesed', 'Gevurah'],
+                chakra: 4,
+                element: 'Fogo',
+                orixa: orixaName,
+                affirmation: `Honro ${orixaName} em minha jornada`,
+              },
+            },
+          },
+        });
+      }
+
+      default: {
+        // Return all types
+        return NextResponse.json({
+          success: true,
+          date: today.toISOString(),
+          tarot: getTarotCardOfDay(seed),
+          cabala: {
+            sephirah: Object.keys(CABALA_SPIRITUAL_CORRELATIONS)[seed % 10],
+            ...CABALA_SPIRITUAL_CORRELATIONS[Object.keys(CABALA_SPIRITUAL_CORRELATIONS)[seed % 10]],
+          },
+          numerologia: {
+            numero: today.getDate(),
+            ...NUMERO_SPIRITUAL_CORRELATIONS[today.getDate()] || NUMERO_SPIRITUAL_CORRELATIONS[3],
+          },
+        });
       }
     }
+  } catch (error) {
     return NextResponse.json({
-      success: true,
-      reading: leitura,
-      meta: {
-        tipo,
-        data: leitura.data,
-        gerado_em: new Date().toISOString(),
-      },
-    });
-  } catch (_error) {
-    console.error('Erro ao gerar leitura diária:', _error);
-    return NextResponse.json(
-      { success: false, error: 'Erro ao processar leitura diária' },
-      { status: 500 }
-    );
+      success: false,
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
 }
