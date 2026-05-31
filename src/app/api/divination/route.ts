@@ -1,15 +1,17 @@
 // src/app/api/divination/route.ts
 // Divination API - skip linting
-
 import { NextRequest, NextResponse } from 'next/server';
-
-// ============================================================
-// TYPES
-// ============================================================
-
-export type DivinationMethod = 'búzios' | 'cards' | 'cowries' | 'opalã' | 'ebós' | 'geomancia';
-
-export interface DivinationQuestion {
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const DivinationMethod = z.enum(['búzios', 'cards', 'cowries', 'opalã', 'ebós', 'geomancia']);
+const DivinationDomain = z.enum(['amor', 'trabalho', 'saúde', 'espiritual', 'financeiro', 'geral']);
+const DivinationQuerySchema = z.object({
+  method: DivinationMethod.optional().default('búzios'),
+  domain: DivinationDomain.optional().default('geral'),
+  intensity: z.coerce.number().int().min(1).max(3).optional().default(2),
+  count: z.coerce.number().int().min(1).max(16).optional(),
+});
+export type DivinationMethod = z.infer<typeof DivinationMethod>;
   method?: DivinationMethod;
   domain?: 'amor' | 'trabalho' | 'saúde' | 'espiritual' | 'financeiro' | 'geral';
   intensity?: number;

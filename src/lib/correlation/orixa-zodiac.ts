@@ -194,26 +194,22 @@ Object.values(ORIXA_ZODIAC_MAP).forEach(mapping => Object.freeze(mapping));
  * Get Orixá-to-Zodiac correlation mapping
  * @param orixa - Name of the Orixá (case-insensitive)
  * @returns OrixaZodiac mapping or undefined if not found
- */
 export function getOrixaZodiac(orixa: string): OrixaZodiac | undefined {
   const normalized = orixa.trim();
   return ORIXA_ZODIAC_MAP[normalized] || Object.values(ORIXA_ZODIAC_MAP).find(
-    entry => entry.orixa.toLowerCase() === normalized.toLowerCase()
+    entry => normalizeString(entry.orixa) === normalizeString(normalized)
   );
 }
 
 /**
  * Get the primary Orixá for a zodiac sign
  * @param signo - Zodiac sign name (case-insensitive)
- * @returns OrixaZodiac mapping or undefined if sign not found
- */
 export function getZodiacOrixa(signo: string): OrixaZodiac | undefined {
   const normalized = signo.trim();
   return Object.values(ORIXA_ZODIAC_MAP).find(
-    entry => entry.signo.toLowerCase() === normalized.toLowerCase()
+    entry => normalizeString(entry.signo) === normalizeString(normalized)
   );
 }
-
 /**
  * Get all Orixá-to-Zodiac mappings
  * @returns Array of all OrixaZodiac objects
@@ -272,3 +268,8 @@ export default {
   getOrixasByDay,
   getOrixasByPlaneta,
 };
+
+// Helper to normalize strings (remove accents, lowercase)
+function normalizeString(str: string): string {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
