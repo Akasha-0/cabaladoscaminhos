@@ -1,13 +1,306 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const RitualTypeSchema = z.enum([
+  'protection',
+  'abundance',
+  'love',
+  'cleansing',
+  'ancestral',
+  'spiritual_growth',
+  'healing',
+  'chakra',
+  'full_moon',
+  'new_moon',
+  'gratitude',
+  'seasonal',
+]);
+const RitualQuerySchema = z.object({
+  tipo: RitualTypeSchema.optional(),
+  search: z.string().optional(),
+  id: z.string().optional(),
+  duracao: z.string().optional(),
+  element: z.string().optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+});
 // Ritual library complete data
 const rituals = [
   // Protection Rituals
-  {
-    id: 'protection-candle',
-    nome: 'Ritual da Vela Protetora',
-    tipo: 'proteção',
-    duracao: '30 minutos',
+  { id: 'prot-001', nome: 'Shield of Light', tipo: 'protection', duracao: '15 min', elements: ['luz', 'fogo'] },
+  { id: 'prot-002', nome: 'Guardian Circle', tipo: 'protection', duracao: '20 min', elements: ['terra', 'éter'] },
+  { id: 'prot-003', nome: 'Divine Armor', tipo: 'protection', duracao: '10 min', elements: ['fogo', 'luz'] },
+  { id: 'prot-004', nome: 'Sacred Boundary', tipo: 'protection', duracao: '25 min', elements: ['agua', 'terra'] },
+  { id: 'prot-005', nome: 'Aurora Protection', tipo: 'protection', duracao: '30 min', elements: ['luz', 'agua'] },
+  { id: 'prot-006', nome: 'Spiritual Shield', tipo: 'protection', duracao: '15 min', elements: ['éter', 'luz'] },
+  { id: 'prot-007', nome: 'Cosmic Armor', tipo: 'protection', duracao: '20 min', elements: ['fogo', 'éter'] },
+  { id: 'prot-008', nome: 'Heavenly Barrier', tipo: 'protection', duracao: '10 min', elements: ['luz', 'fogo'] },
+  { id: 'prot-009', nome: 'Ethereal Shield', tipo: 'protection', duracao: '15 min', elements: ['éter', 'agua'] },
+  { id: 'prot-010', nome: 'Light Warriors', tipo: 'protection', duracao: '30 min', elements: ['luz', 'fogo'] },
+  { id: 'prot-011', nome: 'Guardian Angels', tipo: 'protection', duracao: '20 min', elements: ['luz', 'éter'] },
+  { id: 'prot-012', nome: 'Sacred Fire Circle', tipo: 'protection', duracao: '25 min', elements: ['fogo', 'terra'] },
+  { id: 'prot-013', nome: 'Divine Light Shield', tipo: 'protection', duracao: '15 min', elements: ['luz', 'agua'] },
+  { id: 'prot-014', nome: 'Spiritual Guardian', tipo: 'protection', duracao: '20 min', elements: ['éter', 'fogo'] },
+  { id: 'prot-015', nome: 'Archangel Shield', tipo: 'protection', duracao: '30 min', elements: ['luz', 'fogo'] },
+  { id: 'prot-016', nome: 'Cosmic Protection', tipo: 'protection', duracao: '25 min', elements: ['éter', 'luz'] },
+  { id: 'prot-017', nome: 'Holy Armor', tipo: 'protection', duracao: '20 min', elements: ['luz', 'éter'] },
+  { id: 'prot-018', nome: 'Radiant Shield', tipo: 'protection', duracao: '15 min', elements: ['luz', 'agua'] },
+  { id: 'prot-019', nome: 'Spiritual Fortress', tipo: 'protection', duracao: '30 min', elements: ['terra', 'fogo'] },
+  { id: 'prot-020', nome: 'Divine Barrier', tipo: 'protection', duracao: '25 min', elements: ['fogo', 'luz'] },
+  { id: 'prot-021', nome: 'Light Circle', tipo: 'protection', duracao: '15 min', elements: ['luz', 'éter'] },
+  { id: 'prot-022', nome: 'Sacred Shield', tipo: 'protection', duracao: '20 min', elements: ['fogo', 'agua'] },
+  { id: 'prot-023', nome: 'Heavenly Guard', tipo: 'protection', duracao: '30 min', elements: ['luz', 'terra'] },
+  { id: 'prot-024', nome: 'Spirit Guardian', tipo: 'protection', duracao: '20 min', elements: ['éter', 'luz'] },
+  // Abundance Rituals
+  { id: 'abund-001', nome: 'Abundance Flow', tipo: 'abundance', duracao: '20 min', elements: ['terra', 'agua'] },
+  { id: 'abund-002', nome: 'Prosperity Altar', tipo: 'abundance', duracao: '15 min', elements: ['terra', 'fogo'] },
+  { id: 'abund-003', nome: 'Manifestation Ritual', tipo: 'abundance', duracao: '30 min', elements: ['fogo', 'luz'] },
+  { id: 'abund-004', nome: 'Wealth Attraction', tipo: 'abundance', duracao: '25 min', elements: ['terra', 'luz'] },
+  { id: 'abund-005', nome: 'Success Gateway', tipo: 'abundance', duracao: '20 min', elements: ['fogo', 'terra'] },
+  { id: 'abund-006', nome: 'Prosperity Stream', tipo: 'abundance', duracao: '15 min', elements: ['agua', 'terra'] },
+  { id: 'abund-007', nome: 'Abundance Castle', tipo: 'abundance', duracao: '30 min', elements: ['terra', 'luz'] },
+  { id: 'abund-008', nome: 'Wealth Crystal', tipo: 'abundance', duracao: '25 min', elements: ['crystal', 'terra'] },
+  { id: 'abund-009', nome: 'Money Tree', tipo: 'abundance', duracao: '20 min', elements: ['terra', 'agua'] },
+  { id: 'abund-010', nome: 'Golden Light', tipo: 'abundance', duracao: '15 min', elements: ['luz', 'fogo'] },
+  { id: 'abund-011', nome: 'Prosperity Path', tipo: 'abundance', duracao: '25 min', elements: ['terra', 'fogo'] },
+  { id: 'abund-012', nome: 'Abundance Altar', tipo: 'abundance', duracao: '30 min', elements: ['terra', 'luz'] },
+  { id: 'abund-013', nome: 'Wealth Gateway', tipo: 'abundance', duracao: '20 min', elements: ['fogo', 'luz'] },
+  { id: 'abund-014', nome: 'Money Magnet', tipo: 'abundance', duracao: '15 min', elements: ['terra', 'agua'] },
+  { id: 'abund-015', nome: 'Prosperity Crystal', tipo: 'abundance', duracao: '25 min', elements: ['crystal', 'terra'] },
+  { id: 'abund-016', nome: 'Abundance Stream', tipo: 'abundance', duracao: '30 min', elements: ['agua', 'terra'] },
+  { id: 'abund-017', nome: 'Wealth Altar', tipo: 'abundance', duracao: '20 min', elements: ['terra', 'fogo'] },
+  { id: 'abund-018', nome: 'Golden Path', tipo: 'abundance', duracao: '15 min', elements: ['luz', 'terra'] },
+  // Love Rituals
+  { id: 'love-001', nome: 'Heart Chakra Opening', tipo: 'love', duracao: '20 min', elements: ['agua', 'luz'] },
+  { id: 'love-002', nome: 'Soulmate Attraction', tipo: 'love', duracao: '25 min', elements: ['fogo', 'agua'] },
+  { id: 'love-003', nome: 'Sacred Union', tipo: 'love', duracao: '30 min', elements: ['fogo', 'luz'] },
+  { id: 'love-004', nome: 'Self-Love Ritual', tipo: 'love', duracao: '15 min', elements: ['agua', 'luz'] },
+  { id: 'love-005', nome: 'Relationship Healing', tipo: 'love', duracao: '20 min', elements: ['agua', 'éter'] },
+  { id: 'love-006', nome: 'Love Enchantment', tipo: 'love', duracao: '25 min', elements: ['fogo', 'agua'] },
+  { id: 'love-007', nome: 'Heart Opening', tipo: 'love', duracao: '15 min', elements: ['luz', 'agua'] },
+  { id: 'love-008', nome: 'Soul Connection', tipo: 'love', duracao: '30 min', elements: ['fogo', 'luz'] },
+  { id: 'love-009', nome: 'Love Magnet', tipo: 'love', duracao: '20 min', elements: ['fogo', 'agua'] },
+  { id: 'love-010', nome: 'Divine Love', tipo: 'love', duracao: '25 min', elements: ['luz', 'fogo'] },
+  { id: 'love-011', nome: 'Heart Healing', tipo: 'love', duracao: '15 min', elements: ['agua', 'éter'] },
+  { id: 'love-012', nome: 'Love Flow', tipo: 'love', duracao: '20 min', elements: ['agua', 'luz'] },
+  { id: 'love-013', nome: 'Soulmate召唤', tipo: 'love', duracao: '30 min', elements: ['fogo', 'luz'] },
+  { id: 'love-014', nome: 'Sacred Heart', tipo: 'love', duracao: '25 min', elements: ['luz', 'agua'] },
+  { id: 'love-015', nome: 'Love Temple', tipo: 'love', duracao: '20 min', elements: ['fogo', 'éter'] },
+  { id: 'love-016', nome: 'Heart Light', tipo: 'love', duracao: '15 min', elements: ['luz', 'agua'] },
+  // Cleansing Rituals
+  { id: 'clean-001', nome: 'Smudge Ceremony', tipo: 'cleansing', duracao: '15 min', elements: ['fogo', 'éter'] },
+  { id: 'clean-002', nome: 'Salt Circle', tipo: 'cleansing', duracao: '20 min', elements: ['terra', 'agua'] },
+  { id: 'clean-003', nome: 'White Light Purification', tipo: 'cleansing', duracao: '10 min', elements: ['luz', 'éter'] },
+  { id: 'clean-004', nome: 'Sacred Water Bath', tipo: 'cleansing', duracao: '25 min', elements: ['agua', 'luz'] },
+  { id: 'clean-005', nome: 'Aura Cleansing', tipo: 'cleansing', duracao: '20 min', elements: ['luz', 'éter'] },
+  { id: 'clean-006', nome: 'Smoke Purification', tipo: 'cleansing', duracao: '15 min', elements: ['fogo', 'éter'] },
+  { id: 'clean-007', nome: 'Salt Bath', tipo: 'cleansing', duracao: '25 min', elements: ['agua', 'terra'] },
+  { id: 'clean-008', nome: 'Light Cleansing', tipo: 'cleansing', duracao: '10 min', elements: ['luz', 'água'] },
+  { id: 'clean-009', nome: 'Spiritual Bath', tipo: 'cleansing', duracao: '30 min', elements: ['agua', 'luz'] },
+  { id: 'clean-010', nome: 'Energy Clearing', tipo: 'cleansing', duracao: '20 min', elements: ['éter', 'luz'] },
+  { id: 'clean-011', nome: 'Sacred Smudge', tipo: 'cleansing', duracao: '15 min', elements: ['fogo', 'éter'] },
+  { id: 'clean-012', nome: 'Purification Ritual', tipo: 'cleansing', duracao: '25 min', elements: ['agua', 'fogo'] },
+  { id: 'clean-013', nome: 'Aura Purification', tipo: 'cleansing', duracao: '20 min', elements: ['luz', 'éter'] },
+  { id: 'clean-014', nome: 'Space Clearing', tipo: 'cleansing', duracao: '15 min', elements: ['éter', 'fogo'] },
+  { id: 'clean-015', nome: 'Crystal Cleansing', tipo: 'cleansing', duracao: '25 min', elements: ['crystal', 'luz'] },
+  { id: 'clean-016', nome: 'Spiritual Cleanse', tipo: 'cleansing', duracao: '20 min', elements: ['água', 'luz'] },
+  // Ancestral Rituals
+  { id: 'ances-001', nome: 'Ancestral Connection', tipo: 'ancestral', duracao: '30 min', elements: ['terra', 'éter'] },
+  { id: 'ances-002', nome: 'Genealogy Healing', tipo: 'ancestral', duracao: '25 min', elements: ['terra', 'agua'] },
+  { id: 'ances-003', nome: 'Bloodline Blessing', tipo: 'ancestral', duracao: '20 min', elements: ['fogo', 'terra'] },
+  { id: 'ances-004', nome: 'Spirit Ancestor Ritual', tipo: 'ancestral', duracao: '30 min', elements: ['éter', 'luz'] },
+  { id: 'ances-005', nome: 'Linha do Tempo Ancestral', tipo: 'ancestral', duracao: '25 min', elements: ['terra', 'éter'] },
+  { id: 'ances-006', nome: 'Ancestral Altar', tipo: 'ancestral', duracao: '20 min', elements: ['terra', 'agua'] },
+  { id: 'ances-007', nome: 'Family Healing', tipo: 'ancestral', duracao: '30 min', elements: ['fogo', 'terra'] },
+  { id: 'ances-008', nome: 'Spirit Release', tipo: 'ancestral', duracao: '25 min', elements: ['éter', 'fogo'] },
+  { id: 'ances-009', nome: 'Ancestral Guidance', tipo: 'ancestral', duracao: '20 min', elements: ['luz', 'terra'] },
+  { id: 'ances-010', nome: 'Past Life Integration', tipo: 'ancestral', duracao: '30 min', elements: ['éter', 'luz'] },
+  { id: 'ances-011', nome: 'Family Tree Healing', tipo: 'ancestral', duracao: '25 min', elements: ['terra', 'agua'] },
+  { id: 'ances-012', nome: 'Ancestral Blessing', tipo: 'ancestral', duracao: '20 min', elements: ['fogo', 'luz'] },
+  { id: 'ances-013', nome: 'Spirit Connection', tipo: 'ancestral', duracao: '30 min', elements: ['éter', 'terra'] },
+  { id: 'ances-014', nome: 'Ancestral Powers', tipo: 'ancestral', duracao: '25 min', elements: ['fogo', 'éter'] },
+  { id: 'ances-015', nome: 'Lineage Healing', tipo: 'ancestral', duracao: '20 min', elements: ['terra', 'luz'] },
+  { id: 'ances-016', nome: 'Family Karma', tipo: 'ancestral', duracao: '30 min', elements: ['terra', 'fogo'] },
+  // Spiritual Growth Rituals
+  { id: 'spirit-001', nome: 'Third Eye Activation', tipo: 'spiritual_growth', duracao: '20 min', elements: ['éter', 'luz'] },
+  { id: 'spirit-002', nome: 'Chakra Alignment', tipo: 'spiritual_growth', duracao: '30 min', elements: ['luz', 'fogo'] },
+  { id: 'spirit-003', nome: 'Meditation Mastery', tipo: 'spiritual_growth', duracao: '25 min', elements: ['éter', 'agua'] },
+  { id: 'spirit-004', nome: 'Divine Connection', tipo: 'spiritual_growth', duracao: '20 min', elements: ['luz', 'éter'] },
+  { id: 'spirit-005', nome: 'Kundalini Awakening', tipo: 'spiritual_growth', duracao: '30 min', elements: ['fogo', 'terra'] },
+  { id: 'spirit-006', nome: 'Soul Ascension', tipo: 'spiritual_growth', duracao: '25 min', elements: ['luz', 'éter'] },
+  { id: 'spirit-007', nome: 'Spiritual Enlightenment', tipo: 'spiritual_growth', duracao: '30 min', elements: ['luz', 'água'] },
+  { id: 'spirit-008', nome: 'Higher Self Connection', tipo: 'spiritual_growth', duracao: '20 min', elements: ['éter', 'luz'] },
+  { id: 'spirit-009', nome: 'Divine Wisdom', tipo: 'spiritual_growth', duracao: '25 min', elements: ['luz', 'fogo'] },
+  { id: 'spirit-010', nome: 'Spiritual Awakening', tipo: 'spiritual_growth', duracao: '30 min', elements: ['éter', 'luz'] },
+  { id: 'spirit-011', nome: 'Third Eye Opening', tipo: 'spiritual_growth', duracao: '20 min', elements: ['éter', 'luz'] },
+  { id: 'spirit-012', nome: 'Crown Activation', tipo: 'spiritual_growth', duracao: '25 min', elements: ['luz', 'éter'] },
+  { id: 'spirit-013', nome: 'Spiritual Journey', tipo: 'spiritual_growth', duracao: '30 min', elements: ['éter', 'fogo'] },
+  { id: 'spirit-014', nome: 'Divine Light', tipo: 'spiritual_growth', duracao: '20 min', elements: ['luz', 'água'] },
+  { id: 'spirit-015', nome: 'Soul Star Activation', tipo: 'spiritual_growth', duracao: '25 min', elements: ['luz', 'éter'] },
+  // Healing Rituals
+  { id: 'heal-001', nome: 'Reiki Healing', tipo: 'healing', duracao: '30 min', elements: ['luz', 'agua'] },
+  { id: 'heal-002', nome: 'Sound Healing', tipo: 'healing', duracao: '25 min', elements: ['éter', 'luz'] },
+  { id: 'heal-003', nome: 'Crystal Therapy', tipo: 'healing', duracao: '20 min', elements: ['crystal', 'luz'] },
+  { id: 'heal-004', nome: 'Energy Healing', tipo: 'healing', duracao: '30 min', elements: ['luz', 'éter'] },
+  { id: 'heal-005', nome: 'Chakra Healing', tipo: 'healing', duracao: '25 min', elements: ['fogo', 'luz'] },
+  { id: 'heal-006', nome: 'Spiritual Healing', tipo: 'healing', duracao: '30 min', elements: ['luz', 'agua'] },
+  { id: 'heal-007', nome: 'Divine Healing', tipo: 'healing', duracao: '25 min', elements: ['luz', 'éter'] },
+  { id: 'heal-008', nome: 'Light Therapy', tipo: 'healing', duracao: '20 min', elements: ['luz', 'agua'] },
+  { id: 'heal-009', nome: 'Energy Cleanse', tipo: 'healing', duracao: '30 min', elements: ['éter', 'luz'] },
+  { id: 'heal-010', nome: 'Soul Healing', tipo: 'healing', duracao: '25 min', elements: ['luz', 'fogo'] },
+  { id: 'heal-011', nome: 'Body Healing', tipo: 'healing', duracao: '20 min', elements: ['agua', 'luz'] },
+  { id: 'heal-012', nome: 'Mind Healing', tipo: 'healing', duracao: '30 min', elements: ['éter', 'luz'] },
+  { id: 'heal-013', nome: 'Heart Healing', tipo: 'healing', duracao: '25 min', elements: ['agua', 'luz'] },
+  { id: 'heal-014', nome: 'Spiritual Recovery', tipo: 'healing', duracao: '30 min', elements: ['luz', 'éter'] },
+  { id: 'heal-015', nome: 'Divine Restoration', tipo: 'healing', duracao: '25 min', elements: ['luz', 'fogo'] },
+  { id: 'heal-016', nome: 'Energy Renewal', tipo: 'healing', duracao: '20 min', elements: ['éter', 'agua'] },
+  // Chakra Rituals
+  { id: 'chakra-001', nome: 'Root Activation', tipo: 'chakra', duracao: '20 min', elements: ['terra', 'fogo'] },
+  { id: 'chakra-002', nome: 'Sacral Balance', tipo: 'chakra', duracao: '25 min', elements: ['agua', 'fogo'] },
+  { id: 'chakra-003', nome: 'Solar Opening', tipo: 'chakra', duracao: '20 min', elements: ['fogo', 'luz'] },
+  { id: 'chakra-004', nome: 'Heart Integration', tipo: 'chakra', duracao: '25 min', elements: ['agua', 'luz'] },
+  { id: 'chakra-005', nome: 'Throat Expression', tipo: 'chakra', duracao: '20 min', elements: ['éter', 'luz'] },
+  { id: 'chakra-006', nome: 'Third Eye Vision', tipo: 'chakra', duracao: '25 min', elements: ['éter', 'fogo'] },
+  { id: 'chakra-007', nome: 'Crown Connection', tipo: 'chakra', duracao: '30 min', elements: ['luz', 'éter'] },
+  { id: 'chakra-008', nome: 'All Chakras', tipo: 'chakra', duracao: '45 min', elements: ['luz', 'fogo', 'agua', 'terra'] },
+  { id: 'chakra-009', nome: 'Base Chakra', tipo: 'chakra', duracao: '20 min', elements: ['terra', 'fogo'] },
+  { id: 'chakra-010', nome: 'Sex Chakra', tipo: 'chakra', duracao: '25 min', elements: ['agua', 'fogo'] },
+  { id: 'chakra-011', nome: 'Navel Chakra', tipo: 'chakra', duracao: '20 min', elements: ['fogo', 'luz'] },
+  { id: 'chakra-012', nome: 'Heart Chakra', tipo: 'chakra', duracao: '25 min', elements: ['agua', 'luz'] },
+  { id: 'chakra-013', nome: 'Throat Chakra', tipo: 'chakra', duracao: '20 min', elements: ['éter', 'luz'] },
+  { id: 'chakra-014', nome: 'Brow Chakra', tipo: 'chakra', duracao: '25 min', elements: ['éter', 'fogo'] },
+  { id: 'chakra-015', nome: 'Crown Chakra', tipo: 'chakra', duracao: '30 min', elements: ['luz', 'éter'] },
+  { id: 'chakra-016', nome: 'Full Chakra Balancing', tipo: 'chakra', duracao: '45 min', elements: ['luz', 'agua', 'fogo', 'terra', 'éter'] },
+  // Full Moon Rituals
+  { id: 'fullmoon-001', nome: 'Full Moon Manifestation', tipo: 'full_moon', duracao: '30 min', elements: ['luz', 'agua'] },
+  { id: 'fullmoon-002', nome: 'Moonlight Charging', tipo: 'full_moon', duracao: '25 min', elements: ['luz', 'éter'] },
+  { id: 'fullmoon-003', nome: 'Lunar Energy Bath', tipo: 'full_moon', duracao: '30 min', elements: ['agua', 'luz'] },
+  { id: 'fullmoon-004', nome: 'Intention Setting', tipo: 'full_moon', duracao: '20 min', elements: ['luz', 'éter'] },
+  { id: 'fullmoon-005', nome: 'Release Ritual', tipo: 'full_moon', duracao: '25 min', elements: ['agua', 'fogo'] },
+  { id: 'fullmoon-006', nome: 'Divine Blessing', tipo: 'full_moon', duracao: '30 min', elements: ['luz', 'éter'] },
+  { id: 'fullmoon-007', nome: 'Spiritual Cleansing', tipo: 'full_moon', duracao: '25 min', elements: ['lua', 'agua'] },
+  { id: 'fullmoon-008', nome: 'Wish Ritual', tipo: 'full_moon', duracao: '20 min', elements: ['luz', 'éter'] },
+  { id: 'fullmoon-009', nome: 'Full Moon Meditation', tipo: 'full_moon', duracao: '30 min', elements: ['luz', 'agua'] },
+  { id: 'fullmoon-010', nome: 'Energy Amplification', tipo: 'full_moon', duracao: '25 min', elements: ['luz', 'fogo'] },
+  // New Moon Rituals
+  { id: 'newmoon-001', nome: 'New Beginnings', tipo: 'new_moon', duracao: '25 min', elements: ['éter', 'luz'] },
+  { id: 'newmoon-002', nome: 'Seed Planting', tipo: 'new_moon', duracao: '20 min', elements: ['terra', 'agua'] },
+  { id: 'newmoon-003', nome: 'Fresh Start', tipo: 'new_moon', duracao: '30 min', elements: ['éter', 'fogo'] },
+  { id: 'newmoon-004', nome: 'New Intentions', tipo: 'new_moon', duracao: '25 min', elements: ['luz', 'éter'] },
+  { id: 'newmoon-005', nome: 'Shadow Work', tipo: 'new_moon', duracao: '30 min', elements: ['éter', 'agua'] },
+  { id: 'newmoon-006', nome: 'Inner Reflection', tipo: 'new_moon', duracao: '25 min', elements: ['éter', 'luz'] },
+  { id: 'newmoon-007', nome: 'Creation Ritual', tipo: 'new_moon', duracao: '20 min', elements: ['fogo', 'terra'] },
+  { id: 'newmoon-008', nome: 'New Moon Meditation', tipo: 'new_moon', duracao: '30 min', elements: ['éter', 'luz'] },
+  // Gratitude Rituals
+  { id: 'grat-001', nome: 'Gratitude Altar', tipo: 'gratitude', duracao: '15 min', elements: ['terra', 'luz'] },
+  { id: 'grat-002', nome: 'Thankfulness Journal', tipo: 'gratitude', duracao: '10 min', elements: ['éter', 'luz'] },
+  { id: 'grat-003', nome: 'Blessings Count', tipo: 'gratitude', duracao: '20 min', elements: ['luz', 'agua'] },
+  { id: 'grat-004', nome: 'Divine Thanks', tipo: 'gratitude', duracao: '15 min', elements: ['luz', 'éter'] },
+  { id: 'grat-005', nome: 'Abundance Thanks', tipo: 'gratitude', duracao: '20 min', elements: ['terra', 'fogo'] },
+  { id: 'grat-006', nome: 'Spiritual Appreciation', tipo: 'gratitude', duracao: '15 min', elements: ['luz', 'éter'] },
+  { id: 'grat-007', nome: 'Thank You Ritual', tipo: 'gratitude', duracao: '10 min', elements: ['luz', 'agua'] },
+  { id: 'grat-008', nome: 'Gratitude Meditation', tipo: 'gratitude', duracao: '20 min', elements: ['éter', 'luz'] },
+  // Seasonal Rituals
+  { id: 'season-001', nome: 'Spring Equinox', tipo: 'seasonal', duracao: '30 min', elements: ['terra', 'agua'] },
+  { id: 'season-002', nome: 'Summer Solstice', tipo: 'seasonal', duracao: '30 min', elements: ['fogo', 'luz'] },
+  { id: 'season-003', nome: 'Fall Equinox', tipo: 'seasonal', duracao: '25 min', elements: ['terra', 'fogo'] },
+  { id: 'season-004', nome: 'Winter Solstice', tipo: 'seasonal', duracao: '30 min', elements: ['agua', 'luz'] },
+  { id: 'season-005', nome: 'Sabbats Celebration', tipo: 'seasonal', duracao: '25 min', elements: ['fogo', 'terra'] },
+  { id: 'season-006', nome: 'Seasonal Cleansing', tipo: 'seasonal', duracao: '30 min', elements: ['éter', 'agua'] },
+  { id: 'season-007', nome: 'Nature Connection', tipo: 'seasonal', duracao: '25 min', elements: ['terra', 'agua'] },
+  { id: 'season-008', nome: 'Earth Gratitude', tipo: 'seasonal', duracao: '20 min', elements: ['terra', 'luz'] },
+  { id: 'season-009', nome: 'Celestial Alignment', tipo: 'seasonal', duracao: '30 min', elements: ['luz', 'éter'] },
+  { id: 'season-010', nome: 'Solar Celebration', tipo: 'seasonal', duracao: '25 min', elements: ['fogo', 'luz'] },
+  { id: 'season-011', nome: 'Lunar Cycle', tipo: 'seasonal', duracao: '20 min', elements: ['lua', 'agua'] },
+  { id: 'season-012', nome: 'Elemental Balance', tipo: 'seasonal', duracao: '30 min', elements: ['fogo', 'agua', 'terra', 'éter'] },
+];
+interface Ritual {
+  id: string;
+  nome: string;
+  tipo: string;
+  duracao: string;
+  elements?: string[];
+}
+// GET /api/rituals/library - returns all rituals
+export async function GET(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = RitualQuerySchema.safeParse({
+      tipo: searchParams.get('tipo'),
+      search: searchParams.get('search'),
+      id: searchParams.get('id'),
+      duracao: searchParams.get('duracao'),
+      element: searchParams.get('element'),
+      limit: searchParams.get('limit'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { tipo, search, id, duracao, element, limit } = parseResult.data;
+    // Filter by specific ritual ID
+    if (id) {
+      const ritual = rituals.find(r => r.id === id);
+      if (!ritual) {
+        return NextResponse.json(
+          { error: 'Ritual not found', id },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json(ritual);
+    }
+    let filteredRituals = rituals;
+    // Filter by tipo
+    if (tipo) {
+      filteredRituals = filteredRituals.filter(ritual =>
+        ritual.tipo.toLowerCase() === tipo.toLowerCase()
+      );
+    }
+    // Filter by duration
+    if (duracao) {
+      const durationMatch = duracao.match(/^(\d+)$/);
+      if (durationMatch) {
+        const maxMinutes = parseInt(durationMatch[1], 10);
+        filteredRituals = filteredRituals.filter(ritual => {
+          const match = ritual.duracao.match(/^(\d+)/);
+          if (match) {
+            const ritualMinutes = parseInt(match[1], 10);
+            return ritualMinutes <= maxMinutes;
+          }
+          return true;
+        });
+      }
+    }
+    // Filter by element
+    if (element) {
+      filteredRituals = filteredRituals.filter(ritual =>
+        ritual.elements?.some(el => el.toLowerCase().includes(element.toLowerCase()))
+      );
+    }
+    // Filter by search
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filteredRituals = filteredRituals.filter(ritual =>
+        ritual.nome.toLowerCase().includes(searchLower) ||
+        ritual.tipo.toLowerCase().includes(searchLower)
+      );
+    }
+    // Apply limit
+    if (limit) {
+      filteredRituals = filteredRituals.slice(0, limit);
+    }
+    return NextResponse.json({
+      rituals: filteredRituals,
+      count: filteredRituals.length,
+      total: rituals.length,
+    });
+  } catch {
+    return NextResponse.json({
+      error: 'Erro ao processar rituais',
+    }, { status: 500 });
+  }
+}
     descricao: 'Ritual de proteção usando vela branca e sal grosso para criar uma barreira energética.',
     materiais: ['Vela branca', 'Sal grosso', 'Alho', 'Alecrim'],
     passos: [
