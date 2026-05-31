@@ -77,8 +77,9 @@ function getLunarPhase(dayOfYear: number): LunarPhase {
 
   return {
     phase: phases[phaseIndex],
-    illumination: Math.round(illumination),
     sign: SIGNS[(dayOfYear * 3) % 12]
+  };
+};
 export async function GET(request: Request) {
   try {
     const searchParams = new URL(request.url).searchParams;

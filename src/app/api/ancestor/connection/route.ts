@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
     }
     const { type, id } = parseResult.data;
     const rituals = [
+      {
         id: 'ancestor-invocation-morning',
         name: 'Invocação Matinal aos Ancestrais',
         type: 'invocation',

@@ -15,9 +15,16 @@ export interface MeditationCategory {
   popular: boolean;
 }
 const categories: MeditationCategory[] = [
+  {
+    id: 'focused',
+    name: 'Focused Attention',
+    description: 'Cultivate deep concentration and mindfulness',
+    icon: 'target',
+    color: '#8b5cf6',
     meditationCount: 24,
     popular: true,
   },
+  {
   {
     id: 'breathing',
     name: 'Breathing Exercises',

@@ -51,6 +51,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(entry, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Failed to create timer" }, { status: 500 });
+  return NextResponse.json(entry, { status: 201 });
+  } catch {
+    return NextResponse.json({ error: "Failed to create timer" }, { status: 500 });
 }
 export async function GET(req: NextRequest) {
   try {
