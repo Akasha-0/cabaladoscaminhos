@@ -194,9 +194,9 @@ export const TAROT_FREQUENCY_MAP: Record<number, TarotFrequencyMapping> = {
     significado_espiritual: 'Força interior, coragem, paciência, poder, domínio de emoções',
     propriedades_healing: ['Fortalece coragem', 'Promove calma', 'Desenvolve poder interior', 'Equilibra emoções'],
     sephirah: 'Lamed',
-export const SOLFEGGIO_FREQUENCIES = [396, 417, 528, 639, 741, 852, 963] as const;
-to:
-export const SOLFEGGIO_FREQUENCIES: readonly number[] = Object.freeze([396, 417, 528, 639, 741, 852, 963]);
+  },
+  // XII - O Enforcado - Surrender, new perspective, sacrifice
+  12: {
     numero_carta: 12,
     arcano: 'O Enforcado',
     frequencia: 528,
@@ -252,7 +252,7 @@ export const SOLFEGGIO_FREQUENCIES: readonly number[] = Object.freeze([396, 417,
     elemento: 'Fogo',
     chakra: 3,
     chakra_nome: 'Manipura (Plexo Solar)',
-    significado_espiritual: 'Mudança súbita, destruição, revelação, despertar, chaos construtivo',
+    significado_espiritual: 'Mudança súbita, destruição, revelação, despertar, caos construtivo',
     propriedades_healing: ['Promove despertar', 'Liberta de ilusões', 'Facilita mudanças abruptas', 'Acelera transformação'],
     orixa: 'Iansã',
     sephirah: 'Peh',
@@ -336,7 +336,7 @@ export const TODOS_ARCANOS_MAIORES: readonly number[] = Object.freeze(
 /**
  * All Solfeggio frequencies used in the mapping
  */
-export const SOLFEGGIO_FREQUENCIES = [396, 417, 528, 639, 741, 852, 963] as const;
+export const SOLFEGGIO_FREQUENCIES: readonly number[] = Object.freeze([396, 417, 528, 639, 741, 852, 963]);
 
 /**
  * Normalizes arcano name for consistent lookup.
@@ -405,7 +405,7 @@ export function getChakraByNumber(numero: number): number | null {
 export function getFrequencyTarot(arcano: string): TarotFrequencyMapping | null {
   const normalized = normalizarArcano(arcano);
   if (!normalized) return null;
-  
+
   for (const mapping of Object.values(TAROT_FREQUENCY_MAP)) {
     if (mapping.arcano === normalized) {
       return mapping;
@@ -437,16 +437,9 @@ export function getAllTarotFrequencies(): TarotFrequencyMapping[] {
  */
 export function getAllArcanos(): string[] {
   return Object.values(TAROT_FREQUENCY_MAP)
-    .map((m) => m.arcano)
-    .sort((a, b) => TAROT_FREQUENCY_MAP.findIndex((m) => m.arcano === a) - TAROT_FREQUENCY_MAP.findIndex((m) => m.arcano === b));
-}
-to:
-export function getAllArcanos(): string[] {
-  return Object.values(TAROT_FREQUENCY_MAP)
     .sort((a, b) => a.numero_carta - b.numero_carta)
     .map((m) => m.arcano);
 }
-to:
 
 /**
  * Get all frequencies used in the mapping.
