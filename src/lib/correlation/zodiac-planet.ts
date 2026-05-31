@@ -1,13 +1,13 @@
 /**
- * Zodiac-Planet Spiritual Correlation
- * Maps each zodiac sign to its ruling planet with element connections and spiritual meaning.
- * Based on classical Western astrology integrated with the Cabala dos Caminhos system.
+ * Zodiac-Planet Spiritual Correlation Module
+ * Maps zodiac signs to planetary influences with element connections and spiritual meanings.
+ * Source: Cabala dos Caminhos spiritual system
  */
 
 import type { Elemento } from './element-sign';
 
 /** The twelve zodiac signs in Portuguese */
-export type Signo =
+export type SignoZodiac =
   | 'Áries'
   | 'Touro'
   | 'Gémeos'
@@ -21,703 +21,496 @@ export type Signo =
   | 'Aquário'
   | 'Peixes';
 
-/** The classical planets with their astrological correspondences */
+/** Classical and modern planets in astrology */
 export type Planeta =
   | 'Sol'
   | 'Lua'
   | 'Mercúrio'
-  | 'Vênus'
+  | 'Vénus'
   | 'Marte'
   | 'Júpiter'
-  | 'Saturno';
+  | 'Saturno'
+  | 'Urano'
+  | 'Neptuno'
+  | 'Plutão';
 
 /**
- * Zodiac-planet mapping with spiritual meaning and element connections.
- * Each sign is mapped to its ruling planet, element, and spiritual significance
- * based on Brazilian spiritual traditions and Cabala correlations.
+ * Represents the correlation between a zodiac sign and its ruling planet
  */
 export interface ZodiacPlanetMapping {
-  /** The zodiac sign name */
-  signo: Signo;
-  /** The ruling planet for this sign */
+  signo: SignoZodiac;
   planeta: Planeta;
-  /** Primary element of the sign */
   elemento: Elemento;
-  /** Polarity: Yang (active) or Yin (passive) */
-  polaridade: 'Yang' | 'Yin';
-  /** Modalidade: cardinal, fixo, ou mutável */
-  modalidade: 'Cardinal' | 'Fixo' | 'Mutável';
-  /** Spiritual meaning of the planet-sign connection */
-  significado_espiritual: string;
-  /** Key spiritual lessons for this planet-sign combination */
-  licoes_espirituais: string[];
-  /** Recommended spiritual practices for this combination */
-  praticas_rituais: {
-    ebos: string[];
-    banhos: string[];
-    defumacoes: string[];
-    mantras: string[];
-    cores: string[];
-    dias_favoraveis: string[];
+  significado_spiritual: {
+    descricao: string;
+    qualidade_cosmica: string;
+    lição_espiritual: string;
   };
-  /** Cabala correspondence for this planet-sign */
-  correspondencia_cabala: {
-    sefira: string;
-    caminho: string;
-    arcanjo: string;
-    vibração: string;
+  energia_manifestacao: {
+    foco: string;
+    força: string;
+    sombra: string;
   };
-  /** Chakra associated with this planet-sign energy */
-  chakra_principal: string;
-  /** Orixá associated with this planetary energy */
-  orixa_associado: string;
 }
 
 /**
- * Complete mapping of all 12 zodiac signs with their planetary correspondences.
- * Based on classical Western astrology integrated with Brazilian spiritual traditions.
+ * Complete mapping of the 12 zodiac signs to their ruling planets.
+ * Based on traditional astrological rulerships and modern interpretations
+ * from the Cabala dos Caminhos spiritual system.
+ * Each sign carries the vibrational signature of its ruling planet.
  */
-export const ZODIAC_PLANET_MAPPINGS: Readonly<Record<Signo, ZodiacPlanetMapping>> = {
-  /** Fogo - Yang - Cardinal - Marte: energia de pioneirismo e ação */
+export const ZODIAC_PLANET_MAP: Record<SignoZodiac, ZodiacPlanetMapping> = {
+  /** Fogo - Marte - Warrior energy, courage, initiative */
   Áries: {
     signo: 'Áries',
     planeta: 'Marte',
     elemento: 'Fogo',
-    polaridade: 'Yang',
-    modalidade: 'Cardinal',
-    significado_espiritual:
-      'Marte em Áries representa a chama divina da vontade criadora. É a centelha que desperta a consciência para a ação direta e o pioneirismo espiritual. Canaliza a energia de Ogum, o orixá da guerra e da conquista, para abrir caminhos bloqueados e superar obstáculos terrenos.',
-    licoes_espirituais: [
-      'Aprender a canalizar a energia de forma construtiva',
-      'Desenvolver coragem sem agressividade',
-      'Equilibrar a impetuosidade com a paciência espiritual',
-      'Transformar conflitos em oportunidades de crescimento',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de força para proteção contra inimigos ocultos',
-        'Ebo de coragem para abrir caminhos bloqueados',
-        'Ebo de vitória contra obstáculos',
-      ],
-      banhos: [
-        'Banho de alecrim e louro para energia',
-        'Banho de pétalas de girassol e cânfora',
-        'Banho de arruda e pimenta para proteção',
-      ],
-      defumacoes: ['Sálvia branca para purificação', 'Benjoim para proteção', 'Aloé para energização'],
-      mantras: ['OM (som cósmico de criação)', 'RAM RAM (invocação de Ogum)', 'KRIM (potencialização da força)'],
-      cores: ['Vermelho', 'Laranja', 'Amarelo-dourado'],
-      dias_favoraveis: ['Terça-feira', 'Domingo (dia do Sol em exaltação)'],
+    significado_spiritual: {
+      descricao: 'O primeiro signo do zodíaco representa o início da jornada espiritual, a centelha divina que desperta a consciência para a ação.',
+      qualidade_cosmica: 'Pioneirismo e força vital',
+      lição_espiritual: 'Aprender a canalizar a energia marciana de forma constructiva, transformando impulsividade em força criativa.',
     },
-    correspondencia_cabala: {
-      sefira: 'Geburah (Severidade) - Camino 11',
-      caminho: 'Caminho 11 - Entre Chokmah (Sabedoria) e Tiphereth (Beleza)',
-      arcanjo: 'Kamael (Camil) - executor da vontade divina',
-      vibração: 'Frequência de conquista e proteção',
+    energia_manifestacao: {
+      foco: 'Iniciação e pioneirismo',
+      força: 'Coragem para agir, pioneirismo, vitalidade',
+      sombra: 'Impaciência, agressividade, egoísmo',
     },
-    chakra_principal: 'Muladhara (Raiz) - energia de sobrevivência e força vital',
-    orixa_associado: 'Ogum - orixá das batalhas, ferramentas e caminhos',
   },
-
-  /** Terra - Yin - Fixo - Vênus: energia de nutrição e abundância material */
+  /** Terra - Vénus - Stability, beauty, material abundance */
   Touro: {
     signo: 'Touro',
-    planeta: 'Vênus',
+    planeta: 'Vénus',
     elemento: 'Terra',
-    polaridade: 'Yin',
-    modalidade: 'Fixo',
-    significado_espiritual:
-      'Vênus em Touro representa a energia da Terra Mãe, a nutrição divina que sustenta a vida. É a bênção da abundância material e sensual, conectando a consciência à natureza através do prazer sagrado. Canaliza a energia de Oxum, a orixá do amor e das águas doces.',
-    licoes_espirituais: [
-      'Fortalecer a conexão com a natureza e os recursos terrestres',
-      'Desenvolver gratidão pela abundância existente',
-      'Equilibrar apego material com discernimento espiritual',
-      'Transformar sensualidade em devotional sagrado',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de prosperidade para abrir caminhos financeiros',
-        'Ebo de fertilidade para bênçãos materiais',
-        'Ebo de amor e harmonia conjugal',
-      ],
-      banhos: [
-        'Banho de açucena e jasmim para amor',
-        'Banho de terra de Rio e flores brancas',
-        'Banho de mel e pétalas de rosa',
-      ],
-      defumacoes: ['Benjoim para abundância', 'Pau-brasil para longevidade', 'Canela para prosperidade'],
-      mantras: ['OM HRIM SRIM (som de Oxum)', 'LAMA (amor incondicional)', 'YAM (vibração da água)'],
-      cores: ['Rosa', 'Verde suave', 'Azul claro'],
-      dias_favoraveis: ['Sexta-feira', 'Quarta-feira (dia de Mercúrio em harmonia)'],
+    significado_spiritual: {
+      descricao: 'Símbolo da incarnação terrena e do vínculo com a natureza, representa a alma que busca permanência e beldade no mundo físico.',
+      qualidade_cosmica: 'Abundância e permanência',
+      lição_espiritual: 'Desenvolver contentamento interior enquanto transciende a dependência de posses materiais.',
     },
-    correspondencia_cabala: {
-      sefira: 'Netzach (Vitória) - Camino 25',
-      caminho: 'Caminho 25 - Entre Tiphereth (Beleza) e Hod (Glória)',
-      arcanjo: 'Haniel (Aniel) - mensageiro do amor divino',
-      vibração: 'Frequência de abundância e harmonia',
+    energia_manifestacao: {
+      foco: 'Construção e gozo sensorial',
+      força: 'Persistência, reliability, apreciação da beleza',
+      sombra: 'Possessividade, letargia, materialismo',
     },
-    chakra_principal: 'Svadhisthana (Sacral) - energia de criatividade e prazer',
-    orixa_associado: 'Oxum - orixá das águas doces, amor e fertilidade',
   },
-
-  /** Ar - Yang - Mutável - Mercúrio: energia de comunicação e adaptabilidade */
+  /** Ar - Mercúrio - Communication, intellect, adaptability */
   Gémeos: {
     signo: 'Gémeos',
     planeta: 'Mercúrio',
     elemento: 'Ar',
-    polaridade: 'Yang',
-    modalidade: 'Mutável',
-    significado_espiritual:
-      'Mercúrio em Gémeos representa o mensageiro divino que conecta todos os reinos da consciência. É a energia da mente fluida, da comunicação versátil e da busca constante por conhecimento. Canaliza a energia de Ibeji, os gêmeos divine, para equilibrar dualidades e integrar opostos.',
-    licoes_espirituais: [
-      'Integrar múltiplos aspectos da personalidade',
-      'Desenvolver comunicação clara e滴水穿石',
-      'Transformar versatilidade em maestria',
-      'Estabelecer conexão entre mente e espiritualidade',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de eloquência para negócios e estudos',
-        'Ebo de harmonização das dualidades',
-        'Ebo de proteção para viajantes',
-      ],
-      banhos: [
-        'Banho de hortelã e eucalipto para clareza mental',
-        'Banho de alecrim e lavanda para concentração',
-        'Banho de água de coco e flor de laranjeira',
-      ],
-      defumacoes: ['Lavanda para calma mental', 'Mastruz para proteção intelectual', 'Alcachofra para memória'],
-      mantras: ['GAM (sabedoria dual)', 'KLEEM (atração do conhecimento)', 'SAUM (equilíbrio)'],
-      cores: ['Amarelo', 'Laranja', 'Azul claro'],
-      dias_favoraveis: ['Quarta-feira', 'Terça-feira (fortalece comunicação)'],
+    significado_spiritual: {
+      descricao: 'Representa a mente dual e a capacidade de comunicar diferentes perspectivas, symbolizando a alma entre razão e emoção.',
+      qualidade_cosmica: 'Versatilidade e conhecimento',
+      lição_espiritual: 'Integrar os aspectos mentais e emocionais para alcançar wisdom interior.',
     },
-    correspondencia_cabala: {
-      sefira: 'Hod (Glória) - Camino 24',
-      caminho: 'Caminho 24 - Entre Netzach (Vitória) e Yesod (Fundação)',
-      arcanjo: 'Miguel (Mikhael) - protetor da verdade',
-      vibração: 'Frequência de comunicação e flexibilidade',
+    energia_manifestacao: {
+      foco: 'Comunicação e aprendizado',
+      força: 'Curiosidade, versatility, comunicação clara',
+      sombra: 'Superficialidade, inconsistência, dispersão mental',
     },
-    chakra_principal: 'Vishuddha (Garganta) - energia de expressão e verdade',
-    orixa_associado: 'Ibeji - orixás gêmeos protetores das crianças e equilíbrio',
   },
-
-  /** Água - Yin - Cardinal - Lua: energia de emoção e intuição lunar */
+  /** Água - Lua - Emotions, intuition, nurturing */
   Câncer: {
     signo: 'Câncer',
     planeta: 'Lua',
     elemento: 'Água',
-    polaridade: 'Yin',
-    modalidade: 'Cardinal',
-    significado_espiritual:
-      'A Lua em Câncer representa a energia maternal do oceano cósmico, a consciência que nutre e protege. É a intuição profunda que conecta passado, presente e futuro através das emoções. Canaliza a energia de Iemanjá, a rainha do mar, para harmonizar o lar interior e a jornada emocional.',
-    licoes_espirituais: [
-      'Desenvolver sensibilidade emocional como ferramenta espiritual',
-      'Aprender a nutrir a si mesmo e aos outros',
-      'Transformar memórias dolorosas em sabedoria',
-      'Conectar-se com os ritmos lunares para orientação divina',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de proteção do lar e da família',
-        'Ebo de harmonia emocional',
-        'Ebo de bênçãos maternais',
-      ],
-      banhos: [
-        'Banho de sal grosso e pétalas de maracujá para paz',
-        'Banho de alecrim e água de chuva',
-        'Banho de camomila e baunilha para sonhos',
-      ],
-      defumacoes: ['Mirra para proteção lunar', 'Absinto para intuição', 'Jasmim para连接到 lua'],
-      mantras: ['CHANDRA (soma lunar)', 'SOMA (néctar da imortalidade)', 'MAM (proteção maternal)'],
-      cores: ['Branco', 'Prata', 'Azul marinho'],
-      dias_favoraveis: ['Segunda-feira', 'Quinta-feira (dia de proteção)'],
+    significado_spiritual: {
+      descricao: 'Guardião do passado e das memórias ancestrais, representa a alma que busca segurança emocional e conexão com a família.',
+      qualidade_cosmica: 'Nutrição e proteção',
+      lição_espiritual: 'Cultivar independência emocional enquanto honras as raízes familiares.',
     },
-    correspondencia_cabala: {
-      sefira: 'Yesod (Fundação) - Camino 32',
-      caminho: 'Caminho 32 - Entre Hod (Glória) e Malkuth (Reino)',
-      arcanjo: 'Gabriel (Gavriel) - mensageiro das revelações',
-      vibração: 'Frequência lunar de nutrição e intuição',
+    energia_manifestacao: {
+      foco: 'Proteção e cuidado',
+      força: 'Intuição, compaixão, lealdade familiar',
+      sombra: 'Manipulação emocional, vulnerabilidade excessiva, apego',
     },
-    chakra_principal: 'Ajna (Terceiro olho) - energia de percepção além dos sentidos',
-    orixa_associado: 'Iemanjá - orixá Rainha do Mar, protetora das famílias',
   },
-
-  /** Fogo - Yang - Fixo - Sol: energia de criatividade e autoexpressão */
+  /** Fogo - Sol - Identity, creativity, self-expression */
   Leão: {
     signo: 'Leão',
     planeta: 'Sol',
     elemento: 'Fogo',
-    polaridade: 'Yang',
-    modalidade: 'Fixo',
-    significado_espiritual:
-      'O Sol em Leão representa o fogo central da consciência, a luz que irradia a verdade interior. É a energia do coração radiante que transforma a escuridão em clareza. Canaliza a energia de Oxalá, o pai maior, para iluminar o caminho espiritual e emanar liderança benigna.',
-    licoes_espirituais: [
-      'Reconhecer a luz divina dentro de si',
-      'Desenvolver autoexpressão autêntica',
-      'Transformar ego em serviço ao próximo',
-      'Irradiar amor incondicional sem apego',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de força vital e clareza mental',
-        'Ebo de iluminação espiritual',
-        'Ebo de proteção solar',
-      ],
-      banhos: [
-        'Banho de cravo e cinnamon para energia',
-        'Banho de sunlight capture com dourada',
-        'Banho de Alecrim e mel para coragem',
-      ],
-      defumacoes: ['Ouro incenso para abundância', 'Sândalo para meditação', 'Cedar para conexão celestial'],
-      mantras: ['HRAUM (soma solar)', 'OM SURYAYA (invocação do sol)', 'BHUR BHUH SWAHA (fogo sacrificial)'],
-      cores: ['Ouro', 'Amarelo', 'Laranja brilhante'],
-      dias_favoraveis: ['Domingo', 'Quinta-feira (fortalece espíritu)'],
+    significado_spiritual: {
+      descricao: 'O centro do zodíaco, representa o SELF iluminado e a capacidade de brilhar com autenticidade, irradiando luz para outros.',
+      qualidade_cosmica: 'Autoexpressão e propósito',
+      lição_espiritual: 'Descobrir que o verdadeiro poder vem de servir outros, não de dominar.',
     },
-    correspondencia_cabala: {
-      sefira: 'Tiphereth (Beleza) - Camino 15',
-      caminho: 'Centro do árbol - entre Geburah e Chesed',
-      arcanjo: 'Rafael (Raffael) - médico celestial',
-      vibração: 'Frequência solar de iluminação e harmonia',
+    energia_manifestacao: {
+      foco: 'Criação e reconhecimento',
+      força: 'Confiança, criatividade, generosidade, liderança',
+      sombra: 'Arrogância, vaidade, necessidade de validação',
     },
-    chakra_principal: 'Manipura (Plexo solar) - energia de poder pessoal e vontade',
-    orixa_associado: 'Oxalá - orixá Pai maior, luz e paz',
   },
-
-  /** Terra - Yin - Mutável - Mercúrio: energia de serviço e discernimento */
+  /** Terra - Mercúrio - Analysis, service, perfection */
   Virgem: {
     signo: 'Virgem',
     planeta: 'Mercúrio',
     elemento: 'Terra',
-    polaridade: 'Yin',
-    modalidade: 'Mutável',
-    significado_espiritual:
-      'Mercúrio em Virgem representa a mente analítica a serviço da purificação espiritual. É a energia do discernimento preciso que separa o essencial do illusório. Canaliza a energia de Ossaim, o orixá das ervas, para curar através do conhecimento detalhado da natureza.',
-    licoes_espirituais: [
-      'Transformar perfeccionismo em aceitação compassiva',
-      'Desenvolver serviço desinteressado',
-      'Integrar análise com sabedoria intuitiva',
-      'Purificar corpo e mente para a iluminação',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de purificação e limpeza espiritual',
-        'Ebo de cura para doenças físicas',
-        'Ebo de proteção para trabalhadores da saúde',
-      ],
-      banhos: [
-        'Banho de boldo e pariparoba para desintoxicação',
-        'Banho de artemísia e alecrim para proteção',
-        'Banho de manjericão e hortelã para clareza',
-      ],
-      defumacoes: ['Artemísia para purificação', 'Mil-folhas para proteção', 'Patchouli para ancoragem'],
-      mantras: ['OM BHUR BHUVAH SWAHA (purificação)', 'AH (som da cura)', 'MAM (purificação elemental)'],
-      cores: ['Verde', 'Azul claro', 'Amarelo suave'],
-      dias_favoraveis: ['Quarta-feira', 'Sexta-feira (dia de Vênus em harmonização)'],
+    significado_spiritual: {
+      descricao: 'Guardião da saúde e da purityza, representa a alma que busca perfection through service and análise detalhada.',
+      qualidade_cosmica: 'Discernimento e purificação',
+      lição_espiritual: 'Aceitar a imperfeição como parte da jornada espiritual enquanto mantém o desejo de growth.',
     },
-    correspondencia_cabala: {
-      sefira: 'Hod (Glória) e Netzach (Vitória) - Camino 24 e 25',
-      caminho: 'Caminho 24/25 - Entre Tiphereth (Beleza) e Malkuth (Reino)',
-      arcanjo: 'Miguel (Mikhael) - protetor e purificador',
-      vibração: 'Frequência de discernimento e serviço',
+    energia_manifestacao: {
+      foco: 'Serviço e análise',
+      força: 'Discernimento, organização, pragmatismo',
+      sombra: 'Perfeccionismo, crítica excessiva, obsessão por detalhes',
     },
-    chakra_principal: 'Muladhara (Raiz) - energia de fundamentação e purificação',
-    orixa_associado: 'Ossaim - orixá das ervas e medicina natural',
   },
-
-  /** Ar - Yang - Cardinal - Vênus: energia de harmonia e relacionamentos */
+  /** Ar - Vénus - Balance, relationships, harmony */
   Libra: {
     signo: 'Libra',
-    planeta: 'Vênus',
+    planeta: 'Vénus',
     elemento: 'Ar',
-    polaridade: 'Yang',
-    modalidade: 'Cardinal',
-    significado_espiritual:
-      'Vênus em Libra representa o equilíbrio divino entre opostos, a harmonia que permite a existência. É a energia do relacionamento sagrado que reflete o outro como espelho de si mesmo. Canaliza a energia de Logun-Ede, o orixá da beleza e da fartura, para unir parcerias em perfeição.',
-    licoes_espirituais: [
-      'Desenvolver harmonia interior para projetar equilibrio exterior',
-      'Transformar relacionamentos em caminhos de iluminação',
-      'Integrar masculinidade e feminilidade sagradas',
-      'Buscar justiça com compaixão',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de harmonia conjugal e parcerias',
-        'Ebo de justiça e equilíbrio legal',
-        'Ebo de beleza interior e exterior',
-      ],
-      banhos: [
-        'Banho de pétalas de rosa e água de rosa',
-        'Banho de jasmim e lavanda para paz',
-        'Banho de mel e leite para harmonia',
-      ],
-      defumacoes: ['Benjoim para paz', 'Rosa para amor', 'Lavanda para harmonia'],
-      mantras: ['SHAM (equilíbrio)', 'SRIM (beleza)', 'HLAUM (harmonia)'],
-      cores: ['Rosa', 'Azul claro', 'Branco'],
-      dias_favoraveis: ['Sexta-feira', 'Segunda-feira (dia da Lua em harmonia)'],
+    significado_spiritual: {
+      descricao: 'Símbolo da relação e da parceria divina, representa a alma que busca harmonia e justiça nas relações interpessoais.',
+      qualidade_cosmica: 'Harmonia e justiça',
+      lição_espiritual: 'Equilibrar as necessidades próprias com as dos outros, discovering que a verdadeira paz vem de dentro.',
     },
-    correspondencia_cabala: {
-      sefira: 'Chesed (Misericórdia) - Camino 7',
-      caminho: 'Caminho 7 - Entre Chokmah (Sabedoria) e Geburah (Severidade)',
-      arcanjo: 'Tzadkiel (Tzadquel) - anjo da justiça divina',
-      vibração: 'Frequência de equilíbrio e harmonia',
+    energia_manifestacao: {
+      foco: 'Relacionamentos e equilíbrio',
+      força: 'Diplomacia, sentido estético, buscar justiça',
+      sombra: 'Indecisão, superficialidade, dependência de aprovação',
     },
-    chakra_principal: 'Anahata (Coração) - energia de amor incondicional',
-    orixa_associado: 'Logun-Ede - orixá da beleza, riqueza e encantaria',
   },
-
-  /** Água - Yin - Fixo - Marte: energia de transformação e profundidade */
+  /** Água - Plutão - Transformation, intensity, regeneration */
   Escorpião: {
     signo: 'Escorpião',
-    planeta: 'Marte',
+    planeta: 'Plutão',
     elemento: 'Água',
-    polaridade: 'Yin',
-    modalidade: 'Fixo',
-    significado_espiritual:
-      'Marte em Escorpião representa a energia de morte e renascimento, a transformação que ocorre nas profundezas da consciência. É o poder de regeneração que desperta a kundalini e dissolve ilusões. Canaliza a energia de Oxumaré, a serpente arco-íris, para cicatrizes kármicas e renovação espiritual.',
-    licoes_espirituais: [
-      'Transformar medo de morte em abraço da renovação',
-      'Desenvolver poder pessoal sem manipulação',
-      'Integrar sombras para wholeness',
-      'Despertar poder de regeneração interior',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de transformação e renovação',
-        'Ebo de proteção contra mal olhado',
-        'Ebo de quebra de maldições ancestrais',
-      ],
-      banhos: [
-        'Banho de quebra-feitiço com arruda e alecrim',
-        'Banho de sal grosso e verbena',
-        'Banho de comigo-ninguém-pode e espada-de-são-jorge',
-      ],
-      defumacoes: ['Sálvia para limpeza profunda', 'Mirra para proteção', 'Cicuta para dissolução de vínculos'],
-      mantras: [
-        'HUM (poder destrutivo-transformador)',
-        'TAM (regeneração)',
-        'KSHAM (perdão kármico)',
-      ],
-      cores: ['Preto', 'Vermelho escuro', 'Roxo'],
-      dias_favoraveis: ['Terça-feira', 'Quinta-feira (dia de transformação)'],
+    significado_spiritual: {
+      descricao: 'Guardião dos mistérios da vida e da morte, representa a alma que atravessa transformações profundas para renascer.',
+      qualidade_cosmica: 'Regeneração e mistério',
+      lição_espiritual: 'Aceitar que a morte interior é necessária para a ressurreição espiritual.',
     },
-    correspondencia_cabala: {
-      sefira: 'Geburah (Severidade) - Camino 11',
-      caminho: 'Caminho 11 - Entre Chokmah e Tiphereth - aspecto transformador',
-      arcanjo: 'Samael (Samael) - regenerador celestial',
-      vibração: 'Frequência de transformação e poder regenerador',
+    energia_manifestacao: {
+      foco: 'Transformação e再生',
+      força: 'Intensidade, poder de transformação, profundidade emocional',
+      sombra: 'Manipulação, ciúmes, obsessão, medo da morte',
     },
-    chakra_principal: 'Svadhisthana (Sacral) - energia de criação e destruição',
-    orixa_associado: 'Oxumaré - orixá da cobra arco-íris, renovação e cicatrizes',
   },
-
-  /** Fogo - Yang - Mutável - Júpiter: energia de expansão e sabedoria */
+  /** Fogo - Júpiter - Expansion, wisdom, optimism */
   Sagitário: {
     signo: 'Sagitário',
     planeta: 'Júpiter',
     elemento: 'Fogo',
-    polaridade: 'Yang',
-    modalidade: 'Mutável',
-    significado_espiritual:
-      'Júpiter em Sagitário representa a expansão infinita da consciência, a busca pela verdade além dos limites terrenos. É a energia do viajante espiritual que cruza oceanos de conhecimento. Canaliza a energia de Oxóssi, o orixá da caça e da abundância, para prosperidade através da sabedoria.',
-    licoes_espirituais: [
-      'Expandir horizontes além do visível',
-      'Transformar aventura externa em jornada interna',
-      'Integrar fé com conhecimento',
-      'Desenvolver sabedoria universalista',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de prosperidade e abundância',
-        'Ebo de proteção para viajantes',
-        'Ebo de sabedoria e conhecimento',
-      ],
-      banhos: [
-        'Banho de mand IOC e alecrim para sorte',
-        'Banho de folha de figo e guaraná',
-        'Banho de pemba e água de chuva',
-      ],
-      defumacoes: ['Benjoim para expansão', 'Cedar para viagem espiritual', 'Incenso de alecrim para sabedoria'],
-      mantras: ['GURU (som de expansão)', 'BHRAM (rotação universal)', 'JAM (prosperidade cósmica)'],
-      cores: ['Azul', 'Roxo', 'Verde'],
-      dias_favoraveis: ['Quinta-feira', 'Terça-feira (fortalece espiritualidade)'],
+    significado_spiritual: {
+      descricao: 'O filósofo do zodíaco, representa a alma que busca truth and expansion através de experiências e conhecimento.',
+      qualidade_cosmica: 'Expansão e sabedoria',
+      lição_espiritual: 'Encontrar humility na jornada espiritual, reconhecendo que a wisdom verdadeira vem da experiência.',
     },
-    correspondencia_cabala: {
-      sefira: 'Chesed (Misericórdia) - Camino 7',
-      caminho: 'Caminho 7 - Entre Chokmah (Sabedoria) e Geburah (Severidade)',
-      arcanjo: 'Tsadkiel (Tzadquel) - anjo da expansão divina',
-      vibração: 'Frequência de sabedoria e abundância',
+    energia_manifestacao: {
+      foco: 'Exploração e busca de verdade',
+      força: 'Otimismo, wisdom, busca de conhecimento, aventura',
+      sombra: 'Excesso, dogmatismo, impaciência, irresponsabilidade',
     },
-    chakra_principal: 'Ajna (Terceiro olho) - energia de visão e sabedoria',
-    orixa_associado: 'Oxóssi - orixá do arco e flecha, caçador espiritual',
   },
-
-  /** Terra - Yin - Cardinal - Saturno: energia de estrutura e mestre dourado */
+  /** Terra - Saturno - Discipline, mastery, responsibility */
   Capricórnio: {
     signo: 'Capricórnio',
     planeta: 'Saturno',
     elemento: 'Terra',
-    polaridade: 'Yin',
-    modalidade: 'Cardinal',
-    significado_espiritual:
-      'Saturno em Capricórnio representa a energia do mestre dourado que transforma chumbo em ouro através do trabalho disciplinado. É a sabedoria que vem da paciência e da restrição. Canaliza a energia de Omulu (Obaluaye), o orixá da saúde e da Terra, para师长 através da prova.',
-    licoes_espirituais: [
-      'Transformar restrição em liberdade interior',
-      'Desenvolver mestre através da disciplina',
-      'Integrar responsabilidade com soltura',
-      'Alcançar iluminação através do trabalho sagrado',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de师长 e crescimento na carreira',
-        'Ebo de proteção contra atrasos',
-        'Ebo de cura para doenças crônicas',
-      ],
-      banhos: [
-        'Banho de castanha e caju para prosperidade',
-        'Banho de alecrim e assa-peixe para师长',
-        'Banho de terra de cemitério (Omulu) para transformação',
-      ],
-      defumacoes: ['Mauve para师长', 'Cominho para proteção', 'Sálvia para dissolução de bloqueios'],
-      mantras: ['OM (restrição sagrada)', 'DUM (ancoragem)', 'SHAM (disciplina)'],
-      cores: ['Preto', 'Marrom', 'Cinza'],
-      dias_favoraveis: ['Sábado', 'Quarta-feira (fortalece estructura)'],
+    significado_spiritual: {
+      descricao: 'O mestre do zodíaco, representa a alma que busca mestria através de disciplina e responsabilidade.',
+      qualidade_cosmica: 'Mestria e estrutura',
+      lição_espiritual: 'Desenvolver paciência cósmica, reconhecendo que o tempo é um aliado na construção de realizações duradouras.',
     },
-    correspondencia_cabala: {
-      sefira: 'Binah (Compreensão) - Camino 3',
-      caminho: 'Caminho 3 - Entre Chokmah (Sabedoria) e Kether (Coroa)',
-      arcanjo: 'Cassiel (Kassiel) - anjo do tempo e da restrição',
-      vibração: 'Frequência de师长 e大师境界',
+    energia_manifestacao: {
+      foco: 'Estrutura e realizações',
+      força: 'Disciplina, responsabilidade, ambição estruturada',
+      sombra: 'Rigidez, medo do fracasso, pessimismo, autocrítica excessiva',
     },
-    chakra_principal: 'Muladhara (Raiz) - energia de fundamentação e师长',
-    orixa_associado: 'Omulu/Obaluaye - orixá das doenças, cura e师长',
   },
-
-  /** Ar - Yang - Fixo - Saturno: energia de inovação e redenção */
+  /** Ar - Urano - Innovation, humanitarianism, freedom */
   Aquário: {
     signo: 'Aquário',
-    planeta: 'Saturno',
+    planeta: 'Urano',
     elemento: 'Ar',
-    polaridade: 'Yang',
-    modalidade: 'Fixo',
-    significado_espiritual:
-      'Saturno em Aquário representa a energia do visionário que restructure a sociedade para o bem maior. É a inovação que vem da experiência acumulada e da visão além do tempo. Canaliza a energia de Nanã Buruku, a orixá anciã, para renovação e humanitarianismo.',
-    licoes_espirituais: [
-      'Transformar humanidade coletivamente',
-      'Integrar individualidade com propósito social',
-      'Desenvolver visão de futuro baseada na sabedoria do passado',
-      'Libertar-se das convenções sem perder fundamento',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de inovação e criatividade social',
-        'Ebo de proteção para grupos e comunidades',
-        'Ebo de redenção e libertação de padrões',
-      ],
-      banhos: [
-        'Banho de azul e branco para limpeza espiritual',
-        'Banho de hortelã e citronela para clareza',
-        'Banho de água de chuva e pemba branca',
-      ],
-      defumacoes: ['Sândalo para meditação avançada', 'Lótus para iluminação', 'Musgo para ancoragem celestial'],
-      mantras: ['AHAM (individualidade)', 'MAN (humanitarismo)', 'YUM (libertação)'],
-      cores: ['Azul elétrico', 'Roxo', 'Branco'],
-      dias_favoraveis: ['Sábado', 'Quarta-feira (dia de inovação)'],
+    significado_spiritual: {
+      descricao: 'O visionário do zodíaco, representa a alma que serve a humanidade com originalidade e detached from convenções.',
+      qualidade_cosmica: 'Inovação e liberdade',
+      lição_espiritual: 'Cultivar compaixão universal mantendo individualidade, integrando o singular com o coletivo.',
     },
-    correspondencia_cabala: {
-      sefira: 'Chokmah (Sabedoria) - Camino 2',
-      caminho: 'Caminho 2 - Entre Kether (Coroa) e Binah (Compreensão)',
-      arcanjo: 'Tzapariel - anjo da libertação e inovação',
-      vibração: 'Frequência de redenção social e visão futurista',
+    energia_manifestacao: {
+      foco: 'Inovação e serviço à humanidade',
+      força: 'Originalidade, humanitarismo, pensamento progressista',
+      sombra: 'Rebelião sem propósito, frieza emocional, excentricidade',
     },
-    chakra_principal: 'Ajna (Terceiro olho) - energia de visão coletiva e inovação',
-    orixa_associado: 'Nanã Buruku - orixá anciã da sabedoria e renovação',
   },
-
-  /** Água - Yin - Mutável - Júpiter: energia de transcendência e compaixão */
+  /** Água - Neptuno - Transcendence, compassion, dreams */
   Peixes: {
     signo: 'Peixes',
-    planeta: 'Júpiter',
+    planeta: 'Neptuno',
     elemento: 'Água',
-    polaridade: 'Yin',
-    modalidade: 'Mutável',
-    significado_espiritual:
-      'Júpiter em Peixes representa a energia do oceano cósmico que dissolve os limites do eu. É a compaixão infinita que conecta todos os seres na corrente universal. Canaliza a energia de Iemanjá e Oxumaré, para dissolver ilusões e alcançar a unidade com o divino.',
-    licoes_espirituais: [
-      'Dissolver ego para unir-se ao todo',
-      'Desenvolver compaixão infinita sem apego',
-      'Transformar sofrimento em sabedoria transcendente',
-      'Integrar visão espiritual com ação terrena',
-    ],
-    praticas_rituais: {
-      ebos: [
-        'Ebo de purificação das almas e libertação',
-        'Ebo de cura espiritual e emocional',
-        'Ebo de conexão com o plano espiritual',
-      ],
-      banhos: [
-        'Banho de sal marinho e alecrim para limpeza',
-        'Banho de água do mar e flores brancas',
-        'Banho de lavanda e jasmim para paz interior',
-      ],
-      defumacoes: ['Mirra para elevação espiritual', 'Lótus para transcendência', 'Benjoim para conexão divina'],
-      mantras: ['SO HUM (eu sou isso)', 'AHAM BRAHMASMI (eu sou o absoluto)', 'SHIVOHAM (eu sou Shiva)'],
-      cores: ['Azul-marinho', 'Verde-água', 'Roxo'],
-      dias_favoraveis: ['Quinta-feira', 'Segunda-feira (dia de dissolução)'],
+    significado_spiritual: {
+      descricao: 'O místico do zodíaco, representa a alma que dissolve límites para conectar-se com o divino e o universo.',
+      qualidade_cosmica: 'Transcendência e compaixão',
+      lição_espiritual: 'Manter boundaries saudáveis enquanto se expande para o mundo espiritual.',
     },
-    correspondencia_cabala: {
-      sefira: 'Yesod (Fundação) - Camino 32',
-      caminho: 'Caminho 32 - Entre Hod e Malkuth - aspecto transcendente',
-      arcanjo: 'Gabriel (Gavriel) - mensageiro das revelações',
-      vibração: 'Frequência de dissolução e unidade cósmica',
+    energia_manifestacao: {
+      foco: 'Transcendência e conexão espiritual',
+      força: 'Compaixão universal, intuição profunda, espiritualidade',
+      sombra: 'Ilusão, escapismo, confusão, codependência',
     },
-    chakra_principal: 'Sahasrara (Coroa) - energia de unidade com o divino',
-    orixa_associado: 'Iemanjá - orixá Rainha do Mar, protetora dos sonhos e dissolution',
   },
-} as const;
+};
 
 /**
- * Returns the complete zodiac-planet mapping for a given sign name.
- * @param signo - The zodiac sign name (e.g., 'Áries', 'Touro')
- * @returns The correlation mapping or null if not found
+ * Freeze the mapping object to prevent modifications
  */
-export function getZodiacPlanet(signo: string): ZodiacPlanetMapping | null {
-  const normalized = signNormalization(signo);
-  return ZODIAC_PLANET_MAPPINGS[normalized as Signo] ?? null;
-}
+Object.freeze(ZODIAC_PLANET_MAP);
+Object.values(ZODIAC_PLANET_MAP).forEach((mapping) => Object.freeze(mapping));
 
 /**
- * Normalizes the sign name by handling variations and case.
+ * All 10 planets (classical + modern) used in astrology
  */
-function signNormalization(sign: string): string {
-  const map: Record<string, string> = {
+export const TODOS_PLANETAS: readonly Planeta[] = [
+  'Sol',
+  'Lua',
+  'Mercúrio',
+  'Vénus',
+  'Marte',
+  'Júpiter',
+  'Saturno',
+  'Urano',
+  'Neptuno',
+  'Plutão',
+] as const;
+
+/**
+ * All 12 zodiac signs
+ */
+export const TODOS_SIGNOS: readonly SignoZodiac[] = [
+  'Áries',
+  'Touro',
+  'Gémeos',
+  'Câncer',
+  'Leão',
+  'Virgem',
+  'Libra',
+  'Escorpião',
+  'Sagitário',
+  'Capricórnio',
+  'Aquário',
+  'Peixes',
+] as const;
+
+/**
+ * Normalizes sign name for consistent lookup.
+ * Handles variations like accents, case, and common alternatives.
+ */
+function normalizarSigno(signo: string): SignoZodiac | null {
+  const mapa: Record<string, SignoZodiac> = {
     aries: 'Áries',
+    Áries: 'Áries',
+    arie: 'Áries',
     touro: 'Touro',
-    gêmeos: 'Gémeos',
+    Touro: 'Touro',
+    gemeos: 'Gémeos',
+    Gémeos: 'Gémeos',
     gemeos: 'Gémeos',
     cancer: 'Câncer',
+    Câncer: 'Câncer',
     cancro: 'Câncer',
-    leão: 'Leão',
     leao: 'Leão',
+    Leão: 'Leão',
     virgem: 'Virgem',
+    Virgem: 'Virgem',
     libra: 'Libra',
-    escorpião: 'Escorpião',
+    Libra: 'Libra',
+    balança: 'Libra',
+    Balança: 'Libra',
     escorpiao: 'Escorpião',
-    sagitário: 'Sagitário',
+    Escorpião: 'Escorpião',
+    escorpião: 'Escorpião',
     sagitario: 'Sagitário',
-    capricórnio: 'Capricórnio',
+    Sagitário: 'Sagitário',
     capricornio: 'Capricórnio',
-    aquário: 'Aquário',
+    Capricórnio: 'Capricórnio',
     aquario: 'Aquário',
+    Aquário: 'Aquário',
     peixes: 'Peixes',
+    Peixes: 'Peixes',
   };
-  const lower = sign.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  return map[lower] ?? sign;
+
+  const lower = signo.toLowerCase().trim();
+  return mapa[lower] ?? null;
 }
 
 /**
- * Returns the planet mapping for a given planet name.
- * @param planeta - The planet name (e.g., 'Sol', 'Lua', 'Marte')
- * @returns Array of zodiac signs ruled by this planet
+ * Get the zodiac-planet mapping for a given sign name.
+ * @param signo - Zodiac sign name (e.g., 'Áries', 'Touro')
+ * @returns ZodiacPlanetMapping or null if not found
  */
-export function getPlanetZodiac(planeta: string): ZodiacPlanetMapping[] {
-  return Object.values(ZODIAC_PLANET_MAPPINGS).filter(
-    mapping => mapping.planeta.toLowerCase() === planeta.toLowerCase()
-  );
+export function getZodiacPlanet(signo: string): ZodiacPlanetMapping | null {
+  const normalizado = normalizarSigno(signo);
+  if (!normalizado) return null;
+  return ZODIAC_PLANET_MAP[normalizado] ?? null;
 }
 
 /**
- * Returns all zodiac-planet mappings.
- * @returns Array of all correlation mappings
+ * Get the zodiac sign associated with a given planet.
+ * @param planeta - Planet name (e.g., 'Sol', 'Lua')
+ * @returns SignoZodiac or null if not found
  */
-export function getAllZodiacPlanets(): ZodiacPlanetMapping[] {
-  return Object.values(ZODIAC_PLANET_MAPPINGS);
+export function getPlanetZodiac(planeta: string): SignoZodiac | null {
+  const planetaUpper = planeta.charAt(0).toUpperCase() + planeta.slice(1).toLowerCase();
+
+  for (const [signo, mapping] of Object.entries(ZODIAC_PLANET_MAP)) {
+    if (mapping.planeta === planetaUpper) {
+      return signo as SignoZodiac;
+    }
+  }
+  return null;
 }
 
 /**
- * Returns the ruling planet for a given sign.
- * @param signo - The zodiac sign name
- * @returns The planet name or null if not found
+ * Get the planet for a given sign name.
+ * @param signo - Zodiac sign name
+ * @returns Planeta or null if not found
  */
-export function getPlanetFromZodiac(signo: string): Planeta | null {
+export function getPlanetaFromSigno(signo: string): Planeta | null {
   return getZodiacPlanet(signo)?.planeta ?? null;
 }
 
 /**
- * Returns the element for a given sign.
- * @param signo - The zodiac sign name
- * @returns The element or null if not found
+ * Get all zodiac-planet mappings.
+ * @returns Array of all correlation mappings
  */
-export function getElementFromZodiac(signo: string): Elemento | null {
+export function getAllZodiacPlanets(): ZodiacPlanetMapping[] {
+  return Object.values(ZODIAC_PLANET_MAP);
+}
+
+/**
+ * Get the element for a given sign.
+ * @param signo - Zodiac sign name
+ * @returns Elemento or null if not found
+ */
+export function getElementoFromSigno(signo: string): Elemento | null {
   return getZodiacPlanet(signo)?.elemento ?? null;
 }
 
 /**
- * Returns the spiritual meaning for a given sign.
- * @param signo - The zodiac sign name
- * @returns The spiritual meaning or null if not found
+ * Get the spiritual description for a given sign.
+ * @param signo - Zodiac sign name
+ * @returns Spiritual description or null if not found
  */
-export function getSignificadoEspiritual(signo: string): string | null {
-  return getZodiacPlanet(signo)?.significado_espiritual ?? null;
+export function getSignificadoSpiritual(signo: string): ZodiacPlanetMapping['significado_spiritual'] | null {
+  return getZodiacPlanet(signo)?.significado_spiritual ?? null;
 }
 
 /**
- * Returns the associated orixá for a given sign.
- * @param signo - The zodiac sign name
- * @returns The orixá or null if not found
+ * Get the cosmic quality for a given sign.
+ * @param signo - Zodiac sign name
+ * @returns Cosmic quality string or null if not found
  */
-export function getOrixaFromZodiac(signo: string): string | null {
-  return getZodiacPlanet(signo)?.orixa_associado ?? null;
+export function getQualidadeCosmica(signo: string): string | null {
+  return getZodiacPlanet(signo)?.significado_spiritual.qualidade_cosmica ?? null;
 }
 
 /**
- * Returns the principal chakra for a given sign.
- * @param signo - The zodiac sign name
- * @returns The chakra or null if not found
+ * Get the spiritual lesson for a given sign.
+ * @param signo - Zodiac sign name
+ * @returns Spiritual lesson string or null if not found
  */
-export function getChakraFromZodiac(signo: string): string | null {
-  return getZodiacPlanet(signo)?.chakra_principal ?? null;
+export function getLicaoEspiritual(signo: string): string | null {
+  return getZodiacPlanet(signo)?.significado_spiritual.lição_espiritual ?? null;
 }
 
 /**
- * Returns all signs ruled by a given planet.
- * @param planeta - The planet name
- * @returns Array of signs ruled by this planet
+ * Get the energy of manifestation for a given sign.
+ * @param signo - Zodiac sign name
+ * @returns Energy manifest or null if not found
  */
-export function getSignosByPlanet(planeta: string): Signo[] {
-  return Object.values(ZODIAC_PLANET_MAPPINGS)
-    .filter(mapping => mapping.planeta.toLowerCase() === planeta.toLowerCase())
-    .map(mapping => mapping.signo);
+export function getEnergiaManifestacao(signo: string): ZodiacPlanetMapping['energia_manifestacao'] | null {
+  return getZodiacPlanet(signo)?.energia_manifestacao ?? null;
 }
 
 /**
- * Returns all signs by element.
- * @param elemento - The element name
- * @returns Array of signs with this element
+ * Get all signs ruled by a specific planet.
+ * @param planeta - Planet name
+ * @returns Array of ZodiacPlanetMapping
  */
-export function getSignosByElement(elemento: string): Signo[] {
-  return Object.values(ZODIAC_PLANET_MAPPINGS)
-    .filter(mapping => mapping.elemento.toLowerCase() === elemento.toLowerCase())
-    .map(mapping => mapping.signo);
+export function getSignosByPlaneta(planeta: string): ZodiacPlanetMapping[] {
+  const planetaUpper = planeta.charAt(0).toUpperCase() + planeta.slice(1).toLowerCase();
+  return Object.values(ZODIAC_PLANET_MAP).filter((m) => m.planeta === planetaUpper);
 }
 
 /**
- * Returns all signs by modality.
- * @param modalidade - The modality (Cardinal, Fixo, Mutável)
- * @returns Array of signs with this modality
+ * Get all signs associated with a specific element.
+ * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra')
+ * @returns Array of ZodiacPlanetMapping
  */
-export function getSignosByModalidade(modalidade: 'Cardinal' | 'Fixo' | 'Mutável'): Signo[] {
-  return Object.values(ZODIAC_PLANET_MAPPINGS)
-    .filter(mapping => mapping.modalidade === modalidade)
-    .map(mapping => mapping.signo);
+export function getSignosByElement(elemento: string): ZodiacPlanetMapping[] {
+  return Object.values(ZODIAC_PLANET_MAP).filter((m) => m.elemento === elemento);
 }
 
 /**
- * Returns all signs by polarity.
- * @param polaridade - The polarity (Yang or Yin)
- * @returns Array of signs with this polarity
+ * Get the shadow energy for a given sign.
+ * @param signo - Zodiac sign name
+ * @returns Shadow string or null if not found
  */
-export function getSignosByPolaridade(polaridade: 'Yang' | 'Yin'): Signo[] {
-  return Object.values(ZODIAC_PLANET_MAPPINGS)
-    .filter(mapping => mapping.polaridade === polaridade)
-    .map(mapping => mapping.signo);
+export function getSombraFromSigno(signo: string): string | null {
+  return getZodiacPlanet(signo)?.energia_manifestacao.sombra ?? null;
 }
+
+/**
+ * Get all zodiac signs used in the mapping.
+ * @returns Array of unique sign names
+ */
+export function getAllSigns(): SignoZodiac[] {
+  return Object.values(ZODIAC_PLANET_MAP).map((m) => m.signo);
+}
+
+/**
+ * Get zodiac planet mapping by sign name (case-insensitive).
+ * @param signo - Zodiac sign name
+ * @returns ZodiacPlanetMapping or null if not found
+ */
+export function getZodiacPlanetBySigno(signo: string): ZodiacPlanetMapping | null {
+  return getZodiacPlanet(signo);
+}
+
+/**
+ * Check if a planet has multiple signs.
+ * @param planeta - Planet name
+ * @returns true if planet rules multiple signs
+ */
+export function isPlanetaMultiplo(planeta: string): boolean {
+  return getSignosByPlaneta(planeta).length > 1;
+}
+
+/**
+ * Get all planets that rule multiple signs.
+ * @returns Array of Planeta names
+ */
+export function getPlanetasMultiplos(): Planeta[] {
+  return Object.values(ZODIAC_PLANET_MAP)
+    .map((m) => m.planeta)
+    .filter((planeta, index, arr) => arr.indexOf(planeta) !== index)
+    .filter((planeta, index, arr) => arr.indexOf(planeta) === index) as Planeta[];
+}
+
+/**
+ * Default export with all public functions
+ */
+export default {
+  getZodiacPlanet,
+  getPlanetZodiac,
+  getAllZodiacPlanets,
+  getPlanetaFromSigno,
+  getElementoFromSigno,
+  getSignificadoSpiritual,
+  getQualidadeCosmica,
+  getLicaoEspiritual,
+  getEnergiaManifestacao,
+  getSignosByPlaneta,
+  getSignosByElement,
+  getSombraFromSigno,
+  getAllSigns,
+  getZodiacPlanetBySigno,
+  isPlanetaMultiplo,
+  getPlanetasMultiplos,
+  ZODIAC_PLANET_MAP,
+  TODOS_PLANETAS,
+  TODOS_SIGNOS,
+};

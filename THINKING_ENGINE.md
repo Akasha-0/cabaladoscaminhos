@@ -1,4 +1,4 @@
-# THINKING_ENGINE.md — Sprint 272
+# THINKING_ENGINE.md — Sprint 273
 
 ## BACK-END ENGINE STATE
 
@@ -28,4 +28,4 @@
 - State files maintained: `THINKING_ENGINE.md`, `PROGRESS_ENGINE.md`
 
 ---
-*Last updated: Sprint 272*
+*Last updated: Sprint 273*
