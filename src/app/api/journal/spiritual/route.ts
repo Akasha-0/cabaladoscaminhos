@@ -148,7 +148,6 @@ export async function POST(request: NextRequest) {
         insights: insights || null,
         gratitude: gratitude || null,
       });
-      });
     const { data, error: insertError } = await supabase
       .from('spiritual_journal')
       .insert({
