@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-31
-**Sprints completados:** 488
+**Sprints completados:** 489
 **Tests: ✅ 10531 passing, 31 skipped, 0 failed**
  - Prisma 7 + PostgreSQL via pg adapter
  - Redis/ioredis for caching
@@ -8,6 +8,12 @@
  - OpenAI SDK integrated
  - jsPDF for PDF exports (dynamic import)
  - Minimax API integration for AI responses
+
+### Sprint 489 — Afirmações & Astrologia Análise (COMPLETE)
+Enhanced APIs with spiritual correlations:
+- afirmacoes: Full spiritual correlations for affirmations by category (cabala/numerologia/orixas)
+- astrologia/analise: Full spiritual correlations for signs, planets, aspects, houses
+270 engine tests passing.
 
 ### Sprint 488 — Sacred Texts (COMPLETE)
 Enhanced APIs with spiritual correlations:
