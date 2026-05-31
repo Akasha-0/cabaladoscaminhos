@@ -1,14 +1,12 @@
 /**
  * Moon-Element Spiritual Correlation Module
- * Maps the 8 lunar phases to the 5 elements (Fogo, Água, Ar, Terra, Éter)
- * with spiritual qualities and elemental correspondences.
- * 
+ * Maps lunar phases to elements with spiritual meanings and elemental properties.
  * Based on Cabala dos Caminhos hermetic principles and lunar elemental alchemy.
  */
 
 export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
 
-export type FaseLua = 
+export type FaseLua =
   | 'lua-nova'
   | 'lua-crescente'
   | 'quarto-crescente'
@@ -21,199 +19,215 @@ export type FaseLua =
 export interface MoonElementMapping {
   fase: string;
   nome_fase: string;
-  elemento_primario: Elemento;
-  elementos_secundarios: Elemento[];
-  qualidades_espirituais: {
+  elemento: Elemento;
+  qualidade_elemental: {
+    natureza: string;
     energia: string;
-    polaridade: 'Yang' | 'Yin' | 'Equilibrado';
-    vibração: string;
-    manifesto: string;
+    manifesto_em: string[];
   };
-  praticas_elementais: {
-    meditacao: string[];
-    ritual: string[];
-    cores: string[];
-    cristais: string[];
-    aromas: string[];
+  significado_espiritual: {
+    core: string;
+    aprendizado: string;
+    advertencia: string;
+    ritual_sugerido: string;
   };
-  orixa_regente: string;
-  orixa_secundario: string;
+  correspondencias: {
+    orixa_regente: string;
+    chakra: string;
+    direcao_cardinal: string;
+    estacao: string;
+  };
 }
 
 /**
- * Complete mapping of lunar phases to elements and spiritual qualities.
- * Derived from lunar elemental alchemy and hermetic correspondences.
+ * Complete mapping of lunar phases to elements.
+ * Each phase carries the elemental signature that defines its spiritual nature.
+ * Based on lunar elemental alchemy and traditional hermetic correspondences.
  */
-export const MOON_ELEMENT_MAPPINGS: Record<FaseLua, MoonElementMapping> = {
+export const MOON_ELEMENT_MAP: Record<FaseLua, MoonElementMapping> = {
   'lua-nova': {
     fase: 'lua-nova',
     nome_fase: 'Lua Nova',
-    elemento_primario: 'Terra',
-    elementos_secundarios: ['Éter'],
-    qualidades_espirituais: {
-      energia: 'Receptiva e silenciosa',
-      polaridade: 'Yin',
-      vibração: 'Semente - potencial adormecido',
-      manifesto: 'Intuição profunda, novos inícios, proteção',
+    elemento: 'Terra',
+    qualidade_elemental: {
+      natureza: 'Ancoradora e fecunda',
+      energia: 'Potencial adormecido, semente invisível',
+      manifesto_em: ['plantio', 'fundação', 'ancoramento', 'proteção'],
     },
-    praticas_elementais: {
-      meditacao: ['Meditação de земля (terra) - ancoramento', 'Visualização de raízes', 'Conexão com ancestrais'],
-      ritual: ['Plântulas de intenciones', 'Cerimônias de novos começos', 'Assentamentos'],
-      cores: ['Marrom', 'Preto', 'Verde escuro'],
-      cristais: ['Obsidiana', 'Turmalina negra', 'Pedra-mãe'],
-      aromas: ['Patchouli', 'Mirra', 'Benjoim'],
+    significado_espiritual: {
+      core: 'O vazio fértil onde toda manifestação começa',
+      aprendizado: 'Confiança no invisível e no ciclo que retorna',
+      advertencia: 'Resistência ao silêncio e à espera cria bloqueios',
+      ritual_sugerido: 'Defumação com alecrim, oração de proteção, visualização de raízes',
     },
-    orixa_regente: 'Exu',
-    orixa_secundario: 'Omolu',
+    correspondencias: {
+      orixa_regente: 'Exu',
+      chakra: '1º Básico (Muladhara)',
+      direcao_cardinal: 'Norte',
+      estacao: 'Inverno',
+    },
   },
   'lua-crescente': {
     fase: 'lua-crescente',
     nome_fase: 'Lua Crescente',
-    elemento_primario: 'Água',
-    elementos_secundarios: ['Terra'],
-    qualidades_espirituais: {
-      energia: 'Crescente e nutridora',
-      polaridade: 'Yang',
-      vibração: 'Broto - crescimento vital',
-      manifesto: 'Prosperidade, atração, movimento',
+    elemento: 'Água',
+    qualidade_elemental: {
+      natureza: 'Purificadora e flutuante',
+      energia: 'Fluxo ascendente, limpeza e abertura',
+      manifesto_em: ['purificação', 'limpeza', 'fluidez', 'sensibilidade'],
     },
-    praticas_elementais: {
-      meditacao: ['Meditação de água corrente', 'Visualização de chuva fertilizante', 'Lágrimas de alegria'],
-      ritual: ['Rituais de abertura de caminhos', 'Banhos de prosperidade', 'Oferendas aquáticas'],
-      cores: ['Azul claro', 'Verde', 'Prata'],
-      cristais: ['Água-marinha', 'Jade', 'Esmeralda'],
-      aromas: ['Jasmim', 'Rosa', 'Verbena'],
+    significado_espiritual: {
+      core: 'O movimento que dissolvem barreiras e atrai prosperidade',
+      aprendizado: 'Permitir o fluxo natural e confiar na correnteza',
+      advertencia: 'Apreensão excessiva atrai o que se teme',
+      ritual_sugerido: 'Banho de ervas, defumação de palo santo, visualization de chuva purificadora',
     },
-    orixa_regente: 'Oxóssi',
-    orixa_secundario: 'Ogum',
+    correspondencias: {
+      orixa_regente: 'Oxóssi',
+      chakra: '2º Sacro (Svadhisthana)',
+      direcao_cardinal: 'Nordeste',
+      estacao: 'Primavera',
+    },
   },
   'quarto-crescente': {
     fase: 'quarto-crescente',
     nome_fase: 'Quarto Crescente',
-    elemento_primario: 'Fogo',
-    elementos_secundarios: ['Ar'],
-    qualidades_espirituais: {
-      energia: 'Ativa e desafiadora',
-      polaridade: 'Yang',
-      vibração: 'Chama - força transformadora',
-      manifesto: 'Coragem, ação, quebra de obstáculos',
+    elemento: 'Fogo',
+    qualidade_elemental: {
+      natureza: 'Transformadora e guerreira',
+      energia: 'Ação determinada, coragem ativa',
+      manifesto_em: ['ação', 'coragem', 'determinação', 'quebra de barreiras'],
     },
-    praticas_elementais: {
-      meditacao: ['Meditação de ла flamme (fogo)', 'Visualização solar', 'Pranayama de fogo'],
-      ritual: ['Rituais de defesa', 'Quebra de demandas', 'Ativação da vontade'],
-      cores: ['Vermelho', 'Laranja', 'Amarelo'],
-      cristais: ['Rubi', 'Heliólita', 'Ágata de fogo'],
-      aromas: ['Canela', 'Gengibre', 'Alecrim'],
+    significado_espiritual: {
+      core: 'A chama que consome o medo e forja a vontade',
+      aprendizado: 'A verdadeira força está na ação alinhada com o propósito',
+      advertencia: 'Impaciência e agressividade consomem energia vital',
+      ritual_sugerido: 'Queima de ervas secas, banhos de limpeza forte, caminhadas em fogo',
     },
-    orixa_regente: 'Ogum',
-    orixa_secundario: 'Xangô',
+    correspondencias: {
+      orixa_regente: 'Ogum',
+      chakra: '3º Plexo Solar (Manipura)',
+      direcao_cardinal: 'Leste',
+      estacao: 'Primavera',
+    },
   },
   'lua-cheia': {
     fase: 'lua-cheia',
     nome_fase: 'Lua Cheia',
-    elemento_primario: 'Água',
-    elementos_secundarios: ['Éter'],
-    qualidades_espirituais: {
-      energia: 'Manifestadora e iluminada',
-      polaridade: 'Equilibrado',
-      vibração: 'Oceano - plenitude absoluta',
-      manifesto: 'Culminação, gratidão, magia Manifesta',
+    elemento: 'Ar',
+    qualidade_elemental: {
+      natureza: 'Iluminada e expansiva',
+      energia: 'Culminação, plenitude, amor incondicional',
+      manifesto_em: ['culminação', 'gratidão', 'magia', 'iluminação'],
     },
-    praticas_elementais: {
-      meditacao: ['Meditação sob a lua cheia', 'Banho de luar', 'Lágrimas de libertação'],
-      ritual: ['Alta magia de atração', 'Consagrações', 'Rituais de amor e cura'],
-      cores: ['Branco', 'Prata', 'Azul lunar'],
-      cristais: ['Selenita', 'Quartzo lunar', 'Moldavita'],
-      aromas: ['Lavanda', 'Sândalo', 'Lótus'],
+    significado_espiritual: {
+      core: 'O espelho que reflete a verdade interior e atrai o que ressoa',
+      aprendizado: 'Gratidão atrai abundância e amplia a percepção',
+      advertencia: 'Excesso de luz sem base cria ilusão e dispersão',
+      ritual_sugerido: 'Bênção com incenso, oferendas ao ar livre, dança ritual',
     },
-    orixa_regente: 'Oxalá',
-    orixa_secundario: 'Oxum',
+    correspondencias: {
+      orixa_regente: 'Oxalá',
+      chakra: '4º Cardíaco (Anahata)',
+      direcao_cardinal: 'Sul',
+      estacao: 'Verão',
+    },
   },
   'quarto-minguante': {
     fase: 'quarto-minguante',
     nome_fase: 'Quarto Minguante',
-    elemento_primario: 'Ar',
-    elementos_secundarios: ['Fogo'],
-    qualidades_espirituais: {
-      energia: 'Dissolutiva e libertadora',
-      polaridade: 'Yang',
-      vibração: 'Vento - dispersão do que não serve',
-      manifesto: 'Libertação, purificação, transformação',
+    elemento: 'Ar',
+    qualidade_elemental: {
+      natureza: 'Dissolutiva e libertadora',
+      energia: 'Dispersão do que não serve, vento purificador',
+      manifesto_em: ['libertação', 'purificação', 'comunicação', 'expressão'],
     },
-    praticas_elementais: {
-      meditacao: ['Meditação de ар vent (ar)', 'Pranayama de libertação', 'Sopro de transformação'],
-      ritual: ['Rituais de limpeza', 'Descarrego', 'Dissolução de padrões'],
-      cores: ['Cinza', 'Lavanda', 'Roxo claro'],
-      cristais: ['Amethyst', 'Fluorite', 'Charoíte'],
-      aromas: ['Salvia', 'Lavanda', 'Eucalipto'],
+    significado_espiritual: {
+      core: 'O vento que leva o que precisa partir',
+      aprendizado: 'Soltar é tão poderoso quanto conquistar',
+      advertencia: 'Segurar o que deve partir causa estagnação e peso',
+      ritual_sugerido: 'Escrita e queima de papéis, defumação com sábina, canto libertador',
     },
-    orixa_regente: 'Iansã',
-    orixa_secundario: 'Omolu',
+    correspondencias: {
+      orixa_regente: 'Iansã',
+      chakra: '5º Laríngeo (Vishuddha)',
+      direcao_cardinal: 'Oeste',
+      estacao: 'Outono',
+    },
   },
   'lua-minguante': {
     fase: 'lua-minguante',
     nome_fase: 'Lua Minguante',
-    elemento_primario: 'Éter',
-    elementos_secundarios: ['Terra'],
-    qualidades_espirituais: {
-      energia: 'Transmutadora e reveladora',
-      polaridade: 'Yin',
-      vibração: 'Fumaça - dissolução no invisível',
-      manifesto: 'Revelação de verdades ocultas, cura de feridas antigas',
+    elemento: 'Éter',
+    qualidade_elemental: {
+      natureza: 'Reveladora e transmutadora',
+      energia: 'Dissolução no invisível, visão clara',
+      manifesto_em: ['revelação', 'intuição', 'visão profunda', 'transmutação'],
     },
-    praticas_elementais: {
-      meditacao: ['Meditação de éter - espaço vazio', 'Visualização de dissolução', 'Silêncio profundo'],
-      ritual: ['Rituais de cura profunda', 'Descomplicação kármica', 'Mergulho no inconsciente'],
-      cores: ['Índigo', 'Roxo profundo', 'Preto azulado'],
-      cristais: ['Amatrolite', 'Lápis-lazúli', 'Charoíte'],
-      aromas: ['Incenso de olíbano', 'Mirra', 'Aspa'],
+    significado_espiritual: {
+      core: 'A fumaça que revela verdades ocultas nos cantos escuros',
+      aprendizado: 'A sabedoria verdadeira vem do silêncio interior',
+      advertencia: 'Visões sem ação são ilusões que paralisam',
+      ritual_sugerido: 'Meditação no escuro, trabalho com третьее око, revelação de verdades',
     },
-    orixa_regente: 'Omolu',
-    orixa_secundario: 'Nanã',
+    correspondencias: {
+      orixa_regente: 'Omolu',
+      chakra: '6º Frontal (Ajna)',
+      direcao_cardinal: 'Sudoeste',
+      estacao: 'Outono',
+    },
   },
   'quarto-descrescente': {
     fase: 'quarto-descrescente',
     nome_fase: 'Quarto Descrescente',
-    elemento_primario: 'Terra',
-    elementos_secundarios: ['Água'],
-    qualidades_espirituais: {
-      energia: 'Integradora e reflexiva',
-      polaridade: 'Yin',
-      vibração: 'Raiz - consolidação do aprendizado',
-      manifesto: 'Integração, perdão, preparação para novo ciclo',
+    elemento: 'Éter',
+    qualidade_elemental: {
+      natureza: 'Integradora e reflexiva',
+      energia: 'Consolidação do aprendizado, perdão',
+      manifesto_em: ['integração', 'perdão', 'sabedoria', 'unidade'],
     },
-    praticas_elementais: {
-      meditacao: ['Meditação de terra fértil', 'Grounding profundo', 'Conexão com a Terra Mãe'],
-      ritual: ['Rituais de perdão', 'Enterro de mágoas', 'Sementeira para o próximo ciclo'],
-      cores: ['Marrom', 'Creme', 'Verde musgo'],
-      cristais: ['Mookaíta', 'Septária', 'Ágata musgo'],
-      aromas: ['Ylang-ylang', 'Bergamota', 'Baunilha'],
+    significado_espiritual: {
+      core: 'A raiz que consolida o que foi aprendido no ciclo',
+      aprendizado: 'O perdão liberta mais quem perdoa que quem é perdoado',
+      advertencia: 'Ressentimento guarda o que deveria ser solto',
+      ritual_sugerido: 'Oração silenciosa, sacramentos, contemplação da natureza',
     },
-    orixa_regente: 'Nanã',
-    orixa_secundario: 'Iansã',
+    correspondencias: {
+      orixa_regente: 'Nanã',
+      chakra: '7º Coronário (Sahasrara)',
+      direcao_cardinal: 'Noroeste',
+      estacao: 'Inverno',
+    },
   },
   'lua-velha': {
     fase: 'lua-velha',
     nome_fase: 'Lua Velha',
-    elemento_primario: 'Éter',
-    elementos_secundarios: ['Ar'],
-    qualidades_espirituais: {
-      energia: 'Ancestral e limiar',
-      polaridade: 'Equilibrado',
-      vibração: 'Limiar - entre mundos',
-      manifesto: 'Comunicação com ancestrais, sabedoria dos antigos, preparo para renascimento',
+    elemento: 'Éter',
+    qualidade_elemental: {
+      natureza: 'Ancestral e limiar',
+      energia: 'Comunicação entre mundos, sabedoria antiga',
+      manifesto_em: ['ancestralidade', 'limiar', 'sabedoria', 'transição'],
     },
-    praticas_elementais: {
-      meditacao: ['Meditação de limiar', 'Viagem xamânica', 'Comunicação ancestral'],
-      ritual: ['Rituais de descarrego final', 'Despedidas', 'Transição entre ciclos'],
-      cores: ['Preto', 'Cinza escuro', 'Branco spectral'],
-      cristais: ['Obsidiana', 'Shungite', 'Turmalina negra'],
-      aromas: ['Absinto', 'Artemísia', 'Lavanda seca'],
+    significado_espiritual: {
+      core: 'O véu entre ciclos onde a sabedoria dos antigos sussurra',
+      aprendizado: 'Os ancestrais guardam respostas para perguntas ainda não formuladas',
+      advertencia: 'Obsessão pelo passado impede o novo ciclo de nascer',
+      ritual_sugerido: 'Rituais de despedida, oferendas aos mortos, preparo para Lua Nova',
     },
-    orixa_regente: 'Omolu',
-    orixa_secundario: 'Exu',
+    correspondencias: {
+      orixa_regente: 'Omolu',
+      chakra: '7º Coronário (Sahasrara)',
+      direcao_cardinal: 'Centro',
+      estacao: 'Inverno',
+    },
   },
 };
+
+/**
+ * Freeze the mapping object to prevent modifications
+ */
+Object.freeze(MOON_ELEMENT_MAP);
+Object.values(MOON_ELEMENT_MAP).forEach((mapping) => Object.freeze(mapping));
 
 /**
  * Returns the complete moon-element mapping for a given lunar phase.
@@ -221,58 +235,20 @@ export const MOON_ELEMENT_MAPPINGS: Record<FaseLua, MoonElementMapping> = {
  * @returns The MoonElementMapping or null if phase not found
  */
 export function getMoonElement(fase: string): MoonElementMapping | null {
-  const faseNormalizada = fase.toLowerCase().trim() as FaseLua;
-  return MOON_ELEMENT_MAPPINGS[faseNormalizada] || null;
+  const key = fase.toLowerCase().trim();
+  if (key in MOON_ELEMENT_MAP) {
+    return MOON_ELEMENT_MAP[key as FaseLua] ?? null;
+  }
+  return null;
 }
 
 /**
- * Get the primary element for a given lunar phase.
+ * Get the element corresponding to a given lunar phase.
  * @param fase - The lunar phase identifier
- * @returns The primary element or null if not found
+ * @returns The element name or null if not found
  */
 export function getElementMoon(fase: string): Elemento | null {
-  const mapping = getMoonElement(fase);
-  return mapping?.elemento_primario || null;
-}
-
-/**
- * Get secondary elements for a given lunar phase.
- * @param fase - The lunar phase identifier
- * @returns Array of secondary elements or null if not found
- */
-export function getSecondaryElements(fase: string): Elemento[] | null {
-  const mapping = getMoonElement(fase);
-  return mapping?.elementos_secundarios || null;
-}
-
-/**
- * Get spiritual qualities for a given lunar phase.
- * @param fase - The lunar phase identifier
- * @returns The spiritual qualities or null if not found
- */
-export function getSpiritualQualities(fase: string): MoonElementMapping['qualidades_espirituais'] | null {
-  const mapping = getMoonElement(fase);
-  return mapping?.qualidades_espirituais || null;
-}
-
-/**
- * Get elemental practices for a given lunar phase.
- * @param fase - The lunar phase identifier
- * @returns The elemental practices or null if not found
- */
-export function getElementalPractices(fase: string): MoonElementMapping['praticas_elementais'] | null {
-  const mapping = getMoonElement(fase);
-  return mapping?.praticas_elementais || null;
-}
-
-/**
- * Get the Orixá regente for a given lunar phase.
- * @param fase - The lunar phase identifier
- * @returns The Orixá regente or null if not found
- */
-export function getOrixaRegente(fase: string): string | null {
-  const mapping = getMoonElement(fase);
-  return mapping?.orixa_regente || null;
+  return getMoonElement(fase)?.elemento ?? null;
 }
 
 /**
@@ -280,7 +256,70 @@ export function getOrixaRegente(fase: string): string | null {
  * @returns Array of all MoonElementMapping
  */
 export function getAllMoonElements(): MoonElementMapping[] {
-  return Object.values(MOON_ELEMENT_MAPPINGS);
+  return Object.values(MOON_ELEMENT_MAP);
+}
+
+/**
+ * Get the elemental nature for a given lunar phase.
+ * @param fase - The lunar phase identifier
+ * @returns The elemental nature or null if not found
+ */
+export function getNaturezaElemental(fase: string): string | null {
+  return getMoonElement(fase)?.qualidade_elemental.natureza ?? null;
+}
+
+/**
+ * Get the spiritual core meaning for a given lunar phase.
+ * @param fase - The lunar phase identifier
+ * @returns The core spiritual meaning or null if not found
+ */
+export function getSignificadoCore(fase: string): string | null {
+  return getMoonElement(fase)?.significado_espiritual.core ?? null;
+}
+
+/**
+ * Get the Orixá regente for a given lunar phase.
+ * @param fase - The lunar phase identifier
+ * @returns The Orixá name or null if not found
+ */
+export function getOrixaByMoon(fase: string): string | null {
+  return getMoonElement(fase)?.correspondencias.orixa_regente ?? null;
+}
+
+/**
+ * Get the chakra associated with a given lunar phase.
+ * @param fase - The lunar phase identifier
+ * @returns The chakra name or null if not found
+ */
+export function getChakraByMoon(fase: string): string | null {
+  return getMoonElement(fase)?.correspondencias.chakra ?? null;
+}
+
+/**
+ * Get the cardinal direction for a given lunar phase.
+ * @param fase - The lunar phase identifier
+ * @returns The direction or null if not found
+ */
+export function getDirecaoByMoon(fase: string): string | null {
+  return getMoonElement(fase)?.correspondencias.direcao_cardinal ?? null;
+}
+
+/**
+ * Get the associated season for a given lunar phase.
+ * @param fase - The lunar phase identifier
+ * @returns The season or null if not found
+ */
+export function getEstacaoByMoon(fase: string): string | null {
+  return getMoonElement(fase)?.correspondencias.estacao ?? null;
+}
+
+/**
+ * Get all moon phases for a specific element.
+ * @param elemento - The element name
+ * @returns Array of MoonElementMapping
+ */
+export function getMoonsByElement(elemento: string): MoonElementMapping[] {
+  return Object.values(MOON_ELEMENT_MAP).filter((m) => m.elemento === elemento);
 }
 
 /**
@@ -288,41 +327,14 @@ export function getAllMoonElements(): MoonElementMapping[] {
  * @returns Array of phase identifiers
  */
 export function getAvailablePhases(): FaseLua[] {
-  return Object.keys(MOON_ELEMENT_MAPPINGS) as FaseLua[];
+  return Object.keys(MOON_ELEMENT_MAP) as FaseLua[];
 }
 
 /**
- * Get all mappings for a specific element.
- * @param elemento - The element to filter by
- * @returns Array of MoonElementMapping where the element is primary
+ * Get all available elements.
+ * @returns Array of unique element names
  */
-export function getMoonByElement(elemento: string): MoonElementMapping[] {
-  return getAllMoonElements().filter(
-    (mapping) =>
-      mapping.elemento_primario === elemento ||
-      mapping.elementos_secundarios.includes(elemento as Elemento)
-  );
-}
-
-/**
- * Get the element mapping for a given Orixá.
- * Useful for correlating moon-element-orixá chains.
- * @param orixa - The Orixá name
- * @returns The MoonElementMapping or null if not found
- */
-export function getElementByOrixa(orixa: string): MoonElementMapping | null {
-  return getAllMoonElements().find(
-    (mapping) =>
-      mapping.orixa_regente === orixa || mapping.orixa_secundario === orixa
-  ) || null;
-}
-
-/**
- * Get polarity energy for a given lunar phase.
- * @param fase - The lunar phase identifier
- * @returns The polarity or null if not found
- */
-export function getPolarity(fase: string): 'Yang' | 'Yin' | 'Equilibrado' | null {
-  const mapping = getMoonElement(fase);
-  return mapping?.qualidades_espirituais.polaridade || null;
+export function getAvailableElements(): Elemento[] {
+  const elements = new Set(Object.values(MOON_ELEMENT_MAP).map((m) => m.elemento));
+  return Array.from(elements) as Elemento[];
 }
