@@ -281,6 +281,7 @@ describe('Chakra-Chakra Correlation', () => {
         );
         expect(hasPath).toBe(true);
       }
+    });
     it('should have kundalini paths for full awakening', () => {
       const kundaliniPaths = getPathsByType('kundalini');
       expect(kundaliniPaths.length).toBeGreaterThanOrEqual(1); // at least 1 kundalini path

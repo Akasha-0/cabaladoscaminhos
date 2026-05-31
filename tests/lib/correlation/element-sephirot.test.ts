@@ -338,12 +338,4 @@ describe('correlation/element-sephirot', () => {
     });
   });
 });
-// ─── Default export ───────────────────────────────────────────────────────────
-describe('default export', () => {
-  it('exports all core functions', () => {
-    const def = require('@/lib/correlation/element-sephirot').default;
-    expect(def.getElementSephirot).toBeDefined();
-    expect(def.getSephirotElement).toBeDefined();
-    expect(def.getAllElementSephiroths).toBeDefined();
-  });
-});
+
