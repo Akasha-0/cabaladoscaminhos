@@ -4,6 +4,7 @@ import { Cinzel, Cormorant_Garamond, Raleway, IM_Fell_English } from "next/font/
 import { InstallPrompt } from "@/components/dashboard/InstallPrompt";
 import { OfflineIndicator } from "@/components/dashboard/OfflineIndicator";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
+import { ThemeProvider } from "@/components/design-system/ThemeProvider";
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
@@ -142,7 +143,9 @@ export default function RootLayout({
       >
         <OfflineIndicator />
         <SupabaseProvider>
-          {children}
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
         </SupabaseProvider>
         <InstallPrompt />
       </body>
