@@ -2,16 +2,20 @@
 // CHART GENERATE API - CABALA DOS CAMINHOS
 // ============================================================
 // POST endpoint for generating astrological charts
-// Supports natal, transit, progression, synastry, composite, andhora-igual charts
+// Supports natal, transit, progression, synastry, composite, hora-igual charts
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getChartById, type ChartType, type ChartStyle } from '@/lib/charts/library';
 
-// ============================================================
-// VALIDATION SCHEMA
-// ============================================================
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 const chartGenerateSchema = z.object({
   type: z.enum(['natal', 'transito', 'progressao', 'sinostry', 'composito', 'hora-igual']),
@@ -22,7 +26,177 @@ const chartGenerateSchema = z.object({
   timezone: z.string().optional(),
   style: z.enum(['radix', 'quadrate', 'equal', 'whole-sign']).optional(),
   houseSystem: z.enum(['placidus', 'koch', 'regiomontanus', 'campanus', 'whole-sign']).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
+
+// ─── Spiritual Correlations for Chart Types ──────────────────────────────────────────
+const CHART_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  natal: {
+    sefirot: ['Kether', 'Chokhmah', 'Binah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'O mapa natal revela minha essência divina',
+    frequency: '963 Hz',
+  },
+  transito: {
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Orunmilá',
+    affirmation: 'Os trânsitos celestiais me guiam',
+    frequency: '741 Hz',
+  },
+  progressao: {
+    sefirot: ['Tipheret', 'Yesod'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A progressão revela minha evolução',
+    frequency: '639 Hz',
+  },
+  sinostry: {
+    sefirot: ['Chesed', 'Tipheret'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A sinastria revela conexões cósmicas',
+    frequency: '528 Hz',
+  },
+  composito: {
+    sefirot: ['Tipheret', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'O gráfico composto une duas almas',
+    frequency: '528 Hz',
+  },
+  'hora-igual': {
+    sefirot: ['Binah', 'Kether'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'A hora igual revela o momento presente',
+    frequency: '963 Hz',
+  },
+};
+
+// ─── Spiritual Correlations for Zodiac Signs ──────────────────────────────────────────
+const SIGN_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  aries: {
+    sefirot: ['Gevurah', 'Netzach'],
+    chakra: 1,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'A coragem de Áries me impulsiona',
+    frequency: '528 Hz',
+  },
+  touro: {
+    sefirot: ['Venus', 'Malkuth'],
+    chakra: 2,
+    element: 'Terra',
+    orixa: 'Oxum',
+    affirmation: 'A força de Touro me ancora',
+    frequency: '396 Hz',
+  },
+  gemeos: {
+    sefirot: ['Mercury', 'Hod'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Orunmilá',
+    affirmation: 'A mente de Gêmeos me conecta',
+    frequency: '639 Hz',
+  },
+  cancer: {
+    sefirot: ['Moon', 'Yesod'],
+    chakra: 4,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'A sensibilidade de Câncer me nutre',
+    frequency: '417 Hz',
+  },
+  leao: {
+    sefirot: ['Sun', 'Tipheret'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'O brilho de Leão me ilumina',
+    frequency: '528 Hz',
+  },
+  virgem: {
+    sefirot: ['Mercury', 'Hod'],
+    chakra: 5,
+    element: 'Terra',
+    orixa: 'Nanã',
+    affirmation: 'A precisão de Virgem me orienta',
+    frequency: '528 Hz',
+  },
+  libra: {
+    sefirot: ['Venus', 'Hod'],
+    chakra: 4,
+    element: 'Ar',
+    orixa: 'Oxum',
+    affirmation: 'A harmonia de Libra me equilibra',
+    frequency: '528 Hz',
+  },
+  escorpiao: {
+    sefirot: ['Pluto', 'Gevurah'],
+    chakra: 3,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'A profundidade de Escorpião me transforma',
+    frequency: '417 Hz',
+  },
+  sagitario: {
+    sefirot: ['Jupiter', 'Chesed'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Orunmilá',
+    affirmation: 'A expansão de Sagitário me liberta',
+    frequency: '741 Hz',
+  },
+  capricornio: {
+    sefirot: ['Saturn', 'Malkuth'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Ogum',
+    affirmation: 'A disciplina de Capricórnio me fortalece',
+    frequency: '396 Hz',
+  },
+  aquario: {
+    sefirot: ['Uranus', 'Aquarius'],
+    chakra: 6,
+    element: 'Ar',
+    orixa: 'Oxalá',
+    affirmation: 'A inovação de Aquário me liberta',
+    frequency: '639 Hz',
+  },
+  peixes: {
+    sefirot: ['Neptune', 'Yesod'],
+    chakra: 7,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'A intuição de Peixes me conecta ao divino',
+    frequency: '417 Hz',
+  },
+};
 
 // ============================================================
 // TYPE DEFINITIONS
@@ -37,6 +211,20 @@ interface ChartData {
   style: ChartStyle;
   houseSystem: string;
   createdAt: string;
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+  spiritualCorrelations: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 interface ChartGenerateResponse {
@@ -45,6 +233,22 @@ interface ChartGenerateResponse {
   metadata: {
     calculationTime: string;
     accuracy: string;
+  };
+  spiritualCorrelations: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
+  spiritualStats: {
+    byPlanet: Record<string, number>;
+    bySign: Record<string, number>;
+    bySefirot: Record<string, number>;
+    byChakra: Record<string, number>;
+    byElement: Record<string, number>;
+    byOrixa: Record<string, number>;
   };
 }
 
@@ -82,153 +286,169 @@ function calculateHouses(
   return {
     1: { sign: 'aries', degree: 10 },
     2: { sign: 'taurus', degree: 22 },
-    3: { sign: 'gemini', degree: 5 },
-    4: { sign: 'cancer', degree: 18 },
-    5: { sign: 'leo', degree: 2 },
-    6: { sign: 'virgo', degree: 15 },
+    3: { sign: 'gemini', degree: 15 },
+    4: { sign: 'cancer', degree: 8 },
+    5: { sign: 'leo', degree: 20 },
+    6: { sign: 'virgo', degree: 12 },
     7: { sign: 'libra', degree: 10 },
     8: { sign: 'scorpio', degree: 22 },
-    9: { sign: 'sagittarius', degree: 5 },
-    10: { sign: 'capricorn', degree: 18 },
-    11: { sign: 'aquarius', degree: 2 },
-    12: { sign: 'pisces', degree: 15 },
+9: { sign: 'sagittarius', degree: 15 },
+    10: { sign: 'capricorn', degree: 8 },
+    11: { sign: 'aquarius', degree: 20 },
+    12: { sign: 'pisces', degree: 12 },
   };
 }
 
-function calculateAspects(_planets: Record<string, unknown>): Record<string, unknown> {
+function calculateAspects(planets: Record<string, unknown>): Record<string, unknown> {
   // Placeholder for aspect calculation
   return {
-    sunMoon: { type: 'trine', orb: 3.5 },
-    sunMercury: { type: 'conjunction', orb: 7.2 },
-    venusMars: { type: 'square', orb: 1.8 },
+    sun_moon: { aspect: 'trine', orb: 2 },
+    sun_venus: { aspect: 'conjunct', orb: 0 },
+    mars_saturn: { aspect: 'square', orb: 1 },
   };
 }
 
-function getDefaultChartStyle(type: ChartType): ChartStyle {
-  switch (type) {
-    case 'natal':
-      return 'radix';
-    case 'transito':
-      return 'quadrate';
-    case 'progressao':
-      return 'equal';
-    case 'sinostry':
-      return 'whole-sign';
-    case 'composito':
-      return 'radix';
-    case 'hora-igual':
-      return 'equal';
-    default:
-      return 'radix';
-  }
-}
+function getPlanetElement(sign: string): string {
+  const fireSigns = ['aries', 'leo', 'sagittarius'];
+  const waterSigns = ['cancer', 'scorpio', 'pisces'];
+  const airSigns = ['gemini', 'libra', 'aquarius'];
+  const earthSigns = ['taurus', 'virgo', 'capricorn'];
 
-function getAccuracy(type: ChartType): string {
-  switch (type) {
-    case 'natal':
-      return 'high';
-    case 'transito':
-      return 'medium';
-    case 'progressao':
-      return 'medium';
-    case 'sinostry':
-      return 'high';
-    case 'composito':
-      return 'medium';
-    case 'hora-igual':
-      return 'low';
-    default:
-      return 'medium';
-  }
+  if (fireSigns.includes(sign)) return 'Fogo';
+  if (waterSigns.includes(sign)) return 'Água';
+  if (airSigns.includes(sign)) return 'Ar';
+  if (earthSigns.includes(sign)) return 'Terra';
+  return 'Éter';
 }
 
 // ============================================================
-// API ROUTE HANDLER
+// API ROUTE HANDLERS
 // ============================================================
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
-    const validation = chartGenerateSchema.safeParse(body);
-    
-    if (!validation.success) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: 'Invalid request body',
-          details: validation.error.issues,
-        },
-        { status: 400 }
-      );
+    const parseResult = chartGenerateSchema.safeParse(body);
+
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Dados inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
 
-    const data = validation.data;
-    const dateStr = data.date || new Date().toISOString();
-    
-    const planets = calculatePlanets(dateStr, data.time);
-    const houseSystem = data.houseSystem || 'placidus';
+    const { type, date, time, latitude, longitude, timezone, style, houseSystem } = parseResult.data;
+    const chartId = generateChartId();
+    const startTime = Date.now();
+
+    const planets = calculatePlanets(date || new Date().toISOString(), time);
     const houses = calculateHouses(
-      dateStr,
-      data.latitude || 0,
-      data.longitude || 0,
-      houseSystem
+      date || new Date().toISOString(),
+      latitude || 0,
+      longitude || 0,
+      houseSystem || 'placidus'
     );
     const aspects = calculateAspects(planets);
-    const style = data.style || getDefaultChartStyle(data.type);
 
     const chart: ChartData = {
-      id: generateChartId(),
-      type: data.type,
+      id: chartId,
+      type,
       planets,
       houses,
       aspects,
-      style,
-      houseSystem,
+      style: style || 'radix',
+      houseSystem: houseSystem || 'placidus',
       createdAt: new Date().toISOString(),
+      sefirot: CHART_SPIRITUAL_CORRELATIONS[type].sefirot,
+      chakra: CHART_SPIRITUAL_CORRELATIONS[type].chakra,
+      element: CHART_SPIRITUAL_CORRELATIONS[type].element,
+      orixa: CHART_SPIRITUAL_CORRELATIONS[type].orixa,
+      affirmation: CHART_SPIRITUAL_CORRELATIONS[type].affirmation,
+      frequency: CHART_SPIRITUAL_CORRELATIONS[type].frequency,
+      spiritualCorrelations: CHART_SPIRITUAL_CORRELATIONS[type],
+    };
+
+    // Calculate spiritual stats
+    const planetSigns = Object.entries(planets).reduce((acc, [planet, data]) => {
+      const planetData = data as { sign: string };
+      acc[planet] = planetData.sign;
+      return acc;
+    }, {} as Record<string, string>);
+
+    const spiritualStats = {
+      byPlanet: Object.keys(planets).reduce((acc, planet) => {
+        acc[planet] = 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySign: Object.values(planetSigns).reduce((acc, sign) => {
+        acc[sign] = (acc[sign] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: CHART_SPIRITUAL_CORRELATIONS[type].sefirot.reduce((acc, s) => {
+        acc[s] = 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: { [CHART_SPIRITUAL_CORRELATIONS[type].chakra]: 1 },
+      byElement: { [CHART_SPIRITUAL_CORRELATIONS[type].element]: 1 },
+      byOrixa: { [CHART_SPIRITUAL_CORRELATIONS[type].orixa]: 1 },
     };
 
     const response: ChartGenerateResponse = {
       success: true,
       chart,
       metadata: {
-        calculationTime: new Date().toISOString(),
-        accuracy: getAccuracy(data.type),
+        calculationTime: `${Date.now() - startTime}ms`,
+        accuracy: 'approximate',
       },
+      spiritualCorrelations: CHART_SPIRITUAL_CORRELATIONS[type],
+      spiritualStats,
     };
 
-    return NextResponse.json(response, { status: 201 });
-  } catch (_error) {
-    return NextResponse.json(
-      { success: false, error: 'Failed to generate chart' },
-      { status: 500 }
-    );
+    return NextResponse.json(response);
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Chart generation failed',
+    }, { status: 500 });
   }
 }
 
-// GET endpoint to get available chart types
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const chartId = searchParams.get('id');
+
+  if (!chartId) {
+    return NextResponse.json({
+      success: false,
+      error: 'Chart ID is required',
+    }, { status: 400 });
+  }
+
+  const chart = getChartById(chartId);
+
+  if (!chart) {
+    return NextResponse.json({
+      success: false,
+      error: 'Chart not found',
+    }, { status: 404 });
+  }
+
+  // Add spiritual correlations based on chart type
+  const correlations = CHART_SPIRITUAL_CORRELATIONS[chart.type] || CHART_SPIRITUAL_CORRELATIONS.natal;
+
   return NextResponse.json({
-    types: [
-      { id: 'natal', name: 'Mapa Natal', description: 'Birth chart calculation' },
-      { id: 'transito', name: 'Trânsito', description: 'Current planetary transits' },
-      { id: 'progressao', name: 'Progressão', description: 'Secondary progression' },
-      { id: 'sinostry', name: 'Sinastria', description: 'Relationship compatibility' },
-      { id: 'composito', name: 'Comósito', description: 'Composite chart' },
-      { id: 'hora-igual', name: 'Hora Igual', description: 'Equal house system' },
-    ],
-    styles: [
-      { id: 'radix', name: 'Radix', description: 'Traditional whole sign' },
-      { id: 'quadrate', name: 'Quadrifáero', description: 'Four quadrants' },
-      { id: 'equal', name: 'Equal', description: 'Equal houses' },
-      { id: 'whole-sign', name: 'Whole Sign', description: 'Whole sign houses' },
-    ],
-    houseSystems: [
-      { id: 'placidus', name: 'Placidus' },
-      { id: 'koch', name: 'Koch' },
-      { id: 'regiomontanus', name: 'Regiomontanus' },
-      { id: 'campanus', name: 'Campanus' },
-      { id: 'whole-sign', name: 'Whole Sign' },
-    ],
+    success: true,
+    chart: {
+      ...chart,
+      sefirot: correlations.sefirot,
+      chakra: correlations.chakra,
+      element: correlations.element,
+      orixa: correlations.orixa,
+      affirmation: correlations.affirmation,
+      frequency: correlations.frequency,
+      spiritualCorrelations: correlations,
+    },
+    spiritualCorrelations: correlations,
   });
 }
