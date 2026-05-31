@@ -110,9 +110,9 @@
 ## BACKLOG DE MELHORIAS
 
 ### Alta Prioridade
-1. [ ] Tornar sefirot clicáveis com tooltips
-2. [ ] Criar fluxo visual: Odu → Orixá → Sefira → Chakra
-3. [ ] Corrigir erro de prerenderização em /dashboard/orixa
+1. [x] Tornar sefirot clicáveis com tooltips
+2. [x] Criar fluxo visual: Odu → Orixá → Sefira → Chakra
+3. [x] Corrigir erro de prerenderização em /dashboard/orixa
 
 ### Média Prioridade
 1. [ ] Adicionar tooltips explicativos
@@ -128,9 +128,9 @@
 
 ## PRÓXIMO CICLO
 
-1. **Sefirot Interativas** - Click → Tooltip com significados
-2. **Correlação Total** - Odu ↔ Orixá ↔ Sefira ↔ Chakra
-3. **Tema Claro** - Light mode
+1. **Animações de transição** - Tooltip com fade suave
+2. **Conexão visual** - Linhas ligando os elementos
+3. **Estilos por tradição** - Cores distintas por sistema
 ---
 
 ## SPRINT 225 - CORRELAÇÃO CRUZADA IMPLEMENTADA
