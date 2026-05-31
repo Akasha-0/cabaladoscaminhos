@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schema ───────────────────────────────────────────────────────────
+const AfirmacaoQuerySchema = z.object({
+  categoria: z.enum(['cabala', 'numerologia', 'orixas']).optional(),
+});
+const CATEGORIAS_VALIDAS = ['cabala', 'numerologia', 'orixas'] as const;
 const afirmacoesPorCategoria = {
   cabala: [
     { texto: 'Eu sou parte da luz divina que ilumina o universo inteiro.', fonte: 'Séfer Yetzirá' },
@@ -23,11 +28,50 @@ const afirmacoesPorCategoria = {
     { texto: 'Olorum sincroniza minha alma com a energia criadora do universo.', fonte: 'Oração Ancestral' },
   ],
 };
-
 type Categoria = 'cabala' | 'numerologia' | 'orixas';
-
 function getAfirmacaoDoDia(): { dia: number } {
   const agora = new Date();
+  const diaDoAno = Math.floor(
+    (agora.getTime() - new Date(agora.getFullYear(), 0, 0).getTime()) / 86400000
+  );
+  return { dia: diaDoAno };
+}
+function selectAfirmacao(categoria: Categoria): { texto: string; fonte: string } {
+  const afirmacoes = afirmacoesPorCategoria[categoria];
+  const agora = new Date();
+  const diaDoAno = Math.floor(
+    (agora.getTime() - new Date(agora.getFullYear(), 0, 0).getTime()) / 86400000
+  );
+  const indice = diaDoAno % afirmacoes.length;
+  return afirmacoes[indice];
+}
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const parseResult = AfirmacaoQuerySchema.safeParse({
+    categoria: searchParams.get('categoria'),
+  });
+  const categoria = parseResult.success ? parseResult.data.categoria : null;
+  if (categoria && !CATEGORIAS_VALIDAS.includes(categoria)) {
+    return NextResponse.json(
+      {
+        affirmation: null,
+        error: 'Categoria inválida',
+        details: parseResult.error?.flatten().fieldErrors,
+        categories: [...CATEGORIAS_VALIDAS],
+      },
+      { status: 400 }
+    );
+  }
+  if (!categoria) {
+    return NextResponse.json(
+      {
+        affirmation: null,
+        error: 'Parâmetro "categoria" é obrigatório',
+        categories: [...CATEGORIAS_VALIDAS],
+      },
+      { status: 400 }
+    );
+  }
   const diaDoAno = Math.floor(
     (agora.getTime() - new Date(agora.getFullYear(), 0, 0).getTime()) / 86400000
   );
