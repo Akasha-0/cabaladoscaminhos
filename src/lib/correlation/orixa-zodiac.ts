@@ -28,6 +28,11 @@ export interface OrixaZodiac {
   planeta_regente: string;
 }
 
+// Helper to normalize strings (remove accents, lowercase)
+function normalizeString(str: string): string {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 // ─── Orixá-to-Zodiac Mapping ───────────────────────────────────────────
 
 /**
@@ -194,6 +199,7 @@ Object.values(ORIXA_ZODIAC_MAP).forEach(mapping => Object.freeze(mapping));
  * Get Orixá-to-Zodiac correlation mapping
  * @param orixa - Name of the Orixá (case-insensitive)
  * @returns OrixaZodiac mapping or undefined if not found
+ */
 export function getOrixaZodiac(orixa: string): OrixaZodiac | undefined {
   const normalized = orixa.trim();
   return ORIXA_ZODIAC_MAP[normalized] || Object.values(ORIXA_ZODIAC_MAP).find(
@@ -204,12 +210,15 @@ export function getOrixaZodiac(orixa: string): OrixaZodiac | undefined {
 /**
  * Get the primary Orixá for a zodiac sign
  * @param signo - Zodiac sign name (case-insensitive)
+ * @returns OrixaZodiac mapping or undefined if sign not found
+ */
 export function getZodiacOrixa(signo: string): OrixaZodiac | undefined {
   const normalized = signo.trim();
   return Object.values(ORIXA_ZODIAC_MAP).find(
     entry => normalizeString(entry.signo) === normalizeString(normalized)
   );
 }
+
 /**
  * Get all Orixá-to-Zodiac mappings
  * @returns Array of all OrixaZodiac objects
@@ -244,7 +253,7 @@ export function getOrixasByElement(elemento: OrixaZodiac['elemento']): OrixaZodi
  */
 export function getOrixasByDay(dia: string): OrixaZodiac[] {
   return Object.values(ORIXA_ZODIAC_MAP).filter(
-    entry => entry.dia_sagrado.toLowerCase() === dia.toLowerCase()
+    entry => normalizeString(entry.dia_sagrado) === normalizeString(dia)
   );
 }
 
@@ -255,7 +264,7 @@ export function getOrixasByDay(dia: string): OrixaZodiac[] {
  */
 export function getOrixasByPlaneta(planeta: string): OrixaZodiac[] {
   return Object.values(ORIXA_ZODIAC_MAP).filter(
-    entry => entry.planeta_regente.toLowerCase() === planeta.toLowerCase()
+    entry => normalizeString(entry.planeta_regente) === normalizeString(planeta)
   );
 }
 
@@ -268,8 +277,3 @@ export default {
   getOrixasByDay,
   getOrixasByPlaneta,
 };
-
-// Helper to normalize strings (remove accents, lowercase)
-function normalizeString(str: string): string {
-  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-}
