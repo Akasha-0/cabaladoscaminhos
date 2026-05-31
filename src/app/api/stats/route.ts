@@ -43,12 +43,15 @@ interface RitualStats {
   totalCompletions: number;
   currentStreak: number;
   longestStreak: number;
-  completionRate: number;
   recentCompletions: Array<{
-    activity.lastActive = new Date().toISOString();
-    const count = activity.features.get(feature) || 0;
-    activity.features.set(feature, count + 1);
-  }
+    id: string;
+    completedAt: string;
+  }>;
+function recordFeature(activity: ActivityRecord, feature: string) {
+  activity.lastActive = new Date().toISOString();
+  const count = activity.features.get(feature) || 0;
+  activity.features.set(feature, count + 1);
+}
 }
 
 function getFavoriteFeature(features: Map<string, number>): string | null {

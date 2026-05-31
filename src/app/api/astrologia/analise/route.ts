@@ -11,8 +11,11 @@ const AnaliseQuerySchema = z.object({
   longitude: z.string().regex(/^-?\d+\.?\d*$/, 'Longitude inválida'),
 });
 interface AnaliseStrength {
+interface AnaliseStrength {
+  name: string;
+  description: string;
+}
 function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 export async function GET(request: NextRequest) {
   try {
