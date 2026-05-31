@@ -61,23 +61,43 @@ export async function GET(request: NextRequest) {
   }
 }
 export async function POST(request: NextRequest) {
-
-export async function POST(request: NextRequest) {
   try {
-    const body: NatalRequest = await request.json();
-    const { dataNascimento, horaNascimento = '12:00', latitude, longitude, usuarioId } = body;
-
-    if (!dataNascimento || latitude === undefined || longitude === undefined) {
+    const body = await request.json();
+    const parseResult = NatalBodySchema.safeParse(body);
+    if (!parseResult.success) {
       return NextResponse.json({
-        error: 'Campos obrigatórios: dataNascimento, latitude, longitude'
+        error: 'Corpo inválido',
+        details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
-
+    const { dataNascimento, horaNascimento = '12:00', latitude, longitude, usuarioId } = parseResult.data;
     const mapaNatal = calcularMapaNatal(
       new Date(dataNascimento),
       horaNascimento,
       latitude,
       longitude
+    );
+    if (usuarioId) {
+      mapaNatal.usuarioId = usuarioId;
+    }
+    const posicoes = Object.values(mapaNatal.planeta);
+    const aspectos = calcularAspectos(posicoes);
+    return NextResponse.json({
+      mapaNatal,
+      aspectos,
+    } as NatalResponse, {
+      status: 201,
+      headers: {
+        'Cache-Control': 'public, max-age=259200, stale-while-revalidate=604800',
+      },
+    });
+  } catch (_error) {
+    console.error('Erro calculando mapa natal:', _error);
+    return NextResponse.json({
+      error: 'Erro ao calcular mapa natal'
+    }, { status: 500 });
+  }
+}
     );
 
     if (usuarioId) {

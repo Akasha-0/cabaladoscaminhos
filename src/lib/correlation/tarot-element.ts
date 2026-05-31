@@ -3,8 +3,6 @@
  * Aligns Tarot Major Arcana cards with the four classical elements
  * Each arcano represents a spiritual doorway connecting conscious energy
  */
-
-
 /**
  * Represents the correlation between a Tarot Major Arcana card and its element
  */
