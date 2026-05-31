@@ -1,17 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-export interface SpiritAnimal {
-  id: string;
-  nome: string;
-  nomeIngles: string;
-  elemento: string;
-  qualidade: string;
-  mensagem: string;
-  cor: string;
-  chakra: string;
-  combinacoes: string[];
-}
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SpiritAnimalSchema = z.object({
+  id: z.string(),
+  nome: z.string(),
+  nomeIngles: z.string(),
+  elemento: z.string(),
+  qualidade: z.string(),
+  mensagem: z.string(),
+  cor: z.string(),
+  chakra: z.string(),
+  combinacoes: z.array(z.string()),
+});
+const SpiritAnimalsQuerySchema = z.object({
+  nome: z.string().optional(),
+  id: z.string().optional(),
+  elemento: z.string().optional(),
+});
+export type SpiritAnimal = z.infer<typeof SpiritAnimalSchema>;
 const spiritAnimals: SpiritAnimal[] = [
   {
     id: 'lobo',
@@ -237,10 +243,18 @@ const spiritAnimals: SpiritAnimal[] = [
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const nome = searchParams.get('nome');
-  const id = searchParams.get('id');
-  const elemento = searchParams.get('elemento');
-
+  const parseResult = SpiritAnimalsQuerySchema.safeParse({
+    nome: searchParams.get('nome'),
+    id: searchParams.get('id'),
+    elemento: searchParams.get('elemento'),
+  });
+  if (!parseResult.success) {
+    return NextResponse.json({
+      error: 'Parâmetros inválidos',
+      details: parseResult.error.flatten().fieldErrors,
+    }, { status: 400 });
+  }
+  const { nome, id, elemento } = parseResult.data;
   // Filter by ID
   if (id) {
     const animal = spiritAnimals.find((a) => a.id === id);
