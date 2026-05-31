@@ -43,7 +43,6 @@ describe('ZodiacPlanet Correlation', () => {
       expect(typeof mapping.elemento).toBe('string');
     });
     });
-
     it('should export constants', () => {
       expect(Array.isArray(TODOS_PLANETAS)).toBe(true);
       expect(Array.isArray(TODOS_SIGNOS)).toBe(true);

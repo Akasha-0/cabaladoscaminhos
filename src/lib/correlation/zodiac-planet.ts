@@ -316,6 +316,7 @@ function normalizarSigno(signo: string): SignoZodiac | null {
     leao: 'Leão',
     virgem: 'Virgem',
     libra: 'Libra',
+    balanca: 'Libra',
     balança: 'Libra',
     escorpiao: 'Escorpião',
     escorpião: 'Escorpião',
