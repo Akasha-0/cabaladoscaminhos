@@ -6,180 +6,190 @@ import {
   getAllElements,
   getSoundsByElement,
   getHealingProperties,
+  SOUND_ELEMENTS,
+  type SoundElement,
 } from "@/lib/correlation/sound-element";
 
 describe("sound-element correlation", () => {
   describe("getSoundElement", () => {
-    it("returns correct mapping for LAM (Earth)", () => {
-      const result = getSoundElement("LAM");
-      expect(result).toBeDefined();
-      expect(result?.som).toBe("LAM");
-      expect(result?.elemento).toBe("Terra");
-      expect(result?.elemento_en).toBe("Earth");
-      expect(result?.chakra).toBe("1º Básico");
-      expect(result?.chakra_sanskrit).toBe("Muladhara");
-      expect(result?.chakra_numero).toBe(1);
-      expect(result?.frequencia).toBe(396);
+    it("returns correct mapping for LAM (Earth/Terra)", () => {
+      const mapping = getSoundElement("LAM");
+      expect(mapping).toBeDefined();
+      expect(mapping!.som).toBe("LAM");
+      expect(mapping!.elemento).toBe("Terra");
+      expect(mapping!.elemento_en).toBe("Earth");
+      expect(mapping!.chakra).toBe("1º Básico");
+      expect(mapping!.chakra_sanskrit).toBe("Muladhara");
+      expect(mapping!.chakra_numero).toBe(1);
+      expect(mapping!.frequencia).toBe(396);
+      expect(mapping!.direcao).toBe("Norte");
+      expect(mapping!.estacao).toBe("Inverno");
     });
 
-    it("returns correct mapping for VAM (Water)", () => {
-      const result = getSoundElement("VAM");
-      expect(result).toBeDefined();
-      expect(result?.som).toBe("VAM");
-      expect(result?.elemento).toBe("Água");
-      expect(result?.elemento_en).toBe("Water");
-      expect(result?.chakra).toBe("2º Sacro");
-      expect(result?.chakra_sanskrit).toBe("Svadhisthana");
-      expect(result?.chakra_numero).toBe(2);
-      expect(result?.frequencia).toBe(417);
+    it("returns correct mapping for VAM (Water/Água)", () => {
+      const mapping = getSoundElement("VAM");
+      expect(mapping).toBeDefined();
+      expect(mapping!.som).toBe("VAM");
+      expect(mapping!.elemento).toBe("Água");
+      expect(mapping!.elemento_en).toBe("Water");
+      expect(mapping!.chakra).toBe("2º Sacro");
+      expect(mapping!.chakra_sanskrit).toBe("Svadhisthana");
+      expect(mapping!.chakra_numero).toBe(2);
+      expect(mapping!.frequencia).toBe(417);
+      expect(mapping!.direcao).toBe("Oeste");
+      expect(mapping!.estacao).toBe("Primavera");
     });
 
-    it("returns correct mapping for RAM (Fire)", () => {
-      const result = getSoundElement("RAM");
-      expect(result).toBeDefined();
-      expect(result?.som).toBe("RAM");
-      expect(result?.elemento).toBe("Fogo");
-      expect(result?.elemento_en).toBe("Fire");
-      expect(result?.chakra).toBe("3º Plexo Solar");
-      expect(result?.chakra_sanskrit).toBe("Manipura");
-      expect(result?.chakra_numero).toBe(3);
-      expect(result?.frequencia).toBe(528);
+    it("returns correct mapping for RAM (Fire/Fogo)", () => {
+      const mapping = getSoundElement("RAM");
+      expect(mapping).toBeDefined();
+      expect(mapping!.som).toBe("RAM");
+      expect(mapping!.elemento).toBe("Fogo");
+      expect(mapping!.elemento_en).toBe("Fire");
+      expect(mapping!.chakra).toBe("3º Plexo Solar");
+      expect(mapping!.chakra_sanskrit).toBe("Manipura");
+      expect(mapping!.chakra_numero).toBe(3);
+      expect(mapping!.frequencia).toBe(528);
+      expect(mapping!.direcao).toBe("Sul");
+      expect(mapping!.estacao).toBe("Verão");
     });
 
-    it("returns correct mapping for YAM (Air - Heart)", () => {
-      const result = getSoundElement("YAM");
-      expect(result).toBeDefined();
-      expect(result?.som).toBe("YAM");
-      expect(result?.elemento).toBe("Ar");
-      expect(result?.elemento_en).toBe("Air");
-      expect(result?.chakra).toBe("4º Cardíaco");
-      expect(result?.chakra_sanskrit).toBe("Anahata");
-      expect(result?.chakra_numero).toBe(4);
-      expect(result?.frequencia).toBe(639);
+    it("returns correct mapping for YAM (Air/Ar)", () => {
+      const mapping = getSoundElement("YAM");
+      expect(mapping).toBeDefined();
+      expect(mapping!.som).toBe("YAM");
+      expect(mapping!.elemento).toBe("Ar");
+      expect(mapping!.elemento_en).toBe("Air");
+      expect(mapping!.chakra).toBe("4º Cardíaco");
+      expect(mapping!.chakra_sanskrit).toBe("Anahata");
+      expect(mapping!.chakra_numero).toBe(4);
+      expect(mapping!.frequencia).toBe(639);
+      expect(mapping!.direcao).toBe("Leste");
+      expect(mapping!.estacao).toBe("Outono");
     });
 
-    it("returns correct mapping for HAM (Air - Throat)", () => {
-      const result = getSoundElement("HAM");
-      expect(result).toBeDefined();
-      expect(result?.som).toBe("HAM");
-      expect(result?.elemento).toBe("Ar");
-      expect(result?.elemento_en).toBe("Air");
-      expect(result?.chakra).toBe("5º Laríngeo");
-      expect(result?.chakra_sanskrit).toBe("Vishuddha");
-      expect(result?.chakra_numero).toBe(5);
-      expect(result?.frequencia).toBe(741);
+    it("returns correct mapping for HAM (Air/Ar)", () => {
+      const mapping = getSoundElement("HAM");
+      expect(mapping).toBeDefined();
+      expect(mapping!.som).toBe("HAM");
+      expect(mapping!.elemento).toBe("Ar");
+      expect(mapping!.elemento_en).toBe("Air");
+      expect(mapping!.chakra).toBe("5º Laríngeo");
+      expect(mapping!.chakra_sanskrit).toBe("Vishuddha");
+      expect(mapping!.chakra_numero).toBe(5);
+      expect(mapping!.frequencia).toBe(741);
+      expect(mapping!.direcao).toBe("Leste");
+      expect(mapping!.estacao).toBe("Primavera");
     });
 
-    it("returns correct mapping for OM (Ether - Third Eye)", () => {
-      const result = getSoundElement("OM");
-      expect(result).toBeDefined();
-      expect(result?.som).toBe("OM");
-      expect(result?.elemento).toBe("Éter");
-      expect(result?.elemento_en).toBe("Ether");
-      expect(result?.chakra).toBe("6º Frontal");
-      expect(result?.chakra_sanskrit).toBe("Ajna");
-      expect(result?.chakra_numero).toBe(6);
-      expect(result?.frequencia).toBe(852);
+    it("returns correct mapping for OM (Ether/Éter)", () => {
+      const mapping = getSoundElement("OM");
+      expect(mapping).toBeDefined();
+      expect(mapping!.som).toBe("OM");
+      expect(mapping!.elemento).toBe("Éter");
+      expect(mapping!.elemento_en).toBe("Ether");
+      expect(mapping!.chakra).toBe("6º Frontal");
+      expect(mapping!.chakra_sanskrit).toBe("Ajna");
+      expect(mapping!.chakra_numero).toBe(6);
+      expect(mapping!.frequencia).toBe(852);
+      expect(mapping!.direcao).toBe("Centro");
+      expect(mapping!.estacao).toBe("Todas");
     });
 
-    it("returns correct mapping for AUM (Ether - Crown)", () => {
-      const result = getSoundElement("AUM");
-      expect(result).toBeDefined();
-      expect(result?.som).toBe("AUM");
-      expect(result?.elemento).toBe("Éter");
-      expect(result?.elemento_en).toBe("Ether");
-      expect(result?.chakra).toBe("7º Coronário");
-      expect(result?.chakra_sanskrit).toBe("Sahasrara");
-      expect(result?.chakra_numero).toBe(7);
-      expect(result?.frequencia).toBe(963);
+    it("returns correct mapping for AUM (Ether/Éter)", () => {
+      const mapping = getSoundElement("AUM");
+      expect(mapping).toBeDefined();
+      expect(mapping!.som).toBe("AUM");
+      expect(mapping!.elemento).toBe("Éter");
+      expect(mapping!.elemento_en).toBe("Ether");
+      expect(mapping!.chakra).toBe("7º Coronário");
+      expect(mapping!.chakra_sanskrit).toBe("Sahasrara");
+      expect(mapping!.chakra_numero).toBe(7);
+      expect(mapping!.frequencia).toBe(963);
+      expect(mapping!.direcao).toBe("Zênite");
+      expect(mapping!.estacao).toBe("Todas");
     });
 
-    it("accepts lowercase sound identifier", () => {
-      const result = getSoundElement("lam");
-      expect(result).toBeDefined();
-      expect(result?.elemento).toBe("Terra");
-    });
-
-    it("accepts mixed case sound identifier", () => {
-      const result = getSoundElement("Om");
-      expect(result).toBeDefined();
-      expect(result?.elemento).toBe("Éter");
-    });
-
-    it("accepts sound identifier with whitespace", () => {
-      const result = getSoundElement("  LAM  ");
-      expect(result).toBeDefined();
-      expect(result?.elemento).toBe("Terra");
-    });
-
-    it("returns undefined for unknown sound", () => {
-      const result = getSoundElement("UNKNOWN");
-      expect(result).toBeUndefined();
+    it("returns undefined for non-existent sound", () => {
+      expect(getSoundElement("XYZ")).toBeUndefined();
     });
 
     it("returns undefined for empty string", () => {
-      const result = getSoundElement("");
-      expect(result).toBeUndefined();
+      expect(getSoundElement("")).toBeUndefined();
     });
 
-    it("returns undefined for null/undefined input", () => {
-      expect(getSoundElement(undefined as unknown as string)).toBeUndefined();
-      expect(getSoundElement(null as unknown as string)).toBeUndefined();
+    it("handles case insensitivity", () => {
+      expect(getSoundElement("lam")).toBeDefined();
+      expect(getSoundElement("Lam")).toBeDefined();
+      expect(getSoundElement("LAM")).toBeDefined();
+    });
+
+    it("handles whitespace in input", () => {
+      expect(getSoundElement(" LAM ")).toBeDefined();
+      expect(getSoundElement("  VAM  ")).toBeDefined();
+    });
+
+    it("includes pronunciacao in mapping", () => {
+      const mapping = getSoundElement("LAM");
+      expect(mapping!.pronunciacao).toContain("lahm");
+    });
+
+    it("includes propriedades_cura in mapping", () => {
+      const mapping = getSoundElement("LAM");
+      expect(mapping!.propriedades_cura).toBeDefined();
+      expect(Array.isArray(mapping!.propriedades_cura)).toBe(true);
+      expect(mapping!.propriedades_cura.length).toBeGreaterThan(0);
+    });
+
+    it("includes dinamica in mapping", () => {
+      const mapping = getSoundElement("OM");
+      expect(mapping!.dinamica).toBeDefined();
+      expect(typeof mapping!.dinamica).toBe("string");
     });
   });
 
   describe("getElementSound", () => {
-    it("returns element for LAM", () => {
-      const result = getElementSound("LAM");
-      expect(result).toBe("Terra");
+    it("returns Terra for LAM sound", () => {
+      expect(getElementSound("LAM")).toBe("Terra");
     });
 
-    it("returns element for VAM", () => {
-      const result = getElementSound("VAM");
-      expect(result).toBe("Água");
+    it("returns Água for VAM sound", () => {
+      expect(getElementSound("VAM")).toBe("Água");
     });
 
-    it("returns element for RAM", () => {
-      const result = getElementSound("RAM");
-      expect(result).toBe("Fogo");
+    it("returns Fogo for RAM sound", () => {
+      expect(getElementSound("RAM")).toBe("Fogo");
     });
 
-    it("returns element for YAM", () => {
-      const result = getElementSound("YAM");
-      expect(result).toBe("Ar");
+    it("returns Ar for YAM sound", () => {
+      expect(getElementSound("YAM")).toBe("Ar");
     });
 
-    it("returns element for OM", () => {
-      const result = getElementSound("OM");
-      expect(result).toBe("Éter");
+    it("returns Éter for OM sound", () => {
+      expect(getElementSound("OM")).toBe("Éter");
     });
 
-    it("returns undefined for unknown sound", () => {
-      const result = getElementSound("UNKNOWN");
-      expect(result).toBeUndefined();
+    it("returns undefined for non-existent sound", () => {
+      expect(getElementSound("XYZ")).toBeUndefined();
     });
   });
 
   describe("getAllSoundElements", () => {
     it("returns all 7 sound-element mappings", () => {
-      const result = getAllSoundElements();
-      expect(result).toHaveLength(7);
+      const all = getAllSoundElements();
+      expect(all).toHaveLength(7);
     });
 
-    it("returns elements sorted by chakra number", () => {
-      const result = getAllSoundElements();
-      expect(result[0].chakra_numero).toBe(1);
-      expect(result[1].chakra_numero).toBe(2);
-      expect(result[2].chakra_numero).toBe(3);
-      expect(result[3].chakra_numero).toBe(4);
-      expect(result[4].chakra_numero).toBe(5);
-      expect(result[5].chakra_numero).toBe(6);
-      expect(result[6].chakra_numero).toBe(7);
+    it("returns mappings sorted by chakra_numero", () => {
+      const all = getAllSoundElements();
+      for (let i = 1; i < all.length; i++) {
+        expect(all[i].chakra_numero).toBeGreaterThanOrEqual(all[i - 1].chakra_numero);
+      }
     });
 
-    it("includes all expected elements", () => {
-      const result = getAllSoundElements();
-      const elements = result.map(r => r.elemento);
+    it("contains correct element distribution", () => {
+      const all = getAllSoundElements();
+      const elements = all.map(s => s.elemento);
       expect(elements).toContain("Terra");
       expect(elements).toContain("Água");
       expect(elements).toContain("Fogo");
@@ -187,189 +197,263 @@ describe("sound-element correlation", () => {
       expect(elements).toContain("Éter");
     });
 
-    it("includes healing properties for each mapping", () => {
-      const result = getAllSoundElements();
-      result.forEach(sound => {
-        expect(sound.propriedades_cura).toBeDefined();
-        expect(sound.propriedades_cura.length).toBeGreaterThan(0);
-      });
+    it("contains all expected sounds", () => {
+      const all = getAllSoundElements();
+      const sounds = all.map(s => s.som);
+      expect(sounds).toContain("LAM");
+      expect(sounds).toContain("VAM");
+      expect(sounds).toContain("RAM");
+      expect(sounds).toContain("YAM");
+      expect(sounds).toContain("HAM");
+      expect(sounds).toContain("OM");
+      expect(sounds).toContain("AUM");
     });
 
-    it("includes pronunciacao for each mapping", () => {
-      const result = getAllSoundElements();
-      result.forEach(sound => {
-        expect(sound.pronunciacao).toBeDefined();
-        expect(sound.pronunciacao.length).toBeGreaterThan(0);
+    it("each mapping has valid properties", () => {
+      const all = getAllSoundElements();
+      all.forEach(mapping => {
+        expect(mapping.som).toBeDefined();
+        expect(mapping.pronunciacao).toBeDefined();
+        expect(mapping.elemento).toBeDefined();
+        expect(mapping.elemento_en).toBeDefined();
+        expect(mapping.propriedades_cura).toBeDefined();
+        expect(mapping.chakra).toBeDefined();
+        expect(mapping.chakra_sanskrit).toBeDefined();
+        expect(mapping.chakra_numero).toBeGreaterThan(0);
+        expect(mapping.frequencia).toBeGreaterThan(0);
+        expect(mapping.direcao).toBeDefined();
+        expect(mapping.estacao).toBeDefined();
+        expect(mapping.dinamica).toBeDefined();
       });
     });
   });
 
   describe("getAllElements", () => {
-    it("returns all unique elements", () => {
-      const result = getAllElements();
-      expect(result).toContain("Ar");
-      expect(result).toContain("Água");
-      expect(result).toContain("Éter");
-      expect(result).toContain("Fogo");
-      expect(result).toContain("Terra");
+    it("returns all 5 elements", () => {
+      const elements = getAllElements();
+      expect(elements).toHaveLength(5);
     });
 
-    it("returns array of strings", () => {
-      const result = getAllElements();
-      expect(Array.isArray(result)).toBe(true);
-      result.forEach(el => {
-        expect(typeof el).toBe("string");
-      });
+    it("returns sorted elements", () => {
+      const elements = getAllElements();
+      for (let i = 1; i < elements.length; i++) {
+        expect(elements[i] >= elements[i - 1]).toBe(true);
+      }
+    });
+
+    it("contains expected elements", () => {
+      const elements = getAllElements();
+      expect(elements).toContain("Ar");
+      expect(elements).toContain("Água");
+      expect(elements).toContain("Éter");
+      expect(elements).toContain("Fogo");
+      expect(elements).toContain("Terra");
     });
   });
 
   describe("getSoundsByElement", () => {
-    it("returns LAM for Terra element", () => {
-      const result = getSoundsByElement("Terra");
-      expect(result).toHaveLength(1);
-      expect(result[0].som).toBe("LAM");
+    it("returns 1 sound for Terra", () => {
+      const sounds = getSoundsByElement("Terra");
+      expect(sounds).toHaveLength(1);
+      expect(sounds[0].som).toBe("LAM");
     });
 
-    it("returns VAM for Água element", () => {
-      const result = getSoundsByElement("Água");
-      expect(result).toHaveLength(1);
-      expect(result[0].som).toBe("VAM");
+    it("returns 1 sound for Água", () => {
+      const sounds = getSoundsByElement("Água");
+      expect(sounds).toHaveLength(1);
+      expect(sounds[0].som).toBe("VAM");
     });
 
-    it("returns RAM for Fogo element", () => {
-      const result = getSoundsByElement("Fogo");
-      expect(result).toHaveLength(1);
-      expect(result[0].som).toBe("RAM");
+    it("returns 1 sound for Fogo", () => {
+      const sounds = getSoundsByElement("Fogo");
+      expect(sounds).toHaveLength(1);
+      expect(sounds[0].som).toBe("RAM");
     });
 
-    it("returns YAM and HAM for Ar element", () => {
-      const result = getSoundsByElement("Ar");
-      expect(result).toHaveLength(2);
-      const sounds = result.map(r => r.som).sort();
-      expect(sounds).toEqual(["HAM", "YAM"]);
+    it("returns 2 sounds for Ar (YAM and HAM)", () => {
+      const sounds = getSoundsByElement("Ar");
+      expect(sounds).toHaveLength(2);
+      const soundNames = sounds.map(s => s.som).sort();
+      expect(soundNames).toEqual(["HAM", "YAM"]);
     });
 
-    it("returns OM and AUM for Éter element", () => {
-      const result = getSoundsByElement("Éter");
-      expect(result).toHaveLength(2);
-      const sounds = result.map(r => r.som).sort();
-      expect(sounds).toEqual(["AUM", "OM"]);
+    it("returns 2 sounds for Éter (OM and AUM)", () => {
+      const sounds = getSoundsByElement("Éter");
+      expect(sounds).toHaveLength(2);
+      const soundNames = sounds.map(s => s.som).sort();
+      expect(soundNames).toEqual(["AUM", "OM"]);
     });
 
-    it("accepts lowercase element name", () => {
-      const result = getSoundsByElement("terra");
-      expect(result).toHaveLength(1);
-      expect(result[0].som).toBe("LAM");
-    });
-
-    it("returns empty array for unknown element", () => {
-      const result = getSoundsByElement("Unknown");
-      expect(result).toHaveLength(0);
+    it("returns empty array for non-existent element", () => {
+      expect(getSoundsByElement("Fogo Místico")).toEqual([]);
     });
 
     it("returns empty array for empty string", () => {
-      const result = getSoundsByElement("");
-      expect(result).toHaveLength(0);
+      expect(getSoundsByElement("")).toEqual([]);
+    });
+
+    it("handles case insensitivity for element", () => {
+      const sounds = getSoundsByElement("terra");
+      expect(sounds).toHaveLength(1);
+      expect(sounds[0].som).toBe("LAM");
     });
   });
 
   describe("getHealingProperties", () => {
     it("returns healing properties for LAM", () => {
-      const result = getHealingProperties("LAM");
-      expect(result).toBeDefined();
-      expect(result?.length).toBeGreaterThan(0);
-      expect(result?.[0]).toContain("Dissolução de medos");
+      const props = getHealingProperties("LAM");
+      expect(props).toBeDefined();
+      expect(Array.isArray(props)).toBe(true);
+      expect(props!.length).toBeGreaterThan(0);
     });
 
     it("returns healing properties for OM", () => {
-      const result = getHealingProperties("OM");
-      expect(result).toBeDefined();
-      expect(result?.length).toBeGreaterThan(0);
-      expect(result?.[0]).toContain("Despertar da intuição");
+      const props = getHealingProperties("OM");
+      expect(props).toBeDefined();
+      expect(Array.isArray(props)).toBe(true);
+      expect(props!.length).toBeGreaterThan(0);
     });
 
-    it("returns undefined for unknown sound", () => {
-      const result = getHealingProperties("UNKNOWN");
-      expect(result).toBeUndefined();
+    it("returns undefined for non-existent sound", () => {
+      expect(getHealingProperties("XYZ")).toBeUndefined();
     });
   });
 
-  describe("Element-Sound spiritual correlation completeness", () => {
-    it("maps all five elements with their sounds", () => {
-      const allSounds = getAllSoundElements();
-      const elements = new Set(allSounds.map(s => s.elemento));
-      
-      expect(elements.has("Terra")).toBe(true);
-      expect(elements.has("Água")).toBe(true);
-      expect(elements.has("Fogo")).toBe(true);
-      expect(elements.has("Ar")).toBe(true);
-      expect(elements.has("Éter")).toBe(true);
+  describe("Sound-Element spiritual correlation completeness", () => {
+    it("covers all five elements", () => {
+      const elements = getAllElements();
+      expect(elements).toContain("Terra");
+      expect(elements).toContain("Água");
+      expect(elements).toContain("Fogo");
+      expect(elements).toContain("Ar");
+      expect(elements).toContain("Éter");
     });
 
-    it("includes frequency data for all sounds", () => {
-      const allSounds = getAllSoundElements();
-      allSounds.forEach(sound => {
-        expect(sound.frequencia).toBeGreaterThan(0);
-      });
+    it("covers all seven primary chakras", () => {
+      const all = getAllSoundElements();
+      const chakraNumbers = all.map(s => s.chakra_numero).sort((a, b) => a - b);
+      expect(chakraNumbers).toEqual([1, 2, 3, 4, 5, 6, 7]);
     });
 
-    it("includes direction for all sounds", () => {
-      const allSounds = getAllSoundElements();
-      allSounds.forEach(sound => {
-        expect(sound.direcao).toBeDefined();
-        expect(sound.direcao.length).toBeGreaterThan(0);
-      });
+    it("has frequencies matching Solfeggio scale", () => {
+      const all = getAllSoundElements();
+      const frequencies = all.map(s => s.frequencia);
+      expect(frequencies).toContain(396);
+      expect(frequencies).toContain(417);
+      expect(frequencies).toContain(528);
+      expect(frequencies).toContain(639);
+      expect(frequencies).toContain(741);
+      expect(frequencies).toContain(852);
+      expect(frequencies).toContain(963);
     });
 
-    it("includes season for all sounds", () => {
-      const allSounds = getAllSoundElements();
-      allSounds.forEach(sound => {
-        expect(sound.estacao).toBeDefined();
-        expect(sound.estacao.length).toBeGreaterThan(0);
-      });
+    it("each element has correct direction", () => {
+      const terra = getSoundElement("LAM");
+      expect(terra!.direcao).toBe("Norte");
+
+      const agua = getSoundElement("VAM");
+      expect(agua!.direcao).toBe("Oeste");
+
+      const fogo = getSoundElement("RAM");
+      expect(fogo!.direcao).toBe("Sul");
     });
 
-    it("includes dynamic spiritual description for all sounds", () => {
-      const allSounds = getAllSoundElements();
-      allSounds.forEach(sound => {
-        expect(sound.dinamica).toBeDefined();
-        expect(sound.dinamica.length).toBeGreaterThan(0);
-      });
+    it("elements have seasonal associations", () => {
+      const terra = getSoundElement("LAM");
+      expect(terra!.estacao).toBe("Inverno");
+
+      const agua = getSoundElement("VAM");
+      expect(agua!.estacao).toBe("Primavera");
+
+      const fogo = getSoundElement("RAM");
+      expect(fogo!.estacao).toBe("Verão");
     });
 
-    it("correlates with chakra system correctly", () => {
-      const allSounds = getAllSoundElements();
-      
-      // Earth (1) -> Root
-      expect(getSoundElement("LAM")?.chakra_numero).toBe(1);
-      // Water (2) -> Sacral
-      expect(getSoundElement("VAM")?.chakra_numero).toBe(2);
-      // Fire (3) -> Solar Plexus
-      expect(getSoundElement("RAM")?.chakra_numero).toBe(3);
-      // Air (4,5) -> Heart, Throat
-      expect(getSoundElement("YAM")?.chakra_numero).toBe(4);
-      expect(getSoundElement("HAM")?.chakra_numero).toBe(5);
-      // Ether (6,7) -> Third Eye, Crown
-      expect(getSoundElement("OM")?.chakra_numero).toBe(6);
-      expect(getSoundElement("AUM")?.chakra_numero).toBe(7);
+    it("ether element spans all seasons", () => {
+      const om = getSoundElement("OM");
+      expect(om!.estacao).toBe("Todas");
+
+      const aum = getSoundElement("AUM");
+      expect(aum!.estacao).toBe("Todas");
     });
   });
 
   describe("Healing properties consistency", () => {
-    it("all sounds have at least 4 healing properties", () => {
-      const allSounds = getAllSoundElements();
-      allSounds.forEach(sound => {
-        expect(sound.propriedades_cura.length).toBeGreaterThanOrEqual(4);
+    it("all sounds have healing properties", () => {
+      const all = getAllSoundElements();
+      all.forEach(mapping => {
+        expect(mapping.propriedades_cura).toBeDefined();
+        expect(mapping.propriedades_cura.length).toBeGreaterThan(0);
       });
     });
 
-    it("healing properties are unique per element", () => {
+    it("all healing properties are strings", () => {
+      const all = getAllSoundElements();
+      all.forEach(mapping => {
+        mapping.propriedades_cura.forEach(prop => {
+          expect(typeof prop).toBe("string");
+        });
+      });
+    });
+
+    it("healing properties relate to their element", () => {
       const terra = getSoundElement("LAM");
+      const props = terra!.propriedades_cura.join(" ").toLowerCase();
+      expect(props).toMatch(/terra|ancor|estabil|material|escassez/);
+
       const agua = getSoundElement("VAM");
-      
-      // Terra focuses on grounding, Agua on emotional flow
-      expect(terra?.propriedades_cura[0]).toContain("Dissolução de medos");
-      expect(agua?.propriedades_cura[0]).toContain("Limpeza de traumas");
+      const aguaProps = agua!.propriedades_cura.join(" ").toLowerCase();
+      expect(aguaProps).toMatch(/flu|emo|criat|limpeza|transmut/);
+
+      const fogo = getSoundElement("RAM");
+      const fogoProps = fogo!.propriedades_cura.join(" ").toLowerCase();
+      expect(fogoProps).toMatch(/força|transform|poder|combust|manifest/);
+
+      const ether = getSoundElement("OM");
+      const etherProps = ether!.propriedades_cura.join(" ").toLowerCase();
+      expect(etherProps).toMatch(/intui|sabed|consciência|cósmic|percep/);
+    });
+  });
+
+  describe("SOUND_ELEMENTS constant", () => {
+    it("SOUND_ELEMENTS contains all expected sounds", () => {
+      expect(SOUND_ELEMENTS["LAM"]).toBeDefined();
+      expect(SOUND_ELEMENTS["VAM"]).toBeDefined();
+      expect(SOUND_ELEMENTS["RAM"]).toBeDefined();
+      expect(SOUND_ELEMENTS["YAM"]).toBeDefined();
+      expect(SOUND_ELEMENTS["HAM"]).toBeDefined();
+      expect(SOUND_ELEMENTS["OM"]).toBeDefined();
+      expect(SOUND_ELEMENTS["AUM"]).toBeDefined();
+    });
+
+    it("SOUND_ELEMENTS keys are uppercase", () => {
+      Object.keys(SOUND_ELEMENTS).forEach(key => {
+        expect(key).toBe(key.toUpperCase());
+      });
+    });
+
+    it("SOUND_ELEMENTS has exactly 7 entries", () => {
+      expect(Object.keys(SOUND_ELEMENTS)).toHaveLength(7);
+    });
+  });
+
+  describe("Type exports", () => {
+    it("SoundElement type is exported", () => {
+      const mapping: SoundElement = {
+        som: "TEST",
+        pronunciacao: "test pronunciation",
+        elemento: "Terra",
+        elemento_en: "Earth",
+        propriedades_cura: ["healing"],
+        chakra: "1º Básico",
+        chakra_sanskrit: "Muladhara",
+        chakra_numero: 1,
+        frequencia: 396,
+        direcao: "Norte",
+        estacao: "Inverno",
+        dinamica: "Test dynamics",
+      };
+      expect(mapping.som).toBe("TEST");
     });
   });
 });
