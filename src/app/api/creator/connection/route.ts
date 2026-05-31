@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 const ConnectionTypeSchema = z.enum(['light', 'silence', 'breath', 'vision', 'writing', 'channeling']);
 const CreatorConnectionSchema = z.object({
@@ -16,13 +22,84 @@ const CreatorConnectionSchema = z.object({
   orixas: z.array(z.string()).optional(),
   instructions: z.array(z.string()),
   warnings: z.array(z.string()).optional(),
+  spiritualCorrelations: z.object({
+    sefirot: z.array(SefirotSchema),
+    chakra: ChakraSchema,
+    element: ElementSchema,
+    orixa: z.string(),
+    affirmation: z.string(),
+    frequency: z.string(),
+  }).optional(),
 });
 
 const CreatorConnectionQuerySchema = z.object({
   type: ConnectionTypeSchema.optional(),
   difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'master']).optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
+
+// ─── Spiritual Correlations for Connection Types ──────────────────────────────────────────
+const CONNECTION_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  light: {
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'A luz do Criador me ilumina',
+    frequency: '963 Hz',
+  },
+  silence: {
+    sefirot: ['Binah', 'Daat'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Nanã',
+    affirmation: 'No silêncio, encontro a voz do Criador',
+    frequency: '417 Hz',
+  },
+  breath: {
+    sefirot: ['Tipheret', 'Gevurah'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'O sopro criativo flui através de mim',
+    frequency: '528 Hz',
+  },
+  vision: {
+    sefirot: ['Chokhmah', 'Binah'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Orunmilá',
+    affirmation: 'A visão profética me guia',
+    frequency: '741 Hz',
+  },
+  writing: {
+    sefirot: ['Hod', 'Netzach'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Oxalá',
+    affirmation: 'As palavras sagradas fluem através de mim',
+    frequency: '741 Hz',
+  },
+  channeling: {
+    sefirot: ['Kether', 'Chokhmah', 'Binah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Sou veículo puro para o Criador',
+    frequency: '963 Hz',
+  },
+};
 
 const CREATOR_CONNECTIONS: z.infer<typeof CreatorConnectionSchema>[] = [
   {
@@ -46,6 +123,7 @@ const CREATOR_CONNECTIONS: z.infer<typeof CreatorConnectionSchema>[] = [
       'Agradheça a luz e feche a prática gradualmente',
     ],
     warnings: ['Não force a visualização', 'Pare se sentir desconforto energético'],
+    spiritualCorrelations: CONNECTION_SPIRITUAL_CORRELATIONS['light'],
   },
   {
     id: 'divine-silence',
@@ -67,6 +145,7 @@ const CREATOR_CONNECTIONS: z.infer<typeof CreatorConnectionSchema>[] = [
       'Retorne gradualmente ao mundo com paz interior',
     ],
     warnings: ['Pode evocar memórias profundas', 'Não use em depressão aguda'],
+    spiritualCorrelations: CONNECTION_SPIRITUAL_CORRELATIONS['silence'],
   },
   {
     id: 'creative-breath',
@@ -91,6 +170,7 @@ const CREATOR_CONNECTIONS: z.infer<typeof CreatorConnectionSchema>[] = [
       'Retorne à respiração normal gradualmente',
     ],
     warnings: ['Não hiperventile', 'Pare se sentir tontura'],
+    spiritualCorrelations: CONNECTION_SPIRITUAL_CORRELATIONS['breath'],
   },
   {
     id: 'prophetic-vision',
@@ -115,6 +195,7 @@ const CREATOR_CONNECTIONS: z.infer<typeof CreatorConnectionSchema>[] = [
       'Agradeça a orientação antes de abrir os olhos',
     ],
     warnings: ['Requer preparação prévia', 'Não para iniciantes sem guia'],
+    spiritualCorrelations: CONNECTION_SPIRITUAL_CORRELATIONS['vision'],
   },
   {
     id: 'sacred-writing',
@@ -138,6 +219,7 @@ const CREATOR_CONNECTIONS: z.infer<typeof CreatorConnectionSchema>[] = [
       'Interprete as mensagens com discernimento espiritual',
     ],
     warnings: ['Descarte escritos que tragam medo', 'Verifique energeticamente depois'],
+    spiritualCorrelations: CONNECTION_SPIRITUAL_CORRELATIONS['writing'],
   },
   {
     id: 'direct-channeling',
@@ -161,42 +243,110 @@ const CREATOR_CONNECTIONS: z.infer<typeof CreatorConnectionSchema>[] = [
       'Após o channeling, restaure a consciência individual lentamente',
     ],
     warnings: ['SOMENTE para praticantes avançados', 'Requer proteção espiritual', 'Nunca channelar sozinho pela primeira vez'],
+    spiritualCorrelations: CONNECTION_SPIRITUAL_CORRELATIONS['channeling'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = CreatorConnectionQuerySchema.safeParse({
-    type: searchParams.get('type'),
-    difficulty: searchParams.get('difficulty'),
-    limit: searchParams.get('limit'),
-  });
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = CreatorConnectionQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      difficulty: searchParams.get('difficulty'),
+      limit: searchParams.get('limit'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
 
-  if (!parseResult.success) {
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { type, difficulty, limit, sefirot, chakra, element, orixa } = parseResult.data;
+    let connections = [...CREATOR_CONNECTIONS];
+
+    if (type) {
+      connections = connections.filter(c => c.type === type);
+    }
+
+    if (difficulty) {
+      connections = connections.filter(c => c.difficulty === difficulty);
+    }
+
+    if (limit) {
+      connections = connections.slice(0, limit);
+    }
+
+    if (sefirot) {
+      connections = connections.filter(c => c.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      connections = connections.filter(c => c.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      connections = connections.filter(c => c.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      connections = connections.filter(c => c.spiritualCorrelations?.orixa === orixa);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byType: connections.reduce((acc, c) => {
+        acc[c.type] = (acc[c.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byDifficulty: connections.reduce((acc, c) => {
+        acc[c.difficulty] = (acc[c.difficulty] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: connections.reduce((acc, c) => {
+        c.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: connections.reduce((acc, c) => {
+        const ch = c.spiritualCorrelations?.chakra;
+        if (ch) acc[ch] = (acc[ch] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: connections.reduce((acc, c) => {
+        const e = c.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: connections.reduce((acc, c) => {
+        const o = c.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      connections,
+      count: connections.length,
+      total: CREATOR_CONNECTIONS.length,
+      spiritualCorrelations: CONNECTION_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { type, difficulty, limit, sefirot, chakra, element, orixa },
+      },
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
-
-  const { type, difficulty, limit } = parseResult.data;
-  let connections = [...CREATOR_CONNECTIONS];
-
-  if (type) {
-    connections = connections.filter(c => c.type === type);
-  }
-  if (difficulty) {
-    connections = connections.filter(c => c.difficulty === difficulty);
-  }
-  if (limit) {
-    connections = connections.slice(0, limit);
-  }
-
-  return NextResponse.json({
-    success: true,
-    connections,
-    count: connections.length,
-    total: CREATOR_CONNECTIONS.length,
-  });
 }
