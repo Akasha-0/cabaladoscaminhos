@@ -1,8 +1,8 @@
 # PROGRESS_QA.md — Ciclo de Estabilidade e Alinhamento de Qualidade
 
 **Guardião:** GUARDIAO_QUALIDADE_EVALS_SISTEMICOS  
-**Ciclo:** 2026-05-31 (Ciclo 8)  
-**Data Início:** 2026-05-31T21:43:00Z
+**Ciclo:** 2026-05-31 (Ciclo 9)  
+**Data Início:** 2026-05-31T21:44:00Z
 
 ---
 
@@ -12,7 +12,7 @@
 |---|---|
 | Quality Score | **91.8%** (A-) |
 | Testes | **270 passing** (engines) |
-| .skip/.disabled | **0** permanente |
+| .skip/.disabled | **0 permanente** |
 | Critical Issues | **0** |
 | High Priority Issues | **0** |
 
@@ -37,9 +37,8 @@
 | 3 | 2026-05-31 | — | 200 passing | ArvoreVida + hyper-correlation fix |
 | 4 | 2026-05-31 | 91.8% | 213 passing | Quality eval script + lint cleanup |
 | 5 | 2026-05-31 | 91.8% | 292 passing | Implemented Orixá data files |
-| 6 | 2026-05-31 | 91.8% | 270 passing | Removed residual .skip |
-| 7 | 2026-05-31 | 91.8% | 270 passing | Verified stable state |
-| 8 | 2026-05-31 | 91.8% | 270 passing | .skip permanente removido |
+| 6-8 | 2026-05-31 | 91.8% | 270 passing | Removed .skip residual |
+| 9 | 2026-05-31 | 91.8% | 270 passing | .skip permanente removido |
 
 ---
 
@@ -59,19 +58,6 @@
 
 ---
 
-## PERFIL ÁUREO — VALIDAÇÃO COMPLETA
-
-**Mock Persona**: Escorpião (31/10/1995), Caminho de Vida 11 (Mestre), Oxum
-
-| Camada | Validação |
-|---|---|
-| Pattern Recognition | Transformer + Magician archetypes |
-| Hyper-Correlation | CAMINHO 11 + MASTRE + Oxum |
-| Correlation Diagnosis | Camomila, Melão-de-São-Caetano, 396Hz, 528Hz |
-| Spiritual Reading | 6/6 passing |
-
----
-
 ## SISTEMA ESTÁVEL
 
 | Verificação | Status |
@@ -84,4 +70,4 @@
 
 ---
 
-*Ciclo 8 encerrado. Sistema estável. .skip permanente removido.*
+*Ciclo 9 encerrado. Sistema estável.*
