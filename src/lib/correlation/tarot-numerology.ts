@@ -250,8 +250,20 @@ export function getNumerologyTarot(numero: number): TarotNumerologyMapping[] {
 /**
  * Get all available Tarot-Numerology mappings
  * @returns Array of all correlation mappings sorted by arcano number
+/**
+ * Get all available Tarot-Numerology mappings
+ * @returns Array of all correlation mappings sorted by arcano number
  */
 export function getAllTarotNumerology(): TarotNumerologyMapping[] {
+  return Object.values(TAROT_NUMEROLOGY_MAPPINGS)
+    .sort((a, b) => a.numero_carta - b.numero_carta);
+}
+
+/**
+ * Get all available Tarot-Numerology mappings (alias)
+ * @returns Array of all correlation mappings sorted by arcano number
+ */
+export function getAllTarotNumerologies(): TarotNumerologyMapping[] {
   return Object.values(TAROT_NUMEROLOGY_MAPPINGS)
     .sort((a, b) => a.numero_carta - b.numero_carta);
 }
@@ -338,3 +350,19 @@ export function getAllElements(): string[] {
     .map(m => m.elemento);
   return [...new Set(elements)].sort();
 }
+/**
+ * Default export with all public functions
+ */
+export default {
+  getTarotNumerology,
+  getNumerologyTarot,
+  getAllTarotNumerologies,
+  getAllArcanos,
+  hasTarotNumerology,
+  getArcanoByNumber,
+  getNumerologyByCardNumber,
+  getTarotNumerologyByElement,
+  getTarotByNumerologyNumber,
+  getAllNumerologyNumbers,
+  getAllElements,
+};
