@@ -446,6 +446,7 @@ export function getAllArcanos(): string[] {
     .sort((a, b) => a.numero_carta - b.numero_carta)
     .map((m) => m.arcano);
 }
+to:
 
 /**
  * Get all frequencies used in the mapping.
