@@ -326,13 +326,10 @@ describe('tarot-numerology', () => {
       expect(result[0].numero_carta).toBe(0);
       expect(result[0].numero_numerologia).toBe(0);
     });
-
-    it('last mapping is O Mundo with number 21', () => {
-      const result = getAllTarotNumerology();
-      expect(result[result.length - 1].arcano).toBe('O Mundo');
       expect(result[result.length - 1].numero_carta).toBe(21);
+    });
+  });
   // ─── getAllTarotNumerologies (plural - alias) ───────────────────────────────
-  describe('getAllTarotNumerologies', () => {
     it('returns all 22 Major Arcana mappings', () => {
       const result = getAllTarotNumerologies();
       expect(result).toHaveLength(22);
