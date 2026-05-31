@@ -1,17 +1,20 @@
-// ============================================================
-// NUMEROLOGY READINGS API - CABALA DOS CAMINHOS
-// ============================================================
-// GET/POST endpoints for numerology readings
-// Generates complete numerology reports from name and birth date
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { calculateNumerology, numerologyMethods, type NumerologyReport } from '@/lib/numerologia/generator';
-
-// ============================================================
-// TYPE DEFINITIONS
-// ============================================================
-
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const NumerologyMethodSchema = z.enum(['pitagorica', 'caldeia', 'cabalistica', 'tantrica', 'destino']);
+const NumerologyReadingRequestSchema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório').max(100),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD'),
+  methods: z.array(NumerologyMethodSchema).optional(),
+});
+const NumerologyReadingResponseSchema = z.object({
+  readingId: z.string(),
+  name: z.string(),
+  date: z.string(),
+  report: z.any(),
+  createdAt: z.string(),
+});
 interface NumerologyReadingRequest {
   name: string;
   date: string;
@@ -77,18 +80,15 @@ function validateInput(data: unknown): { valid: boolean; error?: string } {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
-    // Validate input
-    const validation = validateInput(body);
-    if (!validation.valid) {
-      return NextResponse.json(
-        { error: 'Validation failed', details: validation.error },
-        { status: 400 }
-      );
+    // Validate input with Zod
+    const parseResult = NumerologyReadingRequestSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Validation failed',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
-    
-    const { name, date } = body as NumerologyReadingRequest;
-    
+    const { name, date } = parseResult.data;
     // Generate the numerology report
     const report = calculateNumerology(name.trim(), date);
     
