@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const AchievementCategorySchema = z.enum(['prática', 'conhecimento', 'streak']);
-const AchievementRaritySchema = z.enum(['common', 'uncommon', 'rare', 'legendary']);
+const AchievementCategorySchema = z.enum(['prática', 'conhecimento', 'streak', 'ritual', 'meditation']);
+const AchievementRaritySchema = z.enum(['common', 'uncommon', 'rare', 'legendary', 'mythic']);
+
 const AchievementSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -13,32 +15,32 @@ const AchievementSchema = z.object({
   target: z.number().int().positive(),
   progress: z.number().int().min(0).optional(),
   unlockedAt: z.string().nullable(),
+  // Spiritual correlations
+  sefirot: z.array(z.string()).optional(),
+  orixa: z.string().optional(),
+  chakra: z.array(z.number()).optional(),
+  tradicao: z.string().optional(),
+  numeroSagrado: z.number().optional(),
 });
+
 const AchievementsResponseSchema = z.object({
   achievements: z.array(AchievementSchema),
   unlockedCount: z.number().int().min(0),
   totalCount: z.number().int().min(0),
   completionPercentage: z.number().min(0).max(100),
 });
+
 const AchievementsQuerySchema = z.object({
   category: AchievementCategorySchema.optional(),
   rarity: AchievementRaritySchema.optional(),
   userId: z.string().optional(),
+  orixa: z.string().optional(),
+  sefirot: z.string().optional(),
 });
+
 export type AchievementCategory = z.infer<typeof AchievementCategorySchema>;
 export type AchievementRarity = z.infer<typeof AchievementRaritySchema>;
 export type Achievement = z.infer<typeof AchievementSchema>;
-export interface AchievementsResponse {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  category: AchievementCategory;
-  rarity: AchievementRarity;
-  target: number;
-  progress?: number;
-  unlockedAt: string | null;
-}
 
 export interface AchievementsResponse {
   achievements: Achievement[];
@@ -47,10 +49,7 @@ export interface AchievementsResponse {
   completionPercentage: number;
 }
 
-// ============================================================
-// ACHIEVEMENT DEFINITIONS
-// ============================================================
-
+// ─── Achievement Definitions with Spiritual Correlations ──────────────────────────────────────────────
 const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
   // Prática achievements
   {
@@ -61,6 +60,9 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     category: 'prática',
     rarity: 'common',
     target: 1,
+    sefirot: ['Tipheret'],
+    tradicao: 'Consulta Espiritual',
+    numeroSagrado: 1,
   },
   {
     id: 'ten-consultations',
@@ -70,6 +72,9 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     category: 'prática',
     rarity: 'common',
     target: 10,
+    sefirot: ['Chesed'],
+    tradicao: 'Consulta Espiritual',
+    numeroSagrado: 10,
   },
   {
     id: 'fifty-consultations',
@@ -79,6 +84,9 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     category: 'prática',
     rarity: 'uncommon',
     target: 50,
+    sefirot: ['Netzach'],
+    tradicao: 'Consulta Espiritual',
+    numeroSagrado: 50,
   },
   {
     id: 'hundred-consultations',
@@ -88,6 +96,9 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     category: 'prática',
     rarity: 'rare',
     target: 100,
+    sefirot: ['Kether'],
+    tradicao: 'Consulta Espiritual',
+    numeroSagrado: 100,
   },
 
   // Conhecimento achievements
@@ -96,54 +107,78 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     name: 'Calma Interior',
     description: 'Complete sua primeira meditação',
     icon: '🧘',
-    category: 'conhecimento',
+    category: 'meditation',
     rarity: 'common',
     target: 1,
+    sefirot: ['Kether', 'Tipheret'],
+    chakra: [7, 6],
+    tradicao: 'Meditação',
+    numeroSagrado: 1,
   },
   {
     id: 'ten-meditations',
     name: 'Praticante',
-    description: 'Complete 10 медитаций',
+    description: 'Complete 10 meditações',
     icon: '🕉️',
-    category: 'conhecimento',
+    category: 'meditation',
     rarity: 'common',
     target: 10,
+    sefirot: ['Chokhmah'],
+    chakra: [6],
+    tradicao: 'Meditação',
+    numeroSagrado: 10,
   },
   {
     id: 'fifty-meditations',
     name: 'Meditador',
     description: 'Complete 50 meditações',
     icon: '🌟',
-    category: 'conhecimento',
+    category: 'meditation',
     rarity: 'uncommon',
     target: 50,
+    sefirot: ['Binah'],
+    chakra: [7],
+    tradicao: 'Meditação',
+    numeroSagrado: 50,
   },
   {
     id: 'hundred-meditations',
     name: 'Mestre da Mente',
     description: 'Complete 100 meditações',
     icon: '🧠',
-    category: 'conhecimento',
+    category: 'meditation',
     rarity: 'rare',
     target: 100,
+    sefirot: ['Kether', 'Chokhmah', 'Binah'],
+    chakra: [6, 7],
+    tradicao: 'Meditação Avançada',
+    numeroSagrado: 100,
   },
   {
     id: 'hour-of-meditation',
     name: 'Hora da Paz',
     description: 'Medite por um total de 1 hora',
     icon: '⏰',
-    category: 'conhecimento',
+    category: 'meditation',
     rarity: 'uncommon',
     target: 60,
+    sefirot: ['Tipheret'],
+    chakra: [4],
+    tradicao: 'Meditação',
+    numeroSagrado: 11,
   },
   {
     id: 'ten-hours-meditation',
     name: 'Dedicação',
     description: 'Medite por um total de 10 horas',
     icon: '💫',
-    category: 'conhecimento',
+    category: 'meditation',
     rarity: 'rare',
     target: 600,
+    sefirot: ['Netzach', 'Hod'],
+    chakra: [5, 6],
+    tradicao: 'Meditação Profunda',
+    numeroSagrado: 22,
   },
 
   // Streak achievements
@@ -155,6 +190,10 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     category: 'streak',
     rarity: 'common',
     target: 3,
+    sefirot: ['Gevurah'],
+    chakra: [3],
+    tradicao: 'Disciplina',
+    numeroSagrado: 3,
   },
   {
     id: 'streak-7',
@@ -164,6 +203,10 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     category: 'streak',
     rarity: 'uncommon',
     target: 7,
+    sefirot: ['Gevurah', 'Chesed'],
+    chakra: [3, 4],
+    tradicao: 'Disciplina',
+    numeroSagrado: 7,
   },
   {
     id: 'streak-14',
@@ -173,6 +216,10 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     category: 'streak',
     rarity: 'rare',
     target: 14,
+    sefirot: ['Tipheret'],
+    chakra: [4, 6],
+    tradicao: 'Devoção',
+    numeroSagrado: 14,
   },
   {
     id: 'streak-30',
@@ -182,6 +229,10 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     category: 'streak',
     rarity: 'legendary',
     target: 30,
+    sefirot: ['Chokhmah', 'Binah'],
+    chakra: [6, 7],
+    tradicao: 'Devoção',
+    numeroSagrado: 30,
   },
   {
     id: 'streak-100',
@@ -189,20 +240,93 @@ const ACHIEVEMENTS: Omit<Achievement, 'unlockedAt' | 'progress'>[] = [
     description: 'Mantenha uma sequência de 100 dias',
     icon: '👑',
     category: 'streak',
-    rarity: 'legendary',
+    rarity: 'mythic',
     target: 100,
+    sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret'],
+    chakra: [1, 2, 3, 4, 5, 6, 7],
+    tradicao: 'Mestria Espiritual',
+    numeroSagrado: 100,
+  },
+
+  // Ritual achievements
+  {
+    id: 'first-ritual',
+    name: 'Iniciante Ritual',
+    description: 'Complete seu primeiro ritual',
+    icon: '🕯️',
+    category: 'ritual',
+    rarity: 'common',
+    target: 1,
+    sefirot: ['Malkuth'],
+    orixa: 'Oxalá',
+    chakra: [1],
+    tradicao: 'Ritual',
+    numeroSagrado: 1,
+  },
+  {
+    id: 'ten-rituals',
+    name: 'Praticante de Ritual',
+    description: 'Complete 10 rituais',
+    icon: '⚜️',
+    category: 'ritual',
+    rarity: 'uncommon',
+    target: 10,
+    sefirot: ['Yesod'],
+    orixa: 'Ogum',
+    chakra: [1, 2],
+    tradicao: 'Ritual',
+    numeroSagrado: 10,
+  },
+  {
+    id: 'ritual-oxum',
+    name: 'Devoto de Oxum',
+    description: 'Complete rituais de Oxum',
+    icon: '💧',
+    category: 'ritual',
+    rarity: 'rare',
+    target: 5,
+    sefirot: ['Netzach', 'Tipheret'],
+    orixa: 'Oxum',
+    chakra: [2, 4],
+    tradicao: 'Candomblé',
+    numeroSagrado: 11,
+  },
+  {
+    id: 'ritual-ogum',
+    name: 'Guerreiro de Ogum',
+    description: 'Complete rituais de Ogum',
+    icon: '⚔️',
+    category: 'ritual',
+    rarity: 'rare',
+    target: 5,
+    sefirot: ['Gevurah'],
+    orixa: 'Ogum',
+    chakra: [1, 3],
+    tradicao: 'Candomblé',
+    numeroSagrado: 7,
+  },
+  {
+    id: 'ritual-oxala',
+    name: 'Filho de Oxalá',
+    description: 'Complete rituais de Oxalá',
+    icon: '☀️',
+    category: 'ritual',
+    rarity: 'legendary',
+    target: 10,
+    sefirot: ['Kether', 'Chokhmah'],
+    orixa: 'Oxalá',
+    chakra: [6, 7],
+    tradicao: 'Candomblé',
+    numeroSagrado: 33,
   },
 ];
 
-// ============================================================
-// STORAGE HELPERS (localStorage simulation)
-// ============================================================
-
+// ─── Storage Helpers ──────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'gamification_achievements';
 
 interface AchievementStore {
-  unlocked: Record<string, string>; // achievementId -> unlockedAt ISO string
-  progress: Record<string, number>; // achievementId -> current progress
+  unlocked: Record<string, string>;
+  progress: Record<string, number>;
 }
 
 function getStore(): AchievementStore {
@@ -229,10 +353,7 @@ function saveStore(store: AchievementStore): void {
   }
 }
 
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
-
+// ─── Helper Functions ──────────────────────────────────────────────────────────────
 function buildAchievementWithProgress(
   def: Omit<Achievement, 'unlockedAt' | 'progress'>,
   store: AchievementStore
@@ -249,100 +370,152 @@ function calculateCompletionPercentage(unlocked: number, total: number): number 
   return Math.round((unlocked / total) * 100);
 }
 
-// ============================================================
-// GET ALL ACHIEVEMENTS
-// ============================================================
-
+// ─── API Route ─────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const category = searchParams.get('category') as AchievementCategory | null;
-  const achievementId = searchParams.get('id');
-  const stats = searchParams.get('stats');
-  const recent = searchParams.get('recent');
+  try {
+    const { searchParams } = new URL(request.url);
 
-  const store = getStore();
+    const parseResult = AchievementsQuerySchema.safeParse({
+      category: searchParams.get('category'),
+      rarity: searchParams.get('rarity'),
+      userId: searchParams.get('userId'),
+      orixa: searchParams.get('orixa'),
+      sefirot: searchParams.get('sefirot'),
+    });
 
-  // Get single achievement by ID
-  if (achievementId) {
-    const def = ACHIEVEMENTS.find((a) => a.id === achievementId);
-    if (!def) {
-      return NextResponse.json(
-        { error: 'Achievement not found', achievementId },
-        { status: 404 }
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { category, rarity, orixa, sefirot } = parseResult.data;
+    const achievementId = searchParams.get('id');
+    const stats = searchParams.get('stats');
+    const recent = searchParams.get('recent');
+
+    const store = getStore();
+
+    // Get single achievement by ID
+    if (achievementId) {
+      const def = ACHIEVEMENTS.find((a) => a.id === achievementId);
+      if (!def) {
+        return NextResponse.json({
+          success: false,
+          error: 'Achievement not found',
+          achievementId,
+        }, { status: 404 });
+      }
+      const achievement = buildAchievementWithProgress(def, store);
+      return NextResponse.json({ success: true, achievement });
+    }
+
+    // Get recent achievements
+    if (recent) {
+      const limit = Math.min(parseInt(recent, 10) || 5, 20);
+      const allAchievements = ACHIEVEMENTS.map((def) =>
+        buildAchievementWithProgress(def, store)
+      );
+      const recentUnlocked = allAchievements
+        .filter((a) => a.unlockedAt !== null)
+        .sort(
+          (a, b) =>
+            new Date(b.unlockedAt!).getTime() - new Date(a.unlockedAt!).getTime()
+        )
+        .slice(0, limit);
+      return NextResponse.json({ success: true, achievements: recentUnlocked });
+    }
+
+    // Filter achievements
+    let filteredDefinitions = ACHIEVEMENTS;
+    
+    if (category && ['prática', 'conhecimento', 'streak', 'ritual', 'meditation'].includes(category)) {
+      filteredDefinitions = filteredDefinitions.filter((a) => a.category === category);
+    }
+
+    if (rarity) {
+      filteredDefinitions = filteredDefinitions.filter((a) => a.rarity === rarity);
+    }
+
+    if (orixa) {
+      filteredDefinitions = filteredDefinitions.filter((a) =>
+        a.orixa?.toLowerCase().includes(orixa.toLowerCase())
       );
     }
-    const achievement = buildAchievementWithProgress(def, store);
-    return NextResponse.json({ achievement });
-  }
 
-  // Get recent achievements
-  if (recent) {
-    const limit = Math.min(parseInt(recent, 10) || 5, 20);
-    const allAchievements = ACHIEVEMENTS.map((def) =>
+    if (sefirot) {
+      filteredDefinitions = filteredDefinitions.filter((a) =>
+        a.sefirot?.some(sf => sf.toLowerCase().includes(sefirot.toLowerCase()))
+      );
+    }
+
+    const achievements = filteredDefinitions.map((def) =>
       buildAchievementWithProgress(def, store)
     );
-    const recentUnlocked = allAchievements
-      .filter((a) => a.unlockedAt !== null)
-      .sort(
-        (a, b) =>
-          new Date(b.unlockedAt!).getTime() - new Date(a.unlockedAt!).getTime()
-      )
-      .slice(0, limit);
-    return NextResponse.json({ achievements: recentUnlocked });
-  }
 
-  // Filter by category or return all
-  let filteredDefinitions = ACHIEVEMENTS;
-  if (category && ['prática', 'conhecimento', 'streak'].includes(category)) {
-    filteredDefinitions = ACHIEVEMENTS.filter((a) => a.category === category);
-  }
+    const unlockedCount = Object.keys(store.unlocked).length;
+    const totalCount = ACHIEVEMENTS.length;
+    const completionPercentage = calculateCompletionPercentage(
+      unlockedCount,
+      totalCount
+    );
 
-  const achievements = filteredDefinitions.map((def) =>
-    buildAchievementWithProgress(def, store)
-  );
+    // Statistics
+    const statsByCategory = ACHIEVEMENTS.reduce((acc, a) => {
+      acc[a.category] = (acc[a.category] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
 
-  const unlockedCount = Object.keys(store.unlocked).length;
-  const totalCount = ACHIEVEMENTS.length;
-  const completionPercentage = calculateCompletionPercentage(
-    unlockedCount,
-    totalCount
-  );
+    const statsByRarity = ACHIEVEMENTS.reduce((acc, a) => {
+      acc[a.rarity] = (acc[a.rarity] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
 
-  // Include stats if requested
-  if (stats === 'true') {
+    const statsByTradicao = ACHIEVEMENTS.reduce((acc, a) => {
+      if (a.tradicao) acc[a.tradicao] = (acc[a.tradicao] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const statsByOrixa = ACHIEVEMENTS.reduce((acc, a) => {
+      if (a.orixa) acc[a.orixa] = (acc[a.orixa] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Include stats if requested
+    if (stats === 'true') {
+      return NextResponse.json({
+        success: true,
+        achievements,
+        stats: {
+          unlockedCount,
+          totalCount,
+          completionPercentage,
+          byCategory: statsByCategory,
+          byRarity: statsByRarity,
+          byTradicao: statsByTradicao,
+          byOrixa: statsByOrixa,
+        },
+      });
+    }
+
     return NextResponse.json({
+      success: true,
       achievements,
-      stats: {
-        unlockedCount,
-        totalCount,
-        completionPercentage,
-        byCategory: {
-          prática: achievements.filter((a) => a.category === 'prática'),
-          conhecimento: achievements.filter((a) => a.category === 'conhecimento'),
-          streak: achievements.filter((a) => a.category === 'streak'),
-        },
-        byRarity: {
-          common: achievements.filter((a) => a.rarity === 'common'),
-          uncommon: achievements.filter((a) => a.rarity === 'uncommon'),
-          rare: achievements.filter((a) => a.rarity === 'rare'),
-          legendary: achievements.filter((a) => a.rarity === 'legendary'),
-        },
+      unlockedCount,
+      totalCount,
+      completionPercentage,
+      meta: {
+        filters: { category, rarity, orixa, sefirot },
+        spiritualFilters: ['orixa', 'sefirot'],
       },
-    } as AchievementsResponse & {
-      stats: {
-        unlockedCount: number;
-        totalCount: number;
-        completionPercentage: number;
-        byCategory: Record<AchievementCategory, Achievement[]>;
-        byRarity: Record<AchievementRarity, Achievement[]>;
-      };
     });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
   }
-
-  return NextResponse.json({
-    achievements,
-    unlockedCount,
-    totalCount,
-    completionPercentage,
-  } as AchievementsResponse);
 }
