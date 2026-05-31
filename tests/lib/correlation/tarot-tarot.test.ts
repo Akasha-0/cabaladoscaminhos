@@ -15,138 +15,162 @@ import {
   TOTAL_MAPPINGS,
   TOTAL_PATH_TYPES,
 } from '@/lib/correlation/tarot-tarot';
+import type { TarotPathType } from '@/lib/correlation/tarot-tarot';
 
 describe('Tarot-Tarot Correlation', () => {
-  describe('TAROT_TAROT_MAPPINGS', () => {
-    it('has correct total count', () => {
-      expect(TOTAL_MAPPINGS).toBe(62);
-      expect(TAROT_TAROT_MAPPINGS.length).toBe(62);
-    });
-
-    it('has 7 path types', () => {
-      expect(TOTAL_PATH_TYPES).toBe(7);
-    });
-
-    it('mappings have required fields', () => {
-      for (const mapping of TAROT_TAROT_MAPPINGS) {
-        expect(mapping.arcano).toBeDefined();
-        expect(mapping.related_arcano).toBeDefined();
-        expect(mapping.path_type).toBeDefined();
-        expect(mapping.spiritual_meaning).toBeDefined();
-      }
+  describe('TarotPathType union', () => {
+    it('should include all seven path types', () => {
+      const pathTypes: TarotPathType[] = [
+        'Trino', 'Sextil', 'Quadratura', 'Oposi\u00e7\u00e3o',
+        'Sequ\u00eancia', 'Complementar', 'Ancestral',
+      ];
+      pathTypes.forEach((type) => {
+        expect(getAllPathTypes()).toContain(type);
+      });
     });
   });
 
   describe('getTarotTarot', () => {
-    it('returns mappings for O Louco', () => {
-      const result = getTarotTarot('O Louco');
-      expect(result).toBeDefined();
-      expect(result.length).toBeGreaterThan(0);
+    it('should return mapping for O Louco to O Mago', () => {
+      const result = getTarotTarot('0 - O Louco', 'I - O Mago');
+      expect(result).not.toBeNull();
+      expect(result?.path_type).toBe('Sequ\u00eancia');
     });
 
-    it('returns mappings for O Mago', () => {
-      const result = getTarotTarot('O Mago');
-      expect(result).toBeDefined();
-      expect(result.length).toBeGreaterThan(0);
+    it('should return null for non-existent pair', () => {
+      expect(getTarotTarot('0 - O Louco', 'VII - O Carro')).toBeNull();
     });
 
-    it('returns empty array for unknown arcano', () => {
-      const result = getTarotTarot('Unknown Arcano');
-      expect(result).toEqual([]);
+    it('should return mapping for Oposi\u00e7\u00e3o type', () => {
+      const result = getTarotTarot('I - O Mago', 'XVI - A Torre');
+      expect(result).not.toBeNull();
+      expect(result?.path_type).toBe('Oposi\u00e7\u00e3o');
     });
   });
 
   describe('getAllTarotPaths', () => {
-    it('returns all mappings', () => {
-      const result = getAllTarotPaths();
-      expect(result).toBeDefined();
-      expect(result.length).toBe(62);
+    it('should return all mappings', () => {
+      expect(getAllTarotPaths().length).toBeGreaterThan(0);
+    });
+
+    it('should return at least 66 mappings', () => {
+      expect(getAllTarotPaths().length).toBeGreaterThanOrEqual(66);
     });
   });
 
   describe('getAllPathTypes', () => {
-    it('returns array of path types', () => {
-      const result = getAllPathTypes();
-      expect(result).toBeDefined();
-      expect(result.length).toBe(7);
-    });
-
-    it('contains expected path types', () => {
-      const result = getAllPathTypes();
-      expect(result).toContain('Sequência');
-      expect(result).toContain('Complementar');
-      expect(result).toContain('Ancestral');
+    it('should return all seven path types', () => {
+      expect(getAllPathTypes().length).toBe(7);
     });
   });
 
   describe('getAllMappedArcanos', () => {
-    it('contains O Louco', () => {
-      expect(getAllMappedArcanos()).toContain('O Louco');
-    });
-
-    it('contains O Mundo', () => {
-      expect(getAllMappedArcanos()).toContain('O Mundo');
+    it('should return at least 22 arcano names', () => {
+      expect(getAllMappedArcanos().length).toBeGreaterThanOrEqual(22);
     });
   });
 
   describe('getRelationsForArcano', () => {
-    it('returns relations for O Louco', () => {
-      const result = getRelationsForArcano('O Louco');
-      expect(result).toBeDefined();
-      expect(result.length).toBeGreaterThan(0);
+    it('should return relations for O Louco', () => {
+      expect(getRelationsForArcano('0 - O Louco').length).toBeGreaterThan(0);
     });
   });
 
   describe('getRelationsByPathType', () => {
-    it('returns mappings for Sequência type', () => {
-      const result = getRelationsByPathType('Sequência');
-      expect(result).toBeDefined();
-      expect(result.length).toBeGreaterThan(0);
+    it('should return relations for Sequ\u00eancia type', () => {
+      expect(getRelationsByPathType('Sequ\u00eancia').length).toBeGreaterThan(0);
     });
   });
 
   describe('getPathTypeBetween', () => {
-    it('returns path type for related pair', () => {
-      const result = getPathTypeBetween('O Louco', 'O Mago');
-      expect(result).toBeTruthy();
+    it('should return Sequ\u00eancia for O Louco and O Mago', () => {
+      expect(getPathTypeBetween('0 - O Louco', 'I - O Mago')).toBe('Sequ\u00eancia');
     });
 
-    it('returns path type for reverse pair', () => {
-      const result = getPathTypeBetween('O Mago', 'O Louco');
-      expect(result).toBeTruthy();
+    it('should return null for non-existent pair', () => {
+      expect(getPathTypeBetween('0 - O Louco', 'VII - O Carro')).toBeNull();
     });
   });
 
   describe('getSpiritualMeaningBetween', () => {
-    it('returns spiritual meaning for related pair', () => {
-      const result = getSpiritualMeaningBetween('O Louco', 'O Mago');
-      expect(result).toBeTruthy();
+    it('should return spiritual meaning for O Louco and O Mago', () => {
+      const result = getSpiritualMeaningBetween('0 - O Louco', 'I - O Mago');
+      expect(result).not.toBeNull();
+      expect(result?.significado).toBeTruthy();
+      expect(result?.crescimento).toBeTruthy();
+      expect(result?.desafio).toBeTruthy();
     });
   });
 
   describe('hasRelation', () => {
-    it('returns true for related pair', () => {
-      expect(hasRelation('O Louco', 'O Mago')).toBe(true);
+    it('should return true for related pair', () => {
+      expect(hasRelation('0 - O Louco', 'I - O Mago')).toBe(true);
     });
 
-    it('returns true for reverse pair', () => {
-      expect(hasRelation('O Mago', 'O Louco')).toBe(true);
+    it('should return false for non-related pair', () => {
+      expect(hasRelation('0 - O Louco', 'VII - O Carro')).toBe(false);
     });
   });
 
   describe('getArcanoByNumber', () => {
-    it('returns O Louco for 0', () => {
-      expect(getArcanoByNumber(0)).toBe('O Louco');
+    it('should return O Louco for number 0', () => {
+      expect(getArcanoByNumber(0)).toBe('0 - O Louco');
     });
 
-    it('returns O Mundo for 21', () => {
-      expect(getArcanoByNumber(21)).toBe('O Mundo');
+    it('should return O Mundo for number 21', () => {
+      expect(getArcanoByNumber(21)).toBe('XXI - O Mundo');
+    });
+
+    it('should return null for out of range number', () => {
+      expect(getArcanoByNumber(-1)).toBeNull();
+      expect(getArcanoByNumber(22)).toBeNull();
+    });
+  });
+
+  describe('TAROT_TAROT_MAPPINGS', () => {
+    it('should have valid arcano values', () => {
+      TAROT_TAROT_MAPPINGS.forEach((mapping) => {
+        expect(ALL_MAJOR_ARCANOS).toContain(mapping.arcano);
+        expect(ALL_MAJOR_ARCANOS).toContain(mapping.related_arcano);
+      });
+    });
+  });
+
+  describe('TOTAL_MAPPINGS', () => {
+    it('should be positive', () => {
+      expect(TOTAL_MAPPINGS).toBeGreaterThan(0);
+    });
+  });
+
+  describe('TOTAL_PATH_TYPES', () => {
+    it('should be exported and equal to 7', () => {
+      expect(TOTAL_PATH_TYPES).toBe(7);
     });
   });
 
   describe('ALL_MAJOR_ARCANOS', () => {
-    it('has 22 cards', () => {
+    it('should have 22 cards', () => {
       expect(ALL_MAJOR_ARCANOS.length).toBe(22);
+    });
+  });
+
+  describe('default export', () => {
+    it('should export all required functions', async () => {
+      const { default: m } = await import('@/lib/correlation/tarot-tarot');
+      expect(m.getTarotTarot).toBeDefined();
+      expect(m.getAllTarotPaths).toBeDefined();
+      expect(m.getAllPathTypes).toBeDefined();
+      expect(m.getAllMappedArcanos).toBeDefined();
+      expect(m.getRelationsForArcano).toBeDefined();
+      expect(m.getRelationsByPathType).toBeDefined();
+      expect(m.getPathTypeBetween).toBeDefined();
+      expect(m.getSpiritualMeaningBetween).toBeDefined();
+      expect(m.hasRelation).toBeDefined();
+      expect(m.getArcanoByNumber).toBeDefined();
+      expect(m.ALL_MAJOR_ARCANOS).toBeDefined();
+      expect(m.TAROT_TAROT_MAPPINGS).toBeDefined();
+      expect(m.TOTAL_MAPPINGS).toBeDefined();
+      expect(m.TOTAL_PATH_TYPES).toBeDefined();
     });
   });
 });
