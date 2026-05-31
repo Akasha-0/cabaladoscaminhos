@@ -2,13 +2,83 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const PracticeTypeSchema = z.enum(['mantra', 'breathwork', 'visualization', 'gratitude', 'forgiveness', 'loving-kindness']);
 const PracticeQuerySchema = z.object({
   type: PracticeTypeSchema.optional(),
   duration: z.coerce.number().int().positive().optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 export const dynamic = 'force-dynamic';
+
+// ─── Spiritual Correlations for Practice Types ──────────────────────────────────────────
+const PRACTICE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  mantra: {
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'O mantra purifica minha mente e eleva minha consciência',
+    frequency: '963 Hz',
+  },
+  breathwork: {
+    sefirot: ['Tipheret', 'Gevurah'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Xangô',
+    affirmation: 'A respiração é a ponte entre corpo e espírito',
+    frequency: '528 Hz',
+  },
+  visualization: {
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Visualizo minha realidade com clareza e propósito',
+    frequency: '528 Hz',
+  },
+  gratitude: {
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Gratidão abre as portas da abundância',
+    frequency: '528 Hz',
+  },
+  forgiveness: {
+    sefirot: ['Tipheret', 'Binah'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'Perdoo para ser livre',
+    frequency: '639 Hz',
+  },
+  'loving-kindness': {
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Amor e compaixão emanam de mim',
+    frequency: '528 Hz',
+  },
+};
 
 // ─── Practice Data ─────────────────────────────────────────────────────────
 interface AffirmationPractice {
@@ -23,6 +93,14 @@ interface AffirmationPractice {
   sefirot: string[];
   chakra: string;
   tradition: string;
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 const PRACTICES: AffirmationPractice[] = [
@@ -50,6 +128,7 @@ const PRACTICES: AffirmationPractice[] = [
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 'Sahasrara (7º)',
     tradition: 'Hindu/Yoga',
+    spiritualCorrelations: PRACTICE_SPIRITUAL_CORRELATIONS['mantra'],
   },
   {
     id: 'breathwork-purification',
@@ -72,142 +151,205 @@ const PRACTICES: AffirmationPractice[] = [
       'Cada respiração traz renovação',
       'Meu corpo está cheio de prana vital',
     ],
-    sefirot: ['Ruach', 'Tipheret'],
+    sefirot: ['Tipheret', 'Gevurah'],
     chakra: 'Anahata (4º)',
     tradition: 'Tântrico',
+    spiritualCorrelations: PRACTICE_SPIRITUAL_CORRELATIONS['breathwork'],
   },
   {
     id: 'visualization-light',
     type: 'visualization',
     name: 'Visualização da Luz',
     nameEn: 'Light Visualization',
-    description: 'Visualização criativa para conectar-se com a luz divina e energia de cura.',
+    description: 'Visualização guiada para inundar o corpo com luz espiritual.',
     duration: 15,
     steps: [
-      'Feche os olhos e relaxe o corpo',
-      'Visualize uma esfera de luz dourada acima da sua cabeça',
-      'Permita que a luz desça lentamente, preenchendo sua aura',
-      'Sinta a luz atravessando cada célula do seu corpo',
-      'Visualize a luz se expandindo em todas as direções',
-      'Imagine-se envolvido em uma esfera de luz protetora',
-      'Agradeça pela energia recebida',
+      'Sente-se ou deite-se em posição confortável',
+      'Feche os olhos e relaxe todo o corpo',
+      'Visualize uma luz dourada acima da cabeça',
+      'Permita que a luz entre pelo topo da cabeça',
+      'Sinta a luz preenchendo cada célula do corpo',
+      'Visualize a luz purificando e curando',
+      'Permaneça na luz por alguns minutos',
     ],
     affirmations: [
       'Eu sou luz',
-      'A luz divina me protege e cura',
-      'Sou um canal de energia positiva',
+      'A luz me preenche e me cura',
+      'Sou um ser de luz radiante',
     ],
-    sefirot: ['Tipheret', 'Chesed'],
-    chakra: 'Manipura (3º)',
-    tradition: 'Místico',
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 'Ajna (6º)',
+    tradition: 'Sufi/Cristã',
+    spiritualCorrelations: PRACTICE_SPIRITUAL_CORRELATIONS['visualization'],
   },
   {
-    id: 'gratitude-practice',
+    id: 'gratitude-heart',
     type: 'gratitude',
-    name: 'Prática de Gratidão',
-    nameEn: 'Gratitude Practice',
-    description: 'Cultivo consciente da gratidão para atrair abundância e felicidade.',
-    duration: 10,
+    name: 'Gratidão do Coração',
+    nameEn: 'Heart Gratitude',
+    description: 'Prática de gratidão para cultivar abundância e bem-estar.',
+    duration: 5,
     steps: [
-      'Sente-se confortavelmente e feche os olhos',
-      'Pense em três coisas pelas quais você é grato hoje',
-      'Sinta a emoção de gratidão no coração',
-      'Visualize essas bênçãos crescendo e se multiplicando',
-      'Agradeça mentalmente por cada aspecto da sua vida',
-      'Permita que a gratidão encha seu ser',
-      'Faça uma intenção de compartilhar gratidão com outros',
+      'Coloque a mão sobre o coração',
+      'Respire profundamente 3 vezes',
+      'Pense em 3 coisas pelas quais é grato',
+      'Sinta a gratidão emanar do coração',
+      'Agradeça pela vida e pelas lições',
+      'Permaneça nesse estado de gratidão',
     ],
     affirmations: [
-      'Sou grato por toda a bênção em minha vida',
+      'Sou grato por tudo em minha vida',
       'A gratidão atrai mais abundância',
-      'Cada dia traz novas razões para agradecer',
+      'Cada dia é uma bênção',
     ],
-    sefirot: ['Netzach', 'Hod'],
+    sefirot: ['Chesed', 'Netzach'],
     chakra: 'Anahata (4º)',
     tradition: 'Universal',
+    spiritualCorrelations: PRACTICE_SPIRITUAL_CORRELATIONS['gratitude'],
   },
   {
-    id: 'forgiveness-ritual',
+    id: 'forgiveness-release',
     type: 'forgiveness',
-    name: 'Ritual de Perdão',
-    nameEn: 'Forgiveness Ritual',
-    description: 'Prática de perdão para libertar mágoas e restabelecer a paz interior.',
+    name: 'Perdão e Libertação',
+    nameEn: 'Forgiveness Release',
+    description: 'Prática de perdão para libertar ressentimentos e mágoas.',
     duration: 20,
     steps: [
-      'Encontre um momento de solitude',
-      'Identifique uma pessoa ou situação que precisa de perdão',
-      'Visualize a pessoa à sua frente',
-      'Diga em silêncio: "Eu te perdoo"',
-      'Sinta o peso sendo libertado do seu coração',
-      'Visualize uma luz dourada entre vocês',
-      'Libere completamente e deseje paz para ambos',
+      'Identifique uma pessoa ou situação que guarda mágoa',
+      'Reconeça o impacto que isso tem em você',
+      'Visualize a pessoa ou situação em paz',
+      'Diga mentalmente: "Eu perdoo você (e a mim mesmo)"',
+      'Sinta o peso sendo libertado',
+      'Permaneça no espaço de liberdade',
     ],
     affirmations: [
-      'Eu perdoo a mim mesmo e aos outros',
-      'O perdão liberta minha alma',
-      'Escolho a paz sobre o ressentimento',
+      'Eu perdoo para ser livre',
+      'Libertar é um ato de amor próprio',
+      'O perdão traz paz',
     ],
-    sefirot: ['Tipheret', 'Gevurah'],
+    sefirot: ['Tipheret', 'Binah'],
     chakra: 'Anahata (4º)',
-    tradition: 'Cristão/Espiritual',
+    tradition: 'Cristã/TER',
+    spiritualCorrelations: PRACTICE_SPIRITUAL_CORRELATIONS['forgiveness'],
   },
   {
-    id: 'loving-kindness',
+    id: 'loving-kindness-all',
     type: 'loving-kindness',
-    name: 'Metta Bhavana (Amor Bondoso)',
-    nameEn: 'Loving Kindness Meditation',
-    description: 'Cultivo do amor bondoso (metta) para desenvolver compaixão e conexão.',
-    duration: 25,
+    name: 'Amor Incondicional',
+    nameEn: 'Loving Kindness (Metta)',
+    description: 'Cultivo de amor bondoso para todos os seres.',
+    duration: 20,
     steps: [
-      'Sente-se em meditação com o coração aberto',
-      'Comece enviando amor a você mesmo: "Que eu seja feliz"',
-      'Expanda para um benefactor: "Que [nome] seja feliz"',
-      'Inclua um amigo: "Que meu amigo seja feliz"',
-      'Adicione alguém neutro: "Que ele/ela seja feliz"',
-      'Estenda para alguém difícil: "Que meu inimigo seja feliz"',
+      'Sente-se em meditação tranquila',
+      'Cultive amor por você mesmo: "Que eu seja feliz"',
+      'Amplie para uma pessoa amada: "Que [nome] seja feliz"',
+      'Estenda para um conhecido neutro',
+      'Inclua alguém difícil ou desafiador',
       'Abra para todos os seres: "Que todos os seres sejam felizes"',
     ],
     affirmations: [
       'Que eu seja feliz e em paz',
       'Que todos os seres sejam felizes',
-      'O amor é minha natureza fundamental',
+      'O amor incondicional é minha natureza',
     ],
     sefirot: ['Chesed', 'Netzach'],
     chakra: 'Anahata (4º)',
-    tradition: 'Budista/Theravada',
+    tradition: 'Budista (Metta)',
+    spiritualCorrelations: PRACTICE_SPIRITUAL_CORRELATIONS['loving-kindness'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = PracticeQuerySchema.safeParse({
-    type: searchParams.get('type'),
-    duration: searchParams.get('duration'),
-  });
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = PracticeQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      duration: searchParams.get('duration'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
 
-  if (!parseResult.success) {
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { type, duration, sefirot, chakra, element, orixa } = parseResult.data;
+
+    let practices = [...PRACTICES];
+
+    if (type) {
+      practices = practices.filter(p => p.type === type);
+    }
+
+    if (duration) {
+      practices = practices.filter(p => p.duration >= duration);
+    }
+
+    if (sefirot) {
+      practices = practices.filter(p => p.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      practices = practices.filter(p => p.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      practices = practices.filter(p => p.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      practices = practices.filter(p => p.spiritualCorrelations?.orixa === orixa);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byType: practices.reduce((acc, p) => {
+        acc[p.type] = (acc[p.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: practices.reduce((acc, p) => {
+        p.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: practices.reduce((acc, p) => {
+        const c = p.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: practices.reduce((acc, p) => {
+        const e = p.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: practices.reduce((acc, p) => {
+        const o = p.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      practices,
+      count: practices.length,
+      spiritualCorrelations: PRACTICE_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { type, duration, sefirot, chakra, element, orixa },
+      },
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
-
-  const { type, duration } = parseResult.data;
-  let practices = [...PRACTICES];
-
-  if (type) {
-    practices = practices.filter(p => p.type === type);
-  }
-
-  if (duration) {
-    practices = practices.filter(p => p.duration <= duration);
-  }
-
-  return NextResponse.json({
-    success: true,
-    practices,
-    count: practices.length,
-    total: PRACTICES.length,
-  });
 }
