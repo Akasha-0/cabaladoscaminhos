@@ -11,8 +11,32 @@ type Elemento = 'Fogo' | 'Terra' | 'Ar' | 'Água' | 'Éter';
 /** The twelve zodiac signs */
 type Signo = 'Áries' | 'Touro' | 'Gémeos' | 'Câncer' | 'Leão' | 'Virgem' | 'Balança' | 'Escorpião' | 'Sagitário' | 'Capricórnio' | 'Aquário' | 'Peixes';
 
-// ─── Orixá-to-Zodiac Mapping ───────────────────────────────────────────
+/**
+ * Orixá-to-Zodiac correlation mapping
+ */
+export interface OrixaZodiac {
+  /** Orixá name */
+  orixa: string;
+  /** Primary zodiac sign */
+  signo: Signo;
+  /** Element correspondence */
+  elemento: Elemento;
+  /** Spiritual meaning of the correlation */
+  significado_espiritual: string;
+  /** Secondary zodiac signs associated */
+  signos_secundarios?: Signo[];
+  /** Sacred day */
+  dia_sagrado: string;
+  /** Planetary ruler */
+  planeta_regente: string;
+}
 
+// Helper to normalize strings (remove accents, lowercase)
+function normalizeString(str: string): string {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+// ─── Orixá-to-Zodiac Mapping ───────────────────────────────────────────
 /**
  * Mapping of each Orixá to their primary zodiac sign
  * Based on IDEIA.md spiritual correlations
