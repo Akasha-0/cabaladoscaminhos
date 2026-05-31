@@ -304,6 +304,7 @@ export function getBidirectionalOrixas(orixa: string): string[] {
 // Required aliases per acceptance criteria
 export const getOrixaOrixas = getAllOrixaOrixas;
 export const getAllOrixaRellations = getAllOrixaRelations;
+export const getOrixaRelations = getAllOrixaRelations;
 export default {
   getOrixaOrixa,
   getAllOrixaRelations,
