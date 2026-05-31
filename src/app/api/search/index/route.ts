@@ -6,8 +6,69 @@
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { orixas, odus } from '@/lib/data/spiritual-data';
 import { TAROT_DECK } from '@/lib/tarot/cards';
+
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
+const SearchQuerySchema = z.object({
+  q: z.string().optional(),
+  type: z.enum(['odu', 'orixa', 'ritual', 'tarot', 'all']).optional(),
+  element: ElementSchema.optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  orixa: z.string().optional(),
+});
+
+// ─── Spiritual Correlations for Search Results ──────────────────────────────────────────
+const TYPE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  odu: {
+    sefirot: ['Binah', 'Chokhmah'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Orunmilá',
+    affirmation: 'O destino se revela através dos Odús',
+    frequency: '741 Hz',
+  },
+  orixa: {
+    sefirot: ['Tipheret', 'Kether'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Os Orixás me guiam na luz',
+    frequency: '963 Hz',
+  },
+  ritual: {
+    sefirot: ['Gevurah', 'Chesed'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'O ritual me conecta às forças sagradas',
+    frequency: '528 Hz',
+  },
+  tarot: {
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'As cartas revelam minha verdade interior',
+    frequency: '639 Hz',
+  },
+};
 
 // ============================================================
 // TYPES
@@ -21,6 +82,20 @@ export interface SearchResult {
   description: string;
   relevance: number;
   metadata?: Record<string, unknown>;
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+  spiritualCorrelations: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 export interface SearchResponse {
@@ -33,6 +108,21 @@ export interface SearchResponse {
     orixas: string[];
   };
   timestamp: string;
+  spiritualCorrelations: Record<string, {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }>;
+  spiritualStats: {
+    byType: Record<string, number>;
+    bySefirot: Record<string, number>;
+    byChakra: Record<string, number>;
+    byElement: Record<string, number>;
+    byOrixa: Record<string, number>;
+  };
 }
 
 // ============================================================
@@ -46,6 +136,12 @@ const ritualsData = [
     elementos: ['Ar', 'Fogo'],
     orixas: ['Ogum', 'Oxóssi'],
     descricao: 'Ritual para abrir novos caminhos e remover obstáculos',
+    sefirot: ['Chokhmah', 'Netzach'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Ogum',
+    affirmation: 'Abro meu caminho com coragem',
+    frequency: '528 Hz',
   },
   {
     id: 'limpeza-energetica',
@@ -53,6 +149,12 @@ const ritualsData = [
     elementos: ['Água'],
     orixas: ['Oxum', 'Nanã'],
     descricao: 'Ritual para limpeza e purificação de energias negativas',
+    sefirot: ['Binah', 'Yesod'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'As águas purificam meu ser',
+    frequency: '417 Hz',
   },
   {
     id: 'protecao',
@@ -60,6 +162,12 @@ const ritualsData = [
     elementos: ['Terra', 'Fogo'],
     orixas: ['Ogum', 'Iansã'],
     descricao: 'Ritual para proteção espiritual e física',
+    sefirot: ['Gevurah', 'Malkuth'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Ogum',
+    affirmation: 'A proteção divina me envolve',
+    frequency: '396 Hz',
   },
   {
     id: 'amor-prosperidade',
@@ -67,6 +175,12 @@ const ritualsData = [
     elementos: ['Água', 'Fogo'],
     orixas: ['Oxum', 'Xara'],
     descricao: 'Ritual para atrair amor e prosperidade',
+    sefirot: ['Tipheret', 'Chesed'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Amor e abundância fluem para mim',
+    frequency: '528 Hz',
   },
   {
     id: 'ancestral',
@@ -74,6 +188,12 @@ const ritualsData = [
     elementos: ['Terra'],
     orixas: ['Nanã', 'Ewa'],
     descricao: 'Ritual para conexão com ancestrais e forças espirituais',
+    sefirot: ['Malkuth', 'Yesod'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Nanã',
+    affirmation: 'Meus ancestrais me guiam',
+    frequency: '396 Hz',
   },
 ];
 
@@ -81,223 +201,96 @@ const ritualsData = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function normalizeText(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function calculateRelevance(query: string, text: string): number {
-  if (!query || !text) return 0;
-  
-  const normalizedQuery = normalizeText(query);
-  const normalizedText = normalizeText(text);
-  
-  if (normalizedText.includes(normalizedQuery)) {
-    const indexOfMatch = normalizedText.indexOf(normalizedQuery);
-    const positionBonus = 1 - (indexOfMatch / normalizedText.length);
-    return 0.5 + (positionBonus * 0.5);
-  }
-  
-  const queryWords = normalizedQuery.split(' ').filter(Boolean);
-  let matches = 0;
-  
-  for (const word of queryWords) {
-    if (normalizedText.includes(word)) {
-      matches++;
-    }
-  }
-  
-  return matches / queryWords.length;
-}
-
-// ============================================================
-// SEARCH FUNCTIONS
-// ============================================================
-
-function searchOdus(query: string): SearchResult[] {
-  const results: SearchResult[] = [];
-  
-  for (const odu of odus) {
-    const titleRelevance = calculateRelevance(query, odu.nome);
-    const descRelevance = calculateRelevance(query, odu.significado);
-    const elementoRelevance = calculateRelevance(query, odu.elementos);
-    
-    const relevance = Math.max(titleRelevance, descRelevance, elementoRelevance);
-    
-    if (relevance > 0.1) {
-      results.push({
-        type: 'odu',
-        id: String(odu.numero),
-        title: odu.nome,
-        subtitle: `Ogbe - ${odu.significado}`,
-        description: odu.significado,
-        relevance,
-        metadata: {
-          elementos: odu.elementos,
-          orixas: odu.orixas,
-          significado: odu.significado,
-        },
-      });
-    }
-  }
-  
-  return results;
+function searchRituals(query: string, filters: { element?: string; orixa?: string }): SearchResult[] {
+  const q = query.toLowerCase();
+  return ritualsData
+    .filter(r => {
+      if (q && !r.title.toLowerCase().includes(q) && !r.descricao.toLowerCase().includes(q)) {
+        return false;
+      }
+      if (filters.element && !r.elementos.includes(filters.element)) {
+        return false;
+      }
+      if (filters.orixa && !r.orixas.includes(filters.orixa)) {
+        return false;
+      }
+      return true;
+    })
+    .map(r => ({
+      type: 'ritual' as const,
+      id: r.id,
+      title: r.title,
+      description: r.descricao,
+      relevance: q ? (r.title.toLowerCase().includes(q) ? 1 : 0.5) : 1,
+      sefirot: r.sefirot,
+      chakra: r.chakra,
+      element: r.element,
+      orixa: r.orixa,
+      affirmation: r.affirmation,
+      frequency: r.frequency,
+      spiritualCorrelations: TYPE_SPIRITUAL_CORRELATIONS.ritual,
+    }));
 }
 
 function searchOrixas(query: string): SearchResult[] {
-  const results: SearchResult[] = [];
-  
-  for (const orixa of orixas) {
-    const titleRelevance = calculateRelevance(query, orixa.nome);
-    const descRelevance = calculateRelevance(query, orixa.misterio);
-    const dominioRelevance = calculateRelevance(query, orixa.misterio || '');
-    
-    const relevance = Math.max(titleRelevance, descRelevance, dominioRelevance);
-    
-    if (relevance > 0.1) {
-      results.push({
-        type: 'orixa',
-        id: String(orixa.nome),
-        title: orixa.nome,
-        subtitle: orixa.misterio,
-        description: orixa.misterio,
-        relevance,
-        metadata: {
-          elementos: [orixa.elemento ?? ''],
-          dia: orixa.dia,
-          cores: orixa.cores,
-          numero: String(orixa.numero ?? ''),
-        },
-      });
-    }
-  }
-  
-  return results;
+  const q = query.toLowerCase();
+  return orixas
+    .filter(o => q === '' || o.nome.toLowerCase().includes(q) || o.descricao.toLowerCase().includes(q))
+    .map(o => ({
+      type: 'orixa' as const,
+      id: o.id || o.nome,
+      title: o.nome,
+      description: o.descricao,
+      relevance: q ? (o.nome.toLowerCase().includes(q) ? 1 : 0.5) : 1,
+      sefirot: ['Tipheret', 'Kether'],
+      chakra: 7,
+      element: 'Éter',
+      orixa: o.nome,
+      affirmation: `Os ${o.nome} me guiam na luz`,
+      frequency: '963 Hz',
+      spiritualCorrelations: TYPE_SPIRITUAL_CORRELATIONS.orixa,
+    }));
 }
 
-function searchRituals(query: string): SearchResult[] {
-  const results: SearchResult[] = [];
-  
-  for (const ritual of ritualsData) {
-    const titleRelevance = calculateRelevance(query, ritual.title);
-    const descRelevance = calculateRelevance(query, ritual.descricao);
-    
-    const relevance = Math.max(titleRelevance, descRelevance);
-    
-    if (relevance > 0.1) {
-      results.push({
-        type: 'ritual',
-        id: ritual.id,
-        title: ritual.title,
-        description: ritual.descricao,
-        relevance,
-        metadata: {
-          elementos: ritual.elementos,
-          orixas: ritual.orixas,
-        },
-      });
-    }
-  }
-  
-  return results;
+function searchOdus(query: string): SearchResult[] {
+  const q = query.toLowerCase();
+  return odus
+    .filter(o => q === '' || o.nome.toLowerCase().includes(q) || o.significado.toLowerCase().includes(q))
+    .map(o => ({
+      type: 'odu' as const,
+      id: o.id || o.nome,
+      title: o.nome,
+      description: o.significado,
+      relevance: q ? (o.nome.toLowerCase().includes(q) ? 1 : 0.5) : 1,
+      sefirot: ['Binah', 'Chokhmah'],
+      chakra: 6,
+      element: 'Fogo',
+      orixa: 'Orunmilá',
+      affirmation: 'O destino se revela através dos Odús',
+      frequency: '741 Hz',
+      spiritualCorrelations: TYPE_SPIRITUAL_CORRELATIONS.odu,
+    }));
 }
 
 function searchTarot(query: string): SearchResult[] {
-  const results: SearchResult[] = [];
-  
-  for (const card of TAROT_DECK.cards) {
-    const titleRelevance = calculateRelevance(query, card.name);
-    const uprightText = card.upright?.join(' ') || '';
-    const descRelevance = calculateRelevance(query, uprightText);
-    const relevance = Math.max(titleRelevance, descRelevance);
-    
-    if (relevance > 0.1) {
-      results.push({
-        type: 'tarot',
-        id: String(card.id),
-        title: card.name,
-        subtitle: `${card.arcana} Arcana`,
-        description: uprightText.substring(0, 200),
-        relevance,
-        metadata: {
-          suit: card.suit ?? undefined,
-          arcana: card.arcana,
-          element: card.element,
-        },
-      });
-    }
-  }
-  
-  return results;
-}
-
-// ============================================================
-// FILTER FUNCTIONS
-// ============================================================
-
-function filterResults(
-  results: SearchResult[],
-  filters: {
-    categories?: string[];
-    elements?: string[];
-    orixas?: string[];
-  }
-): SearchResult[] {
-  if (!filters.categories?.length && !filters.elements?.length && !filters.orixas?.length) {
-    return results;
-  }
-
-  return results.filter((result) => {
-    if (filters.categories?.length && !filters.categories.includes(result.type)) {
-      return false;
-    }
-
-    if (filters.elements?.length && result.metadata?.elementos) {
-      const elementList = Array.isArray(result.metadata.elementos)
-        ? (result.metadata.elementos as string[])
-        : [String(result.metadata.elementos)];
-      if (!filters.elements.some((el) => elementList.includes(el))) {
-        return false;
-      }
-    }
-
-    if (filters.orixas?.length && result.metadata?.orixas) {
-      const orixaList = Array.isArray(result.metadata.orixas)
-        ? (result.metadata.orixas as string[])
-        : [String(result.metadata.orixas)];
-      if (!filters.orixas.some((o) => orixaList.includes(o))) {
-        return false;
-      }
-    }
-
-    return true;
-  });
-}
-
-function getAvailableFilters(): SearchResponse['filters'] {
-  const elements = new Set<string>();
-  const orixaNames = new Set<string>();
-
-  for (const odu of odus) {
-    odu.elementos.split(' / ').forEach((el) => elements.add(el.trim()));
-    odu.orixas.forEach((o) => orixaNames.add(o));
-  }
-
-  for (const ritual of ritualsData) {
-    ritual.elementos.forEach((el) => elements.add(el));
-    ritual.orixas.forEach((o) => orixaNames.add(o));
-  }
-
-  return {
-    categories: ['odu', 'orixa', 'ritual', 'tarot'],
-    elements: Array.from(elements).sort(),
-    orixas: Array.from(orixaNames).sort(),
-  };
+  const q = query.toLowerCase();
+  return TAROT_DECK
+    .filter(c => q === '' || c.name.toLowerCase().includes(q) || c.meanings.pt.toLowerCase().includes(q))
+    .map(c => ({
+      type: 'tarot' as const,
+      id: c.id,
+      title: c.name,
+      subtitle: c.arcano,
+      description: c.meanings.pt,
+      relevance: q ? (c.name.toLowerCase().includes(q) ? 1 : 0.5) : 1,
+      sefirot: ['Chokhmah', 'Netzach'],
+      chakra: 6,
+      element: 'Fogo',
+      orixa: 'Oxum',
+      affirmation: 'As cartas revelam minha verdade interior',
+      frequency: '639 Hz',
+      spiritualCorrelations: TYPE_SPIRITUAL_CORRELATIONS.tarot,
+    }));
 }
 
 // ============================================================
@@ -305,62 +298,112 @@ function getAvailableFilters(): SearchResponse['filters'] {
 // ============================================================
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const query = searchParams.get('q') || searchParams.get('query') || '';
-  const categories = searchParams.get('categories')?.split(',').filter(Boolean) || [];
-  const elements = searchParams.get('elements')?.split(',').filter(Boolean) || [];
-  const orixasParam = searchParams.get('orixas')?.split(',').filter(Boolean) || [];
-  const limit = parseInt(searchParams.get('limit') || '50', 10);
-  const offset = parseInt(searchParams.get('offset') || '0', 10);
+  try {
+    const url = new URL(request.url);
+    const parseResult = SearchQuerySchema.safeParse({
+      q: url.searchParams.get('q'),
+      type: url.searchParams.get('type'),
+      element: url.searchParams.get('element'),
+      sefirot: url.searchParams.get('sefirot'),
+      chakra: url.searchParams.get('chakra'),
+      orixa: url.searchParams.get('orixa'),
+    });
 
-  // Return available filters when no query
-  if (!query && !categories.length && !elements.length && !orixasParam.length) {
-    return NextResponse.json(
-      {
-        query: '',
-        results: [],
-        total: 0,
-        filters: getAvailableFilters(),
-        timestamp: new Date().toISOString(),
-      },
-      {
-        headers: {
-          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
-        },
-      }
-    );
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { q, type, element, sefirot, chakra, orixa } = parseResult.data;
+    const query = q || '';
+    let results: SearchResult[] = [];
+
+    if (type === 'all' || !type) {
+      results = [
+        ...searchOrixas(query),
+        ...searchOdus(query),
+        ...searchRituals(query, { element, orixa }),
+        ...searchTarot(query),
+      ];
+    } else if (type === 'orixa') {
+      results = searchOrixas(query);
+    } else if (type === 'odu') {
+      results = searchOdus(query);
+    } else if (type === 'ritual') {
+      results = searchRituals(query, { element, orixa });
+    } else if (type === 'tarot') {
+      results = searchTarot(query);
+    }
+
+    // Filter by spiritual dimensions
+    if (sefirot) {
+      results = results.filter(r => r.spiritualCorrelations.sefirot.includes(sefirot));
+    }
+    if (chakra) {
+      results = results.filter(r => r.spiritualCorrelations.chakra === chakra);
+    }
+    if (element) {
+      results = results.filter(r => r.spiritualCorrelations.element === element);
+    }
+    if (orixa) {
+      results = results.filter(r => r.spiritualCorrelations.orixa === orixa);
+    }
+
+    // Sort by relevance
+    results.sort((a, b) => b.relevance - a.relevance);
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byType: results.reduce((acc, r) => {
+        acc[r.type] = (acc[r.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: results.reduce((acc, r) => {
+        r.spiritualCorrelations.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: results.reduce((acc, r) => {
+        const c = r.spiritualCorrelations.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: results.reduce((acc, r) => {
+        const e = r.spiritualCorrelations.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: results.reduce((acc, r) => {
+        const o = r.spiritualCorrelations.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    // Extract unique filters
+    const filters = {
+      categories: [...new Set(results.map(r => r.type))],
+      elements: [...new Set(results.map(r => r.spiritualCorrelations.element).filter(Boolean))],
+      orixas: [...new Set(results.map(r => r.spiritualCorrelations.orixa).filter(Boolean))],
+    };
+
+    return NextResponse.json({
+      query,
+      results,
+      total: results.length,
+      filters,
+      timestamp: new Date().toISOString(),
+      spiritualCorrelations: TYPE_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Search failed',
+    }, { status: 500 });
   }
-
-  let allResults: SearchResult[] = [];
-
-  if (query) {
-    const [oduResults, orixaResults, ritualResults, tarotResults] = await Promise.all([
-      Promise.resolve(searchOdus(query)),
-      Promise.resolve(searchOrixas(query)),
-      Promise.resolve(searchRituals(query)),
-      Promise.resolve(searchTarot(query)),
-    ]);
-
-    allResults = [...oduResults, ...orixaResults, ...ritualResults, ...tarotResults];
-  }
-
-  const filteredResults = filterResults(allResults, { categories, elements, orixas: orixasParam });
-
-  filteredResults.sort((a, b) => b.relevance - a.relevance);
-
-  const paginatedResults = filteredResults.slice(offset, offset + limit);
-
-  const response: SearchResponse = {
-    query,
-    results: paginatedResults,
-    total: filteredResults.length,
-    filters: getAvailableFilters(),
-    timestamp: new Date().toISOString(),
-  };
-
-  return NextResponse.json(response, {
-    headers: {
-      'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
-    },
-  });
 }
