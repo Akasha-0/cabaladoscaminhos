@@ -16,7 +16,6 @@ Enhanced APIs with spiritual correlations:
 
 
 ### Sprint 485 — Ritual Planner & Tarot Consulta (COMPLETE)
-### Sprint 485 — Ritual Planner & Tarot Consulta (COMPLETE)
 Enhanced APIs with spiritual correlations:
 - ritual-planner: 8 ritual templates with spiritual correlations
 - tarot/consulta: Tarot consultation with spiritual correlations
