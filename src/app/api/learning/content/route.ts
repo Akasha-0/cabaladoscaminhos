@@ -97,15 +97,17 @@ interface ContentModule {
   totalDuration: number;
   sefirot?: string[];
   orixa?: string;
-}:
+}
 export const dynamic = 'force-dynamic';
-  sefirot: string[];
+const CONTENT_SPIRITUAL_CORRELATIONS: Record<string, {
+  seirot: string[];
   chakra: number;
   element: string;
   orixa: string;
   affirmation: string;
   frequency: string;
 }> = {
+  cabala: { sefirot: ['Kether', 'Chokhmah', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A sabedoria da Cabala ilumina minha alma', frequency: '963 Hz' },
   cabala: { sefirot: ['Kether', 'Chokhmah', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A sabedoria da Cabala ilumina minha alma', frequency: '963 Hz' },
   orixa: { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'A energia do Orixá flui através de mim', frequency: '528 Hz' },
   tarot: { sefirot: ['Chokhmah', 'Hod'], chakra: 6, element: 'Ar', orixa: 'Oxalá', affirmation: 'Os símbolos do Tarot revelam minha verdade', frequency: '528 Hz' },
