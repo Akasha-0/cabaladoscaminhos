@@ -1,18 +1,15 @@
-// ============================================================
-// ELEMENTS API - CABALA DOS CAMINHOS
-// ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const ElementNameSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-const ElementInputSchema = z.object({
-  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD').optional(),
-  odu: z.string().optional(),
-});
 const ElementQuerySchema = z.object({
   element: ElementNameSchema.optional(),
   includeCorrelations: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
   limit: z.coerce.number().int().positive().max(10).optional(),
+});
+const ElementInputSchema = z.object({
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD').optional(),
+  odu: z.string().optional(),
 });
 const ELEMENTS = [
   {
@@ -96,8 +93,6 @@ const ELEMENTS = [
     affirmation: 'Conecto-me com a energia universal que permeia tudo.',
   },
 ];
-interface ElementInput {
-  birthDate?: string;
   odu?: string;
 }
     tarot: ['A Torre', 'O Carro'],
