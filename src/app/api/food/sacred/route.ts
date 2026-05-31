@@ -359,7 +359,7 @@ const foodCategories: Array<FoodCategory & { spiritualCorrelations: object }> = 
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
 
     const parseResult = FoodSacredQuerySchema.safeParse({
       type: searchParams.get('type'),

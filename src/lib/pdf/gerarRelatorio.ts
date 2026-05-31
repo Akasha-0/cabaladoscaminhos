@@ -438,7 +438,7 @@ function adicionarFooter(doc: any, largura: number, margem: number, pageNum: num
 
 export async function gerarRelatorioPDF(data: MapaData): Promise<Blob> {
   // Dynamic import at call time - jsPDF is ~1MB, only load when needed
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const jsPDF = (await import('jspdf') as any).default;
 
   const doc = new jsPDF({

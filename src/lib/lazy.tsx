@@ -6,7 +6,7 @@ import { ComponentType, lazy as reactLazy, Suspense, ReactNode } from 'react';
  * Lazy load a module and return the default export as a React component.
  * Use this for heavy components that are not needed on initial render.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export function lazyImport<T extends ComponentType<any>>(
   importer: () => Promise<{ default: T }>,
   fallback?: ReactNode
@@ -17,7 +17,7 @@ export function lazyImport<T extends ComponentType<any>>(
     const { fallback: _fallback, ...componentProps } = props;
     return (
       <Suspense fallback={fallback ?? _fallback ?? null}>
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        { }
         <LazyComponent {...(componentProps as any)} />
       </Suspense>
     );
@@ -30,7 +30,7 @@ export function lazyImport<T extends ComponentType<any>>(
  * Higher-order component that lazy-loads a component with Suspense.
  * Returns a component that renders the imported component inside a Suspense boundary.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export function LazyComponent<T extends ComponentType<any>>(
   importer: () => Promise<{ default: T }>,
   fallback?: ReactNode
@@ -39,7 +39,7 @@ export function LazyComponent<T extends ComponentType<any>>(
    
   const LazyWrapper = (props: Omit<React.ComponentProps<T>, 'children'>) => (
     <Suspense fallback={fallback ?? null}>
-      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      { }
       <LazyTheComponent {...(props as any)} />
     </Suspense>
   );

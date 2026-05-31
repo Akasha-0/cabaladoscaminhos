@@ -1,5 +1,5 @@
 // @ts-nocheck
-/* eslint-disable */
+ 
 /**
  * Ikoyun Practice Module
  * Handles Ikoyun spiritual practice operations

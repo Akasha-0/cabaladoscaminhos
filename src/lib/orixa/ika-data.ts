@@ -3,7 +3,7 @@
  * Spiritual data for Ika, the Odu of earth, roots, decomposition, and transformation
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 export interface IkaData {
   id: string;

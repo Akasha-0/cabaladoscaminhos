@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const DATA: Record<string, any> = {
   nadi: {
     meaning: "Leaf blade reading, sidereal palm leaf divination from Tamil tradition",

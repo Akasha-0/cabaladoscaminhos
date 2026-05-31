@@ -171,7 +171,7 @@ function getSpiritualCorrelations(category: string) {
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = LearningQuerySchema.safeParse({
       endpoint: searchParams.get('endpoint'),
       id: searchParams.get('id'),

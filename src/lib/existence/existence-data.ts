@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const DATA: Record<string, any> = {
   existence: {
     meaning: "The state of being, having existence, or being present in reality",

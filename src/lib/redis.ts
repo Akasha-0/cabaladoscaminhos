@@ -87,12 +87,12 @@ async function createRedisClient(
   onDisconnect?: () => void
 ): Promise<RedisLike> {
   // Dynamic import with proper type handling
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   let Redis: new (url: string, options?: object) => any;
   try {
     // ioredis is optional - fallback to in-memory store if not available
      
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+     
     // @ts-ignore - ioredis is optional dependency
     const ioredisModule = await import('ioredis');
     Redis = ioredisModule.default ?? ioredisModule;

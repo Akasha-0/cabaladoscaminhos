@@ -149,7 +149,7 @@ function getHealthCorrelations(entry: Partial<HealthEntry>) {
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = HealthQuerySchema.safeParse({
       date: searchParams.get('date'),
       sefirot: searchParams.get('sefirot'),
@@ -166,7 +166,7 @@ export async function GET(request: NextRequest) {
     }
 
     const { date, sefirot, chakra, element, orixa } = parseResult.data;
-    let entries = date
+    const entries = date
       ? healthData.filter((e) => e.date === date)
       : healthData;
 

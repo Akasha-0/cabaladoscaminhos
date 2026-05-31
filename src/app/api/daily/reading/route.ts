@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 /* prettier-ignore */
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -203,7 +203,7 @@ const NUMERO_SPIRITUAL_CORRELATIONS: Record<number, {
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = ReadingQuerySchema.safeParse({
       tipo: searchParams.get('tipo'),
       forceRefresh: searchParams.get('forceRefresh'),

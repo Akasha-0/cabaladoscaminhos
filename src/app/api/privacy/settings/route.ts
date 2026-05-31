@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { include } = parseResult.data;
-  let settings = { ...DEMO_PRIVACY_SETTINGS };
+      const settings = { ...DEMO_PRIVACY_SETTINGS };
 
   if (include === 'data_sharing') {
     return NextResponse.json({

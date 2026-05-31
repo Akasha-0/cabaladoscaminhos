@@ -277,7 +277,7 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams()
+    const searchParams = request.nextUrl.searchParams
     const parseResult = EnergyWorkQuerySchema.safeParse({
       type: searchParams.get('type'),
       sefirot: searchParams.get('sefirot'),

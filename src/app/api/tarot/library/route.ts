@@ -103,7 +103,7 @@ interface TarotCard {
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = TarotLibraryQuerySchema.safeParse({
       arcano: searchParams.get('arcano'),
       search: searchParams.get('search'),

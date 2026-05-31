@@ -258,7 +258,7 @@ const JOURNEY_PHASES = [
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = SpiritJourneyQuerySchema.safeParse({
       step: searchParams.get('step'),
       sefirot: searchParams.get('sefirot'),

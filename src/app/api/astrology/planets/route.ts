@@ -7,7 +7,7 @@ const PlanetaryPositionsQuerySchema = z.object({
 });
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = PlanetaryPositionsQuerySchema.safeParse({
       data: searchParams.get('data'),
     });

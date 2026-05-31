@@ -251,7 +251,7 @@ const RITUAL_PRACTICES: RitualPractice[] = [
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = GardenQuerySchema.safeParse({
       type: searchParams.get('type'),
       id: searchParams.get('id'),

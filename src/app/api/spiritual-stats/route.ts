@@ -173,7 +173,7 @@ function getElementStats(): ElementStats {
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = SpiritualStatsQuerySchema.safeParse({
       endpoint: searchParams.get('endpoint'),
       name: searchParams.get('name'),

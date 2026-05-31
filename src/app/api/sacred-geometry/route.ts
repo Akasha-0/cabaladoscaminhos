@@ -13,7 +13,7 @@ const SacredGeometryQuerySchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
 
     const parseResult = SacredGeometryQuerySchema.safeParse({
       type: searchParams.get('type'),

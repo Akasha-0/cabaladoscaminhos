@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 /* prettier-ignore */
 
 const STORAGE_KEY = 'prophecy_history';

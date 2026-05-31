@@ -136,7 +136,7 @@ const SOURCE_CONNECTIONS: z.infer<typeof SourceConnectionSchema>[] = [
 
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams();
+  const searchParams = request.nextUrl.searchParams;
   const parseResult = SourceConnectionQuerySchema.safeParse({
     type: searchParams.get('type'),
     limit: searchParams.get('limit'),

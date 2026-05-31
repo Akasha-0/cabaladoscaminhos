@@ -188,7 +188,7 @@ function getRandomOduNumero(): number {
 // ─── API ROUTE HANDLERS ──────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams();
+  const searchParams = request.nextUrl.searchParams;
   const parseResult = CrossSystemQuerySchema.safeParse({
     includeCorrelations: searchParams.get('includeCorrelations'),
     sefirot: searchParams.get('sefirot'),

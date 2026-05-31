@@ -6,7 +6,7 @@
 export interface StatsEntry {
   timestamp: number;
   key: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   data?: Record<string, any>;
 }
 
@@ -40,7 +40,7 @@ function saveState(state: StatsState): void {
 /**
  * Track a stats event
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export function trackStats(key: string, data?: Record<string, any>): void {
   const state = loadState();
   state.entries.push({

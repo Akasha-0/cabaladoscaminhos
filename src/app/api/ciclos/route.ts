@@ -50,7 +50,7 @@ const ELEMENT_BY_NUMBER: Record<number, string> = {
 
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams();
+  const searchParams = request.nextUrl.searchParams;
   const parseResult = CiclosQuerySchema.safeParse({
     tipo: searchParams.get('tipo'),
     data: searchParams.get('data'),

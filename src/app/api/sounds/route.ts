@@ -275,7 +275,7 @@ const FREQUENCY_MAPPINGS = [
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams();
+    const searchParams = request.nextUrl.searchParams;
     const parseResult = SoundsQuerySchema.safeParse({
       action: searchParams.get('action'),
       id: searchParams.get('id'),

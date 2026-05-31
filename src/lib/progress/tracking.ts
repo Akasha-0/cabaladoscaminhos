@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'cabala-progress';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 type ProgressData = Record<string, any>;
 
 export interface ProgressEntry {
