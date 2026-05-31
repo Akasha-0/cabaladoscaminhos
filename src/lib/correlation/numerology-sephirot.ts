@@ -167,7 +167,12 @@ export function getNumerologySephirot(numero: number): NumerologiaSephirot | nul
   return NUMEROLOGIA_SEPHIROT_MAPPINGS[numero] ?? null;
 }
 
-export function getSephirotNumerologia(sephirah: string): NumerologiaSephirot[] {
+/**
+ * Get the Sephirot-numerology reverse mapping
+ * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah', 'Binah')
+ * @returns Array of NumerologiaSephirot mappings for the given Sephirah
+ */
+export function getSephirotNumerology(sephirah: string): NumerologiaSephirot[] {
   const upperSephirah = sephirah.charAt(0).toUpperCase() + sephirah.slice(1);
   return Object.values(NUMEROLOGIA_SEPHIROT_MAPPINGS).filter(
     (mapping) => mapping.sephirah === upperSephirah
@@ -178,6 +183,6 @@ export function getSephirotNumerologia(sephirah: string): NumerologiaSephirot[] 
  * Get all available numerology-Sephirot mappings
  * @returns Array of all correlation mappings
  */
-export function getAllNumerologiaSephiroth(): NumerologiaSephirot[] {
+export function getAllNumerologySephiroths(): NumerologiaSephirot[] {
   return Object.values(NUMEROLOGIA_SEPHIROT_MAPPINGS);
 }
