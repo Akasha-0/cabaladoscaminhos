@@ -1,320 +1,283 @@
 /**
- * Chakra-Planet Spiritual Correlation Module
- * Maps the 7 primary chakras to their associated classical planets
- * Based on IDEIA.md Cabala dos Caminhos framework and day-portal correlations
+ * Chakra-Planet Spiritual Correlation
+ * Maps the 7 chakras (Muladhara to Sahasrara) to their planetary correspondences,
+ * astrological properties, spiritual meanings, and aligned esoteric traditions.
+ *
+ * Based on traditional Vedic astrology and Cabala dos Caminhos hermetic principles.
  */
 
-import type { ChakraName } from './chakra-element';
+export type Planeta = 'Sol' | 'Lua' | 'Marte' | 'Mercúrio' | 'Júpiter' | 'Vênus' | 'Saturno';
 
-export type ChakraPlanetQualidadeEnergetica = 
-  | 'Quente / Radiante'
-  | 'Fria / Receptiva'
-  | 'Neutra / Equilibrada'
-  | 'Mista / Dinâmica';
+export type ChakraName =
+  | 'Muladhara'
+  | 'Svadhisthana'
+  | 'Manipura'
+  | 'Anahata'
+  | 'Vishuddha'
+  | 'Ajna'
+  | 'Sahasrara';
 
 export interface ChakraPlanetMapping {
   chakra: ChakraName;
   chakra_numero: string;
-  planeta_primario: string;
-  planeta_secundario: string | null;
-  qualidade_energetica: ChakraPlanetQualidadeEnergetica;
-  elemento_conexao: string;
-  praticas_espirituais: {
+  planeta: Planeta;
+  propriedades_astrologicas: {
+    signo_regente: string;
+    dia_semana: string;
+    natureza: 'Sadio' | 'Misto' | 'Maléfico';
+    exaltação: string;
+  };
+  significado_espiritual: {
+    qualidades: string;
+    lições_kármicas: string;
+    natureza_planetária: string;
+  };
+  prática_espiritual: {
     tipo: string;
-    descricao: string;
-    frequencias: string[];
-    mantras: string[];
-    praticas: string[];
+    descrição: string;
+    mudras: string[];
+    cores: string[];
   };
 }
 
-// Complete mapping of the 7 chakras to their planetary correspondences
-// Each chakra resonates with specific planets based on vibrational frequency
-const CHAKRA_PLANET_MAP: Record<ChakraName, ChakraPlanetMapping> = {
+/**
+ * Complete mapping of the 7 chakras to their planetary correspondences.
+ * Based on traditional Vedic astrology and esoteric traditions.
+ */
+export const CHAKRA_PLANET_MAPPINGS: Record<ChakraName, ChakraPlanetMapping> = {
   Muladhara: {
     chakra: 'Muladhara',
-    chakra_numero: '1º Básico (Raiz)',
-    planeta_primario: 'Lua',
-    planeta_secundario: 'Saturno',
-    qualidade_energetica: 'Fria / Receptiva',
-    elemento_conexao: 'Terra',
-    praticas_espirituais: {
-      tipo: 'Aterramento e estabilidade',
-      descricao: 'Conexão com a energia terrestre, segurança existencial, ancestralidade e os ciclos naturais',
-      frequencias: ['396 Hz (Libertação)', '852 Hz (Intuição)'],
-      mantras: ['LAM (396 Hz)', 'KRIM', 'YAH'],
-      praticas: [
-        'Meditação de aterramento visualizing raízes',
-        'Banhos de arruda e assa-peixe para ancoramento',
-        'Rituais de limpeza kármica',
-        'Conexão com ancestrais e spirits da terra',
-        'Decocção de canela-de-velho para lavar pés',
-        'Práticas de encerramento de ciclos',
-      ],
+    chakra_numero: '1º Básico',
+    planeta: 'Saturno',
+    propriedades_astrologicas: {
+      signo_regente: 'Capricórnio',
+      dia_semana: 'Sábado',
+      natureza: 'Maléfico',
+      exaltação: 'Libra',
+    },
+    significado_espiritual: {
+      qualidades: 'Ancoramento, estrutura, disciplina, paciência',
+      lições_kármicas: 'Trabalhar questões de sobrevivência e segurança material',
+      natureza_planetária: 'Karma, limitação, mestria através do esforço',
+    },
+    prática_espiritual: {
+      tipo: 'Aterramento e dissolução de medos',
+      descrição: 'Conexão com a energia terrena para dissolver medos de carência e estabelecer firmeza espiritual',
+      mudras: ['Mudra de ancoramento', 'Mudra de Saturno'],
+      cores: ['Vermelho', 'Marrom'],
     },
   },
+
   Svadhisthana: {
     chakra: 'Svadhisthana',
-    chakra_numero: '2º Sacral (Esplênico)',
-    planeta_primario: 'Marte',
-    planeta_secundario: null,
-    qualidade_energetica: 'Quente / Radiante',
-    elemento_conexao: 'Água',
-    praticas_espirituais: {
-      tipo: 'Criatividade e transformação',
-      descricao: 'Despertar da força vital, criatividade, limpeza de traumas e direcionamento de energia sexual',
-      frequencias: ['417 Hz (Facilitação)', '528 Hz (Transformação)'],
-      mantras: ['VAM (417 Hz)', 'RAM (528 Hz)', 'AUM'],
-      praticas: [
-        'Pranayama (respiração intensa)',
-        'Rituais de transmutação criativa',
-        'Limpeza de traumas e bloqueios emocionais',
-        'Exercícios físicos ritualísticos',
-        'Trabalho com elementos de fogo e água',
-        'Práticas de тантрическая energia',
-      ],
+    chakra_numero: '2º Sacro',
+    planeta: 'Júpiter',
+    propriedades_astrologicas: {
+      signo_regente: 'Sagitário',
+      dia_semana: 'Quinta-feira',
+      natureza: 'Sadio',
+      exaltação: 'Câncer',
+    },
+    significado_espiritual: {
+      qualidades: 'Expansão, sabedoria, abundância, criatividade',
+      lições_kármicas: 'Expansão através da expressão criativa e busca por verdade',
+      natureza_planetária: 'Filosofia, abundância, ensino, expansão espiritual',
+    },
+    prática_espiritual: {
+      tipo: 'Transmutação criativa',
+      descrição: 'Transformação de traumas através da fluidez emocional e expressão criativa sagrada',
+      mudras: ['Mudra de Júpiter', 'Mudra de expansão'],
+      cores: ['Laranja', 'Amarelo'],
     },
   },
+
   Manipura: {
     chakra: 'Manipura',
     chakra_numero: '3º Plexo Solar',
-    planeta_primario: 'Mercúrio',
-    planeta_secundario: 'Sol',
-    qualidade_energetica: 'Neutra / Equilibrada',
-    elemento_conexao: 'Fogo',
-    praticas_espirituais: {
-      tipo: 'Poder pessoal e clareza mental',
-      descricao: 'Expansão da mente, comunicação clara, justiça espiritual, poder pessoal e abertura de caminhos',
-      frequencias: ['528 Hz (Transformação)', '741 Hz (Expressão)'],
-      mantras: ['RAM (528 Hz)', 'HAM (741 Hz)', 'AUM'],
-      praticas: [
-        'Meditação para clareza mental',
-        'Práticas de comunicação verdadeira',
-        'Estudos espirituais e filosóficos',
-        'Trabalho com elementais e guias',
-        'Rituais de abertura de caminhos',
-        'Visualização solar para poder pessoal',
-      ],
+    planeta: 'Marte',
+    propriedades_astrologicas: {
+      signo_regente: 'Áries',
+      dia_semana: 'Terça-feira',
+      natureza: 'Maléfico',
+      exaltação: 'Capricórnio',
+    },
+    significado_espiritual: {
+      qualidades: 'Força, coragem, ação, transformação, poder pessoal',
+      lições_kármicas: 'Dominar a vontade e transformar medos em ação positively',
+      natureza_planetária: 'Energia, competição, coragem, ação decisiva',
+    },
+    prática_espiritual: {
+      tipo: 'Quebra de medos e ativação',
+      descrição: 'Ativação do poder pessoal através da transformação da força de vontade e superação de medos',
+      mudras: ['Mudra de ativação', 'Mudra de Marte'],
+      cores: ['Amarelo', 'Dourado'],
     },
   },
+
   Anahata: {
     chakra: 'Anahata',
-    chakra_numero: '4º Cardíaco (Coração)',
-    planeta_primario: 'Vênus',
-    planeta_secundario: 'Júpiter',
-    qualidade_energetica: 'Mista / Dinâmica',
-    elemento_conexao: 'Ar',
-    praticas_espirituais: {
-      tipo: 'Amor e abundância',
-      descricao: 'Expansão do amor incondicional, fartura espiritual, compaixão, cura e conexão com mestres',
-      frequencias: ['639 Hz (Harmonia)', '963 Hz (Conexão Divina)'],
-      mantras: ['YAM (639 Hz)', 'AUM (963 Hz)', 'EHEIEH', 'OM'],
-      praticas: [
-        'Gratidão e visualização de abundância',
-        'Práticas de compaixão e amor incondicional',
-        'Conexão com mestres ascensionados',
-        'Rituais de fartura e prosperidade',
-        'Banhos de mel e rosas para amor próprio',
-        'Silêncio e quietude meditativa',
-      ],
+    chakra_numero: '4º Cardíaco',
+    planeta: 'Vênus',
+    propriedades_astrologicas: {
+      signo_regente: 'Touro',
+      dia_semana: 'Sexta-feira',
+      natureza: 'Sadio',
+      exaltação: 'Peixes',
+    },
+    significado_espiritual: {
+      qualidades: 'Amor, compaixão, harmonia, equilíbrio, relationships',
+      lições_kármicas: 'Desenvolver amor incondicional e curar feridas emocionais',
+      natureza_planetária: 'Amor, beleza, arte, relacionamentos, prazer',
+    },
+    prática_espiritual: {
+      tipo: 'Abertura do coração',
+      descrição: 'Desenvolvimento do amor incondicional e cura de feridas emocionais do passado',
+      mudras: ['Mudra do coração', 'Mudra de Vênus'],
+      cores: ['Verde', 'Rosa'],
     },
   },
+
   Vishuddha: {
     chakra: 'Vishuddha',
-    chakra_numero: '5º Laríngeo (Garganta)',
-    planeta_primario: 'Mercúrio',
-    planeta_secundario: null,
-    qualidade_energetica: 'Neutra / Equilibrada',
-    elemento_conexao: 'Éter',
-    praticas_espirituais: {
-      tipo: 'Comunicação e expressão',
-      descricao: 'Expressão autêntica, comunicação espiritual, verdade, criatividade verbal e manifestação',
-      frequencias: ['741 Hz (Expressão)', '528 Hz (Transformação)'],
-      mantras: ['HAM (741 Hz)', 'RAM (528 Hz)', 'AUM'],
-      praticas: [
-        'Canto de mantras e cânticos sagrados',
-        'Práticas de comunicação verdadeira',
-        'Escrita criativa e journaling espiritual',
-        'Meditação de throat healing',
-        'Trabalho com chackras da garganta',
-        'Rituais de manifestação verbal',
-      ],
+    chakra_numero: '5º Laríngeo',
+    planeta: 'Mercúrio',
+    propriedades_astrologicas: {
+      signo_regente: 'Gêmeos',
+      dia_semana: 'Quarta-feira',
+      natureza: 'Misto',
+      exaltação: 'Virgem',
+    },
+    significado_espiritual: {
+      qualidades: 'Comunicação, expressão, verdade, autenticidade',
+      lições_kármicas: 'Encontrar voz autêntica e expressar verdades mais elevadas',
+      natureza_planetária: 'Comunicação, inteligência, comércio, adaptação',
+    },
+    prática_espiritual: {
+      tipo: 'Liberação da voz',
+      descrição: 'Desbloqueio da comunicação autêntica e expressão da verdade interior',
+      mudras: ['Mudra de comunicação', 'Mudra de Mercúrio'],
+      cores: ['Azul claro', 'Turquesa'],
     },
   },
+
   Ajna: {
     chakra: 'Ajna',
-    chakra_numero: '6º Terceiro Olho (Frontal)',
-    planeta_primario: 'Lua',
-    planeta_secundario: null,
-    qualidade_energetica: 'Fria / Receptiva',
-    elemento_conexao: 'Éter',
-    praticas_espirituais: {
-      tipo: 'Intuição e visão interior',
-      descricao: 'Desenvolvimento da intuição, visão clarividente, percepção extra-sensorial e conexão com o divino',
-      frequencias: ['852 Hz (Intuição)', '396 Hz (Libertação)'],
-      mantras: ['OM (852 Hz)', 'SHAM', 'AUM'],
-      praticas: [
-        'Meditação no terceiro olho',
-        'Visualização de luz violeta',
-        'Práticas de remote viewing',
-        'Trabalho com sonhos lúcidos',
-        'Conexão com guias e mentores',
-        'Leitura de oráculos e símbolos',
-      ],
+    chakra_numero: '6º Frontal',
+    planeta: 'Lua',
+    propriedades_astrologicas: {
+      signo_regente: 'Câncer',
+      dia_semana: 'Segunda-feira',
+      natureza: 'Sadio',
+      exaltação: 'Touro',
+    },
+    significado_espiritual: {
+      qualidades: 'Intuição, clareza, percepção, sabedoria interior',
+      lições_kármicas: 'Desenvolver percepção além dos sentidos e acessar a sabedoria interior',
+      natureza_planetária: 'Mente, emoção, intuição,想象力, inconsciente',
+    },
+    prática_espiritual: {
+      tipo: 'Desenvolvimento da intuição',
+      descrição: 'Expansão da percepção através da conexão com a mente intuitiva e sabedoria interior',
+      mudras: ['Mudra de intuição', 'Mudra da Lua'],
+      cores: ['Índigo', 'Roxo claro'],
     },
   },
+
   Sahasrara: {
     chakra: 'Sahasrara',
-    chakra_numero: '7º Coronário (Plexo Superior)',
-    planeta_primario: 'Sol',
-    planeta_secundario: null,
-    qualidade_energetica: 'Quente / Radiante',
-    elemento_conexao: 'Éter / Luz',
-    praticas_espirituais: {
-      tipo: 'Iluminação e propósito divino',
-      descricao: 'Conexão com a energia solar divina, propósito de vida, consciência cósmica e trascendência',
-      frequencias: ['963 Hz (Conexão Divina)', '528 Hz (Transformação)'],
-      mantras: ['AUM', 'EHEIEH', 'OM (963 Hz)'],
-      praticas: [
-        'Banhos de sol ritualísticos ao amanhecer',
-        'Meditação de luz dourada',
-        'Acender vela dourada para propósito',
-        'Práticas de afirmações de poder pessoal',
-        'Conexão com masters ascensionados',
-        'Rituais de integração alma-corpo',
-      ],
+    chakra_numero: '7º Coronário',
+    planeta: 'Sol',
+    propriedades_astrologicas: {
+      signo_regente: 'Leão',
+      dia_semana: 'Domingo',
+      natureza: 'Sadio',
+      exaltação: 'Áries',
+    },
+    significado_espiritual: {
+      qualidades: 'Iluminação, unidade, consciência cósmica, transcendência',
+      lições_kármicas: 'Realizar a fusão com a consciência divina e alcançar iluminação',
+      natureza_planetária: 'Espírito, vida, consciência,主子, poder criativo',
+    },
+    prática_espiritual: {
+      tipo: 'Conscientização cósmica',
+      descrição: 'Expansão da consciência para além do ego e conexão com a sabedoria universal',
+      mudras: ['Mudra de sabedoria', 'Mudra do Sol'],
+      cores: ['Branco', 'Dourado', 'Violeta'],
     },
   },
 };
 
 /**
- * Normalizes chakra name or number to match ChakraName type
- */
-function normalizeChakraInput(chakra: string): ChakraName | null {
-  const normalized = chakra.trim().toLowerCase();
-  const mapping: Record<string, ChakraName> = {
-    // By name (Portuguese)
-    muladhara: 'Muladhara',
-    svadhisthana: 'Svadhisthana',
-    manipura: 'Manipura',
-    anahata: 'Anahata',
-    vishuddha: 'Vishuddha',
-    ajna: 'Ajna',
-    sahasrara: 'Sahasrara',
-    // By name (English alternative)
-    'root': 'Muladhara',
-    'sacral': 'Svadhisthana',
-    'solar': 'Manipura',
-    'heart': 'Anahata',
-    'throat': 'Vishuddha',
-    'third': 'Ajna',
-    'crown': 'Sahasrara',
-    // By number
-    '1': 'Muladhara',
-    '2': 'Svadhisthana',
-    '3': 'Manipura',
-    '4': 'Anahata',
-    '5': 'Vishuddha',
-    '6': 'Ajna',
-    '7': 'Sahasrara',
-    // By number + name
-    '1º': 'Muladhara',
-    '2º': 'Svadhisthana',
-    '3º': 'Manipura',
-    '4º': 'Anahata',
-    '5º': 'Vishuddha',
-    '6º': 'Ajna',
-    '7º': 'Sahasrara',
-    '1º básico': 'Muladhara',
-    '2º sacral': 'Svadhisthana',
-    '3º plexo': 'Manipura',
-    '4º cardíaco': 'Anahata',
-    '5º laríngeo': 'Vishuddha',
-    '6º terceiro olho': 'Ajna',
-    '7º coronário': 'Sahasrara',
-    // Variations
-    'básico': 'Muladhara',
-    'raiz': 'Muladhara',
-    'sacral': 'Svadhisthana',
-    'esplênico': 'Svadhisthana',
-    'plexo solar': 'Manipura',
-    'cardíaco': 'Anahata',
-    'coração': 'Anahata',
-    'laríngeo': 'Vishuddha',
-    'garganta': 'Vishuddha',
-    'terceiro olho': 'Ajna',
-    'frontal': 'Ajna',
-    'coronário': 'Sahasrara',
-    'plexo superior': 'Sahasrara',
-  };
-
-  return mapping[normalized] || null;
-}
-
-/**
- * Get chakra-planet correlation mapping
- * @param chakra - Name or number of the chakra (e.g., 'Muladhara', '1', 'Raiz', 'Sahasrara')
- * @returns ChakraPlanetMapping or null if not found
+ * Returns the complete chakra-planet mapping for a given chakra name.
  */
 export function getChakraPlanet(chakra: string): ChakraPlanetMapping | null {
-  const normalized = normalizeChakraInput(chakra);
-  if (!normalized) return null;
-  return CHAKRA_PLANET_MAP[normalized] || null;
+  const normalizedChakra = normalizeChakraName(chakra);
+  return CHAKRA_PLANET_MAPPINGS[normalizedChakra as ChakraName] ?? null;
 }
 
 /**
- * Get all planets associated with each chakra
- * @returns Record mapping each ChakraName to its primary planet
+ * Returns the chakra associated with a given planet.
  */
-export function getPlanetChakra(): Record<ChakraName, string> {
-  const result: Partial<Record<ChakraName, string>> = {};
-
-  for (const [chakraName, mapping] of Object.entries(CHAKRA_PLANET_MAP)) {
-    result[chakraName as ChakraName] = mapping.planeta_primario;
-  }
-
-  return result as Record<ChakraName, string>;
+export function getPlanetChakra(planeta: string): ChakraPlanetMapping | null {
+  const normalizedPlanet = normalizePlanetName(planeta);
+  const entry = Object.values(CHAKRA_PLANET_MAPPINGS).find(
+    mapping => mapping.planeta === normalizedPlanet
+  );
+  return entry ?? null;
 }
 
 /**
- * Get all chakra-planet mappings
- * @returns Array of all ChakraPlanetMapping objects
+ * Returns all chakra-planet mappings.
  */
 export function getAllChakraPlanets(): ChakraPlanetMapping[] {
-  return Object.values(CHAKRA_PLANET_MAP);
+  return Object.values(CHAKRA_PLANET_MAPPINGS);
 }
 
 /**
- * Get secondary planet for a chakra (if any)
- * @param chakra - Name or number of the chakra
- * @returns Secondary planet name or null
+ * Normalizes chakra name to match ChakraName type.
  */
-export function getChakraSecondaryPlanet(chakra: string): string | null {
-  const mapping = getChakraPlanet(chakra);
-  return mapping?.planeta_secundario || null;
+function normalizeChakraName(chakra: string): string {
+  const chakraMap: Record<string, string> = {
+    'muladhara': 'Muladhara',
+    'svadhisthana': 'Svadhisthana',
+    'manipura': 'Manipura',
+    'anahata': 'Anahata',
+    'vishuddha': 'Vishuddha',
+    'ajna': 'Ajna',
+    'sahasrara': 'Sahasrara',
+    '1º básico': 'Muladhara',
+    '1º Básico': 'Muladhara',
+    '2º sacro': 'Svadhisthana',
+    '2º Sacro': 'Svadhisthana',
+    '3º plexo solar': 'Manipura',
+    '3º Plexo Solar': 'Manipura',
+    '4º cardíaco': 'Anahata',
+    '4º Cardíaco': 'Anahata',
+    '5º laríngeo': 'Vishuddha',
+    '5º Laríngeo': 'Vishuddha',
+    '6º frontal': 'Ajna',
+    '6º Frontal': 'Ajna',
+    '7º coronário': 'Sahasrara',
+    '7º Coronário': 'Sahasrara',
+  };
+  return chakraMap[chakra.toLowerCase()] ?? chakra;
 }
 
 /**
- * Get planet-to-chakra reverse mapping
- * @returns Record mapping each planet to its primary chakra
+ * Normalizes planet name to match Planeta type.
  */
-export function getPlanetToChakra(): Record<string, ChakraName> {
-  const result: Record<string, ChakraName> = {};
-
-  for (const mapping of Object.values(CHAKRA_PLANET_MAP)) {
-    result[mapping.planeta_primario] = mapping.chakra;
-    if (mapping.planeta_secundario) {
-      // For secondary planets, keep the primary mapping
-    }
-  }
-
-  return result;
+function normalizePlanetName(planeta: string): Planeta {
+  const planetMap: Record<string, Planeta> = {
+    'sol': 'Sol',
+    'lua': 'Lua',
+    'marte': 'Marte',
+    'mercúrio': 'Mercúrio',
+    'mercurio': 'Mercúrio',
+    'júpiter': 'Júpiter',
+    'jupiter': 'Júpiter',
+    'vênus': 'Vênus',
+    'venus': 'Vênus',
+    'saturno': 'Saturno',
+  };
+  return planetMap[planeta.toLowerCase()] ?? planeta as Planeta;
 }
-
-export default {
-  getChakraPlanet,
-  getPlanetChakra,
-  getAllChakraPlanets,
-  getChakraSecondaryPlanet,
-  getPlanetToChakra,
-};
