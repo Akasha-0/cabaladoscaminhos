@@ -14,18 +14,18 @@ const JourneyBodySchema = z.object({
   markMilestone: MarkMilestoneSchema.optional(),
   trackEvent: z.object({
     type: z.string(),
-    data: z.record(z.unknown()).optional(),
   }).optional(),
 });
 // ============================================================
 // TYPES
 // ============================================================
 type MilestoneCategory = 'prática' | 'conhecimento' | 'transformação'
-  description: string
+interface Milestone {
+  id: string
+  title: string
   category: MilestoneCategory
   completedAt?: string
 }
-
 interface JourneyProgress {
   totalPoints: number
   completedMilestones: number
