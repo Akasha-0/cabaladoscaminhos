@@ -12,8 +12,6 @@ export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
  * the Major Arcana path on the Tree of Life.
  */
 
-import { Elemento } from './numerology-element';
-
 /**
  * Represents the correlation between a numerology number and its Major Arcana correspondence
  */
