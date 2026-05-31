@@ -341,18 +341,19 @@ describe('Odú-Ifá Orixá Correlation', () => {
   });
 
   // ─── getOduByOrixa ──────────────────────────────────────────────────────
-
   describe('getOduByOrixa', () => {
     it('should return Odús ruled by Oxalá', () => {
       const result = getOduByOrixa('Oxalá');
       expect(result.length).toBeGreaterThan(0);
-      expect(result.every((m) => m.orixa === 'Oxalá')).toBe(true);
+      // All results should have Oxalá as main orixa or aspect
+      expect(result.every((m) => m.orixa === 'Oxalá' || m.orixa_aspect === 'Oxalá')).toBe(true);
     });
 
     it('should return Odús ruled by Oxum', () => {
       const result = getOduByOrixa('Oxum');
       expect(result.length).toBeGreaterThan(0);
-      expect(result.every((m) => m.orixa === 'Oxum')).toBe(true);
+      // All results should have Oxum as main orixa or aspect
+      expect(result.every((m) => m.orixa === 'Oxum' || m.orixa_aspect === 'Oxum')).toBe(true);
     });
 
     it('should find by aspect name (Logun Ede)', () => {
@@ -480,3 +481,4 @@ describe('Odú-Ifá Orixá Correlation', () => {
       expect(element).toBe('fogo');
     });
   });
+});

@@ -9,6 +9,7 @@ import {
   getNumerologyDay,
   getNumerologyDays,
   getAllDayNumerology,
+  getAllDayNumerologies,
   getDaySpiritualMeaning,
   getNumerologyProperties,
   getDaysByNumero,
@@ -186,6 +187,19 @@ describe('Day-Numerology Correlation', () => {
 
     it('should have unique indices', () => {
       const allDays = getAllDayNumerology();
+      const indices = allDays.map(d => d.indice);
+      const uniqueIndices = new Set(indices);
+      expect(uniqueIndices.size).toBe(7);
+    });
+  describe('getAllDayNumerologies', () => {
+    it('should return array of all DayNumerology objects (plural alias)', () => {
+      const allDays = getAllDayNumerologies();
+      expect(Array.isArray(allDays)).toBe(true);
+      expect(allDays.length).toBe(7);
+    });
+
+    it('should have unique indices', () => {
+      const allDays = getAllDayNumerologies();
       const indices = allDays.map(d => d.indice);
       const uniqueIndices = new Set(indices);
       expect(uniqueIndices.size).toBe(7);
