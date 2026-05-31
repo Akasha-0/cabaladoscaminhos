@@ -1,63 +1,50 @@
 // ============================================================
 // SPIRITUAL STATS API - CABALA DOS CAMINHOS
 // ============================================================
-// GET user spiritual statistics
-// - Total readings by type
-// - Ritual completions and streaks
-// - Activity tracking
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ReadingTypeSchema = z.enum([
+  'tarot',
+  'numerologia',
+  'astrologia',
+  'ifá',
+  'lenormand',
+  'orixá',
+  'cabala',
+]);
+const FeatureSchema = z.enum([
+  'mapa-alma',
+  'mapa-caminho',
+  'ritual',
+  'meditacao',
+  'afirmacoes',
+  'divinacao',
+  'numerologia',
+  'tarot',
+  'orixá',
+  'correlacao',
+]);
+const StatsQuerySchema = z.object({
+  userId: z.string().optional(),
+  type: ReadingTypeSchema.optional(),
+  period: z.enum(['day', 'week', 'month', 'year', 'all']).optional().default('month'),
+});
+const ActivityBodySchema = z.object({
+  userId: z.string().min(1, 'userId é obrigatório'),
+  feature: FeatureSchema,
+  metadata: z.record(z.any()).optional(),
+});
 interface ReadingStats {
   total: number;
   byType: Record<string, number>;
 }
-
 interface RitualStats {
   totalCompletions: number;
   currentStreak: number;
   longestStreak: number;
   completionRate: number;
   recentCompletions: Array<{
-    ritualId: string;
-    date: string;
-    duration: number;
-  }>;
-}
-
-interface ActivityStats {
-  totalSessions: number;
-  lastActive: string | null;
-  favoriteFeature: string | null;
-}
-
-interface SpiritualStats {
-  readings: ReadingStats;
-  rituals: RitualStats;
-  streak: {
-    current: number;
-    longest: number;
-  };
-  activity: ActivityStats;
-  generatedAt: string;
-}
-
-// In-memory activity tracking
-const activityStore: Map<string, { sessions: number; lastActive: string; features: Map<string, number> }> = new Map();
-
-function getUserActivity(userId: string) {
-  if (!activityStore.has(userId)) {
-    activityStore.set(userId, { sessions: 0, lastActive: new Date().toISOString(), features: new Map() });
-  }
-  return activityStore.get(userId);
-}
-
-function recordActivity(userId: string, feature: string) {
-  const activity = getUserActivity(userId);
-  if (activity) {
-    activity.sessions += 1;
     activity.lastActive = new Date().toISOString();
     const count = activity.features.get(feature) || 0;
     activity.features.set(feature, count + 1);
