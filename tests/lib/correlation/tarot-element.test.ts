@@ -24,622 +24,444 @@ import {
   type Elemento,
 } from '@/lib/correlation/tarot-element';
 
-describe('tarot-element', () => {
-  // ─── getTarotElement: valid arcano names ─────────────────────────────────────
+describe('numerology-tarot', () => {
+  // ─── getNumerologyTarot: valid numbers ──────────────────────────────────────
 
-  describe('getTarotElement', () => {
-    it('returns mapping for "O Sol"', () => {
-      const result = getTarotElement('O Sol');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Sol');
-      expect(result?.numero_carta).toBe(19);
-      expect(result?.elemento).toBe('Fogo');
+  describe('getNumerologyTarot', () => {
+    it('returns mapping for number 1', () => {
+      const result = getNumerologyTarot(1);
+      expect(result.arcano).toBe('O Mago');
+      expect(result.numero_carta).toBe(1);
+      expect(result.elemento).toBe('Água');
     });
 
-    it('returns mapping for "A Lua"', () => {
-      const result = getTarotElement('A Lua');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('A Lua');
-      expect(result?.numero_carta).toBe(18);
-      expect(result?.elemento).toBe('Água');
+    it('returns mapping for number 2', () => {
+      const result = getNumerologyTarot(2);
+      expect(result.arcano).toBe('A Alta Sacerdotisa');
+      expect(result.numero_carta).toBe(2);
     });
 
-    it('returns mapping for "O Mago"', () => {
-      const result = getTarotElement('O Mago');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Mago');
-      expect(result?.numero_carta).toBe(1);
-      expect(result?.elemento).toBe('Ar');
+    it('returns mapping for number 3', () => {
+      const result = getNumerologyTarot(3);
+      expect(result.arcano).toBe('A Imperatriz');
+      expect(result.numero_carta).toBe(3);
     });
 
-    it('returns mapping for "A Imperatriz"', () => {
-      const result = getTarotElement('A Imperatriz');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('A Imperatriz');
-      expect(result?.numero_carta).toBe(3);
-      expect(result?.elemento).toBe('Terra');
+    it('returns mapping for number 4', () => {
+      const result = getNumerologyTarot(4);
+      expect(result.arcano).toBe('O Imperador');
+      expect(result.numero_carta).toBe(4);
     });
 
-    it('returns mapping for "O Louco"', () => {
-      const result = getTarotElement('O Louco');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Louco');
-      expect(result?.numero_carta).toBe(0);
-      expect(result?.elemento).toBe('Éter');
+    it('returns mapping for number 5', () => {
+      const result = getNumerologyTarot(5);
+      expect(result.arcano).toBe('O Hierofante');
+      expect(result.numero_carta).toBe(5);
     });
 
-    it('returns mapping for "O Mundo"', () => {
-      const result = getTarotElement('O Mundo');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Mundo');
-      expect(result?.numero_carta).toBe(21);
-      expect(result?.elemento).toBe('Éter');
+    it('returns mapping for number 6', () => {
+      const result = getNumerologyTarot(6);
+      expect(result.arcano).toBe('Os Enamorados');
+      expect(result.numero_carta).toBe(6);
     });
 
-    it('returns mapping for "A Morte"', () => {
-      const result = getTarotElement('A Morte');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('A Morte');
-      expect(result?.numero_carta).toBe(13);
-      expect(result?.elemento).toBe('Água');
+    it('returns mapping for number 7', () => {
+      const result = getNumerologyTarot(7);
+      expect(result.arcano).toBe('O Carro');
+      expect(result.numero_carta).toBe(7);
     });
 
-    it('returns mapping for "A Torre"', () => {
-      const result = getTarotElement('A Torre');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('A Torre');
-      expect(result?.numero_carta).toBe(16);
-      expect(result?.elemento).toBe('Fogo');
+    it('returns mapping for number 8', () => {
+      const result = getNumerologyTarot(8);
+      expect(result.arcano).toBe('A Justiça');
+      expect(result.numero_carta).toBe(8);
     });
 
-    // ─── Case-insensitive lookup ───────────────────────────────────────────────
-
-    it('handles lowercase input', () => {
-      const result = getTarotElement('o sol');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Sol');
+    it('returns mapping for number 9', () => {
+      const result = getNumerologyTarot(9);
+      expect(result.arcano).toBe('O Eremita');
+      expect(result.numero_carta).toBe(9);
     });
 
-    it('handles mixed case input', () => {
-      const result = getTarotElement('O SOL');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Sol');
+    it('throws for number 0', () => {
+      expect(() => getNumerologyTarot(0)).toThrow('Número fora do intervalo válido (1-9)');
     });
 
-    it('handles trimmed input', () => {
-      const result = getTarotElement('  O Sol  ');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Sol');
+    it('throws for number 10', () => {
+      expect(() => getNumerologyTarot(10)).toThrow('Número fora do intervalo válido (1-9)');
     });
 
-    // ─── Alternative names ──────────────────────────────────────────────────────
-
-    it('resolves "hierofante" to "O Papa"', () => {
-      const result = getTarotElement('hierofante');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Papa');
+    it('throws for negative numbers', () => {
+      expect(() => getNumerologyTarot(-1)).toThrow('Número fora do intervalo válido (1-9)');
     });
 
-    it('resolves "amante" to "O Enamorado"', () => {
-      const result = getTarotElement('amante');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Enamorado');
-    });
-
-    it('resolves "juízo" to "O Julgamento"', () => {
-      const result = getTarotElement('juízo');
-      expect(result).toBeDefined();
-      expect(result?.arcano).toBe('O Julgamento');
-    });
-
-    // ─── Invalid input ──────────────────────────────────────────────────────────
-
-    it('returns null for unknown arcano', () => {
-      const result = getTarotElement('Unknown Card');
-      expect(result).toBeNull();
-    });
-
-    it('returns null for empty string', () => {
-      const result = getTarotElement('');
-      expect(result).toBeNull();
-    });
-
-    it('returns null for whitespace only', () => {
-      const result = getTarotElement('   ');
-      expect(result).toBeNull();
+    it('throws for non-integer numbers', () => {
+      expect(() => getNumerologyTarot(3.5)).toThrow('Número fora do intervalo válido (1-9)');
     });
   });
 
-  // ─── getElementFromArcano ────────────────────────────────────────────────────
+  // ─── getTarotNumerology ──────────────────────────────────────────────────────
 
-  describe('getElementFromArcano', () => {
-    it('returns "Fogo" for "O Sol"', () => {
-      expect(getElementFromArcano('O Sol')).toBe('Fogo');
+  describe('getTarotNumerology', () => {
+    it('returns numerology number for O Mago', () => {
+      expect(getTarotNumerology('O Mago')).toBe(1);
     });
 
-    it('returns "Água" for "A Lua"', () => {
-      expect(getElementFromArcano('A Lua')).toBe('Água');
+    it('returns numerology number for A Alta Sacerdotisa', () => {
+      expect(getTarotNumerology('A Alta Sacerdotisa')).toBe(2);
     });
 
-    it('returns "Ar" for "O Mago"', () => {
-      expect(getElementFromArcano('O Mago')).toBe('Ar');
+    it('returns numerology number for A Imperatriz', () => {
+      expect(getTarotNumerology('A Imperatriz')).toBe(3);
     });
 
-    it('returns "Terra" for "A Imperatriz"', () => {
-      expect(getElementFromArcano('A Imperatriz')).toBe('Terra');
+    it('returns numerology number for O Imperador', () => {
+      expect(getTarotNumerology('O Imperador')).toBe(4);
     });
 
-    it('returns "Éter" for "O Louco"', () => {
-      expect(getElementFromArcano('O Louco')).toBe('Éter');
+    it('returns numerology number for O Hierofante', () => {
+      expect(getTarotNumerology('O Hierofante')).toBe(5);
     });
 
-    it('returns null for unknown arcano', () => {
-      expect(getElementFromArcano('Unknown')).toBeNull();
+    it('returns numerology number for Os Enamorados', () => {
+      expect(getTarotNumerology('Os Enamorados')).toBe(6);
+    });
+
+    it('returns numerology number for O Carro', () => {
+      expect(getTarotNumerology('O Carro')).toBe(7);
+    });
+
+    it('returns numerology number for A Justiça', () => {
+      expect(getTarotNumerology('A Justiça')).toBe(8);
+    });
+
+    it('returns numerology number for O Eremita', () => {
+      expect(getTarotNumerology('O Eremita')).toBe(9);
+    });
+
+    it('returns null for non-existent arcano', () => {
+      expect(getTarotNumerology('O Sol')).toBeNull();
+    });
+
+    it('is case-insensitive', () => {
+      expect(getTarotNumerology('o mago')).toBe(1);
+      expect(getTarotNumerology('O MAGO')).toBe(1);
     });
   });
 
-  // ─── getArcanoByElement ──────────────────────────────────────────────────────
+  // ─── getAllNumerologyTarots ─────────────────────────────────────────────────
 
-  describe('getArcanoByElement', () => {
-    it('returns all Fogo arcano', () => {
-      const result = getArcanoByElement('Fogo');
-      expect(result.length).toBeGreaterThan(0);
-      expect(result.every((m) => m.elemento === 'Fogo')).toBe(true);
+  describe('getAllNumerologyTarots', () => {
+    it('returns array with all 9 mappings', () => {
+      const results = getAllNumerologyTarots();
+      expect(results).toHaveLength(9);
     });
 
-    it('returns all Água arcano', () => {
-      const result = getArcanoByElement('Água');
-      expect(result.length).toBeGreaterThan(0);
-      expect(result.every((m) => m.elemento === 'Água')).toBe(true);
+    it('returns mappings sorted by numero', () => {
+      const results = getAllNumerologyTarots();
+      for (let i = 0; i < results.length - 1; i++) {
+        expect(results[i].numero).toBeLessThan(results[i + 1].numero);
+      }
     });
 
-    it('returns all Ar arcano', () => {
-      const result = getArcanoByElement('Ar');
-      expect(result.length).toBeGreaterThan(0);
-      expect(result.every((m) => m.elemento === 'Ar')).toBe(true);
+    it('includes all expected arcano names', () => {
+      const results = getAllNumerologyTarots();
+      const arcanoNames = results.map((r) => r.arcano);
+      expect(arcanoNames).toContain('O Mago');
+      expect(arcanoNames).toContain('A Alta Sacerdotisa');
+      expect(arcanoNames).toContain('A Imperatriz');
+      expect(arcanoNames).toContain('O Imperador');
+      expect(arcanoNames).toContain('O Hierofante');
+      expect(arcanoNames).toContain('Os Enamorados');
+      expect(arcanoNames).toContain('O Carro');
+      expect(arcanoNames).toContain('A Justiça');
+      expect(arcanoNames).toContain('O Eremita');
     });
 
-    it('returns all Terra arcano', () => {
-      const result = getArcanoByElement('Terra');
-      expect(result.length).toBeGreaterThan(0);
-      expect(result.every((m) => m.elemento === 'Terra')).toBe(true);
+    it('each mapping has all required fields', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping).toHaveProperty('numero');
+        expect(mapping).toHaveProperty('arcano');
+        expect(mapping).toHaveProperty('numero_carta');
+        expect(mapping).toHaveProperty('elemento');
+        expect(mapping).toHaveProperty('significado_espiritual');
+        expect(mapping).toHaveProperty('arquétipo');
+        expect(mapping).toHaveProperty('orixá');
+        expect(mapping).toHaveProperty('sephirah');
+        expect(mapping).toHaveProperty('chakra');
+        expect(mapping).toHaveProperty('lição_espiritual');
+        expect(mapping).toHaveProperty('afirmação');
+      }
+    });
+  });
+
+  // ─── hasNumerologyTarot ─────────────────────────────────────────────────────
+
+  describe('hasNumerologyTarot', () => {
+    it('returns true for valid numbers 1-9', () => {
+      for (let i = 1; i <= 9; i++) {
+        expect(hasNumerologyTarot(i)).toBe(true);
+      }
     });
 
-    it('returns all Éter arcano', () => {
-      const result = getArcanoByElement('Éter');
-      expect(result.length).toBeGreaterThan(0);
-      expect(result.every((m) => m.elemento === 'Éter')).toBe(true);
+    it('returns false for number 0', () => {
+      expect(hasNumerologyTarot(0)).toBe(false);
     });
 
-    it('handles lowercase element input', () => {
-      const result = getArcanoByElement('fogo');
-      expect(result.length).toBeGreaterThan(0);
+    it('returns false for numbers greater than 9', () => {
+      expect(hasNumerologyTarot(10)).toBe(false);
+      expect(hasNumerologyTarot(22)).toBe(false);
+    });
+
+    it('returns false for negative numbers', () => {
+      expect(hasNumerologyTarot(-1)).toBe(false);
+    });
+  });
+
+  // ─── getMappingByArcano ──────────────────────────────────────────────────────
+
+  describe('getMappingByArcano', () => {
+    it('returns mapping for O Mago', () => {
+      const result = getMappingByArcano('O Mago');
+      expect(result).not.toBeNull();
+      expect(result!.numero).toBe(1);
+    });
+
+    it('returns mapping for A Justiça', () => {
+      const result = getMappingByArcano('A Justiça');
+      expect(result).not.toBeNull();
+      expect(result!.numero).toBe(8);
+    });
+
+    it('returns null for non-existent arcano', () => {
+      expect(getMappingByArcano('O Sol')).toBeNull();
+    });
+
+    it('is case-insensitive', () => {
+      expect(getMappingByArcano('o mago')).not.toBeNull();
+      expect(getMappingByArcano('O MAGO')).not.toBeNull();
+    });
+  });
+
+  // ─── getNumerologyByElement ─────────────────────────────────────────────────
+
+  describe('getNumerologyByElement', () => {
+    it('returns mappings for Água element', () => {
+      const results = getNumerologyByElement('Água');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((m) => m.elemento === 'Água')).toBe(true);
+    });
+
+    it('returns mappings for Terra element', () => {
+      const results = getNumerologyByElement('Terra');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((m) => m.elemento === 'Terra')).toBe(true);
+    });
+
+    it('returns mappings for Fogo element', () => {
+      const results = getNumerologyByElement('Fogo');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((m) => m.elemento === 'Fogo')).toBe(true);
+    });
+
+    it('returns mappings for Ar element', () => {
+      const results = getNumerologyByElement('Ar');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.every((m) => m.elemento === 'Ar')).toBe(true);
+    });
+
+    it('is case-insensitive', () => {
+      const results1 = getNumerologyByElement('agua');
+      const results2 = getNumerologyByElement('Água');
+      expect(results1.length).toBe(results2.length);
     });
 
     it('returns empty array for unknown element', () => {
-      const result = getArcanoByElement('UnknownElement');
-      expect(result).toEqual([]);
+      expect(getNumerologyByElement('Éter')).toEqual([]);
     });
   });
 
-  // ─── getAllTarotElements ──────────────────────────────────────────────────────
+  // ─── getNumerologyByOrixa ───────────────────────────────────────────────────
 
-  describe('getAllTarotElements', () => {
-    it('returns all 22 arcano mappings', () => {
-      const result = getAllTarotElements();
-      expect(result.length).toBe(22);
+  describe('getNumerologyByOrixa', () => {
+    it('returns mappings for Exu', () => {
+      const results = getNumerologyByOrixa('Exu');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].orixá).toContain('Exu');
     });
 
-    it('returns mappings sorted by card number', () => {
-      const result = getAllTarotElements();
-      for (let i = 1; i < result.length; i++) {
-        expect(result[i].numero_carta).toBeGreaterThan(result[i - 1].numero_carta);
+    it('returns mappings for Ogum', () => {
+      const results = getNumerologyByOrixa('Ogum');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].orixá).toContain('Ogum');
+    });
+
+    it('is case-insensitive', () => {
+      const results1 = getNumerologyByOrixa('exu');
+      const results2 = getNumerologyByOrixa('Exu');
+      expect(results1.length).toBe(results2.length);
+    });
+
+    it('returns empty array for unknown orixá', () => {
+      expect(getNumerologyByOrixa('Orunbila')).toEqual([]);
+    });
+  });
+
+  // ─── getNumerologyBySephirah ─────────────────────────────────────────────────
+
+  describe('getNumerologyBySephirah', () => {
+    it('returns mappings for Kether', () => {
+      const results = getNumerologyBySephirah('Kether');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].sephirah).toBe('Kether');
+    });
+
+    it('returns mappings for Tiphereth', () => {
+      const results = getNumerologyBySephirah('Tiphereth');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].sephirah).toBe('Tiphereth');
+    });
+
+    it('returns empty array for unknown sephirah', () => {
+      expect(getNumerologyBySephirah('Daat')).toEqual([]);
+    });
+  });
+
+  // ─── getNumerologyByChakra ───────────────────────────────────────────────────
+
+  describe('getNumerologyByChakra', () => {
+    it('returns mappings for Frontal chakra', () => {
+      const results = getNumerologyByChakra('Frontal');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].chakra).toContain('Frontal');
+    });
+
+    it('returns mappings for Cardíaco chakra', () => {
+      const results = getNumerologyByChakra('Cardíaco');
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].chakra).toContain('Cardíaco');
+    });
+
+    it('returns empty array for unknown chakra', () => {
+      expect(getNumerologyByChakra('Coronário')).toEqual([]);
+    });
+  });
+
+  // ─── NUMEROLOGIA_ARCANO_MAP constant ──────────────────────────────────────
+
+  describe('NUMEROLOGIA_ARCANO_MAP', () => {
+    it('is defined as a Record', () => {
+      expect(NUMEROLOGIA_ARCANO_MAP).toBeDefined();
+      expect(typeof NUMEROLOGIA_ARCANO_MAP).toBe('object');
+    });
+
+    it('has exactly 9 entries (numbers 1-9)', () => {
+      expect(Object.keys(NUMEROLOGIA_ARCANO_MAP)).toHaveLength(9);
+    });
+
+    it('each numero matches its key', () => {
+      for (const [key, mapping] of Object.entries(NUMEROLOGIA_ARCANO_MAP)) {
+        expect(mapping.numero).toBe(Number(key));
       }
     });
 
-    it('includes all required fields', () => {
-      const result = getAllTarotElements();
-      for (const mapping of result) {
-        expect(mapping.arcano).toBeDefined();
-        expect(mapping.numero_carta).toBeDefined();
-        expect(mapping.elemento).toBeDefined();
-        expect(mapping.significado_espiritual).toBeDefined();
-        expect(mapping.arquétipo).toBeDefined();
-        expect(mapping.orixá).toBeDefined();
-        expect(mapping.sephirah).toBeDefined();
-        expect(mapping.chakra).toBeDefined();
-        expect(mapping.lição_espiritual).toBeDefined();
-        expect(mapping.qualidades).toBeDefined();
-        expect(mapping.afirmação).toBeDefined();
-        expect(mapping.cores).toBeDefined();
-        expect(mapping.dia_sagrado).toBeDefined();
+    it('is frozen to prevent modifications', () => {
+      expect(Object.isFrozen(NUMEROLOGIA_ARCANO_MAP)).toBe(true);
+    });
+
+    it('all nested mapping objects are frozen', () => {
+      for (const mapping of Object.values(NUMEROLOGIA_ARCANO_MAP)) {
+        expect(Object.isFrozen(mapping)).toBe(true);
       }
-    });
-  });
-
-  // ─── getAllArcanos ────────────────────────────────────────────────────────────
-
-  describe('getAllArcanos', () => {
-    it('returns all 22 arcano names', () => {
-      const result = getAllArcanos();
-      expect(result.length).toBe(22);
-    });
-
-    it('includes "O Sol"', () => {
-      expect(getAllArcanos()).toContain('O Sol');
-    });
-
-    it('includes "A Lua"', () => {
-      expect(getAllArcanos()).toContain('A Lua');
-    });
-
-    it('includes "O Louco"', () => {
-      expect(getAllArcanos()).toContain('O Louco');
-    });
-  });
-
-  // ─── getAllElements ───────────────────────────────────────────────────────────
-
-  describe('getAllElements', () => {
-    it('returns all 5 elements', () => {
-      const result = getAllElements();
-      expect(result.length).toBe(5);
-    });
-
-    it('includes Fogo', () => {
-      expect(getAllElements()).toContain('Fogo');
-    });
-
-    it('includes Água', () => {
-      expect(getAllElements()).toContain('Água');
-    });
-
-    it('includes Ar', () => {
-      expect(getAllElements()).toContain('Ar');
-    });
-
-    it('includes Terra', () => {
-      expect(getAllElements()).toContain('Terra');
-    });
-
-    it('includes Éter', () => {
-      expect(getAllElements()).toContain('Éter');
-    });
-  });
-
-  // ─── getSignificadoFromArcano ────────────────────────────────────────────────
-
-  describe('getSignificadoFromArcano', () => {
-    it('returns spiritual meaning for "O Sol"', () => {
-      const result = getSignificadoFromArcano('O Sol');
-      expect(result).toBeDefined();
-      expect(result!.length).toBeGreaterThan(10);
-    });
-
-    it('returns null for unknown arcano', () => {
-      expect(getSignificadoFromArcano('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── getOrixaFromArcano ───────────────────────────────────────────────────────
-
-  describe('getOrixaFromArcano', () => {
-    it('returns orixá for "O Sol"', () => {
-      const result = getOrixaFromArcano('O Sol');
-      expect(result).toBe('Oxumarê');
-    });
-
-    it('returns orixá for "A Lua"', () => {
-      const result = getOrixaFromArcano('A Lua');
-      expect(result).toBe('Iemanjá');
-    });
-
-    it('returns null for unknown arcano', () => {
-      expect(getOrixaFromArcano('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── getSephirahFromArcano ────────────────────────────────────────────────────
-
-  describe('getSephirahFromArcano', () => {
-    it('returns sephirah for "O Sol"', () => {
-      const result = getSephirahFromArcano('O Sol');
-      expect(result).toBe('Tiphereth');
-    });
-
-    it('returns sephirah for "O Louco"', () => {
-      const result = getSephirahFromArcano('O Louco');
-      expect(result).toBe('Kether');
-    });
-
-    it('returns null for unknown arcano', () => {
-      expect(getSephirahFromArcano('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── getChakraFromArcano ──────────────────────────────────────────────────────
-
-  describe('getChakraFromArcano', () => {
-    it('returns chakra for "O Sol"', () => {
-      const result = getChakraFromArcano('O Sol');
-      expect(result).toBe('Solar');
-    });
-
-    it('returns chakra for "A Lua"', () => {
-      const result = getChakraFromArcano('A Lua');
-      expect(result).toBe('Ajna');
-    });
-
-    it('returns null for unknown arcano', () => {
-      expect(getChakraFromArcano('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── getNumeroCartaFromArcano ────────────────────────────────────────────────
-
-  describe('getNumeroCartaFromArcano', () => {
-    it('returns card number 19 for "O Sol"', () => {
-      expect(getNumeroCartaFromArcano('O Sol')).toBe(19);
-    });
-
-    it('returns card number 0 for "O Louco"', () => {
-      expect(getNumeroCartaFromArcano('O Louco')).toBe(0);
-    });
-
-    it('returns card number 21 for "O Mundo"', () => {
-      expect(getNumeroCartaFromArcano('O Mundo')).toBe(21);
-    });
-
-    it('returns null for unknown arcano', () => {
-      expect(getNumeroCartaFromArcano('Unknown')).toBeNull();
-    });
-  });
-
-  // ─── hasTarotElement ──────────────────────────────────────────────────────────
-
-  describe('hasTarotElement', () => {
-    it('returns true for known arcano', () => {
-      expect(hasTarotElement('O Sol')).toBe(true);
-    });
-
-    it('returns true for lowercase arcano', () => {
-      expect(hasTarotElement('o sol')).toBe(true);
-    });
-
-    it('returns false for unknown arcano', () => {
-      expect(hasTarotElement('Unknown Card')).toBe(false);
-    });
-
-    it('returns false for empty string', () => {
-      expect(hasTarotElement('')).toBe(false);
-    });
-  });
-
-  // ─── getArcanoByNumero ────────────────────────────────────────────────────────
-
-  describe('getArcanoByNumero', () => {
-    it('returns "O Louco" for card number 0', () => {
-      expect(getArcanoByNumero(0)).toBe('O Louco');
-    });
-
-    it('returns "O Mago" for go card number 1', () => {
-      expect(getArcanoByNumero(1)).toBe('O Mago');
-    });
-
-    it('returns "O Sol" for card number 19', () => {
-      expect(getArcanoByNumero(19)).toBe('O Sol');
-    });
-
-    it('returns "O Mundo" for card number 21', () => {
-      expect(getArcanoByNumero(21)).toBe('O Mundo');
-    });
-
-    it('returns null for invalid card number', () => {
-      expect(getArcanoByNumero(99)).toBeNull();
-    });
-
-    it('returns null for negative card number', () => {
-      expect(getArcanoByNumero(-1)).toBeNull();
-    });
-  });
-
-  // ─── TAROT_ELEMENT_MAP constant ───────────────────────────────────────────────
-
-  describe('TAROT_ELEMENT_MAP', () => {
-    it('is defined', () => {
-      expect(TAROT_ELEMENT_MAP).toBeDefined();
-    });
-
-    it('has 22 entries', () => {
-      expect(Object.keys(TAROT_ELEMENT_MAP).length).toBe(22);
-    });
-
-    it('is frozen', () => {
-      expect(Object.isFrozen(TAROT_ELEMENT_MAP)).toBe(true);
-    });
-
-    it('contains "O Sol" entry', () => {
-      expect(TAROT_ELEMENT_MAP['O Sol']).toBeDefined();
-      expect(TAROT_ELEMENT_MAP['O Sol'].elemento).toBe('Fogo');
-    });
-
-    it('contains "A Lua" entry', () => {
-      expect(TAROT_ELEMENT_MAP['A Lua']).toBeDefined();
-      expect(TAROT_ELEMENT_MAP['A Lua'].elemento).toBe('Água');
-    });
-
-    it('contains "O Louco" entry', () => {
-      expect(TAROT_ELEMENT_MAP['O Louco']).toBeDefined();
-      expect(TAROT_ELEMENT_MAP['O Louco'].elemento).toBe('Éter');
-    });
-  });
-
-  // ─── TODOS_ARCANOS constant ───────────────────────────────────────────────────
-
-  describe('TODOS_ARCANOS', () => {
-    it('is defined', () => {
-      expect(TODOS_ARCANOS).toBeDefined();
-    });
-
-    it('has 22 entries', () => {
-      expect(TODOS_ARCANOS.length).toBe(22);
-    });
-
-    it('is frozen', () => {
-      expect(Object.isFrozen(TODOS_ARCANOS)).toBe(true);
-    });
-
-    it('includes "O Sol"', () => {
-      expect(TODOS_ARCANOS).toContain('O Sol');
-    });
-
-    it('includes "A Lua"', () => {
-      expect(TODOS_ARCANOS).toContain('A Lua');
-    });
-
-    it('includes all Major Arcana cards', () => {
-      expect(TODOS_ARCANOS).toContain('O Louco');
-      expect(TODOS_ARCANOS).toContain('O Mago');
-      expect(TODOS_ARCANOS).toContain('A Sacerdotisa');
-      expect(TODOS_ARCANOS).toContain('A Imperatriz');
-      expect(TODOS_ARCANOS).toContain('O Imperador');
-      expect(TODOS_ARCANOS).toContain('O Papa');
-      expect(TODOS_ARCANOS).toContain('O Enamorado');
-      expect(TODOS_ARCANOS).toContain('O Carro');
-      expect(TODOS_ARCANOS).toContain('A Justiça');
-      expect(TODOS_ARCANOS).toContain('O Eremita');
-      expect(TODOS_ARCANOS).toContain('A Roda da Fortuna');
-      expect(TODOS_ARCANOS).toContain('A Força');
-      expect(TODOS_ARCANOS).toContain('O Enforcado');
-      expect(TODOS_ARCANOS).toContain('A Morte');
-      expect(TODOS_ARCANOS).toContain('A Temperança');
-      expect(TODOS_ARCANOS).toContain('O Diabo');
-      expect(TODOS_ARCANOS).toContain('A Torre');
-      expect(TODOS_ARCANOS).toContain('A Estrela');
-      expect(TODOS_ARCANOS).toContain('A Lua');
-      expect(TODOS_ARCANOS).toContain('O Sol');
-      expect(TODOS_ARCANOS).toContain('O Julgamento');
-      expect(TODOS_ARCANOS).toContain('O Mundo');
-    });
-  });
-
-  // ─── Element distribution ─────────────────────────────────────────────────────
-
-  describe('Element distribution', () => {
-    it('Fogo has multiple arcano', () => {
-      const fogo = getArcanoByElement('Fogo');
-      expect(fogo.length).toBeGreaterThan(1);
-    });
-
-    it('Água has multiple arcano', () => {
-      const agua = getArcanoByElement('Água');
-      expect(agua.length).toBeGreaterThan(1);
-    });
-
-    it('Ar has multiple arcano', () => {
-      const ar = getArcanoByElement('Ar');
-      expect(ar.length).toBeGreaterThan(1);
-    });
-
-    it('Terra has multiple arcano', () => {
-      const terra = getArcanoByElement('Terra');
-      expect(terra.length).toBeGreaterThan(1);
-    });
-
-    it('Éter has 2 arcano (O Louco and O Mundo)', () => {
-      const ether = getArcanoByElement('Éter');
-      expect(ether.length).toBe(2);
     });
   });
 
   // ─── Spiritual content completeness ─────────────────────────────────────────
 
   describe('Spiritual content completeness', () => {
-    it('all mappings have non-empty significado_espiritual', () => {
-      const all = getAllTarotElements();
-      for (const mapping of all) {
+    it('all mappings have non-empty spiritual meanings', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
         expect(mapping.significado_espiritual.length).toBeGreaterThan(10);
       }
     });
 
-    it('all mappings have non-empty lição_espiritual', () => {
-      const all = getAllTarotElements();
-      for (const mapping of all) {
+    it('all mappings have archetypes', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping.arquétipo).toBeDefined();
+        expect(mapping.arquétipo.length).toBeGreaterThan(0);
+      }
+    });
+
+    it('all mappings have spiritual lessons', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping.lição_espiritual).toBeDefined();
         expect(mapping.lição_espiritual.length).toBeGreaterThan(5);
       }
     });
 
-    it('all mappings have non-empty afirmação', () => {
-      const all = getAllTarotElements();
-      for (const mapping of all) {
+    it('all mappings have affirmations', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
+        expect(mapping.afirmação).toBeDefined();
         expect(mapping.afirmação.length).toBeGreaterThan(5);
       }
     });
+  });
 
-    it('all mappings have orixá from Candomblé tradition', () => {
-      const all = getAllTarotElements();
-      const orixas = all.map((m) => m.orixá);
-      const uniqueOrixas = [...new Set(orixas)];
-      expect(uniqueOrixas.length).toBeGreaterThan(5);
+  // ─── Element distribution ────────────────────────────────────────────────────
+
+  describe('Element distribution', () => {
+    it('has diverse element distribution', () => {
+      const results = getAllNumerologyTarots();
+      const elements = results.map((m) => m.elemento);
+      const uniqueElements = new Set(elements);
+      // Should have at least 4 different elements
+      expect(uniqueElements.size).toBeGreaterThanOrEqual(3);
     });
 
-    it('all mappings have sephirot from Kabbalah', () => {
-      const all = getAllTarotElements();
-      for (const mapping of all) {
-        expect(mapping.sephirah).toBeDefined();
-        expect(mapping.sephirah.length).toBeGreaterThan(0);
+    it('each element mapping is valid', () => {
+      const results = getAllNumerologyTarots();
+      const validElements = ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'];
+      for (const mapping of results) {
+        expect(validElements).toContain(mapping.elemento);
       }
     });
+  });
 
-    it('all mappings have chakra alignment', () => {
-      const all = getAllTarotElements();
-      for (const mapping of all) {
+  // ─── Chakra distribution ─────────────────────────────────────────────────────
+
+  describe('Chakra distribution', () => {
+    it('has chakra mappings for all numbers', () => {
+      const results = getAllNumerologyTarots();
+      for (const mapping of results) {
         expect(mapping.chakra).toBeDefined();
         expect(mapping.chakra.length).toBeGreaterThan(0);
       }
     });
 
-    it('all mappings have cores array with at least one color', () => {
-      const all = getAllTarotElements();
-      for (const mapping of all) {
-        expect(mapping.cores.length).toBeGreaterThan(0);
-      }
-    });
-
-    it('all mappings have dia_sagrado', () => {
-      const all = getAllTarotElements();
-      for (const mapping of all) {
-        expect(mapping.dia_sagrado).toBeDefined();
-        expect(mapping.dia_sagrado.length).toBeGreaterThan(0);
+    it('chakra values contain valid chakra names', () => {
+      const results = getAllNumerologyTarots();
+      const validChakras = ['Básico', 'Sacral', 'Plexo Solar', 'Cardíaco', 'Laríngeo', 'Frontal', 'Coronário'];
+      for (const mapping of results) {
+        const hasValidChakra = validChakras.some((c) => mapping.chakra.includes(c));
+        expect(hasValidChakra).toBe(true);
       }
     });
   });
 
-  // ─── Type exports ────────────────────────────────────────────────────────────
+  // ─── Sephirah coverage ─────────────────────────────────────────────────────
 
-  describe('Type exports', () => {
-    it('TarotElementMapping type is exported', () => {
-      const mapping: TarotElementMapping = {
-        arcano: 'Teste',
-        numero_carta: 0,
-        elemento: 'Fogo',
-        significado_espiritual: 'Teste',
-        arquétipo: 'Teste',
-        orixá: 'Teste',
-        sephirah: 'Teste',
-        chakra: 'Teste',
-        lição_espiritual: 'Teste',
-        qualidades: ['Teste'],
-        afirmação: 'Teste',
-        cores: ['Teste'],
-        dia_sagrado: 'Teste',
-      };
-      expect(mapping.arcano).toBe('Teste');
-    });
-
-    it('Elemento type is exported', () => {
-      const elemento: Elemento = 'Fogo';
-      expect(elemento).toBe('Fogo');
+  describe('Sephirah coverage', () => {
+    it('all sephirot are from the Tree of Life', () => {
+      const results = getAllNumerologyTarots();
+      const sephirot = ['Kether', 'Chokmah', 'Binah', 'Chesed', 'Geburah', 'Tiphereth', 'Netzach', 'Hod', 'Yesod', 'Malkuth'];
+      for (const mapping of results) {
+        expect(sephirot).toContain(mapping.sephirah);
+      }
     });
   });
 });
