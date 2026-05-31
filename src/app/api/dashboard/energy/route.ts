@@ -171,6 +171,7 @@ const MOON_PHASE_SPIRITUAL_CORRELATIONS: Record<string, {
     frequency: '417 Hz',
   },
 };
+const PortalSchema = z.object({
   planeta: z.string(),
   chakra: z.string(),
   chakraNum: z.number(),
