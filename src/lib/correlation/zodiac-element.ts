@@ -152,13 +152,12 @@ export const TODOS_SIGNOS: readonly SignoZodiac[] = Object.freeze([
   'Áries', 'Touro', 'Gémeos', 'Câncer', 'Leão', 'Virgem',
   'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes'
 ]);
-/**
-];
-
+]);
 /**
  * Normalizes sign name for consistent lookup.
  * Handles variations like accents, case, and common alternatives.
  */
+function normalizarSigno(signo: string): SignoZodiac | null {
 function normalizarSigno(signo: string): SignoZodiac | null {
   const normalizado = signo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   
