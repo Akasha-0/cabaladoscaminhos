@@ -2,14 +2,76 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const JourneyStageSchema = z.enum(['awakening', 'purification', 'illumination', 'integration', 'transcendence']);
 const SoulQuerySchema = z.object({
   stage: JourneyStageSchema.optional(),
   includeLessons: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
   limit: z.coerce.number().int().positive().max(20).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 export const dynamic = 'force-dynamic';
+
+// ─── Spiritual Correlations for Journey Stages ──────────────────────────────────────────
+const JOURNEY_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  awakening: {
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Desperto para minha verdadeira natureza divina',
+    frequency: '963 Hz',
+  },
+  purification: {
+    sefirot: ['Yesod', 'Tipheret'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'A purificação lava minha alma',
+    frequency: '417 Hz',
+  },
+  illumination: {
+    sefirot: ['Chokhmah', 'Binah'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Orunmilá',
+    affirmation: 'A iluminação revela minha verdade',
+    frequency: '528 Hz',
+  },
+  integration: {
+    sefirot: ['Tipheret', 'Gevurah'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Xangô',
+    affirmation: 'Integro todas as partes de meu ser',
+    frequency: '528 Hz',
+  },
+  transcendence: {
+    sefirot: ['Kether', 'Malkuth'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Transcendo os limites e toco o infinito',
+    frequency: '963 Hz',
+  },
+};
 
 // ─── Soul Journey Data ───────────────────────────────────────────────────────
 interface SoulStage {
@@ -25,6 +87,14 @@ interface SoulStage {
   sefirot: string[];
   chakra: string;
   signs: string[];
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 const SOUL_JOURNEY_STAGES: SoulStage[] = [
@@ -45,6 +115,7 @@ const SOUL_JOURNEY_STAGES: SoulStage[] = [
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 'Sahasrara (7º)',
     signs: ['LuaNova', 'Eclipse'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['awakening'],
   },
   {
     id: 'first-tests',
@@ -63,6 +134,7 @@ const SOUL_JOURNEY_STAGES: SoulStage[] = [
     sefirot: ['Gevurah', 'Chesed'],
     chakra: 'Manipura (3º)',
     signs: ['Marte', 'Conjuntções tensas'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['awakening'],
   },
   {
     id: 'shadow-work',
@@ -81,186 +153,235 @@ const SOUL_JOURNEY_STAGES: SoulStage[] = [
     sefirot: ['Yesod', 'Tipheret'],
     chakra: 'Svadhisthana (2º)',
     signs: ['Saturno transito', 'Plutão aspecto'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['purification'],
   },
   {
-    id: 'ancestral-healing',
+    id: 'waters-passage',
     stage: 'purification',
-    name: 'Curação Ancestral',
-    nameEn: 'Ancestral Healing',
-    description: 'Limpeza de padrões familiares e heranças kármicas através do trabalho ancestral.',
+    name: 'Passagem pelas Águas',
+    nameEn: 'Waters Passage',
+    description: 'Travessia das águas da purificação para limpar karma e memórias.',
     duration: '7 anos',
     lessons: [
-      'Identificar padrões repetitivos',
-      'Perdoar ancestralmente',
-      'Romper correntes do passado',
+      'Dissolver attached.',
+      'Purificar memórias dolorosas',
+      'Fluir com os ciclos da vida',
     ],
-    symbols: ['Raízes', 'Árvore genealógica', 'Coroa de espinhos'],
-    orixas: ['Omolu', 'Iemanjá'],
-    sefirot: ['Malkuth', 'Yesod'],
-    chakra: 'Muladhara (1º)',
-    signs: ['Quarto Lua', 'Netuno transito'],
+    symbols: ['Rio', 'Mar', 'Chuva'],
+    orixas: ['Iemanjá', 'Oxum'],
+    sefirot: ['Yesod', 'Binah'],
+    chakra: 'Svadhisthana (2º)',
+    signs: ['Lua Cheia', 'Netuno aspecto'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['purification'],
   },
   {
-    id: 'chakra-activation',
+    id: 'third-eye',
     stage: 'illumination',
-    name: 'Ativação dos Chakras',
-    nameEn: 'Chakra Activation',
-    description: 'Despertar progressivo dos centros de energia para expansão da consciência.',
-    duration: '12 anos',
+    name: 'Abertura do Terceiro Olho',
+    nameEn: 'Third Eye Opening',
+    description: 'Desenvolvimento da visão interior e intuição.',
+    duration: '5 anos',
     lessons: [
-      'Ativar o Muladhara (segurança)',
-      'Desenvolver o Svadhisthana (criatividade)',
-      'Equilibrar o Manipura (poder pessoal)',
-      'Abrir o Anahata (amor incondicional)',
-      'Expressar o Vishuddha (comunicação)',
-      'Desenvolver o Ajna (intuição)',
-      'Iluminar o Sahasrara (união divina)',
+      'Desenvolver percepção extrasensorial',
+      'Ver além das ilusões',
+      'Conectar-se com a sabedoria interior',
     ],
-    symbols: ['Flor de lótus', 'Arco-íris', 'Luz branca'],
-    orixas: ['Oxum', 'Iansã', 'Oxóssi'],
-    sefirot: ['Netzach', 'Hod', 'Tipheret'],
-    chakra: 'Sete chakras',
-    signs: ['Trânsitos harmoniosos', 'Júpiter aspekto'],
-  },
-  {
-    id: 'sefirot-integration',
-    stage: 'illumination',
-    name: 'Integração dos Sefirot',
-    nameEn: 'Sephirot Integration',
-    description: 'Incorporar as 10 emanações divinas na consciência para iluminação completa.',
-    duration: '15 anos',
-    lessons: [
-      'Caminhar entre as Três Colunas',
-      'Equilibrar Misericórdia e Severidade',
-      'Unificar os 10 atributos divinos',
-    ],
-    symbols: ['Árvore da Vida', 'Três Colunas', 'Estrela de David'],
-    orixas: ['Oxalá', 'Todos'],
-    sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tiferet', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
-    chakra: 'Sahasrara (7º)',
-    signs: ['Árvore da Vida ativada', 'Caminhos iluminados'],
-  },
-  {
-    id: 'orixa-awakening',
-    stage: 'integration',
-    name: 'Despertar do Orixá',
-    nameEn: 'Orixá Awakening',
-    description: 'Conexão consciente com a energia do Orixá de cabeça para alinhamento espiritual.',
-    duration: '10 anos',
-    lessons: [
-      'Identificar o Orixá de cabeça',
-      'Estabelecer prática devocional',
-      'Receber e integrar energias orixais',
-    ],
-    symbols: ['Sino', 'Bênção', 'Água sagrada'],
-    orixas: ['Todos (personalizado)'],
-    sefirot: ['Tipheret', 'Malkuth'],
-    chakra: 'Anahata (4º)',
-    signs: ['Orixá protector revelado', 'Sonhos com Orixá'],
-  },
-  {
-    id: 'duality-transcendence',
-    stage: 'integration',
-    name: 'Transcendência da Dualidade',
-    nameEn: 'Duality Transcendence',
-    description: 'Superar as polaridades da existência para alcançar equilíbrio interno.',
-    duration: '8 anos',
-    lessons: [
-      'Integrar luz e sombra',
-      'Equilibrar masculino e feminino',
-      'Transcender juío e apego',
-    ],
-    symbols: ['Taijitu', 'Yin-Yang', 'Equilíbrio'],
-    orixas: ['Oxumaré'],
-    sefirot: ['Tipheret', 'Daat'],
-    chakra: 'Ajna (6º)',
-    signs: ['Libra', 'Equinócio'],
-  },
-  {
-    id: 'wisdom-sharing',
-    stage: 'transcendence',
-    name: 'Compartilhamento da Sabedoria',
-    nameEn: 'Wisdom Sharing',
-    description: 'Tornar-se canal de sabedoria para otros, servindo como guia espiritual.',
-    duration: 'Vida toda',
-    lessons: [
-      'Ensinar sem impor',
-      'Servir com humildade',
-      'Ser instrumento do divino',
-    ],
-    symbols: ['Professor', 'Lâmpada', 'Tocha'],
-    orixas: ['Oxóssi', 'Oxum'],
+    symbols: ['Olho', 'Luz', 'Pérola'],
+    orixas: ['Orunmilá', 'Iansã'],
     sefirot: ['Chokhmah', 'Binah'],
-    chakra: 'Vishuddha (5º)',
-    signs: ['Mentor encontrado', 'Chamdo para ensinar'],
+    chakra: 'Ajna (6º)',
+    signs: ['Netuno aspecto', 'Lua em Áries'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['illumination'],
   },
   {
-    id: 'unity-consciousness',
-    stage: 'transcendence',
-    name: 'Consciência de Unidade',
-    nameEn: 'Unity Consciousness',
-    description: 'Realização da единой природы de toda existência, dissolução do ego.',
-    duration: 'Infinite',
+    id: 'wisdom-fire',
+    stage: 'illumination',
+    name: 'Fogo da Sabedoria',
+    nameEn: 'Wisdom Fire',
+    description: 'Queima das ignorâncias pelo fogo da sabedoria divina.',
+    duration: '7 anos',
     lessons: [
-      'Perceber a единую энергию em tudo',
-      'Dissolver identificação com o corpo/mente',
-      'Viver na consciência do uno',
+      'Queimar a ignorância',
+      'Iluminar a mente',
+      'Integrar conhecimento e experiência',
     ],
-    symbols: ['Onda', 'Oceano', 'Céu infinito'],
-    orixas: ['Oxalá', 'Iemanjá'],
-    sefirot: ['Kether', 'Ein Sof'],
+    symbols: ['Fogo', 'Sol', 'Fornalha'],
+    orixas: ['Xangô', 'Oxalá'],
+    sefirot: ['Chokhmah', 'Gevurah'],
+    chakra: 'Manipura (3º)',
+    signs: ['Sol aspecto', 'Fogo lunar'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['illumination'],
+  },
+  {
+    id: 'heart-integration',
+    stage: 'integration',
+    name: 'Integração do Coração',
+    nameEn: 'Heart Integration',
+    description: 'Unificação do coração com a mente para harmonização interior.',
+    duration: '5 anos',
+    lessons: [
+      'Unificar coração e mente',
+      'Desenvolver compaixão universal',
+      'Integrar masculino e feminino interior',
+    ],
+    symbols: ['Coração', 'Rosa', 'Cálice'],
+    orixas: ['Oxum', 'Iemanjá'],
+    sefirot: ['Tipheret', 'Chesed'],
+    chakra: 'Anahata (4º)',
+    signs: ['Vênus aspecto', 'Lua em Touro'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['integration'],
+  },
+  {
+    id: 'will-mastery',
+    stage: 'integration',
+    name: 'Domínio da Vontade',
+    nameEn: 'Will Mastery',
+    description: 'Desenvolvimento da vontade divina em harmonia com o propósito.',
+    duration: '7 anos',
+    lessons: [
+      'Alinhar vontade pessoal com divina',
+      'Desenvolver disciplina espiritual',
+      'Manifestar com intenção pura',
+    ],
+    symbols: ['Cetro', 'Vontade', 'Fogo solar'],
+    orixas: ['Ogum', 'Xangô'],
+    sefirot: ['Gevurah', 'Tipheret'],
+    chakra: 'Manipura (3º)',
+    signs: ['Marte harmonioso', 'Sol em Aries'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['integration'],
+  },
+  {
+    id: 'crown-union',
+    stage: 'transcendence',
+    name: 'União com a Coroa',
+    nameEn: 'Union with the Crown',
+    description: 'Conexão final com a fonte divina e dissolução dos limites do ego.',
+    duration: 'Ciclo completo',
+    lessons: [
+      'Unir-se à fonte',
+      'Dissolver o ego limitado',
+      'Tornar-se canal do divino',
+    ],
+    symbols: ['Coroa', 'Luz infinita', 'Infinito'],
+    orixas: ['Oxalá', 'Orunmilá'],
+    sefirot: ['Kether', 'Malkuth'],
     chakra: 'Sahasrara (7º)',
-    signs: ['Iluminação', 'Satori', 'Unidade com tudo'],
+    signs: ['Ketheriano', 'Estrela de David'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['transcendence'],
+  },
+  {
+    id: 'service-mastery',
+    stage: 'transcendence',
+    name: 'Mestria no Serviço',
+    nameEn: 'Service Mastery',
+    description: 'Uso dos dons espirituais para servir a humanidade.',
+    duration: 'Ciclo completo',
+    lessons: [
+      'Compartilhar dons com o mundo',
+      'Servir com humildade',
+      'Ser instrumento da luz',
+    ],
+    symbols: ['Mão', 'Luz irradiante', 'Serviço'],
+    orizas: ['Oxalá', 'Iemanjá'],
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 'Anahata (4º)',
+    signs: ['Júpiter aspecto', 'Lua em Sagitário'],
+    spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS['transcendence'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = SoulQuerySchema.safeParse({
-    stage: searchParams.get('stage'),
-    includeLessons: searchParams.get('includeLessons'),
-    limit: searchParams.get('limit'),
-  });
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = SoulQuerySchema.safeParse({
+      stage: searchParams.get('stage'),
+      includeLessons: searchParams.get('includeLessons'),
+      limit: searchParams.get('limit'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
 
-  if (!parseResult.success) {
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { stage, includeLessons, limit, sefirot, chakra, element, orixa } = parseResult.data;
+
+    let stages = [...SOUL_JOURNEY_STAGES];
+
+    if (stage) {
+      stages = stages.filter(s => s.stage === stage);
+    }
+
+    if (limit) {
+      stages = stages.slice(0, limit);
+    }
+
+    if (sefirot) {
+      stages = stages.filter(s => s.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      stages = stages.filter(s => s.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      stages = stages.filter(s => s.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      stages = stages.filter(s => s.spiritualCorrelations?.orixa === orixa);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byStage: stages.reduce((acc, s) => {
+        acc[s.stage] = (acc[s.stage] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: stages.reduce((acc, s) => {
+        s.spiritualCorrelations?.sefirot.forEach(sf => {
+          acc[sf] = (acc[sf] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: stages.reduce((acc, s) => {
+        const c = s.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: stages.reduce((acc, s) => {
+        const e = s.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: stages.reduce((acc, s) => {
+        const o = s.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      stages,
+      count: stages.length,
+      spiritualCorrelations: JOURNEY_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { stage, includeLessons, limit, sefirot, chakra, element, orixa },
+      },
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
-
-  const { stage, includeLessons, limit } = parseResult.data;
-  let journey = [...SOUL_JOURNEY_STAGES];
-
-  if (stage) {
-    journey = journey.filter(j => j.stage === stage);
-  }
-
-  if (limit) {
-    journey = journey.slice(0, limit);
-  }
-
-  // Filter out lessons if not requested
-  const response = journey.map(j => {
-    if (!includeLessons) {
-      const { lessons, ...rest } = j;
-      return rest;
-    }
-    return j;
-  });
-
-  return NextResponse.json({
-    success: true,
-    journey: response,
-    count: response.length,
-    total: SOUL_JOURNEY_STAGES.length,
-    stages: {
-      awakening: SOUL_JOURNEY_STAGES.filter(j => j.stage === 'awakening').length,
-      purification: SOUL_JOURNEY_STAGES.filter(j => j.stage === 'purification').length,
-      illumination: SOUL_JOURNEY_STAGES.filter(j => j.stage === 'illumination').length,
-      integration: SOUL_JOURNEY_STAGES.filter(j => j.stage === 'integration').length,
-      transcendence: SOUL_JOURNEY_STAGES.filter(j => j.stage === 'transcendence').length,
-    },
-  });
 }
