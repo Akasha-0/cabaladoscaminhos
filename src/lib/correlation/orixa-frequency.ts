@@ -1,242 +1,128 @@
 /**
  * Orixá-Frequency Correlation Module
- * Based on Orixás of Candomblé/Umbanda mapped to Solfeggio frequencies
- * Source: IDEIA.md - Cabala dos Caminhos framework
- * Maps each Orixá to their corresponding vibrational frequency signature
+ * Maps Orixás to their corresponding Solfeggio frequencies
+ * Based on IDEIA.md and the Cabala dos Caminhos framework
  */
-
-import type { FrequencyOrixa } from './frequency-orixa';
 
 /**
  * Represents the correlation between an Orixá and its Solfeggio frequency
  */
 export interface OrixaFrequency {
-  /** Primary Orixá name */
+  /** Orixá name */
   orixa: string;
   /** Associated Solfeggio frequency in Hz */
   frequencia: number;
-  /** Element associated with this Orixá-frequency */
+  /** Spiritual property associated with this Orixá-frequency */
+  propriedade: string;
+  /** Element associated with this Orixá */
   elemento: string;
-  /** Chakra correspondence */
+  /** Chakra associated with this Orixá-frequency */
   chakra: string;
-  /** Day of week associated */
-  dia_semana: string;
-  /** Color correspondence */
-  cor: string;
-  /** Primary healing application */
-  aplicacao_healing: {
-    /** Physical healing focus */
-    fisico: string;
-    /** Emotional healing focus */
-    emocional: string;
-    /** Mental/spiritual healing focus */
-    mental_espiritual: string;
-    /** Recommended practice type */
-    pratica_recomendada: string;
-  };
 }
 
 /**
  * Complete mapping of Orixás to their Solfeggio frequency correspondences.
- * Based on IDEIA.md and the Cabala dos Caminhos system data.
- * Derived from the inverse of FREQUENCY_ORIXA_MAP.
+ * Based on frequency-orixa.ts as the source of truth.
+ * Each Orixá carries the vibrational signature of its corresponding frequency.
  */
-export const ORIXA_FREQUENCY_MAP: Record<string, OrixaFrequency> = {
-  Oxalufã: {
+const ORIXA_FREQUENCY_MAP: Record<string, OrixaFrequency> = {
+  'Oxalufã': {
     orixa: 'Oxalufã',
     frequencia: 396,
+    propriedade: 'Firmeza, proteção e dissolução de medos de sobrevivência',
     elemento: 'Terra',
     chakra: '1º Básico (Muladhara)',
-    dia_semana: 'Segunda-feira',
-    cor: 'Branco',
-    aplicacao_healing: {
-      fisico: 'Fortalece ossos, sistema imunológico e órgãos vitais',
-      emocional: 'Dissolve medos de sobrevivência e sensação de insegurança',
-      mental_espiritual: 'Promove clareza mental, foco e determinação',
-      pratica_recomendada: 'Meditação em grupo, trabalho ancestral',
-    },
   },
-  Omulu: {
+  'Omulu': {
     orixa: 'Omulu',
     frequencia: 396,
+    propriedade: 'Cura de doenças, transformação da escuridão em luz',
     elemento: 'Terra',
     chakra: '1º Básico (Muladhara)',
-    dia_semana: 'Segunda-feira',
-    cor: 'Branco',
-    aplicacao_healing: {
-      fisico: 'Fortalece ossos, sistema imunológico e órgãos vitais',
-      emocional: 'Dissolve medos de sobrevivência e sensação de insegurança',
-      mental_espiritual: 'Promove clareza mental, foco e determinação',
-      pratica_recomendada: 'Meditação em grupo, trabalho ancestral',
-    },
   },
-  Oxum: {
+  'Oxum': {
     orixa: 'Oxum',
     frequencia: 417,
+    propriedade: 'Prosperidade, renovação emocional e fluidez',
     elemento: 'Água',
     chakra: '2º Sacro (Svadhisthana)',
-    dia_semana: 'Sábado',
-    cor: 'Amarelo-dourado',
-    aplicacao_healing: {
-      fisico: 'Hidrata tecidos, melhora circulação e limpeza celular',
-      emocional: 'Libera traumas emocionais e padrões do passado',
-      mental_espiritual: 'Facilita adaptação, flexibilidade e renovação',
-      pratica_recomendada: 'Trabalho emocional profundo, terapia vibracional',
-    },
   },
-  Iemanjá: {
+  'Iemanjá': {
     orixa: 'Iemanjá',
     frequencia: 417,
+    propriedade: 'Nutrição, proteção maternal e ciclos de renovação',
     elemento: 'Água',
     chakra: '2º Sacro (Svadhisthana)',
-    dia_semana: 'Sábado',
-    cor: 'Amarelo-dourado',
-    aplicacao_healing: {
-      fisico: 'Hidrata tecidos, melhora circulação e limpeza celular',
-      emocional: 'Libera traumas emocionais e padrões do passado',
-      mental_espiritual: 'Facilita adaptação, flexibilidade e renovação',
-      pratica_recomendada: 'Trabalho emocional profundo, terapia vibracional',
-    },
   },
-  Xangô: {
+  'Xangô': {
     orixa: 'Xangô',
     frequencia: 528,
+    propriedade: 'Justiça, força vital e transformação criativa',
     elemento: 'Fogo',
     chakra: '3º Plexo Solar (Manipura)',
-    dia_semana: 'Quarta-feira',
-    cor: 'Vermelho',
-    aplicacao_healing: {
-      fisico: 'Estimula metabolismo, sistema nervoso e força vital',
-      emocional: 'Transforma negatividade em compaixão e amor incondicional',
-      mental_espiritual: 'Ativa criatividade, intuição e manifestação',
-      pratica_recomendada: 'Trabalho com intenção, cura energética avançada',
-    },
   },
   'Logun Ede': {
     orixa: 'Logun Ede',
     frequencia: 528,
+    propriedade: 'Equilíbrio entre masculino e feminino, beleza',
     elemento: 'Fogo',
     chakra: '3º Plexo Solar (Manipura)',
-    dia_semana: 'Quarta-feira',
-    cor: 'Vermelho',
-    aplicacao_healing: {
-      fisico: 'Estimula metabolismo, sistema nervoso e força vital',
-      emocional: 'Transforma negatividade em compaixão e amor incondicional',
-      mental_espiritual: 'Ativa criatividade, intuição e manifestação',
-      pratica_recomendada: 'Trabalho com intenção, cura energética avançada',
-    },
   },
-  Oxóssi: {
+  'Oxóssi': {
     orixa: 'Oxóssi',
     frequencia: 639,
+    propriedade: 'Sabedoria, fartura e abertura de caminhos',
     elemento: 'Ar',
     chakra: '4º Cardíaco (Anahata)',
-    dia_semana: 'Terça-feira',
-    cor: 'Verde',
-    aplicacao_healing: {
-      fisico: 'Equilibra sistema respiratório e circulatório',
-      emocional: 'Harmoniza relacionamentos e promove paz interior',
-      mental_espiritual: 'Abre canal de comunicação com o divino',
-      pratica_recomendada: 'Trabalho com casal, cura de relacionamentos',
-    },
   },
   'Nanã Buruquá': {
     orixa: 'Nanã Buruquá',
     frequencia: 639,
+    propriedade: 'Sabedoria ancestral, ancianidade e conhecimento oculto',
     elemento: 'Ar',
     chakra: '4º Cardíaco (Anahata)',
-    dia_semana: 'Terça-feira',
-    cor: 'Verde',
-    aplicacao_healing: {
-      fisico: 'Equilibra sistema respiratório e circulatório',
-      emocional: 'Harmoniza relacionamentos e promove paz interior',
-      mental_espiritual: 'Abre canal de comunicação com o divino',
-      pratica_recomendada: 'Trabalho com casal, cura de relacionamentos',
-    },
   },
-  Iansã: {
+  'Iansã': {
     orixa: 'Iansã',
     frequencia: 741,
+    propriedade: 'Libertação, expressão autêntica e transformação',
     elemento: 'Ar',
     chakra: '5º Laríngeo (Vishuddha)',
-    dia_semana: 'Quarta-feira',
-    cor: 'Laranja',
-    aplicacao_healing: {
-      fisico: 'Limpa garganta, ouvidos e vias respiratórias',
-      emocional: 'Liberta medo de falar verdades e se expressar autenticamente',
-      mental_espiritual: 'Desperta sabedoria interior e expressão criativa',
-      pratica_recomendada: 'Cantos, mantras, trabalho com voz e som',
-    },
   },
-  Obá: {
+  'Obá': {
     orixa: 'Obá',
     frequencia: 741,
+    propriedade: 'Força guerreira, proteção e batalha espiritual',
     elemento: 'Ar',
     chakra: '5º Laríngeo (Vishuddha)',
-    dia_semana: 'Quarta-feira',
-    cor: 'Laranja',
-    aplicacao_healing: {
-      fisico: 'Limpa garganta, ouvidos e vias respiratórias',
-      emocional: 'Liberta medo de falar verdades e se expressar autenticamente',
-      mental_espiritual: 'Desperta sabedoria interior e expressão criativa',
-      pratica_recomendada: 'Cantos, mantras, trabalho com voz e som',
-    },
   },
-  Oxumaré: {
+  'Oxumaré': {
     orixa: 'Oxumaré',
     frequencia: 852,
+    propriedade: 'Transformação completa, equilíbrio de opostos',
     elemento: 'Éter',
     chakra: '6º Frontal (Ajna)',
-    dia_semana: 'Domingo',
-    cor: 'Arco-íris',
-    aplicacao_healing: {
-      fisico: 'Equilibra glândula pineal e sistema nervoso central',
-      emocional: 'Dissipa ilusões e restaura visão clara da realidade',
-      mental_espiritual: 'Desperta capacidades psíquicas e consciência expandida',
-      pratica_recomendada: 'Meditação profunda, trabalho com terceiro olho',
-    },
   },
-  Ossaim: {
+  'Ossaim': {
     orixa: 'Ossaim',
     frequencia: 852,
+    propriedade: 'Conhecimento das folhas, cura herbal e sabedoria verde',
     elemento: 'Éter',
     chakra: '6º Frontal (Ajna)',
-    dia_semana: 'Domingo',
-    cor: 'Arco-íris',
-    aplicacao_healing: {
-      fisico: 'Equilibra glândula pineal e sistema nervoso central',
-      emocional: 'Dissipa ilusões e restaura visão clara da realidade',
-      mental_espiritual: 'Desperta capacidades psíquicas e consciência expandida',
-      pratica_recomendada: 'Meditação profunda, trabalho com terceiro olho',
-    },
   },
-  Ori: {
+  'Ori': {
     orixa: 'Ori',
     frequencia: 963,
+    propriedade: 'Iluminação interior, propósito de vida e conexão divina',
     elemento: 'Éter',
     chakra: '7º Coronário (Sahasrara)',
-    dia_semana: 'Domingo',
-    cor: 'Branco-dourado',
-    aplicacao_healing: {
-      fisico: 'Restaura padrão original do DNA e regeneração celular',
-      emocional: 'Promove paz profunda e unidade com tudo existente',
-      mental_espiritual: 'Conexão direta com a Fonte criadora e infinito',
-      pratica_recomendada: 'Sagramento, oração silenciosa, contemplação pura',
-    },
   },
-  Olokun: {
+  'Olokun': {
     orixa: 'Olokun',
     frequencia: 963,
+    propriedade: 'Abundância das profundezas, mistérios do mar',
     elemento: 'Éter',
     chakra: '7º Coronário (Sahasrara)',
-    dia_semana: 'Domingo',
-    cor: 'Branco-dourado',
-    aplicacao_healing: {
-      fisico: 'Restaura padrão original do DNA e regeneração celular',
-      emocional: 'Promove paz profunda e unidade com tudo existente',
-      mental_espiritual: 'Conexão direta com a Fonte criadora e infinito',
-      pratica_recomendada: 'Sagramento, oração silenciosa, contemplação pura',
-    },
   },
 };
 
@@ -247,143 +133,96 @@ Object.freeze(ORIXA_FREQUENCY_MAP);
 Object.values(ORIXA_FREQUENCY_MAP).forEach((mapping) => Object.freeze(mapping));
 
 /**
- * All Solfeggio frequencies in Hz
+ * Get Orixá-frequency mapping for a given Orixá
+ * @param orixa - Name of the Orixá (case-insensitive)
+ * @returns OrixaFrequency mapping or undefined if not found
  */
-export const SOLFEGGIO_FREQUENCIES = [396, 417, 528, 639, 741, 852, 963] as const;
-
-/**
- * All unique Orixás in the mapping
- */
-export const ALL_ORIXAS = Object.keys(ORIXA_FREQUENCY_MAP);
-
-/**
- * Get the Orixá-frequency mapping for a given Orixá name
- * @param orixa - Orixá name (case-insensitive)
- * @returns OrixaFrequency mapping or null if not found
- */
-export function getOrixaFrequency(orixa: string): OrixaFrequency | null {
-  const normalized = normalizeOrixaKey(orixa);
-  return ORIXA_FREQUENCY_MAP[normalized] ?? null;
+export function getOrixaFrequency(orixa: string): OrixaFrequency | undefined {
+  const normalized = orixa.trim();
+  return (
+    ORIXA_FREQUENCY_MAP[normalized] ||
+    Object.values(ORIXA_FREQUENCY_MAP).find(
+      entry => entry.orixa.toLowerCase() === normalized.toLowerCase()
+    )
+  );
 }
 
 /**
- * Get the frequency corresponding to an Orixá
- * @param orixa - Orixá name (case-insensitive)
+ * Get the frequency corresponding to a given Orixá
+ * @param orixa - Name of the Orixá (case-insensitive)
  * @returns Frequency in Hz or null if not found
  */
 export function getFrequencyOrixa(orixa: string): number | null {
-  return ORIXA_FREQUENCY_MAP[normalizeOrixaKey(orixa)]?.frequencia ?? null;
+  const mapping = getOrixaFrequency(orixa);
+  return mapping?.frequencia ?? null;
+}
+
+/**
+ * Get the property associated with a given Orixá
+ * @param orixa - Name of the Orixá (case-insensitive)
+ * @returns Property string or null if not found
+ */
+export function getOrixaProperty(orixa: string): string | null {
+  const mapping = getOrixaFrequency(orixa);
+  return mapping?.propriedade ?? null;
+}
+
+/**
+ * Get all registered Orixás
+ * @returns Array of all Orixá names
+ */
+export function getAllOrixas(): string[] {
+  return Object.keys(ORIXA_FREQUENCY_MAP);
+}
+
+/**
+ * Get Orixás by frequency
+ * @param frequencia - Solfeggio frequency in Hz
+ * @returns Array of OrixaFrequency mappings for that frequency
+ */
+export function getOrixasByFrequency(frequencia: number): OrixaFrequency[] {
+  return Object.values(ORIXA_FREQUENCY_MAP).filter(
+    entry => entry.frequencia === frequencia
+  );
+}
+
+/**
+ * Get Orixás by element
+ * @param elemento - Element name (e.g., 'Terra', 'Água', 'Fogo', 'Ar', 'Éter')
+ * @returns Array of OrixaFrequency mappings for that element
+ */
+export function getOrixasByElement(elemento: string): OrixaFrequency[] {
+  return Object.values(ORIXA_FREQUENCY_MAP).filter(
+    entry => entry.elemento.toLowerCase() === elemento.toLowerCase()
+  );
+}
+
+/**
+ * Get Orixás by chakra
+ * @param chakra - Chakra name (case-insensitive)
+ * @returns Array of OrixaFrequency mappings for that chakra
+ */
+export function getOrixasByChakra(chakra: string): OrixaFrequency[] {
+  return Object.values(ORIXA_FREQUENCY_MAP).filter(
+    entry => entry.chakra.toLowerCase().includes(chakra.toLowerCase())
+  );
 }
 
 /**
  * Get all Orixá-frequency mappings
- * @returns Array of all correlation mappings
+ * @returns Array of all OrixaFrequency objects
  */
 export function getAllOrixaFrequencies(): OrixaFrequency[] {
   return Object.values(ORIXA_FREQUENCY_MAP);
 }
 
-/**
- * Get the element for a given Orixá
- * @param orixa - Orixá name (case-insensitive)
- * @returns Element name or null if not found
- */
-export function getElementByOrixa(orixa: string): string | null {
-  return ORIXA_FREQUENCY_MAP[normalizeOrixaKey(orixa)]?.elemento ?? null;
-}
-
-/**
- * Get the chakra for a given Orixá
- * @param orixa - Orixá name (case-insensitive)
- * @returns Chakra name or null if not found
- */
-export function getChakraByOrixa(orixa: string): string | null {
-  return ORIXA_FREQUENCY_MAP[normalizeOrixaKey(orixa)]?.chakra ?? null;
-}
-
-/**
- * Get the day of week for a given Orixá
- * @param orixa - Orixá name (case-insensitive)
- * @returns Day name or null if not found
- */
-export function getDayByOrixa(orixa: string): string | null {
-  return ORIXA_FREQUENCY_MAP[normalizeOrixaKey(orixa)]?.dia_semana ?? null;
-}
-
-/**
- * Get the color for a given Orixá
- * @param orixa - Orixá name (case-insensitive)
- * @returns Color or null if not found
- */
-export function getColorByOrixa(orixa: string): string | null {
-  return ORIXA_FREQUENCY_MAP[normalizeOrixaKey(orixa)]?.cor ?? null;
-}
-
-/**
- * Get the healing application for a given Orixá
- * @param orixa - Orixá name (case-insensitive)
- * @returns Healing application object or null if not found
- */
-export function getHealingByOrixa(orixa: string): OrixaFrequency['aplicacao_healing'] | null {
-  return ORIXA_FREQUENCY_MAP[normalizeOrixaKey(orixa)]?.aplicacao_healing ?? null;
-}
-
-/**
- * Get all Orixás that correspond to a specific frequency
- * @param frequencia - Solfeggio frequency in Hz
- * @returns Array of OrixaFrequency mappings
- */
-export function getOrixasByFrequency(frequencia: number): OrixaFrequency[] {
-  return Object.values(ORIXA_FREQUENCY_MAP).filter(
-    (mapping) => mapping.frequencia === frequencia
-  );
-}
-
-/**
- * Get all Orixás that correspond to a specific element
- * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra', 'Éter')
- * @returns Array of OrixaFrequency mappings
- */
-export function getOrixasByElement(elemento: string): OrixaFrequency[] {
-  return Object.values(ORIXA_FREQUENCY_MAP).filter(
-    (mapping) => mapping.elemento.toLowerCase() === elemento.toLowerCase()
-  );
-}
-
-/**
- * Get all Orixás associated with a specific day of the week
- * @param dia - Day of week (e.g., 'Segunda-feira', 'Terça-feira')
- * @returns Array of OrixaFrequency mappings
- */
-export function getOrixasByDay(dia: string): OrixaFrequency[] {
-  return Object.values(ORIXA_FREQUENCY_MAP).filter(
-    (mapping) => mapping.dia_semana.toLowerCase() === dia.toLowerCase()
-  );
-}
-
-/**
- * Get all unique elements in the mapping
- * @returns Array of unique element names
- */
-export function getAllElements(): string[] {
-  const elements = new Set(Object.values(ORIXA_FREQUENCY_MAP).map((m) => m.elemento));
-  return Array.from(elements);
-}
-
-/**
- * Normalize Orixá name for lookup
- * Handles case-insensitivity and common variations
- */
-function normalizeOrixaKey(orixa: string): string {
-  const normalized = orixa.trim();
-  // Direct match first
-  if (ORIXA_FREQUENCY_MAP[normalized]) {
-    return normalized;
-  }
-  // Case-insensitive match
-  const lower = normalized.toLowerCase();
-  const match = Object.keys(ORIXA_FREQUENCY_MAP).find(
-    (key) => key.toLowerCase() === lower
-  );
-  return match ?? normalized;
-}
+export default {
+  getOrixaFrequency,
+  getFrequencyOrixa,
+  getOrixaProperty,
+  getAllOrixas,
+  getOrixasByFrequency,
+  getOrixasByElement,
+  getOrixasByChakra,
+  getAllOrixaFrequencies,
+};

@@ -335,9 +335,8 @@ export function getTarotByNumerologyNumber(numero: number): TarotNumerologyMappi
 export function getAllNumerologyNumbers(): number[] {
   const numbers = Object.values(TAROT_NUMEROLOGY_MAPPINGS)
     .map(m => m.numero_numerologia);
-  return [...new Set(numbers)].sort((a, b) => a - b);
+  return Array.from(new Set(numbers)).sort((a, b) => a - b);
 }
-
 /**
  * Get all unique elements
  * @returns Array of unique element names
@@ -345,7 +344,7 @@ export function getAllNumerologyNumbers(): number[] {
 export function getAllElements(): string[] {
   const elements = Object.values(TAROT_NUMEROLOGY_MAPPINGS)
     .map(m => m.elemento);
-  return [...new Set(elements)].sort();
+  return Array.from(new Set(elements)).sort();
 }
 /**
  * Default export with all public functions
