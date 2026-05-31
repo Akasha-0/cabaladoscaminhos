@@ -1,13 +1,17 @@
 // ============================================================
 // COSMIC CONSCIOUSNESS API - CABALA DOS CAMINHOS
 // ============================================================
-// GET endpoints for cosmic consciousness
-// - List all consciousness data
-// - Get specific consciousness by ID
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ConsciousnessLevelSchema = z.enum([
+  'physical', 'emotional', 'mental', 'spiritual', 'cosmic', 'divine'
+]);
+const ConsciousnessQuerySchema = z.object({
+  id: ConsciousnessLevelSchema.optional(),
+  minFrequency: z.coerce.number().min(0).optional(),
+  maxFrequency: z.coerce.number().max(1000).optional(),
+});
 interface ConsciousnessData {
   id: string;
   level: string;
