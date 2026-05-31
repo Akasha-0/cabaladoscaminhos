@@ -653,5 +653,76 @@ describe('zodiac-numerology', () => {
       expect(signNames).toContain('Peixes');
       expect(signNames).toHaveLength(4);
     });
+  // ─── getNumerologyZodiac ───────────────────────────────────────────────────
+  describe('getNumerologyZodiac', () => {
+    it('returns mapping for Áries', () => {
+      const mapping = getNumerologyZodiac('Áries');
+      expect(mapping).not.toBeNull();
+      expect(mapping?.signo).toBe('Áries');
+      expect(mapping?.numero).toBe(1);
+    });
+    it('returns mapping for Peixes', () => {
+      const mapping = getNumerologyZodiac('Peixes');
+      expect(mapping).not.toBeNull();
+      expect(mapping?.signo).toBe('Peixes');
+      expect(mapping?.numero).toBe(12);
+    });
+    it('returns null for invalid sign', () => {
+      const mapping = getNumerologyZodiac('InvalidSign');
+      expect(mapping).toBeNull();
+    });
+    it('is case insensitive', () => {
+      const mapping = getNumerologyZodiac('ARIES');
+      expect(mapping).not.toBeNull();
+      expect(mapping?.signo).toBe('Áries');
+    });
+    it('handles accented input', () => {
+      const mapping = getNumerologyZodiac('Sagitário');
+      expect(mapping).not.toBeNull();
+      expect(mapping?.signo).toBe('Sagitário');
+    });
   });
+  // ─── getAllZodiacNumerologies ───────────────────────────────────────────────
+  describe('getAllZodiacNumerologies', () => {
+    it('returns all 12 zodiac numerology mappings', () => {
+      const allMappings = getAllZodiacNumerologies();
+      expect(allMappings).toHaveLength(12);
+    });
+    it('contains all expected zodiac signs', () => {
+      const allMappings = getAllZodiacNumerologies();
+      const signNames = allMappings.map(m => m.signo);
+      expect(signNames).toContain('Áries');
+      expect(signNames).toContain('Touro');
+      expect(signNames).toContain('Gêmeos');
+      expect(signNames).toContain('Câncer');
+      expect(signNames).toContain('Leão');
+      expect(signNames).toContain('Virgem');
+      expect(signNames).toContain('Libra');
+      expect(signNames).toContain('Escorpião');
+      expect(signNames).toContain('Sagitário');
+      expect(signNames).toContain('Capricórnio');
+      expect(signNames).toContain('Aquário');
+      expect(signNames).toContain('Peixes');
+    });
+    it('returns same result as getAllZodiacNumerology', () => {
+      const aliasResult = getAllZodiacNumerologies();
+      const originalResult = getAllZodiacNumerology();
+      expect(aliasResult).toEqual(originalResult);
+    });
+    it('each mapping has required fields', () => {
+      const allMappings = getAllZodiacNumerologies();
+      allMappings.forEach(mapping => {
+        expect(mapping.signo).toBeDefined();
+        expect(mapping.numero).toBeDefined();
+        expect(mapping.elemento).toBeDefined();
+        expect(mapping.modalidade).toBeDefined();
+        expect(mapping.significado_espiritual).toBeDefined();
+        expect(mapping.orixa).toBeDefined();
+        expect(mapping.sephirah).toBeDefined();
+        expect(mapping.planeta).toBeDefined();
+        expect(mapping.interpretacao).toBeDefined();
+      });
+    });
+  });
+});
 });
