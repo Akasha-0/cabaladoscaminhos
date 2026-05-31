@@ -123,7 +123,7 @@ export default function OrixaPage() {
                 <p className="text-xs text-blue-300 mt-2">
                   {chakraData.elemento} • {chakraData.frequencia}
                 </p>
-                </div>
+                </p>
               </>
             ) : (
               <p className="text-sm text-muted-foreground">Carregando...</p>
@@ -311,25 +311,7 @@ export default function OrixaPage() {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Frequência:</span>
-                    <span className="font-bold">{chakraData.frequencia}</span>
                   </div>
-                  <div className="flex gap-2 mt-3 flex-wrap">
-                    {chakraData.cores.map((cor, i) => (
-                      <div
-                        key={i}
-                        className="px-3 py-1 rounded-full text-xs"
-                        style={{ backgroundColor: cor }}
-                      >
-                        {cor}
-                      </div>
-                    ))}
-                  </div>
-                  {chakraData.mantras && (
-                    <div className="mt-3 pt-3 border-t border-gray-700">
-                      <p className="text-xs text-muted-foreground mb-1">Mantras:</p>
-                      <p className="text-sm">{chakraData.mantras.join(', ')}</p>
-                    </div>
-                  )}
                 </div>
               )}
             </Card>
