@@ -1,17 +1,16 @@
-// ============================================================
-// COSMIC CONSCIOUSNESS API - CABALA DOS CAMINHOS
-// ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
+
 const ConsciousnessLevelSchema = z.enum([
   'physical', 'emotional', 'mental', 'spiritual', 'cosmic', 'divine'
 ]);
+
 const ConsciousnessQuerySchema = z.object({
   id: ConsciousnessLevelSchema.optional(),
   minFrequency: z.coerce.number().min(0).optional(),
   maxFrequency: z.coerce.number().max(1000).optional(),
 });
+
 interface ConsciousnessData {
   id: string;
   level: string;
@@ -61,8 +60,10 @@ const CONSCIOUSNESS_DATA: ConsciousnessData[] = [
     level: 'Divine',
     frequency: 600,
     description: 'Divine consciousness united with source',
+    attributes: ['enlightenment', 'unity', 'divinity']
   },
-};
+];
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -99,6 +100,4 @@ export async function GET(request: NextRequest) {
   } catch {
     return NextResponse.json({ error: 'Failed to retrieve consciousness data' }, { status: 500 });
   }
-  }
-}
 }
