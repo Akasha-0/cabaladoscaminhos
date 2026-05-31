@@ -158,10 +158,7 @@ function getColaboracaoData(): ColaboracaoData {
 }
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const view = searchParams.get('view');
   try {
-    const searchParams = request.nextUrl.searchParams;
     const parseResult = CollaborationQuerySchema.safeParse({
       view: searchParams.get('view'),
       limit: searchParams.get('limit'),
