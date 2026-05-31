@@ -53,9 +53,8 @@ export default function OrixaPage() {
   const chakraData = getOrixaChakra(orixaSelecionado);
 
   const ervasFiltradas = categoriaFiltro === 'todas'
-    ? orixaData?.erivas || []
-    : orixaData?.erivas.filter(e => e.categoria === categoriaFiltro) || [];
-
+    ? orixaData?.ervas || []
+    : orixaData?.ervas.filter(e => e.categoria === categoriaFiltro) || [];
   return (
     <CosmicBackground>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
