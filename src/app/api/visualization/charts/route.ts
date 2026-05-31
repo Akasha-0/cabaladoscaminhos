@@ -27,8 +27,8 @@ interface ChartConfig {
   labels: string[];
   datasets: ChartDataset[];
   options?: Record<string, unknown>;
-}
 const chartTypes = ['line', 'bar', 'pie', 'doughnut', 'radar', 'scatter', 'area', 'candlestick'] as const;
+type ChartType = z.infer<typeof ChartTypeSchema>;
 function generateChartData(
   type: ChartType,
   dataPoints: ChartDataPoint[]
@@ -82,26 +82,30 @@ function calculateStatistics(values: number[]) {
   const median = sorted[Math.floor(sorted.length / 2)];
   const variance = values.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / values.length;
   const stdDev = Math.sqrt(variance);
-
-  return { sum, mean, min, max, median, stdDev };
-}
-
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const type = searchParams.get('type') as ChartType || 'bar';
-    const data = searchParams.get('data');
-    const labelsParam = searchParams.get('labels');
-    const customTitle = searchParams.get('title');
-
+    const parseResult = ChartQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      data: searchParams.get('data'),
+      labels: searchParams.get('labels'),
+      title: searchParams.get('title'),
+      limit: searchParams.get('limit'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { type = 'bar', data, labels: labelsParam, title: customTitle, limit } = parseResult.data;
     if (!chartTypes.includes(type)) {
       return NextResponse.json({
         error: 'Tipo de gráfico inválido',
         validTypes: chartTypes,
       }, { status: 400 });
-    }
-
     let dataPoints: ChartDataPoint[] = [];
+    if (data) {
 
     if (data) {
       try {

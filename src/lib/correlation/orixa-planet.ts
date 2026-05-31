@@ -1,248 +1,124 @@
 /**
- * Orixá-Planet Correlation Mapping
- * Based on IDEIA.md Tabela de Correspondência Macro
- * Maps Candomblé/Umbanda Orixás to their corresponding classical planets
+ * Orixá-Planet Correlation Module
+ * Maps Orixás to planets, elements, and spiritual meanings
+ * Based on IDEIA.md Cabala dos Caminhos framework
  */
 
-export interface OrixaPlanetMapping {
-  /** Orixá name (Portuguese) */
+export interface OrixaPlanet {
   orixa: string;
-  /** Classical planet ruler */
-  planet: string;
-  /** Sacred day(s) of the week */
-  dia: string;
-  /** Traditional colors */
-  cores: string[];
-  /** Elemental correspondence */
-  elemento: string;
-  /** Energetic quality classification */
-  qualidade_energetica: string;
-  /** Spiritual meaning */
+  planeta: string;
+  elemento: 'fogo' | 'água' | 'ar' | 'terra' | 'éter';
   significado_espiritual: string;
+  planeta_secundario?: string;
 }
 
-// ─── Orixá-to-Planet Mapping ─────────────────────────────────────────────────
-
-export const ORIXA_PLANET_MAPPINGS: Record<string, OrixaPlanetMapping> = {
-  'Xangô': {
-    orixa: 'Xangô',
-    planet: 'Sol',
-    dia: 'Quarta-feira / Domingo',
-    cores: ['Amarelo', 'Marrom', 'Vermelho', 'Branco'],
-    elemento: 'Fogo',
-    qualidade_energetica: 'Quente / Radiante',
-    significado_espiritual: 'Justiça, lei cósmica, equilíbrio entre opostos. Governa a verdade e a ordem social.',
+// Main Orixá-Planet mappings based on IDEIA.md
+const ORIXAS_PLANETS_MAP: Record<string, OrixaPlanet> = {
+  'Oxalá': {
+    orixa: 'Oxalá',
+    planeta: 'Sol',
+    elemento: 'éter',
+    significado_espiritual: 'O Criador supremo, Pai de todos os Orixás. Governa a criação, pureza, paz e reconciliação. Simboliza o princípio masculino da fecundidade cósmica e a energia etérea que conecta o físico ao espiritual.',
+    planeta_secundario: 'Júpiter'
   },
   'Iemanjá': {
     orixa: 'Iemanjá',
-    planet: 'Lua',
-    dia: 'Segunda-feira',
-    cores: ['Azul Escuro', 'Branco'],
-    elemento: 'Água',
-    qualidade_energetica: 'Fria / Receptiva',
-    significado_espiritual: 'Maternidade divina, emoções profundas, intuição e ciclos. Protetora dos oceanos e da fertilidade.',
-  },
-  'Ogum': {
-    orixa: 'Ogum',
-    planet: 'Marte',
-    dia: 'Terça-feira',
-    cores: ['Azul Claro', 'Vermelho', 'Verde'],
-    elemento: 'Fogo',
-    qualidade_energetica: 'Quente / Ígnea',
-    significado_espiritual: 'Guerra, conquista e inovação. Abre caminhos e preside sobre o ferro e as artes mecânicas.',
-  },
-  'Oxumaré': {
-    orixa: 'Oxumaré',
-    planet: 'Mercúrio',
-    dia: 'Quarta-feira',
-    cores: ['Arco-íris', 'Amarelo', 'Verde'],
-    elemento: 'Ar / Água',
-    qualidade_energetica: 'Neutra / Volátil',
-    significado_espiritual: 'Ciclos cósmicos, renovação constante. A serpente arco-íris que une céu e terra.',
-  },
-  'Oxóssi': {
-    orixa: 'Oxóssi',
-    planet: 'Júpiter',
-    dia: 'Quinta-feira',
-    cores: ['Verde', 'Azul-turquesa'],
-    elemento: 'Terra / Fogo',
-    qualidade_energetica: 'Fria / Expansiva',
-    significado_espiritual: 'Caça, abundância e prosperidade. Caçador visionário que busca a luz da verdade.',
+    planeta: 'Lua',
+    elemento: 'água',
+    significado_espiritual: 'Mãe das águas e Rainha do Mar. Provedora, nutridora e protetora maternal. Governa os ciclos reprodutivos, a fertilidade, os partos e o amor incondicional. Sua energia hídrica traz cura emocional e renovação espiritual.',
+    planeta_secundario: 'Netuno'
   },
   'Oxum': {
     orixa: 'Oxum',
-    planet: 'Vênus',
-    dia: 'Sexta-feira / Sábado',
-    cores: ['Rosa', 'Amarelo-ouro', 'Azul-celeste'],
-    elemento: 'Água',
-    qualidade_energetica: 'Fria / Magnética',
-    significado_espiritual: 'Amor, beleza e riqueza. Dona das águas doces, do ouro e dos segredos divinos.',
+    planeta: 'Vênus',
+    elemento: 'água',
+    significado_espiritual: 'A riqueza interior e a prosperidade material. Deusa do ouro, dos rios e do amor. Governa a vaidade, a beleza, a sensualidade e a abundância. Sua energia hídrica ensina a fluir com gracejo e a atrair recursos com elegância.'
   },
-  'Omolu': {
-    orixa: 'Omolu',
-    planet: 'Saturno',
-    dia: 'Segunda-feira',
-    cores: ['Preto e Branco', 'Vermelho e Preto'],
-    elemento: 'Terra',
-    qualidade_energetica: 'Quente / Densa',
-    significado_espiritual: 'Doenças e cura, transformação. Mestre das epidemias e senhor das terras cultivadas.',
+  'Ogum': {
+    orixa: 'Ogum',
+    planeta: 'Marte',
+    elemento: 'terra',
+    significado_espiritual: 'O guerreiro, ferreiro e senhor das encruzilhadas. Abre caminhos, vence batalhas e conquista territórios. Sua energia telúrica representa a força, a perseverança e a capacidade de superar obstáculos com coragem.',
+    planeta_secundario: 'Plutão'
   },
-  'Nanã': {
-    orixa: 'Nanã',
-    planet: 'Saturno',
-    dia: 'Segunda-feira',
-    cores: ['Roxo', 'Branco', 'Azul-marinho'],
-    elemento: 'Terra / Água',
-    qualidade_energetica: 'Fria / Densa',
-    significado_espiritual: 'Velhice, sabedoria ancestral, morte e renascimento. Mãe de todos os Orixás.',
+  'Oxóssi': {
+    orixa: 'Oxóssi',
+    planeta: 'Júpiter',
+    elemento: 'terra',
+    significado_espiritual: 'O caçador, provedor e senhor das matas. Busca constante, sabedoria ancestral e conexão com a natureza. Sua energia terrestre ensina a buscar com persistência, a confiar no processo e a celebrar as conquistas com alegria.'
+  },
+  'Xangô': {
+    orixa: 'Xangô',
+    planeta: 'Sol',
+    elemento: 'fogo',
+    significado_espiritual: 'O senhor da justiça, do raio e do trovão. Governa a lei cósmica, a verdade e o equilíbrio social. Sua energia ígnea traz poder, autoridade e a capacidade de destruir o que não serve para reconstruir com maior força.',
+    planeta_secundario: 'Marte'
   },
   'Iansã': {
     orixa: 'Iansã',
-    planet: 'Marte',
-    dia: 'Quarta-feira',
-    cores: ['Vermelho', 'Laranja', 'Amarelo'],
-    elemento: 'Ar / Fogo',
-    qualidade_energetica: 'Quente / Volátil',
-    significado_espiritual: 'Tempestades, ventos e relâmpagos. Guerreira feroz que abre caminhos e vence inimigos.',
+    planeta: 'Urano',
+    elemento: 'fogo',
+    significado_espiritual: 'A guerreira dos ventos e das tempestades. Dona das mudanças bruscas e das transformações radicais. Sua energia ígnea representa a libertação, a revolução interior e a capacidade de se adaptar aos ventos da vida com determinação.',
+    planeta_secundario: 'Plutão'
   },
-  'Obá': {
-    orixa: 'Obá',
-    planet: 'Vênus',
-    dia: 'Sexta-feira',
-    cores: ['Dourado', 'Laranja', 'Vermelho'],
-    elemento: 'Fogo / Água',
-    qualidade_energetica: 'Quente / Magnética',
-    significado_espiritual: 'Guerra e amor, força e paixão. Preside o trabalho do ferro e a força do coração.',
+  'Omolu': {
+    orixa: 'Omolu',
+    planeta: 'Saturno',
+    elemento: 'terra',
+    significado_espiritual: 'O senhor das doenças e da cura, das portas e do destino. Transforma a escuridão em luz, a doença em saúde. Sua energia telúrica ensina que através do confronto com a escuridão encontramos a verdadeira cura e renascimento.'
   },
-  'Ossaim': {
-    orixa: 'Ossaim',
-    planet: 'Mercúrio',
-    dia: 'Quarta-feira',
-    cores: ['Verde', 'Amarelo', 'Branco'],
-    elemento: 'Terra / Ar',
-    qualidade_energetica: 'Neutra / Vegetal',
-    significado_espiritual: 'Senhor das folhas sagradas e das ervas medicinais. Guarda os segredos da cura natural.',
-  },
-  'Logunedé': {
-    orixa: 'Logunedé',
-    planet: 'Júpiter',
-    dia: 'Quinta-feira',
-    cores: ['Verde', 'Amarelo', 'Branco'],
-    elemento: 'Água / Terra',
-    qualidade_energetica: 'Morna / Harmônica',
-    significado_espiritual: 'Caçador elegante, guerreiro e caçador. Unifica a energia de Oxóssi e Oxum.',
-  },
-  'Aeremi': {
-    orixa: 'Aeremi',
-    planet: 'Netuno',
-    dia: 'Segunda-feira',
-    cores: ['Azul-celeste', 'Branco', 'Prata'],
-    elemento: 'Água',
-    qualidade_energetica: 'Fria / Etérea',
-    significado_espiritual: 'Ventos, mensagens celestiais e inspirado nos mestres. Transporta oração ao divino.',
-  },
-  'Inhana': {
-    orixa: 'Inhana',
-    planet: 'Plutão',
-    dia: 'Terça-feira',
-    cores: ['Vermelho-escuro', 'Preto', 'Azul-noturno'],
-    elemento: 'Terra',
-    qualidade_energetica: 'Quente / Transformadora',
-    significado_espiritual: 'Guerreira da noite, metamorfose e regeneração. Desperta a força interior adormecida.',
-  },
+  'Nanã': {
+    orixa: 'Nanã',
+    planeta: 'Saturno',
+    elemento: 'água',
+    significado_espiritual: 'A anciã, senhora das águas paradas e do barro. Governa a sabedoria dos anciãos, os segredos ancestrais e a transformação da matéria. Sua energia hídrica ensina que a verdadeira sabedoria vem com o tempo e a experiência.',
+    planeta_secundario: 'Lua'
+  }
 };
-// Freeze the mapping object to prevent modifications
-Object.freeze(ORIXA_PLANET_MAPPINGS);
-// Freeze nested objects
-Object.values(ORIXA_PLANET_MAPPINGS).forEach(mapping => Object.freeze(mapping));
 
 /**
- * Normalize string for comparison (lowercase + accent removal)
+ * Get Orixá planet correlation mapping
+ * @param orixa - Name of the Orixá (case-insensitive)
+ * @returns OrixaPlanet mapping or undefined if not found
  */
-function normalizeString(str: string): string {
-  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+export function getOrixaPlanet(orixa: string): OrixaPlanet | undefined {
+  const normalized = orixa.trim();
+  return ORIXAS_PLANETS_MAP[normalized] || Object.values(ORIXAS_PLANETS_MAP).find(
+    entry => entry.orixa.toLowerCase() === normalized.toLowerCase()
+  );
 }
 
 /**
- * Get the orixá-to-planet correlation mapping
- * @param orixa - Orixá name (e.g., 'Xangô', 'Iemanjá', 'Ogum', 'xango')
- * @returns The correlation mapping or null if not found
- */
-export function getOrixaPlanet(orixa: string): OrixaPlanetMapping | null {
-  // First try direct key lookup
-  if (orixa in ORIXA_PLANET_MAPPINGS) {
-    return ORIXA_PLANET_MAPPINGS[orixa];
-  }
-  // Fallback: search by normalized display name (handles 'xango' -> 'Xangô')
-  const normalized = normalizeString(orixa);
-  for (const mapping of Object.values(ORIXA_PLANET_MAPPINGS)) {
-    if (normalizeString(mapping.orixa) === normalized) {
-      return mapping;
-    }
-  }
-  return null;
-}
-
-/**
- * Get the planet-to-orixá reverse correlation mapping
- * @param planeta - Planet name (e.g., 'Sol', 'Lua', 'Marte', 'mercurio')
- * @returns The correlation mapping or null if not found
- */
-export function getPlanetOrixa(planeta: string): OrixaPlanetMapping | null {
-  const normalized = normalizeString(planeta);
-  for (const mapping of Object.values(ORIXA_PLANET_MAPPINGS)) {
-    if (normalizeString(mapping.planet) === normalized) {
-      return mapping;
-    }
-  }
-  return null;
-}
-
-/**
- * Get all available orixá-planet mappings
- * @returns Array of all correlation mappings
- */
-export function getAllOrixaPlanets(): OrixaPlanetMapping[] {
-  return Object.values(ORIXA_PLANET_MAPPINGS);
-}
-
-/**
- * Get all orixá names
- * @returns Array of Orixá names
+ * Get all registered Orixás
+ * @returns Array of all Orixá names
  */
 export function getAllOrixas(): string[] {
-  return Object.keys(ORIXA_PLANET_MAPPINGS);
+  return Object.keys(ORIXAS_PLANETS_MAP);
 }
 
 /**
- * Check if an orixá exists in the mapping
- * @param orixa - Orixá name to check
- * @returns True if orixá exists in mapping
+ * Get reverse mapping: planet to associated Orixás
+ * @param planeta - Name of the planet
+ * @returns Array of Orixás associated with that planet
  */
-export function hasOrixaPlanet(orixa: string): boolean {
-  return orixa in ORIXA_PLANET_MAPPINGS;
-}
-
-/**
- * Get orixás filtered by element
- * @param elemento - Element to filter by (Fogo, Água, Terra, Ar, Éter, etc.)
- * @returns Array of OrixaPlanetMapping matching the element
- */
-export function getOrixasByElement(elemento: string): OrixaPlanetMapping[] {
-  const normalizedElemento = normalizeString(elemento);
-  return getAllOrixaPlanets().filter(mapping =>
-    normalizeString(mapping.elemento).includes(normalizedElemento)
+export function getPlanetOrixa(planeta: string): OrixaPlanet[] {
+  const normalized = planeta.trim().toLowerCase();
+  return Object.values(ORIXAS_PLANETS_MAP).filter(
+    entry => entry.planeta.toLowerCase() === normalized
   );
 }
 
 /**
- * Get orixás filtered by planet
- * @param planeta - Planet name to filter by
- * @returns Array of OrixaPlanetMapping matching the planet
+ * Get all Orixá-planet mappings
+ * @returns Array of all OrixaPlanet objects
  */
-export function getOrixasByPlanet(planeta: string): OrixaPlanetMapping[] {
-  const normalizedPlaneta = normalizeString(planeta);
-  return getAllOrixaPlanets().filter(mapping =>
-    normalizeString(mapping.planet) === normalizedPlaneta
-  );
+export function getAllOrixaPlanets(): OrixaPlanet[] {
+  return Object.values(ORIXAS_PLANETS_MAP);
 }
+
+export default {
+  getOrixaPlanet,
+  getAllOrixas,
+  getPlanetOrixa,
+  getAllOrixaPlanets,
+};
