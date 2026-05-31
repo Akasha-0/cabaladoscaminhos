@@ -186,17 +186,12 @@ export async function GET(request: NextRequest) {
     const { action, days } = parseResult.data;
     // Get user's energy entries
     const entries = getUserEnergyEntries(userId);
-    switch (action) {
       case 'status': {
-          : null;
-
+        const latestEntry = entries[entries.length - 1];
         return NextResponse.json({
           success: true,
           data: {
             currentLevel: latestEntry?.level ?? ENERGY_LEVELS.MODERATE,
-            lastUpdated: latestEntry?.timestamp ?? new Date().toISOString(),
-            label: getEnergyLabel(latestEntry?.level ?? ENERGY_LEVELS.MODERATE),
-          },
         });
       }
 
