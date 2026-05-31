@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import { withErrorHandler } from '@/lib/error-handling';
 import { z } from 'zod';
 import { getCart, addToCart, removeFromCart, updateCartItemQuantity, clearCart, CartItem } from '@/lib/shop/cart';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+
 const CartItemSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -10,6 +12,7 @@ const CartItemSchema = z.object({
   quantity: z.number().int().min(1).default(1),
   imageUrl: z.string().optional(),
 });
+
 const ShopActionSchema = z.object({
   action: z.enum(['add', 'remove', 'update', 'clear']),
   item: z.object({
@@ -20,10 +23,12 @@ const ShopActionSchema = z.object({
     imageUrl: z.string().optional(),
   }).optional(),
 });
+
 export const GET = withErrorHandler(async () => {
   const cart = getCart();
   return NextResponse.json(cart);
 });
+
 export const POST = withErrorHandler(async (request: Request) => {
   const body = await request.json();
   const parseResult = ShopActionSchema.safeParse(body);
@@ -34,9 +39,6 @@ export const POST = withErrorHandler(async (request: Request) => {
     }, { status: 400 });
   }
   const { action, item } = parseResult.data;
-  let cart;
-  switch (action) {
-    case 'add': {
 
   let cart;
 
@@ -45,7 +47,7 @@ export const POST = withErrorHandler(async (request: Request) => {
       if (!item) {
         return NextResponse.json({ error: 'Item is required for add action' }, { status: 400 });
       }
-      cart = addToCart(item);
+      cart = addToCart(item as CartItem);
       break;
     }
     case 'remove': {
