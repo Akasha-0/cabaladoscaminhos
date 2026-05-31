@@ -252,17 +252,13 @@ export async function GET(request: NextRequest) {
       practices,
       timestamp: new Date().toISOString()
     };
-
-    // Optional metadata
     const meta: Record<string, unknown> = {
       recordType,
       accessLevel,
       timestamp: record.timestamp
     };
-
-    if (soulAgeParam) meta.soulAge = soulAgeParam;
-    if (themeParam) meta.theme = themeParam;
-
+    if (soulAge) meta.soulAge = soulAge;
+    if (theme) meta.theme = theme;
     return NextResponse.json({
       success: true,
       data: record,
