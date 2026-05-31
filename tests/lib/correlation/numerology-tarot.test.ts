@@ -293,7 +293,7 @@ describe('numerology-tarot', () => {
     });
 
     it('returns empty array for unknown orixá', () => {
-      expect(getNumerologyByOrixa('Iemanja')).toEqual([]);
+      expect(getNumerologyByOrixa('Orunbila')).toEqual([]);
     });
   });
 
@@ -333,7 +333,7 @@ describe('numerology-tarot', () => {
     });
 
     it('returns empty array for unknown chakra', () => {
-      expect(getNumerologyByChakra('Plexo Solar')).toEqual([]);
+      expect(getNumerologyByChakra('Coronário')).toEqual([]);
     });
   });
 
