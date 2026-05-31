@@ -36,10 +36,8 @@ export interface OfferingItem {
   name: string;
   description: string;
   type: OfferingType;
-}
   notes?: string;
 }
-
 export interface Offering {
   id: string;
   name: string;

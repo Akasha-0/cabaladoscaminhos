@@ -186,6 +186,7 @@ export async function GET(request: NextRequest) {
     const { action, days } = parseResult.data;
     // Get user's energy entries
     const entries = getUserEnergyEntries(userId);
+    switch (action) {
       case 'status': {
         const latestEntry = entries[entries.length - 1];
         return NextResponse.json({

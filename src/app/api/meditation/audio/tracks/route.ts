@@ -31,7 +31,6 @@ export interface AudioTrack {
   createdAt: string;
 }
 const tracks: AudioTrack[] = [
-const tracks: AudioTrack[] = [
   {
     id: 'track_001',
     name: 'Om 432Hz - Purificação Mental',

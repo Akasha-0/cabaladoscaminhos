@@ -57,8 +57,6 @@ const PRIORITY_LEVELS = {
   MEDIUM: 'medium',
   LOW: 'low',
 } as const;
-} as const;
-
 interface Manifestation {
   id: string;
   userId: string;
