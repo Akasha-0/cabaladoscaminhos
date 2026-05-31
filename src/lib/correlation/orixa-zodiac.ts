@@ -8,8 +8,7 @@
 /** The four classical elements plus quintessence */
 type Elemento = 'Fogo' | 'Terra' | 'Ar' | 'Água' | 'Éter';
 
-/** The twelve zodiac signs */
-type Signo = 'Áries' | 'Touro' | 'Gémeos' | 'Câncer' | 'Leão' | 'Virgem' | 'Balança' | 'Escorpião' | 'Sagitário' | 'Capricórnio' | 'Aquário' | 'Peixes';
+type Signo = 'Áries' | 'Touro' | 'Gémeos' | 'Caranguejo' | 'Leão' | 'Virgem' | 'Balança' | 'Escorpião' | 'Sagitário' | 'Capricórnio' | 'Aquário' | 'Peixes';
 
 /**
  * Orixá-to-Zodiac correlation mapping
@@ -60,13 +59,9 @@ export const ORIXA_ZODIAC_MAP: Readonly<Record<string, OrixaZodiac>> = {
   /**
    * IEMANJÁ - Mother of Waters
    * Zodiac: Câncer
-   * The maternal, nurturing water energy of Iemanjá perfectly aligns with Câncer's emotional depth
-   */
-  'Iemanjá': {
-    orixa: 'Iemanjá',
-    signo: 'Câncer',
+    signo: 'Caranguejo',
     elemento: 'Água',
-    significado_espiritual: 'Iemanjá-Câncer representa a mãe cósmica que guarda a memória ancestral. A energia hídrica de Iemanjá manifesta-se na profunda conexão emocional de Câncer, ensinando que o amor maternal é a força mais poderosa do universo.',
+    significado_espiritual: 'Iemanjá-Caranguejo representa a mãe cósmica que guarda a memória ancestral. A energia hídrica de Iemanjá manifesta-se na profunda conexão emocional de Caranguejo, ensinando que o amor maternal é a força mais poderosa do universo.',
     signos_secundarios: ['Escorpião', 'Peixes'],
     dia_sagrado: 'Sábado',
     planeta_regente: 'Lua',
@@ -82,7 +77,7 @@ export const ORIXA_ZODIAC_MAP: Readonly<Record<string, OrixaZodiac>> = {
     signo: 'Touro',
     elemento: 'Água',
     significado_espiritual: 'Oxum-Touro representa a abundância sagrada que flui através da beleza e do trabalho paciente. A energia hídrica de Oxum manifesta-se na capacidade de Touro de atrair prosperidade através da elegância e do discernimento.',
-    signos_secundarios: ['Libra'],
+    signos_secundarios: ['Balança'],
     dia_sagrado: 'Sábado',
     planeta_regente: 'Vénus',
   },
@@ -97,15 +92,10 @@ export const ORIXA_ZODIAC_MAP: Readonly<Record<string, OrixaZodiac>> = {
     signo: 'Áries',
     elemento: 'Terra',
     significado_espiritual: 'Ogum-Áries representa o guerreiro cósmico que abre novos caminhos. A energia telúrica de Ogum manifesta-se na determinação inabalável de Áries, ensinando que a verdadeira força está em avançar mesmo quando o caminho é incerto.',
-    signos_secundarios: ['Marte'],
+    signos_secundarios: ['Capricórnio'],
     dia_sagrado: 'Terça-feira',
     planeta_regente: 'Marte',
   },
-
-  /**
-   * OXÓSSI - Hunter of Wisdom
-   * Zodiac: Virgem
-   * The analytical, wise earth energy of Oxóssi aligns with Virgo's pursuit of perfection and knowledge
    */
   'Oxóssi': {
     orixa: 'Oxóssi',
@@ -159,17 +149,15 @@ export const ORIXA_ZODIAC_MAP: Readonly<Record<string, OrixaZodiac>> = {
     significado_espiritual: 'Omolu-Capricórnio representa o confronto com a escuridão que precede a cura e o renascimento. A energia telúrica de Omolu manifesta-se na perseverança de Capricórnio através das provas do destino, ensinando que através do sofrimento encontramos a verdadeira transformação.',
     signos_secundarios: ['Saturno'],
     dia_sagrado: 'Segunda-feira',
+  'Omolu': {
+    orixa: 'Omolu',
+    signo: 'Capricórnio',
+    elemento: 'Terra',
+    significado_espiritual: 'Omolu-Capricórnio representa o confronto com a escuridão que precede a cura e o renascimento. A energia telúrica de Omolu manifesta-se na perseverança de Capricórnio através das provas do destino, ensinando que através do sofrimento encontramos a verdadeira transformação.',
+    signos_secundarios: ['Aquário'],
+    dia_sagrado: 'Segunda-feira',
     planeta_regente: 'Saturno',
   },
-
-  /**
-   * NANÃ - Ancient of Waters
-   * Zodiac: Peixes
-   * The wise, deep water energy of Nanã aligns with Pisces's spiritual surrender and ancient wisdom
-   */
-  'Nanã': {
-    orixa: 'Nanã',
-    signo: 'Peixes',
     elemento: 'Água',
     significado_espiritual: 'Nanã-Peixes representa a anciã que guarda os segredos ancestrais das águas profundas. A energia hídrica de Nanã manifesta-se na capacidade de Peixes de acessar a sabedoria dos antepassados e fluir com os mistérios do universo.',
     signos_secundarios: ['Câncer', 'Escorpião'],
