@@ -1,17 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const EnergyActionSchema = z.enum(['status', 'trend', 'history']);
 const EnergyQuerySchema = z.object({
   action: EnergyActionSchema.optional().default('status'),
   days: z.coerce.number().int().positive().max(365).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 const EnergyEntrySchema = z.object({
   level: z.number().int().min(1).max(10),
   note: z.string().optional(),
   timestamp: z.string().datetime().optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
+
+// ─── Energy Level Spiritual Correlations ──────────────────────────────────────────
+const ENERGY_LEVEL_SPIRITUAL_CORRELATIONS: Record<number, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  recommendation: string;
+}> = {
+  1: { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Descanso e me restauro para reconstruir minha energia', recommendation: 'Pratique grounding com Ogum, use crystals de obsidiana' },
+  2: { sefirot: ['Hod', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'Respiração consciente renova minha vitalidade', recommendation: 'Pratique respiração 4-7-8, use incenso de salvio' },
+  3: { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'O equilíbrio me sustenta em harmonia', recommendation: 'Pratique visualization com Oxum, use água de flor' },
+  4: { sefirot: ['Gevurah', 'Chesed'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'Minha energia flui com propósito e força', recommendation: 'Pratique ritual de fogo com Xangô, use cinnamon' },
+  5: { sefirot: ['Chokhmah', 'Tipheret'], chakra: 6, element: 'Ar', orixa: 'Oxum', affirmation: 'Clareza mental e emoção em equilíbrio', recommendation: 'Pratique meditação com Oxum, use quartzo rosa' },
+  6: { sefirot: ['Kether', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Sou um canal de energia divina em plenitude', recommendation: 'Pratique oração de Oxalá, use vela branca' },
+};
+
+// ─── TYPE DEFINITIONS ──────────────────────────────────────────────────────
 const ENERGY_LEVELS = {
   EXHAUSTED: 1,
   LOW: 2,
@@ -22,6 +57,15 @@ const ENERGY_LEVELS = {
 } as const;
 type EnergyLevel = typeof ENERGY_LEVELS[keyof typeof ENERGY_LEVELS];
 
+interface EnergySpiritualCorrelations {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  recommendation: string;
+}
+
 interface EnergyEntry {
   id: string;
   userId: string;
@@ -29,6 +73,7 @@ interface EnergyEntry {
   timestamp: string;
   notes?: string;
   activities?: string[];
+  spiritualCorrelations?: EnergySpiritualCorrelations;
 }
 
 interface EnergyTrend {
@@ -37,6 +82,7 @@ interface EnergyTrend {
   peakTime: string;
   lowTime: string;
   trend: 'increasing' | 'decreasing' | 'stable';
+  spiritualCorrelations?: EnergySpiritualCorrelations;
 }
 
 interface EnergyInsight {
@@ -44,25 +90,30 @@ interface EnergyInsight {
   title: string;
   description: string;
   priority: 'low' | 'medium' | 'high';
+  spiritualCorrelations?: EnergySpiritualCorrelations;
 }
 
-// In-memory energy tracking (in production, use database)
+// In-memory energy tracking
 const energyStore: Map<string, EnergyEntry[]> = new Map();
 
-// Helper to get or create user energy entries
 function getUserEnergyEntries(userId: string): EnergyEntry[] {
   return energyStore.get(userId) || [];
 }
 
-// Calculate energy trend from entries
+function getSpiritualCorrelationsForLevel(level: number): EnergySpiritualCorrelations {
+  return ENERGY_LEVEL_SPIRITUAL_CORRELATIONS[level] || ENERGY_LEVEL_SPIRITUAL_CORRELATIONS[3];
+}
+
 function calculateEnergyTrend(entries: EnergyEntry[]): EnergyTrend {
   if (entries.length === 0) {
+    const defaultCorr = getSpiritualCorrelationsForLevel(3);
     return {
       period: '7d',
       averageLevel: 3,
       peakTime: '10:00',
       lowTime: '14:00',
       trend: 'stable',
+      spiritualCorrelations: defaultCorr,
     };
   }
 
@@ -71,10 +122,8 @@ function calculateEnergyTrend(entries: EnergyEntry[]): EnergyTrend {
   );
 
   const recentEntries = sortedEntries.slice(-7);
-  const averageLevel =
-    recentEntries.reduce((sum, e) => sum + e.level, 0) / recentEntries.length;
+  const averageLevel = recentEntries.reduce((sum, e) => sum + e.level, 0) / recentEntries.length;
 
-  // Determine peak and low times from entries
   const levelByHour = new Map<number, number[]>();
   recentEntries.forEach((entry) => {
     const hour = new Date(entry.timestamp).getHours();
@@ -99,15 +148,16 @@ function calculateEnergyTrend(entries: EnergyEntry[]): EnergyTrend {
     }
   });
 
-  // Calculate trend
   const firstHalf = recentEntries.slice(0, Math.floor(recentEntries.length / 2));
   const secondHalf = recentEntries.slice(Math.floor(recentEntries.length / 2));
-  const firstAvg = firstHalf.reduce((sum, e) => sum + e.level, 0) / (firstHalf.length || 1);
-  const secondAvg = secondHalf.reduce((sum, e) => sum + e.level, 0) / (secondHalf.length || 1);
+  const firstAvg = firstHalf.reduce((sum, e) => sum + e.level, 0) / firstHalf.length || 0;
+  const secondAvg = secondHalf.reduce((sum, e) => sum + e.level, 0) / secondHalf.length || 0;
 
   let trend: 'increasing' | 'decreasing' | 'stable' = 'stable';
-  if (secondAvg - firstAvg > 0.5) trend = 'increasing';
-  else if (firstAvg - secondAvg > 0.5) trend = 'decreasing';
+  if (secondAvg > firstAvg + 0.5) trend = 'increasing';
+  else if (secondAvg < firstAvg - 0.5) trend = 'decreasing';
+
+  const spiritualCorr = getSpiritualCorrelationsForLevel(Math.round(averageLevel));
 
   return {
     period: '7d',
@@ -115,183 +165,196 @@ function calculateEnergyTrend(entries: EnergyEntry[]): EnergyTrend {
     peakTime,
     lowTime,
     trend,
+    spiritualCorrelations: spiritualCorr,
   };
 }
 
-// Generate energy insights based on trends
-function generateInsights(trend: EnergyTrend, entries: EnergyEntry[]): EnergyInsight[] {
-  const insights: EnergyInsight[] = [];
-
-  if (trend.trend === 'decreasing' && trend.averageLevel < 3) {
-    insights.push({
-      type: 'warning',
-      title: 'Energy Declining',
-      description: 'Your energy levels have been decreasing. Consider rest and self-care.',
-      priority: 'high',
-    });
-  }
-
-  if (trend.trend === 'increasing' && trend.averageLevel >= 4) {
-    insights.push({
-      type: 'tip',
-      title: 'Sustained Energy',
-      description: 'Great job maintaining high energy levels! Keep your routines consistent.',
-      priority: 'medium',
-    });
-  }
-
-  // Check for patterns
-  const recentActivities = entries.slice(-14).flatMap((e) => e.activities || []);
-  const activityCounts = new Map<string, number>();
-  recentActivities.forEach((a) => {
-    activityCounts.set(a, (activityCounts.get(a) || 0) + 1);
-  });
-
-  if (activityCounts.size > 0) {
-    const topActivity = Array.from(activityCounts.entries()).sort((a, b) => b[1] - a[1])[0];
-    insights.push({
-      type: 'recommendation',
-      title: 'Activity Insight',
-      description: `Your most frequent energy-boosting activity is "${topActivity[0]}".`,
-      priority: 'low',
-    });
-  }
-
-  // Peak time recommendation
-  insights.push({
-    type: 'tip',
-    title: 'Optimal Time',
-    description: `Your energy peaks around ${trend.peakTime}. Schedule important tasks during this time.`,
-    priority: 'medium',
-  });
-
-  return insights;
-}
-
-// Get current energy status
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'anonymous';
-    const searchParams = request.nextUrl.searchParams();
+    const { searchParams } = new URL(request.url);
     const parseResult = EnergyQuerySchema.safeParse({
       action: searchParams.get('action'),
       days: searchParams.get('days'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
     });
+
     if (!parseResult.success) {
       return NextResponse.json({
+        success: false,
         error: 'Parâmetros inválidos',
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
-    const { action, days } = parseResult.data;
-    // Get user's energy entries
-    const entries = getUserEnergyEntries(userId);
+
+    const { action, days, sefirot, chakra, element, orixa } = parseResult.data;
+    const supabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({
+        success: false,
+        error: 'Usuário não autenticado',
+      }, { status: 401 });
+    }
+
+    const entries = getUserEnergyEntries(user.id);
+
     switch (action) {
       case 'status': {
         const latestEntry = entries[entries.length - 1];
+        const currentLevel = latestEntry?.level || 3;
+        const spiritualCorr = getSpiritualCorrelationsForLevel(currentLevel);
+
+        // Filter by spiritual correlations
+        let filteredEntries = entries;
+        if (sefirot) {
+          filteredEntries = filteredEntries.filter(e => e.spiritualCorrelations?.sefirot.includes(sefirot));
+        }
+        if (chakra) {
+          filteredEntries = filteredEntries.filter(e => e.spiritualCorrelations?.chakra === chakra);
+        }
+        if (element) {
+          filteredEntries = filteredEntries.filter(e => e.spiritualCorrelations?.element === element);
+        }
+        if (orixa) {
+          filteredEntries = filteredEntries.filter(e => e.spiritualCorrelations?.orixa === orixa);
+        }
+
         return NextResponse.json({
           success: true,
-          data: {
-            currentLevel: latestEntry?.level ?? ENERGY_LEVELS.MODERATE,
+          status: {
+            currentLevel,
+            spiritualCorrelations: spiritualCorr,
+            affirmation: spiritualCorr.affirmation,
+            recommendation: spiritualCorr.recommendation,
+          },
+          meta: {
+            filters: { sefirot, chakra, element, orixa },
           },
         });
       }
 
       case 'trend': {
         const trend = calculateEnergyTrend(entries);
-        const insights = generateInsights(trend, entries);
+        
+        // Filter entries by spiritual correlations
+        if (sefirot || chakra || element || orixa) {
+          const filteredEntries = entries.filter(e => {
+            if (sefirot && !e.spiritualCorrelations?.sefirot.includes(sefirot)) return false;
+            if (chakra && e.spiritualCorrelations?.chakra !== chakra) return false;
+            if (element && e.spiritualCorrelations?.element !== element) return false;
+            if (orixa && e.spiritualCorrelations?.orixa !== orixa) return false;
+            return true;
+          });
+          return NextResponse.json({
+            success: true,
+            trend: calculateEnergyTrend(filteredEntries),
+            meta: { filters: { sefirot, chakra, element, orixa } },
+          });
+        }
 
         return NextResponse.json({
           success: true,
-          data: {
-            trend,
-            insights,
-            totalEntries: entries.length,
-          },
+          trend,
         });
       }
+
       case 'history': {
-        const daysParam = days ?? 7;
-        const cutoffDate = new Date();
-        cutoffDate.setDate(cutoffDate.getDate() - daysParam);
-        const filteredEntries = entries.filter(
-          (e) => new Date(e.timestamp) >= cutoffDate
-        );
+        let historyEntries = [...entries];
+        
+        // Filter by spiritual correlations
+        if (sefirot) {
+          historyEntries = historyEntries.filter(e => e.spiritualCorrelations?.sefirot.includes(sefirot));
+        }
+        if (chakra) {
+          historyEntries = historyEntries.filter(e => e.spiritualCorrelations?.chakra === chakra);
+        }
+        if (element) {
+          historyEntries = historyEntries.filter(e => e.spiritualCorrelations?.element === element);
+        }
+        if (orixa) {
+          historyEntries = historyEntries.filter(e => e.spiritualCorrelations?.orixa === orixa);
+        }
+
         return NextResponse.json({
           success: true,
-          data: {
-            entries: filteredEntries,
-            total: filteredEntries.length,
-            period: `${daysParam}d`,
-          },
+          history: historyEntries,
+          count: historyEntries.length,
+          spiritualCorrelations: ENERGY_LEVEL_SPIRITUAL_CORRELATIONS,
         });
       }
-      default: {
-        return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
-      }
+
+      default:
+        return NextResponse.json({
+          success: true,
+          status: {
+            currentLevel: 3,
+            spiritualCorrelations: getSpiritualCorrelationsForLevel(3),
+          },
+        });
     }
-  } catch {
-    return NextResponse.json(
-      { error: 'Failed to process energy request' },
-      { status: 500 }
-    );
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
 }
 
-function getEnergyLabel(level: EnergyLevel): string {
-  const labels: Record<number, string> = {
-    [ENERGY_LEVELS.EXHAUSTED]: 'Exhausted',
-    [ENERGY_LEVELS.LOW]: 'Low',
-    [ENERGY_LEVELS.MODERATE]: 'Moderate',
-    [ENERGY_LEVELS.GOOD]: 'Good',
-    [ENERGY_LEVELS.HIGH]: 'High',
-    [ENERGY_LEVELS.OPTIMAL]: 'Optimal',
-  };
-  return labels[level] || 'Unknown';
-}
-
-// Record energy entry (used by other parts of the app)
 export async function POST(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'anonymous';
     const body = await request.json();
+    const parseResult = EnergyEntrySchema.safeParse(body);
 
-    const { level, notes, activities } = body;
-
-    if (!level || level < 1 || level > 6) {
-      return NextResponse.json(
-        { error: 'Invalid energy level. Must be between 1 and 6.' },
-        { status: 400 }
-      );
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Dados inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
+
+    const supabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ success: false, error: 'Usuário não autenticado' }, { status: 401 });
+    }
+
+    const { level, note, timestamp, sefirot, chakra, element, orixa } = parseResult.data;
+    const spiritualCorr = getSpiritualCorrelationsForLevel(level);
 
     const entry: EnergyEntry = {
-      id: crypto.randomUUID(),
-      userId,
+      id: `energy-${Date.now()}`,
+      userId: user.id,
       level,
-      timestamp: new Date().toISOString(),
-      notes: notes || undefined,
-      activities: activities || undefined,
+      timestamp: timestamp || new Date().toISOString(),
+      notes: note,
+      spiritualCorrelations: sefirot && chakra && element && orixa
+        ? { sefirot: [sefirot], chakra, element, orixa, ...spiritualCorr }
+        : spiritualCorr,
     };
 
-    const userEntries = getUserEnergyEntries(userId);
-    userEntries.push(entry);
-
-    // Keep only last 100 entries per user
-    if (userEntries.length > 100) {
-      userEntries.splice(0, userEntries.length - 100);
-    }
-
-    energyStore.set(userId, userEntries);
+    const entries = getUserEnergyEntries(user.id);
+    entries.push(entry);
+    energyStore.set(user.id, entries);
 
     return NextResponse.json({
       success: true,
-      data: { entry },
+      entry,
+      spiritualCorrelations: entry.spiritualCorrelations,
     });
-  } catch {
-    return NextResponse.json(
-      { error: 'Failed to record energy entry' },
-      { status: 500 }
-    );
+  } catch (error) {
+    return NextResponse.json({ success: false, error: 'Erro interno' }, { status: 500 });
   }
 }
