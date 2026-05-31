@@ -1,15 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-export type FavoritoTipo = 'affirmation' | 'ritual' | 'tarot' | 'numerologia';
-
-export interface Favorito {
-  id: string;
-  tipo: FavoritoTipo;
-  itemId: string;
-  createdAt: string;
-}
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const FavoritoTipoSchema = z.enum(['affirmation', 'ritual', 'tarot', 'numerologia']);
+const FavoritoSchema = z.object({
+  id: z.string(),
+  tipo: FavoritoTipoSchema,
+  itemId: z.string(),
+  createdAt: z.string(),
+});
+const CreateFavoritoSchema = z.object({
+  tipo: FavoritoTipoSchema,
+  itemId: z.string().min(1, 'itemId é obrigatório'),
+});
+const DeleteFavoritoSchema = z.object({
+  id: z.string().min(1, 'id é obrigatório'),
+});
+type FavoritoTipo = z.infer<typeof FavoritoTipoSchema>;
+export type Favorito = z.infer<typeof FavoritoSchema>;
 const favoritos: Map<string, Favorito> = new Map();
+function generateId(): string {
+  return `fav_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+}
 
 function generateId(): string {
   return `fav_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
