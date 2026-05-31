@@ -31,7 +31,7 @@ export interface OrixaSephirah {
 const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Oxalá': {
     orixa: 'Oxalá',
-    sephirah: 'Kether',
+    elemento: 'éter',
     elemento: 'Éter',
     significado_espiritual: 'Pureza Divina — Oxalá, o Criador, conecta-se a Kether, a Coroa da Árvore da Vida. Ambos representam a origem absoluta, o princípio primeiro antes da manifestação. O éter de Oxalá é a luz primordial que precede todos os elementos.',
     numero_caminho: 1,
