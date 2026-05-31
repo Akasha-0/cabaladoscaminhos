@@ -123,8 +123,8 @@ export default function OrixaPage() {
                 <p className="text-xs text-blue-300 mt-2">
                   {chakraData.elemento} • {chakraData.frequencia}
                 </p>
-                </p>
               </>
+            ) : (
             ) : (
               <p className="text-sm text-muted-foreground">Carregando...</p>
             )}
