@@ -1,17 +1,21 @@
-// ============================================================
-// PROGRESS API - CABALA DOS CAMINHOS
-// ============================================================
-// GET user progress data
-// POST track progress updates
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { withErrorHandler } from '@/lib/error-handling';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ProgressQuerySchema = z.object({
+  userId: z.string().optional(),
+  type: z.string().optional(),
+  category: z.string().optional(),
+});
+const AddProgressSchema = z.object({
+  type: z.string().min(1, 'Type is required'),
+  category: z.string().min(1, 'Category is required'),
+  value: z.number().optional().default(1),
+  metadata: z.record(z.unknown()).optional(),
+});
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
 interface ProgressEntry {
   id: string;
   userId: string;
