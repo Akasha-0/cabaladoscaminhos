@@ -38,6 +38,7 @@ export interface ElementNumerology {
   cor: string;
   /** Primary spiritual meaning */
   significado_espiritual: string;
+  /** Cardinal direction */
   direcao: string;
   /** Element qualities */
   qualidades: {
