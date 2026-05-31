@@ -187,7 +187,7 @@ describe('NumerologyElement Correlation', () => {
       const qualities = getNumerologyQualidades(11);
       expect(qualities).toBeDefined();
       expect(qualities?.forca).toContain('Sabedoria transcendental');
-      expect(qualities?.desafio).toContain('idealismo');
+      expect(qualities?.desafio).toContain('Idealismo');
     });
 
     it('should return null for invalid number', () => {
