@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
 const RitualTypeSchema = z.enum(['daily', 'weekly', 'monthly', 'seasonal', 'crisis', 'celebration']);
 const TraditionSchema = z.enum(['candomble', 'umbanda', 'cabala', 'yoruba', 'taoist', 'sufi', 'shamanic']);
 const RitualQuerySchema = z.object({
@@ -10,9 +17,72 @@ const RitualQuerySchema = z.object({
   day: z.string().optional(),
   includeSteps: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
 });
 
 export const dynamic = 'force-dynamic';
+
+// ─── Spiritual Correlations for Ritual Types ──────────────────────────────────────────
+const RITUAL_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  daily: {
+    sefirot: ['Kether', 'Tipheret'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'O ritual diário fortalece minha conexão divina',
+    frequency: '963 Hz',
+  },
+  weekly: {
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'O ritmo semanal me alinha com a energia do universo',
+    frequency: '528 Hz',
+  },
+  monthly: {
+    sefirot: ['Yesod', 'Binah'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'O ciclo mensal purifica minha essência',
+    frequency: '417 Hz',
+  },
+  seasonal: {
+    sefirot: ['Chokhmah', 'Gevurah'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Xangô',
+    affirmation: 'As estações do ano refletem minha transformação',
+    frequency: '528 Hz',
+  },
+  crisis: {
+    sefirot: ['Gevurah', 'Malkuth'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Ogum',
+    affirmation: 'Na crise, encontro força e proteção',
+    frequency: '396 Hz',
+  },
+  celebration: {
+    sefirot: ['Tipheret', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A celebração honra a vida e o divino',
+    frequency: '528 Hz',
+  },
+};
 
 // ─── Practice Data ─────────────────────────────────────────────────────────
 interface RitualPractice {
@@ -30,6 +100,14 @@ interface RitualPractice {
   orixa?: string;
   chakra: string;
   time: string;
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
 }
 
 const RITUAL_PRACTICES: RitualPractice[] = [
@@ -56,6 +134,7 @@ const RITUAL_PRACTICES: RitualPractice[] = [
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 'Sahasrara (7º)',
     time: 'Amanhecer',
+    spiritualCorrelations: RITUAL_SPIRITUAL_CORRELATIONS['daily'],
   },
   {
     id: 'oxum-daily',
@@ -81,267 +160,247 @@ const RITUAL_PRACTICES: RitualPractice[] = [
     orixa: 'Oxum',
     chakra: 'Svadhisthana (2º)',
     time: 'Manhã',
+    spiritualCorrelations: RITUAL_SPIRITUAL_CORRELATIONS['daily'],
   },
   {
-    id: 'oxalá-friday',
+    id: 'weekly-oxala',
     type: 'weekly',
-    name: 'Ritual de Sexta-feira — Oxalá',
-    nameEn: 'Friday Oxalá Ritual',
-    description: 'Prática semanal para paz e conexão com Oxalá no dia dedicado.',
-    tradition: 'candomble',
-    duration: '45 minutos',
-    frequency: 'Sexta-feira',
-    steps: [
-      'Vista roupas brancas',
-      'Limpe o ambiente com sal e água',
-      'Acenda velas brancas (3 ou 7)',
-      'Coloque canjica branca em prato',
-      'Recite orações a Oxalá',
-      'Cante ou dance suavemente',
-      'Pratique silêncio interior',
-      'Acabou: agradeça e descanse',
-    ],
-    materials: ['Velas brancas', 'Roupas brancas', 'Canjica', 'Algodão', 'Vinho branco opcional'],
-    sefirot: ['Kether', 'Tipheret'],
-    orixa: 'Oxalá',
-    chakra: 'Sahasrara (7º)',
-    time: 'Sexta-feira à noite',
-  },
-  {
-    id: 'egungun-ancestors',
-    type: 'weekly',
-    name: 'Ritual dos Ancestrais — Egungun',
-    nameEn: 'Ancestral Ritual',
-    description: 'Conexão com os ancestrais para proteção e sabedoria.',
-    tradition: 'yoruba',
-    duration: '1 hora',
-    frequency: 'Segunda-feira',
-    steps: [
-      'Acenda velas brancas para cada ancestral',
-      'Coloque água e alimentos simples',
-      'Recite nomes dos ancestrais conhecidos',
-      'Peça proteção e orientação',
-      'Fique em silêncio, ouvindo intuição',
-      'Agradeça pelos sacrifícios deles',
-      'Jogue sal na soleira da porta',
-      'Desligue velas e guarde a água',
-    ],
-    materials: ['Velas brancas', 'Água', 'Pipoca ou quirera', 'Sal', 'Alimentos simples'],
-    sefirot: ['Yesod', 'Malkuth'],
-    chakra: 'Muladhara (1º)',
-    time: 'Segunda-feira à noite',
-  },
-  {
-    id: 'xango-wednesday',
-    type: 'weekly',
-    name: 'Ritual de Quarta-feira — Xangô',
-    nameEn: 'Wednesday Xangô Ritual',
-    description: 'Honrar Xangô para justiça, equilíbrio e força.',
-    tradition: 'candomble',
-    duration: '40 minutos',
-    frequency: 'Quarta-feira',
-    steps: [
-      'Acenda velas douradas ou laranja',
-      'Coloque amalá (quiabo cozido com camarão)',
-      'Adicione folhas de fumo (opcional)',
-      'Recite orações de Xangô',
-      'Pida equilíbrio entre força e justiça',
-      'Quebre um galho seco simbolizando demandas',
-      'Acabe com gratidão pela força recebida',
-    ],
-    materials: ['Velas douradas/laranja', 'Amalá', 'Folhas de fumo', 'Galho seco'],
-    sefirot: ['Gevurah', 'Hod'],
-    orixa: 'Xangô',
-    chakra: 'Manipura (3º)',
-    time: 'Quarta-feira',
-  },
-  {
-    id: 'yemanjá-sea',
-    type: 'monthly',
-    name: 'Ritual de Iemanjá — Rainha do Mar',
-    nameEn: 'Yemanjá Monthly Ritual',
-    description: 'Cerimônia mensal para proteção, fertilidade e conexão com o mar.',
-    tradition: 'umbanda',
-    duration: '1-2 horas',
-    frequency: '2ª-feira de cada mês ou véspera de lua cheia',
-    steps: [
-      'Vá ao mar ou tenha água do mar presente',
-      'Vista roupas azul e branco',
-      'Acenda velas azul e branca',
-      'Ofereça flores brancas à água',
-      'Recite orações de proteção',
-      'Peça bênçãos para família e filhos',
-      'Solte as flores na água do mar',
-      'Agradeça pela presença maternal de Iemanjá',
-    ],
-    materials: ['Velas azul e branca', 'Flores brancas', 'Roupas azul/branco', 'Perfume de Iemanjá', 'Água do mar'],
-    sefirot: ['Binah', 'Yesod'],
-    orixa: 'Iemanjá',
-    chakra: 'Sahasrara (7º)',
-    time: 'Noite (lua cheia)',
-  },
-  {
-    id: 'ogum-mardi',
-    type: 'weekly',
-    name: 'Ritual de Terça-feira — Ogum',
-    nameEn: 'Tuesday Ogum Ritual',
-    description: 'Honrar Ogum para proteção, trabalho e conquista.',
+    name: 'Ritual Semanal de Oxalá',
+    nameEn: 'Weekly Oxalá Ritual',
+    description: 'Prática semanal para honrar Oxalá e renovar a fé.',
     tradition: 'candomble',
     duration: '30 minutos',
-    frequency: 'Terça-feira',
+    frequency: 'Domingo',
     steps: [
-      'Acenda velas vermelhas e verdes',
-      'Coloque espada-de-são-jorge (se disponível)',
-      'Ofereça inhame assado ou pipoca',
-      'Recite orações de Ogum',
-      'Pida proteção no trabalho e travels',
-      'Faça um nó com barbante vermelho (proteger against negativity)',
-      'Desenterrar (cortar) o nó depois de 7 dias',
+      'Acenda7 velas brancas em círculo',
+      'Coloque água no centro',
+      'Recite a oração de Oxalá',
+      'Agradeça pelas bênçãos da semana',
+      'Pida proteção e sabedoria',
+      'Medite em silêncio por 10 minutos',
+      'Agradeça e apague as velas uma a uma',
     ],
-    materials: ['Velas vermelho/verde', 'Espada-de-são-jorge', 'Inhame assado', 'Guiné para defumação', 'Barbante vermelho'],
-    sefirot: ['Gevurah'],
-    orixa: 'Ogum',
-    chakra: 'Muladhara (1º)',
-    time: 'Terça-feira',
-  },
-  {
-    id: 'full-moon-ritual',
-    type: 'seasonal',
-    name: 'Ritual da Lua Cheia',
-    nameEn: 'Full Moon Ritual',
-    description: 'Prática poderosa de limpar e carregar energias sob a lua cheia.',
-    tradition: 'sufi',
-    duration: '1 hora',
-    frequency: 'Lua cheia mensal',
-    steps: [
-      'Planeje fora à noite com vista para a lua',
-      'Acenda incenso de sálvia ou lavanda',
-      'Sente ou fique em pé, rosto para lua',
-      'Visualize luz lunar preenchendo seu corpo',
-      'Recite: "Eu sou luz, eu sou amor, eu sou paz"',
-      'Permita emoções fluírem naturalmente',
-      'Escreva intenções e depois queime (seguro)',
-      'Agradeça e volte para dentro gradualmente',
-    ],
-    materials: ['Sálvia ou lavanda', 'Velas', 'Papel e caneta', 'Recipiente seguro para queimar'],
-    sefirot: ['Yesod', 'Tipheret'],
-    chakra: 'Ajna (6º)',
-    time: 'Noite de lua cheia',
-  },
-  {
-    id: 'obatalá-monday',
-    type: 'weekly',
-    name: 'Ritual de Oxalá — Pureza e Paz',
-    nameEn: 'Oxalá Monday Ritual',
-    description: 'Honrar Oxalá para pureza, paz e conexão com o divino.',
-    tradition: 'yoruba',
-    duration: '45 minutos',
-    frequency: 'Domingo ou segunda-feira',
-    steps: [
-      'Vista apenas roupas brancas',
-      'Limpe seu espaço com água e sal',
-      'Acenda múltiplas velas brancas',
-      'Coloque canjica branca em prato branco',
-      'Recite orações de paz a Oxalá',
-      'Pratique 5 minutos de silêncio total',
-      'Visualize-se em paz absoluta',
-      'Acabou: coma um pouco da canjica',
-    ],
-    materials: ['Velas brancas', 'Roupas brancas', 'Canjica branca', 'Prato branco', 'Algodão'],
+    materials: ['7 velas brancas', 'Água', 'Alguidar branco'],
     sefirot: ['Kether', 'Tipheret'],
     orixa: 'Oxalá',
     chakra: 'Sahasrara (7º)',
-    time: 'Domingo ou segunda-feira',
+    time: 'Domingo',
+    spiritualCorrelations: RITUAL_SPIRITUAL_CORRELATIONS['weekly'],
   },
   {
-    id: 'iansan-fire',
-    type: 'weekly',
-    name: 'Ritual de Iansã — Fogo e Transformação',
-    nameEn: 'Iansã Fire Ritual',
-    description: 'Queimar demandas, ativa coragem e transformação através do fogo.',
-    tradition: 'candomble',
-    duration: '50 minutos',
-    frequency: 'Terça-feira',
+    id: 'iemanja-fullmoon',
+    type: 'monthly',
+    name: 'Ritual de Iemanjá na Lua Cheia',
+    nameEn: 'Iemanjá Full Moon Ritual',
+    description: 'Ritual mensal na lua cheia para honr Iemanjá.',
+    tradition: 'umbanda',
+    duration: '1-2 horas',
+    frequency: 'Lua Cheia',
     steps: [
-      'Acenda velas laranja e vermelha',
-      'Coloque alecrim e guiné para defumar',
-      'Recite orações de Iansã',
-      'Pida coragem para quebrar demandas',
-      'Visualize demandas sendo queimadas',
-      'Queime papel com escrito demandas (seguro)',
-      'Sinta a energia de transformação',
-      'Agradeça pela força de Iansã',
+      'Vá a uma praia ou local com água',
+      'Monte seu altar na areia',
+      'Acenda velas azuis e brancas',
+      'Ofrenda: flores, moedas, espelho',
+      'Recite oração a Iemanjá',
+      'Lave as mãos na água do mar',
+      'Faça oferenda à água',
+      'Agradeça e libere a oferenda ao mar',
     ],
-    materials: ['Velas laranja/vermelha', 'Alecrim', 'Guiné', 'Papel para queimar', 'Prato refratário'],
-    sefirot: ['Gevurah', 'Chesed'],
-    orixa: 'Iansã',
+    materials: ['Velas azuis e brancas', 'Flores', 'Moedas', 'Espelho', 'Água do mar'],
+    sefirot: ['Yesod', 'Binah'],
+    orixa: 'Iemanjá',
+    chakra: 'Svadhisthana (2º)',
+    time: 'Lua Cheia',
+    spiritualCorrelations: RITUAL_SPIRITUAL_CORRELATIONS['monthly'],
+  },
+  {
+    id: 'ogum-protection',
+    type: 'crisis',
+    name: 'Ritual de Proteção de Ogum',
+    nameEn: 'Ogum Protection Ritual',
+    description: 'Ritual para proteção em momentos de crise.',
+    tradition: 'candomble',
+    duration: '45 minutos',
+    frequency: 'Quando necessário',
+    steps: [
+      'Acenda vela vermelha',
+      'Cruze os braços sobre o peito',
+      'Recite: "Ogum, senhor das batalhas"',
+      'Visualize uma barreira de luz',
+      'Pida proteção contra inimigos',
+      'Carregue uma钥匙 de ferro (opcional)',
+      'Agradeça a Ogum pela proteção',
+    ],
+    materials: ['Vela vermelha', 'Espada de ferro', 'Água', 'Alho'],
+    sefirot: ['Gevurah', 'Malkuth'],
+    orixa: 'Ogum',
+    chakra: 'Muladhara (1º)',
+    time: 'Qualquer hora',
+    spiritualCorrelations: RITUAL_SPIRITUAL_CORRELATIONS['crisis'],
+  },
+  {
+    id: 'xango-equinox',
+    type: 'seasonal',
+    name: 'Ritual de Xangô no Equinócio',
+    nameEn: 'Xangô Equinox Ritual',
+    description: 'Ritual sazonal no equinócio para Xangô.',
+    tradition: 'candomble',
+    duration: '1 hora',
+    frequency: 'Equinócio (Março/Setembro)',
+    steps: [
+      'Acenda velas vermelhas e pretas',
+      'Coloque 2 pedras uma sobre a outra',
+      'Recite oração a Xangô',
+      'Pida justiça e equilíbrio',
+      'Ofereça dendê e mel',
+      'Queime incenso de patchouli',
+      'Agradeça pelo poder do fogo',
+    ],
+    materials: ['Velas vermelha e preta', 'Pedras', 'Dendê', 'Mel', 'Incenso de patchouli'],
+    sefirot: ['Gevurah', 'Tipheret'],
+    orixa: 'Xangô',
     chakra: 'Manipura (3º)',
-    time: 'Terça-feira à noite',
+    time: 'Equinócio',
+    spiritualCorrelations: RITUAL_SPIRITUAL_CORRELATIONS['seasonal'],
+  },
+  {
+    id: 'oxum-anniversary',
+    type: 'celebration',
+    name: 'Celebração de Oxum',
+    nameEn: 'Oxum Celebration',
+    description: 'Celebração para honrar Oxum em seu dia.',
+    tradition: 'candomble',
+    duration: '2 horas',
+    frequency: '8 de Dezembro',
+    steps: [
+      'Prepare o altar com água doce',
+      'Acenda velas douradas e rosas',
+      'Decore com flores amarelas',
+      'Ofrenda de mel e arroz doce',
+      'Recite oração a Oxum',
+      'Cante músicas de Oxum',
+      'Dance em honra a Oxum',
+      'Agradeça pelas bênçãos',
+    ],
+    materials: ['Velas dourada e rosa', 'Água doce', 'Flores amarelas', 'Mel', 'Arroz doce'],
+    sefirot: ['Tipheret', 'Netzach'],
+    orixa: 'Oxum',
+    chakra: 'Anahata (4º)',
+    time: '8 de Dezembro',
+    spiritualCorrelations: RITUAL_SPIRITUAL_CORRELATIONS['celebration'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = RitualQuerySchema.safeParse({
-    type: searchParams.get('type'),
-    tradition: searchParams.get('tradition'),
-    day: searchParams.get('day'),
-    includeSteps: searchParams.get('includeSteps'),
-    limit: searchParams.get('limit'),
-  });
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = RitualQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      tradition: searchParams.get('tradition'),
+      day: searchParams.get('day'),
+      includeSteps: searchParams.get('includeSteps'),
+      limit: searchParams.get('limit'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+      orixa: searchParams.get('orixa'),
+    });
 
-  if (!parseResult.success) {
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { type, tradition, day, includeSteps, limit, sefirot, chakra, element, orixa } = parseResult.data;
+
+    let practices = [...RITUAL_PRACTICES];
+
+    if (type) {
+      practices = practices.filter(p => p.type === type);
+    }
+
+    if (tradition) {
+      practices = practices.filter(p => p.tradition === tradition);
+    }
+
+    if (day) {
+      practices = practices.filter(p => p.time.toLowerCase().includes(day.toLowerCase()));
+    }
+
+    if (limit) {
+      practices = practices.slice(0, limit);
+    }
+
+    if (sefirot) {
+      practices = practices.filter(p => p.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      practices = practices.filter(p => p.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      practices = practices.filter(p => p.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      practices = practices.filter(p => p.spiritualCorrelations?.orixa === orixa);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byType: practices.reduce((acc, p) => {
+        acc[p.type] = (acc[p.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byTradition: practices.reduce((acc, p) => {
+        acc[p.tradition] = (acc[p.tradition] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byTime: practices.reduce((acc, p) => {
+        acc[p.time] = (acc[p.time] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: practices.reduce((acc, p) => {
+        p.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: practices.reduce((acc, p) => {
+        const c = p.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: practices.reduce((acc, p) => {
+        const e = p.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: practices.reduce((acc, p) => {
+        const o = p.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      practices,
+      count: practices.length,
+      spiritualCorrelations: RITUAL_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { type, tradition, day, includeSteps, limit, sefirot, chakra, element, orixa },
+      },
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
-
-  const { type, tradition, day, includeSteps, limit } = parseResult.data;
-  let practices = [...RITUAL_PRACTICES];
-
-  if (type) {
-    practices = practices.filter(p => p.type === type);
-  }
-
-  if (tradition) {
-    practices = practices.filter(p => p.tradition === tradition);
-  }
-
-  if (day) {
-    practices = practices.filter(p => p.time.toLowerCase().includes(day.toLowerCase()));
-  }
-
-  if (limit) {
-    practices = practices.slice(0, limit);
-  }
-
-  // Filter out steps/materials if not requested
-  const response = practices.map(p => {
-    if (!includeSteps) {
-      const { steps, materials, ...rest } = p;
-      return rest;
-    }
-    return p;
-  });
-
-  return NextResponse.json({
-    success: true,
-    practices: response,
-    count: response.length,
-    total: RITUAL_PRACTICES.length,
-    types: {
-      daily: RITUAL_PRACTICES.filter(p => p.type === 'daily').length,
-      weekly: RITUAL_PRACTICES.filter(p => p.type === 'weekly').length,
-      monthly: RITUAL_PRACTICES.filter(p => p.type === 'monthly').length,
-      seasonal: RITUAL_PRACTICES.filter(p => p.type === 'seasonal').length,
-    },
-    traditions: {
-      candomble: RITUAL_PRACTICES.filter(p => p.tradition === 'candomble').length,
-      umbanda: RITUAL_PRACTICES.filter(p => p.tradition === 'umbanda').length,
-      cabala: RITUAL_PRACTICES.filter(p => p.tradition === 'cabala').length,
-      yoruba: RITUAL_PRACTICES.filter(p => p.tradition === 'yoruba').length,
-    },
-  });
 }
