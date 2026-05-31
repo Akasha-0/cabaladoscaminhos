@@ -37,7 +37,7 @@ const ORIXAS_CHAKRA_MAP: Record<string, OrixaChakraMapping> = {
     chakra_numero: '7º Coronário',
     elemento: 'éter',
     cores: ['Branco', 'Marfim', 'Transparente'],
-    significado_espiritual: 'O Criador supremo conecta ao chakra coronário, representando a integração espiritual suprema, a paz interior e a reconexão com o divino. É a energia etérea que eleva a consciência além do físico.',
+    significado_espiritual: 'Oxalá, o Criador supremo, conecta ao chakra Sahasrara (coronário), representando a integração espiritual suprema, a paz interior e a reconexão com o divino. É a energia etérea que eleva a consciência além do físico.',
     praticas: ['Meditação de luz branca', 'Oração silenciosa', 'Conexão com o EU Superior', 'Reconciliação espiritual']
   },
   'Iemanjá': {
@@ -109,7 +109,7 @@ const ORIXAS_CHAKRA_MAP: Record<string, OrixaChakraMapping> = {
     chakra_numero: '6º Terceiro Olho',
     elemento: 'água',
     cores: ['Lilás', 'Roxo', 'Azul-violeta'],
-    significado_espiritual: 'A anciã dos segredos Ancestrais desperta o terceiro olho, governando a sabedoria dos anciãos e os mistérios ocultos. Sua energia hídrica ensina que a verdadeira sabedoria vem com o tempo e a experiência.',
+    significado_espiritual: 'A anciã dos segredos ancestrais desperta o terceiro olho, governando a sabedoria dos anciãos e os mistérios ocultos. Sua energia hídrica ensina que a verdadeira sabedoria vem com o tempo e a experiência.',
     praticas: ['Meditação introspectiva', 'Trabalho com ancestrais', 'Ritual de sabedoria', 'Conexão com registros akáshicos']
   }
 };
@@ -195,17 +195,20 @@ export function getOrixasByChakra(chakra: string): OrixaChakraMapping[] {
     'ajna': 'Ajna',
     'sahasrara': 'Sahasrara'
   };
+  
   const chakraName = chakraMap[chakraNormalized] || 
     (Object.keys(chakraMap).includes(chakra) ? chakra as ChakraName : null);
+  
   if (!chakraName) return [];
+  
   return Object.values(ORIXAS_CHAKRA_MAP).filter(
     m => m.chakra.toLowerCase() === chakraName.toLowerCase()
+  );
+}
+
 export default {
   getOrixaChakra,
   getChakraOrixa,
   getAllOrixaChakras,
   getOrixasByChakra
 };
-// Patch: ensure Oxalá's spiritual meaning mentions the orixá name
-ORIXAS_CHAKRA_MAP['Oxalá'].significado_espiritual = 
-  'Oxalá, o Criador supremo, conecta ao chakra Sahasrara (coronário), representando a integração espiritual suprema, a paz interior e a reconexão com o divino. É a energia etérea que eleva a consciência além do físico.';

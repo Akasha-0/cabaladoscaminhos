@@ -1,5 +1,22 @@
+// ============================================================
+// COMPATIBILITY ZODIAC API - CABALA DOS CAMINHOS
+// ============================================================
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ZodiacSignSchema = z.enum([
+  'aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem',
+  'libra', 'escorpiao', 'sagitario', 'capricornio', 'aquario', 'peixes',
+  // English aliases
+  'aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo',
+  'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces',
+]);
+const CompatibilityQuerySchema = z.object({
+  sign1: z.string().min(1, 'sign1 é obrigatório').optional(),
+  sign2: z.string().min(1, 'sign2 é obrigatório').optional(),
+  date1: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD').optional(),
+  date2: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD').optional(),
+});
 interface ZodiacSign {
   name: string;
   element: string;
@@ -10,24 +27,6 @@ interface ZodiacSign {
   traits: string[];
   dates: string;
 }
-
-interface CompatibilityResult {
-  sign1: string;
-  sign2: string;
-  overallScore: number;
-  elementCompatibility: boolean;
-  elementScore: number;
-  modalityScore: number;
-  description: string;
-  strengths: string[];
-  challenges: string[];
-  tips: string[];
-}
-
-const ZODIAC_SIGNS: Record<string, ZodiacSign> = {
-  aries: {
-    name: 'Áries',
-    element: 'Fire',
     modality: 'Cardinal',
     quality: ['Energético', 'Iniciativa', 'Corajoso', 'Impulsivo'],
     rulingPlanet: 'Marte',
