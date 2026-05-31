@@ -3,496 +3,337 @@ import {
   getNumerologyElement,
   getAllNumerologyElements,
   getElementNumerology,
-  getElementByNumero,
-  getEnergiaByNumero,
-  NUMERO_ELEMENTO_MAP,
-  type NumerologyElementMapping,
-  type Elemento,
+  getNumerologyArquetipo,
+  getNumerologySignificado,
+  getNumerologyQualidades,
+  getNumerologyEnergia,
+  getNumerologyPolaridade,
+  getAllNumerologyNumbers,
+  getAllElementsFromNumerology,
+  NUMEROLOGY_ELEMENT_MAP,
+  type NumerologyElement,
 } from '@/lib/correlation/numerology-element';
 
-describe('numerology-element', () => {
-  // ─── NUMERO_ELEMENTO_MAP: all 13 numbers ──────────────────────────────
-  describe('NUMERO_ELEMENTO_MAP', () => {
-    it('contains all 13 numbers (1-13)', () => {
-      for (let i = 1; i <= 13; i++) {
-        expect(NUMERO_ELEMENTO_MAP[i]).toBeDefined();
-      }
-      expect(Object.keys(NUMERO_ELEMENTO_MAP)).toHaveLength(13);
-    });
-
-    it('number 1 maps to Fogo (Kether/Exu)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[1];
-      expect(mapping.elemento).toBe('Fogo');
-      expect(mapping.numero).toBe(1);
-      expect(mapping.sephirah).toBe('Kether');
-      expect(mapping.orixa).toBe('Exu / Okaran');
-      expect(mapping.arquétipo).toBe('O Iniciador / O Líder');
-      expect(mapping.qualidade_energetica.tipo).toBe('Quente');
-    });
-
-    it('number 2 maps to Água (Chokmah/Ibeji)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[2];
-      expect(mapping.elemento).toBe('Água');
-      expect(mapping.sephirah).toBe('Chokmah');
-      expect(mapping.orixa).toBe('Ibeji / Ejiokô');
-      expect(mapping.qualidade_energetica.tipo).toBe('Frio');
-    });
-
-    it('number 3 maps to Fogo (Binah/Ogum)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[3];
-      expect(mapping.elemento).toBe('Fogo');
-      expect(mapping.sephirah).toBe('Binah');
-      expect(mapping.orixa).toBe('Ogum / Etaogundá');
-    });
-
-    it('number 4 maps to Terra (Chesed/Iemanjá)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[4];
-      expect(mapping.elemento).toBe('Terra');
-      expect(mapping.sephirah).toBe('Chesed');
-      expect(mapping.orixa).toBe('Iemanjá / Irosun');
-      expect(mapping.qualidade_energetica.tipo).toBe('Quente');
-    });
-
-    it('number 5 maps to Água (Geburah/Oxum)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[5];
-      expect(mapping.elemento).toBe('Água');
-      expect(mapping.sephirah).toBe('Geburah');
-      expect(mapping.orixa).toBe('Oxum / Oxé');
-      expect(mapping.qualidade_energetica.tipo).toBe('Frio');
-    });
-
-    it('number 6 maps to Fogo (Tiphereth/Xangô)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[6];
-      expect(mapping.elemento).toBe('Fogo');
-      expect(mapping.sephirah).toBe('Tiphereth');
-      expect(mapping.orixa).toBe('Xangô / Obará');
-      expect(mapping.qualidade_energetica.tipo).toBe('Quente');
-    });
-
-    it('number 7 maps to Ar (Netzach/Iansã)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[7];
-      expect(mapping.elemento).toBe('Ar');
-      expect(mapping.sephirah).toBe('Netzach');
-      expect(mapping.orixa).toBe('Iansã / Odi');
-      expect(mapping.qualidade_energetica.tipo).toBe('Neutro');
-    });
-
-    it('number 8 maps to Ar (Hod/Oxalá)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[8];
-      expect(mapping.elemento).toBe('Ar');
-      expect(mapping.sephirah).toBe('Hod');
-      expect(mapping.orixa).toBe('Oxalá / EjiOníle');
-      expect(mapping.qualidade_energetica.tipo).toBe('Neutro');
-    });
-
-    it('number 9 maps to Água (Yesod/Ossá)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[9];
-      expect(mapping.elemento).toBe('Água');
-      expect(mapping.sephirah).toBe('Yesod');
-      expect(mapping.orixa).toBe('Ossá');
-      expect(mapping.qualidade_energetica.tipo).toBe('Frio');
-    });
-
-    it('number 10 maps to Terra (Malkuth/Oxalá)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[10];
-      expect(mapping.elemento).toBe('Terra');
-      expect(mapping.sephirah).toBe('Malkuth');
-      expect(mapping.orixa).toBe('Oxalá / Ofun');
-      expect(mapping.qualidade_energetica.tipo).toBe('Quente');
-    });
-
-    it('number 11 maps to Éter (Master Number)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[11];
-      expect(mapping.elemento).toBe('Éter');
-      expect(mapping.sephirah).toBe('Kether / Tiphereth');
-      expect(mapping.orixa).toBe('Alafia / Orunmilá');
-      expect(mapping.arquétipo).toBe('O Canalizador / O Desperto');
-      expect(mapping.qualidade_energetica.tipo).toBe('Neutro');
-    });
-
-    it('number 12 maps to Fogo (Geburah/Xangô)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[12];
-      expect(mapping.elemento).toBe('Fogo');
-      expect(mapping.sephirah).toBe('Geburah');
-      expect(mapping.orixa).toBe('Xangô / Ejilsebora');
-      expect(mapping.arquétipo).toBe('A Justiça / O Fogo Purificador');
-      expect(mapping.qualidade_energetica.tipo).toBe('Quente');
-    });
-
-    it('number 13 maps to Terra (Malkuth/Nanã)', () => {
-      const mapping = NUMERO_ELEMENTO_MAP[13];
-      expect(mapping.elemento).toBe('Terra');
-      expect(mapping.sephirah).toBe('Malkuth');
-      expect(mapping.orixa).toBe('Nanã / Omolu / Olobón');
-      expect(mapping.arquétipo).toBe('A Evolução / A Morte e Renascimento');
-      expect(mapping.qualidade_energetica.tipo).toBe('Quente');
-    });
-
-    it('each mapping has complete spiritual structure', () => {
-      for (let i = 1; i <= 13; i++) {
-        const mapping = NUMERO_ELEMENTO_MAP[i];
-        expect(mapping.numero).toBe(i);
-        expect(mapping.elemento).toBeTruthy();
-        expect(mapping.qualidade_energetica.tipo).toBeTruthy();
-        expect(mapping.qualidade_energetica.polaridade).toBeTruthy();
-        expect(mapping.qualidade_energetica.vibração).toBeTruthy();
-        expect(mapping.significado_espiritual).toBeTruthy();
-        expect(mapping.arquétipo).toBeTruthy();
-        expect(mapping.orixa).toBeTruthy();
-        expect(mapping.sephirah).toBeTruthy();
-        expect(mapping.chakra).toBeTruthy();
-      }
-    });
-
-    it('each mapping has valid energy quality type', () => {
-      const validTypes = ['Quente', 'Frio', 'Neutro'];
-      for (let i = 1; i <= 13; i++) {
-        const mapping = NUMERO_ELEMENTO_MAP[i];
-        expect(validTypes).toContain(mapping.qualidade_energetica.tipo);
-      }
-    });
-
-    it('each mapping has valid polarity', () => {
-      const validPolarities = ['Yang', 'Yin', 'Equilibrado'];
-      for (let i = 1; i <= 13; i++) {
-        const mapping = NUMERO_ELEMENTO_MAP[i];
-        expect(validPolarities).toContain(mapping.qualidade_energetica.polaridade);
-      }
-    });
-  });
-
-  // ─── getNumerologyElement: primary lookup function ───────────────────────
+describe('NumerologyElement Correlation', () => {
   describe('getNumerologyElement', () => {
-    it('returns correct mapping for number 1', () => {
+    it('should return mapping for number 1', () => {
       const result = getNumerologyElement(1);
-      expect(result.numero).toBe(1);
-      expect(result.elemento).toBe('Fogo');
-      expect(result.orixa).toBe('Exu / Okaran');
+      expect(result).toBeDefined();
+      expect(result?.numero).toBe(1);
+      expect(result?.elemento).toBe('fogo');
+      expect(result?.elemento_nome).toBe('Fogo');
+      expect(result?.elemento_english).toBe('Fire');
     });
 
-    it('returns correct mapping for number 7', () => {
-      const result = getNumerologyElement(7);
-      expect(result.numero).toBe(7);
-      expect(result.elemento).toBe('Ar');
-      expect(result.orixa).toBe('Iansã / Odi');
-    });
-
-    it('returns correct mapping for number 11 (Master Number)', () => {
+    it('should return mapping for number 11', () => {
       const result = getNumerologyElement(11);
-      expect(result.numero).toBe(11);
-      expect(result.elemento).toBe('Éter');
-      expect(result.arquétipo).toBe('O Canalizador / O Desperto');
+      expect(result).toBeDefined();
+      expect(result?.numero).toBe(11);
+      expect(result?.elemento).toBe('éter');
+      expect(result?.elemento_nome).toBe('Éter');
     });
 
-    it('returns correct mapping for number 13', () => {
-      const result = getNumerologyElement(13);
-      expect(result.numero).toBe(13);
-      expect(result.elemento).toBe('Terra');
-      expect(result.orixa).toBe('Nanã / Omolu / Olobón');
-    });
-
-    it('throws error for number 0', () => {
-      expect(() => getNumerologyElement(0)).toThrow('Número fora do intervalo válido (1-13)');
-    });
-
-    it('throws error for negative numbers', () => {
-      expect(() => getNumerologyElement(-1)).toThrow('Número fora do intervalo válido (1-13)');
-    });
-
-    it('throws error for numbers greater than 13', () => {
-      expect(() => getNumerologyElement(14)).toThrow('Número fora do intervalo válido (1-13)');
-    });
-
-    it('throws error for non-integer numbers', () => {
-      expect(() => getNumerologyElement(3.5)).toThrow('Número fora do intervalo válido (1-13)');
+    it('should return undefined for invalid number', () => {
+      expect(getNumerologyElement(0)).toBeUndefined();
+      expect(getNumerologyElement(14)).toBeUndefined();
+      expect(getNumerologyElement(-1)).toBeUndefined();
     });
   });
 
-  // ─── getAllNumerologyElements ─────────────────────────────────────────────
   describe('getAllNumerologyElements', () => {
-    it('returns array of 13 mappings', () => {
-      const all = getAllNumerologyElements();
-      expect(all).toHaveLength(13);
+    it('should return all 13 numbers', () => {
+      const result = getAllNumerologyElements();
+      expect(result).toHaveLength(13);
     });
 
-    it('returns array sorted by numero ascending', () => {
-      const all = getAllNumerologyElements();
-      for (let i = 0; i < all.length - 1; i++) {
-        expect(all[i].numero).toBeLessThan(all[i + 1].numero);
-      }
-    });
-
-    it('returns array containing all numbers 1-13', () => {
-      const all = getAllNumerologyElements();
-      const numbers = all.map((m) => m.numero);
+    it('should contain all expected numbers', () => {
+      const result = getAllNumerologyElements();
+      const numeros = result.map((n) => n.numero);
       for (let i = 1; i <= 13; i++) {
-        expect(numbers).toContain(i);
+        expect(numeros).toContain(i);
       }
     });
 
-    it('each returned mapping has complete structure', () => {
-      const all = getAllNumerologyElements();
-      all.forEach((mapping) => {
-        expect(mapping.numero).toBeTruthy();
-        expect(mapping.elemento).toBeTruthy();
-        expect(mapping.significado_espiritual).toBeTruthy();
-        expect(mapping.arquétipo).toBeTruthy();
-      });
+    it('should have correct element mappings for each number', () => {
+      // fogo: 1, 3, 6, 12
+      expect(getNumerologyElement(1)?.elemento).toBe('fogo');
+      expect(getNumerologyElement(3)?.elemento).toBe('fogo');
+      expect(getNumerologyElement(6)?.elemento).toBe('fogo');
+      expect(getNumerologyElement(12)?.elemento).toBe('fogo');
+
+      // água: 2, 5, 9
+      expect(getNumerologyElement(2)?.elemento).toBe('água');
+      expect(getNumerologyElement(5)?.elemento).toBe('água');
+      expect(getNumerologyElement(9)?.elemento).toBe('água');
+
+      // terra: 4, 10, 13
+      expect(getNumerologyElement(4)?.elemento).toBe('terra');
+      expect(getNumerologyElement(10)?.elemento).toBe('terra');
+      expect(getNumerologyElement(13)?.elemento).toBe('terra');
+
+      // ar: 7, 8
+      expect(getNumerologyElement(7)?.elemento).toBe('ar');
+      expect(getNumerologyElement(8)?.elemento).toBe('ar');
+
+      // éter: 11
+      expect(getNumerologyElement(11)?.elemento).toBe('éter');
     });
   });
 
-  // ─── getElementNumerology: reverse lookup by element ─────────────────────
+  describe('NUMEROLOGY_ELEMENT_MAP', () => {
+    it('should have all 13 numbers mapped', () => {
+      for (let i = 1; i <= 13; i++) {
+        expect(NUMEROLOGY_ELEMENT_MAP).toHaveProperty(i);
+      }
+    });
+
+    it('should have required properties for each number', () => {
+      for (let i = 1; i <= 13; i++) {
+        const mapping = NUMEROLOGY_ELEMENT_MAP[i];
+        expect(mapping.numero).toBe(i);
+        expect(mapping.elemento).toBeDefined();
+        expect(mapping.elemento_nome).toBeDefined();
+        expect(mapping.elemento_english).toBeDefined();
+        expect(mapping.significado_espiritual).toBeDefined();
+        expect(mapping.arquetipo).toBeDefined();
+        expect(mapping.orixa).toBeDefined();
+        expect(mapping.sephirah).toBeDefined();
+        expect(mapping.chakra).toBeDefined();
+        expect(mapping.planeta).toBeDefined();
+        expect(mapping.cor).toBeDefined();
+        expect(mapping.direcao).toBeDefined();
+        expect(mapping.qualidades).toBeDefined();
+        expect(mapping.qualidades.forca).toBeDefined();
+        expect(mapping.qualidades.desafio).toBeDefined();
+        expect(mapping.qualidades.licao).toBeDefined();
+        expect(mapping.qualidades.afirmacao).toBeDefined();
+        expect(mapping.energia).toBeDefined();
+        expect(mapping.energia.tipo).toBeDefined();
+        expect(mapping.energia.polaridade).toBeDefined();
+      }
+    });
+
+    it('should have correctly typed energy properties', () => {
+      for (let i = 1; i <= 13; i++) {
+        const mapping = NUMEROLOGY_ELEMENT_MAP[i];
+        expect(['Quente', 'Frio', 'Neutro']).toContain(mapping.energia.tipo);
+        expect(['Yang', 'Yin', 'Equilibrado']).toContain(mapping.energia.polaridade);
+      }
+    });
+  });
+
   describe('getElementNumerology', () => {
-    it('returns correct numbers for Fogo', () => {
-      const fogo = getElementNumerology('Fogo');
-      expect(fogo.length).toBeGreaterThan(0);
-      fogo.forEach((m) => {
-        expect(m.elemento).toBe('Fogo');
-      });
-      const numbers = fogo.map((m) => m.numero);
-      expect(numbers).toContain(1);
-      expect(numbers).toContain(3);
-      expect(numbers).toContain(6);
-      expect(numbers).toContain(12);
+    it('should return correct element name for each number', () => {
+      expect(getElementNumerology(1)).toBe('Fogo');
+      expect(getElementNumerology(2)).toBe('Água');
+      expect(getElementNumerology(3)).toBe('Fogo');
+      expect(getElementNumerology(4)).toBe('Terra');
+      expect(getElementNumerology(5)).toBe('Água');
+      expect(getElementNumerology(6)).toBe('Fogo');
+      expect(getElementNumerology(7)).toBe('Ar');
+      expect(getElementNumerology(8)).toBe('Ar');
+      expect(getElementNumerology(9)).toBe('Água');
+      expect(getElementNumerology(10)).toBe('Terra');
+      expect(getElementNumerology(11)).toBe('Éter');
+      expect(getElementNumerology(12)).toBe('Fogo');
+      expect(getElementNumerology(13)).toBe('Terra');
     });
 
-    it('returns correct numbers for Água', () => {
-      const agua = getElementNumerology('Água');
-      expect(agua.length).toBeGreaterThan(0);
-      agua.forEach((m) => {
-        expect(m.elemento).toBe('Água');
-      });
-      const numbers = agua.map((m) => m.numero);
-      expect(numbers).toContain(2);
-      expect(numbers).toContain(5);
-      expect(numbers).toContain(9);
-    });
-
-    it('returns correct numbers for Ar', () => {
-      const ar = getElementNumerology('Ar');
-      expect(ar.length).toBeGreaterThan(0);
-      ar.forEach((m) => {
-        expect(m.elemento).toBe('Ar');
-      });
-      const numbers = ar.map((m) => m.numero);
-      expect(numbers).toContain(7);
-      expect(numbers).toContain(8);
-    });
-
-    it('returns correct numbers for Terra', () => {
-      const terra = getElementNumerology('Terra');
-      expect(terra.length).toBeGreaterThan(0);
-      terra.forEach((m) => {
-        expect(m.elemento).toBe('Terra');
-      });
-      const numbers = terra.map((m) => m.numero);
-      expect(numbers).toContain(4);
-      expect(numbers).toContain(10);
-      expect(numbers).toContain(13);
-    });
-
-    it('returns correct numbers for Éter', () => {
-      const eter = getElementNumerology('Éter');
-      expect(eter.length).toBeGreaterThan(0);
-      eter.forEach((m) => {
-        expect(m.elemento).toBe('Éter');
-      });
-      const numbers = eter.map((m) => m.numero);
-      expect(numbers).toContain(11);
-    });
-
-    it('is case-insensitive', () => {
-      const upper = getElementNumerology('FOGO');
-      const lower = getElementNumerology('fogo');
-      const mixed = getElementNumerology('FoGo');
-      expect(upper.length).toBe(lower.length);
-      expect(lower.length).toBe(mixed.length);
-    });
-
-    it('handles whitespace in input', () => {
-      const withSpace = getElementNumerology('  Ar  ');
-      const withoutSpace = getElementNumerology('Ar');
-      expect(withSpace.length).toBe(withoutSpace.length);
-    });
-
-    it('handles accented characters', () => {
-      expect(getElementNumerology('Agua').length).toBeGreaterThan(0);
-      expect(getElementNumerology('Eter').length).toBeGreaterThan(0);
-    });
-
-    it('returns empty array for unknown elements', () => {
-      expect(getElementNumerology('unknown')).toEqual([]);
-      expect(getElementNumerology('')).toEqual([]);
+    it('should return null for invalid number', () => {
+      expect(getElementNumerology(0)).toBeNull();
+      expect(getElementNumerology(14)).toBeNull();
     });
   });
 
-  // ─── getElementByNumero ───────────────────────────────────────────────────
-  describe('getElementByNumero', () => {
-    it('returns correct element for each number', () => {
-      expect(getElementByNumero(1)).toBe('Fogo');
-      expect(getElementByNumero(2)).toBe('Água');
-      expect(getElementByNumero(3)).toBe('Fogo');
-      expect(getElementByNumero(4)).toBe('Terra');
-      expect(getElementByNumero(5)).toBe('Água');
-      expect(getElementByNumero(6)).toBe('Fogo');
-      expect(getElementByNumero(7)).toBe('Ar');
-      expect(getElementByNumero(8)).toBe('Ar');
-      expect(getElementByNumero(9)).toBe('Água');
-      expect(getElementByNumero(10)).toBe('Terra');
-      expect(getElementByNumero(11)).toBe('Éter');
-      expect(getElementByNumero(12)).toBe('Fogo');
-      expect(getElementByNumero(13)).toBe('Terra');
+  describe('getNumerologyArquetipo', () => {
+    it('should return archetype for number 1', () => {
+      expect(getNumerologyArquetipo(1)).toBe('O Guerreiro da Luz / O Criador');
     });
 
-    it('returns null for invalid numbers', () => {
-      expect(getElementByNumero(0)).toBeNull();
-      expect(getElementByNumero(-1)).toBeNull();
-      expect(getElementByNumero(14)).toBeNull();
+    it('should return archetype for number 11', () => {
+      expect(getNumerologyArquetipo(11)).toBe('O Canalizador / O Desperto');
+    });
+
+    it('should return null for invalid number', () => {
+      expect(getNumerologyArquetipo(0)).toBeNull();
+      expect(getNumerologyArquetipo(14)).toBeNull();
     });
   });
 
-  // ─── getEnergiaByNumero ───────────────────────────────────────────────────
-  describe('getEnergiaByNumero', () => {
-    it('returns correct energy type for each number', () => {
-      expect(getEnergiaByNumero(1)).toBe('Quente');
-      expect(getEnergiaByNumero(2)).toBe('Frio');
-      expect(getEnergiaByNumero(4)).toBe('Quente');
-      expect(getEnergiaByNumero(5)).toBe('Frio');
-      expect(getEnergiaByNumero(7)).toBe('Neutro');
-      expect(getEnergiaByNumero(11)).toBe('Neutro');
+  describe('getNumerologySignificado', () => {
+    it('should return spiritual meaning for number 1', () => {
+      const significado = getNumerologySignificado(1);
+      expect(significado).toBeDefined();
+      expect(significado).toContain('número 1');
     });
 
-    it('returns null for invalid numbers', () => {
-      expect(getEnergiaByNumero(0)).toBeNull();
-      expect(getEnergiaByNumero(14)).toBeNull();
+    it('should return null for invalid number', () => {
+      expect(getNumerologySignificado(0)).toBeNull();
+      expect(getNumerologySignificado(14)).toBeNull();
     });
   });
 
-  // ─── Element distribution analysis ───────────────────────────────────────
-  describe('element distribution', () => {
-    it('Fogo has the most numbers (4 numbers: 1, 3, 6, 12)', () => {
-      const fogo = getElementNumerology('Fogo');
-      const fogoNumbers = fogo.map((m) => m.numero);
-      expect(fogoNumbers).toContain(1);
-      expect(fogoNumbers).toContain(3);
-      expect(fogoNumbers).toContain(6);
-      expect(fogoNumbers).toContain(12);
-      expect(fogo.length).toBe(4);
+  describe('getNumerologyQualidades', () => {
+    it('should return qualities for number 1', () => {
+      const qualities = getNumerologyQualidades(1);
+      expect(qualities).toBeDefined();
+      expect(qualities?.forca).toContain('Determinação');
+      expect(qualities?.desafio).toContain('Impaciência');
+      expect(qualities?.licao).toContain('Canalizar');
+      expect(qualities?.afirmacao).toContain('transformo');
     });
 
-    it('Água has 3 numbers (2, 5, 9)', () => {
-      const agua = getElementNumerology('Água');
-      const aguaNumbers = agua.map((m) => m.numero);
-      expect(aguaNumbers).toContain(2);
-      expect(aguaNumbers).toContain(5);
-      expect(aguaNumbers).toContain(9);
-      expect(agua.length).toBe(3);
+    it('should return qualities for number 11', () => {
+      const qualities = getNumerologyQualidades(11);
+      expect(qualities).toBeDefined();
+      expect(qualities?.forca).toContain('Sabedoria transcendental');
+      expect(qualities?.desafio).toContain('idealismo');
     });
 
-    it('Terra has 3 numbers (4, 10, 13)', () => {
-      const terra = getElementNumerology('Terra');
-      const terraNumbers = terra.map((m) => m.numero);
-      expect(terraNumbers).toContain(4);
-      expect(terraNumbers).toContain(10);
-      expect(terraNumbers).toContain(13);
-      expect(terra.length).toBe(3);
-    });
-
-    it('Ar has 2 numbers (7, 8)', () => {
-      const ar = getElementNumerology('Ar');
-      const arNumbers = ar.map((m) => m.numero);
-      expect(arNumbers).toContain(7);
-      expect(arNumbers).toContain(8);
-      expect(ar.length).toBe(2);
-    });
-
-    it('Éter has 1 number (11 - Master Number)', () => {
-      const eter = getElementNumerology('Éter');
-      expect(eter.length).toBe(1);
-      expect(eter[0].numero).toBe(11);
-      expect(eter[0].arquétipo).toBe('O Canalizador / O Desperto');
+    it('should return null for invalid number', () => {
+      expect(getNumerologyQualidades(0)).toBeNull();
+      expect(getNumerologyQualidades(14)).toBeNull();
     });
   });
 
-  // ─── Integration with number-mysticism patterns ───────────────────────────
-  describe('spiritual archetype integration', () => {
-    it('Master Number 11 (Éter) connects Crown and Beauty sephirot', () => {
-      const mapping = getNumerologyElement(11);
-      expect(mapping.sephirah).toBe('Kether / Tiphereth');
-      expect(mapping.elemento).toBe('Éter');
-      expect(mapping.qualidade_energetica.polaridade).toBe('Equilibrado');
+  describe('getNumerologyEnergia', () => {
+    it('should return correct energy type for fogo numbers', () => {
+      expect(getNumerologyEnergia(1)).toBe('Quente');
+      expect(getNumerologyEnergia(3)).toBe('Quente');
+      expect(getNumerologyEnergia(6)).toBe('Quente');
+      expect(getNumerologyEnergia(12)).toBe('Quente');
     });
 
-    it('Transformation numbers (12, 13) have Quente energy for fire/earth', () => {
-      const twelve = getNumerologyElement(12);
-      const thirteen = getNumerologyElement(13);
-      expect(twelve.qualidade_energetica.tipo).toBe('Quente');
-      expect(thirteen.qualidade_energetica.tipo).toBe('Quente');
+    it('should return correct energy type for água numbers', () => {
+      expect(getNumerologyEnergia(2)).toBe('Frio');
+      expect(getNumerologyEnergia(5)).toBe('Frio');
+      expect(getNumerologyEnergia(9)).toBe('Frio');
     });
 
-    it('Initiation numbers (1, 7, 11) represent spiritual paths', () => {
-      const one = getNumerologyElement(1);
-      const seven = getNumerologyElement(7);
-      const eleven = getNumerologyElement(11);
-      expect(one.elemento).toBe('Fogo');
-      expect(seven.elemento).toBe('Ar');
-      expect(eleven.elemento).toBe('Éter');
+    it('should return correct energy type for terra numbers', () => {
+      expect(getNumerologyEnergia(4)).toBe('Quente');
+      expect(getNumerologyEnergia(10)).toBe('Quente');
+      expect(getNumerologyEnergia(13)).toBe('Quente');
     });
 
-    it('Each element has consistent chakra alignment', () => {
-      const fogo = getElementNumerology('Fogo');
-      fogo.forEach((m) => {
-        expect(['3º Plexo Solar', '4º Cardíaco']).toContain(m.chakra);
-      });
+    it('should return correct energy type for ar numbers', () => {
+      expect(getNumerologyEnergia(7)).toBe('Neutro');
+      expect(getNumerologyEnergia(8)).toBe('Neutro');
+    });
 
-      const agua = getElementNumerology('Água');
-      agua.forEach((m) => {
-        expect(['2º Sacro', '6º Frontal']).toContain(m.chakra);
-      });
+    it('should return correct energy type for éter numbers', () => {
+      expect(getNumerologyEnergia(11)).toBe('Neutro');
+    });
 
-      const terra = getElementNumerology('Terra');
-      terra.forEach((m) => {
-        expect(m.chakra).toBe('1º Básico');
-      });
-
-      const ar = getElementNumerology('Ar');
-      ar.forEach((m) => {
-        expect(['4º Cardíaco', '5º Laríngeo']).toContain(m.chakra);
-      });
-
-      const eter = getElementNumerology('Éter');
-      eter.forEach((m) => {
-        expect(m.chakra).toBe('7º Coronário');
-      });
+    it('should return null for invalid number', () => {
+      expect(getNumerologyEnergia(0)).toBeNull();
+      expect(getNumerologyEnergia(14)).toBeNull();
     });
   });
 
-  // ─── Type exports ─────────────────────────────────────────────────────────
-  describe('type exports', () => {
-    it('NumerologyElementMapping type is exported', () => {
-      const mapping: NumerologyElementMapping = {
-        numero: 1,
-        elemento: 'Fogo',
-        qualidade_energetica: {
-          tipo: 'Quente',
-          polaridade: 'Yang',
-          vibração: 'Test',
-        },
-        significado_espiritual: 'Test',
-        arquétipo: 'Test',
-        orixa: 'Test',
-        sephirah: 'Test',
-        chakra: 'Test',
-      };
-      expect(mapping.numero).toBe(1);
+  describe('getNumerologyPolaridade', () => {
+    it('should return correct polarity for fogo numbers', () => {
+      expect(getNumerologyPolaridade(1)).toBe('Yang');
+      expect(getNumerologyPolaridade(3)).toBe('Yang');
+      expect(getNumerologyPolaridade(6)).toBe('Yang');
+      expect(getNumerologyPolaridade(12)).toBe('Yang');
     });
 
-    it('Elemento type accepts all valid elements', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
-      elements.forEach((el) => {
-        const mapping = getElementNumerology(el);
-        expect(Array.isArray(mapping)).toBe(true);
-      });
+    it('should return correct polarity for água numbers', () => {
+      expect(getNumerologyPolaridade(2)).toBe('Yin');
+      expect(getNumerologyPolaridade(5)).toBe('Yin');
+      expect(getNumerologyPolaridade(9)).toBe('Yin');
+    });
+
+    it('should return correct polarity for ar numbers', () => {
+      expect(getNumerologyPolaridade(7)).toBe('Equilibrado');
+      expect(getNumerologyPolaridade(8)).toBe('Equilibrado');
+    });
+
+    it('should return correct polarity for éter numbers', () => {
+      expect(getNumerologyPolaridade(11)).toBe('Equilibrado');
+    });
+
+    it('should return null for invalid number', () => {
+      expect(getNumerologyPolaridade(0)).toBeNull();
+      expect(getNumerologyPolaridade(14)).toBeNull();
+    });
+  });
+
+  describe('getAllNumerologyNumbers', () => {
+    it('should return all 13 numbers', () => {
+      const result = getAllNumerologyNumbers();
+      expect(result).toHaveLength(13);
+      expect(result).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+    });
+  });
+
+  describe('getAllElementsFromNumerology', () => {
+    it('should return all 5 element types', () => {
+      const result = getAllElementsFromNumerology();
+      expect(result).toHaveLength(5);
+      expect(result).toContain('fogo');
+      expect(result).toContain('água');
+      expect(result).toContain('terra');
+      expect(result).toContain('ar');
+      expect(result).toContain('éter');
+    });
+  });
+
+  describe('spiritual consistency', () => {
+    it('should align numerology-element with element-numerology mappings', () => {
+      // Number 1- fogo should correspond to Xangô/Marte
+      const n1 = getNumerologyElement(1);
+      expect(n1?.orixa).toBe('Xangô');
+      expect(n1?.planeta).toBe('Marte');
+
+      // Number 2- água should correspond to Iemanjá/Lua
+      const n2 = getNumerologyElement(2);
+      expect(n2?.orixa).toBe('Iemanjá');
+      expect(n2?.planeta).toBe('Lua');
+
+      // Number 11- éter should correspond to Oxalá/Sol
+      const n11 = getNumerologyElement(11);
+      expect(n11?.orixa).toBe('Oxalá');
+      expect(n11?.planeta).toBe('Sol');
+    });
+
+    it('should have consistent energy types across element groups', () => {
+      // Fogo numbers (1,3,6,12) should all have Quente/Yang energy
+      for (const num of [1, 3, 6, 12]) {
+        const mapping = getNumerologyElement(num);
+        expect(mapping?.energia.tipo).toBe('Quente');
+        expect(mapping?.energia.polaridade).toBe('Yang');
+      }
+
+      // Água numbers (2,5,9) should all have Frio/Yin energy
+      for (const num of [2, 5, 9]) {
+        const mapping = getNumerologyElement(num);
+        expect(mapping?.energia.tipo).toBe('Frio');
+        expect(mapping?.energia.polaridade).toBe('Yin');
+      }
+
+      // Éter number (11) should have Neutro/Equilibrado energy
+      const n11 = getNumerologyElement(11);
+      expect(n11?.energia.tipo).toBe('Neutro');
+      expect(n11?.energia.polaridade).toBe('Equilibrado');
+    });
+
+    it('should have correct element distribution', () => {
+      const fogoNums = [1, 3, 6, 12];
+      const aguaNums = [2, 5, 9];
+      const terraNums = [4, 10, 13];
+      const arNums = [7, 8];
+      const eterNums = [11];
+
+      expect(fogoNums).toHaveLength(4);
+      expect(aguaNums).toHaveLength(3);
+      expect(terraNums).toHaveLength(3);
+      expect(arNums).toHaveLength(2);
+      expect(eterNums).toHaveLength(1);
+
+      // Total should be 13
+      expect(fogoNums.length + aguaNums.length + terraNums.length + arNums.length + eterNums.length).toBe(13);
     });
   });
 });

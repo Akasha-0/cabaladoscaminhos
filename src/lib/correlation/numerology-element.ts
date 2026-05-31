@@ -35,7 +35,8 @@ export interface NumerologyElement {
   chakra: string;
   /** Primary planet */
   planeta: string;
-  /** Associated color */
+    /** Associated color */
+    cor: string;
   cor: string;
   /** Cardinal direction */
   direcao: string;
@@ -57,11 +58,12 @@ export interface NumerologyElement {
   };
 }
 
-/**
- * Complete mapping of numerology numbers 1-13 to their elemental correspondences.
- * Each number carries a specific Vibration aligned with elemental forces
- * that represent different aspects of spiritual transformation and cosmic law.
- */
+// Fogo numbers: 1, 3, 6, 12
+// Água numbers: 2, 5, 9
+// Terra numbers: 4, 10, 13
+// Ar numbers: 7, 8
+// Éter numbers: 11
+
 export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
   1: {
     numero: 1,
@@ -83,10 +85,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Canalizar a energia do fogo em propósito construtivo e amoroso',
       afirmacao: 'Eu transformo minha paixão em ação sagrada e serviço amoroso',
     },
-    energia: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-    },
+    energia: { tipo: 'Quente', polaridade: 'Yang' },
   },
   2: {
     numero: 2,
@@ -108,10 +107,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Manter a clareza emocional sem perder a sensibilidade e conexão',
       afirmacao: 'Eu fluo com a vida mantendo minha essência e meus limites sagrados',
     },
-    energia: {
-      tipo: 'Frio',
-      polaridade: 'Yin',
-    },
+    energia: { tipo: 'Frio', polaridade: 'Yin' },
   },
   3: {
     numero: 3,
@@ -133,10 +129,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Canalizar a energia do fogo em propósito construtivo e amoroso',
       afirmacao: 'Eu transformo minha paixão em ação sagrada e serviço amoroso',
     },
-    energia: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-    },
+    energia: { tipo: 'Quente', polaridade: 'Yang' },
   },
   4: {
     numero: 4,
@@ -158,10 +151,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Equilibrar estabilidade com flexibilidade e abertura à transformação',
       afirmacao: 'Eu sou abundante, merecedor de prosperidade e segurança material e espiritual',
     },
-    energia: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-    },
+    energia: { tipo: 'Quente', polaridade: 'Yang' },
   },
   5: {
     numero: 5,
@@ -183,10 +173,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Manter a clareza emocional sem perder a sensibilidade e conexão',
       afirmacao: 'Eu fluo com a vida mantendo minha essência e meus limites sagrados',
     },
-    energia: {
-      tipo: 'Frio',
-      polaridade: 'Yin',
-    },
+    energia: { tipo: 'Frio', polaridade: 'Yin' },
   },
   6: {
     numero: 6,
@@ -208,10 +195,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Canalizar a energia do fogo em propósito construtivo e amoroso',
       afirmacao: 'Eu transformo minha paixão em ação sagrada e serviço amoroso',
     },
-    energia: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-    },
+    energia: { tipo: 'Quente', polaridade: 'Yang' },
   },
   7: {
     numero: 7,
@@ -233,10 +217,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Ancorar pensamentos em ação concreta e consistente com o propósito',
       afirmacao: 'Eu comunico minha verdade com clareza, amor e sabedoria divina',
     },
-    energia: {
-      tipo: 'Neutro',
-      polaridade: 'Equilibrado',
-    },
+    energia: { tipo: 'Neutro', polaridade: 'Equilibrado' },
   },
   8: {
     numero: 8,
@@ -258,10 +239,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Ancorar pensamentos em ação concreta e consistente com o propósito',
       afirmacao: 'Eu comunico minha verdade com clareza, amor e sabedoria divina',
     },
-    energia: {
-      tipo: 'Neutro',
-      polaridade: 'Equilibrado',
-    },
+    energia: { tipo: 'Neutro', polaridade: 'Equilibrado' },
   },
   9: {
     numero: 9,
@@ -283,10 +261,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Manter a clareza emocional sem perder a sensibilidade e conexão',
       afirmacao: 'Eu fluo com a vida mantendo minha essência e meus limites sagrados',
     },
-    energia: {
-      tipo: 'Frio',
-      polaridade: 'Yin',
-    },
+    energia: { tipo: 'Frio', polaridade: 'Yin' },
   },
   10: {
     numero: 10,
@@ -308,10 +283,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Equilibrar estabilidade com flexibilidade e abertura à transformação',
       afirmacao: 'Eu sou abundante, merecedor de prosperidade e segurança material e espiritual',
     },
-    energia: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-    },
+    energia: { tipo: 'Quente', polaridade: 'Yang' },
   },
   11: {
     numero: 11,
@@ -333,10 +305,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Manifestar a luz espiritual no mundo físico sem perder a transcendência',
       afirmacao: 'Eu sou um canal de luz e paz divina que ilumina o mundo ao meu redor',
     },
-    energia: {
-      tipo: 'Neutro',
-      polaridade: 'Equilibrado',
-    },
+    energia: { tipo: 'Neutro', polaridade: 'Equilibrado' },
   },
   12: {
     numero: 12,
@@ -348,7 +317,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
     arquetipo: 'O Guerreiro da Luz / O Executor da Lei',
     orixa: 'Xangô',
     sephirah: 'Geburah',
-    chakra: '3º Plexo Solar, (Manipura)',
+    chakra: '3º Plexo Solar (Manipura)',
     planeta: 'Marte',
     cor: 'Vermelho',
     direcao: 'Sul',
@@ -358,10 +327,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Canalizar a energia do fogo em propósito construtivo e amoroso',
       afirmacao: 'Eu transformo minha paixão em ação sagrada e serviço amoroso',
     },
-    energia: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-    },
+    energia: { tipo: 'Quente', polaridade: 'Yang' },
   },
   13: {
     numero: 13,
@@ -383,114 +349,51 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       licao: 'Equilibrar estabilidade com flexibilidade e abertura à transformação',
       afirmacao: 'Eu sou abundante, merecedor de prosperidade e segurança material e espiritual',
     },
-    energia: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-    },
+    energia: { tipo: 'Quente', polaridade: 'Yang' },
   },
 };
 
-/**
- * Freeze the mapping object to prevent modifications
- */
 Object.freeze(NUMEROLOGY_ELEMENT_MAP);
-Object.values(NUMEROLOGY_ELEMENT_MAP).forEach((mapping) => Object.freeze(mapping));
+Object.values(NUMEROLOGY_ELEMENT_MAP).forEach((m) => Object.freeze(m));
 
-/**
- * Get the numerology-element mapping for a given number
- * @param numero - Numerology number (1-13)
- * @returns NumerologyElement mapping or undefined if not found
- */
-export function getNumerologyElement(numero: number): NumerologyElement | undefined {
-  return NUMEROLOGY_ELEMENT_MAP[numero];
+export function getNumerologyElement(n: number): NumerologyElement | undefined {
+  return NUMEROLOGY_ELEMENT_MAP[n];
 }
 
-/**
- * Get all numerology-element mappings
- * @returns Array of all NumerologyElement mappings
- */
 export function getAllNumerologyElements(): NumerologyElement[] {
   return Object.values(NUMEROLOGY_ELEMENT_MAP);
 }
 
-/**
- * Get the element for a given numerology number
- * @param numero - Numerology number (1-13)
- * @returns Element name or null if not found
- */
-export function getElementNumerology(numero: number): string | null {
-  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
-  return mapping?.elemento_nome ?? null;
+export function getElementNumerology(n: number): string | null {
+  return NUMEROLOGY_ELEMENT_MAP[n]?.elemento_nome ?? null;
 }
 
-/**
- * Get the archetype for a given numerology number
- * @param numero - Numerology number (1-13)
- * @returns Archetype name or null if not found
- */
-export function getNumerologyArquetipo(numero: number): string | null {
-  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
-  return mapping?.arquetipo ?? null;
+export function getNumerologyArquetipo(n: number): string | null {
+  return NUMEROLOGY_ELEMENT_MAP[n]?.arquetipo ?? null;
 }
 
-/**
- * Get the spiritual meaning for a given numerology number
- * @param numero - Numerology number (1-13)
- * @returns Spiritual meaning or null if not found
- */
-export function getNumerologySignificado(numero: number): string | null {
-  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
-  return mapping?.significado_espiritual ?? null;
+export function getNumerologySignificado(n: number): string | null {
+  return NUMEROLOGY_ELEMENT_MAP[n]?.significado_espiritual ?? null;
 }
 
-/**
- * Get the qualities for a given numerology number
- * @param numero - Numerology number (1-13)
- * @returns Qualities object or null if not found
- */
-export function getNumerologyQualidades(numero: number): NumerologyElement['qualidades'] | null {
-  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
-  return mapping?.qualidades ?? null;
+export function getNumerologyQualidades(n: number): NumerologyElement['qualidades'] | null {
+  return NUMEROLOGY_ELEMENT_MAP[n]?.qualidades ?? null;
 }
 
-/**
- * Get the energy type for a given numerology number
- * @param numero - Numerology number (1-13)
- * @returns Energy type ('Quente', 'Frio', 'Neutro') or null if not found
- */
-export function getNumerologyEnergia(numero: number): 'Quente' | 'Frio' | 'Neutro' | null {
-  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
-  return mapping?.energia.tipo ?? null;
+export function getNumerologyEnergia(n: number): 'Quente' | 'Frio' | 'Neutro' | null {
+  return NUMEROLOGY_ELEMENT_MAP[n]?.energia.tipo ?? null;
 }
 
-/**
- * Get the polarity for a given numerology number
- * @param numero - Numerology number (1-13)
- * @returns Polarity ('Yang', 'Yin', 'Equilibrado') or null if not found
- */
-export function getNumerologyPolaridade(numero: number): 'Yang' | 'Yin' | 'Equilibrado' | null {
-  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
-  return mapping?.energia.polaridade ?? null;
+export function getNumerologyPolaridade(n: number): 'Yang' | 'Yin' | 'Equilibrado' | null {
+  return NUMEROLOGY_ELEMENT_MAP[n]?.energia.polaridade ?? null;
 }
 
-/**
- * Get all registered numerology numbers
- * @returns Array of all numerology numbers (1-13)
- */
 export function getAllNumerologyNumbers(): number[] {
   return Array.from({ length: 13 }, (_, i) => i + 1);
 }
 
-/**
- * Get all element types from numerology mappings
- * @returns Array of unique element types
- */
 export function getAllElementsFromNumerology(): ElementoTipo[] {
-  const elements = new Set<ElementoTipo>();
-  for (const mapping of Object.values(NUMEROLOGY_ELEMENT_MAP)) {
-    elements.add(mapping.elemento);
-  }
-  return Array.from(elements);
+  return [...new Set(Object.values(NUMEROLOGY_ELEMENT_MAP).map((m) => m.elemento))];
 }
 
 export default {

@@ -1,74 +1,49 @@
 /**
- * Numerology-Day Spiritual Correlation
- * Maps numerology numbers (1-9) to days of the week with element connections and spiritual meanings
- * Based on classical Western numerological traditions and Cabala dos Caminhos spiritual system
+ * Numerology-Day Correlation Module
+ * Maps numerology numbers to their ruling days and spiritual meanings
+ * Inverse correlation of day-numerology for lookup by number
  */
 
 /**
- * Available elements for correlation
+ * Numerology day mapping interface
  */
-export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
-
-/**
- * Numerology-Day mapping interface
- */
-export interface NumerologyDayMapping {
-  /** The numerology number (1-9) */
+export interface NumerologyDay {
+  /** Numerology number (1-9 or master numbers 11, 22, 33) */
   numero: number;
-  /** Associated day of the week */
+  /** Day of the week associated with this number in Portuguese */
   dia: string;
-  /** Day name in Portuguese */
-  dia_portugues: string;
+  /** Associated element */
+  elemento: string;
+  /** Primary ruling planet */
+  planeta: string;
   /** Day index (0 = Sunday, 6 = Saturday) */
   indice: number;
-  /** Element connection */
-  elemento: Elemento;
-  /** Planetary ruler */
-  planeta: string;
-  /** Energy quality type */
-  qualidade_energetica: {
-    tipo: 'Quente' | 'Frio' | 'Neutro';
-    polaridade: 'Yang' | 'Yin' | 'Equilibrado';
-    vibração: string;
-  };
-  /** Spiritual meaning and archetype */
+  /** Mystical theme and energetic focus */
   significado_espiritual: string;
-  /** Core numerological meaning for the day */
+  /** Core numerological meaning */
   significado_numerologico: string;
-  /** Archetype/role name */
-  arquétipo: string;
-  /** Keywords for the day's energy */
+  /** Keywords for the number's energy */
   palavras_chave: string[];
   /** Quality of the number energy */
   qualidade: 'cardinal' | 'fixed' | 'mutable';
-  /** Recommended spiritual practices for the day */
+  /** Recommended spiritual practices for this number-day */
   praticas_espirituais: string[];
-  /** Chakra associated with the day's energy */
+  /** Chakra associated with this energy */
   chakra: string;
-  /** Sacred color of the day */
+  /** Sacred color */
   cor: string;
 }
 
-/**
- * Complete mapping of numerology numbers 1-9 to their day correspondences.
- * Based on planetary numerology and Western esoteric traditions.
- */
-export const NUMERO_DIA_MAP: Record<number, NumerologyDayMapping> = {
+/** Numerology-to-Day mapping based on planetary and numerological traditions */
+const NUMEROLOGY_DAY_MAP: Record<number, NumerologyDay> = {
   1: {
     numero: 1,
-    dia: 'Sunday',
-    dia_portugues: 'Domingo',
-    indice: 0,
-    elemento: 'Fogo',
+    dia: 'Domingo',
+    elemento: 'fogo',
     planeta: 'Sol',
-    qualidade_energetica: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-      vibração: 'Iniciação, força primal, liderança, manifestação',
-    },
-    significado_espiritual: 'Dia de recarregar a energia vital e reconectar com o propósito de alma. O Sol representa a luz divina que ilumina o caminho, a individualidade e a expressão autêntica do ser. O número 1 traz a energia do pioneiro, do criador, daquele que leadership o caminho.',
-    significado_numerologico: 'O número 1 representa novos começos, liderança, independência e força de vontade. É o número do pioneiro e do criador. Traz energia de renovação e confiança para iniciar ciclos de transformação.',
-    arquétipo: 'O Iniciador / O Líder',
+    indice: 0,
+    significado_espiritual: 'Dia de recarregar a energia vital e reconnectar com o propósito de alma. O Sol representa a luz divina que ilumina o caminho, a individualidade e a expressão autêntica do ser.',
+    significado_numerologico: 'O número 1 representa novos começos, liderança, independência e força de vontade. É o número do pioneiro e do criador. Traz energia de renovação e confiança para iniciar ciclos.',
     palavras_chave: ['renovar', 'brilhar', 'liderar', 'criar', 'irradiar', 'propósito', 'alegria'],
     qualidade: 'fixed',
     praticas_espirituais: [
@@ -82,19 +57,12 @@ export const NUMERO_DIA_MAP: Record<number, NumerologyDayMapping> = {
   },
   2: {
     numero: 2,
-    dia: 'Monday',
-    dia_portugues: 'Segunda-feira',
-    indice: 1,
-    elemento: 'Água',
+    dia: 'Segunda-feira',
+    elemento: 'água',
     planeta: 'Lua',
-    qualidade_energetica: {
-      tipo: 'Frio',
-      polaridade: 'Yin',
-      vibração: 'Receptividade, dualidade, equilíbrio, fluídez emocional',
-    },
-    significado_espiritual: 'Dia de introspecção, sensibilidade e conexão com a intuição profunda. A Lua reflete a luz do Sol no inconsciente, iluminando as emoções e memórias arquetípicas. O número 2 traz a energia da parceria, da cooperação e da harmonia.',
+    indice: 1,
+    significado_espiritual: 'Dia de introspecção, sensibilidade e conexão com a intuição profunda. A Lua reflete a luz do Sol no inconsciente, iluminando as emoções e memórias arquetípicas.',
     significado_numerologico: 'O número 2 representa dualidade, parceria, receptividade e harmonia. É o número da cooperação e da sintonia com os ritmos naturais. Traz energia de acolhimento e nutricalidade.',
-    arquétipo: 'O Diplomata / O Par',
     palavras_chave: ['acolher', 'intuir', 'fluir', 'nutrir', 'sentir', 'receber', 'conectar'],
     qualidade: 'cardinal',
     praticas_espirituais: [
@@ -108,175 +76,88 @@ export const NUMERO_DIA_MAP: Record<number, NumerologyDayMapping> = {
   },
   3: {
     numero: 3,
-    dia: 'Thursday',
-    dia_portugues: 'Quinta-feira',
-    indice: 4,
-    elemento: 'Água',
+    dia: 'Quinta-feira',
+    elemento: 'fogo',
     planeta: 'Júpiter',
-    qualidade_energetica: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-      vibração: 'Expansão, abundância, otimismo, expressão criativa',
-    },
-    significado_espiritual: 'Dia de expansão, abundância e crescimento espiritual. Júpiter representa a expansão da consciência, a sabedoria superior e a conexão com o divino. O número 3 traz a energia da criatividade e da comunicação sagrada.',
-    significado_numerologico: 'O número 3 representa comunicação, criatividade, otimismo e expressão. É o número da festividade e da alegria de viver. Traz energia de expansão e abundância em todos os níveis.',
-    arquétipo: 'O Comunicador / O Criador',
-    palavras_chave: ['expandir', 'celebrar', 'comunicar', 'criar', 'abundar', 'otimizar', 'celebrar'],
+    indice: 4,
+    significado_espiritual: 'Dia de expansão, abundância e sabedoria superior. Júpiter é o guru cósmico que traz otimismo, fé e a expansão do conhecimento espiritual através da filosofia e da gratidão.',
+    significado_numerologico: 'O número 3 representa criatividade, expressão e alegria. É o número da trindade sagrada, da arte e da comunicação criativa. Traz energia de expansão, otimismo e manifestação através da vibração elevada.',
+    palavras_chave: ['expandir', 'criar', 'abundar', 'celebrar', 'saborear', 'gratidão', 'alegria'],
     qualidade: 'mutable',
     praticas_espirituais: [
-      'Orações de agradecimento e prosperidade',
-      'Práticas de generosidade e partilha',
-      'Meditação de expansão de consciência',
-      'Rituais de bênção para novos empreendimentos',
+      'Rituais de fartura e prosperidade',
+      'Práticas de gratidão e oração',
+      'Estudos filosóficos e espirituais',
+      'Busca por mentores e guias iluminados',
     ],
     chakra: '4º Cardíaco',
-    cor: 'Azul Royale',
-  },
-  4: {
-    numero: 4,
-    dia: 'Saturday',
-    dia_portugues: 'Sábado',
-    indice: 6,
-    elemento: 'Terra',
-    planeta: 'Saturno',
-    qualidade_energetica: {
-      tipo: 'Frio',
-      polaridade: 'Yin',
-      vibração: 'Estrutura, disciplina, raízes profundas, trabalho sagrado',
-    },
-    significado_espiritual: 'Dia de estruturação, disciplina e trabalho interior. Saturno representa a lei cósmica, a paciência e a sabedoria conquistada através da experiência. O número 4 traz a energia da construção de alicerces sólidos.',
-    significado_numerologico: 'O número 4 representa estrutura, estabilidade, trabalho e disciplina. É o número do construtor que estabelece bases sólidas para o futuro. Traz energia de organização e perseverança.',
-    arquétipo: 'O Construtor / A Estrutura',
-    palavras_chave: ['estruturar', 'disciplinar', 'fundamentar', 'trabalhar', 'raizar', 'organizar', 'persistir'],
-    qualidade: 'cardinal',
-    praticas_espirituais: [
-      'Rituais de proteção e banimento',
-      'Práticas de meditação em solo sagrado',
-      'Trabalho com ancestrais e raízes',
-      'Descarrego e proteção de ambientes',
-    ],
-    chakra: '1º Básico',
-    cor: 'Preto',
+    cor: 'Azul',
   },
   5: {
     numero: 5,
-    dia: 'Wednesday',
-    dia_portugues: 'Quarta-feira',
-    indice: 3,
-    elemento: 'Ar',
+    dia: 'Quarta-feira',
+    elemento: 'ar',
     planeta: 'Mercúrio',
-    qualidade_energetica: {
-      tipo: 'Neutro',
-      polaridade: 'Equilibrado',
-      vibração: 'Liberdade, adaptabilidade, transformação, alquimia interior',
-    },
-    significado_espiritual: 'Dia da mente ágil, comunicação clara e versatilidade intelectual. Mercúrio é o mensageiro entre céu e terra, traduzindo sabedoria em palavras e ideias em ação. O número 5 traz a energia da liberdade e da transformação.',
+    indice: 3,
+    significado_espiritual: 'Dia da mente ágil, comunicação clara e versatilidade intelectual. Mercúrio é o mensageiro entre céu e terra, traduzindo sabedoria em palavras e ideias em ação.',
     significado_numerologico: 'O número 5 representa liberdade, mudança e adaptabilidade. É o número do movimento, da curiosidade e da experiência variada. Traz energia de transformação mental e expansão de consciência.',
-    arquétipo: 'O Libertador / O Mensageiro',
-    palavras_chave: ['adaptar', 'comunicar', 'transformar', 'liberar', 'curiosar', 'mover', 'fluir'],
-    qualidade: 'cardinal',
+    palavras_chave: ['comunicar', 'adaptar', 'mudar', 'aprender', 'fluir', 'libertar', 'explorar'],
+    qualidade: 'mutable',
     praticas_espirituais: [
-      'Meditação de limpeza mental',
-      'Práticas de comunicação consciente',
-      'Rituais de libertação de padrões limitantes',
-      'Estudos de sabedoria e escrita sagrada',
+      'Defumações com alecrim para clareza mental',
+      'Práticas de comunicação assertiva',
+      'Estudos de filosofia e espiritualidade',
+      'Rituais de agilidade nos negócios',
     ],
     chakra: '5º Laríngeo',
     cor: 'Amarelo',
   },
   6: {
     numero: 6,
-    dia: 'Friday',
-    dia_portugues: 'Sexta-feira',
-    indice: 5,
-    elemento: 'Terra',
+    dia: 'Sexta-feira',
+    elemento: 'terra',
     planeta: 'Vênus',
-    qualidade_energetica: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-      vibração: 'Harmonia, amor, beleza, serviços sagrado',
-    },
-    significado_espiritual: 'Dia do amor, da harmonia e da beleza interior. Vênus representa a energia do amor universal, da estética e do equilíbrio. O número 6 traz a energia do serviço sagrado e da conexão com o belo.',
-    significado_numerologico: 'O número 6 representa harmonia, amor, beleza e serviço. É o número do healer e do equilibrador. Traz energia de paz, reconciliação e koneksião emocional.',
-    arquétipo: 'O Curador / O Equilibrador',
-    palavras_chave: ['harmonizar', 'amar', 'curar', 'belejar', 'servir', 'connectar', 'equilibrar'],
+    indice: 5,
+    significado_espiritual: 'Dia de amor, harmonia e beleza. Vênus é a deusa do amor e da beleza, trazendo magnetismo, prazer e a conexão com o sagrado feminino através da apreciação da arte e da natureza.',
+    significado_numerologico: 'O número 6 representa harmonia, responsabilidade e amor. É o número do equilíbrio, da família e do serviço amoroso. Traz energia de realce, beleza e conexões profundas.',
+    palavras_chave: ['amar', 'harmonizar', 'apreciar', 'conectar', 'cuidar', 'beleza', 'equilíbrio'],
     qualidade: 'fixed',
     praticas_espirituais: [
-      'Rituais de amor próprio e autoestima',
-      'Práticas de harmonização de relacionamentos',
-      'Meditação de conexão com a beleza interior',
-      'Sessões de cura energética e reconciliação',
+      'Banhos de mel e rosas para magnetismo',
+      'Práticas de amor próprio',
+      'Rituais de harmonização do lar',
+      'Conexão com a natureza e a terra',
     ],
-    chakra: '2º Sacro',
+    chakra: '4º Cardíaco',
     cor: 'Verde',
-  },
-  7: {
-    numero: 7,
-    dia: 'Sunday',
-    dia_portugues: 'Domingo',
-    indice: 0,
-    elemento: 'Fogo',
-    planeta: 'Sol',
-    qualidade_energetica: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-      vibração: 'Sabedoria interior, introspecção, mistério, contemplação',
-    },
-    significado_espiritual: 'Dia de reflexão profunda, sabedoria interior e contemplação mística. O Sol em sua expressão mais elevada traz a luz da verdade íntima. O número 7 representa a busca do conhecimento sagrado.',
-    significado_numerologico: 'O número 7 representa introspecção, sabedoria, espiritualidade e mistério. É o número do buscador e do contemplativo. Traz energia de busca interior e conexão com o divino.',
-    arquétipo: 'O Sábio / O Contemplativo',
-    palavras_chave: ['refletir', 'meditar', 'sagrar', 'buscar', 'contemplar', 'mysticar', 'iluminar'],
-    qualidade: 'fixed',
-    praticas_espirituais: [
-      'Meditação profunda e contemplação',
-      'Estudos de textos sagrados e filosofia',
-      'Rituais de iniciação e despertar espiritual',
-      'Práticas de silêncio e recolhimento interior',
-    ],
-    chakra: '6º Frontal',
-    cor: 'Branco',
   },
   8: {
     numero: 8,
-    dia: 'Saturday',
-    dia_portugues: 'Sábado',
-    indice: 6,
-    elemento: 'Éter',
+    dia: 'Sábado',
+    elemento: 'terra',
     planeta: 'Saturno',
-    qualidade_energetica: {
-      tipo: 'Neutro',
-      polaridade: 'Equilibrado',
-      vibração: 'Abundância material e espiritual, karma, transformação profunda',
-    },
-    significado_espiritual: 'Dia de manifestação de abundância e conclusão de ciclos kármicos. Saturno em sua expressão mais alta traz a energia da transformação radical. O número 8 representa o poder de criar realidade.',
-    significado_numerologico: 'O número 8 representa abundância, poder, realização e karma. É o número do mestre que domina tanto o material quanto o espiritual. Traz energia de conclusão e renovação profunda.',
-    arquétipo: 'O Mestre / O Manifestador',
-    palavras_chave: ['manifestar', 'transformar', 'concluir', 'abundar', 'reinar', 'karmar', 'poderar'],
-    qualidade: 'fixed',
+    indice: 6,
+    significado_espiritual: 'Dia de encerramento de ciclos, disciplina e trabalho interno profundo. Saturno é o mestre que testa e fortalece através de desafios, traz estrutura, maturidade e a sabedoria da perseverança.',
+    significado_numerologico: 'O número 8 representa poder, autoridade e realização material e espiritual. É o número do infinito, da abundância concreta e da ação kármica. Traz energia de estrutura, disciplina e sucesso através do esforço.',
+    palavras_chave: ['estruturar', 'disciplinar', 'encerrar', 'amadurecer', 'purificar', 'conquistar', 'limitar'],
+    qualidade: 'cardinal',
     praticas_espirituais: [
-      'Rituais de manifestação e abundância',
-      'Práticas de destruição de obras',
-      'Trabalho com lei karma e conclusões',
-      'Meditação de poder pessoal e autoridade',
+      'Rituais de encerramento de ciclos',
+      'Limpeza kármica e descarregos',
+      'Trabalho com ancestrais e espíritos da terra',
+      'Práticas de ancoramento e disciplina',
     ],
-    chakra: '7º Coronário',
-    cor: 'Violeta',
+    chakra: '1º Básico',
+    cor: 'Preto',
   },
   9: {
     numero: 9,
-    dia: 'Tuesday',
-    dia_portugues: 'Terça-feira',
-    indice: 2,
-    elemento: 'Fogo',
+    dia: 'Terça-feira',
+    elemento: 'fogo',
     planeta: 'Marte',
-    qualidade_energetica: {
-      tipo: 'Quente',
-      polaridade: 'Yang',
-      vibração: 'Força, coragem, ação, transformação, guerreiro sagrado',
-    },
-    significado_espiritual: 'Dia de força, coragem e ação decisiva. Marte representa a energia guerreira que rompe barreiras e transforma através do fogo da determinação. O número 9 traz a energia da iluminação e da transformação profunda.',
-    significado_numerologico: 'O número 9 representa encerramento de ciclos, conclusão e iluminação. É o número da sabedoria conquistada, da compaixão universal e da transformação profunda. Traz energia de libertação e mestre.',
-    arquétipo: 'O Guerreiro / O Iluminado',
+    indice: 2,
+    significado_espiritual: 'Dia de força, coragem e ação decisiva. Marte representa a energia guerreira que rompe barreiras e transforma através do fogo da determinação e da vontade sagrada.',
+    significado_numerologico: 'O número 9 representa encerramento de ciclos, conclusão e iluminação. É o número da sabedoria conquistada, da compaixão universal e da transformação profunda. Traz energia de libertação e mestria.',
     palavras_chave: ['agir', 'romper', 'transformar', 'conquistar', 'libertar', 'coragem', 'força'],
     qualidade: 'cardinal',
     praticas_espirituais: [
@@ -291,64 +172,89 @@ export const NUMERO_DIA_MAP: Record<number, NumerologyDayMapping> = {
 };
 
 /**
- * Returns the day correlation for a given numerology number (1-9)
- * @param numero - The number to look up (1-9)
- * @returns NumerologyDayMapping or null if invalid
+ * Get day correlation for a specific numerology number
+ * @param numero - Numerology number (1-9)
+ * @returns NumerologyDay mapping or undefined if number not found
  */
-export function getNumerologyDay(numero: number): NumerologyDayMapping | null {
-  return NUMERO_DIA_MAP[numero] ?? null;
+export function getNumerologyDay(numero: number): NumerologyDay | undefined {
+  return NUMEROLOGY_DAY_MAP[numero];
 }
 
 /**
- * Get all numerology day mappings
- * @returns Array of all NumerologyDayMapping objects for numbers 1-9
+ * Get day name for a specific numerology number
+ * @param numero - Numerology number (1-9)
+ * @returns Day name in Portuguese or undefined if number not found
  */
-export function getAllNumerologyDays(): NumerologyDayMapping[] {
-  return Object.values(NUMERO_DIA_MAP).sort((a, b) => a.numero - b.numero);
+export function getDayNumerology(numero: number): string | undefined {
+  return NUMEROLOGY_DAY_MAP[numero]?.dia;
 }
 
 /**
- * Returns all data for the getDayNumerology export (alias function)
- * @returns Array of all NumerologyDayMapping objects
+ * Get element for a specific numerology number
+ * @param numero - Numerology number (1-9)
+ * @returns Element or undefined if number not found
  */
-export function getDayNumerology(): NumerologyDayMapping[] {
-  return getAllNumerologyDays();
+export function getNumerologyElement(numero: number): string | undefined {
+  return NUMEROLOGY_DAY_MAP[numero]?.elemento;
 }
 
 /**
- * Returns the day name for a given number
- * @param numero - The number to look up (1-9)
- * @returns Day name in Portuguese or null if invalid
+ * Get planet for a specific numerology number
+ * @param numero - Numerology number (1-9)
+ * @returns Planet or undefined if number not found
  */
-export function getDayByNumero(numero: number): string | null {
-  return NUMERO_DIA_MAP[numero]?.dia_portugues ?? null;
+export function getNumerologyPlanet(numero: number): string | undefined {
+  return NUMEROLOGY_DAY_MAP[numero]?.planeta;
 }
 
 /**
- * Returns the element for a given number
- * @param numero - The number to look up (1-9)
- * @returns Elemento or null if invalid
+ * Get all numerology numbers mapped to days
+ * @returns Array of numerology numbers
  */
-export function getElementByNumero(numero: number): Elemento | null {
-  return NUMERO_DIA_MAP[numero]?.elemento ?? null;
+export function getAllNumerologyDays(): number[] {
+  return Object.keys(NUMEROLOGY_DAY_MAP).map(Number);
 }
 
 /**
- * Returns the planet for a given number
- * @param numero - The number to look up (1-9)
- * @returns Planet name or null if invalid
+ * Get all numerology-day correlations
+ * @returns Array of all NumerologyDay mappings
  */
-export function getPlanetByNumero(numero: number): string | null {
-  return NUMERO_DIA_MAP[numero]?.planeta ?? null;
+export function getAllNumerologyDayCorrelations(): NumerologyDay[] {
+  return Object.values(NUMEROLOGY_DAY_MAP);
 }
 
 /**
- * Returns the spiritual meaning for a given number
- * @param numero - The number to look up (1-9)
- * @returns Spiritual meaning or null if invalid
+ * Get spiritual meaning for a specific numerology number
+ * @param numero - Numerology number (1-9)
+ * @returns Spiritual meaning or undefined if number not found
  */
-export function getSpiritualMeaningByNumero(numero: number): string | null {
-  return NUMERO_DIA_MAP[numero]?.significado_espiritual ?? null;
+export function getNumerologyDaySpiritualMeaning(numero: number): string | undefined {
+  return NUMEROLOGY_DAY_MAP[numero]?.significado_espiritual;
+}
+
+/**
+ * Get numerology properties for a specific number
+ * @param numero - Numerology number (1-9)
+ * @returns Numerology properties or undefined if number not found
+ */
+export function getNumerologyDayProperties(numero: number): { numero: number; dia: string; elemento: string; planeta: string } | undefined {
+  const mapping = NUMEROLOGY_DAY_MAP[numero];
+  if (!mapping) return undefined;
+  return {
+    numero: mapping.numero,
+    dia: mapping.dia,
+    elemento: mapping.elemento,
+    planeta: mapping.planeta,
+  };
+}
+
+/**
+ * Get practices for a specific numerology number
+ * @param numero - Numerology number (1-9)
+ * @returns Array of spiritual practices or undefined if number not found
+ */
+export function getNumerologyDayPractices(numero: number): string[] | undefined {
+  return NUMEROLOGY_DAY_MAP[numero]?.praticas_espirituais;
 }
 
 /**
@@ -357,9 +263,11 @@ export function getSpiritualMeaningByNumero(numero: number): string | null {
 export default {
   getNumerologyDay,
   getDayNumerology,
+  getNumerologyElement,
+  getNumerologyPlanet,
   getAllNumerologyDays,
-  getDayByNumero,
-  getElementByNumero,
-  getPlanetByNumero,
-  getSpiritualMeaningByNumero,
+  getAllNumerologyDayCorrelations,
+  getNumerologyDaySpiritualMeaning,
+  getNumerologyDayProperties,
+  getNumerologyDayPractices,
 };
