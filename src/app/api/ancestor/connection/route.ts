@@ -1,23 +1,25 @@
-// ============================================================
-// ANCESTOR CONNECTION API - CABALA DOS CAMINHOS
-// ============================================================
-// GET endpoints for ancestor connection
-// - Retrieve all ancestor rituals
-// - Retrieve single ritual by ID
-// - Retrieve connection types
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
- 
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const AncestorConnectionQuerySchema = z.object({
+  type: z.enum(['records', 'types']).optional(),
+  id: z.string().optional(),
+});
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type');
-    const id = searchParams.get('id');
-
+    const parseResult = AncestorConnectionQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      id: searchParams.get('id'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { type, id } = parseResult.data;
     const rituals = [
-      {
         id: ' ancestor-invocation-morning',
         name: 'Invocação Matinal aos Ancestrais',
         type: 'invocation',
