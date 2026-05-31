@@ -1,23 +1,47 @@
 // ============================================================
 // DASHBOARD NOTIFICATIONS API - CABALA DOS CAMINHOS
 // ============================================================
-// Gerenciamento de notificações do dashboard
-// - Listar notificações com filtros
-// - Criar, atualizar e remover notificações
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
-interface Notificacao {
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const NotificacaoTipoSchema = z.enum([
+  'info', 'success', 'warning', 'error', 'system',
+  'reading', 'payment', 'orixa', 'transito', 'ritual',
+  'meditacao', 'ciclo', 'mensagem'
+]);
+const NotificacaoImportanciaSchema = z.enum(['low', 'medium', 'high', 'critical']);
+const NotificationsQuerySchema = z.object({
+  tipo: NotificacaoTipoSchema.optional(),
+  lida: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  importancia: NotificacaoImportanciaSchema.optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+  page: z.coerce.number().int().positive().optional(),
+});
+
+const CreateNotificacaoSchema = z.object({
+  tipo: NotificacaoTipoSchema,
+  titulo: z.string().min(1, 'Título é obrigatório'),
+  mensagem: z.string().min(1, 'Mensagem é obrigatória'),
+  importancia: NotificacaoImportanciaSchema.optional().default('medium'),
+  acaoUrl: z.string().url().optional().nullable(),
+  orixa: z.string().optional(),
+  sefirot: z.array(z.string()).optional(),
+});
+
+// ─── Type Definitions ───────────────────────────────────────────────────────
+export interface Notificacao {
   id: string;
-  tipo: 'info' | 'success' | 'warning' | 'error' | 'system' | 'reading' | 'payment';
+  tipo: string;
   titulo: string;
   mensagem: string;
   lida: boolean;
-  важність: 'low' | 'medium' | 'high';
+  importancia: 'low' | 'medium' | 'high' | 'critical';
   acaoUrl: string | null;
   createdAt: string;
   lidaEm: string | null;
+  orixa?: string;
+  sefirot?: string[];
 }
 
 interface NotificacoesData {
@@ -26,331 +50,363 @@ interface NotificacoesData {
   naoLidas: number;
 }
 
-// Mock data
-const mockNotificacoes: Notificacao[] = [
-  {
-    id: 'notif-001',
-    tipo: 'success',
-    titulo: 'Leitura Concluída',
-    mensagem: 'Sua leitura de tarot foi concluída com sucesso.',
-    lida: false,
-    важність: 'high',
-    acaoUrl: '/dashboard/leituras/tarot-001',
-    createdAt: new Date(Date.now() - 600000).toISOString(),
-    lidaEm: null,
-  },
-  {
-    id: 'notif-002',
-    tipo: 'payment',
-    titulo: 'Créditos Adicionados',
-    mensagem: '100 créditos foram adicionados à sua conta.',
-    lida: false,
-    важність: 'medium',
-    acaoUrl: '/dashboard/creditos',
-    createdAt: new Date(Date.now() - 1800000).toISOString(),
-    lidaEm: null,
-  },
-  {
-    id: 'notif-003',
-    tipo: 'reading',
-    titulo: 'Novo Odu Disponível',
-    mensagem: 'O Odu do dia está pronto para consulta.',
-    lida: true,
-    важність: 'medium',
-    acaoUrl: '/dashboard/oracula/odu-do-dia',
-    createdAt: new Date(Date.now() - 3600000).toISOString(),
-    lidaEm: new Date(Date.now() - 3000000).toISOString(),
-  },
-  {
-    id: 'notif-004',
-    tipo: 'info',
-    titulo: 'Atualização do Sistema',
-    mensagem: 'Nova versão do mapa astral disponível.',
-    lida: true,
-    важність: 'low',
-    acaoUrl: '/dashboard/mapa-astral',
-    createdAt: new Date(Date.now() - 7200000).toISOString(),
-    lidaEm: new Date(Date.now() - 6000000).toISOString(),
-  },
-  {
-    id: 'notif-005',
-    tipo: 'warning',
-    titulo: 'Créditos Esgotando',
-    mensagem: 'Você possui apenas 50 créditos restantes.',
-    lida: false,
-    важність: 'high',
-    acaoUrl: '/dashboard/creditos/comprar',
-    createdAt: new Date(Date.now() - 14400000).toISOString(),
-    lidaEm: null,
-  },
-  {
-    id: 'notif-006',
-    tipo: 'system',
-    titulo: 'Manutenção Agendada',
-    mensagem: 'Sistema estará em manutenção às 3h da manhã.',
-    lida: true,
-    важність: 'low',
-    acaoUrl: null,
-    createdAt: new Date(Date.now() - 86400000).toISOString(),
-    lidaEm: new Date(Date.now() - 82800000).toISOString(),
-  },
-  {
-    id: 'notif-007',
-    tipo: 'success',
-    titulo: 'Análise Numerológica',
-    mensagem: 'Sua análise numerológica está pronta.',
-    lida: false,
-    важність: 'medium',
-    acaoUrl: '/dashboard/numerologia/analise',
-    createdAt: new Date(Date.now() - 172800000).toISOString(),
-    lidaEm: null,
-  },
-];
+export const dynamic = 'force-dynamic';
 
-function getNotificacoesData(): NotificacoesData {
+// ─── Mock Data Store ───────────────────────────────────────────────────────
+const notificationStore: Map<string, Notificacao[]> = new Map([
+  ['default', [
+    {
+      id: 'notif-001',
+      tipo: 'success',
+      titulo: 'Leitura Concluída',
+      mensagem: 'Sua leitura de tarot foi concluída com sucesso.',
+      lida: false,
+      importancia: 'high',
+      acaoUrl: '/dashboard/leituras/tarot-001',
+      createdAt: new Date(Date.now() - 600000).toISOString(),
+      lidaEm: null,
+      sefirot: ['Tipheret'],
+    },
+    {
+      id: 'notif-002',
+      tipo: 'payment',
+      titulo: 'Créditos Adicionados',
+      mensagem: '100 créditos foram adicionados à sua conta.',
+      lida: false,
+      importancia: 'medium',
+      acaoUrl: '/dashboard/creditos',
+      createdAt: new Date(Date.now() - 1800000).toISOString(),
+      lidaEm: null,
+    },
+    {
+      id: 'notif-003',
+      tipo: 'reading',
+      titulo: 'Novo Odu Disponível',
+      mensagem: 'O Odu do dia está pronto para consulta.',
+      lida: true,
+      importancia: 'medium',
+      acaoUrl: '/dashboard/oracula/odu-do-dia',
+      createdAt: new Date(Date.now() - 3600000).toISOString(),
+      lidaEm: new Date(Date.now() - 3000000).toISOString(),
+      orixa: 'Oxum',
+    },
+    {
+      id: 'notif-004',
+      tipo: 'info',
+      titulo: 'Atualização do Sistema',
+      mensagem: 'Nova versão do mapa astral disponível.',
+      lida: true,
+      importancia: 'low',
+      acaoUrl: '/dashboard/mapa-astral',
+      createdAt: new Date(Date.now() - 7200000).toISOString(),
+      lidaEm: new Date(Date.now() - 6000000).toISOString(),
+      sefirot: ['Kether'],
+    },
+    {
+      id: 'notif-005',
+      tipo: 'warning',
+      titulo: 'Créditos Esgotando',
+      mensagem: 'Você possui apenas 50 créditos restantes.',
+      lida: false,
+      importancia: 'high',
+      acaoUrl: '/dashboard/creditos/comprar',
+      createdAt: new Date(Date.now() - 14400000).toISOString(),
+      lidaEm: null,
+    },
+    {
+      id: 'notif-006',
+      tipo: 'orixa',
+      titulo: 'Dia de Oxum',
+      mensagem: 'Hoje é dedicado a Oxum. Pratique rituais de amor e prosperidade.',
+      lida: false,
+      importancia: 'high',
+      acaoUrl: '/dashboard/rituais/oxum',
+      createdAt: new Date(Date.now() - 28800000).toISOString(),
+      lidaEm: null,
+      orixa: 'Oxum',
+      sefirot: ['Chesed', 'Hod'],
+    },
+    {
+      id: 'notif-007',
+      tipo: 'transito',
+      titulo: 'Netuno em Peixes - Fim de Ciclo',
+      mensagem: 'Netuno em Peixes traz encerramento de ciclos. Reflecte sobre suas experiências.',
+      lida: false,
+      importancia: 'medium',
+      acaoUrl: '/dashboard/astrologia/transitos',
+      createdAt: new Date(Date.now() - 43200000).toISOString(),
+      lidaEm: null,
+      sefirot: ['Yesod'],
+    },
+    {
+      id: 'notif-008',
+      tipo: 'ritual',
+      titulo: 'Lembrete: Ritual do Amanhecer',
+      mensagem: 'Não se esqueça de realizar seu ritual matinal de conexão com Oxalá.',
+      lida: false,
+      importancia: 'medium',
+      acaoUrl: '/dashboard/rituais/matinal',
+      createdAt: new Date(Date.now() - 86400000).toISOString(),
+      lidaEm: null,
+      orixa: 'Oxalá',
+      sefirot: ['Kether', 'Tipheret'],
+    },
+    {
+      id: 'notif-009',
+      tipo: 'meditacao',
+      titulo: 'Lua Crescente - Meditação Guiada',
+      mensagem: 'A lua crescente é momento propício para meditação e definição de intenções.',
+      lida: true,
+      importancia: 'low',
+      acaoUrl: '/dashboard/meditacao/guiada',
+      createdAt: new Date(Date.now() - 172800000).toISOString(),
+      lidaEm: new Date(Date.now() - 86400000).toISOString(),
+      sefirot: ['Chokhmah'],
+    },
+    {
+      id: 'notif-010',
+      tipo: 'ciclo',
+      titulo: 'Novo Ano Cabalístico',
+      mensagem: 'O Ano Cabalístico começa! Faça uma limpeza energética e renove suas intenções.',
+      lida: false,
+      importancia: 'critical',
+      acaoUrl: '/dashboard/cabala/ano-novo',
+      createdAt: new Date(Date.now() - 259200000).toISOString(),
+      lidaEm: null,
+      sefirot: ['Malkuth'],
+    },
+  ]],
+]);
+
+function getNotificacoes(userId: string): Notificacao[] {
+  return notificationStore.get(userId) || notificationStore.get('default')!;
+}
+
+function getNotificacoesData(userId: string): NotificacoesData {
+  const notificacoes = getNotificacoes(userId);
   return {
-    notificacoes: mockNotificacoes,
-    total: mockNotificacoes.length,
-    naoLidas: mockNotificacoes.filter(n => !n.lida).length,
+    notificacoes,
+    total: notificacoes.length,
+    naoLidas: notificacoes.filter(n => !n.lida).length,
   };
 }
 
+// ─── API Routes ─────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const readFilter = searchParams.get('read');
-  const tipoFilter = searchParams.get('tipo');
-  const dateFrom = searchParams.get('from');
-  const dateTo = searchParams.get('to');
-  const limit = parseInt(searchParams.get('limit') || '50', 10);
-
   try {
-    let filtered = [...mockNotificacoes];
+    const userId = request.headers.get('x-user-id') || 'default';
+    const { searchParams } = new URL(request.url);
 
-    // Filter by read status
-    if (readFilter === 'true') {
-      filtered = filtered.filter(n => n.lida);
-    } else if (readFilter === 'false') {
-      filtered = filtered.filter(n => !n.lida);
+    const parseResult = NotificationsQuerySchema.safeParse({
+      tipo: searchParams.get('tipo'),
+      lida: searchParams.get('lida'),
+      importancia: searchParams.get('importancia'),
+      limit: searchParams.get('limit'),
+      page: searchParams.get('page'),
+    });
+
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
 
-    // Filter by type
-    if (tipoFilter) {
-      filtered = filtered.filter(n => n.tipo === tipoFilter);
+    const { tipo, lida, importancia, limit, page } = parseResult.data;
+    let notificacoes = [...getNotificacoes(userId)];
+
+    // Apply filters
+    if (tipo) {
+      notificacoes = notificacoes.filter(n => n.tipo === tipo);
     }
 
-    // Filter by date range
-    if (dateFrom) {
-      const fromDate = new Date(dateFrom);
-      filtered = filtered.filter(n => new Date(n.createdAt) >= fromDate);
+    if (lida !== undefined) {
+      notificacoes = notificacoes.filter(n => n.lida === lida);
     }
 
-    if (dateTo) {
-      const toDate = new Date(dateTo);
-      filtered = filtered.filter(n => new Date(n.createdAt) <= toDate);
+    if (importancia) {
+      notificacoes = notificacoes.filter(n => n.importancia === importancia);
     }
 
-    // Sort by date (newest first)
-    filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    // Pagination
+    const pageSize = limit || 20;
+    const pageNum = page || 1;
+    const startIndex = (pageNum - 1) * pageSize;
+    const paginatedNotificacoes = notificacoes.slice(startIndex, startIndex + pageSize);
 
-    // Apply limit
-    filtered = filtered.slice(0, limit);
+    const data = getNotificacoesData(userId);
 
     return NextResponse.json({
       success: true,
-      data: filtered,
-      total: mockNotificacoes.length,
-      naoLidas: mockNotificacoes.filter(n => !n.lida).length,
-      filtered: filtered.length,
-    }, { status: 200 });
+      notificacoes: paginatedNotificacoes,
+      pagination: {
+        page: pageNum,
+        pageSize,
+        total: notificacoes.length,
+        totalPages: Math.ceil(notificacoes.length / pageSize),
+      },
+      stats: {
+        total: data.total,
+        naoLidas: data.naoLidas,
+        porTipo: {
+          info: data.notificacoes.filter(n => n.tipo === 'info').length,
+          success: data.notificacoes.filter(n => n.tipo === 'success').length,
+          warning: data.notificacoes.filter(n => n.tipo === 'warning').length,
+          error: data.notificacoes.filter(n => n.tipo === 'error').length,
+          orixa: data.notificacoes.filter(n => n.tipo === 'orixa').length,
+          transito: data.notificacoes.filter(n => n.tipo === 'transito').length,
+          ritual: data.notificacoes.filter(n => n.tipo === 'ritual').length,
+        },
+      },
+    });
   } catch {
     return NextResponse.json({
       success: false,
-      error: 'Falha ao obter notificações',
+      error: 'Erro ao buscar notificações',
     }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
+    const userId = request.headers.get('x-user-id') || 'default';
     const body = await request.json();
-    const { action } = body;
 
-    switch (action) {
-      case 'create': {
-        const { tipo, titulo, mensagem, важність, acaoUrl } = body;
-        
-        if (!titulo || !mensagem) {
-          return NextResponse.json({
-            success: false,
-            error: 'Título e mensagem são obrigatórios',
-          }, { status: 400 });
-        }
+    const parseResult = CreateNotificacaoSchema.safeParse(body);
 
-        const novaNotificacao: Notificacao = {
-          id: `notif-${Date.now()}`,
-          tipo: tipo || 'info',
-          titulo,
-          mensagem,
-          lida: false,
-          важність: важність || 'medium',
-          acaoUrl: acaoUrl || null,
-          createdAt: new Date().toISOString(),
-          lidaEm: null,
-        };
-
-        mockNotificacoes.unshift(novaNotificacao);
-
-        return NextResponse.json({
-          success: true,
-          data: novaNotificacao,
-          message: 'Notificação criada com sucesso',
-        }, { status: 201 });
-      }
-
-      case 'mark-read': {
-        const { notificationId } = body;
-
-        if (!notificationId) {
-          return NextResponse.json({
-            success: false,
-            error: 'ID da notificação é obrigatório',
-          }, { status: 400 });
-        }
-
-        const notificationIndex = mockNotificacoes.findIndex(n => n.id === notificationId);
-        if (notificationIndex === -1) {
-          return NextResponse.json({
-            success: false,
-            error: 'Notificação não encontrada',
-          }, { status: 404 });
-        }
-
-        mockNotificacoes[notificationIndex].lida = true;
-        mockNotificacoes[notificationIndex].lidaEm = new Date().toISOString();
-
-        return NextResponse.json({
-          success: true,
-          data: mockNotificacoes[notificationIndex],
-          message: 'Notificação marcada como lida',
-        }, { status: 200 });
-      }
-
-      case 'mark-all-read': {
-        mockNotificacoes.forEach(n => {
-          if (!n.lida) {
-            n.lida = true;
-            n.lidaEm = new Date().toISOString();
-          }
-        });
-
-        return NextResponse.json({
-          success: true,
-          message: 'Todas as notificações marcadas como lidas',
-          totalLidas: mockNotificacoes.filter(n => n.lida).length,
-        }, { status: 200 });
-      }
-
-      case 'clear-all': {
-        const count = mockNotificacoes.length;
-        mockNotificacoes.length = 0;
-
-        return NextResponse.json({
-          success: true,
-          message: ` ${count} notificações removidas`,
-          removidas: count,
-        }, { status: 200 });
-      }
-
-      default:
-        return NextResponse.json({
-          success: false,
-          error: 'Ação não reconhecida',
-        }, { status: 400 });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Payload inválido',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
+
+    const notificacao: Notificacao = {
+      id: `notif-${Date.now()}`,
+      tipo: parseResult.data.tipo,
+      titulo: parseResult.data.titulo,
+      mensagem: parseResult.data.mensagem,
+      importancia: parseResult.data.importancia || 'medium',
+      acaoUrl: parseResult.data.acaoUrl || null,
+      lida: false,
+      createdAt: new Date().toISOString(),
+      lidaEm: null,
+      orixa: parseResult.data.orixa,
+      sefirot: parseResult.data.sefirot,
+    };
+
+    // Add to store
+    const userNotifications = notificationStore.get(userId) || [];
+    userNotifications.unshift(notificacao);
+    notificationStore.set(userId, userNotifications);
+
+    return NextResponse.json({
+      success: true,
+      notificacao,
+      message: 'Notificação criada com sucesso',
+    }, { status: 201 });
   } catch {
     return NextResponse.json({
       success: false,
-      error: 'Falha ao processar requisição',
+      error: 'Erro ao criar notificação',
     }, { status: 500 });
   }
 }
 
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { notificationId, lida, titulo, mensagem, tipo, важність } = body;
+    const userId = request.headers.get('x-user-id') || 'default';
+    const { searchParams } = new URL(request.url);
+    const action = searchParams.get('action');
+    const id = searchParams.get('id');
 
-    if (!notificationId) {
+    if (action === 'mark-read' && id) {
+      const userNotifications = notificationStore.get(userId) || [];
+      const index = userNotifications.findIndex(n => n.id === id);
+
+      if (index === -1) {
+        return NextResponse.json({
+          success: false,
+          error: 'Notificação não encontrada',
+        }, { status: 404 });
+      }
+
+      userNotifications[index] = {
+        ...userNotifications[index],
+        lida: true,
+        lidaEm: new Date().toISOString(),
+      };
+      notificationStore.set(userId, userNotifications);
+
       return NextResponse.json({
-        success: false,
-        error: 'ID da notificação é obrigatório',
-      }, { status: 400 });
+        success: true,
+        message: 'Notificação marcada como lida',
+      });
     }
 
-    const notificationIndex = mockNotificacoes.findIndex(n => n.id === notificationId);
-    if (notificationIndex === -1) {
+    if (action === 'mark-all-read') {
+      const userNotifications = notificationStore.get(userId) || [];
+      const updated = userNotifications.map(n => ({
+        ...n,
+        lida: true,
+        lidaEm: n.lidaEm || new Date().toISOString(),
+      }));
+      notificationStore.set(userId, updated);
+
       return NextResponse.json({
-        success: false,
-        error: 'Notificação não encontrada',
-      }, { status: 404 });
+        success: true,
+        message: 'Todas as notificações marcadas como lidas',
+      });
     }
-
-    const notification = mockNotificacoes[notificationIndex];
-
-    // Update fields
-    if (typeof lida === 'boolean') {
-      notification.lida = lida;
-      notification.lidaEm = lida ? new Date().toISOString() : null;
-    }
-    if (titulo) notification.titulo = titulo;
-    if (mensagem) notification.mensagem = mensagem;
-    if (tipo) notification.tipo = tipo;
-    if (важність) notification.важність = важність;
 
     return NextResponse.json({
-      success: true,
-      data: notification,
-      message: 'Notificação atualizada com sucesso',
-    }, { status: 200 });
+      success: false,
+      error: 'Ação inválida',
+    }, { status: 400 });
   } catch {
     return NextResponse.json({
       success: false,
-      error: 'Falha ao atualizar notificação',
+      error: 'Erro ao atualizar notificação',
     }, { status: 500 });
   }
 }
 
 export async function DELETE(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const notificationId = searchParams.get('id');
-
   try {
-    if (!notificationId) {
+    const userId = request.headers.get('x-user-id') || 'default';
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
       return NextResponse.json({
         success: false,
-        error: 'ID da notificação é obrigatório',
+        error: 'ID é obrigatório',
       }, { status: 400 });
     }
 
-    const notificationIndex = mockNotificacoes.findIndex(n => n.id === notificationId);
-    if (notificationIndex === -1) {
+    const userNotifications = notificationStore.get(userId) || [];
+    const index = userNotifications.findIndex(n => n.id === id);
+
+    if (index === -1) {
       return NextResponse.json({
         success: false,
         error: 'Notificação não encontrada',
       }, { status: 404 });
     }
 
-    const removida = mockNotificacoes.splice(notificationIndex, 1)[0];
+    userNotifications.splice(index, 1);
+    notificationStore.set(userId, userNotifications);
 
     return NextResponse.json({
       success: true,
-      data: { removidaId: removida.id },
-      message: 'Notificação removida com sucesso',
-    }, { status: 200 });
+      message: 'Notificação deletada com sucesso',
+    });
   } catch {
     return NextResponse.json({
       success: false,
-      error: 'Falha ao remover notificação',
+      error: 'Erro ao deletar notificação',
     }, { status: 500 });
   }
 }
