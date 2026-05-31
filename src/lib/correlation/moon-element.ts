@@ -80,7 +80,7 @@ export const MOON_ELEMENT_MAP: Record<FaseLua, MoonElementMapping> = {
       core: 'O movimento que dissolvem barreiras e atrai prosperidade',
       aprendizado: 'Permitir o fluxo natural e confiar na correnteza',
       advertencia: 'Apreensão excessiva atrai o que se teme',
-      ritual_sugerido: 'Banho de ervas, defumação de palo santo, visualization de chuva purificadora',
+      ritual_sugerido: 'Banho de ervas, defumação de palo santo, visualização de chuva purificadora',
     },
     correspondencias: {
       orixa_regente: 'Oxóssi',
@@ -165,12 +165,10 @@ export const MOON_ELEMENT_MAP: Record<FaseLua, MoonElementMapping> = {
       manifesto_em: ['revelação', 'intuição', 'visão profunda', 'transmutação'],
     },
     significado_espiritual: {
-    significado_espiritual: {
       core: 'A fumaça que revela verdades ocultas nos cantos escuros',
       aprendizado: 'A sabedoria verdadeira vem do silêncio interior',
       advertencia: 'Visões sem ação são ilusões que paralisam',
       ritual_sugerido: 'Meditação no escuro, trabalho com terceiro olho, revelação de verdades',
-    },
     },
     correspondencias: {
       orixa_regente: 'Omolu',
