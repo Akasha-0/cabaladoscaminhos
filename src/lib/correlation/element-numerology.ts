@@ -273,7 +273,7 @@ export function getQualidadesByElement(elemento: string): ElementNumerology['qua
  */
 export function getSignificadoByElement(elemento: string): string | null {
   const mapping = getElementNumerology(elemento);
-  return mapping?.significado_espirtual ?? null;
+  return mapping?.significado_espiritual ?? null;
 }
 
 /**
