@@ -1,21 +1,26 @@
-// ============================================================
-// JOURNEY API - CABALA DOS CAMINHOS
-// ============================================================
-// GET journey progress and milestones
-// POST create/update journey entries
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server'
-
+import { z } from 'zod'
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const JourneyQuerySchema = z.object({
+  completed: z.string().optional(),
+  milestoneId: z.string().optional(),
+  action: z.enum(['progress', 'milestones', 'complete']).optional(),
+});
+const MarkMilestoneSchema = z.object({
+  id: z.string(),
+  completed: z.boolean().optional(),
+});
+const JourneyBodySchema = z.object({
+  markMilestone: MarkMilestoneSchema.optional(),
+  trackEvent: z.object({
+    type: z.string(),
+    data: z.record(z.unknown()).optional(),
+  }).optional(),
+});
 // ============================================================
 // TYPES
 // ============================================================
-
 type MilestoneCategory = 'prática' | 'conhecimento' | 'transformação'
-
-interface Milestone {
-  id: string
-  title: string
   description: string
   category: MilestoneCategory
   completedAt?: string
