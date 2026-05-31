@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
     const pitagorica = calcularPitagorica(nome);
     const caldeia = calcularCaldeia(nome);
     const cabalistica = calcularCabalistica(nome);
+    const tantrica = data ? calcularTantrica(data) : null;
     switch (tipo) {
       case 'pitagorica':
         return NextResponse.json({
@@ -67,16 +68,6 @@ export async function GET(request: NextRequest) {
           tantrica,
           timestamp: new Date().toISOString()
         }, { headers });
-    }
-  } catch (error) {
-    console.error('Erro no cálculo de numerologia:', error);
-    return NextResponse.json(
-      { error: 'Erro ao processar cálculo numerológico' },
-      { status: 500, headers }
-    );
-  }
-}
-        );
     }
   } catch (error) {
     console.error('Erro no cálculo de numerologia:', error);
