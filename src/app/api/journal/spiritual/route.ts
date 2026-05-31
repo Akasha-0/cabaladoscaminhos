@@ -1,90 +1,57 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
+import { supabase } from '@/lib/supabase';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rate-limit';
+
 const JournalEntrySchema = z.object({
-  title: z.string().min(1, 'Título é obrigatório').max(200),
-  content: z.string().min(1, 'Conteúdo é obrigatório'),
-  mood: z.string().optional(),
+  title: z.string().min(1).max(200),
+  content: z.string().optional().default(''),
+  mood: z.enum(['joyful', 'peaceful', 'grateful', 'anxious', 'sad', 'angry', 'neutral']).optional(),
   theme: z.string().optional(),
   insights: z.string().optional(),
   gratitude: z.string().optional(),
 });
+
 interface JournalEntry {
   id: string;
   user_id: string;
   title: string;
-  content: string;
+  content?: string;
   mood?: string;
   theme?: string;
   insights?: string;
   gratitude?: string;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 }
-export async function GET(request: NextRequest) {
-  const supabase = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
 
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    return NextResponse.json(
-      { error: 'Usuário não autenticado' },
-      { status: 401 }
-    );
-  }
-
+// GET /api/journal/spiritual - Retrieve all journal entries
+export async function GET(req: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = parseInt(searchParams.get('limit') || '10', 10);
-    const theme = searchParams.get('theme');
-    const startDate = searchParams.get('start_date');
-    const endDate = searchParams.get('end_date');
-
-    let query = supabase
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const { searchParams } = new URL(req.url);
+    const limitParam = searchParams.get('limit');
+    const limit = limitParam ? parseInt(limitParam, 10) : 20;
+    const { data, error } = await supabase
       .from('spiritual_journal')
-      .select('*', { count: 'exact' })
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
-
-    if (theme) {
-      query = query.eq('theme', theme);
+      .select('*')
+      .eq('user_id', session.user.id)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    if (error) {
+      console.error('Error fetching spiritual journal entries:', error);
+      return NextResponse.json({ error: 'Failed to fetch journal entries' }, { status: 500 });
     }
-
-    if (startDate) {
-      query = query.gte('created_at', startDate);
-    }
-
-    if (endDate) {
-      query = query.lte('created_at', endDate);
-    }
-
-    const from = (page - 1) * limit;
-    const to = from + limit - 1;
-    query = query.range(from, to);
-
-    const { data, count, error: dbError } = await query;
-
-    if (dbError) {
-      console.error('Error fetching spiritual journal entries:', dbError);
-      return NextResponse.json(
-        { error: 'Erro ao buscar entradas do diário espiritual' },
-        { status: 500 }
-      );
-    }
-
-    const total = count || 0;
-    const totalPages = Math.ceil(total / limit);
-
-    const entries: JournalEntry[] = (data || []).map(item => ({
+    const entries: JournalEntry[] = data.map(item => ({
       id: item.id,
       user_id: item.user_id,
-      title: item.title || '',
-      content: item.content || '',
+      title: item.title,
+      content: item.content,
       mood: item.mood,
       theme: item.theme,
       insights: item.insights,
@@ -92,15 +59,10 @@ export async function GET(request: NextRequest) {
       created_at: item.created_at,
       updated_at: item.updated_at,
     }));
-
-      }, { status: 500 });
-    }
+    return NextResponse.json({ success: true, entries, count: entries.length });
   } catch (error) {
     console.error('Error in GET /api/journal/spiritual:', error);
-    return NextResponse.json(
-      { error: 'Erro ao processar diário espiritual' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao processar diário espiritual' }, { status: 500 });
   }
 }
 
@@ -125,7 +87,7 @@ export async function POST(req: NextRequest) {
       .insert({
         user_id: session.user.id,
         title,
-        content,
+        content: content || null,
         mood: mood || null,
         theme: theme || null,
         insights: insights || null,
@@ -135,10 +97,7 @@ export async function POST(req: NextRequest) {
       .single();
     if (insertError) {
       console.error('Error creating spiritual journal entry:', insertError);
-      return NextResponse.json(
-        { error: 'Erro ao criar entrada do diário espiritual' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Erro ao criar entrada do diário espiritual' }, { status: 500 });
     }
     const entry: JournalEntry = {
       id: data.id,
@@ -155,9 +114,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, entry }, { status: 201 });
   } catch (error) {
     console.error('Error in POST /api/journal/spiritual:', error);
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 });
   }
 }
