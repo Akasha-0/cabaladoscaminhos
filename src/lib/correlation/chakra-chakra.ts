@@ -305,19 +305,21 @@ export function getChakraChakra(
   );
 }
 
-/**
- * Returns all paths between two chakras (both directions).
- */
 export function getAllChakraPaths(
   sourceChakra: string,
   targetChakra: string
 ): ChakraChakraMapping[] {
+  const normalizedSource = getChakraByName(sourceChakra);
+  const normalizedTarget = getChakraByName(targetChakra);
+  if (!normalizedSource || !normalizedTarget) {
+    return [];
+  }
   return CHAKRA_CHAKRA_MAPPINGS.filter(
     (mapping) =>
-      (mapping.source_chakra === sourceChakra &&
-        mapping.target_chakra === targetChakra) ||
-      (mapping.source_chakra === targetChakra &&
-        mapping.target_chakra === sourceChakra)
+      (mapping.source_chakra === normalizedSource &&
+        mapping.target_chakra === normalizedTarget) ||
+      (mapping.source_chakra === normalizedTarget &&
+        mapping.target_chakra === normalizedSource)
   );
 }
 
