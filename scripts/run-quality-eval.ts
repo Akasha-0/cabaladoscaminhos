@@ -1,8 +1,9 @@
 /**
  * Run Quality Evals - Executa todos os evals e gera relatório
-// NOTE: Run with: ./node_modules/.bin/tsx scripts/run-quality-eval.ts
+ * NOTE: Run with: ./node_modules/.bin/tsx scripts/run-quality-eval.ts
+ */
 
-// Use tsx: ./node_modules/.bin/tsx scripts/run-quality-eval.ts
+import { runAllEvals } from '../src/lib/quality/runner.js'
 
 async function main() {
   console.log('\n🔮 Executando Avaliação de Qualidade - Cabala dos Caminhos\n')
