@@ -7,7 +7,7 @@
  * associated with specific sound practices and musical expressions.
  */
 
-import type { DiaSemana } from './day-frequency';
+import type { DiaSemana } from './zodiac-day';
 /**
  * Type for all supported days of the week
  */
