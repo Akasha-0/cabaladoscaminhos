@@ -11,12 +11,6 @@ const DivinationQuerySchema = z.object({
   intensity: z.coerce.number().int().min(1).max(3).optional().default(2),
   count: z.coerce.number().int().min(1).max(16).optional(),
 });
-export type DivinationMethod = z.infer<typeof DivinationMethod>;
-  method?: DivinationMethod;
-  domain?: 'amor' | 'trabalho' | 'saúde' | 'espiritual' | 'financeiro' | 'geral';
-  intensity?: number;
-}
-
 export interface DivinationReading {
   id: string;
   method: DivinationMethod;
@@ -25,6 +19,8 @@ export interface DivinationReading {
   guidance: string;
   warnings?: string[];
   timestamp: string;
+}
+// ============================================================
 }
 
 // ============================================================
