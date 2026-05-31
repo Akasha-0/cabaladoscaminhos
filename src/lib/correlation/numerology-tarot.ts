@@ -1,4 +1,9 @@
 /**
+ * Element type for spiritual correlations
+ */
+export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
+
+/**
  * Numerology-Tarot Arcana Spiritual Correlation
  * Maps Pythagorean numbers 1-9 to their corresponding Tarot Major Arcana cards,
  * elemental associations, and spiritual meanings.

@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const MeditationCategoriesQuerySchema = z.object({
+  id: z.string().optional(),
+  popular: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+});
 export interface MeditationCategory {
   id: string;
   name: string;
@@ -9,14 +14,7 @@ export interface MeditationCategory {
   meditationCount: number;
   popular: boolean;
 }
-
 const categories: MeditationCategory[] = [
-  {
-    id: 'guided',
-    name: 'Guided Meditation',
-    description: 'Voice-guided sessions with prompts for focus and relaxation',
-    icon: 'headphones',
-    color: '#6366f1',
     meditationCount: 24,
     popular: true,
   },
