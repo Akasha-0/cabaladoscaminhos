@@ -662,7 +662,17 @@ export function SpiritualRadarChart({
 
           {/* Hovered System Tooltip (floating) */}
           {hoveredSystem && !selectedSystem && (
-            <div className="absolute top-2 left-2 bg-background/95 backdrop-blur-sm border rounded-lg p-3 shadow-lg max-w-[180px]">
+            <div className="absolute top-2 right-2 bg-slate-900/95 backdrop-blur-sm border border-violet-500/30 rounded-lg p-3 shadow-lg shadow-violet-500/20 max-w-[200px] animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex items-center gap-2 mb-2 pb-2 border-b border-slate-700/50">
+                <div 
+                  className="w-5 h-5 rounded-full" 
+                  style={{ 
+                    backgroundColor: SYSTEM_COLORS[hoveredSystem].primary,
+                    boxShadow: `0 0 8px ${SYSTEM_COLORS[hoveredSystem].primary}50`
+                  }} 
+                />
+                <span className="font-semibold text-white text-sm">{SYSTEM_LABELS[hoveredSystem]}</span>
+              </div>
               <SystemTooltip
                 system={hoveredSystem}
                 nivel={getLevelWithDefault(hoveredSystem)}
