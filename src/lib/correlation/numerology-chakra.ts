@@ -1,269 +1,233 @@
 /**
  * Numerology-Chakra Spiritual Correlation
- * Maps numerology numbers to their corresponding chakras, elements,
+ * Maps numerology numbers 1-9 to their corresponding chakras, elements,
  * and spiritual meanings based on Cabala dos Caminhos hermetic principles.
  * 
- * This is the reverse mapping of chakra-numerology.ts - it provides
- * numerology-centric access to chakra correlations.
+ * This is the numerology-centric view of the chakra correlation system,
+ * complementing chakra-numerology.ts which provides the reverse lookup.
  */
 
 import type { Elemento } from './chakra-element';
-import type { ChakraName } from './chakra-numerology';
 
-export type ChakraPosition = 
-  | '1º - Raiz'
-  | '2º - Sacral'
-  | '3º - Plexo Solar'
-  | '4º - Cardíaco'
-  | '5º - Laríngeo'
-  | '6º - Frontal'
-  | '7º - Coronário';
+export type ChakraName = 
+  | 'Muladhara'
+  | 'Svadhisthana'
+  | 'Manipura'
+  | 'Anahata'
+  | 'Vishuddha'
+  | 'Ajna'
+  | 'Sahasrara';
 
 /**
  * Numerology-Chakra spiritual correlation mapping
  */
-export interface NumerologyChakra {
-  /** Numerology number */
+export interface NumerologyChakraMapping {
+  /** The numerology number (1-9) */
   numero: number;
-  /** Associated chakra name */
+  /** Associated chakra in Sanskrit */
   chakra: ChakraName;
   /** Chakra position description */
-  chakra_posicao: ChakraPosition;
+  chakra_posicao: string;
   /** Element connection */
   elemento: Elemento;
+  /** Chakra color in Portuguese */
+  cor: string;
   /** Spiritual meaning */
   significado_espiritual: string;
+  /** Associated sephirah */
+  sephirah: string;
+  /** Associated orixá */
+  orixa: string;
+  /** Quality of the energy */
+  qualidade_energetica: string;
+  /** Chakra affirmation for healing */
+  afirmacao: string;
 }
 
 /**
- * Number 1 - Muladhara (Root Chakra)
- * Element: Terra
- * The Foundation - Individual identity, willpower, new beginnings, grounding
+ * Complete mapping of numerology numbers 1-9 to their chakra correspondences.
+ * Derived from chakra-numerology.ts reverse mapping and numerology-element.ts data.
  */
-const NUMERO_1: NumerologyChakra = {
-  numero: 1,
-  chakra: 'Muladhara',
-  chakra_posicao: '1º - Raiz',
-  elemento: 'Terra',
-  significado_espiritual: 'Início, liderança, individualidade, força de vontade, determinação, manifestação material, coragem de existir, identidade única',
+export const NUMERO_CHAKRA_MAP: Record<number, NumerologyChakraMapping> = {
+  1: {
+    numero: 1,
+    chakra: 'Muladhara',
+    chakra_posicao: '1º Chakra - Raiz',
+    elemento: 'Terra',
+    cor: 'Vermelho',
+    significado_espiritual: 'Força de vontade primal, identidade individual, sobrevivência, coragem de existir, manifestação material, conexão com a terra ancestral.',
+    sephirah: 'Kether',
+    orixa: 'Omolu',
+    qualidade_energetica: 'Yang - Estável, fundamentadora, primária',
+    afirmacao: 'Eu existo, eu sou, eu tenho o direito de estar aqui.',
+  },
+  2: {
+    numero: 2,
+    chakra: 'Svadhisthana',
+    chakra_posicao: '2º Chakra - Sacral',
+    elemento: 'Água',
+    cor: 'Laranja',
+    significado_espiritual: 'Criatividade, fluidez emocional, intimidade, parcerias, receptividade, adaptabilidade, prazer sagrado e desejo sagrado.',
+    sephirah: 'Chokmah',
+    orixa: 'Iemanjá',
+    qualidade_energetica: 'Yin - Fluida, emocional, receptiva',
+    afirmacao: 'Eu sinto, eu fluo, eu me adapto às correntes da vida.',
+  },
+  3: {
+    numero: 3,
+    chakra: 'Manipura',
+    chakra_posicao: '3º Chakra - Plexo Solar',
+    elemento: 'Fogo',
+    cor: 'Amarelo',
+    significado_espiritual: 'Poder pessoal, vontade interior, transformação, disciplina, autoexpressão criativa, fogo interior que move a ação.',
+    sephirah: 'Binah',
+    orixa: 'Ogum',
+    qualidade_energetica: 'Yang - Dinâmica, transformadora, autodeterminada',
+    afirmacao: 'Eu agejo, eu Transformo, eu manifesto minha vontade.',
+  },
+  4: {
+    numero: 4,
+    chakra: 'Manipura',
+    chakra_posicao: '3º Chakra - Plexo Solar',
+    elemento: 'Terra',
+    cor: 'Amarelo',
+    significado_espiritual: 'Estrutura, organização, estabilidade interior, trabalho perseverante, foundations sólidos que sustentam a evolução espiritual.',
+    sephirah: 'Chesed',
+    orixa: 'Iemanjá',
+    qualidade_energetica: 'Yang - Estruturada, estável, trabalhadora',
+    afirmacao: 'Eu construo, eu organizo, eu estableço alicerces firmes.',
+  },
+  5: {
+    numero: 5,
+    chakra: 'Anahata',
+    chakra_posicao: '4º Chakra - Cardíaco',
+    elemento: 'Ar',
+    cor: 'Verde',
+    significado_espiritual: 'Amor incondicional, compaixão, perdão, expansão do coração, equilíbrio entre dar e receber, serviço ao próximo.',
+    sephirah: 'Geburah',
+    orixa: 'Oxum',
+    qualidade_energetica: 'Equilibrado - Harmonioso, amoroso, expansivo',
+    afirmacao: 'Eu amo, eu perdoo, eu me abro ao amor universal.',
+  },
+  6: {
+    numero: 6,
+    chakra: 'Anahata',
+    chakra_posicao: '4º Chakra - Cardíaco',
+    elemento: 'Fogo',
+    cor: 'Verde/Rosa',
+    significado_espiritual: 'Amor harmonioso, equilíbrio coração-ação, responsabilidade afetiva, beleza interior, devoção ao sagrado.',
+    sephirah: 'Tiphereth',
+    orixa: 'Xangô',
+    qualidade_energetica: 'Yang - Harmonioso, dedicado, Beau',
+    afirmacao: 'Eu harmonizo, eu equilibro, eu escolho o amor em todas as situações.',
+  },
+  7: {
+    numero: 7,
+    chakra: 'Ajna',
+    chakra_posicao: '6º Chakra - Frontal',
+    elemento: 'Éter',
+    cor: 'Índigo',
+    significado_espiritual: 'Intuição, visão clara, sabedoria interior, channeling espiritual, percepção além dos sentidos, insight divino.',
+    sephirah: 'Netzach',
+    orixa: 'Iansã',
+    qualidade_energetica: 'Neutro - Intuitivo, visionário, sábio',
+    afirmacao: 'Eu vejo, eu sei, eu confio na minha sabedoria interior.',
+  },
+  8: {
+    numero: 8,
+    chakra: 'Vishuddha',
+    chakra_posicao: '5º Chakra - Laríngeo',
+    elemento: 'Éter',
+    cor: 'Azul Claro',
+    significado_espiritual: 'Comunicação verdadeira, expressão autêntica, poder da palavra, verdade falada, ressonância vibrational, channeling verbal.',
+    sephirah: 'Hod',
+    orixa: 'Oxalá',
+    qualidade_energetica: 'Neutro - Comunicativo, verídico, ressonante',
+    afirmacao: 'Eu falo a verdade, eu expresso minha autenticidade, minha voz tem poder.',
+  },
+  9: {
+    numero: 9,
+    chakra: 'Sahasrara',
+    chakra_posicao: '7º Chakra - Coronário',
+    elemento: 'Éter',
+    cor: 'Violeta/Branco',
+    significado_espiritual: 'Iluminação, transcendência, conexão divina, compaixão universal, encerramento de ciclos, sabedoria dos mestres.',
+    sephirah: 'Yesod',
+    orixa: 'Orunmilá',
+    qualidade_energetica: 'Neutro - Iluminado, transcendente, universal',
+    afirmacao: 'Eu me conecto ao divino, eu sou um com o universo, eu transmito sabedoria.',
+  },
 };
 
 /**
- * Number 2 - Svadhisthana (Sacral Chakra)
- * Element: Água
- * The Flow - Partnerships, duality, receptivity, balance, harmony
+ * Returns the chakra correlation for a given numerology number (1-9)
+ * @param numero - The number to look up (must be 1-9)
+ * @returns NumerologyChakraMapping object with chakra correlations
+ * @throws Error if number is outside valid range
  */
-const NUMERO_2: NumerologyChakra = {
-  numero: 2,
-  chakra: 'Svadhisthana',
-  chakra_posicao: '2º - Sacral',
-  elemento: 'Água',
-  significado_espiritual: 'Parcerias, dualidade, receptividade, equilíbrio, harmonia, cooperação, Diplomacia, intuição emocional, sagrada feminilidade',
-};
-
-/**
- * Number 3 - Manipura (Solar Plexus Chakra)
- * Element: Fogo
- * The Power - Expression, creativity, manifestation, joy, communication
- */
-const NUMERO_3: NumerologyChakra = {
-  numero: 3,
-  chakra: 'Manipura',
-  chakra_posicao: '3º - Plexo Solar',
-  elemento: 'Fogo',
-  significado_espiritual: 'Expressão criativa, alegria, comunicação, expansão, otimismo, Sociabilidade, autoexpressão, magia criativa, entusiasmo',
-};
-
-/**
- * Number 4 - Manipura (Solar Plexus Chakra)
- * Element: Fogo
- * The Power - Stability, structure, foundation, discipline, order
- */
-const NUMERO_4: NumerologyChakra = {
-  numero: 4,
-  chakra: 'Manipura',
-  chakra_posicao: '3º - Plexo Solar',
-  elemento: 'Fogo',
-  significado_espiritual: 'Estrutura, organização, disciplina, trabalho árduo, fundamentos sólidos, responsabilidade, manifestação através da ação, estabilidade',
-};
-
-/**
- * Number 5 - Anahata (Heart Chakra)
- * Element: Ar
- * The Love - Freedom, change, adventure, expansion, versatility
- */
-const NUMERO_5: NumerologyChakra = {
-  numero: 5,
-  chakra: 'Anahata',
-  chakra_posicao: '4º - Cardíaco',
-  elemento: 'Ar',
-  significado_espiritual: 'Liberdade, mudança, aventura, expansão, versatilidade, curiosidade, aprendizado, experiência, abertura mental, transformação do coração',
-};
-
-/**
- * Number 6 - Anahata (Heart Chakra)
- * Element: Ar
- * The Love - Love, harmony, responsibility, nurturing, home
- */
-const NUMERO_6: NumerologyChakra = {
-  numero: 6,
-  chakra: 'Anahata',
-  chakra_posicao: '4º - Cardíaco',
-  elemento: 'Ar',
-  significado_espiritual: 'Amor, harmonia, responsabilidade, nutrição, lar, família, compaixão, serviço ao próximo, equilíbrio entre dar e receber, beleza',
-};
-
-/**
- * Number 7 - Ajna (Third Eye Chakra)
- * Element: Éter
- * The Vision - Reflection, analysis, wisdom, spirituality, inner knowing
- */
-const NUMERO_7: NumerologyChakra = {
-  numero: 7,
-  chakra: 'Ajna',
-  chakra_posicao: '6º - Frontal',
-  elemento: 'Éter',
-  significado_espiritual: 'Reflexão, análise, sabedoria interior, espiritualidade, conhecimento intuitivo, introspecção, busca interior, meditação, compreensão profunda',
-};
-
-/**
- * Number 8 - Vishuddha (Throat Chakra)
- * Element: Éter
- * The Voice - Power, authority, material success, manifestation
- */
-const NUMERO_8: NumerologyChakra = {
-  numero: 8,
-  chakra: 'Vishuddha',
-  chakra_posicao: '5º - Laríngeo',
-  elemento: 'Éter',
-  significado_espiritual: 'Poder, autoridade, sucesso material, manifesta ção, poder pessoal, karma, abundância, negocios, liderança financeira, verdadefalada',
-};
-
-/**
- * Number 9 - Sahasrara (Crown Chakra)
- * Element: Éter
- * The Crown - Completion, humanitarianism, wisdom, endings
- */
-const NUMERO_9: NumerologyChakra = {
-  numero: 9,
-  chakra: 'Sahasrara',
-  chakra_posicao: '7º - Coronário',
-  elemento: 'Éter',
-  significado_espiritual: 'Completude, humanitarismo, sabedoria, finais, iluminação, compaixão universal, encerramento de ciclos, maestria espiritual, amor incondicional',
-};
-
-/**
- * Number 10 - Muladhara (Root Chakra)
- * Element: Terra
- * The Foundation - Transformation, completion of cycle, new beginning after completion
- */
-const NUMERO_10: NumerologyChakra = {
-  numero: 10,
-  chakra: 'Muladhara',
-  chakra_posicao: '1º - Raiz',
-  elemento: 'Terra',
-  significado_espiritual: 'Reinício, transformação, fim de ciclo e novo começo, sabedoria prática, manifestação direta, completude e renascimento, experiência de vida',
-};
-
-/**
- * Number 11 - Ajna (Third Eye Chakra)
- * Element: Éter
- * The Vision - Channeling, spiritual gift, illumination, intuition amplified
- */
-const NUMERO_11: NumerologyChakra = {
-  numero: 11,
-  chakra: 'Ajna',
-  chakra_posicao: '6º - Frontal',
-  elemento: 'Éter',
-  significado_espiritual: 'Canalização, dom espiritual, iluminação, intuição amplificada, visão profética, sensibilidade energetica, missão espiritual, inspirado',
-};
-
-/**
- * Number 12 - Manipura (Solar Plexus Chakra)
- * Element: Fogo
- * The Power - Service through creativity, teamwork, enlightenment through sacrifice
- */
-const NUMERO_12: NumerologyChakra = {
-  numero: 12,
-  chakra: 'Manipura',
-  chakra_posicao: '3º - Plexo Solar',
-  elemento: 'Fogo',
-  significado_espiritual: 'Serviço através da criatividade, trabalho em equipe, iluminação através do sacrifício, transformação grupal, expressão artística coletiva',
-};
-
-/**
- * Number 13 - Sahasrara (Crown Chakra)
- * Element: Éter
- * The Crown - Transformation, rebirth, letting go of old patterns
- */
-const NUMERO_13: NumerologyChakra = {
-  numero: 13,
-  chakra: 'Sahasrara',
-  chakra_posicao: '7º - Coronário',
-  elemento: 'Éter',
-  significado_espiritual: 'Transformação profunda, renascimento, libertação de velhos padrões, morte e renascimento, encerramento kármico, sabedoria dos mestres',
-};
-
-/**
- * Complete lookup table for numerology numbers 1-13
- */
-const NUMEROLOGIA_CHAKRA_MAP: Record<number, NumerologyChakra> = {
-  1: NUMERO_1,
-  2: NUMERO_2,
-  3: NUMERO_3,
-  4: NUMERO_4,
-  5: NUMERO_5,
-  6: NUMERO_6,
-  7: NUMERO_7,
-  8: NUMERO_8,
-  9: NUMERO_9,
-  10: NUMERO_10,
-  11: NUMERO_11,
-  12: NUMERO_12,
-  13: NUMERO_13,
-};
-
-/**
- * Returns the numerology-chakra correlation for a given number.
- * @param numero - The numerology number to look up (1-13)
- * @returns NumerologyChakra object with chakra correlation
- * @throws Error if number is not recognized
- */
-export function getNumerologyChakra(numero: number): NumerologyChakra {
-  const result = NUMEROLOGIA_CHAKRA_MAP[numero];
-  if (!result) {
-    throw new Error(`Número ${numero} não reconhecido na correlação numerologia-chakra (use 1-13)`);
+export function getNumerologyChakra(numero: number): NumerologyChakraMapping {
+  if (!Number.isInteger(numero) || numero < 1 || numero > 9) {
+    throw new Error(`Número fora do intervalo válido (1-9). Recebido: ${numero}`);
   }
-  return result;
+  return NUMERO_CHAKRA_MAP[numero];
 }
 
 /**
- * Returns the chakra-numerology correlation for a given chakra name.
- * @param chakra - The chakra name to search for
- * @returns Array of NumerologyChakra objects associated with the chakra
+ * Get all numerology chakra mappings
+ * @returns Array of all NumerologyChakraMapping objects for numbers 1-9
  */
-export function getChakraNumerology(chakra: string): NumerologyChakra[] {
+export function getAllNumerologyChakras(): NumerologyChakraMapping[] {
+  return Object.values(NUMERO_CHAKRA_MAP).sort((a, b) => a.numero - b.numero);
+}
+
+/**
+ * Returns all numbers associated with a given chakra
+ * @param chakra - Chakra name (Sanskrit or position description)
+ * @returns Array of NumerologyChakraMapping objects for the chakra
+ */
+export function getChakraNumerology(chakra: string): NumerologyChakraMapping[] {
   const normalizedChakra = normalizeChakraName(chakra);
-  return Object.values(NUMEROLOGIA_CHAKRA_MAP).filter(
-    (mapping) => mapping.chakra === normalizedChakra
+  
+  return getAllNumerologyChakras().filter(
+    (m) => m.chakra.toLowerCase() === normalizedChakra.toLowerCase()
   );
 }
 
 /**
- * Returns all numerology-chakra mappings (1-13).
- * @returns Array of all NumerologyChakra objects
+ * Returns the chakra name for a given number
+ * @param numero - The number to look up (1-9)
+ * @returns ChakraName string or null if invalid
  */
-export function getAllNumerologyChakras(): NumerologyChakra[] {
-  return Object.values(NUMEROLOGIA_CHAKRA_MAP).sort((a, b) => a.numero - b.numero);
+export function getChakraByNumero(numero: number): ChakraName | null {
+  if (numero < 1 || numero > 9) return null;
+  return NUMERO_CHAKRA_MAP[numero].chakra;
+}
+
+/**
+ * Returns the element for a given number
+ * @param numero - The number to look up (1-9)
+ * @returns Elemento string or null if invalid
+ */
+export function getElementByNumero(numero: number): Elemento | null {
+  if (numero < 1 || numero > 9) return null;
+  return NUMERO_CHAKRA_MAP[numero].elemento;
+}
+
+/**
+ * Returns the chakra position for a given number
+ * @param numero - The number to look up (1-9)
+ * @returns Chakra position string or null if invalid
+ */
+export function getChakraPosicaoByNumero(numero: number): string | null {
+  if (numero < 1 || numero > 9) return null;
+  return NUMERO_CHAKRA_MAP[numero].chakra_posicao;
 }
 
 /**
  * Normalizes chakra name to match ChakraName type.
  */
-function normalizeChakraName(chakra: string): ChakraName {
-  const normalized = chakra.toLowerCase().trim();
-  
-  const chakraMap: Record<string, ChakraName> = {
+function normalizeChakraName(chakra: string): string {
+  const chakraMap: Record<string, string> = {
     'muladhara': 'Muladhara',
     'svadhisthana': 'Svadhisthana',
     'manipura': 'Manipura',
@@ -271,46 +235,29 @@ function normalizeChakraName(chakra: string): ChakraName {
     'vishuddha': 'Vishuddha',
     'ajna': 'Ajna',
     'sahasrara': 'Sahasrara',
-    // Portuguese alternatives
     'raiz': 'Muladhara',
-    'basic': 'Muladhara',
+    '1º básico': 'Muladhara',
+    '1º Básico': 'Muladhara',
     'sacral': 'Svadhisthana',
-    'sexual': 'Svadhisthana',
-    'plexo': 'Manipura',
-    'solar': 'Manipura',
-    'cardiaco': 'Anahata',
-    'coracao': 'Anahata',
-    'laringeo': 'Vishuddha',
-    'garganta': 'Vishuddha',
+    '2º sacro': 'Svadhisthana',
+    '2º Sacro': 'Svadhisthana',
+    'plexo solar': 'Manipura',
+    '3º plexo solar': 'Manipura',
+    '3º Plexo Solar': 'Manipura',
+    'cardíaco': 'Anahata',
+    '4º cardíaco': 'Anahata',
+    '4º Cardíaco': 'Anahata',
+    'laríngeo': 'Vishuddha',
+    '5º laríngeo': 'Vishuddha',
+    '5º Laríngeo': 'Vishuddha',
     'frontal': 'Ajna',
+    '6º frontal': 'Ajna',
+    '6º Frontal': 'Ajna',
     'terceiro olho': 'Ajna',
-    'third eye': 'Ajna',
-    'coronario': 'Sahasrara',
+    'coronário': 'Sahasrara',
+    '7º coronário': 'Sahasrara',
+    '7º Coronário': 'Sahasrara',
     'coroa': 'Sahasrara',
-    'crown': 'Sahasrara',
-    // Position-based
-    '1º': 'Muladhara',
-    '1º chakra': 'Muladhara',
-    '1': 'Muladhara',
-    '2º': 'Svadhisthana',
-    '2º chakra': 'Svadhisthana',
-    '2': 'Svadhisthana',
-    '3º': 'Manipura',
-    '3º chakra': 'Manipura',
-    '3': 'Manipura',
-    '4º': 'Anahata',
-    '4º chakra': 'Anahata',
-    '4': 'Anahata',
-    '5º': 'Vishuddha',
-    '5º chakra': 'Vishuddha',
-    '5': 'Vishuddha',
-    '6º': 'Ajna',
-    '6º chakra': 'Ajna',
-    '6': 'Ajna',
-    '7º': 'Sahasrara',
-    '7º chakra': 'Sahasrara',
-    '7': 'Sahasrara',
   };
-
-  return chakraMap[normalized] || chakra.toLowerCase() as ChakraName;
+  return chakraMap[chakra.toLowerCase()] ?? chakra;
 }

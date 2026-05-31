@@ -1,14 +1,13 @@
-'use client';
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { UnifiedSpiritualFlow } from './UnifiedSpiritualFlow';
 import { SpiritualRadarChart } from './SpiritualRadarChart';
+import { ArvoreVida } from './ArvoreVida';
 import { GlowEffect } from '@/components/design-system/GlowEffect';
 import { 
   Sparkles, Moon, Sun, Star, Eye, Compass, 
-  ChevronDown, Globe, TreeDeciduous
+  ChevronDown, Globe, TreeDeciduous, TreePine
 } from 'lucide-react';
 
 // ============================================================
@@ -346,7 +345,30 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
       <GlowEffect variant="aurora" intensity="medium" animated className="rounded-2xl">
         <UnifiedSpiritualFlow />
       </GlowEffect>
-
+      {/* Row 1.5: Sacred Tree of Life */}
+      <GlowEffect variant="gold" intensity="low" className="rounded-2xl">
+        <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-950/80 backdrop-blur-sm border border-amber-500/20">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                <TreePine className="w-4 h-4 text-amber-400" />
+              </div>
+              <div>
+                <span className="text-sm font-semibold text-white">Árvore da Vida</span>
+                <p className="text-xs text-slate-400">Sefirot e caminhos cabalísticos</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <ArvoreVida 
+              highlightedSephiroth={userData?.sefirotDominante || ['kether', 'chokhmah']}
+              size="lg"
+              showLabels={true}
+              showPathNumbers={false}
+            />
+          </div>
+        </div>
+      </GlowEffect>
       {/* Row 2: Spiritual Radar + Tools */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         {/* Spiritual Radar Chart */}
@@ -378,7 +400,6 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
             />
           </div>
         </GlowEffect>
-
         {/* Tools Panel */}
         <SectionCard
           title="Ferramentas Místicas"
@@ -388,7 +409,6 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
           <UnifiedToolsPanel userData={userData} />
         </SectionCard>
       </div>
-
       {/* Row 3: Divination + Practice */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Divination Panel */}

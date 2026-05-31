@@ -1,301 +1,460 @@
-/**
- * Numerology-Chakra Correlation Tests
- */
-
 import { describe, it, expect } from 'vitest';
 import {
   getNumerologyChakra,
-  getChakraNumerology,
   getAllNumerologyChakras,
+  getChakraNumerology,
+  getChakraByNumero,
+  getElementByNumero,
+  getChakraPosicaoByNumero,
+  NUMERO_CHAKRA_MAP,
+  type NumerologyChakraMapping,
+  type ChakraName,
 } from '@/lib/correlation/numerology-chakra';
-import type { NumerologyChakra } from '@/lib/correlation/numerology-chakra';
 
-describe('Numerology-Chakra Correlation', () => {
-  describe('getNumerologyChakra', () => {
-    it('should return correct mapping for number 1 - Muladhara', () => {
-      const result = getNumerologyChakra(1);
-      expect(result.numero).toBe(1);
-      expect(result.chakra).toBe('Muladhara');
-      expect(result.chakra_posicao).toBe('1º - Raiz');
-      expect(result.elemento).toBe('Terra');
-      expect(result.significado_espiritual).toContain('individualidade');
+describe('numerology-chakra', () => {
+  // ─── NUMERO_CHAKRA_MAP: all 9 numbers ─────────────────────────────────
+  describe('NUMERO_CHAKRA_MAP', () => {
+    it('contains all 9 numbers (1-9)', () => {
+      for (let i = 1; i <= 9; i++) {
+        expect(NUMERO_CHAKRA_MAP[i]).toBeDefined();
+      }
+      expect(Object.keys(NUMERO_CHAKRA_MAP)).toHaveLength(9);
     });
 
-    it('should return correct mapping for number 2 - Svadhisthana', () => {
-      const result = getNumerologyChakra(2);
-      expect(result.numero).toBe(2);
-      expect(result.chakra).toBe('Svadhisthana');
-      expect(result.chakra_posicao).toBe('2º - Sacral');
-      expect(result.significado_espiritual.toLowerCase()).toContain('parcerias');
+    it('number 1 maps to Muladhara (Root Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[1];
+      expect(mapping.chakra).toBe('Muladhara');
+      expect(mapping.numero).toBe(1);
+      expect(mapping.elemento).toBe('Terra');
+      expect(mapping.chakra_posicao).toBe('1º Chakra - Raiz');
+      expect(mapping.cor).toBe('Vermelho');
+      expect(mapping.sephirah).toBe('Kether');
+      expect(mapping.orixa).toBe('Omolu');
     });
 
-    it('should return correct mapping for number 3 - Manipura', () => {
-      const result = getNumerologyChakra(3);
-      expect(result.numero).toBe(3);
-      expect(result.chakra).toBe('Manipura');
-      expect(result.chakra_posicao).toBe('3º - Plexo Solar');
-      expect(result.significado_espiritual.toLowerCase()).toContain('expressão criativa');
+    it('number 2 maps to Svadhisthana (Sacral Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[2];
+      expect(mapping.chakra).toBe('Svadhisthana');
+      expect(mapping.numero).toBe(2);
+      expect(mapping.elemento).toBe('Água');
+      expect(mapping.chakra_posicao).toBe('2º Chakra - Sacral');
+      expect(mapping.cor).toBe('Laranja');
+      expect(mapping.sephirah).toBe('Chokmah');
+      expect(mapping.orixa).toBe('Iemanjá');
     });
 
-    it('should return correct mapping for number 4 - Manipura', () => {
-      const result = getNumerologyChakra(4);
-      expect(result.numero).toBe(4);
-      expect(result.chakra).toBe('Manipura');
-      expect(result.chakra_posicao).toBe('3º - Plexo Solar');
-      expect(result.significado_espiritual.toLowerCase()).toContain('estrutura');
+    it('number 3 maps to Manipura (Solar Plexus Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[3];
+      expect(mapping.chakra).toBe('Manipura');
+      expect(mapping.numero).toBe(3);
+      expect(mapping.elemento).toBe('Fogo');
+      expect(mapping.chakra_posicao).toBe('3º Chakra - Plexo Solar');
+      expect(mapping.cor).toBe('Amarelo');
+      expect(mapping.sephirah).toBe('Binah');
+      expect(mapping.orixa).toBe('Ogum');
     });
 
-    it('should return correct mapping for number 5 - Anahata', () => {
-      const result = getNumerologyChakra(5);
-      expect(result.numero).toBe(5);
-      expect(result.chakra).toBe('Anahata');
-      expect(result.chakra_posicao).toBe('4º - Cardíaco');
-      expect(result.significado_espiritual.toLowerCase()).toContain('liberdade');
+    it('number 4 maps to Manipura (Solar Plexus Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[4];
+      expect(mapping.chakra).toBe('Manipura');
+      expect(mapping.numero).toBe(4);
+      expect(mapping.elemento).toBe('Terra');
+      expect(mapping.chakra_posicao).toBe('3º Chakra - Plexo Solar');
+      expect(mapping.cor).toBe('Amarelo');
+      expect(mapping.sephirah).toBe('Chesed');
+      expect(mapping.orixa).toBe('Iemanjá');
     });
 
-    it('should return correct mapping for number 6 - Anahata', () => {
-      const result = getNumerologyChakra(6);
-      expect(result.numero).toBe(6);
-      expect(result.chakra).toBe('Anahata');
-      expect(result.chakra_posicao).toBe('4º - Cardíaco');
-      expect(result.significado_espiritual.toLowerCase()).toContain('amor');
+    it('number 5 maps to Anahata (Heart Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[5];
+      expect(mapping.chakra).toBe('Anahata');
+      expect(mapping.numero).toBe(5);
+      expect(mapping.elemento).toBe('Ar');
+      expect(mapping.chakra_posicao).toBe('4º Chakra - Cardíaco');
+      expect(mapping.cor).toBe('Verde');
+      expect(mapping.sephirah).toBe('Geburah');
+      expect(mapping.orixa).toBe('Oxum');
     });
 
-    it('should return correct mapping for number 7 - Ajna', () => {
-      const result = getNumerologyChakra(7);
-      expect(result.numero).toBe(7);
-      expect(result.chakra).toBe('Ajna');
-      expect(result.chakra_posicao).toBe('6º - Frontal');
-      expect(result.significado_espiritual.toLowerCase()).toContain('reflexão');
+    it('number 6 maps to Anahata (Heart Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[6];
+      expect(mapping.chakra).toBe('Anahata');
+      expect(mapping.numero).toBe(6);
+      expect(mapping.elemento).toBe('Fogo');
+      expect(mapping.chakra_posicao).toBe('4º Chakra - Cardíaco');
+      expect(mapping.cor).toBe('Verde/Rosa');
+      expect(mapping.sephirah).toBe('Tiphereth');
+      expect(mapping.orixa).toBe('Xangô');
     });
 
-    it('should return correct mapping for number 8 - Vishuddha', () => {
-      const result = getNumerologyChakra(8);
-      expect(result.numero).toBe(8);
-      expect(result.chakra).toBe('Vishuddha');
-      expect(result.chakra_posicao).toBe('5º - Laríngeo');
-      expect(result.elemento).toBe('Éter');
-      expect(result.significado_espiritual).toContain('poder');
+    it('number 7 maps to Ajna (Third Eye Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[7];
+      expect(mapping.chakra).toBe('Ajna');
+      expect(mapping.numero).toBe(7);
+      expect(mapping.elemento).toBe('Éter');
+      expect(mapping.chakra_posicao).toBe('6º Chakra - Frontal');
+      expect(mapping.cor).toBe('Índigo');
+      expect(mapping.sephirah).toBe('Netzach');
+      expect(mapping.orixa).toBe('Iansã');
     });
 
-    it('should return correct mapping for number 9 - Sahasrara', () => {
-      const result = getNumerologyChakra(9);
-      expect(result.numero).toBe(9);
-      expect(result.chakra).toBe('Sahasrara');
-      expect(result.chakra_posicao).toBe('7º - Coronário');
-      expect(result.significado_espiritual.toLowerCase()).toContain('completude');
+    it('number 8 maps to Vishuddha (Throat Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[8];
+      expect(mapping.chakra).toBe('Vishuddha');
+      expect(mapping.numero).toBe(8);
+      expect(mapping.elemento).toBe('Éter');
+      expect(mapping.chakra_posicao).toBe('5º Chakra - Laríngeo');
+      expect(mapping.cor).toBe('Azul Claro');
+      expect(mapping.sephirah).toBe('Hod');
+      expect(mapping.orixa).toBe('Oxalá');
     });
 
-    it('should return correct mapping for number 10 - Muladhara', () => {
-      const result = getNumerologyChakra(10);
-      expect(result.numero).toBe(10);
-      expect(result.chakra).toBe('Muladhara');
-      expect(result.chakra_posicao).toBe('1º - Raiz');
-      expect(result.elemento).toBe('Terra');
-      expect(result.significado_espiritual).toContain('transformação');
+    it('number 9 maps to Sahasrara (Crown Chakra)', () => {
+      const mapping = NUMERO_CHAKRA_MAP[9];
+      expect(mapping.chakra).toBe('Sahasrara');
+      expect(mapping.numero).toBe(9);
+      expect(mapping.elemento).toBe('Éter');
+      expect(mapping.chakra_posicao).toBe('7º Chakra - Coronário');
+      expect(mapping.cor).toBe('Violeta/Branco');
+      expect(mapping.sephirah).toBe('Yesod');
+      expect(mapping.orixa).toBe('Orunmilá');
     });
 
-    it('should return correct mapping for number 11 - Ajna', () => {
-      const result = getNumerologyChakra(11);
-      expect(result.numero).toBe(11);
-      expect(result.chakra).toBe('Ajna');
-      expect(result.chakra_posicao).toBe('6º - Frontal');
-      expect(result.significado_espiritual.toLowerCase()).toContain('canalização');
-    });
-
-    it('should return correct mapping for number 12 - Manipura', () => {
-      const result = getNumerologyChakra(12);
-      expect(result.numero).toBe(12);
-      expect(result.chakra).toBe('Manipura');
-      expect(result.chakra_posicao).toBe('3º - Plexo Solar');
-      expect(result.significado_espiritual.toLowerCase()).toContain('serviço');
-    });
-
-    it('should return correct mapping for number 13 - Sahasrara', () => {
-      const result = getNumerologyChakra(13);
-      expect(result.numero).toBe(13);
-      expect(result.chakra).toBe('Sahasrara');
-      expect(result.chakra_posicao).toBe('7º - Coronário');
-      expect(result.significado_espiritual.toLowerCase()).toContain('transformação profunda');
-    });
-
-    it('should throw error for number 0', () => {
-      expect(() => getNumerologyChakra(0)).toThrow('não reconhecido');
-    });
-
-    it('should throw error for negative numbers', () => {
-      expect(() => getNumerologyChakra(-1)).toThrow('não reconhecido');
-    });
-
-    it('should throw error for numbers greater than 13', () => {
-      expect(() => getNumerologyChakra(14)).toThrow('não reconhecido');
-    });
-  });
-
-  describe('getChakraNumerology', () => {
-    it('should return all numbers for Muladhara', () => {
-      const result = getChakraNumerology('Muladhara');
-      expect(result.length).toBe(2);
-      expect(result.map(r => r.numero)).toContain(1);
-      expect(result.map(r => r.numero)).toContain(10);
-      expect(result.every(r => r.chakra === 'Muladhara')).toBe(true);
-    });
-
-    it('should return all numbers for Svadhisthana', () => {
-      const result = getChakraNumerology('Svadhisthana');
-      expect(result.length).toBe(1);
-      expect(result[0].numero).toBe(2);
-      expect(result[0].chakra).toBe('Svadhisthana');
-    });
-
-    it('should return all numbers for Manipura', () => {
-      const result = getChakraNumerology('Manipura');
-      expect(result.length).toBe(3);
-      expect(result.map(r => r.numero)).toContain(3);
-      expect(result.map(r => r.numero)).toContain(4);
-      expect(result.map(r => r.numero)).toContain(12);
-    });
-
-    it('should return all numbers for Anahata', () => {
-      const result = getChakraNumerology('Anahata');
-      expect(result.length).toBe(2);
-      expect(result.map(r => r.numero)).toContain(5);
-      expect(result.map(r => r.numero)).toContain(6);
-    });
-
-    it('should return all numbers for Vishuddha', () => {
-      const result = getChakraNumerology('Vishuddha');
-      expect(result.length).toBe(1);
-      expect(result[0].numero).toBe(8);
-    });
-
-    it('should return all numbers for Ajna', () => {
-      const result = getChakraNumerology('Ajna');
-      expect(result.length).toBe(2);
-      expect(result.map(r => r.numero)).toContain(7);
-      expect(result.map(r => r.numero)).toContain(11);
-    });
-
-    it('should return all numbers for Sahasrara', () => {
-      const result = getChakraNumerology('Sahasrara');
-      expect(result.length).toBe(2);
-      expect(result.map(r => r.numero)).toContain(9);
-      expect(result.map(r => r.numero)).toContain(13);
-    });
-
-    it('should accept lowercase chakra names', () => {
-      const result = getChakraNumerology('muladhara');
-      expect(result.length).toBe(2);
-      expect(result.every(r => r.chakra === 'Muladhara')).toBe(true);
-    });
-
-    it('should accept Portuguese alternatives', () => {
-      const result = getChakraNumerology('raiz');
-      expect(result.length).toBe(2);
-      expect(result.every(r => r.chakra === 'Muladhara')).toBe(true);
-    });
-
-    it('should accept position-based chakra names', () => {
-      const result = getChakraNumerology('1º');
-      expect(result.length).toBe(2);
-      expect(result.every(r => r.chakra === 'Muladhara')).toBe(true);
-    });
-
-    it('should return empty array for unknown chakra', () => {
-      const result = getChakraNumerology('UnknownChakra');
-      expect(result).toEqual([]);
-    });
-  });
-
-  describe('getAllNumerologyChakras', () => {
-    it('should return all 13 numerology mappings', () => {
-      const result = getAllNumerologyChakras();
-      expect(result.length).toBe(13);
-    });
-
-    it('should return sorted by numero ascending', () => {
-      const result = getAllNumerologyChakras();
-      for (let i = 1; i < result.length; i++) {
-        expect(result[i].numero).toBeGreaterThan(result[i - 1].numero);
+    it('each mapping has complete spiritual structure', () => {
+      for (let i = 1; i <= 9; i++) {
+        const mapping = NUMERO_CHAKRA_MAP[i];
+        expect(mapping.numero).toBe(i);
+        expect(mapping.chakra).toBeTruthy();
+        expect(mapping.chakra_posicao).toBeTruthy();
+        expect(mapping.elemento).toBeTruthy();
+        expect(mapping.cor).toBeTruthy();
+        expect(mapping.significado_espiritual).toBeTruthy();
+        expect(mapping.sephirah).toBeTruthy();
+        expect(mapping.orixa).toBeTruthy();
+        expect(mapping.qualidade_energetica).toBeTruthy();
+        expect(mapping.afirmacao).toBeTruthy();
       }
     });
 
-    it('should contain all seven chakras', () => {
-      const result = getAllNumerologyChakras();
-      const chakras = new Set(result.map(r => r.chakra));
-      expect(chakras.size).toBe(7);
-      expect(chakras.has('Muladhara')).toBe(true);
-      expect(chakras.has('Svadhisthana')).toBe(true);
-      expect(chakras.has('Manipura')).toBe(true);
-      expect(chakras.has('Anahata')).toBe(true);
-      expect(chakras.has('Vishuddha')).toBe(true);
-      expect(chakras.has('Ajna')).toBe(true);
-      expect(chakras.has('Sahasrara')).toBe(true);
+    it('each mapping has valid element', () => {
+      const validElements = ['Terra', 'Água', 'Fogo', 'Ar', 'Éter'];
+      for (let i = 1; i <= 9; i++) {
+        const mapping = NUMERO_CHAKRA_MAP[i];
+        expect(validElements).toContain(mapping.elemento);
+      }
     });
 
-    it('should contain all five elements', () => {
-      const result = getAllNumerologyChakras();
-      const elementos = new Set(result.map(r => r.elemento));
-      expect(elementos.has('Terra')).toBe(true);
-      expect(elementos.has('Água')).toBe(true);
-      expect(elementos.has('Fogo')).toBe(true);
-      expect(elementos.has('Ar')).toBe(true);
-      expect(elementos.has('Éter')).toBe(true);
+    it('each mapping has valid chakra name', () => {
+      const validChakras: ChakraName[] = [
+        'Muladhara',
+        'Svadhisthana',
+        'Manipura',
+        'Anahata',
+        'Vishuddha',
+        'Ajna',
+        'Sahasrara',
+      ];
+      for (let i = 1; i <= 9; i++) {
+        const mapping = NUMERO_CHAKRA_MAP[i];
+        expect(validChakras).toContain(mapping.chakra);
+      }
     });
   });
 
-  describe('Interface completeness', () => {
-    it('should have all required fields in NumerologyChakra interface', () => {
+  // ─── getNumerologyChakra: primary lookup function ──────────────────────
+  describe('getNumerologyChakra', () => {
+    it('returns correct mapping for number 1', () => {
       const result = getNumerologyChakra(1);
-      expect(result).toHaveProperty('numero');
-      expect(result).toHaveProperty('chakra');
-      expect(result).toHaveProperty('chakra_posicao');
-      expect(result).toHaveProperty('elemento');
-      expect(result).toHaveProperty('significado_espiritual');
+      expect(result.numero).toBe(1);
+      expect(result.chakra).toBe('Muladhara');
+      expect(result.orixa).toBe('Omolu');
     });
 
-    it('should return consistent chakra positions for each number', () => {
-      const chakraPositions = [
-        { num: 1, pos: '1º - Raiz' },
-        { num: 2, pos: '2º - Sacral' },
-        { num: 3, pos: '3º - Plexo Solar' },
-        { num: 4, pos: '3º - Plexo Solar' },
-        { num: 5, pos: '4º - Cardíaco' },
-        { num: 6, pos: '4º - Cardíaco' },
-        { num: 7, pos: '6º - Frontal' },
-        { num: 8, pos: '5º - Laríngeo' },
-        { num: 9, pos: '7º - Coronário' },
-        { num: 10, pos: '1º - Raiz' },
-        { num: 11, pos: '6º - Frontal' },
-        { num: 12, pos: '3º - Plexo Solar' },
-        { num: 13, pos: '7º - Coronário' },
-      ];
+    it('returns correct mapping for number 5', () => {
+      const result = getNumerologyChakra(5);
+      expect(result.numero).toBe(5);
+      expect(result.chakra).toBe('Anahata');
+      expect(result.elemento).toBe('Ar');
+    });
 
-      chakraPositions.forEach(({ num, pos }) => {
-        const result = getNumerologyChakra(num);
-        expect(result.chakra_posicao).toBe(pos);
+    it('returns correct mapping for number 9', () => {
+      const result = getNumerologyChakra(9);
+      expect(result.numero).toBe(9);
+      expect(result.chakra).toBe('Sahasrara');
+      expect(result.qualidade_energetica).toContain('Iluminado');
+    });
+
+    it('throws error for number 0', () => {
+      expect(() => getNumerologyChakra(0)).toThrow('Número fora do intervalo válido (1-9)');
+    });
+
+    it('throws error for negative numbers', () => {
+      expect(() => getNumerologyChakra(-1)).toThrow('Número fora do intervalo válido (1-9)');
+    });
+
+    it('throws error for numbers greater than 9', () => {
+      expect(() => getNumerologyChakra(10)).toThrow('Número fora do intervalo válido (1-9)');
+    });
+
+    it('throws error for non-integer numbers', () => {
+      expect(() => getNumerologyChakra(3.5)).toThrow('Número fora do intervalo válido (1-9)');
+    });
+  });
+
+  // ─── getAllNumerologyChakras ───────────────────────────────────────────
+  describe('getAllNumerologyChakras', () => {
+    it('returns array of 9 mappings', () => {
+      const all = getAllNumerologyChakras();
+      expect(all).toHaveLength(9);
+    });
+
+    it('returns array sorted by numero ascending', () => {
+      const all = getAllNumerologyChakras();
+      for (let i = 0; i < all.length - 1; i++) {
+        expect(all[i].numero).toBeLessThan(all[i + 1].numero);
+      }
+    });
+
+    it('returns array containing all numbers 1-9', () => {
+      const all = getAllNumerologyChakras();
+      const numbers = all.map((m) => m.numero);
+      for (let i = 1; i <= 9; i++) {
+        expect(numbers).toContain(i);
+      }
+    });
+
+    it('each returned mapping has complete structure', () => {
+      const all = getAllNumerologyChakras();
+      all.forEach((mapping) => {
+        expect(mapping.numero).toBeTruthy();
+        expect(mapping.chakra).toBeTruthy();
+        expect(mapping.elemento).toBeTruthy();
+        expect(mapping.significado_espiritual).toBeTruthy();
+        expect(mapping.afirmacao).toBeTruthy();
       });
     });
   });
 
-  describe('Element distribution', () => {
-    it('should have correct element distribution', () => {
-      const result = getAllNumerologyChakras();
-      const byElement = result.reduce((acc, r) => {
-        acc[r.elemento] = (acc[r.elemento] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+  // ─── getChakraNumerology: reverse lookup by chakra ────────────────────
+  describe('getChakraNumerology', () => {
+    it('returns correct numbers for Muladhara', () => {
+      const result = getChakraNumerology('Muladhara');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((m) => {
+        expect(m.chakra).toBe('Muladhara');
+      });
+      const numbers = result.map((m) => m.numero);
+      expect(numbers).toContain(1);
+    });
 
-      // Terra: 1, 10 (2 numbers)
-      expect(byElement['Terra']).toBe(2);
-      // Água: 2 (1 number)
-      expect(byElement['Água']).toBe(1);
-      // Fogo: 3, 4, 12 (3 numbers)
-      expect(byElement['Fogo']).toBe(3);
-      // Ar: 5, 6 (2 numbers)
-      expect(byElement['Ar']).toBe(2);
-      // Éter: 7, 8, 9, 11, 13 (5 numbers)
-      expect(byElement['Éter']).toBe(5);
+    it('returns correct numbers for Svadhisthana', () => {
+      const result = getChakraNumerology('Svadhisthana');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((m) => {
+        expect(m.chakra).toBe('Svadhisthana');
+      });
+      const numbers = result.map((m) => m.numero);
+      expect(numbers).toContain(2);
+    });
+
+    it('returns correct numbers for Manipura (3 and 4)', () => {
+      const result = getChakraNumerology('Manipura');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((m) => {
+        expect(m.chakra).toBe('Manipura');
+      });
+      const numbers = result.map((m) => m.numero);
+      expect(numbers).toContain(3);
+      expect(numbers).toContain(4);
+    });
+
+    it('returns correct numbers for Anahata (5 and 6)', () => {
+      const result = getChakraNumerology('Anahata');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((m) => {
+        expect(m.chakra).toBe('Anahata');
+      });
+      const numbers = result.map((m) => m.numero);
+      expect(numbers).toContain(5);
+      expect(numbers).toContain(6);
+    });
+
+    it('returns correct numbers for Ajna', () => {
+      const result = getChakraNumerology('Ajna');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((m) => {
+        expect(m.chakra).toBe('Ajna');
+      });
+      const numbers = result.map((m) => m.numero);
+      expect(numbers).toContain(7);
+    });
+
+    it('returns correct numbers for Vishuddha', () => {
+      const result = getChakraNumerology('Vishuddha');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((m) => {
+        expect(m.chakra).toBe('Vishuddha');
+      });
+      const numbers = result.map((m) => m.numero);
+      expect(numbers).toContain(8);
+    });
+
+    it('returns correct numbers for Sahasrara', () => {
+      const result = getChakraNumerology('Sahasrara');
+      expect(result.length).toBeGreaterThan(0);
+      result.forEach((m) => {
+        expect(m.chakra).toBe('Sahasrara');
+      });
+      const numbers = result.map((m) => m.numero);
+      expect(numbers).toContain(9);
+    });
+
+    it('handles alternative chakra name formats', () => {
+      const byPosition = getChakraNumerology('4º Cardíaco');
+      expect(byPosition.length).toBeGreaterThan(0);
+      expect(byPosition[0].chakra).toBe('Anahata');
+    });
+
+    it('returns empty array for unknown chakra', () => {
+      const result = getChakraNumerology('UnknownChakra');
+      expect(result).toHaveLength(0);
+    });
+  });
+
+  // ─── getChakraByNumero ─────────────────────────────────────────────────
+  describe('getChakraByNumero', () => {
+    it('returns correct chakra for number 1', () => {
+      expect(getChakraByNumero(1)).toBe('Muladhara');
+    });
+
+    it('returns correct chakra for number 3', () => {
+      expect(getChakraByNumero(3)).toBe('Manipura');
+    });
+
+    it('returns correct chakra for number 5', () => {
+      expect(getChakraByNumero(5)).toBe('Anahata');
+    });
+
+    it('returns correct chakra for number 7', () => {
+      expect(getChakraByNumero(7)).toBe('Ajna');
+    });
+
+    it('returns correct chakra for number 9', () => {
+      expect(getChakraByNumero(9)).toBe('Sahasrara');
+    });
+
+    it('returns null for number 0', () => {
+      expect(getChakraByNumero(0)).toBeNull();
+    });
+
+    it('returns null for numbers greater than 9', () => {
+      expect(getChakraByNumero(10)).toBeNull();
+    });
+  });
+
+  // ─── getElementByNumero ────────────────────────────────────────────────
+  describe('getElementByNumero', () => {
+    it('returns correct element for number 1 (Terra)', () => {
+      expect(getElementByNumero(1)).toBe('Terra');
+    });
+
+    it('returns correct element for number 2 (Água)', () => {
+      expect(getElementByNumero(2)).toBe('Água');
+    });
+
+    it('returns correct element for number 3 (Fogo)', () => {
+      expect(getElementByNumero(3)).toBe('Fogo');
+    });
+
+    it('returns correct element for number 5 (Ar)', () => {
+      expect(getElementByNumero(5)).toBe('Ar');
+    });
+
+    it('returns correct element for number 7 (Éter)', () => {
+      expect(getElementByNumero(7)).toBe('Éter');
+    });
+
+    it('returns correct element for number 8 (Éter)', () => {
+      expect(getElementByNumero(8)).toBe('Éter');
+    });
+
+    it('returns null for number 0', () => {
+      expect(getElementByNumero(0)).toBeNull();
+    });
+
+    it('returns null for numbers greater than 9', () => {
+      expect(getElementByNumero(10)).toBeNull();
+    });
+  });
+
+  // ─── getChakraPosicaoByNumero ──────────────────────────────────────────
+  describe('getChakraPosicaoByNumero', () => {
+    it('returns correct position for number 1', () => {
+      expect(getChakraPosicaoByNumero(1)).toBe('1º Chakra - Raiz');
+    });
+
+    it('returns correct position for number 2', () => {
+      expect(getChakraPosicaoByNumero(2)).toBe('2º Chakra - Sacral');
+    });
+
+    it('returns correct position for number 3', () => {
+      expect(getChakraPosicaoByNumero(3)).toBe('3º Chakra - Plexo Solar');
+    });
+
+    it('returns correct position for number 4', () => {
+      expect(getChakraPosicaoByNumero(4)).toBe('3º Chakra - Plexo Solar');
+    });
+
+    it('returns correct position for number 5', () => {
+      expect(getChakraPosicaoByNumero(5)).toBe('4º Chakra - Cardíaco');
+    });
+
+    it('returns correct position for number 6', () => {
+      expect(getChakraPosicaoByNumero(6)).toBe('4º Chakra - Cardíaco');
+    });
+
+    it('returns correct position for number 7', () => {
+      expect(getChakraPosicaoByNumero(7)).toBe('6º Chakra - Frontal');
+    });
+
+    it('returns correct position for number 8', () => {
+      expect(getChakraPosicaoByNumero(8)).toBe('5º Chakra - Laríngeo');
+    });
+
+    it('returns correct position for number 9', () => {
+      expect(getChakraPosicaoByNumero(9)).toBe('7º Chakra - Coronário');
+    });
+
+    it('returns null for number 0', () => {
+      expect(getChakraPosicaoByNumero(0)).toBeNull();
+    });
+
+    it('returns null for numbers greater than 9', () => {
+      expect(getChakraPosicaoByNumero(10)).toBeNull();
+    });
+  });
+
+  // ─── Chakra element distribution ──────────────────────────────────────
+  describe('Chakra element distribution', () => {
+    it('numbers 1-2 are lower chakras (Terra, Água)', () => {
+      expect(getElementByNumero(1)).toBe('Terra');
+      expect(getElementByNumero(2)).toBe('Água');
+    });
+
+    it('numbers 3-4 are middle chakras (Fogo, Terra)', () => {
+      expect(getElementByNumero(3)).toBe('Fogo');
+      expect(getElementByNumero(4)).toBe('Terra');
+    });
+
+    it('numbers 5-6 are heart chakra range (Ar, Fogo)', () => {
+      expect(getElementByNumero(5)).toBe('Ar');
+      expect(getElementByNumero(6)).toBe('Fogo');
+    });
+
+    it('numbers 7-9 are upper chakras (Éter)', () => {
+      expect(getElementByNumero(7)).toBe('Éter');
+      expect(getElementByNumero(8)).toBe('Éter');
+      expect(getElementByNumero(9)).toBe('Éter');
     });
   });
 });

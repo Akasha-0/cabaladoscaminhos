@@ -30,7 +30,8 @@ import type {
   ChakraResults,
   ChakraInfo,
 } from './types/mapa-alma';
-
+// HyperCorrelationEngine for cross-tradition analysis
+import { hyperCorrelationEngine, getOrixa } from '@/lib/orixa/HyperCorrelationEngine';
 // ============================================================
 // CORRESPONDENCE TABLES
 // ============================================================

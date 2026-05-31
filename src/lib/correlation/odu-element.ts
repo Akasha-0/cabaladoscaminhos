@@ -1,20 +1,16 @@
 /**
  * Odú Ifá-to-Element Correlation Mapping
- * Based on IDEIA.md Cabala dos Caminhos spiritual system
- * Maps each Odu Ifá (Merindilogun) to its corresponding element and spiritual qualities
+ * Based on Cabala dos Caminhos spiritual system
+ * Maps each Odu Ifá (Merindilogun 16) to its corresponding element
+ * and provides comprehensive spiritual correlations
  */
 
-export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra';
+export type Elemento = 'Fogo' | 'Água' | 'Terra' | 'Ar';
 
 export interface ElementQualities {
-  temperatura: 'Quente' | 'Frio' | 'Neutro';
-  umidade: 'Seco' | 'Úmido';
-  polaridade: 'Yang' | 'Yin' | 'Equilibrado';
-}
-
-export interface SpiritualPractice {
-  tipo: 'ebo' | 'oracao' | 'banho' | 'ritual' | 'oferenda';
-  descricao: string;
+  qualidade: 'Yang (Exterior)' | 'Yin (Interior)' | 'Neutro (Equilibrado)';
+  temperamento: string;
+  natureza: 'Transformador' | 'Receptivo' | 'Estruturante' | 'Comunicativo';
 }
 
 export interface OduElementMapping {
@@ -22,426 +18,608 @@ export interface OduElementMapping {
   odu: string;
   /** Odu number (1-16) */
   numero: number;
-  /** Primary corresponding element */
+  /** Primary element */
   elemento: Elemento;
-  /** Elemental qualities (hermetic) */
-  qualidades: ElementQualities;
-  /** Energy alignment description */
-  alinhamento_energetico: string;
-  /** Spiritual significance */
-  significado_espiritual: string;
-  /** Orixá correspondent */
+  /** Element qualities */
+  qualidades_elementares: ElementQualities;
+  /** Spiritual significance of element in this Odu */
+  significado_elementar: string;
+  /** Primary Orixá correspondent */
   orixa: string;
   /** Sacred day */
   dia_sagrado: string;
-  /** Traditional colors */
-  cores: string[];
   /** Chakra correspondent */
   chakra: string;
-  /** Sephirah correspondence (Cabala) */
-  sephirah: string;
-  /** Associated elements for rituals */
-  elementos_rituais: string[];
-  /** Ritual directions */
-  direcoes: string[];
-  /** Spiritual practices for this Odu-element combination */
-  praticas_espirituais: SpiritualPractice[];
-  /** Affinities with body/mind */
+  /** Chakra type for element correlations */
+  tipo_chakra: 'Raiz' | 'Sacral' | 'Solar' | 'Cardíaco' | 'Laríngeo' | 'Frontal' | 'Coronário';
+  /** Associated metals */
+  metais: string[];
+  /** Elemental directions */
+  direcoes_elementares: string[];
+  /** Ritual offerings */
+  oferendas: string[];
+  /** Affinities */
   afinidades: string[];
+  /** Elemental vibrations */
+  vibracoes: string[];
 }
 
 // ─── Odú Ifá-to-Element Mapping ─────────────────────────────────────────────────
 
 export const ODU_ELEMENT_MAPPINGS: Record<string, OduElementMapping> = {
-  // ─── FOGO Element ─────────────────────────────────────────────────────────────
-  Ejilsebora: {
-    odu: 'Ejilsebora',
-    numero: 12,
-    elemento: 'Fogo',
-    qualidades: {
-      temperatura: 'Quente',
-      umidade: 'Seco',
-      polaridade: 'Yang',
-    },
-    alinhamento_energetico: 'Quente / Ígneo / Radiante',
-    significado_espiritual:
-      'Ejilsebora traz a energia do fogo purificador e da guerra justa. Este Odu representa a força vital que transforma o caos em ordem, o brilho interior que ilumina os caminhos e a determinação inabalável que supera obstáculos.',
-    orixa: 'Xangô',
-    dia_sagrado: 'Quarta-feira / Domingo',
-    cores: ['Amarelo', 'Marrom', 'Vermelho', 'Branco'],
-    chakra: '3º Plexo Solar',
-    sephirah: 'Tiphereth',
-    elementos_rituais: ['Fogo', 'Ar'],
-    direcoes: ['Oeste', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'ebo', descricao: 'Firmezas com pedras de raio (meteoritos/quartzo marrom)' },
-      { tipo: 'ritual', descricao: 'Rituais de fogo e purificação' },
-      { tipo: 'oracao', descricao: 'Orações de guerra justa e proteção' },
-    ],
-    afinidades: [
-      'Coração e sistema circulatório',
-      'Plexo Solar (Manipura)',
-      'Sistema metabólico',
-      'Temperamento bilioso',
-      'Espírito de liderança',
-    ],
-  },
-  Obará: {
-    odu: 'Obará',
-    numero: 6,
-    elemento: 'Fogo',
-    qualidades: {
-      temperatura: 'Quente',
-      umidade: 'Seco',
-      polaridade: 'Yang',
-    },
-    alinhamento_energetico: 'Quente / Solar / Brilhante',
-    significado_espiritual:
-      'Obará confere brilho pessoal e prosperidade através da energia solar. Este Odu traz abundância material e espiritual, o carisma que atrai oportunidades e a luz interior que inspira outros.',
-    orixa: 'Xangô',
-    dia_sagrado: 'Quarta-feira / Domingo',
-    cores: ['Amarelo', 'Marrom', 'Vermelho', 'Branco'],
-    chakra: '3º Plexo Solar',
-    sephirah: 'Tiphereth',
-    elementos_rituais: ['Fogo', 'Ar'],
-    direcoes: ['Oeste', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'oferenda', descricao: 'Oferendas de seis tipos de frutas' },
-      { tipo: 'ritual', descricao: 'Rituais de prosperidade e brilho pessoal' },
-      { tipo: 'ebo', descricao: 'Amalá bem quente com folhas de fumo para Xangô' },
-    ],
-    afinidades: [
-      'Coração e sistema circulatório',
-      'Plexo Solar (Manipura)',
-      'Sistema metabólico',
-      'Temperamento bilioso',
-      'Carisma e magnetismo pessoal',
-    ],
-  },
-  Etaogundá: {
-    odu: 'Etaogundá',
-    numero: 3,
-    elemento: 'Fogo',
-    qualidades: {
-      temperatura: 'Quente',
-      umidade: 'Seco',
-      polaridade: 'Yang',
-    },
-    alinhamento_energetico: 'Quente / Transformador / Criativo',
-    significado_espiritual:
-      'Etaogundá representa a criação de ferramentas e o poder de cortar para construir. Este Odu ensina que a destruição do velho permite o nascimento do novo, a transformação necessária para a evolução espiritual.',
-    orixa: 'Xangô',
-    dia_sagrado: 'Quarta-feira / Domingo',
-    cores: ['Amarelo', 'Marrom', 'Vermelho', 'Branco'],
-    chakra: '3º Plexo Solar',
-    sephirah: 'Tiphereth',
-    elementos_rituais: ['Fogo', 'Ar'],
-    direcoes: ['Oeste', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'ebo', descricao: 'Inhames assados para Etaogundá' },
-      { tipo: 'ritual', descricao: 'Rituais de transformação e renovação' },
-      { tipo: 'oracao', descricao: 'Orações para força criativa' },
-    ],
-    afinidades: [
-      'Coração e sistema circulatório',
-      'Plexo Solar (Manipura)',
-      'Sistema metabólico',
-      'Temperamento bilioso',
-      'Criatividade e inovação',
-    ],
-  },
-
-  // ─── ÁGUA Element ────────────────────────────────────────────────────────────
-  Ofun: {
-    odu: 'Ofun',
-    numero: 10,
-    elemento: 'Água',
-    qualidades: {
-      temperatura: 'Frio',
-      umidade: 'Úmido',
-      polaridade: 'Yin',
-    },
-    alinhamento_energetico: 'Frio / Receptivo / Profundo',
-    significado_espiritual:
-      'Ofun traz o sopro divino e a cura através da paciência e do silêncio. Este Odu representa as águas profundas do inconsciente, a sabedoria interior que vem da escuta silenciosa e a cura que flui como rio manso.',
-    orixa: 'Iemanjá',
-    dia_sagrado: 'Segunda-feira / Sábado',
-    cores: ['Azul Escuro', 'Branco', 'Transparente', 'Rosa'],
-    chakra: '6º Frontal',
-    sephirah: 'Yesod',
-    elementos_rituais: ['Água', 'Terra'],
-    direcoes: ['Norte', 'Sul'],
-    praticas_espirituais: [
-      { tipo: 'oracao', descricao: 'Rezas mansas e frutas brancas para Ofun' },
-      { tipo: 'banho', descricao: 'Banhos de leite de cabra ou ervas calmas' },
-      { tipo: 'ritual', descricao: 'Rituais de cura e suavização' },
-    ],
-    afinidades: [
-      'Sistema linfático',
-      'Chakra Frontal (Ajna)',
-      'Sistema hormonal',
-      'Temperamento fleumático',
-      'Sensibilidade emocional',
-    ],
-  },
-  Oxé: {
-    odu: 'Oxé',
-    numero: 5,
-    elemento: 'Água',
-    qualidades: {
-      temperatura: 'Frio',
-      umidade: 'Úmido',
-      polaridade: 'Yin',
-    },
-    alinhamento_energetico: 'Frio / Magnético / Doce',
-    significado_espiritual:
-      'Oxé confere magnetismo, doçura e a energia da feitiçaria natural. Este Odu traz o poder de encantamento e persuasão, a graça que suaviza conflitos e a magia ritual que manifesta desejos.',
-    orixa: 'Iemanjá',
-    dia_sagrado: 'Segunda-feira / Sábado',
-    cores: ['Azul Escuro', 'Branco', 'Transparente', 'Rosa'],
-    chakra: '6º Frontal',
-    sephirah: 'Yesod',
-    elementos_rituais: ['Água', 'Terra'],
-    direcoes: ['Norte', 'Sul'],
-    praticas_espirituais: [
-      { tipo: 'banho', descricao: 'Banhos de mel e caldas de frutas para Oxé' },
-      { tipo: 'ritual', descricao: 'Rituais de encantamento e magnetismo' },
-      { tipo: 'oferenda', descricao: 'Oferendas doces e perfumadas' },
-    ],
-    afinidades: [
-      'Sistema linfático',
-      'Chakra Frontal (Ajna)',
-      'Sistema hormonal',
-      'Temperamento fleumático',
-      'Charme e persuasão',
-    ],
-  },
-  Odi: {
-    odu: 'Odi',
-    numero: 7,
-    elemento: 'Água',
-    qualidades: {
-      temperatura: 'Frio',
-      umidade: 'Úmido',
-      polaridade: 'Yin',
-    },
-    alinhamento_energetico: 'Frio / Oculto / Transmutador',
-    significado_espiritual:
-      'Odi conecta ao poço profundo dos mistérios ocultos e à transmutação. Este Odu revela os segredos escondidos nas águas profundas, o poder de transformar o impuro em puro e a sabedoria dos mistérios antigos.',
-    orixa: 'Omolu',
-    dia_sagrado: 'Segunda-feira / Sábado',
-    cores: ['Azul Escuro', 'Branco', 'Transparente', 'Rosa'],
-    chakra: '6º Frontal',
-    sephirah: 'Yesod',
-    elementos_rituais: ['Água', 'Terra'],
-    direcoes: ['Norte', 'Sul'],
-    praticas_espirituais: [
-      { tipo: 'ebo', descricao: 'Pipoca (Deburu) para Odi/Omolu' },
-      { tipo: 'ritual', descricao: 'Rituais de revelação de mistérios' },
-      { tipo: 'banho', descricao: 'Banhos de lama ou argila para transmutação' },
-    ],
-    afinidades: [
-      'Sistema linfático',
-      'Chakra Frontal (Ajna)',
-      'Sistema hormonal',
-      'Temperamento fleumático',
-      'Intuição e percepção oculta',
-    ],
-  },
-
-  // ─── AR Element ──────────────────────────────────────────────────────────────
-  Alafia: {
-    odu: 'Alafia',
-    numero: 16,
-    elemento: 'Ar',
-    qualidades: {
-      temperatura: 'Neutro',
-      umidade: 'Seco',
-      polaridade: 'Equilibrado',
-    },
-    alinhamento_energetico: 'Neutro / Equilibrado / Elevado',
-    significado_espiritual:
-      'Alafia traz a paz absoluta e a confirmação dos Deuses. Este Odu representa o elemento mais elevado do pensamento iluminado, a harmonia que transcende opostos e a cura que vem da reconciliação interior.',
-    orixa: 'Oxumaré',
-    dia_sagrado: 'Quarta-feira / Terça-feira',
-    cores: ['Arco-íris', 'Amarelo', 'Verde', 'Branco'],
-    chakra: '5º Laríngeo',
-    sephirah: 'Hod',
-    elementos_rituais: ['Ar', 'Fogo'],
-    direcoes: ['Leste', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'oferenda', descricao: 'Flores brancas e oferendas de frutas doces para Alafia' },
-      { tipo: 'ritual', descricao: 'Acentender lâmpadas e velas brancas' },
-      { tipo: 'oracao', descricao: 'Orações de paz e harmonia' },
-    ],
-    afinidades: [
-      'Sistema respiratório',
-      'Chakra Laríngeo (Vishuddha)',
-      'Sistema nervoso',
-      'Temperamento melancólico',
-      'Capacidade de comunicação',
-    ],
-  },
-  Ejiokô: {
-    odu: 'Ejiokô',
-    numero: 2,
-    elemento: 'Ar',
-    qualidades: {
-      temperatura: 'Neutro',
-      umidade: 'Seco',
-      polaridade: 'Equilibrado',
-    },
-    alinhamento_energetico: 'Neutro / Dual / Equilibrado',
-    significado_espiritual:
-      'Ejiokô ensina sobre dualidade e os caminhos duplos. Este Odu traz o equilíbrio entre opostos, a sabedoria de que toda escolha tem dois lados e a capacidade de navegar entre extremos com sabedoria.',
-    orixa: 'Oxumaré',
-    dia_sagrado: 'Quarta-feira / Terça-feira',
-    cores: ['Arco-íris', 'Amarelo', 'Verde', 'Branco'],
-    chakra: '5º Laríngeo',
-    sephirah: 'Hod',
-    elementos_rituais: ['Ar', 'Fogo'],
-    direcoes: ['Leste', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'ritual', descricao: 'Rituais de equilíbrio e escolhas' },
-      { tipo: 'oracao', descricao: 'Orações para sabedoria nas decisões' },
-      { tipo: 'oferenda', descricao: 'Oferendas balanceadas e equilibradas' },
-    ],
-    afinidades: [
-      'Sistema respiratório',
-      'Chakra Laríngeo (Vishuddha)',
-      'Sistema nervoso',
-      'Temperamento melancólico',
-      'Discernimento e sabedoria',
-    ],
-  },
-  Ossá: {
-    odu: 'Ossá',
-    numero: 9,
-    elemento: 'Ar',
-    qualidades: {
-      temperatura: 'Neutro',
-      umidade: 'Seco',
-      polaridade: 'Equilibrado',
-    },
-    alinhamento_energetico: 'Neutro / Transformador / Rápido',
-    significado_espiritual:
-      'Ossá traz as transformações rápidas e o poder feminino das Iyami. Este Odu representa a mudança acelerada, o poder de feitiçaria das bruxas ancestrais e a capacidade de modificar rapidamente a realidade.',
-    orixa: 'Oxumaré',
-    dia_sagrado: 'Quarta-feira / Terça-feira',
-    cores: ['Arco-íris', 'Amarelo', 'Verde', 'Branco'],
-    chakra: '5º Laríngeo',
-    sephirah: 'Hod',
-    elementos_rituais: ['Ar', 'Fogo'],
-    direcoes: ['Leste', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'ritual', descricao: 'Sacudimentos com folhas de fumo para Ossá' },
-      { tipo: 'ebo', descricao: 'Rituais de transformação rápida' },
-      { tipo: 'oracao', descricao: 'Orações para mudanças aceleradas' },
-    ],
-    afinidades: [
-      'Sistema respiratório',
-      'Chakra Laríngeo (Vishuddha)',
-      'Sistema nervoso',
-      'Temperamento melancólico',
-      'Capacidade de transformação',
-    ],
-  },
-
-  // ─── TERRA Element ──────────────────────────────────────────────────────────
+  // ─── TERRA (Estrutura/Grounding) ─────────────────────────────────────────────
   Okaran: {
     odu: 'Okaran',
     numero: 1,
     elemento: 'Terra',
-    qualidades: {
-      temperatura: 'Frio',
-      umidade: 'Seco',
-      polaridade: 'Yin',
+    qualidades_elementares: {
+      qualidade: 'Yin (Interior)',
+      temperamento: 'Melancólico',
+      natureza: 'Estruturante',
     },
-    alinhamento_energetico: 'Denso / Aterrador / Transformador',
-    significado_espiritual:
-      'Okaran traz o começo difícil, a dúvida e a prova que fortalece a vontade de criar. Este Odu representa a terra fértil que necesita de esforço para produzir, o ancoramento que sustenta todos os outros elementos.',
+    significado_elementar:
+      'Terra representa a师长 que traz provas necessárias para o crescimento. O peso da Terra ensina disciplina e perseverança, a estruturação que transforma o粗o em refinamento espiritual através da paciência.',
     orixa: 'Omolu',
     dia_sagrado: 'Segunda-feira',
-    cores: ['Preto', 'Branco', 'Vermelho', 'Preto e Branco'],
-    chakra: '1º Básico',
-    sephirah: 'Malkuth',
-    elementos_rituais: ['Terra', 'Fogo'],
-    direcoes: ['Norte', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'ebo', descricao: 'Despachos em encruzilhadas para Okaran' },
-      { tipo: 'ritual', descricao: 'Rituais para abrir caminhos' },
-      { tipo: 'oferenda', descricao: 'Moedas e pipoca para abrir caminhos' },
-    ],
+    chakra: '1º Básico (Muladhara)',
+    tipo_chakra: 'Raiz',
+    metais: ['Chumbo', 'Ferro'],
+    direcoes_elementares: ['Norte', 'Centro'],
+    oferendas: ['Milho', 'Pipoca', 'Eruwá', 'Gelo'],
     afinidades: [
       'Sistema ósseo',
       'Chakra Básico (Muladhara)',
       'Sistema digestivo',
-      'Temperamento melancólico',
-      'Conexão com a natureza',
+      'Conexão com ancestrais',
+      'Disciplina e perseverança',
+      'Grounding e estabilidade',
+    ],
+    vibracoes: [
+      'Denso',
+      'Estruturante',
+      'Transformador',
+      'Kármico',
+      'Providente',
     ],
   },
+
+  // ─── AR (Comunicação/Ligação) ─────────────────────────────────────────────────
+  Ejiokô: {
+    odu: 'Ejiokô',
+    numero: 2,
+    elemento: 'Ar',
+    qualidades_elementares: {
+      qualidade: 'Neutro (Equilibrado)',
+      temperamento: 'Sanguíneo',
+      natureza: 'Comunicativo',
+    },
+    significado_elementar:
+      'Ar representa a mente que conecta o céu e a terra. O sopro de Ejiokô traz a dualidade sagrada, o equilíbrio entre extremos e a sabedoria de navegar entre opostos com agilidade mental.',
+    orixa: 'Oxumaré',
+    dia_sagrado: 'Quarta-feira',
+    chakra: '5º Laríngeo (Vishuddha)',
+    tipo_chakra: 'Laríngeo',
+    metais: ['Mercúrio', 'Prata'],
+    direcoes_elementares: ['Leste', 'Centro'],
+    oferendas: ['Frutas frescas', 'Mel', 'Água de cheiro'],
+    afinidades: [
+      'Sistema respiratório',
+      'Chakra Laríngeo (Vishuddha)',
+      'Sistema nervoso',
+      'Discernimento e sabedoria',
+      'Comunicação e negociação',
+      'Equilíbrio dual',
+    ],
+    vibracoes: [
+      'Neutro',
+      'Equilibrado',
+      'Comunicativo',
+      'Mental',
+      'Versátil',
+    ],
+  },
+
+  // ─── FOGO (Transformação/Ação) ────────────────────────────────────────────────
+  Etaogundá: {
+    odu: 'Etaogundá',
+    numero: 3,
+    elemento: 'Fogo',
+    qualidades_elementares: {
+      qualidade: 'Yang (Exterior)',
+      temperamento: 'Colérico',
+      natureza: 'Transformador',
+    },
+    significado_elementar:
+      'Fogo representa a criação de ferramentas e o poder de cortar para construir. A chama de Etaogundá traz a energia de combate aos obstáculos, a coragem de iniciar jornadas e a força vital que transforma o caos em ordem.',
+    orixa: 'Ogum',
+    dia_sagrado: 'Terça-feira',
+    chakra: '3º Plexo Solar (Manipura)',
+    tipo_chakra: 'Solar',
+    metais: ['Ferro', 'Aço'],
+    direcoes_elementares: ['Oeste', 'Sul'],
+    oferendas: ['Mel', 'Pimenta', 'Azeite de dendê', 'Gengibre'],
+    afinidades: [
+      'Coração e sistema circulatório',
+      'Plexo Solar (Manipura)',
+      'Sistema muscular',
+      'Criatividade e inovação',
+      'Coragem e determinação',
+      'Poder de transformação',
+    ],
+    vibracoes: [
+      'Quente',
+      'Transformador',
+      'Criativo',
+      'ígneo',
+      'Combativo',
+    ],
+  },
+
+  // ─── ÁGUA (Intuição/Receptividade) ───────────────────────────────────────────
+  Irosun: {
+    odu: 'Irosun',
+    numero: 4,
+    elemento: 'Água',
+    qualidades_elementares: {
+      qualidade: 'Yin (Interior)',
+      temperamento: 'Fleumático',
+      natureza: 'Receptivo',
+    },
+    significado_elementar:
+      'Água representa a alma, os ciclos e a sabedoria emocional. As águas de Irosun trazem a visão espiritual, a percepção do mundo sutil e a conexão com ancestrais através da profundidade emocional.',
+    orixa: 'Iemanjá',
+    dia_sagrado: 'Segunda-feira',
+    chakra: '6º Frontal (Ajna)',
+    tipo_chakra: 'Frontal',
+    metais: ['Prata', 'Platina'],
+    direcoes_elementares: ['Norte', 'Centro'],
+    oferendas: ['Água mineral', 'Flores brancas', 'Mironga', 'Acareação'],
+    afinidades: [
+      'Sistema linfático',
+      'Chakra Frontal (Ajna)',
+      'Sistema hormonal',
+      'Intuição e clarividência',
+      'Conexão com ancestrais',
+      'Sensibilidade emocional',
+    ],
+    vibracoes: [
+      'Frio',
+      'Receptivo',
+      'Profundo',
+      'Maternal',
+      'Oculto',
+    ],
+  },
+
+  // ─── FOGO (Expansão/Abundância) ───────────────────────────────────────────────
+  Oxé: {
+    odu: 'Oxé',
+    numero: 5,
+    elemento: 'Fogo',
+    qualidades_elementares: {
+      qualidade: 'Yang (Exterior)',
+      temperamento: 'Sanguíneo',
+      natureza: 'Transformador',
+    },
+    significado_elementar:
+      'Fogo representa a fartura cósmica e o conhecimento dos mestres. A chama de Oxé confere magnetismo, doçura e a energia da feitiçaria natural que expande a consciência e atrai prosperidade.',
+    orixa: 'Oxóssi',
+    dia_sagrado: 'Quinta-feira',
+    chakra: '4º Cardíaco (Anahata)',
+    tipo_chakra: 'Cardíaco',
+    metais: ['Ouro', 'Cobre'],
+    direcoes_elementares: ['Sul', 'Centro'],
+    oferendas: ['Mel', 'Canela', 'Fumo de rolo', 'Alfarroba'],
+    afinidades: [
+      'Coração e sistema circulatório',
+      'Chakra Cardíaco (Anahata)',
+      'Sistema hepático',
+      'Carisma e magnetismo',
+      'Abundância e prosperidade',
+      'Sabedoria sagrada',
+    ],
+    vibracoes: [
+      'Quente',
+      'Expansivo',
+      'Abundante',
+      'Magnético',
+      'Fertilizante',
+    ],
+  },
+
+  // ─── FOGO (Vitalidade/Liderança) ─────────────────────────────────────────────
+  Obará: {
+    odu: 'Obará',
+    numero: 6,
+    elemento: 'Fogo',
+    qualidades_elementares: {
+      qualidade: 'Yang (Exterior)',
+      temperamento: 'Colérico',
+      natureza: 'Transformador',
+    },
+    significado_elementar:
+      'Fogo representa o núcleo do ser e a essência divina. O brilho solar de Obará ilumina o caminho, confere realeza interior e o poder de manifestar abundância através da luz interior.',
+    orixa: 'Xangô',
+    dia_sagrado: 'Quarta-feira / Domingo',
+    chakra: '3º Plexo Solar (Manipura)',
+    tipo_chakra: 'Solar',
+    metais: ['Aço', 'Ferro'],
+    direcoes_elementares: ['Oeste', 'Centro'],
+    oferendas: ['Pimenta', 'Gengibre', 'Kankere', 'Milho torrado'],
+    afinidades: [
+      'Coração e sistema circulatório',
+      'Plexo Solar (Manipura)',
+      'Sistema metabólico',
+      'Carisma e magnetismo pessoal',
+      'Liderança e criatividade',
+      'Poder de manifestação',
+    ],
+    vibracoes: [
+      'Quente',
+      'Solar',
+      'Brilhante',
+      'Radiante',
+      'Manifestador',
+    ],
+  },
+
+  // ─── ÁGUA (Transmutação/Oculto) ───────────────────────────────────────────────
+  Odi: {
+    odu: 'Odi',
+    numero: 7,
+    elemento: 'Água',
+    qualidades_elementares: {
+      qualidade: 'Yin (Interior)',
+      temperamento: 'Fleumático',
+      natureza: 'Receptivo',
+    },
+    significado_elementar:
+      'Água representa o poço profundo dos mistérios ocultos. As águas de Odi ensinam a coragem de enfrentar o que está oculto, a transformação do impuro em puro e o renascimento após ciclos difíceis.',
+    orixa: 'Omolu',
+    dia_sagrado: 'Segunda-feira',
+    chakra: '6º Frontal (Ajna)',
+    tipo_chakra: 'Frontal',
+    metais: ['Chumbo', 'Prata escura'],
+    direcoes_elementares: ['Norte', 'Sul'],
+    oferendas: ['Gelo', 'Eruwá', 'Pipoca', 'Água de oxum'],
+    afinidades: [
+      'Sistema linfático',
+      'Chakra Frontal (Ajna)',
+      'Sistema reprodutivo',
+      'Intuição e percepção oculta',
+      'Capacidade de transformação',
+      'Sabedoria dos mistérios',
+    ],
+    vibracoes: [
+      'Frio',
+      'Oculto',
+      'Transmutador',
+      'Profundo',
+      'Renovador',
+    ],
+  },
+
+  // ─── ÁGUA (Harmonia/Limpeza) ─────────────────────────────────────────────────
+  EjiOnile: {
+    odu: 'EjiOnile',
+    numero: 8,
+    elemento: 'Água',
+    qualidades_elementares: {
+      qualidade: 'Yin (Interior)',
+      temperamento: 'Fleumático',
+      natureza: 'Receptivo',
+    },
+    significado_elementar:
+      'Água representa o amor incondicional e a harmonia divina. As águas de EjiOnile trazem a limpeza emocional, a paz absoluta e a capacidade de magnetizar experiências de serenidade através da频道.',
+    orixa: 'Oxalá',
+    dia_sagrado: 'Sexta-feira / Sábado',
+    chakra: '4º Cardíaco (Anahata)',
+    tipo_chakra: 'Cardíaco',
+    metais: ['Prata', 'Ouro branco'],
+    direcoes_elementares: ['Centro', 'Leste'],
+    oferendas: ['Leite', 'Acarajé', 'Frutas brancas', 'água de flor'],
+    afinidades: [
+      'Coração e sistema circulatório',
+      'Chakra Cardíaco (Anahata)',
+      'Sistema renal',
+      'Amor e compaixão',
+      'Alinhamento espiritual',
+      'Paz e harmonia',
+    ],
+    vibracoes: [
+      'Frio',
+      'Magnético',
+      'Doce',
+      'Purificador',
+      'Harmonizador',
+    ],
+  },
+
+  // ─── AR (Transformação/Mudança) ─────────────────────────────────────────────
+  Ossá: {
+    odu: 'Ossá',
+    numero: 9,
+    elemento: 'Ar',
+    qualidades_elementares: {
+      qualidade: 'Neutro (Equilibrado)',
+      temperamento: 'Sanguíneo',
+      natureza: 'Comunicativo',
+    },
+    significado_elementar:
+      'Ar representa a mente que muda rapidamente. O sopro de Ossá traz transformações ágeis, o poder feminino das Iyami e a comunicação com mundos superiores através da agilidade mental.',
+    orixa: 'Oxumaré',
+    dia_sagrado: 'Quarta-feira',
+    chakra: '5º Laríngeo (Vishuddha)',
+    tipo_chakra: 'Laríngeo',
+    metais: ['Mercúrio', 'Alumínio'],
+    direcoes_elementares: ['Leste', 'Centro'],
+    oferendas: ['Fumo', 'Mel', 'Goma', 'Água de cheiro'],
+    afinidades: [
+      'Sistema respiratório',
+      'Chakra Laríngeo (Vishuddha)',
+      'Sistema nervoso',
+      'Capacidade de transformação rápida',
+      'Comunicação e expressão',
+      'Conexão com orixás femininos',
+    ],
+    vibracoes: [
+      'Neutro',
+      'Transformador',
+      'Rápido',
+      'Mutável',
+      'Flexível',
+    ],
+  },
+
+  // ─── ÁGUA (Cura/Profundidade) ────────────────────────────────────────────────
+  Ofun: {
+    odu: 'Ofun',
+    numero: 10,
+    elemento: 'Água',
+    qualidades_elementares: {
+      qualidade: 'Yin (Interior)',
+      temperamento: 'Fleumático',
+      natureza: 'Receptivo',
+    },
+    significado_elementar:
+      'Água representa as águas profundas do inconsciente. Ofun traz a cura através da paciência e do silêncio, a sabedoria interior da escuta silenciosa e a cura que flui como rio manso.',
+    orixa: 'Iemanjá',
+    dia_sagrado: 'Segunda-feira / Sábado',
+    chakra: '6º Frontal (Ajna)',
+    tipo_chakra: 'Frontal',
+    metais: ['Prata', 'Cristal'],
+    direcoes_elementares: ['Norte', 'Sul'],
+    oferendas: ['Água de aluá', 'Biscoito de amenim', 'Flores', 'Perfume'],
+    afinidades: [
+      'Sistema linfático',
+      'Chakra Frontal (Ajna)',
+      'Sistema hormonal',
+      'Sensibilidade emocional',
+      'Capacidade de cura',
+      'Sabedoria do silêncio',
+    ],
+    vibracoes: [
+      'Frio',
+      'Receptivo',
+      'Profundo',
+      'Curativo',
+      'Maternal',
+    ],
+  },
+
+  // ─── AR (Elevação/Pensamento) ───────────────────────────────────────────────
+  Alafia: {
+    odu: 'Alafia',
+    numero: 11,
+    elemento: 'Ar',
+    qualidades_elementares: {
+      qualidade: 'Neutro (Equilibrado)',
+      temperamento: 'Sanguíneo',
+      natureza: 'Comunicativo',
+    },
+    significado_elementar:
+      'Ar representa o pensamento iluminado que transcende opostos. O sopro de Alafia traz paz absoluta e a confirmação dos Deuses através da harmonia entre luz e sombra.',
+    orixa: 'Oxumaré',
+    dia_sagrado: 'Quarta-feira / Terça-feira',
+    chakra: '5º Laríngeo (Vishuddha)',
+    tipo_chakra: 'Laríngeo',
+    metais: ['Mercúrio', 'Prata'],
+    direcoes_elementares: ['Leste', 'Centro'],
+    oferendas: ['Mel', 'Fumo', 'Frutas', 'Água de cheiro'],
+    afinidades: [
+      'Sistema respiratório',
+      'Chakra Laríngeo (Vishuddha)',
+      'Sistema nervoso',
+      'Capacidade de comunicação',
+      'Paz e harmonia',
+      'Elevação espiritual',
+    ],
+    vibracoes: [
+      'Neutro',
+      'Equilibrado',
+      'Elevado',
+      'Pacificador',
+      'Transcendente',
+    ],
+  },
+
+  // ─── FOGO (Purificação/Guerra) ──────────────────────────────────────────────
+  Ejilsebora: {
+    odu: 'Ejilsebora',
+    numero: 12,
+    elemento: 'Fogo',
+    qualidades_elementares: {
+      qualidade: 'Yang (Exterior)',
+      temperamento: 'Colérico',
+      natureza: 'Transformador',
+    },
+    significado_elementar:
+      'Fogo representa o brilho purificador e a guerra justa. A chama de Ejilsebora ilumina os caminhos, traz determinação inabalável e a força vital que transforma o caos em ordem.',
+    orixa: 'Xangô',
+    dia_sagrado: 'Quarta-feira / Domingo',
+    chakra: '3º Plexo Solar (Manipura)',
+    tipo_chakra: 'Solar',
+    metais: ['Ferro', 'Aço'],
+    direcoes_elementares: ['Oeste', 'Centro'],
+    oferendas: ['Pimenta', 'Kankere', 'Milho torrado', 'Gengibre'],
+    afinidades: [
+      'Coração e sistema circulatório',
+      'Plexo Solar (Manipura)',
+      'Sistema metabólico',
+      'Espírito de liderança',
+      'Coragem e proteção',
+      'Fogo purificador',
+    ],
+    vibracoes: [
+      'Quente',
+      'ígneo',
+      'Radiante',
+      'Purificador',
+      'Guerreiro',
+    ],
+  },
+
+  // ─── TERRA (Transformação/Físico) ───────────────────────────────────────────
   Olobón: {
     odu: 'Olobón',
     numero: 13,
     elemento: 'Terra',
-    qualidades: {
-      temperatura: 'Frio',
-      umidade: 'Seco',
-      polaridade: 'Yin',
+    qualidades_elementares: {
+      qualidade: 'Yin (Interior)',
+      temperamento: 'Melancólico',
+      natureza: 'Estruturante',
     },
-    alinhamento_energetico: 'Denso / Transformador / Físico',
-    significado_espiritual:
-      'Olobón conecta à transformação física, às doenças que curam e ao fim de ciclos necessários. Este Odu revela que a doença pode ser cura, que o fim de um ciclo é início de outro e que a terra transforma tudo em novo solo.',
+    significado_elementar:
+      'Terra representa a transformação física e a renovação do corpo. A solidez de Olobón traz a limpeza kármica, a renovação através da paciência e a sabedoria do corpo.',
     orixa: 'Omolu',
     dia_sagrado: 'Segunda-feira',
-    cores: ['Preto', 'Branco', 'Vermelho', 'Preto e Branco'],
-    chakra: '1º Básico',
-    sephirah: 'Malkuth',
-    elementos_rituais: ['Terra', 'Fogo'],
-    direcoes: ['Norte', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'ebo', descricao: 'Oferendas na lama ou mangue para Olobón' },
-      { tipo: 'ritual', descricao: 'Rituais de fim de ciclo' },
-      { tipo: 'banho', descricao: 'Banhos de cura e renovação física' },
-    ],
+    chakra: '1º Básico (Muladhara)',
+    tipo_chakra: 'Raiz',
+    metais: ['Chumbo', 'Ferro'],
+    direcoes_elementares: ['Norte', 'Centro'],
+    oferendas: ['Milho', 'Pipoca', 'Eruwá', 'Gelo'],
     afinidades: [
       'Sistema ósseo',
       'Chakra Básico (Muladhara)',
       'Sistema digestivo',
-      'Temperamento melancólico',
       'Resiliência física',
+      'Sabedoria do corpo',
+      'Renovação kármica',
+    ],
+    vibracoes: [
+      'Denso',
+      'Transformador',
+      'Físico',
+      'Kármico',
+      'Renovador',
     ],
   },
+
+  // ─── TERRA (Revelação/Renovação) ────────────────────────────────────────────
   Iká: {
     odu: 'Iká',
     numero: 14,
     elemento: 'Terra',
-    qualidades: {
-      temperatura: 'Frio',
-      umidade: 'Seco',
-      polaridade: 'Yin',
+    qualidades_elementares: {
+      qualidade: 'Yin (Interior)',
+      temperamento: 'Melancólico',
+      natureza: 'Estruturante',
     },
-    alinhamento_energetico: 'Denso / Revelador / Renovador',
-    significado_espiritual:
-      'Iká revela a sabedoria oculta da serpente, a traição que renova e a capacidade de descascar o velho para revelar o novo. Este Odu ensina que a renovação exige soltar o antigo, que a serpente renova sua pele e que a sabedoria vem da transformação.',
+    significado_elementar:
+      'Terra representa a sabedoria da serpente que renova sua pele. Iká revela a capacidade de descascar o velho para revelar o novo, ensinando que a renovação exige soltar o antigo.',
     orixa: 'Omolu',
     dia_sagrado: 'Segunda-feira',
-    cores: ['Preto', 'Branco', 'Vermelho', 'Preto e Branco'],
-    chakra: '1º Básico',
-    sephirah: 'Malkuth',
-    elementos_rituais: ['Terra', 'Fogo'],
-    direcoes: ['Norte', 'Centro'],
-    praticas_espirituais: [
-      { tipo: 'ebo', descricao: 'Ebó com feijão preto e velas lilases' },
-      { tipo: 'ritual', descricao: 'Amarrar fitas coloridas (7 cores) para Iká' },
-      { tipo: 'oracao', descricao: 'Orações para renovação e descascar o velho' },
-    ],
+    chakra: '1º Básico (Muladhara)',
+    tipo_chakra: 'Raiz',
+    metais: ['Chumbo', 'Ferro oxidado'],
+    direcoes_elementares: ['Norte', 'Centro'],
+    oferendas: ['Milho', 'Pipoca', 'Eruwá', 'Inhame'],
     afinidades: [
       'Sistema ósseo',
       'Chakra Básico (Muladhara)',
       'Sistema digestivo',
-      'Temperamento melancólico',
       'Sabedoria ancestral',
+      'Capacidade de renovação',
+      'Transformação da pele',
+    ],
+    vibracoes: [
+      'Denso',
+      'Revelador',
+      'Renovador',
+      'Ancestral',
+      'Serpentino',
+    ],
+  },
+
+  // ─── TERRA (Dedicação/Guerreira) ────────────────────────────────────────────
+  Obá: {
+    odu: 'Obá',
+    numero: 15,
+    elemento: 'Terra',
+    qualidades_elementares: {
+      qualidade: 'Yang (Exterior)',
+      temperamento: 'Colérico',
+      natureza: 'Estruturante',
+    },
+    significado_elementar:
+      'Terra representa a energia guerreira da dedicação amorosa. A força de Obá manifesta-se como a guerreira devotada, a limpeza das negatividades e a proteção através da devoção.',
+    orixa: 'Obá',
+    dia_sagrado: 'Sexta-feira',
+    chakra: '3º Plexo Solar (Manipura)',
+    tipo_chakra: 'Solar',
+    metais: ['Cobre', 'Bronze'],
+    direcoes_elementares: ['Oeste', 'Sul'],
+    oferendas: ['Azeite de dendê', 'Vick Vaporub', 'Pimenta', 'Quiabo'],
+    afinidades: [
+      'Coração e sistema circulatório',
+      'Plexo Solar (Manipura)',
+      'Sistema muscular',
+      'Dedicação e lealdade',
+      'Proteção e guarda',
+      'Força guerreira',
+    ],
+    vibracoes: [
+      'Quente',
+      'Transformador',
+      'Guerreiro',
+      'Devotado',
+      'Protetor',
+    ],
+  },
+
+  // ─── AR (Elevação/Paz) ───────────────────────────────────────────────────────
+  Oyekun: {
+    odu: 'Oyekun',
+    numero: 16,
+    elemento: 'Ar',
+    qualidades_elementares: {
+      qualidade: 'Neutro (Equilibrado)',
+      temperamento: 'Sanguíneo',
+      natureza: 'Comunicativo',
+    },
+    significado_elementar:
+      'Ar representa a expansão da consciência espiritual e a paz que transcende conflitos. O sopro de Oyekun traz a confirmação dos Deuses e a bênção dos mestres para todos os caminhos.',
+    orixa: 'Oxalá',
+    dia_sagrado: 'Sexta-feira / Domingo',
+    chakra: '7º Coronário (Sahasrara)',
+    tipo_chakra: 'Coronário',
+    metais: ['Ouro', 'Prata'],
+    direcoes_elementares: ['Centro', 'Leste', 'Oeste'],
+    oferendas: ['Leite', 'Farinhas', 'Acarajé', 'Água de aluá'],
+    afinidades: [
+      'Sistema nervoso',
+      'Chakra Coronário (Sahasrara)',
+      'Sistema respiratório',
+      'Sabedoria espiritual',
+      'Paz e harmonia',
+      'Conexão divina',
+    ],
+    vibracoes: [
+      'Neutro',
+      'Elevado',
+      'Pacificador',
+      'Espiritual',
+      'Divino',
     ],
   },
 };
@@ -462,13 +640,13 @@ export function getOduElement(odu: string): OduElementMapping | null {
 
 /**
  * Get all Odus for a specific element
- * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra')
+ * @param elemento - Element name ('Fogo', 'Água', 'Terra', 'Ar')
  * @returns Array of Odu mappings for that element
  */
 export function getElementOdu(elemento: string): OduElementMapping[] {
-  return Object.values(ODU_ELEMENT_MAPPINGS).filter(
-    mapping => mapping.elemento === elemento
-  );
+  return Object.values(ODU_ELEMENT_MAPPINGS)
+    .filter(mapping => mapping.elemento === elemento)
+    .sort((a, b) => a.numero - b.numero);
 }
 
 /**
@@ -504,9 +682,7 @@ export function hasOduElement(odu: string): boolean {
  * @returns The element mapping or null if not found
  */
 export function getOduByNumber(numero: number): OduElementMapping | null {
-  return Object.values(ODU_ELEMENT_MAPPINGS).find(
-    mapping => mapping.numero === numero
-  ) ?? null;
+  return Object.values(ODU_ELEMENT_MAPPINGS).find(m => m.numero === numero) ?? null;
 }
 
 /**
@@ -515,10 +691,28 @@ export function getOduByNumber(numero: number): OduElementMapping | null {
  * @returns Array of Odu names for that element
  */
 export function getOdusForElement(elemento: string): string[] {
-  return Object.values(ODU_ELEMENT_MAPPINGS)
-    .filter(mapping => mapping.elemento === elemento)
-    .sort((a, b) => a.numero - b.numero)
-    .map(m => m.odu);
+  return getElementOdu(elemento).map(m => m.odu);
+}
+
+/**
+ * Get all elements
+ * @returns Array of unique element names
+ */
+export function getAllElements(): Elemento[] {
+  const elements = new Set(Object.values(ODU_ELEMENT_MAPPINGS).map(m => m.elemento));
+  return Array.from(elements) as Elemento[];
+}
+
+/**
+ * Get element count distribution
+ * @returns Object with element names as keys and counts as values
+ */
+export function getElementDistribution(): Record<Elemento, number> {
+  const distribution: Record<string, number> = {};
+  for (const odu of Object.values(ODU_ELEMENT_MAPPINGS)) {
+    distribution[odu.elemento] = (distribution[odu.elemento] || 0) + 1;
+  }
+  return distribution as Record<Elemento, number>;
 }
 
 export default {
@@ -529,5 +723,7 @@ export default {
   hasOduElement,
   getOduByNumber,
   getOdusForElement,
+  getAllElements,
+  getElementDistribution,
   ODU_ELEMENT_MAPPINGS,
 };
