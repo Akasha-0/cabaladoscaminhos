@@ -373,10 +373,12 @@ describe('planet-orixa', () => {
     });
 
     it('all planets have unique chakra positions', () => {
+    it('all planets have unique chakra positions', () => {
       const mappings = getAllPlanetOrixas();
       const chakras = mappings.map(m => m.chakra);
       const uniqueChakras = new Set(chakras);
       expect(uniqueChakras.size).toBe(chakras.length);
+    });
     });
   });
 
