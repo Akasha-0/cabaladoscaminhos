@@ -1,376 +1,398 @@
+/**
+ * Element-Chakra Spiritual Correlation Tests
+ */
+
 import { describe, it, expect } from 'vitest';
 import {
-  getElementChakras,
-  getAllElementMappings,
-  getPrimaryChakra,
-  getAllChakras,
-  getEnergyType,
-  getRegentOrixa,
   getElementChakra,
   getChakraElement,
   getAllElementChakras,
-  ELEMENT_CHAKRA_MAPPINGS,
-  type ElementChakraMapping,
-  type Elemento,
-  type Chakra,
+  getChakrasPorElemento,
 } from '@/lib/correlation/element-chakra';
 
-describe('element-chakra', () => {
-  // ─── ELEMENT_CHAKRA_MAPPINGS: all 5 elements ──────────────────────────────
-  describe('ELEMENT_CHAKRA_MAPPINGS', () => {
-    it('contains all 5 elements', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
-      elements.forEach((el) => {
-        expect(ELEMENT_CHAKRA_MAPPINGS[el]).toBeDefined();
-      });
-      expect(Object.keys(ELEMENT_CHAKRA_MAPPINGS)).toHaveLength(5);
-    });
-
-    it('Fogo has correct chakras and orixás', () => {
-      const fogo = ELEMENT_CHAKRA_MAPPINGS['Fogo'];
-      expect(fogo.chakras_correspondentes.primario).toBe('2º Sacro');
-      expect(fogo.chakras_correspondentes.secundarios).toContain('3º Plexo Solar');
-      expect(fogo.orixa_regente).toBe('Iansã');
-      expect(fogo.orixas_secundarios).toContain('Ogum');
-      expect(fogo.orixas_secundarios).toContain('Xangô');
-      expect(fogo.qualidade_energetica.tipo).toBe('Quente');
-      expect(fogo.qualidade_energetica.polaridade).toBe('Yang');
-    });
-
-    it('Água has correct chakras and orixás', () => {
-      const agua = ELEMENT_CHAKRA_MAPPINGS['Água'];
-      expect(agua.chakras_correspondentes.primario).toBe('2º Sacro');
-      expect(agua.chakras_correspondentes.secundarios).toContain('4º Cardíaco');
-      expect(agua.chakras_correspondentes.secundarios).toContain('6º Frontal');
-      expect(agua.orixa_regente).toBe('Oxum');
-      expect(agua.orixas_secundarios).toContain('Iemanjá');
-      expect(agua.qualidade_energetica.tipo).toBe('Frio');
-      expect(agua.qualidade_energetica.polaridade).toBe('Yin');
-    });
-
-    it('Ar has correct chakras and orixás', () => {
-      const ar = ELEMENT_CHAKRA_MAPPINGS['Ar'];
-      expect(ar.chakras_correspondentes.primario).toBe('4º Cardíaco');
-      expect(ar.chakras_correspondentes.secundarios).toContain('3º Plexo Solar');
-      expect(ar.chakras_correspondentes.secundarios).toContain('5º Laríngeo');
-      expect(ar.orixa_regente).toBe('Oxalá');
-      expect(ar.orixas_secundarios).toContain('Oxóssi');
-      expect(ar.qualidade_energetica.tipo).toBe('Neutro');
-      expect(ar.qualidade_energetica.polaridade).toBe('Equilibrado');
-    });
-
-    it('Terra has correct chakras and orixás', () => {
-      const terra = ELEMENT_CHAKRA_MAPPINGS['Terra'];
-      expect(terra.chakras_correspondentes.primario).toBe('1º Básico');
-      expect(terra.chakras_correspondentes.secundarios).toContain('2º Sacro');
-      expect(terra.orixa_regente).toBe('Omolu');
-      expect(terra.orixas_secundarios).toContain('Nanã');
-      expect(terra.qualidade_energetica.tipo).toBe('Quente');
-    });
-
-    it('Éter has correct chakras and orixás', () => {
-      const eter = ELEMENT_CHAKRA_MAPPINGS['Éter'];
-      expect(eter.chakras_correspondentes.primario).toBe('7º Coronário');
-      expect(eter.chakras_correspondentes.secundarios).toContain('6º Frontal');
-      expect(eter.chakras_correspondentes.secundarios).toContain('5º Laríngeo');
-      expect(eter.orixa_regente).toBe('Oxalá');
-      expect(eter.qualidade_energetica.tipo).toBe('Neutro');
-    });
-
-    it('each element has pratica recommendations', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
-      elements.forEach((el) => {
-        const mapping = ELEMENT_CHAKRA_MAPPINGS[el];
-        expect(mapping.praticas_recomendadas.ebos.length).toBeGreaterThan(0);
-        expect(mapping.praticas_recomendadas.banhos.length).toBeGreaterThan(0);
-        expect(mapping.praticas_recomendadas.defumacoes.length).toBeGreaterThan(0);
-        expect(mapping.praticas_recomendadas.mantras.length).toBeGreaterThan(0);
-        expect(mapping.praticas_recomendadas.horarios_rituais.length).toBeGreaterThan(0);
-      });
-    });
-
-    it('each element has sephirot and cardinal direction', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
-      elements.forEach((el) => {
-        const mapping = ELEMENT_CHAKRA_MAPPINGS[el];
-        expect(mapping.correspondencia_sefirot).toBeTruthy();
-        expect(mapping.direcao_cardinal).toBeTruthy();
-      });
-    });
-  });
-
-  // ─── getElementChakras: lookup function ───────────────────────────────────
-  describe('getElementChakras', () => {
-    it('returns correct mapping for Fogo', () => {
-      const result = getElementChakras('Fogo');
-      expect(result).not.toBeNull();
-      expect(result!.elemento).toBe('Fogo');
-      expect(result!.chakras_correspondentes.primario).toBe('2º Sacro');
-      expect(result!.orixa_regente).toBe('Iansã');
-    });
-
-    it('returns correct mapping for Água', () => {
-      const result = getElementChakras('Água');
-      expect(result).not.toBeNull();
-      expect(result!.elemento).toBe('Água');
-      expect(result!.chakras_correspondentes.primario).toBe('2º Sacro');
-      expect(result!.orixa_regente).toBe('Oxum');
-    });
-
-    it('returns correct mapping for Ar', () => {
-      const result = getElementChakras('Ar');
-      expect(result).not.toBeNull();
-      expect(result!.elemento).toBe('Ar');
-      expect(result!.chakras_correspondentes.primario).toBe('4º Cardíaco');
-      expect(result!.orixa_regente).toBe('Oxalá');
-    });
-
-    it('returns correct mapping for Terra', () => {
-      const result = getElementChakras('Terra');
-      expect(result).not.toBeNull();
-      expect(result!.elemento).toBe('Terra');
-      expect(result!.chakras_correspondentes.primario).toBe('1º Básico');
-      expect(result!.orixa_regente).toBe('Omolu');
-    });
-
-    it('returns correct mapping for Éter', () => {
-      const result = getElementChakras('Éter');
-      expect(result).not.toBeNull();
-      expect(result!.elemento).toBe('Éter');
-      expect(result!.chakras_correspondentes.primario).toBe('7º Coronário');
-      expect(result!.orixa_regente).toBe('Oxalá');
-    });
-
-    it('is case-insensitive', () => {
-      expect(getElementChakras('fogo')?.elemento).toBe('Fogo');
-      expect(getElementChakras('FOGO')?.elemento).toBe('Fogo');
-      expect(getElementChakras('FoGo')?.elemento).toBe('Fogo');
-      expect(getElementChakras('terra')?.elemento).toBe('Terra');
-    });
-
-    it('handles whitespace in input', () => {
-      expect(getElementChakras('  Ar  ')?.elemento).toBe('Ar');
-      expect(getElementChakras('\tÁgua\n')?.elemento).toBe('Água');
-    });
-
-    it('handles accented characters', () => {
-      expect(getElementChakras('Agua')?.elemento).toBe('Água');
-      expect(getElementChakras('Eter')?.elemento).toBe('Éter');
-    });
-
-    it('returns null for unknown elements', () => {
-      expect(getElementChakras('unknown')).toBeNull();
-      expect(getElementChakras('')).toBeNull();
-      expect(getElementChakras('Espaço')).toBeNull();
-    });
-  });
-
-  // ─── getAllElementMappings ────────────────────────────────────────────────
-  describe('getAllElementMappings', () => {
-    it('returns all 5 element mappings', () => {
-      const all = getAllElementMappings();
-      expect(all).toHaveLength(5);
-    });
-
-    it('returns array containing all elements', () => {
-      const all = getAllElementMappings();
-      const elements = all.map((m) => m.elemento);
-      expect(elements).toContain('Fogo');
-      expect(elements).toContain('Água');
-      expect(elements).toContain('Ar');
-      expect(elements).toContain('Terra');
-      expect(elements).toContain('Éter');
-    });
-
-    it('each mapping has complete structure', () => {
-      const all = getAllElementMappings();
-      all.forEach((mapping) => {
-        expect(mapping.elemento).toBeTruthy();
-        expect(mapping.chakras_correspondentes.primario).toBeTruthy();
-        expect(mapping.orixa_regente).toBeTruthy();
-        expect(mapping.qualidade_energetica.tipo).toBeTruthy();
-        expect(mapping.praticas_recomendadas.ebos).toBeTruthy();
-      });
-    });
-  });
-
-  // ─── getPrimaryChakra ──────────────────────────────────────────────────────
-  describe('getPrimaryChakra', () => {
-    it('returns correct primary chakra for each element', () => {
-      expect(getPrimaryChakra('Fogo')).toBe('2º Sacro');
-      expect(getPrimaryChakra('Água')).toBe('2º Sacro');
-      expect(getPrimaryChakra('Ar')).toBe('4º Cardíaco');
-      expect(getPrimaryChakra('Terra')).toBe('1º Básico');
-      expect(getPrimaryChakra('Éter')).toBe('7º Coronário');
-    });
-
-    it('returns null for unknown elements', () => {
-      expect(getPrimaryChakra('invalid')).toBeNull();
-    });
-  });
-
-  // ─── getAllChakras ────────────────────────────────────────────────────────
-  describe('getAllChakras', () => {
-    it('returns primary plus secondary chakras', () => {
-      const fogoChakras = getAllChakras('Fogo');
-      expect(fogoChakras).not.toBeNull();
-      expect(fogoChakras).toContain('2º Sacro');
-      expect(fogoChakras).toContain('3º Plexo Solar');
-    });
-
-    it('returns array with primary first', () => {
-      const aguaChakras = getAllChakras('Água');
-      expect(aguaChakras![0]).toBe('2º Sacro');
-      expect(aguaChakras).toHaveLength(3); // 1 primary + 2 secondary
-    });
-
-    it('returns null for unknown elements', () => {
-      expect(getAllChakras('invalid')).toBeNull();
-    });
-  });
-
-  // ─── getEnergyType ────────────────────────────────────────────────────────
-  describe('getEnergyType', () => {
-    it('returns correct energy type for each element', () => {
-      expect(getEnergyType('Fogo')).toBe('Quente');
-      expect(getEnergyType('Terra')).toBe('Quente');
-      expect(getEnergyType('Água')).toBe('Frio');
-      expect(getEnergyType('Ar')).toBe('Neutro');
-      expect(getEnergyType('Éter')).toBe('Neutro');
-    });
-
-    it('returns null for unknown elements', () => {
-      expect(getEnergyType('invalid')).toBeNull();
-    });
-  });
-
-  // ─── getRegentOrixa ───────────────────────────────────────────────────────
-  describe('getRegentOrixa', () => {
-    it('returns correct regent orixá for each element', () => {
-      expect(getRegentOrixa('Fogo')).toBe('Iansã');
-      expect(getRegentOrixa('Água')).toBe('Oxum');
-      expect(getRegentOrixa('Ar')).toBe('Oxalá');
-      expect(getRegentOrixa('Terra')).toBe('Omolu');
-      expect(getRegentOrixa('Éter')).toBe('Oxalá');
-    });
-
-    it('returns null for unknown elements', () => {
-      expect(getRegentOrixa('invalid')).toBeNull();
-    });
-  });
-
-  // ─── Integration: element-orixa-chakra relationships ───────────────────────
-  describe('element-orixa-chakra integration', () => {
-    it('Oxalá is regent of both Ar and Éter (dual spiritual authority)', () => {
-      const arMapping = getElementChakras('Ar');
-      const eterMapping = getElementChakras('Éter');
-      expect(arMapping!.orixa_regente).toBe('Oxalá');
-      expect(eterMapping!.orixa_regente).toBe('Oxalá');
-    });
-
-    it('Iansã rules Fogo element with transformative energy', () => {
-      const fogoMapping = getElementChakras('Fogo');
-      expect(fogoMapping!.orixa_regente).toBe('Iansã');
-      expect(fogoMapping!.qualidade_energetica.tipo).toBe('Quente');
-    });
-
-    it('Terra element connects to Omolu and Muladhara (1º Básico)', () => {
-      const terraMapping = getElementChakras('Terra');
-      expect(terraMapping!.orixa_regente).toBe('Omolu');
-      expect(terraMapping!.chakras_correspondentes.primario).toBe('1º Básico');
-    });
-
-    it('Água element flows through Sacro, Cardíaco, and Frontal chakras', () => {
-      const aguaChakras = getAllChakras('Água');
-      expect(aguaChakras).toContain('2º Sacro');
-      expect(aguaChakras).toContain('4º Cardíaco');
-      expect(aguaChakras).toContain('6º Frontal');
-    });
-
-    it('Éter element is the bridge between human and divine (Coronário + Frontal)', () => {
-      const eterChakras = getAllChakras('Éter');
-      expect(eterChakras).toContain('7º Coronário');
-      expect(eterChakras).toContain('6º Frontal');
-      expect(eterChakras).toContain('5º Laríngeo');
-    });
-  });
-
-  // ─── Type exports ──────────────────────────────────────────────────────────
-  describe('type exports', () => {
-    it('Elemento type accepts all valid elements', () => {
-      const elements: Elemento[] = ['Fogo', 'Água', 'Ar', 'Terra', 'Éter'];
-      elements.forEach((el) => expect(getElementChakras(el)).toBeDefined());
-    });
-
-    it('Chakra type covers all 7 primary chakras', () => {
-      const chakras: Chakra[] = [
-        '1º Básico',
-        '2º Sacro',
-        '3º Plexo Solar',
-        '4º Cardíaco',
-        '5º Laríngeo',
-        '6º Frontal',
-        '7º Coronário',
-      ];
-      chakras.forEach((chakra) => expect(chakra).toBeTruthy());
-    });
-  });
-  // ─── getElementChakra: alias for getElementChakras ────────────────────────
+describe('Element-Chakra Spiritual Correlation', () => {
   describe('getElementChakra', () => {
-    it('returns correct mapping for each element', () => {
-      expect(getElementChakra('Fogo')?.elemento).toBe('Fogo');
-      expect(getElementChakra('Água')?.elemento).toBe('Água');
-      expect(getElementChakra('Ar')?.elemento).toBe('Ar');
-      expect(getElementChakra('Terra')?.elemento).toBe('Terra');
-      expect(getElementChakra('Éter')?.elemento).toBe('Éter');
+    it('should return terra mapping with Muladhara as primary chakra', () => {
+      const result = getElementChakra('terra');
+      
+      expect(result).toBeDefined();
+      expect(result?.elemento).toBe('terra');
+      expect(result?.elemento_nome_portugues).toBe('Terra');
+      expect(result?.chakra_primario).toBe('Muladhara');
+      expect(result?.chakra_secundario).toBeNull();
+      expect(result?.chakra_numero_primario).toBe('1º Básico (Raiz)');
     });
-    it('is case-insensitive', () => {
-      expect(getElementChakra('fogo')?.elemento).toBe('Fogo');
-      expect(getElementChakra('TERRA')?.elemento).toBe('Terra');
+
+    it('should return água mapping with Svadhisthana as primary and Anahata as secondary', () => {
+      const result = getElementChakra('água');
+      
+      expect(result).toBeDefined();
+      expect(result?.elemento).toBe('água');
+      expect(result?.elemento_nome_portugues).toBe('Água');
+      expect(result?.chakra_primario).toBe('Svadhisthana');
+      expect(result?.chakra_secundario).toBe('Anahata');
+      expect(result?.chakra_numero_primario).toBe('2º Sacral (Esplênico)');
+      expect(result?.chakra_numero_secundario).toBe('4º Cardíaco (Coração)');
     });
-    it('returns null for unknown elements', () => {
-      expect(getElementChakra('unknown')).toBeNull();
+
+    it('should return fogo mapping with Manipura as primary chakra', () => {
+      const result = getElementChakra('fogo');
+      
+      expect(result).toBeDefined();
+      expect(result?.elemento).toBe('fogo');
+      expect(result?.elemento_nome_portugues).toBe('Fogo');
+      expect(result?.chakra_primario).toBe('Manipura');
+      expect(result?.chakra_secundario).toBeNull();
+      expect(result?.chakra_numero_primario).toBe('3º Plexo Solar');
+    });
+
+    it('should return ar mapping with Vishuddha as primary and Ajna as secondary', () => {
+      const result = getElementChakra('ar');
+      
+      expect(result).toBeDefined();
+      expect(result?.elemento).toBe('ar');
+      expect(result?.elemento_nome_portugues).toBe('Ar');
+      expect(result?.chakra_primario).toBe('Vishuddha');
+      expect(result?.chakra_secundario).toBe('Ajna');
+      expect(result?.chakra_numero_primario).toBe('5º Laríngeo (Garganta)');
+      expect(result?.chakra_numero_secundario).toBe('6º Terceiro Olho (Frontal)');
+    });
+
+    it('should return éter mapping with Ajna as primary and Sahasrara as secondary', () => {
+      const result = getElementChakra('éter');
+      
+      expect(result).toBeDefined();
+      expect(result?.elemento).toBe('éter');
+      expect(result?.elemento_nome_portugues).toBe('Éter');
+      expect(result?.chakra_primario).toBe('Ajna');
+      expect(result?.chakra_secundario).toBe('Sahasrara');
+      expect(result?.chakra_numero_primario).toBe('6º Terceiro Olho (Frontal)');
+      expect(result?.chakra_numero_secundario).toBe('7º Coronário (Plexo Superior)');
+    });
+
+    it('should include planetary connections for each element', () => {
+      const terra = getElementChakra('terra');
+      expect(terra?.conexao_planetaria.planeta_primario).toBe('Lua');
+      expect(terra?.conexao_planetaria.planeta_secundario).toBe('Saturno');
+
+      const agua = getElementChakra('água');
+      expect(agua?.conexao_planetaria.planeta_primario).toBe('Marte');
+      expect(agua?.conexao_planetaria.planeta_secundario).toBe('Vênus');
+
+      const fogo = getElementChakra('fogo');
+      expect(fogo?.conexao_planetaria.planeta_primario).toBe('Mercúrio');
+      expect(fogo?.conexao_planetaria.planeta_secundario).toBe('Sol');
+
+      const ar = getElementChakra('ar');
+      expect(ar?.conexao_planetaria.planeta_primario).toBe('Mercúrio');
+      expect(ar?.conexao_planetaria.planeta_secundario).toBe('Lua');
+
+      const eter = getElementChakra('éter');
+      expect(eter?.conexao_planetaria.planeta_primario).toBe('Lua');
+      expect(eter?.conexao_planetaria.planeta_secundario).toBe('Sol');
+    });
+
+    it('should include spiritual meaning for each element', () => {
+      const fogo = getElementChakra('fogo');
+      expect(fogo?.significado_espiritual.qualidade).toBeDefined();
+      expect(fogo?.significado_espiritual.licao).toBeDefined();
+      expect(fogo?.significado_espiritual.pratica).toBeDefined();
+      expect(fogo?.significado_espiritual.qualidade).toContain('Transformação');
+    });
+
+    it('should include mantras for each element', () => {
+      const terra = getElementChakra('terra');
+      expect(terra?.mantras).toBeDefined();
+      expect(terra?.mantras.length).toBeGreaterThan(0);
+      expect(terra?.mantras).toContain('LAM (396 Hz)');
+
+      const agua = getElementChakra('água');
+      expect(agua?.mantras).toContain('VAM (417 Hz)');
+      expect(agua?.mantras).toContain('RAM (528 Hz)');
+
+      const fogo = getElementChakra('fogo');
+      expect(fogo?.mantras).toContain('RAM (528 Hz)');
+
+      const ar = getElementChakra('ar');
+      expect(ar?.mantras).toContain('HAM (741 Hz)');
+      expect(ar?.mantras).toContain('OM (852 Hz)');
+
+      const eter = getElementChakra('éter');
+      expect(eter?.mantras).toContain('OM (852 Hz)');
+      expect(eter?.mantras).toContain('AUM (963 Hz)');
+    });
+
+    it('should be case-insensitive', () => {
+      expect(getElementChakra('TERRA')).toBeDefined();
+      expect(getElementChakra('ÁGUA')).toBeDefined();
+      expect(getElementChakra('FOGO')).toBeDefined();
+      expect(getElementChakra('Ar')).toBeDefined();
+      expect(getElementChakra('ÉTER')).toBeDefined();
+    });
+
+    it('should handle accented characters', () => {
+      expect(getElementChakra('agua')).toBeDefined();
+      expect(getElementChakra('agua')?.elemento).toBe('água');
+      expect(getElementChakra('eter')).toBeDefined();
+      expect(getElementChakra('eter')?.elemento).toBe('éter');
+    });
+
+    it('should handle alternative element names', () => {
+      expect(getElementChakra('ether')).toBeDefined();
+      expect(getElementChakra('akasha')).toBeDefined();
+    });
+
+    it('should return undefined for unknown element', () => {
+      expect(getElementChakra('unknown')).toBeUndefined();
+      expect(getElementChakra('')).toBeUndefined();
+      expect(getElementChakra('metal')).toBeUndefined();
+      expect(getElementChakra('água')).toBeDefined();
     });
   });
-  // ─── getChakraElement: reverse lookup by chakra ───────────────────────────
+
   describe('getChakraElement', () => {
-    it('returns correct element for primary chakras', () => {
-      expect(getChakraElement('2º Sacro')?.elemento).toBe('Fogo');
-      expect(getChakraElement('1º Básico')?.elemento).toBe('Terra');
-      expect(getChakraElement('4º Cardíaco')?.elemento).toBe('Ar');
-      expect(getChakraElement('7º Coronário')?.elemento).toBe('Éter');
+    it('should return complete chakra to element mapping', () => {
+      const result = getChakraElement();
+      
+      expect(result).toBeDefined();
+      expect(Object.keys(result).length).toBe(7);
     });
-    it('returns correct element for secondary chakras', () => {
-      expect(getChakraElement('3º Plexo Solar')?.elemento).toBe('Fogo');
-      expect(getChakraElement('6º Frontal')?.elemento).toBe('Água');
+
+    it('should map Muladhara to terra', () => {
+      const result = getChakraElement();
+      
+      expect(result['Muladhara']).toBe('terra');
     });
-    it('is case-insensitive', () => {
-      expect(getChakraElement('2º sacro')?.elemento).toBe('Fogo');
-      expect(getChakraElement('terra')).toBeNull();
+
+    it('should map Svadhisthana to água', () => {
+      const result = getChakraElement();
+      
+      expect(result['Svadhisthana']).toBe('água');
     });
-    it('returns null for unknown chakras', () => {
-      expect(getChakraElement('unknown')).toBeNull();
+
+    it('should map Manipura to fogo', () => {
+      const result = getChakraElement();
+      
+      expect(result['Manipura']).toBe('fogo');
+    });
+
+    it('should map Anahata to ar', () => {
+      const result = getChakraElement();
+      
+      expect(result['Anahata']).toBe('ar');
+    });
+
+    it('should map Vishuddha to ar', () => {
+      const result = getChakraElement();
+      
+      expect(result['Vishuddha']).toBe('ar');
+    });
+
+    it('should map Ajna to éter', () => {
+      const result = getChakraElement();
+      
+      expect(result['Ajna']).toBe('éter');
+    });
+
+    it('should map Sahasrara to éter', () => {
+      const result = getChakraElement();
+      
+      expect(result['Sahasrara']).toBe('éter');
+    });
+
+    it('should be consistent with getElementChakra primary mappings', () => {
+      const toElement = getChakraElement();
+      
+      // Terra -> Muladhara
+      const terra = getElementChakra('terra');
+      expect(toElement[terra!.chakra_primario]).toBe('terra');
+      
+      // Água -> Svadhisthana
+      const agua = getElementChakra('água');
+      expect(toElement[agua!.chakra_primario]).toBe('água');
+      
+      // Fogo -> Manipura
+      const fogo = getElementChakra('fogo');
+      expect(toElement[fogo!.chakra_primario]).toBe('fogo');
+      
+      // Ar -> Vishuddha
+      const ar = getElementChakra('ar');
+      expect(toElement[ar!.chakra_primario]).toBe('ar');
+      
+      // Éter -> Ajna
+      const eter = getElementChakra('éter');
+      expect(toElement[eter!.chakra_primario]).toBe('éter');
     });
   });
-  // ─── getAllElementChakras: alias for getAllElementMappings ─────────────────
+
   describe('getAllElementChakras', () => {
-    it('returns all 5 element mappings', () => {
-      const all = getAllElementChakras();
-      expect(all).toHaveLength(5);
+    it('should return array of all element mappings', () => {
+      const result = getAllElementChakras();
+      
+      expect(Array.isArray(result)).toBe(true);
+      expect(result.length).toBe(5);
     });
-    it('returns array containing all elements', () => {
-      const all = getAllElementChakras();
-      const elements = all.map((m) => m.elemento);
-      expect(elements).toContain('Fogo');
-      expect(elements).toContain('Água');
-      expect(elements).toContain('Ar');
-      expect(elements).toContain('Terra');
-      expect(elements).toContain('Éter');
+
+    it('should include all five elements', () => {
+      const result = getAllElementChakras();
+      const elementos = result.map(r => r.elemento);
+      
+      expect(elementos).toContain('terra');
+      expect(elementos).toContain('água');
+      expect(elementos).toContain('fogo');
+      expect(elementos).toContain('ar');
+      expect(elementos).toContain('éter');
     });
-    it('is equivalent to getAllElementMappings', () => {
-      const all = getAllElementChakras();
-      const expected = getAllElementMappings();
-      expect(all).toEqual(expected);
+
+    it('should return complete mapping objects', () => {
+      const result = getAllElementChakras();
+      
+      for (const mapping of result) {
+        expect(mapping.elemento).toBeDefined();
+        expect(mapping.elemento_nome_portugues).toBeDefined();
+        expect(mapping.chakra_primario).toBeDefined();
+        expect(mapping.chakra_numero_primario).toBeDefined();
+        expect(mapping.conexao_planetaria).toBeDefined();
+        expect(mapping.conexao_planetaria.planeta_primario).toBeDefined();
+        expect(mapping.significado_espiritual).toBeDefined();
+        expect(mapping.significado_espiritual.qualidade).toBeDefined();
+        expect(mapping.significado_espiritual.licao).toBeDefined();
+        expect(mapping.significado_espiritual.pratica).toBeDefined();
+        expect(mapping.mantras).toBeDefined();
+        expect(Array.isArray(mapping.mantras)).toBe(true);
+      }
+    });
+
+    it('should not have duplicate elements', () => {
+      const result = getAllElementChakras();
+      const elementos = result.map(r => r.elemento);
+      const unique = new Set(elementos);
+      
+      expect(unique.size).toBe(elementos.length);
+    });
+  });
+
+  describe('getChakrasPorElemento', () => {
+    it('should return primary and secondary chakras for terra', () => {
+      const result = getChakrasPorElemento('terra');
+      
+      expect(result).toBeDefined();
+      expect(result?.primario).toBe('Muladhara');
+      expect(result?.secundario).toBeNull();
+    });
+
+    it('should return primary and secondary chakras for água', () => {
+      const result = getChakrasPorElemento('água');
+      
+      expect(result).toBeDefined();
+      expect(result?.primario).toBe('Svadhisthana');
+      expect(result?.secundario).toBe('Anahata');
+    });
+
+    it('should return primary and secondary chakras for fogo', () => {
+      const result = getChakrasPorElemento('fogo');
+      
+      expect(result).toBeDefined();
+      expect(result?.primario).toBe('Manipura');
+      expect(result?.secundario).toBeNull();
+    });
+
+    it('should return primary and secondary chakras for ar', () => {
+      const result = getChakrasPorElemento('ar');
+      
+      expect(result).toBeDefined();
+      expect(result?.primario).toBe('Vishuddha');
+      expect(result?.secundario).toBe('Ajna');
+    });
+
+    it('should return primary and secondary chakras for éter', () => {
+      const result = getChakrasPorElemento('éter');
+      
+      expect(result).toBeDefined();
+      expect(result?.primario).toBe('Ajna');
+      expect(result?.secundario).toBe('Sahasrara');
+    });
+
+    it('should return undefined for unknown element', () => {
+      expect(getChakrasPorElemento('unknown')).toBeUndefined();
+      expect(getChakrasPorElemento('')).toBeUndefined();
+    });
+  });
+
+  describe('Element-Chakra correlation consistency', () => {
+    it('should have correct chakra numbers matching chakra-element.ts', () => {
+      const terra = getElementChakra('terra');
+      expect(terra?.chakra_numero_primario).toContain('1º');
+      
+      const agua = getElementChakra('água');
+      expect(agua?.chakra_numero_primario).toContain('2º');
+      expect(agua?.chakra_numero_secundario).toContain('4º');
+      
+      const fogo = getElementChakra('fogo');
+      expect(fogo?.chakra_numero_primario).toContain('3º');
+      
+      const ar = getElementChakra('ar');
+      expect(ar?.chakra_numero_primario).toContain('5º');
+      expect(ar?.chakra_numero_secundario).toContain('6º');
+      
+      const eter = getElementChakra('éter');
+      expect(eter?.chakra_numero_primario).toContain('6º');
+      expect(eter?.chakra_numero_secundario).toContain('7º');
+    });
+
+    it('should have consistent planet connections across elements', () => {
+      // All elements should have at least one planetary connection
+      const allElements = getAllElementChakras();
+      for (const element of allElements) {
+        expect(element.conexao_planetaria.planeta_primario).toBeDefined();
+      }
+    });
+
+    it('should cover all 7 chakras across elements', () => {
+      const toChakra = getChakraElement();
+      const chakraValues = Object.values(toChakra);
+      
+      const uniqueChakras = new Set(chakraValues);
+      // Since one element can map to multiple chakras (primary + secondary),
+      // we need to check the full chakra coverage through getAllElementChakras
+      const allChakras = new Set<string>();
+      for (const element of getAllElementChakras()) {
+        allChakras.add(element.chakra_primario);
+        if (element.chakra_secundario) {
+          allChakras.add(element.chakra_secundario);
+        }
+      }
+      
+      expect(allChakras.size).toBe(7);
+      expect(allChakras.has('Muladhara')).toBe(true);
+      expect(allChakras.has('Svadhisthana')).toBe(true);
+      expect(allChakras.has('Manipura')).toBe(true);
+      expect(allChakras.has('Anahata')).toBe(true);
+      expect(allChakras.has('Vishuddha')).toBe(true);
+      expect(allChakras.has('Ajna')).toBe(true);
+      expect(allChakras.has('Sahasrara')).toBe(true);
+    });
+
+    it('should have mantras matching corresponding chakra frequencies', () => {
+      // Terra (Muladhara) - LAM
+      const terra = getElementChakra('terra');
+      expect(terra?.mantras.some(m => m.includes('LAM'))).toBe(true);
+      
+      // Água (Svadhisthana) - VAM
+      const agua = getElementChakra('água');
+      expect(agua?.mantras.some(m => m.includes('VAM'))).toBe(true);
+      
+      // Fogo (Manipura) - RAM
+      const fogo = getElementChakra('fogo');
+      expect(fogo?.mantras.some(m => m.includes('RAM'))).toBe(true);
+      
+      // Ar (Vishuddha) - HAM
+      const ar = getElementChakra('ar');
+      expect(ar?.mantras.some(m => m.includes('HAM'))).toBe(true);
+      
+      // Éter (Ajna/Sahasrara) - OM/AUM
+      const eter = getElementChakra('éter');
+      expect(eter?.mantras.some(m => m.includes('OM') || m.includes('AUM'))).toBe(true);
     });
   });
 });
