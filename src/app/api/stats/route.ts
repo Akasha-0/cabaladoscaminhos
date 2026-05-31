@@ -47,13 +47,13 @@ interface RitualStats {
     id: string;
     completedAt: string;
   }>;
+}
 function recordFeature(activity: ActivityRecord, feature: string) {
   activity.lastActive = new Date().toISOString();
   const count = activity.features.get(feature) || 0;
   activity.features.set(feature, count + 1);
 }
-}
-
+function getFavoriteFeature(features: Map<string, number>): string | null {
 function getFavoriteFeature(features: Map<string, number>): string | null {
   if (features.size === 0) return null;
   let maxCount = 0;
