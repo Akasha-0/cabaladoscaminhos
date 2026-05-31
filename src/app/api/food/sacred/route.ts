@@ -34,6 +34,8 @@ export async function GET(request: NextRequest) {
     }
     const { type, id } = parseResult.data;
     const sacredFoods = [
+      {
+        id: 'honey',
         name: 'Honey',
         namePt: 'Mel',
         element: 'Fire',

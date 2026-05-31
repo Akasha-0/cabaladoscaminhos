@@ -15,7 +15,6 @@ import {
   TOTAL_MAPPINGS,
   TOTAL_PATH_TYPES,
 } from '@/lib/correlation/tarot-tarot';
-import type { TarotPathType } from '@/lib/correlation/tarot-tarot';
 
 describe('Tarot-Tarot Correlation', () => {
   describe('TAROT_TAROT_MAPPINGS', () => {
@@ -34,7 +33,7 @@ describe('Tarot-Tarot Correlation', () => {
         expect(mapping.related_arcano).toBeDefined();
         expect(mapping.path_type).toBeDefined();
         expect(mapping.spiritual_meaning).toBeDefined();
-      });
+      }
     });
   });
 
@@ -74,7 +73,7 @@ describe('Tarot-Tarot Correlation', () => {
 
     it('contains expected path types', () => {
       const result = getAllPathTypes();
-      expect(result).toContain('Sequ\u00eancia');
+      expect(result).toContain('Sequência');
       expect(result).toContain('Complementar');
       expect(result).toContain('Ancestral');
     });
@@ -99,8 +98,8 @@ describe('Tarot-Tarot Correlation', () => {
   });
 
   describe('getRelationsByPathType', () => {
-    it('returns mappings for Sequ\u00eancia type', () => {
-      const result = getRelationsByPathType('Sequ\u00eancia' as TarotPathType);
+    it('returns mappings for Sequência type', () => {
+      const result = getRelationsByPathType('Sequência');
       expect(result).toBeDefined();
       expect(result.length).toBeGreaterThan(0);
     });
