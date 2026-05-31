@@ -17,7 +17,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Oxalá');
       expect(result?.sephirah).toBe('Kether');
-      expect(result?.elemento).toBe('Éter');
+      expect(result?.elemento).toBe('éter');
       expect(result?.numero_caminho).toBe(1);
       expect(result?.sephirot_secundarias).toContain('Chokmah');
     });
@@ -28,7 +28,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Iemanjá');
       expect(result?.sephirah).toBe('Binah');
-      expect(result?.elemento).toBe('Água');
+      expect(result?.elemento).toBe('água');
       expect(result?.numero_caminho).toBe(3);
     });
 
@@ -38,7 +38,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Oxum');
       expect(result?.sephirah).toBe('Tiphereth');
-      expect(result?.elemento).toBe('Água');
+      expect(result?.elemento).toBe('água');
       expect(result?.numero_caminho).toBe(6);
     });
 
@@ -48,7 +48,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Ogum');
       expect(result?.sephirah).toBe('Geburah');
-      expect(result?.elemento).toBe('Fogo');
+      expect(result?.elemento).toBe('fogo');
       expect(result?.numero_caminho).toBe(5);
     });
 
@@ -58,7 +58,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Oxóssi');
       expect(result?.sephirah).toBe('Chesed');
-      expect(result?.elemento).toBe('Terra');
+      expect(result?.elemento).toBe('terra');
       expect(result?.numero_caminho).toBe(4);
     });
 
@@ -68,7 +68,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Xangô');
       expect(result?.sephirah).toBe('Tiphereth');
-      expect(result?.elemento).toBe('Fogo');
+      expect(result?.elemento).toBe('fogo');
       expect(result?.numero_caminho).toBe(6);
     });
 
@@ -78,7 +78,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Iansã');
       expect(result?.sephirah).toBe('Netzach');
-      expect(result?.elemento).toBe('Fogo');
+      expect(result?.elemento).toBe('fogo');
       expect(result?.numero_caminho).toBe(7);
     });
 
@@ -88,7 +88,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Omolu');
       expect(result?.sephirah).toBe('Malkuth');
-      expect(result?.elemento).toBe('Terra');
+      expect(result?.elemento).toBe('terra');
       expect(result?.numero_caminho).toBe(10);
     });
 
@@ -98,7 +98,7 @@ describe('Orixá-Sephirah Correlation', () => {
       expect(result).toBeDefined();
       expect(result?.orixa).toBe('Nanã');
       expect(result?.sephirah).toBe('Binah');
-      expect(result?.elemento).toBe('Água');
+      expect(result?.elemento).toBe('água');
       expect(result?.numero_caminho).toBe(3);
     });
 
@@ -214,14 +214,14 @@ describe('Orixá-Sephirah Correlation', () => {
   describe('Element correlation consistency', () => {
     it('should have éter element for Oxalá (Kether connection)', () => {
       const result = getOrixaSephirot('Oxalá');
-      expect(result?.elemento).toBe('Éter');
+      expect(result?.elemento).toBe('éter');
     });
 
     it('should have água element for water Orixás', () => {
       const waterOrixas = ['Iemanjá', 'Oxum', 'Nanã'];
       waterOrixas.forEach(orixa => {
         const result = getOrixaSephirot(orixa);
-        expect(result?.elemento).toBe('Água');
+        expect(result?.elemento).toBe('água');
       });
     });
 
@@ -229,7 +229,7 @@ describe('Orixá-Sephirah Correlation', () => {
       const fireOrixas = ['Ogum', 'Xangô', 'Iansã'];
       fireOrixas.forEach(orixa => {
         const result = getOrixaSephirot(orixa);
-        expect(result?.elemento).toBe('Fogo');
+        expect(result?.elemento).toBe('fogo');
       });
     });
 
@@ -237,7 +237,7 @@ describe('Orixá-Sephirah Correlation', () => {
       const earthOrixas = ['Oxóssi', 'Omolu'];
       earthOrixas.forEach(orixa => {
         const result = getOrixaSephirot(orixa);
-        expect(result?.elemento).toBe('Terra');
+        expect(result?.elemento).toBe('terra');
       });
     });
 
@@ -252,7 +252,7 @@ describe('Orixá-Sephirah Correlation', () => {
 
   describe('Cross-correlation with element-sephirot', () => {
     it('should map fire Orixás to fire-associated Sephiroth', () => {
-      const fireOrixas = getAllOrixaSephiroths().filter(o => o.elemento === 'Fogo');
+      const fireOrixas = getAllOrixaSephiroths().filter(o => o.elemento === 'fogo');
       
       fireOrixas.forEach(orixa => {
         expect(['Geburah', 'Tiphereth', 'Netzach']).toContain(orixa.sephirah);
@@ -260,7 +260,7 @@ describe('Orixá-Sephirah Correlation', () => {
     });
 
     it('should map water Orixás to water-associated Sephiroth', () => {
-      const waterOrixas = getAllOrixaSephiroths().filter(o => o.elemento === 'Água');
+      const waterOrixas = getAllOrixaSephiroths().filter(o => o.elemento === 'água');
       
       waterOrixas.forEach(orixa => {
         expect(['Binah', 'Tiphereth']).toContain(orixa.sephirah);
@@ -268,7 +268,7 @@ describe('Orixá-Sephirah Correlation', () => {
     });
 
     it('should map earth Orixás to Malkuth or Chesed', () => {
-      const earthOrixas = getAllOrixaSephiroths().filter(o => o.elemento === 'Terra');
+      const earthOrixas = getAllOrixaSephiroths().filter(o => o.elemento === 'terra');
       
       earthOrixas.forEach(orixa => {
         expect(['Malkuth', 'Chesed']).toContain(orixa.sephirah);

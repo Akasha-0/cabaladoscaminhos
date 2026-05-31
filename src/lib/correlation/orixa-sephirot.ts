@@ -31,8 +31,8 @@ export interface OrixaSephirah {
 const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Oxalá': {
     orixa: 'Oxalá',
+    sephirah: 'Kether',
     elemento: 'éter',
-    elemento: 'Éter',
     significado_espiritual: 'Pureza Divina — Oxalá, o Criador, conecta-se a Kether, a Coroa da Árvore da Vida. Ambos representam a origem absoluta, o princípio primeiro antes da manifestação. O éter de Oxalá é a luz primordial que precede todos os elementos.',
     numero_caminho: 1,
     sephirot_secundarias: ['Chokmah'],
@@ -40,7 +40,7 @@ const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Iemanjá': {
     orixa: 'Iemanjá',
     sephirah: 'Binah',
-    elemento: 'Água',
+    elemento: 'água',
     significado_espiritual: 'Mãe Divina — Iemanjá, a Rainha do Mar, alinha-se com Binah, a Entendimento. Ambas são forças matriciais, geradoras de vida. A água de Iemanjá representa o fluxo criativo primordial que Binah canaliza na formação do universo.',
     numero_caminho: 3,
     sephirot_secundarias: ['Chokmah'],
@@ -48,7 +48,7 @@ const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Oxum': {
     orixa: 'Oxum',
     sephirah: 'Tiphereth',
-    elemento: 'Água',
+    elemento: 'água',
     significado_espiritual: 'Beleza e Harmonia — Oxum, a riqueza das águas doces, corresponde a Tiphereth, a Beleza no centro da Árvore. Ambas representam o ponto de equilíbrio entre polaridades, a harmonização das águas superiores e inferiores.',
     numero_caminho: 6,
     sephirot_secundarias: ['Netzach', 'Yesod'],
@@ -56,7 +56,7 @@ const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Ogum': {
     orixa: 'Ogum',
     sephirah: 'Geburah',
-    elemento: 'Fogo',
+    elemento: 'fogo',
     significado_espiritual: 'Força e Conquista — Ogum, o guerreiro ferreiro, conecta-se a Geburah, a Severidade. Ambos são agentes de transformação através da ação, o fogo que corta e forja. A energia marciana de Ogum corresponde à ira divina de Geburah.',
     numero_caminho: 5,
     sephirot_secundarias: ['Hod'],
@@ -64,7 +64,7 @@ const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Oxóssi': {
     orixa: 'Oxóssi',
     sephirah: 'Chesed',
-    elemento: 'Terra',
+    elemento: 'terra',
     significado_espiritual: 'Abundância e Verdade — Oxóssi, o caçador divisor de destinos, alinha-se com Chesed, a Misericórdia. Ambos governam sobre a distribuição de recursos e o conhecimento das leis naturais. O excesso de Oxóssi corresponde à expansão infinita de Chesed.',
     numero_caminho: 4,
     sephirot_secundarias: ['Netzach'],
@@ -72,7 +72,7 @@ const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Xangô': {
     orixa: 'Xangô',
     sephirah: 'Tiphereth',
-    elemento: 'Fogo',
+    elemento: 'fogo',
     significado_espiritual: 'Justiça e Poder — Xangô, o rei do trovão, conecta-se a Tiphereth através do Sol. Ambas são fontes de luz, comando e equilíbrio entre extremos. O fogo de Xangô ilumina como o Sol de Tiphereth, despertando a consciência e revelando verdades ocultas.',
     numero_caminho: 6,
     sephirot_secundarias: ['Geburah', 'Hod'],
@@ -80,7 +80,7 @@ const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Iansã': {
     orixa: 'Iansã',
     sephirah: 'Netzach',
-    elemento: 'Fogo',
+    elemento: 'fogo',
     significado_espiritual: 'Vitória e Tempestade — Iansã, senhora das batalhas e ventos, corresponde a Netzach, a Vitória. Ambas representam a força que supera obstáculos, o vento que limpa e renova. A urânica Iansã antecipa a transformação de Netzach.',
     numero_caminho: 7,
     sephirot_secundarias: ['Geburah', 'Tiphereth'],
@@ -88,7 +88,7 @@ const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Omolu': {
     orixa: 'Omolu',
     sephirah: 'Malkuth',
-    elemento: 'Terra',
+    elemento: 'terra',
     significado_espiritual: 'Aterramento e Transformação — Omolu, senhor das doenças e curas, conecta-se a Malkuth, o Reino. Ambos governam sobre a materialidade, o corpo físico e os processos de decomposição e regeneração. O接地 de Omolu é a manifestação última de Malkuth.',
     numero_caminho: 10,
     sephirot_secundarias: ['Yesod'],
@@ -96,7 +96,7 @@ const ORIXAS_SEPHIROT_MAP: Record<string, OrixaSephirah> = {
   'Nanã': {
     orixa: 'Nanã',
     sephirah: 'Binah',
-    elemento: 'Água',
+    elemento: 'água',
     significado_espiritual: 'Sabedoria Ancestral — Nanã, a anciã das águas primordiais, conecta-se a Binah pelo limiar do tempo. Ambas são forças de encerramento e renovação, governando sobre a transformação através da dissolução. A saturniana Nanã aguarda a sabedoria de Binah.',
     numero_caminho: 3,
     sephirot_secundarias: ['Chokmah', 'Yesod'],

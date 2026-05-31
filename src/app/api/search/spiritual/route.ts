@@ -1,17 +1,16 @@
-// ============================================================
-// SPIRITUAL SEARCH API - CABALA DOS CAMINHOS
-// ============================================================
-// Search across: Odús, Orixás, rituals, affirmations, numerology, cycles
-// Spiritual-focused search with deep filtering
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { orixas, odus } from '@/lib/data/spiritual-data';
-
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SpiritualSearchQuerySchema = z.object({
+  q: z.string().min(1, 'Query é obrigatória'),
+  type: z.enum(['odus', 'orixas', 'affirmations', 'rituals', 'numerology', 'cycles', 'all']).optional().default('all'),
+  category: z.string().optional(),
+  limit: z.coerce.number().int().positive().max(50).optional().default(10),
+});
 // ============================================================
 // TYPES
 // ============================================================
-
 export interface SpiritualSearchResult {
   type: 'odu' | 'orixa' | 'ritual' | 'afirmation' | 'numerology' | 'cicle';
   id: string;
