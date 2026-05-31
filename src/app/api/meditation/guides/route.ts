@@ -1,27 +1,56 @@
- 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
-export interface MeditationGuide {
-  id: string;
-  title: string;
-  description: string;
-  duration: number;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
-  category: string;
-  steps: GuideStep[];
-  benefits: string[];
-  warnings?: string[];
-}
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const DifficultySchema = z.enum(['beginner', 'intermediate', 'advanced']);
+const MeditationCategorySchema = z.enum([
+  'mindfulness', 'breathing', 'visualization', 'manifestation', 'ancestral',
+  'kundalini', 'zen', 'loving-kindness', 'body-scan', 'transcendental'
+]);
 
-export interface GuideStep {
-  order: number;
-  title: string;
-  duration: number;
-  instructions: string[];
-  breathCount?: number;
-  affirmation?: string;
-}
+const GuideStepSchema = z.object({
+  order: z.number().int().positive(),
+  title: z.string(),
+  duration: z.number().int().positive(),
+  instructions: z.array(z.string()),
+  breathCount: z.number().int().optional(),
+  affirmation: z.string().optional(),
+});
 
+const MeditationGuideSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  duration: z.number().int().positive(),
+  difficulty: DifficultySchema,
+  category: MeditationCategorySchema,
+  steps: z.array(GuideStepSchema),
+  benefits: z.array(z.string()),
+  warnings: z.array(z.string()).optional(),
+  // Spiritual correlations
+  sefirot: z.array(z.string()).optional(),
+  orixa: z.string().optional(),
+  chakra: z.array(z.number()).optional(),
+  tradicao: z.string().optional(),
+  numeroSagrado: z.number().optional(),
+});
+
+const MeditationGuidesQuerySchema = z.object({
+  id: z.string().optional(),
+  category: MeditationCategorySchema.optional(),
+  difficulty: DifficultySchema.optional(),
+  maxDuration: z.coerce.number().int().positive().optional(),
+  orixa: z.string().optional(),
+  sefirot: z.string().optional(),
+  chakra: z.coerce.number().int().min(1).max(7).optional(),
+});
+
+export type MeditationGuide = z.infer<typeof MeditationGuideSchema>;
+export type GuideStep = z.infer<typeof GuideStepSchema>;
+
+export const dynamic = 'force-dynamic';
+
+// ─── Meditation Guides Data ──────────────────────────────────────────────────────
 const guides: MeditationGuide[] = [
   {
     id: 'morning-awareness',
@@ -82,9 +111,13 @@ const guides: MeditationGuide[] = [
       'Better focus throughout the day',
       'Emotional grounding',
     ],
+    sefirot: ['Kether', 'Tipheret'],
+    chakra: [6, 7],
+    tradicao: 'Mindfulness',
+    numeroSagrado: 1,
   },
   {
-    id: '，呼吸放松',
+    id: 'breathing-relaxation',
     title: 'Breath-Based Relaxation',
     description: 'Use the power of breath to release tension and calm the nervous system',
     duration: 15,
@@ -103,300 +136,191 @@ const guides: MeditationGuide[] = [
       },
       {
         order: 2,
-        title: '4-7-8 Breathing',
-        duration: 5,
-        instructions: [
-          'Inhale quietly through your nose for 4 counts',
-          'Hold your breath for 7 counts',
-          'Exhale completely through your mouth for 8 counts',
-          'Repeat this cycle',
-        ],
-        breathCount: 8,
-      },
-      {
-        order: 3,
         title: 'Box Breathing',
-        duration: 4,
+        duration: 6,
         instructions: [
           'Inhale for 4 counts',
           'Hold for 4 counts',
           'Exhale for 4 counts',
-          'Hold empty for 4 counts',
-          'This is one box breath cycle',
+          'Hold for 4 counts',
+          'Repeat 4 times',
         ],
-        breathCount: 4,
+        breathCount: 16,
+        affirmation: 'I breathe in peace and exhale tension',
+      },
+      {
+        order: 3,
+        title: 'Deep Release',
+        duration: 5,
+        instructions: [
+          'Take a deep breath in',
+          'As you exhale, release all tension',
+          'Imagine stress leaving your body',
+          'With each exhale, feel lighter',
+        ],
       },
       {
         order: 4,
-        title: 'Integration',
-        duration: 4,
+        title: 'Rest',
+        duration: 2,
         instructions: [
-          'Allow your breath to return to natural rhythm',
-          'Notice the state of your body',
-          'Rest here for a moment',
-          'When ready, slowly return to activity',
+          'Lie still',
+          'Notice the calm in your body',
+          'Carry this peace with you',
         ],
       },
     ],
     benefits: [
       'Activates parasympathetic nervous system',
       'Reduces cortisol levels',
-      'Lowers blood pressure',
-      'Improves sleep quality',
+      'Improves heart rate variability',
+      'Deep physical relaxation',
     ],
-    warnings: ['If you feel dizzy, return to normal breathing immediately'],
+    sefirot: ['Netzach', 'Hod'],
+    chakra: [4, 5],
+    tradicao: 'Pranayama/Yoga',
+    numeroSagrado: 4,
   },
   {
-    id: 'deep-sleep',
-    title: 'Deep Sleep Preparation',
-    description: 'A calming practice to prepare body and mind for restorative sleep',
+    id: 'kundalini-awakening',
+    title: 'Kundalini Rising',
+    description: 'Awaken the dormant spiritual energy at the base of the spine',
     duration: 20,
-    difficulty: 'beginner',
-    category: 'sleep',
+    difficulty: 'advanced',
+    category: 'kundalini',
     steps: [
       {
         order: 1,
-        title: 'Physical Release',
-        duration: 5,
-        instructions: [
-          'Lie down in your bed',
-          'Starting at your feet, tense each muscle group for 5 seconds',
-          'Release and move to the next body part',
-          'Work your way up through your entire body',
-        ],
-      },
-      {
-        order: 2,
-        title: 'Breath Descent',
-        duration: 5,
-        instructions: [
-          'Take slow, deep breaths',
-          'With each exhale, imagine yourself sinking deeper into the bed',
-          'Let go of any thoughts about tomorrow',
-          'Focus only on the present moment',
-        ],
-        affirmation: 'I release this day and allow myself to rest',
-      },
-      {
-        order: 3,
-        title: 'Gratitude Scan',
-        duration: 5,
-        instructions: [
-          'Bring to mind three things you are grateful for',
-          'Hold each one gently in your awareness',
-          'Let the feeling of gratitude wash over you',
-          'Allow a smile to form naturally',
-        ],
-      },
-      {
-        order: 4,
-        title: 'Drift Away',
-        duration: 5,
-        instructions: [
-          'Continue breathing slowly and deeply',
-          'Let your thoughts fade like clouds',
-          'If a thought arises, acknowledge it and return to your breath',
-          'Allow yourself to drift into sleep naturally',
-        ],
-      },
-    ],
-    benefits: [
-      'Faster sleep onset',
-      'Improved sleep quality',
-      'Reduced rumination at bedtime',
-      'Enhanced sleep architecture',
-    ],
-    warnings: ['Do not practice if you need to stay alert; this practice induces sleepiness'],
-  },
-  {
-    id: 'sacred-space',
-    title: 'Creating Sacred Space',
-    description: 'Build a ritual of sacred intention for spiritual connection',
-    duration: 25,
-    difficulty: 'intermediate',
-    category: 'spiritual',
-    steps: [
-      {
-        order: 1,
-        title: 'Cleansing',
-        duration: 5,
-        instructions: [
-          'Light a candle or incense if desired',
-          'Walk clockwise around your space three times',
-          'Visualize white light clearing any stagnant energy',
-          'Set an intention for your sacred practice',
-        ],
-        affirmation: 'I cleanse this space of all that does not serve my highest good',
-      },
-      {
-        order: 2,
-        title: 'Elemental Connection',
-        duration: 8,
-        instructions: [
-          'Call upon the elements: Earth, Air, Fire, Water',
-          'For each element, visualize its presence and color',
-          'Ask for its blessing in your practice',
-          'Create a circle of elemental protection',
-        ],
-      },
-      {
-        order: 3,
-        title: 'Core Meditation',
-        duration: 10,
-        instructions: [
-          'Sit in the center of your sacred space',
-          'Close your eyes and turn inward',
-          'Focus on your heart center or third eye',
-          'Allow spiritual wisdom to flow to you',
-          'Receive any insights without attachment',
-        ],
-      },
-      {
-        order: 4,
-        title: 'Closing Ritual',
-        duration: 2,
-        instructions: [
-          'Thank the elements for their presence',
-          'Extinguish candles safely if used',
-          'Express gratitude for the experience',
-          'Return to ordinary consciousness slowly',
-        ],
-        affirmation: 'I carry this sacred energy with me as I return',
-      },
-    ],
-    benefits: [
-      'Heightened spiritual awareness',
-      'Energy cleansing',
-      'Deeper contemplative practice',
-      'Ritual grounding',
-    ],
-  },
-  {
-    id: 'loving-kindness',
-    title: 'Loving-Kindness Meditation',
-    description: 'Cultivate compassion for self and all beings through traditional Metta practice',
-    duration: 20,
-    difficulty: 'intermediate',
-    category: 'compassion',
-    steps: [
-      {
-        order: 1,
-        title: 'Settling',
+        title: 'Grounding',
         duration: 3,
         instructions: [
-          'Sit comfortably with a straight spine',
-          'Place one hand over your heart',
-          'Take several deep breaths',
-          'Feel the warmth of your hand',
+          'Sit in easy pose with spine straight',
+          'Root down through your sitting bones',
+          'Draw energy up from Earth',
         ],
       },
       {
         order: 2,
-        title: 'Self-Compassion',
+        title: 'Breath of Fire',
         duration: 5,
         instructions: [
-          'Bring to mind yourself as you are now',
-          'Silently repeat: "May I be happy, May I be healthy"',
-          '"May I be safe, May I live with ease"',
-          'Feel the warmth spreading through your chest',
+          'Begin rhythmic breath of fire',
+          'Navel point pumping',
+          'Eyes are 1/10 open, focusing on the third eye',
+          'Chant SAT NAM silently',
         ],
-        affirmation: 'May I be happy. May I be healthy. May I be safe. May I live with ease.',
+        breathCount: 120,
+        affirmation: 'My kundalini energy rises through all my chakras',
       },
       {
         order: 3,
-        title: 'Loved One',
-        duration: 4,
+        title: 'Spinal Flex',
+        duration: 3,
         instructions: [
-          'Bring to mind someone you love deeply',
-          'See them clearly in your mind',
-          'Offer them the same phrases',
-          'Let feelings of love naturally arise',
+          'Rock gently forward and back',
+          'Keep breath of fire going',
+          'Energy travels up and down the spine',
         ],
       },
       {
         order: 4,
-        title: 'Neutral Person',
-        duration: 3,
+        title: 'Stillness',
+        duration: 5,
         instructions: [
-          'Bring to mind someone neutral',
-          'Perhaps a shopkeeper or neighbor',
-          'Offer them loving-kindness',
-          'Remain open to whatever arises',
+          'Stop all movement',
+          'Keep breath of fire going',
+          'Feel energy traveling up the central channel',
+          'Experience the pure being',
         ],
       },
       {
         order: 5,
-        title: 'All Beings',
-        duration: 5,
+        title: 'Rest',
+        duration: 4,
         instructions: [
-          'Expand your circle of compassion',
-          'Include all beings you know',
-          'Then all beings everywhere',
-          'Rest in the feeling of universal love',
+          'Lie down',
+          'Let energy integrate',
+          'Notice sensations in the body',
         ],
-        affirmation: 'May all beings be happy. May all beings be healthy. May all beings live with ease.',
       },
     ],
     benefits: [
-      'Increased empathy',
-      'Reduced anxiety',
-      'Enhanced social connection',
-      'Self-compassion development',
+      'Spinal elasticity',
+      'Nervous system stimulation',
+      'Emotional release',
+      'Spiritual awakening',
     ],
+    warnings: ['This practice may intensify emotions; proceed with guidance if new to kundalini'],
+    sefirot: ['Malkuth', 'Yesod', 'Gevurah', 'Chesed', 'Tipheret', 'Netzach', 'Hod'],
+    chakra: [1, 2, 3, 4, 5, 6, 7],
+    tradicao: 'Kundalini Yoga',
+    numeroSagrado: 7,
   },
   {
-    id: 'third-eye',
-    title: 'Third Eye Activation',
-    description: 'Open and activate the ajna chakra for enhanced intuition and perception',
-    duration: 30,
-    difficulty: 'advanced',
-    category: 'chakra',
+    id: 'zen-presence',
+    title: 'Zen Presence',
+    description: 'Sit in stillness and observe the nature of mind',
+    duration: 25,
+    difficulty: 'intermediate',
+    category: 'zen',
     steps: [
       {
         order: 1,
-        title: 'Root Activation',
-        duration: 5,
+        title: 'Posture',
+        duration: 2,
         instructions: [
-          'Sit in a comfortable position, ideally lotus or half-lotus',
-          'Ground yourself by visualizing roots extending from your root chakra',
-          'Breathe deeply into your lower abdomen',
-          'Feel stable and rooted like a mountain',
+          'Sit in stable position (seiza or half lotus)',
+          'Hands in cosmic mudra',
+          'Eyes open, soft gaze downward',
+          'Lengthen spine like a stack of coins',
         ],
-        affirmation: 'I am grounded and open to divine wisdom',
       },
       {
         order: 2,
-        title: 'Throat Clearing',
-        duration: 5,
+        title: 'Settling',
+        duration: 3,
         instructions: [
-          'Chant the seed syllable HAM three times',
-          'Feel the vibration in your throat',
-          'Visualize blue light clearing your throat chakra',
-          'Affirm your ability to speak and hear truth',
+          'Take 3 deep breaths',
+          'Exhale completely',
+          'Let the breath find its natural rhythm',
+          'Release any effort in the breath',
         ],
-        breathCount: 3,
       },
       {
         order: 3,
-        title: 'Third Eye Focus',
-        duration: 10,
+        title: 'Silent Illumination',
+        duration: 15,
         instructions: [
-          'Bring your attention to the point between your eyebrows',
-          'Visualize a deep indigo light growing there',
-          'Imagine an eye slowly opening at this point',
-          'Allow your gaze to turn inward',
-          'Remain in this stillness',
+          'Rest in bare awareness',
+          'Notice thoughts as they arise',
+          'Do not follow or reject them',
+          'Return again and again to the present moment',
+          'Like a mirror, let everything appear as it is',
         ],
-        affirmation: 'I open my inner eye to perceive truth',
+        affirmation: 'Just this - nothing more, nothing less',
+      },
+      {
+        order: 4,
+        title: 'Closing',
+        duration: 5,
+        instructions: [
+          'Slowly open eyes',
+          'Bow three times',
+          'Dedicate merit to all beings',
+          'Carry this presence into your day',
+        ],
       },
     ],
     benefits: [
-      'Enhanced intuition',
-      'Clearer perception',
-      'Deeper spiritual insight',
-      'Improved focus',
+      'Non-conceptual awareness',
+      'Equanimity in all conditions',
+      'Direct insight into emptiness',
+      'Psychological freedom',
     ],
-    warnings: ['If you experience discomfort, stop and ground yourself; proceed gently'],
+    sefirot: ['Kether', 'Chokhmah'],
+    chakra: [6, 7],
+    tradicao: 'Zen Buddhism',
+    numeroSagrado: 5,
   },
   {
     id: 'manifestation',
@@ -459,6 +383,10 @@ const guides: MeditationGuide[] = [
       'Reduced attachment anxiety',
       'Active manifestation practice',
     ],
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: [4, 6],
+    tradicao: 'Neo-Spirituality',
+    numeroSagrado: 11,
   },
   {
     id: 'ancestral-healing',
@@ -523,53 +451,206 @@ const guides: MeditationGuide[] = [
       'Generational healing',
     ],
     warnings: ['This practice may surface deep emotions; consider professional support if needed'],
+    sefirot: ['Binah', 'Malkuth', 'Yesod'],
+    orixa: 'Oxalá',
+    chakra: [1, 6, 7],
+    tradicao: 'Ancestral Work',
+    numeroSagrado: 3,
+  },
+  {
+    id: 'loving-kindness',
+    title: 'Loving Kindness (Metta)',
+    description: 'Cultivate boundless compassion for self and all beings',
+    duration: 20,
+    difficulty: 'beginner',
+    category: 'loving-kindness',
+    steps: [
+      {
+        order: 1,
+        title: 'Opening the Heart',
+        duration: 3,
+        instructions: [
+          'Sit comfortably',
+          'Place hand on heart',
+          'Feel the warmth of your own heart',
+          'Breathe deeply into this space',
+        ],
+      },
+      {
+        order: 2,
+        title: 'Self-Love',
+        duration: 5,
+        instructions: [
+          'Begin offering phrases to yourself:',
+          'May I be happy',
+          'May I be healthy',
+          'May I be safe',
+          'May I live with ease',
+          'Feel warmth spreading through your body',
+        ],
+        affirmation: 'May I be happy, may I be healthy, may I be at peace',
+      },
+      {
+        order: 3,
+        title: 'Loved One',
+        duration: 4,
+        instructions: [
+          'Bring to mind someone you love deeply',
+          'Offer them the same phrases:',
+          'May you be happy',
+          'May you be healthy',
+          'May you be safe',
+          'Feel love expanding beyond yourself',
+        ],
+      },
+      {
+        order: 4,
+        title: 'All Beings',
+        duration: 6,
+        instructions: [
+          'Expand your circle of love',
+          'Include friends, acquaintances, strangers',
+          'Include difficult people',
+          'Finally, all beings everywhere',
+          'May all beings be happy',
+        ],
+        affirmation: 'May all beings everywhere be happy, may all beings be free',
+      },
+      {
+        order: 5,
+        title: 'Integration',
+        duration: 2,
+        instructions: [
+          'Rest in the feeling of boundless love',
+          'Know this love is your true nature',
+          'Carry it with you into the world',
+        ],
+      },
+    ],
+    benefits: [
+      'Increased compassion and empathy',
+      'Reduced anxiety and self-criticism',
+      'Improved relationships',
+      'Greater sense of well-being',
+    ],
+    sefirot: ['Tipheret', 'Chesed', 'Netzach'],
+    chakra: [4],
+    tradicao: 'Vipassana/Buddhism',
+    numeroSagrado: 6,
   },
 ];
 
+// ─── API Route ─────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const id = searchParams.get('id');
-  const category = searchParams.get('category');
-  const difficulty = searchParams.get('difficulty');
-  const maxDuration = searchParams.get('maxDuration');
+  try {
+    const { searchParams } = new URL(request.url);
 
-  if (id) {
-    const guide = guides.find((g) => g.id === id);
-    if (!guide) {
-      return NextResponse.json(
-        { error: 'Guide not found' },
-        { status: 404 }
+    const parseResult = MeditationGuidesQuerySchema.safeParse({
+      id: searchParams.get('id'),
+      category: searchParams.get('category'),
+      difficulty: searchParams.get('difficulty'),
+      maxDuration: searchParams.get('maxDuration'),
+      orixa: searchParams.get('orixa'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+    });
+
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { id, category, difficulty, maxDuration, orixa, sefirot, chakra } = parseResult.data;
+
+    // Get single guide
+    if (id) {
+      const guide = guides.find((g) => g.id === id);
+      if (!guide) {
+        return NextResponse.json({
+          success: false,
+          error: 'Guide not found',
+          availableIds: guides.map(g => g.id),
+        }, { status: 404 });
+      }
+      return NextResponse.json({ success: true, guide });
+    }
+
+    let filteredGuides = [...guides];
+
+    // Apply filters
+    if (category) {
+      filteredGuides = filteredGuides.filter((g) => g.category === category);
+    }
+
+    if (difficulty) {
+      filteredGuides = filteredGuides.filter((g) => g.difficulty === difficulty);
+    }
+
+    if (maxDuration) {
+      filteredGuides = filteredGuides.filter((g) => g.duration <= maxDuration);
+    }
+
+    // Spiritual filters
+    if (orixa) {
+      filteredGuides = filteredGuides.filter((g) =>
+        g.orixa?.toLowerCase().includes(orixa.toLowerCase())
       );
     }
-    return NextResponse.json(guide);
-  }
 
-  let filteredGuides = [...guides];
-
-  if (category) {
-    filteredGuides = filteredGuides.filter((g) => g.category === category);
-  }
-
-  if (difficulty) {
-    filteredGuides = filteredGuides.filter((g) => g.difficulty === difficulty);
-  }
-
-  if (maxDuration) {
-    const max = parseInt(maxDuration, 10);
-    if (!isNaN(max)) {
-      filteredGuides = filteredGuides.filter((g) => g.duration <= max);
+    if (sefirot) {
+      filteredGuides = filteredGuides.filter((g) =>
+        g.sefirot?.some(sf => sf.toLowerCase().includes(sefirot.toLowerCase()))
+      );
     }
+
+    if (chakra) {
+      filteredGuides = filteredGuides.filter((g) =>
+        g.chakra?.includes(chakra)
+      );
+    }
+
+    // Statistics
+    const categories = Array.from(new Set(guides.map((g) => g.category)));
+    const difficulties = ['beginner', 'intermediate', 'advanced'];
+    
+    const stats = {
+      byCategory: guides.reduce((acc, g) => {
+        acc[g.category] = (acc[g.category] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byDifficulty: guides.reduce((acc, g) => {
+        acc[g.difficulty] = (acc[g.difficulty] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byTradicao: guides.reduce((acc, g) => {
+        if (g.tradicao) acc[g.tradicao] = (acc[g.tradicao] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: guides.reduce((acc, g) => {
+        if (g.orixa) acc[g.orixa] = (acc[g.orixa] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      averageDuration: Math.round(guides.reduce((sum, g) => sum + g.duration, 0) / guides.length),
+    };
+
+    return NextResponse.json({
+      success: true,
+      guides: filteredGuides,
+      total: guides.length,
+      count: filteredGuides.length,
+      categories,
+      difficulties,
+      filters: { category, difficulty, maxDuration, orixa, sefirot, chakra },
+      stats,
+    });
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
   }
-
-  const total = guides.length;
-  const categories = Array.from(new Set(guides.map((g) => g.category)));
-  const difficulties = ['beginner', 'intermediate', 'advanced'];
-
-  return NextResponse.json({
-    guides: filteredGuides,
-    total,
-    categories,
-    difficulties,
-    count: filteredGuides.length,
-  });
 }

@@ -687,6 +687,7 @@ interface Ritual {
 }
 
 // GET /api/rituals/library - returns all rituals
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const tipo = searchParams.get('tipo');
   const search = searchParams.get('search');
