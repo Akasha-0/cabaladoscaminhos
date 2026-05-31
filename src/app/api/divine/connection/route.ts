@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 const DivineTypeSchema = z.enum(['orixa', 'santo', 'ancestral', 'archangel', 'ascended_master', 'deity']);
 const ConnectionDepthSchema = z.enum(['surface', 'working', 'deep', 'master']);
@@ -21,6 +27,14 @@ const DivineConnectionSchema = z.object({
   offerings: z.array(z.string()),
   invocation: z.string(),
   blessing: z.string(),
+  spiritualCorrelations: z.object({
+    sefirot: z.array(SefirotSchema),
+    chakra: ChakraSchema,
+    element: ElementSchema,
+    orixa: z.string(),
+    affirmation: z.string(),
+    frequency: z.string(),
+  }).optional(),
 });
 
 const DivineConnectionQuerySchema = z.object({
@@ -28,7 +42,69 @@ const DivineConnectionQuerySchema = z.object({
   orixa: z.string().optional(),
   depth: ConnectionDepthSchema.optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
 });
+
+// ─── Spiritual Correlations for Divine Types ──────────────────────────────────────────
+const DIVINE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  orixa: {
+    sefirot: ['Binah', 'Chokhmah'],
+    chakra: 4,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'Orixás me guiam e protegem',
+    frequency: '417 Hz',
+  },
+  santo: {
+    sefirot: ['Tipheret', 'Chesed'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Santos intercedem por mim',
+    frequency: '528 Hz',
+  },
+  ancestral: {
+    sefirot: ['Yesod', 'Malkuth'],
+    chakra: 2,
+    element: 'Terra',
+    orixa: 'Iemanjá',
+    affirmation: 'Ancestrais me abençoam',
+    frequency: '396 Hz',
+  },
+  archangel: {
+    sefirot: ['Kether', 'Gevurah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Arcanjos me protegem',
+    frequency: '963 Hz',
+  },
+  ascended_master: {
+    sefirot: ['Chokhmah', 'Binah'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Orunmilá',
+    affirmation: 'Mestres ascendidos me iluminam',
+    frequency: '741 Hz',
+  },
+  deity: {
+    sefirot: ['Kether', 'Chokhmah', 'Binah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'A divindade me conecta à fonte',
+    frequency: '963 Hz',
+  },
+};
 
 // ─── Divine Connections Data ────────────────────────────────────────────────
 
@@ -46,6 +122,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['mão de Oxalá (15g de akuara)', 'akará (bolinho de feijão)', 'efun (giz branco)', ' Água de obi'],
     invocation: 'Epa! Olorun Oxalá! creator-of-all-light',
     blessing: 'Que a luz de Oxalá illumine seu caminho e traga paz eterna à sua alma.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['deity'],
   },
   {
     id: 'iemanja-ocean',
@@ -61,6 +138,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['flor de balanco branco', 'colares de contas azuis', 'espelho', 'água do mar', 'perfume de ALFABETO (alecrim)'],
     invocation: 'Salve Iemanjá! Rainha das águas! Mãe dos Aires!',
     blessing: 'Que as águas de Iemanjá lavem suas preocupações e tragam prosperidade ao seu lar.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['orixa'],
   },
   {
     id: 'ogum-warrior',
@@ -76,6 +154,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['espada', 'ferradura', 'alecrim', 'fio de contas verdes e amarelas', 'mel'],
     invocation: 'Ogum! Patrón of iron and fire! open my path!',
     blessing: 'Que a espada de Ogum abra seus caminhos e vença todos os obstáculos.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['orixa'],
   },
   {
     id: 'xango-thunder',
@@ -91,6 +170,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['pão', ' fumo', 'gengibre', 'akará', 'pãozinho de manhã cedo'],
     invocation: 'Xangô! Lord of thunder! God of justice!',
     blessing: 'Que o trovão de Xangô traga justiça e dissipe toda escuridão em sua vida.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['orixa'],
   },
   {
     id: 'oxum-gold',
@@ -106,6 +186,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['ouro', 'fio de contas amarelas', 'colher de mel', 'perfume de ALFABETO (lavanda)', 'flores amarelas'],
     invocation: 'Oxum! Rainha das águas doces! Love incarnate!',
     blessing: 'Que as águas de Oxum tragam amor, prosperidade eharmonia ao seu coração.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['orixa'],
   },
   {
     id: 'nanã-ancient',
@@ -121,6 +202,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['obí (noz de cola)', 'pipoca', 'água de obi', 'flor de mão de Nanã'],
     invocation: 'Nanã Burucema! Mãe antiga! Ancient wisdom!',
     blessing: 'Que a sabedoria de Nanã abra sua mente e traga enlightenment espiritual.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['orixa'],
   },
   {
     id: 'omulu-disciple',
@@ -136,6 +218,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['pipoca', 'caruru', 'amendoim torrado', 'farinha de mandioca'],
     invocation: 'Omulu! God of earth and healing! save your people!',
     blessing: 'Que Omulu proteja sua saúde e traga cura para todo sofrimento.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['orixa'],
   },
   {
     id: 'oxumare-rainbow',
@@ -151,6 +234,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['dendê', 'farinha de mandioca', 'flores de todas as cores', 'espelho'],
     invocation: 'Oxumaré! Serpent of the rainbow! cosmic continuity!',
     blessing: 'Que o arco-íris de Oxumaré traga esperança e a promessa de renovação.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['orixa'],
   },
   {
     id: 'archangel-michael',
@@ -166,6 +250,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['incenso de sálvia', 'vela azul', ' água de rosas brancas'],
     invocation: 'Miguel! Archangel of protection! surround me with your light!',
     blessing: 'Que Miguel escudo your aurora field and bring victory in all battles.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['archangel'],
   },
   {
     id: 'archangel-gabriel',
@@ -181,71 +266,105 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     offerings: ['incenso de lavanda', 'vela branca', 'flor de jasmin'],
     invocation: 'Gabriel! Messenger of God! open my channel to the divine!',
     blessing: 'Que Gabriel abra seus canais de comunicação celestial e traga wisdom.',
-  },
-  {
-    id: 'santo-jorge',
-    name: 'São Jorge',
-    nameEn: 'Saint George',
-    type: 'santo',
-    description: 'Santo guerreiro cavaleiro que mata o dragão. Representa proteção contra inimigos e vitória.',
-    sefirot: ['Gevurah'],
-    chakra: 'Manipura (3º)',
-    day: 'terça-feira',
-    colors: ['vermelho', 'verde'],
-    offerings: ['vela vermelha', 'espada', ' imagem de São Jorge', 'rosa vermelha'],
-    invocation: 'São Jorge! Guerreiro de Cristo! proteja-me do mal!',
-    blessing: 'Que São Jorge vença todos os dragões em seu caminho e traga proteção.',
-  },
-  {
-    id: 'jesus-nazarene',
-    name: 'Jesus Nazareno',
-    nameEn: 'Jesus the Nazarene',
-    type: 'santo',
-    description: 'O Salvador e Redentor da humanidade. Representa amor unconditional, compaixão e redenção.',
-    sefirot: ['Tipheret', 'Kether'],
-    chakra: 'Anahata (4º)',
-    day: 'domingo',
-    colors: ['branco', 'roxo'],
-    offerings: ['pão', 'vinho', 'agua', 'flor branca', 'cruz'],
-    invocation: 'Jesus! Nazareno! Redeemer! have mercy on me!',
-    blessing: 'Que o amor de Jesus traga salvação, redenção e paz eterna à sua alma.',
+    spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS['archangel'],
   },
 ];
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const parseResult = DivineConnectionQuerySchema.safeParse({
-    type: searchParams.get('type'),
-    orixa: searchParams.get('orixa'),
-    depth: searchParams.get('depth'),
-    limit: searchParams.get('limit'),
-  });
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = DivineConnectionQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      orixa: searchParams.get('orixa'),
+      depth: searchParams.get('depth'),
+      limit: searchParams.get('limit'),
+      sefirot: searchParams.get('sefirot'),
+      chakra: searchParams.get('chakra'),
+      element: searchParams.get('element'),
+    });
 
-  if (!parseResult.success) {
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+
+    const { type, orixa, depth, limit, sefirot, chakra, element } = parseResult.data;
+    let connections = [...DIVINE_CONNECTIONS];
+
+    if (type) {
+      connections = connections.filter(c => c.type === type);
+    }
+
+    if (orixa) {
+      connections = connections.filter(c => c.orixa === orixa);
+    }
+
+    if (limit) {
+      connections = connections.slice(0, limit);
+    }
+
+    if (sefirot) {
+      connections = connections.filter(c => c.spiritualCorrelations?.sefirot.includes(sefirot));
+    }
+
+    if (chakra) {
+      connections = connections.filter(c => {
+        const cNum = c.spiritualCorrelations?.chakra;
+        return cNum === chakra || c.chakra === 'todos';
+      });
+    }
+
+    if (element) {
+      connections = connections.filter(c => c.spiritualCorrelations?.element === element);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byType: connections.reduce((acc, c) => {
+        acc[c.type] = (acc[c.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      bySefirot: connections.reduce((acc, c) => {
+        c.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<string, number>),
+      byChakra: connections.reduce((acc, c) => {
+        const ch = c.spiritualCorrelations?.chakra;
+        if (ch) acc[ch] = (acc[ch] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byElement: connections.reduce((acc, c) => {
+        const e = c.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: connections.reduce((acc, c) => {
+        const o = c.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+    };
+
+    return NextResponse.json({
+      success: true,
+      connections,
+      count: connections.length,
+      total: DIVINE_CONNECTIONS.length,
+      spiritualCorrelations: DIVINE_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { type, orixa, depth, limit, sefirot, chakra, element },
+      },
+    });
+  } catch (error) {
     return NextResponse.json({
       success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
-
-  const { type, orixa, limit } = parseResult.data;
-  let connections = [...DIVINE_CONNECTIONS];
-
-  if (type) {
-    connections = connections.filter(c => c.type === type);
-  }
-  if (orixa) {
-    connections = connections.filter(c => c.orixa?.toLowerCase() === orixa.toLowerCase());
-  }
-  if (limit) {
-    connections = connections.slice(0, limit);
-  }
-
-  return NextResponse.json({
-    success: true,
-    connections,
-    count: connections.length,
-    total: DIVINE_CONNECTIONS.length,
-  });
 }
