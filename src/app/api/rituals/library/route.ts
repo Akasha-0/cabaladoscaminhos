@@ -685,16 +685,15 @@ interface Ritual {
   significado: string;
   keywords: string[];
 }
+}
+
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const tipo = searchParams.get('tipo');
-  const search = searchParams.get('search');
-  const id = searchParams.get('id');
-  const duracao = searchParams.get('duracao');
-
-  let filteredRituals = rituals;
-
-  // Filter by specific ritual ID
+  try {
+    const { searchParams } = new URL(request.url);
+    const tipo = searchParams.get('tipo');
+    const search = searchParams.get('search');
+    const id = searchParams.get('id');
+    const duracao = searchParams.get('duracao');
   if (id) {
     const ritual = rituals.find(r => r.id === id);
     if (!ritual) {
