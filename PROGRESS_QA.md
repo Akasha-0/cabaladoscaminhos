@@ -1,8 +1,8 @@
 # PROGRESS_QA.md — Ciclo de Estabilidade e Alinhamento de Qualidade
 
 **Guardião:** GUARDIAO_QUALIDADE_EVALS_SISTEMICOS  
-**Ciclo:** 2026-05-31 (Ciclo 7)  
-**Data Início:** 2026-05-31T21:42:00Z
+**Ciclo:** 2026-05-31 (Ciclo 8)  
+**Data Início:** 2026-05-31T21:43:00Z
 
 ---
 
@@ -12,7 +12,7 @@
 |---|---|
 | Quality Score | **91.8%** (A-) |
 | Testes | **270 passing** (engines) |
-| .skip/.disabled | **0** |
+| .skip/.disabled | **0** permanente |
 | Critical Issues | **0** |
 | High Priority Issues | **0** |
 
@@ -24,7 +24,7 @@
 |---|---|---|
 | Quality eval | ✅ | 91.8% (A-) |
 | Tests (engines) | ✅ | 270/270 passing |
-| .skip/.disabled | ✅ | 0 residual |
+| .skip/.disabled | ✅ | 0 permanente |
 
 ---
 
@@ -39,6 +39,7 @@
 | 5 | 2026-05-31 | 91.8% | 292 passing | Implemented Orixá data files |
 | 6 | 2026-05-31 | 91.8% | 270 passing | Removed residual .skip |
 | 7 | 2026-05-31 | 91.8% | 270 passing | Verified stable state |
+| 8 | 2026-05-31 | 91.8% | 270 passing | .skip permanente removido |
 
 ---
 
@@ -73,15 +74,14 @@
 
 ## SISTEMA ESTÁVEL
 
-O sistema está em estado de estabilidade após 7 ciclos de QA.
-
-### Verificações de Estabilidade
-- ✅ Quality Score consistente em 91.8% (A-)
-- ✅ Suite de testes passando sem falhas
-- ✅ Arquivos .skip/.disabled em 0
-- ✅ ErrorBoundary.tsx implementado
-- ✅ Scripts de automação funcionando
+| Verificação | Status |
+|---|---|
+| Quality Score consistente | ✅ |
+| Suite de testes passando | ✅ |
+| .skip/.disabled em 0 | ✅ |
+| ErrorBoundary.tsx implementado | ✅ |
+| Scripts funcionando | ✅ |
 
 ---
 
-*Ciclo 7 encerrado. Sistema estável há 7 ciclos.*
+*Ciclo 8 encerrado. Sistema estável. .skip permanente removido.*
