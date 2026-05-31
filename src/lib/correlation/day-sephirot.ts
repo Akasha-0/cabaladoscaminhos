@@ -5,7 +5,7 @@
  */
 
 /** Supported elements in Kabbalistic tradition */
-export type Element = 'fogo' | 'água' | 'ar' | 'terra' | 'éter';
+export type Element = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
 
 /** Path number on the Tree of Life (1-32) */
 export type PathNumber = number;
@@ -24,7 +24,7 @@ export interface DaySephirot {
   sephirah: string;
   /** Hebrew name of the Sephirah */
   nome_hebraico: string;
-  /** Path number on the Tree of Life */
+  /** Sephirah path number (4-10 for middle column) */
   numero_caminho: PathNumber;
   /** Associated element */
   elemento: Element;
@@ -58,7 +58,7 @@ export const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
     sephirah: 'Tiphereth',
     nome_hebraico: 'תפארת',
     numero_caminho: 6,
-    elemento: 'fogo',
+    elemento: 'Fogo',
     signo: 'Leão',
     significado_espiritual: 'Domingo-Coração do Tree. Tiphereth é a Sephirah da beleza, harmonia e sacrifício redentor. Este dia canaliza a energia do Sol (Shamesh), despertando a capacidade de amar incondicionalmente e transformar o sofrimento em iluminação. A luz solar amplifica a consciência do eu superior e facilita a fusão entre oYO superior e a personalidade.',
     mystere: 'O segredo da beleza escondida no centro da árvore. Tiphereth representa o ponto de encontro entre Chesed (misericórdia) e Geburah (juízo), onde os opostos se reconciliam na harmonia do amor sacrificial.',
@@ -83,7 +83,7 @@ export const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
     sephirah: 'Yesod',
     nome_hebraico: 'יסוד',
     numero_caminho: 9,
-    elemento: 'água',
+    elemento: 'Água',
     signo: 'Câncer',
     significado_espiritual: 'Segunda-feira-Fundamento. Yesod é a Sephirah da fundação, da imaginação e da visão clairvoyante. A Lua (Yareach) rege este dia, amplificando a capacidade de perceber além do véu da matéria. Yesod conecta Malkuth (reino) com Tiphereth (beleza), sendo o canal através do qual a luz celestial desce ao mundo material.',
     mystere: 'O segredo da fundação invisível que sustenta todo o universo manifesto. Yesod é a lua psíquica que reflete a luz solar, revelando como a realidade aparente emerge das águas primitivas da existência.',
@@ -108,7 +108,7 @@ export const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
     sephirah: 'Geburah',
     nome_hebraico: 'גבורה',
     numero_caminho: 5,
-    elemento: 'fogo',
+    elemento: 'Fogo',
     signo: 'Áries',
     significado_espiritual: 'Terça-feira-Força. Geburah é a Sephirah da força, do julgamento e da severidade Divina. Marte (Madim) rege este dia, canalizando energia de ação decisive e transmutação. Geburah representa a chama escarlate que corta, purifica e transforma, sendo necessária para quebrar correntes e destruir obstáculos.',
     mystere: 'O segredo da força que surge da limitation e do julgamento. Geburah ensina que a destruição criativa não é maldade, mas misericórdia disfrazada de severidade para acelerar a evolução da alma.',
@@ -133,7 +133,7 @@ export const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
     sephirah: 'Hod',
     nome_hebraico: 'הוד',
     numero_caminho: 8,
-    elemento: 'ar',
+    elemento: 'Ar',
     signo: 'Gêmeos',
     significado_espiritual: 'Quarta-feira-Glória. Hod é a Sephirah da glória, da comunicação e da compreensão intelectual. Mercúrio (Kokav) rege este dia, amplificando a capacidade de pensar, analisar e comunicar com clareza. Hod é o nível donde la mente se torna un instrumento da service espiritual.',
     mystere: 'O segredo da glória que emerge da comunicação perfeita. Hod representa o momento em que a verdade é falada com tal clareza que ilumina toda a escuridão, tornando o conhecimento acessível a todos.',
@@ -158,7 +158,7 @@ export const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
     sephirah: 'Chesed',
     nome_hebraico: 'חסד',
     numero_caminho: 4,
-    elemento: 'água',
+    elemento: 'Água',
     signo: 'Sagitário',
     significado_espiritual: 'Quinta-feira-Misericórdia. Chesed é a Sephirah da misericórdia infinita, da expansão e da compaixão Divina. Júpiter (Tzedek) rege este dia, canalizando energia de abundância espiritual e crescimento. Chesed é a Luz que se derrama sem medida, sustentando todas as formas de vida.',
     mystere: 'O segredo da misericórdia que cria espaço para o erro. Chesed ensina que a verdadeira grandeza está em dar sem expectativa, em perdoar mesmo quando o outro ainda não pediu, em expandir-se para incluir o que parece indigno.',
@@ -183,7 +183,7 @@ export const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
     sephirah: 'Netzach',
     nome_hebraico: 'נצח',
     numero_caminho: 7,
-    elemento: 'água',
+    elemento: 'Água',
     signo: 'Touro',
     significado_espiritual: 'Sexta-feira-Vitória. Netzach é a Sephirah da vitória, da emoção e da estética. Vênus (Nogah) rege este dia, amplificando a capacidade de sentir, apreciar e criar beleza. Netzach é o coração emocional da árvore, donde los sentimientos se transforman em impulso para a ação.',
     mystere: 'O segredo da vitória que nasce da apreciação do belo. Netzach ensina que a verdadeira conquista não vem da força, mas da capacidade de render-se ao fluxo da vida enquanto mantém o entusiasmo pelo caminho.',
@@ -208,7 +208,7 @@ export const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
     sephirah: 'Malkuth',
     nome_hebraico: 'מלכות',
     numero_caminho: 10,
-    elemento: 'terra',
+    elemento: 'Terra',
     signo: 'Capricórnio',
     significado_espiritual: 'Sábado-Reino. Malkuth é a Sephirah do reino, da manifestação e do mundo material. Saturno (Shabtai) rege este dia, canalizando energia debumildade, disciplina e trabalho terreno. Malkuth é a coroação da árvore, donde o divino se manifesta plenamente no mundo físico.',
     mystere: 'O segredo do divino que se manifesta no mundano. Malkuth ensina que o sagrado não está separado do mundo, mas habita em cada pedra, planta e pessoa. A matéria não é uma queda do espírito, mas sua expressão mais completa.',
@@ -243,7 +243,7 @@ export function getDaySephirot(dia: string): DaySephirot | undefined {
 }
 
 /**
- * Get the Sephirah name for a specific day (alias)
+ * Get the Sephirah name for a specific day
  * @param dia - The day name in Portuguese
  * @returns The Sephirah name or undefined if not found
  */
@@ -252,7 +252,7 @@ export function getSephirotByDay(dia: string): string | undefined {
 }
 
 /**
- * Get the day-Sephirot correlation mapping (reverse lookup)
+ * Get the day-Sephirot correlation mapping (reverse lookup - alias)
  * @param dia - The day name in Portuguese
  * @returns The correlation mapping or undefined if not found
  */
