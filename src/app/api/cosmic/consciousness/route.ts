@@ -64,8 +64,6 @@ const CONSCIOUSNESS_DATA: ConsciousnessData[] = [
   },
 };
 export async function GET(request: NextRequest) {
-};
-export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const parseResult = ConsciousnessQuerySchema.safeParse({
