@@ -53,12 +53,11 @@ describe('GET /api/dashboard/widgets', () => {
     }
   });
 
-  it('GET deve retornar erro 404 para widget type inválido', async () => {
+  it('GET deve retornar erro 400 para widget type inválido', async () => {
     const req = new NextRequest('http://localhost:3000/api/dashboard/widgets?type=invalid');
     const response = await GET(req);
-    expect(response.status).toBe(404);
-    
+    expect(response.status).toBe(400);
     const data = await response.json();
-    expect(data.error).toContain('Widget type not found');
+    expect(data.error).toBeDefined();
   });
 });

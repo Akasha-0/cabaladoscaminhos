@@ -14,7 +14,7 @@ const MoodQuerySchema = z.object({
   sefirot: SefirotSchema.optional(),
   chakra: ChakraSchema.optional(),
   element: ElementSchema.optional(),
- orixa: z.string().optional(),
+  orixa: z.string().optional(),
 });
 
 const MoodEntrySchema = z.object({
@@ -29,6 +29,81 @@ const MoodEntrySchema = z.object({
   element: ElementSchema.optional(),
 });
 
+// ─── Spiritual Correlations for Mood Types ──────────────────────────────────────────
+const MOOD_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  alegre: {
+    sefirot: ['Tipheret', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Eu irradio alegria e luz',
+    frequency: '528 Hz',
+  },
+  triste: {
+    sefirot: ['Binah', 'Yesod'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'Permito que a tristeza flua e libere',
+    frequency: '417 Hz',
+  },
+  ansioso: {
+    sefirot: ['Hod', 'Gevurah'],
+    chakra: 5,
+    element: 'Ar',
+    orixa: 'Ogum',
+    affirmation: 'Eu respiro com calma e confiança',
+    frequency: '741 Hz',
+  },
+  irritado: {
+    sefirot: ['Gevurah'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Xangô',
+    affirmation: 'Transformo a irritação em força positiva',
+    frequency: '528 Hz',
+  },
+  calmo: {
+    sefirot: ['Binah', 'Kether'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'A paz interior me sustenta',
+    frequency: '963 Hz',
+  },
+  esperancoso: {
+    sefirot: ['Chokhmah', 'Chesed'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A esperança ilumina meu caminho',
+    frequency: '528 Hz',
+  },
+  grato: {
+    sefirot: ['Chesed', 'Netzach'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'Gratidão abre as portas da abundância',
+    frequency: '528 Hz',
+  },
+  energizado: {
+    sefirot: ['Gevurah', 'Netzach'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'A energia flui através de mim',
+    frequency: '528 Hz',
+  },
+};
+
 // ─── Mood Types with Spiritual Correlations ──────────────────────────────────────────
 const MOOD_TYPES = [
   {
@@ -42,6 +117,7 @@ const MOOD_TYPES = [
     vibration: 9,
     description: 'Estado de alegria e entusiasmo que eleva a frequência vibracional.',
     affirmations: ['Eu irradio alegria e luz', 'A felicidade flui através de mim'],
+    spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS['alegre'],
   },
   {
     id: 'triste',
@@ -54,6 +130,7 @@ const MOOD_TYPES = [
     vibration: 4,
     description: 'Estado de tristeza que permite cura e limpeza emocional.',
     affirmations: ['Permito que a tristeza flua e libere', 'A dor é passageira e traz sabedoria'],
+    spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS['triste'],
   },
   {
     id: 'ansioso',
@@ -66,7 +143,8 @@ const MOOD_TYPES = [
     vibration: 5,
     description: 'Estado de inquietação mental que requer ancoramento.',
     affirmations: ['Eu respiro com calma e confiança', 'Estabeleço paz em minha mente'],
- },
+    spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS['ansioso'],
+  },
   {
     id: 'irritado',
     name: 'Irritado',
@@ -78,54 +156,46 @@ const MOOD_TYPES = [
     vibration: 5,
     description: 'Estado de tensão que pode indicar necessidade de purificação.',
     affirmations: ['Transformo a irritação em força positiva', 'Libero a tensão e abraço a paz'],
+    spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS['irritado'],
   },
   {
     id: 'calmo',
     name: 'Calmo',
     namePt: 'Calmo',
-    element: 'Água',
-    sefirot: ['Chesed', 'Tipheret'],
-    chakra: 4,
-    orixa: ['Oxalá', 'Iemanjá'],
+    element: 'Éter',
+    sefirot: ['Binah', 'Kether'],
+    chakra: 7,
+    orixa: ['Oxalá'],
     vibration: 8,
-    description: 'Estado de serenidade que favorece práticas espirituais.',
-    affirmations: ['Eu sou paz em todas as situações', 'A serenidade é meu estado natural'],
+    description: 'Estado de paz interior e serenidade espiritual.',
+    affirmations: ['A paz interior me sustenta', 'Sou um canal de calma divina'],
+    spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS['calmo'],
   },
   {
     id: 'esperancoso',
     name: 'Esperançoso',
     namePt: 'Esperançoso',
     element: 'Fogo',
-    sefirot: ['Chokhmah', 'Netzach'],
+    sefirot: ['Chokhmah', 'Chesed'],
     chakra: 6,
-    orixa: ['Oxum', 'Oxalá'],
+    orixa: ['Oxum'],
     vibration: 7,
-    description: 'Estado de abertura para possibilidades futuras.',
-    affirmations: ['O futuro traz experiências maravilhosas', 'Confio no plano divino para minha vida'],
+    description: 'Estado de esperança e otimismo em relação ao futuro.',
+    affirmations: ['A esperança ilumina meu caminho', 'O futuro traz bênçãos'],
+    spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS['esperancoso'],
   },
   {
     id: 'grato',
     name: 'Grato',
     namePt: 'Grato',
     element: 'Fogo',
-    sefirot: ['Chesed', 'Tipheret'],
+    sefirot: ['Chesed', 'Netzach'],
     chakra: 4,
-    orixa: ['Oxum', 'Iemanjá'],
-    vibration: 9,
-    description: 'Estado de gratidão que multiplica bênçãos e eleva a consciência.',
-    affirmations: ['Sou grato por todas as bênçãos', 'A gratidão abre portas para mais abundância'],
-  },
-  {
-    id: 'confuso',
-    name: 'Confuso',
-    namePt: 'Confuso',
-    element: 'Ar',
-    sefirot: ['Binah', 'Hod'],
-    chakra: 5,
-    orixa: ['Orunmilá', 'Oxalá'],
-    vibration: 4,
-    description: 'Estado de indefinição que pode indicar necessidade de consulta espiritual.',
-    affirmations: ['Clareio minha mente com luz divina', 'A sabedoria certa surge no momento certo'],
+    orixa: ['Oxum'],
+    vibration: 8,
+    description: 'Estado de gratidão que atrai abundância e boas energias.',
+    affirmations: ['Gratidão abre as portas da abundância', 'Sou grato por tudo em minha vida'],
+    spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS['grato'],
   },
   {
     id: 'energizado',
@@ -134,73 +204,16 @@ const MOOD_TYPES = [
     element: 'Fogo',
     sefirot: ['Gevurah', 'Netzach'],
     chakra: 3,
-    orixa: ['Ogum', 'Xangô'],
+    orixa: ['Ogum'],
     vibration: 8,
-    description: 'Estado de alta energia que favorece ação e conquista.',
-    affirmations: ['Canalizo minha energia para propósitos elevados', 'Minha energia serve à luz'],
+    description: 'Estado de alta energia e motivação para ação.',
+    affirmations: ['A energia flui através de mim', 'Tenho força para conquistar'],
+    spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS['energizado'],
   },
-  {
-    id: 'exausto',
-    name: 'Exausto',
-    namePt: 'Exausto',
-    element: 'Terra',
-    sefirot: ['Malkuth', 'Yesod'],
-    chakra: 1,
-    orixa: ['Omolu', 'Iemanjá'],
-    vibration: 3,
-    description: 'Estado de baixa energia que requer descanso e regeneração.',
-    affirmations: ['Permito que meu corpo descanse e se regenera', 'Aceito o descanso como necessidade sagrada'],
-  },
-  {
-    id: 'amoroso',
-    name: 'Amoroso',
-    namePt: 'Amoroso',
-    element: 'Fogo',
-    sefirot: ['Tipheret', 'Chesed'],
-    chakra: 4,
-    orixa: ['Oxum', 'Iemanjá'],
-    vibration: 10,
-    description: 'Estado de amor incondicional que é a frequência mais alta.',
-    affirmations: ['Eu sou amor', 'O amor flui através de mim sem limites'],
-  },
-  {
-    id: 'medroso',
-    name: 'Medroso',
-    namePt: 'Medroso',
-    element: 'Água',
-    sefirot: ['Gevurah', 'Malkuth'],
-    chakra: 1,
-    orixa: ['Ogum', 'Oxalá'],
-    vibration: 3,
-    description: 'Estado de medo que pode indicar proteção necessária ou insight deancestral.',
-    affirmations: ['Sou protegido por forças светлые', 'O medo não tem poder sobre mim'],
- },
 ];
 
-// ─── Emotion Correlations ──────────────────────────────────────────────
-const EMOTION_CORRELATIONS: Record<string, { sefirot: string[], chakra: number, element: string, orixa: string[] }> = {
-  'alegria': { sefirot: ['Tipheret', 'Netzach'], chakra: 4, element: 'Fogo', orixa: ['Oxum', 'Iansã'] },
-  'tristeza': { sefirot: ['Binah', 'Yesod'], chakra: 6, element: 'Água', orixa: ['Iemanjá', 'Oxum'] },
-  'raiva': { sefirot: ['Gevurah'], chakra: 3, element: 'Fogo', orixa: ['Xangô', 'Ogum'] },
-  'medo': { sefirot: ['Gevurah', 'Malkuth'], chakra: 1, element: 'Terra', orixa: ['Ogum', 'Oxalá'] },
-  'amor': { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: ['Oxum', 'Iemanjá'] },
-  'ansiedade': { sefirot: ['Hod', 'Gevurah'], chakra: 5, element: 'Ar', orixa: ['Ogum', 'Oxalá'] },
-  'paz': { sefirot: ['Chesed', 'Tipheret'], chakra: 4, element: 'Água', orixa: ['Oxalá', 'Iemanjá'] },
-  'frustracao': { sefirot: ['Hod', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: ['Xangô', 'Ogum'] },
-  'esperanca': { sefirot: ['Chokhmah', 'Netzach'], chakra: 6, element: 'Fogo', orixa: ['Oxum', 'Oxalá'] },
-  'gratidao': { sefirot: ['Chesed', 'Tipheret'], chakra: 4, element: 'Fogo', orixa: ['Oxum', 'Iemanjá'] },
-  'culpa': { sefirot: ['Gevurah', 'Malkuth'], chakra: 2, element: 'Terra', orixa: ['Omolu', 'Oxalá'] },
-  'vergonha': { sefirot: ['Hod', 'Malkuth'], chakra: 3, element: 'Terra', orixa: ['Oxalá', 'Ogum'] },
-  'inveja': { sefirot: ['Hod', 'Gevurah'], chakra: 4, element: 'Fogo', orixa: ['Exu', 'Xangô'] },
-  'orgulho': { sefirot: ['Gevurah', 'Hod'], chakra: 3, element: 'Fogo', orixa: ['Ogum', 'Xangô'] },
-  'surpresa': { sefirot: ['Chokhmah'], chakra: 6, element: 'Ar', orixa: ['Orunmilá'] },
-  'desprezo': { sefirot: ['Gevurah', 'Hod'], chakra: 5, element: 'Fogo', orixa: ['Exu', 'Ogum'] },
-  'interesse': { sefirot: ['Chokhmah', 'Netzach'], chakra: 5, element: 'Ar', orixa: ['Orunmilá', 'Oxum'] },
-  'nojo': { sefirot: ['Malkuth', 'Hod'], chakra: 3, element: 'Terra', orixa: ['Omolu', 'Iemanjá'] },
-};
-
-// ─── Mood Data Store ──────────────────────────────────────────────────────
-interface MoodEntry {
+// In-memory mood entries (would be database in production)
+const moodEntries: Array<{
   id: string;
   date: string;
   mood: string;
@@ -209,19 +222,19 @@ interface MoodEntry {
   notes?: string;
   tags?: string[];
   createdAt: string;
-  sefirot?: string[];
-  chakra?: number;
-  element?: string;
- orixa?: string[];
-}
+  spiritualCorrelations?: {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  };
+}> = [];
 
-const moodData: MoodEntry[] = [];
-
-// ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams();
-
     const parseResult = MoodQuerySchema.safeParse({
       date: searchParams.get('date'),
       sefirot: searchParams.get('sefirot'),
@@ -239,61 +252,73 @@ export async function GET(request: NextRequest) {
     }
 
     const { date, sefirot, chakra, element, orixa } = parseResult.data;
+    let entries = [...moodEntries];
 
-    let entries = [...moodData];
-
-    // Filter by date
     if (date) {
-      entries = entries.filter((e) => e.date === date);
+      entries = entries.filter(e => e.date === date);
     }
 
-    // Filter by spiritual correlations
     if (sefirot) {
-      entries = entries.filter(e => e.sefirot?.includes(sefirot));
-    }
-    if (chakra) {
-      entries = entries.filter(e => e.chakra === chakra);
-    }
-    if (element) {
-      entries = entries.filter(e => e.element === element);
-    }
-    if (orixa) {
-      entries = entries.filter(e => e.orixa?.some(o => o.toLowerCase().includes(orixa.toLowerCase())));
+      entries = entries.filter(e => e.spiritualCorrelations?.sefirot.includes(sefirot));
     }
 
-    // Statistics
-    const stats = {
-      byMood: moodData.reduce((acc, e) => {
+    if (chakra) {
+      entries = entries.filter(e => e.spiritualCorrelations?.chakra === chakra);
+    }
+
+    if (element) {
+      entries = entries.filter(e => e.spiritualCorrelations?.element === element);
+    }
+
+    if (orixa) {
+      entries = entries.filter(e => e.spiritualCorrelations?.orixa === orixa);
+    }
+
+    // Calculate spiritual stats
+    const spiritualStats = {
+      byMood: entries.reduce((acc, e) => {
         acc[e.mood] = (acc[e.mood] || 0) + 1;
         return acc;
       }, {} as Record<string, number>),
-      byElement: moodData.reduce((acc, e) => {
-        if (e.element) {
-          acc[e.element] = (acc[e.element] || 0) + 1;
-        }
+      avgIntensity: entries.reduce((sum, e) => sum + (e.intensity || 0), 0) / (entries.length || 1),
+      bySefirot: entries.reduce((acc, e) => {
+        e.spiritualCorrelations?.sefirot.forEach(s => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
         return acc;
       }, {} as Record<string, number>),
-      byChakra: moodData.reduce((acc, e) => {
-        if (e.chakra) {
-          acc[e.chakra] = (acc[e.chakra] || 0) + 1;
-        }
+      byChakra: entries.reduce((acc, e) => {
+        const c = e.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
         return acc;
-      }, {} as Record<number, number>),
-      totalEntries: moodData.length,
+      }, {} as Record<string, number>),
+      byElement: entries.reduce((acc, e) => {
+        const el = e.spiritualCorrelations?.element;
+        if (el) acc[el] = (acc[el] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+      byOrixa: entries.reduce((acc, e) => {
+        const o = e.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
     };
 
     return NextResponse.json({
       success: true,
       entries,
-      total: entries.length,
       moodTypes: MOOD_TYPES,
-      stats,
+      count: entries.length,
+      spiritualCorrelations: MOOD_SPIRITUAL_CORRELATIONS,
+      spiritualStats,
+      meta: {
+        filters: { date, sefirot, chakra, element, orixa },
+      },
     });
   } catch (error) {
-    const err = error as Error;
     return NextResponse.json({
       success: false,
-      error: `Erro interno: ${err.message}`,
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }
@@ -311,30 +336,13 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { date, mood, intensity, emotions, notes, tags, sefirot, chakra, element } = parseResult.data;
+    const { date, mood, intensity, emotions, notes, tags } = parseResult.data;
 
     // Find mood type correlations
-    const moodType = MOOD_TYPES.find(m => m.id === mood.toLowerCase() || m.namePt.toLowerCase() === mood.toLowerCase());
+    const moodType = MOOD_TYPES.find(m => m.id === mood);
+    const spiritualCorrelations = moodType?.spiritualCorrelations || MOOD_SPIRITUAL_CORRELATIONS['calmo'];
 
-    // Calculate emotion correlations
-    let emotionSefirot: string[] = [];
-    let emotionChakra: number | undefined;
-    let emotionElement: string | undefined;
-    let emotionOrixa: string[] = [];
-
-    if (emotions && emotions.length > 0) {
-      emotions.forEach(emotion => {
-        const corr = EMOTION_CORRELATIONS[emotion.toLowerCase()];
-        if (corr) {
-          emotionSefirot = [...new Set([...emotionSefirot, ...corr.sefirot])];
-          emotionChakra = emotionChakra || corr.chakra;
-          emotionElement = emotionElement || corr.element;
-          emotionOrixa = [...new Set([...emotionOrixa, ...corr.orixa])];
-        }
-      });
-    }
-
-    const entry: MoodEntry = {
+    const entry = {
       id: crypto.randomUUID(),
       date,
       mood,
@@ -343,30 +351,20 @@ export async function POST(request: NextRequest) {
       notes,
       tags,
       createdAt: new Date().toISOString(),
-      sefirot: sefirot || moodType?.sefirot || emotionSefirot,
-      chakra: chakra || moodType?.chakra || emotionChakra,
-      element: element || moodType?.element || emotionElement,
-      orixa: moodType?.orixa || emotionOrixa,
+      spiritualCorrelations,
     };
 
-    moodData.push(entry);
+    moodEntries.push(entry);
 
     return NextResponse.json({
       success: true,
       entry,
-      spiritualCorrelations: {
-        sefirot: entry.sefirot,
-        chakra: entry.chakra,
-        element: entry.element,
-        orixa: entry.orixa,
-        moodVibration: moodType?.vibration,
-      },
+      spiritualCorrelations,
     }, { status: 201 });
   } catch (error) {
-    const err = error as Error;
     return NextResponse.json({
       success: false,
-      error: `Erro interno: ${err.message}`,
+      error: error instanceof Error ? error.message : 'Erro interno',
     }, { status: 500 });
   }
 }
