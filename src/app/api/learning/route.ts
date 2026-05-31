@@ -1,24 +1,26 @@
-// ============================================================
-// LEARNING API - CABALA DOS CAMINHOS
-// ============================================================
-// GET endpoints for spiritual learning content
-// - Courses and lessons
-// - Progress tracking
-// - Quiz management
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { withErrorHandler } from '@/lib/error-handling';
-
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const LearningEndpointSchema = z.enum([
+  'courses', 'course', 'lessons', 'lesson', 'progress', 'categories'
+]);
+const LearningQuerySchema = z.object({
+  endpoint: LearningEndpointSchema,
+  id: z.string().optional(),
+  category: z.string().optional(),
+  difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+  courseId: z.string().optional(),
+  lessonId: z.string().optional(),
+});
 interface Lesson {
   id: string;
   title: string;
   description: string;
   content: string;
-  duration: number; // in minutes
+  duration: number;
   order: number;
 }
-
 interface Course {
   id: string;
   title: string;
@@ -28,11 +30,8 @@ interface Course {
   lessons: Lesson[];
   totalDuration: number;
 }
-
 interface Progress {
   courseId: string;
-  lessonId: string;
-  completed: boolean;
   completedAt?: string;
 }
 
