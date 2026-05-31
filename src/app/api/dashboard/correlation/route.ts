@@ -1,5 +1,20 @@
-import { NextResponse } from 'next/server';
-
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const CorrelationSourceSchema = z.enum(['Solar', 'Lunar', 'Chakra', 'Orixá', 'Odu', 'Element', 'Tarot', 'Numerology', 'Astrology']);
+const CorrelationTargetSchema = z.enum(['CPU', 'Memory', 'Storage', 'Network', 'Performance', 'Health', 'Energy', 'Vibration']);
+const CorrelationTypeSchema = z.enum(['positive', 'negative', 'neutral']);
+const CorrelationQuerySchema = z.object({
+  type: z.enum(['spiritual', 'technical', 'mixed']).optional(),
+  sourceType: z.enum(['spiritual', 'technical']).optional(),
+  targetType: z.enum(['spiritual', 'technical']).optional(),
+  anomaly: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+});
+const AnalyzeCorrelationSchema = z.object({
+  source: z.string().min(1, 'Source é obrigatório'),
+  target: z.string().min(1, 'Target é obrigatório'),
+  type: CorrelationTypeSchema.optional().default('positive'),
+});
 // Correlation data types
 interface Correlation {
   id: string;
@@ -13,7 +28,16 @@ interface Correlation {
   lastUpdated: string;
   anomaly?: boolean;
 }
-
+interface Pattern {
+  id: string;
+  type: 'spiritual' | 'technical' | 'mixed';
+  title: string;
+  description: string;
+  confidence: number;
+  timestamp: string;
+  alerts?: string[];
+  metrics?: Record<string, number>;
+}
 interface Pattern {
   id: string;
   type: 'spiritual' | 'technical' | 'mixed';
