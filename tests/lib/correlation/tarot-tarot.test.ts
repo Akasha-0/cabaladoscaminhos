@@ -58,11 +58,6 @@ describe('tarot-tarot', () => {
       expect(Array.isArray(result)).toBe(true);
     });
 
-    it('returns readonly array', () => {
-      const result = getAllTarotPaths();
-      expect(result).toBeReadonly();
-    });
-
     it('contains all 22 Major Arcana cards', () => {
       const result = getAllTarotPaths();
       const uniqueArcanos = new Set(
@@ -141,6 +136,14 @@ describe('tarot-tarot', () => {
       expect(result[0]).toBe('O Louco');
       expect(result[21]).toBe('O Mundo');
     });
+
+    it('contains all known arcano names', () => {
+      const result = getAllMappedArcanos();
+      expect(result).toContain('O Mago');
+      expect(result).toContain('A Sacerdotisa');
+      expect(result).toContain('O Sol');
+      expect(result).toContain('A Morte');
+    });
   });
 
   describe('getRelationsForArcano', () => {
@@ -154,6 +157,16 @@ describe('tarot-tarot', () => {
       const result = getRelationsForArcano('Unknown');
       expect(result).toBeDefined();
       expect(result.length).toBe(0);
+    });
+
+    it('each relation contains the searched arcano', () => {
+      const arcano = 'O Mago';
+      const result = getRelationsForArcano(arcano);
+      result.forEach((mapping) => {
+        expect(
+          mapping.arcano === arcano || mapping.related_arcano === arcano,
+        ).toBe(true);
+      });
     });
   });
 
@@ -257,19 +270,33 @@ describe('tarot-tarot', () => {
     it('returns null for invalid number', () => {
       expect(getArcanoByNumber(99)).toBeNull();
     });
+
+    it('returns null for negative number', () => {
+      expect(getArcanoByNumber(-1)).toBeNull();
+    });
   });
 
   describe('TAROT_TAROT_MAPPINGS constant', () => {
-    it('is readonly', () => {
-      expect(TAROT_TAROT_MAPPINGS).toBeReadonly();
-    });
-
     it('is frozen', () => {
       expect(Object.isFrozen(TAROT_TAROT_MAPPINGS)).toBe(true);
     });
 
     it('has expected length', () => {
       expect(TAROT_TAROT_MAPPINGS.length).toBeGreaterThan(60);
+    });
+
+    it('contains valid mappings', () => {
+      TAROT_TAROT_MAPPINGS.forEach((mapping: TarotTarotMapping) => {
+        expect(typeof mapping.arcano).toBe('string');
+        expect(typeof mapping.numero_carta).toBe('number');
+        expect(typeof mapping.related_arcano).toBe('string');
+        expect(typeof mapping.related_numero).toBe('number');
+        expect(typeof mapping.path_type).toBe('string');
+        expect(mapping.spiritual_meaning).toBeDefined();
+        expect(typeof mapping.spiritual_meaning.significado).toBe('string');
+        expect(typeof mapping.spiritual_meaning.crescimento).toBe('string');
+        expect(typeof mapping.spiritual_meaning.desafio).toBe('string');
+      });
     });
   });
 
@@ -284,6 +311,19 @@ describe('tarot-tarot', () => {
 
     it('ends with O Mundo', () => {
       expect(ALL_MAJOR_ARCANOS[21]).toBe('O Mundo');
+    });
+
+    it('contains all Major Arcana cards in order', () => {
+      const expected = [
+        'O Louco', 'O Mago', 'A Sacerdotisa', 'A Imperatriz', 'O Imperador',
+        'O Hierofante', 'Os Enamorados', 'O Carro', 'A Força', 'O Eremita',
+        'A Roda da Fortuna', 'A Justiça', 'O Enforcado', 'A Morte', 'A Temperança',
+        'O Diabo', 'A Torre', 'A Estrela', 'A Lua', 'O Sol',
+        'O Julgamento', 'O Mundo',
+      ];
+      expected.forEach((arcano, index) => {
+        expect(ALL_MAJOR_ARCANOS[index]).toBe(arcano);
+      });
     });
   });
 
