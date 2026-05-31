@@ -194,9 +194,9 @@ export const TAROT_FREQUENCY_MAP: Record<number, TarotFrequencyMapping> = {
     significado_espiritual: 'Força interior, coragem, paciência, poder, domínio de emoções',
     propriedades_healing: ['Fortalece coragem', 'Promove calma', 'Desenvolve poder interior', 'Equilibra emoções'],
     sephirah: 'Lamed',
-  },
-  // XII - O Enforcado - Pause, surrender, sacrifice, new perspective
-  12: {
+export const SOLFEGGIO_FREQUENCIES = [396, 417, 528, 639, 741, 852, 963] as const;
+to:
+export const SOLFEGGIO_FREQUENCIES: readonly number[] = Object.freeze([396, 417, 528, 639, 741, 852, 963]);
     numero_carta: 12,
     arcano: 'O Enforcado',
     frequencia: 528,
@@ -439,6 +439,12 @@ export function getAllArcanos(): string[] {
   return Object.values(TAROT_FREQUENCY_MAP)
     .map((m) => m.arcano)
     .sort((a, b) => TAROT_FREQUENCY_MAP.findIndex((m) => m.arcano === a) - TAROT_FREQUENCY_MAP.findIndex((m) => m.arcano === b));
+}
+to:
+export function getAllArcanos(): string[] {
+  return Object.values(TAROT_FREQUENCY_MAP)
+    .sort((a, b) => a.numero_carta - b.numero_carta)
+    .map((m) => m.arcano);
 }
 
 /**
