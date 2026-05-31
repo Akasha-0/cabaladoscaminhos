@@ -8,8 +8,47 @@
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
-// Planetary data structure
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const PlanetKeySchema = z.enum([
+  'sol', 'lua', 'mercurio', 'venus', 'marte',
+  'jupiter', 'saturno', 'urano', 'netuno', 'plutao'
+]);
+
+const PlanetaryQuerySchema = z.object({
+  planet: z.string().optional(),
+  type: z.enum(['guidance', 'correspondences', 'full']).optional(),
+});
+
+const PlanetSchema = z.object({
+  name: z.string(),
+  namePt: z.string(),
+  symbol: z.string(),
+  ruler: z.string(),
+  day: z.string(),
+  metal: z.string(),
+  stone: z.string(),
+  color: z.string(),
+  quality: z.string(),
+  element: z.enum(['Fogo', 'Água', 'Ar', 'Terra', 'Éter']),
+  sefirot: z.array(z.string()),
+  orixas: z.array(z.string()),
+  tarot: z.array(z.string()),
+  chakra: z.string(),
+  traits: z.array(z.string()),
+  strengths: z.array(z.string()),
+  challenges: z.array(z.string()),
+  affirmation: z.string(),
+  meaning: z.string(),
+});
+
+const PositionSchema = z.object({
+  sign: z.string(),
+  degree: z.number(),
+});
+
+// ─── Type Definitions ───────────────────────────────────────────────────────
 interface Planet {
   name: string;
   namePt: string;
@@ -32,6 +71,20 @@ interface Planet {
   meaning: string;
 }
 
+interface Guidance {
+  sign: string;
+  degree: string;
+  daily: string;
+  affirmations: string[];
+  actions: string[];
+  favorable: string[];
+  caution: string[];
+  timeOfDay: string;
+}
+
+export const dynamic = 'force-dynamic';
+
+// ─── Planetary Data ───────────────────────────────────────────────────────
 const PLANETS: Record<string, Planet> = {
   sol: {
     name: 'Sun',
@@ -189,7 +242,7 @@ const PLANETS: Record<string, Planet> = {
     metal: 'Urânio, Metal radioativo',
     stone: 'Moldavita, Rodocrosita',
     color: 'Ciano, elétrico',
-    quality: 'FixO',
+    quality: 'Fixo',
     element: 'Éter',
     sefirot: ['Keter'],
     orixas: ['Oxumaré'],
@@ -217,7 +270,7 @@ const PLANETS: Record<string, Planet> = {
     tarot: ['A Lua (XVIII)', 'A Estrela (XVII)'],
     chakra: 'Sahasrara (7º) - Ajna (6º)',
     traits: ['Transcendência', 'Intuição superior', 'Sonhos', 'Arte', 'Misticismo', 'União cósmica'],
-    strengths: ['Compaixão', 'Inspiração artística', 'Conexão espiritual', 'Sensaiblidade transcendente'],
+    strengths: ['Compaixão', 'Inspiração artística', 'Conexão espiritual', 'Sensibilidade transcendente'],
     challenges: ['Ilusão', 'Confusão', 'Vulnerabilidade a enganos', 'Dissolução de limites'],
     affirmation: 'Permaneço no fluxo divino enquanto mantenho minha essência clara e protegida.',
     meaning: 'Netuno dissolve os limites entre o eu e o todo, revelando a unidade sagrada de toda existência.',
@@ -231,13 +284,13 @@ const PLANETS: Record<string, Planet> = {
     metal: 'Plutônio',
     stone: 'Obsidiana, Turmalina negra',
     color: 'Negro profundo',
-    quality: 'FixO',
+    quality: 'Fixo',
     element: 'Fogo',
     sefirot: ['Daat'],
     orixas: ['Omulu', 'Sangue de Aço (Oxumaré)'],
     tarot: ['A Torre (XVI)', 'A Morte (XIII)', 'O Julgamento (XX)'],
     chakra: 'Muladhara (1º) - Sahasrara (7º)',
-    traits: ['Transformação', 'Regeneração', 'Poder', 'Sangue', 'Sexualidade profunda', 'Rebirth'],
+    traits: ['Transformação', 'Regeneração', 'Poder', 'Sexualidade profunda', 'Rebirth'],
     strengths: ['Resiliência', 'Capacidade de renovação', 'Profundidade psicológica', 'Desapego radical'],
     challenges: ['Obsessão', 'Manipulação', 'Medo primordial', 'Sombra'],
     affirmation: 'Permito que o fogo da transformação renove minha alma, emergindo mais forte.',
@@ -250,8 +303,6 @@ function getPlanetaryPositions(): Record<string, { sign: string; degree: number 
   const now = new Date();
   const jd = getJulianDay(now);
   
-  // Simplified planetary longitude calculations
-  // In production, use a full ephemeris library like swisseph
   return {
     sol: { sign: 'Gêmeos', degree: ((jd * 13 + 45) % 360) },
     lua: { sign: 'Touro', degree: ((jd * 237 + 89) % 360) },
@@ -279,59 +330,92 @@ function getJulianDay(date: Date): number {
   return d + Math.floor((153 * m2 + 2) / 5) + 365 * y2 + Math.floor(y2 / 4) - Math.floor(y2 / 100) + Math.floor(y2 / 400) - 32045;
 }
 
+// ─── API Routes ─────────────────────────────────────────────────────────────
 // GET endpoint - retrieve planetary wisdom
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const planet = searchParams.get('planet');
-  const type = searchParams.get('type');
+  try {
+    const searchParams = request.nextUrl.searchParams;
 
-  // Return all planets with positions
-  if (!planet) {
-    const positions = getPlanetaryPositions();
-    const planetsWithData = Object.entries(PLANETS).map(([key, p]) => ({
-      key,
-      ...p,
-      currentPosition: positions[key],
-    }));
-
-    return NextResponse.json({
-      planets: planetsWithData,
-      timestamp: new Date().toISOString(),
-      type: 'all',
+    const parseResult = PlanetaryQuerySchema.safeParse({
+      planet: searchParams.get('planet'),
+      type: searchParams.get('type'),
     });
-  }
 
-  // Return specific planet
-  const planetKey = planet.toLowerCase();
-  const planetData = PLANETS[planetKey];
+    if (!parseResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
 
-  if (!planetData) {
-    return NextResponse.json(
-      { error: 'Planeta não encontrado', available: Object.keys(PLANETS) },
-      { status: 404 }
-    );
-  }
+    const { planet, type } = parseResult.data;
+    const positions = getPlanetaryPositions();
 
-  const positions = getPlanetaryPositions();
-  const response: Record<string, unknown> = {
-    key: planetKey,
-    ...planetData,
-    currentPosition: positions[planetKey],
-    timestamp: new Date().toISOString(),
-  };
+    // Return all planets with positions
+    if (!planet) {
+      const planetsWithData = Object.entries(PLANETS).map(([key, p]) => ({
+        key,
+        ...p,
+        currentPosition: positions[key],
+      }));
 
-  // Add specific wisdom based on type
-  if (type === 'guidance') {
+      return NextResponse.json({
+        success: true,
+        planets: planetsWithData,
+        timestamp: new Date().toISOString(),
+        type: 'all',
+        meta: {
+          total: Object.keys(PLANETS).length,
+          availablePlanets: Object.keys(PLANETS),
+        },
+      });
+    }
+
+    // Validate planet key
+    const planetKeyParse = z.string().refine(
+      (val) => Object.keys(PLANETS).includes(val.toLowerCase()),
+      { message: 'Planeta inválido' }
+    ).safeParse(planet.toLowerCase());
+
+    if (!planetKeyParse.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Planeta inválido',
+        available: Object.keys(PLANETS),
+      }, { status: 400 });
+    }
+
+    const planetKey = planetKeyParse.data;
+    const planetData = PLANETS[planetKey];
     const pos = positions[planetKey];
-    response.guidance = generateGuidance(planetKey, planetData, pos);
-    response.type = 'guidance';
-  } else if (type === 'correspondences') {
-    response.type = 'correspondences';
-  } else {
-    response.type = 'full';
-  }
 
-  return NextResponse.json(response);
+    const response: Record<string, unknown> = {
+      success: true,
+      key: planetKey,
+      ...planetData,
+      currentPosition: pos,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Add specific wisdom based on type
+    if (type === 'guidance') {
+      response.guidance = generateGuidance(planetKey, planetData, pos);
+      response.type = 'guidance';
+    } else if (type === 'correspondences') {
+      response.type = 'correspondences';
+    } else {
+      response.type = 'full';
+    }
+
+    return NextResponse.json(response);
+  } catch (error) {
+    const err = error as Error;
+    return NextResponse.json({
+      success: false,
+      error: `Erro interno: ${err.message}`,
+    }, { status: 500 });
+  }
 }
 
 // Generate guidance based on planetary position
@@ -339,11 +423,10 @@ function generateGuidance(
   planetKey: string,
   planet: Planet,
   position: { sign: string; degree: number }
-): Record<string, string | string[]> {
+): Guidance {
   const hour = new Date().getHours();
   const isDaytime = hour >= 6 && hour < 18;
   
-  // Basic guidance templates
   const signInfluences: Record<string, string[]> = {
     'Áries': ['Inicie novos projetos com coragem', 'Canalize energia em ação construtiva', 'Assertividade é favorecida'],
     'Touro': ['Foque em estabilidade e recursos', 'Prazer sensorial e conforto', 'Persistência traz resultados'],
@@ -361,27 +444,29 @@ function generateGuidance(
 
   const signInfluence = signInfluences[position.sign] || ['Influência neutral'];
 
+  const planetActions: Record<string, string[]> = {
+    sol: ['Aprecie sua identidade única', 'Busque clareza em decisões'],
+    lua: ['Honre suas emoções', 'Pratique autocuidado'],
+    mercurio: ['Comunique-se claramente', 'Organize seus pensamentos'],
+    venus: ['Cultive relacionamentos', 'Aprecie a beleza'],
+    marte: ['Tome iniciativa', 'Canalize energia positivamente'],
+    jupiter: ['Expanda seus horizontes', 'Busque conhecimento'],
+    saturno: ['Estabeleça estruturas', 'Pratique paciência'],
+    urano: ['Abrace a mudança', 'Seja original'],
+    netuno: ['Medite ou sonhe', 'Confie na intuição'],
+    plutao: ['Libere o que não serve', 'Permita renascimento'],
+  };
+
   return {
     sign: position.sign,
-    degree: position.degree.toString(),
+    degree: position.degree.toFixed(2),
     daily: `${planet.namePt} está em ${position.sign}. ${planet.affirmation}`,
     affirmations: [
       planet.affirmation,
       planet.ruler,
       ...signInfluence.slice(0, 2),
     ],
-    actions: [
-      ...(planetKey === 'sol' ? ['Aprecie sua identidade única', 'Busque clareza em decisões'] : []),
-      ...(planetKey === 'lua' ? ['Honre suas emoções', 'Pratique autocuidado'] : []),
-      ...(planetKey === 'mercurio' ? ['Comunique-se claramente', 'Organize seus pensamentos'] : []),
-      ...(planetKey === 'venus' ? ['Cultive relacionamentos', 'Aprecie a beleza'] : []),
-      ...(planetKey === 'marte' ? ['Tome iniciativa', 'Canalize energia positivamente'] : []),
-      ...(planetKey === 'jupiter' ? ['Expanda seus horizontes', 'Busque conhecimento'] : []),
-      ...(planetKey === 'saturno' ? ['Estabeleça estruturas', 'Pratique paciência'] : []),
-      ...(planetKey === 'urano' ? ['Abrace a mudança', 'Seja original'] : []),
-      ...(planetKey === 'netuno' ? ['Medite ou sonhe', 'Confie na intuição'] : []),
-      ...(planetKey === 'plutao' ? ['Libere o que não serve', 'Permita renascimento'] : []),
-    ],
+    actions: planetActions[planetKey] || [],
     favorable: planet.traits.slice(0, 3),
     caution: planet.challenges.slice(0, 2),
     timeOfDay: isDaytime ? 'Período diurno favorece energia Yang e ação' : 'Período noturno favorece energia Yin e reflexão',
