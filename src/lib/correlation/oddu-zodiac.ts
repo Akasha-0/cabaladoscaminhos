@@ -4,8 +4,6 @@
  * With spiritual meaning for divination and astrological interpretation
  */
 
-// ─── Type Definitions ────────────────────────────────────────────────────────
-
 export type ZodiacSign =
   | 'Áries'
   | 'Touro'
@@ -23,216 +21,46 @@ export type ZodiacSign =
 export type ElementType = 'fogo' | 'água' | 'ar' | 'terra';
 
 export interface OduZodiac {
-  /** Odu number (1-16) */
   odu_numero: number;
-  /** Odu name in Portuguese */
   odu_nome: string;
-  /** Odu name in Yoruba */
   odu_nome_yoruba: string;
-  /** Corresponding zodiac sign */
   signo: ZodiacSign;
-  /** Element of the sign */
   elemento: ElementType;
-  /** Spiritual meaning for divination */
   significado_espiritual: string;
-  /** Key spiritual message */
   mensagem_central: string;
 }
 
-// ─── Odú Ifá-to-Zodiac Mapping (Merindilogun 1-16) ────────────────────────────
-
 export const ODU_ZODIAC_MAPPINGS: Record<number, OduZodiac> = {
-  // ─── 1: Okaran (Okànràn) ───────────────────────────────────────────────────
-  1: {
-    odu_numero: 1,
-    odu_nome: 'Okaran',
-    odu_nome_yoruba: 'Okànràn',
-    signo: 'Áries',
-    elemento: 'fogo',
-    significado_espiritual: 'Coragem, recomeço, pioneirismo. Odu do líder que abre caminhos e da chama que acende novas jornadas.',
-    mensagem_central: 'A coragem move montanhas. Okaran traz a força do fogo para iniciar.',
-  },
-
-  // ─── 2: Ejiokô ─────────────────────────────────────────────────────────────
-  2: {
-    odu_numero: 2,
-    odu_nome: 'Ejiokô',
-    odu_nome_yoruba: 'Ejìokò',
-    signo: 'Touro',
-    elemento: 'terra',
-    significado_espiritual: 'Estabilidade, valor, escolha consciente. Revela a necessidade de construir sobre fundamentos sólidos.',
-    mensagem_central: 'Escolhas importantes pedem firmeza. Ejiokô orienta decisões com persistência.',
-  },
-
-  // ─── 3: Etaogundá ──────────────────────────────────────────────────────────
-  3: {
-    odu_numero: 3,
-    odu_nome: 'Etaogundá',
-    odu_nome_yoruba: 'Ẹtaọgúndá',
-    signo: 'Gêmeos',
-    elemento: 'ar',
-    significado_espiritual: 'Comunicação, dualidade, transformação. Reflete a natureza mutável e a capacidade de adaptar-se.',
-    mensagem_central: 'A fluidez entre opostos traz sabedoria. Etaogundá abre portas da comunicação.',
-  },
-
-  // ─── 4: Irosun ─────────────────────────────────────────────────────────────
-  4: {
-    odu_numero: 4,
-    odu_nome: 'Irosun',
-    odu_nome_yoruba: 'Ìrosùn',
-    signo: 'Câncer',
-    elemento: 'água',
-    significado_espiritual: 'Intuição lunar, emoções profundas, proteção. Revela verdades ocultas e a sabedoria do inconsciente.',
-    mensagem_central: 'Confie na voz interior. Irosun conecta com a memória ancestral.',
-  },
-
-  // ─── 5: Oxé ────────────────────────────────────────────────────────────────
-  5: {
-    odu_numero: 5,
-    odu_nome: 'Oxé',
-    odu_nome_yoruba: 'Ọ̀sà',
-    signo: 'Leão',
-    elemento: 'fogo',
-    significado_espiritual: 'Poder pessoal, criatividade, realeza interior. Ação decisiva que transforma realidades.',
-    mensagem_central: 'O fogo do destino brilha em ti. Oxé desperta a força criadora.',
-  },
-
-  // ─── 6: Obará ───────────────────────────────────────────────────────────────
-  6: {
-    odu_numero: 6,
-    odu_nome: 'Obará',
-    odu_nome_yoruba: 'Ọbàlúayé',
-    signo: 'Virgem',
-    elemento: 'terra',
-    significado_espiritual: 'Purificação, serviço, análise. Transformação através da cura e do discernimento preciso.',
-    mensagem_central: 'A purificação traz restauração. Obará limpa e transforma.',
-  },
-
-  // ─── 7: Odi ────────────────────────────────────────────────────────────────
-  7: {
-    odu_numero: 7,
-    odu_nome: 'Odi',
-    odu_nome_yoruba: 'Òdí',
-    signo: 'Libra',
-    elemento: 'ar',
-    significado_espiritual: 'Harmonia, equilíbrio, destino. Padrões ocultos que direcionam relacionamentos e escolhas.',
-    mensagem_central: 'O equilíbrio revela o caminho. Odi traz justiça aos destinos.',
-  },
-
-  // ─── 8: Ejionlá ─────────────────────────────────────────────────────────────
-  8: {
-    odu_numero: 8,
-    odu_nome: 'Ejionlá',
-    odu_nome_yoruba: 'Ejìọnlá',
-    signo: 'Escorpião',
-    elemento: 'água',
-    significado_espiritual: 'Transformação profunda, regeneração, mistério. Morte e renascimento espiritual.',
-    mensagem_central: 'Das cinzas surge a força. Ejionlá desperta o poder regenerador.',
-  },
-
-  // ─── 9: Oshe ────────────────────────────────────────────────────────────────
-  9: {
-    odu_numero: 9,
-    odu_nome: 'Oshe',
-    odu_nome_yoruba: 'Ọ̀shẹ́',
-    signo: 'Sagitário',
-    elemento: 'fogo',
-    significado_espiritual: 'Expansão, fé, aventura espiritual. Busca por significado e conexão com o divino.',
-    mensagem_central: 'O conhecimento ilumina a jornada. Oshe expande horizontes.',
-  },
-
-  // ─── 10: Ofun ───────────────────────────────────────────────────────────────
-  10: {
-    odu_numero: 10,
-    odu_nome: 'Ofun',
-    odu_nome_yoruba: 'Ọ̀fún',
-    signo: 'Capricórnio',
-    elemento: 'terra',
-    significado_espiritual: 'Disciplina, paciência, conquistas materiais. Sabedoria conquistada através da perseverança.',
-    mensagem_central: 'A paciência constrói impérios. Ofun traz realizações duradouras.',
-  },
-
-  // ─── 11: Eyonla ─────────────────────────────────────────────────────────────
-  11: {
-    odu_numero: 11,
-    odu_nome: 'Eyonla',
-    odu_nome_yoruba: 'Èyọ́nlá',
-    signo: 'Aquário',
-    elemento: 'ar',
-    significado_espiritual: 'Inovação, humanitarianismo, sabedoria libertária. Visão que transcende convenções.',
-    mensagem_central: 'A sabedoria libertária transforma. Eyonla abre a mente para o novo.',
-  },
-
-  // ─── 12: Merinla ─────────────────────────────────────────────────────────────
-  12: {
-    odu_numero: 12,
-    odu_nome: 'Merinla',
-    odu_nome_yoruba: 'Mẹ̀rìnlá',
-    signo: 'Peixes',
-    elemento: 'água',
-    significado_espiritual: 'Unidade cósmica, sacrifício, compaixão infinita. Dissolução de fronteiras entre self e universo.',
-    mensagem_central: 'A compaixão une todos os seres. Merinla dissolve o véu entre dimensões.',
-  },
-
-  // ─── 13: Mero ────────────────────────────────────────────────────────────────
-  13: {
-    odu_numero: 13,
-    odu_nome: 'Mero',
-    odu_nome_yoruba: 'Mẹ̀rọ̀',
-    signo: 'Áries',
-    elemento: 'fogo',
-    significado_espiritual: 'Descoberta, tesouros ocultos, revelação. Prosperidade que surge do inesperado e da coragem.',
-    mensagem_central: 'Tesouros escondidos esperam coragem. Mero revela a riqueza do caminho.',
-  },
-
-  // ─── 14: Jinza ────────────────────────────────────────────────────────────────
-  14: {
-    odu_numero: 14,
-    odu_nome: 'Jinza',
-    odu_nome_yoruba: 'Jìnza',
-    signo: 'Touro',
-    elemento: 'terra',
-    significado_espiritual: 'Força interior, proteção, vitória. Batalha espiritual ganha através da determinação inabalável.',
-    mensagem_central: 'A determinação vence obstáculos. Jinza traz a força do guerreiro.',
-  },
-
-  // ─── 15: Jotagbe ────────────────────────────────────────────────────────────
-  15: {
-    odu_numero: 15,
-    odu_nome: 'Jotagbe',
-    odu_nome_yoruba: 'Jọ́tágbè',
-    signo: 'Gêmeos',
-    elemento: 'ar',
-    significado_espiritual: 'Comunicação ancestral, linhagem espiritual. Conexão entre passado e presente através da palavra sagrada.',
-    mensagem_central: 'A ancestralidade fala através de ti. Jotagbe abre canais de sabedoria.',
-  },
-
-  // ─── 16: Otura ──────────────────────────────────────────────────────────────
-  16: {
-    odu_numero: 16,
-    odu_nome: 'Otura',
-    odu_nome_yoruba: 'Òtúrá',
-    signo: 'Câncer',
-    elemento: 'água',
-    significado_espiritual: 'Jornada, destino, caminho revelado. O destino se forma a cada passo da jornada.',
-    mensagem_central: 'O caminho se revela na caminhada. Otura orienta a jornada do destino.',
-  },
+  1: { odu_numero: 1, odu_nome: 'Okaran', odu_nome_yoruba: 'Okànràn', signo: 'Áries', elemento: 'fogo', significado_espiritual: 'Coragem, recomeço, pioneirismo. Odu do líder que abre caminhos e da chama que acende novas jornadas.', mensagem_central: 'A coragem move montanhas. Okaran traz a força do fogo para iniciar.' },
+  2: { odu_numero: 2, odu_nome: 'Ejiokô', odu_nome_yoruba: 'Ejìokò', signo: 'Touro', elemento: 'terra', significado_espiritual: 'Estabilidade, valor, escolha consciente. Revela a necessidade de construir sobre fundamentos sólidos.', mensagem_central: 'Escolhas importantes pedem firmeza. Ejiokô orienta decisões com persistência.' },
+  3: { odu_numero: 3, odu_nome: 'Etaogundá', odu_nome_yoruba: 'Ẹtaọgúndá', signo: 'Gêmeos', elemento: 'ar', significado_espiritual: 'Comunicação, dualidade, transformação. Reflete a natureza mutável e a capacidade de adaptar-se.', mensagem_central: 'A fluidez entre opostos traz sabedoria. Etaogundá abre portas da comunicação.' },
+  4: { odu_numero: 4, odu_nome: 'Irosun', odu_nome_yoruba: 'Ìrosùn', signo: 'Câncer', elemento: 'água', significado_espiritual: 'Intuição lunar, emoções profundas, proteção. Revela verdades ocultas e a sabedoria do inconsciente.', mensagem_central: 'Confie na voz interior. Irosun conecta com a memória ancestral.' },
+  5: { odu_numero: 5, odu_nome: 'Oxé', odu_nome_yoruba: 'Ọ̀sà', signo: 'Leão', elemento: 'fogo', significado_espiritual: 'Poder pessoal, criatividade, realeza interior. Ação decisiva que transforma realidades.', mensagem_central: 'O fogo do destino brilha em ti. Oxé desperta a força criadora.' },
+  6: { odu_numero: 6, odu_nome: 'Obará', odu_nome_yoruba: 'Ọbàlúayé', signo: 'Virgem', elemento: 'terra', significado_espiritual: 'Purificação, serviço, análise. Transformação através da cura e do discernimento preciso.', mensagem_central: 'A purificação traz restauração. Obará limpa e transforma.' },
+  7: { odu_numero: 7, odu_nome: 'Odi', odu_nome_yoruba: 'Òdí', signo: 'Libra', elemento: 'ar', significado_espiritual: 'Harmonia, equilíbrio, destino. Padrões ocultos que direcionam relacionamentos e escolhas.', mensagem_central: 'O equilíbrio revela o caminho. Odi traz justiça aos destinos.' },
+  8: { odu_numero: 8, odu_nome: 'Ejionlá', odu_nome_yoruba: 'Ejìọnlá', signo: 'Escorpião', elemento: 'água', significado_espiritual: 'Transformação profunda, regeneração, mistério. Morte e renascimento espiritual.', mensagem_central: 'Das cinzas surge a força. Ejionlá desperta o poder transformador.' },
+  9: { odu_numero: 9, odu_nome: 'Oshe', odu_nome_yoruba: 'Ọ̀shẹ́', signo: 'Sagitário', elemento: 'fogo', significado_espiritual: 'Expansão, fé, aventura espiritual. Busca por significado e conexão com o divino.', mensagem_central: 'O conhecimento ilumina a jornada. Oshe expande horizontes.' },
+  10: { odu_numero: 10, odu_nome: 'Ofun', odu_nome_yoruba: 'Ọ̀fún', signo: 'Capricórnio', elemento: 'terra', significado_espiritual: 'Disciplina, paciência, conquistas materiais. Sabedoria conquistada através da perseverança.', mensagem_central: 'A paciência constrói impérios. Ofun traz realizações duradouras.' },
+  11: { odu_numero: 11, odu_nome: 'Eyonla', odu_nome_yoruba: 'Èyọ́nlá', signo: 'Aquário', elemento: 'ar', significado_espiritual: 'Inovação, humanitarianismo, sabedoria libertária. Visão que transcende convenções.', mensagem_central: 'A sabedoria libertária transforma. Eyonla abre a mente para o novo.' },
+  12: { odu_numero: 12, odu_nome: 'Merinla', odu_nome_yoruba: 'Mẹ̀rìnlá', signo: 'Peixes', elemento: 'água', significado_espiritual: 'Unidade cósmica, sacrifício, compaixão infinita. Dissolução de fronteiras entre self e universo.', mensagem_central: 'A compaixão une todos os seres. Merinla dissolve o véu entre dimensões.' },
+  13: { odu_numero: 13, odu_nome: 'Mero', odu_nome_yoruba: 'Mẹ̀rọ̀', signo: 'Áries', elemento: 'fogo', significado_espiritual: 'Descoberta, tesouros ocultos, revelação. Prosperidade que surge do inesperado e da coragem.', mensagem_central: 'Tesouros escondidos esperam coragem. Mero revela a riqueza do caminho.' },
+  14: { odu_numero: 14, odu_nome: 'Jinza', odu_nome_yoruba: 'Jìnza', signo: 'Touro', elemento: 'terra', significado_espiritual: 'Força interior, proteção, vitória. Batalha espiritual ganha através da determinação inabalável.', mensagem_central: 'A determinação vence obstáculos. Jinza traz a força do guerreiro.' },
+  15: { odu_numero: 15, odu_nome: 'Jotagbe', odu_nome_yoruba: 'Jọ́tágbè', signo: 'Gêmeos', elemento: 'ar', significado_espiritual: 'Comunicação ancestral, linhagem espiritual. Conexão entre passado e presente através da palavra sagrada.', mensagem_central: 'A ancestralidade fala através de ti. Jotagbe abre canais de sabedoria.' },
+  16: { odu_numero: 16, odu_nome: 'Otura', odu_nome_yoruba: 'Òtúrá', signo: 'Câncer', elemento: 'água', significado_espiritual: 'Jornada, destino, caminho revelado. O destino se forma a cada passo da jornada.', mensagem_central: 'O caminho se revela na caminhada. Otura orienta a jornada do destino.' },
 };
 
-// Freeze to prevent accidental modifications
 Object.freeze(ODU_ZODIAC_MAPPINGS);
 
-// ─── Lookup Functions ────────────────────────────────────────────────────────
+function normalizeDiacritics(str: string): string {
+  return str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+}
 
 export function getOduZodiac(odu: number | string): OduZodiac | null {
-  if (typeof odu === 'number') {
-    return ODU_ZODIAC_MAPPINGS[odu] ?? null;
-  }
+  if (typeof odu === 'number') return ODU_ZODIAC_MAPPINGS[odu] ?? null;
   const normalized = odu.toLowerCase().trim();
+  if (!normalized) return null;
   const numValue = Number(normalized);
-  if (!isNaN(numValue) && numValue >= 1 && numValue <= 16) {
-    return ODU_ZODIAC_MAPPINGS[numValue] ?? null;
-  }
+  if (!isNaN(numValue) && numValue >= 1 && numValue <= 16) return ODU_ZODIAC_MAPPINGS[numValue] ?? null;
   for (const mapping of Object.values(ODU_ZODIAC_MAPPINGS)) {
     if (mapping.odu_nome.toLowerCase() === normalized) return mapping;
     if (mapping.odu_nome_yoruba.toLowerCase() === normalized) return mapping;
@@ -269,8 +97,11 @@ export function getOduByElement(elemento: ElementType): OduZodiac[] {
 }
 
 export function getZodiacOdu(signo: string): OduZodiac[] {
-  const normalized = signo.toLowerCase().trim();
-  return Object.values(ODU_ZODIAC_MAPPINGS).filter((m) => m.signo.toLowerCase() === normalized).sort((a, b) => a.odu_numero - b.odu_numero);
+  const normalized = normalizeDiacritics(signo.trim());
+  if (!normalized) return [];
+  return Object.values(ODU_ZODIAC_MAPPINGS)
+    .filter((m) => normalizeDiacritics(m.signo) === normalized)
+    .sort((a, b) => a.odu_numero - b.odu_numero);
 }
 
 export function hasOduZodiac(oduNumero: number): boolean {
@@ -289,15 +120,4 @@ export function getOduMessage(oduNumero: number): string | null {
   return ODU_ZODIAC_MAPPINGS[oduNumero]?.mensagem_central ?? null;
 }
 
-export default {
-  getOduZodiac,
-  getAllOduZodiacs,
-  getAllOduNumbers,
-  getAllOduNames,
-  getAllZodiacSigns,
-  getZodiacOdu,
-  hasOduZodiac,
-  getOduZodiacSign,
-  getOduElement,
-  getOduMessage,
-};
+export default { getOduZodiac, getAllOduZodiacs, getAllOduNumbers, getAllOduNames, getAllZodiacSigns, getZodiacOdu, hasOduZodiac, getOduZodiacSign, getOduElement, getOduMessage };
