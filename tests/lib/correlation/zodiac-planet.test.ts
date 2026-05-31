@@ -41,9 +41,22 @@ describe('ZodiacPlanet Correlation', () => {
       expect(typeof mapping.signo).toBe('string');
       expect(typeof mapping.planeta).toBe('string');
       expect(typeof mapping.elemento).toBe('string');
-    });
+// Type exports are compile-time only, verify the types are usable
+    // by checking that exported values exist
+    it('should export type definitions', () => {
+      expect(typeof ZODIAC_PLANET_MAP).toBe('object');
+      const mapping = ZODIAC_PLANET_MAP['Áries'];
+      expect(typeof mapping).toBe('object');
+      expect(typeof mapping.signo).toBe('string');
+      expect(typeof mapping.planeta).toBe('string');
+      expect(typeof mapping.elemento).toBe('string');
     });
     it('should export constants', () => {
+      expect(Array.isArray(TODOS_PLANETAS)).toBe(true);
+      expect(Array.isArray(TODOS_SIGNOS)).toBe(true);
+      expect(typeof ZODIAC_PLANET_MAP).toBe('object');
+    });
+  });
       expect(Array.isArray(TODOS_PLANETAS)).toBe(true);
       expect(Array.isArray(TODOS_SIGNOS)).toBe(true);
       expect(typeof ZODIAC_PLANET_MAP).toBe('object');
