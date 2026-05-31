@@ -221,27 +221,28 @@ function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClo
   };
   const pillarColor = PILLAR_COLORS[sefira.pillar as keyof typeof PILLAR_COLORS] || PILLAR_COLORS.center;
   return (
-    <div className="absolute z-50 bg-slate-900/95 border border-amber-500/30 rounded-xl p-4 shadow-2xl shadow-amber-500/20 min-w-[300px] max-w-[340px] animate-in fade-in zoom-in-95 duration-200">
-      <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white text-lg">
+    <div className="absolute z-50 bg-slate-900/95 border border-amber-500/30 rounded-xl p-4 shadow-2xl shadow-amber-500/20 min-w-[300px] max-w-[340px] animate-in fade-in zoom-in-95 duration-300">
+      <button onClick={onClose} className="absolute top-2 right-2 text-slate-400 hover:text-white text-lg transition-colors hover:text-amber-400">
         ×
       </button>
       <div className="flex items-center gap-3 mb-3">
         <div 
-          className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold"
+          className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold animate-in slide-in-from-left-4 duration-300"
           style={{ 
             backgroundColor: `${pillarColor}30`,
-            border: `2px solid ${pillarColor}`
+            border: `2px solid ${pillarColor}`,
+            boxShadow: `0 0 12px ${pillarColor}40`
           }}
         >
           {sefira.number}
         </div>
-        <div>
+        <div className="animate-in slide-in-from-left-4 duration-300 delay-100">
           <p className="text-lg font-bold text-white">{sefira.name}</p>
           <p className="text-sm text-amber-400">{sefira.hebrew}</p>
         </div>
       </div>
       {/* Core Kabbalah Info */}
-      <div className="space-y-1.5 text-sm mb-3 pb-2 border-b border-slate-700">
+      <div className="space-y-1.5 text-sm mb-3 pb-2 border-b border-slate-700/50 animate-in fade-in duration-300 delay-150">
         <div className="flex justify-between">
           <span className="text-slate-400">Nome Divino:</span>
           <span className="text-white">{meaning.divineName}</span>
@@ -255,68 +256,93 @@ function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClo
           <span className="text-cyan-400">{meaning.element}</span>
         </div>
       </div>
-      {/* Cross-System Correlations */}
-      <div className="space-y-2">
-        {correlations.orixa && (
-          <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">⚡</span>
-              <div>
-                <p className="text-xs text-slate-400">Orixá</p>
-                <p className="text-white font-medium">{correlations.orixa}</p>
+      {/* Cross-System Correlations with Flow Lines */}
+      <div className="relative">
+        {/* Flow Connection Lines */}
+        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-500/40 via-purple-500/40 to-cyan-500/40 rounded-full" />
+        <div className="space-y-2 relative">
+          {/* Sefira → Orixá */}
+          {correlations.orixa && (
+            <div className="flex items-center gap-2 p-2 rounded-lg border bg-slate-800/50 border-amber-500/20 animate-in slide-in-from-left-4 duration-300 delay-200 hover:border-amber-500/40 transition-colors">
+              <div className="w-3 h-3 rounded-full bg-gradient-to-br from-amber-500 to-yellow-400 shadow-lg shadow-amber-500/50 z-10 relative" />
+              <div className="flex items-center gap-2">
+                <span className="text-xl">⚡</span>
+                <div>
+                  <p className="text-xs text-slate-400">Sefira → Orixá</p>
+                  <p className="text-white font-medium">{correlations.orixa}</p>
+                </div>
               </div>
+              {sefirotCorr?.cor && (
+                <div className="ml-auto text-right">
+                  <p className="text-xs text-slate-400">Energia</p>
+                  <p className="text-sm font-medium text-amber-400">{sefirotCorr.cor}</p>
+                </div>
+              )}
             </div>
-            {sefirotCorr?.cor && (
-              <div className="text-right">
-                <p className="text-xs text-slate-400">Energia</p>
-                <p className="text-sm font-medium text-amber-300">{sefirotCorr.cor}</p>
+          )}
+          {/* Orixá → Chakra */}
+          {correlations.chakra && (
+            <div className="flex items-center gap-2 p-2 rounded-lg border bg-slate-800/50 border-purple-500/20 animate-in slide-in-from-left-4 duration-300 delay-300 hover:border-purple-500/40 transition-colors">
+              <div className="w-3 h-3 rounded-full bg-gradient-to-br from-purple-500 to-pink-400 shadow-lg shadow-purple-500/50 z-10 relative" />
+              <div className="flex items-center gap-2">
+                <div 
+                  className="w-5 h-5 rounded-full"
+                  style={{ 
+                    backgroundColor: correlations.chakraColor || '#8b5cf6',
+                    boxShadow: `0 0 10px ${correlations.chakraColor || '#8b5cf6'}`
+                  }}
+                />
+                <div>
+                  <p className="text-xs text-slate-400">Orixá → Chakra</p>
+                  <p className="text-white font-medium">{correlations.chakra}</p>
+                </div>
               </div>
-            )}
+              {chakraSephir?.numero_caminho && (
+                <div className="ml-auto text-right">
+                  <p className="text-xs text-slate-400">Caminho</p>
+                  <p className="text-sm font-medium text-cyan-400">#{chakraSephir.numero_caminho}</p>
+                </div>
+              )}
+            </div>
+          )}
+          {/* Chakra → Odú */}
+          {correlations.odu && correlations.oduNumero && (
+            <div className="flex items-center gap-2 p-2 rounded-lg border bg-slate-800/50 border-cyan-500/20 animate-in slide-in-from-left-4 duration-300 delay-400 hover:border-cyan-500/40 transition-colors">
+              <div className="w-3 h-3 rounded-full bg-gradient-to-br from-cyan-500 to-teal-400 shadow-lg shadow-cyan-500/50 z-10 relative" />
+              <div className="flex items-center gap-2">
+                <span className="text-xl">🔮</span>
+                <div>
+                  <p className="text-xs text-slate-400">Chakra → Odú</p>
+                  <p className="text-white font-medium">{correlations.odu} ({correlations.oduNumero})</p>
+                </div>
+              </div>
+              {oduCorr?.elemento && (
+                <div className="ml-auto text-right">
+                  <p className="text-xs text-slate-400">Elemento</p>
+                  <p className="text-sm font-medium text-green-400">{oduCorr.elemento}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        {/* Flow indicator arrows */}
+        {correlations.orixa && correlations.chakra && (
+          <div className="absolute left-[5px] top-[28px] h-[28px] flex items-center justify-center">
+            <svg className="w-2 h-4 text-amber-500/60" fill="currentColor" viewBox="0 0 4 8">
+              <path d="M0 4l4 4 4-4z" />
+            </svg>
           </div>
         )}
-        {correlations.chakra && (
-          <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <div 
-                className="w-5 h-5 rounded-full"
-                style={{ 
-                  backgroundColor: correlations.chakraColor || '#8b5cf6',
-                  boxShadow: `0 0 8px ${correlations.chakraColor || '#8b5cf6'}`
-                }}
-              />
-              <div>
-                <p className="text-xs text-slate-400">Chakra</p>
-                <p className="text-white font-medium">{correlations.chakra}</p>
-              </div>
-            </div>
-            {chakraSephir?.numero_caminho && (
-              <div className="text-right">
-                <p className="text-xs text-slate-400">Caminho</p>
-                <p className="text-sm font-medium text-cyan-400">#{chakraSephir.numero_caminho}</p>
-              </div>
-            )}
-          </div>
-        )}
-        {correlations.odu && correlations.oduNumero && (
-          <div className="flex items-center justify-between p-2 bg-slate-800/50 rounded-lg border border-slate-700/50">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🔮</span>
-              <div>
-                <p className="text-xs text-slate-400">Odú Ifá</p>
-                <p className="text-white font-medium">{correlations.odu} ({correlations.oduNumero})</p>
-              </div>
-            </div>
-            {oduCorr?.elemento && (
-              <div className="text-right">
-                <p className="text-xs text-slate-400">Elemento</p>
-                <p className="text-sm font-medium text-green-400">{oduCorr.elemento}</p>
-              </div>
-            )}
+        {correlations.chakra && correlations.odu && correlations.oduNumero && (
+          <div className="absolute left-[5px] top-[72px] h-[28px] flex items-center justify-center">
+            <svg className="w-2 h-4 text-purple-500/60" fill="currentColor" viewBox="0 0 4 8">
+              <path d="M0 4l4 4 4-4z" />
+            </svg>
           </div>
         )}
       </div>
       {/* Essence */}
-      <p className="text-slate-300 text-xs italic mt-3 border-t border-slate-700 pt-2">
+      <p className="text-slate-300 text-xs italic mt-3 border-t border-slate-700/50 pt-2 animate-in fade-in duration-300 delay-500">
         "{meaning.essence}"
       </p>
     </div>
