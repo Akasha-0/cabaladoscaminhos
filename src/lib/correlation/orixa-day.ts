@@ -1,7 +1,6 @@
 /**
  * Orixá-Day Correlation Module
- * Maps Orixás to days of the week with spiritual correlations
- * Based on IDEIA.md Cabala dos Caminhos framework
+ * Maps Orixás to sacred days of the week with spiritual elements and meanings
  */
 
 export interface OrixaDay {
@@ -10,92 +9,72 @@ export interface OrixaDay {
   element: 'fogo' | 'água' | 'ar' | 'terra' | 'éter';
   spiritual_meaning: string;
   energy: 'yang' | 'yin' | 'balanced';
-  affirmation?: string;
-  ritual_focus?: string;
 }
 
-// Main Orixá-Day mappings based on IDEIA.md
+// Main Orixá-day mappings
 const ORIXAS_DAY_MAP: Record<string, OrixaDay> = {
   'Oxalá': {
     orixa: 'Oxalá',
     day: 'Sexta-feira',
     element: 'éter',
-    spiritual_meaning: 'Paz, luz, reconciliação e renovação espiritual. O pai supremo que traz harmonia e cura através da transformação interior.',
-    energy: 'balanced',
-    affirmation: 'Eu sou luz, eu sou paz, eu sou reconciliação',
-    ritual_focus: 'Saudação, cura espiritual, decisões importantes, casamentos'
+    spiritual_meaning: 'O Criador supremo, Pai de todos os Orixás. Governa a criação, pureza, paz e reconciliação. Seu dia sagrado fortalece a conexão com o divino e a harmonia entre os seres.',
+    energy: 'yang'
   },
   'Iemanjá': {
     orixa: 'Iemanjá',
     day: 'Sábado',
     element: 'água',
-    spiritual_meaning: 'Maternidade divina, proteção, fertilidade e intuição profunda. A rainha do mar que governa as emoções e os ciclos naturais.',
-    energy: 'yin',
-    affirmation: 'Eu sou protegida, eu sou nutriz, eu sou intuição',
-    ritual_focus: 'Proteção familiar, sonhos, cura emocional, gratidão'
+    spiritual_meaning: 'Mãe das águas e Rainha do Mar. Provedora, nutridora e protetora maternal. Seu dia sagrado é propício para orações de proteção, fertilidade e cura emocional.',
+    energy: 'yin'
   },
   'Oxum': {
     orixa: 'Oxum',
     day: 'Sábado',
     element: 'água',
-    spiritual_meaning: 'Amor, prosperidade, encantaria e sabedoria feminina. A doce senhora das águas doces que abençoa com abundância.',
-    energy: 'yin',
-    affirmation: 'Eu sou amada, eu sou próspera, eu sou encantada',
-    ritual_focus: 'Amor, prosperidade financeira, beleza, saúde feminina'
+    spiritual_meaning: 'A riqueza interior e a prosperidade material. Deusa do ouro, dos rios e do amor. Seu dia fortalece a abundância, a vaidade sagrada e a atração de recursos com elegância.',
+    energy: 'yin'
   },
   'Ogum': {
     orixa: 'Ogum',
     day: 'Terça-feira',
     element: 'terra',
-    spiritual_meaning: 'Força, coragem, determinação e conquista. O guerreiro que abre caminhos e remove obstáculos com poder e vontade.',
-    energy: 'yang',
-    affirmation: 'Eu sou forte, eu sou determinado, eu conquisto',
-    ritual_focus: 'Abertura de caminhos, proteção, luta, trabalho'
+    spiritual_meaning: 'O guerreiro, ferreiro e senhor das encruzilhadas. Abre caminhos, vence batalhas e conquista territórios. Seu dia é ideal para iniciar projetos e superar obstáculos.',
+    energy: 'yang'
   },
   'Oxóssi': {
     orixa: 'Oxóssi',
     day: 'Quinta-feira',
     element: 'terra',
-    spiritual_meaning: 'Abundância, prosperidade, caça espiritual e conhecimento. O caçador céleste que busca a verdade e a riqueza interior.',
-    energy: 'yang',
-    affirmation: 'Eu sou abundante, eu busco a verdade, eu prospero',
-    ritual_focus: 'Prosperidade, conhecimento, equilíbrio, fartura'
+    spiritual_meaning: 'O caçador, provedor e senhor das matas. Busca constante, sabedoria ancestral e conexão com a natureza. Seu dia traz prosperidade e celebra conquistas.',
+    energy: 'balanced'
   },
   'Xangô': {
     orixa: 'Xangô',
     day: 'Quarta-feira',
     element: 'fogo',
-    spiritual_meaning: 'Justiça, poder, transformação e equilíbrio. O rei do trovão que trazendo ordem e coragem através do fogo purificador.',
-    energy: 'yang',
-    affirmation: 'Eu sou justo, eu sou poderoso, eu transformo',
-    ritual_focus: 'Justiça, equilíbrio, força, decisões importantes'
+    spiritual_meaning: 'O senhor da justiça, do raio e do trovão. Governa a lei cósmica, a verdade e o equilíbrio social. Seu dia é propício para decisões importantes e justiça.',
+    energy: 'yang'
   },
   'Iansã': {
     orixa: 'Iansã',
     day: 'Terça-feira',
     element: 'fogo',
-    spiritual_meaning: 'Libertação, transformação, renovação e libertação de padrões. A guerreira que transforma inimigos em aliados através da força interior.',
-    energy: 'yang',
-    affirmation: 'Eu libero, eu transformo, eu renovo',
-    ritual_focus: 'Libertação de prisões, proteção, transformação, conquista'
+    spiritual_meaning: 'A guerreira dos ventos e das tempestades. Dona das mudanças bruscas e das transformações radicais. Seu dia fortalece a libertação e a capacidade de adaptação.',
+    energy: 'yang'
   },
   'Omolu': {
     orixa: 'Omolu',
     day: 'Segunda-feira',
     element: 'terra',
-    spiritual_meaning: 'Cura, proteção contra pragas, renovação e saúde. O senhor das doenças e da cura que transforma a escuridão em luz.',
-    energy: 'balanced',
-    affirmation: 'Eu sou curado, eu sou protegido, eu renasco',
-    ritual_focus: 'Cura de doenças, proteção contra mal, renovação, saúde'
+    spiritual_meaning: 'O senhor das doenças e da cura, das portas e do destino. Transforma a escuridão em luz, a doença em saúde. Seu dia é propício para cura e renovação interior.',
+    energy: 'balanced'
   },
   'Nanã': {
     orixa: 'Nanã',
     day: 'Terça-feira',
     element: 'água',
-    spiritual_meaning: 'Humildade, sabedoria ancestral, fertilidade e respeito aos antepassados. A anciã que ensina através da paciência e do conhecimento.',
-    energy: 'yin',
-    affirmation: 'Eu sou humilde, eu honro meus antepassados, eu aprendo',
-    ritual_focus: 'Fertilidade, respeito aos mortos, humildade, tradição'
+    spiritual_meaning: 'A anciã, senhora das águas paradas e do barro. Governa a sabedoria dos anciãos e os segredos ancestrais. Seu dia fortalece a sabedoria que vem com tempo e experiência.',
+    energy: 'yin'
   }
 };
 
@@ -105,22 +84,21 @@ const ORIXAS_DAY_MAP: Record<string, OrixaDay> = {
  * @returns OrixaDay mapping or undefined if not found
  */
 export function getOrixaDay(orixa: string): OrixaDay | undefined {
-  const normalized = orixa.toLowerCase().trim();
-  const found = Object.entries(ORIXAS_DAY_MAP).find(
-    ([key]) => key.toLowerCase() === normalized
+  const normalized = orixa.trim();
+  return ORIXAS_DAY_MAP[normalized] || Object.values(ORIXAS_DAY_MAP).find(
+    entry => entry.orixa.toLowerCase() === normalized.toLowerCase()
   );
-  return found ? found[1] : undefined;
 }
 
 /**
- * Get Orixá mapping for a specific day of the week
+ * Get the primary Orixá for a given day of the week
  * @param day - Day of the week (e.g., 'Segunda-feira', 'Terça-feira')
- * @returns OrixaDay mapping or undefined if not found
+ * @returns OrixaDay mapping or undefined if no Orixá is associated
  */
 export function getDayOrixa(day: string): OrixaDay | undefined {
-  const normalized = day.toLowerCase().trim();
+  const normalized = day.trim();
   return Object.values(ORIXAS_DAY_MAP).find(
-    (item) => item.day.toLowerCase() === normalized
+    entry => entry.day.toLowerCase() === normalized.toLowerCase()
   );
 }
 
@@ -135,5 +113,5 @@ export function getAllOrixaDays(): OrixaDay[] {
 export default {
   getOrixaDay,
   getDayOrixa,
-  getAllOrixaDays
+  getAllOrixaDays,
 };
