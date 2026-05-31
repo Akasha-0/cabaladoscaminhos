@@ -140,14 +140,10 @@ export default function RootLayout({
       <body
         className={`${cinzel.variable} ${cormorant.variable} ${raleway.variable} ${imFell.variable} min-h-screen bg-background text-foreground antialiased`}
       >
-        <OfflineIndicator />
         <SupabaseProvider>
-          <ThemeProvider>
-            {children}
-          </ThemeProvider>
+          {children}
         </SupabaseProvider>
         <InstallPrompt />
       </body>
-    </html>
   );
 }
