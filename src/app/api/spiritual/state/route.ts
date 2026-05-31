@@ -30,7 +30,7 @@ const STATE_SPIRITUAL_CORRELATIONS: Record<string, {
   affirmation: string;
   frequency: string;
 }> = {
-  lua-nova: {
+  "lua-nova": {
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 7,
     element: 'Éter',
