@@ -10,7 +10,6 @@ const ChartQuerySchema = z.object({
   limit: z.coerce.number().int().positive().max(100).optional(),
 });
 interface ChartDataPoint {
-interface ChartDataPoint {
   label: string;
   value: number;
   category?: string;
@@ -105,8 +104,6 @@ export async function GET(request: NextRequest) {
         validTypes: chartTypes,
       }, { status: 400 });
     let dataPoints: ChartDataPoint[] = [];
-    if (data) {
-
     if (data) {
       try {
         const parsed = JSON.parse(data);
