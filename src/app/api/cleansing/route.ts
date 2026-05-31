@@ -229,5 +229,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       error: 'Erro ao processar limpeza',
     }, { status: 500 });
-    }, { status: 500 });
+  }
 }
