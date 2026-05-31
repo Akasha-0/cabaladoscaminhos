@@ -1,10 +1,19 @@
+// ============================================================
+// ELEMENTS API - CABALA DOS CAMINHOS
+// ============================================================
 import { NextRequest, NextResponse } from 'next/server';
-
-interface ElementInput {
-  birthDate?: string;
-  odu?: string;
-}
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ElementNameSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+const ElementInputSchema = z.object({
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD').optional(),
+  odu: z.string().optional(),
+});
+const ElementQuerySchema = z.object({
+  element: ElementNameSchema.optional(),
+  includeCorrelations: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  limit: z.coerce.number().int().positive().max(10).optional(),
+});
 const ELEMENTS = [
   {
     name: 'Fogo',
@@ -13,6 +22,84 @@ const ELEMENTS = [
     qualities: ['Quente', 'Seco', 'Expansivo'],
     sefirot: ['Chesed', 'Gevurah'],
     orixas: ['Ogum', 'Xangô'],
+    tarot: ['A Torre', 'O Carro'],
+    chakra: 'Manipura (3º)',
+    direction: 'Leste',
+    planet: 'Marte',
+    day: 'Terça-feira',
+    season: 'Verão',
+    traits: ['Paixão', 'Energia', 'Transformação', 'Coragem', 'Impulsividade'],
+    affirmation: 'Minha energia transforma e ilumina todos os caminhos.',
+  },
+  {
+    name: 'Água',
+    nameEn: 'Water',
+    symbol: '💧',
+    qualities: ['Frio', 'Úmido', 'Contensivo'],
+    sefirot: ['Binah', 'Yesod'],
+    orixas: ['Oxum', 'Iemanjá', 'Nanã'],
+    tarot: ['A Lua', 'O Mar'],
+    chakra: 'Svadhisthana (2º)',
+    direction: 'Oeste',
+    planet: 'Lua',
+    day: 'Segunda-feira',
+    season: 'Inverno',
+    traits: ['Intuição', 'Emoção', 'Sensibilidade', 'Adaptabilidade', 'Fluidez'],
+    affirmation: 'Fluo como a água, adaptando-me aos caminhos do universo.',
+  },
+  {
+    name: 'Terra',
+    nameEn: 'Earth',
+    symbol: '🌍',
+    qualities: ['Frio', 'Seco', 'Contensivo'],
+    sefirot: ['Malkut', 'Yesod'],
+    orixas: ['Oxóssi', 'Obatalá'],
+    tarot: ['O Mundo', 'O Imperador'],
+    chakra: 'Muladhara (1º)',
+    direction: 'Sul',
+    planet: 'Saturno',
+    day: 'Sábado',
+    season: 'Outono',
+    traits: ['Estabilidade', 'Paciência', 'Praticidade', 'Segurança', 'Gratidão'],
+    affirmation: 'Estou enraizado na sabedoria ancestral da terra.',
+  },
+  {
+    name: 'Ar',
+    nameEn: 'Air',
+    symbol: '💨',
+    qualities: ['Quente', 'Úmido', 'Expansivo'],
+    sefirot: ['Chokhmah', 'Netzach'],
+    orixas: ['Iansã'],
+    tarot: ['Os Enamorados', 'O Louco'],
+    chakra: 'Anahata (4º)',
+    direction: 'Norte',
+    planet: 'Mercúrio',
+    day: 'Quarta-feira',
+    season: 'Primavera',
+    traits: ['Comunicação', 'Liberdade', 'Inteligência', 'Socialização', 'Versatilidade'],
+    affirmation: 'Respiro a liberdade do ar e expresso minha verdade.',
+  },
+  {
+    name: 'Éter',
+    nameEn: 'Ether',
+    symbol: '✨',
+    qualities: ['Neutro', 'Neutro', 'Expansivo'],
+    sefirot: ['Keter', 'Daat'],
+    orixas: ['Logunede'],
+    tarot: ['O Louco', 'O Mago'],
+    chakra: 'Sahasrara (7º)',
+    direction: 'Centro',
+    planet: 'Mercúrio',
+    day: 'Todos',
+    season: 'Todo',
+    traits: ['Espiritualidade', 'Transcendência', 'Conexão', 'Sabedoria', 'Unidade'],
+    affirmation: 'Conecto-me com a energia universal que permeia tudo.',
+  },
+];
+interface ElementInput {
+  birthDate?: string;
+  odu?: string;
+}
     tarot: ['A Torre', 'O Carro'],
     chakra: 'Manipura (3º)',
     direction: 'Leste',
