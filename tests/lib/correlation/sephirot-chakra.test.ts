@@ -327,6 +327,7 @@ describe('sephirot-chakra', () => {
     });
   });
 
+
   // ─── getAllSephiroth ──────────────────────────────────────────────────────
 
   describe('getAllSephiroth', () => {
