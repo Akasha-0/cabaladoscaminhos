@@ -1,15 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
-
 // Mock any external dependencies if needed
 vi.mock('@/lib/redis', () => ({
   getRedisClient: vi.fn().mockResolvedValue(null),
 }));
-
 // Simple handler wrapper for testing
+function createMockRequest(url = 'http://localhost/api/astrologia/previsao-mensal') {
+  return new NextRequest(url);
+}
 async function handleGetRequest() {
   const { GET } = await import('@/app/api/astrologia/previsao-mensal/route');
-  return GET();
+  return GET(createMockRequest());
 }
 
 describe('GET /api/astrologia/previsao-mensal', () => {
