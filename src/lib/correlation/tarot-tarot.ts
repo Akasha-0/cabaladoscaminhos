@@ -1,164 +1,727 @@
 /**
- * Tarot-Tarot Correlation Module
- * Maps spiritual relationships between Major Arcana cards
+ * Tarot-Tarot Spiritual Correlation Module
+ * Maps relationships between Tarot Major Arcana cards with spiritual context
+ * Based on elemental, chakra, and numerological correspondences
  */
 
-export type TarotPathType = 'Trino' | 'Sextil' | 'Quadratura' | 'Oposicao' | 'Sequencia' | 'Complementar' | 'Ancestral';
+/**
+ * Represents the type of relationship between two Tarot cards
+ */
+export type TarotRelationshipType =
+  | 'mesmo_elemento'      // Same element relationship
+  | 'mesmo_chakra'       // Same chakra relationship
+  | 'numerologico'       // Numerological relationship (card numbers sum to sacred numbers)
+  | 'complementar'       // Complementary/opposite archetypes
+  | 'sequencial'          // Sequential cards in the journey
+  | 'transformacao';     // Transformation relationship (Death → Temperance, etc.)
 
+/**
+ * Represents the correlation between two Tarot Major Arcana cards
+ */
 export interface TarotTarotMapping {
-  arcano: string;
-  arcano_numero: number;
-  arcano_romano: string;
-  related_arcano: string;
-  related_numero: number;
-  related_romano: string;
-  path_type: TarotPathType;
-  significado: string;
-  crescimento: string;
-  desafio: string;
+  /** The source arcano name */
+  arcano_1: string;
+  /** The target arcano name */
+  arcano_2: string;
+  /** The type of spiritual relationship */
+  tipo_relacionamento: TarotRelationshipType;
+  /** The card number of arcano 1 */
+  numero_1: number;
+  /** The card number of arcano 2 */
+  numero_2: number;
+  /** Common element if applicable */
+  elemento?: string;
+  /** Common chakra if applicable */
+  chakra?: string;
+  /** Chakra number if applicable */
+  chakra_numero?: number;
+  /** Spiritual meaning of this card pair relationship */
+  significado_espiritual: string;
+  /** Combined interpretation for readings */
+  interpretacao_combinada: string;
 }
 
-export const ALL_MAJOR_ARCANOS: readonly string[] = [
-  '0 - O Louco', 'I - O Mago', 'II - A Sacerdotisa', 'III - A Imperatriz',
-  'IV - O Imperador', 'V - O Hierofante', 'VI - Os Enamorados', 'VII - O Carro',
-  'VIII - A Justica', 'IX - O Eremita', 'X - A Roda da Fortuna', 'XI - A Forca',
-  'XII - O Enforcado', 'XIII - A Morte', 'XIV - A Temperanca', 'XV - O Diabo',
-  'XVI - A Torre', 'XVII - A Estrela', 'XVIII - A Lua', 'XIX - O Sol',
-  'XX - O Julgamento', 'XXI - O Mundo',
-];
+// ─── Tarot-Tarot Relationship Mappings ────────────────────────────────────────
+// Maps pairs of Major Arcana cards to their spiritual relationships.
+// Relationships are bidirectional - card A relates to card B and vice versa.
 
-export const TAROT_TAROT_MAPPINGS: readonly TarotTarotMapping[] = [
-  { arcano: '0 - O Louco', arcano_numero: 0, arcano_romano: '0', related_arcano: 'I - O Mago', related_numero: 1, related_romano: 'I', path_type: 'Sequencia', significado: 'Iniciacao', crescimento: 'Despertar', desafio: 'Confiar' },
-  { arcano: '0 - O Louco', arcano_numero: 0, arcano_romano: '0', related_arcano: 'X - A Roda da Fortuna', related_numero: 10, related_romano: 'X', path_type: 'Complementar', significado: 'Destino', crescimento: 'Aceitar', desafio: 'Fluir' },
-  { arcano: '0 - O Louco', arcano_numero: 0, arcano_romano: '0', related_arcano: 'XXI - O Mundo', related_numero: 21, related_romano: 'XXI', path_type: 'Ancestral', significado: 'Completude', crescimento: 'Integrar', desafio: 'Renovar' },
-  { arcano: 'I - O Mago', arcano_numero: 1, arcano_romano: 'I', related_arcano: 'II - A Sacerdotisa', related_numero: 2, related_romano: 'II', path_type: 'Sequencia', significado: 'Poder', crescimento: 'Canalizar', desafio: 'Focar' },
-  { arcano: 'I - O Mago', arcano_numero: 1, arcano_romano: 'I', related_arcano: 'XI - A Forca', related_numero: 11, related_romano: 'XI', path_type: 'Trino', significado: 'Vontade', crescimento: 'Transformar', desafio: 'Responsabilidade' },
-  { arcano: 'I - O Mago', arcano_numero: 1, arcano_romano: 'I', related_arcano: 'XVI - A Torre', related_numero: 16, related_romano: 'XVI', path_type: 'Oposicao', significado: 'Construcao', crescimento: 'Liberacao', desafio: 'Aceitar' },
-  { arcano: 'II - A Sacerdotisa', arcano_numero: 2, arcano_romano: 'II', related_arcano: 'III - A Imperatriz', related_numero: 3, related_romano: 'III', path_type: 'Sequencia', significado: 'Mistério', crescimento: 'Aplicar', desafio: 'Integrar' },
-  { arcano: 'II - A Sacerdotisa', arcano_numero: 2, arcano_romano: 'II', related_arcano: 'IX - O Eremita', related_numero: 9, related_romano: 'IX', path_type: 'Trino', significado: 'Sabedoria', crescimento: 'Aprofundar', desafio: 'Equilibrar' },
-  { arcano: 'II - A Sacerdotisa', arcano_numero: 2, arcano_romano: 'II', related_arcano: 'XVIII - A Lua', related_numero: 18, related_romano: 'XVIII', path_type: 'Oposicao', significado: 'Verdade', crescimento: 'Discernir', desafio: 'Ilusao' },
-  { arcano: 'III - A Imperatriz', arcano_numero: 3, arcano_romano: 'III', related_arcano: 'IV - O Imperador', related_numero: 4, related_romano: 'IV', path_type: 'Sequencia', significado: 'Criacao', crescimento: 'Integrar', desafio: 'Disciplina' },
-  { arcano: 'III - A Imperatriz', arcano_numero: 3, arcano_romano: 'III', related_arcano: 'VII - O Carro', related_numero: 7, related_romano: 'VII', path_type: 'Sextil', significado: 'Nutricao', crescimento: 'Discernimento', desafio: 'Dependencia' },
-  { arcano: 'III - A Imperatriz', arcano_numero: 3, arcano_romano: 'III', related_arcano: 'XVII - A Estrela', related_numero: 17, related_romano: 'XVII', path_type: 'Trino', significado: 'Fertilidade', crescimento: 'Esperanca', desafio: 'Tempo' },
-  { arcano: 'IV - O Imperador', arcano_numero: 4, arcano_romano: 'IV', related_arcano: 'V - O Hierofante', related_numero: 5, related_romano: 'V', path_type: 'Sequencia', significado: 'Estrutura', crescimento: 'Ordem', desafio: 'Flexibilidade' },
-  { arcano: 'IV - O Imperador', arcano_numero: 4, arcano_romano: 'IV', related_arcano: 'VIII - A Justica', related_numero: 8, related_romano: 'VIII', path_type: 'Sequencia', significado: 'Autoridade', crescimento: 'Justica', desafio: 'Rigor' },
-  { arcano: 'IV - O Imperador', arcano_numero: 4, arcano_romano: 'IV', related_arcano: 'X - A Roda da Fortuna', related_numero: 10, related_romano: 'X', path_type: 'Quadratura', significado: 'Dominio', crescimento: 'Adaptacao', desafio: 'Controle' },
-  { arcano: 'V - O Hierofante', arcano_numero: 5, arcano_romano: 'V', related_arcano: 'VI - Os Enamorados', related_numero: 6, related_romano: 'VI', path_type: 'Sequencia', significado: 'Tradicao', crescimento: 'Transmissao', desafio: 'Dogma' },
-  { arcano: 'V - O Hierofante', arcano_numero: 5, arcano_romano: 'V', related_arcano: 'VIII - A Justica', related_numero: 8, related_romano: 'VIII', path_type: 'Trino', significado: 'Doutrina', crescimento: 'Ensinamento', desafio: 'Abertura' },
-  { arcano: 'V - O Hierofante', arcano_numero: 5, arcano_romano: 'V', related_arcano: 'X - A Roda da Fortuna', related_numero: 10, related_romano: 'X', path_type: 'Sextil', significado: 'Sabedoria', crescimento: 'Tradicao', desafio: 'Renovacao' },
-  { arcano: 'VI - Os Enamorados', arcano_numero: 6, arcano_romano: 'VI', related_arcano: 'VII - O Carro', related_numero: 7, related_romano: 'VII', path_type: 'Sequencia', significado: 'Escolha', crescimento: 'Uniao', desafio: 'Compromisso' },
-  { arcano: 'VI - Os Enamorados', arcano_numero: 6, arcano_romano: 'VI', related_arcano: 'XIV - A Temperanca', related_numero: 14, related_romano: 'XIV', path_type: 'Sextil', significado: 'Amor', crescimento: 'Harmonia', desafio: 'Tensao' },
-  { arcano: 'VI - Os Enamorados', arcano_numero: 6, arcano_romano: 'VI', related_arcano: 'XX - O Julgamento', related_numero: 20, related_romano: 'XX', path_type: 'Complementar', significado: 'Decisao', crescimento: 'Avaliacao', desafio: 'Conflito' },
-  { arcano: 'VII - O Carro', arcano_numero: 7, arcano_romano: 'VII', related_arcano: 'VIII - A Justica', related_numero: 8, related_romano: 'VIII', path_type: 'Sequencia', significado: 'Vitoria', crescimento: 'Conquista', desafio: 'Arrogancia' },
-  { arcano: 'VII - O Carro', arcano_numero: 7, arcano_romano: 'VII', related_arcano: 'XVI - A Torre', related_numero: 16, related_romano: 'XVI', path_type: 'Oposicao', significado: 'Determinacao', crescimento: 'Triunfo', desafio: 'Queda' },
-  { arcano: 'VII - O Carro', arcano_numero: 7, arcano_romano: 'VII', related_arcano: 'XIX - O Sol', related_numero: 19, related_romano: 'XIX', path_type: 'Trino', significado: 'Sucesso', crescimento: 'Celebracao', desafio: 'Superficialidade' },
-  { arcano: 'VIII - A Justica', arcano_numero: 8, arcano_romano: 'VIII', related_arcano: 'IX - O Eremita', related_numero: 9, related_romano: 'IX', path_type: 'Sequencia', significado: 'Equilibrio', crescimento: 'Retificacao', desafio: 'Rigor' },
-  { arcano: 'VIII - A Justica', arcano_numero: 8, arcano_romano: 'VIII', related_arcano: 'XX - O Julgamento', related_numero: 20, related_romano: 'XX', path_type: 'Sequencia', significado: 'Lei', crescimento: 'Consciencia', desafio: 'Culpa' },
-  { arcano: 'VIII - A Justica', arcano_numero: 8, arcano_romano: 'VIII', related_arcano: 'X - A Roda da Fortuna', related_numero: 10, related_romano: 'X', path_type: 'Quadratura', significado: 'Verdade', crescimento: 'Honestidade', desafio: 'Imparcialidade' },
-  { arcano: 'IX - O Eremita', arcano_numero: 9, arcano_romano: 'IX', related_arcano: 'X - A Roda da Fortuna', related_numero: 10, related_romano: 'X', path_type: 'Sequencia', significado: 'Iluminacao', crescimento: 'Busca', desafio: 'Isolamento' },
-  { arcano: 'IX - O Eremita', arcano_numero: 9, arcano_romano: 'IX', related_arcano: 'XIX - O Sol', related_numero: 19, related_romano: 'XIX', path_type: 'Sequencia', significado: 'Sabedoria', crescimento: 'Guia', desafio: 'Superioridade' },
-  { arcano: 'IX - O Eremita', arcano_numero: 9, arcano_romano: 'IX', related_arcano: 'XVII - A Estrela', related_numero: 17, related_romano: 'XVII', path_type: 'Sextil', significado: 'Reflexao', crescimento: 'Introspeccao', desafio: 'Melancolia' },
-  { arcano: 'X - A Roda da Fortuna', arcano_numero: 10, arcano_romano: 'X', related_arcano: 'XI - A Forca', related_numero: 11, related_romano: 'XI', path_type: 'Sequencia', significado: 'Ciclos', crescimento: 'Adaptacao', desafio: 'Resignacao' },
-  { arcano: 'X - A Roda da Fortuna', arcano_numero: 10, arcano_romano: 'X', related_arcano: 'XV - O Diabo', related_numero: 15, related_romano: 'XV', path_type: 'Oposicao', significado: 'Destino', crescimento: 'Transformacao', desafio: 'Prisao' },
-  { arcano: 'X - A Roda da Fortuna', arcano_numero: 10, arcano_romano: 'X', related_arcano: 'XVIII - A Lua', related_numero: 18, related_romano: 'XVIII', path_type: 'Sextil', significado: 'Karma', crescimento: 'Evolucao', desafio: 'Confusao' },
-  { arcano: 'XI - A Forca', arcano_numero: 11, arcano_romano: 'XI', related_arcano: 'XII - O Enforcado', related_numero: 12, related_romano: 'XII', path_type: 'Sequencia', significado: 'Coragem', crescimento: 'Transcendencia', desafio: 'Fragilidade' },
-  { arcano: 'XI - A Forca', arcano_numero: 11, arcano_romano: 'XI', related_arcano: 'XV - O Diabo', related_numero: 15, related_romano: 'XV', path_type: 'Oposicao', significado: 'Poder', crescimento: 'Dominio', desafio: 'Dependencia' },
-  { arcano: 'XI - A Forca', arcano_numero: 11, arcano_romano: 'XI', related_arcano: 'XIV - A Temperanca', related_numero: 14, related_romano: 'XIV', path_type: 'Trino', significado: 'Bravura', crescimento: 'Moderao', desafio: 'Intemperanca' },
-  { arcano: 'XII - O Enforcado', arcano_numero: 12, arcano_romano: 'XII', related_arcano: 'XIII - A Morte', related_numero: 13, related_romano: 'XIII', path_type: 'Sequencia', significado: 'Sacrificio', crescimento: 'Entrega', desafio: 'Revolta' },
-  { arcano: 'XII - O Enforcado', arcano_numero: 12, arcano_romano: 'XII', related_arcano: 'XVI - A Torre', related_numero: 16, related_romano: 'XVI', path_type: 'Oposicao', significado: 'Perspectiva', crescimento: 'Desapego', desafio: 'Impotencia' },
-  { arcano: 'XII - O Enforcado', arcano_numero: 12, arcano_romano: 'XII', related_arcano: 'XX - O Julgamento', related_numero: 20, related_romano: 'XX', path_type: 'Complementar', significado: 'Renuncia', crescimento: 'Despertar', desafio: 'Confusao' },
-  { arcano: 'XIII - A Morte', arcano_numero: 13, arcano_romano: 'XIII', related_arcano: 'XIV - A Temperanca', related_numero: 14, related_romano: 'XIV', path_type: 'Sequencia', significado: 'Transformacao', crescimento: 'Renascimento', desafio: 'Medo' },
-  { arcano: 'XIII - A Morte', arcano_numero: 13, arcano_romano: 'XIII', related_arcano: 'XVI - A Torre', related_numero: 16, related_romano: 'XVI', path_type: 'Sextil', significado: 'Fim', crescimento: 'Liberacao', desafio: 'Trauma' },
-  { arcano: 'XIII - A Morte', arcano_numero: 13, arcano_romano: 'XIII', related_arcano: 'XX - O Julgamento', related_numero: 20, related_romano: 'XX', path_type: 'Trino', significado: 'Metamorphose', crescimento: 'Ressurreicao', desafio: 'Aversao' },
-  { arcano: 'XIV - A Temperanca', arcano_numero: 14, arcano_romano: 'XIV', related_arcano: 'XV - O Diabo', related_numero: 15, related_romano: 'XV', path_type: 'Sequencia', significado: 'Equilibrio', crescimento: 'Integracao', desafio: 'Extremao' },
-  { arcano: 'XIV - A Temperanca', arcano_numero: 14, arcano_romano: 'XIV', related_arcano: 'XVII - A Estrela', related_numero: 17, related_romano: 'XVII', path_type: 'Sequencia', significado: 'Harmonia', crescimento: 'Alquimia', desafio: 'Insipidez' },
-  { arcano: 'XIV - A Temperanca', arcano_numero: 14, arcano_romano: 'XIV', related_arcano: 'XXI - O Mundo', related_numero: 21, related_romano: 'XXI', path_type: 'Sextil', significado: 'Moderacao', crescimento: 'Sintese', desafio: 'Conflito' },
-  { arcano: 'XV - O Diabo', arcano_numero: 15, arcano_romano: 'XV', related_arcano: 'XVI - A Torre', related_numero: 16, related_romano: 'XVI', path_type: 'Sequencia', significado: 'Prisao', crescimento: 'Libertacao', desafio: 'Tentacao' },
-  { arcano: 'XV - O Diabo', arcano_numero: 15, arcano_romano: 'XV', related_arcano: '0 - O Louco', related_numero: 0, related_romano: '0', path_type: 'Oposicao', significado: 'Sombra', crescimento: 'Reconhecimento', desafio: 'Projeccao' },
-  { arcano: 'XV - O Diabo', arcano_numero: 15, arcano_romano: 'XV', related_arcano: 'XVII - A Estrela', related_numero: 17, related_romano: 'XVII', path_type: 'Quadratura', significado: 'Ilusao', crescimento: 'Superacao', desafio: 'Dependencia' },
-  { arcano: 'XVI - A Torre', arcano_numero: 16, arcano_romano: 'XVI', related_arcano: 'XVII - A Estrela', related_numero: 17, related_romano: 'XVII', path_type: 'Sequencia', significado: 'Revelacao', crescimento: 'Desconstrucao', desafio: 'Trauma' },
-  { arcano: 'XVI - A Torre', arcano_numero: 16, arcano_romano: 'XVI', related_arcano: 'XIX - O Sol', related_numero: 19, related_romano: 'XIX', path_type: 'Sequencia', significado: 'Catastrofe', crescimento: 'Restauracao', desafio: 'Desespero' },
-  { arcano: 'XVI - A Torre', arcano_numero: 16, arcano_romano: 'XVI', related_arcano: 'XVIII - A Lua', related_numero: 18, related_romano: 'XVIII', path_type: 'Sextil', significado: 'Desconstrucao', crescimento: 'Liberacao', desafio: 'Confusao' },
-  { arcano: 'XVII - A Estrela', arcano_numero: 17, arcano_romano: 'XVII', related_arcano: 'XVIII - A Lua', related_numero: 18, related_romano: 'XVIII', path_type: 'Sequencia', significado: 'Esperanca', crescimento: 'Renovacao', desafio: 'Duvida' },
-  { arcano: 'XVII - A Estrela', arcano_numero: 17, arcano_romano: 'XVII', related_arcano: 'XIX - O Sol', related_numero: 19, related_romano: 'XIX', path_type: 'Sequencia', significado: 'Luz', crescimento: 'Inspiracao', desafio: 'Expectativa' },
-  { arcano: 'XVII - A Estrela', arcano_numero: 17, arcano_romano: 'XVII', related_arcano: 'XXI - O Mundo', related_numero: 21, related_romano: 'XXI', path_type: 'Sextil', significado: 'Fluidez', crescimento: 'Confianca', desafio: 'Impaciencia' },
-  { arcano: 'XVIII - A Lua', arcano_numero: 18, arcano_romano: 'XVIII', related_arcano: 'XIX - O Sol', related_numero: 19, related_romano: 'XIX', path_type: 'Sequencia', significado: 'Ilusao', crescimento: 'Claridade', desafio: 'Medo' },
-  { arcano: 'XVIII - A Lua', arcano_numero: 18, arcano_romano: 'XVIII', related_arcano: 'XX - O Julgamento', related_numero: 20, related_romano: 'XX', path_type: 'Sequencia', significado: 'Inconsciente', crescimento: 'Despertar', desafio: 'Ilusao' },
-  { arcano: 'XVIII - A Lua', arcano_numero: 18, arcano_romano: 'XVIII', related_arcano: 'XXI - O Mundo', related_numero: 21, related_romano: 'XXI', path_type: 'Quadratura', significado: 'Mundo Interior', crescimento: 'Integracao', desafio: 'Fragmentacao' },
-  { arcano: 'XIX - O Sol', arcano_numero: 19, arcano_romano: 'XIX', related_arcano: 'XX - O Julgamento', related_numero: 20, related_romano: 'XX', path_type: 'Sequencia', significado: 'Clareza', crescimento: 'Vitalidade', desafio: 'Egoismo' },
-  { arcano: 'XIX - O Sol', arcano_numero: 19, arcano_romano: 'XIX', related_arcano: 'XXI - O Mundo', related_numero: 21, related_romano: 'XXI', path_type: 'Sequencia', significado: 'Alegria', crescimento: 'Sucesso', desafio: 'Arrogancia' },
-  { arcano: 'XIX - O Sol', arcano_numero: 19, arcano_romano: 'XIX', related_arcano: '0 - O Louco', related_numero: 0, related_romano: '0', path_type: 'Sextil', significado: 'Luz', crescimento: 'Integracao', desafio: 'Superficialidade' },
-  { arcano: 'XX - O Julgamento', arcano_numero: 20, arcano_romano: 'XX', related_arcano: 'XXI - O Mundo', related_numero: 21, related_romano: 'XXI', path_type: 'Sequencia', significado: 'Despertar', crescimento: 'Ressurreicao', desafio: 'Juizo' },
-  { arcano: 'XX - O Julgamento', arcano_numero: 20, arcano_romano: 'XX', related_arcano: '0 - O Louco', related_numero: 0, related_romano: '0', path_type: 'Quadratura', significado: 'Chamado', crescimento: 'Renovacao', desafio: 'Comparacao' },
-  { arcano: 'XX - O Julgamento', arcano_numero: 20, arcano_romano: 'XX', related_arcano: 'V - O Hierofante', related_numero: 5, related_romano: 'V', path_type: 'Sextil', significado: 'Avaliacao', crescimento: 'Responsabilidade', desafio: 'Condenacao' },
-  { arcano: 'XXI - O Mundo', arcano_numero: 21, arcano_romano: 'XXI', related_arcano: '0 - O Louco', related_numero: 0, related_romano: '0', path_type: 'Ancestral', significado: 'Completude', crescimento: 'Integracao', desafio: 'Estagnacao' },
-  { arcano: 'XXI - O Mundo', arcano_numero: 21, arcano_romano: 'XXI', related_arcano: 'III - A Imperatriz', related_numero: 3, related_romano: 'III', path_type: 'Sextil', significado: 'Realizacao', crescimento: 'Fertilidade', desafio: 'Satisfacao' },
-  { arcano: 'XXI - O Mundo', arcano_numero: 21, arcano_romano: 'XXI', related_arcano: 'I - O Mago', related_numero: 1, related_romano: 'I', path_type: 'Sextil', significado: 'Dance', crescimento: 'Manifestacao', desafio: 'Complacencia' },
-];
+export const TAROT_TAROT_MAPPINGS: TarotTarotMapping[] = [
+  // ─── Fire Element Group ──────────────────────────────────────────────────
+  {
+    arcano_1: 'O Imperador',
+    arcano_2: 'O Carro',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 4,
+    numero_2: 7,
+    elemento: 'Fogo',
+    significado_espiritual:
+      'Autoridade marcial encontra a vitória guerreira. A estrutura do Imperadormanifesta-se através da conquista do Carro.',
+    interpretacao_combinada:
+      'Assertividade, disciplina marcial e triunfo através da força de vontade. O momento de agir com confiança absoluta.',
+  },
+  {
+    arcano_1: 'O Imperador',
+    arcano_2: 'A Força',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 4,
+    numero_2: 11,
+    elemento: 'Fogo',
+    significado_espiritual:
+      'Autoridade imperial encontra coragem cardíaca. A força do Imperador transforma-se em compaixão guerreira na Força.',
+    interpretacao_combinada:
+      'Coragem compassiva, domínio gentil das situações. O guerreiro que lidera com o coração.',
+  },
+  {
+    arcano_1: 'O Carro',
+    arcano_2: 'A Torre',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 7,
+    numero_2: 16,
+    elemento: 'Fogo',
+    significado_espiritual:
+      'Vitória controlada encontra destruição libertadora. O Carro conquista, a Torre destrói para reconstruir.',
+    interpretacao_combinada:
+      'Mudança dramática com propósito. A transformação que vem através da ação decisiva e ruptura de limitações.',
+  },
+  {
+    arcano_1: 'A Força',
+    arcano_2: 'A Temperança',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 11,
+    numero_2: 14,
+    elemento: 'Fogo',
+    significado_espiritual:
+      'Coragem cardíaca encontra equilíbrio alquímico. A compaixão da Força manifesta-se como moderação da Temperança.',
+    interpretacao_combinada:
+      'Equilíbrio emocional através da força interior. A cura que vem do domínio gentil das polaridades.',
+  },
+  {
+    arcano_1: 'O Sol',
+    arcano_2: 'O Julgamento',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 19,
+    numero_2: 20,
+    elemento: 'Fogo',
+    significado_espiritual:
+      'Vitalidade solar encontra ressurreição flamejante. O brilho do Sol ilumina o despertar do Julgamento.',
+    interpretacao_combinada:
+      'Renascimento radiante, chamada divina para a plenitude. O momento de brilhar autenticamente e responder ao chamado da alma.',
+  },
 
-export const TOTAL_MAPPINGS = TAROT_TAROT_MAPPINGS.length;
-export const TOTAL_PATH_TYPES = 7;
+  // ─── Water Element Group ─────────────────────────────────────────────────
+  {
+    arcano_1: 'A Sacerdotisa',
+    arcano_2: 'A Lua',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 2,
+    numero_2: 18,
+    elemento: 'Água',
+    significado_espiritual:
+      'Sabedoria lunar encontra o inconsciente profundo. A intuição da Sacerdotisa expande-se no mar da Lua.',
+    interpretacao_combinada:
+      'Viagem pelos mundos interiores, revelação dos mistérios ocultos. O reino do sonho e da percepção além do véu.',
+  },
+  {
+    arcano_1: 'A Sacerdotisa',
+    arcano_2: 'O Enforcado',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 2,
+    numero_2: 12,
+    elemento: 'Água',
+    significado_espiritual:
+      'Mistérios guardados encontram sacrifício revelador. A sabedoria da Sacerdotisa sacrifica-se na inversão do Enforcado.',
+    interpretacao_combinada:
+      'Nova perspectiva através da entrega. A sabedoria que vem quando abandonamos a resistência e abraçamos o sacrifício consciente.',
+  },
+  {
+    arcano_1: 'A Morte',
+    arcano_2: 'A Lua',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 13,
+    numero_2: 18,
+    elemento: 'Água',
+    significado_espiritual:
+      'Transformação inevitável encontra os mares emocionais. A morte do ego navega pelos волны da Lua.',
+    interpretacao_combinada:
+      'Dissolução das ilusões, navegação pelo inconsciente. A transformação que acontece quando confrontamos nossos medos mais profundos.',
+  },
 
-export function getAllTarotPaths(): readonly TarotTarotMapping[] {
-  return TAROT_TAROT_MAPPINGS;
+  // ─── Earth Element Group ─────────────────────────────────────────────────
+  {
+    arcano_1: 'O Louco',
+    arcano_2: 'A Imperatriz',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 0,
+    numero_2: 3,
+    elemento: 'Terra',
+    significado_espiritual:
+      'Novo começo errante encontra abundância fertilizante. A liberdade do Louco manifesta-se como criação da Imperatriz.',
+    interpretacao_combinada:
+      'Criatividade que flui naturalmente, novos começos férteis. O impulso inicial que se transforma em manifestação abundante.',
+  },
+  {
+    arcano_1: 'O Louco',
+    arcano_2: 'O Diabo',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 0,
+    numero_2: 15,
+    elemento: 'Terra',
+    significado_espiritual:
+      'Liberdade absoluta encontra prisão terrena. A inocência do Louco contrasta com as correntes do Diabo.',
+    interpretacao_combinada:
+      'O caminho entre a liberdade e a servidão voluntária. A jornada do despertar que pode levar à libertação ou à submissão.',
+  },
+  {
+    arcano_1: 'A Imperatriz',
+    arcano_2: 'O Mundo',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 3,
+    numero_2: 21,
+    elemento: 'Terra',
+    significado_espiritual:
+      'Abundância fertilizante encontra completude terrena. A criação da Imperatriz completa-se na integração do Mundo.',
+    interpretacao_combinada:
+      'Realização criativa, manifestação da abundância interior. O ciclo completo que honra a Terra Mãe.',
+  },
+
+  // ─── Air Element Group ───────────────────────────────────────────────────
+  {
+    arcano_1: 'O Mago',
+    arcano_2: 'O Hierofante',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 1,
+    numero_2: 5,
+    elemento: 'Ar',
+    significado_espiritual:
+      'Manifestação individual encontra sabedoria sagrada. O poder do Mago expande-se na tradição do Hierofante.',
+    interpretacao_combinada:
+      'Magia que se torna doutrina, poder pessoal que honra a tradição. A manifestação consciente dentro dos sagrado.',
+  },
+  {
+    arcano_1: 'O Mago',
+    arcano_2: 'Os Enamorados',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 1,
+    numero_2: 6,
+    elemento: 'Ar',
+    significado_espiritual:
+      'Poder de manifestar encontra união de opostos. A vontade do Mago escolhe no momento dos Enamorados.',
+    interpretacao_combinada:
+      'Escolha sagrada com poder de criação. O momento de manifestar através da união dos opostos.',
+  },
+  {
+    arcano_1: 'O Hierofante',
+    arcano_2: 'A Justiça',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 5,
+    numero_2: 8,
+    elemento: 'Ar',
+    significado_espiritual:
+      'Sabedoria sagrada encontra equilíbrio cósmico. A tradição do Hierofante é julgada pela lei divina da Justiça.',
+    interpretacao_combinada:
+      'Lei sagrada em ação, equilíbrio entre tradição e justiça. O julgamento que honra o caminho espiritual.',
+  },
+  {
+    arcano_1: 'A Estrela',
+    arcano_2: 'Os Enamorados',
+    tipo_relacionamento: 'mesmo_elemento',
+    numero_1: 17,
+    numero_2: 6,
+    elemento: 'Ar',
+    significado_espiritual:
+      'Esperança desperta encontra união sagrada. A luz da Estrela guia a escolha dos Enamorados.',
+    interpretacao_combinada:
+      'Conexão espiritual em harmonia, escolha que traz esperança. O amor que se eleva através da luz interior.',
+  },
+
+  // ─── Numerological Relationships (Sacred Numbers) ────────────────────────
+  // 10 + 11 = 21 (Wheel + Strength = World) - cycles and courage lead to completion
+  {
+    arcano_1: 'A Roda da Fortuna',
+    arcano_2: 'A Força',
+    tipo_relacionamento: 'numerologico',
+    numero_1: 10,
+    numero_2: 11,
+    significado_espiritual:
+      'Ciclos do destino encontram coragem cardíaca. A roda gira, mas a força interior permanece.',
+    interpretacao_combinada:
+      'Coragem nos ciclos da vida, aceitação do destino com força interior. A resiliência que transforma o ciclo em evolução.',
+  },
+  // 10 + 10 = 20 (Wheel + Wheel = Judgement) - doubling of cycles for awakening
+  {
+    arcano_1: 'A Roda da Fortuna',
+    arcano_2: 'O Julgamento',
+    tipo_relacionamento: 'numerologico',
+    numero_1: 10,
+    numero_2: 20,
+    significado_espiritual:
+      'Ciclos do destino encontram ressurreição. A roda prepara o despertar do Julgamento.',
+    interpretacao_combinada:
+      'Renascimento através da compreensão dos ciclos. O momento de responder ao chamado divino após atravessar muitas voltas.',
+  },
+
+  // ─── Same Chakra Relationships ───────────────────────────────────────────
+  // Chakra 1 - Root
+  {
+    arcano_1: 'O Louco',
+    arcano_2: 'A Roda da Fortuna',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 0,
+    numero_2: 10,
+    chakra: '1º Chakra Raiz (Muladhara)',
+    chakra_numero: 1,
+    significado_espiritual:
+      'Grounding journey from freedom to cycles. The root opens to embrace the turning of fate.',
+    interpretacao_combinada:
+      'Ancoramento na mudança, aceitar os ciclos do destino com a liberdade interior do louco.',
+  },
+  {
+    arcano_1: 'O Louco',
+    arcano_2: 'O Diabo',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 0,
+    numero_2: 15,
+    chakra: '1º Chakra Raiz (Muladhara)',
+    chakra_numero: 1,
+    significado_espiritual:
+      'Libertação e prisão no mesmo chakra. A inocência do Louco contrasta com as amarras do Diabo.',
+    interpretacao_combinada:
+      'O teste fundamental: liberdade ou servidão. A escolha que determina nossa relação com a matéria.',
+  },
+
+  // Chakra 2 - Sacral
+  {
+    arcano_1: 'O Mago',
+    arcano_2: 'O Carro',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 1,
+    numero_2: 7,
+    chakra: '2º Chakra Sacral (Svadhisthana)',
+    chakra_numero: 2,
+    significado_espiritual:
+      'Poder de manifestar encontra vitória guerreira. A vontade do Mago conquista no Carro.',
+    interpretacao_combinada:
+      'Manifestação através da ação decisiva. O poder de criar realidade através da vontade sagrada.',
+  },
+  {
+    arcano_1: 'O Mago',
+    arcano_2: 'A Morte',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 1,
+    numero_2: 13,
+    chakra: '2º Chakra Sacral (Svadhisthana)',
+    chakra_numero: 2,
+    significado_espiritual:
+      'Criação manifesta encontra destruição transformadora. O poder do Mago inclui a capacidade de morrer e renascer.',
+    interpretacao_combinada:
+      'Transformação criativa, o poder de destruir para reconstruir. A morte do velho que permite novo nascimento.',
+  },
+  {
+    arcano_1: 'O Carro',
+    arcano_2: 'A Torre',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 7,
+    numero_2: 16,
+    chakra: '2º Chakra Sacral (Svadhisthana)',
+    chakra_numero: 2,
+    significado_espiritual:
+      'Vitória conquistada encontra destruição reveladora. A jornada do Carro atravessa a Tower para a libertação.',
+    interpretacao_combinada:
+      'Avanço transformador, ruptura necessária para o progresso. A destruição que liberta para novas conquistas.',
+  },
+
+  // Chakra 3 - Solar Plexus
+  {
+    arcano_1: 'A Sacerdotisa',
+    arcano_2: 'O Eremita',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 2,
+    numero_2: 9,
+    chakra: '3º Chakra Plexo Solar (Manipura)',
+    chakra_numero: 3,
+    significado_espiritual:
+      'Intuição guardada encontra iluminação solitária. A sabedoria da Sacerdotisa é encontrada pelo Eremita em solidão.',
+    interpretacao_combinada:
+      'Busca da verdade através da introspecção. A sabedoria interior que brilha na escuridão da solidão sagrada.',
+  },
+  {
+    arcano_1: 'A Sacerdotisa',
+    arcano_2: 'O Julgamento',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 2,
+    numero_2: 20,
+    chakra: '3º Chakra Plexo Solar (Manipura)',
+    chakra_numero: 3,
+    significado_espiritual:
+      'Mistérios ocultos encontram ressurreição. A Sacerdotisa guarda os segredos que o Julgamento revela.',
+    interpretacao_combinada:
+      'Despertar dos mistérios, chamado para a verdade. A revelação que responde ao chamado da alma.',
+  },
+  {
+    arcano_1: 'O Eremita',
+    arcano_2: 'O Julgamento',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 9,
+    numero_2: 20,
+    chakra: '3º Chakra Plexo Solar (Manipura)',
+    chakra_numero: 3,
+    significado_espiritual:
+      'Iluminação solitária encontra ressurreição coletiva. A luz do Eremita prepara o despertar do Julgamento.',
+    interpretacao_combinada:
+      'Luz interior que irradia para o mundo, chamado divino após a busca solitária.',
+  },
+
+  // Chakra 4 - Heart
+  {
+    arcano_1: 'A Imperatriz',
+    arcano_2: 'Os Enamorados',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 3,
+    numero_2: 6,
+    chakra: '4º Chakra Cardíaco (Anahata)',
+    chakra_numero: 4,
+    significado_espiritual:
+      'Amor fertilizante encontra escolha sagrada. A Imperatriz nutre a decisão dos Enamorados.',
+    interpretacao_combinada:
+      'Amor que escolhe, escolha que ama. O coração que encontra sua counterpart na harmonia dos opostos.',
+  },
+  {
+    arcano_1: 'A Imperatriz',
+    arcano_2: 'A Força',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 3,
+    numero_2: 11,
+    chakra: '4º Chakra Cardíaco (Anahata)',
+    chakra_numero: 4,
+    significado_espiritual:
+      'Abundância amorosa encontra coragem cardíaca. O amor da Imperatriz manifesta-se como força da Temperança.',
+    interpretacao_combinada:
+      'Amor forte e compassivo, força que vem do coração. A capacidade de amar com coragem e equilibrar as polaridades.',
+  },
+  {
+    arcano_1: 'Os Enamorados',
+    arcano_2: 'A Temperança',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 6,
+    numero_2: 14,
+    chakra: '4º Chakra Cardíaco (Anahata)',
+    chakra_numero: 4,
+    significado_espiritual:
+      'Escolha de amor encontra equilíbrio alquímico. A união dos Enamorados é temperada pela Temperança.',
+    interpretacao_combinada:
+      'Harmonia nas relações, equilíbrio entre dar e receber. A união que se transforma em harmonia duradoura.',
+  },
+  {
+    arcano_1: 'A Força',
+    arcano_2: 'A Temperança',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 11,
+    numero_2: 14,
+    chakra: '4º Chakra Cardíaco (Anahata)',
+    chakra_numero: 4,
+    significado_espiritual:
+      'Coragem cardíaca encontra equilíbrio de polaridades. A força do coração é equilibradapela Temperança.',
+    interpretacao_combinada:
+      'Equilíbrio através do amor, força que harmoniza. A capacidade de manter o coração aberto enquanto se enfrenta os desafios.',
+  },
+
+  // Chakra 5 - Throat
+  {
+    arcano_1: 'O Hierofante',
+    arcano_2: 'A Justiça',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 5,
+    numero_2: 8,
+    chakra: '5º Chakra Laríngeo (Vishuddha)',
+    chakra_numero: 5,
+    significado_espiritual:
+      'Doutrina sagrada encontra lei divina. A sabedoria do Hierofante é equilibrada pela justiça cósmica.',
+    interpretacao_combinada:
+      'Verdade falada com sabedoria, julgamento que honra a tradição. A expressão da verdade sagrada em equilíbrio.',
+  },
+
+  // Chakra 6 - Third Eye
+  {
+    arcano_1: 'A Estrela',
+    arcano_2: 'A Lua',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 17,
+    numero_2: 18,
+    chakra: '6º Chakra Frontal (Ajna)',
+    chakra_numero: 6,
+    significado_espiritual:
+      'Esperança desperta encontra ilusão revelada. A luz da Estrela dissipa os véus da Lua.',
+    interpretacao_combinada:
+      'Intuição clara através das ilusões, esperança que guia pelos mares emocionais. A percepção que vê além do véu.',
+  },
+
+  // Chakra 7 - Crown
+  {
+    arcano_1: 'O Sol',
+    arcano_2: 'O Mundo',
+    tipo_relacionamento: 'mesmo_chakra',
+    numero_1: 19,
+    numero_2: 21,
+    chakra: '7º Chakra Coronário (Sahasrara)',
+    chakra_numero: 7,
+    significado_espiritual:
+      'Vitalidade solar encontra completude divina. O brilho do Sol integra-se na totalidade do Mundo.',
+    interpretacao_combinada:
+      'Realização espiritual plena, conexão com a fonte de toda luz. A dan ça cósmica que completa o ciclo da grande obra.',
+  },
+
+  // ─── Transformation Relationships ────────────────────────────────────────
+  {
+    arcano_1: 'A Morte',
+    arcano_2: 'A Temperança',
+    tipo_relacionamento: 'transformacao',
+    numero_1: 13,
+    numero_2: 14,
+    significado_espiritual:
+      'Transformação inevitável encontra equilíbrio alquímico. A morte do velho self é transmutada pela Temperança.',
+    interpretacao_combinada:
+      'Metamorfose consciente, a morte que leva à harmonia. O processo de transmutação que transforma trauma em sabedoria.',
+  },
+  {
+    arcano_1: 'A Torre',
+    arcano_2: 'A Estrela',
+    tipo_relacionamento: 'transformacao',
+    numero_1: 16,
+    numero_2: 17,
+    significado_espiritual:
+      'Destruição súbita encontra esperança renovad. A Torre destrói, a Estrela restaura a fé.',
+    interpretacao_combinada:
+      'Libertação através da crise, renascimento após a queda. A esperança que nasce das cinzas da destruição.',
+  },
+  {
+    arcano_1: 'O Diabo',
+    arcano_2: 'A Estrela',
+    tipo_relacionamento: 'transformacao',
+    numero_1: 15,
+    numero_2: 17,
+    significado_espiritual:
+      'Prisões interiores encontram libertação estelar. As correntes do Diabo são cortadas pela luz da Estrela.',
+    interpretacao_combinada:
+      'Libertação das amarras materiais e emocionais. A luz que dissipa as sombras e restaura a esperança.',
+  },
+
+  // ─── Sequential Relationships ──────────────────────────────────────────────
+  {
+    arcano_1: 'O Louco',
+    arcano_2: 'O Mago',
+    tipo_relacionamento: 'sequencial',
+    numero_1: 0,
+    numero_2: 1,
+    significado_espiritual:
+      'Inocência encontra poder. A liberdade do Louco desperta o poder do Mago.',
+    interpretacao_combinada:
+      'O início da jornada, o despertar do poder interior. O momento de passar da inocência ao uso consciente da vontade.',
+  },
+  {
+    arcano_1: 'A Imperatriz',
+    arcano_2: 'O Imperador',
+    tipo_relacionamento: 'sequencial',
+    numero_1: 3,
+    numero_2: 4,
+    significado_espiritual:
+      'Abundância encontra estrutura. A criação da Imperatriz precisa da estrutura do Imperador.',
+    interpretacao_combinada:
+      'Manifestação criativa com fundamento, fertilidade com disciplina. O equilíbrio entre receptividade e ação.',
+  },
+  {
+    arcano_1: 'A Estrela',
+    arcano_2: 'A Lua',
+    tipo_relacionamento: 'sequencial',
+    numero_1: 17,
+    numero_2: 18,
+    significado_espiritual:
+      'Esperança encontra inconsciente. A luz da Estrela ilumina os mares da Lua.',
+    interpretacao_combinada:
+      'Luz guiando pelo emocional, esperança nas profundezas. A navegação intuitiva após a restauração da fé.',
+  },
+  {
+    arcano_1: 'A Lua',
+    arcano_2: 'O Sol',
+    tipo_relacionamento: 'sequencial',
+    numero_1: 18,
+    numero_2: 19,
+    significado_espiritual:
+      'Ilusão encontra claridade. Os véus da Lua são dissipados pela luz do Sol.',
+    interpretacao_combinada:
+      'Despertar da ilusão, emergência na luz. O momento de clareza após navegar pelos mares do inconsciente.',
+  },
+  {
+    arcano_1: 'O Sol',
+    arcano_2: 'O Julgamento',
+    tipo_relacionamento: 'sequencial',
+    numero_1: 19,
+    numero_2: 20,
+    significado_espiritual:
+      'Vitalidade encontra despertar. O brilho do Sol prepara o despertar do Julgamento.',
+    interpretacao_combinada:
+      'Chamado divino no momento de plenitude. A resposta ao chamado da alma quando estamos em nosso brilho.',
+  },
+
+  // ─── Complementary Relationships ──────────────────────────────────────────
+  {
+    arcano_1: 'O Louco',
+    arcano_2: 'O Mundo',
+    tipo_relacionamento: 'complementar',
+    numero_1: 0,
+    numero_2: 21,
+    significado_espiritual:
+      'Início e fim da jornada. O Louco começa o que o Mundo completa.',
+    interpretacao_combinada:
+      'O ciclo completo da experiência humana, do novo começo à realização. A jornada que retorna ao ponto de partida em um novo nível.',
+  },
+  {
+    arcano_1: 'A Sacerdotisa',
+    arcano_2: 'O Sol',
+    tipo_relacionamento: 'complementar',
+    numero_1: 2,
+    numero_2: 19,
+    significado_espiritual:
+      'Mistério lunar encontra claridade solar. O oculto revela-se na luz.',
+    interpretacao_combinada:
+      'Equilíbrio entre o oculto e o manifesto, entre a sabedoria guardada e a verdade clara. A integração do mistério na luz.',
+  },
+  {
+    arcano_1: 'A Imperatriz',
+    arcano_2: 'O Hierofante',
+    tipo_relacionamento: 'complementar',
+    numero_1: 3,
+    numero_2: 5,
+    significado_espiritual:
+      'Feminino sagrado encontra masculino sagrado. A fertilidade encontra a doutrina.',
+    interpretacao_combinada:
+      'Sagrado feminino e masculino em equilíbrio, criação e tradição. A expressão completa do divino em forma.',
+  },
+  {
+    arcano_1: 'O Hierofante',
+    arcano_2: 'A Estrela',
+    tipo_relacionamento: 'complementar',
+    numero_1: 5,
+    numero_2: 17,
+    significado_espiritual:
+      'Tradição encontra esperança individual. A sabedoria coletiva ilumina a esperança pessoal.',
+    interpretacao_combinada:
+      'Fé na tradição que nutre a esperança individual. A estrela guia dentro da estrutura sagrada.',
+  },
+] as const;
+
+/**
+ * Get the tarot-tarot relationship between two arcanos
+ * @param arcano1 - First arcano name
+ * @param arcano2 - Second arcano name
+ * @returns The relationship mapping or null if not found
+ */
+export function getTarotTarot(arcano1: string, arcano2: string): TarotTarotMapping | null {
+  return (
+    TAROT_TAROT_MAPPINGS.find(
+      (m) =>
+        (m.arcano_1 === arcano1 && m.arcano_2 === arcano2) ||
+        (m.arcano_1 === arcano2 && m.arcano_2 === arcano1)
+    ) ?? null
+  );
 }
 
-export function getAllPathTypes(): TarotPathType[] {
-  return Array.from(new Set(TAROT_TAROT_MAPPINGS.map(m => m.path_type)));
+/**
+ * Get all relationships for a specific arcano
+ * @param arcano - Arcano name
+ * @returns Array of all relationships involving this arcano
+ */
+export function getTarotRelationships(arcano: string): TarotTarotMapping[] {
+  return TAROT_TAROT_MAPPINGS.filter(
+    (m) => m.arcano_1 === arcano || m.arcano_2 === arcano
+  );
 }
 
-export function getAllMappedArcanos(): string[] {
-  const arcanos = new Set<string>();
-  TAROT_TAROT_MAPPINGS.forEach(m => {
-    arcanos.add(m.arcano);
-    arcanos.add(m.related_arcano);
+/**
+ * Get all relationships of a specific type
+ * @param tipo - Relationship type
+ * @returns Array of mappings with this relationship type
+ */
+export function getRelationshipsByType(tipo: TarotRelationshipType): TarotTarotMapping[] {
+  return TAROT_TAROT_MAPPINGS.filter((m) => m.tipo_relacionamento === tipo);
+}
+
+/**
+ * Get all relationships by element
+ * @param elemento - Element name (Fogo, Água, Terra, Ar)
+ * @returns Array of mappings with this element
+ */
+export function getRelationshipsByElement(elemento: string): TarotTarotMapping[] {
+  return TAROT_TAROT_MAPPINGS.filter((m) => m.elemento === elemento);
+}
+
+/**
+ * Get all relationships by chakra
+ * @param chakraNumero - Chakra number (1-7)
+ * @returns Array of mappings with this chakra
+ */
+export function getRelationshipsByChakra(chakraNumero: number): TarotTarotMapping[] {
+  return TAROT_TAROT_MAPPINGS.filter((m) => m.chakra_numero === chakraNumero);
+}
+
+/**
+ * Get all tarot-tarot relationships
+ * @returns Array of all relationship mappings
+ */
+export function getAllTarotTarot(): TarotTarotMapping[] {
+  return [...TAROT_TAROT_MAPPINGS];
+}
+
+/**
+ * Get arcanos that share a relationship type with a given arcano
+ * @param arcano - Arcano name
+ * @param tipo - Relationship type to filter by
+ * @returns Array of related arcano names
+ */
+export function getRelatedArcanos(arcano: string, tipo?: TarotRelationshipType): string[] {
+  const relationships = tipo
+    ? getRelationshipsByType(tipo).filter(
+        (m) => m.arcano_1 === arcano || m.arcano_2 === arcano
+      )
+    : getTarotRelationships(arcano);
+
+  const related = new Set<string>();
+  relationships.forEach((m) => {
+    if (m.arcano_1 === arcano) related.add(m.arcano_2);
+    else if (m.arcano_2 === arcano) related.add(m.arcano_1);
   });
-  return Array.from(arcanos);
+
+  return Array.from(related);
 }
 
-export function getRelationsForArcano(arcano: string): readonly TarotTarotMapping[] {
-  return TAROT_TAROT_MAPPINGS.filter(m => m.arcano === arcano || m.related_arcano === arcano);
+/**
+ * Check if two arcanos have a relationship
+ * @param arcano1 - First arcano name
+ * @param arcano2 - Second arcano name
+ * @returns True if a relationship exists
+ */
+export function hasTarotRelationship(arcano1: string, arcano2: string): boolean {
+  return getTarotTarot(arcano1, arcano2) !== null;
 }
 
-export function getRelationsByPathType(pathType: TarotPathType): readonly TarotTarotMapping[] {
-  return TAROT_TAROT_MAPPINGS.filter(m => m.path_type === pathType);
-}
-
-export function getPathTypeBetween(arcano1: string, arcano2: string): TarotPathType | null {
-  const mapping = TAROT_TAROT_MAPPINGS.find(
-    m => (m.arcano === arcano1 && m.related_arcano === arcano2) || (m.arcano === arcano2 && m.related_arcano === arcano1)
-  );
-  return mapping?.path_type ?? null;
-}
-
-export function getSpiritualMeaningBetween(arcano1: string, arcano2: string): { significado: string; crescimento: string; desafio: string } | null {
-  const mapping = TAROT_TAROT_MAPPINGS.find(
-    m => (m.arcano === arcano1 && m.related_arcano === arcano2) || (m.arcano === arcano2 && m.related_arcano === arcano1)
-  );
-  if (!mapping) return null;
-  return { significado: mapping.significado, crescimento: mapping.crescimento, desafio: mapping.desafio };
-}
-
-export function hasRelation(arcano1: string, arcano2: string): boolean {
-  return getPathTypeBetween(arcano1, arcano2) !== null;
-}
-
-export function getArcanoByNumber(numero: number): string | null {
-  return ALL_MAJOR_ARCANOS[numero] || null;
+/**
+ * Get all unique relationship types
+ * @returns Array of relationship types
+ */
+export function getAllRelationshipTypes(): TarotRelationshipType[] {
+  const types = new Set<TarotRelationshipType>();
+  TAROT_TAROT_MAPPINGS.forEach((m) => types.add(m.tipo_relacionamento));
+  return Array.from(types);
 }
 
 export default {
-  getAllTarotPaths,
-  getAllPathTypes,
-  getAllMappedArcanos,
-  getRelationsForArcano,
-  getRelationsByPathType,
-  getPathTypeBetween,
-  getSpiritualMeaningBetween,
-  hasRelation,
-  getArcanoByNumber,
-  ALL_MAJOR_ARCANOS,
+  getTarotTarot,
+  getTarotRelationships,
+  getRelationshipsByType,
+  getRelationshipsByElement,
+  getRelationshipsByChakra,
+  getAllTarotTarot,
+  getRelatedArcanos,
+  hasTarotRelationship,
+  getAllRelationshipTypes,
   TAROT_TAROT_MAPPINGS,
-  TOTAL_MAPPINGS,
-  TOTAL_PATH_TYPES,
 };
