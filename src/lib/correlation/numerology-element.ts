@@ -106,7 +106,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       forca: 'Intuição profunda, compaixão, adaptabilidade, sensibilidade',
       desafio: 'Dificuldade em estabelecer limites, volatilidade emocional',
       licao: 'Manter a clareza emocional sem perder a sensibilidade e conexão',
-      affirmacao: 'Eu fluo com a vida mantendo minha essência e meus limites sagrados',
+      afirmacao: 'Eu fluo com a vida mantendo minha essência e meus limites sagrados',
     },
     energia: {
       tipo: 'Frio',
@@ -166,17 +166,11 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
   5: {
     numero: 5,
     elemento: 'água',
-    },
-    energia: {
-      tipo: 'Neutro',
-      polaridade: 'Equilibrado',
-    },
-  },
-  8: {
+    elemento_nome: 'Água',
     elemento_english: 'Water',
     significado_espiritual:
       'O número 5 é a transformação alquímica, a liberdade sagrada e a mudança certa. Representa a adaptação, a curiosidade espiritual e a capacidade de fluir através das transformações da vida.',
-    arquetipo: 'O Guardião das Emoções / O alquimista',
+    arquetipo: 'O Guardião das Emoções / O Alquimista',
     orixa: 'Iemanjá',
     sephirah: 'Yesod',
     chakra: '2º Sacro (Svadhisthana)',
@@ -240,7 +234,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
       afirmacao: 'Eu comunico minha verdade com clareza, amor e sabedoria divina',
     },
     energia: {
-      tipo: 'Neut ro',
+      tipo: 'Neutro',
       polaridade: 'Equilibrado',
     },
   },
@@ -275,7 +269,7 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
     elemento_nome: 'Água',
     elemento_english: 'Water',
     significado_espiritual:
-      'O número 9 é a iluminação universal, a compaixão infinita e o encerramento sagrado. Representa a sabedoria conquistada, a generosity روحانية and the ability to transcender boundaries.',
+      'O número 9 é a iluminação universal, a compaixão infinita e o encerramento sagrado. Representa a sabedoria conquistada, a generosidade espiritual e a capacidade de transcender limites.',
     arquetipo: 'O Guardião das Emoções / O Iluminado',
     orixa: 'Iemanjá',
     sephirah: 'Yesod',
@@ -350,11 +344,11 @@ export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
     elemento_nome: 'Fogo',
     elemento_english: 'Fire',
     significado_espiritual:
-      'O número 12 é a justiça divina, o sacrifício sagrado e a ordem cósmica. Representa a aplicação da lei espiritual, a equilíbrio entre retribuição e misericórdia e a transformação pela prova.',
+      'O número 12 é a justiça divina, o sacrifício sagrado e a ordem cósmica. Representa a aplicação da lei espiritual, o equilíbrio entre retribuição e misericórdia e a transformação pela prova.',
     arquetipo: 'O Guerreiro da Luz / O Executor da Lei',
     orixa: 'Xangô',
     sephirah: 'Geburah',
-    chakra: '3º Plexo Solar (Manipura)',
+    chakra: '3º Plexo Solar, (Manipura)',
     planeta: 'Marte',
     cor: 'Vermelho',
     direcao: 'Sul',
