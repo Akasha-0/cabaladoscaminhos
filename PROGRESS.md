@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-31
-**Sprints completados:** 483
+**Sprints completados:** 484
 **Tests: ✅ 10531 passing, 31 skipped, 0 failed**
  - Prisma 7 + PostgreSQL via pg adapter
  - Redis/ioredis for caching
@@ -9,13 +9,13 @@
  - jsPDF for PDF exports (dynamic import)
  - Minimax API integration for AI responses
 
-### Sprint 483 — Sacred Contracts & Shapes (COMPLETE)
+### Sprint 484 — Shadow Work & Tarot & Progress (COMPLETE)
 Enhanced APIs with spiritual correlations:
-- sacred/contract: 5 sacred contracts with spiritual correlations
-- spiritual/state: Moon phase spiritual state analysis
-- sacred/shapes: Sacred shapes and patterns with spiritual correlations
+- shadow/work: 6 shadow work practices with spiritual correlations
+- tarot/reading: Tarot readings with spiritual correlations
+- progresso: Achievement system with spiritual correlations (22 achievements)
 270 engine tests passing.
-
+### Sprint 483 — Sacred Contracts & Shapes (COMPLETE)
 ### Sprint 482 — Energy Flow& Spirit Communication (COMPLETE)
 Enhanced APIs with spiritual correlations:
 - energy/flow: 6 energy flow patterns with spiritual correlations
