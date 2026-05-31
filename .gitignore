@@ -61,3 +61,8 @@ next-env.d.ts
 /src/app/api/chat.disabled/
 /src/app/api/meditacao.disabled_BROKEN/
 /src/app/api/spiritual.disabled_BROKEN/
+
+# Skip/test disabled files
+**/*.skip
+**/*.test.disabled
+**/*.disabled
