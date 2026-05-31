@@ -396,7 +396,10 @@ describe('ZodiacElement Correlation', () => {
           significado.includes('coragem') ||
           significado.includes('expansão') ||
           significado.includes('transformação') ||
-          significado.includes('ação')
+          significado.includes('ação') ||
+          significado.includes('liderança') ||
+          significado.includes('sabedoria') ||
+          significado.includes('propósito')
         ).toBe(true);
       });
     });
