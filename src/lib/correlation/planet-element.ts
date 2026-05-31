@@ -1,36 +1,36 @@
 /**
  * Planet-Element Spiritual Correlation
  * Based on IDEIA.md Cabala dos Caminhos system data
- * Maps each planet to its ruling element with full spiritual context
+ * Aligns the seven classical planets with their elemental correspondences
  */
 
-export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra';
+export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
 
 export type Planeta = 'Sol' | 'Lua' | 'Mercúrio' | 'Vênus' | 'Marte' | 'Júpiter' | 'Saturno';
 
 export interface PlanetElementMapping {
   /** Planet name */
   planeta: Planeta;
-  /** Primary element */
+  /** Associated element */
   elemento: Elemento;
+  /** Chakra correspondent */
+  chakra: string;
+  /** Orixá correspondent */
+  orixa: string;
   /** Elemental qualities */
   qualidades: {
     temperatura: 'Quente' | 'Frio' | 'Neutro';
     umidade: 'Seco' | 'Úmido' | 'Neutro';
     polaridade: 'Yang' | 'Yin' | 'Equilibrado';
   };
-  /** Orixá correspondent */
-  orixa: string;
   /** Sacred day of the planet */
   dia_sagrado: string;
   /** Traditional colors */
   cores: string[];
-  /** Chakra correspondent */
-  chakra: string;
   /** Sephirah correspondence (Cabala) */
   sephirah: string;
-  /** Spiritual associations */
-  associacoes_espirituais: string[];
+  /** Spiritual meaning / associations */
+  significado_espiritual: string[];
   /** Affinities */
   afinidades: string[];
   /** Práticas espirituais */
@@ -41,252 +41,238 @@ export interface PlanetElementMapping {
   };
 }
 
-// ─── Planet-to-Element Mapping ─────────────────────────────────────────────────
+// ─── Planet-to-Element Mapping ────────────────────────────────────────────────
 
 export const PLANET_ELEMENT_MAPPINGS: Record<Planeta, PlanetElementMapping> = {
   Sol: {
     planeta: 'Sol',
     elemento: 'Fogo',
+    chakra: '3º Plexo Solar',
+    orixa: 'Xangô',
     qualidades: {
       temperatura: 'Quente',
       umidade: 'Seco',
       polaridade: 'Yang',
     },
-    orixa: 'Xangô',
     dia_sagrado: 'Domingo',
-    cores: ['Amarelo', 'Dourado', 'Laranja'],
-    chakra: '3º Plexo Solar',
+    cores: ['Amarelo', 'Marrom', 'Vermelho', 'Branco'],
     sephirah: 'Tiphereth',
-    associacoes_espirituais: [
+    significado_espiritual: [
       'Vitalidade e energia vital',
       'Transformação e purificação',
       'Vontade e determinação',
       'Brilho pessoal e carisma',
       'Fogo sagrado da criação',
-      'Identidade e propósito de vida',
-      'Espírito de liderança',
- ],
+      'Essência do ser e identidade',
+    ],
     afinidades: [
       'Coração e sistema circulatório',
       'Plexo Solar (manipura)',
       'Sistema metabólico',
       'Temperamento bilioso',
-      'Glândula pineal',
     ],
     praticas: {
-      ebos: ['Amalá para Xangô', 'Oferendas de fogo', 'Frutos dourados'],
-      banhos: ['Ervas quentes (guiné, arruda)', 'Folhas de quebra-pedra', 'Alecrim'],
-      defumacoes: ['Sândalo', 'Cravo-da-índia', 'Canela', 'Benjoim'],
+      ebos: ['Amalá para Xangô', 'Oferendas de fogo'],
+      banhos: ['Ervas quentes (guiné, arruda)', 'Folhas de quebra-pedra'],
+      defumacoes: ['Sândalo', 'Cravo-da-índia', 'Canela'],
     },
   },
   Lua: {
     planeta: 'Lua',
     elemento: 'Água',
+    chakra: '6º Frontal',
+    orixa: 'Iemanjá',
     qualidades: {
       temperatura: 'Frio',
       umidade: 'Úmido',
       polaridade: 'Yin',
     },
-    orixa: 'Iemanjá',
     dia_sagrado: 'Segunda-feira',
-    cores: ['Azul Escuro', 'Branco', 'Prata', 'Transparente'],
-    chakra: '6º Frontal',
+    cores: ['Azul Escuro', 'Branco', 'Transparente'],
     sephirah: 'Yesod',
-    associacoes_espirituais: [
+    significado_espiritual: [
       'Emoção e sensibilidade',
       'Intuição e sabedoria interior',
       'Maternidade e nutrição',
       'Ciclos e mudanças',
       'Águas profundas do inconsciente',
-      'Memória e sonhos',
-      'Fertilidade e renovação',
+      'Conexão com o sagrado feminino',
     ],
     afinidades: [
       'Sistema linfático',
       'Chakra Frontal (ajna)',
       'Sistema hormonal',
       'Temperamento fleumático',
-      'Glândula pituitária',
     ],
     praticas: {
-      ebos: ['Canjica na beira-mar para Iemanjá', 'Alimentos brancos', 'Leite e coco'],
-      banhos: ['Colônia', 'Alcaparra', 'Folha de lágrima-de-Nossa-Senhora', 'Manjericão'],
-      defumacoes: ['Lavanda', 'Lálá', 'Alcáçuz', 'Flor de maracujá'],
+      ebos: ['Canjica na beira-mar para Iemanjá', 'Alimentos brancos'],
+      banhos: ['Colônia', 'Alcaparra', 'Folha de lágrima-de-Nossa-Senhora'],
+      defumacoes: ['Lavanda', 'Lálá', 'Alcáçuz'],
     },
   },
   Mercúrio: {
     planeta: 'Mercúrio',
     elemento: 'Ar',
+    chakra: '4º Cardíaco',
+    orixa: 'Oxumaré',
     qualidades: {
       temperatura: 'Neutro',
       umidade: 'Seco',
       polaridade: 'Equilibrado',
     },
-    orixa: 'Oxumaré',
     dia_sagrado: 'Quarta-feira',
-    cores: ['Amarelo', 'Verde', 'Arco-íris'],
-    chakra: '4º Cardíaco',
+    cores: ['Arco-íris', 'Amarelo', 'Verde'],
     sephirah: 'Hod',
-    associacoes_espirituais: [
+    significado_espiritual: [
       'Mente e intelecto',
       'Comunicação e expressão',
       'Flexibilidade e adaptação',
       'Ciclos de transformação',
       'Movimento e respiração',
-      'Inteligência prática',
-      'Comércio e viagens',
+      'Ligação entre céu e terra',
     ],
     afinidades: [
       'Sistema respiratório',
-      'Chakra Cardíaco (anahara)',
+      'Chakra Cardíaco (anahata)',
       'Sistema nervoso',
       'Temperamento melancólico',
-      'Glândula tireoide',
     ],
     praticas: {
-      ebos: ['Arroz doce para Oxumaré', 'Oferendas de arco-íris', 'Dinheiro-em-penca'],
-      banhos: ['Dinheiro-em-penca', 'Folha da fortuna', 'Guiné'],
-      defumacoes: ['Alfarroba', 'Benjoim', 'Mastruz', 'Alecrim'],
+      ebos: ['Arroz doce para Oxumaré', 'Oferendas de arco-íris'],
+      banhos: ['Dinheiro-em-penca', 'Folha da fortuna'],
+      defumacoes: ['Alfarroba', 'Benjoim', 'Mastruz'],
     },
   },
   Vênus: {
     planeta: 'Vênus',
-    elemento: 'Água',
-    qualidades: {
-      temperatura: 'Quente',
-      umidade: 'Úmido',
-      polaridade: 'Yin',
-    },
+    elemento: 'Terra',
+    chakra: '2º Sacral',
     orixa: 'Oxum',
+    qualidades: {
+      temperatura: 'Neutro',
+      umidade: 'Úmido',
+      polaridade: 'Equilibrado',
+    },
     dia_sagrado: 'Sexta-feira',
-    cores: ['Rosa', 'Azul Claro', 'Verde Claro', 'Branco'],
-    chakra: '4º Cardíaco',
+    cores: ['Rosa', 'Azul Claro', 'Verde', 'Dourado'],
     sephirah: 'Netzach',
-    associacoes_espirituais: [
+    significado_espiritual: [
       'Amor e beleza',
       'Harmonia e prazer',
       'Fertilidade e abundância',
-      'Conexões afetivas',
-      'Arte e criatividade',
-      'Relacionamentos e uniões',
-      'Autoestima e valor próprio',
+      'Conexão com a natureza',
+      'Valorização do sagrado feminino',
+      'Prazer da existência',
     ],
     afinidades: [
-      'Sistema renal',
-      'Chakra Cardíaco (anahara)',
       'Sistema reprodutivo',
-      'Temperamento fleumático',
-      'Glândulas suprarrenais',
+      'Chakra Sacral (svadhisthana)',
+      'Rins e bexiga',
+      'Temperamento sanguíneo',
     ],
     praticas: {
-      ebos: ['Mel e água para Oxum', 'Perfume e flores', 'Oferendas de mel'],
-      banhos: ['Rosa', 'Flor de cova', 'Manjericão roxo', 'Cravo'],
-      defumacoes: ['Benjoim', 'Mastruz', 'Lavanda', 'Rosa seca'],
+      ebos: ['Mel e flores para Oxum', 'Água de florais'],
+      banhos: ['Rosa', 'Jasmim', 'Flor de laranjeira'],
+      defumacoes: ['Baunilha', 'Rosa', 'Ylang-ylang'],
     },
   },
   Marte: {
     planeta: 'Marte',
     elemento: 'Fogo',
+    chakra: '1º Básico',
+    orixa: 'Ogum',
     qualidades: {
       temperatura: 'Quente',
       umidade: 'Seco',
       polaridade: 'Yang',
     },
-    orixa: 'Xangô',
     dia_sagrado: 'Terça-feira',
-    cores: ['Vermelho', 'Laranja', 'Preto'],
-    chakra: '1º Básico',
-    sephirah: 'Geburah',
-    associacoes_espirituais: [
-      'Coragem e ação',
-      'Energia de proteção',
-      'Determinação e força',
-      'Luta e conquista',
-      'Justiça e equilíbrio de poder',
-      'Energia sexual e criativa',
-      'Assertividade e liderança',
+    cores: ['Vermelho', 'Laranja', 'Amarelo Queimado'],
+    sephirah: 'Gevurah',
+    significado_espiritual: [
+      'Força e coragem',
+      'Ação e determinação',
+      'Proteção e conquista',
+      'Energia de transformação',
+      'Luta e superação',
+      'Poderio warrior espiritual',
     ],
     afinidades: [
       'Sistema muscular',
       'Chakra Básico (muladhara)',
-      'Sistema digestivo (fogo gástrico)',
+      'Sistema imunológico',
       'Temperamento bilioso',
-      'Glândulas sexuais',
     ],
     praticas: {
-      ebos: ['Pimenta para Xangô', 'Azeite e limões', 'Oferendas de guerra'],
-      banhos: ['Pimenta', 'Arruda', 'Guiné', 'Cravo-da-índia'],
-      defumacoes: ['Cravo', 'Canela', 'Pimenta-da-jamaica', 'Gengibre'],
+      ebos: ['Comidas picantes para Ogum', 'Oferendas de ferro'],
+      banhos: ['Pimenta', 'Gengibre', 'Alecrim'],
+      defumacoes: ['Pimenta', 'Gengibre seco', 'Cravo'],
     },
   },
   Júpiter: {
     planeta: 'Júpiter',
-    elemento: 'Fogo',
+    elemento: 'Éter',
+    chakra: '7º Coronário',
+    orixa: 'Oxalá',
     qualidades: {
       temperatura: 'Quente',
-      umidade: 'Úmido',
+      umidade: 'Neutro',
       polaridade: 'Yang',
     },
-    orixa: 'Oxalá',
-    dia_sagrado: 'Domingo',
-    cores: ['Branco', 'Amarelo', 'Azul Claro'],
-    chakra: '5º Laríngeo',
+    dia_sagrado: 'Quinta-feira',
+    cores: ['Branco', 'Dourado', 'Violeta'],
     sephirah: 'Chesed',
-    associacoes_espirituais: [
+    significado_espiritual: [
       'Expansão e abundância',
       'Sabedoria e filosofia',
-      'Sorte e prosperidade',
-      'Espiritualidade e fé',
-      'Generosidade e compaixão',
-      'Crescimento pessoal',
-      'Proteção espiritual',
+      'Fé e otimismo',
+      'Transcendência espiritual',
+      'Generosidade e justiça',
+      'Conexão com o divino',
     ],
     afinidades: [
       'Fígado e vesícula biliar',
-      'Chakra Laríngeo (vishuddha)',
-      'Sistema circulatório arterial',
-      'Temperamento bilioso',
-      'Glândula hipófise',
+      'Chakra Coronário (sahasrara)',
+      'Sistema nervoso central',
+      'Consciência cósmica',
     ],
     praticas: {
-      ebos: ['Fumo de incenso para Oxalá', 'Milho e pipoca', 'Alimentos brancos'],
-      banhos: ['Alecrim', 'Manjericão branco', 'Cânfora', 'Espada-de-São-Jorge'],
-      defumacoes: ['Sândalo branco', 'Benjoim', 'Lavanda', 'Alcáçuz'],
+      ebos: ['Leite e alimentos brancos para Oxalá', 'Oferendas de paz'],
+      banhos: ['Alfazema', 'Flor de bacharel', 'Rosa branca'],
+      defumacoes: ['Benjoim puro', 'Sálvia branca', 'Mirra'],
     },
   },
   Saturno: {
     planeta: 'Saturno',
     elemento: 'Terra',
+    chakra: '1º Básico',
+    orixa: 'Omolu',
     qualidades: {
       temperatura: 'Frio',
       umidade: 'Seco',
       polaridade: 'Yin',
     },
-    orixa: 'Omolu',
-    dia_sagrado: 'Segunda-feira',
+    dia_sagrado: 'Sábado',
     cores: ['Preto', 'Branco', 'Vermelho', 'Violeta'],
-    chakra: '1º Básico',
     sephirah: 'Malkuth',
-    associacoes_espirituais: [
+    significado_espiritual: [
       'Estrutura e fundamentação',
       'Ancestralidade e tradição',
       'Transformação e renovação',
       'Saúde física e transmutação',
       'O lodo primordial da criação',
-      'Disciplina e organização',
-      'Karma e destino',
- ],
+      'Disciplina e limites sagrados',
+    ],
     afinidades: [
       'Sistema esquelético',
       'Chakra Básico (muladhara)',
       'Sistema digestivo',
       'Temperamento melancólico',
-      'Glândula paratireoide',
     ],
     praticas: {
-      ebos: ['Pipoca (Deburu) para Omolu', 'Ebó de caminho', 'Alimentos pretos'],
-      banhos: ['Canela-de-velho', 'Assa-peixe', 'Erva-de-bicho', 'Pau-brasil'],
-      defumacoes: ['Pau-brasil', 'Nim', 'Carvão vegetal', 'Eucalipto'],
+      ebos: ['Pipoca (Deburu) para Omolu', 'Ebó de caminho'],
+      banhos: ['Canela-de-velho', 'Assa-peixe', 'Erva-de-bicho'],
+      defumacoes: ['Pau-brasil', 'Nim', 'Carvão vegetal'],
     },
   },
 };
@@ -298,7 +284,7 @@ Object.values(PLANET_ELEMENT_MAPPINGS).forEach(mapping => Object.freeze(mapping)
 
 /**
  * Returns the planet-element mapping for a given planet name.
- * @param planeta - Planet name (e.g., 'Sol', 'Lua', 'Mercúrio', 'Saturno')
+ * @param planeta - Planet name (e.g., 'Sol', 'Lua', 'Mercúrio', 'Vênus', 'Marte', 'Júpiter', 'Saturno')
  * @returns The correlation mapping or null if not found
  */
 export function getPlanetElement(planeta: string): PlanetElementMapping | null {
@@ -308,7 +294,7 @@ export function getPlanetElement(planeta: string): PlanetElementMapping | null {
 
 /**
  * Returns the element-planet mapping (reverse lookup).
- * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra')
+ * @param elemento - Element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra', 'Éter')
  * @returns The planet name or null if not found
  */
 export function getElementPlanet(elemento: string): Planeta | null {
