@@ -8,23 +8,32 @@
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
 interface FoodCategory {
   name: string;
   description: string;
   weight: number;
 }
-
-// GET /api/food/sacred - Get sacred food data
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const FoodSacredQuerySchema = z.object({
+  type: z.enum(['records', 'categories']).optional(),
+  id: z.string().optional(),
+});
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type');
-    const id = searchParams.get('id');
-
+    const searchParams = request.nextUrl.searchParams();
+    const parseResult = FoodSacredQuerySchema.safeParse({
+      type: searchParams.get('type'),
+      id: searchParams.get('id'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { type, id } = parseResult.data;
     const sacredFoods = [
-      {
-        id: 'honey',
         name: 'Honey',
         namePt: 'Mel',
         element: 'Fire',
