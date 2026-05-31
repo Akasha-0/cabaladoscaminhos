@@ -306,7 +306,6 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const parseResult = CompatibilityQuerySchema.safeParse({
       sign1: searchParams.get('sign1')?.toLowerCase(),
-      sign1: searchParams.get('sign1')?.toLowerCase(),
       sign2: searchParams.get('sign2')?.toLowerCase(),
       date1: searchParams.get('date1'),
       date2: searchParams.get('date2'),
