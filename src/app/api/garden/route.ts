@@ -1,5 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const ElementSchema = z.enum(['agua', 'terra', 'fogo', 'ar', 'eter']);
+const ChakraSchema = z.enum([
+  'coroa', 'terceiro-olho', 'garanta', 'cardíaco',
+  'plexo-solar', 'sacral', 'raiz',
+]);
+const OrixaSchema = z.enum([
+  'Oxum', 'Iemanjá', 'Ogum', 'Xangô', 'Iansã',
+  'Oxumar', 'Nanã', 'Obá', 'Logunede', 'Oxóssi',
+  'Eshu', 'Omolu', 'Ibeji', 'Aruanda',
+]);
+const SefirahSchema = z.enum([
+  'Keter', 'Chokhmah', 'Binah', 'Daat',
+  'Chesed', 'Gevurah', 'Tiferet', 'Netzach',
+  'Hod', 'Yesod', 'Malkut',
+]);
+const DaySchema = z.enum([
+  'domingo', 'segunda', 'terca', 'quarta',
+  'quinta', 'sexta', 'sabado',
+]);
+const GardenTypeSchema = z.enum(['seeds', 'rituals']);
+const GardenQuerySchema = z.object({
+  type: GardenTypeSchema.optional(),
+  id: z.string().optional(),
+  day: DaySchema.optional(),
+  element: ElementSchema.optional(),
+  chakra: ChakraSchema.optional(),
+});
 interface GardenSeed {
   id: string;
   name: string;
@@ -9,7 +37,6 @@ interface GardenSeed {
   sefirah: string;
   practice: string;
 }
-
 interface RitualPractice {
   id: string;
   name: string;
@@ -19,10 +46,6 @@ interface RitualPractice {
   description: string;
   steps: string[];
 }
-
-const GARDEN_SEEDS: GardenSeed[] = [
-  {
-    id: 'alegria',
     name: 'Semente da Alegria',
     element: 'Fogo',
     chakra: '4º Cardíaco',
