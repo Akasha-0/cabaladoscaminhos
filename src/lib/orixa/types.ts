@@ -25,9 +25,10 @@ import { z } from 'zod';
 // ─── Base Enums ─────────────────────────────────────────────────────────────
 
 export const ORIXAS_PRINCIPAIS = [
-  'Oxalá', 'Iemanjá', 'Ogum', 'Xangô', 'Oxum', 'Shango',
+  'Oxalá', 'Iemanjá', 'Ogum', 'Xangô', 'Oxum', 'Iansã',
   'Obatalá', 'Nanã', 'Ibeji', 'Omolu', 'Oxóssi', 'Logunedé',
-  'Ewa', 'Oba', 'Ori', 'Osain', 'Oxumar', 'Olokun'
+  'Ewa', 'Oba', 'Ori', 'Osain', 'Oxumar', 'Olokun',
+  'Exu', 'Pomba Gira', 'Yemanjá', 'Obaluwaiê', 'Xapanã', 'Aroeira'
 ] as const;
 
 export const ELEMENTOS = ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'] as const;
@@ -368,7 +369,6 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     desafio: 'Avidez material',
     archetype: 'O Senhor das Profundezas',
   },
-  },
   'exu': {
     id: 'exu',
     nome: 'Exu',
@@ -490,8 +490,6 @@ export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
     archetype: 'A Senhora da Limpeza e Proteção',
   },
 };
-};
-
 interface OrixaCore {
   id: string;
   nome: string;
