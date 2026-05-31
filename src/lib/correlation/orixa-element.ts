@@ -31,6 +31,7 @@ const ORIXAS_MAP: Record<string, OrixaElement> = {
       'Algodoeiro',
       'Colônia'
     ],
+    significado_espiritual: 'O Criador supremo, Pai de todos os Orixás. Governa a criação, pureza, paz e reconciliação. Simboliza o princípio masculino da fecundidade cósmica e a energia etérea que conecta o físico ao espiritual.',
     elementos_secundarios: ['fogo'],
     planeta_secundario: 'Júpiter'
   },
