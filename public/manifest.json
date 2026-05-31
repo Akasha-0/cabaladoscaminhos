@@ -55,6 +55,13 @@
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
+      "name": "Oráculo IA",
+      "short_name": "Oráculo",
+      "description": "Consultar o oráculo espiritual",
+      "url": "/dashboard/oraculo",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
       "name": "Calendário",
       "short_name": "Calendário",
       "description": "Ver calendário energético",
@@ -66,6 +73,13 @@
       "short_name": "Dashboard",
       "description": "Acessar dashboard pessoal",
       "url": "/dashboard",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Tarot",
+      "short_name": "Tarot",
+      "description": "Jogar tarot",
+      "url": "/dashboard/tarot",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ],
