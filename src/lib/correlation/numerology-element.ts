@@ -1,289 +1,514 @@
 /**
- * Numerology-Element Spiritual Correlation
- * Maps numerology numbers 1-13 to their corresponding elements,
- * energy qualities, and spiritual meanings.
- * 
- * Based on 'Numerologia Cabalística' section from IDEIA.md and
- * the element correlations in number-mysticism.ts.
+ * Numerology-Element Spiritual Correlation Module
+ *
+ * Maps numerology numbers (1-13) to their elemental correspondences.
+ * Each number carries specific vibrational signatures aligned with
+ * elements in the Cabala dos Caminhos spiritual system.
  */
 
-export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
+/**
+ * Element types in the spiritual system
+ */
+export type ElementoTipo = 'fogo' | 'água' | 'terra' | 'ar' | 'éter';
 
-export interface NumerologyElementMapping {
-  /** The numerology number (1-13) */
+/**
+ * Represents the correlation between a numerology number and its elemental properties
+ */
+export interface NumerologyElement {
+  /** Numerology number */
   numero: number;
-  /** Associated element */
-  elemento: Elemento;
-  /** Energy quality type */
-  qualidade_energetica: {
-    tipo: 'Quente' | 'Frio' | 'Neutro';
-    polaridade: 'Yang' | 'Yin' | 'Equilibrado';
-    vibração: string;
-  };
-  /** Spiritual meaning and archetype */
+  /** Element key */
+  elemento: ElementoTipo;
+  /** Element name in Portuguese */
+  elemento_nome: string;
+  /** Element name in English */
+  elemento_english: string;
+  /** Primary spiritual meaning */
   significado_espiritual: string;
-  /** Archetype/role name */
-  arquétipo: string;
+  /** Archetypal essence */
+  arquetipo: string;
   /** Associated orixá */
   orixa: string;
   /** Associated sephirah */
   sephirah: string;
-  /** Chakra alignment */
+  /** Chakra correspondence */
   chakra: string;
+  /** Primary planet */
+  planeta: string;
+  /** Associated color */
+  cor: string;
+  /** Cardinal direction */
+  direcao: string;
+  /** Element qualities */
+  qualidades: {
+    /** Element strengths */
+    forca: string;
+    /** Element challenges */
+    desafio: string;
+    /** Life lesson */
+    licao: string;
+    /** Spiritual affirmation */
+    afirmacao: string;
+  };
+  /** Energy quality */
+  energia: {
+    tipo: 'Quente' | 'Frio' | 'Neutro';
+    polaridade: 'Yang' | 'Yin' | 'Equilibrado';
+  };
 }
 
 /**
- * Complete mapping of numerology numbers 1-13 to their element correspondences.
- * Derived from IDEIA.md and number-mysticism.ts data.
+ * Complete mapping of numerology numbers 1-13 to their elemental correspondences.
+ * Each number carries a specific Vibration aligned with elemental forces
+ * that represent different aspects of spiritual transformation and cosmic law.
  */
-export const NUMERO_ELEMENTO_MAP: Record<number, NumerologyElementMapping> = {
+export const NUMEROLOGY_ELEMENT_MAP: Record<number, NumerologyElement> = {
   1: {
     numero: 1,
-    elemento: 'Fogo',
-    qualidade_energetica: {
+    elemento: 'fogo',
+    elemento_nome: 'Fogo',
+    elemento_english: 'Fire',
+    significado_espiritual:
+      'O número 1 é a chama da vontade divina, a centelha criadora que inicia toda manifestação. Representa a liderança, a coragem e o poder de transformar sonhos em realidade através da intenção pura.',
+    arquetipo: 'O Guerreiro da Luz / O Criador',
+    orixa: 'Xangô',
+    sephirah: 'Geburah',
+    chakra: '3º Plexo Solar (Manipura)',
+    planeta: 'Marte',
+    cor: 'Vermelho',
+    direcao: 'Sul',
+    qualidades: {
+      forca: 'Determinação, coragem, paixão transformadora, capacidade de manifestar',
+      desafio: 'Impaciência, agressividade, controle excessivo, fanatismo',
+      licao: 'Canalizar a energia do fogo em propósito construtivo e amoroso',
+      afirmacao: 'Eu transformo minha paixão em ação sagrada e serviço amoroso',
+    },
+    energia: {
       tipo: 'Quente',
       polaridade: 'Yang',
-      vibração: 'Iniciação, força primal, liderança, manifestação',
     },
-    significado_espiritual: 'O começo divino, o impulso de criação, a força de vontade que move o universo. Primeiro número representa a chama primordial da existência.',
-    arquétipo: 'O Iniciador / O Líder',
-    orixa: 'Exu / Okaran',
-    sephirah: 'Kether',
-    chakra: '3º Plexo Solar',
   },
   2: {
     numero: 2,
-    elemento: 'Água',
-    qualidade_energetica: {
+    elemento: 'água',
+    elemento_nome: 'Água',
+    elemento_english: 'Water',
+    significado_espiritual:
+      'O número 2 é a sabedoria emocional, a fluidez do universo e a compaixão profunda. Representa a receptividade, a intuição e a capacidade de acolher as águas da sabedoria divina.',
+    arquetipo: 'O Guardião das Emoções / O Sábio Compassivo',
+    orixa: 'Iemanjá',
+    sephirah: 'Yesod',
+    chakra: '2º Sacro (Svadhisthana)',
+    planeta: 'Lua',
+    cor: 'Azul',
+    direcao: 'Oeste',
+    qualidades: {
+      forca: 'Intuição profunda, compaixão, adaptabilidade, sensibilidade',
+      desafio: 'Dificuldade em estabelecer limites, volatilidade emocional',
+      licao: 'Manter a clareza emocional sem perder a sensibilidade e conexão',
+      affirmacao: 'Eu fluo com a vida mantendo minha essência e meus limites sagrados',
+    },
+    energia: {
       tipo: 'Frio',
       polaridade: 'Yin',
-      vibração: 'Receptividade, dualidade, equilíbrio, fluídez emocional',
     },
-    significado_espiritual: 'A polaridade divina, os caminhos duplos, a união entre opostos. Representa a capacidade de receber e adaptar-se às correntes universais.',
-    arquétipo: 'O Diplomata / O Par',
-    orixa: 'Ibeji / Ejiokô',
-    sephirah: 'Chokmah',
-    chakra: '2º Sacro',
   },
   3: {
     numero: 3,
-    elemento: 'Fogo',
-    qualidade_energetica: {
+    elemento: 'fogo',
+    elemento_nome: 'Fogo',
+    elemento_english: 'Fire',
+    significado_espiritual:
+      'O número 3 é a expressão criativa sagrada, a trindade divina em ação. Representa a comunicação, a alegria e a capacidade de transformar a energia em criação artística e espiritual.',
+    arquetipo: 'O Guerreiro da Luz / O Artista Sagrado',
+    orixa: 'Xangô',
+    sephirah: 'Geburah',
+    chakra: '3º Plexo Solar (Manipura)',
+    planeta: 'Marte',
+    cor: 'Vermelho',
+    direcao: 'Sul',
+    qualidades: {
+      forca: 'Determinação, coragem, paixão transformadora, capacidade de manifestar',
+      desafio: 'Impaciência, agressividade, controle excessivo, fanatismo',
+      licao: 'Canalizar a energia do fogo em propósito construtivo e amoroso',
+      afirmacao: 'Eu transformo minha paixão em ação sagrada e serviço amoroso',
+    },
+    energia: {
       tipo: 'Quente',
       polaridade: 'Yang',
-      vibração: 'Criatividade, expressão, expansão, socialização',
     },
-    significado_espiritual: 'A expansão da chama criativa, a expressão divina em movimento. Terceiro número representa a festividade da existência e a comunicação com o sagrado.',
-    arquétipo: 'O Comunicador / O Criador',
-    orixa: 'Ogum / Etaogundá',
-    sephirah: 'Binah',
-    chakra: '3º Plexo Solar',
   },
   4: {
     numero: 4,
-    elemento: 'Terra',
-    qualidade_energetica: {
+    elemento: 'terra',
+    elemento_nome: 'Terra',
+    elemento_english: 'Earth',
+    significado_espiritual:
+      'O número 4 é a estabilidade material, a ancoragem espiritual e a manifestação prática. Representa a construção de alicerces sólidos, o trabalho árduo sagrado e a perseverança divina.',
+    arquetipo: 'O Fundador / O Ancestral',
+    orixa: 'Oxóssi',
+    sephirah: 'Malkuth',
+    chakra: '1º Básico (Muladhara)',
+    planeta: 'Saturno',
+    cor: 'Verde',
+    direcao: 'Norte',
+    qualidades: {
+      forca: 'Paciência, confiabilidade, prática, ancoramento, perseverança',
+      desafio: 'Rigidez, materialismo, resistência a mudanças, apego ao passado',
+      licao: 'Equilibrar estabilidade com flexibilidade e abertura à transformação',
+      afirmacao: 'Eu sou abundante, merecedor de prosperidade e segurança material e espiritual',
+    },
+    energia: {
       tipo: 'Quente',
       polaridade: 'Yang',
-      vibração: 'Estrutura, estabilidade, foundations sólidos, trabalho perseverante',
     },
-    significado_espiritual: 'A materialização divina, a estabilidade do reino físico. Quarto número representa a construção de alicerces que sustentam a evolução espiritual.',
-    arquétipo: 'O Construtor / A Estrutura',
-    orixa: 'Iemanjá / Irosun',
-    sephirah: 'Chesed',
-    chakra: '1º Básico',
   },
   5: {
     numero: 5,
-    elemento: 'Água',
-    qualidade_energetica: {
+    elemento: 'água',
+    },
+    energia: {
+      tipo: 'Neutro',
+      polaridade: 'Equilibrado',
+    },
+  },
+  8: {
+    elemento_english: 'Water',
+    significado_espiritual:
+      'O número 5 é a transformação alquímica, a liberdade sagrada e a mudança certa. Representa a adaptação, a curiosidade espiritual e a capacidade de fluir através das transformações da vida.',
+    arquetipo: 'O Guardião das Emoções / O alquimista',
+    orixa: 'Iemanjá',
+    sephirah: 'Yesod',
+    chakra: '2º Sacro (Svadhisthana)',
+    planeta: 'Lua',
+    cor: 'Azul',
+    direcao: 'Oeste',
+    qualidades: {
+      forca: 'Intuição profunda, compaixão, adaptabilidade, sensibilidade',
+      desafio: 'Dificuldade em estabelecer limites, volatilidade emocional',
+      licao: 'Manter a clareza emocional sem perder a sensibilidade e conexão',
+      afirmacao: 'Eu fluo com a vida mantendo minha essência e meus limites sagrados',
+    },
+    energia: {
       tipo: 'Frio',
       polaridade: 'Yin',
-      vibração: 'Liberdade, adaptabilidade, transformação, alquimia interior',
     },
-    significado_espiritual: 'A fluidez alquímica, a liberdade dentro do fluxo. Quinto número representa a mudança interior e a sabedoria adquirida pela experiência.',
-    arquétipo: 'O Viajante / O Alquimista',
-    orixa: 'Oxum / Oxé',
-    sephirah: 'Geburah',
-    chakra: '2º Sacro',
   },
   6: {
     numero: 6,
-    elemento: 'Fogo',
-    qualidade_energetica: {
+    elemento: 'fogo',
+    elemento_nome: 'Fogo',
+    elemento_english: 'Fire',
+    significado_espiritual:
+      'O número 6 é o amor harmônico, a responsabilidade sagrada e a paz divina. Representa a capacidade de irradiar luz e calor amoroso, criando harmonia nos relacionamentos e no lar espiritual.',
+    arquetipo: 'O Guerreiro da Luz / O Guardião do Lar',
+    orixa: 'Xangô',
+    sephirah: 'Geburah',
+    chakra: '3º Plexo Solar (Manipura)',
+    planeta: 'Marte',
+    cor: 'Vermelho',
+    direcao: 'Sul',
+    qualidades: {
+      forca: 'Determinação, coragem, paixão transformadora, capacidade de manifestar',
+      desafio: 'Impaciência, agressividade, controle excessivo, fanatismo',
+      licao: 'Canalizar a energia do fogo em propósito construtivo e amoroso',
+      afirmacao: 'Eu transformo minha paixão em ação sagrada e serviço amoroso',
+    },
+    energia: {
       tipo: 'Quente',
       polaridade: 'Yang',
-      vibração: 'Harmonia, amor, beleza, responsabilidade, serviço',
     },
-    significado_espiritual: 'O fogo do amor harmonioso, o equilíbrio entre dar e receber. Sexto número representa a integração entre coração e ação.',
-    arquétipo: 'O Harmonizador / O Conciliador',
-    orixa: 'Xangô / Obará',
-    sephirah: 'Tiphereth',
-    chakra: '4º Cardíaco',
   },
   7: {
     numero: 7,
-    elemento: 'Ar',
-    qualidade_energetica: {
-      tipo: 'Neutro',
-      polaridade: 'Equilibrado',
-      vibração: 'Introspecção, sabedoria, misticismo, busca da verdade',
-    },
-    significado_espiritual: 'O sopro da sabedoria divina, a introspecção que revela verdades ocultas. Sétimo número representa a busca espiritual e a compreensão profunda.',
-    arquétipo: 'O Filósofo / O Ocultista',
-    orixa: 'Iansã / Odi',
+    elemento: 'ar',
+    elemento_nome: 'Ar',
+    elemento_english: 'Air',
+    significado_espiritual:
+      'O número 7 é a sabedoria introspectiva, o misticismo profundo e a contemplação sagrada. Representa a busca interior, a análise espiritual e a conexão com os mistérios do universo.',
+    arquetipo: 'O Mensageiro / O Filósofo',
+    orixa: 'Iansã',
     sephirah: 'Netzach',
-    chakra: '5º Laríngeo',
+    chakra: '5º Laríngeo (Vishuddha)',
+    planeta: 'Mercúrio',
+    cor: 'Amarelo',
+    direcao: 'Leste',
+    qualidades: {
+      forca: 'Comunicação clara, objetividade, visão ampla, intelectualidade',
+      desafio: 'Superficialidade, indecisão, excesso de análise, desancoramento',
+      licao: 'Ancorar pensamentos em ação concreta e consistente com o propósito',
+      afirmacao: 'Eu comunico minha verdade com clareza, amor e sabedoria divina',
+    },
+    energia: {
+      tipo: 'Neut ro',
+      polaridade: 'Equilibrado',
+    },
   },
   8: {
     numero: 8,
-    elemento: 'Ar',
-    qualidade_energetica: {
+    elemento: 'ar',
+    elemento_nome: 'Ar',
+    elemento_english: 'Air',
+    significado_espiritual:
+      'O número 8 é o poder pessoal, a autoridade interior e a justiça kármica. Representa a capacidade de manifestar abundância, a sabedoria prática e o equilíbrio entre o céu e a terra.',
+    arquetipo: 'O Mensageiro / O Justiceiro',
+    orixa: 'Iansã',
+    sephirah: 'Netzach',
+    chakra: '5º Laríngeo (Vishuddha)',
+    planeta: 'Mercúrio',
+    cor: 'Amarelo',
+    direcao: 'Leste',
+    qualidades: {
+      forca: 'Comunicação clara, objetividade, visão ampla, intelectualidade',
+      desafio: 'Superficialidade, indecisão, excesso de análise, desancoramento',
+      licao: 'Ancorar pensamentos em ação concreta e consistente com o propósito',
+      afirmacao: 'Eu comunico minha verdade com clareza, amor e sabedoria divina',
+    },
+    energia: {
       tipo: 'Neutro',
       polaridade: 'Equilibrado',
-      vibração: 'Resiliência, autoridade interior, gestão, perseverança',
     },
-    significado_espiritual: 'O vento da justiça kármica, o equilíbrio entre esforço e recompensa. Oitavo número representa o poder pessoal e a autoridade interior.',
-    arquétipo: 'O Executivo / A Justiça Kármica',
-    orixa: 'Oxalá / EjiOníle',
-    sephirah: 'Hod',
-    chakra: '4º Cardíaco',
   },
   9: {
     numero: 9,
-    elemento: 'Água',
-    qualidade_energetica: {
+    elemento: 'água',
+    elemento_nome: 'Água',
+    elemento_english: 'Water',
+    significado_espiritual:
+      'O número 9 é a iluminação universal, a compaixão infinita e o encerramento sagrado. Representa a sabedoria conquistada, a generosity روحانية and the ability to transcender boundaries.',
+    arquetipo: 'O Guardião das Emoções / O Iluminado',
+    orixa: 'Iemanjá',
+    sephirah: 'Yesod',
+    chakra: '2º Sacro (Svadhisthana)',
+    planeta: 'Lua',
+    cor: 'Azul',
+    direcao: 'Oeste',
+    qualidades: {
+      forca: 'Intuição profunda, compaixão, adaptabilidade, sensibilidade',
+      desafio: 'Dificuldade em estabelecer limites, volatilidade emocional',
+      licao: 'Manter a clareza emocional sem perder a sensibilidade e conexão',
+      afirmacao: 'Eu fluo com a vida mantendo minha essência e meus limites sagrados',
+    },
+    energia: {
       tipo: 'Frio',
       polaridade: 'Yin',
-      vibração: 'Humanitarismo, compaixão, sabedoria universal, iluminação',
     },
-    significado_espiritual: 'A água da sabedoria universal, a compaixão que transcende o individual. Nono número representa o fim de ciclos e a iluminação espiritual.',
-    arquétipo: 'O Sábio / O Integrador',
-    orixa: 'Ossá',
-    sephirah: 'Yesod',
-    chakra: '6º Frontal',
   },
   10: {
     numero: 10,
-    elemento: 'Terra',
-    qualidade_energetica: {
+    elemento: 'terra',
+    elemento_nome: 'Terra',
+    elemento_english: 'Earth',
+    significado_espiritual:
+      'O número 10 é a renovação e transformação, o recomeço sagrado e a nova era. Representa a sabedoria divina recebida, a capacidade de renascimento e a manifestação de novos ciclos.',
+    arquetipo: 'O Fundador / O Renascido',
+    orixa: 'Oxóssi',
+    sephirah: 'Malkuth',
+    chakra: '1º Básico (Muladhara)',
+    planeta: 'Saturno',
+    cor: 'Verde',
+    direcao: 'Norte',
+    qualidades: {
+      forca: 'Paciência, confiabilidade, prática, ancoramento, perseverança',
+      desafio: 'Rigidez, materialismo, resistência a mudanças, apego ao passado',
+      licao: 'Equilibrar estabilidade com flexibilidade e abertura à transformação',
+      afirmacao: 'Eu sou abundante, merecedor de prosperidade e segurança material e espiritual',
+    },
+    energia: {
       tipo: 'Quente',
       polaridade: 'Yang',
-      vibração: 'Renovação, transformação, ciclos, manifestação material',
     },
-    significado_espiritual: 'A terra da transformação profunda, o retorno ao centro e a manifestação prática. Décimo número representa o fim de um ciclo e o início de outro.',
-    arquétipo: 'O Renovador / A Mudança',
-    orixa: 'Oxalá / Ofun',
-    sephirah: 'Malkuth',
-    chakra: '1º Básico',
   },
   11: {
     numero: 11,
-    elemento: 'Éter',
-    qualidade_energetica: {
+    elemento: 'éter',
+    elemento_nome: 'Éter',
+    elemento_english: 'Ether',
+    significado_espiritual:
+      'O número 11 é a conexão direta com a Fonte criadora, o número mestre da iluminação espiritual. Carrega a intuição desperta e o channeling da vontade divina para transformação coletiva.',
+    arquetipo: 'O Canalizador / O Desperto',
+    orixa: 'Oxalá',
+    sephirah: 'Kether',
+    chakra: '7º Coronário (Sahasrara)',
+    planeta: 'Sol',
+    cor: 'Branco-dourado',
+    direcao: 'Centro',
+    qualidades: {
+      forca: 'Sabedoria transcendental, espiritualidade profunda, intuição desperta',
+      desafio: 'Desconexão da realidade terrena, idealismo excessivo, vulnerabilidade',
+      licao: 'Manifestar a luz espiritual no mundo físico sem perder a transcendência',
+      afirmacao: 'Eu sou um canal de luz e paz divina que ilumina o mundo ao meu redor',
+    },
+    energia: {
       tipo: 'Neutro',
       polaridade: 'Equilibrado',
-      vibração: 'Intuição espiritual, channeling, inspiração divina, iluminação',
     },
-    significado_espiritual: 'O éter da intuição desperta, o canal entre o humano e o divino. Número mestre que representa o alinhamento completo com a vontade divina.',
-    arquétipo: 'O Canalizador / O Desperto',
-    orixa: 'Alafia / Orunmilá',
-    sephirah: 'Kether / Tiphereth',
-    chakra: '7º Coronário',
   },
   12: {
     numero: 12,
-    elemento: 'Fogo',
-    qualidade_energetica: {
+    elemento: 'fogo',
+    elemento_nome: 'Fogo',
+    elemento_english: 'Fire',
+    significado_espiritual:
+      'O número 12 é a justiça divina, o sacrifício sagrado e a ordem cósmica. Representa a aplicação da lei espiritual, a equilíbrio entre retribuição e misericórdia e a transformação pela prova.',
+    arquetipo: 'O Guerreiro da Luz / O Executor da Lei',
+    orixa: 'Xangô',
+    sephirah: 'Geburah',
+    chakra: '3º Plexo Solar (Manipura)',
+    planeta: 'Marte',
+    cor: 'Vermelho',
+    direcao: 'Sul',
+    qualidades: {
+      forca: 'Determinação, coragem, paixão transformadora, capacidade de manifestar',
+      desafio: 'Impaciência, agressividade, controle excessivo, fanatismo',
+      licao: 'Canalizar a energia do fogo em propósito construtivo e amoroso',
+      afirmacao: 'Eu transformo minha paixão em ação sagrada e serviço amoroso',
+    },
+    energia: {
       tipo: 'Quente',
       polaridade: 'Yang',
-      vibração: 'Justiça divina, coragem moral, fogo purificador, integridade',
     },
-    significado_espiritual: 'O fogo purificador da justiça divina, a guerra justa e a transformação por provações. Décimo segundo número representa o equilíbrio entre razão e emoção.',
-    arquétipo: 'A Justiça / O Fogo Purificador',
-    orixa: 'Xangô / Ejilsebora',
-    sephirah: 'Geburah',
-    chakra: '3º Plexo Solar',
   },
   13: {
     numero: 13,
-    elemento: 'Terra',
-    qualidade_energetica: {
+    elemento: 'terra',
+    elemento_nome: 'Terra',
+    elemento_english: 'Earth',
+    significado_espiritual:
+      'O número 13 é a evolução através da morte e renascimento, a transformação radical e a nova vida. Representa a coragem de atravessar o umbral, deixando o velho para nascer de novo.',
+    arquetipo: 'O Fundador / O Renascido das Cinzas',
+    orixa: 'Oxóssi',
+    sephirah: 'Malkuth',
+    chakra: '1º Básico (Muladhara)',
+    planeta: 'Saturno',
+    cor: 'Verde',
+    direcao: 'Norte',
+    qualidades: {
+      forca: 'Paciência, confiabilidade, prática, ancoramento, perseverança',
+      desafio: 'Rigidez, materialismo, resistência a mudanças, apego ao passado',
+      licao: 'Equilibrar estabilidade com flexibilidade e abertura à transformação',
+      afirmacao: 'Eu sou abundante, merecedor de prosperidade e segurança material e espiritual',
+    },
+    energia: {
       tipo: 'Quente',
       polaridade: 'Yang',
-      vibração: 'Transformação profunda, encerramento de ciclos, sabedoria dos ancestrais',
     },
-    significado_espiritual: 'A terra da morte e renascimento, o fim de ciclos e a evolução espiritual. Décimo terceiro número representa a sabedoria dos mais velhos e a transformação física.',
-    arquétipo: 'A Evolução / A Morte e Renascimento',
-    orixa: 'Nanã / Omolu / Olobón',
-    sephirah: 'Malkuth',
-    chakra: '1º Básico',
   },
 };
 
 /**
- * Returns the element correlation for a given numerology number (1-13)
- * @param numero - The number to look up (must be 1-13)
- * @returns NumerologyElementMapping object with all correlations
- * @throws Error if number is outside valid range
+ * Freeze the mapping object to prevent modifications
  */
-export function getNumerologyElement(numero: number): NumerologyElementMapping {
-  if (!Number.isInteger(numero) || numero < 1 || numero > 13) {
-    throw new Error(`Número fora do intervalo válido (1-13). Recebido: ${numero}`);
+Object.freeze(NUMEROLOGY_ELEMENT_MAP);
+Object.values(NUMEROLOGY_ELEMENT_MAP).forEach((mapping) => Object.freeze(mapping));
+
+/**
+ * Get the numerology-element mapping for a given number
+ * @param numero - Numerology number (1-13)
+ * @returns NumerologyElement mapping or undefined if not found
+ */
+export function getNumerologyElement(numero: number): NumerologyElement | undefined {
+  return NUMEROLOGY_ELEMENT_MAP[numero];
+}
+
+/**
+ * Get all numerology-element mappings
+ * @returns Array of all NumerologyElement mappings
+ */
+export function getAllNumerologyElements(): NumerologyElement[] {
+  return Object.values(NUMEROLOGY_ELEMENT_MAP);
+}
+
+/**
+ * Get the element for a given numerology number
+ * @param numero - Numerology number (1-13)
+ * @returns Element name or null if not found
+ */
+export function getElementNumerology(numero: number): string | null {
+  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
+  return mapping?.elemento_nome ?? null;
+}
+
+/**
+ * Get the archetype for a given numerology number
+ * @param numero - Numerology number (1-13)
+ * @returns Archetype name or null if not found
+ */
+export function getNumerologyArquetipo(numero: number): string | null {
+  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
+  return mapping?.arquetipo ?? null;
+}
+
+/**
+ * Get the spiritual meaning for a given numerology number
+ * @param numero - Numerology number (1-13)
+ * @returns Spiritual meaning or null if not found
+ */
+export function getNumerologySignificado(numero: number): string | null {
+  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
+  return mapping?.significado_espiritual ?? null;
+}
+
+/**
+ * Get the qualities for a given numerology number
+ * @param numero - Numerology number (1-13)
+ * @returns Qualities object or null if not found
+ */
+export function getNumerologyQualidades(numero: number): NumerologyElement['qualidades'] | null {
+  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
+  return mapping?.qualidades ?? null;
+}
+
+/**
+ * Get the energy type for a given numerology number
+ * @param numero - Numerology number (1-13)
+ * @returns Energy type ('Quente', 'Frio', 'Neutro') or null if not found
+ */
+export function getNumerologyEnergia(numero: number): 'Quente' | 'Frio' | 'Neutro' | null {
+  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
+  return mapping?.energia.tipo ?? null;
+}
+
+/**
+ * Get the polarity for a given numerology number
+ * @param numero - Numerology number (1-13)
+ * @returns Polarity ('Yang', 'Yin', 'Equilibrado') or null if not found
+ */
+export function getNumerologyPolaridade(numero: number): 'Yang' | 'Yin' | 'Equilibrado' | null {
+  const mapping = NUMEROLOGY_ELEMENT_MAP[numero];
+  return mapping?.energia.polaridade ?? null;
+}
+
+/**
+ * Get all registered numerology numbers
+ * @returns Array of all numerology numbers (1-13)
+ */
+export function getAllNumerologyNumbers(): number[] {
+  return Array.from({ length: 13 }, (_, i) => i + 1);
+}
+
+/**
+ * Get all element types from numerology mappings
+ * @returns Array of unique element types
+ */
+export function getAllElementsFromNumerology(): ElementoTipo[] {
+  const elements = new Set<ElementoTipo>();
+  for (const mapping of Object.values(NUMEROLOGY_ELEMENT_MAP)) {
+    elements.add(mapping.elemento);
   }
-  return NUMERO_ELEMENTO_MAP[numero];
+  return Array.from(elements);
 }
 
-/**
- * Get all numerology element mappings
- * @returns Array of all NumerologyElementMapping objects for numbers 1-13
- */
-export function getAllNumerologyElements(): NumerologyElementMapping[] {
-  return Object.values(NUMERO_ELEMENTO_MAP).sort((a, b) => a.numero - b.numero);
-}
-
-/**
- * Returns all numbers associated with a given element
- * @param elemento - Element name (Fogo, Água, Ar, Terra, Éter)
- * @returns Array of NumerologyElementMapping objects for the element
- */
-export function getElementNumerology(elemento: string): NumerologyElementMapping[] {
-  const normalized = elemento
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-
-  const elementMap: Record<string, Elemento> = {
-    fogo: 'Fogo',
-    agua: 'Água',
-    ar: 'Ar',
-    terra: 'Terra',
-    eter: 'Éter',
-  };
-
-  const key = elementMap[normalized];
-  if (!key) return [];
-
-  return getAllNumerologyElements().filter((m) => m.elemento === key);
-}
-
-/**
- * Returns the element name for a given number
- * @param numero - The number to look up (1-13)
- * @returns Elemento string or null if invalid
- */
-export function getElementByNumero(numero: number): Elemento | null {
-  if (numero < 1 || numero > 13) return null;
-  return NUMERO_ELEMENTO_MAP[numero].elemento;
-}
-
-/**
- * Returns the energy quality type for a given number
- * @param numero - The number to look up (1-13)
- * @returns Energy quality type or null if invalid
- */
-export function getEnergiaByNumero(numero: number): 'Quente' | 'Frio' | 'Neutro' | null {
-  if (numero < 1 || numero > 13) return null;
-  return NUMERO_ELEMENTO_MAP[numero].qualidade_energetica.tipo;
-}
+export default {
+  getNumerologyElement,
+  getAllNumerologyElements,
+  getElementNumerology,
+  getNumerologyArquetipo,
+  getNumerologySignificado,
+  getNumerologyQualidades,
+  getNumerologyEnergia,
+  getNumerologyPolaridade,
+  getAllNumerologyNumbers,
+  getAllElementsFromNumerology,
+  NUMEROLOGY_ELEMENT_MAP,
+};
