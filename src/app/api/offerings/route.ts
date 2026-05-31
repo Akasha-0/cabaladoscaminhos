@@ -1,23 +1,42 @@
 // ============================================================
 // OFFERINGS API - CABALA DOS CAMINHOS
 // ============================================================
-// API route for spiritual offerings (ebós) management
-// Includes: ebó, oferenda, libação, defumação
-// ============================================================
-
 import { NextRequest, NextResponse } from 'next/server';
-
-// ============================================================
-// TYPES
-// ============================================================
-
-export type OfferingType = 'ebo' | 'oferenda' | 'libacao' | 'defumacao' | 'vela';
-export type ElementType = 'agua' | 'terra' | 'fogo' | 'ar' | 'orixa';
-export type IntensityLevel = 'suave' | 'medio' | 'forte';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const OfferingTypeSchema = z.enum(['ebo', 'oferenda', 'libacao', 'defumacao', 'vela']);
+const ElementTypeSchema = z.enum(['agua', 'terra', 'fogo', 'ar', 'orixa']);
+const IntensityLevelSchema = z.enum(['suave', 'medio', 'forte']);
+const OfferingQuerySchema = z.object({
+  type: OfferingTypeSchema.optional(),
+  orixa: z.string().optional(),
+  element: ElementTypeSchema.optional(),
+  dia: z.enum(['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado']).optional(),
+  id: z.string().optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+});
+const CreateOfferingSchema = z.object({
+  type: OfferingTypeSchema,
+  name: z.string().min(1, 'Nome é obrigatório'),
+  description: z.string().optional(),
+  orixa: z.string().optional(),
+  element: ElementTypeSchema.optional(),
+  ingredients: z.array(z.string()).optional(),
+  instructions: z.string().optional(),
+  bestDays: z.array(z.enum(['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'])).optional(),
+  moonPhase: z.enum(['nova', 'crescente', 'cheia', 'minguante']).optional(),
+  intensity: IntensityLevelSchema.optional(),
+});
+// Type aliases
+type OfferingType = z.infer<typeof OfferingTypeSchema>;
+type ElementType = z.infer<typeof ElementTypeSchema>;
+type IntensityLevel = z.infer<typeof IntensityLevelSchema>;
 export interface OfferingItem {
+  id: string;
   name: string;
-  quantity: string;
+  description: string;
+  type: OfferingType;
+}
   notes?: string;
 }
 
@@ -294,21 +313,28 @@ function getMoonPhase(): string {
 // ============================================================
 // API ROUTE HANDLERS
 // ============================================================
-
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const type = searchParams.get('type') as OfferingType | null;
-  const orixa = searchParams.get('orixa');
-  const element = searchParams.get('element');
-  const diaSemana = searchParams.get('dia');
-  const id = searchParams.get('id');
-
+  const parseResult = OfferingQuerySchema.safeParse({
+    type: searchParams.get('type'),
+    orixa: searchParams.get('orixa'),
+    element: searchParams.get('element'),
+    dia: searchParams.get('dia'),
+    id: searchParams.get('id'),
+    limit: searchParams.get('limit'),
+  });
+  if (!parseResult.success) {
+    return NextResponse.json({
+      error: 'Parâmetros inválidos',
+      details: parseResult.error.flatten().fieldErrors,
+    }, { status: 400 });
+  }
+  const { type, orixa, element, dia, id, limit } = parseResult.data;
   // Get day of week for recommendations
   const agora = new Date();
   const diasSemana = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
-  const diaAtual = diasSemana[agora.getDay()];
+  const diaAtual = dia ?? diasSemana[agora.getDay()];
   const faseLua = getMoonPhase();
-
   // Single offering by ID
   if (id) {
     const offering = offeringsBase.find(o => o.id === id);
@@ -320,38 +346,28 @@ export async function GET(request: NextRequest) {
     }
     return NextResponse.json({
       offering,
-      meta: {
-        phase: faseLua,
-        day: diaAtual,
-      },
+      meta: { phase: faseLua, day: diaAtual },
     });
   }
-
   // Filter offerings by criteria
   let filteredOfferings = [...offeringsBase];
-
-  if (type && ['ebo', 'oferenda', 'libacao', 'defumacao', 'vela'].includes(type)) {
+  if (type) {
     filteredOfferings = filteredOfferings.filter(o => o.type === type);
   }
-
   if (orixa) {
     filteredOfferings = filteredOfferings.filter(o => o.orixa?.toLowerCase() === orixa.toLowerCase());
   }
-
   if (element) {
     filteredOfferings = filteredOfferings.filter(o => o.element === element);
   }
-
   // Return offerings for today by default if no filters
   const todayOrixa = getOrixaByDay(diaAtual);
   const todayOfferings = filteredOfferings.filter(o => {
     if (!o.bestDays) return true;
     return o.bestDays.includes(diaAtual);
   });
-
-  // If no offerings match filters, return empty array
-  const offerings = filteredOfferings.length > 0 ? filteredOfferings : todayOfferings;
-
+  // Apply limit if specified
+  const offerings = (limit ? filteredOfferings.slice(0, limit) : filteredOfferings.length > 0 ? filteredOfferings : todayOfferings);
   return NextResponse.json({
     offerings,
     total: offerings.length,
@@ -359,7 +375,7 @@ export async function GET(request: NextRequest) {
       phase: faseLua,
       day: diaAtual,
       recommendedOrixa: todayOrixa,
-      availableTypes: ['ebo', 'oferenda', 'libacao', 'defumacao', 'vela'] as OfferingType[],
     },
   });
+}
 }
