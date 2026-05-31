@@ -170,3 +170,47 @@
 1. **Animações de transição** - Tooltip com fade suave
 2. **Conexão visual** - Linhas ligando os elementos no tooltip
 3. **Estilos por tradição** - Cores distintas por sistema
+
+---
+
+## SPRINT 226 - ANIMAÇÕES E CONEXÃO VISUAL
+
+**Data:** 2026-05-31
+**Status:** ✅ CONCLUÍDO
+
+### Alterações Realizadas
+
+1. **Animações Escalonadas (Staggered)**
+   - Número da Sefira: `slide-in-from-left-4 duration-300`
+   - Nome/Hebreu: `delay-100`
+   - Info Kabbalah: `delay-150 fade-in`
+   - Card Orixá: `delay-200`
+   - Card Chakra: `delay-300`
+   - Card Odú: `delay-400`
+   - Essence: `delay-500`
+
+2. **Conexão Visual com Linhas**
+   - Gradiente vertical: `from-amber-500 via-purple-500 to-cyan-500`
+   - Pontos coloridos em cada transição (bullets com gradiente)
+   - Setas indicadoras entre elementos (SVG)
+   - Labels "Sefira → Orixá", "Orixá → Chakra", "Chakra → Odú"
+
+3. **Efeitos Visuais por Tradição**
+   - Kabbalah: `border-amber-500` + glow `shadow-amber-500/50`
+   - Candomblé: `border-purple-500` + glow `shadow-purple-500/50`
+   - Ifá: `border-cyan-500` + glow `shadow-cyan-500/50`
+
+4. **Hover States**
+   - Transição suave: `transition-colors`
+   - Borda intensifica: `hover:border-amber-500/40`
+
+### Verificação Build
+- Compile: ✅ 16.2s
+- Generate: ✅ 167 páginas em 3.1s
+- Zero erros
+
+### Próximo Ciclo
+
+1. **Tema Claro** - Light mode toggle
+2. **Animações de entrada escalonadas** - CosmicFlowGrid
+3. **Tooltips explicativos** - SpiritualRadarChart
