@@ -348,11 +348,9 @@ export function getAllElements(): string[] {
   return [...new Set(elements)].sort();
 }
 /**
-/**
  * Default export with all public functions
  */
 export default {
-  getTarotNumerology,
   getNumerologyTarot,
   getAllTarotNumerologies,
   getAllArcanos,
