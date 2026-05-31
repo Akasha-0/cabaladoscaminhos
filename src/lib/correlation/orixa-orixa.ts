@@ -76,7 +76,7 @@ const ORIXA_ORIXA_MAP: OrixaRelation[] = [
     related_orixa: 'Nanã',
     relationship_type: 'irmao_irma',
     spiritual_meaning: 'Iemanjá e Nanã compartilham a energia das águas, sendo ambas ligadas ao elemento água na Umbanda. Nanã é considerada a mais antiga das duas, representando a sabedoria das águas paradas e do barro primordial. Iemanjá traz a energia das águas vivas e dos mares. Esta relação une a juventude nutridora à anciã guardiã dos mistérios.',
-    ritual互补: ['Barro e água de chuva', 'Folhas de assa-peixe', 'Velas lilases e azuis', 'Oferendas na lama'],
+    spiritual_meaning: 'Ogum e Iansã são esposos na tradição iorubá, representando a união entre a força telúrica e a energia ígnea. Ogum abre os caminhos com sua espada, enquanto Iansã sopra os ventos da mudança. Juntos, eles garantem que os caminhos abertos sejam mantidos abertos e que as transformações necessárias ocorram com poder. Compartilham a Terça-feira como dia sagrado.',
     energy_flow: 'bidirectional',
   },
   {
