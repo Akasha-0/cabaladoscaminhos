@@ -190,9 +190,9 @@ function getMonthlyData(mes: number, ano: number) {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const parseResult = MonthQuerySchema.safeParse({
-    mes: searchParams.get('mes'),
-    ano: searchParams.get('ano'),
-    signo: searchParams.get('signo'),
+    mes: searchParams.get('mes') ?? undefined,
+    ano: searchParams.get('ano') ?? undefined,
+    signo: searchParams.get('signo') ?? undefined,
   });
 
   if (!parseResult.success) {
