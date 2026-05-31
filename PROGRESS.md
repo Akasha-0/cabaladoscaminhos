@@ -1,5 +1,5 @@
 **Última atualização:** 2026-05-31
-**Sprints completados:** 489
+**Sprints completados:** 490
 **Tests: ✅ 10531 passing, 31 skipped, 0 failed**
  - Prisma 7 + PostgreSQL via pg adapter
  - Redis/ioredis for caching
@@ -8,6 +8,13 @@
  - OpenAI SDK integrated
  - jsPDF for PDF exports (dynamic import)
  - Minimax API integration for AI responses
+
+### Sprint 490 — Orixá Profiles, Ifá & Cabala Sefirot (COMPLETE)
+Enhanced APIs with spiritual correlations:
+- orixa/profiles: 12 Orixás (Oxalá, Iemanjá, Ogum, Xangô, Oxum, Iansã, Obatalá, Omolu, Oxóssi, Logun-Edé, Exu, Nanã) with spiritual correlations
+- ifa: 16 Merindilogun Odus with spiritual correlations + orixa regente correlations
+- cabala/sefirot: 11 Sephiroth with spiritual correlations (planet, archetype, color, bodyPart)
+Build ✅ Exit 0 | 270 engine tests passing.
 
 ### Sprint 489 — Afirmações & Astrologia Análise (COMPLETE)
 Enhanced APIs with spiritual correlations:
