@@ -23,13 +23,12 @@ describe('GET /api/timer', () => {
   it('GET deve ser uma função assíncrona que retorna objeto com timers', async () => {
     const req = new NextRequest('http://localhost:3000/api/timer');
     const response = await GET(req);
-    console.log('Response status:', response.status);
-    console.log('Response body:', await response.clone().json());
-    expect(response).toBeInstanceOf(Response);
+    const body = await response.clone().json();
+    console.log('Status:', response.status, 'Body:', JSON.stringify(body));
     expect(response.status).toBe(200);
-    const data = await response.json();
-    expect(data).toHaveProperty('timers');
-    expect(Array.isArray(data.timers)).toBe(true);
+    expect(response).toBeInstanceOf(Response);
+    expect(body).toHaveProperty('timers');
+    expect(Array.isArray(body.timers)).toBe(true);
   });
 });
 
