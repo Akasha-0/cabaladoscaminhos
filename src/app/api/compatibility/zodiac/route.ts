@@ -386,7 +386,8 @@ export async function GET(request: NextRequest) {
         details: parseResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
-    let { sign1, sign2, date1, date2, sefirot, chakra, element } = parseResult.data
+    const { date1, date2, sefirot, chakra, element } = parseResult.data;
+    let { sign1, sign2 } = parseResult.data;
     if (!sign1 || !sign2) {
       if (!date1 || !date2) {
         // Return all signs with spiritual correlations
