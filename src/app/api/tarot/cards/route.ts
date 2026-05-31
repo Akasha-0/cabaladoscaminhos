@@ -1,16 +1,36 @@
-// Tarot Cards API - Cabala Dos Caminhos
-// GET endpoints for tarot card readings, interpretations, and spreads
-
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { TAROT_DECK } from '@/lib/tarot/cards';
-
-// Use existing tarot data
 const tarotCards = TAROT_DECK.cards;
-
+// ─── Zod Schema ───────────────────────────────────────────────────────────
+const TarotQuerySchema = z.object({
+  action: z.enum(['card', 'random', 'arcano', 'numerology', 'element', 'astrology']).optional(),
+  id: z.coerce.number().int().positive().optional(),
+  arcano: z.enum(['maior', 'menor']).optional(),
+  nome: z.string().optional(),
+  elemento: z.enum(['fogo', 'agua', 'terra', 'ar']).optional(),
+});
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('action');
-
+  // Validate query params with Zod
+  const parseResult = TarotQuerySchema.safeParse({
+    action: searchParams.get('action'),
+    id: searchParams.get('id'),
+    arcano: searchParams.get('arcano'),
+    nome: searchParams.get('nome'),
+    elemento: searchParams.get('elemento'),
+  });
+  if (!parseResult.success) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
+  }
+  const { action } = parseResult.data;
   try {
     switch (action) {
       case 'card':
