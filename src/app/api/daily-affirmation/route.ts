@@ -1,38 +1,13 @@
- 
- 
-/* prettier-ignore */
+// prettier-ignore
 import { NextRequest, NextResponse } from 'next/server';
-
+import { z } from 'zod';
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const CategoriaSchema = z.enum(['cabala', 'numerologia', 'orixas', 'tarot']);
+const AffirmationQuerySchema = z.object({
+  categoria: CategoriaSchema.optional(),
+});
 export const dynamic = 'force-dynamic';
-
 interface Affirmation {
-  id: string;
-  texto: string;
-  fonte: string;
-  categoria: 'cabala' | 'numerologia' | 'orixas' | 'tarot';
-  tags?: string[];
-}
-
-const affirmations: Affirmation[] = [
-  // Cabala
-  { id: 'cab-001', texto: 'Eu sou parte da luz divina que ilumina o universo inteiro.', fonte: 'Séfer Yetzirá', categoria: 'cabala', tags: ['luz', 'união'] },
-  { id: 'cab-002', texto: 'Minhas palavras carregam poder sagrado quando alinhadas à verdade.', fonte: 'Zohar', categoria: 'cabala', tags: ['palavras', 'verdade'] },
-  { id: 'cab-003', texto: 'Através da árvore da vida, declaro minha expansão consciente.', fonte: 'Cabala Moderna', categoria: 'cabala', tags: ['expansão', 'árvore da vida'] },
-  { id: 'cab-004', texto: 'Cada Sephirah é um portal de transformação na minha jornada.', fonte: 'Meditação Cabalística', categoria: 'cabala', tags: ['transformação', 'sephirot'] },
-  { id: 'cab-005', texto: 'Eu me conecto às energias superiores para guiar meu caminho.', fonte: 'Oração Cabalística', categoria: 'cabala', tags: ['conexão', 'energia'] },
-  { id: 'cab-006', texto: 'Através do vazio, eu crio realidade com intenção pura.', fonte: 'Séfer HaBahir', categoria: 'cabala', tags: ['criação', 'intenção'] },
-  { id: 'cab-007', texto: 'Minha alma reflete a luz infinita do En Soph.', fonte: 'Cabala Luriânica', categoria: 'cabala', tags: ['alma', 'infinito'] },
-  { id: 'cab-008', texto: 'Os caminhos entre as sephirot iluminam meu caminho de evolução.', fonte: 'Árvore da Vida', categoria: 'cabala', tags: ['caminhos', 'evolução'] },
-
-  // Numerologia
-  { id: 'num-001', texto: 'Meu número de vida é a vibração que guia meus passos.', fonte: 'Pitágoras', categoria: 'numerologia', tags: ['vida', 'vibração'] },
-  { id: 'num-002', texto: 'A energia do número 1 me dá força para iniciar novas jornadas.', fonte: 'Numerologia', categoria: 'numerologia', tags: ['início', 'força'] },
-  { id: 'num-003', texto: 'Cada dígito carrega sabedoria ancestral que me transforma.', fonte: 'Cálculo Vibracional', categoria: 'numerologia', tags: ['sabedoria', 'ancestral'] },
-  { id: 'num-004', texto: 'Meus ciclos pessoais estão alinhados com o propósito divino.', fonte: 'Análise Numérica', categoria: 'numerologia', tags: ['ciclos', 'propósito'] },
-  { id: 'num-005', texto: 'A soma dos meus dias revela o caminho da minha alma.', fonte: 'Numerologia Espiritual', categoria: 'numerologia', tags: ['alma', 'revelação'] },
-  { id: 'num-006', texto: 'Minhas portas de destino se abrem no momento certo.', fonte: 'Cálculo de Destino', categoria: 'numerologia', tags: ['destino', 'timing'] },
-  { id: 'num-007', texto: 'A energia do 7 me conecta à sabedoria interior e à intuição.', fonte: 'Mistérios Numéricos', categoria: 'numerologia', tags: ['intuição', 'sabedoria interior'] },
-
   // Orixás
   { id: 'ori-001', texto: 'Xangô me concede a força da justiça e o equilíbrio das emoções.', fonte: 'Tradição Iorubá', categoria: 'orixas', tags: ['justiça', 'equilíbrio'] },
   { id: 'ori-002', texto: 'Iemanjá abençoa minha jornada com proteção e fluidez.', fonte: 'Louvação a Iemanjá', categoria: 'orixas', tags: ['proteção', 'fluidez'] },
@@ -74,45 +49,44 @@ function getAffirmationByCategory(category: string, seed: number): Affirmation |
 }
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const categoria = searchParams.get('categoria');
-  const today = new Date();
-  const dayOfYear = getDayOfYear(today);
-
-  if (categoria && !['cabala', 'numerologia', 'orixas', 'tarot'].includes(categoria)) {
-    return NextResponse.json(
-      {
-        affirmation: null,
-        error: 'Categoria inválida. Use: cabala, numerologia, orixas, tarot',
-        categories: ['cabala', 'numerologia', 'orixas', 'tarot'],
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const parseResult = AffirmationQuerySchema.safeParse({
+      categoria: searchParams.get('categoria'),
+    });
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
+    }
+    const { categoria } = parseResult.data;
+    const today = new Date();
+    const dayOfYear = getDayOfYear(today);
+    const affirmation = categoria
+      ? getAffirmationByCategory(categoria, dayOfYear)
+      : getAffirmationOfDay(dayOfYear);
+    if (!affirmation) {
+      return NextResponse.json(
+        { affirmation: null, error: 'Nenhuma afirmação encontrada.' },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json({
+      affirmation: {
+        id: affirmation.id,
+        texto: affirmation.texto,
+        fonte: affirmation.fonte,
+        categoria: affirmation.categoria,
+        tags: affirmation.tags,
       },
-      { status: 400 }
-    );
+      meta: {
+        diaDoAno: dayOfYear,
+        data: today.toISOString().split('T')[0],
+        categoria: categoria || 'todas',
+      },
+    });
+  } catch {
+    return NextResponse.json({ error: 'Erro ao processar afirmação' }, { status: 500 });
   }
-
-  const affirmation = categoria
-    ? getAffirmationByCategory(categoria, dayOfYear)
-    : getAffirmationOfDay(dayOfYear);
-
-  if (!affirmation) {
-    return NextResponse.json(
-      { affirmation: null, error: 'Nenhuma afirmação encontrada.' },
-      { status: 404 }
-    );
-  }
-
-  return NextResponse.json({
-    affirmation: {
-      id: affirmation.id,
-      texto: affirmation.texto,
-      fonte: affirmation.fonte,
-      categoria: affirmation.categoria,
-      tags: affirmation.tags,
-    },
-    meta: {
-      diaDoAno: dayOfYear,
-      data: today.toISOString().split('T')[0],
-      categoria: categoria || 'todas',
-    },
-  });
 }
