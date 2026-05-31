@@ -26,7 +26,6 @@ interface ZodiacSign {
   symbol: string;
   traits: string[];
   dates: string;
-  dates: string;
 }
 const ZODIAC_SIGNS = {
   aries: {

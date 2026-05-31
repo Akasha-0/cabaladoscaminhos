@@ -108,8 +108,7 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
     blessing: 'Que as águas de Oxum tragam amor, prosperidade eharmonia ao seu coração.',
   },
   {
-    id: 'nanã-ancient',
-    id: 'nanã-ancient',
+  {
     name: 'Nanã Burucema',
     nameEn: 'Ancient Mother / Grandmother',
     type: 'orixa',
