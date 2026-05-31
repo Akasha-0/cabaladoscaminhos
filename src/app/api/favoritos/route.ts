@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
+
 const FavoritoTipoSchema = z.enum(['affirmation', 'ritual', 'tarot', 'numerologia']);
 const FavoritoSchema = z.object({
   id: z.string(),
@@ -15,12 +17,11 @@ const CreateFavoritoSchema = z.object({
 const DeleteFavoritoSchema = z.object({
   id: z.string().min(1, 'id é obrigatório'),
 });
+
 type FavoritoTipo = z.infer<typeof FavoritoTipoSchema>;
 export type Favorito = z.infer<typeof FavoritoSchema>;
+
 const favoritos: Map<string, Favorito> = new Map();
-function generateId(): string {
-  return `fav_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
-}
 
 function generateId(): string {
   return `fav_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
@@ -33,16 +34,14 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { tipo, itemId } = body as { tipo: FavoritoTipo; itemId: string };
-
-    if (!tipo || !itemId) {
-      return NextResponse.json({ error: 'tipo and itemId are required' }, { status: 400 });
+    const parseResult = CreateFavoritoSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Dados inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
-
-    const validTipos: FavoritoTipo[] = ['affirmation', 'ritual', 'tarot', 'numerologia'];
-    if (!validTipos.includes(tipo)) {
-      return NextResponse.json({ error: `tipo must be one of: ${validTipos.join(', ')}` }, { status: 400 });
-    }
+    const { tipo, itemId } = parseResult.data;
 
     const existing = Array.from(favoritos.values()).find(
       f => f.tipo === tipo && f.itemId === itemId
@@ -68,11 +67,14 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id } = body as { id: string };
-
-    if (!id) {
-      return NextResponse.json({ error: 'id is required' }, { status: 400 });
+    const parseResult = DeleteFavoritoSchema.safeParse(body);
+    if (!parseResult.success) {
+      return NextResponse.json({
+        error: 'Dados inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      }, { status: 400 });
     }
+    const { id } = parseResult.data;
 
     if (!favoritos.has(id)) {
       return NextResponse.json({ error: 'Favorite not found' }, { status: 404 });
