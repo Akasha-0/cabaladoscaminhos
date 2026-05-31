@@ -41,7 +41,6 @@ describe('ZodiacElement Correlation', () => {
     });
 
     it('returns null for invalid sign names', () => {
-    it('returns null for invalid sign names', () => {
       expect(getZodiacElement('InvalidSign')).toBeNull();
       expect(getZodiacElement('')).toBeNull();
       expect(getZodiacElement('Leo')?.signo).toBe('Leão');
