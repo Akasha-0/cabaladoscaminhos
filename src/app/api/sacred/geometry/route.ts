@@ -1,45 +1,138 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { getShapes, getShapeById, getShapesBySefirot, getShapesByChakra, SacredShape } from '@/lib/geometria-sagrada/shapes';
 import { FORMAS_SAGRADAS, getFormaPorSefirot, getFormaPorChakra } from '@/lib/geometria-sagrada/dados';
 import { generateMandala, EstiloMandala, MandalaGerado } from '@/lib/geometria-sagrada/mandala-generator';
 import { generateCrystalGrid, Intencao, CristalGrid } from '@/lib/geometria-sagrada/crystal-grid';
 
-/**
- * GET /api/sacred/geometry
- * Query params:
- *   - resource: 'shapes' | 'formas' | 'mandala' | 'crystal-grid'
- *   - id: shape ID (for shapes/formas)
- *   - sefirot: filter by sefirot
- *   - chakra: filter by chakra number
- *   - estilo: mandala style (for mandala)
- *   - centros: number of centers (for mandala, default 1)
- *   - aneis: number of rings (for mandala, default 6)
- *   - espirais: number of spirals (for mandala, default 3)
- *   - intencao: crystal grid intention (for crystal-grid)
- */
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
+const SefirotSchema = z.enum([
+  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
-interface ShapeQuery {
-  id?: string;
-  sefirot?: string;
-  chakra?: string;
-}
+const SacredGeometryQuerySchema = z.object({
+  resource: z.enum(['shapes', 'formas', 'mandala', 'crystal-grid']).optional(),
+  id: z.string().optional(),
+  sefirot: SefirotSchema.optional(),
+  chakra: ChakraSchema.optional(),
+  element: ElementSchema.optional(),
+  orixa: z.string().optional(),
+  estilo: z.enum(['tradicional', 'orgânico', 'geométrico', 'cósmico']).optional(),
+  centros: z.coerce.number().int().min(1).max(5).optional(),
+  aneis: z.coerce.number().int().min(1).max(12).optional(),
+  espirais: z.coerce.number().int().min(1).max(8).optional(),
+  intencao: z.enum(['cura', 'protecao', 'prosperidade', 'amor', 'sabedoria', 'equilibrio']).optional(),
+});
 
-interface FormaQuery {
-  id?: string;
-  sefirot?: string;
-  chakra?: string;
-}
-
-interface MandalaQuery {
-  estilo?: EstiloMandala;
-  centros?: string;
-  aneis?: string;
-  espirais?: string;
-}
-
-interface CrystalGridQuery {
-  intencao?: Intencao;
-}
+// ─── Spiritual Correlations for Sacred Geometry Shapes ──────────────────────────────────────────
+const SHAPE_SPIRITUAL_CORRELATIONS: Record<string, {
+  sefirot: string[];
+  chakra: number;
+  element: string;
+  orixa: string;
+  affirmation: string;
+  frequency: string;
+}> = {
+  tetrahedron: {
+    sefirot: ['Gevurah'],
+    chakra: 3,
+    element: 'Fogo',
+    orixa: 'Ogum',
+    affirmation: 'A força do fogo me fortalece',
+    frequency: '528 Hz',
+  },
+  cube: {
+    sefirot: ['Malkuth'],
+    chakra: 1,
+    element: 'Terra',
+    orixa: 'Nanã',
+    affirmation: 'A terra me ancora na realidade',
+    frequency: '396 Hz',
+  },
+  octahedron: {
+    sefirot: ['Tipheret'],
+    chakra: 4,
+    element: 'Ar',
+    orixa: 'Oxum',
+    affirmation: 'A harmonia do ar me equilibra',
+    frequency: '528 Hz',
+  },
+  dodecahedron: {
+    sefirot: ['Chokhmah'],
+    chakra: 6,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'A sabedoria cósmica me ilumina',
+    frequency: '741 Hz',
+  },
+  icosahedron: {
+    sefirot: ['Binah'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'As águas da vida me purificam',
+    frequency: '417 Hz',
+  },
+  torus: {
+    sefirot: ['Yesod'],
+    chakra: 2,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'A energia flui através de mim',
+    frequency: '417 Hz',
+  },
+  merkaba: {
+    sefirot: ['Kether', 'Chokhmah', 'Binah'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Sou envolvido pela luz divina',
+    frequency: '963 Hz',
+  },
+  flower_of_life: {
+    sefirot: ['Tipheret', 'Yesod'],
+    chakra: 6,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A vida floresce em mim',
+    frequency: '528 Hz',
+  },
+  seed_of_life: {
+    sefirot: ['Chesed'],
+    chakra: 4,
+    element: 'Fogo',
+    orixa: 'Oxum',
+    affirmation: 'A semente da vida germina em mim',
+    frequency: '528 Hz',
+  },
+  tree_of_life: {
+    sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Sou conectado à árvore da vida',
+    frequency: '963 Hz',
+  },
+  metatron: {
+    sefirot: ['Kether', 'Malkuth'],
+    chakra: 7,
+    element: 'Éter',
+    orixa: 'Oxalá',
+    affirmation: 'Metatron me guia na luz',
+    frequency: '963 Hz',
+  },
+  vesica_piscis: {
+    sefirot: ['Binah', 'Chokhmah'],
+    chakra: 6,
+    element: 'Água',
+    orixa: 'Iemanjá',
+    affirmation: 'A união do divino e do humano',
+    frequency: '639 Hz',
+  },
+};
 
 function parseIntSafe(value: string | undefined, fallback: number): number {
   if (!value) return fallback;
@@ -49,99 +142,238 @@ function parseIntSafe(value: string | undefined, fallback: number): number {
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const resource = searchParams.get('resource') ?? 'shapes';
+  const parseResult = SacredGeometryQuerySchema.safeParse({
+    resource: searchParams.get('resource'),
+    id: searchParams.get('id'),
+    sefirot: searchParams.get('sefirot'),
+    chakra: searchParams.get('chakra'),
+    element: searchParams.get('element'),
+    orixa: searchParams.get('orixa'),
+    estilo: searchParams.get('estilo'),
+    centros: searchParams.get('centros'),
+    aneis: searchParams.get('aneis'),
+    espirais: searchParams.get('espirais'),
+    intencao: searchParams.get('intencao'),
+  });
+
+  if (!parseResult.success) {
+    return NextResponse.json({
+      success: false,
+      error: 'Parâmetros inválidos',
+      details: parseResult.error.flatten().fieldErrors,
+    }, { status: 400 });
+  }
+
+  const { resource, id, sefirot, chakra, element, orixa, estilo, centros, aneis, espirais, intencao } = parseResult.data;
+  const resourceType = resource ?? 'shapes';
 
   try {
-    switch (resource) {
+    switch (resourceType) {
       case 'shapes': {
-        const query: ShapeQuery = {
-          id: searchParams.get('id') ?? undefined,
-          sefirot: searchParams.get('sefirot') ?? undefined,
-          chakra: searchParams.get('chakra') ?? undefined,
-        };
-
-        if (query.id) {
-          const shape = getShapeById(query.id);
+        if (id) {
+          const shape = getShapeById(id);
           if (!shape) {
             return NextResponse.json({ error: 'Shape not found' }, { status: 404 });
           }
-          return NextResponse.json(shape);
+          // Add spiritual correlations
+          const correlations = SHAPE_SPIRITUAL_CORRELATIONS[id] || SHAPE_SPIRITUAL_CORRELATIONS.torus;
+          return NextResponse.json({
+            success: true,
+            shape: {
+              ...shape,
+              ...correlations,
+              spiritualCorrelations: correlations,
+            },
+            spiritualCorrelations: correlations,
+          });
         }
 
-        if (query.sefirot) {
-          return NextResponse.json(getShapesBySefirot(query.sefirot));
+        if (sefirot) {
+          const shapes = getShapesBySefirot(sefirot);
+          const enhancedShapes = shapes.map(s => ({
+            ...s,
+            ...(SHAPE_SPIRITUAL_CORRELATIONS[s.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus),
+            spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS[s.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus,
+          }));
+          return NextResponse.json({
+            success: true,
+            shapes: enhancedShapes,
+            count: enhancedShapes.length,
+            spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS,
+          });
         }
 
-        if (query.chakra) {
-          const chakraNum = parseIntSafe(query.chakra, -1);
-          return NextResponse.json(getShapesByChakra(chakraNum));
+        if (chakra) {
+          const chakraNum = parseIntSafe(String(chakra), -1);
+          const shapes = getShapesByChakra(chakraNum);
+          const enhancedShapes = shapes.map(s => ({
+            ...s,
+            ...(SHAPE_SPIRITUAL_CORRELATIONS[s.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus),
+            spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS[s.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus,
+          }));
+          return NextResponse.json({
+            success: true,
+            shapes: enhancedShapes,
+            count: enhancedShapes.length,
+            spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS,
+          });
         }
 
-        return NextResponse.json(getShapes());
+        const shapes = getShapes();
+        const enhancedShapes = shapes.map(s => ({
+          ...s,
+          ...(SHAPE_SPIRITUAL_CORRELATIONS[s.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus),
+          spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS[s.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus,
+        }));
+
+        // Calculate spiritual stats
+        const spiritualStats = {
+          bySefirot: enhancedShapes.reduce((acc, s) => {
+            s.spiritualCorrelations.sefirot.forEach(sf => {
+              acc[sf] = (acc[sf] || 0) + 1;
+            });
+            return acc;
+          }, {} as Record<string, number>),
+          byChakra: enhancedShapes.reduce((acc, s) => {
+            const c = s.spiritualCorrelations.chakra;
+            if (c) acc[c] = (acc[c] || 0) + 1;
+            return acc;
+          }, {} as Record<string, number>),
+          byElement: enhancedShapes.reduce((acc, s) => {
+            const e = s.spiritualCorrelations.element;
+            if (e) acc[e] = (acc[e] || 0) + 1;
+            return acc;
+          }, {} as Record<string, number>),
+          byOrixa: enhancedShapes.reduce((acc, s) => {
+            const o = s.spiritualCorrelations.orixa;
+            if (o) acc[o] = (acc[o] || 0) + 1;
+            return acc;
+          }, {} as Record<string, number>),
+        };
+
+        return NextResponse.json({
+          success: true,
+          shapes: enhancedShapes,
+          count: enhancedShapes.length,
+          spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS,
+          spiritualStats,
+        });
       }
 
       case 'formas': {
-        const query: FormaQuery = {
-          id: searchParams.get('id') ?? undefined,
-          sefirot: searchParams.get('sefirot') ?? undefined,
-          chakra: searchParams.get('chakra') ?? undefined,
-        };
-
-        if (query.id) {
-          const forma = FORMAS_SAGRADAS.find((f) => f.id === query.id);
+        if (id) {
+          const forma = FORMAS_SAGRADAS.find(f => f.id === id);
           if (!forma) {
-            return NextResponse.json({ error: 'Forma not found' }, { status: 404 });
+            return NextResponse.json({ error: 'Forma não encontrada' }, { status: 404 });
           }
-          return NextResponse.json(forma);
+          const correlations = SHAPE_SPIRITUAL_CORRELATIONS[id] || SHAPE_SPIRITUAL_CORRELATIONS.torus;
+          return NextResponse.json({
+            success: true,
+            forma: {
+              ...forma,
+              ...correlations,
+              spiritualCorrelations: correlations,
+            },
+            spiritualCorrelations: correlations,
+          });
         }
 
-        if (query.sefirot) {
-          return NextResponse.json(getFormaPorSefirot(query.sefirot));
+        if (sefirot) {
+          const formas = getFormaPorSefirot(sefirot);
+          const enhancedFormas = formas.map(f => ({
+            ...f,
+            ...(SHAPE_SPIRITUAL_CORRELATIONS[f.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus),
+            spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS[f.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus,
+          }));
+          return NextResponse.json({
+            success: true,
+            formas: enhancedFormas,
+            count: enhancedFormas.length,
+ spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS,
+          });
         }
 
-        if (query.chakra) {
-          const chakraNum = parseIntSafe(query.chakra, -1);
-          return NextResponse.json(getFormaPorChakra(chakraNum));
+        if (chakra) {
+          const chakraNum = parseIntSafe(String(chakra), -1);
+          const formas = getFormaPorChakra(chakraNum);
+          const enhancedFormas = formas.map(f => ({
+            ...f,
+            ...(SHAPE_SPIRITUAL_CORRELATIONS[f.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus),
+            spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS[f.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus,
+          }));
+          return NextResponse.json({
+            success: true,
+            formas: enhancedFormas,
+            count: enhancedFormas.length,
+            spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS,
+          });
         }
 
-        return NextResponse.json(FORMAS_SAGRADAS);
+        const enhancedFormas = FORMAS_SAGRADAS.map(f => ({
+          ...f,
+          ...(SHAPE_SPIRITUAL_CORRELATIONS[f.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus),
+          spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS[f.id] || SHAPE_SPIRITUAL_CORRELATIONS.torus,
+        }));
+
+        return NextResponse.json({
+          success: true,
+          formas: enhancedFormas,
+          count: enhancedFormas.length,
+          spiritualCorrelations: SHAPE_SPIRITUAL_CORRELATIONS,
+        });
       }
 
       case 'mandala': {
-        const query: MandalaQuery = {
-          estilo: searchParams.get('estilo') as EstiloMandala | undefined,
-          centros: searchParams.get('centros') ?? undefined,
-          aneis: searchParams.get('aneis') ?? undefined,
-          espirais: searchParams.get('espirais') ?? undefined,
-        };
+        const mandala = generateMandala({
+          estilo: estilo as EstiloMandala || 'tradicional',
+          centros: centros || 1,
+          aneis: aneis || 6,
+          espirais: espirais || 3,
+        });
 
-        const estilo = query.estilo ?? 'sagrado';
-        const centros = parseIntSafe(query.centros, 1);
-        const aneis = parseIntSafe(query.aneis, 6);
-        const espirais = parseIntSafe(query.espirais, 3);
-
-        const mandala = generateMandala(estilo, centros, aneis, espirais);
-        return NextResponse.json(mandala);
+        return NextResponse.json({
+          success: true,
+          mandala,
+          spiritualCorrelations: {
+            sefirot: ['Tipheret', 'Yesod'],
+            chakra: 6,
+            element: 'Fogo',
+            orixa: 'Oxum',
+            affirmation: 'A beleza sagrada me envolve',
+            frequency: '528 Hz',
+          },
+        });
       }
 
       case 'crystal-grid': {
-        const query: CrystalGridQuery = {
-          intencao: searchParams.get('intencao') as Intencao | undefined,
-        };
+        const grid = generateCrystalGrid({
+          intencao: intencao as Intencao || 'equilibrio',
+        });
 
-        if (!query.intencao) {
-          return NextResponse.json({ error: 'intencao is required' }, { status: 400 });
-        }
-
-        const grid = generateCrystalGrid(query.intencao);
-        return NextResponse.json(grid);
+        return NextResponse.json({
+          success: true,
+          grid,
+          spiritualCorrelations: {
+            sefirot: ['Malkuth', 'Yesod'],
+            chakra: 1,
+            element: 'Terra',
+            orixa: 'Nanã',
+            affirmation: 'A energia dos cristais me fortalece',
+            frequency: '396 Hz',
+          },
+        });
       }
 
       default:
-        return NextResponse.json({ error: 'Unknown resource' }, { status: 400 });
+        return NextResponse.json({
+          success: false,
+          error: 'Recurso inválido',
+        }, { status: 400 });
     }
   } catch (error) {
-    console.error('Sacred geometry API error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Erro interno',
+    }, { status: 500 });
   }
 }
