@@ -692,7 +692,9 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search');
     const id = searchParams.get('id');
     const duracao = searchParams.get('duracao');
-  if (id) {
+    const duracao = searchParams.get('duracao');
+
+    if (id) {
     const ritual = rituals.find(r => r.id === id);
     if (!ritual) {
       return NextResponse.json(
