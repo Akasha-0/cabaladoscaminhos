@@ -518,10 +518,8 @@ describe('Odú-Ifá Chakra Correlation', () => {
   // ─── Default export ──────────────────────────────────────────────────────
 
   describe('Default export', () => {
-    it('should export all required functions', () => {
-      const defaultExport = await import('@/lib/correlation/oddu-chakra').then(
-        (m) => m.default
-      );
+    it('should export all required functions', async () => {
+      const defaultExport = (await import('@/lib/correlation/oddu-chakra')).default;
       expect(defaultExport.getOduChakra).toBeDefined();
       expect(defaultExport.getChakraOdu).toBeDefined();
       expect(defaultExport.getAllOduChakras).toBeDefined();
