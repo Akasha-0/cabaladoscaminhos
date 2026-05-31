@@ -25,12 +25,10 @@ const categories: MeditationCategory[] = [
     popular: true,
   },
   {
-  {
     id: 'breathing',
     name: 'Breathing Exercises',
-    description: 'Focused breathing techniques for stress relief',
     icon: 'wind',
-    color: '#06b6d4',
+    description: 'Focused breathing techniques for stress relief',
     meditationCount: 18,
     popular: true,
   },
