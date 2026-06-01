@@ -26,6 +26,7 @@ model User {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   journalEntries    JournalEntry[]
+  oraculista      Oraculista?
 
   mapaNatal MapaNatal?
 
@@ -500,4 +501,139 @@ model JournalEntry {
   @@index([mood])
   @@index([createdAt])
   @@map("journal_entries")
+}
+// ============================================================
+// MESA REAL INTEGRADA — Modelos do Cockpit do Oraculista
+// ============================================================
+
+enum OraculistaRole {
+  ADMIN
+  ORACULISTA
+  ASSISTENTE
+}
+
+enum TipoSpread {
+  CASA_UNICA
+  CRUZ_CIGANA
+  GRANDE_CONSULTA
+}
+
+enum ReadingStatus {
+  RASCUNHO
+  EM_ANDAMENTO
+  CONCLUIDA
+  CANCELADA
+}
+
+model Oraculista {
+  id        String          @id @default(cuid())
+  userId    String          @unique
+  user      User            @relation(fields: [userId], references: [id], on_delete: Cascade)
+  nome      String
+  role      OraculistaRole  @default(ORACULISTA)
+  biografia String?
+  pix       String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  clientes  Client[]
+  readings  Reading[]
+
+  @@map("oraculistas")
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  oraculistaId String
+  oraculista Oraculista @relation(fields: [oraculistaId], references: [id], on_delete: Cascade)
+
+  nomeCompleto    String
+  dataNascimento  DateTime
+  horaNascimento  String?
+  localNascimento String?
+  whatsapp        String?
+  email           String?
+
+  ascendente      String?
+  solSigno        String?
+  luaSigno        String?
+  venusSigno      String?
+  marteSigno      String?
+
+  caminhoDeVida   Int?
+  numeroAlma      Int?
+  numeroMissao    Int?
+
+  orixaRegente    String?
+  observacoes     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  readings  Reading[]
+
+  @@index([oraculistaId])
+  @@index([nomeCompleto])
+  @@index([dataNascimento])
+  @@map("clients")
+}
+
+model Reading {
+  id           String        @id @default(cuid())
+  oraculistaId String
+  oraculista   Oraculista    @relation(fields: [oraculistaId], references: [id], on_delete: Cascade)
+  clientId     String
+  client       Client        @relation(fields: [clientId], references: [id], on_delete: Cascade)
+
+  spreadTipo   TipoSpread    @default(GRANDE_CONSULTA)
+  status       ReadingStatus @default(RASCUNHO)
+
+  mapaFixo     Json
+  mesaReal     Json
+
+  oduPrincipal String?
+  oduComplementar String?
+  refraoPrincipal String?
+
+  perguntaCliente   String?
+  notasOraculista   String?
+
+  dossie            Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  finalizedAt DateTime?
+
+  report Report?
+
+  @@index([oraculistaId])
+  @@index([clientId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("readings")
+}
+
+model Report {
+  id          String  @id @default(cuid())
+  readingId   String  @unique
+  reading     Reading @relation(fields: [readingId], references: [id], on_delete: Cascade)
+
+  conteudoMd  String
+  conteudoTxt String?
+  interpretacoes Json
+  sintesePilares Json
+
+  totalCasas       Int
+  totalPilares     Int     @default(4)
+  modeloIA         String?
+  tokensUsados     Int?
+  custoCentavos    Int?
+
+  pdfUrl       String?
+  pdfGeradoEm  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reports")
 }
