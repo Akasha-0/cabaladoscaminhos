@@ -4,11 +4,129 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
+
+// ============================================================================
+// ENUMS
+// ============================================================================
 
 enum TipoTransacao {
   CREDITO
   DEBITO
+}
+
+// ============================================================================
+// ÉPICO A — AUTENTICAÇÃO (Doc 04 §1)
+// ============================================================================
+
+enum UserRole {
+  OPERATOR
+  ADMIN
+}
+
+enum ReadingStatus {
+  PENDING     // Mesa preenchida, dossiê ainda não gerado
+  GENERATING  // IA processando
+  COMPLETED   // Dossiê gerado com sucesso
+  ERROR       // Falha na geração
+}
+
+// ============================================================================
+// MODELOS CANÔNICOS (Doc 04 §1) — Client / Reading / Report
+// ============================================================================
+
+/// Usuário operador (terapeuta) — modelo canônico da Fase 1.
+model Operator {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         UserRole @default(OPERATOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  readings Reading[]
+
+  @@map("operators")
+}
+
+/// Consulente — dados fixos do cliente. Os mapas calculados ficam
+/// armazenados em JSON conforme estruturas do Doc 04 §2.
+model Client {
+  id String @id @default(cuid())
+
+  // Identificação
+  fullName     String
+  birthDate    DateTime
+  birthTime    String
+  birthCity    String
+  birthState   String
+  birthCountry String
+
+  // Coordenadas para cálculo astral
+  birthLatitude  Float?
+  birthLongitude Float?
+  birthTimezone  String?
+
+  // Mapas cacheados (calculados uma única vez no cadastro)
+  astrologyMap  Json?
+  kabalisticMap Json?
+  tantricMap    Json?
+  oduBirth      Json?
+
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  readings Reading[]
+
+  @@map("clients")
+}
+
+/// Leitura — uma sessão de Mesa Real.
+model Reading {
+  id     String        @id @default(cuid())
+  date   DateTime      @default(now())
+  status ReadingStatus @default(PENDING)
+  notes  String?
+
+  /// Matriz 9x4 salva como JSON. Estrutura: MatrixData
+  matrixData Json
+
+  // Relacionamentos
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  operatorId String
+  operator   Operator @relation(fields: [operatorId], references: [id])
+
+  report Report?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("readings")
+}
+
+/// Dossiê — relatório interpretativo gerado pelo LLM.
+model Report {
+  id String @id @default(cuid())
+
+  /// Conteúdo gerado pelo LLM. Estrutura: ReportContent
+  content Json
+
+  llmModel   String?
+  tokensUsed Int?
+  pdfUrl     String?
+
+  readingId String  @unique
+  reading   Reading @relation(fields: [readingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reports")
 }
 
 // =====================
