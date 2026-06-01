@@ -979,6 +979,268 @@ Atualiza as preferências de notificação do usuário autenticado.
 |----------|-------|
 | Chat (mensagem) | 2 créditos |
 | Insight Diário | 1 crédito |
+| Divinação Cruzada | 3 créditos |
+| Diagnóstico Espiritual | 2 créditos |
+
+---
+
+## Correlações Espirituais (NEW)
+
+O Cabala dos Caminhos integra múltiplas tradições espirituais através de um sistema de correlações cruzado. Esta seção documenta os endpoints queexpõem essas correlações.
+
+### Correlações por Sistema
+
+#### Tarot ↔ Sefirot
+
+Cada Arcano Maior do Tarot correlaciona-se com Sefirot específicas na Cabala:
+
+| Arcano | Sefirot | Chakra | Elemento | Orixá |
+|--------|---------|--------|----------|-------|
+| O Louco | Kether | Sahasrara (7) | Ar | Oxalá |
+| O Mago | Kether, Chokhmah | Vishuddha (5) | Fogo | Ogum |
+| A Sacerdotisa | Binah, Yesod | Anahata (6) | Água | Iemanjá |
+| A Imperatriz | Chesed, Tipheret | Anahata (4) | Fogo | Oxum |
+| O Imperador | Malkuth, Gevurah | Muladhara (1) | Terra | Ogum |
+| A Justiça | Gevurah, Tipheret | Manipura (3) | Fogo | Xangô |
+| A Morte | Malkuth, Gevurah | Muladhara (1) | Fogo | Omulu |
+| A Torre | Gevurah, Kether | Manipura (3) | Fogo | Xangô |
+| O Julgamento | Kether, Binah | Sahasrara (7) | Fogo | Oxalá |
+| O Mundo | Malkuth, Kether | Sahasrara (7) | Terra | Oxum |
+
+#### Odús ↔ Sefirot
+
+Os 16 Odús do Ifá mapeiam para Sefirot específicas:
+
+| Odú | Sefirot | Elemento | Orixá |
+|------|---------|----------|-------|
+| Ogbe (1) | Hod, Gevurah | Fogo | Ogum |
+| Oyeku (2) | Chokhmah, Binah | Ar | Iemanjá |
+| Iwori (3) | Gevurah, Malkuth | Terra | Ogum |
+| Irosun (4) | Binah, Yesod | Água | Iemanjá |
+| Oxossi (6) | Chesed, Gevurah | Fogo | Xangô |
+| Obatalá (7) | Malkuth, Binah | Terra | Omulu |
+| Ogun (8) | Netzach, Hod | Fogo | Iansã |
+| Meji (13) | Chokhmah, Hod | Ar | Orunmilá |
+
+#### Numerologia ↔ Chakras
+
+| Número | Chakra | Elemento | Orixá | Frequência |
+|--------|--------|----------|-------|------------|
+| 1 | Muladhara (1) | Fogo | Ogum | 528 Hz |
+| 2 | Svadhisthana (2) | Água | Iemanjá | 639 Hz |
+| 3 | Vishuddha (5) | Ar | Orunmilá | 741 Hz |
+| 4 | Muladhara (1) | Terra | Ogum | 396 Hz |
+| 5 | Manipura (3) | Fogo | Xangô | 528 Hz |
+| 6 | Anahata (4) | Fogo | Oxum | 528 Hz |
+| 7 | Ajna (6) | Água | Oxalá | 741 Hz |
+| 8 | Manipura (3) | Terra | Ogum | 396 Hz |
+| 9 | Ajna (6) | Água | Iemanjá | 639 Hz |
+| 11 | Ajna (6) | Ar | Oxalá | 963 Hz |
+| 22 | Anahata (4) | Terra | Ogum | 528 Hz |
+| 33 | Sahasrara (7) | Fogo | Oxalá | 963 Hz |
+
+---
+
+### Endpoints de Correlação
+
+#### `GET /api/correlation/analyze`
+
+Analisa correlações espirituais baseadas em tempo eOdú.
+
+**Parâmetros:**
+
+| Parâmetro | Tipo | Descrição |
+|-----------|------|----------|
+| `type` | enum | `day`, `week`, `lunar`, `ritual`, `odu` |
+| `value` | string | Valor específico (data, dia da semana) |
+| `odu` | number | Número do Odú (1-16) |
+
+**Exemplo:**
+```
+GET /api/correlation/analyze?type=day&value=quarta-feira
+GET /api/correlation/analyze?type=odu&odu=4
+GET /api/correlation/analyze?type=lunar&value=2026-06-01
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "dayEnergy": "Mercurial",
+    "orixa": "Oxossi",
+    "element": "Ar",
+    "practice": "Caça espiritual, busca de conhecimento",
+    "ritualGuidance": {
+      "phase": "dissolving",
+      "title": "Desprendimento",
+      "description": "Libere o que não serve mais"
+    }
+  }
+}
+```
+
+---
+
+#### `POST /api/correlation/diagnosis`
+
+Diagnostica desalinhamentos espirituais baseados em sintomas.
+
+**Autenticação:** Supabase (opcional)
+
+**Request:**
+```json
+{
+  "symptoms": ["Seticismo", "Vazio existencial", "Insônia"]
+}
+```
+
+**Categorias de Sintomas:**
+
+| Categoria | Sintomas |
+|-----------|----------|
+| Coronário | Seticismo, Fanatismo, Vazio existencial, Dores de cabeça, Insônia |
+| Frontal | Desorientação mental, Pesadelos, Confusão, Sinusite, Problemas de visão |
+| Laríngeo | Fofoca, Agressividade, Timidez, Rouquidão, Garganta inflamada |
+| Cardíaco | Mágoa, Dependência, Incapacidade de perdoar, Taquicardia |
+| Plexo Solar | Raiva, Ganância, Complexo de inferioridade, Azia, Refluxo |
+| Sacro | Bloqueio criativo, Impotência, Vícios, Cólicas, Dores pélvicas |
+| Básico | Medo de escassez, Preguiça, Desorganização, Dores nas articulações |
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "diagnosis": [
+      { "chakra": "coronario", "alinhamento": 0.3, "recomendacao": "Meditação com 963 Hz" }
+    ],
+    "prescription": {
+      "meditacao": "Sahaja Yoga para o chakra coronário",
+      "afirmacoes": ["Eu sou luz", "Meu espírito se expande"],
+      "ritual": "Queima de sândalo com intenção"
+    },
+    "summary": "1 chakra(s) memerlukan perhatian"
+  }
+}
+```
+
+---
+
+#### `POST /api/divination/cross-system`
+
+Divinação que integra Tarot, Ifá/Odú, Numerologia e Astrologia.
+
+**Autenticação:** Supabase (obrigatório)  
+**Custo:** 3 créditos
+
+**Request:**
+```json
+{
+  "userId": "uuid",
+  "question": "Qual é meu caminho espiritual neste momento?",
+  "spread": "celtic-cross",
+  "birthDate": "1990-05-15",
+  "includeCorrelations": true
+}
+```
+
+| Campo | Tipo | Obrigatório | Descrição |
+|-------|------|-------------|-----------|
+| `userId` | string | Sim | ID do usuário |
+| `question` | string | Sim | Pergunta espiritual (3-500 chars) |
+| `spread` | enum | Não | `celtic-cross`, `three-cards`, `five-cards`, `single-card` |
+| `birthDate` | string | Não | Data de nascimento (YYYY-MM-DD) |
+| `userName` | string | Não | Nome completo |
+| `includeCorrelations` | boolean | Não | Incluir correlações espirituais |
+| `sefirot` | string | Não | Filtrar por Sefirá |
+| `chakra` | number | Não | Filtrar por Chakra (1-7) |
+| `element` | string | Não | Filtrar por elemento |
+| `orixa` | string | Não | Filtrar por Orixá |
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "id": "csd-1234567890-abc123",
+  "question": "Qual é meu caminho espiritual?",
+  "spread": "celtic-cross",
+  "tarotReading": [
+    {
+      "position": 1,
+      "name": "The Fool",
+      "number": 0,
+      "spiritualCorrelations": {
+        "sefirot": ["Kether"],
+        "chakra": 7,
+        "element": "Ar",
+        "orixa": "Oxalá",
+        "affirmation": "Inicio minha jornada com confiança",
+        "frequency": "963 Hz"
+      }
+    }
+  ],
+  "oduReading": {
+    "numero": 4,
+    "nome": "Irosun",
+    "significado": "Aviso, sangue, visão espiritual",
+    "orixaRegente": "Iemanjá",
+    "spiritualCorrelations": {
+      "sefirot": ["Binah", "Yesod"],
+      "chakra": 2,
+      "element": "Água",
+      "orixa": "Iemanjá"
+    }
+  },
+  "numerologyReading": {
+    "numeroReduzido": 7,
+    "nomeNumerologico": "Número de Vida",
+    "significado": "O Investigador",
+    "sefirotRelacionado": "Binah → Hod",
+    "spiritualCorrelations": {
+      "chakra": 6,
+      "element": "Água",
+      "orixa": "Oxalá"
+    }
+  },
+  "astrologyReading": {
+    "currentAspect": "Lua em Câncer",
+    "dominantPlanet": "Lua",
+    "elementalBalance": "Fogo: 2, Água: 2, Ar: 3, Terra: 3"
+  },
+  "spiritualStats": {
+    "tarotSefirot": { "Kether": 2, "Tipheret": 1 },
+    "tarotChakras": { "7": 2, "6": 3 },
+    "tarotElements": { "Água": 4, "Fogo": 3 },
+    "tarotOrixas": { "Iemanjá": 3, "Oxalá": 2 }
+  },
+  "combinedInterpretation": "A convergência de O Louco com Irosun aponta para...",
+  "aiGuidance": "Permaneça no caminho da luz..."
+}
+```
+
+**Errors:**
+- `400` - Validação falhou
+- `402` - Créditos insuficientes
+- `500` - Erro interno
+
+---
+
+## Frequências Sagradas
+
+O sistema utiliza frequências sonoras para alinhamento espiritual:
+
+| Frequência | Uso | Chakra | Benefício |
+|------------|-----|--------|-----------|
+| **174 Hz** | Fundamental | Muladhara | Estabilidade, segurança |
+| **285 Hz** | Alinhamento | Svadhisthana | Cura emocional |
+| **396 Hz** | Libertação | Manipura | Remoção de culpa |
+| **417 Hz** | Mudança | Manipura | Facilitação de mudanças |
+| **528 Hz** | Transformação | Anahata | Reparação de DNA |
+| **639 Hz** | Harmonia | Anahata | Conexões, relacionamentos |
+| **741 Hz** | despercepção | Vishuddha | Expressão, verdade |
+| **852 Hz** | Intuição | Ajna | Despercepção espiritual |
+| **963 Hz** | Conexão divina | Sahasrara | Unificação com o divino |
 
 ---
 
@@ -994,6 +1256,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-anon
 # Stripe
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
+
+# MiniMax AI (para correlações avançadas)
+MINIMAX_API_KEY=seu-api-key
 
 # Prisma
 DATABASE_URL=postgresql://...
@@ -1011,5 +1276,6 @@ O projeto utiliza Zod para validação de schemas. Verifique `src/lib/validators
 
 | Versão | Data | Alterações |
 |--------|------|------------|
-| 1.0 | 2024-01-15 | Versão inicial |
+| 1.2 | 2026-06-01 | Adicionados endpoints de correlação, divinação cruzada, frequências sagradas |
 | 1.1 | 2024-03-20 | Adicionados endpoints Admin e Notifications |
+| 1.0 | 2024-01-15 | Versão inicial |

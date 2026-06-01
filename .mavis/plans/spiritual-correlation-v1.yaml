@@ -1,0 +1,445 @@
+version: 1
+plan:
+  id: spiritual-correlation-engine-v1
+  name: "Cabala dos Caminhos - Sistema de Correlações Espirituais"
+  owner: mavis
+  message_to_user: "Iniciando equipe autônoma para construir o Sistema de Correlações Espirituais. A equipe vai trabalhar em 4 trilhas paralelas: Documentação, Engine de Correlações, Dashboard e Cálculos. Reporting progress a cada ciclo."
+  auto_reject_retries: 2
+
+tasks:
+  # TRACK 1: DOCUMENTATION
+  - id: docs-vision-paper
+    title: "Documentar Visão e Arquitetura do Sistema"
+    assigned_to: documentation_writer
+    prompt: |
+      # Criar DOCUMENTO DE VISÃO do Projeto
+      
+      ## Objetivo
+      Documentar a visão completa do sistema "Cabala dos Caminhos" com foco em:
+      1. Propósito do projeto (guia de autoconhecimento espiritual)
+      2. Arquitetura do sistema de correlações
+      3. Decisões de design tomadas
+      4. Roadmap de implementação
+      
+      ## Arquivo de Saída
+      `./docs/VISION.md`
+      
+      ## Conteúdo Esperado
+      
+      ### 1. Propósito do Projeto
+      - Sistema de autoconhecimento espiritual baseado em correlações
+      - Tradições: Numerologia Cabalística, Odu (Ifá), Astrologia, Numerologia Tântrica
+      - **Problema que resolve**: números sem compreensão, sistemas isolados, falta de explicação educativa
+      
+      ### 2. Arquitetura de Cálculos
+      Documentar cada sistema:
+      - **Numerologia Cabalística**: soma da data, reduz até 9 (exceto 11, 22, 33)
+      - **Odu de Nascimento**: soma do dia + mês, se > 16 soma os dígitos
+      - **Numerologia Tântrica**: baseada no nome + data,指向 chakras
+      - **Astrologia**: signo solar baseado em data, elemento e planeta regente
+      - **Correlações**: matriz de correlação entre todos os sistemas
+      
+      ### 3. Sistema de Correlações
+      Exemplo concreto de correlação:
+      ```
+      Escorpião + Caminho de Vida 11 + Odu Alafia
+      
+      Escorpião (elemento Água) → intuição e profundidade emocional
+      11 (número mestre) → espiritualidade elevada e intuição
+      Alafia (Odu) → paz, saúde, novos começos
+      
+      CORRELAÇÃO: A intuição de Escorpião é amplificada pelo 11.
+      A energia de Alafia traz paz para a profundidade emocional.
+      
+      INSIGHT: Pessoa com alta sensibilidade espiritual, pode ter
+      dificuldade de aterramento (água + números mestres).
+      ```
+      
+      ### 4. Decisões de Design
+      - Tarot/Mesa Real NÃO devem ser algoritmos - sem propósito espiritual real
+      - Dashboard simplificado (3-5 widgets principais)
+      - Explicações integradas no conteúdo
+      - Mobile-first para acesso cotidiano
+      
+      ### 5. Roadmap
+      ```
+      Fase 1: Correlation Engine Core ✅ Planejado
+      Fase 2: Perfil Consolidado (per-page completo)
+      Fase 3: Dashboard Refatorado (foco em clareza)
+      Fase 4: Insights Diários Personalizados
+      Fase 5: Preceitos e Orientações Dinâmicas
+      ```
+      
+      ## Formato
+      - Escrever em PORTUGUÊS BRASILEIRO
+      - Usar markdown com elementos visuais
+      - Incluir exemplos concretos
+      - máximo 2000 palavras
+      
+    verified_by: general
+    verify_prompt: |
+      Verificar que o arquivo `./docs/VISION.md` foi criado com:
+      1. Propósito do projeto claramente definido
+      2. Arquitetura de cálculos documentada
+      3. Sistema de correlações explicado com exemplo
+      4. Decisões de design documentadas
+      5. Roadmap fases
+      
+      Ler o arquivo e confirmar conteúdo.
+    timeout_ms: 1800000
+
+  # TRACK 2: CORRELATION ENGINE
+  - id: correlation-engine-core
+    title: "Criar Engine de Correlações Espirituais"
+    assigned_to: correlation_expert
+    depends_on: [docs-vision-paper]
+    prompt: |
+      # Criar Sistema de Correlações Espirituais
+      
+      ## Objetivo
+      Criar engine de correlações que gera insights personalizados baseados em múltiplos sistemas espirituais.
+      
+      ## Arquivos a Criar em `./src/lib/correlation/`
+      
+      ### 1. `definitions.ts` - Todas as definições
+      
+      ```typescript
+      // Números Cabalísticos
+      export const CABALISTIC_NUMBERS: Record<number, {
+        name: string;
+        description: string;
+        strengths: string[];
+        challenges: string[];
+        compatibleElements: string[];
+      }> = {
+        1: { name: "Iniciador", description: "Liderança e independência...", strengths: ["Autonomia", "Liderança"],natural challenges: ["Impaciência"], compatibleElements: ["Fogo", "Ar"] },
+        2: { name: "Harmonizador", description: "Diplomacia e cooperação...", strengths: ["Empatia", "Equilíbrio"], challenges: ["Indecisão"], compatibleElements: ["Água", "Terra"] },
+        3: { name: "Criativo", description: "Expressão e comunicação...", strengths: ["Imaginação", "Otimismo"], challenges: ["Superficialidade"], compatibleElements: ["Fogo", "Ar"] },
+        4: { name: "Construtor", description: "Praticidade e disciplina...", strengths: ["Organização", "Persistência"], challenges: ["Rigidez"], compatibleElements: ["Terra", "Fogo"] },
+        5: { name: "Libertador", description: "Liberdade e aventura...", strengths: ["Versatilidade", "Curiosidade"], challenges: ["Impaciência"], compatibleElements: ["Ar", "Água"] },
+        6: { name: "Nurturador", description: "Responsabilidade e cuidado...", strengths: ["Compaixão", "Harmonia"], challenges: ["Perfeccionismo"], compatibleElements: ["Água", "Terra"] },
+        7: { name: "Buscador", description: "Sabedoria e introspecção...", strengths: ["Análise", "Intuição"], challenges: ["Isolamento"], compatibleElements: ["Água", "Ar"] },
+        8: { name: "Realizador", description: "Poder e manifestação...", strengths: ["Ambição", "Confiança"], challenges: ["Materialismo"], compatibleElements: ["Fogo", "Terra"] },
+        9: { name: "Humanitário", description: "Compaixão e idealismo...", strengths: ["Generosidade", "Sabedoria"], challenges: ["Culpa"], compatibleElements: ["Fogo", "Água"] },
+        11: { name: "Mestre Iluminado", description: "Intuição espiritual elevados...", strengths: ["Visão", "Inspiração"], challenges: ["Dificuldade de aterramento"], compatibleElements: ["Água", "Ar"] },
+        22: { name: "Mestre Construtor", description: "Mestria material e espiritual...", strengths: ["Visão de longo prazo", "Execução"], challenges: ["Excesso de responsabilidade"], compatibleElements: ["Terra", "Fogo"] },
+        33: { name: "Mestre Servidor", description: "Serviço espiritual altruísta...", strengths: ["Compaixão infinita", "Healing"], challenges: ["Auto-sacrifício"], compatibleElements: ["Água", "Fogo"] },
+      };
+      
+      // Elementos
+      export const ELEMENTS = {
+        'Agua': {
+          name: "Água",
+          symbol: "💧",
+          characteristics: ["Intuição", "Emocionalidade", "Profundidade", "Transformação"],
+          chakra: ["2º Sacro", "6º Frontal"],
+          compatibleSign: ["Escuroão", "Câncer", "Peixes"],
+          excessBehavior: "Excesso de sensibilidade emocional, dificuldade em estabelecer limites",
+          deficiencyBehavior: "Falta de flexibilidade, rigidez emocional"
+        },
+        'Fogo': {
+          name: "Fogo",
+          symbol: "🔥",
+          characteristics: ["Energia", "Paixão", "Transformação", "Coragem"],
+          chakra: ["3º Plexo Solar"],
+          compatibleSign: ["Aries", "Leão", "Sagitário"],
+          excessBehavior: "Impulsividade, agressividade, combustão rápida",
+          deficiencyBehavior: "Falta de motivação, apatia"
+        },
+        'Terra': {
+          name: "Terra",
+          symbol: "🌍",
+          characteristics: ["Estabilidade", "Praticidade", "Segurança", "Crescimento"],
+          chakra: ["1º Raiz", "4º Cardíaco"],
+          compatibleSign: ["Touro", "Virgem", "Capricórnio"],
+          excessBehavior: "Obstinação, materialismo excessivo",
+          deficiencyBehavior: "Insegurança, dificuldade de aterramento"
+        },
+        'Ar': {
+          name: "Ar",
+          symbol: "💨",
+          characteristics: ["Comunicação", "Liberdade", "Ideias", "Socialização"],
+          chakra: ["5º Laríngeo", "6º Frontal"],
+          compatibleSign: ["Gêmeos", "Libra", "Aquário"],
+          excessBehavior: "Agitação mental, superficialidade",
+          deficiencyBehavior: "Rigidez de pensamento, isolamento"
+        }
+      };
+      
+      // Dorias (16 Odus)
+      export const ODUS: Record<string, {
+        number: number;
+        meaning: string;
+        preceitos: string[];
+        recommendations: string[];
+        compatibleNumerology: number[];
+        incompatibleNumerology: number[];
+        element: string;
+      }> = {
+        'Alafia': { number: 1, meaning: "Paz, saúde e novos começos", preceitos: ["Evitar conflitos desnecessários", "Manter ambiente harmonioso"], recommendations: ["Rituais de limpeza", "Orações pacíficas"], compatibleNumerology: [1, 3, 9], incompatibleNumerology: [4, 5], element: "Agua" },
+        'Ogbe': { number: 2, meaning: "Vitória garantida, prosperidade", preceitos: ["Evitar orgulho excessivo"], recommendations: ["Iniciar novos projetos"], compatibleNumerology: [1, 2, 8], incompatibleNumerology: [6, 7], element: "Ar" },
+        'Oyeku': { number: 3, meaning: "Silêncio e reflexão", preceitos: ["Evitar pressa nas decisões", "Reservar tempo para reflexão"], recommendations: ["Meditação", "Contemplação"], compatibleNumerology: [4, 5, 9], incompatibleNumerology: [1, 3], element: "Terra" },
+        'Iwori': { number: 4, meaning: "Dificuldade e paciência", preceitos: ["Evitar impaciência", "Aceitar o tempo do universo"], recommendations: ["Práticas de paciência"], compatibleNumerology: [2, 6, 8], incompatibleNumerology: [1, 9], element: "Agua" },
+        'Odi': { number: 5, meaning: "Violência e conflito", preceitos: ["Evitar confrontos", "Buscar reconciliação"], recommendations: ["Rituais de paz", "Pedir perdão"], compatibleNumerology: [3, 7, 9], incompatibleNumerology: [4, 8], element: "Fogo" },
+        'Irosun': { number: 6, meaning: "Visão espiritual e proteção", preceitos: ["Evitar consumo excessivo de álcool", "Manter祭祀 limpo"], recommendations: ["Proteção spiritual"], compatibleNumerology: [2, 6, 8], incompatibleNumerology: [5], element: "Agua" },
+        'Owonrin': { number: 1, meaning: "Mudança rápida", preceitos: ["Evitar surpresas", "Estar preparado"], recommendations: ["Flexibilidade"], compatibleNumerology: [1, 3, 5], incompatibleNumerology: [2, 4], element: "Vento" },
+        'Obara': { number: 8, meaning: "Justiça e equidade", preceitos: ["Evitar injustiça", "Ser honesto"], recommendations: ["Buscar equilíbrio"], compatibleNumerology: [4, 6, 8], incompatibleNumerology: [1, 3], element: "Terra" },
+        'Okanran': { number: 9, meaning: "Prisão e libertação", preceitos: ["Evitar maus hábitos", "Buscar libertação"], recommendations: ["Despertar consciousness"], compatibleNumerology: [3, 6, 9], incompatibleNumerology: [4, 8], element: "Terra" },
+        'Ogunda': { number: 10, meaning: "Combate e vitória", preceitos: ["Evitar violência desnecessária", "Lutar com honra"], recommendations: ["Coragem nas batalhas"], compatibleNumerology: [1, 3, 8], incompatibleNumerology: [6, 7], element: "Fogo" },
+        'Osa': { number: 11, meaning: "Precipitação e paciência", preceitos: ["Evitar decisões precipitadas", "Pensar antes de agir"], recommendations: ["Análise cuidadosa"], compatibleNumerology: [2, 5, 7], incompatibleNumerology: [1, 8], element: "Agua" },
+        'Ika': { number: 12, meaning: "Magia e mistério", preceitos: ["Evitar feitiçaria negativa", "Usar poderes com responsabilidad"], recommendations: ["Práticas espiritual avançadas"], compatibleNumerology: [7, 9, 11], incompatibleNumerology: [4, 5], element: "Agua" },
+        'Otura': { number: 13, meaning: "Conhecimento e sabedoria", preceitos: ["Evitar orgulho pelo saber", "Compartilhar conhecimento"], recommendations: ["Estudo espiritual"], compatibleNumerology: [1, 3, 9], incompatibleNumerology: [6, 8], element: "Fogo" },
+        'ObaraMeji': { number: 14, meaning: "Dupla justiça", preceitos: ["Equilíbrio entre extremos", "Buscar harmonia"], recommendations: ["Mediação"], compatibleNumerology: [2, 4, 8], incompatibleNumerology: [1, 3], element: "Terra" },
+        'OgbeMeji': { number: 15, meaning: "Dupla vitória", preceitos: ["Gratidão pela vitória", "Compartilhar prosperidade"], recommendations: ["Generosidade"], compatibleNumerology: [1, 2, 8], incompatibleNumerology: [4, 7], element: "Ar" },
+        'OyekuMeji': { number: 16, meaning: "Dupla reflexão", preceitos: ["Silêncio construtivo", " introspection profunda"], recommendations: ["Journaling espiritual"], compatibleNumerology: [4, 7, 9], incompatibleNumerology: [1, 3], element: "Terra" },
+      };
+      
+      // Signos e Elementos
+      export const ZODIAC_ELEMENTS: Record<string, { element: string; ruler: string }> = {
+        'Aries': { element: 'Fogo', ruler: 'Marte' },
+        'Touro': { element: 'Terra', ruler: 'Vênus' },
+        'Gêmeos': { element: 'Ar', ruler: 'Mercúrio' },
+        'Câncer': { element: 'Agua', ruler: 'Lua' },
+        'Leão': { element: 'Fogo', ruler: 'Sol' },
+        'Virgem': { element: 'Terra', ruler: 'Mercúrio' },
+        'Libra': { element: 'Ar', ruler: 'Vênus' },
+        'Escuroão': { element: 'Agua', ruler: 'Plutão' },
+        'Sagitário': { element: 'Fogo', ruler: 'Júpiter' },
+        'Capricórnio': { element: 'Terra', ruler: 'Saturno' },
+        'Aquário': { element: 'Ar', ruler: 'Saturno' },
+        'Peixes': { element: 'Agua', ruler: 'Júpiter' }
+      };
+      
+      // Chakras
+      export const CHAKRAS: Record<number, { name: string; sanskrit: string; element: string; color: string }> = {
+        1: { name: "Raiz", sanskrit: "Muladhara", element: "Terra", color: "Vermelho" },
+        2: { name: "Sacro", sanskrit: "Svadhisthana", element: "Agua", color: "Laranja" },
+        3: { name: "Plexo Solar", sanskrit: "Manipura", element: "Fogo", color: "Amarelo" },
+        4: { name: "Coração", sanskrit: "Anahata", element: "Ar", color: "Verde" },
+        5: { name: "Laríngeo", sanskrit: "Vishuddha", element: "Éter", color: "Azul" },
+        6: { name: "Terceiro Olho", sanskrit: "Ajna", element: "Luz", color: "Índigo" },
+        7: { name: "Coronário", sanskrit: "Sahasrara", element: "Cosmos", color: "Violeta" }
+      };
+      ```
+      
+      ### 2. `calculator.ts` - Funções de cálculo
+      
+      ```typescript
+      import { CABALISTIC_NUMBERS, ODUS, ZODIAC_ELEMENTS } from './definitions';
+      
+      // Calcula soma dos dígitos de uma data
+      function getDateSum(date: Date): number {
+        const str = date.toISOString().split('T')[0].replace(/-/g, '');
+        return str.split('').reduce((a, b) => a + parseInt(b), 0);
+      }
+      
+      // Reduz ao número raiz (exceto números mestres)
+      function reduceToRoot(num: number): number {
+        if ([11, 22, 33].includes(num)) return num;
+        if (num <= 9) return num;
+        return reduceToRoot(String(num).split('').reduce((a, b) => a + parseInt(b), 0));
+      }
+      
+      // Calcula caminho de vida cabalístico
+      export function calculateCabalisticPath(birthDate: Date): {
+        number: number;
+        isMaster: boolean;
+        description: string;
+        characteristics: string[];
+      } {
+        const sum = getDateSum(birthDate);
+        const reduced = reduceToRoot(sum);
+        const info = CABALISTIC_NUMBERS[reduced] || CABALISTIC_NUMBERS[1];
+        
+        return {
+          number: reduced,
+          isMaster: [11, 22, 33].includes(reduced),
+          description: info.description,
+          characteristics: info.strengths
+        };
+      }
+      
+      // Calcula Odu de nascimento (Ifá)
+      export function calculateBirthOdu(birthDate: Date): {
+        odu: string;
+        meaning: string;
+        preceitos: string[];
+        element: string;
+      } {
+        const day = birthDate.getDate();
+        const month = birthDate.getMonth() + 1;
+        let oduNumber = day + month;
+        
+        // Se > 16, soma os dígitos
+        while (oduNumber > 16) {
+          oduNumber = String(oduNumber).split('').reduce((a, b) => a + parseInt(b), 0);
+        }
+        
+        const oduName = Object.keys(ODUS).find(k => ODUS[k].number === oduNumber) || 'Alafia';
+        const odu = ODUS[oduName];
+        
+        return {
+          odu: oduName,
+          meaning: odu?.meaning || '能量_unknown',
+          preceitos: odu?.preceitos || [],
+          element: odu?.element || 'Terra'
+        };
+      }
+      
+      // Determina signo solar
+      export function getZodiacSign(birthDate: Date): {
+        sign: string;
+        element: string;
+        ruler: string;
+      } {
+        const month = birthDate.getMonth() + 1;
+        const day = birthDate.getDate();
+        
+        // Lógica simplificada de signos
+        if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) {
+          return { sign: 'Escuroão', element: 'Agua', ruler: 'Plutão' };
+        }
+        if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) {
+          return { sign: 'Aries', element: 'Fogo', ruler: 'Marte' };
+        }
+        // ... outros signos
+        return { sign: 'Escuroão', element: 'Agua', ruler: 'Plutão' }; // default
+      }
+      ```
+      
+      ### 3. `correlation-matrix.ts` - Lógica de correlação
+      
+      ### 4. `identity-profile.ts` - Geração de perfil consolidado
+      
+      ## Requirements
+      1. Todos os cálculos em TypeScript puro
+      2. Sem dependências externas
+      3. Tipos fortemente definidos
+      4. Comentários em português explicando lógica
+    verified_by: general
+    verify_prompt: |
+      Verificar que os seguintes arquivos foram criados em `./src/lib/correlation/`:
+      1. `definitions.ts` - contendo todas as definições
+      2. `calculator.ts` - contendo funções de cálculo
+      3. `correlation-matrix.ts` - lógica de correlação
+      4. `identity-profile.ts` - geração de perfil consolidado
+      
+      Verificar tipagem e confirmar que compila.
+    timeout_ms: 2400000
+
+  # TRACK 3: DASHBOARD REFACTORED
+  - id: dashboard-simplified
+    title: "Refatorar Dashboard com Foco em Clareza"
+    assigned_to: ux_spiritual_designer
+    depends_on: [correlation-engine-core]
+    prompt: |
+      # Refatorar Dashboard - Foco em Autoconhecimento
+      
+      ## Conceito
+      Dashboard minimalista que mostra em CLAREZA:
+      1. Quem é você (perfil consolidado)
+      2. O que hoje traz (insight contextualizado)
+      3. Como se alinhar (orientações práticas)
+      
+      NÃO é uma calculadora. É um GUIA DE autoconhecimento.
+      
+      ## Estrutura do Dashboard
+      
+      ```
+      ┌─────────────────────────────────────────────────┐
+      │  SEU MAPA PERSONAL (3 pilares)                  │
+      │  ┌─────────┐ ┌─────────┐ ┌─────────┐              │
+      │  │   11    │ │Escorp.  │ │ Alafia │              │
+      │  │Caminho  │ │signo    │ │   Odu  │              │
+      │  └─────────┘ └─────────┘ └─────────┘              │
+      │  [Correlações: Como estes se conectam]            │
+      ├─────────────────────────────────────────────────┤
+      │  INSIGHT DO DIA                                  │
+      │  "Hoje a água do seu signo se alinha com o 11..."│
+      ├─────────────────────┬───────────────────────────┤
+      │  ORIENTAÇÃO          │   PRECEITO DO DIA        │
+      │  Evitar X / Focar Y  │   Fazer Z baseado no Odu │
+      └─────────────────────┴───────────────────────────┘
+      ```
+      
+      ## Componentes a Criar em `./src/components/dashboard/`
+      
+      ### 1. `HarmonicProfileCard.tsx`
+      Card principal mostrando 3 pilares:
+      - Caminho de Vida (número cabalístico)
+      - Signo (elemento + planeta)
+      - Odu de Nascimento (com preceitos)
+      
+      Cada pilar com:
+      - Ícone visual
+      - Valor claro
+      - Descrição em português
+      - Botão "ver mais" para explicações completas
+      
+      ### 2. `DailyInsight.tsx`
+      Insight contextualizado do dia baseado em:
+      - Dia da semana
+      - Elemento do dia
+      - Correlações pessoais
+      
+      ### 3. `DailyOrientations.tsx`
+      Orientações do dia:
+      - O que fazer (baseado no perfil)
+      - O que evitar
+      - Por que fazer/evitar
+      
+      ## Página Principal: `./src/app/dashboard/page.tsx`
+      
+      Substituir conteúdo atual mantendo apenas:
+      1. HarmonicProfileCard
+      2. DailyInsight
+      3. DailyOrientations
+      4. Header simples
+      
+      REMOVER: todos os widgets antigos (tarot, moon tracker, meditation player, etc)
+    verified_by: general
+    verify_prompt: |
+      Verificar que a página `./src/app/dashboard/page.tsx` foi refatorada com:
+      1. HarmonicProfileCard visível
+      2. DailyInsight com mensagem contextualizada
+      3. DailyOrientations com orientações práticas
+      4. Nenhum widget antigo no dashboard principal
+      
+      Ler o arquivo e verificar estrutura.
+    timeout_ms: 2400000
+
+  # TRACK 4: CALCULATIONS TESTS
+  - id: calculations-tests
+    title: "Testar Cálculos Espirituais"
+    assigned_to: general
+    depends_on: [correlation-engine-core]
+    prompt: |
+      # Criar Tests para Cálculos Espirituais
+      
+      ## Arquivo: `./tests/lib/correlation/calculations.test.ts`
+      
+      Testar:
+      1. calculateCabalisticPath - verificar números mestres
+      2. calculateBirthOdu - verificar Odu resultante
+      3. getZodiacSign - verificar signos
+      4. generateHarmonicProfile - perfil completo
+      
+      Criar tests unitários com vitest e executar.
+    verified_by: general
+    verify_prompt: |
+      Executar os tests e verificar que passam:
+      `npm test -- tests/lib/correlation/`
+      
+      Confirmar que todos os testes passam.
+    timeout_ms: 1800000
+
+verifiers:
+  general:
+    prompt: |
+      Verificação final das implementações:
+      1. `./docs/VISION.md` existe com conteúdo
+      2. `./src/lib/correlation/` contém todos os módulos
+      3. `./src/app/dashboard/page.tsx` foi refatorado
+      4. Tests passam
+      
+      Executar verificação completa.
