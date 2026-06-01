@@ -550,6 +550,473 @@ import { TooltipInfo } from '@/components/ui/tooltip-info';
 
 ---
 
+## Componentes de Correlação Espiritual (Core)
+
+Estes componentes são o **CORE** do sistema Cabala dos Caminhos, implementando a visão de integração entre tradições.
+
+### CorrelationViz
+
+Visualização interativa das correlações entre sistemas espirituais.
+
+**Localização:** `src/components/dashboard/CorrelationViz.tsx`
+
+```tsx
+import { CorrelationViz } from '@/components/dashboard/CorrelationViz';
+
+<CorrelationViz 
+  userData={{
+    sign: 'Escorpiao',
+    numeroPessoal: 11,
+    odu: 'Irosun',
+    sefirotDominante: ['Binah', 'Yesod']
+  }}
+/>
+```
+
+**Funcionalidades:**
+- Mostra correlações entre Numerologia, Astrologia, Ifá e Kabbalah
+- Destaca padrões identificados (Luz, Sabedoria, Transformação, etc.)
+- Exibe força de correlação (0-1) entre sistemas
+
+---
+
+### CorrelationAnalysisPanel
+
+Painel de análise detalhada de correlações.
+
+**Localização:** `src/components/dashboard/CorrelationAnalysisPanel.tsx`
+
+```tsx
+import { CorrelationAnalysisPanel } from '@/components/dashboard/CorrelationAnalysisPanel';
+
+<CorrelationAnalysisPanel 
+  correlations={[
+    { source: 'numerology', target: 'astrology', strength: 0.9 }
+  ]}
+/>
+```
+
+---
+
+### CrossSystemDivination
+
+Componente de divinização que integra múltiplos sistemas.
+
+**Localização:** `src/components/dashboard/CrossSystemDivination.tsx`
+
+```tsx
+import { CrossSystemDivination } from '@/components/dashboard/CrossSystemDivination';
+
+<CrossSystemDivination 
+  userId="uuid"
+  onComplete={handleDivinationResult}
+/>
+```
+
+**Funcionalidades:**
+- Integra Tarot, Ifá, Numerologia e Astrologia
+- Retorna correlações espirituais completas
+- Consome 3 créditos por leitura
+
+---
+
+### SpiritualCorrelationViz
+
+Visualização avançada de correlações espirituais.
+
+**Localização:** `src/components/dashboard/SpiritualCorrelationViz.tsx`
+
+```tsx
+import { SpiritualCorrelationViz } from '@/components/dashboard/SpiritualCorrelationViz';
+
+<SpiritualCorrelationViz patterns={detectedPatterns} />
+```
+
+---
+
+### ChakraBalanceWidget
+
+Widget para visualização e equilíbrio de chakras.
+
+**Localização:** `src/components/dashboard/ChakraBalanceWidget.tsx`
+
+```tsx
+import { ChakraBalanceWidget } from '@/components/dashboard/ChakraBalanceWidget';
+
+<ChakraBalanceWidget />
+```
+
+**Dados exibidos:**
+- 7 chakras com níveis de energia
+- Excesso/deficiência identificado
+- Recomendações de práticas
+
+---
+
+### ElementalBalance
+
+Widget de equilíbrio elemental.
+
+**Localização:** `src/components/dashboard/ElementalBalance.tsx`
+
+```tsx
+import { ElementalBalance } from '@/components/dashboard/ElementalBalance';
+
+<ElementalBalance 
+  elementos={{ fogo: 2, agua: 3, terra: 1, ar: 2 }}
+/>
+```
+
+---
+
+### DayEnergyWidget
+
+Widget de energia do dia com Orixá regente.
+
+**Localização:** `src/components/dashboard/DayEnergyWidget.tsx`
+
+```tsx
+import { DayEnergyWidget } from '@/components/dashboard/DayEnergyWidget';
+
+<DayEnergyWidget />
+```
+
+**Dados exibidos:**
+- Orixá do dia
+- Elemento regente
+- Prática recomendada
+- Évoca sagrada
+
+---
+
+### AstrologicalTransits
+
+Widget de trânsitos astrológicos ativos.
+
+**Localização:** `src/components/dashboard/AstrologicalTransits.tsx`
+
+```tsx
+import { AstrologicalTransits } from '@/components/dashboard/AstrologicalTransits';
+
+<AstrologicalTransits />
+```
+
+---
+
+### LunarPhaseWidget
+
+Widget de fase lunar e ritual recomendado.
+
+**Localização:** `src/components/dashboard/LunarPhaseWidget.tsx`
+
+```tsx
+import { LunarPhaseWidget } from '@/components/dashboard/LunarPhaseWidget';
+
+<LunarPhaseWidget />
+```
+
+---
+
+### ArvoreVida
+
+Visualização da Árvore da Vida Cabalística.
+
+**Localização:** `src/components/dashboard/ArvoreVida.tsx`
+
+```tsx
+import { ArvoreVida } from '@/components/dashboard/ArvoreVida';
+
+<ArvoreVida 
+  activeSefirot={['Kether', 'Chokhmah', 'Binah']}
+/>
+```
+
+---
+
+### OduDivinationWidget
+
+Widget de divinização por Odús.
+
+**Localização:** `src/components/dashboard/OduDivinationWidget.tsx`
+
+```tsx
+import { OduDivinationWidget } from '@/components/dashboard/OduDivinationWidget';
+
+<OduDivinationWidget />
+```
+
+---
+
+### UnifiedSpiritualFlow
+
+Fluxo espiritual unificado integrando todos os sistemas.
+
+**Localização:** `src/components/dashboard/UnifiedSpiritualFlow.tsx`
+
+```tsx
+import { UnifiedSpiritualFlow } from '@/components/dashboard/UnifiedSpiritualFlow';
+
+<UnifiedSpiritualFlow 
+  userProfile={profile}
+/>
+```
+
+---
+
+### EnergyFlowWidget
+
+Widget de fluxo de energia espiritual.
+
+**Localização:** `src/components/dashboard/EnergyFlowWidget.tsx`
+
+```tsx
+import { EnergyFlowWidget } from '@/components/dashboard/EnergyFlowWidget';
+
+<EnergyFlowWidget />
+```
+
+---
+
+## Widgets de Insights (AI-Powered)
+
+### AIOracleChat
+
+Chat com oráculo espiritual AI.
+
+**Localização:** `src/components/dashboard/AIOracleChat.tsx`
+
+```tsx
+import { AIOracleChat } from '@/components/dashboard/AIOracleChat';
+
+<AIOracleChat 
+  userId="uuid"
+  tema="espiritualidade"
+/>
+```
+
+**Custo:** 2 créditos por mensagem
+
+---
+
+### AIRecommendationsEngine
+
+Motor de recomendações personalizado.
+
+**Localização:** `src/components/dashboard/AIRecommendationsEngine.tsx`
+
+```tsx
+import { AIRecommendationsEngine } from '@/components/dashboard/AIRecommendationsEngine';
+
+<AIRecommendationsEngine 
+  userData={userProfile}
+/>
+```
+
+---
+
+### PredictiveInsightsPanel
+
+Painel de insights preditivos.
+
+**Localização:** `src/components/dashboard/PredictiveInsightsPanel.tsx`
+
+```tsx
+import { PredictiveInsightsPanel } from '@/components/dashboard/PredictiveInsightsPanel';
+
+<PredictiveInsightsPanel />
+```
+
+---
+
+### RealTimeInsightsPanel
+
+Painel de insights em tempo real.
+
+**Localização:** `src/components/dashboard/RealTimeInsightsPanel.tsx`
+
+```tsx
+import { RealTimeInsightsPanel } from '@/components/dashboard/RealTimeInsightsPanel';
+
+<RealTimeInsightsPanel />
+```
+
+---
+
+### PredictiveSynthesisPanel
+
+Painel de síntese preditiva.
+
+**Localização:** `src/components/dashboard/PredictiveSynthesisPanel.tsx`
+
+```tsx
+import { PredictiveSynthesisPanel } from '@/components/dashboard/PredictiveSynthesisPanel';
+
+<PredictiveSynthesisPanel />
+```
+
+---
+
+### CrossCorrelationWidget
+
+Widget de correlações cruzadas.
+
+**Localização:** `src/components/dashboard/CrossCorrelationWidget.tsx`
+
+```tsx
+import { CrossCorrelationWidget } from '@/components/dashboard/CrossCorrelationWidget';
+
+<CrossCorrelationWidget />
+```
+
+---
+
+### CorrelationPredictionsWidget
+
+Widget de predições baseadas em correlações.
+
+**Localização:** `src/components/dashboard/CorrelationPredictionsWidget.tsx`
+
+```tsx
+import { CorrelationPredictionsWidget } from '@/components/dashboard/CorrelationPredictionsWidget';
+
+<CorrelationPredictionsWidget />
+```
+
+---
+
+## Widgets de Prática Espiritual
+
+### DailyRitualWidget
+
+Widget de ritual diário recomendado.
+
+**Localização:** `src/components/dashboard/DailyRitualWidget.tsx`
+
+```tsx
+import { DailyRitualWidget } from '@/components/dashboard/DailyRitualWidget';
+
+<DailyRitualWidget />
+```
+
+---
+
+### GuidedMeditationWidget
+
+Widget de meditação guiada.
+
+**Localização:** `src/components/dashboard/GuidedMeditationWidget.tsx`
+
+```tsx
+import { GuidedMeditationWidget } from '@/components/dashboard/GuidedMeditationWidget';
+
+<GuidedMeditationWidget />
+```
+
+---
+
+### AffirmationWidget
+
+Widget de afirmações diárias.
+
+**Localização:** `src/components/dashboard/AffirmationWidget.tsx`
+
+```tsx
+import { AffirmationWidget } from '@/components/dashboard/AffirmationWidget';
+
+<AffirmationWidget 
+  odu="Irosun"
+  numeroPessoal={7}
+/>
+```
+
+---
+
+### RitualReminderWidget
+
+Widget de lembretes de ritual.
+
+**Localização:** `src/components/dashboard/RitualReminderWidget.tsx`
+
+```tsx
+import { RitualReminderWidget } from '@/components/dashboard/RitualReminderWidget';
+
+<RitualReminderWidget />
+```
+
+---
+
+### SacredCalendar
+
+Calendário espiritual com eventos sagrados.
+
+**Localização:** `src/components/dashboard/SacredCalendar.tsx`
+
+```tsx
+import { SacredCalendar } from '@/components/dashboard/SacredCalendar';
+
+<SacredCalendar />
+```
+
+---
+
+## Widgets de Progresso
+
+### SpiritualProgressWidget
+
+Widget de progresso espiritual.
+
+**Localização:** `src/components/dashboard/SpiritualProgressWidget.tsx`
+
+```tsx
+import { SpiritualProgressWidget } from '@/components/dashboard/SpiritualProgressWidget';
+
+<SpiritualProgressWidget />
+```
+
+---
+
+### GamificationHub
+
+Hub de gamificação e conquistas.
+
+**Localização:** `src/components/dashboard/GamificationHub.tsx`
+
+```tsx
+import { GamificationHub } from '@/components/dashboard/GamificationHub';
+
+<GamificationHub />
+```
+
+---
+
+### SelfEvolutionTracker
+
+Rastreador de auto-evolução.
+
+**Localização:** `src/components/dashboard/SelfEvolutionTracker.tsx`
+
+```tsx
+import { SelfEvolutionTracker } from '@/components/dashboard/SelfEvolutionTracker';
+
+<SelfEvolutionTracker />
+```
+
+---
+
+### JourneyTracker
+
+Rastreador de jornada espiritual.
+
+**Localização:** `src/components/dashboard/JourneyTracker.tsx`
+
+```tsx
+import { JourneyTracker } from '@/components/dashboard/JourneyTracker';
+
+<JourneyTracker />
+```
+
+---
+
 ## Estilos e CSS
 
 ### Variáveis CSS (globals.css)

@@ -1,5 +1,6 @@
+'use client';
+
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { UnifiedSpiritualFlow } from './UnifiedSpiritualFlow';
 import { SpiritualRadarChart } from './SpiritualRadarChart';
@@ -7,7 +8,7 @@ import { ArvoreVida } from './ArvoreVida';
 import { GlowEffect } from '@/components/design-system/GlowEffect';
 import { 
   Sparkles, Moon, Sun, Star, Eye, Compass, 
-  ChevronDown, Globe, TreeDeciduous, TreePine
+  ChevronDown, Globe, TreeDeciduous, TreePine, Zap
 } from 'lucide-react';
 
 // ============================================================
@@ -47,76 +48,56 @@ function SectionCard({ title, icon, children, variant = 'primary', className = '
     accent: 'border-emerald-500/20 hover:border-emerald-500/40',
   };
 
+  const variantColors = {
+    primary: 'text-amber-400',
+    secondary: 'text-violet-400',
+    accent: 'text-emerald-400',
+  };
+
   return (
     <div className={cn(
-      'rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-950/80',
+      'rounded-2xl bg-gradient-to-br from-slate-900/90 to-slate-950/90',
       'backdrop-blur-sm border transition-all duration-300',
       variantStyles[variant],
       className
     )}>
-      {/* Section Header */}
       <button 
         onClick={onToggle}
-        className="w-full flex items-center justify-between p-4 border-b border-slate-800/50 hover:bg-slate-800/20 transition-colors"
+        className="w-full flex items-center justify-between p-4 border-b border-slate-800/30 hover:bg-white/5 transition-colors"
       >
         <div className="flex items-center gap-3">
-          <div className={cn(
-            'w-8 h-8 rounded-lg flex items-center justify-center',
-            variant === 'primary' && 'bg-amber-500/10 text-amber-400',
-            variant === 'secondary' && 'bg-violet-500/10 text-violet-400',
-            variant === 'accent' && 'bg-emerald-500/10 text-emerald-400',
-          )}>
+          <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center', variantColors[variant])}>
             {icon}
           </div>
           <span className="text-sm font-semibold text-white">{title}</span>
         </div>
-        <ChevronDown className={cn(
-          'w-4 h-4 text-slate-400 transition-transform duration-300',
-          collapsed && '-rotate-90'
-        )} />
+        <ChevronDown className={cn('w-4 h-4 text-slate-400 transition-transform duration-300', collapsed && '-rotate-90')} />
       </button>
-
-      {/* Section Content */}
-      {!collapsed && (
-        <div className="p-4 pt-2">
-          {children}
-        </div>
-      )}
+      {!collapsed && <div className="p-4">{children}</div>}
     </div>
   );
 }
 
-interface UnifiedToolsPanelProps {
-  userData?: CosmicFlowGridProps['userData'];
+interface TabPanelProps {
+  tabs: { id: string; label: string; icon: React.ReactNode }[];
+  activeTab: string;
+  onTabChange: (tab: string) => void;
+  children: React.ReactNode;
 }
 
-function UnifiedToolsPanel({ userData }: UnifiedToolsPanelProps) {
-  const [activeTab, setActiveTab] = useState<'numerologia' | 'astrologia' | 'lunar'>('numerologia');
-  const [numeros] = useState(() => ({
-    caminho: Math.floor(Math.random() * 9) + 1,
-    missao: Math.floor(Math.random() * 9) + 1,
-    licao: Math.floor(Math.random() * 9) + 1,
-  }));
-
-  const tabs = [
-    { id: 'numerologia' as const, label: 'Numerologia', icon: <Sparkles className="w-4 h-4" /> },
-    { id: 'astrologia' as const, label: 'Astrologia', icon: <Star className="w-4 h-4" /> },
-    { id: 'lunar' as const, label: 'Fases Lunares', icon: <Moon className="w-4 h-4" /> },
-  ];
-
+function TabPanel({ tabs, activeTab, onTabChange, children }: TabPanelProps) {
   return (
     <div className="space-y-4">
-      {/* Tab Navigation */}
-      <div className="flex items-center gap-2 p-1 rounded-xl bg-slate-900/50">
+      <div className="flex items-center gap-2 p-1 rounded-xl bg-slate-800/50 border border-slate-700/30">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => onTabChange(tab.id)}
             className={cn(
-              'flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all',
+              'flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-xs font-medium transition-all duration-300',
               activeTab === tab.id
-                ? 'bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-400 border border-amber-500/30'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                ? 'bg-gradient-to-r from-amber-500/20 to-violet-500/20 text-amber-400 border border-amber-500/30 shadow-md'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50'
             )}
           >
             {tab.icon}
@@ -124,98 +105,133 @@ function UnifiedToolsPanel({ userData }: UnifiedToolsPanelProps) {
           </button>
         ))}
       </div>
+      <div className="min-h-[180px]">{children}</div>
+    </div>
+  );
+}
 
-      {/* Tab Content */}
-      <div className="min-h-[200px]">
-        {activeTab === 'numerologia' && (
-          <div className="space-y-3">
-            <div className="p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-amber-400">{userData?.numeroPessoal || 1}</span>
-                </div>
-                <div>
-                  <p className="text-sm text-slate-400">Número Pessoal</p>
-                  <p className="text-lg font-semibold text-white">
-                    {userData?.numeroPessoal ? `Destino ${userData.numeroPessoal}` : 'Caminho do Início'}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {[['Caminho', numeros.caminho], ['Missao', numeros.missao], ['Lição', numeros.licao]].map(([label, num]) => (
-                <div key={label} className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
-                  <p className="text-lg font-bold text-violet-400">{num}</p>
-                  <p className="text-xs text-slate-500">{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+interface StatBoxProps {
+  label: string;
+  value: string | number;
+  color: string;
+  icon?: React.ReactNode;
+}
 
-        {activeTab === 'astrologia' && (
-          <div className="space-y-3">
-            <div className="p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/20">
-              <div className="flex items-center gap-3">
-                <Sun className="w-8 h-8 text-amber-400" />
-                <div>
-                  <p className="text-sm text-slate-400">Sol em</p>
-                  <p className="text-lg font-semibold text-white">Aries</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="flex-1 p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
-                <p className="text-2xl">🌙</p>
-                <p className="text-xs text-slate-500">Lua em Peixes</p>
-              </div>
-              <div className="flex-1 p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
-                <p className="text-2xl">⬆️</p>
-                <p className="text-xs text-slate-500">Ascendente em Touro</p>
-              </div>
-            </div>
-          </div>
-        )}
+function StatBox({ label, value, color, icon }: StatBoxProps) {
+  return (
+    <div className="p-4 rounded-xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/30 hover:border-slate-600/50 hover:scale-[1.02] transition-all duration-300">
+      <div className="flex items-center justify-between mb-2">
+        {icon && <span style={{ color }}>{icon}</span>}
+        <span className="text-xs text-slate-500">{label}</span>
+      </div>
+      <p className="text-2xl font-bold" style={{ color }}>{value}</p>
+    </div>
+  );
+}
 
-        {activeTab === 'lunar' && (
-          <div className="space-y-3">
-            <div className="p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-indigo-500/10 border border-violet-500/20">
-              <div className="flex items-center gap-3">
-                <Moon className="w-8 h-8 text-violet-400" />
-                <div>
-                  <p className="text-sm text-slate-400">Fase Atual</p>
-                  <p className="text-lg font-semibold text-white">Gibosa Crescente</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              {[...Array(8)].map((_, i) => (
-                <div 
-                  key={i} 
-                  className="flex-1 h-8 rounded-full bg-slate-800/50 border border-slate-700/30 flex items-center justify-center"
-                >
-                  <div 
-                    className={cn(
-                      'w-4 h-4 rounded-full',
-                      i === 5 && 'bg-violet-400 shadow-lg shadow-violet-400/50'
-                    )} 
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+interface OduCardProps {
+  name: string;
+  symbol: string;
+  meaning: string;
+  color: string;
+  isSelected?: boolean;
+  onClick?: () => void;
+}
+
+function OduCard({ name, symbol, meaning, color, isSelected, onClick }: OduCardProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        'p-4 rounded-xl border transition-all duration-300 text-center',
+        'hover:scale-105 hover:shadow-lg',
+        isSelected
+          ? 'border-current bg-slate-800/80 scale-105'
+          : 'border-slate-700/50 bg-slate-800/30 hover:border-slate-600'
+      )}
+      style={isSelected ? { borderColor: color, boxShadow: `0 0 20px ${color}40` } : undefined}
+    >
+      <span className="text-3xl mb-2 block">{symbol}</span>
+      <p className="text-sm font-medium text-white">{name}</p>
+      <p className="text-xs text-slate-500">{meaning}</p>
+    </button>
+  );
+}
+
+interface PracticeCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  tags: string[];
+  color: string;
+}
+
+function PracticeCard({ icon, title, description, tags, color }: PracticeCardProps) {
+  return (
+    <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20 hover:border-emerald-500/40 transition-all">
+      <div className="flex items-start gap-3 mb-3">
+        <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+          {icon}
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-medium text-white">{title}</p>
+          <p className="text-xs text-slate-400">{description}</p>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {tags.map((tag, i) => (
+          <span key={i} className="px-2.5 py-1 rounded-full text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            🌿 {tag}
+          </span>
+        ))}
       </div>
     </div>
   );
 }
 
-interface UnifiedDivinationPanelProps {
-  userData?: CosmicFlowGridProps['userData'];
+interface QuickActionProps {
+  icon: React.ReactNode;
+  label: string;
+  color: string;
 }
 
-function UnifiedDivinationPanel({ userData }: UnifiedDivinationPanelProps) {
+function QuickAction({ icon, label, color }: QuickActionProps) {
+  return (
+    <button className={cn(
+      'flex items-center gap-3 px-4 py-3 rounded-xl',
+      'bg-slate-800/50 border border-slate-700/30',
+      'hover:border-amber-500/40 hover:bg-slate-800/80 hover:scale-105',
+      'transition-all duration-300 text-sm font-medium text-slate-300'
+    )}>
+      <span style={{ color }}>{icon}</span>
+      <span>{label}</span>
+    </button>
+  );
+}
+
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
+
+export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+  const [activeTab, setActiveTab] = useState<'numerologia' | 'astrologia' | 'lunar'>('numerologia');
   const [selectedOdu, setSelectedOdu] = useState<string | null>(null);
+  const [numeros] = useState(() => ({
+    caminho: Math.floor(Math.random() * 9) + 1,
+    missao: Math.floor(Math.random() * 9) + 1,
+    licao: Math.floor(Math.random() * 9) + 1,
+  }));
+
+  const toggleSection = (section: string) => {
+    setCollapsedSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const tabs = [
+    { id: 'numerologia' as const, label: 'Numerologia', icon: <Sparkles className="w-4 h-4" /> },
+    { id: 'astrologia' as const, label: 'Astrologia', icon: <Star className="w-4 h-4" /> },
+    { id: 'lunar' as const, label: 'Fases Lunares', icon: <Moon className="w-4 h-4" /> },
+  ];
 
   const odus = [
     { name: 'Alafia', symbol: '☀️', meaning: 'Paz e saúde', color: '#22C55E' },
@@ -226,146 +242,20 @@ function UnifiedDivinationPanel({ userData }: UnifiedDivinationPanelProps) {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {odus.map((odu) => (
-          <button
-            key={odu.name}
-            onClick={() => setSelectedOdu(odu.name)}
-            className={cn(
-              'p-3 rounded-xl border transition-all duration-300',
-              'hover:scale-105 hover:shadow-lg',
-              selectedOdu === odu.name
-                ? 'border-opacity-100 bg-slate-800/80'
-                : 'border-slate-700/50 bg-slate-800/30'
-            )}
-            style={{ 
-              borderColor: selectedOdu === odu.name ? odu.color : undefined,
-              boxShadow: selectedOdu === odu.name ? `0 0 20px ${odu.color}40` : undefined
-            }}
-          >
-            <div className="text-center">
-              <span className="text-2xl">{odu.symbol}</span>
-              <p className="text-sm font-medium text-white mt-1">{odu.name}</p>
-              <p className="text-xs text-slate-500">{odu.meaning}</p>
-            </div>
-          </button>
-        ))}
-      </div>
-
-      {selectedOdu && (
-        <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900/90 to-slate-950/90 border border-amber-500/20">
-          <p className="text-xs text-amber-400 mb-2">Mensagem do Odu</p>
-          <p className="text-sm text-slate-300 leading-relaxed">
-            {selectedOdu === 'Alafia' && 'O caminho se abre diante de você. A paz interior guia seus passos para realizações significativas.'}
-            {selectedOdu === 'Ogunda' && 'Os obstáculos se apresentam, mas através da perseverança e sabedoria, você triumphará sobre os desafios.'}
-            {selectedOdu === 'Oyeku' && 'Um período de transformação se inicia. Abrace a mudança com coragem e aceitação.'}
-            {selectedOdu === 'Iwori' && 'A paciência será sua maior virtude neste ciclo. Aguarde o momento certo para agir.'}
-          </p>
-        </div>
-      )}
-
-      <button className="w-full p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-violet-500/10 border border-amber-500/20 hover:border-amber-500/40 transition-colors text-sm font-medium text-amber-400">
-        ✨ Consultar Oráculo IA
-      </button>
-    </div>
-  );
-}
-
-interface UnifiedPracticePanelProps {
-  userData?: CosmicFlowGridProps['userData'];
-}
-
-function UnifiedPracticePanel({ userData }: UnifiedPracticePanelProps) {
-  const dailyPractice = {
-    affirmation: 'Eu fluo em harmonia com o cosmos, permitindo que a sabedoria divina guie meu caminho.',
-    ritual: 'Meditação ao amanhecer com fokus na respiração consciente',
-    herbs: ['Alecrim', 'Lavanda', 'Salvia'],
-    frequency: '528Hz - Frequência do Amor',
-  };
-
-  return (
-    <div className="space-y-4">
-      {/* Affirmation */}
-      <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20">
-        <p className="text-xs text-emerald-400 mb-2">✨ Afirmação do Dia</p>
-        <p className="text-sm text-slate-200 italic leading-relaxed">&ldquo;{dailyPractice.affirmation}&rdquo;</p>
-      </div>
-
-      {/* Ritual */}
-      <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/30">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
-            <Compass className="w-5 h-5 text-violet-400" />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-white">Ritual Recomendado</p>
-            <p className="text-xs text-slate-400">{dailyPractice.ritual}</p>
-          </div>
-        </div>
-
-        {/* Herbs */}
-        <div className="flex flex-wrap gap-2">
-          {dailyPractice.herbs.map((herb) => (
-            <span 
-              key={herb}
-              className="px-3 py-1 rounded-full text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-            >
-              🌿 {herb}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Frequency */}
-      <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
-            <span className="text-lg font-bold text-cyan-400">{dailyPractice.frequency.split('-')[0]}</span>
-          </div>
-          <div>
-            <p className="text-xs text-slate-400">Frequência Sagrada</p>
-            <p className="text-sm font-medium text-white">{dailyPractice.frequency}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================================
-// MAIN COMPONENT
-// ============================================================
-
-export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
-  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
-
-  const toggleSection = (section: string) => {
-    setCollapsedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
-  };
-
-  return (
-    <div className="space-y-4">
       {/* Row 1: Unified Spiritual Flow (Full Width) */}
-      <GlowEffect variant="aurora" intensity="medium" animated className="rounded-2xl animate-in slide-in-from-bottom-8 duration-500">
+      <GlowEffect variant="aurora" intensity="medium" animated className="rounded-2xl">
         <UnifiedSpiritualFlow />
       </GlowEffect>
-      {/* Row 1.5: Sacred Tree of Life */}
-      <GlowEffect variant="gold" intensity="low" className="rounded-2xl animate-in slide-in-from-bottom-8 duration-500 delay-100">
-        <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-950/80 backdrop-blur-sm border border-amber-500/20">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                <TreePine className="w-4 h-4 text-amber-400" />
-              </div>
-              <div>
-                <span className="text-sm font-semibold text-white">Árvore da Vida</span>
-                <p className="text-xs text-slate-400">Sefirot e caminhos cabalísticos</p>
-              </div>
-            </div>
-          </div>
+
+      {/* Sacred Tree of Life */}
+      <GlowEffect variant="gold" intensity="low" className="rounded-2xl">
+        <SectionCard
+          title="Árvore da Vida"
+          icon={<TreePine className="w-4 h-4" />}
+          variant="primary"
+          collapsed={collapsedSections['tree']}
+          onToggle={() => toggleSection('tree')}
+        >
           <div className="flex justify-center">
             <ArvoreVida 
               highlightedSephiroth={userData?.sefirotDominante || ['kether', 'chokhmah']}
@@ -374,19 +264,19 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
               showPathNumbers={false}
             />
           </div>
-        </div>
+        </SectionCard>
       </GlowEffect>
+
       {/* Row 2: Spiritual Radar + Tools */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-        {/* Spiritual Radar Chart */}
-        <GlowEffect variant="purple" intensity="medium" className="rounded-2xl animate-in slide-in-from-bottom-8 duration-500 delay-200">
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-950/80 backdrop-blur-sm border border-violet-500/20">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
-                <Eye className="w-4 h-4 text-violet-400" />
-              </div>
-              <span className="text-sm font-semibold text-white">Mapa Espiritual</span>
-            </div>
+        <GlowEffect variant="purple" intensity="medium" className="rounded-2xl">
+          <SectionCard
+            title="Mapa Espiritual"
+            icon={<Eye className="w-4 h-4" />}
+            variant="secondary"
+            collapsed={collapsedSections['radar']}
+            onToggle={() => toggleSection('radar')}
+          >
             <SpiritualRadarChart
               userData={{
                 nome: userData?.nome || 'Visitante',
@@ -403,67 +293,124 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
                 ifa: 6,
               }}
               showTrend
-              className=""
             />
-          </div>
-        </GlowEffect>
-        {/* Tools Panel */}
-        <div className="animate-in slide-in-from-bottom-8 duration-500 delay-300">
-          <SectionCard
-            title="Ferramentas Místicas"
-            icon={<Globe className="w-4 h-4" />}
-            variant="secondary"
-          >
-            <UnifiedToolsPanel userData={userData} />
           </SectionCard>
-        </div>
+        </GlowEffect>
+
+        <SectionCard
+          title="Ferramentas Místicas"
+          icon={<Globe className="w-4 h-4" />}
+          variant="secondary"
+          collapsed={collapsedSections['tools']}
+          onToggle={() => toggleSection('tools')}
+        >
+          <TabPanel tabs={tabs} activeTab={activeTab} onTabChange={(t) => setActiveTab(t as typeof activeTab)}>
+            {activeTab === 'numerologia' && (
+              <div className="space-y-4">
+                <StatBox label="Número Pessoal" value={numeros.caminho} color="#F59E0B" icon={<Zap className="w-4 h-4" />} />
+                <div className="grid grid-cols-3 gap-3">
+                  {[['Caminho', numeros.caminho], ['Missao', numeros.missao], ['Lição', numeros.licao]].map(([label, num]) => (
+                    <div key={label} className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
+                      <p className="text-lg font-bold text-violet-400">{num}</p>
+                      <p className="text-xs text-slate-500">{label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {activeTab === 'astrologia' && (
+              <div className="space-y-4">
+                <StatBox label="Sol em" value="Aries" color="#F59E0B" icon={<Sun className="w-4 h-4" />} />
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">🌕<br/><span className="text-xs">Lua em Peixes</span></div>
+                  <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">⬆️<br/><span className="text-xs">Ascendente em Touro</span></div>
+                </div>
+              </div>
+            )}
+            {activeTab === 'lunar' && (
+              <div className="space-y-4">
+                <StatBox label="Fase Atual" value="Gibosa" color="#8B5CF6" icon={<Moon className="w-4 h-4" />} />
+                <div className="flex gap-2">
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} className="flex-1 h-8 rounded-full bg-slate-800/50 border border-slate-700/30 flex items-center justify-center">
+                      <div className={cn('w-4 h-4 rounded-full', i === 5 && 'bg-violet-400 shadow-lg shadow-violet-400/50')} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </TabPanel>
+        </SectionCard>
       </div>
+
       {/* Row 3: Divination + Practice */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Divination Panel */}
-        <div className="animate-in slide-in-from-bottom-8 duration-500 delay-400">
-          <SectionCard
-            title="Divinação Integrada"
-            icon={<TreeDeciduous className="w-4 h-4" />}
-            variant="primary"
-          >
-            <UnifiedDivinationPanel userData={userData} />
-          </SectionCard>
-        </div>
-        {/* Practice Panel */}
-        <div className="animate-in slide-in-from-bottom-8 duration-500 delay-500">
-          <SectionCard
-            title="Prática do Dia"
-            icon={<Sparkles className="w-4 h-4" />}
-            variant="accent"
-          >
-            <UnifiedPracticePanel userData={userData} />
-          </SectionCard>
-        </div>
-      </div>
-      {/* Row 4: Quick Actions */}
-      <div className="animate-in slide-in-from-bottom-8 duration-500 delay-600">
-        <div className="flex flex-wrap gap-3 justify-center">
-          {[
-            { icon: <Sun className="w-4 h-4" />, label: 'Consultar Odu', color: 'amber' },
-            { icon: <Moon className="w-4 h-4" />, label: 'Ver Ritais', color: 'violet' },
-            { icon: <Star className="w-4 h-4" />, label: 'Meditação', color: 'emerald' },
-            { icon: <Compass className="w-4 h-4" />, label: 'Mapa Natal', color: 'cyan' },
-          ].map((action) => (
-            <button
-              key={action.label}
-              className={cn(
-                'flex items-center gap-2 px-4 py-2 rounded-xl',
-                'bg-slate-800/50 border border-slate-700/30',
-                'hover:border-amber-500/40 hover:bg-slate-800/80',
-                'transition-all duration-300 text-sm font-medium text-slate-300'
-              )}
-            >
-              {action.icon}
-              <span>{action.label}</span>
+        <SectionCard
+          title="Divinação Integrada"
+          icon={<TreeDeciduous className="w-4 h-4" />}
+          variant="primary"
+          collapsed={collapsedSections['divination']}
+          onToggle={() => toggleSection('divination')}
+        >
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {odus.map((odu) => (
+                <OduCard key={odu.name} {...odu} isSelected={selectedOdu === odu.name} onClick={() => setSelectedOdu(odu.name)} />
+              ))}
+            </div>
+            {selectedOdu && (
+              <div className="p-4 rounded-xl bg-gradient-to-br from-slate-900/90 to-slate-950/90 border border-amber-500/20">
+                <p className="text-xs text-amber-400 mb-2">Mensagem do Odu</p>
+                <p className="text-sm text-slate-300 leading-relaxed">
+                  {selectedOdu === 'Alafia' && 'O caminho se abre diante de você. A paz interior guia seus passos.'}
+                  {selectedOdu === 'Ogunda' && 'Os obstáculos se apresentam, mas através da perseverança, você triumphará.'}
+                  {selectedOdu === 'Oyeku' && 'Um período de transformação se inicia. Abrace a mudança com coragem.'}
+                  {selectedOdu === 'Iwori' && 'A paciência será sua maior virtude neste ciclo.'}
+                </p>
+              </div>
+            )}
+            <button className="w-full p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-violet-500/10 border border-amber-500/20 hover:border-amber-500/40 transition-colors text-sm font-medium text-amber-400">
+              ✨ Consultar Oráculo IA
             </button>
-          ))}
-        </div>
+          </div>
+        </SectionCard>
+
+        <SectionCard
+          title="Prática do Dia"
+          icon={<Compass className="w-4 h-4" />}
+          variant="accent"
+          collapsed={collapsedSections['practice']}
+          onToggle={() => toggleSection('practice')}
+        >
+          <div className="space-y-4">
+            <PracticeCard
+              icon={<Compass className="w-5 h-5" />}
+              title="Ritual Recomendado"
+              description="Meditação ao amanhecer"
+              tags={['Alecrim', 'Lavanda', 'Salvia']}
+              color="#22C55E"
+            />
+            <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center">
+                  <span className="text-lg font-bold text-cyan-400">528</span>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-400">Frequência Sagrada</p>
+                  <p className="text-sm font-medium text-white">Hz — Frequência do Amor</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SectionCard>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="flex flex-wrap gap-3 justify-center">
+        <QuickAction icon={<Sun className="w-4 h-4" />} label="Consultar Odu" color="#F59E0B" />
+        <QuickAction icon={<Moon className="w-4 h-4" />} label="Ver Ritais" color="#8B5CF6" />
+        <QuickAction icon={<Star className="w-4 h-4" />} label="Meditação" color="#22C55E" />
+        <QuickAction icon={<Compass className="w-4 h-4" />} label="Mapa Natal" color="#06B6D4" />
       </div>
     </div>
   );
