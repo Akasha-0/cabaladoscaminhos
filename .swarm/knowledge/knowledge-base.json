@@ -2267,7 +2267,1021 @@
       "id": "kb-1780319953596-jzni46f",
       "createdAt": "2026-06-01T13:19:13.596Z",
       "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.oxala",
+      "data": {
+        "orixa": "Oxalá",
+        "tipo": "Banho de abertura de semana e paz",
+        "ervas": [
+          "Alfazema",
+          "Rosa branca",
+          "Copo-de-leite"
+        ],
+        "preparo": "Ferver 1 litro de água, adicionar 3 mãos-cheias de cada erva, abençoar com sal grosso, tomar banho do pescoço para baixo em silêncio",
+        "indicacao": [
+          "Início de semana",
+          "Conflitos",
+          "Busca de paz"
+        ],
+        "dia": "Segunda-feira e Sexta-feira",
+        "oracao": "\"Oxalá, pai maior, cubra-me com o manto branco da paz. Que minha cabeça seja firme, minha palavra pura e meus caminhos iluminados.\""
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 92,
+      "validated": true,
+      "id": "kb-1780320371481-3li56li",
+      "createdAt": "2026-06-01T13:26:11.481Z",
+      "updatedAt": "2026-06-01T13:26:11.481Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.oxum",
+      "data": {
+        "orixa": "Oxum",
+        "tipo": "Banho de amor, beleza e prosperidade",
+        "ervas": [
+          "Manjericão roxo",
+          "Hortelã",
+          "Melissa"
+        ],
+        "preparo": "Decocção das folhas, adicionar mel à água do banho, banhar-se com calma e prazer",
+        "indicacao": [
+          "Atrair amor",
+          "Limpar inveja",
+          "Aumentar beleza",
+          "Prosperidade"
+        ],
+        "dia": "Sexta-feira",
+        "oracao": "\"Oxum, senhora das águas doces, rega meu terreiro, meu coração e meus caminhos. Que eu seja fértil em amor e beleza.\""
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320371482-55vaa67",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.ogum",
+      "data": {
+        "orixa": "Ogum",
+        "tipo": "Banho de abertura de caminhos",
+        "ervas": [
+          "Espada-de-São-Jorge",
+          "Pimenta",
+          "Alfavaca"
+        ],
+        "preparo": "Ferver 1 litro de água com 7 folhas de espada, pimentas, abençoar com aguardente",
+        "indicacao": [
+          "Abrir caminhos",
+          "Desfazer demandas",
+          "Conquistar objetivos"
+        ],
+        "dia": "Terça-feira",
+        "oracao": "\"Ogum, senhor dos caminhos, abra minhas sendas, derrote meus inimigos e me dê a vitória. Patakori!\""
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 94,
+      "validated": true,
+      "id": "kb-1780320371482-xx696m7",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.iansa",
+      "data": {
+        "orixa": "Iansã",
+        "tipo": "Banho de coragem e transformação",
+        "ervas": [
+          "Manjericão",
+          "Cereja",
+          "Canela"
+        ],
+        "preparo": "Decocção, adicionar canela em pau, banhar-se com força",
+        "indicacao": [
+          "Coragem",
+          "Mudanças",
+          "Cortar demandas",
+          "Justiça"
+        ],
+        "dia": "Quarta-feira",
+        "oracao": "\"Iansã, mãe dos ventos, varra tudo que me impede, traga coragem e me dê asas. Eparrei!\""
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780320371482-c95iy5i",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.xango",
+      "data": {
+        "orixa": "Xangô",
+        "tipo": "Banho de justiça e verdade",
+        "ervas": [
+          "Cavalinha",
+          "Canela",
+          "Sálvia"
+        ],
+        "preparo": "Decocção forte, abençoar com aguardente, tomar banho com firmeza",
+        "indicacao": [
+          "Justiça",
+          "Verdade",
+          "Poder pessoal",
+          "Equilíbrio"
+        ],
+        "dia": "Quarta-feira",
+        "oracao": "\"Xangô, rei da justiça, que minha palavra seja firme, meu coração equilibrado e minha causa vença. Kaô!\""
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 91,
+      "validated": true,
+      "id": "kb-1780320371482-8jdi0pf",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.oxossi",
+      "data": {
+        "orixa": "Oxóssi",
+        "tipo": "Banho de prosperidade e conhecimento",
+        "ervas": [
+          "Arruda",
+          "Guiné (com moderação)",
+          "Hortelã"
+        ],
+        "preparo": "Decocção, abençoar com mel, banhar-se com gratidão",
+        "indicacao": [
+          "Prosperidade",
+          "Conhecimento",
+          "Conectar com a mata"
+        ],
+        "dia": "Quinta-feira",
+        "oracao": "\"Oxóssi, caçador das matas, abre meus olhos para a abundância da floresta, me ensina a partilhar. Okê Arô!\""
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780320371482-6hb3vyx",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.iemanja",
+      "data": {
+        "orixa": "Iemanjá",
+        "tipo": "Banho de mãe, proteção e purificação",
+        "ervas": [
+          "Rosa branca",
+          "Camomila",
+          "Erva-cidreira"
+        ],
+        "preparo": "Decocção suave, banhar-se com oração",
+        "indicacao": [
+          "Proteção maternal",
+          "Limpeza emocional",
+          "Paz familiar"
+        ],
+        "dia": "Sábado",
+        "oracao": "\"Iemanjá, mãe maior, abraça-me com teu manto azul, protege minha família e acalma meus medos. Odo Iá!\""
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 93,
+      "validated": true,
+      "id": "kb-1780320371482-v87u9e9",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.omolu",
+      "data": {
+        "orixa": "Omolu/Obaluaê",
+        "tipo": "Banho de cura e saúde",
+        "ervas": [
+          "Vassourinha-de-botão",
+          "Camomila",
+          "Calêndula"
+        ],
+        "preparo": "Decocção, tomar banho com devoção, oferecer pipoca a Omolu",
+        "indicacao": [
+          "Saúde",
+          "Cura",
+          "Febre",
+          "Transmutação"
+        ],
+        "dia": "Segunda-feira",
+        "oracao": "\"Omolu, senhor da cura, cobre-me com tua palha sagrada, cura meus males e transmutando minha dor em luz. Atotô!\""
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 92,
+      "validated": true,
+      "id": "kb-1780320371482-sn61j7z",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "ervas.muladhara",
+      "data": {
+        "chakra": "1º Muladhara",
+        "cor": "Vermelho",
+        "ervas": [
+          "Cedro",
+          "Sândalo",
+          "Mirra",
+          "Vetiver"
+        ],
+        "incensos": [
+          "Sândalo",
+          "Cedro"
+        ],
+        "cristais": [
+          "Granada",
+          "Hematita",
+          "Jaspe Vermelho"
+        ],
+        "yoga": [
+          "Tadasana",
+          "Vrksasana (árvore)",
+          "Malasana"
+        ],
+        "musica": "Frequência 396 Hz",
+        "desequilibrios": [
+          "Medo",
+          "Insegurança",
+          "Apego material"
+        ]
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320371482-2x9lo7k",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "ervas.svadhisthana",
+      "data": {
+        "chakra": "2º Svadhisthana",
+        "cor": "Laranja",
+        "ervas": [
+          "Sândalo",
+          "Ylang-ylang",
+          "Laranja-doce"
+        ],
+        "incensos": [
+          "Ylang-ylang",
+          "Sândalo"
+        ],
+        "cristais": [
+          "Cornalina",
+          "Pedra da Lua",
+          "Citrino"
+        ],
+        "yoga": [
+          "Baddha Konasana",
+          "Upavistha Konasana"
+        ],
+        "musica": "Frequência 417 Hz",
+        "desequilibrios": [
+          "Bloqueio sexual",
+          "Culpa",
+          "Rigidez emocional"
+        ]
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 93,
+      "validated": true,
+      "id": "kb-1780320371482-oqsylod",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "ervas.manipura",
+      "data": {
+        "chakra": "3º Manipura",
+        "cor": "Amarelo",
+        "ervas": [
+          "Canela",
+          "Gengibre",
+          "Hortelã-pimenta"
+        ],
+        "incensos": [
+          "Canela",
+          "Cravo"
+        ],
+        "cristais": [
+          "Citrino",
+          "Olho de Tigre",
+          "Ametista"
+        ],
+        "yoga": [
+          "Navasana (barco)",
+          "Ardha Matsyendrasana"
+        ],
+        "musica": "Frequência 528 Hz",
+        "desequilibrios": [
+          "Baixa autoestima",
+          "Raiva",
+          "Vitimização"
+        ]
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320371482-413y8pl",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "ervas.anahata",
+      "data": {
+        "chakra": "4º Anahata",
+        "cor": "Verde/Rosa",
+        "ervas": [
+          "Rosa",
+          "Jasmim",
+          "Lavanda",
+          "Bergamota"
+        ],
+        "incensos": [
+          "Rosa",
+          "Sândalo"
+        ],
+        "cristais": [
+          "Quartzo Verde",
+          "Quartzo Rosa",
+          "Aventurina"
+        ],
+        "yoga": [
+          "Bhujangasana",
+          "Ustrasana",
+          "Matsyasana"
+        ],
+        "musica": "Frequência 639 Hz",
+        "desequilibrios": [
+          "Bloqueio afetivo",
+          "Mágoa",
+          "Dificuldade de perdoar"
+        ]
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320371482-nioquce",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "ervas.vishuddha",
+      "data": {
+        "chakra": "5º Vishuddha",
+        "cor": "Azul",
+        "ervas": [
+          "Eucalipto",
+          "Hortelã",
+          "Salvia",
+          "Camomila"
+        ],
+        "incensos": [
+          "Eucalipto",
+          "Salvia"
+        ],
+        "cristais": [
+          "Lápis-lazúli",
+          "Ágata azul",
+          "Turquesa"
+        ],
+        "yoga": [
+          "Sarvangasana",
+          "Halasana",
+          "Simhasana"
+        ],
+        "musica": "Frequência 741 Hz",
+        "desequilibrios": [
+          "Dificuldade de expressão",
+          "Mentiras",
+          "Acumulação"
+        ]
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 93,
+      "validated": true,
+      "id": "kb-1780320371482-1qcrot7",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "ervas.ajna",
+      "data": {
+        "chakra": "6º Ajna",
+        "cor": "Anil",
+        "ervas": [
+          "Lavanda",
+          "Sândalo",
+          "Menta"
+        ],
+        "incensos": [
+          "Lavanda",
+          "Incenso"
+        ],
+        "cristais": [
+          "Ametista",
+          "Fluorita",
+          "Lápis-lazúli"
+        ],
+        "yoga": [
+          "Balasana",
+          "Viparita Karani",
+          "Meditação"
+        ],
+        "musica": "Frequência 852 Hz",
+        "desequilibrios": [
+          "Intuição bloqueada",
+          "Confusão mental",
+          "Rigidez de pensamento"
+        ]
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 92,
+      "validated": true,
+      "id": "kb-1780320371482-1b4l0i5",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "ervas.sahasrara",
+      "data": {
+        "chakra": "7º Sahasrara",
+        "cor": "Violeta/Branco",
+        "ervas": [
+          "Lótus",
+          "Artemisia",
+          "Salvia branca"
+        ],
+        "incensos": [
+          "Lótus",
+          "Salvia"
+        ],
+        "cristais": [
+          "Ametista",
+          "Quartzo Transparente",
+          "Diamante"
+        ],
+        "yoga": [
+          "Sirsasana",
+          "Padmasana",
+          "Silêncio"
+        ],
+        "musica": "Frequência 963 Hz",
+        "desequilibrios": [
+          "Desconexão espiritual",
+          "Vazio existencial",
+          "Materialismo"
+        ]
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780320371482-qwt832f",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.aries",
+      "data": {
+        "signo": "Áries",
+        "elemento": "Fogo",
+        "regente": "Marte",
+        "sexualidade": {
+          "essencia": "Impulsivo, direto, ardente, competitivo",
+          "deseja": "Iniciativa, conquista, novidade, intensidade",
+          "desafio": "Impaciência, egoísmo, perder interesse rápido",
+          "equilibrar": "Respiração consciente antes de agir, escutar o outro, desacelerar",
+          "casaDominante": "Casa 1 + Casa 5",
+          "planetaSexual": "Marte"
+        }
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780320371482-i6zuo3j",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.touro",
+      "data": {
+        "signo": "Touro",
+        "elemento": "Terra",
+        "regente": "Vênus",
+        "sexualidade": {
+          "essencia": "Sensorial, tátil, profundo, possessivo",
+          "deseja": "Prazer prolongado, beleza, segurança, rituais",
+          "desafio": "Rotina, posse, lentidão para mudanças",
+          "equilibrar": "Variar cenários, honrar o próprio corpo, massagem",
+          "casaDominante": "Casa 2 + Casa 8",
+          "planetaSexual": "Vênus"
+        }
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780320371482-jbupow7",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.escorpiao",
+      "data": {
+        "signo": "Escorpião",
+        "elemento": "Água",
+        "regente": "Plutão/Marte",
+        "sexualidade": {
+          "essencia": "Profundo, transformador, intenso, tabu",
+          "deseja": "Conexão total, alma gêmea, intensidade, mistério",
+          "desafio": "Obsessão, ciúmes, poder, medo de vulnerabilidade",
+          "equilibrar": "Tantra, meditação, terapia, honrar a sombra",
+          "casaDominante": "Casa 8 (natural)",
+          "planetaSexual": "Plutão"
+        }
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320371482-pt8wgg0",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.leao",
+      "data": {
+        "signo": "Leão",
+        "elemento": "Fogo",
+        "regente": "Sol",
+        "sexualidade": {
+          "essencia": "Dramático, criativo, generoso, vaidoso",
+          "deseja": "Admiração, romance, performance, generosidade",
+          "desafio": "Egocentrismo, necessidade de validação",
+          "equilibrar": "Focar no prazer do outro, generosidade, criatividade",
+          "casaDominante": "Casa 5 (natural)",
+          "planetaSexual": "Sol"
+        }
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780320371482-2le0y0t",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "orixas",
+      "key": "oracao.oxala",
+      "data": {
+        "orixa": "Oxalá",
+        "rezas": [
+          {
+            "nome": "Reza de Abertura",
+            "texto": "\"Opa Babá! Oxalá, pai maior, criador do mundo, dono do branco manto da paz. Cobre minha cabeça, guia meus passos, que minha palavra seja de luz. Kaô Kabiesilê!\"",
+            "momento": "Início do dia, segunda-feira, sextas-feiras"
+          },
+          {
+            "nome": "Reza de Cura",
+            "texto": "\"Oxalá, pai branco, que minha paz volte, que minha saúde se restaure. A corrente que me prende, que se desfaça no manto de Oxalá.\"",
+            "momento": "Momentos de conflito ou doença"
+          }
+        ]
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780320371482-74kdcir",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "orixas",
+      "key": "oracao.oxum",
+      "data": {
+        "orixa": "Oxum",
+        "rezas": [
+          {
+            "nome": "Reza do Amor",
+            "texto": "\"Orrí Ò! Oxum, mãe das águas doces, dona do ouro e do amor. Banha meu corpo, meu coração e meus caminhos. Que eu seja fértil em tudo que me faz mulher/homem. Ê!\"",
+            "momento": "Sexta-feira, momentos de amor"
+          }
+        ]
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 92,
+      "validated": true,
+      "id": "kb-1780320371482-7zfacsv",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "orixas",
+      "key": "oracao.ogum",
+      "data": {
+        "orixa": "Ogum",
+        "rezas": [
+          {
+            "nome": "Reza de Abertura de Caminhos",
+            "texto": "\"Ogunhê! Ogum, patrão das guerras e dos caminhos, abre as sendas para mim, varre os males, derrete o ferro. Patakori Ogunhê!\"",
+            "momento": "Terça-feira, momentos de bloqueio"
+          }
+        ]
+      },
+      "source": "agent:orixa-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320371482-8hgcbzp",
+      "createdAt": "2026-06-01T13:26:11.482Z",
+      "updatedAt": "2026-06-01T13:26:11.482Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "cha.boldo",
+      "data": {
+        "planta": "Boldo (Peumus boldus)",
+        "uso": "Chá digestivo e hepático",
+        "indicacao": [
+          "Digestão difícil",
+          "Fígado",
+          "Mal-estar"
+        ],
+        "preparo": "1 colher de folhas secas em 200ml de água fervente, 10 min",
+        "contraindicacoes": [
+          "Gestantes",
+          "Pessoas com obstrução biliar"
+        ],
+        "planeta": "Mercúrio"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320470959-dv0wlwk",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "cha.hortela",
+      "data": {
+        "planta": "Hortelã (Mentha spicata)",
+        "uso": "Chá digestivo, refrescante",
+        "indicacao": [
+          "Digestão",
+          "Gases",
+          "Frescor mental"
+        ],
+        "preparo": "Infusão de folhas frescas, 5 min",
+        "contraindicacoes": [
+          "Refluxo grave"
+        ],
+        "planeta": "Mercúrio"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320470959-9b164zm",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "cha.gengibre",
+      "data": {
+        "planta": "Gengibre (Zingiber officinale)",
+        "uso": "Chá termogênico, imunoestimulante",
+        "indicacao": [
+          "Resfriados",
+          "Imunidade",
+          "Libido",
+          "Digestão"
+        ],
+        "preparo": "Decocção da raiz fresca, 10 min, pode adicionar mel e limão",
+        "contraindicacoes": [
+          "Pressão alta",
+          "Gestantes (dose alta)"
+        ],
+        "planeta": "Sol"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320470959-n2ev53t",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.cabaca-de-ovo",
+      "data": {
+        "tipo": "Banho de prosperidade e liderança",
+        "ingredientes": [
+          "Cascas de cebola",
+          "Cascas de ovo",
+          "Mel",
+          "Vela branca"
+        ],
+        "preparo": "Colocar cascas de cebola e ovo na água, ferver, abençoar com mel",
+        "indicacao": [
+          "Prosperidade",
+          "Comando",
+          "Liderança"
+        ],
+        "orixas": [
+          "Ogum",
+          "Oxalá",
+          "Xangô"
+        ]
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 85,
+      "validated": true,
+      "id": "kb-1780320470959-tzuh2yv",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "banho.sete-ervas",
+      "data": {
+        "tipo": "Banho de limpeza profunda (7 ervas)",
+        "ingredientes": [
+          "Arruda",
+          "Guiné",
+          "Manjericão",
+          "Hortelã",
+          "Alecrim",
+          "Espada-de-São-Jorge",
+          "Comigo-ninguém-pode"
+        ],
+        "preparo": "Decocção de todas, tomar banho do pescoço para baixo",
+        "indicacao": [
+          "Limpeza anual",
+          "Renovação",
+          "Quebra de demandas"
+        ],
+        "contraindicacoes": [
+          "Gestantes"
+        ],
+        "poder": "Muito forte, fazer apenas em momentos de necessidade"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780320470959-zsakg3j",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "defumacao.arruda-alecrim",
+      "data": {
+        "tipo": "Defumação de proteção",
+        "ingredientes": [
+          "Arruda",
+          "Alecrim",
+          "Benção"
+        ],
+        "preparo": "Queimar em braseiro, abençoar o ambiente",
+        "indicacao": [
+          "Limpar ambiente",
+          "Espantar energias negativas"
+        ],
+        "orixas": [
+          "Oxalá",
+          "Exu",
+          "Omolu"
+        ]
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 92,
+      "validated": true,
+      "id": "kb-1780320470959-ceye0mk",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "defumacao.benjoeiro",
+      "data": {
+        "tipo": "Defumação de abertura",
+        "ingredientes": [
+          "Resina de benjoeiro"
+        ],
+        "preparo": "Queimar em braseiro",
+        "indicacao": [
+          "Abertura de caminhos",
+          "Força",
+          "Encantamento"
+        ],
+        "orixas": [
+          "Exu",
+          "Iansã"
+        ]
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780320470959-7skn1a3",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "corpos-pranicos",
+      "key": "cura.pranamaya",
+      "data": {
+        "corpo": "Pranamaya Kosha",
+        "pranas": [
+          "Prana (entrada)",
+          "Apana (saída)"
+        ],
+        "praticas": {
+          "pranayama": {
+            "nome": "Nadi Shodhana",
+            "descricao": "Respiração alternada pelas narinas",
+            "duracao": "5-10 minutos",
+            "efeito": "Equilibra Ida e Pingala, acalma o sistema nervoso"
+          },
+          "asana": {
+            "nome": "Tadasana + Savasana",
+            "efeito": "Aterrar e expandir a respiração"
+          }
+        },
+        "desequilibrios": {
+          "baixaEnergia": "Prana (respiração mais profunda)",
+          "ansiedade": "Apana (raiz, aterrar)",
+          "digestao": "Samana (fogo interno)"
+        }
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 92,
+      "validated": true,
+      "id": "kb-1780320470959-t0oqkpa",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "corpos-pranicos",
+      "key": "cura.manomaya",
+      "data": {
+        "corpo": "Manomaya Kosha",
+        "praticas": {
+          "meditacao": {
+            "nome": "Meditação Vipassana",
+            "descricao": "Observar pensamentos sem julgamento",
+            "duracao": "20 min"
+          },
+          "journaling": "Escrever 3 páginas toda manhã (Julia Cameron)",
+          "mindfulness": "Presente contínuo"
+        },
+        "desequilibrios": {
+          "ansiedade": "Meditação, respiração",
+          "depressao": "Terapia + práticas corporais",
+          "insonia": "Ritual noturno, tela desligada 1h antes"
+        }
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780320470959-s6w6xrz",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "pratica.tantra",
+      "data": {
+        "nome": "Tantra Sexual",
+        "origem": "Tradição tântrica hindu",
+        "principios": [
+          "Presença total",
+          "Respiração sincronizada",
+          "Sem objetivo final",
+          "Conexão divina"
+        ],
+        "praticas": [
+          {
+            "nome": "Respiração Conjunta",
+            "descricao": "Respirar em sincronia com o parceiro(a) por 5 min",
+            "efeito": "Conexão, sincronia energética"
+          },
+          {
+            "nome": "Olhar Profundo",
+            "descricao": "Olhar nos olhos por 5-10 min",
+            "efeito": "Conexão anímica, vulnerabilidade"
+          },
+          {
+            "nome": "Toque Consciente",
+            "descricao": "Toque lento, sem objetivo, presente",
+            "efeito": "Sensibilização do corpo, mindfulness"
+          }
+        ],
+        "contraindicacoes": "Nenhuma - é para todos"
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780320470959-m1r8z7k",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "pratica.kundalini-sexual",
+      "data": {
+        "nome": "Kundalini e Sexualidade",
+        "descricao": "A Kundalini desperta pelo sexo sagrado, transformando energia em consciência",
+        "praticas": [
+          "Maithuna (união tântrica)",
+          "Kumbhaka durante o ato",
+          "Bandhas durante o clímax (transformação em vez de perda)"
+        ],
+        "chakras": [
+          "Muladhara (raiz)",
+          "Svadhisthana (prazer)",
+          "Sahasrara (iluminação)"
+        ],
+        "beneficios": [
+          "Expansão da consciência",
+          "Prazer sem perda",
+          "União sagrada"
+        ]
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 85,
+      "validated": true,
+      "id": "kb-1780320470959-s7b6fhm",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "odu",
+      "key": "composto.ogbe-oyeku",
+      "data": {
+        "nome": "Ogbe-Oyeku",
+        "composicao": "Ogbe + Oyeku",
+        "significado": "Cegueira espiritual + luz",
+        "fundamento": "Momento de clarear a visão, sair da escuridão, ver a verdade",
+        "ebó": "Galinha preta, abará",
+        "orixasAssociados": [
+          "Oxalá",
+          "Omolu"
+        ],
+        "recomendacao": "Buscar autoconhecimento, terapia, rituais de luz"
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 80,
+      "validated": true,
+      "id": "kb-1780320470959-i58tmt2",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
+    },
+    {
+      "domain": "odu",
+      "key": "composto.iwori-odi",
+      "data": {
+        "nome": "Iwori-Odi",
+        "composicao": "Iwori + Odi",
+        "significado": "Reconciliação profunda",
+        "fundamento": "Momento de cura, perdão, reconexão",
+        "ebó": "Pomba, arroz-doce",
+        "orixasAssociados": [
+          "Oxum",
+          "Iemanjá"
+        ],
+        "recomendacao": "Perdoar, reconciliar, fortalecer laços"
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 82,
+      "validated": true,
+      "id": "kb-1780320470959-8jaua5y",
+      "createdAt": "2026-06-01T13:27:50.959Z",
+      "updatedAt": "2026-06-01T13:27:50.959Z"
     }
   ],
-  "updatedAt": "2026-06-01T13:19:13.596Z"
+  "updatedAt": "2026-06-01T13:27:50.959Z"
 }
