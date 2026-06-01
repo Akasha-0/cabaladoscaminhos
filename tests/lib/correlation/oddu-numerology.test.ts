@@ -230,7 +230,7 @@ describe('correlation/oddu-numerology', () => {
       const result = getOduMessage(1);
       expect(result).toBeTruthy();
       expect(typeof result).toBe('string');
-      expect(result.length).toBeGreaterThan(0);
+      expect(result!.length).toBeGreaterThan(0);
     });
 
     it('returns null for invalid Odu number', () => {
@@ -244,8 +244,8 @@ describe('correlation/oddu-numerology', () => {
       const result = getOduNumbers(1);
       expect(result).toBeTruthy();
       expect(Array.isArray(result)).toBe(true);
-      expect(result.length).toBe(2);
-      result.forEach(n => {
+      expect(result!.length).toBe(2);
+      result!.forEach(n => {
         expect(typeof n.numero).toBe('number');
         expect(typeof n.interpretacao).toBe('string');
       });

@@ -230,7 +230,7 @@ export default function Dashboard() {
           action={{ label: 'Ver todas', href: '/dashboard/praticas' }}
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <MoonTracker userData={userData} />
+          <MoonTracker />
           <MeditationPlayer userData={userData} />
         </div>
       </section>

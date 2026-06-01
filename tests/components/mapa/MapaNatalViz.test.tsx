@@ -6,7 +6,7 @@ import type { AstrologyResults } from '@/lib/engines/types/mapa-alma';
 
 const mockAstrologia: AstrologyResults = {
   ascendente: 'leao',
-  sol: { planeta: 'sol', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'escorpiao', casa: 8, grauNoSigno: 15 },
+  sol: { planeta: 'sol', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'escorpio', casa: 8, grauNoSigno: 15 },
   lua: { planeta: 'lua', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'cancer', casa: 6, grauNoSigno: 20 },
   mercurio: { planeta: 'mercurio', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'sagitario', casa: 9, grauNoSigno: 10 },
   venus: { planeta: 'venus', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'capricornio', casa: 10, grauNoSigno: 5 },
@@ -15,7 +15,7 @@ const mockAstrologia: AstrologyResults = {
   saturno: { planeta: 'saturno', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'touro', casa: 2, grauNoSigno: 3 },
   urano: { planeta: 'urano', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'aquario', casa: 11, grauNoSigno: 2 },
   netuno: { planeta: 'netuno', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'capricornio', casa: 10, grauNoSigno: 18 },
-  plutão: { planeta: 'plutao', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'escorpiao', casa: 8, grauNoSigno: 22 },
+  plutao: { planeta: 'plutao', longitude: 0, latitude: 0, distancia: 0, velocidade: 0, signo: 'escorpio', casa: 8, grauNoSigno: 22 },
   casas: [],
   aspectos: [],
 };

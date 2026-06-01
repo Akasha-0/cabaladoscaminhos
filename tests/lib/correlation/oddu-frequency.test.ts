@@ -213,7 +213,7 @@ describe('OdduFrequency Correlation', () => {
     });
 
     it('should return empty array for non-existing element', () => {
-      const mappings = getOdusForElement('Éter');
+      const mappings = getOdusForElement('Éter' as Elemento);
       expect(mappings).toEqual([]);
     });
 
@@ -233,7 +233,7 @@ describe('OdduFrequency Correlation', () => {
     });
 
     it('should return empty array for non-existing element', () => {
-      expect(getFrequenciesForElement('Éter')).toEqual([]);
+      expect(getFrequenciesForElement('Éter' as Elemento)).toEqual([]);
     });
   });
 

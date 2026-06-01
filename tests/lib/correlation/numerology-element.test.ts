@@ -83,7 +83,7 @@ describe('NumerologyElement Correlation', () => {
   describe('NUMEROLOGY_ELEMENT_MAP', () => {
     it('should have all 13 numbers mapped', () => {
       for (let i = 1; i <= 13; i++) {
-        expect(NUMEROLOGY_ELEMENT_MAP).toHaveProperty(i);
+        expect(NUMEROLOGY_ELEMENT_MAP).toHaveProperty(String(i));
       }
     });
 

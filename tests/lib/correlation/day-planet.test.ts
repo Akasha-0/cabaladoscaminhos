@@ -15,6 +15,7 @@ import {
   getElementByDay,
   getPlanetaryHours,
   getDayPractices,
+  Planet,
 } from '@/lib/correlation/day-planet';
 
 describe('Day-Planet Correlation', () => {
@@ -257,7 +258,7 @@ describe('Day-Planet Correlation', () => {
     });
 
     it('should return empty array for non-existent planet', () => {
-      expect(getDaysByPlaneta('Plutão')).toEqual([]);
+      expect(getDaysByPlaneta('Plutão' as Planet)).toEqual([]);
     });
 
     it('should return array of strings', () => {
@@ -310,7 +311,7 @@ describe('Day-Planet Correlation', () => {
     it('should return spiritual meaning for valid day', () => {
       const meaning = getDaySpiritualMeaning('Domingo');
       expect(typeof meaning).toBe('string');
-      expect(meaning.length).toBeGreaterThan(0);
+      expect(meaning!.length).toBeGreaterThan(0);
     });
 
     it('should return undefined for invalid day', () => {
@@ -422,7 +423,7 @@ describe('Day-Planet Correlation', () => {
     it('should return practices for valid day', () => {
       const practices = getDayPractices('Domingo');
       expect(Array.isArray(practices)).toBe(true);
-      expect(practices.length).toBeGreaterThan(0);
+      expect(practices!.length).toBeGreaterThan(0);
     });
 
     it('should return undefined for invalid day', () => {

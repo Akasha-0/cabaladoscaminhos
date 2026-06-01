@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { renderHook, result } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { useDashboardConfig } from '@/hooks/useDashboardConfig';
 
 describe('useDashboardConfig', () => {

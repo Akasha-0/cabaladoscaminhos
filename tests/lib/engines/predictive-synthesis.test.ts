@@ -36,8 +36,8 @@ const criarMapaMock = (overrides = {}): MapaAlmaCompleto => ({
     regente: {
       numero: 1,
       nome: 'Ogbe',
-      opeCima: 'EEEE' as const,
-      opeBaixo: 'EEEE' as const,
+      opeCima: 'EEEE' as any,
+      opeBaixo: 'EEEE' as any,
       elementos: 'Terra',
       orixaRegente: 'Oxalá',
       significado: 'Caminho de Oxalá',
@@ -70,7 +70,7 @@ const criarMapaMock = (overrides = {}): MapaAlmaCompleto => ({
     cartaNascimento: 0, // O Louco
     cartaAnoPessoal: 13,
     cartaAlma: 19,
-    interpretacao: { name: 'The Sun', arcano: 19, suit: 'Major', element: 'Fire', keywords: ['joy', 'success'] },
+    interpretacao: { name: 'The Sun', upright: 'joy and success', reversed: 'blocked joy' },
   },
   chakras: {
     chakras: [
@@ -268,8 +268,8 @@ describe('PredictiveSynthesisEngine', () => {
       const sintese = engine.gerarSinteseConsciencial()
       const insight = sintese.insights[2]
 
-      expect(insight.ervas).toBeDefined()
-      expect(insight.ervas.length).toBeGreaterThan(0)
+      expect(insight.ervas!).toBeDefined()
+      expect(insight.ervas!.length).toBeGreaterThan(0)
     })
   })
 

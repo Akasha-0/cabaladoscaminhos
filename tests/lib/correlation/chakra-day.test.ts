@@ -263,49 +263,49 @@ describe('Chakra-Day Correlation', () => {
         mappings => mappings.some(m => m.dia_semana_pt === 'Segunda-feira')
       );
       expect(segundaMappings).toBeDefined();
-      expect(segundaMappings[0].elemento).toBe('Terra');
+      expect(segundaMappings![0].elemento).toBe('Terra');
 
       // Terça-feira (1) - Água
       const tercaMappings = Object.values(CHAKRA_DAY_MAPPINGS).find(
         mappings => mappings.some(m => m.dia_semana_pt === 'Terça-feira')
       );
       expect(tercaMappings).toBeDefined();
-      expect(tercaMappings[0].elemento).toBe('Água');
+      expect(tercaMappings![0].elemento).toBe('Água');
 
       // Quarta-feira (2) - Fogo
       const quartaMappings = Object.values(CHAKRA_DAY_MAPPINGS).find(
         mappings => mappings.some(m => m.dia_semana_pt === 'Quarta-feira')
       );
       expect(quartaMappings).toBeDefined();
-      expect(quartaMappings[0].elemento).toBe('Fogo');
+      expect(quartaMappings![0].elemento).toBe('Fogo');
 
       // Quinta-feira (3) - Ar
       const quintaMappings = Object.values(CHAKRA_DAY_MAPPINGS).find(
         mappings => mappings.some(m => m.dia_semana_pt === 'Quinta-feira')
       );
       expect(quintaMappings).toBeDefined();
-      expect(quintaMappings[0].elemento).toBe('Ar');
+      expect(quintaMappings![0].elemento).toBe('Ar');
 
       // Sexta-feira (4) - Éter
       const sextaMappings = Object.values(CHAKRA_DAY_MAPPINGS).find(
         mappings => mappings.some(m => m.dia_semana_pt === 'Sexta-feira')
       );
       expect(sextaMappings).toBeDefined();
-      expect(sextaMappings[0].elemento).toBe('Éter');
+      expect(sextaMappings![0].elemento).toBe('Éter');
 
       // Sábado (5) - Ar
       const sabadoMappings = Object.values(CHAKRA_DAY_MAPPINGS).find(
         mappings => mappings.some(m => m.dia_semana_pt === 'Sábado')
       );
       expect(sabadoMappings).toBeDefined();
-      expect(sabadoMappings[0].elemento).toBe('Ar');
+      expect(sabadoMappings![0].elemento).toBe('Ar');
 
       // Domingo (6) - Ar
       const domingoMappings = Object.values(CHAKRA_DAY_MAPPINGS).find(
         mappings => mappings.some(m => m.dia_semana_pt === 'Domingo')
       );
       expect(domingoMappings).toBeDefined();
-      expect(domingoMappings[0].elemento).toBe('Ar');
+      expect(domingoMappings![0].elemento).toBe('Ar');
     });
 
     it('should have spiritual meaning for each mapping', () => {

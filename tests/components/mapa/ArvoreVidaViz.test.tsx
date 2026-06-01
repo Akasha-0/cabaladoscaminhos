@@ -15,13 +15,12 @@ const mockNumerologia: NumerologyResults = {
   metodoUsado: 'pitagorica',
 };
 
-const mockOdu: OduResults = {
+const mockOdu = {
   odu: 'EjiOko',
   regente: {
     nome: 'Ogum',
-    orixa: 'Ogum',
-    caminho: 7,
-  },
+    Caminho: 7,
+  } as OduResults['regente'],
   caminhoSephirah: 'Netzach',
   significado: 'Vitória e conquista',
   caracteristicas: [],
@@ -32,7 +31,7 @@ const mockOdu: OduResults = {
     meses: [],
     anos: [],
   },
-};
+} as unknown as OduResults;
 
 describe('ArvoreVidaViz', () => {
   it('renders without crashing', () => {

@@ -4,7 +4,7 @@ import {
   getDaySephirot,
   getAllSephirotDays,
   SEPHIROT_DAY_MAPPINGS,
-  type SephirotDayMapping
+  type SephirahDay
 } from '../../../src/lib/correlation/sephirot-day';
 
 describe('Sephirot-Day Correlation', () => {

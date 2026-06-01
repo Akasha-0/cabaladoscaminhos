@@ -49,13 +49,13 @@ vi.mock('@/components/ui/badge', () => ({
 const mockOduData: OduResults = {
   regente: {
     numero: 7,
-    caminho: 7,
+    Caminho: 7,
     nome: 'Oyei',
     significado: 'Conhecimento, sabedoria',
   },
   secundario: {
     numero: 3,
-    caminho: 3,
+    Caminho: 3,
     nome: 'Oxê',
     significado: 'Força,威力',
   },
@@ -385,7 +385,7 @@ describe('OduCardFull', () => {
       const specialChars: OduResults = {
         regente: {
           numero: 1,
-          caminho: 1,
+          Caminho: 1,
           nome: 'Ogbe-Worí',
           significado: 'Criação &🌱',
         },

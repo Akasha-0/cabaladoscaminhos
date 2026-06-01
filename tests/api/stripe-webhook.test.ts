@@ -29,10 +29,10 @@ vi.mock('@/lib/prisma', () => ({
 // Import mocked modules
 import { stripe } from '@/lib/payments/stripe';
 // Cast stripe to Mocked<typeof stripe> to satisfy TypeScript for mock methods
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const stripeMock = stripe as any;
 import { prisma } from '@/lib/prisma';
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const prismaMock = prisma as any;
 import { NextRequest } from 'next/server';
 
@@ -196,8 +196,8 @@ describe('POST /api/stripe/webhook', () => {
     const eventData = createMockEvent('checkout.session.completed', { customer: 'cus_enterprise', metadata: { userId: 'user_enterprise' }, subscription: 'sub_enterprise' });
     stripeMock.webhooks.constructEvent.mockReturnValue(eventData);
     stripeMock.subscriptions.retrieve.mockResolvedValue({ items: { data: [{ price: { id: 'price_enterprise' } }] } });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.assinatura.upsert.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_ent' });
     const response = await POST(request);
@@ -210,8 +210,8 @@ describe('POST /api/stripe/webhook', () => {
     const eventData = createMockEvent('checkout.session.completed', { customer: 'cus_basic', metadata: { userId: 'user_basic' }, subscription: 'sub_basic' });
     stripeMock.webhooks.constructEvent.mockReturnValue(eventData);
     stripeMock.subscriptions.retrieve.mockResolvedValue({ items: { data: [{ price: { id: 'price_basic' } }] } });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.assinatura.upsert.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_basic' });
     const response = await POST(request);
@@ -224,8 +224,8 @@ describe('POST /api/stripe/webhook', () => {
     const eventData = createMockEvent('checkout.session.completed', { customer: 'cus_error', metadata: { userId: 'user_error', plano: 'premium' }, subscription: 'sub_error' });
     stripeMock.webhooks.constructEvent.mockReturnValue(eventData);
     stripeMock.subscriptions.retrieve.mockRejectedValue(new Error('API Error'));
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.assinatura.upsert.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_error' });
     const response = await POST(request);
@@ -242,10 +242,10 @@ describe('POST /api/stripe/webhook', () => {
     ];
     for (const eventData of events) {
       stripeMock.webhooks.constructEvent.mockReturnValue(eventData);
-      prisma.user.findFirst.mockResolvedValue({ id: 'user_multi_1' });
-      prisma.assinatura.upsert.mockResolvedValue({});
-      prisma.assinatura.update.mockResolvedValue({});
-      prisma.user.update.mockResolvedValue({});
+      prismaMock.user.findFirst.mockResolvedValue({ id: 'user_multi_1' });
+      prismaMock.assinatura.upsert.mockResolvedValue({});
+      prismaMock.assinatura.update.mockResolvedValue({});
+      prismaMock.user.update.mockResolvedValue({});
       const body = JSON.stringify(eventData);
       const request = createWebhookRequest(body, { 'stripe-signature': 'sig_multi' });
       const response = await POST(request);
@@ -257,8 +257,8 @@ describe('POST /api/stripe/webhook', () => {
     const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', { customer: 'cus_export', metadata: { userId: 'user_export' }, subscription: 'sub_export' });
     stripeMock.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.assinatura.upsert.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_export' });
     const response = await POST(request);
@@ -269,12 +269,12 @@ describe('POST /api/stripe/webhook', () => {
     const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', { metadata: { userId: 'user_text' } });
     const bodyString = JSON.stringify(eventData);
-    stripeMock.webhooks.constructEvent.mockImplementation((body, sig, secret) => {
+    stripeMock.webhooks.constructEvent.mockImplementation((body: any, sig: any, secret: any) => {
       expect(typeof body).toBe('string');
       return eventData;
     });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.assinatura.upsert.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const request = createWebhookRequest(bodyString, { 'stripe-signature': 'sig_text' });
     const response = await POST(request);
     expect(response.status).toBe(200);
@@ -284,8 +284,8 @@ describe('POST /api/stripe/webhook', () => {
     const POST = await getRouteWithEnv();
     const eventData = createMockEvent('checkout.session.completed', { customer: 'cus_empty', metadata: {}, subscription: 'sub_empty' });
     stripeMock.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.assinatura.upsert.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_empty' });
     const response = await POST(request);
@@ -296,9 +296,9 @@ describe('POST /api/stripe/webhook', () => {
     const POST = await getRouteWithEnv();
     const eventData = createMockEvent('customer.subscription.updated', { id: 'sub_no_items', customer: 'cus_no_items', items: { data: [] } });
     stripeMock.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue({ id: 'user_no_items' });
-    prisma.assinatura.update.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.user.findFirst.mockResolvedValue({ id: 'user_no_items' });
+    prismaMock.assinatura.update.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_no_items' });
     const response = await POST(request);
@@ -309,9 +309,9 @@ describe('POST /api/stripe/webhook', () => {
     const POST = await getRouteWithEnv();
     const eventData = createMockEvent('customer.subscription.updated', { id: 'sub_unknown_price', customer: 'cus_unknown_price', items: { data: [{ price: { id: 'price_unknown_123' } }] } });
     stripeMock.webhooks.constructEvent.mockReturnValue(eventData);
-    prisma.user.findFirst.mockResolvedValue({ id: 'user_unknown_price' });
-    prisma.assinatura.update.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.user.findFirst.mockResolvedValue({ id: 'user_unknown_price' });
+    prismaMock.assinatura.update.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_unknown_price' });
     const response = await POST(request);
@@ -327,8 +327,8 @@ describe('POST /api/stripe/webhook', () => {
       receivedBodyType = typeof body;
       return eventData;
     });
-    prisma.assinatura.upsert.mockResolvedValue({});
-    prisma.user.update.mockResolvedValue({});
+    prismaMock.assinatura.upsert.mockResolvedValue({});
+    prismaMock.user.update.mockResolvedValue({});
     const body = JSON.stringify(eventData);
     const request = createWebhookRequest(body, { 'stripe-signature': 'sig_string' });
     await POST(request);

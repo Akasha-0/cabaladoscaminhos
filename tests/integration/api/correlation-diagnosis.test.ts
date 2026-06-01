@@ -152,8 +152,7 @@ describe('POST /api/correlation/diagnosis', () => {
 
 describe('GET /api/correlation/diagnosis', () => {
   it('returns 200 with symptom categories', async () => {
-    const req = createGetRequest();
-    const res = await GET(req);
+    const res = await GET();
     const json = await res.json();
 
     expect(res.status).toBe(200);
@@ -163,8 +162,7 @@ describe('GET /api/correlation/diagnosis', () => {
   });
 
   it('categories contain all 7 chakra types', async () => {
-    const req = createGetRequest();
-    const res = await GET(req);
+    const res = await GET();
     const json = await res.json();
 
     const categories = json.data.categories;
@@ -180,8 +178,7 @@ describe('GET /api/correlation/diagnosis', () => {
   });
 
   it('each chakra category has symptom strings', async () => {
-    const req = createGetRequest();
-    const res = await GET(req);
+    const res = await GET();
     const json = await res.json();
 
     for (const symptoms of Object.values(json.data.categories) as string[][]) {

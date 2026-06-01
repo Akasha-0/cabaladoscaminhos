@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
  * Props for the AppShell component
  */
 export interface AppShellProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }
 

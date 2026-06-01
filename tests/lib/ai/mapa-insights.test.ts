@@ -279,7 +279,7 @@ describe('parser', () => {
   describe('criarInsightFallback', () => {
 
     it('12. derives all fields from MapaAlmaCompleto', () => {
-      const result = criarInsightFallback(SAMPLE_MAPA);
+      const result = criarInsightFallback(SAMPLE_MAPA as any);
 
       expect(result.id).toBeDefined();
       expect(result.dataGeracao).toBeDefined();
@@ -292,7 +292,7 @@ describe('parser', () => {
     });
 
     it('13. includes odu.regente.nome, quizilas, preceitos, ebós', () => {
-      const result = criarInsightFallback(SAMPLE_MAPA);
+      const result = criarInsightFallback(SAMPLE_MAPA as any);
 
       expect(result.preceitos).toHaveLength(1);
       const preceitosItem = result.preceitos![0];
@@ -303,7 +303,7 @@ describe('parser', () => {
     });
 
     it('14. generates id and dataGeracao', () => {
-      const result = criarInsightFallback(SAMPLE_MAPA);
+      const result = criarInsightFallback(SAMPLE_MAPA as any);
 
       // UUID format check
       expect(result.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
@@ -312,7 +312,7 @@ describe('parser', () => {
     });
 
     it('15. maps orixasDominantes to orixas array', () => {
-      const result = criarInsightFallback(SAMPLE_MAPA);
+      const result = criarInsightFallback(SAMPLE_MAPA as any);
 
       expect(result.orixas!).toHaveLength(1);
       const orixaItem = result.orixas![0];
@@ -343,8 +343,8 @@ describe('generator', () => {
   describe('gerarCacheKey', () => {
 
     it('1. same profile → same hash', () => {
-      const key1 = gerarCacheKey(SAMPLE_MAPA);
-      const key2 = gerarCacheKey(SAMPLE_MAPA);
+      const key1 = gerarCacheKey(SAMPLE_MAPA as any);
+      const key2 = gerarCacheKey(SAMPLE_MAPA as any);
 
       expect(key1).toBe(key2);
     });
@@ -355,8 +355,8 @@ describe('generator', () => {
         perfil: { ...SAMPLE_MAPA.perfil, nomeCompleto: 'Maria Santos' },
       };
 
-      const key1 = gerarCacheKey(SAMPLE_MAPA);
-      const key2 = gerarCacheKey(mapa2);
+      const key1 = gerarCacheKey(SAMPLE_MAPA as any);
+      const key2 = gerarCacheKey(mapa2 as any);
 
       expect(key1).not.toBe(key2);
     });
@@ -367,8 +367,8 @@ describe('generator', () => {
         perfil: { ...SAMPLE_MAPA.perfil, dataNascimento: '1985-01-01' },
       };
 
-      const key1 = gerarCacheKey(SAMPLE_MAPA);
-      const key2 = gerarCacheKey(mapa2);
+      const key1 = gerarCacheKey(SAMPLE_MAPA as any);
+      const key2 = gerarCacheKey(mapa2 as any);
 
       expect(key1).not.toBe(key2);
     });
@@ -386,7 +386,7 @@ describe('generator', () => {
         },
       };
 
-      const key = gerarCacheKey(mapaEmpty);
+      const key = gerarCacheKey(mapaEmpty as any);
 
       expect(key).toMatch(/^insights:[a-f0-9]{64}$/);
     });
@@ -405,7 +405,7 @@ describe('generator', () => {
       mockRedisGet.mockResolvedValueOnce(null);
       mockRedisSet.mockResolvedValueOnce('OK');
 
-      const result = await generateMapaInsights(SAMPLE_MAPA);
+      const result = await generateMapaInsights(SAMPLE_MAPA as any);
 
       expect(result.fromCache).toBe(false);
       expect(result.insight.resumo).toBe('Mapa espiritual completo para João Silva');
@@ -429,7 +429,7 @@ describe('generator', () => {
 
       mockRedisGet.mockResolvedValueOnce(JSON.stringify(cachedInsight));
 
-      const result = await generateMapaInsights(SAMPLE_MAPA);
+      const result = await generateMapaInsights(SAMPLE_MAPA as any);
 
       expect(result.fromCache).toBe(true);
       expect(result.insight.resumo).toBe('Cached insight');
@@ -439,7 +439,7 @@ describe('generator', () => {
       mockCreateChatCompletion.mockRejectedValueOnce(new Error('API Error'));
       mockRedisGet.mockResolvedValueOnce(null);
 
-      const result = await generateMapaInsights(SAMPLE_MAPA);
+      const result = await generateMapaInsights(SAMPLE_MAPA as any);
 
       // Should use fallback, not throw
       expect(result.fromCache).toBe(false);
@@ -455,7 +455,7 @@ describe('generator', () => {
       });
       mockRedisSet.mockResolvedValueOnce('OK');
 
-      const result = await generateMapaInsights(SAMPLE_MAPA, { forcar: true });
+      const result = await generateMapaInsights(SAMPLE_MAPA as any, { forcar: true });
 
       expect(result.fromCache).toBe(false);
       expect(result.insight.resumo).toBe('Fresh from API');
@@ -470,7 +470,7 @@ describe('generator', () => {
       mockRedisGet.mockResolvedValueOnce(null);
       mockRedisSet.mockResolvedValueOnce('OK');
 
-      const result = await generateMapaInsights(SAMPLE_MAPA);
+      const result = await generateMapaInsights(SAMPLE_MAPA as any);
 
       expect(result).toHaveProperty('insight');
       expect(result).toHaveProperty('fromCache');
@@ -493,7 +493,7 @@ describe('generator', () => {
       mockRedisGet.mockResolvedValueOnce(null);
       mockRedisSet.mockResolvedValueOnce('OK');
 
-      const result = await generateMapaInsights(SAMPLE_MAPA);
+      const result = await generateMapaInsights(SAMPLE_MAPA as any);
 
       expect(result.cacheKey).toMatch(/^insights:[a-f0-9]{64}$/);
     });

@@ -316,7 +316,7 @@ describe('Orixá-Orixá Correlation', () => {
       complementars.forEach(rel => {
         expect(rel.ritual互补).toBeDefined();
         expect(Array.isArray(rel.ritual互补)).toBe(true);
-        expect(rel.ritual互补.length).toBeGreaterThan(0);
+        expect(rel.ritual互补!.length).toBeGreaterThan(0);
       });
     });
 

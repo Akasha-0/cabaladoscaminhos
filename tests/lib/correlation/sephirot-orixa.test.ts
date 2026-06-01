@@ -3,7 +3,7 @@ import {
   getSephirotOrixa,
   getOrixaSephirot,
   getAllSephirotOrixas,
-  SEPHIROT_ORIXA_MAP,
+  SEPHIROT_ORIXA_MAPPINGS,
 } from '@/lib/correlation/sephirot-orixa';
 
 describe('sephirot-orixa', () => {

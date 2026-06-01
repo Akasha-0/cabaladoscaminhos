@@ -27,14 +27,14 @@ describe('useAfirmacoes', () => {
   it('currentAffirmation has id', () => {
     const { result } = renderHook(() => useAfirmacoes());
     
-    expect(result.current.currentAffirmation.id).toBeDefined();
+    expect(result.current.currentAffirmation!.id).toBeDefined();
   });
 
   it('currentAffirmation has texto', () => {
     const { result } = renderHook(() => useAfirmacoes());
     
-    expect(result.current.currentAffirmation.texto).toBeDefined();
-    expect(typeof result.current.currentAffirmation.texto).toBe('string');
+    expect(result.current.currentAffirmation!.texto).toBeDefined();
+    expect(typeof result.current.currentAffirmation!.texto).toBe('string');
   });
 
   it('has getNewAffirmation function', () => {

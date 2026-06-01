@@ -228,7 +228,7 @@ describe('Numerology-Day Correlation', () => {
       const meaning = getNumerologyDaySpiritualMeaning(1);
       expect(meaning).toBeDefined();
       expect(typeof meaning).toBe('string');
-      expect(meaning.length).toBeGreaterThan(0);
+      expect(meaning!.length).toBeGreaterThan(0);
     });
 
     it('should return undefined for invalid numbers', () => {
@@ -258,7 +258,7 @@ describe('Numerology-Day Correlation', () => {
     it('should return practices array for valid numbers', () => {
       const practices = getNumerologyDayPractices(1);
       expect(practices).toBeInstanceOf(Array);
-      expect(practices.length).toBeGreaterThan(0);
+      expect(practices!.length).toBeGreaterThan(0);
     });
 
     it('should return undefined for invalid numbers', () => {

@@ -2,9 +2,13 @@ import { describe, it, expect } from 'vitest';
 import { calculateBalance, getElementColor, getElementSymbol } from '@/lib/elements/balance';
 
 describe('balance', () => {
-  it('should calculate balance from signs', () => {
+  it('should calculate balance from planets', () => {
     const result = calculateBalance({
-      signs: ['aries', 'leo', 'sagittarius', 'sun'],
+      planets: {
+        sun: { signo: 'aries' },
+        moon: { signo: 'leo' },
+        mars: { signo: 'sagittarius' },
+      },
     });
     expect(result).toBeDefined();
     expect(result.balanced).toBeDefined();

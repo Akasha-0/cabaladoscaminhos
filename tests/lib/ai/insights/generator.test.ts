@@ -10,6 +10,7 @@ import {
   getAvailableIdentifiers,
   type SupportedTradition,
   type InsightResult,
+  type GenerateInsightParams,
 } from '@/lib/ai/insights/generator';
 
 // ============================================================
@@ -378,7 +379,7 @@ describe('Output Format Consistency', () => {
     ];
 
     for (const tc of testCases) {
-      const result = generateInsight(tc.tradition, tc);
+      const result = generateInsight(tc.tradition || 'odu', tc);
       expect(isInsightResult(result)).toBe(true);
       expect(typeof result.title).toBe('string');
       expect(typeof result.description).toBe('string');
@@ -583,15 +584,4 @@ describe('Correlation Cross-Validation', () => {
 
 });
 
-// ============================================================
-// TYPE for test helper
-// ============================================================
 
-interface GenerateInsightParams {
-  tradition?: SupportedTradition;
-  identifier: string | number;
-  userContext?: {
-    nome?: string;
-    dataNascimento?: string;
-  };
-}

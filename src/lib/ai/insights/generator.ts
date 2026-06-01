@@ -30,6 +30,7 @@ export interface InsightResult {
 
 export interface GenerateInsightParams {
   identifier: string | number;
+  tradition?: SupportedTradition;
   userContext?: {
     nome?: string;
     dataNascimento?: string;
@@ -488,7 +489,7 @@ function normalizeSephirahName(name: string): string {
 export function generateMultiTraditionInsight(
   identifiers: GenerateInsightParams[]
 ): InsightResult[] {
-  return identifiers.map(params => generateInsight(params.tradition, params));
+  return identifiers.map(params => generateInsight(params.tradition || 'odu' as SupportedTradition, params));
 }
 
 /**

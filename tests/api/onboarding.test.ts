@@ -52,7 +52,7 @@ describe('GET /api/onboarding', () => {
       dataNascimento: null,
       horaNascimento: null,
       localNascimento: null,
-    });
+    } as any);
 
     const { GET } = await import('@/app/api/onboarding/route');
     
@@ -78,7 +78,7 @@ describe('GET /api/onboarding', () => {
       dataNascimento: new Date('1990-05-15'),
       horaNascimento: null,
       localNascimento: null,
-    });
+    } as any);
 
     const { GET } = await import('@/app/api/onboarding/route');
     
@@ -104,7 +104,7 @@ describe('GET /api/onboarding', () => {
       dataNascimento: new Date('1990-05-15'),
       horaNascimento: '14:30',
       localNascimento: null,
-    });
+    } as any);
 
     const { GET } = await import('@/app/api/onboarding/route');
     
@@ -130,7 +130,7 @@ describe('GET /api/onboarding', () => {
       dataNascimento: new Date('1990-05-15'),
       horaNascimento: '14:30',
       localNascimento: 'São Paulo, SP, Brasil',
-    });
+    } as any);
 
     const { GET } = await import('@/app/api/onboarding/route');
     

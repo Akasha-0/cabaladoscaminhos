@@ -274,9 +274,8 @@ describe('POST /api/auth/register', () => {
       // O route retorna erro do Supabase
       const body = await response.json() as Record<string, unknown>;
       expect(body.error).toBeTruthy();
-      expect(body.error).toContain('registered').toBeTruthy() || 
-        expect(body.error).toContain('exist').toBeTruthy() ||
-        expect(response.status).toBeGreaterThanOrEqual(400);
+      expect(body.error && (body.error as string).toLowerCase()).toMatch(/registered|exist/);
+      expect(response.status).toBeGreaterThanOrEqual(400);
     });
   });
 

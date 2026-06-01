@@ -29,11 +29,9 @@ const mockTarotData: TarotResults = {
   cartaAnoPessoal: 12,
   cartaAlma: 19,
   interpretacao: {
-    id: 'tarot-07',
     name: 'The Chariot',
     upright: 'Success, determination, triumph',
     reversed: 'Self-discipline, failure, lack of direction',
-    arcano: 'maior' as const,
   },
 };
 
@@ -379,6 +377,11 @@ describe('TarotCard', () => {
         cartaNascimento: 1,
         cartaAnoPessoal: 2,
         cartaAlma: 3,
+        interpretacao: {
+          name: 'Default',
+          upright: '',
+          reversed: '',
+        },
       };
 
       mockUseState

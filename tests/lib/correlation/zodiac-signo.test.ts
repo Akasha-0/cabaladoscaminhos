@@ -165,7 +165,7 @@ describe('correlation/zodiac-signo', () => {
       const significado = getSignoSignificado('Áries');
       expect(significado).toBeDefined();
       expect(typeof significado).toBe('string');
-      expect(significado.length).toBeGreaterThan(0);
+      expect(significado!.length).toBeGreaterThan(0);
     });
 
     it('returns null for unknown sign', () => {

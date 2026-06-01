@@ -297,7 +297,7 @@ describe('ElementTarot Correlation', () => {
       const conexao = getConexaoElemental('Terra');
       expect(conexao).not.toBeNull();
       expect(typeof conexao).toBe('string');
-      expect(conexao.length).toBeGreaterThan(0);
+      expect(conexao!.length).toBeGreaterThan(0);
     });
 
     it('returns null for unknown element', () => {

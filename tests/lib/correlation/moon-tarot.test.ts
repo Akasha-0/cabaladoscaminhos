@@ -14,6 +14,7 @@ import {
   getConexaoByPhase,
   getRitualByPhase,
   MOON_TAROT_MAPPINGS,
+  FaseLua,
 } from '@/lib/correlation/moon-tarot';
 
 describe('Moon-Tarot Correlation', () => {

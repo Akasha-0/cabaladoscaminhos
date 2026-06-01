@@ -363,7 +363,7 @@ describe('Odú-Ifá Zodíaco Correlation', () => {
       const msg = getOduMessage(1);
       expect(msg).toBeDefined();
       expect(typeof msg).toBe('string');
-      expect(msg.length).toBeGreaterThan(0);
+      expect(msg!.length).toBeGreaterThan(0);
     });
 
     it('should return null for invalid Odu number', () => {

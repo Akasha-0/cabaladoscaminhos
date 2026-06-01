@@ -77,17 +77,19 @@ describe('GET /api/health', () => {
       expect(response.status).toBe(200);
       const body = await response.json() as Record<string, unknown>;
       
+      const checks = (body as { checks: Record<string, string> }).checks;
+      
       // Check required fields
       expect(body).toHaveProperty('status');
       expect(body).toHaveProperty('checks');
-      expect(body.checks).toHaveProperty('db');
-      expect(body.checks).toHaveProperty('redis');
+      expect(checks).toHaveProperty('db');
+      expect(checks).toHaveProperty('redis');
       expect(body).toHaveProperty('timestamp');
       
       // Check field types
       expect(body.status).toBe('ok');
-      expect(body.checks.db).toBe('ok');
-      expect(body.checks.redis).toBe('ok');
+      expect(checks.db).toBe('ok');
+      expect(checks.redis).toBe('ok');
       expect(typeof body.timestamp).toBe('string');
     });
 
@@ -144,10 +146,11 @@ describe('GET /api/health', () => {
       // Returns 503 when Redis fails (not 200)
       expect(response.status).toBe(503);
       const body = await response.json() as Record<string, unknown>;
+      const checks = (body as { checks: Record<string, string> }).checks;
       expect(body.status).toBe('error');
-      expect(body.checks).toHaveProperty('redis');
-      expect(body.checks.redis).toBe('error');
-      expect(body.checks.db).toBe('ok');
+      expect(checks).toHaveProperty('redis');
+      expect(checks.redis).toBe('error');
+      expect(checks.db).toBe('ok');
     });
     it('returns db error but still 200 when database is unavailable', async () => {
       // Mock unavailable DB, healthy Redis
@@ -160,10 +163,11 @@ describe('GET /api/health', () => {
       // Returns 503 when DB fails (not 200)
       expect(response.status).toBe(503);
       const body = await response.json() as Record<string, unknown>;
+      const checks = (body as { checks: Record<string, string> }).checks;
       expect(body.status).toBe('error');
-      expect(body.checks).toHaveProperty('db');
-      expect(body.checks.db).toBe('error');
-      expect(body.checks.redis).toBe('ok');
+      expect(checks).toHaveProperty('db');
+      expect(checks.db).toBe('error');
+      expect(checks.redis).toBe('ok');
     });
 
     it('returns 503 when both database and Redis are unavailable', async () => {
@@ -176,9 +180,10 @@ describe('GET /api/health', () => {
       
       expect(response.status).toBe(503);
       const body = await response.json() as Record<string, unknown>;
+      const checks = (body as { checks: Record<string, string> }).checks;
       expect(body.status).toBe('error');
-      expect(body.checks.db).toBe('error');
-      expect(body.checks.redis).toBe('error');
+      expect(checks.db).toBe('error');
+      expect(checks.redis).toBe('error');
     });
 
     it('response format is JSON', async () => {

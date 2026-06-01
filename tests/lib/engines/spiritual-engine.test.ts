@@ -555,8 +555,8 @@ describe('detectarConvergencias', () => {
     regente: {
       numero,
       nome: 'Ogundá',
-      opeCima: 'EEEE',
-      opeBaixo: 'EEEE',
+      opeCima: 'EEEE' as any,
+      opeBaixo: 'EEEE' as any,
       elementos: 'Ar',
       orixaRegente: orixas[0] || 'Ogum',
       significado: 'Test',
@@ -583,8 +583,8 @@ describe('detectarConvergencias', () => {
     urano: { planeta: 'urano', longitude: 18, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario' as any, casa: 11, grauNoSigno: 1 },
     netuno: { planeta: 'netuno', longitude: 325, latitude: 0, distancia: 1, velocidade: 0, signo: 'peixes' as any, casa: 12, grauNoSigno: 1 },
     plutao: { planeta: 'plutao', longitude: 210, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio' as any, casa: 8, grauNoSigno: 1 },
-    houses: [],
-    aspects: [],
+    casas: [],
+    aspectos: [],
   });
 
   describe('Strong Convergence (vida-odu match)', () => {
@@ -755,8 +755,8 @@ describe('Convergence Detection - Depth & Scoring', () => {
     regente: {
       numero,
       nome: 'Ogundá',
-      opeCima: 'EEEE',
-      opeBaixo: 'EEEE',
+      opeCima: 'EEEE' as any,
+      opeBaixo: 'EEEE' as any,
       elementos: 'Ar',
       orixaRegente: orixas[0] || 'Ogum',
       significado: 'Test',
@@ -783,8 +783,8 @@ describe('Convergence Detection - Depth & Scoring', () => {
     urano: { planeta: 'urano', longitude: 18, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario' as any, casa: 11, grauNoSigno: 1 },
     netuno: { planeta: 'netuno', longitude: 325, latitude: 0, distancia: 1, velocidade: 0, signo: 'peixes' as any, casa: 12, grauNoSigno: 1 },
     plutao: { planeta: 'plutao', longitude: 210, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio' as any, casa: 8, grauNoSigno: 1 },
-    houses: [],
-    aspects: [],
+    casas: [],
+    aspectos: [],
   });
 
   describe('Vida-Odu Convergence (VIDA_ODU_MAP)', () => {
@@ -1383,7 +1383,7 @@ describe('Chakra Building - buildChakraResults', () => {
       // Simulate the actual transformation logic
       chakras.forEach((c) => {
         if (isHyperactive && c.sequence <= 3) {
-          c.estado = 'hiperativo';
+          (c.estado as any) = 'hiperativo';
         }
       });
 
@@ -1409,7 +1409,7 @@ describe('Chakra Building - buildChakraResults', () => {
       // Simulate the actual transformation logic
       chakras.forEach((c) => {
         if (isBlocked && c.sequence >= 6) {
-          c.estado = 'bloqueado';
+          (c.estado as any) = 'bloqueado';
         }
       });
 
