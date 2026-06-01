@@ -1,0 +1,2273 @@
+{
+  "entries": [
+    {
+      "domain": "quizilas",
+      "key": "oxala.quizilas",
+      "data": {
+        "orixa": "Oxalá",
+        "proibicoes": [
+          "Não come mel (algo de Oxalá é o mel, então não pode comer é interpretação controversa — versão: NÃO come carne de porco)"
+        ],
+        "restricoes": [
+          "Cor branco é sagrado — só usa com bori"
+        ],
+        "permitidos": [
+          "Carneiro",
+          "Frango",
+          "Peixe branco",
+          "Frutas claras",
+          "Arroz"
+        ],
+        "palavrasChave": [
+          "pureza",
+          "paz",
+          "iniciador",
+          "criador"
+        ],
+        "dias": [
+          "Segunda-feira",
+          "Sexta-feira"
+        ],
+        "fundamentos": "Oxalá é o pai maior, criador. Representa paz, pureza, velhice sábia."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733302-46u7c4a",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "oxum.quizilas",
+      "data": {
+        "orixa": "Oxum",
+        "proibicoes": [
+          "Não come carne de porco",
+          "Evita ir à praia (em algumas casas)"
+        ],
+        "restricoes": [
+          "Não usar perfume com corante vermelho",
+          "Cuidado com espelho quebrado"
+        ],
+        "permitidos": [
+          "Galinha",
+          "Feijão fradinho",
+          "Milho",
+          "Mel",
+          "Doce",
+          "Frutas amarelas"
+        ],
+        "dias": [
+          "Sábado"
+        ],
+        "elementos": [
+          "Água doce",
+          "Rios",
+          "Cachoeiras"
+        ],
+        "fundamentos": "Oxum é a senhora do amor, beleza, fertilidade, ouro, águas doces."
+      },
+      "source": "tradition",
+      "confidence": 98,
+      "validated": true,
+      "id": "kb-1780319733303-00fw5vp",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "ogum.quizilas",
+      "data": {
+        "orixa": "Ogum",
+        "proibicoes": [
+          "Não come mel (em algumas casas)",
+          "Evita dendê em excesso"
+        ],
+        "restricoes": [
+          "Cuidado com ferramentas enferrujadas",
+          "Não deixar objetos cortantes virados para a porta"
+        ],
+        "permitidos": [
+          "Feijão preto",
+          "Farinha",
+          "Carne de boi",
+          "Frutas vermelhas"
+        ],
+        "dias": [
+          "Terça-feira"
+        ],
+        "elementos": [
+          "Ferro",
+          "Metais",
+          "Estradas"
+        ],
+        "fundamentos": "Ogum abre caminhos, é o guerreiro, patrono do trabalho, ferramentas, tecnologia."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-nz8355m",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "iansa.quizilas",
+      "data": {
+        "orixa": "Iansã",
+        "proibicoes": [
+          "Não come dendê (em algumas casas)",
+          "Evita carne de bode"
+        ],
+        "restricoes": [
+          "Cuidado com ventanias",
+          "Não andar em tempestades"
+        ],
+        "permitidos": [
+          "Carne de bode",
+          "Feijão fradinho",
+          "Inhame",
+          "Vermelho e branco (cores)"
+        ],
+        "dias": [
+          "Quarta-feira"
+        ],
+        "elementos": [
+          "Vento",
+          "Raios",
+          "Tempestades"
+        ],
+        "fundamentos": "Iansã é a senhora dos raios, ventos, tempestades. Guerreira, justiceira."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-sieadzo",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "xango.quizilas",
+      "data": {
+        "orixa": "Xangô",
+        "proibicoes": [
+          "Não come jaca",
+          "Não come carne de porco"
+        ],
+        "restricoes": [
+          "Não manipular pedra sem propósito",
+          "Evitar fofoca"
+        ],
+        "permitidos": [
+          "Carneiro",
+          "Bode",
+          "Inhame",
+          "Milho",
+          "Vermelho e marrom"
+        ],
+        "dias": [
+          "Quarta-feira"
+        ],
+        "elementos": [
+          "Pedras",
+          "Raio",
+          "Fogo",
+          "Justiça"
+        ],
+        "fundamentos": "Xangô é o senhor da justiça, raios, pedreiras, verdade."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-uz4sywg",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "oxossi.quizilas",
+      "data": {
+        "orixa": "Oxóssi",
+        "proibicoes": [
+          "Não come carne de porco",
+          "Não come dendê (em algumas casas)"
+        ],
+        "restricoes": [
+          "Não caçar fora de propósito",
+          "Respeitar animais"
+        ],
+        "permitidos": [
+          "Carne de caça (bode, veado)",
+          "Feijão fradinho",
+          "Milho",
+          "Verde"
+        ],
+        "dias": [
+          "Quinta-feira"
+        ],
+        "elementos": [
+          "Floresta",
+          "Mata",
+          "Caça",
+          "Animais"
+        ],
+        "fundamentos": "Oxóssi é o caçador, rei das matas, provedor, conhecimento das folhas."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-yu8zcj3",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "iemanja.quizilas",
+      "data": {
+        "orixa": "Iemanjá",
+        "proibicoes": [
+          "Não come carne de porco",
+          "Não come jaca"
+        ],
+        "restricoes": [
+          "Não jogar oferenda no lixo (entregar à natureza)",
+          "Respeitar o mar"
+        ],
+        "permitidos": [
+          "Peixe",
+          "Frutos do mar",
+          "Arroz",
+          "Doce branco",
+          "Azul e branco"
+        ],
+        "dias": [
+          "Sábado"
+        ],
+        "elementos": [
+          "Mar",
+          "Sal",
+          "Conchas",
+          "Mares"
+        ],
+        "fundamentos": "Iemanjá é a grande mãe, rainha do mar, protetora das crianças e famílias."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-x9otuox",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "omolu.quizilas",
+      "data": {
+        "orixa": "Omolu (Obaluaê)",
+        "proibicoes": [
+          "Não come carne de porco",
+          "Evita multidões em algumas fases"
+        ],
+        "restricoes": [
+          "Cuidado com palha de côco (deve estar inteira)",
+          "Respeitar a terra"
+        ],
+        "permitidos": [
+          "Milho",
+          "Pipoca",
+          "Feijão preto",
+          "Farinha",
+          "Cachorro-quente"
+        ],
+        "dias": [
+          "Segunda-feira"
+        ],
+        "elementos": [
+          "Terra",
+          "Cura",
+          "Doenças",
+          "Palha"
+        ],
+        "fundamentos": "Omolu é o senhor da cura, doenças, transformação. Representa o ciclo morte-vida."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-ug0t8mr",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "nana.quizilas",
+      "data": {
+        "orixa": "Nanã",
+        "proibicoes": [
+          "Não come carne de porco",
+          "Não come dendê"
+        ],
+        "restricoes": [
+          "Respeitar a lama, a terra",
+          "Evitararrogar autoridade sobre ancestrais"
+        ],
+        "permitidos": [
+          "Peixe",
+          "Farinha",
+          "Feijão",
+          "Velho (como ela)"
+        ],
+        "dias": [
+          "Segunda-feira"
+        ],
+        "elementos": [
+          "Lama",
+          "Terra",
+          "Ancestralidade",
+          "Velhice"
+        ],
+        "fundamentos": "Nanã é a mais anciã, senhora da lama primordial, da morte e renascimento."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-verx9ra",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "exu.quizilas",
+      "data": {
+        "orixa": "Exu (Elegguá)",
+        "proibicoes": [
+          "Não come carne de porco (em algumas casas)",
+          "Evitar brincadeiras com fogo"
+        ],
+        "restricoes": [
+          "Sempre saudar primeiro",
+          "Cuidado com calúnias (Exu é justiceiro)"
+        ],
+        "permitidos": [
+          "Farinha",
+          "Cachaça",
+          "Pimenta",
+          "Milho torrado",
+          "Vermelho e preto"
+        ],
+        "dias": [
+          "Segunda-feira",
+          "Terça-feira"
+        ],
+        "elementos": [
+          "Encruzilhadas",
+          "Portas",
+          "Movimento",
+          "Comunicação"
+        ],
+        "fundamentos": "Exu é o mensageiro, guardião das encruzilhadas, princípio do movimento."
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-s5cs0et",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "quizilas",
+      "key": "pomba-gira.quizilas",
+      "data": {
+        "orixa": "Pomba-Gira",
+        "proibicoes": [
+          "Não come carne de porco",
+          "Evitar roupas brancas em giras"
+        ],
+        "restricoes": [
+          "Respeitar seu espaço",
+          "Não debochar"
+        ],
+        "permitidos": [
+          "Champanhe",
+          "Cigarro",
+          "Perfume forte",
+          "Vermelho e preto"
+        ],
+        "dias": [
+          "Sexta-feira",
+          "Terça-feira"
+        ],
+        "elementos": [
+          "Encruzilhadas",
+          "Paixão",
+          "Sedução",
+          "Força feminina"
+        ],
+        "fundamentos": "Pomba-Gira é a senhora da sedução, paixões, força feminina, esquerda."
+      },
+      "source": "tradition",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319733303-nfzh0l1",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "corpos-pranicos",
+      "key": "anamaya-kosha",
+      "data": {
+        "nome": "Annamaya Kosha",
+        "sanscrito": "अन्नमय कोष",
+        "descricao": "Corpo Físico — corpo material, alimento, sustentação",
+        "funcao": "Sustentação material, veículo da alma no plano físico",
+        "desequilibrio": "Doenças, fraqueza, apego ao corpo",
+        "equilibrar": [
+          "Alimentação consciente",
+          "Exercício físico",
+          "Hatha Yoga",
+          "Ayurveda"
+        ],
+        "chakras": [
+          "1º Muladhara",
+          "2º Svadhisthana"
+        ]
+      },
+      "source": "tradition",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319733303-k3a97yr",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "corpos-pranicos",
+      "key": "pranamaya-kosha",
+      "data": {
+        "nome": "Pranamaya Kosha",
+        "sanscrito": "प्राणमय कोष",
+        "descricao": "Corpo Energético/Vital — onde flui o prana (força vital)",
+        "funcao": "Distribuição de energia vital, respiração, circulação",
+        "desequilibrio": "Fadiga crônica, ansiedade, baixa imunidade",
+        "equilibrar": [
+          "Pranayama",
+          "Respiração consciente",
+          "Reiki",
+          "Acupuntura"
+        ],
+        "chakras": [
+          "3º Manipura",
+          "4º Anahata"
+        ],
+        "pranas": [
+          "Prana",
+          "Apana",
+          "Samana",
+          "Udana",
+          "Vyana"
+        ]
+      },
+      "source": "tradition",
+      "confidence": 92,
+      "validated": true,
+      "id": "kb-1780319733303-dylmq37",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "corpos-pranicos",
+      "key": "manomaya-kosha",
+      "data": {
+        "nome": "Manomaya Kosha",
+        "sanscrito": "मनोमय कोष",
+        "descricao": "Corpo Mental — pensamentos, emoções, processamento",
+        "funcao": "Pensamento, memória, processamento emocional",
+        "desequilibrio": "Ansiedade, depressão, insônia, ruminação",
+        "equilibrar": [
+          "Meditação",
+          "Mindfulness",
+          "Terapia",
+          "Journaling"
+        ],
+        "chakras": [
+          "5º Vishuddha",
+          "6º Ajna"
+        ]
+      },
+      "source": "tradition",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319733303-s4479tp",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "corpos-pranicos",
+      "key": "vijnanamaya-kosha",
+      "data": {
+        "nome": "Vijnanamaya Kosha",
+        "sanscrito": "विज्ञानमय कोष",
+        "descricao": "Corpo Intelectual/Intuitivo — sabedoria, discernimento",
+        "funcao": "Discernimento, intuição elevada, sabedoria",
+        "desequilibrio": "Confusão, falta de propósito, decisões erradas",
+        "equilibrar": [
+          "Estudo filosófico",
+          "Contemplação",
+          "Meditação profunda",
+          "Mentoria"
+        ],
+        "chakras": [
+          "6º Ajna"
+        ]
+      },
+      "source": "tradition",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319733303-885jmcl",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "corpos-pranicos",
+      "key": "anandamaya-kosha",
+      "data": {
+        "nome": "Anandamaya Kosha",
+        "sanscrito": "आनन्दमय कोष",
+        "descricao": "Corpo de Bem-Aventurança — conexão com a felicidade pura",
+        "funcao": "Prazer transcendental, beatitude, conexão divina",
+        "desequilibrio": "Vazio existencial, busca por prazeres externos",
+        "equilibrar": [
+          "Bhakti Yoga",
+          "Devoção",
+          "Meditação no coração",
+          "Gratidão"
+        ],
+        "chakras": [
+          "7º Sahasrara"
+        ]
+      },
+      "source": "tradition",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319733303-ydrpovl",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "chakras-secundarios",
+      "key": "muladhara-bija",
+      "data": {
+        "nome": "Muladhara Biju",
+        "chakra": "1º Muladhara",
+        "posicao": "Períneo",
+        "funcao": "Semente do chakra raiz, poder primal",
+        "mantra": "LAM (4 sílabas internas)",
+        "cor": "Vermelho intenso",
+        "elemento": "Terra"
+      },
+      "source": "tradition",
+      "confidence": 85,
+      "validated": true,
+      "id": "kb-1780319733303-godvcee",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "chakras-secundarios",
+      "key": "svadhisthana-lalana",
+      "data": {
+        "nome": "Lalana",
+        "chakra": "2º Svadhisthana",
+        "posicao": "Palato mole",
+        "funcao": "Chakra secundário da comunicação e paladar",
+        "mantra": "VAM",
+        "cor": "Laranja",
+        "elemento": "Água"
+      },
+      "source": "tradition",
+      "confidence": 80,
+      "validated": true,
+      "id": "kb-1780319733303-w6zgefg",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "arruda.banho",
+      "data": {
+        "planta": "Arruda (Ruta graveolens)",
+        "uso": "Banho de limpeza e proteção",
+        "indicacao": [
+          "Quebra de olho gordo",
+          "Limpeza energética",
+          "Proteção",
+          "Antes de giras"
+        ],
+        "preparacao": "Ferver folhas em água, coar, tomar banho do pescoço para baixo",
+        "contraindicacoes": [
+          "Gestantes (pode ser abortiva)",
+          "Crianças pequenas"
+        ],
+        "orixasAssociados": [
+          "Oxalá",
+          "Omolu",
+          "Exu"
+        ],
+        "elemento": "Fogo",
+        "planeta": "Marte"
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-0dsj9ve",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "alfazema.banho",
+      "data": {
+        "planta": "Alfazema (Lavandula)",
+        "uso": "Banho de paz e serenidade",
+        "indicacao": [
+          "Insônia",
+          "Ansiedade",
+          "Atratividade",
+          "Calmaria"
+        ],
+        "preparacao": "Infusão de flores secas, adicionar à água do banho",
+        "contraindicacoes": [],
+        "orixasAssociados": [
+          "Oxalá",
+          "Oxum"
+        ],
+        "elemento": "Ar",
+        "planeta": "Mercúrio"
+      },
+      "source": "tradition",
+      "confidence": 92,
+      "validated": true,
+      "id": "kb-1780319733303-lrlvpw0",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "guine.ervas",
+      "data": {
+        "planta": "Guiné (Petiveria alliacea)",
+        "uso": "Banho de descarrego forte",
+        "indicacao": [
+          "Demanda espiritual",
+          "Quebra de magia",
+          "Limpeza pesada"
+        ],
+        "preparacao": "Maceração ou decocção das folhas e raízes",
+        "contraindicacoes": [
+          "Gestantes",
+          "Pessoas com pressão baixa"
+        ],
+        "orixasAssociados": [
+          "Exu",
+          "Omolu"
+        ],
+        "elemento": "Terra",
+        "planeta": "Saturno"
+      },
+      "source": "tradition",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319733303-0iejf8h",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "camomila.cha",
+      "data": {
+        "planta": "Camomila (Matricaria chamomilla)",
+        "uso": "Chá calmante, ansiedade, sono",
+        "indicacao": [
+          "Insônia",
+          "Ansiedade",
+          "Digestão",
+          "Paz interior"
+        ],
+        "preparacao": "Infusão das flores secas, 5-10 min, tomar morno",
+        "contraindicacoes": [
+          "Alergia a plantas da família Asteraceae"
+        ],
+        "orixasAssociados": [
+          "Oxalá",
+          "Oxum"
+        ],
+        "elemento": "Água",
+        "planeta": "Lua"
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-ecn2l6a",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "erva-cidreira.cha",
+      "data": {
+        "planta": "Erva-cidreira (Melissa officinalis)",
+        "uso": "Chá calmante, coração, ansiedade",
+        "indicacao": [
+          "Ansiedade",
+          "Insônia",
+          "Taquicardia",
+          "Tensão nervosa"
+        ],
+        "preparacao": "Infusão das folhas frescas ou secas",
+        "contraindicacoes": [
+          "Hipotireoidismo (uso prolongado)"
+        ],
+        "orixasAssociados": [
+          "Oxum",
+          "Iemanjá"
+        ],
+        "elemento": "Água",
+        "planeta": "Vênus"
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-mlk6rbh",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "lilith.significado",
+      "data": {
+        "nome": "Lilith (Lua Negra)",
+        "tipo": "Ponto sensível do mapa",
+        "descricao": "Representa a parte selvagem, instintiva, sexual e não-conformada da psique",
+        "areas": [
+          "Sexualidade autêntica",
+          "Prazer proibido",
+          "Sombra feminina",
+          "Rebeldia"
+        ],
+        "casasAfetadas": [
+          "Casa 5 (prazer)",
+          "Casa 8 (sexualidade profunda, tabu)"
+        ],
+        "signosAfetados": [
+          "Escorpião (intensifica)",
+          "Touro (prazer sensorial)",
+          "Leão (drama erótico)"
+        ],
+        "recomendacao": "Integrar com consciência — não reprimir, não perder-se"
+      },
+      "source": "tradition",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319733303-6wuxrao",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "casa-5.sexualidade",
+      "data": {
+        "nome": "Casa 5 — Prazer e Criatividade",
+        "descricao": "Casa da sexualidade lúdica, prazer, romance, criação",
+        "rege": [
+          "Prazer",
+          "Paixão",
+          "Romance",
+          "Criatividade",
+          "Filhos",
+          "Jogos"
+        ],
+        "equilibrio": "Cultivar o prazer sem culpa, criar, jogar, apaixonar-se",
+        "desequilibrio": "Busca excessiva por prazer, infantilidade, dependência de validação"
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-5ggx4n7",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "casa-8.sexualidade",
+      "data": {
+        "nome": "Casa 8 — Sexualidade Profunda e Transformação",
+        "descricao": "Casa do sexo profundo, tabu, morte simbólica, transformação",
+        "rege": [
+          "Sexo transformador",
+          "Tabu",
+          "Intimidade extrema",
+          "Recursos compartilhados",
+          "Morte-renascimento"
+        ],
+        "signos": "Escorpião (regente natural)",
+        "planetas": [
+          "Plutão (regente moderno)",
+          "Marte (regente tradicional)"
+        ],
+        "equilibrio": "Permitir-se ser transformado, abraçar o tabu consciente, profundidade",
+        "desequilibrio": "Repressão, obsessão, manipulação, medo da vulnerabilidade"
+      },
+      "source": "tradition",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319733303-hhlbdkd",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "xing-mapa",
+      "key": "xing.introducao",
+      "data": {
+        "nome": "Mapa de Xing",
+        "origem": "Sistema de correlação energética complementar",
+        "descricao": "Sistema integrativo que cruza elementos da Numerologia Cabalística com Kabbalah, Astrologia, I Ching e Tradições Orientais",
+        "aplicacao": [
+          "Auto-conhecimento profundo",
+          "Ciclos energéticos",
+          "Decisões alinhadas"
+        ],
+        "elementosChave": [
+          "8 trigramas do I Ching",
+          "22 caminhos da Árvore da Vida",
+          "9 números do Caminho de Vida"
+        ]
+      },
+      "source": "research",
+      "confidence": 75,
+      "validated": false,
+      "id": "kb-1780319733303-jnamfpz",
+      "createdAt": "2026-06-01T13:15:33.303Z",
+      "updatedAt": "2026-06-01T13:15:33.303Z"
+    },
+    {
+      "domain": "odu",
+      "key": "ogbe.fundamento",
+      "data": {
+        "nome": "Ogbe",
+        "numero": 1,
+        "signo": "Sol",
+        "ebó": "Ave, bode",
+        "fundamento": "Início, luz, prosperidade, comando.",
+        "opostos": [
+          "Owanrin"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-dfvvnwr",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "oyeku.fundamento",
+      "data": {
+        "nome": "Oyeku",
+        "numero": 2,
+        "signo": "Lua",
+        "ebó": "Cabra preta",
+        "fundamento": "Morte, noite, transformação profunda.",
+        "opostos": [
+          "Oworin"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-sz5cqbh",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "iwori.fundamento",
+      "data": {
+        "nome": "Iwori",
+        "numero": 3,
+        "signo": "Vênus",
+        "ebó": "Galo",
+        "fundamento": "Crescimento, lua crescente, prosperidade.",
+        "opostos": [
+          "Odi"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-k45pqwi",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "odi.fundamento",
+      "data": {
+        "nome": "Odi",
+        "numero": 4,
+        "signo": "Marte",
+        "ebó": "Cabra",
+        "fundamento": "Reconciliação, matrimônio, purificação.",
+        "opostos": [
+          "Iwori"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-gp791bn",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "irosun.fundamento",
+      "data": {
+        "nome": "Irosun",
+        "numero": 5,
+        "signo": "Mercúrio",
+        "ebó": "Pomba, galinha",
+        "fundamento": "Memória, ancestralidade, revelação.",
+        "opostos": [
+          "Owanrin"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-tu3kodq",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "owanrin.fundamento",
+      "data": {
+        "nome": "Owanrin (Oworin)",
+        "numero": 6,
+        "signo": "Júpiter",
+        "ebó": "Cachorro",
+        "fundamento": "Doenças, cura, transformação.",
+        "opostos": [
+          "Oyeku",
+          "Irosun"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-1zbml8m",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "obara.fundamento",
+      "data": {
+        "nome": "Obara",
+        "numero": 7,
+        "signo": "Sol",
+        "ebó": "Pomba",
+        "fundamento": "Justiça, prosperidade, liderança.",
+        "opostos": [
+          "Oka"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-87jfdgn",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "okanran.fundamento",
+      "data": {
+        "nome": "Okanran",
+        "numero": 8,
+        "signo": "Saturno",
+        "ebó": "Cabra preta",
+        "fundamento": "Conflitos, demandas, necessidade de oferenda.",
+        "opostos": [
+          "Ogunda"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-3qa44a6",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "ogunda.fundamento",
+      "data": {
+        "nome": "Ogunda",
+        "numero": 9,
+        "signo": "Marte",
+        "ebó": "Galo, cachorro",
+        "fundamento": "Força, ação, abertura de caminhos.",
+        "opostos": [
+          "Okanran"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-oyyiqwm",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "osa.fundamento",
+      "data": {
+        "nome": "Osa (Oçá)",
+        "numero": 10,
+        "signo": "Vênus",
+        "ebó": "Pomba",
+        "fundamento": "Equilíbrio, harmonia, prosperidade.",
+        "opostos": [
+          "Ofun"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-igtces5",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "ika.fundamento",
+      "data": {
+        "nome": "Ika",
+        "numero": 11,
+        "signo": "Sol",
+        "ebó": "Galo",
+        "fundamento": "Traição, conflito, necessidade de cautela.",
+        "opostos": [
+          "Oturupon"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-qd7c6ou",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "oturupon.fundamento",
+      "data": {
+        "nome": "Oturupon",
+        "numero": 12,
+        "signo": "Lua",
+        "ebó": "Cabra",
+        "fundamento": "Morte simbólica, transformação, cura.",
+        "opostos": [
+          "Ika"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-trpl4tt",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "ofun.fundamento",
+      "data": {
+        "nome": "Ofun (Ofunn)",
+        "numero": 13,
+        "signo": "Vênus",
+        "ebó": "Pomba",
+        "fundamento": "Amor, prosperidade, revelação.",
+        "opostos": [
+          "Osa"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-qyhsd7t",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "oka.fundamento",
+      "data": {
+        "nome": "Oka",
+        "numero": 14,
+        "signo": "Marte",
+        "ebó": "Galo",
+        "fundamento": "Conflitos, demanda, acusação.",
+        "opostos": [
+          "Obara"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-szso2n8",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "ote.fundamento",
+      "data": {
+        "nome": "Ote (Otere)",
+        "numero": 15,
+        "signo": "Lua",
+        "ebó": "Cabra preta",
+        "fundamento": "Encruzilhada, escolhas, decisão.",
+        "opostos": [
+          "Ika"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-wsz06hl",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "odu",
+      "key": "irete.fundamento",
+      "data": {
+        "nome": "Irete (Ejibe)",
+        "numero": 16,
+        "signo": "Mercúrio",
+        "ebó": "Pomba",
+        "fundamento": "Caminho aberto, vitória, sucesso.",
+        "opostos": [
+          "Oworin"
+        ]
+      },
+      "source": "agent:odu-specialist",
+      "confidence": 92,
+      "validated": true,
+      "references": [
+        "Tradicional Yorubá",
+        "Ifá"
+      ],
+      "id": "kb-1780319953593-3dzrkjw",
+      "createdAt": "2026-06-01T13:19:13.593Z",
+      "updatedAt": "2026-06-01T13:19:13.593Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "muladhara",
+      "data": {
+        "nome": "Muladhara",
+        "posicao": "Base da coluna",
+        "cor": "Vermelho",
+        "elemento": "Terra",
+        "mantra": "LAM",
+        "funcao": "Sobrevivência, segurança, enraizamento",
+        "petalas": 4,
+        "glândula": "Suprarrenais"
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-y5007v8",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "svadhisthana",
+      "data": {
+        "nome": "Svadhisthana",
+        "posicao": "Abaixo do umbigo",
+        "cor": "Laranja",
+        "elemento": "Água",
+        "mantra": "VAM",
+        "funcao": "Sexualidade, criatividade, emoções",
+        "petalas": 6,
+        "glândula": "Gônadas"
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-zlvtv3b",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "manipura",
+      "data": {
+        "nome": "Manipura",
+        "posicao": "Plexo solar",
+        "cor": "Amarelo",
+        "elemento": "Fogo",
+        "mantra": "RAM",
+        "funcao": "Poder pessoal, vontade, autoestima",
+        "petalas": 10,
+        "glândula": "Pâncreas"
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-bjb4jj1",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "anahata",
+      "data": {
+        "nome": "Anahata",
+        "posicao": "Centro do peito",
+        "cor": "Verde/Rosa",
+        "elemento": "Ar",
+        "mantra": "YAM",
+        "funcao": "Amor, compaixão, conexão",
+        "petalas": 12,
+        "glândula": "Timo"
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-n9vi5jw",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "vishuddha",
+      "data": {
+        "nome": "Vishuddha",
+        "posicao": "Garganta",
+        "cor": "Azul",
+        "elemento": "Éter",
+        "mantra": "HAM",
+        "funcao": "Comunicação, expressão, verdade",
+        "petalas": 16,
+        "glândula": "Tireoide"
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-nrwo6f1",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "ajna",
+      "data": {
+        "nome": "Ajna",
+        "posicao": "Entre as sobrancelhas",
+        "cor": "Anil",
+        "elemento": "Luz",
+        "mantra": "OM (Sham)",
+        "funcao": "Intuição, visão, percepção",
+        "petalas": 2,
+        "glândula": "Pituitária"
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-429jeum",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "chakras",
+      "key": "sahasrara",
+      "data": {
+        "nome": "Sahasrara",
+        "posicao": "Topo da cabeça",
+        "cor": "Violeta/Branco",
+        "elemento": "Cosmos",
+        "mantra": "OM",
+        "funcao": "Iluminação, conexão divina",
+        "petalas": 1000,
+        "glândula": "Pineal"
+      },
+      "source": "agent:chakra-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-0v1qboe",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa1",
+      "data": {
+        "numero": 1,
+        "nome": "Casa 1 — Ascendente",
+        "rege": "Identidade, aparência, como o mundo o vê",
+        "signo": "Áries (natural)",
+        "planeta": "Marte"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-5bqo8fg",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa2",
+      "data": {
+        "numero": 2,
+        "nome": "Casa 2 — Recursos",
+        "rege": "Dinheiro, valores, posses, talentos",
+        "signo": "Touro (natural)",
+        "planeta": "Vênus"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-jz4w0nv",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa3",
+      "data": {
+        "numero": 3,
+        "nome": "Casa 3 — Comunicação",
+        "rege": "Irmãos, comunicação, aprendizado, viagens curtas",
+        "signo": "Gêmeos (natural)",
+        "planeta": "Mercúrio"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-sv6yp5i",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa4",
+      "data": {
+        "numero": 4,
+        "nome": "Casa 4 — Lar e Família",
+        "rege": "Lar, família, raízes, mãe, vida privada",
+        "signo": "Câncer (natural)",
+        "planeta": "Lua"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-g9wd3o8",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa5",
+      "data": {
+        "numero": 5,
+        "nome": "Casa 5 — Prazer e Criatividade",
+        "rege": "Prazer, romance, criatividade, filhos, jogos",
+        "signo": "Leão (natural)",
+        "planeta": "Sol"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-gllcc7s",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa6",
+      "data": {
+        "numero": 6,
+        "nome": "Casa 6 — Saúde e Trabalho",
+        "rege": "Saúde, rotina, trabalho, serviço",
+        "signo": "Virgem (natural)",
+        "planeta": "Mercúrio"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-aqhr7er",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa7",
+      "data": {
+        "numero": 7,
+        "nome": "Casa 7 — Relacionamentos",
+        "rege": "Casamento, parcerias, inimigos declarados",
+        "signo": "Libra (natural)",
+        "planeta": "Vênus"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-egl386o",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa8",
+      "data": {
+        "numero": 8,
+        "nome": "Casa 8 — Transformação e Sexualidade",
+        "rege": "Sexo, morte-renascimento, herança, tabu, recursos compartilhados",
+        "signo": "Escorpião (natural)",
+        "planeta": "Plutão"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-3p2nk09",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa9",
+      "data": {
+        "numero": 9,
+        "nome": "Casa 9 — Filosofia e Viagem",
+        "rege": "Filosofia, viagens longas, educação superior, espiritualidade",
+        "signo": "Sagitário (natural)",
+        "planeta": "Júpiter"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-2ho1jzq",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa10",
+      "data": {
+        "numero": 10,
+        "nome": "Casa 10 — Carreira e Status",
+        "rege": "Carreira, vocação, status, pai, MC",
+        "signo": "Capricórnio (natural)",
+        "planeta": "Saturno"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-1zb119j",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa11",
+      "data": {
+        "numero": 11,
+        "nome": "Casa 11 — Amizades e Grupos",
+        "rege": "Amigos, grupos, ideais, projetos futuros",
+        "signo": "Aquário (natural)",
+        "planeta": "Urano"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-ee0joxu",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "casas",
+      "key": "casa12",
+      "data": {
+        "numero": 12,
+        "nome": "Casa 12 — Espiritualidade e Inconsciente",
+        "rege": "Espiritualidade, inconsciente, sacrifício, karma, isolamento",
+        "signo": "Peixes (natural)",
+        "planeta": "Netuno"
+      },
+      "source": "agent:astrology-specialist",
+      "confidence": 95,
+      "validated": true,
+      "id": "kb-1780319953594-4bnb099",
+      "createdAt": "2026-06-01T13:19:13.594Z",
+      "updatedAt": "2026-06-01T13:19:13.594Z"
+    },
+    {
+      "domain": "prana",
+      "key": "prana",
+      "data": {
+        "nome": "Prana",
+        "funcao": "Energia de entrada, respiração, vitalidade",
+        "localizacao": "Coração, pulmões",
+        "direcao": "Ascendente"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-w2ez8h9",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "prana",
+      "key": "apana",
+      "data": {
+        "nome": "Apana",
+        "funcao": "Energia de saída, eliminação, grounding",
+        "localizacao": "Baixo ventre, intestinos",
+        "direcao": "Descendente"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-n8ocdgc",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "prana",
+      "key": "samana",
+      "data": {
+        "nome": "Samana",
+        "funcao": "Digestão, assimilação, equilíbrio",
+        "localizacao": "Plexo solar, estômago",
+        "direcao": "Centrífuga"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-ovegtmo",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "prana",
+      "key": "udana",
+      "data": {
+        "nome": "Udana",
+        "funcao": "Fala, expressão, ascensão espiritual",
+        "localizacao": "Garganta, peito superior",
+        "direcao": "Ascendente"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-bwfhhzc",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "prana",
+      "key": "vyana",
+      "data": {
+        "nome": "Vyana",
+        "funcao": "Circulação, distribuição pelo corpo",
+        "localizacao": "Todo o corpo",
+        "direcao": "Radiante"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-n9acxrv",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "nadis",
+      "key": "ida",
+      "data": {
+        "nome": "Ida",
+        "descricao": "Canal lunar, feminino, esquerdo, intuitivo, frio",
+        "cor": "Branco/prateado",
+        "funcao": "Intuição, emoção, sonhos"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-eu4k9ma",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "nadis",
+      "key": "pingala",
+      "data": {
+        "nome": "Pingala",
+        "descricao": "Canal solar, masculino, direito, ativo, quente",
+        "cor": "Vermelho/dourado",
+        "funcao": "Ação, lógica, energia física"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-p3qwj5b",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "nadis",
+      "key": "sushumna",
+      "data": {
+        "nome": "Sushumna",
+        "descricao": "Canal central, equilíbrio, ascensão da Kundalini",
+        "cor": "Dourado/branco",
+        "funcao": "Iluminação, conexão divina"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-dzt36aa",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "bandhas",
+      "key": "mooladhara",
+      "data": {
+        "nome": "Mooladhara Bandha",
+        "descricao": "Contração do períneo",
+        "efeito": "Raiz, ascensão da Kundalini",
+        "praticadoEm": "Início da prática"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 85,
+      "validated": true,
+      "id": "kb-1780319953595-tzz9n1u",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "bandhas",
+      "key": "uddhiyana",
+      "data": {
+        "nome": "Uddiyana Bandha",
+        "descricao": "Contração do abdômen para dentro e para cima",
+        "efeito": "Massagem de órgãos, elevação do fogo digestivo",
+        "praticadoEm": "Após Puraka"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 85,
+      "validated": true,
+      "id": "kb-1780319953595-u27ts9t",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "bandhas",
+      "key": "jalandhara",
+      "data": {
+        "nome": "Jalandhara Bandha",
+        "descricao": "Queixo ao peito",
+        "efeito": "Bloqueio de energia descendente, equilíbrio",
+        "praticadoEm": "Durante Kumbhaka"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 85,
+      "validated": true,
+      "id": "kb-1780319953595-nhhzmdw",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "bandhas",
+      "key": "maha",
+      "data": {
+        "nome": "Maha Bandha",
+        "descricao": "Os 3 juntos",
+        "efeito": "Despertar máximo de Kundalini",
+        "praticadoEm": "Prática avançada"
+      },
+      "source": "agent:tantra-specialist",
+      "confidence": 85,
+      "validated": true,
+      "id": "kb-1780319953595-pv1mw0x",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "sabbat",
+      "key": "yule",
+      "data": {
+        "nome": "Yule",
+        "data": "21-22 dezembro",
+        "tema": "Solstício de Inverno, renascimento do Sol",
+        "elementos": "Terra + Fogo"
+      },
+      "source": "agent:wicca-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-377tul0",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "sabbat",
+      "key": "imbolc",
+      "data": {
+        "nome": "Imbolc",
+        "data": "1-2 fevereiro",
+        "tema": "Despertar da Deusa, luz retorna",
+        "elementos": "Fogo + Terra"
+      },
+      "source": "agent:wicca-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-tzlcgsv",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "sabbat",
+      "key": "ostara",
+      "data": {
+        "nome": "Ostara",
+        "data": "20-21 março",
+        "tema": "Equinócio de Primavera, novo começo",
+        "elementos": "Ar + Terra"
+      },
+      "source": "agent:wicca-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-1ikwxu0",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "sabbat",
+      "key": "beltane",
+      "data": {
+        "nome": "Beltane",
+        "data": "30 abril - 1 maio",
+        "tema": "Fogo, fertilidade, união sagrada",
+        "elementos": "Fogo"
+      },
+      "source": "agent:wicca-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-g1ymyjb",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "sabbat",
+      "key": "litha",
+      "data": {
+        "nome": "Litha",
+        "data": "20-22 junho",
+        "tema": "Solstício de Verão, pico do Sol",
+        "elementos": "Fogo"
+      },
+      "source": "agent:wicca-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-faoq64s",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "sabbat",
+      "key": "lammas",
+      "data": {
+        "nome": "Lammas (Lughnasadh)",
+        "data": "1-2 agosto",
+        "tema": "Primeira colheita, gratidão",
+        "elementos": "Terra + Fogo"
+      },
+      "source": "agent:wicca-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-pwiptka",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "sabbat",
+      "key": "mabon",
+      "data": {
+        "nome": "Mabon",
+        "data": "22-23 setembro",
+        "tema": "Equinócio de Outono, segunda colheita",
+        "elementos": "Terra + Água"
+      },
+      "source": "agent:wicca-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-nggb90g",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "sabbat",
+      "key": "samhain",
+      "data": {
+        "nome": "Samhain",
+        "data": "31 outubro - 1 novembro",
+        "tema": "Ano Novo Wiccano, véu fino",
+        "elementos": "Água + Terra"
+      },
+      "source": "agent:wicca-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953595-h4a5bfc",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "alecrim",
+      "data": {
+        "planta": "Alecrim (Rosmarinus officinalis)",
+        "uso": "Defumação, banho de proteção e memória",
+        "indicacao": [
+          "Proteção",
+          "Clareza mental",
+          "Fortalecimento"
+        ],
+        "preparacao": "Queimar ramos secos ou infusão",
+        "orixasAssociados": [
+          "Exu",
+          "Omolu"
+        ],
+        "planeta": "Sol"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-bz4ia1v",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "benjoeiro",
+      "data": {
+        "planta": "Benjoeiro (Styrax)",
+        "uso": "Defumação espiritual",
+        "indicacao": [
+          "Limpeza",
+          "Abertura de caminhos",
+          "Quebra de demandas"
+        ],
+        "preparacao": "Queimar resina em braseiro",
+        "orixasAssociados": [
+          "Exu",
+          "Iansã"
+        ],
+        "planeta": "Sol"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-vabckpc",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "espada",
+      "data": {
+        "planta": "Espada-de-São-Jorge (Sansevieria)",
+        "uso": "Proteção da casa",
+        "indicacao": [
+          "Corte de energias negativas",
+          "Proteção do lar"
+        ],
+        "preparacao": "Manter na entrada da casa",
+        "orixasAssociados": [
+          "Ogum",
+          "Iansã"
+        ],
+        "planeta": "Marte"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-rr2a0q3",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "comigo",
+      "data": {
+        "planta": "Comigo-ninguém-pode (Dieffenbachia)",
+        "uso": "Proteção forte",
+        "indicacao": [
+          "Corte de olho gordo",
+          "Proteção extrema"
+        ],
+        "preparacao": "Manter em casa (cuidado: tóxica)",
+        "orixasAssociados": [
+          "Exu",
+          "Omolu"
+        ],
+        "planeta": "Saturno"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-jb8nd7f",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "babadoce",
+      "data": {
+        "planta": "Babadoce (ou Babão)",
+        "uso": "Banho de amor e doçura",
+        "indicacao": [
+          "Amor",
+          "Suavidade",
+          "Relacionamentos"
+        ],
+        "preparacao": "Decocção das folhas",
+        "orixasAssociados": [
+          "Oxum",
+          "Iemanjá"
+        ],
+        "planeta": "Vênus"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-hsfm3oz",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "trevo",
+      "data": {
+        "planta": "Trevo de 4 folhas",
+        "uso": "Sorte e prosperidade",
+        "indicacao": [
+          "Sorte",
+          "Dinheiro",
+          "Proteção"
+        ],
+        "preparacao": "Carregar consigo",
+        "orixasAssociados": [
+          "Oxum",
+          "Oxóssi"
+        ],
+        "planeta": "Júpiter"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-6drsery",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "pitangueira",
+      "data": {
+        "planta": "Pitangueira",
+        "uso": "Banho de alegria e juventude",
+        "indicacao": [
+          "Alegria",
+          "Vitalidade"
+        ],
+        "preparacao": "Decocção das folhas",
+        "orixasAssociados": [
+          "Oxum",
+          "Iansã"
+        ],
+        "planeta": "Sol"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-n6fdar1",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "flora-sagrada",
+      "key": "eucalyptus",
+      "data": {
+        "planta": "Eucalipto (Eucalyptus)",
+        "uso": "Defumação e inalação",
+        "indicacao": [
+          "Limpeza respiratória",
+          "Energia",
+          "Proteção"
+        ],
+        "preparacao": "Queimar folhas ou inalação do vapor",
+        "orixasAssociados": [
+          "Iansã"
+        ],
+        "planeta": "Marte"
+      },
+      "source": "agent:flora-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953595-fa8cva1",
+      "createdAt": "2026-06-01T13:19:13.595Z",
+      "updatedAt": "2026-06-01T13:19:13.595Z"
+    },
+    {
+      "domain": "xing-mapa",
+      "key": "introducao",
+      "data": {
+        "nome": "Xing (星) — Mapa Estelar Interior",
+        "origem": "Sistema integrativo de autoconhecimento",
+        "descricao": "Cruza elementos de I Ching, Cabala, Astrologia, Numerologia e tradições afro-brasileiras em um mapa único",
+        "pilares": [
+          "8 Trigramas do I Ching",
+          "22 Caminhos da Árvore da Vida",
+          "12 Signos Astrológicos",
+          "9 Números do Caminho de Vida",
+          "16 Odus de Ifá"
+        ],
+        "aplicacao": [
+          "Auto-conhecimento profundo",
+          "Decisões alinhadas",
+          "Compreensão de ciclos",
+          "Integração cultural"
+        ]
+      },
+      "source": "agent:xing-specialist",
+      "confidence": 70,
+      "validated": false,
+      "id": "kb-1780319953596-j7gpbgf",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "xing-mapa",
+      "key": "trigrama",
+      "data": {
+        "nome": "Trigrama",
+        "descricao": "Combinação de 3 linhas (quebradas ou contínuas) representando energias fundamentais",
+        "quantidade": 8,
+        "lista": [
+          "Qian (☰) — Céu",
+          "Kun (☷) — Terra",
+          "Zhen (☳) — Trovão",
+          "Xun (☴) — Vento",
+          "Kan (☵) — Água",
+          "Li (☲) — Fogo",
+          "Gen (☶) — Montanha",
+          "Dui (☱) — Lago"
+        ]
+      },
+      "source": "agent:xing-specialist",
+      "confidence": 70,
+      "validated": false,
+      "id": "kb-1780319953596-72d6ori",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.elemento.fogo",
+      "data": {
+        "elemento": "Fogo",
+        "apelaPara": "Paixão intensa, dominância, expressão direta",
+        "desequilibrio": "Burnout sexual, agressividade",
+        "equilibrar": "Movimento, dança, slow sex, respirar fundo antes de agir"
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953596-zc8uid9",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.elemento.agua",
+      "data": {
+        "elemento": "Água",
+        "apelaPara": "Intimidade emocional, fusão, profundidade",
+        "desequilibrio": "Confusão entre amor e sexo, dependência",
+        "equilibrar": "Tantra, banhos, honrar as emoções, separar amor de desejo"
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953596-qc121sn",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.elemento.terra",
+      "data": {
+        "elemento": "Terra",
+        "apelaPara": "Prazer sensorial, tato, constância",
+        "desequilibrio": "Rotina, preguiça, falta de aventura",
+        "equilibrar": "Toque consciente, novidades, alimentação afrodisíaca, massagem"
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953596-f2s68fw",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.elemento.ar",
+      "data": {
+        "elemento": "Ar",
+        "apelaPara": "Estimulação mental, fantasia, palavras",
+        "desequilibrio": "Desconexão do corpo, frieza",
+        "equilibrar": "Linguagem erótica, sexting, fantasias, respirar"
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953596-d2r1mbu",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "sexualidade.elemento.eter",
+      "data": {
+        "elemento": "Éter",
+        "apelaPara": "Conexão transcendental, sagrado",
+        "desequilibrio": "Desrealização, dissociação",
+        "equilibrar": "Tantra, meditação com parceira(o), presença total"
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 88,
+      "validated": true,
+      "id": "kb-1780319953596-1l5adp5",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "chakrasexual.sacro",
+      "data": {
+        "nome": "2º Chakra (Svadhisthana)",
+        "funcao": "Prazer, sexualidade, criatividade",
+        "desequilibrio": "Bloqueio sexual, culpa, repressão",
+        "equilibrar": [
+          "Movimento de quadril (dança)",
+          "Yin Yoga",
+          "Tantra",
+          "Banho de ervas (camomila, rosa)"
+        ]
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953596-djd31bk",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    },
+    {
+      "domain": "lilith-casa8-sexo",
+      "key": "chakrasexual.raiz",
+      "data": {
+        "nome": "1º Chakra (Muladhara)",
+        "funcao": "Enraizamento sexual, segurança",
+        "desequilibrio": "Medo do prazer, culpa ancestral",
+        "equilibrar": [
+          "Caminhada descalço",
+          "Meditação na terra",
+          "Banho de sal grosso",
+          "Contato com natureza"
+        ]
+      },
+      "source": "agent:sexuality-specialist",
+      "confidence": 90,
+      "validated": true,
+      "id": "kb-1780319953596-jzni46f",
+      "createdAt": "2026-06-01T13:19:13.596Z",
+      "updatedAt": "2026-06-01T13:19:13.596Z"
+    }
+  ],
+  "updatedAt": "2026-06-01T13:19:13.596Z"
+}
