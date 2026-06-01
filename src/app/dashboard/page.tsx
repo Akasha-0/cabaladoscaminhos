@@ -6,7 +6,7 @@ import { HarmonicProfileCard } from '@/components/dashboard/HarmonicProfileCard'
 import { DailyInsight } from '@/components/dashboard/DailyInsight';
 import { DailyOrientations } from '@/components/dashboard/DailyOrientations';
 import { Card } from '@/components/ui/card';
-import { Calendar, Map, ChevronRight, Shield } from 'lucide-react';
+import { Calendar, Map, ChevronRight, Shield, Compass } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -182,7 +182,28 @@ export default function Dashboard() {
       </section>
 
       {/* Footer minimalista */}
-      <section className="mt-8 mb-6">
+      <section className="mt-8 mb-6 space-y-3">
+        <Link 
+          href="/dashboard/life-areas"
+          className={cn(
+            'flex items-center justify-between p-4 rounded-xl',
+            'bg-gradient-to-r from-amber-500/10 via-violet-500/10 to-pink-500/10 border border-amber-500/30',
+            'hover:from-amber-500/20 hover:via-violet-500/20 hover:to-pink-500/20',
+            'transition-all duration-200'
+          )}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/20 to-violet-500/20 flex items-center justify-center">
+              <Compass className="w-4 h-4 text-amber-400" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-white">✨ 12 Áreas da Vida com IA</p>
+              <p className="text-xs text-slate-400">Carreira, amor, sexualidade, finanças, saúde e mais — correlações profundas</p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-amber-400" />
+        </Link>
+
         <Link 
           href="/dashboard/mapa"
           className={cn(
