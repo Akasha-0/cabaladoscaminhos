@@ -458,15 +458,3 @@ export function getPredominantElement(
 }
 
 // ============================================
-// EXPORTAÇÃO DE TIPOS
-// ============================================
-
-export type {
-  BirthData,
-  CabalisticPathResult,
-  BirthOduResult,
-  ZodiacSignResult,
-  ChakraConfigResult,
-  CompleteProfileInput,
-  CompleteProfile
-};

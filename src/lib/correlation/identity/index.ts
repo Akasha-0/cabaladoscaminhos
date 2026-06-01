@@ -19,7 +19,7 @@ import {
   ODUS,
   ZODIAC_SIGNS,
   CHAKRAS
-} from './definitions';
+} from '../definitions';
 
 import {
   calculateCabalisticPath,
@@ -29,7 +29,7 @@ import {
   calculateCompleteProfile,
   analyzeCabalisticOduCompatibility,
   analyzeZodiacCabalisticHarmony
-} from './calculator';
+} from '../calculator';
 
 import {
   generateCrossSystemAnalysis,
@@ -40,7 +40,7 @@ import {
   correlateZodiacChakra,
   CrossSystemInsights,
   FullProfileCorrelation
-} from './correlation-matrix';
+} from '../correlation-matrix';
 
 // ============================================
 // TIPOS DO PERFIL CONSOLIDADO
@@ -537,15 +537,3 @@ function getConflictingElements(element: ElementType): ElementType[] {
 }
 
 // ============================================
-// EXPORTAÇÃO DO MÓDULO
-// ============================================
-
-export {
-  generateConsolidatedProfile,
-  generateQuickProfile
-};
-
-export type {
-  ConsolidatedProfile,
-  QuickProfile
-};

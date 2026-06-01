@@ -6,8 +6,6 @@ import {
   UserProfile,
   LifeAreaId,
 } from '@/lib/life-areas';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 
 // ============================================================
 // API: /api/life-areas
