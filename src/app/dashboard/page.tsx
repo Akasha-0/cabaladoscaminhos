@@ -7,8 +7,10 @@ import { DailyInsight } from '@/components/dashboard/DailyInsight';
 import { DailyOrientations } from '@/components/dashboard/DailyOrientations';
 import { DailyActionWidget } from '@/components/dashboard/DailyActionWidget';
 import { SpiritualContextWidget } from '@/components/dashboard/SpiritualContextWidget';
+import { SwarmChatWidget } from '@/components/dashboard/SwarmChatWidget';
+import { SwarmStatusWidget } from '@/components/dashboard/SwarmStatusWidget';
 import { Card } from '@/components/ui/card';
-import { Calendar, Map, ChevronRight, Shield, Compass } from 'lucide-react';
+import { Calendar, Map, ChevronRight, Shield, Compass, Brain } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -157,6 +159,11 @@ export default function Dashboard() {
       {/* Saudação */}
       <SimpleHeader userName={nome} />
 
+      {/* Swarm Status Indicator */}
+      <div className="mt-4">
+        <SwarmStatusWidget />
+      </div>
+
       {/* Ações Rápidas */}
       <QuickActions />
 
@@ -221,6 +228,24 @@ export default function Dashboard() {
       {/* Banner de Proteção */}
       <section className="mt-8">
         <ProtectionBanner />
+      </section>
+
+      {/* MAWARI - Chat agêntico com Knowledge Base */}
+      <section className="mt-8">
+        <SwarmChatWidget
+          userData={{
+            nome: MOCK_USER_DATA.nome,
+            fullName: MOCK_USER_DATA.fullName,
+            dataNascimento: MOCK_USER_DATA.dataNascimento,
+            horaNascimento: MOCK_USER_DATA.horaNascimento,
+            localNascimento: MOCK_USER_DATA.localNascimento,
+            caminhoDeVida: MOCK_USER_DATA.caminhoDeVida,
+            signoSolar: MOCK_USER_DATA.signoSolar,
+            ascendente: MOCK_USER_DATA.ascendente,
+            oduNascimento: MOCK_USER_DATA.oduNascimento,
+            orixaRegente: MOCK_USER_DATA.orixaRegente,
+          }}
+        />
       </section>
 
       {/* Footer minimalista */}
