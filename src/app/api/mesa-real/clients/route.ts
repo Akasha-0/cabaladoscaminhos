@@ -1,0 +1,185 @@
+// ============================================================
+// MESA REAL API - Cabala Dos Caminhos
+// Cockpit Oracular - Client Management Routes
+// ============================================================
+
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import {
+  createClient,
+  getClient,
+  listClients,
+  updateClient,
+  deleteClient,
+  searchClients,
+  saveClientMaps,
+} from '@/lib/db/client-actions';
+
+// ============================================================
+// CLIENT CRUD ROUTES
+// ============================================================
+
+// Schema for client creation
+const createClientSchema = z.object({
+  fullName: z.string().min(1),
+  birthDate: z.string().datetime(),
+  birthTime: z.string().optional(),
+  birthCity: z.string().optional(),
+  birthState: z.string().optional(),
+  birthCountry: z.string().optional(),
+  userId: z.string().min(1),
+});
+
+// ============================================================
+// GET /api/mesa-real/clients - List all clients
+// ============================================================
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const query = searchParams.get('q');
+    const clientId = searchParams.get('clientId');
+
+    // Search by name
+    if (query) {
+      const results = await searchClients(query);
+      return NextResponse.json({ clients: results });
+    }
+
+    // Get single client
+    if (clientId) {
+      const client = await getClient(clientId);
+      if (!client) {
+        return NextResponse.json(
+          { error: 'Cliente não encontrado' },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({ client });
+    }
+
+    // List all clients
+    const clients = await listClients();
+    return NextResponse.json({ clients });
+
+  } catch (error) {
+    console.error('GET /api/mesa-real/clients error:', error);
+    return NextResponse.json(
+      { error: 'Erro ao buscar clientes' },
+      { status: 500 }
+    );
+  }
+}
+
+// ============================================================
+// POST /api/mesa-real/clients - Create a new client
+// ============================================================
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const data = createClientSchema.parse(body);
+
+    const client = await createClient({
+      fullName: data.fullName,
+      birthDate: data.birthDate,
+      birthTime: data.birthTime,
+      birthCity: data.birthCity,
+      birthState: data.birthState,
+      birthCountry: data.birthCountry,
+      userId: data.userId,
+    });
+
+    return NextResponse.json({ client }, { status: 201 });
+
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Dados inválidos', details: error.errors },
+        { status: 400 }
+      );
+    }
+    console.error('POST /api/mesa-real/clients error:', error);
+    return NextResponse.json(
+      { error: 'Erro ao criar cliente' },
+      { status: 500 }
+    );
+  }
+}
+
+// ============================================================
+// PATCH /api/mesa-real/clients - Update client maps
+// ============================================================
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { action, clientId, ...data } = body;
+
+    if (!clientId) {
+      return NextResponse.json(
+        { error: 'clientId é obrigatório' },
+        { status: 400 }
+      );
+    }
+
+    switch (action) {
+      case 'updateMaps': {
+        const mapsData = await saveClientMaps(clientId, {
+          astrologyMap: data.astrologyMap,
+          kabalisticMap: data.kabalisticMap,
+          tantricMap: data.tantricMap,
+        });
+        return NextResponse.json({ client: mapsData });
+      }
+
+      case 'update': {
+        const client = await updateClient(clientId, data);
+        return NextResponse.json({ client });
+      }
+
+      default:
+        return NextResponse.json(
+          { error: 'Ação desconhecida' },
+          { status: 400 }
+        );
+    }
+
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Dados inválidos', details: error.errors },
+        { status: 400 }
+      );
+    }
+    console.error('PATCH /api/mesa-real/clients error:', error);
+    return NextResponse.json(
+      { error: 'Erro ao atualizar cliente' },
+      { status: 500 }
+    );
+  }
+}
+
+// ============================================================
+// DELETE /api/mesa-real/clients - Delete a client
+// ============================================================
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const clientId = searchParams.get('clientId');
+
+    if (!clientId) {
+      return NextResponse.json(
+        { error: 'clientId é obrigatório' },
+        { status: 400 }
+      );
+    }
+
+    await deleteClient(clientId);
+    return NextResponse.json({ success: true });
+
+  } catch (error) {
+    console.error('DELETE /api/mesa-real/clients error:', error);
+    return NextResponse.json(
+      { error: 'Erro ao deletar cliente' },
+      { status: 500 }
+    );
+  }
+}
