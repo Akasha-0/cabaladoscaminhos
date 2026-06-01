@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { SpiritualSidebar } from './SpiritualSidebar';
 import { MobileBottomNav } from './MobileBottomNav';
 import { Sparkles, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface DashboardLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
@@ -19,7 +19,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
-      // Auto-collapse sidebar on smaller screens
       if (window.innerWidth < 1024) {
         setSidebarCollapsed(true);
       }
@@ -32,11 +31,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Loading state
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500);
+    const timer = setTimeout(() => setIsLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
-  // Listen for sidebar toggle from SpiritualSidebar
+  // Listen for sidebar toggle
   useEffect(() => {
     const handleSidebarToggle = (e: CustomEvent<boolean>) => {
       setSidebarCollapsed(e.detail);
@@ -49,50 +48,92 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   if (isLoading) {
     return (
       <div className="flex min-h-screen bg-slate-950 items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center animate-pulse">
-            <Sparkles className="w-6 h-6 text-white" />
+        <div className="flex flex-col items-center gap-6">
+          {/* Logo */}
+          <div className="relative">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-2xl shadow-amber-500/30 animate-pulse">
+              <Sparkles className="w-10 h-10 text-white" />
+            </div>
+            {/* Glow ring */}
+            <div className="absolute inset-0 w-20 h-20 rounded-2xl border-2 border-amber-400/30 animate-ping" />
           </div>
-          <div className="flex items-center gap-2 text-slate-400">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span className="text-sm">Carregando...</span>
+          
+          {/* Loading text */}
+          <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-3 text-slate-400">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span className="text-lg font-medium">Carregando sua jornada...</span>
+            </div>
+            <div className="w-48 h-1 bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-full w-1/3 bg-gradient-to-r from-amber-500 to-violet-500 rounded-full animate-progress" />
+            </div>
           </div>
         </div>
+        
+        <style>{`
+          @keyframes progress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(400%); }
+          }
+          .animate-progress {
+            animation: progress 1.5s ease-in-out infinite;
+          }
+        `}</style>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950">
-      {/* Desktop Sidebar - hidden on mobile */}
-      <div className="hidden md:block">
+    <div className="flex min-h-screen bg-slate-950 relative overflow-hidden">
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:block fixed inset-y-0 left-0 z-30">
         <SpiritualSidebar />
       </div>
       
-      {/* Main Content */}
+      {/* Mobile Sidebar Overlay */}
+      {isMobile && (
+        <div className="md:hidden fixed inset-y-0 left-0 z-30">
+          <SpiritualSidebar />
+        </div>
+      )}
+      
+      {/* Main Content Area */}
       <main 
         className={cn(
           'flex-1 flex flex-col transition-all duration-300',
-          isMobile ? 'ml-0' : sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-72'
+          'relative z-10',
+          isMobile ? 'ml-0' : 'lg:ml-72'
         )}
       >
-        {/* Page content */}
-        <div className="flex-1 p-4 md:p-6 pb-24 md:pb-6">
+        {/* Page Content with consistent padding */}
+        <div className="flex-1 p-4 md:p-6 lg:p-8 pb-24 md:pb-8 max-w-[1800px] mx-auto w-full">
           {children}
         </div>
       </main>
       
-      {/* Mobile Bottom Nav */}
+      {/* Mobile Bottom Navigation */}
       <MobileBottomNav />
 
-      {/* Background gradient effects */}
+      {/* Ambient Background Effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        {/* Top gradient */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl" />
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-violet-500/5 rounded-full blur-3xl" />
-        {/* Bottom gradient */}
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+        {/* Top gradients */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-violet-500/5 rounded-full blur-[120px]" />
+        
+        {/* Center glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-cyan-500/3 rounded-full blur-[150px]" />
+        
+        {/* Bottom gradients */}
+        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-1/3 w-[400px] h-[400px] bg-rose-500/5 rounded-full blur-[100px]" />
+        
+        {/* Noise texture overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.015]" 
+          style={{ 
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          }} 
+        />
       </div>
     </div>
   );
