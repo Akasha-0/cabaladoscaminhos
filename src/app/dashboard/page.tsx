@@ -5,6 +5,8 @@ import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { HarmonicProfileCard } from '@/components/dashboard/HarmonicProfileCard';
 import { DailyInsight } from '@/components/dashboard/DailyInsight';
 import { DailyOrientations } from '@/components/dashboard/DailyOrientations';
+import { DailyActionWidget } from '@/components/dashboard/DailyActionWidget';
+import { SpiritualContextWidget } from '@/components/dashboard/SpiritualContextWidget';
 import { Card } from '@/components/ui/card';
 import { Calendar, Map, ChevronRight, Shield, Compass } from 'lucide-react';
 import Link from 'next/link';
@@ -16,12 +18,21 @@ import { cn } from '@/lib/utils';
  */
 const MOCK_USER_DATA = {
   nome: 'Maria',
+  fullName: 'Maria da Conceição Santos',
+  dataNascimento: '1985-11-08',
+  horaNascimento: '06:45',
+  localNascimento: 'Salvador, BA',
   caminhoDeVida: 11,
+  numeroExpressao: 9,
   signo: 'Escorpião',
+  signoSolar: 'Escorpião',
+  ascendente: 'Câncer',
   signoElemento: 'Água',
   signoPlaneta: 'Plutão',
   odu: 'Alafia',
   oduNumero: 16,
+  oduNascimento: 'Alafia',
+  orixaRegente: 'Iemanjá',
 };
 
 // ============================================================
@@ -159,16 +170,47 @@ export default function Dashboard() {
         />
       </section>
 
-      {/* Grid: Insight + Orientações */}
+      {/* NOVA SEÇÃO AGÊNTICA: Sua Direção + Contexto Espiritual */}
       <section className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Insight do Dia */}
+        <DailyActionWidget
+          userData={{
+            nome: MOCK_USER_DATA.nome,
+            fullName: MOCK_USER_DATA.fullName,
+            dataNascimento: MOCK_USER_DATA.dataNascimento,
+            horaNascimento: MOCK_USER_DATA.horaNascimento,
+            localNascimento: MOCK_USER_DATA.localNascimento,
+            caminhoDeVida: MOCK_USER_DATA.caminhoDeVida,
+            signoSolar: MOCK_USER_DATA.signoSolar,
+            ascendente: MOCK_USER_DATA.ascendente,
+            oduNascimento: MOCK_USER_DATA.oduNascimento,
+            orixaRegente: MOCK_USER_DATA.orixaRegente,
+          }}
+        />
+
+        <SpiritualContextWidget
+          userData={{
+            nome: MOCK_USER_DATA.nome,
+            fullName: MOCK_USER_DATA.fullName,
+            dataNascimento: MOCK_USER_DATA.dataNascimento,
+            horaNascimento: MOCK_USER_DATA.horaNascimento,
+            localNascimento: MOCK_USER_DATA.localNascimento,
+            caminhoDeVida: MOCK_USER_DATA.caminhoDeVida,
+            signoSolar: MOCK_USER_DATA.signoSolar,
+            ascendente: MOCK_USER_DATA.ascendente,
+            oduNascimento: MOCK_USER_DATA.oduNascimento,
+            orixaRegente: MOCK_USER_DATA.orixaRegente,
+          }}
+        />
+      </section>
+
+      {/* Grid: Insight + Orientações (mantidos) */}
+      <section className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
         <DailyInsight
           caminhoDeVida={caminhoDeVida}
           signoElemento={signoElemento}
           odu={odu}
         />
 
-        {/* Orientações e Preceitos */}
         <DailyOrientations
           odu={odu}
           caminhoDeVida={caminhoDeVida}
