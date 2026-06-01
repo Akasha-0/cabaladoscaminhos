@@ -30,7 +30,7 @@ const EnergyEntrySchema = z.object({
 });
 
 // ─── Energy Level Spiritual Correlations ──────────────────────────────────────────
-const ENERGY_LEVEL_SPIRITUAL_CORRELATIONS: Record<number, {
+const ENERGY_LEVEL_SPIRITUAL_CORRELATIONS: Record<string, {
   sefirot: string[];
   chakra: number;
   element: string;
@@ -101,7 +101,7 @@ function getUserEnergyEntries(userId: string): EnergyEntry[] {
 }
 
 function getSpiritualCorrelationsForLevel(level: number): EnergySpiritualCorrelations {
-  return ENERGY_LEVEL_SPIRITUAL_CORRELATIONS[level] || ENERGY_LEVEL_SPIRITUAL_CORRELATIONS[3];
+  return ENERGY_LEVEL_SPIRITUAL_CORRELATIONS[level.toString()] || ENERGY_LEVEL_SPIRITUAL_CORRELATIONS['3'];
 }
 
 function calculateEnergyTrend(entries: EnergyEntry[]): EnergyTrend {
@@ -334,14 +334,15 @@ export async function POST(request: NextRequest) {
     const { level, note, timestamp, sefirot, chakra, element, orixa } = parseResult.data;
     const spiritualCorr = getSpiritualCorrelationsForLevel(level);
 
+    const { affirmation, recommendation, ...restCorr } = spiritualCorr;
     const entry: EnergyEntry = {
       id: `energy-${Date.now()}`,
       userId: user.id,
-      level,
+      level: level as unknown as EnergyLevel,
       timestamp: timestamp || new Date().toISOString(),
       notes: note,
-      spiritualCorrelations: sefirot && chakra && element && orixa
-        ? { sefirot: [sefirot], chakra, element, orixa, ...spiritualCorr }
+      spiritualCorrelations: (sefirot && chakra && element && orixa)
+        ? { sefirot: [sefirot], chakra, element, orixa, affirmation, recommendation }
         : spiritualCorr,
     };
 

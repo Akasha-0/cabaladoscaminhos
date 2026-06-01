@@ -539,8 +539,8 @@ describe('zodiac-day', () => {
 
   describe('default export', () => {
     it('should export all required functions', async () => {
-      const module = await import('@/lib/correlation/zodiac-day');
-      const def = module.default;
+      const mod = await import('@/lib/correlation/zodiac-day');
+      const def = mod.default;
 
       expect(def.getZodiacDay).toBeDefined();
       expect(typeof def.getZodiacDay).toBe('function');
@@ -549,8 +549,8 @@ describe('zodiac-day', () => {
     });
 
     it('should have ZODIAC_DAY_MAPPINGS in default export', async () => {
-      const module = await import('@/lib/correlation/zodiac-day');
-      const def = module.default;
+      const mod = await import('@/lib/correlation/zodiac-day');
+      const def = mod.default;
 
       expect(def.ZODIAC_DAY_MAPPINGS).toBeDefined();
       expect(Object.keys(def.ZODIAC_DAY_MAPPINGS)).toHaveLength(12);

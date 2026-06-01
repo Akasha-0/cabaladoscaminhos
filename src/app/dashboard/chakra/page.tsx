@@ -10,7 +10,7 @@ import { getChakraDay, getDayChakra } from '@/lib/correlation/chakra-day';
 import { getPlanetChakra, getChakraPlanet } from '@/lib/correlation/chakra-planet';
 import { getChakraFrequency } from '@/lib/correlation/chakra-frequency';
 import { getAllChakraDays } from '@/lib/correlation/chakra-day';
-import { getAllChakraPlanets, getAllPlanetChakras } from '@/lib/correlation/chakra-planet';
+import { getAllChakraPlanets } from '@/lib/correlation/chakra-planet';
 import { getAllChakraFrequencies } from '@/lib/correlation/chakra-frequency';
 
 /**
@@ -56,18 +56,19 @@ export default function ChakraPage() {
 
   const chakraData = CHAKRAS.find(c => c.nome === chakraSelecionado);
   const planetaData = getChakraPlanet(chakraSelecionado);
-  const frequencyData = getChakraFrequency(chakraSelecionado);
+  const allChakraFreqs = getAllChakraFrequencies();
+  const frequencyData = allChakraFreqs.find(f => f.chakra_sanskrit === chakraSelecionado || f.chakra === chakraSelecionado);
 
   const allDaysData = getDayChakra([0, 1, 2, 3, 4, 5, 6].indexOf(0)); // Monday
   const allPlanetsData = getChakraPlanet(chakraSelecionado);
-  const allFrequenciesData = getChakraFrequency(chakraSelecionado);
+  const allFrequenciesData = allChakraFreqs.find(f => f.chakra_sanskrit === chakraSelecionado || f.chakra === chakraSelecionado);
 
   return (
     <CosmicBackground>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
-          <Heading level={1} className="text-3xl font-bold text-center mb-2">
+          <Heading as="h1" className="text-3xl font-bold text-center mb-2">
             ✦ Dashboard dos Chakras ✦
           </Heading>
           <p className="text-center text-muted-foreground">
@@ -179,12 +180,12 @@ export default function ChakraPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm">Mantra:</span>
-                    <span className="font-semibold">{frequencyData.mantra}</span>
+                    <span className="font-semibold">{frequencyData.mantram}</span>
                   </div>
-                  {frequencyData.acoes && (
+                  {frequencyData.qualidades_elementais && (
                     <div className="flex justify-between">
-                      <span className="text-sm">Ações:</span>
-                      <span className="font-semibold text-xs">{frequencyData.acoes.slice(0, 2).join(', ')}</span>
+                      <span className="text-sm">Qualidades:</span>
+                      <span className="font-semibold text-xs">{frequencyData.qualidades_elementais.slice(0, 2).join(', ')}</span>
                     </div>
                   )}
                 </div>
@@ -269,7 +270,7 @@ export default function ChakraPage() {
                     </div>
                     <div className="text-right">
                       <p className="font-bold text-sm">{planetMapping?.planeta || 'N/A'}</p>
-                      <p className="text-xs opacity-60">{planetMapping?.signo || 'N/A'}</p>
+                      <p className="text-xs opacity-60">{planetMapping?.propriedades_astrologicas?.signo_regente || 'N/A'}</p>
                     </div>
                   </div>
                 );
@@ -283,7 +284,7 @@ export default function ChakraPage() {
             <h3 className="text-xl font-bold mb-4">🎵 Frequências Solfeggio por Chakra</h3>
             <div className="space-y-4">
               {CHAKRAS.map(chakra => {
-                const freqMapping = getChakraFrequency(chakra.nome);
+                const freqMapping = allChakraFreqs.find(f => f.chakra_sanskrit === chakra.nome || f.chakra === chakra.nome);
                 return (
                   <div key={chakra.nome} className="p-4 bg-gray-800/30 rounded-lg">
                     <div className="flex items-center gap-4 mb-3">
@@ -307,7 +308,7 @@ export default function ChakraPage() {
                           </div>
                           <div className="p-2 bg-purple-900/20 rounded">
                             <p className="text-xs text-muted-foreground">Mantra</p>
-                            <p className="font-bold text-sm">{freqMapping.mantra}</p>
+                            <p className="font-bold text-sm">{freqMapping.mantram}</p>
                           </div>
                         </>
                       )}

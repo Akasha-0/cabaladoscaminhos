@@ -235,22 +235,22 @@ export async function GET(request: NextRequest) {
       }
 
       case 'lessons': {
-        if (!courseId) {
+        if (!id) {
           return NextResponse.json({ success: false, error: 'courseId requerido' }, { status: 400 });
         }
-        const course = courses.find(c => c.id === courseId);
+        const course = courses.find(c => c.id === id);
         if (!course) {
           return NextResponse.json({ success: false, error: 'Curso não encontrado' }, { status: 404 });
         }
-        return NextResponse.json({ success: true, lessons: course.lessons, courseId });
+        return NextResponse.json({ success: true, lessons: course.lessons, courseId: id });
       }
 
       case 'lesson': {
-        if (!lessonId) {
+        if (!id) {
           return NextResponse.json({ success: false, error: 'lessonId requerido' }, { status: 400 });
         }
         for (const course of courses) {
-          const lesson = course.lessons.find(l => l.id === lessonId);
+          const lesson = course.lessons.find(l => l.id === id);
           if (lesson) {
             return NextResponse.json({ success: true, lesson, courseId: course.id });
           }

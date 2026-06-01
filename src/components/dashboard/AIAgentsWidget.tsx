@@ -25,7 +25,7 @@ interface Insight {
   title: string;
   content: string;
   confidence: number;
-  icon: React.ReactNode;
+  icon: React.ComponentType<{ className?: string }>;
   color: string;
   bg: string;
 }
@@ -48,7 +48,7 @@ const SAMPLE_INSIGHTS: Insight[] = [
     title: 'Alinhamento Planetário',
     content: 'O alinhamento entre seu orixá regente (Oxum) e o planeta Vênus indica um dia favorável para práticas de amor-próprio e auto-cuidado.',
     confidence: 92,
-    icon: Droplets,
+    icon: Droplets as React.ComponentType<{ className?: string }>,
     color: 'text-amber-400',
     bg: 'bg-amber-500/20',
   },
@@ -58,7 +58,7 @@ const SAMPLE_INSIGHTS: Insight[] = [
     title: 'Padrão Numerológico',
     content: 'Seu número pessoal (7) ressoa com a energia da Lua nesta semana, amplificando sua intuição e capacidade de洞察.',
     confidence: 87,
-    icon: Brain,
+    icon: Brain as React.ComponentType<{ className?: string }>,
     color: 'text-violet-400',
     bg: 'bg-violet-500/20',
   },
@@ -68,7 +68,7 @@ const SAMPLE_INSIGHTS: Insight[] = [
     title: 'Oportunidade de Crescimento',
     content: 'Nas próximas 48 horas, você terá maior receptividade para meditação e práticas ascensionais. Aproveite!',
     confidence: 78,
-    icon: TrendingUp,
+    icon: TrendingUp as React.ComponentType<{ className?: string }>,
     color: 'text-emerald-400',
     bg: 'bg-emerald-500/20',
   },
@@ -78,7 +78,7 @@ const SAMPLE_INSIGHTS: Insight[] = [
     title: 'Mensagem do Odú',
     content: 'Alafia - A cura está presente. Permita-se receber as bênçãos que o universo oferece hoje.',
     confidence: 95,
-    icon: Sparkles,
+    icon: Sparkles as React.ComponentType<{ className?: string }>,
     color: 'text-cyan-400',
     bg: 'bg-cyan-500/20',
   },

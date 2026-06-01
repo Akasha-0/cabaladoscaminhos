@@ -303,7 +303,7 @@ export function getTodayCorrelation(date: Date = new Date()): TodayCorrelation {
     lua,
 
     // ─── Sacred Geometry ────────────────────────────────────────
-    poliedro,
+    poliedro: poliedro ?? null,
 
     // ─── Ritual ─────────────────────────────────────────────────
     atuacaoRitual: dayEnergy.atuacaoRitual,

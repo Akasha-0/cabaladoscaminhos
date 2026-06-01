@@ -26,7 +26,7 @@ export function performPractice(): OdaraPracticeResult {
       'Deixo o equilíbrio guiar meus passos',
     ],
     herbs: data.herbs,
-    colors: data.colors,
+    colors: data.cores,
     guidance: data.guidance,
   };
 }

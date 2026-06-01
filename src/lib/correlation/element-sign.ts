@@ -153,9 +153,9 @@ export function getSignsByElement(elemento: string): Signo[] | null {
   const mapping = getElementSign(elemento);
   if (!mapping) return null;
   return [
-    mapping.signos_pertencentes.cardinal,
-    mapping.signos_pertencentes.fixed,
-    mapping.signos_pertencentes.mutable,
+    mapping.signos_pertencentes.cardinal as Signo,
+    mapping.signos_pertencentes.fixed as Signo,
+    mapping.signos_pertencentes.mutable as Signo,
   ];
 }
 

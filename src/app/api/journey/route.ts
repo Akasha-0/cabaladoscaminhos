@@ -67,7 +67,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'p1',
     title: 'Primeiro Ritual',
-    description: 'Complete seu primeiro ritual sagrado',
     category: 'prática',
     sefirot: ['Tipheret', 'Chesed'],
     chakra: 4,
@@ -78,7 +77,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'p2',
     title: 'Disciplina Diária',
-    description: 'Pratique por 7 dias consecutivos',
     category: 'prática',
     sefirot: ['Gevurah', 'Hod'],
     chakra: 3,
@@ -89,7 +87,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'p3',
     title: 'Mestre dos Elementos',
-    description: 'Realize rituais dos 4 elementos',
     category: 'prática',
     sefirot: ['Malkuth', 'Chokhmah'],
     chakra: 5,
@@ -100,7 +97,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'p4',
     title: 'Guardião do Fogo',
-    description: 'Acenda 30 velas em rituais',
     category: 'prática',
     sefirot: ['Gevurah', 'Netzach'],
     chakra: 3,
@@ -111,7 +107,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'p5',
     title: 'Filho das Águas',
-    description: 'Realize 15 banhos ritualísticos',
     category: 'prática',
     sefirot: ['Yesod', 'Binah'],
     chakra: 6,
@@ -124,7 +119,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'c1',
     title: 'Iniciando no Merindilogun',
-    description: 'Estude os 16 Odús do destino',
     category: 'conhecimento',
     sefirot: ['Chokhmah', 'Hod'],
     chakra: 6,
@@ -135,7 +129,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'c2',
     title: 'Caminho das Sephiroth',
-    description: 'Explore as 10 Sephiroth da Árvore da Vida',
     category: 'conhecimento',
     sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
     chakra: 7,
@@ -146,7 +139,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'c3',
     title: 'Arquétipos em Foco',
-    description: 'Estude 7 Orixás em profundidade',
     category: 'conhecimento',
     sefirot: ['Tipheret', 'Chesed'],
     chakra: 4,
@@ -157,7 +149,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'c4',
     title: 'Sabedoria Antiga',
-    description: 'Leia 5 textos sobre tradição ocultista',
     category: 'conhecimento',
     sefirot: ['Chokhmah', 'Binah'],
     chakra: 6,
@@ -168,7 +159,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 'c5',
     title: 'Mapa Interior',
-    description: 'Complete sua primeira análise de mapa natal',
     category: 'conhecimento',
     sefirot: ['Yesod', 'Tipheret'],
     chakra: 6,
@@ -181,7 +171,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 't1',
     title: 'Despertar',
-    description: 'Tenha sua primeira visão ou sonho premonitório',
     category: 'transformação',
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 6,
@@ -192,7 +181,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 't2',
     title: 'Transmutação',
-    description: 'Supere um padrão negativo identificado',
     category: 'transformação',
     sefirot: ['Gevurah', 'Tipheret'],
     chakra: 3,
@@ -203,7 +191,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 't3',
     title: 'Alinhamento',
-    description: 'Realize um ritual de alinhamento cósmico',
     category: 'transformação',
     sefirot: ['Kether', 'Tipheret'],
     chakra: 7,
@@ -214,7 +201,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 't4',
     title: 'Renascimento',
-    description: 'Complete um ciclo completo de 40 dias',
     category: 'transformação',
     sefirot: ['Binah', 'Yesod'],
     chakra: 6,
@@ -225,7 +211,6 @@ const MILESTONE_DEFS: Milestone[] = [
   {
     id: 't5',
     title: 'Iluminação',
-    description: 'Alcance harmonia entre todos os chakras',
     category: 'transformação',
     sefirot: ['Kether', 'Tipheret', 'Malkuth'],
     chakra: 7,
@@ -238,7 +223,7 @@ const MILESTONE_DEFS: Milestone[] = [
 // ─── Storage Helpers ──────────────────────────────────────────────────────────
 function getMilestoneWithProgress(id: string): Milestone {
   const def = MILESTONE_DEFS.find(m => m.id === id)
-  return def ? { ...def } : { id, title: id, description: '', category: 'prática', sefirot: [], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: '' }
+  return def ? { ...def } : { id, title: id, category: 'prática', sefirot: [], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: '' }
 }
 
 function calculateProgress(milestones: Milestone[]): JourneyProgress {

@@ -15,8 +15,7 @@
  * ════════════════════════════════════════════════════════════════════════════
  */
 
-import { MapaAlmaCompleto } from '../engines/types/mapa-alma'
-import { Convergencia, TipoConvergencia } from '../engines/types/mapa-alma'
+import { MapaAlmaCompleto, Convergence } from '../engines/types/mapa-alma'
 
 // ============================================================================
 // TIPOS E INTERFACES
@@ -237,9 +236,9 @@ export class PredictiveSynthesisEngine {
     const astrologia = mapa.astrologia
 
     // Encontrar o elemento comum entre tradições
-    const signo = astrologia?.signoSun || 'Desconhecido'
-    const caminhoVida = numerologia?.caminhoVida || 0
-    const oduPrincipal = odu?.oduPrincipal?.nome || 'Desconhecido'
+    const signo = astrologia?.sol?.signo || astrologia?.ascendente || 'Desconhecido'
+    const caminhoVida = numerologia?.vida || 0
+    const oduPrincipal = odu?.regente?.nome || 'Desconhecido'
 
     // Verificar número mestre
     const éNúmeroMestre = [11, 22, 33].includes(caminhoVida)
@@ -248,7 +247,7 @@ export class PredictiveSynthesisEngine {
     // Calcular nível de convergência
     const converências = mapa.convergencias || []
     const converênciasSignificativas = converências.filter(c => 
-      c.tipo === 'tríplice' || c.tipo === 'dupla'
+      c.forca === 'forte' || c.forca === 'medio'
     )
 
     return {
@@ -283,7 +282,8 @@ export class PredictiveSynthesisEngine {
       nivelPotencia: converênciasSignificativas.length > 2 ? 'tríplice' : 'dupla',
       aplicacaoPratica: 'Pratique auto-observação nos momentos de intuição aguda. ' +
         'Anote seus insights em um diário espiritual para rastrear padrões.',
-      orixafavoravel: this.identificarOrixáFavorável(signo, caminhoVida)
+      orixafavoravel: this.identificarOrixáFavorável(signo, caminhoVida),
+      timestamp: new Date()
     }
   }
 
@@ -295,8 +295,7 @@ export class PredictiveSynthesisEngine {
     const numerologia = mapa.numerologia
     const tarot = mapa.tarot
 
-    const caminhoVida = numerologia?.caminhoVida || 0
-    const arcoMenor = tarot?.arcoMenor || []
+    const caminhoVida = numerologia?.vida || 0
 
     // Mapear número a arcano
     const arcanoCorrespondente = caminhoVida <= 22 
@@ -330,7 +329,8 @@ export class PredictiveSynthesisEngine {
       confianca: 0.91,
       nivelPotencia: 'dupla',
       aplicacaoPratica: `Medite sobre a energia do Arcano ${arcanoCorrespondente.nome}. ` +
-        `Visualize seu caminho de vida fluindo através desta energia arquetípica.`
+        `Visualize seu caminho de vida fluindo através desta energia arquetípica.`,
+      timestamp: new Date()
     }
   }
 
@@ -341,14 +341,15 @@ export class PredictiveSynthesisEngine {
     const mapa = this.mapaAlma!
     const odu = mapa.odu
     const chakrasInfo = mapa.chakras?.chakras || []
-    const oduPrincipal = odu?.oduPrincipal?.nome || 'Ogbe'
+    const oduRegente = odu?.regente
+    const oduPrincipal = typeof oduRegente === 'object' && 'nome' in oduRegente ? oduRegente.nome : 'Ogbe'
     const orixáCabeca = this.identificarOrixáCabeça(oduPrincipal)
     const mapeamento = MAPEAMENTO_ORIXÁ_CHAKRA[orixáCabeca.toLowerCase()] || 
                        MAPEAMENTO_ORIXÁ_CHAKRA['oxalá']
 
     // Encontrar chakra correspondente
     const chakraCorrespondente = chakrasInfo.find(c => 
-      c.nome === mapeamento.chakra || c.posicao === mapeamento.numero
+      c.nome === mapeamento.chakra || c.numero === mapeamento.numero
     )
 
     return {
@@ -356,9 +357,9 @@ export class PredictiveSynthesisEngine {
       titulo: `Correlação Ancestral: ${orixáCabeca} ↔ ${mapeamento.chakra}`,
       mensagem: `Você é filho(a) de ${orixáCabeca}, que ressoa com o chakra ${mapeamento.chakra} (${mapeamento.numero}º). ` +
         `Este alinhamento indica que sua energia ancestral flui através do ${mapeamento.elemento}. ` +
-        chakraCorrespondente 
-          ? `Seu chakra ${mapeamento.chakra} está com energia de ${chakraCorrespondente.energia}%.`
-          : `A harmonização deste eixo é essencial para seu equilíbrio.`,
+        (chakraCorrespondente 
+          ? `Seu chakra ${mapeamento.chakra} está com energia de ${chakraCorrespondente.intensidade}%.`
+          : `A harmonização deste eixo é essencial para seu equilíbrio.`),
       tradicoes: ['candomblé', 'umbanda', 'yoga', 'chakras'],
       eixos: [
         {
@@ -378,7 +379,8 @@ export class PredictiveSynthesisEngine {
         `Mantras do chakra são recomendados diariamente.`,
       orixafavoravel: orixáCabeca,
       chakras: [mapeamento.chakra],
-      ervas: [this.obterErvaCorrespondente(orixáCabeca)]
+      ervas: [this.obterErvaCorrespondente(orixáCabeca)],
+      timestamp: new Date()
     }
   }
 
@@ -389,8 +391,8 @@ export class PredictiveSynthesisEngine {
     const mapa = this.mapaAlma!
     const astrologia = mapa.astrologia
 
-    const signo = astrologia?.signoSun || 'Escorpiao'
-    const lua = astrologia?.lua || 'Crescente'
+    const signo = astrologia?.sol?.signo || 'escorpiao'
+    const lua = astrologia?.lua?.signo || 'crescente'
 
     // Calcular períodos favoráveis
     const períodos = this.calcularPeríodosFavoráveis(signo, lua)
@@ -414,7 +416,8 @@ export class PredictiveSynthesisEngine {
       ],
       confianca: 0.89,
       nivelPotencia: 'dupla',
-      aplicacaoPratica: períodos.prática
+      aplicacaoPratica: períodos.prática,
+      timestamp: new Date()
     }
   }
 
@@ -425,20 +428,22 @@ export class PredictiveSynthesisEngine {
     const mapa = this.mapaAlma!
     const convergências = mapa.convergencias || []
 
-    const tríplices = convergências.filter(c => c.tipo === 'tríplice')
-    const duplas = convergências.filter(c => c.tipo === 'dupla')
+    const fortes = convergências.filter(c => c.forca === 'forte')
+    const medias = convergências.filter(c => c.forca === 'medio')
 
-    const título = tríplices.length > 0 
-      ? `Convergência Tríplice: ${tríplices[0].descricao}`
-      : duplas.length > 0 
-        ? `Convergência Dupla: ${duplas[0].descricao}`
+    const título = fortes.length > 0 
+      ? `Convergência Forte: ${fortes[0].descricao}`
+      : medias.length > 0 
+        ? `Convergência Média: ${medias[0].descricao}`
         : 'Síntese de Configurações'
 
-    const descrição = tríplices.length > 0
-      ? `Você possui ${tríplices.length} convergência(s) tríplice(s), indicating alta sintonia com múltiplas tradições. ${tríplices[0].descricao}`
-      : duplas.length > 0
-        ? `Sua configuração possui ${duplas.length} convergência(s) dupla(s). ${duplas[0].descricao}`
+    const descrição = fortes.length > 0
+      ? `Você possui ${fortes.length} convergência(s) forte(s), indicando alta sintonia com múltiplas tradições. ${fortes[0].descricao}`
+      : medias.length > 0
+        ? `Sua configuração possui ${medias.length} convergência(s) média(s). ${medias[0].descricao}`
         : 'Suas tradições estão alinhadas de forma consistente.'
+
+    const forçaMap: Record<string, number> = { 'forte': 0.9, 'medio': 0.7, 'fraco': 0.5 }
 
     return {
       id: `insight-convergencias-${Date.now()}`,
@@ -447,19 +452,20 @@ export class PredictiveSynthesisEngine {
       tradicoes: this.extrairTradiçõesConvergências(convergências),
       eixos: convergências.map(c => ({
         eixo: 'cósmico-vibracional' as const,
-        elementos: c.elementos.map(e => ({
-          tradicao: e.tradicao,
-          elemento: e.tipo,
-          valor: e.valor,
-          significado: e.descricao || e.valor
+        elementos: c.sistemas.map((s, i) => ({
+          tradicao: s,
+          elemento: `sistema${i + 1}`,
+          valor: c.energia,
+          significado: c.descricao
         })),
-        confianca: c.forca || 0.85
+        confianca: forçaMap[c.forca] ?? 0.85
       })),
-      confianca: tríplices.length > 0 ? 0.95 : 0.88,
-      nivelPotencia: tríplices.length > 0 ? 'tríplice' : duplas.length > 0 ? 'dupla' : 'simples',
-      aplicacaoPratica: tríplices.length > 0
+      confianca: fortes.length > 0 ? 0.95 : 0.88,
+      nivelPotencia: fortes.length > 0 ? 'tríplice' : medias.length > 0 ? 'dupla' : 'simples',
+      aplicacaoPratica: fortes.length > 0
         ? 'Este é um momento de alta potência espiritual. Realize suas práticas mais importantes.'
-        : 'Suas práticas regulares estão bem alinhadas. Continue com consistência.'
+        : 'Suas práticas regulares estão bem alinhadas. Continue com consistência.',
+      timestamp: new Date()
     }
   }
 
@@ -719,10 +725,10 @@ export class PredictiveSynthesisEngine {
     return recomendações
   }
 
-  private extrairTradiçõesConvergências(convergências: Convergencia[]): string[] {
+  private extrairTradiçõesConvergências(convergências: Convergence[]): string[] {
     const tradições = new Set<string>()
     convergências.forEach(c => {
-      c.elementos.forEach(e => tradições.add(e.tradicao))
+      c.sistemas.forEach(s => tradições.add(s))
     })
     return Array.from(tradições)
   }
@@ -742,15 +748,3 @@ export class PredictiveSynthesisEngine {
 // ============================================================================
 
 export const predictiveSynthesisEngine = new PredictiveSynthesisEngine()
-
-export type { 
-  InsightSintese, 
-  SinteseConsciencial, 
-  GrafoNodo, 
-  JanelaTemporal,
-  TraçoDominante,
-  TraçoSombra,
-  Recomendação,
-  EixoCorrelacional,
-  MapeamentoElemento
-}

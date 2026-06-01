@@ -12,7 +12,8 @@ import {
   getOrixaMainHerbs,
   getHerbOrixas,
   type OrixaName,
-  type HerbCategory
+  type HerbCategory,
+  type HerbProperties
 } from '@/lib/correlation/orixa-herb';
 import { getOrixaChakra, getAllOrixaChakras } from '@/lib/correlation/orixa-chakra';
 
@@ -53,14 +54,14 @@ export default function OrixaPage() {
   const chakraData = getOrixaChakra(orixaSelecionado);
 
   const ervasFiltradas = categoriaFiltro === 'todas'
-    ? orixaData?.ervas || []
-    : orixaData?.ervas.filter(e => e.categoria === categoriaFiltro) || [];
+    ? orixaData?.erivas || []
+    : orixaData?.erivas.filter((e: HerbProperties) => e.categoria === categoriaFiltro) || [];
   return (
     <CosmicBackground>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
-          <Heading level={1} className="text-3xl font-bold text-center mb-2">
+          <Heading as="h1" className="text-3xl font-bold text-center mb-2">
             ✦ Dashboard dos Orixás ✦
           </Heading>
           <p className="text-center text-muted-foreground">
@@ -113,15 +114,10 @@ export default function OrixaPage() {
             {chakraData ? (
               <>
                 <p className="text-sm font-semibold text-blue-200">
-                  {chakraData.chakra_primario}
+                  {chakraData.chakra}
                 </p>
-                {chakraData.chakra_secundario && (
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Secundário: {chakraData.chakra_secundario}
-                  </p>
-                )}
                 <p className="text-xs text-blue-300 mt-2">
-                  {chakraData.elemento} • {chakraData.frequencia}
+                  {chakraData.elemento}
                 </p>
               </>
             ) : (
@@ -295,21 +291,12 @@ export default function OrixaPage() {
               {chakraData && (
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">Chakra Primário:</span>
-                    <span className="font-bold">{chakraData.chakra_primario}</span>
+                    <span className="text-sm">Chakra:</span>
+                    <span className="font-bold">{chakraData.chakra}</span>
                   </div>
-                  {chakraData.chakra_secundario && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm">Chakra Secundário:</span>
-                      <span className="font-bold">{chakraData.chakra_secundario}</span>
-                    </div>
-                  )}
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Elemento:</span>
                     <span className="font-bold">{chakraData.elemento}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Frequência:</span>
                   </div>
                 </div>
               )}
@@ -329,7 +316,7 @@ export default function OrixaPage() {
                   >
                     <p className="font-semibold text-sm">{mapping.orixa}</p>
                     <p className="text-xs text-muted-foreground">
-                      {mapping.chakra_primario}
+                      {mapping.chakra}
                     </p>
                   </div>
                 ))}

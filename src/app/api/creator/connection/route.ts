@@ -23,7 +23,7 @@ const CreatorConnectionSchema = z.object({
   instructions: z.array(z.string()),
   warnings: z.array(z.string()).optional(),
   spiritualCorrelations: z.object({
-    sefirot: z.array(SefirotSchema),
+    sefirot: z.array(z.string()),
     chakra: ChakraSchema,
     element: ElementSchema,
     orixa: z.string(),
@@ -46,7 +46,7 @@ const CreatorConnectionQuerySchema = z.object({
 const CONNECTION_SPIRITUAL_CORRELATIONS: Record<string, {
   sefirot: string[];
   chakra: number;
-  element: string;
+  element: 'Fogo' | 'Água' | 'Terra' | 'Ar' | 'Éter';
   orixa: string;
   affirmation: string;
   frequency: string;

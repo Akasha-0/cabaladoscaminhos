@@ -84,18 +84,20 @@ const ORIXA_SPIRITUAL_CORRELATIONS: Record<string, {
   sefirot: string[];
   chakra: number;
   element: string;
+  orixa: string;
   affirmation: string;
+  frequency: string;
 }> = {
-  'Yemanjá': { sefirot: ['Binah', 'Yesod'], chakra: 2, element: 'Água', affirmation: 'Iemanjá protege e abençoa minha jornada' },
-  'Oxumaru': { sefirot: ['Netzach', 'Hod'], chakra: 4, element: 'Fogo', affirmation: 'Oxumaru conecta mundos e traz abundância' },
-  'Ogum': { sefirot: ['Malkuth', 'Gevurah'], chakra: 1, element: 'Terra', affirmation: 'Ogum abre caminhos e protege' },
-  'Xangô': { sefirot: ['Gevurah', 'Tipheret'], chakra: 3, element: 'Fogo', affirmation: 'Xangô traz justiça e transformação' },
-  'Oxum': { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Água', affirmation: 'Oxum adorna minha vida com prosperidade' },
-  'Iansã': { sefirot: ['Gevurah', 'Hod'], chakra: 3, element: 'Fogo', affirmation: 'Iansã me dá coragem para vencer' },
-  'Oxalá': { sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Éter', affirmation: 'Oxalá ilumina minha paz eterna' },
-  'Oxóssi': { sefirot: ['Chokhmah', 'Netzach'], chakra: 6, element: 'Ar', affirmation: 'Oxóssi me guia na trilha da sabedoria' },
-  'Nanã': { sefirot: ['Yesod', 'Binah'], chakra: 2, element: 'Água', affirmation: 'Nanã revela sabedoria ancestral' },
-  'Eshu': { sefirot: ['Hod', 'Gevurah'], chakra: 1, element: 'Terra', affirmation: 'Eshu abre portais e protege o caminho' },
+  'Yemanjá': { sefirot: ['Binah', 'Yesod'], chakra: 2, element: 'Água', orixa: 'Yemanjá', affirmation: 'Iemanjá protege e abençoa minha jornada', frequency: '639 Hz' },
+  'Oxumaru': { sefirot: ['Netzach', 'Hod'], chakra: 4, element: 'Fogo', orixa: 'Oxumaru', affirmation: 'Oxumaru conecta mundos e traz abundância', frequency: '528 Hz' },
+  'Ogum': { sefirot: ['Malkuth', 'Gevurah'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Ogum abre caminhos e protege', frequency: '396 Hz' },
+  'Xangô': { sefirot: ['Gevurah', 'Tipheret'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'Xangô traz justiça e transformação', frequency: '528 Hz' },
+  'Oxum': { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Água', orixa: 'Oxum', affirmation: 'Oxum adorna minha vida com prosperidade', frequency: '528 Hz' },
+  'Iansã': { sefirot: ['Gevurah', 'Hod'], chakra: 3, element: 'Fogo', orixa: 'Iansã', affirmation: 'Iansã me dá coragem para vencer', frequency: '528 Hz' },
+  'Oxalá': { sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Oxalá ilumina minha paz eterna', frequency: '963 Hz' },
+  'Oxóssi': { sefirot: ['Chokhmah', 'Netzach'], chakra: 6, element: 'Ar', orixa: 'Oxóssi', affirmation: 'Oxóssi me guia na trilha da sabedoria', frequency: '741 Hz' },
+  'Nanã': { sefirot: ['Yesod', 'Binah'], chakra: 2, element: 'Água', orixa: 'Nanã', affirmation: 'Nanã revela sabedoria ancestral', frequency: '417 Hz' },
+  'Eshu': { sefirot: ['Hod', 'Gevurah'], chakra: 1, element: 'Terra', orixa: 'Eshu', affirmation: 'Eshu abre portais e protege o caminho', frequency: '396 Hz' },
 };
 
 // ─── Lunar Phase Correlations ──────────────────────────────────────────────────────────
@@ -103,16 +105,18 @@ const LUNAR_PHASE_CORRELATIONS: Record<string, {
   sefirot: string[];
   chakra: number;
   element: string;
+  orixa: string;
   affirmation: string;
+  frequency: string;
 }> = {
-  'new-moon': { sefirot: ['Kether', 'Binah'], chakra: 7, element: 'Éter', affirmation: 'Na lua nova, planto intenções de luz' },
-  'waxing-crescent': { sefirot: ['Chokhmah'], chakra: 6, element: 'Ar', affirmation: 'A lua crescente fortalece minha intenção' },
-  'first-quarter': { sefirot: ['Gevurah'], chakra: 3, element: 'Fogo', affirmation: 'Na primeira quartera, tomo ação decisiva' },
-  'waxing-gibbous': { sefirot: ['Tipheret'], chakra: 5, element: 'Ar', affirmation: 'A lua gibosa refina minha energia' },
-  'full-moon': { sefirot: ['Yesod', 'Binah'], chakra: 6, element: 'Água', affirmation: 'Na lua cheia, celebro minha transformação' },
-  'waning-gibbous': { sefirot: ['Netzach'], chakra: 4, element: 'Fogo', affirmation: 'A lua gibosa minguante distribui gratidão' },
-  'last-quarter': { sefirot: ['Hod'], chakra: 5, element: 'Ar', affirmation: 'Na última quartera, perdoo e libero' },
-  'waning-crescent': { sefirot: ['Malkuth'], chakra: 1, element: 'Terra', affirmation: 'Na lua minguante, descanso e reflito' },
+  'new-moon': { sefirot: ['Kether', 'Binah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Na lua nova, planto intenções de luz', frequency: '963 Hz' },
+  'waxing-crescent': { sefirot: ['Chokhmah'], chakra: 6, element: 'Ar', orixa: 'Orunmilá', affirmation: 'A lua crescente fortalece minha intenção', frequency: '741 Hz' },
+  'first-quarter': { sefirot: ['Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'Na primeira quartera, tomo ação decisiva', frequency: '528 Hz' },
+  'waxing-gibbous': { sefirot: ['Tipheret'], chakra: 5, element: 'Ar', orixa: 'Oxum', affirmation: 'A lua gibosa refina minha energia', frequency: '528 Hz' },
+  'full-moon': { sefirot: ['Yesod', 'Binah'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Na lua cheia, celebro minha transformação', frequency: '639 Hz' },
+  'waning-gibbous': { sefirot: ['Netzach'], chakra: 4, element: 'Fogo', orixa: 'Iansã', affirmation: 'A lua gibosa minguante distribui gratidão', frequency: '528 Hz' },
+  'last-quarter': { sefirot: ['Hod'], chakra: 5, element: 'Ar', orixa: 'Ogum', affirmation: 'Na última quartera, perdoo e libero', frequency: '417 Hz' },
+  'waning-crescent': { sefirot: ['Malkuth'], chakra: 1, element: 'Terra', orixa: 'Nanã', affirmation: 'Na lua minguante, descanso e reflito', frequency: '396 Hz' },
 };
 
 // ─── CONSTANTS ──────────────────────────────────────────────────────────

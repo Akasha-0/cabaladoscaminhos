@@ -97,7 +97,7 @@ const LENORMAND_CORRELATIONS: Record<number, {
 
 // ─── Thematic Houses with Spiritual Correlations ──────────────────────────────────────────
 const THEMATIC_HOUSES_SPIRITUAL = CASAS_TEMATICAS.map((house, index) => ({
-  ...house,
+  house,
   sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'].slice(0, Math.ceil((index + 1) / 4)),
   element: ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'][index % 5],
   chakra: ((index % 7) + 1) as 1 | 2 | 3 | 4 | 5 | 6 | 7,
@@ -129,7 +129,6 @@ export async function GET(request: NextRequest) {
     const spreads = Object.entries(MESA_REAL_SPREADS).map(([key, s]) => ({
       id: key,
       format: s,
-      positions: s.positions?.length ?? 0,
     }));
 
     const response: Record<string, unknown> = {
@@ -208,8 +207,9 @@ export async function POST(request: NextRequest) {
     const reading = realizarLeitura(format, seed);
 
     // Add spiritual correlations to reading cards
-    const enrichedCards = reading.map(card => {
-      const corr = LENORMAND_CORRELATIONS[card.carta];
+    const enrichedCards = reading.map((card, idx) => {
+      const cardNum = idx + 1; // Card numbers are 1-36 based on position
+      const corr = LENORMAND_CORRELATIONS[cardNum];
       return {
         ...card,
         sefirot: corr?.sefirot || [],

@@ -27,6 +27,7 @@ const EnergyWorkQuerySchema = z.object({
 interface EnergyTechnique {
   id: string
   name: string
+  nameEn?: string
   type: string
   description: string
   steps: string[]
@@ -44,8 +45,8 @@ interface EnergyTechnique {
 const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   {
     id: 'reiiki',
-    name: 'Reiki Energy Channeling',
-    namePt: 'Canalização de Energia Reiki',
+    name: 'Canalização de Energia Reiki',
+    nameEn: 'Reiki Energy Channeling',
     type: 'healing',
     description: 'Channel universal life force energy through the palms for healing and balance.',
     steps: [
@@ -67,8 +68,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'cord-cutting',
-    name: 'Energy Cord Cutting',
-    namePt: 'Corte de Cordões Energéticos',
+    name: 'Corte de Cordões Energéticos',
+    nameEn: 'Energy Cord Cutting',
     type: 'cleansing',
     description: 'Sever energetic connections to people, places, or situations that drain your energy.',
     steps: [
@@ -90,8 +91,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'grounding',
-    name: 'Energy Grounding Practice',
-    namePt: 'Prática de Ancoramento Energético',
+    name: 'Prática de Ancoramento Energético',
+    nameEn: 'Energy Grounding Practice',
     type: 'balancing',
     description: 'Connect with Earth energy to stabilize and anchor your personal energy field.',
     steps: [
@@ -113,8 +114,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'shielding',
-    name: 'Shielding Technique',
-    namePt: 'Técnica de Proteção Energética',
+    name: 'Técnica de Proteção Energética',
+    nameEn: 'Shielding Technique',
     type: 'protection',
     description: 'Create an energetic shield to protect yourself from negative influences.',
     steps: [
@@ -136,8 +137,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'abundance',
-    name: 'Energy Manifestation Practice',
-    namePt: 'Prática de Manifestação Energética',
+    name: 'Prática de Manifestação Energética',
+    nameEn: 'Energy Manifestation Practice',
     type: 'manifestation',
     description: 'Align your energy field with abundance to attract desired outcomes.',
     steps: [
@@ -159,8 +160,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'chakra-activation',
-    name: 'Chakra Activation',
-    namePt: 'Ativação de Chakras',
+    name: 'Ativação de Chakras',
+    nameEn: 'Chakra Activation',
     type: 'healing',
     description: 'Activate and balance the energy centers for optimal spiritual flow.',
     steps: [
@@ -182,8 +183,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'auracleansing',
-    name: 'Aura Cleansing',
-    namePt: 'Limpeza da Aura',
+    name: 'Limpeza da Aura',
+    nameEn: 'Aura Cleansing',
     type: 'cleansing',
     description: 'Clean and purify your energetic field to remove accumulated negative energies.',
     steps: [
@@ -205,8 +206,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'third-eye-opening',
-    name: 'Third Eye Opening',
-    namePt: 'Abertura do Terceiro Olho',
+    name: 'Abertura do Terceiro Olho',
+    nameEn: 'Third Eye Opening',
     type: 'channeling',
     description: 'Activate the sixth chakra to enhance intuition and spiritual perception.',
     steps: [
@@ -228,8 +229,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'heart-healing',
-    name: 'Heart Chakra Healing',
-    namePt: 'Cura do Chakra do Coração',
+    name: 'Cura do Chakra do Coração',
+    nameEn: 'Heart Chakra Healing',
     type: 'healing',
     description: 'Heal and open the heart chakra to receive and give unconditional love.',
     steps: [
@@ -251,8 +252,8 @@ const ENERGY_TECHNIQUES: EnergyTechnique[] = [
   },
   {
     id: 'sacral-cleansing',
-    name: 'Sacral Chakra Healing',
-    namePt: 'Cura do Chakra Sacral',
+    name: 'Cura do Chakra Sacral',
+    nameEn: 'Sacral Chakra Healing',
     type: 'cleansing',
     description: 'Cleanse and balance the sacral chakra for emotional harmony and creativity.',
     steps: [

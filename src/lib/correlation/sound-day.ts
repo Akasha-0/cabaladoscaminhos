@@ -560,7 +560,7 @@ export function getDaySound(): Record<string, SoundDayCorrelation[]> {
   const result: Partial<Record<SoundDay, SoundDayCorrelation[]>> = {};
   for (const item of Object.values(SOUND_DAY_MAP)) {
     if (!result[item.dia]) result[item.dia] = [];
-    result[item.dia].push(item);
+    result[item.dia]!.push(item);
   }
   return result as Record<string, SoundDayCorrelation[]>;
 }

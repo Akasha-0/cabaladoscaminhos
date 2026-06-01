@@ -447,11 +447,11 @@ describe('numerology-planet', () => {
   // ─── Default export ──────────────────────────────────────────────────────
   describe('default export', () => {
     it('exports required functions', async () => {
-      const module = await import('@/lib/correlation/numerology-planet');
-      expect(module.default).toBeDefined();
-      expect(typeof module.default.getNumerologyPlanet).toBe('function');
-      expect(typeof module.default.getPlanetNumerology).toBe('function');
-      expect(typeof module.default.getAllNumerologyPlanets).toBe('function');
+      const mod = await import('@/lib/correlation/numerology-planet');
+      expect(mod.default).toBeDefined();
+      expect(typeof mod.default.getNumerologyPlanet).toBe('function');
+      expect(typeof mod.default.getPlanetNumerology).toBe('function');
+      expect(typeof mod.default.getAllNumerologyPlanets).toBe('function');
     });
   });
 });

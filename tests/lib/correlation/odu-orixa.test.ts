@@ -554,8 +554,8 @@ describe('Odu-Orixá Correlation', () => {
 
   describe('Default export', () => {
     it('should export all required functions', async () => {
-      const module = await import('@/lib/correlation/odu-orixa');
-      const defaultExport = module.default;
+      const mod = await import('@/lib/correlation/odu-orixa');
+      const defaultExport = mod.default;
       
       expect(defaultExport.getOduOrixa).toBeDefined();
       expect(defaultExport.getOrixaOdu).toBeDefined();

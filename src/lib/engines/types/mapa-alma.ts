@@ -96,6 +96,24 @@ export type Convergence = {
   forca: 'forte' | 'medio' | 'fraco';
   descricao: string;
 };
+export type HyperSynthesis = {
+  signature: string;
+  explanation: string;
+  practices: string[];
+  harmonization: Array<{
+    type: 'practice' | 'element' | 'conflict';
+    tradition: string;
+    description: string;
+    priority: 'high' | 'medium' | 'low';
+  }>;
+  conflicts: Array<{
+    type: 'practice' | 'element' | 'conflict';
+    tradition: string;
+    description: string;
+    priority: 'high' | 'medium' | 'low';
+  }>;
+};
+
 export type MapaAlmaCompleto = {
   perfil: BirthProfile;
   numerologia: NumerologyResults;
@@ -112,6 +130,7 @@ export type MapaAlmaCompleto = {
     patterns: CrossSystemPattern[];
     energyHarmony: EnergyHarmonyReport;
   } | null;
+  hyperSynthesis?: HyperSynthesis | null;
 };
 
 export type {

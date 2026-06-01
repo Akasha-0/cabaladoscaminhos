@@ -289,8 +289,8 @@ interface AchievementBase {
   description: string;
   icon: string;
   target: number;
-  category: CategorySchema;
-  rarity: RaritySchema;
+  category: z.infer<typeof CategorySchema>;
+  rarity: z.infer<typeof RaritySchema>;
   sefirot: string[];
   chakra: number;
   element: string;
@@ -376,7 +376,7 @@ function enrichAchievement(
     orixa: base.spiritualCorrelations.orixa,
     affirmation: base.spiritualCorrelations.affirmation,
     spiritualCorrelations: base.spiritualCorrelations,
-  };
+  } as Achievement;
 }
 
 function calculateSpiritualStats(achievements: Achievement[]) {

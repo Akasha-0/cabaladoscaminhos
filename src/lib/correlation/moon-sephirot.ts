@@ -4,7 +4,8 @@
  * Based on traditional Kabbalistic correspondences and lunar cycle mysticism
  */
 
-import type { Elemento } from './sephirot-element';
+// Elemento type compatible with sephirot-element's ElementoTipo but using uppercase for data compatibility
+type MoonElemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
 
 /**
  * Represents the correlation between a lunar phase and its associated Sephirah
@@ -15,7 +16,7 @@ export interface MoonSephirot {
   /** The associated Sephirah name (Hebrew) */
   sephirah: string;
   /** The corresponding classical element */
-  elemento: Elemento;
+  elemento: MoonElemento;
   /** Path number on the Tree of Life */
   numero_caminho: number;
   /** Quality of the phase-sephirah energetic connection */

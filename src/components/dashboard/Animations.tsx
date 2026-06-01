@@ -3,6 +3,7 @@
  * Using Tailwind + tw-animate-css for consistent animations
  */
 
+import React from 'react';
 import { cn } from '@/lib/utils';
 
 // ============================================================

@@ -16,7 +16,22 @@ const ElementInputSchema = z.object({
 
 // ─── Element Data with Spiritual Correlations ──────────────────────────────
 
-const ELEMENTS: z.infer<typeof ElementInputSchema>[] = [
+const ELEMENTS: Array<{
+  name: string;
+  nameEn: string;
+  symbol: string;
+  qualities: string[];
+  sefirot: string[];
+  orixas: string[];
+  tarot: string[];
+  chakra: string;
+  direction: string;
+  planet: string;
+  day: string;
+  season: string;
+  traits: string[];
+  affirmation: string;
+}> = [
   {
     name: 'Fogo',
     nameEn: 'Fire',

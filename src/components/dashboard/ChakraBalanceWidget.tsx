@@ -149,7 +149,7 @@ const ChakraBalanceWidget = React.memo(function ChakraBalanceWidget({ className 
   const average = Math.round(chakras.reduce((sum, c) => sum + c.energia, 0) / chakras.length);
   
   // Color based on average
-  const avgColor = average >= 80 ? 'emerald' : average >= 60 ? 'amber' : 'red';
+  const avgColor = average >= 80 ? 'emerald' : average >= 60 ? 'amber' : 'violet';
 
   return (
     <Card className={cn(

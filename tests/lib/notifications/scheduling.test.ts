@@ -6,9 +6,9 @@ describe('notifications/scheduling', () => {
   describe('scheduleNotification', () => {
     it('creates scheduled notification', () => {
       const input: ScheduleInput = {
-        type: 'ritual_reminder',
+        type: 'ritual',
         title: 'Test Notification',
-        body: 'Test body',
+        message: 'Test body',
         scheduledAt: Date.now() + 1000,
       };
       const result = scheduleNotification(input);

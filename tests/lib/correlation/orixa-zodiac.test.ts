@@ -428,15 +428,15 @@ describe('orixa-zodiac', () => {
   // ─── Default export ─────────────────────────────────────────────────────────
   describe('default export', () => {
     it('should export all functions', async () => {
-      const module = await import('@/lib/correlation/orixa-zodiac');
-      expect(module.default).toBeDefined();
-      expect(typeof module.default.getOrixaZodiac).toBe('function');
-      expect(typeof module.default.getZodiacOrixa).toBe('function');
-      expect(typeof module.default.getAllOrixaZodiacs).toBe('function');
-      expect(typeof module.default.getAllOrixas).toBe('function');
-      expect(typeof module.default.getOrixasByElement).toBe('function');
-      expect(typeof module.default.getOrixasByDay).toBe('function');
-      expect(typeof module.default.getOrixasByPlaneta).toBe('function');
+      const mod = await import('@/lib/correlation/orixa-zodiac');
+      expect(mod.default).toBeDefined();
+      expect(typeof mod.default.getOrixaZodiac).toBe('function');
+      expect(typeof mod.default.getZodiacOrixa).toBe('function');
+      expect(typeof mod.default.getAllOrixaZodiacs).toBe('function');
+      expect(typeof mod.default.getAllOrixas).toBe('function');
+      expect(typeof mod.default.getOrixasByElement).toBe('function');
+      expect(typeof mod.default.getOrixasByDay).toBe('function');
+      expect(typeof mod.default.getOrixasByPlaneta).toBe('function');
     });
   });
 });

@@ -178,9 +178,8 @@ function normalizeDay(dia: string): string {
     'quinta': 'Quinta-feira',
     'sexta-feira': 'Sexta-feira',
     'sexta': 'Sexta-feira',
-    sábado: 'Sábado',
-    sabado: 'Sábado',
     'sábado': 'Sábado',
+    sabado: 'Sábado',
   };
   return dayMap[dia.toLowerCase()] || dia;
 }

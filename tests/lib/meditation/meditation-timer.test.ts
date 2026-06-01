@@ -2,15 +2,15 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { startTimer, type TimerOptions, type TimerControls, type TimerState } from '@/lib/meditation/meditation-timer';
 
 describe('meditation-timer', () => {
-  let mockOnTick: ReturnType<typeof vi.fn>;
-  let mockOnComplete: ReturnType<typeof vi.fn>;
-  let mockOnPhaseChange: ReturnType<typeof vi.fn>;
+  let mockOnTick: (remaining: number) => void;
+  let mockOnComplete: () => void;
+  let mockOnPhaseChange: (phaseIndex: number, phaseName: string) => void;
 
   beforeEach(() => {
     vi.useFakeTimers();
-    mockOnTick = vi.fn();
-    mockOnComplete = vi.fn();
-    mockOnPhaseChange = vi.fn();
+    mockOnTick = vi.fn((_remaining: number) => {});
+    mockOnComplete = vi.fn(() => {});
+    mockOnPhaseChange = vi.fn((_phaseIndex: number, _phaseName: string) => {});
   });
 
   afterEach(() => {

@@ -206,7 +206,7 @@ describe('Sync Conflict Resolution', () => {
     });
 
     it('should return true for different types', () => {
-      expect(hasConflict('string', 123)).toBe(true);
+      expect(hasConflict('string', '123')).toBe(true);
     });
 
     it('should return false for identical arrays', () => {

@@ -495,7 +495,7 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
   // 9. DEEP CORRELATION ANALYSIS
   const deepEngine = new DeepCorrelationEngine();
   const userData: UserSpiritualData = {
-    id: profile.email || profile.nomeCompleto,
+    id: profile.nomeCompleto,
     nome: profile.nomeCompleto,
     dataNascimento: profile.dataNascimento,
     numeroPessoal: numerologia.vida,

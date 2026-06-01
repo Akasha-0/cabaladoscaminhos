@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { calculateBalance, EnergyTracker, type EnergyBalance, type EnergyReading } from '@/lib/energy/balance';
+import { calculateBalance, EnergyTracker } from '@/lib/energy/balance';
+import type { EnergyBalance, EnergyReading } from '@/lib/energy/balance';
 
 describe('calculateBalance', () => {
   it('returns dormant distribution for empty input', () => {

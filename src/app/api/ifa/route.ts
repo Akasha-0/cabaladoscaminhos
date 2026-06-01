@@ -4,7 +4,7 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { odusData, calcularOduNascimento } from '@/lib/odus/calculos';
+import { odusData, calcularOduNascimento, type OduInfo } from '@/lib/odus/calculos';
 import { getOduTimeline, getPhaseProgress } from '@/lib/ifa/timeline';
 import { matchOduToRitual } from '@/lib/ifa/matching';
 import { getRitualSuggestions, getRitualTiming } from '@/lib/ifa/suggestions';
@@ -78,7 +78,7 @@ const ORIXA_SPIRITUAL_CORRELATIONS: Record<string, {
 };
 
 // ─── Enrich Odu with Spiritual Correlations ──────────────────────────────────────────
-function enrichOdu(odu: ReturnType<typeof odusData[keyof typeof odusData]>) {
+function enrichOdu(odu: OduInfo) {
   const corr = ODU_SPIRITUAL_CORRELATIONS[odu.numero] || ODU_SPIRITUAL_CORRELATIONS[1];
   const orixaCorr = ORIXA_SPIRITUAL_CORRELATIONS[odu.orixaRegente] || ORIXA_SPIRITUAL_CORRELATIONS['Oxalá'];
   return {
@@ -130,7 +130,6 @@ export async function GET(request: NextRequest) {
       return errorResponse({
         code: ErrorCode.VALIDATION_ERROR,
         message: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
         statusCode: 400,
       });
     }

@@ -197,7 +197,7 @@ export function AIMeditationGuide({ userId, userName = 'Visitante', className = 
                 <div className={cn(
                   'absolute inset-0 rounded-full bg-gradient-to-br from-violet-500/20 to-purple-500/20 border-2 border-violet-500/30',
                   isPlaying && 'animate-pulse'
-                )} style={{ transform: isPlaying ? `scale(${1 + Math.sin(Date.now() / 1000) * 0.1})` : 'scale(1)', transition: 'transform 2s ease-in-out' }} />
+                )} style={{ transform: isPlaying ? 'scale(1.1)' : 'scale(1)', transition: 'transform 2s ease-in-out' }} />
                 <div className="absolute inset-4 rounded-full bg-slate-800/80 flex items-center justify-center">
                   <Clock className="w-6 h-6 text-violet-400" />
                 </div>

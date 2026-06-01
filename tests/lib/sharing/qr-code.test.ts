@@ -49,7 +49,7 @@ describe('QR Code Generation', () => {
       ];
       
       for (const url of testUrls) {
-        vi.mocked(toDataURL).mockResolvedValueOnce('data:image/png;base64,mock');
+        (toDataURL as ReturnType<typeof vi.fn>).mockResolvedValueOnce('data:image/png;base64,mock');
         await generateQRCode(url);
         expect(toDataURL).toHaveBeenLastCalledWith(url, expect.any(Object));
       }

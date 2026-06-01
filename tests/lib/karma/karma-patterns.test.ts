@@ -51,9 +51,9 @@ describe('karma/karma-patterns', () => {
 
   describe('getPatternsBySeverity', () => {
     it('filters patterns by severity', () => {
-      const patterns = getPatternsBySeverity('critical');
+      const patterns = getPatternsBySeverity('heavy');
       expect(Array.isArray(patterns)).toBe(true);
-      patterns.forEach((p) => expect(p.severity).toBe('critical'));
+      patterns.forEach((p) => expect(p.severity).toBe('heavy'));
     });
   });
 

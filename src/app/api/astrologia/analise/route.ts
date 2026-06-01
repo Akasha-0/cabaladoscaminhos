@@ -169,7 +169,9 @@ export async function GET(request: NextRequest) {
       const planetCorr = PLANET_SPIRITUAL_CORRELATIONS[planeta] || PLANET_SPIRITUAL_CORRELATIONS['sol'];
       const signCorr = SIGN_SPIRITUAL_CORRELATIONS[posicao.signo] || SIGN_SPIRITUAL_CORRELATIONS['aries'];
       const houseCorr = HOUSE_SPIRITUAL_CORRELATIONS[posicao.casa] || HOUSE_SPIRITUAL_CORRELATIONS[1];
-      (mapaNatalEnriched.planeta[planeta as Planeta] as typeof posicao & { spiritualCorrelations: object }).spiritualCorrelations = {
+      const planetKey = planeta as keyof typeof mapaNatalEnriched.planeta;
+      const enriched = mapaNatalEnriched.planeta[planetKey] as unknown as typeof posicao & { spiritualCorrelations: object };
+      enriched.spiritualCorrelations = {
         planet: planetCorr,
         sign: signCorr,
         house: houseCorr,

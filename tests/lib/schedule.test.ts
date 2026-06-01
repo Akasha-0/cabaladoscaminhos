@@ -84,10 +84,12 @@ describe('Schedule Module', () => {
       const reminder: Reminder = {
         id: 'test-id',
         userId: 'user-123',
+        type: 'ritual',
         title: 'Test',
         message: 'Test message',
         scheduledAt: Date.now(),
         status: 'pending',
+        createdAt: Date.now(),
       };
       expect(reminder.id).toBe('test-id');
     });

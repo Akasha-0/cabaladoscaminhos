@@ -282,7 +282,7 @@ const SOUL_JOURNEY_STAGES: SoulStage[] = [
       'Ser instrumento da luz',
     ],
     symbols: ['Mão', 'Luz irradiante', 'Serviço'],
-    orizas: ['Oxalá', 'Iemanjá'],
+    orixas: ['Oxalá', 'Iemanjá'],
     sefirot: ['Chesed', 'Netzach'],
     chakra: 'Anahata (4º)',
     signs: ['Júpiter aspecto', 'Lua em Sagitário'],

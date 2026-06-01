@@ -435,7 +435,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Add spiritual correlations based on chart type
-  const correlations = CHART_SPIRITUAL_CORRELATIONS[chart.type] || CHART_SPIRITUAL_CORRELATIONS.natal;
+  const correlations = CHART_SPIRITUAL_CORRELATIONS[chart.tipo] || CHART_SPIRITUAL_CORRELATIONS.natal;
 
   return NextResponse.json({
     success: true,

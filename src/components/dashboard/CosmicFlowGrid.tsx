@@ -18,9 +18,11 @@ interface CosmicFlowGridProps {
   userData?: {
     id?: string;
     nome?: string;
+    dataNascimento?: string;
     numeroPessoal?: number;
     odu?: string;
     arcanoPessoal?: number;
+    sefirotDominante?: string[];
   };
 }
 
@@ -90,6 +92,11 @@ interface UnifiedToolsPanelProps {
 
 function UnifiedToolsPanel({ userData }: UnifiedToolsPanelProps) {
   const [activeTab, setActiveTab] = useState<'numerologia' | 'astrologia' | 'lunar'>('numerologia');
+  const [numeros] = useState(() => ({
+    caminho: Math.floor(Math.random() * 9) + 1,
+    missao: Math.floor(Math.random() * 9) + 1,
+    licao: Math.floor(Math.random() * 9) + 1,
+  }));
 
   const tabs = [
     { id: 'numerologia' as const, label: 'Numerologia', icon: <Sparkles className="w-4 h-4" /> },
@@ -136,9 +143,9 @@ function UnifiedToolsPanel({ userData }: UnifiedToolsPanelProps) {
               </div>
             </div>
             <div className="grid grid-cols-3 gap-3">
-              {['Caminho', 'Missao', 'Lição'].map((label, i) => (
+              {[['Caminho', numeros.caminho], ['Missao', numeros.missao], ['Lição', numeros.licao]].map(([label, num]) => (
                 <div key={label} className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
-                  <p className="text-lg font-bold text-violet-400">{Math.floor(Math.random() * 9) + 1}</p>
+                  <p className="text-lg font-bold text-violet-400">{num}</p>
                   <p className="text-xs text-slate-500">{label}</p>
                 </div>
               ))}
@@ -281,7 +288,7 @@ function UnifiedPracticePanel({ userData }: UnifiedPracticePanelProps) {
       {/* Affirmation */}
       <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20">
         <p className="text-xs text-emerald-400 mb-2">✨ Afirmação do Dia</p>
-        <p className="text-sm text-slate-200 italic leading-relaxed">"{dailyPractice.affirmation}"</p>
+        <p className="text-sm text-slate-200 italic leading-relaxed">&ldquo;{dailyPractice.affirmation}&rdquo;</p>
       </div>
 
       {/* Ritual */}
@@ -382,10 +389,10 @@ export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
             </div>
             <SpiritualRadarChart
               userData={{
-                name: userData?.nome || 'Visitante',
-                birthDate: '',
+                nome: userData?.nome || 'Visitante',
+                dataNascimento: userData?.dataNascimento || '',
                 odu: userData?.odu || 'Alafia',
-                orixa: 'Oxalá',
+                orixas: ['Oxalá'],
               }}
               currentLevels={{
                 numerologia: 7,

@@ -14,15 +14,6 @@ export {
   createChatCompletionStream,
 } from './openai';
 
-// Re-export generator types
-export {
-  type GerarInsightOptions,
-  type InsightGenerationResult,
-  gerarInsightDiario,
-  gerarInsightComRetry,
-  gerarInsightFresh,
-  hasCachedInsight,
-  limparCacheInsight,
-} from './insights/generator';
+// Re-export tradition mapper
 export { traditionMapper, TraditionMapper } from './tradition-mapper';
 export type { TraditionConnection, TraditionMapData } from './tradition-mapper';

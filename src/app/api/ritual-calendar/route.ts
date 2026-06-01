@@ -42,6 +42,13 @@ const RitualQuerySchema = z.object({
 type RitualEntry = z.infer<typeof RitualEntrySchema>;
 type CreateRitualInput = z.infer<typeof CreateRitualSchema>;
 type UpdateRitualInput = z.infer<typeof UpdateRitualSchema>;
+
+interface RitualCalendarResponse {
+  rituals: RitualEntry[];
+  upcomingRituals: RitualEntry[];
+  pastRituals: RitualEntry[];
+  totalCount: number;
+}
 // In-memory storage for demo (replace with DB in production)
 // In-memory storage for demo (replace with DB in production)
 const ritualStorage = new Map<string, RitualEntry>();

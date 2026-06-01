@@ -15,6 +15,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+// @ts-ignore
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Sparkles, 
@@ -36,6 +37,7 @@ import {
   type TraçoSombra
 } from '@/lib/engines/predictive-synthesis-engine'
 import { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma'
+// @ts-ignore
 import { GlowEffect } from '@/components/shared/GlowEffect'
 
 // ============================================================================

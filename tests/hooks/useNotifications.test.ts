@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act, waitFor } from '@testing-library/react';
-import { useNotifications, type Notification } from '@/hooks/useNotifications';
+import { renderHook, act } from '@testing-library/react';
+import { useNotifications } from '@/hooks/useNotifications';
 
 // Mock the global EventSource and WebSocket
 const mockEventSource = {
@@ -38,62 +38,62 @@ describe('useNotifications', () => {
   });
 
   it('returns notifications array', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(result.current.notifications).toBeDefined();
     expect(Array.isArray(result.current.notifications)).toBe(true);
   });
 
   it('returns isConnected boolean', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(typeof result.current.isConnected).toBe('boolean');
   });
 
   it('returns connectionStatus', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(['connecting', 'connected', 'disconnected', 'error']).toContain(result.current.connectionStatus);
   });
 
   it('returns error as null or string', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(result.current.error === null || typeof result.current.error === 'string').toBe(true);
   });
 
   it('has clearNotifications function', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(typeof result.current.clearNotifications).toBe('function');
   });
 
   it('has markAsRead function', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(typeof result.current.markAsRead).toBe('function');
   });
 
   it('has markAllAsRead function', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(typeof result.current.markAllAsRead).toBe('function');
   });
 
   it('has removeNotification function', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(typeof result.current.removeNotification).toBe('function');
   });
 
   it('has reconnect function', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     expect(typeof result.current.reconnect).toBe('function');
   });
 
   it('clearNotifications clears the array', async () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     act(() => {
       result.current.clearNotifications();
@@ -103,7 +103,7 @@ describe('useNotifications', () => {
   });
 
   it('markAsRead updates notification read status', async () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     // Initial state - no notifications
     expect(result.current.notifications).toHaveLength(0);
@@ -117,7 +117,7 @@ describe('useNotifications', () => {
   });
 
   it('markAllAsRead marks all as read', async () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     act(() => {
       result.current.markAllAsRead();
@@ -128,7 +128,7 @@ describe('useNotifications', () => {
   });
 
   it('removeNotification removes by id', async () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     act(() => {
       result.current.removeNotification('test-id');
@@ -139,7 +139,7 @@ describe('useNotifications', () => {
   });
 
   it('reconnect function is callable', async () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     act(() => {
       result.current.reconnect();
@@ -150,7 +150,7 @@ describe('useNotifications', () => {
   });
 
   it('returns correct interface shape', () => {
-    const { result } = renderHook(() => useNotifications({ enabled: false }));
+    const { result } = renderHook(() => useNotifications({ enableSSE: false, enableWS: false }));
     
     const keys = Object.keys(result.current);
     expect(keys).toContain('notifications');

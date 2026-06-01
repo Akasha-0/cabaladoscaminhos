@@ -324,12 +324,12 @@ export async function GET(request: NextRequest) {
       }
 
       case 'mandala': {
-        const mandala = generateMandala({
-          estilo: estilo as EstiloMandala || 'tradicional',
-          centros: centros || 1,
-          aneis: aneis || 6,
-          espirais: espirais || 3,
-        });
+        const mandala = generateMandala(
+          estilo as EstiloMandala || 'tradicional',
+          centros || 1,
+          aneis || 6,
+          espirais || 3
+        );
 
         return NextResponse.json({
           success: true,
@@ -346,9 +346,7 @@ export async function GET(request: NextRequest) {
       }
 
       case 'crystal-grid': {
-        const grid = generateCrystalGrid({
-          intencao: intencao as Intencao || 'equilibrio',
-        });
+        const grid = generateCrystalGrid(intencao as Intencao || 'equilibrio');
 
         return NextResponse.json({
           success: true,

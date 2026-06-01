@@ -439,7 +439,7 @@ export default function MapaPage() {
         </div>
 
         {/* Numerologia */}
-        <NumerologiaCard numerologia={mapaData.numerologia} />
+        <NumerologiaCard data={mapaData.numerologia} />
 
         {/* Odú Ifá */}
         <OduCardFull odu={mapaData.odu} />

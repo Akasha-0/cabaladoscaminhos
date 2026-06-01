@@ -228,7 +228,8 @@ export async function POST(request: NextRequest) {
 
     const { healingType, chakra, intensity, duration } = parseResult.data;
     const selectedType = healingType || 'reiki';
-    const selectedChakra = chakra || (Math.floor(Math.random() * 7) + 1 as const);
+    const randomChakra = Math.floor(Math.random() * 7) + 1;
+    const selectedChakra = chakra || (randomChakra as 1 | 2 | 3 | 4 | 5 | 6 | 7);
     const selectedIntensity = intensity || Math.floor(Math.random() * 50) + 50;
     const selectedDuration = duration || Math.floor(Math.random() * 20) + 10;
 
@@ -260,6 +261,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-// Export types for use in other modules
-export type { HealingType, Chakra } from './types';

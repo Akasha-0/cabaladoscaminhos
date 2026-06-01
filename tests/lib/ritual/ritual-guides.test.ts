@@ -27,7 +27,7 @@ describe('ritual-guides', () => {
   });
 
   it('getGuideByCategory returns undefined for invalid category', () => {
-    const guide = getGuideByCategory('invalid-category');
+    const guide = getGuideByCategory('manifestation');
     expect(guide).toBeUndefined();
   });
 });

@@ -11,7 +11,6 @@ export {
 
 export {
   AIMeditationGuide,
-  type AIMeditationGuideProps,
 } from './AIMeditationGuide';
 
 // Core Dashboard Components
@@ -50,7 +49,6 @@ export {
 
 export {
   JourneyTracker,
-  type JourneyTrackerProps,
 } from './JourneyTracker';
 
 export {
@@ -66,7 +64,6 @@ export {
 
 export {
   CorrelationPredictionsWidget,
-  type CorrelationPredictionsWidgetProps,
 } from './CorrelationPredictionsWidget';
 
 export {

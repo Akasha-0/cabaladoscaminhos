@@ -248,7 +248,7 @@ export async function GET(request: NextRequest) {
 
       // Apply spiritual filters
       if (school) {
-        scholars = scholars.filter(s => s.school === school);
+        scholars = scholars.filter(s => s.tradition === school);
       }
 
       if (sefirot) {

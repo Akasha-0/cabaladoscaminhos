@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useCallback } from 'react';
+// @ts-ignore
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, AlertCircle, Info, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';

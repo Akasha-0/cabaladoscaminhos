@@ -6,6 +6,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
+import type { Ope } from '@/lib/ifa/draw';
 
 // Mock Redis before imports
 vi.mock('@/lib/redis', () => ({
@@ -24,7 +25,7 @@ import {
   gerarPromptInsight,
 } from '@/lib/ai/mapa-insights/prompt-builder';
 
-import type { MapaAlmaCompleto, Convergence } from '@/lib/engines/types/mapa-alma';
+import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 
 // ============================================================
 // HELPERS
@@ -57,14 +58,18 @@ function buildMapaCompleto(): MapaAlmaCompleto {
         numero: 8,
         significado: 'Incerteza, necessidade de escolha entre dois caminhos',
         orixaRegente: 'Iemanjá',
-        elementos: ['Agua', 'Terra'],
+        elementos: 'Agua',
+        opeCima: { id: 1, nome: 'Ogbe', simbolo: '☰', linhas: [true, true, true], significado: 'Caminho aberto', natureza: 'Yang' as const },
+        opeBaixo: { id: 1, nome: 'Ogbe', simbolo: '☰', linhas: [true, true, true], significado: 'Caminho aberto', natureza: 'Yang' as const },
       },
       secundario: {
         nome: 'Iwori',
         numero: 7,
         significado: 'A mulher da agua',
         orixaRegente: 'Iemanjá',
-        elementos: ['Agua'],
+        elementos: 'Agua',
+        opeCima: { id: 1, nome: 'Ogbe', simbolo: '☰', linhas: [true, true, true], significado: 'Caminho aberto', natureza: 'Yang' as const },
+        opeBaixo: { id: 1, nome: 'Ogbe', simbolo: '☰', linhas: [true, true, true], significado: 'Caminho aberto', natureza: 'Yang' as const },
       },
       orixas: ['Iemanjá', 'Oxum'],
       quizilas: ['nao comer ionga'],
@@ -93,9 +98,9 @@ function buildMapaCompleto(): MapaAlmaCompleto {
       cartaNascimento: 8,
       cartaAnoPessoal: 18,
       cartaAlma: 19,
-      interpretacao: { name: 'Justice', arcano: 8, suit: 'Major', element: 'Air', keywords: ['balance', 'justice'] },
+      interpretacao: { name: 'Justice', upright: 'Justice represents fairness, balance, and karma.', reversed: 'Unfairness, lack of accountability.' },
       cartasAdicionais: [
-        { name: 'The Moon', arcano: 18, suit: 'Major', element: 'Water', keywords: ['illusion', 'intuition'] },
+        { name: 'The Moon', upright: 'Illusion, intuition, unconscious.', reversed: 'Secrets, confusion, fear.' },
       ],
     },
     chakras: {
@@ -116,24 +121,23 @@ function buildMapaCompleto(): MapaAlmaCompleto {
       {
         sistemas: ['Candomble', 'Numerologia', 'Astrologia'],
         energia: 'agua',
-        forca: 'triplice' as const,
+        forca: 'forte',
         descricao: 'Triplice convergencia aquatica',
       },
       {
         sistemas: ['Cabala', 'Tarot'],
         energia: 'ar',
-        forca: 'dupla' as const,
+        forca: 'medio',
         descricao: 'Convergencia de ar',
       },
       {
         sistemas: ['Ifa'],
         energia: 'terra',
-        forca: 'simples' as const,
+        forca: 'fraco',
         descricao: 'Desafio karmico de Ifa',
       },
     ],
     orixasDominantes: ['Iemanjá', 'Oxum'],
-    orixas: ['Iemanjá', 'Oxum'],
     dataCalculo: '2024-01-01T00:00:00Z',
     versao: '1.0.0',
   };
@@ -154,7 +158,7 @@ describe('Mapa Insights Parser', () => {
             titulo: 'Intuicao Aquatica',
             descricao: 'Capacidade de sentir as correntes emocionais profundas.',
             sistema: 'Candomble',
-            forca: 'triplice',
+            forca: 'forte',
           },
         ],
         desafios: [
@@ -162,7 +166,7 @@ describe('Mapa Insights Parser', () => {
             titulo: 'Indecisao Cardinal',
             descricao: 'Dificuldade em tomar decisoes.',
             sistema: 'Ifa',
-            forca: 'simples',
+            forca: 'fraco',
           },
         ],
         preceitos: [],
@@ -176,10 +180,10 @@ describe('Mapa Insights Parser', () => {
 
       expect(result.resumo).toBe('Resumo poetico do mapa.');
       expect(result.proposito).toBe('Alinhar-se com a energia de Iemanja.');
-      expect(result.dons).toHaveLength(1);
-      expect(result.dons[0].forca).toBe('triplice');
-      expect(result.desafios).toHaveLength(1);
-      expect(result.desafios[0].forca).toBe('simples');
+      expect(result.dons!).toHaveLength(1);
+      expect(result.dons![0].forca).toBe('forte');
+      expect(result.desafios!).toHaveLength(1);
+      expect(result.desafios![0].forca).toBe('fraco');
       expect(result.id).toBeTruthy();
       expect(result.dataGeracao).toBeTruthy();
     });
@@ -232,19 +236,19 @@ describe('Mapa Insights Parser', () => {
       const mapa = buildMapaCompleto();
       const result = criarInsightFallback(mapa);
 
-      expect(result.preceitos).toHaveLength(1);
-      expect(result.preceitos[0].quizilas).toEqual(mapa.odu.quizilas);
-      expect(result.preceitos[0].preceitos).toEqual(mapa.odu.preceitos);
-      expect(result.preceitos[0].ebos).toEqual(mapa.odu.ebos);
+      expect(result.preceitos!).toHaveLength(1);
+      expect(result.preceitos![0].quizilas).toEqual(mapa.odu.quizilas);
+      expect(result.preceitos![0].preceitos).toEqual(mapa.odu.preceitos);
+      expect(result.preceitos![0].ebos).toEqual(mapa.odu.ebos);
     });
 
     it('maps orixas to orixas field', () => {
       const mapa = buildMapaCompleto();
       const result = criarInsightFallback(mapa);
 
-      expect(result.orixas).toHaveLength(2);
-      expect(result.orixas[0].nome).toBe('Iemanjá');
-      expect(result.orixas[1].nome).toBe('Oxum');
+      expect(result.orixas!).toHaveLength(2);
+      expect(result.orixas![0].nome).toBe('Iemanjá');
+      expect(result.orixas![1].nome).toBe('Oxum');
     });
 
     it('sets valid id and dataGeracao', () => {
@@ -253,7 +257,7 @@ describe('Mapa Insights Parser', () => {
 
       expect(result.id).toBeTruthy();
       expect(result.dataGeracao).toBeTruthy();
-      expect(new Date(result.dataGeracao)).toBeInstanceOf(Date);
+      expect(new Date(result.dataGeracao!)).toBeInstanceOf(Date);
     });
   });
 });
@@ -349,7 +353,7 @@ describe('Mapa Insights Prompt Builder', () => {
       const ctx = gerarContextoUsuario(mapa);
 
       expect(ctx).toContain('CONVERG');
-      expect(ctx).toMatch(/triplice/i);
+      expect(ctx).toMatch(/forte|medio|fraco/i);
     });
   });
 

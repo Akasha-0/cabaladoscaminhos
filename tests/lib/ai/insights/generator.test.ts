@@ -563,7 +563,7 @@ describe('Correlation Cross-Validation', () => {
     // And Arcano 3 should appear in Oxum's Tarot correlations
     const orixaHasTarot = orixaResult.correlations.some(c => c.includes('Imperadora') || c.includes('3'));
 
-    expect(tarotHasOxum || orixaHasTarout).toBe(true); // At least one direction
+    expect(tarotHasOxum || orixaHasTarot).toBe(true); // At least one direction
   });
 
   it('65. All Odu-Sephirot pairs are consistent in both directions', () => {
@@ -588,7 +588,7 @@ describe('Correlation Cross-Validation', () => {
 // ============================================================
 
 interface GenerateInsightParams {
-  tradition: SupportedTradition;
+  tradition?: SupportedTradition;
   identifier: string | number;
   userContext?: {
     nome?: string;

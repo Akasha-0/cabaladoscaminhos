@@ -3,7 +3,7 @@
  */
 
 export interface EnergyReading {
-  timestamp: number;
+  timestamp?: number;
   physical?: number;
   emotional?: number;
   mental?: number;

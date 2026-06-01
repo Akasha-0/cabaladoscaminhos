@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getAllSpreadTypes, getSpread, type SpreadType, type SpreadPosition } from '@/lib/tarot/spreads';
-import { drawCards, getCard } from '@/lib/tarot/cards';
+import { drawCards } from '@/lib/tarot/cards';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
@@ -233,14 +233,12 @@ export async function GET(request: NextRequest) {
     const cards: DrawnCard[] = [];
 
     for (let i = 0; i < drawn.length; i++) {
-      const cardId = drawn[i];
-      const card = getCard(cardId);
-      if (!card) continue;
+      const card = drawn[i];
 
       const position = i + 1;
       const spreadPosition = spread.positions[i];
       const isReversed = Math.random() > 0.7;
-      const spiritualCorr = getSpiritualCorrelations(cardId, isReversed);
+      const spiritualCorr = getSpiritualCorrelations(card.id, isReversed);
 
       // Apply spiritual filters
       if (sefirot && !spiritualCorr.sefirot.includes(sefirot)) continue;
@@ -256,8 +254,8 @@ export async function GET(request: NextRequest) {
         positionName: spreadPosition.name,
         positionDescription: spreadPosition.description,
         isReversed,
-        uprightMeaning: card.meaning_upright,
-        reversedMeaning: card.meaning_reversed,
+        uprightMeaning: card.upright.join(' '),
+        reversedMeaning: card.reversed.join(' '),
         interpretation: generateInterpretation(
           card.name,
           card.arcana,
@@ -266,7 +264,7 @@ export async function GET(request: NextRequest) {
           spreadPosition.description,
           question
         ),
-        keywords: card.keywords?.upright || [],
+        keywords: [],
         sefirot: spiritualCorr.sefirot,
         chakra: spiritualCorr.chakra,
         element: spiritualCorr.element,
@@ -310,7 +308,7 @@ export async function GET(request: NextRequest) {
       reading: {
         id: generateReadingId(),
         timestamp: new Date().toISOString(),
-        spreadType: spread.type,
+        spreadType: spread.id,
         spreadName: spread.name,
         question,
         focusArea,
@@ -362,14 +360,12 @@ export async function POST(request: NextRequest) {
     const cards: DrawnCard[] = [];
 
     for (let i = 0; i < drawn.length; i++) {
-      const cardId = drawn[i];
-      const card = getCard(cardId);
-      if (!card) continue;
+      const card = drawn[i];
 
       const position = i + 1;
       const spreadPosition = spread.positions[i];
       const isReversed = Math.random() > 0.7;
-      const spiritualCorr = getSpiritualCorrelations(cardId, isReversed);
+      const spiritualCorr = getSpiritualCorrelations(card.id, isReversed);
 
       cards.push({
         id: card.id,
@@ -379,8 +375,8 @@ export async function POST(request: NextRequest) {
         positionName: spreadPosition.name,
         positionDescription: spreadPosition.description,
         isReversed,
-        uprightMeaning: card.meaning_upright,
-        reversedMeaning: card.meaning_reversed,
+        uprightMeaning: card.upright.join(' '),
+        reversedMeaning: card.reversed.join(' '),
         interpretation: generateInterpretation(
           card.name,
           card.arcana,
@@ -389,7 +385,7 @@ export async function POST(request: NextRequest) {
           spreadPosition.description,
           question
         ),
-        keywords: card.keywords?.upright || [],
+        keywords: [],
         sefirot: spiritualCorr.sefirot,
         chakra: spiritualCorr.chakra,
         element: spiritualCorr.element,
@@ -431,7 +427,7 @@ export async function POST(request: NextRequest) {
       reading: {
         id: generateReadingId(),
         timestamp: new Date().toISOString(),
-        spreadType: spread.type,
+        spreadType: spread.id,
         spreadName: spread.name,
         question,
         focusArea,

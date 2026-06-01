@@ -149,9 +149,11 @@ export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardPro
   // Get Odu display name
   const getOduDisplayName = () => {
     if ('numero' in data.odu.regente) {
-      return `Oxé (${data.odu.regente.numero})`;
+      const regente = data.odu.regente as { numero: number; nome: string };
+      return `Oxé (${regente.numero})`;
     }
-    return `${data.odu.regente.nome} (${data.odu.regente.numero})`;
+    const regente = data.odu.regente as { number: number; name: string };
+    return `${regente.name} (${regente.number})`;
   };
 
   // Get Astrology sign
@@ -308,7 +310,7 @@ export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardPro
                       Insight IA
                     </div>
                     <p className="text-sm text-slate-300 leading-relaxed">
-                      {data.deepCorrelations.energyHarmony.summary ||
+                      {data.deepCorrelations.energyHarmony.dominant_energy ||
                        'Análise profunda das conexões entre seus sistemas espirituais.'}
                     </p>
                   </div>

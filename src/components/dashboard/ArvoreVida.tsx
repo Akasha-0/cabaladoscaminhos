@@ -204,7 +204,7 @@ interface CrossCorrelation {
   odu?: string;
   oduNumero?: number;
 }
-function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClose: () => void }) {
+function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[number]; onClose: () => void }) {
   const meaning = SEFIRA_MEANINGS[sefira.id];
   if (!meaning) return null;
   // Get cross-system correlations
@@ -213,11 +213,11 @@ function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClo
   const chakraSephir = getChakraSephirot(chakraCorr?.chakra || '');
   const oduCorr = chakraSephir?.chakra ? getChakraOdu(chakraSephir.chakra) : null;
   const correlations: CrossCorrelation = {
-    chakra: chakraCorr?.chakra || chakraSephir?.chakra || null,
-    chakraColor: chakraCorr?.cores?.[0] || null,
-    orixa: sephirotCorr?.orixa || null,
-    odu: oduCorr?.odu?.primario?.nome || null,
-    oduNumero: oduCorr?.odu?.primario?.numero || null,
+    chakra: chakraCorr?.chakra || chakraSephir?.chakra || undefined,
+    chakraColor: chakraCorr?.cores?.[0] || undefined,
+    orixa: sephirotCorr?.orixa || undefined,
+    odu: oduCorr?.odu?.primario?.nome || undefined,
+    oduNumero: oduCorr?.odu?.primario?.numero || undefined,
   };
   const pillarColor = PILLAR_COLORS[sefira.pillar as keyof typeof PILLAR_COLORS] || PILLAR_COLORS.center;
   return (
@@ -272,10 +272,10 @@ function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClo
                   <p className="text-white font-medium">{correlations.orixa}</p>
                 </div>
               </div>
-              {sefirotCorr?.cor && (
+              {sephirotCorr?.cor && (
                 <div className="ml-auto text-right">
                   <p className="text-xs text-slate-400">Energia</p>
-                  <p className="text-sm font-medium text-amber-400">{sefirotCorr.cor}</p>
+                  <p className="text-sm font-medium text-amber-400">{sephirotCorr.cor}</p>
                 </div>
               )}
             </div>
@@ -343,7 +343,7 @@ function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[0]; onClo
       </div>
       {/* Essence */}
       <p className="text-slate-300 text-xs italic mt-3 border-t border-slate-700/50 pt-2 animate-in fade-in duration-300 delay-500">
-        "{meaning.essence}"
+        &ldquo;{meaning.essence}&rdquo;
       </p>
     </div>
   );

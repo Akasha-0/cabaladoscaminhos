@@ -534,8 +534,8 @@ describe('Odu-Tarot Correlation', () => {
 
   describe('default export', () => {
     it('should export all required functions', async () => {
-      const module = await import('@/lib/correlation/odu-tarot');
-      const defaultExport = module.default;
+      const mod = await import('@/lib/correlation/odu-tarot');
+      const defaultExport = mod.default;
 
       expect(typeof defaultExport.getOduTarot).toBe('function');
       expect(typeof defaultExport.getTarotOdu).toBe('function');
@@ -544,8 +544,8 @@ describe('Odu-Tarot Correlation', () => {
     });
 
     it('should export correct ODU_TAROT_MAPPINGS', async () => {
-      const module = await import('@/lib/correlation/odu-tarot');
-      const defaultExport = module.default;
+      const mod = await import('@/lib/correlation/odu-tarot');
+      const defaultExport = mod.default;
 
       expect(defaultExport.ODU_TAROT_MAPPINGS).toBe(ODU_TAROT_MAPPINGS);
     });

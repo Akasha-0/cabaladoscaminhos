@@ -11,6 +11,8 @@ import {
   getOrixasDoDia,
   getFaseLuaAtual,
   getCorrespondenciasDia,
+  type DiaSemanaData,
+  type OrixaData,
 } from '@/lib/data/spiritual-data';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
@@ -94,12 +96,12 @@ export async function GET(request: NextRequest) {
 
     switch (category) {
       case 'dias': {
-        let data = diasSemana;
+        let data = Object.values(diasSemana);
         
         if (filter) {
-          data = data.filter(d => 
+          data = data.filter((d: DiaSemanaData) => 
             d.dia.toLowerCase().includes(filter.toLowerCase()) ||
-            d.orixá.toLowerCase().includes(filter.toLowerCase())
+            d.orixas.some((orixa: string) => orixa.toLowerCase().includes(filter.toLowerCase()))
           );
         }
         
@@ -114,14 +116,14 @@ export async function GET(request: NextRequest) {
         let data = getOrixasDoDia();
         
         if (filter) {
-          data = data.filter(o => 
+          data = data.filter((o: OrixaData) => 
             o.nome.toLowerCase().includes(filter.toLowerCase()) ||
-            o.elemento.toLowerCase().includes(filter.toLowerCase())
+            (o.elemento?.toLowerCase() || '').includes(filter.toLowerCase())
           );
         }
         
         if (element) {
-          data = data.filter(o => o.elemento.toLowerCase() === element.toLowerCase());
+          data = data.filter((o: OrixaData) => (o.elemento?.toLowerCase() || '') === element.toLowerCase());
         }
         
         return NextResponse.json({
@@ -179,7 +181,7 @@ export async function GET(request: NextRequest) {
         if (filter) {
           data = data.filter(c => 
             c.nome.toLowerCase().includes(filter.toLowerCase()) ||
-            c.localizacao.toLowerCase().includes(filter.toLowerCase())
+            c.funcao.toLowerCase().includes(filter.toLowerCase())
           );
         }
         

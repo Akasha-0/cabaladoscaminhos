@@ -313,6 +313,7 @@ const mockDataSources: DataSource[] = [
     configuracao: {
       host: 'storage.cabala.internal',
       porta: 9000,
+      ssl: false,
     },
     metricas: {
       latencia: 12,

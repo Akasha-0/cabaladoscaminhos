@@ -85,7 +85,7 @@ function getEnergyIntensity(level: number): { label: string; color: string; icon
 export function RealtimeEnergyWidget() {
   const correlation = useTodayCorrelation();
   const moonData = getMoonPhases();
-  const solfeggio = getSolfeggioForElement(correlation.element);
+  const solfeggio = getSolfeggioForElement(correlation.elemento);
   const activeChakras = getActiveChakras(correlation.chakra);
   const intensity = getEnergyIntensity(75);
   const orixaSymbol = ORIXAS_SYMBOLS[correlation.orixa] || '🔮';
@@ -141,7 +141,7 @@ export function RealtimeEnergyWidget() {
               </p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-lg">{correlation.elementEmoji}</span>
-                <span className="text-xs text-slate-300">Elemento: {correlation.element}</span>
+                <span className="text-xs text-slate-300">Elemento: {correlation.elemento}</span>
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@ export function RealtimeEnergyWidget() {
           {/* Element */}
           <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
             <p className="text-2xl">{correlation.elementEmoji}</p>
-            <p className="text-xs text-slate-400">{correlation.element}</p>
+            <p className="text-xs text-slate-400">{correlation.elemento}</p>
           </div>
 
           {/* Solfeggio */}
@@ -211,7 +211,7 @@ export function RealtimeEnergyWidget() {
         {/* Mystery / Spiritual Purpose */}
         <div>
           <p className="text-xs text-slate-400 mb-2">Mistério do Dia</p>
-          <p className="text-sm text-slate-300 italic">"{correlation.mystery}"</p>
+          <p className="text-sm text-slate-300 italic">&ldquo;{correlation.mystery}&rdquo;</p>
         </div>
       </CardContent>
     </Card>

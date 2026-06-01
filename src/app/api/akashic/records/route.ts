@@ -11,7 +11,7 @@ const AccessLevelSchema = z.enum(['basic', 'intermediate', 'advanced', 'master']
 const SoulAgeSchema = z.enum(['young', 'mature', 'old', 'ancient']);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Kether', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah',
   'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
 ]);
 
@@ -48,7 +48,7 @@ export const dynamic = 'force-dynamic';
 
 // ─── Record Type Correlations ──────────────────────────────────────────────────────────
 const RECORD_CORRELATIONS: Record<RecordType, {
-  sefirot: SefirotSchema[];
+  sefirot: z.infer<typeof SefirotSchema>[];
   chakra: number;
   orixa: string;
   element: string;

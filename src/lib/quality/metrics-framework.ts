@@ -24,19 +24,19 @@ export const MetricSeverity = z.enum(['critical', 'high', 'medium', 'low', 'info
 export type MetricSeverity = z.infer<typeof MetricSeverity>
 export const MetricStatus = z.enum(['pass', 'fail', 'warning', 'skipped', 'error'])
 export type MetricStatus = z.infer<typeof MetricStatus>
-// Aliases for .options compatibility (Zod uses .values internally)
+// Aliases for .options compatibility (Zod uses .options in v4, .enumValues in older versions)
 Object.defineProperty(MetricCategory, 'options', {
-  value: MetricCategory.values,
+  value: (MetricCategory as any)._def.values ?? (MetricCategory as any)._def.enumValues,
   writable: false,
   enumerable: true,
 })
 Object.defineProperty(MetricSeverity, 'options', {
-  value: MetricSeverity.values,
+  value: (MetricSeverity as any)._def.values ?? (MetricSeverity as any)._def.enumValues,
   writable: false,
   enumerable: true,
 })
 Object.defineProperty(MetricStatus, 'options', {
-  value: MetricStatus.values,
+  value: (MetricStatus as any)._def.values ?? (MetricStatus as any)._def.enumValues,
   writable: false,
   enumerable: true,
 })
@@ -218,30 +218,12 @@ export function getGradeColor(grade: QualityReport['grade']): string {
 // ============================================================================
 export class MetricResultBuilder {
   private result: Partial<MetricResult>
-  constructor(id: string, category: MetricCategory, name?: string) {
-    let actualCategory = category;
-    let actualName = name ?? id;
-    
-    // Auto-swap if arguments were passed as (id, name, category) instead of (id, category, name)
-    const validCategories = [
-      'spiritual_correlations',
-      'ai_integration',
-      'performance',
-      'ui_design',
-      'ux_design',
-      'architecture',
-      'qa_testing',
-      'documentation'
-    ];
-    if (name && validCategories.includes(name) && !validCategories.includes(category)) {
-      actualCategory = name as MetricCategory;
-      actualName = category;
-    }
-    
+  constructor(id: string, name: string, category: MetricCategory) {
+    // All calls use (id, name, category) order from runner.ts
     this.result = {
       id,
-      name: actualName,
-      category: actualCategory,
+      name,
+      category,
       timestamp: new Date(),
     }
   }
@@ -410,10 +392,10 @@ export class QualityReportGenerator {
     
     let totalWeightedScore = 0
     let totalWeight = 0
-    for (const [, data] of categoryScores) {
+    categoryScores.forEach((data) => {
       totalWeightedScore += data.score
       totalWeight += data.weight
-    }
+    })
     
     const overallScore = totalWeight > 0 ? totalWeightedScore / totalWeight : 0
 

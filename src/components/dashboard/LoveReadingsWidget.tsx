@@ -51,7 +51,7 @@ const ELEMENT_COMPATIBILITY: Record<string, Record<string, number>> = {
 };
 
 const ORIXA_ELEMENT_MAP: Record<string, string> = {
-  'Oxum': 'water', 'Iemanjá': 'water', 'Iemanjá': 'water',
+  'Oxum': 'water', 'Iemanjá': 'water',
   'Oxalá': 'air', 'Omolu': 'earth', 'Obá': 'earth',
   'Xangô': 'fire', 'Ogum': 'fire',
   'Iansã': 'fire', 'Oxóssi': 'earth',

@@ -39,7 +39,7 @@ const NumerologyReadingResponseSchema = z.object({
 });
 
 // ─── Spiritual Correlations for Numerology Numbers ──────────────────────────────────────────
-const NUMERO_SPIRITUAL_CORRELATIONS: Record<number, {
+const NUMERO_SPIRITUAL_CORRELATIONS: Record<string, {
   sefirot: string[];
   chakra: number;
   element: string;
@@ -47,18 +47,18 @@ const NUMERO_SPIRITUAL_CORRELATIONS: Record<number, {
   affirmation: string;
   frequency: string;
 }> = {
-  1: { sefirot: ['Kether', 'Gevurah'], chakra: 1, element: 'Fogo', orixa: 'Ogum', affirmation: 'Eu lidero com coragem e propósito', frequency: '528 Hz' },
-  2: { sefirot: ['Chokhmah', 'Binah'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'A cooperação traz harmonia', frequency: '417 Hz' },
-  3: { sefirot: ['Chokhmah', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'A criatividade flui através de mim', frequency: '639 Hz' },
-  4: { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Construo uma base sólida', frequency: '528 Hz' },
-  5: { sefirot: ['Hod', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'A liberdade me guia', frequency: '741 Hz' },
-  6: { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'O amor e a responsabilidade guiam meu caminho', frequency: '528 Hz' },
-  7: { sefirot: ['Binah', 'Hod'], chakra: 6, element: 'Água', orixa: 'Oxalá', affirmation: 'A sabedoria interior me sustenta', frequency: '396 Hz' },
-  8: { sefirot: ['Gevurah', 'Malkuth'], chakra: 3, element: 'Terra', orixa: 'Ogum', affirmation: 'O poder justo flui através de mim', frequency: '528 Hz' },
-  9: { sefirot: ['Tipheret', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Sou um canal de compaixão e serviço', frequency: '528 Hz' },
-  11: { sefirot: ['Kether', 'Chokhmah'], chakra: 6, element: 'Ar', orixa: 'Oxalá', affirmation: 'Minha intuição ilumina o caminho', frequency: '963 Hz' },
-  22: { sefirot: ['Chesed', 'Gevurah'], chakra: 4, element: 'Terra', orixa: 'Ogum', affirmation: 'Transformo visões em realidade', frequency: '528 Hz' },
-  33: { sefirot: ['Tipheret', 'Kether'], chakra: 7, element: 'Fogo', orixa: 'Oxalá', affirmation: 'Sou um canal de amor divino', frequency: '528 Hz' },
+  '1': { sefirot: ['Kether', 'Gevurah'], chakra: 1, element: 'Fogo', orixa: 'Ogum', affirmation: 'Eu lidero com coragem e propósito', frequency: '528 Hz' },
+  '2': { sefirot: ['Chokhmah', 'Binah'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'A cooperação traz harmonia', frequency: '417 Hz' },
+  '3': { sefirot: ['Chokhmah', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'A criatividade flui através de mim', frequency: '639 Hz' },
+  '4': { sefirot: ['Malkuth', 'Yesod'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Construo uma base sólida', frequency: '528 Hz' },
+  '5': { sefirot: ['Hod', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'A liberdade me guia', frequency: '741 Hz' },
+  '6': { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'O amor e a responsabilidade guiam meu caminho', frequency: '528 Hz' },
+  '7': { sefirot: ['Binah', 'Hod'], chakra: 6, element: 'Água', orixa: 'Oxalá', affirmation: 'A sabedoria interior me sustenta', frequency: '396 Hz' },
+  '8': { sefirot: ['Gevurah', 'Malkuth'], chakra: 3, element: 'Terra', orixa: 'Ogum', affirmation: 'O poder justo flui através de mim', frequency: '528 Hz' },
+  '9': { sefirot: ['Tipheret', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'Sou um canal de compaixão e serviço', frequency: '528 Hz' },
+  '11': { sefirot: ['Kether', 'Chokhmah'], chakra: 6, element: 'Ar', orixa: 'Oxalá', affirmation: 'Minha intuição ilumina o caminho', frequency: '963 Hz' },
+  '22': { sefirot: ['Chesed', 'Gevurah'], chakra: 4, element: 'Terra', orixa: 'Ogum', affirmation: 'Transformo visões em realidade', frequency: '528 Hz' },
+  '33': { sefirot: ['Tipheret', 'Kether'], chakra: 7, element: 'Fogo', orixa: 'Oxalá', affirmation: 'Sou um canal de amor divino', frequency: '528 Hz' },
 };
 
 interface NumerologyReadingRequest {
@@ -96,11 +96,11 @@ function generateReadingId(): string {
 function getCorrelationsForNumber(num: number) {
   // Handle master numbers
   if (num === 11 || num === 22 || num === 33) {
-    return NUMERO_SPIRITUAL_CORRELATIONS[num];
+    return NUMERO_SPIRITUAL_CORRELATIONS[num.toString()];
   }
   // For other numbers, reduce to 1-9
   const reduced = ((num - 1) % 9) + 1;
-  return NUMERO_SPIRITUAL_CORRELATIONS[reduced];
+  return NUMERO_SPIRITUAL_CORRELATIONS[reduced.toString()];
 }
 
 function validateInput(data: unknown): { valid: boolean; error?: string } {
@@ -158,10 +158,10 @@ export async function POST(request: NextRequest) {
     const { name, date, methods } = parseResult.data;
 
     // Calculate numerology
-    const report = calculateNumerology(name, date, methods);
+    const report = calculateNumerology(name, date);
 
     // Get spiritual correlations based on destiny number
-    const destinyNumber = report.destino;
+    const destinyNumber = report.destino.numero;
     const spiritualCorrelations = getCorrelationsForNumber(destinyNumber);
 
     const reading: NumerologyReadingResponse = {
@@ -201,54 +201,54 @@ export async function GET(request: NextRequest) {
   const element = searchParams.get('element');
   const orixa = searchParams.get('orixa');
 
-  let correlations = { ...NUMERO_SPIRITUAL_CORRELATIONS };
+  let correlations: Record<string, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = { ...NUMERO_SPIRITUAL_CORRELATIONS } as Record<string, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]>;
 
   // Filter by parameters
   if (numero) {
     const num = parseInt(numero);
-    if (NUMERO_SPIRITUAL_CORRELATIONS[num]) {
-      correlations = { [num]: NUMERO_SPIRITUAL_CORRELATIONS[num] };
+    if (NUMERO_SPIRITUAL_CORRELATIONS[num.toString()]) {
+      correlations = { [num.toString()]: NUMERO_SPIRITUAL_CORRELATIONS[num.toString()] };
     }
   }
 
   if (sefirot) {
-    const filtered: Record<number, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = {};
+    const filtered: Record<string, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = {};
     Object.entries(NUMERO_SPIRITUAL_CORRELATIONS).forEach(([num, corr]) => {
       if (corr.sefirot.includes(sefirot)) {
-        filtered[parseInt(num)] = corr;
+        filtered[num] = corr;
       }
     });
-    correlations = filtered;
+    correlations = filtered as typeof correlations;
   }
 
   if (chakra) {
-    const filtered: Record<number, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = {};
+    const filtered: Record<string, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = {};
     Object.entries(NUMERO_SPIRITUAL_CORRELATIONS).forEach(([num, corr]) => {
       if (corr.chakra === parseInt(chakra)) {
-        filtered[parseInt(num)] = corr;
+        filtered[num] = corr;
       }
     });
-    correlations = filtered;
+    correlations = filtered as typeof correlations;
   }
 
   if (element) {
-    const filtered: Record<number, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = {};
+    const filtered: Record<string, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = {};
     Object.entries(NUMERO_SPIRITUAL_CORRELATIONS).forEach(([num, corr]) => {
       if (corr.element === element) {
-        filtered[parseInt(num)] = corr;
+        filtered[num] = corr;
       }
     });
-    correlations = filtered;
+    correlations = filtered as typeof correlations;
   }
 
   if (orixa) {
-    const filtered: Record<number, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = {};
+    const filtered: Record<string, typeof NUMERO_SPIRITUAL_CORRELATIONS[string]> = {};
     Object.entries(NUMERO_SPIRITUAL_CORRELATIONS).forEach(([num, corr]) => {
       if (corr.orixa === orixa) {
-        filtered[parseInt(num)] = corr;
+        filtered[num] = corr;
       }
     });
-    correlations = filtered;
+    correlations = filtered as typeof correlations;
   }
 
   // Calculate spiritual stats

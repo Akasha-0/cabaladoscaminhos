@@ -235,12 +235,12 @@ function searchRituals(query: string, filters: { element?: string; orixa?: strin
 function searchOrixas(query: string): SearchResult[] {
   const q = query.toLowerCase();
   return orixas
-    .filter(o => q === '' || o.nome.toLowerCase().includes(q) || o.descricao.toLowerCase().includes(q))
+    .filter(o => q === '' || o.nome.toLowerCase().includes(q) || o.misterio.toLowerCase().includes(q))
     .map(o => ({
       type: 'orixa' as const,
       id: o.id || o.nome,
       title: o.nome,
-      description: o.descricao,
+      description: o.misterio,
       relevance: q ? (o.nome.toLowerCase().includes(q) ? 1 : 0.5) : 1,
       sefirot: ['Tipheret', 'Kether'],
       chakra: 7,
@@ -258,7 +258,7 @@ function searchOdus(query: string): SearchResult[] {
     .filter(o => q === '' || o.nome.toLowerCase().includes(q) || o.significado.toLowerCase().includes(q))
     .map(o => ({
       type: 'odu' as const,
-      id: o.id || o.nome,
+      id: String(o.numero) || o.nome,
       title: o.nome,
       description: o.significado,
       relevance: q ? (o.nome.toLowerCase().includes(q) ? 1 : 0.5) : 1,
@@ -274,14 +274,14 @@ function searchOdus(query: string): SearchResult[] {
 
 function searchTarot(query: string): SearchResult[] {
   const q = query.toLowerCase();
-  return TAROT_DECK
-    .filter(c => q === '' || c.name.toLowerCase().includes(q) || c.meanings.pt.toLowerCase().includes(q))
-    .map(c => ({
+  return TAROT_DECK.cards
+    .filter((c) => q === '' || c.name.toLowerCase().includes(q) || (c as any).significado?.toLowerCase().includes(q))
+    .map((c) => ({
       type: 'tarot' as const,
-      id: c.id,
+      id: String(c.id),
       title: c.name,
-      subtitle: c.arcano,
-      description: c.meanings.pt,
+      subtitle: (c as any).arcano || '',
+      description: (c as any).significado || c.reversed[0] || c.upright[0] || '',
       relevance: q ? (c.name.toLowerCase().includes(q) ? 1 : 0.5) : 1,
       sefirot: ['Chokhmah', 'Netzach'],
       chakra: 6,

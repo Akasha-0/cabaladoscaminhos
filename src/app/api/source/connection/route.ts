@@ -4,7 +4,7 @@ import { z } from 'zod';
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
   'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth', 'Daat'
 ]);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);

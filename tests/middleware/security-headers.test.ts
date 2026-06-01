@@ -148,7 +148,7 @@ describe('Security Headers', () => {
   describe('Permissions-Policy', () => {
     it('should set Permissions-Policy on API routes', () => {
       const response = simulateMiddlewareResponse('/api/numerologia');
-      const policy = response.headers.get('Permissions-Policy');
+      const policy = response.headers.get('Permissions-Policy') ?? '';
       expect(policy).toBeDefined();
       expect(typeof policy).toBe('string');
       expect(policy.length).toBeGreaterThan(0);
@@ -156,7 +156,7 @@ describe('Security Headers', () => {
 
     it('should set Permissions-Policy on page routes', () => {
       const response = simulateMiddlewareResponse('/dashboard');
-      const policy = response.headers.get('Permissions-Policy');
+      const policy = response.headers.get('Permissions-Policy') ?? '';
       expect(policy).toBeDefined();
       expect(policy).toContain('geolocation=()');
       expect(policy).toContain('microphone=()');
@@ -165,7 +165,7 @@ describe('Security Headers', () => {
 
     it('should restrict sensitive device access', () => {
       const response = simulateMiddlewareResponse('/mapa');
-      const policy = response.headers.get('Permissions-Policy') || '';
+      const policy = response.headers.get('Permissions-Policy') ?? '';
       expect(policy).toContain('geolocation=()');
       expect(policy).toContain('microphone=()');
       expect(policy).toContain('camera=()');

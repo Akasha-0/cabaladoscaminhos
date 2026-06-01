@@ -269,7 +269,8 @@ export async function POST(request: NextRequest) {
     const cards: DrawnCard[] = [];
 
     for (let i = 0; i < drawn.length; i++) {
-      const cardId = drawn[i];
+      const tarotCard = drawn[i];
+      const cardId = tarotCard.id;
       const position = i + 1;
       const spreadPosition = spread.positions[i];
       const isReversed = includeReversed && Math.random() > 0.7;
@@ -278,11 +279,11 @@ export async function POST(request: NextRequest) {
       // Create basic card object for meaning lookup
       const cardData = {
         cardId,
-        name: `Card ${cardId}`,
-        arcana: cardId < 22 ? 'major' as const : 'minor' as const,
+        name: tarotCard.name,
+        arcana: tarotCard.arcana,
         isReversed,
-        upright: ['Card upright meaning'],
-        reversed: ['Card reversed meaning'],
+        upright: tarotCard.upright,
+        reversed: tarotCard.reversed,
       };
 
       cards.push({
@@ -324,7 +325,7 @@ export async function POST(request: NextRequest) {
 
     const response: TarotConsultaResponse = {
       spread: {
-        id: spread.type,
+        id: spread.id,
         name: spread.name,
         description: spread.description || `Leitura de ${spread.name}`,
         totalCards: cards.length,
@@ -365,9 +366,9 @@ export async function GET(request: NextRequest) {
 
   const spreads = getAllSpreadTypes();
 
-  let filteredSpreads = spreads.map(s => ({
-    ...s,
-    spiritualCorrelations: READING_SPIRITUAL_CORRELATIONS[s.type] || READING_SPIRITUAL_CORRELATIONS['single-card'],
+  let filteredSpreads = spreads.map(spreadType => ({
+    ...getSpread(spreadType),
+    spiritualCorrelations: READING_SPIRITUAL_CORRELATIONS[spreadType] || READING_SPIRITUAL_CORRELATIONS['single-card'],
   }));
 
   // Apply spiritual filters

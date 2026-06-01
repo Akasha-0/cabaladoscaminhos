@@ -160,19 +160,19 @@ export async function GET(request: NextRequest) {
   }
 
   if (sefirot) {
-    filteredSessions = filteredSessions.filter((s) => s.spiritualCorrelations?.sefirot.includes(sefirot));
+    filteredSessions = filteredSessions.filter((s) => s.sefirot?.includes(sefirot as typeof s.sefirot[number]));
   }
 
   if (chakra) {
-    filteredSessions = filteredSessions.filter((s) => s.spiritualCorrelations?.chakra === parseInt(chakra));
+    filteredSessions = filteredSessions.filter((s) => s.chakra === parseInt(chakra));
   }
 
   if (element) {
-    filteredSessions = filteredSessions.filter((s) => s.spiritualCorrelations?.element === element);
+    filteredSessions = filteredSessions.filter((s) => s.element === element);
   }
 
   if (orixa) {
-    filteredSessions = filteredSessions.filter((s) => s.spiritualCorrelations?.orixa === orixa);
+    filteredSessions = filteredSessions.filter((s) => s.orixa === orixa);
   }
 
   filteredSessions.sort((a, b) =>
@@ -189,23 +189,23 @@ export async function GET(request: NextRequest) {
       return acc;
     }, {} as Record<string, number>),
     bySefirot: filteredSessions.reduce((acc, s) => {
-      s.spiritualCorrelations?.sefirot.forEach(sf => {
+      s.sefirot?.forEach((sf: string) => {
         acc[sf] = (acc[sf] || 0) + 1;
       });
       return acc;
     }, {} as Record<string, number>),
     byChakra: filteredSessions.reduce((acc, s) => {
-      const c = s.spiritualCorrelations?.chakra;
+      const c = s.chakra;
       if (c) acc[c] = (acc[c] || 0) + 1;
       return acc;
     }, {} as Record<string, number>),
     byElement: filteredSessions.reduce((acc, s) => {
-      const e = s.spiritualCorrelations?.element;
+      const e = s.element;
       if (e) acc[e] = (acc[e] || 0) + 1;
       return acc;
     }, {} as Record<string, number>),
     byOrixa: filteredSessions.reduce((acc, s) => {
-      const o = s.spiritualCorrelations?.orixa;
+      const o = s.orixa;
       if (o) acc[o] = (acc[o] || 0) + 1;
       return acc;
     }, {} as Record<string, number>),
@@ -262,9 +262,9 @@ export async function POST(request: NextRequest) {
       notes,
       category,
       createdAt: new Date().toISOString(),
-      sefirot: sefirot || spiritualCorrelations.sefirot,
-      chakra: chakra || spiritualCorrelations.chakra,
-      element: element || spiritualCorrelations.element,
+      sefirot: sefirot || (spiritualCorrelations.sefirot as MeditationSession['sefirot']),
+      chakra: chakra ?? spiritualCorrelations.chakra,
+      element: element ?? (spiritualCorrelations.element as MeditationSession['element']),
       orixa: orixa || spiritualCorrelations.orixa,
       frequency: spiritualCorrelations.frequency,
       affirmation: spiritualCorrelations.affirmation,

@@ -6,6 +6,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { parseInsightResponse, extractJson, criarInsightFallback } from '@/lib/ai/mapa-insights/parser';
 import { generateMapaInsights, gerarCacheKey } from '@/lib/ai/mapa-insights/generator';
+import { Ope } from '@/lib/ifa/draw';
 
 // ============================================================
 // HOISTED MOCKS (available during vi.mock factory evaluation)
@@ -64,8 +65,8 @@ const SAMPLE_MAPA = {
     regente: {
       numero: 5,
       nome: 'Oxé',
-      opeCima: '—',
-      opeBaixo: '—',
+      opeCima: { id: 1, nome: 'Ogbe', simbolo: '☰', linhas: [true, true, true], significado: 'Caminho aberto', natureza: 'Yang' as const },
+      opeBaixo: { id: 1, nome: 'Ogbe', simbolo: '☰', linhas: [true, true, true], significado: 'Caminho aberto', natureza: 'Yang' as const },
       elementos: 'Água',
       orixaRegente: 'Oxum',
       significado: '',
@@ -80,17 +81,17 @@ const SAMPLE_MAPA = {
     caminhoSephirah: 'Geburah',
   },
   astrologia: {
-    ascendente: 'Leão',
-    sol: { planeta: 'sol', longitude: 45, latitude: 0, distancia: 1, velocidade: 0, signo: 'Touro', casa: 1, grauNoSigno: 15 },
-    lua: { planeta: 'lua', longitude: 180, latitude: 0, distancia: 1, velocidade: 0, signo: 'Escorpião', casa: 8, grauNoSigno: 0 },
-    mercurio: { planeta: 'mercurio', longitude: 30, latitude: 0, distancia: 1, velocidade: 0, signo: 'Gêmeos', casa: 3, grauNoSigno: 1 },
-    venus: { planeta: 'venus', longitude: 60, latitude: 0, distancia: 1, velocidade: 0, signo: 'Touro', casa: 2, grauNoSigno: 1 },
-    marte: { planeta: 'marte', longitude: 120, latitude: 0, distancia: 1, velocidade: 0, signo: 'Áries', casa: 1, grauNoSigno: 1 },
-    jupiter: { planeta: 'jupiter', longitude: 150, latitude: 0, distancia: 1, velocidade: 0, signo: 'Sagitário', casa: 9, grauNoSigno: 1 },
-    saturno: { planeta: 'saturno', longitude: 180, latitude: 0, distancia: 1, velocidade: 0, signo: 'Capricórnio', casa: 10, grauNoSigno: 1 },
-    urano: { planeta: 'urano', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'Aquário', casa: 11, grauNoSigno: 1 },
-    netuno: { planeta: 'netuno', longitude: 330, latitude: 0, distancia: 1, velocidade: 0, signo: 'Peixes', casa: 12, grauNoSigno: 1 },
-    plutao: { planeta: 'plutao', longitude: 270, latitude: 0, distancia: 1, velocidade: 0, signo: 'Escorpião', casa: 8, grauNoSigno: 1 },
+    ascendente: 'leao' as const,
+    sol: { planeta: 'sol', longitude: 45, latitude: 0, distancia: 1, velocidade: 0, signo: 'touro' as const, casa: 1, grauNoSigno: 15 },
+    lua: { planeta: 'lua', longitude: 180, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio' as const, casa: 8, grauNoSigno: 0 },
+    mercurio: { planeta: 'mercurio', longitude: 30, latitude: 0, distancia: 1, velocidade: 0, signo: 'gemeos' as const, casa: 3, grauNoSigno: 1 },
+    venus: { planeta: 'venus', longitude: 60, latitude: 0, distancia: 1, velocidade: 0, signo: 'touro' as const, casa: 2, grauNoSigno: 1 },
+    marte: { planeta: 'marte', longitude: 120, latitude: 0, distancia: 1, velocidade: 0, signo: 'aries' as const, casa: 1, grauNoSigno: 1 },
+    jupiter: { planeta: 'jupiter', longitude: 150, latitude: 0, distancia: 1, velocidade: 0, signo: 'sagitario' as const, casa: 9, grauNoSigno: 1 },
+    saturno: { planeta: 'saturno', longitude: 180, latitude: 0, distancia: 1, velocidade: 0, signo: 'capricornio' as const, casa: 10, grauNoSigno: 1 },
+    urano: { planeta: 'urano', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario' as const, casa: 11, grauNoSigno: 1 },
+    netuno: { planeta: 'netuno', longitude: 330, latitude: 0, distancia: 1, velocidade: 0, signo: 'peixes' as const, casa: 12, grauNoSigno: 1 },
+    plutao: { planeta: 'plutao', longitude: 270, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio' as const, casa: 8, grauNoSigno: 1 },
     casas: [],
     aspectos: [],
   },
@@ -294,10 +295,11 @@ describe('parser', () => {
       const result = criarInsightFallback(SAMPLE_MAPA);
 
       expect(result.preceitos).toHaveLength(1);
-      expect(result.preceitos[0].odu).toBe('Oxé');
-      expect(result.preceitos[0].quizilas).toEqual(['Ovos', 'Comidas salgadas']);
-      expect(result.preceitos[0].preceitos).toEqual(['Não comer abóbora']);
-      expect(result.preceitos[0].ebos).toEqual(['Banho de mel']);
+      const preceitosItem = result.preceitos![0];
+      expect(preceitosItem.odu).toBe('Oxé');
+      expect(preceitosItem.quizilas).toEqual(['Ovos', 'Comidas salgadas']);
+      expect(preceitosItem.preceitos).toEqual(['Não comer abóbora']);
+      expect(preceitosItem.ebos).toEqual(['Banho de mel']);
     });
 
     it('14. generates id and dataGeracao', () => {
@@ -312,11 +314,12 @@ describe('parser', () => {
     it('15. maps orixasDominantes to orixas array', () => {
       const result = criarInsightFallback(SAMPLE_MAPA);
 
-      expect(result.orixas).toHaveLength(1);
-      expect(result.orixas[0].nome).toBe('Oxum');
-      expect(result.orixas[0].caminho).toBe('Geburah');
-      expect(result.orixas[0].saudacao).toBe('');
-      expect(result.orixas[0].cores).toEqual([]);
+      expect(result.orixas!).toHaveLength(1);
+      const orixaItem = result.orixas![0];
+      expect(orixaItem.nome).toBe('Oxum');
+      expect(orixaItem.caminho).toBe('Geburah');
+      expect(orixaItem.saudacao).toBe('');
+      expect(orixaItem.cores).toEqual([]);
     });
 
   });

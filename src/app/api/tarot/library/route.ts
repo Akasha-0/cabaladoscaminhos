@@ -87,13 +87,16 @@ const tarotCards = [
   { numero: 21, nome: 'O Mundo', arcano: 'Maior', significadoUpright: 'Realização, completude, integração, viagens', significadoReversed: 'Falta de progresso, sentimento de incompletude', keywords: ['realização', 'completude', 'integração'] },
 ];
 
-interface TarotCard {
+interface RawTarotCard {
   numero: number;
   nome: string;
   arcano: string;
   significadoUpright: string;
   significadoReversed: string;
   keywords: string[];
+}
+
+interface TarotCard extends RawTarotCard {
   sefirot: string[];
   chakra: number;
   element: string;
@@ -124,7 +127,7 @@ export async function GET(request: NextRequest) {
 
     const { arcano, search, numero, limit, sefirot, chakra, element } = parseResult.data;
 
-    let cards = [...tarotCards];
+    let cards = [...tarotCards] as TarotCard[];
 
     // Filter by arcano (Maior/Menor)
     if (arcano) {
@@ -161,13 +164,13 @@ export async function GET(request: NextRequest) {
 
     // Filter by spiritual correlations
     if (sefirot) {
-      cards = cards.filter(card => card.sefirot.includes(sefirot));
+      cards = (cards as TarotCard[]).filter(card => card.sefirot.includes(sefirot));
     }
     if (chakra) {
-      cards = cards.filter(card => card.chakra === chakra);
+      cards = (cards as TarotCard[]).filter(card => card.chakra === chakra);
     }
     if (element) {
-      cards = cards.filter(card => card.element === element);
+      cards = (cards as TarotCard[]).filter(card => card.element === element);
     }
 
     // Apply limit

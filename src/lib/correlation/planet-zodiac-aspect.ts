@@ -344,6 +344,3 @@ export function getTotalMappings(): number {
 export function hasPlanetZodiacAspect(planeta: string, signo: string, aspecto: string): boolean {
   return getPlanetZodiacAspect(planeta, signo, aspecto) !== null;
 }
-
-// Re-export types for convenience
-export type { PlanetZodiacMapping, PlanetAspect } from '@/lib/correlation/planet-zodiac';

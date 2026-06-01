@@ -47,6 +47,7 @@ interface Material {
   name: string;
   type: string;
   rarity: string;
+  description?: string;
   properties?: {
     element?: string;
     chakra?: string[];
@@ -195,7 +196,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, type, rarity, element, chakra, orixa, description } = body;
+    const { name, type, rarity, element, chakra, orixa, description, sefirot } = body;
 
     if (!name || !type) {
       return NextResponse.json({ success: false, error: 'Nome e tipo requeridos' }, { status: 400 });

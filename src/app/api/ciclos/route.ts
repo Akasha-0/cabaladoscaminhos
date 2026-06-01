@@ -139,8 +139,15 @@ export async function GET(request: NextRequest) {
       }
       case 'todos':
       case undefined: {
-        const ciclos = getCiclosTemporais(dataNascimento);
-        const enrichedCiclos = ciclos.map(ciclo => {
+        const ciclosRaw = getCiclosTemporais(dataNascimento);
+        // Transform single object into array of cycles for consistent handling
+        const ciclos = [
+          { numero: ciclosRaw.anoPessoal, sefirot: ciclosRaw.sefirotAno, tipo: 'ano' as const, descricao: ciclosRaw.descricao.ano },
+          { numero: ciclosRaw.mesPessoal, sefirot: ciclosRaw.sefirotMes, tipo: 'mes' as const, descricao: ciclosRaw.descricao.mes },
+          { numero: ciclosRaw.diaPessoal, sefirot: ciclosRaw.sefirotDia, tipo: 'dia' as const, descricao: ciclosRaw.descricao.dia },
+        ];
+
+        const enrichedCiclos = ciclos.map((ciclo: { numero: number; sefirot: string; tipo: string; descricao: { nome: string; descricao: string; oraculo: string; cor: string; elemento: string } | null }) => {
           const num = ciclo.numero;
           const corr = NUMERO_SPIRITUAL_CORRELATIONS[num] || NUMERO_SPIRITUAL_CORRELATIONS[num % 9 + 1];
           return {
@@ -159,44 +166,44 @@ export async function GET(request: NextRequest) {
         // Filter by spiritual correlations if requested
         let filteredCiclos = enrichedCiclos;
         if (sefirot) {
-          filteredCiclos = filteredCiclos.filter(c =>
+          filteredCiclos = filteredCiclos.filter((c: typeof enrichedCiclos[0]) =>
             c.spiritualCorrelations.sefirot.includes(sefirot)
           );
         }
         if (chakra) {
-          filteredCiclos = filteredCiclos.filter(c =>
+          filteredCiclos = filteredCiclos.filter((c: typeof enrichedCiclos[0]) =>
             c.spiritualCorrelations.chakra === chakra
           );
         }
         if (element) {
-          filteredCiclos = filteredCiclos.filter(c =>
+          filteredCiclos = filteredCiclos.filter((c: typeof enrichedCiclos[0]) =>
             c.spiritualCorrelations.element === element
           );
         }
 
         // Statistics
         const stats = {
-          byElement: enrichedCiclos.reduce((acc, c) => {
+          byElement: enrichedCiclos.reduce((acc: Record<string, number>, c: typeof enrichedCiclos[0]) => {
             const el = c.spiritualCorrelations.element;
             if (el) {
               acc[el] = (acc[el] || 0) + 1;
             }
             return acc;
           }, {} as Record<string, number>),
-          byChakra: enrichedCiclos.reduce((acc, c) => {
+          byChakra: enrichedCiclos.reduce((acc: Record<number, number>, c: typeof enrichedCiclos[0]) => {
             const ch = c.spiritualCorrelations.chakra;
             if (ch) {
               acc[ch] = (acc[ch] || 0) + 1;
             }
             return acc;
           }, {} as Record<number, number>),
-          bySefirot: enrichedCiclos.reduce((acc, c) => {
-            c.spiritualCorrelations.sefirot.forEach(sf => {
+          bySefirot: enrichedCiclos.reduce((acc: Record<string, number>, c: typeof enrichedCiclos[0]) => {
+            c.spiritualCorrelations.sefirot.forEach((sf: string) => {
               acc[sf] = (acc[sf] || 0) + 1;
             });
             return acc;
           }, {} as Record<string, number>),
-          byOrixa: enrichedCiclos.reduce((acc, c) => {
+          byOrixa: enrichedCiclos.reduce((acc: Record<string, number>, c: typeof enrichedCiclos[0]) => {
             const o = c.spiritualCorrelations.orixa;
             if (o) {
               acc[o] = (acc[o] || 0) + 1;

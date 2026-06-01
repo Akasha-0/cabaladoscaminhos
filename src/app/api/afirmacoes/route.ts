@@ -80,6 +80,7 @@ const CATEGORY_SPIRITUAL_CORRELATIONS: Record<Categoria, {
 const AFIRMACOES_POR_CATEGORIA: Record<Categoria, Array<{
   texto: string;
   fonte: string;
+  categoria: Categoria;
   sefirot: string[];
   chakra: number;
   element: string;
@@ -88,25 +89,25 @@ const AFIRMACOES_POR_CATEGORIA: Record<Categoria, Array<{
   frequency: string;
 }>> = {
   cabala: [
-    { texto: 'Eu sou parte da luz divina que ilumina o universo inteiro.', fonte: 'Séfer Yetzirá', sefirot: ['Kether'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Eu sou luz', frequency: '963 Hz' },
-    { texto: 'Minhas palavras carregam poder sagrado quando alinhadas à verdade.', fonte: 'Zohar', sefirot: ['Hod', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Xangô', affirmation: 'A verdade me liberta', frequency: '741 Hz' },
-    { texto: 'Através da árvore da vida, declaro minha expansão consciente.', fonte: 'Cabala Moderna', sefirot: ['Tipheret', 'Yesod'], chakra: 6, element: 'Fogo', orixa: 'Oxum', affirmation: 'Eu me expando', frequency: '528 Hz' },
-    { texto: 'Cada Sephirah é um portal de transformação na minha jornada.', fonte: 'Meditação Cabalística', sefirot: ['Chokhmah', 'Binah', 'Chesed', 'Gevurah'], chakra: 6, element: 'Fogo', orixa: 'Orunmilá', affirmation: 'Cada portal se abre', frequency: '639 Hz' },
-    { texto: 'Eu me conecto às energias superiores para guiá-lo em meu caminho.', fonte: 'Oração Cabalística', sefirot: ['Kether', 'Tipheret'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Guia-me, ó luz', frequency: '963 Hz' },
+    { texto: 'Eu sou parte da luz divina que ilumina o universo inteiro.', fonte: 'Séfer Yetzirá', categoria: 'cabala', sefirot: ['Kether'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Eu sou luz', frequency: '963 Hz' },
+    { texto: 'Minhas palavras carregam poder sagrado quando alinhadas à verdade.', fonte: 'Zohar', categoria: 'cabala', sefirot: ['Hod', 'Netzach'], chakra: 5, element: 'Ar', orixa: 'Xangô', affirmation: 'A verdade me liberta', frequency: '741 Hz' },
+    { texto: 'Através da árvore da vida, declaro minha expansão consciente.', fonte: 'Cabala Moderna', categoria: 'cabala', sefirot: ['Tipheret', 'Yesod'], chakra: 6, element: 'Fogo', orixa: 'Oxum', affirmation: 'Eu me expando', frequency: '528 Hz' },
+    { texto: 'Cada Sephirah é um portal de transformação na minha jornada.', fonte: 'Meditação Cabalística', categoria: 'cabala', sefirot: ['Chokhmah', 'Binah', 'Chesed', 'Gevurah'], chakra: 6, element: 'Fogo', orixa: 'Orunmilá', affirmation: 'Cada portal se abre', frequency: '639 Hz' },
+    { texto: 'Eu me conecto às energias superiores para guiá-lo em meu caminho.', fonte: 'Oração Cabalística', categoria: 'cabala', sefirot: ['Kether', 'Tipheret'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Guia-me, ó luz', frequency: '963 Hz' },
   ],
   numerologia: [
-    { texto: 'Meu número de vida é a vibração que guia meus passos.', fonte: 'Pitágoras', sefirot: ['Chokhmah'], chakra: 6, element: 'Ar', orixa: 'Orunmilá', affirmation: 'Minha vibração é pura', frequency: '741 Hz' },
-    { texto: 'A energia do número 1 me dá força para iniciar novas jornadas.', fonte: 'Numerologia', sefirot: ['Kether', 'Gevurah'], chakra: 1, element: 'Fogo', orixa: 'Ogum', affirmation: 'Eu inicio com poder', frequency: '528 Hz' },
-    { texto: 'Cada dígito carrega sabedoria ancestral que me transforma.', fonte: 'Cálculo Vibracional', sefirot: ['Binah', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'A sabedoria me transforma', frequency: '639 Hz' },
-    { texto: 'Minhas ciclos pessoais estão alinhados com o propósito divino.', fonte: 'Análise Numérica', sefirot: ['Tipheret', 'Netzach'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'Meus ciclos servem ao divino', frequency: '528 Hz' },
-    { texto: 'A soma dos meus dias revela o caminho da minha alma.', fonte: 'Numerologia Espiritual', sefirot: ['Chokhmah', 'Binah'], chakra: 6, element: 'Ar', orixa: 'Orunmilá', affirmation: 'O caminho se revela', frequency: '741 Hz' },
+    { texto: 'Meu número de vida é a vibração que guia meus passos.', fonte: 'Pitágoras', categoria: 'numerologia', sefirot: ['Chokhmah'], chakra: 6, element: 'Ar', orixa: 'Orunmilá', affirmation: 'Minha vibração é pura', frequency: '741 Hz' },
+    { texto: 'A energia do número 1 me dá força para iniciar novas jornadas.', fonte: 'Numerologia', categoria: 'numerologia', sefirot: ['Kether', 'Gevurah'], chakra: 1, element: 'Fogo', orixa: 'Ogum', affirmation: 'Eu inicio com poder', frequency: '528 Hz' },
+    { texto: 'Cada dígito carrega sabedoria ancestral que me transforma.', fonte: 'Cálculo Vibracional', categoria: 'numerologia', sefirot: ['Binah', 'Yesod'], chakra: 6, element: 'Água', orixa: 'Iemanjá', affirmation: 'A sabedoria me transforma', frequency: '639 Hz' },
+    { texto: 'Minhas ciclos pessoais estão alinhados com o propósito divino.', fonte: 'Análise Numérica', categoria: 'numerologia', sefirot: ['Tipheret', 'Netzach'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'Meus ciclos servem ao divino', frequency: '528 Hz' },
+    { texto: 'A soma dos meus dias revela o caminho da minha alma.', fonte: 'Numerologia Espiritual', categoria: 'numerologia', sefirot: ['Chokhmah', 'Binah'], chakra: 6, element: 'Ar', orixa: 'Orunmilá', affirmation: 'O caminho se revela', frequency: '741 Hz' },
   ],
   orixas: [
-    { texto: 'Xangô me concede a força da justiça e o equilíbrio das emoções.', fonte: 'Tradição Iorubá', sefirot: ['Gevurah', 'Tipheret'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'Justiça e equilíbrio me guiam', frequency: '528 Hz' },
-    { texto: 'Iemanjá abençoa minha jornada com proteção e fluidez.', fonte: 'Louvação a Iemanjá', sefirot: ['Binah', 'Yesod'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'Fluo como as águas sagradas', frequency: '639 Hz' },
-    { texto: 'Ogum abre os caminhos quando minha determinação é firme.', fonte: 'Oração a Ogum', sefirot: ['Malkuth', 'Gevurah'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Ogum abre meu caminho', frequency: '396 Hz' },
-    { texto: 'Oxum revela a beleza interior e a prosperidade consciente.', fonte: 'Saudação a Oxum', sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'Beleza e prosperidade me adornam', frequency: '528 Hz' },
-    { texto: 'Olorum sincroniza minha alma com a energia criadora do universo.', fonte: 'Oração Ancestral', sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Sincronizo-me com o Criador', frequency: '963 Hz' },
+    { texto: 'Xangô me concede a força da justiça e o equilíbrio das emoções.', fonte: 'Tradição Iorubá', categoria: 'orixas', sefirot: ['Gevurah', 'Tipheret'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'Justiça e equilíbrio me guiam', frequency: '528 Hz' },
+    { texto: 'Iemanjá abençoa minha jornada com proteção e fluidez.', fonte: 'Louvação a Iemanjá', categoria: 'orixas', sefirot: ['Binah', 'Yesod'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'Fluo como as águas sagradas', frequency: '639 Hz' },
+    { texto: 'Ogum abre os caminhos quando minha determinação é firme.', fonte: 'Oração a Ogum', categoria: 'orixas', sefirot: ['Malkuth', 'Gevurah'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Ogum abre meu caminho', frequency: '396 Hz' },
+    { texto: 'Oxum revela a beleza interior e a prosperidade consciente.', fonte: 'Saudação a Oxum', categoria: 'orixas', sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'Beleza e prosperidade me adornam', frequency: '528 Hz' },
+    { texto: 'Olorum sincroniza minha alma com a energia criadora do universo.', fonte: 'Oração Ancestral', categoria: 'orixas', sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'Sincronizo-me com o Criador', frequency: '963 Hz' },
   ],
 };
 

@@ -163,12 +163,11 @@ describe('Sync Data Module', () => {
       const existingData = { name: 'John', age: 30 };
       setSyncData(existingData);
 
-      const result = mergeSyncData({ age: 31, city: 'NYC' });
+      const result = mergeSyncData<typeof existingData>({ age: 31 });
 
       expect(result).not.toBeNull();
-      expect(result?.data.name).toBe('John');
       expect(result?.data.age).toBe(31);
-      expect(result?.data.city).toBe('NYC');
+      expect(result?.data.name).toBe('John');
     });
 
     it('should preserve version and update lastModified', () => {

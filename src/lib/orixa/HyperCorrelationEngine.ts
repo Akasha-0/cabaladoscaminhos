@@ -306,7 +306,7 @@ export class HyperCorrelationEngine {
         correlations.push({
           tradition: 'Chakra',
           entity: `Chakra ${orixaData.chakraPrincipal}`,
-          value: orixaData.cores,
+          value: orixaData.cores.join(', '),
           strength: 0.9,
           explanation: `Chakra principal de ${orixaData.nome} é o ${orixaData.chakraPrincipal}`,
         });

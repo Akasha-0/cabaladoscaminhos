@@ -86,11 +86,8 @@ interface Contract {
   frequency: string;
   affirmation: string;
   sefirotCorr: string[];
-  chakra: number;
   elementCorr: string;
   orixa: string;
-  affirmation: string;
-  frequency: string;
   spiritualCorrelations: {
     sefirot: string[];
     chakra: number;
@@ -116,11 +113,8 @@ const CONTRACTS: Contract[] = [
     frequency: 'Daily practice, weekly communion',
     affirmation: 'I am united with my sacred partner in divine love and purpose',
     sefirotCorr: CONTRACT_SPIRITUAL_CORRELATIONS.union.sefirot,
-    chakra: CONTRACT_SPIRITUAL_CORRELATIONS.union.chakra,
     elementCorr: CONTRACT_SPIRITUAL_CORRELATIONS.union.element,
     orixa: CONTRACT_SPIRITUAL_CORRELATIONS.union.orixa,
-    affirmation: CONTRACT_SPIRITUAL_CORRELATIONS.union.affirmation,
-    frequency: CONTRACT_SPIRITUAL_CORRELATIONS.union.frequency,
     spiritualCorrelations: CONTRACT_SPIRITUAL_CORRELATIONS.union,
   },
   {
@@ -137,11 +131,8 @@ const CONTRACTS: Contract[] = [
     frequency: 'Continuous awareness, dedicated service hours',
     affirmation: 'I am a vessel of divine light serving the highest good of all',
     sefirotCorr: CONTRACT_SPIRITUAL_CORRELATIONS.service.sefirot,
-    chakra: CONTRACT_SPIRITUAL_CORRELATIONS.service.chakra,
     elementCorr: CONTRACT_SPIRITUAL_CORRELATIONS.service.element,
     orixa: CONTRACT_SPIRITUAL_CORRELATIONS.service.orixa,
-    affirmation: CONTRACT_SPIRITUAL_CORRELATIONS.service.affirmation,
-    frequency: CONTRACT_SPIRITUAL_CORRELATIONS.service.frequency,
     spiritualCorrelations: CONTRACT_SPIRITUAL_CORRELATIONS.service,
   },
   {
@@ -158,11 +149,8 @@ const CONTRACTS: Contract[] = [
     frequency: 'As needed, intensive healing periods',
     affirmation: 'All fragmented parts of my soul return to wholeness now',
     sefirotCorr: CONTRACT_SPIRITUAL_CORRELATIONS.healing.sefirot,
-    chakra: CONTRACT_SPIRITUAL_CORRELATIONS.healing.chakra,
     elementCorr: CONTRACT_SPIRITUAL_CORRELATIONS.healing.element,
     orixa: CONTRACT_SPIRITUAL_CORRELATIONS.healing.orixa,
-    affirmation: CONTRACT_SPIRITUAL_CORRELATIONS.healing.affirmation,
-    frequency: CONTRACT_SPIRITUAL_CORRELATIONS.healing.frequency,
     spiritualCorrelations: CONTRACT_SPIRITUAL_CORRELATIONS.healing,
   },
   {
@@ -179,11 +167,8 @@ const CONTRACTS: Contract[] = [
     frequency: 'Seasonal celebrations, daily elemental attunement',
     affirmation: 'I am in sacred relationship with all elemental forces',
     sefirotCorr: CONTRACT_SPIRITUAL_CORRELATIONS.elemental.sefirot,
-    chakra: CONTRACT_SPIRITUAL_CORRELATIONS.elemental.chakra,
     elementCorr: CONTRACT_SPIRITUAL_CORRELATIONS.elemental.element,
     orixa: CONTRACT_SPIRITUAL_CORRELATIONS.elemental.orixa,
-    affirmation: CONTRACT_SPIRITUAL_CORRELATIONS.elemental.affirmation,
-    frequency: CONTRACT_SPIRITUAL_CORRELATIONS.elemental.frequency,
     spiritualCorrelations: CONTRACT_SPIRITUAL_CORRELATIONS.elemental,
   },
   {
@@ -200,11 +185,8 @@ const CONTRACTS: Contract[] = [
     frequency: 'Continuous practice, ascension initiations',
     affirmation: 'I ascend with grace and ease into higher dimensions of being',
     sefirotCorr: CONTRACT_SPIRITUAL_CORRELATIONS.ascension.sefirot,
-    chakra: CONTRACT_SPIRITUAL_CORRELATIONS.ascension.chakra,
     elementCorr: CONTRACT_SPIRITUAL_CORRELATIONS.ascension.element,
     orixa: CONTRACT_SPIRITUAL_CORRELATIONS.ascension.orixa,
-    affirmation: CONTRACT_SPIRITUAL_CORRELATIONS.ascension.affirmation,
-    frequency: CONTRACT_SPIRITUAL_CORRELATIONS.ascension.frequency,
     spiritualCorrelations: CONTRACT_SPIRITUAL_CORRELATIONS.ascension,
   },
 ];

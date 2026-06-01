@@ -8,45 +8,72 @@ const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
 const mockProfile: BirthProfile = {
-  nome: 'Maria Silva',
+  nomeCompleto: 'Maria Silva',
   dataNascimento: '1990-06-15',
-  horaNascimento: '14:30',
-  localNascimento: 'São Paulo, Brasil',
+  hora: '14:30',
+  cidade: 'São Paulo',
+  estado: 'SP',
+  pais: 'Brasil',
 };
 
 const mockMapaAlma: MapaAlmaCompleto = {
+  perfil: {
+    nomeCompleto: 'Maria Silva',
+    dataNascimento: '1990-06-15',
+    hora: '14:30',
+    cidade: 'São Paulo',
+    estado: 'SP',
+    pais: 'Brasil',
+  },
   numerologia: {
-    numeroVida: 7,
-    numeroDestino: 3,
-    numeroAlma: 5,
-    numeroPersonalidade: 9,
-    numeroExpressao: 4,
-    numeroMotivacao: 6,
-    caminhoVida: 'O caminho da sabedoria interior',
+    vida: 7,
+    expressao: 5,
+    motivacao: 3,
+    impressao: 2,
+    destino: 9,
+    cicloAtual: 8,
+    anoPessoal: 3,
+    metodoUsado: 'pitagorica',
   },
   odu: {
-    nome: 'Ogbe',
-    numero: 1,
+    regente: {
+      nome: 'Ogbe',
+      numero: 1,
+      significado: 'O começo',
+      orixaRegente: 'Oxalá',
+      elementos: 'Terra',
+      opeCima: { id: 1, nome: 'Ogbe', simbolo: '☰', linhas: [true, true, true], significado: 'Caminho aberto', natureza: 'Yang' as const },
+      opeBaixo: { id: 1, nome: 'Ogbe', simbolo: '☰', linhas: [true, true, true], significado: 'Caminho aberto', natureza: 'Yang' as const },
+    },
+    secundario: null,
     orixas: ['Oxum', 'Iemanjá'],
     quizilas: ['Não comer frutos do mar', 'Evitar lugares escuros'],
-    preceitos: 'Caminhe sempre com gratidão',
+    preceitos: ['Caminhe sempre com gratidão'],
     ebos: ['Água doce', 'Flores amarelas'],
-    cores: ['Azul', 'Branco'],
-    diasFavoraveis: ['Segunda', 'Sexta'],
+    elemento: 'Água',
+    arcanoTarot: 1,
+    caminhoSephirah: 'Kether',
   },
   astrologia: {
-    signo: 'Escorpião',
-    ascendente: 'Leão',
-    planetas: {
-      Sol: 'Escorpião',
-      Lua: 'Câncer',
-      Marte: 'Escorpião',
-    },
+    ascendente: 'leao',
+    sol: { signo: 'escorpio', grauNoSigno: 15, planeta: 'sol', longitude: 195, latitude: 0, distancia: 1.0, velocidade: 1.0, casa: 1 },
+    lua: { signo: 'cancer', grauNoSigno: 22, planeta: 'lua', longitude: 112, latitude: 0, distancia: 0.0, velocidade: 14.0, casa: 4 },
+    mercurio: { signo: 'escorpio', grauNoSigno: 10, planeta: 'mercurio', longitude: 190, latitude: 0, distancia: 1.2, velocidade: 2.0, casa: 1 },
+    venus: { signo: 'libra', grauNoSigno: 5, planeta: 'venus', longitude: 225, latitude: 0, distancia: 0.7, velocidade: 1.2, casa: 7 },
+    marte: { signo: 'capricornio', grauNoSigno: 3, planeta: 'marte', longitude: 273, latitude: 0, distancia: 2.0, velocidade: 1.5, casa: 1 },
+    jupiter: { signo: 'touro', grauNoSigno: 18, planeta: 'jupiter', longitude: 48, latitude: 0, distancia: 5.5, velocidade: 0.2, casa: 2 },
+    saturno: { signo: 'virgem', grauNoSigno: 12, planeta: 'saturno', longitude: 168, latitude: 0, distancia: 10.0, velocidade: 0.1, casa: 9 },
+    urano: { signo: 'escorpio', grauNoSigno: 27, planeta: 'urano', longitude: 227, latitude: 0, distancia: 19.0, velocidade: 0.05, casa: 10 },
+    netuno: { signo: 'sagitario', grauNoSigno: 8, planeta: 'netuno', longitude: 278, latitude: 0, distancia: 30.0, velocidade: 0.03, casa: 11 },
+    plutao: { signo: 'libra', grauNoSigno: 4, planeta: 'plutao', longitude: 184, latitude: 0, distancia: 34.0, velocidade: 0.02, casa: 8 },
+    casas: [],
+    aspectos: [],
   },
   tarot: {
     cartaNascimento: 1,
     cartaAnoPessoal: 15,
     cartaAlma: 7,
+    interpretacao: { name: 'O Mago', upright: 'Manifestação, habilidade, poder', reversed: 'Manipulação, habilidades não usadas' },
   },
   chakras: {
     chakras: [
@@ -62,8 +89,8 @@ const mockMapaAlma: MapaAlmaCompleto = {
     bloqueado: 'Muladhara',
     equilibrio: 81,
   },
+  convergencias: [],
   orixasDominantes: ['Oxum', 'Iemanjá'],
-  sefirot: ['Chokhmah', 'Binah', 'Daat'],
   dataCalculo: '2024-01-15T10:00:00Z',
   versao: '1.0.0',
 };
@@ -146,7 +173,7 @@ describe('useMapaAlma', () => {
     expect(result.current.data).toEqual(mockMapaAlma);
 
     // Change the response for refetch
-    const updatedMapa = { ...mockMapaAlma, numerologia: { ...mockMapaAlma.numerologia, numeroVida: 8 } };
+    const updatedMapa = { ...mockMapaAlma, numerologia: { ...mockMapaAlma.numerologia, vida: 8 } };
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => updatedMapa,
@@ -185,9 +212,9 @@ describe('useMapaAlma', () => {
       expect(result.current.data).not.toBeNull();
     });
 
-    expect(result.current.data?.numerologia.numeroVida).toBe(7);
-    expect(result.current.data?.numerologia.numeroDestino).toBe(3);
-    expect(result.current.data?.numerologia.numeroAlma).toBe(5);
+    expect(result.current.data!.numerologia.vida).toBe(7);
+    expect(result.current.data!.numerologia.expressao).toBe(5);
+    expect(result.current.data!.numerologia.motivacao).toBe(3);
   });
 
   it('returns correct odu data', async () => {
@@ -202,9 +229,9 @@ describe('useMapaAlma', () => {
       expect(result.current.data).not.toBeNull();
     });
 
-    expect(result.current.data?.odu.nome).toBe('Ogbe');
-    expect(result.current.data?.odu.numero).toBe(1);
-    expect(result.current.data?.odu.orixas).toContain('Oxum');
+    expect(result.current.data!.odu.regente.nome).toBe('Ogbe');
+    expect(result.current.data!.odu.regente.numero).toBe(1);
+    expect(result.current.data!.odu.orixas).toContain('Oxum');
   });
 
   it('returns correct astrologia data', async () => {
@@ -219,8 +246,8 @@ describe('useMapaAlma', () => {
       expect(result.current.data).not.toBeNull();
     });
 
-    expect(result.current.data?.astrologia.signo).toBe('Escorpião');
-    expect(result.current.data?.astrologia.ascendente).toBe('Leão');
+    expect(result.current.data!.astrologia.ascendente).toBe('leao');
+    expect(result.current.data!.astrologia.sol.signo).toBe('escorpio');
   });
 
   it('returns correct tarot data', async () => {
@@ -235,8 +262,8 @@ describe('useMapaAlma', () => {
       expect(result.current.data).not.toBeNull();
     });
 
-    expect(result.current.data?.tarot.cartaNascimento).toBe(1);
-    expect(result.current.data?.tarot.cartaAnoPessoal).toBe(15);
+    expect(result.current.data!.tarot.cartaNascimento).toBe(1);
+    expect(result.current.data!.tarot.cartaAnoPessoal).toBe(15);
   });
 
   it('returns correct chakras data', async () => {
@@ -251,10 +278,10 @@ describe('useMapaAlma', () => {
       expect(result.current.data).not.toBeNull();
     });
 
-    expect(result.current.data?.chakras.chakras).toHaveLength(7);
-    expect(result.current.data?.chakras.dominante).toBe('Ajna');
-    expect(result.current.data?.chakras.bloqueado).toBe('Muladhara');
-    expect(result.current.data?.chakras.equilibrio).toBe(81);
+    expect(result.current.data!.chakras.chakras).toHaveLength(7);
+    expect(result.current.data!.chakras.dominante).toBe('Ajna');
+    expect(result.current.data!.chakras.bloqueado).toBe('Muladhara');
+    expect(result.current.data!.chakras.equilibrio).toBe(81);
   });
 
   it('handles null profile gracefully', async () => {

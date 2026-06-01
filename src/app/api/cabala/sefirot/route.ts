@@ -68,7 +68,7 @@ function normalizeSefiraName(name: string): string {
   return mapping[normalized] || normalized;
 }
 
-function enrichSefira(sefira: Record<string, unknown>, name: string) {
+function enrichSefira(sefira: SefiraMeaning, name: string) {
   const normalizedName = normalizeSefiraName(name);
   const corr = SEPHIRAH_SPIRITUAL_CORRELATIONS[normalizedName] || SEPHIRAH_SPIRITUAL_CORRELATIONS['Kether'];
   return {
@@ -110,7 +110,7 @@ export async function GET(request: NextRequest) {
     }
 
     const { sefira, language, sefirot, chakra, element, orixa } = parseResult.data;
-    const rawSefirot = getMeanings(language as 'pt' | 'en' | 'he');
+    const rawSefirot = getMeanings();
 
     // Filter by spiritual correlations
     if (sefirot || chakra || element || orixa) {

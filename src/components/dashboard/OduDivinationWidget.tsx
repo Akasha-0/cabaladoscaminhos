@@ -247,7 +247,7 @@ export function OduDivinationWidget() {
         </div>
 
         {/* Progress */}
-        <WidgetProgress label="Alinhamento espiritual" value={75} max={100} color="orange" />
+        <WidgetProgress label="Alinhamento espiritual" value={75} max={100} color="amber" />
       </CardContent>
     </Card>
   );

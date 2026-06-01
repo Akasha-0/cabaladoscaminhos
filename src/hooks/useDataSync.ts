@@ -72,17 +72,17 @@ export function useDataSync(options: DataSyncOptions = {}) {
       if (!pendingRaw) return;
 
       const pending = JSON.parse(pendingRaw);
-      const current = localStorage.getItem(opts.storageKey);
+      const current = localStorage.getItem(opts.storageKey ?? 'spiritual_data');
       const currentData = current ? JSON.parse(current) : {};
 
       for (const key of pending) {
         if (key in currentData) {
-          const cloudData = localStorage.getItem(`${opts.storageKey}_cloud`);
+          const cloudData = localStorage.getItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`);
           const cloud = cloudData ? JSON.parse(cloudData) : {};
 
           if (JSON.stringify(currentData[key]) !== JSON.stringify(cloud[key])) {
-            localStorage.setItem(`${opts.storageKey}_conflicts`, JSON.stringify([
-              ...JSON.parse(localStorage.getItem(`${opts.storageKey}_conflicts`) || '[]'),
+            localStorage.setItem(`${opts.storageKey ?? 'spiritual_data'}_conflicts`, JSON.stringify([
+              ...JSON.parse(localStorage.getItem(`${opts.storageKey ?? 'spiritual_data'}_conflicts`) || '[]'),
               { key, localValue: currentData[key], cloudValue: cloud[key], resolution: null },
             ]));
           }
@@ -94,7 +94,7 @@ export function useDataSync(options: DataSyncOptions = {}) {
   }, [opts.storageKey]);
 
   const syncToCloud = useCallback(async (data: unknown): Promise<void> => {
-    const response = await fetch(opts.cloudEndpoint, {
+    const response = await fetch(opts.cloudEndpoint ?? '/api/sync/data', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ data, timestamp: new Date().toISOString() }),
@@ -104,11 +104,11 @@ export function useDataSync(options: DataSyncOptions = {}) {
       throw new Error(`Sync failed: ${response.status}`);
     }
 
-    return response.json();
+    await response.json();
   }, [opts.cloudEndpoint]);
 
   const _syncFromCloud = useCallback(async (): Promise<unknown> => {
-    const response = await fetch(opts.cloudEndpoint, {
+    const response = await fetch(opts.cloudEndpoint ?? '/api/sync/data', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -126,10 +126,10 @@ export function useDataSync(options: DataSyncOptions = {}) {
     setStatus(s => ({ ...s, syncing: true, error: null }));
 
     try {
-      const localRaw = localStorage.getItem(opts.storageKey);
+      const localRaw = localStorage.getItem(opts.storageKey ?? 'spiritual_data');
       const localData = localRaw ? JSON.parse(localRaw) : null;
 
-      const cloudRaw = localStorage.getItem(`${opts.storageKey}_cloud`);
+      const cloudRaw = localStorage.getItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`);
       const cloudData = cloudRaw ? JSON.parse(cloudRaw) : null;
 
       if (!localData && !cloudData) {
@@ -163,7 +163,7 @@ export function useDataSync(options: DataSyncOptions = {}) {
 
           for (const conflict of newConflicts) {
             const resolution = await opts.onConflict(conflict);
-            resolved.push({ ...conflict, resolution });
+            resolved.push({ ...conflict, resolution: resolution ?? null });
           }
 
           setConflicts(resolved);
@@ -181,14 +181,14 @@ export function useDataSync(options: DataSyncOptions = {}) {
           }
 
           await syncToCloud(resolvedData);
-          localStorage.setItem(opts.storageKey, JSON.stringify(resolvedData));
-          localStorage.setItem(`${opts.storageKey}_cloud`, JSON.stringify(resolvedData));
-          localStorage.removeItem(`${opts.storageKey}_pending`);
+          localStorage.setItem(opts.storageKey ?? 'spiritual_data', JSON.stringify(resolvedData));
+          localStorage.setItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`, JSON.stringify(resolvedData));
+          localStorage.removeItem(`${opts.storageKey ?? 'spiritual_data'}_pending`);
         } else if (newConflicts.length === 0) {
           const merged = mergeValues(cloudData, localData);
           await syncToCloud(merged);
-          localStorage.setItem(`${opts.storageKey}_cloud`, JSON.stringify(merged));
-          localStorage.removeItem(`${opts.storageKey}_pending`);
+          localStorage.setItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`, JSON.stringify(merged));
+          localStorage.removeItem(`${opts.storageKey ?? 'spiritual_data'}_pending`);
         }
       }
 
@@ -207,8 +207,8 @@ export function useDataSync(options: DataSyncOptions = {}) {
     key: string,
     resolution: 'local' | 'cloud' | 'merged'
   ): Promise<void> => {
-    const cloudRaw = localStorage.getItem(`${opts.storageKey}_cloud`);
-    const localRaw = localStorage.getItem(opts.storageKey);
+    const cloudRaw = localStorage.getItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`);
+    const localRaw = localStorage.getItem(opts.storageKey ?? 'spiritual_data');
     const cloudData = cloudRaw ? JSON.parse(cloudRaw) : {};
     const localData = localRaw ? JSON.parse(localRaw) : {};
 
@@ -227,8 +227,8 @@ export function useDataSync(options: DataSyncOptions = {}) {
 
     try {
       await syncToCloud(updatedCloud);
-      localStorage.setItem(`${opts.storageKey}_cloud`, JSON.stringify(updatedCloud));
-      localStorage.setItem(opts.storageKey, JSON.stringify(updatedLocal));
+      localStorage.setItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`, JSON.stringify(updatedCloud));
+      localStorage.setItem(opts.storageKey ?? 'spiritual_data', JSON.stringify(updatedLocal));
 
       setConflicts(prev => prev.filter(c => c.key !== key));
     } catch {
@@ -243,13 +243,13 @@ export function useDataSync(options: DataSyncOptions = {}) {
 
       if (!pending.includes(key)) {
         pending.push(key);
-        localStorage.setItem(`${opts.storageKey}_pending`, JSON.stringify(pending));
+        localStorage.setItem(`${opts.storageKey ?? 'spiritual_data'}_pending`, JSON.stringify(pending));
       }
 
-      const currentRaw = localStorage.getItem(opts.storageKey);
+      const currentRaw = localStorage.getItem(opts.storageKey ?? 'spiritual_data');
       const current: Record<string, unknown> = currentRaw ? JSON.parse(currentRaw) : {};
       current[key] = value;
-      localStorage.setItem(opts.storageKey, JSON.stringify(current));
+      localStorage.setItem(opts.storageKey ?? 'spiritual_data', JSON.stringify(current));
 
       setStatus(s => ({ ...s, pending: countPending() }));
     } catch {
@@ -266,7 +266,7 @@ export function useDataSync(options: DataSyncOptions = {}) {
       const lastSync = lastSyncRaw ? new Date(lastSyncRaw).getTime() : 0;
       const now = Date.now();
 
-      if (!lastSync || now - lastSync >= opts.syncIntervalMs) {
+      if (!lastSync || now - lastSync >= (opts.syncInterval ?? 60000)) {
         performSync();
       }
 
@@ -274,14 +274,14 @@ export function useDataSync(options: DataSyncOptions = {}) {
         const currentLastSync = lastSyncRef.current
           ? new Date(lastSyncRef.current).getTime()
           : 0;
-        if (Date.now() - currentLastSync >= opts.syncIntervalMs) {
+        if (Date.now() - currentLastSync >= (opts.syncInterval ?? 60000)) {
           performSync();
         }
-      }, opts.syncIntervalMs);
+      }, opts.syncInterval ?? 60000);
 
       return () => clearInterval(interval);
     }
-  }, [opts.autoSync, opts.syncIntervalMs, performSync, countPending]);
+  }, [opts.autoSync, opts.syncInterval, performSync, countPending]);
 
   useEffect(() => {
     if (status.lastSync) {

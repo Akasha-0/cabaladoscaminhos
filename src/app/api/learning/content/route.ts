@@ -517,7 +517,7 @@ export async function GET(request: NextRequest) {
             if (courseId && enrichedItem.courseId !== courseId) matches = false;
             if (category && enrichedItem.category !== category) matches = false;
             if (type && enrichedItem.type !== type) matches = false;
-            if (tags && tags.length > 0 && !tags.some((t) => enrichedItem.tags.includes(t))) matches = false;
+            if (tags && tags.length > 0 && !tags.split(',').some((t: string) => enrichedItem.tags.includes(t.trim()))) matches = false;
             if (orixa && !enrichedItem.orixa?.toLowerCase().includes(orixa.toLowerCase())) matches = false;
             if (sefirot && !enrichedItem.sefirot?.some(sf => sf.toLowerCase().includes(sefirot.toLowerCase()))) matches = false;
             if (chakra && !enrichedItem.chakra?.includes(chakra)) matches = false;
@@ -551,13 +551,14 @@ export async function GET(request: NextRequest) {
         // Spiritual stats
         const spiritualStats = {
           bySefirot: filteredItems.reduce((acc, item) => {
-            const sc = (item as Record<string, unknown>).spiritualCorrelations as { sefirot: string[] } | undefined;
-            sc?.sefirot?.forEach(sf => { acc[sf] = (acc[sf] || 0) + 1; });
+            const sc = enrichContentItem(item).spiritualCorrelations;
+            const sefirotArr = Array.isArray(sc?.sefirot) ? sc.sefirot : [];
+            sefirotArr.forEach((sf: string) => { acc[sf] = (acc[sf] || 0) + 1; });
             return acc;
           }, {} as Record<string, number>),
           byElement: filteredItems.reduce((acc, item) => {
-            const sc = (item as Record<string, unknown>).spiritualCorrelations as { element: string } | undefined;
-            if (sc?.element) acc[sc.element] = (acc[sc.element] || 0) + 1;
+            const sc = enrichContentItem(item).spiritualCorrelations;
+            if (sc?.element && typeof sc.element === 'string') acc[sc.element] = (acc[sc.element] || 0) + 1;
             return acc;
           }, {} as Record<string, number>),
         };

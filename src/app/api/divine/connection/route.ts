@@ -28,7 +28,7 @@ const DivineConnectionSchema = z.object({
   invocation: z.string(),
   blessing: z.string(),
   spiritualCorrelations: z.object({
-    sefirot: z.array(SefirotSchema),
+    sefirot: z.array(z.string()),
     chakra: ChakraSchema,
     element: ElementSchema,
     orixa: z.string(),
@@ -49,9 +49,9 @@ const DivineConnectionQuerySchema = z.object({
 
 // ─── Spiritual Correlations for Divine Types ──────────────────────────────────────────
 const DIVINE_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
+  sefirot: Array<'Kether' | 'Chokhmah' | 'Binah' | 'Chesed' | 'Gevurah' | 'Tipheret' | 'Netzach' | 'Hod' | 'Yesod' | 'Malkuth'>;
   chakra: number;
-  element: string;
+  element: 'Fogo' | 'Água' | 'Terra' | 'Ar' | 'Éter';
   orixa: string;
   affirmation: string;
   frequency: string;

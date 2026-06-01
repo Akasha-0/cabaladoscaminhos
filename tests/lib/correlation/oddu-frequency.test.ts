@@ -441,8 +441,8 @@ describe('OdduFrequency Correlation', () => {
 
   describe('Default Export', () => {
     it('should export default object with all functions', async () => {
-      const module = await import('@/lib/correlation/oddu-frequency');
-      const defaultExport = module.default;
+      const mod = await import('@/lib/correlation/oddu-frequency');
+      const defaultExport = mod.default;
       expect(defaultExport).toBeDefined();
       expect(typeof defaultExport.getOduFrequency).toBe('function');
       expect(typeof defaultExport.getFrequencyOdu).toBe('function');

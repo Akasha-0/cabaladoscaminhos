@@ -193,14 +193,6 @@ const SPIRIT_ANIMAL_SPIRITUAL_CORRELATIONS: Record<string, {
     affirmation: 'Exibo minha beleza interior com orgulho',
     frequency: '528 Hz',
   },
-  lobo: {
-    sefirot: ['Gevurah', 'Malkuth'],
-    chakra: 1,
-    element: 'Terra',
-    orixa: 'Ogum',
-    affirmation: 'A comunhão com a matilha me sustenta',
-    frequency: '174 Hz',
-  },
 };
 
 const spiritAnimals: SpiritAnimal[] = [

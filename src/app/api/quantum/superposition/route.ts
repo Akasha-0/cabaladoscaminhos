@@ -200,7 +200,7 @@ Retorne APENAS um JSON válido com este formato exato, sem markdown ou texto adi
     let parsed;
 
     try {
-      parsed = JSON.parse(response);
+      parsed = JSON.parse(response.content);
     } catch {
       return NextResponse.json({
         success: false,

@@ -222,7 +222,7 @@ export async function GET(request: NextRequest) {
       // Enhance week data with spiritual correlations
       const enhancedFragrances = RITUAL_FRAGRANCES.map(f => ({
         ...f,
-        spiritualCorrelations: FRAGRANCE_SPIRITUAL_CORRELATIONS[f.dia] || FRAGRANCE_SPIRITUAL_CORRELATIONS.domingo,
+        spiritualCorrelations: FRAGRANCE_SPIRITUAL_CORRELATIONS[f.diaSemana] || FRAGRANCE_SPIRITUAL_CORRELATIONS.domingo,
       }));
 
       const enhancedDefumations = DAY_DEFUMATIONS.map(d => ({
@@ -257,7 +257,7 @@ export async function GET(request: NextRequest) {
     // Default: all fragrances with spiritual correlations
     const enhancedFragrances = RITUAL_FRAGRANCES.map(f => ({
       ...f,
-      spiritualCorrelations: FRAGRANCE_SPIRITUAL_CORRELATIONS[f.dia] || FRAGRANCE_SPIRITUAL_CORRELATIONS.domingo,
+      spiritualCorrelations: FRAGRANCE_SPIRITUAL_CORRELATIONS[f.diaSemana] || FRAGRANCE_SPIRITUAL_CORRELATIONS.domingo,
     }));
 
     const enhancedDefumations = DAY_DEFUMATIONS.map(d => ({

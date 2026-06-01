@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
     // Add spiritual correlations to transits
     const enrichedTransitos = transitos.map(transito => {
       const planetCorr = PLANET_SPIRITUAL_CORRELATIONS[transito.planeta.toLowerCase()];
-      const aspectCorr = ASPECT_SPIRITUAL_CORRELATIONS[transito.tipo.toLowerCase()];
+      const aspectCorr = ASPECT_SPIRITUAL_CORRELATIONS[transito.aspecto.toLowerCase()];
 
       return {
         ...transito,
@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
         return acc;
       }, {} as Record<string, number>),
       byAspect: enrichedTransitos.reduce((acc, t) => {
-        acc[t.tipo] = (acc[t.tipo] || 0) + 1;
+        acc[t.aspecto] = (acc[t.aspecto] || 0) + 1;
         return acc;
       }, {} as Record<string, number>),
       byElement: enrichedTransitos.reduce((acc, t) => {

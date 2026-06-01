@@ -348,7 +348,6 @@ const NORMALIZED_TO_SIGNO: Readonly<Record<string, Signo>> = {
   balanca: 'Balança',
   escorpiao: 'Escorpião',
   sagitario: 'Sagitário',
-  sagitario: 'Sagitário',
   capricornio: 'Capricórnio',
   aquario: 'Aquário',
   peixes: 'Peixes',

@@ -16,7 +16,7 @@ interface WidgetWrapperProps {
   error?: string | null;
   title?: string;
   icon?: React.ReactNode;
-  iconColor?: string;
+  iconColor?: 'amber' | 'violet' | 'emerald' | 'cyan' | 'pink' | 'slate';
   gradient?: 'amber' | 'violet' | 'emerald' | 'cyan' | 'pink' | 'slate';
   actions?: React.ReactNode;
   collapsible?: boolean;

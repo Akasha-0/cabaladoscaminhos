@@ -195,7 +195,7 @@ export async function GET(request: NextRequest) {
       }, { status: 401 });
     }
 
-    const effectiveUserId = userId || user?.id;
+    const effectiveUserId = userId || user?.id ?? '';
 
     // Get or create activity record
     let activity = activityStore.get(effectiveUserId);

@@ -5,7 +5,7 @@ import { z } from 'zod';
 const OracleTypeSchema = z.enum(['tarot', 'lenormand', 'ifa', 'ogbe', 'opalino', 'kabbalah']);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
+  'Kether', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah',
   'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
 ]);
 
@@ -36,7 +36,7 @@ const OracleSystemSchema = z.object({
 export const dynamic = 'force-dynamic';
 
 // ─── Oracle Systems with Spiritual Correlations ──────────────────────────────────────────
-const ORACLE_SYSTEMS: OracleSystemSchema[] = [
+const ORACLE_SYSTEMS: z.infer<typeof OracleSystemSchema>[] = [
   {
     id: 'tarot',
     name: 'Tarot',

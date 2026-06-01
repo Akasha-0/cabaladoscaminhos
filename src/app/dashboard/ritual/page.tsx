@@ -6,7 +6,7 @@ import { Heading } from '@/components/design-system/Typography';
 import { MysticDivider } from '@/components/shared/MysticDivider';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { generateRitualPlan, getWeeklyRitualSchedule, type RitualPlan, type DayRitual } from '@/lib/correlation/ritual-planner';
+import { generateRitualPlan, getWeeklyRitualSchedule, type RitualPlan } from '@/lib/correlation/ritual-planner';
 import { ORIXÁ_HERB_MAPPINGS } from '@/lib/correlation/orixa-herb';
 import { PLANET_HERB_MAPPINGS } from '@/lib/correlation/planet-herb';
 
@@ -71,7 +71,7 @@ export default function RitualPage() {
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
-          <Heading level={1} className="text-3xl font-bold text-center mb-2">
+          <Heading as="h1" className="text-3xl font-bold text-center mb-2">
             ✦ Dashboard de Rituais ✦
           </Heading>
           <p className="text-center text-muted-foreground">
@@ -163,31 +163,25 @@ export default function RitualPage() {
               <Card className="p-6">
                 <h3 className="text-xl font-bold mb-4">🕯️ Ritual de Hoje</h3>
                 <div className="space-y-4">
-                  {ritual.rituais.map((r, i) => (
-                    <div key={i} className="p-4 bg-gray-800/30 rounded-lg">
-                      <div className="flex items-start gap-3">
-                        <span className="text-2xl">{r.tipo === 'banho' ? '🛁' : r.tipo === 'defumacao' ? '🔥' : r.tipo === 'oracao' ? '🙏' : '🕯️'}</span>
-                        <div className="flex-1">
-                          <h4 className="font-bold capitalize">{r.tipo}</h4>
-                          <p className="text-sm text-muted-foreground">{r.descricao}</p>
-                          {r.ervas && r.ervas.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mt-2">
-                              {r.ervas.map((erva, j) => (
-                                <span key={j} className="px-2 py-0.5 bg-green-900/50 rounded-full text-xs">
-                                  {erva}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                          {r.orixa && (
-                            <p className="text-xs mt-2 text-purple-300">
-                              Orixá: {r.orixa}
-                            </p>
-                          )}
-                        </div>
+                  <div className="p-4 bg-gray-800/30 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">🕯️</span>
+                      <div className="flex-1">
+                        <h4 className="font-bold">{ritual.name}</h4>
+                        <p className="text-sm text-muted-foreground">Fase Lunar: {ritual.lunarPhase}</p>
+                        <p className="text-sm text-muted-foreground">Dia: {ritual.dayOfWeek}</p>
+                        {ritual.affirmations.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {ritual.affirmations.map((affirmation, j) => (
+                              <span key={j} className="px-2 py-0.5 bg-green-900/50 rounded-full text-xs">
+                                {affirmation}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </Card>
             )}
@@ -214,19 +208,8 @@ export default function RitualPage() {
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">
-                      {day.descricao || 'Dia de harmonia e proteção'}
+                      {day.name || 'Dia de harmonia e proteção'}
                     </p>
-                    {day.rituais && day.rituais.length > 0 && (
-                      <div className="space-y-2">
-                        {day.rituais.slice(0, 2).map((r, j) => (
-                          <div key={j} className="flex items-center gap-2 text-xs">
-                            <span>•</span>
-                            <span className="capitalize">{r.tipo}</span>
-                            <span className="opacity-60">- {r.descricao}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 );
               })}

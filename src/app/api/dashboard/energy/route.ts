@@ -172,6 +172,7 @@ const MOON_PHASE_SPIRITUAL_CORRELATIONS: Record<string, {
   },
 };
 const PortalSchema = z.object({
+  orixa: z.string(),
   planeta: z.string(),
   chakra: z.string(),
   chakraNum: z.number(),

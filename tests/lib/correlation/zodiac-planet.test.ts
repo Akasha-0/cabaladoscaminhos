@@ -480,8 +480,8 @@ describe('ZodiacPlanet Correlation', () => {
 
   describe('Default Export', () => {
     it('should export all functions', async () => {
-      const module = await import('@/lib/correlation/zodiac-planet');
-      const defaultExport = module.default;
+      const mod = await import('@/lib/correlation/zodiac-planet');
+      const defaultExport = mod.default;
 
       expect(typeof defaultExport.getZodiacPlanet).toBe('function');
       expect(typeof defaultExport.getPlanetZodiac).toBe('function');
@@ -502,8 +502,8 @@ describe('ZodiacPlanet Correlation', () => {
     });
 
     it('should export constants', async () => {
-      const module = await import('@/lib/correlation/zodiac-planet');
-      const defaultExport = module.default;
+      const mod = await import('@/lib/correlation/zodiac-planet');
+      const defaultExport = mod.default;
 
       expect(Array.isArray(defaultExport.TODOS_PLANETAS)).toBe(true);
       expect(Array.isArray(defaultExport.TODOS_SIGNOS)).toBe(true);

@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { WidgetInfoRow, WidgetTagList, WidgetProgress } from './SpiritualWidgetSystem';
-import { Moon, Sun, Planet } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 
 const SIGNOS = [
   { emoji: '♈', name: 'Áries', planeta: 'Marte', elemento: 'Fogo' },
@@ -91,7 +91,7 @@ export function AstrologyWidget() {
               <span className="text-3xl">{signoAtual.emoji}</span>
             </div>
             <div className="flex-1">
-              <p className="text-xl font-bold text-white">{signoAtual.nome}</p>
+              <p className="text-xl font-bold text-white">{signoAtual.name}</p>
               <div className="flex items-center gap-3 mt-1">
                 <span className="text-sm text-violet-400">{elementosEmojis[signoAtual.elemento]} {signoAtual.planeta}</span>
                 <span className="text-xs text-slate-500">|</span>

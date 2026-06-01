@@ -76,10 +76,10 @@ const ELEMENT_SPIRITUAL_CORRELATIONS: Record<string, {
 
 // ─── TYPE DEFINITIONS ──────────────────────────────────────────────────────
 interface OverviewStats {
-  totalPaths: number;
-  totalSefirot: number;
-  elementBalance: Record<string, number>;
-  date: string;
+  totalMeanings: number;
+  categories: string[];
+  categoryDistribution: Record<string, number>;
+  themesCount: number;
 }
 
 interface SefirotStats {
@@ -154,7 +154,7 @@ function getSefirotStats(): SefirotStats {
 function getElementStats(): ElementStats {
   const elements = Object.keys(ELEMENT_SPIRITUAL_CORRELATIONS);
   const distribution = elements.reduce((acc, el) => {
-    acc[el] = SEFIROT_SPIRITUAL_CORRELATIONS[el]?.sefirot?.length || 0;
+    acc[el] = ELEMENT_SPIRITUAL_CORRELATIONS[el]?.sefirot?.length || 0;
     return acc;
   }, {} as Record<string, number>);
 
@@ -321,7 +321,7 @@ export async function GET(request: NextRequest) {
           return NextResponse.json({ success: false, error: 'Nome e data requeridos' }, { status: 400 });
         }
         
-        const path = calculateTreePath(name, date);
+        const path = calculateTreePath(name);
         const sefirotName = Object.keys(SEFIROT_SPIRITUAL_CORRELATIONS)[path % 10] || 'Malkuth';
         const corr = SEFIROT_SPIRITUAL_CORRELATIONS[sefirotName];
 
@@ -345,18 +345,18 @@ export async function GET(request: NextRequest) {
           return NextResponse.json({ success: false, error: 'Nome requerido' }, { status: 400 });
         }
         
-        const numerology = calculateNumerology(name);
+        const expression = calculateNumerology(name);
         
         return NextResponse.json({
           success: true,
           numerology: {
             name,
-            ...numerology,
+            expression,
             spiritualCorrelations: {
-              sefirot: Object.keys(SEFIROT_SPIRITUAL_CORRELATIONS)[numerology.expression % 10] || 'Malkuth',
-              chakra: (numerology.expression % 7) + 1,
-              element: Object.keys(ELEMENT_SPIRITUAL_CORRELATIONS)[numerology.expression % 5] || 'Terra',
-              orixa: Object.values(SEFIROT_SPIRITUAL_CORRELATIONS)[numerology.expression % 10]?.orixa || 'Ogum',
+              sefirot: Object.keys(SEFIROT_SPIRITUAL_CORRELATIONS)[expression % 10] || 'Malkuth',
+              chakra: (expression % 7) + 1,
+              element: Object.keys(ELEMENT_SPIRITUAL_CORRELATIONS)[expression % 5] || 'Terra',
+              orixa: Object.values(SEFIROT_SPIRITUAL_CORRELATIONS)[expression % 10]?.orixa || 'Ogum',
             },
           },
         });

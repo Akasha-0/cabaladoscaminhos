@@ -4,7 +4,7 @@ import { z } from 'zod';
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
   'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth', 'Daat'
 ]);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
@@ -301,7 +301,7 @@ export async function GET(request: NextRequest) {
       case 'list': {
         let sounds = Object.values(SACRED_SOUNDS);
         if (sefirot) {
-          sounds = sounds.filter(s => s.spiritualCorrelations.sefirot.includes(sefirot));
+          sounds = sounds.filter(s => (s.spiritualCorrelations.sefirot as unknown as string[]).includes(sefirot));
         }
         if (chakra) {
           sounds = sounds.filter(s => s.spiritualCorrelations.chakra === chakra);

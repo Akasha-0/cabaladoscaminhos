@@ -25,7 +25,7 @@ describe('offering-guide', () => {
   });
 
   it('getGuideByType returns undefined for invalid type', () => {
-    const guide = getGuideByType('invalid-type');
+    const guide = getGuideByType('outro');
     expect(guide).toBeUndefined();
   });
 });

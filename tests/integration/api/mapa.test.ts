@@ -11,8 +11,8 @@ import { NextRequest } from 'next/server';
 // ============================================================
 
 // Mock Redis client
-const mockRedisGet = vi.fn<() => Promise<string | null>>();
-const mockRedisSet = vi.fn<() => Promise<unknown>>();
+const mockRedisGet = vi.fn<(key: string) => Promise<string | null>>();
+const mockRedisSet = vi.fn<(key: string, value: string, ex: string, ttl: number) => Promise<unknown>>();
 
 vi.mock('@/lib/redis', () => ({
   getRedisClient: vi.fn(() =>
@@ -509,8 +509,8 @@ describe('POST /api/mapa', () => {
 
       await POST(request);
 
-      const setCall = mockRedisSet.mock.calls[0];
-      const cacheKey = setCall[0] as string;
+      const setCall = mockRedisSet.mock.calls[0] as unknown as [string, string, string, number];
+      const cacheKey = setCall[0];
 
       expect(cacheKey).toMatch(/^mapa:[a-f0-9]{64}$/);
     });
@@ -525,7 +525,7 @@ describe('POST /api/mapa', () => {
       });
 
       await POST(request1);
-      const key1 = mockRedisSet.mock.calls[0][0] as string;
+      const key1 = (mockRedisSet.mock.calls[0] as unknown as [string, string, string, number])[0];
 
       const request2 = createMapaRequest({
         nomeCompleto: 'João Silva',
@@ -533,7 +533,7 @@ describe('POST /api/mapa', () => {
       });
 
       await POST(request2);
-      const key2 = mockRedisSet.mock.calls[1][0] as string;
+      const key2 = (mockRedisSet.mock.calls[1] as unknown as [string, string, string, number])[0];
 
       expect(key1).not.toBe(key2);
     });
@@ -548,7 +548,7 @@ describe('POST /api/mapa', () => {
       });
 
       await POST(request1);
-      const key1 = mockRedisSet.mock.calls[0][0] as string;
+      const key1 = (mockRedisSet.mock.calls[0] as unknown as [string, string, string, number])[0];
 
       const request2 = createMapaRequest({
         nomeCompleto: 'Maria da Silva',
@@ -556,7 +556,7 @@ describe('POST /api/mapa', () => {
       });
 
       await POST(request2);
-      const key2 = mockRedisSet.mock.calls[1][0] as string;
+      const key2 = (mockRedisSet.mock.calls[1] as unknown as [string, string, string, number])[0];
 
       expect(key1).not.toBe(key2);
     });
@@ -572,7 +572,7 @@ describe('POST /api/mapa', () => {
 
       await POST(request);
 
-      const setCall = mockRedisSet.mock.calls[0];
+      const setCall = mockRedisSet.mock.calls[0] as unknown as [string, string, string, number];
       expect(setCall[2]).toBe('EX');
       expect(setCall[3]).toBe(86400);
     });

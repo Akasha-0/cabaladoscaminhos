@@ -29,7 +29,6 @@ export interface InsightResult {
 }
 
 export interface GenerateInsightParams {
-  tradition: SupportedTradition;
   identifier: string | number;
   userContext?: {
     nome?: string;
@@ -318,7 +317,7 @@ function normalizeOrixaName(name: string): string {
     'iansã': 'Iansã', 'iansan': 'Iansã', 'oyá': 'Iansã',
     'omulu': 'Omulu', 'obaluaiê': 'Omulu', 'obaluaê': 'Omulu',
     'eshu': 'Eshu', 'exu': 'Eshu',
-    'oxumar': 'Oxumar', 'oxum': 'Oxum',
+    'oxumar': 'Oxumar',
   };
 
   const lower = name.toLowerCase().trim();

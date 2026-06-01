@@ -269,7 +269,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       success: true,
-      start_date: start.toISOString().split('T')[0],
+      start_date: start,
       days: calendar.length,
       calendar,
       spiritualCorrelations: {

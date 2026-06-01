@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
     if (category) {
       products = getProductsByCategory(category);
     } else {
-      products = getCatalog();
+      products = getCatalog().products;
     }
 
     // Add spiritual correlations to all products

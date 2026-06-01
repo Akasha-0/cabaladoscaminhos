@@ -13,9 +13,12 @@ const DivinationQuerySchema = z.object({
   count: z.coerce.number().int().min(1).max(16).optional(),
 });
 
+// ─── Type Aliases ───────────────────────────────────────────────────────────
+type DivinationMethodType = z.infer<typeof DivinationMethod>;
+
 export interface DivinationReading {
   id: string;
-  method: DivinationMethod;
+  method: DivinationMethodType;
   symbols: string[];
   interpretation: string;
   guidance: string;
@@ -32,7 +35,7 @@ export interface DivinationReading {
 }
 
 // ─── Spiritual Correlations by Method ──────────────────────────────────────────────────
-const DIVINATION_SPIRITUAL_CORRELATIONS: Record<DivinationMethod, {
+const DIVINATION_SPIRITUAL_CORRELATIONS: Record<DivinationMethodType, {
   sefirot: string[];
   chakra: number;
   element: string;
@@ -85,14 +88,14 @@ function generateId(): string {
   return `div-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
 }
 
-function getSymbols(method: DivinationMethod, count: number = 3): string[] {
+function getSymbols(method: DivinationMethodType, count: number = 3): string[] {
   const pool = divinationSymbols[method];
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
 }
 
-function interpretSymbols(method: DivinationMethod, symbols: string[], domain: string): string {
-  const interpretations: Record<DivinationMethod, Record<string, string>> = {
+function interpretSymbols(method: DivinationMethodType, symbols: string[], domain: string): string {
+  const interpretations: Record<DivinationMethodType, Record<string, string>> = {
     búzios: {
       amor: 'Os búzios revelam conexões emocionais profundas. O momento favorece reconciliações e novos encontros.',
       trabalho: ' sinaliza mudança profissional. Prepare-se para oportunidades que surgirão.',
@@ -147,8 +150,8 @@ function interpretSymbols(method: DivinationMethod, symbols: string[], domain: s
   return `${mainSymbol}${interpretations[method][domain]}`;
 }
 
-function generateGuidance(method: DivinationMethod, symbols: string[], domain: string): string {
-  const guidanceTemplates: Record<DivinationMethod, string> = {
+function generateGuidance(method: DivinationMethodType, symbols: string[], domain: string): string {
+  const guidanceTemplates: Record<DivinationMethodType, string> = {
     búzios: 'Realize um ebó de abertura com milho branco e mel. Candle uma vela branca ao cair da noite por 7 dias.',
     cards: 'Embaralhe suas intenções e escolha três cartas. Medite sobre cada uma antes de prosseguir.',
     cowries: 'Faça uma oração a Exu antes de manusear os cowries. Trace um círculo no chão com farinha de milharina.',
@@ -160,7 +163,7 @@ function generateGuidance(method: DivinationMethod, symbols: string[], domain: s
   return guidanceTemplates[method];
 }
 
-function generateWarnings(method: DivinationMethod, domain: string): string[] {
+function generateWarnings(method: DivinationMethodType, domain: string): string[] {
   const warnings: string[] = [];
 
   if (domain === 'espiritual') {
@@ -189,12 +192,12 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
 
     const methodParam = searchParams.get('method');
-    const domainParam = searchParams.get('domain') as DivinationQuestion['domain'];
+    const domainParam = searchParams.get('domain');
     const intensityParam = searchParams.get('intensity');
 
     // Validate method
-    const method: DivinationMethod = (methodParam as DivinationMethod) || 'búzios';
-    const validMethods: DivinationMethod[] = ['búzios', 'cards', 'cowries', 'opalã', 'ebós', 'geomancia'];
+    const method: DivinationMethodType = (methodParam as DivinationMethodType) || 'búzios';
+    const validMethods: DivinationMethodType[] = ['búzios', 'cards', 'cowries', 'opalã', 'ebós', 'geomancia'];
 
     if (!validMethods.includes(method)) {
       return NextResponse.json(
@@ -207,7 +210,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Validate domain
-    const domain = domainParam || 'geral';
+    const domain = (domainParam || 'geral') as z.infer<typeof DivinationDomain>;
     const validDomains = ['amor', 'trabalho', 'saúde', 'espiritual', 'financeiro', 'geral'];
 
     if (!validDomains.includes(domain)) {

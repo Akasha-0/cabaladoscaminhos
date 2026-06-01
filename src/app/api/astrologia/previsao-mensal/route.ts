@@ -226,7 +226,7 @@ export async function GET(request: NextRequest) {
 
   if (signo && SIGN_CORRELATIONS[signo]) {
     const signInfo = SIGN_CORRELATIONS[signo];
-    const isFavorable = monthlyData.signosFavoraveis.some(s => 
+    const isFavorable = (monthlyData.signosFavoraveis || []).some(s => 
       s.toLowerCase().includes(signo) || 
       (signo === 'escorpiao' && s === 'Escorpião') ||
       (signo === 'touro' && s === 'Touro')

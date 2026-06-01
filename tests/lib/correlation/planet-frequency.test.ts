@@ -466,11 +466,11 @@ describe('planet-frequency', () => {
 
   describe('default export', () => {
     it('exports all required functions', async () => {
-      const module = await import('@/lib/correlation/planet-frequency');
-      expect(module.default).toBeDefined();
-      expect(typeof module.default.getPlanetFrequency).toBe('function');
-      expect(typeof module.default.getFrequencyPlanet).toBe('function');
-      expect(typeof module.default.getAllPlanetFrequencies).toBe('function');
+      const mod = await import('@/lib/correlation/planet-frequency');
+      expect(mod.default).toBeDefined();
+      expect(typeof mod.default.getPlanetFrequency).toBe('function');
+      expect(typeof mod.default.getFrequencyPlanet).toBe('function');
+      expect(typeof mod.default.getAllPlanetFrequencies).toBe('function');
     });
   });
 });

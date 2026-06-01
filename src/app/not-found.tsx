@@ -59,7 +59,7 @@ export default function NotFound() {
 
           {/* Mystic divider */}
           <div className="mb-8">
-            <MysticDivider variant="glow" className="max-w-xs mx-auto" />
+            <MysticDivider variant="bold" className="max-w-xs mx-auto" />
           </div>
 
           {/* Heading */}

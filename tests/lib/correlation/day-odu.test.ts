@@ -379,17 +379,17 @@ describe('Day-Odú Ifá Correlation', () => {
 
   describe('default export', () => {
     it('should export all required functions', async () => {
-      const module = await import('@/lib/correlation/day-odu');
-      expect(module.default).toBeDefined();
-      expect(typeof module.default.getDayOdu).toBe('function');
-      expect(typeof module.default.getOduDay).toBe('function');
-      expect(typeof module.default.getAllDayOdus).toBe('function');
-      expect(typeof module.default.getAllDays).toBe('function');
-      expect(typeof module.default.hasDayOdu).toBe('function');
-      expect(typeof module.default.getDayByOduNumber).toBe('function');
-      expect(typeof module.default.getAllOduNumbers).toBe('function');
-      expect(typeof module.default.getDaysByOduNumber).toBe('function');
-      expect(module.default.DAY_ODU_MAPPINGS).toBeDefined();
+      const mod = await import('@/lib/correlation/day-odu');
+      expect(mod.default).toBeDefined();
+      expect(typeof mod.default.getDayOdu).toBe('function');
+      expect(typeof mod.default.getOduDay).toBe('function');
+      expect(typeof mod.default.getAllDayOdus).toBe('function');
+      expect(typeof mod.default.getAllDays).toBe('function');
+      expect(typeof mod.default.hasDayOdu).toBe('function');
+      expect(typeof mod.default.getDayByOduNumber).toBe('function');
+      expect(typeof mod.default.getAllOduNumbers).toBe('function');
+      expect(typeof mod.default.getDaysByOduNumber).toBe('function');
+      expect(mod.default.DAY_ODU_MAPPINGS).toBeDefined();
     });
   });
 });

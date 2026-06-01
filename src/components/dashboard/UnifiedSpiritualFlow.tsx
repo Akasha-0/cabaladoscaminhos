@@ -175,8 +175,8 @@ function ChakraOrbit({ chakras, activeChakra }: { chakras: typeof CHAKRA_DATA; a
 
 function SacredStatsGrid({ correlation }: { correlation: ReturnType<typeof useTodayCorrelation> }) {
   const stats = [
-    { label: 'Elemento', value: correlation.element, emoji: correlation.elementEmoji, color: '#F59E0B' },
-    { label: 'Solfeggio', value: `${correlation.solfeggioFrequency}Hz`, emoji: '🎵', color: '#06B6D4' },
+    { label: 'Elemento', value: correlation.elemento, emoji: correlation.elementEmoji, color: '#F59E0B' },
+    { label: 'Solfeggio', value: `${correlation.frequenciaPrimaria?.frequencia ?? 528}Hz`, emoji: '🎵', color: '#06B6D4' },
     { label: 'Planeta', value: correlation.planeta.split('/')[0].trim(), emoji: '🌍', color: '#8B5CF6' },
   ];
 
@@ -254,9 +254,9 @@ function EnergyFlowDiagram({ correlation, activeChakraIndex }: {
         <div className="flex items-center justify-center gap-2 text-xs">
           <span className="text-slate-400">{correlation.planeta}</span>
           <span className="text-slate-600">•</span>
-          <span className="text-slate-400">{correlation.element}</span>
+          <span className="text-slate-400">{correlation.elemento}</span>
           <span className="text-slate-600">•</span>
-          <span className="text-slate-400">{correlation.solfeggioFrequency}Hz</span>
+          <span className="text-slate-400">{correlation.frequenciaPrimaria?.frequencia ?? 528}Hz</span>
         </div>
       </div>
     </div>
@@ -282,7 +282,7 @@ function MysteryBanner({ mystery }: { mystery: string }) {
   return (
     <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 to-violet-500/10 border border-amber-500/20">
       <p className="text-xs text-amber-400 mb-2 font-medium">✧ Mistério do Dia</p>
-      <p className="text-sm text-slate-300 italic leading-relaxed">"{mystery}"</p>
+      <p className="text-sm text-slate-300 italic leading-relaxed">&ldquo;{mystery}&rdquo;</p>
     </div>
   );
 }
@@ -392,7 +392,7 @@ export function UnifiedSpiritualFlow({ className = '' }: UnifiedSpiritualFlowPro
           <p className="text-xs text-slate-500 mb-3 text-center">Conexões Energéticas</p>
           <div className="flex flex-wrap justify-center gap-3">
             <ChakraFlowLine from={correlation.orixa} to="Elemento" color={correlation.primaryColor} />
-            <ChakraFlowLine from={correlation.element} to="Chakra" color="#22C55E" />
+            <ChakraFlowLine from={correlation.elemento} to="Chakra" color="#22C55E" />
             <ChakraFlowLine from={activeChakra.name} to="Planeta" color={activeChakra.color} />
           </div>
         </div>

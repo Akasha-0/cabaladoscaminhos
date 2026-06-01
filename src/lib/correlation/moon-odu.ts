@@ -216,7 +216,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
       numero: 13,
       elemento: 'Terra',
     },
-    elemento: 'Éter',
+    elemento: 'Terra',
     polaridade: 'Yin',
     significado_espiritual:
       'Lua Minguante com Odi traz o poder do poço profundo - a sabedoria oculta das águas transmutadoras. Este é o momento de revelação, de acessar os mistérios escondidos no inconsciente. Odi ensina que nas profundezas escuras habitam as maiores verdades. Omolu guarda estes segredos.',
@@ -276,7 +276,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
       numero: 1,
       elemento: 'Terra',
     },
-    elemento: 'Éter',
+    elemento: 'Terra',
     polaridade: 'Equilibrado',
     significado_espiritual:
       'Lua Velha com Olobón traz a sabedoria do fim - a compreensão de que a doença pode ser cura. Este é o momento de despedidas sagradas, de preparar a travessia para o próximo mundo. Olobón ensina que o fim é também começo. Omolu abre as portas da transição.',

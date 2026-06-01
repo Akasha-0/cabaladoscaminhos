@@ -181,26 +181,25 @@ function searchOdus(query: string): SearchResult[] {
   for (const odu of odus) {
     const searchFields = [
       odu.nome,
-      odu.nomeIoruba,
       odu.significado,
-      odu.orixás[0],
+      odu.orixas[0],
       odu.elementos,
-      odu.ebó,
- ].join(' ');
+      odu.ebo,
+    ].join(' ');
 
     const relevance = calculateRelevance(query, searchFields);
     if (relevance > 0) {
       results.push({
         type: 'odu',
-        id: odu.id,
+        id: `odu-${odu.numero}`,
         title: odu.nome,
-        subtitle: odu.nomeIoruba,
+        subtitle: `Odú ${odu.numero}`,
         description: odu.significado,
         relevance,
         metadata: {
           elementos: odu.elementos,
-          orixas: odu.orixás,
-          ebo: odu.ebó,
+          orixas: odu.orixas,
+          ebo: odu.ebo,
         },
       });
     }
@@ -215,8 +214,8 @@ function searchOrixas(query: string): SearchResult[] {
   for (const orixa of orixas) {
     const searchFields = [
       orixa.nome,
-      orixa.descricao,
-      orixa.elemento,
+      orixa.misterio,
+      orixa.elemento || '',
       orixa.cores[0],
       orixa.dia,
       orixa.saudacao,
@@ -226,13 +225,13 @@ function searchOrixas(query: string): SearchResult[] {
     if (relevance > 0) {
       results.push({
         type: 'orixa',
-        id: orixa.id,
+        id: orixa.nome.toLowerCase().replace(/\s+/g, '-'),
         title: orixa.nome,
-        subtitle: orixa.elemento,
-        description: orixa.descricao,
+        subtitle: orixa.elemento || '',
+        description: orixa.misterio,
         relevance,
         metadata: {
-          elemento: orixa.elemento,
+          elemento: orixa.elemento || '',
           cores: orixa.cores,
           dia: orixa.dia,
           planeta: orixa.planeta,
@@ -357,8 +356,8 @@ function getAvailableFilters(): SearchResponse['filters'] {
   const orixaNames = new Set<string>();
 
   for (const odu of odus) {
-    odu.elementos.split(' / ').forEach((el) => elements.add(el.trim()));
-    odu.orixás.forEach((o) => orixaNames.add(o));
+    odu.elementos.split(' / ').forEach((el: string) => elements.add(el.trim()));
+    odu.orixas.forEach((o: string) => orixaNames.add(o));
   }
 
   for (const ritual of ritualsData) {

@@ -177,14 +177,14 @@ const MANIFESTATION_CATEGORIES = [
 ];
 
 // ─── Priority Correlations ──────────────────────────────────────────────
-const PRIORITY_CORRELATIONS: Record<PriorityLevel, { sefirot: string[], chakra: number, element: string }> = {
-  high: { sefirot: ['Gevurah', 'Kether'], chakra: 3, element: 'Fogo' },
-  medium: { sefirot: ['Tipheret', 'Yesod'], chakra: 5, element: 'Ar' },
-  low: { sefirot: ['Malkuth', 'Chesed'], chakra: 1, element: 'Terra' },
+const PRIORITY_CORRELATIONS: Record<PriorityLevel, { sefirot: readonly string[], chakra: number, element: string }> = {
+  high: { sefirot: ['Gevurah', 'Kether'] as const, chakra: 3, element: 'Fogo' },
+  medium: { sefirot: ['Tipheret', 'Yesod'] as const, chakra: 5, element: 'Ar' },
+  low: { sefirot: ['Malkuth', 'Chesed'] as const, chakra: 1, element: 'Terra' },
 };
 
 // ─── In-memory manifestation store ──────────────────────────────────────
-interface Manifestation {
+interface ManifestationData {
   id: string;
   userId: string;
   intention: string;
@@ -403,9 +403,9 @@ export async function POST(request: NextRequest) {
       actionSteps: actionSteps || [],
       progress: 0,
       reinforcementCount: 0,
-      sefirot: sefirot || categoryCorr?.sefirot || priorityCorr.sefirot,
+      sefirot: (sefirot || categoryCorr?.sefirot || [...priorityCorr.sefirot] as string[]) as ("Kether" | "Chokhmah" | "Binah" | "Chesed" | "Gevurah" | "Tipheret" | "Netzach" | "Hod" | "Yesod" | "Malkuth")[],
       chakra: chakra || categoryCorr?.chakra || priorityCorr.chakra,
-      element: element || categoryCorr?.element || priorityCorr.element,
+      element: (element || categoryCorr?.element || priorityCorr.element) as "Ar" | "Fogo" | "Éter" | "Água" | "Terra" | undefined,
       orixa: orixa || categoryCorr?.orixa,
     };
 

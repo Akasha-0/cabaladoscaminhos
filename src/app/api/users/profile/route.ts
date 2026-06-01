@@ -14,7 +14,7 @@ const OrixaSchema = z.enum([
 ]);
 
 const NumerologyProfileSchema = z.object({
-  lifePath: z.number().int().min(1).max(11).or(z.enum([22, 33])),
+  lifePath: z.number().int().min(1).max(33),
   expression: z.number().int().min(1).max(9),
   soulUrge: z.number().int().min(1).max(9),
   personality: z.number().int().min(1).max(9),
@@ -85,7 +85,7 @@ const DEMO_PROFILE: z.infer<typeof UserProfileResponseSchema> = {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const parseResult = ProfileQuerySchema.safeParse({
-    include: searchParams.get('include'),
+    include: searchParams.get('include') ?? undefined,
   });
 
   if (!parseResult.success) {
