@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sparkles, Loader2, Brain, RefreshCw, Calendar, Moon, Star, Zap, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -91,13 +91,7 @@ export function DailyActionWidget({ userData, className, autoLoad = true }: Dail
   const [error, setError] = useState<string | null>(null);
   const [showFullRecommendation, setShowFullRecommendation] = useState(false);
 
-  useEffect(() => {
-    if (autoLoad) {
-      loadDaily();
-    }
-  }, [userData.nome, userData.dataNascimento]);
-
-  const loadDaily = async () => {
+  const loadDaily = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -121,7 +115,13 @@ export function DailyActionWidget({ userData, className, autoLoad = true }: Dail
     } finally {
       setLoading(false);
     }
-  };
+  }, [userData.nome, userData.dataNascimento]);
+
+  useEffect(() => {
+    if (autoLoad) {
+      loadDaily();
+    }
+  }, [autoLoad, loadDaily]);
 
   const today = new Date().toLocaleDateString('pt-BR', {
     weekday: 'long',

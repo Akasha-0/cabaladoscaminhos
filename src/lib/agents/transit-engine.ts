@@ -13,14 +13,15 @@
 
 import { getPositions, type PlanetPosition } from '@/lib/astrologia/planet-positions';
 import { getBirthChart, type BirthChart } from '@/lib/astrologia/birth-chart';
-import { findAspects, type AspectMatch } from '@/lib/astrologia/aspect-finder';
+import { findAspects } from '@/lib/astrologia/aspect-finder';
 
 // ============================================================
 // TYPES
 // ============================================================
 
 export type Planet = 'sol' | 'lua' | 'mercurio' | 'venus' | 'marte' |
-                     'jupiter' | 'saturno' | 'urano' | 'netuno' | 'plutao';
+                     'jupiter' | 'saturno' | 'urano' | 'netuno' | 'plutao' |
+                     'node_norte' | 'node_sul';
 
 export type AspectType = 'conjuncao' | 'sextil' | 'quadratura' | 'trino' | 'oposicao';
 
@@ -354,7 +355,7 @@ export function calculateTransits(
   orbs: Record<AspectType, number> = TRANSIT_ORBS
 ): TransitAspect[] {
   const transitPositions = getPositions(currentDate);
-  const natalPositions = birthChart.posicoes;
+  const natalPositions = birthChart.planets;
 
   const aspects: TransitAspect[] = [];
 
@@ -440,8 +441,8 @@ function calculateExactness(t1: number, t2: number, aspect: AspectType): number 
   return Math.max(0, Math.min(100, 100 - (distance / 3) * 100));
 }
 
-function estimateDuration(planet: Planet): string {
-  const durations: Record<Planet, string> = {
+function estimateDuration(planet: Planet | string): string {
+  const durations: Record<string, string> = {
     sol: '1-2 dias',
     lua: '2-4 horas',
     mercurio: '3-5 dias',
@@ -452,13 +453,15 @@ function estimateDuration(planet: Planet): string {
     urano: '14-30 dias',
     netuno: '30-60 dias',
     plutao: '60-180 dias',
+    node_norte: '30-60 dias',
+    node_sul: '30-60 dias',
   };
   return durations[planet] || '1-3 dias';
 }
 
 function getGenericInterpretation(
-  transitP: Planet,
-  natalP: Planet,
+  transitP: Planet | string,
+  natalP: Planet | string,
   aspect: AspectType
 ): { interpretation: string; lifeAreas: string[]; energy: 'harmonioso' | 'desafiador' | 'neutro'; recommendation: string } {
   const energy: 'harmonioso' | 'desafiador' | 'neutro' =
@@ -466,7 +469,7 @@ function getGenericInterpretation(
     aspect === 'quadratura' || aspect === 'oposicao' ? 'desafiador' : 'neutro';
 
   return {
-    interpretation: `Trânsito de ${transitP} ${aspect} ao ${natalP} natal traz movimento nessa área.`,
+    interpretation: `Trânsito de ${String(transitP)} ${aspect} ao ${String(natalP)} natal traz movimento nessa área.`,
     lifeAreas: ['geral'],
     energy,
     recommendation: energy === 'harmonioso'
@@ -488,9 +491,9 @@ export function buildDailyEnergy(
   const moonPhase = calculateMoonPhase(currentDate);
   const aspects = calculateTransits(birthChart, currentDate);
 
-  const retrogradePlanets: Planet[] = birthChart.posicoes
-    .filter(p => p?.retrograde)
-    .map(p => p!.planet as Planet);
+  const retrogradePlanets: Planet[] = birthChart.planets
+    .filter((p: PlanetPosition) => p?.retrograde)
+    .map((p: PlanetPosition) => p.planet as Planet);
 
   const majorAspects = aspects
     .filter(a => a.exactness >= 50)

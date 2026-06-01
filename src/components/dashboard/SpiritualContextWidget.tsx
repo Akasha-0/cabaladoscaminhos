@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, Sparkles, Loader2, AlertCircle, Sun, Moon, Star, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -47,11 +47,7 @@ export function SpiritualContextWidget({ userData, className }: ContextWidgetPro
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadContext();
-  }, [userData.nome, userData.dataNascimento]);
-
-  const loadContext = async () => {
+  const loadContext = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -74,7 +70,11 @@ export function SpiritualContextWidget({ userData, className }: ContextWidgetPro
     } finally {
       setLoading(false);
     }
-  };
+  }, [userData.nome, userData.dataNascimento]);
+
+  useEffect(() => {
+    loadContext();
+  }, [loadContext]);
 
   if (loading && !context) {
     return (

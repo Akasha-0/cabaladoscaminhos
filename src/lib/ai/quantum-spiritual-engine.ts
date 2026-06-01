@@ -135,7 +135,7 @@ pairs. Focus on paths of transformation, growth opportunities, and spiritual cro
 
     try {
       const { content } = await generateMinimaxResponse(messages, {
-        model: 'minimax/m2.7',
+        model: 'minimax/m3',
         temperature: 0.9,
         max_tokens: 800
       });
@@ -193,7 +193,7 @@ Return a JSON array of {system1, system2, entanglement_strength, description, ma
 
     try {
       const { content } = await generateMinimaxResponse(messages, {
-        model: 'minimax/m2.7',
+        model: 'minimax/m3',
         temperature: 0.8,
         max_tokens: 900
       });
@@ -270,7 +270,7 @@ context and the question. Return a JSON object with {collapsed_answer, alternati
 
     try {
       const { content } = await generateMinimaxResponse(messages, {
-        model: 'minimax/m2.7',
+        model: 'minimax/m3',
         temperature: 0.3,
         max_tokens: 600
       });
@@ -329,7 +329,7 @@ and personal spiritual markers. Return a JSON object with {frequencies: {system_
 
     try {
       const { content } = await generateMinimaxResponse(messages, {
-        model: 'minimax/m2.7',
+        model: 'minimax/m3',
         temperature: 0.85,
         max_tokens: 700
       });

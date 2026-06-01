@@ -92,6 +92,7 @@ export interface LifeArea {
   element: ElementMapping;
   questions: string[];     // Perguntas para auto-reflexão
   practices: string[];     // Práticas recomendadas
+  challenges: string[];    // Desafios/cuidados
   crystals: string[];      // Cristais
   affirmations: string[];  // Afirmações
 }
@@ -159,6 +160,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Meditação silenciosa', 'Journaling', 'Retiros espirituais', 'Estudo de filosofia'],
     crystals: ['Ametista', 'Quartzo transparente', 'Sugilita'],
+    challenges: [],
     affirmations: [
       'Eu confio no chamado da minha alma.',
       'Minha missão se revela a cada passo.',
@@ -224,6 +226,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Planejamento estratégico', 'Mentoria', 'Estudo contínuo', 'Networking'],
     crystals: ['Olho de Tigre', 'Cornalina', 'Citrino'],
+    challenges: [],
     affirmations: [
       'Eu mereço sucesso e reconhecimento.',
       'Minha carreira está em perfeita expansão.',
@@ -289,6 +292,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Controle financeiro', 'Investimentos', 'Visualização criativa', 'Gratidão diária'],
     crystals: ['Citrino', 'Pirita', 'Esmeralda', 'Aventurina verde'],
+    challenges: [],
     affirmations: [
       'Eu sou um imã para a abundância.',
       'O dinheiro flui para mim de fontes múltiplas.',
@@ -354,6 +358,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Exercícios regulares', 'Alimentação consciente', 'Sono de qualidade', 'Cura energética'],
     crystals: ['Quartzo Verde', 'Cornalina', 'Granada', 'Olho de Tigre'],
+    challenges: [],
     affirmations: [
       'Meu corpo é um templo sagrado.',
       'Eu tenho energia vital ilimitada.',
@@ -419,6 +424,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Comunicação consciente', 'Terapia de casal', 'Ritual de união', 'Ho oponopono'],
     crystals: ['Quartzo Rosa', 'Aventurina', 'Rodocrosita', 'Morganita'],
+    challenges: [],
     affirmations: [
       'Eu me permito ser amado(a) plenamente.',
       'Mereço um amor que me honre e respeite.',
@@ -484,6 +490,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Movimento consciente', 'Tantra', 'Cura do chacra sacro', 'Dança'],
     crystals: ['Cornalina', 'Granada', 'Rubi', 'Crisocola'],
+    challenges: [],
     affirmations: [
       'Eu honro minha energia sexual como sagrada.',
       'Eu mereço prazer e conexão profunda.',
@@ -549,6 +556,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Reconexão familiar', 'Terapia sistêmica', 'Akofá', 'Ritual de Egum'],
     crystals: ['Quartzo Fumê', 'Pedra Mãe', 'Ágata', 'Jade'],
+    challenges: [],
     affirmations: [
       'Eu honro minha família e meus ancestrais.',
       'Eu transformo padrões que não me servem.',
@@ -614,6 +622,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Meditação', 'Oração', 'Contemplação', 'Jejum', 'Retiros'],
     crystals: ['Ametista', 'Selenita', 'Sugilita', 'Lapislázuli'],
+    challenges: [],
     affirmations: [
       'Eu sou um ser espiritual vivendo uma experiência humana.',
       'Minha fé me guia nos momentos difíceis.',
@@ -679,6 +688,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Escrita criativa', 'Pintura', 'Música', 'Dança', 'Culinária'],
     crystals: ['Cornalina', 'Ágata de fogo', 'Topázio imperial'],
+    challenges: [],
     affirmations: [
       'Eu sou um canal de criação divina.',
       'Minha expressão é única e necessária.',
@@ -744,6 +754,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Voluntariado', 'Grupos de interesse', 'Eventos sociais', 'Apoio mútuo'],
     crystals: ['Ágata azul', 'Fluorita', 'Aventurina'],
+    challenges: [],
     affirmations: [
       'Eu atraio amizades verdadeiras e nutritivas.',
       'Pertenço a comunidades que me celebram.',
@@ -809,6 +820,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Leitura', 'Cursos', 'Mentoria', 'Pesquisa', 'Escrita reflexiva'],
     crystals: ['Lapislázuli', 'Fluorita', 'Ametista'],
+    challenges: [],
     affirmations: [
       'Eu sou um eterno aprendiz.',
       'A sabedoria flui para mim com facilidade.',
@@ -874,6 +886,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
     ],
     practices: ['Terapia', 'Journaling', 'Meditação profunda', 'Trabalho corporal', 'Astrologia terapêutica'],
     crystals: ['Obsidiana negra', 'Sugilita', 'Labradorita', 'Pedra Lua'],
+    challenges: [],
     affirmations: [
       'Eu integro luz e sombra com amor.',
       'Cada ferida é uma porta para a cura.',

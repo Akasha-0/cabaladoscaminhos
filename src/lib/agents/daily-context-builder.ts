@@ -113,18 +113,14 @@ export async function buildDailyContext(
   let birthChart: BirthChart;
   try {
     birthChart = getBirthChart({
-      data: user.dataNascimento,
-      hora: user.horaNascimento || '12:00',
-      local: user.localNascimento || 'Salvador, BA',
+      birthDate,
       latitude: -12.9714,
       longitude: -38.5014,
     });
   } catch (err) {
     // Fallback
     birthChart = getBirthChart({
-      data: user.dataNascimento,
-      hora: '12:00',
-      local: 'Salvador, BA',
+      birthDate,
       latitude: -12.9714,
       longitude: -38.5014,
     });

@@ -75,7 +75,7 @@ Provide guidance in Portuguese. Be mystical yet practical.`;
 
 const MINIMAX_API_TOKEN = process.env.MINIMAX_API_TOKEN || '';
 const MINIMAX_BASE_URL = 'https://api.minimaxi.chat/v1';
-const MINIMAX_MODEL = 'minimax/m2';
+const MINIMAX_MODEL = 'minimax/m3';
 
 class MinimaxAPIError extends Error {
   constructor(message: string, public statusCode?: number) {

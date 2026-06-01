@@ -146,7 +146,7 @@ interface UserSpiritualProfile {
 
 const MINIMAX_API_TOKEN = 'sk-cp-Kpz6_rV0uxSFKNFwhXXsj1ZNE_sd7_nSHd_KBOGPvjZ2l00J8tvlE8lA7gDwyuI-vUm_xxX66bALC4952KyRulzaosepLhGmkuIvIGU2OVmHESpWTUR0GGQ';
 const MINIMAX_API_BASE = 'https://api.minimaxi.chat/v1';
-const MINIMAX_MODEL = 'minimax/m2';
+const MINIMAX_MODEL = 'minimax/m3';
 
 // ============================================================
 // MOON PHASE CALCULATION

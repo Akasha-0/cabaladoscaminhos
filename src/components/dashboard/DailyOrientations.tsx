@@ -249,7 +249,7 @@ export function DailyOrientations({
           <h4 className="text-sm font-semibold text-white">Preceito do Odu para Hoje</h4>
         </div>
         <p className="text-sm text-slate-300 leading-relaxed italic">
-          "{oduOrientations.fazer[0] || 'Manter a paz interior e a gratidão pelo dia presente.'}"
+          &ldquo;{oduOrientations.fazer[0] || 'Manter a paz interior e a gratidão pelo dia presente.'}&rdquo;
         </p>
         <div className="flex flex-wrap gap-2 mt-3">
           {oduOrientations.orixas.map((orixa) => (

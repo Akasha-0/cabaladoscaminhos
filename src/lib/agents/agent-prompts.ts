@@ -262,7 +262,7 @@ ${context.user.nome} quer saber: QUAL É O MELHOR MOMENTO ESPIRITUAL para "${int
 📋 ANÁLISE
 ═══════════════════════════════════════════════════════
 
-1. **HOJE** — A energia atual (Dia Pessoal ${context.dailyEnergy.date}, ${context.dailyEnergy.dailyEnergy.overallTheme}) é favorável? Como agir?
+1. **HOJE** — A energia atual (Dia Pessoal ${context.dailyEnergy.date}, ${context.dailyEnergy.overallTheme}) é favorável? Como agir?
 
 2. **Esta Semana** — Em qual dia desta semana a energia converge mais para esta intenção?
 

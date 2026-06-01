@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { WidgetProgress, WidgetCard } from '@/components/dashboard/SpiritualWidgetSystem';
 import { LifeAreasOverview } from '@/components/dashboard/LifeAreasOverview';
@@ -66,18 +66,18 @@ export default function LifeAreasPage() {
   const [insight, setInsight] = useState<AIInsight | null>(null);
   const [insightLoading, setInsightLoading] = useState(false);
 
-  // Compute map on mount
-  useEffect(() => {
-    computeMap();
-  }, []);
-
-  const computeMap = async () => {
+  const computeMap = useCallback(async () => {
     setLoading(true);
     await new Promise(r => setTimeout(r, 600));
     const map = correlateLifeAreas(profile);
     setResult(map);
     setLoading(false);
-  };
+  }, [profile]);
+
+  // Compute map on mount
+  useEffect(() => {
+    computeMap();
+  }, [computeMap]);
 
   const handleSelectArea = async (areaId: LifeAreaId) => {
     setSelectedArea(areaId);
