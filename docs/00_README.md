@@ -18,6 +18,15 @@
 | 06 | [Motor de IA & Matriz de Correlação](./06_ai-engine-spec.md) | Prompt engineering, cadeia de raciocínio e mapeamento das 36 casas |
 | 07 | [Épicos & User Stories](./07_epics-stories.md) | Backlog estruturado com critérios de aceitação técnicos |
 | 08 | [Roadmap](./08_roadmap.md) | Fases de desenvolvimento, milestones e entregáveis |
+| 09 | [Master Prompt para Agentes](./09_master-agent-prompt.md) | Contexto-mestre para o agente orquestrador/codificador |
+| 10 | [Revisão & Gap Analysis](./10_revisao-gap-analysis.md) | Auditoria de prontidão mecânica da documentação 00–09 |
+| 11 | [Cálculo Determinístico](./11_calculo-deterministico.md) | Tabelas alfanuméricas, fórmulas, números mestres, data→Odu |
+| 12 | [Motor de Consulta Interativa (Q&A)](./12_motor-consulta-qa.md) | Roteador de temas, RAG fechado, persona e API de consulta |
+| 13 | [Identidade Ramiro & Design System v2](./13_identidade-ramiro-design-v2.md) | Consagração ao Cigano Ramiro, paleta laranja+azul royal (canônica) |
+| 14 | [Extensibilidade Oracular](./14_extensibilidade-oracular.md) | Contrato de plugin para I-Ching e novos sistemas |
+| 15 | [Glossário Oracular Canônico](./15_glossario-oracular.md) | Significados-base das 36 cartas e 16 Odus (anti-alucinação) |
+
+> **Identidade visual:** o **Doc 13** é a fonte canônica da paleta (laranja + azul royal, consagração ao Cigano Ramiro). Em qualquer divergência de cor, ele prevalece sobre os demais.
 
 ---
 
@@ -29,6 +38,8 @@
 
 ## Como Usar Esta Documentação
 
-- **Para o Agente de Orquestração (Hermes):** Leia os documentos 01, 02 e 07 para entender o escopo e dividir as tarefas em subtarefas atômicas para o swarm.
-- **Para o Agente de Codificação (Minimax/Claude Code):** Leia os documentos 03, 04, 05 e 06 para implementar os módulos. Siga a ordem dos épicos no documento 07.
-- **Para o Desenvolvedor (Gabriel):** Use o documento 08 para monitorar o progresso e o 02 para validar se o que foi construído atende ao requisito.
+- **Para o Agente de Orquestração (Hermes):** Leia os documentos 01, 02, 07 e 10 para entender o escopo, as lacunas conhecidas e dividir as tarefas em subtarefas atômicas para o swarm.
+- **Para o Agente de Codificação (Minimax/Claude Code):** Leia os documentos 03, 04, 05, 06, 09, 11, 12, 13 e 14 para implementar os módulos. Siga a ordem dos épicos no documento 07.
+- **Para o Desenvolvedor (Gabriel):** Use o documento 08 para monitorar o progresso, o 02 para validar requisitos e o 10 §5 para as decisões de conteúdo pendentes (D1–D6) que só você pode definir.
+
+> **Comece pelo Doc 10 (Gap Analysis).** Ele mapeia o estado de prontidão da documentação e aponta exatamente o que cada documento ganhou nesta refatoração.

@@ -23,6 +23,13 @@ localmente com             para uso real em            para outros
 banco configurado          atendimentos               terapeutas
 ```
 
+> **Itens incorporados nesta refatoração (Doc 10):**
+> - **Mapas enriquecidos** (G3) entram já na **Fase 1** (motores de cálculo — Doc 11).
+> - **Consulta Interativa / Q&A** (G5, Doc 12) entra na transição **Fase 2 → 3** (Sprint 7), atrás de feature flag.
+> - **Identidade v2 / paleta laranja+royal** (Doc 13) aplica-se a toda UI desde o setup.
+> - **Extensibilidade (I-Ching)** (Doc 14) fica como **Fase 2+**, fora do MVP.
+> - **Decisões de conteúdo D1–D6** (Doc 10 §5) são pré-requisito da Fase 1/2 — ver "Dependências Críticas".
+
 ---
 
 ## FASE 1 — Fundação e Motores de Cálculo
@@ -47,14 +54,16 @@ banco configurado          atendimentos               terapeutas
 
 ### Sprint 2 (Semanas 3–4): Motores de Cálculo e Cadastro
 
+> **Pré-requisito de conteúdo:** as decisões **D1–D4** (Doc 10 §5 / Doc 11) devem estar respondidas, ou os motores rodam com os defaults provisórios do Doc 11 e os campos afetados ficam sinalizados.
+
 | ID | Tarefa | Épico | Prioridade | Estimativa |
 |---|---|---|---|---|
-| T2.1 | Motor de Numerologia Cabalística completo + testes | E2 | 🔴 | 8h |
-| T2.2 | Motor de Numerologia Tântrica completo + testes | E2 | 🔴 | 4h |
-| T2.3 | Integração com API de Astrologia + AstrologyMap | E2 | 🔴 | 12h |
-| T2.4 | Motor de Odu de Nascimento | E2 | 🟡 | 3h |
+| T2.1 | Motor de Numerologia Cabalística **enriquecido** + testes (Doc 11 §2: impressão, pináculos, lições, ciclos pessoais, arcanos) | E2 | 🔴 | 10h |
+| T2.2 | Motor de Numerologia Tântrica completo + testes (Doc 11 §3: 11 corpos, rótulos resolvidos) | E2 | 🔴 | 5h |
+| T2.3 | Integração com API de Astrologia + AstrologyMap **enriquecido** (elementos, modalidades, harmony/tension) | E2 | 🔴 | 13h |
+| T2.4 | Motor de Odu de Nascimento (Doc 11 §4; default provisório até D3) | E2 | 🟡 | 3h |
 | T2.5 | Formulário de cadastro de consulente (validação Zod) | E2 | 🔴 | 8h |
-| T2.6 | Server Action: createClient com todos os mapas | E2 | 🔴 | 6h |
+| T2.6 | Server Action: createClient com todos os mapas (enriquecidos) | E2 | 🔴 | 6h |
 | T2.7 | Página de listagem e perfil de consulente | E2 | 🟡 | 6h |
 
 **Milestone Sprint 2:** Cadastrar um consulente calcula e salva todos os mapas. Perfil exibe badges dos mapas corretamente.
@@ -140,11 +149,26 @@ banco configurado          atendimentos               terapeutas
 
 ---
 
-### Sprint 7–8 (Semanas 13–16): UX Avançada e Performance
+### Sprint 7 (Semanas 13–14): Consulta Interativa (Q&A) — *Doc 12*
+
+> **Decisão D5:** Q&A recomendado para a **Fase 2/início da Fase 3**, atrás de feature flag. Aplicar a paleta v2 (Doc 13). Marca a entrega da "maior expansão da visão".
 
 | ID | Tarefa | Épico | Prioridade | Estimativa |
 |---|---|---|---|---|
-| T7.1 | Micro-interações e animações do grid | E7 | 🟢 | 8h |
+| T7Q.1 | Modelos `Consultation`/`ChatMessage` + migration (Doc 04) | E8 | 🔴 | 3h |
+| T7Q.2 | Roteador de Temas `theme-router.ts` (Doc 12 §4) | E8 | 🔴 | 8h |
+| T7Q.3 | API `/api/consult` com RAG fechado + persona (Doc 12 §5–§7) | E8 | 🔴 | 10h |
+| T7Q.4 | Tela "Consultar o Oráculo" (Doc 05 §9) + chips de roteamento | E8 | 🔴 | 8h |
+
+**Milestone Sprint 7:** É possível perguntar ao Oráculo sobre uma leitura e receber resposta ancorada, com transparência das casas consultadas.
+
+---
+
+### Sprint 8 (Semanas 15–16): UX Avançada e Performance
+
+| ID | Tarefa | Épico | Prioridade | Estimativa |
+|---|---|---|---|---|
+| T7.1 | Micro-interações e animações do grid (paleta v2) | E7 | 🟢 | 8h |
 | T7.2 | Atalhos de teclado globais | E7 | 🟢 | 4h |
 | T7.3 | Otimização de re-renders com React.memo e useCallback | E7 | 🟡 | 6h |
 | T7.4 | Responsividade para tablet (iPad Pro landscape) | E7 | 🟡 | 8h |
@@ -185,6 +209,8 @@ O MVP é considerado bem-sucedido quando:
 | API do LLM (OpenAI/Anthropic) | Alta — core do produto | Implementar com ambos os providers e failover automático |
 | Google Places API | Baixo — apenas autocomplete | Fallback: input manual de cidade + timezone |
 | Cálculos Numerológicos | Nenhum — algoritmos próprios | Validar com casos conhecidos antes de produção |
+| Decisões de conteúdo D1–D4 (tabelas alfanuméricas, tântricas, data→Odu, 16 Odus) | Média — sem elas os números seguem defaults provisórios | Rodar com defaults do Doc 11 sinalizados; substituir pela linhagem antes do go-live |
+| Tabela data → Odu (D3) | Alta para o Odu Natal | Algoritmo default provisório (Doc 11 §4.1) até o operador definir a tabela |
 
 ---
 

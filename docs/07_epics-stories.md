@@ -17,6 +17,9 @@
 | E5 | Exportação de PDF e Entrega | 🟡 Alta | S5.1 a S5.2 |
 | E6 | Histórico e Dashboard | 🟡 Alta | S6.1 a S6.3 |
 | E7 | Refinamentos de UX e Performance | 🟢 Média | S7.1 a S7.3 |
+| E8 | Consulta Interativa (Q&A) — *Fase 2* | 🟡 Alta | S8.1 a S8.3 |
+
+> **Identidade visual:** todas as stories de UI seguem a paleta v2 (laranja + azul royal) do **Doc 13**. Toda referência a "âmbar/dourado/esmeralda" foi migrada.
 
 ---
 
@@ -157,25 +160,25 @@ const clientSchema = z.object({
 
 **Story:** Como sistema, quero calcular os números cabalísticos a partir do nome e data de nascimento, para que os dados sejam usados nas correlações com a Mesa Real.
 
-**Tarefas Técnicas:**
+**Tarefas Técnicas:** *(fórmulas, tabelas e regras de borda exatas no **Doc 11 §1–§2**)*
 - [ ] Criar `src/lib/calculators/numerology-kabalah.ts`
-- [ ] Implementar tabela de conversão alfanumérica (A=1, B=2... Z=9, conforme método cabalístico)
-- [ ] Implementar função `reduceToSingleDigit(n: number): number` (mantém 11, 22, 33)
-- [ ] Implementar `calculateLifePath(date: string): number`
-- [ ] Implementar `calculateExpression(fullName: string): number`
-- [ ] Implementar `calculateMotivation(fullName: string): number` (apenas vogais)
-- [ ] Implementar `calculateMission(date: string): number`
-- [ ] Implementar `calculateNativeDayGifts(date: string): number`
-- [ ] Implementar `calculateChallenges(date: string): { first, second, main, last }`
-- [ ] Implementar `calculateKarmicDebts(fullName: string): number[]`
+- [ ] Implementar a tabela de conversão alfanumérica conforme **Doc 11 §2.1** (default Pitagórico — sujeito a D1)
+- [ ] Implementar a normalização de nomes (acentos, Ç, Y, hífen) conforme **Doc 11 §2.2**
+- [ ] Implementar `reduceToSingleDigit(n, keepMasters)` conforme **Doc 11 §1** (preserva 11/22/33 nos campos certos)
+- [ ] Implementar `calculateLifePath`, `calculateExpression`, `calculateMotivation` (vogais), `calculateImpression` (consoantes), `calculateMission`, `calculateNativeDayGifts`
+- [ ] Implementar `calculateChallenges` e `calculatePinnacles` (Doc 11 §2.5–§2.6) — *Pináculos novos (G3)*
+- [ ] Implementar `calculateKarmicLessons` (ausentes no nome) e `calculateKarmaicDebts` (13/14/16/19) — *distintos (G3)*
+- [ ] Implementar `calculatePersonalCycles(birthDate, refDate)` → `{ personalYear, personalMonth, personalDay }` — *novo, volátil, calculado sob demanda (G3)*
+- [ ] Implementar `calculateRulingArcana` (correspondência com o Tarô) — *novo (G3)*
 - [ ] Criar função agregadora `buildKabalisticMap(fullName, date): KabalisticMap`
-- [ ] Criar testes unitários para casos conhecidos
+- [ ] Criar testes unitários para os casos resolvidos do **Doc 11 §2.7**
 
 **Critérios de Aceitação:**
-- [ ] Para "20/08/1986": Caminho de Vida = 7
-- [ ] Redução de números mestres (11, 22, 33) não é reduzida
-- [ ] Função de vogais identifica corretamente A, E, I, O, U (incluindo acentuadas)
-- [ ] Todos os números retornados são inteiros entre 1 e 33
+- [ ] Para "20/08/1986": Caminho de Vida = 7 (Doc 11 §2.7)
+- [ ] Redução de números mestres (11, 22, 33) preserva nos campos de identidade e reduz nos cíclicos (Doc 11 §1.1)
+- [ ] Função de vogais identifica A, E, I, O, U após normalização de acentos (Doc 11 §2.2–§2.3)
+- [ ] `impression`, `karmicLessons`, `pinnacles` e `personalCycles` presentes no mapa
+- [ ] Pontos sujeitos a D1 sinalizados como provisórios até validação do operador
 
 ---
 
@@ -183,20 +186,22 @@ const clientSchema = z.object({
 
 **Story:** Como sistema, quero calcular os números tântricos a partir da data de nascimento, para complementar o perfil de cada consulente com os corpos energéticos tântricos.
 
-**Tarefas Técnicas:**
+**Tarefas Técnicas:** *(fórmulas exatas no **Doc 11 §3**; resolve o conflito de rótulos da G3/D2)*
 - [ ] Criar `src/lib/calculators/numerology-tantric.ts`
-- [ ] Implementar a tabela dos 11 Corpos Tântricos e suas descrições
+- [ ] Implementar a constante `TANTRIC_BODIES` (11 corpos explícitos, Doc 11 §3.2 / Doc 04)
 - [ ] Calcular `soul`: reduzir o DIA de nascimento (ex: 20 → 2)
-- [ ] Calcular `karma`: usar o MÊS de nascimento (ex: 08 → 8)
-- [ ] Calcular `divineGift`: reduzir o ANO em dois passos (ex: 1986 → 8+6=14 → 1+4=5)
-- [ ] Calcular `destiny`: somar os 4 dígitos do ano e reduzir (ex: 1+9+8+6=24 → 2+4=6)
-- [ ] Calcular `tantricPath`: soma total de dia+mês+ano reduzida
+- [ ] Calcular `karma`: reduzir o MÊS de nascimento (ex: 08 → 8)
+- [ ] Calcular `divineGift`: reduzir os **DOIS ÚLTIMOS dígitos do ano** (ex: 1986 → 86 → 14 → 5)
+- [ ] Calcular `destiny`: somar os 4 dígitos do ano e reduzir (ex: 1+9+8+6=24 → 6)
+- [ ] Calcular `tantricPath` (Caminho Total): soma de dia+mês+ano completo reduzida (ex: 2014 → 7)
+- [ ] Associar cada número ao seu corpo tântrico (`*Body` + `*Description`)
 - [ ] Criar função agregadora `buildTantricMap(date): TantricMap`
 
 **Critérios de Aceitação:**
-- [ ] Para data "20/08/1986": soul=2, karma=8, divineGift=5, destiny=6
-- [ ] Cada número vem acompanhado de sua descrição do corpo tântrico
-- [ ] Nenhum número retornado ultrapassa 11 (máximo tântrico)
+- [ ] Para data "20/08/1986": soul=2, karma=8, divineGift=5, destiny=6, tantricPath=7 (Doc 11 §3.3)
+- [ ] `divineGift` ≠ `destiny` ≠ `tantricPath` (rótulos resolvidos — G3)
+- [ ] Cada número vem acompanhado da descrição do seu corpo tântrico
+- [ ] Os 11 corpos expostos como estrutura nomeada imutável, não dicionário genérico
 
 ---
 
@@ -209,7 +214,11 @@ const clientSchema = z.object({
 - [ ] Criar `src/lib/astrology/ephemeris.ts` com a integração
 - [ ] Implementar função `calculateAstrologyMap(date, time, lat, lng, timezone): AstrologyMap`
 - [ ] O resultado deve incluir: Sun, Moon, Ascendente, 10 planetas, Quíron, Lilith, Nodos, 12 Casas e planetas em casas
+- [ ] Computar `elements` (fogo/terra/ar/água) e `modalities` (cardinal/fixo/mutável) — *novo (G3)*
+- [ ] Rotular cada aspecto com `nature: "harmony" | "tension"` — *novo (G3)*
 - [ ] Criar fallback: se a API falhar, retornar objeto parcial com campos disponíveis
+
+> **Odu de Nascimento (S2.4b):** implementar `calculateBirthOdu(date)` conforme **Doc 11 §4**. Até a tabela de linhagem (D3) ser definida, usar o algoritmo default provisório e marcar `oduBirth.provisional = true`.
 - [ ] Cache do resultado no campo `astrologyMap` do Client (nunca recalcular)
 
 **Critérios de Aceitação:**
@@ -342,7 +351,7 @@ interface MesaRealStore {
 - [ ] Implementar counter "X/36 casas preenchidas" na área central
 - [ ] Implementar botão "Limpar Mesa" com Dialog de confirmação
 - [ ] Botão "Gerar Dossiê" ativa quando ≥1 casa preenchida e cliente selecionado
-- [ ] Quando todas as 36 casas preenchidas, botão pulsa em âmbar (CSS animation)
+- [ ] Quando todas as 36 casas preenchidas, botão pulsa em **laranja** (CSS animation) — *paleta v2, Doc 13*
 
 **Critérios de Aceitação:**
 - [ ] Counter atualiza instantaneamente ao preencher/limpar qualquer slot
@@ -408,15 +417,15 @@ interface MesaRealStore {
 - [ ] Criar `src/components/mesa-real/DossierViewer.tsx`
 - [ ] Usar `useEffect` + `ReadableStream` para consumir o SSE da API
 - [ ] Renderizar o Markdown acumulado usando `react-markdown` + `remark-gfm`
-- [ ] Aplicar estilos CSS customizados ao Markdown renderizado (tipografia Lora, cores âmbar/esmeralda)
+- [ ] Aplicar estilos CSS customizados ao Markdown renderizado (tipografia Lora, cores **laranja/azul royal** — Doc 13)
 - [ ] Exibir animação de loading enquanto o stream não começa
 - [ ] Scroll automático conforme o texto vai sendo gerado
 - [ ] Botão "Parar Geração" (cancela o stream se necessário)
 
 **Critérios de Aceitação:**
 - [ ] Texto aparece token a token com efeito de máquina de escrever
-- [ ] Títulos das casas (h2 em Markdown) renderizam em dourado com fonte Cinzel
-- [ ] Tags de carta/Odu (*Carta: X | Odu: Y*) renderizam em esmeralda
+- [ ] Títulos das casas (h2 em Markdown) renderizam em **laranja** (`#F97316`) com fonte Cinzel
+- [ ] Tags de carta/Odu (*Carta: X | Odu: Y*) renderizam em **azul royal** (`#3B5BDB`)
 - [ ] Scroll automático sem travar a tela
 - [ ] Ao completar, exibe toast "Dossiê gerado com sucesso" e ativa botão de PDF
 
@@ -519,3 +528,59 @@ interface MesaRealStore {
 - Toast de erro com mensagem amigável para falhas de API
 - Estado de loading consistente em todos os botões assíncronos
 - Mensagem de "Nenhum consulente cadastrado" na tela de nova consulta com CTA para cadastrar
+
+---
+
+## ÉPICO 8 — Consulta Interativa (Q&A) — *Fase 2*
+
+**Objetivo:** Permitir perguntas abertas sobre uma leitura, roteadas deterministicamente e ancoradas no dossiê. Especificação completa no **Doc 12**.
+
+---
+
+### S8.1 — Modelo de Dados e Roteador de Temas
+
+**Story:** Como sistema, preciso persistir conversas ancoradas numa leitura e rotear perguntas abertas para as casas certas, para responder sem sair do contexto da leitura.
+
+**Tarefas Técnicas:**
+- [ ] Adicionar modelos `Consultation` + `ChatMessage` + enum `ChatRole` ao schema (Doc 04) e migrar
+- [ ] Implementar `lib/ai/theme-router.ts` com a taxonomia `tema → casas + aspectos` (Doc 12 §4)
+- [ ] Classificação estruturada (LLM `temperature: 0`, saída validada por Zod) → `{ themes, houses }`
+- [ ] Fallback para tema `geral` quando confiança baixa
+
+**Critérios de Aceitação:**
+- [ ] Pergunta sobre amor roteia para a Casa 24 (+ Vênus/Lua); sobre dinheiro, Casa 34 (+ 2ª)
+- [ ] Mesma pergunta + mesma leitura → mesmas casas (determinístico)
+
+---
+
+### S8.2 — API `/api/consult` com RAG Fechado
+
+**Story:** Como operador, quero perguntar ao Oráculo sobre uma leitura e receber resposta em streaming ancorada só no que foi tirado.
+
+**Tarefas Técnicas:**
+- [ ] Criar `src/app/api/consult/route.ts` (POST, streaming) — pipeline do Doc 12 §7
+- [ ] Montar o contexto RAG fechado (dossiê + mapas + casas roteadas), Doc 12 §5
+- [ ] Aplicar a persona/guarda-corpos de consulta (Doc 12 §6)
+- [ ] Persistir mensagens `USER`/`ORACLE` com `routedThemes`/`routedHouses`
+
+**Critérios de Aceitação:**
+- [ ] 401 sem sessão; 400 com body inválido
+- [ ] Resposta nunca cita carta/Odu fora da `matrixData`; nunca contradiz o dossiê
+- [ ] Determinações médicas/jurídicas/financeiras categóricas são recusadas e reformuladas como tendência
+- [ ] Streaming começa em < 3s
+
+---
+
+### S8.3 — Tela "Consultar o Oráculo"
+
+**Story:** Como operador, quero um chat sobre a leitura, para aprofundar pontos com o consulente em tempo real.
+
+**Tarefas Técnicas:**
+- [ ] Criar a tela de chat conforme **Doc 05 §9** (bolhas laranja/royal, tipografia Lora)
+- [ ] Exibir chips de transparência do roteamento (casas consultadas) por resposta
+- [ ] Streaming token a token; input fixo no rodapé com botão "Enviar" (laranja)
+
+**Critérios de Aceitação:**
+- [ ] Acessível a partir de `/dashboard/leituras/[id]`
+- [ ] Cada resposta do Oráculo mostra as casas consultadas
+- [ ] Histórico da conversa persistido e recarregável

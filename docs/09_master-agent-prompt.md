@@ -22,16 +22,19 @@ Você é o Engenheiro de Software Principal responsável pelo desenvolvimento do
 
 **Funcionamento em uma linha:** O terapeuta faz o jogo físico, digita os dados do cliente e da tiragem no sistema, e a IA gera um dossiê profundo e personalizado.
 
+**Identidade (Doc 13):** o sistema é consagrado ao **Cigano Ramiro**. Paleta canônica = **laranja** (ação, fogo, abertura de caminhos) + **azul royal** (profundidade, mistério, proteção). **Nunca** use a paleta antiga dourado/âmbar+esmeralda. Terminologia canônica: **búzios/Odus (merindilogun)**, não "geomancia".
+
 **O sistema tem 3 módulos core:**
 
 ### Módulo A — Consulente
 - Formulário de cadastro com: Nome Completo, Data, Hora e Local de Nascimento.
 - O backend calcula e salva em JSON (campos `astrologyMap`, `kabalisticMap`, `tantricMap`, `oduBirth`):
   - **Astrologia:** Signos, Ascendente, 12 planetas, 12 casas astrológicas, Nodos, aspectos.
-  - **Numerologia Cabalística:** Caminho de Vida, Missão, Expressão, Motivação, Dons, Desafios, Dívidas Kármicas.
-  - **Numerologia Tântrica:** Alma (dia), Karma (mês), Dom Divino (ano em 2 passos), Destino, Caminho Total.
-  - **Odu de Nascimento.**
-- Esses dados são calculados **uma única vez** no cadastro e cacheados. Nunca recalculados durante uma leitura.
+  - **Numerologia Cabalística:** Caminho de Vida, Missão, Expressão, Motivação, **Impressão**, Dons, Desafios, **Pináculos**, **Lições e Dívidas Kármicas**, **Arcanos Regentes**, **Ciclos Pessoais** (Doc 11 §2).
+  - **Numerologia Tântrica:** Alma (dia), Karma (mês), Dom Divino (**2 últimos dígitos do ano**), Destino (soma do ano), Caminho Total (data completa), **11 Corpos** (Doc 11 §3).
+  - **Astrologia enriquecida:** + distribuição de **elementos** e **modalidades**, e rótulo `harmony|tension` nos aspectos (Doc 11/Doc 04).
+  - **Odu de Nascimento** (Doc 11 §4; tabela definitiva pendente de D3 — usar default provisório).
+- Esses dados são calculados **uma única vez** no cadastro e cacheados. Nunca recalculados durante uma leitura. **Exceção:** os **Ciclos Pessoais** (dia/mês/ano pessoais) são voláteis e derivados sob demanda da data atual — não fazem parte do mapa imutável.
 
 ### Módulo B — Mesa Real (O Cockpit)
 - Um grid visual de **9 colunas × 4 linhas** (36 slots/casas).
@@ -50,10 +53,19 @@ Você é o Engenheiro de Software Principal responsável pelo desenvolvimento do
   5. O Odu tirado + sua essência
 - O LLM gera para cada casa: 3 parágrafos obrigatórios (O Terreno, O Evento, A Direção).
 - Ao final: Síntese em 4 capítulos (Trabalho/Dinheiro, Lar/Família, Amor/Relacionamentos, Conselho Espiritual) + Veredito Final.
+- **No motor do dossiê, a IA NUNCA recebe perguntas abertas** — só dados estruturados por casa.
+
+### Módulo D — Consulta Interativa / Q&A (Fase 2 — Doc 12)
+- Depois do dossiê, o operador pode fazer **perguntas abertas** sobre a leitura via `POST /api/consult` (streaming).
+- A pergunta é **roteada deterministicamente** para casas/aspectos (roteador de temas, inverso da Matriz) e respondida em **RAG fechado**: só o dossiê + os 4 mapas + as casas tiradas roteadas. Nunca conhecimento aberto.
+- Persistência: `Consultation` + `ChatMessage` (Doc 04).
+- **Isto NÃO contradiz a regra acima:** o motor por-casa segue determinístico; a abertura está só na camada de consulta, e ainda assim roteada. (Resolve I3 do Doc 10.)
 
 ---
 
 ## 3. A MATRIZ DE CORRELAÇÃO — REGRA DE NEGÓCIO CENTRAL
+
+> O código-fonte completo das **36 entradas** (`correlation-map.ts`) está pronto no **Doc 06 §3.1**. A tabela abaixo é o resumo de referência.
 
 Esta é a lógica mais crítica do sistema. O PromptBuilder usa estas regras para saber QUAIS dados do mapa natal injetar em QUAL casa:
 
@@ -106,7 +118,7 @@ Casa 36 (Cruz)      → Astro: Nodo Sul + Saturno + 12ª Casa | Cabala: Dívidas
 - **Estado:** Zustand (para o grid) + React Hook Form (formulários) + Zod (validação)
 - **Banco de dados:** PostgreSQL via Prisma ORM
 - **Autenticação:** NextAuth.js com CredentialsProvider
-- **IA:** OpenAI GPT-4o (principal) + Anthropic Claude como fallback, via wrapper abstrato
+- **IA:** OpenAI GPT-4o (principal) + Anthropic Claude como fallback, via wrapper abstrato. **Nomes de modelo configuráveis por env** (`OPENAI_MODEL`, `ANTHROPIC_MODEL`) — resolve I6 do Doc 10.
 - **PDF:** @react-pdf/renderer ou Puppeteer
 - **Deploy:** Vercel + Supabase (PostgreSQL)
 
@@ -121,6 +133,10 @@ Casa 36 (Cruz)      → Astro: Nodo Sul + Saturno + 12ª Casa | Cabala: Dívidas
 5. **NUNCA** usar `localStorage` — estado no Zustand (memória), persistência no Prisma (banco).
 6. O grid 9×4 deve ser um `"use client"` com estado Zustand. Re-renders devem ser atômicos por slot.
 7. O PromptBuilder **nunca** deve enviar dados genéricos. Cada casa recebe apenas os dados mapeados para ela na Matriz de Correlação.
+8. **Paleta v2 obrigatória** (laranja + azul royal, Doc 13). Nenhuma cor âmbar/dourado/esmeralda em código ou CSS.
+9. **Q&A é RAG fechado** (Doc 12): a consulta nunca usa conhecimento aberto, nunca contradiz o dossiê, nunca cita carta/Odu fora da tiragem.
+10. **Extensibilidade por contrato** (Doc 14): adicionar um sistema oracular novo (ex.: I-Ching) só pelos 5 pontos de extensão; campos novos em `CorrelationEntry` são opcionais para não quebrar as 36 entradas.
+11. **Significado-base vem do glossário** (Doc 15), injetado no prompt como verdade — não da memória do LLM.
 
 ---
 

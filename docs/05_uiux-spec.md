@@ -8,35 +8,42 @@
 
 ## 1. Design System
 
-### 1.1 Paleta de Cores (CSS Variables)
+### 1.1 Paleta de Cores (CSS Variables) — v2 Cigano Ramiro
+
+> **Fonte canônica: Doc 13.** Substitui a paleta dourado/âmbar + esmeralda (v1). Identidade: **laranja** (fogo, ação, abertura de caminhos) + **azul royal** (profundidade, mistério, proteção).
 
 ```css
 /* tailwind.config.ts — extend colors */
 :root {
-  /* Backgrounds */
-  --bg-canvas:     #020817;  /* slate-950 — fundo principal */
-  --bg-surface:    #0f172a;  /* slate-900 — cards e painéis */
-  --bg-elevated:   #1e293b;  /* slate-800 — elementos elevados */
-  --bg-border:     #334155;  /* slate-700 — bordas */
+  /* Backgrounds — azul-noite (harmoniza com o royal) */
+  --bg-canvas:   #0A0E1A;  /* fundo principal */
+  --bg-surface:  #111726;  /* cards e painéis */
+  --bg-elevated: #1A2236;  /* elementos elevados */
+  --bg-border:   #2A3550;  /* bordas */
 
-  /* Primária — Dourado/Âmbar (Sagrado, Luz, Oráculo) */
-  --accent-gold:   #f59e0b;  /* amber-500 */
-  --accent-gold-dim: #92400e; /* amber-800 — hover states */
-  --accent-gold-glow: rgba(245, 158, 11, 0.15); /* glow effects */
+  /* Primária — LARANJA (Ramiro: luz, fogo, movimento, abertura de caminhos) */
+  --accent-orange:        #F97316;
+  --accent-orange-bright: #FB923C;
+  --accent-orange-dim:    #C2410C;
+  --accent-orange-glow:   rgba(249,115,22,0.18);
 
-  /* Secundária — Esmeralda (Odus, Natureza, Abertura) */
-  --accent-emerald: #10b981;  /* emerald-500 */
-  --accent-emerald-dim: #065f46;
+  /* Secundária — AZUL ROYAL (Ramiro: profundidade, mistério, nobreza, proteção) */
+  --accent-royal:        #2547D0;
+  --accent-royal-bright: #3B5BDB;
+  --accent-royal-dim:    #1E3A8A;
+  --accent-royal-glow:   rgba(37,71,208,0.18);
 
   /* Alerta — Rosa (Atenção, Corte, Urgência) */
-  --accent-rose:   #f43f5e;   /* rose-500 */
+  --accent-alert: #F43F5E;
 
   /* Texto */
-  --text-primary:  #f8fafc;   /* slate-50 */
-  --text-secondary:#94a3b8;   /* slate-400 */
-  --text-muted:    #475569;   /* slate-600 */
+  --text-primary:   #F5F7FF;
+  --text-secondary: #9AA7C7;
+  --text-muted:     #56618A;
 }
 ```
+
+**Mapeamento semântico (Doc 13 §4):** laranja = elementos *ativos* (casa preenchida, glow do slot, botão "Gerar Dossiê", `h2` de casa, palavra-chave de destaque); azul royal = *estrutura e profundidade* (badges, glows internos, linha-síntese em itálico, bolhas do Oráculo no chat).
 
 ### 1.2 Tipografia
 
@@ -93,8 +100,8 @@ font-family: 'Lora', serif;
 
 **Implementação (`DashboardLayout.tsx`):**
 ```tsx
-<div className="flex h-screen bg-[#020817] overflow-hidden">
-  <Sidebar className="w-72 flex-shrink-0 border-r border-slate-800" />
+<div className="flex h-screen bg-[#0A0E1A] overflow-hidden">
+  <Sidebar className="w-72 flex-shrink-0 border-r border-[#2A3550]" />
   <div className="flex-1 flex flex-col overflow-hidden">
     <Topbar />
     <main className="flex-1 overflow-y-auto p-6">
@@ -220,11 +227,13 @@ Cada mapa é exibido como um grupo de badges compactos:
 </div>
 ```
 
-**Estilos dos Badges:**
-- `variant="astro"`: bg-blue-950 border-blue-700 text-blue-300
-- `variant="kabala"`: bg-purple-950 border-purple-700 text-purple-300
-- `variant="tantric"`: bg-amber-950 border-amber-700 text-amber-300
-- `variant="odu"`: bg-emerald-950 border-emerald-700 text-emerald-300
+**Estilos dos Badges (v2 — Doc 13 §4.3; laranja + royal apenas):**
+- `variant="astro"`: bg-[#1E3A8A]/20 border-[#2547D0]/40 text-[#3B5BDB]
+- `variant="kabala"`: bg-[#2547D0]/10 border-[#3B5BDB]/40 text-[#F5F7FF]
+- `variant="tantric"`: bg-[#C2410C]/20 border-[#F97316]/40 text-[#FB923C]
+- `variant="odu"`: bg-[#2547D0]/15 border-[#3B5BDB]/50 text-[#3B5BDB]
+
+> Princípio: a numerologia tântrica (dom/fogo da alma) puxa para o laranja; astrologia, cabala e Odu (estrutura/profundidade) puxam para o royal.
 
 ---
 
@@ -236,9 +245,9 @@ Cada mapa é exibido como um grupo de badges compactos:
   className="
     grid grid-cols-9 gap-2
     p-4 rounded-2xl
-    bg-gradient-to-br from-slate-900/60 to-slate-950/80
-    border border-slate-800
-    shadow-[inset_0_0_60px_rgba(245,158,11,0.03)]
+    bg-gradient-to-br from-[#111726]/60 to-[#0A0E1A]/80
+    border border-[#2A3550]
+    shadow-[inset_0_0_60px_rgba(37,71,208,0.05)]
   "
 >
   {HOUSES.map((house) => (
@@ -254,9 +263,9 @@ Cada mapa é exibido como um grupo de badges compactos:
   className="
     relative flex flex-col items-center justify-center
     h-36 rounded-xl cursor-pointer
-    bg-slate-900/50
-    border border-dashed border-slate-700/60
-    hover:border-amber-600/40 hover:bg-slate-800/60
+    bg-[#111726]/50
+    border border-dashed border-[#2A3550]/60
+    hover:border-orange-500/40 hover:bg-[#1A2236]/60
     hover:-translate-y-0.5
     transition-all duration-200
   "
@@ -287,10 +296,10 @@ Cada mapa é exibido como um grupo de badges compactos:
   className="
     relative flex flex-col items-center justify-center gap-1
     h-36 rounded-xl cursor-pointer
-    bg-gradient-to-b from-slate-800/70 to-slate-900/70
-    border border-amber-600/40
-    shadow-[0_0_12px_rgba(245,158,11,0.08)]
-    hover:border-amber-500/60 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]
+    bg-gradient-to-b from-[#1A2236]/70 to-[#111726]/70
+    border border-orange-500/40
+    shadow-[0_0_12px_rgba(249,115,22,0.10)]
+    hover:border-orange-400/60 hover:shadow-[0_0_20px_rgba(249,115,22,0.18)]
     hover:-translate-y-0.5
     transition-all duration-200
   "
@@ -302,14 +311,14 @@ Cada mapa é exibido como um grupo de badges compactos:
   </span>
 
   {/* Nome da carta tirada */}
-  <span className="text-xs font-semibold text-amber-400 text-center px-2 leading-tight font-['Cinzel']">
+  <span className="text-xs font-semibold text-orange-400 text-center px-2 leading-tight font-['Cinzel']">
     {slotData.cartaName}
   </span>
 
   {/* Odu tirado */}
   <span className="
-    text-[10px] font-medium text-emerald-400
-    bg-emerald-950/60 border border-emerald-800/40
+    text-[10px] font-medium text-[#3B5BDB]
+    bg-[#1E3A8A]/40 border border-[#2547D0]/40
     px-2 py-0.5 rounded-full
   ">
     {slotData.oduName}
@@ -346,7 +355,7 @@ Cada mapa é exibido como um grupo de badges compactos:
   {/* Header */}
   <div className="mb-4">
     <p className="text-[10px] uppercase tracking-widest text-slate-500">Preenchendo</p>
-    <p className="text-sm font-semibold text-amber-400 font-['Cinzel']">
+    <p className="text-sm font-semibold text-orange-400 font-['Cinzel']">
       Casa {house.id} — {house.name}
     </p>
   </div>
@@ -380,7 +389,7 @@ Cada mapa é exibido como um grupo de badges compactos:
       size="sm"
       onClick={handleConfirm}
       disabled={!selectedCarta || !selectedOdu}
-      className="flex-1 bg-amber-600 hover:bg-amber-500 text-white"
+      className="flex-1 bg-orange-500 hover:bg-orange-400 text-white"
     >
       Confirmar ↵
     </Button>
@@ -407,7 +416,7 @@ Após clicar "Gerar Dossiê", a tela faz uma transição suave para o modo de vi
 **Layout durante processamento:**
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  [Loader orbital animado em âmbar]                           │
+│  [Loader orbital animado em laranja]                         │
 │  "Cruzando os mapas das 36 casas..."                        │
 │  "Consultando os Odus..."                                    │
 │  "Tecendo o Dossiê Cabalístico..."                          │
@@ -450,15 +459,15 @@ Após clicar "Gerar Dossiê", a tela faz uma transição suave para o modo de vi
 
 .dossier-content h2 {
   font-family: 'Cinzel', serif;
-  color: #f59e0b; /* amber-500 */
+  color: #F97316; /* accent-orange */
   font-size: 18px;
-  border-bottom: 1px solid #1e293b;
+  border-bottom: 1px solid #2A3550;
   padding-bottom: 8px;
   margin-top: 36px;
 }
 
 .dossier-content em {
-  color: #10b981; /* emerald-500 */
+  color: #3B5BDB; /* accent-royal-bright */
   font-style: normal;
   font-size: 12px;
 }
@@ -502,7 +511,43 @@ Após salvar: indicador de progresso animado enquanto os mapas são calculados (
 ## 8. Micro-interações e Animações
 
 - **Slot preenchido:** animação de `scale(1.02)` + glow pulse de 0.3s ao confirmar.
-- **Botão "Gerar Dossiê":** pulsa suavemente em âmbar quando todas as casas estão preenchidas.
+- **Botão "Gerar Dossiê":** pulsa suavemente em **laranja** quando todas as casas estão preenchidas.
 - **Transição de estado vazio → preenchido:** fade + slide-up da carta e Odu no slot.
 - **Loading do Dossiê:** animação orbital de partículas ao redor do símbolo do projeto.
 - **Streaming do texto:** o Markdown aparece token a token (efeito máquina de escrever) via SSE/streaming da API.
+
+---
+
+## 9. Tela: Consultar o Oráculo (Q&A) — *Fase 2 (Doc 12)*
+
+Acessível a partir de um dossiê gerado (`/dashboard/leituras/[id]`), como aba ou painel lateral "Consultar o Oráculo". Permite **perguntas abertas** ancoradas exclusivamente na leitura (Doc 12).
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│  CONSULTAR O ORÁCULO — Maria Silva · Leitura de 01/06/2026         │
+├────────────────────────────────────────────────────────────────────┤
+│                                                                    │
+│                          ┌─────────────────────────────────────┐  │
+│                          │ E quanto à minha vida amorosa?       │  │  ← bolha do usuário
+│                          └─────────────────────────────────────┘  │     (laranja, à direita)
+│                                                                    │
+│  ┌──────────────────────────────────────────────┐                 │
+│  │ O seu Coração (Casa 24) revela...             │  ← bolha do     │
+│  │ ...                                            │     Oráculo     │
+│  │ *Síntese: o amor pede coragem, não pressa.*    │  (royal, à esq) │
+│  │  ── consultadas: [Casa 24] [Casa 22]           │  ← chips royal  │
+│  └──────────────────────────────────────────────┘                 │
+│                                                                    │
+├────────────────────────────────────────────────────────────────────┤
+│  [ Pergunte ao Oráculo...                          ]  [ Enviar → ] │  ← input fixo
+└────────────────────────────────────────────────────────────────────┘
+```
+
+**Especificação visual:**
+- Bolha do usuário: `bg-orange-500/15 border-orange-500/30`, alinhada à direita.
+- Bolha do Oráculo: `bg-[#2547D0]/12 border-[#3B5BDB]/30`, alinhada à esquerda, tipografia `Lora`.
+- Linha-síntese em itálico dentro da resposta: `text-[#3B5BDB]` (royal-bright).
+- **Chips de transparência do roteamento:** abaixo de cada resposta, chips royal discretos mostrando as casas consultadas (ex.: "Casa 24 · Casa 22") — derivados de `routedHouses` (Doc 12 §3).
+- Botão "Enviar": laranja (`bg-orange-500 hover:bg-orange-400`).
+- Streaming token a token, igual ao dossiê.
+- Estado vazio: "Faça uma pergunta sobre esta leitura. O Oráculo responde a partir do que foi tirado para você."

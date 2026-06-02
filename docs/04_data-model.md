@@ -31,7 +31,8 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  readings     Reading[]
+  readings      Reading[]
+  consultations Consultation[]
 
   @@map("users")
 }
@@ -96,7 +97,8 @@ model Reading {
   userId      String
   user        User          @relation(fields: [userId], references: [id])
 
-  report      Report?
+  report        Report?
+  consultations Consultation[]   // Threads de Q&A ancoradas nesta leitura (Doc 12)
 
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -134,7 +136,54 @@ model Report {
 
   @@map("reports")
 }
+
+// ─────────────────────────────────────────────
+// CONSULTA INTERATIVA — Thread de Q&A sobre uma leitura (Doc 12)
+// ─────────────────────────────────────────────
+model Consultation {
+  id          String        @id @default(cuid())
+  title       String?       // Resumo opcional do tema dominante da conversa
+
+  readingId   String
+  reading     Reading       @relation(fields: [readingId], references: [id], onDelete: Cascade)
+
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+
+  messages    ChatMessage[]
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([readingId])
+  @@map("consultations")
+}
+
+model ChatMessage {
+  id             String        @id @default(cuid())
+  role           ChatRole      // USER | ORACLE
+  content        String        // Markdown da mensagem
+
+  // Rastreabilidade do roteamento (somente mensagens do ORACLE)
+  routedThemes   String[]      // Ex: ["amor", "decisao"]
+  routedHouses   Int[]         // Ex: [24, 22]
+
+  consultationId String
+  consultation   Consultation  @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime      @default(now())
+
+  @@index([consultationId])
+  @@map("chat_messages")
+}
+
+enum ChatRole {
+  USER
+  ORACLE
+}
 ```
+
+> **Sobre `personalCycles` (KabalisticMap §2.2):** é o **único campo volátil** — depende da data atual e, portanto, é derivado sob demanda (na consulta/leitura) a partir dos números-base cacheados, **não** persistido no mapa imutável. Isso preserva a regra inviolável "mapas natais nunca são recalculados" (Doc 09 §5.3): o que se recalcula é apenas o ciclo pessoal corrente, não o mapa natal.
 
 ---
 
@@ -205,7 +254,12 @@ interface AstrologyMap {
     planet2: string;
     type: "conjunction" | "opposition" | "trine" | "square" | "sextile";
     orb: number;
+    nature: "harmony" | "tension";  // novo (G3) — trígono/sextil = harmony; oposição/quadratura = tension; conjunção = depende dos planetas
   }>;
+
+  // Distribuição de Elementos e Modalidades (novo — G3, exigido pela visão)
+  elements: { fire: number; earth: number; air: number; water: number };       // contagem de planetas por elemento
+  modalities: { cardinal: number; fixed: number; mutable: number };            // contagem por modalidade
 }
 
 interface PlanetPosition {
@@ -234,6 +288,9 @@ interface KabalisticMap {
   // Número de Motivação / Impulso da Alma (apenas vogais do nome, reduzidas)
   motivation: number;
 
+  // Número de Impressão (apenas consoantes do nome, reduzidas) — novo (G3)
+  impression: number;
+
   // Dons Nativos (dia de nascimento não reduzido se for 10-31)
   nativeDayNumber: number;     // Ex: 20
 
@@ -245,8 +302,22 @@ interface KabalisticMap {
     last: number;
   };
 
-  // Karmas da Vida (números ausentes entre 1-9 no nome completo)
-  karmaicDebts: number[];      // Ex: [4, 8] = ausência dos números 4 e 8 no nome
+  // Pináculos / Ciclos de Realização (novo — G3; fórmulas no Doc 11 §2.6)
+  pinnacles: {
+    first: { number: number; ageEnd: number };
+    second: { number: number; ageStart: number; ageEnd: number };
+    third: { number: number; ageStart: number; ageEnd: number };
+    fourth: { number: number; ageStart: number };
+  };
+
+  // Lições Kármicas — números de 1-9 AUSENTES no nome (novo — G3, distinto de karmaicDebts)
+  karmicLessons: number[];     // Ex: [3, 7] = nenhuma letra do nome vale 3 ou 7
+
+  // Dívidas Kármicas (presença de 13/14/16/19 nos totais intermediários)
+  karmaicDebts: number[];      // Ex: [4, 8]
+
+  // Arcanos Regentes / correspondência com o Tarô (novo — G3; ponte com Doc 14)
+  rulingArcana: { lifePathArcana: number; expressionArcana: number };  // nº do Arcano Maior (0-21)
 
   // Ciclos de Vida (3 grandes períodos)
   lifeCycles: {
@@ -254,36 +325,63 @@ interface KabalisticMap {
     second: { number: number; ageStart: number; ageEnd: number };
     third: { number: number; ageStart: number };
   };
+
+  // Ciclos Pessoais correntes (novo e CRÍTICO p/ o Q&A — G3; recalculados na consulta a partir da data atual)
+  personalCycles: {
+    personalYear: number;
+    personalMonth: number;
+    personalDay: number;
+    referenceDate: string;     // ISO — data de referência usada no cálculo
+  };
 }
 ```
 
 ### 2.3 TantricMap (campo `tantricMap` no Client)
 
+> **Conflito de rótulos resolvido (G3/D2):** as fórmulas exatas estão no **Doc 11 §3.1**. `divineGift` usa os **dois últimos dígitos do ano**; `destiny` usa a **soma dos 4 dígitos do ano**; `tantricPath` (Caminho Total) usa a **data completa**. Assim os três são números distintos.
+
 ```typescript
 interface TantricMap {
-  // Corpo Negativo / Número de Alma (dia de nascimento, reduzido)
+  // Número de Alma (dia de nascimento, reduzido)
   soul: number;                // Ex: 20 → 2+0 = 2
+  soulBody: number;            // nº do corpo tântrico (1-11) — ver TANTRIC_BODIES
   soulDescription: string;     // Ex: "Corpo Negativo — Mente Protetora"
 
-  // Corpo Prânico / Número de Karma (mês de nascimento)
+  // Número de Karma (mês de nascimento)
   karma: number;               // Ex: 8
+  karmaBody: number;
   karmaDescription: string;    // Ex: "Corpo Prânico — Energia Vital"
 
-  // Número de Dom Divino (ano de nascimento reduzido em dois passos)
-  divineGift: number;          // Ex: 1986 → 8+6=14 → 1+4=5
+  // Número de Dom Divino (DOIS ÚLTIMOS dígitos do ano, reduzidos)
+  divineGift: number;          // Ex: 1986 → 86 → 8+6=14 → 1+4=5
+  divineGiftBody: number;
   divineGiftDescription: string; // Ex: "Corpo Físico — A Palavra e o Dom"
 
-  // Número de Destino (ano completo de 4 dígitos, reduzido)
+  // Número de Destino (soma dos 4 dígitos do ano, reduzida)
   destiny: number;             // Ex: 1+9+8+6=24 → 2+4=6
 
-  // Número de Caminho Tântrico (soma total de dia+mês+ano, reduzida)
-  tantricPath: number;
+  // Número de Caminho Total (soma de dia+mês+ano completo, reduzida)
+  tantricPath: number;         // Ex: 20+8+1986 = 2014 → 7
 
-  // Atributo de cada número tântrico (1 a 11)
-  tantricBodies: {
-    [key: number]: string;     // Ex: { 1: "Corpo Sutil", 2: "Corpo Negativo", ... }
-  };
+  // Os 11 Corpos Tântricos explícitos (não dicionário genérico) — Doc 11 §3.2
+  // Estrutura nomeada, imutável: índice 1..11 → { name, essence }
+  bodies: Array<{ id: number; name: string; essence: string }>;
 }
+
+// Constante derivada do Doc 11 §3.2
+export const TANTRIC_BODIES = [
+  { id: 1,  name: "Corpo da Alma",                 essence: "Núcleo, pureza, origem" },
+  { id: 2,  name: "Corpo Negativo / Mente Protetora", essence: "Cautela, discernimento, proteção" },
+  { id: 3,  name: "Corpo Positivo / Mente Projetiva", essence: "Expansão, otimismo, ação" },
+  { id: 4,  name: "Corpo Neutro / Mente Meditativa",  essence: "Equilíbrio, julgamento sereno" },
+  { id: 5,  name: "Corpo Físico",                  essence: "Manifestação, a palavra, o dom material" },
+  { id: 6,  name: "Arco da Linha",                 essence: "Integridade, projeção, intuição" },
+  { id: 7,  name: "Aura",                          essence: "Campo de proteção, presença" },
+  { id: 8,  name: "Corpo Prânico",                 essence: "Energia vital, respiração, força" },
+  { id: 9,  name: "Corpo Sutil",                   essence: "Maestria, sabedoria refinada" },
+  { id: 10, name: "Corpo Radiante",                essence: "Realeza, coragem, brilho" },
+  { id: 11, name: "Corpo do Infinito",             essence: "Transcendência, totalidade" },
+] as const;
 ```
 
 ### 2.4 OduBirth (campo `oduBirth` no Client)
@@ -361,6 +459,8 @@ interface ReportContent {
 ---
 
 ## 5. Constantes Imutáveis do Sistema
+
+> **Enriquecimento (G11):** as constantes abaixo são a base mínima. O **Doc 15 (Glossário Oracular Canônico)** define os campos curados `baseMeaning`/`shadow` (cartas) e `quizila`/`precept`/`baseAdvice` (Odus), que devem ser adicionados a estas constantes para alimentar o prompt como verdade (anti-alucinação). A lista dos 16 Odus está sujeita à validação de linhagem **D4** (Doc 11 §5).
 
 ### 5.1 As 36 Cartas Ciganas (Lenormand)
 

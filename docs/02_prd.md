@@ -43,19 +43,24 @@ O operador acessa `/dashboard/clientes/novo` e preenche:
 **B.2 — Processamento Automático dos Mapas**
 Ao salvar o cadastro, o sistema executa em background:
 
-1. **Motor de Numerologia Cabalística** (processado localmente no servidor):
+1. **Motor de Numerologia Cabalística** (processado localmente no servidor — fórmulas exatas no **Doc 11 §2**):
    - Caminho de Vida (soma reduzida de todos os dígitos da data)
-   - Número de Missão (análise da data)
+   - Número de Missão (síntese da data + expressão)
    - Número de Expressão (conversão alfanumérica do nome completo)
    - Número de Motivação (vogais do nome)
+   - Número de Impressão (consoantes do nome) — *novo (G3)*
    - Número de Dons Nativos (dia de nascimento)
+   - Desafios e Pináculos (ciclos de realização) — *Pináculos novos (G3)*
+   - Lições e Dívidas Kármicas (números ausentes / dívidas) — *Lições novas (G3)*
+   - Ciclos Pessoais: dia/mês/ano pessoais — *novo e crítico para o Q&A (G3)*
 
-2. **Motor de Numerologia Tântrica** (processado localmente no servidor):
+2. **Motor de Numerologia Tântrica** (processado localmente no servidor — fórmulas exatas no **Doc 11 §3**):
    - Número de Alma (dia de nascimento reduzido)
    - Número de Karma (mês de nascimento)
-   - Número de Dom Divino (ano de nascimento, reduzido: ex. 1986 → 8+6=14 → 1+4=5)
-   - Número de Destino (ano completo de 4 dígitos, reduzido)
-   - Número de Caminho (soma total de toda a data)
+   - Número de Dom Divino (**dois últimos dígitos do ano**, reduzidos: ex. 1986 → 86 → 8+6=14 → 1+4=5)
+   - Número de Destino (soma dos 4 dígitos do ano, reduzida: ex. 1+9+8+6=24 → 6)
+   - Número de Caminho Total (soma total de toda a data, reduzida)
+   - Os 11 Corpos Tântricos explícitos (não dicionário genérico) — *resolve conflito de rótulos da G3/D2; ver Doc 11 §3.1*
 
 3. **Motor de Astrologia** (via API externa ou biblioteca de efemérides):
    - Signo Solar
@@ -66,10 +71,11 @@ Ao salvar o cadastro, o sistema executa em background:
    - Casa Astrológica de cada planeta
    - Signo regente de cada uma das 12 Casas Astrológicas
    - Nodo Norte e Nodo Sul (eixo do karma e destino)
-   - Aspectos principais (conjunção, oposição, trígono, quadratura, sextil)
+   - Aspectos principais (conjunção, oposição, trígono, quadratura, sextil) com rótulo `harmony | tension` — *rótulo novo (G3)*
+   - Distribuição de Elementos (fogo/terra/ar/água) e Modalidades (cardinal/fixo/mutável) — *novo (G3)*
 
-4. **Odu de Nascimento** (calculado por regra interna):
-   - Determinado pela data de nascimento conforme tabela fixa de mapeamento.
+4. **Odu de Nascimento** (calculado por regra interna — algoritmo/tabela no **Doc 11 §4**):
+   - Determinado pela data de nascimento conforme tabela fixa de mapeamento. *A tabela definitiva é decisão de metodologia do operador (D3); até lá, usa-se o algoritmo default provisório do Doc 11 §4.1.*
 
 Os resultados são salvos no banco de dados nos campos `astrologyMap`, `kabalisticMap` e `tantricMap` como JSON.
 
@@ -199,6 +205,31 @@ Os resultados são salvos no banco de dados nos campos `astrologyMap`, `kabalist
   - Card: "Consultas realizadas este mês"
   - Card: "Total de consulentes cadastrados"
   - Tabela: "Últimas 10 consultas" com nome, data e link para o dossiê.
+
+---
+
+### Módulo F — Consulta Interativa (Q&A) — *Fase 2 (D5)*
+
+**Escopo (D5):** recomendado para a **Fase 2**, após o MVP do dossiê. Pode ser entregue atrás de feature flag. Especificação completa no **Doc 12**.
+
+**F.1 — Perguntar ao Oráculo sobre uma leitura**
+- A partir de um dossiê gerado (`/dashboard/leituras/[id]`), o operador abre o painel "Consultar o Oráculo".
+- Faz **perguntas abertas** ("e quanto ao amor?", "esse dinheiro vem este ano?").
+- O sistema **roteia deterministicamente** a pergunta para as casas e aspectos natais relevantes (roteador de temas, Doc 12 §4) e responde **ancorado exclusivamente** na leitura já realizada (RAG fechado, Doc 12 §5).
+
+**F.2 — Garantias**
+- A resposta nunca cita carta/Odu fora da tiragem da leitura.
+- A resposta nunca contradiz o dossiê gerado.
+- Sem determinações médicas/jurídicas/financeiras categóricas — apenas tendências e direções.
+- Conversa persistida (`Consultation` + `ChatMessage`, Doc 04).
+
+**Critérios de Aceitação:**
+- [ ] `POST /api/consult` exige sessão e valida o body (`readingId`, `question`).
+- [ ] Pergunta sobre amor roteia para a Casa 24 (+ Vênus/Lua) e responde ancorada no dossiê.
+- [ ] Resposta em streaming começa em menos de 3s.
+- [ ] Cada resposta exibe, de forma discreta, quais casas foram consultadas (transparência do roteamento).
+
+> **Resolve I3 do Doc 10:** a frase "a IA nunca recebe perguntas abertas" (Doc 06 §1) vale para o **motor por-casa do dossiê**. Na **camada de consulta**, perguntas abertas são aceitas e roteadas deterministicamente. Ver Doc 12 §1.
 
 ---
 

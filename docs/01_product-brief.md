@@ -8,7 +8,9 @@
 
 ## 1. Visão do Produto
 
-**Cabala dos Caminhos** é um cockpit operacional de alta precisão para terapeutas oraculistas conduzirem sessões de leitura integrativa. O sistema combina a estrutura milenar da Mesa Real do Baralho Cigano com cálculos matemáticos de Astrologia, Numerologia Cabalística, Numerologia Tântrica e Geomancia dos Odus, processados por Inteligência Artificial para gerar dossiês interpretativos hiperpersonalizados.
+**Cabala dos Caminhos** é um cockpit operacional de alta precisão para terapeutas oraculistas conduzirem sessões de leitura integrativa. O sistema combina a estrutura milenar da Mesa Real do Baralho Cigano com cálculos matemáticos de Astrologia, Numerologia Cabalística, Numerologia Tântrica e o **jogo de búzios (merindilogun / Odus)**, processados por Inteligência Artificial para gerar dossiês interpretativos hiperpersonalizados.
+
+> **Terminologia (resolve I5 do Doc 10):** ao longo de toda a documentação, a leitura dos Odus refere-se ao **jogo de búzios (merindilogun)** por casa — não à "geomancia". O termo "búzios/Odus" é o padrão canônico do projeto.
 
 O produto resolve um problema central: o cruzamento manual de múltiplos sistemas oraculares e matemáticos durante um atendimento exige horas de trabalho, conhecimento técnico profundo em diferentes áreas e uma capacidade de síntese que humanos não conseguem executar em tempo real. O sistema automatiza essa síntese sem substituir o terapeuta — ele amplifica a capacidade de entrega e o valor percebido pelo consulente.
 
@@ -102,5 +104,9 @@ Sem um produto tangível de alto valor para entregar, terapeutas cobram menos do
 
 - **Nome:** Cabala dos Caminhos
 - **Conceito:** "36 casas que revelam 36 caminhos" — cada casa da Mesa Real é um espelho de uma área da vida do consulente, amplificado pelo cruzamento de todos os sistemas de mapeamento.
-- **Tom visual:** Místico, sofisticado, tecnológico. Dark mode. Dourado e esmeralda como cores primárias.
+- **Consagração:** O sistema é consagrado ao **Cigano Ramiro**, entidade da abertura de caminhos. Toda a identidade nasce do seu duplo princípio: **fogo que abre caminho** (luz, movimento, oportunidade) e **profundidade que protege** (mistério, nobreza, sabedoria oculta).
+- **Tom visual:** Místico, sofisticado, tecnológico. Dark mode. **Laranja** (fogo, ação, abertura de caminhos) e **azul royal** (profundidade, mistério, proteção) como cores primárias. *(Atualizado — antes "dourado e esmeralda"; ver Doc 13.)*
+- **Tom verbal:** místico-tecnológico, direto e protetor. A persona do Oráculo fala no espírito de Ramiro.
 - **Posicionamento:** Ferramenta de tecnologia oracular premium — a fusão entre sabedoria milenar e inteligência artificial.
+
+> **Fonte canônica da identidade visual e verbal:** **Doc 13 — Identidade Cigano Ramiro & Design System v2.** Resolve as lacunas G1 e G2 do Doc 10.

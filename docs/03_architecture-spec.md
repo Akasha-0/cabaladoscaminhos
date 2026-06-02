@@ -203,7 +203,7 @@ cabala-dos-caminhos/
         ├──► [AstrologyService.calculateChart(date, time, lat, lng)]
         │         └── Retorna: { sun, moon, ascendant, planets, houses, nodes }
         │
-        └──► [OduService.calculateBirthOdu(date)]
+        └──► [OduService.calculateBirthOdu(date)]   // algoritmo/tabela no Doc 11 §4 (default provisório até D3)
                   └── Retorna: { odu_number, odu_name, regency }
         │
         ▼
@@ -271,6 +271,9 @@ NEXTAUTH_URL="http://localhost:3000"
 # APIs de Inteligência Artificial (escolher uma)
 OPENAI_API_KEY="sk-..."
 ANTHROPIC_API_KEY="sk-ant-..."
+# Nomes de modelo configuráveis (resolve I6 do Doc 10; defaults no llm-client.ts)
+OPENAI_MODEL="gpt-4o"
+ANTHROPIC_MODEL="claude-sonnet-4-6"
 
 # API de Astrologia (escolher uma)
 ASTROLOGY_API_KEY="..."
