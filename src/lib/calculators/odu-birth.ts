@@ -35,6 +35,7 @@ export function calculateBirthOdu(birthDate: string): OduBirth {
       orixaRegency: ['Oxalá'],
       elementalForce: 'Luz, criação, autoridade divina',
       lifeLesson: 'Cultivar a paciência e honrar a criação.',
+      provisional: true,
     };
   }
 
@@ -51,5 +52,8 @@ export function calculateBirthOdu(birthDate: string): OduBirth {
     orixaRegency: [odu.orixaRegente],
     elementalForce: `${odu.elemento} — ${odu.significado.split('.')[0]}`,
     lifeLesson: odu.preceptos.join('; '),
+    // Algoritmo default (dia+mês). A tabela definitiva da linhagem é decisão
+    // do operador (D3, Doc 11 §4); sinalizado para a UI até ser substituído.
+    provisional: true,
   };
 }

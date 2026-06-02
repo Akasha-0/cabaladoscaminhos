@@ -13,21 +13,25 @@
 import type { TantricMap } from '@/types';
 
 // ============================================================================
-// 11 CORPOS TÂNTRICOS
+// OS 11 CORPOS TÂNTRICOS — tabela canônica (Doc 11 §3.2)
 // ============================================================================
-const TANTRIC_BODIES: Record<number, string> = {
-  1: 'Corpo Sutil — Essência primordial, conexão com o divino',
-  2: 'Corpo Negativo — Mente protetora, defesas psíquicas',
-  3: 'Corpo Físico — Vitalidade, presença material',
-  4: 'Corpo Prânico — Energia vital, respiração',
-  5: 'Corpo da Palavra — Dom da comunicação, expressão',
-  6: 'Corpo da Luz — Cura, magnetismo, radiância',
-  7: 'Corpo da Intuição — Visão interior, pressentimento',
-  8: 'Corpo da Vontade — Determinação, poder pessoal',
-  9: 'Corpo Espiritual — Conexão com planos superiores',
-  10: 'Corpo Cósmico — Integração universal',
-  11: 'Corpo Divino — Mestria, iluminação',
-};
+export const TANTRIC_BODIES_DATA: ReadonlyArray<{ id: number; name: string; essence: string }> = [
+  { id: 1, name: 'Corpo da Alma', essence: 'Núcleo, pureza, origem' },
+  { id: 2, name: 'Corpo Negativo / Mente Protetora', essence: 'Cautela, discernimento, proteção' },
+  { id: 3, name: 'Corpo Positivo / Mente Projetiva', essence: 'Expansão, otimismo, ação' },
+  { id: 4, name: 'Corpo Neutro / Mente Meditativa', essence: 'Equilíbrio, julgamento sereno' },
+  { id: 5, name: 'Corpo Físico', essence: 'Manifestação, a palavra, o dom material' },
+  { id: 6, name: 'Arco da Linha', essence: 'Integridade, projeção, intuição' },
+  { id: 7, name: 'Aura', essence: 'Campo de proteção, presença' },
+  { id: 8, name: 'Corpo Prânico', essence: 'Energia vital, respiração, força' },
+  { id: 9, name: 'Corpo Sutil', essence: 'Maestria, sabedoria refinada' },
+  { id: 10, name: 'Corpo Radiante', essence: 'Realeza, coragem, brilho' },
+  { id: 11, name: 'Corpo do Infinito', essence: 'Transcendência, totalidade' },
+] as const;
+
+const TANTRIC_BODIES: Record<number, string> = Object.fromEntries(
+  TANTRIC_BODIES_DATA.map((b) => [b.id, `${b.name} — ${b.essence}`])
+);
 
 export function getTantricBody(n: number): string {
   return TANTRIC_BODIES[n] ?? `Corpo Tântrico ${n}`;
@@ -114,13 +118,17 @@ export function buildTantricMap(birthDate: string): TantricMap {
 
   return {
     soul,
+    soulBody: soul,
     soulDescription: getTantricBody(soul),
     karma,
+    karmaBody: karma,
     karmaDescription: getTantricBody(karma),
     divineGift,
+    divineGiftBody: divineGift,
     divineGiftDescription: getTantricBody(divineGift),
     destiny,
     tantricPath,
     tantricBodies: { ...TANTRIC_BODIES },
+    bodies: TANTRIC_BODIES_DATA,
   };
 }

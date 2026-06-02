@@ -92,6 +92,9 @@ export interface KabalisticMap {
 
   motivation: number;
 
+  /** Número de Impressão — apenas consoantes do nome (Doc 11 §2.4). */
+  impression?: number;
+
   /** Dons Nativos (dia de nascimento não reduzido) */
   nativeDayNumber: number;     // Ex: 20
 
@@ -102,13 +105,38 @@ export interface KabalisticMap {
     last: number;
   };
 
-  /** Karmas da Vida (números ausentes entre 1-9 no nome) */
+  /** Pináculos / Ciclos de Realização (Doc 11 §2.6). */
+  pinnacles?: {
+    first: { number: number; ageEnd: number };
+    second: { number: number; ageStart: number; ageEnd: number };
+    third: { number: number; ageStart: number; ageEnd: number };
+    fourth: { number: number; ageStart: number };
+  };
+
+  /** Lições Kármicas — números de 1-9 AUSENTES no nome (Doc 11 §2.4). */
+  karmicLessons?: number[];
+
+  /** Dívidas Kármicas — presença de 13/14/16/19 nos totais intermediários (Doc 11 §2.4). */
   karmaicDebts: number[];
+
+  /** Arcanos Regentes — correspondência com o Tarô (Doc 11/Doc 04 §2.2). */
+  rulingArcana?: { lifePathArcana: number; expressionArcana: number };
 
   lifeCycles: {
     first: { number: number; ageStart: number; ageEnd: number };
     second: { number: number; ageStart: number; ageEnd: number };
     third: { number: number; ageStart: number };
+  };
+
+  /**
+   * Ciclos Pessoais correntes (Doc 11 §2.4) — campo VOLÁTIL: depende da
+   * data atual e é derivado sob demanda, não faz parte do mapa imutável.
+   */
+  personalCycles?: {
+    personalYear: number;
+    personalMonth: number;
+    personalDay: number;
+    referenceDate: string;   // ISO
   };
 }
 
@@ -130,9 +158,17 @@ export interface TantricMap {
 
   tantricPath: number;             // soma total de dia+mês+ano reduzida
 
+  /** Índices (1-11) dos corpos tântricos correspondentes a cada número (Doc 11 §3.2). */
+  soulBody?: number;
+  karmaBody?: number;
+  divineGiftBody?: number;
+
   tantricBodies: {
-    [key: number]: string;         // Ex: { 1: "Corpo Sutil", 2: "Corpo Negativo", ... }
+    [key: number]: string;         // Ex: { 1: "Corpo da Alma", 2: "Corpo Negativo", ... }
   };
+
+  /** Os 11 corpos explícitos como estrutura nomeada imutável (Doc 11 §3.2). */
+  bodies?: ReadonlyArray<{ id: number; name: string; essence: string }>;
 }
 
 // ============================================================================
@@ -145,6 +181,8 @@ export interface OduBirth {
   orixaRegency: string[];       // Ex: ["Xangô", "Oxalá"]
   elementalForce: string;       // Ex: "Justiça, Força, Liderança"
   lifeLesson: string;           // Síntese do ensinamento central
+  /** true enquanto usar o algoritmo default (tabela de linhagem pendente — D3, Doc 11 §4). */
+  provisional?: boolean;
 }
 
 // ============================================================================

@@ -11,6 +11,11 @@ import {
   calculateNativeDayGifts,
   calculateChallenges,
   calculateKarmicDebts,
+  calculateKarmicLessons,
+  calculateImpression,
+  calculatePinnacles,
+  calculateRulingArcana,
+  calculatePersonalCycles,
   buildKabalisticMap,
 } from '@/lib/calculators/numerology-kabalah';
 import {
@@ -72,23 +77,61 @@ describe('Numerologia Cabalística', () => {
     expect(c.last).toBe(5);
   });
 
-  it('Karmic Debts identifica números ausentes no nome', () => {
-    // "ELIANE" = E(5) L(3) I(9) A(1) N(5) E(5) = {1,3,5,9}
-    // "SIMÃO" = S(1) I(9) M(4) A(1) O(6) = {1,4,6,9}
-    // "DE" = D(4) E(5) = {4,5}
-    // "ALMEIDA" = A(1) L(3) M(4) E(5) I(9) D(4) A(1) = {1,3,4,5,9}
-    // União: {1,3,4,5,6,9}
-    // Ausentes: 2, 7, 8
-    const debts = calculateKarmicDebts(NOME_ELIANE);
-    expect(debts).toEqual([2, 7, 8]);
+  it('Lições Kármicas identificam números ausentes no nome (Doc 11 §2.4)', () => {
+    // União dos valores presentes no nome: {1,3,4,5,6,9} → ausentes: 2, 7, 8
+    const lessons = calculateKarmicLessons(NOME_ELIANE);
+    expect(lessons).toEqual([2, 7, 8]);
   });
 
-  it('Mapa Cabalístico completo é construído', () => {
+  it('Dívidas Kármicas detectam apenas 13/14/16/19 nos totais (Doc 11 §2.4)', () => {
+    const debts = calculateKarmicDebts(NOME_ELIANE, DATA_ELIANE);
+    // toda dívida retornada pertence ao conjunto canônico
+    for (const d of debts) expect([13, 14, 16, 19]).toContain(d);
+  });
+
+  it('Número de Impressão (consoantes) é mestre-consciente e em 1..33', () => {
+    const imp = calculateImpression(NOME_ELIANE);
+    expect(imp.number).toBeGreaterThanOrEqual(1);
+    expect(imp.number).toBeLessThanOrEqual(33);
+  });
+
+  it('Pináculos: 4 pináculos com idades crescentes', () => {
+    const p = calculatePinnacles(DATA_ELIANE, 7);
+    expect(p.first.ageEnd).toBe(29); // 36 - 7
+    expect(p.second.ageStart).toBe(30);
+    expect(p.fourth.ageStart).toBe(48);
+    for (const k of ['first', 'second', 'third', 'fourth'] as const) {
+      expect(p[k].number).toBeGreaterThanOrEqual(0);
+      expect(p[k].number).toBeLessThanOrEqual(9);
+    }
+  });
+
+  it('Arcanos Regentes mapeiam para 0..21', () => {
+    const a = calculateRulingArcana(7, 8);
+    expect(a.lifePathArcana).toBe(7);
+    expect(a.expressionArcana).toBe(8);
+    expect(calculateRulingArcana(33, 22).lifePathArcana).toBeLessThanOrEqual(21);
+  });
+
+  it('Ciclos Pessoais são determinísticos para uma data de referência fixa', () => {
+    const c = calculatePersonalCycles(DATA_ELIANE, new Date('2026-06-02T00:00:00Z'));
+    expect(c.referenceDate).toBe('2026-06-02');
+    for (const v of [c.personalYear, c.personalMonth, c.personalDay]) {
+      expect(v).toBeGreaterThanOrEqual(1);
+      expect(v).toBeLessThanOrEqual(9);
+    }
+  });
+
+  it('Mapa Cabalístico completo é construído (campos enriquecidos)', () => {
     const map = buildKabalisticMap(NOME_ELIANE, DATA_ELIANE);
     expect(map.lifePath).toBe(7);
     expect(map.nativeDayNumber).toBe(20);
     expect(map.challenges.first).toBe(6);
-    expect(map.karmaicDebts).toEqual([2, 7, 8]);
+    expect(map.karmicLessons).toEqual([2, 7, 8]);
+    expect(map.impression).toBeDefined();
+    expect(map.pinnacles?.first.ageEnd).toBe(29);
+    expect(map.rulingArcana?.lifePathArcana).toBe(7);
+    expect(map.personalCycles).toBeDefined();
   });
 });
 
@@ -140,6 +183,10 @@ describe('Numerologia Tântrica', () => {
     expect(map.destiny).toBe(6);
     expect(map.tantricPath).toBe(7);
     expect(map.soulDescription).toContain('Corpo Negativo');
+    // corpos canônicos explícitos (Doc 11 §3.2)
+    expect(map.bodies).toHaveLength(11);
+    expect(map.bodies?.[0]).toMatchObject({ id: 1, name: 'Corpo da Alma' });
+    expect(map.soulBody).toBe(2);
   });
 });
 

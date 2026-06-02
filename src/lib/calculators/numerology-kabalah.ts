@@ -105,6 +105,18 @@ export function calculateMotivation(fullName: string): { number: number; master:
 }
 
 // ============================================================================
+// 4b. NÚMERO DE IMPRESSÃO (apenas consoantes do nome) — Doc 11 §2.4
+// ============================================================================
+export function calculateImpression(fullName: string): { number: number; master: boolean } {
+  const sum = normalizeName(fullName)
+    .split('')
+    .filter((c) => !VOGAIS.has(c) && LETTER_VALUES[c] !== undefined)
+    .reduce((s, c) => s + LETTER_VALUES[c], 0);
+  const reduced = reduceToSingleDigit(sum);
+  return { number: reduced, master: isMaster(reduced) };
+}
+
+// ============================================================================
 // 5. DONS NATIVOS (dia de nascimento NÃO reduzido se for 10-31)
 // ============================================================================
 export function calculateNativeDayGifts(birthDate: string): number {
@@ -148,20 +160,135 @@ export function calculateChallenges(birthDate: string): {
 }
 
 // ============================================================================
-// 7. DÍVIDAS KÁRMICAS (números ausentes entre 1-9 no nome)
+// 7. LIÇÕES KÁRMICAS (números de 1-9 AUSENTES no nome) — Doc 11 §2.4
 // ============================================================================
-export function calculateKarmicDebts(fullName: string): number[] {
+export function calculateKarmicLessons(fullName: string): number[] {
   const lettersInName = new Set(
     normalizeName(fullName)
       .split('')
-      .map((c) => LETTER_VALUES[c.toUpperCase()])
+      .map((c) => LETTER_VALUES[c])
       .filter((v) => v !== undefined && v > 0)
   );
-  const debts: number[] = [];
+  const lessons: number[] = [];
   for (let i = 1; i <= 9; i++) {
-    if (!lettersInName.has(i)) debts.push(i);
+    if (!lettersInName.has(i)) lessons.push(i);
   }
-  return debts;
+  return lessons;
+}
+
+// ============================================================================
+// 7b. DÍVIDAS KÁRMICAS (presença de 13/14/16/19 nos totais intermediários)
+//     Doc 11 §2.4 — uma dívida existe quando o total ANTES da redução final
+//     é 13, 14, 16 ou 19.
+// ============================================================================
+const KARMIC_DEBT_NUMBERS = [13, 14, 16, 19];
+
+/** Coleta dívidas kármicas a partir dos totais (somas) brutos informados. */
+function collectKarmicDebts(rawSums: number[]): number[] {
+  const found = new Set<number>();
+  for (const sum of rawSums) {
+    let n = sum;
+    while (n > 9) {
+      if (KARMIC_DEBT_NUMBERS.includes(n)) found.add(n);
+      n = String(n).split('').reduce((s, d) => s + parseInt(d, 10), 0);
+    }
+  }
+  return [...found].sort((a, b) => a - b);
+}
+
+export function calculateKarmicDebts(fullName: string, birthDate: string): number[] {
+  const norm = normalizeName(fullName);
+  const expressionSum = norm.split('').reduce((s, c) => s + (LETTER_VALUES[c] ?? 0), 0);
+  const motivationSum = norm
+    .split('')
+    .filter((c) => VOGAIS.has(c))
+    .reduce((s, c) => s + (LETTER_VALUES[c] ?? 0), 0);
+  const impressionSum = norm
+    .split('')
+    .filter((c) => !VOGAIS.has(c))
+    .reduce((s, c) => s + (LETTER_VALUES[c] ?? 0), 0);
+  const dateSum = birthDate.replace(/\D/g, '').split('').reduce((s, d) => s + parseInt(d, 10), 0);
+  const dayNum = (() => {
+    const m = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? parseInt(m[3], 10) : 0;
+  })();
+
+  return collectKarmicDebts([expressionSum, motivationSum, impressionSum, dateSum, dayNum]);
+}
+
+// ============================================================================
+// 7c. PINÁCULOS / CICLOS DE REALIZAÇÃO — Doc 11 §2.6
+// ============================================================================
+export function calculatePinnacles(
+  birthDate: string,
+  lifePath: number
+): {
+  first: { number: number; ageEnd: number };
+  second: { number: number; ageStart: number; ageEnd: number };
+  third: { number: number; ageStart: number; ageEnd: number };
+  fourth: { number: number; ageStart: number };
+} {
+  const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const day = match ? reduceToSingleDigit(parseInt(match[3], 10), false) : 0;
+  const month = match ? reduceToSingleDigit(parseInt(match[2], 10), false) : 0;
+  const year = match ? reduceToSingleDigit(parseInt(match[1], 10), false) : 0;
+
+  const first = reduceToSingleDigit(day + month, false);
+  const second = reduceToSingleDigit(day + year, false);
+  const third = reduceToSingleDigit(first + second, false);
+  const fourth = reduceToSingleDigit(month + year, false);
+
+  const firstEnd = 36 - (isMaster(lifePath) ? reduceToSingleDigit(lifePath, false) : lifePath);
+  return {
+    first: { number: first, ageEnd: firstEnd },
+    second: { number: second, ageStart: firstEnd + 1, ageEnd: firstEnd + 9 },
+    third: { number: third, ageStart: firstEnd + 10, ageEnd: firstEnd + 18 },
+    fourth: { number: fourth, ageStart: firstEnd + 19 },
+  };
+}
+
+// ============================================================================
+// 7d. ARCANOS REGENTES (correspondência com o Tarô) — Doc 11/Doc 04 §2.2
+// ============================================================================
+function arcanaFor(n: number): number {
+  return n <= 21 ? n : reduceToSingleDigit(n, false);
+}
+export function calculateRulingArcana(
+  lifePath: number,
+  expression: number
+): { lifePathArcana: number; expressionArcana: number } {
+  return { lifePathArcana: arcanaFor(lifePath), expressionArcana: arcanaFor(expression) };
+}
+
+// ============================================================================
+// 7e. CICLOS PESSOAIS (VOLÁTEIS — dependem da data atual) — Doc 11 §2.4
+// ============================================================================
+export function calculatePersonalCycles(
+  birthDate: string,
+  referenceDate: Date = new Date()
+): { personalYear: number; personalMonth: number; personalDay: number; referenceDate: string } {
+  const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const birthDay = match ? parseInt(match[3], 10) : 0;
+  const birthMonth = match ? parseInt(match[2], 10) : 0;
+
+  const curYear = referenceDate.getFullYear();
+  const curMonth = referenceDate.getMonth() + 1;
+  const curDay = referenceDate.getDate();
+  const yearReduced = reduceToSingleDigit(
+    String(curYear).split('').reduce((s, d) => s + parseInt(d, 10), 0),
+    false
+  );
+
+  const personalYear = reduceToSingleDigit(birthDay + birthMonth + yearReduced, false);
+  const personalMonth = reduceToSingleDigit(personalYear + curMonth, false);
+  const personalDay = reduceToSingleDigit(personalMonth + curDay, false);
+
+  return {
+    personalYear,
+    personalMonth,
+    personalDay,
+    referenceDate: referenceDate.toISOString().slice(0, 10),
+  };
 }
 
 // ============================================================================
@@ -171,14 +298,14 @@ export function calculateKarmicDebts(fullName: string): number[] {
 // Segundo ciclo: até os 56 anos
 // Terceiro ciclo: a partir dos 56 anos
 export function calculateLifeCycles(birthDate: string): {
-  first: { number: number; ageEnd: number };
+  first: { number: number; ageStart: number; ageEnd: number };
   second: { number: number; ageStart: number; ageEnd: number };
   third: { number: number; ageStart: number };
 } {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) {
     return {
-      first: { number: 0, ageEnd: 28 },
+      first: { number: 0, ageStart: 0, ageEnd: 28 },
       second: { number: 0, ageStart: 29, ageEnd: 56 },
       third: { number: 0, ageStart: 57 },
     };
@@ -192,7 +319,7 @@ export function calculateLifeCycles(birthDate: string): {
   const secondEnd = firstEnd + 27;
 
   return {
-    first: { number: dayRed, ageEnd: firstEnd },
+    first: { number: dayRed, ageStart: 0, ageEnd: firstEnd },
     second: { number: monthRed, ageStart: firstEnd + 1, ageEnd: secondEnd },
     third: { number: yearRed, ageStart: secondEnd + 1 },
   };
@@ -206,6 +333,7 @@ export function buildKabalisticMap(fullName: string, birthDate: string): Kabalis
   const mission = calculateMission(birthDate);
   const expression = calculateExpression(fullName);
   const motivation = calculateMotivation(fullName);
+  const impression = calculateImpression(fullName);
 
   return {
     lifePath: lifePath.number,
@@ -214,10 +342,15 @@ export function buildKabalisticMap(fullName: string, birthDate: string): Kabalis
     expression: expression.number,
     expressionMaster: expression.master,
     motivation: motivation.number,
+    impression: impression.number,
     nativeDayNumber: calculateNativeDayGifts(birthDate),
     challenges: calculateChallenges(birthDate),
-    karmaicDebts: calculateKarmicDebts(fullName),
+    pinnacles: calculatePinnacles(birthDate, lifePath.number),
+    karmicLessons: calculateKarmicLessons(fullName),
+    karmaicDebts: calculateKarmicDebts(fullName, birthDate),
+    rulingArcana: calculateRulingArcana(lifePath.number, expression.number),
     lifeCycles: calculateLifeCycles(birthDate),
+    personalCycles: calculatePersonalCycles(birthDate),
   };
 }
 
