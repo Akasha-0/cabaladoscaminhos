@@ -34,6 +34,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 17 | **Audit auth Operator** (server-side gate em todas as páginas + APIs) | `4e3f3c5b` | ✅ |
 | 18 | **Hard final + cleanup** (rate-limit Redis, security headers, PROGRESS.md) | (este commit) | ✅ |
 | 18b | **Fallow cleanup** (42% reduction de issues) | `b3524c41` | ✅ |
+| 19 | **Cockpit completeness + PDF export** (T7.2 Leituras, Consulentes, PDF Dossiê) | `add046e5` | ✅ |
 ### Fase 18 — Hard final + cleanup (detalhes)
 
 | Rota | Limite | Janela |
@@ -186,17 +187,21 @@ npm run db:generate      # Após mudanças no schema Prisma
 
 ## 8. Nota da Sessão Atual (2026-06-02)
 
-A running session produziu as siguientes mudanças não-planejadas:
+A running session produziu as siguientes mudanças:
+
+**Fase 19 — Cockpit completeness + PDF export + Fallback corruption fix**:
+- `cockpit/leituras/page.tsx` + `ReadingsTable.tsx` — Server Component + Client table com busca
+- `cockpit/consulentes/page.tsx` + `ConsulentesTable.tsx` — Server Component + Client table com busca
+- PDF Export completo: `api/mesa-real/pdf/route.ts`, `lib/pdf/dossier-pdf.ts`, `DossierPdfButton.tsx`
+- **Fallow corruption fix**: 22 arquivos restaurados de commits pré-fallow (Phase 18b corrompeu)
+  - Interfaces duplicadas, corpos de funções removidos, números de linha mesclados com texto
+  - `theme.ts`: `persist` import de `zustand/middleware` (v5 breaking change)
+  - `client-actions.ts`: `'use server'` adicionado (corrige bundling pg no browser)
+  - Commits: `add046e5` (fix fallow) + agentes parallelos (CockpitPages, PDFExport, DataQuality)
 
 **Fase 18b — Fallow Cleanup**: Limpeza via `npx fallow`
 - 1029 → 595 issues (-42%) — principalmente unresolved imports (515→49)
 - Commits: `2e91f8e2` (config inicial) · `c3fa0301` (stats + test fixes) · `b3524c41` (operator login refactor)
 - Arquivos de dados espirituais (Odús, meji) adicionados a `.fallowrc.json` ignorePatterns
-- 4 test files legacy com `@ts-ignore` em imports de módulos inexistentes
 
-**OperatorLoginForm refactor**: `b3524c41` — signIn direto do provider removido
-O form agora faz fetch direto para `/api/operator/auth/login` (não passa pelo helper signIn que não expõe mfaToken).
-
-**Docs criados**: `docs/fallow-duplication-analysis.md` (clone groups priorizados)
-
-*Última atualização: 2026-06-02 — Fase 18b (Fallow cleanup)*
+*Última atualização: 2026-06-02 — Fase 19 (Build ✅ | Corretions ✅)*
