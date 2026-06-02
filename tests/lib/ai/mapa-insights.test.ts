@@ -497,7 +497,74 @@ describe('generator', () => {
 
       expect(result.cacheKey).toMatch(/^insights:[a-f0-9]{64}$/);
     });
-
   });
-
+});
+// ============================================================
+// GROUP 3: PROMPT BUILDER TESTS
+// ============================================================
+import { gerarContextoUsuario } from '@/lib/ai/mapa-insights/prompt-builder';
+describe('gerarContextoUsuario', () => {
+  it('returns a non-empty string', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(typeof result).toBe('string');
+    expect(result.length).toBeGreaterThan(0);
+  });
+  it('includes PERFIL section with user name', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('João Silva');
+  });
+  it('includes NUMEROLOGIA section', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('NUMEROLOGIA');
+    expect(result).toContain('Caminho de Vida');
+  });
+  it('includes ODÚ section', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('ODÚ (IFÁ)');
+  });
+  it('includes ASTROLOGIA section with ascendente', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('ASTROLOGIA');
+    expect(result).toContain('leao');
+  });
+  it('includes TAROT section', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('TAROT');
+    expect(result).toContain('Arcano 5');
+  });
+  it('includes CHAKRAS section', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('CHAKRAS');
+  });
+  it('includes ORIXÁS DOMINANTES section when present', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('Oxum');
+  });
+  // Indirect coverage of helpers: verify Odu optional fields render correctly
+  it('includes Odu quizilas when present', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('Ovos'); // quizilas
+    expect(result).toContain('abóbora'); // preceitos
+  });
+  it('includes Odu ebos when present', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('Banho de mel'); // ebos
+  });
+  it('includes astrologia planets', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('Sol');
+    expect(result).toContain('Mercúrio');
+    expect(result).toContain('Marte');
+    expect(result).toContain('Júpiter');
+    expect(result).toContain('Saturno');
+  });
+  it('includes tarot arcano numbers', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('Arcano 5');
+    expect(result).toContain('Arcano 8');
+  });
+  it('includes chakras equilibrio percentage', () => {
+    const result = gerarContextoUsuario(SAMPLE_MAPA as any);
+    expect(result).toContain('65%');
+  });
 });

@@ -53,8 +53,10 @@ export function formatDuration(seconds: number): string {
 // Lunar Phase Utilities
 // ============================================================================
 
+// ============================================================================
 /**
  * Returns the current lunar phase based on day of year.
+ */
 // fallow-ignore-next-line unused-export
 export function getLunarPhase(dayOfYear?: number): { emoji: string; name: string; element: string } {
   const day = dayOfYear ?? getDayOfYear();

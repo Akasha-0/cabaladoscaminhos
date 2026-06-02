@@ -2,18 +2,16 @@
 // Akashic Records API - skip linting
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const RecordTypeSchema = z.enum([
-  'life', 'karma', 'soul', 'past_life', 'future', 'ancestral', 'universal'
-]);
-const AccessLevelSchema = z.enum(['basic', 'intermediate', 'advanced', 'master']);
-const SoulAgeSchema = z.enum(['young', 'mature', 'old', 'ancient']);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const SefirotSchema = z.enum([
   'Kether', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah',
   'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
 ]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+const RecordTypeSchema = z.enum(['life', 'karma', 'soul', 'past_life', 'future', 'ancestral', 'universal']);
+const SoulAgeSchema = z.enum(['young', 'mature', 'old', 'ancient']);
+const AccessLevelSchema = z.enum(['basic', 'intermediate', 'advanced', 'master']);
 
 const AkashicQuerySchema = z.object({
   recordType: RecordTypeSchema.optional(),

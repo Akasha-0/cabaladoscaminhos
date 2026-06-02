@@ -187,6 +187,12 @@ function getSephirahPosition(id: string) {
   const sephirah = SEPHIROTH.find((s) => s.id === id);
   return sephirah ? { x: sephirah.x, y: sephirah.y } : null;
 }
+/** Returns the gradient ID and stroke color for a given pillar value. */
+function getPillarStyle(pillar: string): { gradientId: string; strokeColor: string } {
+  if (pillar === 'right') return { gradientId: 'sephirah-gradient-right', strokeColor: PILLAR_COLORS.right };
+  if (pillar === 'left') return { gradientId: 'sephirah-gradient-left', strokeColor: PILLAR_COLORS.left };
+  return { gradientId: 'sephirah-gradient-center', strokeColor: PILLAR_COLORS.center };
+}
 
 // fallow-ignore-next-line complexity
 function getPathColor(from: string, to: string, sephiroth: typeof SEPHIROTH): string {
@@ -459,28 +465,21 @@ function ArvoreVida({
 
         {/* Draw Sephiroth */}
         <g className="sephiroth">
-// fallow-ignore-next-line complexity
           {SEPHIROTH.map((sephirah) => {
             const isHighlighted = highlightedSet.has(sephirah.id);
             const isSelected = selectedSefira === sephirah.id;
             const isHovered = hoveredSefira === sephirah.id;
             const radius = sephirah.id === 'malkhut' ? 4.5 : 4;
-
-            let gradientId = 'sephirah-gradient-center';
-            let strokeColor = PILLAR_COLORS.center;
-
-            if (sephirah.pillar === 'right') {
-              gradientId = 'sephirah-gradient-right';
-              strokeColor = PILLAR_COLORS.right;
-            } else if (sephirah.pillar === 'left') {
-              gradientId = 'sephirah-gradient-left';
-              strokeColor = PILLAR_COLORS.left;
-            }
-
+            const { gradientId, strokeColor } = getPillarStyle(sephirah.pillar);
+            const filterUrl = (isHighlighted || isSelected)
+              ? 'url(#glow-strong)'
+              : isHovered
+                ? 'url(#glow)'
+                : undefined;
             return (
               <g
                 key={sephirah.id}
-                filter={(isHighlighted || isSelected) ? 'url(#glow-strong)' : isHovered ? 'url(#glow)' : undefined}
+                filter={filterUrl}
                 style={{ cursor: interactive ? 'pointer' : 'default' }}
                 onClick={() => interactive && setSelectedSefira(isSelected ? null : sephirah.id)}
                 onMouseEnter={() => interactive && setHoveredSefira(sephirah.id)}

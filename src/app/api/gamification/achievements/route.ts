@@ -23,6 +23,7 @@ const AchievementSchema = z.object({
   numeroSagrado: z.number().optional(),
 });
 
+export type Achievement = z.infer<typeof AchievementSchema>;
 const AchievementsResponseSchema = z.object({
   achievements: z.array(AchievementSchema),
   unlockedCount: z.number().int().min(0),

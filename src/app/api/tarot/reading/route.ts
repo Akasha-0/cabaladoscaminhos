@@ -7,6 +7,7 @@ import { handleAPIError } from '@/lib/api/error-handler';
 // ============================================================
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { drawCards } from '@/lib/tarot/cards';
 import {
   getAllSpreadTypes,
@@ -15,21 +16,7 @@ import {
   type SpreadPosition,
 } from '@/lib/tarot/spreads';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether',
-  'Chokhmah',
-  'Binah',
-  'Chesed',
-  'Gevurah',
-  'Tipheret',
-  'Netzach',
-  'Hod',
-  'Yesod',
-  'Malkuth',
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 // ─── Spiritual Correlations for Tarot ──────────────────────────────────────────
 const MAJOR_ARCANA_SPIRITUAL_CORRELATIONS: Record<

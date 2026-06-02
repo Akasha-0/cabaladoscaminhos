@@ -358,16 +358,13 @@ function buildTarotResults(vida: number, _anoPessoal: number): TarotResults {
 // ============================================================
 // CONVERGENCE DETECTION
 // ============================================================
-
-// fallow-ignore-next-line complexity
-// fallow-ignore-next-line unused-export
 export function detectarConvergencias(
   numerologia: NumerologyResults,
   odu: OduResults,
   astrologia: AstrologyResults
 ): Convergence[] {
   const convergencias: Convergence[] = [];
-
+  // 1. Vida-Odú dual convergence
   if (VIDA_ODU_MAP[numerologia.vida] === odu.regente.numero) {
     convergencias.push({
       sistemas: ['numerologia', 'odu'],
@@ -376,34 +373,13 @@ export function detectarConvergencias(
       descricao: `Caminho de Vida ${numerologia.vida} alinha-se com ${odu.regente.nome}.`,
     });
   }
+  // 2. Sol-Orixá convergence (astro-odu + potentially triple)
+  const solConvergencia = detectSolOrixaConvergence(numerologia, odu, astrologia);
+  if (solConvergencia) convergencias.push(solConvergencia.dual);
+  if (solConvergencia?.triple) convergencias.push(solConvergencia.triple);
 
-  const solSigno = astrologia.sol.signo;
-  const solPlaneta = ZODIAC_TO_PLANET[solSigno.toLowerCase()] ?? solSigno;
-  const solOrixa = PLANETA_SIGNO_ORIXÁ[solPlaneta];
-  if (solOrixa && odu.orixas.includes(solOrixa)) {
-    convergencias.push({
-      sistemas: ['astrologia', 'odu'],
-      energia: solOrixa.toLowerCase(),
-      forca: 'medio',
-      descricao: `Sol em ${solSigno} conecta-se a ${solOrixa} (${odu.regente.nome}).`,
-    });
-  }
-
-  if (solOrixa && odu.orixas.includes(solOrixa)) {
-    const vidaEnergia = odu.orixas[0]?.toLowerCase() ?? '';
-    if (vidaEnergia === solOrixa.toLowerCase()) {
-      convergencias.push({
-        sistemas: ['numerologia', 'astrologia', 'odu'],
-        energia: vidaEnergia,
-        forca: 'forte',
-        descricao: `Tríplice convergência: Vida ${numerologia.vida}, Sol em ${solSigno}, ${solOrixa}.`,
-      });
-    }
-  }
-
-  const ascSigno = astrologia.ascendente;
-  const ascPlaneta = ZODIAC_TO_PLANET[ascSigno.toLowerCase()] ?? ascSigno;
-  const ascOrixa = PLANETA_SIGNO_ORIXÁ[ascPlaneta];
+  // 3. Ascendente-Orixá convergence
+  const ascOrixa = getPlanetaOrixa(astrologia.ascendente);
   if (ascOrixa && odu.orixas.includes(ascOrixa)) {
     convergencias.push({
       sistemas: ['astrologia', 'odu'],
@@ -416,76 +392,65 @@ export function detectarConvergencias(
   return convergencias;
 }
 
+// ─── Convergence Helpers ─────────────────────────────────────────────────────
+
+/** Returns the orixá linked to a planet via ZODIAC_TO_PLANET → PLANETA_SIGNO_ORIXÁ chain. */
+function getPlanetaOrixa(sign: string): string | undefined {
+  const planeta = ZODIAC_TO_PLANET[sign.toLowerCase()] ?? sign;
+  return PLANETA_SIGNO_ORIXÁ[planeta];
+}
+
+/**
+ * Detects Sol-Orixá convergence (dual astro-odu + triple numerologia-astrologia-odu).
+ * Consolidates two redundant if-blocks into one structured check.
+ */
+function detectSolOrixaConvergence(
+  numerologia: NumerologyResults,
+  odu: OduResults,
+  astrologia: AstrologyResults
+): { dual: Convergence; triple?: Convergence } | null {
+  const solSigno = astrologia.sol.signo;
+  const solOrixa = getPlanetaOrixa(solSigno);
+  if (!solOrixa || !odu.orixas.includes(solOrixa)) return null;
+  const dual: Convergence = {
+    sistemas: ['astrologia', 'odu'],
+    energia: solOrixa.toLowerCase(),
+    forca: 'medio',
+    descricao: `Sol em ${solSigno} conecta-se a ${solOrixa} (${odu.regente.nome}).`,
+  };
+  const vidaEnergia = odu.orixas[0]?.toLowerCase() ?? '';
+  if (vidaEnergia === solOrixa.toLowerCase()) {
+    return {
+      dual,
+      triple: {
+        sistemas: ['numerologia', 'astrologia', 'odu'],
+        energia: vidaEnergia,
+        forca: 'forte',
+        descricao: `Tríplice convergência: Vida ${numerologia.vida}, Sol em ${solSigno}, ${solOrixa}.`,
+      },
+    };
+  }
+  return { dual };
+}
+
 // ============================================================
 // MAIN ENGINE FUNCTION
 // ============================================================
-// fallow-ignore-next-line complexity
-
 export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<MapaAlmaCompleto> {
   const currentYear = new Date().getFullYear();
-
   // 1. NUMEROLOGIA
-  const numerologiaRaw = calculateNumerology(profile.nomeCompleto, profile.dataNascimento);
-  const numerologiaDestino = numerologiaRaw.destino;
-  const numerologia: NumerologyResults = {
-    vida: numerologiaRaw.vida,
-    expressao: numerologiaRaw.expressao,
-    motivacao: numerologiaRaw.motivacao,
-    impressao: numerologiaRaw.impressao,
-    destino: typeof numerologiaDestino === 'object' && numerologiaDestino !== null
-      ? (numerologiaDestino as { numero: number }).numero
-      : 0,
-    cicloAtual: reduceToBase(currentYear),
-    anoPessoal: calcularAnoPessoal(profile.dataNascimento),
-    metodoUsado: 'pitagorica',
-    raw: undefined,
-  };
-
+  const numerologia = buildNumerologiaResults(profile, currentYear);
   // 2. ODU
   const odu = calcOdu(profile);
-
   // 3. ASTROLOGIA
-  const coords =
-    CITY_COORDS[profile.cidade] ||
-    CITY_COORDS[profile.estado] ||
-    DEFAULT_COORDS;
-
-  let astrologia: AstrologyResults;
-  try {
-    const birthDate = new Date(profile.dataNascimento);
-    const birthTime = profile.hora
-      ? new Date(`${profile.dataNascimento}T${profile.hora}`)
-      : birthDate;
-
-    const chartRaw = getBirthChart({
-      birthDate: birthTime,
-      latitude: coords.lat,
-      longitude: coords.lon,
-    });
-    astrologia = parseAstrologyResults(chartRaw);
-  } catch {
-    astrologia = ASTROLOGY_FALLBACK;
-  }
-
-  // 4. TAROT
+  const coords = CITY_COORDS[profile.cidade] || CITY_COORDS[profile.estado] || DEFAULT_COORDS;
+  const astrologia = buildAstrologiaResults(profile, coords);
+  // 4–8. TAROT, CHAKRAS, CONVERGÊNCIAS, ORIXÁS
   const tarot = buildTarotResults(numerologia.vida, numerologia.anoPessoal);
-
-  // 5. CHAKRAS
-  const chakras = buildChakraResults(
-    numerologia.vida,
-    odu.regente.numero,
-    astrologia.ascendente,
-    profile.dataNascimento
-  );
-  // 6. CONVERGÊNCIAS
+  const chakras = buildChakraResults(numerologia.vida, odu.regente.numero, astrologia.ascendente, profile.dataNascimento);
   const convergencias = detectarConvergencias(numerologia, odu, astrologia);
-  // 7. ORIXÁS DOMINANTES
-  const orixasDominantes = aggregateOrixas(
-    odu,
-    astrologia.ascendente,
-    astrologia.sol.signo
-  );
-  //8. BUILD MAPA OBJECT
+  const orixasDominantes = aggregateOrixas(odu, astrologia.ascendente, astrologia.sol.signo);
+  // BUILD MAPA OBJECT
   const mapa: MapaAlmaCompleto = {
     perfil: profile,
     numerologia,
@@ -499,12 +464,84 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
     versao: '1.0.0',
     deepCorrelations: null,
   };
-  // 9. DEEP CORRELATION ANALYSIS
-  const deepEngine = new DeepCorrelationEngine();
-  const userData: UserSpiritualData = {
-    id: profile.nomeCompleto,
-    nome: profile.nomeCompleto,
-    dataNascimento: profile.dataNascimento,
+  // 9. DEEP CORRELATION ANALYSIS (graceful degradation)
+  attachDeepCorrelations(mapa, numerologia, tarot, odu, orixasDominantes, astrologia);
+  // 10. HYPER CORRELATION SYNTHESIS
+  attachHyperSynthesis(mapa, numerologia, astrologia, odu);
+  return mapa;
+}
+// ─── Main Engine Helpers ─────────────────────────────────────────────────────
+/** Builds the NumerologyResults from a birth profile and current year. */
+function buildNumerologiaResults(profile: BirthProfile, currentYear: number): NumerologyResults {
+  const numerologiaRaw = calculateNumerology(profile.nomeCompleto, profile.dataNascimento);
+  const destino = numerologiaRaw.destino;
+  return {
+    vida: numerologiaRaw.vida,
+    expressao: numerologiaRaw.expressao,
+    motivacao: numerologiaRaw.motivacao,
+    impressao: numerologiaRaw.impressao,
+    destino: typeof destino === 'object' && destino !== null
+      ? (destino as { numero: number }).numero
+      : 0,
+    cicloAtual: reduceToBase(currentYear),
+    anoPessoal: calcularAnoPessoal(profile.dataNascimento),
+    metodoUsado: 'pitagorica',
+    raw: undefined,
+  };
+}
+/** Builds AstrologyResults from a birth profile and coordinates, with graceful fallback. */
+function buildAstrologiaResults(profile: BirthProfile, coords: { lat: number; lon: number }): AstrologyResults {
+  try {
+    const birthDate = new Date(profile.dataNascimento);
+    const birthTime = profile.hora
+      ? new Date(`${profile.dataNascimento}T${profile.hora}`)
+      : birthDate;
+    const chartRaw = getBirthChart({
+      birthDate: birthTime,
+      latitude: coords.lat,
+      longitude: coords.lon,
+    });
+    return parseAstrologyResults(chartRaw);
+  } catch {
+    return ASTROLOGY_FALLBACK;
+  }
+}
+/**
+ * Attaches deep correlations to the mapa, with graceful degradation.
+ * Failures are logged but do not break the calculation.
+ */
+function attachDeepCorrelations(
+  mapa: MapaAlmaCompleto,
+  numerologia: NumerologyResults,
+  tarot: TarotResults,
+  odu: OduResults,
+  orixasDominantes: string[],
+  astrologia: AstrologyResults
+): void {
+  try {
+    const deepEngine = new DeepCorrelationEngine();
+    const userData = buildDeepCorrelationUserData(numerologia, tarot, odu, orixasDominantes, mapa.perfil, astrologia);
+    const correlations = deepEngine.analyzeCorrelations(userData);
+    const patterns = deepEngine.findCrossSystemPatterns(userData);
+    const energyHarmony = deepEngine.calculateEnergyHarmony(userData);
+    mapa.deepCorrelations = { correlations, patterns, energyHarmony };
+  } catch (err) {
+    console.warn('[MapaAlma] Deep correlation analysis failed:', err instanceof Error ? err.message : String(err));
+  }
+}
+/** Builds the UserSpiritualData shape required by DeepCorrelationEngine. */
+function buildDeepCorrelationUserData(
+  numerologia: NumerologyResults,
+  tarot: TarotResults,
+  odu: OduResults,
+  orixasDominantes: string[],
+  perfil: BirthProfile,
+  astrologia: AstrologyResults
+): UserSpiritualData {
+  return {
+    id: perfil.nomeCompleto,
+    nome: perfil.nomeCompleto,
+    dataNascimento: perfil.dataNascimento,
     numeroPessoal: numerologia.vida,
     arcoPessoal: tarot.cartaNascimento,
     odu: odu.regente.nome,
@@ -515,31 +552,24 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
     houses: {},
     rashi: astrologia.sol.signo,
   };
-  try {
-    const correlations = deepEngine.analyzeCorrelations(userData);
-    const patterns = deepEngine.findCrossSystemPatterns(userData);
-    const energyHarmony = deepEngine.calculateEnergyHarmony(userData);
-    mapa.deepCorrelations = { correlations, patterns, energyHarmony };
-  } catch (err) {
-    // Graceful degradation — deep correlations are enhancement, not critical
-    console.warn('[MapaAlma] Deep correlation analysis failed:', err instanceof Error ? err.message : String(err));
-  }
-  // ─── HyperCorrelation Synthesis (Sprint 218) ──────────────────────────
-  // Generate cross-tradition synthesis using HyperCorrelationEngine
+}
+/** Attaches HyperCorrelation synthesis and signature to the mapa. */
+function attachHyperSynthesis(
+  mapa: MapaAlmaCompleto,
+  numerologia: NumerologyResults,
+  astrologia: AstrologyResults,
+  odu: OduResults
+): void {
   const orixaRegenteMapa = odu.orixas[0]?.toLowerCase() ?? 'oxala';
   const synthesis = hyperCorrelationEngine.answerDeepQuestion(
     numerologia.vida,
     astrologia.sol.signo,
     orixaRegenteMapa
   );
-  // Build signature with master number support
-  const isMasterNum = [11, 22, 33].includes(numerologia.vida);
-  const vidaStr = isMasterNum ? `${numerologia.vida}M` : String(numerologia.vida);
+  const harmonization = generateHarmonizationRecommendations(numerologia.vida, astrologia.sol.signo, orixaRegenteMapa, odu);
+  const vidaStr = [11, 22, 33].includes(numerologia.vida) ? `${numerologia.vida}M` : String(numerologia.vida);
   const signStr = astrologia.sol.signo.substring(0, 3).toLowerCase();
   const orixaStr = orixaRegenteMapa.substring(0, 3);
-  // Generate harmonization recommendations
-  const harmonization = generateHarmonizationRecommendations(numerologia.vida, astrologia.sol.signo, orixaRegenteMapa, odu);
-  // Add hyperSynthesis to mapa
   (mapa as unknown as Record<string, unknown>).hyperSynthesis = {
     signature: `${vidaStr}-${signStr}-${orixaStr}`,
     explanation: synthesis,
@@ -551,7 +581,6 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
     harmonization,
     conflicts: harmonization.filter(h => h.type === 'conflict'),
   };
-  return mapa;
 }
 // ─── Harmonization Helper ─────────────────────────────────────────────────
 interface HarmonizationItem {

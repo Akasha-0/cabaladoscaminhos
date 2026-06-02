@@ -1,15 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { calcularTrânsitosAtivos } from '@/lib/astrologia/trânsitos/calculator';
 import { calcularMapaNatal } from '@/lib/astrologia/planetas/posicoes';
-
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
+// ─── Transit-Specific Query Schema ────────────────────────────────────────────
 
 const TransitosQuerySchema = z.object({
   dataNascimento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD'),

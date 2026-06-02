@@ -4,6 +4,7 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { odusData, calcularOduNascimento, type OduInfo } from '@/lib/odus/calculos';
 import { getOduTimeline, getPhaseProgress } from '@/lib/ifa/timeline';
 import { matchOduToRitual } from '@/lib/ifa/matching';
@@ -11,13 +12,7 @@ import { getRitualSuggestions, getRitualTiming } from '@/lib/ifa/suggestions';
 import { compareOduNumbers } from '@/lib/ifa/comparison';
 import { successResponse, errorResponse, ErrorCode } from '@/lib/api/base-route';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const IfaQuerySchema = z.object({
   numero: z.coerce.number().int().min(1).max(16).optional(),

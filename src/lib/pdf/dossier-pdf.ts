@@ -316,7 +316,7 @@ function drawMapsSummarySection(doc: jsPDF, state: PageState, data: DossierPdfDa
 // CASAS
 // ----------------------------------------------------------------------------
 
-/** Desenha uma única entrada de casa. */
+// Desenha uma única entrada de casa.
 function drawHouseEntry(
   doc: jsPDF,
   state: PageState,
@@ -324,26 +324,46 @@ function drawHouseEntry(
   houseData: NonNullable<DossierPdfData['reportContent']['houses'][string]>,
   matrix: DossierPdfData['matrixData'][string],
 ): void {
+  // ── Extract and normalize labels ─────────────────────────────────────────────
   const cartaNum  = matrix?.carta ?? 0;
   const casaLabel = cartaNum > 0 ? cartaNome(cartaNum) : houseData.carta ?? `Carta ${casa}`;
   const oduLabel  = matrix?.odu
     ? `${oduNome(matrix.odu)} (${matrix.odu})`
     : houseData.odu ?? '';
-
+  // ── Normalize interpretation text ───────────────────────────────────────────
   const rawText       = houseData.interpretation ?? '';
   const interpretation = stripMarkdown(rawText);
   const wrapped        = doc.splitTextToSize(interpretation, CONTENT_W - 12);
   const linesNeeded    = 6 + wrapped.length;
   ensureSpace(doc, state, linesNeeded);
-
-  // Header da casa
+  // ── Draw house header ───────────────────────────────────────────────────────
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(...LARANJA);
   doc.text(`Casa ${casa} — ${casaLabel}`, MARGIN, state.y);
   state.y += LINE_H;
-
-  // Cartas e Odu na mesma linha
+  // ── Draw card and Odu labels ────────────────────────────────────────────────
+  drawCardAndOduLabels(doc, state, cartaNum, casaLabel, oduLabel);
+  // ── Draw interpretation text ────────────────────────────────────────────────
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(...TEXT_WHITE);
+  for (const line of wrapped) {
+    ensureSpace(doc, state, LINE_H);
+    doc.text(line, MARGIN, state.y);
+    state.y += 4.5;
+  }
+  state.y += 6;
+  state.y = drawDivider(doc, MARGIN, state.y, PAGE_W - MARGIN, ROYAL_LIGHT);
+}
+/** Draws the card name and Odu label on a single row, handling absence gracefully. */
+function drawCardAndOduLabels(
+  doc: jsPDF,
+  state: PageState,
+  cartaNum: number,
+  casaLabel: string,
+  oduLabel: string,
+): void {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8);
   if (cartaNum > 0) {
@@ -356,19 +376,6 @@ function drawHouseEntry(
     doc.text(`Odu: ${oduLabel}`, oduX, state.y);
   }
   state.y += LINE_H + 1;
-
-  // Interpretação
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8.5);
-  doc.setTextColor(...TEXT_WHITE);
-  for (const line of wrapped) {
-    ensureSpace(doc, state, LINE_H);
-    doc.text(line, MARGIN, state.y);
-    state.y += 4.5;
-  }
-
-  state.y += 6;
-  state.y = drawDivider(doc, MARGIN, state.y, PAGE_W - MARGIN, ROYAL_LIGHT);
 }
 
 /** Seção de casas — percorre e desenha cada casa preenchida. */

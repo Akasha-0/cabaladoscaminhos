@@ -1,14 +1,9 @@
 // fallow-ignore-next-line complexity
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from "zod";
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { withErrorHandler } from "@/lib/error-handling";
-
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const NotificationPreferencesSchema = z.object({
   email: z.boolean(),

@@ -1,16 +1,11 @@
 import { applySpiritualFilters } from '@/lib/api/filter-utils';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { createErrorResponse, createListResponse } from '@/lib/api/response-helpers';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const EnergyActionSchema = z.enum(['status', 'trend', 'history']);
 const EnergyQuerySchema = z.object({

@@ -34,20 +34,42 @@ IDIOMA: Responda SEMPRE em português brasileiro, culturalmente apropriado e po�
  * Builds a structured user context from MapaAlmaCompleto for AI prompts.
  * Extracts all relevant spiritual data into human-readable format.
  */
-// fallow-ignore-next-line complexity
 // fallow-ignore-next-line unused-export
 export function gerarContextoUsuario(mapa: MapaAlmaCompleto): string {
   const parts: string[] = [];
-
   // ── Perfil ──────────────────────────────────────────────────
-  parts.push(`## PERFIL DO USUÁRIO
-**Nome:** ${mapa.perfil.nomeCompleto}
-**Data de Nascimento:** ${mapa.perfil.dataNascimento}${mapa.perfil.hora ? ` às ${mapa.perfil.hora}` : ''}
-**Cidade:** ${mapa.perfil.cidade}, ${mapa.perfil.estado}, ${mapa.perfil.pais}`);
-
+  parts.push(buildPerfilSection(mapa));
   // ── Numerologia ─────────────────────────────────────────────
-  const num = mapa.numerologia;
-  parts.push(`## NUMEROLOGIA
+  parts.push(buildNumerologiaSection(mapa.numerologia));
+  // ── Odú ─────────────────────────────────────────────────────
+  parts.push(buildOduSection(mapa.odu));
+  // ── Astrologia ──────────────────────────────────────────────
+  parts.push(buildAstrologiaSection(mapa.astrologia));
+  // ── Tarot ───────────────────────────────────────────────────
+  parts.push(buildTarotSection(mapa.tarot));
+  // ── Chakras ────────────────────────────────────────────────
+  parts.push(buildChakrasSection(mapa.chakras));
+  // ── Orixás Dominantes ───────────────────────────────────────
+  if (mapa.orixasDominantes.length > 0) {
+    parts.push(`## ORIXÁS DOMINANTES\n${mapa.orixasDominantes.join(', ')}`);
+  }
+  // ── Convergências ───────────────────────────────────────────
+  if ((mapa.convergencias ?? []).length > 0) {
+    parts.push(buildConvergenciasSection(mapa.convergencias));
+  }
+  return parts.join('\n\n');
+}
+// ─── Section Builders ────────────────────────────────────────────────────────
+function buildPerfilSection(mapa: MapaAlmaCompleto): string {
+  const p = mapa.perfil;
+  return `## PERFIL DO USUÁRIO
+**Nome:** ${p.nomeCompleto}
+**Data de Nascimento:** ${p.dataNascimento}${p.hora ? ` às ${p.hora}` : ''}
+**Cidade:** ${p.cidade}, ${p.estado}, ${p.pais}`;
+}
+
+function buildNumerologiaSection(num: MapaAlmaCompleto['numerologia']): string {
+  return `## NUMEROLOGIA
 **Caminho de Vida:** ${num.vida}
 **Expressão:** ${num.expressao}
 **Motivação (Desejo de Alma):** ${num.motivacao}
@@ -55,51 +77,38 @@ export function gerarContextoUsuario(mapa: MapaAlmaCompleto): string {
 **Destino (Lição de Vida):** ${num.destino}
 **Ciclo Atual:** ${num.cicloAtual}
 **Ano Pessoal:** ${num.anoPessoal}
-**Método:** ${num.metodoUsado}`);
+**Método:** ${num.metodoUsado}`;
+}
 
-  // ── Odú ─────────────────────────────────────────────────────
-  const odu = mapa.odu;
+function buildOduSection(odu: MapaAlmaCompleto['odu']): string {
   const regente = odu.regente;
-  const secundario = odu.secundario;
-
-  let oduBlock = `## ODÚ (IFÁ)
-**Odú Regente:** ${regente.nome} (${regente.numero})
-**Significado:** ${regente.significado}
-**Orixá Regente:** ${'orixaRegente' in regente ? regente.orixaRegente : 'N/A'}
-**Elemento:** ${'elementos' in regente ? regente.elementos : 'N/A'}
-**Caminho Sephirah:** ${odu.caminhoSephirah}`;
-
-  if (secundario) {
-    oduBlock += `\n**Odú Secundário:** ${secundario.nome} (${secundario.numero})
-**Significado:** ${secundario.significado}`;
+  const lines: string[] = [
+    `## ODÚ (IFÁ)`,
+    `**Odú Regente:** ${regente.nome} (${regente.numero})`,
+    `**Significado:** ${regente.significado}`,
+    `**Orixá Regente:** ${'orixaRegente' in regente ? regente.orixaRegente : 'N/A'}`,
+    `**Elemento:** ${'elementos' in regente ? regente.elementos : 'N/A'}`,
+    `**Caminho Sephirah:** ${odu.caminhoSephirah}`,
+  ];
+  if (odu.secundario) {
+    lines.push(
+      `**Odú Secundário:** ${odu.secundario.nome} (${odu.secundario.numero})`,
+      `**Significado:** ${odu.secundario.significado}`
+    );
   }
+  if (odu.orixas.length > 0) lines.push(`**Orixás Ligados:** ${odu.orixas.join(', ')}`);
+  if (odu.quizilas.length > 0) lines.push(`**Quizilas:** ${odu.quizilas.join(', ')}`);
+  if (odu.preceitos.length > 0) lines.push(`**Preceitos:** ${odu.preceitos.join(' | ')}`);
+  if (odu.ebos.length > 0) lines.push(`**Ebós Sugeridos:** ${odu.ebos.join(', ')}`);
+  return lines.join('\n');
+}
 
-  if (odu.orixas.length > 0) {
-    oduBlock += `\n**Orixás Ligados:** ${odu.orixas.join(', ')}`;
-  }
+function fmtPlaneta(nome: string, pos: PosicaoPlaneta): string {
+  return `**${nome}:** ${pos.signo}${pos.grauNoSigno !== undefined ? ` (${pos.grauNoSigno}°)` : ''}`;
+}
 
-  if (odu.quizilas.length > 0) {
-    oduBlock += `\n**Quizilas:** ${odu.quizilas.join(', ')}`;
-  }
-
-  if (odu.preceitos.length > 0) {
-    oduBlock += `\n**Preceitos:** ${odu.preceitos.join(' | ')}`;
-  }
-
-  if (odu.ebos.length > 0) {
-    oduBlock += `\n**Ebós Sugeridos:** ${odu.ebos.join(', ')}`;
-  }
-
-  parts.push(oduBlock);
-
-  // ── Astrologia ──────────────────────────────────────────────
-  const astro = mapa.astrologia;
-
-  function fmtPlaneta(nome: string, pos: PosicaoPlaneta): string {
-    return `**${nome}:** ${pos.signo} ${pos.grauNoSigno !== undefined ? `(${pos.grauNoSigno}°)` : ''}`;
-  }
-
-  parts.push(`## ASTROLOGIA
+function buildAstrologiaSection(astro: MapaAlmaCompleto['astrologia']): string {
+  return `## ASTROLOGIA
 **Ascendente:** ${astro.ascendente}
 ${fmtPlaneta('Sol', astro.sol)}
 ${fmtPlaneta('Lua', astro.lua)}
@@ -110,44 +119,37 @@ ${fmtPlaneta('Júpiter', astro.jupiter)}
 ${fmtPlaneta('Saturno', astro.saturno)}
 ${fmtPlaneta('Urano', astro.urano)}
 ${fmtPlaneta('Netuno', astro.netuno)}
-${fmtPlaneta('Plutão', astro.plutao)}`);
+${fmtPlaneta('Plutão', astro.plutao)}`;
+}
 
-  // ── Tarot ───────────────────────────────────────────────────
-  const tarot = mapa.tarot;
-  parts.push(`## TAROT
+function buildTarotSection(tarot: MapaAlmaCompleto['tarot']): string {
+  const adicional = tarot.cartasAdicionais && tarot.cartasAdicionais.length > 0
+    ? `\n**Cartas Adicionais:** ${tarot.cartasAdicionais.map(c => c.name).join(', ')}`
+    : '';
+  return `## TAROT
 **Carta de Nascimento (Arcano ${tarot.cartaNascimento}):** ${tarot.interpretacao.name}
-**Carta do Ano Pessoal (Arcano ${tarot.cartaAnoPessoal}):** ${tarot.cartaAlma}
-${tarot.cartasAdicionais && tarot.cartasAdicionais.length > 0 ? `**Cartas Adicionais:** ${tarot.cartasAdicionais.map(c => c.name).join(', ')}` : ''}`);
+**Carta do Ano Pessoal (Arcano ${tarot.cartaAnoPessoal}):** ${tarot.cartaAlma}${adicional}`;
+}
 
-  // ── Chakras ────────────────────────────────────────────────
-  const chakras = mapa.chakras;
-  const chakraLines = chakras.chakras.map(
+function buildChakrasSection(chakras: MapaAlmaCompleto['chakras']): string {
+  const lines = chakras.chakras.map(
     c => `  - ${c.nome} (#${c.numero}): ${c.estado} (intensidade ${c.intensidade})${c.cor ? ` | cor: ${c.cor}` : ''}`
-  ).join('\n');
+  );
+  return [
+    `## CHAKRAS`,
+    `**Dominante:** ${chakras.dominante}`,
+    `**Bloqueado:** ${chakras.bloqueado}`,
+    `**Equilíbrio:** ${chakras.equilibrio}%`,
+    ...lines,
+  ].join('\n');
 
-  parts.push(`## CHAKRAS
-**Dominante:** ${chakras.dominante}
-**Bloqueado:** ${chakras.bloqueado}
-**Equilíbrio:** ${chakras.equilibrio}%
-${chakraLines}`);
-
-  // ── Orixás Dominantes ───────────────────────────────────────
-  if (mapa.orixasDominantes.length > 0) {
-    parts.push(`## ORIXÁS DOMINANTES
-${mapa.orixasDominantes.join(', ')}`);
-  }
-
-  if ((mapa.convergencias ?? []).length > 0) {
-    const convLines = mapa.convergencias.map(c => {
-      const prefix = c.forca === 'forte' ? '🔴' : c.forca === 'medio' ? '🟡' : '⚪';
-      return `  ${prefix} [${c.forca.toUpperCase()}] ${c.sistemas.join(' + ')}: ${c.descricao} (${c.energia})`;
-    }).join('\n');
-
-    parts.push(`## CONVERGÊNCIAS DETECTADAS
-${convLines}`);
-  }
-
-  return parts.join('\n\n');
+}
+function buildConvergenciasSection(convergencias: MapaAlmaCompleto['convergencias']): string {
+  const convLines = convergencias.map(c => {
+    const prefix = c.forca === 'forte' ? '🔴' : c.forca === 'medio' ? '🟡' : '⚪';
+    return `  ${prefix} [${c.forca.toUpperCase()}] ${c.sistemas.join(' + ')}: ${c.descricao} (${c.energia})`;
+  });
+  return `## CONVERGÊNCIAS DETECTADAS\n${convLines.join('\n')}`;
 }
 
 // ============================================================

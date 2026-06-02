@@ -131,6 +131,16 @@ function findAspectsBetweenPlanets(
   }
   return aspects;
 }
+/**
+ * Determines the overall synastry score category based on harmony percentage.
+ */
+function determineOverallScore(harmonyPercent: number): SynastryScore['overall'] {
+  if (harmonyPercent >= 70) return 'excelente';
+  if (harmonyPercent >= 55) return 'bom';
+  if (harmonyPercent >= 45) return 'neutro';
+  if (harmonyPercent >= 30) return 'desafiante';
+  return 'conflituoso';
+}
 function computeSynastryScores(aspects: SynastryAspect[]): {
   scores: SynastryScore;
   harmonyPercent: number;
@@ -156,18 +166,7 @@ function computeSynastryScores(aspects: SynastryAspect[]): {
   const totalTension = Math.round(tensionScore);
   const total = totalHarmony + totalTension;
   const harmonyPercent = total > 0 ? (totalHarmony / total) * 100 : 50;
-  let overall: SynastryScore['overall'];
-  if (harmonyPercent >= 70) {
-    overall = 'excelente';
-  } else if (harmonyPercent >= 55) {
-    overall = 'bom';
-  } else if (harmonyPercent >= 45) {
-    overall = 'neutro';
-  } else if (harmonyPercent >= 30) {
-    overall = 'desafiante';
-  } else {
-    overall = 'conflituoso';
-  }
+  const overall = determineOverallScore(harmonyPercent);
   const scores: SynastryScore = {
     total: Math.round(total),
     harmony: totalHarmony,

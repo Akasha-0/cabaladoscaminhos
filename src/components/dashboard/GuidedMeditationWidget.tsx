@@ -469,6 +469,33 @@ function getMoonPhase(): string {
   if (phaseNum < 0.4375) return 'full';
   return 'waning';
 }
+/**
+ * Get the target count for a specific breathing phase
+ */
+function getBreathingTargetCount(
+  phase: 'inhale' | 'hold' | 'exhale',
+  pattern: { inhale: number; hold: number; exhale: number }
+): number {
+  switch (phase) {
+    case 'inhale': return pattern.inhale;
+    case 'hold': return pattern.hold;
+    case 'exhale': return pattern.exhale;
+    default: return 0;
+  }
+}
+/**
+ * Get the next phase in the breathing cycle
+ */
+function getNextBreathingPhase(
+  currentPhase: 'inhale' | 'hold' | 'exhale'
+): 'inhale' | 'hold' | 'exhale' {
+  switch (currentPhase) {
+    case 'exhale': return 'inhale';
+    case 'inhale': return 'hold';
+    case 'hold': return 'exhale';
+    default: return 'inhale';
+  }
+}
 
 // ============================================================
 // SUB-COMPONENTS
@@ -715,41 +742,17 @@ export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProp
   // Breathing logic
   useEffect(() => {
     if (!isBreathingRunning || breathingPhase === 'idle') return;
-    
     const pattern = BREATHING_PATTERNS['478'];
-    let targetCount: number;
-    
-    switch (breathingPhase) {
-      case 'inhale':
-        targetCount = pattern.inhale;
-        break;
-      case 'hold':
-        targetCount = pattern.hold;
-        break;
-      case 'exhale':
-        targetCount = pattern.exhale;
-        break;
-      default:
-        targetCount = 0;
-    }
-    
+    const targetCount = getBreathingTargetCount(breathingPhase, pattern);
     breathingIntervalRef.current = setInterval(() => {
       setBreathingCount((prev) => {
         if (prev >= targetCount) {
-          // Move to next phase
-          if (breathingPhase === 'exhale') {
-            setBreathingPhase('inhale');
-          } else if (breathingPhase === 'inhale') {
-            setBreathingPhase('hold');
-          } else {
-            setBreathingPhase('exhale');
-          }
+          setBreathingPhase(getNextBreathingPhase(breathingPhase));
           return 0;
         }
         return prev + 1;
       });
     }, 1000);
-    
     return () => {
       if (breathingIntervalRef.current) {
         clearInterval(breathingIntervalRef.current);

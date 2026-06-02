@@ -1,20 +1,7 @@
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
-
-const SefirotSchema = z.enum([
-  'Kether',
-  'Chokhmah',
-  'Binah',
-  'Chesed',
-  'Gevurah',
-  'Tipheret',
-  'Netzach',
-  'Hod',
-  'Yesod',
-  'Malkuth',
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const SpiritualNotificationTypeSchema = z.enum([
   'ritual_reminder',

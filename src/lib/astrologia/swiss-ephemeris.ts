@@ -193,40 +193,7 @@ export function calcularCasas(
   const casas: Casa[] = [];
 
   for (let i = 0; i < 12; i++) {
-    let grau: number;
-
-    if (i < 3) {
-      const factor = (i + 1) / 3;
-      const startAngle = ascendente;
-      const endAngle = mc;
-      let diff = endAngle - startAngle;
-      if (diff < 0) diff += 360;
-      grau = startAngle + diff * factor;
-    } else if (i < 6) {
-      const factor = (i - 2) / 3;
-      const startAngle = mc;
-      const endAngle = ascendente + 180;
-      let diff = endAngle - startAngle;
-      if (diff < 0) diff += 360;
-      grau = startAngle + diff * factor;
-    } else if (i < 9) {
-      const factor = (i - 5) / 3;
-      const startAngle = ascendente + 180;
-      const endAngle = mc + 180;
-      let diff = endAngle - startAngle;
-      if (diff < 0) diff += 360;
-      grau = startAngle + diff * factor;
-    } else {
-      const factor = (i - 8) / 3;
-      const startAngle = mc + 180;
-      const endAngle = ascendente;
-      let diff = endAngle - startAngle;
-      if (diff < 0) diff += 360;
-      grau = startAngle + diff * factor;
-    }
-
-    grau = normalizeDegrees(grau);
-
+    const grau = normalizeDegrees(calcularGrauCasa(i, ascendente, mc));
     casas.push({
       numero: i + 1,
       signo: getSigno(grau),
@@ -234,6 +201,31 @@ export function calcularCasas(
       planetaRegente: null,
     });
   }
-
   return { casas, ascendente, mediumCoeli: mc };
+  return { casas, ascendente, mediumCoeli: mc };
+}
+/**
+ * Calculate the degree for a specific house based on quadrant logic.
+ * House indices: 0-2 (1st quadrant), 3-5 (2nd), 6-8 (3rd), 9-11 (4th)
+ */
+function calcularGrauCasa(houseIndex: number, ascendente: number, mc: number): number {
+  const quadrant = Math.floor(houseIndex / 3);
+  const factor = ((houseIndex % 3) + 1) / 3;
+  const [startAngle, endAngle] = getQuadrantAngles(quadrant, ascendente, mc);
+  let diff = endAngle - startAngle;
+  if (diff < 0) diff += 360;
+  return startAngle + diff * factor;
+}
+function getQuadrantAngles(
+  quadrant: number,
+  ascendente: number,
+  mc: number
+): [number, number] {
+  switch (quadrant) {
+    case 0: return [ascendente, mc];
+    case 1: return [mc, ascendente + 180];
+    case 2: return [ascendente + 180, mc + 180];
+    case 3: return [mc + 180, ascendente];
+    default: return [ascendente, mc];
+  }
 }

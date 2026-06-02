@@ -37,7 +37,7 @@ export interface ValidatedRequest<T> {
 /**
  * Parse and validate request body with Zod schema
  */
-function validateRequestBody<T>(
+export function validateRequestBody<T>(
   schema: z.ZodSchema<T>,
   body: unknown
 ): ValidatedRequest<T> {

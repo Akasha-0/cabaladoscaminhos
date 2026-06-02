@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const OracleTypeSchema = z.enum(['tarot', 'lenormand', 'ifa', 'ogbe', 'opalino', 'kabbalah']);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
+// ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
   'Kether', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah',
   'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
 ]);
+const ChakraSchema = z.coerce.number().int().min(1).max(7);
+const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+const OracleTypeSchema = z.enum(['tarot', 'lenormand', 'ifa', 'ogbe', 'opalino', 'kabbalah']);
 
 const OracleQuerySchema = z.object({
   type: OracleTypeSchema.optional().default('tarot'),

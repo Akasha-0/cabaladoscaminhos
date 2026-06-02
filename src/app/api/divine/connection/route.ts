@@ -2,14 +2,8 @@ import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
 import { handleAPIError } from '@/lib/api/error-handler';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const DivineTypeSchema = z.enum(['orixa', 'santo', 'ancestral', 'archangel', 'ascended_master', 'deity']);
 const ConnectionDepthSchema = z.enum(['surface', 'working', 'deep', 'master']);

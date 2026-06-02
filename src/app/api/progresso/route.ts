@@ -9,20 +9,14 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 const CategorySchema = z.enum([
   'readings', 'rituals', 'meditation', 'credits', 'streaks', 'exploration'
 ]);
 const RaritySchema = z.enum(['common', 'uncommon', 'rare', 'epic', 'legendary']);
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-
 const AchievementSchema = z.object({
   id: z.string(),
   name: z.string(),

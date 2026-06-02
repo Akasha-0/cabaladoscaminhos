@@ -4,17 +4,14 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { calcularMapaNatal } from '@/lib/astrologia/planetas/posicoes';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { calcularAspectos } from '@/lib/astrologia/planetas/aspectos';
+import { calcularMapaNatal } from '@/lib/astrologia/planetas/posicoes';
 import type { MapaNatal, Aspecto, Planeta } from '@/lib/astrologia/tipos';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
+
 
 const AnaliseQuerySchema = z.object({
   dataNascimento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD'),

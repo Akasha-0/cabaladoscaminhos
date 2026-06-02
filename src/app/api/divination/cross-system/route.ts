@@ -5,18 +5,13 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { TarotCard, MAJOR_ARCANA, MINOR_ARCANA } from '@/lib/tarot/cards';
 import { odusData } from '@/lib/odus/calculos';
 import { calcularPitagorica, calcularPitagoricaData } from '@/lib/numerologia/calculos';
 import { generateMinimaxResponse } from '@/lib/ai/minimax';
 import { NUMEROLOGY_ODU_CORRELATIONS } from '@/lib/numerologia/odu-correlations';
-
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const CrossSystemQuerySchema = z.object({
   includeCorrelations: z.enum(['true', 'false']).transform(v => v === 'true').optional(),

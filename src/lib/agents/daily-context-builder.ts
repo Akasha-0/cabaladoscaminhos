@@ -180,14 +180,23 @@ function formatContextForAI(
   aspects: TransitAspect[]
 ): string {
   const lines: string[] = [];
-
   lines.push('═══════════════════════════════════════════════════════');
   lines.push('🕐 CONTEXTO ESPIRITUAL DO DIA');
   lines.push(`Data: ${new Date(cycle.currentDate).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' })}`);
   lines.push('═══════════════════════════════════════════════════════');
   lines.push('');
-
-  // PERFIL DO USUÁRIO
+  formatUserProfile(lines, user, cycle);
+  formatPersonalCycles(lines, cycle);
+  formatUniversalYear(lines, energy);
+  formatTransits(lines, aspects);
+  formatMoonPhase(lines, energy);
+  formatRetrogradePlanets(lines, energy);
+  formatKarmicLessons(lines, cycle);
+  formatOverallEnergy(lines, energy);
+  lines.push('═══════════════════════════════════════════════════════');
+  return lines.join('\n');
+}
+function formatUserProfile(lines: string[], user: UserSpiritualProfile, cycle: PersonalCycleSnapshot): void {
   lines.push('👤 PERFIL ESPIRITUAL');
   lines.push('─────────────────────────────────────────────────────');
   lines.push(`Nome: ${user.nome}`);
@@ -200,8 +209,8 @@ function formatContextForAI(
   lines.push(`Pináculo Atual: ${cycle.currentPinnacle.theme}`);
   lines.push(`Número de Maturidade: ${cycle.maturity.number} (${cycle.maturity.theme})`);
   lines.push('');
-
-  // CICLOS PESSOAIS
+}
+function formatPersonalCycles(lines: string[], cycle: PersonalCycleSnapshot): void {
   lines.push('🔄 CICLOS PESSOAIS (Dinâmicos)');
   lines.push('─────────────────────────────────────────────────────');
   lines.push(`📅 DIA PESSOAL ${cycle.personalDay.number} — ${cycle.personalDay.energy}`);
@@ -226,29 +235,28 @@ function formatContextForAI(
   lines.push(`   Oportunidades: ${cycle.personalYear.opportunities.join(' | ')}`);
   lines.push(`   Ação-chave: ${cycle.personalYear.keyAction}`);
   lines.push('');
-
-  // ANO UNIVERSAL
+}
+function formatUniversalYear(lines: string[], energy: DailyEnergy): void {
   lines.push('🌍 ANO UNIVERSAL');
   lines.push('─────────────────────────────────────────────────────');
-  lines.push(`Ano ${energy.date.split('-')[0]} = Número Universal ${cycle.universalYear.number}`);
-  lines.push(`Tema global: ${cycle.universalYear.theme}`);
-  lines.push(`Energia global: ${cycle.universalYear.globalEnergy}`);
+  lines.push(`Ano ${energy.date.split('-')[0]} = Número Universal ${energy.universalYear.number}`);
+  lines.push(`Tema global: ${energy.universalYear.theme}`);
+  lines.push(`Energia global: ${energy.universalYear.globalEnergy}`);
   lines.push('');
-
-  // TRÂNSITOS
-  if (aspects.length > 0) {
-    lines.push('🪐 TRÂNSITOS PLANETÁRIOS (Ativos hoje)');
-    lines.push('─────────────────────────────────────────────────────');
-    aspects.forEach(a => {
-      lines.push(`${a.transitPlanet} ${a.aspect} ${a.natalPlanet} (${a.exactness}% exato)`);
-      lines.push(`   ${a.interpretation}`);
-      lines.push(`   Energia: ${a.energy} | Áreas: ${a.lifeAreas.join(', ')}`);
-      lines.push(`   → ${a.recommendation}`);
-      lines.push('');
-    });
-  }
-
-  // FASE LUNAR
+}
+function formatTransits(lines: string[], aspects: TransitAspect[]): void {
+  if (aspects.length === 0) return;
+  lines.push('🪐 TRÂNSITOS PLANETÁRIOS (Ativos hoje)');
+  lines.push('─────────────────────────────────────────────────────');
+  aspects.forEach(a => {
+    lines.push(`${a.transitPlanet} ${a.aspect} ${a.natalPlanet} (${a.exactness}% exato)`);
+    lines.push(`   ${a.interpretation}`);
+    lines.push(`   Energia: ${a.energy} | Áreas: ${a.lifeAreas.join(', ')}`);
+    lines.push(`   → ${a.recommendation}`);
+    lines.push('');
+  });
+}
+function formatMoonPhase(lines: string[], energy: DailyEnergy): void {
   lines.push('🌙 FASE LUNAR');
   lines.push('─────────────────────────────────────────────────────');
   lines.push(`${energy.moonPhase.name} (${energy.moonPhase.illumination}% iluminada)`);
@@ -258,27 +266,25 @@ function formatContextForAI(
   lines.push(`Favorável para: ${energy.moonPhase.favorableFor.join(', ')}`);
   lines.push(`Rituais: ${energy.moonPhase.rituals.join(' | ')}`);
   lines.push('');
-
-  // RETROGRADAÇÕES
-  if (energy.retrogradePlanets.length > 0) {
-    lines.push('⏪ PLANETAS RETRÓGRADOS');
-    lines.push('─────────────────────────────────────────────────────');
-    lines.push(energy.retrogradePlanets.join(', '));
-    lines.push('(período de revisão, introspecção, refazer)');
-    lines.push('');
-  }
-
-  // DESAFIOS KÁRMICOS
-  if (cycle.karmicLessons.length > 0) {
-    lines.push('⚠️ LIÇÕES CÁRMICAS ATIVAS');
-    lines.push('─────────────────────────────────────────────────────');
-    cycle.karmicLessons.slice(0, 3).forEach(l => {
-      lines.push(`• Lição do ${l.missing}: ${l.description} (${l.lifeArea})`);
-    });
-    lines.push('');
-  }
-
-  // ENERGIA GERAL
+}
+function formatRetrogradePlanets(lines: string[], energy: DailyEnergy): void {
+  if (energy.retrogradePlanets.length === 0) return;
+  lines.push('⏪ PLANETAS RETRÓGRADOS');
+  lines.push('─────────────────────────────────────────────────────');
+  lines.push(energy.retrogradePlanets.join(', '));
+  lines.push('(período de revisão, introspecção, refazer)');
+  lines.push('');
+}
+function formatKarmicLessons(lines: string[], cycle: PersonalCycleSnapshot): void {
+  if (cycle.karmicLessons.length === 0) return;
+  lines.push('⚠️ LIÇÕES CÁRMICAS ATIVAS');
+  lines.push('─────────────────────────────────────────────────────');
+  cycle.karmicLessons.slice(0, 3).forEach(l => {
+    lines.push(`• Lição do ${l.missing}: ${l.description} (${l.lifeArea})`);
+  });
+  lines.push('');
+}
+function formatOverallEnergy(lines: string[], energy: DailyEnergy): void {
   lines.push('⚡ ENERGIA GERAL DO DIA');
   lines.push('─────────────────────────────────────────────────────');
   lines.push(`Nível: ${energy.overallEnergy}/100`);
@@ -288,10 +294,6 @@ function formatContextForAI(
   lines.push(`Número de sorte: ${energy.luckyNumber}`);
   lines.push(`Horário de pico: ${energy.powerHour}`);
   lines.push('');
-
-  lines.push('═══════════════════════════════════════════════════════');
-
-  return lines.join('\n');
 }
 
 // ============================================================

@@ -253,6 +253,52 @@ function toUpcomingRitual(event: CalendarEvent, ritualMap: Map<string, Ritual>, 
     isToday: daysUntil === 0,
   };
 }
+// ─── Calendar event helpers ────────────────────────────────────────────────
+/** Builds the calendar event data object from ritual and scheduling parameters. */
+function buildRitualEventData(
+  ritual: Ritual,
+  startDate: Date,
+  frequency: 'once' | 'daily' | 'weekly' | 'monthly'
+): Record<string, unknown> {
+  const recurrenceMap: Record<string, string | undefined> = {
+    once: undefined,
+    daily: 'daily',
+    weekly: 'weekly',
+    monthly: 'monthly',
+  };
+  return {
+    title: `${ritual.nome} 🌙`,
+    startDate: startDate.toISOString(),
+    endDate: ritual.duracaoMinutos
+      ? new Date(startDate.getTime() + ritual.duracaoMinutos * 60000).toISOString()
+      : undefined,
+    allDay: false,
+    notes: `ritual:${ritual.id}`,
+    recurrence: recurrenceMap[frequency],
+  };
+}
+
+/** Resolves the target calendar from a list of calendars, by explicit ID or primary flag. */
+function resolveTargetCalendar(
+  calendars: Array<{ id: string; isPrimary?: boolean; title?: string }>,
+  calendarId?: string
+): { id: string; isPrimary?: boolean; title?: string } | undefined {
+  return calendarId
+    ? calendars.find(c => c.id === calendarId)
+    : calendars.find(c => c.isPrimary);
+}
+
+/** Converts event data to plugin format when the provider is a plugin (numeric timestamps). */
+function toPluginEvent(
+  eventData: Record<string, unknown>,
+  startDate: Date
+): Record<string, unknown> {
+  return {
+    ...eventData,
+    startDate: startDate.getTime(),
+    endDate: eventData.endDate ? new Date(eventData.endDate as string).getTime() : undefined,
+  };
+}
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Hook
@@ -328,41 +374,19 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
     calendarId?: string
   ): Promise<string | null> => {
     try {
-      const eventData = {
-        title: `${ritual.nome} 🌙`,
-        startDate: startDate.toISOString(),
-        endDate: ritual.duracaoMinutos
-          ? new Date(startDate.getTime() + ritual.duracaoMinutos * 60000).toISOString()
-          : undefined,
-        allDay: false,
-        notes: `ritual:${ritual.id}`,
-        recurrence: frequency === 'once' ? undefined :
-          frequency === 'daily' ? 'daily' :
-          frequency === 'weekly' ? 'weekly' :
-          frequency === 'monthly' ? 'monthly' : undefined,
-      };
-
+      const eventData = buildRitualEventData(ritual, startDate, frequency);
       const provider = resolveCalendarProvider();
       const calendars = await fetchCalendarsFromProvider(provider);
-      const targetCal = calendarId
-        ? calendars.find(c => c.id === calendarId)
-        : calendars.find(c => c.isPrimary);
-
+      const targetCal = resolveTargetCalendar(calendars, calendarId);
       if (!targetCal) return null;
-
-      // Build plugin-compatible event (uses numeric timestamps)
-      const pluginEvent = provider.type === 'plugin' ? {
-        ...eventData,
-        startDate: startDate.getTime(),
-        endDate: eventData.endDate ? new Date(eventData.endDate).getTime() : undefined,
-      } : eventData;
-
+      const pluginEvent = provider.type === 'plugin'
+        ? toPluginEvent(eventData, startDate)
+        : eventData;
       const created = await createCalendarEvent(provider, targetCal.id, pluginEvent);
       const createdEventId = created?.id || null;
-
       if (createdEventId) {
-        const daysUntil = Math.ceil((startDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
         setUpcomingRituals(prev => {
+          const daysUntil = Math.ceil((startDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
           const newEvent: UpcomingRitual = {
             id: createdEventId,
             title: eventData.title,
@@ -378,7 +402,6 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
           return [...prev, newEvent].sort((a, b) => a.daysUntil - b.daysUntil);
         });
       }
-
       return createdEventId;
     } catch {
       return null;
