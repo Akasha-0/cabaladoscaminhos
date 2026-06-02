@@ -1,30 +1,50 @@
 // src/app/cockpit/consulentes/page.tsx
-// Listagem de consulentes do Operator (Doc 05 §6).
-// Server Component — usa getClientsByOperator (já cabeado em C.1).
+// Índice de consulentes do Operator com tabela e contagem de leituras (Doc 05 §6).
+// Server Component: busca clientes + contagem de leituras, renderiza via ConsulentesTable.
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { ConsulentesTable } from '@/components/cockpit/consulentes/ConsulentesTable';
 import { getOperatorFromServerContext } from '@/lib/auth/operator-session';
-import { getClientsByOperator } from '@/lib/db/client-actions';
+import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
-
-function formatDate(d: Date | string | null): string {
-  if (!d) return '—';
-  const date = typeof d === 'string' ? new Date(d) : d;
-  return new Intl.DateTimeFormat('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  }).format(date);
-}
 
 export default async function ConsulentesPage() {
   const operator = await getOperatorFromServerContext();
   if (!operator) redirect('/cockpit/login');
 
-  const clientes = await getClientsByOperator(operator.id);
+  // Busca clientes distintos do operator + contagem de leituras por cliente
+  const readings = await prisma.reading.findMany({
+    where: { operatorId: operator.id },
+    select: {
+      clientId: true,
+      client: {
+        select: {
+          id: true,
+          fullName: true,
+          birthDate: true,
+          birthCity: true,
+          createdAt: true,
+        },
+      },
+    },
+    orderBy: { date: 'desc' },
+  });
+
+  // Dedupe por clientId, attach readingCount
+  const seen = new Set<string>();
+  const consulentes = readings
+    .filter((r) => {
+      if (seen.has(r.clientId)) return false;
+      seen.add(r.clientId);
+      return true;
+    })
+    .map((r) => {
+      const readingCount = readings.filter((x) => x.clientId === r.clientId).length;
+      return { ...r.client, readingCount };
+    });
 
   return (
     <div className="p-8 max-w-5xl space-y-6">
@@ -32,8 +52,8 @@ export default async function ConsulentesPage() {
         <div>
           <h1 className="font-cinzel text-2xl text-primary">Consulentes</h1>
           <p className="text-muted-foreground">
-            {clientes.length} consulente{clientes.length === 1 ? '' : 's'} atendido
-            {clientes.length === 1 ? '' : 's'}.
+            {consulentes.length} consulente{consulentes.length === 1 ? '' : 's'} atendido
+            {consulentes.length === 1 ? '' : 's'}.
           </p>
         </div>
         <Link href="/cockpit/consulentes/novo">
@@ -48,29 +68,7 @@ export default async function ConsulentesPage() {
         </Link>
       </header>
 
-      {clientes.length === 0 ? (
-        <div className="bg-card/40 border border-dashed border-border rounded-xl p-12 text-center">
-          <p className="text-muted-foreground">Nenhum consulente ainda.</p>
-          <p className="text-xs text-muted-foreground/60 mt-1">
-            Comece cadastrando o primeiro consulente.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {clientes.map((c) => (
-            <Link
-              key={c.id}
-              href={`/cockpit/consulentes/${c.id}`}
-              className="block bg-card/40 border border-border rounded-lg p-4 hover:bg-card/60 hover:border-primary/30 transition-colors"
-            >
-              <p className="font-medium text-foreground/90">{c.fullName}</p>
-              <p className="text-xs text-muted-foreground/70 mt-1 font-mono">
-                {formatDate(c.birthDate)}
-              </p>
-            </Link>
-          ))}
-        </div>
-      )}
+      <ConsulentesTable consulentes={consulentes} />
     </div>
   );
 }

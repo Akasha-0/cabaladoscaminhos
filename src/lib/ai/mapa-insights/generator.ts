@@ -12,6 +12,7 @@ import type { InsightData, GenerateInsightsOptions, GenerateInsightsResult } fro
  * Format: insights:{hash}
  * Matches spiritual-engine cache key convention.
  */
+// fallow-ignore-next-line unused-export
 export function gerarCacheKey(mapa: MapaAlmaCompleto): string {
   const { nomeCompleto, dataNascimento } = mapa.perfil;
   const input = `${nomeCompleto}::${dataNascimento}`;

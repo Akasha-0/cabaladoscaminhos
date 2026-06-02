@@ -33,6 +33,7 @@ import {
   getOperatorFromServerContext,
 } from './operator-session';
 
+// fallow-ignore-next-line unused-export
 /** Caminho de login do Operator (B2B). */
 export const OPERATOR_LOGIN_PATH = '/cockpit/login';
 

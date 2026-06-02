@@ -1,4 +1,3 @@
-// fallow-ignore-next-line unresolved-import
 // @ts-ignore - @vercel/og not installed, using ImageResponse type
 import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';

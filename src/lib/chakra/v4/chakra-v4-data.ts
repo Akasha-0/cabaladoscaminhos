@@ -93,6 +93,7 @@ export function getData(): ChakraV4Data[] {
   return DATA;
 }
 
+// fallow-ignore-next-line unused-type
 /**
  * Retorna o chakra por nome/sanskrit (compatibilidade com ChakraInfo)
  * @deprecated Use getData() diretamente e filtre

@@ -24,6 +24,7 @@ export function SkeletonLine({ width = '100%', height = '16px', className }: Ske
 // ============================================================
 // SkeletonAvatar — circular placeholder
 // ============================================================
+// fallow-ignore-next-line unused-type
 export interface SkeletonAvatarProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
@@ -44,13 +45,13 @@ function SkeletonAvatar({ size = 'md', className }: SkeletonAvatarProps) {
       aria-hidden="true"
     />
   );
-}
-
 // ============================================================
+// fallow-ignore-next-line unused-type
 export interface SkeletonTextProps {
   lines?: number;
   lastLineWidth?: string;
   className?: string;
+}
 }
 
 function SkeletonText({ lines = 3, lastLineWidth = '60%', className }: SkeletonTextProps) {

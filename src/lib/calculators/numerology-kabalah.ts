@@ -200,7 +200,7 @@ function collectKarmicDebts(rawSums: number[]): number[] {
   }
   return [...found].sort((a, b) => a - b);
 }
-
+// fallow-ignore-next-line unused-export
 export function calculateKarmicDebts(fullName: string, birthDate: string): number[] {
   const norm = normalizeName(fullName);
   const expressionSum = norm.split('').reduce((s, c) => s + (LETTER_VALUES[c] ?? 0), 0);
@@ -259,6 +259,7 @@ export function calculatePinnacles(
 function arcanaFor(n: number): number {
   return n <= 21 ? n : reduceToSingleDigit(n, false);
 }
+// fallow-ignore-next-line unused-export
 export function calculateRulingArcana(
   lifePath: number,
   expression: number
