@@ -1,15 +1,19 @@
 /**
- * KeyboardShortcutsLayer — Client Component wrapper que ativa os atalhos
- * canônicos em todo o cockpit. Renderiza invisível (return null).
+ * KeyboardShortcutsLayer — Client Component que ativa os atalhos canônicos
+ * em todo o cockpit. Renderiza invisível + Help dialog on `?`.
  *
  * Refs: T7.2 (Sprint 8 UX), useKeyboardShortcuts.ts
  */
 
 'use client';
 
+import { useState } from 'react';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { KeyboardShortcutsHelp } from './KeyboardShortcutsHelp';
 
-export function KeyboardShortcutsLayer(): null {
+export function KeyboardShortcutsLayer(): JSX.Element {
+  const [helpOpen, setHelpOpen] = useState(false);
+
   useKeyboardShortcuts([
     {
       key: 'k',
@@ -38,6 +42,10 @@ export function KeyboardShortcutsLayer(): null {
     {
       key: 'Escape',
       handler: () => {
+        if (helpOpen) {
+          setHelpOpen(false);
+          return;
+        }
         // TODO: fechar dialog/modal aberto
         console.info('[shortcut] Esc — fechar');
       },
@@ -46,11 +54,14 @@ export function KeyboardShortcutsLayer(): null {
       key: '?',
       shift: true,
       handler: () => {
-        // TODO: abrir help dialog
-        console.info('[shortcut] ? — help');
+        setHelpOpen(true);
       },
     },
   ]);
 
-  return null;
+  return (
+    <>
+      <KeyboardShortcutsHelp open={helpOpen} onClose={() => setHelpOpen(false)} />
+    </>
+  );
 }
