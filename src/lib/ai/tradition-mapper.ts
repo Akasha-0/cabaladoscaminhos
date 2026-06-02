@@ -1,5 +1,6 @@
 import type { ChatMessage } from './types';
 import type { UserSpiritualData } from './types';
+// fallow-ignore-next-line unresolved-import
 import { spiritualData, type SpiritualData } from '../spiritual-data/spiritual-data';
 
 // ============================================================

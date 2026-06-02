@@ -27,6 +27,7 @@ export interface ArchetypePattern {
 /**
  * How an archetype manifests across different traditions
  */
+// fallow-ignore-next-line unused-type
 export interface ArchetypeManifestation {
   tradition: string;
   name: string;

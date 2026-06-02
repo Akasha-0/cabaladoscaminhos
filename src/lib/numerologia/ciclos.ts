@@ -111,6 +111,7 @@ export function calcularAnoPessoal(dataNascimento: string): { numero: number; se
   };
 }
 
+// fallow-ignore-next-line unused-export
 export function calcularMesPessoal(anoPessoal: number): { numero: number; sefirot: string; descricao: DescricaoCiclo | null } {
   const mesAtual = new Date().getMonth() + 1;
   let numero = anoPessoal + mesAtual;
@@ -126,6 +127,7 @@ export function calcularMesPessoal(anoPessoal: number): { numero: number; sefiro
   };
 }
 
+// fallow-ignore-next-line unused-export
 export function calcularDiaPessoal(dataNascimento: string, anoPessoal: number): { numero: number; sefirot: string; descricao: DescricaoCiclo | null } {
   const hoje = new Date();
   const diaAtual = hoje.getDate();

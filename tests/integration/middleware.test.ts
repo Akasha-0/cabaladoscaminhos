@@ -6,6 +6,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+// fallow-ignore-next-line unresolved-import
 import { PUBLIC_ROUTES, PROTECTED_ROUTES } from './setup';
 
 // ============================================

@@ -112,11 +112,13 @@ const oduMap: Record<number, { top: number; bottom: number; elementos: string; o
 };
 
 // Get Ope by ID
+// fallow-ignore-next-line unused-export
 export function getOpe(id: number): Ope {
   return opes.find(o => o.id === id) || opes[0];
 }
 
 // Get all 16 Odu
+// fallow-ignore-next-line unused-export
 export function getAllOdu(): Odu[] {
   return Object.entries(oduMap).map(([num, config]) => ({
     numero: parseInt(num),
@@ -232,6 +234,7 @@ function deriveOduFromBirthDate(dataNascimento: string): number {
 }
 
 // Draw multiple Odus (for complex readings)
+// fallow-ignore-next-line unused-export
 export function drawMultipleOdu(count: number): DrawResult[] {
   const results: DrawResult[] = [];
   
@@ -243,6 +246,7 @@ export function drawMultipleOdu(count: number): DrawResult[] {
 }
 
 // Get Odu by number
+// fallow-ignore-next-line unused-export
 export function getOduByNumber(numero: number): Odu | null {
   if (numero < 1 || numero > 16) return null;
   

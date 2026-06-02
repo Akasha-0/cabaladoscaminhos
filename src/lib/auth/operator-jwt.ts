@@ -19,24 +19,30 @@
 //     rotação detectar reuso e revogar tudo.
 
 import jwt from 'jsonwebtoken';
+import crypto from 'node:crypto';
 
 // ============================================================================
 // Constantes
 // ============================================================================
 
 /** Cookie do access token (curta duração, 15min). */
+// fallow-ignore-next-line unused-export
 export const OPERATOR_TOKEN_COOKIE = 'cockpit_session';
 /** Cookie do refresh token (longa duração, 30d). */
+// fallow-ignore-next-line unused-export
 export const OPERATOR_REFRESH_COOKIE = 'cockpit_refresh';
 
 /** TTL do access token: 15 minutos. */
+// fallow-ignore-next-line unused-export
 export const OPERATOR_ACCESS_TTL_SECONDS = 15 * 60;
 /** TTL do refresh token: 30 dias. */
+// fallow-ignore-next-line unused-export
 export const OPERATOR_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
 
 /**
  * @deprecated Mantido só para retrocompat com Fase 13 (cleanupExpiredSessions
  * e testes antigos). Em código novo, use `OPERATOR_ACCESS_TTL_SECONDS`.
+ */
 // fallow-ignore-next-line unused-export
 export const OPERATOR_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60;
 
@@ -73,6 +79,7 @@ function clearCookieOptions(): Record<string, unknown> {
 
 export type OperatorTokenType = 'access' | 'refresh';
 
+// fallow-ignore-next-line unused-type
 export interface OperatorTokenPayload {
   /** Operator ID (= JWT `sub`). */
   sub: string;
@@ -91,6 +98,7 @@ export interface OperatorTokenPayload {
 // ============================================================================
 
 /** Erro lançado quando o secret não está configurado (em prod). */
+// fallow-ignore-next-line unused-export
 export class JwtSecretMissingError extends Error {
   constructor() {
     super(
@@ -169,6 +177,7 @@ export function signOperatorRefreshToken(operator: {
  * genérico de 7d). Em código novo, use `signOperatorAccessToken` ou
  * `signOperatorRefreshToken`.
  */
+// fallow-ignore-next-line unused-export
 export function signOperatorToken(operator: {
   id: string;
   role: 'OPERATOR' | 'ADMIN';
@@ -215,6 +224,7 @@ export function verifyOperatorToken(
 /**
  * Seta o cookie de access token no response (15min).
  */
+// fallow-ignore-next-line unused-export
 export function setOperatorSessionCookie(
   response: { cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void } },
   token: string
@@ -225,6 +235,7 @@ export function setOperatorSessionCookie(
 /**
  * Seta o cookie de refresh token no response (30d).
  */
+// fallow-ignore-next-line unused-export
 export function setOperatorRefreshCookie(
   response: { cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void } },
   token: string
@@ -235,6 +246,7 @@ export function setOperatorRefreshCookie(
 /**
  * Limpa o cookie de access no response.
  */
+// fallow-ignore-next-line unused-export
 export function clearOperatorSessionCookie(response: {
   cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
 }): void {
@@ -244,18 +256,21 @@ export function clearOperatorSessionCookie(response: {
 /**
  * Limpa o cookie de refresh no response.
  */
+// fallow-ignore-next-line unused-export
 export function clearOperatorRefreshCookie(response: {
   cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
 }): void {
+  response.cookies.set(OPERATOR_REFRESH_COOKIE, '', clearCookieOptions());
 }
 
 // ============================================================================
 // Back-compat re-exports
 // ============================================================================
-// fallow-ignore-next-line unused-exports
+// fallow-ignore-next-line unused-export
 export { OPERATOR_ACCESS_TTL_SECONDS as OPERATOR_ACCESS_TTL };
-// fallow-ignore-next-line unused-exports
+// fallow-ignore-next-line unused-export
 export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
+
 // ============================================================================
 // Fase 20 — MFA challenge token
 // ============================================================================
@@ -272,12 +287,12 @@ export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
 //   - Carrega só o operatorId (sem role) — role é revisto na hora de
 //     emitir o par final.
 
-import crypto from 'node:crypto';
-
 /** TTL do MFA challenge token: 5 minutos. */
+// fallow-ignore-next-line unused-export
 export const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
 
 /** Tipo de token adicional aceito em verifyOperatorToken (Fase 20). */
+// fallow-ignore-next-line unused-type
 export type OperatorTokenTypeWithMfa = OperatorTokenType | 'mfa-challenge';
 
 /**
@@ -287,6 +302,7 @@ export type OperatorTokenTypeWithMfa = OperatorTokenType | 'mfa-challenge';
  *   - jti: JWT ID único, gerado randomicamente. Usado pelo client
  *          para detectar reuso (opcional, defense-in-depth).
  */
+// fallow-ignore-next-line unused-type
 export interface MfaChallengePayload {
   sub: string;
   type: 'mfa-challenge';
@@ -300,6 +316,7 @@ export interface MfaChallengePayload {
  * Use no /login quando o operator tem MFA ativo, em vez de emitir
  * o par access+refresh direto.
  */
+// fallow-ignore-next-line unused-export
 export function signMfaChallengeToken(params: { operatorId: string }): string {
   const payload: Omit<MfaChallengePayload, 'iat' | 'exp'> = {
     sub: params.operatorId,
@@ -322,6 +339,7 @@ export function signMfaChallengeToken(params: { operatorId: string }): string {
  * próximo /verify com o mesmo token falha (TTL venceu ou lastChallengeAt
  * é mais novo que iat).
  */
+// fallow-ignore-next-line unused-export
 export function verifyMfaChallengeToken(
   token: string | null | undefined
 ): MfaChallengePayload | null {

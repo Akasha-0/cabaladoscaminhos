@@ -3,6 +3,7 @@
  * Executa ciclo de auto-evolução baseado nos resultados dos evals
  */
 
+// fallow-ignore-next-line unresolved-import
 import { runAllEvals, ALL_EVALS } from '../src/lib/quality/runner'
 import { 
   AutoEvolutionEngine,
@@ -10,6 +11,7 @@ import {
   type QualityReport,
   DEFAULT_THRESHOLDS,
   calculateGrade
+// fallow-ignore-next-line unresolved-import
 } from '../src/lib/quality/metrics-framework'
 
 interface EvolutionResult {

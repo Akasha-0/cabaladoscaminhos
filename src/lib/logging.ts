@@ -49,7 +49,7 @@ export interface LogContext {
   [key: string]: unknown;
 }
 
-// fallow-ignore-start unused-types
+// fallow-ignore-next-line unused-type
 export interface LogEntry {
   timestamp: string;
   level: LogLevel;
@@ -67,7 +67,6 @@ export interface LogEntry {
     cpu?: number;
   };
 }
-// fallow-ignore-end unused-types
 
 // ============================================================
 // LOGGER CLASS
@@ -246,8 +245,7 @@ export const logger = Logger.getInstance();
 // ============================================================
 // PERFORMANCE MONITORING
 // ====================================
-
-// fallow-ignore-start unused-types
+// fallow-ignore-next-line unused-type
 export interface PerformanceMetrics {
   requestId: string;
   path: string;
@@ -262,7 +260,6 @@ export interface PerformanceMetrics {
   };
   userId?: string;
 }
-// fallow-ignore-end unused-types
 
 // ============================================================
 // INTERNAL MONITOR

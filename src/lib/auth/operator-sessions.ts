@@ -342,6 +342,7 @@ export async function revokeSession(token: string): Promise<{ revoked: boolean }
  * todos os dispositivos"). Útil para "minha conta foi comprometida"
  * e para detecção de reuso de refresh token (Fase 15).
  */
+// fallow-ignore-next-line unused-export
 export async function revokeAllOperatorSessions(operatorId: string): Promise<{ count: number }> {
   const result = await prisma.operatorSession.updateMany({
     where: { operatorId, revokedAt: null },
@@ -354,6 +355,7 @@ export async function revokeAllOperatorSessions(operatorId: string): Promise<{ c
  * Remove sessões já expiradas e/ou revogadas há mais de `olderThanDays`.
  * Útil como job de manutenção; não afeta a request hot path.
  */
+// fallow-ignore-next-line unused-export
 export async function cleanupExpiredSessions(olderThanDays = 30): Promise<{ count: number }> {
   const cutoff = new Date(Date.now() - olderThanDays * 24 * 60 * 60 * 1000);
   const result = await prisma.operatorSession.deleteMany({

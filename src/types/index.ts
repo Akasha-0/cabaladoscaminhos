@@ -174,7 +174,7 @@ export interface HouseReport {
   interpretation: string;
 }
 
-// fallow-ignore-start unused-types
+// fallow-ignore-next-line unused-type
 export interface ReportContent {
   houses: {
     [houseNumber: string]: HouseReport;
@@ -190,13 +190,11 @@ export interface ReportContent {
   llmModel: string;
   totalHousesAnalyzed: number;
 }
-// fallow-ignore-end unused-types
 
 // ============================================================================
 // Entidades Prisma (mínimo para o motor de IA)
 // ============================================================================
-
-// fallow-ignore-start unused-types
+// fallow-ignore-next-line unused-type
 export interface Client {
   id: string;
   fullName: string;
@@ -214,4 +212,3 @@ export interface Client {
   oduBirth: OduBirth | null;
   notes: string | null;
 }
-// fallow-ignore-end unused-types

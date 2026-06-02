@@ -5,19 +5,18 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { TOTP, Secret } from 'otpauth';
+import bcrypt from 'bcryptjs';
 
 // ----------------------------------------------------------------------------
 // Mocks
 // ----------------------------------------------------------------------------
 
-const { mockFindUnique, mockUpsert, mockUpdate, mockDelete, mockBcryptHash, mockBcryptCompare } = vi.hoisted(() => {
+const { mockFindUnique, mockUpsert, mockUpdate, mockDelete } = vi.hoisted(() => {
   return {
     mockFindUnique: vi.fn(),
     mockUpsert: vi.fn(),
     mockUpdate: vi.fn(),
     mockDelete: vi.fn(),
-    mockBcryptHash: vi.fn(),
-    mockBcryptCompare: vi.fn(),
   };
 });
 
@@ -32,11 +31,14 @@ vi.mock('@/lib/prisma', () => ({
   },
 }));
 
-vi.mock('bcryptjs', () => {
-  const hash = (...args: unknown[]) => mockBcryptHash(...args);
-  const compare = (...args: unknown[]) => mockBcryptCompare(...args);
-  return { default: { hash, compare }, hash, compare };
-});
+// bcryptjs: usamos o REAL para hash/compare. A setupMfa chama
+// bcrypt.hash 10 vezes em paralelo, e mockar via dynamic import causava
+// race condition (apenas a 1ª chamada usava o mock). Custo: ~1s extra
+// para gerar 10 hashes com rounds=4. Aceitável em test.
+//
+// Para o testOperator.passwordHash, geramos o bcrypt real com
+// rounds=4 para o mockCompare aceitar. O disableMfa usa bcrypt.compare
+// (real) que valida corretamente.
 
 // TOTP secret determinístico para os testes de verify/consume
 import { encryptSecret, generateTotpSecret, hashRecoveryCode } from '@/lib/auth/operator-totp';
@@ -56,25 +58,22 @@ let storedMfa: {
   lastUsedStep: bigint | null;
 } | null = null;
 
+// Gera bcrypt real (rounds=4) para o passwordHash do testOperator.
+// Roda 1x antes de todos os tests; bcrypt real é usado em disableMfa.
+import { beforeAll } from 'vitest';
+let _bcryptHashesReady: Promise<void> | null = null;
+beforeAll(async () => {
+  _bcryptHashesReady = (async () => {
+    testOperator.passwordHash = await bcrypt.hash('admin123', 4);
+  })();
+  await _bcryptHashesReady;
+});
+
 beforeEach(() => {
   process.env.MFA_ENCRYPTION_KEY = TEST_KEY_HEX;
   process.env.NODE_ENV = 'test';
   vi.clearAllMocks();
-  // Mock bcrypt: hash(plain) = "$2a$10$" + base64(plain) (fake bcrypt look),
-  // compare(plain, hash) = reverse o base64 e compara com plain
-  // Estrutura do fake hash: "$2a$10$<22 chars base64-style>"
-  mockBcryptHash.mockImplementation(async (pw: string) => {
-    // Encode plain como base64 truncado (apenas deterministic)
-    const buf = Buffer.from(pw, 'utf8').toString('base64').replace(/=+$/, '').slice(0, 22);
-    return `$2a$10$${buf}`;
-  });
-  mockBcryptCompare.mockImplementation(async (pw: string, hash: string) => {
-    // Decode: extrai o meio do fake hash e compara
-    if (!hash.startsWith('$2a$10$')) return false;
-    const middle = hash.slice('$2a$10$'.length);
-    const expected = Buffer.from(pw, 'utf8').toString('base64').replace(/=+$/, '').slice(0, 22);
-    return middle === expected;
-  });
+  // bcrypt REAL — ver header do arquivo para rationale.
   storedMfa = null;
 
   // Implementação realística do mock: findUnique/upsert/update/delete
@@ -125,7 +124,8 @@ beforeEach(() => {
 const testOperator = {
   id: 'op-admin-1',
   email: 'admin@cabala.com',
-  passwordHash: '$2a$10$' + Buffer.from('admin123', 'utf8').toString('base64').replace(/=+$/, '').slice(0, 22),
+  // passwordHash é gerado ANTES dos tests (rounds=4) para o bcrypt real
+  passwordHash: '', // setado em beforeAll — ver abaixo
   role: 'ADMIN' as const,
 };
 
@@ -304,11 +304,6 @@ describe('consumeRecoveryCode', () => {
 
     const targetCode = r.recoveryCodes[3];
     const result = await consumeRecoveryCode({ operatorId: testOperator.id, code: targetCode });
-    // DEBUG
-    if (!result.ok) {
-      // eslint-disable-next-line no-console
-      console.log('DEBUG recovery fail:', { result, targetCode, storedCodes: storedMfa?.recoveryCodesHash });
-    }
     expect(result.ok).toBe(true);
     if (result.ok) expect(result.method).toBe('recovery');
 

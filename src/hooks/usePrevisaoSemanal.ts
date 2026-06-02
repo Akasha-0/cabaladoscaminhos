@@ -12,6 +12,7 @@ export interface PrevisaoDiaria {
   conselho: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface PrevisaoSemanalData {
   semana: string;
   previsoes: PrevisaoDiaria[];

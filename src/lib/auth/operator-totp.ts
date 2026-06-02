@@ -23,6 +23,7 @@
 //      o app pode usar 1 dos 10 para entrar; deve rotacionar depois.
 
 import crypto from 'node:crypto';
+import bcrypt from 'bcryptjs';
 import { TOTP, Secret } from 'otpauth';
 import QRCode from 'qrcode';
 
@@ -32,7 +33,6 @@ import QRCode from 'qrcode';
 
 /** Issuer exibido no app autenticador. */
 export const MFA_ISSUER = 'Cabala dos Caminhos';
-
 /** Tamanho do secret TOTP em bytes (20 = 160 bits, RFC 4226 recomenda ≥ 128). */
 export const TOTP_SECRET_BYTES = 20;
 
@@ -51,9 +51,11 @@ export const TOTP_ALGORITHM = 'SHA1' as const;
  */
 export const TOTP_DRIFT_STEPS = 1;
 
+// fallow-ignore-next-line unused-export
 /** Tamanho do recovery code em bytes (8 bytes = 16 chars hex = ~10^19 entropia). */
 export const RECOVERY_CODE_BYTES = 8;
 
+// fallow-ignore-next-line unused-export
 /** Quantidade de recovery codes gerados no setup. */
 export const RECOVERY_CODE_COUNT = 10;
 
@@ -89,6 +91,7 @@ export type DecryptResult = { ok: true; plaintext: string } | { ok: false; reaso
 // ============================================================================
 
 /** Lançado quando a MFA_ENCRYPTION_KEY não está configurada (em prod). */
+// fallow-ignore-next-line unused-export
 export class MfaKeyMissingError extends Error {
   constructor() {
     super(
@@ -155,6 +158,7 @@ function getEncryptionKey(): Buffer {
  * Gera um secret TOTP em base32 (compatível com Google Authenticator,
  * Authy, 1Password, etc.). 20 bytes = 32 chars base32.
  */
+// fallow-ignore-next-line unused-export
 export function generateTotpSecret(): string {
   const bytes = crypto.randomBytes(TOTP_SECRET_BYTES);
   const secret = new Secret({ buffer: bytes });
@@ -165,6 +169,7 @@ export function generateTotpSecret(): string {
  * Constrói a URL `otpauth://` que será codificada no QR code.
  * Formato padrão: `otpauth://totp/ISSUER:ACCOUNT?secret=...&issuer=...&algorithm=...&digits=...&period=...`
  */
+// fallow-ignore-next-line unused-export
 export function buildOtpAuthUrl(params: {
   secret: string;
   accountName: string; // ex: email do operator
@@ -184,6 +189,7 @@ export function buildOtpAuthUrl(params: {
  * Gera o QR code (PNG data URL) para a URL otpauth.
  * Retorna `data:image/png;base64,...` pronto para `<img src=...>`.
  */
+// fallow-ignore-next-line unused-export
 export async function generateQrCodeDataUrl(otpauthUrl: string): Promise<string> {
   return QRCode.toDataURL(otpauthUrl, {
     errorCorrectionLevel: 'M',
@@ -205,6 +211,7 @@ export async function generateQrCodeDataUrl(otpauthUrl: string): Promise<string>
  * authTag garante integridade — qualquer adulteração do ciphertext
  * (ou do IV) faz verify falhar.
  */
+// fallow-ignore-next-line unused-export
 export function encryptSecret(plaintext: string): string {
   const key = getEncryptionKey();
   const iv = crypto.randomBytes(AES_IV_BYTES);
@@ -310,6 +317,7 @@ function timingSafeEqual(a: string, b: string): boolean {
  * Formato: 16 chars hex (8 bytes) sem separadores.
  * Retorna o array de códigos EM PLAIN TEXT (mostrar UMA vez no setup).
  */
+// fallow-ignore-next-line unused-export
 export function generateRecoveryCodes(): string[] {
   return Array.from({ length: RECOVERY_CODE_COUNT }, () =>
     crypto.randomBytes(RECOVERY_CODE_BYTES).toString('hex')
@@ -320,8 +328,8 @@ export function generateRecoveryCodes(): string[] {
  * Hash bcrypt de um recovery code. Custo 10 — alinhado com passwordHash
  * dos Operators (mesmo módulo bcryptjs). Não retorna o plain.
  */
+// fallow-ignore-next-line unused-export
 export async function hashRecoveryCode(plain: string): Promise<string> {
-  const bcrypt = (await import('bcryptjs')).default;
   return bcrypt.hash(plain, 10);
 }
 
@@ -337,12 +345,12 @@ export async function hashRecoveryCode(plain: string): Promise<string> {
  * responsabilidade da camada superior: depois de usar, persistir
  * o array com `codes[index] = ""` para invalidar o slot.
  */
+// fallow-ignore-next-line unused-export
 export async function tryConsumeRecoveryCode(
   codes: string[], // bcrypt hashes (length = RECOVERY_CODE_COUNT)
   plain: string
 ): Promise<number | null> {
   if (codes.length !== RECOVERY_CODE_COUNT) return null;
-  const bcrypt = (await import('bcryptjs')).default;
   for (let i = 0; i < codes.length; i++) {
     const hash = codes[i];
     if (!hash || hash === '') continue; // slot já consumido

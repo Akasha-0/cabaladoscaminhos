@@ -49,9 +49,7 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]): void {
     const handler = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       const inEditable =
-        target?.tagName === 'INPUT' ||
-        target?.tagName === 'TEXTAREA' ||
-        target?.isContentEditable;
+        target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable;
       if (inEditable && e.key !== 'Escape') return;
 
       for (const s of shortcuts) {
