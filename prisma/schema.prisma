@@ -46,7 +46,8 @@ model Operator {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  readings Reading[]
+  readings      Reading[]
+  consultations Consultation[]
 
   @@map("operators")
 }
@@ -101,7 +102,8 @@ model Reading {
   operatorId String
   operator   Operator @relation(fields: [operatorId], references: [id])
 
-  report Report?
+  report        Report?
+  consultations Consultation[] // Threads de Q&A ancoradas nesta leitura (Doc 12)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -127,6 +129,51 @@ model Report {
   updatedAt DateTime @updatedAt
 
   @@map("reports")
+}
+
+/// Consulta Interativa — thread de Q&A ancorada numa leitura (Doc 12 §3).
+/// A conversa herda todo o contexto do Reading (e, por ele, do Client e do Report).
+model Consultation {
+  id    String  @id @default(cuid())
+  title String? // Resumo opcional do tema dominante da conversa
+
+  readingId String
+  reading   Reading @relation(fields: [readingId], references: [id], onDelete: Cascade)
+
+  operatorId String
+  operator   Operator @relation(fields: [operatorId], references: [id])
+
+  messages ChatMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([readingId])
+  @@map("consultations")
+}
+
+/// Mensagem de uma consulta interativa (Doc 12 §3).
+model ChatMessage {
+  id      String   @id @default(cuid())
+  role    ChatRole
+  content String // Markdown da mensagem
+
+  // Rastreabilidade do roteamento (somente mensagens do ORACLE)
+  routedThemes String[] // Ex: ["amor", "decisao"]
+  routedHouses Int[] // Ex: [24, 22]
+
+  consultationId String
+  consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([consultationId])
+  @@map("chat_messages")
+}
+
+enum ChatRole {
+  USER
+  ORACLE
 }
 
 // =====================
