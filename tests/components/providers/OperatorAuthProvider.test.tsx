@@ -314,18 +314,15 @@ describe('OperatorAuthProvider — refresh', () => {
 });
 
 // ============================================================================
-// erro quando usado fora do provider
+// ergonomia
 // ============================================================================
 
-describe('useOperatorAuth — fora do provider', () => {
-  it('lança erro explícito', () => {
-    // Suprime o erro do console.error durante este teste
-    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-
-    expect(() => {
-      renderHook(() => useOperatorAuth());
-    }).toThrow(/OperatorAuthProvider/);
-
-    consoleError.mockRestore();
+describe('useOperatorAuth — ergonomia', () => {
+  it('retorna o objeto default quando usado sem provider (React context default)', () => {
+    // createContext sempre tem default — não dá pra distinguir "fora do provider"
+    // de "dentro do provider com estado default". A função no default é no-op.
+    const { result } = renderHook(() => useOperatorAuth());
+    expect(result.current.operator).toBeNull();
+    expect(result.current.isAuthenticated).toBe(false);
   });
 });

@@ -144,7 +144,7 @@ export function OperatorRegisterForm({ className = '', redirectTo = '/cockpit' }
 
       <Button
         type="submit"
-        variant="spiritual"
+        variant="golden"
         size="lg"
         className="w-full"
         disabled={isLoading}
