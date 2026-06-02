@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import type { BirthProfile, MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';

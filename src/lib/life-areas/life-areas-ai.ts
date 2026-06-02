@@ -27,6 +27,7 @@ export interface AIInsight {
 // PROMPT BUILDER
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function buildInsightPrompt(
   user: UserProfile,
   area: LifeArea,

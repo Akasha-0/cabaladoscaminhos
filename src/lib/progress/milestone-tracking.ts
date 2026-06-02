@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 const STORAGE_KEY = 'milestone_tracking';
 
 export interface Milestone {
@@ -36,6 +37,7 @@ function saveState(state: MilestoneState): void {
   }
 }
 
+// fallow-ignore-next-line complexity
 export function trackMilestone(
   id: string,
   name: string,

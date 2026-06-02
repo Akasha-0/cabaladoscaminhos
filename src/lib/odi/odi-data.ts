@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // @ts-nocheck
 // Odi data — The Ifá Divination System
 

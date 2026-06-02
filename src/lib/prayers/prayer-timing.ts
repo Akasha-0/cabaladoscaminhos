@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Prayer Timing
  * Optimal timing calculations for prayer practice

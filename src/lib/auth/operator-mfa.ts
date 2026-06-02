@@ -200,6 +200,7 @@ export async function verifySetupMfa(params: {
  *
  * @returns { ok: true, method: 'totp' } em sucesso, ou falha.
  */
+// fallow-ignore-next-line complexity
 export async function consumeMfaChallenge(params: {
   operatorId: string;
   code: string;

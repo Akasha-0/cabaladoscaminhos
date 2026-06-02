@@ -38,6 +38,7 @@ import {
 } from '@/lib/auth/rate-limit';
 import { rotateRefreshToken } from '@/lib/auth/operator-sessions';
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   // Fase 18: rate-limit ANTES de tudo. Refresh é endpoint "barato" mas
   // faz 3 escritas no banco (revoke + create access + create refresh) e

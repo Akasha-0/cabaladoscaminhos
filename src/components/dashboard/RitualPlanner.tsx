@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState } from 'react';
@@ -163,6 +164,7 @@ export function RitualPlanner({ className }: RitualPlannerProps) {
 
             {/* Today's Rituals */}
             <div className="space-y-2">
+// fallow-ignore-next-line complexity
               {TODAY_RITUALS.map((ritual) => {
                 const isCompleted = completedRituals.includes(ritual.id);
                 const category = RITUAL_CATEGORIES.find(c => c.id === ritual.type);

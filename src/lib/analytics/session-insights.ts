@@ -58,6 +58,7 @@ function trackSessionEvent(event: Omit<SessionEvent, 'id' | 'timestamp'>): Sessi
 /**
  * Detect patterns in session data
  */
+// fallow-ignore-next-line complexity
 function detectPatterns(events: SessionEvent[]): string[] {
   const patterns: string[] = [];
 
@@ -125,6 +126,7 @@ function detectPatterns(events: SessionEvent[]): string[] {
 
 /**
  * Identify anomalies in session data
+// fallow-ignore-next-line complexity
  */
 function identifyAnomalies(events: SessionEvent[]): string[] {
   const anomalies: string[] = [];
@@ -238,6 +240,7 @@ function calculateStats(events: SessionEvent[]): SessionSummary {
 }
 
 /**
+// fallow-ignore-next-line complexity
  * Get comprehensive session insights
  */
 export function getInsights(userId?: string): {

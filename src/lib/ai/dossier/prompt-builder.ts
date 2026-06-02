@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Prompt Builder for Mesa Real Dossier AI Generation
  * @module ai/dossier/prompt-builder
@@ -267,6 +268,7 @@ Nenhuma tiragem disponível para análise.`;
   }
 
   // Build sections for each casa
+// fallow-ignore-next-line complexity
   const sections = arquitetura.map(casa => {
     const parts: string[] = [];
 

@@ -60,11 +60,13 @@ function getForcaColor(forca: string): string {
   }
 }
 
+// fallow-ignore-next-line complexity
 export default function SharedMapaPage({ params }: { params: { hash: string } }) {
   const [mapa, setMapa] = useState<MapaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+// fallow-ignore-next-line complexity
   useEffect(() => {
     async function fetchSharedMapa() {
       try {

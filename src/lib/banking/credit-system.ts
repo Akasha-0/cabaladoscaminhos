@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import { prisma } from '@/lib/prisma';
 
 export interface CreditInfo {

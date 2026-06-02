@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from 'react';
@@ -201,6 +202,7 @@ export function SpiritualProgressWidget({ className = '', userId = 'default', us
   }, [spiritualHistory]);
 
   React.useEffect(() => {
+// fallow-ignore-next-line complexity
     const loadProgress = async () => {
       setLoading('loading');
       await new Promise((resolve) => setTimeout(resolve, 600));

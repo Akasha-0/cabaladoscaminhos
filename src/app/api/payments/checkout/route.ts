@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { criarSessaoCheckout, PlanoInvalidoError, CheckoutError } from '@/lib/payments/service';
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

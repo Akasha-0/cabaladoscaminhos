@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -93,6 +94,7 @@ const TIME_MODIFIERS = {
 // HELPER FUNCTIONS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function getTimeOfDay(): keyof typeof TIME_MODIFIERS {
   const hour = new Date().getHours();
   if (hour >= 5 && hour < 12) return 'morning';

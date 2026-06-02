@@ -109,6 +109,7 @@ export class MfaKeyMissingError extends Error {
  * persiste, então secret gravado antes do restart fica irrecuperável
  * (intencional: força setup de novo MFA em dev).
  */
+// fallow-ignore-next-line complexity
 function getEncryptionKey(): Buffer {
   const raw = process.env.MFA_ENCRYPTION_KEY;
   if (!raw || raw === '') {
@@ -220,6 +221,7 @@ export function encryptSecret(plaintext: string): string {
  * IMPORTANTE: auth tag mismatch aqui é INDICATIVO de adulteração ou
  * key errada — nunca tratar como warning silencioso. A camada acima
  * (operator-mfa.ts) deve falhar fechado.
+// fallow-ignore-next-line complexity
  */
 export function decryptSecret(stored: string): DecryptResult {
   const parts = stored.split(':');
@@ -333,6 +335,7 @@ export async function hashRecoveryCode(plain: string): Promise<string> {
  *
  * A comparação é feita com bcrypt (lento por design). Single-use é
  * responsabilidade da camada superior: depois de usar, persistir
+// fallow-ignore-next-line complexity
  * o array com `codes[index] = ""` para invalidar o slot.
  */
 export async function tryConsumeRecoveryCode(

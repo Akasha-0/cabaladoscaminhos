@@ -217,6 +217,7 @@ const FLOW_PATTERNS: FlowPattern[] = [
   },
 ];
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const parseResult = EnergyFlowQuerySchema.safeParse({

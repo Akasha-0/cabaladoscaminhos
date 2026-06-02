@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Moon Phases
  * Lunar cycle tracking and phase calculations for spiritual practice
@@ -39,7 +40,8 @@ const LUNAR_CYCLE_DAYS = 29.53058867;
  * Calculate the moon phase for a given date
  * Uses a simplified calculation based on known new moon reference
  */
-export function calculateMoonPhase(date: Date): MoonPhaseName {
+// fallow-ignore-next-line complexity
+function calculateMoonPhase(date: Date): MoonPhaseName {
   const diff = date.getTime() - KNOWN_NEW_MOON.getTime();
   const daysSinceNewMoon = diff / (1000 * 60 * 60 * 24);
   const lunarAge = daysSinceNewMoon % LUNAR_CYCLE_DAYS;

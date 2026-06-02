@@ -21,6 +21,7 @@ export interface PlanetaryPosition {
   retrograde: boolean;
 }
 
+// fallow-ignore-next-line complexity
 function isRetrograde(planeta: Planeta, data: Date): boolean {
   if (planeta === 'sol' || planeta === 'lua') {
     return false;

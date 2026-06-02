@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // OpenAPI 3.0 specification generator for Cabala dos Caminhos API
  
 

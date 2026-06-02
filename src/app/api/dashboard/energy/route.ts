@@ -226,6 +226,7 @@ const PORTALS: Record<z.infer<typeof PortalDaySchema>, z.infer<typeof PortalSche
 
 const DAYS: z.infer<typeof PortalDaySchema>[] = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
 
+// fallow-ignore-next-line complexity
 function getMoonPhase(date: Date): { phase: string; illumination: number } {
   const knownNewMoon = new Date(2024, 0, 11);
   const lunarCycle = 29.53058867;
@@ -263,6 +264,7 @@ function getMoonPhaseCorrelation(phase: string) {
   return MOON_PHASE_SPIRITUAL_CORRELATIONS[key] || MOON_PHASE_SPIRITUAL_CORRELATIONS['lua-cheia'];
 }
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

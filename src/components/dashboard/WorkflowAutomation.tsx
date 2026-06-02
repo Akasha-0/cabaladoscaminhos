@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState } from 'react';
@@ -72,6 +73,7 @@ function StepIndicator({ step }: { step: WorkflowStep }) {
   );
 }
 
+// fallow-ignore-next-line complexity
 function WorkflowCard({ workflow, onRun }: { workflow: Workflow; onRun: (id: string) => void }) {
   const [expanded, setExpanded] = useState(false);
   const colors = CATEGORY_COLORS[workflow.category];

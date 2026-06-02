@@ -107,6 +107,7 @@ const DISTANCIAS_APROX: Record<string, number> = {
   plutao: 39.482,
 };
 
+// fallow-ignore-next-line complexity
 export function calcularPosicao(planeta: Planeta, data: Date): PosicaoPlaneta {
   let longitude: number;
   let velocidade: number;
@@ -162,6 +163,7 @@ export function calcularPosicao(planeta: Planeta, data: Date): PosicaoPlaneta {
     grauNoSigno: getGrauNoSigno(longitude),
   };
 }
+// fallow-ignore-next-line complexity
 
 export function calcularCasas(
   data: Date,

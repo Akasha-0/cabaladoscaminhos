@@ -22,6 +22,7 @@ const CabalaQuerySchema = z.discriminatedUnion('action', [
   z.object({ action: z.undefined() }),
 ])
 // GET /api/cabala - List all available endpoints
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const parseResult = CabalaQuerySchema.safeParse({

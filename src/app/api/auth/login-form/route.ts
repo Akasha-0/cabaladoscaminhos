@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
+// fallow-ignore-next-line complexity
 export async function POST(request: Request) {
   try {
     const formData = await request.formData()

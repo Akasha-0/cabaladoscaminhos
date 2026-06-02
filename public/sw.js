@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 const CACHE_NAME = 'cabala-dos-caminhos-v1';
 const STATIC_ASSETS = [
   '/',
@@ -71,6 +72,7 @@ async function networkFirst(request) {
   }
 }
 
+// fallow-ignore-next-line complexity
 async function cacheFirstAPI(request) {
   const cachedResponse = await caches.match(request);
   

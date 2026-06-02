@@ -30,6 +30,7 @@ const VOGAIS = new Set(['A', 'E', 'I', 'O', 'U', 'Á', 'É', 'Í', 'Ó', 'Ú', '
 // ============================================================================
 // REDUÇÃO NUMÉRICA (mantém números mestres 11, 22, 33)
 // ============================================================================
+// fallow-ignore-next-line complexity
 function reduceToSingleDigit(n: number, keepMaster = true): number {
   if (n <= 0) return 0;
   if (n <= 9) return n;

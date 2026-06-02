@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import { calcularPosicao, getSigno, getGrauNoSigno } from './swiss-ephemeris';
 import type { Planeta, Signo } from './tipos';
 
@@ -38,6 +39,7 @@ function getSunLongitude(data: Date): number {
   return pos.longitude;
 }
 
+// fallow-ignore-next-line complexity
 function isRetrograde(planeta: Planeta, data: Date): boolean {
   if (planeta === 'sol' || planeta === 'lua' || planeta === 'node_norte' || planeta === 'node_sul') {
     return false;

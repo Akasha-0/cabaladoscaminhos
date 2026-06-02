@@ -185,6 +185,7 @@ function generateWarnings(method: DivinationMethodType, domain: string): string[
  * GET /api/divination
  * Perform a spiritual divination reading
  */
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

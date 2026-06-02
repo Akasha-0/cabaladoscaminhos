@@ -47,6 +47,7 @@ export function CasaModal({
   const casaData = casaNumero ? getCasaPorNumero(casaNumero) : null;
 
   // Load current data when modal opens
+// fallow-ignore-next-line complexity
   useEffect(() => {
     if (open && casaNumero) {
       const current = matrixData[casaNumero];

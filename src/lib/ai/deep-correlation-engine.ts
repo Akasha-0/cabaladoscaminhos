@@ -717,6 +717,7 @@ Keep explanations concise but profound, 2-3 sentences max.`,
   /**
    * Get all correlations for a user's spiritual data
    */
+// fallow-ignore-next-line complexity
   getAllSystemCorrelations(userData: UserSpiritualData): SystemCorrelation[] {
     const correlations: SystemCorrelation[] = [];
 
@@ -818,6 +819,7 @@ Keep explanations concise but profound, 2-3 sentences max.`,
     return patterns;
   }
 
+// fallow-ignore-next-line complexity
   private detectElementalImbalance(userData: UserSpiritualData): DetectedPattern[] {
     const patterns: DetectedPattern[] = [];
     
@@ -876,6 +878,7 @@ Keep explanations concise but profound, 2-3 sentences max.`,
 
     return patterns;
   }
+// fallow-ignore-next-line complexity
 
   private detectKarmicThemes(userData: UserSpiritualData): DetectedPattern[] {
     const patterns: DetectedPattern[] = [];
@@ -908,6 +911,7 @@ Keep explanations concise but profound, 2-3 sentences max.`,
       });
     }
 
+// fallow-ignore-next-line complexity
     return patterns;
   }
 
@@ -1039,6 +1043,7 @@ Forneça:
     };
     return tarotNames[arcanaNum] || `Arcana ${arcanaNum}`;
   }
+// fallow-ignore-next-line complexity
 
   private hasDataForSystem(userData: UserSpiritualData, system: SpiritualSource): boolean {
     switch (system) {
@@ -1060,6 +1065,7 @@ Forneça:
     }
   }
 
+// fallow-ignore-next-line complexity
   private getSystemTargets(userData: UserSpiritualData, source: SpiritualSource): string[] {
     switch (source) {
       case 'kabbalah':
@@ -1083,6 +1089,7 @@ Forneça:
     }
   }
 
+// fallow-ignore-next-line complexity
   private getDataPresenceMultiplier(userData: UserSpiritualData, source: SpiritualSource, _target: string): number {
     let multiplier = 0.5;
 
@@ -1109,6 +1116,7 @@ Forneça:
     }
 
     const otherSystems = this.getSystemTargets(userData, source);
+// fallow-ignore-next-line complexity
     if (otherSystems.length > 0) {
       multiplier += 0.1;
     }

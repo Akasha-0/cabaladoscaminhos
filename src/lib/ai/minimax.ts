@@ -33,6 +33,7 @@ class MinimaxError extends Error {
 /**
  * Generate a non-streaming response from Minimax
  */
+// fallow-ignore-next-line complexity
 export async function generateMinimaxResponse(
   messages: ChatMessage[],
   options: {

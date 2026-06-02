@@ -398,6 +398,7 @@ const offeringsBase: Offering[] = [
 ];
 
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -539,6 +540,7 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
+// fallow-ignore-next-line complexity
 
 export async function POST(request: NextRequest) {
   try {

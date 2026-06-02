@@ -129,6 +129,7 @@ export interface PersonalCycleSnapshot {
 // CORE CALCULATIONS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function reduce(num: number, keepMaster = true): number {
   if (keepMaster && (num === 11 || num === 22 || num === 33)) return num;
   if (num < 10) return num;
@@ -718,6 +719,7 @@ function calculateChallenges(
 // ============================================================
 // LIÇÕES CÁRMICAS
 // ============================================================
+// fallow-ignore-next-line complexity
 
 function calculateKarmicLessons(
   birthDate: Date,

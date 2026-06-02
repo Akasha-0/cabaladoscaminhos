@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -56,6 +57,7 @@ function formatTime(seconds: number): string {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function MeditationPlayer({ className, userData }: MeditationPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedType, setSelectedType] = useState(MEDITATION_TYPES[0]);

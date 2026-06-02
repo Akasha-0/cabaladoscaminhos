@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * KeyboardShortcutsLayer — Client Component que ativa os atalhos canônicos
  * em todo o cockpit. Renderiza invisível + Help dialog on `?`.

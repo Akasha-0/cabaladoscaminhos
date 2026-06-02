@@ -35,6 +35,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 18 | **Hard final + cleanup** (rate-limit Redis, security headers, PROGRESS.md) | (este commit) | ✅ |
 | 18b | **Fallow cleanup** (42% reduction de issues) | `b3524c41` | ✅ |
 | 19 | **Cockpit completeness + PDF export** (T7.2 Leituras, Consulentes, PDF Dossiê) | `add046e5` | ✅ |
+| 20 | **Cockpit completeness v2 + cleanup** (legacy integration tests removidos, Ramiro palette to @theme) | (este commit) | ✅ |
+
 ### Fase 18 — Hard final + cleanup (detalhes)
 
 | Rota | Limite | Janela |
@@ -107,26 +109,27 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 
 ---
 
-## 4. Pré-existentes Conhecidos
+## 4. Pré-existentes Conhecidos — Limpeza (Fase 20)
 
-> Falhas/drift documentados. **NÃO consertar** sem aprovação — podem
-> ser dívida técnica intencional (ver `AGENTS.md` §4 — Surgical Changes).
+Os 3 arquivos de integração que testavam `@/lib/auth-jwt` (módulo inexistente
+desde Fase 6+) foram removidos. Auth coberto por `tests/lib/auth/` e
+`tests/api/operator-auth/`.
 
-| Item | Descrição | Origem |
-|------|-----------|--------|
-| `tests/integration/setup.ts` | importa `@/lib/auth-jwt` (módulo inexistente) | Pré-Fase 6 |
-| `tests/integration/middleware.test.ts` | importa helpers de `@/lib/auth-jwt/helpers` | Pré-Fase 6 |
-| `tests/integration/api/auth.test.ts` | importa `clearAuthCookie` de `@/lib/auth-jwt/helpers` | Pré-Fase 6 |
+| Arquivo | Motivo | Ação |
+|---------|--------|------|
+| `tests/integration/setup.ts` | importava `signToken` de `@/lib/auth-jwt` | ✅ Removido |
+| `tests/integration/middleware.test.ts` | importava helpers de `@/lib/auth-jwt/helpers` | ✅ Removido |
+| `tests/integration/api/auth.test.ts` | importava `clearAuthCookie` de `@/lib/auth-jwt/helpers` | ✅ Removido |
 
-Estes testes de integração referenciam um módulo `@/lib/auth-jwt` que
-foi removido/renomeado na Fase 6+ (substituído por `@/lib/auth/operator-jwt`
-e família). Como a Fase 18 só listou `tests/lib/auth-jwt/*` no escopo de
-limpeza, estes permanecem para decisão futura. Possíveis ações:
-- (a) Remover (provavelmente o mais simples — auth é coberto pelos novos
-  testes em `tests/lib/auth/` e `tests/api/operator-auth/`).
-- (b) Migrar para os novos helpers (mais trabalho, valor questionável).
+### Outros arquivos de integração (válidos — mantidos)
+
+- `tests/integration/middleware-auth.test.ts` ✅
+- `tests/integration/cockpit-auth-gate.test.ts` ✅
+- `tests/integration/spiritual-reading.test.ts` ✅
+- `tests/integration/api/` — 12 arquivos (sem imports de auth-jwt) ✅
 
 ---
+
 
 ## 5. Roadmap (Phase 19+)
 
@@ -189,6 +192,18 @@ npm run db:generate      # Após mudanças no schema Prisma
 
 A running session produziu as siguientes mudanças:
 
+**Fase 20 — Cockpit completeness v2 + cleanup**:
+- Remoção de 3 arquivos de integração quebrados (importavam `@/lib/auth-jwt` inexistente):
+  - `tests/integration/setup.ts`
+  - `tests/integration/middleware.test.ts`
+  - `tests/integration/api/auth.test.ts`
+- Promoção da paleta Ramiro para `@theme` root em `src/app/globals.css`
+  (Doc 13 AD-08): adicionados `--color-ramiro-*` tokens derivados do `.ramiro` scope
+  para uso direto no Tailwind (ex: `text-ramiro-orange`, `bg-ramiro-canvas`).
+- `.ramiro` mantido como backward-compatibility alias em `src/styles/ramiro-tokens.css`
+- PROGRESS.md §2: adicionado registro Fase 20; §4: atualizado status de cleanup
+- PROGRESS.md §8: atualizado com as mudanças desta sessão
+
 **Fase 19 — Cockpit completeness + PDF export + Fallback corruption fix**:
 - `cockpit/leituras/page.tsx` + `ReadingsTable.tsx` — Server Component + Client table com busca
 - `cockpit/consulentes/page.tsx` + `ConsulentesTable.tsx` — Server Component + Client table com busca
@@ -204,4 +219,5 @@ A running session produziu as siguientes mudanças:
 - Commits: `2e91f8e2` (config inicial) · `c3fa0301` (stats + test fixes) · `b3524c41` (operator login refactor)
 - Arquivos de dados espirituais (Odús, meji) adicionados a `.fallowrc.json` ignorePatterns
 
-*Última atualização: 2026-06-02 — Fase 19 (Build ✅ | Corretions ✅)*
+*Última atualização: 2026-06-02 — Fase 20 (Build ⏳ | Tests ⏳)*
+*Versão: 1.0 — Inicial*

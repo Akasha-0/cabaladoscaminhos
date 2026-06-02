@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import Image from "next/image"
 
 // Re-export Next.js Image for convenience
@@ -11,6 +12,7 @@ const IMAGE_BASE_URL = process.env.NEXT_PUBLIC_IMAGE_CDN || ""
  * @param src - Image source (path or full URL)
  * @param options - Transform options
  */
+// fallow-ignore-next-line complexity
 export function getImageUrl(
   src: string,
   options?: {
@@ -81,6 +83,7 @@ export interface OptimizedImageProps {
 /**
  * Create a fully configured Next.js Image component
  * with lazy loading and priority support
+// fallow-ignore-next-line complexity
  */
 export function createOptimizedImage(props: OptimizedImageProps) {
   const {

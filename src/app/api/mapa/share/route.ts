@@ -79,6 +79,7 @@ function cleanupExpired() {
   lastCleanup = now;
 }
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

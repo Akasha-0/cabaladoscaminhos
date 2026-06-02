@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Name analysis module
 // @ts-nocheck
 

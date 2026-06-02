@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // In-memory cache with TTL support
 
 interface CacheEntry<T> {

@@ -205,6 +205,7 @@ const ritualsData = [
 function searchRituals(query: string, filters: { element?: string; orixa?: string }): SearchResult[] {
   const q = query.toLowerCase();
   return ritualsData
+// fallow-ignore-next-line complexity
     .filter(r => {
       if (q && !r.title.toLowerCase().includes(q) && !r.descricao.toLowerCase().includes(q)) {
         return false;
@@ -276,6 +277,7 @@ function searchOdus(query: string): SearchResult[] {
 function searchTarot(query: string): SearchResult[] {
   const q = query.toLowerCase();
   return TAROT_DECK.cards
+// fallow-ignore-next-line complexity
     .filter((c) => q === '' || c.name.toLowerCase().includes(q) || (c as any).significado?.toLowerCase().includes(q))
     .map((c) => ({
       type: 'tarot' as const,
@@ -298,6 +300,7 @@ function searchTarot(query: string): SearchResult[] {
 // API ROUTE HANDLERS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);

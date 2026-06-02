@@ -93,6 +93,7 @@ export interface HousePayload {
  * Monta o bloco interpretativo de UMA casa, injetando apenas os
  * aspectos natais delegados pela CORRELATION_MAP.
  */
+// fallow-ignore-next-line complexity
 export function buildHousePayload(
   house: number,
   entry: MatrixData[string],

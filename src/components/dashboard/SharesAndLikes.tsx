@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, Share2, Eye, TrendingUp } from 'lucide-react';

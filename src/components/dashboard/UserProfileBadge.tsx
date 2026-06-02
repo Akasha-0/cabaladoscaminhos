@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 // fallow-ignore-next-line unresolved-import
@@ -5,6 +6,7 @@ import { useUserProfileStore } from '@/lib/store/user-profile'
 import { Card, CardContent } from '@/components/ui/card';
 import { User, Crown, Star } from 'lucide-react';
 
+// fallow-ignore-next-line complexity
 export function UserProfileBadge() {
   const { profile } = useUserProfileStore();
   

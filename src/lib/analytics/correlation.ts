@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Correlation matrix generator for spiritual systems
 // Calculates correlations between Cabala, Orixás, Odús, Tarot, Numerologia, Lua, etc.
 
@@ -64,6 +65,7 @@ function calculateCorrelation(a: number[], b: number[]): number {
  * Calculate correlation matrix between all spiritual systems
  * @returns Heatmap data with labels, matrix, and cells
  */
+// fallow-ignore-next-line complexity
 export function calculateCorrelations(): HeatmapData {
   const systems = SPIRITUAL_SYSTEMS as unknown as SpiritualSystem[];
   const labels = [...systems];

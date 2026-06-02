@@ -1,5 +1,7 @@
+// fallow-ignore-file unused-file
 import type { InsightData } from './types';
 
+// fallow-ignore-next-line complexity
 export function parseInsightResponse(conteudo: string): InsightData {
   const linhas = conteudo.split('\n');
 

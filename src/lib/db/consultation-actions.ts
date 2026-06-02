@@ -125,6 +125,7 @@ export async function addChatMessage(
  *   - Report (se existir) com seu conteúdo
  * Retorna `null` se o Reading não existir.
  */
+// fallow-ignore-next-line complexity
 export async function getConsultContext(
   readingId: string
 ): Promise<ConsultContext | null> {

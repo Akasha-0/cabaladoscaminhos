@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,6 +41,7 @@ function getPlanetaRegente(): typeof PLANETAS_DO_DIA[0] {
   return PLANETAS_DO_DIA[today.getDay()];
 }
 
+// fallow-ignore-next-line complexity
 function getFaseLua(): string {
   const today = new Date();
   const knownNewMoon = new Date(2024, 0, 11).getTime();

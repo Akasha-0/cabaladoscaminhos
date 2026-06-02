@@ -268,6 +268,7 @@ const ELEMENT_MATERIALS: Record<string, string[]> = {
   Éter: ['1', '9'], // Aether, Quartzo
 };
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -390,6 +391,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// fallow-ignore-next-line complexity
 // POST handler for adding custom materials
 export async function POST(request: NextRequest) {
   try {

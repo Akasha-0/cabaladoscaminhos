@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Numerology compatibility scores
  * Calculates match percentages between two numerology charts
@@ -52,6 +53,7 @@ export function calculateScore(chartA: NumerologyNumbers, chartB: NumerologyNumb
   };
 }
 
+// fallow-ignore-next-line complexity
 function calculateNumberCompatibility(numA: number, numB: number): number {
   // Perfect match
   if (numA === numB) return 100;

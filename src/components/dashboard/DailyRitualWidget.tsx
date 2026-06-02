@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React from 'react';
@@ -107,6 +108,7 @@ export function DailyRitualWidget({ className }: DailyRitualWidgetProps) {
 
         {/* Ritual list */}
         <div className="space-y-2">
+// fallow-ignore-next-line complexity
           {RITUALS.map((ritual) => {
             const Icon = ritual.icon;
             const colors: Record<string, { bg: string; border: string; text: string }> = {

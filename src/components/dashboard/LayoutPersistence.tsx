@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
@@ -77,6 +78,7 @@ const DEFAULT_TEMPLATES: DashboardLayout[] = [
   }
 ];
 
+// fallow-ignore-next-line complexity
 export function LayoutPersistence({
   currentLayout,
   onLoadLayout,

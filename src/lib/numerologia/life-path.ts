@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Life Path Number Calculation Module
  * Based on Pythagorean/Tantric numerology using birth date

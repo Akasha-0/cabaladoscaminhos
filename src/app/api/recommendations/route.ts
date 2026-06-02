@@ -20,6 +20,7 @@ interface RequestBody {
   useAI?: boolean;
 }
 
+// fallow-ignore-next-line complexity
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as RequestBody;

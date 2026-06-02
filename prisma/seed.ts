@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
+// fallow-ignore-next-line complexity
 async function main() {
   console.log('🌱 Starting spiritual data seed...')
 

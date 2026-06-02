@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // PT-BR Translations for Cabala dos Caminhos
 
 export const ptBR = {

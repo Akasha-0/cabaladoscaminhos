@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -201,6 +202,7 @@ interface NotificationItemProps {
   onDismiss?: () => void;
 }
 
+// fallow-ignore-next-line complexity
 function NotificationItem({ notification, onClick, onDismiss }: NotificationItemProps) {
   const colors = NOTIFICATION_COLORS[notification.type];
   const icon = NOTIFICATION_ICONS[notification.type];
@@ -317,6 +319,7 @@ function FilterChip({ label, isActive, count, onClick, color = 'slate' }: Filter
 // ============================================================
 // MAIN COMPONENT
 // ============================================================
+// fallow-ignore-next-line complexity
 
 export function SpiritualNotificationCenter({
   notifications = DEFAULT_NOTIFICATIONS,

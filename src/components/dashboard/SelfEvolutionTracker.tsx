@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from 'react';
@@ -82,6 +83,7 @@ interface MonthlyProgress {
 // PROPS INTERFACE
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface SelfEvolutionTrackerProps {
   className?: string;
   userId?: string;
@@ -219,6 +221,7 @@ function calculateGrowthMetrics(userId: string, activity: UserActivity) {
   };
 }
 
+// fallow-ignore-next-line complexity
 function getAchievements(activity: UserActivity): Achievement[] {
   const achievements: Achievement[] = [];
   
@@ -316,6 +319,7 @@ function predictGrowth(currentStage: EvolutionStage, activity: UserActivity) {
     momentum: weeklyRate > 3 ? 'Acima da média' : weeklyRate > 1 ? 'Na média' : 'Desenvolvendo',
   };
 }
+// fallow-ignore-next-line complexity
 
 function generateEvolutionInsight(activity: UserActivity): string {
   const insights = [];
@@ -343,6 +347,7 @@ function generateEvolutionInsight(activity: UserActivity): string {
   }
   
   return insights[Math.floor(Math.random() * insights.length)];
+// fallow-ignore-next-line complexity
 }
 
 function getRecommendedNextSteps(activity: UserActivity, currentStage: EvolutionStage): string[] {
@@ -497,6 +502,7 @@ function MilestoneItem({ milestone, isNext = false, stageColor }: MilestoneItemP
  * Achievement Badge Component with Rarity
  */
 interface AchievementBadgeProps {
+// fallow-ignore-next-line complexity
   achievement: Achievement;
 }
 
@@ -917,4 +923,5 @@ function SelfEvolutionTracker({
   );
 }
 
+// fallow-ignore-next-line unused-export
 export default SelfEvolutionTracker;

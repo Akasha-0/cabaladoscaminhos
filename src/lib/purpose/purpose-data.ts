@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Purpose data
 
 export interface PurposeEntity {

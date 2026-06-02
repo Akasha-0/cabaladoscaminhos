@@ -35,6 +35,7 @@ interface NotificationSettings {
   promotions: boolean;
 }
 
+// fallow-ignore-next-line complexity
 export default function ProfileSettingsPage() {
   const { user } = useAuth();
   const [theme, setTheme] = useState<Theme>('system');

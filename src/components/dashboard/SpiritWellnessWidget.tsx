@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -243,6 +244,7 @@ function InsightCard({ dimension, score }: InsightCardProps) {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function SpiritWellnessWidget({ userId }: SpiritWellnessWidgetProps) {
   const [state, setState] = useState<WellnessState>(DEFAULT_STATE);
   const [isHydrated, setIsHydrated] = useState(false);

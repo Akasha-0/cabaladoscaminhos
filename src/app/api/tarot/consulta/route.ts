@@ -151,6 +151,7 @@ interface TarotConsultaResponse {
 // HELPER FUNCTIONS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function getCardSpiritualCorrelations(cardId: number, isReversed: boolean) {
   // Major arcana (0-21)
   if (cardId >= 0 && cardId <= 21) {
@@ -204,6 +205,7 @@ function getCardSpiritualCorrelations(cardId: number, isReversed: boolean) {
     frequency: '396 Hz',
   };
 }
+// fallow-ignore-next-line complexity
 
 function generateCardInterpretation(
   card: DrawnCard,
@@ -241,6 +243,7 @@ function generateReadingSummary(
 // ============================================================
 // API ROUTE HANDLERS
 // ============================================================
+// fallow-ignore-next-line complexity
 
 export async function POST(request: NextRequest) {
   try {

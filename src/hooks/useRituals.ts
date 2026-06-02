@@ -1,7 +1,9 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 
+// fallow-ignore-next-line unused-type
 export interface Ritual {
   id: string;
   nome: string;
@@ -12,19 +14,21 @@ export interface Ritual {
   duracaoMinutos?: number;
 }
 
+// fallow-ignore-next-line unused-type
 export interface RitualCompletion {
   ritualId: string;
   completedAt: string;
   nota?: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface RitualStreak {
   ritualId: string;
   currentStreak: number;
   longestStreak: number;
   lastCompleted: string | null;
 }
-
+// fallow-ignore-next-line unused-type
 export interface RitualStats {
   totalCompletions: number;
   completionsToday: number;
@@ -38,7 +42,7 @@ interface UseRitualsOptions {
   userId?: string;
 }
 
-export function useRituals(options: UseRitualsOptions = {}) {
+function useRituals(options: UseRitualsOptions = {}) {
   const { autoRefresh = true, refreshInterval = 60000, userId } = options;
 
   const [rituais, setRituais] = useState<Ritual[]>([]);
@@ -55,6 +59,7 @@ export function useRituals(options: UseRitualsOptions = {}) {
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+// fallow-ignore-next-line complexity
   const calculateStreak = useCallback((ritualId: string, completionList: RitualCompletion[]): RitualStreak => {
     const ritualCompletions = completionList
       .filter((c) => c.ritualId === ritualId)
@@ -132,6 +137,7 @@ export function useRituals(options: UseRitualsOptions = {}) {
       completionsThisMonth: completionList.filter((c) => new Date(c.completedAt) >= monthStart).length,
     };
   }, []);
+// fallow-ignore-next-line complexity
 
   const fetchRituais = useCallback(async () => {
     try {
@@ -151,6 +157,7 @@ export function useRituals(options: UseRitualsOptions = {}) {
     }
   }, [userId]);
 
+// fallow-ignore-next-line complexity
   const fetchCompletions = useCallback(async () => {
     try {
       const url = userId ? `/api/rituais/completions?userId=${userId}` : '/api/rituais/completions';

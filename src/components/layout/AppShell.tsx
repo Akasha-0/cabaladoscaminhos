@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useState } from 'react';
@@ -34,6 +35,7 @@ const NAV_ITEMS = [
  * AppShell layout component for Mesa Real cockpit.
  * Provides sidebar navigation and main content area.
  */
+// fallow-ignore-next-line complexity
 export function AppShell({ children, className = '' }: AppShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

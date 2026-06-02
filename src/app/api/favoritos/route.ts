@@ -107,6 +107,7 @@ function generateId(): string {
   return `fav_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

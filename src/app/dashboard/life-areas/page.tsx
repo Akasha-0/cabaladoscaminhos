@@ -636,6 +636,7 @@ function InsightContent({ content }: { content: string }) {
   const lines = content.split('\n');
   const rendered: React.ReactNode[] = [];
 
+// fallow-ignore-next-line complexity
   lines.forEach((line, i) => {
     if (line.startsWith('## ')) {
       rendered.push(

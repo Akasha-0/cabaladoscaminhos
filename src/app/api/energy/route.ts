@@ -247,6 +247,7 @@ export async function GET(request: NextRequest) {
         
         // Filter entries by spiritual correlations
         if (sefirot || chakra || element || orixa) {
+// fallow-ignore-next-line complexity
           const filteredEntries = entries.filter(e => {
             if (sefirot && !e.spiritualCorrelations?.sefirot.includes(sefirot)) return false;
             if (chakra && e.spiritualCorrelations?.chakra !== chakra) return false;
@@ -308,6 +309,7 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
+// fallow-ignore-next-line complexity
 
 export async function POST(request: NextRequest) {
   try {

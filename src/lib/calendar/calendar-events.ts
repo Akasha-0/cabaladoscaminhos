@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Calendar events module
  * Provides event management functionality

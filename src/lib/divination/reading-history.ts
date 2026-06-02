@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // src/lib/divination/reading-history.ts
 // Histórico de leituras (consultas) do operador.
 //

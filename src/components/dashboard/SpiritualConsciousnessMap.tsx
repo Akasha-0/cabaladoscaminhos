@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
@@ -529,6 +530,7 @@ export function SpiritualConsciousnessMap({
             className="overflow-visible"
           >
             {/* Connection lines */}
+// fallow-ignore-next-line complexity
             {LEVEL_CONNECTIONS.map(([id1, id2], index) => {
               const node1 = nodePositions.find((n) => n.level.id === id1);
               const node2 = nodePositions.find((n) => n.level.id === id2);

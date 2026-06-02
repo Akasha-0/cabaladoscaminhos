@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Gamepad2, Users, TrendingUp, Trophy } from 'lucide-react';

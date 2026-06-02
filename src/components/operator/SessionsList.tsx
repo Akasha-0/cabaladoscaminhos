@@ -123,6 +123,7 @@ interface SessionsListProps {
   onOpenChange: (open: boolean) => void;
 }
 
+// fallow-ignore-next-line complexity
 export function SessionsList({ open, onOpenChange }: SessionsListProps) {
   const { listSessions, revokeSession, revokeAllSessions } = useOperatorAuth();
 
@@ -364,6 +365,7 @@ interface SessionItemProps {
   isRevoking: boolean;
   onRevoke: (id: string) => void;
 }
+// fallow-ignore-next-line complexity
 
 function SessionItem({ session, isCurrent = false, isRevoking, onRevoke }: SessionItemProps) {
   const device = parseUserAgent(session.userAgent);

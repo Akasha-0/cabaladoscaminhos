@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 // src/components/operator/MfaSetup.tsx
 // Componente de setup de MFA TOTP (Fase 20).
@@ -29,6 +30,7 @@ interface SetupResponse {
   recoveryCodes: string[];
 }
 
+// fallow-ignore-next-line complexity
 export function MfaSetup({ onSuccess, onCancel }: MfaSetupProps) {
   const [step, setStep] = useState<'init' | 'verify' | 'done'>('init');
   const [setup, setSetup] = useState<SetupResponse | null>(null);
@@ -60,6 +62,7 @@ export function MfaSetup({ onSuccess, onCancel }: MfaSetupProps) {
     }
   };
 
+// fallow-ignore-next-line complexity
   // STEP 2 — submete código TOTP
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();

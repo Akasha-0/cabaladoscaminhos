@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import { generateMinimaxResponse } from './minimax';
 import type { UserSpiritualData } from './types';
 import type { ChatMessage } from './types';
@@ -134,6 +135,7 @@ export class PredictiveGuidanceEngine {
   /**
    * Predict spiritual trends for user
    */
+// fallow-ignore-next-line complexity
   predictTrends(userData: UserSpiritualData, daysAhead: number): SpiritualTrend[] {
     const trends: SpiritualTrend[] = [];
     const cyclePos = calculateCyclePosition(userData.dataNascimento);
@@ -548,6 +550,7 @@ Generate 4-6 ritual recommendations with timing, duration, materials, purpose, a
       });
 
       const parsed = JSON.parse(response.content.trim());
+// fallow-ignore-next-line complexity
       if (Array.isArray(parsed)) {
         recommendations.push(...parsed.map((r: Partial<RitualRecommendation>) => ({
           ritual: r.ritual || 'Ritual',

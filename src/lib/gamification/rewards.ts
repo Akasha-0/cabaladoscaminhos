@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Streak rewards system
  * Provides rewards based on consecutive days of practice

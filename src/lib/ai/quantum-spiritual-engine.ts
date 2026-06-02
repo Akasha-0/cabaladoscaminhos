@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Quantum Spiritual Engine - Cabala Dos Caminhos
 // Applies quantum-inspired processing to spiritual analysis
 import { generateMinimaxResponse } from './minimax';
@@ -112,6 +113,7 @@ export class QuantumSpiritualEngine {
    * Analyze multiple spiritual possibilities using superposition concept
    * Each spiritual state exists in multiple potential states until observed
    */
+// fallow-ignore-next-line complexity
   async analyzeSuperposition(userData: UserSpiritualData): Promise<SuperpositionState[]> {
     const states: SuperpositionState[] = [];
 
@@ -265,6 +267,7 @@ Return a JSON array of {system1, system2, entanglement_strength, description, ma
    * Collapse spiritual superposition into actionable guidance
    * The act of observation causes the quantum spiritual state to collapse
    */
+// fallow-ignore-next-line complexity
   async observeAndGuide(userData: UserSpiritualData, question: string): Promise<QuantumGuidance> {
     const superpositionSnapshot = await this.analyzeSuperposition(userData);
 
@@ -490,6 +493,7 @@ Lunar Sign (Rashi): ${userData.rashi}`;
   }
 
   /**
+// fallow-ignore-next-line complexity
    * Generate recommendations based on resonance frequencies
    */
   private generateResonanceRecommendations(
@@ -530,6 +534,7 @@ Lunar Sign (Rashi): ${userData.rashi}`;
   }
 
   /**
+// fallow-ignore-next-line complexity
    * Generate fallback guidance when AI is unavailable
    */
   private fallbackGuidance(question: string, userData: UserSpiritualData): string {

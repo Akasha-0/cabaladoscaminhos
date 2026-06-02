@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // src/lib/tarot/v2/tarot-v2-data.ts
 // Tarot-v2 data - 78 cards: 22 Major Arcana + 56 Minor Arcana
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

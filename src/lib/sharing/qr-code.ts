@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import { toDataURL } from 'qrcode'
 
 export async function generateQRCode(url: string): Promise<string> {

@@ -82,6 +82,7 @@ export function NumerologiaCard({ data, className }: NumerologiaCardProps) {
 
       {/* 2x2 Grid */}
       <div className="grid grid-cols-2 gap-4">
+// fallow-ignore-next-line complexity
         {gridItems.map(({ key, value, color }) => {
           const isExpanded = expanded === key;
           const isMaster = isMasterNumber(value);

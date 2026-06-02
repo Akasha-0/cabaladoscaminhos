@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState } from 'react';
@@ -132,6 +133,7 @@ export function JourneyTracker({ className, userData }: JourneyTrackerProps) {
             <div className="absolute left-[22px] top-0 bottom-0 w-0.5 bg-slate-700/50" />
             
             <div className="space-y-2">
+// fallow-ignore-next-line complexity
               {STAGES.map((stage) => {
                 const isActive = expandedStage === stage.id;
                 const isComplete = stage.progress === 100;

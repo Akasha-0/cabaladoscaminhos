@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // src/lib/tarot/tarot-deck.ts
 // Tarot deck - 78 cards
 

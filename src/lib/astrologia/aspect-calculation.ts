@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import type { AspectoTipo, PosicaoPlaneta } from './tipos';
 
 interface AspectDefinition {

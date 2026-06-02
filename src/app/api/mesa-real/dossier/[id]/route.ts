@@ -26,6 +26,7 @@ type CumContent = {
   >;
 };
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const op = await requireOperator(request);
   if (op instanceof NextResponse) return op;
@@ -45,6 +46,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
+// fallow-ignore-next-line complexity
     async start(controller) {
       const { send, close } = createSSEStream(controller, encoder);
       const startMs = Date.now();

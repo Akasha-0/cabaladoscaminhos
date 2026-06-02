@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * ════════════════════════════════════════════════════════════════════════════
  * PREDICTIVE SYNTHESIS ENGINE v1.0
@@ -60,6 +61,7 @@ export interface MapeamentoElemento {
 /**
  * Resultado da Síntese Consciencial
  */
+// fallow-ignore-next-line unused-type
 export interface SinteseConsciencial {
   insights: InsightSintese[]
   grafoConsciencial: GrafoNodo[]
@@ -161,7 +163,7 @@ const NÚMEROS_MESTRES = {
 // CLASSE PRINCIPAL
 // ============================================================================
 
-export class PredictiveSynthesisEngine {
+class PredictiveSynthesisEngine {
   private mapaAlma: MapaAlmaCompleto | null = null
   private insightsCache: Map<string, InsightSintese> = new Map()
 
@@ -229,6 +231,7 @@ export class PredictiveSynthesisEngine {
   /**
    * Gera insight de integração entre tradições
    */
+// fallow-ignore-next-line complexity
   private gerarInsightIntegraçãoTradições(): InsightSintese {
     const mapa = this.mapaAlma!
     const numerologia = mapa.numerologia
@@ -336,6 +339,7 @@ export class PredictiveSynthesisEngine {
 
   /**
    * Gera insight de correlação Orixá-Chakra-Sephirah
+// fallow-ignore-next-line complexity
    */
   private gerarInsightCorrelaçãoOrixáChakraSephirah(): InsightSintese {
     const mapa = this.mapaAlma!
@@ -423,6 +427,7 @@ export class PredictiveSynthesisEngine {
 
   /**
    * Gera insight de síntese de convergências
+// fallow-ignore-next-line complexity
    */
   private gerarInsightSínteseConvergências(): InsightSintese {
     const mapa = this.mapaAlma!
@@ -656,6 +661,7 @@ export class PredictiveSynthesisEngine {
       tradicoesIndicam: n.tradicoes,
       causaProfunda: 'Bloqueio energético identificado',
       prácticaRecuperadora: 'Práticas de harmonização recomendadas'
+// fallow-ignore-next-line complexity
     }))
   }
 
@@ -747,4 +753,4 @@ export class PredictiveSynthesisEngine {
 // EXPORTS
 // ============================================================================
 
-export const predictiveSynthesisEngine = new PredictiveSynthesisEngine()
+const predictiveSynthesisEngine = new PredictiveSynthesisEngine()

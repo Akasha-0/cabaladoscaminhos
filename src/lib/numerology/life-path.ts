@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // @ts-nocheck
 // Life Path Number - date-based numerology calculation
 

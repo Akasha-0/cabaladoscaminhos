@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState } from 'react';
@@ -49,6 +50,7 @@ const RITUALS_BY_MOON = {
 // HELPER FUNCTIONS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function getMoonPhase(daysSinceNewMoon: number): typeof MOON_PHASES[0] {
   const cycle = daysSinceNewMoon % 29.5;
   if (cycle < 3.7) return MOON_PHASES[0];

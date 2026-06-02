@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
  
 import type { AspectoTipo } from './tipos';
 
@@ -46,6 +47,6 @@ const MEANINGS: Record<AspectoTipo, AspectoMeaning> = {
   },
 };
 
-export function getAspectMeaning(tipo: AspectoTipo): AspectoMeaning {
+function getAspectMeaning(tipo: AspectoTipo): AspectoMeaning {
   return MEANINGS[tipo];
 }

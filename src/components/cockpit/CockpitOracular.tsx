@@ -1,9 +1,13 @@
 // src/components/cockpit/CockpitOracular.tsx
 // Main cockpit — 3-zone layout (Doc 05 §4.1).
 // Tokens Ramiro v2: bg-background, glow royal no container, glow laranja no overlay.
+// Zone A (sidebar): Client info + 4 natal maps
+// Zone B (center): Mesa Real grid 9×4
+// Zone C (right): Dossier viewer + Consultation drawer (collapsible)
 
 'use client';
 
+import { FileText, MessageCircle, X, Sparkles } from 'lucide-react';
 import React, { useState, useCallback } from 'react';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
 import { type OduInfo } from '@/lib/ifa/odu-data';
@@ -13,12 +17,23 @@ import { CockpitHeader } from './CockpitHeader';
 import { CockpitSidebar } from './CockpitSidebar';
 import { HouseCell } from './HouseCell';
 import { HouseInputPopover } from './HouseInputPopover';
+import { DossierViewer } from './dossier/DossierViewer';
+import { OraculoChat } from './consultation/OraculoChat';
+import { Button } from '@/components/ui/button';
+
+// Zone C panel dimensions
+const RIGHT_PANEL_WIDTH = '480px';
 
 interface CockpitOracularProps {
+  /** Optional reading ID to wire DossierViewer and OraculoChat. */
+  readingId?: string;
+  /** Client name for OraculoChat placeholder. */
+  clientName?: string;
   showDebug?: boolean;
 }
 
-export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
+// fallow-ignore-next-line complexity
+export function CockpitOracular({ readingId, clientName, showDebug = false }: CockpitOracularProps) {
   const {
     houses,
     activePopover,
@@ -27,6 +42,12 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
     clearHouse,
     clearAllHouses,
     resetCockpit,
+    // Zone C state
+    isRightPanelOpen,
+    rightPanelTab,
+    setRightPanelTab,
+    toggleRightPanel,
+    openRightPanel,
   } = useCockpitStore();
 
   const [popoverPosition, setPopoverPosition] = useState<{ x: number; y: number } | null>(null);
@@ -141,7 +162,7 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
           onAutoFill={showDebug ? handleAutoFill : undefined}
         />
 
-        {/* Zone C: Matrix Grid */}
+        {/* Zone C: Mesa Real Grid (center content) */}
         <div className="flex-1 p-6 overflow-auto">
           <div
             className={cn(
@@ -231,6 +252,186 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
           />
         </div>
       )}
+
+      {/* Zone C: Right Panel (collapsible drawer) */}
+      <ZoneCRightPanel
+        readingId={readingId}
+        clientName={clientName ?? 'Cliente'}
+        isOpen={isRightPanelOpen}
+        activeTab={rightPanelTab}
+        onToggle={toggleRightPanel}
+        onSetTab={setRightPanelTab}
+      />
     </div>
+  );
+}
+
+// ─── Zone C: Right Panel ─────────────────────────────────────────────────────
+
+interface ZoneCRightPanelProps {
+  readingId?: string;
+  clientName: string;
+  isOpen: boolean;
+  activeTab: 'dossier' | 'consult';
+  onToggle: () => void;
+  onSetTab: (tab: 'dossier' | 'consult') => void;
+}
+// fallow-ignore-next-line complexity
+
+function ZoneCRightPanel({
+  readingId,
+  clientName,
+  isOpen,
+  activeTab,
+  onToggle,
+  onSetTab,
+}: ZoneCRightPanelProps) {
+  return (
+    <>
+      {/* Toggle Button — always visible on right edge */}
+      <button
+        onClick={onToggle}
+        aria-label={isOpen ? 'Fechar painel direito' : 'Abrir painel direito'}
+        className={cn(
+          'fixed top-1/2 right-0 z-30',
+          'flex flex-col items-center justify-center gap-1',
+          'w-10 h-20 rounded-l-xl',
+          'bg-card/90 border border-border/50 backdrop-blur-sm',
+          'shadow-[0_0_20px_var(--accent-royal-glow)]',
+          'transition-all duration-300',
+          'hover:bg-card',
+          isOpen && 'opacity-0 pointer-events-none translate-x-4'
+        )}
+      >
+        <FileText className="w-4 h-4 text-primary" />
+        <MessageCircle className="w-4 h-4 text-secondary" />
+      </button>
+
+      {/* Panel backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black/20 backdrop-blur-[2px] lg:hidden"
+          onClick={onToggle}
+        />
+      )}
+
+      {/* Panel */}
+      <div
+        className={cn(
+          'fixed top-0 right-0 z-30 h-full',
+          'bg-card/95 border-l border-border/50 backdrop-blur-md',
+          'flex flex-col shadow-[-20px_0_60px_rgba(0,0,0,0.3)]',
+          'transition-transform duration-300 ease-out',
+          'w-[480px] max-w-[100vw]',
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        )}
+      >
+        {/* Panel Header */}
+        <div className="flex-shrink-0 border-b border-border/50 px-4 py-3">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-cinzel text-sm text-foreground">
+              Ferramentas de Leitura
+            </h2>
+            <button
+              onClick={onToggle}
+              aria-label="Fechar painel"
+              className="p-1.5 rounded-lg hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Tab Switcher */}
+          <div className="flex rounded-lg bg-muted/50 p-1 gap-1">
+            <TabButton
+              active={activeTab === 'dossier'}
+              onClick={() => onSetTab('dossier')}
+              icon={<FileText className="w-3.5 h-3.5" />}
+              label="Dossiê"
+            />
+            <TabButton
+              active={activeTab === 'consult'}
+              onClick={() => onSetTab('consult')}
+              icon={<MessageCircle className="w-3.5 h-3.5" />}
+              label="Consultar"
+            />
+          </div>
+        </div>
+
+        {/* Panel Content */}
+        <div className="flex-1 overflow-hidden">
+          {activeTab === 'dossier' ? (
+            readingId ? (
+              <DossierViewer readingId={readingId} />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full px-8 text-center">
+                <FileText className="w-12 h-12 text-muted-foreground/40 mb-4" />
+                <p className="font-cinzel text-base text-muted-foreground mb-2">
+                  Nenhuma leitura selecionada
+                </p>
+                <p className="text-xs text-muted-foreground/60">
+                  Gere o dossiê após preencher as casas da Mesa Real
+                </p>
+              </div>
+            )
+          ) : readingId ? (
+            <div className="flex flex-col h-full">
+              {/* Oráculo header */}
+              <div className="flex-shrink-0 px-4 py-3 border-b border-border/50 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+                <span className="font-cinzel text-xs text-primary">
+                  Oráculo · {clientName}
+                </span>
+              </div>
+              <OraculoChat readingId={readingId} clientName={clientName} />
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full px-8 text-center">
+              <MessageCircle className="w-12 h-12 text-muted-foreground/40 mb-4" />
+              <p className="font-cinzel text-base text-muted-foreground mb-2">
+                Nenhuma leitura selecionada
+              </p>
+              <p className="text-xs text-muted-foreground/60">
+                Abra uma leitura para consultar o Oráculo
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ─── Tab Button ─────────────────────────────────────────────────────────────
+
+interface TabButtonProps {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+}
+
+function TabButton({ active, onClick, icon, label }: TabButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        'flex-1 flex items-center justify-center gap-1.5 py-2 px-3',
+        'rounded-md text-xs font-medium transition-all duration-200',
+        active
+          ? [
+              'bg-primary text-primary-foreground',
+              'shadow-[0_0_16px_var(--accent-orange-glow)]',
+              // laranja for active
+            ].join(' ')
+          : [
+              'text-muted-foreground hover:text-foreground hover:bg-muted/60',
+              // royal for inactive
+            ].join(' ')
+      )}
+    >
+      {icon}
+      {label}
+    </button>
   );
 }

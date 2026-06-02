@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // In-memory storage for ritual completions
 
 export interface RitualCompletion {

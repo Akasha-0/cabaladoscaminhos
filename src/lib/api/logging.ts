@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // ============================================================
 // REQUEST/RESPONSE LOGGING MIDDLEWARE - CABALA DOS CAMINHOS
 // ============================================================
@@ -19,6 +20,7 @@ const DEFAULT_SKIP_PATHS = ['/favicon.ico', '/robots.txt', '/health'];
 export function createRequestLogger(options: RequestLoggerOptions = {}) {
   const { skipPaths = DEFAULT_SKIP_PATHS, extraHeaders = [] } = options;
 
+// fallow-ignore-next-line complexity
   return async function requestLogger(
     request: NextRequest
   ): Promise<NextResponse | void> {

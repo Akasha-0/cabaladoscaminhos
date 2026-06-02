@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Dashboard Animations
  * Using Tailwind + tw-animate-css for consistent animations

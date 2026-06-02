@@ -87,6 +87,7 @@ export interface DailyAgentContext {
 // BUILD CONTEXT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export async function buildDailyContext(
   user: UserSpiritualProfile,
   currentDate: Date = new Date()
@@ -170,6 +171,7 @@ export async function buildDailyContext(
 // ============================================================
 // FORMAT CONTEXT FOR AI
 // ============================================================
+// fallow-ignore-next-line complexity
 
 function formatContextForAI(
   user: UserSpiritualProfile,

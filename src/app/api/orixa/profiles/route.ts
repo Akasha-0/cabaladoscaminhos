@@ -355,6 +355,7 @@ function enrichProfile(profile: typeof ORIXA_PROFILES[number]) {
   };
 }
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

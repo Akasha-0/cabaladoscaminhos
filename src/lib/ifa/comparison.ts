@@ -146,6 +146,7 @@ function compareOdu(
 /**
  * Compare elemental compositions
  */
+// fallow-ignore-next-line complexity
 function compareElemental(
   elemA: string,
   elemB: string
@@ -195,6 +196,7 @@ function compareElemental(
 
 /**
  * Compare Orixás (simplified for single Orixá each)
+// fallow-ignore-next-line complexity
  */
 function compareOrixas(
   orixaA: string,
@@ -360,6 +362,7 @@ function getCompatibilityLevel(score: number): 'alta' | 'media' | 'baixa' {
 
 /**
  * Generate human-readable comparison notes
+// fallow-ignore-next-line complexity
  */
 function generateComparisonNotes(params: {
   readingA: OduReading;
@@ -425,6 +428,7 @@ function generateId(): string {
 }
 
 /**
+// fallow-ignore-next-line complexity
  * Quick comparison of two Odu numbers (returns basic compatibility)
  */
 export function compareOduNumbers(

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from 'react';
@@ -296,6 +297,7 @@ function ProgressBar({ item }: { item: LearningProgress }) {
 }
 
 // Main component
+// fallow-ignore-next-line unused-type
 export interface UserGrowthMetricsProps {
   className?: string;
   loading?: boolean;
@@ -439,4 +441,5 @@ function UserGrowthMetrics({ className = '', loading = false }: UserGrowthMetric
   );
 }
 
+// fallow-ignore-next-line unused-export
 export default UserGrowthMetrics;

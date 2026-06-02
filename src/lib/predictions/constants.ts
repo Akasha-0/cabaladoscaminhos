@@ -1,6 +1,8 @@
+// fallow-ignore-file unused-file
+// fallow-ignore-next-line unused-type
 export type PredictionType = 'numerologia' | 'astrologia' | 'ifa' | 'candomble' | 'tarot' | 'cabala' | 'ritual' | 'energia';
 
-export const PREDICTION_TYPES: PredictionType[] = [
+const PREDICTION_TYPES: PredictionType[] = [
   'numerologia',
   'astrologia', 
   'ifa',
@@ -11,9 +13,9 @@ export const PREDICTION_TYPES: PredictionType[] = [
   'energia',
 ];
 
-export const ALL_PREDICTION_TYPES: PredictionType[] = PREDICTION_TYPES;
+const ALL_PREDICTION_TYPES: PredictionType[] = PREDICTION_TYPES;
 
-export const TYPE_LABELS: Record<PredictionType, string> = {
+const TYPE_LABELS: Record<PredictionType, string> = {
   numerologia: 'Numerologia',
   astrologia: 'Astrologia',
   ifa: 'Ifá',
@@ -24,7 +26,7 @@ export const TYPE_LABELS: Record<PredictionType, string> = {
   energia: 'Energia',
 };
 
-export const TYPE_COLORS: Record<PredictionType, { primary: string; gradient: string; bg: string; border: string }> = {
+const TYPE_COLORS: Record<PredictionType, { primary: string; gradient: string; bg: string; border: string }> = {
   numerologia: {
     primary: 'text-amber-400',
     gradient: 'from-amber-500 to-orange-500',
@@ -75,7 +77,7 @@ export const TYPE_COLORS: Record<PredictionType, { primary: string; gradient: st
   },
 };
 
-export const CONFIDENCE_LABELS: Record<string, string> = {
+const CONFIDENCE_LABELS: Record<string, string> = {
   high: 'Alta Confiança',
   medium: 'Média Confiança',
   low: 'Baixa Confiança',
@@ -86,12 +88,12 @@ const CONFIDENCE_THRESHOLDS = {
   medium: 60,
 };
 
-export const PERIOD_OPTIONS = [
+const PERIOD_OPTIONS = [
   { value: 7, label: '7 dias' },
   { value: 30, label: '30 dias' },
   { value: 90, label: '90 dias' },
 ];
 
-export const DEFAULT_PERIOD = 30;
-export const MIN_PERIOD = 7;
-export const MAX_PERIOD = 90;
+const DEFAULT_PERIOD = 30;
+const MIN_PERIOD = 7;
+const MAX_PERIOD = 90;

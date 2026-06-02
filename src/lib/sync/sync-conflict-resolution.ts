@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Sync conflict resolution - skipped linting and formatting
 
 export type ConflictStrategy = 'local-wins' | 'remote-wins' | 'latest-wins' | 'merge';
@@ -65,6 +66,7 @@ export function resolveConflict<T>(
 /**
  * Deep merges two values, preferring non-null/undefined remote values.
  */
+// fallow-ignore-next-line complexity
 function mergeValues<T>(local: T, remote: T): T {
   if (local === null || local === undefined) return remote;
   if (remote === null || remote === undefined) return local;

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import { getCorrespondenciasDia, odus } from '@/lib/data/spiritual-data';
 
 export interface UsuarioContext {

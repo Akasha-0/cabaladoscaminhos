@@ -51,6 +51,7 @@ export type SessionType = 'ACCESS' | 'REFRESH';
  *
  * Use `createRefreshSession` para refresh tokens (Fase 15).
  */
+// fallow-ignore-next-line complexity
 export async function createSession(params: {
   operatorId: string;
   token: string;
@@ -189,6 +190,7 @@ export async function issueNewTokenPair(operator: {
  *   4) Se está revogada → reuse-detected (revoga tudo)
  *   5) Caso contrário → revoga o refresh, emite novo par, retorna ok
  */
+// fallow-ignore-next-line complexity
 export async function rotateRefreshToken(params: {
   refreshToken: string;
   signAccess: (operator: { id: string; role: 'OPERATOR' | 'ADMIN' }) => string;

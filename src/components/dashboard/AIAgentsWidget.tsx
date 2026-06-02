@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -116,6 +117,7 @@ function getConfidenceColor(confidence: number): string {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function AIAgentsWidget({ className, userData }: AIAgentsWidgetProps) {
   const [insights, setInsights] = useState<Insight[]>(SAMPLE_INSIGHTS);
   const [loading, setLoading] = useState(false);

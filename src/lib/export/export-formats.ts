@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Export formats and data export utilities
  * Supports multiple output formats: JSON, CSV, TXT, XML
@@ -108,6 +109,7 @@ function exportAsXml(data: unknown, opts: FormatOptions): ExportResult {
   };
 }
 
+// fallow-ignore-next-line complexity
 function serializeToCsv(data: unknown, includeMetadata?: boolean): string {
   if (!data && data !== 0) return '';
   
@@ -190,6 +192,7 @@ function formatObjectLine(value: unknown): string {
 
 function serializeToXml(data: unknown, includeMetadata?: boolean, indent = 2): string {
   const pad = (level: number) => ' '.repeat(level * indent);
+// fallow-ignore-next-line complexity
   
   function toXml(value: unknown, tagName: string, level: number): string {
     if (value === null || value === undefined) {

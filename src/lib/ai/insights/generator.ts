@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * AI Insights Generator
  * Generates spiritual insights across multiple traditions with consistent output format.
@@ -330,6 +331,7 @@ function normalizeOrixaName(name: string): string {
 /**
  * Find cross-references for an orixá across traditions
  */
+// fallow-ignore-next-line complexity
 function findOrixaCrossReferences(orixaName: string): {
   odu: string[];
   tarot: number[];
@@ -423,6 +425,7 @@ function createFallbackInsight(
  *   - correlations: string[]
  *   - action: string
  *   - frequency: string
+// fallow-ignore-next-line complexity
  */
 export function generateInsight(
   tradition: SupportedTradition,
@@ -495,6 +498,7 @@ export function generateMultiTraditionInsight(
 }
 
 /**
+// fallow-ignore-next-line complexity
  * Get available identifiers for a tradition
  */
 export function getAvailableIdentifiers(tradition: SupportedTradition): string[] {

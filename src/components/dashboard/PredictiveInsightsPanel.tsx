@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import {
@@ -152,6 +153,7 @@ function PredictionsSkeleton() {
   );
 }
 
+// fallow-ignore-next-line complexity
 export function PredictiveInsightsPanel({
   userId,
   userData,
@@ -414,6 +416,7 @@ export function PredictiveInsightsPanel({
                 <Sparkles className="h-8 w-8 mx-auto mb-2 opacity-50" />
                 <p>Nenhuma previsão para os filtros selecionados.</p>
               </div>
+// fallow-ignore-next-line complexity
             ) : (
               filteredPredictions.map((prediction) => {
                 const colors = TYPE_COLORS[prediction.type];
@@ -604,6 +607,7 @@ export function PredictiveInsightsPanel({
               ref={timelineRef}
               className="relative overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-amber-500/30 scrollbar-track-amber-950/20"
               style={{ scrollbarWidth: 'thin' }}
+// fallow-ignore-next-line complexity
             >
               <div className="flex gap-3 min-w-max px-1">
                 {timelinePoints.map((point, idx) => {

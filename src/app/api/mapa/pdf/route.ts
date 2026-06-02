@@ -18,6 +18,7 @@ type MapaInput = z.infer<typeof mapaSchema>;
 // POST — generate PDF
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as unknown;

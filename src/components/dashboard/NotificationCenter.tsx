@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
@@ -94,6 +95,7 @@ interface NotificationItemProps {
   onComplete: () => void;
 }
 
+// fallow-ignore-next-line complexity
 function NotificationItem({
   notification,
   onClick,

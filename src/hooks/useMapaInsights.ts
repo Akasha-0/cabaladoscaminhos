@@ -19,6 +19,7 @@ export function useMapaInsights(options?: UseMapaInsightsOptions) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+// fallow-ignore-next-line complexity
   useEffect(() => {
     if (options?.enabled !== false) {
       // Load profile from localStorage

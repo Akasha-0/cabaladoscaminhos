@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 import React, { useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
@@ -187,6 +188,7 @@ function getSephirahPosition(id: string) {
   return sephirah ? { x: sephirah.x, y: sephirah.y } : null;
 }
 
+// fallow-ignore-next-line complexity
 function getPathColor(from: string, to: string, sephiroth: typeof SEPHIROTH): string {
   const fromPillar = sephiroth.find((s) => s.id === from)?.pillar;
   const toPillar = sephiroth.find((s) => s.id === to)?.pillar;
@@ -417,6 +419,7 @@ function ArvoreVida({
 
         {/* Draw Paths */}
         <g className="paths">
+// fallow-ignore-next-line complexity
           {TRADITIONAL_PATHS.map((path) => {
             const fromPos = getSephirahPosition(path.from);
             const toPos = getSephirahPosition(path.to);

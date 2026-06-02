@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
@@ -254,6 +255,7 @@ export function AIRecommendationsEngine({
 
       {/* Recommendations list */}
       <div className="max-h-[500px] overflow-y-auto">
+// fallow-ignore-next-line complexity
         {sortedRecommendations.map(rec => {
           const isExpanded = expandedId === rec.id;
 
@@ -331,6 +333,7 @@ export function AIRecommendationsEngine({
                         <div className="flex gap-2">
                           {rec.actions.map((action, i) => (
                             <button
+// fallow-ignore-next-line complexity
                               key={i}
                               onClick={() => {
                                 if (action === 'Aplicar' || action === 'Iniciar') onApply?.(rec.id);

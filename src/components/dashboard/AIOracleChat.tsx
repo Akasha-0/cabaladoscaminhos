@@ -231,6 +231,7 @@ function TypingIndicator({ name = ORACLE_PERSONALITY.name }: { name?: string }) 
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function AIOracleChat({
   userData,
   className = '',

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShoppingBag, DollarSign, TrendingUp, Package } from 'lucide-react';

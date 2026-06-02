@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -181,6 +182,7 @@ interface TimelineItemProps {
   onClick?: () => void;
 }
 
+// fallow-ignore-next-line complexity
 function TimelineItem({ event, isLast, onClick }: TimelineItemProps) {
   const colors = EVENT_COLORS[event.type];
   

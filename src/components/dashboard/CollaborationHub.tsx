@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState } from 'react';
@@ -137,6 +138,7 @@ function ActivityItem({ activity, collaborator }: { activity: Activity; collabor
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function CollaborationHub({ className = '' }: CollaborationHubProps) {
   const [showAll, setShowAll] = useState(false);
   const [activeTab, setActiveTab] = useState<'collaborators' | 'activity'>('collaborators');

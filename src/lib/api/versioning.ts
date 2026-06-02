@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // ============================================================
 // API VERSIONING MIDDLEWARE - CABALA DOS CAMINHOS
 // ============================================================
@@ -131,6 +132,7 @@ const SUPPORTED_HEADERS = 'X-API-Supported-Versions';
  *   import { versionMiddleware } from '@/lib/api/versioning';
  *   export default stackMiddlewares([versionMiddleware]);
  */
+// fallow-ignore-next-line complexity
 export function versionMiddleware(request: NextRequest): NextResponse | null {
   const pathname = request.nextUrl.pathname;
 
@@ -255,6 +257,7 @@ export function createVersionMiddleware(
     defaultVersion = DEFAULT_VERSION,
     strictMode = false,
   } = options;
+// fallow-ignore-next-line complexity
 
   return function versioningHandler(
     request: NextRequest

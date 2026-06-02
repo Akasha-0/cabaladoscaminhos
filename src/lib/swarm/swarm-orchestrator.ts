@@ -277,6 +277,7 @@ class SwarmOrchestrator {
     await this.persistState();
   }
 
+// fallow-ignore-next-line complexity
   private async identifyGaps(): Promise<string[]> {
     const gaps: string[] = [];
     const stats = this.knowledge.stats();

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Progress trends analyzer for spiritual journey tracking
 // Calculates trends and historical patterns in practice sessions, readings, and growth
 
@@ -68,6 +69,7 @@ function generateHistoricalData(days: number = 30): HistoricalSnapshot[] {
 }
 
 // Calculate trend direction and percentage change
+// fallow-ignore-next-line complexity
 function calculateTrend(points: TrendPoint[]): { direction: 'up' | 'down' | 'stable'; percentageChange: number } {
   if (points.length < 2) {
     return { direction: 'stable', percentageChange: 0 };

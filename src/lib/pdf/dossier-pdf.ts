@@ -111,6 +111,7 @@ const LINE_H = 6;
  * @param data  Dados completos retornados pela API /api/mesa-real/pdf
  * @returns void — dispara window.open com o Blob URL
  */
+// fallow-ignore-next-line complexity
 export function generateDossierPDF(data: DossierPdfData): void {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 

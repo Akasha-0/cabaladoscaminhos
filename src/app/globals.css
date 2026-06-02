@@ -57,6 +57,23 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Colors - Ramiro Palette v2 (Doc 13 AD-08 — promoted from .ramiro scope) */
+  --color-ramiro-orange: #f97316;
+  --color-ramiro-orange-bright: #fb923c;
+  --color-ramiro-orange-dim: #c2410c;
+  --color-ramiro-royal: #2547d0;
+  --color-ramiro-royal-bright: #3b5bdb;
+  --color-ramiro-royal-dim: #1e3a8a;
+  --color-ramiro-alert: #f43f5e;
+  --color-ramiro-canvas: #0a0e1a;
+  --color-ramiro-surface: #111726;
+  --color-ramiro-elevated: #1a2236;
+  --color-ramiro-border: #2a3550;
+  --color-ramiro-text: #f5f7ff;
+  --color-ramiro-muted: #9aa7c7;
+  --color-ramiro-muted-text: #56618a;
+
 }
 
 /* === LIGHT MODE CSS VARIABLES (Default) === */

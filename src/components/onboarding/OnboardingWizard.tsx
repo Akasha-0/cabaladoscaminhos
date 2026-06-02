@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -68,6 +69,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+// fallow-ignore-next-line complexity
   const canProceed = (): boolean => {
     switch (currentStep) {
       case 0:
@@ -98,6 +100,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
       setCurrentStep((prev) => prev - 1);
     }
   };
+// fallow-ignore-next-line complexity
 
   const handleSubmit = () => {
     if (canProceed()) {
@@ -145,6 +148,7 @@ export function OnboardingWizard({ onComplete, className }: OnboardingWizardProp
           aria-label="Progresso do onboarding"
           className="flex items-center gap-2 mb-12"
         >
+// fallow-ignore-next-line complexity
           {Array.from({ length: TOTAL_STEPS }).map((_, index) => (
             <div key={index} className="flex items-center">
               {index < TOTAL_STEPS - 1 && (

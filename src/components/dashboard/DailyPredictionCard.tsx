@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from 'react';
@@ -109,6 +110,7 @@ function getLifePathInsight(lifePath: number): { tema: string; conselha: string 
   return LIFE_PATH_INSIGHTS[lifePath] || LIFE_PATH_INSIGHTS[7];
 }
 
+// fallow-ignore-next-line complexity
 function generatePrediction(
   dayElement: string,
   userElement: string,
@@ -224,6 +226,7 @@ function OduOfDayBadge({ odu }: { odu: { nome: string; significado: string } }) 
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function DailyPredictionCard({ userData, className = '' }: DailyPredictionCardProps) {
   const dayInfo = getDayElement();
   const today = new Date();

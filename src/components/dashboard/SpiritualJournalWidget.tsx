@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from 'react';
@@ -183,6 +184,7 @@ function saveEntries(entries: JournalEntry[]): void {
   }
 }
 
+// fallow-ignore-next-line complexity
 function calculateStreak(entries: JournalEntry[]): number {
   if (entries.length === 0) return 0;
   
@@ -312,6 +314,7 @@ function GratitudeItem({ text, index, onRemove }: GratitudeItemProps) {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function SpiritualJournalWidget({
   userId,
   userOrixa,

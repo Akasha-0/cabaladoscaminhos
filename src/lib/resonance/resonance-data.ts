@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Stub for @/lib/resonance/resonance-data
 // Module does not exist - stub implementation for test compatibility
 

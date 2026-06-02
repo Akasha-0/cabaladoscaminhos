@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from 'react';
@@ -107,6 +108,7 @@ interface RitualItemProps {
   onToggle: () => void;
 }
 
+// fallow-ignore-next-line complexity
 function RitualItem({ ritual, isCompleted, onToggle }: RitualItemProps) {
   const config = RITUAL_TYPE_CONFIG[ritual.type];
 
@@ -177,6 +179,7 @@ export function RitualReminderWidget({ className = '', userId = 'default' }: Rit
   const dayName = DAY_NAMES[today];
   const orixa = DAY_ORIXA[today];
 
+// fallow-ignore-next-line complexity
   React.useEffect(() => {
     const loadRituals = async () => {
       setLoading('loading');

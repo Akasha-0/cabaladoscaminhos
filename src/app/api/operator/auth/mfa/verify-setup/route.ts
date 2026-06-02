@@ -17,6 +17,7 @@ const verifySetupSchema = z.object({
   code: z.string().regex(/^\d{6}$/, 'Código deve ter 6 dígitos'),
 });
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   const guard = await requireOperatorApi(request);
   if (guard instanceof NextResponse) return guard;

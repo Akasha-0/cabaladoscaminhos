@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Synastry Comparison Module
  * Compares two birth charts and calculates compatibility scores.

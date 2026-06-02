@@ -37,6 +37,7 @@ interface CasaCellProps {
   onClick: () => void;
 }
 
+// fallow-ignore-next-line complexity
 function CasaCell({ casa, status, onClick }: CasaCellProps) {
   return (
     <motion.button

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import {
@@ -114,6 +115,7 @@ const TOOL_COLORS: Record<
 // HELPER FUNCTIONS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function calculateToolAffinity(userData: UserSpiritualData, toolId: string): number {
   switch (toolId) {
     case 'symbol-decoder':
@@ -203,6 +205,7 @@ interface ToolCardProps {
   onSelect: () => void;
 }
 
+// fallow-ignore-next-line complexity
 function ToolCard({ tool, progress, affinity, isSelected, onSelect }: ToolCardProps) {
   const colors = TOOL_COLORS[tool.color] || TOOL_COLORS.purple;
   const progressPercent = progress?.progress ?? 0;

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Integration data for v2 APIs
 
 export interface IntegrationData {

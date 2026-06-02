@@ -79,6 +79,7 @@ async function generateDossier(
 // MAIN COMPONENT (with Suspense for useSearchParams)
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function MesaRealPageContent() {
   const searchParams = useSearchParams();
   const clientId = searchParams.get('clientId');
@@ -141,6 +142,7 @@ function MesaRealPageContent() {
 
   const filledCount = Object.keys(matrixData).length;
 
+// fallow-ignore-next-line complexity
   const handleGenerateDossier = async () => {
     if (!clientId || filledCount === 0) return;
 

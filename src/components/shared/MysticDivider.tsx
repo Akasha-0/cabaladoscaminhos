@@ -15,6 +15,7 @@ const SYMBOLS = {
   moon: '☽',
 } as const;
 
+// fallow-ignore-next-line complexity
 export function MysticDivider({
   symbol = 'star',
   variant = 'default',

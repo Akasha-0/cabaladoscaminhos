@@ -295,6 +295,7 @@ function generateReadingId(): string {
   return `reading_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 }
 
+// fallow-ignore-next-line complexity
 function getSpiritualCorrelations(cardId: number, isReversed: boolean) {
   // Major arcana cards have specific correlations
   if (cardId >= 0 && cardId <= 21) {

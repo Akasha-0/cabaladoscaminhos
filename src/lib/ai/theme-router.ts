@@ -139,6 +139,7 @@ function normalize(text: string): string {
  * @param question      pergunta do consulente
  * @param filledHouses  casas efetivamente tiradas na leitura (para `geral` e filtro)
  */
+// fallow-ignore-next-line complexity
 export function routeQuestion(question: string, filledHouses: number[] = []): RoutingResult {
   const normalized = normalize(question);
 

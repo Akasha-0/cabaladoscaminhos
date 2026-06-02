@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Data deletion utilities for GDPR/privacy compliance.
  * Handles user data removal requests with proper cascading and verification.

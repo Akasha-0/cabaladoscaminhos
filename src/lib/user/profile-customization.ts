@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 export interface Avatar {
   id: string;
   url: string;

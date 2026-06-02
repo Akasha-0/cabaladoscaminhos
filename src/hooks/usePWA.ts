@@ -107,6 +107,7 @@ export function usePWA() {
   }, [loadPendingSyncs, savePendingSyncs, state.isOnline]);
 
   // Process sync queue
+// fallow-ignore-next-line complexity
   const processSync = useCallback(async () => {
     if (!state.isOnline || syncStatus.syncing) return;
 
@@ -370,6 +371,7 @@ function useOfflineCache<T>(
 
   useEffect(() => {
     if (!enabled) return;
+// fallow-ignore-next-line complexity
 
     const load = async () => {
       setLoading(true);

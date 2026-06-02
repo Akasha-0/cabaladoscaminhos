@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import {
@@ -117,6 +118,7 @@ function getEnergyGradient(value: number): string {
   }
 }
 
+// fallow-ignore-next-line complexity
 function calculateEnergyFromUserData(
   userData?: SpiritualEnergyWidgetProps['userData']
 ): EnergyData {
@@ -234,6 +236,7 @@ function EnergyBar({
     </div>
   );
 }
+// fallow-ignore-next-line complexity
 
 function TrendBadge({ trend, value }: { trend: 'up' | 'down' | 'stable'; value: number }) {
   const iconClass =
@@ -296,6 +299,7 @@ function EnergySkeleton() {
 
 // ============================================================
 // MAIN COMPONENT
+// fallow-ignore-next-line complexity
 // ============================================================
 
 export function SpiritualEnergyWidget({

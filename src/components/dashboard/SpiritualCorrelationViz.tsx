@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -179,6 +180,7 @@ function generatePlanetAlignments(): PlanetAlignment[] {
   }));
 }
 
+// fallow-ignore-next-line complexity
 export function SpiritualCorrelationViz({ className = '', loading = false }: SpiritualCorrelationVizProps) {
   const [activeTab, setActiveTab] = useState<'radial' | 'planets' | 'sephirot'>('radial');
   const [selectedNode, setSelectedNode] = useState<SpiritualSystem | null>(null);

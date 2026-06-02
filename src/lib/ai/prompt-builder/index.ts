@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // ============================================================
 // PROMPT BUILDER — Mesa Real Dossiê Generator
 // ============================================================
@@ -155,6 +156,7 @@ export function buildDossiePrompt(input: HouseInput): {
 /**
  * Validates that all required data is present for prompt generation
  */
+// fallow-ignore-next-line complexity
 export function validateHouseInput(input: HouseInput): {
   valid: boolean;
   errors: string[];

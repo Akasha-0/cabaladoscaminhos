@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React from 'react';
@@ -66,6 +67,7 @@ function getDailyAffirmation(orixaName?: string): string {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function AffirmationWidget({ userData, className = '' }: AffirmationWidgetProps) {
   const [copied, setCopied] = React.useState(false);
   const affirmation = React.useMemo(() => getDailyAffirmation(userData?.orixaRegente), [userData?.orixaRegente]);

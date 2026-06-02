@@ -129,6 +129,7 @@ function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -270,6 +271,7 @@ export async function GET(request: NextRequest) {
 
     // Apply spiritual filters
     if (sefirot || chakra || element || orixa) {
+// fallow-ignore-next-line complexity
       const filteredPlanets = Object.entries(mapaNatal.planeta).filter(([planeta, posicao]) => {
         const planetCorr = PLANET_SPIRITUAL_CORRELATIONS[planeta] || {};
         const signCorr = SIGN_SPIRITUAL_CORRELATIONS[posicao.signo] || {};

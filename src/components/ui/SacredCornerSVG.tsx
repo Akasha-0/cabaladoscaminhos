@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Sacred geometry corner decoration
 const SacredCornerSVG = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -7,4 +8,5 @@ const SacredCornerSVG = ({ className }: { className?: string }) => (
   </svg>
 );
 
+// fallow-ignore-next-line unused-export
 export default SacredCornerSVG;

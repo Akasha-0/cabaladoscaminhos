@@ -61,6 +61,7 @@ interface FormData {
   country: string;
 }
 
+// fallow-ignore-next-line complexity
 export default function OnboardingPage() {
   const router = useRouter();
   const { user, isLoading } = useAuth();
@@ -153,6 +154,7 @@ export default function OnboardingPage() {
     }
   };
 
+// fallow-ignore-next-line complexity
   const canProceed = () => {
     switch (currentStep) {
       case 0:

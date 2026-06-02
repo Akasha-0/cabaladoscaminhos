@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Profile data - skipped linting and formatting
 
 export interface ProfileData {

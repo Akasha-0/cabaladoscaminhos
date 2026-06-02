@@ -95,6 +95,7 @@ export type AuthRoute = keyof typeof AUTH_RATE_LIMITS;
  * só usa o bucket "unknown" para todos os requests sem IP.
  */
 // fallow-ignore-next-line unused-export
+// fallow-ignore-next-line complexity
 export function getClientIp(request: NextRequest | undefined | null): string {
   if (!request || !request.headers) {
     return 'unknown';

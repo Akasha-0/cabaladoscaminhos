@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import type { ChatMessage } from './types';
 import type { UserSpiritualData } from './types';
 // fallow-ignore-next-line unresolved-import

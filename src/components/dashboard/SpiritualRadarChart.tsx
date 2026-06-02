@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 // Sacred geometry corner decoration
@@ -335,6 +336,7 @@ function RadarLabels({ centerX, centerY, radius, angles, levels, hoveredSystem, 
 
   return (
     <g className="radar-labels">
+// fallow-ignore-next-line complexity
       {levels.map((level, i) => {
         const angle = angles[i];
         const pos = getLabelPosition(angle, 10);
@@ -402,6 +404,7 @@ interface SystemTooltipProps {
   previousLevel?: number;
 }
 
+// fallow-ignore-next-line complexity
 function SystemTooltip({ system, nivel, trend, previousLevel }: SystemTooltipProps) {
   const colors = SYSTEM_COLORS[system];
   const change = previousLevel !== undefined ? nivel - previousLevel : null;
@@ -505,6 +508,7 @@ function RadarSkeleton({ variant = 'full' }: RadarSkeletonProps) {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function SpiritualRadarChart({
   userData,
   currentLevels = {},

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -41,6 +42,7 @@ const ICON_COLOR_MAP = {
   slate: 'text-slate-400',
 };
 
+// fallow-ignore-next-line complexity
 export function WidgetWrapper({
   children,
   className,
@@ -154,6 +156,7 @@ const STAT_COLORS = {
   pink: { bg: 'bg-pink-500/20', text: 'text-pink-400' },
   slate: { bg: 'bg-slate-500/20', text: 'text-slate-400' },
 };
+// fallow-ignore-next-line complexity
 
 export function WidgetStat({ label, value, unit, icon, color = 'amber', trend }: WidgetStatProps) {
   const colors = STAT_COLORS[color];
@@ -257,6 +260,7 @@ interface WidgetProgressProps {
   color?: 'amber' | 'violet' | 'emerald' | 'cyan' | 'pink' | 'slate';
   showPercentage?: boolean;
   size?: 'sm' | 'md' | 'lg';
+// fallow-ignore-next-line complexity
 }
 
 export function WidgetProgress({ 

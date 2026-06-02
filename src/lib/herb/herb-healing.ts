@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Herb Healing Module
  * Provides healing functionality using medicinal herbs

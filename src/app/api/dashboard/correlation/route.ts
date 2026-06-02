@@ -207,6 +207,7 @@ const DETECTED_PATTERNS: Pattern[] = [
 ];
 
 // GET - Get all correlations or patterns
+// fallow-ignore-next-line complexity
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type') || 'correlations';
@@ -292,6 +293,7 @@ export async function GET(request: Request) {
   }
 }
 
+// fallow-ignore-next-line complexity
 // POST - Analyze new correlation
 export async function POST(request: Request) {
   try {

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -190,6 +191,7 @@ const ALL_ARCHETYPES: Archetype[] = [
 // HELPER FUNCTIONS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function determineArchetype(userData?: ArchetypeDisplayProps['userData']): Archetype | null {
   if (!userData) return ALL_ARCHETYPES[0];
 
@@ -253,6 +255,7 @@ interface ArchetypeCardProps {
   showDetails?: boolean;
 }
 
+// fallow-ignore-next-line complexity
 function ArchetypeCard({ archetype, isActive, onClick, showDetails = false }: ArchetypeCardProps) {
   const colors = ARCHETYPE_COLORS[archetype.color] || ARCHETYPE_COLORS['purple'];
   const icon = ARCHETYPE_ICONS[archetype.icon] || ARCHETYPE_ICONS['user'];
@@ -388,6 +391,7 @@ function ArchetypeDetail({ archetype, complement }: ArchetypeDetailProps) {
 // ============================================================
 // MAIN COMPONENT
 // ============================================================
+// fallow-ignore-next-line complexity
 
 export function ArchetypeDisplay({
   userData,

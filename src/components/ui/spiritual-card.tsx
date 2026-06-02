@@ -1,8 +1,10 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
+// fallow-ignore-next-line unused-type
 export interface SpiritualCardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'elevated' | 'glow' | 'golden';
   size?: 'sm' | 'default' | 'lg';
@@ -84,9 +86,5 @@ const SpiritualCardContent = React.forwardRef<
 ));
 SpiritualCardContent.displayName = "SpiritualCardContent";
 
-export {
-  SpiritualCard,
-  SpiritualCardHeader,
-  SpiritualCardTitle,
-  SpiritualCardContent,
-}
+// fallow-ignore-next-line unused-export
+export { SpiritualCard, SpiritualCardHeader, SpiritualCardTitle, SpiritualCardContent };

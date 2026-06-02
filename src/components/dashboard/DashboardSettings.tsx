@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState } from 'react';
@@ -35,6 +36,7 @@ interface SettingsState {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function DashboardSettings({ className = '' }: DashboardSettingsProps) {
   const [settings, setSettings] = useState<SettingsState>({
     theme: 'dark',

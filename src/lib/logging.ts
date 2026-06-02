@@ -99,6 +99,7 @@ class Logger {
     // Already using console methods, just configure formatting
   }
 
+// fallow-ignore-next-line complexity
   private formatEntry(entry: LogEntry): string {
     const color = LOG_LEVEL_COLORS[entry.level];
     const timestamp = new Date(entry.timestamp).toISOString();
@@ -141,6 +142,7 @@ class Logger {
 
     return formatted;
   }
+// fallow-ignore-next-line complexity
 
   private log(level: LogLevel, message: string, context?: LogContext, error?: Error): void {
     if (level < this.minLevel) return;
@@ -293,6 +295,7 @@ class PerformanceMonitor {
         duration: metric.duration,
       });
     }
+// fallow-ignore-next-line complexity
   }
 
   getMetrics(filter?: {

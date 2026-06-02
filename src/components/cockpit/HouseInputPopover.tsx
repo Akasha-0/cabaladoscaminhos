@@ -1,6 +1,7 @@
 // src/components/cockpit/HouseInputPopover.tsx
 // Popover for inputting carta and odu (Doc 05 §4.4)
 // Tokens Ramiro v2: laranja (carta) + royal (Odu) — dual identity.
+// AD-17.2: Filter out already-placed cards to enforce uniqueness.
 
 'use client';
 
@@ -13,7 +14,7 @@ import { LENORMAND_CARDS } from '@/lib/constants/lenormand-cards';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
 import { oduData, type OduInfo } from '@/lib/ifa/odu-data';
 import { cn } from '@/lib/utils';
-import type { CartaCiganaOption } from '@/stores/cockpit-store';
+import { useCockpitStore, type CartaCiganaOption } from '@/stores/cockpit-store';
 
 interface HouseInputPopoverProps {
   casaNumero: number;
@@ -35,6 +36,10 @@ const CARTAS_CIGANAS: CartaCiganaOption[] = LENORMAND_CARDS.map((carta) => ({
 export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPopoverProps) {
   const house = HOUSES_36.find((h) => h.number === casaNumero);
 
+  // AD-17.2: Get used cards from store to filter available cards
+  const placedCards = useCockpitStore((s) => s.placedCards);
+  const remainingCount = 36 - placedCards.size;
+
   const [cartaSearch, setCartaSearch] = useState('');
   const [oduSearch, setOduSearch] = useState('');
   const [selectedCarta, setSelectedCarta] = useState<CartaCiganaOption | null>(null);
@@ -47,11 +52,21 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
     cartaInputRef.current?.focus();
   }, []);
 
+  // AD-17.2: Filter out already-placed cards, but allow the currently selected one
+  // (in case user is editing a house that already has a card)
   const filteredCartas = CARTAS_CIGANAS.filter(
     (c) =>
-      c.nome.toLowerCase().includes(cartaSearch.toLowerCase()) ||
-      String(c.numero).includes(cartaSearch)
+      // Card must match search
+      (c.nome.toLowerCase().includes(cartaSearch.toLowerCase()) ||
+        String(c.numero).includes(cartaSearch)) &&
+      // AD-17.2: Card is not already placed OR it's the currently selected card
+      (!placedCards.has(c.numero) || c.numero === selectedCarta?.numero)
   );
+
+  // AD-17.2: Count available cards for display
+  const availableCardCount = CARTAS_CIGANAS.filter(
+    (c) => !placedCards.has(c.numero) || c.numero === selectedCarta?.numero
+  ).length;
 
   const filteredOdus = oduData.filter(
     (o) =>
@@ -59,6 +74,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
   );
 
   const handleKeyDown = useCallback(
+// fallow-ignore-next-line complexity
     (e: React.KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -112,15 +128,26 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
         <p className="text-xs text-muted-foreground/70 mt-1">
           {house?.cartaCigana} · {house?.tema}
         </p>
+        {/* AD-17.2: Show remaining cards count */}
+        <div className="mt-1 flex items-center gap-1 text-xs text-primary/80">
+          <span className="font-mono">{String(availableCardCount).padStart(2, '0')}</span>
+          <span className="text-muted-foreground/60">cartas disponíveis</span>
+        </div>
       </div>
 
       {/* Body */}
       <div className="p-4 space-y-4">
         {/* Carta Input (laranja) */}
         <div className="space-y-2">
-          <label className="text-xs text-muted-foreground uppercase tracking-wider">
-            Buscar Carta
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs text-muted-foreground uppercase tracking-wider">
+              Buscar Carta
+            </label>
+            {/* AD-17.2: Remaining cards badge */}
+            <span className="text-xs text-muted-foreground/60">
+              {remainingCount} restantes
+            </span>
+          </div>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/70" />
             <Input
@@ -153,7 +180,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
             <div className="max-h-40 overflow-y-auto bg-muted/80 border border-border/50 rounded-lg">
               {filteredCartas.length === 0 ? (
                 <div className="p-3 text-sm text-muted-foreground/70 text-center">
-                  Nenhuma carta encontrada
+                  Nenhuma carta disponível
                 </div>
               ) : (
                 filteredCartas.map((carta) => (
@@ -173,6 +200,13 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
                   </button>
                 ))
               )}
+            </div>
+          )}
+
+          {/* AD-17.2: Show "no cards available" when search is empty and all cards are used */}
+          {!cartaSearch && placedCards.size >= 36 && (
+            <div className="text-xs text-primary/70 text-center py-2">
+              Todas as 36 cartas já foram colocadas
             </div>
           )}
         </div>

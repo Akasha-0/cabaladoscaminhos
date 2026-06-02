@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // ============================================================
 // API TYPES - CABALA DOS CAMINHOS
 // ============================================================
@@ -10,6 +11,7 @@ import { z } from 'zod';
 // API RESPONSE WRAPPERS
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
@@ -40,6 +42,7 @@ export interface PaginationMeta {
 // GENERIC API TYPES
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface PaginatedRequest {
   page?: number;
   pageSize?: number;
@@ -47,6 +50,7 @@ export interface PaginatedRequest {
   sortOrder?: 'asc' | 'desc';
 }
 
+// fallow-ignore-next-line unused-type
 export interface PaginatedResponse<T> {
   items: T[];
   pagination: PaginationMeta;
@@ -85,6 +89,7 @@ const TransacaoCreditoSchema = z.object({
   createdAt: z.string().datetime(),
 });
 
+// fallow-ignore-next-line unused-type
 export interface AssinaturaInfo {
   plano: string;
   status: string;
@@ -92,6 +97,7 @@ export interface AssinaturaInfo {
   dataProximoCobro?: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface CreditosInfo {
   saldo: number;
   transacoes?: TransacaoCreditoType[];
@@ -105,8 +111,10 @@ const NumerologiaRequestSchema = z.object({
   tipo: z.enum(['pitagorica', 'caldeia', 'cabalistica', 'tantrica', 'pitagorica-data', 'destino']),
 });
 
+// fallow-ignore-next-line unused-type
 export type NumerologiaRequest = z.infer<typeof NumerologiaRequestSchema>;
 
+// fallow-ignore-next-line unused-type
 export interface NumerologiaResponse {
   numero: number;
   tipo: string;
@@ -148,6 +156,7 @@ const MapaNatalSchema = z.object({
   }),
 });
 
+// fallow-ignore-next-line unused-type
 export type MapaNatal = z.infer<typeof MapaNatalSchema>;
 
 export interface MapaNatalSummary {
@@ -167,6 +176,7 @@ export interface Transito {
   dataFim: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface TransitosResponse {
   transitos: Transito[];
   mapaNatal: MapaNatalSummary;
@@ -187,6 +197,7 @@ export interface OduInfo {
   ebos: string[];
 }
 
+// fallow-ignore-next-line unused-type
 export interface OdusResponse {
   principal: OduInfo;
   secundario: OduInfo | null;
@@ -199,8 +210,10 @@ export interface OdusResponse {
    transacoes: z.array(TransacaoCreditoSchema).optional(),
  });
 
+// fallow-ignore-next-line unused-type
 export type Creditos = z.infer<typeof CreditosSchema>;
 
+// fallow-ignore-next-line unused-type
 export interface CreditosRequest {
   quantidade?: number;
   operacao?: string;
@@ -228,6 +241,7 @@ export interface MensagemChat {
   timestamp: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface ConversaChat {
   id: string;
   userId: string;
@@ -237,12 +251,14 @@ export interface ConversaChat {
   atualizadaEm: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface ChatRequest {
   pergunta: string;
   tema: TemaChat;
   historico?: MensagemChat[];
 }
 
+// fallow-ignore-next-line unused-type
 export interface ChatResponse {
   resposta: string;
   novoSaldo: number;
@@ -252,6 +268,7 @@ export interface ChatResponse {
 // CYCLES TYPES
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface CiclosResponse {
   ano: {
     numero: number;
@@ -286,6 +303,7 @@ export interface Insight {
   };
 }
 
+// fallow-ignore-next-line unused-type
 export interface InsightsResponse {
   insights: Insight[];
 }

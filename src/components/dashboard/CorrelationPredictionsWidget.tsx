@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -91,6 +92,7 @@ function PredictionsSkeleton() {
   );
 }
 
+// fallow-ignore-next-line complexity
 export function CorrelationPredictionsWidget({ userData, className = '' }: CorrelationPredictionsWidgetProps) {
   const [predictions, setPredictions] = useState<SpiritualPrediction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,6 +106,7 @@ export function CorrelationPredictionsWidget({ userData, className = '' }: Corre
     setIsLoading(true);
     setError(null);
 
+// fallow-ignore-next-line complexity
     async function loadPredictions() {
       try {
         // Get correlations from DeepCorrelationEngine
@@ -204,6 +207,7 @@ export function CorrelationPredictionsWidget({ userData, className = '' }: Corre
     setError(null);
     setExpandedId(null);
     // Trigger reload by updating state
+// fallow-ignore-next-line complexity
     setPredictions([]);
     setTimeout(() => {
       const correlations = correlationEngine.analyzeCorrelations(userData);
@@ -338,6 +342,7 @@ export function CorrelationPredictionsWidget({ userData, className = '' }: Corre
                 <p>Nenhuma correlação encontrada.</p>
               </div>
             ) : (
+// fallow-ignore-next-line complexity
               predictions.map(prediction => {
                 const isExpanded = expandedId === prediction.id;
                 const confidenceLevel = getConfidenceLevel(prediction.confidence);

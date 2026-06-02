@@ -143,6 +143,7 @@ const NOTIFICATION_SPIRITUAL_CORRELATIONS: Record<
 // In-memory storage for spiritual notifications
 const spiritualNotifications: z.infer<typeof SpiritualNotificationSchema>[] = [];
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const parseResult = NotificationsQuerySchema.safeParse({

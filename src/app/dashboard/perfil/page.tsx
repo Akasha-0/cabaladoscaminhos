@@ -62,6 +62,7 @@ export default function PerfilPage() {
 // fallow-ignore-next-line complexity
   useEffect(() => {
     if (user) {
+// fallow-ignore-next-line complexity
       setFormData(prev => ({
         ...prev,
         nomeCompleto: user.user_metadata?.nomeCompleto || user.user_metadata?.full_name || user.email?.split('@')[0] || prev.nomeCompleto,

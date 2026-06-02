@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client'
 // src/components/auth/OperatorAuthGuard.tsx
 // Guard para rotas protegidas do Operator (B2B).

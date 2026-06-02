@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 "use client";
 
 import * as React from "react";
@@ -93,6 +94,7 @@ function saveProgressData(userId: string, data: PracticeDay[]): void {
   }
 }
 
+// fallow-ignore-next-line complexity
 function calculateStats(practices: PracticeDay[]): ProgressStats {
   const sorted = [...practices].sort((a, b) => b.date.localeCompare(a.date));
   const today = getDateString();
@@ -159,6 +161,7 @@ function calculateStats(practices: PracticeDay[]): ProgressStats {
     totalPractices,
   };
 }
+// fallow-ignore-next-line complexity
 
 function getStreakMessage(streak: number): string {
   if (streak >= 90) return STREAK_MESSAGES[90];

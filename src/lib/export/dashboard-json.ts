@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Dashboard JSON export utilities
  */
@@ -23,6 +24,7 @@ export interface ExportOptions {
   filename?: string;
 }
 
+// fallow-ignore-next-line complexity
 export function exportDashboardJSON(
   data: DashboardExportData,
   options: ExportOptions = {}

@@ -51,6 +51,7 @@ const INITIAL: FormState = {
 
 type FieldErrors = Partial<Record<keyof FormState, string>>;
 
+// fallow-ignore-next-line complexity
 function validate(state: FormState): FieldErrors {
   const errs: FieldErrors = {};
   if (state.fullName.trim().length < 3) errs.fullName = 'Nome deve ter ao menos 3 caracteres';
@@ -63,6 +64,7 @@ function validate(state: FormState): FieldErrors {
   return errs;
 }
 
+// fallow-ignore-next-line complexity
 export function ClientForm() {
   const router = useRouter();
   const [state, setState] = useState<FormState>(INITIAL);

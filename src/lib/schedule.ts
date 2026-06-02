@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Schedule module - stub for reminder system
  * TODO: Implement reminder system when needed

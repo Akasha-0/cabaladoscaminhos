@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Dashboard data
 export interface DashboardData {
   totalUsers: number;

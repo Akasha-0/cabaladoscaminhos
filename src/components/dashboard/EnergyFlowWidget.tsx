@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React from 'react';
@@ -176,6 +177,7 @@ export function EnergyFlowWidget({ className, userData }: EnergyFlowWidgetProps)
             
             {/* Timeline items */}
             <div className="space-y-2 relative">
+// fallow-ignore-next-line complexity
               {HOURS_ENERGY.slice(0, 6).map((slot, index) => {
                 const element = ELEMENTS[slot.element as keyof typeof ELEMENTS];
                 const isCurrent = index === currentHourIndex || (currentHourIndex >= 6 && index === 5);

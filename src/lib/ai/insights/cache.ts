@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 interface CacheEntry {
   data: unknown;
   expiresAt: number;

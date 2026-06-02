@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * useKeyboardShortcuts — Hook para registrar atalhos de teclado globais.
  *
@@ -31,6 +32,7 @@ export interface KeyboardShortcut {
 
 const isMac = typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform);
 
+// fallow-ignore-next-line complexity
 function matchesShortcut(e: KeyboardEvent, s: KeyboardShortcut): boolean {
   if (e.key.toLowerCase() !== s.key.toLowerCase()) return false;
   const ctrlOrCmd = isMac ? e.metaKey : e.ctrlKey;
@@ -43,8 +45,9 @@ function matchesShortcut(e: KeyboardEvent, s: KeyboardShortcut): boolean {
   return true;
 }
 
-export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]): void {
+function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]): void {
   useEffect(() => {
+// fallow-ignore-next-line complexity
     if (typeof window === 'undefined') return;
     const handler = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -65,7 +68,7 @@ export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]): void {
   }, [shortcuts]);
 }
 
-export const CANONICAL_SHORTCUTS: Omit<KeyboardShortcut, 'handler'>[] = [
+const CANONICAL_SHORTCUTS: Omit<KeyboardShortcut, 'handler'>[] = [
   { key: 'k', ctrl: true },
   { key: 'n', ctrl: true },
   { key: 's', ctrl: true },

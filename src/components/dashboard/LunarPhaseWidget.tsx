@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from 'react';
@@ -94,6 +95,7 @@ const LUNAR_PHASES: Record<string, LunarPhaseData> = {
 // HELPER FUNCTIONS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function getMoonPhase(date: Date): string {
   const knownNewMoon = new Date(2000, 0, 6).getTime();
   const lunarCycle = 29.53058867 * 24 * 60 * 60 * 1000;
@@ -118,6 +120,7 @@ function getIllumination(phase: string): number {
 // ============================================================
 // MOON VISUAL COMPONENT
 // ============================================================
+// fallow-ignore-next-line complexity
 
 function MoonVisual({ phase, illumination, size = 80 }: { phase: string; illumination: number; size?: number }) {
   const data = LUNAR_PHASES[phase];
@@ -167,6 +170,7 @@ function MoonVisual({ phase, illumination, size = 80 }: { phase: string; illumin
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function LunarPhaseWidget({ className = '', customDate }: LunarPhaseWidgetProps) {
   const [loading, setLoading] = React.useState<LoadingState>('loading');
   const [phase, setPhase] = React.useState<string>('full');

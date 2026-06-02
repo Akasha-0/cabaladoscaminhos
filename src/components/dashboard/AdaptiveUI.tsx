@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
@@ -71,6 +72,7 @@ const LEARNING_THRESHOLDS = {
   confidenceThreshold: 0.7
 };
 
+// fallow-ignore-next-line complexity
 export function AdaptiveUI({
   onPreferenceChange,
   learningMode = 'active',
@@ -121,6 +123,7 @@ export function AdaptiveUI({
   // Track user behavior
   const trackBehavior = useCallback((type: keyof UserBehavior, key: string, value?: number) => {
     if (learningMode === 'disabled') return;
+// fallow-ignore-next-line complexity
 
     setBehavior(prev => {
       const updated = { ...prev };

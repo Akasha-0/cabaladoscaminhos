@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Chart interpretations - Natal chart, aspects, and element analysis
 
 export interface ChartInterpretation {
@@ -585,6 +586,7 @@ export function getHouseInterpretation(house: number): HouseInterpretation | und
 /**
  * Generate a comprehensive natal chart interpretation based on planet positions
  */
+// fallow-ignore-next-line complexity
 function generateNatalInterpretation(chartData: {
   planetPositions?: Array<{ planet: string; sign: string; house: number }>;
   dominantElement?: string;

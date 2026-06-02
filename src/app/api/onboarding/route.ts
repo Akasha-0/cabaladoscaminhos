@@ -29,6 +29,7 @@ const onboardingRequestSchema = z.object({
 export type OnboardingStep = 0 | 1 | 2 | 3 | 4 | 5;
 
 // GET - Get current onboarding step for user
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

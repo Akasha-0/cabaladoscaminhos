@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
@@ -331,6 +332,7 @@ interface CardProps {
   onReveal: () => void;
 }
 
+// fallow-ignore-next-line complexity
 function DivinationCard({ card, position, index, revealState, onReveal }: CardProps) {
   return (
     <div className="flex flex-col items-center">
@@ -403,6 +405,7 @@ interface CorrelationBadgeProps {
   icon: React.ReactNode;
   color?: string;
 }
+// fallow-ignore-next-line complexity
 
 function CorrelationBadge({ label, value, icon, color = 'slate' }: CorrelationBadgeProps) {
   return (

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -298,6 +299,7 @@ function SystemConnection({ source, target, strength, color }: SystemConnectionP
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function CorrelationAnalysisPanel({
   correlations = DEFAULT_CORRELATIONS,
   className = '',

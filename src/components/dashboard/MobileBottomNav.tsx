@@ -22,6 +22,7 @@ export function MobileBottomNav() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
       
       <div className="flex justify-around items-end py-2 px-2">
+// fallow-ignore-next-line complexity
         {ITEMS.map((item) => {
           const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
           

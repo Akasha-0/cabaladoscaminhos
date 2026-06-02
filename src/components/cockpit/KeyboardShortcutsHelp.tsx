@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * KeyboardShortcutsHelp — Dialog que lista todos os atalhos do cockpit.
  * Acionado pelo atalho `?` no KeyboardShortcutsLayer.
@@ -14,7 +15,7 @@ export interface ShortcutEntry {
   scope?: 'global' | 'cockpit' | 'mesa-real';
 }
 
-export const CANONICAL_ENTRIES: ShortcutEntry[] = [
+const CANONICAL_ENTRIES: ShortcutEntry[] = [
   { keys: 'Ctrl + K', description: 'Focar busca de consulentes', scope: 'global' },
   { keys: 'Ctrl + N', description: 'Novo consulente', scope: 'cockpit' },
   { keys: 'Ctrl + S', description: 'Salvar formulário ativo', scope: 'cockpit' },
@@ -22,7 +23,7 @@ export const CANONICAL_ENTRIES: ShortcutEntry[] = [
   { keys: '?', description: 'Mostrar esta ajuda', scope: 'global' },
 ];
 
-export function KeyboardShortcutsHelp({
+function KeyboardShortcutsHelp({
   open,
   onClose,
 }: {

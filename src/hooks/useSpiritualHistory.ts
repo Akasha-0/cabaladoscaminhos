@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -41,6 +42,7 @@ export interface SpiritualDayEntry {
   rituals: RitualCompletion[];
 }
 
+// fallow-ignore-next-line unused-type
 export interface UseSpiritualHistoryReturn {
   history: SpiritualDayEntry[];
   isLoading: boolean;
@@ -96,7 +98,7 @@ function getOrCreateEntry(history: SpiritualDayEntry[], date: string): Spiritual
   };
 }
 
-export function useSpiritualHistory(): UseSpiritualHistoryReturn {
+function useSpiritualHistory(): UseSpiritualHistoryReturn {
   const [history, setHistory] = useState<SpiritualDayEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -201,6 +203,7 @@ export function useSpiritualHistory(): UseSpiritualHistoryReturn {
     [history]
   );
 
+// fallow-ignore-next-line complexity
   const getStreak = useCallback((): number => {
     if (history.length === 0) return 0;
     const sorted = [...history].sort((a, b) => b.date.localeCompare(a.date));

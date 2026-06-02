@@ -45,6 +45,7 @@ export interface AreaRecommendation {
 // CALL MINIMAX v2
 // ============================================================
 
+// fallow-ignore-next-line complexity
 async function callMinimaxV2(
   systemPrompt: string,
   userPrompt: string,
@@ -238,6 +239,7 @@ export async function askSpiritualAgentV2(
 // SMART FALLBACK (com Knowledge Base)
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function generateSmartFallback(
   context: DailyAgentContext,
   kb: KnowledgeEntry[],

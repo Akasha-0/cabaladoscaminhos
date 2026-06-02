@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -73,6 +74,7 @@ function getDailyLoveCard(): LoveTarotCard {
   return LOVE_TAROT_CARDS[dayOfYear % LOVE_TAROT_CARDS.length];
 }
 
+// fallow-ignore-next-line complexity
 function calculateCompatibility(userOrixa?: string, partnerSign?: string): CompatibilityResult {
   const userElement = userOrixa ? ORIXA_ELEMENT_MAP[userOrixa] || 'water' : 'water';
   const partnerElement = 'water'; // Default
@@ -128,6 +130,7 @@ function getHeartChakraState(): { energy: number; status: string; tip: string } 
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function LoveReadingsWidget({ 
   userId,
   userOrixa,

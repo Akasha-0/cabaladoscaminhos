@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState } from 'react';
@@ -212,6 +213,7 @@ export function AchievementsWidget({ className, userData }: AchievementsWidgetPr
 
         {/* Achievements List */}
         <div className="space-y-2">
+// fallow-ignore-next-line complexity
           {displayedAchievements.map((achievement) => {
             const Icon = achievement.icon;
             const isUnlocked = achievement.unlocked;

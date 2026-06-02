@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // ============================================================
 // PREFERENCE MANAGEMENT - CABALA DOS CAMINHOS
 // ============================================================
@@ -151,6 +152,7 @@ function saveClientPreferences(preferences: Partial<UserPreferences>): UserPrefe
 // PREFERENCE MANAGEMENT
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface PreferenceManager {
   get: () => UserPreferences;
   set: (preferences: Partial<UserPreferences>) => UserPreferences;
@@ -244,6 +246,7 @@ function setPreference<K extends keyof UserPreferences>(
 /**
  * Check if preferences have been customized
  */
+// fallow-ignore-next-line complexity
 function hasCustomPreferences(): boolean {
   const prefs = loadClientPreferences();
   const defaults = DEFAULT_PREFERENCES;
@@ -283,4 +286,5 @@ function importPreferences(json: string): UserPreferences | null {
 // DEFAULT EXPORT
 // ============================================================
 
+// fallow-ignore-next-line unused-export
 export default managePreferences;

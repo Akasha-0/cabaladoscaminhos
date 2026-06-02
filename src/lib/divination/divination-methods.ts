@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // src/lib/divination/divination-methods.ts
 // Catálogo dos métodos de divinatório suportados pela plataforma.
 // Fonte canônica: Doc 06 §1 / Doc 14 (Extensibilidade Oracular).

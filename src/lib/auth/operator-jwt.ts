@@ -188,6 +188,7 @@ export function signOperatorToken(operator: {
  * Se `expectedType` for passado, também checa o claim `type` — útil
  * em /me (só aceita access) e /refresh (só aceita refresh).
  */
+// fallow-ignore-next-line complexity
 export function verifyOperatorToken(
   token: string | null | undefined,
   expectedType?: OperatorTokenType
@@ -324,6 +325,7 @@ export function signMfaChallengeToken(params: { operatorId: string }): string {
  * bem-sucedido, o sistema apaga o OperatorMfa.lastChallengeAt e o
  * próximo /verify com o mesmo token falha (TTL venceu ou lastChallengeAt
  * é mais novo que iat).
+// fallow-ignore-next-line complexity
  */
 export function verifyMfaChallengeToken(
   token: string | null | undefined

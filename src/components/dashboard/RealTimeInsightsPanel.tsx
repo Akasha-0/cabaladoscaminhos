@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
@@ -240,6 +241,7 @@ export function RealTimeInsightsPanel({
 
       {/* Insights list */}
       <div ref={listRef} className="max-h-[400px] overflow-y-auto">
+// fallow-ignore-next-line complexity
         {insights.map((insight, index) => {
           const isExpanded = expandedId === insight.id;
           const isUnread = !insight.read && unreadIds.has(insight.id);

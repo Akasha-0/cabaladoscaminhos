@@ -1,4 +1,3 @@
-// fallow-ignore-next-line unresolved-import
 import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
 

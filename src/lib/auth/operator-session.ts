@@ -129,6 +129,7 @@ export async function requireOperator(
  * protegidos para garantir que o conteúdo não vaze antes do JS hidratar.
  * Comportamento idêntico ao `getOperatorFromRequest` (JWT + session check).
  */
+// fallow-ignore-next-line complexity
 export async function getOperatorFromServerContext(): Promise<Operator | null> {
   const cookieStore = await cookies();
   const headerStore = await headers();

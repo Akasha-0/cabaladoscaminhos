@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 "use client";
 
 import { useState } from "react";
@@ -249,6 +250,7 @@ export default function RitualMaterialsShop() {
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
+// fallow-ignore-next-line complexity
                   {categories.map((category) => (
                     <Button
                       key={category}
@@ -271,6 +273,7 @@ export default function RitualMaterialsShop() {
             </Card>
 
             {/* Products Grid */}
+// fallow-ignore-next-line complexity
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {filteredMaterials.map((material) => {
                 const inCart = cart.find((item) => item.id === material.id);

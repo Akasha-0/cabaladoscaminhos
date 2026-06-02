@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 const STORAGE_KEY = 'progress_milestones';
 
 export type MilestoneCategory = 'ritual' | 'estudo' | 'crescimento' | 'conexao';

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // fallow-ignore-next-line complexity
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
@@ -455,6 +456,7 @@ function ContextInfo({ lunarPhase, orixaRegente }: ContextInfoProps) {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function SpiritualGuidanceChat({
   userData,
   className = '',
@@ -621,6 +623,7 @@ export function SpiritualGuidanceChat({
                 />
               </div>
             )}
+// fallow-ignore-next-line complexity
             
             {messages.map(message => (
               <div

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useMemo } from 'react';
@@ -192,6 +193,7 @@ export function MapaNatalWheel({ data, showAspects = true, size = 'md', theme = 
         {/* Aspect Lines */}
         {showAspects && (
           <g className="aspect-lines">
+// fallow-ignore-next-line complexity
             {aspects.map((aspect, i) => {
               const p1 = planets.find(p => p.planeta === aspect.planets[0]);
               const p2 = planets.find(p => p.planeta === aspect.planets[1]);

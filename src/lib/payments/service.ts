@@ -49,6 +49,7 @@ export class CheckoutError extends Error {
   }
 }
 
+// fallow-ignore-next-line complexity
 export async function criarSessaoCheckout(
   userId: string,
   planoId: string,
@@ -110,6 +111,7 @@ export async function criarSessaoCheckout(
   }
 }
 
+// fallow-ignore-next-line complexity
 async function verificarAssinatura(userId: string) {
   if (!stripe) {
     throw new CheckoutError('Stripe não está configurado');

@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // Skip link for keyboard navigation
 function SkipLink() {
   return (

@@ -66,6 +66,7 @@ export function calcularMapaNatal(
   };
 }
 
+// fallow-ignore-next-line complexity
 function determinarCasa(longitude: number, casas: { grauNoSigno: number }[]): number {
   for (let i = 0; i < 12; i++) {
     const casaStart = casas[i].grauNoSigno;

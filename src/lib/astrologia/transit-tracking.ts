@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import type { Transito } from './trânsitos/calculator';
 
 const STORAGE_KEY = 'transit_tracking';

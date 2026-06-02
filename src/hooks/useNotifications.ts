@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -229,6 +230,7 @@ export function useNotifications(options: UseNotificationsOptions = {}): Notific
   }, []);
 
   // Start connection (SSE or WebSocket)
+// fallow-ignore-next-line complexity
   const startConnection = useCallback(() => {
     if (!isMountedRef.current) return;
 

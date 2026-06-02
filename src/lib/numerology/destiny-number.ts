@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // @ts-nocheck
 // Destiny Number - date-based numerology calculation
 

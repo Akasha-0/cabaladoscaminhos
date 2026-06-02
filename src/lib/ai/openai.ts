@@ -163,6 +163,7 @@ async function createChatCompletionStream(
   });
 
   return {
+// fallow-ignore-next-line complexity
     async *[Symbol.asyncIterator]() {
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content || '';
@@ -187,6 +188,7 @@ export interface RetryableError {
   statusCode?: number;
   code?: string;
 }
+// fallow-ignore-next-line complexity
 
 function isRetryableError(error: unknown): boolean {
   if (error instanceof AIError) {

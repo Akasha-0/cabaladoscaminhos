@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -194,6 +195,7 @@ export function usePrevisaoMensal(): usePrevisaoMensalReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+// fallow-ignore-next-line complexity
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);

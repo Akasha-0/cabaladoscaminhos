@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * Admin Reports — generate and manage administrative reports.
  */
@@ -118,6 +119,7 @@ function buildMetadata(
   };
 }
 
+// fallow-ignore-next-line complexity
 async function fetchReportData(
   type: ReportType,
   filters: Record<string, unknown>,

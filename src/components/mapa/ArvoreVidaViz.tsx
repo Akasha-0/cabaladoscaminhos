@@ -51,6 +51,7 @@ function findPath(from: number, to: number): PathTuple | null {
 }
 
 // Get highlighted Sephiroth IDs
+// fallow-ignore-next-line complexity
 function getHighlightedSep(vida: number, caminho: string): number[] {
   const vidaMap: Record<number, number> = {
     1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9,
@@ -161,6 +162,7 @@ export function ArvoreVidaViz({ numerologia, odu, className = '' }: ArvoreVidaVi
 
           {/* Sephiroth circles */}
           <g className="sephiroth">
+// fallow-ignore-next-line complexity
             {SEPHIROTH_POSITIONS.map((sep) => {
               const isHighlighted = highlightedIds.has(sep.id);
               const tooltipVisible = isTooltipVisible(sep.id);

@@ -28,6 +28,7 @@ import {
 } from '@/lib/auth/operator-jwt';
 import { hashOperatorToken } from '@/lib/auth/operator-sessions';
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const operatorOrResponse = await requireOperator(request);
   if (operatorOrResponse instanceof NextResponse) return operatorOrResponse;

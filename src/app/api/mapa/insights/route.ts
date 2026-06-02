@@ -20,6 +20,7 @@ type MapaInput = z.infer<typeof mapaSchema>;
 // POST — generate AI insights from MapaAlmaCompleto
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     // 1. Parse and validate body

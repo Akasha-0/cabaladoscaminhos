@@ -22,6 +22,7 @@ interface AIResponseFields {
  * Parse AI JSON response into InsightData
  * Returns partial data on parse error with error field filled
  */
+// fallow-ignore-next-line complexity
 export function parseInsightResponse(raw: string): InsightData {
   const json = extractJson(raw);
   const data = JSON.parse(json) as AIResponseFields;

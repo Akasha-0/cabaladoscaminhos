@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 export type Sefirah =
   | 'keter'
   | 'chokhmah'

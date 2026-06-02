@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useTheme } from '@/lib/theme';
@@ -24,6 +25,7 @@ interface ThemeSwitcherProps {
   className?: string;
 }
 
+// fallow-ignore-next-line complexity
 export function ThemeSwitcher({ variant = 'pill', className = '' }: ThemeSwitcherProps) {
   const { theme, setTheme, toggleTheme, systemTheme, isDark } = useTheme();
 

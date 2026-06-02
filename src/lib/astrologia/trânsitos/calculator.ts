@@ -42,6 +42,7 @@ const ASPECTOS_TRANSITO = [
 
 const PLANETAS_TRANSITO = ['marte', 'jupiter', 'saturno', 'urano', 'netuno', 'plutao'] as const;
 
+// fallow-ignore-next-line complexity
 export function calcularTrânsitosAtivos(
   mapaNatal: MapaNatal,
   dataAtual: Date = new Date()

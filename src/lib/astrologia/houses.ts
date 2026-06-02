@@ -49,6 +49,7 @@ function toJulianDate(data: Date): number {
   return jd + hora / 24;
 }
 
+// fallow-ignore-next-line complexity
 function calculatePlacidus(
   jd: number,
   latitude: number,

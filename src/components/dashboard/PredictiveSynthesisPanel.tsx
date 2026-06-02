@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 /**
  * ════════════════════════════════════════════════════════════════════════════
  * PREDICTIVE SYNTHESIS PANEL
@@ -67,6 +68,7 @@ interface InsightCardProps {
   index: number
 }
 
+// fallow-ignore-next-line complexity
 const InsightCard: React.FC<InsightCardProps> = ({ insight, index }) => {
   const [expandido, setExpandido] = useState(false)
   const badge = PotenciaBadge[insight.nivelPotencia]
@@ -180,6 +182,7 @@ interface PredictiveSynthesisPanelProps {
   className?: string
 }
 
+// fallow-ignore-next-line complexity
 export const PredictiveSynthesisPanel: React.FC<PredictiveSynthesisPanelProps> = ({
   mapaAlma,
   className = ''

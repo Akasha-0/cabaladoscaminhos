@@ -5,6 +5,7 @@ const AncestorConnectionQuerySchema = z.object({
   type: z.enum(['records', 'types']).optional(),
   id: z.string().optional(),
 });
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

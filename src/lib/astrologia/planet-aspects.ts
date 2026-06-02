@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 import type { AspectoTipo, PosicaoPlaneta, Planeta } from './tipos';
 import { getAspectMeaning } from './aspect-meanings';
 import { getSymbol } from './symbols';

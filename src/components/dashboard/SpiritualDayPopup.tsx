@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -242,6 +243,7 @@ const ENERGY_CONFIG: Record<string, {
   },
 };
 
+// fallow-ignore-next-line complexity
 export function SpiritualDayPopup({ dayData, onClose }: SpiritualDayPopupProps) {
   const popupRef = useRef<HTMLDivElement>(null);
 

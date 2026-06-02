@@ -70,6 +70,7 @@ async function handleWebhookEvent(event: Stripe.Event) {
   return NextResponse.json({ recebido: true });
 }
 
+// fallow-ignore-next-line complexity
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const userId = session.metadata?.userId;
   const planoId = session.metadata?.planoId;

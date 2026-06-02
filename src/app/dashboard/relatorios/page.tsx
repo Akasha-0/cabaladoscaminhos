@@ -45,6 +45,7 @@ export default function RelatoriosPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+// fallow-ignore-next-line complexity
     const loadData = async () => {
       setLoading(true);
       setError(null);

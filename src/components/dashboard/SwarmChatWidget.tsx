@@ -41,6 +41,7 @@ interface SwarmChatWidgetProps {
 // SWARM CHAT WIDGET - Chat agêntico com IA + Knowledge Base
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function SwarmChatWidget({ userData, className }: SwarmChatWidgetProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');

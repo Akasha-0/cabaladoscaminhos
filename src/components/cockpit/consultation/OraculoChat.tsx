@@ -87,6 +87,7 @@ export function OraculoChat({ readingId, clientName }: OraculoChatProps) {
     }
   }
 
+// fallow-ignore-next-line complexity
   async function handleSend(question: string) {
     if (streaming) return;
     setError(null);

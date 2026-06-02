@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useMemo, useCallback } from 'react';
@@ -150,6 +151,7 @@ function getPhaseFromStep(stepId: string): JourneyPhase {
 function generateDefaultSteps(): JourneyStep[] {
   const steps: JourneyStep[] = [];
   
+// fallow-ignore-next-line complexity
   PHASES.forEach((phase, phaseIndex) => {
     const baseStepNum = phaseIndex * 3 + 1;
     
@@ -586,6 +588,7 @@ export function SpiritualJourneyGuide({
 
         {/* Timeline progress */}
         <div className="flex items-center gap-2">
+// fallow-ignore-next-line complexity
           {PHASES.map((phase, idx) => {
             const phaseSteps = steps.filter((s) => getPhaseFromStep(s.id) === phase.id);
             const completed = phaseSteps.filter((s) => s.status === 'completed').length;

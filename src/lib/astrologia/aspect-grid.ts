@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
  import type { Aspecto, AspectoTipo, PosicaoPlaneta } from './tipos';
 
 export interface AspectGridCell {

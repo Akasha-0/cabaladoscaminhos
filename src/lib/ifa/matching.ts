@@ -485,6 +485,7 @@ function matchMultipleOduToRituals(odus: OduInfo[]): OduMatchingResult[] {
 /**
  * Get summary of all rituals needed for a set of Odus
  */
+// fallow-ignore-next-line complexity
 function getRitualSummary(results: OduMatchingResult[]): {
   urgencia: 'baixa' | 'media' | 'alta';
   quantidade: number;

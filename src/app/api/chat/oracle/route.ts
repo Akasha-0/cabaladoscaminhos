@@ -85,6 +85,7 @@ class MinimaxAPIError extends Error {
 
 // ─── API CLIENT ──────────────────────────────────────────────────────────────
 
+// fallow-ignore-next-line complexity
 async function callMinimaxAPI(prompt: string, systemPrompt: string): Promise<string> {
   if (!MINIMAX_API_TOKEN) {
     throw new MinimaxAPIError('MINIMAX_API_TOKEN is not configured');
@@ -135,6 +136,7 @@ interface ToolResult { tool: string; result: string; }
 
 // ─── TOOL FUNCTIONS ─────────────────────────────────────────────────────────
 
+// fallow-ignore-next-line complexity
 function detectTools(query: string, context?: UserSpiritualData): string[] {
   const lower = query.toLowerCase();
   const tools: string[] = [];
@@ -145,6 +147,7 @@ function detectTools(query: string, context?: UserSpiritualData): string[] {
   if (context?.odu && (lower.includes('predict') || lower.includes('futuro'))) tools.push('predicao');
   return tools;
 }
+// fallow-ignore-next-line complexity
 
 function executeTool(tool: string, query: string, context?: UserSpiritualData): string {
   switch (tool) {

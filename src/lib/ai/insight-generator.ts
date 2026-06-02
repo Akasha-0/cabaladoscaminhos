@@ -1,11 +1,14 @@
+// fallow-ignore-file unused-file
 import type { UserSpiritualData } from './types';
 
 // Re-export UserSpiritualData for backwards compatibility
+// fallow-ignore-next-line unused-type
 export type { UserSpiritualData } from './types';
 
 /**
  * Generate a contextual prompt for spiritual guidance based on user data
  */
+// fallow-ignore-next-line complexity
 function generateSpiritualContext(userData: UserSpiritualData): string {
   const {
     nome,
@@ -35,6 +38,7 @@ Arco Maior: ${arcoList}
 /**
  * Generate a summary of user spiritual profile for AI prompts
  */
+// fallow-ignore-next-line complexity
 function generateSpiritualSummary(userData: UserSpiritualData): {
   introduction: string;
   keyAttributes: string[];

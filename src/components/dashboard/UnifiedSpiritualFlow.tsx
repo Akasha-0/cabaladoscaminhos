@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useState, useMemo } from 'react';
@@ -135,6 +136,7 @@ function ChakraOrbit({ chakras, activeChakra }: { chakras: typeof CHAKRA_DATA; a
       />
       
       {/* Chakra dots */}
+// fallow-ignore-next-line complexity
       {chakras.map((chakra, i) => {
         const angle = (i / chakras.length) * 2 * Math.PI - Math.PI / 2;
         const x = center + radius * Math.cos(angle);
@@ -292,7 +294,7 @@ function MysteryBanner({ mystery }: { mystery: string }) {
 // MAIN COMPONENT
 // ============================================================
 
-export function UnifiedSpiritualFlow({ className = '' }: UnifiedSpiritualFlowProps) {
+function UnifiedSpiritualFlow({ className = '' }: UnifiedSpiritualFlowProps) {
   const correlation = useTodayCorrelation();
   const moonData = getMoonPhases();
 

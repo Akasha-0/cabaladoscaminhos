@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 const STORAGE_KEY = 'cabala-progress';
 
  

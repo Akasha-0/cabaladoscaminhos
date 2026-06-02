@@ -164,6 +164,7 @@ async function handleSubscriptionDeleted(subscription: {
  * Handle customer.subscription.updated event
  * Updates subscription status when modified (e.g., plan change, payment issues)
  */
+// fallow-ignore-next-line complexity
 async function handleSubscriptionUpdated(subscription: {
   id: string;
   customer: string;
@@ -237,6 +238,7 @@ async function handleSubscriptionUpdated(subscription: {
 }
 
 // POST /api/stripe/webhook - Handle Stripe webhook events
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   // Return 200 quickly - Stripe expects acknowledgment
   const body = await request.text();

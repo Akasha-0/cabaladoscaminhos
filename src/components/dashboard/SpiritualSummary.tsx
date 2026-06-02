@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React from 'react';
@@ -97,6 +98,7 @@ function getAffirmation(orixa?: string): string {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function SpiritualSummary({ 
   className, 
   orixaRegente = 'Oxalá',

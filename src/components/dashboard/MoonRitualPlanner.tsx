@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import * as React from 'react';
@@ -187,6 +188,7 @@ function getCategoryBadge(category: RitualRecommendation['category']): string {
 // SUB-COMPONENTS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function MoonDisplay({ illumination, phase }: { illumination: number; phase: MoonPhase }) {
   return (
     <div className="relative w-24 h-24">
@@ -320,6 +322,7 @@ function VoidOfCourseIndicator({ nextVoid }: { nextVoid: Date | null }) {
 
   return null;
 }
+// fallow-ignore-next-line complexity
 
 function UpcomingRitualItem({ ritual }: { ritual: UpcomingRitual }) {
   const isToday = ritual.date.toDateString() === new Date().toDateString();

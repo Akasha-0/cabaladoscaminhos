@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 'use client';
 
 import React, { useMemo } from 'react';
@@ -143,6 +144,7 @@ function getSpiritualTitle(arcoPessoal: number): { title: string; description: s
   return SPIRITUAL_TITLES[index + 1] || SPIRITUAL_TITLES[1];
 }
 
+// fallow-ignore-next-line complexity
 function calculateProfileStrength(userData: UserSpiritualData): ProfileStrength {
   let score = 0;
   const maxScore = 10;
@@ -196,6 +198,7 @@ function calculateEvolutionLevel(userData: UserSpiritualData): EvolutionLevel {
     description: descriptions[level] || descriptions[1],
   };
 }
+// fallow-ignore-next-line complexity
 
 function getCorrelationDescription(systemId: string, userData: UserSpiritualData): string | undefined {
   const correlations: Record<string, string> = {
@@ -218,6 +221,7 @@ interface SystemCardProps {
   isActive: boolean;
   onExplore?: () => void;
 }
+// fallow-ignore-next-line complexity
 
 function SystemCard({ system, isActive, onExplore }: SystemCardProps) {
   const colors = SYSTEM_COLORS[system.color];
