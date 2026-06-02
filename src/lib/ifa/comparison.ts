@@ -428,9 +428,9 @@ function generateId(): string {
 }
 
 /**
-// fallow-ignore-next-line complexity
  * Quick comparison of two Odu numbers (returns basic compatibility)
  */
+// fallow-ignore-next-line complexity
 export function compareOduNumbers(
   numeroA: number,
   numeroB: number

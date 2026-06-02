@@ -6,11 +6,8 @@
 // ============================================================
 
 import {
-  LIFE_AREAS,
   LifeArea,
   LifeAreaId,
-  LIFE_AREA_ORDER,
-  getLifeArea,
   getAllLifeAreas,
 } from './life-areas-engine';
 
@@ -158,225 +155,18 @@ function getIntensityEmoji(intensity: AreaCorrelation['intensidade']): string {
 // MAIN CORRELATION FUNCTION
 // ============================================================
 
-// fallow-ignore-next-line complexity
+// ============================================================
+// MAIN CORRELATION FUNCTION
+// ============================================================
 export function correlateLifeAreas(user: UserProfile): LifeMapResult {
-  const correlations: AreaCorrelation[] = [];
-
-  for (const area of getAllLifeAreas()) {
-    const matches: AreaMatch[] = [];
-    let totalScore = 0;
-    let matchCount = 0;
-
-    // NUMEROLOGIA - Caminho de Vida
-    const numAreas = NUMEROLOGY_AREAS[user.caminhoDeVida] || [];
-    if (numAreas.includes(area.id)) {
-      const resonance = 85;
-      matches.push({
-        source: 'numerologia',
-        category: 'Caminho de Vida',
-        value: String(user.caminhoDeVida),
-        resonance,
-        interpretation: `Seu caminho de vida ${user.caminhoDeVida} vibra fortemente com a área de ${area.name.toLowerCase()}.`,
-      });
-      totalScore += resonance;
-      matchCount++;
-    }
-
-    // NUMEROLOGIA - Número de Destino
-    const destAreas = NUMEROLOGY_AREAS[user.numeroDestino] || [];
-    if (destAreas.includes(area.id)) {
-      const resonance = 80;
-      matches.push({
-        source: 'numerologia',
-        category: 'Número de Destino',
-        value: String(user.numeroDestino),
-        resonance,
-        interpretation: `Seu número de destino ${user.numeroDestino} alinha com esta área, apontando para um campo de realização natural.`,
-      });
-      totalScore += resonance;
-      matchCount++;
-    }
-
-    // ASTROLOGIA - Signo Solar
-    const signoLower = normalize(user.signoSolar);
-    const signoAreas = ASTROLOGY_SIGN_AREAS[signoLower] || [];
-    if (signoAreas.includes(area.id)) {
-      const resonance = 75;
-      matches.push({
-        source: 'astrologia',
-        category: 'Signo Solar',
-        value: user.signoSolar,
-        resonance,
-        interpretation: `Seu signo ${user.signoSolar} tem afinidade natural com ${area.name.toLowerCase()}.`,
-      });
-      totalScore += resonance;
-      matchCount++;
-    }
-
-    // ASTROLOGIA - Planetas no signo (sol, ascendente, etc)
-    if (user.planetaDominante) {
-      const planetaLower = normalize(user.planetaDominante);
-      const planetaAreas = ASTROLOGY_PLANET_AREAS[planetaLower] || [];
-      if (planetaAreas.includes(area.id)) {
-        const resonance = 80;
-        matches.push({
-          source: 'astrologia',
-          category: 'Planeta Dominante',
-          value: user.planetaDominante,
-          resonance,
-          interpretation: `${user.planetaDominante} rege diretamente aspectos de ${area.name.toLowerCase()}, ativando esta área de forma intensa.`,
-        });
-        totalScore += resonance;
-        matchCount++;
-      }
-    }
-
-    // ORIXÁ
-    const orixaKey = getOrixaMatches(user.orixaRegente);
-    if (orixaKey) {
-      const orixaAreas = ORIXAS_AREAS[orixaKey] || [];
-      if (orixaAreas.includes(area.id)) {
-        const resonance = 90;
-        matches.push({
-          source: 'orixa',
-          category: 'Orixá Regente',
-          value: user.orixaRegente,
-          resonance,
-          interpretation: `${user.orixaRegente} é o guardião desta área na sua vida, trazendo proteção e direcionamento.`,
-        });
-        totalScore += resonance;
-        matchCount++;
-      }
-    }
-
-    // ODU
-    const oduLower = normalize(user.oduNascimento);
-    if (area.odu.primaryOdus.some(o => normalize(o) === oduLower)) {
-      const resonance = 85;
-      matches.push({
-        source: 'odu',
-        category: 'Odu de Nascimento',
-        value: user.oduNascimento,
-        resonance,
-        interpretation: `O Odu ${user.oduNascimento} traz suas lições e bênçãos especificamente para esta área.`,
-      });
-      totalScore += resonance;
-      matchCount++;
-    } else if (area.odu.favorableOdus.some(o => normalize(o) === oduLower)) {
-      const resonance = 65;
-      matches.push({
-        source: 'odu',
-        category: 'Odu Favorável',
-        value: user.oduNascimento,
-        resonance,
-        interpretation: `${user.oduNascimento} é um Odu favorável para esta área, trazendo fluidez.`,
-      });
-      totalScore += resonance;
-      matchCount++;
-    }
-
-    // CHAKRA
-    if (user.chakraDominante && area.chakra.primary.some(c => normalize(c).includes(normalize(user.chakraDominante || '')))) {
-      const resonance = 70;
-      matches.push({
-        source: 'chakra',
-        category: 'Chakra Dominante',
-        value: user.chakraDominante,
-        resonance,
-        interpretation: `Seu chakra ${user.chakraDominante} rege energeticamente esta área.`,
-      });
-      totalScore += resonance;
-      matchCount++;
-    }
-
-    // ELEMENTO
-    if (user.elementoDominante) {
-      const elemLower = normalize(user.elementoDominante);
-      const elemAreas = ELEMENT_AREAS[elemLower] || [];
-      if (elemAreas.includes(area.id)) {
-        const resonance = 60;
-        matches.push({
-          source: 'elemento',
-          category: 'Elemento Dominante',
-          value: user.elementoDominante,
-          resonance,
-          interpretation: `O elemento ${user.elementoDominante} potencializa esta área, trazendo vitalidade.`,
-        });
-        totalScore += resonance;
-        matchCount++;
-      }
-    }
-
-    // ANO PESSOAL
-    if (user.anoPessoal) {
-      const anoAreas = NUMEROLOGY_AREAS[user.anoPessoal] || [];
-      if (anoAreas.includes(area.id)) {
-        const resonance = 50;
-        matches.push({
-          source: 'numerologia',
-          category: 'Ano Pessoal',
-          value: String(user.anoPessoal),
-          resonance,
-          interpretation: `Seu ano pessoal ${user.anoPessoal} traz foco especial para esta área.`,
-        });
-        totalScore += resonance;
-        matchCount++;
-      }
-    }
-
-    // Calculate final score
-    const score = matchCount > 0 ? Math.min(100, Math.round(totalScore / matchCount)) : 25;
-
-    // Gifts and challenges
-    const gifts = area.astrology.keywords.slice(0, 3);
-    const challenges = [
-      `Trabalhar a energia de ${area.astrology.signs[0] || 'transformação'}`,
-      `Equilibrar o elemento ${area.element.primary}`,
-      `Honrar o Odu ${area.odu.primaryOdus[0]}`,
-    ];
-
-    // Build guidance text
-    let guidance = '';
-    if (score >= 70) {
-      guidance = `Esta é uma área de poder na sua vida. Você tem recursos internos para brilhar e contribuir significativamente. ${area.practices[0]} pode amplificar ainda mais.`;
-    } else if (score >= 50) {
-      guidance = `Esta é uma área de equilíbrio. Continue cultivando-a com atenção e presença. ${area.practices[0]} é recomendado.`;
-    } else {
-      guidance = `Esta área pede atenção e cura. Seja gentil consigo mesmo(a) ao desenvolvê-la. ${area.questions[0]} é um bom ponto de partida.`;
-    }
-
-    correlations.push({
-      area,
-      score,
-      intensidade: classifyIntensity(score),
-      matches: matches.sort((a, b) => b.resonance - a.resonance),
-      challenges,
-      gifts,
-      guidance,
-    });
-  }
-
+  // Compute correlation for each life area
+  const correlations = getAllLifeAreas().map(area => computeAreaCorrelation(area, user));
   // Sort by score descending
   correlations.sort((a, b) => b.score - a.score);
-
-  // Identify top, growth and shadow areas
-  const topAreas = correlations
-    .filter(c => c.score >= 70)
-    .map(c => c.area.id)
-    .slice(0, 3);
-
-  const shadowAreas = correlations
-    .filter(c => c.score < 50)
-    .map(c => c.area.id)
-    .slice(0, 3);
-
-  const growthAreas = correlations
-    .filter(c => c.score >= 50 && c.score < 70)
-    .map(c => c.area.id)
-    .slice(0, 3);
-
+  // Classify areas
+  const { topAreas, growthAreas, shadowAreas } = classifyAreas(correlations);
+  // Generate synthesis
   const synthesis = generateSynthesis(correlations, user);
-
   return {
     user,
     correlations,
@@ -455,4 +245,213 @@ function getTopArea(result: LifeMapResult): AreaCorrelation {
 
 function getAreaById(result: LifeMapResult, id: LifeAreaId): AreaCorrelation | undefined {
   return result.correlations.find(c => c.area.id === id);
+}
+// ============================================================
+// SCORE CALCULATION
+// ============================================================
+function calculateCorrelationScore(matches: AreaMatch[]): number {
+  if (matches.length === 0) return 25;
+  const totalScore = matches.reduce((sum, m) => sum + m.resonance, 0);
+  return Math.min(100, Math.round(totalScore / matches.length));
+}
+function extractGifts(area: LifeArea): string[] {
+  return area.astrology.keywords.slice(0, 3);
+}
+function extractChallenges(area: LifeArea): string[] {
+  return [
+    `Trabalhar a energia de ${area.astrology.signs[0] || 'transformação'}`,
+    `Equilibrar o elemento ${area.element.primary}`,
+    `Honrar o Odu ${area.odu.primaryOdus[0]}`,
+  ];
+}
+// ============================================================
+// MATCH COLLECTORS
+// ============================================================
+function collectNumerologyMatches(area: LifeArea, user: UserProfile, matches: AreaMatch[]): void {
+  // Caminho de Vida
+  const caminhoAreas = NUMEROLOGY_AREAS[user.caminhoDeVida];
+  if (caminhoAreas?.includes(area.id)) {
+    matches.push({
+      source: 'numerologia',
+      category: 'Caminho de Vida',
+      value: String(user.caminhoDeVida),
+      resonance: 85,
+      interpretation: `Seu caminho de vida ${user.caminhoDeVida} vibra fortemente com a área de ${area.name.toLowerCase()}.`,
+    });
+  }
+  // Número de Destino
+  const destinoAreas = NUMEROLOGY_AREAS[user.numeroDestino];
+  if (destinoAreas?.includes(area.id)) {
+    matches.push({
+      source: 'numerologia',
+      category: 'Número de Destino',
+      value: String(user.numeroDestino),
+      resonance: 80,
+      interpretation: `Seu número de destino ${user.numeroDestino} alinha com esta área, apontando para um campo de realização natural.`,
+    });
+  }
+  // Ano Pessoal
+  const anoAreas = NUMEROLOGY_AREAS[user.anoPessoal];
+  if (anoAreas?.includes(area.id)) {
+    matches.push({
+      source: 'numerologia',
+      category: 'Ano Pessoal',
+      value: String(user.anoPessoal),
+      resonance: 50,
+      interpretation: `Seu ano pessoal ${user.anoPessoal} traz foco especial para esta área.`,
+    });
+  }
+}
+function collectAstrologyMatches(area: LifeArea, user: UserProfile, matches: AreaMatch[]): void {
+  // Signo Solar
+  const signoLower = normalize(user.signoSolar);
+  const signoAreas = ASTROLOGY_SIGN_AREAS[signoLower];
+  if (signoAreas?.includes(area.id)) {
+    matches.push({
+      source: 'astrologia',
+      category: 'Signo Solar',
+      value: user.signoSolar,
+      resonance: 75,
+      interpretation: `Seu signo ${user.signoSolar} tem afinidade natural com ${area.name.toLowerCase()}.`,
+    });
+  }
+  // Planeta Dominante
+  if (user.planetaDominante) {
+    const planetaLower = normalize(user.planetaDominante);
+    const planetaAreas = ASTROLOGY_PLANET_AREAS[planetaLower];
+    if (planetaAreas?.includes(area.id)) {
+      matches.push({
+        source: 'astrologia',
+        category: 'Planeta Dominante',
+        value: user.planetaDominante,
+        resonance: 80,
+        interpretation: `${user.planetaDominante} rege diretamente aspectos de ${area.name.toLowerCase()}, ativando esta área de forma intensa.`,
+      });
+    }
+  }
+}
+function collectOrixaMatches(area: LifeArea, user: UserProfile, matches: AreaMatch[]): void {
+  const orixaKey = getOrixaMatches(user.orixaRegente);
+  if (!orixaKey) return;
+  const orixaAreas = ORIXAS_AREAS[orixaKey];
+  if (orixaAreas?.includes(area.id)) {
+    matches.push({
+      source: 'orixa',
+      category: 'Orixá Regente',
+      value: user.orixaRegente,
+      resonance: 90,
+      interpretation: `${user.orixaRegente} é o guardião desta área na sua vida, trazendo proteção e direcionamento.`,
+    });
+  }
+}
+function collectOduMatches(area: LifeArea, user: UserProfile, matches: AreaMatch[]): void {
+  const oduLower = normalize(user.oduNascimento);
+  const isPrimary = area.odu.primaryOdus.some(o => normalize(o) === oduLower);
+  const isFavorable = area.odu.favorableOdus.some(o => normalize(o) === oduLower);
+  if (isPrimary) {
+    matches.push({
+      source: 'odu',
+      category: 'Odu de Nascimento',
+      value: user.oduNascimento,
+      resonance: 85,
+      interpretation: `O Odu ${user.oduNascimento} traz suas lições e bênçãos especificamente para esta área.`,
+    });
+  } else if (isFavorable) {
+    matches.push({
+      source: 'odu',
+      category: 'Odu Favorável',
+      value: user.oduNascimento,
+      resonance: 65,
+      interpretation: `${user.oduNascimento} é um Odu favorável para esta área, trazendo fluidez.`,
+    });
+  }
+}
+function collectChakraMatches(area: LifeArea, user: UserProfile, matches: AreaMatch[]): void {
+  if (!user.chakraDominante) return;
+  const chakraMatch = area.chakra.primary.some(
+    c => normalize(c).includes(normalize(user.chakraDominante!))
+  );
+  if (chakraMatch) {
+    matches.push({
+      source: 'chakra',
+      category: 'Chakra Dominante',
+      value: user.chakraDominante,
+      resonance: 70,
+      interpretation: `Seu chakra ${user.chakraDominante} rege energeticamente esta área.`,
+    });
+  }
+}
+function collectElementMatches(area: LifeArea, user: UserProfile, matches: AreaMatch[]): void {
+  if (!user.elementoDominante) return;
+  const elemLower = normalize(user.elementoDominante);
+  const elemAreas = ELEMENT_AREAS[elemLower];
+  if (elemAreas?.includes(area.id)) {
+    matches.push({
+      source: 'elemento',
+      category: 'Elemento Dominante',
+      value: user.elementoDominante,
+      resonance: 60,
+      interpretation: `O elemento ${user.elementoDominante} potencializa esta área, trazendo vitalidade.`,
+    });
+  }
+}
+function collectAllMatches(area: LifeArea, user: UserProfile): AreaMatch[] {
+  const matches: AreaMatch[] = [];
+  collectNumerologyMatches(area, user, matches);
+  collectAstrologyMatches(area, user, matches);
+  collectOrixaMatches(area, user, matches);
+  collectOduMatches(area, user, matches);
+  collectChakraMatches(area, user, matches);
+  collectElementMatches(area, user, matches);
+  return matches;
+}
+// ============================================================
+// AREA CORRELATION COMPUTATION
+// ============================================================
+function computeAreaCorrelation(area: LifeArea, user: UserProfile): AreaCorrelation {
+  const matches = collectAllMatches(area, user);
+  const score = calculateCorrelationScore(matches);
+  return {
+    area,
+    score,
+    intensidade: classifyIntensity(score),
+    matches: matches.sort((a, b) => b.resonance - a.resonance),
+    challenges: extractChallenges(area),
+    gifts: extractGifts(area),
+    guidance: generateGuidance(score, area),
+  };
+}
+// ============================================================
+// AREA CLASSIFICATION
+// ============================================================
+function classifyAreas(correlations: AreaCorrelation[]): {
+  topAreas: LifeAreaId[];
+  growthAreas: LifeAreaId[];
+  shadowAreas: LifeAreaId[];
+} {
+  const topAreas = correlations
+    .filter(c => c.score >= 70)
+    .map(c => c.area.id)
+    .slice(0, 3);
+  const shadowAreas = correlations
+    .filter(c => c.score < 50)
+    .map(c => c.area.id)
+    .slice(0, 3);
+  const growthAreas = correlations
+    .filter(c => c.score >= 50 && c.score < 70)
+    .map(c => c.area.id)
+    .slice(0, 3);
+  return { topAreas, growthAreas, shadowAreas };
+}
+// ============================================================
+// GUIDANCE GENERATION
+// ============================================================
+function generateGuidance(score: number, area: LifeArea): string {
+  if (score >= 70) {
+    return `Esta é uma área de poder na sua vida. Você tem recursos internos para brilhar e contribuir significativamente. ${area.practices[0]} pode amplificar ainda mais.`;
+  }
+  if (score >= 50) {
+    return `Esta é uma área de equilíbrio. Continue cultivando-a com atenção e presença. ${area.practices[0]} é recomendado.`;
+  }
+  return `Esta área pede atenção e cura. Seja gentil consigo mesmo(a) ao desenvolvê-la. ${area.questions[0]} é um bom ponto de partida.`;
 }

@@ -89,60 +89,73 @@ function getAspectStrength(orb: number, orbMax: number): number {
   const ratio = 1 - orb / orbMax;
   return Math.max(0, Math.min(1, ratio));
 }
-
-// fallow-ignore-next-line complexity
-export function calculateSynastry(chart1: MapaNatal, chart2: MapaNatal): SynastryResult {
-  const planets1 = getPlanets(chart1);
-  const planets2 = getPlanets(chart2);
+function computeAspectScoreContribution(
+  pattern: { type: AspectoTipo; weight: number },
+  strength: number,
+  p1Weight: number,
+  p2Weight: number
+): { harmony: number; tension: number } {
+  const score = pattern.weight * strength * ((p1Weight + p2Weight) / 2);
+  if (pattern.type === 'trino' || pattern.type === 'sextil') {
+    return { harmony: score, tension: 0 };
+  }
+  if (pattern.type === 'quadratura' || pattern.type === 'oposição') {
+    return { harmony: 0, tension: score };
+  }
+  return { harmony: score * 0.5, tension: 0 };
+}
+function findAspectsBetweenPlanets(
+  planets1: PosicaoPlaneta[],
+  planets2: PosicaoPlaneta[]
+): SynastryAspect[] {
   const aspects: SynastryAspect[] = [];
-
-  let harmonyScore = 0;
-  let tensionScore = 0;
-
   for (const p1 of planets1) {
     for (const p2 of planets2) {
       if (p1.planeta === p2.planeta) continue;
-
       const diff = getAngleDiff(p1.longitude, p2.longitude);
-
       for (const pattern of ASPECT_PATTERNS) {
         const orb = calculateOrb(diff, pattern.angle);
-
-        if (orb <= pattern.orbMax) {
-          const strength = getAspectStrength(orb, pattern.orbMax);
-          const p1Weight = PLANET_WEIGHTS[p1.planeta] ?? 5;
-          const p2Weight = PLANET_WEIGHTS[p2.planeta] ?? 5;
-          const score = pattern.weight * strength * ((p1Weight + p2Weight) / 2);
-
-          const aspect: SynastryAspect = {
-            planet1: p1.planeta,
-            planet2: p2.planeta,
-            planet1In: p1.signo,
-            planet2In: p2.signo,
-            type: pattern.type,
-            orb,
-            strength,
-          };
-
-          aspects.push(aspect);
-
-          if (pattern.type === 'trino' || pattern.type === 'sextil') {
-            harmonyScore += score;
-          } else if (pattern.type === 'quadratura' || pattern.type === 'oposição') {
-            tensionScore += score;
-          } else {
-            harmonyScore += score * 0.5;
-          }
-        }
+        if (orb > pattern.orbMax) continue;
+        const strength = getAspectStrength(orb, pattern.orbMax);
+        aspects.push({
+          planet1: p1.planeta,
+          planet2: p2.planeta,
+          planet1In: p1.signo,
+          planet2In: p2.signo,
+          type: pattern.type,
+          orb,
+          strength,
+        });
       }
     }
   }
-
+  return aspects;
+}
+function computeSynastryScores(aspects: SynastryAspect[]): {
+  scores: SynastryScore;
+  harmonyPercent: number;
+} {
+  let harmonyScore = 0;
+  let tensionScore = 0;
+  for (const aspect of aspects) {
+    const pattern = ASPECT_PATTERNS.find(p => p.type === aspect.type);
+    if (!pattern) continue;
+    const strength = aspect.strength;
+    const p1Weight = PLANET_WEIGHTS[aspect.planet1] ?? 5;
+    const p2Weight = PLANET_WEIGHTS[aspect.planet2] ?? 5;
+    const { harmony, tension } = computeAspectScoreContribution(
+      pattern,
+      strength,
+      p1Weight,
+      p2Weight
+    );
+    harmonyScore += harmony;
+    tensionScore += tension;
+  }
   const totalHarmony = Math.round(harmonyScore);
   const totalTension = Math.round(tensionScore);
   const total = totalHarmony + totalTension;
   const harmonyPercent = total > 0 ? (totalHarmony / total) * 100 : 50;
-
   let overall: SynastryScore['overall'];
   if (harmonyPercent >= 70) {
     overall = 'excelente';
@@ -155,16 +168,20 @@ export function calculateSynastry(chart1: MapaNatal, chart2: MapaNatal): Synastr
   } else {
     overall = 'conflituoso';
   }
-
   const scores: SynastryScore = {
     total: Math.round(total),
     harmony: totalHarmony,
     tension: totalTension,
     overall,
   };
-
+  return { scores, harmonyPercent };
+}
+export function calculateSynastry(chart1: MapaNatal, chart2: MapaNatal): SynastryResult {
+  const planets1 = getPlanets(chart1);
+  const planets2 = getPlanets(chart2);
+  const aspects = findAspectsBetweenPlanets(planets1, planets2);
+  const { scores } = computeSynastryScores(aspects);
   const summary = generateSummary(scores, aspects);
-
   return { aspects, scores, summary };
 }
 

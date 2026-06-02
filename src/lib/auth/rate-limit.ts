@@ -94,8 +94,8 @@ export type AuthRoute = keyof typeof AUTH_RATE_LIMITS;
  * de NextRequest), retorna 'unknown'. O rate-limit ainda funciona,
  * só usa o bucket "unknown" para todos os requests sem IP.
  */
-// fallow-ignore-next-line unused-export
 // fallow-ignore-next-line complexity
+// fallow-ignore-next-line unused-export
 export function getClientIp(request: NextRequest | undefined | null): string {
   if (!request || !request.headers) {
     return 'unknown';

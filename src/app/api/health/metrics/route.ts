@@ -1,3 +1,4 @@
+import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import type { SpiritualCorrelations } from '@/lib/api/spiritual-correlations';
@@ -191,64 +192,18 @@ export async function GET(request: NextRequest) {
     entries = entries.filter((e) => e.spiritualCorrelations?.orixa === orixa);
   }
 
-  // Calculate spiritual stats
+  // Calculate spiritual stats using shared utility
+  const spiritualStatsBase = calculateSpiritualStatsInline(entries);
   const spiritualStats = {
-    byType: entries.reduce(
-      (acc, e) => {
-        acc[e.metricType] = (acc[e.metricType] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>
-    ),
+    ...spiritualStatsBase,
     avgValue: entries.reduce((sum, e) => sum + e.value, 0) / (entries.length || 1),
-    bySefirot: entries.reduce(
-      (acc, e) => {
-        e.spiritualCorrelations?.sefirot.forEach((s) => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-        return acc;
-      },
-      {} as Record<string, number>
-    ),
-    byChakra: entries.reduce(
-      (acc, e) => {
-        const c = e.spiritualCorrelations?.chakra;
-        if (c) acc[c] = (acc[c] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>
-    ),
-    byElement: entries.reduce(
-      (acc, e) => {
-        const el = e.spiritualCorrelations?.element;
-        if (el) acc[el] = (acc[el] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>
-    ),
-    byOrixa: entries.reduce(
-      (acc, e) => {
-        const o = e.spiritualCorrelations?.orixa;
-        if (o) acc[o] = (acc[o] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>
-    ),
   };
-
   return NextResponse.json({
-    success: true,
-    entries,
-    total: entries.length,
-    spiritualCorrelations: METRIC_SPIRITUAL_CORRELATIONS,
+    filters: { date, type, sefirot, chakra, element, orixa },
     spiritualStats,
-    meta: {
-      filters: { date, type, sefirot, chakra, element, orixa },
-    },
   });
 }
 // fallow-ignore-next-line complexity
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

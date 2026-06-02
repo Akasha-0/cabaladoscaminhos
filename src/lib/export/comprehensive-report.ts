@@ -340,8 +340,8 @@ function gerarRecomendacoes(data: ComprehensiveReportData): ComprehensiveRecomme
 
 /**
  * Gera a timeline/cronograma de influências.
-// fallow-ignore-next-line complexity
  */
+// fallow-ignore-next-line complexity
 function gerarTimeline(data: ComprehensiveReportData): ComprehensiveTimelineItem[] {
   const timeline: ComprehensiveTimelineItem[] = [];
   const agora = new Date();

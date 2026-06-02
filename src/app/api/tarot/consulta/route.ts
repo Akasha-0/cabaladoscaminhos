@@ -1,3 +1,5 @@
+import { calculateSpreadSpiritualStats } from '@/lib/tarot/spread-calculator';
+import { handleAPIError } from '@/lib/api/error-handler';
 // ============================================================
 // TAROT CONSULTATION API - CABALA DOS CAMINHOS
 // ============================================================
@@ -301,30 +303,8 @@ export async function POST(request: NextRequest) {
     // Get spiritual correlations for the reading
     const readingCorr = READING_SPIRITUAL_CORRELATIONS[spreadType] || READING_SPIRITUAL_CORRELATIONS['single-card'];
 
-    // Calculate spiritual stats
-    const spiritualStats = {
-      bySefirot: cards.reduce((acc, c) => {
-        c.spiritualCorrelations.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-        return acc;
-      }, {} as Record<string, number>),
-      byChakra: cards.reduce((acc, c) => {
-        const ch = c.spiritualCorrelations.chakra;
-        if (ch) acc[ch] = (acc[ch] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byElement: cards.reduce((acc, c) => {
-        const e = c.spiritualCorrelations.element;
-        if (e) acc[e] = (acc[e] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byOrixa: cards.reduce((acc, c) => {
-        const o = c.spiritualCorrelations.orixa;
-        if (o) acc[o] = (acc[o] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-    };
+    // Calculate spiritual stats using shared utility
+    const spiritualStats = calculateSpreadSpiritualStats(cards);
 
     const response: TarotConsultaResponse = {
       spread: {
@@ -351,11 +331,7 @@ export async function POST(request: NextRequest) {
       ...response,
     });
   } catch (error) {
-    console.error('Tarot consultation error:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to generate tarot consultation',
-    }, { status: 500 });
+    return handleAPIError(error, { message: 'Failed to generate tarot consultation' });
   }
 }
 

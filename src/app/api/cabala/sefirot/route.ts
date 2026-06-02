@@ -49,7 +49,7 @@ const SEPHIRAH_SPIRITUAL_CORRELATIONS: Record<string, {
   'Malkuth': { sefirot: ['Malkuth'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'Aterra sagrada me ancora', frequency: '396 Hz', planet: 'Saturno', archetype: 'O Reino', color: 'Marrom/Amarelo', bodyPart: 'Pés' },
 };
 
-const VALID_SEFIROT = ['Keter', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah', 'Tiferet', 'Netzach', 'Hod', 'Yesod', 'Malkut'];
+const VALID_SEFIRA_NAMES = ['Keter', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah', 'Tiferet', 'Netzach', 'Hod', 'Yesod', 'Malkut'];
 // fallow-ignore-next-line unused-type
 export type { SefiraMeaning };
 

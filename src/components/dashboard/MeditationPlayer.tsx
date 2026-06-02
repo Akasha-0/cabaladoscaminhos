@@ -1,3 +1,4 @@
+import { formatTime } from '@/lib/shared/date-utils';
 // fallow-ignore-file unused-file
 'use client';
 
@@ -47,11 +48,6 @@ const AMBIENT_SOUNDS = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function formatTime(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-}
 
 // ============================================================
 // MAIN COMPONENT

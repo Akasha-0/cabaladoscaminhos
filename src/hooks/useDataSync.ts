@@ -18,7 +18,7 @@ export interface DataSyncOptions {
   autoSync?: boolean;
   syncInterval?: number;
   onSyncComplete?: (status: SyncStatus) => void;
-  onConflict?: (conflict: SyncConflict) => void;
+  onConflict?: (conflict: SyncConflict) => 'local' | 'cloud' | 'merged' | null | Promise<'local' | 'cloud' | 'merged' | null>;
 }
 const DEFAULT_OPTIONS: DataSyncOptions = {
   storageKey: 'spiritual_data',
@@ -45,6 +45,64 @@ function mergeValues(local: unknown, cloud: unknown): unknown {
   }
   return merged;
 }
+// ─── Pure helpers: sync logic extracted from performSync ──────────────────────
+// Load both storages safely
+function loadSyncData(storageKey: string): { local: Record<string, unknown> | null; cloud: Record<string, unknown> | null } {
+  try {
+    const localRaw = localStorage.getItem(storageKey);
+    const cloudRaw = localStorage.getItem(`${storageKey}_cloud`);
+    return {
+      local: localRaw ? JSON.parse(localRaw) : null,
+      cloud: cloudRaw ? JSON.parse(cloudRaw) : null,
+    };
+  } catch {
+    return { local: null, cloud: null };
+  }
+}
+// Read pending keys from storage
+function loadPending(storageKey: string): string[] {
+  try {
+    const raw = localStorage.getItem(`${storageKey}_pending`);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+// Detect conflicts between local and cloud for pending keys
+export function detectConflicts(
+  localData: Record<string, unknown> | null,
+  cloudData: Record<string, unknown> | null,
+  pending: string[],
+): SyncConflict[] {
+  if (!localData || !cloudData) return [];
+  const conflicts: SyncConflict[] = [];
+  for (const key of pending) {
+    if (localData[key] && cloudData[key]) {
+      conflicts.push({ key, localValue: localData[key], cloudValue: cloudData[key], resolution: null });
+    }
+  }
+  return conflicts;
+}
+// Apply conflict resolutions to build final merged data
+function applyConflictResolutions(
+  conflicts: SyncConflict[],
+  cloudData: Record<string, unknown>,
+): Record<string, unknown> {
+  const resolved: Record<string, unknown> = { ...cloudData };
+  for (const c of conflicts) {
+    if (c.resolution === 'local') resolved[c.key] = c.localValue;
+    else if (c.resolution === 'cloud') resolved[c.key] = c.cloudValue;
+    else if (c.resolution === 'merged') resolved[c.key] = mergeValues(c.localValue, c.cloudValue);
+  }
+  return resolved;
+}
+// Persist synced data and clear pending
+function persistSync(storageKey: string, data: Record<string, unknown>): void {
+  localStorage.setItem(storageKey, JSON.stringify(data));
+  localStorage.setItem(`${storageKey}_cloud`, JSON.stringify(data));
+  localStorage.removeItem(`${storageKey}_pending`);
+}
+// ─── Hook starts here ─────────────────────────────────────────────────────────
 export function useDataSync(options: DataSyncOptions = {}) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
   const lastSyncRef = useRef<string | null>(null);
@@ -122,81 +180,42 @@ export function useDataSync(options: DataSyncOptions = {}) {
     return response.json();
   }, [opts.cloudEndpoint]);
 
-// fallow-ignore-next-line complexity
   const performSync = useCallback(async (): Promise<void> => {
     if (status.syncing) return;
-
     setStatus(s => ({ ...s, syncing: true, error: null }));
-
     try {
-      const localRaw = localStorage.getItem(opts.storageKey ?? 'spiritual_data');
-      const localData = localRaw ? JSON.parse(localRaw) : null;
-
-      const cloudRaw = localStorage.getItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`);
-      const cloudData = cloudRaw ? JSON.parse(cloudRaw) : null;
-
+      const storageKey = opts.storageKey ?? 'spiritual_data';
+      const { local: localData, cloud: cloudData } = loadSyncData(storageKey);
+      // Nothing to sync
       if (!localData && !cloudData) {
         setStatus(s => ({ ...s, syncing: false, lastSync: new Date().toISOString() }));
         return;
       }
-
+      // Push-only: local exists, no cloud
       if (!cloudData && localData) {
         await syncToCloud(localData);
-        localStorage.setItem(`${opts.storageKey}_cloud`, JSON.stringify(localData));
-        localStorage.removeItem(`${opts.storageKey}_pending`);
-      } else if (localData && cloudData) {
-        const pendingRaw = localStorage.getItem(`${opts.storageKey}_pending`);
-        const pending: string[] = pendingRaw ? JSON.parse(pendingRaw) : [];
-
-        const newConflicts: SyncConflict[] = [];
-
-        for (const key of pending) {
-          if (localData[key] && cloudData[key]) {
-            newConflicts.push({
-              key,
-              localValue: localData[key],
-              cloudValue: cloudData[key],
-              resolution: null,
-            });
-          }
-        }
-
-        if (newConflicts.length > 0 && opts.onConflict) {
-          const resolved: SyncConflict[] = [];
-
-          for (const conflict of newConflicts) {
-            const resolution = await opts.onConflict(conflict);
-            resolved.push({ ...conflict, resolution: resolution ?? null });
-          }
-
+        persistSync(storageKey, localData);
+        finishSync();
+        return;
+      }
+      // Merge: both local and cloud exist
+      if (localData && cloudData) {
+        const pending = loadPending(storageKey);
+        const conflicts = detectConflicts(localData, cloudData, pending);
+        if (conflicts.length > 0 && opts.onConflict) {
+          const resolved = await resolveConflictsWithCallback(conflicts, opts.onConflict);
           setConflicts(resolved);
-
-          const resolvedData: Record<string, unknown> = { ...cloudData };
-
-          for (const conflict of resolved) {
-            if (conflict.resolution === 'local') {
-              resolvedData[conflict.key] = conflict.localValue;
-            } else if (conflict.resolution === 'cloud') {
-              resolvedData[conflict.key] = conflict.cloudValue;
-            } else if (conflict.resolution === 'merged') {
-              resolvedData[conflict.key] = mergeValues(conflict.localValue, conflict.cloudValue);
-            }
-          }
-
+          const resolvedData = applyConflictResolutions(resolved, cloudData);
           await syncToCloud(resolvedData);
-          localStorage.setItem(opts.storageKey ?? 'spiritual_data', JSON.stringify(resolvedData));
-          localStorage.setItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`, JSON.stringify(resolvedData));
-          localStorage.removeItem(`${opts.storageKey ?? 'spiritual_data'}_pending`);
-        } else if (newConflicts.length === 0) {
-          const merged = mergeValues(cloudData, localData);
+          persistSync(storageKey, resolvedData);
+        } else {
+          // No conflicts: deep-merge local into cloud
+          const merged = mergeValues(cloudData, localData) as Record<string, unknown>;
           await syncToCloud(merged);
-          localStorage.setItem(`${opts.storageKey ?? 'spiritual_data'}_cloud`, JSON.stringify(merged));
-          localStorage.removeItem(`${opts.storageKey ?? 'spiritual_data'}_pending`);
+          persistSync(storageKey, merged);
         }
       }
-
-      lastSyncRef.current = new Date().toISOString();
-      setStatus(s => ({ ...s, syncing: false, lastSync: lastSyncRef.current, pending: 0 }));
+      finishSync();
     } catch (err) {
       setStatus(s => ({
         ...s,
@@ -204,8 +223,23 @@ export function useDataSync(options: DataSyncOptions = {}) {
         error: err instanceof Error ? err.message : 'Sync failed',
       }));
     }
-// fallow-ignore-next-line complexity
   }, [opts, status.syncing, syncToCloud]);
+// ─── Inline helpers scoped to performSync ────────────────────────────────────
+async function resolveConflictsWithCallback(
+  conflicts: SyncConflict[],
+  onConflict: NonNullable<DataSyncOptions['onConflict']>,
+): Promise<SyncConflict[]> {
+  const resolved: SyncConflict[] = [];
+  for (const conflict of conflicts) {
+    const resolution = await onConflict(conflict);
+    resolved.push({ ...conflict, resolution: resolution ?? null });
+  }
+  return resolved;
+}
+function finishSync(): void {
+  lastSyncRef.current = new Date().toISOString();
+  setStatus(s => ({ ...s, syncing: false, lastSync: lastSyncRef.current, pending: 0 }));
+}
 
   const resolveConflict = useCallback(async (
     key: string,

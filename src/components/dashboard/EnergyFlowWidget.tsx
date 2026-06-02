@@ -1,3 +1,4 @@
+import { getDayOfYear } from '@/lib/shared/date-utils';
 // fallow-ignore-file unused-file
 'use client';
 
@@ -77,12 +78,6 @@ const HOURS_ENERGY = [
 // HELPER FUNCTIONS
 // ============================================================
 
-function getDayOfYear(): number {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0);
-  const diff = now.getTime() - start.getTime();
-  return Math.floor(diff / 86400000);
-}
 
 function getDominantElement(): keyof typeof ELEMENTS {
   const dayOfYear = getDayOfYear();

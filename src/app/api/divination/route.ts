@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const DivinationMethod = z.enum(['búzios', 'cards', 'cowries', 'opalã', 'ebós', 'geomancia']);
+export type DivinationMethodType = z.infer<typeof DivinationMethod>;
 const DivinationDomain = z.enum(['amor', 'trabalho', 'saúde', 'espiritual', 'financeiro', 'geral']);
 const DivinationQuerySchema = z.object({
   method: DivinationMethod.optional().default('búzios'),

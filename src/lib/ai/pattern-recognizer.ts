@@ -885,8 +885,8 @@ class PatternRecognizer {
 
   /**
    * Calculate harmony score between archetypes (0-100)
-// fallow-ignore-next-line complexity
    */
+// fallow-ignore-next-line complexity
   calculateArchetypeHarmony(patterns: ArchetypePattern[]): number {
     if (patterns.length <= 1) {
       return 100;

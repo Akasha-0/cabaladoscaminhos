@@ -47,8 +47,8 @@ function matchesShortcut(e: KeyboardEvent, s: KeyboardShortcut): boolean {
 
 function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]): void {
   useEffect(() => {
-// fallow-ignore-next-line complexity
     if (typeof window === 'undefined') return;
+// fallow-ignore-next-line complexity
     const handler = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       const inEditable =

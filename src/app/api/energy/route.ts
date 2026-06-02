@@ -1,6 +1,8 @@
+import { applySpiritualFilters } from '@/lib/api/filter-utils';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import { createErrorResponse, createListResponse } from '@/lib/api/response-helpers';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
@@ -213,20 +215,8 @@ export async function GET(request: NextRequest) {
         const currentLevel = latestEntry?.level || 3;
         const spiritualCorr = getSpiritualCorrelationsForLevel(currentLevel);
 
-        // Filter by spiritual correlations
-        let filteredEntries = entries;
-        if (sefirot) {
-          filteredEntries = filteredEntries.filter(e => e.spiritualCorrelations?.sefirot.includes(sefirot));
-        }
-        if (chakra) {
-          filteredEntries = filteredEntries.filter(e => e.spiritualCorrelations?.chakra === chakra);
-        }
-        if (element) {
-          filteredEntries = filteredEntries.filter(e => e.spiritualCorrelations?.element === element);
-        }
-        if (orixa) {
-          filteredEntries = filteredEntries.filter(e => e.spiritualCorrelations?.orixa === orixa);
-        }
+        // Filter by spiritual correlations using shared utility
+        const filteredEntries = applySpiritualFilters(entries as any, { sefirot, chakra, element, orixa });
 
         return NextResponse.json({
           success: true,
@@ -245,19 +235,12 @@ export async function GET(request: NextRequest) {
       case 'trend': {
         const trend = calculateEnergyTrend(entries);
         
-        // Filter entries by spiritual correlations
-        if (sefirot || chakra || element || orixa) {
-// fallow-ignore-next-line complexity
-          const filteredEntries = entries.filter(e => {
-            if (sefirot && !e.spiritualCorrelations?.sefirot.includes(sefirot)) return false;
-            if (chakra && e.spiritualCorrelations?.chakra !== chakra) return false;
-            if (element && e.spiritualCorrelations?.element !== element) return false;
-            if (orixa && e.spiritualCorrelations?.orixa !== orixa) return false;
-            return true;
-          });
+        // Filter entries by spiritual correlations using shared utility
+        const filteredEntries = applySpiritualFilters(entries as any, { sefirot, chakra, element, orixa });
+        if (filteredEntries.length !== entries.length || sefirot || chakra || element || orixa) {
           return NextResponse.json({
             success: true,
-            trend: calculateEnergyTrend(filteredEntries),
+            trend: calculateEnergyTrend(filteredEntries as unknown as EnergyEntry[]),
             meta: { filters: { sefirot, chakra, element, orixa } },
           });
         }
@@ -269,21 +252,8 @@ export async function GET(request: NextRequest) {
       }
 
       case 'history': {
-        let historyEntries = [...entries];
-        
-        // Filter by spiritual correlations
-        if (sefirot) {
-          historyEntries = historyEntries.filter(e => e.spiritualCorrelations?.sefirot.includes(sefirot));
-        }
-        if (chakra) {
-          historyEntries = historyEntries.filter(e => e.spiritualCorrelations?.chakra === chakra);
-        }
-        if (element) {
-          historyEntries = historyEntries.filter(e => e.spiritualCorrelations?.element === element);
-        }
-        if (orixa) {
-          historyEntries = historyEntries.filter(e => e.spiritualCorrelations?.orixa === orixa);
-        }
+        // Filter by spiritual correlations using shared utility
+        const historyEntries = applySpiritualFilters(entries as any, { sefirot, chakra, element, orixa });
 
         return NextResponse.json({
           success: true,
@@ -303,14 +273,13 @@ export async function GET(request: NextRequest) {
         });
     }
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erro interno',
-    }, { status: 500 });
+    return createErrorResponse(
+      error instanceof Error ? error.message : 'Erro interno',
+      { status: 500 }
+    );
   }
 }
 // fallow-ignore-next-line complexity
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

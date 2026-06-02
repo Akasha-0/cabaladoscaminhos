@@ -427,6 +427,7 @@ function createFallbackInsight(
  *   - frequency: string
 // fallow-ignore-next-line complexity
  */
+// fallow-ignore-next-line complexity
 export function generateInsight(
   tradition: SupportedTradition,
   params: GenerateInsightParams

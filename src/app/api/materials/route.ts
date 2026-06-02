@@ -1,3 +1,4 @@
+import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
@@ -326,7 +327,8 @@ export async function GET(request: NextRequest) {
       materials = materials.slice(0, limit);
     }
 
-    // Statistics
+    // Statistics using shared utility for spiritual stats
+    const spiritualStats = calculateSpiritualStatsInline(materials);
     const stats = {
       byType: materials.reduce(
         (acc, m) => {
@@ -342,30 +344,10 @@ export async function GET(request: NextRequest) {
         },
         {} as Record<string, number>
       ),
-      byElement: materials.reduce(
-        (acc, m) => {
-          const el = m.spiritualCorrelations?.element || 'Unknown';
-          acc[el] = (acc[el] || 0) + 1;
-          return acc;
-        },
-        {} as Record<string, number>
-      ),
-      byChakra: materials.reduce(
-        (acc, m) => {
-          const ch = m.spiritualCorrelations?.chakra || 0;
-          if (ch) acc[ch] = (acc[ch] || 0) + 1;
-          return acc;
-        },
-        {} as Record<number, number>
-      ),
-      byOrixa: materials.reduce(
-        (acc, m) => {
-          const ox = m.spiritualCorrelations?.orixa || 'Unknown';
-          acc[ox] = (acc[ox] || 0) + 1;
-          return acc;
-        },
-        {} as Record<string, number>
-      ),
+      byElement: spiritualStats.byElement,
+      byChakra: spiritualStats.byChakra,
+      byOrixa: spiritualStats.byOrixa,
+      bySefirot: spiritualStats.bySefirot,
     };
 
     return NextResponse.json({

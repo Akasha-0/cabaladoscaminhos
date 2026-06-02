@@ -1,8 +1,13 @@
 // fallow-ignore-file unused-file
 import type { ChatMessage } from './types';
 import type { UserSpiritualData } from './types';
+import { getUserTraditions, type TraditionInfo } from './tradition-utils';
 // fallow-ignore-next-line unresolved-import
-import { spiritualData, type SpiritualData } from '../spiritual-data/spiritual-data';
+import { spiritualData } from '../spiritual-data/spiritual-data';
+// Re-export for backward compatibility
+export { getUserTraditions, type TraditionInfo };
+
+
 
 // ============================================================
 // CONFIGURATION
@@ -540,11 +545,6 @@ export const SEPHIROT_MAPPINGS: Record<string, {
 // INTERNAL TYPES
 // ============================================================
 
-interface TraditionInfo {
-  name: string;
-  origin: string;
-  keywords: string[];
-}
 
 // ============================================================
 // TRADITION MAPPER CLASS
@@ -578,7 +578,8 @@ export class TraditionMapper {
    * Map all connections between traditions for a user
    */
   mapTraditionConnections(userData: UserSpiritualData): TraditionConnection[] {
-    const userTraditions = this.getUserTraditions(userData);
+    const userTraditions = getUserTraditions(userData, spiritualData);
+
     const connections: TraditionConnection[] = [];
 
     // Compare each pair of user traditions
@@ -705,149 +706,12 @@ Provide a 2-3 sentence explanation of how these traditions connect and why this 
   // ============================================================
   // PRIVATE METHODS
   // ============================================================
+  // getUserTraditions and isMajorTradition moved to tradition-utils.ts
 
   /**
-   * Get traditions relevant to the user based on their spiritual data
+   * Find connection between two traditions
    */
-  // fallow-ignore-next-line complexity
-  private getUserTraditions(userData: UserSpiritualData): TraditionInfo[] {
-    const traditions = new Set<TraditionInfo>();
 
-    // Get all spiritual data entries and group by origin
-    const entriesByOrigin = new Map<string, SpiritualData[]>();
-    for (const entry of spiritualData) {
-      const origin = entry.origin;
-      if (!entriesByOrigin.has(origin)) {
-        entriesByOrigin.set(origin, []);
-      }
-      entriesByOrigin.get(origin)!.push(entry);
-    }
-
-    // Add traditions based on user's spiritual profile
-    // Yoruba/Ifá tradition from odu
-    if (userData.odu) {
-      const yorubaTraditions = entriesByOrigin.get('Tradição Iorubá');
-      if (yorubaTraditions) {
-        traditions.add({
-          name: 'Tradição Iorubá',
-          origin: 'Tradição Iorubá',
-          keywords: yorubaTraditions.flatMap(t => t.keywords)
-        });
-      }
-    }
-
-    // Hindu/Yoga tradition from chakras or orixa
-    if (userData.orixaRegente) {
-      const hinduTraditions = entriesByOrigin.get('Tradição Hindu');
-      if (hinduTraditions) {
-        traditions.add({
-          name: 'Tradição Hindu',
-          origin: 'Tradição Hindu',
-          keywords: hinduTraditions.flatMap(t => t.keywords)
-        });
-      }
-    }
-
-    // Western/Tarot tradition from arco maior
-    if (userData.arcoMaior && userData.arcoMaior.length > 0) {
-      const westernTraditions = entriesByOrigin.get('Tradição Ocidental');
-      if (westernTraditions) {
-        traditions.add({
-          name: 'Tradição Ocidental',
-          origin: 'Tradição Ocidental',
-          keywords: westernTraditions.flatMap(t => t.keywords)
-        });
-      }
-    }
-
-    // Celtic tradition from element
-    const elementTraditions = entriesByOrigin.get('Tradição Celta');
-    if (elementTraditions) {
-      traditions.add({
-        name: 'Tradição Celta',
-        origin: 'Tradição Celta',
-        keywords: elementTraditions.flatMap(t => t.keywords)
-      });
-    }
-
-    // Kabbalistic tradition from sefirot
-    if (userData.sefirotDominante && userData.sefirotDominante.length > 0) {
-      const kabbalahTraditions = entriesByOrigin.get('Tradição Cabalística');
-      if (kabbalahTraditions) {
-        traditions.add({
-          name: 'Tradição Cabalística',
-          origin: 'Tradição Cabalística',
-          keywords: kabbalahTraditions.flatMap(t => t.keywords)
-        });
-      }
-    }
-
-    // Numerology/Pythagorean tradition
-    if (userData.numeroPessoal) {
-      const pythagoreanTraditions = entriesByOrigin.get('Tradição Pitagórica');
-      if (pythagoreanTraditions) {
-        traditions.add({
-          name: 'Tradição Pitagórica',
-          origin: 'Tradição Pitagórica',
-          keywords: pythagoreanTraditions.flatMap(t => t.keywords)
-        });
-      }
-    }
-
-    // Native American tradition
-    const nativeTraditions = entriesByOrigin.get('Tradição Native Americana');
-    if (nativeTraditions) {
-      traditions.add({
-        name: 'Tradição Native Americana',
-        origin: 'Tradição Native Americana',
-        keywords: nativeTraditions.flatMap(t => t.keywords)
-      });
-    }
-
-    // Vedic/Astral tradition from rashi
-    if (userData.rashi) {
-      const astralTraditions = entriesByOrigin.get('Tradição Astral');
-      if (astralTraditions) {
-        traditions.add({
-          name: 'Tradição Astral',
-          origin: 'Tradição Astral',
-          keywords: astralTraditions.flatMap(t => t.keywords)
-        });
-      }
-    }
-
-    // Fallback: add all major traditions if user has minimal data
-    if (traditions.size < 3) {
-      for (const [origin, entries] of entriesByOrigin) {
-        if (this.isMajorTradition(origin)) {
-          traditions.add({
-            name: origin,
-            origin,
-            keywords: entries.flatMap(t => t.keywords)
-          });
-        }
-      }
-    }
-
-    return Array.from(traditions);
-  }
-
-  /**
-   * Determine if a tradition is a major tradition
-   */
-  private isMajorTradition(origin: string): boolean {
-    const majorTraditions = [
-      'Tradição Hindu',
-      'Tradição Ocidental',
-      'Tradição Cabalística',
-      'Tradição Pitagórica',
-      'Tradição Iorubá',
-      'Tradição Native Americana',
-      'Tradição Celta',
-      'Tradição Astral'
-    ];
-    return majorTraditions.includes(origin);
-  }
 
   /**
    * Find connection between two traditions

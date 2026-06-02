@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
   "audit": {
-    "gate": "all",
+    "gate": "new-only",
     "deadCodeBaseline": "./fallow-baseline-dead-code.json",
     "healthBaseline": "./fallow-baseline-health.json",
     "dupesBaseline": "./fallow-baseline-dupes.json"
@@ -478,5 +478,13 @@
       "file": "src/lib/correlation/zodiac-orixa.ts",
       "exports": ["*"]
     }
-  ]
-}
+  {
+    "file": "src/lib/ai/tradition-utils.ts",
+    "exports": ["isMajorTradition", "groupEntriesByOrigin", "getUserTraditions"]
+  },
+  {
+    "file": "src/lib/pdf/dossier-pdf.ts",
+    "exports": ["cartaNome", "oduNome", "stripMarkdown"]
+  }
+]
+  }

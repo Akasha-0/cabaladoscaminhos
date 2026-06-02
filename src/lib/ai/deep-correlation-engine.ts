@@ -914,7 +914,7 @@ Keep explanations concise but profound, 2-3 sentences max.`,
 // fallow-ignore-next-line complexity
     return patterns;
   }
-
+// fallow-ignore-next-line complexity
   private detectSpiritualBlocks(userData: UserSpiritualData): DetectedPattern[] {
     const patterns: DetectedPattern[] = [];
     const blocks: string[] = [];

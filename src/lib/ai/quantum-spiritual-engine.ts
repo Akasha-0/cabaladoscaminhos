@@ -534,9 +534,9 @@ Lunar Sign (Rashi): ${userData.rashi}`;
   }
 
   /**
-// fallow-ignore-next-line complexity
    * Generate fallback guidance when AI is unavailable
    */
+// fallow-ignore-next-line complexity
   private fallbackGuidance(question: string, userData: UserSpiritualData): string {
     const q = question.toLowerCase();
 

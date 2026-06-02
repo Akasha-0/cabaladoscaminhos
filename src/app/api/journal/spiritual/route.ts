@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
   'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
   'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'

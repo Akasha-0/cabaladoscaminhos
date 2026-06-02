@@ -1,3 +1,5 @@
+import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
+import { handleAPIError } from '@/lib/api/error-handler';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -322,34 +324,8 @@ export async function GET(request: NextRequest) {
       connections = connections.filter(c => c.spiritualCorrelations?.element === element);
     }
 
-    // Calculate spiritual stats
-    const spiritualStats = {
-      byType: connections.reduce((acc, c) => {
-        acc[c.type] = (acc[c.type] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      bySefirot: connections.reduce((acc, c) => {
-        c.spiritualCorrelations?.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-        return acc;
-      }, {} as Record<string, number>),
-      byChakra: connections.reduce((acc, c) => {
-        const ch = c.spiritualCorrelations?.chakra;
-        if (ch) acc[ch] = (acc[ch] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byElement: connections.reduce((acc, c) => {
-        const e = c.spiritualCorrelations?.element;
-        if (e) acc[e] = (acc[e] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byOrixa: connections.reduce((acc, c) => {
-        const o = c.spiritualCorrelations?.orixa;
-        if (o) acc[o] = (acc[o] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-    };
+    // Calculate spiritual stats using shared utility
+    const spiritualStats = calculateSpiritualStatsInline(connections);
 
     return NextResponse.json({
       success: true,
@@ -363,9 +339,6 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erro interno',
-    }, { status: 500 });
+    return handleAPIError(error);
   }
 }

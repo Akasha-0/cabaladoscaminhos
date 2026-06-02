@@ -714,8 +714,8 @@ export interface FetchResult {
 
 /**
  * Fetch all dashboard data with selective loading and caching
-// fallow-ignore-next-line complexity
  */
+// fallow-ignore-next-line complexity
 export async function fetchAllDashboardData(
   userId: string,
   userData: UserSpiritualData,

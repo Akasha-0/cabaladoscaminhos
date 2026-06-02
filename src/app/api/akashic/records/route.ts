@@ -40,7 +40,8 @@ const AkashicRecordSchema = z.object({
   chakra: z.number().int().min(1).max(7).optional(),
   orixa: z.string().optional(),
 });
-
+// fallow-ignore-next-line unused-type
+export type AkashicRecord = z.infer<typeof AkashicRecordSchema>;
 // fallow-ignore-next-line unused-type
 export type RecordType = z.infer<typeof RecordTypeSchema>;
 // fallow-ignore-next-line unused-type

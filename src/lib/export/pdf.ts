@@ -548,8 +548,8 @@ const PLANET_GLYPHS: Record<string, string> = {
 /**
  * Draws a circular birth chart visualization with zodiac wheel and planet positions
  * Enhanced with degree markers, house system, and improved visual styling
-// fallow-ignore-next-line complexity
  */
+// fallow-ignore-next-line complexity
 function drawBirthChartWheel(doc: any, centerX: number, centerY: number, radius: number): void {
   // Draw outer wheel with thick primary colored border
   doc.setDrawColor(74, 0, 130);

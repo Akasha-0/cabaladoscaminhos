@@ -91,8 +91,8 @@ const descricoesCiclos: Record<number, DescricaoCiclo> = {
   }
 };
 
-// fallow-ignore-next-line unused-export
 // fallow-ignore-next-line complexity
+// fallow-ignore-next-line unused-export
 export function calcularAnoPessoal(dataNascimento: string): { numero: number; sefirot: string; descricao: DescricaoCiclo | null } {
   const anoAtual = new Date().getFullYear();
   const numeros = (dataNascimento + anoAtual.toString()).replace(/\D/g, '');

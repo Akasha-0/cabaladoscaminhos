@@ -123,8 +123,8 @@ export function AdaptiveUI({
   // Track user behavior
   const trackBehavior = useCallback((type: keyof UserBehavior, key: string, value?: number) => {
     if (learningMode === 'disabled') return;
-// fallow-ignore-next-line complexity
 
+// fallow-ignore-next-line complexity
     setBehavior(prev => {
       const updated = { ...prev };
       if (type === 'pageViews') {

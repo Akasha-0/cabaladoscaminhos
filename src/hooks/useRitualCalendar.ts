@@ -34,6 +34,230 @@ interface UseRitualCalendarOptions {
   lookAheadDays?: number;
 }
 
+// ──────────────────────────────────────────────────────────────────────────────
+// Calendar provider helpers
+// ──────────────────────────────────────────────────────────────────────────────
+
+interface CalendarManager {
+  getCalendars(): Promise<Array<{ id: string; isPrimary?: boolean; title?: string }>>;
+  fetchEvents(calendarId: string, startDate: Date, endDate: Date): Promise<Array<{
+    id: string;
+    title?: string;
+    startDate: string;
+    endDate?: string;
+    allDay?: boolean;
+    recurrence?: string;
+    notes?: string;
+  }>>;
+  createEvent(calendarId: string, event: Record<string, unknown>): Promise<{ id: string } | null>;
+  deleteEvent(eventId: string): Promise<void>;
+}
+
+interface CalendarPlugin {
+  listCalendars(): Promise<Array<{ id: string; isPrimary?: boolean; title?: string }>>;
+  findEvents(calendarId: string, startDate: number, endDate: number): Promise<Array<{
+    id: string;
+    title?: string;
+    startDate: number;
+    endDate?: number;
+    allDay?: boolean;
+    recurrence?: string;
+    notes?: string;
+  }>>;
+  createEvent(calendarId: string, event: Record<string, unknown>): Promise<{ id: string } | null>;
+  deleteEvent(eventId: string): Promise<void>;
+}
+
+type ResolvedCalendarProvider = {
+  type: 'manager';
+  manager: CalendarManager;
+} | {
+  type: 'plugin';
+  plugin: CalendarPlugin;
+} | {
+  type: 'none';
+};
+
+/** Detects which calendar API is available in the current environment. */
+function resolveCalendarProvider(): ResolvedCalendarProvider {
+  if ('calendarManager' in navigator) {
+    return { type: 'manager', manager: navigator.calendarManager as CalendarManager };
+  }
+  const plugin = (navigator as unknown as { plugin?: { calendar?: CalendarPlugin } }).plugin?.calendar;
+  if (plugin) {
+    return { type: 'plugin', plugin };
+  }
+  return { type: 'none' };
+}
+
+/** Fetches all calendars from the resolved provider. */
+async function fetchCalendarsFromProvider(provider: ResolvedCalendarProvider): Promise<Array<{ id: string; isPrimary?: boolean; title?: string }>> {
+  if (provider.type === 'manager') {
+    return provider.manager.getCalendars();
+  }
+  if (provider.type === 'plugin') {
+    return provider.plugin.listCalendars();
+  }
+  return [];
+}
+
+/** Creates a calendar event using the resolved provider. */
+async function createCalendarEvent(
+  provider: ResolvedCalendarProvider,
+  calendarId: string,
+  event: Record<string, unknown>
+): Promise<{ id: string } | null> {
+  if (provider.type === 'manager') {
+    return provider.manager.createEvent(calendarId, event);
+  }
+  if (provider.type === 'plugin') {
+    return provider.plugin.createEvent(calendarId, event);
+  }
+  return null;
+}
+
+/** Deletes a calendar event using the resolved provider. */
+async function deleteCalendarEvent(provider: ResolvedCalendarProvider, eventId: string): Promise<void> {
+  if (provider.type === 'manager') {
+    return provider.manager.deleteEvent(eventId);
+  }
+  if (provider.type === 'plugin') {
+    return provider.plugin.deleteEvent(eventId);
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Event normalization helpers
+// ──────────────────────────────────────────────────────────────────────────────
+
+/** Normalizes a raw manager event into the internal CalendarEvent shape. */
+function normalizeManagerEvent(event: {
+  id: string;
+  title?: string;
+  startDate: string;
+  endDate?: string;
+  allDay?: boolean;
+  recurrence?: string;
+  notes?: string;
+}): CalendarEvent {
+  return {
+    id: event.id,
+    title: event.title || '',
+    ritualId: extractRitualId(event.notes),
+    startDate: event.startDate,
+    endDate: event.endDate,
+    allDay: event.allDay || false,
+    recurrence: event.recurrence,
+  };
+}
+
+/** Normalizes a raw plugin event into the internal CalendarEvent shape. */
+function normalizePluginEvent(event: {
+  id: string;
+  title?: string;
+  startDate: number;
+  endDate?: number;
+  allDay?: boolean;
+  recurrence?: string;
+  notes?: string;
+}): CalendarEvent {
+  return {
+    id: event.id,
+    title: event.title || '',
+    ritualId: extractRitualId(event.notes),
+    startDate: new Date(event.startDate).toISOString(),
+    endDate: event.endDate ? new Date(event.endDate).toISOString() : undefined,
+    allDay: event.allDay || false,
+    recurrence: event.recurrence,
+  };
+}
+
+/** Extracts the ritual ID from event notes (format: "ritual:<id>"). */
+function extractRitualId(notes?: string): string | undefined {
+  if (!notes) return undefined;
+  const idx = notes.indexOf('ritual:');
+  if (idx === -1) return undefined;
+  return notes.slice(idx + 7).trim();
+}
+
+/** Fetches all calendar events across all calendars within the given range. */
+async function fetchCalendarEvents(
+  provider: ResolvedCalendarProvider,
+  now: Date,
+  endDate: Date
+): Promise<CalendarEvent[]> {
+  if (provider.type === 'none') return [];
+
+  const calendars = await fetchCalendarsFromProvider(provider);
+  const events: CalendarEvent[] = [];
+
+  for (const cal of calendars) {
+    if (provider.type === 'manager') {
+      const raw = await provider.manager.fetchEvents(cal.id, now, endDate);
+      for (const event of raw) {
+        events.push(normalizeManagerEvent(event));
+      }
+    } else if (provider.type === 'plugin') {
+      const raw = await provider.plugin.findEvents(cal.id, now.getTime(), endDate.getTime());
+      for (const event of raw) {
+        events.push(normalizePluginEvent(event));
+      }
+    }
+  }
+
+  return events;
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Rituals helpers
+// ──────────────────────────────────────────────────────────────────────────────
+
+/** Fetches the user's rituals from the API. */
+async function fetchRituals(userId?: string): Promise<Ritual[]> {
+  const res = await fetch(`/api/rituais?userId=${userId || ''}`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return data.rituais || [];
+}
+
+/** Maps ritual array by ID for O(1) lookup. */
+function buildRitualMap(rituais: Ritual[]): Map<string, Ritual> {
+  const map = new Map<string, Ritual>();
+  for (const r of rituais) {
+    map.set(r.id, r);
+  }
+  return map;
+}
+
+/** Finds a ritual matching an event by ID or name similarity. */
+function matchRitual(event: CalendarEvent, ritualMap: Map<string, Ritual>, ritualList: Ritual[]): Ritual | undefined {
+  if (event.ritualId) {
+    return ritualMap.get(event.ritualId);
+  }
+  return ritualList.find(r => r.nome === event.title || event.title.includes(r.nome));
+}
+
+/** Converts a CalendarEvent into an UpcomingRitual if a matching ritual exists. */
+function toUpcomingRitual(event: CalendarEvent, ritualMap: Map<string, Ritual>, ritualList: Ritual[], now: Date): UpcomingRitual | null {
+  const ritual = matchRitual(event, ritualMap, ritualList);
+  if (!ritual) return null;
+
+  const start = new Date(event.startDate);
+  const daysUntil = Math.ceil((start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  if (daysUntil < 0) return null;
+
+  return {
+    ...event,
+    ritual,
+    daysUntil,
+    isToday: daysUntil === 0,
+  };
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Hook
+// ──────────────────────────────────────────────────────────────────────────────
+
 export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
   const {
     autoSync = true,
@@ -64,72 +288,21 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
     }
   }, []);
 
-// fallow-ignore-next-line complexity
   const syncWithDeviceCalendar = useCallback(async (): Promise<void> => {
     setSyncStatus(prev => ({ ...prev, isLoading: true, error: null }));
+
     try {
-      const events: CalendarEvent[] = [];
       const now = new Date();
       const endDate = new Date(now.getTime() + lookAheadDays * 24 * 60 * 60 * 1000);
 
-      const availableProviders = await navigator.mediaDevices?.getUserMedia ? [] : [];
+      const provider = resolveCalendarProvider();
+      const events = await fetchCalendarEvents(provider, now, endDate);
+      const rituais = await fetchRituals(userId);
 
-      if ('calendarManager' in navigator) {
-        const calendarManager = (navigator as unknown as { calendarManager: CalendarManager }).calendarManager;
-        const calendars = await calendarManager.getCalendars();
-        for (const cal of calendars) {
-          const calEvents = await calendarManager.fetchEvents(cal.id, now, endDate);
-          for (const event of calEvents) {
-            events.push({
-              id: event.id,
-              title: event.title || '',
-              ritualId: event.notes?.includes('ritual:') ? event.notes.split('ritual:')[1]?.trim() : undefined,
-              startDate: event.startDate,
-              endDate: event.endDate,
-              allDay: event.allDay || false,
-              recurrence: event.recurrence,
-            });
-          }
-        }
-      } else if ('plugin' in navigator && (navigator as unknown as { plugin: { calendar: CalendarPlugin } }).plugin?.calendar) {
-        const calendarPlugin = (navigator as unknown as { plugin: { calendar: CalendarPlugin } }).plugin.calendar;
-        const allCalendars = await calendarPlugin.listCalendars();
-        for (const cal of allCalendars) {
-          const calEvents = await calendarPlugin.findEvents(cal.id, now.getTime(), endDate.getTime());
-          for (const event of calEvents) {
-            events.push({
-              id: event.id,
-              title: event.title || '',
-              ritualId: event.notes?.includes('ritual:') ? event.notes.split('ritual:')[1]?.trim() : undefined,
-              startDate: new Date(event.startDate).toISOString(),
-              endDate: event.endDate ? new Date(event.endDate).toISOString() : undefined,
-              allDay: event.allDay || false,
-              recurrence: event.recurrence,
-            });
-          }
-        }
-      }
-
-      const ritualsRes = await fetch(`/api/rituais?userId=${userId || ''}`);
-      const ritualsData = ritualsRes.ok ? await ritualsRes.json() : { rituais: [] };
-      const ritais: Ritual[] = ritualsData.rituais || [];
-
+      const ritualMap = buildRitualMap(rituais);
       const mapped: UpcomingRitual[] = events
-        .map(event => {
-          const ritual = event.ritualId
-            ? ritais.find(r => r.id === event.ritualId)
-            : ritais.find(r => r.nome === event.title || event.title.includes(r.nome));
-          if (!ritual) return null;
-          const start = new Date(event.startDate);
-          const daysUntil = Math.ceil((start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-          return {
-            ...event,
-            ritual,
-            daysUntil,
-            isToday: daysUntil === 0,
-          };
-        })
-        .filter((r): r is UpcomingRitual => r !== null && r.daysUntil >= 0)
+        .map(event => toUpcomingRitual(event, ritualMap, rituais, now))
+        .filter((r): r is UpcomingRitual => r !== null)
         .sort((a, b) => a.daysUntil - b.daysUntil);
 
       setUpcomingRituals(mapped);
@@ -148,7 +321,6 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
     }
   }, [userId, lookAheadDays]);
 
-// fallow-ignore-next-line complexity
   const addRitualToCalendar = useCallback(async (
     ritual: Ritual,
     startDate: Date,
@@ -156,7 +328,6 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
     calendarId?: string
   ): Promise<string | null> => {
     try {
-      let createdEventId: string | null = null;
       const eventData = {
         title: `${ritual.nome} 🌙`,
         startDate: startDate.toISOString(),
@@ -171,36 +342,29 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
           frequency === 'monthly' ? 'monthly' : undefined,
       };
 
-      if ('calendarManager' in navigator) {
-        const calendarManager = (navigator as unknown as { calendarManager: CalendarManager }).calendarManager;
-        const calendars = await calendarManager.getCalendars();
-        const targetCal = calendarId
-          ? calendars.find(c => c.id === calendarId)
-          : calendars.find(c => c.isPrimary);
-        if (targetCal) {
-          const created = await calendarManager.createEvent(targetCal.id, eventData);
-          createdEventId = created?.id || null;
-        }
-      } else if ('plugin' in navigator && (navigator as unknown as { plugin: { calendar: CalendarPlugin } }).plugin?.calendar) {
-        const calendarPlugin = (navigator as unknown as { plugin: { calendar: CalendarPlugin } }).plugin.calendar;
-        const allCalendars = await calendarPlugin.listCalendars();
-        const targetCal = calendarId
-          ? allCalendars.find(c => c.id === calendarId)
-          : allCalendars.find(c => c.isPrimary);
-        if (targetCal) {
-          const created = await calendarPlugin.createEvent(targetCal.id, {
-            ...eventData,
-            startDate: startDate.getTime(),
-            endDate: eventData.endDate ? new Date(eventData.endDate).getTime() : undefined,
-          });
-          createdEventId = created?.id || null;
-        }
-      }
+      const provider = resolveCalendarProvider();
+      const calendars = await fetchCalendarsFromProvider(provider);
+      const targetCal = calendarId
+        ? calendars.find(c => c.id === calendarId)
+        : calendars.find(c => c.isPrimary);
+
+      if (!targetCal) return null;
+
+      // Build plugin-compatible event (uses numeric timestamps)
+      const pluginEvent = provider.type === 'plugin' ? {
+        ...eventData,
+        startDate: startDate.getTime(),
+        endDate: eventData.endDate ? new Date(eventData.endDate).getTime() : undefined,
+      } : eventData;
+
+      const created = await createCalendarEvent(provider, targetCal.id, pluginEvent);
+      const createdEventId = created?.id || null;
 
       if (createdEventId) {
+        const daysUntil = Math.ceil((startDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
         setUpcomingRituals(prev => {
           const newEvent: UpcomingRitual = {
-            id: createdEventId!,
+            id: createdEventId,
             title: eventData.title,
             ritualId: ritual.id,
             startDate: eventData.startDate,
@@ -208,8 +372,8 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
             allDay: eventData.allDay,
             recurrence: eventData.recurrence,
             ritual,
-            daysUntil: Math.ceil((startDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
-            isToday: Math.ceil((startDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) === 0,
+            daysUntil,
+            isToday: daysUntil === 0,
           };
           return [...prev, newEvent].sort((a, b) => a.daysUntil - b.daysUntil);
         });
@@ -223,14 +387,8 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
 
   const removeRitualFromCalendar = useCallback(async (eventId: string): Promise<boolean> => {
     try {
-      if ('calendarManager' in navigator) {
-        const calendarManager = (navigator as unknown as { calendarManager: CalendarManager }).calendarManager;
-        await calendarManager.deleteEvent(eventId);
-      } else if ('plugin' in navigator && (navigator as unknown as { plugin: { calendar: CalendarPlugin } }).plugin?.calendar) {
-        const calendarPlugin = (navigator as unknown as { plugin: { calendar: CalendarPlugin } }).plugin.calendar;
-        await calendarPlugin.deleteEvent(eventId);
-      }
-
+      const provider = resolveCalendarProvider();
+      await deleteCalendarEvent(provider, eventId);
       setUpcomingRituals(prev => prev.filter(e => e.id !== eventId));
       return true;
     } catch {
@@ -265,34 +423,4 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
     addRitualToCalendar,
     removeRitualFromCalendar,
   };
-}
-
-interface CalendarManager {
-  getCalendars(): Promise<Array<{ id: string; isPrimary?: boolean; title?: string }>>;
-  fetchEvents(calendarId: string, startDate: Date, endDate: Date): Promise<Array<{
-    id: string;
-    title?: string;
-    startDate: string;
-    endDate?: string;
-    allDay?: boolean;
-    recurrence?: string;
-    notes?: string;
-  }>>;
-  createEvent(calendarId: string, event: Record<string, unknown>): Promise<{ id: string } | null>;
-  deleteEvent(eventId: string): Promise<void>;
-}
-
-interface CalendarPlugin {
-  listCalendars(): Promise<Array<{ id: string; isPrimary?: boolean; title?: string }>>;
-  findEvents(calendarId: string, startDate: number, endDate: number): Promise<Array<{
-    id: string;
-    title?: string;
-    startDate: number;
-    endDate?: number;
-    allDay?: boolean;
-    recurrence?: string;
-    notes?: string;
-  }>>;
-  createEvent(calendarId: string, event: Record<string, unknown>): Promise<{ id: string } | null>;
-  deleteEvent(eventId: string): Promise<void>;
 }

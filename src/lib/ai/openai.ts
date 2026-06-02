@@ -109,7 +109,9 @@ function recordSuccess(): void {
 // ============================================================
 
 async function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  const { promise, resolve } = Promise.withResolvers<void>();
+  setTimeout(resolve, ms);
+  return promise;
 }
 
 function calculateBackoffDelay(attempt: number): number {
@@ -232,7 +234,115 @@ function isRateLimitError(error: unknown): boolean {
   return false;
 }
 
-// fallow-ignore-next-line complexity
+// ============================================================
+// API PARAMETERS EXTRACTION
+// ============================================================
+
+interface ApiParams {
+  model: string;
+  temperature: number;
+  max_tokens: number;
+  useFallback: boolean;
+}
+
+function extractApiParams(options: ChatCompletionOptions): ApiParams {
+  return {
+    model: options.model || DEFAULT_MODEL,
+    temperature: options.temperature ?? DEFAULT_TEMPERATURE,
+    max_tokens: options.max_tokens ?? DEFAULT_MAX_TOKENS,
+    useFallback: options.useFallback ?? false,
+  };
+}
+
+// ============================================================
+// RESPONSE TRANSFORMATION
+// ============================================================
+
+function transformResponse(completion: OpenAI.Chat.ChatCompletion): AIResponse {
+  const choice = completion.choices[0];
+  return {
+    content: choice.message.content || '',
+    usage: completion.usage
+      ? {
+          prompt_tokens: completion.usage.prompt_tokens,
+          completion_tokens: completion.usage.completion_tokens,
+          total_tokens: completion.usage.total_tokens,
+        }
+      : undefined,
+    model: completion.model,
+  };
+}
+
+// ============================================================
+// ERROR TYPE DETECTION
+// ============================================================
+
+function detectApiErrorType(error: unknown, model: string): never {
+  if (!(error instanceof Error)) {
+    throw new AIError(
+      'Erro desconhecido na API OpenAI',
+      'UNKNOWN_ERROR',
+      undefined,
+      true
+    );
+  }
+
+  const msg = error.message;
+
+  if (msg.includes('401') || msg.includes('api key')) {
+    throw new AIError('API key inválida ou não configurada', 'INVALID_API_KEY', 401, false);
+  }
+  if (msg.includes('403') || msg.includes('forbidden')) {
+    throw new AIError('Acesso à API negado - verifique permissões', 'ACCESS_DENIED', 403, false);
+  }
+  if (msg.includes('429')) {
+    throw new RateLimitError();
+  }
+  if (msg.includes('model')) {
+    throw new AIError(`Modelo '${model}' não disponível`, 'MODEL_UNAVAILABLE', 400, false);
+  }
+
+  throw new AIError(msg, 'UNKNOWN_ERROR', undefined, true);
+}
+
+async function executeRetryOrThrow(
+  error: unknown,
+  options: ChatCompletionOptions,
+  retryCount: number,
+  useFallback: boolean
+): Promise<AIResponse> {
+  if (!isRetryableError(error)) {
+    throw error;
+  }
+
+  const delay = calculateBackoffDelay(retryCount);
+  const errorMsg = error instanceof Error ? error.message : String(error);
+
+  console.warn(
+    `[OpenAI] Request failed (attempt ${retryCount + 1}/${MAX_RETRIES + 1}), ` +
+    `retrying in ${Math.round(delay)}ms: ${errorMsg}`
+  );
+
+  await sleep(delay);
+
+  if (isRateLimitError(error)) {
+    const rateLimitDelay = Math.min(delay * 2, MAX_DELAY_MS);
+    console.info(`[OpenAI] Rate limited, waiting ${Math.round(rateLimitDelay)}ms before retry`);
+    await sleep(rateLimitDelay);
+  }
+
+  const shouldUseFallback = retryCount === MAX_RETRIES - 1 && !useFallback;
+
+  return createChatCompletion(
+    { ...options, useFallback: shouldUseFallback },
+    retryCount + 1
+  );
+}
+
+// ============================================================
+// MAIN COMPLETION FUNCTION WITH RETRY & CIRCUIT BREAKER
+// ============================================================
+
 export async function createChatCompletion(
   options: ChatCompletionOptions,
   retryCount = 0
@@ -241,99 +351,28 @@ export async function createChatCompletion(
     throw new CircuitBreakerOpenError();
   }
 
-  const model = options.model || DEFAULT_MODEL;
-  const temperature = options.temperature ?? DEFAULT_TEMPERATURE;
-  const max_tokens = options.max_tokens ?? DEFAULT_MAX_TOKENS;
-  const useFallback = options.useFallback ?? false;
+  const params = extractApiParams(options);
+  const { model, temperature, max_tokens, useFallback } = params;
+  const effectiveModel = useFallback ? FALLBACK_MODEL : model;
 
   try {
     const completion = await getOpenAIClient().chat.completions.create({
-      model: useFallback ? FALLBACK_MODEL : model,
+      model: effectiveModel,
       messages: options.messages,
       temperature,
       max_tokens,
     });
 
     recordSuccess();
-
-    const choice = completion.choices[0];
-
-    return {
-      content: choice.message.content || '',
-      usage: completion.usage
-        ? {
-            prompt_tokens: completion.usage.prompt_tokens,
-            completion_tokens: completion.usage.completion_tokens,
-            total_tokens: completion.usage.total_tokens,
-          }
-        : undefined,
-      model: completion.model,
-    };
+    return transformResponse(completion);
   } catch (error) {
     recordFailure();
 
-    if (retryCount < MAX_RETRIES && isRetryableError(error)) {
-      const delay = calculateBackoffDelay(retryCount);
-      console.warn(
-        `[OpenAI] Request failed (attempt ${retryCount + 1}/${MAX_RETRIES + 1}), ` +
-        `retrying in ${Math.round(delay)}ms: ${error instanceof Error ? error.message : String(error)}`
-      );
-
-      await sleep(delay);
-
-      if (isRateLimitError(error)) {
-        const rateLimitDelay = Math.min(delay * 2, MAX_DELAY_MS);
-        console.info(`[OpenAI] Rate limited, waiting ${Math.round(rateLimitDelay)}ms before retry`);
-        await sleep(rateLimitDelay);
-      }
-
-      const shouldUseFallback = retryCount === MAX_RETRIES - 1 && !useFallback;
-      
-      return createChatCompletion(
-        { ...options, useFallback: shouldUseFallback },
-        retryCount + 1
-      );
+    if (retryCount < MAX_RETRIES) {
+      return await executeRetryOrThrow(error, options, retryCount, useFallback);
     }
 
-    if (error instanceof Error) {
-      if (error.message.includes('401') || error.message.includes('api key')) {
-        throw new AIError(
-          'API key inválida ou não configurada',
-          'INVALID_API_KEY',
-          401,
-          false
-        );
-      }
-      
-      if (error.message.includes('403') || error.message.includes('forbidden')) {
-        throw new AIError(
-          'Acesso à API negado - verifique permissões',
-          'ACCESS_DENIED',
-          403,
-          false
-        );
-      }
-
-      if (error.message.includes('429')) {
-        throw new RateLimitError();
-      }
-
-      if (error.message.includes('model')) {
-        throw new AIError(
-          `Modelo '${model}' não disponível`,
-          'MODEL_UNAVAILABLE',
-          400,
-          false
-        );
-      }
-    }
-
-    throw new AIError(
-      error instanceof Error ? error.message : 'Erro desconhecido na API OpenAI',
-      'UNKNOWN_ERROR',
-      undefined,
-      true
-    );
+    return detectApiErrorType(error, model);
   }
 }
 

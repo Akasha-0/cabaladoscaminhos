@@ -466,9 +466,9 @@ Retorne no seguinte formato JSON (sem markdown, apenas o objeto JSON):
     }
   }
   /**
-// fallow-ignore-next-line complexity
    * Generate comprehensive daily spiritual insight integrating all spiritual systems
    */
+// fallow-ignore-next-line complexity
   async generateComprehensiveDailyInsight(userData: UserSpiritualData): Promise<DailyInsight> {
     const now = new Date();
     const cyclePos = this.calculateCyclePosition(userData.dataNascimento);

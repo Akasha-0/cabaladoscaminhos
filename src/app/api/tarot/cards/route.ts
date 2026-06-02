@@ -1,3 +1,10 @@
+import {
+  reduceToSingleDigit,
+  getMasterNumbers,
+  getNumerologyElement,
+  getNumerologyChakra,
+  getElementKeywords,
+} from '@/lib/tarot/shared-card-data';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { TAROT_DECK } from '@/lib/tarot/cards';
@@ -51,7 +58,10 @@ export async function GET(request: NextRequest) {
     }
   } catch (err) {
     return NextResponse.json(
-      { success: false, error: { message: 'Erro interno do servidor', code: 'INTERNAL_ERROR' } },
+      {
+        success: false,
+        error: 'Erro interno',
+      },
       { status: 500 }
     );
   }
@@ -92,7 +102,6 @@ function handleGetAllCards(searchParams: URLSearchParams) {
   });
 }
 // fallow-ignore-next-line complexity
-
 function handleGetCard(searchParams: URLSearchParams) {
   const idParam = searchParams.get('id');
   const name = searchParams.get('name');
@@ -302,41 +311,6 @@ function handleGetCardAstrology(searchParams: URLSearchParams) {
 
 // ============================================================
 // HELPER FUNCTIONS
-// ============================================================
-
-function reduceToSingleDigit(num: number): number {
-  while (num > 9 && ![11, 22, 33].includes(num)) {
-    num = num.toString().split('').reduce((sum, digit) => sum + parseInt(digit, 10), 0);
-  }
-  return num;
-}
-
-function getMasterNumbers(num: number): number[] {
-  const masters = [11, 22, 33];
-  if (masters.includes(num)) return [num];
-  
-  const reduced = reduceToSingleDigit(num);
-  return masters.includes(reduced) ? [reduced] : [];
-}
-
-function getNumerologyElement(num: number): string {
-  const elements = ['Air', 'Earth', 'Water', 'Fire'];
-  return elements[num % 4] || 'Spirit';
-}
-
-function getNumerologyChakra(num: number): number {
-  return (num % 7) + 1;
-}
-
-function getElementKeywords(element: string): string[] {
-  const keywords: Record<string, string[]> = {
-    Air: ['action', 'inspiration', 'new beginnings'],
-    Earth: ['stability', 'materialization', 'practice'],
-    Water: ['emotion', 'intuition', 'fluidity'],
-    Fire: ['transformation', 'passion', 'energy'],
-  };
-  return keywords[element] || ['spiritual connection'];
-}
 
 function getModalityFromSign(astro: string): string {
   const modalities: Record<string, string> = {

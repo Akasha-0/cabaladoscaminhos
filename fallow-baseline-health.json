@@ -1,46 +1,17 @@
 {
   "finding_counts": {
-    "middleware.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "prisma/seed.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "public/sw.js": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 3
       }
     },
     "src/app/api/akashic/records/route.ts": {
       "crap_critical": {
-        "count": 2
-      }
-    },
-    "src/app/api/ancestor/connection/route.ts": {
-      "crap_high": {
         "count": 1
       }
     },
-    "src/app/api/astrologia/analise/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/app/api/astrologia/transitos/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
+    "src/app/api/astrologia/previsao-mensal/route.ts": {
+      "crap_moderate": {
         "count": 1
       }
     },
@@ -59,8 +30,8 @@
         "count": 1
       }
     },
-    "src/app/api/auth/login-form/route.ts": {
-      "crap_critical": {
+    "src/app/api/auth/login/route.ts": {
+      "crap_moderate": {
         "count": 1
       }
     },
@@ -74,164 +45,52 @@
         "count": 1
       }
     },
-    "src/app/api/cabala/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/cabala/sefirot/route.ts": {
-      "crap_critical": {
-        "count": 2
-      }
-    },
     "src/app/api/calendar/route.ts": {
       "crap_moderate": {
         "count": 1
       }
     },
     "src/app/api/chart/generate/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/app/api/chart/interpretations/route.ts": {
-      "crap_critical": {
         "count": 1
       }
     },
     "src/app/api/chat/oracle/route.ts": {
-      "crap_high": {
+      "crap_critical": {
         "count": 1
       },
+      "crap_moderate": {
+        "count": 3
+      }
+    },
+    "src/app/api/correlation/diagnosis/route.ts": {
       "crap_moderate": {
         "count": 1
       }
     },
-    "src/app/api/correlation/analyze/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/correlation/ritual/route.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/app/api/dashboard/ai-models/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/dashboard/collaboration/route.ts": {
-      "complexity_critical": {
-        "count": 1
-      },
-      "crap_critical": {
-        "count": 1
-      }
-    },
     "src/app/api/dashboard/correlation/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
-        "count": 1
-      }
-    },
-    "src/app/api/dashboard/data-sources/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/dashboard/energy/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/app/api/dashboard/workflow/route.ts": {
-      "crap_critical": {
         "count": 1
       }
     },
     "src/app/api/divination/cross-system/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       }
     },
     "src/app/api/divination/oracle/route.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/app/api/divination/route.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/app/api/divine/connection/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/energy/flow/route.ts": {
-      "crap_high": {
         "count": 1
       }
     },
     "src/app/api/energy/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
-      }
-    },
-    "src/app/api/energy/work/route.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/app/api/favoritos/route.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/app/api/gamification/achievements/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/guidance/types/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/healing/types/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/health/metrics/route.ts": {
-      "crap_high": {
-        "count": 2
       }
     },
     "src/app/api/ifa/consulta/route.ts": {
@@ -240,59 +99,29 @@
       }
     },
     "src/app/api/ifa/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       },
       "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/app/api/journal/spiritual/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/lenormand/route.ts": {
-      "crap_high": {
-        "count": 2
-      },
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/app/api/mapa/insights/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/mapa/pdf/route.ts": {
-      "crap_high": {
         "count": 1
       }
     },
     "src/app/api/mapa/share/route.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/app/api/materials/route.ts": {
       "crap_critical": {
-        "count": 2
-      },
-      "crap_moderate": {
         "count": 1
       }
     },
     "src/app/api/mesa-real/clients/route.ts": {
-      "crap_high": {
+      "crap_moderate": {
         "count": 1
-      },
+      }
+    },
+    "src/app/api/mesa-real/pdf/route.ts": {
       "crap_moderate": {
         "count": 1
       }
@@ -302,16 +131,11 @@
         "count": 1
       },
       "crap_moderate": {
-        "count": 2
-      }
-    },
-    "src/app/api/notifications/preferences/route.ts": {
-      "crap_critical": {
         "count": 1
       }
     },
-    "src/app/api/notifications/spiritual/route.ts": {
-      "crap_high": {
+    "src/app/api/mesa-real/save/route.ts": {
+      "crap_moderate": {
         "count": 1
       }
     },
@@ -321,17 +145,11 @@
       }
     },
     "src/app/api/numerologia/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/app/api/numerology/readings/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       },
@@ -340,9 +158,6 @@
       }
     },
     "src/app/api/offerings/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       },
@@ -355,15 +170,27 @@
         "count": 1
       }
     },
-    "src/app/api/orixa/profiles/route.ts": {
-      "crap_critical": {
+    "src/app/api/operator/auth/logout/route.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/app/api/operator/auth/sessions/[id]/route.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/app/api/operator/auth/sessions/revoke-all/route.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/app/api/payments/portal/route.ts": {
+      "crap_moderate": {
         "count": 1
       }
     },
     "src/app/api/planetary/route.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -374,11 +201,8 @@
       }
     },
     "src/app/api/progress/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
-        "count": 2
+        "count": 1
       }
     },
     "src/app/api/progresso/route.ts": {
@@ -386,55 +210,33 @@
         "count": 1
       }
     },
-    "src/app/api/recommendations/route.ts": {
-      "crap_critical": {
+    "src/app/api/search/index/route.ts": {
+      "crap_high": {
         "count": 1
       }
     },
     "src/app/api/search/route.ts": {
-      "crap_critical": {
-        "count": 2
-      },
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/app/api/search/spiritual/route.ts": {
-      "crap_critical": {
-        "count": 2
-      },
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 2
       }
     },
-    "src/app/api/stats/route.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/api/swarm/route.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/app/api/tarot/cards/route.ts": {
-      "crap_high": {
-        "count": 2
-      },
       "crap_moderate": {
         "count": 3
       }
     },
     "src/app/api/tarot/consulta/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 2
       },
@@ -443,22 +245,16 @@
       }
     },
     "src/app/api/tarot/do-dia/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       }
     },
-    "src/app/api/tarot/library/route.ts": {
-      "crap_critical": {
-        "count": 1
+    "src/app/api/tarot/reading/route.ts": {
+      "crap_moderate": {
+        "count": 2
       }
     },
-    "src/app/api/tarot/reading/route.ts": {
-      "crap_critical": {
-        "count": 1
-      },
+    "src/app/api/tarot/readings/route.ts": {
       "crap_moderate": {
         "count": 2
       }
@@ -471,11 +267,6 @@
     "src/app/api/users/profile/route.ts": {
       "crap_moderate": {
         "count": 2
-      }
-    },
-    "src/app/api/webhooks/stripe/route.ts": {
-      "crap_moderate": {
-        "count": 1
       }
     },
     "src/app/calendario/page.tsx": {
@@ -494,53 +285,21 @@
       }
     },
     "src/app/dashboard/life-areas/page.tsx": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
-        "count": 2
+        "count": 1
       }
     },
     "src/app/dashboard/mapa/page.tsx": {
-      "crap_moderate": {
-        "count": 2
-      }
-    },
-    "src/app/dashboard/mesa-real/page.tsx": {
-      "crap_critical": {
-        "count": 2
-      }
-    },
-    "src/app/dashboard/perfil/page.tsx": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/app/dashboard/relatorios/page.tsx": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/app/mapa/page.tsx": {
-      "crap_high": {
-        "count": 2
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/app/mapa/shared/[hash]/page.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       }
     },
     "src/app/onboarding/page.tsx": {
-      "crap_high": {
-        "count": 2
-      },
       "crap_moderate": {
         "count": 3
       }
@@ -555,15 +314,7 @@
         "count": 3
       }
     },
-    "src/app/profile/page.tsx": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
     "src/components/auth/LoginForm.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       }
@@ -574,11 +325,6 @@
       }
     },
     "src/components/auth/OperatorLoginForm.tsx": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/components/auth/OperatorRegisterForm.tsx": {
       "crap_high": {
         "count": 1
       }
@@ -594,24 +340,54 @@
       }
     },
     "src/components/cockpit/HouseInputPopover.tsx": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/components/cockpit/clients/ClientForm.tsx": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/components/cockpit/clients/ClientMapPreview.tsx": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/components/cockpit/clients/ClientSearchCombobox.tsx": {
+      "crap_high": {
+        "count": 1
+      },
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/components/cockpit/consulentes/ConsulentesTable.tsx": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/components/cockpit/consultation/OraculoChat.tsx": {
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/components/cockpit/dossier/DossierIndex.tsx": {
       "crap_high": {
         "count": 1
       }
     },
-    "src/components/dashboard/AIAgentsWidget.tsx": {
-      "crap_high": {
+    "src/components/cockpit/dossier/DossierPdfButton.tsx": {
+      "crap_moderate": {
         "count": 1
       }
     },
-    "src/components/dashboard/AIMeditationGuide.tsx": {
-      "crap_high": {
+    "src/components/cockpit/leituras/ReadingsTable.tsx": {
+      "crap_moderate": {
         "count": 1
       }
     },
     "src/components/dashboard/AIOracleChat.tsx": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -636,21 +412,13 @@
       }
     },
     "src/components/dashboard/AdaptiveUI.tsx": {
-      "crap_critical": {
-        "count": 2
-      },
       "crap_moderate": {
         "count": 3
       }
     },
     "src/components/dashboard/AdaptiveWidgetGrid.tsx": {
       "crap_high": {
-        "count": 3
-      }
-    },
-    "src/components/dashboard/AffirmationWidget.tsx": {
-      "crap_high": {
-        "count": 1
+        "count": 2
       }
     },
     "src/components/dashboard/AncestralConnectionPanel.tsx": {
@@ -660,9 +428,6 @@
     },
     "src/components/dashboard/ArchetypeDisplay.tsx": {
       "crap_critical": {
-        "count": 2
-      },
-      "crap_high": {
         "count": 1
       },
       "crap_moderate": {
@@ -675,14 +440,6 @@
       },
       "crap_critical": {
         "count": 2
-      },
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/components/dashboard/AstrologyWidget.tsx": {
-      "crap_high": {
-        "count": 1
       }
     },
     "src/components/dashboard/CalendarioEspiritual.tsx": {
@@ -695,25 +452,14 @@
         "count": 1
       }
     },
-    "src/components/dashboard/CollaborationHub.tsx": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/components/dashboard/CorrelationAnalysisPanel.tsx": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/components/dashboard/CorrelationPredictionsWidget.tsx": {
-      "crap_critical": {
-        "count": 2
-      },
       "crap_high": {
-        "count": 2
+        "count": 1
       }
     },
     "src/components/dashboard/CrossCorrelationWidget.tsx": {
@@ -722,17 +468,9 @@
       }
     },
     "src/components/dashboard/CrossSystemDivination.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       },
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/components/dashboard/DailyActionWidget.tsx": {
       "crap_moderate": {
         "count": 1
       }
@@ -743,9 +481,6 @@
       }
     },
     "src/components/dashboard/DailyPredictionCard.tsx": {
-      "crap_high": {
-        "count": 2
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -760,7 +495,7 @@
         "count": 1
       }
     },
-    "src/components/dashboard/DashboardSettings.tsx": {
+    "src/components/dashboard/EnergyFlowWidget.tsx": {
       "crap_high": {
         "count": 1
       }
@@ -779,9 +514,6 @@
       }
     },
     "src/components/dashboard/LayoutPersistence.tsx": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -791,23 +523,9 @@
         "count": 1
       }
     },
-    "src/components/dashboard/LoveReadingsWidget.tsx": {
-      "complexity_critical": {
-        "count": 1
-      },
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/components/dashboard/LunarPhaseWidget.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
-        "count": 2
+        "count": 1
       }
     },
     "src/components/dashboard/MapaNatalWheel.tsx": {
@@ -818,11 +536,6 @@
         "count": 1
       }
     },
-    "src/components/dashboard/MeditationPlayer.tsx": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
     "src/components/dashboard/MobileBottomNav.tsx": {
       "crap_high": {
         "count": 1
@@ -830,29 +543,18 @@
     },
     "src/components/dashboard/MoonRitualPlanner.tsx": {
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 1
       }
     },
-    "src/components/dashboard/MoonTracker.tsx": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/components/dashboard/NotificationCenter.tsx": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 4
       }
     },
     "src/components/dashboard/PredictiveInsightsPanel.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 2
       },
@@ -861,20 +563,11 @@
       }
     },
     "src/components/dashboard/PredictiveSynthesisPanel.tsx": {
-      "crap_high": {
-        "count": 2
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/components/dashboard/ProgressTracker.tsx": {
-      "complexity_critical": {
-        "count": 1
-      },
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       },
@@ -905,7 +598,7 @@
     },
     "src/components/dashboard/RitualReminderWidget.tsx": {
       "crap_high": {
-        "count": 2
+        "count": 1
       }
     },
     "src/components/dashboard/SacredCalendar.tsx": {
@@ -915,16 +608,13 @@
     },
     "src/components/dashboard/SelfEvolutionTracker.tsx": {
       "crap_high": {
-        "count": 4
+        "count": 3
       },
       "crap_moderate": {
         "count": 5
       }
     },
     "src/components/dashboard/SpiritWellnessWidget.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -936,7 +626,7 @@
     },
     "src/components/dashboard/SpiritualBalanceGauge.tsx": {
       "crap_high": {
-        "count": 3
+        "count": 2
       },
       "crap_moderate": {
         "count": 3
@@ -955,34 +645,17 @@
         "count": 1
       }
     },
-    "src/components/dashboard/SpiritualCorrelationViz.tsx": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
     "src/components/dashboard/SpiritualDayPopup.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/components/dashboard/SpiritualEnergyWidget.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 2
       }
     },
     "src/components/dashboard/SpiritualExplorationTools.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -993,9 +666,6 @@
       }
     },
     "src/components/dashboard/SpiritualGuidanceChat.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       },
@@ -1004,19 +674,13 @@
       }
     },
     "src/components/dashboard/SpiritualJournalWidget.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 2
       }
     },
     "src/components/dashboard/SpiritualJourneyGuide.tsx": {
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 4
@@ -1024,7 +688,7 @@
     },
     "src/components/dashboard/SpiritualNotificationCenter.tsx": {
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 2
@@ -1032,7 +696,7 @@
     },
     "src/components/dashboard/SpiritualProfileView.tsx": {
       "crap_critical": {
-        "count": 2
+        "count": 1
       },
       "crap_high": {
         "count": 1
@@ -1042,16 +706,13 @@
       }
     },
     "src/components/dashboard/SpiritualProgressWidget.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 2
       }
     },
     "src/components/dashboard/SpiritualRadarChart.tsx": {
       "crap_high": {
-        "count": 3
+        "count": 1
       },
       "crap_moderate": {
         "count": 3
@@ -1064,36 +725,22 @@
     },
     "src/components/dashboard/SpiritualSidebar.tsx": {
       "crap_critical": {
-        "count": 2
+        "count": 1
       }
     },
     "src/components/dashboard/SpiritualStateMonitor.tsx": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
-    "src/components/dashboard/SpiritualSummary.tsx": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/components/dashboard/SpiritualTimeline.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/components/dashboard/SwarmChatWidget.tsx": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
-        "count": 3
+        "count": 2
       }
     },
     "src/components/dashboard/SwarmStatusWidget.tsx": {
@@ -1111,11 +758,6 @@
         "count": 1
       }
     },
-    "src/components/dashboard/UserProfileBadge.tsx": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/components/dashboard/WelcomeCard.tsx": {
       "crap_moderate": {
         "count": 2
@@ -1126,14 +768,14 @@
         "count": 1
       },
       "crap_critical": {
-        "count": 2
+        "count": 1
       },
       "crap_high": {
         "count": 1
       }
     },
-    "src/components/dashboard/WorkflowAutomation.tsx": {
-      "crap_critical": {
+    "src/components/dashboard/markdown-renderer.tsx": {
+      "crap_high": {
         "count": 1
       }
     },
@@ -1142,18 +784,8 @@
         "count": 1
       }
     },
-    "src/components/design-system/ThemeSwitcher.tsx": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
     "src/components/design-system/Typography.tsx": {
       "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/components/layout/AppShell.tsx": {
-      "crap_high": {
         "count": 1
       }
     },
@@ -1164,9 +796,6 @@
     },
     "src/components/mapa/ArvoreVidaViz.tsx": {
       "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
         "count": 1
       },
       "crap_moderate": {
@@ -1209,15 +838,7 @@
       }
     },
     "src/components/mesa-real/CasaModal.tsx": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/components/mesa-real/MesaRealGrid.tsx": {
-      "crap_high": {
         "count": 1
       }
     },
@@ -1226,22 +847,33 @@
         "count": 1
       },
       "crap_high": {
-        "count": 2
+        "count": 1
+      }
+    },
+    "src/components/operator/MfaChallenge.tsx": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/components/operator/MfaSetup.tsx": {
+      "crap_high": {
+        "count": 1
+      },
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/components/operator/SessionsList.tsx": {
+      "crap_high": {
+        "count": 1
+      },
+      "crap_moderate": {
+        "count": 1
       }
     },
     "src/components/providers/OperatorAuthProvider.tsx": {
       "crap_moderate": {
         "count": 2
-      }
-    },
-    "src/components/shared/ErrorState.tsx": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/components/shared/MysticDivider.tsx": {
-      "crap_critical": {
-        "count": 1
       }
     },
     "src/components/shop/RitualMaterialsShop.tsx": {
@@ -1266,38 +898,64 @@
       }
     },
     "src/hooks/useDataSync.ts": {
-      "complexity_critical": {
-        "count": 1
-      },
       "crap_critical": {
-        "count": 3
+        "count": 1
       },
       "crap_high": {
         "count": 2
+      }
+    },
+    "src/hooks/useMapaAlma.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/hooks/useMapaInsights.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/hooks/useMapaNatal.ts": {
+      "crap_moderate": {
+        "count": 1
       }
     },
     "src/hooks/usePWA.ts": {
       "crap_high": {
-        "count": 2
+        "count": 1
+      }
+    },
+    "src/hooks/usePrevisaoMensal.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/hooks/useRitualCalendar.ts": {
+      "crap_moderate": {
+        "count": 1
       }
     },
     "src/hooks/useRituals.ts": {
-      "complexity_moderate": {
+      "crap_high": {
+        "count": 1
+      }
+    },
+    "src/hooks/useSpiritualHistory.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/hooks/useUserProfile.ts": {
+      "crap_moderate": {
         "count": 1
       }
     },
     "src/lib/admin/admin-reports.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/lib/agents/daily-context-builder.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       },
@@ -1307,91 +965,74 @@
     },
     "src/lib/agents/personal-cycle-engine.ts": {
       "crap_high": {
-        "count": 2
-      }
-    },
-    "src/lib/agents/recommendation-engine-v2.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
         "count": 1
       }
     },
     "src/lib/agents/recommendation-engine.ts": {
-      "complexity_critical": {
-        "count": 1
-      },
-      "crap_critical": {
-        "count": 2
-      },
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/lib/agents/transit-engine.ts": {
       "crap_high": {
-        "count": 3
+        "count": 2
       }
     },
     "src/lib/ai/autonomous-insights.ts": {
-      "crap_critical": {
-        "count": 3
-      },
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 3
       }
     },
     "src/lib/ai/deep-correlation-engine.ts": {
-      "crap_high": {
+      "crap_critical": {
         "count": 2
       },
+      "crap_high": {
+        "count": 1
+      },
       "crap_moderate": {
-        "count": 3
+        "count": 7
+      }
+    },
+    "src/lib/ai/dossier/consult-context.ts": {
+      "crap_moderate": {
+        "count": 1
       }
     },
     "src/lib/ai/dossier/prompt-builder.ts": {
-      "complexity_high": {
-        "count": 1
-      },
-      "crap_high": {
+      "crap_moderate": {
         "count": 1
       }
     },
     "src/lib/ai/insight-generator.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
     "src/lib/ai/insights/generator.ts": {
-      "complexity_moderate": {
+      "crap_high": {
         "count": 1
-      },
+      }
+    },
+    "src/lib/ai/mapa-insights/generator.ts": {
       "crap_moderate": {
         "count": 1
       }
     },
-    "src/lib/ai/insights/parser.ts": {
+    "src/lib/ai/mapa-insights/prompt-builder.ts": {
       "crap_critical": {
+        "count": 1
+      },
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/lib/ai/openai.ts": {
+      "crap_high": {
         "count": 1
       }
     },
     "src/lib/ai/oracle.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -1403,16 +1044,13 @@
     },
     "src/lib/ai/predictive-guidance.ts": {
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 5
       }
     },
     "src/lib/ai/prompt-builder/index.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -1423,59 +1061,60 @@
       }
     },
     "src/lib/ai/quantum-spiritual-engine.ts": {
-      "complexity_critical": {
-        "count": 1
-      },
-      "crap_critical": {
-        "count": 2
-      },
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 1
       }
     },
-    "src/lib/ai/theme-router.ts": {
-      "complexity_moderate": {
-        "count": 1
+    "src/lib/ai/tradition-mapper.ts": {
+      "crap_moderate": {
+        "count": 4
       }
     },
     "src/lib/analytics/analytics-export.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/analytics/correlation.ts": {
-      "crap_high": {
         "count": 1
       }
     },
     "src/lib/analytics/meditation-analytics.ts": {
-      "crap_high": {
-        "count": 2
-      }
-    },
-    "src/lib/analytics/progress-trends.ts": {
       "crap_high": {
         "count": 1
       }
     },
     "src/lib/analytics/session-insights.ts": {
       "crap_high": {
-        "count": 3
+        "count": 2
       },
       "crap_moderate": {
         "count": 1
       }
     },
-    "src/lib/api/logging.ts": {
+    "src/lib/api/auth-utils.ts": {
+      "crap_high": {
+        "count": 1
+      }
+    },
+    "src/lib/api/error-handler.ts": {
+      "crap_high": {
+        "count": 1
+      }
+    },
+    "src/lib/api/filter-utils.ts": {
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/lib/api/response-helpers.ts": {
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/lib/api/spiritual-stats.ts": {
+      "complexity_critical": {
+        "count": 1
+      },
       "crap_critical": {
         "count": 1
       }
@@ -1487,10 +1126,15 @@
     },
     "src/lib/api/versioning.ts": {
       "crap_high": {
-        "count": 2
+        "count": 1
       }
     },
     "src/lib/astrologia/aspect-calculation.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/astrologia/aspect-finder.ts": {
       "crap_moderate": {
         "count": 1
       }
@@ -1500,8 +1144,8 @@
         "count": 2
       }
     },
-    "src/lib/astrologia/houses.ts": {
-      "complexity_moderate": {
+    "src/lib/astrologia/moon-calculator.ts": {
+      "crap_high": {
         "count": 1
       }
     },
@@ -1511,9 +1155,16 @@
       }
     },
     "src/lib/astrologia/planet-calculator.ts": {
-      "crap_high": {
+      "crap_moderate": {
         "count": 1
-      },
+      }
+    },
+    "src/lib/astrologia/planet-positions.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/astrologia/planetas/aspectos.ts": {
       "crap_moderate": {
         "count": 1
       }
@@ -1523,28 +1174,52 @@
         "count": 3
       }
     },
-    "src/lib/astrologia/planetas/positions.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/lib/astrologia/swiss-ephemeris.ts": {
-      "complexity_moderate": {
+      "complexity_high": {
         "count": 1
-      }
-    },
-    "src/lib/astrologia/symbols.ts": {
+      },
       "crap_high": {
         "count": 1
       }
     },
-    "src/lib/astrologia/trânsitos/calculator.ts": {
-      "complexity_moderate": {
+    "src/lib/auth/operator-jwt.ts": {
+      "crap_critical": {
         "count": 1
       }
     },
-    "src/lib/astrology/v2/astrology-v2-practice.ts": {
-      "crap_critical": {
+    "src/lib/auth/operator-mfa.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/auth/operator-session.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/auth/operator-sessions.ts": {
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/lib/auth/operator-totp.ts": {
+      "crap_high": {
+        "count": 2
+      },
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/auth/rate-limit.ts": {
+      "crap_high": {
+        "count": 1
+      },
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/lib/banking/credit-system.ts": {
+      "crap_moderate": {
         "count": 1
       }
     },
@@ -1559,81 +1234,12 @@
       }
     },
     "src/lib/chart/chart-export.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
     },
-    "src/lib/chart/chart-interpretations.ts": {
-      "complexity_moderate": {
-        "count": 1
-      },
+    "src/lib/credits/service.ts": {
       "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/correlation/calculator.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 2
-      },
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/correlation/chakra-chakra.ts": {
-      "complexity_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/correlation/correlation-matrix.ts": {
-      "crap_high": {
-        "count": 2
-      },
-      "crap_moderate": {
-        "count": 3
-      }
-    },
-    "src/lib/correlation/cross-tradition.ts": {
-      "complexity_high": {
-        "count": 1
-      },
-      "complexity_moderate": {
-        "count": 1
-      },
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/correlation/identity/index.ts": {
-      "crap_critical": {
-        "count": 2
-      },
-      "crap_high": {
-        "count": 2
-      }
-    },
-    "src/lib/correlation/oddu-orixa.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/lib/correlation/odtu-zodiac.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/lib/correlation/orixa-destiny.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/correlation/orixa-sephirot.ts": {
-      "complexity_moderate": {
         "count": 1
       }
     },
@@ -1643,11 +1249,8 @@
       }
     },
     "src/lib/dashboard/data-fetcher.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 3
@@ -1658,7 +1261,15 @@
         "count": 1
       }
     },
+    "src/lib/db/reading-actions.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
     "src/lib/engines/predictive-synthesis-engine.ts": {
+      "crap_critical": {
+        "count": 1
+      },
       "crap_high": {
         "count": 1
       },
@@ -1667,27 +1278,9 @@
       }
     },
     "src/lib/engines/spiritual-engine.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/export/comprehensive-report.ts": {
       "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 3
-      },
-      "crap_moderate": {
         "count": 2
-      }
-    },
-    "src/lib/export/dashboard-json.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/lib/export/export-formats.ts": {
+      },
       "crap_high": {
         "count": 2
       },
@@ -1695,25 +1288,30 @@
         "count": 4
       }
     },
-    "src/lib/export/manifest.ts": {
+    "src/lib/export/comprehensive-report.ts": {
       "crap_high": {
         "count": 1
+      },
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/lib/export/export-formats.ts": {
+      "crap_high": {
+        "count": 1
+      },
+      "crap_moderate": {
+        "count": 4
       }
     },
     "src/lib/export/pdf.ts": {
-      "crap_critical": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 4
       }
     },
     "src/lib/export/png.ts": {
       "crap_high": {
-        "count": 2
+        "count": 1
       }
     },
     "src/lib/export/reports.ts": {
@@ -1721,7 +1319,22 @@
         "count": 2
       }
     },
+    "src/lib/gamification/achievements.ts": {
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/lib/gamification/rewards.ts": {
+      "crap_moderate": {
+        "count": 2
+      }
+    },
     "src/lib/gamification/streak-tracking.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/herb/v2/herb-v2-practice.ts": {
       "crap_moderate": {
         "count": 1
       }
@@ -1733,25 +1346,22 @@
     },
     "src/lib/ifa/comparison.ts": {
       "crap_critical": {
-        "count": 2
+        "count": 1
       },
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 1
+      }
+    },
+    "src/lib/ifa/draw.ts": {
+      "crap_moderate": {
+        "count": 2
       }
     },
     "src/lib/ifa/matching.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/ifa/ritual-matching.ts": {
-      "crap_high": {
         "count": 1
       }
     },
@@ -1761,17 +1371,11 @@
       }
     },
     "src/lib/image.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
         "count": 1
       }
     },
     "src/lib/life-areas/life-areas-ai.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -1783,33 +1387,39 @@
     },
     "src/lib/logging.ts": {
       "crap_critical": {
+        "count": 1
+      },
+      "crap_high": {
+        "count": 1
+      },
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/numerologia/calculator.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/numerologia/calculos.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/numerologia/ciclos.ts": {
+      "crap_high": {
+        "count": 1
+      },
+      "crap_moderate": {
         "count": 2
-      },
-      "crap_high": {
-        "count": 1
-      },
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/meji-ika/meji-ika-practice.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/merkaba/v2/merkaba-v2-practice.ts": {
-      "crap_critical": {
-        "count": 1
-      }
-    },
-    "src/lib/nirvana/nirvana-practice.ts": {
-      "crap_high": {
-        "count": 1
       }
     },
     "src/lib/numerologia/compatibility.ts": {
+      "crap_high": {
+        "count": 2
+      },
       "crap_moderate": {
-        "count": 1
+        "count": 2
       }
     },
     "src/lib/numerologia/date-analysis.ts": {
@@ -1819,7 +1429,7 @@
     },
     "src/lib/numerologia/numerology-charts.ts": {
       "crap_high": {
-        "count": 2
+        "count": 1
       },
       "crap_moderate": {
         "count": 1
@@ -1830,10 +1440,12 @@
         "count": 1
       }
     },
+    "src/lib/numerologia/odu-correlations.ts": {
+      "crap_moderate": {
+        "count": 2
+      }
+    },
     "src/lib/numerology/compatibility-scores.ts": {
-      "crap_critical": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 1
       }
@@ -1848,20 +1460,24 @@
         "count": 1
       }
     },
-    "src/lib/numerology/name-analysis.ts": {
+    "src/lib/odu/HyperCorrelationEngine.ts": {
       "crap_high": {
         "count": 1
       }
     },
+    "src/lib/odus/calculos.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
+    "src/lib/payments/service.ts": {
+      "crap_moderate": {
+        "count": 1
+      }
+    },
     "src/lib/predictions/prediction-engine.ts": {
-      "complexity_high": {
-        "count": 1
-      },
-      "crap_critical": {
-        "count": 1
-      },
       "crap_high": {
-        "count": 2
+        "count": 1
       }
     },
     "src/lib/predictions/year.ts": {
@@ -1879,14 +1495,14 @@
         "count": 1
       }
     },
-    "src/lib/progress/milestone-tracking.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/lib/push-notifications.ts": {
       "crap_moderate": {
         "count": 2
+      }
+    },
+    "src/lib/quality/metrics-framework.ts": {
+      "crap_moderate": {
+        "count": 3
       }
     },
     "src/lib/rate-limit-monitor.ts": {
@@ -1894,13 +1510,23 @@
         "count": 1
       }
     },
-    "src/lib/reading/reminders.ts": {
-      "crap_high": {
+    "src/lib/redis.ts": {
+      "crap_moderate": {
+        "count": 3
+      }
+    },
+    "src/lib/ritual-storage.ts": {
+      "crap_moderate": {
         "count": 1
       }
     },
-    "src/lib/relatorios/dados.ts": {
-      "crap_critical": {
+    "src/lib/sharing/url-shortener.ts": {
+      "crap_moderate": {
+        "count": 2
+      }
+    },
+    "src/lib/statistics/stats-visualization.ts": {
+      "crap_moderate": {
         "count": 1
       }
     },
@@ -1919,111 +1545,30 @@
         "count": 2
       }
     },
-    "src/lib/swarm/swarm-orchestrator.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
     "src/lib/sync/sync-conflict-resolution.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "src/lib/user/preference-management.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "src/lib/user/profile-customization.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "tests/e2e/user-flows.test.ts": {
-      "complexity_high": {
-        "count": 1
-      },
-      "crap_high": {
-        "count": 1
-      },
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "tests/lib/correlation/element-chakra.test.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "tests/lib/correlation/element-numerology.test.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "tests/lib/correlation/moon-odu.test.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "tests/lib/correlation/numerology-element.test.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "tests/lib/correlation/numerology-frequency.test.ts": {
-      "crap_high": {
-        "count": 1
-      },
       "crap_moderate": {
         "count": 2
       }
     },
-    "tests/lib/correlation/oddu-numerology.test.ts": {
+    "src/lib/sync/sync-data.ts": {
       "crap_moderate": {
         "count": 1
       }
     },
-    "tests/lib/correlation/odu-element.test.ts": {
-      "crap_high": {
+    "src/lib/tarot/spread-calculator.ts": {
+      "complexity_critical": {
+        "count": 1
+      },
+      "crap_critical": {
         "count": 1
       }
     },
-    "tests/lib/correlation/odu-numerology.test.ts": {
+    "src/lib/tarot/spread-maker.ts": {
       "crap_moderate": {
-        "count": 1
+        "count": 4
       }
     },
-    "tests/lib/correlation/odu-planet.test.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "tests/lib/correlation/sephirot-chakra.test.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "tests/lib/correlation/sephirot-numerology.test.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "tests/lib/correlation/sound-planet.test.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "tests/lib/energy/patterns.test.ts": {
-      "crap_moderate": {
-        "count": 1
-      }
-    },
-    "tests/lib/engines/mapa-alma.test.ts": {
-      "crap_high": {
-        "count": 1
-      }
-    },
-    "tests/lib/engines/spiritual-engine.test.ts": {
+    "src/lib/user/profile-customization.ts": {
       "crap_moderate": {
         "count": 1
       }
@@ -2031,105 +1576,17 @@
   },
   "runtime_coverage_findings": [],
   "target_keys": [
-    "src/components/ui/popover.tsx:dead code",
-    "src/lib/okanran/okanran-data.ts:dead code",
-    "src/lib/correlation/calculator.ts:complexity",
-    "src/components/ui/spiritual-card.tsx:dead code",
-    "src/lib/ai/insights/parser.ts:dead code",
-    "src/hooks/useDataSync.ts:complexity",
-    "src/lib/i18n/index.ts:dead code",
-    "src/lib/correlation/oddu-sephirot.ts:dead code",
-    "src/lib/astrologia/planet-aspects.ts:dead code",
-    "src/lib/ai/prompt-builder/index.ts:dead code",
-    "src/lib/astrologia/transit-tracking.ts:dead code",
-    "src/lib/reading/reminders.ts:dead code",
-    "src/lib/auth-impl.ts:dead code",
-    "src/lib/ai/prompt-system.ts:dead code",
-    "src/lib/cache.ts:dead code",
-    "src/lib/export/export-formats.ts:dead code",
-    "src/components/providers/UserProvider.tsx:dead code",
-    "src/lib/astrologia/planet-calculator.ts:dead code",
-    "src/lib/reading/scheduler.ts:dead code",
-    "src/lib/astrologia/aspect-grid.ts:dead code",
-    "src/lib/astrologia/synastry.ts:complexity",
-    "src/components/dashboard/WidgetComponents.tsx:dead code",
-    "src/lib/ai/insights/cache.ts:dead code",
-    "src/lib/analytics/meditation-analytics.ts:dead code",
-    "src/lib/gamification/streak-tracking.ts:dead code",
-    "src/lib/image.ts:dead code",
-    "src/lib/numerology/compatibility-scores.ts:dead code",
-    "src/lib/export/comprehensive-report.ts:dead code",
-    "src/lib/lazy.tsx:dead code",
-    "src/lib/numerology/name-analysis.ts:dead code",
-    "src/lib/profile/analytics.ts:dead code",
-    "src/lib/api/versioning.ts:dead code",
-    "src/lib/correlation/odtu-zodiac.ts:dead code",
-    "src/lib/banking/transaction-history.ts:dead code",
-    "src/lib/api/validation.ts:dead code",
-    "src/lib/export/png.ts:dead code",
-    "src/lib/progress/achievement-system.ts:dead code",
-    "src/lib/analytics/analytics-data.ts:dead code",
-    "src/lib/profile/profile-data.ts:dead code",
-    "src/lib/meji-ikate/meji-ikate-data.ts:dead code",
-    "src/lib/meji-oyeku/meji-oyeku-data.ts:dead code",
-    "src/lib/meji-yeku/meji-yeku-data.ts:dead code",
-    "src/lib/merkaba/v2/merkaba-v2-practice.ts:dead code",
-    "src/lib/okanle/okanle-data.ts:dead code",
-    "src/lib/prisma-optimized.ts:dead code",
-    "src/lib/progress/milestones.ts:dead code",
-    "src/lib/user/profile-customization.ts:dead code",
-    "src/components/dashboard/Animations.tsx:dead code",
-    "src/lib/astrologia/planetas/dados.ts:dead code",
-    "src/lib/meji/meji-data.ts:dead code",
-    "src/lib/meji-fa/meji-fa-data.ts:dead code",
-    "src/lib/meji-je/meji-je-data.ts:dead code",
-    "src/lib/meji-kan/meji-kan-data.ts:dead code",
-    "src/lib/meji-ros/meji-ros-data.ts:dead code",
-    "src/lib/meji-she/meji-she-data.ts:dead code",
-    "src/lib/correlation/orixa-destiny.ts:dead code",
-    "src/lib/correlation/oddu-orixa.ts:dead code",
-    "src/lib/meji-ile/meji-ile-data.ts:dead code",
-    "src/lib/privacy/privacy-settings.ts:dead code",
-    "src/lib/notifications/templates/index.ts:dead code",
-    "src/lib/correlation/day-element.ts:dead code",
-    "src/lib/meji-na/meji-na-practice.ts:dead code",
-    "src/lib/meji-odi/meji-odi-data.ts:dead code",
-    "src/lib/relatorios/dados.ts:dead code",
-    "src/lib/logbara/logbara-data.ts:dead code",
-    "src/lib/meji-odedin/meji-odedin-data.ts:dead code",
-    "src/lib/meji-tura/meji-tura-data.ts:dead code",
-    "src/lib/ogbe/ogbe-data.ts:dead code",
-    "src/lib/otura/otura-data.ts:dead code",
-    "src/lib/oturupon/oturupon-data.ts:dead code",
-    "src/lib/owonrin/owonrin-data.ts:dead code",
-    "src/lib/ifa/patakwe.ts:dead code",
-    "src/lib/meji-odedin-meji/meji-odedin-meji-data.ts:dead code",
-    "src/lib/meji-teturupon/meji-teturupon-data.ts:dead code",
-    "src/lib/api/error-codes.ts:dead code",
-    "src/lib/tarot/tarot-spreads.ts:dead code",
-    "src/lib/tarot/v2/tarot-v2-data.ts:dead code",
-    "src/lib/ifa/v2/ifa-v2-data.ts:dead code",
-    "src/lib/tarot/reading-spreads.ts:dead code",
-    "src/lib/charts/templates.ts:dead code",
-    "src/lib/ifa/interpretations.ts:dead code",
-    "src/lib/profile/templates.ts:dead code",
-    "src/lib/dashboard/data-fetcher.ts:dead code",
-    "src/lib/numerologia/numerology-charts.ts:dead code",
-    "src/lib/correlation/tarot-frequency.ts:dead code",
-    "src/lib/ai/openai.ts:complexity",
-    "src/lib/export/pdf.ts:dead code",
     "src/app/dashboard/perfil/page.tsx:complexity",
-    "src/lib/correlation/tarot-numerology.ts:dead code",
-    "src/lib/correlation/tarot-odu.ts:dead code",
-    "src/lib/tarot/tarot-interpretations.ts:dead code",
-    "src/lib/tarot/card-interpretations.ts:dead code",
+    "src/hooks/useDataSync.ts:complexity",
+    "src/hooks/useKeyboardShortcuts.ts:untested risk",
+    "src/lib/ai/openai.ts:complexity",
     "src/hooks/useRitualCalendar.ts:complexity",
     "src/lib/life-areas/life-areas-correlator.ts:complexity",
-    "src/lib/ai/dossier/prompt-builder.ts:complexity",
-    "src/lib/correlation/cross-tradition.ts:complexity",
+    "src/lib/astrologia/synastry.ts:complexity",
+    "src/lib/pdf/dossier-pdf.ts:complexity",
     "src/lib/ai/tradition-mapper.ts:complexity",
-    "scripts/run-evolution.ts:complexity",
     "src/lib/ifa/matching.ts:complexity",
+    "src/lib/ai/dossier/prompt-builder.ts:complexity",
     "src/app/api/progresso/route.ts:complexity"
   ]
 }

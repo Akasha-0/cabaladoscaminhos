@@ -185,3 +185,15 @@ export async function getConsultationsByReading(
     include: { _count: { select: { messages: true } } },
   });
 }
+
+/**
+ * Carrega todas as mensagens de uma consultation (para restaurar chat history).
+ */
+export async function getMessagesByConsultation(
+  consultationId: string
+): Promise<ChatMessage[]> {
+  return prisma.chatMessage.findMany({
+    where: { consultationId },
+    orderBy: { createdAt: 'asc' },
+  });
+}

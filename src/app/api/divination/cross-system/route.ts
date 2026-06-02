@@ -11,7 +11,6 @@ import { calcularPitagorica, calcularPitagoricaData } from '@/lib/numerologia/ca
 import { generateMinimaxResponse } from '@/lib/ai/minimax';
 import { NUMEROLOGY_ODU_CORRELATIONS } from '@/lib/numerologia/odu-correlations';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
   'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
   'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
@@ -362,7 +361,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Apply spiritual filters to tarot cards
-// fallow-ignore-next-line complexity
+    // fallow-ignore-next-line complexity
     if (sefirot || chakra || element || orixa) {
       const filtered = enrichedTarot.filter(card => {
         const corr = getTarotCorrelations(card.name);

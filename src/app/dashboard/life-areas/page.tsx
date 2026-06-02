@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { renderInsightContent } from '@/components/dashboard/markdown-renderer';
 import { Card, CardContent } from '@/components/ui/card';
 import { WidgetProgress, WidgetCard } from '@/components/dashboard/SpiritualWidgetSystem';
 import { LifeAreasOverview } from '@/components/dashboard/LifeAreasOverview';
@@ -628,73 +629,15 @@ function AreaDetailView({
   );
 }
 
-// ============================================================
-// INSIGHT CONTENT - Renders markdown-like content
-// ============================================================
-
-function InsightContent({ content }: { content: string }) {
-  const lines = content.split('\n');
-  const rendered: React.ReactNode[] = [];
-
-// fallow-ignore-next-line complexity
-  lines.forEach((line, i) => {
-    if (line.startsWith('## ')) {
-      rendered.push(
-        <h3 key={i} className="text-base font-semibold text-amber-300 mt-4 mb-2 flex items-center gap-2">
-          <span className="w-1 h-4 bg-amber-400 rounded" />
-          {line.replace('## ', '')}
-        </h3>
-      );
-    } else if (line.startsWith('# ')) {
-      rendered.push(
-        <h2 key={i} className="text-lg font-bold text-white mt-4 mb-2">
-          {line.replace('# ', '')}
-        </h2>
-      );
-    } else if (line.startsWith('### ')) {
-      rendered.push(
-        <h4 key={i} className="text-sm font-semibold text-violet-300 mt-3 mb-1.5">
-          {line.replace('### ', '')}
-        </h4>
-      );
-    } else if (line.match(/^\d+\.\s/)) {
-      rendered.push(
-        <p key={i} className="text-sm text-slate-300 leading-relaxed ml-4 mb-1.5">
-          {line}
-        </p>
-      );
-    } else if (line.startsWith('> ')) {
-      rendered.push(
-        <blockquote key={i} className="border-l-2 border-amber-400/50 pl-3 my-2 italic text-sm text-slate-300">
-          {line.replace('> ', '')}
-        </blockquote>
-      );
-    } else if (line.trim() === '') {
-      // skip empty lines
-    } else {
-      const parts = line.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g);
-      const processed = parts.map((part, j) => {
-        if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={j} className="text-white font-semibold">{part.replace(/\*\*/g, '')}</strong>;
-        }
-        if (part.startsWith('*') && part.endsWith('*')) {
-          return <em key={j} className="italic">{part.replace(/\*/g, '')}</em>;
-        }
-        return <span key={j}>{part}</span>;
-      });
-      rendered.push(
-        <p key={i} className="text-sm text-slate-300 leading-relaxed mb-2">
-          {processed}
-        </p>
-      );
-    }
-  });
-
-  return (
-    <Card className="bg-slate-900/60 border-slate-800/50">
-      <CardContent className="p-6">
-        {rendered}
-      </CardContent>
-    </Card>
-  );
-}
+  // ============================================================
+  // INSIGHT CONTENT - Renders markdown-like content (using shared utility)
+  // ============================================================
+  function InsightContent({ content }: { content: string }) {
+    return (
+      <Card className="bg-slate-900/60 border-slate-800/50">
+        <CardContent className="p-6">
+          {renderInsightContent(content)}
+        </CardContent>
+      </Card>
+    );
+  }

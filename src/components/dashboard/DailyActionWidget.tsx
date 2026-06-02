@@ -1,4 +1,5 @@
 'use client';
+import { MarkdownContent } from '@/components/dashboard/markdown-renderer';
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -345,55 +346,4 @@ function ErrorState({ error, onRetry }: { error: string; onRetry: () => void }) 
       </div>
     </div>
   );
-}
-
-function MarkdownContent({ content }: { content: string }) {
-  const lines = content.split('\n');
-  const rendered: React.ReactNode[] = [];
-
-  lines.forEach((line, i) => {
-    if (line.startsWith('## ')) {
-      rendered.push(
-        <h3 key={i} className="text-sm font-semibold text-amber-300 mt-3 mb-1.5 flex items-center gap-1.5">
-          <span className="w-0.5 h-3.5 bg-amber-400 rounded" />
-          {line.replace('## ', '')}
-        </h3>
-      );
-    } else if (line.startsWith('### ')) {
-      rendered.push(
-        <h4 key={i} className="text-xs font-semibold text-violet-300 mt-2 mb-1">
-          {line.replace('### ', '')}
-        </h4>
-      );
-    } else if (line.match(/^\d+\.\s/)) {
-      rendered.push(
-        <p key={i} className="text-xs text-slate-300 leading-relaxed ml-3 mb-1">
-          {line}
-        </p>
-      );
-    } else if (line.startsWith('> ')) {
-      rendered.push(
-        <blockquote key={i} className="border-l-2 border-amber-400/40 pl-2 my-1.5 italic text-xs text-slate-300">
-          {line.replace('> ', '')}
-        </blockquote>
-      );
-    } else if (line.trim() === '') {
-      // skip
-    } else {
-      const parts = line.split(/(\*\*[^*]+\*\*)/g);
-      const processed = parts.map((part, j) => {
-        if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={j} className="text-white font-semibold">{part.replace(/\*\*/g, '')}</strong>;
-        }
-        return <span key={j}>{part}</span>;
-      });
-      rendered.push(
-        <p key={i} className="text-xs text-slate-300 leading-relaxed mb-1.5">
-          {processed}
-        </p>
-      );
-    }
-  });
-
-  return <div className="pt-2 border-t border-amber-500/10">{rendered}</div>;
 }

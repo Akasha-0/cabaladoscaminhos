@@ -339,8 +339,8 @@ class PredictiveSynthesisEngine {
 
   /**
    * Gera insight de correlação Orixá-Chakra-Sephirah
-// fallow-ignore-next-line complexity
    */
+// fallow-ignore-next-line complexity
   private gerarInsightCorrelaçãoOrixáChakraSephirah(): InsightSintese {
     const mapa = this.mapaAlma!
     const odu = mapa.odu

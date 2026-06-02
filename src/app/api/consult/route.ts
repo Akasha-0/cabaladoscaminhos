@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       fullName: consultContext.client.fullName,
       birthDate: consultContext.client.birthDate,
       astrologyMap: consultContext.client.maps.astrology,
-      kabalisticMap: consultContext.client.maps.kabala,
+      kabalisticMap: consultContext.client.maps.kabalistic,
       tantricMap: consultContext.client.maps.tantric,
       oduBirth: consultContext.client.maps.oduBirth,
     },

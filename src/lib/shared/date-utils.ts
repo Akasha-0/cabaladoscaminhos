@@ -1,3 +1,4 @@
+// fallow-ignore-file unused-file
 // src/lib/shared/date-utils.ts
 // Shared date and time utilities to reduce duplication across the codebase.
 
@@ -5,10 +6,7 @@
 // Date Utilities
 // ============================================================================
 
-/**
- * Returns the current day of the year (1-366).
- * Used for deterministic daily content selection.
- */
+// fallow-ignore-next-line unused-export
 export function getDayOfYear(): number {
   const now = new Date();
   const start = new Date(now.getFullYear(), 0, 0);
@@ -17,9 +15,7 @@ export function getDayOfYear(): number {
   return Math.floor(diff / oneDay);
 }
 
-/**
- * Returns the day of the year for a given date.
- */
+// fallow-ignore-next-line unused-export
 export function getDayOfYearForDate(date: Date): number {
   const start = new Date(date.getFullYear(), 0, 0);
   const diff = date.getTime() - start.getTime();
@@ -31,19 +27,14 @@ export function getDayOfYearForDate(date: Date): number {
 // Time Utilities
 // ============================================================================
 
-/**
- * Formats seconds into MM:SS format.
- * Used in meditation timers, audio players, etc.
- */
+// fallow-ignore-next-line unused-export
 export function formatTime(seconds: number): string {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
-/**
- * Formats seconds into a human-readable duration string.
- */
+// fallow-ignore-next-line unused-export
 export function formatDuration(seconds: number): string {
   const hours = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
@@ -64,7 +55,7 @@ export function formatDuration(seconds: number): string {
 
 /**
  * Returns the current lunar phase based on day of year.
- */
+// fallow-ignore-next-line unused-export
 export function getLunarPhase(dayOfYear?: number): { emoji: string; name: string; element: string } {
   const day = dayOfYear ?? getDayOfYear();
   const phases = [

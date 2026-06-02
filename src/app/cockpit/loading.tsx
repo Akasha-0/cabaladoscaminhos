@@ -4,7 +4,6 @@
  *
  * Refs: T7.1 (Sprint 8 UX), docs/05_uiux-spec.md
  */
-
 import { LoadingOrbital } from '@/components/cockpit/dossier/LoadingOrbital';
 
 export default function CockpitLoading(): JSX.Element {

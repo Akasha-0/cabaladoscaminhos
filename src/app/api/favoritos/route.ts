@@ -1,3 +1,5 @@
+import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
+import { applySpiritualFilters } from '@/lib/api/filter-utils';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -150,55 +152,11 @@ export async function GET(request: NextRequest) {
     if (element) {
       items = items.filter((f) => f.spiritualCorrelations?.element === element);
     }
-
     if (orixa) {
       items = items.filter((f) => f.spiritualCorrelations?.orixa === orixa);
     }
-
-    // Calculate spiritual stats
-    const spiritualStats = {
-      byType: items.reduce(
-        (acc, f) => {
-          acc[f.tipo] = (acc[f.tipo] || 0) + 1;
-          return acc;
-        },
-        {} as Record<string, number>
-      ),
-      bySefirot: items.reduce(
-        (acc, f) => {
-          f.spiritualCorrelations?.sefirot.forEach((s) => {
-            acc[s] = (acc[s] || 0) + 1;
-          });
-          return acc;
-        },
-        {} as Record<string, number>
-      ),
-      byChakra: items.reduce(
-        (acc, f) => {
-          const c = f.spiritualCorrelations?.chakra;
-          if (c) acc[c] = (acc[c] || 0) + 1;
-          return acc;
-        },
-        {} as Record<string, number>
-      ),
-      byElement: items.reduce(
-        (acc, f) => {
-          const e = f.spiritualCorrelations?.element;
-          if (e) acc[e] = (acc[e] || 0) + 1;
-          return acc;
-        },
-        {} as Record<string, number>
-      ),
-      byOrixa: items.reduce(
-        (acc, f) => {
-          const o = f.spiritualCorrelations?.orixa;
-          if (o) acc[o] = (acc[o] || 0) + 1;
-          return acc;
-        },
-        {} as Record<string, number>
-      ),
-    };
-
+    // Calculate spiritual stats using shared utility
+    const spiritualStats = calculateSpiritualStatsInline(items);
     return NextResponse.json({
       success: true,
       favoritos: items,

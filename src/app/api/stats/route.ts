@@ -1,3 +1,4 @@
+import { handleAPIError } from '@/lib/api/error-handler';
 // ============================================================
 // SPIRITUAL STATS API - CABALA DOS CAMINHOS
 // ============================================================

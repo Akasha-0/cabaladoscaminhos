@@ -1,3 +1,4 @@
+import { getDayOfYear, getLunarPhase as getLunarPhaseUtil } from '@/lib/shared/date-utils';
 // fallow-ignore-file unused-file
 'use client';
 
@@ -5,6 +6,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sparkles, Sun, Moon, Star, Heart, Flame, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { MetricCard } from '@/components/shared/MetricCard';
 
 // ============================================================
 // TYPES
@@ -42,12 +44,6 @@ const ELEMENT_COLORS: Record<string, { bg: string; text: string; border: string 
 // HELPER FUNCTIONS
 // ============================================================
 
-function getDayOfYear(): number {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), 0, 0);
-  const diff = now.getTime() - start.getTime();
-  return Math.floor(diff / 86400000);
-}
 
 function getOrixaElement(orixa?: string): string {
   const elements: Record<string, string> = {
@@ -67,6 +63,19 @@ function getOrixaElement(orixa?: string): string {
   return elements[orixa || ''] || 'ether';
 }
 
+function getAffirmation(orixa?: string): string {
+  const affirmations: Record<string, string> = {
+    fire: 'Eu abraço minha força interior e transformo obstáculos em oportunidades.',
+    water: 'Eu flutuo com grace, permitindo que a vida me guie suavemente.',
+    earth: 'Eu solidifico meus propósitos e construo uma vida de abundância.',
+    air: 'Eu respiro liberdade e deixo que meus pensamentos voem alto.',
+    ether: 'Eu sou luz pura, conectado à sabedoria divina do universo.',
+  };
+  const element = getOrixaElement(orixa);
+  return affirmations[element] || affirmations.ether;
+}
+
+
 function getLunarPhase(): { emoji: string; name: string; element: string } {
   const dayOfYear = getDayOfYear();
   const phases = [
@@ -81,19 +90,6 @@ function getLunarPhase(): { emoji: string; name: string; element: string } {
   ];
   return phases[dayOfYear % 8];
 }
-
-function getAffirmation(orixa?: string): string {
-  const affirmations: Record<string, string> = {
-    fire: 'Eu abraço minha força interior e transformo obstáculos em oportunidades.',
-    water: 'Eu flutuo com grace, permitindo que a vida me guie suavemente.',
-    earth: 'Eu solidifico meus propósitos e construo uma vida de abundância.',
-    air: 'Eu respiro liberdade e deixo que meus pensamentos voem alto.',
-    ether: 'Eu sou luz pura, conectado à sabedoria divina do universo.',
-  };
-  const element = getOrixaElement(orixa);
-  return affirmations[element] || affirmations.ether;
-}
-
 // ============================================================
 // MAIN COMPONENT
 // ============================================================
@@ -105,7 +101,7 @@ export function SpiritualSummary({
   odu = 'Alafia',
   numeroPessoal = 1,
 }: SpiritualSummaryProps) {
-  const lunarPhase = getLunarPhase();
+  const lunarPhase = getLunarPhaseUtil();
   const element = getOrixaElement(orixaRegente);
   const elementColors = ELEMENT_COLORS[element];
   const affirmation = getAffirmation(orixaRegente);
@@ -152,25 +148,26 @@ export function SpiritualSummary({
         {/* Key Stats Grid */}
         <div className="grid grid-cols-3 gap-3">
           {/* Orixá */}
-          <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
-            <Sun className="w-5 h-5 mx-auto mb-1 text-amber-400" />
-            <p className="text-lg font-bold text-white">{orixaRegente}</p>
-            <p className="text-xs text-slate-400">Orixá Regente</p>
-          </div>
-
+          <MetricCard
+            icon={<Sun className="w-5 h-5 mx-auto" />}
+            value={orixaRegente}
+            label="Orixá Regente"
+            iconColor="text-amber-400"
+          />
           {/* Odú */}
-          <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
-            <Star className="w-5 h-5 mx-auto mb-1 text-violet-400" />
-            <p className="text-lg font-bold text-white">{odu}</p>
-            <p className="text-xs text-slate-400">Odú Pessoal</p>
-          </div>
-
+          <MetricCard
+            icon={<Star className="w-5 h-5 mx-auto" />}
+            value={odu}
+            label="Odú Pessoal"
+            iconColor="text-violet-400"
+          />
           {/* Número */}
-          <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 text-center">
-            <Zap className="w-5 h-5 mx-auto mb-1 text-emerald-400" />
-            <p className="text-lg font-bold text-white">{numeroPessoal}</p>
-            <p className="text-xs text-slate-400">Número</p>
-          </div>
+          <MetricCard
+            icon={<Zap className="w-5 h-5 mx-auto" />}
+            value={numeroPessoal}
+            label="Número"
+            iconColor="text-emerald-400"
+          />
         </div>
 
         {/* Lunar Phase */}
