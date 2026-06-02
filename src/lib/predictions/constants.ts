@@ -1,5 +1,3 @@
-// fallow-ignore-file unused-file
-// fallow-ignore-next-line unused-type
 export type PredictionType = 'numerologia' | 'astrologia' | 'ifa' | 'candomble' | 'tarot' | 'cabala' | 'ritual' | 'energia';
 
 const PREDICTION_TYPES: PredictionType[] = [

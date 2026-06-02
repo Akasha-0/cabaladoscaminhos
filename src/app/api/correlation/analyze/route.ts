@@ -3,7 +3,6 @@ import { analyzeDay, getWeeklyCycle } from '@/lib/correlation/day-portal-analyze
 import { getLunarPhase, getPhaseForRitual, getRitualGuidance } from '@/lib/correlation/lunar-phase-analyzer';
 import { ODU_TAROT_CORRELATIONS, getOduCorrelations } from '@/lib/correlation/correlation-types';
 
-// fallow-ignore-next-line complexity
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type') || 'day';

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Dashboard Data Fetcher
  * High-performance data fetching with caching, real-time updates, and error handling
@@ -173,7 +172,6 @@ class DashboardCache {
   /**
    * Generate cache key including userId and options
    */
-// fallow-ignore-next-line complexity
   generateKey(userId: string, options?: DataFetchOptions): string {
     const parts = [`user:${userId}`];
     
@@ -715,7 +713,6 @@ export interface FetchResult {
 /**
  * Fetch all dashboard data with selective loading and caching
  */
-// fallow-ignore-next-line complexity
 export async function fetchAllDashboardData(
   userId: string,
   userData: UserSpiritualData,
@@ -860,7 +857,6 @@ export function invalidateCache(userId: string): void {
 }
 
 /**
-// fallow-ignore-next-line complexity
  * Get connection status
  */
 export function getConnectionStatus(): 'connected' | 'disconnected' | 'unstable' {

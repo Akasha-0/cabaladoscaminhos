@@ -245,7 +245,6 @@ const TRANSIT_ORBS: Record<AspectType, number> = {
 // CÁLCULO DE FASE LUNAR
 // ============================================================
 
-// fallow-ignore-next-line complexity
 function calculateMoonPhase(date: Date): MoonPhase {
   // Algoritmo simplificado de fase lunar
   // Referência: Lua Nova 2000-01-06
@@ -349,7 +348,6 @@ function calculateMoonPhase(date: Date): MoonPhase {
 // ============================================================
 // CÁLCULO DE TRÂNSITOS DO DIA
 // ============================================================
-// fallow-ignore-next-line complexity
 
 function calculateTransits(
   birthChart: BirthChart,
@@ -459,7 +457,6 @@ function estimateDuration(planet: Planet | string): string {
     node_sul: '30-60 dias',
   };
   return durations[planet] || '1-3 dias';
-// fallow-ignore-next-line complexity
 }
 
 function getGenericInterpretation(

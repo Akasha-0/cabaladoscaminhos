@@ -32,27 +32,22 @@ import QRCode from 'qrcode';
 // ============================================================================
 
 /** Issuer exibido no app autenticador. */
-// fallow-ignore-next-line unused-export
 export const MFA_ISSUER = 'Cabala dos Caminhos';
 /** Tamanho do secret TOTP em bytes (20 = 160 bits, RFC 4226 recomenda ≥ 128). */
-// fallow-ignore-next-line unused-export
 export const TOTP_SECRET_BYTES = 20;
 /** Dígitos do código TOTP. */
-// fallow-ignore-next-line unused-export
-export const TOTP_DIGITS = 6;
+export const TOTP_DRIFT_STEPS = 1; const TOTP_DIGITS = 6;
 /** Período do código em segundos. */
-// fallow-ignore-next-line unused-export
 export const TOTP_PERIOD_SECONDS = 30;
 /** Algoritmo de hash TOTP. */
-// fallow-ignore-next-line unused-export
 export const TOTP_ALGORITHM = 'SHA1' as const;
 /**
  * Drift permitido em passos (RFC 6238 §5.2): aceita o passo anterior
  * e o próximo. Para período de 30s, isso dá ±30s de tolerância.
-// fallow-ignore-next-line unused-export
 export const TOTP_DRIFT_STEPS = 1;
 
 /** Quantidade de recovery codes gerados no setup. */
+const RECOVERY_CODE_BYTES = 16;
 export const RECOVERY_CODE_COUNT = 10;
 
 /** Tamanho da chave AES-256 (32 bytes). */
@@ -87,7 +82,6 @@ export type DecryptResult = { ok: true; plaintext: string } | { ok: false; reaso
 // ============================================================================
  
 /** Lançado quando a MFA_ENCRYPTION_KEY não está configurada (em prod). */
-// fallow-ignore-next-line unused-export
 export class MfaKeyMissingError extends Error {
   constructor() {
     super(
@@ -109,7 +103,6 @@ export class MfaKeyMissingError extends Error {
  * persiste, então secret gravado antes do restart fica irrecuperável
  * (intencional: força setup de novo MFA em dev).
  */
-// fallow-ignore-next-line complexity
 function getEncryptionKey(): Buffer {
   const raw = process.env.MFA_ENCRYPTION_KEY;
   if (!raw || raw === '') {
@@ -156,8 +149,8 @@ function getEncryptionKey(): Buffer {
  * Authy, 1Password, etc.). 20 bytes = 32 chars base32.
  */
 export function generateTotpSecret(): string {
-  const bytes = crypto.randomBytes(TOTP_SECRET_BYTES);
-  const secret = new Secret({ buffer: bytes });
+  const bytes = new Uint8Array(crypto.randomBytes(TOTP_SECRET_BYTES));
+  const secret = new Secret({ buffer: bytes.buffer as ArrayBuffer });
   return secret.base32;
 }
 
@@ -221,7 +214,6 @@ export function encryptSecret(plaintext: string): string {
  * IMPORTANTE: auth tag mismatch aqui é INDICATIVO de adulteração ou
  * key errada — nunca tratar como warning silencioso. A camada acima
  * (operator-mfa.ts) deve falhar fechado.
-// fallow-ignore-next-line complexity
  */
 export function decryptSecret(stored: string): DecryptResult {
   const parts = stored.split(':');
@@ -335,7 +327,6 @@ export async function hashRecoveryCode(plain: string): Promise<string> {
  *
  * A comparação é feita com bcrypt (lento por design). Single-use é
  * responsabilidade da camada superior: depois de usar, persistir
-// fallow-ignore-next-line complexity
  * o array com `codes[index] = ""` para invalidar o slot.
  */
 export async function tryConsumeRecoveryCode(
@@ -358,7 +349,6 @@ export async function tryConsumeRecoveryCode(
 }
 
 // Re-exports para testes
-// fallow-ignore-next-line unused-export
 export const __TEST__ = {
   AES_TAG_BYTES,
   AES_KEY_BYTES,

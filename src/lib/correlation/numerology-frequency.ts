@@ -434,7 +434,6 @@ export function getNumerologyByChakra(chakra: string): NumerologyFrequencyMappin
 /**
  * Default export for convenience
  */
-// fallow-ignore-next-line unused-export
 export default {
   getNumerologyFrequency,
   getFrequencyNumerology,

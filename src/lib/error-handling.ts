@@ -38,7 +38,6 @@ export interface AppErrorOptions {
   cause?: Error;
 }
 
-// fallow-ignore-next-line unused-export
 export class AppError extends Error {
   public readonly code: ErrorCode;
   public readonly statusCode: number;
@@ -70,7 +69,6 @@ export class AppError extends Error {
   }
 }
 
-// fallow-ignore-next-line complexity
 function getDefaultStatusCode(code: ErrorCode): number {
   if (code >= 1000 && code < 1100) {
     if (code === ErrorCode.AUTH_FORBIDDEN) return 403;
@@ -89,7 +87,6 @@ function getDefaultStatusCode(code: ErrorCode): number {
   return 500;
 }
 
-// fallow-ignore-next-line unused-export
 export const errors = {
   auth: {
     invalidCredentials: (details?: Record<string, unknown>) =>
@@ -153,7 +150,6 @@ export const errors = {
   },
 };
 
-// fallow-ignore-next-line unused-export
 export function handleApiError(error: unknown) {
   if (error instanceof AppError) {
     return { status: error.statusCode, body: error.toJSON() };

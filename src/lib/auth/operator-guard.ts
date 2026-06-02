@@ -1,4 +1,5 @@
 // src/lib/auth/operator-guard.ts
+const OPERATOR_LOGIN_PATH = '/cockpit/login';
 // Helpers de server-side auth gate para Server Components (Fase 17).
 //
 // Objetivo: padronizar o pattern de "página Operator precisa de login"

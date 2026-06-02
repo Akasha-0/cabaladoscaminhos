@@ -51,7 +51,6 @@ export type SessionType = 'ACCESS' | 'REFRESH';
  *
  * Use `createRefreshSession` para refresh tokens (Fase 15).
  */
-// fallow-ignore-next-line complexity
 export async function createSession(params: {
   operatorId: string;
   token: string;
@@ -125,7 +124,6 @@ export async function createRefreshSession(params: {
  * Verifica se uma refresh session está ativa (existe, não revogada, não
  * expirada). Usado pelo endpoint /refresh antes de rotacionar.
  */
-// fallow-ignore-next-line unused-export
 export async function isRefreshSessionActive(token: string): Promise<boolean> {
   const tokenHash = hashOperatorToken(token);
   const session = await prisma.operatorSession.findUnique({
@@ -166,7 +164,6 @@ export type RotateResult =
  * id+role) e retorna os tokens assinados — usado tanto em rotação
  * quanto em criação inicial (login).
  */
-// fallow-ignore-next-line unused-export
 export async function issueNewTokenPair(operator: {
   id: string;
   role: 'OPERATOR' | 'ADMIN';
@@ -190,7 +187,6 @@ export async function issueNewTokenPair(operator: {
  *   4) Se está revogada → reuse-detected (revoga tudo)
  *   5) Caso contrário → revoga o refresh, emite novo par, retorna ok
  */
-// fallow-ignore-next-line complexity
 export async function rotateRefreshToken(params: {
   refreshToken: string;
   signAccess: (operator: { id: string; role: 'OPERATOR' | 'ADMIN' }) => string;
@@ -345,7 +341,6 @@ export async function revokeSession(token: string): Promise<{ revoked: boolean }
  * todos os dispositivos"). Útil para "minha conta foi comprometida"
  * e para detecção de reuso de refresh token (Fase 15).
  */
-// fallow-ignore-next-line unused-export
 export async function revokeAllOperatorSessions(operatorId: string): Promise<{ count: number }> {
   const result = await prisma.operatorSession.updateMany({
     where: { operatorId, revokedAt: null },
@@ -358,7 +353,6 @@ export async function revokeAllOperatorSessions(operatorId: string): Promise<{ c
  * Remove sessões já expiradas e/ou revogadas há mais de `olderThanDays`.
  * Útil como job de manutenção; não afeta a request hot path.
  */
-// fallow-ignore-next-line unused-export
 export async function cleanupExpiredSessions(olderThanDays = 30): Promise<{ count: number }> {
   const cutoff = new Date(Date.now() - olderThanDays * 24 * 60 * 60 * 1000);
   const result = await prisma.operatorSession.deleteMany({

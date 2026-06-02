@@ -178,7 +178,6 @@ function DetailsModal({
   );
 }
 
-// fallow-ignore-next-line complexity
 export function HarmonicProfileCard({ 
   caminhoDeVida, 
   signo, 

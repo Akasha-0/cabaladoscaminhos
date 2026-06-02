@@ -47,7 +47,7 @@ function getSupabaseClient() {
   return supabaseClient
 }
 
-export function SupabaseProvider({ children }: { children: React.ReactNode }) {
+function SupabaseProvider({ children }: { children: React.ReactNode }) {
   // All hooks must be called unconditionally
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)

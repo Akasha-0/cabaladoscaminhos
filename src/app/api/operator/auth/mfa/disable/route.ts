@@ -18,7 +18,6 @@ const disableSchema = z.object({
   password: z.string().min(1, 'Senha é obrigatória'),
 });
 
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   const guard = await requireOperatorApi(request);
   if (guard instanceof NextResponse) return guard;

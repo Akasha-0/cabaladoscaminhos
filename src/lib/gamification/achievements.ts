@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 const STORAGE_KEY = 'gamification_achievements';
 
 export type AchievementCategory = 'prática' | 'conhecimento' | 'streak';

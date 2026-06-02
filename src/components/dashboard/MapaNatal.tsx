@@ -2,7 +2,6 @@
 
 import React, { useMemo } from 'react';
 
-// fallow-ignore-next-line unused-type
 export interface MapaNatalProps {
   mapaNatal: {
     planeta?: Record<string, {

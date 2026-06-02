@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 const INJECTION_PATTERNS = [
   /ignore previous instructions/i,
   /ignore all previous instructions/i,

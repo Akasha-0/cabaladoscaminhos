@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 import { createBrowserClient } from '@supabase/ssr'
 
 export function createClient() {

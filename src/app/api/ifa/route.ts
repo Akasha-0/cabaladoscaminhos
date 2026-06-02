@@ -108,7 +108,6 @@ const birthDateSchema = z.object({
 // API ROUTE HANDLERS
 // ============================================================
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 
@@ -135,7 +134,6 @@ export async function GET(request: NextRequest) {
     // Filter all odus by spiritual correlations
     if (sefirot || chakra || element || orixa) {
       const filteredOdus = Object.values(odusData)
-// fallow-ignore-next-line complexity
         .filter(odu => {
           const corr = ODU_SPIRITUAL_CORRELATIONS[odu.numero];
           if (sefirot && !corr?.sefirot.includes(sefirot)) return false;
@@ -386,7 +384,6 @@ function handleGetSuggestions(oduNum: number) {
     spiritualCorrelations: ODU_SPIRITUAL_CORRELATIONS[oduNum],
   }).body);
 }
-// fallow-ignore-next-line complexity
 
 function handleGetOduFromBirth(dataNascimento: string) {
   const validation = birthDateSchema.safeParse({ data: dataNascimento });

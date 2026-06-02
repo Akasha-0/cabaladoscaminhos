@@ -32,7 +32,6 @@ interface OperatorLoginFormProps {
   redirectTo?: string;
 }
 
-// fallow-ignore-next-line complexity
 export function OperatorLoginForm({ className = '', redirectTo = '/cockpit' }: OperatorLoginFormProps) {
   const [formData, setFormData] = useState<LoginFormData>({ email: '', password: '' });
   const [errors, setErrors] = useState<Partial<Record<keyof LoginFormData, string>>>({});
@@ -53,7 +52,6 @@ export function OperatorLoginForm({ className = '', redirectTo = '/cockpit' }: O
     }
     setServerError(null);
   };
-// fallow-ignore-next-line complexity
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

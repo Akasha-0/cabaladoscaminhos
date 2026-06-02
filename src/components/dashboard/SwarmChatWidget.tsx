@@ -41,7 +41,6 @@ interface SwarmChatWidgetProps {
 // SWARM CHAT WIDGET - Chat agêntico com IA + Knowledge Base
 // ============================================================
 
-// fallow-ignore-next-line complexity
 export function SwarmChatWidget({ userData, className }: SwarmChatWidgetProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -260,8 +259,7 @@ export function SwarmChatWidget({ userData, className }: SwarmChatWidgetProps) {
   );
 }
 function MarkdownContent({ content }: { content: string }) {
-  return <MarkdownContent content={content} variant="compact" />;
+  return <p className="text-sm text-muted-foreground">{content}</p>;
 }
 
-// fallow-ignore-next-line unused-export
 export default SwarmChatWidget;

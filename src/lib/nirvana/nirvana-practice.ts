@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Nirvana practice
 
 export interface NirvanaPracticeParams {
@@ -30,7 +29,6 @@ const insightPool = [
   'The river enters the ocean and the ocean is not changed.',
 ];
 
-// fallow-ignore-next-line complexity
 export async function performPractice(params: NirvanaPracticeParams = {}): Promise<NirvanaPracticeResult> {
   const { userId = 'anon', duration = 30, approach = 'emptiness', timestamp = Date.now() } = params;
 

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Streak tracking with LocalStorage persistence
 
 export interface StreakData {

@@ -135,7 +135,6 @@ function enrichTarotCards(cards: TarotCard[], includeCorrelations: boolean) {
   }));
 }
 
-// fallow-ignore-next-line complexity
 function enrichOdu(numero: number) {
   const odu = odusData[numero];
   const corr = ODU_SPIRITUAL_CORRELATIONS[numero] || ODU_SPIRITUAL_CORRELATIONS[1];
@@ -219,7 +218,6 @@ export async function GET(request: NextRequest) {
   });
 }
 
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -356,7 +354,6 @@ export async function POST(request: NextRequest) {
     };
 
     // Apply spiritual filters to tarot cards
-    // fallow-ignore-next-line complexity
     if (sefirot || chakra || element || orixa) {
       const filtered = enrichedTarot.filter(card => {
         const corr = getTarotCorrelations(card.name);

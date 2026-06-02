@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /* eslint-disable */
 
 /**
@@ -60,7 +59,6 @@ const ASPECT_SYMBOLS: Record<string, string> = {
  * @param name - The specific symbol name (e.g., 'aries', 'sun', 'conjunction')
  * @returns SVG string or placeholder if not found
  */
-// fallow-ignore-next-line complexity
 function getSymbol(type: 'zodiac' | 'planet' | 'aspect', name: string): string {
   const normalizedName = name.toLowerCase();
 

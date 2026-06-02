@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export interface ReadingSpreadPosition {
   index: number;
   name: string;

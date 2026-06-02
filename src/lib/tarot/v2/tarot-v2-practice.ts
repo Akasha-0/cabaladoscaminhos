@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Tarot V2 Practice
  * Core practice logic for tarot-v2 pathway

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Meditation analytics — session stats and engagement tracking.
  */
@@ -44,7 +43,6 @@ export function trackMeditationEvent(
 /**
  * Calculate session streak (consecutive days with at least one completed session).
  */
-// fallow-ignore-next-line complexity
 function calculateStreak(sessions: MeditationAnalyticsEvent[]): { current: number; longest: number } {
   const completed = sessions
     .filter((e) => e.type === 'complete')
@@ -95,7 +93,6 @@ function calculateStreak(sessions: MeditationAnalyticsEvent[]): { current: numbe
 
 /**
  * Retrieve meditation analytics / session stats.
-// fallow-ignore-next-line complexity
  */
 export function getAnalytics(): MeditationSessionStats {
   const completed = events.filter((e) => e.type === 'complete');

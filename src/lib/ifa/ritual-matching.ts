@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Ritual Matching - Cabala Dos Caminhos
 // Odu-to-ritual mapping and ritual matching logic
 
@@ -149,7 +148,6 @@ const ritualDefinitions: Record<RitualCategory, {
 /**
  * Match Odu to ritual configuration
  */
-// fallow-ignore-next-line complexity
 export function matchRitual(odu: OduInfo): RitualMatchResult {
   const oduConfig = oduToRitualMap[odu.numero];
   const matchedOn: string[] = [];

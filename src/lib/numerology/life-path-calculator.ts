@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Life Path Number Calculator
  * Calculates the Life Path number from a birth date following

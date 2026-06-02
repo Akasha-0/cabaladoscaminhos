@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export interface AnalyticsEvent {
   id: string;
   name: string;

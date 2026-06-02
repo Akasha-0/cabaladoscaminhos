@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Stub for @/lib/past-life/past-life-data
 // Module does not exist - stub implementation for test compatibility
 

@@ -317,7 +317,6 @@ export function getAllNumerologyNumbers(): number[] {
   return Array.from(numbers).sort((a, b) => a - b);
 }
 
-// fallow-ignore-next-line unused-export
 export default {
   getElementNumerology,
   getAllElementNumerologies,

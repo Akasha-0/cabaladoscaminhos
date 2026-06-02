@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * PNG export utility for dashboard visualizations and charts.
  * Provides canvas-based rendering for downloadable PNG images.
@@ -78,7 +77,6 @@ async function renderElement(
 /**
  * Exports a single renderable element to PNG format.
  */
-// fallow-ignore-next-line complexity
 export async function exportToPNG(
   element: CanvasRenderable | HTMLElement,
   options: PNGExportOptions = {}
@@ -197,7 +195,6 @@ async function htmlToSVG(element: HTMLElement, width: number, height: number): P
  */
 function getAllStyles(element: HTMLElement): string {
   const styles: string[] = [];
-// fallow-ignore-next-line complexity
   
   function collectStyles(el: HTMLElement): void {
     const computed = getComputedStyle(el);

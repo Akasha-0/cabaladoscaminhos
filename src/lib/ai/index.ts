@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export type { AIResponse, ChatCompletionOptions, ChatMessage, StreamChunk } from './types';
 export { sanitizeInput } from './sanitize';
 export { gerarContextoUsuario } from './prompt-system';

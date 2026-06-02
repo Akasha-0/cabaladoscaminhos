@@ -251,7 +251,6 @@ export default function CalendarioPage() {
             Legenda dos Dias
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-// fallow-ignore-next-line complexity
             {diasDaSemana.map((dia) => (
               <div key={dia.dayName} className="flex items-center gap-2">
                 <div

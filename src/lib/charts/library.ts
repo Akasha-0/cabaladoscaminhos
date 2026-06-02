@@ -101,6 +101,7 @@ function getCharts(): ChartLibrary {
   ];
 
   return {
+    getChartById: (id: string) => charts.find(c => c.id === id),
     charts,
     total: charts.length,
   };

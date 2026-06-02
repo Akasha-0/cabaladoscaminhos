@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Módulo de geração de relatórios abrangentes.
  * Integra dados de múltiplas disciplinas esotéricas em um relatório unificado.
@@ -168,7 +167,6 @@ function gerarSecaoNumerologia(data: NumerologiaReportData): ComprehensiveReport
 /**
  * Gera a seção de Astrologia.
  */
-// fallow-ignore-next-line complexity
 function gerarSecaoAstrologia(data: AstrologiaReportData): ComprehensiveReportSection {
   const signo = data.signos?.sol || 'Não especificado';
   const ascendente = data.signos?.ascendente || 'Não especificado';
@@ -231,7 +229,6 @@ function gerarSecaoOdu(data: OduReportData): ComprehensiveReportSection {
 
 /**
  * Gera a seção integrativa que conecta todas as disciplinas.
-// fallow-ignore-next-line complexity
  */
 function gerarSecaoIntegrativa(data: ComprehensiveReportData): ComprehensiveReportSection {
   const pontosComuns: string[] = [];
@@ -271,7 +268,6 @@ function gerarSecaoIntegrativa(data: ComprehensiveReportData): ComprehensiveRepo
 /**
  * Gera as recomendações baseadas em todas as análises.
  */
-// fallow-ignore-next-line complexity
 function gerarRecomendacoes(data: ComprehensiveReportData): ComprehensiveRecommendation[] {
   const recomendacoes: ComprehensiveRecommendation[] = [];
 
@@ -341,7 +337,6 @@ function gerarRecomendacoes(data: ComprehensiveReportData): ComprehensiveRecomme
 /**
  * Gera a timeline/cronograma de influências.
  */
-// fallow-ignore-next-line complexity
 function gerarTimeline(data: ComprehensiveReportData): ComprehensiveTimelineItem[] {
   const timeline: ComprehensiveTimelineItem[] = [];
   const agora = new Date();

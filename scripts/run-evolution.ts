@@ -3,7 +3,6 @@
  * Executa ciclo de auto-evolução baseado nos resultados dos evals
  */
 
-// fallow-ignore-next-line unresolved-import
 import { runAllEvals, ALL_EVALS } from '../src/lib/quality/runner'
 import { 
   AutoEvolutionEngine,
@@ -32,7 +31,6 @@ interface Improvement {
   action: string
 }
 
-// fallow-ignore-next-line complexity
 async function runEvolutionCycle(): Promise<EvolutionResult | null> {
   console.log('\n🚀 AUTO-EVOLUTION CYCLE')
   console.log('═'.repeat(64))

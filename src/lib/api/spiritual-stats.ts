@@ -33,7 +33,6 @@ export interface HasSpiritualCorrelations {
  * @param items - Array of items with optional spiritual correlations
  * @returns SpiritualStats object with counts by type, sefirot, chakra, element, orixa
  */
-// fallow-ignore-next-line unused-export
 export function calculateSpiritualStats<T extends HasSpiritualCorrelations>(
   items: T[],
   options: {

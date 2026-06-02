@@ -311,7 +311,6 @@ function getPlanetElement(sign: string): string {
 // API ROUTE HANDLERS
 // ============================================================
 
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

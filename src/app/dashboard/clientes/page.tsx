@@ -247,7 +247,7 @@ export default function ClientesPage() {
         <h1 className="text-3xl font-bold">Consulentes</h1>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
+          <DialogTrigger>
             <Button>Novo Consulente</Button>
           </DialogTrigger>
           <DialogContent>

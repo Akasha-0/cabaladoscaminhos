@@ -81,7 +81,6 @@ function isAllowedWhenQuarantined(pathname: string): boolean {
 // Middleware - Auth is handled client-side
 // ============================================
 
-// fallow-ignore-next-line complexity
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 

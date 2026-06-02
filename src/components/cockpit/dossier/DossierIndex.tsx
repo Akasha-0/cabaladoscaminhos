@@ -66,7 +66,6 @@ export function DossierIndex({ casas, activeCasa, onSelect, progress, errors }: 
         </p>
       </div>
       <nav className="space-y-0.5">
-// fallow-ignore-next-line complexity
         {Array.from({ length: 36 }, (_, i) => i + 1).map((casa) => {
           const isGenerated = generated.has(casa);
           const isErrored = errored.has(casa);

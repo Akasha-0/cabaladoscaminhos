@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export interface NumerologyCalculation {
   id: string;
   timestamp: number;

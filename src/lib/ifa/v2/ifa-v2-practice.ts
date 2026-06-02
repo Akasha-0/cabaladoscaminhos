@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // @ts-nocheck
 /* eslint-disable */
 // Ifá-v2 Practice

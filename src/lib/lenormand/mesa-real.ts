@@ -303,9 +303,6 @@ export const MESA_REAL_SPREADS = {
   },
 } as const;
 
-// fallow-ignore-start unused-types
-export type SpreadType = keyof typeof MESA_REAL_SPREADS;
-// fallow-ignore-end unused-types
 
 /**
  * Gera posições para uma tiragem 9x4
@@ -416,16 +413,3 @@ export function contarElementos(dossiê: ArquiteturaDossiê[]): Record<string, n
 /**
  * Exporta tipos para uso em outros módulos
  */
-// fallow-ignore-start unused-types
-export type {
-  CasaCigana,
-  CartaCigana,
-  OduInfo,
-  TiragemMesaReal,
-  ArquiteturaDossiê,
-  DadosConsulente,
-  CorrelacaoCasa,
-  ResultadoLeitura,
-  PosicaoTiragem,
-} from './mesa-real-types';
-// fallow-ignore-end unused-types

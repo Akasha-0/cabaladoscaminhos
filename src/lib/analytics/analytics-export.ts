@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Analytics export — export analytics data in multiple formats.
  */
@@ -108,7 +107,6 @@ function exportCsv(data: unknown, filename: string, includeMetadata: boolean): E
   };
 }
 
-// fallow-ignore-next-line complexity
 function flattenObject(obj: unknown, prefix: string, rows: string[][]): void {
   if (obj === null || obj === undefined) {
     rows.push([prefix || '(root)', '']);
@@ -164,7 +162,6 @@ function exportXml(data: unknown, filename: string, includeMetadata: boolean): E
   };
 }
 
-// fallow-ignore-next-line complexity
 function objectToXml(obj: unknown, indent: number): string {
   const pad = ' '.repeat(indent);
   if (obj === null || obj === undefined) return `${pad}<null />`;

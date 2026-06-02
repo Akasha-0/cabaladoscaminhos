@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Tarot Journal — save and retrieve past readings
 // Skip linting and formatting
 

@@ -25,7 +25,6 @@ interface LoginFormProps {
   onSuccess?: () => void;
 }
 
-// fallow-ignore-next-line complexity
 export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
@@ -48,7 +47,6 @@ export function LoginForm({ className = '', onSuccess }: LoginFormProps) {
     }
     setServerError(null);
   };
-// fallow-ignore-next-line complexity
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

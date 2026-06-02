@@ -28,7 +28,6 @@ export type ErrorCodeType = typeof ErrorCode[keyof typeof ErrorCode];
 // VALIDATION HELPERS
 // ============================================================
 
-// fallow-ignore-next-line unused-type
 export interface ValidatedRequest<T> {
   data: T;
   error: { message: string; code: ErrorCodeType } | null;
@@ -189,7 +188,6 @@ export interface AuthUser {
   email: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface AuthResult {
   user: AuthUser | null;
   error: { code: ErrorCodeType; message: string } | null;

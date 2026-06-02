@@ -17,7 +17,6 @@ const TarotQuerySchema = z.object({
   nome: z.string().optional(),
   elemento: z.enum(['fogo', 'agua', 'terra', 'ar']).optional(),
 });
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   // Validate query params with Zod
@@ -101,7 +100,6 @@ function handleGetAllCards(searchParams: URLSearchParams) {
     },
   });
 }
-// fallow-ignore-next-line complexity
 function handleGetCard(searchParams: URLSearchParams) {
   const idParam = searchParams.get('id');
   const name = searchParams.get('name');

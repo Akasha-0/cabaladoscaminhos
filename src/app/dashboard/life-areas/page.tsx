@@ -249,7 +249,6 @@ function LifeAreasGrid({ result, onSelectArea }: {
 // AREA DETAIL VIEW
 // ============================================================
 
-// fallow-ignore-next-line complexity
 function AreaDetailView({
   areaId,
   insight,

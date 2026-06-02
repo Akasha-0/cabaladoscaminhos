@@ -761,7 +761,6 @@ export function getOduZodiacPraticas(odu: string): SpiritualPractice[] | null {
   return ODU_ZODIAC_MAPPINGS[odu]?.praticas_espirituais ?? null;
 }
 
-// fallow-ignore-next-line unused-export
 export default {
   getOduZodiac,
   getZodiacOdu,

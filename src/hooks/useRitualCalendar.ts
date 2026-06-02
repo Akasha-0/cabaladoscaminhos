@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -389,12 +388,12 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
           const daysUntil = Math.ceil((startDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
           const newEvent: UpcomingRitual = {
             id: createdEventId,
-            title: eventData.title,
+            title: String(eventData.title),
             ritualId: ritual.id,
-            startDate: eventData.startDate,
-            endDate: eventData.endDate,
-            allDay: eventData.allDay,
-            recurrence: eventData.recurrence,
+            startDate: String(eventData.startDate),
+            endDate: eventData.endDate ? String(eventData.endDate) : undefined,
+            allDay: Boolean(eventData.allDay),
+            recurrence: eventData.recurrence ? String(eventData.recurrence) : undefined,
             ritual,
             daysUntil,
             isToday: daysUntil === 0,

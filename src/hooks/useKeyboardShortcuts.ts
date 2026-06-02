@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * useKeyboardShortcuts — Hook para registrar atalhos de teclado globais.
  *

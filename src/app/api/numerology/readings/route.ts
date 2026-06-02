@@ -97,7 +97,6 @@ function getCorrelationsForNumber(num: number) {
   return NUMERO_SPIRITUAL_CORRELATIONS[reduced.toString()];
 }
 
-// fallow-ignore-next-line complexity
 function validateInput(data: unknown): { valid: boolean; error?: string } {
   if (!data || typeof data !== 'object') {
     return { valid: false, error: 'Request body is required' };
@@ -187,7 +186,6 @@ export async function POST(request: NextRequest) {
 /**
  * GET /api/numerology/readings
  * Get available numerology methods and spiritual correlations
-// fallow-ignore-next-line complexity
  */
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;

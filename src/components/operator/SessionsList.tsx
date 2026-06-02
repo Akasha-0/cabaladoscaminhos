@@ -53,8 +53,9 @@ interface DeviceInfo {
 
 /**
  * Parse best-effort de um userAgent. NÃO é uma lib completa — só
-...
-export function parseUserAgent(ua: string | null | undefined): DeviceInfo {
+ * cobre navegadores e OS mais comuns.
+ */
+function parseUserAgent(ua: string | null | undefined): DeviceInfo {
   const raw = (ua ?? '').trim();
   if (!raw) {
     return { icon: Globe, label: 'Dispositivo desconhecido', kind: 'unknown' };
@@ -123,7 +124,6 @@ interface SessionsListProps {
   onOpenChange: (open: boolean) => void;
 }
 
-// fallow-ignore-next-line complexity
 export function SessionsList({ open, onOpenChange }: SessionsListProps) {
   const { listSessions, revokeSession, revokeAllSessions } = useOperatorAuth();
 
@@ -365,7 +365,6 @@ interface SessionItemProps {
   isRevoking: boolean;
   onRevoke: (id: string) => void;
 }
-// fallow-ignore-next-line complexity
 
 function SessionItem({ session, isCurrent = false, isRevoking, onRevoke }: SessionItemProps) {
   const device = parseUserAgent(session.userAgent);
@@ -435,3 +434,4 @@ function SessionItem({ session, isCurrent = false, isRevoking, onRevoke }: Sessi
     </div>
   );
 }
+

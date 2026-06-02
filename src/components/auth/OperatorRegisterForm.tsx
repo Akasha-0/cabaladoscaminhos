@@ -27,7 +27,6 @@ interface OperatorRegisterFormProps {
   redirectTo?: string;
 }
 
-// fallow-ignore-next-line complexity
 export function OperatorRegisterForm({ className = '', redirectTo = '/cockpit' }: OperatorRegisterFormProps) {
   const [formData, setFormData] = useState<RegisterFormData>({ name: '', email: '', password: '' });
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterFormData, string>>>({});

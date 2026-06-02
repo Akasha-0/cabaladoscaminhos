@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // @ts-nocheck
 // Numerology charts - visualization data generators
 
@@ -92,7 +91,6 @@ export function generateChart(
   return buildChart(result, chartType, name, date, options);
 }
 
-// fallow-ignore-next-line complexity
 function buildChart(
   result: ReturnType<typeof calculate>,
   type: ChartType,
@@ -337,7 +335,6 @@ export function getCompatibilityMatrix(yourNumber: number, partnerNumbers: numbe
   
   return matrix;
 }
-// fallow-ignore-next-line complexity
 
 function calculateCompatibilityScore(a: number, b: number): number {
   const diff = Math.abs(a - b);

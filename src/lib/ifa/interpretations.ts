@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export interface OduInterpretation {
   name: string;
   yoruba: string;

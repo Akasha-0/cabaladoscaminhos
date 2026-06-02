@@ -33,7 +33,6 @@ export interface ClienteInfo {
   };
 }
 
-// fallow-ignore-next-line unused-type
 export type RightPanelTab = 'dossier' | 'consult';
 
 interface CockpitState {

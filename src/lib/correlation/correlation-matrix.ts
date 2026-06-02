@@ -397,7 +397,6 @@ export interface CrossSystemInsights {
 /**
  * Gera análise completa de correlações cruzadas
  */
-// fallow-ignore-next-line complexity
 function generateCrossSystemAnalysis(profile: FullProfileCorrelation): CrossSystemInsights {
   const correlations: CorrelationResult[] = [];
   

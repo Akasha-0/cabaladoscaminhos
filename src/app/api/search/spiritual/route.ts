@@ -21,7 +21,6 @@ export interface SpiritualSearchResult {
   metadata?: Record<string, string | string[]>;
 }
 
-// fallow-ignore-next-line unused-type
 export interface SpiritualSearchResponse {
   query: string;
   results: SpiritualSearchResult[];
@@ -107,7 +106,6 @@ function calculateRelevance(query: string, text: string): number {
   return queryWords.length > 0 ? matchCount / queryWords.length : 0;
 }
 
-// fallow-ignore-next-line complexity
 function searchOdus(query: string): SpiritualSearchResult[] {
   const results: SpiritualSearchResult[] = [];
 
@@ -145,7 +143,6 @@ function searchOdus(query: string): SpiritualSearchResult[] {
   return results;
 }
 
-// fallow-ignore-next-line complexity
 function searchOrixas(query: string): SpiritualSearchResult[] {
   const results: SpiritualSearchResult[] = [];
 
@@ -291,7 +288,6 @@ function searchCycles(query: string): SpiritualSearchResult[] {
   }
 
   return results;
-// fallow-ignore-next-line complexity
 }
 
 function filterResults(
@@ -306,7 +302,6 @@ function filterResults(
     return results;
   }
 
-// fallow-ignore-next-line complexity
   return results.filter((result) => {
     if (filters.categories?.length && !filters.categories.includes(result.type)) {
       return false;
@@ -374,7 +369,6 @@ function getAvailableFilters(): SpiritualSearchResponse['filters'] {
 // API ROUTE HANDLERS
 // ============================================================
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const query = searchParams.get('q') || searchParams.get('query') || '';

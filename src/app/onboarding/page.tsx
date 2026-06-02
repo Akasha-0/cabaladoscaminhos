@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Progress, ProgressIndicator } from '@/components/ui/progress';
+import { Progress } from '@/components/ui/progress';
 import { Sparkles, User, Calendar, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/components/providers/SupabaseProvider';
 import { CosmicBackground } from '@/components/design-system/CosmicBackground';
@@ -61,7 +61,6 @@ interface FormData {
   country: string;
 }
 
-// fallow-ignore-next-line complexity
 export default function OnboardingPage() {
   const router = useRouter();
   const { user, isLoading } = useAuth();
@@ -154,7 +153,6 @@ export default function OnboardingPage() {
     }
   };
 
-// fallow-ignore-next-line complexity
   const canProceed = () => {
     switch (currentStep) {
       case 0:

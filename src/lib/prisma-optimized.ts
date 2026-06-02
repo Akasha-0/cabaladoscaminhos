@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // ============================================================
 // PRISMA QUERY OPTIMIZATION - CABALA DOS CAMINHOS
 // ============================================================

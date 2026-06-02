@@ -158,7 +158,7 @@ interface WidgetInfoRowProps {
   className?: string;
 }
 
-export function WidgetInfoRow({ label, value, icon, valueColor = 'text-white', className = '' }: WidgetInfoRowProps) {
+function WidgetInfoRow({ label, value, icon, valueColor = 'text-white', className = '' }: WidgetInfoRowProps) {
   return (
     <div className={cn(
       'flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-slate-700/30 transition-all duration-200 hover:bg-slate-800/70',

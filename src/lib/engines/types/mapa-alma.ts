@@ -139,7 +139,6 @@ export type {
   DrawResult,
   MapaNatal,
   PosicaoPlaneta,
-  // fallow-ignore-next-line unused-type
   Planeta,
   Signo,
   Aspecto,

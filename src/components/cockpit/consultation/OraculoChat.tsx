@@ -11,7 +11,6 @@ import { OracleBubble } from './OracleBubble';
 import { RoutingChips } from './RoutingChips';
 import { UserBubble } from './UserBubble';
 
-// fallow-ignore-next-line unused-type
 export interface ChatMessage {
   id: string;
   role: 'USER' | 'ORACLE';
@@ -120,7 +119,6 @@ export function OraculoChat({ readingId, clientName, consultationId: consultatio
     }
   }
 
-// fallow-ignore-next-line complexity
   async function handleSend(question: string) {
     if (streaming) return;
     setError(null);

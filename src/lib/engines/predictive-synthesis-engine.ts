@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * ════════════════════════════════════════════════════════════════════════════
  * PREDICTIVE SYNTHESIS ENGINE v1.0
@@ -61,7 +60,6 @@ export interface MapeamentoElemento {
 /**
  * Resultado da Síntese Consciencial
  */
-// fallow-ignore-next-line unused-type
 export interface SinteseConsciencial {
   insights: InsightSintese[]
   grafoConsciencial: GrafoNodo[]
@@ -231,7 +229,6 @@ class PredictiveSynthesisEngine {
   /**
    * Gera insight de integração entre tradições
    */
-// fallow-ignore-next-line complexity
   private gerarInsightIntegraçãoTradições(): InsightSintese {
     const mapa = this.mapaAlma!
     const numerologia = mapa.numerologia
@@ -340,7 +337,6 @@ class PredictiveSynthesisEngine {
   /**
    * Gera insight de correlação Orixá-Chakra-Sephirah
    */
-// fallow-ignore-next-line complexity
   private gerarInsightCorrelaçãoOrixáChakraSephirah(): InsightSintese {
     const mapa = this.mapaAlma!
     const odu = mapa.odu
@@ -427,7 +423,6 @@ class PredictiveSynthesisEngine {
 
   /**
    * Gera insight de síntese de convergências
-// fallow-ignore-next-line complexity
    */
   private gerarInsightSínteseConvergências(): InsightSintese {
     const mapa = this.mapaAlma!
@@ -661,7 +656,6 @@ class PredictiveSynthesisEngine {
       tradicoesIndicam: n.tradicoes,
       causaProfunda: 'Bloqueio energético identificado',
       prácticaRecuperadora: 'Práticas de harmonização recomendadas'
-// fallow-ignore-next-line complexity
     }))
   }
 

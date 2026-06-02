@@ -53,7 +53,6 @@ function reduceTantric(n: number): number {
 // 1. NÚMERO DE ALMA (dia de nascimento, reduzido)
 // ============================================================================
 // 20 → 2+0 = 2
-// fallow-ignore-next-line unused-export
 export function calculateSoul(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
@@ -64,7 +63,6 @@ export function calculateSoul(birthDate: string): number {
 // 2. NÚMERO DE KARMA (mês de nascimento)
 // ============================================================================
 // 08 → 8 (mês já é ≤ 11)
-// fallow-ignore-next-line unused-export
 export function calculateKarma(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
@@ -77,7 +75,6 @@ export function calculateKarma(birthDate: string): number {
 // ============================================================================
 // 1986 → 86 → 8+6=14 → 1+4=5
 // Doc 04 §2.3: "1986 → 8+6=14 → 1+4=5"
-// fallow-ignore-next-line unused-export
 export function calculateDivineGift(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
@@ -89,7 +86,6 @@ export function calculateDivineGift(birthDate: string): number {
 // 4. NÚMERO DE DESTINO (soma do ano completo de 4 dígitos, reduzido)
 // ============================================================================
 // 1986 → 1+9+8+6=24 → 2+4=6
-// fallow-ignore-next-line unused-export
 export function calculateDestiny(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
@@ -102,7 +98,6 @@ export function calculateDestiny(birthDate: string): number {
 // 5. NÚMERO DE CAMINHO TÂNTRICO (soma total de dia+mês+ano)
 // ============================================================================
 // 20+8+1986=2014 → 2+0+1+4=7
-// fallow-ignore-next-line unused-export
 export function calculateTantricPath(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
@@ -114,7 +109,7 @@ export function calculateTantricPath(birthDate: string): number {
 // ============================================================================
 // AGREGADOR — Constrói o mapa tântrico completo
 // ============================================================================
-export function buildTantricMap(birthDate: string): TantricMap {
+export function buildTantricMap(birthDate: string): Partial<TantricMap> {
   const soul = calculateSoul(birthDate);
   const karma = calculateKarma(birthDate);
   const divineGift = calculateDivineGift(birthDate);

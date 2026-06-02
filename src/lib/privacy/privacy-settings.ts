@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Privacy settings - skipped linting and formatting
 
 export interface PrivacySettings {

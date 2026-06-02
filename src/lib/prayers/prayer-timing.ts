@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Prayer Timing
  * Optimal timing calculations for prayer practice
@@ -7,7 +6,6 @@
 /**
  * Get optimal time for prayer based on time of day and spiritual context
  */
-// fallow-ignore-next-line complexity
 export function getBestTiming(hour?: number, dayOfWeek?: number): {
   time: string;
   period: string;

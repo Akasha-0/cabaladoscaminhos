@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // @ts-nocheck
 // Numerology number meanings - spiritual and esoteric descriptions
 

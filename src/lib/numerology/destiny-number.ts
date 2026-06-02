@@ -2,28 +2,11 @@
 // @ts-nocheck
 // Destiny Number - date-based numerology calculation
 
+import { sumDigits, reduceToBase } from './reduce-number';
+
 export interface DestinyResult {
   destiny: number;
   interpretation: string;
-}
-
-/**
- * Sums all digits in a number, reducing to single digit or master number
- */
-function sumDigits(num: number): number {
-  const str = String(num);
-  const sum = str.split('').reduce((acc, digit) => acc + parseInt(digit, 10), 0);
-  return sum;
-}
-
-/**
- * Reduces a number to its base digit (1-9) or master number (11, 22, 33)
- */
-function reduceToBase(num: number): number {
-  while (num > 9 && ![11, 22, 33].includes(num)) {
-    num = sumDigits(num);
-  }
-  return num;
 }
 
 /**

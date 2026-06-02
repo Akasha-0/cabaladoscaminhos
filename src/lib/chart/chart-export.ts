@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Chart Export Module
  * Handles export of astrological charts in multiple formats
@@ -42,7 +41,6 @@ export interface ChartData {
 /**
  * Export chart data in the specified format
  */
-// fallow-ignore-next-line complexity
 export async function exportChart(
   chartData: ChartData,
   options: ChartExportOptions

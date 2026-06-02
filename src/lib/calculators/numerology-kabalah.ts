@@ -30,7 +30,6 @@ const VOGAIS = new Set(['A', 'E', 'I', 'O', 'U', 'Á', 'É', 'Í', 'Ó', 'Ú', '
 // ============================================================================
 // REDUÇÃO NUMÉRICA (mantém números mestres 11, 22, 33)
 // ============================================================================
-// fallow-ignore-next-line complexity
 function reduceToSingleDigit(n: number, keepMaster = true): number {
   if (n <= 0) return 0;
   if (n <= 9) return n;
@@ -54,7 +53,6 @@ function isMaster(n: number): boolean {
 // ============================================================================
 // Soma TODOS os dígitos da data de nascimento, reduzida.
 // Para 20/08/1986: 2+0+0+8+1+9+8+6 = 34 → 3+4 = 7
-// fallow-ignore-next-line unused-export
 export function calculateLifePath(birthDate: string): { number: number; master: boolean } {
   const digits = birthDate.replace(/\D/g, '');
   const sum = digits.split('').reduce((s, d) => s + parseInt(d, 10), 0);
@@ -109,7 +107,6 @@ function calculateMotivation(fullName: string): { number: number; master: boolea
 // ============================================================================
 // 4b. NÚMERO DE IMPRESSÃO (apenas consoantes do nome) — Doc 11 §2.4
 // ============================================================================
-// fallow-ignore-next-line unused-export
 export function calculateImpression(fullName: string): { number: number; master: boolean } {
   const sum = normalizeName(fullName)
     .split('')
@@ -122,7 +119,6 @@ export function calculateImpression(fullName: string): { number: number; master:
 // ============================================================================
 // 5. DONS NATIVOS (dia de nascimento NÃO reduzido se for 10-31)
 // ============================================================================
-// fallow-ignore-next-line unused-export
 export function calculateNativeDayGifts(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 0;
@@ -137,7 +133,6 @@ export function calculateNativeDayGifts(birthDate: string): number {
 // - second: |dia - ano|
 // - main:  |first - second|
 // - last:  |ano - mês - dia| (nunca 0, mínimo 1)
-// fallow-ignore-next-line unused-export
 export function calculateChallenges(birthDate: string): {
   first: number;
   second: number;
@@ -167,7 +162,6 @@ export function calculateChallenges(birthDate: string): {
 // ============================================================================
 // 7. LIÇÕES KÁRMICAS (números de 1-9 AUSENTES no nome) — Doc 11 §2.4
 // ============================================================================
-// fallow-ignore-next-line unused-export
 export function calculateKarmicLessons(fullName: string): number[] {
   const lettersInName = new Set(
     normalizeName(fullName)
@@ -201,7 +195,6 @@ function collectKarmicDebts(rawSums: number[]): number[] {
   }
   return [...found].sort((a, b) => a - b);
 }
-// fallow-ignore-next-line unused-export
 export function calculateKarmicDebts(fullName: string, birthDate: string): number[] {
   const norm = normalizeName(fullName);
   const expressionSum = norm.split('').reduce((s, c) => s + (LETTER_VALUES[c] ?? 0), 0);
@@ -225,7 +218,6 @@ export function calculateKarmicDebts(fullName: string, birthDate: string): numbe
 // ============================================================================
 // 7c. PINÁCULOS / CICLOS DE REALIZAÇÃO — Doc 11 §2.6
 // ============================================================================
-// fallow-ignore-next-line unused-export
 export function calculatePinnacles(
   birthDate: string,
   lifePath: number
@@ -260,7 +252,6 @@ export function calculatePinnacles(
 function arcanaFor(n: number): number {
   return n <= 21 ? n : reduceToSingleDigit(n, false);
 }
-// fallow-ignore-next-line unused-export
 export function calculateRulingArcana(
   lifePath: number,
   expression: number
@@ -271,7 +262,6 @@ export function calculateRulingArcana(
 // ============================================================================
 // 7e. CICLOS PESSOAIS (VOLÁTEIS — dependem da data atual) — Doc 11 §2.4
 // ============================================================================
-// fallow-ignore-next-line unused-export
 export function calculatePersonalCycles(
   birthDate: string,
   referenceDate: Date = new Date()
@@ -338,7 +328,7 @@ function calculateLifeCycles(birthDate: string): {
 // AGREGADOR — Constrói o mapa cabalístico completo
 // ============================================================================
 
-export function buildKabalisticMap(fullName: string, birthDate: string): KabalisticMap {
+export function buildKabalisticMap(fullName: string, birthDate: string): Partial<KabalisticMap> {
   const lifePath = calculateLifePath(birthDate);
   const mission = calculateMission(birthDate);
   const expression = calculateExpression(fullName);

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Profile templates - skipped linting and formatting
 
 export type ProfileType =

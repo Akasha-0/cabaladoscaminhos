@@ -187,7 +187,6 @@ function getMonthlyData(mes: number, ano: number) {
   return { ...currentData, ano };
 }
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const parseResult = MonthQuerySchema.safeParse({

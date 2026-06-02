@@ -39,13 +39,9 @@ const AchievementsQuerySchema = z.object({
   sefirot: z.string().optional(),
 });
 
-// fallow-ignore-next-line unused-type
 export type AchievementCategory = z.infer<typeof AchievementCategorySchema>;
-// fallow-ignore-next-line unused-type
 export type AchievementRarity = z.infer<typeof AchievementRaritySchema>;
-// fallow-ignore-end unused-type
 
-// fallow-ignore-next-line unused-type
 export interface AchievementsResponse {
   achievements: Achievement[];
   unlockedCount: number;
@@ -375,7 +371,6 @@ function calculateCompletionPercentage(unlocked: number, total: number): number 
 }
 
 // ─── API Route ─────────────────────────────────────────────────────────────
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

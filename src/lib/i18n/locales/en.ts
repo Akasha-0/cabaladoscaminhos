@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // EN Translations for Cabala dos Caminhos
 
 const en = {

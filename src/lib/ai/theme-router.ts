@@ -39,7 +39,6 @@ export interface ThemeEntry {
 
 // Taxonomia canônica (Doc 12 §4). O tema `geral` não tem keywords —
 // é o fallback quando nenhum outro tema casa.
-// fallow-ignore-next-line unused-export
 export const THEME_TAXONOMY: Record<Exclude<ThemeId, 'geral'>, ThemeEntry> = {
   amor: {
     id: 'amor', primaryHouses: [24], secondaryHouses: [25, 29],
@@ -139,7 +138,6 @@ function normalize(text: string): string {
  * @param question      pergunta do consulente
  * @param filledHouses  casas efetivamente tiradas na leitura (para `geral` e filtro)
  */
-// fallow-ignore-next-line complexity
 export function routeQuestion(question: string, filledHouses: number[] = []): RoutingResult {
   const normalized = normalize(question);
 

@@ -1,4 +1,4 @@
-import { calculateSpreadSpiritualStats } from '@/lib/tarot/spread-calculator';
+import { calculateSpreadSpiritualStats, type DrawnCard as ScDrawnCard } from '@/lib/tarot/spread-calculator';
 import { handleAPIError } from '@/lib/api/error-handler';
 // ============================================================
 // TAROT READING API - CABALA DOS CAMINHOS
@@ -237,7 +237,6 @@ interface DrawnCard {
   uprightMeaning: string;
   reversedMeaning: string;
   interpretation: string;
-  // fallow-ignore-next-line code-duplication
   keywords: string[];
   sefirot: string[];
   chakra: number;
@@ -284,7 +283,6 @@ function generateReadingId(): string {
   return `reading_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 }
 
-// fallow-ignore-next-line complexity
 function getSpiritualCorrelations(cardId: number, isReversed: boolean) {
   // Major arcana cards have specific correlations
   if (cardId >= 0 && cardId <= 21) {
@@ -372,7 +370,6 @@ function generateInterpretation(
 // ============================================================
 // API ROUTE HANDLERS
 // ============================================================
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const spreadType = (searchParams.get('spreadType') as SpreadType) || 'single-card';
@@ -441,7 +438,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Calculate spiritual stats using shared utility
-    const spiritualStats = calculateSpreadSpiritualStats(cards);
+    const spiritualStats = calculateSpreadSpiritualStats(cards as unknown as ScDrawnCard[]);
 
     const summary =
       cards.length > 0

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // @ts-nocheck
 // Name analysis - multiple numerology methods
 
@@ -56,7 +55,6 @@ function getInterpretation(num: number): string {
   return interp?.descricao || `Número ${num}`;
 }
 
-// fallow-ignore-next-line complexity
 export function analyzeName(name: string): NameAnalysis {
   const normalized = normalizeName(name);
 

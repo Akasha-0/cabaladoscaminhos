@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // src/lib/oracle/oracle-reading.ts
 // Stub providing performReading, getSpreads, getSpreadByName for the oracle-reading test.
 // Uses the canonical LENORMAND_CARDS source. Replaces the deprecated

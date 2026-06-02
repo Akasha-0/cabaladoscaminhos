@@ -69,7 +69,6 @@ function PasswordStrengthIndicator({ password }: { password: string }) {
     </div>
   );
 }
-// fallow-ignore-next-line complexity
 export function RegisterForm({ className = '', onSuccess }: RegisterFormProps) {
   const [formData, setFormData] = useState<RegisterFormData>({
     name: '',

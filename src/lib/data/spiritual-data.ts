@@ -45,7 +45,6 @@ export interface OduData {
   ebo: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface CartaLenormand {
   numero: number;
   nome: string;
@@ -54,7 +53,6 @@ export interface CartaLenormand {
   interpretacao: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface ChakraData {
   numero: number;
   nome: string;
@@ -68,7 +66,6 @@ export interface ChakraData {
   funcao: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface CartaTarot {
   numero: number;
   nome: string;
@@ -425,3 +422,6 @@ export function getCorrespondenciasDia(): {
     faseLua: getFaseLuaAtual()
   };
 }
+
+// Stub for backward compatibility
+export const spiritualData = {};

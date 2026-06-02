@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 import type { Planeta, Signo } from '../tipos';
 
 export interface PlanetaInfo {

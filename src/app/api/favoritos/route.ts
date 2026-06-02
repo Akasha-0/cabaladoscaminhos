@@ -41,7 +41,6 @@ const FavoritosQuerySchema = z.object({
   element: ElementSchema.optional(),
   orixa: z.string().optional(),
 });
-// fallow-ignore-next-line unused-type
 export type Favorito = z.infer<typeof FavoritoSchema>;
 
 // ─── Spiritual Correlations by Favorite Type ──────────────────────────────────────────
@@ -96,12 +95,10 @@ function generateId(): string {
   return `fav_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 }
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const parseResult = FavoritosQuerySchema.safeParse({
-      // fallow-ignore-next-line code-duplication
       tipo: searchParams.get('tipo'),
       sefirot: searchParams.get('sefirot'),
       chakra: searchParams.get('chakra'),
@@ -164,7 +161,6 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

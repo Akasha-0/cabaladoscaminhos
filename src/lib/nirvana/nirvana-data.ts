@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Nirvana data - liberation and ultimate enlightenment
 
 export interface NirvanaPath {

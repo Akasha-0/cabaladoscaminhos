@@ -53,7 +53,6 @@ class DuplicateCardError extends Error {
  * Valida que não há cartas duplicadas no matrixData (AD-17.2).
  * Returns array of duplicate cards with their house positions.
  */
-// fallow-ignore-next-line complexity
 function validateCardUniqueness(matrixData: MatrixData): { valid: boolean; duplicates: DuplicateCardError[] } {
   const cardToHouses = new Map<number, { name: string; houses: number[] }>();
 

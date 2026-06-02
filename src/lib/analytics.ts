@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Analytics service - in-memory storage, replaceable with external service
 
 interface EventData {

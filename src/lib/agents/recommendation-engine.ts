@@ -59,7 +59,6 @@ export interface AreaRecommendation {
 // CALL MINIMAX
 // ============================================================
 
-// fallow-ignore-next-line complexity
 async function callMinimax(
   systemPrompt: string,
   userPrompt: string,
@@ -103,7 +102,6 @@ async function callMinimax(
 // FALLBACK GENERATORS (IA offline)
 // ============================================================
 
-// fallow-ignore-next-line complexity
 function generateFallbackUnifiedRecommendation(context: DailyAgentContext): string {
   const { user, personalDay, personalMonth, personalYear, dailyEnergy, age } = context;
   const nome = user.nome.split(' ')[0];
@@ -159,7 +157,6 @@ Que seu dia seja luminoso e alinhado. 🕊️
 *— Sabedoria do seu Mapa Espiritual, calculada em ${new Date().toLocaleString('pt-BR')}*`;
 }
 
-// fallow-ignore-next-line complexity
 function generateFallbackAreaRecommendation(context: DailyAgentContext, area: LifeArea): string {
   const { user, personalDay, dailyEnergy } = context;
   const nome = user.nome.split(' ')[0];

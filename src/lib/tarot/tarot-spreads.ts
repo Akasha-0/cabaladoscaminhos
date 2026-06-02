@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export interface SpreadPosition {
   index: number;
   name: string;

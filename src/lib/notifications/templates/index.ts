@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Notification Templates System
  * Centralized notification templates for the Cabala dos Caminhos platform

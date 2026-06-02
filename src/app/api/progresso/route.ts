@@ -88,18 +88,12 @@ const CreditsProgressSchema = z.object({
   currentBalance: z.number().int(),
   mostExpensiveFeature: z.string().nullable(),
 });
-
-// fallow-ignore-next-line unused-type
 export type Achievement = z.infer<typeof AchievementSchema>;
-// fallow-ignore-next-line unused-type
+export type CreditsProgress = z.infer<typeof CreditsProgressSchema>;
 export type ProgressStats = z.infer<typeof ProgressStatsSchema>;
-// fallow-ignore-next-line unused-type
 export type ReadingProgress = z.infer<typeof ReadingProgressSchema>;
-// fallow-ignore-next-line unused-type
 export type RitualProgress = z.infer<typeof RitualProgressSchema>;
-// fallow-ignore-next-line unused-type
 export type MeditationProgress = z.infer<typeof MeditationProgressSchema>;
-// fallow-ignore-end unused-type
 export const dynamic = 'force-dynamic';
 
 // ─── Achievement Spiritual Correlations ──────────────────────────────────────────
@@ -343,7 +337,6 @@ interface LevelResult {
   level: number;
   expToNext: number;
 }
-// fallow-ignore-next-line unused-export
 export function calculateLevel(experience: number): LevelResult {
   const baseExp = 100;
   const multiplier = 1.5;
@@ -358,7 +351,6 @@ export function calculateLevel(experience: number): LevelResult {
   const expToNext = baseExp * Math.pow(multiplier, level - 1);
   return { level, expToNext };
 }
-// fallow-ignore-next-line unused-export
 export function enrichAchievement(
   base: AchievementBase,
   currentProgress: number,
@@ -390,7 +382,6 @@ export interface SpiritualStats {
   byRarity: Record<string, number>;
   byCategory: Record<string, number>;
 }
-// fallow-ignore-next-line unused-export
 export function calculateSpiritualStats(achievements: Achievement[]): SpiritualStats {
   return {
     bySefirot: achievements.reduce((acc, a) => {
@@ -544,7 +535,6 @@ export interface SpiritualFilters {
   element?: string;
   orixa?: string;
 }
-// fallow-ignore-next-line unused-export
 export function applySpiritualFilters(
   achievements: Achievement[],
   filters: SpiritualFilters
@@ -552,8 +542,8 @@ export function applySpiritualFilters(
   let filtered = achievements;
 
   if (filters.sefirot) {
-    filtered = filtered.filter(a => 
-      a.spiritualCorrelations?.sefirot.includes(filters.sefirot!)
+    filtered = filtered.filter(a =>
+      (a.spiritualCorrelations?.sefirot as readonly string[])?.includes(filters.sefirot!)
     );
   }
   if (filters.chakra) {
@@ -575,7 +565,6 @@ export function applySpiritualFilters(
   return filtered;
 }
 // ─── Data Normalization Functions ────────────────────────────────────────────────────
-// fallow-ignore-next-line unused-export
 export function normalizeProgressData(rawData: unknown): ProgressData | null {
   if (!rawData || typeof rawData !== 'object') return null;
   const d = rawData as Record<string, unknown>;
@@ -602,7 +591,6 @@ export function normalizeProgressData(rawData: unknown): ProgressData | null {
   };
 }
 // ─── Response Building Functions ────────────────────────────────────────────────────
-// fallow-ignore-next-line unused-export
 export function buildProgressStatsFromExp(experience: number, totalPoints: number): ProgressStats {
   const { level, expToNext } = calculateLevel(experience);
   return {
@@ -612,7 +600,6 @@ export function buildProgressStatsFromExp(experience: number, totalPoints: numbe
     totalPoints,
   };
 }
-// fallow-ignore-next-line unused-export
 export function buildReadingProgress(progressData: ProgressData | null): ReadingProgress {
   return {
     total: progressData?.readingsCount || 0,
@@ -621,7 +608,6 @@ export function buildReadingProgress(progressData: ProgressData | null): Reading
     thisMonth: progressData?.readingsThisMonth || 0,
   };
 }
-// fallow-ignore-next-line unused-export
 export function buildRitualProgress(progressData: ProgressData | null): RitualProgress {
   return {
     totalCompletions: progressData?.ritualsCount || 0,
@@ -631,7 +617,6 @@ export function buildRitualProgress(progressData: ProgressData | null): RitualPr
     favoriteRitual: progressData?.favoriteRitual || null,
   };
 }
-// fallow-ignore-next-line unused-export
 export function buildMeditationProgress(progressData: ProgressData | null): MeditationProgress {
   const sessions = progressData?.meditationSessions || 0;
   const minutes = progressData?.meditationMinutes || 0;
@@ -643,7 +628,6 @@ export function buildMeditationProgress(progressData: ProgressData | null): Medi
     longestMeditationStreak: progressData?.meditationLongestStreak || 0,
   };
 }
-// fallow-ignore-next-line unused-export
 export function buildCreditsProgress(progressData: ProgressData | null): CreditsProgress {
   return {
     totalEarned: progressData?.creditsEarned || 0,

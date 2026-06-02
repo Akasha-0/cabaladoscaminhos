@@ -18,7 +18,6 @@ function safeObj(v: unknown): Record<string, unknown> {
   return {};
 }
 
-// fallow-ignore-next-line complexity
 function stringifyValue(v: unknown): string {
   if (v == null) return '—';
   if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') return String(v);

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // @ts-nocheck
 /* eslint-disable */
 // Astrology-v2 practice
@@ -163,7 +162,6 @@ function generateActiveTransits(planets: string[], birthDate?: Date): string[] {
   return transits;
 }
 
-// fallow-ignore-next-line complexity
 function generateChartSynthesis(
   planets: string[],
   aspects: string[],

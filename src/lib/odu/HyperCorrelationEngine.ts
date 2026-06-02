@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * ════════════════════════════════════════════════════════════════════════════
  * UNIFIED ODU HYPER-CORRELATION ENGINE — Cabala dos Caminhos
@@ -341,7 +340,6 @@ export function getOdusByTarot(tarot: string): Odu[] {
 /**
  * Find resonance between Odu, Orixá, and another tradition
  */
-// fallow-ignore-next-line complexity
 export function findResonance(
   oduNumero: number,
   tradicao: 'orixa' | 'planeta' | 'sephirot' | 'tarot' | 'numerologia'
@@ -372,7 +370,6 @@ export function findResonance(
 
 /**
  * Analyze compatibility between two Odus
-// fallow-ignore-next-line complexity
  */
 export function analyzeOduCompatibility(
   odu1Numero: number,

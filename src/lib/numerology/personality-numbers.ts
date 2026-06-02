@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // @ts-nocheck
 // Personality Numbers - Consonant-based numerology calculation
 

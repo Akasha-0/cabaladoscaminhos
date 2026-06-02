@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // OpenAPI 3.0 specification generator for Cabala dos Caminhos API
  
 
@@ -91,7 +90,6 @@ export interface SecurityScheme {
  * Generates OpenAPI 3.0 specification for all API routes
  * @returns OpenAPI 3.0 compliant specification object
  */
-// fallow-ignore-next-line complexity
 export function generateOpenAPISpec(): OpenAPISpec {
   const spec: OpenAPISpec = {
     openapi: '3.0.0',

@@ -98,7 +98,6 @@ export async function GET(request: NextRequest) {
 // ============================================================
 // PUT /api/user/profile — Update user profile
 // ============================================================
-// fallow-ignore-next-line complexity
 export async function PUT(request: NextRequest) {
   try {
     const cookieStore = await cookies()

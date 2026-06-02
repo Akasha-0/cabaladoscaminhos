@@ -68,7 +68,6 @@ interface TarotCardResult {
   frequency: string;
 }
 
-// fallow-ignore-next-line complexity
 function getDailyCard(position: string, filters?: { sefirot?: string; chakra?: number; element?: string; orixa?: string }): TarotCardResult {
   const now = new Date();
   const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
@@ -122,7 +121,6 @@ function getDailyCard(position: string, filters?: { sefirot?: string; chakra?: n
     frequency: card.frequency,
   };
 }
-// fallow-ignore-next-line complexity
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;

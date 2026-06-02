@@ -129,7 +129,6 @@ interface HealthMetric {
 
 const metricsData: HealthMetric[] = [];
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const parseResult = HealthMetricsQuerySchema.safeParse({
@@ -190,7 +189,6 @@ export async function GET(request: NextRequest) {
     spiritualStats,
   });
 }
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 import { chromium } from 'playwright';
 import * as fs from 'fs';
 

@@ -20,7 +20,6 @@ import { useRouter } from 'next/navigation'
 // Tipos
 // ============================================================================
 
-// fallow-ignore-next-line unused-type
 export interface OperatorInfo {
   id: string
   email: string
@@ -116,7 +115,6 @@ async function readError(res: Response, fallback: string): Promise<string> {
 // ============================================================================
 // Provider
 // ============================================================================
-// fallow-ignore-next-line unused-export
 export function OperatorAuthProvider({ children }: { children: ReactNode }) {
   const [operator, setOperator] = useState<OperatorInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)

@@ -7,7 +7,6 @@
 import { describe, it, expect, vi } from 'vitest';
 
 // Mock all the AI modules
-// fallow-ignore-next-line unresolved-import
 vi.mock('@/lib/ai/spiritual-energy-analyzer', () => ({
   SpiritualEnergyAnalyzer: vi.fn(() => ({
     analyzeCurrentEnergy: vi.fn().mockResolvedValue({
@@ -23,7 +22,6 @@ vi.mock('@/lib/ai/spiritual-energy-analyzer', () => ({
   })),
 }));
 
-// fallow-ignore-next-line unresolved-import
 vi.mock('@/lib/ai/correlation-engine', () => ({
   correlateSpiritualData: vi.fn().mockResolvedValue({
     numerology: { numero: 7, element: 'fogo', planet: 'marte' },
@@ -35,7 +33,6 @@ vi.mock('@/lib/ai/correlation-engine', () => ({
   }),
 }));
 
-// fallow-ignore-next-line unresolved-import
 vi.mock('@/lib/ai/personalized-report', () => ({
   generateSpiritualReport: vi.fn().mockResolvedValue({
     id: 'report-123',
@@ -48,7 +45,6 @@ vi.mock('@/lib/ai/personalized-report', () => ({
   }),
 }));
 
-// fallow-ignore-next-line unresolved-import
 vi.mock('@/lib/ai/prophecy-ai', () => ({
   generateProphecy: vi.fn().mockResolvedValue({
     id: 'prophecy-123',
@@ -62,7 +58,6 @@ vi.mock('@/lib/ai/prophecy-ai', () => ({
   }),
 }));
 
-// fallow-ignore-next-line unresolved-import
 vi.mock('@/lib/ai/meditation-ai', () => ({
   generateMeditationGuidance: vi.fn().mockResolvedValue({
     id: 'meditation-123',

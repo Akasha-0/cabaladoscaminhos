@@ -37,7 +37,6 @@ const matrixDataSchema = z.record(z.any());
 // ============================================================
 // GET /api/mesa-real/readings
 // ============================================================
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const auth = await requireOperator(request);
@@ -145,7 +144,6 @@ export async function POST(request: NextRequest) {
 
 // ============================================================
 // PATCH /api/mesa-real/readings - Update matrix data or status
-// fallow-ignore-next-line complexity
 // ============================================================
 export async function PATCH(request: NextRequest) {
   try {

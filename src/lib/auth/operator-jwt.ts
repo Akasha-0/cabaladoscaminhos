@@ -38,7 +38,6 @@ export const OPERATOR_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
  * @deprecated Mantido só para retrocompat com Fase 13 (cleanupExpiredSessions
  * e testes antigos). Em código novo, use `OPERATOR_ACCESS_TTL_SECONDS`.
  */
-// fallow-ignore-next-line unused-export
 export const OPERATOR_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60;
 
 const OPERATOR_ACCESS_TTL_DESCRIPTION = '15m';
@@ -91,7 +90,6 @@ export interface OperatorTokenPayload {
 // Erros
 // ============================================================================
 /** Erro lançado quando o secret não está configurado (em prod). */
-// fallow-ignore-next-line unused-export
 export class JwtSecretMissingError extends Error {
   constructor() {
     super(
@@ -170,7 +168,6 @@ export function signOperatorRefreshToken(operator: {
  * genérico de 7d). Em código novo, use `signOperatorAccessToken` ou
  * `signOperatorRefreshToken`.
  */
-// fallow-ignore-next-line unused-export
 export function signOperatorToken(operator: {
   id: string;
   role: 'OPERATOR' | 'ADMIN';
@@ -188,7 +185,6 @@ export function signOperatorToken(operator: {
  * Se `expectedType` for passado, também checa o claim `type` — útil
  * em /me (só aceita access) e /refresh (só aceita refresh).
  */
-// fallow-ignore-next-line complexity
 export function verifyOperatorToken(
   token: string | null | undefined,
   expectedType?: OperatorTokenType
@@ -205,7 +201,7 @@ export function verifyOperatorToken(
     // tokens com type. (Bcrypt bcrypt, etc — segurança > compat.)
     if (obj.type !== 'access' && obj.type !== 'refresh') return null;
     if (expectedType && obj.type !== expectedType) return null;
-    return obj as OperatorTokenPayload;
+    return obj as unknown as OperatorTokenPayload;
   } catch {
     return null;
   }
@@ -255,9 +251,7 @@ export function clearOperatorRefreshCookie(response: {
 
 // ============================================================================
 // Back-compat re-exports
-// fallow-ignore-next-line unused-export
 export { OPERATOR_ACCESS_TTL_SECONDS as OPERATOR_ACCESS_TTL };
-// fallow-ignore-next-line unused-export
 export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
 // ============================================================================
 // Fase 20 — MFA challenge token
@@ -278,11 +272,9 @@ export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
 import crypto from 'node:crypto';
 
 /** TTL do MFA challenge token: 5 minutos. */
-// fallow-ignore-next-line unused-export
 export const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
 
 /** Tipo de token adicional aceito em verifyOperatorToken (Fase 20). */
-// fallow-ignore-next-line unused-type
 export type OperatorTokenTypeWithMfa = OperatorTokenType | 'mfa-challenge';
 
 /**
@@ -326,7 +318,6 @@ export function signMfaChallengeToken(params: { operatorId: string }): string {
  * bem-sucedido, o sistema apaga o OperatorMfa.lastChallengeAt e o
  * próximo /verify com o mesmo token falha (TTL venceu ou lastChallengeAt
  * é mais novo que iat).
-// fallow-ignore-next-line complexity
  */
 export function verifyMfaChallengeToken(
   token: string | null | undefined
@@ -339,7 +330,7 @@ export function verifyMfaChallengeToken(
     if (obj.type !== 'mfa-challenge') return null;
     if (typeof obj.sub !== 'string' || obj.sub === '') return null;
     if (typeof obj.jti !== 'string' || obj.jti === '') return null;
-    return obj as MfaChallengePayload;
+    return obj as unknown as MfaChallengePayload;
   } catch {
     return null;
   }

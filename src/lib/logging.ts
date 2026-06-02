@@ -49,7 +49,6 @@ export interface LogContext {
   [key: string]: unknown;
 }
 
-// fallow-ignore-next-line unused-type
 export interface LogEntry {
   timestamp: string;
   level: LogLevel;
@@ -99,7 +98,6 @@ class Logger {
     // Already using console methods, just configure formatting
   }
 
-// fallow-ignore-next-line complexity
   private formatEntry(entry: LogEntry): string {
     const color = LOG_LEVEL_COLORS[entry.level];
     const timestamp = new Date(entry.timestamp).toISOString();
@@ -142,7 +140,6 @@ class Logger {
 
     return formatted;
   }
-// fallow-ignore-next-line complexity
 
   private log(level: LogLevel, message: string, context?: LogContext, error?: Error): void {
     if (level < this.minLevel) return;
@@ -247,7 +244,6 @@ export const logger = Logger.getInstance();
 // ============================================================
 // PERFORMANCE MONITORING
 // ====================================
-// fallow-ignore-next-line unused-type
 export interface PerformanceMetrics {
   requestId: string;
   path: string;
@@ -295,7 +291,6 @@ class PerformanceMonitor {
         duration: metric.duration,
       });
     }
-// fallow-ignore-next-line complexity
   }
 
   getMetrics(filter?: {
@@ -397,5 +392,4 @@ function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise
   }) as T;
 }
 
-// fallow-ignore-next-line unused-export
 export { withLogging };

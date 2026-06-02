@@ -32,7 +32,6 @@ const CARTAS_CIGANAS: CartaCiganaOption[] = LENORMAND_CARDS.map((carta) => ({
   significado: carta.keywords,
 }));
 
-// fallow-ignore-next-line complexity
 export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPopoverProps) {
   const house = HOUSES_36.find((h) => h.number === casaNumero);
 
@@ -74,7 +73,6 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
   );
 
   const handleKeyDown = useCallback(
-// fallow-ignore-next-line complexity
     (e: React.KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();

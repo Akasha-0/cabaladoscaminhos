@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export type TipoOperacao = 
   | 'insightRapido'
   | 'insightDetalhado'

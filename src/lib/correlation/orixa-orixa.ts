@@ -307,7 +307,6 @@ const getOrixaOrixas = getAllOrixaOrixas;
 const getAllOrixaRellations = getAllOrixaRelations;
 const getOrixaRelations = getAllOrixaRelations;
 
-// fallow-ignore-next-line unused-export
 export default {
   getOrixaOrixa,
   getAllOrixaRelations,

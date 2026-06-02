@@ -59,7 +59,6 @@ export function applySpiritualFilters<T extends FilterableItem>(
   return filtered;
 }
 
-// fallow-ignore-next-line unused-export
 export function parseSpiritualFilterParams(
   searchParams: URLSearchParams
 ): SpiritualFilterParams {
@@ -71,7 +70,6 @@ export function parseSpiritualFilterParams(
   };
 }
 
-// fallow-ignore-next-line unused-export
 export function buildFilterMeta(filters: SpiritualFilterParams): Record<string, unknown> {
   return {
     filters: {

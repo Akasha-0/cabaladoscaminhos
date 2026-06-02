@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Sacred dates calendar
 // @ts-nocheck
 

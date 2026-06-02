@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-// fallow-ignore-next-line complexity
 export async function POST(request: Request) {
   try {
     const { email, password, nomeCompleto, dataNascimento } = await request.json()

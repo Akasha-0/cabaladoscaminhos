@@ -98,5 +98,4 @@ export function SwarmStatusWidget({ className }: SwarmStatusWidgetProps) {
   );
 }
 
-// fallow-ignore-next-line unused-export
 export default SwarmStatusWidget;

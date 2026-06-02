@@ -12,8 +12,8 @@ const ShareRequestSchema = z.object({
   mapaId: z.string().min(1, 'mapaId is required'),
   expiresIn: z.number().int().positive().optional(),
 });
+export type ShareRequest = z.infer<typeof ShareRequestSchema>;
 
-// fallow-ignore-next-line unused-type
 export interface MapaData {
   id: string;
   created_at: string;
@@ -79,7 +79,6 @@ function cleanupExpired() {
   lastCleanup = now;
 }
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

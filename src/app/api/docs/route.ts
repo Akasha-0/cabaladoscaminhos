@@ -3,7 +3,6 @@
 import { NextRequest } from 'next/server';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const spec = {
     openapi: '3.0.3',

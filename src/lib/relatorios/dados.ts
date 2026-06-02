@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export interface RelatorioSemanal {
   tipo: 'semanal';
   dataGeracao: Date;
@@ -146,7 +145,6 @@ export function gerarAffirmationMensal(numeroMensal: number): string {
   return affirmations[numeroMensal] || affirmations[1];
 }
 
-// fallow-ignore-next-line complexity
 export function calcularEnergiaDiaria(
   diaSemana: number,
   numeroPessoal: number,

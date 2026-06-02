@@ -120,5 +120,4 @@ export function getUsedElements(): ElementType[] {
   return Array.from(elements);
 }
 
-// fallow-ignore-next-line unused-export
 export default { getOduFrequency, getFrequencyByOdu, getAllOduFrequencies, getAllOduNumbers, getAllOduNames, getAllOduNamesYoruba, getOduByElement, getOduByFrequency, getElementByOdu, getMessageByOdu, getHealingByOdu, hasOduFrequency, getUsedFrequencies, getUsedElements };

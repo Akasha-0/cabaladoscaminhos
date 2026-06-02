@@ -7,7 +7,6 @@
 // Clone group: 92587013 (72 lines, 3 instances)
 // Files: tarot/cards, tarot/consulta, tarot/reading routes
 // ============================================================
-// fallow-ignore-next-line unused-type
 export interface TarotCardBase {
   id: number;
   name: string;
@@ -88,17 +87,14 @@ export function getElementKeywords(element: string): string[] {
 
 // ─── Card Validation ──────────────────────────────────────────────────────────
 
-// fallow-ignore-next-line unused-export
 export function isValidCardId(id: number): boolean {
   return Number.isInteger(id) && id >= 0 && id <= 77;
 }
 
-// fallow-ignore-next-line unused-export
 export function getArcanaFromId(id: number): 'major' | 'minor' {
   return id <= 21 ? 'major' : 'minor';
 }
 
-// fallow-ignore-next-line unused-export
 export function calculateCardNumerology(cardId: number): TarotCardNumerology {
   const singleDigit = reduceToSingleDigit(cardId);
   const masterNumbers = getMasterNumbers(cardId);

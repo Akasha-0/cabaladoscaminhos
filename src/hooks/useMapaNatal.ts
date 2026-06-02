@@ -1,9 +1,7 @@
-// fallow-ignore-file unused-file
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 
-// fallow-ignore-next-line unused-type
 export interface MapaNatalData {
   solSigno: string;
   luaSigno: string;
@@ -15,7 +13,6 @@ export interface MapaNatalData {
   interpretacao: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface Transito {
   planeta: string;
   aspecto: string;
@@ -24,7 +21,7 @@ export interface Transito {
   descricao: string;
 }
 
-function useMapaNatal() {
+export function useMapaNatal() {
   const [data, setData] = useState<MapaNatalData | null>(null);
   const [transitos, setTransitos] = useState<Transito[]>([]);
   const [loading, setLoading] = useState(true);

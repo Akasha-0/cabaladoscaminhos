@@ -9,14 +9,12 @@
 
 import { NextResponse } from 'next/server';
 
-// fallow-ignore-next-line unused-type
 export interface SuccessResponse<T = unknown> {
   success: true;
   data?: T;
   [key: string]: unknown;
 }
 
-// fallow-ignore-next-line unused-type
 export interface ErrorResponse {
   success: false;
   error: string;
@@ -27,7 +25,6 @@ export interface ErrorResponse {
 /**
  * Create a standardized success response
  */
-// fallow-ignore-next-line unused-export
 export function createAPIResponse<T>(
   data: T,
   options: {
@@ -60,7 +57,6 @@ export function createAPIResponse<T>(
 /**
  * Create a list response with pagination metadata
  */
-// fallow-ignore-next-line unused-export
 export function createListResponse<T>(
   items: T[],
   options: {
@@ -121,7 +117,6 @@ export function createErrorResponse(
 /**
  * Create a formatListResponse helper for generic list formatting
  */
-// fallow-ignore-next-line unused-export
 export function formatListResponse<T extends { id: string | number }>(
   items: T[],
   options: {

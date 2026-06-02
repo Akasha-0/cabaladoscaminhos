@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Dossier Types - Cabala Dos Caminhos
  * Cockpit Oracular - TypeScript Interfaces for Mesa Real Dossier

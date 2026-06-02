@@ -52,7 +52,6 @@ const OrixaProfileSchema = z.object({
   spiritualCorrelations: SpiritualCorrelationsSchema,
 });
 
-// fallow-ignore-next-line unused-type
 export type OrixaProfile = z.infer<typeof OrixaProfileSchema>;
 
 // ─── Spiritual Correlations for Each Orixá ──────────────────────────────────────────
@@ -349,7 +348,6 @@ function enrichProfile(profile: typeof ORIXA_PROFILES[number]) {
   };
 }
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

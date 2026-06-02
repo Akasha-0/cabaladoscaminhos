@@ -1,4 +1,3 @@
-// fallow-ignore-next-line complexity
 // LIFE AREAS CORRELATOR
 // ============================================================
 // Correlaciona o perfil completo do usuário com cada área da vida

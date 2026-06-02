@@ -90,7 +90,6 @@ export type CreateClientWithMapsInput = {
 
 export type CreateClientResult = { ok: true; id: string } | { ok: false; error: string };
 
-// fallow-ignore-next-line complexity
 export async function createClientWithMaps(
   input: CreateClientWithMapsInput
 ): Promise<CreateClientResult> {
@@ -215,7 +214,6 @@ export async function getClientsByOperator(operatorId: string) {
 
 /**
  * Updates a client
-// fallow-ignore-next-line complexity
  */
 export async function updateClient(clientId: string, input: UpdateClientInput) {
   const data = updateClientSchema.parse(input);

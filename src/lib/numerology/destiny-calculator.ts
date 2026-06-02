@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // @ts-nocheck
 // Destiny Calculator - Name-based numerology calculation
 import {

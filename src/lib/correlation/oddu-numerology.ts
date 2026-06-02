@@ -459,7 +459,6 @@ export function hasOduNumerology(oduNumero: number): boolean {
 
 // ─── Default Export ───────────────────────────────────────────────────────────
 
-// fallow-ignore-next-line unused-export
 export default {
   getOduNumerology,
   getNumerologyOdu,

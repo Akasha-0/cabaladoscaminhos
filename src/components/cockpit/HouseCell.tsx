@@ -19,7 +19,6 @@ interface HouseCellProps {
   onClear: () => void;
 }
 
-// fallow-ignore-next-line complexity
 export function HouseCell({ house, filledData, isActive, onClick, onClear }: HouseCellProps) {
   const isFilled = !!filledData;
 

@@ -266,7 +266,6 @@ const DIVINE_CONNECTIONS: z.infer<typeof DivineConnectionSchema>[] = [
   },
 ];
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

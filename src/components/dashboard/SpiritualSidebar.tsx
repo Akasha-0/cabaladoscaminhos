@@ -80,7 +80,6 @@ interface NavItemProps {
   badge?: string;
 }
 
-// fallow-ignore-next-line complexity
 function NavItem({ item, isCollapsed, badge }: NavItemProps) {
   const pathname = usePathname();
   const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
@@ -181,7 +180,6 @@ function NavSection({ title, items, isCollapsed, defaultOpen = true }: NavSectio
 // ============================================================
 // MAIN COMPONENT
 // ============================================================
-// fallow-ignore-next-line complexity
 
 export function SpiritualSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);

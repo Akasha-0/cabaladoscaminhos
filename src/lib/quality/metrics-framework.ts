@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Stub for @/lib/quality/metrics-framework
 // Module does not exist - stub implementation for test compatibility
 
@@ -49,7 +48,6 @@ export const DEFAULT_THRESHOLDS: Threshold[] = [
 ];
 
 // Grade calculation
-// fallow-ignore-next-line complexity
 export function calculateGrade(score: number): string {
   if (score >= 97) return 'A+';
   if (score >= 93) return 'A';

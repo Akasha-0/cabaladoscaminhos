@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Reading manifest/preface generator
 // eslint-disable
 
@@ -192,7 +191,6 @@ function gerarPrefacio(tipo: ReadingType, nome?: string): string {
 /**
  * Create readings manifest/preface
  */
-// fallow-ignore-next-line complexity
 export function createManifest(
   readingType: ReadingType,
   data: Partial<ManifestData> = {}

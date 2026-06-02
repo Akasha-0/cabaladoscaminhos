@@ -1,5 +1,4 @@
 import { calcularPitagorica, InterpretacaoNumerologia, getInterpretacao } from './calculos';
-// fallow-ignore-next-line unused-type
 export interface CompatibilityResult {
   score: number;
   nivel: 'Baixa' | 'Moderada' | 'Alta' | 'Muito Alta';
@@ -106,7 +105,6 @@ function construirMatriz(a: number, b: number): CompatibilityMatrix {
   return { forca, destino, combinacao, diferenca, harmonic };
 }
 
-// fallow-ignore-next-line complexity
 function gerarForcas(forca: number, destino: number, matriz: CompatibilityMatrix): string[] {
   const forcas: string[] = [];
   const key = `${Math.min(forca, destino)}-${Math.max(forca, destino)}`;
@@ -156,7 +154,6 @@ function gerarDesafios(forca: number, destino: number, matriz: CompatibilityMatr
 
   return desafios;
 }
-// fallow-ignore-next-line complexity
 
 function gerarHarmonias(matriz: CompatibilityMatrix): string[] {
   const harmonias: string[] = [];
@@ -184,7 +181,6 @@ function gerarHarmonias(matriz: CompatibilityMatrix): string[] {
   return harmonias;
 }
 
-// fallow-ignore-next-line complexity
 function gerarRecomendacoes(forca: number, destino: number, score: number, nivel: string): string[] {
   const recs: string[] = [];
 
@@ -210,7 +206,6 @@ function gerarRecomendacoes(forca: number, destino: number, score: number, nivel
     recs.push('Considerem unir energias em projetos comuns');
   }
 
-// fallow-ignore-next-line complexity
   return recs;
 }
 

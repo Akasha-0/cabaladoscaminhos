@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Chart templates library
 // Pre-built chart configurations for common astrological visualizations
 

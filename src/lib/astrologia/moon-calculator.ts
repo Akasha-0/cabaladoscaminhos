@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Moon Phase Calculator
  * Provides accurate moon phase calculations using astronomical formulas
@@ -14,7 +13,6 @@ export type MoonPhase =
   | 'lastQuarter'
   | 'waning';
 
-// fallow-ignore-next-line unused-type
 export interface MoonPhaseInfo {
   phase: MoonPhase;
   name: string;
@@ -25,7 +23,6 @@ export interface MoonPhaseInfo {
   isWaxing: boolean;
 }
 
-// fallow-ignore-next-line unused-type
 export interface VoidOfCoursePeriod {
   start: Date;
   end: Date;
@@ -43,7 +40,6 @@ function getMoonAge(date: Date): number {
   return ((daysSinceReference % LUNAR_CYCLE_DAYS) + LUNAR_CYCLE_DAYS) % LUNAR_CYCLE_DAYS;
 }
 
-// fallow-ignore-next-line complexity
 function getMoonPhaseInfo(date: Date): MoonPhaseInfo {
   const age = getMoonAge(date);
   const phaseIndex = (age / LUNAR_CYCLE_DAYS) * 8;
@@ -157,7 +153,6 @@ function getUpcoming7Days(date: Date): Array<{ date: Date; phase: MoonPhase; nam
  * Simplified void-of-course calculator
  * Moon is void-of-course when transitioning between signs
  * Approximate method: check moon position relative to sign boundaries
-// fallow-ignore-next-line complexity
  */
 function calculateVoidOfCoursePeriods(
   startDate: Date,

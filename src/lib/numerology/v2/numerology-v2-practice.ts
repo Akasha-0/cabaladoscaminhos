@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Numerology V2 Practice
  * Core practice logic for numerology-v2 pathway

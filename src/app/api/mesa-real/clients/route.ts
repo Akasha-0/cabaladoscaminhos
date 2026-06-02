@@ -117,7 +117,6 @@ export async function POST(request: NextRequest) {
 // ============================================================
 // PATCH /api/mesa-real/clients - Update client maps
 // ============================================================
-// fallow-ignore-next-line complexity
 export async function PATCH(request: NextRequest) {
   try {
     const auth = await requireOperator(request);

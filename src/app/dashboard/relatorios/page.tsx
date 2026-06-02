@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ErrorState } from '@/components/shared/ErrorState';
-import { SkeletonCard, SkeletonText, SkeletonLine } from '@/components/shared/SkeletonSpiritual';
+import { SkeletonCard, SkeletonLine } from '@/components/shared/SkeletonSpiritual';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -37,7 +37,6 @@ function LoadingSkeleton() {
   );
 }
 
-// fallow-ignore-next-line complexity
 export default function RelatoriosPage() {
   const [mapaData, setMapaData] = useState<MapaAlmaCompleto | null>(null);
   const [profile, setProfile] = useState<BirthProfile | null>(null);
@@ -45,7 +44,6 @@ export default function RelatoriosPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-// fallow-ignore-next-line complexity
     const loadData = async () => {
       setLoading(true);
       setError(null);
@@ -75,7 +73,6 @@ export default function RelatoriosPage() {
             hora: profileData.hora,
             cidade: profileData.cidade,
             estado: profileData.estado,
-            // fallow-ignore-next-line code-duplication
             pais: profileData.pais,
           }),
         });

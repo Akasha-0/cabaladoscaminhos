@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { generateRitualPlan, getWeeklyRitualSchedule } from '@/lib/correlation/ritual-planner';
 
-// fallow-ignore-next-line complexity
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type') || 'today';

@@ -1,9 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Cinzel, Cormorant_Garamond, Raleway, IM_Fell_English, Lora, JetBrains_Mono } from "next/font/google";
-import { InstallPrompt } from "@/components/dashboard/InstallPrompt";
-import { OfflineIndicator } from "@/components/dashboard/OfflineIndicator";
-import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
+
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
@@ -154,10 +152,7 @@ export default function RootLayout({
       <body
         className={`${cinzel.variable} ${cormorant.variable} ${raleway.variable} ${imFell.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen bg-background text-foreground antialiased`}
       >
-        <SupabaseProvider>
-          {children}
-        </SupabaseProvider>
-        <InstallPrompt />
+        {children}
       </body>
     </html>
   );

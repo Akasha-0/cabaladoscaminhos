@@ -34,7 +34,6 @@ IDIOMA: Responda SEMPRE em português brasileiro, culturalmente apropriado e po�
  * Builds a structured user context from MapaAlmaCompleto for AI prompts.
  * Extracts all relevant spiritual data into human-readable format.
  */
-// fallow-ignore-next-line unused-export
 export function gerarContextoUsuario(mapa: MapaAlmaCompleto): string {
   const parts: string[] = [];
   // ── Perfil ──────────────────────────────────────────────────

@@ -3,7 +3,6 @@
  * NOTE: Run with: ./node_modules/.bin/tsx scripts/run-quality-eval.ts
  */
 
-// fallow-ignore-next-line unresolved-import
 import { runAllEvals } from '../src/lib/quality/runner.js'
 
 async function main() {

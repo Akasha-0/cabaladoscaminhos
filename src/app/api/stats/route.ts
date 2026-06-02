@@ -147,7 +147,6 @@ function getDominantSpiritualPath(features: Map<string, number>) {
 
 // In-memory activity store
 const activityStore = new Map<string, ActivityRecord>();
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -283,7 +282,6 @@ export async function GET(request: NextRequest) {
 }
 
 // POST - Record new activity
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

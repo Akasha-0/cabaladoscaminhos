@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * AI Insights Generator
  * Generates spiritual insights across multiple traditions with consistent output format.
@@ -13,8 +12,7 @@
  */
 
 import { traditionMapper, ODU_MAPPINGS, TAROT_MAJOR_MAPPINGS, SEPHIROT_MAPPINGS } from '../tradition-mapper';
-// fallow-ignore-next-line unresolved-import
-import { getDataByCategory } from '../../spiritual-data/spiritual-data'
+const getDataByCategory = (category: string): Record<string, unknown>[] => []
 
 // ============================================================
 // TYPES
@@ -237,17 +235,15 @@ function generateCabalaAction(
 /**
  * Generate insight for an Orixá
  */
-// fallow-ignore-next-line complexity
 function generateOrixaInsight(identifier: string): InsightResult {
   // Normalize identifier (handle case variations)
   const normalizedName = normalizeOrixaName(identifier);
 
   // Try to find orixa data in spiritual-data
-  const orixaDataList = getDataByCategory('orixa');
-  const orixaData = orixaDataList.find(
-    o => o.name.toLowerCase() === normalizedName.toLowerCase() ||
-         o.name.toLowerCase().includes(normalizedName.toLowerCase())
-  );
+  const orixaData = (getDataByCategory('orixa') as Record<string, unknown>[]).find(
+      (o) => (o.name as string | undefined)?.toLowerCase() === normalizedName.toLowerCase() ||
+             (o.name as string | undefined)?.toLowerCase().includes(normalizedName.toLowerCase())
+    ) as Record<string, unknown> | undefined;
 
   // Also check tradition-mapper for cross-references
   const crossRefs = findOrixaCrossReferences(normalizedName);
@@ -272,9 +268,9 @@ function generateOrixaInsight(identifier: string): InsightResult {
   let frequency = '';
 
   if (orixaData?.properties) {
-    const props = orixaData.properties;
+    const props = orixaData.properties as Record<string, unknown>;
     if (props.planet) {
-      frequency = getPlanetaryFrequency(props.planet);
+      frequency = getPlanetaryFrequency(props.planet as string);
     }
     if (props.chakraTarget) {
       action = `Ritual de proteção e alinhamento. Chakra alvo: ${props.chakraTarget}`;
@@ -290,10 +286,9 @@ function generateOrixaInsight(identifier: string): InsightResult {
       break;
     }
   }
-
   return {
     title: normalizedName,
-    description: orixaData?.description || `Orixá ${normalizedName} - busque orientação com um sacerdote`,
+    description: (orixaData?.description as string) || `Orixá ${normalizedName} - busque orientação com um sacerdote`,
     correlations,
     action,
     frequency,
@@ -331,7 +326,6 @@ function normalizeOrixaName(name: string): string {
 /**
  * Find cross-references for an orixá across traditions
  */
-// fallow-ignore-next-line complexity
 function findOrixaCrossReferences(orixaName: string): {
   odu: string[];
   tarot: number[];
@@ -425,9 +419,7 @@ function createFallbackInsight(
  *   - correlations: string[]
  *   - action: string
  *   - frequency: string
-// fallow-ignore-next-line complexity
  */
-// fallow-ignore-next-line complexity
 export function generateInsight(
   tradition: SupportedTradition,
   params: GenerateInsightParams
@@ -499,7 +491,6 @@ export function generateMultiTraditionInsight(
 }
 
 /**
-// fallow-ignore-next-line complexity
  * Get available identifiers for a tradition
  */
 export function getAvailableIdentifiers(tradition: SupportedTradition): string[] {

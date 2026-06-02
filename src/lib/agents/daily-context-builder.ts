@@ -87,7 +87,6 @@ export interface DailyAgentContext {
 // BUILD CONTEXT
 // ============================================================
 
-// fallow-ignore-next-line complexity
 export async function buildDailyContext(
   user: UserSpiritualProfile,
   currentDate: Date = new Date()
@@ -171,7 +170,6 @@ export async function buildDailyContext(
 // ============================================================
 // FORMAT CONTEXT FOR AI
 // ============================================================
-// fallow-ignore-next-line complexity
 
 function formatContextForAI(
   user: UserSpiritualProfile,
@@ -187,7 +185,7 @@ function formatContextForAI(
   lines.push('');
   formatUserProfile(lines, user, cycle);
   formatPersonalCycles(lines, cycle);
-  formatUniversalYear(lines, energy);
+  formatUniversalYear(lines, cycle);
   formatTransits(lines, aspects);
   formatMoonPhase(lines, energy);
   formatRetrogradePlanets(lines, energy);
@@ -236,12 +234,13 @@ function formatPersonalCycles(lines: string[], cycle: PersonalCycleSnapshot): vo
   lines.push(`   Ação-chave: ${cycle.personalYear.keyAction}`);
   lines.push('');
 }
-function formatUniversalYear(lines: string[], energy: DailyEnergy): void {
+function formatUniversalYear(lines: string[], cycle: PersonalCycleSnapshot): void {
+  const uy = cycle.universalYear;
   lines.push('🌍 ANO UNIVERSAL');
   lines.push('─────────────────────────────────────────────────────');
-  lines.push(`Ano ${energy.date.split('-')[0]} = Número Universal ${energy.universalYear.number}`);
-  lines.push(`Tema global: ${energy.universalYear.theme}`);
-  lines.push(`Energia global: ${energy.universalYear.globalEnergy}`);
+  lines.push(`Ano ${uy.number} = Número Universal ${uy.number}`);
+  lines.push(`Tema global: ${uy.theme}`);
+  lines.push(`Energia global: ${uy.globalEnergy}`);
   lines.push('');
 }
 function formatTransits(lines: string[], aspects: TransitAspect[]): void {

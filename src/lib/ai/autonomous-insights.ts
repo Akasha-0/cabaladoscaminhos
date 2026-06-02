@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 import { generateMinimaxResponse } from './minimax';
 import type { ChatMessage, UserSpiritualData } from './types';
 
@@ -149,7 +148,6 @@ Retorne no seguinte formato JSON (sem markdown, apenas o objeto JSON):
 }`;
 }
 
-// fallow-ignore-next-line complexity
 function parseInsightResponse(response: string): Omit<SpiritualInsight, 'id' | 'timestamp' | 'expires_at'> {
   // Try to extract JSON from the response
   let jsonStr = response.trim();
@@ -185,7 +183,6 @@ function parseInsightResponse(response: string): Omit<SpiritualInsight, 'id' | '
   }
 }
 
-// fallow-ignore-next-line complexity
 function parseCorrelationResponse(response: string): {
   primary_correlation: SpiritualCorrelation;
   secondary_correlations: SpiritualCorrelation[];
@@ -468,7 +465,6 @@ Retorne no seguinte formato JSON (sem markdown, apenas o objeto JSON):
   /**
    * Generate comprehensive daily spiritual insight integrating all spiritual systems
    */
-// fallow-ignore-next-line complexity
   async generateComprehensiveDailyInsight(userData: UserSpiritualData): Promise<DailyInsight> {
     const now = new Date();
     const cyclePos = this.calculateCyclePosition(userData.dataNascimento);
@@ -663,7 +659,6 @@ Retorne como JSON array:
     };
   }
 
-// fallow-ignore-next-line complexity
   private generateAlgorithmicCompatibility(user1: UserSpiritualData, user2: UserSpiritualData): CompatibilityInsight[] {
     const insights: CompatibilityInsight[] = [];
 

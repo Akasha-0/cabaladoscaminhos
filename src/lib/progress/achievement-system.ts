@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 const STORAGE_KEY = 'progress_achievements';
 
 export type AchievementCategory = 

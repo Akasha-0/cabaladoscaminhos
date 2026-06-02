@@ -90,7 +90,6 @@ function accumulateCorrelation(
   }
 }
 
-// fallow-ignore-next-line unused-export
 export function buildDrawnCard(
   card: {
     id: number;
@@ -118,7 +117,6 @@ export function buildDrawnCard(
   };
 }
 
-// fallow-ignore-next-line unused-export
 export function generateReadingSummary(
   spread: Spread,
   cards: DrawnCard[],

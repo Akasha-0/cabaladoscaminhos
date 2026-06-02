@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Report generation module for numerologia, astrologia, and odu reports.
  * Generates downloadable reports with charts and interpretations.
@@ -91,7 +90,6 @@ export interface ChartData {
   datasets: { label: string; data: number[]; backgroundColor?: string | string[] }[];
 }
 
-// fallow-ignore-next-line unused-type
 export interface GeneratedReport {
   type: ReportType;
   title: string;

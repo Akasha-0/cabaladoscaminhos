@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
  
 /**
  * Tarot card interpretations for all 78 cards

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Moon Phases
  * Lunar cycle tracking and phase calculations for spiritual practice
@@ -40,7 +39,6 @@ const LUNAR_CYCLE_DAYS = 29.53058867;
  * Calculate the moon phase for a given date
  * Uses a simplified calculation based on known new moon reference
  */
-// fallow-ignore-next-line complexity
 function calculateMoonPhase(date: Date): MoonPhaseName {
   const diff = date.getTime() - KNOWN_NEW_MOON.getTime();
   const daysSinceNewMoon = diff / (1000 * 60 * 60 * 24);
@@ -63,7 +61,6 @@ function calculateMoonPhase(date: Date): MoonPhaseName {
 /**
  * Calculate illumination percentage (0-100)
  */
-// fallow-ignore-next-line unused-export
 export function calculateIllumination(date: Date): number {
   const diff = date.getTime() - KNOWN_NEW_MOON.getTime();
   const daysSinceNewMoon = diff / (1000 * 60 * 60 * 24);
@@ -78,7 +75,6 @@ export function calculateIllumination(date: Date): number {
 /**
  * Get the next full moon date
  */
-// fallow-ignore-next-line unused-export
 export function getNextFullMoon(fromDate: Date): Date {
   const diff = fromDate.getTime() - KNOWN_NEW_MOON.getTime();
   const daysSinceNewMoon = diff / (1000 * 60 * 60 * 24);
@@ -98,7 +94,6 @@ export function getNextFullMoon(fromDate: Date): Date {
 /**
  * Get the next new moon date
  */
-// fallow-ignore-next-line unused-export
 export function getNextNewMoon(fromDate: Date): Date {
   const diff = fromDate.getTime() - KNOWN_NEW_MOON.getTime();
   const daysSinceNewMoon = diff / (1000 * 60 * 60 * 24);
@@ -175,7 +170,6 @@ const PHASE_DATA: Record<MoonPhaseName, Omit<MoonPhase, 'illumination'>> = {
 /**
  * Get complete moon phase data for a specific date
  */
-// fallow-ignore-next-line unused-export
 export function getMoonPhaseForDate(date: Date): MoonPhaseData {
   const phaseName = calculateMoonPhase(date);
   const illumination = calculateIllumination(date);
@@ -204,7 +198,6 @@ export function getMoonPhaseForDate(date: Date): MoonPhaseData {
  * Get moon phases - main exported function
  * Returns moon phase data for today by default, or specified date
  */
-// fallow-ignore-next-line unused-export
 export function getMoonPhases(date?: Date | string): MoonPhaseData {
   const targetDate = date
     ? typeof date === 'string' ? new Date(date) : date
@@ -216,7 +209,6 @@ export function getMoonPhases(date?: Date | string): MoonPhaseData {
 /**
  * Get moon phases - alias for getMoonPhases
  */
-// fallow-ignore-next-line unused-export
 export function getPhases(date?: Date | string): MoonPhaseData {
   return getMoonPhases(date);
 }
@@ -224,7 +216,6 @@ export function getPhases(date?: Date | string): MoonPhaseData {
 /**
  * Get moon phases for a date range (for calendar display)
  */
-// fallow-ignore-next-line unused-export
 export function getMoonPhasesForRange(startDate: Date, days: number): MoonPhaseData[] {
   const phases: MoonPhaseData[] = [];
   const current = new Date(startDate);
@@ -246,7 +237,6 @@ export interface MoonPhaseHistoryEntry {
   loggedAt: string;
 }
 
-// fallow-ignore-next-line unused-export
 export function createPhaseEntry(date?: Date): MoonPhaseHistoryEntry {
   const targetDate = date ?? new Date();
   const phaseName = calculateMoonPhase(targetDate);
@@ -261,7 +251,6 @@ export function createPhaseEntry(date?: Date): MoonPhaseHistoryEntry {
 /**
  * Get spiritual recommendations based on current phase
  */
-// fallow-ignore-next-line unused-export
 export function getPhaseRecommendations(date?: Date): {
   recommended: string[];
   avoided: string[];
@@ -319,7 +308,6 @@ export function getPhaseRecommendations(date?: Date): {
 /**
  * Get all phases for a specific month
  */
-// fallow-ignore-next-line unused-export
 export function getMonthlyPhases(year: number, month: number): MoonPhaseData[] {
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);

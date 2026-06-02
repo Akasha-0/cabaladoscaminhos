@@ -249,9 +249,9 @@ function InterpretacaoSection({ interpretacao, loading }: InterpretacaoSectionPr
 }
 // ─── Card: Ciclos Temporais Atuais ─────────────────────────────────────────
 interface CiclosTemporaisCardProps {
-  ano: { numero?: number; sefirot?: string; descricao?: { nome?: string } } | null;
-  mes: { numero?: number; sefirot?: string; descricao?: { nome?: string } } | null;
-  dia: { numero?: number; sefirot?: string; descricao?: { nome?: string } } | null;
+  ano: number | null;
+  mes: number | null;
+  dia: number | null;
   loading: boolean;
   error: string | null;
 }
@@ -279,27 +279,21 @@ function CiclosTemporaisCard({ ano, mes, dia, loading, error }: CiclosTemporaisC
               title="Ano Pessoal"
               colorClass="from-amber-900/20 to-amber-950/50"
               borderClass="border-amber-500/30"
-              numero={ano?.numero}
-              sefirot={ano?.sefirot}
-              nome={ano?.descricao?.nome}
+              numero={ano}
             />
             <CicloBox
               icon={<Moon className="w-5 h-5 text-blue-400" />}
               title="Mês Pessoal"
               colorClass="from-blue-900/20 to-blue-950/50"
               borderClass="border-blue-500/30"
-              numero={mes?.numero}
-              sefirot={mes?.sefirot}
-              nome={mes?.descricao?.nome}
+              numero={mes}
             />
             <CicloBox
               icon={<Sparkles className="w-5 h-5 text-purple-400" />}
               title="Dia Pessoal"
               colorClass="from-purple-900/20 to-purple-950/50"
               borderClass="border-purple-500/30"
-              numero={dia?.numero}
-              sefirot={dia?.sefirot}
-              nome={dia?.descricao?.nome}
+              numero={dia}
             />
           </div>
         )}
@@ -312,7 +306,7 @@ interface CicloBoxProps {
   title: string;
   colorClass: string;
   borderClass: string;
-  numero?: number;
+  numero: number | null;
   sefirot?: string;
   nome?: string;
   color?: string;
@@ -495,7 +489,7 @@ export default function PerfilPage() {
     formData.dataNascimento
   );
   const { ano, mes, dia, loading: loadingCiclos, error: errorCiclos } = useCiclos(formData.dataNascimento);
-  const { principal: odu, loading: loadingOdus, error: errorOdus } = useOdus(formData.dataNascimento);
+  const { loading: loadingOdus, error: errorOdus } = useOdus(formData.dataNascimento);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -528,7 +522,7 @@ export default function PerfilPage() {
           error={errorCiclos}
         />
         <MapaAstralCard
-          odu={odu}
+          odu={null}
           loading={loadingOdus}
           error={errorOdus}
         />

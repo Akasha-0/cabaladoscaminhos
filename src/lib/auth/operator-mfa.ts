@@ -200,7 +200,6 @@ export async function verifySetupMfa(params: {
  *
  * @returns { ok: true, method: 'totp' } em sucesso, ou falha.
  */
-// fallow-ignore-next-line complexity
 export async function consumeMfaChallenge(params: {
   operatorId: string;
   code: string;
@@ -216,7 +215,7 @@ export async function consumeMfaChallenge(params: {
   if (!result.ok) return { ok: false, reason: 'invalid' };
 
   // Single-use: rejeita códigos no mesmo step.
-  if (mfa.lastUsedStep !== null && mfa.lastUsedStep === result.stepUsed) {
+  if (mfa.lastUsedStep !== null && Number(mfa.lastUsedStep) === result.stepUsed) {
     return { ok: false, reason: 'invalid' };
   }
 

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // User settings - skipped linting and formatting
 
 import type { UserPreferences } from '../user/preference-management';

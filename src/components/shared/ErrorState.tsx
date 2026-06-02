@@ -30,7 +30,6 @@ const TITLES = {
   critical: 'Erro detectado',
 };
 
-// fallow-ignore-next-line complexity
 export function ErrorState({
   title,
   message,

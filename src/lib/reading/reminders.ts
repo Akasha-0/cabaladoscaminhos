@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 export interface Reminder {
   id: string;
   bookId: string;
@@ -76,7 +75,6 @@ export async function requestNotificationPermission(): Promise<boolean> {
 }
 
 // Fire any due reminders and mark them notified
-// fallow-ignore-next-line complexity
 export function processDueReminders(): void {
   const now = Date.now();
   const items = load();

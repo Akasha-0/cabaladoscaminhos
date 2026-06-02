@@ -23,7 +23,6 @@ interface MfaChallengeProps {
   onCancel: () => void;
 }
 
-// fallow-ignore-next-line complexity
 export function MfaChallenge({ mfaToken, onVerified, onCancel }: MfaChallengeProps) {
   const [mode, setMode] = useState<'totp' | 'recovery'>('totp');
   const [code, setCode] = useState('');

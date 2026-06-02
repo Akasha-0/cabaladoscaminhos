@@ -1,10 +1,9 @@
-// fallow-ignore-file unused-file
 /**
  * Prompt Builder for Mesa Real Dossier AI Generation
  * @module ai/dossier/prompt-builder
  */
 
-import type { TiragemMesaReal, ArquiteturaDossiê } from './types';
+import type { TiragemMesaReal, ArquiteturaDossiê, OduCarta } from './types';
 
 // ============================================================
 // SYSTEM PROMPT
@@ -249,7 +248,7 @@ export function construirBaseArquitetura(
     element: CASA_ELEMENTO_MAP[(casaNumero - 1) % CASA_ELEMENTO_MAP.length] || 'Éter',
     sefirot: CASA_SEFIROT_MAP[casaNumero] || ['Malkuth'],
     chakra: ((casaNumero - 1) % 7) + 1,
-    injeccao_terreno: injeccoes.length > 0 ? injeccoes : undefined,
+    injeccao_terreno: injeccoes && injeccoes.length > 0 ? injeccoes : undefined,
   };
 }
 
@@ -259,7 +258,7 @@ export function construirBaseArquitetura(
 export function encontrarOduCorrelacionado(
   carta: TiragemMesaReal['cartas'][number],
   odus: TiragemMesaReal['odus']
-): TiragemMesaReal['odus'][number] | undefined {
+): OduCarta | undefined {
   return odus?.find(
     o => o.oduNumero === carta.posicao || o.oduNumero === carta.cartaNumero
   );
@@ -270,7 +269,7 @@ export function encontrarOduCorrelacionado(
  */
 export function adicionarOduAArquitetura<T extends PartialArquitetura>(
   item: T,
-  odu: TiragemMesaReal['odus'][number] | undefined
+  odu: OduCarta | undefined
 ): T & Pick<ArquiteturaDossiê, 'odu_numero' | 'odu_nome' | 'odu_significado' | 'odu_conselho' | 'odu_orixa'> {
   if (!odu) return { ...item } as T & Pick<ArquiteturaDossiê, 'odu_numero' | 'odu_nome' | 'odu_significado' | 'odu_conselho' | 'odu_orixa'>;
   return {

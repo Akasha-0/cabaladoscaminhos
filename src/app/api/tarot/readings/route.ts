@@ -42,7 +42,6 @@ interface DrawnCard {
   keywords: string[];
 }
 
-// fallow-ignore-next-line unused-type
 export interface TarotReading {
   id: string;
   spreadType: string;

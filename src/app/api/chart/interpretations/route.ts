@@ -115,7 +115,6 @@ const PLANET_SPIRITUAL_CORRELATIONS = [
 ];
 
 // ─── API ROUTE HANDLER ──────────────────────────────────────────────────────────
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

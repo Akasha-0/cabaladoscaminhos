@@ -120,7 +120,6 @@ const MOOD_SPIRITUAL_CORRELATIONS: Record<string, {
 
 const mockEntries: JournalEntry[] = [];
 
-// fallow-ignore-next-line complexity
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);

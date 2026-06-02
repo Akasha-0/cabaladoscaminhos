@@ -98,7 +98,6 @@ interface TarotCard extends RawTarotCard {
   affirmation: string;
 }
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -145,7 +144,6 @@ export async function GET(request: NextRequest) {
     }
 
     // Add spiritual correlations
-// fallow-ignore-next-line complexity
     cards = cards.map(card => {
       const corr = TAROT_SPIRITUAL_CORRELATIONS[card.numero];
       return {

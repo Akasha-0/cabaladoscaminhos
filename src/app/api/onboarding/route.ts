@@ -25,11 +25,9 @@ const onboardingRequestSchema = z.object({
   data: onboardingDataSchema.optional(),
 });
 
-// fallow-ignore-next-line unused-type
 export type OnboardingStep = 0 | 1 | 2 | 3 | 4 | 5;
 
 // GET - Get current onboarding step for user
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -106,7 +104,6 @@ export async function GET(request: NextRequest) {
 }
 
 // POST - Save onboarding data
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 import { useState, useEffect, useCallback, useRef } from 'react';
 export interface SyncStatus {
   lastSync: string | null;
@@ -27,7 +26,6 @@ const DEFAULT_OPTIONS: DataSyncOptions = {
   syncInterval: 60000,
 };
 // Helper to merge local and cloud values
-// fallow-ignore-next-line complexity
 function mergeValues(local: unknown, cloud: unknown): unknown {
   if (typeof local !== 'object' || local === null || typeof cloud !== 'object' || cloud === null) {
     return cloud;
@@ -125,7 +123,6 @@ export function useDataSync(options: DataSyncOptions = {}) {
     }
   }, [opts.storageKey]);
 
-// fallow-ignore-next-line complexity
   const pushLocal = useCallback((): void => {
     try {
       const pendingRaw = localStorage.getItem(`${opts.storageKey}_pending`);
@@ -271,7 +268,6 @@ function finishSync(): void {
       setConflicts(prev => prev.filter(c => c.key !== key));
     } catch {
       setStatus(s => ({ ...s, error: 'Failed to resolve conflict' }));
-// fallow-ignore-next-line complexity
     }
   }, [opts.storageKey, syncToCloud]);
 
@@ -292,7 +288,6 @@ function finishSync(): void {
 
       setStatus(s => ({ ...s, pending: countPending() }));
     } catch {
-// fallow-ignore-next-line complexity
       // Ignore storage errors
     }
   }, [opts.storageKey, countPending]);

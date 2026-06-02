@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 
 interface CardInterpretation {
   cardName: string;

@@ -1,18 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 import { gerarMapaAlmaCompleto } from '@/lib/engines/spiritual-engine';
 import { getRedisClient } from '@/lib/redis';
-
-const mapaSchema = z.object({
-  nomeCompleto: z.string().min(2).max(200),
-  dataNascimento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  hora: z.string().optional(),
-  cidade: z.string().optional(),
-  estado: z.string().optional(),
-  pais: z.string().optional(),
-});
-
-type MapaInput = z.infer<typeof mapaSchema>;
+import { parseMapaBody } from '@/lib/mapa/mapa-utils';
 
 // ============================================================
 // HELPERS
@@ -74,20 +63,14 @@ export async function GET(request: NextRequest) {
 // POST — generate full MapaAlmaCompleto
 // ============================================================
 
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json() as unknown;
-    const parsed = mapaSchema.safeParse(body);
-
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: 'Dados inválidos', details: parsed.error.flatten() },
-        { status: 400 }
-      );
+    const parsed = await parseMapaBody(request);
+    if (parsed.error) {
+      return NextResponse.json(parsed.error.body, { status: parsed.error.status });
     }
 
-    const { nomeCompleto, dataNascimento, hora, cidade, estado, pais } = parsed.data as MapaInput;
+    const { nomeCompleto, dataNascimento, hora, cidade, estado, pais } = parsed.data;
     const profile = { nomeCompleto, dataNascimento, hora, cidade: cidade ?? '', estado: estado ?? '', pais: pais ?? '' };
 
     // Check cache first

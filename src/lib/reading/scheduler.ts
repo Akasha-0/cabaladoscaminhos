@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Reading Scheduler - Cabala Dos Caminhos
 // Schedules readings with localStorage persistence
 // No linting, no formatting

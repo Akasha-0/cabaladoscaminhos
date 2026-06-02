@@ -55,7 +55,6 @@ export interface EboAlignment {
 /**
  * Complete comparison result
  */
-// fallow-ignore-next-line unused-type
 export interface OduComparison {
   id: string;
   readingA: OduReading;
@@ -146,7 +145,6 @@ function compareOdu(
 /**
  * Compare elemental compositions
  */
-// fallow-ignore-next-line complexity
 function compareElemental(
   elemA: string,
   elemB: string
@@ -196,7 +194,6 @@ function compareElemental(
 
 /**
  * Compare Orixás (simplified for single Orixá each)
-// fallow-ignore-next-line complexity
  */
 function compareOrixas(
   orixaA: string,
@@ -362,7 +359,6 @@ function getCompatibilityLevel(score: number): 'alta' | 'media' | 'baixa' {
 
 /**
  * Generate human-readable comparison notes
-// fallow-ignore-next-line complexity
  */
 function generateComparisonNotes(params: {
   readingA: OduReading;
@@ -430,7 +426,6 @@ function generateId(): string {
 /**
  * Quick comparison of two Odu numbers (returns basic compatibility)
  */
-// fallow-ignore-next-line complexity
 export function compareOduNumbers(
   numeroA: number,
   numeroB: number

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // src/lib/tarot/spread-maker.ts
 // Tarot spread maker - create custom spreads
 

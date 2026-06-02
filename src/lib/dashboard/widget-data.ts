@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Widget data for dashboard components
 
 export interface WidgetData {

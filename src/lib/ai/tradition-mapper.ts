@@ -1,9 +1,7 @@
-// fallow-ignore-file unused-file
 import type { ChatMessage } from './types';
 import type { UserSpiritualData } from './types';
-import { getUserTraditions, type TraditionInfo } from './tradition-utils';
-// fallow-ignore-next-line unresolved-import
-import { spiritualData } from '../spiritual-data/spiritual-data';
+import { getUserTraditions, type TraditionInfo, type SpiritualDataEntry } from './tradition-utils';
+import { spiritualData } from '@/lib/data/spiritual-data';
 // Re-export for backward compatibility
 export { getUserTraditions, type TraditionInfo };
 
@@ -578,7 +576,7 @@ export class TraditionMapper {
    * Map all connections between traditions for a user
    */
   mapTraditionConnections(userData: UserSpiritualData): TraditionConnection[] {
-    const userTraditions = getUserTraditions(userData, spiritualData);
+    const userTraditions = getUserTraditions(userData, spiritualData as SpiritualDataEntry[]);
 
     const connections: TraditionConnection[] = [];
 

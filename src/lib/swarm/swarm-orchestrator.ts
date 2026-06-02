@@ -277,7 +277,6 @@ class SwarmOrchestrator {
     await this.persistState();
   }
 
-// fallow-ignore-next-line complexity
   private async identifyGaps(): Promise<string[]> {
     const gaps: string[] = [];
     const stats = this.knowledge.stats();
@@ -338,5 +337,4 @@ export function getSwarm(): SwarmOrchestrator {
   }
   return swarmInstance;
 }
-// fallow-ignore-next-line unused-type
 export type { SwarmConfig };

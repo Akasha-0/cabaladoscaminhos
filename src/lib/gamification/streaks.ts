@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Streak tracking for daily practice
  * Tracks consecutive days of user activity
@@ -71,7 +70,6 @@ function isSameDay(dateStr: string, today: string): boolean {
  * Track daily practice and update streak
  * Call this when user completes a daily activity
  */
-// fallow-ignore-next-line complexity
 export function trackStreak(): Streak {
   const today = getTodayString();
   const streak = getStoredStreak();

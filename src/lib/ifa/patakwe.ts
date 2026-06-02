@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Patakwe - Ifa Divination System - Cabala Dos Caminhos
 // Traditional verses and meanings for Patakwe Odu
 

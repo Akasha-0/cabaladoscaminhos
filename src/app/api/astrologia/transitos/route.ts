@@ -49,7 +49,6 @@ const ASPECT_SPIRITUAL_CORRELATIONS: Record<string, {
   sextil: { meaning: 'Oportunidade', sefirot: ['Netzach'], recommendation: 'Agradeça e aproveite as oportunidades' },
 };
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -87,7 +86,6 @@ export async function GET(request: NextRequest) {
     );
 
     // Add spiritual correlations to transits
-// fallow-ignore-next-line complexity
     const enrichedTransitos = transitos.map(transito => {
       const planetCorr = PLANET_SPIRITUAL_CORRELATIONS[transito.planeta.toLowerCase()];
       const aspectCorr = ASPECT_SPIRITUAL_CORRELATIONS[transito.aspecto.toLowerCase()];

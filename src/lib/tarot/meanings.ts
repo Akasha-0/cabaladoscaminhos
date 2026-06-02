@@ -422,14 +422,12 @@ const pentacles: CardMeaning[] = [
   },
 ];
 
-// fallow-ignore-next-line unused-export
 export const tarotDeck: TarotDeck = {
   majorArcana,
   minorArcana: { wands, cups, swords, pentacles },
 };
 
 /** Returns all 78 card meanings flat */
-// fallow-ignore-next-line unused-export
 export function getAllMeanings(): CardMeaning[] {
   return [
     ...majorArcana,
@@ -441,7 +439,6 @@ export function getAllMeanings(): CardMeaning[] {
 }
 
 /** Looks up a card by name (case-insensitive, partial match) */
-// fallow-ignore-next-line unused-export
 export function getCardMeaning(name: string): CardMeaning | undefined {
   const lower = name.toLowerCase().trim();
   return getAllMeanings().find(

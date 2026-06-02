@@ -210,7 +210,6 @@ export function getAllOrixaFrequencies(): OrixaFrequency[] {
   return Object.values(ORIXA_FREQUENCY_MAP);
 }
 
-// fallow-ignore-next-line unused-export
 export default {
   getOrixaFrequency,
   getFrequencyOrixa,

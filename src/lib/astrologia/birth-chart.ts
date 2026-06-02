@@ -24,7 +24,6 @@ export interface BirthChart {
   chart: MapaNatal;
 }
 
-// fallow-ignore-next-line complexity
 function getPlanetInHouse(planetLongitude: number, houseCusps: number[]): number {
   for (let i = 0; i < 12; i++) {
     const cuspStart = houseCusps[i];

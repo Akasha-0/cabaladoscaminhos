@@ -93,7 +93,6 @@ export interface HousePayload {
  * Monta o bloco interpretativo de UMA casa, injetando apenas os
  * aspectos natais delegados pela CORRELATION_MAP.
  */
-// fallow-ignore-next-line complexity
 export function buildHousePayload(
   house: number,
   entry: MatrixData[string],
@@ -125,12 +124,12 @@ export function buildHousePayload(
       odu_natal: client.oduBirth,
     },
     tiragem_do_dia: {
-      carta: entry.cartaName ?? card?.name ?? `Carta ${entry.carta}`,
+      carta: card?.name ?? card?.name ?? `Carta ${entry.carta}`,
       carta_numero: entry.carta,
       carta_significado: card?.keywords ?? '',
       carta_base: card?.baseMeaning ?? '',
       carta_sombra: card?.shadow ?? '',
-      odu_tirado: entry.oduName ?? odu?.name ?? `Odu ${entry.odu}`,
+      odu_tirado: odu?.name ?? odu?.name ?? `Odu ${entry.odu}`,
       odu_numero: entry.odu,
       odu_essencia: odu?.essence ?? '',
       odu_quizila: odu?.quizila ?? '',
@@ -153,7 +152,6 @@ export interface FullPayload {
 /**
  * Monta o payload completo (todas as casas preenchidas + instrução de síntese).
  */
-// fallow-ignore-next-line unused-export
 export function buildFullPayload(client: ClientMaps, matrixData: MatrixData): FullPayload {
   const casas = Object.entries(matrixData)
     .filter(([houseStr]) => CORRELATION_MAP[parseInt(houseStr, 10)] !== undefined)

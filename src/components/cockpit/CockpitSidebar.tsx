@@ -26,7 +26,6 @@ interface CockpitSidebarProps {
   onNewAtendimento: () => void;
 }
 
-// fallow-ignore-next-line complexity
 export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
   const { cliente, currentClientId, houses, setCliente, setCurrentReadingId, openRightPanel, setRightPanelTab, isSidebarCollapsed, toggleSidebar } = useCockpitStore();
   const [isFormExpanded, setIsFormExpanded] = useState(!cliente);

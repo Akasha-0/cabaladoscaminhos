@@ -32,7 +32,6 @@ const consultSchema = z.object({
 
 type ConsultInput = z.infer<typeof consultSchema>;
 
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   // 1) Auth (síncrono, antes do stream)
   const op = await requireOperator(request);
@@ -115,7 +114,6 @@ export async function POST(request: NextRequest) {
   // 7) Stream SSE
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
-// fallow-ignore-next-line complexity
     async start(controller) {
       const { send, close } = createSSEStream(controller, encoder);
 

@@ -51,7 +51,6 @@ const SEPHIRAH_SPIRITUAL_CORRELATIONS: Record<string, {
 };
 
 const VALID_SEFIRA_NAMES = ['Keter', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah', 'Tiferet', 'Netzach', 'Hod', 'Yesod', 'Malkut'];
-// fallow-ignore-next-line unused-type
 export type { SefiraMeaning };
 
 function normalizeSefiraName(name: string): string {
@@ -89,7 +88,6 @@ function enrichSefira(sefira: SefiraMeaning, name: string) {
   };
 }
 
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -116,7 +114,6 @@ export async function GET(request: NextRequest) {
     // Filter by spiritual correlations
     if (sefirot || chakra || element || orixa) {
       const filtered = VALID_SEFIRA_NAMES
-// fallow-ignore-next-line complexity
         .filter(name => {
           const corr = SEPHIRAH_SPIRITUAL_CORRELATIONS[name];
           if (!corr) return false;

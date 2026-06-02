@@ -47,7 +47,6 @@ function publicOperator(operator: { id: string; email: string; name: string; rol
   return { id: operator.id, email: operator.email, name: operator.name, role: operator.role };
 }
 
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   // Fase 18: rate-limit PRIMEIRO (antes de qualquer trabalho caro).
   // Brute-force típico: 1000 requests com senha errada. Bloquear nos

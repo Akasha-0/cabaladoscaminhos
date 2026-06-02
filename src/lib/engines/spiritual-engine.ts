@@ -173,7 +173,6 @@ const CHAKRA_BY_DAY: Record<number, string> = {
   4: 'heart', 5: 'crown', 6: 'solar-plexus',
 };
 
-// fallow-ignore-next-line complexity
 function getDominantChakra(dayOfBirth: number, ascendente: string): string {
   const dayChakra = CHAKRA_BY_DAY[dayOfBirth] ?? 'solar-plexus';
   if (ascendente === 'touro' || ascendente === 'libra') return 'heart';
@@ -195,7 +194,6 @@ function buildChakraResults(
 
   const isHyperactive = vida % 2 !== 0;
   const isBlocked = oduNumero >= 10;
-// fallow-ignore-next-line complexity
 
   const chakraInfos: ChakraInfo[] = chakras.map((c) => {
     let estado: ChakraInfo['estado'] = 'equilibrado';
@@ -249,7 +247,6 @@ function aggregateOrixas(
 // ASTROLOGY PARSER
 // ============================================================
 
-// fallow-ignore-next-line complexity
 function ascendenteFromDegree(deg: number): AstrologyResults['ascendente'] {
   if (deg < 30) return 'aries';
   if (deg < 60) return 'touro';
@@ -262,7 +259,6 @@ function ascendenteFromDegree(deg: number): AstrologyResults['ascendente'] {
   if (deg < 270) return 'sagitario';
   if (deg < 300) return 'capricornio';
   if (deg < 330) return 'aquario';
-// fallow-ignore-next-line complexity
   return 'peixes';
 }
 
@@ -359,7 +355,6 @@ function buildTarotResults(vida: number, _anoPessoal: number): TarotResults {
 // CONVERGENCE DETECTION
 // ============================================================
 
-// fallow-ignore-next-line unused-export
 export function detectarConvergencias(
   numerologia: NumerologyResults,
   odu: OduResults,

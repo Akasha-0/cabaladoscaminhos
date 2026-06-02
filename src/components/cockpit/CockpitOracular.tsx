@@ -32,7 +32,6 @@ interface CockpitOracularProps {
   showDebug?: boolean;
 }
 
-// fallow-ignore-next-line complexity
 export function CockpitOracular({ readingId: propReadingId, clientName: propClientName, showDebug = false }: CockpitOracularProps) {
   const {
     houses,
@@ -278,7 +277,6 @@ interface ZoneCRightPanelProps {
   onToggle: () => void;
   onSetTab: (tab: 'dossier' | 'consult') => void;
 }
-// fallow-ignore-next-line complexity
 
 function ZoneCRightPanel({
   readingId,

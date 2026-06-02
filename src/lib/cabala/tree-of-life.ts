@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Tree of Life - Cabalistic sephiroth structure
 
 export interface Sephirah {

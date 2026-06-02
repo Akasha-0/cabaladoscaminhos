@@ -71,7 +71,6 @@ function readMax(envName: string, defaultMax: number): number {
   return n;
 }
 
-// fallow-ignore-next-line unused-export
 export const AUTH_RATE_LIMITS = {
   login:    { windowSeconds: 15 * 60, max: readMax('AUTH_RL_LOGIN_MAX', 5),  label: 'login'    },
   register: { windowSeconds: 60 * 60, max: readMax('AUTH_RL_REGISTER_MAX', 3),  label: 'register' },
@@ -94,8 +93,6 @@ export type AuthRoute = keyof typeof AUTH_RATE_LIMITS;
  * de NextRequest), retorna 'unknown'. O rate-limit ainda funciona,
  * só usa o bucket "unknown" para todos os requests sem IP.
  */
-// fallow-ignore-next-line complexity
-// fallow-ignore-next-line unused-export
 export function getClientIp(request: NextRequest | undefined | null): string {
   if (!request || !request.headers) {
     return 'unknown';
@@ -130,7 +127,6 @@ export interface RateLimitResult {
  * mas loga. Bloquear tudo por causa de Redis down seria pior — um
  * atacante poderia tirar o Redis e DoS-ar todos os logins.
  */
-// fallow-ignore-next-line unused-export
 export async function checkAuthRateLimit(
   route: AuthRoute,
   ip: string
@@ -240,7 +236,6 @@ export async function enforceAuthRateLimit(
  * que rodam múltiplos casos contra a mesma rota. Em produção, NUNCA
  * chamar — invalidaria a proteção contra brute-force.
  */
-// fallow-ignore-next-line unused-export
 export async function resetAuthRateLimit(
   route: AuthRoute,
   ip: string

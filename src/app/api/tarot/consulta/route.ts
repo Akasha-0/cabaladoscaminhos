@@ -1,4 +1,4 @@
-import { calculateSpreadSpiritualStats } from '@/lib/tarot/spread-calculator';
+import { calculateSpreadSpiritualStats, type DrawnCard as ScDrawnCard } from '@/lib/tarot/spread-calculator';
 import { handleAPIError } from '@/lib/api/error-handler';
 // ============================================================
 // TAROT CONSULTATION API - CABALA DOS CAMINHOS
@@ -147,7 +147,6 @@ interface TarotConsultaResponse {
 // HELPER FUNCTIONS
 // ============================================================
 
-// fallow-ignore-next-line complexity
 function getCardSpiritualCorrelations(cardId: number, isReversed: boolean) {
   // Major arcana (0-21)
   if (cardId >= 0 && cardId <= 21) {
@@ -201,7 +200,6 @@ function getCardSpiritualCorrelations(cardId: number, isReversed: boolean) {
     frequency: '396 Hz',
   };
 }
-// fallow-ignore-next-line complexity
 
 function generateCardInterpretation(
   card: DrawnCard,
@@ -239,7 +237,6 @@ function generateReadingSummary(
 // ============================================================
 // API ROUTE HANDLERS
 // ============================================================
-// fallow-ignore-next-line complexity
 
 export async function POST(request: NextRequest) {
   try {
@@ -298,7 +295,7 @@ export async function POST(request: NextRequest) {
     const readingCorr = READING_SPIRITUAL_CORRELATIONS[spreadType] || READING_SPIRITUAL_CORRELATIONS['single-card'];
 
     // Calculate spiritual stats using shared utility
-    const spiritualStats = calculateSpreadSpiritualStats(cards);
+    const spiritualStats = calculateSpreadSpiritualStats(cards as unknown as ScDrawnCard[]);
 
     const response: TarotConsultaResponse = {
       spread: {

@@ -91,8 +91,6 @@ const descricoesCiclos: Record<number, DescricaoCiclo> = {
   }
 };
 
-// fallow-ignore-next-line complexity
-// fallow-ignore-next-line unused-export
 export function calcularAnoPessoal(dataNascimento: string): { numero: number; sefirot: string; descricao: DescricaoCiclo | null } {
   const anoAtual = new Date().getFullYear();
   const numeros = (dataNascimento + anoAtual.toString()).replace(/\D/g, '');
@@ -113,7 +111,6 @@ export function calcularAnoPessoal(dataNascimento: string): { numero: number; se
   };
 }
 
-// fallow-ignore-next-line unused-export
 export function calcularMesPessoal(anoPessoal: number): { numero: number; sefirot: string; descricao: DescricaoCiclo | null } {
   const mesAtual = new Date().getMonth() + 1;
   let numero = anoPessoal + mesAtual;
@@ -129,7 +126,6 @@ export function calcularMesPessoal(anoPessoal: number): { numero: number; sefiro
   };
 }
 
-// fallow-ignore-next-line unused-export
 export function calcularDiaPessoal(dataNascimento: string, anoPessoal: number): { numero: number; sefirot: string; descricao: DescricaoCiclo | null } {
   const hoje = new Date();
   const diaAtual = hoje.getDate();

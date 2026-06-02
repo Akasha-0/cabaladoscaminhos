@@ -42,7 +42,7 @@ export function ConsulentesTable({ consulentes }: ConsulentesTableProps) {
         c.fullName.toLowerCase().includes(q) ||
         (c.birthCity ?? '').toLowerCase().includes(q)
     );
-  }, [consultentes, query]);
+  }, [consulentes, query]);
 
   if (consulentes.length === 0) {
     return (

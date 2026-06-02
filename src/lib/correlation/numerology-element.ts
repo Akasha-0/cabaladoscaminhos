@@ -191,7 +191,6 @@ export function getAllElementsFromNumerology(): ElementoTipo[] {
   return elements;
 }
 
-// fallow-ignore-next-line unused-export
 export default {
   getNumerologyElement,
   getAllNumerologyElements,

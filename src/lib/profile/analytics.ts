@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Profile analytics — engagement tracking for user profiles.
  */

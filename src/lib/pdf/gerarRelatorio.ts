@@ -7,7 +7,6 @@ import type { MapaAlmaCompleto } from '../engines/types/mapa-alma';
 // Types
 // ============================================================
 
-// fallow-ignore-next-line unused-type
 export interface MapaData {
   id: string;
   created_at: string;

@@ -2,6 +2,8 @@
 // @ts-nocheck
 // Personality Number - consonant-based numerology calculation
 
+import { sumDigits, reduceToBase } from './reduce-number';
+
 export interface PersonalityResult {
   personality: number;
   interpretation: string;
@@ -28,19 +30,6 @@ function getConsonantValue(char: string): number {
   // Y is treated as consonant unless it's a vowel sound
   if (upper === 'Y') return 7;
   return pythagoreanChart[upper] ?? 0;
-}
-
-function sumDigits(num: number): number {
-  const str = String(num);
-  const sum = str.split('').reduce((acc, digit) => acc + parseInt(digit, 10), 0);
-  return sum;
-}
-
-function reduceToBase(num: number): number {
-  while (num > 9 && ![11, 22, 33].includes(num)) {
-    num = sumDigits(num);
-  }
-  return num;
 }
 
 /**

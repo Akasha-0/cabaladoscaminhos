@@ -51,7 +51,6 @@ export async function createSupabaseServerClient() {
   );
 }
 
-// fallow-ignore-next-line unused-export
 export async function validateAuthToken(): Promise<AuthResult> {
   try {
     const supabase = await createSupabaseServerClient();
@@ -81,7 +80,6 @@ export async function validateAuthToken(): Promise<AuthResult> {
   }
 }
 
-// fallow-ignore-next-line unused-export
 export async function requireAuth(): Promise<AuthResult> {
   const result = await validateAuthToken();
 
@@ -92,13 +90,11 @@ export async function requireAuth(): Promise<AuthResult> {
   return result;
 }
 
-// fallow-ignore-next-line unused-export
 export async function checkAuth(): Promise<AuthUser | null> {
   const result = await validateAuthToken();
   return result.user;
 }
 
-// fallow-ignore-next-line unused-export
 export function unauthorizedResponse(message = 'Não autorizado'): NextResponse {
   return NextResponse.json(
     {
@@ -113,7 +109,6 @@ export function unauthorizedResponse(message = 'Não autorizado'): NextResponse 
 /**
  * Create forbidden response
  */
-// fallow-ignore-next-line unused-export
 export function forbiddenResponse(message = 'Acesso negado'): NextResponse {
   return NextResponse.json(
     {

@@ -109,7 +109,6 @@ function buildClientMaps(input: GenerateInput): ClientMaps {
 // ----------------------------------------------------------------------------
 // Route
 // ----------------------------------------------------------------------------
-// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   // 1) Auth
   const operatorOrResponse = await requireOperator(request);
@@ -136,10 +135,9 @@ export async function POST(request: NextRequest) {
 
   // 4) Constrói payload canônico
   const entry: MatrixEntry = {
+    house: body.casaNumero,
     carta: body.carta.numero,
-    cartaName: body.carta.nome,
     odu: body.odu.numero,
-    oduName: body.odu.nome,
   };
   const client = buildClientMaps(body);
   const systemPrompt = buildSystemPrompt();

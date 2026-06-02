@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 import type { UserSpiritualData, ChatMessage } from './types';
 import { generateMinimaxResponse } from './minimax';
 
@@ -9,7 +8,6 @@ import { generateMinimaxResponse } from './minimax';
 /**
  * Cross-tradition archetype pattern
  */
-// fallow-ignore-next-line unused-type
 export interface ArchetypePattern {
   id: string;
   name: string;
@@ -29,7 +27,6 @@ export interface ArchetypePattern {
 /**
  * How an archetype manifests across different traditions
  */
-// fallow-ignore-next-line unused-type
 export interface ArchetypeManifestation {
   tradition: string;
   name: string;
@@ -209,7 +206,6 @@ const TRADITION_WEIGHTS: Record<string, number> = {
   numerology: 1,
 };
 
-// fallow-ignore-next-line complexity
 function calculateTraditionAffinity(
   userData: UserSpiritualData
 ): Record<string, number> {
@@ -273,7 +269,6 @@ class PatternRecognizer {
   /**
    * Recognize dominant archetype patterns from user spiritual data
    */
-  // fallow-ignore-next-line complexity
   recognizeArchetypePatterns(userData: UserSpiritualData): ArchetypePattern[] {
     const affinities = calculateTraditionAffinity(userData);
     const scores: Array<{ pattern: ArchetypePattern; score: number }> = [];
@@ -419,7 +414,6 @@ class PatternRecognizer {
 
   /**
    * Find archetype manifestations across traditions
-// fallow-ignore-next-line complexity
    */
   findArchetypeManifestations(archetypeId: string): ArchetypeManifestation[] {
     const archetype = this.archetypes.find((a) => a.id === archetypeId);
@@ -886,7 +880,6 @@ class PatternRecognizer {
   /**
    * Calculate harmony score between archetypes (0-100)
    */
-// fallow-ignore-next-line complexity
   calculateArchetypeHarmony(patterns: ArchetypePattern[]): number {
     if (patterns.length <= 1) {
       return 100;
@@ -995,5 +988,4 @@ Forneça:
 
 const patternRecognizer = new PatternRecognizer();
 
-// fallow-ignore-next-line unused-export
 export default PatternRecognizer;

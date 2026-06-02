@@ -300,7 +300,6 @@ function formatSize(bytes: number): string {
 }
 
 // ─── API Routes ─────────────────────────────────────────────────────────────
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

@@ -54,10 +54,23 @@ export interface AstrologyMap {
 // ============================================================================
 
 export interface KabalisticMap {
+  // Life path and expression numbers
+  lifePath?: number;
+  lifePathMaster?: boolean;
+  mission?: number;
+  expression?: number;
+  expressionMaster?: boolean;
+  motivation?: number;
+  impression?: number;
+  nativeDayNumber?: number;
+  challenges?: { first: number; second: number; main: number; last: number };
+  pinnacles?: { first: { number: number; ageEnd: number }; second: { number: number; ageStart: number; ageEnd: number }; third: { number: number; ageStart: number; ageEnd: number }; fourth: { number: number; ageStart: number } };
+  karmicLessons?: number[];
+  karmaicDebts?: number[];
+  rulingArcana?: { lifePathArcana: number; expressionArcana: number };
+  lifeCycles?: { first: { number: number; ageStart: number; ageEnd: number }; second: { number: number; ageStart: number; ageEnd: number }; third: { number: number; ageStart: number } };
+  personalCycles?: { personalYear: number; personalMonth: number; personalDay: number; referenceDate: string };
   hebrewLetter: string;
-  letterValue: number;
-  primeNumber: number;
-  letterMeaning: string;
   sefirotPath: string;
   vibrationalNumber: number;
   chaliceNumber: number;
@@ -87,6 +100,20 @@ export interface KabalisticMap {
 // ============================================================================
 
 export interface TantricMap {
+  // Tantric body properties
+  soul?: number;
+  soulBody?: number;
+  soulDescription?: string;
+  karma?: number;
+  karmaBody?: number;
+  karmaDescription?: string;
+  divineGift?: number;
+  divineGiftBody?: number;
+  divineGiftDescription?: string;
+  destiny?: number;
+  tantricPath?: number;
+  tantricBodies?: Record<string, unknown>;
+  bodies?: readonly { id: number; name: string; essence: string }[];
   sacredGeometry: {
     merkabaActive: boolean;
     merkabahFields: string[];
@@ -131,16 +158,22 @@ export interface TantricMap {
 // ============================================================================
 
 export interface OduBirth {
-  odu: string;
-  meaning: string;
-  sign: string;
-  animal: string;
-  owner: string;
-  ebwe: string;
-  message: string;
-  initiationPath: string;
-  prohibitions: string[];
-  birthOdu: Array<{
+  oduNumber?: number;
+  oduName?: string;
+  odu?: string;
+  meaning?: string;
+  sign?: string;
+  animal?: string;
+  owner?: string;
+  ebwe?: string;
+  message?: string;
+  initiationPath?: string;
+  prohibitions?: string[];
+  orixaRegency?: string[];
+  elementalForce?: string;
+  lifeLesson?: string;
+  provisional?: boolean;
+  birthOdu?: Array<{
     dayOfBirth: string;
     oduNumber: number;
     meaning: string;
@@ -174,7 +207,6 @@ export interface HouseReport {
   interpretation: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface ReportContent {
   houses: {
     [houseNumber: string]: HouseReport;
@@ -194,7 +226,6 @@ export interface ReportContent {
 // ============================================================================
 // Entidades Prisma (mínimo para o motor de IA)
 // ============================================================================
-// fallow-ignore-next-line unused-type
 export interface Client {
   id: string;
   fullName: string;

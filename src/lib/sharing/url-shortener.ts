@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * URL shortener for readings
  * Generates short codes and maps them to full URLs
@@ -54,7 +53,6 @@ function generateCode(): string {
  * Shorten a URL for a reading
  * Reuses existing code if URL was already shortened
  */
-// fallow-ignore-next-line complexity
 export function shortenUrl(originalUrl: string, options: ShortenerOptions = {}): ShortenedUrl {
   const { expiresIn = null, prefix = '' } = options;
 

@@ -39,7 +39,6 @@ const SearchFiltersSchema = z.object({
   orixas: z.array(z.string()).optional(),
 });
 
-// fallow-ignore-next-line unused-type
 export type SearchResult = z.infer<typeof SearchResultSchema>;
 export const dynamic = 'force-dynamic';
 
@@ -151,7 +150,6 @@ const ritualsData = [
 ];
 
 // ─── Search Functions ──────────────────────────────────────────────────────────────
-// fallow-ignore-next-line complexity
 function calculateRelevance(query: string, text: string): number {
   if (!query || !text) return 0;
   
@@ -277,7 +275,6 @@ function searchRituals(query: string): SearchResult[] {
   return results;
 }
 
-// fallow-ignore-next-line complexity
 function searchTarot(query: string): SearchResult[] {
   const results: SearchResult[] = [];
 
@@ -313,7 +310,6 @@ function searchTarot(query: string): SearchResult[] {
   }
 
   return results;
-// fallow-ignore-next-line complexity
 }
 
 function filterResults(
@@ -328,7 +324,6 @@ function filterResults(
     return results;
   }
 
-// fallow-ignore-next-line complexity
   return results.filter((result) => {
     if (filters.categories?.length && !filters.categories.includes(result.type)) {
       return false;
@@ -378,7 +373,6 @@ function getAvailableFilters(): SearchResponse['filters'] {
 }
 
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;

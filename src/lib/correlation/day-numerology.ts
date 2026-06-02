@@ -268,7 +268,6 @@ export function getDayNumerologyPractices(dia: string): string[] | undefined {
 /**
  * Default export with all public functions
  */
-// fallow-ignore-next-line unused-export
 export default {
   getDayNumerology,
   getNumerologyByDay,

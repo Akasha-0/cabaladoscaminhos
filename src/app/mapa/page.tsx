@@ -92,7 +92,6 @@ function formatSigno(signo: string | undefined): string {
 interface AstrologiaSectionProps {
   astrologia: MapaAlmaCompleto['astrologia'];
 }
-// fallow-ignore-next-line complexity
 function AstrologiaSection({ astrologia }: AstrologiaSectionProps) {
   const mapaNatal = astrologia.raw;
   const ascendente = mapaNatal?.ascendente;
@@ -233,7 +232,6 @@ function OrixasSection({ orixas }: OrixasSectionProps) {
 // MAIN PAGE COMPONENT
 // ============================================================
 
-// fallow-ignore-next-line complexity
 export default function MapaPage() {
   const router = useRouter();
   const [profile, setProfile] = useState<BirthProfile | null>(null);

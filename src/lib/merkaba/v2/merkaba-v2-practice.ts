@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Merkaba-v2 Practice Module
  * Handles merkaba (light-body vehicle) cultivation and activation practices
@@ -34,7 +33,6 @@ const FIELD_METADATA: Record<string, { geometry: string; element: string; meanin
   divine: { geometry: 'Divine Gateway', element: 'Light', meaning: 'Portal to creator consciousness beyond form' },
 };
 
-// fallow-ignore-next-line complexity
 export async function performPractice(
   config: MerkabaV2PracticeConfig = {}
 ): Promise<MerkabaV2PracticeResult> {

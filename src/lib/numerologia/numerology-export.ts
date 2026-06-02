@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 /**
  * Numerology Export Module
  * Supports multiple export formats for numerology charts and data

@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // Oracle AI Service - Cabala Dos Caminhos
 // Mock implementation (replace with OpenAI in production)
 
@@ -126,7 +125,6 @@ function getArcanoDoDia(dia: DiaSemanaData): string {
 /**
  * Build spiritual context string for the Oracle
  */
-// fallow-ignore-next-line complexity
 function buildSpiritualContext(context: OracleContext): string {
   const parts: string[] = [];
 
@@ -159,7 +157,6 @@ function buildSpiritualContext(context: OracleContext): string {
 /**
  * Generate spiritual response using mock Oracle logic
  */
-// fallow-ignore-next-line complexity
 function generateMockSpiritualResponse(
   prompt: string,
   context: OracleContext

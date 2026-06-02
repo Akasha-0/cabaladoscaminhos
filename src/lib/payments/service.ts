@@ -10,7 +10,6 @@ export interface PlanoInfo {
   recursos: string[];
 }
 
-// fallow-ignore-next-line unused-export
 export const PLANOS: Record<string, PlanoInfo> = {
   Iniciante: {
     id: process.env.STRIPE_PRICE_INICIANTE || 'price_iniciante',
@@ -49,7 +48,6 @@ export class CheckoutError extends Error {
   }
 }
 
-// fallow-ignore-next-line complexity
 export async function criarSessaoCheckout(
   userId: string,
   planoId: string,
@@ -111,7 +109,6 @@ export async function criarSessaoCheckout(
   }
 }
 
-// fallow-ignore-next-line complexity
 async function verificarAssinatura(userId: string) {
   if (!stripe) {
     throw new CheckoutError('Stripe não está configurado');
@@ -205,17 +202,14 @@ async function obterCustomerId(userId: string): Promise<string | null> {
   }
 }
 
-// fallow-ignore-next-line unused-export
 export function extrairUserId(metadata: Stripe.Metadata): string | null {
   return metadata.userId || null;
 }
 
-// fallow-ignore-next-line unused-export
 export function extrairPlanoId(metadata: Stripe.Metadata): string | null {
   return metadata.planoId || null;
 }
 
-// fallow-ignore-next-line unused-export
 export function extrairCreditos(metadata: Stripe.Metadata): number {
   const creditos = metadata.creditos;
   return creditos ? parseInt(creditos, 10) : 0;

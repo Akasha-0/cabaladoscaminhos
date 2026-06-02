@@ -43,7 +43,6 @@ function getUserProgress(userId: string): ProgressEntry[] {
   return progressStore.get(userId) || [];
 }
 
-// fallow-ignore-next-line complexity
 function calculateProgressSummary(userId: string): ProgressSummary {
   const entries = getUserProgress(userId);
   
@@ -112,7 +111,6 @@ function addProgressEntry(
   return entry;
 }
 
-// fallow-ignore-next-line complexity
 export const GET = withErrorHandler(async (req: NextRequest) => {
   const userId = req.headers.get('x-user-id');
   
@@ -178,7 +176,6 @@ export const GET = withErrorHandler(async (req: NextRequest) => {
     },
     source: supabaseData ? 'supabase' : 'memory',
   });
-// fallow-ignore-next-line complexity
 });
 
 export const POST = withErrorHandler(async (req: NextRequest) => {

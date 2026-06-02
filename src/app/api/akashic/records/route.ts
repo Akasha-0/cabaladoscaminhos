@@ -38,13 +38,9 @@ const AkashicRecordSchema = z.object({
   chakra: z.number().int().min(1).max(7).optional(),
   orixa: z.string().optional(),
 });
-// fallow-ignore-next-line unused-type
 export type AkashicRecord = z.infer<typeof AkashicRecordSchema>;
-// fallow-ignore-next-line unused-type
 export type RecordType = z.infer<typeof RecordTypeSchema>;
-// fallow-ignore-next-line unused-type
 export type AccessLevel = z.infer<typeof AccessLevelSchema>;
-// fallow-ignore-end unused-type
 export const dynamic = 'force-dynamic';
 
 // ─── Record Type Correlations ──────────────────────────────────────────────────────────
@@ -221,7 +217,6 @@ const practiceSets: Record<RecordType, string[]> = {
 const recordsStore: AkashicRecord[] = [];
 
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
-// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -342,7 +337,6 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
-// fallow-ignore-next-line complexity
 
 export async function POST(request: NextRequest) {
   try {

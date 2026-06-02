@@ -1,4 +1,3 @@
-// fallow-ignore-file unused-file
 // ============================================================
 // PUSH NOTIFICATIONS SERVICE - CABALA DOS CAMINHOS
 // ============================================================

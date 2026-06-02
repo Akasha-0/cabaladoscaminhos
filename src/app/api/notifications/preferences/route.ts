@@ -1,4 +1,3 @@
-// fallow-ignore-next-line complexity
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from "zod";
 import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
@@ -112,7 +111,6 @@ const PREFERENCE_SPIRITUAL_CORRELATIONS: Record<string, {
   },
 };
 
-// fallow-ignore-next-line unused-type
 export interface NotificationPreferences {
   email: boolean;
   push: boolean;
@@ -147,7 +145,6 @@ const preferenceStore: Map<string, NotificationPreferences> = new Map([
   }],
 ]);
 
-// fallow-ignore-next-line complexity
 export const GET = withErrorHandler(async (req: NextRequest) => {
   try {
     const userId = req.headers.get('x-user-id') || 'default';
@@ -238,7 +235,6 @@ export const GET = withErrorHandler(async (req: NextRequest) => {
   }
 });
 
-// fallow-ignore-next-line complexity
 export const POST = withErrorHandler(async (req: NextRequest) => {
   try {
     const userId = req.headers.get('x-user-id') || 'default';

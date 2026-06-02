@@ -85,7 +85,6 @@ interface DailyActionWidgetProps {
 // MAIN COMPONENT
 // ============================================================
 
-// fallow-ignore-next-line complexity
 export function DailyActionWidget({ userData, className, autoLoad = true }: DailyActionWidgetProps) {
   const [context, setContext] = useState<DailyContext | null>(null);
   const [recommendation, setRecommendation] = useState<RecommendationResult | null>(null);
