@@ -28,6 +28,10 @@ import crypto from 'node:crypto';
 export const OPERATOR_TOKEN_COOKIE = 'cockpit_session';
 export const OPERATOR_REFRESH_COOKIE = 'cockpit_refresh';
 
+/** TTL do access token: 15 minutos. */
+export const OPERATOR_ACCESS_TTL_SECONDS = 15 * 60;
+/** TTL do refresh token: 30 dias. */
+export const OPERATOR_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
 
 /**
  * @deprecated Mantido só para retrocompat com Fase 13 (cleanupExpiredSessions
@@ -213,6 +217,7 @@ export function verifyOperatorToken(
 
 /**
  * Seta o cookie de access token no response (15min).
+ */
 export function setOperatorSessionCookie(
   response: { cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void } },
   token: string

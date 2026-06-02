@@ -3,7 +3,6 @@
 import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { Lightbulb, Clock, Eye, Check, ChevronDown, ChevronRight, Zap, Activity, RefreshCw } from 'lucide-react';
 
-// fallow-ignore-next-line unused-type
 export interface RealTimeInsight {
   id: string;
   type: 'spiritual' | 'technical' | 'mixed';

@@ -32,17 +32,22 @@ import QRCode from 'qrcode';
 // ============================================================================
 
 /** Issuer exibido no app autenticador. */
+// fallow-ignore-next-line unused-export
 export const MFA_ISSUER = 'Cabala dos Caminhos';
 /** Tamanho do secret TOTP em bytes (20 = 160 bits, RFC 4226 recomenda ≥ 128). */
+// fallow-ignore-next-line unused-export
 export const TOTP_SECRET_BYTES = 20;
 
 /** Dígitos do código TOTP. */
+// fallow-ignore-next-line unused-export
 export const TOTP_DIGITS = 6;
 
 /** Período do código em segundos. */
+// fallow-ignore-next-line unused-export
 export const TOTP_PERIOD_SECONDS = 30;
 
 /** Algoritmo de hash TOTP. */
+// fallow-ignore-next-line unused-export
 export const TOTP_ALGORITHM = 'SHA1' as const;
 
 /**
@@ -271,6 +276,7 @@ export function decryptSecret(stored: string): DecryptResult {
  * `verifyTotpCode` com sucesso, a app DEVE persistir o `stepUsed`
  * e rejeitar códigos no mesmo step.
  */
+// fallow-ignore-next-line unused-export
 export function verifyTotpCode(params: {
   secretBase32: string;
   code: string;

@@ -1,3 +1,4 @@
+// fallow-ignore-next-line unused-type
 import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } from '@/lib/ai/deep-correlation-engine';
 /**
  * MapaAlmaCompleto Type Definitions

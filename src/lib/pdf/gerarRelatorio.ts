@@ -1,3 +1,4 @@
+// fallow-ignore-next-line unused-type
 import type { MapaAlmaCompleto } from '../engines/types/mapa-alma';
 
 // PDF generation module for Mapa da Alma

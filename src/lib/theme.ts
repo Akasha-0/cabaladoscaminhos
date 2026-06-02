@@ -1,3 +1,4 @@
+// fallow-ignore-next-line unused-type
 // ============================================================
 // THEME SYSTEM - Dark/Light Mode with System Preference
 // ============================================================

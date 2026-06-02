@@ -97,5 +97,4 @@ export function LoadingSpinner({
   );
 }
 
-// fallow-ignore-next-line unused-export
 export default LoadingSpinner;

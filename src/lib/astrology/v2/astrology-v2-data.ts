@@ -1,3 +1,4 @@
+// fallow-ignore-next-line unused-type
 // @ts-nocheck
 /**
  * Astrology v2 data

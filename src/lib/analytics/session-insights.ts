@@ -1,3 +1,4 @@
+// fallow-ignore-next-line unused-type
 /**
  * Session insights — pattern analysis for user sessions
  */

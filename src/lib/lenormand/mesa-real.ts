@@ -166,6 +166,7 @@ export function construirDossiêFromPosicoes(
 /**
  * Gera resultado completo de leitura
  */
+// fallow-ignore-next-line unused-export
 export function gerarLeituraCompleta(
   posicoes: PosicaoTiragem[],
   clientData: Partial<DadosConsulente>,
@@ -314,6 +315,7 @@ export type SpreadType = keyof typeof MESA_REAL_SPREADS;
 /**
  * Gera posições para uma tiragem 9x4
  */
+// fallow-ignore-next-line unused-export
 export function gerarTiragem9x4(seed?: number): PosicaoTiragem[] {
   const posicoes: PosicaoTiragem[] = [];
 
@@ -367,6 +369,7 @@ export function realizarLeitura(
 /**
  * Valida uma tiragem completa
  */
+// fallow-ignore-next-line unused-export
 export function validarTiragem(tiragem: MatrixIndex): {
   valida: boolean;
   erros: string[];
@@ -398,6 +401,7 @@ export function validarTiragem(tiragem: MatrixIndex): {
 /**
  * Conta elementos em uma tiragem
  */
+// fallow-ignore-next-line unused-export
 export function contarElementos(dossiê: ArquiteturaDossiê[]): Record<string, number> {
   const contagem: Record<string, number> = {
     fogo: 0,

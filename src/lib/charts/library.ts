@@ -1,3 +1,4 @@
+// fallow-ignore-next-line unused-type
 // Chart library - skipped linting and formatting
 
 import type { Aspecto, Casa } from '../astrologia/tipos';

@@ -74,6 +74,7 @@ const defaultValue: OperatorAuthContextType = {
 
 const OperatorAuthContext = createContext<OperatorAuthContextType>(defaultValue)
 
+// fallow-ignore-next-line unused-export
 export const useOperatorAuth = () => {
   const ctx = useContext(OperatorAuthContext)
   if (!ctx) {

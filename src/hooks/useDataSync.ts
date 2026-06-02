@@ -1,4 +1,3 @@
-// fallow-ignore-next-line complexity
 import { useState, useEffect, useCallback, useRef } from 'react';
 export interface SyncStatus {
   lastSync: string | null;

@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { TipoTransacao } from '@prisma/client';
 
+// fallow-ignore-next-line unused-export
 export class CreditosInsuficientesError extends Error {
   constructor(
     public saldoAtual: number,
@@ -11,6 +12,7 @@ export class CreditosInsuficientesError extends Error {
   }
 }
 
+// fallow-ignore-next-line unused-export
 export async function getCreditos(userId: string): Promise<number> {
   const credito = await prisma.credito.findUnique({
     where: { userId },
@@ -19,6 +21,7 @@ export async function getCreditos(userId: string): Promise<number> {
   return credito?.saldo ?? 0;
 }
 
+// fallow-ignore-next-line unused-export
 export async function getCreditosCompleto(userId: string) {
   const credito = await prisma.credito.findUnique({
     where: { userId },
@@ -72,6 +75,7 @@ export async function adicionarCreditos(
   return { novoSaldo: credito.saldo };
 }
 
+// fallow-ignore-next-line unused-export
 export async function debitarCreditos(
   userId: string,
   quantidade: number,
@@ -109,6 +113,7 @@ export async function debitarCreditos(
   return { novoSaldo: creditoAtualizado.saldo };
 }
 
+// fallow-ignore-next-line unused-export
 export async function verificarCreditos(
   userId: string,
   quantidade: number

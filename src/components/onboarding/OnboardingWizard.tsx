@@ -9,7 +9,6 @@ import { MysticDivider } from '@/components/shared/MysticDivider';
 import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// fallow-ignore-next-line unused-type
 export interface OnboardingData {
   fullName: string;
   birthDate: string;

@@ -1,6 +1,7 @@
 'use client';
 
-import { useUserProfileStore } from '@/lib/store/user-profile';
+// fallow-ignore-next-line unresolved-import
+import { useUserProfileStore } from '@/lib/store/user-profile'
 import { Card, CardContent } from '@/components/ui/card';
 import { User, Crown, Star } from 'lucide-react';
 

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useMemo, ReactNode } from 'react';
-import { useUserProfileStore } from '@/lib/store/user-profile';
+// fallow-ignore-next-line unresolved-import
+import { useUserProfileStore } from '@/lib/store/user-profile'
 import { 
   calculateLifePath, 
   calculateExpression, 

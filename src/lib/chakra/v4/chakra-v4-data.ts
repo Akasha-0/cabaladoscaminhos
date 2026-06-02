@@ -1,3 +1,4 @@
+// fallow-ignore-next-line unused-type
 /**
  * Chakra V4 Data - Traditional Hindu/Spiritual Chakras
  *

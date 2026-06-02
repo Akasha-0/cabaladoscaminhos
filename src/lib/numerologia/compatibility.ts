@@ -1,3 +1,4 @@
+// fallow-ignore-next-line unused-type
 import { calcularPitagorica, InterpretacaoNumerologia, getInterpretacao } from './calculos';
 
 export interface CompatibilityResult {

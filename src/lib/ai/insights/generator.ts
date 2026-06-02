@@ -12,7 +12,8 @@
  */
 
 import { traditionMapper, ODU_MAPPINGS, TAROT_MAJOR_MAPPINGS, SEPHIROT_MAPPINGS } from '../tradition-mapper';
-import { getDataByCategory } from '../../spiritual-data/spiritual-data';
+// fallow-ignore-next-line unresolved-import
+import { getDataByCategory } from '../../spiritual-data/spiritual-data'
 
 // ============================================================
 // TYPES

@@ -24,7 +24,6 @@ import { cn } from '@/lib/utils';
 
 export type SpiritualSystem = 'numerologia' | 'astrologia' | 'orixas' | 'tarot' | 'cabala' | 'ifa';
 
-// fallow-ignore-next-line unused-type
 export interface SystemLevel {
   system: SpiritualSystem;
   nivel: number; // 0-100
@@ -45,7 +44,6 @@ export interface UserSpiritualData {
   };
 }
 
-// fallow-ignore-next-line unused-type
 export interface SpiritualRadarChartProps {
   userData: UserSpiritualData;
   currentLevels?: Partial<Record<SpiritualSystem, number>>;

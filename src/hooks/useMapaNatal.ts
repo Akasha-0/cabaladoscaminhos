@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-// fallow-ignore-next-line unused-type
 export interface MapaNatalData {
   solSigno: string;
   luaSigno: string;

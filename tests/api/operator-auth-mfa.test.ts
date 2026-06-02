@@ -49,10 +49,25 @@ vi.mock('@/lib/prisma', () => ({
   },
 }));
 
+// Mock next/headers (necessário para requireOperatorApi / getOperatorFromRequest)
+const cookieStore: { current: Record<string, string> } = { current: {} };
+vi.mock('next/headers', () => ({
+  cookies: vi.fn(async () => ({
+    get: (name: string) => {
+      const v = cookieStore.current[name];
+      return v ? { name, value: v } : undefined;
+    },
+  })),
+  headers: vi.fn(async () => ({
+    get: () => null,
+  })),
+}));
+
 beforeEach(() => {
   vi.clearAllMocks();
   mockBcryptHash.mockImplementation(async (pw: string) => `hashed:${pw}`);
   mockBcryptCompare.mockImplementation(async (pw: string, hash: string) => hash === `hashed:${pw}`);
+  cookieStore.current = {};
 });
 
 // ----------------------------------------------------------------------------

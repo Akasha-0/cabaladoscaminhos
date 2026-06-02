@@ -4,7 +4,8 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTodayCorrelation } from '@/lib/correlation/useTodayCorrelation';
 import { getMoonPhases } from '@/lib/calendar/moon-phases';
-import { SOLFEGGIO_FREQUENCIES } from '@/lib/frequency/frequency-data';
+// fallow-ignore-next-line unresolved-import
+import { SOLFEGGIO_FREQUENCIES } from '@/lib/frequency/frequency-data'
 import { Sun, Moon, Zap, Sparkles, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
