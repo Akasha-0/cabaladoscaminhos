@@ -1,126 +1,140 @@
-// ============================================================
-// MOTOR DE NUMEROLOGIA TÂNTRICA
-// ============================================================
-// Implementação conforme Doc 04 §2.3.
-//
-// Teste oficial (Doc 09 §8):
-//   20/08/1986
-//   → soul = 2 (dia 20 → 2+0 = 2)
-//   → karma = 8 (mês 08)
-//   → divineGift = 5 (1986 → 8+6=14 → 1+4=5)
-//   → destiny = 6 (1+9+8+6=24 → 2+4=6)
+/**
+ * Motor de Numerologia Tântrica
+ * ==============================
+ *
+ * Calcula o TantricMap (Doc 04 §2.3) a partir da data de nascimento.
+ *
+ * @see docs/04_data-model.md §2.3
+ * @see docs/07_epics-stories.md §S2.3
+ *
+ * Os 11 Corpos Tântricos:
+ *   1  Corpo Sutil
+ *   2  Corpo Negativo
+ *   3  Corpo Prânico
+ *   4  Corpo Físico
+ *   5  Corpo Etérico
+ *   6  Corpo Astral
+ *   7  Corpo Causal
+ *   8  Corpo Mental
+ *   9  Corpo Espiritual
+ *  10  Corpo Divino
+ *  11  Corpo Cósmico
+ */
 
 import type { TantricMap } from '@/types';
 
-// ============================================================================
-// 11 CORPOS TÂNTRICOS
-// ============================================================================
-const TANTRIC_BODIES: Record<number, string> = {
-  1: 'Corpo Sutil — Essência primordial, conexão com o divino',
-  2: 'Corpo Negativo — Mente protetora, defesas psíquicas',
-  3: 'Corpo Físico — Vitalidade, presença material',
-  4: 'Corpo Prânico — Energia vital, respiração',
-  5: 'Corpo da Palavra — Dom da comunicação, expressão',
-  6: 'Corpo da Luz — Cura, magnetismo, radiância',
-  7: 'Corpo da Intuição — Visão interior, pressentimento',
-  8: 'Corpo da Vontade — Determinação, poder pessoal',
-  9: 'Corpo Espiritual — Conexão com planos superiores',
-  10: 'Corpo Cósmico — Integração universal',
-  11: 'Corpo Divino — Mestria, iluminação',
+const TANTRIC_BODIES: Readonly<Record<number, string>> = {
+  1: 'Corpo Sutil',
+  2: 'Corpo Negativo',
+  3: 'Corpo Prânico',
+  4: 'Corpo Físico',
+  5: 'Corpo Etérico',
+  6: 'Corpo Astral',
+  7: 'Corpo Causal',
+  8: 'Corpo Mental',
+  9: 'Corpo Espiritual',
+  10: 'Corpo Divino',
+  11: 'Corpo Cósmico',
 };
 
-export function getTantricBody(n: number): string {
-  return TANTRIC_BODIES[n] ?? `Corpo Tântrico ${n}`;
+/**
+ * Reduz para um número entre 1 e 11 (sem zerar). Diferente do
+ * cabalístico, o tântrico NÃO preserva números mestres do
+ * cabalístico — apenas dobra o intervalo máximo.
+ */
+function reduceTo1to11(n: number): number {
+  if (!Number.isFinite(n) || n <= 0) return 1;
+  let current = Math.abs(Math.round(n));
+  while (current > 11) {
+    current = current
+      .toString()
+      .split('')
+      .reduce((acc, d) => acc + Number(d), 0);
+  }
+  return current;
 }
 
-// ============================================================================
-// REDUÇÃO TÂNTRICA (limite: 1-11)
-// ============================================================================
-function reduceTantric(n: number): number {
-  if (n <= 0) return 1;
-  if (n <= 11) return n;
-  const reduced = String(n)
+function splitDate(date: Date | string): { year: number; month: number; day: number } {
+  const iso =
+    typeof date === 'string'
+      ? date.slice(0, 10)
+      : date.toISOString().slice(0, 10);
+  const [y, m, d] = iso.split('-').map(Number);
+  return { year: y ?? 0, month: m ?? 0, day: d ?? 0 };
+}
+
+function sumDigits(n: number): number {
+  return n
+    .toString()
     .split('')
-    .reduce((s, d) => s + parseInt(d, 10), 0);
-  return reduceTantric(reduced);
+    .reduce((acc, d) => acc + Number(d), 0);
 }
 
 // ============================================================================
-// 1. NÚMERO DE ALMA (dia de nascimento, reduzido)
+// CÁLCULOS INDIVIDUAIS
 // ============================================================================
-// 20 → 2+0 = 2
-export function calculateSoul(birthDate: string): number {
-  const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return 1;
-  return reduceTantric(parseInt(match[3], 10));
+
+/** Alma (Corpo Negativo) — dia de nascimento reduzido */
+export function calculateSoul(date: Date | string): { value: number; description: string } {
+  const { day } = splitDate(date);
+  const value = reduceTo1to11(sumDigits(day));
+  return { value, description: TANTRIC_BODIES[value] ?? '' };
+}
+
+/** Karma (Corpo Prânico) — mês de nascimento */
+export function calculateKarma(date: Date | string): { value: number; description: string } {
+  const { month } = splitDate(date);
+  const value = reduceTo1to11(month);
+  return { value, description: TANTRIC_BODIES[value] ?? '' };
+}
+
+/**
+ * Dom Divino — ano de nascimento, reduzido em dois passos
+ * (ex: 1986 → 1+9+8+6=24 → 2+4=6).
+ */
+export function calculateDivineGift(date: Date | string): { value: number; description: string } {
+  const { year } = splitDate(date);
+  const first = sumDigits(year);
+  const value = reduceTo1to11(first);
+  return { value, description: TANTRIC_BODIES[value] ?? '' };
+}
+
+/** Destino — ano completo de 4 dígitos, reduzido */
+export function calculateDestiny(date: Date | string): number {
+  const { year } = splitDate(date);
+  return reduceTo1to11(sumDigits(year));
+}
+
+/** Caminho Tântrico — soma total dia+mês+ano, reduzida */
+export function calculateTantricPath(date: Date | string): number {
+  const { year, month, day } = splitDate(date);
+  return reduceTo1to11(sumDigits(day) + sumDigits(month) + sumDigits(year));
 }
 
 // ============================================================================
-// 2. NÚMERO DE KARMA (mês de nascimento)
+// FUNÇÃO AGREGADORA
 // ============================================================================
-// 08 → 8 (mês já é ≤ 11)
-export function calculateKarma(birthDate: string): number {
-  const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return 1;
-  return reduceTantric(parseInt(match[2], 10));
-}
 
-// ============================================================================
-// 3. NÚMERO DE DOM DIVINO (ano, reduzido em 2 passos a partir do ano
-//    de 2 dígitos = últimos 2 dígitos do ano)
-// ============================================================================
-// 1986 → 86 → 8+6=14 → 1+4=5
-// Doc 04 §2.3: "1986 → 8+6=14 → 1+4=5"
-export function calculateDivineGift(birthDate: string): number {
-  const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return 1;
-  const yearLastTwo = parseInt(match[1].slice(-2), 10);
-  return reduceTantric(yearLastTwo);
-}
-
-// ============================================================================
-// 4. NÚMERO DE DESTINO (soma do ano completo de 4 dígitos, reduzido)
-// ============================================================================
-// 1986 → 1+9+8+6=24 → 2+4=6
-export function calculateDestiny(birthDate: string): number {
-  const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return 1;
-  const year = parseInt(match[1], 10);
-  const sum = String(year).split('').reduce((s, d) => s + parseInt(d, 10), 0);
-  return reduceTantric(sum);
-}
-
-// ============================================================================
-// 5. NÚMERO DE CAMINHO TÂNTRICO (soma total de dia+mês+ano)
-// ============================================================================
-// 20+8+1986=2014 → 2+0+1+4=7
-export function calculateTantricPath(birthDate: string): number {
-  const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (!match) return 1;
-  const [, y, m, d] = match;
-  const total = parseInt(d, 10) + parseInt(m, 10) + parseInt(y, 10);
-  return reduceTantric(total);
-}
-
-// ============================================================================
-// AGREGADOR — Constrói o mapa tântrico completo
-// ============================================================================
-export function buildTantricMap(birthDate: string): TantricMap {
-  const soul = calculateSoul(birthDate);
-  const karma = calculateKarma(birthDate);
-  const divineGift = calculateDivineGift(birthDate);
-  const destiny = calculateDestiny(birthDate);
-  const tantricPath = calculateTantricPath(birthDate);
+/**
+ * Constrói o TantricMap completo. Útil como ponto de entrada no
+ * cadastro do consulente (Doc 02 §B.2, item 2).
+ */
+export function buildTantricMap(date: Date | string): TantricMap {
+  const soul = calculateSoul(date);
+  const karma = calculateKarma(date);
+  const gift = calculateDivineGift(date);
+  const destiny = calculateDestiny(date);
+  const path = calculateTantricPath(date);
 
   return {
-    soul,
-    soulDescription: getTantricBody(soul),
-    karma,
-    karmaDescription: getTantricBody(karma),
-    divineGift,
-    divineGiftDescription: getTantricBody(divineGift),
+    soul: soul.value,
+    soulDescription: soul.description,
+    karma: karma.value,
+    karmaDescription: karma.description,
+    divineGift: gift.value,
+    divineGiftDescription: gift.description,
     destiny,
-    tantricPath,
+    tantricPath: path,
     tantricBodies: { ...TANTRIC_BODIES },
   };
 }

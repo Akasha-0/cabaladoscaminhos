@@ -112,7 +112,7 @@ ${input.mapaFixo.karmaTantrico ? `**Karma Tântrico:** ${input.mapaFixo.karmaTan
 - **Elemento:** ${input.odu.elemento}
 - **Significado:** ${input.odu.significado}
 ${input.odu.orixas.length ? `- **Orixás:** ${input.odu.orixas.join(', ')}` : ''}
-${input.odu.quililas.length ? `- **Quizilas:** ${input.odu.quililas.join(', ')}` : ''}
+${input.odu.quizilas.length ? `- **Quizilas:** ${input.odu.quizilas.join(', ')}` : ''}
 
 ---
 

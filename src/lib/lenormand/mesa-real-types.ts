@@ -4,8 +4,6 @@
  * @module lenormand/mesa-real-types
  */
 
-import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
-
 /**
  * Card position in a Mesa Real spread
  */
@@ -117,6 +115,89 @@ export interface ResultadoGeracaoDossiê {
  */
 export interface EntradaGeracaoDossiê {
   clientId: string;
-  matrixData: TiragemMesaReal;
-  mapaAlma?: MapaAlmaCompleto;
+  data?: string;
+  matrixData?: Record<number, {
+    carta: { numero: number; nome: string; significado: string };
+    odu?: { numero: number; nome: string; significado: string };
+  }>;
+  options?: OpcoesGeracaoDossiê;
+}
+
+/**
+ * Casa Cigana — the 36 houses of the Mesa Real
+ * Matches the shape used in mesa-real-data.ts (houseNumber, name, meaning, etc.)
+ */
+export interface CasaCigana {
+  houseNumber: number;
+  name: string;
+  meaning: string;
+  element: string;
+  archetype: string;
+  associatedPlanet?: string;
+  astrologyHouse?: number;
+  numerologyAspects: string[];
+  oduAspects: string[];
+}
+
+/**
+ * Carta Cigana — Lenormand card drawn for a house
+ */
+export interface CartaCigana {
+  numero: number;
+  nome: string;
+  significado: string;
+  palavrasChave?: string[];
+}
+
+/**
+ * Odu information for Ifá correlation
+ */
+export interface OduInfo {
+  numero: number;
+  nome: string;
+  significado: string;
+  elemento: string;
+  orixas: string[];
+  quizilas: string[];
+}
+
+/**
+ * Dados do Consulente (client data for reading)
+ */
+export interface DadosConsulente {
+  nome: string;
+  dataNascimento: string;
+  localNascimento?: string;
+  horaNascimento?: string;
+}
+
+/**
+ * Correlação entre casa e cartas/Odus
+ */
+export interface CorrelacaoCasa {
+  casaNumero: number;
+  carta: CartaCigana;
+  odu?: OduInfo;
+  convergencias?: string[];
+}
+
+/**
+ * Resultado de uma leitura completa
+ */
+export interface ResultadoLeitura {
+  clienteId: string;
+  consulente: DadosConsulente;
+  tiragem: TiragemMesaReal;
+  dossiê?: DossiêCompleto;
+  dataLeitura: string;
+}
+
+/**
+ * Posição em uma tiragem
+ */
+export interface PosicaoTiragem {
+  posicao: number;
+  casa: CasaCigana;
+  carta?: CartaCigana;
+  odu?: OduInfo;
 }

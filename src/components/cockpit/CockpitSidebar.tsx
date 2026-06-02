@@ -22,9 +22,6 @@ interface CockpitSidebarProps {
   onNewAtendimento: () => void;
 }
 export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
-}
-
-export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
   const { cliente, setCliente, isSidebarCollapsed, toggleSidebar } = useCockpitStore();
   const [isFormExpanded, setIsFormExpanded] = useState(!cliente);
   const [formData, setFormData] = useState<ClienteInfo>({

@@ -167,6 +167,7 @@ export type KnowledgeDomain =
   | 'wicca' | 'sabbat' | 'esbat' | 'paganismo'
   | 'flora-sagrada' | 'ervas' | 'banhos' | 'chas' | 'medicina-floresta'
   | 'xing-mapa' | 'sexualidade' | 'prazer' | 'sombra'
+  | 'lilith-casa8-sexo'
   | 'umbanda' | 'candomble' | 'umbanda-cultos'
   | 'prompts' | 'cot' | 'validacao' | 'coerencia';
 
