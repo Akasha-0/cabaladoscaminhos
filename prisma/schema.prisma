@@ -25,10 +25,10 @@ enum UserRole {
 }
 
 enum ReadingStatus {
-  PENDING     // Mesa preenchida, dossiê ainda não gerado
-  GENERATING  // IA processando
-  COMPLETED   // Dossiê gerado com sucesso
-  ERROR       // Falha na geração
+  PENDING // Mesa preenchida, dossiê ainda não gerado
+  GENERATING // IA processando
+  COMPLETED // Dossiê gerado com sucesso
+  ERROR // Falha na geração
 }
 
 // ============================================================================
@@ -47,8 +47,45 @@ model Operator {
 
   readings      Reading[]
   consultations Consultation[]
+  sessions      OperatorSession[]
 
   @@map("operators")
+}
+
+/// Sessão ativa do Operator (B2B) — Fase 13.
+///
+/// Cada login cria uma OperatorSession com o hash SHA-256 do JWT (não
+/// o token em si). Logout marca `revokedAt` (soft revoke) — permite
+/// auditoria de quem logou de onde, sem expor credenciais.
+///
+/// Trade-off: 1 query extra em /api/operator/auth/me para verificar
+/// não-revogação. Para o cockpit B2B (não high-traffic), é OK.
+model OperatorSession {
+  id String @id @default(cuid())
+
+  /// Hash SHA-256 do JWT (NUNCA o token em si). 64 chars hex.
+  tokenHash String @unique
+
+  /// Quando o JWT expira — usado para cleanup automático.
+  expiresAt DateTime
+
+  /// Soft revoke: se != null, sessão está revogada.
+  /// Mantida para auditoria (quem logou de onde, quando foi revogada).
+  revokedAt DateTime?
+
+  /// Metadados de auditoria
+  ipAddress String?
+  userAgent String?
+
+  operatorId String
+  operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([operatorId])
+  @@index([expiresAt])
+  @@map("operator_sessions")
 }
 
 /// Consulente — dados fixos do cliente. Os mapas calculados ficam
@@ -180,16 +217,16 @@ enum ChatRole {
 // =====================
 
 model User {
-  id              String   @id @default(cuid())
-  email           String   @unique
+  id              String         @id @default(cuid())
+  email           String         @unique
   passwordHash    String?
   nomeCompleto    String
   dataNascimento  DateTime
   horaNascimento  String?
   localNascimento String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  journalEntries    JournalEntry[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  journalEntries  JournalEntry[]
 
   mapaNatal MapaNatal?
 
@@ -649,13 +686,13 @@ model LeituraHistorico {
 }
 
 model JournalEntry {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title     String?
-  content   String
-  mood      String?
-  tags      String[]
+  id      String   @id @default(cuid())
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title   String?
+  content String
+  mood    String?
+  tags    String[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

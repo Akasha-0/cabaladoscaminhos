@@ -20,6 +20,7 @@ import {
   OPERATOR_TOKEN_COOKIE,
   verifyOperatorToken,
 } from './operator-jwt';
+import { isSessionActive } from './operator-sessions';
 
 const DEV_HEADER = 'x-dev-operator-id';
 
@@ -54,6 +55,16 @@ export async function getOperatorFromRequest(
   if (token) {
     const payload = verifyOperatorToken(token);
     if (payload) {
+      // Fase 13: verifica também se a sessão não foi revogada/expirada
+      // (logout imediato). Falha aqui → null (= 401). DB error →
+      // fail-open (não bloqueia o usuário por causa de DB down).
+      let sessionActive = true;
+      try {
+        sessionActive = await isSessionActive(token);
+      } catch (err) {
+        console.error('[operator-session] session check failed', err);
+      }
+      if (!sessionActive) return null;
       return loadOperator(payload.sub);
     }
     // Token inválido — não tenta o dev header (cookie adulterado/expirado
