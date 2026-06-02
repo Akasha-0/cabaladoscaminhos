@@ -20,6 +20,10 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         golden:
           "bg-gradient-to-r from-[var(--spiritual-gold-dark)] via-[var(--spiritual-gold)] to-[var(--spiritual-gold-light)] text-black font-semibold shadow-[var(--shadow-glow-gold)] hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:brightness-110 transition-all duration-300",
+        // Alias semântico de `golden` para contextos de UI espiritual
+        // (form de login, CTA de "ativação", etc.). Mesmo styling.
+        spiritual:
+          "bg-gradient-to-r from-[var(--spiritual-gold-dark)] via-[var(--spiritual-gold)] to-[var(--spiritual-gold-light)] text-black font-semibold shadow-[var(--shadow-glow-gold)] hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:brightness-110 transition-all duration-300",
         "golden-outline":
           "border border-spiritual-gold/50 text-spiritual-gold bg-spiritual-gold-muted/30 hover:bg-spiritual-gold/20 hover:border-spiritual-gold hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]",
       },
