@@ -3,6 +3,7 @@
 // ============================================================
 
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 // fallow-ignore-next-line unused-type
 export type ThemeMode = 'dark' | 'light';

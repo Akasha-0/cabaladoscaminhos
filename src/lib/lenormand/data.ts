@@ -6,7 +6,6 @@
 import { LENORMAND_CARDS, getLenormandCardById } from '@/lib/constants/lenormand-cards';
 
 /** Alias canônico para getCardByNumero */
-// fallow-ignore-next-line unused-export
 
 /** Re-export das cartas canônicas */
 export const LENORMAND_CARDS_LEGACY = LENORMAND_CARDS;

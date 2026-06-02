@@ -37,6 +37,7 @@ export const OPERATOR_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
 /**
  * @deprecated Mantido só para retrocompat com Fase 13 (cleanupExpiredSessions
  * e testes antigos). Em código novo, use `OPERATOR_ACCESS_TTL_SECONDS`.
+ */
 // fallow-ignore-next-line unused-export
 export const OPERATOR_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60;
 
@@ -89,8 +90,8 @@ export interface OperatorTokenPayload {
 // ============================================================================
 // Erros
 // ============================================================================
-
 /** Erro lançado quando o secret não está configurado (em prod). */
+// fallow-ignore-next-line unused-export
 export class JwtSecretMissingError extends Error {
   constructor() {
     super(
@@ -169,6 +170,7 @@ export function signOperatorRefreshToken(operator: {
  * genérico de 7d). Em código novo, use `signOperatorAccessToken` ou
  * `signOperatorRefreshToken`.
  */
+// fallow-ignore-next-line unused-export
 export function signOperatorToken(operator: {
   id: string;
   role: 'OPERATOR' | 'ADMIN';
@@ -251,10 +253,9 @@ export function clearOperatorRefreshCookie(response: {
 
 // ============================================================================
 // Back-compat re-exports
-// ============================================================================
-// fallow-ignore-next-line unused-exports
+// fallow-ignore-next-line unused-export
 export { OPERATOR_ACCESS_TTL_SECONDS as OPERATOR_ACCESS_TTL };
-// fallow-ignore-next-line unused-exports
+// fallow-ignore-next-line unused-export
 export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
 // ============================================================================
 // Fase 20 — MFA challenge token
@@ -275,9 +276,11 @@ export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
 import crypto from 'node:crypto';
 
 /** TTL do MFA challenge token: 5 minutos. */
+// fallow-ignore-next-line unused-export
 export const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
 
 /** Tipo de token adicional aceito em verifyOperatorToken (Fase 20). */
+// fallow-ignore-next-line unused-type
 export type OperatorTokenTypeWithMfa = OperatorTokenType | 'mfa-challenge';
 
 /**

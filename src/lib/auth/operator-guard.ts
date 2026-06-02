@@ -35,7 +35,6 @@ import {
 
 
 /** Caminho de login do Operator (B2B). */
-// fallow-ignore-next-line unused-export
 
 /**
  * Server Component: garante que há um Operator logado.

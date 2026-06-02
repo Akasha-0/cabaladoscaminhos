@@ -1,3 +1,4 @@
+'use server';
 // ============================================================
 // CLIENT ACTIONS - Cabala Dos Caminhos
 // Cockpit Oracular - Client Management

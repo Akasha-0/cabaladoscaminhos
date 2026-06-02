@@ -609,8 +609,8 @@ export function getCartaPorNumero(numero: number): CartaCigana | undefined {
 export function getOduPorNumero(numero: number): OduInfo | undefined {
   return ODUS_IFA.find((o) => o.numero === numero);
 }
-/** Retorna posicao no grid 9x4 para houseNumber. */
-// fallow-ignore-next-line unused-export
+//  fallow-ignore-next-line unused-export
+export function getPosicaoGrid(casaNumero: number): { row: number; col: number } {
   const idx = casaNumero - 1;
   return { row: Math.floor(idx / 9) + 1, col: (idx % 9) + 1 };
 }

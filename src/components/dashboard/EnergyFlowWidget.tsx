@@ -87,6 +87,7 @@ function getDominantElement(): keyof typeof ELEMENTS {
   const dayOfYear = getDayOfYear();
   const elements: (keyof typeof ELEMENTS)[] = ['fire', 'water', 'earth', 'air'];
   return elements[dayOfYear % 4];
+}
 
 // fallow-ignore-next-line complexity
 function getCurrentHourIndex(): number {

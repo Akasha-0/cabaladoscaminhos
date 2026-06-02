@@ -355,6 +355,7 @@ function buildTarotResults(vida: number, _anoPessoal: number): TarotResults {
 // CONVERGENCE DETECTION
 // ============================================================
 
+// fallow-ignore-next-line unused-export
 export function detectarConvergencias(
   numerologia: NumerologyResults,
   odu: OduResults,

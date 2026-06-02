@@ -92,4 +92,5 @@ export function calculate(input: string | NumerologyInput): NumerologyResult {
   };
 }
 
+// fallow-ignore-next-line unused-export
 export default calculate;

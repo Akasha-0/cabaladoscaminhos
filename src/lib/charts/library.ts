@@ -38,7 +38,7 @@ export interface Chart {
   personalizado?: boolean;
 }
 
-// fallow-ignore-next-line unused-export
+//  fallow-ignore-next-line unused-type
 export interface ChartLibrary {
   charts: Chart[];
   total: number;
