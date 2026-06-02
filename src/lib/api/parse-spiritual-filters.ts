@@ -84,10 +84,6 @@ const SpiritualTypeSchema = z.enum([
   'offering',
 ]);
 
-// Re-exported for callers that want to keep using these named
-// schemas in body validation / other route sections.
-export { SefirotSchema, ChakraSchema, ElementSchema, SpiritualTypeSchema };
-
 // ------------------------------------------------------------
 // Public API
 // ------------------------------------------------------------
