@@ -2,9 +2,8 @@
 // READING ACTIONS - Cabala Dos Caminhos
 // Cockpit Oracular - Mesa Real Reading Management
 // ============================================================
-
-import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
 
 // Type for matrix data (Casa 1-36 mapping to Carta e Odu)
 export interface MatrixData {
@@ -77,6 +76,7 @@ export async function getReadingsByClient(clientId: string) {
 
 /**
  * Gets readings by user ID
+ * @deprecated use getReadingsByOperator (Doc 16 AD-03: Operator substitui User)
  */
 export async function getReadingsByUser(userId: string) {
   return prisma.reading.findMany({
@@ -90,12 +90,53 @@ export async function getReadingsByUser(userId: string) {
 }
 
 /**
+ * Lista leituras do Operator autenticado (Doc 16 AD-03).
+ * Filtra por operatorId (não userId legado).
+ */
+export async function getReadingsByOperator(
+  operatorId: string,
+  opts?: { limit?: number; status?: 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR' }
+) {
+  return prisma.reading.findMany({
+    where: {
+      operatorId,
+      ...(opts?.status ? { status: opts.status } : {}),
+    },
+    include: {
+      client: { select: { id: true, fullName: true } },
+    },
+    orderBy: { date: 'desc' },
+    take: opts?.limit ?? 10,
+  });
+}
+
+/**
+ * Conta leituras criadas no mês corrente pelo Operator.
+ */
+export async function countReadingsThisMonth(operatorId: string): Promise<number> {
+  const start = new Date();
+  start.setDate(1);
+  start.setHours(0, 0, 0, 0);
+  return prisma.reading.count({
+    where: { operatorId, date: { gte: start } },
+  });
+}
+
+/**
+ * Conta leituras pendentes (PENDING) criadas hoje pelo Operator.
+ */
+export async function countPendingToday(operatorId: string): Promise<number> {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  return prisma.reading.count({
+    where: { operatorId, status: 'PENDING', date: { gte: start } },
+  });
+}
+
+/**
  * Updates matrix data for a reading (save current state)
  */
-export async function updateMatrixData(
-  readingId: string,
-  matrixData: MatrixData
-) {
+export async function updateMatrixData(readingId: string, matrixData: MatrixData) {
   return prisma.reading.update({
     where: { id: readingId },
     data: {
@@ -107,10 +148,7 @@ export async function updateMatrixData(
 /**
  * Updates reading status
  */
-export async function updateReadingStatus(
-  readingId: string,
-  status: ReadingStatus
-) {
+export async function updateReadingStatus(readingId: string, status: ReadingStatus) {
   return prisma.reading.update({
     where: { id: readingId },
     data: { status },
