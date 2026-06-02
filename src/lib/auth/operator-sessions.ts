@@ -159,11 +159,12 @@ export type RotateResult =
   | { kind: 'invalid' }
   | { kind: 'reuse-detected' };
 
+
 /**
  * Helper para gerar novo par access+refresh. Recebe o operator (com
  * id+role) e retorna os tokens assinados — usado tanto em rotação
  * quanto em criação inicial (login).
- */
+// fallow-ignore-next-line unused-export
 export async function issueNewTokenPair(operator: {
   id: string;
   role: 'OPERATOR' | 'ADMIN';

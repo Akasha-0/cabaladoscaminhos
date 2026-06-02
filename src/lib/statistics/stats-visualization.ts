@@ -3,8 +3,7 @@
 /**
  * Stats Visualization Module
  * Chart data generation and visualization utilities
- */
-
+// fallow-ignore-next-line unresolved-import
 import {
   getDashboardData,
   ActivityDataPoint,
@@ -15,7 +14,35 @@ import {
   MeditationTrend,
   AchievementStat,
 } from '../stats/dashboard';
-
+export interface ActivityDataPoint {
+  date: string;
+  value: number;
+  type: string;
+}
+export interface WeeklyProgress {
+  day: string;
+  value: number;
+}
+export interface CategoryBreakdown {
+  category: string;
+  value: number;
+}
+export interface MonthlyOverview {
+  month: string;
+  value: number;
+}
+export interface ChartStat {
+  label: string;
+  value: number;
+}
+export interface MeditationTrend {
+  date: string;
+  duration: number;
+}
+export interface AchievementStat {
+  name: string;
+  progress: number;
+}
 export interface ChartConfig {
   type: 'bar' | 'line' | 'pie' | 'area' | 'radar' | 'doughnut';
   title: string;

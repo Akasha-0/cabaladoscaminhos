@@ -140,9 +140,9 @@ export interface OduBirth {
   message: string;
   initiationPath: string;
   prohibitions: string[];
-  birth ebwe: Array<{
+  birthOdu: Array<{
     dayOfBirth: string;
-    ebweNumber: number;
+    oduNumber: number;
     meaning: string;
   }>;
 }

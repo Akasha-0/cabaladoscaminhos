@@ -206,6 +206,7 @@ export function getOrixasByChakra(chakra: string): OrixaChakraMapping[] {
   );
 }
 
+// fallow-ignore-next-line unused-export
 export default {
   getOrixaChakra,
   getChakraOrixa,

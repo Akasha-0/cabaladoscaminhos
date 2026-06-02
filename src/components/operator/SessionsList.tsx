@@ -50,12 +50,10 @@ interface DeviceInfo {
   kind: 'desktop' | 'mobile' | 'tablet' | 'unknown';
 }
 
+
 /**
  * Parse best-effort de um userAgent. NÃO é uma lib completa — só
- * precisa dar um label humano para os casos mais comuns. Se o UA
- * não bater em nenhum padrão conhecido, devolve "Dispositivo
- * desconhecido" + o UA truncado como `raw`.
- */
+...
 export function parseUserAgent(ua: string | null | undefined): DeviceInfo {
   const raw = (ua ?? '').trim();
   if (!raw) {

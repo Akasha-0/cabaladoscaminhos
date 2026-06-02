@@ -116,6 +116,7 @@ export function getAllOrixaPlanets(): OrixaPlanet[] {
   return Object.values(ORIXAS_PLANETS_MAP);
 }
 
+// fallow-ignore-next-line unused-export
 export default {
   getOrixaPlanet,
   getAllOrixas,

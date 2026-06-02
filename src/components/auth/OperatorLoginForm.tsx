@@ -2,6 +2,9 @@
 // src/components/auth/OperatorLoginForm.tsx
 // Form de login para Operator (B2B) — usa o novo OperatorAuthProvider.
 // NÃO conflitar com o LoginForm Supabase (B2C) — este é o "OperatorLoginForm".
+//
+// Fase 20: integrado com MFA. Se o /login retornar { mfaRequired: true,
+// mfaToken }, troca para o step 2 (MfaChallenge) automaticamente.
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -13,6 +16,7 @@ import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useOperatorAuth } from '@/components/providers/OperatorAuthProvider';
+import { MfaChallenge } from '@/components/operator/MfaChallenge';
 
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -32,9 +36,11 @@ export function OperatorLoginForm({ className = '', redirectTo = '/cockpit' }: O
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  // Fase 20 — MFA state. Se mfaToken != null, estamos no step 2.
+  const [mfaToken, setMfaToken] = useState<string | null>(null);
 
   const router = useRouter();
-  const { signIn } = useOperatorAuth();
+  const { signIn, refresh } = useOperatorAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -61,6 +67,8 @@ export function OperatorLoginForm({ className = '', redirectTo = '/cockpit' }: O
     }
 
     setIsLoading(true);
+    // Fase 20: detecta MFA via response { mfaRequired, mfaToken }.
+    // Em sucesso direto, signIn() já popula o provider — só redireciona.
     const res = await signIn(result.data.email, result.data.password);
     setIsLoading(false);
 
@@ -68,11 +76,103 @@ export function OperatorLoginForm({ className = '', redirectTo = '/cockpit' }: O
       setServerError(res.error ?? 'Falha no login');
       return;
     }
-    router.push(redirectTo);
+
+    // Verifica se o response do /login indicou MFA necessário.
+    // O provider signIn não expõe o body inteiro, então fazemos um
+    // probe via cookie: se o /me responder 200, login completo.
+    // Edge case: se provider já marcou o operator, o cookie de sessão
+    // JÁ está setado e o /me funciona. Se só temos mfaToken, signIn
+    // não conseguiu setar provider (o provider só seta em res.ok=true
+    // do /login, que retorna ok mesmo com mfaRequired=true — então
+    // pode ter populado o estado com data.operator). Precisamos checar
+    // se o cookie de sessão REALMENTE foi setado.
+    const probe = await fetch('/api/operator/auth/me', { credentials: 'include' });
+    if (probe.ok) {
+      router.push(redirectTo);
+      return;
+    }
+    // MFA challenge: pegamos o mfaToken do probe response? Não — o
+    // /me retorna 401 sem cookie. Precisamos de outro método.
+    // Workaround: re-fetch /login NÃO (login com senha OK é o que
+    // gerou o mfaToken). Em vez disso, mantemos o estado: se o signIn
+    // populou o provider mas o /me deu 401, é porque o cookie não
+    // foi setado (mfaRequired path) — o mfaToken precisa ser
+    // reaproveitado. Solução: refazer signIn e detectar mfaToken no
+    // wrapper. Aqui voltamos ao formulário.
+    setServerError('Resposta inesperada do servidor. Tente novamente.');
   };
 
+  // ========================================================================
+  // MfaChallenge step (Fase 20)
+  // ========================================================================
+
+  // Quando entramos no step de MFA, precisamos ter o mfaToken. Como
+  // signIn() no provider não o expõe, interceptamos aqui fazendo
+  // o login via fetch direto quando o signIn indicar que algo
+  // "esperto" aconteceu. Simplificação: refazemos o login via fetch
+  // direto para ter o mfaToken.
+  const handleStartMfa = async (token: string) => {
+    setMfaToken(token);
+  };
+
+  if (mfaToken) {
+    return (
+      <MfaChallenge
+        mfaToken={mfaToken}
+        onVerified={async () => {
+          await refresh();
+          router.push(redirectTo);
+        }}
+        onCancel={() => {
+          setMfaToken(null);
+          setServerError(null);
+        }}
+      />
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className={cn('w-full max-w-md space-y-4', className)} noValidate>
+    <form onSubmit={async (e) => {
+      e.preventDefault();
+      setServerError(null);
+      const result = loginSchema.safeParse(formData);
+      if (!result.success) {
+        const fieldErrors: Partial<Record<keyof LoginFormData, string>> = {};
+        result.error.errors.forEach((err) => {
+          const field = err.path[0] as keyof LoginFormData;
+          if (field) fieldErrors[field] = err.message;
+        });
+        setErrors(fieldErrors);
+        return;
+      }
+      setIsLoading(true);
+      // Intercepta: faz o fetch direto para ter acesso ao mfaToken
+      try {
+        const res = await fetch('/api/operator/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(result.data),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          setServerError(data.error ?? 'Falha no login');
+          return;
+        }
+        const data = await res.json();
+        if (data.mfaRequired && data.mfaToken) {
+          handleStartMfa(data.mfaToken);
+          return;
+        }
+        // Sucesso sem MFA — atualiza provider e redireciona
+        await refresh();
+        router.push(redirectTo);
+      } catch (err) {
+        setServerError(err instanceof Error ? err.message : 'Erro de rede');
+      } finally {
+        setIsLoading(false);
+      }
+    }} className={cn('w-full max-w-md space-y-4', className)} noValidate>
       {serverError && (
         <div className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-300" role="alert">
           {serverError}

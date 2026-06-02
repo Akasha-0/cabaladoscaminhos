@@ -1,5 +1,5 @@
 // ============================================================
-// API ROUTE — Login do Operator (Fase 8 + 13 + 15 + 18)
+// API ROUTE — Login do Operator (Fase 8 + 13 + 15 + 18 + 20)
 // ============================================================
 // Recebe { email, password }, valida credenciais contra o Operator no
 // banco, emite PAR access (15min) + refresh (30d) (Fase 15), cria
@@ -8,6 +8,11 @@
 //
 // Fase 18: rate-limit por IP (5 tentativas / 15min) via Redis com
 // fallback in-memory. Headers `X-RateLimit-*` em todas as respostas.
+//
+// Fase 20: se operator tem MFA ativo (OperatorMfa.enabled=true),
+// emite `mfaRequired=true` + `mfaToken` (5min, single-use) em vez
+// do par access+refresh. Cliente então chama /mfa/verify ou
+// /mfa/recovery-code para trocar o mfaToken pelos cookies finais.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -16,6 +21,7 @@ import { prisma } from '@/lib/prisma';
 import {
   signOperatorAccessToken,
   signOperatorRefreshToken,
+  signMfaChallengeToken,
   setOperatorSessionCookie,
   setOperatorRefreshCookie,
 } from '@/lib/auth/operator-jwt';
@@ -24,6 +30,7 @@ import {
   applyRateLimitHeaders,
   enforceAuthRateLimit,
 } from '@/lib/auth/rate-limit';
+import { isMfaEnabled } from '@/lib/auth/operator-mfa';
 
 const loginSchema = z.object({
   // Preprocess normaliza o email (lowercase + trim) ANTES de validar
@@ -80,6 +87,29 @@ export async function POST(request: NextRequest) {
   const ok = await bcrypt.compare(body.password, operator.passwordHash);
   if (!ok) {
     const res = NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
+    applyRateLimitHeaders(res, rlResult);
+    return res;
+  }
+
+  // 2.5) Fase 20 — checar se operator tem MFA ativo. Se sim, retornar
+  //      mfaRequired + mfaToken em vez do par access+refresh.
+  //      O cliente então chama /mfa/verify (com TOTP) ou
+  //      /mfa/recovery-code (com recovery code) para concluir.
+  let mfaEnabled = false;
+  try {
+    mfaEnabled = await isMfaEnabled(operator.id);
+  } catch (err) {
+    // DB error aqui NÃO bloqueia o login — degrada para sem MFA.
+    console.error('[operator/auth/login] mfa check failed', err);
+  }
+
+  if (mfaEnabled) {
+    const mfaToken = signMfaChallengeToken({ operatorId: operator.id });
+    const res = NextResponse.json({
+      mfaRequired: true,
+      mfaToken,
+      operator: publicOperator(operator),
+    });
     applyRateLimitHeaders(res, rlResult);
     return res;
   }

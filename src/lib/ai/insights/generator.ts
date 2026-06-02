@@ -529,6 +529,4 @@ export function getAvailableIdentifiers(tradition: SupportedTradition): string[]
 // ============================================================
 // RE-EXPORTS FROM TRADITION-MAPPER
 // ============================================================
-
-// fallow-ignore-next-line unused-export
 export { traditionMapper, ODU_MAPPINGS, TAROT_MAJOR_MAPPINGS, SEPHIROT_MAPPINGS } from '../tradition-mapper';

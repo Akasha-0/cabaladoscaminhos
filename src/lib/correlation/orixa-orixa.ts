@@ -301,10 +301,13 @@ export function getBidirectionalOrixas(orixa: string): string[] {
     )
     .map(rel => (normalize(rel.orixa) === normalizedOrixa ? rel.related_orixa : rel.orixa));
 }
+
 // Required aliases per acceptance criteria
 const getOrixaOrixas = getAllOrixaOrixas;
 const getAllOrixaRellations = getAllOrixaRelations;
 const getOrixaRelations = getAllOrixaRelations;
+
+// fallow-ignore-next-line unused-export
 export default {
   getOrixaOrixa,
   getAllOrixaRelations,

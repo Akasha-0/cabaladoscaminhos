@@ -57,7 +57,70 @@ model Operator {
   consultations Consultation[]
   sessions      OperatorSession[]
 
+  /// Fase 20: MFA TOTP opt-in. Apenas role=ADMIN pode ativar.
+  mfa           OperatorMfa?
+
   @@map("operators")
+}
+
+/// Fase 20 — MFA / TOTP para Operators ADMIN (RFC 6238).
+///
+/// Opt-in: apenas Operators com role=ADMIN podem ativar. Operadores
+/// comuns (role=OPERATOR) NÃO exigem MFA nesta fase.
+///
+/// Fluxo de setup:
+///   1. POST /api/operator/auth/mfa/setup     → gera secret + 10 recovery codes
+///   2. POST /api/operator/auth/mfa/verify-setup { code } → valida primeiro TOTP
+///   3. Marca `enabled=true` (secretEncrypted + recoveryCodesHash gravados)
+///
+/// Login com MFA:
+///   - Senha OK + MFA ativo → resposta 200 { mfaRequired: true, mfaToken }
+///   - Cliente: POST /api/operator/auth/mfa/verify { mfaToken, code }
+///     → recebe par access+refresh cookies
+///
+/// Armazenamento:
+///   - `secretEncrypted`: secret TOTP (32 chars base32) cifrado com
+///     AES-256-GCM usando MFA_ENCRYPTION_KEY (env). NUNCA plain.
+///   - `recoveryCodesHash`: array JSON com bcrypts dos 10 recovery
+///     codes single-use. Para usar, o cliente submete um código em
+///     /mfa/recovery-code; o sistema encontra o bcrypt, valida e
+///     remove o slot (replace com string vazia = consumido).
+///
+/// `recoveryCodesHash` é `String` (JSON stringificado) porque o
+/// SQLite/Postgres do Prisma não tem suporte nativo a String[].
+/// Custo: serializar uma vez no read/write.
+model OperatorMfa {
+  id String @id @default(cuid())
+
+  operatorId String   @unique
+  operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  /// Secret TOTP (base32) cifrado AES-256-GCM.
+  /// Formato armazenado: "iv:authTag:ciphertext" (hex).
+  /// Plain secret NUNCA persiste no DB — se vazar o DB sem a key de
+  /// env, o secret continua protegido.
+  secretEncrypted String
+
+  /// true após verify-setup bem-sucedido. Antes disso, o secret
+  /// existe mas o MFA não está ativo (operator pode abortar setup).
+  enabled Boolean @default(false)
+
+  /// Array JSON de hashes bcrypt dos 10 recovery codes.
+  /// Cada posição é "" se o código já foi consumido (single-use).
+  /// Mantemos 10 posições fixas para simplicidade — pool esgota →
+  /// admin deve regenerar (não implementado nesta fase, apenas disable+reenable).
+  recoveryCodesHash String
+
+  /// Último step (TOTP step = unix_seconds / 30) usado com sucesso.
+  /// Single-use: rejeita códigos no mesmo step na próxima chamada.
+  /// Null = nenhum código usado ainda.
+  lastUsedStep BigInt?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([operatorId])
+  @@map("operator_mfa")
 }
 
 /// Sessão ativa do Operator (B2B) — Fase 13 + Fase 15 (refresh).

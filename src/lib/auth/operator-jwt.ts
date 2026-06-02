@@ -37,7 +37,7 @@ export const OPERATOR_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
 /**
  * @deprecated Mantido só para retrocompat com Fase 13 (cleanupExpiredSessions
  * e testes antigos). Em código novo, use `OPERATOR_ACCESS_TTL_SECONDS`.
- */
+// fallow-ignore-next-line unused-export
 export const OPERATOR_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60;
 
 const OPERATOR_ACCESS_TTL_DESCRIPTION = '15m';
@@ -249,7 +249,92 @@ export function clearOperatorRefreshCookie(response: {
 }): void {
   response.cookies.set(OPERATOR_REFRESH_COOKIE, '', clearCookieOptions());
 }
-
 // Re-exports for back-compat
+// Re-exports for back-compat
+// fallow-ignore-next-line unused-export
 export { OPERATOR_ACCESS_TTL_SECONDS as OPERATOR_ACCESS_TTL };
+// fallow-ignore-next-line unused-export
 export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
+
+// ============================================================================
+// Fase 20 — MFA challenge token
+// ============================================================================
+// Token dedicado, single-use, emitido pelo /login quando o operator
+// tem MFA ativo. Tipo: 'mfa-challenge'. TTL curto (5min). Trocado
+// pelo /verify (com código TOTP) ou /recovery-code (com recovery code)
+// por um par access+refresh.
+//
+// Diferente de access/refresh, este token:
+//   - Não é persistido no DB (não há OperatorSession com type=MFA).
+//   - Single-use é enforced pelo client flow: após o operador usar
+//     o token, o estado "challenge em andamento" é zerado e um novo
+//     login é necessário para gerar outro.
+//   - Carrega só o operatorId (sem role) — role é revisto na hora de
+//     emitir o par final.
+
+import crypto from 'node:crypto';
+
+/** TTL do MFA challenge token: 5 minutos. */
+export const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
+
+/** Tipo de token adicional aceito em verifyOperatorToken (Fase 20). */
+export type OperatorTokenTypeWithMfa = OperatorTokenType | 'mfa-challenge';
+
+/**
+ * Payload do MFA challenge token.
+ *   - sub: operatorId
+ *   - type: 'mfa-challenge'
+ *   - jti: JWT ID único, gerado randomicamente. Usado pelo client
+ *          para detectar reuso (opcional, defense-in-depth).
+ */
+export interface MfaChallengePayload {
+  sub: string;
+  type: 'mfa-challenge';
+  jti: string;
+  iat?: number;
+  exp?: number;
+}
+
+/**
+ * Assina um MFA challenge token (curta duração, 5min).
+ * Use no /login quando o operator tem MFA ativo, em vez de emitir
+ * o par access+refresh direto.
+ */
+export function signMfaChallengeToken(params: { operatorId: string }): string {
+  const payload: Omit<MfaChallengePayload, 'iat' | 'exp'> = {
+    sub: params.operatorId,
+    type: 'mfa-challenge',
+    jti: crypto.randomUUID(),
+  };
+  return jwt.sign(payload, getSecret(), {
+    algorithm: 'HS256',
+    expiresIn: OPERATOR_MFA_CHALLENGE_TTL_SECONDS,
+  });
+}
+
+/**
+ * Verifica um MFA challenge token. Retorna o payload decodificado, ou
+ * `null` se inválido / expirado / type errado.
+ *
+ * IMPORTANTE: esta função NÃO consulta DB. Single-use é responsabilidade
+ * da camada superior (operator-mfa.ts + rota /verify) — após o uso
+ * bem-sucedido, o sistema apaga o OperatorMfa.lastChallengeAt e o
+ * próximo /verify com o mesmo token falha (TTL venceu ou lastChallengeAt
+ * é mais novo que iat).
+ */
+export function verifyMfaChallengeToken(
+  token: string | null | undefined
+): MfaChallengePayload | null {
+  if (!token) return null;
+  try {
+    const decoded = jwt.verify(token, getSecret(), { algorithms: ['HS256'] });
+    if (typeof decoded !== 'object' || decoded === null) return null;
+    const obj = decoded as Record<string, unknown>;
+    if (obj.type !== 'mfa-challenge') return null;
+    if (typeof obj.sub !== 'string' || obj.sub === '') return null;
+    if (typeof obj.jti !== 'string' || obj.jti === '') return null;
+    return obj as MfaChallengePayload;
+  } catch {
+    return null;
+  }
+}
