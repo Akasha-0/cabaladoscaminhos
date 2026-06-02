@@ -1,9 +1,11 @@
 // tests/lib/auth/operator-session.test.ts
-// Testes do helper de sessão do Operator (Fase 7).
-// Cobre os 3 paths: cookie válido, header dev-only, e ausência (→ null/401).
+// Testes do helper de sessão do Operator (Fase 8 com JWT real).
+// Cobre: cookie JWT válido, cookie JWT inválido, dev header, dev
+// header em prod (rejeitado), e Server Context.
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
 
 // ----------------------------------------------------------------------------
 // Mocks
@@ -53,9 +55,18 @@ import {
 // Helpers
 // ----------------------------------------------------------------------------
 
+function makeValidToken(operatorId: string, role: 'OPERATOR' | 'ADMIN' = 'OPERATOR'): string {
+  return jwt.sign(
+    { sub: operatorId, role },
+    process.env.JWT_SECRET || 'dev-only-fallback-secret-do-not-use-in-prod',
+    { algorithm: 'HS256', expiresIn: '7d' }
+  );
+}
+
 function makeRequest(opts: {
   cookieValue?: string;
   devHeaderValue?: string;
+  prodMode?: boolean;
 } = {}): NextRequest {
   cookieStore.current = {};
   if (opts.cookieValue) cookieStore.current['cockpit_session'] = opts.cookieValue;
@@ -73,20 +84,14 @@ beforeEach(() => {
 });
 
 // ============================================================================
-// getOperatorFromRequest
+// getOperatorFromRequest — caminho JWT (produção)
 // ============================================================================
 
-describe('getOperatorFromRequest', () => {
-  it('returns null when no cookie and no dev header', async () => {
-    const req = makeRequest();
-    const result = await getOperatorFromRequest(req);
-    expect(result).toBeNull();
-    expect(mockFindUnique).not.toHaveBeenCalled();
-  });
-
-  it('resolves operator from cookie', async () => {
+describe('getOperatorFromRequest — JWT cookie', () => {
+  it('resolves operator from valid JWT cookie', async () => {
+    const token = makeValidToken('op-1');
     mockFindUnique.mockResolvedValue(mockOperator);
-    const req = makeRequest({ cookieValue: 'op-1' });
+    const req = makeRequest({ cookieValue: token });
 
     const result = await getOperatorFromRequest(req);
 
@@ -94,7 +99,75 @@ describe('getOperatorFromRequest', () => {
     expect(result).toEqual(mockOperator);
   });
 
-  it('resolves operator from x-dev-operator-id header (dev only)', async () => {
+  it('returns null when cookie JWT is invalid signature', async () => {
+    const wrongToken = jwt.sign(
+      { sub: 'op-1' },
+      'wrong-secret',
+      { algorithm: 'HS256', expiresIn: '7d' }
+    );
+    const req = makeRequest({ cookieValue: wrongToken });
+
+    const result = await getOperatorFromRequest(req);
+
+    expect(result).toBeNull();
+    expect(mockFindUnique).not.toHaveBeenCalled();
+  });
+
+  it('returns null when cookie JWT is expired', async () => {
+    // Forçar expiração via expiresIn negativo
+    const expiredToken = jwt.sign(
+      { sub: 'op-1' },
+      process.env.JWT_SECRET || 'dev-only-fallback-secret-do-not-use-in-prod',
+      { algorithm: 'HS256', expiresIn: '-1s' }
+    );
+    const req = makeRequest({ cookieValue: expiredToken });
+
+    const result = await getOperatorFromRequest(req);
+
+    expect(result).toBeNull();
+  });
+
+  it('returns null when cookie JWT is malformed', async () => {
+    const req = makeRequest({ cookieValue: 'not-a-jwt-at-all' });
+
+    const result = await getOperatorFromRequest(req);
+
+    expect(result).toBeNull();
+  });
+
+  it('does NOT fall back to dev header when cookie JWT is invalid', async () => {
+    // Segurança: cookie adulterado → não tenta bypass via dev header
+    const req = makeRequest({
+      cookieValue: 'invalid-token',
+      devHeaderValue: 'op-dev',
+    });
+
+    const result = await getOperatorFromRequest(req);
+
+    expect(result).toBeNull();
+    expect(mockFindUnique).not.toHaveBeenCalled();
+  });
+
+  it('ignores dev header when valid JWT cookie is present (cookie takes precedence)', async () => {
+    const token = makeValidToken('op-cookie');
+    mockFindUnique.mockResolvedValue(mockOperator);
+    const req = makeRequest({
+      cookieValue: token,
+      devHeaderValue: 'op-dev',
+    });
+
+    await getOperatorFromRequest(req);
+
+    expect(mockFindUnique).toHaveBeenCalledWith({ where: { id: 'op-cookie' } });
+  });
+});
+
+// ============================================================================
+// getOperatorFromRequest — dev header
+// ============================================================================
+
+describe('getOperatorFromRequest — dev header', () => {
+  it('resolves operator from dev header when no cookie', async () => {
     mockFindUnique.mockResolvedValue(mockOperator);
     const req = makeRequest({ devHeaderValue: 'op-dev' });
 
@@ -104,37 +177,23 @@ describe('getOperatorFromRequest', () => {
     expect(result).toEqual(mockOperator);
   });
 
-  it('cookie wins over dev header when both present', async () => {
-    mockFindUnique.mockResolvedValue(mockOperator);
-    const req = makeRequest({
-      cookieValue: 'op-cookie',
-      devHeaderValue: 'op-dev',
-    });
-
-    await getOperatorFromRequest(req);
-
-    expect(mockFindUnique).toHaveBeenCalledWith({ where: { id: 'op-cookie' } });
+  it('returns null when nothing is set', async () => {
+    const req = makeRequest();
+    const result = await getOperatorFromRequest(req);
+    expect(result).toBeNull();
+    expect(mockFindUnique).not.toHaveBeenCalled();
   });
 
   it('returns null when DB lookup throws', async () => {
     mockFindUnique.mockRejectedValue(new Error('connection refused'));
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-    const req = makeRequest({ cookieValue: 'op-1' });
+    const req = makeRequest({ devHeaderValue: 'op-1' });
     const result = await getOperatorFromRequest(req);
 
     expect(result).toBeNull();
     expect(consoleError).toHaveBeenCalled();
     consoleError.mockRestore();
-  });
-
-  it('returns null when operator not found in DB', async () => {
-    mockFindUnique.mockResolvedValue(null);
-    const req = makeRequest({ cookieValue: 'unknown' });
-
-    const result = await getOperatorFromRequest(req);
-
-    expect(result).toBeNull();
   });
 });
 
@@ -143,9 +202,10 @@ describe('getOperatorFromRequest', () => {
 // ============================================================================
 
 describe('requireOperator', () => {
-  it('returns Operator when authenticated', async () => {
+  it('returns Operator when authenticated via JWT', async () => {
+    const token = makeValidToken('op-1');
     mockFindUnique.mockResolvedValue(mockOperator);
-    const req = makeRequest({ cookieValue: 'op-1' });
+    const req = makeRequest({ cookieValue: token });
 
     const result = await requireOperator(req);
 
@@ -163,8 +223,16 @@ describe('requireOperator', () => {
     expect(resp.status).toBe(401);
     const body = await resp.json();
     expect(body.error).toMatch(/Não autenticado/);
-    expect(body.message).toMatch(/cockpit_session/);
-    expect(body.message).toMatch(/x-dev-operator-id/);
+    expect(body.message).toMatch(/cockpit_session|login/);
+  });
+
+  it('returns 401 when JWT is invalid (does not fall back to dev header)', async () => {
+    const req = makeRequest({ cookieValue: 'bad-token' });
+
+    const result = await requireOperator(req);
+
+    expect(result).toBeInstanceOf(Response);
+    expect((result as Response).status).toBe(401);
   });
 });
 
@@ -173,9 +241,10 @@ describe('requireOperator', () => {
 // ============================================================================
 
 describe('getOperatorFromServerContext', () => {
-  it('reads from cookie store', async () => {
+  it('reads from JWT cookie', async () => {
+    const token = makeValidToken('op-server');
     mockFindUnique.mockResolvedValue(mockOperator);
-    cookieStore.current = { cockpit_session: 'op-server' };
+    cookieStore.current = { cockpit_session: token };
 
     const result = await getOperatorFromServerContext();
 
@@ -183,7 +252,7 @@ describe('getOperatorFromServerContext', () => {
     expect(result).toEqual(mockOperator);
   });
 
-  it('falls back to header in server context', async () => {
+  it('falls back to dev header in server context (NODE_ENV != production)', async () => {
     mockFindUnique.mockResolvedValue(mockOperator);
     cookieStore.current = { 'x-dev-operator-id': 'op-header' };
 

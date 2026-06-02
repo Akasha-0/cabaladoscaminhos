@@ -1,44 +1,44 @@
 // src/lib/auth/operator-session.ts
-// Resolução da sessão do Operator (terapeuta) a partir de uma requisição HTTP.
+// Resolução da sessão do Operator (terapeuta) — Fase 8 com JWT real.
 //
-// Stub explícito (Doc 04 §1, Fase 7). O fluxo de login real (bcrypt + JWT
-// + refresh token) ainda não está implementado; esta função marca o
-// "ponto de integração" para que, quando o login for cabeado, TODAS as
-// rotas cockpit passem a verificar o operador autenticado sem mudanças
-// adicionais.
+// Fluxo:
+//   1. Cookie `cockpit_session` (JWT assinado) — caminho produção.
+//   2. Header `x-dev-operator-id` — DEV/TEST ONLY (NODE_ENV !== 'production').
+//      Permite testar sem login, mantém compat com testes da Fase 7.
 //
-// Como identificar o operator (em ordem de precedência):
-//   1. Cookie `cockpit_session` (setado pelo fluxo de login real — futuro).
-//   2. Header `x-dev-operator-id` (DEV ONLY; permite testar sem login).
-//   3. Caso contrário: null → 401.
+// A verificação do JWT é obrigatória: se o cookie existe mas o token é
+// inválido/expirado/adulterado, é ignorado (cai pra null → 401).
 //
-// Esta camada NÃO faz a verificação de credencial — apenas lê um
-// identificador e carrega o Operator do banco. A integridade do
-// identificador é responsabilidade do cookie/header emitter.
+// Helpers de Server Components / Server Actions ficam em
+// `getOperatorFromServerContext` (mesma precedência).
 
 import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import type { Operator } from '@prisma/client';
+import {
+  OPERATOR_TOKEN_COOKIE,
+  verifyOperatorToken,
+} from './operator-jwt';
 
-const COOKIE_NAME = 'cockpit_session';
 const DEV_HEADER = 'x-dev-operator-id';
 
 /**
- * Lê o operatorId da requisição via cookie ou header de dev.
- * Retorna `null` se nenhum for encontrado.
+ * Lê o token JWT do cookie da requisição.
+ * Retorna `null` se o cookie não existir ou o token for inválido.
  */
-async function readOperatorIdFromRequest(request: NextRequest): Promise<string | null> {
-  // 1) Cookie (padrão em produção — setado pelo fluxo de login)
+async function readJwtFromRequest(request: NextRequest): Promise<string | null> {
   const cookieStore = await cookies();
-  const fromCookie = cookieStore.get(COOKIE_NAME)?.value;
-  if (fromCookie) return fromCookie;
+  return cookieStore.get(OPERATOR_TOKEN_COOKIE)?.value ?? null;
+}
 
-  // 2) Header dev-only (úteis em testes e preview)
-  const fromHeader = request.headers.get(DEV_HEADER);
-  if (fromHeader) return fromHeader;
-
-  return null;
+/**
+ * Em dev/test, lê o operatorId do header de fallback.
+ * Em produção, retorna sempre null (header desabilitado).
+ */
+async function readDevHeaderFromRequest(request: NextRequest): Promise<string | null> {
+  if (process.env.NODE_ENV === 'production') return null;
+  return request.headers.get(DEV_HEADER);
 }
 
 /**
@@ -49,13 +49,32 @@ async function readOperatorIdFromRequest(request: NextRequest): Promise<string |
 export async function getOperatorFromRequest(
   request: NextRequest
 ): Promise<Operator | null> {
-  const operatorId = await readOperatorIdFromRequest(request);
-  if (!operatorId) return null;
+  // 1) Cookie JWT (caminho de produção)
+  const token = await readJwtFromRequest(request);
+  if (token) {
+    const payload = verifyOperatorToken(token);
+    if (payload) {
+      return loadOperator(payload.sub);
+    }
+    // Token inválido — não tenta o dev header (cookie adulterado/expirado
+    // indica tentativa de bypass; cai direto pra 401).
+    return null;
+  }
 
+  // 2) Dev header (apenas NODE_ENV !== 'production')
+  const devOperatorId = await readDevHeaderFromRequest(request);
+  if (devOperatorId) {
+    return loadOperator(devOperatorId);
+  }
+
+  return null;
+}
+
+/** Carrega Operator do DB; tolera falhas de conexão. */
+async function loadOperator(id: string): Promise<Operator | null> {
   try {
-    return await prisma.operator.findUnique({ where: { id: operatorId } });
+    return await prisma.operator.findUnique({ where: { id } });
   } catch (err) {
-    // Log sem expor PII; mantém o helper resistente a falhas de DB.
     console.error('[operator-session] DB lookup failed', err);
     return null;
   }
@@ -63,7 +82,6 @@ export async function getOperatorFromRequest(
 
 /**
  * Variante "guard": resolve o Operator OU devolve um NextResponse 401.
- * Use em rotas que requerem operador autenticado:
  *
  *   const operatorOrResponse = await requireOperator(request);
  *   if (operatorOrResponse instanceof NextResponse) return operatorOrResponse;
@@ -78,7 +96,7 @@ export async function requireOperator(
       {
         error: 'Não autenticado',
         message:
-          'Operator não identificado. Forneça o cookie `cockpit_session` ou o header `x-dev-operator-id` (dev only).',
+          'Operator não identificado. Faça login em /api/operator/auth/login para obter o cookie de sessão.',
       },
       { status: 401 }
     );
@@ -87,8 +105,7 @@ export async function requireOperator(
 }
 
 // ============================================================================
-// Helpers de servidor (sem NextRequest) — para uso em Server Components
-// e Server Actions, onde a fonte do identificador é diferente.
+// Helpers de servidor (sem NextRequest)
 // ============================================================================
 
 /**
@@ -99,14 +116,21 @@ export async function getOperatorFromServerContext(): Promise<Operator | null> {
   const cookieStore = await cookies();
   const headerStore = await headers();
 
-  const operatorId =
-    cookieStore.get(COOKIE_NAME)?.value ?? headerStore.get(DEV_HEADER);
-  if (!operatorId) return null;
-
-  try {
-    return await prisma.operator.findUnique({ where: { id: operatorId } });
-  } catch (err) {
-    console.error('[operator-session] DB lookup failed', err);
+  // 1) Cookie JWT
+  const token = cookieStore.get(OPERATOR_TOKEN_COOKIE)?.value ?? null;
+  if (token) {
+    const payload = verifyOperatorToken(token);
+    if (payload) {
+      return loadOperator(payload.sub);
+    }
     return null;
   }
+
+  // 2) Dev header
+  if (process.env.NODE_ENV !== 'production') {
+    const devId = headerStore.get(DEV_HEADER);
+    if (devId) return loadOperator(devId);
+  }
+
+  return null;
 }

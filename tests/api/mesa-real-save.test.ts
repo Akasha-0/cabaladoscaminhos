@@ -4,6 +4,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
+import jwt from 'jsonwebtoken';
 
 // Mocks ----------------------------------------------------------------------------
 
@@ -172,20 +173,33 @@ describe('POST /api/mesa-real/save', () => {
     );
   });
 
-  it('authenticates via cookie (not just dev header)', async () => {
+  it('authenticates via JWT cookie (not just dev header)', async () => {
+    // Fase 8: o cookie precisa ser um JWT válido assinado, não mais um
+    // id cru.
+    const validToken = jwt.sign(
+      { sub: 'op-1', role: 'OPERATOR' },
+      process.env.JWT_SECRET || 'dev-only-fallback-secret-do-not-use-in-prod',
+      { algorithm: 'HS256', expiresIn: '7d' }
+    );
+    cookieStore.current = { cockpit_session: validToken };
+
     (prisma.operator.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue(mockOperator);
     (prisma.client.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue({ id: 'client-1' });
     (prisma.reading.create as ReturnType<typeof vi.fn>).mockResolvedValue(mockReading);
 
-    const req = makeRequest(
-      {
+    const req = new NextRequest('http://localhost/api/mesa-real/save', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        cookie: `cockpit_session=${validToken}`,
+      },
+      body: JSON.stringify({
         clientId: 'client-1',
         matrixData: {
           1: { carta: { numero: 1, nome: 'A', significado: 'x' }, odu: { numero: 1, nome: 'O', significado: 'x' } },
         },
-      },
-      'cookie'
-    );
+      }),
+    });
     const { POST } = await import('@/app/api/mesa-real/save/route');
     const res = await POST(req);
     expect(res.status).toBe(201);
