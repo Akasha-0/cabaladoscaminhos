@@ -24,15 +24,12 @@ _Nenhum._
 ### HIGH
 _Nenhum._
 
-### MEDIUM (1)
+### MEDIUM (1) — **RECLASSIFICADO COMO FALSO POSITIVO** (cycle-121)
 
 **`src/lib/auth/operator-mfa.ts`** — `MFA_ENCRYPTION_KEY` sem validação early-startup.
-- Schema documenta que `secretEncrypted` é cifrado com `MFA_ENCRYPTION_KEY`. Erro pode aparecer só no uso, dando 500.
-- **Fix sugerido** (próximo ciclo):
-  ```ts
-  const MFA_KEY = process.env.MFA_ENCRYPTION_KEY;
-  if (!MFA_KEY) throw new Error('MFA_ENCRYPTION_KEY required for /auth/mfa/*');
-  ```
+- ~~Schema documenta que `secretEncrypted` é cifrado com `MFA_ENCRYPTION_KEY`. Erro pode aparecer só no uso, dando 500.~~
+- **Verificação cycle-121:** validação JÁ EXISTE em `src/lib/auth/operator-totp.ts:91-95, 106-143` (helper de criptografia). Lança erro explícito se a env var faltar em produção. O fluxo está coberto — o instinto `lazy-compute-env-config-not-module-load` está sendo respeitado.
+- **Status:** ✅ Resolvido retroativamente. Sem ação necessária.
 
 ### LOW (2)
 1. `prisma/schema.prisma` — `recoveryCodesHash: String` JSON workaround; considerar `Json` type em PG final.
