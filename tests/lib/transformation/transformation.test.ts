@@ -1,10 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+// @ts-ignore
 import {
   getData,
   getDataById,
   getDataByCategory,
   TransformationData,
 } from '../../../src/lib/transformation/transformation-data';
+// @ts-ignore
 import {
   trackProgress,
   getProgress,
