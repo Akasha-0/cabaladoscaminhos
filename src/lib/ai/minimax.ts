@@ -15,7 +15,7 @@ const DEFAULT_MAX_TOKENS = 1000;
 // ERROR TYPES
 // ============================================================
 
-export class MinimaxError extends Error {
+class MinimaxError extends Error {
   constructor(
     message: string,
     public statusCode?: number,
@@ -78,7 +78,7 @@ export async function generateMinimaxResponse(
 /**
  * Stream a response from Minimax
  */
-export async function* streamMinimaxResponse(
+async function* streamMinimaxResponse(
   messages: ChatMessage[],
   options: {
     model?: string;

@@ -15,7 +15,7 @@ export interface MatrixData {
 }
 
 // Schema for creating a reading
-export const createReadingSchema = z.object({
+const createReadingSchema = z.object({
   clientId: z.string().min(1, 'clientId é obrigatório'),
   userId: z.string().min(1, 'userId é obrigatório'),
   matrixData: z.record(z.number(z.any())).optional(),
@@ -131,7 +131,7 @@ export async function deleteReading(readingId: string) {
 // ============================================================
 
 // Schema for creating/updating a report
-export const saveReportSchema = z.object({
+const saveReportSchema = z.object({
   readingId: z.string().min(1, 'readingId é obrigatório'),
   content: z.record(z.unknown()),
   pdfUrl: z.string().url().optional().nullable(),
@@ -186,7 +186,7 @@ export async function getReportByReading(readingId: string) {
 /**
  * Gets a report by ID
  */
-export async function getReport(reportId: string) {
+async function getReport(reportId: string) {
   return prisma.report.findUnique({
     where: { id: reportId },
     include: {

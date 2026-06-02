@@ -94,11 +94,11 @@ export function getData(): OsiData[] {
   return OSI_DATA;
 }
 
-export function getDataById(id: string): OsiData | undefined {
+function getDataById(id: string): OsiData | undefined {
   return OSI_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OsiData[] {
+function searchData(query: string): OsiData[] {
   const q = query.toLowerCase();
   return OSI_DATA.filter(
     (o) =>
@@ -110,10 +110,10 @@ export function searchData(query: string): OsiData[] {
   );
 }
 
-export function getOsiByElement(element: string): OsiData[] {
+function getOsiByElement(element: string): OsiData[] {
   return OSI_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getOsiByDay(day: string): OsiData[] {
+function getOsiByDay(day: string): OsiData[] {
   return OSI_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }

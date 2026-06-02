@@ -250,30 +250,30 @@ export function getData(): OgunData {
   return OGUN_DATA;
 }
 
-export function getDataById(id: string): OgunData | undefined {
+function getDataById(id: string): OgunData | undefined {
   return id === 'ogun' ? OGUN_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return OGUN_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return OGUN_DATA.ritualPractices;
 }
 
-export function getHealingPractices(): string[] {
+function getHealingPractices(): string[] {
   return OGUN_DATA.healingPractices;
 }
 
-export function getSacredTrees(): string[] {
+function getSacredTrees(): string[] {
   return OGUN_DATA.sacredTrees;
 }
 
-export function getOgunByElement(element: string): OgunData | undefined {
+function getOgunByElement(element: string): OgunData | undefined {
   return OGUN_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OGUN_DATA : undefined;
 }
 
-export function getOgunByPlanet(planet: string): OgunData | undefined {
+function getOgunByPlanet(planet: string): OgunData | undefined {
   return OGUN_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? OGUN_DATA : undefined;
 }

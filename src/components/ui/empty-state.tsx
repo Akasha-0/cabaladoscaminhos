@@ -12,7 +12,7 @@ export interface EmptyStateProps {
   };
 }
 
-export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
       {icon && (
@@ -42,7 +42,7 @@ export interface LoadingStateProps {
   message?: string;
 }
 
-export function LoadingState({ message = 'Carregando...' }: LoadingStateProps) {
+function LoadingState({ message = 'Carregando...' }: LoadingStateProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
       <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />

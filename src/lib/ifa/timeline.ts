@@ -245,7 +245,7 @@ function getPhaseTitle(phase: TimelinePhase, oduNum: number): string {
 /**
  * Get timeline for multiple Odus (combined reading)
  */
-export function getCombinedTimeline(odus: (OduInfo | number)[]): OduTimeline[] {
+function getCombinedTimeline(odus: (OduInfo | number)[]): OduTimeline[] {
   return odus.map(odu => getOduTimeline(odu));
 }
 
@@ -274,7 +274,7 @@ export function getPhaseProgress(timeline: OduTimeline, phase: TimelinePhase): n
 /**
  * Get next phase in the timeline
  */
-export function getNextPhase(currentPhase: TimelinePhase): TimelinePhase | null {
+function getNextPhase(currentPhase: TimelinePhase): TimelinePhase | null {
   const phases: TimelinePhase[] = [
     'iniciacao',
     'desenvolvimento',
@@ -291,7 +291,7 @@ export function getNextPhase(currentPhase: TimelinePhase): TimelinePhase | null 
 /**
  * Get milestone dates for timeline
  */
-export function getTimelineMilestones(timeline: OduTimeline): {
+function getTimelineMilestones(timeline: OduTimeline): {
   day: number;
   event: TimelineEvent;
   label: string;

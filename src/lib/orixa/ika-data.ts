@@ -130,11 +130,11 @@ export function getData(): IkaData[] {
   return IKA_DATA;
 }
 
-export function getDataById(id: string): IkaData | undefined {
+function getDataById(id: string): IkaData | undefined {
   return IKA_DATA.find((i) => i.id === id);
 }
 
-export function searchIka(query: string): IkaData[] {
+function searchIka(query: string): IkaData[] {
   const q = query.toLowerCase();
   return IKA_DATA.filter(
     (i) =>
@@ -145,13 +145,13 @@ export function searchIka(query: string): IkaData[] {
   );
 }
 
-export function getIkaByElement(element: string): IkaData[] {
+function getIkaByElement(element: string): IkaData[] {
   return IKA_DATA.filter((i) =>
     i.element.toLowerCase().includes(element.toLowerCase())
   );
 }
 
-export function getIkaByRitual(ritualName: string): IkaData | undefined {
+function getIkaByRitual(ritualName: string): IkaData | undefined {
   return IKA_DATA.find((i) =>
     i.ritualPractices.some((r) =>
       r.name.toLowerCase().includes(ritualName.toLowerCase())

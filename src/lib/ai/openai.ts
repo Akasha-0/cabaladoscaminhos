@@ -24,7 +24,7 @@ const CIRCUIT_BREAKER_TIMEOUT_MS = parseInt(process.env.OPENAI_CIRCUIT_TIMEOUT_M
 // ERROR TYPES
 // ============================================================
 
-export class AIError extends Error {
+class AIError extends Error {
   constructor(
     message: string,
     public readonly code: string,
@@ -36,7 +36,7 @@ export class AIError extends Error {
   }
 }
 
-export class CircuitBreakerOpenError extends AIError {
+class CircuitBreakerOpenError extends AIError {
   constructor() {
     super(
       'Circuit breaker is open - service temporarily unavailable',
@@ -48,7 +48,7 @@ export class CircuitBreakerOpenError extends AIError {
   }
 }
 
-export class RateLimitError extends AIError {
+class RateLimitError extends AIError {
   constructor(
     public readonly retryAfterMs?: number
   ) {
@@ -133,7 +133,7 @@ function getOpenAIClient(): OpenAI {
   return openaiClient;
 }
 
-export function resetOpenAIClient(): void {
+function resetOpenAIClient(): void {
   openaiClient = null;
 }
 
@@ -146,7 +146,7 @@ export interface StreamChunk {
   done: boolean;
 }
 
-export async function createChatCompletionStream(
+async function createChatCompletionStream(
   options: ChatCompletionOptions
 ): Promise<AsyncIterable<StreamChunk>> {
   const client = getOpenAIClient();
@@ -338,7 +338,7 @@ export async function createChatCompletion(
 // SEND MESSAGE WITH SYSTEM PROMPT
 // ============================================================
 
-export async function sendMessage(
+async function sendMessage(
   messages: ChatMessage[],
   systemPrompt?: string
 ): Promise<AIResponse> {
@@ -357,7 +357,7 @@ export async function sendMessage(
 // UTILITY: Get circuit breaker status
 // ============================================================
 
-export function getCircuitBreakerStatus(): {
+function getCircuitBreakerStatus(): {
   isOpen: boolean;
   failures: number;
   timeSinceLastFailure: number;
@@ -373,7 +373,7 @@ export function getCircuitBreakerStatus(): {
 // UTILITY: Reset circuit breaker
 // ============================================================
 
-export function resetCircuitBreaker(): void {
+function resetCircuitBreaker(): void {
   circuitState.failures = 0;
   circuitState.lastFailureTime = 0;
   circuitState.isOpen = false;

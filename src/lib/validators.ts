@@ -48,12 +48,12 @@ export const senhaSchema = z
   .regex(/[a-z]/, "Senha deve conter pelo menos uma letra minúscula")
   .regex(/[0-9]/, "Senha deve conter pelo menos um número");
 
-export const horaNascimentoSchema = z
+const horaNascimentoSchema = z
   .string()
   .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, "Hora deve estar no formato HH:MM")
   .optional();
 
-export const localNascimentoSchema = z
+const localNascimentoSchema = z
   .string()
   .min(2, "Local deve ter pelo menos 2 caracteres")
   .max(200, "Local deve ter no máximo 200 caracteres")
@@ -102,7 +102,7 @@ export const mapaNatalInputSchema = z.object({
 
 export type MapaNatalInput = z.infer<typeof mapaNatalInputSchema>;
 
-export const transitosInputSchema = z.object({
+const transitosInputSchema = z.object({
   dataAtual: dataNascimentoSchema.optional(),
 });
 
@@ -112,7 +112,7 @@ export type TransitosInput = z.infer<typeof transitosInputSchema>;
 // CHAT VALIDATORS
 // ============================================================
 
-export const chatMensagemSchema = z.object({
+const chatMensagemSchema = z.object({
   conteudo: z
     .string()
     .min(1, "Mensagem não pode estar vazia")
@@ -126,7 +126,7 @@ export type ChatMensagemInput = z.infer<typeof chatMensagemSchema>;
 // CYCLES VALIDATORS
 // ============================================================
 
-export const ciclosInputSchema = z.object({
+const ciclosInputSchema = z.object({
   dataNascimento: dataNascimentoSchema,
 });
 
@@ -136,7 +136,7 @@ export type CiclosInput = z.infer<typeof ciclosInputSchema>;
 // CREDITS VALIDATORS
 // ============================================================
 
-export const creditosInputSchema = z.object({
+const creditosInputSchema = z.object({
   quantidade: z.number().int().positive("Quantidade deve ser positiva").max(10000, "Máximo de 10000"),
   operacao: z.enum(["adicionar", "debitar"]),
   descricao: z.string().max(500).optional(),
@@ -148,7 +148,7 @@ export type CreditosInput = z.infer<typeof creditosInputSchema>;
 // ODÚS VALIDATORS
 // ============================================================
 
-export const odusInputSchema = z.object({
+const odusInputSchema = z.object({
   dataNascimento: dataNascimentoSchema.optional(),
   nomeCompleto: nomeCompletoSchema.optional(),
 });
@@ -159,7 +159,7 @@ export type OdusInput = z.infer<typeof odusInputSchema>;
 // INSIGHTS VALIDATORS
 // ============================================================
 
-export const insightDiarioInputSchema = z.object({
+const insightDiarioInputSchema = z.object({
   userId: z.string().cuid("ID de usuário inválido").optional(),
 });
 

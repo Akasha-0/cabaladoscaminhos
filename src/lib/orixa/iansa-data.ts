@@ -86,11 +86,11 @@ export function getData(): IansaData[] {
   return IANSA_DATA;
 }
 
-export function getDataById(id: string): IansaData | undefined {
+function getDataById(id: string): IansaData | undefined {
   return IANSA_DATA.find((i) => i.id === id);
 }
 
-export function searchData(query: string): IansaData[] {
+function searchData(query: string): IansaData[] {
   const q = query.toLowerCase();
   return IANSA_DATA.filter(
     (i) =>
@@ -102,6 +102,6 @@ export function searchData(query: string): IansaData[] {
   );
 }
 
-export function getIansaByElement(element: string): IansaData[] {
+function getIansaByElement(element: string): IansaData[] {
   return IANSA_DATA.filter((i) => i.element.toLowerCase().includes(element.toLowerCase()));
 }

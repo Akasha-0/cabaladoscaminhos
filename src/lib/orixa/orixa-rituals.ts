@@ -321,14 +321,14 @@ export function getRituals(): Ritual[] {
   return ORIXA_RITUALS;
 }
 
-export function getRitualsByOrixa(orixaId: string): Ritual[] {
+function getRitualsByOrixa(orixaId: string): Ritual[] {
   return ORIXA_RITUALS.filter((ritual) => ritual.orixaId === orixaId);
 }
 
-export function getRitualsByType(type: RitualType): Ritual[] {
+function getRitualsByType(type: RitualType): Ritual[] {
   return ORIXA_RITUALS.filter((ritual) => ritual.type === type);
 }
 
-export function getRitualById(id: string): Ritual | undefined {
+function getRitualById(id: string): Ritual | undefined {
   return ORIXA_RITUALS.find((ritual) => ritual.id === id);
 }

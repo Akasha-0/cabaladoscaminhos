@@ -62,11 +62,11 @@ export function getData(): SuporteData[] {
   return SUPORTE_DATA;
 }
 
-export function getDataById(id: string): SuporteData | undefined {
+function getDataById(id: string): SuporteData | undefined {
   return SUPORTE_DATA.find((s) => s.id === id);
 }
 
-export function searchData(query: string): SuporteData[] {
+function searchData(query: string): SuporteData[] {
   const q = query.toLowerCase();
   return SUPORTE_DATA.filter(
     (s) =>
@@ -78,6 +78,6 @@ export function searchData(query: string): SuporteData[] {
   );
 }
 
-export function getSuporteByElement(element: string): SuporteData[] {
+function getSuporteByElement(element: string): SuporteData[] {
   return SUPORTE_DATA.filter((s) => s.element.toLowerCase().includes(element.toLowerCase()));
 }

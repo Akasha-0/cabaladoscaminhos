@@ -36,7 +36,7 @@ export interface ValidatedRequest<T> {
 /**
  * Parse and validate request body with Zod schema
  */
-export function validateRequestBody<T>(
+function validateRequestBody<T>(
   schema: z.ZodSchema<T>,
   body: unknown
 ): ValidatedRequest<T> {
@@ -59,7 +59,7 @@ export function validateRequestBody<T>(
 /**
  * Parse and validate query parameters with Zod schema
  */
-export function validateQueryParams<T>(
+function validateQueryParams<T>(
   schema: z.ZodSchema<T>,
   params: Record<string, string>
 ): ValidatedRequest<T> {
@@ -92,7 +92,7 @@ interface RateLimitResult {
 // Simple in-memory rate limiter (for production, use Redis)
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
-export function checkRequestRateLimit(
+function checkRequestRateLimit(
   request: NextRequest,
   options: {
     maxRequests?: number;
@@ -196,7 +196,7 @@ export interface AuthResult {
 /**
  * Extract user from request (JWT or Supabase)
  */
-export async function getAuthUser(request: NextRequest): Promise<AuthResult> {
+async function getAuthUser(request: NextRequest): Promise<AuthResult> {
   try {
     // Try to get from cookie (simplified - extend with actual JWT/Supabase validation)
     const cookieHeader = request.headers.get('cookie') || '';
@@ -218,7 +218,7 @@ export async function getAuthUser(request: NextRequest): Promise<AuthResult> {
 // REQUEST ID HELPER
 // ============================================================
 
-export function getRequestId(request: NextRequest): string {
+function getRequestId(request: NextRequest): string {
   return (
     request.headers.get('x-request-id') ||
     `req_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`

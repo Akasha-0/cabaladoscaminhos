@@ -36,7 +36,7 @@ export interface CabalisticNumberInfo {
  * Números Cabalísticos com suas interpretações
  * Os números mestres (11, 22, 33) têm significado espiritual elevado
  */
-export const CABALISTIC_NUMBERS: Record<number, CabalisticNumberInfo> = {
+const CABALISTIC_NUMBERS: Record<number, CabalisticNumberInfo> = {
   1: {
     name: "Iniciador",
     description: "O número 1 representa o princípio masculino, liderança e independência. Você é um pioneiro, alguém que inicia novos ciclos com força e determinação.",
@@ -165,7 +165,7 @@ export interface ElementInfo {
 /**
  * Os quatro elementos clássicos com suas características
  */
-export const ELEMENTS: Record<ElementType, ElementInfo> = {
+const ELEMENTS: Record<ElementType, ElementInfo> = {
   'Agua': {
     name: "Água",
     symbol: "💧",
@@ -228,7 +228,7 @@ export interface OduInfo {
  * Os 16 Odus do Merindilogun com suas características
  * Baseado no sistema tradicional de Ifá
  */
-export const ODUS: Record<string, OduInfo> = {
+const ODUS: Record<string, OduInfo> = {
   'Alafia': {
     number: 1,
     meaning: "Paz, saúde e novos começos. Indica que tudo está bem e que novos ciclos começam.",
@@ -424,7 +424,7 @@ export interface ZodiacSignInfo {
 /**
  * Os 12 signos do zodíaco com suas características
  */
-export const ZODIAC_SIGNS: Record<SignType, ZodiacSignInfo> = {
+const ZODIAC_SIGNS: Record<SignType, ZodiacSignInfo> = {
   'Aries': {
     element: 'Fogo',
     ruler: 'Marte',
@@ -553,7 +553,7 @@ export interface ChakraInfo {
 /**
  * Os 7 chakras principais com suas características
  */
-export const CHAKRAS: Record<ChakraLevel, ChakraInfo> = {
+const CHAKRAS: Record<ChakraLevel, ChakraInfo> = {
   1: {
     name: "Raiz",
     sanskrit: "Muladhara",
@@ -633,62 +633,62 @@ export const CHAKRAS: Record<ChakraLevel, ChakraInfo> = {
 /**
  * Retorna informação do número cabalístico
  */
-export function getCabalisticInfo(number: number): CabalisticNumberInfo | undefined {
+function getCabalisticInfo(number: number): CabalisticNumberInfo | undefined {
   return CABALISTIC_NUMBERS[number];
 }
 
 /**
  * Retorna informação do elemento
  */
-export function getElementInfo(element: ElementType): ElementInfo | undefined {
+function getElementInfo(element: ElementType): ElementInfo | undefined {
   return ELEMENTS[element];
 }
 
 /**
  * Retorna informação do Odu
  */
-export function getOduInfo(oduName: string): OduInfo | undefined {
+function getOduInfo(oduName: string): OduInfo | undefined {
   return ODUS[oduName];
 }
 
 /**
  * Retorna informação do signo
  */
-export function getZodiacInfo(sign: SignType): ZodiacSignInfo | undefined {
+function getZodiacInfo(sign: SignType): ZodiacSignInfo | undefined {
   return ZODIAC_SIGNS[sign];
 }
 
 /**
  * Retorna informação do chakra
  */
-export function getChakraInfo(level: ChakraLevel): ChakraInfo | undefined {
+function getChakraInfo(level: ChakraLevel): ChakraInfo | undefined {
   return CHAKRAS[level];
 }
 
 /**
  * Retorna todos os elementos como array
  */
-export function getAllElements(): ElementType[] {
+function getAllElements(): ElementType[] {
   return ['Agua', 'Fogo', 'Terra', 'Ar'];
 }
 
 /**
  * Retorna todos os signos como array
  */
-export function getAllZodiacSigns(): SignType[] {
+function getAllZodiacSigns(): SignType[] {
   return ['Aries', 'Touro', 'Gemeos', 'Cancer', 'Leao', 'Virgem', 'Libra', 'Escorpiao', 'Sagitario', 'Capricornio', 'Aquario', 'Peixes'];
 }
 
 /**
  * Retorna todos os nomes dos Odus
  */
-export function getAllOduNames(): string[] {
+function getAllOduNames(): string[] {
   return Object.keys(ODUS);
 }
 
 /**
  * Verifica se um número é um número mestre
  */
-export function isMasterNumber(num: number): boolean {
+function isMasterNumber(num: number): boolean {
   return [11, 22, 33].includes(num);
 }

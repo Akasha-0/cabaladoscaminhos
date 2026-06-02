@@ -63,11 +63,11 @@ export function getData(): OaxoareData[] {
   return OAXOARE_DATA;
 }
 
-export function getDataById(id: string): OaxoareData | undefined {
+function getDataById(id: string): OaxoareData | undefined {
   return OAXOARE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OaxoareData[] {
+function searchData(query: string): OaxoareData[] {
   const lowerQuery = query.toLowerCase();
   return OAXOARE_DATA.filter(
     (o) =>

@@ -193,26 +193,26 @@ export function getData(): AroniData {
   return ARONI_DATA;
 }
 
-export function getDataById(id: string): AroniData | undefined {
+function getDataById(id: string): AroniData | undefined {
   return id === 'aroni' ? ARONI_DATA : undefined;
 }
 
-export function getConsciousness(): ConsciousnessData {
+function getConsciousness(): ConsciousnessData {
   return ARONI_DATA.consciousness;
 }
 
-export function getMentalPractices(): MentalPracticeData[] {
+function getMentalPractices(): MentalPracticeData[] {
   return ARONI_DATA.mentalPractices;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return ARONI_DATA.ritualPractices;
 }
 
-export function getGreeting(): string {
+function getGreeting(): string {
   return ARONI_DATA.greeting;
 }
 
-export function getPath(): string {
+function getPath(): string {
   return ARONI_DATA.path;
 }

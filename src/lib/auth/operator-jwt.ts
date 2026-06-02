@@ -19,7 +19,7 @@ import jwt from 'jsonwebtoken';
 
 export const OPERATOR_TOKEN_COOKIE = 'cockpit_session';
 export const OPERATOR_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60; // 7 dias
-export const OPERATOR_TOKEN_TTL_DESCRIPTION = '7d';
+const OPERATOR_TOKEN_TTL_DESCRIPTION = '7d';
 
 const COOKIE_OPTIONS_BASE = {
   httpOnly: true,

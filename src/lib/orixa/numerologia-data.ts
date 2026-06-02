@@ -543,19 +543,19 @@ const NUMEROLOGIA_DATA: NumerologiaData[] = [
   }
 ];
 
-export function getData(): NumerologiaData[] {
+function getData(): NumerologiaData[] {
   return NUMEROLOGIA_DATA;
 }
 
-export function getDataById(id: string): NumerologiaData | undefined {
+function getDataById(id: string): NumerologiaData | undefined {
   return NUMEROLOGIA_DATA.find((n) => n.id === id);
 }
 
-export function getDataByNumero(numero: number): NumerologiaData | undefined {
+function getDataByNumero(numero: number): NumerologiaData | undefined {
   return NUMEROLOGIA_DATA.find((n) => n.numero === numero);
 }
 
-export function searchData(query: string): NumerologiaData[] {
+function searchData(query: string): NumerologiaData[] {
   const lowerQuery = query.toLowerCase();
   return NUMEROLOGIA_DATA.filter((n) =>
     n.nome.toLowerCase().includes(lowerQuery) ||
@@ -566,23 +566,23 @@ export function searchData(query: string): NumerologiaData[] {
   );
 }
 
-export function getDataByPlaneta(planeta: string): NumerologiaData[] {
+function getDataByPlaneta(planeta: string): NumerologiaData[] {
   return NUMEROLOGIA_DATA.filter((n) => n.planeta.toLowerCase().includes(planeta.toLowerCase()));
 }
 
-export function getDataBySefira(sefira: string): NumerologiaData[] {
+function getDataBySefira(sefira: string): NumerologiaData[] {
   return NUMEROLOGIA_DATA.filter((n) => n.sefira.toLowerCase().includes(sefira.toLowerCase()));
 }
 
-export function getDataByElemento(elemento: string): NumerologiaData[] {
+function getDataByElemento(elemento: string): NumerologiaData[] {
   return NUMEROLOGIA_DATA.filter((n) => n.elemento.toLowerCase().includes(elemento.toLowerCase()));
 }
 
-export function getMasterNumbers(): NumerologiaData[] {
+function getMasterNumbers(): NumerologiaData[] {
   return NUMEROLOGIA_DATA.filter((n) => [11, 22, 33].includes(n.numero));
 }
 
-export function getCoreNumbers(): NumerologiaData[] {
+function getCoreNumbers(): NumerologiaData[] {
   return NUMEROLOGIA_DATA.filter((n) => n.numero >= 1 && n.numero <= 9);
 }
 

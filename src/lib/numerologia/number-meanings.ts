@@ -17,7 +17,7 @@ export interface NumberMeaning {
   affirmation: string;
 }
 
-export const numberMeanings: Record<number, NumberMeaning> = {
+const numberMeanings: Record<number, NumberMeaning> = {
   1: {
     numero: 1,
     nome: 'O Sol',

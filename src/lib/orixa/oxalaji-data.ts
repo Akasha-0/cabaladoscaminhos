@@ -37,7 +37,7 @@ export interface OxalajiData {
   periodo: string;
 }
 
-export const OXALAJI_DATA: OxalajiData = {
+const OXALAJI_DATA: OxalajiData = {
   nome: 'Oxalaji',
   nomePortugues: 'Oxalá+Iansã',
   categoria: 'Odu de Fusão',
@@ -77,22 +77,22 @@ export function getData(): OxalajiData {
   return OXALAJI_DATA;
 }
 
-export function getMensagens(): string[] {
+function getMensagens(): string[] {
   return OXALAJI_DATA.mensagens;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return OXALAJI_DATA.quizilas;
 }
 
-export function getEbós(): string[] {
+function getEbós(): string[] {
   return OXALAJI_DATA.ebós;
 }
 
-export function getCores(): string[] {
+function getCores(): string[] {
   return OXALAJI_DATA.cores;
 }
 
-export function getPedras(): string[] {
+function getPedras(): string[] {
   return OXALAJI_DATA.pedras;
 }

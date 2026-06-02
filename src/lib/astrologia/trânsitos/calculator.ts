@@ -28,7 +28,7 @@ function setCachedTransits(key: string, data: Transito[]): void {
   transitCache.set(key, { data, expiresAt: Date.now() + CACHE_TTL_MS });
 }
 
-export function clearTransitCache(): void {
+function clearTransitCache(): void {
   transitCache.clear();
 }
 

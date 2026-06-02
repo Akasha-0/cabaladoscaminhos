@@ -351,11 +351,11 @@ export function getData(): EnergiaData[] {
   return ENERGIAS_DATA;
 }
 
-export function getDataById(id: string): EnergiaData | undefined {
+function getDataById(id: string): EnergiaData | undefined {
   return ENERGIAS_DATA.find((e) => e.id === id);
 }
 
-export function searchData(query: string): EnergiaData[] {
+function searchData(query: string): EnergiaData[] {
   const lowerQuery = query.toLowerCase();
   return ENERGIAS_DATA.filter(
     (e) =>
@@ -367,10 +367,10 @@ export function searchData(query: string): EnergiaData[] {
   );
 }
 
-export function getEnergiasByElement(element: string): EnergiaData[] {
+function getEnergiasByElement(element: string): EnergiaData[] {
   return ENERGIAS_DATA.filter((e) => e.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getEnergiasByQuality(quality: string): EnergiaData[] {
+function getEnergiasByQuality(quality: string): EnergiaData[] {
   return ENERGIAS_DATA.filter((e) => e.quality.toLowerCase().includes(quality.toLowerCase()));
 }

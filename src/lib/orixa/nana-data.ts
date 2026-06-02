@@ -78,15 +78,15 @@ const NANA_DATA: NanaData[] = [
   },
 ];
 
-export function getData(): NanaData[] {
+function getData(): NanaData[] {
   return NANA_DATA;
 }
 
-export function getDataById(id: string): NanaData | undefined {
+function getDataById(id: string): NanaData | undefined {
   return NANA_DATA.find((n) => n.id === id);
 }
 
-export function searchData(query: string): NanaData[] {
+function searchData(query: string): NanaData[] {
   const lowerQuery = query.toLowerCase();
   return NANA_DATA.filter(
     (n) =>
@@ -98,10 +98,10 @@ export function searchData(query: string): NanaData[] {
   );
 }
 
-export function getNanaByDay(day: string): NanaData[] {
+function getNanaByDay(day: string): NanaData[] {
   return NANA_DATA.filter((n) => n.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getNanaByElement(element: string): NanaData[] {
+function getNanaByElement(element: string): NanaData[] {
   return NANA_DATA.filter((n) => n.element.toLowerCase().includes(element.toLowerCase()));
 }

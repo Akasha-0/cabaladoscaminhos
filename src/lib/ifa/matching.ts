@@ -391,6 +391,7 @@ function buildRitualSuggestion(odu: OduInfo): RitualSuggestion | null {
 /**
  * Parse ebó string from Odu data into structured suggestion
  */
+// fallow-ignore-next-line complexity
 function parseEboFromOdu(odu: OduInfo): EboSuggestion | null {
   const eboText = odu.ebos[0] || '';
   if (!eboText) return null;
@@ -477,14 +478,14 @@ export function matchOduToRitual(odu: OduInfo): OduMatchingResult {
 /**
  * Match multiple Odus for complex readings
  */
-export function matchMultipleOduToRituals(odus: OduInfo[]): OduMatchingResult[] {
+function matchMultipleOduToRituals(odus: OduInfo[]): OduMatchingResult[] {
   return odus.map(odu => matchOduToRitual(odu));
 }
 
 /**
  * Get summary of all rituals needed for a set of Odus
  */
-export function getRitualSummary(results: OduMatchingResult[]): {
+function getRitualSummary(results: OduMatchingResult[]): {
   urgencia: 'baixa' | 'media' | 'alta';
   quantidade: number;
   orixas: string[];

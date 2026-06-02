@@ -388,11 +388,11 @@ export function getData(): AncestralRitualData[] {
   return ANCESTRAL_RITUAL_DATA;
 }
 
-export function getDataById(id: string): AncestralRitualData | undefined {
+function getDataById(id: string): AncestralRitualData | undefined {
   return ANCESTRAL_RITUAL_DATA.find((r) => r.id === id);
 }
 
-export function searchData(query: string): AncestralRitualData[] {
+function searchData(query: string): AncestralRitualData[] {
   const lowerQuery = query.toLowerCase();
   return ANCESTRAL_RITUAL_DATA.filter((r) =>
     r.name.toLowerCase().includes(lowerQuery) ||
@@ -403,32 +403,32 @@ export function searchData(query: string): AncestralRitualData[] {
   );
 }
 
-export function getRitualsByCategory(category: string): AncestralRitualData[] {
+function getRitualsByCategory(category: string): AncestralRitualData[] {
   return ANCESTRAL_RITUAL_DATA.filter((r) => r.category === category);
 }
 
-export function getRitualsByOrixa(orixa: string): AncestralRitualData[] {
+function getRitualsByOrixa(orixa: string): AncestralRitualData[] {
   return ANCESTRAL_RITUAL_DATA.filter((r) =>
     r.orixa.some(o => o.toLowerCase().includes(orixa.toLowerCase()))
   );
 }
 
-export function getRitualsByEnergy(energy: string): AncestralRitualData[] {
+function getRitualsByEnergy(energy: string): AncestralRitualData[] {
   return ANCESTRAL_RITUAL_DATA.filter((r) => r.energy.toLowerCase() === energy.toLowerCase());
 }
 
-export function getRitualsByPurpose(purpose: string): AncestralRitualData[] {
+function getRitualsByPurpose(purpose: string): AncestralRitualData[] {
   return ANCESTRAL_RITUAL_DATA.filter((r) =>
     r.purpose.toLowerCase().includes(purpose.toLowerCase())
   );
 }
 
-export function getRitualCategories(): string[] {
+function getRitualCategories(): string[] {
   const categories = new Set(ANCESTRAL_RITUAL_DATA.map((r) => r.category));
   return Array.from(categories);
 }
 
-export function getAllEnergies(): string[] {
+function getAllEnergies(): string[] {
   const energies = new Set(ANCESTRAL_RITUAL_DATA.map((r) => r.energy));
   return Array.from(energies);
 }

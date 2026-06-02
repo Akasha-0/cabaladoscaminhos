@@ -171,35 +171,35 @@ export function getData(): OdiMejiOdu {
   return ODI_MEJI_DATA;
 }
 
-export function getDataById(id: string): OdiMejiOdu | undefined {
+function getDataById(id: string): OdiMejiOdu | undefined {
   return id === 'odi-meji' ? ODI_MEJI_DATA : undefined;
 }
 
-export function getHerbs(): string[] {
+function getHerbs(): string[] {
   return ODI_MEJI_DATA.herbs;
 }
 
-export function getRituals(): Ebo[] {
+function getRituals(): Ebo[] {
   return ODI_MEJI_DATA.ebos;
 }
 
-export function getOrixas(): string[] {
+function getOrixas(): string[] {
   return ODI_MEJI_DATA.orixas;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return ODI_MEJI_DATA.quizilas;
 }
 
-export function getSacredFrequencies(): string[] {
+function getSacredFrequencies(): string[] {
   return ODI_MEJI_DATA.sacredFrequencies;
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return ODI_MEJI_DATA.affirmations;
 }
 
-export function getMeditation(): string {
+function getMeditation(): string {
   return ODI_MEJI_DATA.meditation;
 }
 

@@ -10,7 +10,7 @@ import { ErrorCode } from "./error-handling";
 // LOG LEVELS
 // ============================================================
 
-export enum LogLevel {
+enum LogLevel {
   DEBUG = 0,
   INFO = 1,
   WARN = 2,
@@ -351,7 +351,7 @@ class PerformanceMonitor {
   }
 }
 
-export const performanceMonitor = PerformanceMonitor.getInstance();
+const performanceMonitor = PerformanceMonitor.getInstance();
 
 // ============================================================
 // UTILITY FUNCTIONS
@@ -361,7 +361,7 @@ export function generateRequestId(): string {
   return `req_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
 }
 
-export function createLogContext(request: Request): LogContext {
+function createLogContext(request: Request): LogContext {
   return {
     requestId: generateRequestId(),
     ip: request.headers.get("x-forwarded-for") || undefined,
@@ -371,7 +371,7 @@ export function createLogContext(request: Request): LogContext {
   };
 }
 
-export function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise<Response>>(
+function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise<Response>>(
   handler: T,
   options?: { path?: string }
 ): T {

@@ -80,11 +80,11 @@ export function getData(): AlokeData[] {
   return ALOKE_DATA;
 }
 
-export function getDataById(id: string): AlokeData | undefined {
+function getDataById(id: string): AlokeData | undefined {
   return ALOKE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): AlokeData[] {
+function searchData(query: string): AlokeData[] {
   const q = query.toLowerCase();
   return ALOKE_DATA.filter(
     (o) =>
@@ -95,10 +95,10 @@ export function searchData(query: string): AlokeData[] {
   );
 }
 
-export function getAlokeByElement(element: string): AlokeData[] {
+function getAlokeByElement(element: string): AlokeData[] {
   return ALOKE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getAlokeByDay(day: string): AlokeData[] {
+function getAlokeByDay(day: string): AlokeData[] {
   return ALOKE_DATA.filter((o) => o.dayOfWeek.toLowerCase() === day.toLowerCase());
 }

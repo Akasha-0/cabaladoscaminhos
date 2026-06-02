@@ -51,7 +51,7 @@ export function track(event: string, properties: EventData = {}): void {
  * @param step - Funnel step name: 'views', 'signups', 'first_calculation', 'subscription', 'churn'
  * @param userId - Optional user identifier (uses current user if not provided)
  */
-export function trackFunnelStep(step: FunnelStepName, userId?: string): void {
+function trackFunnelStep(step: FunnelStepName, userId?: string): void {
   const targetUserId = userId || _currentUserId;
   if (!targetUserId) {
     console.warn('trackFunnelStep: No user ID available');
@@ -75,7 +75,7 @@ export function trackFunnelStep(step: FunnelStepName, userId?: string): void {
  * @param userId - User identifier
  * @returns Array of funnel steps with timestamps
  */
-export function getFunnelData(userId: string): FunnelStep[] {
+function getFunnelData(userId: string): FunnelStep[] {
   return _funnelData.get(userId) || [];
 }
 

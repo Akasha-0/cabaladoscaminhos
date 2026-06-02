@@ -31,7 +31,7 @@ export interface SephirotOrixa {
 
 // ─── Sephirot-to-Orixá Mapping ─────────────────────────────────────────────
 
-export const SEPHIROT_ORIXA_MAPPINGS: Record<string, SephirotOrixa> = {
+const SEPHIROT_ORIXA_MAPPINGS: Record<string, SephirotOrixa> = {
   // 1. Kether (Coroa) - Oxalá
   // A coroa divina, o ponto zero da existência. A transcendência suprema onde a consciência
   // encontra o vazio criativo. Conexão com o Orixá da paz, sabedoria e criação primordial.
@@ -201,7 +201,7 @@ export function getSephirotOrixa(sephirah: string): SephirotOrixa | null {
  * Get the Orixá to Sephirot reverse mapping
  * @returns Record mapping each Orixá name to their primary Sephirah
  */
-export function getOrixaSephirot(): Record<string, string> {
+function getOrixaSephirot(): Record<string, string> {
   const result: Record<string, string> = {};
   const seen = new Set<string>();
   // Primary orixás first (deduplicated — first sephirah wins)
@@ -233,7 +233,7 @@ export function getAllSephirotOrixas(): SephirotOrixa[] {
  * Get all Sephirah names
  * @returns Array of Sephirah names
  */
-export function getAllSephiroth(): string[] {
+function getAllSephiroth(): string[] {
   return Object.keys(SEPHIROT_ORIXA_MAPPINGS);
 }
 
@@ -242,7 +242,7 @@ export function getAllSephiroth(): string[] {
  * @param sephirah - The name of the Sephirah to check
  * @returns True if Sephirah exists in mapping
  */
-export function hasSephirotOrixa(sephirah: string): boolean {
+function hasSephirotOrixa(sephirah: string): boolean {
   return sephirah in SEPHIROT_ORIXA_MAPPINGS;
 }
 
@@ -251,7 +251,7 @@ export function hasSephirotOrixa(sephirah: string): boolean {
  * @param path - The path number (1-10)
  * @returns The Sephirot-Orixá mapping or null if not found
  */
-export function getSephirotByPath(path: number): SephirotOrixa | null {
+function getSephirotByPath(path: number): SephirotOrixa | null {
   const entry = Object.values(SEPHIROT_ORIXA_MAPPINGS).find(
     mapping => mapping.numero_caminho === path
   );
@@ -262,7 +262,7 @@ export function getSephirotByPath(path: number): SephirotOrixa | null {
  * Get all Orixá names in the mapping
  * @returns Array of unique Orixá names
  */
-export function getAllOrixas(): string[] {
+function getAllOrixas(): string[] {
   const orixas = new Set<string>();
   for (const mapping of Object.values(SEPHIROT_ORIXA_MAPPINGS)) {
     orixas.add(mapping.orixa);
@@ -278,7 +278,7 @@ export function getAllOrixas(): string[] {
  * @param sephirah - The name of the Sephirah
  * @returns The Orixá name or null if not found
  */
-export function getOrixaBySephirah(sephirah: string): string | null {
+function getOrixaBySephirah(sephirah: string): string | null {
   return SEPHIROT_ORIXA_MAPPINGS[sephirah]?.orixa ?? null;
 }
 
@@ -287,7 +287,7 @@ export function getOrixaBySephirah(sephirah: string): string | null {
  * @param orixa - The name of the Orixá
  * @returns The Sephirah name or null if not found
  */
-export function getSephirahByOrixa(orixa: string): string | null {
+function getSephirahByOrixa(orixa: string): string | null {
   const reverseMap = getOrixaSephirot();
   return reverseMap[orixa] ?? null;
 }
@@ -297,7 +297,7 @@ export function getSephirahByOrixa(orixa: string): string | null {
  * @param elemento - The element name (e.g., 'Fogo', 'Água', 'Ar', 'Terra', 'Éter')
  * @returns Array of Sephirot-Orixá mappings for the given element
  */
-export function getSephirotOrixaByElement(elemento: string): SephirotOrixa[] {
+function getSephirotOrixaByElement(elemento: string): SephirotOrixa[] {
   return Object.values(SEPHIROT_ORIXA_MAPPINGS).filter(
     mapping => mapping.elemento === elemento
   );
@@ -308,7 +308,7 @@ export function getSephirotOrixaByElement(elemento: string): SephirotOrixa[] {
  * @param dia - The day name in Portuguese (e.g., 'Segunda-feira', 'Terça-feira')
  * @returns Array of Sephirot-Orixá mappings for the given day
  */
-export function getSephirotOrixaByDay(dia: string): SephirotOrixa[] {
+function getSephirotOrixaByDay(dia: string): SephirotOrixa[] {
   return Object.values(SEPHIROT_ORIXA_MAPPINGS).filter(
     mapping => mapping.dia_sagrado.includes(dia)
   );

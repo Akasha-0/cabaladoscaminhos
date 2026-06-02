@@ -78,11 +78,11 @@ export function getData(): OzulumData[] {
   return OZULUM_DATA;
 }
 
-export function getDataById(id: string): OzulumData | undefined {
+function getDataById(id: string): OzulumData | undefined {
   return OZULUM_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OzulumData[] {
+function searchData(query: string): OzulumData[] {
   const lowerQuery = query.toLowerCase();
   return OZULUM_DATA.filter(
     (o) =>
@@ -92,6 +92,6 @@ export function searchData(query: string): OzulumData[] {
   );
 }
 
-export function getOzulumByElement(element: string): OzulumData[] {
+function getOzulumByElement(element: string): OzulumData[] {
   return OZULUM_DATA.filter((o) => o.element.toLowerCase() === element.toLowerCase());
 }

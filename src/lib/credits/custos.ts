@@ -17,6 +17,6 @@ export function obterCusto(operacao: TipoOperacao): number {
   return CUSTOS_OPERACOES[operacao];
 }
 
-export function formatarSaldo(saldo: number): string {
+function formatarSaldo(saldo: number): string {
   return `${saldo} crédito${saldo !== 1 ? 's' : ''}`;
 }

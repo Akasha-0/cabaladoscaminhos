@@ -214,5 +214,4 @@ const ChakraBalanceWidget = React.memo(function ChakraBalanceWidget({ className 
   );
 });
 
-export { ChakraBalanceWidget };
 export default ChakraBalanceWidget;

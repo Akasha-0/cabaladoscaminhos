@@ -88,11 +88,11 @@ export function getData(): OxalufiData[] {
   return OXALUFI_DATA;
 }
 
-export function getDataById(id: string): OxalufiData | undefined {
+function getDataById(id: string): OxalufiData | undefined {
   return OXALUFI_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OxalufiData[] {
+function searchData(query: string): OxalufiData[] {
   const q = query.toLowerCase();
   return OXALUFI_DATA.filter(
     (o) =>
@@ -104,10 +104,10 @@ export function searchData(query: string): OxalufiData[] {
   );
 }
 
-export function getOxalufiByDay(day: string): OxalufiData[] {
+function getOxalufiByDay(day: string): OxalufiData[] {
   return OXALUFI_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOxalufiByElement(element: string): OxalufiData[] {
+function getOxalufiByElement(element: string): OxalufiData[] {
   return OXALUFI_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

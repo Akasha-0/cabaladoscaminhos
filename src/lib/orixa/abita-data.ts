@@ -82,11 +82,11 @@ export function getData(): AbitaData[] {
   return ABITA_DATA;
 }
 
-export function getDataById(id: string): AbitaData | undefined {
+function getDataById(id: string): AbitaData | undefined {
   return ABITA_DATA.find((a) => a.id === id);
 }
 
-export function searchData(query: string): AbitaData[] {
+function searchData(query: string): AbitaData[] {
   const lowerQuery = query.toLowerCase();
   return ABITA_DATA.filter(
     (a) =>
@@ -98,22 +98,22 @@ export function searchData(query: string): AbitaData[] {
   );
 }
 
-export function getAbitaByDay(day: string): AbitaData[] {
+function getAbitaByDay(day: string): AbitaData[] {
   return ABITA_DATA.filter((a) => a.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getAbitaByElement(element: string): AbitaData[] {
+function getAbitaByElement(element: string): AbitaData[] {
   return ABITA_DATA.filter((a) => a.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return ABITA_DATA.flatMap((a) => a.sacredObjects);
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return ABITA_DATA.flatMap((a) => a.invocationPhrases);
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ABITA_DATA.flatMap((a) => a.domains);
 }

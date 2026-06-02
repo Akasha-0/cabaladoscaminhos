@@ -301,7 +301,7 @@ export interface UserGrowthMetricsProps {
   loading?: boolean;
 }
 
-export function UserGrowthMetrics({ className = '', loading = false }: UserGrowthMetricsProps) {
+function UserGrowthMetrics({ className = '', loading = false }: UserGrowthMetricsProps) {
   if (loading) {
     return (
       <div className={cn('space-y-6', className)}>

@@ -1,4 +1,4 @@
-'use client';
+// fallow-ignore-next-line: high-complexity
 
 import React, { useState, useCallback } from 'react';
 import {

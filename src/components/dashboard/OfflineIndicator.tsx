@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { WifiOff } from 'lucide-react';
 
-export function OfflineIndicator() {
+function OfflineIndicator() {
   const [isOnline, setIsOnline] = useState(true);
   const [showBanner, setShowBanner] = useState(false);
 

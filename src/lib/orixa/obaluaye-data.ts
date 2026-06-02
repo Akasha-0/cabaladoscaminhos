@@ -88,11 +88,11 @@ export function getData(): ObaluayeData[] {
   return OBALUAYE_DATA;
 }
 
-export function getDataById(id: string): ObaluayeData | undefined {
+function getDataById(id: string): ObaluayeData | undefined {
   return OBALUAYE_DATA.find((e) => e.id === id);
 }
 
-export function searchData(query: string): ObaluayeData[] {
+function searchData(query: string): ObaluayeData[] {
   const lowerQuery = query.toLowerCase();
   return OBALUAYE_DATA.filter(
     (e) =>

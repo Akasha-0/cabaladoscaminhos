@@ -151,38 +151,38 @@ export function getData(): LokociData {
   return LOKOCI_DATA;
 }
 
-export function getDataById(id: string): LokociData | undefined {
+function getDataById(id: string): LokociData | undefined {
   return id === 'lokoci' ? LOKOCI_DATA : undefined;
 }
 
-export function getTransformationAspects(): TransformationAspect[] {
+function getTransformationAspects(): TransformationAspect[] {
   return transformationAspects;
 }
 
-export function getCrossroadPaths(): CrossroadPath[] {
+function getCrossroadPaths(): CrossroadPath[] {
   return crossroadPaths;
 }
 
-export function getDualityForms(): DualityForm[] {
+function getDualityForms(): DualityForm[] {
   return dualityForms;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return LOKOCI_DATA.sacredObjects;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return LOKOCI_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return LOKOCI_DATA.domains;
 }
 
-export function getLokociByElement(element: string): LokociData | undefined {
+function getLokociByElement(element: string): LokociData | undefined {
   return LOKOCI_DATA.element.toLowerCase().includes(element.toLowerCase()) ? LOKOCI_DATA : undefined;
 }
 
-export function getLokociByDay(day: string): LokociData | undefined {
+function getLokociByDay(day: string): LokociData | undefined {
   return LOKOCI_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? LOKOCI_DATA : undefined;
 }

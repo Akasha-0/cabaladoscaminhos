@@ -183,35 +183,35 @@ export function getData(): OsaMejiOdu {
   return OSA_MEJI_DATA;
 }
 
-export function getDataById(id: string): OsaMejiOdu | undefined {
+function getDataById(id: string): OsaMejiOdu | undefined {
   return id === 'osa-meji' ? OSA_MEJI_DATA : undefined;
 }
 
-export function getHerbs(): string[] {
+function getHerbs(): string[] {
   return OSA_MEJI_DATA.herbs;
 }
 
-export function getRituals(): Ebo[] {
+function getRituals(): Ebo[] {
   return OSA_MEJI_DATA.ebos;
 }
 
-export function getOrixas(): string[] {
+function getOrixas(): string[] {
   return OSA_MEJI_DATA.orixas;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return OSA_MEJI_DATA.quizilas;
 }
 
-export function getSacredFrequencies(): string[] {
+function getSacredFrequencies(): string[] {
   return OSA_MEJI_DATA.sacredFrequencies;
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return OSA_MEJI_DATA.affirmations;
 }
 
-export function getMeditation(): string {
+function getMeditation(): string {
   return OSA_MEJI_DATA.meditation;
 }
 

@@ -116,11 +116,11 @@ export function getData(): AvangaData[] {
   return AVANGA_DATA;
 }
 
-export function getDataById(id: string): AvangaData | undefined {
+function getDataById(id: string): AvangaData | undefined {
   return AVANGA_DATA.find((a) => a.id === id);
 }
 
-export function searchData(query: string): AvangaData[] {
+function searchData(query: string): AvangaData[] {
   const q = query.toLowerCase();
   return AVANGA_DATA.filter(
     (a) =>
@@ -132,10 +132,10 @@ export function searchData(query: string): AvangaData[] {
   );
 }
 
-export function getAvangaByDay(day: string): AvangaData[] {
+function getAvangaByDay(day: string): AvangaData[] {
   return AVANGA_DATA.filter((a) => a.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getAvangaByElement(element: string): AvangaData[] {
+function getAvangaByElement(element: string): AvangaData[] {
   return AVANGA_DATA.filter((a) => a.element.toLowerCase().includes(element.toLowerCase()));
 }

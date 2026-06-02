@@ -64,11 +64,11 @@ export function getData(): OdobandeData[] {
   return ODOBANDE_DATA;
 }
 
-export function getDataById(id: string): OdobandeData | undefined {
+function getDataById(id: string): OdobandeData | undefined {
   return ODOBANDE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OdobandeData[] {
+function searchData(query: string): OdobandeData[] {
   const lowerQuery = query.toLowerCase();
   return ODOBANDE_DATA.filter(
     (o) =>
@@ -81,10 +81,10 @@ export function searchData(query: string): OdobandeData[] {
   );
 }
 
-export function getOdobandeByDay(day: string): OdobandeData[] {
+function getOdobandeByDay(day: string): OdobandeData[] {
   return ODOBANDE_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOdobandeByElement(element: string): OdobandeData[] {
+function getOdobandeByElement(element: string): OdobandeData[] {
   return ODOBANDE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

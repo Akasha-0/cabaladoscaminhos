@@ -1,6 +1,6 @@
 // PT-BR Translations for Cabala dos Caminhos
 
-export const ptBR = {
+const ptBR = {
   common: {
     buttons: {
       submit: 'Enviar',

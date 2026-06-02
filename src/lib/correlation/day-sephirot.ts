@@ -50,7 +50,7 @@ export interface DaySephirot {
 
 // ─── Day-to-Sephirot Mapping ──────────────────────────────────────────────────
 
-export const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
+const DAY_SEPHIROT_MAP: Record<string, DaySephirot> = {
   'Domingo': {
     dia: 'Domingo',
     dia_en: 'Sunday',
@@ -272,7 +272,7 @@ export function getAllDaySephiroth(): DaySephirot[] {
  * Alias for getAllDaySephiroth
  * @returns Array of all correlation mappings
  */
-export function getAllDaySephiroths(): DaySephirot[] {
+function getAllDaySephiroths(): DaySephirot[] {
   return getAllDaySephiroth();
 }
 

@@ -260,30 +260,30 @@ export function getData(): LogbaraData {
   return LOGBARA_DATA;
 }
 
-export function getDataById(id: string): LogbaraData | undefined {
+function getDataById(id: string): LogbaraData | undefined {
   return id === 'logbara' ? LOGBARA_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return LOGBARA_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return LOGBARA_DATA.ritualPractices;
 }
 
-export function getHealingPractices(): string[] {
+function getHealingPractices(): string[] {
   return LOGBARA_DATA.healingPractices;
 }
 
-export function getSacredTrees(): string[] {
+function getSacredTrees(): string[] {
   return LOGBARA_DATA.sacredTrees;
 }
 
-export function getLogbaraByElement(element: string): LogbaraData | undefined {
+function getLogbaraByElement(element: string): LogbaraData | undefined {
   return LOGBARA_DATA.element.toLowerCase().includes(element.toLowerCase()) ? LOGBARA_DATA : undefined;
 }
 
-export function getLogbaraByPlanet(planet: string): LogbaraData | undefined {
+function getLogbaraByPlanet(planet: string): LogbaraData | undefined {
   return LOGBARA_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? LOGBARA_DATA : undefined;
 }

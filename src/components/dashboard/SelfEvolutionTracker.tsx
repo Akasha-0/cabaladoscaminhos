@@ -652,7 +652,7 @@ function MomentumIndicator({ momentum, weeklyGoal }: MomentumIndicatorProps) {
 // MAIN COMPONENT
 // ============================================================
 
-export function SelfEvolutionTracker({
+function SelfEvolutionTracker({
   className = '',
   userId,
   userName = 'Buscador',

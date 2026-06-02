@@ -62,11 +62,11 @@ export function getData(): PropositoData[] {
   return PROPOSITO_DATA;
 }
 
-export function getDataById(id: string): PropositoData | undefined {
+function getDataById(id: string): PropositoData | undefined {
   return PROPOSITO_DATA.find((p) => p.id === id);
 }
 
-export function searchData(query: string): PropositoData[] {
+function searchData(query: string): PropositoData[] {
   const q = query.toLowerCase();
   return PROPOSITO_DATA.filter(
     (p) =>
@@ -78,6 +78,6 @@ export function searchData(query: string): PropositoData[] {
   );
 }
 
-export function getPropositoByElement(element: string): PropositoData[] {
+function getPropositoByElement(element: string): PropositoData[] {
   return PROPOSITO_DATA.filter((p) => p.element.toLowerCase().includes(element.toLowerCase()));
 }

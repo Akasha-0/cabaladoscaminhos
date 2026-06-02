@@ -12,7 +12,7 @@
 // Version: 1.1.0
 // Last Updated: 2026-05-30
 // ─── Master Number Type ─────────────────────────────────────────────────
-export const MASTER_NUMBERS = [11, 22, 33] as const;
+const MASTER_NUMBERS = [11, 22, 33] as const;
 export type MasterNumber = typeof MASTER_NUMBERS[number];
 export function isMasterNumber(n: number): n is MasterNumber {
   return MASTER_NUMBERS.includes(n as MasterNumber);

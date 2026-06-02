@@ -64,11 +64,11 @@ export function getData(): AlagbedoData[] {
   return ALAGBEDO_DATA;
 }
 
-export function getDataById(id: string): AlagbedoData | undefined {
+function getDataById(id: string): AlagbedoData | undefined {
   return ALAGBEDO_DATA.find((a) => a.id === id);
 }
 
-export function searchData(query: string): AlagbedoData[] {
+function searchData(query: string): AlagbedoData[] {
   const lowerQuery = query.toLowerCase();
   return ALAGBEDO_DATA.filter(
     (a) =>
@@ -80,10 +80,10 @@ export function searchData(query: string): AlagbedoData[] {
   );
 }
 
-export function getAlagbedoByDay(day: string): AlagbedoData[] {
+function getAlagbedoByDay(day: string): AlagbedoData[] {
   return ALAGBEDO_DATA.filter((a) => a.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getAlagbedoByElement(element: string): AlagbedoData[] {
+function getAlagbedoByElement(element: string): AlagbedoData[] {
   return ALAGBEDO_DATA.filter((a) => a.element.toLowerCase().includes(element.toLowerCase()));
 }

@@ -118,11 +118,11 @@ export function getData(): AraData[] {
   return ARA_DATA;
 }
 
-export function getDataById(id: string): AraData | undefined {
+function getDataById(id: string): AraData | undefined {
   return ARA_DATA.find((a) => a.id === id);
 }
 
-export function searchData(query: string): AraData[] {
+function searchData(query: string): AraData[] {
   const lowerQuery = query.toLowerCase();
   return ARA_DATA.filter(
     (a) =>
@@ -133,10 +133,10 @@ export function searchData(query: string): AraData[] {
   );
 }
 
-export function getAraByDay(day: string): AraData[] {
+function getAraByDay(day: string): AraData[] {
   return ARA_DATA.filter((a) => a.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getAraByElement(element: string): AraData[] {
+function getAraByElement(element: string): AraData[] {
   return ARA_DATA.filter((a) => a.element.toLowerCase().includes(element.toLowerCase()));
 }

@@ -211,26 +211,26 @@ export function getData(): PagamentoData {
   return PAGAMENTO_DATA;
 }
 
-export function getPlans(): PaymentPlan[] {
+function getPlans(): PaymentPlan[] {
   return PAGAMENTO_DATA.plans;
 }
 
-export function getDefaultPaymentMethods(): PaymentMethod[] {
+function getDefaultPaymentMethods(): PaymentMethod[] {
   return PAGAMENTO_DATA.defaultPaymentMethods;
 }
 
-export function getRecentTransactions(): Transaction[] {
+function getRecentTransactions(): Transaction[] {
   return PAGAMENTO_DATA.recentTransactions;
 }
 
-export function getOfferingsPrices(): OfferingsPrice[] {
+function getOfferingsPrices(): OfferingsPrice[] {
   return PAGAMENTO_DATA.offeringsPrices;
 }
 
-export function getStats() {
+function getStats() {
   return PAGAMENTO_DATA.stats;
 }
 
-export function getAcceptedCurrencies(): string[] {
+function getAcceptedCurrencies(): string[] {
   return PAGAMENTO_DATA.acceptedCurrencies;
 }

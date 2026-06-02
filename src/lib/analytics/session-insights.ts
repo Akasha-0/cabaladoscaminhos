@@ -44,7 +44,7 @@ const PATTERN_THRESHOLDS = {
 /**
  * Track a session event
  */
-export function trackSessionEvent(event: Omit<SessionEvent, 'id' | 'timestamp'>): SessionEvent {
+function trackSessionEvent(event: Omit<SessionEvent, 'id' | 'timestamp'>): SessionEvent {
   const sessionEvent: SessionEvent = {
     ...event,
     id: `session-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
@@ -312,6 +312,6 @@ export function getInsights(userId?: string): {
 /**
  * Reset session data (for testing only)
  */
-export function _resetSessions(): void {
+function _resetSessions(): void {
   sessions.length = 0;
 }

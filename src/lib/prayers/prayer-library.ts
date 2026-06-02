@@ -119,14 +119,14 @@ export function getPrayers(): Prayer[] {
 /**
  * Returns prayers filtered by category.
  */
-export function getPrayersByCategory(category: string): Prayer[] {
+function getPrayersByCategory(category: string): Prayer[] {
   return prayers.filter((p) => p.category === category);
 }
 
 /**
  * Returns a random prayer.
  */
-export function getRandomPrayer(): Prayer {
+function getRandomPrayer(): Prayer {
   const index = Math.floor(Math.random() * prayers.length);
   return prayers[index];
 }
@@ -134,7 +134,7 @@ export function getRandomPrayer(): Prayer {
 /**
  * Returns a random prayer from a specific category.
  */
-export function getRandomPrayerByCategory(category: string): Prayer | null {
+function getRandomPrayerByCategory(category: string): Prayer | null {
   const filtered = prayers.filter((p) => p.category === category);
   if (filtered.length === 0) return null;
   const index = Math.floor(Math.random() * filtered.length);

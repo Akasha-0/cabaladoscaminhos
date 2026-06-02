@@ -55,7 +55,7 @@ export function getDayOdu(dia: string): OduDay[] { return ODDU_DAY_BY_DAY[dia] ?
 export function getAllOduDays(): OduDay[] { return [...ODDU_DAY_DATA]; }
 export function getAllDaysWithOdus(): string[] { return Object.keys(ODDU_DAY_BY_DAY); }
 export function getAllOduNumbers(): number[] { return Object.keys(ODDU_DAY_BY_ODU).map(Number).sort((a, b) => a - b); }
-export function getAllOduNames(): string[] { return Array.from(new Set(ODDU_DAY_DATA.map(m => m.odu_nome))); }
+function getAllOduNames(): string[] { return Array.from(new Set(ODDU_DAY_DATA.map(m => m.odu_nome))); }
 export function getOduDaysByElement(elemento: ElementType): OduDay[] { return ODDU_DAY_DATA.filter(m => m.elemento === elemento); }
 export function hasOduDay(oduNumero: number): boolean { return oduNumero in ODDU_DAY_BY_ODU; }
 export function hasDayOdu(dia: string): boolean { return dia in ODDU_DAY_BY_DAY; }

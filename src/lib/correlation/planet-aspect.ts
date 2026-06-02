@@ -193,7 +193,7 @@ export function getPlanetAspect(aspecto: string): PlanetAspect | null {
  * @param aspecto - Aspect name
  * @returns The interpretation string or null if not found
  */
-export function getAspectInterpretation(aspecto: string): string | null {
+function getAspectInterpretation(aspecto: string): string | null {
   return PLANET_ASPECTS[aspecto]?.interpretacao ?? null;
 }
 
@@ -201,7 +201,7 @@ export function getAspectInterpretation(aspecto: string): string | null {
  * Get all available aspects
  * @returns Array of all aspect names
  */
-export function getAllAspects(): string[] {
+function getAllAspects(): string[] {
   return Object.keys(PLANET_ASPECTS);
 }
 
@@ -218,7 +218,7 @@ export function getAllPlanetAspects(): PlanetAspect[] {
  * @param aspecto - Aspect name to check
  * @returns True if aspect exists
  */
-export function hasAspect(aspecto: string): boolean {
+function hasAspect(aspecto: string): boolean {
   return aspecto in PLANET_ASPECTS;
 }
 
@@ -227,7 +227,7 @@ export function hasAspect(aspecto: string): boolean {
  * @param natureza - Nature to filter by
  * @returns Array of PlanetAspect objects matching the nature
  */
-export function getAspectsByNature(natureza: 'harmonioso' | 'tensional' | 'neutro'): PlanetAspect[] {
+function getAspectsByNature(natureza: 'harmonioso' | 'tensional' | 'neutro'): PlanetAspect[] {
   return Object.values(PLANET_ASPECTS).filter(a => a.natureza === natureza);
 }
 
@@ -236,7 +236,7 @@ export function getAspectsByNature(natureza: 'harmonioso' | 'tensional' | 'neutr
  * @param aspecto - Aspect name
  * @returns The symbol or null if not found
  */
-export function getAspectSymbol(aspecto: string): string | null {
+function getAspectSymbol(aspecto: string): string | null {
   return PLANET_ASPECTS[aspecto]?.simbolo ?? null;
 }
 
@@ -246,7 +246,7 @@ export function getAspectSymbol(aspecto: string): string | null {
  * @param tipo - Orb type: 'padrao' (default), 'amplo', 'exato'
  * @returns The orb in degrees or null if not found
  */
-export function getAspectOrb(aspecto: string, tipo: 'padrao' | 'amplo' | 'exato' = 'padrao'): number | null {
+function getAspectOrb(aspecto: string, tipo: 'padrao' | 'amplo' | 'exato' = 'padrao'): number | null {
   return PLANET_ASPECTS[aspecto]?.orb[tipo] ?? null;
 }
 
@@ -255,7 +255,7 @@ export function getAspectOrb(aspecto: string, tipo: 'padrao' | 'amplo' | 'exato'
  * @param aspecto - Aspect name
  * @returns Array of planet names or null if not found
  */
-export function getAspectPlanets(aspecto: string): string[] | null {
+function getAspectPlanets(aspecto: string): string[] | null {
   return PLANET_ASPECTS[aspecto]?.planetas_comuns ?? null;
 }
 
@@ -266,7 +266,7 @@ export function getAspectPlanets(aspecto: string): string[] | null {
  * @param aspecto - Aspect type to check
  * @returns True if these planets commonly form this aspect
  */
-export function canFormAspect(planeta1: string, planeta2: string, aspecto: string): boolean {
+function canFormAspect(planeta1: string, planeta2: string, aspecto: string): boolean {
   const aspect = PLANET_ASPECTS[aspecto];
   if (!aspect) return false;
 
@@ -281,6 +281,6 @@ export function canFormAspect(planeta1: string, planeta2: string, aspecto: strin
  * @param aspecto - Aspect name
  * @returns The exact degree or null if not found
  */
-export function getAspectDegree(aspecto: string): number | null {
+function getAspectDegree(aspecto: string): number | null {
   return PLANET_ASPECTS[aspecto]?.grau ?? null;
 }

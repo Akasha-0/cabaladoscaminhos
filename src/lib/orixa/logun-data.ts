@@ -63,11 +63,11 @@ export function getData(): LogunData[] {
   return LOGUN_DATA;
 }
 
-export function getDataById(id: string): LogunData | undefined {
+function getDataById(id: string): LogunData | undefined {
   return LOGUN_DATA.find((l) => l.id === id);
 }
 
-export function searchData(query: string): LogunData[] {
+function searchData(query: string): LogunData[] {
   const lower = query.toLowerCase();
   return LOGUN_DATA.filter(
     (l) =>
@@ -78,10 +78,10 @@ export function searchData(query: string): LogunData[] {
   );
 }
 
-export function getLogunByDay(day: string): LogunData[] {
+function getLogunByDay(day: string): LogunData[] {
   return LOGUN_DATA.filter((l) => l.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getLogunByElement(element: string): LogunData[] {
+function getLogunByElement(element: string): LogunData[] {
   return LOGUN_DATA.filter((l) => l.element.toLowerCase().includes(element.toLowerCase()));
 }

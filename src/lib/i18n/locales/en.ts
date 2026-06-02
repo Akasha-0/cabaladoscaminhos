@@ -1,6 +1,6 @@
 // EN Translations for Cabala dos Caminhos
 
-export const en = {
+const en = {
   common: {
     buttons: {
       submit: 'Submit',

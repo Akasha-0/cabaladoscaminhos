@@ -37,7 +37,7 @@ export interface LojaData {
   periodo: string;
 }
 
-export const LOJA_DATA: LojaData = {
+const LOJA_DATA: LojaData = {
   nome: "Loja",
   nomePortugues: "Loja",
   categoria: "Orixá",
@@ -89,37 +89,37 @@ export function getData(): LojaData {
   return LOJA_DATA;
 }
 
-export function getLojaByType(type: keyof LojaData): LojaData[keyof LojaData] | LojaData {
+function getLojaByType(type: keyof LojaData): LojaData[keyof LojaData] | LojaData {
   if (type in LOJA_DATA) {
     return LOJA_DATA[type];
   }
   return LOJA_DATA;
 }
 
-export function getMensagens(): string[] {
+function getMensagens(): string[] {
   return LOJA_DATA.mensagens;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return LOJA_DATA.quizilas;
 }
 
-export function getEbós(): string[] {
+function getEbós(): string[] {
   return LOJA_DATA.ebós;
 }
 
-export function getCores(): string[] {
+function getCores(): string[] {
   return LOJA_DATA.cores;
 }
 
-export function getPedras(): string[] {
+function getPedras(): string[] {
   return LOJA_DATA.pedras;
 }
 
-export function getAlimentos(): string[] {
+function getAlimentos(): string[] {
   return LOJA_DATA.alimentos;
 }
 
-export function getNumSagrado(): number[] {
+function getNumSagrado(): number[] {
   return LOJA_DATA.numSagrado;
 }

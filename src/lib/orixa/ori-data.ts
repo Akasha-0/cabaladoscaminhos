@@ -94,11 +94,11 @@ export function getData(): OriData[] {
   return ORI_DATA;
 }
 
-export function getDataById(id: string): OriData | undefined {
+function getDataById(id: string): OriData | undefined {
   return ORI_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OriData[] {
+function searchData(query: string): OriData[] {
   const q = query.toLowerCase();
   return ORI_DATA.filter(
     (o) =>
@@ -110,10 +110,10 @@ export function searchData(query: string): OriData[] {
   );
 }
 
-export function getOriByElement(element: string): OriData[] {
+function getOriByElement(element: string): OriData[] {
   return ORI_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getOriByDay(day: string): OriData[] {
+function getOriByDay(day: string): OriData[] {
   return ORI_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }

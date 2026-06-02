@@ -163,11 +163,11 @@ export function getData(): HarmonizacaoData[] {
   return HARMONIZACAO_DATA;
 }
 
-export function getDataById(id: string): HarmonizacaoData | undefined {
+function getDataById(id: string): HarmonizacaoData | undefined {
   return HARMONIZACAO_DATA.find((h) => h.id === id);
 }
 
-export function searchData(query: string): HarmonizacaoData[] {
+function searchData(query: string): HarmonizacaoData[] {
   const lowerQuery = query.toLowerCase();
   return HARMONIZACAO_DATA.filter(
     (h) =>
@@ -178,6 +178,6 @@ export function searchData(query: string): HarmonizacaoData[] {
   );
 }
 
-export function getHarmonizacaoByElement(element: string): HarmonizacaoData[] {
+function getHarmonizacaoByElement(element: string): HarmonizacaoData[] {
   return HARMONIZACAO_DATA.filter((h) => h.element.toLowerCase().includes(element.toLowerCase()));
 }

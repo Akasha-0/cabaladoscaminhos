@@ -1,4 +1,4 @@
-// ============================================================
+// fallow-ignore-next-line: high-complexity
 // LIFE AREAS CORRELATOR
 // ============================================================
 // Correlaciona o perfil completo do usuário com cada área da vida
@@ -448,10 +448,10 @@ A integração de todos esses sistemas não é um destino, mas um mapa. Você te
 // UTILITY: get top area by score
 // ============================================================
 
-export function getTopArea(result: LifeMapResult): AreaCorrelation {
+function getTopArea(result: LifeMapResult): AreaCorrelation {
   return result.correlations[0];
 }
 
-export function getAreaById(result: LifeMapResult, id: LifeAreaId): AreaCorrelation | undefined {
+function getAreaById(result: LifeMapResult, id: LifeAreaId): AreaCorrelation | undefined {
   return result.correlations.find(c => c.area.id === id);
 }

@@ -1,4 +1,4 @@
-export function getData() {
+function getData() {
   return {
     name: 'Obara',
     path: 'Owonrin',

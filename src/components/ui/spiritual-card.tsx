@@ -118,7 +118,6 @@ export {
   SpiritualCard,
   SpiritualCardHeader,
   SpiritualCardTitle,
-  SpiritualCardDescription,
   SpiritualCardContent,
   SpiritualCardFooter,
-};
+}

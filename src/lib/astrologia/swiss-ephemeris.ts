@@ -37,7 +37,7 @@ export function getGrauNoSigno(longitude: number): number {
   return longitude % 30;
 }
 
-export function calcularSol(data: Date): { longitude: number; velocidade: number } {
+function calcularSol(data: Date): { longitude: number; velocidade: number } {
   const jd = toJulianDate(data);
   const d = jd - 2451545.0;
 
@@ -49,7 +49,7 @@ export function calcularSol(data: Date): { longitude: number; velocidade: number
   return { longitude: L, velocidade: 0.9856 };
 }
 
-export function calcularLua(data: Date): { longitude: number; velocidade: number } {
+function calcularLua(data: Date): { longitude: number; velocidade: number } {
   const jd = toJulianDate(data);
   const d = jd - 2451545.0;
 

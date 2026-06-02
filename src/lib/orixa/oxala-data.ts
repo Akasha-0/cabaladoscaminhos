@@ -96,6 +96,6 @@ export function searchData(query: string): OxalaData[] {
   );
 }
 
-export function getOxalaByElement(element: string): OxalaData[] {
+function getOxalaByElement(element: string): OxalaData[] {
   return OXALA_DATA.filter((o) => o.element.toLowerCase() === element.toLowerCase());
 }

@@ -112,7 +112,7 @@ function extractField(lines: string[], keys: string[]): string | null {
   return null;
 }
 
-export async function generatePrediction(
+async function generatePrediction(
   userData: UserSpiritualData,
   type: PredictionType,
   targetDate: Date
@@ -173,7 +173,7 @@ Responda apenas com o formato especificado, sem comentários adicionais.`;
   }
 }
 
-export async function generateAllPredictions(
+async function generateAllPredictions(
   userData: UserSpiritualData,
   period: number,
   types?: PredictionType[]
@@ -202,7 +202,7 @@ export async function generateAllPredictions(
   return predictions.sort((a, b) => a.date.getTime() - b.date.getTime());
 }
 
-export function filterPredictions(
+function filterPredictions(
   predictions: Prediction[],
   options: {
     types?: PredictionType[];
@@ -239,13 +239,13 @@ export function filterPredictions(
   });
 }
 
-export function getConfidenceLevel(confidence: number): 'high' | 'medium' | 'low' {
+function getConfidenceLevel(confidence: number): 'high' | 'medium' | 'low' {
   if (confidence >= 80) return 'high';
   if (confidence >= 60) return 'medium';
   return 'low';
 }
 
-export function getConfidenceColor(level: 'high' | 'medium' | 'low'): string {
+function getConfidenceColor(level: 'high' | 'medium' | 'low'): string {
   switch (level) {
     case 'high': return 'text-emerald-400';
     case 'medium': return 'text-amber-400';
@@ -253,7 +253,7 @@ export function getConfidenceColor(level: 'high' | 'medium' | 'low'): string {
   }
 }
 
-export function getConfidenceBgColor(level: 'high' | 'medium' | 'low'): string {
+function getConfidenceBgColor(level: 'high' | 'medium' | 'low'): string {
   switch (level) {
     case 'high': return 'bg-emerald-400';
     case 'medium': return 'bg-amber-400';

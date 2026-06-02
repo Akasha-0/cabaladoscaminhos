@@ -30,7 +30,7 @@ interface ToastContextValue {
 
 const ToastContext = createContext<ToastContextValue | undefined>(undefined);
 
-export function useToast() {
+function useToast() {
   const context = useContext(ToastContext);
   if (!context) {
     throw new Error('useToast must be used within a ToastProvider');
@@ -136,7 +136,7 @@ interface ToastProviderProps {
   children: React.ReactNode;
 }
 
-export function ToastProvider({ children }: ToastProviderProps) {
+function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = useCallback((message: string, type: ToastType = 'info', duration = 4000) => {
@@ -175,7 +175,7 @@ interface SuccessAnimationProps {
   onComplete?: () => void;
 }
 
-export function SuccessAnimation({ message = 'Sucesso!', onComplete }: SuccessAnimationProps) {
+function SuccessAnimation({ message = 'Sucesso!', onComplete }: SuccessAnimationProps) {
   React.useEffect(() => {
     const timer = setTimeout(() => onComplete?.(), 2000);
     return () => clearTimeout(timer);
@@ -212,7 +212,7 @@ interface LoadingSpinnerProps {
   message?: string;
 }
 
-export function LoadingSpinner({ size = 'md', message }: LoadingSpinnerProps) {
+function LoadingSpinner({ size = 'md', message }: LoadingSpinnerProps) {
   const sizes = {
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
@@ -237,7 +237,7 @@ interface SkeletonProps {
   className?: string;
 }
 
-export function Skeleton({ className }: SkeletonProps) {
+function Skeleton({ className }: SkeletonProps) {
   return (
     <motion.div
       className={cn('bg-slate-800/50 rounded-lg animate-pulse', className)}
@@ -258,7 +258,7 @@ interface EmptyStateProps {
   action?: React.ReactNode;
 }
 
-export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
       {icon && (

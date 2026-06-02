@@ -71,11 +71,11 @@ export function getData(): BabaData[] {
   return BABA_DATA;
 }
 
-export function getDataById(id: string): BabaData | undefined {
+function getDataById(id: string): BabaData | undefined {
   return BABA_DATA.find((b) => b.id === id);
 }
 
-export function searchData(query: string): BabaData[] {
+function searchData(query: string): BabaData[] {
   const lowerQuery = query.toLowerCase();
   return BABA_DATA.filter(
     (b) =>
@@ -86,10 +86,10 @@ export function searchData(query: string): BabaData[] {
   );
 }
 
-export function getBabaByDay(day: string): BabaData[] {
+function getBabaByDay(day: string): BabaData[] {
   return BABA_DATA.filter((b) => b.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getBabaByElement(element: string): BabaData[] {
+function getBabaByElement(element: string): BabaData[] {
   return BABA_DATA.filter((b) => b.element.toLowerCase().includes(element.toLowerCase()));
 }

@@ -79,11 +79,11 @@ export function getData(): OyandaData[] {
   return OYANDA_DATA;
 }
 
-export function getDataById(id: string): OyandaData | undefined {
+function getDataById(id: string): OyandaData | undefined {
   return OYANDA_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OyandaData[] {
+function searchData(query: string): OyandaData[] {
   const lowerQuery = query.toLowerCase();
   return OYANDA_DATA.filter(
     (o) =>
@@ -93,6 +93,6 @@ export function searchData(query: string): OyandaData[] {
   );
 }
 
-export function getOyandaByElement(element: string): OyandaData[] {
+function getOyandaByElement(element: string): OyandaData[] {
   return OYANDA_DATA.filter((o) => o.element.toLowerCase() === element.toLowerCase());
 }

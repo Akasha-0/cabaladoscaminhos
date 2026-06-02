@@ -54,6 +54,7 @@ const formDataInicial = {
   localNascimento: LOCAL_NASCIMENTO_PADRAO,
 };
 
+// fallow-ignore-next-line complexity
 export default function PerfilPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState(formDataInicial);

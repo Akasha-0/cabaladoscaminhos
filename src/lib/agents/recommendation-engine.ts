@@ -239,7 +239,7 @@ A combinação do seu **Caminho de Vida ${context.user.caminhoDeVida || context.
 /**
  * Gera recomendação unificada do dia
  */
-export async function generateDailyRecommendation(
+async function generateDailyRecommendation(
   user: UserSpiritualProfile,
   options: { useAI?: boolean; currentDate?: Date } = {}
 ): Promise<{ context: DailyAgentContext; recommendation: RecommendationResult }> {
@@ -275,7 +275,7 @@ export async function generateDailyRecommendation(
 /**
  * Gera recomendação para área específica
  */
-export async function generateAreaRecommendation(
+async function generateAreaRecommendation(
   user: UserSpiritualProfile,
   areaId: LifeAreaId,
   options: { useAI?: boolean; currentDate?: Date } = {}
@@ -316,7 +316,7 @@ export async function generateAreaRecommendation(
 /**
  * Insight profundo sobre área (página /dashboard/life-areas)
  */
-export async function generateAreaDeepInsight(
+async function generateAreaDeepInsight(
   user: UserSpiritualProfile,
   areaId: LifeAreaId,
   options: { useAI?: boolean; currentDate?: Date } = {}
@@ -348,7 +348,7 @@ export async function generateAreaDeepInsight(
 /**
  * Chat com IA sobre o mapa espiritual
  */
-export async function askSpiritualAgent(
+async function askSpiritualAgent(
   user: UserSpiritualProfile,
   question: string,
   options: { useAI?: boolean; currentDate?: Date } = {}
@@ -378,7 +378,7 @@ export async function askSpiritualAgent(
 /**
  * Timing espiritual - melhor momento para uma intenção
  */
-export async function getSpiritualTiming(
+async function getSpiritualTiming(
   user: UserSpiritualProfile,
   intention: string,
   options: { useAI?: boolean; currentDate?: Date } = {}

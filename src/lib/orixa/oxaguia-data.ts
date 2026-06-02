@@ -167,29 +167,29 @@ export function getData(): OxaguiaData {
   return OXAGUIA_DATA;
 }
 
-export function getDataById(id: string): OxaguiaData | undefined {
+function getDataById(id: string): OxaguiaData | undefined {
   return id === 'oxaguia' ? OXAGUIA_DATA : undefined;
 }
 
-export function getDawnRituals(): DawnRitualData[] {
+function getDawnRituals(): DawnRitualData[] {
   return OXAGUIA_DATA.dawnRituals;
 }
 
-export function getSacredPaths(): SacredPathData[] {
+function getSacredPaths(): SacredPathData[] {
   return OXAGUIA_DATA.sacredPaths;
 }
 
-export function getAwakeningPrinciples(): string[] {
+function getAwakeningPrinciples(): string[] {
   return OXAGUIA_DATA.awakeningPrinciples;
 }
 
-export function getOxaguiaByElement(element: string): OxaguiaData | undefined {
+function getOxaguiaByElement(element: string): OxaguiaData | undefined {
   return OXAGUIA_DATA.element.toLowerCase().includes(element.toLowerCase())
     ? OXAGUIA_DATA
     : undefined;
 }
 
-export function getOxaguiaByDay(day: string): OxaguiaData | undefined {
+function getOxaguiaByDay(day: string): OxaguiaData | undefined {
   return OXAGUIA_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase())
     ? OXAGUIA_DATA
     : undefined;

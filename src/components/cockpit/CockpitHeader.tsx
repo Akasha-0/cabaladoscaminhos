@@ -1,5 +1,6 @@
 // src/components/cockpit/CockpitHeader.tsx
-// Header with progress indicator and quick actions
+// Header with progress indicator, quick actions e info do Operator logado
+// (Fase 11 — UI de auth).
 
 'use client';
 
@@ -7,11 +8,14 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { 
+import {
   Trash2,
-  Zap
+  Zap,
+  LogOut,
+  User as UserIcon,
 } from 'lucide-react';
 import { useCockpitStore } from '@/stores/cockpit-store';
+import { useOperatorAuth } from '@/components/providers/OperatorAuthProvider';
 
 interface CockpitHeaderProps {
   showDebug?: boolean;
@@ -21,6 +25,7 @@ interface CockpitHeaderProps {
 
 export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: CockpitHeaderProps) {
   const { getFilledCount } = useCockpitStore();
+  const { operator, signOut } = useOperatorAuth();
   const filledCount = getFilledCount();
   const totalHouses = 36;
   const progressPercent = (filledCount / totalHouses) * 100;
@@ -45,8 +50,8 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
               Cartas na Mesa
             </p>
             <div className="flex items-center gap-2 mt-1">
-              <Progress 
-                value={progressPercent} 
+              <Progress
+                value={progressPercent}
                 className="h-1.5 w-24 bg-slate-800"
               />
               <span className="text-xs text-slate-500">
@@ -76,7 +81,7 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
       )}
 
       {/* Right - Actions */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         {showDebug && onAutoFill && (
           <Button
             variant="ghost"
@@ -88,7 +93,7 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
             Auto-preenchimento
           </Button>
         )}
-        
+
         <Button
           variant="ghost"
           size="sm"
@@ -98,6 +103,32 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
           <Trash2 className="w-4 h-4 mr-2" />
           Limpar Mesa
         </Button>
+
+        {/* Operator info + Logout */}
+        {operator && (
+          <div className="flex items-center gap-2 pl-3 ml-1 border-l border-slate-800">
+            <div className="text-right hidden md:block">
+              <p className="text-xs font-medium text-slate-200 leading-tight">
+                {operator.name}
+              </p>
+              <p className="text-[10px] text-slate-500 leading-tight">
+                {operator.email}
+              </p>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500/20 to-royal/20 border border-orange-500/30 flex items-center justify-center">
+              <UserIcon className="w-4 h-4 text-orange-400" />
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => void signOut()}
+              className="text-slate-400 hover:text-orange-300 hover:bg-orange-500/10"
+              aria-label="Sair"
+            >
+              <LogOut className="w-4 h-4" />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

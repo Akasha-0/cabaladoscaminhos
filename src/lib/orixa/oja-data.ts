@@ -179,38 +179,38 @@ export function getData(): OjaData {
   return OJA_DATA;
 }
 
-export function getDataById(id: string): OjaData | undefined {
+function getDataById(id: string): OjaData | undefined {
   return id === 'oja' ? OJA_DATA : undefined;
 }
 
-export function getHealingAspects(): HealingAspect[] {
+function getHealingAspects(): HealingAspect[] {
   return healingAspects;
 }
 
-export function getMedicineGifts(): MedicineGift[] {
+function getMedicineGifts(): MedicineGift[] {
   return medicineGifts;
 }
 
-export function getPaths(): PathOfOja[] {
+function getPaths(): PathOfOja[] {
   return pathsOfOja;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return OJA_DATA.sacredObjects;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return OJA_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return OJA_DATA.domains;
 }
 
-export function getOjaByElement(element: string): OjaData | undefined {
+function getOjaByElement(element: string): OjaData | undefined {
   return OJA_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OJA_DATA : undefined;
 }
 
-export function getOjaByDay(day: string): OjaData | undefined {
+function getOjaByDay(day: string): OjaData | undefined {
   return OJA_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? OJA_DATA : undefined;
 }

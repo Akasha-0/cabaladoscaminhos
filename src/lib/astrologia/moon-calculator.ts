@@ -104,7 +104,7 @@ export function getMoonPhaseInfo(date: Date): MoonPhaseInfo {
   return { phase, name, emoji: getPhaseEmoji(phase), illumination, daysIntoPhase, daysUntilNextPhase, isWaxing };
 }
 
-export function getPhaseEmoji(phase: MoonPhase): string {
+function getPhaseEmoji(phase: MoonPhase): string {
   const map: Record<MoonPhase, string> = {
     new: '🌑',
     waxing: '🌓',
@@ -154,7 +154,7 @@ export function getUpcoming7Days(date: Date): Array<{ date: Date; phase: MoonPha
  * Moon is void-of-course when transitioning between signs
  * Approximate method: check moon position relative to sign boundaries
  */
-export function calculateVoidOfCoursePeriods(
+function calculateVoidOfCoursePeriods(
   startDate: Date,
   endDate: Date
 ): VoidOfCoursePeriod[] {

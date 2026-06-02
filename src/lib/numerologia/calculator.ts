@@ -48,7 +48,7 @@ function interpret(num: number): string {
   return interp?.descricao || `Número ${num}`;
 }
 
-export const methods = {
+const methods = {
   pitagorica: (name: string): NumerologyMethodResult => {
     const n = calcularPitagorica(name);
     return { numero: n, interpretacao: interpret(n) };

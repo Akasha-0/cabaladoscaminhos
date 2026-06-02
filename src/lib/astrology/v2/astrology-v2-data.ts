@@ -260,7 +260,7 @@ export const SIGNOS_DATA: Record<string, SignoData> = {
   },
 };
 
-export const PLANETAS_DATA: Record<string, PlanetaData> = {
+const PLANETAS_DATA: Record<string, PlanetaData> = {
   sol: {
     nome: 'Sol',
     simbolo: '☉',
@@ -455,7 +455,7 @@ export const PLANETAS_DATA: Record<string, PlanetaData> = {
   },
 };
 
-export const ELEMENTOS_DATA: Record<string, ElementoData> = {
+const ELEMENTOS_DATA: Record<string, ElementoData> = {
   fogo: {
     nome: 'Fogo',
     simbolo: '🜂',
@@ -490,7 +490,7 @@ export const ELEMENTOS_DATA: Record<string, ElementoData> = {
   },
 };
 
-export const ASPECTOS_DATA: Record<string, AspectoData> = {
+const ASPECTOS_DATA: Record<string, AspectoData> = {
   conjuncao: {
     nome: 'Conjunção',
     simbolo: '☌',
@@ -556,7 +556,7 @@ export const ASPECTOS_DATA: Record<string, AspectoData> = {
   },
 };
 
-export const CASAS_DATA: Record<number, CasaData> = {
+const CASAS_DATA: Record<number, CasaData> = {
   1: {
     numero: 1,
     nome: 'Casa I - Ascendente',
@@ -675,7 +675,7 @@ export interface AstrologyV2Data {
   casas: Record<number, CasaData>;
 }
 
-export function getData(): AstrologyV2Data {
+function getData(): AstrologyV2Data {
   return {
     signos: SIGNOS_DATA,
     planetas: PLANETAS_DATA,

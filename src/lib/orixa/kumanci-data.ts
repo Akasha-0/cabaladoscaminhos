@@ -105,11 +105,11 @@ export function getData(): KumanciData[] {
   return KUMANCI_DATA;
 }
 
-export function getDataById(id: string): KumanciData | undefined {
+function getDataById(id: string): KumanciData | undefined {
   return KUMANCI_DATA.find((k) => k.id === id);
 }
 
-export function searchData(query: string): KumanciData[] {
+function searchData(query: string): KumanciData[] {
   const lowerQuery = query.toLowerCase();
   return KUMANCI_DATA.filter(
     (k) =>
@@ -121,10 +121,10 @@ export function searchData(query: string): KumanciData[] {
   );
 }
 
-export function getKumanciByDay(day: string): KumanciData[] {
+function getKumanciByDay(day: string): KumanciData[] {
   return KUMANCI_DATA.filter((k) => k.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getKumanciByElement(element: string): KumanciData[] {
+function getKumanciByElement(element: string): KumanciData[] {
   return KUMANCI_DATA.filter((k) => k.element.toLowerCase().includes(element.toLowerCase()));
 }

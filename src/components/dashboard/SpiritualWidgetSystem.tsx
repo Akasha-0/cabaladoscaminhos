@@ -103,7 +103,7 @@ const STAT_BG = {
   pink: 'bg-pink-500/10 border-pink-500/20',
 };
 
-export function WidgetStat({ label, value, color = 'amber', icon }: WidgetStatProps) {
+function WidgetStat({ label, value, color = 'amber', icon }: WidgetStatProps) {
   return (
     <div className={cn(
       'flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 hover:scale-[1.02]',
@@ -132,7 +132,7 @@ interface WidgetStatGridProps {
   className?: string;
 }
 
-export function WidgetStatGrid({ children, columns = 2, className = '' }: WidgetStatGridProps) {
+function WidgetStatGrid({ children, columns = 2, className = '' }: WidgetStatGridProps) {
   const gridCols = {
     2: 'grid-cols-2',
     3: 'grid-cols-3',
@@ -235,7 +235,7 @@ const TAG_COLORS = {
   pink: 'bg-pink-500/15 text-pink-400 border-pink-500/20',
 };
 
-export function WidgetTag({ children, color = 'amber', size = 'sm' }: WidgetTagProps) {
+function WidgetTag({ children, color = 'amber', size = 'sm' }: WidgetTagProps) {
   return (
     <span className={cn(
       'inline-flex items-center rounded-full border font-medium',
@@ -256,7 +256,7 @@ interface WidgetTagListProps {
   color?: 'amber' | 'violet' | 'emerald' | 'cyan' | 'pink';
 }
 
-export function WidgetTagList({ tags, color = 'amber' }: WidgetTagListProps) {
+function WidgetTagList({ tags, color = 'amber' }: WidgetTagListProps) {
   return (
     <div className="flex flex-wrap gap-2">
       {tags.map((tag, index) => (
@@ -277,7 +277,7 @@ interface WidgetSkeletonProps {
   height?: string;
 }
 
-export function WidgetSkeleton({ rows = 3, height = 'h-4' }: WidgetSkeletonProps) {
+function WidgetSkeleton({ rows = 3, height = 'h-4' }: WidgetSkeletonProps) {
   return (
     <div className="space-y-3">
       {Array.from({ length: rows }).map((_, i) => (

@@ -132,7 +132,7 @@ export function getStreakRewards(): StreakReward[] {
 /**
  * Get rewards filtered by tier
  */
-export function getRewardsByTier(tier: RewardTier): StreakReward[] {
+function getRewardsByTier(tier: RewardTier): StreakReward[] {
   return getStreakRewards().filter((sr) => sr.reward.tier === tier);
 }
 
@@ -180,7 +180,7 @@ export function getRewardById(id: string): Reward | undefined {
 /**
  * Calculate progress to next reward (0-100%)
  */
-export function getProgressToNextReward(): number {
+function getProgressToNextReward(): number {
   const currentStreak = getCurrentStreakDays();
   const next = getNextReward();
 

@@ -151,30 +151,30 @@ export function getData(): OshaData {
   return OSHA_DATA;
 }
 
-export function getDataById(id: string): OshaData | undefined {
+function getDataById(id: string): OshaData | undefined {
   return id === 'osha' ? OSHA_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return OSHA_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return OSHA_DATA.ritualPractices;
 }
 
-export function getHealingPractices(): string[] {
+function getHealingPractices(): string[] {
   return OSHA_DATA.healingPractices;
 }
 
-export function getSacredTrees(): string[] {
+function getSacredTrees(): string[] {
   return OSHA_DATA.sacredTrees;
 }
 
-export function getOshaByElement(element: string): OshaData | undefined {
+function getOshaByElement(element: string): OshaData | undefined {
   return OSHA_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OSHA_DATA : undefined;
 }
 
-export function getOshaByPlanet(planet: string): OshaData | undefined {
+function getOshaByPlanet(planet: string): OshaData | undefined {
   return OSHA_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? OSHA_DATA : undefined;
 }

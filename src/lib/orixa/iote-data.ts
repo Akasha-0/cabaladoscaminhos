@@ -38,7 +38,7 @@ export interface IoteData {
   periodo: string;
 }
 
-export const IOTE_DATA: IoteData = {
+const IOTE_DATA: IoteData = {
   nome: 'Iote',
   nomePortugues: 'Iyáwó ou Terceiro Dia',
   categoria: 'Odu Menor',
@@ -78,22 +78,22 @@ export function getData(): IoteData {
   return IOTE_DATA;
 }
 
-export function getMensagens(): string[] {
+function getMensagens(): string[] {
   return IOTE_DATA.mensagens;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return IOTE_DATA.quizilas;
 }
 
-export function getEbós(): string[] {
+function getEbós(): string[] {
   return IOTE_DATA.ebós;
 }
 
-export function getCores(): string[] {
+function getCores(): string[] {
   return IOTE_DATA.cores;
 }
 
-export function getPedras(): string[] {
+function getPedras(): string[] {
   return IOTE_DATA.pedras;
 }

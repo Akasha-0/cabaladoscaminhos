@@ -118,23 +118,23 @@ export function getData(): OchosiData {
   return OCHOSI_DATA;
 }
 
-export function getDataById(id: string): OchosiData | undefined {
+function getDataById(id: string): OchosiData | undefined {
   return id === 'ochosi' ? OCHOSI_DATA : undefined;
 }
 
-export function getHuntingRituals(): string[] {
+function getHuntingRituals(): string[] {
   return OCHOSI_DATA.huntingRituals;
 }
 
-export function getFishingRituals(): string[] {
+function getFishingRituals(): string[] {
   return OCHOSI_DATA.fishingRituals;
 }
 
-export function getForestWisdom(): string[] {
+function getForestWisdom(): string[] {
   return OCHOSI_DATA.forestWisdom;
 }
 
-export function searchOchosi(query: string): OchosiData | undefined {
+function searchOchosi(query: string): OchosiData | undefined {
   const q = query.toLowerCase();
   if (OCHOSI_DATA.name.toLowerCase().includes(q) || OCHOSI_DATA.id.includes(q)) {
     return OCHOSI_DATA;
@@ -142,13 +142,13 @@ export function searchOchosi(query: string): OchosiData | undefined {
   return undefined;
 }
 
-export function getOchosiByDay(day: string): OchosiData | undefined {
+function getOchosiByDay(day: string): OchosiData | undefined {
   return OCHOSI_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase())
     ? OCHOSI_DATA
     : undefined;
 }
 
-export function getOchosiByElement(element: string): OchosiData | undefined {
+function getOchosiByElement(element: string): OchosiData | undefined {
   return OCHOSI_DATA.element.toLowerCase().includes(element.toLowerCase())
     ? OCHOSI_DATA
     : undefined;

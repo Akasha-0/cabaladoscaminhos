@@ -64,11 +64,11 @@ export function getData(): OaData[] {
   return OA_DATA;
 }
 
-export function getDataById(id: string): OaData | undefined {
+function getDataById(id: string): OaData | undefined {
   return OA_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OaData[] {
+function searchData(query: string): OaData[] {
   const lower = query.toLowerCase();
   return OA_DATA.filter(
     (o) =>
@@ -79,10 +79,10 @@ export function searchData(query: string): OaData[] {
   );
 }
 
-export function getOaByDay(day: string): OaData[] {
+function getOaByDay(day: string): OaData[] {
   return OA_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOaByElement(element: string): OaData[] {
+function getOaByElement(element: string): OaData[] {
   return OA_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

@@ -88,11 +88,11 @@ export function getData(): ObaData[] {
   return OBA_DATA;
 }
 
-export function getDataById(id: string): ObaData | undefined {
+function getDataById(id: string): ObaData | undefined {
   return OBA_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): ObaData[] {
+function searchData(query: string): ObaData[] {
   const lowerQuery = query.toLowerCase();
   return OBA_DATA.filter(
     (o) =>
@@ -104,6 +104,6 @@ export function searchData(query: string): ObaData[] {
   );
 }
 
-export function getObaByElement(element: string): ObaData[] {
+function getObaByElement(element: string): ObaData[] {
   return OBA_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

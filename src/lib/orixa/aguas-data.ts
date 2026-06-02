@@ -186,78 +186,78 @@ export function getData(): AguasData {
   return AGUAS_DATA;
 }
 
-export function getDataById(id: string): AguasData | undefined {
+function getDataById(id: string): AguasData | undefined {
   return id === 'aguas' ? AGUAS_DATA : undefined;
 }
 
-export function getAguasByType(type: keyof AguasData): AguasData[keyof AguasData] | AguasData {
+function getAguasByType(type: keyof AguasData): AguasData[keyof AguasData] | AguasData {
   return AGUAS_DATA[type] as AguasData[keyof AguasData] ?? AGUAS_DATA;
 }
 
-export function getMensagens(): string[] {
+function getMensagens(): string[] {
   return AGUAS_DATA.mensagens;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return AGUAS_DATA.quizilas;
 }
 
-export function getEbós(): string[] {
+function getEbós(): string[] {
   return AGUAS_DATA.ebós;
 }
 
-export function getCores(): string[] {
+function getCores(): string[] {
   return AGUAS_DATA.cores;
 }
 
-export function getPedras(): string[] {
+function getPedras(): string[] {
   return AGUAS_DATA.pedras;
 }
 
-export function getAlimentos(): string[] {
+function getAlimentos(): string[] {
   return AGUAS_DATA.alimentos;
 }
 
-export function getNumSagrado(): number[] {
+function getNumSagrado(): number[] {
   return AGUAS_DATA.numSagrado;
 }
 
-export function getDominios(): string[] {
+function getDominios(): string[] {
   return AGUAS_DATA.dominios;
 }
 
-export function getPraticasRituais(): string[] {
+function getPraticasRituais(): string[] {
   return AGUAS_DATA.praticasRituais;
 }
 
-export function getSimbolos(): string[] {
+function getSimbolos(): string[] {
   return AGUAS_DATA.simbolos;
 }
 
-export function getCantos(): string[] {
+function getCantos(): string[] {
   return AGUAS_DATA.cantos;
 }
 
-export function getOfertas(): string[] {
+function getOfertas(): string[] {
   return AGUAS_DATA.ofertas;
 }
 
-export function getRiosSagrados(): RioSagrado[] {
+function getRiosSagrados(): RioSagrado[] {
   return riosSagrados;
 }
 
-export function getAspectosLiquidos(): AspectoLiquido[] {
+function getAspectosLiquidos(): AspectoLiquido[] {
   return aspectosLiquidos;
 }
 
-export function getAguasByElement(element: string): AguasData | undefined {
+function getAguasByElement(element: string): AguasData | undefined {
   return AGUAS_DATA.elementos.some(el => el.toLowerCase().includes(element.toLowerCase())) ? AGUAS_DATA : undefined;
 }
 
-export function getAguasByPlanet(planet: string): AguasData | undefined {
+function getAguasByPlanet(planet: string): AguasData | undefined {
   return AGUAS_DATA.planeta.toLowerCase().includes(planet.toLowerCase()) ? AGUAS_DATA : undefined;
 }
 
-export function getAguasByDirection(direction: string): AguasData | undefined {
+function getAguasByDirection(direction: string): AguasData | undefined {
   return AGUAS_DATA.direcao.toLowerCase().includes(direction.toLowerCase()) ? AGUAS_DATA : undefined;
 }

@@ -442,15 +442,15 @@ export function getProfileById(id: string): OrixaProfile | undefined {
   return ORIXA_PROFILES.find((p) => p.id === id);
 }
 
-export function getProfilesByPath(path: string): OrixaProfile[] {
+function getProfilesByPath(path: string): OrixaProfile[] {
   return ORIXA_PROFILES.filter((p) => p.path === path);
 }
 
-export function getProfilesByElement(element: string): OrixaProfile[] {
+function getProfilesByElement(element: string): OrixaProfile[] {
   return ORIXA_PROFILES.filter((p) => p.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function searchProfiles(query: string): OrixaProfile[] {
+function searchProfiles(query: string): OrixaProfile[] {
   const q = query.toLowerCase();
   return ORIXA_PROFILES.filter(
     (p) =>

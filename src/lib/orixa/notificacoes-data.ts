@@ -274,23 +274,23 @@ export function getData() {
   return NOTIFICACOES_DATA;
 }
 
-export function getConfigs(): NotificacaoConfig[] {
+function getConfigs(): NotificacaoConfig[] {
   return NOTIFICACOES_DATA.config;
 }
 
-export function getTemplates(): NotificacaoTemplate[] {
+function getTemplates(): NotificacaoTemplate[] {
   return NOTIFICACOES_DATA.templates;
 }
 
-export function getActiveConfigs(): NotificacaoConfig[] {
+function getActiveConfigs(): NotificacaoConfig[] {
   return NOTIFICACOES_DATA.config.filter(c => c.ativo);
 }
 
-export function getConfigsByType(tipo: NotificacaoConfig['tipo']): NotificacaoConfig[] {
+function getConfigsByType(tipo: NotificacaoConfig['tipo']): NotificacaoConfig[] {
   return NOTIFICACOES_DATA.config.filter(c => c.tipo === tipo);
 }
 
-export function getConfigsByCategory(categoria: string): NotificacaoConfig[] {
+function getConfigsByCategory(categoria: string): NotificacaoConfig[] {
   return NOTIFICACOES_DATA.config.filter(c => c.categoria === categoria);
 }
 

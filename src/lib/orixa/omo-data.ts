@@ -210,86 +210,86 @@ export function getData(): OmoData {
   return OMO_DATA;
 }
 
-export function getOfferings(): OmoOfferings {
+function getOfferings(): OmoOfferings {
   return OMO_DATA.offerings;
 }
 
-export function getRituals(): OmoRitual[] {
+function getRituals(): OmoRitual[] {
   return OMO_DATA.rituals;
 }
 
-export function getSymbols(): OmoSymbols {
+function getSymbols(): OmoSymbols {
   return OMO_DATA.symbols;
 }
 
-export function getMythology(): OmoMythology {
+function getMythology(): OmoMythology {
   return OMO_DATA.mythology;
 }
 
-export function getChants(): string[] {
+function getChants(): string[] {
   return OMO_DATA.chants;
 }
 
-export function getQualities(): string[] {
+function getQualities(): string[] {
   return OMO_DATA.qualities;
 }
 
-export function getSacredNumbers(): number[] {
+function getSacredNumbers(): number[] {
   return OMO_DATA.numbersSacred;
 }
 
-export function getSacredAnimals(): string[] {
+function getSacredAnimals(): string[] {
   return OMO_DATA.sacredAnimals;
 }
 
-export function getPlants(): string[] {
+function getPlants(): string[] {
   return OMO_DATA.plants;
 }
 
-export function getGreeting(): string {
+function getGreeting(): string {
   return OMO_DATA.greeting;
 }
 
-export function getSpiritualLesson(): string {
+function getSpiritualLesson(): string {
   return OMO_DATA.spiritualLesson;
 }
 
-export function getAffirmation(): string {
+function getAffirmation(): string {
   return OMO_DATA.affirmation;
 }
 
-export function getMeditation(): string {
+function getMeditation(): string {
   return OMO_DATA.meditation;
 }
 
-export function getAspects(): OmoAspect[] {
+function getAspects(): OmoAspect[] {
   return OMO_DATA.aspects;
 }
 
-export function getChallenges(): string[] {
+function getChallenges(): string[] {
   return OMO_DATA.challenges;
 }
 
-export function getElement(): string {
+function getElement(): string {
   return OMO_DATA.element;
 }
 
-export function getPath(): string {
+function getPath(): string {
   return OMO_DATA.path;
 }
 
-export function getArchetype(): string {
+function getArchetype(): string {
   return OMO_DATA.archetype;
 }
 
-export function getColors(): string[] {
+function getColors(): string[] {
   return OMO_DATA.colors;
 }
 
-export function getDaysSacred(): string[] {
+function getDaysSacred(): string[] {
   return OMO_DATA.daysSacred;
 }
 
-export function getFoods(): string[] {
+function getFoods(): string[] {
   return OMO_DATA.foods;
 }

@@ -180,35 +180,35 @@ export function getData(): OgbeMejiOdu {
   return OGBE_MEJI_DATA;
 }
 
-export function getDataById(id: string): OgbeMejiOdu | undefined {
+function getDataById(id: string): OgbeMejiOdu | undefined {
   return id === 'ogbe-meji' ? OGBE_MEJI_DATA : undefined;
 }
 
-export function getHerbs(): string[] {
+function getHerbs(): string[] {
   return OGBE_MEJI_DATA.herbs;
 }
 
-export function getRituals(): Ebo[] {
+function getRituals(): Ebo[] {
   return OGBE_MEJI_DATA.ebos;
 }
 
-export function getOrixas(): string[] {
+function getOrixas(): string[] {
   return OGBE_MEJI_DATA.orixas;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return OGBE_MEJI_DATA.quizilas;
 }
 
-export function getSacredFrequencies(): string[] {
+function getSacredFrequencies(): string[] {
   return OGBE_MEJI_DATA.sacredFrequencies;
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return OGBE_MEJI_DATA.affirmations;
 }
 
-export function getMeditation(): string {
+function getMeditation(): string {
   return OGBE_MEJI_DATA.meditation;
 }
 

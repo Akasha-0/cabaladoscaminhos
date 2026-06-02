@@ -112,7 +112,7 @@ function getDayOfWeek(date: Date = new Date()): number {
 /**
  * Get Odu of the day based on date
  */
-export function getOduDoDia(date: Date = new Date()): OduSign {
+function getOduDoDia(date: Date = new Date()): OduSign {
   const seed = getDailySeed(date);
   const dayOfYear = Math.floor((date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
   
@@ -135,7 +135,7 @@ export function getOduDoDia(date: Date = new Date()): OduSign {
 /**
  * Get Odu by user destiny (if known)
  */
-export function getOduByNumero(numero: number): OduSign | null {
+function getOduByNumero(numero: number): OduSign | null {
   const odu = ODUS_DATA.find(o => o.numero === numero);
   if (!odu) return null;
   
@@ -156,7 +156,7 @@ export function getOduByNumero(numero: number): OduSign | null {
 /**
  * Get Orixás of the day for widgets
  */
-export function getOrixasDoDia(date: Date = new Date()): OrixaData[] {
+function getOrixasDoDia(date: Date = new Date()): OrixaData[] {
   const dayOfWeek = getDayOfWeek(date);
   
   // Map day of week to Orixás
@@ -212,7 +212,7 @@ export function getOrixasDoDia(date: Date = new Date()): OrixaData[] {
 /**
  * Get Orixá by name
  */
-export function getOrixaByName(nome: string): OrixaData | null {
+function getOrixaByName(nome: string): OrixaData | null {
   const found = ORIXAS_DATA.find(o => 
     o.nome.toLowerCase().includes(nome.toLowerCase())
   );
@@ -239,7 +239,7 @@ export function getOrixaByName(nome: string): OrixaData | null {
 /**
  * Get Tarot card of the day based on date
  */
-export function getTarotCardDoDia(date: Date = new Date()): TarotCard {
+function getTarotCardDoDia(date: Date = new Date()): TarotCard {
   const seed = getDailySeed(date);
   const dayOfYear = Math.floor((date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
   
@@ -273,7 +273,7 @@ function reduceToDigit(num: number): number {
 /**
  * Calculate Life Path number from birth date
  */
-export function calculateLifePath(birthDate: string): number {
+function calculateLifePath(birthDate: string): number {
   const digits = birthDate.replace(/\D/g, '');
   const sum = digits.split('').reduce((acc, d) => acc + parseInt(d), 0);
   return reduceToDigit(sum);
@@ -282,7 +282,7 @@ export function calculateLifePath(birthDate: string): number {
 /**
  * Calculate Expression number from name (simplified)
  */
-export function calculateExpression(name: string): number {
+function calculateExpression(name: string): number {
   const letters: Record<string, number> = {
     a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9,
     j: 1, k: 2, l: 3, m: 4, n: 5, o: 6, p: 7, q: 8, r: 9,
@@ -305,7 +305,7 @@ export function calculateExpression(name: string): number {
 /**
  * Get full numerology breakdown from birth date
  */
-export function getNumerologyFromBirthDate(birthDate: string): {
+function getNumerologyFromBirthDate(birthDate: string): {
   lifePath: number;
   expression: number;
   soulUrge: number;
@@ -351,7 +351,7 @@ export function getNumerologyFromBirthDate(birthDate: string): {
 /**
  * Calculate element balance from birth date
  */
-export function getElementBalance(birthDate: string): ElementBalanceData {
+function getElementBalance(birthDate: string): ElementBalanceData {
   const dateNum = parseInt(birthDate.replace(/\D/g, ''), 10);
   const dayOfWeek = getDayOfWeek();
   
@@ -436,7 +436,7 @@ export interface UserSpiritualData {
 /**
  * Fetch all widget data for a user
  */
-export async function fetchWidgetData(userData: UserSpiritualData = {}): Promise<WidgetData> {
+async function fetchWidgetData(userData: UserSpiritualData = {}): Promise<WidgetData> {
   const date = new Date();
   
   // Odu of the day

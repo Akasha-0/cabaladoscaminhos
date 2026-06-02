@@ -98,11 +98,11 @@ export function getData(): OluwandeData[] {
   return OLUWANDE_DATA;
 }
 
-export function getDataById(id: string): OluwandeData | undefined {
+function getDataById(id: string): OluwandeData | undefined {
   return OLUWANDE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OluwandeData[] {
+function searchData(query: string): OluwandeData[] {
   const q = query.toLowerCase();
   return OLUWANDE_DATA.filter(
     (o) =>
@@ -112,35 +112,35 @@ export function searchData(query: string): OluwandeData[] {
   );
 }
 
-export function getOluwandeByDay(day: string): OluwandeData[] {
+function getOluwandeByDay(day: string): OluwandeData[] {
   return OLUWANDE_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOluwandeByElement(element: string): OluwandeData[] {
+function getOluwandeByElement(element: string): OluwandeData[] {
   return OLUWANDE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ['Marinheiross', 'Navegação', 'Lealdade', 'Transição', 'Legado', 'Esperança', 'Bravura', 'Proteção'];
 }
 
-export function getSacredAnimals(): string[] {
+function getSacredAnimals(): string[] {
   return ['Polvo', 'Gaivota', 'Cavalo-marinho', 'Touro', 'Falcão', 'Golfinho'];
 }
 
-export function getSymbols(): string[] {
+function getSymbols(): string[] {
   return ['Bússola', 'Leme', 'Navio', 'Cordas', 'Rede de pesca', 'Cálice', 'Remos', 'Lanterna'];
 }
 
-export function getLegacyTeaching(): string {
+function getLegacyTeaching(): string {
   const teachings = OLUWANDE_DATA.map((o) => o.legacyTeaching);
   return teachings[Math.floor(Math.random() * teachings.length)];
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return OLUWANDE_DATA.map((o) => o.affirmation);
 }
 
-export function getOluwandeByArchetype(archetype: string): OluwandeData[] {
+function getOluwandeByArchetype(archetype: string): OluwandeData[] {
   return OLUWANDE_DATA.filter((o) => o.archetype.toLowerCase().includes(archetype.toLowerCase()));
 }

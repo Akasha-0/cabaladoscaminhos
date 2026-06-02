@@ -99,11 +99,11 @@ export function getData(): RoqueData[] {
   return ROQUE_DATA;
 }
 
-export function getDataById(id: string): RoqueData | undefined {
+function getDataById(id: string): RoqueData | undefined {
   return ROQUE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): RoqueData[] {
+function searchData(query: string): RoqueData[] {
   const lowerQuery = query.toLowerCase();
   return ROQUE_DATA.filter(
     (o) =>
@@ -115,34 +115,34 @@ export function searchData(query: string): RoqueData[] {
   );
 }
 
-export function getRoqueByDay(day: string): RoqueData[] {
+function getRoqueByDay(day: string): RoqueData[] {
   return ROQUE_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getRoqueByElement(element: string): RoqueData[] {
+function getRoqueByElement(element: string): RoqueData[] {
   return ROQUE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ['Lealdade', 'Protecao', 'Forca', 'Amizade', 'Dedicao', 'Protecao dos fracos', 'Fogo', 'Forja'];
 }
 
-export function getSacredAnimals(): string[] {
+function getSacredAnimals(): string[] {
   return ['Cavalo', 'Touro', 'Cachorro', 'Lobo', 'Fenix'];
 }
 
-export function getSymbols(): string[] {
+function getSymbols(): string[] {
   return ['Amuleto', 'Ancora', 'Foice', 'Forno', 'Corda de sino', 'Fornalha', 'Martelo'];
 }
 
-export function getLegacyTeaching(): string {
+function getLegacyTeaching(): string {
   return 'Um guardiao nao abandona seu posto, mesmo quando a noite e mais escura e a tempestade mais forte';
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return ROQUE_DATA.map((o) => o.affirmation);
 }
 
-export function getRoqueByArchetype(archetype: string): RoqueData[] {
+function getRoqueByArchetype(archetype: string): RoqueData[] {
   return ROQUE_DATA.filter((o) => o.archetype.toLowerCase().includes(archetype.toLowerCase()));
 }

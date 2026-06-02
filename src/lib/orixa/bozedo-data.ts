@@ -105,11 +105,11 @@ export function getData(): BozedoData[] {
   return BOZEDO_DATA;
 }
 
-export function getDataById(id: string): BozedoData | undefined {
+function getDataById(id: string): BozedoData | undefined {
   return BOZEDO_DATA.find((e) => e.id === id);
 }
 
-export function searchData(query: string): BozedoData[] {
+function searchData(query: string): BozedoData[] {
   const lowerQuery = query.toLowerCase();
   return BOZEDO_DATA.filter(
     (e) =>
@@ -121,10 +121,10 @@ export function searchData(query: string): BozedoData[] {
   );
 }
 
-export function getBozedoByDay(day: string): BozedoData[] {
+function getBozedoByDay(day: string): BozedoData[] {
   return BOZEDO_DATA.filter((e) => e.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getBozedoByElement(element: string): BozedoData[] {
+function getBozedoByElement(element: string): BozedoData[] {
   return BOZEDO_DATA.filter((e) => e.element.toLowerCase().includes(element.toLowerCase()));
 }

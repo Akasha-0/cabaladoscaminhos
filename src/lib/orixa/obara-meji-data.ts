@@ -307,11 +307,11 @@ export function getData(): ObaraMejiOdu[] {
   return OBARA_MEJI_DATA;
 }
 
-export function getDataById(id: string): ObaraMejiOdu | undefined {
+function getDataById(id: string): ObaraMejiOdu | undefined {
   return OBARA_MEJI_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): ObaraMejiOdu[] {
+function searchData(query: string): ObaraMejiOdu[] {
   const q = query.toLowerCase();
   return OBARA_MEJI_DATA.filter(
     (o) =>
@@ -322,12 +322,12 @@ export function searchData(query: string): ObaraMejiOdu[] {
   );
 }
 
-export function getObaraMejiByElement(element: string): ObaraMejiOdu[] {
+function getObaraMejiByElement(element: string): ObaraMejiOdu[] {
   return OBARA_MEJI_DATA.filter((o) =>
     o.element.toLowerCase().includes(element.toLowerCase())
   );
 }
 
-export function getObaraMejiByPolarity(polarity: 'masculine' | 'feminine'): ObaraMejiOdu[] {
+function getObaraMejiByPolarity(polarity: 'masculine' | 'feminine'): ObaraMejiOdu[] {
   return OBARA_MEJI_DATA.filter((o) => o.polarity === polarity);
 }

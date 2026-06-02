@@ -77,11 +77,11 @@ export function getData(): AbabeData[] {
   return ABABE_DATA;
 }
 
-export function getDataById(id: string): AbabeData | undefined {
+function getDataById(id: string): AbabeData | undefined {
   return ABABE_DATA.find((a) => a.id === id);
 }
 
-export function searchData(query: string): AbabeData[] {
+function searchData(query: string): AbabeData[] {
   const lowerQuery = query.toLowerCase();
   return ABABE_DATA.filter(
     (a) =>
@@ -93,10 +93,10 @@ export function searchData(query: string): AbabeData[] {
   );
 }
 
-export function getAbabeByDay(day: string): AbabeData[] {
+function getAbabeByDay(day: string): AbabeData[] {
   return ABABE_DATA.filter((a) => a.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getAbabeByElement(element: string): AbabeData[] {
+function getAbabeByElement(element: string): AbabeData[] {
   return ABABE_DATA.filter((a) => a.element.toLowerCase().includes(element.toLowerCase()));
 }

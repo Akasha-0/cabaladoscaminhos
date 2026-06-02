@@ -15,7 +15,7 @@ import type { TantricMap } from '@/types';
 // ============================================================================
 // OS 11 CORPOS TÂNTRICOS — tabela canônica (Doc 11 §3.2)
 // ============================================================================
-export const TANTRIC_BODIES_DATA: ReadonlyArray<{ id: number; name: string; essence: string }> = [
+const TANTRIC_BODIES_DATA: ReadonlyArray<{ id: number; name: string; essence: string }> = [
   { id: 1, name: 'Corpo da Alma', essence: 'Núcleo, pureza, origem' },
   { id: 2, name: 'Corpo Negativo / Mente Protetora', essence: 'Cautela, discernimento, proteção' },
   { id: 3, name: 'Corpo Positivo / Mente Projetiva', essence: 'Expansão, otimismo, ação' },
@@ -33,7 +33,7 @@ const TANTRIC_BODIES: Record<number, string> = Object.fromEntries(
   TANTRIC_BODIES_DATA.map((b) => [b.id, `${b.name} — ${b.essence}`])
 );
 
-export function getTantricBody(n: number): string {
+function getTantricBody(n: number): string {
   return TANTRIC_BODIES[n] ?? `Corpo Tântrico ${n}`;
 }
 

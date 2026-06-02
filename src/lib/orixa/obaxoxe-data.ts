@@ -89,11 +89,11 @@ export function getData(): ObaxoxeData[] {
   return OBAXOXE_DATA;
 }
 
-export function getDataById(id: string): ObaxoxeData | undefined {
+function getDataById(id: string): ObaxoxeData | undefined {
   return OBAXOXE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): ObaxoxeData[] {
+function searchData(query: string): ObaxoxeData[] {
   const q = query.toLowerCase();
   return OBAXOXE_DATA.filter(
     (o) =>
@@ -104,10 +104,10 @@ export function searchData(query: string): ObaxoxeData[] {
   );
 }
 
-export function getObaxoxeByDay(day: string): ObaxoxeData[] {
+function getObaxoxeByDay(day: string): ObaxoxeData[] {
   return OBAXOXE_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getObaxoxeByElement(element: string): ObaxoxeData[] {
+function getObaxoxeByElement(element: string): ObaxoxeData[] {
   return OBAXOXE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

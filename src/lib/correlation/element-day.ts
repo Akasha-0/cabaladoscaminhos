@@ -43,7 +43,7 @@ export interface ElementDayMapping {
 
 // ─── Element-to-Day Mapping ──────────────────────────────────────────────────
 
-export const ELEMENT_DAY_MAPPINGS: Record<Elemento, ElementDayMapping> = {
+const ELEMENT_DAY_MAPPINGS: Record<Elemento, ElementDayMapping> = {
   fogo: {
     elemento: 'fogo',
     elemento_nome: 'Fogo',

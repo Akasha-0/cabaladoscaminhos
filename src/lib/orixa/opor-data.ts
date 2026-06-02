@@ -81,7 +81,7 @@ export function getDataById(id: string): OporData | undefined {
   return OPOR_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OporData[] {
+function searchData(query: string): OporData[] {
   const q = query.toLowerCase();
   return OPOR_DATA.filter(
     (o) =>
@@ -92,10 +92,10 @@ export function searchData(query: string): OporData[] {
   );
 }
 
-export function getOporByDay(day: string): OporData[] {
+function getOporByDay(day: string): OporData[] {
   return OPOR_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOporByElement(element: string): OporData[] {
+function getOporByElement(element: string): OporData[] {
   return OPOR_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

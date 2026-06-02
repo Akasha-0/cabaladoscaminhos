@@ -893,11 +893,11 @@ export function getData(): AstrologiaData[] {
   return ASTROLOGIA_DATA;
 }
 
-export function getDataById(id: string): AstrologiaData | undefined {
+function getDataById(id: string): AstrologiaData | undefined {
   return ASTROLOGIA_DATA.find((a) => a.id === id);
 }
 
-export function searchData(query: string): AstrologiaData[] {
+function searchData(query: string): AstrologiaData[] {
   const lowerQuery = query.toLowerCase();
   return ASTROLOGIA_DATA.filter(
     (a) =>
@@ -908,11 +908,11 @@ export function searchData(query: string): AstrologiaData[] {
   );
 }
 
-export function getAstrologiaByElement(element: string): AstrologiaData[] {
+function getAstrologiaByElement(element: string): AstrologiaData[] {
   return ASTROLOGIA_DATA.filter((a) => a.element.toLowerCase() === element.toLowerCase());
 }
 
-export function getAstrologiaByOrisha(orisha: string): AstrologiaData[] {
+function getAstrologiaByOrisha(orisha: string): AstrologiaData[] {
   return ASTROLOGIA_DATA.filter(
     (a) =>
       a.rulingOrisha.toLowerCase() === orisha.toLowerCase() ||
@@ -920,7 +920,7 @@ export function getAstrologiaByOrisha(orisha: string): AstrologiaData[] {
   );
 }
 
-export function getCompatibleSigns(sign: string): AstrologiaData[] {
+function getCompatibleSigns(sign: string): AstrologiaData[] {
   const data = ASTROLOGIA_DATA.find((a) => a.sign.toLowerCase().includes(sign.toLowerCase()));
   if (!data) return [];
   return ASTROLOGIA_DATA.filter((a) => data.compatibleSigns.includes(a.sign));

@@ -86,7 +86,7 @@ export function createSpread(options: CustomSpreadOptions): CreatedSpread {
  * @param overrides - Optional overrides for name and description
  * @returns A spread configuration based on the template
  */
-export function createSpreadFromTemplate(
+function createSpreadFromTemplate(
   templateType: SpreadType | (typeof import('./spreads')['getAllSpreadTypes'] extends () => infer R ? R extends string[] ? R[number] : never : never),
   overrides?: { name?: string; description?: string }
 ): TarotSpread {
@@ -150,7 +150,7 @@ export function validateSpreadOptions(options: CustomSpreadOptions): string[] {
  * @param additionalPositions - Additional positions to append
  * @returns A new spread with the combined positions
  */
-export function extendSpread(
+function extendSpread(
   spread: TarotSpread,
   additionalPositions: Array<{
     name: string;

@@ -322,7 +322,7 @@ export function usePWA() {
 }
 
 // Hook for caching data with offline support
-export function useOfflineCache<T>(
+function useOfflineCache<T>(
   key: string,
   fetcher: () => Promise<T>,
   options?: {

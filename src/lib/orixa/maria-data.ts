@@ -148,11 +148,11 @@ export function getData(): MariaData[] {
   return MARIA_DATA;
 }
 
-export function getDataById(id: string): MariaData | undefined {
+function getDataById(id: string): MariaData | undefined {
   return MARIA_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): MariaData[] {
+function searchData(query: string): MariaData[] {
   const lowerQuery = query.toLowerCase();
   return MARIA_DATA.filter(
     (o) =>
@@ -164,15 +164,15 @@ export function searchData(query: string): MariaData[] {
   );
 }
 
-export function getMariaByDay(day: string): MariaData[] {
+function getMariaByDay(day: string): MariaData[] {
   return MARIA_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getMariaByElement(element: string): MariaData[] {
+function getMariaByElement(element: string): MariaData[] {
   return MARIA_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return [
     'Cura',
     'Protecao',
@@ -185,7 +185,7 @@ export function getDomains(): string[] {
   ];
 }
 
-export function getSacredAnimals(): string[] {
+function getSacredAnimals(): string[] {
   return [
     'Cavalo',
     'Pomba',
@@ -198,7 +198,7 @@ export function getSacredAnimals(): string[] {
   ];
 }
 
-export function getSymbols(): string[] {
+function getSymbols(): string[] {
   return [
     'Rosario',
     'Espada',
@@ -212,14 +212,14 @@ export function getSymbols(): string[] {
   ];
 }
 
-export function getLegacyTeaching(): string {
+function getLegacyTeaching(): string {
   return 'A sabedoria verdadeira vem da experiencia vivida e do amor verdadeiro';
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return MARIA_DATA.map((o) => o.affirmation);
 }
 
-export function getMariaByArchetype(archetype: string): MariaData[] {
+function getMariaByArchetype(archetype: string): MariaData[] {
   return MARIA_DATA.filter((o) => o.archetype.toLowerCase().includes(archetype.toLowerCase()));
 }

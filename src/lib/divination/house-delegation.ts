@@ -144,6 +144,6 @@ export const HOUSES_36: HouseDefinition[] = Object.values(CORRELATION_MAP)
  * Busca a definição de uma casa pelo número (1..36).
  * Retorna `undefined` se a casa não existir.
  */
-export function getHouseDefinition(houseNumber: number): HouseDefinition | undefined {
+function getHouseDefinition(houseNumber: number): HouseDefinition | undefined {
   return HOUSES_36.find((h) => h.number === houseNumber);
 }

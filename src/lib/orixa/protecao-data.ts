@@ -519,11 +519,11 @@ export function getData(): ProteçãoData[] {
   return PROTEÇÃO_DATA;
 }
 
-export function getDataById(id: string): ProteçãoData | undefined {
+function getDataById(id: string): ProteçãoData | undefined {
   return PROTEÇÃO_DATA.find((p) => p.id === id);
 }
 
-export function searchData(query: string): ProteçãoData[] {
+function searchData(query: string): ProteçãoData[] {
   const lowerQuery = query.toLowerCase();
   return PROTEÇÃO_DATA.filter(
     (p) =>
@@ -534,30 +534,30 @@ export function searchData(query: string): ProteçãoData[] {
   );
 }
 
-export function getProteçãoByOrisha(orisha: string): ProteçãoData[] {
+function getProteçãoByOrisha(orisha: string): ProteçãoData[] {
   return PROTEÇÃO_DATA.filter((p) => p.orisha.toLowerCase() === orisha.toLowerCase());
 }
 
-export function getProteçãoByElement(element: string): ProteçãoData[] {
+function getProteçãoByElement(element: string): ProteçãoData[] {
   return PROTEÇÃO_DATA.filter((p) => p.element.toLowerCase() === element.toLowerCase());
 }
 
-export function getProteçãoByType(type: string): ProteçãoData[] {
+function getProteçãoByType(type: string): ProteçãoData[] {
   return PROTEÇÃO_DATA.filter((p) => p.type.toLowerCase() === type.toLowerCase());
 }
 
-export function getProteçãoByPower(power: string): ProteçãoData[] {
+function getProteçãoByPower(power: string): ProteçãoData[] {
   return PROTEÇÃO_DATA.filter((p) =>
     p.powers.some((pw) => pw.toLowerCase().includes(power.toLowerCase()))
   );
 }
 
-export function getCompatibleProteçãoPractices(id: string): string[] {
+function getCompatibleProteçãoPractices(id: string): string[] {
   const proteção = getDataById(id);
   return proteção?.characteristics || [];
 }
 
-export function getEnemiesOfProteção(id: string): string[] {
+function getEnemiesOfProteção(id: string): string[] {
   const proteção = getDataById(id);
   return proteção?.enemies || [];
 }

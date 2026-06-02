@@ -89,11 +89,11 @@ export function getData(): OloxumData[] {
   return OLOXUM_DATA;
 }
 
-export function getDataById(id: string): OloxumData | undefined {
+function getDataById(id: string): OloxumData | undefined {
   return OLOXUM_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OloxumData[] {
+function searchData(query: string): OloxumData[] {
   const lowerQuery = query.toLowerCase();
   return OLOXUM_DATA.filter(
     (o) =>
@@ -105,10 +105,10 @@ export function searchData(query: string): OloxumData[] {
   );
 }
 
-export function getOloxumByDay(day: string): OloxumData[] {
+function getOloxumByDay(day: string): OloxumData[] {
   return OLOXUM_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOloxumByElement(element: string): OloxumData[] {
+function getOloxumByElement(element: string): OloxumData[] {
   return OLOXUM_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

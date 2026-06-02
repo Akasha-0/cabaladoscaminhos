@@ -30,7 +30,7 @@ const VOGAIS = new Set(['A', 'E', 'I', 'O', 'U', 'Á', 'É', 'Í', 'Ó', 'Ú', '
 // ============================================================================
 // REDUÇÃO NUMÉRICA (mantém números mestres 11, 22, 33)
 // ============================================================================
-export function reduceToSingleDigit(n: number, keepMaster = true): number {
+function reduceToSingleDigit(n: number, keepMaster = true): number {
   if (n <= 0) return 0;
   if (n <= 9) return n;
   if (keepMaster && (n === 11 || n === 22 || n === 33)) return n;
@@ -66,7 +66,7 @@ export function calculateLifePath(birthDate: string): { number: number; master: 
 // Variante da data que olha especificamente para o dia + mês + ano reduzidos
 // separadamente e depois somados. Geralmente coincide com o Caminho de Vida
 // quando o consulente está alinhado com sua missão.
-export function calculateMission(birthDate: string): { number: number; master: boolean } {
+function calculateMission(birthDate: string): { number: number; master: boolean } {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return { number: 0, master: false };
   const [, y, m, d] = match;
@@ -82,7 +82,7 @@ export function calculateMission(birthDate: string): { number: number; master: b
 // 3. NÚMERO DE EXPRESSÃO
 // ============================================================================
 // Soma de TODAS as letras do nome completo (consonantes + vogais).
-export function calculateExpression(fullName: string): { number: number; master: boolean } {
+function calculateExpression(fullName: string): { number: number; master: boolean } {
   const sum = normalizeName(fullName)
     .split('')
     .filter((c) => LETTER_VALUES[c] !== undefined)
@@ -95,7 +95,7 @@ export function calculateExpression(fullName: string): { number: number; master:
 // 4. NÚMERO DE MOTIVAÇÃO (Impulso da Alma)
 // ============================================================================
 // Soma APENAS das vogais do nome completo.
-export function calculateMotivation(fullName: string): { number: number; master: boolean } {
+function calculateMotivation(fullName: string): { number: number; master: boolean } {
   const sum = normalizeName(fullName)
     .split('')
     .filter((c) => VOGAIS.has(c.toUpperCase()) && LETTER_VALUES[c.toUpperCase()] !== undefined)
@@ -297,7 +297,7 @@ export function calculatePersonalCycles(
 // Primeiro ciclo: da infância até o dia do retorno (28 - dia reduzido)
 // Segundo ciclo: até os 56 anos
 // Terceiro ciclo: a partir dos 56 anos
-export function calculateLifeCycles(birthDate: string): {
+function calculateLifeCycles(birthDate: string): {
   first: { number: number; ageStart: number; ageEnd: number };
   second: { number: number; ageStart: number; ageEnd: number };
   third: { number: number; ageStart: number };

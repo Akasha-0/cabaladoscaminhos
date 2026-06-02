@@ -23,7 +23,7 @@ export interface ChakraPoliedro {
  * Mapping of the 7 main chakras to their corresponding Platonic solids
  * Based on sacred geometry principles from IDEIA.md
  */
-export const CHAKRA_POLIEDRO_MAP: ChakraPoliedro[] = [
+const CHAKRA_POLIEDRO_MAP: ChakraPoliedro[] = [
   {
     chakra: "Muladhara",
     chakraNumber: 1,
@@ -207,27 +207,27 @@ export function getChakraPoliedro(chakra: string): ChakraPoliedro | undefined {
 /**
  * Get all chakra-poliedro mappings
  */
-export function getAllChakraPoliedro(): ChakraPoliedro[] {
+function getAllChakraPoliedro(): ChakraPoliedro[] {
   return CHAKRA_POLIEDRO_MAP;
 }
 
 /**
  * Get the Platonic solid for a given chakra
  */
-export function getPoliedroForChakra(chakra: string): string | undefined {
+function getPoliedroForChakra(chakra: string): string | undefined {
   return getChakraPoliedro(chakra)?.poliedro;
 }
 
 /**
  * Get the element(s) associated with a chakra's Platonic solid
  */
-export function getElementosForChakra(chakra: string): string[] | undefined {
+function getElementosForChakra(chakra: string): string[] | undefined {
   return getChakraPoliedro(chakra)?.elementos;
 }
 
 /**
  * Get the frequency(ies) associated with a chakra
  */
-export function getFrequenciaForChakra(chakra: string): string[] | undefined {
+function getFrequenciaForChakra(chakra: string): string[] | undefined {
   return getChakraPoliedro(chakra)?.frequencias;
 }

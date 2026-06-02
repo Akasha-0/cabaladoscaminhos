@@ -163,11 +163,11 @@ export function getData(): CompartilharData[] {
   return COMPARTILHAR_DATA;
 }
 
-export function getDataById(id: string): CompartilharData | undefined {
+function getDataById(id: string): CompartilharData | undefined {
   return COMPARTILHAR_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): CompartilharData[] {
+function searchData(query: string): CompartilharData[] {
   const q = query.toLowerCase();
   return COMPARTILHAR_DATA.filter(
     (o) =>
@@ -180,6 +180,6 @@ export function searchData(query: string): CompartilharData[] {
   );
 }
 
-export function getCompartilharByElement(element: string): CompartilharData[] {
+function getCompartilharByElement(element: string): CompartilharData[] {
   return COMPARTILHAR_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

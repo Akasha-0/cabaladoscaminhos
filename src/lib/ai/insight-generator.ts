@@ -6,7 +6,7 @@ export type { UserSpiritualData } from './types';
 /**
  * Generate a contextual prompt for spiritual guidance based on user data
  */
-export function generateSpiritualContext(userData: UserSpiritualData): string {
+function generateSpiritualContext(userData: UserSpiritualData): string {
   const {
     nome,
     numeroPessoal,
@@ -35,7 +35,7 @@ Arco Maior: ${arcoList}
 /**
  * Generate a summary of user spiritual profile for AI prompts
  */
-export function generateSpiritualSummary(userData: UserSpiritualData): {
+function generateSpiritualSummary(userData: UserSpiritualData): {
   introduction: string;
   keyAttributes: string[];
   areasOfFocus: string[];
@@ -73,7 +73,7 @@ export function generateSpiritualSummary(userData: UserSpiritualData): {
 /**
  * Validate user spiritual data has minimum required fields
  */
-export function isValidUserSpiritualData(data: unknown): data is UserSpiritualData {
+function isValidUserSpiritualData(data: unknown): data is UserSpiritualData {
   if (!data || typeof data !== 'object') return false;
   const d = data as Partial<UserSpiritualData>;
   return (

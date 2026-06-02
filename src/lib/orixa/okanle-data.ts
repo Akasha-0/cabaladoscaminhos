@@ -141,11 +141,11 @@ export function getData(): OkanleData[] {
   return OKANLE_DATA;
 }
 
-export function getDataById(id: string): OkanleData | undefined {
+function getDataById(id: string): OkanleData | undefined {
   return OKANLE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OkanleData[] {
+function searchData(query: string): OkanleData[] {
   const lowerQuery = query.toLowerCase();
   return OKANLE_DATA.filter(
     (o) =>
@@ -156,10 +156,10 @@ export function searchData(query: string): OkanleData[] {
   );
 }
 
-export function getOkanleByElement(element: string): OkanleData[] {
+function getOkanleByElement(element: string): OkanleData[] {
   return OKANLE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getOkanleByPlanet(planet: string): OkanleData[] {
+function getOkanleByPlanet(planet: string): OkanleData[] {
   return OKANLE_DATA.filter((o) => o.rulingPlanet.toLowerCase().includes(planet.toLowerCase()));
 }

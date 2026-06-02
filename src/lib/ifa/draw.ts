@@ -12,7 +12,7 @@ export interface Ope {
   natureza: 'Yang' | 'Yin' | 'Neutro';
 }
 
-export const opes: Ope[] = [
+const opes: Ope[] = [
   {
     id: 1,
     nome: 'Ogbe',

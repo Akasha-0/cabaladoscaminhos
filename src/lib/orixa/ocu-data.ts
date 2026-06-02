@@ -63,11 +63,11 @@ export function getData(): OcuData[] {
   return OCU_DATA;
 }
 
-export function getDataById(id: string): OcuData | undefined {
+function getDataById(id: string): OcuData | undefined {
   return OCU_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OcuData[] {
+function searchData(query: string): OcuData[] {
   const lowerQuery = query.toLowerCase();
   return OCU_DATA.filter(
     (o) =>
@@ -78,6 +78,6 @@ export function searchData(query: string): OcuData[] {
   );
 }
 
-export function getOcuByElement(element: string): OcuData[] {
+function getOcuByElement(element: string): OcuData[] {
   return OCU_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

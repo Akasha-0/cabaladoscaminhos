@@ -88,11 +88,11 @@ export function getData(): OgunhleData[] {
   return OGUNHLE_DATA;
 }
 
-export function getDataById(id: string): OgunhleData | undefined {
+function getDataById(id: string): OgunhleData | undefined {
   return OGUNHLE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OgunhleData[] {
+function searchData(query: string): OgunhleData[] {
   const q = query.toLowerCase();
   return OGUNHLE_DATA.filter(
     (o) =>
@@ -103,10 +103,10 @@ export function searchData(query: string): OgunhleData[] {
   );
 }
 
-export function getOgunhleByDay(day: string): OgunhleData[] {
+function getOgunhleByDay(day: string): OgunhleData[] {
   return OGUNHLE_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOgunhleByElement(element: string): OgunhleData[] {
+function getOgunhleByElement(element: string): OgunhleData[] {
   return OGUNHLE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

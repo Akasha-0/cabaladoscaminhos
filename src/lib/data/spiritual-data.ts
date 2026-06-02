@@ -78,7 +78,7 @@ export interface CartaTarot {
 // DIAS DA SEMANA E SUAS CORRESPONDÊNCIAS
 // ============================================================
 
-export const diasSemana: Record<string, DiaSemanaData> = {
+const diasSemana: Record<string, DiaSemanaData> = {
   segunda: {
     dia: "Segunda-feira",
     chakras: ["1º Básico", "6º Frontal"],
@@ -327,7 +327,7 @@ export const odus: OduData[] = [
 // CARTAS DO BARALHO CIGANO (LENORMAND)
 // ============================================================
 
-export const cartasLenormand: CartaLenormand[] = [
+const cartasLenormand: CartaLenormand[] = [
   { numero: 1, nome: "O Cavaleiro", significado: "Início, velocidade, notícias que chegam, movimentos rápidos.", area: "Ações imediatas, projetos novos, novos caminhos.", interpretacao: "Mostra o que está entrando na vida do consulente logo no início do jogo." },
   { numero: 2, nome: "O Trevo", significado: "Pequenos obstáculos, imprevistos, sorte rápida ou testes cotidianos.", area: "Desafios diários, sorte, pequenas dificuldades de percurso.", interpretacao: "Indica as pequenas pedras no caminho ou golpes de sorte momentâneos." },
   { numero: 3, nome: "O Navio", significado: "Viagens, transições de longo prazo, mudanças profundas, horizontes.", area: "Mudanças geográficas ou de estado civil/emocional, comércio exterior.", interpretacao: "Revela para onde a vida do consulente está navegando e o ritmo dessa mudança." },
@@ -370,7 +370,7 @@ export const cartasLenormand: CartaLenormand[] = [
 // CHAKRAS E SUAS CORRESPONDÊNCIAS
 // ============================================================
 
-export const chakras: ChakraData[] = [
+const chakras: ChakraData[] = [
   { numero: 1, nome: "1º Básico (Muladhara)", cor: "Vermelho", planeta: "Saturno", elemento: "Terra", freqSolfeggio: "396 Hz", mantram: "LAM", nomeDivino: "ADONAI HA-ARETZ", poliedro: "Cubo", funcao: "Dissolução de medos de sobrevivência, ancoramento e firmeza material." },
   { numero: 2, nome: "2º Sacro (Swadhisthana)", cor: "Laranja", planeta: "Lua", elemento: "Água", freqSolfeggio: "417 Hz", mantram: "VAM", nomeDivino: "ELOHIM GIBOR", poliedro: "Cubo / Hexaedro", funcao: "Limpeza de traumas do passado, transmutação criativa e fluidez vital." },
   { numero: 3, nome: "3º Plexo Solar (Manipura)", cor: "Amarelo", planeta: "Sol", elemento: "Fogo", freqSolfeggio: "528 Hz", mantram: "RAM", nomeDivino: "SHADDAI EL CHAI", poliedro: "Tetraedro", funcao: "Transformação da força de vontade, quebra de medos e ativação do brilho." },
@@ -381,7 +381,7 @@ export const chakras: ChakraData[] = [
 ];
 
 // ============================================================
-export const fasesLua = [
+const fasesLua = [
   { fase: "Lua Nova", estado: "Introspecção, silêncio, planejamento invisível.", janela: "Das 00:00 às 03:00 (Hora Astrológica).", ritual: "Início de projetos secretos, firmezas de proteção profunda, assentamento de Exu.", orixas: "Exu, Omolu, Ogum", cartas: "Casa 1 (O Cavaleiro) / Casa 26 (O Livro)", praticas: "Meditação silenciosa, journaling, firmezas de proteção" },
   { fase: "Lua Crescente", estado: "Foco, ação disciplinada, força de vontade.", janela: "Das 06:00 às 12:00 (Amanhecer/Zênite).", ritual: "Rituais de abertura de caminhos comerciais, banhos de prosperidade e atração.", orixas: "Oxóssi, Ogum, Xangô", cartas: "Casa 13 (A Criança) / Casa 34 (Os Peixes)", praticas: "Iniciação de projetos e usaha, trabalho com intenção e disciplina" },
   { fase: "Lua Cheia", estado: "Expansão áurica máxima, magnetismo, êxtase.", janela: "Das 18:00 às 00:00 (Ascensão da Lua).", ritual: "Alta magia de atração, consagração de patuás, boris, rituais de amor e cura de Ori.", orixas: "Oxalá, Oxum, Iemanjá", cartas: "Casa 16 (A Estrela) / Casa 31 (O Sol)", praticas: "Rituais de alta magia, cura, amor, consagrações" },
@@ -392,14 +392,14 @@ export const fasesLua = [
 // UTILITÁRIOS
 // ============================================================
 
-export function getDiaSemanaAtual(): DiaSemanaData {
+function getDiaSemanaAtual(): DiaSemanaData {
   const dias = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
   const hoje = new Date().getDay();
   const diaKey = dias[hoje];
   return diasSemana[diaKey];
 }
 
-export function getOrixasDoDia(): OrixaData[] {
+function getOrixasDoDia(): OrixaData[] {
   const diaAtual = getDiaSemanaAtual();
   return orixas.filter(o => diaAtual.orixas.some(orixa => o.nome.includes(orixa.split('/')[0].trim())));
 }

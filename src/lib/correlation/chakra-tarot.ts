@@ -135,7 +135,7 @@ export function getAllChakraTarots(): ChakraTarotMapping[] {
  * Get all chakra names
  * @returns Array of chakra names (Sanskrit)
  */
-export function getAllChakras(): string[] {
+function getAllChakras(): string[] {
   return Object.keys(CHAKRA_TAROT_MAPPINGS);
 }
 

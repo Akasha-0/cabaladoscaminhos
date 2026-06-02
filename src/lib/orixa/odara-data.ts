@@ -40,7 +40,7 @@ export interface OdaraData {
   periodo: string;
 }
 
-export const ODARA_DATA: OdaraData = {
+const ODARA_DATA: OdaraData = {
   nome: 'Odara',
   nomePortugues: 'O Dara - O Belo',
   categoria: 'Odu de Harmonia',
@@ -83,26 +83,26 @@ export function getData(): OdaraData {
   return ODARA_DATA;
 }
 
-export function getMensagens(): string[] {
+function getMensagens(): string[] {
   return ODARA_DATA.mensagens;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return ODARA_DATA.quizilas;
 }
 
-export function getEbós(): string[] {
+function getEbós(): string[] {
   return ODARA_DATA.ebós;
 }
 
-export function getCores(): string[] {
+function getCores(): string[] {
   return ODARA_DATA.cores;
 }
 
-export function getPedras(): string[] {
+function getPedras(): string[] {
   return ODARA_DATA.pedras;
 }
 
-export function getHarmonyElements(): string[] {
+function getHarmonyElements(): string[] {
   return ODARA_DATA.harmonyElements;
 }

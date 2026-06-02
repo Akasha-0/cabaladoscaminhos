@@ -1,31 +1,4 @@
-export interface OgundaEbo {
-  tipo: string;
-  descricao: string;
-  elementos: string[];
-}
 
-export interface OgundaData {
-  id: string;
-  name: string;
-  namePt: string;
-  nameEn: string;
-  yoruba: string;
-  numero: number;
-  simbolo: string;
-  linhas: boolean[];
-  significado: string;
-  description: string;
-  keywords: string[];
-  oduPrinciples: string[];
-  spiritualGuidance: string[];
-  ritualPractices: string[];
-  ebos: OgundaEbo[];
-  quizilas: string[];
-  orixas: string[];
-  sacredFrequencies: string[];
-  elements: string[];
-  dayOfWeek: string;
-  colors: string[];
 }
 
 export const ogundaData: OgundaData = {

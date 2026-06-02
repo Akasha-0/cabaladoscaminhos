@@ -380,6 +380,6 @@ const MEJI_DATA: MejiOdu[] = [
   },
 ];
 
-export function getData(): MejiOdu[] {
+function getData(): MejiOdu[] {
   return MEJI_DATA;
 }

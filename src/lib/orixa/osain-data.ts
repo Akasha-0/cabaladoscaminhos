@@ -235,30 +235,30 @@ export function getData(): OsainData {
   return OSAIN_DATA;
 }
 
-export function getDataById(id: string): OsainData | undefined {
+function getDataById(id: string): OsainData | undefined {
   return id === 'osain' ? OSAIN_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return OSAIN_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return OSAIN_DATA.ritualPractices;
 }
 
-export function getHealingPractices(): string[] {
+function getHealingPractices(): string[] {
   return OSAIN_DATA.healingPractices;
 }
 
-export function getSacredTrees(): string[] {
+function getSacredTrees(): string[] {
   return OSAIN_DATA.sacredTrees;
 }
 
-export function getOsainByElement(element: string): OsainData | undefined {
+function getOsainByElement(element: string): OsainData | undefined {
   return OSAIN_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OSAIN_DATA : undefined;
 }
 
-export function getOsainByPlanet(planet: string): OsainData | undefined {
+function getOsainByPlanet(planet: string): OsainData | undefined {
   return OSAIN_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? OSAIN_DATA : undefined;
 }

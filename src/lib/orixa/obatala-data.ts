@@ -89,11 +89,11 @@ export function getData(): ObatalaData[] {
   return OBATALA_DATA;
 }
 
-export function getDataById(id: string): ObatalaData | undefined {
+function getDataById(id: string): ObatalaData | undefined {
   return OBATALA_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): ObatalaData[] {
+function searchData(query: string): ObatalaData[] {
   const lower = query.toLowerCase();
   return OBATALA_DATA.filter(
     (o) =>
@@ -104,10 +104,10 @@ export function searchData(query: string): ObatalaData[] {
   );
 }
 
-export function getObatalaByDay(day: string): ObatalaData[] {
+function getObatalaByDay(day: string): ObatalaData[] {
   return OBATALA_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getObatalaByElement(element: string): ObatalaData[] {
+function getObatalaByElement(element: string): ObatalaData[] {
   return OBATALA_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

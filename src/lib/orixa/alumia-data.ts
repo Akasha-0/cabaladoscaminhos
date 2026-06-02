@@ -78,11 +78,11 @@ export function getData(): AlumiaData[] {
   return ALUMIA_DATA;
 }
 
-export function getDataById(id: string): AlumiaData | undefined {
+function getDataById(id: string): AlumiaData | undefined {
   return ALUMIA_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): AlumiaData[] {
+function searchData(query: string): AlumiaData[] {
   const q = query.toLowerCase();
   return ALUMIA_DATA.filter(
     (o) =>
@@ -92,10 +92,10 @@ export function searchData(query: string): AlumiaData[] {
   );
 }
 
-export function getAlumiaByElement(element: string): AlumiaData[] {
+function getAlumiaByElement(element: string): AlumiaData[] {
   return ALUMIA_DATA.filter((o) => o.element.includes(element.toLowerCase()));
 }
 
-export function getAlumiaByDay(day: string): AlumiaData[] {
+function getAlumiaByDay(day: string): AlumiaData[] {
   return ALUMIA_DATA.filter((o) => o.dayOfWeek.includes(day.toLowerCase()));
 }

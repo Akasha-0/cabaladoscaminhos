@@ -268,7 +268,7 @@ function generateMockSpiritualResponse(
  * @param context - Spiritual context metadata
  * @returns OracleResponse with formatted spiritual guidance
  */
-export async function generateOracleResponse(
+async function generateOracleResponse(
   prompt: string,
   context: OracleContext = {}
 ): Promise<OracleResponse> {
@@ -302,6 +302,6 @@ function generateMockPrediction(
 /**
  * Get Oracle system prompt
  */
-export function getOracleSystemPrompt(): string {
+function getOracleSystemPrompt(): string {
   return ORACLE_SYSTEM_PROMPT;
 }

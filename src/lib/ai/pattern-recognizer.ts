@@ -263,7 +263,7 @@ function calculateTraditionAffinity(
 // PATTERN RECOGNIZER CLASS
 // ============================================================
 
-export class PatternRecognizer {
+class PatternRecognizer {
   private archetypes = ARCHETYPE_DATABASE;
 
   /**

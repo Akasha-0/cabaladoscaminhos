@@ -188,7 +188,7 @@ export function getTotalMissionCount(): number {
 /**
  * Returns completion percentage for today
  */
-export function getMissionCompletionPercentage(): number {
+function getMissionCompletionPercentage(): number {
   const total = getTotalMissionCount();
   if (total === 0) return 0;
   return Math.round((getCompletedCount() / total) * 100);

@@ -105,11 +105,11 @@ export function getData(): OpareData[] {
   return OPARE_DATA;
 }
 
-export function getDataById(id: string): OpareData | undefined {
+function getDataById(id: string): OpareData | undefined {
   return OPARE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OpareData[] {
+function searchData(query: string): OpareData[] {
   const lowerQuery = query.toLowerCase();
   return OPARE_DATA.filter(
     (o) =>
@@ -121,10 +121,10 @@ export function searchData(query: string): OpareData[] {
   );
 }
 
-export function getOpareByDay(day: string): OpareData[] {
+function getOpareByDay(day: string): OpareData[] {
   return OPARE_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOpareByElement(element: string): OpareData[] {
+function getOpareByElement(element: string): OpareData[] {
   return OPARE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

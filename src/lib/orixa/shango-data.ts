@@ -89,11 +89,11 @@ export function getData(): ShangoData[] {
   return SHANGO_DATA;
 }
 
-export function getDataById(id: string): ShangoData | undefined {
+function getDataById(id: string): ShangoData | undefined {
   return SHANGO_DATA.find((s) => s.id === id);
 }
 
-export function searchData(query: string): ShangoData[] {
+function searchData(query: string): ShangoData[] {
   const lower = query.toLowerCase();
   return SHANGO_DATA.filter(
     (s) =>
@@ -104,10 +104,10 @@ export function searchData(query: string): ShangoData[] {
   );
 }
 
-export function getShangoByDay(day: string): ShangoData[] {
+function getShangoByDay(day: string): ShangoData[] {
   return SHANGO_DATA.filter((s) => s.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getShangoByElement(element: string): ShangoData[] {
+function getShangoByElement(element: string): ShangoData[] {
   return SHANGO_DATA.filter((s) => s.element.some((e) => e.toLowerCase().includes(element.toLowerCase())));
 }

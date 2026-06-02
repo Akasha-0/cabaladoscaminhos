@@ -246,7 +246,7 @@ function getElement(entity: string): string | null {
 // MAIN ENGINE
 // ════════════════════════════════════════════════════════════════════════════
 
-export class HyperCorrelationEngine {
+class HyperCorrelationEngine {
   /**
    * Analyze cross-tradition correlations for a given profile
    */

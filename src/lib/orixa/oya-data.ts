@@ -177,11 +177,11 @@ export function getData(): OyaData {
   return OYA_DATA;
 }
 
-export function getDataById(id: string): OyaData | undefined {
+function getDataById(id: string): OyaData | undefined {
   return id === 'oya' ? OYA_DATA : undefined;
 }
 
-export function searchData(query: string): OyaData[] {
+function searchData(query: string): OyaData[] {
   const q = query.toLowerCase();
   return OYA_DATA.name.toLowerCase().includes(q) ||
     OYA_DATA.namePortuguese.toLowerCase().includes(q) ||
@@ -192,26 +192,26 @@ export function searchData(query: string): OyaData[] {
     : [];
 }
 
-export function getOyaByElement(element: string): OyaData | undefined {
+function getOyaByElement(element: string): OyaData | undefined {
   return OYA_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OYA_DATA : undefined;
 }
 
-export function getOyaByDay(day: string): OyaData | undefined {
+function getOyaByDay(day: string): OyaData | undefined {
   return OYA_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? OYA_DATA : undefined;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return OYA_DATA.sacredObjects;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return OYA_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return OYA_DATA.domains;
 }
 
-export function getAspects(): OyaAspect[] {
+function getAspects(): OyaAspect[] {
   return OYA_DATA.aspects;
 }

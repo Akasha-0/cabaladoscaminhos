@@ -70,11 +70,11 @@ export function getData(): VovochicoData[] {
   return VOVOCHICO_DATA;
 }
 
-export function getDataById(id: string): VovochicoData | undefined {
+function getDataById(id: string): VovochicoData | undefined {
   return VOVOCHICO_DATA.find((v) => v.id === id);
 }
 
-export function searchData(query: string): VovochicoData[] {
+function searchData(query: string): VovochicoData[] {
   const lowerQuery = query.toLowerCase();
   return VOVOCHICO_DATA.filter(
     (v) =>
@@ -85,34 +85,34 @@ export function searchData(query: string): VovochicoData[] {
   );
 }
 
-export function getVovochicoByDay(day: string): VovochicoData[] {
+function getVovochicoByDay(day: string): VovochicoData[] {
   return VOVOCHICO_DATA.filter((v) => v.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getVovochicoByElement(element: string): VovochicoData[] {
+function getVovochicoByElement(element: string): VovochicoData[] {
   return VOVOCHICO_DATA.filter((v) => v.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ['Sabedoria Ancestral', 'Transformacao', 'Ciclicidade', 'Protecao', 'Intuicao', 'Memoria'];
 }
 
-export function getSacredAnimals(): string[] {
+function getSacredAnimals(): string[] {
   return ['Coruja', 'Cobra', 'Borboleta'];
 }
 
-export function getSymbols(): string[] {
+function getSymbols(): string[] {
   return ['Cabaça ritual', 'Rabo de cavalo', 'Espelho antigo', 'Chocalho'];
 }
 
-export function getLegacyTeaching(): string {
+function getLegacyTeaching(): string {
   return 'A sabedoria dos antigos nao se perde, ela apenas adormece ate que uma nova geracao a desperte';
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return VOVOCHICO_DATA.map((v) => v.affirmation);
 }
 
-export function getVovochicoByArchetype(archetype: string): VovochicoData[] {
+function getVovochicoByArchetype(archetype: string): VovochicoData[] {
   return VOVOCHICO_DATA.filter((v) => v.archetype.toLowerCase().includes(archetype.toLowerCase()));
 }

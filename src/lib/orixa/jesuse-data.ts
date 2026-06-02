@@ -70,11 +70,11 @@ export function getData(): JesuseData[] {
   return JESUSE_DATA;
 }
 
-export function getDataById(id: string): JesuseData | undefined {
+function getDataById(id: string): JesuseData | undefined {
   return JESUSE_DATA.find((j) => j.id === id);
 }
 
-export function searchData(query: string): JesuseData[] {
+function searchData(query: string): JesuseData[] {
   const lowerQuery = query.toLowerCase();
   return JESUSE_DATA.filter(
     (j) =>
@@ -85,10 +85,10 @@ export function searchData(query: string): JesuseData[] {
   );
 }
 
-export function getJesuseByDay(day: string): JesuseData[] {
+function getJesuseByDay(day: string): JesuseData[] {
   return JESUSE_DATA.filter((j) => j.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getJesuseByElement(element: string): JesuseData[] {
+function getJesuseByElement(element: string): JesuseData[] {
   return JESUSE_DATA.filter((j) => j.element.toLowerCase().includes(element.toLowerCase()));
 }

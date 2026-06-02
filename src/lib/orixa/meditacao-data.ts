@@ -139,30 +139,30 @@ export function getData(): MeditacaoData {
   return MEDITACAO_DATA;
 }
 
-export function getDataById(id: string): MeditacaoData | undefined {
+function getDataById(id: string): MeditacaoData | undefined {
   return id === 'meditacao' ? MEDITACAO_DATA : undefined;
 }
 
-export function getBreathingTechnique(): BreathingData {
+function getBreathingTechnique(): BreathingData {
   return MEDITACAO_DATA.breathing;
 }
 
-export function getVisualization(): VisualizationData {
+function getVisualization(): VisualizationData {
   return MEDITACAO_DATA.visualization;
 }
 
-export function getMantra(): MantraData {
+function getMantra(): MantraData {
   return MEDITACAO_DATA.mantra;
 }
 
-export function getAssociatedOrixas(): string[] {
+function getAssociatedOrixas(): string[] {
   return MEDITACAO_DATA.associatedOrixas;
 }
 
-export function getSacredTimes(): string[] {
+function getSacredTimes(): string[] {
   return MEDITACAO_DATA.sacredTimes;
 }
 
-export function getElements(): string[] {
+function getElements(): string[] {
   return MEDITACAO_DATA.elements;
 }

@@ -257,31 +257,31 @@ export function getData(): XingoData {
   return XINGO_DATA;
 }
 
-export function getDataById(id: string): XingoData | undefined {
+function getDataById(id: string): XingoData | undefined {
   return id === 'xingo' ? XINGO_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return XINGO_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return XINGO_DATA.ritualPractices;
 }
 
-export function getHealingPractices(): string[] {
+function getHealingPractices(): string[] {
   return XINGO_DATA.healingPractices;
 }
 
-export function getSacredTrees(): string[] {
+function getSacredTrees(): string[] {
   return XINGO_DATA.sacredTrees;
 }
 
-export function getXingoByElement(element: string): XingoData | undefined {
+function getXingoByElement(element: string): XingoData | undefined {
   return XINGO_DATA.element.toLowerCase().includes(element.toLowerCase()) ? XINGO_DATA : undefined;
 }
 
-export function getXingoByPlanet(planet: string): XingoData | undefined {
+function getXingoByPlanet(planet: string): XingoData | undefined {
   return XINGO_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? XINGO_DATA : undefined;
 }
 

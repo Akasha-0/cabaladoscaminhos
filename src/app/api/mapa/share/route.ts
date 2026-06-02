@@ -183,4 +183,3 @@ export async function POST(request: NextRequest) {
 }
 
 // Export store for type access
-export { shareStore };

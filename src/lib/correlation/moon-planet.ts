@@ -395,6 +395,6 @@ export function getAvailablePlanets(): Planeta[] {
  * Get all unique planet names sorted alphabetically.
  * @returns Array of unique planet names
  */
-export function getAvailablePlanetsAlphabetical(): Planeta[] {
+function getAvailablePlanetsAlphabetical(): Planeta[] {
   return Array.from(getAvailablePlanets()).sort();
 }

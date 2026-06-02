@@ -150,27 +150,27 @@ export function getData(): XapaData {
   return XAPA_DATA;
 }
 
-export function getDataById(id: string): XapaData | undefined {
+function getDataById(id: string): XapaData | undefined {
   return id === 'xapa' ? XAPA_DATA : undefined;
 }
 
-export function getManifestationAspects(): ManifestationAspect[] {
+function getManifestationAspects(): ManifestationAspect[] {
   return manifestationAspects;
 }
 
-export function getCreativeGifts(): CreativeGift[] {
+function getCreativeGifts(): CreativeGift[] {
   return creativeGifts;
 }
 
-export function getPaths(): PathOfXapa[] {
+function getPaths(): PathOfXapa[] {
   return pathsOfXapa;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return ["Círculo de criação", "Chave de ouro", "Espiral", "Espelho", "Cristal"];
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return [
     "Xapa, abre meu caminho de manifestação",
     "Xapa, transforma minha intenção em realidade",
@@ -178,17 +178,17 @@ export function getInvocationPhrases(): string[] {
   ];
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return XAPA_DATA.qualities;
 }
 
-export function getXapaByElement(element: string): XapaData | undefined {
+function getXapaByElement(element: string): XapaData | undefined {
   return XAPA_DATA.element.toLowerCase().includes(element.toLowerCase())
     ? XAPA_DATA
     : undefined;
 }
 
-export function getXapaByDay(day: string): XapaData | undefined {
+function getXapaByDay(day: string): XapaData | undefined {
   return XAPA_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase())
     ? XAPA_DATA
     : undefined;

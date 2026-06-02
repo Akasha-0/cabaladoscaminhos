@@ -168,38 +168,38 @@ export function getData(): IkoyunData {
   return IKOYUN_DATA;
 }
 
-export function getDataById(id: string): IkoyunData | undefined {
+function getDataById(id: string): IkoyunData | undefined {
   return id === 'ikoyun' ? IKOYUN_DATA : undefined;
 }
 
-export function getAncestralPrinciples(): AncestralPrinciple[] {
+function getAncestralPrinciples(): AncestralPrinciple[] {
   return ancestralPrinciples;
 }
 
-export function getSpiritualGuidance(): SpiritualGuidance[] {
+function getSpiritualGuidance(): SpiritualGuidance[] {
   return spiritualGuidance;
 }
 
-export function getPathsOfIkoyun(): PathOfIkoyun[] {
+function getPathsOfIkoyun(): PathOfIkoyun[] {
   return pathsOfIkoyun;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return IKOYUN_DATA.sacredObjects;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return IKOYUN_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return IKOYUN_DATA.domains;
 }
 
-export function getIkoyunByElement(element: string): IkoyunData | undefined {
+function getIkoyunByElement(element: string): IkoyunData | undefined {
   return IKOYUN_DATA.element.toLowerCase().includes(element.toLowerCase()) ? IKOYUN_DATA : undefined;
 }
 
-export function getIkoyunByDay(day: string): IkoyunData | undefined {
+function getIkoyunByDay(day: string): IkoyunData | undefined {
   return IKOYUN_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? IKOYUN_DATA : undefined;
 }

@@ -109,7 +109,7 @@ export async function criarSessaoCheckout(
   }
 }
 
-export async function verificarAssinatura(userId: string) {
+async function verificarAssinatura(userId: string) {
   if (!stripe) {
     throw new CheckoutError('Stripe não está configurado');
   }
@@ -181,7 +181,7 @@ export async function criarPortalSession(
   }
 }
 
-export async function obterCustomerId(userId: string): Promise<string | null> {
+async function obterCustomerId(userId: string): Promise<string | null> {
   if (!stripe) {
     return null;
   }

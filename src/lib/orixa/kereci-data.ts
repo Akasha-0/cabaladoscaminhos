@@ -154,38 +154,38 @@ export function getData(): KereciData {
   return KERECI_DATA;
 }
 
-export function getDataById(id: string): KereciData | undefined {
+function getDataById(id: string): KereciData | undefined {
   return id === "kereci" ? KERECI_DATA : undefined;
 }
 
-export function getSecretAspects(): SecretAspect[] {
+function getSecretAspects(): SecretAspect[] {
   return secretAspects;
 }
 
-export function getTransformationGifts(): TransformationGift[] {
+function getTransformationGifts(): TransformationGift[] {
   return transformationGifts;
 }
 
-export function getPaths(): PathOfKereci[] {
+function getPaths(): PathOfKereci[] {
   return pathsOfKereci;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return ["espelho", "chave antiga", "velas pretas", "espelhos quebrados"];
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return KERECI_DATA.chants;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ["segredos", "magia", "transformação", "conhecimento oculto", "mistérios"];
 }
 
-export function getKereciByElement(element: string): KereciData | undefined {
+function getKereciByElement(element: string): KereciData | undefined {
   return KERECI_DATA.element.toLowerCase().includes(element.toLowerCase()) ? KERECI_DATA : undefined;
 }
 
-export function getKereciByDay(day: string): KereciData | undefined {
+function getKereciByDay(day: string): KereciData | undefined {
   return KERECI_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? KERECI_DATA : undefined;
 }

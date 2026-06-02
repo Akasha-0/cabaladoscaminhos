@@ -105,11 +105,11 @@ export function getData(): YemojaData[] {
   return YEMOJA_DATA;
 }
 
-export function getDataById(id: string): YemojaData | undefined {
+function getDataById(id: string): YemojaData | undefined {
   return YEMOJA_DATA.find((y) => y.id === id);
 }
 
-export function searchData(query: string): YemojaData[] {
+function searchData(query: string): YemojaData[] {
   const lowerQuery = query.toLowerCase();
   return YEMOJA_DATA.filter(
     (y) =>
@@ -120,10 +120,10 @@ export function searchData(query: string): YemojaData[] {
   );
 }
 
-export function getYemojaByDay(day: string): YemojaData[] {
+function getYemojaByDay(day: string): YemojaData[] {
   return YEMOJA_DATA.filter((y) => y.dayOfWeek.toLowerCase() === day.toLowerCase());
 }
 
-export function getYemojaByElement(element: string): YemojaData[] {
+function getYemojaByElement(element: string): YemojaData[] {
   return YEMOJA_DATA.filter((y) => y.element.toLowerCase() === element.toLowerCase());
 }

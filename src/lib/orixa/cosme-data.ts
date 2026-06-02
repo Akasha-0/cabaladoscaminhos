@@ -97,11 +97,11 @@ export function getData(): CosmeData[] {
   return COSME_DATA;
 }
 
-export function getDataById(id: string): CosmeData | undefined {
+function getDataById(id: string): CosmeData | undefined {
   return COSME_DATA.find((c) => c.id === id);
 }
 
-export function searchData(query: string): CosmeData[] {
+function searchData(query: string): CosmeData[] {
   const lowerQuery = query.toLowerCase();
   return COSME_DATA.filter(
     (c) =>
@@ -113,34 +113,34 @@ export function searchData(query: string): CosmeData[] {
   );
 }
 
-export function getCosmeByDay(day: string): CosmeData[] {
+function getCosmeByDay(day: string): CosmeData[] {
   return COSME_DATA.filter((c) => c.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getCosmeByElement(element: string): CosmeData[] {
+function getCosmeByElement(element: string): CosmeData[] {
   return COSME_DATA.filter((c) => c.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ['Marinheiross', 'Navegação', 'Lealdade', 'Companheirismo', 'Legado', 'Esperança', 'Bravura', 'Proteção'];
 }
 
-export function getSacredAnimals(): string[] {
+function getSacredAnimals(): string[] {
   return ['Gaivota', 'Polvo', 'Cavalo-marinho', 'Touro', 'Falcão', 'Golfinho'];
 }
 
-export function getSymbols(): string[] {
+function getSymbols(): string[] {
   return ['Bússola', 'Leme', 'Navio', 'Cordas', 'Rede de pesca', 'Cálice', 'Remos', 'Lanterna'];
 }
 
-export function getLegacyTeaching(): string {
+function getLegacyTeaching(): string {
   return 'A amizade verdadeiro se prova não apenas nos momentos de glória, mas também quando tudo parece perdido';
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return COSME_DATA.map((c) => c.affirmation);
 }
 
-export function getCosmeByArchetype(archetype: string): CosmeData[] {
+function getCosmeByArchetype(archetype: string): CosmeData[] {
   return COSME_DATA.filter((c) => c.archetype.toLowerCase().includes(archetype.toLowerCase()));
 }

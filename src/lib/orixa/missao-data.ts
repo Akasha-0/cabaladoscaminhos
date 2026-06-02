@@ -178,11 +178,11 @@ export function getData(): MissaoData[] {
   return MISSAO_DATA;
 }
 
-export function getDataById(id: string): MissaoData | undefined {
+function getDataById(id: string): MissaoData | undefined {
   return MISSAO_DATA.find((m) => m.id === id);
 }
 
-export function searchData(query: string): MissaoData[] {
+function searchData(query: string): MissaoData[] {
   const q = query.toLowerCase();
   return MISSAO_DATA.filter(
     (m) =>
@@ -193,10 +193,10 @@ export function searchData(query: string): MissaoData[] {
   );
 }
 
-export function getMissaoByDay(day: string): MissaoData[] {
+function getMissaoByDay(day: string): MissaoData[] {
   return MISSAO_DATA.filter((m) => m.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getMissaoByElement(element: string): MissaoData[] {
+function getMissaoByElement(element: string): MissaoData[] {
   return MISSAO_DATA.filter((m) => m.element.toLowerCase().includes(element.toLowerCase()));
 }

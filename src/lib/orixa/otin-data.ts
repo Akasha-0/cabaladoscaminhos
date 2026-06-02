@@ -149,38 +149,38 @@ export function getData(): OtinData {
   return OTIN_DATA;
 }
 
-export function getDataById(id: string): OtinData | undefined {
+function getDataById(id: string): OtinData | undefined {
   return id === 'otin' ? OTIN_DATA : undefined;
 }
 
-export function getEnduranceAspects(): EnduranceAspect[] {
+function getEnduranceAspects(): EnduranceAspect[] {
   return enduranceAspects;
 }
 
-export function getInnerStrengthGifts(): InnerStrengthGift[] {
+function getInnerStrengthGifts(): InnerStrengthGift[] {
   return innerStrengthGifts;
 }
 
-export function getPaths(): PathOfOtin[] {
+function getPaths(): PathOfOtin[] {
   return pathsOfOtin;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return OTIN_DATA.sacredObjects;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return OTIN_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return OTIN_DATA.domains;
 }
 
-export function getOtinByElement(element: string): OtinData | undefined {
+function getOtinByElement(element: string): OtinData | undefined {
   return OTIN_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OTIN_DATA : undefined;
 }
 
-export function getOtinByDay(day: string): OtinData | undefined {
+function getOtinByDay(day: string): OtinData | undefined {
   return OTIN_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? OTIN_DATA : undefined;
 }

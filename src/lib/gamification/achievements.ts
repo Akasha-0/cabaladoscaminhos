@@ -118,7 +118,7 @@ export function unlockAchievement(id: string, progress?: number): boolean {
   return true;
 }
 
-export function updateProgress(id: string, progress: number): void {
+function updateProgress(id: string, progress: number): void {
   const store = readStorage();
   const def = achievementDefinitions.find((a) => a.id === id);
   if (!def || store[id]?.unlockedAt) return;
@@ -148,7 +148,7 @@ export function getCompletionPercentage(): number {
   return Math.round((getUnlockedCount() / total) * 100);
 }
 
-export function getRecentAchievements(limit: number = 5): Achievement[] {
+function getRecentAchievements(limit: number = 5): Achievement[] {
   return getAchievements()
     .filter((a) => a.unlockedAt)
     .sort((a, b) => new Date(b.unlockedAt!).getTime() - new Date(a.unlockedAt!).getTime())

@@ -63,11 +63,11 @@ export function getData(): OssonoData[] {
   return OSSONO_DATA;
 }
 
-export function getDataById(id: string): OssonoData | undefined {
+function getDataById(id: string): OssonoData | undefined {
   return OSSONO_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OssonoData[] {
+function searchData(query: string): OssonoData[] {
   const q = query.toLowerCase();
   return OSSONO_DATA.filter(
     (o) =>
@@ -78,10 +78,10 @@ export function searchData(query: string): OssonoData[] {
   );
 }
 
-export function getOssonoByDay(day: string): OssonoData[] {
+function getOssonoByDay(day: string): OssonoData[] {
   return OSSONO_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOssonoByElement(element: string): OssonoData[] {
+function getOssonoByElement(element: string): OssonoData[] {
   return OSSONO_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

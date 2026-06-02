@@ -82,7 +82,7 @@ export const ELEMENT_TAROT_MAP: Record<string, ElementTarotMapping> = {
 /**
  * All 5 elements in traditional order
  */
-export const ELEMENTOS = ['Terra', 'Água', 'Fogo', 'Ar', 'Éter'] as const;
+const ELEMENTOS = ['Terra', 'Água', 'Fogo', 'Ar', 'Éter'] as const;
 
 /**
  * Freeze the mapping object to prevent modifications

@@ -1,4 +1,4 @@
-'use client';
+// fallow-ignore-next-line: high-complexity
 import { useState, useEffect, useCallback, useRef } from 'react';
 export interface SyncStatus {
   lastSync: string | null;

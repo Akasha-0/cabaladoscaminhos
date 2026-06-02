@@ -89,11 +89,11 @@ export function getData(): OxosseData[] {
   return OXOSSE_DATA;
 }
 
-export function getDataById(id: string): OxosseData | undefined {
+function getDataById(id: string): OxosseData | undefined {
   return OXOSSE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OxosseData[] {
+function searchData(query: string): OxosseData[] {
   const q = query.toLowerCase();
   return OXOSSE_DATA.filter(
     (o) =>
@@ -105,10 +105,10 @@ export function searchData(query: string): OxosseData[] {
   );
 }
 
-export function getOxosseByDay(day: string): OxosseData[] {
+function getOxosseByDay(day: string): OxosseData[] {
   return OXOSSE_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOxosseByElement(element: string): OxosseData[] {
+function getOxosseByElement(element: string): OxosseData[] {
   return OXOSSE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

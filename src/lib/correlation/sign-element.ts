@@ -282,7 +282,7 @@ export function getSignsByRuler(planeta: string): Signo[] {
  * @param direcao - Cardinal direction (Norte, Sul, Leste, Oeste)
  * @returns Array of signs with that direction
  */
-export function getSignsByDirection(direcao: string): Signo[] {
+function getSignsByDirection(direcao: string): Signo[] {
   return (Object.keys(SIGN_ELEMENT_MAPPINGS) as Signo[]).filter(
     (signo) => getSignElement(signo)?.direcao === direcao
   );

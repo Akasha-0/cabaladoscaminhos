@@ -56,7 +56,7 @@ export interface PaginatedResponse<T> {
 // USER TYPES
 // ============================================================
 
-export const UserSchema = z.object({
+const UserSchema = z.object({
   id: z.string(),
   email: z.string().email(),
   nomeCompleto: z.string().min(1),
@@ -76,7 +76,7 @@ export interface TransacaoCreditoType {
   createdAt: string;
 }
 
-export const TransacaoCreditoSchema = z.object({
+const TransacaoCreditoSchema = z.object({
   id: z.string(),
   tipo: z.enum(['CREDITO', 'DEBITO']),
   quantidade: z.number(),
@@ -99,7 +99,7 @@ export interface CreditosInfo {
 
 // ============================================================
 
-export const NumerologiaRequestSchema = z.object({
+const NumerologiaRequestSchema = z.object({
   nome: z.string().optional(),
   data: z.string().optional(),
   tipo: z.enum(['pitagorica', 'caldeia', 'cabalistica', 'tantrica', 'pitagorica-data', 'destino']),
@@ -117,7 +117,7 @@ export interface NumerologiaResponse {
 // ASTROLOGY TYPES
 // ============================================================
 
-export const PosicaoPlanetaSchema = z.object({
+const PosicaoPlanetaSchema = z.object({
   planeta: z.string(),
   longitude: z.number(),
   latitude: z.number(),
@@ -128,14 +128,14 @@ export const PosicaoPlanetaSchema = z.object({
   grauNoSigno: z.number(),
 });
 
-export const CasaSchema = z.object({
+const CasaSchema = z.object({
   numero: z.number(),
   signo: z.string(),
   grauNoSigno: z.number(),
   planetaRegente: z.string().nullable(),
 });
 
-export const MapaNatalSchema = z.object({
+const MapaNatalSchema = z.object({
   usuarioId: z.string(),
   dataCalculo: z.string().datetime(),
   planeta: z.record(PosicaoPlanetaSchema),
@@ -194,7 +194,7 @@ export interface OdusResponse {
 
  // CREDITS TYPES
  // ============================================================
- export const CreditosSchema = z.object({
+ const CreditosSchema = z.object({
    saldo: z.number(),
    transacoes: z.array(TransacaoCreditoSchema).optional(),
  });
@@ -294,19 +294,19 @@ export interface InsightsResponse {
 // VALIDATORS - Zod schemas for API validation
 // ============================================================
 
-export const paginationSchema = z.object({
+const paginationSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(1).max(100).default(20),
   sortBy: z.string().optional(),
   sortOrder: z.enum(['asc', 'desc']).default('asc'),
 });
 
-export const idParamSchema = z.object({
+const idParamSchema = z.object({
   id: z.string().min(1, 'ID é obrigatório'),
 });
 
 // Query params with pagination
-export const paginatedQuerySchema = z.object({
+const paginatedQuerySchema = z.object({
   ...paginationSchema.shape,
 });
 
@@ -314,7 +314,7 @@ export const paginatedQuerySchema = z.object({
 // RESPONSE FACTORIES
 // ============================================================
 
-export function createSuccessResponse<T>(
+function createSuccessResponse<T>(
   data: T,
   meta?: ResponseMeta
 ): ApiResponse<T> {
@@ -328,7 +328,7 @@ export function createSuccessResponse<T>(
   };
 }
 
-export function createPaginatedResponse<T>(
+function createPaginatedResponse<T>(
   items: T[],
   pagination: PaginationMeta
 ): PaginatedResponse<T> {
@@ -341,7 +341,7 @@ export function createPaginatedResponse<T>(
   };
 }
 
-export function createErrorResponse(
+function createErrorResponse(
   code: number,
   message: string,
   details?: Record<string, unknown>
@@ -360,11 +360,11 @@ export function createErrorResponse(
 // TYPE GUARDS
 // ============================================================
 
-export function isApiError(response: ApiResponse): response is ApiResponse & { error: ApiError } {
+function isApiError(response: ApiResponse): response is ApiResponse & { error: ApiError } {
   return !response.success && 'error' in response;
 }
 
-export function isPaginatedResponse<T>(
+function isPaginatedResponse<T>(
   response: ApiResponse<T> | PaginatedResponse<T>
 ): response is PaginatedResponse<T> {
   return 'items' in response && 'pagination' in response;

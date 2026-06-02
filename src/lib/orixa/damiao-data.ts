@@ -97,11 +97,11 @@ export function getData(): DamiaoData[] {
   return DAMIAO_DATA;
 }
 
-export function getDataById(id: string): DamiaoData | undefined {
+function getDataById(id: string): DamiaoData | undefined {
   return DAMIAO_DATA.find((d) => d.id === id);
 }
 
-export function searchData(query: string): DamiaoData[] {
+function searchData(query: string): DamiaoData[] {
   const q = query.toLowerCase();
   return DAMIAO_DATA.filter(
     (d) =>
@@ -111,35 +111,35 @@ export function searchData(query: string): DamiaoData[] {
   );
 }
 
-export function getDamiaoByDay(day: string): DamiaoData[] {
+function getDamiaoByDay(day: string): DamiaoData[] {
   return DAMIAO_DATA.filter((d) => d.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getDamiaoByElement(element: string): DamiaoData[] {
+function getDamiaoByElement(element: string): DamiaoData[] {
   return DAMIAO_DATA.filter((d) => d.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ['Lealdade', 'Persistência', 'Honestidade', 'Companheirismo', 'Guardianship', 'Promessas', 'Honra', 'Defesa'];
 }
 
-export function getSacredAnimals(): string[] {
+function getSacredAnimals(): string[] {
   return ['Cão', 'Cavalo', 'Tartaruga', 'Cão de guarda', 'Leão', 'Águia'];
 }
 
-export function getSymbols(): string[] {
+function getSymbols(): string[] {
   return ['Cápsula de tempo', 'Chave antiga', 'Livro de promessas', 'Fio de linha', 'Escudo', 'Espada', 'Brasão familiar'];
 }
 
-export function getLegacyTeaching(): string {
+function getLegacyTeaching(): string {
   const teachings = DAMIAO_DATA.map((d) => d.legacyTeaching);
   return teachings[Math.floor(Math.random() * teachings.length)];
 }
 
-export function getAffirmations(): string[] {
+function getAffirmations(): string[] {
   return DAMIAO_DATA.map((d) => d.affirmation);
 }
 
-export function getDamiaoByArchetype(archetype: string): DamiaoData[] {
+function getDamiaoByArchetype(archetype: string): DamiaoData[] {
   return DAMIAO_DATA.filter((d) => d.archetype.toLowerCase().includes(archetype.toLowerCase()));
 }

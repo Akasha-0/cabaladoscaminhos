@@ -63,11 +63,11 @@ export function getData(): ZezinhoData[] {
   return ZEZINHO_DATA;
 }
 
-export function getDataById(id: string): ZezinhoData | undefined {
+function getDataById(id: string): ZezinhoData | undefined {
   return ZEZINHO_DATA.find((z) => z.id === id);
 }
 
-export function searchData(query: string): ZezinhoData[] {
+function searchData(query: string): ZezinhoData[] {
   const lowerQuery = query.toLowerCase();
   return ZEZINHO_DATA.filter(
     (z) =>
@@ -78,6 +78,6 @@ export function searchData(query: string): ZezinhoData[] {
   );
 }
 
-export function getZezinhoByElement(element: string): ZezinhoData[] {
+function getZezinhoByElement(element: string): ZezinhoData[] {
   return ZEZINHO_DATA.filter((z) => z.element.toLowerCase().includes(element.toLowerCase()));
 }

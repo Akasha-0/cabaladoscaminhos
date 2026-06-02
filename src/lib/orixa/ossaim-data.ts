@@ -187,18 +187,18 @@ export function getData(): OssaimData {
   return OSSAIM_DATA;
 }
 
-export function getDataById(id: string): OssaimData | undefined {
+function getDataById(id: string): OssaimData | undefined {
   return id === 'ossaim' ? OSSAIM_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return OSSAIM_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return OSSAIM_DATA.ritualPractices;
 }
 
-export function getHealingPrinciples(): string[] {
+function getHealingPrinciples(): string[] {
   return OSSAIM_DATA.healingPrinciples;
 }

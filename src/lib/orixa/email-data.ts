@@ -237,23 +237,23 @@ export function getData() {
   return EMAIL_DATA;
 }
 
-export function getConfig(): EmailConfig {
+function getConfig(): EmailConfig {
   return EMAIL_DATA.config;
 }
 
-export function getTemplates(): EmailTemplate[] {
+function getTemplates(): EmailTemplate[] {
   return EMAIL_DATA.templates;
 }
 
-export function getActiveTemplates(): EmailTemplate[] {
+function getActiveTemplates(): EmailTemplate[] {
   return EMAIL_DATA.templates.filter(t => t.ativo);
 }
 
-export function getTemplatesByType(tipo: EmailTemplate['tipo']): EmailTemplate[] {
+function getTemplatesByType(tipo: EmailTemplate['tipo']): EmailTemplate[] {
   return EMAIL_DATA.templates.filter(t => t.tipo === tipo);
 }
 
-export function getTemplatesByCategory(categoria: string): EmailTemplate[] {
+function getTemplatesByCategory(categoria: string): EmailTemplate[] {
   return EMAIL_DATA.templates.filter(t => t.categoria === categoria);
 }
 

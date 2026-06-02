@@ -10,7 +10,7 @@ interface GlowEffectProps {
   children?: React.ReactNode;
 }
 
-export function GlowEffect({
+function GlowEffect({
   variant = 'gold',
   intensity = 'medium',
   animated = false,

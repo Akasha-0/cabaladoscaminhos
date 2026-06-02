@@ -175,38 +175,38 @@ export function getData(): RoggaData {
   return ROGGA_DATA;
 }
 
-export function getDataById(id: string): RoggaData | undefined {
+function getDataById(id: string): RoggaData | undefined {
   return id === 'rogga' ? ROGGA_DATA : undefined;
 }
 
-export function getTransformAspects(): TransformAspect[] {
+function getTransformAspects(): TransformAspect[] {
   return transformAspects;
 }
 
-export function getAncestralGifts(): AncestralGift[] {
+function getAncestralGifts(): AncestralGift[] {
   return ancestralGifts;
 }
 
-export function getPaths(): PathOfRogga[] {
+function getPaths(): PathOfRogga[] {
   return pathsOfRogga;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return ROGGA_DATA.sacredObjects;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return ROGGA_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ROGGA_DATA.domains;
 }
 
-export function getRoggaByElement(element: string): RoggaData | undefined {
+function getRoggaByElement(element: string): RoggaData | undefined {
   return ROGGA_DATA.element.toLowerCase().includes(element.toLowerCase()) ? ROGGA_DATA : undefined;
 }
 
-export function getRoggaByDay(day: string): RoggaData | undefined {
+function getRoggaByDay(day: string): RoggaData | undefined {
   return ROGGA_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? ROGGA_DATA : undefined;
 }

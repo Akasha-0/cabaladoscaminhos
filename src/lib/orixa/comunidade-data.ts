@@ -482,30 +482,30 @@ export function getData(): CommunityData {
   return COMUNIDADE_DATA;
 }
 
-export function getStats() {
+function getStats() {
   return COMUNIDADE_DATA.stats;
 }
 
-export function getFeaturedMembers(): CommunityMember[] {
+function getFeaturedMembers(): CommunityMember[] {
   return COMUNIDADE_DATA.featuredMembers;
 }
 
-export function getGroups(): CommunityGroup[] {
+function getGroups(): CommunityGroup[] {
   return COMUNIDADE_DATA.groups;
 }
 
-export function getUpcomingEvents(): CommunityEvent[] {
+function getUpcomingEvents(): CommunityEvent[] {
   return COMUNIDADE_DATA.upcomingEvents;
 }
 
-export function getRecentTopics(): ForumTopic[] {
+function getRecentTopics(): ForumTopic[] {
   return COMUNIDADE_DATA.recentTopics;
 }
 
-export function getPopularRituals(): SharedRitual[] {
+function getPopularRituals(): SharedRitual[] {
   return COMUNIDADE_DATA.popularRituals;
 }
 
-export function getTestimonials(): Testimonial[] {
+function getTestimonials(): Testimonial[] {
   return COMUNIDADE_DATA.testimonials;
 }

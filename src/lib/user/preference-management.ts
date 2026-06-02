@@ -112,7 +112,7 @@ const SERVER_PREFERENCE_PREFIX = 'pref:';
 /**
  * Load preferences from client-side storage (localStorage)
  */
-export function loadClientPreferences(): UserPreferences {
+function loadClientPreferences(): UserPreferences {
   if (typeof window === 'undefined') {
     return { ...DEFAULT_PREFERENCES };
   }
@@ -132,7 +132,7 @@ export function loadClientPreferences(): UserPreferences {
 /**
  * Save preferences to client-side storage (localStorage)
  */
-export function saveClientPreferences(preferences: Partial<UserPreferences>): UserPreferences {
+function saveClientPreferences(preferences: Partial<UserPreferences>): UserPreferences {
   if (typeof window === 'undefined') {
     return { ...DEFAULT_PREFERENCES, ...preferences };
   }
@@ -163,7 +163,7 @@ export interface PreferenceManager {
  * Create a preference manager instance
  * Manages user preferences with client-side storage
  */
-export function managePreferences(): PreferenceManager {
+function managePreferences(): PreferenceManager {
   const subscribers = new Set<(prefs: UserPreferences) => void>();
 
   const notify = (prefs: UserPreferences) => {
@@ -224,7 +224,7 @@ export function managePreferences(): PreferenceManager {
 /**
  * Get a specific preference value
  */
-export function getPreference<K extends keyof UserPreferences>(
+function getPreference<K extends keyof UserPreferences>(
   key: K
 ): UserPreferences[K] {
   const prefs = loadClientPreferences();
@@ -234,7 +234,7 @@ export function getPreference<K extends keyof UserPreferences>(
 /**
  * Update a specific preference value
  */
-export function setPreference<K extends keyof UserPreferences>(
+function setPreference<K extends keyof UserPreferences>(
   key: K,
   value: UserPreferences[K]
 ): UserPreferences {
@@ -244,7 +244,7 @@ export function setPreference<K extends keyof UserPreferences>(
 /**
  * Check if preferences have been customized
  */
-export function hasCustomPreferences(): boolean {
+function hasCustomPreferences(): boolean {
   const prefs = loadClientPreferences();
   const defaults = DEFAULT_PREFERENCES;
 
@@ -262,7 +262,7 @@ export function hasCustomPreferences(): boolean {
 /**
  * Export preferences as JSON string
  */
-export function exportPreferences(): string {
+function exportPreferences(): string {
   const prefs = loadClientPreferences();
   return JSON.stringify(prefs, null, 2);
 }
@@ -270,7 +270,7 @@ export function exportPreferences(): string {
 /**
  * Import preferences from JSON string
  */
-export function importPreferences(json: string): UserPreferences | null {
+function importPreferences(json: string): UserPreferences | null {
   try {
     const parsed = JSON.parse(json) as Partial<UserPreferences>;
     return saveClientPreferences(parsed);

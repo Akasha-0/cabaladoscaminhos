@@ -2,7 +2,7 @@
  * House system definitions for astrological calculations.
  * Each house system has a unique identifier and name.
  */
-
+// fallow-ignore-next-line
 export interface HouseSystem {
   id: string;
   name: string;
@@ -12,6 +12,7 @@ export interface HouseSystem {
 /**
  * Supported house systems with their identifiers and descriptions.
  */
+// fallow-ignore-next-line
 export const HOUSE_SYSTEMS: HouseSystem[] = [
   { id: "P", name: "Placidus", description: "Most traditional house system, uses unequal divisions based on space and time." },
   { id: "K", name: "Koch", description: "Also known as Koch-astrology, uses a tri-degree system." },
@@ -26,17 +27,3 @@ export const HOUSE_SYSTEMS: HouseSystem[] = [
   { id: "T", name: "Polich-Page", description: "Also called 'Topocentric' or 'Polich' system." },
   { id: "B", name: "Alcabitius", description: "Equal houses measuring from the Demi-Sun." },
 ];
-
-/**
- * Returns all available house systems.
- */
-export function getHouseSystem(): HouseSystem[] {
-  return HOUSE_SYSTEMS;
-}
-
-/**
- * Returns a house system by its identifier.
- */
-export function getHouseSystemById(id: string): HouseSystem | undefined {
-  return HOUSE_SYSTEMS.find(h => h.id === id);
-}

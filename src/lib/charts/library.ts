@@ -49,7 +49,7 @@ export interface ChartLibrary {
 /**
  * Get all available charts
  */
-export function getCharts(): ChartLibrary {
+function getCharts(): ChartLibrary {
   const charts: Chart[] = [
     {
       id: 'natal',
@@ -117,6 +117,6 @@ export function getChartById(id: string): Chart | undefined {
 /**
  * Get charts by type
  */
-export function getChartsByType(tipo: ChartType): Chart[] {
+function getChartsByType(tipo: ChartType): Chart[] {
   return getCharts().charts.filter(c => c.tipo === tipo);
 }

@@ -163,11 +163,11 @@ export function getData(): EruData[] {
   return ERU_DATA;
 }
 
-export function getDataById(id: string): EruData | undefined {
+function getDataById(id: string): EruData | undefined {
   return ERU_DATA.find((e) => e.id === id);
 }
 
-export function searchData(query: string): EruData[] {
+function searchData(query: string): EruData[] {
   const lowerQuery = query.toLowerCase();
   return ERU_DATA.filter(
     (e) =>
@@ -180,14 +180,14 @@ export function searchData(query: string): EruData[] {
   );
 }
 
-export function getEruByDay(day: string): EruData[] {
+function getEruByDay(day: string): EruData[] {
   return ERU_DATA.filter((e) => e.dayOfWeek.toLowerCase() === day.toLowerCase());
 }
 
-export function getEruByElement(element: string): EruData[] {
+function getEruByElement(element: string): EruData[] {
   return ERU_DATA.filter((e) => e.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getEruByPlanet(planet: string): EruData[] {
+function getEruByPlanet(planet: string): EruData[] {
   return ERU_DATA.filter((e) => e.rulingPlanet.toLowerCase().includes(planet.toLowerCase()));
 }

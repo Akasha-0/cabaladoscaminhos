@@ -152,54 +152,54 @@ export function getData(): EleguaData {
   return ELEGUA_DATA;
 }
 
-export function getOfferings(): EleguaOfferings {
+function getOfferings(): EleguaOfferings {
   return ELEGUA_DATA.offerings;
 }
 
-export function getRituals(): EleguaRitual[] {
+function getRituals(): EleguaRitual[] {
   return ELEGUA_DATA.rituals;
 }
 
-export function getSymbols(): EleguaSymbols {
+function getSymbols(): EleguaSymbols {
   return ELEGUA_DATA.symbols;
 }
 
-export function getMythology(): EleguaMythology {
+function getMythology(): EleguaMythology {
   return ELEGUA_DATA.mythology;
 }
 
-export function getChants(): string[] {
+function getChants(): string[] {
   return ELEGUA_DATA.chants;
 }
 
-export function getQualities(): string[] {
+function getQualities(): string[] {
   return ELEGUA_DATA.qualities;
 }
 
-export function getSacredNumbers(): number[] {
+function getSacredNumbers(): number[] {
   return ELEGUA_DATA.numbersSacred;
 }
 
-export function getSacredAnimals(): string[] {
+function getSacredAnimals(): string[] {
   return ELEGUA_DATA.sacredAnimals;
 }
 
-export function getPlants(): string[] {
+function getPlants(): string[] {
   return ELEGUA_DATA.plants;
 }
 
-export function getGreeting(): string {
+function getGreeting(): string {
   return ELEGUA_DATA.greeting;
 }
 
-export function getSpiritualLesson(): string {
+function getSpiritualLesson(): string {
   return ELEGUA_DATA.spiritualLesson;
 }
 
-export function getAffirmation(): string {
+function getAffirmation(): string {
   return ELEGUA_DATA.affirmation;
 }
 
-export function getMeditation(): string {
+function getMeditation(): string {
   return ELEGUA_DATA.meditation;
 }

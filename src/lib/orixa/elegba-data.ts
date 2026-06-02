@@ -88,11 +88,11 @@ export function getData(): ElegbaData[] {
   return ELEGBA_DATA;
 }
 
-export function getDataById(id: string): ElegbaData | undefined {
+function getDataById(id: string): ElegbaData | undefined {
   return ELEGBA_DATA.find((e) => e.id === id);
 }
 
-export function searchData(query: string): ElegbaData[] {
+function searchData(query: string): ElegbaData[] {
   const lowerQuery = query.toLowerCase();
   return ELEGBA_DATA.filter(
     (e) =>

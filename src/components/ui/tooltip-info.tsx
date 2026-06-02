@@ -3,22 +3,22 @@
 import * as React from 'react';
 
 // TooltipProvider - provides context for tooltips (simplified without Radix)
-export function TooltipProvider({ children, ...props }: { children: React.ReactNode } & Record<string, unknown>) {
+function TooltipProvider({ children, ...props }: { children: React.ReactNode } & Record<string, unknown>) {
   return <>{children}</>;
 }
 
 // Tooltip - wrapper component
-export function Tooltip({ children, ...props }: { children: React.ReactNode } & Record<string, unknown>) {
+function Tooltip({ children, ...props }: { children: React.ReactNode } & Record<string, unknown>) {
   return <>{children}</>;
 }
 
 // TooltipTrigger - placeholder (not used in simple implementation)
-export function TooltipTrigger({ children, asChild, ...props }: { children?: React.ReactNode; asChild?: boolean } & Record<string, unknown>) {
+function TooltipTrigger({ children, asChild, ...props }: { children?: React.ReactNode; asChild?: boolean } & Record<string, unknown>) {
   return <>{children}</>;
 }
 
 // TooltipContent - placeholder (not used in simple implementation)
-export function TooltipContent({ children, ...props }: { children?: React.ReactNode } & Record<string, unknown>) {
+function TooltipContent({ children, ...props }: { children?: React.ReactNode } & Record<string, unknown>) {
   return <>{children}</>;
 }
 
@@ -30,7 +30,7 @@ interface TooltipInfoProps {
   variante?: 'info' | 'ajuda';
 }
 
-export function TooltipInfo({ 
+function TooltipInfo({ 
   children, 
   titulo, 
   descricao, 

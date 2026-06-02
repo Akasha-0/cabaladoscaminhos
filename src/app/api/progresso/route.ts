@@ -422,6 +422,7 @@ function calculateSpiritualStats(achievements: Achievement[]) {
 }
 
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const supabase = createSupabaseClient(

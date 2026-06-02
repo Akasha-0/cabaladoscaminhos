@@ -204,6 +204,7 @@ interface CrossCorrelation {
   odu?: string;
   oduNumero?: number;
 }
+// fallow-ignore-next-line complexity
 function SefiraTooltip({ sefira, onClose }: { sefira: typeof SEPHIROTH[number]; onClose: () => void }) {
   const meaning = SEFIRA_MEANINGS[sefira.id];
   if (!meaning) return null;

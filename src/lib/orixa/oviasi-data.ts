@@ -148,27 +148,27 @@ export function getData(): OviasiData {
   return OVIASI_DATA;
 }
 
-export function getDataById(id: string): OviasiData | undefined {
+function getDataById(id: string): OviasiData | undefined {
   return id === 'oviasi' ? OVIASI_DATA : undefined;
 }
 
-export function getTransformationStages(): string[] {
+function getTransformationStages(): string[] {
   return OVIASI_DATA.transformationStages;
 }
 
-export function getSacredCycles(): string[] {
+function getSacredCycles(): string[] {
   return OVIASI_DATA.sacredCycles;
 }
 
-export function getRebirthPractices(): string[] {
+function getRebirthPractices(): string[] {
   return OVIASI_DATA.rebirthPractices;
 }
 
-export function getOviasiByElement(element: string): OviasiData | undefined {
+function getOviasiByElement(element: string): OviasiData | undefined {
   return OVIASI_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OVIASI_DATA : undefined;
 }
 
-export function getOviasiByPlanet(planet: string): OviasiData | undefined {
+function getOviasiByPlanet(planet: string): OviasiData | undefined {
   return OVIASI_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? OVIASI_DATA : undefined;
 }
 

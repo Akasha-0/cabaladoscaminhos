@@ -220,31 +220,31 @@ export function getData(): IrosunData {
   return IROSUN_DATA;
 }
 
-export function getDataById(id: string): IrosunData | undefined {
+function getDataById(id: string): IrosunData | undefined {
   return id === 'irosun' ? IROSUN_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return IROSUN_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return IROSUN_DATA.ritualPractices;
 }
 
-export function getHealingPractices(): string[] {
+function getHealingPractices(): string[] {
   return IROSUN_DATA.healingPractices;
 }
 
-export function getSacredTrees(): string[] {
+function getSacredTrees(): string[] {
   return IROSUN_DATA.sacredTrees;
 }
 
-export function getIrosunByElement(element: string): IrosunData | undefined {
+function getIrosunByElement(element: string): IrosunData | undefined {
   return IROSUN_DATA.element.toLowerCase().includes(element.toLowerCase()) ? IROSUN_DATA : undefined;
 }
 
-export function getIrosunByPlanet(planet: string): IrosunData | undefined {
+function getIrosunByPlanet(planet: string): IrosunData | undefined {
   return IROSUN_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? IROSUN_DATA : undefined;
 }
 

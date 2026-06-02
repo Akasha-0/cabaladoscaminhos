@@ -445,8 +445,7 @@ Label.displayName = "Label";
 // Exports
 // =============================================================================
 
-export { Heading, headingVariants };
+export { Heading };
 
-export { BodyText, bodyTextVariants };
+export { BodyText };
 
-export { Label, labelVariants, ORIXÁ_COLORS };

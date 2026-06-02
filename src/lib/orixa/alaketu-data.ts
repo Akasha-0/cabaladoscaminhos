@@ -63,11 +63,11 @@ export function getData(): AlaketuData[] {
   return ALAKETU_DATA;
 }
 
-export function getDataById(id: string): AlaketuData | undefined {
+function getDataById(id: string): AlaketuData | undefined {
   return ALAKETU_DATA.find((a) => a.id === id);
 }
 
-export function searchData(query: string): AlaketuData[] {
+function searchData(query: string): AlaketuData[] {
   const lowerQuery = query.toLowerCase();
   return ALAKETU_DATA.filter(
     (a) =>
@@ -79,10 +79,10 @@ export function searchData(query: string): AlaketuData[] {
   );
 }
 
-export function getAlaketuByDay(day: string): AlaketuData[] {
+function getAlaketuByDay(day: string): AlaketuData[] {
   return ALAKETU_DATA.filter((a) => a.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getAlaketuByElement(element: string): AlaketuData[] {
+function getAlaketuByElement(element: string): AlaketuData[] {
   return ALAKETU_DATA.filter((a) => a.element.toLowerCase().includes(element.toLowerCase()));
 }

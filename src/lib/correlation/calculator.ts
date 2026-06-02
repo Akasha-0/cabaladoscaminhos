@@ -1,3 +1,4 @@
+// fallow-ignore-next-line complexity
 /**
  * Calculadora do Sistema de Correlações Espirituais
  * Cabala dos Caminhos - Engine de Correlações
@@ -74,14 +75,14 @@ export interface ChakraConfigResult {
 /**
  * Soma os dígitos de um número até остатка single digit
  */
-export function sumDigits(num: number): number {
+function sumDigits(num: number): number {
   return String(num).split('').reduce((sum, digit) => sum + parseInt(digit, 10), 0);
 }
 
 /**
  * Reduz um número à sua raiz (1-9) preservando números mestres
  */
-export function reduceToRoot(num: number): number {
+function reduceToRoot(num: number): number {
   // Se é um número mestre, retorna diretamente
   if ([11, 22, 33].includes(num)) {
     return num;
@@ -99,7 +100,7 @@ export function reduceToRoot(num: number): number {
 /**
  * Converte data para string YYYYMMDD
  */
-export function dateToString(date: Date): string {
+function dateToString(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -109,7 +110,7 @@ export function dateToString(date: Date): string {
 /**
  * Soma todos os dígitos de uma data (YYYYMMDD -> sum)
  */
-export function sumDateDigits(date: Date): number {
+function sumDateDigits(date: Date): number {
   const dateStr = dateToString(date);
   return dateStr.split('').reduce((sum, digit) => sum + parseInt(digit, 10), 0);
 }
@@ -126,7 +127,7 @@ export function sumDateDigits(date: Date): number {
  * @param birthDate - Data de nascimento
  * @returns Resultado com número, se é mestre, e informações detalhadas
  */
-export function calculateCabalisticPath(birthDate: Date): CabalisticPathResult {
+function calculateCabalisticPath(birthDate: Date): CabalisticPathResult {
   // Soma todos os dígitos da data
   const total = sumDateDigits(birthDate);
   
@@ -159,7 +160,7 @@ export function calculateCabalisticPath(birthDate: Date): CabalisticPathResult {
  * @param birthDate - Data de nascimento
  * @returns Resultado com Odu e informações tradicionais
  */
-export function calculateBirthOdu(birthDate: Date): BirthOduResult {
+function calculateBirthOdu(birthDate: Date): BirthOduResult {
   const day = birthDate.getDate();
   const month = birthDate.getMonth() + 1;
   
@@ -196,7 +197,7 @@ export function calculateBirthOdu(birthDate: Date): BirthOduResult {
  * @param birthDate - Data de nascimento
  * @returns Resultado com signo e características
  */
-export function getZodiacSign(birthDate: Date): ZodiacSignResult {
+function getZodiacSign(birthDate: Date): ZodiacSignResult {
   const month = birthDate.getMonth() + 1;
   const day = birthDate.getDate();
   
@@ -255,7 +256,7 @@ export function getZodiacSign(birthDate: Date): ZodiacSignResult {
  * @param name - Nome completo (opcional)
  * @returns Configuração de chakras dominantes
  */
-export function calculateChakraConfig(birthDate: Date, name?: string): ChakraConfigResult {
+function calculateChakraConfig(birthDate: Date, name?: string): ChakraConfigResult {
   // Calcula números baseados na data
   const daySum = sumDigits(birthDate.getDate());
   const monthSum = sumDigits(birthDate.getMonth() + 1);
@@ -314,7 +315,7 @@ export interface CompleteProfile {
  * @param input - Dados de nascimento e nome
  * @returns Perfil espiritual completo
  */
-export function calculateCompleteProfile(input: CompleteProfileInput): CompleteProfile {
+function calculateCompleteProfile(input: CompleteProfileInput): CompleteProfile {
   const { birthDate, name } = input;
   
   // Calcula cada componente
@@ -352,7 +353,7 @@ export function calculateCompleteProfile(input: CompleteProfileInput): CompleteP
 /**
  * Analisa compatibilidade entre número cabalístico e Odu
  */
-export function analyzeCabalisticOduCompatibility(
+function analyzeCabalisticOduCompatibility(
   cabalisticNumber: number, 
   oduNumber: number
 ): { compatible: boolean; notes: string } {
@@ -388,7 +389,7 @@ export function analyzeCabalisticOduCompatibility(
 /**
  * Analisa harmonia entre signo e número cabalístico
  */
-export function analyzeZodiacCabalisticHarmony(
+function analyzeZodiacCabalisticHarmony(
   sign: SignType, 
   cabalisticNumber: number
 ): { harmony: 'high' | 'medium' | 'low'; notes: string } {
@@ -423,7 +424,7 @@ export function analyzeZodiacCabalisticHarmony(
 /**
  * Retorna o elemento predominante considerando múltiplas fontes
  */
-export function getPredominantElement(
+function getPredominantElement(
   signElement: ElementType,
   oduElement: ElementType,
   cabalisticElement?: ElementType

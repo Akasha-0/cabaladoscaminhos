@@ -81,7 +81,7 @@ export const CONFIDENCE_LABELS: Record<string, string> = {
   low: 'Baixa Confiança',
 };
 
-export const CONFIDENCE_THRESHOLDS = {
+const CONFIDENCE_THRESHOLDS = {
   high: 80,
   medium: 60,
 };

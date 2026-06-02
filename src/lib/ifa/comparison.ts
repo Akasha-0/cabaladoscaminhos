@@ -78,7 +78,7 @@ export interface OduComparison {
 /**
  * Compare two Odu readings
  */
-export function compareOdu(
+function compareOdu(
   readingA: OduReading,
   readingB: OduReading
 ): OduComparison {

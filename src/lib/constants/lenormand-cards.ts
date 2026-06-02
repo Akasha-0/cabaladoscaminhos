@@ -81,4 +81,4 @@ export function getLenormandCardById(id: number): LenormandCard | undefined {
  * A "casa" é a posição fixa no grid 9x4; a carta é a carta tirada
  * naquela posição. Em ambos os casos o nome é o mesmo.
  */
-export const MESA_REAL_HOUSES: ReadonlyArray<LenormandCard> = LENORMAND_CARDS;
+const MESA_REAL_HOUSES: ReadonlyArray<LenormandCard> = LENORMAND_CARDS;

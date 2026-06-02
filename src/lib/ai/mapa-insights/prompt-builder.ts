@@ -328,7 +328,7 @@ function getInsightSchema(): Record<string, unknown> {
  * Generates a formatted summary block of detected convergences.
  * Highlights tríplice convergences as most powerful.
  */
-export function gerarSumarioConvergencias(convergencias: MapaAlmaCompleto['convergencias']): string {
+function gerarSumarioConvergencias(convergencias: MapaAlmaCompleto['convergencias']): string {
   if (convergencias.length === 0) {
     return `## Convergências Espirituais
 

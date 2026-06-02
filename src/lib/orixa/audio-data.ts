@@ -503,11 +503,11 @@ export function getData(): AudioData[] {
   return AUDIO_DATA;
 }
 
-export function getDataById(id: string): AudioData | undefined {
+function getDataById(id: string): AudioData | undefined {
   return AUDIO_DATA.find((a) => a.id === id);
 }
 
-export function searchData(query: string): AudioData[] {
+function searchData(query: string): AudioData[] {
   const lowerQuery = query.toLowerCase();
   return AUDIO_DATA.filter(
     (a) =>
@@ -520,31 +520,31 @@ export function searchData(query: string): AudioData[] {
   );
 }
 
-export function getAudioByType(type: string): AudioData[] {
+function getAudioByType(type: string): AudioData[] {
   return AUDIO_DATA.filter((a) => a.type.toLowerCase().includes(type.toLowerCase()));
 }
 
-export function getAudioByCategory(category: string): AudioData[] {
+function getAudioByCategory(category: string): AudioData[] {
   return AUDIO_DATA.filter((a) => a.category.toLowerCase().includes(category.toLowerCase()));
 }
 
-export function getAudioByInstrument(instrument: string): AudioData[] {
+function getAudioByInstrument(instrument: string): AudioData[] {
   return AUDIO_DATA.filter((a) =>
     a.instruments.some((i) => i.toLowerCase().includes(instrument.toLowerCase()))
   );
 }
 
-export function getAudioByMood(mood: string): AudioData[] {
+function getAudioByMood(mood: string): AudioData[] {
   return AUDIO_DATA.filter((a) =>
     a.mood.some((m) => m.toLowerCase().includes(mood.toLowerCase()))
   );
 }
 
-export function getAllRituals(): { name: string; description: string; duration: string; steps: string[] }[] {
+function getAllRituals(): { name: string; description: string; duration: string; steps: string[] }[] {
   return AUDIO_DATA.flatMap((a) => a.rituals);
 }
 
-export function getRitualsByName(name: string): { name: string; description: string; duration: string; steps: string[] }[] {
+function getRitualsByName(name: string): { name: string; description: string; duration: string; steps: string[] }[] {
   return AUDIO_DATA.flatMap((a) =>
     a.rituals.filter((r) => r.name.toLowerCase().includes(name.toLowerCase()))
   );

@@ -157,7 +157,7 @@ function ageInYears(birthDate: Date, targetDate: Date): number {
 // DIA PESSOAL
 // ============================================================
 
-export function calculatePersonalDay(
+function calculatePersonalDay(
   birthDate: Date,
   currentDate: Date,
   lifePath: number
@@ -314,7 +314,7 @@ export function calculatePersonalDay(
 // MÊS PESSOAL
 // ============================================================
 
-export function calculatePersonalMonth(
+function calculatePersonalMonth(
   personalYear: number,
   currentDate: Date
 ): PersonalMonth {
@@ -425,7 +425,7 @@ export function calculatePersonalMonth(
 // ANO PESSOAL
 // ============================================================
 
-export function calculatePersonalYear(
+function calculatePersonalYear(
   birthDate: Date,
   currentDate: Date,
   lifePath: number
@@ -547,7 +547,7 @@ export function calculatePersonalYear(
 // ANO UNIVERSAL
 // ============================================================
 
-export function calculateUniversalYear(currentDate: Date): UniversalYear {
+function calculateUniversalYear(currentDate: Date): UniversalYear {
   const year = currentDate.getFullYear();
   const num = reduce(sumDigits(year));
 
@@ -574,7 +574,7 @@ export function calculateUniversalYear(currentDate: Date): UniversalYear {
 // PINÁCULOS
 // ============================================================
 
-export function calculatePinnacles(
+function calculatePinnacles(
   birthDate: Date,
   lifePath: number,
   expression: number = lifePath
@@ -628,7 +628,7 @@ export function calculatePinnacles(
   ];
 }
 
-export function getCurrentPinnacle(
+function getCurrentPinnacle(
   pinnacles: Pinnacle[],
   age: number
 ): Pinnacle {
@@ -639,7 +639,7 @@ export function getCurrentPinnacle(
 // DESAFIOS
 // ============================================================
 
-export function calculateChallenges(
+function calculateChallenges(
   birthDate: Date,
   lifePath: number
 ): Challenge[] {
@@ -719,7 +719,7 @@ export function calculateChallenges(
 // LIÇÕES CÁRMICAS
 // ============================================================
 
-export function calculateKarmicLessons(
+function calculateKarmicLessons(
   birthDate: Date,
   fullName: string = ''
 ): KarmicLesson[] {
@@ -771,7 +771,7 @@ export function calculateKarmicLessons(
 // NÚMERO DE MATURIDADE
 // ============================================================
 
-export function calculateMaturityNumber(
+function calculateMaturityNumber(
   lifePath: number,
   expression: number,
   age: number

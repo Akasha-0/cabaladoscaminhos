@@ -117,7 +117,7 @@ export async function verificarCreditos(
   return saldo >= quantidade;
 }
 
-export async function usarCreditos(
+async function usarCreditos(
   userId: string,
   quantidade: number,
   operacao: string,

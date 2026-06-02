@@ -239,11 +239,11 @@ export function getData(): ProfeciaData[] {
   return PROFECIA_DATA;
 }
 
-export function getDataById(id: string): ProfeciaData | undefined {
+function getDataById(id: string): ProfeciaData | undefined {
   return PROFECIA_DATA.find((p) => p.id === id);
 }
 
-export function searchData(query: string): ProfeciaData[] {
+function searchData(query: string): ProfeciaData[] {
   const lowered = query.toLowerCase();
   return PROFECIA_DATA.filter(
     (p) =>
@@ -255,10 +255,10 @@ export function searchData(query: string): ProfeciaData[] {
   );
 }
 
-export function getProfeciaByDay(day: string): ProfeciaData[] {
+function getProfeciaByDay(day: string): ProfeciaData[] {
   return PROFECIA_DATA.filter((p) => p.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getProfeciaByElement(element: string): ProfeciaData[] {
+function getProfeciaByElement(element: string): ProfeciaData[] {
   return PROFECIA_DATA.filter((p) => p.element.toLowerCase().includes(element.toLowerCase()));
 }

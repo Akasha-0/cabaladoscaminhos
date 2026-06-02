@@ -123,26 +123,26 @@ export function getData(): DashboardData {
   return DASHBOARD_DATA;
 }
 
-export function getStats(): DashboardStats {
+function getStats(): DashboardStats {
   return DASHBOARD_DATA.stats;
 }
 
-export function getDailyInsight(): DailyInsight {
+function getDailyInsight(): DailyInsight {
   return DASHBOARD_DATA.dailyInsight;
 }
 
-export function getOrixaProgress(): OrixaProgress[] {
+function getOrixaProgress(): OrixaProgress[] {
   return DASHBOARD_DATA.orixaProgress;
 }
 
-export function getMoonPhase(): MoonPhase {
+function getMoonPhase(): MoonPhase {
   return DASHBOARD_DATA.moonPhase;
 }
 
-export function getRecentActivity(): ActivityItem[] {
+function getRecentActivity(): ActivityItem[] {
   return DASHBOARD_DATA.recentActivity;
 }
 
-export function getUpcomingPractices(): PracticeItem[] {
+function getUpcomingPractices(): PracticeItem[] {
   return DASHBOARD_DATA.upcomingPractices;
 }

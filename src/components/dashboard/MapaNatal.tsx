@@ -85,7 +85,7 @@ function getPosition(longitude: number, radius: number, cx: number, cy: number):
   };
 }
 
-export function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalProps) {
+function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalProps) {
   const center = size / 2;
   const outerRadius = size * 0.45;
   const innerRadius = size * 0.35;

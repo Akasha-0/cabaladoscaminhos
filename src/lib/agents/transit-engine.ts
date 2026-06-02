@@ -245,7 +245,7 @@ const TRANSIT_ORBS: Record<AspectType, number> = {
 // CÁLCULO DE FASE LUNAR
 // ============================================================
 
-export function calculateMoonPhase(date: Date): MoonPhase {
+function calculateMoonPhase(date: Date): MoonPhase {
   // Algoritmo simplificado de fase lunar
   // Referência: Lua Nova 2000-01-06
   const reference = new Date('2000-01-06T18:14:00Z');
@@ -349,7 +349,7 @@ export function calculateMoonPhase(date: Date): MoonPhase {
 // CÁLCULO DE TRÂNSITOS DO DIA
 // ============================================================
 
-export function calculateTransits(
+function calculateTransits(
   birthChart: BirthChart,
   currentDate: Date = new Date(),
   orbs: Record<AspectType, number> = TRANSIT_ORBS

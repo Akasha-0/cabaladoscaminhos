@@ -189,38 +189,38 @@ export function getData(): OgumData {
   return OGUM_DATA;
 }
 
-export function getDataById(id: string): OgumData | undefined {
+function getDataById(id: string): OgumData | undefined {
   return id === 'ogum' ? OGUM_DATA : undefined;
 }
 
-export function getWarriorAspects(): WarriorAspect[] {
+function getWarriorAspects(): WarriorAspect[] {
   return warriorAspects;
 }
 
-export function getCivilizationGifts(): CivilizationGift[] {
+function getCivilizationGifts(): CivilizationGift[] {
   return civilizationGifts;
 }
 
-export function getPaths(): PathOfOgum[] {
+function getPaths(): PathOfOgum[] {
   return pathsOfOgum;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return OGUM_DATA.sacredObjects;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return OGUM_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return OGUM_DATA.domains;
 }
 
-export function getOgumByElement(element: string): OgumData | undefined {
+function getOgumByElement(element: string): OgumData | undefined {
   return OGUM_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OGUM_DATA : undefined;
 }
 
-export function getOgumByDay(day: string): OgumData | undefined {
+function getOgumByDay(day: string): OgumData | undefined {
   return OGUM_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? OGUM_DATA : undefined;
 }

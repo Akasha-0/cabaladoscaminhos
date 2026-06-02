@@ -347,21 +347,21 @@ export function getData(): MejiOdu[] {
   return OWONRIN_MEJI_DATA;
 }
 
-export function getOwonrinMejiById(id: string): MejiOdu | undefined {
+function getOwonrinMejiById(id: string): MejiOdu | undefined {
   return OWONRIN_MEJI_DATA.find(m => m.id === id);
 }
 
-export function getOwonrinMejiByOrder(order: number): MejiOdu | undefined {
+function getOwonrinMejiByOrder(order: number): MejiOdu | undefined {
   return OWONRIN_MEJI_DATA.find(m => m.order === order);
 }
 
-export function getOwonrinMejiByElement(element: string): MejiOdu[] {
+function getOwonrinMejiByElement(element: string): MejiOdu[] {
   return OWONRIN_MEJI_DATA.filter(m =>
     m.element.toLowerCase() === element.toLowerCase()
   );
 }
 
-export function getOwonrinMejiByPolarity(polarity: 'masculine' | 'feminine'): MejiOdu[] {
+function getOwonrinMejiByPolarity(polarity: 'masculine' | 'feminine'): MejiOdu[] {
   return OWONRIN_MEJI_DATA.filter(m => m.polarity === polarity);
 }
 

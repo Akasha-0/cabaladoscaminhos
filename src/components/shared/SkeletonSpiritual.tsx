@@ -35,7 +35,7 @@ const avatarSizes = {
   lg: '64px',
 };
 
-export function SkeletonAvatar({ size = 'md', className }: SkeletonAvatarProps) {
+function SkeletonAvatar({ size = 'md', className }: SkeletonAvatarProps) {
   const dimension = avatarSizes[size];
   return (
     <div
@@ -55,7 +55,7 @@ export interface SkeletonTextProps {
   className?: string;
 }
 
-export function SkeletonText({ lines = 3, lastLineWidth = '60%', className }: SkeletonTextProps) {
+function SkeletonText({ lines = 3, lastLineWidth = '60%', className }: SkeletonTextProps) {
   return (
     <div className={cn('flex flex-col gap-2', className)} aria-hidden="true">
       {Array.from({ length: lines }).map((_, i) => {
@@ -122,7 +122,7 @@ export interface SkeletonChartProps {
 
 const barHeights = ['45%', '70%', '55%', '85%', '60%', '90%', '50%', '75%', '40%', '65%'];
 
-export function SkeletonChart({ height = '200px', className }: SkeletonChartProps) {
+function SkeletonChart({ height = '200px', className }: SkeletonChartProps) {
   return (
     <div
       className={cn('flex items-end gap-2 px-4 py-4 rounded-xl bg-black/20', className)}

@@ -125,18 +125,18 @@ export function getData(): OmaleData {
   return OMALE_DATA;
 }
 
-export function getDataById(id: string): OmaleData | undefined {
+function getDataById(id: string): OmaleData | undefined {
   return id === 'omale' ? OMALE_DATA : undefined;
 }
 
-export function getDestinyPrinciples(): string[] {
+function getDestinyPrinciples(): string[] {
   return OMALE_DATA.destinyPrinciples;
 }
 
-export function getProvidenceAspects(): ProvidenceData[] {
+function getProvidenceAspects(): ProvidenceData[] {
   return OMALE_DATA.providenceAspects;
 }
 
-export function getOmaleByArchetype(archetype: string): OmaleData | undefined {
+function getOmaleByArchetype(archetype: string): OmaleData | undefined {
   return OMALE_DATA.archetype.toLowerCase().includes(archetype.toLowerCase()) ? OMALE_DATA : undefined;
 }

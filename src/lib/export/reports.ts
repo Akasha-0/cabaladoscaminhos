@@ -102,7 +102,7 @@ export interface GeneratedReport {
 /**
  * Generates a complete report based on type and user data.
  */
-export function generateReport(
+function generateReport(
   type: ReportType,
   data: {
     nome: string;
@@ -336,10 +336,10 @@ function generateOduReport(data: { nome: string; dataNascimento: string }): Gene
   };
 }
 
-export function exportToPDF(report: GeneratedReport): string {
+function exportToPDF(report: GeneratedReport): string {
   return JSON.stringify(report, null, 2);
 }
 
-export function exportToJSON(report: GeneratedReport): string {
+function exportToJSON(report: GeneratedReport): string {
   return JSON.stringify(report, null, 2);
 }

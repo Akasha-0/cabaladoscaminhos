@@ -261,30 +261,30 @@ export function getData(): OxossiData {
   return OXOSSI_DATA;
 }
 
-export function getDataById(id: string): OxossiData | undefined {
+function getDataById(id: string): OxossiData | undefined {
   return id === 'oxossi' ? OXOSSI_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return OXOSSI_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return OXOSSI_DATA.ritualPractices;
 }
 
-export function getHealingPractices(): string[] {
+function getHealingPractices(): string[] {
   return OXOSSI_DATA.healingPractices;
 }
 
-export function getSacredTrees(): string[] {
+function getSacredTrees(): string[] {
   return OXOSSI_DATA.sacredTrees;
 }
 
-export function getOxossiByElement(element: string): OxossiData | undefined {
+function getOxossiByElement(element: string): OxossiData | undefined {
   return OXOSSI_DATA.element.toLowerCase().includes(element.toLowerCase()) ? OXOSSI_DATA : undefined;
 }
 
-export function getOxossiByPlanet(planet: string): OxossiData | undefined {
+function getOxossiByPlanet(planet: string): OxossiData | undefined {
   return OXOSSI_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? OXOSSI_DATA : undefined;
 }

@@ -153,30 +153,30 @@ export function getData(): InleData {
   return INLE_DATA;
 }
 
-export function getDataById(id: string): InleData | undefined {
+function getDataById(id: string): InleData | undefined {
   return id === 'inle' ? INLE_DATA : undefined;
 }
 
-export function getHerbs(): HerbData[] {
+function getHerbs(): HerbData[] {
   return INLE_DATA.herbs;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return INLE_DATA.ritualPractices;
 }
 
-export function getHealingPractices(): string[] {
+function getHealingPractices(): string[] {
   return INLE_DATA.healingPractices;
 }
 
-export function getSacredTrees(): string[] {
+function getSacredTrees(): string[] {
   return INLE_DATA.sacredTrees;
 }
 
-export function getInleByElement(element: string): InleData | undefined {
+function getInleByElement(element: string): InleData | undefined {
   return INLE_DATA.element.toLowerCase().includes(element.toLowerCase()) ? INLE_DATA : undefined;
 }
 
-export function getInleByPlanet(planet: string): InleData | undefined {
+function getInleByPlanet(planet: string): InleData | undefined {
   return INLE_DATA.rulingPlanet.toLowerCase().includes(planet.toLowerCase()) ? INLE_DATA : undefined;
 }

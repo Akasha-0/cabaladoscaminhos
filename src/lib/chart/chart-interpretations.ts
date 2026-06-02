@@ -547,7 +547,7 @@ export function getInterpretations(): {
 /**
  * Get interpretation for a specific planet in a specific sign
  */
-export function getPlanetSignInterpretation(
+function getPlanetSignInterpretation(
   planet: string,
   sign: string
 ): PlanetPositionInterpretation | undefined {
@@ -564,14 +564,14 @@ export function getAspectInterpretation(aspect: string): AspectInterpretation | 
 /**
  * Get interpretation for a specific element
  */
-export function getElementInterpretation(element: string): ElementInterpretation | undefined {
+function getElementInterpretation(element: string): ElementInterpretation | undefined {
   return ELEMENT_INTERPRETATIONS[element.toLowerCase()];
 }
 
 /**
  * Get interpretation for a specific zodiac sign
  */
-export function getSignInterpretation(sign: string): SignInterpretation | undefined {
+function getSignInterpretation(sign: string): SignInterpretation | undefined {
   return SIGN_INTERPRETATIONS[sign.toLowerCase()];
 }
 
@@ -585,7 +585,7 @@ export function getHouseInterpretation(house: number): HouseInterpretation | und
 /**
  * Generate a comprehensive natal chart interpretation based on planet positions
  */
-export function generateNatalInterpretation(chartData: {
+function generateNatalInterpretation(chartData: {
   planetPositions?: Array<{ planet: string; sign: string; house: number }>;
   dominantElement?: string;
   dominantSign?: string;

@@ -406,7 +406,7 @@ export function parsearRespostaDossiê(
 /**
  * Generates markdown from parsed dossier result
  */
-export function gerarMarkdownDossiê(result: DossiêResult): string {
+function gerarMarkdownDossiê(result: DossiêResult): string {
   const lines: string[] = ['# Dossiê da Mesa Real\n'];
 
   for (const [casaNumero, analysis] of Object.entries(result)) {
@@ -427,7 +427,7 @@ export function gerarMarkdownDossiê(result: DossiêResult): string {
 /**
  * Generates full markdown dossier from raw LLM text
  */
-export function gerarMarkdownBruto(llmResponse: string): string {
+function gerarMarkdownBruto(llmResponse: string): string {
   return `# Dossiê Oracular - Mesa Real
 
 ${llmResponse}

@@ -26,7 +26,7 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export const useThemeStore = create<ThemeState>()(
+const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
       theme: getSystemTheme(),
@@ -39,13 +39,13 @@ export const useThemeStore = create<ThemeState>()(
 );
 
 // Export individual functions for direct use
-export const theme = useThemeStore.getState().theme;
-export const setTheme = (mode: ThemeMode) => useThemeStore.getState().setTheme(mode);
-export const toggleTheme = () => {
+const theme = useThemeStore.getState().theme;
+const setTheme = (mode: ThemeMode) => useThemeStore.getState().setTheme(mode);
+const toggleTheme = () => {
   const current = useThemeStore.getState().theme;
   useThemeStore.getState().setTheme(current === 'dark' ? 'light' : 'dark');
 };
-export const systemTheme = getSystemTheme();
+const systemTheme = getSystemTheme();
 
 // Hook for React components
 export function useTheme() {

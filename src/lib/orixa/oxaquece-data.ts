@@ -88,11 +88,11 @@ export function getData(): OxaqueceData[] {
   return OXAUECE_DATA;
 }
 
-export function getDataById(id: string): OxaqueceData | undefined {
+function getDataById(id: string): OxaqueceData | undefined {
   return OXAUECE_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OxaqueceData[] {
+function searchData(query: string): OxaqueceData[] {
   const lowerQuery = query.toLowerCase();
   return OXAUECE_DATA.filter(
     (o) =>
@@ -104,10 +104,10 @@ export function searchData(query: string): OxaqueceData[] {
   );
 }
 
-export function getOxaueceByDay(day: string): OxaqueceData[] {
+function getOxaueceByDay(day: string): OxaqueceData[] {
   return OXAUECE_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOxaueceByElement(element: string): OxaqueceData[] {
+function getOxaueceByElement(element: string): OxaqueceData[] {
   return OXAUECE_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }

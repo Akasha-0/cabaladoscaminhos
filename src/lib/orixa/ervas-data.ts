@@ -740,51 +740,51 @@ export function getData(): ErvaData {
   return ERVAS_DATA;
 }
 
-export function getDataById(id: string): ErvaData | undefined {
+function getDataById(id: string): ErvaData | undefined {
   const normalizedId = id.toLowerCase().replace(/[_\s-]/g, '-');
   return herbs.find(h => h.name.toLowerCase().replace(/[_\s-]/g, '-') === normalizedId || h.name.toLowerCase() === normalizedId);
 }
 
-export function getHerbs(): ErvaData[] {
+function getHerbs(): ErvaData[] {
   return herbs;
 }
 
-export function getHerbsByOrisha(orisha: string): ErvaData[] {
+function getHerbsByOrisha(orisha: string): ErvaData[] {
   return herbs.filter(h => h.orisha.toLowerCase() === orisha.toLowerCase());
 }
 
-export function getHerbsByElement(element: string): ErvaData[] {
+function getHerbsByElement(element: string): ErvaData[] {
   return herbs.filter(h => h.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getHerbsByModality(modality: string): ErvaData[] {
+function getHerbsByModality(modality: string): ErvaData[] {
   return herbs.filter(h => h.modality === modality || h.modality === 'both');
 }
 
-export function getHerbsByAttribute(attribute: string): ErvaData[] {
+function getHerbsByAttribute(attribute: string): ErvaData[] {
   return herbs.filter(h => 
     h.attributes.some(attr => attr.toLowerCase().includes(attribute.toLowerCase()))
   );
 }
 
-export function getHerbsByDomain(domain: string): ErvaData[] {
+function getHerbsByDomain(domain: string): ErvaData[] {
   return herbs.filter(h => 
     h.domains.some(d => d.toLowerCase().includes(domain.toLowerCase()))
   );
 }
 
-export function getHerbByName(name: string): ErvaData | undefined {
+function getHerbByName(name: string): ErvaData | undefined {
   return herbs.find(h => h.name.toLowerCase() === name.toLowerCase());
 }
 
-export function getPreparationMethods(): string[] {
+function getPreparationMethods(): string[] {
   return ERVAS_DATA.preparation;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return ERVAS_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return ERVAS_DATA.domains;
 }

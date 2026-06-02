@@ -142,7 +142,7 @@ export const MASTER_NUMBER_CORRELATIONS: Record<number, {
 /**
  * Get the element for a given value across traditions
  */
-export function getElement(value: string | number, tradition?: string): string | null {
+function getElement(value: string | number, tradition?: string): string | null {
   const val = String(value).toLowerCase();
 
   // Check master numbers first
@@ -242,7 +242,7 @@ export function correlateOrixa(orixaName: string): CrossTraditionMap | null {
 /**
  * Correlate a zodiac sign across traditions
  */
-export function correlateZodiac(signo: string): CrossTraditionMap | null {
+function correlateZodiac(signo: string): CrossTraditionMap | null {
   const normalized = signo.toLowerCase();
 
   for (const [element, data] of Object.entries(ELEMENT_MAP)) {
@@ -267,7 +267,7 @@ export function correlateZodiac(signo: string): CrossTraditionMap | null {
 /**
  * Correlate a chakra across traditions
  */
-export function correlateChakra(chakraNum: number): CrossTraditionMap | null {
+function correlateChakra(chakraNum: number): CrossTraditionMap | null {
   for (const [element, data] of Object.entries(ELEMENT_MAP)) {
     if (data.chakras.includes(chakraNum)) {
       return {
@@ -394,7 +394,7 @@ export function getSignature(data: {
 /**
  * Get harmonization advice for conflicting elements
  */
-export function getHarmonizationAdvice(element1: string, element2: string): string {
+function getHarmonizationAdvice(element1: string, element2: string): string {
   const harmonizations: Record<string, Record<string, string>> = {
     'Fogo': { 'Água': 'Use signos de transição (Sagitário/Câncer) para mediar', 'Terra': 'Pratique respiração de fogo para aquecer', 'Ar': 'Integrar através de práticas intelectuais' },
     'Água': { 'Fogo': 'Use signos de transição (Câncer/Escorpiao) para mediar', 'Terra': 'Pratique em locais naturais perto de água', 'Ar': 'Integre através de meditação aquática' },
@@ -406,4 +406,3 @@ export function getHarmonizationAdvice(element1: string, element2: string): stri
 }
 
 // Export element data for external use
-export { ELEMENT_MAP };

@@ -185,7 +185,7 @@ Que sua jornada seja leve e profunda. 🙏`;
 // MAIN: Generate insight for a single area
 // ============================================================
 
-export async function generateAreaInsight(
+async function generateAreaInsight(
   user: UserProfile,
   areaId: LifeAreaId,
   correlation: AreaCorrelation,
@@ -223,7 +223,7 @@ export async function generateAreaInsight(
 // MAIN: Generate insights for top areas
 // ============================================================
 
-export async function generateTopAreasInsights(
+async function generateTopAreasInsights(
   result: LifeMapResult,
   options: { useAI?: boolean; maxAreas?: number } = {}
 ): Promise<AIInsight[]> {

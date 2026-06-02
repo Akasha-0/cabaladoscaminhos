@@ -160,7 +160,7 @@ Object.values(NUMEROLOGY_ZODIAC_MAPPINGS).forEach(mapping => Object.freeze(mappi
  * @param numero - The numerology number (1-10)
  * @returns The correlation mapping or null if not found
  */
-export function getNumerologyZodiacMapping(numero: number): NumerologyZodiacMapping | null {
+function getNumerologyZodiacMapping(numero: number): NumerologyZodiacMapping | null {
   if (numero < 1 || numero > 10) {
     return null;
   }

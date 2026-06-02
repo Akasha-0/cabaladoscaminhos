@@ -131,7 +131,7 @@ async function createRedisClient(
 
 // Singleton client
 let redisClient: RedisLike | null = null;
-export let useMemory = false;
+let useMemory = false;
 
 export async function getRedisClient(): Promise<RedisLike> {
   if (redisClient) return redisClient;
@@ -169,5 +169,3 @@ getRedisClient().catch(() => {
   useMemory = true;
   redisClient = createInMemoryStore();
 });
-
-export { memoryStore as inMemoryStore };

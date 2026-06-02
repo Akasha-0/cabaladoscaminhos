@@ -179,38 +179,38 @@ export function getData(): IoData {
   return IO_DATA;
 }
 
-export function getDataById(id: string): IoData | undefined {
+function getDataById(id: string): IoData | undefined {
   return id === 'io' ? IO_DATA : undefined;
 }
 
-export function getCommunicationAspects(): CommunicationAspect[] {
+function getCommunicationAspects(): CommunicationAspect[] {
   return communicationAspects;
 }
 
-export function getExchangeGifts(): ExchangeGift[] {
+function getExchangeGifts(): ExchangeGift[] {
   return exchangeGifts;
 }
 
-export function getPaths(): PathOfIo[] {
+function getPaths(): PathOfIo[] {
   return pathsOfIo;
 }
 
-export function getSacredObjects(): string[] {
+function getSacredObjects(): string[] {
   return IO_DATA.sacredObjects;
 }
 
-export function getInvocationPhrases(): string[] {
+function getInvocationPhrases(): string[] {
   return IO_DATA.invocationPhrases;
 }
 
-export function getDomains(): string[] {
+function getDomains(): string[] {
   return IO_DATA.domains;
 }
 
-export function getIoByElement(element: string): IoData | undefined {
+function getIoByElement(element: string): IoData | undefined {
   return IO_DATA.element.toLowerCase().includes(element.toLowerCase()) ? IO_DATA : undefined;
 }
 
-export function getIoByDay(day: string): IoData | undefined {
+function getIoByDay(day: string): IoData | undefined {
   return IO_DATA.dayOfWeek.toLowerCase().includes(day.toLowerCase()) ? IO_DATA : undefined;
 }

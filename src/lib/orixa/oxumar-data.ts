@@ -192,22 +192,22 @@ export function getData(): OxumarData {
   return OXUMAR_DATA;
 }
 
-export function getDataById(id: string): OxumarData | undefined {
+function getDataById(id: string): OxumarData | undefined {
   return id === 'oxumar' ? OXUMAR_DATA : undefined;
 }
 
-export function getDreams(): DreamData {
+function getDreams(): DreamData {
   return OXUMAR_DATA.dreams;
 }
 
-export function getDivination(): DivinationData {
+function getDivination(): DivinationData {
   return OXUMAR_DATA.divination;
 }
 
-export function getRituals(): RitualData[] {
+function getRituals(): RitualData[] {
   return OXUMAR_DATA.ritualPractices;
 }
 
-export function getRainbowPrinciples(): string[] {
+function getRainbowPrinciples(): string[] {
   return OXUMAR_DATA.rainbowPrinciples;
 }

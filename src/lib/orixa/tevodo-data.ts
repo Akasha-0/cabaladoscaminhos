@@ -63,11 +63,11 @@ export function getData(): TevodoData[] {
   return TEVODO_DATA;
 }
 
-export function getDataById(id: string): TevodoData | undefined {
+function getDataById(id: string): TevodoData | undefined {
   return TEVODO_DATA.find((t) => t.id === id);
 }
 
-export function searchData(query: string): TevodoData[] {
+function searchData(query: string): TevodoData[] {
   const lowerQuery = query.toLowerCase();
   return TEVODO_DATA.filter(
     (t) =>

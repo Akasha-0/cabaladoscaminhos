@@ -146,14 +146,14 @@ export const NUMEROLOGY_ODU_CORRELATIONS: NumerologyOdúCorrelation[] = [
 /**
  * Get correlation for a specific number
  */
-export function getCorrelationForNumber(numero: number): NumerologyOdúCorrelation | undefined {
+function getCorrelationForNumber(numero: number): NumerologyOdúCorrelation | undefined {
   return NUMEROLOGY_ODU_CORRELATIONS.find(c => c.numeroReduzido === numero);
 }
 
 /**
  * Get Odú for a birth number
  */
-export function getOduForBirthNumber(numero: number): string {
+function getOduForBirthNumber(numero: number): string {
   const reduced = numero > 9 && numero !== 11 ? numero % 9 : numero;
   const correlation = getCorrelationForNumber(reduced);
   return correlation?.oduNascimento || 'Ofun (10)';
@@ -169,7 +169,7 @@ export function getAllNumerologyOdúCorrelations(): NumerologyOdúCorrelation[] 
 /**
  * Get tarot correlation for a number
  */
-export function getTarotForNumber(numero: number): string {
+function getTarotForNumber(numero: number): string {
   const reduced = numero > 9 && numero !== 11 ? numero % 9 : numero;
   const correlation = getCorrelationForNumber(reduced);
   return correlation?.tarotCorrelation || 'A Roda da Fortuna';
@@ -178,7 +178,7 @@ export function getTarotForNumber(numero: number): string {
 /**
  * Get sephirah alignment for a number
  */
-export function getSephirahAlignment(numero: number): { from: string; to: string } | null {
+function getSephirahAlignment(numero: number): { from: string; to: string } | null {
   const reduced = numero > 9 && numero !== 11 ? numero % 9 : numero;
   const correlation = getCorrelationForNumber(reduced);
   if (!correlation) return null;

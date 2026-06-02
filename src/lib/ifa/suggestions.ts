@@ -528,7 +528,7 @@ function getNotasAdicionales(numero: number): string[] {
 /**
  * Get ritual suggestions for multiple Odus
  */
-export function getRitualSuggestionsMultiple(odus: (Odu | number)[]): RitualSuggestion[] {
+function getRitualSuggestionsMultiple(odus: (Odu | number)[]): RitualSuggestion[] {
   return odus.map(odu => getRitualSuggestions(odu));
 }
 

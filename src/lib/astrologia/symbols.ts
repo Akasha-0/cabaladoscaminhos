@@ -59,7 +59,7 @@ const ASPECT_SYMBOLS: Record<string, string> = {
  * @param name - The specific symbol name (e.g., 'aries', 'sun', 'conjunction')
  * @returns SVG string or placeholder if not found
  */
-export function getSymbol(type: 'zodiac' | 'planet' | 'aspect', name: string): string {
+function getSymbol(type: 'zodiac' | 'planet' | 'aspect', name: string): string {
   const normalizedName = name.toLowerCase();
 
   switch (type) {
@@ -84,7 +84,7 @@ function getPlaceholder(type: string): string {
 /**
  * Get all available symbol names for a given type
  */
-export function getSymbolNames(type: 'zodiac' | 'planet' | 'aspect'): string[] {
+function getSymbolNames(type: 'zodiac' | 'planet' | 'aspect'): string[] {
   switch (type) {
     case 'zodiac':
       return Object.keys(ZODIAC_SYMBOLS);
@@ -100,7 +100,7 @@ export function getSymbolNames(type: 'zodiac' | 'planet' | 'aspect'): string[] {
 /**
  * Check if a symbol exists
  */
-export function symbolExists(type: 'zodiac' | 'planet' | 'aspect', name: string): boolean {
+function symbolExists(type: 'zodiac' | 'planet' | 'aspect', name: string): boolean {
   const normalizedName = name.toLowerCase();
   switch (type) {
     case 'zodiac':

@@ -36,7 +36,7 @@ export interface OxumData {
   periodo: string;
 }
 
-export const OXUM_DATA: OxumData = {
+const OXUM_DATA: OxumData = {
   nome: 'Oxum',
   nomePortugues: 'Abundância',
   categoria: 'Orixá Feminino',
@@ -77,37 +77,37 @@ export function getData(): OxumData {
   return OXUM_DATA;
 }
 
-export function getOxumByType(type: keyof OxumData): OxumData[keyof OxumData] | OxumData {
+function getOxumByType(type: keyof OxumData): OxumData[keyof OxumData] | OxumData {
   if (type === 'all') {
     return OXUM_DATA;
   }
   return OXUM_DATA[type] as OxumData[keyof OxumData];
 }
 
-export function getMensagens(): string[] {
+function getMensagens(): string[] {
   return OXUM_DATA.mensagens;
 }
 
-export function getQuizilas(): string[] {
+function getQuizilas(): string[] {
   return OXUM_DATA.quizilas;
 }
 
-export function getEbós(): string[] {
+function getEbós(): string[] {
   return OXUM_DATA.ebós;
 }
 
-export function getCores(): string[] {
+function getCores(): string[] {
   return OXUM_DATA.cores;
 }
 
-export function getPedras(): string[] {
+function getPedras(): string[] {
   return OXUM_DATA.pedras;
 }
 
-export function getAlimentos(): string[] {
+function getAlimentos(): string[] {
   return OXUM_DATA.alimentos;
 }
 
-export function getNumSagrado(): number[] {
+function getNumSagrado(): number[] {
   return OXUM_DATA.numSagrado;
 }

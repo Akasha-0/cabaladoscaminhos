@@ -236,7 +236,7 @@ function getNivel(score: number): CompatibilityResult['nivel'] {
  * Calcula a compatibilidade numerológica entre dois nomes/números.
  * Usa a numerologia pitagórica para determinar a synergy entre os caminhos de vida.
  */
-export function calculateCompatibility(a: number | string, b: number | string): CompatibilityResult {
+function calculateCompatibility(a: number | string, b: number | string): CompatibilityResult {
   const forcaNumero = typeof a === 'string' ? calcularPitagorica(a) : a;
   const destinoNumero = typeof b === 'string' ? calcularPitagorica(b) : b;
 
@@ -258,4 +258,4 @@ export function calculateCompatibility(a: number | string, b: number | string): 
     matriz
 }
 };
-export const calculate = calculateCompatibility;
+const calculate = calculateCompatibility;
