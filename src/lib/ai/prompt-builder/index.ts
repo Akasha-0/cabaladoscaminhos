@@ -1,12 +1,16 @@
 // ============================================================
 // PROMPT BUILDER — Mesa Real Dossiê Generator
 // ============================================================
-// This module builds the prompt for the LLM based on:
+// This module builds the per-house prompt for the LLM based on:
 // - Casa Number (1-36)
-// - Casa Definition (from house-delegation)
+// - Casa Definition (CORRELATION_MAP — Doc 06 §3.1)
 // - Carta Cigana (sorteada)
 // - Odu (sorteado)
 // - MapaFixo (client birth data calculations)
+//
+// Persona e estrutura canônicas: Doc 06 §3.2 + Doc 13 (Cigano Ramiro).
+
+import { getCorrelationEntry } from '@/lib/ai/correlation-map';
 
 // ============================================================
 // TYPES
@@ -60,37 +64,37 @@ export interface HouseInput {
 // SYSTEM PROMPT
 // ============================================================
 
-const SYSTEM_PROMPT = `Você é um terapeuta espiritual especializado em Baralho Cigano (Mesa Real) e Ifá (Odus de Búzios). Sua tarefa é gerar dossiers profundos e personalizados para cada casa da Mesa Real.
+const SYSTEM_PROMPT = `Você é o Oráculo da "Cabala dos Caminhos", consagrado ao Cigano Ramiro, especializado em Baralho Cigano (Mesa Real) e Ifá (Odus de Búzios). Sua tarefa é gerar a análise profunda e personalizada de cada casa da Mesa Real.
 
 REGRAS FUNDAMENTAIS:
-1. NUNCA misture assuntos. Cada casa tem um tema específico.
-2. Use os dados do mapa do cliente (astrologia, numerologia, tantra) para PERSONALIZAR.
-3. Cruze a Carta Cigana + Odu + Mapa Fixo em uma interpretação única.
-4. Responda em português brasileiro, tom respeitoso e profundo.
-5. Formate em Markdown com títulos, listas e seções claras.
+1. NUNCA misture assuntos. Cada casa tem um tema específico e recebe apenas os aspectos natais delegados a ela.
+2. Dirija-se SEMPRE ao consulente na segunda pessoa (você, seu, sua), em tom místico-tecnológico, direto e protetor.
+3. Cruze a Carta Cigana + Odu + os aspectos natais delegados em uma interpretação única; NUNCA seja genérico.
+4. Responda em português brasileiro. Formate em Markdown.
 
-ESTRUTURA DO DOSSIÊ:
-## Contexto da Casa
-- Tema e propósito da casa
-- Por que esta casa é importante para este cliente
+ESTRUTURA OBRIGATÓRIA (3 parágrafos):
+**O Terreno:** Como você naturalmente vive esta área da vida, baseado nos aspectos natais delegados a esta casa.
+**O Evento:** O que a Carta Cigana tirada revela sobre o momento atual nesta área.
+**A Direção:** O conselho do Odu para agir/navegar esta energia (inclua quizilas/advertências relevantes).
 
-## Interpretação Cruzada
-- O que a Carta Cigana revela neste contexto
-- O que o Odu complementa/contradiz
-- Como os dados do mapa personalizam
+Feche com uma linha-síntese em itálico: *[Palavra-chave]: [frase de 10 a 15 palavras]*`;
 
-## Aconselhamento Espiritual
-- Orientações práticas baseadas nos símbolos
-- Quizilas ou advertências relevantes
-- Sugestões de ebós ou práticas
+const USER_PROMPT = (input: HouseInput) => {
+  const correlation = getCorrelationEntry(input.casaNumero);
+  const aspectosDelegados = [
+    ...correlation.astrology.primaryPlanets,
+    ...correlation.astrology.primaryHouses.map((h) => `${h}ª Casa astrológica`),
+    ...correlation.kabalah.aspects,
+    ...correlation.tantric.aspects,
+  ].join(', ');
 
-## Síntese Final
-- Frase de fechamento profunda`;
+  return `
+# DOSSIÊ — CASA ${input.casaNumero}: ${correlation.houseName}
 
-const USER_PROMPT = (input: HouseInput) => `
-# DOSSIÊ — CASA ${input.casaNumero} DA MESA REAL
+**Tema desta casa:** ${correlation.houseTheme}
+**Aspectos natais delegados a esta casa (use SOMENTE estes):** ${aspectosDelegados}
 
-## Dados do Cliente
+## Dados do Consulente
 ${input.mapaFixo.nomeCompleto ? `**Nome:** ${input.mapaFixo.nomeCompleto}` : ''}
 ${input.mapaFixo.dataNascimento ? `**Nascimento:** ${input.mapaFixo.dataNascimento}` : ''}
 ${input.mapaFixo.signoSolar ? `**Sol:** ${input.mapaFixo.signoSolar}` : ''}
@@ -98,26 +102,28 @@ ${input.mapaFixo.signoLunar ? `**Lua:** ${input.mapaFixo.signoLunar}` : ''}
 ${input.mapaFixo.ascendente ? `**Ascendente:** ${input.mapaFixo.ascendente}` : ''}
 ${input.mapaFixo.caminhoDeVida ? `**Caminho de Vida:** ${input.mapaFixo.caminhoDeVida}` : ''}
 ${input.mapaFixo.numeroAlma ? `**Número da Alma:** ${input.mapaFixo.numeroAlma}` : ''}
-${input.mapaFixo.dominioTantrico ? `**Domínio Tântrico:** ${input.mapaFixo.dominioTantrico}` : ''}
+${input.mapaFixo.numeroExpressao ? `**Número de Expressão:** ${input.mapaFixo.numeroExpressao}` : ''}
+${input.mapaFixo.dominioTantrico ? `**Dom Divino:** ${input.mapaFixo.dominioTantrico}` : ''}
 ${input.mapaFixo.karmaTantrico ? `**Karma Tântrico:** ${input.mapaFixo.karmaTantrico}` : ''}
 
-## Carta Cigana — Casa ${input.casaNumero}
+## Carta Cigana tirada (Evento)
 - **Número:** ${input.carta.numero}
 - **Nome:** ${input.carta.nome}
 - **Significado:** ${input.carta.significado}
 
-## Odu de Búzios — Casa ${input.casaNumero}
+## Odu tirado (Direção)
 - **Número:** ${input.odu.numero}
 - **Nome:** ${input.odu.nome}
 - **Elemento:** ${input.odu.elemento}
 - **Significado:** ${input.odu.significado}
 ${input.odu.orixas.length ? `- **Orixás:** ${input.odu.orixas.join(', ')}` : ''}
-${input.odu.quililas.length ? `- **Quizilas:** ${input.odu.quililas.join(', ')}` : ''}
+${input.odu.quizilas.length ? `- **Quizilas:** ${input.odu.quizilas.join(', ')}` : ''}
 
 ---
 
-Gere o dossier completo seguindo a estrutura definida no system prompt.
+Gere a análise desta casa seguindo a estrutura de 3 parágrafos do system prompt.
 `;
+};
 
 // ============================================================
 // BUILDERS
@@ -194,9 +200,5 @@ export function parseMatrixData(
 
   return inputs;
 }
-
-// ============================================================
-// EXPORTS
-// ============================================================
-
-export type { HouseInput, CartaCigana, Odu, MapaFixo };
+// Tipos já são exportados nas próprias declarações (`export interface`),
+// portanto não há re-export redundante aqui.

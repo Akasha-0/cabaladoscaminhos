@@ -72,7 +72,8 @@ export async function POST(request: NextRequest) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        // Modelo configurável por env (Doc 06 §3.3 / I6); default seguro.
+        model: process.env.OPENAI_MODEL ?? 'gpt-4o',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt },
