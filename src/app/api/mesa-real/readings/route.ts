@@ -2,9 +2,13 @@
 // READINGS API - Cabala Dos Caminhos
 // Cockpit Oracular - Mesa Real Reading Management
 // ============================================================
+// Fase 17: rotas de leitura são Operator-only (Doc 16 AD-03). O
+// `userId`/`clientId` na URL é só filtro — a autorização vem sempre
+// do cookie de sessão, nunca do body.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { requireOperator } from '@/lib/auth/operator-session';
 import {
   createReading,
   getReading,
@@ -35,6 +39,9 @@ const matrixDataSchema = z.record(z.any());
 // ============================================================
 export async function GET(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { searchParams } = new URL(request.url);
     const readingId = searchParams.get('readingId');
     const clientId = searchParams.get('clientId');
@@ -87,6 +94,9 @@ export async function GET(request: NextRequest) {
 // ============================================================
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const body = await request.json();
     const { action, ...data } = body;
 
@@ -137,6 +147,9 @@ export async function POST(request: NextRequest) {
 // ============================================================
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const body = await request.json();
     const { readingId, matrixData, status } = body;
 
@@ -185,6 +198,9 @@ export async function PATCH(request: NextRequest) {
 // ============================================================
 export async function DELETE(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { searchParams } = new URL(request.url);
     const readingId = searchParams.get('readingId');
 
