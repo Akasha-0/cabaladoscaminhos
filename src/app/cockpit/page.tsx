@@ -12,7 +12,8 @@ export default function CockpitPage() {
                     window.location.search.includes('debug=true');
   
   return (
-    <main className="min-h-screen bg-slate-950">
+    // `ramiro` aplica a paleta v2 (laranja + azul royal — Doc 13) a todo o cockpit.
+    <main className="ramiro min-h-screen bg-background text-foreground">
       <CockpitOracular showDebug={showDebug} />
     </main>
   );

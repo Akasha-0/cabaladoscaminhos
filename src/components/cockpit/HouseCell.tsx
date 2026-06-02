@@ -32,27 +32,27 @@ export function HouseCell({ house, filledData, isActive, onClick, onClear }: Hou
         // Empty state
         !isFilled && [
           'bg-slate-900/80 border border-dashed border-slate-700',
-          'hover:border-amber-500/50 hover:bg-slate-900/90',
+          'hover:border-orange-500/50 hover:bg-slate-900/90',
           'hover:-translate-y-1',
         ].join(' '),
         
         // Filled state
         isFilled && [
           'bg-gradient-to-b from-slate-800 to-slate-900',
-          'border border-amber-600/50',
+          'border border-orange-600/50',
           'shadow-[0_0_15px_rgba(212,175,55,0.1)]',
-          'hover:border-amber-500 hover:shadow-[0_0_25px_rgba(212,175,55,0.2)]',
+          'hover:border-orange-500 hover:shadow-[0_0_25px_rgba(212,175,55,0.2)]',
           'hover:-translate-y-1',
         ].join(' '),
         
         // Active state (has open popover)
-        isActive && 'ring-2 ring-amber-500 ring-offset-2 ring-offset-slate-950'
+        isActive && 'ring-2 ring-orange-500 ring-offset-2 ring-offset-slate-950'
       )}
     >
       {/* House Number - Top Left */}
       <div className={cn(
         'absolute top-2 left-2 text-xs font-mono',
-        isFilled ? 'text-amber-500/70' : 'text-slate-600'
+        isFilled ? 'text-orange-500/70' : 'text-slate-600'
       )}>
         {String(house.number).padStart(2, '0')}
       </div>
@@ -81,13 +81,13 @@ export function HouseCell({ house, filledData, isActive, onClick, onClear }: Hou
           // Empty state - show plus icon
           <Plus className={cn(
             'w-6 h-6 transition-colors',
-            'text-slate-600 group-hover:text-amber-500/50'
+            'text-slate-600 group-hover:text-orange-500/50'
           )} />
         ) : (
           // Filled state
           <>
             {/* Carta Name */}
-            <span className="text-sm font-bold text-amber-400 text-center leading-tight">
+            <span className="text-sm font-bold text-orange-400 text-center leading-tight">
               {String(filledData.carta?.numero ?? '?').padStart(2, '0')}. {filledData.carta?.nome ?? ''}
             </span>
             
@@ -98,8 +98,8 @@ export function HouseCell({ house, filledData, isActive, onClick, onClear }: Hou
                   variant="outline"
                   className={cn(
                     'text-[10px] px-2 py-0.5',
-                    'bg-emerald-900/30 border-emerald-500/30',
-                    'text-emerald-400'
+                    'bg-indigo-900/30 border-indigo-500/30',
+                    'text-indigo-400'
                   )}
                 >
                   Odu {filledData.odu.numero} - {filledData.odu.nome}
@@ -121,7 +121,7 @@ export function HouseCell({ house, filledData, isActive, onClick, onClear }: Hou
       
       {/* Active glow indicator */}
       {isActive && (
-        <div className="absolute inset-0 rounded-xl bg-amber-500/5 pointer-events-none" />
+        <div className="absolute inset-0 rounded-xl bg-orange-500/5 pointer-events-none" />
       )}
     </div>
   );

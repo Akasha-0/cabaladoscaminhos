@@ -31,8 +31,8 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/20 border border-amber-500/30 flex items-center justify-center">
-              <span className="text-lg font-bold text-amber-400">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/20 border border-orange-500/30 flex items-center justify-center">
+              <span className="text-lg font-bold text-orange-400">
                 {String(filledCount).padStart(2, '0')}
               </span>
             </div>
@@ -61,11 +61,11 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
       {filledCount > 0 && (
         <div className="flex items-center gap-6 text-sm text-slate-400">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-amber-500" />
+            <span className="w-2 h-2 rounded-full bg-orange-500" />
             <span>{filledCount} cartas</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="w-2 h-2 rounded-full bg-indigo-500" />
             <span>0 odus</span>
           </div>
           <div className="flex items-center gap-2">

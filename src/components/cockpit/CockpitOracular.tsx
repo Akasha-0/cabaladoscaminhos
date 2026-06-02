@@ -143,7 +143,7 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
             </div>
 
             {/* Grid Glow Effect */}
-            <div className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-b from-amber-500/5 to-transparent opacity-50" />
+            <div className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-b from-orange-500/5 to-transparent opacity-50" />
           </div>
 
           {/* Progress Summary */}
@@ -154,11 +154,11 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
                 <span className="text-xs text-slate-500">Vazia</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-gradient-to-b from-slate-800 to-slate-900 border border-amber-600/50" />
+                <div className="w-3 h-3 rounded bg-gradient-to-b from-slate-800 to-slate-900 border border-orange-600/50" />
                 <span className="text-xs text-slate-500">Preenchida</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded ring-2 ring-amber-500" />
+                <div className="w-3 h-3 rounded ring-2 ring-orange-500" />
                 <span className="text-xs text-slate-500">Em edição</span>
               </div>
             </div>

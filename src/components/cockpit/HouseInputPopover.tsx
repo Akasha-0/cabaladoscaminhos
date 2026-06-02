@@ -133,7 +133,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
       <div className="px-4 py-3 bg-slate-800/80 border-b border-slate-700/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-500" />
+            <Sparkles className="w-4 h-4 text-orange-500" />
             <span className="text-sm font-medium text-slate-200">
               Casa {String(casaNumero).padStart(2, '0')}
             </span>
@@ -165,15 +165,15 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
               value={cartaSearch}
               onChange={(e) => setCartaSearch(e.target.value)}
               onFocus={() => setFocusedField('carta')}
-              className="pl-9 bg-slate-800/50 border-slate-700/50 focus:border-amber-500/50"
+              className="pl-9 bg-slate-800/50 border-slate-700/50 focus:border-orange-500/50"
             />
           </div>
           
           {/* Selected Carta */}
           {selectedCarta && (
-            <div className="flex items-center gap-2 p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-              <Check className="w-4 h-4 text-amber-500" />
-              <span className="text-sm text-amber-400 font-medium">
+            <div className="flex items-center gap-2 p-2 bg-orange-500/10 border border-orange-500/30 rounded-lg">
+              <Check className="w-4 h-4 text-orange-500" />
+              <span className="text-sm text-orange-400 font-medium">
                 {String(selectedCarta.numero).padStart(2, '0')}. {selectedCarta.nome}
               </span>
               <button 
@@ -228,22 +228,22 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
               onFocus={() => setFocusedField('odu')}
               className={cn(
                 'pl-9 bg-slate-800/50 border-slate-700/50',
-                focusedField === 'odu' ? 'border-emerald-500/50' : ''
+                focusedField === 'odu' ? 'border-indigo-500/50' : ''
               )}
             />
           </div>
           
           {/* Selected Odu */}
           {selectedOdu && (
-            <div className="flex items-center gap-2 p-2 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
-              <Check className="w-4 h-4 text-emerald-500" />
+            <div className="flex items-center gap-2 p-2 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
+              <Check className="w-4 h-4 text-indigo-500" />
               <div>
-                <span className="text-sm text-emerald-400 font-medium">
+                <span className="text-sm text-indigo-400 font-medium">
                   Odu {selectedOdu.numero} - {selectedOdu.nome}
                 </span>
                 <div className="flex gap-1 mt-1">
                   {selectedOdu.orixas.map(orixa => (
-                    <Badge key={orixa} variant="outline" className="text-[10px] bg-emerald-500/10 border-emerald-500/20 text-emerald-300">
+                    <Badge key={orixa} variant="outline" className="text-[10px] bg-indigo-500/10 border-indigo-500/20 text-indigo-300">
                       {orixa}
                     </Badge>
                   ))}
@@ -276,7 +276,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
                       'flex items-center gap-2'
                     )}
                   >
-                    <span className="text-xs text-emerald-500 font-mono w-6">
+                    <span className="text-xs text-indigo-500 font-mono w-6">
                       {odu.numero}
                     </span>
                     <span className="text-sm">{odu.nome}</span>
@@ -306,7 +306,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
               Preencher
             </Button>
           ) : (
-            <span className="flex items-center gap-1 text-amber-500/70">
+            <span className="flex items-center gap-1 text-orange-500/70">
               <AlertCircle className="w-3 h-3" />
               Selecione carta e odu
             </span>

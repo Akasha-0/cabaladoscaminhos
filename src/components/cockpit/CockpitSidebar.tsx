@@ -74,8 +74,8 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
           <ChevronRight className="w-5 h-5" />
         </button>
         <div className="mt-8 space-y-4">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-amber-400" />
+          <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-orange-400" />
           </div>
         </div>
       </div>
@@ -88,10 +88,10 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
       <div className="p-4 border-b border-slate-800/50">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-amber-400" />
+            <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-orange-400" />
             </div>
-            <span className="text-lg font-bold bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+            <span className="text-lg font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
               Cabala
             </span>
           </div>
@@ -127,7 +127,7 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                 placeholder="Digite o nome..."
                 value={formData.nome}
                 onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                className="bg-slate-800/50 border-slate-700/50 focus:border-amber-500/50"
+                className="bg-slate-800/50 border-slate-700/50 focus:border-orange-500/50"
               />
             </div>
 
@@ -142,7 +142,7 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                   type="date"
                   value={formData.dataNascimento}
                   onChange={(e) => setFormData({ ...formData, dataNascimento: e.target.value })}
-                  className="bg-slate-800/50 border-slate-700/50 focus:border-amber-500/50"
+                  className="bg-slate-800/50 border-slate-700/50 focus:border-orange-500/50"
                 />
               </div>
 
@@ -156,7 +156,7 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                   type="time"
                   value={formData.horaNascimento}
                   onChange={(e) => setFormData({ ...formData, horaNascimento: e.target.value })}
-                  className="bg-slate-800/50 border-slate-700/50 focus:border-amber-500/50"
+                  className="bg-slate-800/50 border-slate-700/50 focus:border-orange-500/50"
                 />
               </div>
             </div>
@@ -171,7 +171,7 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                 placeholder="Cidade, Estado"
                 value={formData.localNascimento}
                 onChange={(e) => setFormData({ ...formData, localNascimento: e.target.value })}
-                className="bg-slate-800/50 border-slate-700/50 focus:border-amber-500/50"
+                className="bg-slate-800/50 border-slate-700/50 focus:border-orange-500/50"
               />
             </div>
 
@@ -192,7 +192,7 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                 <span className="text-sm font-medium text-slate-200">{cliente.nome}</span>
                 <button
                   onClick={() => setIsFormExpanded(true)}
-                  className="text-xs text-amber-500 hover:text-amber-400"
+                  className="text-xs text-orange-500 hover:text-orange-400"
                 >
                   Editar
                 </button>
@@ -209,9 +209,9 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                 {(cliente.mapa.sol || cliente.mapa.ascendente) && (
                   <Badge 
                     variant="outline"
-                    className="w-full justify-start bg-amber-500/5 border-amber-500/20 text-amber-400/80"
+                    className="w-full justify-start bg-orange-500/5 border-orange-500/20 text-orange-400/80"
                   >
-                    <Crown className="w-3 h-3 mr-2 text-amber-500" />
+                    <Crown className="w-3 h-3 mr-2 text-orange-500" />
                     {cliente.mapa.sol || 'Sol em ...'} {cliente.mapa.ascendente && `| ${cliente.mapa.ascendente}`}
                   </Badge>
                 )}
@@ -232,9 +232,9 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                 {(cliente.mapa.alma || cliente.mapa.karma) && (
                   <Badge 
                     variant="outline"
-                    className="w-full justify-start bg-emerald-500/5 border-emerald-500/20 text-emerald-400/80"
+                    className="w-full justify-start bg-indigo-500/5 border-indigo-500/20 text-indigo-400/80"
                   >
-                    <MapPin className="w-3 h-3 mr-2 text-emerald-500" />
+                    <MapPin className="w-3 h-3 mr-2 text-indigo-500" />
                     {cliente.mapa.alma && `Alma: ${cliente.mapa.alma}`} 
                     {cliente.mapa.karma && ` | Karma: ${cliente.mapa.karma}`}
                   </Badge>
