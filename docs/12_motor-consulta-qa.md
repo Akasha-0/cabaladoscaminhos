@@ -57,8 +57,8 @@ model Consultation {
   readingId   String
   reading     Reading       @relation(fields: [readingId], references: [id], onDelete: Cascade)
 
-  userId      String
-  user        User          @relation(fields: [userId], references: [id])
+  operatorId  String
+  operator    Operator      @relation(fields: [operatorId], references: [id])
 
   messages    ChatMessage[]
 
@@ -94,7 +94,7 @@ enum ChatRole {
 }
 ```
 
-> **Relações a adicionar:** `Reading` ganha `consultations Consultation[]`; `User` ganha `consultations Consultation[]`.
+> **Relações a adicionar:** `Reading` ganha `consultations Consultation[]`; `Operator` ganha `consultations Consultation[]` (Doc 16 AD-03; a v1 dizia `User`).
 
 ---
 

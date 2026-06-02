@@ -67,6 +67,13 @@ O problema **não está mais na documentação** — está na **distância entre
 └──────────────────────────────────────────────────────────────┘
 ```
 
+**Censo do schema (evidência dura do conflito).** O próprio `prisma/schema.prisma` carrega os dois mundos na mesma base:
+
+- **B2B (produto documentado) — 6 modelos:** `Operator`, `Client`, `Reading`, `Report`, `Consultation`, `ChatMessage`. `Reading` e `Consultation` relacionam-se a **`Operator`** (não `User`).
+- **B2C (legado, fora de escopo) — ~23 modelos:** `User`, `BirthChart`, `MapaNatal`, `SynastryResult`, `Chakra`, `Orixa`, `Odú`, `Sefirot`, `Elemento`, `Erva`, `FaseLua`, `DiaSemana`, `Insight`, `Reminder`, `Favorito`, `JournalEntry`, `LeituraHistorico`, `Conversa`, `Mensagem`, `Assinatura`, `Credito`, `TransacaoCredito`, `Empresa`.
+
+> Ou seja: **~4 modelos legados para cada modelo do produto.** A migração inicial e qualquer backup carregam todo o B2C — mais um motivo para a quarentena (AD-01).
+
 **Sintomas concretos do conflito** (todos já observados no código):
 - Build quebrava por dependências do B2C (`agent-prompts-v2`, `useToast`, `notifications/templates`, `chakra/v4`) — resolvido com *stubs*, mas é dívida.
 - Duas implementações de Mesa Real: `components/mesa-real/MesaRealGrid` (B2C) vs `components/cockpit/*` (B2B).

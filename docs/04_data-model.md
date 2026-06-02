@@ -20,24 +20,27 @@ datasource db {
 }
 
 // ─────────────────────────────────────────────
-// USUÁRIO — O Operador/Terapeuta do sistema
+// OPERADOR — O Operador/Terapeuta do sistema
+// (implementado como `Operator` + JWT próprio — Doc 16 AD-03;
+//  a v1 deste doc chamava-o `User`/NextAuth. O modelo `User` que
+//  ainda existe no schema pertence ao B2C legado, fora de escopo — Doc 16 AD-01.)
 // ─────────────────────────────────────────────
-model User {
+model Operator {
   id           String    @id @default(cuid())
   email        String    @unique
   name         String
   passwordHash String
-  role         UserRole  @default(OPERATOR)
+  role         OperatorRole @default(OPERATOR)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
   readings      Reading[]
   consultations Consultation[]
 
-  @@map("users")
+  @@map("operators")
 }
 
-enum UserRole {
+enum OperatorRole {
   OPERATOR
   ADMIN
 }
@@ -94,8 +97,8 @@ model Reading {
   clientId    String
   client      Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
-  userId      String
-  user        User          @relation(fields: [userId], references: [id])
+  operatorId  String
+  operator    Operator      @relation(fields: [operatorId], references: [id])
 
   report        Report?
   consultations Consultation[]   // Threads de Q&A ancoradas nesta leitura (Doc 12)
@@ -147,8 +150,8 @@ model Consultation {
   readingId   String
   reading     Reading       @relation(fields: [readingId], references: [id], onDelete: Cascade)
 
-  userId      String
-  user        User          @relation(fields: [userId], references: [id])
+  operatorId  String
+  operator    Operator      @relation(fields: [operatorId], references: [id])
 
   messages    ChatMessage[]
 
