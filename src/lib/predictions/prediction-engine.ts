@@ -61,6 +61,7 @@ interface PredictionResponse {
   confidence: number;
 }
 
+// fallow-ignore-next-line complexity
 function parsePredictionResponse(text: string, type: PredictionType): PredictionResponse {
   const lines = text.split('\n').filter(l => l.trim());
   

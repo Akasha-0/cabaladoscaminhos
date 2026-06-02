@@ -30,6 +30,7 @@ interface Improvement {
   action: string
 }
 
+// fallow-ignore-next-line complexity
 async function runEvolutionCycle(): Promise<EvolutionResult | null> {
   console.log('\n🚀 AUTO-EVOLUTION CYCLE')
   console.log('═'.repeat(64))

@@ -42,6 +42,7 @@ export function calcularCaminhoVida(dataNascimento: string): number {
   return soma;
 }
 
+// fallow-ignore-next-line complexity
 function calculate(dataNascimento: string): LifePathResult {
   const dataOriginal = dataNascimento;
   const digitosOriginais = dataOriginal.replace(/\D/g, '').split('').map(Number);

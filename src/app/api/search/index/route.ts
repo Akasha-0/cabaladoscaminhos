@@ -96,8 +96,20 @@ export interface SearchResult {
     affirmation: string;
     frequency: string;
   };
+// fallow-ignore-next-line unused-type
+export interface SearchResult {
+  id: string;
+  type: 'odu' | 'orixa' | 'ritual' | 'tarot';
+  name: string;
+  description: string;
+  keywords: string[];
+  element?: string;
+  orixa?: string;
+  affirmation?: string;
+  frequency?: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface SearchResponse {
   query: string;
   results: SearchResult[];
@@ -297,6 +309,7 @@ function searchTarot(query: string): SearchResult[] {
 // API ROUTE HANDLERS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);

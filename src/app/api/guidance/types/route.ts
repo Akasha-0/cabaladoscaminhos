@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-
 const GuidanceTypeSchema = z.enum([
   'tarot', 'numerology', 'astrology', 'cabala',
   'ifa', 'orixa', 'chakras', 'meditation', 'ritual',
@@ -17,10 +11,6 @@ const GuidanceTypeSchema = z.enum([
 const GuidanceQuerySchema = z.object({
   type: GuidanceTypeSchema.optional(),
   includeDetails: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
-  sefirot: SefirotSchema.optional(),
-  chakra: ChakraSchema.optional(),
-  element: ElementSchema.optional(),
-  orixa: z.string().optional(),
 });
 
 // ─── Type Definitions ────────────────────────────────────────────────────────
@@ -272,13 +262,13 @@ const GUIDANCE_TYPES: GuidanceType[] = [
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    const parsed = parseSpiritualFilters(searchParams, 'type');
+    if (!parsed.ok) return parsed.response;
+    const { sefirot, chakra, element, orixa } = parsed.data;
+
     const parseResult = GuidanceQuerySchema.safeParse({
       type: searchParams.get('type'),
       includeDetails: searchParams.get('includeDetails'),
-      sefirot: searchParams.get('sefirot'),
-      chakra: searchParams.get('chakra'),
-      element: searchParams.get('element'),
-      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -289,7 +279,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { type, includeDetails, sefirot, chakra, element, orixa } = parseResult.data;
+    const { type, includeDetails } = parseResult.data;
     let guidanceTypes = [...GUIDANCE_TYPES];
 
     if (type) {

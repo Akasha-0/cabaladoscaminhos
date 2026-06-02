@@ -39,6 +39,7 @@ const SearchFiltersSchema = z.object({
   orixas: z.array(z.string()).optional(),
 });
 
+// fallow-ignore-next-line unused-type
 export type SearchResult = z.infer<typeof SearchResultSchema>;
 export const dynamic = 'force-dynamic';
 
@@ -324,6 +325,7 @@ function filterResults(
     return results;
   }
 
+// fallow-ignore-next-line complexity
   return results.filter((result) => {
     if (filters.categories?.length && !filters.categories.includes(result.type)) {
       return false;

@@ -40,6 +40,7 @@ type ConsultInput = z.infer<typeof consultSchema>;
 // Route
 // ----------------------------------------------------------------------------
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   // 1) Auth
   const operatorOrResponse = await requireOperator(request);

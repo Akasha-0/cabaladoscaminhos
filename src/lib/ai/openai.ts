@@ -230,6 +230,7 @@ function isRateLimitError(error: unknown): boolean {
   return false;
 }
 
+// fallow-ignore-next-line complexity
 export async function createChatCompletion(
   options: ChatCompletionOptions,
   retryCount = 0

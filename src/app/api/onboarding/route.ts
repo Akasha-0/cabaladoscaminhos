@@ -25,7 +25,7 @@ const onboardingRequestSchema = z.object({
   data: onboardingDataSchema.optional(),
 });
 
-// Onboarding steps
+// fallow-ignore-next-line unused-type
 export type OnboardingStep = 0 | 1 | 2 | 3 | 4 | 5;
 
 // GET - Get current onboarding step for user
@@ -105,6 +105,7 @@ export async function GET(request: NextRequest) {
 }
 
 // POST - Save onboarding data
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

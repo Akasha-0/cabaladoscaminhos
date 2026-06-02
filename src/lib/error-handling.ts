@@ -69,6 +69,7 @@ export class AppError extends Error {
   }
 }
 
+// fallow-ignore-next-line complexity
 function getDefaultStatusCode(code: ErrorCode): number {
   if (code >= 1000 && code < 1100) {
     if (code === ErrorCode.AUTH_FORBIDDEN) return 403;

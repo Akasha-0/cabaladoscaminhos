@@ -39,5 +39,3 @@ export function StatsOverview() {
     </div>
   );
 }
-
-export default StatsOverview;

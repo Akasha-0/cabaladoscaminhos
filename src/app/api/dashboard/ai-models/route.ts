@@ -3,15 +3,9 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-
 const ModelTypeSchema = z.enum(['chat', 'completion', 'embedding', 'vision', 'speech', 'oracle', 'divination']);
 const ModelStatusSchema = z.enum(['active', 'inactive', 'training', 'error', 'deprecated']);
 const ModelQuerySchema = z.object({
@@ -20,10 +14,6 @@ const ModelQuerySchema = z.object({
   provider: z.string().optional(),
   habilitado: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
-  sefirot: SefirotSchema.optional(),
-  chakra: ChakraSchema.optional(),
-  element: ElementSchema.optional(),
-  orixa: z.string().optional(),
 });
 
 const UpdateModelSchema = z.object({
@@ -401,16 +391,16 @@ const mockModels: AIModel[] = [
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    const parsed = parseSpiritualFilters(searchParams, 'tipo');
+    if (!parsed.ok) return parsed.response;
+    const { sefirot, chakra, element, orixa } = parsed.data;
+
     const parseResult = ModelQuerySchema.safeParse({
       tipo: searchParams.get('tipo'),
       status: searchParams.get('status'),
       provider: searchParams.get('provider'),
       habilitado: searchParams.get('habilitado'),
       limit: searchParams.get('limit'),
-      sefirot: searchParams.get('sefirot'),
-      chakra: searchParams.get('chakra'),
-      element: searchParams.get('element'),
-      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -421,7 +411,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { tipo, status, provider, habilitado, limit, sefirot, chakra, element, orixa } = parseResult.data;
+    const { tipo, status, provider, habilitado, limit } = parseResult.data;
 
     let modelos = [...mockModels];
 

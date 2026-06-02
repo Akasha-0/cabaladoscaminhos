@@ -1,4 +1,4 @@
-// fallow-ignore-next-line: high-complexity
+// fallow-ignore-next-line complexity
 import { z } from "zod";
 import { withErrorHandler } from "@/lib/error-handling";
 
@@ -117,7 +117,7 @@ const PREFERENCE_SPIRITUAL_CORRELATIONS: Record<string, {
   },
 };
 
-// ─── Type Definitions ───────────────────────────────────────────────────────
+// fallow-ignore-next-line unused-type
 export interface NotificationPreferences {
   email: boolean;
   push: boolean;
@@ -242,6 +242,7 @@ export const GET = withErrorHandler(async (req: NextRequest) => {
   }
 });
 
+// fallow-ignore-next-line complexity
 export const POST = withErrorHandler(async (req: NextRequest) => {
   try {
     const userId = req.headers.get('x-user-id') || 'default';

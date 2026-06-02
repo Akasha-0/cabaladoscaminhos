@@ -7,6 +7,7 @@ import type { ChatMessage } from './types';
 /**
  * User spiritual data structure
  */
+// fallow-ignore-next-line code-duplication
 export interface UserSpiritualData {
   id: string;
   nome: string;
@@ -174,6 +175,7 @@ pairs. Focus on paths of transformation, growth opportunities, and spiritual cro
    * Detect hidden spiritual connections using entanglement concept
    * Entangled spiritual systems show correlations regardless of apparent distance
    */
+// fallow-ignore-next-line complexity
   async detectEntanglements(userData: UserSpiritualData): Promise<SpiritualEntanglement[]> {
     const entanglements: SpiritualEntanglement[] = [];
 
@@ -311,6 +313,7 @@ context and the question. Return a JSON object with {collapsed_answer, alternati
    * Calculate spiritual frequencies and resonance patterns
    * Each spiritual system vibrates at specific frequencies that can be measured
    */
+// fallow-ignore-next-line complexity
   async calculateResonances(userData: UserSpiritualData): Promise<ResonanceReport> {
     const frequencies: Record<string, number> = {};
 

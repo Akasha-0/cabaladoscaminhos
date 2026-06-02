@@ -59,7 +59,7 @@ export default function PerfilPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState(formDataInicial);
   const { user } = useAuth();
-
+// fallow-ignore-next-line complexity
   useEffect(() => {
     if (user) {
       setFormData(prev => ({

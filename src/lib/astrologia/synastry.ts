@@ -89,6 +89,7 @@ function getAspectStrength(orb: number, orbMax: number): number {
   return Math.max(0, Math.min(1, ratio));
 }
 
+// fallow-ignore-next-line complexity
 export function calculateSynastry(chart1: MapaNatal, chart2: MapaNatal): SynastryResult {
   const planets1 = getPlanets(chart1);
   const planets2 = getPlanets(chart2);

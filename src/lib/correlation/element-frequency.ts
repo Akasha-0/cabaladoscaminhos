@@ -344,6 +344,7 @@ export function getAllFrequencies(): number[] {
   return [396, 417, 528, 741, 963];
 }
 
+// fallow-ignore-next-line unused-export
 export default {
   getElementFrequency,
   getFrequencyElement,

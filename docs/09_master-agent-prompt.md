@@ -44,7 +44,7 @@ Você é o Engenheiro de Software Principal responsável pelo desenvolvimento do
 - Estado gerenciado por Zustand: `{ "1": { carta: 19, cartaName: "A Torre", odu: 10, oduName: "Osá" }, ... }`
 
 ### Módulo C — Motor de IA
-- Botão "Gerar Dossiê" envia: clientId + matrixData → `/api/generate-dossier`.
+- Botão "Gerar Dossiê" envia: clientId + matrixData → `/api/mesa-real/generate` (Doc 16 AD-05).
 - O **PromptBuilder** itera sobre cada casa preenchida. Para cada casa, ele injecta no prompt:
   1. O significado base da casa
   2. O aspecto astrológico específico DESTA casa (ex: Casa 34=Peixes injeta a 2ª Casa Astrológica do mapa natal)
@@ -148,20 +148,18 @@ Casa 36 (Cruz)      → Astro: Nodo Sul + Saturno + 12ª Casa | Cabala: Dívidas
 src/
 ├── app/
 │   ├── (auth)/login/page.tsx
-│   ├── (dashboard)/
+│   ├── cockpit/                        ← Cockpit Oracular (B2B)
 │   │   ├── layout.tsx
+│   │   ├── page.tsx                     ← O COCKPIT PRINCIPAL
+│   │   ├── login/page.tsx
 │   │   ├── dashboard/page.tsx
-│   │   ├── nova-consulta/page.tsx      ← O COCKPIT PRINCIPAL
-│   │   ├── clientes/page.tsx
-│   │   ├── clientes/novo/page.tsx
-│   │   ├── clientes/[id]/page.tsx
-│   │   └── leituras/[id]/page.tsx
+│   │   ├── leituras/[id]/page.tsx
+│   │   ├── leituras/[id]/consulta/page.tsx
+│   │   └── consulentes/{novo,[id]}/page.tsx
 │   └── api/
-│       ├── auth/[...nextauth]/route.ts
-│       ├── clients/route.ts
-│       ├── clients/[id]/route.ts
-│       ├── readings/route.ts
-│       └── generate-dossier/route.ts   ← O MOTOR DE IA
+│       ├── operator/auth/{login,logout,me,register}/route.ts  ← JWT próprio
+│       ├── mesa-real/{generate,save,readings,clients}/route.ts  ← B2B core
+│       └── consult/route.ts             ← Q&A (Doc 12)
 ├── components/
 │   ├── ui/                             ← Shadcn (auto-gerado)
 │   ├── layout/Sidebar.tsx
@@ -199,7 +197,7 @@ Execute as fases nesta ordem EXATA. Não pule etapas:
 
 ```
 FASE 1: FUNDAÇÃO
-  1. Setup do projeto (Next.js, Tailwind, Shadcn, Prisma, NextAuth)
+  1. Setup do projeto (Next.js 16, Tailwind v4, Shadcn/Radix, Prisma 7, JWT próprio — **sem** NextAuth, Doc 16 AD-03)
   2. Criar schema.prisma e aplicar migration
   3. Criar seed com usuário admin
   4. Criar layout base (Sidebar + Dashboard layout)
@@ -224,7 +222,7 @@ FASE 4: O MOTOR DE IA
   17. Criar correlation-map.ts (36 entradas completas)
   18. Criar PromptBuilder (buildHousePayload + buildFullPayload)
   19. Criar LLM Client (OpenAI + Anthropic)
-  20. Criar API Route /api/generate-dossier com streaming
+  20. Criar API Route `/api/mesa-real/generate` com streaming (Doc 16 AD-05)
   21. Criar DossierViewer (consome stream + render Markdown)
   22. Salvar Reading + Report no banco ao completar
 

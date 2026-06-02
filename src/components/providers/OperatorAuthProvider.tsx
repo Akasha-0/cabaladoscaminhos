@@ -79,7 +79,7 @@ async function fetchMe(): Promise<OperatorInfo | null> {
 // Provider
 // ============================================================================
 
-export function OperatorAuthProvider({ children }: { children: ReactNode }) {
+function OperatorAuthProvider({ children }: { children: ReactNode }) {
   const [operator, setOperator] = useState<OperatorInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isHydrated, setIsHydrated] = useState(false)

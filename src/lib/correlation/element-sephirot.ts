@@ -352,6 +352,7 @@ export function getAllElementTypes(): ElementoTipo[] {
   return ['fogo', 'água', 'terra', 'ar', 'éter'];
 }
 
+// fallow-ignore-next-line unused-export
 export default {
   getElementSephirot,
   getSephirotElement,

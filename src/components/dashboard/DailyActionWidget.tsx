@@ -84,6 +84,7 @@ interface DailyActionWidgetProps {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function DailyActionWidget({ userData, className, autoLoad = true }: DailyActionWidgetProps) {
   const [context, setContext] = useState<DailyContext | null>(null);
   const [recommendation, setRecommendation] = useState<RecommendationResult | null>(null);
@@ -396,5 +397,3 @@ function MarkdownContent({ content }: { content: string }) {
 
   return <div className="pt-2 border-t border-amber-500/10">{rendered}</div>;
 }
-
-export default DailyActionWidget;

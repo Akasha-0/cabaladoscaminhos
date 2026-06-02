@@ -10,6 +10,7 @@ import { MysticDivider } from '@/components/shared/MysticDivider';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+import { fetchMapa } from '@/lib/api/fetch-mapa';
 import { NumerologiaCard } from '@/components/mapa/NumerologiaCard';
 import { OduCardFull } from '@/components/mapa/OduCardFull';
 import { ChakraPanel } from '@/components/mapa/ChakraPanel';
@@ -41,26 +42,15 @@ export default function MapaPage() {
 
         const profile = JSON.parse(savedProfile);
 
-        // Fetch Mapa data from API
-        const response = await fetch('/api/mapa', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            nomeCompleto: profile.nomeCompleto,
-            dataNascimento: profile.dataNascimento,
-            hora: profile.hora,
-            cidade: profile.cidade,
-            estado: profile.estado,
-            pais: profile.pais,
-          }),
-        });
-
-        if (!response.ok) {
-          const data = await response.json().catch(() => ({}));
-          throw new Error(data.error || `HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
+        // Fetch Mapa data via shared helper
+        const data = await fetchMapa(
+          profile.nomeCompleto,
+          profile.dataNascimento,
+          profile.hora,
+          profile.cidade,
+          profile.estado,
+          profile.pais
+        );
         setMapaData(data as MapaAlmaCompleto);
       } catch (err) {
         console.error('[DashboardMapa] Fetch error:', err);

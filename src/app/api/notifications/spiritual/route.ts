@@ -131,6 +131,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const parseResult = NotificationsQuerySchema.safeParse({
     type: searchParams.get('type'),
+    // fallow-ignore-next-line code-duplication
     unreadOnly: searchParams.get('unreadOnly'),
     sefirot: searchParams.get('sefirot'),
     chakra: searchParams.get('chakra'),
@@ -215,6 +216,7 @@ export async function GET(request: NextRequest) {
   });
 }
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

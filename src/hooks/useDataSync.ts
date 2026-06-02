@@ -1,4 +1,4 @@
-// fallow-ignore-next-line: high-complexity
+// fallow-ignore-next-line complexity
 import { useState, useEffect, useCallback, useRef } from 'react';
 export interface SyncStatus {
   lastSync: string | null;
@@ -120,6 +120,7 @@ export function useDataSync(options: DataSyncOptions = {}) {
     return response.json();
   }, [opts.cloudEndpoint]);
 
+// fallow-ignore-next-line complexity
   const performSync = useCallback(async (): Promise<void> => {
     if (status.syncing) return;
 

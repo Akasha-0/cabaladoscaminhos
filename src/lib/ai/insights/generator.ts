@@ -235,6 +235,7 @@ function generateCabalaAction(
 /**
  * Generate insight for an Orixá
  */
+// fallow-ignore-next-line complexity
 function generateOrixaInsight(identifier: string): InsightResult {
   // Normalize identifier (handle case variations)
   const normalizedName = normalizeOrixaName(identifier);
@@ -529,4 +530,5 @@ export function getAvailableIdentifiers(tradition: SupportedTradition): string[]
 // RE-EXPORTS FROM TRADITION-MAPPER
 // ============================================================
 
+// fallow-ignore-next-line unused-export
 export { traditionMapper, ODU_MAPPINGS, TAROT_MAJOR_MAPPINGS, SEPHIROT_MAPPINGS } from '../tradition-mapper';

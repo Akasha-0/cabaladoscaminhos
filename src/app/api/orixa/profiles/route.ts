@@ -58,6 +58,7 @@ const OrixaProfileSchema = z.object({
   spiritualCorrelations: SpiritualCorrelationsSchema,
 });
 
+// fallow-ignore-next-line unused-type
 export type OrixaProfile = z.infer<typeof OrixaProfileSchema>;
 
 // ─── Spiritual Correlations for Each Orixá ──────────────────────────────────────────

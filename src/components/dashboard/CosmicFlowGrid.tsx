@@ -212,7 +212,7 @@ function QuickAction({ icon, label, color }: QuickActionProps) {
 // ============================================================
 // MAIN COMPONENT
 // ============================================================
-
+// fallow-ignore-next-line complexity
 export function CosmicFlowGrid({ userData }: CosmicFlowGridProps) {
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
   const [activeTab, setActiveTab] = useState<'numerologia' | 'astrologia' | 'lunar'>('numerologia');

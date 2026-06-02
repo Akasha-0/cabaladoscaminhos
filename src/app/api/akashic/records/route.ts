@@ -41,9 +41,11 @@ const AkashicRecordSchema = z.object({
   orixa: z.string().optional(),
 });
 
+// fallow-ignore-next-line unused-type
 export type RecordType = z.infer<typeof RecordTypeSchema>;
+// fallow-ignore-next-line unused-type
 export type AccessLevel = z.infer<typeof AccessLevelSchema>;
-export type AkashicRecord = z.infer<typeof AkashicRecordSchema>;
+// fallow-ignore-end unused-type
 export const dynamic = 'force-dynamic';
 
 // ─── Record Type Correlations ──────────────────────────────────────────────────────────

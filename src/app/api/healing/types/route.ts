@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-
 const HealingTypeSchema = z.enum(['mental', 'physical', 'spiritual', 'karmic', 'emotional', 'ancestral']);
 const HealingStageSchema = z.object({
   id: z.string(),
@@ -42,10 +36,6 @@ const HealingTypeDetailSchema = z.object({
 const HealingTypesQuerySchema = z.object({
   type: HealingTypeSchema.optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
-  sefirot: SefirotSchema.optional(),
-  chakra: ChakraSchema.optional(),
-  element: ElementSchema.optional(),
-  orixa: z.string().optional(),
 });
 
 // ─── Spiritual Correlations for Healing Types ──────────────────────────────────────────
@@ -221,13 +211,13 @@ const HEALING_TYPES: z.infer<typeof HealingTypeDetailSchema>[] = [
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    const parsed = parseSpiritualFilters(searchParams, 'type');
+    if (!parsed.ok) return parsed.response;
+    const { sefirot, chakra, element, orixa } = parsed.data;
+
     const parseResult = HealingTypesQuerySchema.safeParse({
       type: searchParams.get('type'),
       limit: searchParams.get('limit'),
-      sefirot: searchParams.get('sefirot'),
-      chakra: searchParams.get('chakra'),
-      element: searchParams.get('element'),
-      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -238,7 +228,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { type, limit, sefirot, chakra, element, orixa } = parseResult.data;
+    const { type, limit } = parseResult.data;
 
     let healingTypes = [...HEALING_TYPES];
 

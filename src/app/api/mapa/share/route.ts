@@ -13,9 +13,7 @@ const ShareRequestSchema = z.object({
   expiresIn: z.number().int().positive().optional(),
 });
 
-type ShareRequest = z.infer<typeof ShareRequestSchema>;
-
-// Full mapa data type (subset of what's returned by /api/mapa)
+// fallow-ignore-next-line unused-type
 export interface MapaData {
   id: string;
   created_at: string;

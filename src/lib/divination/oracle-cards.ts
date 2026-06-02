@@ -1,11 +1,11 @@
 // src/lib/divination/oracle-cards.ts
-// Catálogo canônico das 36 Cartas Ciganas (Lenormand Cigano)
-// usado pelo Cockpit Oracular e por testes de oráculo.
-//
-// Fonte canônica: as 36 cartas da Mesa Real (Doc 06 §2 / Doc 14).
-// Esta é uma camada de "oráculo aberto" (single-card pulls) por
-// cima do baralho completo — não é o baralho em si (esse está em
-// `src/lib/constants/lenormand-cards.ts`).
+// @deprecated desde Ciclo 120 — AD-02 do Doc 16: a fonte canônica única
+// das 36 cartas é `src/lib/constants/lenormand-cards.ts` (com baseMeaning
+// + shadow, derivado do Doc 15 Glossário Oracular). Este arquivo continha
+// drift (carta 24 = "A Borboleta" — errado; deveria ser "O Coração").
+// Mantido apenas porque 2 testes (`tests/lib/divination/oracle-cards.test.ts`
+// e `tests/lib/oracle/oracle-reading.test.ts`) ainda o consomem. Não usar
+// em código novo. Não deletar até migrar os testes para o canônico.
 
 // ============================================================================
 // Types

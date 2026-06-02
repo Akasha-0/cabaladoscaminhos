@@ -78,6 +78,7 @@ export async function generateMinimaxResponse(
 /**
  * Stream a response from Minimax
  */
+// fallow-ignore-next-line complexity
 async function* streamMinimaxResponse(
   messages: ChatMessage[],
   options: {

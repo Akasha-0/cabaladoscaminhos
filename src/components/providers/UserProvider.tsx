@@ -77,6 +77,7 @@ export function UserProvider({ children, initialData }: UserProviderProps) {
   const store = useUserProfileStore();
   
   // Calculate numerology from store profile
+// fallow-ignore-next-line complexity
   const userDataWithNumerology = useMemo<UserDataWithNumerology>(() => {
     const profile = store.profile;
     

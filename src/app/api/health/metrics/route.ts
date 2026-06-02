@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import type { SpiritualCorrelations } from '@/lib/api/spiritual-correlations';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
@@ -121,14 +122,7 @@ interface HealthMetric {
   orixa: string;
   affirmation: string;
   frequency: string;
-  spiritualCorrelations: {
-    sefirot: string[];
-    chakra: number;
-    element: string;
-    orixa: string;
-    affirmation: string;
-    frequency: string;
-  };
+  spiritualCorrelations: SpiritualCorrelations;
 }
 
 const metricsData: HealthMetric[] = [];

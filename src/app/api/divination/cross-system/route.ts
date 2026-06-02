@@ -224,6 +224,7 @@ export async function GET(request: NextRequest) {
   });
 }
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

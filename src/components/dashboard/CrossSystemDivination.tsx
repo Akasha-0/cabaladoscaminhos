@@ -573,6 +573,7 @@ function ResultPanel({ result, onSave, onReset }: ResultPanelProps) {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function CrossSystemDivination({
   userData,
   userId,

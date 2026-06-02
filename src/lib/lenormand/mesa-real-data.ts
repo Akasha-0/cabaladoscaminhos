@@ -605,13 +605,11 @@ export function getCasaPorNumero(numero: number): CasaCigana | undefined {
 export function getCartaPorNumero(numero: number): CartaCigana | undefined {
   return CARTAS_CIGANAS.find((c) => c.numero === numero);
 }
-
-/** Busca Odú por numero (1..16). */
+/** Busca odu por numero. */
 export function getOduPorNumero(numero: number): OduInfo | undefined {
   return ODUS_IFA.find((o) => o.numero === numero);
 }
-
-// Grid position: 9 columns × 4 rows, 1-indexed
+/** Retorna posicao no grid 9x4 para houseNumber. */
 export function getPosicaoGrid(casaNumero: number): { row: number; col: number } {
   const idx = casaNumero - 1;
   return { row: Math.floor(idx / 9) + 1, col: (idx % 9) + 1 };

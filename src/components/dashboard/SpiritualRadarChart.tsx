@@ -505,7 +505,7 @@ function RadarSkeleton({ variant = 'full' }: RadarSkeletonProps) {
 // MAIN COMPONENT
 // ============================================================
 
-export function SpiritualRadarChart({
+function SpiritualRadarChart({
   userData,
   currentLevels = {},
   previousLevels,

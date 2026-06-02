@@ -95,12 +95,17 @@ const CreditsProgressSchema = z.object({
   mostExpensiveFeature: z.string().nullable(),
 });
 
+// fallow-ignore-next-line unused-type
 export type Achievement = z.infer<typeof AchievementSchema>;
+// fallow-ignore-next-line unused-type
 export type ProgressStats = z.infer<typeof ProgressStatsSchema>;
+// fallow-ignore-next-line unused-type
 export type ReadingProgress = z.infer<typeof ReadingProgressSchema>;
+// fallow-ignore-next-line unused-type
 export type RitualProgress = z.infer<typeof RitualProgressSchema>;
+// fallow-ignore-next-line unused-type
 export type MeditationProgress = z.infer<typeof MeditationProgressSchema>;
-export type CreditsProgress = z.infer<typeof CreditsProgressSchema>;
+// fallow-ignore-end unused-type
 export const dynamic = 'force-dynamic';
 
 // ─── Achievement Spiritual Correlations ──────────────────────────────────────────

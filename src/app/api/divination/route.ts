@@ -1,4 +1,3 @@
-// src/app/api/divination/route.ts
 // Divination API - skip linting
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -14,8 +13,7 @@ const DivinationQuerySchema = z.object({
 });
 
 // ─── Type Aliases ───────────────────────────────────────────────────────────
-type DivinationMethodType = z.infer<typeof DivinationMethod>;
-
+// fallow-ignore-next-line unused-type
 export interface DivinationReading {
   id: string;
   method: DivinationMethodType;

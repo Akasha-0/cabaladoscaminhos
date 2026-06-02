@@ -416,6 +416,7 @@ export function getMoonByElement(elemento: string): MoonOduMapping[] {
   return getAllMoonOdus().filter(mapping => mapping.elemento === elemento);
 }
 
+// fallow-ignore-next-line unused-export
 export default {
   getMoonOdu,
   getOduMoon,

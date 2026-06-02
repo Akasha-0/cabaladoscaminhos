@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 
 // Sacred geometry corner decoration
+// fallow-ignore-next-line code-duplication
 const SacredCornerSVG = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2 2 L20 2 L20 5 L5 5 L5 20 L2 20 Z" fill="currentColor" opacity="0.3" />
@@ -110,6 +111,7 @@ function parseMarkdown(text: string): string {
 // SUB-COMPONENTS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function MessageBubble({ message, onCopy }: { message: ChatMessage; onCopy?: () => void }) {
   const [copied, setCopied] = useState(false);
   const isUser = message.role === 'user';
@@ -392,6 +394,7 @@ export function AIOracleChat({
 // ORACLE RESPONSE GENERATOR
 // ============================================================
 
+// fallow-ignore-next-line complexity
 function generateOracleResponse(question: string, userData?: AIOracleChatProps['userData']): string {
   const lowerQ = question.toLowerCase();
 

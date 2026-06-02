@@ -1,5 +1,6 @@
 // src/components/cockpit/HouseCell.tsx
-// Individual cell for the 36-house matrix
+// Individual cell for the 36-house matrix (Doc 05 §4.3 / Doc 13 §4.1)
+// Tokens Ramiro v2: laranja (ação) + royal (estrutura).
 
 'use client';
 
@@ -18,9 +19,10 @@ interface HouseCellProps {
   onClear: () => void;
 }
 
+// fallow-ignore-next-line complexity
 export function HouseCell({ house, filledData, isActive, onClick, onClear }: HouseCellProps) {
   const isFilled = !!filledData;
-  
+
   return (
     <div
       onClick={onClick}
@@ -28,35 +30,35 @@ export function HouseCell({ house, filledData, isActive, onClick, onClear }: Hou
         // Base styles
         'relative h-[140px] rounded-xl cursor-pointer transition-all duration-200',
         'flex flex-col overflow-hidden',
-        
-        // Empty state
+
+        // Empty state — Doc 13 §4.1 (laranja no hover)
         !isFilled && [
-          'bg-slate-900/80 border border-dashed border-slate-700',
-          'hover:border-orange-500/50 hover:bg-slate-900/90',
+          'bg-card/50 border border-dashed border-border',
+          'hover:border-primary/50 hover:bg-card/70',
           'hover:-translate-y-1',
         ].join(' '),
-        
-        // Filled state
+
+        // Filled state — Doc 13 §4.1 (laranja sólido + glow)
         isFilled && [
-          'bg-gradient-to-b from-slate-800 to-slate-900',
-          'border border-orange-600/50',
-          'shadow-[0_0_15px_rgba(212,175,55,0.1)]',
-          'hover:border-orange-500 hover:shadow-[0_0_25px_rgba(212,175,55,0.2)]',
+          'bg-gradient-to-b from-card/80 to-background/80',
+          'border border-primary/50',
+          'shadow-[0_0_15px_var(--accent-orange-glow)]',
+          'hover:border-primary hover:shadow-[0_0_25px_var(--accent-orange-glow)]',
           'hover:-translate-y-1',
         ].join(' '),
-        
-        // Active state (has open popover)
-        isActive && 'ring-2 ring-orange-500 ring-offset-2 ring-offset-slate-950'
+
+        // Active state (has open popover) — Doc 13 §4.1
+        isActive && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
       )}
     >
-      {/* House Number - Top Left */}
+      {/* House Number - Top Left (JetBrains Mono) */}
       <div className={cn(
         'absolute top-2 left-2 text-xs font-mono',
-        isFilled ? 'text-orange-500/70' : 'text-slate-600'
+        isFilled ? 'text-primary/70' : 'text-muted-foreground/50'
       )}>
         {String(house.number).padStart(2, '0')}
       </div>
-      
+
       {/* Clear Button - Top Right */}
       {isFilled && (
         <button
@@ -67,39 +69,40 @@ export function HouseCell({ house, filledData, isActive, onClick, onClear }: Hou
           className={cn(
             'absolute top-2 right-2 p-1 rounded-md',
             'opacity-0 group-hover:opacity-100',
-            'hover:bg-slate-700/50 text-slate-400 hover:text-rose-400',
+            'hover:bg-muted/50 text-muted-foreground hover:text-destructive',
             'transition-all duration-150'
           )}
+          aria-label={`Limpar casa ${house.number}`}
         >
           <Trash2 className="w-3 h-3" />
         </button>
       )}
-      
+
       {/* Content - Center */}
       <div className="flex-1 flex flex-col items-center justify-center p-2">
         {!isFilled ? (
           // Empty state - show plus icon
           <Plus className={cn(
             'w-6 h-6 transition-colors',
-            'text-slate-600 group-hover:text-orange-500/50'
+            'text-muted-foreground/50 group-hover:text-primary/50'
           )} />
         ) : (
           // Filled state
           <>
-            {/* Carta Name */}
-            <span className="text-sm font-bold text-orange-400 text-center leading-tight">
+            {/* Carta Name (Cinzel, laranja Ramiro) */}
+            <span className="text-sm font-bold text-primary text-center leading-tight font-cinzel">
               {String(filledData.carta?.numero ?? '?').padStart(2, '0')}. {filledData.carta?.nome ?? ''}
             </span>
-            
-            {/* Odu Badge */}
+
+            {/* Odu Badge (royal) */}
             {filledData.odu && (
               <div className="mt-2">
-                <Badge 
+                <Badge
                   variant="outline"
                   className={cn(
                     'text-[10px] px-2 py-0.5',
-                    'bg-indigo-900/30 border-indigo-500/30',
-                    'text-indigo-400'
+                    'bg-secondary/20 border-secondary/30',
+                    'text-secondary'
                   )}
                 >
                   Odu {filledData.odu.numero} - {filledData.odu.nome}
@@ -109,22 +112,20 @@ export function HouseCell({ house, filledData, isActive, onClick, onClear }: Hou
           </>
         )}
       </div>
-      
+
       {/* House Original Name - Bottom */}
       <div className={cn(
         'absolute bottom-2 left-0 right-0 text-center',
         'text-[10px] uppercase tracking-wider',
-        isFilled ? 'text-slate-400' : 'text-slate-500'
+        isFilled ? 'text-muted-foreground' : 'text-muted-foreground/70'
       )}>
         {house.cartaCigana}
       </div>
-      
+
       {/* Active glow indicator */}
       {isActive && (
-        <div className="absolute inset-0 rounded-xl bg-orange-500/5 pointer-events-none" />
+        <div className="absolute inset-0 rounded-xl bg-primary/5 pointer-events-none" />
       )}
     </div>
   );
 }
-
-export default HouseCell;

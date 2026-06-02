@@ -9,7 +9,7 @@ import { z } from 'zod';
 // Schema for creating a client
 // Sem `userId`: o modelo Client não armazena dono por-operador (Doc 16 §2.2);
 // a autorização vem do Operator autenticado na rota, não de um campo no corpo.
-export const createClientSchema = z.object({
+const createClientSchema = z.object({
   fullName: z.string().min(1, 'Nome completo é obrigatório'),
   birthDate: z.string().datetime({ message: 'Data de nascimento inválida' }),
   birthTime: z.string().optional(),
@@ -19,7 +19,7 @@ export const createClientSchema = z.object({
 });
 
 // Schema for updating a client
-export const updateClientSchema = z.object({
+const updateClientSchema = z.object({
   fullName: z.string().min(1).optional(),
   birthDate: z.string().datetime().optional(),
   birthTime: z.string().optional(),
@@ -29,7 +29,7 @@ export const updateClientSchema = z.object({
 });
 
 // Schema for saving calculation maps
-export const saveClientMapsSchema = z.object({
+const saveClientMapsSchema = z.object({
   astrologyMap: z.record(z.unknown()).optional(),
   kabalisticMap: z.record(z.unknown()).optional(),
   tantricMap: z.record(z.unknown()).optional(),

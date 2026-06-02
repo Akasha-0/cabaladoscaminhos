@@ -11,6 +11,7 @@ export const MetricCategory = z.enum([
   'reliability',
   'security',
 ]);
+// fallow-ignore-next-line unused-type
 export type MetricCategory = z.infer<typeof MetricCategory>;
 
 export const MetricSeverity = z.enum([
@@ -20,6 +21,7 @@ export const MetricSeverity = z.enum([
   'low',
   'info',
 ]);
+// fallow-ignore-next-line unused-type
 export type MetricSeverity = z.infer<typeof MetricSeverity>;
 
 export const MetricStatus = z.enum([
@@ -29,6 +31,7 @@ export const MetricStatus = z.enum([
   'skipped',
   'error',
 ]);
+// fallow-ignore-next-line unused-type
 export type MetricStatus = z.infer<typeof MetricStatus>;
 
 // Threshold interface

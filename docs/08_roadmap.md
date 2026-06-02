@@ -115,7 +115,7 @@ banco configurado          atendimentos               terapeutas
 
 | ID | Tarefa | Épico | Prioridade | Estimativa |
 |---|---|---|---|---|
-| T5.1 | API Route /api/generate-dossier com streaming | E4 | 🔴 | 8h |
+| T5.1 | API Route `/api/mesa-real/generate` com streaming | E4 | 🔴 | 8h |
 | T5.2 | DossierViewer: consumir stream + render Markdown | E4 | 🔴 | 8h |
 | T5.3 | Criação de Reading + Report no banco | E4 | 🔴 | 4h |
 | T5.4 | Estados de loading, erro e sucesso na UI | E4 | 🟡 | 4h |

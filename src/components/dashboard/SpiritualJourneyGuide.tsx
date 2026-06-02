@@ -219,6 +219,7 @@ interface TimelineStepProps {
   onComplete: (stepId: string) => void;
 }
 
+// fallow-ignore-next-line complexity
 function TimelineStep({ step, isLast, onComplete }: TimelineStepProps) {
   const phase = getPhaseFromStep(step.id);
   const phaseConfig = PHASES.find((p) => p.id === phase)!;

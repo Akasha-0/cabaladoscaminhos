@@ -3,15 +3,9 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-
 const DataSourceTypeSchema = z.enum(['api', 'database', 'file', 'stream', 'cache', 'orixa', 'astrology', 'numerology']);
 const DataSourceStatusSchema = z.enum(['connected', 'disconnected', 'error', 'syncing']);
 const DataSourceQuerySchema = z.object({
@@ -19,10 +13,6 @@ const DataSourceQuerySchema = z.object({
   status: DataSourceStatusSchema.optional(),
   habilitado: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
-  sefirot: SefirotSchema.optional(),
-  chakra: ChakraSchema.optional(),
-  element: ElementSchema.optional(),
-  orixa: z.string().optional(),
 });
 
 const ConnectDataSourceSchema = z.object({
@@ -358,15 +348,15 @@ const mockDataSources: DataSource[] = [
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    const parsed = parseSpiritualFilters(searchParams, 'tipo');
+    if (!parsed.ok) return parsed.response;
+    const { sefirot, chakra, element, orixa } = parsed.data;
+
     const parseResult = DataSourceQuerySchema.safeParse({
       tipo: searchParams.get('tipo'),
       status: searchParams.get('status'),
       habilitado: searchParams.get('habilitado'),
       limit: searchParams.get('limit'),
-      sefirot: searchParams.get('sefirot'),
-      chakra: searchParams.get('chakra'),
-      element: searchParams.get('element'),
-      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -377,7 +367,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { tipo, status, habilitado, limit, sefirot, chakra, element, orixa } = parseResult.data;
+    const { tipo, status, habilitado, limit } = parseResult.data;
 
     let fontes = [...mockDataSources];
 

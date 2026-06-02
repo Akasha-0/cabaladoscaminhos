@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-
 const MaterialTypeSchema = z.enum([
   'elemental', 'essence', 'crystal', 'herb', 'ritual', 'symbolic', 'offering'
 ]);
@@ -19,10 +13,6 @@ const MaterialQuerySchema = z.object({
   type: MaterialTypeSchema.optional(),
   rarity: RaritySchema.optional(),
   limit: z.coerce.number().int().positive().max(100).optional(),
-  sefirot: SefirotSchema.optional(),
-  chakra: ChakraSchema.optional(),
-  element: ElementSchema.optional(),
-  orixa: z.string().optional(),
 });
 
 // ─── Material Spiritual Correlations ──────────────────────────────────────────
@@ -94,14 +84,14 @@ const ELEMENT_MATERIALS: Record<string, string[]> = {
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    const parsed = parseSpiritualFilters(searchParams, 'type');
+    if (!parsed.ok) return parsed.response;
+    const { sefirot, chakra, element, orixa } = parsed.data;
+
     const parseResult = MaterialQuerySchema.safeParse({
       type: searchParams.get('type'),
       rarity: searchParams.get('rarity'),
       limit: searchParams.get('limit'),
-      sefirot: searchParams.get('sefirot'),
-      chakra: searchParams.get('chakra'),
-      element: searchParams.get('element'),
-      orixa: searchParams.get('orixa'),
     });
 
     if (!parseResult.success) {
@@ -112,7 +102,7 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const { type, rarity, limit, sefirot, chakra, element, orixa } = parseResult.data;
+    const { type, rarity, limit } = parseResult.data;
 
     let materials = [...MATERIALS];
 

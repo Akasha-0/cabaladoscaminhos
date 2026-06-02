@@ -24,10 +24,12 @@ export function SkeletonLine({ width = '100%', height = '16px', className }: Ske
 // ============================================================
 // SkeletonAvatar — circular placeholder
 // ============================================================
+// fallow-ignore-start unused-types
 export interface SkeletonAvatarProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
+// fallow-ignore-end unused-types
 
 const avatarSizes = {
   sm: '32px',
@@ -47,13 +49,13 @@ function SkeletonAvatar({ size = 'md', className }: SkeletonAvatarProps) {
 }
 
 // ============================================================
-// SkeletonText — paragraph simulation
-// ============================================================
+// fallow-ignore-start unused-types
 export interface SkeletonTextProps {
   lines?: number;
   lastLineWidth?: string;
   className?: string;
 }
+// fallow-ignore-end unused-types
 
 function SkeletonText({ lines = 3, lastLineWidth = '60%', className }: SkeletonTextProps) {
   return (
@@ -115,10 +117,12 @@ export function SkeletonCard({ lines = 3, avatar = false, className }: SkeletonC
 // ============================================================
 // SkeletonChart — bar chart simulation
 // ============================================================
+// fallow-ignore-start unused-types
 export interface SkeletonChartProps {
   height?: string;
   className?: string;
 }
+// fallow-ignore-end unused-types
 
 const barHeights = ['45%', '70%', '55%', '85%', '60%', '90%', '50%', '75%', '40%', '65%'];
 

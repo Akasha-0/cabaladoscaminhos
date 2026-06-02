@@ -440,6 +440,7 @@ export function getOduMessage(oduNumero: number): string | null {
 
 // ─── Default Export ───────────────────────────────────────────────────────────
 
+// fallow-ignore-next-line unused-export
 export default {
   getOduChakra,
   getChakraOdu,

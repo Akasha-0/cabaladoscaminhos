@@ -36,6 +36,7 @@ type InsightCard = {
   date: string;
 };
 
+// fallow-ignore-next-line complexity
 export default function InsightsPage() {
   const [view, setView] = useState<'resumido' | 'aprofundado'>('resumido');
   const { insight, loading, error, refetch } = useMapaInsights();

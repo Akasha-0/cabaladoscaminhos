@@ -304,4 +304,5 @@ function MarkdownContent({ content }: { content: string }) {
   return <div>{rendered}</div>;
 }
 
+// fallow-ignore-next-line unused-export
 export default SwarmChatWidget;

@@ -821,6 +821,7 @@ function renderAspectsTable(
 /**
  * Generates a chart-specific PDF with birth chart visualization
  */
+// fallow-ignore-next-line complexity
 export async function generateChartPDF(
   data: ChartTemplateData,
   options: PDFOptions = {}

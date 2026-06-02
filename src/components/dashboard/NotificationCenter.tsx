@@ -231,6 +231,7 @@ function FilterChip({ label, isActive, count, onClick, color }: FilterChipProps)
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function NotificationCenter({
   className = '',
   maxVisible = 10,

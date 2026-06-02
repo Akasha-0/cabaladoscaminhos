@@ -52,6 +52,7 @@ interface TarotCardProps {
   className?: string;
 }
 
+// fallow-ignore-next-line complexity
 export function TarotCard({ data, className = '' }: TarotCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);

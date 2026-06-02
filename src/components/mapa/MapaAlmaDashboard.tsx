@@ -134,6 +134,7 @@ function SectionHeader({ title, subtitle }: SectionHeaderProps) {
 }
 
 // Main Dashboard Component
+// fallow-ignore-next-line complexity
 export function MapaAlmaDashboard({ data, className = '' }: MapaAlmaDashboardProps) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 

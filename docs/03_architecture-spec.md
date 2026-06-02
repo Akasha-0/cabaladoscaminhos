@@ -19,7 +19,7 @@ O sistema segue uma arquitetura **monolítica modular** com separação clara en
 ┌────────────────────────────▼────────────────────────────────────┐
 │                     NEXT.JS SERVER LAYER                        │
 │  App Router Pages | Server Components | API Routes             │
-│  /api/generate-dossier | /api/clients | /api/readings          │
+│  /api/mesa-real/{generate,save,readings,clients} | /api/consult | /api/operator/auth/{login,logout,me,register} │
 └──────┬─────────────────────┬───────────────────────────────────┘
        │                     │
 ┌──────▼──────┐    ┌─────────▼──────────────────────────────────┐
@@ -90,34 +90,26 @@ cabala-dos-caminhos/
 │
 ├── src/
 │   ├── app/                       # Next.js App Router
-│   │   ├── (auth)/
-│   │   │   └── login/
-│   │   │       └── page.tsx
-│   │   ├── (dashboard)/
-│   │   │   ├── layout.tsx         # Layout com sidebar fixa
-│   │   │   ├── dashboard/
-│   │   │   │   └── page.tsx       # Dashboard com métricas
-│   │   │   ├── nova-consulta/
-│   │   │   │   └── page.tsx       # O Cockpit principal
-│   │   │   ├── clientes/
-│   │   │   │   ├── page.tsx       # Listagem de consulentes
-│   │   │   │   ├── novo/
-│   │   │   │   │   └── page.tsx   # Formulário de cadastro
-│   │   │   │   └── [id]/
-│   │   │   │       └── page.tsx   # Perfil do consulente
-│   │   │   └── leituras/
-│   │   │       └── [id]/
-│   │   │           └── page.tsx   # Dossiê salvo
+│   │   ├── cockpit/                          # Cockpit Oracular (B2B — Doc 16 AD-01)
+│   │   │   ├── layout.tsx                    # Layout B2B com sidebar de navegação
+│   │   │   ├── page.tsx                      # O Cockpit principal (portão de auth)
+│   │   │   ├── login/page.tsx                # Tela de login do Operator
+│   │   │   ├── dashboard/page.tsx            # Dashboard B2B (métricas)
+│   │   │   ├── leituras/[id]/page.tsx        # Visualização do dossiê
+│   │   │   ├── leituras/[id]/consulta/page.tsx  # Q&A (Doc 12)
+│   │   │   └── consulentes/                  # CRUD de consulentes
 │   │   └── api/
-│   │       ├── auth/              # NextAuth routes
-│   │       ├── clients/
-│   │       │   ├── route.ts       # GET (listagem) / POST (criar)
-│   │       │   └── [id]/
-│   │       │       └── route.ts   # GET / PUT / DELETE
-│   │       ├── readings/
-│   │       │   └── route.ts       # POST (criar leitura)
-│   │       └── generate-dossier/
-│   │           └── route.ts       # POST (dispara a IA)
+│   │       ├── operator/auth/                # JWT próprio (Doc 16 AD-03)
+│   │       │   ├── login/route.ts
+│   │       │   ├── logout/route.ts
+│   │       │   ├── me/route.ts
+│   │       │   └── register/route.ts
+│   │       ├── mesa-real/                    # B2B core
+│   │       │   ├── generate/route.ts         # POST: dispara IA, persiste Report
+│   │       │   ├── save/route.ts             # POST: cria Reading (status PENDING)
+│   │       │   ├── readings/route.ts         # GET: lista leituras
+│   │       │   └── clients/route.ts          # GET/POST/PATCH/DELETE (requireOperator)
+│   │       └── consult/route.ts              # POST: Q&A com RAG fechado
 │   │
 │   ├── components/
 │   │   ├── ui/                    # Componentes Shadcn (auto-gerados)
@@ -227,7 +219,7 @@ cabala-dos-caminhos/
 [Zustand Store: { matrixData: { "1": {carta, odu}, "4": {...}, ... } }]
         │
         ▼
-[POST /api/generate-dossier { clientId, matrixData }]
+[POST /api/mesa-real/generate { clientId, matrixData }]
         │
         ▼
 [Server: busca Client no banco (mapas já calculados)]

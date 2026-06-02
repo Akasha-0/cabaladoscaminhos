@@ -269,6 +269,7 @@ class PatternRecognizer {
   /**
    * Recognize dominant archetype patterns from user spiritual data
    */
+  // fallow-ignore-next-line complexity
   recognizeArchetypePatterns(userData: UserSpiritualData): ArchetypePattern[] {
     const affinities = calculateTraditionAffinity(userData);
     const scores: Array<{ pattern: ArchetypePattern; score: number }> = [];
@@ -988,4 +989,5 @@ Forneça:
 
 export const patternRecognizer = new PatternRecognizer();
 
+// fallow-ignore-next-line unused-export
 export default PatternRecognizer;

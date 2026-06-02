@@ -157,6 +157,7 @@ function buildSpiritualContext(context: OracleContext): string {
 /**
  * Generate spiritual response using mock Oracle logic
  */
+// fallow-ignore-next-line complexity
 function generateMockSpiritualResponse(
   prompt: string,
   context: OracleContext

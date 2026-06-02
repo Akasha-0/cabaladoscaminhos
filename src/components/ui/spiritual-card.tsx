@@ -72,21 +72,6 @@ const SpiritualCardTitle = React.forwardRef<
 ));
 SpiritualCardTitle.displayName = "SpiritualCardTitle";
 
-const SpiritualCardDescription = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "text-sm text-muted-foreground leading-relaxed",
-      className
-    )}
-    {...props}
-  />
-));
-SpiritualCardDescription.displayName = "SpiritualCardDescription";
-
 const SpiritualCardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -99,25 +84,9 @@ const SpiritualCardContent = React.forwardRef<
 ));
 SpiritualCardContent.displayName = "SpiritualCardContent";
 
-const SpiritualCardFooter = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "flex items-center pt-4 mt-4 border-t border-border/30",
-      className
-    )}
-    {...props}
-  />
-));
-SpiritualCardFooter.displayName = "SpiritualCardFooter";
-
 export {
   SpiritualCard,
   SpiritualCardHeader,
   SpiritualCardTitle,
   SpiritualCardContent,
-  SpiritualCardFooter,
 }

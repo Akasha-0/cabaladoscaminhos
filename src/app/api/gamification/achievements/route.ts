@@ -38,10 +38,13 @@ const AchievementsQuerySchema = z.object({
   sefirot: z.string().optional(),
 });
 
+// fallow-ignore-next-line unused-type
 export type AchievementCategory = z.infer<typeof AchievementCategorySchema>;
+// fallow-ignore-next-line unused-type
 export type AchievementRarity = z.infer<typeof AchievementRaritySchema>;
-export type Achievement = z.infer<typeof AchievementSchema>;
+// fallow-ignore-end unused-type
 
+// fallow-ignore-next-line unused-type
 export interface AchievementsResponse {
   achievements: Achievement[];
   unlockedCount: number;

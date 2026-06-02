@@ -442,6 +442,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

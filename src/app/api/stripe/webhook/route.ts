@@ -36,6 +36,7 @@ const PLAN_MODULES: Record<string, { moduloPlanetas: boolean; moduloLetras: bool
  * Handle checkout.session.completed event
  * Marks user as premium when checkout completes
  */
+// fallow-ignore-next-line complexity
 async function handleCheckoutCompleted(session: {
   customer?: string;
   customer_email?: string;

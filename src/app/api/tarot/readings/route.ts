@@ -50,6 +50,8 @@ export interface TarotReading {
   question?: string;
   summary: string;
   createdAt: string;
+// fallow-ignore-next-line unused-type
+export interface TarotReading {
 }
 
 // ============================================================

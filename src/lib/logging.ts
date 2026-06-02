@@ -29,7 +29,7 @@ const LOG_LEVEL_COLORS: Record<LogLevel, string> = {
   [LogLevel.INFO]: "\x1b[32m",     // Green
   [LogLevel.WARN]: "\x1b[33m",     // Yellow
   [LogLevel.ERROR]: "\x1b[31m",    // Red
-  [LogLevel.FATAL]: "\x1b[35m",    // Magenta
+  [LogLevel.FATAL]: "\x1b[35m",   // Magenta
 };
 
 const RESET_COLOR = "\x1b[0m";
@@ -49,6 +49,7 @@ export interface LogContext {
   [key: string]: unknown;
 }
 
+// fallow-ignore-start unused-types
 export interface LogEntry {
   timestamp: string;
   level: LogLevel;
@@ -66,6 +67,7 @@ export interface LogEntry {
     cpu?: number;
   };
 }
+// fallow-ignore-end unused-types
 
 // ============================================================
 // LOGGER CLASS
@@ -154,7 +156,7 @@ class Logger {
 
     if (error) {
       entry.error = {
-       code: ((error as { code?: string }).code ?? ErrorCode.INTERNAL_ERROR) as ErrorCode,
+        code: ((error as { code?: string }).code ?? ErrorCode.INTERNAL_ERROR) as ErrorCode,
         message: error.message,
         stack: error.stack,
       };
@@ -243,8 +245,9 @@ export const logger = Logger.getInstance();
 
 // ============================================================
 // PERFORMANCE MONITORING
-// ============================================================
+// ====================================
 
+// fallow-ignore-start unused-types
 export interface PerformanceMetrics {
   requestId: string;
   path: string;
@@ -259,6 +262,11 @@ export interface PerformanceMetrics {
   };
   userId?: string;
 }
+// fallow-ignore-end unused-types
+
+// ============================================================
+// INTERNAL MONITOR
+// ====================================
 
 class PerformanceMonitor {
   private static instance: PerformanceMonitor;
@@ -298,56 +306,42 @@ class PerformanceMonitor {
     let filtered = this.metrics;
 
     if (filter?.path) {
-      filtered = filtered.filter((m) => m.path.includes(filter.path!));
+      filtered = filtered.filter(m => m.path === filter.path);
     }
 
     if (filter?.minDuration) {
-      filtered = filtered.filter((m) => m.duration >= filter.minDuration!);
+      filtered = filtered.filter(m => m.duration >= filter.minDuration!);
     }
 
     if (filter?.since) {
-      filtered = filtered.filter((m) => new Date(m.timestamp) >= filter.since!);
+      const sinceTime = filter.since.getTime();
+      filtered = filtered.filter(m => new Date(m.timestamp).getTime() >= sinceTime);
     }
 
     return filtered;
   }
 
-  getStats(path?: string): {
-    count: number;
-    avgDuration: number;
-    p50Duration: number;
-    p95Duration: number;
-    p99Duration: number;
-    errorRate: number;
-  } {
-    const metrics = path ? this.getMetrics({ path }) : this.metrics;
-
-    if (metrics.length === 0) {
-      return {
-        count: 0,
-        avgDuration: 0,
-        p50Duration: 0,
-        p95Duration: 0,
-        p99Duration: 0,
-        errorRate: 0,
-      };
-    }
-
-    const durations = metrics.map((m) => m.duration).sort((a, b) => a - b);
-    const errors = metrics.filter((m) => m.statusCode && m.statusCode >= 400).length;
-
-    return {
-      count: metrics.length,
-      avgDuration: Math.round(durations.reduce((a, b) => a + b, 0) / durations.length),
-      p50Duration: durations[Math.floor(durations.length * 0.5)],
-      p95Duration: durations[Math.floor(durations.length * 0.95)],
-      p99Duration: durations[Math.floor(durations.length * 0.99)],
-      errorRate: Math.round((errors / metrics.length) * 100 * 100) / 100,
-    };
-  }
-
   clearMetrics(): void {
     this.metrics = [];
+  }
+
+  getSummary(): {
+    totalRequests: number;
+    avgDuration: number;
+    slowRequests: number;
+  } {
+    if (this.metrics.length === 0) {
+      return { totalRequests: 0, avgDuration: 0, slowRequests: 0 };
+    }
+
+    const totalDuration = this.metrics.reduce((sum, m) => sum + m.duration, 0);
+    const slowRequests = this.metrics.filter(m => m.duration > 5000).length;
+
+    return {
+      totalRequests: this.metrics.length,
+      avgDuration: Math.round(totalDuration / this.metrics.length),
+      slowRequests,
+    };
   }
 }
 
@@ -364,8 +358,8 @@ export function generateRequestId(): string {
 function createLogContext(request: Request): LogContext {
   return {
     requestId: generateRequestId(),
-    ip: request.headers.get("x-forwarded-for") || undefined,
-    userAgent: request.headers.get("user-agent") || undefined,
+    ip: request.headers.get('x-forwarded-for') || undefined,
+    userAgent: request.headers.get('user-agent') || undefined,
     path: new URL(request.url).pathname,
     method: request.method,
   };
@@ -376,22 +370,31 @@ function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise
   options?: { path?: string }
 ): T {
   return (async (request: Request, ...rest: unknown[]) => {
-    const endTimer = logger.startTimer();
-    logger.info(`→ ${request.method} ${options?.path || request.url}`, { requestId: request.headers.get('x-request-id') ?? undefined });
+    const context = createLogContext(request);
+    const startTime = performance.now();
+
     try {
       const response = await handler(request, ...rest);
-      const duration = endTimer();
-      logger.info(`← ${response.status} ${request.method} ${request.url}`, {
+      const duration = Math.round(performance.now() - startTime);
+
+      logger.info(`${options?.path || request.method} ${request.url}`, {
+        ...context,
         duration,
-        statusCode: response.status,
+        status: (response as Response).status,
       });
+
       return response;
     } catch (error) {
-      const duration = endTimer();
-      logger.error(`✗ ${request.method} ${request.url}`, error as Error, {
+      const duration = Math.round(performance.now() - startTime);
+
+      logger.error(`${options?.path || request.method} ${request.url} failed`, error as Error, {
+        ...context,
         duration,
       });
+
       throw error;
     }
   }) as T;
 }
+
+export { withLogging };

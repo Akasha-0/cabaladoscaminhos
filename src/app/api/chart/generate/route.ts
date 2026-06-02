@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getChartById, type ChartType, type ChartStyle } from '@/lib/charts/library';
+import type { SpiritualCorrelations } from '@/lib/api/spiritual-correlations';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
@@ -217,14 +218,7 @@ interface ChartData {
   orixa: string;
   affirmation: string;
   frequency: string;
-  spiritualCorrelations: {
-    sefirot: string[];
-    chakra: number;
-    element: string;
-    orixa: string;
-    affirmation: string;
-    frequency: string;
-  };
+  spiritualCorrelations: SpiritualCorrelations;
 }
 
 interface ChartGenerateResponse {
@@ -234,14 +228,7 @@ interface ChartGenerateResponse {
     calculationTime: string;
     accuracy: string;
   };
-  spiritualCorrelations: {
-    sefirot: string[];
-    chakra: number;
-    element: string;
-    orixa: string;
-    affirmation: string;
-    frequency: string;
-  };
+  spiritualCorrelations: SpiritualCorrelations;
   spiritualStats: {
     byPlanet: Record<string, number>;
     bySign: Record<string, number>;

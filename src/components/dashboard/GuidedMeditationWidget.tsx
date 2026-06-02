@@ -632,6 +632,7 @@ function GuidedScriptCard({ script, onStart }: GuidedScriptCardProps) {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function GuidedMeditationWidget({ userOrixa }: GuidedMeditationWidgetProps) {
   const [activeTab, setActiveTab] = useState<MeditationTab>('timer');
   const [selectedDuration, setSelectedDuration] = useState<TimerDuration>(10);

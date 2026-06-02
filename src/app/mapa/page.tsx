@@ -12,6 +12,7 @@ import { NumerologiaCard } from '@/components/mapa/NumerologiaCard';
 import { OduCardFull } from '@/components/mapa/OduCardFull';
 import { ConvergenciasCard } from '@/components/mapa/ConvergenciasCard';
 import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+import { fetchMapa } from '@/lib/api/fetch-mapa';
 
 // ============================================================
 // TYPES
@@ -255,30 +256,19 @@ export default function MapaPage() {
   useEffect(() => {
     if (!profile) return;
 
-    const fetchMapa = async () => {
+    const loadMapa = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        const response = await fetch('/api/mapa', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            nomeCompleto: profile.nomeCompleto,
-            dataNascimento: profile.dataNascimento,
-            hora: profile.hora,
-            cidade: profile.cidade,
-            estado: profile.estado,
-            pais: profile.pais,
-          }),
-        });
-
-        if (!response.ok) {
-          const data = await response.json().catch(() => ({}));
-          throw new Error(data.error || `HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
+        const data = await fetchMapa(
+          profile.nomeCompleto,
+          profile.dataNascimento,
+          profile.hora,
+          profile.cidade,
+          profile.estado,
+          profile.pais
+        );
         setMapaData(data as MapaAlmaCompleto);
       } catch (err) {
         console.error('[MapaPage] Fetch error:', err);
@@ -288,7 +278,7 @@ export default function MapaPage() {
       }
     };
 
-    fetchMapa();
+    loadMapa();
   }, [profile]);
 
   // ============================================================

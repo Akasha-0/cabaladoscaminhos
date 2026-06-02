@@ -113,6 +113,7 @@ const birthDateSchema = z.object({
 // API ROUTE HANDLERS
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
 

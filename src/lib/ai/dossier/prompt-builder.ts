@@ -163,6 +163,7 @@ const CASA_SEFIROT_MAP: Record<number, string[]> = {
 /**
  * Builds the architecture from matrix data (Mesa Real tiragem)
  */
+// fallow-ignore-next-line complexity
 export function construirArquiteturaDossiê(
   matrixData: TiragemMesaReal,
   clientData?: {

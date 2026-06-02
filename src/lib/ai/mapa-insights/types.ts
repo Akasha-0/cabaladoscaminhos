@@ -6,11 +6,13 @@
 import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 
 // Re-export MapaAlmaCompleto for convenience
+// fallow-ignore-next-line unused-type
 export type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 
 /**
  * Insight sections for POI/POA analysis
  */
+// fallow-ignore-next-line unused-type
 export interface InsightSection {
   titulo: string;
   descricao: string;

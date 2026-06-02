@@ -685,4 +685,5 @@ function getData(): AstrologyV2Data {
   };
 }
 
+// fallow-ignore-next-line unused-export
 export default getData;

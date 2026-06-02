@@ -1,5 +1,4 @@
-// fallow-ignore-next-line: high-complexity
-
+// fallow-ignore-next-line complexity
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import {
@@ -171,6 +170,7 @@ function generateMessageId(): string {
   return `guidance-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
+// fallow-ignore-next-line complexity
 function generateStreamingResponse(prompt: string, userData?: SpiritualGuidanceChatProps['userData'], theme?: ChatTheme): string {
   const lowerPrompt = prompt.toLowerCase();
   

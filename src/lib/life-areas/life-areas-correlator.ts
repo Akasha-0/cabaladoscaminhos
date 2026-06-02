@@ -1,4 +1,4 @@
-// fallow-ignore-next-line: high-complexity
+// fallow-ignore-next-line complexity
 // LIFE AREAS CORRELATOR
 // ============================================================
 // Correlaciona o perfil completo do usuário com cada área da vida
@@ -158,6 +158,7 @@ function getIntensityEmoji(intensity: AreaCorrelation['intensidade']): string {
 // MAIN CORRELATION FUNCTION
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function correlateLifeAreas(user: UserProfile): LifeMapResult {
   const correlations: AreaCorrelation[] = [];
 

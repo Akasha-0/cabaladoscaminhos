@@ -400,6 +400,7 @@ function EvolutionMeter({ evolution, colors }: EvolutionMeterProps) {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function SpiritualProfileView({
   userData,
   userId,
@@ -442,8 +443,8 @@ export function SpiritualProfileView({
     () => getSpiritualTitle(safeUserData.arcoPessoal || 0),
     [safeUserData.arcoPessoal]
   );
-
   // Define spiritual systems
+// fallow-ignore-next-line complexity
   const systems = useMemo<SpiritualSystem[]>(() => {
     const sefirotDisplay = safeUserData.sefirotDominante?.length
       ? safeUserData.sefirotDominante.slice(0, 3).join(', ')

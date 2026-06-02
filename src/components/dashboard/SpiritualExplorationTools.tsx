@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import { cn } from '@/lib/utils';
+import type { UserSpiritualData } from '@/lib/ai/types';
 import {
   Sparkles,
   Compass,
@@ -23,22 +24,6 @@ export interface SpiritualExplorationToolsProps {
   userId: string;
   className?: string;
   onToolSelect?: (tool: string) => void;
-}
-
-interface UserSpiritualData {
-  id: string;
-  nome: string;
-  dataNascimento: string;
-  numeroPessoal: number;
-  arcoPessoal: number;
-  odu: string;
-  orixaRegente: string;
-  sefirotDominante: string[];
-  arcoMaior: number[];
-  sign: string;
-  houses?: Record<string, number>;
-  rashi?: string;
-  planetPositions?: Record<string, string>;
 }
 
 interface Tool {

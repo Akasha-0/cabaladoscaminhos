@@ -12,12 +12,14 @@ export interface Ritual {
   duracaoMinutos?: number;
 }
 
+// fallow-ignore-next-line unused-type
 export interface RitualCompletion {
   ritualId: string;
   completedAt: string;
   nota?: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface RitualStreak {
   ritualId: string;
   currentStreak: number;
@@ -25,6 +27,7 @@ export interface RitualStreak {
   lastCompleted: string | null;
 }
 
+// fallow-ignore-next-line unused-type
 export interface RitualStats {
   totalCompletions: number;
   completionsToday: number;

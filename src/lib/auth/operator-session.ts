@@ -122,22 +122,36 @@ export async function requireOperator(
 /**
  * Versão para Server Components / Server Actions: lê dos cookies/headers
  * da requisição atual sem precisar do NextRequest explícito.
+ *
+ * Fase 14: Server-side auth gate — use isto em page.tsx e layouts
+ * protegidos para garantir que o conteúdo não vaze antes do JS hidratar.
+ * Comportamento idêntico ao `getOperatorFromRequest` (JWT + session check).
  */
 export async function getOperatorFromServerContext(): Promise<Operator | null> {
   const cookieStore = await cookies();
   const headerStore = await headers();
 
-  // 1) Cookie JWT
+  // 1) Cookie JWT (caminho de produção)
   const token = cookieStore.get(OPERATOR_TOKEN_COOKIE)?.value ?? null;
   if (token) {
     const payload = verifyOperatorToken(token);
     if (payload) {
+      // Fase 13: valida não-revogação da session. DB error → fail-open
+      // (DB down não deve derrubar todos os usuários logados).
+      let sessionActive = true;
+      try {
+        sessionActive = await isSessionActive(token);
+      } catch (err) {
+        console.error('[operator-session] session check failed', err);
+      }
+      if (!sessionActive) return null;
       return loadOperator(payload.sub);
     }
+    // JWT inválido — não tenta dev header (prevenção de bypass)
     return null;
   }
 
-  // 2) Dev header
+  // 2) Dev header (apenas NODE_ENV !== 'production')
   if (process.env.NODE_ENV !== 'production') {
     const devId = headerStore.get(DEV_HEADER);
     if (devId) return loadOperator(devId);

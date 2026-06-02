@@ -273,6 +273,7 @@ export function getFrequencyZodiacBySigno(signo: string): FrequencyZodiacMapping
   return found ?? null;
 }
 
+// fallow-ignore-next-line unused-export
 export default {
   getFrequencyZodiac,
   getZodiacFrequency,

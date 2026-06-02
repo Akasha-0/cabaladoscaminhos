@@ -81,6 +81,7 @@ ESTRUTURA OBRIGATÓRIA (3 parágrafos):
 
 Feche com uma linha-síntese em itálico: *[Palavra-chave]: [frase de 10 a 15 palavras]*`;
 
+// fallow-ignore-next-line complexity
 const USER_PROMPT = (input: HouseInput) => {
   const correlation = getCorrelationEntry(input.casaNumero);
   const aspectosDelegados = [

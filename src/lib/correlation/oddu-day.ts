@@ -61,4 +61,5 @@ export function hasOduDay(oduNumero: number): boolean { return oduNumero in ODDU
 export function hasDayOdu(dia: string): boolean { return dia in ODDU_DAY_BY_DAY; }
 export function getPrimaryDayForOdu(oduNumero: number): string | null { return ODDU_DAY_BY_ODU[oduNumero]?.[0]?.dia ?? null; }
 export function getOduElement(oduNumero: number): ElementType | null { return ODDU_DAY_BY_ODU[oduNumero]?.[0]?.elemento ?? null; }
+// fallow-ignore-next-line unused-export
 export default { getOduDay, getDayOdu, getAllOduDays, getAllDaysWithOdus, getAllOduNumbers, getAllOduNames, getOduDaysByElement, hasOduDay, hasDayOdu, getPrimaryDayForOdu, getOduElement };

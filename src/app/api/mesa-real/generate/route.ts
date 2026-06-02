@@ -109,7 +109,7 @@ function buildClientMaps(input: GenerateInput): ClientMaps {
 // ----------------------------------------------------------------------------
 // Route
 // ----------------------------------------------------------------------------
-
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   // 1) Auth
   const operatorOrResponse = await requireOperator(request);

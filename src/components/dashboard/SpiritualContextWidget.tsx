@@ -218,5 +218,3 @@ function CycleCard({
     </div>
   );
 }
-
-export default SpiritualContextWidget;

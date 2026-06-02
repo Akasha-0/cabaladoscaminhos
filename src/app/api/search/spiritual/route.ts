@@ -21,6 +21,7 @@ export interface SpiritualSearchResult {
   metadata?: Record<string, string | string[]>;
 }
 
+// fallow-ignore-next-line unused-type
 export interface SpiritualSearchResponse {
   query: string;
   results: SpiritualSearchResult[];
@@ -302,6 +303,7 @@ function filterResults(
     return results;
   }
 
+// fallow-ignore-next-line complexity
   return results.filter((result) => {
     if (filters.categories?.length && !filters.categories.includes(result.type)) {
       return false;

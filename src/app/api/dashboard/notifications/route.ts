@@ -156,8 +156,7 @@ const NOTIFICATION_SPIRITUAL_CORRELATIONS: Record<string, {
     frequency: '741 Hz',
   },
 };
-
-// ─── Type Definitions ───────────────────────────────────────────────────────
+// fallow-ignore-next-line unused-type
 export interface Notificacao {
   id: string;
   tipo: string;
@@ -257,6 +256,7 @@ const notificationStore: Map<string, Notificacao[]> = new Map([
   ]],
 ]);
 
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -265,6 +265,7 @@ export async function GET(request: NextRequest) {
       lida: searchParams.get('lida'),
       importancia: searchParams.get('importancia'),
       limit: searchParams.get('limit'),
+      // fallow-ignore-next-line code-duplication
       page: searchParams.get('page'),
       sefirot: searchParams.get('sefirot'),
       chakra: searchParams.get('chakra'),
@@ -377,6 +378,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
+// fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

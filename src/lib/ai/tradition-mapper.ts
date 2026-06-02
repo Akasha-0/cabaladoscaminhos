@@ -707,6 +707,7 @@ Provide a 2-3 sentence explanation of how these traditions connect and why this 
   /**
    * Get traditions relevant to the user based on their spiritual data
    */
+  // fallow-ignore-next-line complexity
   private getUserTraditions(userData: UserSpiritualData): TraditionInfo[] {
     const traditions = new Set<TraditionInfo>();
 

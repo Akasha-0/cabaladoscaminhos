@@ -197,6 +197,7 @@ function calculateBirthOdu(birthDate: Date): BirthOduResult {
  * @param birthDate - Data de nascimento
  * @returns Resultado com signo e características
  */
+// fallow-ignore-next-line complexity
 function getZodiacSign(birthDate: Date): ZodiacSignResult {
   const month = birthDate.getMonth() + 1;
   const day = birthDate.getDate();

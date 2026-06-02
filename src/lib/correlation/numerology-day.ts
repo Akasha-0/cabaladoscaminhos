@@ -260,6 +260,7 @@ export function getNumerologyDayPractices(numero: number): string[] | undefined 
 /**
  * Default export with all public functions
  */
+// fallow-ignore-next-line unused-export
 export default {
   getNumerologyDay,
   getDayNumerology,

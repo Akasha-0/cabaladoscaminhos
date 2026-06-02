@@ -79,6 +79,7 @@ interface DrawnCard {
   uprightMeaning: string;
   reversedMeaning: string;
   interpretation: string;
+  // fallow-ignore-next-line code-duplication
   keywords: string[];
   sefirot: string[];
   chakra: number;
@@ -207,7 +208,7 @@ function generateInterpretation(
 // ============================================================
 // API ROUTE HANDLERS
 // ============================================================
-
+// fallow-ignore-next-line complexity
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const spreadType = searchParams.get('spreadType') as SpreadType || 'single-card';

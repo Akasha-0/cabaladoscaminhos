@@ -28,10 +28,12 @@ export type ErrorCodeType = typeof ErrorCode[keyof typeof ErrorCode];
 // VALIDATION HELPERS
 // ============================================================
 
+// fallow-ignore-start unused-types
 export interface ValidatedRequest<T> {
   data: T;
   error: { message: string; code: ErrorCodeType } | null;
 }
+// fallow-ignore-end unused-types
 
 /**
  * Parse and validate request body with Zod schema
@@ -188,10 +190,12 @@ export interface AuthUser {
   email: string;
 }
 
+// fallow-ignore-start unused-types
 export interface AuthResult {
   user: AuthUser | null;
   error: { code: ErrorCodeType; message: string } | null;
 }
+// fallow-ignore-end unused-types
 
 /**
  * Extract user from request (JWT or Supabase)

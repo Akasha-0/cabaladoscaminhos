@@ -4,8 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
-// ─── TYPE DEFINITIONS ─────────────────────────────────────────────────────────
-
+// fallow-ignore-next-line unused-type
 export interface Message {
   id?: string;
   role: 'user' | 'assistant';

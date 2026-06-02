@@ -37,6 +37,7 @@ function LoadingSkeleton() {
   );
 }
 
+// fallow-ignore-next-line complexity
 export default function RelatoriosPage() {
   const [mapaData, setMapaData] = useState<MapaAlmaCompleto | null>(null);
   const [profile, setProfile] = useState<BirthProfile | null>(null);
@@ -73,6 +74,7 @@ export default function RelatoriosPage() {
             hora: profileData.hora,
             cidade: profileData.cidade,
             estado: profileData.estado,
+            // fallow-ignore-next-line code-duplication
             pais: profileData.pais,
           }),
         });

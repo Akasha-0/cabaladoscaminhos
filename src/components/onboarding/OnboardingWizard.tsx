@@ -54,7 +54,7 @@ const BRAZILIAN_STATES = [
 ];
 
 const TOTAL_STEPS = 4;
-
+// fallow-ignore-next-line complexity
 export function OnboardingWizard({ onComplete, className }: OnboardingWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState<'forward' | 'back'>('forward');

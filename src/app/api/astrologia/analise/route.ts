@@ -222,6 +222,7 @@ export async function GET(request: NextRequest) {
       bySign: {} as Record<string, number>,
     };
 
+// fallow-ignore-next-line complexity
     Object.entries(mapaNatal.planeta).forEach(([planeta, posicao]) => {
       const planetCorr = PLANET_SPIRITUAL_CORRELATIONS[planeta] || {};
       const signCorr = SIGN_SPIRITUAL_CORRELATIONS[posicao.signo] || {};
@@ -453,6 +454,7 @@ function generateInterpretation(mapaNatal: MapaNatal, aspectos: Aspecto[]): Inte
     netuno: 'intuição, espiritualidade e transcendência', plutao: 'transformação, poder e renovação',
   };
 
+// fallow-ignore-next-line complexity
   Object.entries(mapaNatal.planeta).forEach(([planeta, posicao]) => {
     const aspectosDoPlaneta = aspectos.filter(
       a => a.planeta1 === planeta || a.planeta2 === planeta

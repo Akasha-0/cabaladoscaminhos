@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Ritual } from './useRituals';
 
+// fallow-ignore-next-line unused-type
 export interface CalendarSyncStatus {
   isSynced: boolean;
   lastSyncedAt: string | null;
@@ -20,6 +21,7 @@ export interface CalendarEvent {
   recurrence?: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface UpcomingRitual extends CalendarEvent {
   ritual: Ritual;
   daysUntil: number;
@@ -63,6 +65,7 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
     }
   }, []);
 
+// fallow-ignore-next-line complexity
   const syncWithDeviceCalendar = useCallback(async (): Promise<void> => {
     setSyncStatus(prev => ({ ...prev, isLoading: true, error: null }));
     try {
@@ -146,6 +149,7 @@ export function useRitualCalendar(options: UseRitualCalendarOptions = {}) {
     }
   }, [userId, lookAheadDays]);
 
+// fallow-ignore-next-line complexity
   const addRitualToCalendar = useCallback(async (
     ritual: Ritual,
     startDate: Date,

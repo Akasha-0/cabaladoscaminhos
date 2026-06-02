@@ -49,4 +49,3 @@ function Slider({
   )
 }
 
-export { Slider }

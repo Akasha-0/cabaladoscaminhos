@@ -1,5 +1,6 @@
 // src/components/cockpit/CockpitOracular.tsx
-// Main cockpit component with 3-zone layout
+// Main cockpit — 3-zone layout (Doc 05 §4.1).
+// Tokens Ramiro v2: bg-background, glow royal no container, glow laranja no overlay.
 
 'use client';
 
@@ -85,14 +86,14 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
   }, [fillHouse]);
 
   return (
-    <div className="flex min-h-screen bg-slate-950">
+    <div className="flex min-h-screen bg-background">
       {/* Zone A: Left Sidebar */}
       <CockpitSidebar onNewAtendimento={handleNewAtendimento} />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         {/* Zone B: Header */}
-        <CockpitHeader 
+        <CockpitHeader
           showDebug={showDebug}
           onClearAll={handleClearAll}
           onAutoFill={showDebug ? handleAutoFill : undefined}
@@ -100,17 +101,18 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
 
         {/* Zone C: Matrix Grid */}
         <div className="flex-1 p-6 overflow-auto">
-          <div 
+          <div
             className={cn(
-              'max-w-6xl mx-auto',
-              'bg-slate-900/50 rounded-3xl',
-              'border border-slate-800/50',
+              'relative max-w-6xl mx-auto',
+              'bg-card/50 rounded-3xl',
+              'border border-border/50',
               'p-6 md:p-8',
-              'shadow-[0_0_80px_rgba(212,175,55,0.05)]'
+              // Doc 05 §4.3 — profundidade royal ao fundo do grid
+              'shadow-[inset_0_0_60px_var(--accent-royal-glow)]'
             )}
           >
             {/* Grid Container */}
-            <div 
+            <div
               className="grid gap-3"
               style={{
                 gridTemplateColumns: 'repeat(9, minmax(0, 1fr))',
@@ -119,9 +121,9 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
               {HOUSES_36.map((house) => {
                 const filledData = houses.get(house.number);
                 const isActive = activePopover === house.number;
-                
+
                 return (
-                  <div 
+                  <div
                     key={house.number}
                     className="group"
                     onClick={() => {
@@ -142,28 +144,28 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
               })}
             </div>
 
-            {/* Grid Glow Effect */}
-            <div className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-b from-orange-500/5 to-transparent opacity-50" />
+            {/* Grid Glow Effect (laranja) */}
+            <div className="absolute inset-0 pointer-events-none rounded-3xl bg-gradient-to-b from-primary/5 to-transparent opacity-50" />
           </div>
 
           {/* Progress Summary */}
           <div className="max-w-6xl mx-auto mt-6 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-slate-800 border border-dashed border-slate-600" />
-                <span className="text-xs text-slate-500">Vazia</span>
+                <div className="w-3 h-3 rounded bg-muted border border-dashed border-muted-foreground/40" />
+                <span className="text-xs text-muted-foreground/70">Vazia</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-gradient-to-b from-slate-800 to-slate-900 border border-orange-600/50" />
-                <span className="text-xs text-slate-500">Preenchida</span>
+                <div className="w-3 h-3 rounded bg-gradient-to-b from-card/80 to-background/80 border border-primary/50" />
+                <span className="text-xs text-muted-foreground/70">Preenchida</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded ring-2 ring-orange-500" />
-                <span className="text-xs text-slate-500">Em edição</span>
+                <div className="w-3 h-3 rounded ring-2 ring-primary" />
+                <span className="text-xs text-muted-foreground/70">Em edição</span>
               </div>
             </div>
-            
-            <p className="text-xs text-slate-600">
+
+            <p className="text-xs text-muted-foreground/60">
               Clique em uma casa para preencher · Use Tab para navegar
             </p>
           </div>
@@ -172,7 +174,7 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
 
       {/* Popover - Positioned absolutely */}
       {activePopover !== null && (
-        <div 
+        <div
           className="fixed z-50"
           style={{
             top: popoverPosition?.y ? popoverPosition.y - 10 : undefined,
@@ -190,5 +192,3 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
     </div>
   );
 }
-
-export default CockpitOracular;

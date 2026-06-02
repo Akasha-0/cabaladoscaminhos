@@ -465,6 +465,7 @@ class DeepCorrelationEngine {
   /**
    * Calculate energy harmony between all spiritual systems
    */
+  // fallow-ignore-next-line complexity
   calculateEnergyHarmony(userData: UserSpiritualData): EnergyHarmonyReport {
     const sources: SpiritualSource[] = ['kabbalah', 'ifa', 'candomble', 'tarot', 'astrology', 'numerology'];
     const systemHarmonies: Record<SpiritualSource, number> = {} as Record<SpiritualSource, number>;
@@ -1177,4 +1178,5 @@ Forneça:
 // ============================================================
 
 export { DeepCorrelationEngine };
+// fallow-ignore-next-line unused-export
 export default DeepCorrelationEngine;

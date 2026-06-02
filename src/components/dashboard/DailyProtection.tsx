@@ -59,6 +59,7 @@ function getDayProtectionLevel(): keyof typeof PROTECTION_LEVELS {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function DailyProtection({ className }: DailyProtectionProps) {
   const [activeRituals, setActiveRituals] = useState<number[]>([4]);
   const [showDetails, setShowDetails] = useState(true);

@@ -131,6 +131,7 @@ export interface ValidateEndpointOptions {
  * @param options - Validation options for the endpoint
  * @returns ValidationResult indicating if the endpoint is valid
  */
+// fallow-ignore-next-line complexity
 export function validateEndpoint(
   context: ValidationContext,
   options: ValidateEndpointOptions

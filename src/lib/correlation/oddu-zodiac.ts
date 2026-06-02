@@ -120,4 +120,5 @@ export function getOduMessage(oduNumero: number): string | null {
   return ODU_ZODIAC_MAPPINGS[oduNumero]?.mensagem_central ?? null;
 }
 
+// fallow-ignore-next-line unused-export
 export default { getOduZodiac, getAllOduZodiacs, getAllOduNumbers, getAllOduNames, getAllZodiacSigns, getZodiacOdu, hasOduZodiac, getOduZodiacSign, getOduElement, getOduMessage };

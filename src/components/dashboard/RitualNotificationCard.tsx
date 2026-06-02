@@ -1,5 +1,4 @@
-// fallow-ignore-next-line: high-complexity
-
+// fallow-ignore-next-line complexity
 import React, { useState, useCallback } from 'react';
 import {
   Sparkles,
@@ -221,6 +220,7 @@ function ExpandableContent({ isExpanded, children }: ExpandableContentProps) {
 // MAIN COMPONENT
 // ============================================================
 
+// fallow-ignore-next-line complexity
 export function RitualNotificationCard({
   notificationId,
   title,

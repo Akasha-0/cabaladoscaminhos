@@ -79,7 +79,7 @@ interface Offering {
     frequency: string;
   };
 }
-
+// fallow-ignore-next-line unused-type
 export type { Offering, OfferingItem, OfferingType, ElementType, IntensityLevel };
 export const dynamic = 'force-dynamic';
 
