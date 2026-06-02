@@ -238,6 +238,7 @@ export async function enforceAuthRateLimit(
  * Reseta o contador de rate-limit para um (route, ip). Útil em testes
  * que rodam múltiplos casos contra a mesma rota. Em produção, NUNCA
  * chamar — invalidaria a proteção contra brute-force.
+ */
 // fallow-ignore-next-line unused-export
 export async function resetAuthRateLimit(
   route: AuthRoute,

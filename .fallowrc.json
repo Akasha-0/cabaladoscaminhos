@@ -60,7 +60,7 @@
     "src/lib/oturupon/**/*",
     "src/lib/meji/**/*",
     "src/lib/correlation/*.ts",
-    "tests/lib/**"
+    "tests/**"
   ],
   "ignoreUnresolvedImports": [
     "tests/lib/**",
