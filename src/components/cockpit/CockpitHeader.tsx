@@ -4,12 +4,14 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { 
+import {
   Trash2,
-  Zap
+  Zap,
+  LogOut
 } from 'lucide-react';
 import { useCockpitStore } from '@/stores/cockpit-store';
 
@@ -20,10 +22,20 @@ interface CockpitHeaderProps {
 }
 
 export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: CockpitHeaderProps) {
+  const router = useRouter();
   const { getFilledCount } = useCockpitStore();
   const filledCount = getFilledCount();
   const totalHouses = 36;
   const progressPercent = (filledCount / totalHouses) * 100;
+
+  async function handleLogout() {
+    try {
+      await fetch('/api/operator/auth/logout', { method: 'POST' });
+    } finally {
+      router.push('/cockpit/login');
+      router.refresh();
+    }
+  }
 
   return (
     <div className="flex items-center justify-between px-6 py-3 bg-slate-900/50 border-b border-slate-800/50">
@@ -97,6 +109,17 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
         >
           <Trash2 className="w-4 h-4 mr-2" />
           Limpar Mesa
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleLogout}
+          className="text-slate-400 hover:text-orange-400 hover:bg-orange-500/10"
+          title="Encerrar sessão do operador"
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Sair
         </Button>
       </div>
     </div>

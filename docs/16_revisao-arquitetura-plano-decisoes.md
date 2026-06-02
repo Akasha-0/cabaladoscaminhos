@@ -115,7 +115,7 @@ O problema **não está mais na documentação** — está na **distância entre
   - **Allow-list B2B preservada:** `/cockpit`, `/api/mesa-real/*`, `/api/consult`, `/api/operator/*`, `/api/health` (+ infra/PWA).
   - **Verificação em runtime** (build de produção): `/cockpit`→200; `/dashboard`,`/mapa`,`/`→307→`/cockpit`; `/api/tarot/*`,`/api/chakra/*`→404; `/api/operator/auth/me`→401 (alcança o handler); `/api/mesa-real/clients`→500 (alcança o handler, falha só por falta de `DATABASE_URL` no ambiente efêmero — **não** é 404). Ou seja: B2B acessível, B2C bloqueado.
   - **Por que flag e não mover para `src/_legacy/`:** mover ~60 diretórios de rota no App Router é arriscado e *menos* reversível que uma flag. A flag entrega o objetivo essencial ("fora do roteamento, atrás de flag, trabalho preservado") sem tocar no build. A realocação física para `src/_legacy/` pode ser feita depois, como passo mecânico, se desejado.
-  - **Follow-up imediato (gap exposto):** não há **página** de login B2B — o operador autentica via `/api/operator/auth/login` (a UI `/login` era B2C e foi quarentenada). Construir a tela de login do Operator é a primeira das "telas B2B faltantes" (Onda E).
+  - **Follow-up imediato (gap exposto):** ✅ **entregue** — criada a **página de login do Operator** em `/cockpit/login` (dentro do prefixo allow-listed) e o **portão de autenticação server-side** em `/cockpit` (redireciona para o login sem sessão), além de **logout** no header. Verificado: `/cockpit`→307→`/cockpit/login`; `/cockpit/login`→200.
 
 ### AD-02 — Fonte única de verdade das 36 cartas = `lenormand-cards.ts` (Doc 15).
 - **Decisão:** `src/lib/constants/lenormand-cards.ts` (canônico, Doc 15, com `baseMeaning`/`shadow`) é a **única** definição das 36 cartas. Tudo deriva dela.
@@ -225,9 +225,9 @@ Estas edições alinham os docs à realidade (a stack real é a desejada — atu
 
 **Onda D — Pós-decisão de plataforma (após A):**
 4. ✅ **AD-01 aplicada** (quarentena do B2C via flag `LEGACY_B2C` no middleware; verificada em runtime).
-5. **AD-08** — paleta Ramiro promovida a `@theme` raiz (agora viável: B2C fora do roteamento).
-6. **AD-10/11** — uma só Mesa Real + navegação B2B.
-7. **Tela de login do Operator** (gap exposto pela quarentena) — primeira das "telas B2B faltantes".
+5. ✅ **Tela de login do Operator entregue** — `/cockpit/login` + portão server-side em `/cockpit` + logout no header (fecha o loop de autenticação B2B).
+6. **AD-08** — paleta Ramiro promovida a `@theme` raiz (agora viável: B2C fora do roteamento).
+7. **AD-10/11** — uma só Mesa Real + navegação B2B.
 
 **Onda E — Fechamento de MVP:** Dashboard B2B, histórico, Q&A atrás de flag (UI Doc 05 §9), PDF do dossiê.
 
