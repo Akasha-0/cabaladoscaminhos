@@ -99,16 +99,16 @@ export function CasaModal({
           <div className="space-y-2">
             <Label htmlFor="carta">Carta Cigana *</Label>
             <Select
-              value={carta?.toString() || ''}
-              onValueChange={(v) => setCarta(parseInt(v, 10))}
+              value={carta?.toString() ?? ''}
+              onValueChange={(v) => v && setCarta(parseInt(v, 10))}
             >
               <SelectTrigger id="carta">
                 <SelectValue placeholder="Selecione a carta (1-36)" />
               </SelectTrigger>
               <SelectContent>
                 {CARTAS_CIGANAS.map((c) => (
-                  <SelectItem key={c.number} value={c.number.toString()}>
-                    {c.number} - {c.name}
+                  <SelectItem key={c.numero} value={c.numero.toString()}>
+                    {c.numero} - {c.nome}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -119,8 +119,8 @@ export function CasaModal({
           <div className="space-y-2">
             <Label htmlFor="odu">Odú</Label>
             <Select
-              value={odu?.toString() || ''}
-              onValueChange={(v) => setOdu(parseInt(v, 10))}
+              value={odu?.toString() ?? ''}
+              onValueChange={(v) => v && setOdu(parseInt(v, 10))}
             >
               <SelectTrigger id="odu">
                 <SelectValue placeholder="Selecione o odú (opcional)" />

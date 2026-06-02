@@ -97,10 +97,19 @@ export function getArchetypeCorrelation(
 }
 
 /**
+ * Tipo prático: a parte indexada de TiragemMesaReal.
+ * Aceita tanto a forma completa quanto o Record simples usado por
+ * testes e pela UI (não exige os campos `formato/cartas/odus/timestamp`).
+ */
+export type MatrixIndex = {
+  [casaNumero: number]: { carta: number; odu: number };
+};
+
+/**
  * Constrói a arquitetura completa do dossiê
  */
 export function construirArquiteturaDossiê(
-  matrixData: TiragemMesaReal,
+  matrixData: MatrixIndex,
   clientData: Partial<DadosConsulente>
 ): ArquiteturaDossiê[] {
   const dossiê: ArquiteturaDossiê[] = [];
@@ -132,9 +141,9 @@ export function construirArquiteturaDossiê(
       casaSignificado: casa.meaning,
       posicaoGrid: getPosicaoGrid(casaNumero),
       carta: {
-        numero: carta.number,
-        nome: carta.name,
-        significado: carta.meaning,
+        numero: carta.numero,
+        nome: carta.nome,
+        significado: carta.significado,
       },
       odu: {
         numero: odu.numero,
@@ -157,7 +166,10 @@ export function construirDossiêFromPosicoes(
   posicoes: PosicaoTiragem[],
   clientData: Partial<DadosConsulente>
 ): ArquiteturaDossiê[] {
-  const matrixData: TiragemMesaReal = {};
+  // Constrói index auxiliar pos→{carta,odu}; não precisa de todos os
+  // campos canônicos de TiragemMesaReal porque é só consumido pelo
+  // construirArquiteturaDossiê.
+  const matrixData: MatrixIndex = {};
 
   for (const pos of posicoes) {
     matrixData[pos.casa] = {
@@ -258,7 +270,7 @@ function gerarInterpretacaoPosicao(
   }
 
   // Odú
-  elementos.push(`Odú ${odu.nome} traz ${odu.shortMeaning}`);
+  elementos.push(`Odú ${odu.nome} traz ${odu.significado}`);
 
   // Dados do consulente
   if (clientData.ascendente) {
@@ -309,7 +321,7 @@ function gerarSintese(dossiê: ArquiteturaDossiê[], clientData: Partial<DadosCo
   // Odú mais frequente
   const oduPredominante = getOduData(parseInt(maisFrequente[0]));
   if (oduPredominante) {
-    sintesePartes.push(`Odú mais presente: ${oduPredominante.nome} (${maisFrequente[1]} vezes) - ${oduPredominante.shortMeaning}`);
+    sintesePartes.push(`Odú mais presente: ${oduPredominante.nome} (${maisFrequente[1]} vezes) - ${oduPredominante.significado}`);
   }
 
   // Posição do consulente
@@ -383,7 +395,7 @@ export function realizarLeitura(
     return {
       position: pos.casa,
       house: casa?.name || `Casa ${pos.casa}`,
-      card: carta?.name || `Carta ${pos.carta}`,
+      card: carta?.nome || `Carta ${pos.carta}`,
     };
   });
 }
@@ -395,7 +407,7 @@ export function realizarLeitura(
 /**
  * Valida uma tiragem completa
  */
-export function validarTiragem(tiragem: TiragemMesaReal): {
+export function validarTiragem(tiragem: MatrixIndex): {
   valida: boolean;
   erros: string[];
 } {

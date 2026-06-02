@@ -25,6 +25,8 @@ import {
   ODUS_IFA,
   CORRELACOES_ESPECIAIS,
 } from '@/lib/lenormand/mesa-real-data';
+import type { TiragemMesaReal } from '@/lib/lenormand/mesa-real-types';
+import type { MatrixIndex } from '@/lib/lenormand/mesa-real';
 
 describe('Mesa Real - Data Integrity', () => {
   describe('36 Houses', () => {
@@ -121,7 +123,7 @@ describe('Mesa Real - Data Integrity', () => {
     });
 
     it('should have cards numbered 1-36', () => {
-      const numbers = CARTAS_CIGANAS.map(c => c.number).sort((a, b) => a - b);
+      const numbers = CARTAS_CIGANAS.map(c => c.numero).sort((a, b) => a - b);
       expect(numbers).toEqual(Array.from({ length: 36 }, (_, i) => i + 1));
     });
 
@@ -135,26 +137,26 @@ describe('Mesa Real - Data Integrity', () => {
 
     it('should have non-empty meanings for all cards', () => {
       for (const carta of CARTAS_CIGANAS) {
-        expect(carta.meaning.length).toBeGreaterThan(0);
+        expect(carta.significado.length).toBeGreaterThan(0);
       }
     });
 
     it('should include O CAMINHO (Card 21)', () => {
-      const caminho = CARTAS_CIGANAS.find(c => c.number === 21);
+      const caminho = CARTAS_CIGANAS.find(c => c.numero === 21);
       expect(caminho).toBeDefined();
-      expect(caminho?.name).toBe('O CAMINHO');
+      expect(caminho?.nome).toBe('O CAMINHO');
     });
 
     it('should include A FLOR (Card 6)', () => {
-      const flor = CARTAS_CIGANAS.find(c => c.number === 6);
+      const flor = CARTAS_CIGANAS.find(c => c.numero === 6);
       expect(flor).toBeDefined();
-      expect(flor?.name).toBe('A FLOR');
+      expect(flor?.nome).toBe('A FLOR');
     });
 
     it('should include A SERPE (Card 5)', () => {
-      const serpe = CARTAS_CIGANAS.find(c => c.number === 5);
+      const serpe = CARTAS_CIGANAS.find(c => c.numero === 5);
       expect(serpe).toBeDefined();
-      expect(serpe?.name).toBe('A SERPE');
+      expect(serpe?.nome).toBe('A SERPE');
     });
   });
 
@@ -202,8 +204,8 @@ describe('Mesa Real - Data Integrity', () => {
 
     it('should have short meanings for all odus', () => {
       for (const odu of ODUS_IFA) {
-        expect(odu.shortMeaning).toBeDefined();
-        expect(odu.shortMeaning?.length).toBeGreaterThan(0);
+        expect(odu.significado).toBeDefined();
+        expect(odu.significado?.length).toBeGreaterThan(0);
       }
     });
   });
@@ -253,7 +255,7 @@ describe('Mesa Real - getCartaData', () => {
     for (let i = 1; i <= 36; i++) {
       const carta = getCartaData(i);
       expect(carta).not.toBeNull();
-      expect(carta?.number).toBe(i);
+      expect(carta?.numero).toBe(i);
     }
   });
 
@@ -269,13 +271,13 @@ describe('Mesa Real - getCartaData', () => {
 
   it('should return correct card for card 1', () => {
     const carta = getCartaData(1);
-    expect(carta?.name).toBe('O MENSAGEIRO');
+    expect(carta?.nome).toBe('O MENSAGEIRO');
   });
 
   it('should return correct card for card 21 (O CAMINHO)', () => {
     const carta = getCartaData(21);
-    expect(carta?.name).toBe('O CAMINHO');
-    expect(carta?.meaning).toContain('Jornada');
+    expect(carta?.nome).toBe('O CAMINHO');
+    expect(carta?.significado).toContain('Jornada');
   });
 });
 
@@ -392,7 +394,7 @@ describe('Mesa Real - construirArquiteturaDossiê', () => {
     signoSolar: 'Leão',
   };
 
-  const sampleTiragem: Record<number, { carta: number; odu: number }> = {
+  const sampleTiragem: MatrixIndex = {
     1: { carta: 10, odu: 1 },
     2: { carta: 20, odu: 2 },
     3: { carta: 30, odu: 3 },
@@ -424,11 +426,11 @@ describe('Mesa Real - construirArquiteturaDossiê', () => {
     const dossiê = construirArquiteturaDossiê(sampleTiragem, mockClientData);
 
     for (const item of dossiê) {
-      const { linha, coluna } = item.posicaoGrid;
-      expect(linha).toBeGreaterThanOrEqual(1);
-      expect(linha).toBeLessThanOrEqual(4);
-      expect(coluna).toBeGreaterThanOrEqual(1);
-      expect(coluna).toBeLessThanOrEqual(9);
+      const { row, col } = item.posicaoGrid;
+      expect(row).toBeGreaterThanOrEqual(1);
+      expect(row).toBeLessThanOrEqual(4);
+      expect(col).toBeGreaterThanOrEqual(1);
+      expect(col).toBeLessThanOrEqual(9);
     }
   });
 
@@ -451,7 +453,7 @@ describe('Mesa Real - construirArquiteturaDossiê', () => {
   });
 
   it('should skip positions not in tiragem', () => {
-    const partialTiragem: Record<number, { carta: number; odu: number }> = {
+    const partialTiragem: MatrixIndex = {
       1: { carta: 10, odu: 1 },
       2: { carta: 20, odu: 2 },
     };
@@ -540,7 +542,7 @@ describe('Mesa Real - gerarLeituraCompleta', () => {
 
 describe('Mesa Real - validarTiragem', () => {
   it('should validate complete tiragem with 36 positions', () => {
-    const tiragemCompleta: Record<number, { carta: number; odu: number }> = {};
+    const tiragemCompleta: MatrixIndex = {};
     for (let i = 1; i <= 36; i++) {
       tiragemCompleta[i] = { carta: i, odu: ((i - 1) % 16) + 1 };
     }
@@ -551,7 +553,7 @@ describe('Mesa Real - validarTiragem', () => {
   });
 
   it('should detect missing positions', () => {
-    const tiragemIncompleta: Record<number, { carta: number; odu: number }> = {
+    const tiragemIncompleta: MatrixIndex = {
       1: { carta: 1, odu: 1 },
       2: { carta: 2, odu: 2 },
     };
@@ -563,7 +565,7 @@ describe('Mesa Real - validarTiragem', () => {
   });
 
   it('should detect invalid card numbers', () => {
-    const tiragemInvalida: Record<number, { carta: number; odu: number }> = {
+    const tiragemInvalida: MatrixIndex = {
       1: { carta: 50, odu: 1 },
       2: { carta: 2, odu: 2 },
     };
@@ -574,7 +576,7 @@ describe('Mesa Real - validarTiragem', () => {
   });
 
   it('should detect invalid odu numbers', () => {
-    const tiragemInvalida: Record<number, { carta: number; odu: number }> = {
+    const tiragemInvalida: MatrixIndex = {
       1: { carta: 1, odu: 20 },
       2: { carta: 2, odu: 2 },
     };
@@ -672,7 +674,7 @@ describe('Mesa Real - Edge Cases', () => {
   });
 
   it('should handle empty client data', () => {
-    const tiragem: Record<number, { carta: number; odu: number }> = {
+    const tiragem: MatrixIndex = {
       1: { carta: 1, odu: 1 },
     };
     const dossiê = construirArquiteturaDossiê(tiragem, {});
