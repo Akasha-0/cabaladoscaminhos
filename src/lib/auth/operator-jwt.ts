@@ -247,15 +247,15 @@ export function clearOperatorSessionCookie(response: {
 export function clearOperatorRefreshCookie(response: {
   cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
 }): void {
-  response.cookies.set(OPERATOR_REFRESH_COOKIE, '', clearCookieOptions());
 }
-// Re-exports for back-compat
-// Re-exports for back-compat
-// fallow-ignore-next-line unused-export
-export { OPERATOR_ACCESS_TTL_SECONDS as OPERATOR_ACCESS_TTL };
-// fallow-ignore-next-line unused-export
-export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
 
+// ============================================================================
+// Back-compat re-exports
+// ============================================================================
+// fallow-ignore-next-line unused-exports
+export { OPERATOR_ACCESS_TTL_SECONDS as OPERATOR_ACCESS_TTL };
+// fallow-ignore-next-line unused-exports
+export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
 // ============================================================================
 // Fase 20 — MFA challenge token
 // ============================================================================
