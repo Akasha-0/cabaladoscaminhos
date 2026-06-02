@@ -77,6 +77,8 @@ font-family: 'Lora', serif;
 
 ## 2. Layout Global das Telas do Dashboard
 
+> ⚠️ **Superseded pelo Doc 17 (Interface Única).** A navegação multi-tela abaixo (sidebar com Nova Consulta / Consulentes / Dashboard / Leituras) foi substituída pela decisão de **uma só página** (a Mesa Real, `/cockpit`). As 4 entradas natais, a seleção de consulente e a saída do dossiê passam a viver **dentro da página única** (zonas A/B/C — Doc 17 §2). Mantido aqui apenas como referência histórica.
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  SIDEBAR FIXA (w-72 = 288px)    │  ÁREA PRINCIPAL (flex-1)      │

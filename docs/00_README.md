@@ -26,10 +26,13 @@
 | 14 | [Extensibilidade Oracular](./14_extensibilidade-oracular.md) | Contrato de plugin para I-Ching e novos sistemas |
 | 15 | [Glossário Oracular Canônico](./15_glossario-oracular.md) | Significados-base das 36 cartas e 16 Odus (anti-alucinação) |
 | 16 | [Revisão de Arquitetura & Plano de Decisões](./16_revisao-arquitetura-plano-decisoes.md) | Auditoria Visão × Implementação; ADRs de features e UI/UX; plano priorizado |
+| 17 | [Arquitetura da Interface Única (Mesa Real)](./17_arquitetura-interface-unica.md) | A visão "uma só página": 36 casas em cards + Odus + 4 entradas natais; poda de componentes; camadas de inteligência |
 
 > **Identidade visual:** o **Doc 13** é a fonte canônica da paleta (laranja + azul royal, consagração ao Cigano Ramiro). Em qualquer divergência de cor, ele prevalece sobre os demais.
 >
 > **Arquitetura (Visão × Código):** o **Doc 16** é a fonte canônica das decisões de arquitetura. Onde um doc mais antigo divergir sobre stack, rotas ou estrutura de pastas, o Doc 16 prevalece.
+>
+> **Interface & navegação:** o **Doc 17** é a fonte canônica da **interface única** (a Mesa Real numa só página). Onde um doc mais antigo descrever múltiplas telas/rotas, o Doc 17 prevalece.
 
 ---
 

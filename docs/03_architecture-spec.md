@@ -82,6 +82,8 @@ O sistema segue uma arquitetura **monolítica modular** com separação clara en
 
 ## 3. Estrutura de Diretórios do Repositório
 
+> ⚠️ **Estrutura de telas superseded pelo Doc 17.** A árvore multi-página abaixo (`nova-consulta`, `clientes`, `leituras`…) reflete a visão antiga. A canônica é a **interface única** (`/cockpit` + `/cockpit/login`) com a estrutura enxuta do Doc 17 §6. A árvore real atual está no Doc 16 §6 / Anexo.
+
 ```
 cabala-dos-caminhos/
 ├── prisma/

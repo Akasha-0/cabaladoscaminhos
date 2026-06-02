@@ -144,6 +144,8 @@ Casa 36 (Cruz)      → Astro: Nodo Sul + Saturno + 12ª Casa | Cabala: Dívidas
 
 ## 6. ESTRUTURA DE PASTAS ESPERADA
 
+> ⚠️ **Superseded pelo Doc 17 (Interface Única) + Doc 16 §6.** A árvore multi-página abaixo (`(dashboard)/nova-consulta`, `clientes`, `leituras`, `[...nextauth]`) é histórica. O produto é **uma só página** (`/cockpit`) com auth JWT do Operator; veja a estrutura-alvo enxuta no Doc 17 §6.
+
 ```
 src/
 ├── app/

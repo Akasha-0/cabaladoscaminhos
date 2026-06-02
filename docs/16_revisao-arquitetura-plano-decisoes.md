@@ -187,9 +187,9 @@ Ordem recomendada (cada item é uma entrega verificável):
 - **Decisão:** o componente canônico é `components/cockpit/*` (popover de fricção zero, estados vazio/preenchido, paleta v2 — Doc 05 §4). `components/mesa-real/MesaRealGrid` é legado.
 - **Ação:** quarentenar `MesaRealGrid` com o B2C (AD-01); garantir que o cockpit cobre 100% do Doc 05 §4.
 
-### AD-11 — Navegação do produto reflete só o B2B.
-- **Decisão:** a navegação canônica (Doc 05 §2) é: **Nova Consulta (Cockpit) · Consulentes · Dashboard · Leituras**. Remover do menu qualquer item B2C (mapa pessoal, rituais, onboarding de consumidor).
-- **Ação:** após AD-01, o layout do dashboard expõe só as 4 áreas B2B; rotas B2C deixam de ser navegáveis.
+### AD-11 — Navegação do produto: colapsada em uma só página (ver Doc 17).
+- **Decisão (atualizada):** **não há navegação multi-tela.** A decisão de produto é **uma só página** — a Mesa Real (`/cockpit`) — onde entradas natais, seleção de consulente, tiragem e dossiê convivem em zonas (Doc 17 §2). Isso **substitui** a ideia anterior de menu "Consulentes · Dashboard · Leituras".
+- **Ação:** seguir o Doc 17 (interface única); itens que seriam "telas" viram painéis/drawers na própria página.
 
 ### AD-12 — UX do dossiê e do chat seguem Doc 05 §5/§9 (índice sticky, streaming, chips de roteamento).
 - **Decisão:** manter o padrão já especificado: dois painéis (índice + conteúdo), streaming token-a-token, chips royal de transparência do roteamento no Q&A.
