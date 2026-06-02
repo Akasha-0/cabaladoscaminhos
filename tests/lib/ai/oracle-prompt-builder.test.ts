@@ -50,6 +50,11 @@ describe('buildHousePayload — delegação determinística', () => {
     // a carta e o odu são resolvidos pelas constantes canônicas
     expect(p.tiragem_do_dia.carta).toBe('A Torre');
     expect(p.tiragem_do_dia.carta_significado.length).toBeGreaterThan(0);
+    // verdade-base canônica injetada (anti-alucinação — Doc 15)
+    expect(p.tiragem_do_dia.carta_base).toContain('reclusão');
+    expect(p.tiragem_do_dia.carta_sombra.length).toBeGreaterThan(0);
+    expect(p.tiragem_do_dia.odu_quizila.length).toBeGreaterThan(0);
+    expect(p.tiragem_do_dia.odu_conselho.length).toBeGreaterThan(0);
   });
 
   it('Casa 34 injeta 2ª Casa + Vênus + Karma, e NÃO vaza Ascendente/Lua', () => {

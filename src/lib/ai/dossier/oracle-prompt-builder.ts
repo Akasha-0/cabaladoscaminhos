@@ -74,9 +74,17 @@ export interface HousePayload {
     carta: string;
     carta_numero: number;
     carta_significado: string;
+    /** Significado-base canônico injetado como verdade (Doc 15). */
+    carta_base: string;
+    /** Face desafiadora da carta (Doc 15). */
+    carta_sombra: string;
     odu_tirado: string;
     odu_numero: number;
     odu_essencia: string;
+    /** Quizila/preceito do Odu (Doc 15). */
+    odu_quizila: string;
+    /** Conselho-base do Odu (Doc 15). */
+    odu_conselho: string;
   };
   instrucao: string;
 }
@@ -119,9 +127,13 @@ export function buildHousePayload(
       carta: entry.cartaName ?? card?.name ?? `Carta ${entry.carta}`,
       carta_numero: entry.carta,
       carta_significado: card?.keywords ?? '',
+      carta_base: card?.baseMeaning ?? '',
+      carta_sombra: card?.shadow ?? '',
       odu_tirado: entry.oduName ?? odu?.name ?? `Odu ${entry.odu}`,
       odu_numero: entry.odu,
       odu_essencia: odu?.essence ?? '',
+      odu_quizila: odu?.quizila ?? '',
+      odu_conselho: odu?.baseAdvice ?? '',
     },
     instrucao: `Analise a Casa ${house} (${correlation.houseName}) seguindo os 3 parágrafos obrigatórios.`,
   };

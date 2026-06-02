@@ -11,6 +11,8 @@
 // Persona e estrutura canônicas: Doc 06 §3.2 + Doc 13 (Cigano Ramiro).
 
 import { getCorrelationEntry } from '@/lib/ai/correlation-map';
+import { getLenormandCardById } from '@/lib/constants/lenormand-cards';
+import { getOduById } from '@/lib/constants/odus';
 
 // ============================================================
 // TYPES
@@ -88,6 +90,10 @@ const USER_PROMPT = (input: HouseInput) => {
     ...correlation.tantric.aspects,
   ].join(', ');
 
+  // Verdade-base canônica (Doc 15) — injetada para evitar alucinação.
+  const cardCanon = getLenormandCardById(input.carta.numero);
+  const oduCanon = getOduById(input.odu.numero);
+
   return `
 # DOSSIÊ — CASA ${input.casaNumero}: ${correlation.houseName}
 
@@ -110,6 +116,8 @@ ${input.mapaFixo.karmaTantrico ? `**Karma Tântrico:** ${input.mapaFixo.karmaTan
 - **Número:** ${input.carta.numero}
 - **Nome:** ${input.carta.nome}
 - **Significado:** ${input.carta.significado}
+${cardCanon ? `- **Significado-base (verdade canônica):** ${cardCanon.baseMeaning}` : ''}
+${cardCanon ? `- **Sombra (face desafiadora):** ${cardCanon.shadow}` : ''}
 
 ## Odu tirado (Direção)
 - **Número:** ${input.odu.numero}
@@ -117,7 +125,8 @@ ${input.mapaFixo.karmaTantrico ? `**Karma Tântrico:** ${input.mapaFixo.karmaTan
 - **Elemento:** ${input.odu.elemento}
 - **Significado:** ${input.odu.significado}
 ${input.odu.orixas.length ? `- **Orixás:** ${input.odu.orixas.join(', ')}` : ''}
-${input.odu.quizilas.length ? `- **Quizilas:** ${input.odu.quizilas.join(', ')}` : ''}
+${input.odu.quizilas.length ? `- **Quizilas:** ${input.odu.quizilas.join(', ')}` : oduCanon ? `- **Quizila (canônica):** ${oduCanon.quizila}` : ''}
+${oduCanon ? `- **Conselho-base (canônico):** ${oduCanon.baseAdvice}` : ''}
 
 ---
 
