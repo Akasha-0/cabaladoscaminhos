@@ -1,7 +1,7 @@
 /**
- * @deprecated — fonte canônica das cartas é `src/lib/constants/lenormand-cards.ts`
- * (Doc 16 AD-02). Mantido apenas como stub de compatibilidade para rotas B2C
- * quarentenadas via LEGACY_B2C.
+ * @deprecated This file has 42 cards (obsolete Baralho Cigano extended).
+ * Use `src/lib/constants/lenormand-cards.ts` for the canonical 36 cards.
+ * AD-02 in docs/16_revisao-arquitetura-plano-decisoes.md
  */
 import { LENORMAND_CARDS, getLenormandCardById } from '@/lib/constants/lenormand-cards';
 

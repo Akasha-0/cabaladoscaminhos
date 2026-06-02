@@ -43,7 +43,11 @@
  * para a paleta Ramiro. Como as utilities (bg-primary, border-secondary…)
  * referenciam estas vars em runtime, todo o cockpit herda a paleta v2.
  */
+/* === LIGHT MODE CSS VARIABLES (Default) === */
+/* Ramiro v2 base — @theme now references var() chains so both legacy and v4 vars are aligned. */
+/* Legacy var (--primary, --secondary) for code that reads CSS vars directly (not Tailwind utilities). */
 .ramiro {
+  /* Tailwind v4 @theme variable overrides */
   --color-background: var(--bg-canvas);
   --color-foreground: var(--ramiro-text-primary);
   --color-card: var(--bg-surface);
@@ -51,23 +55,36 @@
   --color-popover: var(--bg-surface);
   --color-popover-foreground: var(--ramiro-text-primary);
 
-  /* Primária = laranja (elementos ativos: casa preenchida, CTAs, h2) */
+  /* Legacy CSS vars (used by code reading --primary / --secondary directly) */
+  --primary: var(--accent-orange);
+  --primary-foreground: #1a0d03;
+  --secondary: var(--accent-royal);
+  --secondary-foreground: var(--ramiro-text-primary);
+  --accent: var(--accent-royal-dim);
+  --accent-foreground: var(--ramiro-text-primary);
+  --ring: var(--accent-orange);
+
+  --muted: var(--bg-elevated);
+  --muted-foreground: var(--ramiro-text-secondary);
+  --border: var(--bg-border);
+  --input: var(--bg-border);
+  --destructive: var(--accent-alert);
+  --destructive-foreground: #ffffff;
+
+  /* Tailwind v4 @theme variable overrides */
   --color-primary: var(--accent-orange);
   --color-primary-foreground: #1a0d03;
-
-  /* Secundária / accent = royal (estrutura e profundidade: badges, glows) */
   --color-secondary: var(--accent-royal);
   --color-secondary-foreground: var(--ramiro-text-primary);
   --color-accent: var(--accent-royal-dim);
   --color-accent-foreground: var(--ramiro-text-primary);
-
   --color-muted: var(--bg-elevated);
   --color-muted-foreground: var(--ramiro-text-secondary);
-
   --color-border: var(--bg-border);
   --color-input: var(--bg-border);
   --color-ring: var(--accent-orange);
-
   --color-destructive: var(--accent-alert);
   --color-destructive-foreground: #ffffff;
+  --color-background: var(--bg-canvas);
+  --color-foreground: var(--ramiro-text-primary);
 }

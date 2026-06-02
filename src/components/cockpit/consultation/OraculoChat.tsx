@@ -24,6 +24,7 @@ export interface ChatMessage {
 interface OraculoChatProps {
   readingId: string;
   clientName: string;
+  consultationId?: string | null;
 }
 
 interface RoutingPayload {
@@ -42,12 +43,44 @@ interface SsePayload {
   fullAnswer?: string;
 }
 
-export function OraculoChat({ readingId, clientName }: OraculoChatProps) {
+export function OraculoChat({ readingId, clientName, consultationId: consultationIdProp }: OraculoChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [consultationId, setConsultationId] = useState<string | null>(null);
+  const [consultationId, setConsultationId] = useState<string | null>(consultationIdProp ?? null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Load chat history on mount if consultationId is already known
+  useEffect(() => {
+    if (!consultationIdProp || messages.length > 0) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/consult/history?consultationId=${encodeURIComponent(consultationIdProp)}`);
+        if (!res.ok) return;
+        const data = (await res.json()) as { messages: ChatMessage[] };
+        if (cancelled) return;
+        if (data.messages && data.messages.length > 0) {
+          setConsultationId(consultationIdProp);
+          setMessages(
+            data.messages.map((m) => ({
+              id: m.id,
+              role: m.role,
+              content: m.content,
+              routedThemes: m.routedThemes ?? [],
+              routedHouses: m.routedHouses ?? [],
+              pending: false,
+            }))
+          );
+        }
+      } catch {
+        // Silently ignore history load failures — user can still send messages
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [consultationIdProp]);
 
   useEffect(() => {
     if (scrollRef.current) {

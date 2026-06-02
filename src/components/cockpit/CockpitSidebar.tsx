@@ -13,6 +13,7 @@ import {
   ChevronRight,
   RotateCcw,
   Crown,
+  Loader2,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -27,8 +28,9 @@ interface CockpitSidebarProps {
 
 // fallow-ignore-next-line complexity
 export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
-  const { cliente, setCliente, isSidebarCollapsed, toggleSidebar } = useCockpitStore();
+  const { cliente, currentClientId, houses, setCliente, setCurrentReadingId, openRightPanel, setRightPanelTab, isSidebarCollapsed, toggleSidebar } = useCockpitStore();
   const [isFormExpanded, setIsFormExpanded] = useState(!cliente);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [formData, setFormData] = useState<ClienteInfo>({
     nome: '',
     dataNascimento: '',
@@ -66,6 +68,36 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
     setIsFormExpanded(true);
   };
 
+  const handleGenerateDossie = async () => {
+    if (!cliente || !currentClientId || houses.size === 0) return;
+    setIsGenerating(true);
+    try {
+      const matrixData: Record<string, { carta: number; cartaName: string; odu: number; oduName: string } | null> = {};
+      houses.forEach((house, casaNum) => {
+        if (house.carta && house.odu) {
+          matrixData[String(casaNum)] = {
+            carta: house.carta.numero,
+            cartaName: house.carta.nome,
+            odu: house.odu.numero,
+            oduName: house.odu.nome,
+          };
+        }
+      });
+      const res = await fetch('/api/mesa-real/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clientId: currentClientId, matrixData }),
+      });
+      if (!res.ok) throw new Error('Falha ao criar leitura');
+      const data = await res.json();
+      setCurrentReadingId(data.id);
+      openRightPanel('dossier');
+    } catch (err) {
+      console.error('[GerarDossie]', err);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
   if (isSidebarCollapsed) {
     return (
       <div className="w-16 bg-card/80 border-r border-border flex flex-col items-center py-4">
@@ -268,13 +300,18 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
           variant="spiritual"
           size="lg"
           className="w-full shadow-[0_0_20px_var(--accent-orange-glow)]"
-          disabled={false}
+          onClick={handleGenerateDossie}
+          disabled={isGenerating || !cliente || houses.size === 0}
         >
-          <Sparkles className="w-4 h-4 mr-2" />
-          Gerar Dossiê Cabalístico
+          {isGenerating ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <Sparkles className="w-4 h-4 mr-2" />
+          )}
+          {isGenerating ? 'Salvando...' : 'Gerar Dossiê Cabalístico'}
         </Button>
         <p className="text-xs text-muted-foreground/60 text-center mt-2">
-          Preencha as casas para gerar o relatório
+          {!cliente ? 'Selecione um cliente para gerar o dossiê' : houses.size === 0 ? 'Preencha as casas para gerar o relatório' : `${houses.size} casa${houses.size !== 1 ? 's' : ''} preenchida${houses.size !== 1 ? 's' : ''}`}
         </p>
       </div>
     </div>

@@ -14,11 +14,21 @@ export default async function ConsultaPage({ params }: { params: Promise<{ id: s
   if (!operator) redirect('/cockpit/login');
 
   const { id } = await params;
-  const reading = await prisma.reading.findUnique({
-    where: { id },
-    include: { client: { select: { fullName: true } } },
-  });
+  const [reading, recentConsultations] = await Promise.all([
+    prisma.reading.findUnique({
+      where: { id },
+      include: { client: { select: { fullName: true } } },
+    }),
+    prisma.consultation.findMany({
+      where: { readingId: id },
+      orderBy: { updatedAt: 'desc' },
+      take: 1,
+      select: { id: true },
+    }),
+  ]);
   if (!reading || reading.operatorId !== operator.id) notFound();
+
+  const consultationId = recentConsultations[0]?.id ?? null;
 
   return (
     <div className="ramiro flex flex-col h-screen">
@@ -42,7 +52,11 @@ export default async function ConsultaPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
       </header>
-      <OraculoChat readingId={reading.id} clientName={reading.client.fullName} />
+      <OraculoChat
+        readingId={reading.id}
+        clientName={reading.client.fullName}
+        consultationId={consultationId}
+      />
     </div>
   );
 }

@@ -91,6 +91,10 @@
   ],
   "ignoreExports": [
     {
+      "file": "src/lib/api/base-route.ts",
+      "exports": ["validateRequestBody"]
+    },
+    {
       "file": "src/components/cockpit/CockpitHeader.tsx",
       "exports": ["default"]
     },

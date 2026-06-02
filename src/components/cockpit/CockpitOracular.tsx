@@ -33,7 +33,7 @@ interface CockpitOracularProps {
 }
 
 // fallow-ignore-next-line complexity
-export function CockpitOracular({ readingId, clientName, showDebug = false }: CockpitOracularProps) {
+export function CockpitOracular({ readingId: propReadingId, clientName: propClientName, showDebug = false }: CockpitOracularProps) {
   const {
     houses,
     activePopover,
@@ -42,6 +42,8 @@ export function CockpitOracular({ readingId, clientName, showDebug = false }: Co
     clearHouse,
     clearAllHouses,
     resetCockpit,
+    currentReadingId: storeReadingId,
+    cliente,
     // Zone C state
     isRightPanelOpen,
     rightPanelTab,
@@ -255,8 +257,8 @@ export function CockpitOracular({ readingId, clientName, showDebug = false }: Co
 
       {/* Zone C: Right Panel (collapsible drawer) */}
       <ZoneCRightPanel
-        readingId={readingId}
-        clientName={clientName ?? 'Cliente'}
+        readingId={storeReadingId ?? undefined}
+        clientName={cliente?.nome ?? 'Cliente'}
         isOpen={isRightPanelOpen}
         activeTab={rightPanelTab}
         onToggle={toggleRightPanel}

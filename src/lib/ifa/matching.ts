@@ -75,9 +75,6 @@ export interface OduMatchingResult {
   contraindicacoes: string[];
 }
 
-/**
- * Map Odu numbers to ritual types
- */
 const oduRitualMap: Record<number, { tipo: RitualType; urgencia: 'baixa' | 'media' | 'alta'; prazo: string }> = {
   1: { tipo: 'caminho', urgencia: 'alta', prazo: 'urgent' },
   2: { tipo: 'prosperidade', urgencia: 'media', prazo: 'semana' },
@@ -96,6 +93,53 @@ const oduRitualMap: Record<number, { tipo: RitualType; urgencia: 'baixa' | 'medi
   15: { tipo: 'defesa', urgencia: 'alta', prazo: 'hoje' },
   16: { tipo: 'agradecimento', urgencia: 'baixa', prazo: 'mes' },
 };
+/**
+ * Ordered keyword-to-ebó-category lookup for parseEboType.
+ * Earlier entries take priority; keywords must be checked in this order.
+ */
+const EBO_TYPE_TOKENS: [string, EboCategory][] = [
+  ['Caminho', 'caminho'],
+  ['Prosperidade', 'prosperidade'],
+  ['Defesa', 'defesa'],
+  ['Atração', 'atração'],
+  ['Ouro', 'atração'],
+  ['Prote', 'protecao'],
+  ['Transmut', 'transformacao'],
+  ['Alinhamento', 'alinhamento'],
+  ['Saúde', 'saude'],
+  ['Alívio', 'saude'],
+  ['Justiça', 'justica'],
+  ['Renovação', 'transformacao'],
+  ['Agradecimento', 'agradecimento'],
+  ['Movimento', 'movimento'],
+  ['Limpeza', 'limpeza'],
+];
+/**
+ * Keyword-to-element display-name lookup for parseEboElements.
+ * Each entry maps a substring to the label shown in EboSuggestion.elementos.
+ */
+const EBO_ELEMENT_TOKENS: [string, string][] = [
+  ['despachos', 'Despachos'],
+  ['moedas', 'Moedas'],
+  ['pipoca', 'Pipoca'],
+  ['panos', 'Panos escuros'],
+  ['alimentos brancos', 'Alimentos brancos'],
+  ['canjica', 'Canjica'],
+  ['banhos', 'Banhos de folhas'],
+  ['frutas', 'Frutas'],
+  ['folhas', 'Folhas'],
+  ['velas', 'Velas'],
+  ['inhames', 'Inhames'],
+  ['paliteiros', 'Paliteiros'],
+  ['ferro', 'Ferro'],
+  ['girassóis', 'Girassóis'],
+  ['mel', 'Mel'],
+  ['doces', 'Doces'],
+  ['amala', 'Amalá'],
+  ['pedras', 'Pedras de raio'],
+  ['lama', 'Lama/argila'],
+  ['algodão', 'Algodão'],
+];
 
 /**
  * Ritual definitions by type
@@ -389,54 +433,34 @@ function buildRitualSuggestion(odu: OduInfo): RitualSuggestion | null {
 }
 
 /**
- * Parse ebó string from Odu data into structured suggestion
+ * Parse ebó type from text using ordered keyword lookup.
  */
-// fallow-ignore-next-line complexity
+function parseEboType(eboText: string): EboCategory {
+  for (const [keyword, category] of EBO_TYPE_TOKENS) {
+    if (eboText.includes(keyword)) return category;
+  }
+  return 'protecao';
+}
+/**
+ * Parse ebó elements from text using keyword-to-label lookup.
+ * Returns an empty array if no elements are found.
+ */
+function parseEboElements(eboText: string): string[] {
+  const elements: string[] = [];
+  for (const [keyword, label] of EBO_ELEMENT_TOKENS) {
+    if (eboText.includes(keyword)) elements.push(label);
+  }
+  return elements;
+}
+/**
+ * Parse ebó string from Odu data into structured suggestion.
+ */
 function parseEboFromOdu(odu: OduInfo): EboSuggestion | null {
   const eboText = odu.ebos[0] || '';
   if (!eboText) return null;
-
-  // Parse ebo type from text
-  let tipo: EboCategory = 'protecao';
-  if (eboText.includes('Caminho')) tipo = 'caminho';
-  else if (eboText.includes('Prosperidade')) tipo = 'prosperidade';
-  else if (eboText.includes('Defesa')) tipo = 'defesa';
-  else if (eboText.includes('Prote')) tipo = 'protecao';
-  else if (eboText.includes('Transmut')) tipo = 'transformacao';
-  else if (eboText.includes('Alinhamento')) tipo = 'alinhamento';
-  else if (eboText.includes('Saúde') || eboText.includes('Alívio')) tipo = 'saude';
-  else if (eboText.includes('Justiça')) tipo = 'justica';
-  else if (eboText.includes('Renovação')) tipo = 'transformacao';
-  else if (eboText.includes('Agradecimento')) tipo = 'agradecimento';
-  else if (eboText.includes('Atração') || eboText.includes('Ouro')) tipo = 'atração';
-  else if (eboText.includes('Movimento')) tipo = 'movimento';
-  else if (eboText.includes('Limpeza')) tipo = 'limpeza';
-
-  // Parse elements from text
-  const elements: string[] = [];
-  if (eboText.includes('despachos')) elements.push('Despachos');
-  if (eboText.includes('moedas')) elements.push('Moedas');
-  if (eboText.includes('pipoca')) elements.push('Pipoca');
-  if (eboText.includes('panos')) elements.push('Panos escuros');
-  if (eboText.includes('alimentos brancos')) elements.push('Alimentos brancos');
-  if (eboText.includes('canjica')) elements.push('Canjica');
-  if (eboText.includes('banhos')) elements.push('Banhos de folhas');
-  if (eboText.includes('frutas')) elements.push('Frutas');
-  if (eboText.includes('folhas')) elements.push('Folhas');
-  if (eboText.includes('velas')) elements.push('Velas');
-  if (eboText.includes('inhames')) elements.push('Inhames');
-  if (eboText.includes('paliteiros')) elements.push('Paliteiros');
-  if (eboText.includes('ferro')) elements.push('Ferro');
-  if (eboText.includes('girassóis')) elements.push('Girassóis');
-  if (eboText.includes('mel')) elements.push('Mel');
-  if (eboText.includes('doces')) elements.push('Doces');
-  if (eboText.includes('amala')) elements.push('Amalá');
-  if (eboText.includes('pedras')) elements.push('Pedras de raio');
-  if (eboText.includes('lama')) elements.push('Lama/argila');
-  if (eboText.includes('algodão')) elements.push('Algodão');
-
-  const definition = eboDefinitions[tipo] || eboDefinitions['protecao'];
-
+  const tipo = parseEboType(eboText);
+  const elements = parseEboElements(eboText);
+  const definition = eboDefinitions[tipo] ?? eboDefinitions['protecao'];
   return {
     tipo,
     nome: definition.nome,
@@ -483,9 +507,8 @@ function matchMultipleOduToRituals(odus: OduInfo[]): OduMatchingResult[] {
 }
 
 /**
- * Get summary of all rituals needed for a set of Odus
+ * Get summary of all rituals needed for a set of Odus.
  */
-// fallow-ignore-next-line complexity
 function getRitualSummary(results: OduMatchingResult[]): {
   urgencia: 'baixa' | 'media' | 'alta';
   quantidade: number;
@@ -493,28 +516,21 @@ function getRitualSummary(results: OduMatchingResult[]): {
   tipos: RitualType[];
 } {
   const allUrgencias = results.flatMap(r => r.rituais.map(rit => rit.urgencia));
-  const urgenciaMax = allUrgencias.includes('alta') ? 'alta' : allUrgencias.includes('media') ? 'media' : 'baixa';
-
-  const orixasList: string[] = [];
-  const tiposList: RitualType[] = [];
-  
+  const urgenciaMax = allUrgencias.includes('alta')
+    ? 'alta'
+    : allUrgencias.includes('media')
+    ? 'media'
+    : 'baixa';
+  const orixaSet = new Set<string>();
+  const tipoSet = new Set<RitualType>();
   for (const result of results) {
-    for (const orixa of result.orixasRelacionados) {
-      if (!orixasList.includes(orixa)) {
-        orixasList.push(orixa);
-      }
-    }
-    for (const rit of result.rituais) {
-      if (!tiposList.includes(rit.tipo)) {
-        tiposList.push(rit.tipo);
-      }
-    }
+    for (const orixa of result.orixasRelacionados) orixaSet.add(orixa);
+    for (const rit of result.rituais) tipoSet.add(rit.tipo);
   }
-
   return {
     urgencia: urgenciaMax,
     quantidade: results.length,
-    orixas: orixasList,
-    tipos: tiposList,
+    orixas: [...orixaSet],
+    tipos: [...tipoSet],
   };
 }

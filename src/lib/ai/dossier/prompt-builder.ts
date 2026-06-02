@@ -136,7 +136,7 @@ const CASA_SIGNIFICADO_MAP: Record<number, string> = {
 /**
  * Element mapping for houses
  */
-const CASA_ELEMENTO_MAP: Record<number, string> = [
+const CASA_ELEMENTO_MAP: string[] = [
   'Fogo', 'Água', 'Terra', 'Ar', 'Éter',
   'Fogo', 'Água', 'Terra', 'Ar',
   'Fogo', 'Água', 'Terra', 'Ar', 'Éter',
@@ -161,98 +161,196 @@ const CASA_SEFIROT_MAP: Record<number, string[]> = {
   33: ['Malkuth', 'Yesod'], 34: ['Chesed'], 35: ['Netzach'], 36: ['Malkuth', 'Binah'],
 };
 
+// ============================================================
+// ARCHITECTURE BUILDER - FOCUSED HELPERS
+// ============================================================
+
+/** Client data shape used throughout the architecture builder helpers. */
+type ClientData = {
+  ascendente?: string;
+  caminhoVida?: number;
+  numeroAlma?: number;
+  oduRegente?: string;
+  domDivino?: number;
+};
+
+/**
+ * Builds terrain injections (client data correlations) for a specific house.
+ * Extracts the switch logic that was previously inside the main loop.
+ */
+export function construirInjeccaoTerreno(
+  casaNumero: number,
+  clientData: ClientData | undefined
+): ArquiteturaDossiê['injeccao_terreno'] {
+  if (!clientData) return [];
+
+  switch (casaNumero) {
+    case 1: { // O Mensageiro - Ascendente + Número de Alma
+      const injecoes: ArquiteturaDossiê['injeccao_terreno'] = [];
+      if (clientData.ascendente) {
+        injecoes.push({ tipo: 'ascendente', valor: clientData.ascendente, fonte: 'astrologia' });
+      }
+      if (clientData.numeroAlma) {
+        injecoes.push({ tipo: 'numero_alma', valor: clientData.numeroAlma, fonte: 'tantrica' });
+      }
+      return injecoes;
+    }
+    case 4: { // A Casa - Fundo do Céu + Número de Motivação
+      if (clientData.caminhoVida) {
+        return [{ tipo: 'numero_motivacao', valor: clientData.caminhoVida, fonte: 'cabala' }];
+      }
+      return [];
+    }
+    case 12: { // Os Pássaros - Mercúrio/Casa 3 + Dom Divino
+      if (clientData.domDivino) {
+        return [{ tipo: 'dom_divino', valor: clientData.domDivino, fonte: 'tantrica' }];
+      }
+      return [];
+    }
+    case 34: { // Os Peixes - Casa 2 (Finanças) + Número de Karma
+      if (clientData.caminhoVida) {
+        return [{ tipo: 'numero_karma', valor: clientData.caminhoVida, fonte: 'tantrica' }];
+      }
+      return [];
+    }
+    default: { // Default: inject caminho vida as numero_alma from numerologia
+      if (clientData.caminhoVida) {
+        return [{ tipo: 'numero_alma', valor: clientData.caminhoVida, fonte: 'numerologia' }];
+      }
+      return [];
+    }
+  }
+}
+
+/**
+ * Partial architecture item - odu fields are added conditionally.
+ */
+type PartialArquitetura = Omit<
+  ArquiteturaDossiê,
+  'odu_numero' | 'odu_nome' | 'odu_significado' | 'odu_conselho' | 'odu_orixa'
+>;
+
+/**
+ * Builds the base architecture item for one house (no odu fields yet).
+ */
+export function construirBaseArquitetura(
+  carta: TiragemMesaReal['cartas'][number],
+  injeccoes: ArquiteturaDossiê['injeccao_terreno']
+): PartialArquitetura {
+  const casaNumero = carta.casaNumero;
+  return {
+    casa_numero: casaNumero,
+    casa_nome: CASA_NOME_MAP[casaNumero] || `Casa ${casaNumero}`,
+    casa_significado: CASA_SIGNIFICADO_MAP[casaNumero] || 'Área de vida',
+    carta_numero: carta.cartaNumero,
+    carta_nome: CARTA_NOME_MAP[carta.cartaNumero] || `Carta ${carta.cartaNumero}`,
+    carta_significado: carta.significado,
+    carta_orientacao: carta.orientacao,
+    element: CASA_ELEMENTO_MAP[(casaNumero - 1) % CASA_ELEMENTO_MAP.length] || 'Éter',
+    sefirot: CASA_SEFIROT_MAP[casaNumero] || ['Malkuth'],
+    chakra: ((casaNumero - 1) % 7) + 1,
+    injeccao_terreno: injeccoes.length > 0 ? injeccoes : undefined,
+  };
+}
+
+/**
+ * Finds the odu that correlates to a given card position.
+ */
+export function encontrarOduCorrelacionado(
+  carta: TiragemMesaReal['cartas'][number],
+  odus: TiragemMesaReal['odus']
+): TiragemMesaReal['odus'][number] | undefined {
+  return odus?.find(
+    o => o.oduNumero === carta.posicao || o.oduNumero === carta.cartaNumero
+  );
+}
+
+/**
+ * Adds odu fields to an architecture item when an odu match is found.
+ */
+export function adicionarOduAArquitetura<T extends PartialArquitetura>(
+  item: T,
+  odu: TiragemMesaReal['odus'][number] | undefined
+): T & Pick<ArquiteturaDossiê, 'odu_numero' | 'odu_nome' | 'odu_significado' | 'odu_conselho' | 'odu_orixa'> {
+  if (!odu) return { ...item } as T & Pick<ArquiteturaDossiê, 'odu_numero' | 'odu_nome' | 'odu_significado' | 'odu_conselho' | 'odu_orixa'>;
+  return {
+    ...item,
+    odu_numero: odu.oduNumero,
+    odu_nome: odu.nome,
+    odu_significado: odu.significado,
+    odu_conselho: odu.conselho,
+    odu_orixa: odu.orixa,
+  };
+}
+
 /**
  * Builds the architecture from matrix data (Mesa Real tiragem)
  */
-// fallow-ignore-next-line complexity
 export function construirArquiteturaDossiê(
   matrixData: TiragemMesaReal,
-  clientData?: {
-    ascendente?: string;
-    caminhoVida?: number;
-    numeroAlma?: number;
-    oduRegente?: string;
-    domDivino?: number;
-  }
+  clientData?: ClientData
 ): ArquiteturaDossiê[] {
+  const odus = matrixData.odus ?? [];
+
   const arquitetura: ArquiteturaDossiê[] = [];
 
   for (const carta of matrixData.cartas) {
-    const casaNumero = carta.casaNumero;
-    
-    // Find matching odu if available
-    const oduMatch = matrixData.odus?.find(
-      o => o.oduNumero === carta.posicao || o.oduNumero === carta.cartaNumero
-    );
-
-    // Build injections based on house correlations
-    const injeccao_terreno: ArquiteturaDossiê['injeccao_terreno'] = [];
-    
-    if (clientData) {
-      switch (casaNumero) {
-        case 1: // O Mensageiro - Ascendente + Número de Alma
-          if (clientData.ascendente) {
-            injeccao_terreno.push({ tipo: 'ascendente', valor: clientData.ascendente, fonte: 'astrologia' });
-          }
-          if (clientData.numeroAlma) {
-            injeccao_terreno.push({ tipo: 'numero_alma', valor: clientData.numeroAlma, fonte: 'tantrica' });
-          }
-          break;
-        case 4: // A Casa - Fundo do Céu + Número de Motivação
-          if (clientData.caminhoVida) {
-            injeccao_terreno.push({ tipo: 'numero_motivacao', valor: clientData.caminhoVida, fonte: 'cabala' });
-          }
-          break;
-        case 12: // Os Pássaros - Mercúrio/Casa 3 + Dom Divino
-          if (clientData.domDivino) {
-            injeccao_terreno.push({ tipo: 'dom_divino', valor: clientData.domDivino, fonte: 'tantrica' });
-          }
-          break;
-        case 34: // Os Peixes - Casa 2 (Finanças) + Número de Karma
-          if (clientData.caminhoVida) {
-            injeccao_terreno.push({ tipo: 'numero_karma', valor: clientData.caminhoVida, fonte: 'tantrica' });
-          }
-          break;
-        default:
-          if (clientData.caminhoVida) {
-            injeccao_terreno.push({ tipo: 'numero_alma', valor: clientData.caminhoVida, fonte: 'numerologia' });
-          }
-      }
-    }
-
-    const archItem: ArquiteturaDossiê = {
-      casa_numero: casaNumero,
-      casa_nome: CASA_NOME_MAP[casaNumero] || `Casa ${casaNumero}`,
-      casa_significado: CASA_SIGNIFICADO_MAP[casaNumero] || 'Área de vida',
-      carta_numero: carta.cartaNumero,
-      carta_nome: CARTA_NOME_MAP[carta.cartaNumero] || `Carta ${carta.cartaNumero}`,
-      carta_significado: carta.significado,
-      carta_orientacao: carta.orientacao,
-      element: CASA_ELEMENTO_MAP[(casaNumero - 1) % CASA_ELEMENTO_MAP.length] || 'Éter',
-      sefirot: CASA_SEFIROT_MAP[casaNumero] || ['Malkuth'],
-      chakra: ((casaNumero - 1) % 7) + 1,
-      injeccao_terreno: injeccao_terreno.length > 0 ? injeccao_terreno : undefined,
-    };
-
-    // Add odu data if available
-    if (oduMatch) {
-      archItem.odu_numero = oduMatch.oduNumero;
-      archItem.odu_nome = oduMatch.nome;
-      archItem.odu_significado = oduMatch.significado;
-      archItem.odu_conselho = oduMatch.conselho;
-      archItem.odu_orixa = oduMatch.orixa;
-    }
-
-    arquitetura.push(archItem);
+    const injeccoes = construirInjeccaoTerreno(carta.casaNumero, clientData);
+    const base = construirBaseArquitetura(carta, injeccoes);
+    const odu = encontrarOduCorrelacionado(carta, odus);
+    const item = adicionarOduAArquitetura(base, odu);
+    arquitetura.push(item);
   }
 
-  // Sort by casa number
   return arquitetura.sort((a, b) => a.casa_numero - b.casa_numero);
 }
 
 // ============================================================
 // USER PROMPT BUILDING
 // ============================================================
+
+/**
+ * Builds the section text for a single casa in the user prompt.
+ */
+export function construirSecaoPrompt(casa: ArquiteturaDossiê): string {
+  const parts: string[] = [];
+
+  parts.push(`### CASA ${casa.casa_numero}: ${casa.casa_nome}`);
+  parts.push(`**Terreno (Significado da Casa):** ${casa.casa_significado}`);
+
+  parts.push('\n**Tiragem (Evento):**');
+  parts.push(`  + Carta: ${casa.carta_nome} (${casa.carta_numero})`);
+  parts.push(`  + Significado: ${casa.carta_significado}`);
+  parts.push(`  + Orientação: ${casa.carta_orientacao}`);
+
+  if (casa.odu_numero) {
+    parts.push('\n**Odu:**');
+    parts.push(`  + Nome: ${casa.odu_nome}`);
+    parts.push(`  + Significado: ${casa.odu_significado}`);
+    if (casa.odu_conselho) {
+      parts.push(`  + Conselho: ${casa.odu_conselho}`);
+    }
+    if (casa.odu_orixa) {
+      parts.push(`  + Orixá: ${casa.odu_orixa}`);
+    }
+  }
+
+  if (casa.injeccao_terreno && casa.injeccao_terreno.length > 0) {
+    parts.push('\n**Injeções Espirituais (Terreno do Cliente):**');
+    for (const injecao of casa.injeccao_terreno) {
+      parts.push(`  + ${injecao.tipo}: ${injecao.valor} (${injecao.fonte})`);
+    }
+  }
+
+  if (casa.element || casa.sefirot || casa.chakra) {
+    parts.push('\n**Correlações:**');
+    if (casa.element) parts.push(`  + Elemento: ${casa.element}`);
+    if (casa.sefirot && casa.sefirot.length > 0) parts.push(`  + Sephirot: ${casa.sefirot.join(' > ')}`);
+    if (casa.chakra) parts.push(`  + Chakra: ${casa.chakra}`);
+  }
+
+  return parts.join('\n');
+}
 
 /**
  * Builds the full user prompt for dossier generation
@@ -267,49 +365,7 @@ export function gerarPromptDossiê(
 Nenhuma tiragem disponível para análise.`;
   }
 
-  // Build sections for each casa
-// fallow-ignore-next-line complexity
-  const sections = arquitetura.map(casa => {
-    const parts: string[] = [];
-
-    parts.push(`### CASA ${casa.casa_numero}: ${casa.casa_nome}`);
-    parts.push(`**Terreno (Significado da Casa):** ${casa.casa_significado}`);
-
-    parts.push(`\n**Tiragem (Evento):**`);
-    parts.push(`- Carta: ${casa.carta_nome} (${casa.carta_numero})`);
-    parts.push(`- Significado: ${casa.carta_significado}`);
-    parts.push(`- Orientação: ${casa.carta_orientacao}`);
-
-    if (casa.odu_numero) {
-      parts.push(`\n**Odu:**`);
-      parts.push(`- Nome: ${casa.odu_nome}`);
-      parts.push(`- Significado: ${casa.odu_significado}`);
-      if (casa.odu_conselho) {
-        parts.push(`- Conselho: ${casa.odu_conselho}`);
-      }
-      if (casa.odu_orixa) {
-        parts.push(`- Orixá: ${casa.odu_orixa}`);
-      }
-    }
-
-    // Terrain injections (client data)
-    if (casa.injeccao_terreno && casa.injeccao_terreno.length > 0) {
-      parts.push(`\n**Injeções Espirituais (Terreno do Cliente):**`);
-      for (const injecao of casa.injeccao_terreno) {
-        parts.push(`- ${injecao.tipo}: ${injecao.valor} (${injecao.fonte})`);
-      }
-    }
-
-    // Correlations
-    if (casa.element || casa.sefirot || casa.chakra) {
-      parts.push(`\n**Correlações:**`);
-      if (casa.element) parts.push(`- Elemento: ${casa.element}`);
-      if (casa.sefirot && casa.sefirot.length > 0) parts.push(`- Sephirot: ${casa.sefirot.join(' > ')}`);
-      if (casa.chakra) parts.push(`- Chakra: ${casa.chakra}`);
-    }
-
-    return parts.join('\n');
-  });
+  const sections = arquitetura.map(construirSecaoPrompt);
 
   return `## DOSSIÊ ORACULAR - MESA REAL
 
@@ -327,11 +383,11 @@ ${sections.join('\n\n---\n')}
 Gere um relatório completo para todas as casas informadas seguindo o formato JSON especificado no system prompt.
 
 Cada seção deve conter:
-- **casa**: número da casa
-- **titulo**: nome da casa
-- **interpretacao**: análise arquetípica profunda conectando terreno + evento + diretriz
-- **recomendacao**: ação prática sugerida
-- **convergencias**: lista de convergências identificadas (opcional)`;
+  + **casa**: número da casa
+  + **titulo**: nome da casa
+  + **interpretacao**: análise arquetípica profunda conectando terreno + evento + diretriz
+  + **recomendacao**: ação prática sugerida
+  + **convergencias**: lista de convergências identificadas (opcional)`;
 }
 
 // ============================================================
@@ -369,7 +425,7 @@ export function parsearRespostaDossiê(
   // If already object, parse it
   if (typeof response === 'object') {
     const parsed = response as Record<string, unknown>;
-    
+
     // Check if it has the new format
     if ('sumario' in parsed && 'secoes' in parsed) {
       return {
@@ -377,7 +433,7 @@ export function parsearRespostaDossiê(
         markdown: JSON.stringify(parsed, null, 2),
       };
     }
-    
+
     // Old format
     return {
       parsed: parsed as unknown as DossiêResult,
@@ -414,7 +470,7 @@ function gerarMarkdownDossiê(result: DossiêResult): string {
 
   for (const [casaNumero, analysis] of Object.entries(result)) {
     const num = parseInt(casaNumero.replace('casa', ''), 10);
-    
+
     lines.push(`## Casa ${num}`);
     lines.push(`**Terreno:** ${analysis.terreno}`);
     lines.push(`**Evento:** ${analysis.evento}`);

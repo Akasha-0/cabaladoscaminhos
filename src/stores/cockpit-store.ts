@@ -18,6 +18,7 @@ export interface FilledHouse {
 }
 
 export interface ClienteInfo {
+  id?: string;
   nome: string;
   dataNascimento: string;
   horaNascimento: string;
@@ -38,6 +39,8 @@ export type RightPanelTab = 'dossier' | 'consult';
 interface CockpitState {
   // Cliente info
   cliente: ClienteInfo | null;
+  currentReadingId: string | null;
+  currentClientId: string | null;
 
   // Houses state
   houses: Map<number, FilledHouse>;
@@ -57,6 +60,12 @@ interface CockpitState {
   setCliente: (cliente: ClienteInfo) => void;
   fillHouse: (casaNumero: number, carta: CartaCiganaOption, odu: OduInfo) => void;
   clearHouse: (casaNumero: number) => void;
+  // Reading management
+  setCurrentReadingId: (id: string | null) => void;
+  setCurrentClientId: (id: string | null) => void;
+
+
+  // Right panel actions (Zone C)
   clearAllHouses: () => void;
   setActivePopover: (casaNumero: number | null) => void;
   toggleSidebar: () => void;
@@ -81,7 +90,10 @@ interface CockpitState {
 
 export const useCockpitStore = create<CockpitState>((set, get) => ({
   cliente: null,
+  currentReadingId: null,
+  currentClientId: null,
   houses: new Map(),
+
   placedCards: new Set(),
   activePopover: null,
   isSidebarCollapsed: false,
@@ -90,8 +102,10 @@ export const useCockpitStore = create<CockpitState>((set, get) => ({
   isRightPanelOpen: false,
   rightPanelTab: 'dossier',
 
-  setCliente: (cliente) => set({ cliente }),
+  setCliente: (cliente) => set({ cliente, currentClientId: cliente?.id ?? null }),
 
+  setCurrentReadingId: (id) => set({ currentReadingId: id }),
+  setCurrentClientId: (id) => set({ currentClientId: id }),
   fillHouse: (casaNumero, carta, odu) => {
     set((state) => {
       const newHouses = new Map(state.houses);
@@ -142,6 +156,8 @@ export const useCockpitStore = create<CockpitState>((set, get) => ({
   resetCockpit: () =>
     set({
       cliente: null,
+      currentReadingId: null,
+      currentClientId: null,
       houses: new Map(),
       activePopover: null,
       placedCards: new Set(),

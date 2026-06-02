@@ -32,7 +32,7 @@ export default async function LeituraPage({ params }: { params: Promise<{ id: st
             <ChevronLeft className="w-3 h-3" /> Voltar
           </Link>
           <div>
-            <h1 className="font-cinzel text-lg text-primary">Dossiê Cabalístico</h1>
+            <h1 className="font-cinzel text-lg text-ramiro-orange">Dossiê Cabalístico</h1>
             <p className="text-xs text-muted-foreground">
               {reading.client.fullName} · {new Date(reading.date).toLocaleDateString('pt-BR')}
             </p>

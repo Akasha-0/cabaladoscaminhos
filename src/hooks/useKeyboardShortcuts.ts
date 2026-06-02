@@ -30,29 +30,54 @@ export interface KeyboardShortcut {
   preventDefault?: boolean;
 }
 
-const isMac = typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform);
-
-// fallow-ignore-next-line complexity
-function matchesShortcut(e: KeyboardEvent, s: KeyboardShortcut): boolean {
-  if (e.key.toLowerCase() !== s.key.toLowerCase()) return false;
-  const ctrlOrCmd = isMac ? e.metaKey : e.ctrlKey;
-  if (s.ctrl && !ctrlOrCmd) return false;
-  if (!s.ctrl && ctrlOrCmd) return false;
-  if (s.shift && !e.shiftKey) return false;
-  if (!s.shift && e.shiftKey) return false;
-  if (s.alt && !e.altKey) return false;
-  if (!s.alt && e.altKey) return false;
-  return true;
+function isMacPlatform(): boolean {
+  return typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform);
 }
 
-function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]): void {
+function keyMatches(e: KeyboardEvent, expected: string): boolean {
+  return e.key.toLowerCase() === expected.toLowerCase();
+}
+function modifierMatches(
+  event: KeyboardEvent,
+  shortcut: KeyboardShortcut,
+): boolean {
+  const requiresCtrl = shortcut.ctrl ?? false;
+  const ctrlOrCmd = isMacPlatform() ? event.metaKey : event.ctrlKey;
+
+  if (requiresCtrl !== ctrlOrCmd) return false;
+
+  const requiresShift = shortcut.shift ?? false;
+  if (requiresShift !== event.shiftKey) return false;
+
+  const requiresAlt = shortcut.alt ?? false;
+  if (requiresAlt !== event.altKey) return false;
+
+  return true;
+}
+function matchesShortcut(e: KeyboardEvent, s: KeyboardShortcut): boolean {
+  return keyMatches(e, s.key) && modifierMatches(e, s);
+}
+
+export function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]): void {
   useEffect(() => {
     if (typeof window === 'undefined') return;
-// fallow-ignore-next-line complexity
-    const handler = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement | null;
-      const inEditable =
-        target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable;
+    function isEditableElement(target: EventTarget | null): boolean {
+      if (!target || typeof target !== 'object') return false;
+      const el = target as Partial<HTMLElement>;
+      const tagName = el.tagName ?? '';
+      // Check contentEditable (string: 'true', 'false', 'inherit') and isContentEditable (boolean-like)
+      const contentEditable = el.contentEditable;
+      const isEditableContent = contentEditable === 'true' || el.isContentEditable === true;
+      return (
+        tagName === 'INPUT' ||
+        tagName === 'TEXTAREA' ||
+        isEditableContent
+      );
+    }
+
+    function handleKeydown(e: KeyboardEvent): void {
+      const target = e.target;
+      const inEditable = isEditableElement(target);
       if (inEditable && e.key !== 'Escape') return;
 
       for (const s of shortcuts) {
@@ -62,9 +87,10 @@ function useKeyboardShortcuts(shortcuts: KeyboardShortcut[]): void {
           return;
         }
       }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    }
+
+    window.addEventListener('keydown', handleKeydown);
+    return () => window.removeEventListener('keydown', handleKeydown);
   }, [shortcuts]);
 }
 

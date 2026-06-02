@@ -106,7 +106,7 @@ export function DossierViewer({ readingId }: { readingId: string }) {
                   activeCasa === casa && 'border-primary/50'
                 )}
               >
-                <h2 className="font-cinzel text-primary text-lg">
+                <h2 className="font-cinzel text-ramiro-orange text-lg">
                   Casa {casa} — {h.houseName}
                 </h2>
                 <p className="text-xs text-muted-foreground/60 font-mono mb-3">

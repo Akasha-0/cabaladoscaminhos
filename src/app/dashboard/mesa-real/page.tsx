@@ -10,7 +10,6 @@ import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/useToast';
-import { MesaRealGrid, CasaModal } from '@/components/mesa-real';
 
 // ============================================================
 // TYPES

@@ -13,7 +13,12 @@ export function RoutingChips({ themes, houses }: RoutingChipsProps) {
       {houses.map((casa) => (
         <span
           key={casa}
-          className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full border bg-secondary/15 border-secondary/40 text-secondary"
+          className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full border"
+          style={{
+            backgroundColor: 'rgba(37, 71, 208, 0.15)',
+            borderColor: 'rgba(37, 71, 208, 0.40)',
+            color: 'var(--color-ramiro-royal)',
+          }}
         >
           Casa {casa}
         </span>

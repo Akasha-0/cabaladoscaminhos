@@ -7,6 +7,11 @@ import {
   gerarSystemPromptDossier,
   gerarPromptDossiê,
   construirArquiteturaDossiê,
+  construirInjeccaoTerreno,
+  construirBaseArquitetura,
+  encontrarOduCorrelacionado,
+  adicionarOduAArquitetura,
+  construirSecaoPrompt,
   parsearRespostaDossiê,
 } from '@/lib/ai/dossier/prompt-builder';
 import type { ArquiteturaDossiê, TiragemMesaReal } from '@/lib/ai/dossier/types';
@@ -210,6 +215,258 @@ describe('Dossier Prompt Builder', () => {
       expect(arquitetura[0].casa_numero).toBe(5);
       expect(arquitetura[1].casa_numero).toBe(12);
       expect(arquitetura[2].casa_numero).toBe(20);
+    });
+  });
+
+  describe('construirArquiteturaDossiê helpers', () => {
+    describe('construirInjeccaoTerreno', () => {
+      it('returns empty array when clientData is undefined', () => {
+        const result = construirInjeccaoTerreno(5, undefined);
+        expect(result).toEqual([]);
+      });
+
+      it('returns empty array when no relevant fields present', () => {
+        const result = construirInjeccaoTerreno(5, {});
+        expect(result).toEqual([]);
+      });
+
+      it('injects ascendente and numeroAlma for house 1', () => {
+        const clientData = { ascendente: 'Leão', numeroAlma: 7 };
+        const result = construirInjeccaoTerreno(1, clientData);
+        expect(result).toHaveLength(2);
+        expect(result[0]).toEqual({ tipo: 'ascendente', valor: 'Leão', fonte: 'astrologia' });
+        expect(result[1]).toEqual({ tipo: 'numero_alma', valor: 7, fonte: 'tantrica' });
+      });
+
+      it('injects only ascendente for house 1 when numeroAlma missing', () => {
+        const result = construirInjeccaoTerreno(1, { ascendente: 'Virgem' });
+        expect(result).toHaveLength(1);
+        expect(result[0].tipo).toBe('ascendente');
+      });
+
+      it('injects numero_motivacao for house 4', () => {
+        const result = construirInjeccaoTerreno(4, { caminhoVida: 5 });
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual({ tipo: 'numero_motivacao', valor: 5, fonte: 'cabala' });
+      });
+
+      it('injects dom_divino for house 12', () => {
+        const result = construirInjeccaoTerreno(12, { domDivino: 3 });
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual({ tipo: 'dom_divino', valor: 3, fonte: 'tantrica' });
+      });
+
+      it('injects numero_karma for house 34', () => {
+        const result = construirInjeccaoTerreno(34, { caminhoVida: 11 });
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual({ tipo: 'numero_karma', valor: 11, fonte: 'tantrica' });
+      });
+
+      it('defaults to numero_alma from numerologia for other houses', () => {
+        const result = construirInjeccaoTerreno(7, { caminhoVida: 9 });
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual({ tipo: 'numero_alma', valor: 9, fonte: 'numerologia' });
+      });
+    });
+
+    describe('construirBaseArquitetura', () => {
+      it('maps all required fields from a carta', () => {
+        const carta = {
+          posicao: 1,
+          casaNumero: 5,
+          cartaNumero: 12,
+          nomeCarta: 'Os Pássaros',
+          significado: 'Comunicação',
+          orientacao: 'normal' as const,
+        };
+        const result = construirBaseArquitetura(carta, []);
+        expect(result.casa_numero).toBe(5);
+        expect(result.carta_numero).toBe(12);
+        expect(result.carta_significado).toBe('Comunicação');
+        expect(result.carta_orientacao).toBe('normal');
+        expect(result.injeccao_terreno).toBeUndefined();
+      });
+
+      it('includes terrain injections when provided', () => {
+        const carta = {
+          posicao: 1,
+          casaNumero: 1,
+          cartaNumero: 1,
+          nomeCarta: 'O Mensageiro',
+          significado: 'msg',
+          orientacao: 'normal' as const,
+        };
+        const injecoes = [{ tipo: 'ascendente' as const, valor: 'Escorpião', fonte: 'astrologia' }];
+        const result = construirBaseArquitetura(carta, injecoes);
+        expect(result.injeccao_terreno).toEqual(injecoes);
+      });
+
+      it('uses fallback names for unknown house/card numbers', () => {
+        const carta = {
+          posicao: 99,
+          casaNumero: 99,
+          cartaNumero: 99,
+          nomeCarta: '???',
+          significado: '???',
+          orientacao: 'normal' as const,
+        };
+        const result = construirBaseArquitetura(carta, []);
+        expect(result.casa_nome).toBe('Casa 99');
+        expect(result.carta_nome).toBe('Carta 99');
+      });
+    });
+
+    describe('encontrarOduCorrelacionado', () => {
+      const carta = {
+        posicao: 4,
+        casaNumero: 4,
+        cartaNumero: 8,
+        nomeCarta: 'O Buquê',
+        significado: 'amor',
+        orientacao: 'normal' as const,
+      };
+
+      it('returns odu matching by posicao', () => {
+        const odus = [{ oduNumero: 4, nome: 'Owanrin', significado: 'teste', conselho: 'c', orixa: 'Eshu' }];
+        const result = encontrarOduCorrelacionado(carta, odus);
+        expect(result?.oduNumero).toBe(4);
+      });
+
+      it('returns odu matching by cartaNumero', () => {
+        const odus = [{ oduNumero: 8, nome: 'Ogbe', significado: 'teste', conselho: 'c', orixa: 'Obatalá' }];
+        const result = encontrarOduCorrelacionado(carta, odus);
+        expect(result?.oduNumero).toBe(8);
+      });
+
+      it('returns undefined when no match found', () => {
+        const odus = [{ oduNumero: 99, nome: 'Other', significado: 'teste', conselho: 'c', orixa: 'X' }];
+        const result = encontrarOduCorrelacionado(carta, odus);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined for empty odu array', () => {
+        const result = encontrarOduCorrelacionado(carta, []);
+        expect(result).toBeUndefined();
+      });
+
+      it('returns undefined when odus is undefined', () => {
+        const result = encontrarOduCorrelacionado(carta, undefined as unknown as []);
+        expect(result).toBeUndefined();
+      });
+    });
+
+    describe('adicionarOduAArquitetura', () => {
+      it('adds odu fields when odu is provided', () => {
+        const base = { casa_numero: 5, casa_nome: 'A Árvore' } as Omit<ArquiteturaDossiê, 'odu_numero' | 'odu_nome' | 'odu_significado' | 'odu_conselho' | 'odu_orixa'>;
+        const odu = { oduNumero: 3, nome: 'Otura', significado: 'teste', conselho: 'c', orixa: 'Oxum' };
+        const result = adicionarOduAArquitetura(base, odu);
+        expect(result.odu_numero).toBe(3);
+        expect(result.odu_nome).toBe('Otura');
+        expect(result.odu_orixa).toBe('Oxum');
+      });
+
+      it('returns base without odu fields when odu is undefined', () => {
+        const base = { casa_numero: 5, casa_nome: 'A Árvore' } as Omit<ArquiteturaDossiê, 'odu_numero' | 'odu_nome' | 'odu_significado' | 'odu_conselho' | 'odu_orixa'>;
+        const result = adicionarOduAArquitetura(base, undefined);
+        expect(result).not.toHaveProperty('odu_numero');
+        expect(result.casa_numero).toBe(5);
+      });
+    });
+
+    describe('construirSecaoPrompt', () => {
+      it('includes casa header and significado', () => {
+        const casa: ArquiteturaDossiê = {
+          casa_numero: 3,
+          casa_nome: 'O Navio',
+          casa_significado: 'Viagem',
+          carta_numero: 3,
+          carta_nome: 'O Navio',
+          carta_significado: 'Jornada',
+          carta_orientacao: 'normal',
+          element: 'Água',
+          sefirot: ['Binah'],
+          chakra: 2,
+        };
+        const result = construirSecaoPrompt(casa);
+        expect(result).toContain('### CASA 3: O Navio');
+        expect(result).toContain('**Terreno (Significado da Casa):** Viagem');
+        expect(result).toContain('  + Carta: O Navio (3)');
+      });
+
+      it('includes odu block when present', () => {
+        const casa: ArquiteturaDossiê = {
+          casa_numero: 1,
+          casa_nome: 'O Mensageiro',
+          casa_significado: 'Início',
+          carta_numero: 1,
+          carta_nome: 'O Mensageiro',
+          carta_significado: 'msg',
+          carta_orientacao: 'normal',
+          odu_numero: 8,
+          odu_nome: 'Owanrin',
+          odu_significado: 'dualidade',
+          odu_conselho: 'busque equilíbrio',
+          odu_orixa: 'Obatalá',
+        };
+        const result = construirSecaoPrompt(casa);
+        expect(result).toContain('**Odu:**');
+        expect(result).toContain('Owanrin');
+        expect(result).toContain('Obatalá');
+        expect(result).toContain('busque equilíbrio');
+      });
+
+      it('omits odu block when not present', () => {
+        const casa: ArquiteturaDossiê = {
+          casa_numero: 2,
+          casa_nome: 'A Cruz',
+          casa_significado: 'Decisão',
+          carta_numero: 2,
+          carta_nome: 'A Cruz',
+          carta_significado: 'escolha',
+          carta_orientacao: 'normal',
+        };
+        const result = construirSecaoPrompt(casa);
+        expect(result).not.toContain('**Odu:**');
+      });
+
+      it('includes terrain injections when present', () => {
+        const casa: ArquiteturaDossiê = {
+          casa_numero: 1,
+          casa_nome: 'O Mensageiro',
+          casa_significado: 'Início',
+          carta_numero: 1,
+          carta_nome: 'O Mensageiro',
+          carta_significado: 'msg',
+          carta_orientacao: 'normal',
+          injeccao_terreno: [
+            { tipo: 'ascendente', valor: 'Leão', fonte: 'astrologia' },
+          ],
+        };
+        const result = construirSecaoPrompt(casa);
+        expect(result).toContain('Injeções Espirituais');
+        expect(result).toContain('ascendente');
+        expect(result).toContain('Leão');
+      });
+
+      it('includes correlations when element, sefirot, or chakra present', () => {
+        const casa: ArquiteturaDossiê = {
+          casa_numero: 1,
+          casa_nome: 'O Mensageiro',
+          casa_significado: 'Início',
+          carta_numero: 1,
+          carta_nome: 'O Mensageiro',
+          carta_significado: 'msg',
+          carta_orientacao: 'normal',
+          element: 'Fogo',
+          sefirot: ['Kether'],
+          chakra: 7,
+        };
+        const result = construirSecaoPrompt(casa);
+        expect(result).toContain('**Correlações:**');
+        expect(result).toContain('Elemento: Fogo');
+        expect(result).toContain('Sephirot: Kether');
+        expect(result).toContain('Chakra: 7');
+      });
     });
   });
 

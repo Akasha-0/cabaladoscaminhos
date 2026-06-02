@@ -5,19 +5,26 @@ import { Sparkles } from 'lucide-react';
 export function OracleBubble({ content, pending }: { content: string; pending?: boolean }) {
   return (
     <div className="flex justify-start gap-2">
-      <div className="flex-shrink-0 w-7 h-7 rounded-full bg-secondary/15 border border-secondary/30 flex items-center justify-center mt-1">
-        <Sparkles className="w-3.5 h-3.5 text-secondary" />
+      <div className="flex-shrink-0 w-7 h-7 rounded-full border border-[var(--color-ramiro-royal)]/30 flex items-center justify-center mt-1"
+        style={{ backgroundColor: 'rgba(37, 71, 208, 0.20)' }}
+      >
+        <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--color-ramiro-royal)' }} />
       </div>
-      <div className="max-w-[80%] bg-secondary/12 border border-secondary/30 rounded-2xl rounded-tl-sm px-4 py-2.5">
+      <div
+        className="max-w-[80%] border border-[var(--color-ramiro-royal)]/30 rounded-2xl rounded-tl-sm px-4 py-2.5"
+        style={{ backgroundColor: 'rgba(37, 71, 208, 0.12)' }}
+      >
         {pending && !content ? (
           <p className="text-sm text-muted-foreground italic animate-pulse">
             Consultando os oráculos…
           </p>
         ) : (
-          <div className="font-dossier text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">
+          <div className="font-dossier text-sm leading-relaxed whitespace-pre-wrap"
+            style={{ color: 'var(--color-ramiro-text, #f8fafc)' }}
+          >
             {content}
             {pending && (
-              <span className="inline-block w-1.5 h-3.5 ml-1 bg-secondary animate-pulse align-middle" />
+              <span className="inline-block w-1.5 h-3.5 ml-1 animate-pulse align-middle" style={{ backgroundColor: 'var(--color-ramiro-royal)' }} />
             )}
           </div>
         )}
