@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 
-// Permissive type for partial mapa natal data
+// fallow-ignore-next-line unused-type
 export interface MapaNatalProps {
   mapaNatal: {
     planeta?: Record<string, {

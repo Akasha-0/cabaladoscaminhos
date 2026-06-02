@@ -35,7 +35,6 @@ import {
  * Obtém dados de uma casa específica (1-36).
  * Retorna `null` para fora do range (vs `undefined` das helpers de mesa-real-data).
  */
-// fallow-ignore-next-line unused-export
 export function getCasaData(casaNumero: number): CasaCigana | null {
   if (casaNumero < 1 || casaNumero > 36) {
     return null;
@@ -47,7 +46,6 @@ export function getCasaData(casaNumero: number): CasaCigana | null {
  * Obtém dados de uma carta específica (1-36).
  * Retorna `null` para fora do range.
  */
-// fallow-ignore-next-line unused-export
 export function getCartaData(cartaNumero: number): CartaCigana | null {
   if (cartaNumero < 1 || cartaNumero > 36) {
     return null;
@@ -59,7 +57,6 @@ export function getCartaData(cartaNumero: number): CartaCigana | null {
  * Obtém dados de um Odú específico (1-16).
  * Retorna `null` para fora do range.
  */
-// fallow-ignore-next-line unused-export
 export function getOduData(oduNumero: number): OduInfo | null {
   if (oduNumero < 1 || oduNumero > 16) {
     return null;
@@ -70,7 +67,6 @@ export function getOduData(oduNumero: number): OduInfo | null {
 /**
  * Obtém correlação de arquétipo para uma casa com dados do consulente
  */
-// fallow-ignore-next-line unused-export
 export function getArchetypeCorrelation(
   casaNumero: number,
   clientData: Partial<DadosConsulente>
@@ -113,10 +109,10 @@ export function getArchetypeCorrelation(
 export type MatrixIndex = {
   [casaNumero: number]: { carta: number; odu: number };
 };
+
 /**
  * Constrói a arquitetura completa do dossiê
  */
-// fallow-ignore-next-line unused-export
 export function construirArquiteturaDossiê(
   matrixData: MatrixIndex,
   clientData: Partial<DadosConsulente>
@@ -147,15 +143,14 @@ export function construirArquiteturaDossiê(
 
   return dossiê;
 }
+
 /**
  * Constrói dossiê a partir de posições ordenadas (alternativa)
  */
-// fallow-ignore-next-line unused-export
 export function construirDossiêFromPosicoes(
   posicoes: PosicaoTiragem[],
   clientData: Partial<DadosConsulente>
 ): ArquiteturaDossiê[] {
-  const matrixIndex: MatrixIndex = {};
   const matrixIndex: MatrixIndex = {};
   for (const pos of posicoes) {
     matrixIndex[pos.casa] = { carta: pos.carta, odu: pos.odu };
@@ -166,7 +161,6 @@ export function construirDossiêFromPosicoes(
 /**
  * Gera resultado completo de leitura
  */
-// fallow-ignore-next-line unused-export
 export function gerarLeituraCompleta(
   posicoes: PosicaoTiragem[],
   clientData: Partial<DadosConsulente>,
@@ -309,13 +303,13 @@ export const MESA_REAL_SPREADS = {
   },
 } as const;
 
-// fallow-ignore-next-line unused-type
+// fallow-ignore-start unused-types
 export type SpreadType = keyof typeof MESA_REAL_SPREADS;
+// fallow-ignore-end unused-types
 
 /**
  * Gera posições para uma tiragem 9x4
  */
-// fallow-ignore-next-line unused-export
 export function gerarTiragem9x4(seed?: number): PosicaoTiragem[] {
   const posicoes: PosicaoTiragem[] = [];
 
@@ -369,7 +363,6 @@ export function realizarLeitura(
 /**
  * Valida uma tiragem completa
  */
-// fallow-ignore-next-line unused-export
 export function validarTiragem(tiragem: MatrixIndex): {
   valida: boolean;
   erros: string[];
@@ -401,7 +394,6 @@ export function validarTiragem(tiragem: MatrixIndex): {
 /**
  * Conta elementos em uma tiragem
  */
-// fallow-ignore-next-line unused-export
 export function contarElementos(dossiê: ArquiteturaDossiê[]): Record<string, number> {
   const contagem: Record<string, number> = {
     fogo: 0,
@@ -423,7 +415,8 @@ export function contarElementos(dossiê: ArquiteturaDossiê[]): Record<string, n
 
 /**
  * Exporta tipos para uso em outros módulos
-// fallow-ignore-next-line unused-type
+ */
+// fallow-ignore-start unused-types
 export type {
   CasaCigana,
   CartaCigana,
@@ -435,3 +428,4 @@ export type {
   ResultadoLeitura,
   PosicaoTiragem,
 } from './mesa-real-types';
+// fallow-ignore-end unused-types

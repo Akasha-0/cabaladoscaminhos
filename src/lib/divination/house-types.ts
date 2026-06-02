@@ -1,4 +1,3 @@
-// fallow-ignore-next-line unused-type
 // src/lib/divination/house-types.ts
 // Tipos canônicos das 36 casas da Mesa Real (Doc 06 §2).
 // Forma consumida pela UI do Cockpit e por testes em tests/cockpit/.
@@ -62,6 +61,7 @@ export interface HouseDefinition {
  *
  * Importante: este tipo é usado por `src/stores/cockpit-store.ts`.
  */
+// fallow-ignore-next-line unused-type
 export type CasaState =
   | { status: 'empty' }
   | {

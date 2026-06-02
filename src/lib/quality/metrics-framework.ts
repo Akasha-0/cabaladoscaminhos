@@ -11,7 +11,6 @@ export const MetricCategory = z.enum([
   'reliability',
   'security',
 ]);
-// fallow-ignore-next-line unused-type
 export type MetricCategory = z.infer<typeof MetricCategory>;
 
 export const MetricSeverity = z.enum([
@@ -21,7 +20,6 @@ export const MetricSeverity = z.enum([
   'low',
   'info',
 ]);
-// fallow-ignore-next-line unused-type
 export type MetricSeverity = z.infer<typeof MetricSeverity>;
 
 export const MetricStatus = z.enum([
@@ -31,7 +29,6 @@ export const MetricStatus = z.enum([
   'skipped',
   'error',
 ]);
-// fallow-ignore-next-line unused-type
 export type MetricStatus = z.infer<typeof MetricStatus>;
 
 // Threshold interface
@@ -44,7 +41,6 @@ export interface Threshold {
   low?: number;
 }
 
-// fallow-ignore-next-line unused-export
 export const DEFAULT_THRESHOLDS: Threshold[] = [
   { category: 'spiritual_correlations', weight: 1.0, critical: 95, high: 85, medium: 75, low: 60 },
   { category: 'ai_integration', weight: 0.8, critical: 90, high: 80, medium: 70, low: 50 },
@@ -52,7 +48,6 @@ export const DEFAULT_THRESHOLDS: Threshold[] = [
 ];
 
 // Grade calculation
-// fallow-ignore-next-line unused-export
 export function calculateGrade(score: number): string {
   if (score >= 97) return 'A+';
   if (score >= 93) return 'A';
@@ -67,7 +62,6 @@ export function calculateGrade(score: number): string {
 }
 
 // Metric validation
-// fallow-ignore-next-line unused-export
 export function validateMetricValue(
   value: number,
   threshold: number,
@@ -90,7 +84,6 @@ export function validateMetricValue(
 }
 
 // Score calculation
-// fallow-ignore-next-line unused-export
 export function calculateScoreFromValue(
   value: number,
   thresholds: { critical: number; high: number; medium: number; low: number }
@@ -103,7 +96,6 @@ export function calculateScoreFromValue(
 }
 
 // Performance Monitor
-// fallow-ignore-next-line unused-type
 export interface MetricStats {
   count: number;
   avg: number;
@@ -113,7 +105,6 @@ export interface MetricStats {
   p99: number;
 }
 
-// fallow-ignore-next-line unused-export
 export class PerformanceMonitor {
   private metrics: Map<string, number[]> = new Map();
 

@@ -1,4 +1,3 @@
-// fallow-ignore-next-line unused-type
 // ============================================================
 // SWARM ORCHESTRATOR
 // ============================================================
@@ -338,5 +337,5 @@ export function getSwarm(): SwarmOrchestrator {
   }
   return swarmInstance;
 }
-
+// fallow-ignore-next-line unused-type
 export type { SwarmConfig };

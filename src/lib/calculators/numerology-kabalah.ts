@@ -336,7 +336,7 @@ function calculateLifeCycles(birthDate: string): {
 // ============================================================================
 // AGREGADOR — Constrói o mapa cabalístico completo
 // ============================================================================
-// fallow-ignore-next-line unused-export
+
 export function buildKabalisticMap(fullName: string, birthDate: string): KabalisticMap {
   const lifePath = calculateLifePath(birthDate);
   const mission = calculateMission(birthDate);

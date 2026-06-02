@@ -1,3 +1,4 @@
+import { DossierPdfButton } from '@/components/cockpit/dossier/DossierPdfButton';
 // src/app/cockpit/leituras/[id]/page.tsx
 // Visualização do Dossiê Cabalístico (Doc 05 §5). Server Component + auth + DossierViewer.
 import { ChevronLeft } from 'lucide-react';
@@ -37,6 +38,7 @@ export default async function LeituraPage({ params }: { params: Promise<{ id: st
             </p>
           </div>
         </div>
+        <DossierPdfButton readingId={reading.id} />
       </header>
       <DossierViewer readingId={reading.id} />
     </div>

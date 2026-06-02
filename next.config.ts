@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['jspdf', 'lucide-react'],
   },
+  serverExternalPackages: ['@prisma/client', 'prisma', 'pg', 'pg-pool', 'pg-connection-string'],
   staticPageGenerationTimeout: 120,
 };
 

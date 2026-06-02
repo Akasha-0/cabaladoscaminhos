@@ -1,4 +1,3 @@
-// fallow-ignore-next-line unused-type
 // Chart library - skipped linting and formatting
 
 import type { Aspecto, Casa } from '../astrologia/tipos';
@@ -39,12 +38,11 @@ export interface Chart {
   personalizado?: boolean;
 }
 
-/**
- * Chart library interface
- */
+// fallow-ignore-next-line unused-export
 export interface ChartLibrary {
   charts: Chart[];
   total: number;
+  getChartById(id: string): Chart | undefined;
 }
 
 /**

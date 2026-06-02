@@ -50,12 +50,12 @@ export const TOTP_ALGORITHM = 'SHA1' as const;
  * Drift permitido em passos (RFC 6238 §5.2): aceita o passo anterior
  * e o próximo. Para período de 30s, isso dá ±30s de tolerância.
  */
-// fallow-ignore-next-line unused-export
 export const TOTP_DRIFT_STEPS = 1;
+
 // fallow-ignore-next-line unused-export
 /** Tamanho do recovery code em bytes (8 bytes = 16 chars hex = ~10^19 entropia). */
 export const RECOVERY_CODE_BYTES = 8;
-// fallow-ignore-next-line unused-export
+
 /** Quantidade de recovery codes gerados no setup. */
 export const RECOVERY_CODE_COUNT = 10;
 
@@ -90,6 +90,7 @@ export type DecryptResult = { ok: true; plaintext: string } | { ok: false; reaso
 // Erros
 // ============================================================================
 
+// fallow-ignore-next-line unused-export
 /** Lançado quando a MFA_ENCRYPTION_KEY não está configurada (em prod). */
 export class MfaKeyMissingError extends Error {
   constructor() {

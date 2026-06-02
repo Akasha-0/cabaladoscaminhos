@@ -13,14 +13,11 @@
 // Last Updated: 2026-05-30
 // ─── Master Number Type ─────────────────────────────────────────────────
 const MASTER_NUMBERS = [11, 22, 33] as const;
-// fallow-ignore-next-line unused-export
 export type MasterNumber = typeof MASTER_NUMBERS[number];
-// fallow-ignore-next-line unused-export
 export function isMasterNumber(n: number): n is MasterNumber {
   return MASTER_NUMBERS.includes(n as MasterNumber);
 }
 // ─── Original Tables ──────────────────────────────────────────────────────
-// fallow-ignore-next-line unused-export
 export const tabelaPitagorica: Record<string, number> = {
   A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9,
   J: 1, K: 2, L: 3, M: 4, N: 5, O: 6, P: 7, Q: 8, R: 9,
@@ -28,7 +25,6 @@ export const tabelaPitagorica: Record<string, number> = {
   Á: 1, À: 1, Ã: 1, Â: 1, É: 5, Ê: 5, Í: 9, Ó: 6, Ô: 6, Õ: 6, Ú: 3, Ü: 3
 };
 
-// fallow-ignore-next-line unused-export
 export const tabelaCaldeia: Record<string, number> = {
   A: 1, B: 2, C: 3, D: 4, E: 5, F: 8, G: 3, H: 5, I: 1,
   J: 1, K: 2, L: 3, M: 4, N: 5, O: 7, P: 8, Q: 1, R: 2,
@@ -36,7 +32,6 @@ export const tabelaCaldeia: Record<string, number> = {
   Á: 1, À: 1, Ã: 1, Â: 1, É: 5, Ê: 5, Í: 1, Ó: 7, Ô: 7, Õ: 7, Ú: 6, Ü: 6
 };
 
-// fallow-ignore-next-line unused-export
 export const tabelaCabalistica: Record<string, number> = {
   A: 1, B: 2, C: 3, D: 4, E: 5, F: 8, G: 3, H: 5, I: 1,
   J: 1, K: 2, L: 30, M: 40, N: 50, O: 70, P: 80, Q: 100, R: 200,
@@ -122,7 +117,6 @@ export interface InterpretacaoNumerologia {
   sefirotRelacionado: string;
 }
 
-// fallow-ignore-next-line unused-export
 export const interpretacoesNumerologia: Record<number, InterpretacaoNumerologia> = {
   1: {
     numero: 1,

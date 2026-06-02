@@ -50,9 +50,7 @@ export interface TarotReading {
   question?: string;
   summary: string;
   createdAt: string;
-// fallow-ignore-next-line unused-type
-export interface TarotReading {
-}
+
 
 // ============================================================
 // IN-MEMORY STORE (production would use a database)

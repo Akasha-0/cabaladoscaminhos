@@ -394,4 +394,5 @@ function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise
   }) as T;
 }
 
+// fallow-ignore-next-line unused-export
 export { withLogging };

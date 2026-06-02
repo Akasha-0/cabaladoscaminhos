@@ -1,4 +1,3 @@
-// fallow-ignore-next-line unused-type
 // Odu Comparison Tool - Cabala Dos Caminhos
 // Compare two Ifa/Odu readings for similarities and differences
 
@@ -56,6 +55,7 @@ export interface EboAlignment {
 /**
  * Complete comparison result
  */
+// fallow-ignore-next-line unused-type
 export interface OduComparison {
   id: string;
   readingA: OduReading;

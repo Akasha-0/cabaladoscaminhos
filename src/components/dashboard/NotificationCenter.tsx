@@ -16,6 +16,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+// fallow-ignore-next-line unresolved-import
 import { useNotifications, type SpiritualNotification, type NotificationType } from '@/lib/hooks/useNotifications';
 
 // ============================================================

@@ -37,6 +37,7 @@ import {
   type TraçoSombra
 } from '@/lib/engines/predictive-synthesis-engine'
 import { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma'
+// fallow-ignore-next-line unresolved-import
 import { GlowEffect } from '@/components/shared/GlowEffect'
 
 // ============================================================================

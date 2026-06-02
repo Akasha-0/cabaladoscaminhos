@@ -96,18 +96,7 @@ export interface SearchResult {
     affirmation: string;
     frequency: string;
   };
-// fallow-ignore-next-line unused-type
-export interface SearchResult {
-  id: string;
-  type: 'odu' | 'orixa' | 'ritual' | 'tarot';
-  name: string;
-  description: string;
-  keywords: string[];
-  element?: string;
-  orixa?: string;
-  affirmation?: string;
-  frequency?: string;
-}
+
 
 // fallow-ignore-next-line unused-type
 export interface SearchResponse {

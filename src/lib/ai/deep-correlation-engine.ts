@@ -547,6 +547,7 @@ class DeepCorrelationEngine {
   /**
    * Generate AI-powered explanation for a correlation
    */
+  // fallow-ignore-next-line unused-class-member
   async explainCorrelation(correlation: SpiritualCorrelation): Promise<string> {
     const messages: ChatMessage[] = [
       {

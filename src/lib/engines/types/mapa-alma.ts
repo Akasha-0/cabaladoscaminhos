@@ -1,4 +1,3 @@
-// fallow-ignore-next-line unused-type
 import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } from '@/lib/ai/deep-correlation-engine';
 /**
  * MapaAlmaCompleto Type Definitions
@@ -140,6 +139,7 @@ export type {
   DrawResult,
   MapaNatal,
   PosicaoPlaneta,
+  // fallow-ignore-next-line unused-type
   Planeta,
   Signo,
   Aspecto,

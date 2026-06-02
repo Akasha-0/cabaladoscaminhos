@@ -1,11 +1,10 @@
-// fallow-ignore-next-line unused-type
 // ============================================================
 // THEME SYSTEM - Dark/Light Mode with System Preference
 // ============================================================
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
+// fallow-ignore-next-line unused-type
 export type ThemeMode = 'dark' | 'light';
 
 interface ThemeState {

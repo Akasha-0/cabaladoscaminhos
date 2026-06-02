@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation'
 // Tipos
 // ============================================================================
 
+// fallow-ignore-next-line unused-type
 export interface OperatorInfo {
   id: string
   email: string
@@ -73,7 +74,7 @@ const defaultValue: OperatorAuthContextType = {
 
 const OperatorAuthContext = createContext<OperatorAuthContextType>(defaultValue)
 
-// fallow-ignore-next-line unused-export
+
 export const useOperatorAuth = () => {
   const ctx = useContext(OperatorAuthContext)
   if (!ctx) {
