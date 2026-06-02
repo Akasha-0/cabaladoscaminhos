@@ -39,15 +39,17 @@ O sistema segue uma arquitetura **monolítica modular** com separação clara en
 
 ## 2. Tech Stack Definitivo
 
+> **Atualizado para a realidade implementada (Doc 16 §6).** As versões abaixo refletem o código vigente. A v1 deste doc dizia Next 14 / React 18 / NextAuth — substituído pela stack real, mais moderna.
+
 ### Frontend
 | Tecnologia | Versão | Justificativa |
 |---|---|---|
-| Next.js | 14+ (App Router) | SSR, Server Actions, roteamento moderno |
-| React | 18+ | Base do framework |
+| Next.js | **16** (App Router, Turbopack) | SSR, Server Actions, roteamento moderno |
+| React | **19** | Base do framework |
 | TypeScript | 5+ (strict mode) | Tipagem completa evita erros em runtime |
-| Tailwind CSS | 3.4+ | Estilização rápida, design system consistente |
-| Shadcn/ui | Latest | Componentes acessíveis (Popover, Select, Dialog, Toast) |
-| Zustand | 4+ | Gerenciamento de estado do grid (evita prop drilling) |
+| Tailwind CSS | **v4** (`@theme`) | Design system por tokens; paleta v2 Ramiro (Doc 13) via escopo `.ramiro` |
+| Radix / shadcn | Latest | Componentes acessíveis (Popover, Select, Dialog, Toast) |
+| Zustand | **5+** | Gerenciamento de estado do grid (evita prop drilling) |
 | React Hook Form | 7+ | Formulários performáticos com validação |
 | Zod | 3+ | Validação de schemas TypeScript-first |
 
@@ -55,9 +57,9 @@ O sistema segue uma arquitetura **monolítica modular** com separação clara en
 | Tecnologia | Versão | Justificativa |
 |---|---|---|
 | Next.js API Routes | — | Mesmo repositório, sem servidor separado |
-| Prisma ORM | 5+ | Type-safe, migrations automáticas |
+| Prisma ORM | **7** | Type-safe; conexão via `prisma.config.ts` + adapter `pg` |
 | PostgreSQL | 15+ | Banco relacional com suporte nativo a JSON |
-| NextAuth.js | 4+ | Autenticação com sessão, JWT |
+| **JWT próprio** (`jsonwebtoken`) | 9+ | Autenticação de sessão do `Operator` — **substitui NextAuth** (Doc 16 AD-03) |
 | bcryptjs | — | Hash de senhas |
 
 ### Integrações Externas
@@ -264,9 +266,8 @@ cabala-dos-caminhos/
 # Banco de Dados
 DATABASE_URL="postgresql://user:password@host:5432/cabala_dos_caminhos"
 
-# Autenticação
-NEXTAUTH_SECRET="seu-secret-aqui"
-NEXTAUTH_URL="http://localhost:3000"
+# Autenticação (JWT próprio do Operator — Doc 16 AD-03; substitui NextAuth)
+JWT_SECRET="seu-secret-aqui"
 
 # APIs de Inteligência Artificial (escolher uma)
 OPENAI_API_KEY="sk-..."

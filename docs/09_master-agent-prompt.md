@@ -112,15 +112,17 @@ Casa 36 (Cruz)      → Astro: Nodo Sul + Saturno + 12ª Casa | Cabala: Dívidas
 
 ## 4. TECH STACK — USE EXATAMENTE ISTO
 
-- **Framework:** Next.js 14 com App Router
+> **Atualizado para a realidade implementada (Doc 16 §6).** A stack abaixo reflete o código vigente — mais moderna que a v1 (que dizia Next 14 / NextAuth / Shadcn).
+
+- **Framework:** Next.js **16** com App Router (Turbopack)
 - **Linguagem:** TypeScript com strict mode
-- **Estilização:** Tailwind CSS + Shadcn/ui
+- **Estilização:** **Tailwind CSS v4** (`@theme`) + Radix/shadcn; paleta v2 Ramiro (Doc 13)
 - **Estado:** Zustand (para o grid) + React Hook Form (formulários) + Zod (validação)
-- **Banco de dados:** PostgreSQL via Prisma ORM
-- **Autenticação:** NextAuth.js com CredentialsProvider
+- **Banco de dados:** PostgreSQL via Prisma **7** (config em `prisma.config.ts`)
+- **Autenticação:** **JWT próprio** (`jsonwebtoken` + `bcryptjs`), modelo `Operator` — **não** NextAuth (Doc 16 AD-03)
 - **IA:** OpenAI GPT-4o (principal) + Anthropic Claude como fallback, via wrapper abstrato. **Nomes de modelo configuráveis por env** (`OPENAI_MODEL`, `ANTHROPIC_MODEL`) — resolve I6 do Doc 10.
-- **PDF:** @react-pdf/renderer ou Puppeteer
-- **Deploy:** Vercel + Supabase (PostgreSQL)
+- **PDF:** **jsPDF** (Fase 3 — template do dossiê ainda a implementar)
+- **Deploy:** Vercel + Supabase/Neon (PostgreSQL)
 
 ---
 

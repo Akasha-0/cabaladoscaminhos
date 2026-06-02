@@ -25,8 +25,11 @@
 | 13 | [Identidade Ramiro & Design System v2](./13_identidade-ramiro-design-v2.md) | Consagração ao Cigano Ramiro, paleta laranja+azul royal (canônica) |
 | 14 | [Extensibilidade Oracular](./14_extensibilidade-oracular.md) | Contrato de plugin para I-Ching e novos sistemas |
 | 15 | [Glossário Oracular Canônico](./15_glossario-oracular.md) | Significados-base das 36 cartas e 16 Odus (anti-alucinação) |
+| 16 | [Revisão de Arquitetura & Plano de Decisões](./16_revisao-arquitetura-plano-decisoes.md) | Auditoria Visão × Implementação; ADRs de features e UI/UX; plano priorizado |
 
 > **Identidade visual:** o **Doc 13** é a fonte canônica da paleta (laranja + azul royal, consagração ao Cigano Ramiro). Em qualquer divergência de cor, ele prevalece sobre os demais.
+>
+> **Arquitetura (Visão × Código):** o **Doc 16** é a fonte canônica das decisões de arquitetura. Onde um doc mais antigo divergir sobre stack, rotas ou estrutura de pastas, o Doc 16 prevalece.
 
 ---
 

@@ -42,7 +42,7 @@ banco configurado          atendimentos               terapeutas
 |---|---|---|---|---|
 | T1.1 | Setup Next.js, Tailwind, Shadcn/ui | E1 | 🔴 | 4h |
 | T1.2 | Configurar Prisma + PostgreSQL + Migrations | E1 | 🔴 | 4h |
-| T1.3 | Implementar NextAuth + tela de Login | E1 | 🔴 | 6h |
+| T1.3 | Implementar auth JWT própria (Operator) + tela de Login | E1 | 🔴 | 6h |
 | T1.4 | Criar layout base do Dashboard (Sidebar + Topbar) | E1 | 🔴 | 6h |
 | T1.5 | Configurar fontes e design system (CSS vars) | E1 | 🟡 | 3h |
 | T1.6 | Criar constantes: 36 cartas e 16 Odus | E2 | 🔴 | 3h |
@@ -237,6 +237,6 @@ Antes de usar o sistema em atendimentos reais:
 - [ ] PDF exportado e formatado corretamente
 - [ ] Backup automático do banco configurado
 - [ ] Chaves de API rotacionadas (não usar as de desenvolvimento)
-- [ ] NEXTAUTH_SECRET seguro gerado em produção
+- [ ] JWT_SECRET seguro gerado em produção
 - [ ] Deploy em Vercel com domínio personalizado
 - [ ] Teste de carga: gerar 3 dossiês simultâneos sem timeout
