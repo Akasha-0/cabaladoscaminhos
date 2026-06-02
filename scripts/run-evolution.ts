@@ -11,7 +11,6 @@ import {
   DEFAULT_THRESHOLDS,
   calculateGrade
 } from '../src/lib/quality/metrics-framework'
-} from '../src/lib/quality/metrics-framework'
 
 interface EvolutionResult {
   cycleId: string
