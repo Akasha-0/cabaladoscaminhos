@@ -175,7 +175,9 @@ Ordem recomendada (cada item é uma entrega verificável):
 - **Justificativa:** enquanto o B2C existir, o escopo `.ramiro` é a escolha certa (isola sem quebrar o legado). Após a quarentena (AD-01), a paleta Ramiro deve **subir** para `:root`/`@theme`, eliminando o tema legado.
 - **Ação:** (curto prazo) manter `.ramiro`; (pós-AD-01) migrar tokens Ramiro para `@theme` e remover sidebar/chart legados.
 
-### AD-09 — Tipografia: completar com **Lora** (corpo do dossiê) e **JetBrains Mono** (números).
+### AD-09 — ✅ Tipografia completada com **Lora** (corpo do dossiê) e **JetBrains Mono** (números).
+> **Status: aplicada.** `layout.tsx` carrega Lora (`--font-lora`) e JetBrains Mono (`--font-jetbrains`); `globals.css` corrigiu `--font-mono` (antes auto-referente) → JetBrains, e adicionou `--font-dossier` → Lora. Números das casas (`font-mono` em `HouseCell`) já renderizam em JetBrains; `font-dossier` fica pronto para o `DossierViewer`/chat (telas B2B pendentes).
+
 - **Decisão:** Docs 05 §1.2 e 13 §5 especificam **Cinzel / Cormorant Garamond / JetBrains Mono / Lora**. O código carrega Cinzel + Cormorant, mas **Raleway** e **IM Fell English** no lugar de **Lora/JetBrains Mono**.
 - **Justificativa:** o corpo do dossiê (Doc 05 §5: `font-family: 'Lora'`) e os números de casa monospace (`JetBrains Mono`) são parte da identidade de leitura. A divergência é puramente de carregamento de fonte.
 - **Ação:** adicionar `Lora` e `JetBrains_Mono` em `layout.tsx`; mapear `--font-mono`→JetBrains e criar `--font-dossier`→Lora; aplicar Lora no `DossierViewer` e na bolha do Oráculo (Doc 12 §8).

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Cinzel, Cormorant_Garamond, Raleway, IM_Fell_English } from "next/font/google";
+import { Cinzel, Cormorant_Garamond, Raleway, IM_Fell_English, Lora, JetBrains_Mono } from "next/font/google";
 import { InstallPrompt } from "@/components/dashboard/InstallPrompt";
 import { OfflineIndicator } from "@/components/dashboard/OfflineIndicator";
 import { SupabaseProvider } from "@/components/providers/SupabaseProvider";
@@ -27,6 +27,20 @@ const imFell = IM_Fell_English({
   variable: "--font-imfell",
   subsets: ["latin"],
   weight: ["400"],
+});
+
+// Corpo do dossiê e bolhas do chat de consulta (Doc 05 §5 / Doc 13 §5).
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+// Números das casas, IDs e dados técnicos (Doc 05 §1.2 / Doc 13 §5).
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://cabaladoscaminhos.com';
@@ -138,7 +152,7 @@ export default function RootLayout({
         <link rel="robots" href="/robots.txt" />
       </head>
       <body
-        className={`${cinzel.variable} ${cormorant.variable} ${raleway.variable} ${imFell.variable} min-h-screen bg-background text-foreground antialiased`}
+        className={`${cinzel.variable} ${cormorant.variable} ${raleway.variable} ${imFell.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen bg-background text-foreground antialiased`}
       >
         <SupabaseProvider>
           {children}

@@ -5,12 +5,14 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Fonts */
+  /* Fonts (Doc 05 §1.2 / Doc 13 §5) */
   --font-sans: var(--font-raleway), system-ui, sans-serif;
   --font-serif: var(--font-cormorant), Georgia, serif;
-  --font-mono: var(--font-mono);
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --font-cinzel: var(--font-cinzel), serif;
   --font-imfell: var(--font-imfell), serif;
+  /* Corpo do dossiê gerado pela IA e bolhas do chat de consulta. */
+  --font-dossier: var(--font-lora), Georgia, serif;
 
   /* Colors - Sidebar */
   --color-sidebar-ring: #4338ca;
