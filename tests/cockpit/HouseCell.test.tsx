@@ -101,6 +101,6 @@ describe('HouseCell', () => {
     // Check for ring class (active state indicator)
     const cell = container.firstChild as HTMLElement;
     expect(cell.className).toContain('ring-2');
-    expect(cell.className).toContain('ring-amber-500');
+    expect(cell.className).toContain('ring-orange-500');
   });
 });

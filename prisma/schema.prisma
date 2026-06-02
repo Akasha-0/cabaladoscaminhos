@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ============================================================================
@@ -665,3 +664,4 @@ model JournalEntry {
   @@index([mood])
   @@index([createdAt])
   @@map("journal_entries")
+}
