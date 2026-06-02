@@ -48,12 +48,19 @@
     "src/proxy.ts"
   ],
   "ignorePatterns": [
-    "src/lib/orixa**",
-    "src/lib/od***",
-    "src/lib/os***",
-    "src/lib/ik***",
-    "src/lib/ir**.test.ts",
-    "**/*.test.tsx"
+    "src/lib/meji-*/**/*.ts",
+    "src/lib/irosun/**/*",
+    "src/lib/iwori/**/*",
+    "src/lib/obara/**/*",
+    "src/lib/okanle/**/*",
+    "src/lib/okanran/**/*",
+    "src/lib/owonrin/**/*",
+    "src/lib/orixa/**/*",
+    "src/lib/ogbe/**/*",
+    "src/lib/oturupon/**/*",
+    "src/lib/meji/**/*",
+    "src/lib/correlation/*.ts",
+    "tests/lib/**"
   ],
   "ignoreUnresolvedImports": [
     "tests/lib/**",
