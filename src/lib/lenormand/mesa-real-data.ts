@@ -591,3 +591,28 @@ export const ODUS_IFA: OduInfo[] = [
     preceptos: ['Buscar a totalidade', 'Integrar todas as lições'],
   },
 ];
+
+// ============================================================================
+// LOOKUP HELPERS
+// ============================================================================
+
+export function getCasaPorNumero(numero: number): CasaCigana | undefined {
+  return CASAS_MESA_REAL.find((c) => c.houseNumber === numero);
+}
+
+export function getCartaPorNumero(numero: number): CartaCigana | undefined {
+  return CARTAS_CIGANAS.find((c) => c.numero === numero);
+}
+
+export function getOduPorNumero(numero: number): OduInfo | undefined {
+  return ODUS_IFA.find((o) => o.numero === numero);
+}
+
+// Grid position: 9 columns × 4 rows, 1-indexed
+export function getPosicaoGrid(casaNumero: number): { row: number; col: number } {
+  const idx = casaNumero - 1;
+  return { row: Math.floor(idx / 9) + 1, col: (idx % 9) + 1 };
+}
+
+// Correlações especiais por casa (complementam o Doc 06 §2)
+export const CORRELACOES_ESPECIAIS: Record<number, { numerologia: string[]; tantrica: string[]; cabalistica: string[] }> = {};
