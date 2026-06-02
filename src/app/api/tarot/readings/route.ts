@@ -50,7 +50,7 @@ export interface TarotReading {
   question?: string;
   summary: string;
   createdAt: string;
-
+}
 
 // ============================================================
 // IN-MEMORY STORE (production would use a database)
