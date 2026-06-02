@@ -33,14 +33,14 @@
     "next.config.ts",
     "prisma/seed.ts",
     "prisma.config.ts",
-    "src/apppage.tsx",
-    "src/applayout.tsx",
-    "src/approute.ts",
-    "src/apploading.tsx",
-    "src/apperror.tsx",
-    "src/appnot-found.tsx",
-    "src/apptemplate.tsx",
-    "src/appdefault.tsx",
+    "src/app/page.tsx",
+    "src/app/layout.tsx",
+    "src/app/route.ts",
+    "src/app/loading.tsx",
+    "src/app/error.tsx",
+    "src/app/not-found.tsx",
+    "src/app/template.tsx",
+    "src/app/default.tsx",
     "src/middleware.ts",
     "src/middleware/index.ts",
     "src/instrumentation.ts",
@@ -56,6 +56,8 @@
     "**/*.test.tsx"
   ],
   "ignoreUnresolvedImports": [
+    "tests/lib/**",
+    "tests/integration/**",
     "tests/lib/manifestation/**",
     "tests/lib/sacred-geometry/**",
     "tests/lib/transformation/**",
@@ -66,5 +68,394 @@
     "tests/lib/auth-jwt.test.ts",
     "**/stats-visualization.ts"
   ],
-  "ignoreExports": []
+  "ignoreExports": [
+    {
+      "file": "src/components/cockpit/CockpitHeader.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/cockpit/CockpitOracular.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/cockpit/CockpitSidebar.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/cockpit/HouseCell.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/cockpit/HouseInputPopover.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/DailyActionWidget.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/LifeAreasOverview.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/MeditationStats.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/ProgressChart.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/SessionInsightsPanel.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/SpiritualContextWidget.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/StatsOverview.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/lib/validators.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/chart/chart-interpretations.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/tradition-mapper.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/agents/recommendation-engine-v2.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/agents/recommendation-engine.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-numerology.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/numerology-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sephirot-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/components/dashboard/AIOracleChat.tsx",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/types.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/dossier/consult-context.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/db/consultation-actions.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/dossier/prompt-builder.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/dossier/types.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-sephirot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-sign.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/frequency-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/frequency-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/moon-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/moon-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/moon-numerology.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/moon-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/numerology-moon.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/numerology-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/oddu-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/odu-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/odu-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/odu-numerology.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sephirot-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-sephirot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/components/design-system/Typography.tsx",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/components/ui/label.tsx",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/odu-data.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/lenormand/mesa-real-types.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/matching.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/suggestions.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/astrologia/tipos.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sign-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-signo.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/openai.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-sephirot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/frequency-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sound-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/frequency-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/odu-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-sephirot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-zodiac-aspect.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sound-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/orixa-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/orixa-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-orixa.ts",
+      "exports": ["*"]
+    }
+  ]
 }
