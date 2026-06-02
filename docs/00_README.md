@@ -28,6 +28,7 @@
 | 16 | [Revisão de Arquitetura & Plano de Decisões](./16_revisao-arquitetura-plano-decisoes.md) | Auditoria Visão × Implementação; ADRs de features e UI/UX; plano priorizado |
 | 17 | [Arquitetura da Interface Única (Mesa Real)](./17_arquitetura-interface-unica.md) | A visão "uma só página": 36 casas em cards + Odus + 4 entradas natais; poda de componentes; camadas de inteligência |
 | 18 | [Blueprint Técnico & Contratos](./18_blueprint-tecnico-contratos.md) | Contratos de dados/estado/API: `MatrixData` canônico, store Zustand, máquina de estados, sequências, decisões AD-18 |
+| 19 | [Estratégia de Testes, Qualidade & CI](./19_estrategia-testes-qualidade.md) | Partição core/legado (Vitest projects), pirâmide de testes, testes-guardião de determinismo, gate de CI, orçamento de performance |
 
 > **Identidade visual:** o **Doc 13** é a fonte canônica da paleta (laranja + azul royal, consagração ao Cigano Ramiro). Em qualquer divergência de cor, ele prevalece sobre os demais.
 >
