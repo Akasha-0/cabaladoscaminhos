@@ -1,16 +1,22 @@
 // ============================================================
-// API ROUTE — Login do Operator (Fase 8 + 13)
+// API ROUTE — Login do Operator (Fase 8 + 13 + 15)
 // ============================================================
 // Recebe { email, password }, valida credenciais contra o Operator no
-// banco, assina JWT, cria OperatorSession (Fase 13 — revogação), e
-// seta o cookie `cockpit_session` no response.
+// banco, emite PAR access (15min) + refresh (30d) (Fase 15), cria
+// DUAS OperatorSession (Fase 13 — revogação), e seta OS DOIS cookies
+// no response: `cockpit_session` (access) + `cockpit_refresh` (refresh).
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
-import { signOperatorToken, setOperatorSessionCookie } from '@/lib/auth/operator-jwt';
-import { createSession } from '@/lib/auth/operator-sessions';
+import {
+  signOperatorAccessToken,
+  signOperatorRefreshToken,
+  setOperatorSessionCookie,
+  setOperatorRefreshCookie,
+} from '@/lib/auth/operator-jwt';
+import { createSession, createRefreshSession } from '@/lib/auth/operator-sessions';
 
 const loginSchema = z.object({
   // Preprocess normaliza o email (lowercase + trim) ANTES de validar
@@ -56,24 +62,36 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
   }
 
-  // 3) Assinar JWT
-  const token = signOperatorToken({ id: operator.id, role: operator.role });
+  // 3) Fase 15 — emitir par access (15min) + refresh (30d)
+  const accessToken = signOperatorAccessToken({ id: operator.id, role: operator.role });
+  const refreshToken = signOperatorRefreshToken({ id: operator.id, role: operator.role });
 
-  // 4) Criar OperatorSession (Fase 13) — habilita logout imediato.
+  const ipAddress = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip');
+  const userAgent = request.headers.get('user-agent');
+
+  // 4) Criar DUAS OperatorSession (Fase 13 + 15)
   //    Falha aqui é logged mas NÃO bloqueia o login (degradação suave).
   try {
     await createSession({
       operatorId: operator.id,
-      token,
-      ipAddress: request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip'),
-      userAgent: request.headers.get('user-agent'),
+      token: accessToken,
+      type: 'ACCESS',
+      ipAddress,
+      userAgent,
+    });
+    await createRefreshSession({
+      operatorId: operator.id,
+      token: refreshToken,
+      ipAddress,
+      userAgent,
     });
   } catch (err) {
-    console.error('[operator/auth/login] failed to create session', err);
+    console.error('[operator/auth/login] failed to create session(s)', err);
   }
 
-  // 5) Setar cookie httpOnly e responder
+  // 5) Setar 2 cookies httpOnly e responder
   const response = NextResponse.json({ operator: publicOperator(operator) });
-  setOperatorSessionCookie(response, token);
+  setOperatorSessionCookie(response, accessToken);
+  setOperatorRefreshCookie(response, refreshToken);
   return response;
 }

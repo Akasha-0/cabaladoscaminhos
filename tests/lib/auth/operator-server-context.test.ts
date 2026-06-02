@@ -68,8 +68,9 @@ afterEach(() => {
 });
 
 function makeValidToken(operatorId: string, role: 'OPERATOR' | 'ADMIN' = 'OPERATOR'): string {
+  // Fase 15: tokens precisam ter claim type='access' para passar a verificação.
   return jwt.sign(
-    { sub: operatorId, role },
+    { sub: operatorId, role, type: 'access' },
     TEST_SECRET,
     { algorithm: 'HS256', expiresIn: '7d' }
   );
@@ -94,7 +95,7 @@ describe('getOperatorFromServerContext — cookie JWT', () => {
     expect(result).toEqual(mockOperator);
     expect(mockSessionFindUnique).toHaveBeenCalledWith({
       where: { tokenHash: expect.stringMatching(/^[a-f0-9]{64}$/) },
-      select: { expiresAt: true, revokedAt: true },
+      select: { type: true, expiresAt: true, refreshExpiresAt: true, revokedAt: true },
     });
     expect(mockFindUnique).toHaveBeenCalledWith({ where: { id: 'op-1' } });
   });

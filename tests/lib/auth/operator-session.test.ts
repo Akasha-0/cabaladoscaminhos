@@ -56,8 +56,9 @@ import {
 // ----------------------------------------------------------------------------
 
 function makeValidToken(operatorId: string, role: 'OPERATOR' | 'ADMIN' = 'OPERATOR'): string {
+  // Fase 15: tokens precisam ter claim type='access' para passar a verificação.
   return jwt.sign(
-    { sub: operatorId, role },
+    { sub: operatorId, role, type: 'access' },
     process.env.JWT_SECRET || 'dev-only-fallback-secret-do-not-use-in-prod',
     { algorithm: 'HS256', expiresIn: '7d' }
   );

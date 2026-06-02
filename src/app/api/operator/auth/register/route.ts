@@ -1,19 +1,25 @@
 // ============================================================
-// API ROUTE — Registro de Operator (Fase 8)
+// API ROUTE — Registro de Operator (Fase 8 + 15)
 // ============================================================
 // Cria um novo Operator com email+senha. Decisão Fase 8: endpoint
 // público (útil para primeiro usuário, demos, dev). Em produção,
 // restrinja via reverse-proxy/allowlist — o helper
 // `ALLOW_OPERATOR_REGISTRATION` permite ligar/desligar sem mexer no código.
 //
-// Comportamento: registra e AUTO-LOGA o usuário (seta cookie de sessão)
-// para simplificar o fluxo de primeiro uso.
+// Comportamento: registra e AUTO-LOGA o usuário (seta par de cookies
+// access+refresh — Fase 15) para simplificar o fluxo de primeiro uso.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
-import { signOperatorToken, setOperatorSessionCookie } from '@/lib/auth/operator-jwt';
+import {
+  signOperatorAccessToken,
+  signOperatorRefreshToken,
+  setOperatorSessionCookie,
+  setOperatorRefreshCookie,
+} from '@/lib/auth/operator-jwt';
+import { createSession, createRefreshSession } from '@/lib/auth/operator-sessions';
 
 const BCRYPT_COST = 12; // ~250ms em CPU moderna; bom balanço segurança/perf.
 
@@ -82,12 +88,37 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // Auto-login: assina JWT e seta cookie
-  const token = signOperatorToken({ id: operator.id, role: operator.role });
+  // Fase 15: auto-login com par access+refresh
+  const accessToken = signOperatorAccessToken({ id: operator.id, role: operator.role });
+  const refreshToken = signOperatorRefreshToken({ id: operator.id, role: operator.role });
+
+  const ipAddress = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip');
+  const userAgent = request.headers.get('user-agent');
+
+  // Cria as 2 OperatorSession (best-effort, falha não bloqueia)
+  try {
+    await createSession({
+      operatorId: operator.id,
+      token: accessToken,
+      type: 'ACCESS',
+      ipAddress,
+      userAgent,
+    });
+    await createRefreshSession({
+      operatorId: operator.id,
+      token: refreshToken,
+      ipAddress,
+      userAgent,
+    });
+  } catch (err) {
+    console.error('[operator/auth/register] failed to create session(s)', err);
+  }
+
   const response = NextResponse.json(
     { operator: publicOperator(operator) },
     { status: 201 }
   );
-  setOperatorSessionCookie(response, token);
+  setOperatorSessionCookie(response, accessToken);
+  setOperatorRefreshCookie(response, refreshToken);
   return response;
 }

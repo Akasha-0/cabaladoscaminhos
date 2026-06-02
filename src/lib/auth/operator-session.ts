@@ -53,7 +53,9 @@ export async function getOperatorFromRequest(
   // 1) Cookie JWT (caminho de produção)
   const token = await readJwtFromRequest(request);
   if (token) {
-    const payload = verifyOperatorToken(token);
+    // Fase 15: /me só aceita access token. Refresh token aqui = 401
+    // (deve usar POST /refresh).
+    const payload = verifyOperatorToken(token, 'access');
     if (payload) {
       // Fase 13: verifica também se a sessão não foi revogada/expirada
       // (logout imediato). Falha aqui → null (= 401). DB error →
@@ -134,7 +136,8 @@ export async function getOperatorFromServerContext(): Promise<Operator | null> {
   // 1) Cookie JWT (caminho de produção)
   const token = cookieStore.get(OPERATOR_TOKEN_COOKIE)?.value ?? null;
   if (token) {
-    const payload = verifyOperatorToken(token);
+    // Fase 15: server context só aceita access token (mesma regra do /me).
+    const payload = verifyOperatorToken(token, 'access');
     if (payload) {
       // Fase 13: valida não-revogação da session. DB error → fail-open
       // (DB down não deve derrubar todos os usuários logados).

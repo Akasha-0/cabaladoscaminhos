@@ -177,7 +177,7 @@ describe('POST /api/mesa-real/save', () => {
     // Fase 8: o cookie precisa ser um JWT válido assinado, não mais um
     // id cru.
     const validToken = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR' },
+      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
       process.env.JWT_SECRET || 'dev-only-fallback-secret-do-not-use-in-prod',
       { algorithm: 'HS256', expiresIn: '7d' }
     );

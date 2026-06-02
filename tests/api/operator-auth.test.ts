@@ -1,6 +1,8 @@
 // tests/api/operator-auth.test.ts
-// Integração das rotas /api/operator/auth/* (Fase 8).
-// Cobre: login, logout, register, me.
+// Integração das rotas /api/operator/auth/* (Fase 8 + 13 + 15).
+// Cobre: login (emite par access+refresh, 2 cookies), logout (revoga
+// 2 sessions, limpa 2 cookies), register (auto-login com 2 cookies),
+// me (só aceita access, não refresh).
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
@@ -22,14 +24,18 @@ vi.mock('bcryptjs', () => {
   return { default: { hash, compare }, hash, compare };
 });
 
-// Prisma — Operator model mockado
+// Prisma — Operator + OperatorSession models mockados
 const mockFindUnique = vi.fn();
 const mockCreate = vi.fn();
+const mockOperatorSessionCreate = vi.fn();
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     operator: {
       findUnique: (args: unknown) => mockFindUnique(args),
       create: (args: unknown) => mockCreate(args),
+    },
+    operatorSession: {
+      create: (args: unknown) => mockOperatorSessionCreate(args),
     },
   },
 }));
@@ -90,13 +96,24 @@ function getSetCookie(response: Response): string | null {
   return response.headers.get('set-cookie');
 }
 
+function getAllSetCookies(response: Response): string[] {
+  // Pode haver múltiplos Set-Cookie headers
+  const single = response.headers.get('set-cookie');
+  if (!single) return [];
+  return [single];
+  // Em algumas plataformas é uma string com múltiplos cookies separados
+  // por ', ' (mas ', ' também aparece em Expires=Wed, 01 Jan...)
+  // Para simplicidade do teste, assumimos 1-2 cookies por request
+}
+
 // ============================================================================
 // POST /api/operator/auth/login
 // ============================================================================
 
 describe('POST /api/operator/auth/login', () => {
-  it('retorna 200 + operator + cookie quando credenciais corretas', async () => {
+  it('retorna 200 + operator + 2 cookies quando credenciais corretas (Fase 15)', async () => {
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
+    mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
     const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
@@ -115,13 +132,15 @@ describe('POST /api/operator/auth/login', () => {
     // Sem passwordHash na response
     expect(body.operator.passwordHash).toBeUndefined();
 
-    // Cookie setado
+    // 2 cookies setados (access + refresh)
     const setCookie = getSetCookie(res);
     expect(setCookie).toMatch(/cockpit_session=/);
+    expect(setCookie).toMatch(/cockpit_refresh=/);
   });
 
-  it('seta cookie com JWT válido (verificável com verifyOperatorToken)', async () => {
+  it('access cookie tem JWT válido com type=access (Fase 15)', async () => {
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
+    mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
     const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
@@ -134,10 +153,50 @@ describe('POST /api/operator/auth/login', () => {
     const token = tokenMatch?.[1];
     expect(token).toBeTruthy();
 
-    // Decodifica e verifica
     const decoded = jwt.verify(token!, TEST_SECRET, { algorithms: ['HS256'] });
     expect((decoded as { sub: string }).sub).toBe('op-1');
     expect((decoded as { role: string }).role).toBe('OPERATOR');
+    expect((decoded as { type: string }).type).toBe('access');
+  });
+
+  it('refresh cookie tem JWT válido com type=refresh (Fase 15)', async () => {
+    mockFindUnique.mockResolvedValue(mockOperatorRecord);
+    mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
+
+    const { POST } = await import('@/app/api/operator/auth/login/route');
+    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
+      email: 'ramiro@cabala.com',
+      password: 'secret123',
+    }));
+
+    const setCookie = getSetCookie(res);
+    const tokenMatch = setCookie?.match(/cockpit_refresh=([^;]+)/);
+    const token = tokenMatch?.[1];
+    expect(token).toBeTruthy();
+
+    const decoded = jwt.verify(token!, TEST_SECRET, { algorithms: ['HS256'] });
+    expect((decoded as { sub: string }).sub).toBe('op-1');
+    expect((decoded as { type: string }).type).toBe('refresh');
+  });
+
+  it('cria DUAS OperatorSession (ACCESS + REFRESH) — Fase 15', async () => {
+    mockFindUnique.mockResolvedValue(mockOperatorRecord);
+    mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
+
+    const { POST } = await import('@/app/api/operator/auth/login/route');
+    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
+      email: 'ramiro@cabala.com',
+      password: 'secret123',
+    }));
+
+    expect(res.status).toBe(200);
+    expect(mockOperatorSessionCreate).toHaveBeenCalledTimes(2);
+
+    const types = mockOperatorSessionCreate.mock.calls.map(
+      (call) => (call[0] as { data: { type: string } }).data.type
+    );
+    expect(types).toContain('ACCESS');
+    expect(types).toContain('REFRESH');
   });
 
   it('retorna 401 quando email não existe', async () => {
@@ -213,11 +272,12 @@ describe('POST /api/operator/auth/logout', () => {
     expect(body.success).toBe(true);
   });
 
-  it('limpa o cookie cockpit_session', async () => {
+  it('limpa os 2 cookies cockpit_session + cockpit_refresh (Fase 15)', async () => {
     const { POST } = await import('@/app/api/operator/auth/logout/route');
     const res = await POST();
     const setCookie = getSetCookie(res);
     expect(setCookie).toMatch(/cockpit_session=/);
+    expect(setCookie).toMatch(/cockpit_refresh=/);
     expect(setCookie).toMatch(/Max-Age=0/);
   });
 
@@ -235,9 +295,10 @@ describe('POST /api/operator/auth/logout', () => {
 // ============================================================================
 
 describe('POST /api/operator/auth/register', () => {
-  it('cria Operator + auto-login (seta cookie) com dados válidos', async () => {
+  it('cria Operator + auto-login (seta 2 cookies) com dados válidos', async () => {
     mockFindUnique.mockResolvedValue(null); // email não existe
     mockCreate.mockResolvedValue(mockOperatorRecord);
+    mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/register/route');
     const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
@@ -255,7 +316,10 @@ describe('POST /api/operator/auth/register', () => {
       role: 'OPERATOR',
     });
     expect(body.operator.passwordHash).toBeUndefined();
-    expect(getSetCookie(res)).toMatch(/cockpit_session=/);
+
+    const setCookie = getSetCookie(res);
+    expect(setCookie).toMatch(/cockpit_session=/);
+    expect(setCookie).toMatch(/cockpit_refresh=/);
   });
 
   it('bcrypt.hash é chamado com a senha e cost factor 12', async () => {
@@ -347,6 +411,7 @@ describe('POST /api/operator/auth/register', () => {
 
     mockFindUnique.mockResolvedValue(null);
     mockCreate.mockResolvedValue(mockOperatorRecord);
+    mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/register/route');
     const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
@@ -366,9 +431,9 @@ describe('POST /api/operator/auth/register', () => {
 // ============================================================================
 
 describe('GET /api/operator/auth/me', () => {
-  it('retorna operator quando autenticado via JWT cookie', async () => {
+  it('retorna operator quando autenticado via JWT cookie (access)', async () => {
     const token = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR' },
+      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
       TEST_SECRET,
       { algorithm: 'HS256', expiresIn: '7d' }
     );
@@ -404,11 +469,39 @@ describe('GET /api/operator/auth/me', () => {
 
   it('retorna 401 quando token é expirado', async () => {
     const expired = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR' },
+      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
       TEST_SECRET,
       { algorithm: 'HS256', expiresIn: '-1s' }
     );
     cookieStore.current = { cockpit_session: expired };
+    const { GET } = await import('@/app/api/operator/auth/me/route');
+    const res = await GET(makeGetRequest('http://l/api/operator/auth/me'));
+    expect(res.status).toBe(401);
+  });
+
+  it('retorna 401 quando cookie é REFRESH (não access) — Fase 15', async () => {
+    const refresh = jwt.sign(
+      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
+      TEST_SECRET,
+      { algorithm: 'HS256', expiresIn: '7d' }
+    );
+    cookieStore.current = { cockpit_session: refresh };
+    mockFindUnique.mockResolvedValue(mockOperatorRecord);
+
+    const { GET } = await import('@/app/api/operator/auth/me/route');
+    const res = await GET(makeGetRequest('http://l/api/operator/auth/me'));
+    expect(res.status).toBe(401);
+  });
+
+  it('retorna 401 quando token não tem type (back-compat Fase 13)', async () => {
+    const oldToken = jwt.sign(
+      { sub: 'op-1', role: 'OPERATOR' }, // sem type
+      TEST_SECRET,
+      { algorithm: 'HS256', expiresIn: '7d' }
+    );
+    cookieStore.current = { cockpit_session: oldToken };
+    mockFindUnique.mockResolvedValue(mockOperatorRecord);
+
     const { GET } = await import('@/app/api/operator/auth/me/route');
     const res = await GET(makeGetRequest('http://l/api/operator/auth/me'));
     expect(res.status).toBe(401);

@@ -24,6 +24,14 @@ enum UserRole {
   ADMIN
 }
 
+/// Tipo de token de sessão (Fase 15 — refresh tokens).
+/// ACCESS: token de curta duração (15min) usado em toda request.
+/// REFRESH: token de longa duração (30d) usado SÓ no endpoint /refresh.
+enum OperatorSessionType {
+  ACCESS
+  REFRESH
+}
+
 enum ReadingStatus {
   PENDING // Mesa preenchida, dossiê ainda não gerado
   GENERATING // IA processando
@@ -52,11 +60,18 @@ model Operator {
   @@map("operators")
 }
 
-/// Sessão ativa do Operator (B2B) — Fase 13.
+/// Sessão ativa do Operator (B2B) — Fase 13 + Fase 15 (refresh).
 ///
-/// Cada login cria uma OperatorSession com o hash SHA-256 do JWT (não
-/// o token em si). Logout marca `revokedAt` (soft revoke) — permite
-/// auditoria de quem logou de onde, sem expor credenciais.
+/// Cada login cria DUAS OperatorSession:
+///   - type=ACCESS com hash do access token (15min, cookie `cockpit_session`)
+///   - type=REFRESH com hash do refresh token (30d, cookie `cockpit_refresh`)
+///
+/// O endpoint /refresh faz rotação: revoga o refresh usado e emite um
+/// novo par access+refresh. Detecção de reuso de refresh revogado →
+/// revoga TODAS as sessões do operator (sinal de roubo de cookie).
+///
+/// Logout marca `revokedAt` (soft revoke) — permite auditoria de quem
+/// logou de onde, sem expor credenciais.
 ///
 /// Trade-off: 1 query extra em /api/operator/auth/me para verificar
 /// não-revogação. Para o cockpit B2B (não high-traffic), é OK.
@@ -66,8 +81,18 @@ model OperatorSession {
   /// Hash SHA-256 do JWT (NUNCA o token em si). 64 chars hex.
   tokenHash String @unique
 
+  /// Tipo do token: ACCESS (curta duração) ou REFRESH (longa duração).
+  /// Fase 15: substituiu o single-token por par access+refresh.
+  type OperatorSessionType @default(ACCESS)
+
   /// Quando o JWT expira — usado para cleanup automático.
+  /// Para type=ACCESS: ~15min. Para type=REFRESH: ~30d.
   expiresAt DateTime
+
+  /// (Fase 15) Expiração específica do refresh, para o caso do
+  /// access de 15min ser revogado/logout mantendo o refresh ativo.
+  /// Default: igual a expiresAt (mantém compat com Fase 13).
+  refreshExpiresAt DateTime?
 
   /// Soft revoke: se != null, sessão está revogada.
   /// Mantida para auditoria (quem logou de onde, quando foi revogada).
@@ -84,7 +109,9 @@ model OperatorSession {
   updatedAt DateTime @updatedAt
 
   @@index([operatorId])
+  @@index([operatorId, type])
   @@index([expiresAt])
+  @@index([type, revokedAt])
   @@map("operator_sessions")
 }
 
