@@ -25,19 +25,9 @@ import crypto from 'node:crypto';
 // Constantes
 // ============================================================================
 
-/** Cookie do access token (curta duração, 15min). */
-// fallow-ignore-next-line unused-export
 export const OPERATOR_TOKEN_COOKIE = 'cockpit_session';
-/** Cookie do refresh token (longa duração, 30d). */
-// fallow-ignore-next-line unused-export
 export const OPERATOR_REFRESH_COOKIE = 'cockpit_refresh';
 
-/** TTL do access token: 15 minutos. */
-// fallow-ignore-next-line unused-export
-export const OPERATOR_ACCESS_TTL_SECONDS = 15 * 60;
-/** TTL do refresh token: 30 dias. */
-// fallow-ignore-next-line unused-export
-export const OPERATOR_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
 
 /**
  * @deprecated Mantido só para retrocompat com Fase 13 (cleanupExpiredSessions
@@ -223,8 +213,6 @@ export function verifyOperatorToken(
 
 /**
  * Seta o cookie de access token no response (15min).
- */
-// fallow-ignore-next-line unused-export
 export function setOperatorSessionCookie(
   response: { cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void } },
   token: string
@@ -234,9 +222,6 @@ export function setOperatorSessionCookie(
 
 /**
  * Seta o cookie de refresh token no response (30d).
- */
-// fallow-ignore-next-line unused-export
-export function setOperatorRefreshCookie(
   response: { cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void } },
   token: string
 ): void {
@@ -245,9 +230,6 @@ export function setOperatorRefreshCookie(
 
 /**
  * Limpa o cookie de access no response.
- */
-// fallow-ignore-next-line unused-export
-export function clearOperatorSessionCookie(response: {
   cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
 }): void {
   response.cookies.set(OPERATOR_TOKEN_COOKIE, '', clearCookieOptions());
@@ -255,9 +237,6 @@ export function clearOperatorSessionCookie(response: {
 
 /**
  * Limpa o cookie de refresh no response.
- */
-// fallow-ignore-next-line unused-export
-export function clearOperatorRefreshCookie(response: {
   cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
 }): void {
   response.cookies.set(OPERATOR_REFRESH_COOKIE, '', clearCookieOptions());

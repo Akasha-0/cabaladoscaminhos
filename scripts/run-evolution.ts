@@ -11,7 +11,7 @@ import {
   type QualityReport,
   DEFAULT_THRESHOLDS,
   calculateGrade
-// fallow-ignore-next-line unresolved-import
+} from '../src/lib/quality/metrics-framework'
 } from '../src/lib/quality/metrics-framework'
 
 interface EvolutionResult {
