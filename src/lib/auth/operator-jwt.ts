@@ -250,6 +250,7 @@ export function clearOperatorSessionCookie(response: {
 export function clearOperatorRefreshCookie(response: {
   cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
 }): void {
+  response.cookies.set(OPERATOR_REFRESH_COOKIE, '', clearCookieOptions());
 }
 
 // ============================================================================
