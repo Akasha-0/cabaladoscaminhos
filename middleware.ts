@@ -37,6 +37,28 @@ const SECURITY_HEADERS = {
 };
 
 // ============================================
+// Quarentena do B2C legado (Doc 16 AD-01)
+// --------------------------------------------
+// O produto é o Cockpit Oracular (B2B). A plataforma B2C de bem-estar
+// (dashboard, mapa pessoal, rituais, billing…) é fora de escopo (Doc 09 §5.1/§9).
+// Esta quarentena a remove do roteamento de produção SEM apagar nada:
+//   - `LEGACY_B2C=on`  → restaura o B2C (reversível por flag).
+//   - ausente/qualquer → B2C quarentenado: páginas → /cockpit; APIs → 404.
+// ============================================
+
+const LEGACY_B2C_ENABLED = process.env.LEGACY_B2C === 'on';
+
+// Prefixos do produto B2B — sempre acessíveis.
+const B2B_PREFIXES = ['/cockpit', '/api/mesa-real', '/api/consult', '/api/operator', '/api/health'];
+// Infraestrutura/PWA — sempre acessível.
+const INFRA_PREFIXES = ['/_next', '/favicon.ico', '/manifest', '/icons', '/offline', '/sw', '/api/og'];
+
+function isAllowedWhenQuarantined(pathname: string): boolean {
+  const prefixes = [...B2B_PREFIXES, ...INFRA_PREFIXES];
+  return prefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
+}
+
+// ============================================
 // Middleware - Auth is handled client-side
 // ============================================
 
@@ -52,6 +74,17 @@ export async function middleware(request: NextRequest) {
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
+
+  // ── Quarentena do B2C legado (Doc 16 AD-01) ──
+  // Tudo que não é B2B nem infraestrutura é bloqueado quando a flag está desligada.
+  if (!LEGACY_B2C_ENABLED && !isAllowedWhenQuarantined(pathname)) {
+    if (pathname.startsWith('/api/')) {
+      // APIs legadas não existem no produto B2B.
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
+    // Raiz e páginas legadas levam ao Cockpit (entrada única do produto).
+    return NextResponse.redirect(new URL('/cockpit', request.url));
+  }
 
   // Skip rate limiting for excluded paths
   const EXCLUDED_PATHS = ['/_next', '/favicon.ico', '/api/health'];

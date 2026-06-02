@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { requireOperator } from '@/lib/auth/operator-session';
 import {
   createClient,
   getClient,
@@ -17,9 +18,13 @@ import {
 
 // ============================================================
 // CLIENT CRUD ROUTES
+// Todas exigem um Operator autenticado (Doc 16 AD-03 / Doc 09 §5.2):
+// dados de consulente são confidenciais e nunca devem ser acessíveis
+// sem sessão. O operador vem da sessão — nunca do corpo da requisição.
 // ============================================================
 
-// Schema for client creation
+// Schema for client creation (sem userId: a identidade vem da sessão, e o
+// modelo Client não é dono por-operador — Doc 16 §2.2 / AD-03).
 const createClientSchema = z.object({
   fullName: z.string().min(1),
   birthDate: z.string().datetime(),
@@ -27,7 +32,6 @@ const createClientSchema = z.object({
   birthCity: z.string().optional(),
   birthState: z.string().optional(),
   birthCountry: z.string().optional(),
-  userId: z.string().min(1),
 });
 
 // ============================================================
@@ -35,6 +39,9 @@ const createClientSchema = z.object({
 // ============================================================
 export async function GET(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q');
     const clientId = searchParams.get('clientId');
@@ -75,6 +82,9 @@ export async function GET(request: NextRequest) {
 // ============================================================
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const body = await request.json();
     const data = createClientSchema.parse(body);
 
@@ -85,7 +95,6 @@ export async function POST(request: NextRequest) {
       birthCity: data.birthCity,
       birthState: data.birthState,
       birthCountry: data.birthCountry,
-      userId: data.userId,
     });
 
     return NextResponse.json({ client }, { status: 201 });
@@ -110,6 +119,9 @@ export async function POST(request: NextRequest) {
 // ============================================================
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const body = await request.json();
     const { action, clientId, ...data } = body;
 
@@ -162,6 +174,9 @@ export async function PATCH(request: NextRequest) {
 // ============================================================
 export async function DELETE(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { searchParams } = new URL(request.url);
     const clientId = searchParams.get('clientId');
 

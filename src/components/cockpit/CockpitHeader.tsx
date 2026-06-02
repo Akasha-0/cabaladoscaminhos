@@ -1,21 +1,19 @@
 // src/components/cockpit/CockpitHeader.tsx
-// Header with progress indicator, quick actions e info do Operator logado
-// (Fase 11 — UI de auth).
+// Header with progress indicator and quick actions
 
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import {
   Trash2,
   Zap,
-  LogOut,
-  User as UserIcon,
+  LogOut
 } from 'lucide-react';
 import { useCockpitStore } from '@/stores/cockpit-store';
-import { useOperatorAuth } from '@/components/providers/OperatorAuthProvider';
 
 interface CockpitHeaderProps {
   showDebug?: boolean;
@@ -24,11 +22,20 @@ interface CockpitHeaderProps {
 }
 
 export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: CockpitHeaderProps) {
+  const router = useRouter();
   const { getFilledCount } = useCockpitStore();
-  const { operator, signOut } = useOperatorAuth();
   const filledCount = getFilledCount();
   const totalHouses = 36;
   const progressPercent = (filledCount / totalHouses) * 100;
+
+  async function handleLogout() {
+    try {
+      await fetch('/api/operator/auth/logout', { method: 'POST' });
+    } finally {
+      router.push('/cockpit/login');
+      router.refresh();
+    }
+  }
 
   return (
     <div className="flex items-center justify-between px-6 py-3 bg-slate-900/50 border-b border-slate-800/50">
@@ -50,8 +57,8 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
               Cartas na Mesa
             </p>
             <div className="flex items-center gap-2 mt-1">
-              <Progress
-                value={progressPercent}
+              <Progress 
+                value={progressPercent} 
                 className="h-1.5 w-24 bg-slate-800"
               />
               <span className="text-xs text-slate-500">
@@ -81,7 +88,7 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
       )}
 
       {/* Right - Actions */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         {showDebug && onAutoFill && (
           <Button
             variant="ghost"
@@ -93,7 +100,7 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
             Auto-preenchimento
           </Button>
         )}
-
+        
         <Button
           variant="ghost"
           size="sm"
@@ -104,31 +111,16 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
           Limpar Mesa
         </Button>
 
-        {/* Operator info + Logout */}
-        {operator && (
-          <div className="flex items-center gap-2 pl-3 ml-1 border-l border-slate-800">
-            <div className="text-right hidden md:block">
-              <p className="text-xs font-medium text-slate-200 leading-tight">
-                {operator.name}
-              </p>
-              <p className="text-[10px] text-slate-500 leading-tight">
-                {operator.email}
-              </p>
-            </div>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500/20 to-royal/20 border border-orange-500/30 flex items-center justify-center">
-              <UserIcon className="w-4 h-4 text-orange-400" />
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => void signOut()}
-              className="text-slate-400 hover:text-orange-300 hover:bg-orange-500/10"
-              aria-label="Sair"
-            >
-              <LogOut className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleLogout}
+          className="text-slate-400 hover:text-orange-400 hover:bg-orange-500/10"
+          title="Encerrar sessão do operador"
+        >
+          <LogOut className="w-4 h-4 mr-2" />
+          Sair
+        </Button>
       </div>
     </div>
   );

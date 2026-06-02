@@ -7,18 +7,19 @@ import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
 // Schema for creating a client
-const createClientSchema = z.object({
+// Sem `userId`: o modelo Client não armazena dono por-operador (Doc 16 §2.2);
+// a autorização vem do Operator autenticado na rota, não de um campo no corpo.
+export const createClientSchema = z.object({
   fullName: z.string().min(1, 'Nome completo é obrigatório'),
   birthDate: z.string().datetime({ message: 'Data de nascimento inválida' }),
   birthTime: z.string().optional(),
   birthCity: z.string().optional(),
   birthState: z.string().optional(),
   birthCountry: z.string().optional(),
-  userId: z.string().min(1, 'userId é obrigatório'),
 });
 
 // Schema for updating a client
-const updateClientSchema = z.object({
+export const updateClientSchema = z.object({
   fullName: z.string().min(1).optional(),
   birthDate: z.string().datetime().optional(),
   birthTime: z.string().optional(),
@@ -28,7 +29,7 @@ const updateClientSchema = z.object({
 });
 
 // Schema for saving calculation maps
-const saveClientMapsSchema = z.object({
+export const saveClientMapsSchema = z.object({
   astrologyMap: z.record(z.unknown()).optional(),
   kabalisticMap: z.record(z.unknown()).optional(),
   tantricMap: z.record(z.unknown()).optional(),
