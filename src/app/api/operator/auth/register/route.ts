@@ -1,5 +1,5 @@
 // ============================================================
-// API ROUTE — Registro de Operator (Fase 8 + 15)
+// API ROUTE — Registro de Operator (Fase 8 + 15 + 18)
 // ============================================================
 // Cria um novo Operator com email+senha. Decisão Fase 8: endpoint
 // público (útil para primeiro usuário, demos, dev). Em produção,
@@ -8,6 +8,9 @@
 //
 // Comportamento: registra e AUTO-LOGA o usuário (seta par de cookies
 // access+refresh — Fase 15) para simplificar o fluxo de primeiro uso.
+//
+// Fase 18: rate-limit por IP (3 registros / 1h) via Redis. Mitiga
+// account-stuffing caso o endpoint seja exposto publicamente.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -20,6 +23,10 @@ import {
   setOperatorRefreshCookie,
 } from '@/lib/auth/operator-jwt';
 import { createSession, createRefreshSession } from '@/lib/auth/operator-sessions';
+import {
+  applyRateLimitHeaders,
+  enforceAuthRateLimit,
+} from '@/lib/auth/rate-limit';
 
 const BCRYPT_COST = 12; // ~250ms em CPU moderna; bom balanço segurança/perf.
 
@@ -41,15 +48,26 @@ function publicOperator(operator: { id: string; email: string; name: string; rol
 }
 
 export async function POST(request: NextRequest) {
+  // Fase 18: rate-limit ANTES de tudo (até antes do gate opcional).
+  // Register é caro (bcrypt cost 12) — não queremos rodar isso
+  // 1000x/segundo num account-stuffing.
+  const rl = await enforceAuthRateLimit(request, 'register');
+  if (rl.kind === 'blocked') {
+    return rl.response;
+  }
+  const { result: rlResult } = rl;
+
   // Gate opcional (default: desligado em prod, ligado em dev/test)
   const allowRegistration =
     process.env.ALLOW_OPERATOR_REGISTRATION !== 'false' ||
     process.env.NODE_ENV !== 'production';
   if (!allowRegistration) {
-    return NextResponse.json(
+    const res = NextResponse.json(
       { error: 'Registro de Operator desabilitado neste ambiente' },
       { status: 403 }
     );
+    applyRateLimitHeaders(res, rlResult);
+    return res;
   }
 
   let body: z.infer<typeof registerSchema>;
@@ -57,10 +75,12 @@ export async function POST(request: NextRequest) {
     body = registerSchema.parse(await request.json());
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return NextResponse.json(
+      const res = NextResponse.json(
         { error: 'Dados inválidos', details: err.flatten() },
         { status: 400 }
       );
+      applyRateLimitHeaders(res, rlResult);
+      return res;
     }
     throw err;
   }
@@ -70,10 +90,12 @@ export async function POST(request: NextRequest) {
   // Verifica duplicata
   const existing = await prisma.operator.findUnique({ where: { email } });
   if (existing) {
-    return NextResponse.json(
+    const res = NextResponse.json(
       { error: 'Email já cadastrado' },
       { status: 409 }
     );
+    applyRateLimitHeaders(res, rlResult);
+    return res;
   }
 
   // Hash da senha
@@ -120,5 +142,6 @@ export async function POST(request: NextRequest) {
   );
   setOperatorSessionCookie(response, accessToken);
   setOperatorRefreshCookie(response, refreshToken);
+  applyRateLimitHeaders(response, rlResult);
   return response;
 }

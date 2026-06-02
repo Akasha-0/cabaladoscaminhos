@@ -25,16 +25,35 @@ const CORS_HEADERS = {
 };
 
 // ============================================
-// Security Headers
+// Security Headers (Fase 18 — endurecido)
 // ============================================
-
+// HSTS (Strict-Transport-Security): força HTTPS por 1 ano, com
+//   includeSubDomains e preload. Só é enviado em produção (HTTPS);
+//   em dev (HTTP) o browser ignora — não quebra.
+// X-Content-Type-Options: nosniff — bloqueia MIME sniffing.
+// X-Frame-Options: DENY — bloqueia clickjacking (frame/iframe).
+// Referrer-Policy: strict-origin-when-cross-origin — não vaza URL
+//   completa para terceiros.
+// Permissions-Policy: desabilita APIs sensíveis (geolocation etc).
+//
+// CSP para APIs: default-src 'none' — APIs não devem servir HTML/JS.
+//   Para páginas, CSP fica no Next.js metadata / response headers;
+//   aqui só endurecemos as rotas /api (que é onde ele tem efeito
+//   bloqueante: se um atacante fizer upload de HTML, 'none' bloqueia).
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-XSS-Protection': '1; mode=block',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+  // HSTS só faz sentido em produção com HTTPS. Em dev (http://localhost)
+  // o browser ignora; mesmo assim, devolvemos o header para que
+  // qualquer proxy reverso de dev também já esteja condicionado.
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
 };
+
+/** CSP strict para rotas API (não servem conteúdo navegável). */
+const API_CSP = "default-src 'none'; frame-ancestors 'none'";
 
 // ============================================
 // Quarentena do B2C legado (Doc 16 AD-01)
@@ -74,13 +93,23 @@ export async function middleware(request: NextRequest) {
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
+  // CSP strict para APIs (Fase 18). Páginas recebem CSP via Next metadata.
+  if (pathname.startsWith('/api/')) {
+    response.headers.set('Content-Security-Policy', API_CSP);
+  }
 
   // ── Quarentena do B2C legado (Doc 16 AD-01) ──
   // Tudo que não é B2B nem infraestrutura é bloqueado quando a flag está desligada.
   if (!LEGACY_B2C_ENABLED && !isAllowedWhenQuarantined(pathname)) {
     if (pathname.startsWith('/api/')) {
       // APIs legadas não existem no produto B2B.
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+      const notFound = NextResponse.json({ error: 'Not found' }, { status: 404 });
+      // Aplica headers de segurança + CSP também no 404 (defense in depth).
+      Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
+        notFound.headers.set(key, value);
+      });
+      notFound.headers.set('Content-Security-Policy', API_CSP);
+      return notFound;
     }
     // Raiz e páginas legadas levam ao Cockpit (entrada única do produto).
     return NextResponse.redirect(new URL('/cockpit', request.url));
@@ -109,14 +138,20 @@ export async function middleware(request: NextRequest) {
 
     const identifier = extractIdentifier(request);
     const rateLimitResult = checkRateLimit(identifier, RATE_LIMIT_CONFIG);
-    
+
     if (!rateLimitResult.allowed) {
-      return NextResponse.json(
+      const tooMany = NextResponse.json(
         { error: 'Too many requests. Please try again later.' },
         { status: 429 }
       );
+      // Defense in depth: headers de segurança + CSP também no 429.
+      Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
+        tooMany.headers.set(key, value);
+      });
+      tooMany.headers.set('Content-Security-Policy', API_CSP);
+      return tooMany;
     }
-    
+
     // Add CORS headers for API routes
     Object.entries(CORS_HEADERS).forEach(([key, value]) => {
       response.headers.set(key, value);

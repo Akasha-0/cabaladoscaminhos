@@ -1,8 +1,14 @@
 // tests/api/operator-auth-sessions.test.ts
-// Integração das rotas de auth com OperatorSession (Fase 13 + 15).
+// Integração das rotas de auth com OperatorSession (Fase 13 + 15 + 18).
 // Cobre: login cria 2 sessions (ACCESS+REFRESH), logout revoga ambas,
 // /me valida não-revogação + type=access, /refresh faz rotação e
 // detecta reuso.
+
+// Fase 18: desabilita rate-limit (sufixos altos) — ver nota em
+// `tests/api/operator-auth.test.ts`.
+process.env.AUTH_RL_LOGIN_MAX = '10000';
+process.env.AUTH_RL_REGISTER_MAX = '10000';
+process.env.AUTH_RL_REFRESH_MAX = '10000';
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';

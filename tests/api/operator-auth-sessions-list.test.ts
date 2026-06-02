@@ -1,5 +1,5 @@
 // tests/api/operator-auth-sessions-list.test.ts
-// Testes de integração para as rotas de gestão de sessões (Fase 16):
+// Testes de integração para as rotas de gestão de sessões (Fase 16 + 18):
 //   GET    /api/operator/auth/sessions            (listar ativas)
 //   DELETE /api/operator/auth/sessions/[id]       (revogar 1)
 //   POST   /api/operator/auth/sessions/revoke-all (revogar todas as outras)
@@ -12,6 +12,12 @@
 //   - revoke-all preserva a sessão atual (isCurrent) e revoga o resto
 //   - revoke-all com cookie expirado (currentTokenHash=null) revoga TUDO
 //   - DELETE idempotente: revogada de novo → 200
+
+// Fase 18: desabilita rate-limit (sufixos altos) — ver nota em
+// `tests/api/operator-auth.test.ts`.
+process.env.AUTH_RL_LOGIN_MAX = '10000';
+process.env.AUTH_RL_REGISTER_MAX = '10000';
+process.env.AUTH_RL_REFRESH_MAX = '10000';
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';

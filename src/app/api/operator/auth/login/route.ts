@@ -1,10 +1,13 @@
 // ============================================================
-// API ROUTE — Login do Operator (Fase 8 + 13 + 15)
+// API ROUTE — Login do Operator (Fase 8 + 13 + 15 + 18)
 // ============================================================
 // Recebe { email, password }, valida credenciais contra o Operator no
 // banco, emite PAR access (15min) + refresh (30d) (Fase 15), cria
 // DUAS OperatorSession (Fase 13 — revogação), e seta OS DOIS cookies
 // no response: `cockpit_session` (access) + `cockpit_refresh` (refresh).
+//
+// Fase 18: rate-limit por IP (5 tentativas / 15min) via Redis com
+// fallback in-memory. Headers `X-RateLimit-*` em todas as respostas.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -17,6 +20,10 @@ import {
   setOperatorRefreshCookie,
 } from '@/lib/auth/operator-jwt';
 import { createSession, createRefreshSession } from '@/lib/auth/operator-sessions';
+import {
+  applyRateLimitHeaders,
+  enforceAuthRateLimit,
+} from '@/lib/auth/rate-limit';
 
 const loginSchema = z.object({
   // Preprocess normaliza o email (lowercase + trim) ANTES de validar
@@ -34,15 +41,26 @@ function publicOperator(operator: { id: string; email: string; name: string; rol
 }
 
 export async function POST(request: NextRequest) {
+  // Fase 18: rate-limit PRIMEIRO (antes de qualquer trabalho caro).
+  // Brute-force típico: 1000 requests com senha errada. Bloquear nos
+  // primeiros 5 protege bcrypt (que é caro em CPU) e a tabela Operator.
+  const rl = await enforceAuthRateLimit(request, 'login');
+  if (rl.kind === 'blocked') {
+    return rl.response;
+  }
+  const { result: rlResult } = rl;
+
   let body: z.infer<typeof loginSchema>;
   try {
     body = loginSchema.parse(await request.json());
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return NextResponse.json(
+      const res = NextResponse.json(
         { error: 'Dados inválidos', details: err.flatten() },
         { status: 400 }
       );
+      applyRateLimitHeaders(res, rlResult);
+      return res;
     }
     throw err;
   }
@@ -53,13 +71,17 @@ export async function POST(request: NextRequest) {
   });
   if (!operator) {
     // Mensagem genérica para não revelar se o email existe (anti-enumeração).
-    return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
+    const res = NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
+    applyRateLimitHeaders(res, rlResult);
+    return res;
   }
 
   // 2) Verificar senha (bcrypt)
   const ok = await bcrypt.compare(body.password, operator.passwordHash);
   if (!ok) {
-    return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
+    const res = NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
+    applyRateLimitHeaders(res, rlResult);
+    return res;
   }
 
   // 3) Fase 15 — emitir par access (15min) + refresh (30d)
@@ -93,5 +115,6 @@ export async function POST(request: NextRequest) {
   const response = NextResponse.json({ operator: publicOperator(operator) });
   setOperatorSessionCookie(response, accessToken);
   setOperatorRefreshCookie(response, refreshToken);
+  applyRateLimitHeaders(response, rlResult);
   return response;
 }

@@ -1,5 +1,5 @@
 // ============================================================
-// API ROUTE — Refresh do Operator (Fase 15)
+// API ROUTE — Refresh do Operator (Fase 15 + 18)
 // ============================================================
 // Rotaciona o refresh token: revoga o refresh usado e emite novo par
 // access (15min) + refresh (30d). Detecta reuso de refresh revogado
@@ -9,11 +9,15 @@
 //   200 — rotação OK; novos cookies setados; { operator: {...} }
 //   401 — refresh ausente / inválido / expirado
 //   403 — reuso detectado; cookies limpos; operador precisa logar de novo
+//   429 — rate-limit excedido (Fase 18)
 //
 // Por que 403 (e não 401) para reuso? RFC sugere 401 (não autenticado),
 // mas a semântica de reuso é diferente: a autenticação era válida e foi
 // REVOGADA por suspeita de comprometimento. 403 + log de segurança
 // ajuda times de SRE a diferenciar.
+//
+// Fase 18: rate-limit por IP (30 rotações / min) via Redis. Mitiga
+// abuso do endpoint de rotação (que faz I/O no banco + cria session).
 
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -28,27 +32,44 @@ import {
   clearOperatorRefreshCookie,
   verifyOperatorToken,
 } from '@/lib/auth/operator-jwt';
+import {
+  applyRateLimitHeaders,
+  enforceAuthRateLimit,
+} from '@/lib/auth/rate-limit';
 import { rotateRefreshToken } from '@/lib/auth/operator-sessions';
 
 export async function POST(request: NextRequest) {
+  // Fase 18: rate-limit ANTES de tudo. Refresh é endpoint "barato" mas
+  // faz 3 escritas no banco (revoke + create access + create refresh) e
+  // emite 2 JWTs. Atacante pode abusar para encher a tabela de sessions.
+  const rl = await enforceAuthRateLimit(request, 'refresh');
+  if (rl.kind === 'blocked') {
+    return rl.response;
+  }
+  const { result: rlResult } = rl;
+
   // 1) Lê refresh cookie
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get(OPERATOR_REFRESH_COOKIE)?.value;
 
   if (!refreshToken) {
-    return NextResponse.json(
+    const res = NextResponse.json(
       { error: 'Refresh token ausente. Faça login novamente.' },
       { status: 401 }
     );
+    applyRateLimitHeaders(res, rlResult);
+    return res;
   }
 
   // 2) Verifica assinatura + type=refresh
   const payload = verifyOperatorToken(refreshToken, 'refresh');
   if (!payload) {
-    return NextResponse.json(
+    const res = NextResponse.json(
       { error: 'Refresh token inválido. Faça login novamente.' },
       { status: 401 }
     );
+    applyRateLimitHeaders(res, rlResult);
+    return res;
   }
 
   // 3) Rotação (Fase 15): revoga refresh usado, emite novo par.
@@ -79,6 +100,7 @@ export async function POST(request: NextRequest) {
     );
     clearOperatorSessionCookie(response);
     clearOperatorRefreshCookie(response);
+    applyRateLimitHeaders(response, rlResult);
     return response;
   }
 
@@ -100,6 +122,7 @@ export async function POST(request: NextRequest) {
     );
     clearOperatorSessionCookie(response);
     clearOperatorRefreshCookie(response);
+    applyRateLimitHeaders(response, rlResult);
     return response;
   }
 
@@ -117,6 +140,7 @@ export async function POST(request: NextRequest) {
     );
     clearOperatorSessionCookie(response);
     clearOperatorRefreshCookie(response);
+    applyRateLimitHeaders(response, rlResult);
     return response;
   }
 
@@ -130,5 +154,6 @@ export async function POST(request: NextRequest) {
   });
   setOperatorSessionCookie(response, result.newAccessToken);
   setOperatorRefreshCookie(response, result.newRefreshToken);
+  applyRateLimitHeaders(response, rlResult);
   return response;
 }

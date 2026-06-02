@@ -163,7 +163,36 @@ Tipos:
 - spiritual-correlation: nova correlação espiritual
 ```
 
+## 11. Workflow de Fases
+
+O projeto evolui em **fases numeradas** (1, 2, 3 …). Cada fase:
+
+1. **Lê** `PROGRESS.md` (estado atual) e `AGENTS.md` (este arquivo).
+2. **Planeja** 1–3 tarefas coesas (Fase N.A, N.B, N.C).
+3. **Implementa** com cobertura de testes.
+4. **Valida**: `npx tsc --noEmit` + `npm run test:run` + `npm run build`.
+5. **Documenta** decisões em `memory/cycle-NNN.md` (NNN = nº do ciclo).
+6. **Commita** com `Fase N — descrição` no subject (ver §10).
+7. **Pusha** para `origin/<branch>` e, se for fase grande, abre PR.
+
+### Convenção de memória
+
+- `memory/cycle-NNN.md` — métricas finais + aprendizados da fase.
+- `MEMORY.md` (raiz) — índice das últimas 10–15 fases.
+- `PROGRESS.md` (raiz) — visão macro de todas as fases + roadmap.
+
+### Quando uma fase falha parcialmente
+
+- Cria/atualiza `PROGRESS.md` §4 (Pré-existentes Conhecidos).
+- **NÃO** consertar débitos não relacionados durante a fase (Surgical Changes, §3).
+- Registra no `cycle-NNN.md` "Lições" o que ficou para próxima fase.
+
+### Quando uma fase descobre dívida técnica maior
+
+- Cria task list com `TaskCreate` (assim não se perde).
+- Adiciona em `PROGRESS.md` §5 (Roadmap) com sugestão de fase futura.
+
 ---
 
-*Última atualização: 2026-05-31*
-*Versão: 2.1 — Corrigido merge conflict*
+*Última atualização: 2026-06-02*
+*Versão: 2.2 — Adicionado §11 (workflow de fases)*

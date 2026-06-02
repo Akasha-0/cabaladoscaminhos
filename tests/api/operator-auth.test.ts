@@ -1,8 +1,16 @@
 // tests/api/operator-auth.test.ts
-// Integração das rotas /api/operator/auth/* (Fase 8 + 13 + 15).
+// Integração das rotas /api/operator/auth/* (Fase 8 + 13 + 15 + 18).
 // Cobre: login (emite par access+refresh, 2 cookies), logout (revoga
 // 2 sessions, limpa 2 cookies), register (auto-login com 2 cookies),
-// me (só aceita access, não refresh).
+// me (só aceita access, não refresh), rate-limit (Fase 18).
+
+// Fase 18: desabilita rate-limit por padrão neste suite — os testes
+// rodam muitas requests em sequência e não queremos que se bloqueiem
+// mutuamente. O comportamento de rate-limit em si é coberto por
+// `tests/lib/auth/rate-limit.test.ts`.
+process.env.AUTH_RL_LOGIN_MAX = '10000';
+process.env.AUTH_RL_REGISTER_MAX = '10000';
+process.env.AUTH_RL_REFRESH_MAX = '10000';
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
