@@ -1,7 +1,5 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { cn } from '@/lib/utils';
 import {
   Sparkles,
   Send,
@@ -18,6 +16,8 @@ import {
   Moon,
   Sun,
 } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { cn } from '@/lib/utils';
 
 // Sacred geometry corner decoration
 // fallow-ignore-next-line code-duplication
@@ -70,13 +70,18 @@ export interface ChatSession {
 
 const ORACLE_PERSONALITY = {
   name: 'Oráculo IA',
-  greeting: 'Sou seu guia espiritual. Pergunte-me sobre seu caminho, insights ou orientações divinas.',
-  systemPrompt: 'Você é um oráculo sábio e compassivo, guiando o usuário em sua jornada espiritual com base em sua numerologia, astrologia e tradição Ifá.',
+  greeting:
+    'Sou seu guia espiritual. Pergunte-me sobre seu caminho, insights ou orientações divinas.',
+  systemPrompt:
+    'Você é um oráculo sábio e compassivo, guiando o usuário em sua jornada espiritual com base em sua numerologia, astrologia e tradição Ifá.',
 };
 
 const QUICK_PROMPTS = [
   { label: 'Meu destino hoje', prompt: 'O que o universo revela para mim hoje?' },
-  { label: 'Proteção espiritual', prompt: 'Preciso de proteção espiritual, quais orações me ajudam?' },
+  {
+    label: 'Proteção espiritual',
+    prompt: 'Preciso de proteção espiritual, quais orações me ajudam?',
+  },
   { label: 'Caminho de evolução', prompt: 'Como posso acelerar minha evolução espiritual?' },
   { label: 'Odu guidance', prompt: 'O que meu Odu revela sobre meu caminho atual?' },
 ];
@@ -126,7 +131,9 @@ function MessageBubble({ message, onCopy }: { message: ChatMessage; onCopy?: () 
 
   return (
     <div className={cn('flex', isUser ? 'justify-end' : 'justify-start')}>
-      <div className={cn('relative max-w-[80%] rounded-xl p-4 border', MESSAGE_COLORS[message.role])}>
+      <div
+        className={cn('relative max-w-[80%] rounded-xl p-4 border', MESSAGE_COLORS[message.role])}
+      >
         <div className="flex items-center gap-2 mb-2">
           {isUser ? (
             <User className="w-4 h-4 text-purple-400" />
@@ -138,7 +145,9 @@ function MessageBubble({ message, onCopy }: { message: ChatMessage; onCopy?: () 
           <span className="text-xs text-slate-400">
             {isUser ? 'Você' : isSystem ? 'Sistema' : ORACLE_PERSONALITY.name}
           </span>
-          <span className="text-xs text-slate-500 ml-auto">{formatTimestamp(message.timestamp)}</span>
+          <span className="text-xs text-slate-500 ml-auto">
+            {formatTimestamp(message.timestamp)}
+          </span>
         </div>
         <div
           className="text-sm text-slate-200 leading-relaxed"
@@ -146,13 +155,15 @@ function MessageBubble({ message, onCopy }: { message: ChatMessage; onCopy?: () 
         />
         {message.metadata?.type && (
           <div className="mt-2 flex items-center gap-1">
-            <span className={cn(
-              'text-xs px-2 py-0.5 rounded-full',
-              message.metadata.type === 'insight' && 'bg-blue-500/20 text-blue-400',
-              message.metadata.type === 'guidance' && 'bg-emerald-500/20 text-emerald-400',
-              message.metadata.type === 'warning' && 'bg-amber-500/20 text-amber-400',
-              message.metadata.type === 'affirmation' && 'bg-purple-500/20 text-purple-400',
-            )}>
+            <span
+              className={cn(
+                'text-xs px-2 py-0.5 rounded-full',
+                message.metadata.type === 'insight' && 'bg-blue-500/20 text-blue-400',
+                message.metadata.type === 'guidance' && 'bg-emerald-500/20 text-emerald-400',
+                message.metadata.type === 'warning' && 'bg-amber-500/20 text-amber-400',
+                message.metadata.type === 'affirmation' && 'bg-purple-500/20 text-purple-400'
+              )}
+            >
               {message.metadata.type}
             </span>
           </div>
@@ -162,7 +173,11 @@ function MessageBubble({ message, onCopy }: { message: ChatMessage; onCopy?: () 
             onClick={handleCopy}
             className="absolute top-2 right-2 p-1 rounded hover:bg-slate-700/50 transition-colors"
           >
-            {copied ? <CheckCheck className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-slate-400" />}
+            {copied ? (
+              <CheckCheck className="w-3 h-3 text-emerald-400" />
+            ) : (
+              <Copy className="w-3 h-3 text-slate-400" />
+            )}
           </button>
         )}
       </div>
@@ -170,7 +185,15 @@ function MessageBubble({ message, onCopy }: { message: ChatMessage; onCopy?: () 
   );
 }
 
-function QuickPromptButton({ label, prompt, onClick }: { label: string; prompt: string; onClick: (prompt: string) => void }) {
+function QuickPromptButton({
+  label,
+  prompt,
+  onClick,
+}: {
+  label: string;
+  prompt: string;
+  onClick: (prompt: string) => void;
+}) {
   return (
     <button
       onClick={() => onClick(prompt)}
@@ -187,9 +210,18 @@ function TypingIndicator({ name = ORACLE_PERSONALITY.name }: { name?: string }) 
       <Bot className="w-4 h-4" />
       <span className="text-sm">{name} está digitando</span>
       <div className="flex gap-1">
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+        <span
+          className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"
+          style={{ animationDelay: '0ms' }}
+        />
+        <span
+          className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"
+          style={{ animationDelay: '150ms' }}
+        />
+        <span
+          className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"
+          style={{ animationDelay: '300ms' }}
+        />
       </div>
     </div>
   );
@@ -231,51 +263,54 @@ export function AIOracleChat({
     }
   }, []);
 
-  const handleSendMessage = useCallback(async (content: string) => {
-    if (!content.trim() || isLoading) return;
+  const handleSendMessage = useCallback(
+    async (content: string) => {
+      if (!content.trim() || isLoading) return;
 
-    const userMessage: ChatMessage = {
-      id: generateMessageId(),
-      role: 'user',
-      content: content.trim(),
-      timestamp: new Date(),
-    };
+      const userMessage: ChatMessage = {
+        id: generateMessageId(),
+        role: 'user',
+        content: content.trim(),
+        timestamp: new Date(),
+      };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInputValue('');
-    setIsLoading(true);
+      setMessages((prev) => [...prev, userMessage]);
+      setInputValue('');
+      setIsLoading(true);
 
-    try {
-      let responseText = '';
-      if (onSendMessage) {
-        responseText = await onSendMessage(content);
-      } else {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        responseText = generateOracleResponse(content, userData);
+      try {
+        let responseText = '';
+        if (onSendMessage) {
+          responseText = await onSendMessage(content);
+        } else {
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          responseText = generateOracleResponse(content, userData);
+        }
+
+        const assistantMessage: ChatMessage = {
+          id: generateMessageId(),
+          role: 'assistant',
+          content: responseText,
+          timestamp: new Date(),
+          metadata: { type: 'insight', source: 'oracle' },
+        };
+
+        setMessages((prev) => [...prev, assistantMessage]);
+      } catch (error) {
+        const errorMessage: ChatMessage = {
+          id: generateMessageId(),
+          role: 'assistant',
+          content: 'Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.',
+          timestamp: new Date(),
+          metadata: { type: 'warning', source: 'system' },
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      } finally {
+        setIsLoading(false);
       }
-
-      const assistantMessage: ChatMessage = {
-        id: generateMessageId(),
-        role: 'assistant',
-        content: responseText,
-        timestamp: new Date(),
-        metadata: { type: 'insight', source: 'oracle' },
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (error) {
-      const errorMessage: ChatMessage = {
-        id: generateMessageId(),
-        role: 'assistant',
-        content: 'Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.',
-        timestamp: new Date(),
-        metadata: { type: 'warning', source: 'system' },
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [onSendMessage, isLoading, userData]);
+    },
+    [onSendMessage, isLoading, userData]
+  );
 
   const handleQuickPrompt = (prompt: string) => handleSendMessage(prompt);
 
@@ -312,13 +347,20 @@ export function AIOracleChat({
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={(e) => { e.stopPropagation(); handleClearChat(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClearChat();
+            }}
             className="p-2 rounded-lg hover:bg-slate-700/50 transition-colors"
             title="Limpar conversa"
           >
             <RefreshCw className="w-4 h-4 text-slate-400" />
           </button>
-          {isExpanded ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+          {isExpanded ? (
+            <ChevronUp className="w-4 h-4 text-slate-400" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-slate-400" />
+          )}
         </div>
       </div>
 
@@ -334,7 +376,7 @@ export function AIOracleChat({
               </div>
             )}
 
-            {messages.map(message => (
+            {messages.map((message) => (
               <MessageBubble
                 key={message.id}
                 message={message}
@@ -355,7 +397,12 @@ export function AIOracleChat({
           {/* Quick Prompts */}
           <div className="px-4 pb-2 flex flex-wrap gap-2 relative z-10">
             {QUICK_PROMPTS.map(({ label, prompt }) => (
-              <QuickPromptButton key={label} label={label} prompt={prompt} onClick={handleQuickPrompt} />
+              <QuickPromptButton
+                key={label}
+                label={label}
+                prompt={prompt}
+                onClick={handleQuickPrompt}
+              />
             ))}
           </div>
 
@@ -395,7 +442,10 @@ export function AIOracleChat({
 // ============================================================
 
 // fallow-ignore-next-line complexity
-function generateOracleResponse(question: string, userData?: AIOracleChatProps['userData']): string {
+function generateOracleResponse(
+  question: string,
+  userData?: AIOracleChatProps['userData']
+): string {
   const lowerQ = question.toLowerCase();
 
   if (lowerQ.includes('destino') || lowerQ.includes('futuro') || lowerQ.includes('hoje')) {

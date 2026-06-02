@@ -4,16 +4,23 @@
 // POST endpoint for generating astrological charts
 // Supports natal, transit, progression, synastry, composite, hora-igual charts
 // ============================================================
-
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { getChartById, type ChartType, type ChartStyle } from '@/lib/charts/library';
+import { NextRequest, NextResponse } from 'next/server';
 import type { SpiritualCorrelations } from '@/lib/api/spiritual-correlations';
+import { getChartById, type ChartType, type ChartStyle } from '@/lib/charts/library';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+  'Kether',
+  'Chokhmah',
+  'Binah',
+  'Chesed',
+  'Gevurah',
+  'Tipheret',
+  'Netzach',
+  'Hod',
+  'Yesod',
+  'Malkuth',
 ]);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
@@ -34,14 +41,17 @@ const chartGenerateSchema = z.object({
 });
 
 // ─── Spiritual Correlations for Chart Types ──────────────────────────────────────────
-const CHART_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const CHART_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   natal: {
     sefirot: ['Kether', 'Chokhmah', 'Binah'],
     chakra: 7,
@@ -93,14 +103,17 @@ const CHART_SPIRITUAL_CORRELATIONS: Record<string, {
 };
 
 // ─── Spiritual Correlations for Zodiac Signs ──────────────────────────────────────────
-const SIGN_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const SIGN_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   aries: {
     sefirot: ['Gevurah', 'Netzach'],
     chakra: 1,
@@ -279,7 +292,7 @@ function calculateHouses(
     6: { sign: 'virgo', degree: 12 },
     7: { sign: 'libra', degree: 10 },
     8: { sign: 'scorpio', degree: 22 },
-9: { sign: 'sagittarius', degree: 15 },
+    9: { sign: 'sagittarius', degree: 15 },
     10: { sign: 'capricorn', degree: 8 },
     11: { sign: 'aquarius', degree: 20 },
     12: { sign: 'pisces', degree: 12 },
@@ -318,14 +331,18 @@ export async function POST(request: NextRequest) {
     const parseResult = chartGenerateSchema.safeParse(body);
 
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Dados inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Dados inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
-    const { type, date, time, latitude, longitude, timezone, style, houseSystem } = parseResult.data;
+    const { type, date, time, latitude, longitude, timezone, style, houseSystem } =
+      parseResult.data;
     const chartId = generateChartId();
     const startTime = Date.now();
 
@@ -357,25 +374,37 @@ export async function POST(request: NextRequest) {
     };
 
     // Calculate spiritual stats
-    const planetSigns = Object.entries(planets).reduce((acc, [planet, data]) => {
-      const planetData = data as { sign: string };
-      acc[planet] = planetData.sign;
-      return acc;
-    }, {} as Record<string, string>);
+    const planetSigns = Object.entries(planets).reduce(
+      (acc, [planet, data]) => {
+        const planetData = data as { sign: string };
+        acc[planet] = planetData.sign;
+        return acc;
+      },
+      {} as Record<string, string>
+    );
 
     const spiritualStats = {
-      byPlanet: Object.keys(planets).reduce((acc, planet) => {
-        acc[planet] = 1;
-        return acc;
-      }, {} as Record<string, number>),
-      bySign: Object.values(planetSigns).reduce((acc, sign) => {
-        acc[sign] = (acc[sign] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      bySefirot: CHART_SPIRITUAL_CORRELATIONS[type].sefirot.reduce((acc, s) => {
-        acc[s] = 1;
-        return acc;
-      }, {} as Record<string, number>),
+      byPlanet: Object.keys(planets).reduce(
+        (acc, planet) => {
+          acc[planet] = 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      bySign: Object.values(planetSigns).reduce(
+        (acc, sign) => {
+          acc[sign] = (acc[sign] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      bySefirot: CHART_SPIRITUAL_CORRELATIONS[type].sefirot.reduce(
+        (acc, s) => {
+          acc[s] = 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
       byChakra: { [CHART_SPIRITUAL_CORRELATIONS[type].chakra]: 1 },
       byElement: { [CHART_SPIRITUAL_CORRELATIONS[type].element]: 1 },
       byOrixa: { [CHART_SPIRITUAL_CORRELATIONS[type].orixa]: 1 },
@@ -394,10 +423,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Chart generation failed',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Chart generation failed',
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -406,23 +438,30 @@ export async function GET(request: NextRequest) {
   const chartId = searchParams.get('id');
 
   if (!chartId) {
-    return NextResponse.json({
-      success: false,
-      error: 'Chart ID is required',
-    }, { status: 400 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Chart ID is required',
+      },
+      { status: 400 }
+    );
   }
 
   const chart = getChartById(chartId);
 
   if (!chart) {
-    return NextResponse.json({
-      success: false,
-      error: 'Chart not found',
-    }, { status: 404 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Chart not found',
+      },
+      { status: 404 }
+    );
   }
 
   // Add spiritual correlations based on chart type
-  const correlations = CHART_SPIRITUAL_CORRELATIONS[chart.tipo] || CHART_SPIRITUAL_CORRELATIONS.natal;
+  const correlations =
+    CHART_SPIRITUAL_CORRELATIONS[chart.tipo] || CHART_SPIRITUAL_CORRELATIONS.natal;
 
   return NextResponse.json({
     success: true,

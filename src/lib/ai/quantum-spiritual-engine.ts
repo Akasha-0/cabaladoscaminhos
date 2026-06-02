@@ -1,6 +1,5 @@
 // Quantum Spiritual Engine - Cabala Dos Caminhos
 // Applies quantum-inspired processing to spiritual analysis
-
 import { generateMinimaxResponse } from './minimax';
 import type { ChatMessage } from './types';
 
@@ -115,10 +114,10 @@ export class QuantumSpiritualEngine {
    */
   async analyzeSuperposition(userData: UserSpiritualData): Promise<SuperpositionState[]> {
     const states: SuperpositionState[] = [];
-    
+
     // Build quantum context from user data
     const quantumContext = this.buildQuantumContext(userData);
-    
+
     // Query Minimax for superposition analysis
     const messages: ChatMessage[] = [
       {
@@ -126,19 +125,19 @@ export class QuantumSpiritualEngine {
         content: `You are a quantum spiritual analyzer. Analyze the spiritual possibilities for this person.
 Consider the spiritual data as quantum states that exist in superposition. Identify the most significant
 spiritual possibilities with their probability weights. Return a JSON array of {possibility, probability}
-pairs. Focus on paths of transformation, growth opportunities, and spiritual crossroads.`
+pairs. Focus on paths of transformation, growth opportunities, and spiritual crossroads.`,
       },
       {
         role: 'user',
-        content: quantumContext
-      }
+        content: quantumContext,
+      },
     ];
 
     try {
       const { content } = await generateMinimaxResponse(messages, {
         model: 'minimax/m3',
         temperature: 0.9,
-        max_tokens: 800
+        max_tokens: 800,
       });
 
       // Parse response and convert to superposition states
@@ -149,7 +148,7 @@ pairs. Focus on paths of transformation, growth opportunities, and spiritual cro
             possibility: item.possibility || item.state || String(item) || 'Unknown',
             probability: item.probability ?? item.prob ?? item.weight ?? item.value ?? 0.5,
             collapsed_value: undefined,
-            observation_timestamp: undefined
+            observation_timestamp: undefined,
           });
         }
       }
@@ -175,7 +174,7 @@ pairs. Focus on paths of transformation, growth opportunities, and spiritual cro
    * Detect hidden spiritual connections using entanglement concept
    * Entangled spiritual systems show correlations regardless of apparent distance
    */
-// fallow-ignore-next-line complexity
+  // fallow-ignore-next-line complexity
   async detectEntanglements(userData: UserSpiritualData): Promise<SpiritualEntanglement[]> {
     const entanglements: SpiritualEntanglement[] = [];
 
@@ -185,19 +184,19 @@ pairs. Focus on paths of transformation, growth opportunities, and spiritual cro
         content: `You are a quantum spiritual analyst specializing in entanglement detection.
 Identify hidden connections between spiritual systems in this person's life. Look for correlations
 between orixás, sefirot, astrological influences, and spiritual paths that show entanglement.
-Return a JSON array of {system1, system2, entanglement_strength, description, manifestations} objects.`
+Return a JSON array of {system1, system2, entanglement_strength, description, manifestations} objects.`,
       },
       {
         role: 'user',
-        content: this.buildQuantumContext(userData)
-      }
+        content: this.buildQuantumContext(userData),
+      },
     ];
 
     try {
       const { content } = await generateMinimaxResponse(messages, {
         model: 'minimax/m3',
         temperature: 0.8,
-        max_tokens: 900
+        max_tokens: 900,
       });
 
       const parsed = this.parseJsonResponse<EntanglementItem[]>(content);
@@ -206,9 +205,12 @@ Return a JSON array of {system1, system2, entanglement_strength, description, ma
           entanglements.push({
             system1: item.system1 || item.insight || String(item),
             system2: item.system2 || '',
-            entanglement_strength: item.entanglement_strength ?? item.strength ?? Math.random() * 0.4 + 0.6,
+            entanglement_strength:
+              item.entanglement_strength ?? item.strength ?? Math.random() * 0.4 + 0.6,
             description: item.description || item.insight || '',
-            manifestations: Array.isArray(item.manifestations) ? item.manifestations : [item.manifest || '']
+            manifestations: Array.isArray(item.manifestations)
+              ? item.manifestations
+              : [item.manifest || ''],
           });
         }
       }
@@ -224,21 +226,34 @@ Return a JSON array of {system1, system2, entanglement_strength, description, ma
           system2: userData.sefirotDominante[0] || 'Chesed',
           entanglement_strength: 0.89,
           description: `A energia de ${userData.orixaRegente} ressoa profundamente com a sefirá dominante, criando um campo de força espiritual contínuo.`,
-          manifestations: ['Intuiçao fortalecida', 'Sincronicidades aumentadas', 'Sensibilidade espiritual ampliada']
+          manifestations: [
+            'Intuiçao fortalecida',
+            'Sincronicidades aumentadas',
+            'Sensibilidade espiritual ampliada',
+          ],
         },
         {
           system1: userData.odu,
           system2: userData.arcoMaior[0]?.toString() || '0',
           entanglement_strength: 0.76,
           description: `O Odu ${userData.odu} codifica informaçőes quânticas que se manifestam através do arcano ${userData.arcoMaior[0]}.`,
-          manifestations: ['Padrőes de destino emergem', 'Lembranças ancestrais despertam', 'Conexőes kármicas se revelam']
+          manifestations: [
+            'Padrőes de destino emergem',
+            'Lembranças ancestrais despertam',
+            'Conexőes kármicas se revelam',
+          ],
         },
         {
           system1: userData.sign,
           system2: userData.rashi,
           entanglement_strength: 0.82,
-          description: 'A correlaçao astrológica entre signo solar e signo lunar forma um sistema bipartido interconectado.',
-          manifestations: ['Equilíbrio entre expressǎo e receptividade', 'Maturidade espiritual acelerada', 'Integridade characterial']
+          description:
+            'A correlaçao astrológica entre signo solar e signo lunar forma um sistema bipartido interconectado.',
+          manifestations: [
+            'Equilíbrio entre expressǎo e receptividade',
+            'Maturidade espiritual acelerada',
+            'Integridade characterial',
+          ],
         }
       );
     }
@@ -258,12 +273,12 @@ Return a JSON array of {system1, system2, entanglement_strength, description, ma
         role: 'system',
         content: `You are a quantum spiritual oracle. A question has been asked and you must provide guidance
 by collapsing the superposition of possibilities into a single definitive answer. Consider the spiritual
-context and the question. Return a JSON object with {collapsed_answer, alternatives: string[], confidence: number}.`
+context and the question. Return a JSON object with {collapsed_answer, alternatives: string[], confidence: number}.`,
       },
       {
         role: 'user',
-        content: `Spiritual Context:\n${this.buildQuantumContext(userData)}\n\nQuestion: ${question}\n\nPossible States:\n${superpositionSnapshot.map(s => `- ${s.possibility} (${(s.probability * 100).toFixed(0)}%)`).join('\n')}`
-      }
+        content: `Spiritual Context:\n${this.buildQuantumContext(userData)}\n\nQuestion: ${question}\n\nPossible States:\n${superpositionSnapshot.map((s) => `- ${s.possibility} (${(s.probability * 100).toFixed(0)}%)`).join('\n')}`,
+      },
     ];
 
     let collapsedAnswer = '';
@@ -274,12 +289,13 @@ context and the question. Return a JSON object with {collapsed_answer, alternati
       const { content } = await generateMinimaxResponse(messages, {
         model: 'minimax/m3',
         temperature: 0.3,
-        max_tokens: 600
+        max_tokens: 600,
       });
 
       const parsed = this.parseJsonResponse<GuidanceResponse>(content);
       if (parsed && typeof parsed === 'object') {
-        collapsedAnswer = parsed.collapsed_answer || parsed.answer || parsed.guidance || content.substring(0, 200);
+        collapsedAnswer =
+          parsed.collapsed_answer || parsed.answer || parsed.guidance || content.substring(0, 200);
         alternatives = Array.isArray(parsed.alternatives) ? parsed.alternatives : [];
         confidence = parsed.confidence ?? 0.75;
       } else {
@@ -288,7 +304,11 @@ context and the question. Return a JSON object with {collapsed_answer, alternati
     } catch (error) {
       console.error('Observation and guidance error:', error);
       collapsedAnswer = this.fallbackGuidance(question, userData);
-      alternatives = ['Explore sua espiritualidade com mais profundidade', 'Considere práticas meditativas', 'Busque alinhamento com seu Orixá'];
+      alternatives = [
+        'Explore sua espiritualidade com mais profundidade',
+        'Considere práticas meditativas',
+        'Busque alinhamento com seu Orixá',
+      ];
       confidence = 0.55;
     }
 
@@ -305,7 +325,7 @@ context and the question. Return a JSON object with {collapsed_answer, alternati
       collapsed_answer: collapsedAnswer,
       alternatives,
       confidence,
-      superposition_snapshot: superpositionSnapshot
+      superposition_snapshot: superpositionSnapshot,
     };
   }
 
@@ -313,7 +333,7 @@ context and the question. Return a JSON object with {collapsed_answer, alternati
    * Calculate spiritual frequencies and resonance patterns
    * Each spiritual system vibrates at specific frequencies that can be measured
    */
-// fallow-ignore-next-line complexity
+  // fallow-ignore-next-line complexity
   async calculateResonances(userData: UserSpiritualData): Promise<ResonanceReport> {
     const frequencies: Record<string, number> = {};
 
@@ -322,29 +342,36 @@ context and the question. Return a JSON object with {collapsed_answer, alternati
         role: 'system',
         content: `You are a quantum spiritual frequency analyzer. Calculate the vibrational frequencies
 of various spiritual systems for this person. Consider orixá, sefirot, astrological influences,
-and personal spiritual markers. Return a JSON object with {frequencies: {system_name: frequency}, dominant_frequency, harmony_score, recommendations: string[]}. Frequencies should be 0-1 values.`
+and personal spiritual markers. Return a JSON object with {frequencies: {system_name: frequency}, dominant_frequency, harmony_score, recommendations: string[]}. Frequencies should be 0-1 values.`,
       },
       {
         role: 'user',
-        content: this.buildQuantumContext(userData)
-      }
+        content: this.buildQuantumContext(userData),
+      },
     ];
 
     try {
       const { content } = await generateMinimaxResponse(messages, {
         model: 'minimax/m3',
         temperature: 0.85,
-        max_tokens: 700
+        max_tokens: 700,
       });
 
       const parsed = this.parseJsonResponse<ResonanceResponse>(content);
       if (parsed && typeof parsed === 'object') {
         if (parsed.frequencies) {
-          frequencies['orixa'] = parsed.frequencies.orixa ?? parsed.frequencies[userData.orixaRegente.toLowerCase()] ?? 0.8;
-          frequencies['sefirot'] = parsed.frequencies.sefirot ?? parsed.frequencies['sefirah'] ?? 0.75;
-          frequencies['astrologico'] = parsed.frequencies.astrologico ?? parsed.frequencies['astrological'] ?? 0.72;
-          frequencies['karmico'] = parsed.frequencies.karmico ?? parsed.frequencies['karmic'] ?? 0.68;
-          frequencies['ancestral'] = parsed.frequencies.ancestral ?? parsed.frequencies['ancestral'] ?? 0.85;
+          frequencies['orixa'] =
+            parsed.frequencies.orixa ??
+            parsed.frequencies[userData.orixaRegente.toLowerCase()] ??
+            0.8;
+          frequencies['sefirot'] =
+            parsed.frequencies.sefirot ?? parsed.frequencies['sefirah'] ?? 0.75;
+          frequencies['astrologico'] =
+            parsed.frequencies.astrologico ?? parsed.frequencies['astrological'] ?? 0.72;
+          frequencies['karmico'] =
+            parsed.frequencies.karmico ?? parsed.frequencies['karmic'] ?? 0.68;
+          frequencies['ancestral'] =
+            parsed.frequencies.ancestral ?? parsed.frequencies['ancestral'] ?? 0.85;
         }
       }
     } catch (error) {
@@ -381,7 +408,7 @@ and personal spiritual markers. Return a JSON object with {frequencies: {system_
       frequencies,
       dominant_frequency: dominantFrequency,
       harmony_score: harmonyScore,
-      recommendations
+      recommendations,
     };
   }
 
@@ -412,13 +439,13 @@ Lunar Sign (Rashi): ${userData.rashi}`;
       // Try to extract JSON from markdown code blocks
       const jsonMatch = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
       const jsonStr = jsonMatch ? jsonMatch[1] : content;
-      
+
       // Handle trailing commas and common issues
       const cleaned = jsonStr
         .replace(/,\s*([\]}])/g, '$1')
         .replace(/`/g, '')
         .trim();
-      
+
       return JSON.parse(cleaned) as T;
     } catch {
       // Try to find JSON-like structure
@@ -441,7 +468,7 @@ Lunar Sign (Rashi): ${userData.rashi}`;
     let hash = 0;
     for (let i = 0; i < identifier.length; i++) {
       const char = identifier.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash;
     }
     return 0.55 + Math.abs(hash % 40) / 100;
@@ -452,11 +479,12 @@ Lunar Sign (Rashi): ${userData.rashi}`;
    */
   private calculateHarmonyScore(frequencies: number[]): number {
     if (frequencies.length === 0) return 0;
-    
+
     const avg = frequencies.reduce((a, b) => a + b, 0) / frequencies.length;
-    const variance = frequencies.reduce((sum, f) => sum + Math.pow(f - avg, 2), 0) / frequencies.length;
+    const variance =
+      frequencies.reduce((sum, f) => sum + Math.pow(f - avg, 2), 0) / frequencies.length;
     const stdDev = Math.sqrt(variance);
-    
+
     // Lower variance = higher harmony
     return Math.max(0, Math.min(1, 1 - stdDev));
   }
@@ -464,11 +492,16 @@ Lunar Sign (Rashi): ${userData.rashi}`;
   /**
    * Generate recommendations based on resonance frequencies
    */
-  private generateResonanceRecommendations(frequencies: Record<string, number>, userData: UserSpiritualData): string[] {
+  private generateResonanceRecommendations(
+    frequencies: Record<string, number>,
+    userData: UserSpiritualData
+  ): string[] {
     const recommendations: string[] = [];
 
     if (frequencies['orixa'] > 0.8) {
-      recommendations.push(`Alinhe suas práticas espirituais com a energia de ${userData.orixaRegente}`);
+      recommendations.push(
+        `Alinhe suas práticas espirituais com a energia de ${userData.orixaRegente}`
+      );
     }
     if (frequencies['sefirot'] > 0.75) {
       recommendations.push('Fortaleça a conexao com as sefirot atraves da meditaçao cabalistica');
@@ -477,14 +510,18 @@ Lunar Sign (Rashi): ${userData.rashi}`;
       recommendations.push('Honre os ciclos astrologicos em suas decisoes importantes');
     }
     if (frequencies['karmico'] < 0.6) {
-      recommendations.push('Trabalhe ativamente na limpeza kármica através de rituais de purificaçao');
+      recommendations.push(
+        'Trabalhe ativamente na limpeza kármica através de rituais de purificaçao'
+      );
     }
     if (frequencies['ancestral'] > 0.8) {
       recommendations.push('Cultive práticas ancestrais para manter a alta frequencia espiritual');
     }
 
     if (recommendations.length < 3) {
-      recommendations.push('Mantenha coerência entre pensamentos e ações para elevar sua frequencia');
+      recommendations.push(
+        'Mantenha coerência entre pensamentos e ações para elevar sua frequencia'
+      );
       recommendations.push('Pratique gratidao daily para harmonizar todos os sistemasspirituais');
       recommendations.push('Busque equilíbrio entreoxalu e ogum em seu caminho espiritual');
     }
@@ -497,7 +534,7 @@ Lunar Sign (Rashi): ${userData.rashi}`;
    */
   private fallbackGuidance(question: string, userData: UserSpiritualData): string {
     const q = question.toLowerCase();
-    
+
     if (q.includes('caminho') || q.includes('path')) {
       return `O caminho spiritual de ${userData.nome} está alinhado com ${userData.orixaRegente}. Continue na direçao da luz.`;
     }
@@ -510,7 +547,7 @@ Lunar Sign (Rashi): ${userData.rashi}`;
     if (q.includes('saúde') || q.includes('health')) {
       return 'Sua frequência espiritual suporta recuperaçao. Mantenha práticas de purificaçao energética.';
     }
-    
+
     return `A energia de ${userData.orixaRegente} orienta que você siga com confianca e sincerity em sua jornada.`;
   }
 }

@@ -4,15 +4,11 @@
 
 'use client';
 
+import { Trash2, Zap, LogOut } from 'lucide-react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import {
-  Trash2,
-  Zap,
-  LogOut
-} from 'lucide-react';
 import { useCockpitStore } from '@/stores/cockpit-store';
 
 interface CockpitHeaderProps {
@@ -53,14 +49,9 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
             </div>
           </div>
           <div>
-            <p className="text-sm font-medium text-foreground/90">
-              Cartas na Mesa
-            </p>
+            <p className="text-sm font-medium text-foreground/90">Cartas na Mesa</p>
             <div className="flex items-center gap-2 mt-1">
-              <Progress
-                value={progressPercent}
-                className="h-1.5 w-24 bg-muted"
-              />
+              <Progress value={progressPercent} className="h-1.5 w-24 bg-muted" />
               <span className="text-xs text-muted-foreground/70 font-mono">
                 {Math.round(progressPercent)}%
               </span>

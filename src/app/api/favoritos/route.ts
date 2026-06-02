@@ -1,10 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+  'Kether',
+  'Chokhmah',
+  'Binah',
+  'Chesed',
+  'Gevurah',
+  'Tipheret',
+  'Netzach',
+  'Hod',
+  'Yesod',
+  'Malkuth',
 ]);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
@@ -15,14 +23,16 @@ const FavoritoSchema = z.object({
   tipo: FavoritoTipoSchema,
   itemId: z.string(),
   createdAt: z.string(),
-  spiritualCorrelations: z.object({
-    sefirot: z.array(z.string()),
-    chakra: z.number(),
-    element: z.string(),
-    orixa: z.string(),
-    affirmation: z.string(),
-    frequency: z.string(),
-  }).optional(),
+  spiritualCorrelations: z
+    .object({
+      sefirot: z.array(z.string()),
+      chakra: z.number(),
+      element: z.string(),
+      orixa: z.string(),
+      affirmation: z.string(),
+      frequency: z.string(),
+    })
+    .optional(),
 });
 const CreateFavoritoSchema = z.object({
   tipo: FavoritoTipoSchema,
@@ -46,14 +56,17 @@ const FavoritosQuerySchema = z.object({
 export type Favorito = z.infer<typeof FavoritoSchema>;
 
 // ─── Spiritual Correlations by Favorite Type ──────────────────────────────────────────
-const FAVORITE_TYPE_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const FAVORITE_TYPE_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   affirmation: {
     sefirot: ['Kether', 'Chokhmah'],
     chakra: 6,
@@ -107,11 +120,14 @@ export async function GET(request: NextRequest) {
     });
 
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Parâmetros inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
     const { tipo, sefirot, chakra, element, orixa } = parseResult.data;
@@ -119,52 +135,67 @@ export async function GET(request: NextRequest) {
     let items = Array.from(favoritos.values());
 
     if (tipo) {
-      items = items.filter(f => f.tipo === tipo);
+      items = items.filter((f) => f.tipo === tipo);
     }
 
     if (sefirot) {
-      items = items.filter(f => f.spiritualCorrelations?.sefirot.includes(sefirot));
+      items = items.filter((f) => f.spiritualCorrelations?.sefirot.includes(sefirot));
     }
 
     if (chakra) {
-      items = items.filter(f => f.spiritualCorrelations?.chakra === chakra);
+      items = items.filter((f) => f.spiritualCorrelations?.chakra === chakra);
     }
 
     if (element) {
-      items = items.filter(f => f.spiritualCorrelations?.element === element);
+      items = items.filter((f) => f.spiritualCorrelations?.element === element);
     }
 
     if (orixa) {
-      items = items.filter(f => f.spiritualCorrelations?.orixa === orixa);
+      items = items.filter((f) => f.spiritualCorrelations?.orixa === orixa);
     }
 
     // Calculate spiritual stats
     const spiritualStats = {
-      byType: items.reduce((acc, f) => {
-        acc[f.tipo] = (acc[f.tipo] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      bySefirot: items.reduce((acc, f) => {
-        f.spiritualCorrelations?.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-        return acc;
-      }, {} as Record<string, number>),
-      byChakra: items.reduce((acc, f) => {
-        const c = f.spiritualCorrelations?.chakra;
-        if (c) acc[c] = (acc[c] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byElement: items.reduce((acc, f) => {
-        const e = f.spiritualCorrelations?.element;
-        if (e) acc[e] = (acc[e] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byOrixa: items.reduce((acc, f) => {
-        const o = f.spiritualCorrelations?.orixa;
-        if (o) acc[o] = (acc[o] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
+      byType: items.reduce(
+        (acc, f) => {
+          acc[f.tipo] = (acc[f.tipo] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      bySefirot: items.reduce(
+        (acc, f) => {
+          f.spiritualCorrelations?.sefirot.forEach((s) => {
+            acc[s] = (acc[s] || 0) + 1;
+          });
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byChakra: items.reduce(
+        (acc, f) => {
+          const c = f.spiritualCorrelations?.chakra;
+          if (c) acc[c] = (acc[c] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byElement: items.reduce(
+        (acc, f) => {
+          const e = f.spiritualCorrelations?.element;
+          if (e) acc[e] = (acc[e] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byOrixa: items.reduce(
+        (acc, f) => {
+          const o = f.spiritualCorrelations?.orixa;
+          if (o) acc[o] = (acc[o] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
     };
 
     return NextResponse.json({
@@ -178,10 +209,13 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erro interno',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro interno',
+      },
+      { status: 500 }
+    );
   }
 }
 // fallow-ignore-next-line complexity
@@ -190,16 +224,19 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parseResult = CreateFavoritoSchema.safeParse(body);
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Dados inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Dados inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
     const { tipo, itemId, sefirot, chakra, element, orixa } = parseResult.data;
 
     const existing = Array.from(favoritos.values()).find(
-      f => f.tipo === tipo && f.itemId === itemId
+      (f) => f.tipo === tipo && f.itemId === itemId
     );
     if (existing) {
       return NextResponse.json(existing, { status: 200 });
@@ -224,11 +261,14 @@ export async function POST(request: NextRequest) {
     };
 
     favoritos.set(favorito.id, favorito);
-    return NextResponse.json({
-      success: true,
-      favorito,
-      spiritualCorrelations: spiritualCorr,
-    }, { status: 201 });
+    return NextResponse.json(
+      {
+        success: true,
+        favorito,
+        spiritualCorrelations: spiritualCorr,
+      },
+      { status: 201 }
+    );
   } catch {
     return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 });
   }
@@ -239,11 +279,14 @@ export async function DELETE(request: NextRequest) {
     const body = await request.json();
     const parseResult = DeleteFavoritoSchema.safeParse(body);
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Dados inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Dados inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
     const { id } = parseResult.data;
 

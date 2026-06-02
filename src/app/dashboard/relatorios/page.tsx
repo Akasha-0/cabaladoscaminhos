@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { SkeletonCard, SkeletonText, SkeletonLine } from '@/components/shared/SkeletonSpiritual';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { SkeletonCard, SkeletonText, SkeletonLine } from '@/components/shared/SkeletonSpiritual';
-import { ErrorState } from '@/components/shared/ErrorState';
 import type { MapaAlmaCompleto, Convergence, BirthProfile } from '@/lib/engines/types/mapa-alma';
 
 interface ReportCardProps {
@@ -146,10 +146,7 @@ export default function RelatoriosPage() {
           <p className="text-slate-400 mb-4">
             Complete seu cadastro para visualizar seus relatórios espirituais.
           </p>
-          <Button
-            variant="golden"
-            onClick={() => window.location.href = '/onboarding'}
-          >
+          <Button variant="golden" onClick={() => (window.location.href = '/onboarding')}>
             Completar Cadastro
           </Button>
         </div>
@@ -164,7 +161,7 @@ export default function RelatoriosPage() {
   const anoPessoal = numerologia.anoPessoal || 1;
 
   // Get dominant/convergent themes
-  const forcasConvergentes = convergencias.filter(c => c.forca === 'forte');
+  const forcasConvergentes = convergencias.filter((c) => c.forca === 'forte');
   const orixas = orixasDominantes.length > 0 ? orixasDominantes : [];
 
   return (
@@ -172,7 +169,8 @@ export default function RelatoriosPage() {
       <div>
         <h1 className="font-serif text-3xl text-slate-100">Relatórios Espirituais</h1>
         <p className="text-slate-400 mt-2">
-          Olá, {profile.nomeCompleto.split(' ')[0]}. Seus relatórios são baseados em seu Mapa da Alma.
+          Olá, {profile.nomeCompleto.split(' ')[0]}. Seus relatórios são baseados em seu Mapa da
+          Alma.
         </p>
       </div>
 
@@ -194,7 +192,7 @@ export default function RelatoriosPage() {
                 </div>
                 <SkeletonLine width="100%" height="8px" className="rounded-full" />
                 <p className="text-sm text-slate-400">
-                  Você está no ciclo de vida número {cicloAtual}. Este ciclo traz influências 
+                  Você está no ciclo de vida número {cicloAtual}. Este ciclo traz influências
                   específicas para sua jornada espiritual atual.
                 </p>
               </div>
@@ -232,7 +230,7 @@ export default function RelatoriosPage() {
                         className="w-full h-16 rounded-t-lg"
                         style={{
                           backgroundColor: chakra.cor ? `${chakra.cor}40` : '#6366f1',
-                          borderTop: chakra.cor ? `2px solid ${chakra.cor}` : '2px solid #6366f1'
+                          borderTop: chakra.cor ? `2px solid ${chakra.cor}` : '2px solid #6366f1',
                         }}
                         title={chakra.nome}
                       />
@@ -285,7 +283,9 @@ export default function RelatoriosPage() {
                   <p className="text-xs text-slate-500 mt-1">Expressão</p>
                 </div>
                 <div className="text-center p-3 bg-slate-800/30 rounded-lg">
-                  <span className="text-2xl font-bold text-emerald-400">{numerologia.motivacao}</span>
+                  <span className="text-2xl font-bold text-emerald-400">
+                    {numerologia.motivacao}
+                  </span>
                   <p className="text-xs text-slate-500 mt-1">Motivação</p>
                 </div>
                 <div className="text-center p-3 bg-slate-800/30 rounded-lg">
@@ -311,18 +311,24 @@ export default function RelatoriosPage() {
                     <div key={index} className="border border-slate-700/30 rounded-lg p-3">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-slate-200 font-medium">{conv.energia}</span>
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          conv.forca === 'forte' ? 'bg-green-900/30 text-green-400' :
-                          conv.forca === 'medio' ? 'bg-yellow-900/30 text-yellow-400' :
-                          'bg-slate-700/30 text-slate-400'
-                        }`}>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${
+                            conv.forca === 'forte'
+                              ? 'bg-green-900/30 text-green-400'
+                              : conv.forca === 'medio'
+                                ? 'bg-yellow-900/30 text-yellow-400'
+                                : 'bg-slate-700/30 text-slate-400'
+                          }`}
+                        >
                           {conv.forca}
                         </span>
                       </div>
                       <p className="text-sm text-slate-400">{conv.descricao}</p>
                       <div className="flex gap-1 mt-2">
                         {conv.sistemas.map((sistema, i) => (
-                          <span key={i} className="text-xs text-slate-500">{sistema}</span>
+                          <span key={i} className="text-xs text-slate-500">
+                            {sistema}
+                          </span>
                         ))}
                       </div>
                     </div>
@@ -341,8 +347,8 @@ export default function RelatoriosPage() {
                 <div className="space-y-3">
                   <h4 className="text-slate-300 font-medium">Seu Mapa Espiritual</h4>
                   <p className="text-sm text-slate-400">
-                    Com base em {profile.dataNascimento}, seu mapa anual integra múltiplos 
-                    sistemas espirituais para oferecer uma visão completa de sua jornada.
+                    Com base em {profile.dataNascimento}, seu mapa anual integra múltiplos sistemas
+                    espirituais para oferecer uma visão completa de sua jornada.
                   </p>
                   <div className="space-y-2 mt-4">
                     <div className="flex items-center gap-2">
@@ -387,13 +393,20 @@ export default function RelatoriosPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Estado Geral:</span>
-                  <span className={`px-3 py-1 rounded-full text-sm capitalize ${
-                    chakras.equilibrio > 0.7 ? 'bg-green-900/30 text-green-400' :
-                    chakras.equilibrio > 0.4 ? 'bg-yellow-900/30 text-yellow-400' :
-                    'bg-red-900/30 text-red-400'
-                  }`}>
-                    {chakras.equilibrio > 0.7 ? 'Equilibrado' :
-                     chakras.equilibrio > 0.4 ? 'Moderado' : 'Em Ajuste'}
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm capitalize ${
+                      chakras.equilibrio > 0.7
+                        ? 'bg-green-900/30 text-green-400'
+                        : chakras.equilibrio > 0.4
+                          ? 'bg-yellow-900/30 text-yellow-400'
+                          : 'bg-red-900/30 text-red-400'
+                    }`}
+                  >
+                    {chakras.equilibrio > 0.7
+                      ? 'Equilibrado'
+                      : chakras.equilibrio > 0.4
+                        ? 'Moderado'
+                        : 'Em Ajuste'}
                   </span>
                 </div>
                 <div className="space-y-2">
@@ -430,7 +443,9 @@ export default function RelatoriosPage() {
                   {mapaData.deepCorrelations.correlations.slice(0, 3).map((corr, index) => (
                     <div key={index} className="border-l-2 border-violet-500 pl-3">
                       <p className="text-slate-200 text-sm">{corr.shared_energy}</p>
-                      <p className="text-xs text-slate-500 mt-1">Correlação: {Math.round(corr.correlation * 100)}%</p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Correlação: {Math.round(corr.correlation * 100)}%
+                      </p>
                       <p className="text-xs text-slate-400 mt-2">{corr.explanation}</p>
                     </div>
                   ))}
@@ -447,30 +462,33 @@ export default function RelatoriosPage() {
           <div className="space-y-2">
             <h4 className="text-slate-300 font-medium">Relatório Semanal</h4>
             <p>
-              Foco nos ciclos atuais, orixás e forças espirituais que influenciam 
-              sua semana. Ideal para práticas diárias e decisões de curto prazo.
+              Foco nos ciclos atuais, orixás e forças espirituais que influenciam sua semana. Ideal
+              para práticas diárias e decisões de curto prazo.
             </p>
           </div>
           <div className="space-y-2">
             <h4 className="text-slate-300 font-medium">Relatório Mensal</h4>
             <p>
-              análise numerológica detalhada com seus números de vida, ano pessoal 
-              e convergências entre sistemas. Perfeito para planejamento mensal.
+              análise numerológica detalhada com seus números de vida, ano pessoal e convergências
+              entre sistemas. Perfeito para planejamento mensal.
             </p>
           </div>
           <div className="space-y-2">
             <h4 className="text-slate-300 font-medium">Relatório Anual</h4>
             <p>
-              Visão holística de sua jornada espiritual, integrando todos os 
-              sistemas: numerologia, Odu, chakras, tarô e correlações profundas.
+              Visão holística de sua jornada espiritual, integrando todos os sistemas: numerologia,
+              Odu, chakras, tarô e correlações profundas.
             </p>
           </div>
           <div className="space-y-2">
             <h4 className="text-slate-300 font-medium">Dados Atualizados</h4>
             <p>
-              Todos os relatórios são gerados em tempo real a partir do seu 
-              Mapa da Alma completo. Última atualização: {mapaData.dataCalculo ? 
-              new Date(mapaData.dataCalculo).toLocaleDateString('pt-BR') : 'N/A'}.
+              Todos os relatórios são gerados em tempo real a partir do seu Mapa da Alma completo.
+              Última atualização:{' '}
+              {mapaData.dataCalculo
+                ? new Date(mapaData.dataCalculo).toLocaleDateString('pt-BR')
+                : 'N/A'}
+              .
             </p>
           </div>
         </div>

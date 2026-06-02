@@ -15,17 +15,24 @@
 // The discriminator enum values are unified into a single Zod
 // schema covering every known type across the five routes.
 // ============================================================
-
-import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextResponse } from 'next/server';
 
 // ------------------------------------------------------------
 // Common spiritual filter field schemas (shared by all callers)
 // ------------------------------------------------------------
 
 const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth',
+  'Kether',
+  'Chokhmah',
+  'Binah',
+  'Chesed',
+  'Gevurah',
+  'Tipheret',
+  'Netzach',
+  'Hod',
+  'Yesod',
+  'Malkuth',
 ]);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
@@ -38,25 +45,48 @@ const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
  */
 const SpiritualTypeSchema = z.enum([
   // ai-models
-  'chat', 'completion', 'embedding', 'vision', 'speech', 'oracle', 'divination',
+  'chat',
+  'completion',
+  'embedding',
+  'vision',
+  'speech',
+  'oracle',
+  'divination',
   // data-sources
-  'api', 'database', 'file', 'stream', 'cache', 'orixa', 'astrology', 'numerology',
+  'api',
+  'database',
+  'file',
+  'stream',
+  'cache',
+  'orixa',
+  'astrology',
+  'numerology',
   // guidance/types
-  'tarot', 'cabala', 'ifa', 'chakras', 'meditation', 'ritual',
+  'tarot',
+  'cabala',
+  'ifa',
+  'chakras',
+  'meditation',
+  'ritual',
   // healing/types
-  'mental', 'physical', 'spiritual', 'karmic', 'emotional', 'ancestral',
+  'mental',
+  'physical',
+  'spiritual',
+  'karmic',
+  'emotional',
+  'ancestral',
   // materials
-  'elemental', 'essence', 'crystal', 'herb', 'symbolic', 'offering',
+  'elemental',
+  'essence',
+  'crystal',
+  'herb',
+  'symbolic',
+  'offering',
 ]);
 
 // Re-exported for callers that want to keep using these named
 // schemas in body validation / other route sections.
-export {
-  SefirotSchema,
-  ChakraSchema,
-  ElementSchema,
-  SpiritualTypeSchema,
-};
+export { SefirotSchema, ChakraSchema, ElementSchema, SpiritualTypeSchema };
 
 // ------------------------------------------------------------
 // Public API
@@ -110,7 +140,7 @@ function buildSpiritualFilterSchema(fieldName: SpiritualFilterFieldName) {
  */
 export function parseSpiritualFilters(
   searchParams: URLSearchParams,
-  fieldName: SpiritualFilterFieldName,
+  fieldName: SpiritualFilterFieldName
 ): ParseSpiritualFiltersResult {
   const schema = buildSpiritualFilterSchema(fieldName);
 
@@ -131,7 +161,7 @@ export function parseSpiritualFilters(
           error: 'Parâmetros inválidos',
           details: result.error.flatten().fieldErrors,
         },
-        { status: 400 },
+        { status: 400 }
       ),
     };
   }

@@ -5,12 +5,12 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import { cn } from '@/lib/utils';
-import { useCockpitStore, type CartaCiganaOption } from '@/stores/cockpit-store';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
 import { type OduInfo } from '@/lib/ifa/odu-data';
-import { CockpitSidebar } from './CockpitSidebar';
+import { cn } from '@/lib/utils';
+import { useCockpitStore, type CartaCiganaOption } from '@/stores/cockpit-store';
 import { CockpitHeader } from './CockpitHeader';
+import { CockpitSidebar } from './CockpitSidebar';
 import { HouseCell } from './HouseCell';
 import { HouseInputPopover } from './HouseInputPopover';
 
@@ -36,15 +36,21 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
     setPopoverPosition(null);
   }, [setActivePopover]);
 
-  const handleSaveHouse = useCallback((carta: CartaCiganaOption, odu: OduInfo) => {
-    if (activePopover) {
-      fillHouse(activePopover, carta, odu);
-    }
-  }, [activePopover, fillHouse]);
+  const handleSaveHouse = useCallback(
+    (carta: CartaCiganaOption, odu: OduInfo) => {
+      if (activePopover) {
+        fillHouse(activePopover, carta, odu);
+      }
+    },
+    [activePopover, fillHouse]
+  );
 
-  const handleClearHouse = useCallback((casaNumero: number) => {
-    clearHouse(casaNumero);
-  }, [clearHouse]);
+  const handleClearHouse = useCallback(
+    (casaNumero: number) => {
+      clearHouse(casaNumero);
+    },
+    [clearHouse]
+  );
 
   const handleNewAtendimento = useCallback(() => {
     resetCockpit();
@@ -72,10 +78,46 @@ export function CockpitOracular({ showDebug = false }: CockpitOracularProps) {
     ];
 
     const odusExample = [
-      { numero: 1, nome: 'Okaran', significado: 'O começo', elementos: 'Terra / Fogo', orixas: ['Exu', 'Omolu'], quizilas: [], preceitos: '', ebo: '' },
-      { numero: 4, nome: 'Irosun', significado: 'O aviso', elementos: 'Fogo / Terra', orixas: ['Iemanjá', 'Oxóssi'], quizilas: [], preceitos: '', ebo: '' },
-      { numero: 7, nome: 'Odi', significado: 'O poço', elementos: 'Terra / Água', orixas: ['Omolu', 'Oxumaré'], quizilas: [], preceitos: '', ebo: '' },
-      { numero: 2, nome: 'Ejiokô', significado: 'Dualidade', elementos: 'Ar / Terra', orixas: ['Ibeji', 'Ogum'], quizilas: [], preceitos: '', ebo: '' },
+      {
+        numero: 1,
+        nome: 'Okaran',
+        significado: 'O começo',
+        elementos: 'Terra / Fogo',
+        orixas: ['Exu', 'Omolu'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
+      {
+        numero: 4,
+        nome: 'Irosun',
+        significado: 'O aviso',
+        elementos: 'Fogo / Terra',
+        orixas: ['Iemanjá', 'Oxóssi'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
+      {
+        numero: 7,
+        nome: 'Odi',
+        significado: 'O poço',
+        elementos: 'Terra / Água',
+        orixas: ['Omolu', 'Oxumaré'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
+      {
+        numero: 2,
+        nome: 'Ejiokô',
+        significado: 'Dualidade',
+        elementos: 'Ar / Terra',
+        orixas: ['Ibeji', 'Ogum'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
     ];
 
     for (let i = 1; i <= 12; i++) {

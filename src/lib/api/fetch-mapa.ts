@@ -37,7 +37,7 @@ export async function fetchMapa(
   });
 
   if (!response.ok) {
-    const data = await response.json().catch(() => ({} as { error?: string }));
+    const data = await response.json().catch(() => ({}) as { error?: string });
     throw new Error((data as { error?: string }).error || `HTTP ${response.status}`);
   }
 

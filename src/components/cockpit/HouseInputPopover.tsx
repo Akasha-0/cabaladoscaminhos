@@ -4,23 +4,16 @@
 
 'use client';
 
+import { Search, Check, X, ChevronRight, Sparkles, AlertCircle } from 'lucide-react';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { cn } from '@/lib/utils';
-import { HOUSES_36 } from '@/lib/divination/house-delegation';
-import { oduData, type OduInfo } from '@/lib/ifa/odu-data';
-import { LENORMAND_CARDS } from '@/lib/constants/lenormand-cards';
-import type { CartaCiganaOption } from '@/stores/cockpit-store';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Search,
-  Check,
-  X,
-  ChevronRight,
-  Sparkles,
-  AlertCircle
-} from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { LENORMAND_CARDS } from '@/lib/constants/lenormand-cards';
+import { HOUSES_36 } from '@/lib/divination/house-delegation';
+import { oduData, type OduInfo } from '@/lib/ifa/odu-data';
+import { cn } from '@/lib/utils';
+import type { CartaCiganaOption } from '@/stores/cockpit-store';
 
 interface HouseInputPopoverProps {
   casaNumero: number;
@@ -40,7 +33,7 @@ const CARTAS_CIGANAS: CartaCiganaOption[] = LENORMAND_CARDS.map((carta) => ({
 
 // fallow-ignore-next-line complexity
 export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPopoverProps) {
-  const house = HOUSES_36.find(h => h.number === casaNumero);
+  const house = HOUSES_36.find((h) => h.number === casaNumero);
 
   const [cartaSearch, setCartaSearch] = useState('');
   const [oduSearch, setOduSearch] = useState('');
@@ -54,29 +47,33 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
     cartaInputRef.current?.focus();
   }, []);
 
-  const filteredCartas = CARTAS_CIGANAS.filter(c =>
-    c.nome.toLowerCase().includes(cartaSearch.toLowerCase()) ||
-    String(c.numero).includes(cartaSearch)
+  const filteredCartas = CARTAS_CIGANAS.filter(
+    (c) =>
+      c.nome.toLowerCase().includes(cartaSearch.toLowerCase()) ||
+      String(c.numero).includes(cartaSearch)
   );
 
-  const filteredOdus = oduData.filter(o =>
-    o.nome.toLowerCase().includes(oduSearch.toLowerCase()) ||
-    String(o.numero).includes(oduSearch)
+  const filteredOdus = oduData.filter(
+    (o) =>
+      o.nome.toLowerCase().includes(oduSearch.toLowerCase()) || String(o.numero).includes(oduSearch)
   );
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    } else if (e.key === 'Enter' && selectedCarta && selectedOdu) {
-      onSave(selectedCarta, selectedOdu);
-    } else if (e.key === 'Tab' && e.shiftKey) {
-      e.preventDefault();
-      setFocusedField('carta');
-    } else if (e.key === 'Tab' && !e.shiftKey) {
-      e.preventDefault();
-      setFocusedField('odu');
-    }
-  }, [onClose, onSave, selectedCarta, selectedOdu]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key === 'Enter' && selectedCarta && selectedOdu) {
+        onSave(selectedCarta, selectedOdu);
+      } else if (e.key === 'Tab' && e.shiftKey) {
+        e.preventDefault();
+        setFocusedField('carta');
+      } else if (e.key === 'Tab' && !e.shiftKey) {
+        e.preventDefault();
+        setFocusedField('odu');
+      }
+    },
+    [onClose, onSave, selectedCarta, selectedOdu]
+  );
 
   const handleCartaSelect = (carta: CartaCiganaOption) => {
     setSelectedCarta(carta);
@@ -159,7 +156,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
                   Nenhuma carta encontrada
                 </div>
               ) : (
-                filteredCartas.map(carta => (
+                filteredCartas.map((carta) => (
                   <button
                     key={carta.numero}
                     onClick={() => handleCartaSelect(carta)}
@@ -207,8 +204,12 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
                   Odu {selectedOdu.numero} - {selectedOdu.nome}
                 </span>
                 <div className="flex gap-1 mt-1">
-                  {selectedOdu.orixas.map(orixa => (
-                    <Badge key={orixa} variant="outline" className="text-[10px] bg-secondary/10 border-secondary/20 text-secondary/80">
+                  {selectedOdu.orixas.map((orixa) => (
+                    <Badge
+                      key={orixa}
+                      variant="outline"
+                      className="text-[10px] bg-secondary/10 border-secondary/20 text-secondary/80"
+                    >
                       {orixa}
                     </Badge>
                   ))}
@@ -231,7 +232,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
                   Nenhum odu encontrado
                 </div>
               ) : (
-                filteredOdus.map(odu => (
+                filteredOdus.map((odu) => (
                   <button
                     key={odu.numero}
                     onClick={() => handleOduSelect(odu)}
@@ -241,9 +242,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
                       'flex items-center gap-2'
                     )}
                   >
-                    <span className="text-xs text-secondary font-mono w-6">
-                      {odu.numero}
-                    </span>
+                    <span className="text-xs text-secondary font-mono w-6">{odu.numero}</span>
                     <span className="text-sm">{odu.nome}</span>
                     <span className="text-xs text-muted-foreground/70 ml-auto">
                       {odu.orixas[0]}

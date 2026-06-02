@@ -3,14 +3,22 @@
 // ============================================================
 // GET endpoints for energy flow visualization and tracking
 // ============================================================
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import type { SpiritualCorrelations } from '@/lib/api/spiritual-correlations';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+  'Kether',
+  'Chokhmah',
+  'Binah',
+  'Chesed',
+  'Gevurah',
+  'Tipheret',
+  'Netzach',
+  'Hod',
+  'Yesod',
+  'Malkuth',
 ]);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
@@ -24,17 +32,20 @@ const EnergyFlowQuerySchema = z.object({
 });
 
 const ENERGY_FLOW_MODES = ['inhale', 'exhale', 'hold'] as const;
-type FlowMode = typeof ENERGY_FLOW_MODES[number];
+type FlowMode = (typeof ENERGY_FLOW_MODES)[number];
 
 // ─── Spiritual Correlations for Energy Flow Patterns ──────────────────────────────────────────
-const FLOW_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const FLOW_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   balanced: {
     sefirot: ['Tipheret', 'Yesod'],
     chakra: 4,
@@ -217,59 +228,74 @@ export async function GET(request: NextRequest) {
   });
 
   if (!parseResult.success) {
-    return NextResponse.json({
-      success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
 
   const { pattern, sefirot, chakra, element, orixa } = parseResult.data;
   let patterns = [...FLOW_PATTERNS];
 
   if (pattern) {
-    patterns = patterns.filter(p => p.id === pattern);
+    patterns = patterns.filter((p) => p.id === pattern);
   }
 
   if (sefirot) {
-    patterns = patterns.filter(p => p.spiritualCorrelations.sefirot.includes(sefirot));
+    patterns = patterns.filter((p) => p.spiritualCorrelations.sefirot.includes(sefirot));
   }
 
   if (chakra) {
-    patterns = patterns.filter(p => p.spiritualCorrelations.chakra === chakra);
+    patterns = patterns.filter((p) => p.spiritualCorrelations.chakra === chakra);
   }
 
   if (element) {
-    patterns = patterns.filter(p => p.spiritualCorrelations.element === element);
+    patterns = patterns.filter((p) => p.spiritualCorrelations.element === element);
   }
 
   if (orixa) {
-    patterns = patterns.filter(p => p.spiritualCorrelations.orixa === orixa);
+    patterns = patterns.filter((p) => p.spiritualCorrelations.orixa === orixa);
   }
 
   // Calculate spiritual stats
   const spiritualStats = {
-    bySefirot: patterns.reduce((acc, p) => {
-      p.spiritualCorrelations.sefirot.forEach(s => {
-        acc[s] = (acc[s] || 0) + 1;
-      });
-      return acc;
-    }, {} as Record<string, number>),
-    byChakra: patterns.reduce((acc, p) => {
-      const c = p.spiritualCorrelations.chakra;
-      if (c) acc[c] = (acc[c] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
-    byElement: patterns.reduce((acc, p) => {
-      const e = p.spiritualCorrelations.element;
-      if (e) acc[e] = (acc[e] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
-    byOrixa: patterns.reduce((acc, p) => {
-      const o = p.spiritualCorrelations.orixa;
-      if (o) acc[o] = (acc[o] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
+    bySefirot: patterns.reduce(
+      (acc, p) => {
+        p.spiritualCorrelations.sefirot.forEach((s) => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byChakra: patterns.reduce(
+      (acc, p) => {
+        const c = p.spiritualCorrelations.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byElement: patterns.reduce(
+      (acc, p) => {
+        const e = p.spiritualCorrelations.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byOrixa: patterns.reduce(
+      (acc, p) => {
+        const o = p.spiritualCorrelations.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
   };
 
   return NextResponse.json({

@@ -1,41 +1,58 @@
 // ============================================================
 // DASHBOARD DATA SOURCES API - CABALA DOS CAMINHOS
 // ============================================================
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const DataSourceTypeSchema = z.enum(['api', 'database', 'file', 'stream', 'cache', 'orixa', 'astrology', 'numerology']);
+const DataSourceTypeSchema = z.enum([
+  'api',
+  'database',
+  'file',
+  'stream',
+  'cache',
+  'orixa',
+  'astrology',
+  'numerology',
+]);
 const DataSourceStatusSchema = z.enum(['connected', 'disconnected', 'error', 'syncing']);
 const DataSourceQuerySchema = z.object({
   tipo: DataSourceTypeSchema.optional(),
   status: DataSourceStatusSchema.optional(),
-  habilitado: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  habilitado: z
+    .enum(['true', 'false'])
+    .transform((v) => v === 'true')
+    .optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
 });
 
 const ConnectDataSourceSchema = z.object({
   id: z.string().min(1, 'ID é obrigatório'),
-  configuracao: z.object({
-    host: z.string().optional(),
-    porta: z.number().int().positive().optional(),
-    database: z.string().optional(),
-    endpoint: z.string().url().optional(),
-    autenticacao: z.enum(['none', 'basic', 'bearer', 'oauth']).optional(),
-    ssl: z.boolean().optional(),
-  }).optional(),
+  configuracao: z
+    .object({
+      host: z.string().optional(),
+      porta: z.number().int().positive().optional(),
+      database: z.string().optional(),
+      endpoint: z.string().url().optional(),
+      autenticacao: z.enum(['none', 'basic', 'bearer', 'oauth']).optional(),
+      ssl: z.boolean().optional(),
+    })
+    .optional(),
 });
 
 // ─── Spiritual Correlations for Data Source Types ──────────────────────────────────────────
-const DATASOURCE_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const DATASOURCE_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   api: {
     sefirot: ['Hod', 'Netzach'],
     chakra: 5,
@@ -360,11 +377,14 @@ export async function GET(request: NextRequest) {
     });
 
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Parâmetros inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
     const { tipo, status, habilitado, limit } = parseResult.data;
@@ -372,31 +392,31 @@ export async function GET(request: NextRequest) {
     let fontes = [...mockDataSources];
 
     if (tipo) {
-      fontes = fontes.filter(f => f.tipo === tipo);
+      fontes = fontes.filter((f) => f.tipo === tipo);
     }
 
     if (status) {
-      fontes = fontes.filter(f => f.status === status);
+      fontes = fontes.filter((f) => f.status === status);
     }
 
     if (habilitado !== undefined) {
-      fontes = fontes.filter(f => f.habilitado === habilitado);
+      fontes = fontes.filter((f) => f.habilitado === habilitado);
     }
 
     if (sefirot) {
-      fontes = fontes.filter(f => f.spiritualCorrelations?.sefirot.includes(sefirot));
+      fontes = fontes.filter((f) => f.spiritualCorrelations?.sefirot.includes(sefirot));
     }
 
     if (chakra) {
-      fontes = fontes.filter(f => f.spiritualCorrelations?.chakra === chakra);
+      fontes = fontes.filter((f) => f.spiritualCorrelations?.chakra === chakra);
     }
 
     if (element) {
-      fontes = fontes.filter(f => f.spiritualCorrelations?.element === element);
+      fontes = fontes.filter((f) => f.spiritualCorrelations?.element === element);
     }
 
     if (orixa) {
-      fontes = fontes.filter(f => f.spiritualCorrelations?.orixa === orixa);
+      fontes = fontes.filter((f) => f.spiritualCorrelations?.orixa === orixa);
     }
 
     if (limit && fontes.length > limit) {
@@ -404,39 +424,57 @@ export async function GET(request: NextRequest) {
     }
 
     const total = fontes.length;
-    const conectadas = fontes.filter(f => f.status === 'connected').length;
+    const conectadas = fontes.filter((f) => f.status === 'connected').length;
 
     // Calculate spiritual stats
     const spiritualStats = {
-      byTipo: fontes.reduce((acc, f) => {
-        acc[f.tipo] = (acc[f.tipo] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byStatus: fontes.reduce((acc, f) => {
-        acc[f.status] = (acc[f.status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      bySefirot: fontes.reduce((acc, f) => {
-        f.spiritualCorrelations?.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-        return acc;
-      }, {} as Record<string, number>),
-      byChakra: fontes.reduce((acc, f) => {
-        const c = f.spiritualCorrelations?.chakra;
-        if (c) acc[c] = (acc[c] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byElement: fontes.reduce((acc, f) => {
-        const e = f.spiritualCorrelations?.element;
-        if (e) acc[e] = (acc[e] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byOrixa: fontes.reduce((acc, f) => {
-        const o = f.spiritualCorrelations?.orixa;
-        if (o) acc[o] = (acc[o] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
+      byTipo: fontes.reduce(
+        (acc, f) => {
+          acc[f.tipo] = (acc[f.tipo] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byStatus: fontes.reduce(
+        (acc, f) => {
+          acc[f.status] = (acc[f.status] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      bySefirot: fontes.reduce(
+        (acc, f) => {
+          f.spiritualCorrelations?.sefirot.forEach((s) => {
+            acc[s] = (acc[s] || 0) + 1;
+          });
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byChakra: fontes.reduce(
+        (acc, f) => {
+          const c = f.spiritualCorrelations?.chakra;
+          if (c) acc[c] = (acc[c] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byElement: fontes.reduce(
+        (acc, f) => {
+          const e = f.spiritualCorrelations?.element;
+          if (e) acc[e] = (acc[e] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byOrixa: fontes.reduce(
+        (acc, f) => {
+          const o = f.spiritualCorrelations?.orixa;
+          if (o) acc[o] = (acc[o] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
     };
 
     return NextResponse.json({
@@ -451,9 +489,12 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erro interno',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro interno',
+      },
+      { status: 500 }
+    );
   }
 }

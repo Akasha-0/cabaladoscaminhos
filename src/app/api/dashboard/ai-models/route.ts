@@ -1,30 +1,43 @@
 // ============================================================
 // DASHBOARD AI MODELS API - CABALA DOS CAMINHOS
 // ============================================================
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
-const ModelTypeSchema = z.enum(['chat', 'completion', 'embedding', 'vision', 'speech', 'oracle', 'divination']);
+const ModelTypeSchema = z.enum([
+  'chat',
+  'completion',
+  'embedding',
+  'vision',
+  'speech',
+  'oracle',
+  'divination',
+]);
 const ModelStatusSchema = z.enum(['active', 'inactive', 'training', 'error', 'deprecated']);
 const ModelQuerySchema = z.object({
   tipo: ModelTypeSchema.optional(),
   status: ModelStatusSchema.optional(),
   provider: z.string().optional(),
-  habilitado: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  habilitado: z
+    .enum(['true', 'false'])
+    .transform((v) => v === 'true')
+    .optional(),
   limit: z.coerce.number().int().positive().max(50).optional(),
 });
 
 const UpdateModelSchema = z.object({
   id: z.string().min(1, 'ID é obrigatório'),
-  configuracao: z.object({
-    temperatura: z.number().min(0).max(2).optional(),
-    maxTokens: z.number().int().positive().optional(),
-    topP: z.number().min(0).max(1).optional(),
-    frequenciaPenalty: z.number().min(-2).max(2).optional(),
-    presencaPenalty: z.number().min(-2).max(2).optional(),
-  }).optional(),
+  configuracao: z
+    .object({
+      temperatura: z.number().min(0).max(2).optional(),
+      maxTokens: z.number().int().positive().optional(),
+      topP: z.number().min(0).max(1).optional(),
+      frequenciaPenalty: z.number().min(-2).max(2).optional(),
+      presencaPenalty: z.number().min(-2).max(2).optional(),
+    })
+    .optional(),
   habilitado: z.boolean().optional(),
 });
 
@@ -33,26 +46,31 @@ const CreateModelSchema = z.object({
   tipo: ModelTypeSchema,
   provider: z.string().min(1, 'Provider é obrigatório'),
   modelo: z.string().min(1, 'Modelo é obrigatório'),
-  configuracao: z.object({
-    temperatura: z.number().min(0).max(2).optional().default(0.7),
-    maxTokens: z.number().int().positive().optional().default(2048),
-    topP: z.number().min(0).max(1).optional().default(0.95),
-    frequenciaPenalty: z.number().min(-2).max(2).optional().default(0),
-    presencaPenalty: z.number().min(-2).max(2).optional().default(0),
-  }).optional(),
+  configuracao: z
+    .object({
+      temperatura: z.number().min(0).max(2).optional().default(0.7),
+      maxTokens: z.number().int().positive().optional().default(2048),
+      topP: z.number().min(0).max(1).optional().default(0.95),
+      frequenciaPenalty: z.number().min(-2).max(2).optional().default(0),
+      presencaPenalty: z.number().min(-2).max(2).optional().default(0),
+    })
+    .optional(),
   sefirot: z.array(z.string()).optional(),
   orixa: z.string().optional(),
 });
 
 // ─── Spiritual Correlations for AI Model Types ──────────────────────────────────────────
-const MODEL_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const MODEL_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   chat: {
     sefirot: ['Hod', 'Netzach'],
     chakra: 5,
@@ -183,7 +201,7 @@ const mockModels: AIModel[] = [
       errosHoje: 8,
       tempoMedioResposta: 1800,
       taxaSucesso: 99.82,
-      custoTotal: 234.50,
+      custoTotal: 234.5,
     },
     versao: '1.2.0',
     createdAt: '2026-01-15T08:00:00Z',
@@ -247,7 +265,7 @@ const mockModels: AIModel[] = [
       errosHoje: 2,
       tempoMedioResposta: 2500,
       taxaSucesso: 99.78,
-      custoTotal: 156.80,
+      custoTotal: 156.8,
     },
     versao: '1.0.0',
     createdAt: '2026-03-01T00:00:00Z',
@@ -279,7 +297,7 @@ const mockModels: AIModel[] = [
       errosHoje: 1,
       tempoMedioResposta: 3000,
       taxaSucesso: 99.99,
-      custoTotal: 89.00,
+      custoTotal: 89.0,
     },
     versao: '1.1.0',
     createdAt: '2026-03-15T00:00:00Z',
@@ -311,7 +329,7 @@ const mockModels: AIModel[] = [
       errosHoje: 0,
       tempoMedioResposta: 200,
       taxaSucesso: 100,
-      custoTotal: 78.00,
+      custoTotal: 78.0,
     },
     versao: '1.0.0',
     createdAt: '2026-04-01T00:00:00Z',
@@ -404,11 +422,14 @@ export async function GET(request: NextRequest) {
     });
 
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Parâmetros inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
     const { tipo, status, provider, habilitado, limit } = parseResult.data;
@@ -416,35 +437,35 @@ export async function GET(request: NextRequest) {
     let modelos = [...mockModels];
 
     if (tipo) {
-      modelos = modelos.filter(m => m.tipo === tipo);
+      modelos = modelos.filter((m) => m.tipo === tipo);
     }
 
     if (status) {
-      modelos = modelos.filter(m => m.status === status);
+      modelos = modelos.filter((m) => m.status === status);
     }
 
     if (provider) {
-      modelos = modelos.filter(m => m.provider.toLowerCase().includes(provider.toLowerCase()));
+      modelos = modelos.filter((m) => m.provider.toLowerCase().includes(provider.toLowerCase()));
     }
 
     if (habilitado !== undefined) {
-      modelos = modelos.filter(m => m.habilitado === habilitado);
+      modelos = modelos.filter((m) => m.habilitado === habilitado);
     }
 
     if (sefirot) {
-      modelos = modelos.filter(m => m.spiritualCorrelations?.sefirot.includes(sefirot));
+      modelos = modelos.filter((m) => m.spiritualCorrelations?.sefirot.includes(sefirot));
     }
 
     if (chakra) {
-      modelos = modelos.filter(m => m.spiritualCorrelations?.chakra === chakra);
+      modelos = modelos.filter((m) => m.spiritualCorrelations?.chakra === chakra);
     }
 
     if (element) {
-      modelos = modelos.filter(m => m.spiritualCorrelations?.element === element);
+      modelos = modelos.filter((m) => m.spiritualCorrelations?.element === element);
     }
 
     if (orixa) {
-      modelos = modelos.filter(m => m.spiritualCorrelations?.orixa === orixa);
+      modelos = modelos.filter((m) => m.spiritualCorrelations?.orixa === orixa);
     }
 
     if (limit && modelos.length > limit) {
@@ -452,43 +473,64 @@ export async function GET(request: NextRequest) {
     }
 
     const total = modelos.length;
-    const ativos = modelos.filter(m => m.status === 'active' && m.habilitado).length;
+    const ativos = modelos.filter((m) => m.status === 'active' && m.habilitado).length;
 
     // Calculate spiritual stats
     const spiritualStats = {
-      byTipo: modelos.reduce((acc, m) => {
-        acc[m.tipo] = (acc[m.tipo] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byStatus: modelos.reduce((acc, m) => {
-        acc[m.status] = (acc[m.status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byProvider: modelos.reduce((acc, m) => {
-        acc[m.provider] = (acc[m.provider] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      bySefirot: modelos.reduce((acc, m) => {
-        m.spiritualCorrelations?.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-        return acc;
-      }, {} as Record<string, number>),
-      byChakra: modelos.reduce((acc, m) => {
-        const c = m.spiritualCorrelations?.chakra;
-        if (c) acc[c] = (acc[c] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byElement: modelos.reduce((acc, m) => {
-        const e = m.spiritualCorrelations?.element;
-        if (e) acc[e] = (acc[e] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byOrixa: modelos.reduce((acc, m) => {
-        const o = m.spiritualCorrelations?.orixa;
-        if (o) acc[o] = (acc[o] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
+      byTipo: modelos.reduce(
+        (acc, m) => {
+          acc[m.tipo] = (acc[m.tipo] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byStatus: modelos.reduce(
+        (acc, m) => {
+          acc[m.status] = (acc[m.status] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byProvider: modelos.reduce(
+        (acc, m) => {
+          acc[m.provider] = (acc[m.provider] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      bySefirot: modelos.reduce(
+        (acc, m) => {
+          m.spiritualCorrelations?.sefirot.forEach((s) => {
+            acc[s] = (acc[s] || 0) + 1;
+          });
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byChakra: modelos.reduce(
+        (acc, m) => {
+          const c = m.spiritualCorrelations?.chakra;
+          if (c) acc[c] = (acc[c] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byElement: modelos.reduce(
+        (acc, m) => {
+          const e = m.spiritualCorrelations?.element;
+          if (e) acc[e] = (acc[e] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byOrixa: modelos.reduce(
+        (acc, m) => {
+          const o = m.spiritualCorrelations?.orixa;
+          if (o) acc[o] = (acc[o] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
     };
 
     return NextResponse.json({
@@ -503,9 +545,12 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erro interno',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro interno',
+      },
+      { status: 500 }
+    );
   }
 }

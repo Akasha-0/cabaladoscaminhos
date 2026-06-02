@@ -1,8 +1,5 @@
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { cn } from '@/lib/utils';
-import type { UserSpiritualData } from '@/lib/ai/types';
 import {
   Sparkles,
   Compass,
@@ -14,6 +11,9 @@ import {
   Eye,
   Settings,
 } from 'lucide-react';
+import React, { useState, useMemo, useCallback } from 'react';
+import type { UserSpiritualData } from '@/lib/ai/types';
+import { cn } from '@/lib/utils';
 
 // ============================================================
 // TYPES
@@ -76,7 +76,10 @@ const TOOLS: Tool[] = [
   },
 ];
 
-const TOOL_COLORS: Record<string, { bg: string; border: string; text: string; accent: string; icon: string }> = {
+const TOOL_COLORS: Record<
+  string,
+  { bg: string; border: string; text: string; accent: string; icon: string }
+> = {
   purple: {
     bg: 'bg-purple-500/20',
     border: 'border-purple-500/50',
@@ -114,13 +117,13 @@ const TOOL_COLORS: Record<string, { bg: string; border: string; text: string; ac
 function calculateToolAffinity(userData: UserSpiritualData, toolId: string): number {
   switch (toolId) {
     case 'symbol-decoder':
-      return Math.min(40 + (userData.arcoMaior.length * 5) + (userData.numeroPessoal % 20), 95);
+      return Math.min(40 + userData.arcoMaior.length * 5 + (userData.numeroPessoal % 20), 95);
     case 'energy-calculator':
-      return Math.min(35 + (userData.numeroPessoal * 4) + (userData.arcoPessoal * 3), 90);
+      return Math.min(35 + userData.numeroPessoal * 4 + userData.arcoPessoal * 3, 90);
     case 'system-explorer':
-      return Math.min(45 + (userData.sefirotDominante.length * 4) + (userData.odu ? 10 : 0), 95);
+      return Math.min(45 + userData.sefirotDominante.length * 4 + (userData.odu ? 10 : 0), 95);
     case 'correlation-tester':
-      return Math.min(30 + (userData.numeroPessoal * 3) + (userData.orixaRegente ? 15 : 0), 90);
+      return Math.min(30 + userData.numeroPessoal * 3 + (userData.orixaRegente ? 15 : 0), 90);
     default:
       return 50;
   }
@@ -132,7 +135,7 @@ function getStorageKey(userId: string): string {
 
 function loadProgress(userId: string): Record<string, ToolProgress> {
   if (typeof window === 'undefined') return {};
-  
+
   try {
     const stored = localStorage.getItem(getStorageKey(userId));
     if (stored) {
@@ -154,7 +157,7 @@ function loadProgress(userId: string): Record<string, ToolProgress> {
 
 function saveProgress(userId: string, progress: Record<string, ToolProgress>): void {
   if (typeof window === 'undefined') return;
-  
+
   try {
     localStorage.setItem(getStorageKey(userId), JSON.stringify(progress));
   } catch {
@@ -214,43 +217,59 @@ function ToolCard({ tool, progress, affinity, isSelected, onSelect }: ToolCardPr
         'group relative w-full p-5 rounded-xl border transition-all duration-300 text-left',
         'bg-slate-800/40 hover:bg-slate-800/60',
         isSelected
-          ? cn('border-2 ring-2 ring-offset-2 ring-offset-slate-900', colors.border, 'ring-opacity-50')
+          ? cn(
+              'border-2 ring-2 ring-offset-2 ring-offset-slate-900',
+              colors.border,
+              'ring-opacity-50'
+            )
           : 'border-slate-700/50 hover:border-slate-600/60',
         'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900',
         isSelected ? colors.text.replace('text-', 'ring-') : 'focus:ring-purple-500/50'
       )}
-      style={isSelected ? { '--tw-ring-color': `var(--${tool.color}-500)` } as React.CSSProperties : undefined}
+      style={
+        isSelected
+          ? ({ '--tw-ring-color': `var(--${tool.color}-500)` } as React.CSSProperties)
+          : undefined
+      }
     >
       {/* Gradient background for selected state */}
       {isSelected && (
-        <div className={cn('absolute inset-0 rounded-xl bg-gradient-to-br opacity-20', colors.accent)} />
+        <div
+          className={cn('absolute inset-0 rounded-xl bg-gradient-to-br opacity-20', colors.accent)}
+        />
       )}
-      
+
       <div className="relative z-10">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className={cn(
-              'p-2.5 rounded-lg bg-gradient-to-br',
-              colors.bg,
-              isSelected ? colors.accent : ''
-            )}>
+            <div
+              className={cn(
+                'p-2.5 rounded-lg bg-gradient-to-br',
+                colors.bg,
+                isSelected ? colors.accent : ''
+              )}
+            >
               <span className="text-2xl">{tool.icon}</span>
             </div>
             <div>
-              <h3 className={cn(
-                'font-semibold text-base transition-colors',
-                isSelected ? colors.text : 'text-slate-200'
-              )}>
+              <h3
+                className={cn(
+                  'font-semibold text-base transition-colors',
+                  isSelected ? colors.text : 'text-slate-200'
+                )}
+              >
                 {tool.name}
               </h3>
               <p className="text-slate-400 text-xs mt-0.5">{tool.description}</p>
             </div>
           </div>
-          <ChevronRight className={cn(
-            'w-5 h-5 text-slate-500 transition-all duration-300',
-            isSelected ? cn(colors.text, 'translate-x-1') : 'group-hover:translate-x-0.5'
-          )} />
+          <ChevronRight
+            className={cn(
+              'w-5 h-5 text-slate-500 transition-all duration-300',
+              isSelected ? cn(colors.text, 'translate-x-1') : 'group-hover:translate-x-0.5'
+            )}
+          />
         </div>
 
         {/* Progress bar */}
@@ -294,10 +313,12 @@ function ToolDetailPanel({ tool, progress, onClose }: ToolDetailPanelProps) {
   const progressPercent = progress?.progress ?? 0;
 
   return (
-    <div className={cn(
-      'p-5 rounded-xl border border-slate-700/50 bg-slate-800/30',
-      'animate-in fade-in slide-in-from-bottom-4 duration-300'
-    )}>
+    <div
+      className={cn(
+        'p-5 rounded-xl border border-slate-700/50 bg-slate-800/30',
+        'animate-in fade-in slide-in-from-bottom-4 duration-300'
+      )}
+    >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -408,7 +429,10 @@ function ToolSkeleton({ count = 4 }: SkeletonProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {[...Array(count)].map((_, i) => (
-        <div key={i} className="animate-pulse p-5 rounded-xl bg-slate-800/40 border border-slate-700/50">
+        <div
+          key={i}
+          className="animate-pulse p-5 rounded-xl bg-slate-800/40 border border-slate-700/50"
+        >
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-lg bg-slate-700/50" />
             <div className="flex-1">
@@ -450,33 +474,39 @@ export function SpiritualExplorationTools({
 
   // Calculate affinities
   const toolAffinities = useMemo(() => {
-    return TOOLS.reduce((acc, tool) => {
-      acc[tool.id] = calculateToolAffinity(userData, tool.id);
-      return acc;
-    }, {} as Record<string, number>);
+    return TOOLS.reduce(
+      (acc, tool) => {
+        acc[tool.id] = calculateToolAffinity(userData, tool.id);
+        return acc;
+      },
+      {} as Record<string, number>
+    );
   }, [userData]);
 
   // Handle tool selection
-  const handleToolSelect = useCallback((toolId: string) => {
-    setSelectedTool(prev => prev === toolId ? null : toolId);
-    onToolSelect?.(toolId);
+  const handleToolSelect = useCallback(
+    (toolId: string) => {
+      setSelectedTool((prev) => (prev === toolId ? null : toolId));
+      onToolSelect?.(toolId);
 
-    // Update progress on selection
-    const currentProgress = progress[toolId]?.progress ?? 0;
-    if (currentProgress === 0) {
-      const updatedProgress: Record<string, ToolProgress> = {
-        ...progress,
-        [toolId]: {
-          toolId,
-          progress: Math.min(currentProgress + 5, 100),
-          lastUsed: new Date(),
-          affinityScore: toolAffinities[toolId],
-        },
-      };
-      setProgress(updatedProgress);
-      saveProgress(userId, updatedProgress);
-    }
-  }, [progress, toolAffinities, userId, onToolSelect]);
+      // Update progress on selection
+      const currentProgress = progress[toolId]?.progress ?? 0;
+      if (currentProgress === 0) {
+        const updatedProgress: Record<string, ToolProgress> = {
+          ...progress,
+          [toolId]: {
+            toolId,
+            progress: Math.min(currentProgress + 5, 100),
+            lastUsed: new Date(),
+            affinityScore: toolAffinities[toolId],
+          },
+        };
+        setProgress(updatedProgress);
+        saveProgress(userId, updatedProgress);
+      }
+    },
+    [progress, toolAffinities, userId, onToolSelect]
+  );
 
   // Handle panel close and save progress
   const handleClosePanel = useCallback(() => {
@@ -497,7 +527,7 @@ export function SpiritualExplorationTools({
     setSelectedTool(null);
   }, [selectedTool, progress, toolAffinities, userId]);
 
-  const selectedToolData = TOOLS.find(t => t.id === selectedTool);
+  const selectedToolData = TOOLS.find((t) => t.id === selectedTool);
 
   if (isLoading) {
     return (
@@ -507,7 +537,9 @@ export function SpiritualExplorationTools({
             <Sparkles className="w-5 h-5 text-purple-400" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white">Ferramentas de Exploração Espiritual</h2>
+            <h2 className="text-lg font-semibold text-white">
+              Ferramentas de Exploração Espiritual
+            </h2>
             <p className="text-sm text-slate-400">Carregando...</p>
           </div>
         </div>
@@ -525,7 +557,9 @@ export function SpiritualExplorationTools({
             <Sparkles className="w-5 h-5 text-purple-400" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white">Ferramentas de Exploração Espiritual</h2>
+            <h2 className="text-lg font-semibold text-white">
+              Ferramentas de Exploração Espiritual
+            </h2>
             <p className="text-sm text-slate-400">Descubra e explore sistemas espirituais</p>
           </div>
         </div>
@@ -536,7 +570,7 @@ export function SpiritualExplorationTools({
 
       {/* Tool grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {TOOLS.map(tool => (
+        {TOOLS.map((tool) => (
           <ToolCard
             key={tool.id}
             tool={tool}

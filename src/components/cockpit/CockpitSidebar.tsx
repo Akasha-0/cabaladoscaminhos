@@ -3,11 +3,6 @@
 // Tokens Ramiro v2: badges por sistema — astro/cabala/odu = royal, tantric = laranja.
 
 'use client';
-import React, { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   Sparkles,
   User,
@@ -17,8 +12,13 @@ import {
   ChevronDown,
   ChevronRight,
   RotateCcw,
-  Crown
+  Crown,
 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useCockpitStore, type ClienteInfo } from '@/stores/cockpit-store';
 
 interface CockpitSidebarProps {
@@ -122,7 +122,10 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
         {isFormExpanded || !cliente ? (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="nome" className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1">
+              <Label
+                htmlFor="nome"
+                className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1"
+              >
                 <User className="w-3 h-3" />
                 Nome do Cliente
               </Label>
@@ -137,7 +140,10 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
 
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label htmlFor="data" className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1">
+                <Label
+                  htmlFor="data"
+                  className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1"
+                >
                   <Calendar className="w-3 h-3" />
                   Data Nasc.
                 </Label>
@@ -151,7 +157,10 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="hora" className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1">
+                <Label
+                  htmlFor="hora"
+                  className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1"
+                >
                   <Clock className="w-3 h-3" />
                   Hora
                 </Label>
@@ -166,7 +175,10 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="local" className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1">
+              <Label
+                htmlFor="local"
+                className="text-xs text-muted-foreground uppercase tracking-wider flex items-center gap-1"
+              >
                 <MapPin className="w-3 h-3" />
                 Local
               </Label>
@@ -216,7 +228,8 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                     className="w-full justify-start bg-secondary/15 border-secondary/40 text-secondary"
                   >
                     <Crown className="w-3 h-3 mr-2 text-secondary" />
-                    {cliente.mapa.sol || 'Sol em ...'} {cliente.mapa.ascendente && `| ${cliente.mapa.ascendente}`}
+                    {cliente.mapa.sol || 'Sol em ...'}{' '}
+                    {cliente.mapa.ascendente && `| ${cliente.mapa.ascendente}`}
                   </Badge>
                 )}
 

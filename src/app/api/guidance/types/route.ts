@@ -1,16 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import { parseSpiritualFilters } from '@/lib/api/parse-spiritual-filters';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const GuidanceTypeSchema = z.enum([
-  'tarot', 'numerology', 'astrology', 'cabala',
-  'ifa', 'orixa', 'chakras', 'meditation', 'ritual',
+  'tarot',
+  'numerology',
+  'astrology',
+  'cabala',
+  'ifa',
+  'orixa',
+  'chakras',
+  'meditation',
+  'ritual',
 ]);
 
 const GuidanceQuerySchema = z.object({
   type: GuidanceTypeSchema.optional(),
-  includeDetails: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  includeDetails: z
+    .enum(['true', 'false'])
+    .transform((v) => v === 'true')
+    .optional(),
 });
 
 // ─── Type Definitions ────────────────────────────────────────────────────────
@@ -38,16 +48,30 @@ interface GuidanceType {
 }
 
 // ─── Spiritual Correlations for Guidance Types ──────────────────────────────────────────
-const GUIDANCE_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const GUIDANCE_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   tarot: {
-    sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
+    sefirot: [
+      'Kether',
+      'Chokhmah',
+      'Binah',
+      'Chesed',
+      'Gevurah',
+      'Tipheret',
+      'Netzach',
+      'Hod',
+      'Yesod',
+      'Malkuth',
+    ],
     chakra: 6,
     element: 'Ar',
     orixa: 'Oxalá',
@@ -71,7 +95,18 @@ const GUIDANCE_SPIRITUAL_CORRELATIONS: Record<string, {
     frequency: '639 Hz',
   },
   cabala: {
-    sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
+    sefirot: [
+      'Kether',
+      'Chokhmah',
+      'Binah',
+      'Chesed',
+      'Gevurah',
+      'Tipheret',
+      'Netzach',
+      'Hod',
+      'Yesod',
+      'Malkuth',
+    ],
     chakra: 7,
     element: 'Éter',
     orixa: 'Oxalá',
@@ -131,7 +166,18 @@ const GUIDANCE_TYPES: GuidanceType[] = [
     traditions: ['Egípcia', 'Cabalística', 'Hermética'],
     elements: ['Ar'],
     chakras: [6, 7],
-    sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
+    sefirot: [
+      'Kether',
+      'Chokhmah',
+      'Binah',
+      'Chesed',
+      'Gevurah',
+      'Tipheret',
+      'Netzach',
+      'Hod',
+      'Yesod',
+      'Malkuth',
+    ],
     orixa: ['Oxalá'],
     affirmation: 'A sabedoria divina me guia através dos símbolos',
     frequency: '528 Hz',
@@ -176,7 +222,18 @@ const GUIDANCE_TYPES: GuidanceType[] = [
     traditions: ['Judaica', 'Hermética', 'Cabalística'],
     elements: ['Éter'],
     chakras: [6, 7],
-    sefirot: ['Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah', 'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'],
+    sefirot: [
+      'Kether',
+      'Chokhmah',
+      'Binah',
+      'Chesed',
+      'Gevurah',
+      'Tipheret',
+      'Netzach',
+      'Hod',
+      'Yesod',
+      'Malkuth',
+    ],
     orixa: ['Oxalá'],
     affirmation: 'A Árvore da Vida me conecta à fonte',
     frequency: '963 Hz',
@@ -272,74 +329,96 @@ export async function GET(request: NextRequest) {
     });
 
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Parâmetros inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
     const { type, includeDetails } = parseResult.data;
     let guidanceTypes = [...GUIDANCE_TYPES];
 
     if (type) {
-      guidanceTypes = guidanceTypes.filter(g => g.id === type);
+      guidanceTypes = guidanceTypes.filter((g) => g.id === type);
     }
 
     if (sefirot) {
-      guidanceTypes = guidanceTypes.filter(g => g.spiritualCorrelations?.sefirot.includes(sefirot));
+      guidanceTypes = guidanceTypes.filter((g) =>
+        g.spiritualCorrelations?.sefirot.includes(sefirot)
+      );
     }
 
     if (chakra) {
-      guidanceTypes = guidanceTypes.filter(g => g.spiritualCorrelations?.chakra === chakra);
+      guidanceTypes = guidanceTypes.filter((g) => g.spiritualCorrelations?.chakra === chakra);
     }
 
     if (element) {
-      guidanceTypes = guidanceTypes.filter(g => g.spiritualCorrelations?.element === element);
+      guidanceTypes = guidanceTypes.filter((g) => g.spiritualCorrelations?.element === element);
     }
 
     if (orixa) {
-      guidanceTypes = guidanceTypes.filter(g => g.spiritualCorrelations?.orixa === orixa);
+      guidanceTypes = guidanceTypes.filter((g) => g.spiritualCorrelations?.orixa === orixa);
     }
 
     // Calculate spiritual stats
     const spiritualStats = {
-      byType: guidanceTypes.reduce((acc, g) => {
-        acc[g.id] = (acc[g.id] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      bySefirot: guidanceTypes.reduce((acc, g) => {
-        g.spiritualCorrelations?.sefirot.forEach(s => {
-          acc[s] = (acc[s] || 0) + 1;
-        });
-        return acc;
-      }, {} as Record<string, number>),
-      byChakra: guidanceTypes.reduce((acc, g) => {
-        const c = g.spiritualCorrelations?.chakra;
-        if (c) acc[c] = (acc[c] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byElement: guidanceTypes.reduce((acc, g) => {
-        const e = g.spiritualCorrelations?.element;
-        if (e) acc[e] = (acc[e] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      byOrixa: guidanceTypes.reduce((acc, g) => {
-        const o = g.spiritualCorrelations?.orixa;
-        if (o) acc[o] = (acc[o] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
+      byType: guidanceTypes.reduce(
+        (acc, g) => {
+          acc[g.id] = (acc[g.id] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      bySefirot: guidanceTypes.reduce(
+        (acc, g) => {
+          g.spiritualCorrelations?.sefirot.forEach((s) => {
+            acc[s] = (acc[s] || 0) + 1;
+          });
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byChakra: guidanceTypes.reduce(
+        (acc, g) => {
+          const c = g.spiritualCorrelations?.chakra;
+          if (c) acc[c] = (acc[c] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byElement: guidanceTypes.reduce(
+        (acc, g) => {
+          const e = g.spiritualCorrelations?.element;
+          if (e) acc[e] = (acc[e] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
+      byOrixa: guidanceTypes.reduce(
+        (acc, g) => {
+          const o = g.spiritualCorrelations?.orixa;
+          if (o) acc[o] = (acc[o] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>
+      ),
     };
 
     return NextResponse.json({
       success: true,
-      guidanceTypes: includeDetails ? guidanceTypes : guidanceTypes.map(g => ({
-        id: g.id,
-        name: g.name,
-        namePt: g.namePt,
-        description: g.description,
-        icon: g.icon,
-      })),
+      guidanceTypes: includeDetails
+        ? guidanceTypes
+        : guidanceTypes.map((g) => ({
+            id: g.id,
+            name: g.name,
+            namePt: g.namePt,
+            description: g.description,
+            icon: g.icon,
+          })),
       count: guidanceTypes.length,
       spiritualCorrelations: GUIDANCE_SPIRITUAL_CORRELATIONS,
       spiritualStats,
@@ -348,9 +427,12 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erro interno',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro interno',
+      },
+      { status: 500 }
+    );
   }
 }

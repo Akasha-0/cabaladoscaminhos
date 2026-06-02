@@ -1,10 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
+  'Kether',
+  'Chokhmah',
+  'Binah',
+  'Chesed',
+  'Gevurah',
+  'Tipheret',
+  'Netzach',
+  'Hod',
+  'Yesod',
+  'Malkuth',
 ]);
 const ChakraSchema = z.coerce.number().int().min(1).max(7);
 const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
@@ -27,14 +35,16 @@ const SpiritualNotificationSchema = z.object({
   timestamp: z.string(),
   read: z.boolean().default(false),
   metadata: z.record(z.unknown()).optional(),
-  spiritualCorrelations: z.object({
-    sefirot: z.array(z.string()),
-    chakra: z.number(),
-    element: z.string(),
-    orixa: z.string(),
-    affirmation: z.string(),
-    frequency: z.string(),
-  }).optional(),
+  spiritualCorrelations: z
+    .object({
+      sefirot: z.array(z.string()),
+      chakra: z.number(),
+      element: z.string(),
+      orixa: z.string(),
+      affirmation: z.string(),
+      frequency: z.string(),
+    })
+    .optional(),
 });
 
 const CreateSpiritualNotificationSchema = z.object({
@@ -50,7 +60,10 @@ const CreateSpiritualNotificationSchema = z.object({
 
 const NotificationsQuerySchema = z.object({
   type: SpiritualNotificationTypeSchema.optional(),
-  unreadOnly: z.enum(['true', 'false']).transform(v => v === 'true').optional(),
+  unreadOnly: z
+    .enum(['true', 'false'])
+    .transform((v) => v === 'true')
+    .optional(),
   sefirot: SefirotSchema.optional(),
   chakra: ChakraSchema.optional(),
   element: ElementSchema.optional(),
@@ -58,14 +71,17 @@ const NotificationsQuerySchema = z.object({
 });
 
 // ─── Spiritual Correlations for Notification Types ──────────────────────────────────────────
-const NOTIFICATION_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const NOTIFICATION_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   ritual_reminder: {
     sefirot: ['Tipheret', 'Gevurah'],
     chakra: 4,
@@ -140,11 +156,14 @@ export async function GET(request: NextRequest) {
   });
 
   if (!parseResult.success) {
-    return NextResponse.json({
-      success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
 
   const { type, unreadOnly, sefirot, chakra, element, orixa } = parseResult.data;
@@ -152,56 +171,71 @@ export async function GET(request: NextRequest) {
   let notifications = [...spiritualNotifications];
 
   if (type) {
-    notifications = notifications.filter(n => n.type === type);
+    notifications = notifications.filter((n) => n.type === type);
   }
 
   if (unreadOnly) {
-    notifications = notifications.filter(n => !n.read);
+    notifications = notifications.filter((n) => !n.read);
   }
 
   if (sefirot) {
-    notifications = notifications.filter(n => n.spiritualCorrelations?.sefirot.includes(sefirot));
+    notifications = notifications.filter((n) => n.spiritualCorrelations?.sefirot.includes(sefirot));
   }
 
   if (chakra) {
-    notifications = notifications.filter(n => n.spiritualCorrelations?.chakra === chakra);
+    notifications = notifications.filter((n) => n.spiritualCorrelations?.chakra === chakra);
   }
 
   if (element) {
-    notifications = notifications.filter(n => n.spiritualCorrelations?.element === element);
+    notifications = notifications.filter((n) => n.spiritualCorrelations?.element === element);
   }
 
   if (orixa) {
-    notifications = notifications.filter(n => n.spiritualCorrelations?.orixa === orixa);
+    notifications = notifications.filter((n) => n.spiritualCorrelations?.orixa === orixa);
   }
 
   // Calculate spiritual stats
   const spiritualStats = {
-    byType: notifications.reduce((acc, n) => {
-      acc[n.type] = (acc[n.type] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
-    bySefirot: notifications.reduce((acc, n) => {
-      n.spiritualCorrelations?.sefirot.forEach(s => {
-        acc[s] = (acc[s] || 0) + 1;
-      });
-      return acc;
-    }, {} as Record<string, number>),
-    byChakra: notifications.reduce((acc, n) => {
-      const c = n.spiritualCorrelations?.chakra;
-      if (c) acc[c] = (acc[c] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
-    byElement: notifications.reduce((acc, n) => {
-      const e = n.spiritualCorrelations?.element;
-      if (e) acc[e] = (acc[e] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
-    byOrixa: notifications.reduce((acc, n) => {
-      const o = n.spiritualCorrelations?.orixa;
-      if (o) acc[o] = (acc[o] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
+    byType: notifications.reduce(
+      (acc, n) => {
+        acc[n.type] = (acc[n.type] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    bySefirot: notifications.reduce(
+      (acc, n) => {
+        n.spiritualCorrelations?.sefirot.forEach((s) => {
+          acc[s] = (acc[s] || 0) + 1;
+        });
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byChakra: notifications.reduce(
+      (acc, n) => {
+        const c = n.spiritualCorrelations?.chakra;
+        if (c) acc[c] = (acc[c] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byElement: notifications.reduce(
+      (acc, n) => {
+        const e = n.spiritualCorrelations?.element;
+        if (e) acc[e] = (acc[e] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
+    byOrixa: notifications.reduce(
+      (acc, n) => {
+        const o = n.spiritualCorrelations?.orixa;
+        if (o) acc[o] = (acc[o] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    ),
   };
 
   return NextResponse.json({
@@ -222,11 +256,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const parseResult = CreateSpiritualNotificationSchema.safeParse(body);
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Dados inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Dados inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
     const { type, title, message, metadata, sefirot, chakra, element, orixa } = parseResult.data;
@@ -254,15 +291,21 @@ export async function POST(request: NextRequest) {
 
     spiritualNotifications.push(notification);
 
-    return NextResponse.json({
-      success: true,
-      notification,
-      spiritualCorrelations: spiritualCorr,
-    }, { status: 201 });
+    return NextResponse.json(
+      {
+        success: true,
+        notification,
+        spiritualCorrelations: spiritualCorr,
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erro interno',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro interno',
+      },
+      { status: 500 }
+    );
   }
 }

@@ -3,22 +3,22 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { CosmicBackground } from '@/components/design-system/CosmicBackground';
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
-import { SkeletonMapa } from '@/components/shared/SkeletonSpiritual';
 import { Heading } from '@/components/design-system/Typography';
-import { MysticDivider } from '@/components/shared/MysticDivider';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
-import { fetchMapa } from '@/lib/api/fetch-mapa';
+import { ArvoreVidaViz } from '@/components/mapa/ArvoreVidaViz';
+import { CalendarioEnergetico } from '@/components/mapa/CalendarioEnergetico';
+import { ChakraPanel } from '@/components/mapa/ChakraPanel';
+import { CorrelacaoInsight } from '@/components/mapa/CorrelacaoInsight';
+import { MapaNatalViz } from '@/components/mapa/MapaNatalViz';
 import { NumerologiaCard } from '@/components/mapa/NumerologiaCard';
 import { OduCardFull } from '@/components/mapa/OduCardFull';
-import { ChakraPanel } from '@/components/mapa/ChakraPanel';
 import { TarotCard } from '@/components/mapa/TarotCard';
-import { ArvoreVidaViz } from '@/components/mapa/ArvoreVidaViz';
-import { MapaNatalViz } from '@/components/mapa/MapaNatalViz';
-import { CorrelacaoInsight } from '@/components/mapa/CorrelacaoInsight';
-import { CalendarioEnergetico } from '@/components/mapa/CalendarioEnergetico';
+import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { MysticDivider } from '@/components/shared/MysticDivider';
+import { SkeletonMapa } from '@/components/shared/SkeletonSpiritual';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { fetchMapa } from '@/lib/api/fetch-mapa';
+import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 
 export default function MapaPage() {
   const router = useRouter();
@@ -72,9 +72,7 @@ export default function MapaPage() {
             <Heading variant="mystical" size="2xl">
               ✦ Mapa da Alma
             </Heading>
-            <span className="text-slate-500 text-sm font-cinzel animate-pulse">
-              Carregando...
-            </span>
+            <span className="text-slate-500 text-sm font-cinzel animate-pulse">Carregando...</span>
           </div>
           <Suspense fallback={<SkeletonMapa />}>
             <SkeletonMapa />
@@ -93,11 +91,7 @@ export default function MapaPage() {
             <p className="text-lg font-medium mb-2">Erro ao carregar Mapa</p>
             <p className="text-sm text-slate-400">{error}</p>
           </div>
-          <Button
-            variant="golden"
-            onClick={() => window.location.reload()}
-            className="mt-4"
-          >
+          <Button variant="golden" onClick={() => window.location.reload()} className="mt-4">
             Tentar novamente
           </Button>
         </div>
@@ -115,14 +109,10 @@ export default function MapaPage() {
           </Heading>
           <MysticDivider className="max-w-sm mx-auto mb-8" />
           <p className="text-slate-400 mb-8 max-w-md mx-auto">
-            Complete seu cadastro para gerar seu mapa espiritual completo.
-            Seu mapa integrará numerologia, Odu, tarô, astrologia e chakras.
+            Complete seu cadastro para gerar seu mapa espiritual completo. Seu mapa integrará
+            numerologia, Odu, tarô, astrologia e chakras.
           </p>
-          <Button
-            variant="golden"
-            onClick={() => router.push('/onboarding')}
-            className="px-8"
-          >
+          <Button variant="golden" onClick={() => router.push('/onboarding')} className="px-8">
             Completar Cadastro ✦
           </Button>
         </div>
@@ -139,9 +129,7 @@ export default function MapaPage() {
           <Heading variant="mystical" size="2xl">
             ✦ {mapaData.perfil.nomeCompleto}
           </Heading>
-          <span className="text-slate-500 text-sm font-cinzel">
-            {mapaData.dataCalculo}
-          </span>
+          <span className="text-slate-500 text-sm font-cinzel">{mapaData.dataCalculo}</span>
         </div>
 
         {/* Main grid - responsive layout */}
@@ -157,7 +145,7 @@ export default function MapaPage() {
           {/* Right column: Correlação + Visualizações (spans 2 columns on lg) */}
           <div className="lg:col-span-2 space-y-4">
             <CorrelacaoInsight convergencias={mapaData.convergencias} />
-            
+
             {/* Visualizações lado a lado no desktop */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <ArvoreVidaViz numerologia={mapaData.numerologia} odu={mapaData.odu} />

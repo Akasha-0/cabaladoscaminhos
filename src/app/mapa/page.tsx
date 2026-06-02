@@ -1,18 +1,18 @@
 'use client';
 
+import { Sparkles, Star, Moon, Sun, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Sparkles, Star, Moon, Sun, Download } from 'lucide-react';
-import MapaNatal from '@/components/dashboard/MapaNatal';
 import ChakraBalanceWidget from '@/components/dashboard/ChakraBalanceWidget';
+import MapaNatal from '@/components/dashboard/MapaNatal';
+import { ConvergenciasCard } from '@/components/mapa/ConvergenciasCard';
 import { NumerologiaCard } from '@/components/mapa/NumerologiaCard';
 import { OduCardFull } from '@/components/mapa/OduCardFull';
-import { ConvergenciasCard } from '@/components/mapa/ConvergenciasCard';
-import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { fetchMapa } from '@/lib/api/fetch-mapa';
+import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 
 // ============================================================
 // TYPES
@@ -134,7 +134,9 @@ function AstrologiaSection({ astrologia }: AstrologiaSectionProps) {
         {/* Aspects summary */}
         {astrologia.aspectos && astrologia.aspectos.length > 0 && (
           <div>
-            <div className="text-sm text-slate-400 uppercase tracking-wide mb-2">Aspectos Principais</div>
+            <div className="text-sm text-slate-400 uppercase tracking-wide mb-2">
+              Aspectos Principais
+            </div>
             <div className="flex flex-wrap gap-2">
               {astrologia.aspectos.slice(0, 6).map((aspecto, i) => (
                 <Badge

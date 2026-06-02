@@ -1,12 +1,5 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { TooltipInfo } from '@/components/ui/tooltip-info';
-import SacredCornerSVG from '@/components/ui/SacredCornerSVG';
 import {
   Sparkles,
   Calendar,
@@ -29,8 +22,32 @@ import {
   Target,
   ScrollText,
 } from 'lucide-react';
-import { generateAllPredictions, filterPredictions, getConfidenceLevel, getConfidenceColor, type Prediction, type UserSpiritualData } from '@/lib/predictions/prediction-engine';
-import { TYPE_COLORS, TYPE_LABELS, PREDICTION_TYPES, CONFIDENCE_LABELS, PERIOD_OPTIONS, DEFAULT_PERIOD, MIN_PERIOD, MAX_PERIOD, type PredictionType } from '@/lib/predictions/constants';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import SacredCornerSVG from '@/components/ui/SacredCornerSVG';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { TooltipInfo } from '@/components/ui/tooltip-info';
+import {
+  TYPE_COLORS,
+  TYPE_LABELS,
+  PREDICTION_TYPES,
+  CONFIDENCE_LABELS,
+  PERIOD_OPTIONS,
+  DEFAULT_PERIOD,
+  MIN_PERIOD,
+  MAX_PERIOD,
+  type PredictionType,
+} from '@/lib/predictions/constants';
+import {
+  generateAllPredictions,
+  filterPredictions,
+  getConfidenceLevel,
+  getConfidenceColor,
+  type Prediction,
+  type UserSpiritualData,
+} from '@/lib/predictions/prediction-engine';
+import { cn } from '@/lib/utils';
 
 interface TimelinePoint {
   date: Date;
@@ -60,12 +77,14 @@ function generateTimelinePoints(predictions: Prediction[], period: number): Time
     const date = new Date(now);
     date.setDate(date.getDate() + i);
 
-    const pointPredictions = predictions.filter(p => {
+    const pointPredictions = predictions.filter((p) => {
       const diffDays = Math.ceil((p.date.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
       return diffDays >= 0 && diffDays < intervalDays;
     });
 
-    const intensity = pointPredictions.reduce((sum, p) => sum + p.confidence, 0) / Math.max(1, pointPredictions.length);
+    const intensity =
+      pointPredictions.reduce((sum, p) => sum + p.confidence, 0) /
+      Math.max(1, pointPredictions.length);
 
     points.push({ date, predictions: pointPredictions, intensity: Math.min(100, intensity) });
   }
@@ -74,20 +93,38 @@ function generateTimelinePoints(predictions: Prediction[], period: number): Time
 
 function getConfidenceBgColor(level: 'high' | 'medium' | 'low'): string {
   switch (level) {
-    case 'high': return 'bg-emerald-400';
-    case 'medium': return 'bg-amber-400';
-    case 'low': return 'bg-rose-400';
+    case 'high':
+      return 'bg-emerald-400';
+    case 'medium':
+      return 'bg-amber-400';
+    case 'low':
+      return 'bg-rose-400';
   }
 }
 
 function getImpactBadge(impact: 'low' | 'medium' | 'high'): React.ReactElement {
   switch (impact) {
     case 'high':
-      return <Badge variant="destructive" className="bg-rose-500/20 text-rose-400 border-rose-500/30">Alto Impacto</Badge>;
+      return (
+        <Badge variant="destructive" className="bg-rose-500/20 text-rose-400 border-rose-500/30">
+          Alto Impacto
+        </Badge>
+      );
     case 'medium':
-      return <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">Médio Impacto</Badge>;
+      return (
+        <Badge variant="secondary" className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+          Médio Impacto
+        </Badge>
+      );
     case 'low':
-      return <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30">Baixo Impacto</Badge>;
+      return (
+        <Badge
+          variant="outline"
+          className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+        >
+          Baixo Impacto
+        </Badge>
+      );
   }
 }
 
@@ -95,7 +132,7 @@ function getImpactBadge(impact: 'low' | 'medium' | 'high'): React.ReactElement {
 function PredictionsSkeleton() {
   return (
     <div className="space-y-3">
-      {[1, 2, 3].map(i => (
+      {[1, 2, 3].map((i) => (
         <div key={i} className="p-4 rounded-lg border border-slate-700/30 space-y-2">
           <div className="flex items-center gap-2">
             <div className="h-5 w-20 rounded skeleton-spiritual" />
@@ -104,7 +141,10 @@ function PredictionsSkeleton() {
           <div className="h-4 w-3/4 rounded skeleton-spiritual" />
           <div className="h-3 w-full rounded skeleton-spiritual" />
           <div className="h-1.5 rounded-full bg-slate-700/50 overflow-hidden">
-            <div className="h-full rounded-full skeleton-spiritual" style={{ width: `${50 + i * 15}%` }} />
+            <div
+              className="h-full rounded-full skeleton-spiritual"
+              style={{ width: `${50 + i * 15}%` }}
+            />
           </div>
         </div>
       ))}
@@ -121,7 +161,9 @@ export function PredictiveInsightsPanel({
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [selectedTypes, setSelectedTypes] = useState<PredictionType[]>(PREDICTION_TYPES);
-  const [selectedConfidence, setSelectedConfidence] = useState<'all' | 'high' | 'medium' | 'low'>('all');
+  const [selectedConfidence, setSelectedConfidence] = useState<'all' | 'high' | 'medium' | 'low'>(
+    'all'
+  );
   const [selectedPeriod, setSelectedPeriod] = useState(predictionPeriod);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -135,7 +177,11 @@ export function PredictiveInsightsPanel({
 
     async function loadPredictions() {
       try {
-        const generated = await generateAllPredictions(userData, selectedPeriod, selectedTypes.length > 0 ? selectedTypes : undefined);
+        const generated = await generateAllPredictions(
+          userData,
+          selectedPeriod,
+          selectedTypes.length > 0 ? selectedTypes : undefined
+        );
         if (!cancelled) {
           setPredictions(generated);
           setIsLoading(false);
@@ -149,25 +195,33 @@ export function PredictiveInsightsPanel({
     }
 
     const timer = setTimeout(loadPredictions, 500);
-    return () => { cancelled = true; clearTimeout(timer); };
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
   }, [userData, selectedPeriod, selectedTypes]);
 
   const filteredPredictions = useMemo(() => {
-    let result = predictions.filter(p => selectedTypes.includes(p.type));
+    let result = predictions.filter((p) => selectedTypes.includes(p.type));
     if (selectedConfidence !== 'all') {
-      result = result.filter(p => getConfidenceLevel(p.confidence) === selectedConfidence);
+      result = result.filter((p) => getConfidenceLevel(p.confidence) === selectedConfidence);
     }
     return result;
   }, [predictions, selectedTypes, selectedConfidence]);
 
-  const timelinePoints = useMemo(() => generateTimelinePoints(filteredPredictions, selectedPeriod), [filteredPredictions, selectedPeriod]);
+  const timelinePoints = useMemo(
+    () => generateTimelinePoints(filteredPredictions, selectedPeriod),
+    [filteredPredictions, selectedPeriod]
+  );
 
   const toggleType = useCallback((type: PredictionType) => {
-    setSelectedTypes(prev => prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]);
+    setSelectedTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+    );
   }, []);
 
   const toggleExpand = useCallback((id: string) => {
-    setExpandedId(prev => prev === id ? null : id);
+    setExpandedId((prev) => (prev === id ? null : id));
   }, []);
 
   const refreshPredictions = useCallback(() => {
@@ -176,7 +230,11 @@ export function PredictiveInsightsPanel({
     setExpandedId(null);
     async function loadPredictions() {
       try {
-        const generated = await generateAllPredictions(userData, selectedPeriod, selectedTypes.length > 0 ? selectedTypes : undefined);
+        const generated = await generateAllPredictions(
+          userData,
+          selectedPeriod,
+          selectedTypes.length > 0 ? selectedTypes : undefined
+        );
         setPredictions(generated);
         setIsLoading(false);
       } catch (err) {
@@ -188,7 +246,8 @@ export function PredictiveInsightsPanel({
     return () => clearTimeout(timer);
   }, [userData, selectedPeriod, selectedTypes]);
 
-  const formatDate = (date: Date): string => date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+  const formatDate = (date: Date): string =>
+    date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
 
   const scrollTimeline = useCallback((direction: 'left' | 'right') => {
     if (timelineRef.current) {
@@ -207,8 +266,6 @@ export function PredictiveInsightsPanel({
     return markers;
   }, [selectedPeriod]);
 
-
-
   if (error) {
     return (
       <Card className={cn('card-spiritual border-rose-500/30', className)}>
@@ -216,7 +273,9 @@ export function PredictiveInsightsPanel({
           <div className="flex items-center gap-3 text-rose-400">
             <AlertCircle className="h-5 w-5" />
             <span>{error}</span>
-            <Button variant="ghost" size="sm" onClick={refreshPredictions}>Tentar novamente</Button>
+            <Button variant="ghost" size="sm" onClick={refreshPredictions}>
+              Tentar novamente
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -238,7 +297,9 @@ export function PredictiveInsightsPanel({
               <Sparkles className="h-5 w-5 text-amber-400" />
             </div>
             <div>
-              <CardTitle className="text-lg font-semibold text-amber-100">Previsões Espirituais AI</CardTitle>
+              <CardTitle className="text-lg font-semibold text-amber-100">
+                Previsões Espirituais AI
+              </CardTitle>
               <p className="text-sm text-amber-200/60">
                 Próximos {selectedPeriod} dias • {filteredPredictions.length} previsões
               </p>
@@ -247,21 +308,33 @@ export function PredictiveInsightsPanel({
           <div className="flex items-center gap-2">
             <div className="flex bg-amber-950/50 rounded-lg p-1">
               <Button
-                variant="ghost" size="sm"
+                variant="ghost"
+                size="sm"
                 onClick={() => setViewMode('cards')}
-                className={viewMode === 'cards' ? 'bg-amber-500/20 text-amber-300' : 'text-amber-200/60'}
+                className={
+                  viewMode === 'cards' ? 'bg-amber-500/20 text-amber-300' : 'text-amber-200/60'
+                }
               >
                 <Eye className="h-4 w-4" />
               </Button>
               <Button
-                variant="ghost" size="sm"
+                variant="ghost"
+                size="sm"
                 onClick={() => setViewMode('timeline')}
-                className={viewMode === 'timeline' ? 'bg-amber-500/20 text-amber-300' : 'text-amber-200/60'}
+                className={
+                  viewMode === 'timeline' ? 'bg-amber-500/20 text-amber-300' : 'text-amber-200/60'
+                }
               >
                 <Calendar className="h-4 w-4" />
               </Button>
             </div>
-            <Button variant="ghost" size="sm" onClick={refreshPredictions} disabled={isLoading} className="text-amber-200/60 hover:text-amber-300">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={refreshPredictions}
+              disabled={isLoading}
+              className="text-amber-200/60 hover:text-amber-300"
+            >
               <Sparkles className={cn('h-4 w-4', isLoading && 'animate-spin')} />
             </Button>
           </div>
@@ -275,21 +348,28 @@ export function PredictiveInsightsPanel({
               onChange={(e) => setSelectedPeriod(Number(e.target.value))}
               className="bg-amber-950/50 text-amber-200 border border-amber-500/30 rounded px-2 py-1 text-sm"
             >
-              {PERIOD_OPTIONS.map(opt => (<option key={opt.value} value={opt.value}>{opt.label}</option>))}
+              {PERIOD_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="flex items-center gap-1 text-amber-200/60 text-sm">
             <Star className="h-3 w-3" />
             <span>Confiança:</span>
-            {(['all', 'high', 'medium', 'low'] as const).map(level => (
+            {(['all', 'high', 'medium', 'low'] as const).map((level) => (
               <Button
                 key={level}
-                variant="ghost" size="sm"
+                variant="ghost"
+                size="sm"
                 onClick={() => setSelectedConfidence(level)}
                 className={cn(
                   'text-xs px-2 py-0.5 h-auto transition-all',
-                  selectedConfidence === level ? 'bg-amber-500/30 text-amber-200' : 'text-amber-200/40 hover:text-amber-300'
+                  selectedConfidence === level
+                    ? 'bg-amber-500/30 text-amber-200'
+                    : 'text-amber-200/40 hover:text-amber-300'
                 )}
               >
                 {level === 'all' ? 'Todas' : CONFIDENCE_LABELS[level]}
@@ -303,14 +383,19 @@ export function PredictiveInsightsPanel({
             <Filter className="h-3 w-3" />
             <span>Sistemas:</span>
           </div>
-          {PREDICTION_TYPES.map(type => {
+          {PREDICTION_TYPES.map((type) => {
             const isActive = selectedTypes.includes(type);
             const colors = TYPE_COLORS[type];
             return (
               <Button
-                key={type} variant="ghost" size="sm"
+                key={type}
+                variant="ghost"
+                size="sm"
                 onClick={() => toggleType(type)}
-                className={cn('text-xs px-2 py-1 h-auto transition-all', isActive ? colors.bg + ' ' + colors.primary : 'text-amber-200/40')}
+                className={cn(
+                  'text-xs px-2 py-1 h-auto transition-all',
+                  isActive ? colors.bg + ' ' + colors.primary : 'text-amber-200/40'
+                )}
               >
                 {TYPE_LABELS[type]}
               </Button>
@@ -330,7 +415,7 @@ export function PredictiveInsightsPanel({
                 <p>Nenhuma previsão para os filtros selecionados.</p>
               </div>
             ) : (
-              filteredPredictions.map(prediction => {
+              filteredPredictions.map((prediction) => {
                 const colors = TYPE_COLORS[prediction.type];
                 const isExpanded = expandedId === prediction.id;
                 const confidenceLevel = getConfidenceLevel(prediction.confidence);
@@ -338,34 +423,62 @@ export function PredictiveInsightsPanel({
                 const confidenceBgColor = getConfidenceBgColor(confidenceLevel);
 
                 return (
-                  <div key={prediction.id} className={cn(
-                    'rounded-lg border transition-all duration-200',
-                    colors.border, colors.bg,
-                    isExpanded && 'ring-1 ring-amber-500/40'
-                  )}>
-                    <button onClick={() => toggleExpand(prediction.id)} className="w-full p-4 text-left">
+                  <div
+                    key={prediction.id}
+                    className={cn(
+                      'rounded-lg border transition-all duration-200',
+                      colors.border,
+                      colors.bg,
+                      isExpanded && 'ring-1 ring-amber-500/40'
+                    )}
+                  >
+                    <button
+                      onClick={() => toggleExpand(prediction.id)}
+                      className="w-full p-4 text-left"
+                    >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <Badge variant="outline" className={cn('text-xs', colors.bg, colors.primary, 'border-0')}>{TYPE_LABELS[prediction.type]}</Badge>
+                            <Badge
+                              variant="outline"
+                              className={cn('text-xs', colors.bg, colors.primary, 'border-0')}
+                            >
+                              {TYPE_LABELS[prediction.type]}
+                            </Badge>
                             {getImpactBadge(prediction.impact)}
                             <span className={cn('text-xs', confidenceColor)}>
-                              {confidenceLevel === 'high' ? '★★★' : confidenceLevel === 'medium' ? '★★' : '★'} {prediction.confidence}%
+                              {confidenceLevel === 'high'
+                                ? '★★★'
+                                : confidenceLevel === 'medium'
+                                  ? '★★'
+                                  : '★'}{' '}
+                              {prediction.confidence}%
                             </span>
                           </div>
-                          <h4 className="font-medium text-amber-100 truncate">{prediction.title}</h4>
-                          <p className="text-sm text-amber-200/60 line-clamp-2">{prediction.description}</p>
+                          <h4 className="font-medium text-amber-100 truncate">
+                            {prediction.title}
+                          </h4>
+                          <p className="text-sm text-amber-200/60 line-clamp-2">
+                            {prediction.description}
+                          </p>
                         </div>
                         <div className="flex flex-col items-end gap-2">
                           <div className="flex items-center gap-1 text-xs text-amber-200/60">
                             <Clock className="h-3 w-3" />
                             <span>{formatDate(prediction.date)}</span>
                           </div>
-                          {isExpanded ? <ChevronUp className="h-4 w-4 text-amber-400" /> : <ChevronDown className="h-4 w-4 text-amber-400" />}
+                          {isExpanded ? (
+                            <ChevronUp className="h-4 w-4 text-amber-400" />
+                          ) : (
+                            <ChevronDown className="h-4 w-4 text-amber-400" />
+                          )}
                         </div>
                       </div>
                       <div className="mt-3 h-1.5 rounded-full bg-amber-950/50 overflow-hidden">
-                        <div className={cn('h-full rounded-full transition-all', confidenceBgColor)} style={{ width: `${prediction.confidence}%` }} />
+                        <div
+                          className={cn('h-full rounded-full transition-all', confidenceBgColor)}
+                          style={{ width: `${prediction.confidence}%` }}
+                        />
                       </div>
                     </button>
 
@@ -374,44 +487,62 @@ export function PredictiveInsightsPanel({
                         <div className="h-px bg-amber-500/20" />
                         <div>
                           <h5 className="text-sm font-medium text-amber-200 mb-2 flex items-center gap-2">
-                            <ScrollText className="h-3 w-3" />Interpretação Detalhada
+                            <ScrollText className="h-3 w-3" />
+                            Interpretação Detalhada
                           </h5>
-                          <p className="text-sm text-amber-100/80 leading-relaxed">{prediction.detailedExplanation || prediction.description}</p>
+                          <p className="text-sm text-amber-100/80 leading-relaxed">
+                            {prediction.detailedExplanation || prediction.description}
+                          </p>
                         </div>
                         <div className="grid gap-3">
                           <div className="p-3 rounded-lg bg-amber-900/20 border border-amber-500/20">
                             <h6 className="text-xs font-medium text-amber-300 mb-1 flex items-center gap-1.5">
-                              <Lightbulb className="h-3 w-3" />Por Que Esta Predição
+                              <Lightbulb className="h-3 w-3" />
+                              Por Que Esta Predição
                             </h6>
                             <p className="text-xs text-amber-100/70">{prediction.whyPrediction}</p>
                           </div>
                           <div className="p-3 rounded-lg bg-amber-900/20 border border-amber-500/20">
                             <h6 className="text-xs font-medium text-amber-300 mb-1 flex items-center gap-1.5">
-                              <GitBranch className="h-3 w-3" />Padrão Histórico
+                              <GitBranch className="h-3 w-3" />
+                              Padrão Histórico
                             </h6>
-                            <p className="text-xs text-amber-100/70">{prediction.historicalPattern}</p>
+                            <p className="text-xs text-amber-100/70">
+                              {prediction.historicalPattern}
+                            </p>
                           </div>
                           <div className="p-3 rounded-lg bg-emerald-900/20 border border-emerald-500/20">
                             <h6 className="text-xs font-medium text-emerald-400 mb-1 flex items-center gap-1.5">
-                              <Target className="h-3 w-3" />Ação Recomendada
+                              <Target className="h-3 w-3" />
+                              Ação Recomendada
                             </h6>
-                            <p className="text-xs text-emerald-100/70">{prediction.recommendedAction}</p>
+                            <p className="text-xs text-emerald-100/70">
+                              {prediction.recommendedAction}
+                            </p>
                           </div>
                         </div>
                         {prediction.optimalTime && (
                           <div className="flex items-center gap-2 text-sm text-amber-200/80">
                             <Clock className="h-4 w-4 text-amber-400" />
-                            <span>Momento ideal: <strong className="text-amber-200">{prediction.optimalTime}</strong></span>
+                            <span>
+                              Momento ideal:{' '}
+                              <strong className="text-amber-200">{prediction.optimalTime}</strong>
+                            </span>
                           </div>
                         )}
                         <div>
                           <h5 className="text-sm font-medium text-amber-200 mb-2 flex items-center gap-2">
-                            <Zap className="h-3 w-3" />Recomendações
+                            <Zap className="h-3 w-3" />
+                            Recomendações
                           </h5>
                           <ul className="space-y-1">
                             {prediction.recommendations.map((rec, idx) => (
-                              <li key={idx} className="flex items-center gap-2 text-sm text-amber-100/70">
-                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />{rec}
+                              <li
+                                key={idx}
+                                className="flex items-center gap-2 text-sm text-amber-100/70"
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                                {rec}
                               </li>
                             ))}
                           </ul>
@@ -420,9 +551,15 @@ export function PredictiveInsightsPanel({
                           <div className={cn('flex items-center gap-1 text-xs', confidenceColor)}>
                             <Star className="h-3 w-3" />
                             <span>Confiança: {prediction.confidence}%</span>
-                            <span className="text-amber-200/40">({CONFIDENCE_LABELS[confidenceLevel]})</span>
+                            <span className="text-amber-200/40">
+                              ({CONFIDENCE_LABELS[confidenceLevel]})
+                            </span>
                           </div>
-                          <Button variant="ghost" size="sm" className="text-xs text-amber-300 hover:text-amber-200">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-xs text-amber-300 hover:text-amber-200"
+                          >
                             Conectar ao sistema <ArrowRight className="h-3 w-3 ml-1" />
                           </Button>
                         </div>
@@ -439,14 +576,26 @@ export function PredictiveInsightsPanel({
               <div className="flex items-center gap-2 text-sm text-amber-200/60">
                 <span>Período:</span>
                 {weekMarkers.map((marker, idx) => (
-                  <span key={idx} className="px-2 py-0.5 rounded bg-amber-900/30 text-xs">{marker.label}</span>
+                  <span key={idx} className="px-2 py-0.5 rounded bg-amber-900/30 text-xs">
+                    {marker.label}
+                  </span>
                 ))}
               </div>
               <div className="flex items-center gap-1">
-                <Button variant="ghost" size="sm" onClick={() => scrollTimeline('left')} className="h-7 w-7 p-0 text-amber-300">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => scrollTimeline('left')}
+                  className="h-7 w-7 p-0 text-amber-300"
+                >
                   <ChevronUp className="h-4 w-4 rotate-90" />
                 </Button>
-                <Button variant="ghost" size="sm" onClick={() => scrollTimeline('right')} className="h-7 w-7 p-0 text-amber-300">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => scrollTimeline('right')}
+                  className="h-7 w-7 p-0 text-amber-300"
+                >
                   <ChevronDown className="h-4 w-4 rotate-90" />
                 </Button>
               </div>
@@ -467,7 +616,9 @@ export function PredictiveInsightsPanel({
                         <div
                           className={cn(
                             'absolute top-6 w-full rounded-lg border transition-all',
-                            hasPredictions ? 'bg-gradient-to-b from-amber-900/40 to-amber-950/60 border-amber-500/30' : 'bg-amber-950/30 border-amber-700/20'
+                            hasPredictions
+                              ? 'bg-gradient-to-b from-amber-900/40 to-amber-950/60 border-amber-500/30'
+                              : 'bg-amber-950/30 border-amber-700/20'
                           )}
                           style={{ height: `${Math.max(20, point.intensity)}%` }}
                         >
@@ -476,7 +627,14 @@ export function PredictiveInsightsPanel({
                               {point.predictions.slice(0, 3).map((pred, pIdx) => {
                                 const pColors = TYPE_COLORS[pred.type];
                                 return (
-                                  <div key={pIdx} className={cn('w-2 h-2 rounded-full', pColors.primary.replace('text-', 'bg-'))} title={pred.title} />
+                                  <div
+                                    key={pIdx}
+                                    className={cn(
+                                      'w-2 h-2 rounded-full',
+                                      pColors.primary.replace('text-', 'bg-')
+                                    )}
+                                    title={pred.title}
+                                  />
                                 );
                               })}
                             </div>
@@ -485,14 +643,18 @@ export function PredictiveInsightsPanel({
                         <div
                           className={cn(
                             'absolute -top-1 w-3 h-3 rounded-full border-2',
-                            isToday ? 'bg-amber-400 border-amber-300 shadow-lg shadow-amber-400/50' :
-                            hasPredictions ? 'bg-amber-500 border-amber-400' : 'bg-amber-950 border-amber-700'
+                            isToday
+                              ? 'bg-amber-400 border-amber-300 shadow-lg shadow-amber-400/50'
+                              : hasPredictions
+                                ? 'bg-amber-500 border-amber-400'
+                                : 'bg-amber-950 border-amber-700'
                           )}
                         />
                       </div>
                       {hasPredictions && (
                         <div className="mt-2 text-xs text-amber-200/60">
-                          {point.predictions.length} {point.predictions.length === 1 ? 'evento' : 'eventos'}
+                          {point.predictions.length}{' '}
+                          {point.predictions.length === 1 ? 'evento' : 'eventos'}
                         </div>
                       )}
                     </div>
@@ -517,13 +679,25 @@ export function PredictiveInsightsPanel({
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2 mt-4">
-              {filteredPredictions.slice(0, 4).map(pred => {
+              {filteredPredictions.slice(0, 4).map((pred) => {
                 const colors = TYPE_COLORS[pred.type];
                 return (
-                  <div key={pred.id} className={cn('p-2 rounded', colors.bg, 'border', colors.border)}>
+                  <div
+                    key={pred.id}
+                    className={cn('p-2 rounded', colors.bg, 'border', colors.border)}
+                  >
                     <div className="flex items-center justify-between mb-1">
-                      <span className={cn('text-xs font-medium', colors.primary)}>{TYPE_LABELS[pred.type]}</span>
-                      <span className={cn('text-xs', getConfidenceColor(getConfidenceLevel(pred.confidence)))}>{pred.confidence}%</span>
+                      <span className={cn('text-xs font-medium', colors.primary)}>
+                        {TYPE_LABELS[pred.type]}
+                      </span>
+                      <span
+                        className={cn(
+                          'text-xs',
+                          getConfidenceColor(getConfidenceLevel(pred.confidence))
+                        )}
+                      >
+                        {pred.confidence}%
+                      </span>
                     </div>
                     <p className="text-xs text-amber-100/80 line-clamp-1">{pred.title}</p>
                     <p className="text-xs text-amber-200/50 mt-1">{formatDate(pred.date)}</p>
@@ -547,7 +721,9 @@ export function PredictiveInsightsPanel({
                 <TooltipInfo titulo="Alta Confiança" descricao="Previsões de alta confiança">
                   <div className="flex items-center gap-1.5 text-emerald-400">
                     <TrendingUp className="h-3.5 w-3.5" />
-                    <span>{filteredPredictions.filter(p => p.confidence >= 80).length} alta confiança</span>
+                    <span>
+                      {filteredPredictions.filter((p) => p.confidence >= 80).length} alta confiança
+                    </span>
                   </div>
                 </TooltipInfo>
                 <TooltipInfo titulo="Período Selecionado" descricao="Dias para análise">
