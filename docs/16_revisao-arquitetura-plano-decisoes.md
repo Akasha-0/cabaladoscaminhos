@@ -130,6 +130,7 @@ O problema **não está mais na documentação** — está na **distância entre
 - **Decisão:** o `Operator` (auth JWT, Fases 7–8) é a identidade canônica do B2B. O Doc 04 deve trocar o modelo `User` por `Operator` nas relações de `Reading`/`Consultation`.
 - **Justificativa:** o código já implementou `Operator`+JWT; `User` pertence ao B2C. Doc 04 ainda referencia `User` — drift a corrigir.
 - **Ação:** atualizar Doc 04 §1 (relações `Reading.operator`, `Consultation.operator`); confirmar `schema.prisma` consistente; documentar que NextAuth foi substituído por JWT próprio.
+- **Hardening aplicado:** `/api/mesa-real/clients` estava **sem `requireOperator`** (dados de consulente expostos sem sessão) e exigia um `userId` no corpo que o modelo `Client` nem armazena. ✅ Corrigido: as 4 operações (GET/POST/PATCH/DELETE) agora exigem Operator autenticado (paridade com `/save` e `/generate`), e o `userId` vestigial foi removido — a autorização vem da sessão, não do corpo.
 
 ### AD-04 — 🧭 Astrologia: assumir a aproximação própria como MVP, com caminho para efeméride real.
 - **Decisão:** `astrologia/swiss-ephemeris.ts` é uma **aproximação analítica própria** (não a Swiss Ephemeris real). Aceitável para o MVP **se** a precisão for validada; senão, plugar `astronomy-engine`/efeméride real.

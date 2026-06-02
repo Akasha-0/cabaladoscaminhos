@@ -7,6 +7,8 @@ import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
 // Schema for creating a client
+// Sem `userId`: o modelo Client não armazena dono por-operador (Doc 16 §2.2);
+// a autorização vem do Operator autenticado na rota, não de um campo no corpo.
 export const createClientSchema = z.object({
   fullName: z.string().min(1, 'Nome completo é obrigatório'),
   birthDate: z.string().datetime({ message: 'Data de nascimento inválida' }),
@@ -14,7 +16,6 @@ export const createClientSchema = z.object({
   birthCity: z.string().optional(),
   birthState: z.string().optional(),
   birthCountry: z.string().optional(),
-  userId: z.string().min(1, 'userId é obrigatório'),
 });
 
 // Schema for updating a client
