@@ -85,12 +85,14 @@ O problema **não está mais na documentação** — está na **distância entre
 
 | Módulo (visão) | Doc | Estado no código | Lacuna |
 |---|---|---|---|
-| A — Consulente (cadastro + 4 mapas) | 02§B, 04 | Parcial (`/api/mesa-real/clients`) | Validar wiring map↔cadastro; astro é aproximação |
-| B — Mesa Real (grid 9×4 + popover) | 02§C, 05§4 | Presente (`cockpit/*`) | **Lista de cartas do popover corrompida (C2)** |
-| C — Motor de IA (dossiê 3 §) | 06, 09 | Presente (`ai/dossier`, `correlation-map`) | Streaming/persistência a confirmar |
-| D — Q&A (RAG fechado) | 12 | Presente (`theme-router`, `consult`) | Atrás de flag; UI de chat a confirmar |
-| E — Histórico/Dashboard | 02§E, 05§3 | A confirmar | Métricas + leituras |
+| A — Consulente (cadastro + 4 mapas) | 02§B, 04 | Presente (`/api/mesa-real/clients`, `Client` cacheia 4 mapas) | Astro é aproximação (AD-04) |
+| B — Mesa Real (grid 9×4 + popover) | 02§C, 05§4 | Presente (`cockpit/*`) | **Lista de cartas do popover errada/corrompida (C2)** |
+| C — Motor de IA (dossiê 3 §) | 06, 09 | **Wired ao Prisma** (`/api/mesa-real/generate` persiste `Report`; `requireOperator`) | Validar streaming + 3§ no output |
+| D — Q&A (RAG fechado) | 12 | **Wired** (`theme-router`, `/api/consult` persiste `Consultation`/`ChatMessage`) | UI de chat (Doc 05 §9) + flag |
+| E — Histórico/Dashboard | 02§E, 05§3 | Parcial (`/api/mesa-real/readings` lista; persistência OK) | Tela de dashboard/métricas B2B |
 | PDF do dossiê | 02§D.4, 08 S6 | **Ausente** (só PDF legado) | Fase 3 |
+
+> **Correção de leitura inicial:** o pipeline B2B **persiste corretamente** no Prisma (save cria `Reading`; generate grava `Report`; consult grava `Consultation`+`ChatMessage`), todos atrás de `requireOperator`. O gargalo do MVP **não** é persistência — é (1) a lista de cartas quebrada (C2), (2) telas de histórico/dashboard B2B, (3) precisão astrológica (AD-04).
 
 ---
 
@@ -106,11 +108,16 @@ O problema **não está mais na documentação** — está na **distância entre
   - **(B) Remoção:** apagar o B2C. Mais limpo, irreversível sem git.
   - **(C) Fork:** extrair o B2C para outro repositório.
 - **Recomendação:** **(A) Quarentena** — desbloqueia o produto, preserva o trabalho, é reversível.
+- **Viabilidade (boa notícia):** o B2B é **~21 arquivos** num repositório de **~1.295** (1,6%), e no banco há **separação limpa** — os modelos B2B (`Operator/Client/Reading/Report/Consultation/ChatMessage`) **não têm referência cruzada** com os modelos B2C. Isso torna a quarentena cirúrgica: isola-se o B2C sem tocar no produto.
 
 ### AD-02 — Fonte única de verdade das 36 cartas = `lenormand-cards.ts` (Doc 15).
 - **Decisão:** `src/lib/constants/lenormand-cards.ts` (canônico, Doc 15, com `baseMeaning`/`shadow`) é a **única** definição das 36 cartas. Tudo deriva dela.
-- **Justificativa:** hoje há ≥3 listas divergentes. A UI do cockpit (`HouseInputPopover`) usa uma lista **errada** (Casa 24 = "A Borboleta" em vez de "O Coração") e **corrompida** (carta 36 = `"A苹果 / Final"`, com caracteres chineses). Isso quebra a correlação: o operador seleciona uma carta cujo nome não bate com `correlation-map.ts`, e o Q&A (que roteia amor→Casa 24=Coração) fica incoerente.
-- **Ação:** `HouseInputPopover` e qualquer combobox de cartas devem **importar** de `lenormand-cards.ts`. Eliminar o array `CARTAS_CIGANAS` hardcoded. `mesa-real-data.ts` (se sobreviver à AD-01) deve derivar dela ou ser quarentenado.
+- **Justificativa:** existem **7 definições** das 36 cartas no código (ver Anexo §9.4). Quatro batem com o canônico (`lenormand-cards.ts`, `mesa-real-data.ts`, `correlation-map.ts`, `spiritual-data.ts`); **dois consumidores estão errados** e um está obsoleto:
+  - `components/cockpit/HouseInputPopover.tsx` — Casa 24 = "A Borboleta" (deveria ser "O Coração") e carta 36 = `"A苹果 / Final"` (Unicode corrompido; deveria ser "A Cruz"). **É a UI que o operador realmente usa.**
+  - `lib/divination/oracle-cards.ts` — Casa 24 = "A Borboleta" (errada).
+  - `lib/lenormand/data.ts` — baralho de **42 cartas** obsoleto (carta 36 = "A Caveira"); deprecar.
+  Isso quebra a correlação: o operador seleciona uma carta cujo nome não bate com `correlation-map.ts`, e o Q&A (que roteia amor→Casa 24=Coração) fica incoerente. **Sintoma medível:** `tests/lib/lenormand/mesa-real.test.ts` falha 33/83 (contrato carta↔casa quebrado — Anexo §9.5).
+- **Ação:** `HouseInputPopover` e `oracle-cards.ts` devem **importar** de `lenormand-cards.ts`; eliminar arrays hardcoded; deprecar `lenormand/data.ts`. `mesa-real-data.ts` (se sobreviver à AD-01) deriva do canônico.
 
 ### AD-03 — Identidade do operador = modelo `Operator` (JWT próprio). `User` é legado.
 - **Decisão:** o `Operator` (auth JWT, Fases 7–8) é a identidade canônica do B2B. O Doc 04 deve trocar o modelo `User` por `Operator` nas relações de `Reading`/`Consultation`.
@@ -225,6 +232,47 @@ Estas edições alinham os docs à realidade (a stack real é a desejada — atu
 | **AD-04** | Barra de precisão astrológica (aproximação vs efeméride real) | Confiabilidade do `astrologyMap` |
 | **D1–D4** (Doc 10/11) | Tabelas alfanuméricas, tântricas, data→Odu, 16 Odus | Precisão dos números (hoje em defaults provisórios sinalizados) |
 | **D5** (Doc 12) | Q&A entra no MVP ou pós-MVP | Escopo da Onda E |
+
+> **Saúde de testes (risco técnico):** a suíte tem **~1.208 arquivos** e estoura o timeout de 120s — sinal de que precisa de particionamento/CI dedicado. Entre os visíveis, `tests/lib/lenormand/mesa-real.test.ts` falha **33/83** (contrato carta↔casa — resolve-se com AD-02). A maioria das falhas concentra-se no **legado** (mesa-real, correlation), reforçando AD-01.
+
+---
+
+## 9. Anexo — Censo de Evidências (mapa do código real)
+
+> Levantamento factual do estado da implementação em 2026-06-02 (base da auditoria).
+
+### 9.1 Census de rotas
+- **Páginas (~26):** 1 B2B (`/cockpit`) + ~25 B2C/públicas (`/dashboard` + 9 sub-rotas, `/mapa`, `/onboarding`, `/pricing`, `/profile`, `/conta`, `/analytics`, `/pagamento/*`, `/login`, `/register`).
+- **APIs (~95):** B2B = `/api/operator/auth/*`, `/api/mesa-real/{generate,save,readings,clients}`, `/api/consult` (todas com `requireOperator`). Legado = ~70+ (`/api/tarot/*`, `/api/astrology/*`, `/api/numerology/*`, `/api/ifa/*`, `/api/chakra/*`, `/api/mapa/*`, `/api/correlation/*`, `/api/auth/*` sem guarda).
+
+### 9.2 Census de modelos (Prisma)
+- **B2B (6):** `Operator`, `Client`, `Reading`, `Report`, `Consultation`, `ChatMessage`.
+- **B2C legado (~23):** `User`, `MapaNatal`, `BirthChart`, `SynastryResult`, `Assinatura`, `Credito`, `TransacaoCredito`, `JournalEntry`, `Favorito`, `LeituraHistorico`, `Insight`, `Conversa`, `Mensagem`, `Reminder`, `Empresa`, + taxonomias (`Orixa`, `Chakra`, `Sefirot`, `Odú`, `Erva`, `FaseLua`, `Elemento`, `DiaSemana`).
+- **Separação:** **zero referências cruzadas** entre B2B e B2C (viabiliza AD-01).
+
+### 9.3 Auth
+- HS256 JWT próprio (`operator-jwt.ts` + `operator-session.ts`); cookie `cockpit_session` (HttpOnly, TTL 7d); env `JWT_SECRET`. `requireOperator` em 4 rotas. **NextAuth não é usado.** Auth legada (`/api/auth/*`) sem guarda.
+
+### 9.4 Fontes das 36 cartas (7 definições)
+| Arquivo | Carta 24 | Carta 36 | Status |
+|---|---|---|---|
+| `constants/lenormand-cards.ts` | O Coração | A Cruz | ✓ **canônico** |
+| `lenormand/mesa-real-data.ts` | O CORAÇÃO | A CRUZ | ✓ ok |
+| `ai/correlation-map.ts` | O Coração | A Cruz | ✓ ok |
+| `data/spiritual-data.ts` | O Coração | A Cruz | ✓ ok |
+| `divination/oracle-cards.ts` | **A Borboleta** | A Cruz | ✗ **errada** |
+| `components/cockpit/HouseInputPopover.tsx` | **A Borboleta** | **`A苹果 / Final`** | ✗ **errada + corrompida** |
+| `lenormand/data.ts` | O Coração | A Caveira | ⚠️ obsoleto (42 cartas) |
+
+### 9.5 Pipeline B2B (wiring confirmado)
+- `/api/mesa-real/save` → cria `Reading` (`operatorId`+`clientId`+`matrixData`, status `PENDING`).
+- `/api/mesa-real/generate` → `requireOperator`; LLM (modelo por env); grava `Report.content` por casa.
+- `/api/consult` → cria `Consultation` ancorada ao `Reading`; grava `ChatMessage` com `routedThemes`/`routedHouses`.
+
+### 9.6 Census de arquivos (≈1.295 .ts/.tsx em src)
+- **B2B Cockpit:** ~21 arquivos (1,6%) — `cockpit/` (5), `mesa-real` componentes (3) + rotas (4), `ai/dossier` (4), `ai/correlation-map` (1), `ai/theme-router` (1), `auth/operator` (2).
+- **B2C legado:** ~267 arquivos (~20%) — `correlation/` (167), `rituals/` (47), `chakra/` (25), `swarm/` (10), `agents/` (9), `life-areas/` (5), `engines/` (3), `mapa-alma` (1).
+- **Compartilhado/infra:** ~1.007 (~78%) — rotas de API, libs e utilitários.
 
 ---
 
