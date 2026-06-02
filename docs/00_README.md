@@ -27,12 +27,15 @@
 | 15 | [Glossário Oracular Canônico](./15_glossario-oracular.md) | Significados-base das 36 cartas e 16 Odus (anti-alucinação) |
 | 16 | [Revisão de Arquitetura & Plano de Decisões](./16_revisao-arquitetura-plano-decisoes.md) | Auditoria Visão × Implementação; ADRs de features e UI/UX; plano priorizado |
 | 17 | [Arquitetura da Interface Única (Mesa Real)](./17_arquitetura-interface-unica.md) | A visão "uma só página": 36 casas em cards + Odus + 4 entradas natais; poda de componentes; camadas de inteligência |
+| 18 | [Blueprint Técnico & Contratos](./18_blueprint-tecnico-contratos.md) | Contratos de dados/estado/API: `MatrixData` canônico, store Zustand, máquina de estados, sequências, decisões AD-18 |
 
 > **Identidade visual:** o **Doc 13** é a fonte canônica da paleta (laranja + azul royal, consagração ao Cigano Ramiro). Em qualquer divergência de cor, ele prevalece sobre os demais.
 >
 > **Arquitetura (Visão × Código):** o **Doc 16** é a fonte canônica das decisões de arquitetura. Onde um doc mais antigo divergir sobre stack, rotas ou estrutura de pastas, o Doc 16 prevalece.
 >
 > **Interface & navegação:** o **Doc 17** é a fonte canônica da **interface única** (a Mesa Real numa só página). Onde um doc mais antigo descrever múltiplas telas/rotas, o Doc 17 prevalece.
+>
+> **Contratos (dados/estado/API):** o **Doc 18** é a fonte canônica dos contratos técnicos (`MatrixData`, store, payloads de rota, orquestração da geração). Onde um doc mais antigo divergir sobre formato de dados ou payload, o Doc 18 prevalece — subordinado ao Doc 17 (visão) e ao Doc 06 (correlação).
 
 ---
 

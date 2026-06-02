@@ -403,6 +403,10 @@ interface OduBirth {
 
 ## 3. Estrutura JSON da Matriz da Mesa Real (matrixData)
 
+> **Formato canônico e invariantes: Doc 18 §2.** Esta é a forma **achatada e normalizada** adotada em todas as bordas (store→save→DB→consult→report) — Doc 18 AD-18.1. Duas regras invioláveis:
+> - **Permutação das cartas (Doc 17 AD-17.2 / Doc 18 AD-18.2):** cada `carta` (1..36) aparece **no máximo uma vez** na tiragem; os `odu` (1..16) podem repetir. O `save` deve **validar** e rejeitar cartas duplicadas (`400`).
+> - **Sem significado no payload:** `carta`/`odu` trafegam só por número + nome; o significado vem do **glossário** no servidor (anti-alucinação, Doc 15).
+
 Este é o objeto salvo no campo `matrixData` do modelo `Reading`. É gerado pelo Zustand store no frontend e enviado para a API.
 
 ```typescript
