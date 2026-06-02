@@ -4,12 +4,13 @@
 
 'use client';
 
-import { Trash2, Zap, LogOut } from 'lucide-react';
-import React from 'react';
+import { Trash2, Zap, LogOut, ShieldCheck } from 'lucide-react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useCockpitStore } from '@/stores/cockpit-store';
+import { SessionsList } from '@/components/operator/SessionsList';
 
 interface CockpitHeaderProps {
   showDebug?: boolean;
@@ -23,6 +24,7 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
   const filledCount = getFilledCount();
   const totalHouses = 36;
   const progressPercent = (filledCount / totalHouses) * 100;
+  const [sessionsOpen, setSessionsOpen] = useState(false);
 
   async function handleLogout() {
     try {
@@ -105,6 +107,17 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
         <Button
           variant="ghost"
           size="sm"
+          onClick={() => setSessionsOpen(true)}
+          className="text-muted-foreground hover:text-secondary hover:bg-secondary/10"
+          title="Ver e revogar sessões ativas"
+        >
+          <ShieldCheck className="w-4 h-4 mr-2" />
+          Sessões
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={handleLogout}
           className="text-muted-foreground hover:text-primary hover:bg-primary/10"
           title="Encerrar sessão do operador"
@@ -113,6 +126,9 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
           Sair
         </Button>
       </div>
+
+      {/* Modal de Sessões Ativas (Fase 16) — gerenciado por state local */}
+      <SessionsList open={sessionsOpen} onOpenChange={setSessionsOpen} />
     </div>
   );
 }
