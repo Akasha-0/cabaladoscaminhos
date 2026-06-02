@@ -57,4 +57,5 @@ export function useAnalytics(customAnalytics?: Partial<AnalyticsService>): Analy
   return { trackPage, trackEvent };
 }
 
+// fallow-ignore-next-line unused-type
 export type { AnalyticsTrackOptions };

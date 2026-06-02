@@ -1,11 +1,10 @@
 // @ts-nocheck
 // Destiny Calculator - Name-based numerology calculation
-
 import {
   calcularPitagorica,
   calcularCaldeia,
   getInterpretacao,
-} from './calculos';
+} from '../numerologia/calculos';
 
 export interface DestinyResult {
   numero: number;
@@ -20,7 +19,6 @@ function reduzirNumero(num: number): number {
   while (num > 9 && ![11, 22, 33].includes(num)) {
     num = String(num).split('').reduce((acc, d) => acc + parseInt(d, 10), 0);
   }
-  return num;
 }
 
 /**

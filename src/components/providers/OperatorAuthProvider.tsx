@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation'
 // Tipos
 // ============================================================================
 
+// fallow-ignore-next-line unused-type
 export interface OperatorInfo {
   id: string
   email: string

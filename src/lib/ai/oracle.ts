@@ -12,6 +12,7 @@ export type CaminhoType = 'caminho-da-mao-direita' | 'caminho-da-mao-esquerda' |
 /**
  * Oracle response structure
  */
+// fallow-ignore-next-line unused-type
 export interface OracleResponse {
   resposta: string;
   referencias: string[];
@@ -25,6 +26,7 @@ export interface OracleResponse {
 /**
  * Oracle context for enhanced responses
  */
+// fallow-ignore-next-line unused-type
 export interface OracleContext {
   /** User's birth date for numerological calculations */
   dataNascimento?: string;

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
+// fallow-ignore-next-line unused-type
 export interface Afirmacao {
   id: string;
   texto: string;

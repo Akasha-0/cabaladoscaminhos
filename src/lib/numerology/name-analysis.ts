@@ -1,13 +1,14 @@
 // @ts-nocheck
 // Name analysis - multiple numerology methods
 
+const VOWELS = ['A', 'E', 'I', 'O', 'U', 'Á', 'É', 'Í', 'Ó', 'Ú', 'Ã', 'Ẽ', 'Ĩ', 'Õ', 'Ũ', 'Â', 'Ê', 'Î', 'Ô', 'Û'];
+
 import {
   calcularPitagorica,
   calcularCaldeia,
   calcularCabalistica,
   getInterpretacao,
-} from './calculos';
-
+} from '../numerologia/calculos';
 
 export interface NameAnalysis {
   original: string;

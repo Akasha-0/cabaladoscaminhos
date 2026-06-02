@@ -11,6 +11,7 @@ import { getChakraOdu } from '@/lib/correlation/chakra-odu';
 // Interactive SVG visualization with click-to-reveal details
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface SefiraDetails {
   id: string;
   name: string;
@@ -27,6 +28,7 @@ export interface SefiraDetails {
   };
 }
 
+// fallow-ignore-next-line unused-type
 export interface ArvoreVidaProps {
   highlightedSephiroth?: string[];
   size?: 'sm' | 'md' | 'lg' | 'xl';

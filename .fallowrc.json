@@ -65,7 +65,7 @@
   "ignoreUnresolvedImports": [
     "tests/lib/**",
     "tests/integration/**",
-    "tests/lib/manifestation/**",
+    "tests/integration/**/*.test.ts",
     "tests/lib/sacred-geometry/**",
     "tests/lib/transformation/**",
     "tests/lib/energy/**",
