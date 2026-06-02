@@ -109,6 +109,13 @@ O problema **não está mais na documentação** — está na **distância entre
   - **(C) Fork:** extrair o B2C para outro repositório.
 - **Recomendação:** **(A) Quarentena** — desbloqueia o produto, preserva o trabalho, é reversível.
 - **Viabilidade (boa notícia):** o B2B é **~21 arquivos** num repositório de **~1.295** (1,6%), e no banco há **separação limpa** — os modelos B2B (`Operator/Client/Reading/Report/Consultation/ChatMessage`) **não têm referência cruzada** com os modelos B2C. Isso torna a quarentena cirúrgica: isola-se o B2C sem tocar no produto.
+- **Status: ✅ APLICADA (decisão do operador: Quarentena).** Implementada no `middleware.ts` via flag **`LEGACY_B2C`** — a opção mais reversível e de menor risco (zero movimentação de arquivos; nada é apagado):
+  - `LEGACY_B2C=on` → restaura todo o B2C.
+  - ausente/qualquer valor → B2C **fora do roteamento**: páginas legadas redirecionam para `/cockpit`; APIs legadas retornam `404`.
+  - **Allow-list B2B preservada:** `/cockpit`, `/api/mesa-real/*`, `/api/consult`, `/api/operator/*`, `/api/health` (+ infra/PWA).
+  - **Verificação em runtime** (build de produção): `/cockpit`→200; `/dashboard`,`/mapa`,`/`→307→`/cockpit`; `/api/tarot/*`,`/api/chakra/*`→404; `/api/operator/auth/me`→401 (alcança o handler); `/api/mesa-real/clients`→500 (alcança o handler, falha só por falta de `DATABASE_URL` no ambiente efêmero — **não** é 404). Ou seja: B2B acessível, B2C bloqueado.
+  - **Por que flag e não mover para `src/_legacy/`:** mover ~60 diretórios de rota no App Router é arriscado e *menos* reversível que uma flag. A flag entrega o objetivo essencial ("fora do roteamento, atrás de flag, trabalho preservado") sem tocar no build. A realocação física para `src/_legacy/` pode ser feita depois, como passo mecânico, se desejado.
+  - **Follow-up imediato (gap exposto):** não há **página** de login B2B — o operador autentica via `/api/operator/auth/login` (a UI `/login` era B2C e foi quarentenada). Construir a tela de login do Operator é a primeira das "telas B2B faltantes" (Onda E).
 
 ### AD-02 — Fonte única de verdade das 36 cartas = `lenormand-cards.ts` (Doc 15).
 - **Decisão:** `src/lib/constants/lenormand-cards.ts` (canônico, Doc 15, com `baseMeaning`/`shadow`) é a **única** definição das 36 cartas. Tudo deriva dela.
@@ -128,6 +135,7 @@ O problema **não está mais na documentação** — está na **distância entre
 - **Decisão:** `astrologia/swiss-ephemeris.ts` é uma **aproximação analítica própria** (não a Swiss Ephemeris real). Aceitável para o MVP **se** a precisão for validada; senão, plugar `astronomy-engine`/efeméride real.
 - **Justificativa:** Doc 08 já prevê fallback de "precisão menor". O risco é o `astrologyMap` (Ascendente, casas) sair impreciso e contaminar a Matriz. O Ascendente exige hora/local exatos e cálculo de casas confiável.
 - **Ação:** validar 3 mapas conhecidos contra uma efeméride de referência; se erro > 1°, adotar lib dedicada. Registrar a decisão de precisão no Doc 03/11.
+- **Status (decisão do operador): Validar antes de decidir.** A validação dos 3 mapas-âncora contra efeméride de referência fica agendada (não executada nesta onda); a escolha entre manter a aproximação ou plugar lib dedicada será tomada com os dados em mãos.
 
 ---
 
@@ -216,9 +224,10 @@ Estas edições alinham os docs à realidade (a stack real é a desejada — atu
 **Onda C — Reconciliação de docs (Seção 6):** atualizar 03, 08, 09, 04, 00 para a realidade.
 
 **Onda D — Pós-decisão de plataforma (após A):**
-4. **AD-01** aplicada (quarentena do B2C).
-5. **AD-08** — paleta Ramiro promovida a `@theme` raiz.
+4. ✅ **AD-01 aplicada** (quarentena do B2C via flag `LEGACY_B2C` no middleware; verificada em runtime).
+5. **AD-08** — paleta Ramiro promovida a `@theme` raiz (agora viável: B2C fora do roteamento).
 6. **AD-10/11** — uma só Mesa Real + navegação B2B.
+7. **Tela de login do Operator** (gap exposto pela quarentena) — primeira das "telas B2B faltantes".
 
 **Onda E — Fechamento de MVP:** Dashboard B2B, histórico, Q&A atrás de flag (UI Doc 05 §9), PDF do dossiê.
 

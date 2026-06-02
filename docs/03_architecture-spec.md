@@ -292,6 +292,11 @@ AWS_S3_BUCKET="cabala-dossiers"
 
 # Ambiente
 NODE_ENV="development"
+
+# Quarentena do B2C legado (Doc 16 AD-01).
+# Ausente/qualquer valor = B2C fora do roteamento (só o Cockpit B2B responde).
+# "on" restaura o B2C legado (reversível por flag).
+LEGACY_B2C="off"
 ```
 
 ---
