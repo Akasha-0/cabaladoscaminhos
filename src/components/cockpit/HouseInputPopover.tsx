@@ -7,6 +7,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
 import { oduData, type OduInfo } from '@/lib/ifa/odu-data';
+import { LENORMAND_CARDS } from '@/lib/constants/lenormand-cards';
 import type { CartaCiganaOption } from '@/stores/cockpit-store';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -27,45 +28,14 @@ interface HouseInputPopoverProps {
   anchorRef?: React.RefObject<HTMLElement>;
 }
 
-// 36 Cartas Ciganas data
-const CARTAS_CIGANAS: CartaCiganaOption[] = [
-  { numero: 1, nome: 'O Cavaleiro', significado: 'Ação, viagem, notícia rápida' },
-  { numero: 2, nome: 'O Trevo', significado: 'Esperança, sorte, oportunidade' },
-  { numero: 3, nome: 'A Nave', significado: 'Viagem, mudança, expansão' },
-  { numero: 4, nome: 'A Casa', significado: 'Família, lar, estabilidade' },
-  { numero: 5, nome: 'A Árvore', significado: 'Crescimento, saúde, natureza' },
-  { numero: 6, nome: 'As Nuvens', significado: 'Dúvidas, confusão, incerteza' },
-  { numero: 7, nome: 'A Serpente', significado: 'Inveja, sabedoria, transformação' },
-  { numero: 8, nome: 'O Caixão', significado: 'Transformação, fim, morte simbólica' },
-  { numero: 9, nome: 'O Buquê', significado: 'Surpresas, dons, beleza' },
-  { numero: 10, nome: 'A Foice', significado: 'Corte, decisões, maturidade' },
-  { numero: 11, nome: 'O Chicote', significado: 'Conflitos, raiva, disputas' },
-  { numero: 12, nome: 'Os Pássaros', significado: 'Comunicação, notícias, palavras' },
-  { numero: 13, nome: 'O Cão', significado: 'Lealdade, amizade, proteção' },
-  { numero: 14, nome: 'O Burro', significado: 'Teimosia, rotina, perseverança' },
-  { numero: 15, nome: 'O Coelho', significado: 'Medo, cautela, prudência' },
-  { numero: 16, nome: 'A Estrela', significado: 'Esperança, inspiração, direção' },
-  { numero: 17, nome: 'O Veado', significado: 'Nobreza, metas, crescimento' },
-  { numero: 18, nome: 'A Cegonha', significado: 'Mudanças, transformações, novos inícios' },
-  { numero: 19, nome: 'O Cachorro', significado: 'Companheirismo, fidelidade, confiança' },
-  { numero: 20, nome: 'O Torreão', significado: 'Prisão, limite, estabilidade' },
-  { numero: 21, nome: 'O Gato', significado: 'Independência, astúcia, autonomia' },
-  { numero: 22, nome: 'O Rato', significado: 'Inimizade oculta, problemas menores' },
-  { numero: 23, nome: 'A Rã', significado: 'Prosperidade, fertilidade, abundância' },
-  { numero: 24, nome: 'A Borboleta', significado: 'Felicidade, leveza,transformação leve' },
-  { numero: 25, nome: 'A Flor', significado: 'Amor, beleza, natureza' },
-  { numero: 26, nome: 'A Espada', significado: 'Conflito, decisão, justiça' },
-  { numero: 27, nome: 'A Áncora', significado: 'Estabilidade, segurança,esperança' },
-  { numero: 28, nome: 'O Anjo', significado: 'Proteção divina, espiritualidade' },
-  { numero: 29, nome: 'O Bouquet', significado: 'Celebração, presentes, alegrias' },
-  { numero: 30, nome: 'A Lua', significado: 'Intuição, emoções, inconsciente' },
-  { numero: 31, nome: 'O Sol', significado: 'Sucesso, clareza, vitalidade' },
-  { numero: 32, nome: 'A Montanha', significado: 'Obstáculos, perseverança, desafios' },
-  { numero: 33, nome: 'Os Maridos', significado: 'Aliança, sociedade, casamento' },
-  { numero: 34, nome: 'O Corvo', significado: 'Mágoa, traição, segredo revelado' },
-  { numero: 35, nome: 'As Crianças', significado: 'Inocência, novo começo, pureza' },
-  { numero: 36, nome: 'A苹果 / Final', significado: 'Conclusão, fim de ciclo, renovação' },
-];
+// As 36 Cartas Ciganas — derivadas da fonte canônica única (Doc 15 / Doc 16 AD-02).
+// NÃO redeclarar nomes aqui: a lista canônica (lenormand-cards.ts) é a única verdade,
+// garantindo que o nome escolhido no popover bata com o correlation-map e o roteador de Q&A.
+const CARTAS_CIGANAS: CartaCiganaOption[] = LENORMAND_CARDS.map((carta) => ({
+  numero: carta.id,
+  nome: carta.name,
+  significado: carta.keywords,
+}));
 
 export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPopoverProps) {
   const house = HOUSES_36.find(h => h.number === casaNumero);
