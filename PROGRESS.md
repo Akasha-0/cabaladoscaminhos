@@ -787,7 +787,7 @@ Commit: d4eab91e
 
 **Doc updates:**
 - `docs/04_data-model.md` §2: Updated audit note — Chiron/Lilith/elements/modalidades already present (Fase 29); AD-23.1 closed; AD-23.2/23.3 remaining.
-- `docs/23_auditoria-mapas-geolocalizacao.md` §6: AD-23.1 ✅ checked; AD-23.3 deferred (low priority; bridge via normalizeBirthChart).
+- `docs/23_auditoria-mapas-geolocalizacao.md` §6: AD-23.1 ✅ checked; AD-23.3 ✅ completed (9 dead fields removed from OduBirth type).
 
 **Resultado:** 1,761 testes passando · TypeScript 0 erros · build OK.
 
@@ -862,3 +862,14 @@ Docs hygiene (Doc 24 §3):
 .gitignore: .claude/ agora ignorado completamente.
 Resultado: 1437 testes · TypeScript 0 erros · build 118 páginas OK.
 Commit: e2a674dc (force-pushed)
+### Fase 50 — AD-23.3 OduBirth type hygiene (2026-06-03)
+AD-23.3: ~10 dead fields in OduBirth interface.
+9 fields confirmed dead (0 usages in src/ tests/):
+  animal, owner, ebwe, message, initiationPath, prohibitions,
+  sign (odu.significado ≠ OduBirth.sign — different data structure),
+  meaning (BirthOduResult.meaning ≠ OduBirth.meaning — different type),
+  odu (calculateBirthOdu never returns this field)
+Live fields preserved: oduNumber, oduName, orixaRegency, elementalForce,
+  lifeLesson, provisional, birthOdu.
+Result: 1767 testes · TypeScript 0 erros · build 118 páginas OK.
+Commit: 04753c6d
