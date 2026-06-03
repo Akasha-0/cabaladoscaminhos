@@ -48,7 +48,7 @@ export const DEFAULT_THRESHOLDS: Threshold[] = [
 ];
 
 // Grade calculation
-function calculateGrade(score: number): string {
+export function calculateGrade(score: number): string {
   if (score >= 97) return 'A+';
   if (score >= 93) return 'A';
   if (score >= 90) return 'A-';
@@ -61,11 +61,19 @@ function calculateGrade(score: number): string {
   return 'F';
 }
 
+// Grade color mapping
+export function getGradeColor(grade: string): string {
+  if (grade.startsWith('A')) return '#22c55e';
+  if (grade.startsWith('B')) return '#84cc16';
+  if (grade.startsWith('C')) return '#eab308';
+  return '#ef4444';
+}
+
 // Metric validation
-function validateMetricValue(
+export function validateMetricValue(
   value: number,
   threshold: number,
-  operator: 'gte' | 'lte' | 'eq' | 'gt' | 'lt'
+  operator: 'gte' | 'lte' | 'eq' | 'gt' | 'lt' = 'gte'
 ): boolean {
   switch (operator) {
     case 'gte':
@@ -84,7 +92,7 @@ function validateMetricValue(
 }
 
 // Score calculation
-function calculateScoreFromValue(
+export function calculateScoreFromValue(
   value: number,
   thresholds: { critical: number; high: number; medium: number; low: number }
 ): number {

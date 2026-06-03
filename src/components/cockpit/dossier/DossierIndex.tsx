@@ -4,6 +4,7 @@
 'use client';
 
 import { Check, AlertCircle, Circle } from 'lucide-react';
+import { LENORMAND_CARDS } from '@/lib/constants/lenormand-cards';
 import { cn } from '@/lib/utils';
 
 interface DossierIndexProps {
@@ -14,44 +15,10 @@ interface DossierIndexProps {
   errors: number[];
 }
 
-const HOUSE_NAMES: Record<number, string> = {
-  1: 'O Cavaleiro',
-  2: 'O Trevo',
-  3: 'O Navio',
-  4: 'A Casa',
-  5: 'A Árvore',
-  6: 'As Nuvens',
-  7: 'A Serpente',
-  8: 'O Caixão',
-  9: 'Os Buquês',
-  10: 'A Foice',
-  11: 'O Chicote',
-  12: 'Os Pássaros',
-  13: 'A Criança',
-  14: 'A Raposa',
-  15: 'O Urso',
-  16: 'A Estrela',
-  17: 'A Cegonha',
-  18: 'O Cachorro',
-  19: 'A Torre',
-  20: 'O Jardim',
-  21: 'A Montanha',
-  22: 'Os Caminhos',
-  23: 'O Rato',
-  24: 'O Coração',
-  25: 'O Anel',
-  26: 'O Livro',
-  27: 'A Carta',
-  28: 'O Cigano',
-  29: 'A Cigana',
-  30: 'Os Lírios',
-  31: 'O Sol',
-  32: 'A Lua',
-  33: 'A Chave',
-  34: 'Os Peixes',
-  35: 'A Âncora',
-  36: 'A Cruz',
-};
+/** Fonte canônica — não hardcodar nomes de casas. */
+const HOUSE_NAMES: Record<number, string> = Object.fromEntries(
+  LENORMAND_CARDS.map((c) => [c.id, c.name])
+);
 
 export function DossierIndex({ casas, activeCasa, onSelect, progress, errors }: DossierIndexProps) {
   const generated = new Set(casas);

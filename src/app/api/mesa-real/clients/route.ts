@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireOperator } from '@/lib/auth/operator-session';
 import {
-  createClient,
+  createClientWithMaps,
   getClient,
   listClients,
   updateClient,
@@ -32,6 +32,10 @@ const createClientSchema = z.object({
   birthCity: z.string().optional(),
   birthState: z.string().optional(),
   birthCountry: z.string().optional(),
+  birthLatitude: z.number().optional(),
+  birthLongitude: z.number().optional(),
+  birthTimezone: z.string().optional(),
+  notes: z.string().optional(),
 });
 
 // ============================================================
@@ -88,15 +92,26 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const data = createClientSchema.parse(body);
 
-    const client = await createClient({
+// Calcular 4 mapas automaticamente no cadastro (Onda D - Wire 4 Mapas)
+    const result = await createClientWithMaps({
       fullName: data.fullName,
       birthDate: data.birthDate,
-      birthTime: data.birthTime,
-      birthCity: data.birthCity,
-      birthState: data.birthState,
-      birthCountry: data.birthCountry,
+      birthTime: data.birthTime ?? '',
+      birthCity: data.birthCity ?? '',
+      birthState: data.birthState ?? '',
+      birthCountry: data.birthCountry ?? '',
+      birthLatitude: data.birthLatitude,
+      birthLongitude: data.birthLongitude,
+      birthTimezone: data.birthTimezone,
+      notes: data.notes,
     });
-
+    if (!result.ok) {
+      return NextResponse.json(
+        { error: 'Erro ao criar cliente com mapas', detail: result.error },
+        { status: 500 }
+      );
+    }
+    const client = await getClient(result.id);
     return NextResponse.json({ client }, { status: 201 });
 
   } catch (error) {
