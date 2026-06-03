@@ -1,8 +1,9 @@
 # IDEIA.md — Banco de Correspondências Esotéricas
 
-> **Versão:** 1.0 | **Data:** 2026-06-03
-> **Governança:** Doc 20 AD-20.1 a AD-20.9
-> **Fontes:** Doc 06 (§2), Doc 11 (§2–§3, §5), Doc 15
+> **Versão:** 1.1 | **Data:** 2026-06-03
+> **Governança:** Doc 20 AD-20.1 a AD-20.9 · **Entrada do agente:** Doc 24 · **Painel:** Doc 21
+> **Fontes:** Doc 06 §2 (correlação), Doc 11 §2–§3 (numerologia), **Doc 04 §5.2 + Doc 15** (Odus/glossário)
+> **Sincronia código ↔ ledger:** as constantes `src/lib/constants/{lenormand-cards,odus}.ts` e `src/lib/ai/correlation-map.ts` são a **projeção em runtime** deste ledger — **mesma verdade, nomes canônicos**. Em qualquer divergência de **nome/grafia**, ledger e constantes devem coincidir (fonte única — Doc 16 AD-02 / Doc 24 §8).
 
 ---
 
@@ -40,7 +41,7 @@ Regras invioláveis (AD-20.1–AD-20.9):
 ---
 
 ### Casa 2 — O Trevo
-**Tema:** Pequenas sorts, oportunidades rápidas, a fé que sustenta.
+**Tema:** Pequenas sortes, oportunidades rápidas, a fé que sustenta.
 **Tradição:** Ifá/Merindilogun (Lenormand)
 
 | Sistema | Aspecto Delegado | Justificativa | Status |
@@ -633,26 +634,28 @@ Idades de troca: 1º até `36 − lifePath`; depois faixas de 9 anos.
 
 > Fonte: Doc 11 §5 e Doc 15 §2
 
-**⚠️ VALIDAR (D4)** — Grafias, numeração, orixás e essência variam entre tradições. A tabela abaixo é o **default herdado do Doc 04 §5.2**; o operador deve **confirmar ou corrigir** cada linha segundo sua linhagem.
+**⚠️ VALIDAR (D4)** — Grafias, numeração, orixás e essência variam entre tradições. A tabela abaixo usa os **nomes canônicos de `src/lib/constants/odus.ts`** (= Doc 04 §5.2 / Doc 15), que é a **projeção em runtime deste ledger** e já carrega `source`/`lineage` (AD-20.6). As **variantes de grafia** ficam registradas para resolução na D4. O operador deve **confirmar ou corrigir** cada linha segundo sua linhagem.
+
+> **Variantes de linhagem (D4) a resolver:** Ogbe (var.: Okran/Okaran) · Etogundá (Etaogundá) · Ejilaxebô (Ejilaxebora) · Oturupon (Ejiologbon) · Iká (Obeogundá) · Ofurufu (Alafia/Alaafia).
 
 | # | Odu | Orixás | Essência |
 |---|---|---|---|
-| 1 | Okran / Ogbe | Oxalá / Exu | Luz, origem, criação, renovação |
+| 1 | Ogbe | Oxalá | Luz, origem, criação, renovação |
 | 2 | Ejiokô | Ibeji, Ogum | Dualidade, movimento, parcerias |
-| 3 | Etaogundá | Ogum | Batalha, conquista, abertura de caminhos |
+| 3 | Etogundá | Ogum, Ogun | Batalha, conquista, abertura de caminhos |
 | 4 | Irosun | Oxum, Iemanjá | Atenção, sangue, cuidado com traições |
-| 5 | Oxê | Oxum | Beleza, amor, fertilidade, magnetismo |
+| 5 | Oxê | Oxum, Iemanjá | Beleza, amor, fertilidade, magnetismo |
 | 6 | Obará | Xangô, Oxóssi | Riqueza, glória, abundância, fartura |
 | 7 | Odi | Exu, Omolu | Segredos, transformação, cautela, limpeza |
 | 8 | Ejionile | Xangô, Oxalá | Justiça, liderança, força, vitória |
-| 9 | Ossá | Iemanjá, Oyá | Proteção feminina, sabedoria, turbação |
-| 10 | Ofun | Oxalufã, Oxalá | Espiritualidade profunda, equilíbrio mental |
+| 9 | Ossá | Iemanjá, Oyá | Proteção feminina, sabedoria, turbulência |
+| 10 | Ofun | Oxalufan, Oxalá | Espiritualidade profunda, equilíbrio mental |
 | 11 | Owarin | Exu, Oyá | Dinâmica, perigo, astúcia, movimento rápido |
-| 12 | Ejilaxebora | Xangô | Honra, proteção, caminho aberto |
-| 13 | Ejiologbon / Oturupon | Omolu, Nanã | Cura, purificação, ancestralidade |
-| 14 | Iká / Oturá | Oxalá, Iemanjá | Paz, benevolência, proteção divina |
-| 15 | Obeogundá / Iká | Xangô, Oxum | Poder, estratégia, responsabilidade |
-| 16 | Alafia / Ofurufu | Oxalá, Todos os Orixás | Completude, totalidade, bênção universal |
+| 12 | Ejilaxebô | Ogum, Oxum | Honra, proteção, caminho aberto |
+| 13 | Oturupon | Omolu, Nanã | Cura, purificação, ancestralidade |
+| 14 | Oturá | Oxalá, Iemanjá | Paz, benevolência, proteção divina |
+| 15 | Iká | Xangô, Oxum | Poder, estratégia, responsabilidade |
+| 16 | Ofurufu | Oxalá, Todos os Orixás | Completude, totalidade, bênção universal |
 
 ---
 
@@ -710,9 +713,9 @@ Idades de troca: 1º até `36 − lifePath`; depois faixas de 9 anos.
 
 | # | Odu | Essência | Quizila / Preceito | Conselho-base |
 |---|---|---|---|---|
-| 1 | Okran/Ogbe | Luz, origem, criação, renovação | Não pular etapas; não desprezar o começo. | Recomece com fé; a luz já apontou o caminho. |
+| 1 | Ogbe | Luz, origem, criação, renovação | Não pular etapas; não desprezar o começo. | Recomece com fé; a luz já apontou o caminho. |
 | 2 | Ejiokô | Dualidade, movimento, parcerias | Evitar decisões sozinho; não duplicar conflitos. | Busque o par certo; a força está na união. |
-| 3 | Etaogundá | Batalha, conquista, abertura de caminhos | Não recuar na luta justa; evitar violência fútil. | Avance com coragem; abra o caminho à força. |
+| 3 | Etogundá | Batalha, conquista, abertura de caminhos | Não recuar na luta justa; evitar violência fútil. | Avance com coragem; abra o caminho à força. |
 | 4 | Irosun | Atenção, sangue, cuidado com traições | Cuidado com o que se come e com falsos amigos. | Atenção redobrada; proteja o que é seu. |
 | 5 | Oxê | Beleza, amor, fertilidade, magnetismo | Não usar o charme para enganar; evitar vaidade. | Ame e crie; sua doçura atrai a bênção. |
 | 6 | Obará | Riqueza, glória, abundância, fartura | Não desperdiçar; evitar ganância e ostentação. | A fartura chega; administre com sabedoria. |
@@ -721,11 +724,11 @@ Idades de troca: 1º até `36 − lifePath`; depois faixas de 9 anos.
 | 9 | Ossá | Proteção feminina, sabedoria, turbulência | Cuidado com tempestades emocionais; evitar fofoca. | Acolha a proteção; a sabedoria acalma o vento. |
 | 10 | Ofun | Espiritualidade profunda, equilíbrio mental | Não negligenciar o espírito; evitar excesso mental. | Aquiete a mente; o equilíbrio é seu remédio. |
 | 11 | Owarin | Dinâmica, perigo, astúcia, movimento rápido | Cuidado com a pressa e o risco; evitar atalhos. | Mova-se com astúcia, mas não corra cego. |
-| 12 | Ejilaxebora | Honra, proteção, caminho aberto | Honrar a palavra; evitar deslealdade. | O caminho está aberto; siga com honra. |
-| 13 | Ejiologbon/Oturupon | Cura, purificação, ancestralidade | Cuidar da saúde e dos ancestrais; evitar negligência. | Cure as raízes; a ancestralidade te sustenta. |
-| 14 | Iká/Oturá | Paz, benevolência, proteção divina | Não romper a paz; evitar conflito desnecessário. | Mantenha a paz; a proteção divina te cobre. |
-| 15 | Obeogundá | Poder, estratégia, responsabilidade | Não abusar do poder; evitar irresponsabilidade. | Use o poder com estratégia e responsabilidade. |
-| 16 | Alafia/Ofurufu | Completude, totalidade, bênção universal | Não desperdiçar a graça; manter humildade. | A bênção é plena; agradeça e partilhe. |
+| 12 | Ejilaxebô | Honra, proteção, caminho aberto | Honrar a palavra; evitar deslealdade. | O caminho está aberto; siga com honra. |
+| 13 | Oturupon | Cura, purificação, ancestralidade | Cuidar da saúde e dos ancestrais; evitar negligência. | Cure as raízes; a ancestralidade te sustenta. |
+| 14 | Oturá | Paz, benevolência, proteção divina | Não romper a paz; evitar conflito desnecessário. | Mantenha a paz; a proteção divina te cobre. |
+| 15 | Iká | Poder, estratégia, responsabilidade | Não abusar do poder; evitar irresponsabilidade. | Use o poder com estratégia e responsabilidade. |
+| 16 | Ofurufu | Completude, totalidade, bênção universal | Não desperdiçar a graça; manter humildade. | A bênção é plena; agradeça e partilhe. |
 
 ---
 
