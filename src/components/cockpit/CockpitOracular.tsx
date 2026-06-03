@@ -8,6 +8,7 @@
 import { FileText, MessageCircle, X, Sparkles } from 'lucide-react';
 import React, { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
+import { useKeyboardShortcuts, type KeyboardShortcut } from '@/hooks/use-keyboard-shortcuts';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
 import { type OduInfo } from '@/lib/ifa/odu-data';
 import { cn } from '@/lib/utils';
@@ -222,6 +223,18 @@ export function CockpitOracular({
       fillHouse(i, carta, odu as unknown as OduInfo);
     }
   }, [fillHouse]);
+
+  // T7.2: cockpit keyboard shortcuts. Escape always passes the editable
+  // guard inside the hook; the other three are skipped while typing.
+  const shortcuts = React.useMemo<KeyboardShortcut[]>(
+    () => [
+      { key: 'n', ctrl: true, handler: handleNewAtendimento },
+      { key: 'b', ctrl: true, handler: toggleRightPanel },
+      { key: 'Escape', handler: handleClosePopover },
+    ],
+    [handleNewAtendimento, toggleRightPanel, handleClosePopover]
+  );
+  useKeyboardShortcuts(shortcuts);
 
   return (
     <div className="flex min-h-screen bg-background">
