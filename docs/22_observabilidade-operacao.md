@@ -1,9 +1,7 @@
 # Documento 22 — Observabilidade & Operação
-
 ## Cabala dos Caminhos
-
 > **Tipo:** Decisão de arquitetura — observabilidade, auditoria, custo de IA, resiliência e operação.
-> **Versão:** 1.0 | **Data:** 2026-06-02
+> **Versão:** 1.1 | **Data:** 2026-06-03
 > **Função:** tornar o produto **operável e auditável** — não se evolui rápido o que não se observa. Foca o núcleo B2B (Doc 17); o legado (Doc 16 AD-01) está fora.
 
 ---

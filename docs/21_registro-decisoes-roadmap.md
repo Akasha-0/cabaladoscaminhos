@@ -1,8 +1,6 @@
 # Documento 21 — Registro de Decisões de Arquitetura (ADR Index) & Roadmap de Execução
 ## Cabala dos Caminhos
-> **Tipo:** Índice consolidado de decisões (ADR) + plano de execução rastreável.
-> **Versão:** 1.1 | **Data:** 2026-06-03
-> **Função:** reunir **todas** as decisões dos Docs 16–20 num só lugar, com **status** e **ordem de execução** — para o projeto evoluir rápido e constante sem perder o fio.
+> **Versão:** 1.2 | **Data:** 2026-06-03
 > **Regra:** este doc **não cria** decisões novas; ele **rastreia** as existentes. A fonte de cada decisão é o doc indicado.
 
 ---
@@ -69,13 +67,17 @@
 ### 2.6 Observabilidade & operação (Doc 22)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
-| AD-22.1 | Observabilidade só do núcleo B2B | ✅ (implementado) | O |
+| AD-22.1 | Observabilidade só do núcleo B2B | ✅ | O |
 | AD-22.2 | Privacidade por padrão: zero PII/segredos em log | ✅ (principio) | O |
 | AD-22.3 | Log estruturado JSON com `requestId` propagado | ✅ (em logging.ts) | O |
 | AD-22.4 | Auditar ações de negócio (não só login) | ✅ (reading.saved + dossier.generated + consult.answered + client.created/updated + auth.logout/SESSION_REVOKED — Fase 39.1) | O |
+| AD-22.5 | Toda chamada LLM instrumentada e contabilizada (`consult` persiste `tokensUsed`) | ✅ (tokensUsed em ChatMessage + consult route captura) | O |
 | AD-22.6 | Modelo e parâmetros por env logados | ✅ | O |
 | AD-22.7 | SSE tolerante a falha + persistência incremental + status `ERROR` | ✅ (timeout 300s + abort; persistência incremental house-a-house) | O |
 | AD-22.8 | Separar liveness × readiness | ✅ (/api/health/live) | O |
+| AD-22.9 | Taxonomia de erros HTTP padronizada (400/401/404/429/500/502/503) | ✅ (`{ error, details }` em todas as rotas) | O |
+| AD-22.10 | Ciclo de vida dos dados: retenção + cron cleanup + LGPD (deleção/portabilidade) | ✅ (cleanup-tokens.ts + scripts LGPD documentados em Doc 22 §8) | O |
+| AD-22.11 | Runbook operacional versionado | ✅ (Doc 22 §9) | O |
 ### 2.5 Governança de conteúdo & inteligência (Doc 20)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
@@ -140,16 +142,14 @@ ONDA O — Observabilidade (paral.) AD-22.x (log estruturado, auditoria, custo I
 ---
 
 ## 5. Definição de "Arquitetura Convergida" (o norte)
-
 O projeto atinge a visão quando **todas** estas forem verdade:
 - [x] **Uma página** (`/cockpit`) + login; nenhuma rota/competente B2C (AD-17.1, AD-01, poda) — cockpit layout + login; src/app limpo de B2C.
 - [x] As 36 casas preenchem-se com 36 cartas distintas + Odu, via popover, sem modais (AD-17.2/.3) — HouseCell x36 com uniqueness enforcement.
 - [x] `MatrixData` é único em todas as bordas; `save` valida a permutação (AD-18.1/.2) — matrixData canônico + Set de validação.
 - [x] `generate` carrega mapas por `readingId`, transmite o dossiê (casas + síntese) e atualiza o status (AD-18.7/.8/.9) — SSE + ReadingStatus transitions.
 - [x] `src/` enxuto (estrutura do Doc 17 §6); paleta Ramiro na raiz; legado removido (AD-08, AD-17.4) — dirs canônicos; B2C em vitest quarantine.
-- [x] `test:core` < 30s é o gate; 6 testes-guardião verdes (AD-19.1/.4/.5) — 1767 testes passam em ~21s (Fase 45).
+- [x] `test:core` < 30s é o gate; 6 testes-guardião verdes (AD-19.1/.4/.5) — 1437 testes (test:core) passam em ~17.67s (Fase 48); full suite 1767 testes ~21s.
 - [x] Todo conteúdo tem fonte no `IDEIA.md`; correspondências carregam proveniência (AD-20.1/.5/.6) — IDEIA.md + source/rationale em CorrelationEntry.
-
 ---
 
 ## 6. Convenção de manutenção deste registro
