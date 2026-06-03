@@ -37,8 +37,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 19 | **Cockpit completeness + PDF export** (T7.2 Leituras, Consulentes, PDF Dossiê) | `add046e5` | ✅ |
 | 23 | **Alinhamento documentação** (Ondas A/B/D/G: cartas consolidadas, 4 mapas wire, Q&A wired) | `cebdca70` | ✅ |
 | 24 | **Ondas C/E: Cleanup B2C + Dashboard B2B** (116 arquivos removidos, API /operator/dashboard) | `85ed0608` | ✅ |
-| 25 | **Revisão Docs 16-21 + correções C2** (card divergences, IDEIA.md, Vitest partition) | (este ciclo) | ✅ |
-### Fase 18 — Hard final + cleanup (detalhes)
+| 25 | **Revisão Docs 16-21 + correções C2** (card divergences, IDEIA.md, Vitest partition) | `cebdca70` | ✅ |
+| 26 | **Doc 22 Observabilidade** (tokens, health/live, SSE timeout) | `2646c4bc` | ✅ |
 
 | Rota | Limite | Janela |
 |------|--------|--------|
