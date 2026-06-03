@@ -405,3 +405,42 @@ Correções no vitest.config.ts (parse error) + UI component tests:
 
 *Última atualização: 2026-06-03 — Fase 31*
 *Versão: 1.3*
+
+### Fase 32 — End-to-End Intelligence & Quality Gates (2026-06-03)
+
+**AD-18.5/18.7:** generate route now loads client maps from DB by readingId.
+- `buildClientMapsFromDb()` helper: converts DB JSON maps to `ClientMaps`
+- When readingId provided: fetches Client with astrologyMap/kabalisticMap/tantricMap/oduBirth
+- DB maps take priority; `mapaFixo` body is fallback for legacy readings
+
+**AD-18.9:** ReadingStatus type expanded to `PENDING | GENERATING | COMPLETED | ERROR`
+
+**AD-19.4 (6 determinism test guardians):**
+- `tests/lib/ai/determinism-guardians.test.ts`: 20 tests (19 pass, 1 skip)
+  - Invariant 1: Correlation determinism — Casa 34 no ascendant/moon leak
+  - Invariant 2: Lenormand uniqueness — 36 unique cards
+  - Invariant 3: Numerology anchor — "Eliane 20/08/1986" → Caminho 7, Alma 2, Karma 8, Dom 5
+  - Invariant 4: Save rejects duplicates
+  - Invariant 5: Theme router deterministic (amor→Casa24, dinheiro→Casa34)
+  - Invariant 6: RAG closed (skipped — requires LLM integration harness)
+
+**AD-20.6/20.8:** Correlation provenance tests
+- `tests/lib/ai/correlation-provenance.test.ts`: 540 tests all pass
+  - All 36 houses have source+rationale in all 3 systems (astrology/kabalah/tantric)
+  - Source values from supported traditions
+  - Rationales substantive (≥5 chars)
+  - No duplicate extractionKeys within blocks
+
+**AD-20.2:** Glossary injection tests
+- `tests/lib/ai/glossary-injection.test.ts`: 5/5 pass
+  - carta_base, carta_sombra, odu_essencia, odu_quizila, odu_conselho all injected
+
+**AD-19.4:** Theme router determinism
+- `tests/lib/ai/theme-router-determinism.test.ts`: 47/47 pass
+  - amor→Casa24, dinheiro→Casa34 (verified), 100-call stress test
+  - Cross-theme isolation, unknown theme graceful fallback
+
+**Resultado:** 1319 testes core passando. Falhas restantes: pré-existentes (stripe-webhook, health/Redis, SessionsList UI, OperatorAuthProvider, LoadingSpinner/ErrorState/MysticDivider mocks, mapa-insights).
+
+*Última atualização: 2026-06-03 — Fase 32*
+*Versão: 1.3*
