@@ -1,7 +1,7 @@
 # Documento 08 — Roadmap de Desenvolvimento
 ## Cabala dos Caminhos
-
-> **Versão:** 1.0 | **Horizonte:** 5 meses até lançamento do MVP estável  
+> **Versão:** 1.1 | **Atualizado:** 2026-06-03 | **Horizonte:** 5 meses até lançamento do MVP estável
+> **Status:** Sprint 6, 7, 8 majoritariamente implementados (ver §4). Sprint 9–10 opcionais.
 > **Metodologia:** Sprints de 2 semanas
 
 ---
@@ -138,14 +138,13 @@ banco configurado          atendimentos               terapeutas
 
 ### Sprint 6 (Semanas 11–12): Exportação de PDF
 
-| ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T6.1 | Template do PDF (react-pdf ou Puppeteer) | E5 | 🔴 | 12h |
-| T6.2 | API Route /api/generate-pdf | E5 | 🔴 | 6h |
-| T6.3 | Upload para Vercel Blob / S3 + salvar URL | E5 | 🟡 | 4h |
-| T6.4 | Botão de download integrado ao DossierViewer | E5 | 🔴 | 3h |
-
-**Milestone Sprint 6:** Dossiê exportável como PDF com capa, mapas e análise formatada.
+| ID | Tarefa | Épico | Prioridade | Estimativa | Status |
+|---|---|---|---|---|---|
+| T6.1 | Template do PDF (jsPDF client-side) | E5 | 🔴 | 12h | ✅ `src/lib/pdf/dossier-pdf.ts` |
+| T6.2 | API Route /api/mapa/pdf | E5 | 🔴 | 6h | ✅ `src/app/api/mapa/pdf/route.ts` |
+| T6.3 | Upload para Vercel Blob / S3 + salvar URL | E5 | 🟡 | 4h | N/A — client-side |
+| T6.4 | Botão de download integrado ao DossierViewer | E5 | 🔴 | 3h | ✅ `DossierPdfButton.tsx` |
+**Milestone Sprint 6:** Dossiê exportável como PDF com capa, mapas e análise formatada. ✅ IMPLEMENTADO.
 
 ---
 
@@ -154,14 +153,13 @@ banco configurado          atendimentos               terapeutas
 > **Decisão D5:** Q&A recomendado para a **Fase 2/início da Fase 3**, atrás de feature flag. Aplicar a paleta v2 (Doc 13). Marca a entrega da "maior expansão da visão".
 
 | ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T7Q.1 | Modelos `Consultation`/`ChatMessage` + migration (Doc 04) | E8 | 🔴 | 3h |
-| T7Q.2 | Roteador de Temas `theme-router.ts` (Doc 12 §4) | E8 | 🔴 | 8h |
-| T7Q.3 | API `/api/consult` com RAG fechado + persona (Doc 12 §5–§7) | E8 | 🔴 | 10h |
-| T7Q.4 | Tela "Consultar o Oráculo" (Doc 05 §9) + chips de roteamento | E8 | 🔴 | 8h |
-
-**Milestone Sprint 7:** É possível perguntar ao Oráculo sobre uma leitura e receber resposta ancorada, com transparência das casas consultadas.
-
+| ID | Tarefa | Épico | Prioridade | Estimativa | Status |
+|---|---|---|---|---|---|
+| T7Q.1 | Modelos Consultation/ChatMessage + migration | E8 | 🔴 | 3h | ✅ schema Prisma |
+| T7Q.2 | Roteador de Temas theme-router.ts | E8 | 🔴 | 8h | ✅ `src/lib/ai/theme-router.ts` |
+| T7Q.3 | API /api/consult com RAG fechado + persona | E8 | 🔴 | 10h | ✅ `src/app/api/consult/route.ts` (SSE) |
+| T7Q.4 | Tela "Consultar o Oráculo" + chips de roteamento | E8 | 🔴 | 8h | ✅ `cockpit/leituras/[id]/consulta/page.tsx` |
+**Milestone Sprint 7:** É possível perguntar ao Oráculo sobre uma leitura e receber resposta ancorada, com transparência das casas consultadas. ✅ IMPLEMENTADO.
 ---
 
 ### Sprint 8 (Semanas 15–16): UX Avançada e Performance
@@ -175,6 +173,26 @@ banco configurado          atendimentos               terapeutas
 | T7.5 | Testes de integração E2E com Playwright | E7 | 🟡 | 12h |
 
 ---
+§4 — Status de Implementação Consolidado (2026-06-03)
+Sprint 6 — Exportação de PDF ✅
+  src/lib/pdf/dossier-pdf.ts (515 linhas, jsPDF client-side)
+  src/app/api/mapa/pdf/route.ts (~80 linhas)
+  src/components/cockpit/dossier/DossierPdfButton.tsx (via generateDossierPDF)
+  Sem necessidade de blob upload — executa 100% no browser.
+Sprint 7 — Consulta Interativa (Q&A) ✅
+  prisma/schema.prisma (Consultation/ChatMessage)
+  src/lib/ai/theme-router.ts
+  src/app/api/consult/route.ts (285 linhas, SSE streaming)
+  src/app/cockpit/leituras/[id]/consulta/page.tsx
+  RAG fechado: só dossiê + casas da leitura; transparência de casas roteadas.
+Sprint 8 — UX Avançada ⚠️ parcial
+  T7.1 ⚠️ pendente — Micro-interações e animações do grid (paleta v2)
+  T7.2 ✅ testes — tests/hooks/useKeyboardShortcuts.test.ts existe; impl não verificada
+  T7.3 ⚠️ cockpit não usa — Sem React.memo/useCallback nos componentes cockpit
+  T7.4 ⚠️ pendente — Responsividade iPad Pro landscape
+  T7.5 ✅ mockado — tests/e2e/user-flows.test.ts (1057 linhas Vitest com browser mock)
+Sprint 9–10 — Escala e Monetização 🟢 opcional
+  Sem implementação verificada. Fora do escopo MVP.
 
 ### Sprint 9–10 (Semanas 17–20): Escala e Monetização (Opcional)
 
