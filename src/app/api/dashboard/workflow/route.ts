@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 // ============================================================
 // DASHBOARD WORKFLOW API - CABALA DOS CAMINHOS
 // ============================================================
@@ -259,6 +260,8 @@ const mockWorkflows: Workflow[] = [
 ];
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const searchParams = request.nextUrl.searchParams;
     const parseResult = WorkflowQuerySchema.safeParse({

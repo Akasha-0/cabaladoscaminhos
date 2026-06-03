@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 // ============================================================
 // DASHBOARD AI MODELS API - CABALA DOS CAMINHOS
 // ============================================================
@@ -407,6 +408,8 @@ const mockModels: AIModel[] = [
 ];
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const searchParams = request.nextUrl.searchParams;
     const parsed = parseSpiritualFilters(searchParams, 'tipo');

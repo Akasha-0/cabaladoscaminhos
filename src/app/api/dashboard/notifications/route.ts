@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 // ============================================================
 // DASHBOARD NOTIFICATIONS API - CABALA DOS CAMINHOS
 // ============================================================
@@ -271,6 +272,9 @@ const notificationStore: Map<string, Notificacao[]> = new Map([
 ]);
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
+  const operator = authResult;
   try {
     const searchParams = request.nextUrl.searchParams;
     const parseResult = NotificationsQuerySchema.safeParse({
@@ -298,8 +302,7 @@ export async function GET(request: NextRequest) {
 
     const { tipo, lida, importancia, limit, page, sefirot, chakra, element, orixa } =
       parseResult.data;
-
-    const userId = request.headers.get('x-user-id') || 'default';
+    const userId = operator.id;
     let notificacoes = notificationStore.get(userId) || notificationStore.get('default')!;
 
     if (tipo) {
@@ -416,6 +419,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
+  const operator = authResult;
   try {
     const body = await request.json();
     const parseResult = CreateNotificacaoSchema.safeParse(body);
@@ -458,8 +464,7 @@ export async function POST(request: NextRequest) {
       sefirot,
       spiritualCorrelations: spiritualCorr,
     };
-
-    const userId = request.headers.get('x-user-id') || 'default';
+    const userId = operator.id;
     const userNotifications = notificationStore.get(userId) || [];
     userNotifications.unshift(notificacao);
     notificationStore.set(userId, userNotifications);

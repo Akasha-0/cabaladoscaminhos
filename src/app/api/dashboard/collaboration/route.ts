@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 // ============================================================
 // DASHBOARD COLLABORATION API - CABALA DOS CAMINHOS
 // ============================================================
@@ -306,6 +307,8 @@ function getColaboracaoData(): ColaboracaoData {
 
 // ─── API Routes ─────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const { searchParams } = new URL(request.url);
 
@@ -443,6 +446,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');

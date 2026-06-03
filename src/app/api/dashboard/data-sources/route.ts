@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 // ============================================================
 // DASHBOARD DATA SOURCES API - CABALA DOS CAMINHOS
 // ============================================================
@@ -363,6 +364,8 @@ const mockDataSources: DataSource[] = [
 ];
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const searchParams = request.nextUrl.searchParams;
     const parsed = parseSpiritualFilters(searchParams, 'tipo');
