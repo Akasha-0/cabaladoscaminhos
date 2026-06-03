@@ -1,36 +1,10 @@
 // ============================================================
-// SHARED TAROT CARD DATA - CABALA DOS CAMINHOS
+// SHARED TAROT NUMEROLOGY UTILITIES - CABALA DOS CAMINHOS
 // ============================================================
-// Shared tarot card definitions and helper functions
-// used across tarot routes and related components.
-//
-// Clone group: 92587013 (72 lines, 3 instances)
-// Files: tarot/cards, tarot/consulta, tarot/reading routes
+// Numerology utilities for tarot cards used in tarot routes.
+// The canonical TarotCard interface lives in `lib/tarot/cards.ts`.
+// Only `getElementKeywords` is actively used by tarot/cards/route.ts.
 // ============================================================
-// fallow-ignore-next-line unused-type
-export interface TarotCardBase {
-  id: number;
-  name: string;
-  arcana: 'major' | 'minor';
-  suit?: string;
-  number?: number;
-  element?: string;
-  astro?: string;
-  upright: string[];
-  reversed: string[];
-}
-
-interface TarotCardNumerology {
-  cardId: number;
-  numerology: {
-    singleDigit: number;
-    isMasterNumber: boolean;
-    masterNumbers: number[];
-    element: string;
-    associatedChakra: number;
-    vibrationalEnergy: number;
-  };
-}
 // ─── Numerology Utilities ─────────────────────────────────────────────────────
 
 /**
@@ -85,31 +59,3 @@ export function getElementKeywords(element: string): string[] {
   return keywordMap[element] || ['spiritual connection', 'integration'];
 }
 
-// ─── Card Validation ──────────────────────────────────────────────────────────
-
-function isValidCardId(id: number): boolean {
-  return Number.isInteger(id) && id >= 0 && id <= 77;
-}
-
-function getArcanaFromId(id: number): 'major' | 'minor' {
-  return id <= 21 ? 'major' : 'minor';
-}
-
-function calculateCardNumerology(cardId: number): TarotCardNumerology {
-  const singleDigit = reduceToSingleDigit(cardId);
-  const masterNumbers = getMasterNumbers(cardId);
-  const element = getNumerologyElement(cardId);
-  const chakra = getNumerologyChakra(cardId);
-
-  return {
-    cardId,
-    numerology: {
-      singleDigit,
-      isMasterNumber: masterNumbers.length > 0,
-      masterNumbers,
-      element,
-      associatedChakra: chakra,
-      vibrationalEnergy: cardId * 9,
-    },
-  };
-}

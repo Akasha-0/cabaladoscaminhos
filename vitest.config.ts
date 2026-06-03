@@ -31,6 +31,10 @@ export default defineConfig({
             'tests/lib/divination/divination-methods.test.ts',
             'tests/lib/divination/reading-history.test.ts',
             'tests/lib/engines/spiritual-engine.test.ts',
+            'tests/lib/engines/mapa-insights.test.ts',
+            'tests/lib/engines/pattern-recognizer.test.ts',
+            'tests/lib/engines/predictive-synthesis.test.ts',
+            'tests/lib/ai/mapa-insights.test.ts',
           ],
         },
         resolve: {
@@ -53,6 +57,8 @@ export default defineConfig({
             'tests/api/gamification/**',
             'tests/api/healthcare/**',
             'tests/api/orixa/**',
+            'tests/api/stripe-webhook.test.ts',
+            'tests/api/health.test.ts',
           ],
         },
         resolve: {
