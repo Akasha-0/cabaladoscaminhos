@@ -95,7 +95,7 @@
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
 | AD-23.1 | `AstrologyMap` canônico completo (Quíron/Lilith, elements/modalities, planetsInHouses, Asc/MC com signo, `nature`) | 🟡 (astro a 46% — bloqueador) | 4 |
-| AD-23.2 | Geolocalização obrigatória (cidade→lat/lng/timezone; Nominatim/Places) | 🟡 (inexistente hoje) | 4 |
+| AD-23.2 | Geolocalização obrigatória (cidade→lat/lng/timezone; Nominatim) | ✅ (city-autocomplete extrai timezone; ClientForm popula birthTimezone) | 4 |
 | AD-23.3 | Higiene de tipos: tipo reflete o que se produz (sem campos mortos) | 🟡 | 3 |
 | AD-23.4 | Odu: tabela de linhagem (D3) + `orixaRegency` completo | 🧭 (D3) | 0 |
 | AD-23.5 | "Mapas completos" é pré-condição da precisão por casa | 🟡 (princípio) | — |
