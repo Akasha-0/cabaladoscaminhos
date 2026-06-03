@@ -74,8 +74,7 @@
 | AD-22.1 | Observabilidade só do núcleo B2B | ✅ (implementado) | O |
 | AD-22.2 | Privacidade por padrão: zero PII/segredos em log | ✅ (principio) | O |
 | AD-22.3 | Log estruturado JSON com `requestId` propagado | ✅ (em logging.ts) | O |
-| AD-22.4 | Auditar ações de negócio (não só login) | ✅ (SecurityEvent table + logSecurityEvent em login/logout/mfa/refresh) | O |
-| AD-22.5 | Instrumentar/contabilizar toda chamada de LLM; `consult` persiste tokens | ✅ (tokensUsed na ChatMessage) | O |
+| AD-22.4 | Auditar ações de negócio (não só login) | ✅ (reading.saved + dossier.generated + consult.answered + client.created/updated — Fase 35) | O |
 | AD-22.6 | Modelo e parâmetros por env logados | ✅ | O |
 | AD-22.7 | SSE tolerante a falha + persistência incremental + status `ERROR` | ✅ (timeout 300s + abort; persistência incremental house-a-house) | O |
 | AD-22.8 | Separar liveness × readiness | ✅ (/api/health/live) | O |

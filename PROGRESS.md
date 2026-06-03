@@ -492,3 +492,46 @@ matrixData[casaNum] = {
 
 *Última atualização: 2026-06-03 — Fase 34*
 *Versão: 1.3*
+
+### Fase 35 — Alinhamento Final com Documentação (2026-06-03)
+
+**Metodologia:** análise completa de todos os 22 documentos vs. código real.
+
+**Resultado da análise:**
+
+| Doc | Status | Notas |
+|---|---|---|
+| 00 README | ✅ | Índice 00-22 completo |
+| 01 Product Brief | ✅ | |
+| 02 PRD | ✅ | |
+| 03 Architecture | ✅ | |
+| 04 Data Model | ✅ | Todos campos enriquecidos (impression, pinnacles, karmicLessons, rulingArcana, bodies, elementalChart) |
+| 05 UI/UX | ✅ | Cockpit implementado |
+| 06 AI Engine | ✅ | Correlation 36 casas + RAG + theme router |
+| 07 Epics | ✅ | |
+| 08 Roadmap | ✅ | Sprint 6 (PDF) ✅ via DossierPdfButton |
+| 09 Master Prompt | ✅ | Persona Ramiro + 3 parágrafos + síntese |
+| 10 Gap Analysis | ✅ | Todas lacunas resolvidas |
+| 11 Cálculo | ✅ | reduceToSingleDigit, Pitagórica, mestres 11/22/33 |
+| 12 Q&A Motor | ✅ | Theme router + RAG closed + tokens persist |
+| 13 Design v2 | ✅ | Paleta laranja/royal + badges |
+| 14 Extensibilidade | ✅ | Contrato 5 pontos documentado |
+| 15 Glossário | ✅ | baseMeaning/shadow + quizila/baseAdvice + source/lineage |
+| 16 Arquitetura | ✅ | Todas ADs |
+| 17 Interface Única | ✅ | Cockpit página única |
+| 18 Contratos | ✅ | MatrixData canônico |
+| 19 Testes | ✅ | 47 determinismo + 540 provenance + 11 RAG + 10 client |
+| 20 Governança | ✅ | IDEIA.md + lineage |
+| 21 ADR Index | ✅ | Todas 42 ADs ✅ |
+| 22 Observabilidade | ✅ | Faltava client.created — corrigida |
+
+**Lacuna CRÍTICA corrigida:**
+- `client.created` event não era logado em `POST /api/mesa-real/clients` (AD-22.4)
+
+**Novos testes:**
+- `tests/lib/engines/numerology-enriched.test.ts`: 47 testes cobrindo karmicLessons, karmaicDebts, rulingArcana, pinnacles, lifeCycles
+
+**Resultado:** 1,538 testes core passando. Build 118 páginas OK. 0 TS errors.
+
+*Última atualização: 2026-06-03 — Fase 35*
+*Versão: 1.4*
