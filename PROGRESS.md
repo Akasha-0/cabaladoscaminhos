@@ -473,3 +473,22 @@ Correções no vitest.config.ts (parse error) + UI component tests:
 
 *Última atualização: 2026-06-03 — Fase 33*
 *Versão: 1.3*
+
+### Fase 34 — AD-18.1 MatrixData Canonical + AD-18.5 New Client API Wiring (2026-06-03)
+
+**Bug crítico corrigido:** `handleGenerateDossie` enviava formato flat `{ carta: 24 }` mas `extractFilledHouses` esperava nested `{ carta: { numero, nome } }` — todas as casas eram silenciosamente ignoradas → 400 ERROR.AD-18.1 fix: `handleGenerateDossie` agora envia nested:
+```typescript
+matrixData[casaNum] = {
+  carta: { numero: house.carta.numero, nome: house.carta.nome, significado: house.carta.significado ?? '' },
+  odu: { numero: house.odu.numero, nome: house.odu.nome, significado: '' },
+}
+```
+
+**AD-18.5:** `handleSaveCliente` agora chama `POST /api/mesa-real/clients` (cálculo server-side dos 4 mapas) e define `currentClientId` no store — cliente novo pode gerar dossiê.**AD-18.5 tests:**
+- `tests/api/mesa-real-clients.test.ts`: 10/10 — POST/GET client, validação 400/401, determinismo (1986-08-20 → lifePath=7, alma=2, karma=8)**AD-18.1 tests:**
+- `tests/lib/ai/matrix-data-contract.test.ts`: 9/9 — contrato de formato `MatrixData` verificado
+
+**Resultado:** 1356 testes core passando. Build 118 páginas OK.
+
+*Última atualização: 2026-06-03 — Fase 34*
+*Versão: 1.3*
