@@ -535,3 +535,22 @@ matrixData[casaNum] = {
 
 *Última atualização: 2026-06-03 — Fase 35*
 *Versão: 1.4*
+
+### Fase 36 — MFA Docs + Spiritual Correlations Deduplication (2026-06-03)
+
+**AUTH-AUDIT.md atualizado** (§3.1–3.3):
+- 6 rotas MFA documentadas: setup/verify/verify-setup/disable/status/recovery-code
+- 2 rotas password recovery: forgot-password/reset-password
+- 3 rotas sessions: GET/DELETE/revoke-all
+- Total: 11 rotas adicionadas ao documento
+
+**fallow-duplication-analysis.md — Clone Group 1 resolvido:**
+- `src/lib/correlation/tarot-spiritual.ts` criado (192 linhas)
+- `MAJOR_ARCANA_SPIRITUAL_CORRELATIONS` extraído de tarot/reading + tarot/consulta
+- Ambos agora importam da fonte canônica compartilhada
+- Fix de tipo: `chakra: number` (não `1|2|3|4|5|6|7`) para compatibilidade TypeScript
+
+**Resultado:** 1,538 testes core passando. Build 118 páginas OK. 144 commits à frente.
+
+*Última atualização: 2026-06-03 — Fase 36*
+*Versão: 1.5*
