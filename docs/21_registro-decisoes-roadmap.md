@@ -69,6 +69,18 @@
 | AD-19.5 | Gate = `test:core` + lint + tsc | 🟡 | T1 |
 | AD-19.6 | Tuning do runner do núcleo (node, threads, timeout 5s) | 🟡 | T1 |
 
+### 2.6 Observabilidade & operação (Doc 22)
+| ID | Decisão (resumo) | Status | Onda |
+|---|---|---|---|
+| AD-22.1 | Observabilidade só do núcleo B2B | 🟡 (princípio) | O |
+| AD-22.2 | Privacidade por padrão: zero PII/segredos em log | 🟡 | O |
+| AD-22.3 | Log estruturado JSON com `requestId` propagado | 🔵 (logger+requestId existem; falta convenção) | O |
+| AD-22.4 | Auditar ações de negócio (não só login) | 🔵 (`OperatorSession` audita sessão) | O |
+| AD-22.5 | Instrumentar/contabilizar toda chamada de LLM; `consult` persiste tokens | 🔵 (`generate` grava; `consult` não) | O |
+| AD-22.7 | SSE tolerante a falha + persistência incremental + status `ERROR` | 🔵 (parcial cumulativo) | O |
+| AD-22.8 | Separar liveness × readiness | 🟡 | O |
+| AD-22.10/.11 | Retenção/segredos + runbook antes do go-live | 🟡 | O |
+
 ### 2.5 Governança de conteúdo & inteligência (Doc 20)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
@@ -117,9 +129,10 @@ ONDA 5 — Precisão astral        AD-04 (validar/efeméride)
    │
 ONDA G — Governança (paralela)  AD-20.3/.5/.6/.8 (IDEIA.md + proveniência)
 ONDA T — Testes (paralela)      AD-19.1–.6 (partição, guardião, gate)
+ONDA O — Observabilidade (paral.) AD-22.x (log estruturado, auditoria, custo IA, SSE)
 ```
 
-> **Caminho crítico:** Ondas 1 → 2 → 3 → 4. As ondas **G** (governança) e **T** (testes) correm em paralelo e protegem as demais (proveniência + testes-guardião).
+> **Caminho crítico:** Ondas 1 → 2 → 3 → 4. As ondas **G** (governança), **T** (testes) e **O** (observabilidade) correm em paralelo e protegem as demais (proveniência + testes-guardião + operabilidade).
 
 ---
 
