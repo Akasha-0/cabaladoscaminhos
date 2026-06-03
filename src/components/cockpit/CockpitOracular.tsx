@@ -392,7 +392,7 @@ function ZoneCRightPanel({
           'w-10 h-20 rounded-l-xl',
           'bg-card/90 border border-border/50 backdrop-blur-sm',
           'shadow-[0_0_20px_var(--accent-royal-glow)]',
-          'transition-all duration-300',
+          'motion-safe:transition-all motion-safe:duration-300',
           'hover:bg-card',
           isOpen && 'opacity-0 pointer-events-none translate-x-4'
         )}
@@ -507,7 +507,7 @@ function TabButton({ active, onClick, icon, label }: TabButtonProps) {
       onClick={onClick}
       className={cn(
         'flex-1 flex items-center justify-center gap-1.5 py-2 px-3',
-        'rounded-md text-xs font-medium transition-all duration-200',
+        'rounded-md text-xs font-medium motion-safe:transition-all motion-safe:duration-200',
         active
           ? [
               'bg-primary text-primary-foreground',
