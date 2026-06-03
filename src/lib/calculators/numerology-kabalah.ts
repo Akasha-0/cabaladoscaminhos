@@ -25,7 +25,7 @@ const LETTER_VALUES: Record<string, number> = {
   S: 1, T: 2, U: 3, V: 4, W: 5, X: 6, Y: 7, Z: 8,
 };
 
-const VOGAIS = new Set(['A', 'E', 'I', 'O', 'U', 'Á', 'É', 'Í', 'Ó', 'Ú', 'Â', 'Ê', 'Ô', 'Ã', 'Õ', 'À']);
+const VOGAIS = new Set(['A', 'E', 'I', 'O', 'U']);
 
 // ============================================================================
 // REDUÇÃO NUMÉRICA (mantém números mestres 11, 22, 33)
