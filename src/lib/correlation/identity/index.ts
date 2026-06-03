@@ -15,20 +15,9 @@ import {
   getOduInfo,
   getZodiacInfo,
   getChakraInfo,
-  CABALISTIC_NUMBERS,
-  ODUS,
-  ZODIAC_SIGNS,
-  CHAKRAS
 } from '../definitions';
-
 import {
-  calculateCabalisticPath,
-  calculateBirthOdu,
-  getZodiacSign,
-  calculateChakraConfig,
   calculateCompleteProfile,
-  analyzeCabalisticOduCompatibility,
-  analyzeZodiacCabalisticHarmony
 } from '../calculator';
 
 import {
@@ -184,13 +173,6 @@ export function generateConsolidatedProfile(
 ): ConsolidatedProfile {
   // Calcula perfil completo
   const profile = calculateCompleteProfile({ birthDate, name });
-  
-  // Obtém informações detalhadas
-  const cabalisticInfo = getCabalisticInfo(profile.cabalisticPath.number);
-  const oduInfo = getOduInfo(profile.birthOdu.odu);
-  const zodiacInfo = getZodiacInfo(profile.zodiacSign.sign);
-  const elementInfo = getElementInfo(profile.dominantElement);
-  
   // Gera correlações
   const numerologyElementCorr = correlateNumerologyElement(
     profile.cabalisticPath.number,

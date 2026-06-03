@@ -1,9 +1,8 @@
 // ============================================================
 // AGENTS - Cada especialista em um domínio
 // ============================================================
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { AgentTask, AgentResult, ChainOfThought, KnowledgeEntry, KnowledgeDomain } from '../swarm-types';
-
 // ============================================================
 // HELPER: cria resultado padrão
 // ============================================================
