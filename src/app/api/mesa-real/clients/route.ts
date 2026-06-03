@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireOperator } from '@/lib/auth/operator-session';
+import { createLogger, generateRequestId } from '@/lib/logging';
 import {
   createClientWithMaps,
   getClient,
@@ -88,7 +89,9 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireOperator(request);
     if (auth instanceof NextResponse) return auth;
-
+    const operator = auth;
+    const requestId = generateRequestId();
+    const log = createLogger(requestId, '/api/mesa-real/clients');
     const body = await request.json();
     const data = createClientSchema.parse(body);
 
@@ -112,6 +115,7 @@ export async function POST(request: NextRequest) {
       );
     }
     const client = await getClient(result.id);
+    log.info('client.created', { operatorId: operator.id, clientId: client.id });
     return NextResponse.json({ client }, { status: 201 });
 
   } catch (error) {
@@ -136,6 +140,9 @@ export async function PATCH(request: NextRequest) {
   try {
     const auth = await requireOperator(request);
     if (auth instanceof NextResponse) return auth;
+    const operator = auth;
+    const requestId = generateRequestId();
+    const log = createLogger(requestId, '/api/mesa-real/clients');
 
     const body = await request.json();
     const { action, clientId, ...data } = body;
@@ -159,6 +166,7 @@ export async function PATCH(request: NextRequest) {
 
       case 'update': {
         const client = await updateClient(clientId, data);
+        log.info('client.updated', { operatorId: operator.id, clientId });
         return NextResponse.json({ client });
       }
 
