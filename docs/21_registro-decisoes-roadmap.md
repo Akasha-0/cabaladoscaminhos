@@ -84,12 +84,12 @@
 | AD-20.1 | Nenhuma correspondência sem fonte | ✅ (IDEIA.md) | — |
 | AD-20.2 | Verdade injetada (glossário), nunca lembrada pelo LLM | ✅ (glossary-injection 5/5 pass — Fase 33) | 4 |
 | AD-20.3 | Proveniência é dado, não comentário | ✅ (source/rationale em CorrelationEntry + lineage em glossário — AD-20.6) | G |
-| AD-20.4 | Conteúdo provisório (D1–D4) é explícito | ✅ | 0 |
+| AD-20.4 | Conteúdo provisório (D1–D4) é explícito | ✅ (oduBirth.provisional=true; glossario Odus ⚠️ PROVISIONAL (D4); Doc 11 §4.1 alg default) | 0 |
 | AD-20.5 | Reinstaurar `IDEIA.md` como ledger canônico | ✅ (criado 783 linhas) | G |
 | AD-20.6 | `source`/`rationale` no `CorrelationEntry`; `lineage` no glossário | ✅ (108 entradas com source/rationale em astrology/kabalah/tantric) | G |
 | AD-20.7 | Crescimento aditivo/versionado (3 vetores) | ✅ (principio) | — |
 | AD-20.8 | Validador rejeita sem fonte | ✅ (correlation-provenance 540/540 pass — Fase 32) | G |
-| AD-20.9 | `provisional` enquanto D1–D4 não confirmados | ✅ | 0 |
+| AD-20.9 | `provisional` enquanto D1–D4 não confirmados | ✅ (oduBirth.provisional=true pelo codigo; glossario §2 marcado ⚠️ PROVISIONAL (D4)) | 0 |
 
 ## 3. Decisões do Operador (Onda 0 — desbloqueiam o resto)
 
