@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { extractIdentifier } from '@/middleware/rateLimit';
-import { checkRateLimit } from '@/lib/rate-limit';
 import { generateRequestId } from '@/lib/logging';
+import { checkRateLimit } from '@/lib/rate-limit';
+import { extractIdentifier } from '@/middleware/rateLimit';
 
 // ============================================
 // Rate Limiting Configuration
@@ -9,7 +9,7 @@ import { generateRequestId } from '@/lib/logging';
 
 const RATE_LIMIT_CONFIG = {
   windowMs: 60 * 1000, // 1 minute
-  maxRequests: 100,    // 100 requests per minute
+  maxRequests: 100, // 100 requests per minute
 };
 
 // ============================================
@@ -70,7 +70,15 @@ const LEGACY_B2C_ENABLED = process.env.LEGACY_B2C === 'on';
 // Prefixos do produto B2B — sempre acessíveis.
 const B2B_PREFIXES = ['/cockpit', '/api/mesa-real', '/api/consult', '/api/operator', '/api/health'];
 // Infraestrutura/PWA — sempre acessível.
-const INFRA_PREFIXES = ['/_next', '/favicon.ico', '/manifest', '/icons', '/offline', '/sw', '/api/og'];
+const INFRA_PREFIXES = [
+  '/_next',
+  '/favicon.ico',
+  '/manifest',
+  '/icons',
+  '/offline',
+  '/sw',
+  '/api/og',
+];
 
 function isAllowedWhenQuarantined(pathname: string): boolean {
   const prefixes = [...B2B_PREFIXES, ...INFRA_PREFIXES];
@@ -90,17 +98,19 @@ export async function middleware(request: NextRequest) {
   // Add security headers to response
   const response = NextResponse.next();
   response.headers.set('X-Request-Id', requestId);
+  // Expor pathname para layouts server-side (evita self-redirect no /cockpit/login)
+  response.headers.set('x-pathname', pathname);
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
-   // CSP strict para APIs
-   if (pathname.startsWith('/api/')) {
-     response.headers.set('Content-Security-Policy', API_CSP);
-   }
-   // CSP para cockpit (páginas do produto B2B)
-   if (pathname.startsWith('/cockpit')) {
-     response.headers.set('Content-Security-Policy', COCKPIT_CSP);
-   }
+  // CSP strict para APIs
+  if (pathname.startsWith('/api/')) {
+    response.headers.set('Content-Security-Policy', API_CSP);
+  }
+  // CSP para cockpit (páginas do produto B2B)
+  if (pathname.startsWith('/cockpit')) {
+    response.headers.set('Content-Security-Policy', COCKPIT_CSP);
+  }
 
   // ── Quarentena do B2C legado (Doc 16 AD-01) ──
   // Tudo que não é B2B nem infraestrutura é bloqueado quando a flag está desligada.
@@ -121,7 +131,7 @@ export async function middleware(request: NextRequest) {
 
   // Skip rate limiting for excluded paths
   const EXCLUDED_PATHS = ['/_next', '/favicon.ico', '/api/health'];
-  if (EXCLUDED_PATHS.some(path => pathname.startsWith(path))) {
+  if (EXCLUDED_PATHS.some((path) => pathname.startsWith(path))) {
     return response;
   }
 
@@ -170,9 +180,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };
 
 // ============================================

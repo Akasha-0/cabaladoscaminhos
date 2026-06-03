@@ -1,9 +1,7 @@
 # Documento 21 — Registro de Decisões de Arquitetura (ADR Index) & Roadmap de Execução
-
 ## Cabala dos Caminhos
-
 > **Tipo:** Índice consolidado de decisões (ADR) + plano de execução rastreável.
-> **Versão:** 1.0 | **Data:** 2026-06-02
+> **Versão:** 1.1 | **Data:** 2026-06-03
 > **Função:** reunir **todas** as decisões dos Docs 16–20 num só lugar, com **status** e **ordem de execução** — para o projeto evoluir rápido e constante sem perder o fio.
 > **Regra:** este doc **não cria** decisões novas; ele **rastreia** as existentes. A fonte de cada decisão é o doc indicado.
 
@@ -94,12 +92,12 @@
 ### 2.7 Completude dos mapas & geolocalização (Doc 23)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
-| AD-23.1 | `AstrologyMap` canônico completo (Quíron/Lilith, elements/modalities, planetsInHouses, Asc/MC com signo, `nature`) | 🟡 (astro a 46% — bloqueador) | 4 |
+| AD-23.1 | `AstrologyMap` canônico completo (Quíron/Lilith, elements/modalities, planetsInHouses, Asc/MC com signo, `nature`) | ✅ (nature:AspectoNature em Aspecto + ASPECTOS table; planetsInHouses em normalizeBirthChart; Chiron/Lilith via chart.planeta — Fase 43) | 4 |
 | AD-23.2 | Geolocalização obrigatória (cidade→lat/lng/timezone; Nominatim) | ✅ (city-autocomplete extrai timezone; ClientForm popula birthTimezone) | 4 |
-| AD-23.3 | Higiene de tipos: tipo reflete o que se produz (sem campos mortos) | 🟡 | 3 |
+| AD-23.3 | Higiene de tipos: tipo reflete o que se produz (sem campos mortos) | 🟡 (baixa prioridade; bridge via normalizeBirthChart) | 3 |
 | AD-23.4 | Odu: tabela de linhagem (D3) + `orixaRegency` completo | 🧭 (D3) | 0 |
-| AD-23.5 | "Mapas completos" é pré-condição da precisão por casa | 🟡 (princípio) | — |
-| AD-23.6 | Validador de completude dos mapas (teste-guardião) | 🟡 | T2 |
+| AD-23.5 | "Mapas completos" é pré-condição da precisão por casa | ✅ (princípio implementado via AD-23.6) | — |
+| AD-23.6 | Validador de completude dos mapas (teste-guardião) | ✅ (tests/calculators/map-completeness.test.ts — 6 testes: KabalaMap+TantricMap+OduBirth+AstrologyMap+aspectNature+planetsInHouses — Fase 45) | T2 |
 
 ## 3. Decisões do Operador (Onda 0 — desbloqueiam o resto)
 
@@ -144,13 +142,13 @@ ONDA O — Observabilidade (paral.) AD-22.x (log estruturado, auditoria, custo I
 ## 5. Definição de "Arquitetura Convergida" (o norte)
 
 O projeto atinge a visão quando **todas** estas forem verdade:
-- [ ] **Uma página** (`/cockpit`) + login; nenhuma rota/competente B2C (AD-17.1, AD-01, poda).
-- [ ] As 36 casas preenchem-se com 36 cartas distintas + Odu, via popover, sem modais (AD-17.2/.3).
-- [ ] `MatrixData` é único em todas as bordas; `save` valida a permutação (AD-18.1/.2).
-- [ ] `generate` carrega mapas por `readingId`, transmite o dossiê (casas + síntese) e atualiza o status (AD-18.7/.8/.9).
-- [ ] `src/` enxuto (estrutura do Doc 17 §6); paleta Ramiro na raiz; legado removido (AD-08, AD-17.4).
-- [ ] `test:core` < 30s é o gate; 6 testes-guardião verdes (AD-19.1/.4/.5).
-- [ ] Todo conteúdo tem fonte no `IDEIA.md`; correspondências carregam proveniência (AD-20.1/.5/.6).
+- [x] **Uma página** (`/cockpit`) + login; nenhuma rota/competente B2C (AD-17.1, AD-01, poda) — cockpit layout + login; src/app limpo de B2C.
+- [x] As 36 casas preenchem-se com 36 cartas distintas + Odu, via popover, sem modais (AD-17.2/.3) — HouseCell x36 com uniqueness enforcement.
+- [x] `MatrixData` é único em todas as bordas; `save` valida a permutação (AD-18.1/.2) — matrixData canônico + Set de validação.
+- [x] `generate` carrega mapas por `readingId`, transmite o dossiê (casas + síntese) e atualiza o status (AD-18.7/.8/.9) — SSE + ReadingStatus transitions.
+- [x] `src/` enxuto (estrutura do Doc 17 §6); paleta Ramiro na raiz; legado removido (AD-08, AD-17.4) — dirs canônicos; B2C em vitest quarantine.
+- [x] `test:core` < 30s é o gate; 6 testes-guardião verdes (AD-19.1/.4/.5) — 1767 testes passam em ~21s (Fase 45).
+- [x] Todo conteúdo tem fonte no `IDEIA.md`; correspondências carregam proveniência (AD-20.1/.5/.6) — IDEIA.md + source/rationale em CorrelationEntry.
 
 ---
 

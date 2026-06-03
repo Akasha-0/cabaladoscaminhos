@@ -1,9 +1,7 @@
 # Documento 23 — Auditoria de Completude dos Mapas Natais, Geolocalização & Precisão da IA
-
 ## Cabala dos Caminhos
-
 > **Tipo:** Auditoria (código × visão) + decisões de arquitetura para **precisão dos 4 mapas** e da análise por casa.
-> **Versão:** 1.0 | **Data:** 2026-06-02
+> **Versão:** 1.1 | **Data:** 2026-06-03
 > **Motivação:** a visão exige que a IA gere o **diagnóstico preciso de cada uma das 36 casas** cruzando os 4 mapas natais. Isso só é possível se os mapas estiverem **completos, com todos os aspectos**. Esta auditoria mede o estado real e decide como fechar as lacunas.
 > **Relação:** confronta o código com Doc 04 §2 (estrutura dos mapas) e Doc 11 (cálculo); alimenta o Doc 18 (contratos) e o Doc 06 (correlação por casa). Registrado no painel (Doc 21).
 
@@ -98,13 +96,12 @@ Isso contraria o requisito da visão: *"o local de nascimento deveria ser preenc
 ---
 
 ## 5. Impacto na IA (por que isto importa para o diagnóstico)
-
 A análise por casa cruza **significado da casa + carta tirada + Odu tirado + aspecto natal delegado** (Doc 06 §1). A qualidade depende, na ordem:
 1. **Glossário** (significados-base) — ✅ existe (Doc 15).
 2. **Correlação determinística** — ✅ as 36 entradas existem (Doc 06).
-3. **Mapas natais completos** — ⚠️ **aqui está o gargalo**: astrologia a 46% e sem geolocalização.
-
-> **Logo:** o maior salto de **precisão da IA** não vem de um modelo maior, e sim de **completar o mapa astral + geolocalizar** (AD-23.1/.2). É a alavanca de maior retorno para "dar todos os caminhos com precisão".
+3. **Mapas natais completos** — ✅ astrologia (AD-23.1) + geolocalização (AD-23.2) resolvidos; AD-23.6 garante que não regride.
+4. **Validador guardião** — ✅ AD-23.6 (Fase 45): `tests/calculators/map-completeness.test.ts` — 6 testes cobrindo os 4 mapas.
+> **Estado atual:** AD-23.1 (astrologia completa com nature+planetsInHouses) e AD-23.2 (timezone) resolvidos. AD-23.6 impede regressão. O gargalo restante é AD-23.4 (D3 — aguardando operador).
 
 ---
 
@@ -117,4 +114,4 @@ A análise por casa cruza **significado da casa + carta tirada + Odu tirado + as
 
 ---
 
-*Doc 23 é a auditoria canônica de completude dos mapas e a decisão de geolocalização. As numerologias estão prontas; a astrologia + geolocalização são o caminho crítico para a precisão da IA. Registrado no painel (Doc 21) como parte da Onda 4/5.*
+*Doc 23 é a auditoria canônica de completude dos mapas e a decisão de geolocalização. AD-23.1/.2/.6 resolvidos (Fase 43/44/45). Gargalo restante: AD-23.4 (D3 — aguardando operador para tabela de linhagem dos Odus). Registrado no painel (Doc 21 v1.1) como parte da Onda 4/5.*
