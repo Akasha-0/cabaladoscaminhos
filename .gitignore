@@ -66,3 +66,7 @@ next-env.d.ts
 **/*.skip
 **/*.test.disabled
 **/*.disabled
+
+# Harness runtime locks (transitórios — não versionar)
+.claude/scheduled_tasks.lock
+.claude/*.lock
