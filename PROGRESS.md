@@ -554,3 +554,24 @@ matrixData[casaNum] = {
 
 *Última atualização: 2026-06-03 — Fase 36*
 *Versão: 1.5*
+
+### Fase 37 — Fallow Clone Groups + Validação Docs (2026-06-03)
+
+**Fallow investigation + deduplication:**
+
+| Clone Group | Resultado |
+|---|---|
+| Chakra Types (3 arquivos) | ✅ `chakra-base.ts` criado — `ChakraName`, `Elemento`, `Planeta`, `normalizeChakraName` extraídos |
+| Date/Filtro Parse (4 arquivos) | ❌ Fallow desatualizado — `parseDateFilters` não existe nos arquivos listados |
+| Tarot Card Definitions (3 arquivos) | ⚠️ Parcial — 2 arquivos não existem; só `shared-card-data.ts` duplicável |
+
+**fallow-analysis atualizado:**
+- §2 (Tarot): arquivo 2 e 3 não existem; `meanings.ts` incompatível; só `shared-card-data.ts` recuperável
+- §3 (Chakra): ✅ resolvido com `chakra-base.ts`
+- §4 (Spiritual): ✅ Fase 36
+- §5 (Date Parse): ❌ fallow desatualizado
+
+**Resultado:** 1,538 testes core passando. Build 118 páginas OK. 152 commits à frente.
+
+*Última atualização: 2026-06-03 — Fase 37*
+*Versão: 1.6*
