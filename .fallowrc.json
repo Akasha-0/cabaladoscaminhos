@@ -194,6 +194,14 @@
       "exports": ["*"]
     },
     {
+      "file": "src/lib/ifa/draw.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/auth/rate-limit.ts",
+      "exports": ["*"]
+    },
+    {
       "file": "src/lib/correlation/chakra-day.ts",
       "exports": ["*"]
     },
