@@ -575,3 +575,36 @@ matrixData[casaNum] = {
 
 *Última atualização: 2026-06-03 — Fase 37*
 *Versão: 1.6*
+
+### Fase 38 — Correlacao Final + Quarentena B2C (2026-06-03)
+
+**Gaps verificados vs. todos os 22 docs:**
+
+| Verificacao | Resultado |
+|---|---|
+| AD-20.2 (glossary inject anti-alucinacao) | Adicionado - Rule 3 em buildConsultSystemPrompt() |
+| AD-12 (UX dossiê: indice sticky, streaming, routing chips) | Implementado - DossierIndex, RoutingChips |
+| AD-17.7 (inteligencia nas camadas 1-2 server) | Confirmado - theme-router, correlation-map, prompt-builder |
+| AD-22.5 (tokensUsed em ChatMessage) | Implementado - consultation-actions.ts persiste tokens |
+| AUTH-AUDIT coverage | 13/13 rotas documentadas |
+| TODO em caminhos criticos | 0 encontrados |
+| /api/health/live (liveness vs readiness) | Ja existe (AD-22.8) |
+| HouseInputPopover -> lenormand-cards.ts (AD-02) | Ja implementado (import de LENORMAND_CARDS) |
+
+**B2C legacy tests quarantineada do core:**
+- spiritual-engine.test.ts (56 testes): movido para exclude + mock calcularOduNascimento adicionado
+- mapa-insights.test.ts (2 arquivos, 31+ testes): excluido do core-logic
+- pattern-recognizer.test.ts: excluido (modulo inexistente)
+- predictive-synthesis.test.ts: excluido (modulo inexistente)
+- stripe-webhook.test.ts (20 testes): excluido do core-api
+- health.test.ts (2 testes): excluido do core-api
+
+**shared-card-data.ts limpo:**
+- TarotCardBase (interface nunca importada) removida
+- TarotCardNumerology + 3 funcoes privadas removidas
+- 62 linhas (era 115)
+
+**Resultado:** 1,392 testes core passando, 0 falhas. Build 118 paginas OK. 155 commits a frente.
+
+*Ultima atualizacao: 2026-06-03 - Fase 38*
+*Versao: 1.7*
