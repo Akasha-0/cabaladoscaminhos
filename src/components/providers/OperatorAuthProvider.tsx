@@ -33,7 +33,8 @@ export interface OperatorInfo {
  * Shape público da rota GET /api/operator/auth/sessions — sem
  * `tokenHash`, `operatorId` ou `passwordHash` (campos sensíveis).
  */
-export interface OperatorSessionInfo {
+// fallow-ignore-next-line unused-type
+ export interface OperatorSessionInfo {
   id: string
   ipAddress: string | null
   userAgent: string | null

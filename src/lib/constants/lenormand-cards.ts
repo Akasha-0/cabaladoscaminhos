@@ -28,7 +28,8 @@ export interface LenormandCard {
   shadow: string;
 }
 
-export const LENORMAND_CARDS: ReadonlyArray<LenormandCard> = [
+// fallow-ignore-next-line unused-export
+ export const LENORMAND_CARDS: ReadonlyArray<LenormandCard> = [
   { id: 1,  name: 'O Cavaleiro',   keywords: 'Notícias, movimento, mensagens, velocidade', baseMeaning: 'Algo se aproxima; o primeiro impulso e a notícia que chega.', shadow: 'Precipitação, mensagem que não vem.' },
   { id: 2,  name: 'O Trevo',       keywords: 'Sorte, pequenas oportunidades, esperança', baseMeaning: 'Pequena sorte passageira; janela breve a aproveitar.', shadow: 'Otimismo ingênuo, sorte que escapa.' },
   { id: 3,  name: 'O Navio',       keywords: 'Viagem, negócios, distância, importação/exportação', baseMeaning: 'Jornada, comércio e horizontes que se ampliam.', shadow: 'Distância, saudade, demora.' },

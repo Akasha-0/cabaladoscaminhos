@@ -116,7 +116,7 @@ function mapKarmaToEnergyMatrix(karma: number) {
   const matrix: Record<number, { physicalBody: number; emotionalBody: number; mentalBody: number; spiritualBody: number }> = {
     1:  { physicalBody: 9, emotionalBody: 1, mentalBody: 3, spiritualBody: 2 },
     2:  { physicalBody: 2, emotionalBody: 9, mentalBody: 1, spiritualBody: 3 },
-    3:  { physicalBody: 3, emotionalBody: 2, mentalBody: 9, mentalBody: 1 },
+    3:  { physicalBody: 3, emotionalBody: 2, mentalBody: 9, spiritualBody: 1 },
     4:  { physicalBody: 9, emotionalBody: 4, mentalBody: 2, spiritualBody: 4 },
     5:  { physicalBody: 5, emotionalBody: 5, mentalBody: 5, spiritualBody: 5 },
     6:  { physicalBody: 6, emotionalBody: 6, mentalBody: 3, spiritualBody: 6 },

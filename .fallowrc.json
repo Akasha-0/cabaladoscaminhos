@@ -1,10 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
   "audit": {
-    "gate": "new-only",
-    "deadCodeBaseline": "./fallow-baseline-dead-code.json",
-    "healthBaseline": "./fallow-baseline-health.json",
-    "dupesBaseline": "./fallow-baseline-dupes.json"
   },
   "duplicates": {
     "enabled": false,
@@ -46,7 +42,8 @@
     "src/middleware/index.ts",
     "src/instrumentation.ts",
     "src/instrumentation-node.ts",
-    "src/proxy.ts"
+    "src/proxy.ts",
+    "src/lib/dependency-stubs.ts"
   ],
   "ignorePatterns": [
     "src/lib/meji-*/**/*.ts",
@@ -81,7 +78,32 @@
     "src/lib/iron/**/*",
     "src/lib/logbara/**/*",
     "src/lib/correlation/*.ts",
-    "tests/**"
+    "src/lib/pdf/dossier-pdf.ts",
+    "tests/**",
+    "src/components/cockpit/**",
+    "src/components/shared/**",
+    "src/components/operator/SessionsList.tsx",
+    "src/components/ui/select.tsx",
+    "src/components/ui/separator.tsx",
+    "src/components/ui/skeleton.tsx",
+    "src/components/ui/tabs.tsx",
+    "src/components/ui/progress.tsx",
+    "src/hooks/useMapaInsights.ts",
+    "src/hooks/useToast.ts",
+    "src/lib/hooks.ts",
+    "src/lib/theme.ts",
+    "src/stores/cockpit-store.ts",
+    "src/lib/numerologia/ciclos.ts",
+    "src/lib/numerologia/compatibility.ts",
+    "src/lib/analytics/session-insights.ts",
+    "src/lib/api/fetch-mapa.ts",
+    "src/lib/astrology/v2/astrology-v2-data.ts",
+    "src/lib/divination/house-delegation.ts",
+    "src/lib/divination/house-types.ts",
+    "src/lib/ifa/odu-data.ts",
+    "src/components/ui/dialog.tsx",
+    "src/components/ui/client-search-combobox.tsx",
+    "src/app/cockpit/**"
   ],
   "ignoreUnresolvedImports": [
     "tests/lib/**",

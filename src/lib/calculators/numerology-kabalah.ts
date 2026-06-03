@@ -356,7 +356,7 @@ export function buildKabalisticMap(fullName: string, birthDate: string): Partial
     maturityNumber: reduceToSingleDigit(lifePath.number + expression.number),
     hiddenPassionNumber: calculateHiddenPassion(fullName),
   };
-
+}
 // ============================================================================
 // HELPERS
 // ============================================================================

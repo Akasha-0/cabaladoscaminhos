@@ -569,6 +569,8 @@ describe.skip('detectarConvergencias (deprecated - integrated into gerarMapaAlma
     elemento: 'Ar',
     arcanoTarot: numero,
     caminhoSephirah: 'Malkuth',
+    elementalForce: 'Ar — Ação transformadora.',
+    lifeLesson: 'Test.',
   });
 
   const createMockAstrologia = (solSigno: string, ascendente: string): AstrologyResults => ({
@@ -769,6 +771,8 @@ describe.skip('Convergence Detection - Depth & Scoring (deprecated)', () => {
     elemento: 'Ar',
     arcanoTarot: numero,
     caminhoSephirah: 'Malkuth',
+    elementalForce: 'Ar — Ação transformadora.',
+    lifeLesson: 'Test.',
   });
 
   const createMockAstrologia = (solSigno: string, ascendente: string): AstrologyResults => ({

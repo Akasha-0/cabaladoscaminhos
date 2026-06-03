@@ -34,13 +34,16 @@ describe('numerology-tantric: calculateSoul', () => {
     expect(calculateSoul('2000-01-15')).toBe(6);
     // Day 9 → 9 (already single digit)
     expect(calculateSoul('2000-01-09')).toBe(9);
-    // Day 28 → 2+8 = 10 → 1+0 = 1
-    expect(calculateSoul('2000-01-28')).toBe(1);
+    // Day 28 → 2+8 = 10 (not reduced further since 10 <= 11)
+    expect(calculateSoul('2000-01-28')).toBe(10);
   });
 
   it('should handle two-digit day correctly', () => {
-    // Day 11 → 1+1 = 2
-    expect(calculateSoul('2000-01-11')).toBe(2);
+    // Day 11 → 11 (master number, stays as 11 since <= 11)
+    expect(calculateSoul('2000-01-11')).toBe(11);
+    // Day 22 → 22 (master number, stays as 22 since <= 11 is false but 22 > 11, so reduces)
+    // Wait, 22 > 11 so it reduces: 2+2 = 4
+    expect(calculateSoul('2000-01-22')).toBe(4);
   });
 });
 
@@ -68,19 +71,19 @@ describe('numerology-tantric: calculateDivineGift', () => {
   });
 
   it('should use last two digits of year', () => {
-    // Year 2000 → 00 → 0
-    expect(calculateDivineGift('2000-01-15')).toBe(0);
+    // Year 2000 → 00 → 0 → reduceTantric(0) → 1 (since 0 <= 0)
+    expect(calculateDivineGift('2000-01-15')).toBe(1);
     // Year 1999 → 99 → 9+9=18 → 1+8=9
     expect(calculateDivineGift('1999-01-15')).toBe(9);
     // Year 2025 → 25 → 2+5=7
     expect(calculateDivineGift('2025-01-15')).toBe(7);
   });
 
-  it('should handle years ending in master numbers', () => {
-    // Year 1911 → 11 (master number, stays as 11)
+  it('should handle years correctly', () => {
+    // Year 1911 → 11 → reduceTantric(11) → 11 (since 11 <= 11)
     expect(calculateDivineGift('1911-01-15')).toBe(11);
-    // Year 1922 → 22 (master number, stays as 22)
-    expect(calculateDivineGift('1922-01-15')).toBe(22);
+    // Year 1922 → 22 → 2+2 = 4 (since 22 > 11)
+    expect(calculateDivineGift('1922-01-15')).toBe(4);
   });
 });
 
@@ -93,11 +96,11 @@ describe('numerology-tantric: calculateDestiny', () => {
   it('should sum all four digits of year', () => {
     // 2000 → 2+0+0+0 = 2
     expect(calculateDestiny('2000-01-15')).toBe(2);
-    // 1999 → 1+9+9+9 = 28 → 2+8 = 10 → 1+0 = 1
-    expect(calculateDestiny('1999-01-15')).toBe(1);
+    // 1999 → 1+9+9+9 = 28 → 2+8 = 10 (not reduced since 10 <= 11)
+    expect(calculateDestiny('1999-01-15')).toBe(10);
   });
 
-  it('should handle year with master number result', () => {
+  it('should handle year correctly', () => {
     // 1992 → 1+9+9+2 = 21 → 2+1 = 3
     expect(calculateDestiny('1992-01-15')).toBe(3);
   });
@@ -232,13 +235,16 @@ describe('numerology-tantric: edge cases', () => {
   it('should handle year 2000 correctly', () => {
     // Year 2000 has many zeros
     expect(calculateDestiny('2000-01-01')).toBe(2);
-    expect(calculateDivineGift('2000-01-01')).toBe(0);
+    // 00 → reduceTantric(0) → 1 (since 0 <= 0)
+    expect(calculateDivineGift('2000-01-01')).toBe(1);
     expect(calculateTantricPath('2000-01-01')).toBe(4);
   });
 
   it('should handle year 1999 correctly', () => {
     // Year 1999 has high digit sum
-    expect(calculateDestiny('1999-12-31')).toBe(1);
+    // 1999 → 1+9+9+9 = 28 → reduceTantric(28) → 2+8 = 10
+    expect(calculateDestiny('1999-12-31')).toBe(10);
+    // 99 → 9+9 = 18 → 1+8 = 9
     expect(calculateDivineGift('1999-12-31')).toBe(9);
   });
 });

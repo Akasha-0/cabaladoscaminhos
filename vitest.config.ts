@@ -25,6 +25,11 @@ export default defineConfig({
             'tests/lib/constants/**',
           ],
         },
+        resolve: {
+          alias: {
+            '@': path.resolve(__dirname, './src'),
+          },
+        },
       },
       {
         test: {
@@ -35,6 +40,11 @@ export default defineConfig({
             'tests/middleware/**',
           ],
         },
+        resolve: {
+          alias: {
+            '@': path.resolve(__dirname, './src'),
+          },
+        },
       },
       {
         test: {
@@ -43,6 +53,11 @@ export default defineConfig({
           include: [
             'tests/cockpit/**',
           ],
+        },
+        resolve: {
+          alias: {
+            '@': path.resolve(__dirname, './src'),
+          },
         },
       },
       {
@@ -83,12 +98,12 @@ export default defineConfig({
             'tests/hooks/useUserPreferences*',
           ],
         },
+        resolve: {
+          alias: {
+            '@': path.resolve(__dirname, './src'),
+          },
+        },
       },
     ],
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
   },
 });

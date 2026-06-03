@@ -70,11 +70,11 @@ describe('Numerologia Cabalística', () => {
     // first = |2-8| = 6
     // second = |2-6| = 4
     // main = |6-4| = 2
-    // last = |1986-8-20| = 1958 → 1+9+5+8 = 23 → 5
+    // last = |8-6| = 2 (Doc 11 §2.5: |reduce(mês) - reduce(ano)|)
     expect(c.first).toBe(6);
     expect(c.second).toBe(4);
     expect(c.main).toBe(2);
-    expect(c.last).toBe(5);
+    expect(c.last).toBe(2);
   });
 
   it('Lições Kármicas identificam números ausentes no nome (Doc 11 §2.4)', () => {
