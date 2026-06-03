@@ -115,6 +115,7 @@ export async function POST(request: NextRequest) {
       );
     }
     const client = await getClient(result.id);
+    if (!client) return NextResponse.json({ error: 'Cliente não encontrado após criação' }, { status: 500 });
     log.info('client.created', { operatorId: operator.id, clientId: client.id });
     return NextResponse.json({ client }, { status: 201 });
 
