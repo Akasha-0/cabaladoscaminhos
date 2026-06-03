@@ -108,6 +108,17 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
  - ✅ auth/rate-limit.test.ts: exportados AUTH_RATE_LIMITS, getClientIp, checkAuthRateLimit
  - ✅ quality/auto-evolution.test.ts: marcado como skip (módulo removido)
 ### Fase 22 — Testes + Rate-Limit Fixes
+### Fase 28 — CRITICAL + Audit Exhaustivo (26 docs)
+**CRITICAL Fixes:**
+- Fix `extractFromMap`: planets array lookup (find by .planet name), houses array lookup (find by .house number), flat object fallback
+- CORRELATION_MAP: Casa 1/13 `ascendant.sign` → `ascendant` (plain string)
+- `fillHouse` refusa carta já usada (AD-17.2/AD-18.3): guard `if placedCards.has(carta.numero) return state`
+- `prisma/seed.ts`: cria Operator admin via bcrypt (ADMIN_EMAIL + ADMIN_PASSWORD env vars)
+**Testes Corrigidos:**
+- `correlation-map.test.ts` — 11/11 (array format, planets/houses lookup)
+- `oracle-prompt-builder.test.ts` — 3/3 (mock atualizado, propriedade `dados_nata[i]s_consulente`)
+- `theme-router.test.ts` — 12/12 (THEME_TAXONOMY guard)
+**Build:** 111 páginas ✅
 **Test Fixes:**
  - ✅ Export `AUTH_RATE_LIMITS`, `getClientIp`, `checkAuthRateLimit` em rate-limit.ts
  - ✅ `chakra/v4-data.test.ts`: reescrito para usar estrutura real (id, name, color, frequency, element, meaning, location)
