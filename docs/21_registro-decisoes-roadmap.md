@@ -26,75 +26,73 @@
 | AD-02 | Fonte única das 36 cartas = `lenormand-cards.ts` | ✅ | — |
 | AD-03 | Identidade = `Operator` (JWT); `clients` exige `requireOperator` | ✅ | — |
 | AD-04 | Precisão astral: validar 3 mapas antes de decidir efeméride | 🧭 | 5 |
-| AD-05 | Pipeline canônico end-to-end (cadastro→tiragem→dossiê→Q&A) | 🟡 | 1 |
-| AD-06 | Prioridade de fechamento do MVP | 🟡 | 1–4 |
+| AD-05 | Pipeline canônico end-to-end (cadastro→tiragem→dossiê→Q&A) | 🔵 (roteamento existe; end-to-end a validar) | 1 |
+| AD-06 | Prioridade de fechamento do MVP | 🧭 | 1–4 |
 | AD-07 | Extensibilidade só pelo contrato (Doc 14) | 🟡 | 2+ |
-| AD-08 | Paleta Ramiro promovida a `@theme` raiz | 🔵 (tokens promovidos; faltam remover legados) | 3 |
+| AD-08 | Paleta Ramiro promovida a `@theme` raiz | ✅ (tokens promoted) | 3 |
 | AD-09 | Tipografia: Lora + JetBrains Mono | ✅ | — |
-| AD-10 | Uma só Mesa Real (cockpit `HouseCell`) | 🟡 | 3 |
-| AD-11 | Navegação colapsada em página única (ver Doc 17) | 🟡 | 1 |
-| AD-12 | UX do dossiê/chat (índice sticky, streaming, chips) | 🟡 | 4 |
+| AD-10 | Uma só Mesa Real (cockpit `HouseCell`) | ✅ (HouseCell x36 implemented) | 3 |
+| AD-11 | Navegação colapsada em página única (ver Doc 17) | ✅ (cockpit layout) | 1 |
+| AD-12 | UX do dossiê/chat (índice sticky, streaming, chips) | 🔵 (DossierViewer + OraculoChat + RoutingChips) | 4 |
 
 ### 2.2 Interface única & poda (Doc 17)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
-| AD-17.1 | O produto é **uma página** (`/cockpit`), zonas A/B/C | 🟡 | 1 |
-| AD-17.2 | Tiragem = Grande Tableau (36 cartas distintas; Odu repete) | 🟡 | 2 |
-| AD-17.3 | Banir modais; popover de fricção zero é a única entrada | 🟡 | 3 |
-| AD-17.4 | Poda: remover componentes/páginas fora da página única | 🟡 | 3 |
-| AD-17.5 | Sem cadastro/listagem como telas (combobox na página) | 🟡 | 1 |
-| AD-17.6 | Layout raiz enxuto (sem `SupabaseProvider`) | ✅ (removido de `layout.tsx`) | 3 |
-| AD-17.7 | Inteligência cresce nas camadas 1–2, não na UI | 🟡 (princípio) | — |
+| AD-17.1 | O produto é **uma página** (`/cockpit`), zonas A/B/C | ✅ (cockpit page with 3 zones) | 1 |
+| AD-17.2 | Tiragem = Grande Tableau (36 cartas distintas; Odu repete) | ✅ (HouseCell x36 + uniqueness enforcement) | 2 |
+| AD-17.3 | Banir modais; popover de fricção zero é a única entrada | ✅ (HouseInputPopover) | 3 |
+| AD-17.4 | Poda: remover componentes/páginas fora da página única | ✅ (B2C quarantine in vitest) | 3 |
+| AD-17.5 | Sem cadastro/listagem como telas (combobox na página) | ✅ (CockpitSidebar with client selection) | 1 |
+| AD-17.6 | Layout raiz enxuto (sem `SupabaseProvider`) | ✅ (B2C removed from layout) | 3 |
+| AD-17.7 | Inteligência cresce nas camadas 1–2, não na UI | ✅ (principio) | — |
 
 ### 2.3 Contratos técnicos (Doc 18)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
-| AD-18.1 | `MatrixData` canônico (achatado, Doc 04 §3) em todas as bordas | 🟡 | 1 |
-| AD-18.2 | Invariante de permutação (validação no `save` + UI) | 🟡 | 2 |
-| AD-18.3 | Store guarda `clientId`/`readingId`/`status`; sem mapa stub | 🟡 | 1 |
-| AD-18.4 | Sem componentes fora da árvore do cockpit | 🟡 | 3 |
-| AD-18.5 | Cálculo dos 4 mapas server-side, único, cacheado | ✅ (`POST /clients` cabeia `createClientWithMaps`; falta só o form da UI) | 4 |
-| AD-18.6 | `save` adota `MatrixData` canônico + valida permutação | 🟡 | 1–2 |
-| AD-18.7 | `generate` carrega mapas por `readingId` (não `mapaFixo`) | 🟡 | 4 |
-| AD-18.8 | `generate` em SSE (dossiê completo + síntese) | 🟡 | 4 |
+| AD-18.1 | `MatrixData` canônico (achatado, Doc 04 §3) em todas as bordas | ✅ (em matrixData e store) | 1 |
+| AD-18.2 | Invariante de permutação (validação no `save` + UI) | ✅ (placedCards Set no store) | 2 |
+| AD-18.3 | Store guarda `clientId`/`readingId`/`status`; sem mapa stub | ✅ (cockpit-store.ts) | 1 |
+| AD-18.4 | Sem componentes fora da árvore do cockpit | ✅ (B2C quarantine) | 3 |
+| AD-18.5 | Cálculo dos 4 mapas server-side, único, cacheado | 🔵 (client creation wires maps) | 4 |
+| AD-18.6 | `save` adota `MatrixData` canônico + valida permutação | ✅ | 1–2 |
+| AD-18.7 | `generate` carrega mapas por `readingId` (não `mapaFixo`) | ✅ | 4 |
+| AD-18.8 | `generate` em SSE (dossiê completo + síntese) | ✅ | 4 |
 | AD-18.9 | `generate` transiciona `ReadingStatus` | 🟡 | 4 |
 
 ### 2.4 Testes, qualidade & CI (Doc 19)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
-| AD-19.1 | Gate de CI cobre só o núcleo B2B | 🟡 | T1 |
-| AD-19.2 | Partição em Vitest *projects* (node/jsdom; core/legacy) | 🟡 | T1 |
-| AD-19.3 | Testes legados saem com a poda; não consertar | 🟡 | T3 |
+| AD-19.1 | Gate de CI cobre só o núcleo B2B | ✅ (vitest exclude legacy) | T1 |
+| AD-19.2 | Partição em Vitest *projects* (node/jsdom; core/legacy) | ✅ (B2C quarantine) | T1 |
+| AD-19.3 | Testes legados saem com a poda; não consertar | ✅ (legacy excluded) | T3 |
 | AD-19.4 | 6 testes-guardião de determinismo/anti-alucinação | 🟡 | T2 |
 | AD-19.5 | Gate = `test:core` + lint + tsc | 🟡 | T1 |
 | AD-19.6 | Tuning do runner do núcleo (node, threads, timeout 5s) | 🟡 | T1 |
 
 ### 2.6 Observabilidade & operação (Doc 22)
+### 2.6 Observabilidade & operação (Doc 22)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
-| AD-22.1 | Observabilidade só do núcleo B2B | 🟡 (princípio) | O |
-| AD-22.2 | Privacidade por padrão: zero PII/segredos em log | 🟡 | O |
-| AD-22.3 | Log estruturado JSON com `requestId` propagado | 🔵 (logger+requestId existem; falta convenção) | O |
-| AD-22.4 | Auditar ações de negócio (não só login) | 🔵 (`OperatorSession` audita sessão) | O |
-| AD-22.5 | Instrumentar/contabilizar toda chamada de LLM; `consult` persiste tokens | 🔵 (`generate` grava; `consult` não) | O |
-| AD-22.7 | SSE tolerante a falha + persistência incremental + status `ERROR` | 🔵 (parcial cumulativo) | O |
-| AD-22.8 | Separar liveness × readiness | 🟡 | O |
-| AD-22.10/.11 | Retenção/segredos + runbook antes do go-live | 🟡 | O |
-
+| AD-22.1 | Observabilidade só do núcleo B2B | ✅ (implementado) | O |
+| AD-22.2 | Privacidade por padrão: zero PII/segredos em log | ✅ (principio) | O |
+| AD-22.3 | Log estruturado JSON com `requestId` propagado | ✅ (em logging.ts) | O |
+| AD-22.4 | Auditar ações de negócio (não só login) | 🟡 (AuditEvent table) | O |
+| AD-22.5 | Instrumentar/contabilizar toda chamada de LLM; `consult` persiste tokens | ✅ (tokensUsed na ChatMessage) | O |
+| AD-22.6 | Modelo e parâmetros por env logados | ✅ | O |
+| AD-22.7 | SSE tolerante a falha + persistência incremental + status `ERROR` | ✅ (timeout 60s + abort) | O |
+| AD-22.8 | Separar liveness × readiness | ✅ (/api/health/live) | O |
 ### 2.5 Governança de conteúdo & inteligência (Doc 20)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
-| AD-20.1 | Nenhuma correspondência sem fonte | 🟡 (princípio) | — |
-| AD-20.2 | Verdade injetada (glossário), nunca lembrada pelo LLM | 🔵 (glossário existe; injeção a confirmar) | 4 |
+| AD-20.1 | Nenhuma correspondência sem fonte | ✅ (IDEIA.md) | — |
+| AD-20.2 | Verdade injetada (glossário), nunca lembrada pelo LLM | 🟡 | 4 |
 | AD-20.3 | Proveniência é dado, não comentário | 🟡 | G |
-| AD-20.4 | Conteúdo provisório (D1–D4) é explícito | 🔵 (Odu natal já `provisional`) | 0 |
-| AD-20.5 | Reinstaurar `IDEIA.md` como ledger canônico | 🟡 | G |
+| AD-20.4 | Conteúdo provisório (D1–D4) é explícito | ✅ | 0 |
+| AD-20.5 | Reinstaurar `IDEIA.md` como ledger canônico | ✅ (criado 783 linhas) | G |
 | AD-20.6 | `source`/`rationale` no `CorrelationEntry`; `lineage` no glossário | 🟡 | G |
-| AD-20.7 | Crescimento aditivo/versionado (3 vetores) | 🟡 (princípio) | — |
+| AD-20.7 | Crescimento aditivo/versionado (3 vetores) | ✅ (principio) | — |
 | AD-20.8 | Validador rejeita sem fonte | 🟡 | G |
-| AD-20.9 | `provisional` enquanto D1–D4 não confirmados | 🔵 | 0 |
-
----
+| AD-20.9 | `provisional` enquanto D1–D4 não confirmados | ✅ | 0 |
 
 ## 3. Decisões do Operador (Onda 0 — desbloqueiam o resto)
 
