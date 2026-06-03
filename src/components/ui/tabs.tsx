@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// fallow-ignore-next-line unused-files
+// fallow-ignore-next-line unused-file
 function Tabs({
   className,
   orientation = "horizontal",
