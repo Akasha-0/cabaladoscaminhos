@@ -883,3 +883,14 @@ E2E: 29 new cockpit tests (cockpit-flows.test.ts)
 Type fix: vida → lifePath in correlacao.test.ts
 Result: 1829 testes (+62) · TypeScript 0 erros · build 118 páginas OK.
 Commit: 267db25c
+### Fase 52 — HIGH security fixes: JWT/TOTP strict, CORS, dev auth opt-in (2026-06-03)
+Security fixes:
+  operator-jwt.ts: throw on missing JWT_SECRET in non-dev/non-test envs
+  operator-totp.ts: throw unconditionally on missing MFA_ENCRYPTION_KEY
+  middleware.ts: remove CORS wildcard; dynamic origin validation from ALLOWED_ORIGINS
+  operator-session.ts: replace NODE_ENV check with ALLOW_DEV_AUTH_BYPASS=true opt-in
+  register/route.ts: require ALLOW_OPERATOR_REGISTRATION=true (not NODE_ENV)
+Tests updated: operator-jwt, operator-auth, operator-guard, operator-server-context,
+  consult, mesa-real-save. Production guard tests verify bypass blocked without flag.
+Result: 1832 testes (+65) · TypeScript 0 erros.
+Commit: f562fd49
