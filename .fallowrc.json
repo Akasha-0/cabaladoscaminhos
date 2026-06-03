@@ -69,10 +69,16 @@
     "src/lib/osetura/**/*",
     "src/lib/osha/**/*",
     "src/lib/oshe/**/*",
+    "src/lib/analytics.ts",
+    "src/lib/validators.ts",
+    "src/lib/ritual-storage.ts",
+    "src/lib/schedule.ts",
+    "src/lib/numerologia/life-path.ts",
+    "src/lib/numerologia/number-meanings.ts",
+    "src/lib/megi/**/*",
     "src/lib/otura/**/*",
     "src/lib/oyeku/**/*",
     "src/lib/iron/**/*",
-    "src/lib/megi/**/*",
     "src/lib/logbara/**/*",
     "src/lib/correlation/*.ts",
     "tests/**"
@@ -145,6 +151,26 @@
     },
     {
       "file": "src/lib/validators.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/calculators/numerology-kabalah.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/calculators/numerology-tantric.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/numerologia/calculos.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/numerologia/ciclos.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/draw.ts",
       "exports": ["*"]
     },
     {
