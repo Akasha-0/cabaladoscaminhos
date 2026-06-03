@@ -6,16 +6,11 @@
  * Based on Cabala dos Caminhos hermetic principles and day-energy.ts data.
  */
 
-export type ChakraName = 
-  | 'Muladhara'
-  | 'Svadhisthana'
-  | 'Manipura'
-  | 'Anahata'
-  | 'Vishuddha'
-  | 'Ajna'
-  | 'Sahasrara';
+import type { ChakraName, Elemento } from './chakra-base';
+import { normalizeChakraName } from './chakra-base';
 
-export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
+// Re-export for backward compatibility with existing importers
+export type { ChakraName, Elemento };
 
 export type DayNamePt = 
   | 'Domingo'
@@ -306,11 +301,9 @@ export function getAllChakraDays(): ChakraDayMapping[] {
  * Returns the primary chakra for a given day (0-6 or day name).
  */
 export function getPrimaryChakraForDay(dia: number | string): ChakraDayMapping | null {
-  const normalizedIndex = normalizeDayInput(dia);
-  if (normalizedIndex < 0) return null;
-  const key = String(normalizedIndex);
-  const mappings = CHAKRA_DAY_MAPPINGS[key];
-  return mappings?.[0] ?? null;
+  const mappings = getDayChakra(dia);
+  if (mappings.length === 0) return null;
+  return mappings[0];
 }
 
 /**
@@ -318,43 +311,6 @@ export function getPrimaryChakraForDay(dia: number | string): ChakraDayMapping |
  */
 export function getDaysForChakra(chakra: string): ChakraDayMapping[] {
   return getChakraDay(chakra);
-}
-
-/**
- * Normalizes chakra name to match ChakraName type.
- */
-function normalizeChakraName(chakra: string): string {
-  const chakraMap: Record<string, string> = {
-    'muladhara': 'Muladhara',
-    'svadhisthana': 'Svadhisthana',
-    'manipura': 'Manipura',
-    'anahata': 'Anahata',
-    'vishuddha': 'Vishuddha',
-    'ajna': 'Ajna',
-    'sahasrara': 'Sahasrara',
-    '1º básico': 'Muladhara',
-    '1º Básico': 'Muladhara',
-    '2º sacro': 'Svadhisthana',
-    '2º Sacro': 'Svadhisthana',
-    '3º plexo solar': 'Manipura',
-    '3º Plexo Solar': 'Manipura',
-    '4º cardíaco': 'Anahata',
-    '4º Cardíaco': 'Anahata',
-    '5º laríngeo': 'Vishuddha',
-    '5º Laríngeo': 'Vishuddha',
-    '6º frontal': 'Ajna',
-    '6º Frontal': 'Ajna',
-    '7º coronário': 'Sahasrara',
-    '7º Coronário': 'Sahasrara',
-    'basic': 'Muladhara',
-    'sacro': 'Svadhisthana',
-    'plexo': 'Manipura',
-    'cardiaco': 'Anahata',
-    'laríngeo': 'Vishuddha',
-    'frontal': 'Ajna',
-    'coronário': 'Sahasrara',
-  };
-  return chakraMap[chakra.toLowerCase()] ?? chakra;
 }
 
 /**
@@ -370,5 +326,5 @@ function normalizeDayInput(dia: number | string): number {
   if (typeof dia === 'string') {
     return DAY_NAME_TO_INDEX[dia as DayNamePt] ?? -1;
   }
-  return ((dia % 7) + 7) % 7; // Handle negative numbers
+  return normalizeDayIndex(dia);
 }

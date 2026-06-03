@@ -1,0 +1,62 @@
+/**
+ * Chakra Base Types and Utilities
+ *
+ * Canonical definitions shared across chakra correlation modules
+ * (chakra-day, chakra-element, chakra-planet).
+ */
+
+// Tipos canônicos
+export type ChakraName =
+  | 'Muladhara'
+  | 'Svadhisthana'
+  | 'Manipura'
+  | 'Anahata'
+  | 'Vishuddha'
+  | 'Ajna'
+  | 'Sahasrara';
+
+export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
+
+export type Planeta = 'Sol' | 'Lua' | 'Marte' | 'Mercúrio' | 'Júpiter' | 'Vênus' | 'Saturno';
+
+/**
+ * Normalizes chakra name to match ChakraName type.
+ * Preserves behavior of the original three implementations:
+ * - standard Sanskrit names
+ * - numbered Portuguese forms (1º básico, 2º sacro, etc.)
+ * - short Portuguese forms (basic, sacro, plexo, etc.)
+ */
+export function normalizeChakraName(chakra: string): ChakraName {
+  const chakraMap: Record<string, ChakraName> = {
+    'muladhara': 'Muladhara',
+    'svadhisthana': 'Svadhisthana',
+    'manipura': 'Manipura',
+    'anahata': 'Anahata',
+    'vishuddha': 'Vishuddha',
+    'ajna': 'Ajna',
+    'sahasrara': 'Sahasrara',
+    '1º básico': 'Muladhara',
+    '1º Básico': 'Muladhara',
+    '2º sacro': 'Svadhisthana',
+    '2º Sacro': 'Svadhisthana',
+    '3º plexo solar': 'Manipura',
+    '3º Plexo Solar': 'Manipura',
+    '4º cardíaco': 'Anahata',
+    '4º Cardíaco': 'Anahata',
+    '5º laríngeo': 'Vishuddha',
+    '5º Laríngeo': 'Vishuddha',
+    '6º frontal': 'Ajna',
+    '6º Frontal': 'Ajna',
+    '7º coronário': 'Sahasrara',
+    '7º Coronário': 'Sahasrara',
+    // short Portuguese forms (from chakra-day.ts)
+    'basic': 'Muladhara',
+    'sacro': 'Svadhisthana',
+    'plexo': 'Manipura',
+    'cardiaco': 'Anahata',
+    'laríngeo': 'Vishuddha',
+    'frontal': 'Ajna',
+    'coronário': 'Sahasrara',
+  };
+  return chakraMap[chakra.toLowerCase()] ?? 'Muladhara';
+}
