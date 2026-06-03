@@ -4,7 +4,6 @@
  import {
    SefirotWithDaatSchema,
    ChakraSchema,
-   ElementSchema,
  } from '@/lib/api/spiritual-filters';
 
  // ─── Zod Schemas ───────────────────────────────────────────────────────────

@@ -93,10 +93,14 @@ export async function middleware(request: NextRequest) {
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
-  // CSP strict para APIs (Fase 18). Páginas recebem CSP via Next metadata.
-  if (pathname.startsWith('/api/')) {
-    response.headers.set('Content-Security-Policy', API_CSP);
-  }
+   // CSP strict para APIs
+   if (pathname.startsWith('/api/')) {
+     response.headers.set('Content-Security-Policy', API_CSP);
+   }
+   // CSP para cockpit (páginas do produto B2B)
+   if (pathname.startsWith('/cockpit')) {
+     response.headers.set('Content-Security-Policy', COCKPIT_CSP);
+   }
 
   // ── Quarentena do B2C legado (Doc 16 AD-01) ──
   // Tudo que não é B2B nem infraestrutura é bloqueado quando a flag está desligada.
@@ -170,3 +174,24 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
+
+// ============================================
+// CSP for Cockpit Pages (Fase 23)
+// ============================================
+// Restrictive CSP for cockpit — no external scripts, no iframes.
+// 'unsafe-inline' for style-src is REQUIRED: Tailwind CSS inlines critical
+// styles in production (Next.js extracts and inlines Tailwind classes).
+// nonce-based approach is ideal but requires more setup; unsafe-inline
+// with strict default-src 'self' is an acceptable balance for internal tools.
+const COCKPIT_CSP = [
+  "default-src 'self'",
+  "script-src 'self'",
+  // unsafe-inline required for Tailwind critical CSS inlining in production
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https://*.openstreetmap.org https://*.tile.openstreetmap.org",
+  "font-src 'self' data:",
+  "connect-src 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join('; ');

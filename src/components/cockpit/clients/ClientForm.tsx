@@ -6,16 +6,17 @@
 
 'use client';
 
-import {
-  User,
-  Calendar,
-  Clock,
-  MapPin,
-  FileText,
-  Sparkles,
-  AlertCircle,
-  Check,
-} from 'lucide-react';
+ import {
+   User,
+   Calendar,
+   Clock,
+   MapPin,
+   FileText,
+   Sparkles,
+   AlertCircle,
+   Check,
+   ShieldCheck,
+ } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -23,20 +24,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CityAutocomplete, type CityResult } from '@/components/ui/city-autocomplete';
 import { createClientWithMaps } from '@/lib/db/client-actions';
-
-interface FormState {
-  fullName: string;
-  birthDate: string;
-  birthTime: string;
-  birthCity: string;
-  birthState: string;
-  birthCountry: string;
-  birthLatitude: string;
-  birthLongitude: string;
-  birthTimezone: string;
-  notes: string;
-}
-
+ interface FormState {
+   fullName: string;
+   birthDate: string;
+   birthTime: string;
+   birthCity: string;
+   birthState: string;
+   birthCountry: string;
+   birthLatitude: string;
+   birthLongitude: string;
+   birthTimezone: string;
+   notes: string;
+   consentGiven: boolean;
+ }
 const INITIAL: FormState = {
   fullName: '',
   birthDate: '',
@@ -47,7 +47,8 @@ const INITIAL: FormState = {
   birthLatitude: '',
   birthLongitude: '',
   birthTimezone: '',
-  notes: '',
+   notes: '',
+   consentGiven: false,
 };
 
 type FieldErrors = Partial<Record<keyof FormState, string>>;
@@ -94,7 +95,8 @@ export function ClientForm() {
         birthLatitude: state.birthLatitude ? Number(state.birthLatitude) : undefined,
         birthLongitude: state.birthLongitude ? Number(state.birthLongitude) : undefined,
         birthTimezone: state.birthTimezone.trim() || undefined,
-        notes: state.notes.trim() || undefined,
+       notes: state.notes.trim() || undefined,
+       consentGiven: state.consentGiven,
       });
       if (!result.ok) {
         setServerError(result.error);
@@ -259,16 +261,43 @@ export function ClientForm() {
             onChange={(e) => setField('notes', e.target.value)}
             className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-border/50 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/50"
           />
-        </div>
-      </section>
+         </div>
+       </section>
 
-      {/* Erro de servidor */}
-      {serverError && (
-        <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
-          <AlertCircle className="w-4 h-4" />
-          {serverError}
-        </div>
-      )}
+       {/* LGPD Consent */}
+       <section className="space-y-3 p-4 rounded-lg bg-muted/30 border border-border/50">
+         <div className="flex items-start gap-3">
+           <input
+             id="consentGiven"
+             type="checkbox"
+             checked={state.consentGiven}
+             onChange={(e) => setField('consentGiven', e.target.checked)}
+             className="mt-0.5 h-4 w-4 rounded border-border text-primary focus:ring-primary/50"
+           />
+           <div className="space-y-1">
+             <label
+               htmlFor="consentGiven"
+               className="text-sm font-medium leading-none cursor-pointer flex items-center gap-1.5"
+             >
+               <ShieldCheck className="w-3.5 h-3.5 text-primary" />
+               Consentimento para Tratamento de Dados (LGPD)
+             </label>
+             <p className="text-xs text-muted-foreground leading-relaxed">
+               O consulente foi devidamente informado sobre o tratamento de seus dados pessoais
+               (nome, data e local de nascimento, conteúdo das consultas) e consentiu expressamente,
+               nos termos da Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
+             </p>
+           </div>
+         </div>
+       </section>
+
+       {/* Erro de servidor */}
+       {serverError && (
+         <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+           <AlertCircle className="w-4 h-4" />
+           {serverError}
+         </div>
+       )}
 
       {/* Ações */}
       <div className="flex items-center justify-between pt-4 border-t border-border/50">

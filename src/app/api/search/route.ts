@@ -9,7 +9,6 @@
  import { z } from 'zod';
  import { orixas, odus } from '@/lib/data/spiritual-data';
  import { TAROT_DECK } from '@/lib/tarot/cards';
- import { ElementExtendedSchema } from '@/lib/api/spiritual-filters';
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SearchTypeSchema = z.enum(['odu', 'orixa', 'ritual', 'tarot']);
 
