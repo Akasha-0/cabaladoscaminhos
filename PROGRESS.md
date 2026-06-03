@@ -873,3 +873,13 @@ Live fields preserved: oduNumber, oduName, orixaRegency, elementalForce,
   lifeLesson, provisional, birthOdu.
 Result: 1767 testes · TypeScript 0 erros · build 118 páginas OK.
 Commit: 04753c6d
+### Fase 51 — Security hardening + quality runner + E2E expansion (2026-06-03)
+Security fixes (CRITICAL):
+  minimax.ts: hardcoded API key → require MINIMAX_API_TOKEN env var
+  recommendation-engine-v2.ts: hardcoded API key fallback → env var
+  webhooks/stripe/route.ts: Stripe signature verification + reject if secret unset
+Quality runner: src/lib/quality/runner.ts full implementation
+E2E: 29 new cockpit tests (cockpit-flows.test.ts)
+Type fix: vida → lifePath in correlacao.test.ts
+Result: 1829 testes (+62) · TypeScript 0 erros · build 118 páginas OK.
+Commit: 267db25c
