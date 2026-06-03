@@ -20,17 +20,16 @@
 // AD-22.5: Token budget check via Redis INCR on `llm:daily:tokens`.
 //
 // Referências: Doc 06 §3.2 (per-house prompt) + Doc 12 §7 (Q&A).
-
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/prisma';
-import { requireOperator } from '@/lib/auth/operator-session';
+import { NextRequest, NextResponse } from 'next/server';
 import {
   buildSystemPrompt,
   buildHousePayload,
   type ClientMaps,
 } from '@/lib/ai/dossier/oracle-prompt-builder';
+import { requireOperator } from '@/lib/auth/operator-session';
 import { createLogger, generateRequestId } from '@/lib/logging';
+import { prisma } from '@/lib/prisma';
 import { createSSEStream } from '@/lib/sse';
 import { checkTokenBudget, incrementTokenUsage } from '@/lib/token-budget';
 
@@ -118,6 +117,38 @@ function buildClientMaps(input: GenerateInput): ClientMaps {
     oduBirth: null,
   };
 }
+/**
+ * Builds ClientMaps from DB-stored maps (AD-18.5/18.7).
+ * Returns null when all DB maps are absent (legacy readings without stored maps).
+ */
+function buildClientMapsFromDb(dbMaps: {
+  astrologyMap: unknown;
+  kabalisticMap: unknown;
+  tantricMap: unknown;
+  oduBirth: unknown;
+  fullName?: string;
+  birthDate?: Date | string;
+  birthCity?: string;
+  birthCountry?: string;
+}): ClientMaps | null {
+  const hasMaps =
+    dbMaps.astrologyMap != null ||
+    dbMaps.kabalisticMap != null ||
+    dbMaps.tantricMap != null ||
+    dbMaps.oduBirth != null;
+  if (!hasMaps) return null;
+  return {
+    fullName: dbMaps.fullName ?? '',
+    birthDate:
+      dbMaps.birthDate instanceof Date ? dbMaps.birthDate.toISOString() : (dbMaps.birthDate ?? ''),
+    birthCity: dbMaps.birthCity,
+    birthCountry: dbMaps.birthCountry,
+    astrologyMap: (dbMaps.astrologyMap as Record<string, unknown>) ?? null,
+    kabalisticMap: (dbMaps.kabalisticMap as Record<string, unknown>) ?? null,
+    tantricMap: (dbMaps.tantricMap as Record<string, unknown>) ?? null,
+    oduBirth: (dbMaps.oduBirth as Record<string, unknown>) ?? null,
+  };
+}
 
 /**
  * Estrai casas preenchidas do matrixData (ordenadas por número da casa).
@@ -135,13 +166,7 @@ function extractFilledHouses(matrixData: MatrixData): Array<{
 
   for (const [key, value] of Object.entries(matrixData)) {
     const house = Number(key);
-    if (
-      !Number.isInteger(house) ||
-      house < 1 ||
-      house > 36 ||
-      !value?.carta ||
-      !value?.odu
-    ) {
+    if (!Number.isInteger(house) || house < 1 || house > 36 || !value?.carta || !value?.odu) {
       continue;
     }
     filled.push({
@@ -240,10 +265,7 @@ Responda em português, com linguagem mística e direta, segunda pessoa.
 `;
 
   const housesSummary = houses
-    .map(
-      (h) =>
-        `Casa ${h.house}: Carta ${h.carta.nome} | Orixá ${h.odu.nome}\n${h.content}`
-    )
+    .map((h) => `Casa ${h.house}: Carta ${h.carta.nome} | Orixá ${h.odu.nome}\n${h.content}`)
     .join('\n\n---\n\n');
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -257,8 +279,7 @@ Responda em português, com linguagem mística e direta, segunda pessoa.
       messages: [
         {
           role: 'system',
-          content:
-            'Você é o Oráculo Cigano Ramiro. Fale com clareza, proteção e sabedoria.',
+          content: 'Você é o Oráculo Cigano Ramiro. Fale com clareza, proteção e sabedoria.',
         },
         {
           role: 'user',
@@ -350,7 +371,8 @@ export async function POST(request: NextRequest) {
       );
     }
   }
-
+  // AD-18.5/18.7: DB maps loaded when readingId is provided
+  let dbClientMaps: ClientMaps | null = null;
   // 4) Cria Reading (PENDING) se readingId não fornecido
   let readingId = body.readingId;
   if (!readingId) {
@@ -382,10 +404,7 @@ export async function POST(request: NextRequest) {
       select: { id: true, status: true },
     });
     if (!existing) {
-      return NextResponse.json(
-        { error: `Reading ${readingId} não encontrada` },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: `Reading ${readingId} não encontrada` }, { status: 404 });
     }
     // AD-18.9: Impede re-processamento de leituras já concluídas ou em curso
     if (existing.status === 'COMPLETED') {
@@ -399,6 +418,27 @@ export async function POST(request: NextRequest) {
         { error: 'Leitura já está sendo gerada', code: 'READING_ALREADY_GENERATING' },
         { status: 409 }
       );
+    }
+    // AD-18.5/18.7: Fetch Client maps from DB when readingId is provided
+    const readingWithClient = await prisma.reading.findUnique({
+      where: { id: readingId },
+      select: {
+        client: {
+          select: {
+            fullName: true,
+            birthDate: true,
+            birthCity: true,
+            birthCountry: true,
+            astrologyMap: true,
+            kabalisticMap: true,
+            tantricMap: true,
+            oduBirth: true,
+          },
+        },
+      },
+    });
+    if (readingWithClient?.client) {
+      dbClientMaps = buildClientMapsFromDb(readingWithClient.client as Parameters<typeof buildClientMapsFromDb>[0]);
     }
   }
 
@@ -416,8 +456,8 @@ export async function POST(request: NextRequest) {
         timeoutMs: 300_000, // 5 min total ceiling — AD-22.7 (abort, never hang)
       });
 
-      // Build client maps once (used for every house)
-      const client = buildClientMaps(body);
+      // AD-18.5/18.7: Use DB maps if available (readingId), fall back to mapaFixo body
+      const client = dbClientMaps ?? buildClientMaps(body);
 
       let totalTokens = 0;
       const housesResults: Array<{
@@ -446,8 +486,14 @@ export async function POST(request: NextRequest) {
               content: `[Dev] Interpretação da Casa ${h.house}`,
             });
           }
-          send({ event: 'synthesis', data: { content: '[Dev] Síntese desativada — OPENAI_API_KEY não configurada.' } });
-          send({ event: 'done', data: { readingId, housesGenerated: filledHouses.length, totalTokens: 0 } });
+          send({
+            event: 'synthesis',
+            data: { content: '[Dev] Síntese desativada — OPENAI_API_KEY não configurada.' },
+          });
+          send({
+            event: 'done',
+            data: { readingId, housesGenerated: filledHouses.length, totalTokens: 0 },
+          });
           close();
           return;
         }
@@ -499,8 +545,12 @@ export async function POST(request: NextRequest) {
         // 6b) Gera síntese se todas as casas foram geradas
         if (finalStatus === 'COMPLETED' && housesResults.length > 0) {
           try {
-            const { content: synthesisContent, tokensUsed: synthTokens } =
-              await generateSynthesis(client, housesResults, apiKey, llmModel);
+            const { content: synthesisContent, tokensUsed: synthTokens } = await generateSynthesis(
+              client,
+              housesResults,
+              apiKey,
+              llmModel
+            );
 
             if (synthTokens > 0) {
               await incrementTokenUsage(synthTokens);

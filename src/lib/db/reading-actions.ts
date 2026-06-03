@@ -23,7 +23,7 @@ const createReadingSchema = z.object({
 export type CreateReadingInput = z.infer<typeof createReadingSchema>;
 
 // Status type
-export type ReadingStatus = 'PENDING' | 'COMPLETED';
+export type ReadingStatus = 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
 
 // ============================================================
 // READING CRUD OPERATIONS
