@@ -19,7 +19,7 @@ interface HouseCellProps {
   onClear: () => void;
 }
 
-export function HouseCell({ house, filledData, isActive, onClick, onClear }: HouseCellProps) {
+function HouseCellInner({ house, filledData, isActive, onClick, onClear }: HouseCellProps) {
   const isFilled = !!filledData;
 
   return (
@@ -135,3 +135,6 @@ export function HouseCell({ house, filledData, isActive, onClick, onClear }: Hou
     </div>
   );
 }
+
+// T7.3: memoize — 36 cells mounted; prevent re-render when sibling cell state changes
+export const HouseCell = React.memo(HouseCellInner);
