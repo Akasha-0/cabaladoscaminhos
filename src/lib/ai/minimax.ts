@@ -45,6 +45,7 @@ export async function generateMinimaxResponse(
   const temperature = options.temperature ?? DEFAULT_TEMPERATURE;
   const max_tokens = options.max_tokens ?? DEFAULT_MAX_TOKENS;
 
+  const startMs = Date.now();
   const response = await fetch(`${MINIMAX_API_BASE}/text/chatcompletion_v2`, {
     method: 'POST',
     headers: {
@@ -58,6 +59,7 @@ export async function generateMinimaxResponse(
       max_tokens,
     }),
   });
+  const durationMs = Date.now() - startMs;
 
   if (!response.ok) {
     const errorText = await response.text().catch(() => 'Unknown error');
@@ -68,10 +70,25 @@ export async function generateMinimaxResponse(
   }
 
   const data = await response.json();
+  const usage = data.usage ? { total_tokens: data.usage.total_tokens } : undefined;
+
+  // Structured log: llm.call event (AD-22.6)
+  const logEntry = {
+    ts: new Date().toISOString(),
+    level: 'info',
+    event: 'llm.call',
+    model,
+    temperature,
+    max_tokens,
+    totalTokens: usage?.total_tokens,
+    durationMs,
+    provider: 'minimax',
+  };
+  console.log(JSON.stringify(logEntry));
 
   return {
     content: data.choices?.[0]?.message?.content || '',
-    usage: data.usage ? { total_tokens: data.usage.total_tokens } : undefined,
+    usage,
   };
 }
 

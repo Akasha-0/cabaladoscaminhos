@@ -1,9 +1,12 @@
 // tests/cockpit/consultation/RoutingChips.test.tsx
 // Tests for RoutingChips — transparency of theme routing (Doc 12 §8, royal chips).
 
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
 import { RoutingChips } from '@/components/cockpit/consultation/RoutingChips';
+
+beforeEach(cleanup);
 
 describe('RoutingChips', () => {
   it('renders house chips with Casa prefix', () => {
@@ -39,7 +42,6 @@ describe('RoutingChips', () => {
     render(<RoutingChips themes={[]} houses={[8]} />);
     const chip = screen.getByText('Casa 8');
     expect(chip).toBeInTheDocument();
-    // Verify the chip has uppercase/tracking via class pattern
     expect(chip.className).toContain('uppercase');
     expect(chip.className).toContain('tracking-widest');
   });

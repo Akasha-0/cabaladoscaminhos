@@ -62,6 +62,19 @@ export type AstrologyResults = {
   urano: PosicaoPlaneta;
   netuno: PosicaoPlaneta;
   plutao: PosicaoPlaneta;
+  chiron: PosicaoPlaneta;
+  lilith: PosicaoPlaneta;
+  elementos: {
+    fire: number;
+    earth: number;
+    air: number;
+    water: number;
+  };
+  modalidades: {
+    cardinal: number;
+    fixed: number;
+    mutable: number;
+  };
   casas: Casa[];
   aspectos: Aspecto[];
   raw?: MapaNatal;

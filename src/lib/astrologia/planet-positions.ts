@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
- 
+
 /* prettier-ignore */
 
 import { calcularPosicao, getSigno, getGrauNoSigno } from './swiss-ephemeris';
@@ -27,6 +27,9 @@ const TEN_PLANETS: Planeta[] = [
   'urano',
   'netuno',
   'plutao',
+  'node_norte',
+  'chiron',
+  'lilith',
 ];
 
 const RETROGRADE_ORBS: Partial<Record<Planeta, number>> = {
@@ -41,7 +44,15 @@ const RETROGRADE_ORBS: Partial<Record<Planeta, number>> = {
 };
 
 function isRetrograde(planeta: Planeta, data: Date): boolean {
-  if (planeta === 'sol' || planeta === 'lua' || planeta === 'node_norte') {
+  // Chiron, Lilith, luminaries, and nodes are never retrograde
+  if (
+    planeta === 'sol'
+    || planeta === 'lua'
+    || planeta === 'node_norte'
+    || planeta === 'node_sul'
+    || planeta === 'chiron'
+    || planeta === 'lilith'
+  ) {
     return false;
   }
 

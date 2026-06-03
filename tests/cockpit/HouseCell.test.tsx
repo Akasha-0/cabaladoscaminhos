@@ -1,12 +1,15 @@
 // tests/cockpit/HouseCell.test.tsx
 // Tests for HouseCell component
 
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import React from 'react';
 import { HouseCell } from '@/components/cockpit/HouseCell';
 import type { HouseDefinition } from '@/lib/divination/house-types';
 import type { FilledHouse } from '@/stores/cockpit-store';
+
+beforeEach(cleanup);
 
 const mockHouse: HouseDefinition = {
   number: 1,
@@ -34,13 +37,9 @@ describe('HouseCell', () => {
       />
     );
 
-    // Should show house number
     expect(screen.getByText('01')).toBeInTheDocument();
-    
-    // Should show house original name
     expect(screen.getByText('O Cavaleiro')).toBeInTheDocument();
-    
-    // Should show plus icon (empty state indicator)
+    // Plus icon renders as SVG with lucide class
     const plusIcon = document.querySelector('[class*="lucide"]');
     expect(plusIcon).toBeInTheDocument();
   });
@@ -62,16 +61,13 @@ describe('HouseCell', () => {
       />
     );
 
-    // Should show carta number and name
     expect(screen.getByText('04. A Casa')).toBeInTheDocument();
-    
-    // Should show odu badge
     expect(screen.getByText(/Odu 1 - Okaran/)).toBeInTheDocument();
   });
 
   it('calls onClick when clicked', () => {
     const handleClick = vi.fn();
-    
+
     render(
       <HouseCell
         house={mockHouse}
@@ -83,7 +79,6 @@ describe('HouseCell', () => {
     );
 
     fireEvent.click(screen.getByText('01'));
-    
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
@@ -98,9 +93,9 @@ describe('HouseCell', () => {
       />
     );
 
-    // Check for ring class (active state indicator)
     const cell = container.firstChild as HTMLElement;
     expect(cell.className).toContain('ring-2');
-    expect(cell.className).toContain('ring-orange-500');
+    // Active state uses ring-primary per Doc 13 §4.1
+    expect(cell.className).toContain('ring-primary');
   });
 });

@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { CityAutocomplete, type CityResult } from '@/components/ui/city-autocomplete';
 import { createClientWithMaps } from '@/lib/db/client-actions';
 
 interface FormState {
@@ -50,7 +51,7 @@ const INITIAL: FormState = {
 };
 
 type FieldErrors = Partial<Record<keyof FormState, string>>;
-
+type FieldErrors = Partial<Record<keyof FormState, string>>;
 function validate(state: FormState): FieldErrors {
   const errs: FieldErrors = {};
   if (state.fullName.trim().length < 3) errs.fullName = 'Nome deve ter ao menos 3 caracteres';
@@ -186,15 +187,19 @@ export function ClientForm() {
             >
               Cidade
             </Label>
-            <Input
-              id="birthCity"
-              placeholder="Ex: São Paulo"
+            <CityAutocomplete
               value={state.birthCity}
-              onChange={(e) => setField('birthCity', e.target.value)}
-              aria-invalid={!!errors.birthCity}
-              className="bg-muted/50 border-border/50 focus:border-primary/50"
+              onChange={(v) => setField('birthCity', v)}
+              onSelect={(city: CityResult) => {
+                setField('birthCity', city.name);
+                setField('birthState', city.state || state.birthState);
+                setField('birthCountry', city.country || state.birthCountry);
+                if (city.latitude) setField('birthLatitude', city.latitude);
+                if (city.longitude) setField('birthLongitude', city.longitude);
+              }}
+              placeholder="Ex: São Paulo"
+              error={errors.birthCity}
             />
-            {errors.birthCity && <p className="text-xs text-destructive">{errors.birthCity}</p>}
           </div>
           <div className="space-y-2">
             <Label
@@ -233,12 +238,9 @@ export function ClientForm() {
           </div>
         </div>
         <p className="text-xs text-muted-foreground/60">
-          Coordenadas geográficas (latitude/longitude) podem ser preenchidas depois para refinar o
-          mapa astral.
+          Coordenadas geográficas (latitude/longitude) são preenchidas automaticamente ao selecionar uma cidade.
         </p>
       </section>
-
-      {/* Grupo 3 — Anotações */}
       <section className="space-y-4">
         <header>
           <h2 className="font-cinzel text-lg text-primary flex items-center gap-2">

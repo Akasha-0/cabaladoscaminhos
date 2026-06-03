@@ -1,11 +1,13 @@
 // tests/cockpit/consultation/ConsultationInput.test.tsx
 // Tests for ConsultationInput — chat input (Doc 12 §8, textarea + Send button).
 
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { ConsultationInput } from '@/components/cockpit/consultation/ConsultationInput';
 
-// Named type — matches the onSend contract in ConsultationInput
+beforeEach(cleanup);
+
 type SendFn = (question: string) => void;
 
 describe('ConsultationInput', () => {
@@ -73,15 +75,13 @@ describe('ConsultationInput', () => {
   });
 
   it('disables button when textarea is empty', () => {
-    const onSend: SendFn = vi.fn();
-    render(<ConsultationInput onSend={onSend} />);
+    render(<ConsultationInput onSend={vi.fn()} />);
     const btn = screen.getByRole('button', { name: 'Enviar pergunta' });
     expect(btn).toBeDisabled();
   });
 
   it('enables button when textarea has content', () => {
-    const onSend: SendFn = vi.fn();
-    render(<ConsultationInput onSend={onSend} />);
+    render(<ConsultationInput onSend={vi.fn()} />);
     const textarea = screen.getByPlaceholderText(/Pergunte ao Oráculo/);
     fireEvent.change(textarea, { target: { value: 'Pergunta' } });
     const btn = screen.getByRole('button', { name: 'Enviar pergunta' });
@@ -89,8 +89,7 @@ describe('ConsultationInput', () => {
   });
 
   it('disables controls when disabled prop is true', () => {
-    const onSend: SendFn = vi.fn();
-    render(<ConsultationInput onSend={onSend} disabled={true} />);
+    render(<ConsultationInput onSend={vi.fn()} disabled={true} />);
     const textarea = screen.getByPlaceholderText(/Pergunte ao Oráculo/);
     expect((textarea as HTMLTextAreaElement).disabled).toBe(true);
     expect(screen.getByRole('button', { name: 'Enviar pergunta' })).toBeDisabled();

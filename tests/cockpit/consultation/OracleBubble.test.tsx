@@ -1,9 +1,12 @@
 // tests/cockpit/consultation/OracleBubble.test.tsx
 // Tests for OracleBubble — oracle response bubble (Doc 12 §8, royal, left-aligned, streaming).
 
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
 import { OracleBubble } from '@/components/cockpit/consultation/OracleBubble';
+
+beforeEach(cleanup);
 
 describe('OracleBubble', () => {
   it('renders the message content', () => {
@@ -13,9 +16,6 @@ describe('OracleBubble', () => {
 
   it('renders Sparkles SVG icon inside the avatar circle', () => {
     render(<OracleBubble content="Resposta" />);
-    const svg = document.querySelector('svg');
-    expect(svg).toBeInTheDocument();
-    // Lucide icons use lucide-sparkles class
     const iconSvg = document.querySelector('.lucide-sparkles');
     expect(iconSvg).toBeInTheDocument();
   });
@@ -29,7 +29,6 @@ describe('OracleBubble', () => {
   it('applies royal background via class', () => {
     const { container } = render(<OracleBubble content="Resposta" />);
     const wrapper = container.firstChild as HTMLElement;
-    // inner bubble has royal background class
     const bubble = wrapper.querySelector('[class*="ramiro-royal"]') as HTMLElement;
     expect(bubble).toBeInTheDocument();
   });

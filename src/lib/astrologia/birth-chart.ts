@@ -94,7 +94,7 @@ export function getBirthChart(input: BirthChartInput): BirthChart {
   const houses = calculateHouses(birthDate, birthDate, latitude, longitude, houseSystem);
 
   const houseCusps = houses.cusps.map(c => c.longitude);
-  const planetPositions: any[] = planets.map(p => {
+  const planetPositions = planets.map(p => {
     const { sign, degree } = getPlanetSignAndDegree(p);
     return {
       planeta: p.planet,
@@ -110,7 +110,7 @@ export function getBirthChart(input: BirthChartInput): BirthChart {
 
   const aspects = findAspects(planetPositions);
 
-  const chartHouses: any[] = Array.from({ length: 12 }, (_, i) => {
+  const chartHouses = Array.from({ length: 12 }, (_, i) => {
     const cusp = houses.cusps[i];
     const { sign, degree } = {
       sign: getSignoFromLongitude(cusp.longitude),
@@ -125,7 +125,7 @@ export function getBirthChart(input: BirthChartInput): BirthChart {
     };
   });
 
-  const planetMap: Record<string, any> = {};
+  const planetMap: Record<string, (typeof planetPositions)[number]> = {};
   for (const p of planetPositions) {
     planetMap[p.planeta] = p;
   }
@@ -134,23 +134,25 @@ export function getBirthChart(input: BirthChartInput): BirthChart {
     usuarioId: '',
     dataCalculo: new Date(),
     planeta: {
-      sol: planetMap.sol,
-      lua: planetMap.lua,
-      mercurio: planetMap.mercurio,
-      venus: planetMap.venus,
-      marte: planetMap.marte,
-      jupiter: planetMap.jupiter,
-      saturno: planetMap.saturno,
-      urano: planetMap.urano,
-      netuno: planetMap.netuno,
-      plutao: planetMap.plutao
+      sol: planetMap['sol'],
+      lua: planetMap['lua'],
+      mercurio: planetMap['mercurio'],
+      venus: planetMap['venus'],
+      marte: planetMap['marte'],
+      jupiter: planetMap['jupiter'],
+      saturno: planetMap['saturno'],
+      urano: planetMap['urano'],
+      netuno: planetMap['netuno'],
+      plutao: planetMap['plutao'],
+      chiron: planetMap['chiron'],
+      lilith: planetMap['lilith'],
     },
     casas: chartHouses,
     ascendente: houses.asc,
     mediumCoeli: houses.mc,
     nodes: {
-      norte: planetMap.node_norte,
-      sul: planetMap.node_sul
+      norte: planetMap['node_norte'],
+      sul: planetMap['node_sul'],
     }
   };
 

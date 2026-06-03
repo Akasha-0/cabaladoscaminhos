@@ -1,5 +1,5 @@
 // ============================================================
-// API ROUTE — Gerar Dossiê de UMA Casa da Mesa Real (Fase 7)
+// API ROUTE — Gerar Dossiê Completo via SSE (AD-18.8)
 // ============================================================
 // Migra o `mesa-real/generate` do prompt-builder morto
 // (`@/lib/ai/prompt-builder`) para o canônico da Fase 1
@@ -8,13 +8,16 @@
 // Comportamento:
 //   1. Auth: exige Operator (cookie `cockpit_session` ou header dev).
 //   2. Valida o input (Zod).
-//   3. Transforma o `mapaFixo` legado (campos achatados) em ClientMaps
-//      canônico e constrói o payload determinístico por casa.
-//   4. Chama o LLM (OpenAI / Minimax via env).
-//   5. Persiste a interpretação por casa no `Report.content`
+//   3. Constrói o payload determinístico por casa.
+//   4. Para cada casa preenchida: chama o LLM, emite `event: house` via SSE.
+//   5. Ao final: emite `event: synthesis` + `event: done` via SSE.
+//   6. Persiste a interpretação por casa no `Report.content`
 //      (cumulativo — não destrutivo se a rota for chamada várias
 //      vezes para casas diferentes).
-//   6. Onda I.4: transiciona ReadingStatus PENDING → GENERATING → COMPLETED/ERROR.
+//   7. Onda I.4: transiciona ReadingStatus PENDING → GENERATING → COMPLETED/ERROR.
+//   8. AD-22.5: Verifica LLM_DAILY_TOKEN_BUDGET via Redis antes de processar.
+//
+// AD-22.5: Token budget check via Redis INCR on `llm:daily:tokens`.
 //
 // Referências: Doc 06 §3.2 (per-house prompt) + Doc 12 §7 (Q&A).
 
@@ -27,30 +30,33 @@ import {
   buildHousePayload,
   type ClientMaps,
 } from '@/lib/ai/dossier/oracle-prompt-builder';
-import type { MatrixEntry } from '@/types';
 import { createLogger, generateRequestId } from '@/lib/logging';
+import { createSSEStream } from '@/lib/sse';
+import { checkTokenBudget, incrementTokenUsage } from '@/lib/token-budget';
 
 // ----------------------------------------------------------------------------
 // Schemas
 // ----------------------------------------------------------------------------
 
+interface CasaData {
+  carta: { numero: number; nome: string; significado: string } | null;
+  odu: { numero: number; nome: string; significado: string } | null;
+}
+
+type MatrixData = Record<number, CasaData | null>;
+
 const generateSchema = z.object({
-  /** Opcional: se passado, persiste no Report dessa leitura. */
+  /**
+   * Opcional: se passado, persiste no Report dessa leitura e usa o
+   * Reading existente (criado via /api/mesa-real/save).
+   * Se omitido, cria uma reading anônima em memória (sem persistência).
+   */
   readingId: z.string().optional(),
-  casaNumero: z.number().int().min(1).max(36),
-  carta: z.object({
-    numero: z.number().int().min(1).max(36),
-    nome: z.string().min(1),
-    significado: z.string().optional(),
-  }),
-  odu: z.object({
-    numero: z.number().int().min(1).max(16),
-    nome: z.string().min(1),
-    significado: z.string().optional(),
-    elemento: z.string().optional(),
-    orixas: z.array(z.string()).optional(),
-    quizilas: z.array(z.string()).optional(),
-  }),
+  /**
+   * Obrigatório: ID do cliente dono do mapa.
+   * Usado para construir o ClientMaps canônico.
+   */
+  clientId: z.string().min(1, 'clientId é obrigatório'),
   /**
    * Mapa fixo achatado (compatibilidade com clientes legados do
    * frontend). Internamente é convertido em ClientMaps canônico.
@@ -71,6 +77,11 @@ const generateSchema = z.object({
       vereditoTantrico: z.number().optional(),
     })
     .passthrough(),
+  /**
+   * Matriz de 36 casas. Apenas casas com carta + odu são processadas.
+   * Estrutura: { [houseNumber]: { carta: {...}, odu: {...} } | null }
+   */
+  matrixData: z.record(z.unknown()),
 });
 
 type GenerateInput = z.infer<typeof generateSchema>;
@@ -108,14 +119,181 @@ function buildClientMaps(input: GenerateInput): ClientMaps {
   };
 }
 
+/**
+ * Estrai casas preenchidas do matrixData (ordenadas por número da casa).
+ */
+function extractFilledHouses(matrixData: MatrixData): Array<{
+  house: number;
+  carta: { numero: number; nome: string };
+  odu: { numero: number; nome: string };
+}> {
+  const filled: Array<{
+    house: number;
+    carta: { numero: number; nome: string };
+    odu: { numero: number; nome: string };
+  }> = [];
+
+  for (const [key, value] of Object.entries(matrixData)) {
+    const house = Number(key);
+    if (
+      !Number.isInteger(house) ||
+      house < 1 ||
+      house > 36 ||
+      !value?.carta ||
+      !value?.odu
+    ) {
+      continue;
+    }
+    filled.push({
+      house,
+      carta: { numero: value.carta.numero, nome: value.carta.nome },
+      odu: { numero: value.odu.numero, nome: value.odu.nome },
+    });
+  }
+
+  return filled.sort((a, b) => a.house - b.house);
+}
+
+/**
+ * Gera conteúdo de uma casa via LLM (OpenAI API, non-streaming).
+ * Retorna o texto da interpretação e os tokens usados.
+ */
+async function generateHouseContent(
+  house: number,
+  carta: { numero: number; nome: string },
+  odu: { numero: number; nome: string },
+  client: ClientMaps,
+  apiKey: string,
+  llmModel: string
+): Promise<{ content: string; tokensUsed: number }> {
+  const systemPrompt = buildSystemPrompt();
+  const userPayload = buildHousePayload(
+    house,
+    { house, carta: carta.numero, odu: odu.numero },
+    client
+  );
+
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: llmModel,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: JSON.stringify(userPayload) },
+      ],
+      temperature: 0.7,
+      max_tokens: 1500,
+    }),
+  });
+
+  if (!res.ok) {
+    const detail = await res.text();
+    throw new Error(`LLM error ${res.status}: ${detail}`);
+  }
+
+  const data = await res.json();
+  const content = data.choices?.[0]?.message?.content ?? '';
+  const tokensUsed = data.usage?.total_tokens ?? 0;
+
+  return { content, tokensUsed };
+}
+
+/**
+ * Gera síntese final do dossiê via LLM (non-streaming).
+ */
+async function generateSynthesis(
+  client: ClientMaps,
+  houses: Array<{
+    house: number;
+    carta: { nome: string };
+    odu: { nome: string };
+    content: string;
+  }>,
+  apiKey: string,
+  llmModel: string
+): Promise<{ content: string; tokensUsed: number }> {
+  const synthesisInstruction = `
+## Instrução de Síntese
+
+Com base nas interpretações das ${houses.length} casas preenchidas, gere uma síntese oracular com 4 capítulos e um veredicto final:
+
+### 1. Arco Narrativo
+Como a energia das cartas e Orixás se articulam nesta leitura?
+
+### 2. Tensões e Oportunidades
+Quais são os pontos de atrito e onde estão as forças?
+
+### 3. Caminho Indicado
+Qual é a direção espiritual sugerida?
+
+### 4. Alerta Karmático
+Quais padrões se repetem e merecem atenção?
+
+### Veredicto Final
+Uma sentença direta e protetora do Oráculo.
+
+Responda em português, com linguagem mística e direta, segunda pessoa.
+`;
+
+  const housesSummary = houses
+    .map(
+      (h) =>
+        `Casa ${h.house}: Carta ${h.carta.nome} | Orixá ${h.odu.nome}\n${h.content}`
+    )
+    .join('\n\n---\n\n');
+
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: llmModel,
+      messages: [
+        {
+          role: 'system',
+          content:
+            'Você é o Oráculo Cigano Ramiro. Fale com clareza, proteção e sabedoria.',
+        },
+        {
+          role: 'user',
+          content: `${synthesisInstruction}\n\n## Casas Interpretadas\n\n${housesSummary}`,
+        },
+      ],
+      temperature: 0.6,
+      max_tokens: 2000,
+    }),
+  });
+
+  if (!res.ok) {
+    const detail = await res.text();
+    throw new Error(`LLM synthesis error ${res.status}: ${detail}`);
+  }
+
+  const data = await res.json();
+  const content = data.choices?.[0]?.message?.content ?? '';
+  const tokensUsed = data.usage?.total_tokens ?? 0;
+
+  return { content, tokensUsed };
+}
+
 // ----------------------------------------------------------------------------
 // Route
 // ----------------------------------------------------------------------------
+
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   // 1) Auth
   const operatorOrResponse = await requireOperator(request);
   if (operatorOrResponse instanceof NextResponse) return operatorOrResponse;
   const operator = operatorOrResponse;
+
   // K.1: Structured logging
   const requestId = generateRequestId();
   const log = createLogger(requestId, '/api/mesa-real/generate');
@@ -135,171 +313,299 @@ export async function POST(request: NextRequest) {
     throw err;
   }
 
-  // 3) Onda I.4: valida existência + transição PENDING → GENERATING
-  if (body.readingId) {
-    const existing = await prisma.reading.findUnique({ where: { id: body.readingId } });
-    if (!existing) {
-      return NextResponse.json(
-        { error: `Reading ${body.readingId} não encontrada` },
-        { status: 404 }
-      );
-    }
-    await prisma.reading.update({
-      where: { id: body.readingId },
-      data: { status: 'GENERATING' },
-    });
-  }
+  const matrixData = body.matrixData as MatrixData;
+  const filledHouses = extractFilledHouses(matrixData);
 
-  // 4) Sanity: o Operator precisa estar vinculado a um Client (mapaFixo.nomeCompleto)
-  //    e o OperatorId deve existir (FK). A validação Zod já garante tipos.
-  void operator; // operator disponível p/ enriquecer logs/auditoria no futuro
-
-  // 5) Constrói payload canônico
-  const entry: MatrixEntry = {
-    house: body.casaNumero,
-    carta: body.carta.numero,
-    odu: body.odu.numero,
-  };
-  const client = buildClientMaps(body);
-  const systemPrompt = buildSystemPrompt();
-  const userPayload = buildHousePayload(body.casaNumero, entry, client);
-
-  // 6) Chama o LLM
-  const apiKey = process.env.OPENAI_API_KEY;
-  const llmModel = process.env.OPENAI_MODEL ?? 'gpt-4o';
-
-  if (!apiKey) {
-    // Rollback PENDING se não há chave
-    if (body.readingId) {
-      await prisma.reading.update({
-        where: { id: body.readingId },
-        data: { status: 'PENDING' },
-      });
-    }
+  if (filledHouses.length === 0) {
     return NextResponse.json(
-      {
-        error: 'OPENAI_API_KEY não configurada',
-        hint: 'Defina OPENAI_API_KEY no ambiente. Sem ela, apenas o payload determinístico pode ser devolvido (modo dev).',
-      },
-      { status: 503 }
+      { error: 'Nenhuma casa preenchida (carta + odu) no matrixData' },
+      { status: 400 }
     );
   }
 
-  try {
-    const llmResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: llmModel,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: JSON.stringify(userPayload) },
-        ],
-        temperature: 0.7,
-        max_tokens: 1500,
-      }),
-    });
+  const apiKey = process.env.OPENAI_API_KEY;
+  const llmModel = process.env.OPENAI_MODEL ?? 'gpt-4o';
 
-    if (!llmResponse.ok) {
-      const detail = await llmResponse.text();
-      if (body.readingId) {
-        await prisma.reading.update({
-          where: { id: body.readingId },
-          data: { status: 'ERROR' },
-        });
-      }
+  // 3) AD-22.5: Verifica token budget antes de processar
+  if (apiKey) {
+    const budgetResult = await checkTokenBudget();
+    if (!budgetResult.allowed) {
+      log.warn('token.budget.exceeded', {
+        operatorId: operator.id,
+        budget: budgetResult.budget,
+        used: budgetResult.used,
+        limit: budgetResult.limit,
+      });
       return NextResponse.json(
-        { error: 'Erro ao chamar o LLM', details: detail },
-        { status: 502 }
+        {
+          error: 'Token budget exceeded',
+          code: 'BUDGET_EXCEEDED',
+          details: {
+            budget: budgetResult.budget,
+            used: budgetResult.used,
+            limit: budgetResult.limit,
+          },
+        },
+        { status: 429 }
+      );
+    }
+  }
+
+  // 4) Cria Reading (PENDING) se readingId não fornecido
+  let readingId = body.readingId;
+  if (!readingId) {
+    const client = await prisma.client.findUnique({
+      where: { id: body.clientId },
+      select: { id: true },
+    });
+    if (!client) {
+      return NextResponse.json(
+        { error: `Cliente ${body.clientId} não encontrado` },
+        { status: 404 }
       );
     }
 
-    const llmData = await llmResponse.json();
-    const dossie = llmData.choices?.[0]?.message?.content ?? '';
-    const tokensUsed = llmData.usage?.total_tokens;
-
-    // 7) Persiste no Report da leitura (se readingId fornecido)
-    let report: { id: string; readingId: string } | null = null;
-    if (body.readingId) {
-      // Existence already checked in step 3; the select always succeeds.
-      const reading = await prisma.reading.findUnique({
-        where: { id: body.readingId },
-        select: { id: true, report: { select: { id: true, content: true } } },
-      });
-
-      // Cumulativo: se já existe Report, anexa/sobrescreve a casa; senão cria.
-      const existingContent =
-        (reading?.report?.content as Record<string, unknown> | null) ?? {};
-      const newContent = {
-        ...existingContent,
-        houses: {
-          ...((existingContent.houses as Record<string, unknown> | undefined) ?? {}),
-          [String(body.casaNumero)]: {
-            interpretation: dossie,
-            houseName: userPayload.casa_nome,
-            generatedAt: new Date().toISOString(),
-          },
-        },
-      };
-
-      const saved = await prisma.report.upsert({
-        where: { readingId: body.readingId },
-        create: {
-          readingId: body.readingId,
-          // Prisma 7 `Json` exige `Prisma.InputJsonValue`; serializar via
-          // JSON é a forma mais portável de garantir o shape.
-          content: JSON.parse(JSON.stringify(newContent)),
-          llmModel,
-          tokensUsed: tokensUsed ?? null,
-        },
-        update: {
-          content: JSON.parse(JSON.stringify(newContent)),
-          llmModel,
-          // Não sobrescreve tokensUsed — manteria o cumulativo se a rota
-          // guardasse estado; aqui mantemos o último p/ simplicidade.
-        },
-        select: { id: true, readingId: true },
-      });
-      report = saved;
-
-      // Onda I.4: transição GENERATING → COMPLETED
-      await prisma.reading.update({
-        where: { id: body.readingId },
-        data: { status: 'COMPLETED' },
-      });
-    }
-
-    // K.2: Log business event (AD-22.4)
-    const durationMs = Date.now() - startTime;
-    log.info('dossier.generated', {
-      operatorId: operator.id,
-      readingId: body.readingId ?? null,
-      tokens: tokensUsed ?? null,
-      llmModel,
-      durationMs,
+    const created = await prisma.reading.create({
+      data: {
+        clientId: body.clientId,
+        operatorId: operator.id,
+        matrixData: matrixData as object,
+        status: 'PENDING',
+      },
+      select: { id: true },
     });
-
-    return NextResponse.json({
-      casaNumero: body.casaNumero,
-      dossie,
-      tokensUsed,
-      report,
+    readingId = created.id;
+  } else {
+    // Valida que a reading existe
+    const existing = await prisma.reading.findUnique({
+      where: { id: readingId },
+      select: { id: true, status: true },
     });
-  } catch (err) {
-    // Onda I.4: transição GENERATING → ERROR (best-effort)
-    if (body.readingId) {
-      await prisma.reading
-        .update({
-          where: { id: body.readingId },
-          data: { status: 'ERROR' },
-        })
-        .catch(() => {
-          /* best-effort: leitura pode ter sido removida entre meanwhile */
-        });
+    if (!existing) {
+      return NextResponse.json(
+        { error: `Reading ${readingId} não encontrada` },
+        { status: 404 }
+      );
     }
-    throw err;
   }
+
+  // 5) Transição PENDING → GENERATING
+  await prisma.reading.update({
+    where: { id: readingId },
+    data: { status: 'GENERATING' },
+  });
+
+  // 6) SSE Stream
+  const encoder = new TextEncoder();
+
+  const stream = new ReadableStream({
+    async start(controller) {
+      const { send, close, abortController } = createSSEStream(controller, encoder, {
+        timeoutMs: 0, // Disable timeout — house-by-house processing is unbounded
+      });
+
+      // Build client maps once (used for every house)
+      const client = buildClientMaps(body);
+
+      let totalTokens = 0;
+      const housesResults: Array<{
+        house: number;
+        carta: { nome: string };
+        odu: { nome: string };
+        content: string;
+      }> = [];
+      let finalStatus: 'COMPLETED' | 'ERROR' = 'COMPLETED';
+
+      try {
+        if (!apiKey) {
+          // Modo dev: emite casas com placeholder, encerra
+          for (const h of filledHouses) {
+            send({
+              event: 'house',
+              data: {
+                houseNumber: h.house,
+                content: `[Dev] Interpretação da Casa ${h.house} (${h.carta.nome} / ${h.odu.nome}) — defina OPENAI_API_KEY para ativar o Oráculo.`,
+              },
+            });
+            housesResults.push({
+              house: h.house,
+              carta: { nome: h.carta.nome },
+              odu: { nome: h.odu.nome },
+              content: `[Dev] Interpretação da Casa ${h.house}`,
+            });
+          }
+          send({ event: 'synthesis', data: { content: '[Dev] Síntese desativada — OPENAI_API_KEY não configurada.' } });
+          send({ event: 'done', data: { readingId, housesGenerated: filledHouses.length, totalTokens: 0 } });
+          close();
+          return;
+        }
+
+        // 6a) Gera cada casa e emite SSE por casa (flush imediato)
+        for (const h of filledHouses) {
+          try {
+            const { content, tokensUsed } = await generateHouseContent(
+              h.house,
+              h.carta,
+              h.odu,
+              client,
+              apiKey,
+              llmModel
+            );
+
+            // AD-22.5: Incrementa contador de tokens
+            if (tokensUsed > 0) {
+              await incrementTokenUsage(tokensUsed);
+              totalTokens += tokensUsed;
+            }
+
+            // Emite SSE imediatamente (flush)
+            send({
+              event: 'house',
+              data: {
+                houseNumber: h.house,
+                content,
+              },
+            });
+
+            housesResults.push({
+              house: h.house,
+              carta: { nome: h.carta.nome },
+              odu: { nome: h.odu.nome },
+              content,
+            });
+          } catch (houseErr) {
+            const msg = houseErr instanceof Error ? houseErr.message : String(houseErr);
+            send({
+              event: 'error',
+              data: { houseNumber: h.house, message: `Erro na Casa ${h.house}: ${msg}` },
+            });
+            finalStatus = 'ERROR';
+            break;
+          }
+        }
+
+        // 6b) Gera síntese se todas as casas foram geradas
+        if (finalStatus === 'COMPLETED' && housesResults.length > 0) {
+          try {
+            const { content: synthesisContent, tokensUsed: synthTokens } =
+              await generateSynthesis(client, housesResults, apiKey, llmModel);
+
+            if (synthTokens > 0) {
+              await incrementTokenUsage(synthTokens);
+              totalTokens += synthTokens;
+            }
+
+            send({ event: 'synthesis', data: { content: synthesisContent } });
+          } catch (synthErr) {
+            const msg = synthErr instanceof Error ? synthErr.message : String(synthErr);
+            send({ event: 'error', data: { message: `Erro na síntese: ${msg}` } });
+            finalStatus = 'ERROR';
+          }
+        }
+
+        // 6c) Persiste no Report (se LLM gerou conteúdo)
+        if (readingId && housesResults.length > 0) {
+          try {
+            const reading = await prisma.reading.findUnique({
+              where: { id: readingId },
+              select: { id: true, report: { select: { id: true, content: true } } },
+            });
+
+            const existingContent =
+              (reading?.report?.content as Record<string, unknown> | null) ?? {};
+            const newContent = {
+              ...existingContent,
+              houses: {
+                ...((existingContent.houses as Record<string, unknown> | undefined) ?? {}),
+                ...Object.fromEntries(
+                  housesResults.map((hr) => [
+                    String(hr.house),
+                    {
+                      interpretation: hr.content,
+                      houseName: hr.carta.nome,
+                      oduName: hr.odu.nome,
+                      generatedAt: new Date().toISOString(),
+                    },
+                  ])
+                ),
+              },
+            };
+
+            await prisma.report.upsert({
+              where: { readingId },
+              create: {
+                readingId,
+                content: JSON.parse(JSON.stringify(newContent)),
+                llmModel,
+                tokensUsed: totalTokens,
+              },
+              update: {
+                content: JSON.parse(JSON.stringify(newContent)),
+                llmModel,
+              },
+            });
+          } catch (persistErr) {
+            // Best-effort: não falha o stream se persistência falhar
+            console.error('[generate] Report persist error:', persistErr);
+          }
+        }
+
+        // 6d) Done
+        send({
+          event: 'done',
+          data: {
+            readingId,
+            housesGenerated: housesResults.length,
+            totalTokens,
+          },
+        });
+        close();
+      } catch (err) {
+        // Erro fatal no stream
+        try {
+          send({
+            event: 'error',
+            data: {
+              message: err instanceof Error ? err.message : 'Erro interno no stream',
+            },
+          });
+        } catch {
+          /* stream may already be closed */
+        }
+        close();
+      } finally {
+        // 7) Transição GENERATING → COMPLETED/ERROR
+        if (readingId) {
+          await prisma.reading
+            .update({
+              where: { id: readingId },
+              data: { status: finalStatus },
+            })
+            .catch(() => {
+              /* best-effort */
+            });
+        }
+
+        // K.2: Log business event (AD-22.4)
+        const durationMs = Date.now() - startTime;
+        log.info('dossier.generated', {
+          operatorId: operator.id,
+          readingId: readingId ?? null,
+          tokens: totalTokens,
+          llmModel,
+          durationMs,
+          housesAnalyzed: housesResults.length,
+        });
+      }
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream; charset=utf-8',
+      'Cache-Control': 'no-cache, no-transform',
+      Connection: 'keep-alive',
+      'X-Accel-Buffering': 'no', // Disable nginx buffering for SSE
+    },
+  });
 }

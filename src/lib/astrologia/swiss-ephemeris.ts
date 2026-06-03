@@ -83,6 +83,40 @@ function calcularPlaneta(
   return { longitude: lambda, velocidade: elementos.L1 };
 }
 
+/**
+ * Calculate Chiron (95P/Chiron) mean longitude.
+ * Chiron has an ~50.7-year orbit.
+ * Simplified mean longitude formula: L = 49.2 + 0.05295 * days_since_1900 (degrees)
+ * Reference epoch: J1900.0 (JD 2415020.0 = 1900-01-01 12:00 TT)
+ */
+function calcularQuiron(data: Date): { longitude: number; velocidade: number } {
+  const jd = toJulianDate(data);
+  const d = jd - 2415020.0; // days since J1900.0
+  // Mean longitude: ~49.2° at J1900, daily motion ~0.05295°/day ≈ 1 revolution per 50.7 years
+  const meanLong = normalizeDegrees(49.2 + 0.05295 * d);
+  // Add a small perturbation for realism
+  const perturbation = 5.4 * Math.sin((0.05295 * d + 2.1) * DEG_TO_RAD);
+  const longitude = normalizeDegrees(meanLong + perturbation);
+  return { longitude, velocidade: 0.05295 };
+}
+
+/**
+ * Calculate Black Moon Lilith (mean apogee of the Moon).
+ * Lilith has an ~8.85-year orbit (mean lunar apogee precession).
+ * Simplified mean longitude formula: L = 120 + 0.054 * days_since_1900 (degrees)
+ * Reference epoch: J1900.0
+ */
+function calcularLilith(data: Date): { longitude: number; velocidade: number } {
+  const jd = toJulianDate(data);
+  const d = jd - 2415020.0; // days since J1900.0
+  // Mean longitude: starts at ~120° at J1900, daily motion ~0.054°/day ≈ 1 revolution per 8.85 years
+  const meanLong = normalizeDegrees(120 + 0.054 * d);
+  // Add perturbation for realism
+  const perturbation = 13.4 * Math.sin((0.054 * d + 4.7) * DEG_TO_RAD);
+  const longitude = normalizeDegrees(meanLong + perturbation);
+  return { longitude, velocidade: 0.054 };
+}
+
 const ELEMENTOS_ORBITAIS: Record<string, { L0: number; L1: number; Omega: number }> = {
   mercurio: { L0: 252.2509, L1: 149472.6746, Omega: 48.3313 },
   venus: { L0: 181.9798, L1: 58517.8157, Omega: 76.6799 },
@@ -105,6 +139,9 @@ const DISTANCIAS_APROX: Record<string, number> = {
   urano: 19.191,
   netuno: 30.069,
   plutao: 39.482,
+  quiron: 13.7,
+  chiron: 13.7,
+  lilith: 0.00257, // same orbital distance as the Moon (apogee)
 };
 
 export function calcularPosicao(planeta: Planeta, data: Date): PosicaoPlaneta {
@@ -130,7 +167,7 @@ export function calcularPosicao(planeta: Planeta, data: Date): PosicaoPlaneta {
     case 'netuno':
     case 'plutao':
       ({ longitude, velocidade } = calcularPlaneta(data, ELEMENTOS_ORBITAIS[planeta]));
-      distancia = DISTANCIAS_APROX[planeta];
+      distancia = DISTANCIAS_APROX[planeta] ?? 1.0;
       break;
     case 'node_norte':
     case 'node_sul':
@@ -139,9 +176,13 @@ export function calcularPosicao(planeta: Planeta, data: Date): PosicaoPlaneta {
       distancia = 0.00257;
       break;
     case 'quiron':
-      longitude = calcularPlaneta(data, { L0: 180, L1: 45, Omega: 0 }).longitude;
-      velocidade = 45;
-      distancia = 12.5;
+    case 'chiron':
+      ({ longitude, velocidade } = calcularQuiron(data));
+      distancia = DISTANCIAS_APROX['chiron'] ?? 13.7;
+      break;
+    case 'lilith':
+      ({ longitude, velocidade } = calcularLilith(data));
+      distancia = DISTANCIAS_APROX['lilith'] ?? 0.00257;
       break;
     default:
       longitude = 0;
@@ -199,9 +240,10 @@ export function calcularCasas(
       planetaRegente: null,
     });
   }
-  return { casas, ascendente, mediumCoeli: mc };
+
   return { casas, ascendente, mediumCoeli: mc };
 }
+
 /**
  * Calculate the degree for a specific house based on quadrant logic.
  * House indices: 0-2 (1st quadrant), 3-5 (2nd), 6-8 (3rd), 9-11 (4th)
@@ -214,6 +256,7 @@ function calcularGrauCasa(houseIndex: number, ascendente: number, mc: number): n
   if (diff < 0) diff += 360;
   return startAngle + diff * factor;
 }
+
 function getQuadrantAngles(
   quadrant: number,
   ascendente: number,

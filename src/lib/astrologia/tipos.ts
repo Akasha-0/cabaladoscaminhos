@@ -19,18 +19,7 @@ export interface Casa {
 export interface MapaNatal {
   usuarioId: string;
   dataCalculo: Date;
-  planeta: {
-    sol: PosicaoPlaneta;
-    lua: PosicaoPlaneta;
-    mercurio: PosicaoPlaneta;
-    venus: PosicaoPlaneta;
-    marte: PosicaoPlaneta;
-    jupiter: PosicaoPlaneta;
-    saturno: PosicaoPlaneta;
-    urano: PosicaoPlaneta;
-    netuno: PosicaoPlaneta;
-    plutao: PosicaoPlaneta;
-  };
+  planeta: Record<string, PosicaoPlaneta>;
   casas: Casa[];
   ascendente: number;
   mediumCoeli: number;
@@ -53,7 +42,9 @@ export type Planeta =
   | 'plutao'
   | 'node_norte'
   | 'node_sul'
-  | 'quiron';
+  | 'quiron'
+  | 'chiron'
+  | 'lilith';
 
 export type Signo =
   | 'aries'

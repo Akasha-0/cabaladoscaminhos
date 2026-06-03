@@ -239,13 +239,132 @@ export function calculateTantricPath(birthDate: string): number {
 // ============================================================================
 // AGREGADOR — Constrói o mapa tântrico completo
 // ============================================================================
+// ============================================================================
+// 5-BODY TÂNTRIC FRAMEWORK — derived from birth date
+// ============================================================================
+const BODY_QUALITIES: Record<number, string[]> = {
+  1: ['Liderança', 'Iniciativa', 'Determinação', 'Coragem'],
+  2: ['Intuição', 'Sensibilidade', 'Cooperatividade', 'Diplomacia'],
+  3: ['Criatividade', 'Expressão', 'Comunicação', 'Otimismo'],
+  4: ['Estabilidade', 'Praticidade', 'Disciplina', 'Resiliência'],
+  5: ['Versatilidade', 'Liberdade', 'Adaptação', 'Curiosidade'],
+  6: ['Harmonia', 'Responsabilidade', 'Devoção', 'Família'],
+  7: ['Análise', 'Espiritualidade', 'Sabedoria', 'Introspecção'],
+  8: ['Abundância', 'Autoridade', 'Sabedoria prática', 'Manifestação'],
+  9: ['Compaixão', 'Universalidade', 'Iluminação', 'Generosidade'],
+  11: ['Visão', 'Inspiração', 'Iluminação espiritual', 'Mestria'],
+  22: ['Realização', 'Construção', 'Grande escala', 'Visão prática'],
+  33: ['Serviço', 'Ensino', 'Transcendência', 'Mestria espiritual'],
+};
+const BODY_DESCRIPTIONS: Record<string, Record<number, string>> = {
+  fisico: {
+    1: 'Corpo físico forte e vital, predisposição à liderança e ação direta',
+    2: 'Corpo físico harmonioso, sensibilidade corporal e receptividade',
+    3: 'Corpo expressivo e flexível, energia de comunicação e movimento',
+    4: 'Corpo robusto e estável, resistência física e disciplina',
+    5: 'Corpo dinâmico e adaptável, energia de liberdade e mudança',
+    6: 'Corpo harmonioso e nutritivo, energia de cuidado e família',
+    7: 'Corpo refined e contemplativo, energia de introspecção',
+    8: 'Corpo poderoso e abundante, energia de manifestação material',
+    9: 'Corpo compassivo e humanitário, energia de serviço universal',
+  },
+  pranic: {
+    1: 'Prana vibrante e direcionado, energia de vontade e ação',
+    2: 'Prana receptivo e fluido, energia de feeling e empatia',
+    3: 'Prana expansivo e comunicativo, energia de expressão creativa',
+    4: 'Prana firme e estruturado, energia de disciplina e root',
+    5: 'Prana livre e versátil, energia de mudança e adaptação',
+    6: 'Prana harmonioso e amoroso, energia de conexão e cuidado',
+    7: 'Prana profundo e contemplativo, energia de sabedoria interior',
+    8: 'Prana poderoso e abundante, energia de transformação material',
+    9: 'Prana universal e compassivo, energia de serviço global',
+  },
+  emocional: {
+    1: 'Emoções diretas e intensas, autoexpressão forte e independentes',
+    2: 'Emoções profundas e receptivas, forte conexão com sentimentos alheios',
+    3: 'Emoções expressivas e criativas, alegria de viver e comunicação',
+    4: 'Emoções estáveis e leais, profundidade sentimental e comprometimento',
+    5: 'Emoções livres e versáteis, intensidade emocional e curiosidade',
+    6: 'Emoções harmoniosas e devotas, amor incondicional e família',
+    7: 'Emoções refinadas e intuitivas, empatia profunda e espiritualidade',
+    8: 'Emoções poderosas e transformadoras, paixão por justiça e poder',
+    9: 'Emoções universais e compassivas, empatia global e altruísmo',
+  },
+  mental: {
+    1: 'Mente analítica e diretiva, foco em resultados e originalidade',
+    2: 'Mente intuitiva e cooperadora, foco em relacionamentos e equilíbrio',
+    3: 'Mente criativa e expressiva, foco em comunicação e inovação',
+    4: 'Mente prática e estruturada, foco em organização e fundamento',
+    5: 'Mente versátil e curiosa, foco em liberdade e novas ideias',
+    6: 'Mente harmoniosa e responsável, foco em justiça e serviço',
+    7: 'Mente sábia e introspectiva, foco em conhecimento e verdade',
+    8: 'Mente estratégica e poderosa, foco em poder e abundância',
+    9: 'Mente humanitária e iluminada, foco em compaixão e sabedoria',
+  },
+  espiritual: {
+    1: 'Espiritualidade de autoafirmação, busca de propósito individual',
+    2: 'Espiritualidade de union, busca de conexão com o divino através do outro',
+    3: 'Espiritualidade de expressão criativa, busca de verdade através da arte',
+    4: 'Espiritualidade de serviço estruturado, busca de propósito através do trabalho',
+    5: 'Espiritualidade de liberdade, busca de verdade através da experiência',
+    6: 'Espiritualidade de devoção, busca de amor divino através do serviço',
+    7: 'Espiritualidade contemplativa, busca de sabedoria através da solidão',
+    8: 'Espiritualidade de abundância, busca de plenitude através da manifestação',
+    9: 'Espiritualidade universal, busca de iluminação através da compaixão',
+  },
+};
+function getBodyNumber(day: number, mod = 9): number {
+  return ((day - 1) % mod) + 1;
+}
+function derive5Bodies(birthDate: string): TantricMap['bodies'] {
+  const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) {
+    return {
+      fisico: { number: 1, description: 'Corpo físico — padrão', qualities: ['Energia padrão'] },
+      pranic: { number: 1, description: 'Corpo prânico — padrão', qualities: ['Prana padrão'] },
+      emocional: { number: 1, description: 'Corpo emocional — padrão', qualities: ['Emoção padrão'] },
+      mental: { number: 1, description: 'Corpo mental — padrão', qualities: ['Mente padrão'] },
+      espiritual: { number: 1, description: 'Corpo espiritual — padrão', qualities: ['Espiritualidade padrão'] },
+    };
+  }
+  const [, year, month, dayStr] = match;
+  const day = parseInt(dayStr, 10);
+  const monthNum = parseInt(month, 10);
+  const yearNum = parseInt(year, 10);
+  // Físico: day → emotional/mental via vowels/consonants derivation
+  // Since we don't have fullName, derive emotional/mental from day+month+year
+  const fisicoNum = reduceTantric(day);
+  const pranicNum = reduceTantric(monthNum);
+  const emocionalNum = reduceTantric(day + monthNum);
+  const mentalNum = reduceTantric(day + yearNum % 100);
+  const espiritualNum = reduceTantric(
+    String(yearNum).split('').reduce((s, d) => s + parseInt(d, 10), 0)
+  );
+  const mkNum = (n: number) => {
+    if (n === 11 || n === 22 || n === 33) return n;
+    return n;
+  };
+  const mkDesc = (body: string, n: number) => {
+    return BODY_DESCRIPTIONS[body]?.[n] ?? BODY_DESCRIPTIONS[body]?.[reduceTantric(n)] ?? `Corpo ${body}: energia ${n}`;
+  };
+  const mkQuals = (n: number) => BODY_QUALITIES[n] ?? BODY_QUALITIES[reduceTantric(n)] ?? [`Energia ${n}`];
+  return {
+    fisico: { number: mkNum(fisicoNum), description: mkDesc('fisico', fisicoNum), qualities: mkQuals(fisicoNum) },
+    pranic: { number: mkNum(pranicNum), description: mkDesc('pranic', pranicNum), qualities: mkQuals(pranicNum) },
+    emocional: { number: mkNum(emocionalNum), description: mkDesc('emocional', emocionalNum), qualities: mkQuals(emocionalNum) },
+    mental: { number: mkNum(mentalNum), description: mkDesc('mental', mentalNum), qualities: mkQuals(mentalNum) },
+    espiritual: { number: mkNum(espiritualNum), description: mkDesc('espiritual', espiritualNum), qualities: mkQuals(espiritualNum) },
+  };
+}
+// ============================================================================
+// AGREGADOR — Constrói o mapa tântrico completo
+// ============================================================================
 export function buildTantricMap(birthDate: string): Partial<TantricMap> {
   const soul = calculateSoul(birthDate);
   const karma = calculateKarma(birthDate);
   const divineGift = calculateDivineGift(birthDate);
   const destiny = calculateDestiny(birthDate);
   const tantricPath = calculateTantricPath(birthDate);
-
   return {
     soul,
     soulBody: soul,
@@ -259,7 +378,7 @@ export function buildTantricMap(birthDate: string): Partial<TantricMap> {
     destiny,
     tantricPath,
     tantricBodies: { ...TANTRIC_BODIES },
-    bodies: TANTRIC_BODIES_DATA,
+    bodies: derive5Bodies(birthDate),
     sacredGeometry: deriveSacredGeometry(soul, karma, destiny),
     chakraStates: mapSoulToChakraStates(soul),
     energyMatrix: mapKarmaToEnergyMatrix(karma),

@@ -64,7 +64,10 @@ vi.mock('@/lib/prisma', () => ({
     operator: { findUnique: vi.fn() },
     reading: { findUnique: vi.fn() },
     consultation: { findUnique: vi.fn(), create: vi.fn(), update: vi.fn() },
-    chatMessage: { create: vi.fn() },
+    chatMessage: {
+      create: vi.fn(),
+      findMany: vi.fn().mockResolvedValue([]),
+    },
     $transaction: vi.fn(async (cb: (tx: unknown) => Promise<unknown>) =>
       cb({
         chatMessage: { create: vi.fn().mockResolvedValue({ id: 'msg-1' }) },
@@ -72,6 +75,14 @@ vi.mock('@/lib/prisma', () => ({
       })
     ),
   },
+}));
+vi.mock('@/lib/logging', () => ({
+  generateRequestId: vi.fn(() => 'test-request-id'),
+  createLogger: vi.fn(() => ({
+    info: vi.fn(),
+    error: vi.fn(),
+    warn: vi.fn(),
+  })),
 }));
 
 import { prisma } from '@/lib/prisma';

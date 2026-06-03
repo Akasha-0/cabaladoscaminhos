@@ -182,11 +182,19 @@ describe('numerology-tantric: buildTantricMap', () => {
     expect(typeof result.tantricBodies).toBe('object');
   });
 
-  it('should include bodies array with 11 entries', () => {
+  it('should include bodies object with 5 tantric bodies', () => {
     const result = buildTantricMap(TEST_DATE);
     expect(result.bodies).toBeDefined();
-    expect(Array.isArray(result.bodies)).toBe(true);
-    expect(result.bodies!.length).toBe(11);
+    expect(typeof result.bodies).toBe('object');
+    const bodies = result.bodies!;
+    expect(bodies.fisico).toBeDefined();
+    expect(bodies.fisico.number).toBeGreaterThan(0);
+    expect(typeof bodies.fisico.description).toBe('string');
+    expect(Array.isArray(bodies.fisico.qualities)).toBe(true);
+    expect(bodies.pranic).toBeDefined();
+    expect(bodies.emocional).toBeDefined();
+    expect(bodies.mental).toBeDefined();
+    expect(bodies.espiritual).toBeDefined();
   });
   it('should have soulDescription as non-empty string', () => {
     const result = buildTantricMap(TEST_DATE);

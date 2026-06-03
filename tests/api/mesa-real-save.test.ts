@@ -56,6 +56,14 @@ vi.mock('@/lib/prisma', () => ({
     },
   },
 }));
+vi.mock('@/lib/logging', () => ({
+  generateRequestId: vi.fn(() => 'test-request-id'),
+  createLogger: vi.fn(() => ({
+    info: vi.fn(),
+    error: vi.fn(),
+    warn: vi.fn(),
+  })),
+}));
 
 import { prisma } from '@/lib/prisma';
 

@@ -7,6 +7,8 @@ import type { AIResponse, ChatCompletionOptions, ChatMessage } from './types';
 
 const DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-4o';
 const FALLBACK_MODEL = process.env.OPENAI_FALLBACK_MODEL || 'gpt-4o-mini';
+// ANTHROPIC_MODEL: future support for Claude models via Anthropic API
+const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || '';
 const DEFAULT_MAX_TOKENS = parseInt(process.env.OPENAI_MAX_TOKENS || '1000', 10);
 const DEFAULT_TEMPERATURE = parseFloat(process.env.OPENAI_TEMPERATURE || '0.7');
 
@@ -348,20 +350,37 @@ export async function createChatCompletion(
   if (!shouldRetryAfterFailure()) {
     throw new CircuitBreakerOpenError();
   }
-
   const params = extractApiParams(options);
   const { model, temperature, max_tokens, useFallback } = params;
   const effectiveModel = useFallback ? FALLBACK_MODEL : model;
 
   try {
+    const startMs = Date.now();
     const completion = await getOpenAIClient().chat.completions.create({
       model: effectiveModel,
       messages: options.messages,
       temperature,
       max_tokens,
     });
-
     recordSuccess();
+
+    // Structured log: llm.call event (AD-22.6)
+    const durationMs = Date.now() - startMs;
+    const logEntry = {
+      ts: new Date().toISOString(),
+      level: 'info',
+      event: 'llm.call',
+      model: effectiveModel,
+      temperature,
+      max_tokens,
+      promptTokens: completion.usage?.prompt_tokens,
+      completionTokens: completion.usage?.completion_tokens,
+      totalTokens: completion.usage?.total_tokens,
+      durationMs,
+      cached: false,
+    };
+    console.log(JSON.stringify(logEntry));
+
     return transformResponse(completion);
   } catch (error) {
     recordFailure();

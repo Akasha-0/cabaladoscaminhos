@@ -276,18 +276,50 @@ function parseAstrologyResults(
 ): AstrologyResults {
   const sol = raw.planets.find((p) => p.planet === 'sol');
   const sign = (sol?.sign ?? 'aries') as Signo;
+  const toPos = (p: { planet: string; longitude: number; sign: string } | undefined) =>
+    ({ planeta: (p?.planet ?? 'sol') as import('@/lib/astrologia/tipos').Planeta, longitude: p?.longitude ?? 0, latitude: 0, distancia: 1, velocidade: 0, signo: (p?.sign ?? 'aries') as Signo, casa: 1, grauNoSigno: Math.floor((p?.longitude ?? 0) % 30) + 1 });
+  const chironP = raw.planets.find((p) => p.planet === 'chiron');
+  const lilithP = raw.planets.find((p) => p.planet === 'lilith');
+  // Count planets by element
+  const PLANET_SIGNS = raw.planets.map((p) => p.sign);
+  const ELEMENT_SIGNS: Record<string, string[]> = {
+    fire: ['aries', 'leao', 'sagitario'],
+    earth: ['touro', 'virgem', 'capricornio'],
+    air: ['gemeos', 'libra', 'aquario'],
+    water: ['cancer', 'escorpio', 'peixes'],
+  };
+  const MODALITY_SIGNS: Record<string, string[]> = {
+    cardinal: ['aries', 'cancer', 'libra', 'capricornio'],
+    fixed: ['touro', 'leao', 'escorpio', 'aquario'],
+    mutable: ['gemeos', 'virgem', 'sagitario', 'peixes'],
+  };
+  const elementos = {
+    fire: PLANET_SIGNS.filter((s) => ELEMENT_SIGNS.fire.includes(s)).length,
+    earth: PLANET_SIGNS.filter((s) => ELEMENT_SIGNS.earth.includes(s)).length,
+    air: PLANET_SIGNS.filter((s) => ELEMENT_SIGNS.air.includes(s)).length,
+    water: PLANET_SIGNS.filter((s) => ELEMENT_SIGNS.water.includes(s)).length,
+  };
+  const modalidades = {
+    cardinal: PLANET_SIGNS.filter((s) => MODALITY_SIGNS.cardinal.includes(s)).length,
+    fixed: PLANET_SIGNS.filter((s) => MODALITY_SIGNS.fixed.includes(s)).length,
+    mutable: PLANET_SIGNS.filter((s) => MODALITY_SIGNS.mutable.includes(s)).length,
+  };
   return {
     ascendente: ascendenteFromDegree(raw.ascendant),
-    sol: { planeta: 'sol', longitude: sol?.longitude ?? 0, latitude: 0, distancia: 1, velocidade: 0, signo: sign, casa: 1, grauNoSigno: Math.floor((sol?.longitude ?? 0) % 30) + 1 },
-    lua: { planeta: 'lua', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'cancer', casa: 1, grauNoSigno: 1 },
-    mercurio: { planeta: 'mercurio', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'gemeos', casa: 1, grauNoSigno: 1 },
-    venus: { planeta: 'venus', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'touro', casa: 1, grauNoSigno: 1 },
-    marte: { planeta: 'marte', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'aries', casa: 1, grauNoSigno: 1 },
-    jupiter: { planeta: 'jupiter', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'sagitario', casa: 1, grauNoSigno: 1 },
-    saturno: { planeta: 'saturno', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'capricornio', casa: 1, grauNoSigno: 1 },
-    urano: { planeta: 'urano', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario', casa: 1, grauNoSigno: 1 },
-    netuno: { planeta: 'netuno', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'peixes', casa: 1, grauNoSigno: 1 },
-    plutao: { planeta: 'plutao', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio', casa: 1, grauNoSigno: 1 },
+    sol: toPos(sol),
+    lua: toPos(raw.planets.find((p) => p.planet === 'lua')),
+    mercurio: toPos(raw.planets.find((p) => p.planet === 'mercurio')),
+    venus: toPos(raw.planets.find((p) => p.planet === 'venus')),
+    marte: toPos(raw.planets.find((p) => p.planet === 'marte')),
+    jupiter: toPos(raw.planets.find((p) => p.planet === 'jupiter')),
+    saturno: toPos(raw.planets.find((p) => p.planet === 'saturno')),
+    urano: toPos(raw.planets.find((p) => p.planet === 'urano')),
+    netuno: toPos(raw.planets.find((p) => p.planet === 'netuno')),
+    plutao: toPos(raw.planets.find((p) => p.planet === 'plutao')),
+    chiron: toPos(chironP),
+    lilith: toPos(lilithP),
+    elementos,
+    modalidades,
     casas: raw.houses.map((h, i) => ({
       numero: i + 1,
       signo: sign,
@@ -311,6 +343,10 @@ const ASTROLOGY_FALLBACK: AstrologyResults = {
   urano: { planeta: 'urano', longitude: 210, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario', casa: 11, grauNoSigno: 1 },
   netuno: { planeta: 'netuno', longitude: 240, latitude: 0, distancia: 1, velocidade: 0, signo: 'peixes', casa: 12, grauNoSigno: 1 },
   plutao: { planeta: 'plutao', longitude: 270, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio', casa: 8, grauNoSigno: 1 },
+  chiron: { planeta: 'chiron' as import('@/lib/astrologia/tipos').Planeta, longitude: 0, latitude: 0, distancia: 13.7, velocidade: 0.05295, signo: 'aries', casa: 1, grauNoSigno: 1 },
+  lilith: { planeta: 'lilith' as import('@/lib/astrologia/tipos').Planeta, longitude: 120, latitude: 0, distancia: 0.00257, velocidade: 0.054, signo: 'leao', casa: 5, grauNoSigno: 1 },
+  elementos: { fire: 3, earth: 3, air: 3, water: 3 },
+  modalidades: { cardinal: 3, fixed: 3, mutable: 3 },
   casas: Array.from({ length: 12 }, (_, i) => ({
     numero: i + 1,
     signo: 'aries' as Signo,
