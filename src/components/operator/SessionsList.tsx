@@ -55,7 +55,7 @@ interface DeviceInfo {
  * Parse best-effort de um userAgent. NÃO é uma lib completa — só
  * cobre navegadores e OS mais comuns.
  */
-export function parseUserAgent(ua: string | null | undefined): DeviceInfo {
+function parseUserAgent(ua: string | null | undefined): DeviceInfo {
   const raw = (ua ?? '').trim();
   if (!raw) {
     return { icon: Globe, label: 'Dispositivo desconhecido', kind: 'unknown' };

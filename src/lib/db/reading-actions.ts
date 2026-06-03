@@ -100,7 +100,7 @@ export async function getReadingsByOperator(
 /**
  * Conta leituras criadas no mês corrente pelo Operator.
  */
-export async function countReadingsThisMonth(operatorId: string): Promise<number> {
+async function countReadingsThisMonth(operatorId: string): Promise<number> {
   const start = new Date();
   start.setDate(1);
   start.setHours(0, 0, 0, 0);
@@ -112,7 +112,7 @@ export async function countReadingsThisMonth(operatorId: string): Promise<number
 /**
  * Conta leituras pendentes (PENDING) criadas hoje pelo Operator.
  */
-export async function countPendingToday(operatorId: string): Promise<number> {
+async function countPendingToday(operatorId: string): Promise<number> {
   const start = new Date();
   start.setHours(0, 0, 0, 0);
   return prisma.reading.count({

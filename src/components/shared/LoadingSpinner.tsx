@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 
-// fallow-ignore-next-line unused-files
+// fallow-ignore-next-line unused-file
 export interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'gold' | 'purple' | 'white';

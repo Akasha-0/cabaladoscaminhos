@@ -247,7 +247,7 @@ async function generateTopAreasInsights(
 // MAIN: Generate insight for ONE specific area (used by detail page)
 // ============================================================
 
-export async function generateDetailedAreaInsight(
+async function generateDetailedAreaInsight(
   user: UserProfile,
   areaId: LifeAreaId,
   correlation: AreaCorrelation

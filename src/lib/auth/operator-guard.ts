@@ -49,7 +49,7 @@ import {
  *   const operator = await requireOperatorPage();
  *   // prossegue com `operator` (já narrowed para `Operator`)
  */
-export async function requireOperatorPage(): Promise<Operator> {
+async function requireOperatorPage(): Promise<Operator> {
   const operator = await getOperatorFromServerContext();
   if (!operator) {
     redirect(OPERATOR_LOGIN_PATH);

@@ -157,7 +157,7 @@ function getIntensityEmoji(intensity: AreaCorrelation['intensidade']): string {
 // ============================================================
 // MAIN CORRELATION FUNCTION
 // ============================================================
-export function correlateLifeAreas(user: UserProfile): LifeMapResult {
+function correlateLifeAreas(user: UserProfile): LifeMapResult {
   // Compute correlation for each life area
   const correlations = getAllLifeAreas().map(area => computeAreaCorrelation(area, user));
   // Sort by score descending

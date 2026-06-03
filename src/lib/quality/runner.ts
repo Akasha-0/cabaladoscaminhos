@@ -55,7 +55,7 @@ function stubEval(
 }
 
 // Structured eval registry
-export const ALL_EVALS: Record<string, EvalDefinition[]> = {
+const ALL_EVALS: Record<string, EvalDefinition[]> = {
   architecture: [
     stubEval('arch-001', 'Module coupling', 'performance', 'high'),
     stubEval('arch-002', 'Interface stability', 'performance', 'medium'),

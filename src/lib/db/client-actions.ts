@@ -47,7 +47,7 @@ export type SaveClientMapsInput = z.infer<typeof saveClientMapsSchema>;
 /**
  * Creates a new client with optional calculation maps
  */
-export async function createClient(input: CreateClientInput) {
+async function createClient(input: CreateClientInput) {
   const data = createClientSchema.parse(input);
 
   return prisma.client.create({
@@ -198,7 +198,7 @@ export async function listClients() {
  * Lista os consulentes que o Operator autenticado atendeu (Doc 16 AD-03).
  * O modelo Client não tem operatorId direto; filtra via readings.distinct(clientId).
  */
-export async function getClientsByOperator(operatorId: string) {
+async function getClientsByOperator(operatorId: string) {
   const readings = await prisma.reading.findMany({
     where: { operatorId },
     select: {

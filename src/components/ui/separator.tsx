@@ -5,7 +5,7 @@ import { Separator as SeparatorPrimitive } from "@base-ui/react/separator"
 import { cn } from "@/lib/utils"
 
 function Separator({
-// fallow-ignore-next-line unused-files
+// fallow-ignore-next-line unused-file
   className,
   orientation = "horizontal",
   ...props

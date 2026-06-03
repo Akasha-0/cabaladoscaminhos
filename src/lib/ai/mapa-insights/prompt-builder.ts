@@ -35,7 +35,7 @@ IDIOMA: Responda SEMPRE em português brasileiro, culturalmente apropriado e po�
  * Extracts all relevant spiritual data into human-readable format.
  */
 
-export function gerarContextoUsuario(mapa: MapaAlmaCompleto): string {
+function gerarContextoUsuario(mapa: MapaAlmaCompleto): string {
   const parts: string[] = [];
 
   // ─── Section Builders ────────────────────────────────────────────────────────
