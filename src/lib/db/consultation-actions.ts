@@ -4,10 +4,9 @@
 // Camada de DB para o motor de Q&A da Fase 4. Estas funções são
 // "action helpers" puros (mesmo padrão de reading-actions.ts /
 // client-actions.ts): input validado por Zod, retorno direto do Prisma.
-
-import { prisma } from '@/lib/prisma';
-import { z } from 'zod';
 import type { ChatRole, Consultation, ChatMessage } from '@prisma/client';
+import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
 
 // ============================================================================
 // Schemas (Zod)
@@ -43,6 +42,18 @@ export type AddChatMessageInput = z.infer<typeof addChatMessageSchema>;
  *   - Report (se já gerado) com seu conteúdo interpretativo
  *   - Lista de casas já preenchidas (para enriquecer o prompt)
  */
+/**
+ * ChatMessage shape returned inside ConsultContext with routing metadata (AD-12).
+ */
+export interface RoutingChatMessage {
+  id: string;
+  role: ChatRole;
+  content: string;
+  routedThemes: string[];
+  routedHouses: number[];
+  consultationId: string;
+  createdAt: Date;
+}
 export interface ConsultContext {
   readingId: string;
   client: {
@@ -59,6 +70,7 @@ export interface ConsultContext {
   matrixData: Record<number, { carta: number; odu: number }>;
   report: { id: string; content: Record<string, unknown> } | null;
   filledHouseNumbers: number[];
+  messages: RoutingChatMessage[]; // AD-12: routing info for RAG Q&A
 }
 
 // ============================================================================
@@ -69,9 +81,7 @@ export interface ConsultContext {
  * Cria uma nova thread de Q&A ancorada a uma leitura.
  * Garante que o Reading e o Operator existam antes de criar.
  */
-export async function createConsultation(
-  input: CreateConsultationInput
-): Promise<Consultation> {
+export async function createConsultation(input: CreateConsultationInput): Promise<Consultation> {
   const data = createConsultationSchema.parse(input);
 
   // Verifica existência para devolver 404-friendly (route layer trata).
@@ -95,9 +105,7 @@ export async function createConsultation(
  * Adiciona uma mensagem à thread e atualiza o `updatedAt` da consultation
  * (para ordenação de threads ativas).
  */
-export async function addChatMessage(
-  input: AddChatMessageInput
-): Promise<ChatMessage> {
+export async function addChatMessage(input: AddChatMessageInput): Promise<ChatMessage> {
   const data = addChatMessageSchema.parse(input);
 
   // Transação: cria a mensagem e bumpa o updatedAt da thread.
@@ -127,23 +135,23 @@ export async function addChatMessage(
  *   - Report (se existir) com seu conteúdo
  * Retorna `null` se o Reading não existir.
  */
-export async function getConsultContext(
-  readingId: string
-): Promise<ConsultContext | null> {
+export async function getConsultContext(readingId: string): Promise<ConsultContext | null> {
   const reading = await prisma.reading.findUnique({
     where: { id: readingId },
     include: {
       client: true,
       report: true,
+      consultations: {
+        include: {
+          messages: { orderBy: { createdAt: 'asc' } },
+        },
+      },
     },
   });
 
   if (!reading) return null;
 
-  const matrixData = (reading.matrixData ?? {}) as Record<
-    number,
-    { carta: number; odu: number }
-  >;
+  const matrixData = (reading.matrixData ?? {}) as Record<number, { carta: number; odu: number }>;
   const filledHouseNumbers = Object.keys(matrixData)
     .map((k) => Number(k))
     .filter((n) => Number.isFinite(n))
@@ -170,6 +178,17 @@ export async function getConsultContext(
         }
       : null,
     filledHouseNumbers,
+    messages: (reading.consultations ?? [])
+      .flatMap((c) => c.messages)
+      .map((m) => ({
+        id: m.id,
+        role: m.role,
+        content: m.content,
+        routedThemes: m.routedThemes,
+        routedHouses: m.routedHouses,
+        consultationId: m.consultationId,
+        createdAt: m.createdAt,
+      })),
   };
 }
 
@@ -190,9 +209,7 @@ export async function getConsultationsByReading(
 /**
  * Carrega todas as mensagens de uma consultation (para restaurar chat history).
  */
-export async function getMessagesByConsultation(
-  consultationId: string
-): Promise<ChatMessage[]> {
+export async function getMessagesByConsultation(consultationId: string): Promise<ChatMessage[]> {
   return prisma.chatMessage.findMany({
     where: { consultationId },
     orderBy: { createdAt: 'asc' },
