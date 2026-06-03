@@ -33,6 +33,10 @@ const consultSchema = z.object({
 
 type ConsultInput = z.infer<typeof consultSchema>;
 
+// AD-22.5 compliant: tokensUsed is captured from the LLM usage response (K.3)
+// and persisted via addChatMessage below (7c).
+// Prerequisite: ChatMessage.tokensUsed field (prisma/schema.prisma) +
+// addChatMessageSchema.tokensUsed (src/lib/db/consultation-actions.ts).
 export async function POST(request: NextRequest) {
   // 1) Auth (síncrono, antes do stream)
   const op = await requireOperator(request);
