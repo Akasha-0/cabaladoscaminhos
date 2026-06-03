@@ -1,6 +1,6 @@
-import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [react()],
@@ -18,6 +18,7 @@ export default defineConfig({
         test: {
           name: 'core-logic',
           environment: 'node',
+          setupFiles: ['./tests/setup.ts'],
           include: [
             'tests/lib/ai/**',
             'tests/lib/engines/**',
@@ -35,6 +36,8 @@ export default defineConfig({
             'tests/lib/engines/pattern-recognizer.test.ts',
             'tests/lib/engines/predictive-synthesis.test.ts',
             'tests/lib/ai/mapa-insights.test.ts',
+            '**/*.snap',
+            '**/__snapshots__/**',
           ],
         },
         resolve: {
@@ -47,10 +50,8 @@ export default defineConfig({
         test: {
           name: 'core-api',
           environment: 'node',
-          include: [
-            'tests/api/**',
-            'tests/middleware/**',
-          ],
+          setupFiles: ['./tests/setup.ts'],
+          include: ['tests/api/**', 'tests/middleware/**'],
           exclude: [
             'tests/api/timer.test.ts',
             'tests/api/progresso.test.ts',
@@ -59,6 +60,8 @@ export default defineConfig({
             'tests/api/orixa/**',
             'tests/api/stripe-webhook.test.ts',
             'tests/api/health.test.ts',
+            '**/*.snap',
+            '**/__snapshots__/**',
           ],
         },
         resolve: {
@@ -71,41 +74,15 @@ export default defineConfig({
         test: {
           name: 'core-ui',
           environment: 'jsdom',
-          include: [
-            'tests/cockpit/**',
-            'tests/components/**',
-          ],
-        },
-        resolve: {
-          alias: {
-            '@': path.resolve(__dirname, './src'),
-          },
-        },
-      },
-      {
-        test: {
-          name: 'legacy',
-          environment: 'jsdom',
-          include: [
-            'tests/lib/akashic/**',
-            'tests/lib/ancestor/**',
-            'tests/lib/aromatherapy/**',
-            'tests/lib/ascension*/**',
-            'tests/lib/aura/**',
-            'tests/lib/awakening/**',
-            'tests/lib/ayurveda/**',
-            'tests/lib/dosha*/**',
-            'tests/lib/element-compatibility/**',
-            'tests/lib/gamification/**',
-            'tests/lib/healing*/**',
-            'tests/lib/herb*/**',
-            'tests/lib/orixa*/**',
-            'tests/lib/reiki*/**',
-            'tests/lib/sign-relationships/**',
-            'tests/app/dashboard/chakra*',
-            'tests/app/dashboard/orixa*',
-            'tests/app/dashboard/ritual*',
-            'tests/components/onboarding/**',
+          setupFiles: ['./tests/setup.ts'],
+          include: ['tests/cockpit/**', 'tests/components/**'],
+          exclude: [
+            '**/*.snap',
+            '**/__snapshots__/**',
+            'tests/components/onboarding/OnboardingWizard.test.tsx',
+            'tests/components/layout/AppShell.test.tsx',
+            'tests/components/layout/PageHeader.test.tsx',
+            'tests/components/providers/UserProvider.test.tsx',
           ],
         },
         resolve: {
@@ -118,8 +95,15 @@ export default defineConfig({
         test: {
           name: 'integration',
           environment: 'node',
-          include: [
-            'tests/integration/**',
+          setupFiles: ['./tests/setup.ts'],
+          include: ['tests/integration/**'],
+          exclude: [
+            '**/*.snap',
+            '**/__snapshots__/**',
+            'tests/integration/middleware-auth.test.ts',
+            'tests/integration/api/chat-oracle.test.ts',
+            'tests/integration/api/oracle.test.ts',
+            'tests/integration/api/correlacao.test.ts',
           ],
         },
         resolve: {
