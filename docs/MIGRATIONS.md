@@ -102,7 +102,7 @@ prisma/
 
 ## Próximas migrations (quando aplicável)
 
-- Adicionar `Operator.sessions` (Fase 8 → Fase 12: lista de tokens
-  revogados para logout imediato)
+- ✅ `Operator.sessions` (Fase 13) — entregue via migration inicial
+  `20260602000000_init` (model `OperatorSession` + enum `OperatorSessionType`)
 - Adicionar `Reading.tags` para organização
 - Adicionar `Client.consentGiven` (LGPD/GDPR compliance)
