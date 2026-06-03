@@ -22,6 +22,7 @@ import {
 import { revokeSession } from '@/lib/auth/operator-sessions';
 import { checkOperatorRateLimit, OPERATOR_RATE_LIMITS } from '@/lib/auth/rate-limit';
 import { getOperatorFromRequest } from '@/lib/auth/operator-session';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
 
 const OPERATOR_LIMIT = OPERATOR_RATE_LIMITS['logout'].max; // 10
 const OPERATOR_WINDOW = OPERATOR_RATE_LIMITS['logout'].windowSeconds; // 60s
@@ -63,7 +64,6 @@ export async function POST(request: NextRequest) {
       }
     );
   }
-
   // Tenta revogar ambas as sessões (se houver cookies).
   // Falha aqui é logged mas NÃO bloqueia o logout.
   try {
@@ -76,10 +76,21 @@ export async function POST(request: NextRequest) {
     if (refreshToken) {
       await revokeSession(refreshToken);
     }
+    // AD-22.4: аудит события выхода (SESSION_REVOKED)
+    const ipAddress = request.headers.get('x-forwarded-for')
+      ?? request.headers.get('x-real-ip')
+      ?? undefined;
+    if (operatorId !== 'anonymous') {
+      logSecurityEvent({
+        type: 'SESSION_REVOKED',
+        operatorId,
+        ipAddress,
+        metadata: { reason: 'logout' },
+      });
+    }
   } catch (err) {
     console.error('[operator/auth/logout] failed to revoke session(s)', err);
   }
-
   const response = NextResponse.json({ success: true });
   clearOperatorSessionCookie(response);
   clearOperatorRefreshCookie(response);
