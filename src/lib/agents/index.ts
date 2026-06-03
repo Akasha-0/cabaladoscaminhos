@@ -5,8 +5,6 @@
 export * from './personal-cycle-engine';
 export * from './transit-engine';
 export * from './daily-context-builder';
-export * from './agent-prompts';
-export * from './recommendation-engine';
 // re-export v2 with explicit naming to avoid AreaRecommendation conflict
 export {
   generateAreaRecommendationV2,
