@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
+import StripeLib from 'stripe';
 import { adicionarCreditos } from '@/lib/credits/service';
-
 export const runtime = 'nodejs';
-
+// Stripe instance — requires STRIPE_SECRET_KEY
+function getStripe(): Stripe {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY is not configured');
+  return new StripeLib(key, { apiVersion: '2026-05-27.dahlia' });
+}
 // In-memory subscription status store
 const subscriptionStore = new Map<string, {
   userId: string;
@@ -12,34 +17,36 @@ const subscriptionStore = new Map<string, {
   planoId: string | null;
   updatedAt: Date;
 }>();
-
+// Restore the POST function properly
 export async function POST(request: NextRequest) {
   const body = await request.text();
   const signature = request.headers.get('stripe-signature');
-
-  // Mock signature validation for development
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-  if (!webhookSecret) {
-    console.warn('STRIPE_WEBHOOK_SECRET não definida - usando mock de validação');
-  }
-
+  // Check signature first — missing signature is a 400 bad request
   if (!signature) {
     return NextResponse.json(
       { erro: 'Assinatura do webhook não encontrada' },
       { status: 400 }
     );
   }
-
+  // CRITICAL: Reject if secret is not configured (production safety)
+  if (!webhookSecret) {
+    console.error('STRIPE_WEBHOOK_SECRET não definida — rejeitando webhook');
+    return NextResponse.json(
+      { erro: 'Configuração de webhook incompleta' },
+      { status: 500 }
+    );
+  }
   try {
-    const eventData = JSON.parse(body) as Stripe.Event;
-    return await handleWebhookEvent(eventData);
+    const stripe = getStripe();
+    const event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    return await handleWebhookEvent(event);
   } catch (err) {
     const error = err as Error;
     console.error('Erro ao processar webhook:', error.message);
     return NextResponse.json(
-      { erro: `Erro interno: ${error.message}` },
-      { status: 500 }
+      { erro: `Webhook inválido: ${error.message}` },
+      { status: 400 }
     );
   }
 }

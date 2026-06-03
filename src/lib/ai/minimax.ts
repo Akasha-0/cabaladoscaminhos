@@ -3,9 +3,11 @@ import type { ChatMessage, StreamChunk } from './types';
 // ============================================================
 // CONFIGURATION
 // ============================================================
-
-const MINIMAX_API_TOKEN = 'sk-cp-Kpz6_rV0uxSFKNFwhXXsj1ZNE_sd7_nSHd_KBOGPvjZ2l00J8tvlE8lA7gDwyuI-vUm_xxX66bALC4952KyRulzaosepLhGmkuIvIGU2OVmHESpWTUR0GGQ';
-const MINIMAX_API_BASE = 'https://api.minimaxi.chat/v1';
+const MINIMAX_API_TOKEN = process.env.MINIMAX_API_TOKEN;
+if (!MINIMAX_API_TOKEN) {
+  throw new Error('MINIMAX_API_TOKEN environment variable is required');
+}
+const MINIMAX_API_BASE = process.env.MINIMAX_API_BASE_URL ?? 'https://api.minimaxi.chat/v1';
 const MINIMAX_MODEL = 'minimax/m3';
 
 const DEFAULT_TEMPERATURE = 0.7;

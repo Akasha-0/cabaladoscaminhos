@@ -113,6 +113,24 @@ export default defineConfig({
           },
         },
       },
+      {
+        test: {
+          name: 'e2e',
+          environment: 'node',
+          setupFiles: ['./tests/setup.ts'],
+          testTimeout: 15000,
+          include: ['tests/e2e/**'],
+          exclude: [
+            '**/*.snap',
+            '**/__snapshots__/**',
+          ],
+        },
+        resolve: {
+          alias: {
+            '@': path.resolve(__dirname, './src'),
+          },
+        },
+      },
     ],
   },
 });
