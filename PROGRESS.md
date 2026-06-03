@@ -693,3 +693,31 @@ matrixData[casaNum] = {
 **Resultado:** 1,747 testes passando, 17 skipped · Build 118 páginas OK · TypeScript 0 erros · lint warnings (pre-existentes).
 
 Commit: 761c123f
+
+### Fase 40b — D4 Provisional Markers + Odu Algorithm Docs (2026-06-03)
+
+**D4 (Odu natal) — Glossário marked provisional:**
+- `docs/15_glossario-oracular.md`: Bump to v1.1 (2026-06-03)
+  - Header: add ⚠️ PROVISIONAL (D4) banner for Section 2 (Odus)
+  - §0: clarify Section 1 (Cartas Ciganas) is canonical; Section 2 is provisional
+  - §2 header: explicit ⚠️ PROVISIONAL (D4) banner
+  - §3 versionamento: note Section 2 updates when D4 is validated
+
+**D3 (Odu natal algorithm) — Algorithm docs fixed:**
+- `docs/11_calculo-deterministico.md` §4.1: Fix algorithm to match actual code
+  - Actual: `src/lib/calculators/odu-birth.ts:calculateBirthOdu` (day+month, not full date)
+  - Algorithm: day + month → reduceOduNumber → 1..16 (with iterative digit sum)
+  - provisional flag set by code (UI must display it)
+  - Note: `src/lib/ifa/draw.ts:deriveOduFromBirthDate` is a DIFFERENT function (tiragem Odu, not natal)
+
+**Test:**
+- `tests/calculators/engines.test.ts`: new test — 'Odu de nascimento retorna provisional=true (D3 default)'
+
+**Audit findings (logged, not addressed):**
+- AD-04 (ephemeris precision): Validation never executed — needs 3 birth charts vs reference ephemeris. Status 🧭 (blocked on external reference data).
+- AD-22.5 (tokensUsed in ChatMessage): Already fully implemented (schema + route + DB action).
+- AD-22.11 (runbook): Already documented in Doc 22 §9; cleanup-tokens.ts exists.
+
+**Resultado:** 1,748 testes passando (+1 new) · TypeScript 0 erros · lint warnings (pre-existentes em .next/dev/ validator.ts — nao relacionado).
+
+Commit: ecbadb4f, 7a74472c
