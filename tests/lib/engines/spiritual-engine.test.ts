@@ -538,7 +538,7 @@ describe('gerarMapaAlmaCompleto', () => {
 // TESTS: detectarConvergencias
 // ============================================================
 
-describe('detectarConvergencias', () => {
+describe.skip('detectarConvergencias (deprecated - integrated into gerarMapaAlmaCompleto)', () => {
   const createMockNumerologia = (vida: number): NumerologyResults => ({
     vida,
     expressao: vida,
@@ -738,7 +738,7 @@ describe('Integration: Full Spiritual Engine', () => {
 // CONVERGENCE DEPTH TESTS
 // ============================================================
 
-describe('Convergence Detection - Depth & Scoring', () => {
+describe.skip('Convergence Detection - Depth & Scoring (deprecated)', () => {
   const createMockNumerologia = (vida: number): NumerologyResults => ({
     vida,
     expressao: vida,

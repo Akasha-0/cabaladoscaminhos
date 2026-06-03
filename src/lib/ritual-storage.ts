@@ -1,4 +1,5 @@
 /**
+/**
  * Ritual Storage Module
  * @module ritual-storage
  *

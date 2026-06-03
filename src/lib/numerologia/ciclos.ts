@@ -1,4 +1,3 @@
-// fallow-ignore-next-line unused-type
 export interface CicloTemporais {
   anoPessoal: number;
   mesPessoal: number;

@@ -117,7 +117,7 @@ function getOpe(id: number): Ope {
 }
 
 // Get all 16 Odu
-function getAllOdu(): Odu[] {
+export function getAllOdu(): Odu[] {
   return Object.entries(oduMap).map(([num, config]) => ({
     numero: parseInt(num),
     Caminho: parseInt(num),
@@ -243,7 +243,7 @@ function drawMultipleOdu(count: number): DrawResult[] {
 }
 
 // Get Odu by number
-function getOduByNumber(numero: number): Odu | null {
+export function getOduByNumber(numero: number): Odu | null {
   if (numero < 1 || numero > 16) return null;
   
   const config = oduMap[numero];

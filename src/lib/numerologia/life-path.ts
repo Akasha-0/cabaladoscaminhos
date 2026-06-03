@@ -1,4 +1,5 @@
 /**
+/**
  * Life Path Number Calculator
  * @module numerologia/life-path
  *

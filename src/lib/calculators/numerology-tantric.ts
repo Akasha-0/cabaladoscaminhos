@@ -53,7 +53,7 @@ function reduceTantric(n: number): number {
 // 1. NÚMERO DE ALMA (dia de nascimento, reduzido)
 // ============================================================================
 // 20 → 2+0 = 2
-function calculateSoul(birthDate: string): number {
+export function calculateSoul(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
   return reduceTantric(parseInt(match[3], 10));
@@ -63,7 +63,7 @@ function calculateSoul(birthDate: string): number {
 // 2. NÚMERO DE KARMA (mês de nascimento)
 // ============================================================================
 // 08 → 8 (mês já é ≤ 11)
-function calculateKarma(birthDate: string): number {
+export function calculateKarma(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
   return reduceTantric(parseInt(match[2], 10));
@@ -75,7 +75,7 @@ function calculateKarma(birthDate: string): number {
 // ============================================================================
 // 1986 → 86 → 8+6=14 → 1+4=5
 // Doc 04 §2.3: "1986 → 8+6=14 → 1+4=5"
-function calculateDivineGift(birthDate: string): number {
+export function calculateDivineGift(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
   const yearLastTwo = parseInt(match[1].slice(-2), 10);
@@ -86,7 +86,7 @@ function calculateDivineGift(birthDate: string): number {
 // 4. NÚMERO DE DESTINO (soma do ano completo de 4 dígitos, reduzido)
 // ============================================================================
 // 1986 → 1+9+8+6=24 → 2+4=6
-function calculateDestiny(birthDate: string): number {
+export function calculateDestiny(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
   const year = parseInt(match[1], 10);
@@ -98,7 +98,7 @@ function calculateDestiny(birthDate: string): number {
 // 5. NÚMERO DE CAMINHO TÂNTRICO (soma total de dia+mês+ano)
 // ============================================================================
 // 20+8+1986=2014 → 2+0+1+4=7
-function calculateTantricPath(birthDate: string): number {
+export function calculateTantricPath(birthDate: string): number {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return 1;
   const [, y, m, d] = match;
