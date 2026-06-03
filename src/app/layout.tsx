@@ -41,6 +41,33 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
+// ============================================================
+// Security Headers — CSP para rotas de página (não /api/*)
+// Middleware.ts já endurece /api/* com default-src 'none'.
+// Aqui adicionamos CSP funcional para páginas (Doc 18 §4).
+// ============================================================
+const PAGE_CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  "connect-src 'self' https://api.openai.com https://api.minimax.io https://api.stripe.com",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join('; ');
+
+export const headers = [
+  {
+    source: '/:path*',
+    headers: [
+      { key: 'Content-Security-Policy', value: PAGE_CSP },
+    ],
+  },
+];
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://cabaladoscaminhos.com';
 
 export const metadata: Metadata = {

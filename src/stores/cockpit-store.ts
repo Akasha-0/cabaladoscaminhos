@@ -92,6 +92,7 @@ interface CockpitState {
   getFilledCount: () => number;
   getUsedCardCount: () => number;
   getRemainingCardCount: () => number;
+  cartasRestantes: () => number[];
   canGenerateDossie: () => boolean;
 }
 
@@ -211,12 +212,14 @@ export const useCockpitStore = create<CockpitState>((set, get) => ({
 
   // AD-17.2: Cards that have been placed
   getUsedCardCount: () => get().placedCards.size,
-
   // AD-17.2: Cards remaining to place (36 - placed)
   getRemainingCardCount: () => 36 - get().placedCards.size,
-
+  // AD-17.2: List of card IDs (1-36) NOT yet placed
+  cartasRestantes: () => {
+    const placed = get().placedCards;
+    return Array.from({ length: 36 }, (_, i) => i + 1).filter(n => !placed.has(n));
+  },
   canGenerateDossie: () => get().houses.size >= 1,
-
   // Right panel actions (Zone C)
   setRightPanelTab: (tab) => set({ rightPanelTab: tab }),
 
