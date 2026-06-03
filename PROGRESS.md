@@ -294,3 +294,20 @@ Exclusão de testes legados B2C do core-api no vitest.config.ts
 
 *Última atualização: 2026-06-03 — Fase 28*
 *Versão: 1.1*
+### Fase 29 — Auth Test Mocks Fix (2026-06-03)
+
+Correcao de mocks faltando nos testes de autenticacao:
+
+**Bug Critico:** `operatorMfa` nao estava mockado em `operator-auth.test.ts`
+- Rota `/login` chama `isMfaEnabled()` -> `prisma.operatorMfa.findUnique`
+- Erro: `Cannot read properties of undefined (reading 'findUnique')`
+
+**Fixes aplicados:**
+- `tests/api/operator-auth.test.ts`: Added `operatorMfa.findUnique` mock returning `null`
+- `tests/api/operator-auth.test.ts`: Added `operatorSession.findUnique` mock for `/me` route tests
+- `tests/api/operator-auth.test.ts`: Added `mockOperatorSessionFindUnique` const declaration
+- Mock data includes `type`, `expiresAt`, `refreshExpiresAt`, `revokedAt` para `isSessionActive()`
+
+**Resultado:** 67 auth tests passando (26 auth + 21 sessions + 20 MFA)
+
+*Ultima atualizacao: 2026-06-03 — Fase 29*
