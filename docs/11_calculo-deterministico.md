@@ -202,20 +202,24 @@ Cada número tântrico carrega a descrição do seu corpo (campo `*Description`)
 
 ### 4.1 Algoritmo Data → Odu
 
-**`⚠️ VALIDAR (D3)` — BLOQUEADOR DE CONTEÚDO.** Não existe padrão universal; a tabela/algoritmo é **escolha da linhagem do Cigano Ramiro**. Até o operador definir, o sistema usa o **default provisório determinístico** abaixo (executável, porém **deve ser substituído** antes do go-live):
-
+**`⚠️ VALIDAR (D3)` — BLOQUEADOR DE CONTEÚDO.** Não existe padrão universal; a tabela/algoritmo é **escolha da linhagem do Cigano Ramiro**. Até o operador definir, o sistema usa o **default provisório determinístico** abaixo (executável, porém **deve ser substituído** antes do go-live).
+**Algoritmo implementado** (`src/lib/calculators/odu-birth.ts:calculateBirthOdu`):
+1. Extrai dia e mês da data de nascimento (YYYY-MM-DD).
+2. Soma dia + mês.
+3. `reduceOduNumber(n)`: se n > 16, repete soma dos dígitos até caber em 1–16.
+4. Retorna `OduBirth` completo com `provisional: true` (sempre no default).
+5. Em caso de data inválida, retorna Odu 1 com `provisional: true`.
 ```typescript
-/**
- * DEFAULT PROVISÓRIO — substituir pela tabela da linhagem (D3).
- * Soma todos os dígitos da data e mapeia ao intervalo 1..16.
- */
-function calculateBirthOdu(date: string): number {
-  const digits = date.replace(/\D/g, '').split('').reduce((s, d) => s + Number(d), 0);
-  return ((digits - 1) % 16) + 1; // 1..16
+function reduceOduNumber(n: number): number {
+  let r = n;
+  while (r > 16) r = String(r).split('').reduce((s, d) => s + parseInt(d), 0);
+  if (r === 0) r = 16;
+  return r; // 1..16
 }
+// Exemplo: 20/08 → 20+8=28 → 2+8=10 → Odu 10 (Ofun)
+// Algoritmo default (dia+mês). A tabela definitiva da linhagem é decisão do operador (D3).
 ```
-
-> Quando o operador fornecer a tabela definitiva (ex.: por faixa de data, por jogo ritual, ou por correspondência astrológica→Odu), substituir esta função pela tabela fixa e adicionar os casos de teste correspondentes. Marcar `oduBirth.provisional: true` enquanto o default estiver em uso, para a UI sinalizar.
+> O campo `provisional: true` é definido **pelo código** enquanto o algoritmo default estiver em uso — a UI deve sinalizar visualmente. Quando o operador fornecer a tabela definitiva (por faixa de data, jogo ritual, ou correspondência astrológica→Odu), substituir `calculateBirthOdu` e remover o flag `provisional`.
 
 ### 4.2 Estrutura de Saída
 

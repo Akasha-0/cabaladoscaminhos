@@ -2,8 +2,13 @@
 ## Cabala dos Caminhos
 
 > **Tipo:** Base de conteúdo curada (anti-alucinação)
-> **Versão:** 1.0 | **Resolve:** G11 do Doc 10
-> **Uso:** Estes significados-base são **injetados no prompt como verdade** (Doc 06 §3.2), em vez de confiar na memória do LLM. O LLM interpreta o cruzamento; ele **não inventa** o significado base.
+> **Versão:** 1.1 | **Data:** 2026-06-03
+> **⚠️ PROVISIONAL (D4) — Seção 2 dos Odus não validada pela linhagem do operador.**
+> O conteúdo oracular dos Odus (essência, quizilas, conselhos) deve ser confirmado ou corrigido
+> antes do go-live. Seção 1 (Cartas Ciganas) é canônica e final.
+> **Uso:** estes significados-base são **injetados no prompt como verdade** (Doc 06 §3.2),
+> em vez de confiar na memória do LLM. O LLM interpreta o cruzamento; ele **não inventa**
+> o significado base.
 
 ---
 
@@ -11,7 +16,9 @@
 
 - O `PromptBuilder` injeta o `baseMeaning` da carta tirada e o `baseMeaning` do Odu tirado em cada bloco de casa.
 - O motor de Q&A (Doc 12) usa as mesmas verdades-base.
-- **`⚠️ VALIDAR (D4)`** aplica-se à seção dos Odus (grafia/essência da linhagem) — espelha o Doc 11 §5.
+- **`⚠️ VALIDAR (D4)`** aplica-se à **seção 2** (Odus):
+  - **Seção 1** (Cartas Ciganas): canônica e final.
+  - **Seção 2** (Odus): **provisória** até validação da linhagem do operador. Quando D4 for confirmado, atualizar para versão 2.0 com changelog das correções.
 
 ---
 
@@ -62,9 +69,9 @@ Cada entrada: **keywords** (do Doc 04 §5.1) + **significado-base** (frase-verda
 
 ---
 
-## 2. Os 16 Odus — Significado-Base, Quizila e Conselho
+## 2. Os 16 Odus — ⚠️ PROVISIONAL (D4)
 
-**`⚠️ VALIDAR (D4)`** — Derivado do Doc 11 §5. Cada Odu: **essência** + **quizila/preceito** (o que evitar) + **conselho-base** (a direção que o Oráculo oferece). Confirmar/corrigir pela linhagem do operador antes de imutabilizar.
+**`⚠️ PROVISIONAL (D4)`** — O conteúdo abaixo (essência, quizilas, conselhos) é **provisório** e deve ser validado/corrigido pela linhagem do operador antes do go-live. Derivado do Doc 11 §5. Cada Odu: **essência** + **quizila/preceito** (o que evitar) + **conselho-base** (a direção que o Oráculo oferece).
 
 | # | Odu | Essência | Quizila / Preceito | Conselho-base |
 |---|---|---|---|---|
@@ -94,4 +101,4 @@ Cada entrada: **keywords** (do Doc 04 §5.1) + **significado-base** (frase-verda
 1. **Verdade injetada > memória do modelo:** o significado-base vem deste documento; o LLM só interpreta o cruzamento (Terreno/Evento/Direção).
 2. **Nada de carta/Odu fora desta lista:** se o LLM precisar citar significado, ele usa o `baseMeaning`/`essence` daqui.
 3. **Sombra com proteção:** ao acessar a "sombra" de uma carta ou a "quizila" de um Odu, o Oráculo entrega como cuidado e direção (tom Ramiro — Doc 13), nunca como sentença.
-4. **Versionamento:** qualquer alteração aqui é uma mudança de conteúdo oracular e deve ser commitada com justificativa.
+4. **Versionamento:** qualquer alteração aqui é uma mudança de conteúdo oracular e deve ser commitada com justificativa. Seção 1 (Cartas) é imutável; Seção 2 (Odus) atualiza quando D4 for validado.

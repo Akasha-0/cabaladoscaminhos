@@ -224,4 +224,8 @@ describe('Odu de Nascimento', () => {
       }
     }
   });
+  it('Odu de nascimento retorna provisional=true (D3 default)', () => {
+    const odu = calculateBirthOdu(DATA_ELIANE);
+    expect(odu.provisional).toBe(true);
+  });
 });
