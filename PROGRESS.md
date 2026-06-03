@@ -608,3 +608,52 @@ matrixData[casaNum] = {
 
 *Ultima atualizacao: 2026-06-03 - Fase 38*
 *Versao: 1.7*
+
+### Fase 39 — Alinhamento Final Docs + Cron + Tests Guards (2026-06-03)
+
+**Diagnostico completo de gaps (todos os 22 docs verificados):**
+
+| Doc | Item | Status |
+|---|---|---|
+| Doc 22 AD-22.3 | Log estruturado + requestId propagado | Ja existia |
+| Doc 22 AD-22.4 | Eventos de negocio (reading.saved, dossier.generated, client.created, consult.answered) | Ja existia |
+| Doc 22 AD-22.5 | tokensUsed persistence (generate + consult) + token budget graceful degradation | Ja existia |
+| Doc 22 AD-22.6 | Modelo por env em todas as chamadas LLM | Ja existia |
+| Doc 22 AD-22.7 | SSE timeout configuravel + persistencia incremental | Ja existia |
+| Doc 22 AD-22.8 | liveness / readiness separados | Ja existia |
+| Doc 22 AD-22.9 | Taxonomia de erros HTTP 400/401/404/429/500/502/503 | Ja existia |
+| Doc 20 AD-20.3 | CorrelationEntry com source + rationale (36 casas) | Ja existia |
+| Doc 20 AD-20.6 | Glossarios com source + lineage (lenormand + odus) | Ja existia |
+| Doc 20 AD-20.5 | IDEIA.md ledger (782 linhas, 36 casas + numerologia + Odus) | Ja existia |
+| Doc 19 4.1 #2 | theme-router determinism + RAG fechado | Ja existia |
+| Doc 19 4.1 #3 | Permutacao (fillHouse guard) | Ja existia |
+| Doc 19 4.1 #5 | Numerology Eliane anchor (karmicLessons) | Ja existia |
+
+**Gaps REALMENTE resolvidos nesta fase:**
+
+1. **Cron cleanup script** (`scripts/cleanup-tokens.ts`):
+   - Limpa OperatorSession expiradas (expiresAt < now OR revokedAt < 30d)
+   - Limpa RefreshToken revogados (revokedAt < 30d)
+   - Suporta --dry-run
+   - Implementa AD-22.10 (Doc 22 8)
+   - Commit: 9e4fde76
+
+2. **Teste Eliane com valores exatos** (`numerology-enriched.test.ts`):
+   - Camino de Vida = 7 assertion
+   - Alma = 2, Karma = 8 (TantricMap)
+   - Dom Divino = 5
+   - 50/50 testes passando
+   - Commit: 669eb4c5
+
+3. **Teste determinismo correlacao** (`correlation-determinism.test.ts`):
+   - Casa 34 isolation: NAO vaza ascendente/lua (apenas 2a Casa + Venus)
+   - Todas as 36 casas tem extractionKeys nao-vazios
+   - extractFromMap so retorna keys pedidas
+   - buildConsultContext passa dados natal sem leak
+   - 17/17 testes passando
+   - Commit: 9e4fde76
+
+**Resultado:** 1,392+ testes core passando, 0 falhas. Build 118 paginas OK. 159 commits a frente.
+
+*Ultima atualizacao: 2026-06-03 - Fase 39*
+*Versao: 1.8*
