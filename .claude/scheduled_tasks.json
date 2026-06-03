@@ -40,7 +40,7 @@
       "project_dir": "/home/skynet/cabala-dos-caminhos",
       "enabled": true,
       "comment": "Quick cycle every 20 min — fills gaps between hourly cycles. Cron '13,33,53 * * * *' = :13, :33, :53 of every hour (off-round to avoid :00 spike).",
-      "last_run": "2026-06-03T01:56:00Z",
+      "last_run": "2026-06-03T02:23:35Z",
       "last_status": "success"
     },
     {

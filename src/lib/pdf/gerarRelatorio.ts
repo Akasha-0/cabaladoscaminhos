@@ -63,7 +63,7 @@ function mapaAlmaToMapaData(mapa: MapaAlmaCompleto): MapaData {
     id: crypto.randomUUID(),
     created_at: mapa.dataCalculo,
     numerologia: {
-      numero_vida: mapa.numerologia.vida,
+      numero_vida: mapa.numerologia.lifePath,
       numero_destino: mapa.numerologia.destino,
       numero_alma: mapa.numerologia.motivacao,
       numero_personalidade: mapa.numerologia.expressao,

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# cabala-loop-runner.sh — ONE iteration, enforced single-instance with MAX_CONCURRENT guard
+# cabala-loop-runner.sh — ONE iteration, MAX_CONCURRENT=1 enforced
 
 CLAUDE_BIN="${CLAUDE_BIN:-${HOME}/.local/bin/claude}"
 if ! command -v "$CLAUDE_BIN" 2>/dev/null; then
@@ -15,11 +15,13 @@ LOOP_PROMPT="${MEMORY_DIR}/loop-prompt.md"
 TASK_QUEUE="${MEMORY_DIR}/task-queue.md"
 CYCLE_DIR="${MEMORY_DIR}"
 
-# MAX CONCURRENT GUARD
+# MAX CONCURRENT GUARD — grep returns 1 when no match, use ||true to avoid exit
 MAX_CONCURRENT="${MAX_CONCURRENT:-1}"
-RUNNING=$(ps aux | grep "$CLAUDE_BIN -p" | grep -v grep | grep -v "mcp\|context7\|github" | wc -l | tr -d ' ')
+set +e
+RUNNING=$(ps aux 2>/dev/null | grep -F "claude -p" 2>/dev/null | grep -v "grep" | grep -v "cabala-loop-runner" | grep -v "mcp\|context7\|github" | wc -l | tr -d " \n" || echo 0)
+set -e
 if [ "$RUNNING" -ge "$MAX_CONCURRENT" ]; then
-  echo "SKIP: $RUNNING >= $MAX_CONCURRENT processos ja rodando. Aguarde."
+  echo "SKIP: $RUNNING >= $MAX_CONCURRENT procesos ja rodando."
   exit 0
 fi
 
@@ -139,15 +141,16 @@ ERR_CONTENT="$(cat "$CLAUDE_ERR" 2>/dev/null | grep -v '^$' | head -20 || echo '
 rm -f "$CLAUDE_OUTPUT" "$CLAUDE_ERR"
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] END — cycle-${NEXT_CYCLE} — ${ELAPSED}s (${BUDGET_PCT}% budget)"
+echo "  Log: $LOG_FILE"
 
 # MEMORY.md index
-[ -f "${MEMORY_DIR}/MEMORY.md" ] && {
+if [ -f "${MEMORY_DIR}/MEMORY.md" ]; then
   TMP="$(mktemp)"
   { head -5 "${MEMORY_DIR}/MEMORY.md"; echo "- [cycle-${NEXT_CYCLE}](cycle-${NEXT_CYCLE}.md) — $MODE — $(date '+%Y-%m-%d') — ${ELAPSED}s"; tail -n +6 "${MEMORY_DIR}/MEMORY.md" 2>/dev/null || true; } > "$TMP" && mv "$TMP" "${MEMORY_DIR}/MEMORY.md"
-}
+fi
 
 # scheduled_tasks.json
-[ -f "${PROJECT_DIR}/.claude/scheduled_tasks.json" ] && {
+if [ -f "${PROJECT_DIR}/.claude/scheduled_tasks.json" ]; then
   TASK_ID=""
   case "$MODE" in
     quick)   TASK_ID="cabala-quick-cycle" ;;
@@ -156,11 +159,13 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] END — cycle-${NEXT_CYCLE} — ${ELAPSED}s
     standup) TASK_ID="cabala-daily-standup" ;;
     weekly)  TASK_ID="cabala-weekly-evolve" ;;
   esac
-  [ -n "$TASK_ID" ] && node -e "
+  if [ -n "$TASK_ID" ]; then
+    node -e "
 const fs=require('fs');
-try{const d=JSON.parse(fs.readFileSync('${PROJECT_DIR}/.claude/scheduled_tasks.json','utf8'));
-const t=d.tasks.find(x=>x.id=='$TASK_ID');
+try{var d=JSON.parse(fs.readFileSync('${PROJECT_DIR}/.claude/scheduled_tasks.json','utf8'));
+var t=d.tasks.find(function(x){return x.id=='$TASK_ID'});
 if(t){t.last_run='$TIMESTAMP';t.last_status='success';}
 fs.writeFileSync('${PROJECT_DIR}/.claude/scheduled_tasks.json',JSON.stringify(d,null,2));}catch(e){}
 " 2>/dev/null || true
-}
+  fi
+fi

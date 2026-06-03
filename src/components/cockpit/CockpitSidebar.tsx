@@ -71,7 +71,11 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
       mapa: client.mapa as ClienteInfo['mapa'],
     });
     setCliente({
-      ...client,
+      id: client.id,
+      nome: client.nome,
+      dataNascimento: client.dataNascimento,
+      horaNascimento: client.horaNascimento ?? '',
+      localNascimento: client.localNascimento ?? '',
       mapa: client.mapa as ClienteInfo['mapa'],
     });
     setIsFormExpanded(false);
@@ -288,48 +292,48 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
             {cliente.mapa && (
               <div className="space-y-2">
                 {/* Astrologia → royal (Doc 13 §4.3) */}
-                {(cliente.mapa.sol || cliente.mapa.ascendente) && (
+                {Boolean(cliente.mapa.sol || cliente.mapa.ascendente) && (
                   <Badge
                     variant="outline"
                     className="w-full justify-start bg-secondary/15 border-secondary/40 text-secondary"
                   >
                     <Crown className="w-3 h-3 mr-2 text-secondary" />
-                    {cliente.mapa.sol || 'Sol em ...'}{' '}
-                    {cliente.mapa.ascendente && `| ${cliente.mapa.ascendente}`}
+                    {String(cliente.mapa.sol ?? 'Sol em ...')} {' '}
+                    {Boolean(cliente.mapa.ascendente) && `| ${String(cliente.mapa.ascendente)}`}
                   </Badge>
                 )}
 
                 {/* Cabala → royal */}
-                {(cliente.mapa.caminho || cliente.mapa.missao) && (
+                {Boolean(cliente.mapa.caminho || cliente.mapa.missao) && (
                   <Badge
                     variant="outline"
                     className="w-full justify-start bg-secondary/10 border-secondary/30 text-foreground/90"
                   >
                     <Sparkles className="w-3 h-3 mr-2 text-secondary" />
-                    {cliente.mapa.caminho && `Caminho: ${cliente.mapa.caminho}`}
-                    {cliente.mapa.missao && ` | Missão: ${cliente.mapa.missao}`}
+                    {Boolean(cliente.mapa.caminho) && `Caminho: ${String(cliente.mapa.caminho)}`}
+                    {Boolean(cliente.mapa.missao) && ` | Missão: ${String(cliente.mapa.missao)}`}
                   </Badge>
                 )}
 
                 {/* Tântrica → laranja (Doc 13 §4.3) */}
-                {(cliente.mapa.alma || cliente.mapa.karma) && (
+                {Boolean(cliente.mapa.alma || cliente.mapa.karma) && (
                   <Badge
                     variant="outline"
                     className="w-full justify-start bg-primary/15 border-primary/40 text-primary"
                   >
                     <MapPin className="w-3 h-3 mr-2 text-primary" />
-                    {cliente.mapa.alma && `Alma: ${cliente.mapa.alma}`}
-                    {cliente.mapa.karma && ` | Karma: ${cliente.mapa.karma}`}
+                    {Boolean(cliente.mapa.alma) && `Alma: ${String(cliente.mapa.alma)}`}
+                    {Boolean(cliente.mapa.karma) && ` | Karma: ${String(cliente.mapa.karma)}`}
                   </Badge>
                 )}
                 {/* C3: Odu Natal → royal (Doc 05 §4.2) */}
-                {cliente.mapa?.oduNatal && (
+                {Boolean(cliente.mapa?.oduNatal) && (
                   <Badge
                     variant="outline"
                     className="w-full justify-start bg-secondary/15 border-secondary/40 text-secondary"
                   >
                     <Crown className="w-3 h-3 mr-2 text-secondary" />
-                    {cliente.mapa.oduNatal}
+                    {String(cliente.mapa.oduNatal)}
                   </Badge>
                 )}
               </div>

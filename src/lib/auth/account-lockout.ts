@@ -68,7 +68,7 @@ export async function recordFailedAttempt(email: string): Promise<void> {
 
   const operator = await prisma.operator.findUnique({
     where: { email: normalizedEmail },
-    select: { failedLoginAttempts: true },
+    select: { failedLoginAttempts: true, lockedUntil: true },
   });
 
   if (!operator) {

@@ -23,6 +23,12 @@
     "pid": "2395111",
     "status": "active"
   },
+  "485bee4b-6d2e-4920-9389-fc784d9fb97b": {
+    "short_id": "485bee4b-6d2",
+    "last_seen": 1780464246,
+    "pid": "2796557",
+    "status": "active"
+  },
   "50344bbc-2729-48cc-8fd4-567c4786ca67": {
     "short_id": "50344bbc-272",
     "last_seen": 1780457863,
@@ -57,6 +63,12 @@
     "short_id": "8a3c54f7-109",
     "last_seen": 1780461956,
     "pid": "2571032",
+    "status": "active"
+  },
+  "9ef03a8f-9090-4320-81bc-91024f5d1452": {
+    "short_id": "9ef03a8f-909",
+    "last_seen": 1780463292,
+    "pid": "2720031",
     "status": "active"
   },
   "a5df823e-1e52-46a5-a3f7-a2fb0866659a": {

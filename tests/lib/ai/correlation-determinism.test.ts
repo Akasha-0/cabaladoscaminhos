@@ -36,3 +36,16 @@ describe('Correlation determinism (Doc 06 / AD-19.4)', () => {
     expect(result).not.toHaveProperty('ascendant');
   });
 });
+
+// AD-20.6: CorrelationEntry must have source and rationale for provenance tracking.
+describe('CorrelationEntry provenance (AD-20.6)', () => {
+  it('has source and rationale for all 36 houses', () => {
+    for (let i = 1; i <= 36; i++) {
+      const entry = CORRELATION_MAP[i]!;
+      expect(entry.astrology.source, `House ${i} astrology.source`).toBeDefined();
+      expect(entry.astrology.rationale, `House ${i} astrology.rationale`).toBeDefined();
+      expect(entry.kabalah.source, `House ${i} kabalah.source`).toBeDefined();
+      expect(entry.tantric.source, `House ${i} tantric.source`).toBeDefined();
+    }
+ });
+});

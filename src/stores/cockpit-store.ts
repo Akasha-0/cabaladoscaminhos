@@ -24,8 +24,14 @@ export interface ClienteInfo {
   horaNascimento: string;
   localNascimento: string;
   mapa?: {
-    // expanded client maps — populated by save flow
-    [key: string]: unknown;
+    sol?: string;
+    ascendente?: string;
+    caminho?: string;
+    missao?: string;
+    alma?: string;
+    karma?: string;
+    oduNatal?: string;
+    [key: string]: string | undefined;
   };
 }
 

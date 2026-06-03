@@ -99,12 +99,8 @@ export function ForgotPasswordForm({ className = '' }: ForgotPasswordFormProps) 
             O link é válido por 1 hora.
           </p>
         </div>
-        <Button variant="outline" asChild className="w-full">
-          <Link href="/operator/login">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Voltar ao login
-          </Link>
-        </Button>
+        <Link href="/operator/login" className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium border border-input bg-background rounded-md hover:bg-muted transition-colors"><ArrowLeft className="mr-2 h-4 w-4" />
+            Voltar ao login</Link>
       </div>
     );
   }
@@ -158,12 +154,8 @@ export function ForgotPasswordForm({ className = '' }: ForgotPasswordFormProps) 
       </form>
 
       <div className="text-center">
-        <Button variant="link" asChild className="text-sm">
-          <Link href="/operator/login">
-            <ArrowLeft className="mr-1 h-4 w-4" />
-            Voltar ao login
-          </Link>
-        </Button>
+        <Link href="/operator/login" className="text-sm text-primary hover:text-primary/80 underline underline-offset-4"><ArrowLeft className="mr-1 h-4 w-4" />
+            Voltar ao login</Link>
       </div>
     </div>
   );

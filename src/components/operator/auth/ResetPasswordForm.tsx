@@ -131,17 +131,9 @@ export function ResetPasswordForm({ className = '' }: ResetPasswordFormProps) {
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <Button variant="outline" asChild className="w-full">
-            <Link href="/operator/forgot-password">
-              Solicitar novo link
-            </Link>
-          </Button>
-          <Button variant="ghost" asChild className="w-full">
-            <Link href="/operator/login">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar ao login
-            </Link>
-          </Button>
+          <Link href="/operator/forgot-password" className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium border border-input bg-background rounded-md hover:bg-muted transition-colors">Solicitar novo link</Link>
+          <Link href="/operator/login" className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"><ArrowLeft className="mr-2 h-4 w-4" />
+              Voltar ao login</Link>
         </div>
       </div>
     );
@@ -162,12 +154,8 @@ export function ResetPasswordForm({ className = '' }: ResetPasswordFormProps) {
             Redirecionando para o login...
           </p>
         </div>
-        <Button variant="outline" asChild className="w-full">
-          <Link href="/operator/login">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Ir para login agora
-          </Link>
-        </Button>
+        <Link href="/operator/login" className="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium border border-input bg-background rounded-md hover:bg-muted transition-colors"><ArrowLeft className="mr-2 h-4 w-4" />
+            Ir para login agora</Link>
       </div>
     );
   }
@@ -256,12 +244,8 @@ export function ResetPasswordForm({ className = '' }: ResetPasswordFormProps) {
       </form>
 
       <div className="text-center">
-        <Button variant="link" asChild className="text-sm">
-          <Link href="/operator/login">
-            <ArrowLeft className="mr-1 h-4 w-4" />
-            Voltar ao login
-          </Link>
-        </Button>
+        <Link href="/operator/login" className="text-sm text-primary hover:text-primary/80 underline underline-offset-4"><ArrowLeft className="mr-1 h-4 w-4" />
+            Voltar ao login</Link>
       </div>
     </div>
   );

@@ -50,7 +50,7 @@ export interface LogContext {
   [key: string]: unknown;
 }
 
-interface LogEntry {
+interface LogRecord {
   timestamp: string;
   level: LogLevel;
   levelName: string;
@@ -73,7 +73,7 @@ interface LogEntry {
 class Logger {
   private static instance: Logger;
   private minLevel: LogLevel;
-  private entries: LogEntry[] = [];
+  private entries: LogRecord[] = [];
   private readonly maxEntries = 1000;
   private isProduction = process.env.NODE_ENV === "production";
 
@@ -97,7 +97,7 @@ class Logger {
     // Already using console methods, just configure formatting
   }
 
-  private formatEntry(entry: LogEntry): string {
+  private formatEntry(entry: LogRecord): string {
     const color = LOG_LEVEL_COLORS[entry.level];
     const timestamp = new Date(entry.timestamp).toISOString();
     
@@ -143,7 +143,7 @@ class Logger {
   private log(level: LogLevel, message: string, context?: LogContext, error?: Error): void {
     if (level < this.minLevel) return;
 
-    const entry: LogEntry = {
+    const entry: LogRecord = {
       timestamp: new Date().toISOString(),
       level,
       levelName: LOG_LEVEL_NAMES[level],
@@ -189,7 +189,7 @@ class Logger {
     }
   }
 
-  private async sendToMonitoring(_entry: LogEntry): Promise<void> {
+  private async sendToMonitoring(_entry: LogRecord): Promise<void> {
     // TODO: Integrate with Sentry, Datadog, or similar
     if (process.env.SENTRY_DSN) {
       // await import('@sentry/node').then(({ captureException }) => {
@@ -227,7 +227,7 @@ class Logger {
   }
 
   // Get recent logs (for debugging)
-  getRecentLogs(count = 100): LogEntry[] {
+  getRecentLogs(count = 100): LogRecord[] {
     return this.entries.slice(-count);
   }
 

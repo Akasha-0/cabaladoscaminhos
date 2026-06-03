@@ -51,7 +51,6 @@ const INITIAL: FormState = {
 };
 
 type FieldErrors = Partial<Record<keyof FormState, string>>;
-type FieldErrors = Partial<Record<keyof FormState, string>>;
 function validate(state: FormState): FieldErrors {
   const errs: FieldErrors = {};
   if (state.fullName.trim().length < 3) errs.fullName = 'Nome deve ter ao menos 3 caracteres';

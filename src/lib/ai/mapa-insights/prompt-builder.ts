@@ -49,7 +49,7 @@ export function gerarContextoUsuario(mapa: MapaAlmaCompleto): string {
 
   function buildNumerologiaSection(num: MapaAlmaCompleto['numerologia']): string {
     return `## NUMEROLOGIA
-**Caminho de Vida:** ${num.vida}
+**Caminho de Vida:** ${num.lifePath}
 **Expressão:** ${num.expressao}
 **Motivação (Desejo de Alma):** ${num.motivacao}
 **Impressão (Opostos):** ${num.impressao}

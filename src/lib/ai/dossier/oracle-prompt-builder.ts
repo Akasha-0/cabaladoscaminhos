@@ -211,7 +211,7 @@ export function buildHousePayload(
 ): HousePayload {
   const correlation = getCorrelationEntry(house);
 
-  const normalizedAstro = normalizeBirthChart(client.astrologyMap as BirthChart);
+  const normalizedAstro = normalizeBirthChart(client.astrologyMap as unknown as BirthChart);
   const astralData = extractFromMap(normalizedAstro, correlation.astrology.extractionKeys);
   const kabalaData = extractFromMap(client.kabalisticMap, correlation.kabalah.extractionKeys);
   const tantricData = extractFromMap(client.tantricMap, correlation.tantric.extractionKeys);
