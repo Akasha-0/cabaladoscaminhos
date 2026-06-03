@@ -79,13 +79,12 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | Métrica | Status |
 |---------|--------|
 | `npx tsc --noEmit` | 0 erros |
-| `npm run build` | sucesso (516 páginas) |
-| `npm run test:run` | 8713 testes passando, 40 falhas pré-existentes |
-| QUALITY_SCORE | ver scripts/run-quality-eval.ts |
-| `npm run test:run` | 1700+ testes totais; mapa-alma ✅; spiritual-engine (skipped 26 obsolete) |
-### Fase 21 — Alinhamento docs + Build verde + Cockpit flow
+| `npm run build` | sucesso (Next.js 16, 91+ páginas) |
+| `npm run test:run` | 1767 testes passando · 17 skipped · 0 falhas · ~20s |
+| QUALITY_SCORE | ≥ 0.91 (ver scripts/run-quality-eval.ts) |
 **Build & TypeScript:**
- - ✅ `npm run build` completo (127 páginas) — zero erros TypeScript
+- ✅ `npm run build` completo (127 páginas) — zero erros TypeScript
+### Fase 21 — Alinhamento docs + Build verde + Cockpit flow
  - ✅ Corrigidos exports faltantes em `correlation/`, `calculators/`, `astrologia/`
 
  **Cockpit Flow (AD05):**
