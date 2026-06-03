@@ -83,12 +83,16 @@ export async function getReadingsByOperator(
   opts?: { limit?: number; status?: 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR' }
 ) {
   return prisma.reading.findMany({
-    where: { operatorId },
+    where: {
+      operatorId,
+      ...(opts?.status ? { status: opts.status } : {}),
+    },
     include: {
       client: true,
       report: true,
     },
     orderBy: { createdAt: 'desc' },
+    ...(opts?.limit ? { take: opts.limit } : {}),
   });
 }
 
