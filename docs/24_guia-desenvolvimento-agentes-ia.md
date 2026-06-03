@@ -112,7 +112,7 @@ Docs antigos (03, 05, 09) que descrevem múltiplas telas/stack antiga são **sup
 | Mapa astral | `src/lib/astrologia/*` (precisão: 23) |
 | Estado da mesa | `src/stores/cockpit-store.ts` |
 | Auth do Operator | `src/lib/auth/operator-*` |
-| Ledger de correspondências | `IDEIA.md` (a criar — 20 AD-20.5) |
+| Ledger de correspondências | `IDEIA.md` (criado — AD-20.5; verificado Fase 45) |
 | **Status das decisões** | `docs/21_*` |
 
 ---

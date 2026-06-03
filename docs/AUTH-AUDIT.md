@@ -1,10 +1,8 @@
 # AUTH-AUDIT — Cabala dos Caminhos
-
 > Audit de auth (Fase 17) realizado em `src/app/**/page.tsx` e `src/app/**/route.ts`.
 > Categoriza cada página/rota como Operator (B2B), B2C User ou pública,
 > e documenta o mecanismo de auth gate de cada uma.
-
-**Última atualização:** 2026-06-02 (Fase 17)
+**Última atualização:** 2026-06-03 (Fase 47 — cockpit/layout.tsx x-pathname auth gate)
 **Branch:** `claude/docs-refactor-alignment-FOUqN`
 
 ---
@@ -29,8 +27,7 @@
 | Path | Tipo | Gate | Status |
 |------|------|------|--------|
 | `src/app/cockpit/page.tsx` | Server | `getOperatorFromServerContext` + `redirect('/cockpit/login')` | OK Fase 14 |
-| `src/app/cockpit/layout.tsx` | Server | `getOperatorFromServerContext` + `redirect('/cockpit/login')` | OK Fase 14 |
-| `src/app/cockpit/dashboard/page.tsx` | Server | `getOperatorFromServerContext` + `redirect` | OK |
+| `src/app/cockpit/layout.tsx` | Server | `x-pathname` header (middleware) → `PUBLIC_PATHS` set → `getOperatorFromServerContext` + `redirect('/cockpit/login')` | OK Fase 47 (previne loop infinito no /cockpit/login) |
 | `src/app/cockpit/consulentes/page.tsx` | Server | `getOperatorFromServerContext` + `redirect` | OK |
 | `src/app/cockpit/consulentes/[id]/page.tsx` | Server | `getOperatorFromServerContext` + `redirect` | OK |
 | `src/app/cockpit/consulentes/novo/page.tsx` | Server | `getOperatorFromServerContext` + `redirect` | OK |
