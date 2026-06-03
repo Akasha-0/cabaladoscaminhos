@@ -27,7 +27,7 @@ interface CockpitSidebarProps {
 }
 
 export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
-  const { cliente, currentClientId, houses, setCliente, setCurrentReadingId, openRightPanel, setRightPanelTab, isSidebarCollapsed, toggleSidebar } = useCockpitStore();
+  const { cliente, currentClientId, houses, setCliente, setCurrentReadingId, setCurrentClientId, openRightPanel, setRightPanelTab, isSidebarCollapsed, toggleSidebar } = useCockpitStore();
   const [isFormExpanded, setIsFormExpanded] = useState(!cliente);
   const [isGenerating, setIsGenerating] = useState(false);
   const [formData, setFormData] = useState<ClienteInfo>({
@@ -38,21 +38,59 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
     mapa: undefined,
   });
 
-  const handleSaveCliente = () => {
-    // Em produção: chama Server Action que calcula 4 mapas e persiste.
-    // Aqui: stub que preenche badges para preview visual.
-    setCliente({
-      ...formData,
-      mapa: {
-        sol: 'Sol em Leão',
-        ascendente: 'Asc: Virgem',
-        caminho: '7',
-        missao: '11',
-        alma: '2',
-        karma: '8',
-      },
-    });
-    setIsFormExpanded(false);
+  const handleSaveCliente = async () => {
+    if (!formData.nome || !formData.dataNascimento) return;
+    setIsGenerating(true);
+    try {
+      const birthDateISO = `${formData.dataNascimento}T${formData.horaNascimento || '12:00'}:00.000Z`;
+      const res = await fetch('/api/mesa-real/clients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: formData.nome,
+          birthDate: birthDateISO,
+          birthTime: formData.horaNascimento || '12:00',
+          birthCity: formData.localNascimento || '',
+          birthState: '',
+          birthCountry: '',
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        alert('Erro ao criar cliente: ' + (err.error || res.statusText));
+        return;
+      }
+      const { client } = await res.json();
+      // Extract sun sign: astrologyMap can be a full BirthChart (planets[]) or simplified fallback ({ sun: string })
+      const sunEntry = client.astrologyMap;
+      const sunSign: string =
+        typeof sunEntry?.sun === 'string' ? sunEntry.sun :
+        sunEntry?.planets?.find((p: { planet: string; sign: string }) => p.planet === 'sol')?.sign || '';
+      const ascLong = typeof sunEntry?.ascendant === 'number' ? sunEntry.ascendant : 0;
+      const ascSign = ['aries','touro','gemeos','cancer','leao','virgem','libra','escorpio','sagitario','capricornio','aquario','peixes'][Math.floor(ascLong / 30) % 12] || '';
+      setCliente({
+        id: client.id,
+        nome: client.fullName,
+        dataNascimento: formData.dataNascimento,
+        horaNascimento: formData.horaNascimento || '',
+        localNascimento: formData.localNascimento,
+        mapa: {
+          sol: sunSign ? `Sol em ${sunSign}` : '',
+          ascendente: ascSign ? `Asc: ${ascSign}` : '',
+          caminho: client.kabalisticMap?.lifePath?.toString() || '',
+          missao: client.kabalisticMap?.expression?.toString() || '',
+          alma: client.tantricMap?.soul?.toString() || '',
+          karma: client.tantricMap?.karma?.toString() || '',
+        },
+      });
+      setCurrentClientId(client.id);
+      setIsFormExpanded(false);
+    } catch (err) {
+      console.error('[handleSaveCliente]', err);
+      alert('Erro ao criar cliente');
+    } finally {
+      setIsGenerating(false);
+    }
   };
   // C2: Handle client selection from search results
   const handleSelectSearchedClient = (client: {
@@ -78,6 +116,7 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
       localNascimento: client.localNascimento ?? '',
       mapa: client.mapa as ClienteInfo['mapa'],
     });
+    setCurrentClientId(client.id || null);
     setIsFormExpanded(false);
   };
 
@@ -97,15 +136,15 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
     if (!cliente || !currentClientId || houses.size === 0) return;
     setIsGenerating(true);
     try {
-      const matrixData: Record<string, { carta: number; cartaName: string; odu: number; oduName: string } | null> = {};
+      // AD-18.1: Must send nested { carta: { numero, nome, significado }, odu: { numero, nome, significado } }
+      // for extractFilledHouses (generate/route.ts) to correctly read carta.numero and odu.numero.
+      const matrixData: Record<string, { carta: { numero: number; nome: string; significado: string }; odu: { numero: number; nome: string; significado: string } } | null> = {};
       houses.forEach((house, casaNum) => {
         if (house.carta && house.odu) {
-          matrixData[String(casaNum)] = {
-            carta: house.carta.numero,
-            cartaName: house.carta.nome,
-            odu: house.odu.numero,
-            oduName: house.odu.nome,
-          };
+        matrixData[String(casaNum)] = {
+          carta: { numero: house.carta.numero, nome: house.carta.nome, significado: house.carta.significado ?? '' },
+          odu: { numero: house.odu.numero, nome: house.odu.nome, significado: '' },
+        };
         }
       });
       const res = await fetch('/api/mesa-real/save', {
