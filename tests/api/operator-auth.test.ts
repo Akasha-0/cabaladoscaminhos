@@ -30,13 +30,12 @@ vi.mock('bcryptjs', () => {
   const hash = (...args: unknown[]) => mockBcryptHash(...args);
   const compare = (...args: unknown[]) => mockBcryptCompare(...args);
   return { default: { hash, compare }, hash, compare };
+});
 // Prisma — Operator + OperatorSession models mockados
-const mockFindUnique = vi.fn();
 const mockFindUnique = vi.fn();
 const mockCreate = vi.fn();
 const mockOperatorSessionCreate = vi.fn();
 const mockOperatorSessionFindUnique = vi.fn();
-
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     operator: {
@@ -47,7 +46,7 @@ vi.mock('@/lib/prisma', () => ({
       findUnique: vi.fn().mockResolvedValue(null),
     },
     operatorSession: {
-      findUnique: vi.fn(),
+      findUnique: (args: unknown) => mockOperatorSessionFindUnique(args),
       create: (args: unknown) => mockOperatorSessionCreate(args),
     },
   },
@@ -452,10 +451,16 @@ describe('GET /api/operator/auth/me', () => {
     );
     cookieStore.current = { cockpit_session: token };
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
-
+    mockOperatorSessionFindUnique.mockResolvedValue({
+      id: 'sess-1',
+      operatorId: 'op-1',
+      type: 'ACCESS',
+      expiresAt: new Date(Date.now() + 3600_000),
+      refreshExpiresAt: null,
+      revokedAt: null,
+    });
     const { GET } = await import('@/app/api/operator/auth/me/route');
     const res = await GET(makeGetRequest('http://l/api/operator/auth/me'));
-
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.operator).toMatchObject({
