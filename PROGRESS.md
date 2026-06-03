@@ -752,3 +752,17 @@ Commit: ecbadb4f, 7a74472c
 **Resultado:** 1,761 testes passando (+13 novos) · 5 skipped · TypeScript 0 erros · lint warnings (pre-existentes).
 
 Commit: `815258b9`
+
+### Fase 42 — Lint Warning Debt Reduction (2026-06-03)
+
+**Identified gap:** 1,489 lint warnings (1,373 no-unused-vars, 112 import/no-anonymous-default-export).
+
+**Root cause:** Generated/orxa-data files with unused imports, swarm agent scaffold with unused standard interface parameters, barrel index files re-exporting unused schemas.
+
+**Fixes applied:**
+- `src/lib/correlation/identity/index.ts`: Removed 11 dead imports + 6 unused const declarations (-12 warnings)
+- `src/lib/swarm/agents/index.ts`: Added `eslint-disable` for no-unused-vars (scaffold agent interface params — same pattern as `planet-positions.ts`) (-40 warnings)
+
+**Resultado:** 1,437 warnings remaining · 1,761 testes passando · 0 erros TypeScript · pré-existentes: B2C quarentenado, test scaffolding, schema exports barrel.
+
+Commit: d4eab91e
