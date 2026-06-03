@@ -4,7 +4,7 @@ import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/design-system/Typography';
 
-// fallow-ignore-next-line unused-files
+// fallow-ignore-next-line unused-file
 interface ErrorStateProps {
   title?: string;
   message?: string;

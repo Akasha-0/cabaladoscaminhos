@@ -667,7 +667,6 @@ const CASAS_DATA: Record<number, CasaData> = {
   },
 };
 export interface AstrologyV2Data {
-export interface AstrologyV2Data {
   signos: Record<string, SignoData>;
   planetas: Record<string, PlanetaData>;
   elementos: Record<string, ElementoData>;

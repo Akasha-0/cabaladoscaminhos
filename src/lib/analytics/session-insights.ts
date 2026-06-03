@@ -3,7 +3,6 @@
  */
 
 export interface SessionEvent {
-export interface SessionEvent {
   id: string;
   userId?: string;
   type: 'start' | 'end' | 'action' | 'navigation';
