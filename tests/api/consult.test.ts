@@ -139,18 +139,17 @@ describe('POST /api/consult', () => {
     (prisma.operator.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue(mockOperator);
     (prisma.reading.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue(mockReadingWithContext);
     (prisma.consultation.create as ReturnType<typeof vi.fn>).mockResolvedValue(mockConsultation);
-
     const req = makeRequest({ readingId: 'reading-1', question: 'O que significa a casa 1?' });
     const { POST } = await import('@/app/api/consult/route');
     const res = await POST(req);
-
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.consultationId).toBe('consult-new');
     expect(body.answer).toBeNull(); // fallback mode (sem OPENAI_API_KEY)
     expect(body.routedThemes).toBeDefined();
     expect(body.routedHouses).toBeDefined();
-
+    // AD-22.5: done event includes tokensUsed
+    expect(body.tokensUsed).toBe(0);
     // Criou a thread
     expect(prisma.consultation.create).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -160,12 +159,7 @@ describe('POST /api/consult', () => {
         }),
       })
     );
-
     // Persistiu a pergunta do user (chamado via $transaction, ver addChatMessage)
-    // Aqui só checamos que prisma.chatMessage.create foi invocado com o shape certo.
-    // Nota: a rota chama addChatMessage que usa $transaction, então os create
-    // aparecem no txMock; ajustamos a expectativa para o prisma.chatMessage mock
-    // OU usamos o spy do addChatMessage. Aqui aceitamos a chamada no create global.
     expect(prisma.consultation.create).toHaveBeenCalled();
   });
 

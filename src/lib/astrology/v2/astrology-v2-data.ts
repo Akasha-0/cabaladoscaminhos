@@ -666,7 +666,7 @@ const CASAS_DATA: Record<number, CasaData> = {
     关键词: ['Eu sacrifico', 'carma', 'prisões', 'inconsciente'],
   },
 };
-// fallow-ignore-next-line unused-type
+export interface AstrologyV2Data {
 export interface AstrologyV2Data {
   signos: Record<string, SignoData>;
   planetas: Record<string, PlanetaData>;

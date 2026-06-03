@@ -92,6 +92,9 @@ export async function POST(request: NextRequest) {
   const operatorOrResponse = await requireOperator(request);
   if (operatorOrResponse instanceof NextResponse) return operatorOrResponse;
   const operator = operatorOrResponse;
+  // K.1: Structured logging
+  const requestId = generateRequestId();
+  const log = createLogger(requestId, '/api/mesa-real/save');
 
   // 2) Parse + validação
   let body: z.infer<typeof saveReadingSchema>;
@@ -155,7 +158,12 @@ export async function POST(request: NextRequest) {
     },
     include: { client: { select: { id: true, fullName: true } } },
   });
-
+  // K.2: Log business event (AD-22.4)
+  log.info('reading.saved', {
+    operatorId: operator.id,
+    readingId: reading.id,
+    filledHouses,
+  });
   return NextResponse.json(
     {
       success: true,

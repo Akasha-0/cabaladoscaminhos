@@ -287,6 +287,9 @@ model ChatMessage {
   // Rastreabilidade do roteamento (somente mensagens do ORACLE)
   routedThemes String[] // Ex: ["amor", "decisao"]
   routedHouses Int[] // Ex: [24, 22]
+  /// Contagem de tokens consumidos pelo LLM (apenas mensagens do ORACLE).
+  /// AD-22.5: usado para rastreamento de custos por consulta.
+  tokensUsed Int?
 
   consultationId String
   consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)

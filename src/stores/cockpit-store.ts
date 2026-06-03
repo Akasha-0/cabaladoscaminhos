@@ -24,23 +24,26 @@ export interface ClienteInfo {
   horaNascimento: string;
   localNascimento: string;
   mapa?: {
-    sol?: string;
-    ascendente?: string;
-    caminho?: string;
-    missao?: string;
-    alma?: string;
-    karma?: string;
+    // expanded client maps — populated by save flow
+    [key: string]: unknown;
   };
 }
 
 // fallow-ignore-next-line unused-type
 export type RightPanelTab = 'dossier' | 'consult';
 
+export type CockpitStatus = 'draft' | 'saved' | 'generating' | 'completed' | 'error';
+
 interface CockpitState {
   // Cliente info
   cliente: ClienteInfo | null;
   currentReadingId: string | null;
   currentClientId: string | null;
+
+  // Onda I.1 — reading/client lifecycle
+  clientId: string | null;
+  readingId: string | null;
+  status: CockpitStatus;
 
   // Houses state
   houses: Map<number, FilledHouse>;
@@ -63,7 +66,10 @@ interface CockpitState {
   // Reading management
   setCurrentReadingId: (id: string | null) => void;
   setCurrentClientId: (id: string | null) => void;
-
+  // Onda I.1 — new setters
+  setClientId: (id: string) => void;
+  setReadingId: (id: string) => void;
+  setStatus: (status: CockpitStatus) => void;
 
   // Right panel actions (Zone C)
   clearAllHouses: () => void;
@@ -92,6 +98,12 @@ export const useCockpitStore = create<CockpitState>((set, get) => ({
   cliente: null,
   currentReadingId: null,
   currentClientId: null,
+
+  // Onda I.1 — initial state
+  clientId: null,
+  readingId: null,
+  status: 'draft',
+
   houses: new Map(),
 
   placedCards: new Set(),
@@ -102,10 +114,21 @@ export const useCockpitStore = create<CockpitState>((set, get) => ({
   isRightPanelOpen: false,
   rightPanelTab: 'dossier',
 
-  setCliente: (cliente) => set({ cliente, currentClientId: cliente?.id ?? null }),
+  setCliente: (cliente) =>
+    set({
+      cliente,
+      currentClientId: cliente?.id ?? null,
+      clientId: cliente?.id ?? null,
+    }),
 
   setCurrentReadingId: (id) => set({ currentReadingId: id }),
   setCurrentClientId: (id) => set({ currentClientId: id }),
+
+  // Onda I.1 — new setters
+  setClientId: (id) => set({ clientId: id }),
+  setReadingId: (id) => set({ readingId: id, status: 'saved' }),
+  setStatus: (status) => set({ status }),
+
   fillHouse: (casaNumero, carta, odu) => {
     set((state) => {
       const newHouses = new Map(state.houses);
@@ -153,11 +176,15 @@ export const useCockpitStore = create<CockpitState>((set, get) => ({
 
   toggleSidebar: () => set((state) => ({ isSidebarCollapsed: !state.isSidebarCollapsed })),
 
+  // Onda I.1 — resetCockpit includes new fields
   resetCockpit: () =>
     set({
       cliente: null,
       currentReadingId: null,
       currentClientId: null,
+      clientId: null,
+      readingId: null,
+      status: 'draft',
       houses: new Map(),
       activePopover: null,
       placedCards: new Set(),

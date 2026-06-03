@@ -390,3 +390,42 @@ function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise
   }) as T;
 }
 
+// ============================================================
+// K.1 — STRUCTURED LOGGING (AD-22.3)
+// ============================================================
+export interface LogEntry {
+  ts: string;
+  level: 'error' | 'warn' | 'info' | 'debug';
+  requestId: string;
+  route: string;
+  operatorId?: string;
+  event: string; // 'reading.saved', 'dossier.generated', etc.
+  durationMs?: number;
+  status?: number;
+  meta?: Record<string, unknown>;
+}
+/**
+ * Creates a structured logger bound to a single request context.
+ * Logs are emitted as single-line JSON to stdout/stderr, suitable
+ * for log aggregators (Datadog, CloudWatch, etc.).
+ */
+export function createLogger(requestId: string, route: string) {
+  return {
+    info: (event: string, meta?: Record<string, unknown>) =>
+      console.log(
+        JSON.stringify({ ts: new Date().toISOString(), level: 'info', requestId, route, event, ...meta })
+      ),
+    error: (event: string, meta?: Record<string, unknown>) =>
+      console.error(
+        JSON.stringify({ ts: new Date().toISOString(), level: 'error', requestId, route, event, ...meta })
+      ),
+    warn: (event: string, meta?: Record<string, unknown>) =>
+      console.warn(
+        JSON.stringify({ ts: new Date().toISOString(), level: 'warn', requestId, route, event, ...meta })
+      ),
+    debug: (event: string, meta?: Record<string, unknown>) =>
+      console.log(
+        JSON.stringify({ ts: new Date().toISOString(), level: 'debug', requestId, route, event, ...meta })
+      ),
+  };
+}

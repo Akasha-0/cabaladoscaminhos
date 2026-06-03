@@ -14,6 +14,7 @@
 //   5. Persiste a interpretação por casa no `Report.content`
 //      (cumulativo — não destrutivo se a rota for chamada várias
 //      vezes para casas diferentes).
+//   6. Onda I.4: transiciona ReadingStatus PENDING → GENERATING → COMPLETED/ERROR.
 //
 // Referências: Doc 06 §3.2 (per-house prompt) + Doc 12 §7 (Q&A).
 
@@ -27,6 +28,7 @@ import {
   type ClientMaps,
 } from '@/lib/ai/dossier/oracle-prompt-builder';
 import type { MatrixEntry } from '@/types';
+import { createLogger, generateRequestId } from '@/lib/logging';
 
 // ----------------------------------------------------------------------------
 // Schemas
@@ -114,6 +116,10 @@ export async function POST(request: NextRequest) {
   const operatorOrResponse = await requireOperator(request);
   if (operatorOrResponse instanceof NextResponse) return operatorOrResponse;
   const operator = operatorOrResponse;
+  // K.1: Structured logging
+  const requestId = generateRequestId();
+  const log = createLogger(requestId, '/api/mesa-real/generate');
+  const startTime = Date.now();
 
   // 2) Parse + validação
   let body: GenerateInput;
@@ -129,11 +135,26 @@ export async function POST(request: NextRequest) {
     throw err;
   }
 
-  // 3) Sanity: o Operator precisa estar vinculado a um Client (mapaFixo.nomeCompleto)
+  // 3) Onda I.4: valida existência + transição PENDING → GENERATING
+  if (body.readingId) {
+    const existing = await prisma.reading.findUnique({ where: { id: body.readingId } });
+    if (!existing) {
+      return NextResponse.json(
+        { error: `Reading ${body.readingId} não encontrada` },
+        { status: 404 }
+      );
+    }
+    await prisma.reading.update({
+      where: { id: body.readingId },
+      data: { status: 'GENERATING' },
+    });
+  }
+
+  // 4) Sanity: o Operator precisa estar vinculado a um Client (mapaFixo.nomeCompleto)
   //    e o OperatorId deve existir (FK). A validação Zod já garante tipos.
   void operator; // operator disponível p/ enriquecer logs/auditoria no futuro
 
-  // 4) Constrói payload canônico
+  // 5) Constrói payload canônico
   const entry: MatrixEntry = {
     house: body.casaNumero,
     carta: body.carta.numero,
@@ -143,11 +164,18 @@ export async function POST(request: NextRequest) {
   const systemPrompt = buildSystemPrompt();
   const userPayload = buildHousePayload(body.casaNumero, entry, client);
 
-  // 5) Chama o LLM
+  // 6) Chama o LLM
   const apiKey = process.env.OPENAI_API_KEY;
   const llmModel = process.env.OPENAI_MODEL ?? 'gpt-4o';
 
   if (!apiKey) {
+    // Rollback PENDING se não há chave
+    if (body.readingId) {
+      await prisma.reading.update({
+        where: { id: body.readingId },
+        data: { status: 'PENDING' },
+      });
+    }
     return NextResponse.json(
       {
         error: 'OPENAI_API_KEY não configurada',
@@ -157,89 +185,121 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const llmResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: llmModel,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: JSON.stringify(userPayload) },
-      ],
-      temperature: 0.7,
-      max_tokens: 1500,
-    }),
-  });
-
-  if (!llmResponse.ok) {
-    const detail = await llmResponse.text();
-    return NextResponse.json(
-      { error: 'Erro ao chamar o LLM', details: detail },
-      { status: 502 }
-    );
-  }
-
-  const llmData = await llmResponse.json();
-  const dossie = llmData.choices?.[0]?.message?.content ?? '';
-  const tokensUsed = llmData.usage?.total_tokens;
-
-  // 6) Persiste no Report da leitura (se readingId fornecido)
-  let report: { id: string; readingId: string } | null = null;
-  if (body.readingId) {
-    const reading = await prisma.reading.findUnique({
-      where: { id: body.readingId },
-      select: { id: true, report: { select: { id: true, content: true } } },
+  try {
+    const llmResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: llmModel,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: JSON.stringify(userPayload) },
+        ],
+        temperature: 0.7,
+        max_tokens: 1500,
+      }),
     });
-    if (!reading) {
+
+    if (!llmResponse.ok) {
+      const detail = await llmResponse.text();
+      if (body.readingId) {
+        await prisma.reading.update({
+          where: { id: body.readingId },
+          data: { status: 'ERROR' },
+        });
+      }
       return NextResponse.json(
-        { error: `Reading ${body.readingId} não encontrada` },
-        { status: 404 }
+        { error: 'Erro ao chamar o LLM', details: detail },
+        { status: 502 }
       );
     }
 
-    // Cumulativo: se já existe Report, anexa/sobrescreve a casa; senão cria.
-    const existingContent =
-      (reading.report?.content as Record<string, unknown> | null) ?? {};
-    const newContent = {
-      ...existingContent,
-      houses: {
-        ...((existingContent.houses as Record<string, unknown> | undefined) ?? {}),
-        [String(body.casaNumero)]: {
-          interpretation: dossie,
-          houseName: userPayload.casa_nome,
-          generatedAt: new Date().toISOString(),
+    const llmData = await llmResponse.json();
+    const dossie = llmData.choices?.[0]?.message?.content ?? '';
+    const tokensUsed = llmData.usage?.total_tokens;
+
+    // 7) Persiste no Report da leitura (se readingId fornecido)
+    let report: { id: string; readingId: string } | null = null;
+    if (body.readingId) {
+      // Existence already checked in step 3; the select always succeeds.
+      const reading = await prisma.reading.findUnique({
+        where: { id: body.readingId },
+        select: { id: true, report: { select: { id: true, content: true } } },
+      });
+
+      // Cumulativo: se já existe Report, anexa/sobrescreve a casa; senão cria.
+      const existingContent =
+        (reading?.report?.content as Record<string, unknown> | null) ?? {};
+      const newContent = {
+        ...existingContent,
+        houses: {
+          ...((existingContent.houses as Record<string, unknown> | undefined) ?? {}),
+          [String(body.casaNumero)]: {
+            interpretation: dossie,
+            houseName: userPayload.casa_nome,
+            generatedAt: new Date().toISOString(),
+          },
         },
-      },
-    };
+      };
 
-    const saved = await prisma.report.upsert({
-      where: { readingId: body.readingId },
-      create: {
-        readingId: body.readingId,
-        // Prisma 7 `Json` exige `Prisma.InputJsonValue`; serializar via
-        // JSON é a forma mais portável de garantir o shape.
-        content: JSON.parse(JSON.stringify(newContent)),
-        llmModel,
-        tokensUsed: tokensUsed ?? null,
-      },
-      update: {
-        content: JSON.parse(JSON.stringify(newContent)),
-        llmModel,
-        // Não sobrescreve tokensUsed — manteria o cumulativo se a rota
-        // guardasse estado; aqui mantemos o último p/ simplicidade.
-      },
-      select: { id: true, readingId: true },
+      const saved = await prisma.report.upsert({
+        where: { readingId: body.readingId },
+        create: {
+          readingId: body.readingId,
+          // Prisma 7 `Json` exige `Prisma.InputJsonValue`; serializar via
+          // JSON é a forma mais portável de garantir o shape.
+          content: JSON.parse(JSON.stringify(newContent)),
+          llmModel,
+          tokensUsed: tokensUsed ?? null,
+        },
+        update: {
+          content: JSON.parse(JSON.stringify(newContent)),
+          llmModel,
+          // Não sobrescreve tokensUsed — manteria o cumulativo se a rota
+          // guardasse estado; aqui mantemos o último p/ simplicidade.
+        },
+        select: { id: true, readingId: true },
+      });
+      report = saved;
+
+      // Onda I.4: transição GENERATING → COMPLETED
+      await prisma.reading.update({
+        where: { id: body.readingId },
+        data: { status: 'COMPLETED' },
+      });
+    }
+
+    // K.2: Log business event (AD-22.4)
+    const durationMs = Date.now() - startTime;
+    log.info('dossier.generated', {
+      operatorId: operator.id,
+      readingId: body.readingId ?? null,
+      tokens: tokensUsed ?? null,
+      llmModel,
+      durationMs,
     });
-    report = saved;
-  }
 
-  return NextResponse.json({
-    casaNumero: body.casaNumero,
-    dossie,
-    tokensUsed,
-    report,
-  });
+    return NextResponse.json({
+      casaNumero: body.casaNumero,
+      dossie,
+      tokensUsed,
+      report,
+    });
+  } catch (err) {
+    // Onda I.4: transição GENERATING → ERROR (best-effort)
+    if (body.readingId) {
+      await prisma.reading
+        .update({
+          where: { id: body.readingId },
+          data: { status: 'ERROR' },
+        })
+        .catch(() => {
+          /* best-effort: leitura pode ter sido removida entre meanwhile */
+        });
+    }
+    throw err;
+  }
 }

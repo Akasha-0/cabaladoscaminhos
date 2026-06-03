@@ -2,7 +2,7 @@
  * Session insights — pattern analysis for user sessions
  */
 
-// fallow-ignore-next-line unused-type
+export interface SessionEvent {
 export interface SessionEvent {
   id: string;
   userId?: string;

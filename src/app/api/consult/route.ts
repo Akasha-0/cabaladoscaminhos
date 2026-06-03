@@ -19,6 +19,7 @@ import {
   addChatMessage,
   getConsultContext,
 } from '@/lib/db/consultation-actions';
+import { createLogger, generateRequestId } from '@/lib/logging';
 import { prisma } from '@/lib/prisma';
 import { createSSEStream } from '@/lib/sse';
 
@@ -37,6 +38,10 @@ export async function POST(request: NextRequest) {
   const op = await requireOperator(request);
   if (op instanceof NextResponse) return op;
   const operator = op;
+
+  // K.1: Structured logging (AD-22.3)
+  const requestId = generateRequestId();
+  const log = createLogger(requestId, '/api/consult');
 
   // 2) Validação
   let body: ConsultInput;
@@ -115,7 +120,11 @@ export async function POST(request: NextRequest) {
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
-      const { send, close } = createSSEStream(controller, encoder);
+      const { send, close, abortController } = createSSEStream(
+        controller,
+        encoder,
+        { timeoutMs: 60_000 }
+      );
 
       // 7a) Routing imediato
       send({
@@ -138,11 +147,19 @@ export async function POST(request: NextRequest) {
           },
         });
         close();
+        log.warn('consult.answered', {
+          operatorId: operator.id,
+          readingId: body.readingId,
+          routedThemes: ragContext.routing.themes,
+          routedHouses: ragContext.routing.houses,
+          tokens: 0,
+        });
         return;
       }
 
       // 7b) LLM com stream=true
       let fullAnswer = '';
+      let tokensUsed: number | undefined = undefined;
       try {
         const res = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
@@ -157,6 +174,7 @@ export async function POST(request: NextRequest) {
             max_tokens: 1500,
             stream: true,
           }),
+          signal: abortController.signal,
         });
         if (!res.ok || !res.body) {
           throw new Error(`LLM ${res.status}: ${await res.text()}`);
@@ -178,6 +196,10 @@ export async function POST(request: NextRequest) {
             if (payload === '[DONE]') continue;
             try {
               const json = JSON.parse(payload);
+              // K.3: Captura usage.total_tokens do chunk final (AD-22.5)
+              if (json.usage?.total_tokens != null && tokensUsed == null) {
+                tokensUsed = json.usage.total_tokens;
+              }
               const delta: string | undefined = json.choices?.[0]?.delta?.content;
               if (delta) {
                 fullAnswer += delta;
@@ -189,13 +211,17 @@ export async function POST(request: NextRequest) {
           }
         }
       } catch (err) {
-        send({
-          event: 'error',
-          data: { message: err instanceof Error ? err.message : 'Erro ao chamar o LLM' },
-        });
+        try {
+          send({
+            event: 'error',
+            data: { message: err instanceof Error ? err.message : 'Erro ao chamar o LLM' },
+          });
+        } catch {
+          /* stream already closed by timeout */
+        }
       }
 
-      // 7c) Persiste ORACLE
+      // 7c) Persiste ORACLE com tokensUsed (AD-22.5)
       if (fullAnswer) {
         try {
           await addChatMessage({
@@ -204,6 +230,7 @@ export async function POST(request: NextRequest) {
             content: fullAnswer,
             routedThemes: ragContext.routing.themes,
             routedHouses: ragContext.routing.houses,
+            tokensUsed: tokensUsed ?? undefined,
           });
         } catch {
           /* não falhar o stream se persistência falhar */
@@ -211,16 +238,30 @@ export async function POST(request: NextRequest) {
       }
 
       // 7d) Done
-      send({
-        event: 'done',
-        data: {
-          consultationId,
-          routedThemes: ragContext.routing.themes,
-          routedHouses: ragContext.routing.houses,
-          fullAnswer,
-        },
-      });
+      try {
+        send({
+          event: 'done',
+          data: {
+            consultationId,
+            routedThemes: ragContext.routing.themes,
+            routedHouses: ragContext.routing.houses,
+            fullAnswer,
+            tokensUsed: tokensUsed ?? 0,
+          },
+        });
+      } catch {
+        /* stream already closed */
+      }
       close();
+
+      // K.2: Log business event (AD-22.4)
+      log.info('consult.answered', {
+        operatorId: operator.id,
+        readingId: body.readingId,
+        routedThemes: ragContext.routing.themes,
+        routedHouses: ragContext.routing.houses,
+        tokens: tokensUsed ?? 0,
+      });
     },
   });
 

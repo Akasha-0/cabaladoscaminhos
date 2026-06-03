@@ -25,6 +25,7 @@ export const addChatMessageSchema = z.object({
   content: z.string().min(1, 'Mensagem vazia').max(8000),
   routedThemes: z.array(z.string()).optional(),
   routedHouses: z.array(z.number().int().positive()).optional(),
+  tokensUsed: z.number().int().nonnegative().optional(), // AD-22.5: rastreamento de custo
 });
 
 export type CreateConsultationInput = z.infer<typeof createConsultationSchema>;
@@ -108,6 +109,7 @@ export async function addChatMessage(
         content: data.content,
         routedThemes: data.routedThemes ?? [],
         routedHouses: data.routedHouses ?? [],
+        tokensUsed: data.tokensUsed,
       },
     });
     await tx.consultation.update({
