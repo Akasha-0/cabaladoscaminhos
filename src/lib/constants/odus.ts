@@ -26,7 +26,7 @@ export interface Odu {
   baseAdvice: string;
 }
 
-const ODUS: ReadonlyArray<Odu> = [
+export const ODUS: ReadonlyArray<Odu> = [
   { id: 1,  name: 'Ogbe',      orixas: ['Oxalá'],                          essence: 'Luz, origem, criação, renovação',                quizila: 'Não pular etapas; não desprezar o começo.',          baseAdvice: 'Recomece com fé; a luz já apontou o caminho.' },
   { id: 2,  name: 'Ejiokô',    orixas: ['Ibeji', 'Ogum'],                  essence: 'Dualidade, movimento, parcerias',                quizila: 'Evitar decisões sozinho; não duplicar conflitos.',   baseAdvice: 'Busque o par certo; a força está na união.' },
   { id: 3,  name: 'Etogundá',  orixas: ['Ogum', 'Ogun'],                   essence: 'Batalha, conquista, abertura de caminhos',       quizila: 'Não recuar na luta justa; evitar violência fútil.',  baseAdvice: 'Avance com coragem; abra o caminho à força.' },

@@ -151,7 +151,7 @@ const errors = {
   },
 };
 
-function handleApiError(error: unknown) {
+export function handleApiError(error: unknown): { status: number; body: Record<string, unknown> } {
   if (error instanceof AppError) {
     return { status: error.statusCode, body: error.toJSON() };
   }
@@ -178,3 +178,5 @@ export function withErrorHandler<T extends (...args: Parameters<T>) => Promise<R
     }
   }) as T;
 }
+
+export { AppError, errors };

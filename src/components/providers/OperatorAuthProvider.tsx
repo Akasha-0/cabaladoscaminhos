@@ -116,7 +116,7 @@ async function readError(res: Response, fallback: string): Promise<string> {
 // ============================================================================
 // Provider
 // ============================================================================
-function OperatorAuthProvider({ children }: { children: ReactNode }) {
+export function OperatorAuthProvider({ children }: { children: ReactNode }) {
   const [operator, setOperator] = useState<OperatorInfo | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isHydrated, setIsHydrated] = useState(false)

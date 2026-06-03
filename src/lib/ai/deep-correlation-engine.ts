@@ -911,8 +911,7 @@ class DeepCorrelationEngine {
 
   /**
    * Generate AI explanation for a system correlation
-   */
-  async explainCorrelationPT(correlation: SystemCorrelation): Promise<string> {
+  async explainCorrelation(correlation: SystemCorrelation): Promise<string> {
     const messages: ChatMessage[] = [
       {
         role: 'system',

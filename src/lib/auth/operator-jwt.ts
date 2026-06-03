@@ -168,7 +168,7 @@ export function signOperatorRefreshToken(operator: {
  * genérico de 7d). Em código novo, use `signOperatorAccessToken` ou
  * `signOperatorRefreshToken`.
  */
-function signOperatorToken(operator: {
+export function signOperatorToken(operator: {
   id: string;
   role: 'OPERATOR' | 'ADMIN';
 }): string {
@@ -266,7 +266,7 @@ export function clearOperatorRefreshCookie(response: {
 import crypto from 'node:crypto';
 
 /** TTL do MFA challenge token: 5 minutos. */
-const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
+export const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
 
 /** Tipo de token adicional aceito em verifyOperatorToken (Fase 20). */
 // fallow-ignore-next-line unused-type

@@ -14,7 +14,7 @@
 // ─── Master Number Type ─────────────────────────────────────────────────
 const MASTER_NUMBERS = [11, 22, 33] as const;
 export type MasterNumber = typeof MASTER_NUMBERS[number];
-function isMasterNumber(n: number): n is MasterNumber {
+export function isMasterNumber(n: number): n is MasterNumber {
   return MASTER_NUMBERS.includes(n as MasterNumber);
 }
 // ─── Original Tables ──────────────────────────────────────────────────────

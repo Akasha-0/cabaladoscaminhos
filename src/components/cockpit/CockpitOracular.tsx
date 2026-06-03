@@ -87,16 +87,16 @@ export function CockpitOracular({ readingId: propReadingId, clientName: propClie
     const CARTAS_EXAMPLE: { numero: number; nome: string; significado: string }[] = [
       { numero: 1, nome: 'O Cavaleiro', significado: 'Ação' },
       { numero: 4, nome: 'A Casa', significado: 'Família' },
-      { numero: 9, nome: 'O Buquê', significado: 'Surpresas' },
+      { numero: 9, nome: 'Os Buquês', significado: 'Surpresas' },
       { numero: 12, nome: 'Os Pássaros', significado: 'Comunicação' },
       { numero: 16, nome: 'A Estrela', significado: 'Esperança' },
       { numero: 19, nome: 'O Cachorro', significado: 'Lealdade' },
-      { numero: 25, nome: 'A Flor', significado: 'Amor' },
-      { numero: 27, nome: 'A Áncora', significado: 'Estabilidade' },
+      { numero: 25, nome: 'O Coração', significado: 'Amor' },
+      { numero: 27, nome: 'A Âncora', significado: 'Estabilidade' },
       { numero: 31, nome: 'O Sol', significado: 'Sucesso' },
       { numero: 5, nome: 'A Árvore', significado: 'Crescimento' },
-      { numero: 17, nome: 'O Veado', significado: 'Metas' },
-      { numero: 28, nome: 'O Anjo', significado: 'Proteção' },
+      { numero: 17, nome: 'A Cegonha', significado: 'Novidades' },
+      { numero: 28, nome: 'O Cigano', significado: 'Energia Masculina' },
     ];
 
     const odusExample = [

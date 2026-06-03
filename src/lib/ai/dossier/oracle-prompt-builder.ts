@@ -153,7 +153,7 @@ export interface FullPayload {
 /**
  * Monta o payload completo (todas as casas preenchidas + instrução de síntese).
  */
-function buildFullPayload(client: ClientMaps, matrixData: MatrixData): FullPayload {
+export function buildFullPayload(client: ClientMaps, matrixData: MatrixData): FullPayload {
   const casas = Object.entries(matrixData)
     .filter(([houseStr]) => CORRELATION_MAP[parseInt(houseStr, 10)] !== undefined)
     .map(([houseStr, entry]) => buildHousePayload(parseInt(houseStr, 10), entry, client));

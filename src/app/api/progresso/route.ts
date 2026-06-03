@@ -343,7 +343,7 @@ interface LevelResult {
   level: number;
   expToNext: number;
 }
-function calculateLevel(experience: number): LevelResult {
+export function calculateLevel(experience: number): LevelResult {
   const baseExp = 100;
   const multiplier = 1.5;
   let level = 1;
@@ -357,7 +357,7 @@ function calculateLevel(experience: number): LevelResult {
   const expToNext = baseExp * Math.pow(multiplier, level - 1);
   return { level, expToNext };
 }
-function enrichAchievement(
+export function enrichAchievement(
   base: AchievementBase,
   currentProgress: number,
   unlockedAt: string | null
@@ -389,7 +389,7 @@ export interface SpiritualStats {
   byRarity: Record<string, number>;
   byCategory: Record<string, number>;
 }
-function calculateSpiritualStats(achievements: Achievement[]): SpiritualStats {
+export function calculateSpiritualStats(achievements: Achievement[]): SpiritualStats {
   return {
     bySefirot: achievements.reduce((acc, a) => {
       if (a.spiritualCorrelations) {
@@ -543,7 +543,7 @@ export interface SpiritualFilters {
   element?: string;
   orixa?: string;
 }
-function applySpiritualFilters(
+export function applySpiritualFilters(
   achievements: Achievement[],
   filters: SpiritualFilters
 ): Achievement[] {
@@ -573,7 +573,7 @@ function applySpiritualFilters(
   return filtered;
 }
 // ─── Data Normalization Functions ────────────────────────────────────────────────────
-function normalizeProgressData(rawData: unknown): ProgressData | null {
+export function normalizeProgressData(rawData: unknown): ProgressData | null {
   if (!rawData || typeof rawData !== 'object') return null;
   const d = rawData as Record<string, unknown>;
   return {
@@ -599,7 +599,7 @@ function normalizeProgressData(rawData: unknown): ProgressData | null {
   };
 }
 // ─── Response Building Functions ────────────────────────────────────────────────────
-function buildProgressStatsFromExp(experience: number, totalPoints: number): ProgressStats {
+export function buildProgressStatsFromExp(experience: number, totalPoints: number): ProgressStats {
   const { level, expToNext } = calculateLevel(experience);
   return {
     level,
@@ -608,7 +608,7 @@ function buildProgressStatsFromExp(experience: number, totalPoints: number): Pro
     totalPoints,
   };
 }
-function buildReadingProgress(progressData: ProgressData | null): ReadingProgress {
+export function buildReadingProgress(progressData: ProgressData | null): ReadingProgress {
   return {
     total: progressData?.readingsCount || 0,
     byType: progressData?.readingsByType || {},
@@ -616,7 +616,7 @@ function buildReadingProgress(progressData: ProgressData | null): ReadingProgres
     thisMonth: progressData?.readingsThisMonth || 0,
   };
 }
-function buildRitualProgress(progressData: ProgressData | null): RitualProgress {
+export function buildRitualProgress(progressData: ProgressData | null): RitualProgress {
   return {
     totalCompletions: progressData?.ritualsCount || 0,
     currentStreak: progressData?.ritualsStreak || 0,
@@ -625,7 +625,7 @@ function buildRitualProgress(progressData: ProgressData | null): RitualProgress 
     favoriteRitual: progressData?.favoriteRitual || null,
   };
 }
-function buildMeditationProgress(progressData: ProgressData | null): MeditationProgress {
+export function buildMeditationProgress(progressData: ProgressData | null): MeditationProgress {
   const sessions = progressData?.meditationSessions || 0;
   const minutes = progressData?.meditationMinutes || 0;
   return {
@@ -636,7 +636,7 @@ function buildMeditationProgress(progressData: ProgressData | null): MeditationP
     longestMeditationStreak: progressData?.meditationLongestStreak || 0,
   };
 }
-function buildCreditsProgress(progressData: ProgressData | null): CreditsProgress {
+export function buildCreditsProgress(progressData: ProgressData | null): CreditsProgress {
   return {
     totalEarned: progressData?.creditsEarned || 0,
     totalSpent: progressData?.creditsSpent || 0,

@@ -11,7 +11,7 @@ export interface PlanoInfo {
   recursos: string[];
 }
 
-const PLANOS: Record<string, PlanoInfo> = {
+export const PLANOS: Record<string, PlanoInfo> = {
   Iniciante: {
     id: process.env.STRIPE_PRICE_INICIANTE || 'price_iniciante',
     nome: 'Iniciante',
@@ -203,15 +203,15 @@ async function obterCustomerId(userId: string): Promise<string | null> {
   }
 }
 
-function extrairUserId(metadata: Stripe.Metadata): string | null {
+export function extrairUserId(metadata: Stripe.Metadata): string | null {
   return metadata.userId || null;
 }
 
-function extrairPlanoId(metadata: Stripe.Metadata): string | null {
+export function extrairPlanoId(metadata: Stripe.Metadata): string | null {
   return metadata.planoId || null;
 }
 
-function extrairCreditos(metadata: Stripe.Metadata): number {
+export function extrairCreditos(metadata: Stripe.Metadata): number {
   const creditos = metadata.creditos;
   return creditos ? parseInt(creditos, 10) : 0;
 }

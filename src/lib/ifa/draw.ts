@@ -112,7 +112,7 @@ const oduMap: Record<number, { top: number; bottom: number; elementos: string; o
 };
 
 // Get Ope by ID
-function getOpe(id: number): Ope {
+export function getOpe(id: number): Ope {
   return opes.find(o => o.id === id) || opes[0];
 }
 
@@ -232,7 +232,7 @@ function deriveOduFromBirthDate(dataNascimento: string): number {
 }
 
 // Draw multiple Odus (for complex readings)
-function drawMultipleOdu(count: number): DrawResult[] {
+export function drawMultipleOdu(count: number): DrawResult[] {
   const results: DrawResult[] = [];
   
   for (let i = 0; i < count; i++) {
