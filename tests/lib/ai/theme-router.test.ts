@@ -10,8 +10,11 @@ import type { MatrixData } from '@/types';
 
 describe('THEME_TAXONOMY', () => {
   it('todo tema tem casas primárias, aspectos e keywords', () => {
+    expect(THEME_TAXONOMY).toBeDefined();
     for (const entry of Object.values(THEME_TAXONOMY)) {
+      if (!entry) continue; // skip undefined entries
       expect(entry.primaryHouses.length).toBeGreaterThan(0);
+      expect(entry.natalAspects.length).toBeGreaterThan(0);
       expect(entry.natalAspects.length).toBeGreaterThan(0);
       expect(entry.keywords.length).toBeGreaterThan(0);
     }

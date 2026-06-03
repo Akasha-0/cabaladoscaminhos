@@ -45,12 +45,11 @@ describe('buildHousePayload — delegação determinística', () => {
     const entry = { carta: 19, cartaName: 'A Torre', odu: 10, oduName: 'Ofun' };
     const p = buildHousePayload(1, entry, client);
     expect(p.casa_nome).toBe('O Cavaleiro');
-    // ascendant é string → extração direta
-    expect(p.dados_nata1s_consulente.astrologia.valores).toHaveProperty('ascendant', 'Virgem');
-    // planets array: planets.mars.sign extrai via find
-    expect(p.dados_nata1s_consulente.astrologia.valores).toHaveProperty('planets.mars.sign', 'Leão');
-    expect(p.dados_nata1s_consulente.numerologia_cabalistica.valores).toHaveProperty('expression', 8);
-    expect(p.dados_nata1s_consulente.numerologia_tantrica.valores).toHaveProperty('soul', 2);
+    const astro1 = p.dados_natais_consulente.astrologia.valores;
+    expect(astro1).toHaveProperty('ascendant', 'Virgem');
+    expect(astro1).toHaveProperty('planets.mars.sign', 'Leão');
+    expect(p.dados_natais_consulente.numerologia_cabalistica.valores).toHaveProperty('expression', 8);
+    expect(p.dados_natais_consulente.numerologia_tantrica.valores).toHaveProperty('soul', 2);
     expect(p.tiragem_do_dia.carta_numero).toBe(19);
     expect(p.tiragem_do_dia.carta_significado.length).toBeGreaterThan(0);
     expect(p.tiragem_do_dia.carta_base.length).toBeGreaterThan(0);
@@ -62,13 +61,11 @@ describe('buildHousePayload — delegação determinística', () => {
     const entry = { carta: 34, cartaName: 'Os Peixes', odu: 6, oduName: 'Obará' };
     const p = buildHousePayload(34, entry, client);
     expect(p.casa_nome).toBe('Os Peixes');
-    const astro = p.dados_nata1s_consulente.astrologia.valores;
-    // houses array: houses.2 extrai via find by house number
-    expect(astro).toHaveProperty('houses.2', 'Libra');
-    expect(astro).toHaveProperty('planets.venus.sign', 'Câncer');
-    expect(p.dados_nata1s_consulente.numerologia_tantrica.valores).toHaveProperty('karma', 8);
-    // determinismo: nada do Ascendente nem da Lua entra na casa 34
-    expect(Object.keys(astro).some((k) => k.includes('ascendant'))).toBe(false);
-    expect(Object.keys(astro).some((k) => k.includes('moon'))).toBe(false);
+    const astro34 = p.dados_natais_consulente.astrologia.valores;
+    expect(astro34).toHaveProperty('houses.2', 'Libra');
+    expect(astro34).toHaveProperty('planets.venus.sign', 'Câncer');
+    expect(p.dados_natais_consulente.numerologia_tantrica.valores).toHaveProperty('karma', 8);
+    expect(Object.keys(astro34).some((k) => k.includes('ascendant'))).toBe(false);
+    expect(Object.keys(astro34).some((k) => k.includes('moon'))).toBe(false);
   });
 });
