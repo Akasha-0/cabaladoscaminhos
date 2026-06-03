@@ -74,10 +74,17 @@ export function getArchetypeCorrelation(
   const casa = getCasaData(casaNumero);
   if (!casa) {
     return {
-      numerologia: [],
+      casaNumero,
+      casaNome: `Casa ${casaNumero}`,
+      casaSignificado: '',
       arquetipo: '',
+      casaAstrologica: 1,
+      planetaRegente: '',
+      numerologia: [],
+      odus: [],
       sefirot: '',
       tarot: '',
+      integracao: '',
     };
   }
 
@@ -94,10 +101,17 @@ export function getArchetypeCorrelation(
   }
 
   return {
-    numerologia: correlations.numerologia || [],
+    casaNumero,
+    casaNome: casa.name,
+    casaSignificado: casa.meaning,
     arquetipo: casa.archetype,
-    sefirot: casa.sefira,
-    tarot: correlations.tarot || [],
+    casaAstrologica: casa.houseNumber,
+    planetaRegente: casa.associatedPlanet || '',
+    numerologia: correlations.numerologia || [],
+    odus: correlations.cabalistica || [],
+    sefirot: correlations.cabalistica?.[0] || '',
+    tarot: '',
+    integracao: '',
   };
 }
 
@@ -129,15 +143,19 @@ export function construirArquiteturaDossiê(
 
     if (!casa || !carta || !odu) continue;
 
-    const integracao = construirIntegracao(casa, clientData, {});
+    const integracao = construirIntegracao(casa, clientData, CORRELACOES_ESPECIAIS[casa.houseNumber] || { numerologia: [], tantrica: [], cabalistica: [] });
     const correlacao = getArchetypeCorrelation(i, clientData);
 
     dossiê.push({
       casaNumero: i,
+      casaNome: casa.name,
+      casaSignificado: casa.meaning,
+      posicaoGrid: { row: Math.floor((i - 1) / 4) + 1, col: ((i - 1) % 4) + 1 },
       carta,
       odu,
       integracao,
       correlacao,
+      dadosConsulente: clientData as DadosConsulente,
     });
   }
 
@@ -170,7 +188,9 @@ export function gerarLeituraCompleta(
   const sintese = gerarSintese(dossiê, clientData);
 
   return {
-    tipo: tipoTiragem,
+    data: new Date().toISOString(),
+    tipoTiragem,
+    posicoes: [],
     dossiê,
     sintese,
   };
@@ -191,7 +211,7 @@ function construirIntegracao(
   const parts: string[] = [];
 
   // Basic house description
-  parts.push(casa.description);
+  parts.push(casa.meaning);
 
   // Add archetype if available
   if (clientData.numerologia) {
@@ -224,10 +244,10 @@ function gerarInterpretacaoPosicao(
   const parts: string[] = [];
 
   // House interpretation
-  parts.push(`${casa.name} (Casa ${casa.position}): ${casa.description}`);
+  parts.push(`${casa.name} (Casa ${casa.houseNumber}): ${casa.meaning}`);
 
   // Card interpretation
-  parts.push(`Carta: ${carta.nome} - ${carta.description}`);
+  parts.push(`Carta: ${carta.nome} - ${carta.significado}`);
 
   // Odu interpretation
   if (odu?.significado) {
@@ -346,6 +366,7 @@ export function realizarLeitura(
     const casa = getCasaData(pos.casa);
     const carta = getCartaData(pos.carta);
     return {
+    data: new Date().toISOString(),
       position: pos.casa,
       house: casa?.name || `Casa ${pos.casa}`,
       card: carta?.nome || `Carta ${pos.carta}`,

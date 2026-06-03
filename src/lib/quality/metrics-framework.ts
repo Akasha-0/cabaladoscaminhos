@@ -4,7 +4,7 @@
 import { z } from 'zod';
 
 // Enums
-export const MetricCategory = z.enum([
+const MetricCategory = z.enum([
   'spiritual_correlations',
   'ai_integration',
   'performance',
@@ -13,7 +13,7 @@ export const MetricCategory = z.enum([
 ]);
 export type MetricCategory = z.infer<typeof MetricCategory>;
 
-export const MetricSeverity = z.enum([
+const MetricSeverity = z.enum([
   'critical',
   'high',
   'medium',
@@ -22,7 +22,7 @@ export const MetricSeverity = z.enum([
 ]);
 export type MetricSeverity = z.infer<typeof MetricSeverity>;
 
-export const MetricStatus = z.enum([
+const MetricStatus = z.enum([
   'pass',
   'fail',
   'warning',
@@ -48,7 +48,7 @@ export const DEFAULT_THRESHOLDS: Threshold[] = [
 ];
 
 // Grade calculation
-export function calculateGrade(score: number): string {
+function calculateGrade(score: number): string {
   if (score >= 97) return 'A+';
   if (score >= 93) return 'A';
   if (score >= 90) return 'A-';
@@ -62,7 +62,7 @@ export function calculateGrade(score: number): string {
 }
 
 // Metric validation
-export function validateMetricValue(
+function validateMetricValue(
   value: number,
   threshold: number,
   operator: 'gte' | 'lte' | 'eq' | 'gt' | 'lt'
@@ -84,7 +84,7 @@ export function validateMetricValue(
 }
 
 // Score calculation
-export function calculateScoreFromValue(
+function calculateScoreFromValue(
   value: number,
   thresholds: { critical: number; high: number; medium: number; low: number }
 ): number {
@@ -96,6 +96,7 @@ export function calculateScoreFromValue(
 }
 
 // Performance Monitor
+// fallow-ignore-next-line unused-type
 export interface MetricStats {
   count: number;
   avg: number;
@@ -105,7 +106,7 @@ export interface MetricStats {
   p99: number;
 }
 
-export class PerformanceMonitor {
+class PerformanceMonitor {
   private metrics: Map<string, number[]> = new Map();
 
   record(metric: string, value: number): void {

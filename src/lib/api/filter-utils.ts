@@ -59,7 +59,7 @@ export function applySpiritualFilters<T extends FilterableItem>(
   return filtered;
 }
 
-export function parseSpiritualFilterParams(
+function parseSpiritualFilterParams(
   searchParams: URLSearchParams
 ): SpiritualFilterParams {
   return {
@@ -70,7 +70,7 @@ export function parseSpiritualFilterParams(
   };
 }
 
-export function buildFilterMeta(filters: SpiritualFilterParams): Record<string, unknown> {
+function buildFilterMeta(filters: SpiritualFilterParams): Record<string, unknown> {
   return {
     filters: {
       sefirot: filters.sefirot,

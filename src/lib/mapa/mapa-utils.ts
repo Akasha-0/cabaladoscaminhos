@@ -4,7 +4,7 @@ import { z } from 'zod';
  * Shared Zod schema for MapaAlma input validation.
  * Used across all /api/mapa routes.
  */
-export const mapaSchema = z.object({
+const mapaSchema = z.object({
   nomeCompleto: z.string().min(2).max(200),
   dataNascimento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   hora: z.string().optional(),

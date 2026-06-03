@@ -9,13 +9,12 @@
 
 import { NextResponse } from 'next/server';
 
-export interface SuccessResponse<T = unknown> {
+interface SuccessResponse<T = unknown> {
   success: true;
   data?: T;
   [key: string]: unknown;
 }
-
-export interface ErrorResponse {
+interface ErrorResponse {
   success: false;
   error: string;
   code?: string;
@@ -25,7 +24,7 @@ export interface ErrorResponse {
 /**
  * Create a standardized success response
  */
-export function createAPIResponse<T>(
+function createAPIResponse<T>(
   data: T,
   options: {
     /** Additional metadata to include */
@@ -54,38 +53,6 @@ export function createAPIResponse<T>(
   return NextResponse.json(response, { status });
 }
 
-/**
- * Create a list response with pagination metadata
- */
-export function createListResponse<T>(
-  items: T[],
-  options: {
-    /** Total count of all items (for pagination) */
-    total?: number;
-    /** Current page number */
-    page?: number;
-    /** Items per page */
-    limit?: number;
-    /** Custom metadata */
-    meta?: Record<string, unknown>;
-  } = {}
-): NextResponse {
-  const { total, page, limit, meta } = options;
-  const count = items.length;
-
-  const response: SuccessResponse<T[]> = {
-    success: true,
-    data: items,
-    count,
-  };
-
-  if (total !== undefined) response.total = total;
-  if (page !== undefined) response.page = page;
-  if (limit !== undefined) response.limit = limit;
-  if (meta) response.meta = meta;
-
-  return NextResponse.json(response);
-}
 
 /**
  * Create an error response
@@ -117,7 +84,7 @@ export function createErrorResponse(
 /**
  * Create a formatListResponse helper for generic list formatting
  */
-export function formatListResponse<T extends { id: string | number }>(
+function formatListResponse<T extends { id: string | number }>(
   items: T[],
   options: {
     /** Key to extract spiritual correlations from items */

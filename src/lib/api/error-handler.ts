@@ -9,6 +9,7 @@
 
 import { NextResponse } from 'next/server';
 import type { ZodError } from 'zod';
+// fallow-ignore-next-line unused-type
 export interface APIError {
   code?: string;
   message: string;
@@ -70,7 +71,7 @@ export function handleAPIError(
   );
 }
 
-export function isZodError(error: unknown): error is ZodError {
+function isZodError(error: unknown): error is ZodError {
   return (
     typeof error === 'object' &&
     error !== null &&
@@ -79,7 +80,7 @@ export function isZodError(error: unknown): error is ZodError {
   );
 }
 
-export function authError(message = 'Usuário não autenticado'): NextResponse {
+function authError(message = 'Usuário não autenticado'): NextResponse {
   return NextResponse.json(
     {
       success: false,
@@ -90,7 +91,7 @@ export function authError(message = 'Usuário não autenticado'): NextResponse {
   );
 }
 
-export function validationError(
+function validationError(
   error: unknown,
   message = 'Dados inválidos'
 ): NextResponse {
@@ -119,7 +120,7 @@ export function validationError(
 /**
  * Create not found error response
  */
-export function notFoundError(resource: string): NextResponse {
+function notFoundError(resource: string): NextResponse {
   return NextResponse.json(
     {
       success: false,
@@ -130,7 +131,7 @@ export function notFoundError(resource: string): NextResponse {
   );
 }
 
-export function withErrorHandling<T extends (...args: unknown[]) => Promise<NextResponse>>(
+function withErrorHandling<T extends (...args: unknown[]) => Promise<NextResponse>>(
   handler: T,
   options?: Parameters<typeof handleAPIError>[1]
 ): T {

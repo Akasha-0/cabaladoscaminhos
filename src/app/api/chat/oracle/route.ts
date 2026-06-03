@@ -1,9 +1,12 @@
+import { requireOperatorApi } from '@/lib/auth/operator-guard';
+
 // ============================================================
 // ORACLE CHAT API - CABALA DOS CAMINHOS
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
+// fallow-ignore-next-line unused-type
 export interface Message {
   id?: string;
   role: 'user' | 'assistant';
@@ -215,6 +218,8 @@ Ferramentas utilizadas: ${results.map(r => `${r.tool}: ${r.result}`).join(', ')}
 // ─── API HANDLERS ────────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest): Promise<NextResponse<OracleResponse | { error: string; details?: string }>> {
+  const authResult = await requireOperatorApi(request);
+  if (authResult instanceof NextResponse) return authResult as NextResponse<OracleResponse | { error: string }>;
   try {
     let body;
     try {

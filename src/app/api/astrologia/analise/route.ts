@@ -1,3 +1,5 @@
+import { requireOperatorApi } from '@/lib/auth/operator-guard';
+
 // ============================================================
 // ASTROLOGIA ANÁLISE API - CABALA DOS CAMINHOS
 // Birth chart analysis with spiritual correlations
@@ -127,6 +129,8 @@ function capitalize(str: string): string {
 }
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperatorApi(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const searchParams = request.nextUrl.searchParams;
     const parseResult = AnaliseQuerySchema.safeParse({

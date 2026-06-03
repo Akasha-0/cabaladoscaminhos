@@ -12,9 +12,8 @@ const ShareRequestSchema = z.object({
   mapaId: z.string().min(1, 'mapaId is required'),
   expiresIn: z.number().int().positive().optional(),
 });
-export type ShareRequest = z.infer<typeof ShareRequestSchema>;
-
-export interface MapaData {
+type ShareRequest = z.infer<typeof ShareRequestSchema>;
+interface MapaData {
   id: string;
   created_at: string;
   numerologia: {

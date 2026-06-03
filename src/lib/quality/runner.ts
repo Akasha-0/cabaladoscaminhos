@@ -29,6 +29,7 @@ export interface QualityReport {
   timestamp: Date
 }
 
+// fallow-ignore-next-line unused-type
 export interface EvalDefinition {
   name: string
   category: MetricCategory
@@ -36,7 +37,7 @@ export interface EvalDefinition {
   run: () => Promise<EvalMetric>
 }
 
-export const ALL_EVALS: EvalDefinition[] = []
+const ALL_EVALS: EvalDefinition[] = []
 
 export async function runAllEvals(options: EvalOptions): Promise<QualityReport | null> {
   const report: QualityReport = {

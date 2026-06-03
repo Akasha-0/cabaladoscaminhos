@@ -19,6 +19,7 @@ export interface SpiritualStats {
   byOrixa: Record<string, number>;
 }
 
+// fallow-ignore-next-line unused-type
 export interface HasSpiritualCorrelations {
   tipo?: string;
   type?: string;
@@ -33,7 +34,7 @@ export interface HasSpiritualCorrelations {
  * @param items - Array of items with optional spiritual correlations
  * @returns SpiritualStats object with counts by type, sefirot, chakra, element, orixa
  */
-export function calculateSpiritualStats<T extends HasSpiritualCorrelations>(
+function calculateSpiritualStats<T extends HasSpiritualCorrelations>(
   items: T[],
   options: {
     /** Include byType breakdown (default: true) */

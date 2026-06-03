@@ -310,14 +310,6 @@ function shuffle<T>(array: T[]): T[] {
   return result;
 }
 
-export function getCard(idOrName: number | string): TarotCard | undefined {
-  if (typeof idOrName === 'number') {
-    return ALL_CARDS.find(card => card.id === idOrName);
-  }
-  return ALL_CARDS.find(
-    card => card.name.toLowerCase() === idOrName.toLowerCase()
-  );
-}
 
 export function drawCards(n: number): TarotCard[] {
   return shuffle(ALL_CARDS).slice(0, n);

@@ -14,6 +14,7 @@ import {
   calculatePersonality,
 } from './calculos';
 
+// fallow-ignore-next-line unused-type
 export interface NumerologyInput {
   name: string;
   date: string;
@@ -75,21 +76,3 @@ const methods = {
   impressao: (name: string): number => reduceToDigits(calculatePersonality(name)),
 };
 
-export function calculate(input: string | NumerologyInput): NumerologyResult {
-  const name = typeof input === 'string' ? input : input.name;
-  const date = typeof input === 'string' ? '' : input.date;
-
-  return {
-    vida: methods.vida(date || date),
-    expressao: methods.expressao(name),
-    motivacao: methods.motivacao(name),
-    impressao: methods.impressao(name),
-    pitagorica: methods.pitagorica(name),
-    caldeia: methods.caldeia(name),
-    cabalistica: methods.cabalistica(name),
-    tantrica: methods.tantrica(date || date),
-    destino: methods.destino(date || date),
-  };
-}
-
-export default calculate;

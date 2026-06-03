@@ -1,3 +1,24 @@
+export interface OkanranData {
+  name: string;
+  odu: number;
+  path: string;
+  description: string;
+  keywords: string[];
+  elements: Array<{ id: string; label: string; weight: number }>;
+  qualities: string[];
+  lessons: string[];
+  challenges: string[];
+  opportunities: string[];
+  rituals: string[];
+  colors: string[];
+  symbols: string[];
+  affirmation: string;
+  chakra: string;
+  planet: string;
+  day: string;
+  element: string;
+}
+
 /**
  * Complete Okanran data
  */

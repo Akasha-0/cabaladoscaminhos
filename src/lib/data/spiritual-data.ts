@@ -5,7 +5,7 @@
 // baseadas em Cabala, Orixás, Odús, Tarot, Numerologia e Lua
 // ============================================================
 
-export interface DiaSemanaData {
+interface DiaSemanaData {
   dia: string;
   chakras: string[];
   cores: string[];
@@ -45,15 +45,14 @@ export interface OduData {
   ebo: string;
 }
 
-export interface CartaLenormand {
+interface CartaLenormand {
   numero: number;
   nome: string;
   significado: string;
   area: string;
   interpretacao: string;
 }
-
-export interface ChakraData {
+interface ChakraData {
   numero: number;
   nome: string;
   cor: string;
@@ -66,14 +65,13 @@ export interface ChakraData {
   funcao: string;
 }
 
-export interface CartaTarot {
+interface CartaTarot {
   numero: number;
   nome: string;
   arcano: string;
   significado: string;
   keywords: string[];
 }
-
 // ============================================================
 // DIAS DA SEMANA E SUAS CORRESPONDÊNCIAS
 // ============================================================
@@ -404,24 +402,3 @@ function getOrixasDoDia(): OrixaData[] {
   return orixas.filter(o => diaAtual.orixas.some(orixa => o.nome.includes(orixa.split('/')[0].trim())));
 }
 
-export function getFaseLuaAtual(): typeof fasesLua[0] | null {
-  // Cálculo simplificado - em produção usar biblioteca de astronomia
-  const dia = new Date().getDate();
-  const faseIndex = Math.floor((dia % 30) / 7.5);
-  return fasesLua[faseIndex] || null;
-}
-
-export function getCorrespondenciasDia(): {
-  dia: DiaSemanaData;
-  orixas: OrixaData[];
-  faseLua: typeof fasesLua[0] | null;
-} {
-  return {
-    dia: getDiaSemanaAtual(),
-    orixas: getOrixasDoDia(),
-    faseLua: getFaseLuaAtual()
-  };
-}
-
-// Stub for backward compatibility
-export const spiritualData = {};

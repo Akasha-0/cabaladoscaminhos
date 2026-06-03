@@ -162,7 +162,7 @@ function getOduForBirthNumber(numero: number): string {
 /**
  * Get all correlations
  */
-export function getAllNumerologyOdúCorrelations(): NumerologyOdúCorrelation[] {
+function getAllNumerologyOdúCorrelations(): NumerologyOdúCorrelation[] {
   return NUMEROLOGY_ODU_CORRELATIONS;
 }
 

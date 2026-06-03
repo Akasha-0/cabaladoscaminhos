@@ -51,7 +51,7 @@ export function parseInsightResponse(raw: string): InsightData {
 /**
  * Extract JSON from AI response that may contain markdown code blocks
  */
-export function extractJson(raw: string): string {
+function extractJson(raw: string): string {
   // Try direct parse first
   try {
     JSON.parse(raw);

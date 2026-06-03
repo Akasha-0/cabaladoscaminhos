@@ -113,7 +113,7 @@ export interface OrixaAstrologia {
 // UNIFIED ORIXÁ DATA MAP
 // ════════════════════════════════════════════════════════════════════════════
 
-const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
+export const ORIXAS_UNIFIED: Record<string, OrixaCore> = {
   'oxala': {
     id: 'oxala',
     nome: 'Oxalá',
@@ -556,42 +556,42 @@ function getOrixasByChakra(chakraNum: number): OrixaCore[] {
 /**
  * Get Orixá colors
  */
-function getOrixaCores(nome: string): string[] {
+export function getOrixaCores(nome: string): string[] {
   return getOrixa(nome)?.cores ?? [];
 }
 
 /**
  * Get Orixá sacred numbers
  */
-function getOrixaNumeros(nome: string): number[] {
+export function getOrixaNumeros(nome: string): number[] {
   return getOrixa(nome)?.numerosSagrados ?? [];
 }
 
 /**
  * Normalize Orixá name for lookup
  */
-function normalizeOrixaKey(nome: string): string {
+export function normalizeOrixaKey(nome: string): string {
   return nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 /**
  * Get Orixá element
  */
-function getOrixaElemento(nome: string): string | null {
+export function getOrixaElemento(nome: string): string | null {
   return getOrixa(nome)?.elemento ?? null;
 }
 
 /**
  * Get Orixá planet
  */
-function getOrixaPlaneta(nome: string): string | null {
+export function getOrixaPlaneta(nome: string): string | null {
   return getOrixa(nome)?.planeta ?? null;
 }
 
 /**
  * Get Orixá chakra number
  */
-function getOrixaChakra(nome: string): number | null {
+export function getOrixaChakra(nome: string): number | null {
   return getOrixa(nome)?.chakraPrincipal ?? null;
 }
 

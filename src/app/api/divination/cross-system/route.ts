@@ -1,3 +1,5 @@
+import { requireOperatorApi } from '@/lib/auth/operator-guard';
+
 // ============================================================
 // CROSS-SYSTEM DIVINATION API - CABALA DOS CAMINHOS
 // Combines Tarot, Ifá/Odu, Numerology, Astrology
@@ -54,7 +56,6 @@ const TAROT_SPIRITUAL_CORRELATIONS: Record<string, {
   'The World': { sefirot: ['Malkuth', 'Kether'], chakra: 7, element: 'Terra', orixa: 'Oxum', affirmation: 'Completo ciclos com graça', frequency: '528 Hz' },
 };
 
-// ─── Spiritual Correlations for Odús ──────────────────────────────────────────
 const ODU_SPIRITUAL_CORRELATIONS: Record<number, {
   sefirot: string[];
   chakra: number;
@@ -62,23 +63,24 @@ const ODU_SPIRITUAL_CORRELATIONS: Record<number, {
   orixa: string;
   affirmation: string;
   frequency: string;
+  oduId: string;
 }> = {
-  1: { sefirot: ['Hod', 'Gevurah'], chakra: 5, element: 'Fogo', orixa: 'Ogum', affirmation: 'Inicio meu caminho com coragem', frequency: '417 Hz' },
-  2: { sefirot: ['Chokhmah', 'Binah'], chakra: 6, element: 'Ar', orixa: 'Iemanjá', affirmation: 'A dualidade me ensina harmonia', frequency: '639 Hz' },
-  3: { sefirot: ['Gevurah', 'Malkuth'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'A força de Ogum me protege', frequency: '396 Hz' },
-  4: { sefirot: ['Binah', 'Yesod'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'Minha visão espiritual clareia', frequency: '639 Hz' },
-  5: { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Água', orixa: 'Oxum', affirmation: 'A doçura de Oxum me adorna', frequency: '528 Hz' },
-  6: { sefirot: ['Chesed', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'A riqueza de Xangô me abençoa', frequency: '528 Hz' },
-  7: { sefirot: ['Malkuth', 'Binah'], chakra: 1, element: 'Terra', orixa: 'Omolu', affirmation: 'A transformação de Omolu me renova', frequency: '174 Hz' },
-  8: { sefirot: ['Netzach', 'Hod'], chakra: 6, element: 'Fogo', orixa: 'Iansã', affirmation: 'O poder de Iansã me transforma', frequency: '417 Hz' },
-  9: { sefirot: ['Tipheret', 'Yesod'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'A clareza me guia para a verdade', frequency: '528 Hz' },
-  10: { sefirot: ['Netzach', 'Malkuth'], chakra: 6, element: 'Terra', orixa: 'Oxóssi', affirmation: 'A prosperidade flui em minha vida', frequency: '639 Hz' },
-  11: { sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Ar', orixa: 'Oxalá', affirmation: 'A justiça de Oxalá me equilibra', frequency: '963 Hz' },
-  12: { sefirot: ['Yesod', 'Malkuth'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'O amor de Iemanjá me sustenta', frequency: '639 Hz' },
-  13: { sefirot: ['Chokhmah', 'Hod'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'A sabedoria de Orunmilá me ilumina', frequency: '741 Hz' },
-  14: { sefirot: ['Binah', 'Tipheret'], chakra: 4, element: 'Fogo', orixa: 'Xangô', affirmation: 'O destino se revela em meu caminho', frequency: '528 Hz' },
-  15: { sefirot: ['Kether', 'Tipheret'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A bênção divina me protege', frequency: '963 Hz' },
-  16: { sefirot: ['Binah', 'Kether', 'Yesod'], chakra: 7, element: 'Água', orixa: 'Iemanjá', affirmation: 'O universo conspirou a meu favor', frequency: '963 Hz' },
+  1: { sefirot: ['Hod', 'Gevurah'], chakra: 5, element: 'Fogo', orixa: 'Ogum', affirmation: 'Inicio meu caminho com coragem', frequency: '417 Hz', oduId: 'Ogbe' },
+  2: { sefirot: ['Chokhmah', 'Binah'], chakra: 6, element: 'Ar', orixa: 'Iemanjá', affirmation: 'A dualidade me ensina harmonia', frequency: '639 Hz', oduId: 'Ejiokô' },
+  3: { sefirot: ['Gevurah', 'Malkuth'], chakra: 1, element: 'Terra', orixa: 'Ogum', affirmation: 'A força de Ogum me protege', frequency: '396 Hz', oduId: 'Etogundá' },
+  4: { sefirot: ['Binah', 'Yesod'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'Minha visão espiritual clareia', frequency: '639 Hz', oduId: 'Irosun' },
+  5: { sefirot: ['Tipheret', 'Chesed'], chakra: 4, element: 'Água', orixa: 'Oxum', affirmation: 'A doçura de Oxum me adorna', frequency: '528 Hz', oduId: 'Oxê' },
+  6: { sefirot: ['Chesed', 'Gevurah'], chakra: 3, element: 'Fogo', orixa: 'Xangô', affirmation: 'A riqueza de Xangô me abençoa', frequency: '528 Hz', oduId: 'Obará' },
+  7: { sefirot: ['Malkuth', 'Binah'], chakra: 1, element: 'Terra', orixa: 'Omolu', affirmation: 'A transformação de Omolu me renova', frequency: '174 Hz', oduId: 'Odi' },
+  8: { sefirot: ['Netzach', 'Hod'], chakra: 6, element: 'Fogo', orixa: 'Iansã', affirmation: 'O poder de Iansã me transforma', frequency: '417 Hz', oduId: 'Ejionile' },
+  9: { sefirot: ['Tipheret', 'Yesod'], chakra: 4, element: 'Fogo', orixa: 'Oxum', affirmation: 'A clareza me guia para a verdade', frequency: '528 Hz', oduId: 'Ossá' },
+  10: { sefirot: ['Netzach', 'Malkuth'], chakra: 6, element: 'Terra', orixa: 'Oxóssi', affirmation: 'A prosperidade flui em minha vida', frequency: '639 Hz', oduId: 'Ofun' },
+  11: { sefirot: ['Kether', 'Chokhmah'], chakra: 7, element: 'Ar', orixa: 'Oxalá', affirmation: 'A justiça de Oxalá me equilibra', frequency: '963 Hz', oduId: 'Owarin' },
+  12: { sefirot: ['Yesod', 'Malkuth'], chakra: 2, element: 'Água', orixa: 'Iemanjá', affirmation: 'O amor de Iemanjá me sustenta', frequency: '639 Hz', oduId: 'Ejilaxebô' },
+  13: { sefirot: ['Chokhmah', 'Hod'], chakra: 5, element: 'Ar', orixa: 'Orunmilá', affirmation: 'A sabedoria de Orunmilá me ilumina', frequency: '741 Hz', oduId: 'Oturupon' },
+  14: { sefirot: ['Binah', 'Tipheret'], chakra: 4, element: 'Fogo', orixa: 'Xangô', affirmation: 'O destino se revela em meu caminho', frequency: '528 Hz', oduId: 'Oturá' },
+  15: { sefirot: ['Kether', 'Tipheret'], chakra: 7, element: 'Éter', orixa: 'Oxalá', affirmation: 'A bênção divina me protege', frequency: '963 Hz', oduId: 'Iká' },
+  16: { sefirot: ['Binah', 'Kether', 'Yesod'], chakra: 7, element: 'Água', orixa: 'Iemanjá', affirmation: 'O universo conspirou a meu favor', frequency: '963 Hz', oduId: 'Ofurufu' },
 };
 
 // ─── Spiritual Correlations for Numerology ──────────────────────────────────────────
@@ -182,6 +184,8 @@ function getRandomOduNumero(): number {
 // ─── API ROUTE HANDLERS ──────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperatorApi(request);
+  if (authResult instanceof NextResponse) return authResult;
   const searchParams = request.nextUrl.searchParams;
   const parseResult = CrossSystemQuerySchema.safeParse({
     includeCorrelations: searchParams.get('includeCorrelations'),
@@ -219,6 +223,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const authResult = await requireOperatorApi(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const body = await request.json();
 

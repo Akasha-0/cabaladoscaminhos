@@ -38,6 +38,7 @@ const RESET_COLOR = "\x1b[0m";
 // LOG CONTEXT
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface LogContext {
   requestId?: string;
   userId?: string;
@@ -49,7 +50,7 @@ export interface LogContext {
   [key: string]: unknown;
 }
 
-export interface LogEntry {
+interface LogEntry {
   timestamp: string;
   level: LogLevel;
   levelName: string;
@@ -61,12 +62,10 @@ export interface LogEntry {
     stack?: string;
   };
   duration?: number;
-  performance?: {
-    memory?: number;
-    cpu?: number;
-  };
+  requestId?: string;
+  userId?: string;
+  ip?: string;
 }
-
 // ============================================================
 // LOGGER CLASS
 // ============================================================
@@ -238,13 +237,13 @@ class Logger {
   }
 }
 
-// Export singleton instance
-export const logger = Logger.getInstance();
+// Singleton logger instance (internal use by functions in this file)
+const logger = Logger.getInstance();
 
 // ============================================================
 // PERFORMANCE MONITORING
 // ====================================
-export interface PerformanceMetrics {
+interface PerformanceMetrics {
   requestId: string;
   path: string;
   method: string;
@@ -258,7 +257,6 @@ export interface PerformanceMetrics {
   };
   userId?: string;
 }
-
 // ============================================================
 // INTERNAL MONITOR
 // ====================================
@@ -392,4 +390,3 @@ function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise
   }) as T;
 }
 
-export { withLogging };

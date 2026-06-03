@@ -89,7 +89,7 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
       });
       if (!res.ok) throw new Error('Falha ao criar leitura');
       const data = await res.json();
-      setCurrentReadingId(data.id);
+      setCurrentReadingId(data.reading?.id);
       openRightPanel('dossier');
     } catch (err) {
       console.error('[GerarDossie]', err);

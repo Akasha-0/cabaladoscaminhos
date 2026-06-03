@@ -666,6 +666,7 @@ const CASAS_DATA: Record<number, CasaData> = {
     关键词: ['Eu sacrifico', 'carma', 'prisões', 'inconsciente'],
   },
 };
+// fallow-ignore-next-line unused-type
 export interface AstrologyV2Data {
   signos: Record<string, SignoData>;
   planetas: Record<string, PlanetaData>;
@@ -683,5 +684,3 @@ function getData(): AstrologyV2Data {
     casas: CASAS_DATA,
   };
 }
-
-export default getData;

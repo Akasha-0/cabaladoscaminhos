@@ -11,6 +11,7 @@ import { OracleBubble } from './OracleBubble';
 import { RoutingChips } from './RoutingChips';
 import { UserBubble } from './UserBubble';
 
+// fallow-ignore-next-line unused-type
 export interface ChatMessage {
   id: string;
   role: 'USER' | 'ORACLE';

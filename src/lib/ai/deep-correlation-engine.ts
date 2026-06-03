@@ -160,50 +160,45 @@ const LIFE_PATH_ZODIAC_MAP: Record<number, string[]> = {
   22: ['Capricorn', 'Aquarius', 'Aries'],
 };
 
-// 16 Odús to Tarot Major Arcana correlations
+// 16 Odús to Tarot Major Arcana — canonical names from constants/odus.ts
+// Arcano numbers follow Merindilogun position: Ogbe=0, Ejiokô=1, Etogundá=2, etc.
 const ODU_TAROT_MAP: Record<string, number[]> = {
   'Ogbe': [0],
-  'Oyeku': [1],
-  'Iwori': [2],
-  'Odi': [3],
-  'Irosun': [4],
-  'Oxossi': [5],
-  'Obatala': [6],
-  'Ogun': [7],
-  'Ogunda': [8],
-  'Osa': [9],
-  'Ofun': [10],
-  'Oni': [11],
-  'Meji': [12],
-  'Ika': [13],
-  'Ikate': [14],
-  'Ikite': [15],
-  'Oturupon': [16],
-  'Iwori-Meji': [17],
-  'Oka': [18],
-  'Ogbe-Meji': [19],
-  'Ogunda-Meji': [20],
-  'Osa-Meji': [21],
+  'Ejiokô': [1],
+  'Etogundá': [2],
+  'Irosun': [3],
+  'Oxê': [4],
+  'Obará': [5],
+  'Odi': [6],
+  'Ejionile': [7],
+  'Ossá': [8],
+  'Ofun': [9],
+  'Owarin': [10],
+  'Ejilaxebô': [11],
+  'Oturupon': [12],
+  'Oturá': [13],
+  'Iká': [14],
+  'Ofurufu': [15],
 };
 
-// Odú to Kabbalah Sephirot paths
+// Odú to Kabbalah Sephirot paths — canonical names from constants/odus.ts
 const ODU_SEPHIROT_MAP: Record<string, string[]> = {
   'Ogbe': ['Keter', 'Chokhmah'],
-  'Oyeku': ['Binah', 'Daat'],
-  'Iwori': ['Chokhmah', 'Keter'],
-  'Odi': ['Malkuth', 'Yesod'],
+  'Ejiokô': ['Binah', 'Daat'],
+  'Etogundá': ['Chokhmah', 'Keter'],
   'Irosun': ['Gevurah', 'Chesed'],
-  'Oxossi': ['Netzach', 'Hod'],
-  'Obatala': ['Chesed', 'Gevurah'],
-  'Ogun': ['Gevurah', 'Netzach'],
-  'Ogunda': ['Netzach', 'Tipheret'],
-  'Osa': ['Hod', 'Yesod'],
+  'Oxê': ['Netzach', 'Hod'],
+  'Obará': ['Chesed', 'Gevurah'],
+  'Odi': ['Malkuth', 'Yesod'],
+  'Ejionile': ['Netzach', 'Hod'],
+  'Ossá': ['Hod', 'Yesod'],
   'Ofun': ['Tipheret', 'Malkuth'],
-  'Oni': ['Din', 'Gevurah'],
-  'Meji': ['Tipheret', 'Yesod'],
-  'Ika': ['Malkuth', 'Yesod'],
-  'Ikate': ['Netzach', 'Hod'],
-  'Ikite': ['Malkuth'],
+  'Owarin': ['Din', 'Gevurah'],
+  'Ejilaxebô': ['Tipheret', 'Yesod'],
+  'Oturupon': ['Malkuth', 'Yesod'],
+  'Oturá': ['Netzach', 'Hod'],
+  'Iká': ['Malkuth'],
+  'Ofurufu': ['Keter', 'Tipheret'],
 };
 
 // Major Arcana to Orixás correlation
@@ -543,39 +538,8 @@ class DeepCorrelationEngine {
     };
   }
 
-  /**
-   * Generate AI-powered explanation for a correlation
-   */
-  async explainCorrelation(correlation: SpiritualCorrelation): Promise<string> {
-    const messages: ChatMessage[] = [
-      {
-        role: 'system',
-        content: `You are a spiritual wisdom teacher explaining correlations between mystical traditions.
-Explain the deep connection between ${correlation.source} and ${correlation.target} systems.
-Focus on their shared energy: ${correlation.shared_energy}.
-Keep explanations concise but profound, 2-3 sentences max.`,
-      },
-      {
-        role: 'user',
-        content: `Explain the spiritual correlation between ${correlation.source} and ${correlation.target} (correlation: ${(correlation.correlation * 100).toFixed(0)}%). Their shared energy is: ${correlation.shared_energy}.`,
-      },
-    ];
-
-    try {
-      const response = await generateMinimaxResponse(messages, {
-        temperature: 0.8,
-        max_tokens: 150,
-      });
-      return response.content;
-    } catch {
-      return `The ${correlation.source} and ${correlation.target} traditions both carry ${correlation.shared_energy}. This connection runs deep in the mystical roots shared by all spiritual paths.`;
-    }
-  }
-
   // ============================================================
   // CROSS-SYSTEM CORRELATION FUNCTIONS
-  // ============================================================
-
   /**
    * Correlate Life Path Number with Zodiac Signs
    */
@@ -1176,4 +1140,3 @@ Forneça:
 // ============================================================
 
 export { DeepCorrelationEngine };
-export default DeepCorrelationEngine;

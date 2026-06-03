@@ -25,6 +25,7 @@ const onboardingRequestSchema = z.object({
   data: onboardingDataSchema.optional(),
 });
 
+// fallow-ignore-next-line unused-type
 export type OnboardingStep = 0 | 1 | 2 | 3 | 4 | 5;
 
 // GET - Get current onboarding step for user

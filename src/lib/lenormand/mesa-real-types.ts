@@ -68,7 +68,10 @@ export interface ArquiteturaDossiê {
   };
   correlacao: CorrelacaoCasa;
   dadosConsulente: DadosConsulente;
-  tiragem: string;
+  integracao?: string;
+  sefirot?: string;
+  tarot?: string;
+  tiragem?: string;
 }
 
 /**
@@ -181,6 +184,8 @@ export interface DadosConsulente {
   caminhoDeVida?: number;
   oduNascimento?: string;
   orixaRegente?: string;
+  numerologia?: string;
+  sefira?: string;
 }
 
 /**
@@ -195,6 +200,8 @@ export interface CorrelacaoCasa {
   planetaRegente: string;
   numerologia: string[];
   odus: string[];
+  sefirot?: string;
+  tarot?: string;
   integracao: string;
 }
 

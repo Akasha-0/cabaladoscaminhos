@@ -196,17 +196,18 @@ function buildChakraResults(
   const isBlocked = oduNumero >= 10;
 
   const chakraInfos: ChakraInfo[] = chakras.map((c) => {
-    let estado: ChakraInfo['estado'] = 'equilibrado';
-    if (isHyperactive && c.sequence <= 3) estado = 'hiperativo';
-    if (isBlocked && c.sequence >= 6) estado = 'bloqueado';
+    let estado: 'equilibrado' | 'hiperativo' | 'bloqueado' = 'equilibrado';
+    const seq = (c as unknown as { sequence?: number }).sequence ?? 0;
+    if (isHyperactive && seq <= 3) estado = 'hiperativo';
+    if (isBlocked && seq >= 6) estado = 'bloqueado';
     const intensidade = c.id === dominantChakraId ? 85 : 50;
     return {
-      numero: c.sequence,
-      nome: c.namePt,
+      numero: seq,
+      nome: c.name,
       estado,
       intensidade,
       elemento: c.element,
-      cor: c.colorHex ?? c.color,
+      cor: c.color,
     };
   });
 
@@ -219,8 +220,8 @@ function buildChakraResults(
 
   return {
     chakras: chakraInfos,
-    dominante: dominante?.namePt ?? 'Plexo Solar',
-    bloqueado: bloqueado?.namePt ?? 'Raiz',
+    dominante: dominante?.name ?? 'Plexo Solar',
+    bloqueado: bloqueado?.name ?? 'Raiz',
     equilibrio,
     raw: chakras,
   };
@@ -355,7 +356,7 @@ function buildTarotResults(vida: number, _anoPessoal: number): TarotResults {
 // CONVERGENCE DETECTION
 // ============================================================
 
-export function detectarConvergencias(
+function detectarConvergencias(
   numerologia: NumerologyResults,
   odu: OduResults,
   astrologia: AstrologyResults

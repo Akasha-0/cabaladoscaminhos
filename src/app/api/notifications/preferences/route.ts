@@ -111,6 +111,7 @@ const PREFERENCE_SPIRITUAL_CORRELATIONS: Record<string, {
   },
 };
 
+// fallow-ignore-next-line unused-type
 export interface NotificationPreferences {
   email: boolean;
   push: boolean;

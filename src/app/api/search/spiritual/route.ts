@@ -21,6 +21,7 @@ export interface SpiritualSearchResult {
   metadata?: Record<string, string | string[]>;
 }
 
+// fallow-ignore-next-line unused-type
 export interface SpiritualSearchResponse {
   query: string;
   results: SpiritualSearchResult[];

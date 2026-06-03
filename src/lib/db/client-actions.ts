@@ -5,6 +5,7 @@
 // ============================================================
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
 // Schema for creating a client
 // Sem `userId`: o modelo Client não armazena dono por-operador (Doc 16 §2.2);
@@ -53,10 +54,10 @@ export async function createClient(input: CreateClientInput) {
     data: {
       fullName: data.fullName,
       birthDate: new Date(data.birthDate),
-      birthTime: data.birthTime,
-      birthCity: data.birthCity,
-      birthState: data.birthState,
-      birthCountry: data.birthCountry,
+      birthTime: data.birthTime ?? '',
+      birthCity: data.birthCity ?? '',
+      birthState: data.birthState ?? '',
+      birthCountry: data.birthCountry ?? '',
     },
   });
 }
@@ -105,11 +106,9 @@ export async function createClientWithMaps(
     try {
       if (input.birthLatitude != null && input.birthLongitude != null) {
         astrologyMap = getBirthChart({
-          date: input.birthDate,
-          time: input.birthTime,
+          birthDate: new Date(input.birthDate),
           latitude: input.birthLatitude,
           longitude: input.birthLongitude,
-          timezone: input.birthTimezone ?? 'UTC',
         });
       } else {
         astrologyMap = {
@@ -154,10 +153,10 @@ export async function createClientWithMaps(
         birthLongitude: input.birthLongitude ?? null,
         birthTimezone: input.birthTimezone ?? null,
         notes: input.notes ?? null,
-        astrologyMap: (astrologyMap ?? null) as object | null,
-        kabalisticMap: (kabalisticMap ?? null) as object | null,
-        tantricMap: (tantricMap ?? null) as object | null,
-        oduBirth: (oduMap ?? null) as object | null,
+        astrologyMap: astrologyMap ?? Prisma.JsonNull,
+        kabalisticMap: kabalisticMap ?? Prisma.JsonNull,
+        tantricMap: tantricMap ?? Prisma.JsonNull,
+        oduBirth: oduMap ?? Prisma.JsonNull,
       },
       select: { id: true },
     });

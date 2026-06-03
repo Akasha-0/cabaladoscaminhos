@@ -1,3 +1,5 @@
+import { requireOperatorApi } from '@/lib/auth/operator-guard';
+
 // src/app/api/akashic/records/route.ts
 // Akashic Records API - skip linting
 import { NextRequest, NextResponse } from 'next/server';
@@ -34,12 +36,16 @@ const AkashicRecordSchema = z.object({
   affirmations: z.array(z.string()),
   practices: z.array(z.string()),
   timestamp: z.string(),
+  operatorId: z.string().optional(),
   sefirot: z.array(SefirotSchema).optional(),
   chakra: z.number().int().min(1).max(7).optional(),
   orixa: z.string().optional(),
 });
+// fallow-ignore-next-line unused-type
 export type AkashicRecord = z.infer<typeof AkashicRecordSchema>;
+// fallow-ignore-next-line unused-type
 export type RecordType = z.infer<typeof RecordTypeSchema>;
+// fallow-ignore-next-line unused-type
 export type AccessLevel = z.infer<typeof AccessLevelSchema>;
 export const dynamic = 'force-dynamic';
 
@@ -218,6 +224,8 @@ const recordsStore: AkashicRecord[] = [];
 
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperatorApi(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const searchParams = request.nextUrl.searchParams;
 
@@ -291,6 +299,7 @@ export async function GET(request: NextRequest) {
         affirmations: affirmations,
         practices: practices,
         timestamp: new Date().toISOString(),
+        operatorId: undefined,
         sefirot: correlation.sefirot,
         chakra: correlation.chakra,
         orixa: correlation.orixa,
@@ -339,6 +348,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const authResult = await requireOperatorApi(request);
+  if (authResult instanceof NextResponse) return authResult;
+  const operator = authResult;
   try {
     const body = await request.json();
 
@@ -376,6 +388,7 @@ export async function POST(request: NextRequest) {
       affirmations: affirmations || affirmationSets[recordType],
       practices: practices || practiceSets[recordType],
       timestamp: new Date().toISOString(),
+      operatorId: undefined,
       sefirot: correlation.sefirot,
       chakra: correlation.chakra,
       orixa: correlation.orixa,

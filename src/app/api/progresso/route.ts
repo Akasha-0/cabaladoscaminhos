@@ -88,11 +88,17 @@ const CreditsProgressSchema = z.object({
   currentBalance: z.number().int(),
   mostExpensiveFeature: z.string().nullable(),
 });
+// fallow-ignore-next-line unused-type
 export type Achievement = z.infer<typeof AchievementSchema>;
+// fallow-ignore-next-line unused-type
 export type CreditsProgress = z.infer<typeof CreditsProgressSchema>;
+// fallow-ignore-next-line unused-type
 export type ProgressStats = z.infer<typeof ProgressStatsSchema>;
+// fallow-ignore-next-line unused-type
 export type ReadingProgress = z.infer<typeof ReadingProgressSchema>;
+// fallow-ignore-next-line unused-type
 export type RitualProgress = z.infer<typeof RitualProgressSchema>;
+// fallow-ignore-next-line unused-type
 export type MeditationProgress = z.infer<typeof MeditationProgressSchema>;
 export const dynamic = 'force-dynamic';
 
@@ -337,7 +343,7 @@ interface LevelResult {
   level: number;
   expToNext: number;
 }
-export function calculateLevel(experience: number): LevelResult {
+function calculateLevel(experience: number): LevelResult {
   const baseExp = 100;
   const multiplier = 1.5;
   let level = 1;
@@ -351,7 +357,7 @@ export function calculateLevel(experience: number): LevelResult {
   const expToNext = baseExp * Math.pow(multiplier, level - 1);
   return { level, expToNext };
 }
-export function enrichAchievement(
+function enrichAchievement(
   base: AchievementBase,
   currentProgress: number,
   unlockedAt: string | null
@@ -374,6 +380,7 @@ export function enrichAchievement(
     spiritualCorrelations: base.spiritualCorrelations,
   } as Achievement;
 }
+// fallow-ignore-next-line unused-type
 export interface SpiritualStats {
   bySefirot: Record<string, number>;
   byChakra: Record<string, number>;
@@ -382,7 +389,7 @@ export interface SpiritualStats {
   byRarity: Record<string, number>;
   byCategory: Record<string, number>;
 }
-export function calculateSpiritualStats(achievements: Achievement[]): SpiritualStats {
+function calculateSpiritualStats(achievements: Achievement[]): SpiritualStats {
   return {
     bySefirot: achievements.reduce((acc, a) => {
       if (a.spiritualCorrelations) {
@@ -529,13 +536,14 @@ function parseQueryParams(searchParams: URLSearchParams): {
 
 // ─── Filtering Functions ─────────────────────────────────────────────────────────────
 
+// fallow-ignore-next-line unused-type
 export interface SpiritualFilters {
   sefirot?: string;
   chakra?: number;
   element?: string;
   orixa?: string;
 }
-export function applySpiritualFilters(
+function applySpiritualFilters(
   achievements: Achievement[],
   filters: SpiritualFilters
 ): Achievement[] {
@@ -565,7 +573,7 @@ export function applySpiritualFilters(
   return filtered;
 }
 // ─── Data Normalization Functions ────────────────────────────────────────────────────
-export function normalizeProgressData(rawData: unknown): ProgressData | null {
+function normalizeProgressData(rawData: unknown): ProgressData | null {
   if (!rawData || typeof rawData !== 'object') return null;
   const d = rawData as Record<string, unknown>;
   return {
@@ -591,7 +599,7 @@ export function normalizeProgressData(rawData: unknown): ProgressData | null {
   };
 }
 // ─── Response Building Functions ────────────────────────────────────────────────────
-export function buildProgressStatsFromExp(experience: number, totalPoints: number): ProgressStats {
+function buildProgressStatsFromExp(experience: number, totalPoints: number): ProgressStats {
   const { level, expToNext } = calculateLevel(experience);
   return {
     level,
@@ -600,7 +608,7 @@ export function buildProgressStatsFromExp(experience: number, totalPoints: numbe
     totalPoints,
   };
 }
-export function buildReadingProgress(progressData: ProgressData | null): ReadingProgress {
+function buildReadingProgress(progressData: ProgressData | null): ReadingProgress {
   return {
     total: progressData?.readingsCount || 0,
     byType: progressData?.readingsByType || {},
@@ -608,7 +616,7 @@ export function buildReadingProgress(progressData: ProgressData | null): Reading
     thisMonth: progressData?.readingsThisMonth || 0,
   };
 }
-export function buildRitualProgress(progressData: ProgressData | null): RitualProgress {
+function buildRitualProgress(progressData: ProgressData | null): RitualProgress {
   return {
     totalCompletions: progressData?.ritualsCount || 0,
     currentStreak: progressData?.ritualsStreak || 0,
@@ -617,7 +625,7 @@ export function buildRitualProgress(progressData: ProgressData | null): RitualPr
     favoriteRitual: progressData?.favoriteRitual || null,
   };
 }
-export function buildMeditationProgress(progressData: ProgressData | null): MeditationProgress {
+function buildMeditationProgress(progressData: ProgressData | null): MeditationProgress {
   const sessions = progressData?.meditationSessions || 0;
   const minutes = progressData?.meditationMinutes || 0;
   return {
@@ -628,7 +636,7 @@ export function buildMeditationProgress(progressData: ProgressData | null): Medi
     longestMeditationStreak: progressData?.meditationLongestStreak || 0,
   };
 }
-export function buildCreditsProgress(progressData: ProgressData | null): CreditsProgress {
+function buildCreditsProgress(progressData: ProgressData | null): CreditsProgress {
   return {
     totalEarned: progressData?.creditsEarned || 0,
     totalSpent: progressData?.creditsSpent || 0,

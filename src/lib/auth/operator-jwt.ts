@@ -38,7 +38,7 @@ export const OPERATOR_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
  * @deprecated Mantido só para retrocompat com Fase 13 (cleanupExpiredSessions
  * e testes antigos). Em código novo, use `OPERATOR_ACCESS_TTL_SECONDS`.
  */
-export const OPERATOR_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60;
+const OPERATOR_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60;
 
 const OPERATOR_ACCESS_TTL_DESCRIPTION = '15m';
 const OPERATOR_REFRESH_TTL_DESCRIPTION = '30d';
@@ -90,7 +90,7 @@ export interface OperatorTokenPayload {
 // Erros
 // ============================================================================
 /** Erro lançado quando o secret não está configurado (em prod). */
-export class JwtSecretMissingError extends Error {
+class JwtSecretMissingError extends Error {
   constructor() {
     super(
       'JWT_SECRET não está configurado. Defina a env var antes de iniciar o servidor.'
@@ -168,7 +168,7 @@ export function signOperatorRefreshToken(operator: {
  * genérico de 7d). Em código novo, use `signOperatorAccessToken` ou
  * `signOperatorRefreshToken`.
  */
-export function signOperatorToken(operator: {
+function signOperatorToken(operator: {
   id: string;
   role: 'OPERATOR' | 'ADMIN';
 }): string {
@@ -250,12 +250,6 @@ export function clearOperatorRefreshCookie(response: {
 }
 
 // ============================================================================
-// Back-compat re-exports
-export { OPERATOR_ACCESS_TTL_SECONDS as OPERATOR_ACCESS_TTL };
-export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
-// ============================================================================
-// Fase 20 — MFA challenge token
-// ============================================================================
 // Token dedicado, single-use, emitido pelo /login quando o operator
 // tem MFA ativo. Tipo: 'mfa-challenge'. TTL curto (5min). Trocado
 // pelo /verify (com código TOTP) ou /recovery-code (com recovery code)
@@ -272,9 +266,10 @@ export { OPERATOR_REFRESH_TTL_SECONDS as OPERATOR_REFRESH_TTL };
 import crypto from 'node:crypto';
 
 /** TTL do MFA challenge token: 5 minutos. */
-export const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
+const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
 
 /** Tipo de token adicional aceito em verifyOperatorToken (Fase 20). */
+// fallow-ignore-next-line unused-type
 export type OperatorTokenTypeWithMfa = OperatorTokenType | 'mfa-challenge';
 
 /**

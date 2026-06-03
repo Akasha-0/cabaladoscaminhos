@@ -166,7 +166,7 @@ export type KnowledgeDomain =
   | 'tantra' | 'prana' | 'nadis' | 'bandhas' | 'corpos-pranicos'
   | 'wicca' | 'sabbat' | 'esbat' | 'paganismo'
   | 'flora-sagrada' | 'ervas' | 'banhos' | 'chas' | 'medicina-floresta'
-  | 'xing-mapa' | 'sexualidade' | 'prazer' | 'sombra'
+  | 'xing-mapa' | 'sexualidade' | 'lilith-casa8-sexo' | 'prazer' | 'sombra'
   | 'umbanda' | 'candomble' | 'umbanda-cultos'
   | 'prompts' | 'cot' | 'validacao' | 'coerencia';
 

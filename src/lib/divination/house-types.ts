@@ -61,6 +61,7 @@ export interface HouseDefinition {
  *
  * Importante: este tipo é usado por `src/stores/cockpit-store.ts`.
  */
+// fallow-ignore-next-line unused-type
 export type CasaState =
   | { status: 'empty' }
   | {

@@ -18,6 +18,7 @@ export interface AuthUser {
   role?: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface AuthResult {
   user: AuthUser | null;
   error: string | null;
@@ -51,7 +52,7 @@ export async function createSupabaseServerClient() {
   );
 }
 
-export async function validateAuthToken(): Promise<AuthResult> {
+async function validateAuthToken(): Promise<AuthResult> {
   try {
     const supabase = await createSupabaseServerClient();
     const { data: { user }, error } = await supabase.auth.getUser();
@@ -80,7 +81,7 @@ export async function validateAuthToken(): Promise<AuthResult> {
   }
 }
 
-export async function requireAuth(): Promise<AuthResult> {
+async function requireAuth(): Promise<AuthResult> {
   const result = await validateAuthToken();
 
   if (result.error) {
@@ -90,12 +91,12 @@ export async function requireAuth(): Promise<AuthResult> {
   return result;
 }
 
-export async function checkAuth(): Promise<AuthUser | null> {
+async function checkAuth(): Promise<AuthUser | null> {
   const result = await validateAuthToken();
   return result.user;
 }
 
-export function unauthorizedResponse(message = 'Não autorizado'): NextResponse {
+function unauthorizedResponse(message = 'Não autorizado'): NextResponse {
   return NextResponse.json(
     {
       success: false,
@@ -109,7 +110,7 @@ export function unauthorizedResponse(message = 'Não autorizado'): NextResponse 
 /**
  * Create forbidden response
  */
-export function forbiddenResponse(message = 'Acesso negado'): NextResponse {
+function forbiddenResponse(message = 'Acesso negado'): NextResponse {
   return NextResponse.json(
     {
       success: false,

@@ -9,6 +9,7 @@ import {
   getHighPriorityTemplates,
 } from "@/lib/notifications/templates";
 
+// fallow-ignore-next-line unused-type
 export type { NotificationTemplate, TemplateCategory };
 
 export const GET = withErrorHandler(async (req: NextRequest) => {

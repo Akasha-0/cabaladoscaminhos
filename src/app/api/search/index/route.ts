@@ -92,6 +92,7 @@ export interface SearchResult {
   };
 }
 
+// fallow-ignore-next-line unused-type
 export interface SearchResponse {
   query: string;
   results: SearchResult[];

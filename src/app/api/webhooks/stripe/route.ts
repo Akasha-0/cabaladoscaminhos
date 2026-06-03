@@ -156,10 +156,10 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 }
 
 // Export for testing purposes
-export function getSubscriptionStatus(subscriptionId: string) {
+function getSubscriptionStatus(subscriptionId: string) {
   return subscriptionStore.get(subscriptionId) || null;
 }
 
-export function getAllSubscriptions() {
+function getAllSubscriptions() {
   return new Map(subscriptionStore);
 }

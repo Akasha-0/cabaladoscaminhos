@@ -25,6 +25,7 @@ export type ThemeId =
   | 'karma_destino'
   | 'geral';
 
+// fallow-ignore-next-line unused-type
 export interface ThemeEntry {
   id: ThemeId;
   /** Casas primárias da Mesa Real associadas ao tema. */
@@ -39,7 +40,7 @@ export interface ThemeEntry {
 
 // Taxonomia canônica (Doc 12 §4). O tema `geral` não tem keywords —
 // é o fallback quando nenhum outro tema casa.
-export const THEME_TAXONOMY: Record<Exclude<ThemeId, 'geral'>, ThemeEntry> = {
+const THEME_TAXONOMY: Record<Exclude<ThemeId, 'geral'>, ThemeEntry> = {
   amor: {
     id: 'amor', primaryHouses: [24], secondaryHouses: [25, 29],
     natalAspects: ['Vênus', 'Lua', '5ª Casa'],

@@ -167,6 +167,7 @@ const NOTIFICATION_SPIRITUAL_CORRELATIONS: Record<
     frequency: '741 Hz',
   },
 };
+// fallow-ignore-next-line unused-type
 export interface Notificacao {
   id: string;
   tipo: string;

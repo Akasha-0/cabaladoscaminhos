@@ -19,6 +19,7 @@ interface SpreadPosition {
   sefira?: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface Spread {
   id: string;
   name: string;
@@ -90,7 +91,7 @@ function accumulateCorrelation(
   }
 }
 
-export function buildDrawnCard(
+function buildDrawnCard(
   card: {
     id: number;
     name: string;
@@ -117,7 +118,7 @@ export function buildDrawnCard(
   };
 }
 
-export function generateReadingSummary(
+function generateReadingSummary(
   spread: Spread,
   cards: DrawnCard[],
   options: {

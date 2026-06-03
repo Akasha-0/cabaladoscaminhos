@@ -41,6 +41,7 @@ const FavoritosQuerySchema = z.object({
   element: ElementSchema.optional(),
   orixa: z.string().optional(),
 });
+// fallow-ignore-next-line unused-type
 export type Favorito = z.infer<typeof FavoritoSchema>;
 
 // ─── Spiritual Correlations by Favorite Type ──────────────────────────────────────────

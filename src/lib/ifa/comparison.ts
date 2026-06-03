@@ -15,6 +15,7 @@ export interface OduReading {
 /**
  * Elemental alignment between two readings
  */
+// fallow-ignore-next-line unused-type
 export interface ElementalAlignment {
   matches: string[];
   conflicts: string[];
@@ -25,6 +26,7 @@ export interface ElementalAlignment {
 /**
  * Orixá overlap between readings
  */
+// fallow-ignore-next-line unused-type
 export interface OrixaOverlap {
   shared: string[];
   uniqueA: string[];
@@ -35,6 +37,7 @@ export interface OrixaOverlap {
 /**
  * Quizila compatibility analysis
  */
+// fallow-ignore-next-line unused-type
 export interface QuizilaCompatibility {
   sharedConstraints: string[];
   conflictingConstraints: string[];
@@ -45,6 +48,7 @@ export interface QuizilaCompatibility {
 /**
  * Ebó alignment between readings
  */
+// fallow-ignore-next-line unused-type
 export interface EboAlignment {
   sharedPractices: string[];
   complementaryPractices: string[];
@@ -55,6 +59,7 @@ export interface EboAlignment {
 /**
  * Complete comparison result
  */
+// fallow-ignore-next-line unused-type
 export interface OduComparison {
   id: string;
   readingA: OduReading;
@@ -71,7 +76,6 @@ export interface OduComparison {
   orixaOverlap: OrixaOverlap;
   quizilaCompatibility: QuizilaCompatibility;
   eboAlignment: EboAlignment;
-  /** Detailed comparison notes */
   notes: string[];
 }
 

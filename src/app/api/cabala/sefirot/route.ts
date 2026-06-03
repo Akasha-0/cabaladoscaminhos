@@ -51,6 +51,7 @@ const SEPHIRAH_SPIRITUAL_CORRELATIONS: Record<string, {
 };
 
 const VALID_SEFIRA_NAMES = ['Keter', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah', 'Tiferet', 'Netzach', 'Hod', 'Yesod', 'Malkut'];
+// fallow-ignore-next-line unused-type
 export type { SefiraMeaning };
 
 function normalizeSefiraName(name: string): string {

@@ -124,7 +124,7 @@ function MapaNatal({ mapaNatal, size = 400, className = '' }: MapaNatalProps) {
     
     for (const [name, planet] of planetEntries) {
       const symbol = PLANET_SYMBOLS[name] || name;
-      const pos = getPosition(planet.longitude, planetRadius, center, center);
+      const pos = getPosition((planet as { longitude: number }).longitude ?? 0, planetRadius, center, center);
       result.push({
         name,
         symbol,

@@ -12,7 +12,7 @@ import type { InsightData, GenerateInsightsOptions, GenerateInsightsResult } fro
  * Format: insights:{hash}
  * Matches spiritual-engine cache key convention.
  */
-export function gerarCacheKey(mapa: MapaAlmaCompleto): string {
+function gerarCacheKey(mapa: MapaAlmaCompleto): string {
   const { nomeCompleto, dataNascimento } = mapa.perfil;
   const input = `${nomeCompleto}::${dataNascimento}`;
   const hash = createHash('sha256').update(input).digest('hex');

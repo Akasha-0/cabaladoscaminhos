@@ -6,7 +6,7 @@ export interface OsaData {
   sign: string;
 }
 
-function getData(): OsaData[] {
+export function getData(): OsaData[] {
   return [
     { odu: 'Osa-Meji', meaning: 'Double Osa - Unity and completion', sign: 'Ogun' },
     { odu: 'Osa-Ogbe', meaning: 'Osa leads - Transformation and change', sign: 'Shango' },

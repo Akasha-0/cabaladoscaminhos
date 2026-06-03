@@ -17,6 +17,7 @@
     "enabled": false
   },
   "rules": {
+    "unused-types": "warn",
     "unused-dependencies": "warn"
   },
   "usedClassMembers": [
@@ -74,7 +75,7 @@
     "src/lib/megi/**/*",
     "src/lib/logbara/**/*",
     "src/lib/correlation/*.ts",
-    "tests/**",
+    "tests/**"
   ],
   "ignoreUnresolvedImports": [
     "tests/lib/**",
@@ -481,14 +482,47 @@
     {
       "file": "src/lib/correlation/zodiac-orixa.ts",
       "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/tradition-utils.ts",
+      "exports": ["isMajorTradition", "groupEntriesByOrigin", "getUserTraditions"]
+    },
+    {
+      "file": "src/lib/pdf/dossier-pdf.ts",
+      "exports": ["cartaNome", "oduNome", "stripMarkdown"]
+    },
+    {
+      "file": "src/components/dashboard/SwarmChatWidget.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/SwarmStatusWidget.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/shared/LoadingSpinner.tsx",
+      "exports": ["default"]
     }
-  {
-    "file": "src/lib/ai/tradition-utils.ts",
-    "exports": ["isMajorTradition", "groupEntriesByOrigin", "getUserTraditions"]
-  },
-  {
-    "file": "src/lib/pdf/dossier-pdf.ts",
-    "exports": ["cartaNome", "oduNome", "stripMarkdown"]
+  ],
+  "regression": {
+    "baseline": {
+      "totalIssues": 0,
+      "unusedTypes": 0,
+      "unusedDependencies": 0,
+      "unusedDevDependencies": 0,
+      "unusedOptionalDependencies": 0,
+      "unusedEnumMembers": 0,
+      "unusedClassMembers": 0,
+      "unusedFiles": 0,
+      "unusedExports": 0,
+      "unresolvedImports": 0,
+      "unlistedDependencies": 0,
+      "duplicateExports": 0,
+      "circularDependencies": 0,
+      "reExportCycles": 0,
+      "typeOnlyDependencies": 0,
+      "testOnlyDependencies": 0,
+      "boundaryViolations": 0
+    }
   }
-]
-  }
+}

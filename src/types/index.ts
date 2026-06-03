@@ -207,6 +207,7 @@ export interface HouseReport {
   interpretation: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface ReportContent {
   houses: {
     [houseNumber: string]: HouseReport;
@@ -226,6 +227,7 @@ export interface ReportContent {
 // ============================================================================
 // Entidades Prisma (mínimo para o motor de IA)
 // ============================================================================
+// fallow-ignore-next-line unused-type
 export interface Client {
   id: string;
   fullName: string;

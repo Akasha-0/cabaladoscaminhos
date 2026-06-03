@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { getCard, drawCards } from '@/lib/tarot/cards';
+import { drawCards } from '@/lib/tarot/cards';
 
 // ============================================================
 // VALIDATION SCHEMA
@@ -42,6 +42,7 @@ interface DrawnCard {
   keywords: string[];
 }
 
+// fallow-ignore-next-line unused-type
 export interface TarotReading {
   id: string;
   spreadType: string;

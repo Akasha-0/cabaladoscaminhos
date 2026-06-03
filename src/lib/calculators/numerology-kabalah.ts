@@ -66,7 +66,7 @@ export function calculateLifePath(birthDate: string): { number: number; master: 
 // Variante da data que olha especificamente para o dia + mês + ano reduzidos
 // separadamente e depois somados. Geralmente coincide com o Caminho de Vida
 // quando o consulente está alinhado com sua missão.
-function calculateMission(birthDate: string): { number: number; master: boolean } {
+export function calculateMission(birthDate: string): { number: number; master: boolean } {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return { number: 0, master: false };
   const [, y, m, d] = match;
@@ -82,7 +82,7 @@ function calculateMission(birthDate: string): { number: number; master: boolean 
 // 3. NÚMERO DE EXPRESSÃO
 // ============================================================================
 // Soma de TODAS as letras do nome completo (consonantes + vogais).
-function calculateExpression(fullName: string): { number: number; master: boolean } {
+export function calculateExpression(fullName: string): { number: number; master: boolean } {
   const sum = normalizeName(fullName)
     .split('')
     .filter((c) => LETTER_VALUES[c] !== undefined)
@@ -95,7 +95,7 @@ function calculateExpression(fullName: string): { number: number; master: boolea
 // 4. NÚMERO DE MOTIVAÇÃO (Impulso da Alma)
 // ============================================================================
 // Soma APENAS das vogais do nome completo.
-function calculateMotivation(fullName: string): { number: number; master: boolean } {
+export function calculateMotivation(fullName: string): { number: number; master: boolean } {
   const sum = normalizeName(fullName)
     .split('')
     .filter((c) => VOGAIS.has(c.toUpperCase()) && LETTER_VALUES[c.toUpperCase()] !== undefined)
@@ -258,7 +258,6 @@ export function calculateRulingArcana(
 ): { lifePathArcana: number; expressionArcana: number } {
   return { lifePathArcana: arcanaFor(lifePath), expressionArcana: arcanaFor(expression) };
 }
-
 // ============================================================================
 // 7e. CICLOS PESSOAIS (VOLÁTEIS — dependem da data atual) — Doc 11 §2.4
 // ============================================================================

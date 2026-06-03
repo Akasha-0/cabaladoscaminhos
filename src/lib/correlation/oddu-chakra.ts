@@ -42,7 +42,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Ajna (Third Eye) - Intuição, visão espiritual, fé
   1: {
     odu_numero: 1,
-    odu_nome: 'Okaran',
+    odu_nome: 'Ogbe',
     odu_nome_yoruba: 'Okànràn',
     chakra: 'Ajna',
     chakra_numero: '6º Terceiro Olho',
@@ -74,7 +74,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Manipura (Solar) - Poder pessoal, transformação, vontade
   3: {
     odu_numero: 3,
-    odu_nome: 'Etaogundá',
+    odu_nome: 'Etogundá',
     odu_nome_yoruba: 'Ẹtaọgúndá',
     chakra: 'Manipura',
     chakra_numero: '3º Plexo Solar',
@@ -106,7 +106,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Muladhara (Root) - Lei divina, justiça, ancoramento
   5: {
     odu_numero: 5,
-    odu_nome: 'Oxé',
+    odu_nome: 'Oxê',
     odu_nome_yoruba: 'Ọ̀sà',
     chakra: 'Muladhara',
     chakra_numero: '1º Básico',
@@ -154,7 +154,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Sahasrara (Crown) - Sabedoria superior, conexão divina, transcendência
   8: {
     odu_numero: 8,
-    odu_nome: 'Osí',
+    odu_nome: 'Ejionile',
     odu_nome_yoruba: 'Òsì',
     chakra: 'Sahasrara',
     chakra_numero: '7º Coronário',
@@ -170,7 +170,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Ajna (Third Eye) - Mistérios, sabedoria lunar, intuição profunda
   9: {
     odu_numero: 9,
-    odu_nome: 'Iuní',
+    odu_nome: 'Ossá',
     odu_nome_yoruba: 'Ìwùrìn',
     chakra: 'Ajna',
     chakra_numero: '6º Terceiro Olho',
@@ -186,7 +186,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Muladhara (Root) - Natureza, força física, sobrevivência
   10: {
     odu_numero: 10,
-    odu_nome: 'Owonrin',
+    odu_nome: 'Ofun',
     odu_nome_yoruba: 'Òwónrìn',
     chakra: 'Muladhara',
     chakra_numero: '1º Básico',
@@ -202,7 +202,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Vishuddha (Throat) - Verdade, comunicação, expressão autêntica
   11: {
     odu_numero: 11,
-    odu_nome: 'Ejila',
+    odu_nome: 'Owarin',
     odu_nome_yoruba: 'Ẹjìlà',
     chakra: 'Vishuddha',
     chakra_numero: '5º Laríngeo',
@@ -218,7 +218,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Svadhisthana (Sacral) - Abundância, prosperidade, fluxo criativo
   12: {
     odu_numero: 12,
-    odu_nome: 'Logumí',
+    odu_nome: 'Ejilaxebô',
     odu_nome_yoruba: 'Ògóndódò',
     chakra: 'Svadhisthana',
     chakra_numero: '2º Sacral',
@@ -234,7 +234,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Anahata (Heart) - Equilíbrio, proteção, amor divino
   13: {
     odu_numero: 13,
-    odu_nome: 'Odí',
+    odu_nome: 'Oturupon',
     odu_nome_yoruba: 'Òdí',
     chakra: 'Anahata',
     chakra_numero: '4º Cardíaco',
@@ -250,7 +250,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Manipura (Solar) - Vitória, sucesso, persistência
   14: {
     odu_numero: 14,
-    odu_nome: 'Bejí',
+    odu_nome: 'Oturá',
     odu_nome_yoruba: 'Ìrè',
     chakra: 'Manipura',
     chakra_numero: '3º Plexo Solar',
@@ -266,7 +266,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Svadhisthana (Sacral) - Encantamento, mudança, renovação
   15: {
     odu_numero: 15,
-    odu_nome: 'Ibí',
+    odu_nome: 'Iká',
     odu_nome_yoruba: 'Ìbí',
     chakra: 'Svadhisthana',
     chakra_numero: '2º Sacral',
@@ -282,7 +282,7 @@ export const ODDU_CHAKRA_MAPPINGS: Record<number, OduChakraMapping> = {
   // Muladhara (Root) - Completion, renovação, reintegração
   16: {
     odu_numero: 16,
-    odu_nome: 'Okandí',
+    odu_nome: 'Ofurufu',
     odu_nome_yoruba: 'Òkandí',
     chakra: 'Muladhara',
     chakra_numero: '1º Básico',

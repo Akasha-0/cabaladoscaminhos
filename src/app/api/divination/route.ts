@@ -14,6 +14,7 @@ const DivinationQuerySchema = z.object({
 });
 
 // ─── Type Aliases ───────────────────────────────────────────────────────────
+// fallow-ignore-next-line unused-type
 export interface DivinationReading {
   id: string;
   method: DivinationMethodType;

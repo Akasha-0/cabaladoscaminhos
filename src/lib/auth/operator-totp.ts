@@ -32,15 +32,15 @@ import QRCode from 'qrcode';
 // ============================================================================
 
 /** Issuer exibido no app autenticador. */
-export const MFA_ISSUER = 'Cabala dos Caminhos';
+const MFA_ISSUER = 'Cabala dos Caminhos';
 /** Tamanho do secret TOTP em bytes (20 = 160 bits, RFC 4226 recomenda ≥ 128). */
-export const TOTP_SECRET_BYTES = 20;
+const TOTP_SECRET_BYTES = 20;
 /** Dígitos do código TOTP. */
-export const TOTP_DRIFT_STEPS = 1; const TOTP_DIGITS = 6;
+const TOTP_DRIFT_STEPS = 1; const TOTP_DIGITS = 6;
 /** Período do código em segundos. */
-export const TOTP_PERIOD_SECONDS = 30;
+const TOTP_PERIOD_SECONDS = 30;
 /** Algoritmo de hash TOTP. */
-export const TOTP_ALGORITHM = 'SHA1' as const;
+const TOTP_ALGORITHM = 'SHA1' as const;
 /**
  * Drift permitido em passos (RFC 6238 §5.2): aceita o passo anterior
  * e o próximo. Para período de 30s, isso dá ±30s de tolerância.
@@ -82,7 +82,7 @@ export type DecryptResult = { ok: true; plaintext: string } | { ok: false; reaso
 // ============================================================================
  
 /** Lançado quando a MFA_ENCRYPTION_KEY não está configurada (em prod). */
-export class MfaKeyMissingError extends Error {
+class MfaKeyMissingError extends Error {
   constructor() {
     super(
       'MFA_ENCRYPTION_KEY não está configurada. Defina env var (32 bytes hex/base64) antes de iniciar o servidor.'
@@ -349,7 +349,7 @@ export async function tryConsumeRecoveryCode(
 }
 
 // Re-exports para testes
-export const __TEST__ = {
+const __TEST__ = {
   AES_TAG_BYTES,
   AES_KEY_BYTES,
 };

@@ -16,7 +16,7 @@ export interface MatrixData {
 // Schema for creating a reading
 const createReadingSchema = z.object({
   clientId: z.string().min(1, 'clientId é obrigatório'),
-  userId: z.string().min(1, 'userId é obrigatório'),
+  operatorId: z.string().min(1, 'operatorId é obrigatório'),
   matrixData: z.record(z.number(z.any())).optional(),
 });
 
@@ -38,7 +38,7 @@ export async function createReading(input: CreateReadingInput) {
   return prisma.reading.create({
     data: {
       clientId: data.clientId,
-      userId: data.userId,
+      operatorId: data.operatorId,
       matrixData: data.matrixData || {},
       status: 'PENDING',
     },
@@ -78,9 +78,12 @@ export async function getReadingsByClient(clientId: string) {
  * Gets readings by user ID
  * @deprecated use getReadingsByOperator (Doc 16 AD-03: Operator substitui User)
  */
-export async function getReadingsByUser(userId: string) {
+export async function getReadingsByOperator(
+  operatorId: string,
+  opts?: { limit?: number; status?: 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR' }
+) {
   return prisma.reading.findMany({
-    where: { userId },
+    where: { operatorId },
     include: {
       client: true,
       report: true,
@@ -93,22 +96,6 @@ export async function getReadingsByUser(userId: string) {
  * Lista leituras do Operator autenticado (Doc 16 AD-03).
  * Filtra por operatorId (não userId legado).
  */
-export async function getReadingsByOperator(
-  operatorId: string,
-  opts?: { limit?: number; status?: 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR' }
-) {
-  return prisma.reading.findMany({
-    where: {
-      operatorId,
-      ...(opts?.status ? { status: opts.status } : {}),
-    },
-    include: {
-      client: { select: { id: true, fullName: true } },
-    },
-    orderBy: { date: 'desc' },
-    take: opts?.limit ?? 10,
-  });
-}
 
 /**
  * Conta leituras criadas no mês corrente pelo Operator.

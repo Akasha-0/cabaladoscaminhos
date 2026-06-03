@@ -1,4 +1,5 @@
 import { calcularPitagorica, InterpretacaoNumerologia, getInterpretacao } from './calculos';
+// fallow-ignore-next-line unused-type
 export interface CompatibilityResult {
   score: number;
   nivel: 'Baixa' | 'Moderada' | 'Alta' | 'Muito Alta';

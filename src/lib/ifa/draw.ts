@@ -112,12 +112,12 @@ const oduMap: Record<number, { top: number; bottom: number; elementos: string; o
 };
 
 // Get Ope by ID
-export function getOpe(id: number): Ope {
+function getOpe(id: number): Ope {
   return opes.find(o => o.id === id) || opes[0];
 }
 
 // Get all 16 Odu
-export function getAllOdu(): Odu[] {
+function getAllOdu(): Odu[] {
   return Object.entries(oduMap).map(([num, config]) => ({
     numero: parseInt(num),
     Caminho: parseInt(num),
@@ -232,7 +232,7 @@ function deriveOduFromBirthDate(dataNascimento: string): number {
 }
 
 // Draw multiple Odus (for complex readings)
-export function drawMultipleOdu(count: number): DrawResult[] {
+function drawMultipleOdu(count: number): DrawResult[] {
   const results: DrawResult[] = [];
   
   for (let i = 0; i < count; i++) {
@@ -243,7 +243,7 @@ export function drawMultipleOdu(count: number): DrawResult[] {
 }
 
 // Get Odu by number
-export function getOduByNumber(numero: number): Odu | null {
+function getOduByNumber(numero: number): Odu | null {
   if (numero < 1 || numero > 16) return null;
   
   const config = oduMap[numero];

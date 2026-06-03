@@ -13,7 +13,7 @@ import {
   createReading,
   getReading,
   getReadingsByClient,
-  getReadingsByUser,
+  getReadingsByOperator,
   updateMatrixData,
   updateReadingStatus,
   deleteReading,
@@ -28,6 +28,7 @@ import {
 // Schema for reading creation
 const createReadingSchema = z.object({
   clientId: z.string().min(1),
+  operatorId: z.string().min(1),
   userId: z.string().min(1),
   matrixData: z.record(z.any()).optional(),
 });
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (userId) {
-      const readings = await getReadingsByUser(userId);
+      const readings = await getReadingsByOperator(userId);
       return NextResponse.json({ readings });
     }
 
@@ -121,7 +122,7 @@ export async function POST(request: NextRequest) {
 
     const reading = await createReading({
       clientId: parseResult.data.clientId,
-      userId: parseResult.data.userId,
+      operatorId: parseResult.data.operatorId,
       matrixData: parseResult.data.matrixData,
     });
 

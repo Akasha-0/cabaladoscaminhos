@@ -159,7 +159,10 @@ export default function SharedMapaPage({ params }: { params: { hash: string } })
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <MapaNatal mapaNatal={mapa.astrologia.planeta || {}} />
+              <MapaNatal mapaNatal={{
+                planeta: mapa.astrologia.planeta,
+                ascendente: mapa.astrologia.ascendenteDegree ?? (parseFloat(mapa.astrologia.ascendente) || 0),
+              }} />
             </CardContent>
           </Card>
          )}

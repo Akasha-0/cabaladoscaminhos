@@ -127,7 +127,7 @@ const ELEMENT_COMPATIBILITY: Record<ElementType, Record<ElementType, number>> = 
 /**
  * Analisa a correlação entre número cabalístico e elemento
  */
-function correlateNumerologyElement(
+export function correlateNumerologyElement(
   number: number,
   element: ElementType
 ): CorrelationResult {
@@ -161,7 +161,7 @@ function correlateNumerologyElement(
 /**
  * Analisa a correlação entre Odu e número cabalístico
  */
-function correlateOduNumerology(
+export function correlateOduNumerology(
   oduName: string,
   cabalisticNumber: number
 ): CorrelationResult {
@@ -216,7 +216,7 @@ function correlateOduNumerology(
 /**
  * Analisa a correlação entre signo e elemento
  */
-function correlateZodiacElement(
+export function correlateZodiacElement(
   sign: SignType,
   element: ElementType
 ): CorrelationResult {
@@ -273,7 +273,7 @@ function correlateZodiacElement(
 /**
  * Analisa a correlação entre chakra e elemento
  */
-function correlateChakraElement(
+export function correlateChakraElement(
   chakra: ChakraLevel,
   element: ElementType
 ): CorrelationResult {
@@ -315,7 +315,7 @@ function correlateChakraElement(
 /**
  * Analisa a correlação entre signo e chakra
  */
-function correlateZodiacChakra(
+export function correlateZodiacChakra(
   sign: SignType,
   dominantChakra: ChakraLevel
 ): CorrelationResult {
@@ -397,7 +397,7 @@ export interface CrossSystemInsights {
 /**
  * Gera análise completa de correlações cruzadas
  */
-function generateCrossSystemAnalysis(profile: FullProfileCorrelation): CrossSystemInsights {
+export function generateCrossSystemAnalysis(profile: FullProfileCorrelation): CrossSystemInsights {
   const correlations: CorrelationResult[] = [];
   
   // Numerologia ↔ Elemento
@@ -520,14 +520,14 @@ function getElementPractice(element: ElementType): string {
 /**
  * Calcula score de compatibilidade entre dois elementos
  */
-function getElementCompatibilityScore(element1: ElementType, element2: ElementType): number {
+export function getElementCompatibilityScore(element1: ElementType, element2: ElementType): number {
   return ELEMENT_COMPATIBILITY[element1]?.[element2] || 1;
 }
 
 /**
  * Retorna elementos complementares a um dado elemento
  */
-function getComplementaryElements(element: ElementType): ElementType[] {
+export function getComplementaryElements(element: ElementType): ElementType[] {
   const allElements = getAllElements();
   return allElements.filter(e => 
     e !== element && ELEMENT_COMPATIBILITY[element]?.[e] >= 2
@@ -537,7 +537,7 @@ function getComplementaryElements(element: ElementType): ElementType[] {
 /**
  * Retorna elementos em conflito com um dado elemento
  */
-function getConflictingElements(element: ElementType): ElementType[] {
+export function getConflictingElements(element: ElementType): ElementType[] {
   const allElements = getAllElements();
   return allElements.filter(e => 
     e !== element && ELEMENT_COMPATIBILITY[element]?.[e] === 1
@@ -547,7 +547,7 @@ function getConflictingElements(element: ElementType): ElementType[] {
 /**
  * Gera matriz de compatibilidade elemental completa
  */
-function generateElementCompatibilityMatrix(): Record<ElementType, Record<ElementType, string>> {
+export function generateElementCompatibilityMatrix(): Record<ElementType, Record<ElementType, string>> {
   const elements = getAllElements();
   const matrix: Record<ElementType, Record<ElementType, string>> = {} as any;
   

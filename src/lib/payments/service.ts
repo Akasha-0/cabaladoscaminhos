@@ -2,6 +2,7 @@ import { stripe } from './stripe';
 import { prisma } from '@/lib/prisma';
 import Stripe from 'stripe';
 
+// fallow-ignore-next-line unused-type
 export interface PlanoInfo {
   id: string;
   nome: string;
@@ -10,7 +11,7 @@ export interface PlanoInfo {
   recursos: string[];
 }
 
-export const PLANOS: Record<string, PlanoInfo> = {
+const PLANOS: Record<string, PlanoInfo> = {
   Iniciante: {
     id: process.env.STRIPE_PRICE_INICIANTE || 'price_iniciante',
     nome: 'Iniciante',
@@ -202,15 +203,15 @@ async function obterCustomerId(userId: string): Promise<string | null> {
   }
 }
 
-export function extrairUserId(metadata: Stripe.Metadata): string | null {
+function extrairUserId(metadata: Stripe.Metadata): string | null {
   return metadata.userId || null;
 }
 
-export function extrairPlanoId(metadata: Stripe.Metadata): string | null {
+function extrairPlanoId(metadata: Stripe.Metadata): string | null {
   return metadata.planoId || null;
 }
 
-export function extrairCreditos(metadata: Stripe.Metadata): number {
+function extrairCreditos(metadata: Stripe.Metadata): number {
   const creditos = metadata.creditos;
   return creditos ? parseInt(creditos, 10) : 0;
 }

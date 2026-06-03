@@ -79,17 +79,14 @@ export function stripMarkdown(text: string): string {
 
 // ----------------------------------------------------------------------------
 // Cores — Estilo Ramiro
-// ----------------------------------------------------------------------------
-
-const ROYAL_DARK   = [13, 10, 40]   as const; // #0D0A28 — fundo principal
-const ROYAL_MID    = [22, 17, 70]   as const; // #161146 — cards
-const ROYAL_LIGHT  = [35, 30, 100]  as const; // #231E64 — bordas
-const LARANJA      = [235, 100, 20] as const; // #EB6414 — destaques
-const LARANJA_BG   = [70, 20, 0]    as const; // bg laranja escuro
-const TEXT_WHITE   = [245, 240, 230] as const; // texto principal
-const TEXT_MUTED    = [200, 195, 220] as const; // texto secundário
-const TEXT_ACCENT  = [255, 190, 80]  as const; // laranja claro
-
+const ROYAL_DARK: [number, number, number]   = [13, 10, 40];
+const ROYAL_MID: [number, number, number]    = [22, 17, 70];
+const ROYAL_LIGHT: [number, number, number]  = [35, 30, 100];
+const LARANJA: [number, number, number]      = [235, 100, 20];
+const LARANJA_BG: [number, number, number]   = [70, 20, 0];
+const TEXT_WHITE: [number, number, number]   = [245, 240, 230];
+const TEXT_MUTED: [number, number, number]   = [200, 195, 220];
+const TEXT_ACCENT: [number, number, number]   = [255, 190, 80];
 // ----------------------------------------------------------------------------
 // Constantes de layout (A4, milímetros)
 // ----------------------------------------------------------------------------
@@ -118,15 +115,14 @@ interface PageState {
 
 /** Preenche toda a página com o fundo royal escuro. */
 function fillRoyalBackground(doc: jsPDF): void {
-  doc.setFillColor(...ROYAL_DARK);
+  doc.setFillColor(ROYAL_DARK[0], ROYAL_DARK[1], ROYAL_DARK[2]);
   doc.rect(0, 0, PAGE_W, PAGE_H, 'F');
 }
 
-/** Desenha o rodapé com título e número de página. */
 function drawFooter(doc: jsPDF, data: DossierPdfData, pageNum: number): void {
   const total = doc.getNumberOfPages();
   doc.setFontSize(8);
-  doc.setTextColor(...TEXT_MUTED);
+  doc.setTextColor(TEXT_MUTED[0], TEXT_MUTED[1], TEXT_MUTED[2]);
   doc.setFont('helvetica', 'normal');
   doc.text(
     `Cabala dos Caminhos · Dossiê Cabalístico · ${data.clientName}`,
@@ -137,9 +133,8 @@ function drawFooter(doc: jsPDF, data: DossierPdfData, pageNum: number): void {
   doc.text(`${pageNum} / ${total}`, PAGE_W - MARGIN, PAGE_H - 6, { align: 'right' });
 }
 
-/** Linha separadora horizontal com cor personalizável. */
-function drawDivider(doc: jsPDF, x1: number, y: number, x2: number, color: readonly number[]): number {
-  doc.setDrawColor(...color);
+function drawDivider(doc: jsPDF, x1: number, y: number, x2: number, color: [number, number, number]): number {
+  doc.setDrawColor(color[0], color[1], color[2]);
   doc.setLineWidth(0.4);
   doc.line(x1, y, x2, y);
   return y + 4;
@@ -237,7 +232,7 @@ interface MapCardDef {
   label: string;
   icon: string;
   map: Record<string, unknown> | unknown[] | null;
-  accent: readonly number[];
+  accent: [number, number, number];
 }
 
 function isRecord(v: unknown): v is Record<string, unknown> {
@@ -249,13 +244,13 @@ function drawMapCard(doc: jsPDF, card: MapCardDef, y: number): number {
   const CARD_H = 30;
   const cardY = y;
 
-  doc.setFillColor(...card.accent);
+  doc.setFillColor(card.accent[0], card.accent[1], card.accent[2]);
   doc.roundedRect(MARGIN, cardY, CONTENT_W, CARD_H, 2, 2, 'F');
 
   // Label + ícone
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
-  doc.setTextColor(...TEXT_ACCENT);
+  doc.setTextColor(TEXT_ACCENT[0], TEXT_ACCENT[1], TEXT_ACCENT[2]);
   doc.text(`${card.icon}  ${card.label}`, MARGIN + 5, cardY + 7);
 
   // Conteúdo
