@@ -7,6 +7,7 @@ import {
   calculateLifeCycles,
   buildKabalisticMap,
 } from '@/lib/calculators/numerology-kabalah';
+import { buildTantricMap } from '@/lib/calculators/numerology-tantric';
 
 describe('numerology-kabalah — enriched fields (Doc 04 §2.2)', () => {
 
@@ -329,6 +330,27 @@ describe('numerology-kabalah — enriched fields (Doc 04 §2.2)', () => {
       const third = calculateLifeCycles('1986-08-20');
       expect(second).toEqual(first);
       expect(third).toEqual(first);
+    });
+  });
+  // ─── 6. ELIANE SIMÃO DE ALMEIDA — Doc 09 §8 Test 1 anchor values ───────────
+  describe('Eliane Simao de Almeida — Doc 09 §8 Test 1 anchor values', () => {
+    const NAME = 'Eliane Simao de Almeida';
+    const DATE = '1986-08-20';
+
+    it('Caminho de Vida = 7 (Kabalistic)', () => {
+      const map = buildKabalisticMap(NAME, DATE);
+      expect(map.lifePath).toBe(7);
+    });
+
+    it('Alma = 2, Karma = 8 (Tantric)', () => {
+      const map = buildTantricMap(DATE);
+      expect(map.soul).toBe(2);
+      expect(map.karma).toBe(8);
+    });
+
+    it('Dom Divino = 5 (Tantric)', () => {
+      const map = buildTantricMap(DATE);
+      expect(map.divineGift).toBe(5);
     });
   });
 
