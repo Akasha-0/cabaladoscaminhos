@@ -43,7 +43,7 @@
 | AD-17.3 | Banir modais; popover de fricção zero é a única entrada | 🟡 | 3 |
 | AD-17.4 | Poda: remover componentes/páginas fora da página única | 🟡 | 3 |
 | AD-17.5 | Sem cadastro/listagem como telas (combobox na página) | 🟡 | 1 |
-| AD-17.6 | Layout raiz enxuto (sem `SupabaseProvider`) | 🟡 | 3 |
+| AD-17.6 | Layout raiz enxuto (sem `SupabaseProvider`) | ✅ (removido de `layout.tsx`) | 3 |
 | AD-17.7 | Inteligência cresce nas camadas 1–2, não na UI | 🟡 (princípio) | — |
 
 ### 2.3 Contratos técnicos (Doc 18)
@@ -53,7 +53,7 @@
 | AD-18.2 | Invariante de permutação (validação no `save` + UI) | 🟡 | 2 |
 | AD-18.3 | Store guarda `clientId`/`readingId`/`status`; sem mapa stub | 🟡 | 1 |
 | AD-18.4 | Sem componentes fora da árvore do cockpit | 🟡 | 3 |
-| AD-18.5 | Cálculo dos 4 mapas server-side, único, cacheado | 🔵 (`createClientWithMaps` existe; falta cabear à UI) | 4 |
+| AD-18.5 | Cálculo dos 4 mapas server-side, único, cacheado | ✅ (`POST /clients` cabeia `createClientWithMaps`; falta só o form da UI) | 4 |
 | AD-18.6 | `save` adota `MatrixData` canônico + valida permutação | 🟡 | 1–2 |
 | AD-18.7 | `generate` carrega mapas por `readingId` (não `mapaFixo`) | 🟡 | 4 |
 | AD-18.8 | `generate` em SSE (dossiê completo + síntese) | 🟡 | 4 |
