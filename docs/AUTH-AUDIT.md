@@ -62,6 +62,31 @@
 | `src/app/api/mesa-real/generate/route.ts` | POST | `requireOperator` | OK |
 | `src/app/api/mesa-real/readings/route.ts` | GET/POST/PATCH/DELETE | **`requireOperator`** (Fase 17) | **ADICIONADO** |
 | `src/app/api/consult/route.ts` | POST | `requireOperator` | OK |
+## 3.1 Operator MFA Routes (TOTP 2FA)
+
+| Path | Métodos | Gate | Status |
+|------|---------|------|--------|
+| `src/app/api/operator/auth/mfa/setup/route.ts` | POST | público (gera secret + QR) | ✅ |
+| `src/app/api/operator/auth/mfa/verify-setup/route.ts` | POST | público (verifica TOTP no setup) | ✅ |
+| `src/app/api/operator/auth/mfa/verify/route.ts` | POST | público (verifica TOTP no login) | ✅ |
+| `src/app/api/operator/auth/mfa/disable/route.ts` | POST | `requireOperator` (desabilita MFA) | ✅ |
+| `src/app/api/operator/auth/mfa/status/route.ts` | GET | `requireOperator` (retorna enabled/verified) | ✅ |
+| `src/app/api/operator/auth/mfa/recovery-code/route.ts` | POST | `requireOperator` (gera/revoga recovery codes) | ✅ |
+
+## 3.2 Operator Password Recovery Routes
+
+| Path | Métodos | Gate | Status |
+|------|---------|------|--------|
+| `src/app/api/operator/auth/forgot-password/route.ts` | POST | público (gera token de reset) | ✅ |
+| `src/app/api/operator/auth/reset-password/route.ts` | POST | público (reseta com token) | ✅ |
+
+## 3.3 Operator Sessions Routes
+
+| Path | Métodos | Gate | Status |
+|------|---------|------|--------|
+| `src/app/api/operator/auth/sessions/route.ts` | GET | `requireOperator` (lista sessões ativas) | OK Fase 16 |
+| `src/app/api/operator/auth/sessions/[id]/route.ts` | DELETE | `requireOperator` (revoga sessão) | OK Fase 16 |
+| `src/app/api/operator/auth/sessions/revoke-all/route.ts` | POST | `requireOperator` (revoga todas exceto atual) | OK Fase 16 |
 
 ---
 
