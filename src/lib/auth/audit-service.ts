@@ -14,7 +14,7 @@ import type { Prisma } from '@prisma/client';
 
 export type { SecurityEventType } from '@prisma/client';
 
-/** Tipo de evento de segurança. Deve ser um dos valores do enum SecurityEventType. */
+// Tipo de evento de segurança. Deve ser um dos valores do enum SecurityEventType.
 export type SecurityEventTypeValue =
   | 'LOGIN_SUCCESS'
   | 'LOGIN_FAILURE'
@@ -29,12 +29,12 @@ export type SecurityEventTypeValue =
 export interface LogSecurityEventParams {
   /** Tipo de evento de segurança. */
   type: SecurityEventTypeValue;
-  /** OperatorId quando disponível (null para eventos sem autenticação). */
+  /** OperatorId quando disponível. */
   operatorId?: string;
   /** IP do cliente (extraído de x-forwarded-for ou x-real-ip). */
-  ipAddress?: string;
+  ipAddress?: string | null;
   /** User-Agent do cliente. */
-  userAgent?: string;
+  userAgent?: string | null;
   /** Dados extras específicos do tipo de evento. */
   metadata?: Prisma.InputJsonValue;
 }
@@ -46,17 +46,9 @@ export interface LogSecurityEventParams {
  *   - Fire-and-forget: Promise é criada mas não awaited pelo caller.
  *   - Erros são capturados e logged — nunca propagam.
  *   - Se o prisma client falhar (ex: DB down), o auth continua normalmente.
- *
- * Uso:
- *   // Nunca bloqueia o login
- *   logSecurityEvent({ type: 'LOGIN_SUCCESS', operatorId: op.id, ipAddress, userAgent });
- *
- *   // Erro não propaga — caller pode continuar normalmente
- *   logSecurityEvent({ type: 'LOGIN_FAILURE', ipAddress, userAgent, metadata: { emailAttempted } });
  */
 export function logSecurityEvent(params: LogSecurityEventParams): void {
   // Fire-and-forget: não awaited pelo caller.
-  // Esta função retorna void — o caller não pode depender do resultado.
   void persistSecurityEvent(params);
 }
 
@@ -65,20 +57,16 @@ export function logSecurityEvent(params: LogSecurityEventParams): void {
  * Erros são completamente absorvidos para não afetar o caller.
  */
 async function persistSecurityEvent(params: LogSecurityEventParams): Promise<void> {
+  const data = {
+    type: params.type,
+    operatorId: params.operatorId ?? null,
+    ipAddress: params.ipAddress ?? null,
+    userAgent: params.userAgent ?? null,
+    ...(params.metadata !== undefined ? { metadata: params.metadata } : {}),
+  };
   try {
-    await prisma.securityEvent.create({
-      data: {
-        type: params.type,
-        operatorId: params.operatorId ?? null,
-        ipAddress: params.ipAddress ?? null,
-        userAgent: params.userAgent ?? null,
-        // biome-ignore style/noExplicitAny: Prisma 7 JSON null type workaround
-        metadata: params.metadata ?? (null as unknown as null),
-      },
-    });
+    await prisma.securityEvent.create({ data });
   } catch (err) {
-    // Log para diagnóstico, mas nunca deixa propagar.
-    // O auth flow continua normalmente mesmo se o audit log falhar.
     console.error('[audit-service] failed to persist security event', {
       type: params.type,
       operatorId: params.operatorId,
