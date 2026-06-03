@@ -35,7 +35,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 18 | **Hard final + cleanup** (rate-limit Redis, security headers, PROGRESS.md) | (este commit) | ✅ |
 | 18b | **Fallow cleanup** (42% reduction de issues) | `b3524c41` | ✅ |
 | 19 | **Cockpit completeness + PDF export** (T7.2 Leituras, Consulentes, PDF Dossiê) | `add046e5` | ✅ |
-| 21 | **Alinhamento docs + Build verde + Cockpit flow** (Doc 03/04/05/13, paleta Ramiro v2, SSE streaming) | `a1521981` | ✅ |
+| 22 | **Test fixes** (mapa-alma, spiritual-engine, chakra-v4, rate-limit, quality) | `c543fc29` | ✅ |
+| 23 | **Alinhamento documentação** (Ondas A/B/D/G: cartas consolidadas, 4 mapas wire, Q&A wired) | `cebdca70` | ✅ |
 
 ### Fase 18 — Hard final + cleanup (detalhes)
 
@@ -111,7 +112,20 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 **Test Fixes:**
  - ✅ Export `AUTH_RATE_LIMITS`, `getClientIp`, `checkAuthRateLimit` em rate-limit.ts
  - ✅ `chakra/v4-data.test.ts`: reescrito para usar estrutura real (id, name, color, frequency, element, meaning, location)
- - ✅ `quality/auto-evolution.test.ts`: marcado como skip (auto-evolution.ts removido)
+### Fase 23 — Alinhamento Documentação (Ondas A/B/D/G)
+**Onda A - Consolidação Cartas (AD-02):**
+ - ✅ HouseInputPopover já importa LENORMAND_CARDS (consolidado)
+ - ✅ DossierIndex.tsx: HOUSE_NAMES derivado de LORMAND_CARDS
+ - ✅ lenormand/data.ts marcado como @deprecated
+**Onda B - Layout Enxuto (AD-17.6):**
+ - ✅ Layout já enxuto (sem SupabaseProvider propagado)
+**Onda D - Wire 4 Mapas (AD-06.2):**
+ - ✅ POST /api/mesa-real/clients calcula 4 mapas automaticamente
+ - ✅ KabalisticMap, TantricMap, OduBirth, AstrologyMap
+ - ✅ Novo teste: mesa-real-clients.test.ts (6 casos)
+**Onda G - Q&A UI:**
+ - ✅ OraculoChat wired em CockpitOracular.tsx
+ - ✅ Novos testes: consultation/*.test.tsx (5 arquivos)
 ### 3.2 Cobertura de Testes
 
 - `tests/lib/auth/` — operator-jwt, operator-session, operator-sessions, operator-guard, operator-server-context, **rate-limit (novo)**
