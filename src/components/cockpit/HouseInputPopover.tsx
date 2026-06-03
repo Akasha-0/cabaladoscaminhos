@@ -32,7 +32,7 @@ const CARTAS_CIGANAS: CartaCiganaOption[] = LENORMAND_CARDS.map((carta) => ({
   significado: carta.keywords,
 }));
 
-export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPopoverProps) {
+export const HouseInputPopover = React.memo(function HouseInputPopoverInner({ casaNumero, onClose, onSave }: HouseInputPopoverProps) {
   const house = HOUSES_36.find((h) => h.number === casaNumero);
 
   // AD-17.2: Get used cards from store to filter available cards
@@ -103,7 +103,7 @@ export function HouseInputPopover({ casaNumero, onClose, onSave }: HouseInputPop
 
   return (
     <div
-      className="w-80 bg-popover border border-border rounded-xl shadow-2xl shadow-black/50 overflow-hidden"
+      className="w-80 bg-popover border border-border rounded-xl shadow-2xl shadow-black/50 overflow-hidden motion-safe:animate-fade-in-up motion-safe:scale-95"
       onKeyDown={handleKeyDown}
     >
       {/* Header */}

@@ -90,7 +90,7 @@ describe('HouseCell', () => {
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it('shows active state styling', () => {
+  it('shows active state styling with glow-pulse animation', () => {
     const { container } = render(
       <HouseCell
         house={mockHouse}
@@ -100,15 +100,16 @@ describe('HouseCell', () => {
         onClear={() => {}}
       />
     );
-
     const cell = container.firstChild as HTMLElement;
     expect(cell.className).toContain('ring-2');
     // Active state uses ring-primary per Doc 13 §4.1
     expect(cell.className).toContain('ring-primary');
+    // T7.1: animate-glow-pulse on motion-safe for prefers-reduced-motion
+    expect(cell.className).toContain('motion-safe:animate-glow-pulse');
   });
 
   // T7.1 a11y: hover-transform gated on motion-safe (prefers-reduced-motion)
-  it('gates hover translate on motion-safe (a11y)', () => {
+  it('gates hover scale on motion-safe (a11y)', () => {
     const { container: emptyContainer } = render(
       <HouseCell
         house={mockHouse}
@@ -119,8 +120,7 @@ describe('HouseCell', () => {
       />
     );
     const emptyCell = emptyContainer.firstChild as HTMLElement;
-    expect(emptyCell.className).toContain('motion-safe:hover:-translate-y-1');
-
+    expect(emptyCell.className).toContain('motion-safe:hover:scale-105');
     const filledData: FilledHouse = {
       casaNumero: 1,
       carta: { numero: 4, nome: 'A Casa', significado: 'Família' },
@@ -145,6 +145,6 @@ describe('HouseCell', () => {
       />
     );
     const filledCell = filledContainer.firstChild as HTMLElement;
-    expect(filledCell.className).toContain('motion-safe:hover:-translate-y-1');
+    expect(filledCell.className).toContain('motion-safe:hover:scale-105');
   });
 });

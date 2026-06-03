@@ -36,9 +36,8 @@ function HouseCellInner({ house, filledData, isActive, onClick, onClear }: House
             'bg-card/50 border border-dashed border-border',
             'hover:border-primary/50 hover:bg-card/70',
             // T7.1 a11y: gate hover-transform on motion-safe (prefers-reduced-motion: no-preference)
-            'motion-safe:hover:-translate-y-1',
+            'motion-safe:hover:scale-105',
           ].join(' '),
-
         // Filled state — Doc 13 §4.1 (laranja sólido + glow)
         isFilled &&
           [
@@ -47,11 +46,12 @@ function HouseCellInner({ house, filledData, isActive, onClick, onClear }: House
             'shadow-[0_0_15px_var(--accent-orange-glow)]',
             'hover:border-primary hover:shadow-[0_0_25px_var(--accent-orange-glow)]',
             // T7.1 a11y: gate hover-transform on motion-safe (prefers-reduced-motion: no-preference)
-            'motion-safe:hover:-translate-y-1',
+            'motion-safe:hover:scale-105',
           ].join(' '),
 
         // Active state (has open popover) — Doc 13 §4.1
-        isActive && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
+        // T7.1: animate-glow-pulse on motion-safe for prefers-reduced-motion
+        isActive && 'ring-2 ring-primary ring-offset-2 ring-offset-background motion-safe:animate-glow-pulse'
       )}
     >
       {/* House Number - Top Left (JetBrains Mono) */}
