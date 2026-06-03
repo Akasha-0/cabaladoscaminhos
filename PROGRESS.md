@@ -825,3 +825,16 @@ Commit: e8a95a70
 **Resultado:** 1767 testes (+6) · TypeScript 0 erros · build OK.
 
 Commit: 868d59bf
+### Fase 47 — Doc Sync + Docs Audit + Auth Fix (2026-06-03)
+**Docs audit (continuação Fase 46):**
+- Doc 21 v1.1: AD-23.1/.5/.6 atualizados; §5 "Arquitetura Convergida" 6/6 verificado ✅
+- Doc 23 v1.1: §5 "Impacto na IA" reescrito (AD-23.1/.2/.6 ✅; AD-23.4 🧭 restantes)
+- Doc 24 §8: IDEIA.md marcado como 'criado' (não 'a criar' — AD-20.5 verificado Fase 45)
+- AUTH-AUDIT: header atualizado 2026-06-03; cockpit/layout.tsx reflete mecanismo x-pathname + PUBLIC_PATHS
+- PROGRESS.md §2: métricas atualizadas (1767 testes · 0 falhas · ~20s · QUALITY_SCORE ≥0.91)
+**Auth fix (cockpit/login infinite redirect):**
+- `middleware.ts`: expõe `x-pathname` header com pathname atual em toda resposta
+- `src/app/cockpit/layout.tsx`: usa `x-pathname` header → `PUBLIC_PATHS` set → auth gate
+   pula `/cockpit/login` sem redir (evita loop infinito)
+**Resultado:** 1767 testes · TypeScript 0 erros · build 118 páginas OK.
+Commit: af7c56da
