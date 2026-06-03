@@ -332,7 +332,7 @@ export function calculatePersonalCycles(
 // Primeiro ciclo: da infância até o dia do retorno (28 - dia reduzido)
 // Segundo ciclo: até os 56 anos
 // Terceiro ciclo: a partir dos 56 anos
-function calculateLifeCycles(birthDate: string): {
+export function calculateLifeCycles(birthDate: string): {
   first: { number: number; ageStart: number; ageEnd: number };
   second: { number: number; ageStart: number; ageEnd: number };
   third: { number: number; ageStart: number };

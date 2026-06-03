@@ -20,6 +20,7 @@ export default defineConfig({
           environment: 'node',
           include: [
             'tests/lib/ai/**',
+            'tests/lib/engines/**',
             'tests/calculators/**',
             'tests/lib/auth/**',
             'tests/lib/db/**',
