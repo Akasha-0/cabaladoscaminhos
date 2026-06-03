@@ -657,3 +657,16 @@ matrixData[casaNum] = {
 
 *Ultima atualizacao: 2026-06-03 - Fase 39*
 *Versao: 1.8*
+
+### Fase 39.1 — Gap Audit Logout (2026-06-03)
+
+**Gap identificado:** Doc 22 AD-22.4 exige evento de audit `auth.logout` para logout de operator. Rota `/operator/auth/logout` NAO emitia `logSecurityEvent` — sessions eram revogadas mas sem registro de auditoria.
+
+**Fix aplicado:**
+- `src/app/api/operator/auth/logout/route.ts`: adicionado `logSecurityEvent({ type: 'SESSION_REVOKED', operatorId, ipAddress, metadata: { reason: 'logout' } })` apos revogacao bem-sucedida
+- Import `logSecurityEvent` adicionado
+- IP extraido de `x-forwarded-for` / `x-real-ip` (mesmo padrao do login)
+
+**Resultado:** 1,408 testes core passando, 0 falhas.
+
+*Ultima atualizacao: 2026-06-03 - Fase 39.1*
