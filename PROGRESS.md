@@ -294,6 +294,22 @@ Exclusão de testes legados B2C do core-api no vitest.config.ts
 
 *Última atualização: 2026-06-03 — Fase 28*
 *Versão: 1.1*
+
+### Fase 30 — Correlation Engine Fix + Cockpit Store + Tests + Docs (Junho 2026)
+**Bug crítico corrigido:** `oracle-prompt-builder.ts` passava o `BirthChart` raw ao `extractFromMap`, mas as chaves de extração usavam nomes de campos inexistentes. Resultado: ZERO contexto astrológico no dossiê gerado.
+
+**Correções de código:**
+- `src/lib/ai/correlation-map.ts`: `extractFromMap` reescrito para suportar formato `Record` (não só array) — `houses['1']` retorna string `sign` diretamente; busca `h.house || h.numero` para compatibilidade
+- `src/lib/ai/dossier/oracle-prompt-builder.ts`: `normalizeBirthChart()` novo — normaliza `BirthChart` (planetas em português → inglês, `casas` em Record, `ascendente` como chave top-level `ascendant`) bridging para as chaves de extração do `correlation-map`
+- `src/stores/cockpit-store.ts`: adicionado `cartasRestantes()` — retorna `number[]` com IDs das cartas disponíveis
+- `src/lib/ai/correlation-map.ts`: bug fix `h.house` vs `h.numero`
+
+**Testes novos:**
+- `tests/lib/ai/correlation-map.test.ts`: 19 testes para `extractFromMap` + `normalizeBirthChart` (key paths, ascendente, casas, nodes)
+- `tests/lib/ai/correlation-determinism.test.ts`: invariantes de determinismo (Casa 34 sem ascendente/lua)
+- `tests/lib/ai/permutation-invariant.test.ts`: cockpit store permutation (rejeita carta duplicada)
+
+**Resultado:** 1164 testes passando, 103 falhas pré-existentes (audit-service timers, stripe-webhook mocks, legacy B2C)
 ### Fase 29 — Auth Test Mocks Fix (2026-06-03)
 
 Correcao de mocks faltando nos testes de autenticacao:
