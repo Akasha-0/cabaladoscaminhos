@@ -183,19 +183,6 @@ class Logger {
         break;
     }
 
-    // In production, send to external service (e.g., Sentry, Datadog)
-    if (this.isProduction && level >= LogLevel.ERROR) {
-      this.sendToMonitoring(entry);
-    }
-  }
-
-  private async sendToMonitoring(_entry: LogRecord): Promise<void> {
-    // TODO: Integrate with Sentry, Datadog, or similar
-    if (process.env.SENTRY_DSN) {
-      // await import('@sentry/node').then(({ captureException }) => {
-      //   captureException(new Error(entry.message), { extra: entry });
-      // });
-    }
   }
 
   debug(message: string, context?: LogContext): void {
