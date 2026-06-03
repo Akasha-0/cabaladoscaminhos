@@ -894,3 +894,15 @@ Tests updated: operator-jwt, operator-auth, operator-guard, operator-server-cont
   consult, mesa-real-save. Production guard tests verify bypass blocked without flag.
 Result: 1832 testes (+65) · TypeScript 0 erros.
 Commit: f562fd49
+### Fase 53 — Multi-agent security & quality audit (2026-06-03)
+10 parallel agents scanned the codebase. Fixes:
+Auth on protected routes: admin/dashboard, admin/rate-limit, swarm,
+  payments/checkout, payments/portal, mapa — requireOperator guards added
+Dev endpoints: create-test, test, login-form — NODE_ENV guards (DEV ONLY)
+Hardcoded secrets: life-areas-ai.ts MiniMax key removed
+Quality runner: fallow regex fixed, dead code report validated, 
+  test baseline 1767→1832, hardcoded spiritual/AI scores → dynamic
+Docs: README status → Fase 52, Doc 03/05 flagged SUPERSEDED,
+  Doc 02/07 flagged LEGADO B2C
+Result: 1832 testes · TypeScript 0 erros.
+Commit: 5e1df21a
