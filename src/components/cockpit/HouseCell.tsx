@@ -35,7 +35,8 @@ function HouseCellInner({ house, filledData, isActive, onClick, onClear }: House
           [
             'bg-card/50 border border-dashed border-border',
             'hover:border-primary/50 hover:bg-card/70',
-            'hover:-translate-y-1',
+            // T7.1 a11y: gate hover-transform on motion-safe (prefers-reduced-motion: no-preference)
+            'motion-safe:hover:-translate-y-1',
           ].join(' '),
 
         // Filled state — Doc 13 §4.1 (laranja sólido + glow)
@@ -45,7 +46,8 @@ function HouseCellInner({ house, filledData, isActive, onClick, onClear }: House
             'border border-primary/50',
             'shadow-[0_0_15px_var(--accent-orange-glow)]',
             'hover:border-primary hover:shadow-[0_0_25px_var(--accent-orange-glow)]',
-            'hover:-translate-y-1',
+            // T7.1 a11y: gate hover-transform on motion-safe (prefers-reduced-motion: no-preference)
+            'motion-safe:hover:-translate-y-1',
           ].join(' '),
 
         // Active state (has open popover) — Doc 13 §4.1
