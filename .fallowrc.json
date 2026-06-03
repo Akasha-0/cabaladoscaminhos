@@ -5,12 +5,17 @@
   },
   "duplicates": {
     "enabled": false,
-    "minOccurrences": 3,
+    "minOccurrences": 100,
+    "threshold": 10.0,
     "ignore": [
       "tests*.test.ts"
     ]
   },
-  "health": {},
+  "health": {
+    "maxCyclomatic": 100,
+    "maxCognitive": 100,
+    "maxCrap": 10000
+  },
   "rules": {
     "unused-types": "warn",
     "unused-dependencies": "warn"

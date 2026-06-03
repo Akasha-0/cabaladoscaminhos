@@ -1,6 +1,4 @@
-// src/lib/auth/operator-guard.ts
-const OPERATOR_LOGIN_PATH = '/cockpit/login';
-// Helpers de server-side auth gate para Server Components (Fase 17).
+export const OPERATOR_LOGIN_PATH = '/cockpit/login';
 //
 // Objetivo: padronizar o pattern de "página Operator precisa de login"
 // em TODOS os page.tsx e route.ts do produto B2B.
@@ -49,7 +47,7 @@ import {
  *   const operator = await requireOperatorPage();
  *   // prossegue com `operator` (já narrowed para `Operator`)
  */
-async function requireOperatorPage(): Promise<Operator> {
+export async function requireOperatorPage(): Promise<Operator> {
   const operator = await getOperatorFromServerContext();
   if (!operator) {
     redirect(OPERATOR_LOGIN_PATH);

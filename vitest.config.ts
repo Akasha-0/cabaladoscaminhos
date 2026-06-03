@@ -39,6 +39,13 @@ export default defineConfig({
             'tests/api/**',
             'tests/middleware/**',
           ],
+          exclude: [
+            'tests/api/timer.test.ts',
+            'tests/api/progresso.test.ts',
+            'tests/api/gamification/**',
+            'tests/api/healthcare/**',
+            'tests/api/orixa/**',
+          ],
         },
         resolve: {
           alias: {

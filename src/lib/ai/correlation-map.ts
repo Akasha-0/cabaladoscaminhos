@@ -38,7 +38,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
   1: {
     houseId: 1, houseName: 'O Cavaleiro',
     houseTheme: 'Notícias, movimento, o primeiro impulso, como a pessoa chega ao mundo',
-    astrology: { primaryHouses: [1], primaryPlanets: ['ascendant', 'mars'], extractionKeys: ['ascendant.sign', 'planets.mars.sign', 'planets.mars.house', 'houses.1'] },
+    astrology: { primaryHouses: [1], primaryPlanets: ['ascendant', 'mars'], extractionKeys: ['ascendant', 'planets.mars.sign', 'planets.mars.house', 'houses.1'] },
     kabalah: { aspects: ['Número de Expressão'], extractionKeys: ['expression'] },
     tantric: { aspects: ['Número de Alma'], extractionKeys: ['soul', 'soulDescription'] },
   },
@@ -122,7 +122,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
   13: {
     houseId: 13, houseName: 'A Criança',
     houseTheme: 'Novos começos, projetos iniciais, inocência, renovação, vulnerabilidade',
-    astrology: { primaryHouses: [1], primaryPlanets: ['ascendant', 'jupiter'], extractionKeys: ['ascendant.sign', 'houses.1', 'planets.jupiter.sign', 'planets.jupiter.house'] },
+    astrology: { primaryHouses: [1], primaryPlanets: ['ascendant', 'jupiter'], extractionKeys: ['ascendant', 'houses.1', 'planets.jupiter.sign', 'planets.jupiter.house'] },
     kabalah: { aspects: ['Número de Missão'], extractionKeys: ['mission'] },
     tantric: { aspects: ['Número de Alma'], extractionKeys: ['soul', 'soulDescription'] },
   },
@@ -309,10 +309,53 @@ export function extractFromMap(
 ): Record<string, unknown> {
   if (!map) return {};
   return keys.reduce<Record<string, unknown>>((acc, key) => {
-    const value = key.split('.').reduce<unknown>((obj, k) => {
-      if (obj && typeof obj === 'object') return (obj as Record<string, unknown>)[k];
-      return undefined;
-    }, map);
+    const parts = key.split('.');
+    let value: unknown;
+    const first = parts[0];
+    const second = parts[1];
+    if (first === 'planets' && second) {
+      // Handle array-based planets: planets.mars.sign → find by .planet name
+      const planets = map['planets'] as Array<{ planet: string; [k: string]: unknown }> | undefined;
+      if (Array.isArray(planets)) {
+        const planet = planets.find(p => p.planet === second);
+        value = parts.slice(2).reduce<unknown>((obj, k) => {
+          if (obj && typeof obj === 'object') return (obj as Record<string, unknown>)[k];
+          return undefined;
+        }, planet);
+      } else {
+        // Fallback to old flat format: planets.mars.sign → planets.mars.sign
+        value = parts.reduce<unknown>((obj, k) => {
+          if (obj && typeof obj === 'object') return (obj as Record<string, unknown>)[k];
+          return undefined;
+        }, map);
+      }
+    } else if (first === 'houses' && second) {
+      // Handle array-based houses: houses.2 → find by .house number
+      const houses = map['houses'] as Array<{ house: number; sign: string; degree?: number }> | undefined;
+      if (Array.isArray(houses)) {
+        const houseNum = Number(second);
+        const house = houses.find(h => h.house === houseNum);
+        if (parts.length === 2) {
+          // Just 'houses.2' → return the sign string
+          value = house?.sign;
+        } else {
+          // 'houses.2.degree' → drill further
+          value = parts.slice(2).reduce<unknown>((obj, k) => {
+            if (obj && typeof obj === 'object') return (obj as Record<string, unknown>)[k];
+            return undefined;
+          }, house);
+        }
+      } else {
+        // Fallback to old flat format: houses.2 → houses[2]
+        value = (map['houses'] as Record<string, unknown>)?.[second];
+      }
+    } else {
+      // Default: dot-path traversal
+      value = parts.reduce<unknown>((obj, k) => {
+        if (obj && typeof obj === 'object') return (obj as Record<string, unknown>)[k];
+        return undefined;
+      }, map);
+    }
     if (value !== undefined) acc[key] = value;
     return acc;
   }, {});

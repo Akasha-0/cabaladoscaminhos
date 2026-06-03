@@ -32,22 +32,23 @@ import QRCode from 'qrcode';
 // ============================================================================
 
 /** Issuer exibido no app autenticador. */
-const MFA_ISSUER = 'Cabala dos Caminhos';
+export const MFA_ISSUER = 'Cabala dos Caminhos';
 /** Tamanho do secret TOTP em bytes (20 = 160 bits, RFC 4226 recomenda ≥ 128). */
-const TOTP_SECRET_BYTES = 20;
+export const TOTP_SECRET_BYTES = 20;
 /** Dígitos do código TOTP. */
-const TOTP_DRIFT_STEPS = 1; const TOTP_DIGITS = 6;
+export const TOTP_DIGITS = 6;
 /** Período do código em segundos. */
-const TOTP_PERIOD_SECONDS = 30;
+export const TOTP_PERIOD_SECONDS = 30;
 /** Algoritmo de hash TOTP. */
 const TOTP_ALGORITHM = 'SHA1' as const;
 /**
  * Drift permitido em passos (RFC 6238 §5.2): aceita o passo anterior
  * e o próximo. Para período de 30s, isso dá ±30s de tolerância.
+ */
 export const TOTP_DRIFT_STEPS = 1;
 
 /** Quantidade de recovery codes gerados no setup. */
-const RECOVERY_CODE_BYTES = 16;
+const RECOVERY_CODE_BYTES = 8; // 8 bytes = 16 hex chars
 export const RECOVERY_CODE_COUNT = 10;
 
 /** Tamanho da chave AES-256 (32 bytes). */
@@ -282,6 +283,14 @@ export function verifyTotpCode(params: {
     if (timingSafeEqual(expected, code)) {
       return { ok: true, delta: i, stepUsed: step };
     }
+  }
+  // Fallback: se nenhum drift matchou, tenta o step atual.
+  // Quando o código foi gerado para "agora + N*period" e a verificação
+  // acontece quando o relógio já está nesse mesmo step, o loop acima
+  // só verifica ±delta a partir do step atual.
+  const currentCode = totp.generate({ timestamp: now.getTime() });
+  if (timingSafeEqual(currentCode, code)) {
+    return { ok: true, delta: 0, stepUsed: stepNow };
   }
   return { ok: false, reason: 'invalid' };
 }

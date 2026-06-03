@@ -124,7 +124,7 @@ export async function createRefreshSession(params: {
  * Verifica se uma refresh session está ativa (existe, não revogada, não
  * expirada). Usado pelo endpoint /refresh antes de rotacionar.
  */
-async function isRefreshSessionActive(token: string): Promise<boolean> {
+export async function isRefreshSessionActive(token: string): Promise<boolean> {
   const tokenHash = hashOperatorToken(token);
   const session = await prisma.operatorSession.findUnique({
     where: { tokenHash },
@@ -341,7 +341,7 @@ export async function revokeSession(token: string): Promise<{ revoked: boolean }
  * todos os dispositivos"). Útil para "minha conta foi comprometida"
  * e para detecção de reuso de refresh token (Fase 15).
  */
-async function revokeAllOperatorSessions(operatorId: string): Promise<{ count: number }> {
+export async function revokeAllOperatorSessions(operatorId: string): Promise<{ count: number }> {
   const result = await prisma.operatorSession.updateMany({
     where: { operatorId, revokedAt: null },
     data: { revokedAt: new Date() },
@@ -353,7 +353,7 @@ async function revokeAllOperatorSessions(operatorId: string): Promise<{ count: n
  * Remove sessões já expiradas e/ou revogadas há mais de `olderThanDays`.
  * Útil como job de manutenção; não afeta a request hot path.
  */
-async function cleanupExpiredSessions(olderThanDays = 30): Promise<{ count: number }> {
+export async function cleanupExpiredSessions(olderThanDays = 30): Promise<{ count: number }> {
   const cutoff = new Date(Date.now() - olderThanDays * 24 * 60 * 60 * 1000);
   const result = await prisma.operatorSession.deleteMany({
     where: {

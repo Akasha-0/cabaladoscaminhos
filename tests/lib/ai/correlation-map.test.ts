@@ -56,33 +56,38 @@ describe('CORRELATION_MAP — as 36 casas da Mesa Real', () => {
 });
 
 describe('extractFromMap — extração determinística por dot-path', () => {
+  // Use the real AstrologyMap array format (Doc 04 §2.1: planets/houses are arrays)
   const astrologyMap = {
-    ascendant: { sign: 'Virgem', degree: 12 },
-    planets: { mars: { sign: 'Leão', house: 11 }, venus: { sign: 'Câncer', house: 10 } },
-    houses: { 1: 'Virgem', 2: 'Libra' },
+    ascendant: 'Virgem',
+    planets: [
+      { planet: 'mars', sign: 'Leão', degree: 22, house: 11 },
+      { planet: 'venus', sign: 'Câncer', degree: 5, house: 10 },
+    ],
+    houses: [
+      { house: 1, sign: 'Virgem', degree: 12 },
+      { house: 2, sign: 'Libra', degree: 8 },
+    ],
   };
-
-  it('extrai apenas as keys solicitadas', () => {
-    const out = extractFromMap(astrologyMap, ['ascendant.sign', 'planets.mars.house']);
-    expect(out).toEqual({ 'ascendant.sign': 'Virgem', 'planets.mars.house': 11 });
+  it('extrai planets array por nome (planets.mars.house)', () => {
+    const out = extractFromMap(astrologyMap, ['planets.mars.house', 'planets.venus.sign']);
+    expect(out).toEqual({ 'planets.mars.house': 11, 'planets.venus.sign': 'Câncer' });
   });
-
+  it('extrai houses array por número (houses.2)', () => {
+    const out = extractFromMap(astrologyMap, ['houses.2', 'houses.1']);
+    expect(out).toEqual({ 'houses.2': 'Libra', 'houses.1': 'Virgem' });
+  });
   it('ignora keys ausentes sem quebrar', () => {
-    const out = extractFromMap(astrologyMap, ['planets.pluto.sign', 'houses.1']);
-    expect(out).toEqual({ 'houses.1': 'Virgem' });
+    const out = extractFromMap(astrologyMap, ['planets.pluto.sign']);
+    expect(Object.keys(out).length).toBe(0);
   });
-
   it('retorna objeto vazio para mapa nulo/indefinido', () => {
     expect(extractFromMap(null, ['x'])).toEqual({});
     expect(extractFromMap(undefined, ['x'])).toEqual({});
   });
-
   it('a extração da Casa 1 só traz dados delegados (sem vazamento)', () => {
     const e = getCorrelationEntry(1);
     const out = extractFromMap(astrologyMap, e.astrology.extractionKeys);
-    expect(out).toHaveProperty('ascendant.sign', 'Virgem');
     expect(out).toHaveProperty('planets.mars.sign', 'Leão');
-    // Vênus NÃO é delegada à casa 1 — não deve aparecer
     expect(Object.keys(out).some((k) => k.includes('venus'))).toBe(false);
   });
 });

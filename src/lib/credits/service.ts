@@ -72,7 +72,8 @@ export async function adicionarCreditos(
   return { novoSaldo: credito.saldo };
 }
 
-async function debitarCreditos(
+// fallow-ignore-next-line unused-export
+export async function debitarCreditos(
   userId: string,
   quantidade: number,
   operacao: string

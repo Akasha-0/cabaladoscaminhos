@@ -168,7 +168,7 @@ export function signOperatorRefreshToken(operator: {
  * genérico de 7d). Em código novo, use `signOperatorAccessToken` ou
  * `signOperatorRefreshToken`.
  */
-function signOperatorToken(operator: {
+export function signOperatorToken(operator: {
   id: string;
   role: 'OPERATOR' | 'ADMIN';
 }): string {

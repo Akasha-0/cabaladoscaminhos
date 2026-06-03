@@ -132,14 +132,13 @@ export const useCockpitStore = create<CockpitState>((set, get) => ({
 
   fillHouse: (casaNumero, carta, odu) => {
     set((state) => {
+      if (state.placedCards.has(carta.numero)) return state;
       const newHouses = new Map(state.houses);
       newHouses.set(casaNumero, { casaNumero, carta, odu });
-      // Track card placement for uniqueness (AD-17.2)
       const newPlacedCards = new Set(state.placedCards);
       newPlacedCards.add(carta.numero);
       return { houses: newHouses, activePopover: null, placedCards: newPlacedCards };
     });
-
     // Auto-advance to next house if applicable
     const nextCasa = casaNumero + 1;
     if (nextCasa <= 36) {
@@ -153,11 +152,9 @@ export const useCockpitStore = create<CockpitState>((set, get) => ({
     const { houses, placedCards } = get();
     const house = houses.get(casaNumero);
     const cardNumber = house?.carta?.numero;
-
     set((state) => {
       const newHouses = new Map(state.houses);
       newHouses.delete(casaNumero);
-      // Remove from placedCards if card was present
       const newPlacedCards = new Set(state.placedCards);
       if (cardNumber !== undefined) {
         newPlacedCards.delete(cardNumber);

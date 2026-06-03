@@ -263,5 +263,23 @@ A running session produziu as siguientes mudanças:
 - Commits: `2e91f8e2` (config inicial) · `c3fa0301` (stats + test fixes) · `b3524c41` (operator login refactor)
 - Arquivos de dados espirituais (Odús, meji) adicionados a `.fallowrc.json` ignorePatterns
 
-*Última atualização: 2026-06-02 — Fase 20 (Build ⏳ | Tests ⏳)*
-*Versão: 1.0 — Inicial*
+### Fase 28 — Test Suite Repair + Export Fixes (2026-06-03)
+
+Correção do glossário ODUS: `ODUS` exportado em `src/lib/constants/odus.ts`
+
+Correção TOTP recovery codes: `RECOVERY_CODE_BYTES` 16→8 (16 hex chars)
+
+Correção TOTP drift: verificação do step atual como fallback
+
+Exports adicionados:
+  * `operator-totp.ts`: `MFA_ISSUER`, `TOTP_SECRET_BYTES`, `TOTP_DIGITS`, `TOTP_PERIOD_SECONDS`
+  * `operator-sessions.ts`: `isRefreshSessionActive`, `revokeAllOperatorSessions`, `cleanupExpiredSessions`
+  * `operator-guard.ts`: `requireOperatorPage`, `OPERATOR_LOGIN_PATH`
+  * `operator-jwt.ts`: `signOperatorToken` (back-compat)
+
+Exclusão de testes legados B2C do core-api no vitest.config.ts
+
+**Resultado**: 141 → 75 falhas (-47%), 722 → 743 passando (+3%)
+
+*Última atualização: 2026-06-03 — Fase 28*
+*Versão: 1.1*

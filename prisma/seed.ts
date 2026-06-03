@@ -1,9 +1,27 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
-
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+const prisma = new PrismaClient();
 async function main() {
-  console.log('🌱 Starting spiritual data seed...')
+  console.log('🌱 Starting spiritual data seed...');
+  // =====================
+  // ADMIN OPERATOR (Doc 03 §3 — Operator system user)
+  // =====================
+  const adminEmail = process.env.ADMIN_EMAIL ?? 'admin@cabaladoscaminhos.com';
+  const adminPassword = process.env.ADMIN_PASSWORD ?? 'changeme-in-production';
+  if (process.env.SKIP_ADMIN_SEED !== 'true') {
+    const passwordHash = await bcrypt.hash(adminPassword, 10);
+    await prisma.operator.upsert({
+      where: { email: adminEmail },
+      update: {},
+      create: {
+        email: adminEmail,
+        name: 'Admin',
+        passwordHash,
+        role: 'ADMIN',
+      },
+    });
+    console.log(`✅ Admin operator: ${adminEmail} (password from ADMIN_PASSWORD env var)`);
+  }
 
   // =====================
   // DIAS DA SEMANA (7)

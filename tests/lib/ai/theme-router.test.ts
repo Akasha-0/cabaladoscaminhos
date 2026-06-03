@@ -62,8 +62,15 @@ describe('buildConsultContext — RAG fechado (Doc 12 §5)', () => {
     fullName: 'Maria Silva',
     birthDate: '1990-05-10',
     astrologyMap: {
-      planets: { venus: { sign: 'Touro', house: 7 }, moon: { sign: 'Peixes', house: 4 } },
-      houses: { 2: 'Áries', 5: 'Câncer' },
+      ascendant: 'Libra',
+      planets: [
+        { planet: 'venus', sign: 'Touro', degree: 12, house: 7 },
+        { planet: 'moon', sign: 'Peixes', degree: 18, house: 4 },
+      ],
+      houses: [
+        { house: 2, sign: 'Áries', degree: 5 },
+        { house: 5, sign: 'Câncer', degree: 22 },
+      ],
     },
     kabalisticMap: { motivation: 6, expression: 3 },
     tantricMap: { soul: 1, soulDescription: 'Corpo da Alma', karma: 5, karmaDescription: 'Corpo Físico' },
