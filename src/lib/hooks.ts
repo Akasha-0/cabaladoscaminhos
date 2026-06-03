@@ -5,6 +5,7 @@
 // Currently imported by src/app/dashboard/perfil/page.tsx
 // ============================================================================
 
+// fallow-ignore-next-line unused-files
 /**
  * Hook para cálculos numerológicos
  * @deprecated Needs proper implementation

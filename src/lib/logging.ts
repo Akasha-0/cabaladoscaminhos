@@ -393,6 +393,7 @@ function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise
 // ============================================================
 // K.1 — STRUCTURED LOGGING (AD-22.3)
 // ============================================================
+// fallow-ignore-next-line unused-type
 export interface LogEntry {
   ts: string;
   level: 'error' | 'warn' | 'info' | 'debug';

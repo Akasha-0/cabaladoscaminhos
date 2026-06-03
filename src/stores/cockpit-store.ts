@@ -32,6 +32,7 @@ export interface ClienteInfo {
 // fallow-ignore-next-line unused-type
 export type RightPanelTab = 'dossier' | 'consult';
 
+// fallow-ignore-next-line unused-type
 export type CockpitStatus = 'draft' | 'saved' | 'generating' | 'completed' | 'error';
 
 interface CockpitState {

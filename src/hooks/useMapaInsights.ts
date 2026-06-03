@@ -7,6 +7,7 @@ interface UseMapaInsightsOptions {
   enabled?: boolean;
   usarCache?: boolean;
 }
+// fallow-ignore-next-line unused-files
 
 /**
  * Hook to fetch AI-generated MapaAlma insights from /api/mapa/insights

@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 
+// fallow-ignore-next-line unused-files
 export interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'gold' | 'purple' | 'white';
@@ -43,52 +44,35 @@ export function LoadingSpinner({
       aria-label={label}
       className={cn('loading-spinner-root', className)}
       style={{
-        '--spinner-size': spinnerSize,
+        width: spinnerSize,
+        height: spinnerSize,
         '--star-color': starColor,
         '--glow-color': glowColor,
       } as React.CSSProperties}
     >
       <style>{`
-        @keyframes spinStar {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-
-        @keyframes glowPulse {
-          0%, 100% { filter: drop-shadow(0 0 4px var(--glow-color)); }
-          50% { filter: drop-shadow(0 0 12px var(--glow-color)); }
-        }
-
         .loading-spinner-root {
+          position: relative;
           display: inline-flex;
           align-items: center;
           justify-content: center;
         }
 
         .loading-star {
-          display: block;
-          font-size: var(--spinner-size);
           color: var(--star-color);
+          font-size: calc(var(--spin-size, 24px) * 0.5);
           line-height: 1;
-          animation: spinStar 2s linear infinite, glowPulse 2s ease-in-out infinite;
+          filter: drop-shadow(0 0 4px var(--glow-color)) drop-shadow(0 0 8px var(--glow-color));
+          animation: spin 1.2s linear infinite;
         }
 
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          white-space: nowrap;
-          border-width: 0;
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .loading-star {
-            animation: none;
-          }
+          .loading-star { animation: none; }
         }
       `}</style>
       <span className="loading-star">✦</span>

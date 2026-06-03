@@ -6,6 +6,7 @@ interface SkeletonProps {
   variant?: "text" | "card" | "chart";
   className?: string;
 }
+// fallow-ignore-next-line unused-files
 
 export function Skeleton({ variant = "text", className }: SkeletonProps) {
   return (

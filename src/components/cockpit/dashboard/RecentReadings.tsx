@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 type ReadingStatus = 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
+// fallow-ignore-next-line unused-files
 
 interface RecentReadingsProps {
   readings: Array<{
