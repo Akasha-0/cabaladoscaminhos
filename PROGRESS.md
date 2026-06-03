@@ -444,3 +444,32 @@ Correções no vitest.config.ts (parse error) + UI component tests:
 
 *Última atualização: 2026-06-03 — Fase 32*
 *Versão: 1.3*
+
+### Fase 33 — Glossary Governance + RAG + Consult Integration Tests (2026-06-03)
+
+**AD-20.6:** LenormandCard + Odu types gain `source` + `lineage` fields
+- 36 Lenormand cards: `source='Cartomancia Cigana Clássica'`, `lineage` by group (cigano 1-9, geomântico 10-28, mesa real 29-36)
+- 16 Odus: `source='Ifá Merindilogun (Tradição Iorubá-Nagô)'`, lineage per Odu/orixá
+- Both fields optional to avoid breaking changes
+
+**AD-19.4 Invariant 6 (RAG closed):**
+- `tests/lib/ai/consult-context-rag.test.ts`: 11/11 pass
+  - `buildConsultSystemPrompt`: anti-alucinação constraints verified
+  - `drawnHouses`/`natalOnlyHouses`: boundary enforced by matrixData
+  - `routeQuestion` determinism + 'geral' fallback
+
+**AD-12:** Consultation routing metadata
+- `src/lib/db/consultation-actions.ts`: `RoutingChatMessage` type added
+- `ConsultContext.messages` now returns `routedThemes`/`routedHouses` per message
+- `tests/lib/db/consultation-actions.test.ts`: 3 new tests
+
+**AD-19.4:** consult SSE routing structure
+- `tests/api/consult.test.ts`: 18/18 pass (extended with RAG-closed tests)
+  - `amor→Casa24`, `dinheiro→Casa34`, `trabalho→Casa35` routing verified
+  - Determinism across 2 and 3 identical calls
+  - `done` event carries routing metadata
+
+**Resultado:** 1343 testes core passando. Build 118 páginas OK.
+
+*Última atualização: 2026-06-03 — Fase 33*
+*Versão: 1.3*
