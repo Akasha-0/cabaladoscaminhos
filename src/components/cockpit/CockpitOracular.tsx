@@ -29,8 +29,8 @@ function getPopoverPosition(element: HTMLElement): { x: number; y: number } {
     y: rect.top - 10,
   };
 }
-// Zone C panel dimensions
-const RIGHT_PANEL_WIDTH = '480px';
+// T7.4: Zone C panel dimensions — responsive at lg: breakpoint (overlay)
+// const RIGHT_PANEL_WIDTH = '480px'; // removed: unused — width handled by tailwind
 interface CockpitOracularProps {
   /** Optional reading ID to wire DossierViewer and OraculoChat. */
   readingId?: string;
@@ -262,12 +262,9 @@ export function CockpitOracular({
               'shadow-[inset_0_0_60px_var(--accent-royal-glow)]'
             )}
           >
-            {/* Grid Container */}
+            {/* T7.4: Grid Container — responsive + stagger entrance */}
             <div
-              className="grid gap-3"
-              style={{
-                gridTemplateColumns: 'repeat(9, minmax(0, 1fr))',
-              }}
+              className="grid gap-3 grid-cols-9 lg:grid-cols-6 xl:grid-cols-9 stagger-children"
             >
               {HOUSES_36.map((house) => {
                 const filledData = houses.get(house.number);
@@ -416,7 +413,8 @@ function ZoneCRightPanel({
           'bg-card/95 border-l border-border/50 backdrop-blur-md',
           'flex flex-col shadow-[-20px_0_60px_rgba(0,0,0,0.3)]',
           'transition-transform duration-300 ease-out',
-          'w-[480px] max-w-[100vw]',
+          // T7.4: responsive at lg: — collapse to overlay (no fixed width, full height drawer)
+          'w-[480px] max-w-[100vw] lg:hidden',
           isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >

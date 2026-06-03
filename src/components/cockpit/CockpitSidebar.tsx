@@ -26,7 +26,7 @@ interface CockpitSidebarProps {
   onNewAtendimento: () => void;
 }
 
-export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
+export const CockpitSidebar = React.memo(function CockpitSidebarInner({ onNewAtendimento }: CockpitSidebarProps) {
   const { cliente, currentClientId, houses, setCliente, setCurrentReadingId, setCurrentClientId, openRightPanel, setRightPanelTab, isSidebarCollapsed, toggleSidebar } = useCockpitStore();
   const [isFormExpanded, setIsFormExpanded] = useState(!cliente);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -180,9 +180,9 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
       </div>
     );
   }
-
   return (
-    <div className="w-80 bg-card/80 border-r border-border flex flex-col">
+    {/* T7.4: Sidebar collapses to icon-only (w-20) at lg: breakpoint (iPad landscape) */}
+    <div className="w-80 lg:w-20 bg-card/80 border-r border-border flex flex-col">
       {/* Header */}
       <div className="p-4 border-b border-border/50">
         <div className="flex items-center justify-between mb-2">
