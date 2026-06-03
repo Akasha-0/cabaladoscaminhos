@@ -33,6 +33,7 @@
 | 21 | [Registro de Decisões (ADR Index) & Roadmap](./21_registro-decisoes-roadmap.md) | Painel único de todas as decisões AD-16…AD-20 com status e ordem de execução; roadmap consolidado em ondas |
 | 22 | [Observabilidade & Operação](./22_observabilidade-operacao.md) | Logging estruturado, auditoria do Operator, custo/uso de IA, resiliência de SSE, saúde, privacidade e runbook |
 | 23 | [Auditoria de Mapas Natais & Geolocalização](./23_auditoria-mapas-geolocalizacao.md) | Completude dos 4 mapas (código × visão): astrologia 46% (bloqueador) + geolocalização; decisões para precisão da IA por casa |
+| 24 | [Guia de Desenvolvimento para Agentes de IA](./24_guia-desenvolvimento-agentes-ia.md) | **Ponto de entrada do agente codificador**: mapa de leitura, precedência, regras invioláveis, workflow, anti-padrões, artefatos canônicos |
 
 > **Identidade visual:** o **Doc 13** é a fonte canônica da paleta (laranja + azul royal, consagração ao Cigano Ramiro). Em qualquer divergência de cor, ele prevalece sobre os demais.
 >
@@ -52,8 +53,10 @@
 
 ## Como Usar Esta Documentação
 
-- **Para o Agente de Orquestração (Hermes):** Leia os documentos 01, 02, 07 e 10 para entender o escopo, as lacunas conhecidas e dividir as tarefas em subtarefas atômicas para o swarm.
-- **Para o Agente de Codificação (Minimax/Claude Code):** Leia os documentos 03, 04, 05, 06, 09, 11, 12, 13 e 14 para implementar os módulos. Siga a ordem dos épicos no documento 07.
+> 🤖 **Agente de IA que vai CODIFICAR: comece pelo [Doc 24 — Guia de Desenvolvimento para Agentes de IA](./24_guia-desenvolvimento-agentes-ia.md).** Ele é o ponto de entrada: mapa de leitura, regras invioláveis, workflow e onde mora cada verdade. Depois, consulte o [Doc 21 (painel de decisões)](./21_registro-decisoes-roadmap.md) para escolher a próxima tarefa.
+
+- **Para o Agente de Codificação:** **Doc 24 primeiro** → escolha uma decisão 🟡 no Doc 21 → leia o doc-fonte da decisão (06, 11, 17, 18, 23 conforme o caso) → implemente cirúrgico → gate (build/lint/test:core) → atualize o painel.
+- **Para o Agente de Orquestração:** Leia 01, 02, **17** e **21** para entender escopo, visão da página única e o roadmap em ondas; divida o trabalho por decisões AD do painel.
 - **Para o Desenvolvedor (Gabriel):** Use o documento 08 para monitorar o progresso, o 02 para validar requisitos e o 10 §5 para as decisões de conteúdo pendentes (D1–D6) que só você pode definir.
 
 > **Comece pelo Doc 10 (Gap Analysis).** Ele mapeia o estado de prontidão da documentação e aponta exatamente o que cada documento ganhou nesta refatoração.
