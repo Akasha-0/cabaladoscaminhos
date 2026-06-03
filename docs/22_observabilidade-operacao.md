@@ -223,12 +223,12 @@ A IA é o maior custo variável e o coração da qualidade. Precisa ser medida.
 > - **Testar restore antes do go-live:** criar instância staging e verificar integridade dos dados
 Registradas no painel (Doc 21) como **Onda O** (observabilidade, paralela a G/T):
 
-- [ ] Log estruturado JSON com `requestId` propagado; zero PII/segredos (AD-22.2/.3).
-- [ ] Eventos de negócio logados (`reading.saved`, `dossier.generated`, `consult.answered`, …) (AD-22.4).
-- [ ] `consult` persiste tokens; painel de custo/dia e custo/dossiê (AD-22.5).
-- [ ] SSE com persistência incremental + estado `ERROR` fiel (AD-22.7).
-- [ ] liveness × readiness separados (AD-22.8); taxonomia de erro consistente (AD-22.9).
-- [ ] Política de retenção/segredos + runbook documentados antes do go-live (AD-22.10/.11).
+- [x] Log estruturado JSON com `requestId` propagado; zero PII/segredos (AD-22.2/.3).
+- [x] Eventos de negocio logados (`reading.saved`, `dossier.generated`, `consult.answered`, `auth.logout/SESSION_REVOKED`, ...) (AD-22.4).
+- [x] `consult` persiste tokens; token budget com graceful degradation 429 (AD-22.5).
+- [x] SSE com persistencia incremental + timeout 300s + estado `ERROR` fiel (AD-22.7).
+- [x] liveness x readiness separados (`/api/health/live`, `/api/health/ready`); taxonomia de erro 400/401/404/429/500/502/503 (AD-22.9).
+- [x] Politica de retencao documentada; cron cleanup script criado; runbook operacional documentado (AD-22.10/.11).
 
 ---
 
