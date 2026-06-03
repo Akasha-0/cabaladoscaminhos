@@ -536,6 +536,14 @@
     {
       "file": "src/components/shared/LoadingSpinner.tsx",
       "exports": ["default"]
+    },
+    {
+      "file": "src/lib/db/client-actions.ts",
+      "exports": ["CreateClientInput"]
+    },
+    {
+      "file": "src/lib/life-areas/life-areas-ai.ts",
+      "exports": ["AIInsight"]
     }
   ],
   "regression": {
