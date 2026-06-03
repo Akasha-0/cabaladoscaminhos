@@ -40,6 +40,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 25 | **Revisão Docs 16-21 + correções C2** (card divergences, IDEIA.md, Vitest partition) | `cebdca70` | ✅ |
 | 26 | **Doc 22 Observabilidade** (tokens, health/live, SSE timeout) | `2646c4bc` | ✅ |
 | 27 | **Alinhamento Final** (Docs 16-22: schema, numerology, cockpit, correlation, AI synthesis, observabilidade) | `2646c4bc` | ✅ |
+| 43 | **Cockpit autofill completo** (36 cartas Lenormand × 8 odús Ifá, bug-fix Ejiokô/Ejeonlê) | `98575fe1` | ✅ |
+| 44 | **AD-23.2 Geolocalização + timezone** (Nominatim, MFA testTimeout 15s) | `f8a9da46` | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
