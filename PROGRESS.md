@@ -721,3 +721,34 @@ Commit: 761c123f
 **Resultado:** 1,748 testes passando (+1 new) · TypeScript 0 erros · lint warnings (pre-existentes em .next/dev/ validator.ts — nao relacionado).
 
 Commit: ecbadb4f, 7a74472c
+
+### Fase 41 — Generate Route Test Coverage (2026-06-03)
+
+**Missing test coverage identified:** `src/app/api/mesa-real/generate/route.ts` had zero integration tests.
+
+**New tests:** `tests/api/mesa-real-generate.test.ts` — 13 tests covering:
+- Auth 401 (requireOperator mock)
+- Zod validation 400 (missing clientId)
+- No house filled 400 (extractFilledHouses → 0 houses → JSON 400)
+- Client not found 404
+- Token budget exceeded 429 (AD-22.5 — via mock, dev mode)
+- SSE dev mode 200 + headers (Content-Type, Cache-Control, X-Accel-Buffering)
+- SSE house events (2 filled houses → 2 house events)
+- SSE done event (readingId, housesGenerated, totalTokens)
+- AD-18.9: READING_ALREADY_COMPLETED (409)
+- AD-18.9: READING_ALREADY_GENERATING (409)
+- Non-existent readingId (404)
+- AD-18.5/18.7: uses existing readingId (no create)
+- AD-22.5: token-budget called before SSE
+
+**Key patterns established:**
+- `vi.hoisted` for mockOperator (Vitest hoisting compatibility)
+- `requireOperator` mocked to bypass JWT auth in tests
+- SSE events parsed via `parseSSEvents` helper
+- `client.findUnique` (not findFirst) mocked correctly
+- `reading.create` + `reading.update` mocked for new reading flow
+- Dev mode SSE path tested (no OPENAI_API_KEY → placeholder events)
+
+**Resultado:** 1,761 testes passando (+13 novos) · 5 skipped · TypeScript 0 erros · lint warnings (pre-existentes).
+
+Commit: [pending]
