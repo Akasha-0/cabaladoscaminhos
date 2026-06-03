@@ -7,6 +7,7 @@
 'use client';
 import { FileText, MessageCircle, X, Sparkles } from 'lucide-react';
 import React, { useState, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
 import { type OduInfo } from '@/lib/ifa/odu-data';
 import { cn } from '@/lib/utils';
@@ -15,9 +16,9 @@ import { CockpitHeader } from './CockpitHeader';
 import { CockpitSidebar } from './CockpitSidebar';
 import { HouseCell } from './HouseCell';
 import { HouseInputPopover } from './HouseInputPopover';
-import { DossierViewer } from './dossier/DossierViewer';
 import { OraculoChat } from './consultation/OraculoChat';
-import { Button } from '@/components/ui/button';
+import { DossierViewer } from './dossier/DossierViewer';
+
 // C1: HouseInputPopover positioning helper — must be after 'use client'
 function getPopoverPosition(element: HTMLElement): { x: number; y: number } {
   const rect = element.getBoundingClientRect();
@@ -37,7 +38,11 @@ interface CockpitOracularProps {
   showDebug?: boolean;
 }
 
-export function CockpitOracular({ readingId: propReadingId, clientName: propClientName, showDebug = false }: CockpitOracularProps) {
+export function CockpitOracular({
+  readingId: propReadingId,
+  clientName: propClientName,
+  showDebug = false,
+}: CockpitOracularProps) {
   const {
     houses,
     activePopover,
@@ -88,20 +93,44 @@ export function CockpitOracular({ readingId: propReadingId, clientName: propClie
   }, [clearAllHouses]);
 
   const handleAutoFill = useCallback(() => {
-    // Demo auto-fill - fill first 12 houses
+    // Demo auto-fill - fill all 36 houses
     const CARTAS_EXAMPLE: { numero: number; nome: string; significado: string }[] = [
       { numero: 1, nome: 'O Cavaleiro', significado: 'Ação' },
+      { numero: 2, nome: 'O Trevo', significado: 'Sorte' },
+      { numero: 3, nome: 'O Navio', significado: 'Viagem' },
       { numero: 4, nome: 'A Casa', significado: 'Família' },
-      { numero: 9, nome: 'Os Buquês', significado: 'Surpresas' },
-      { numero: 12, nome: 'Os Pássaros', significado: 'Comunicação' },
-      { numero: 16, nome: 'A Estrela', significado: 'Esperança' },
-      { numero: 19, nome: 'O Cachorro', significado: 'Lealdade' },
-      { numero: 25, nome: 'O Coração', significado: 'Amor' },
-      { numero: 27, nome: 'A Âncora', significado: 'Estabilidade' },
-      { numero: 31, nome: 'O Sol', significado: 'Sucesso' },
       { numero: 5, nome: 'A Árvore', significado: 'Crescimento' },
+      { numero: 6, nome: 'As Nuvens', significado: 'Confusão' },
+      { numero: 7, nome: 'A Serpente', significado: 'Sabedoria' },
+      { numero: 8, nome: 'O Caixão', significado: 'Transformação' },
+      { numero: 9, nome: 'Os Buquês', significado: 'Surpresas' },
+      { numero: 10, nome: 'A Foice', significado: 'Corte' },
+      { numero: 11, nome: 'O Chicote', significado: 'Conflito' },
+      { numero: 12, nome: 'Os Pássaros', significado: 'Comunicação' },
+      { numero: 13, nome: 'A Criança', significado: 'Inocência' },
+      { numero: 14, nome: 'A Raposa', significado: 'Astúcia' },
+      { numero: 15, nome: 'O Urso', significado: 'Força' },
+      { numero: 16, nome: 'A Estrela', significado: 'Esperança' },
       { numero: 17, nome: 'A Cegonha', significado: 'Novidades' },
-      { numero: 28, nome: 'O Cigano', significado: 'Energia Masculina' },
+      { numero: 18, nome: 'O Cão', significado: 'Lealdade' },
+      { numero: 19, nome: 'A Torre', significado: 'Solidão' },
+      { numero: 20, nome: 'O Jardim', significado: 'Sociedade' },
+      { numero: 21, nome: 'A Montanha', significado: 'Obstáculo' },
+      { numero: 22, nome: 'A Encruzilhada', significado: 'Escolha' },
+      { numero: 23, nome: 'Os Ratos', significado: 'Perda' },
+      { numero: 24, nome: 'O Coração', significado: 'Amor' },
+      { numero: 25, nome: 'O Anel', significado: 'União' },
+      { numero: 26, nome: 'O Livro', significado: 'Segredo' },
+      { numero: 27, nome: 'A Carta', significado: 'Mensagem' },
+      { numero: 28, nome: 'O Homem', significado: 'Energia Masculina' },
+      { numero: 29, nome: 'A Mulher', significado: 'Energia Feminina' },
+      { numero: 30, nome: 'Os Lírios', significado: 'Maturidade' },
+      { numero: 31, nome: 'O Sol', significado: 'Sucesso' },
+      { numero: 32, nome: 'A Lua', significado: 'Intuição' },
+      { numero: 33, nome: 'A Chave', significado: 'Solução' },
+      { numero: 34, nome: 'Os Peixes', significado: 'Prosperidade' },
+      { numero: 35, nome: 'A Âncora', significado: 'Estabilidade' },
+      { numero: 36, nome: 'A Cruz', significado: 'Destino' },
     ];
 
     const odusExample = [
@@ -111,6 +140,26 @@ export function CockpitOracular({ readingId: propReadingId, clientName: propClie
         significado: 'O começo',
         elementos: 'Terra / Fogo',
         orixas: ['Exu', 'Omolu'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
+      {
+        numero: 2,
+        nome: 'Ejiokô',
+        significado: 'Dualidade',
+        elementos: 'Ar / Terra',
+        orixas: ['Ibeji', 'Ogum'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
+      {
+        numero: 3,
+        nome: 'Etaogundá',
+        significado: 'Equilíbrio',
+        elementos: 'Água / Fogo',
+        orixas: ['Oxum', 'Iansã'],
         quizilas: [],
         preceitos: '',
         ebo: '',
@@ -126,6 +175,26 @@ export function CockpitOracular({ readingId: propReadingId, clientName: propClie
         ebo: '',
       },
       {
+        numero: 5,
+        nome: 'Oxê',
+        significado: 'A espada',
+        elementos: 'Ar / Fogo',
+        orixas: ['Ogum', 'Iansã'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
+      {
+        numero: 6,
+        nome: 'Bará',
+        significado: 'A tempestade',
+        elementos: 'Fogo / Ar',
+        orixas: ['Exu', 'Iansã'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
+      {
         numero: 7,
         nome: 'Odi',
         significado: 'O poço',
@@ -136,18 +205,18 @@ export function CockpitOracular({ readingId: propReadingId, clientName: propClie
         ebo: '',
       },
       {
-        numero: 2,
-        nome: 'Ejiokô',
-        significado: 'Dualidade',
-        elementos: 'Ar / Terra',
-        orixas: ['Ibeji', 'Ogum'],
+        numero: 8,
+        nome: 'Ejeonlê',
+        significado: 'A ancestralidade',
+        elementos: 'Terra / Água',
+        orixas: ['Oxumaré', 'Omolu'],
         quizilas: [],
         preceitos: '',
         ebo: '',
       },
     ];
 
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= 36; i++) {
       const carta = CARTAS_EXAMPLE[(i - 1) % CARTAS_EXAMPLE.length];
       const odu = odusExample[(i - 1) % odusExample.length];
       fillHouse(i, carta, odu as unknown as OduInfo);
@@ -341,9 +410,7 @@ function ZoneCRightPanel({
         {/* Panel Header */}
         <div className="flex-shrink-0 border-b border-border/50 px-4 py-3">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-cinzel text-sm text-foreground">
-              Ferramentas de Leitura
-            </h2>
+            <h2 className="font-cinzel text-sm text-foreground">Ferramentas de Leitura</h2>
             <button
               onClick={onToggle}
               aria-label="Fechar painel"
@@ -391,9 +458,7 @@ function ZoneCRightPanel({
               {/* Oráculo header */}
               <div className="flex-shrink-0 px-4 py-3 border-b border-border/50 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-                <span className="font-cinzel text-xs text-primary">
-                  Oráculo · {clientName}
-                </span>
+                <span className="font-cinzel text-xs text-primary">Oráculo · {clientName}</span>
               </div>
               <OraculoChat readingId={readingId} clientName={clientName} />
             </div>
