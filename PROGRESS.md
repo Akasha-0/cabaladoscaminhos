@@ -851,3 +851,14 @@ AD-22.5/.9/.10/.11 adicionados à tabela §2.6 (Onda O)
 Versão 1.0 → 1.1; data 2026-06-02 → 2026-06-03
 **Resultado:** 1767 testes · TypeScript 0 erros · build 118 páginas OK · ~18s.
 Commit: 6e1d61e6
+### Fase 49 — Dead stubs + docs hygiene + .gitignore fix (2026-06-03)
+Dead code removido (0 refs):
+  src/lib/meji-ogbe/* — 391 linhas, 0 refs
+  src/lib/orixa/busca-practice.ts — 4 linhas, 0 refs
+Docs hygiene (Doc 24 §3):
+  Doc 03: ⚠️ SUPERSEDED por Doc 16
+  Doc 05: ⚠️ SUPERSEDED por Doc 17
+  Doc 09: ⚠️ LEGADO — ponto de entrada é Doc 24
+.gitignore: .claude/ agora ignorado completamente.
+Resultado: 1437 testes · TypeScript 0 erros · build 118 páginas OK.
+Commit: e2a674dc (force-pushed)
