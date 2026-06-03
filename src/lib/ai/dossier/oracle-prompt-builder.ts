@@ -114,9 +114,17 @@ export function normalizeBirthChart(chart: BirthChart): Record<string, unknown> 
     };
   };
 
+  // Build planetsInHouses: reverse lookup from planet → house
+  const planetsInHouses: Record<string, string[]> = {};
+  for (const [key, pos] of Object.entries(planets)) {
+    const house = String(pos.house);
+    if (!planetsInHouses[house]) planetsInHouses[house] = [];
+    planetsInHouses[house].push(key);
+  }
   return {
     planets,
     houses,
+    planetsInHouses,
     aspects: aspects as unknown,
     ascendente,
     ascendente_signo: signFromDegree(ascendente),

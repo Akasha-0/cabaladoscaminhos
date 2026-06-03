@@ -1,11 +1,11 @@
 import type { Aspecto, AspectoTipo, PosicaoPlaneta } from './tipos';
 
-const ASPECTOS: { tipo: AspectoTipo; angulo: number; orbMax: number }[] = [
-  { tipo: 'conjunção', angulo: 0, orbMax: 10 },
-  { tipo: 'sextil', angulo: 60, orbMax: 6 },
-  { tipo: 'quadratura', angulo: 90, orbMax: 8 },
-  { tipo: 'trino', angulo: 120, orbMax: 8 },
-  { tipo: 'oposição', angulo: 180, orbMax: 10 },
+const ASPECTOS: { tipo: AspectoTipo; angulo: number; orbMax: number; nature: import('./tipos').AspectoNature }[] = [
+  { tipo: 'conjunção', angulo: 0, orbMax: 10, nature: 'neutral' },
+  { tipo: 'sextil', angulo: 60, orbMax: 6, nature: 'harmony' },
+  { tipo: 'quadratura', angulo: 90, orbMax: 8, nature: 'tension' },
+  { tipo: 'trino', angulo: 120, orbMax: 8, nature: 'harmony' },
+  { tipo: 'oposição', angulo: 180, orbMax: 10, nature: 'tension' },
 ];
 
 function normalizeDiff(diff: number): number {
@@ -31,6 +31,7 @@ export function findAspects(positions: PosicaoPlaneta[]): Aspecto[] {
             tipo: aspecto.tipo,
             orb,
             aplicativo: p1.velocidade > p2.velocidade,
+            nature: aspecto.nature,
           });
         }
       }

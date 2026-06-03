@@ -66,6 +66,7 @@ export interface Aspecto {
   tipo: AspectoTipo;
   orb: number;
   aplicativo: boolean;
+  nature: AspectoNature;
 }
 
 export type AspectoTipo =
@@ -74,3 +75,5 @@ export type AspectoTipo =
   | 'quadratura'
   | 'trino'
   | 'sextil';
+// AD-23.1: nature field for aspect classification (correlation system uses harmony/tension)
+export type AspectoNature = 'harmony' | 'tension' | 'neutral';

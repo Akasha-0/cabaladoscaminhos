@@ -110,9 +110,9 @@ A análise por casa cruza **significado da casa + carta tirada + Odu tirado + as
 
 ## 6. Critério de "pronto" (mapas prontos para diagnóstico preciso)
 
-- [ ] `AstrologyMap` canônico completo: 10 planetas + Quíron + Lilith, casas, `planetsInHouses`, `elements`, `modalities`, Asc/MC com signo, aspectos com `nature` (AD-23.1).
-- [ ] Geolocalização preenche `lat/lng/timezone` no cadastro; sem eles, mapa astral marcado `incomplete` (AD-23.2).
-- [ ] Tipos dos 4 mapas refletem exatamente o que é produzido (AD-23.3).
+- [x] `AstrologyMap` — AD-23.1 ✅ (2026-06-03): `nature` em aspectos (trino/sextil=harmony, oposicao/quadratura=tension, conjuncao=neutral); `planetsInHouses` em `normalizeBirthChart`; Chiron/Lilith e elementos/modalidades presentes (Fase 29).
+- [ ] `AstrologyMap` canônico (Doc 04 2.1): tipo difere do formato `BirthChart` armazenado (AD-23.3 — baixa prioridade; bridge via `normalizeBirthChart`).
+- [ ] Geolocalizacao preenche lat/lng/timezone no cadastro; sem eles mapa astral marcado `incomplete` (AD-23.2).
 - [ ] Odu com tabela de linhagem (D3) ou `provisional` sinalizado; `orixaRegency` completo (AD-23.4).
 - [ ] Validador de completude verde no gate (AD-23.6).
 

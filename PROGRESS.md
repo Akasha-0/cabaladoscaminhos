@@ -766,3 +766,28 @@ Commit: `815258b9`
 **Resultado:** 1,437 warnings remaining · 1,761 testes passando · 0 erros TypeScript · pré-existentes: B2C quarentenado, test scaffolding, schema exports barrel.
 
 Commit: d4eab91e
+
+### Fase 43 — AD-23.1 Astrology Gap Closure (2026-06-03)
+
+**Gaps identified (Doc 23 audit):**
+- `nature` field missing from `Aspecto` type
+- `planetsInHouses` missing from normalized birth chart input
+- Doc 04/23 audit notes outdated (Chiron/Lilith/elements/modalities were already added in Fase 29)
+
+**Fixes applied:**
+
+**AD-23.1.1 — `nature` field in aspects:**
+- `src/lib/astrologia/tipos.ts`: Added `AspectoNature = 'harmony' | 'tension' | 'neutral'`; added `nature: AspectoNature` to `Aspecto` interface
+- `src/lib/astrologia/aspect-finder.ts`: Added `nature` to `ASPECTOS` table — trino/sextil=harmony, oposicao/quadratura=tension, conjuncao=neutral
+- `src/lib/astrologia/planetas/aspectos.ts`: Same fix for duplicate aspect calculator (BUG: two parallel aspect-finder implementations existed)
+
+**AD-23.1.2 — `planetsInHouses` in correlation input:**
+- `src/lib/ai/dossier/oracle-prompt-builder.ts normalizeBirthChart()`: Added reverse lookup — iterates planets, maps house number → planet name array. Correlation extraction key `planetsInHouses.2` now resolves correctly.
+
+**Doc updates:**
+- `docs/04_data-model.md` §2: Updated audit note — Chiron/Lilith/elements/modalidades already present (Fase 29); AD-23.1 closed; AD-23.2/23.3 remaining.
+- `docs/23_auditoria-mapas-geolocalizacao.md` §6: AD-23.1 ✅ checked; AD-23.3 deferred (low priority; bridge via normalizeBirthChart).
+
+**Resultado:** 1,761 testes passando · TypeScript 0 erros · build OK.
+
+Commit: pending
