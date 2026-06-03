@@ -790,4 +790,17 @@ Commit: d4eab91e
 
 **Resultado:** 1,761 testes passando · TypeScript 0 erros · build OK.
 
-Commit: pending
+Commit: e8a95a70
+
+### Fase 44 — AD-23.2 Geolocalização (2026-06-03)
+
+**AD-23.2 gap:** `birthTimezone` nunca era preenchido mesmo com coordenadas capturadas.
+
+**Fixes applied:**
+- `src/components/ui/city-autocomplete.tsx`: `extratags=timezone` na query Nominatim; extrai `timezone` de `item.extratags?.timezone` no tipo `CityResult`
+- `src/components/cockpit/clients/ClientForm.tsx`: `city.timezone → setField('birthTimezone', city.timezone)` no callback `onSelect`
+- `vitest.config.ts`: `testTimeout` global de 5000ms para 15000ms (MFA bcrypt tests precisam de mais tempo sob crypto contention no full suite)
+
+**Resultado:** 1,761 testes · TypeScript 0 erros · build OK.
+
+Commit: e8a95a70

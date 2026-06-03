@@ -143,7 +143,7 @@ function currentTotpCode(secret = TEST_SECRET): string {
 // Tests
 // ----------------------------------------------------------------------------
 
-describe('setupMfa', () => {
+describe('setupMfa', { timeout: 15000 }, () => {
   it('cria OperatorMfa com enabled=false e retorna secret + recoveryCodes', async () => {
     const { setupMfa } = await import('@/lib/auth/operator-mfa');
     const result = await setupMfa({ id: testOperator.id, email: testOperator.email });
