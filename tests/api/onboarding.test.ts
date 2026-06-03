@@ -1,15 +1,39 @@
+// Enable dev auth bypass for testing
+process.env.ALLOW_DEV_AUTH_BYPASS = 'true';
+
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 
 // Mock prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
+    operator: {
+      findUnique: vi.fn().mockResolvedValue({
+        id: 'op-test-1',
+        email: 'operator@test.com',
+        name: 'Test Operator',
+        role: 'OPERATOR',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        passwordHash: 'hashed',
+      }),
+    },
     user: {
       findUnique: vi.fn(),
       update: vi.fn(),
     },
     $transaction: vi.fn(),
   },
+}));
+
+// Mock next/headers for auth (required by requireOperator)
+vi.mock('next/headers', () => ({
+  cookies: vi.fn(async () => ({
+    get: () => undefined,
+  })),
+  headers: vi.fn(async () => ({
+    get: () => null,
+  })),
 }));
 
 describe('GET /api/onboarding', () => {
@@ -19,7 +43,7 @@ describe('GET /api/onboarding', () => {
 
   it('deve retornar 400 quando userId ausente (sem searchParams)', async () => {
     const { GET } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding');
 
     const response = await GET(request);
@@ -34,8 +58,8 @@ describe('GET /api/onboarding', () => {
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null);
 
     const { GET } = await import('@/app/api/onboarding/route');
-    
-    const request = new NextRequest('http://localhost/api/onboarding?userId= nonexist-user');
+
+    const request = new NextRequest('http://localhost/api/onboarding?userId=nonexist-user');
 
     const response = await GET(request);
     const data = await response.json();
@@ -52,10 +76,10 @@ describe('GET /api/onboarding', () => {
       dataNascimento: null,
       horaNascimento: null,
       localNascimento: null,
-    } as any);
+    });
 
     const { GET } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding?userId=user123');
 
     const response = await GET(request);
@@ -78,10 +102,10 @@ describe('GET /api/onboarding', () => {
       dataNascimento: new Date('1990-05-15'),
       horaNascimento: null,
       localNascimento: null,
-    } as any);
+    });
 
     const { GET } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding?userId=user123');
 
     const response = await GET(request);
@@ -104,10 +128,10 @@ describe('GET /api/onboarding', () => {
       dataNascimento: new Date('1990-05-15'),
       horaNascimento: '14:30',
       localNascimento: null,
-    } as any);
+    });
 
     const { GET } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding?userId=user123');
 
     const response = await GET(request);
@@ -130,10 +154,10 @@ describe('GET /api/onboarding', () => {
       dataNascimento: new Date('1990-05-15'),
       horaNascimento: '14:30',
       localNascimento: 'São Paulo, SP, Brasil',
-    } as any);
+    });
 
     const { GET } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding?userId=user123');
 
     const response = await GET(request);
@@ -156,9 +180,10 @@ describe('POST /api/onboarding', () => {
 
   it('deve retornar 400 quando userId ausente', async () => {
     const { POST } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding', {
       method: 'POST',
+      headers: { 'x-dev-operator-id': 'op-test-1', 'content-type': 'application/json' },
       body: JSON.stringify({
         step: 0,
       }),
@@ -173,9 +198,10 @@ describe('POST /api/onboarding', () => {
 
   it('deve retornar 400 quando step é negativo', async () => {
     const { POST } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding', {
       method: 'POST',
+      headers: { 'x-dev-operator-id': 'op-test-1', 'content-type': 'application/json' },
       body: JSON.stringify({
         userId: 'user123',
         step: -1,
@@ -191,9 +217,10 @@ describe('POST /api/onboarding', () => {
 
   it('deve retornar 400 quando step não é inteiro', async () => {
     const { POST } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding', {
       method: 'POST',
+      headers: { 'x-dev-operator-id': 'op-test-1', 'content-type': 'application/json' },
       body: JSON.stringify({
         userId: 'user123',
         step: 1.5,
@@ -211,9 +238,10 @@ describe('POST /api/onboarding', () => {
     const { POST } = await import('@/app/api/onboarding/route');
     const { prisma } = await import('@/lib/prisma');
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null);
-    
+
     const request = new NextRequest('http://localhost/api/onboarding', {
       method: 'POST',
+      headers: { 'x-dev-operator-id': 'op-test-1', 'content-type': 'application/json' },
       body: JSON.stringify({
         userId: 'user123',
         step: 0,
@@ -229,7 +257,7 @@ describe('POST /api/onboarding', () => {
 
   it('deve retornar 200 e atualizar perfil do usuário com dados válidos', async () => {
     const { prisma } = await import('@/lib/prisma');
-    
+
     vi.mocked(prisma.user.findUnique).mockResolvedValue({
       id: 'user123',
       email: 'maria@example.com',
@@ -237,7 +265,7 @@ describe('POST /api/onboarding', () => {
       dataNascimento: null,
       horaNascimento: null,
       localNascimento: null,
-    } as any);
+    });
 
     vi.mocked(prisma.user.update).mockResolvedValue({
       id: 'user123',
@@ -246,12 +274,13 @@ describe('POST /api/onboarding', () => {
       dataNascimento: null,
       horaNascimento: null,
       localNascimento: null,
-    } as any);
+    });
 
     const { POST } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding', {
       method: 'POST',
+      headers: { 'x-dev-operator-id': 'op-test-1', 'content-type': 'application/json' },
       body: JSON.stringify({
         userId: 'user123',
         step: 1,
@@ -275,13 +304,13 @@ describe('POST /api/onboarding', () => {
   });
 
   it('deve retornar 404 quando usuário não encontrado', async () => {
+    const { POST } = await import('@/app/api/onboarding/route');
     const { prisma } = await import('@/lib/prisma');
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null);
 
-    const { POST } = await import('@/app/api/onboarding/route');
-    
     const request = new NextRequest('http://localhost/api/onboarding', {
       method: 'POST',
+      headers: { 'x-dev-operator-id': 'op-test-1', 'content-type': 'application/json' },
       body: JSON.stringify({
         userId: 'nonexist-user',
         step: 0,
@@ -300,7 +329,7 @@ describe('POST /api/onboarding', () => {
     vi.mocked(prisma.user.findUnique).mockRejectedValue(new Error('P1001: Database error'));
 
     const { GET } = await import('@/app/api/onboarding/route');
-    
+
     const request = new NextRequest('http://localhost/api/onboarding?userId=user123');
 
     const response = await GET(request);

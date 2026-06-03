@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -120,6 +121,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // Auth guard
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const body = await request.json();
     const parseResult = UpdatePrivacySettingsSchema.safeParse(body);

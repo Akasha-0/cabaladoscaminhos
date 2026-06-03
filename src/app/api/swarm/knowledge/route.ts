@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { getKnowledgeBase } from '@/lib/swarm';
 import type { KnowledgeDomain } from '@/lib/swarm';
@@ -6,6 +7,9 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(req: NextRequest) {
+  // Auth guard
+  const authResult = await requireOperator(req);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const kb = getKnowledgeBase();
     await kb.load();
@@ -31,6 +35,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  // Auth guard
+  const authResult2 = await requireOperator(req);
+  if (authResult2 instanceof NextResponse) return authResult2;
   try {
     const body = await req.json();
     const kb = getKnowledgeBase();

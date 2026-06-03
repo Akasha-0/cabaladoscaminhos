@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { gerarMapaAlmaCompleto } from '@/lib/engines/spiritual-engine';
 import { gerarRelatorioMapaAlmaPDF } from '@/lib/pdf/gerarRelatorio';
@@ -8,6 +9,9 @@ import { parseMapaBody } from '@/lib/mapa/mapa-utils';
 // ============================================================
 
 export async function POST(request: NextRequest) {
+  // Auth guard
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const parsed = await parseMapaBody(request);
     if (parsed.error) {

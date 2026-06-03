@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 // ============================================================
 // ONBOARDING API - Cabala Dos Caminhos
 // ============================================================
@@ -106,6 +107,9 @@ export async function GET(request: NextRequest) {
 
 // POST - Save onboarding data
 export async function POST(request: NextRequest) {
+  // Auth guard
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const body = await request.json();
 

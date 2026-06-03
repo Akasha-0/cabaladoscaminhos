@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { withErrorHandler } from '@/lib/error-handling';
@@ -179,6 +180,9 @@ export const GET = withErrorHandler(async (req: NextRequest) => {
 });
 
 export const POST = withErrorHandler(async (req: NextRequest) => {
+  // Auth guard
+  const authResult = await requireOperator(req);
+  if (authResult instanceof NextResponse) return authResult;
   const userId = req.headers.get('x-user-id');
   
   if (!userId) {

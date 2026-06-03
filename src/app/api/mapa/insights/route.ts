@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { gerarMapaAlmaCompleto } from '@/lib/engines/spiritual-engine';
 import { generateMapaInsights } from '@/lib/ai/mapa-insights/generator';
@@ -10,6 +11,9 @@ import { parseMapaBody, type MapaInput } from '@/lib/mapa/mapa-utils';
 
 // fallow-ignore-next-line complexity
 export async function POST(request: NextRequest) {
+  // Auth guard
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     // 1. Parse and validate body
     const parsed = await parseMapaBody(request);
