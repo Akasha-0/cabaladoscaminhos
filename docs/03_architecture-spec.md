@@ -1,8 +1,7 @@
 # Documento 03 — Arquitetura Técnica
 ## Cabala dos Caminhos
-
 > **Versão:** 1.0 | **Padrão:** Clean Architecture + Next.js App Router
-
+> ⚠️ **SUPERSEDED** por **Doc 16** (`16_revisao-arquitetura-plano-decisoes.md`). Este documento contém a stack e decisões originais e está retido para referência histórica. Para decisões vigentes, consultar Doc 16 e o painel Doc 21.
 ---
 
 ## 1. Visão Geral da Arquitetura

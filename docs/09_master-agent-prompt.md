@@ -1,10 +1,8 @@
 # Documento 09 — Master Prompt para Agentes
-## Cabala dos Caminhos
-
-> **Uso:** Copie este documento completo como System Prompt no Hermes (orquestrador) e/ou Minimax (agente de codificação).  
+## Cabala dos Caminhos · **LEIA ISTO PRIMEIRO**
+> **Uso:** Copie este documento completo como System Prompt no Hermes (orquestrador) e/ou Minimax (agente de codificação).
 > **Versão:** 1.0
-
----
+> ⚠️ **LEGADO** — O ponto de entrada canônico para agentes é **Doc 24** (`24_guia-desenvolvimento-agentes-ia.md`). Este documento contém o prompt original e está retido para referência. Para orientação operacional, usar Doc 24.
 
 # MASTER CONTEXT: PROJETO CABALA DOS CAMINHOS
 

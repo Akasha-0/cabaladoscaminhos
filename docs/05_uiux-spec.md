@@ -1,10 +1,8 @@
 # Documento 05 — Especificação UI/UX
 ## Cabala dos Caminhos
-
-> **Versão:** 1.0 | **Modo:** Dark Mode (único — sem modo claro)  
+> **Versão:** 1.0 | **Modo:** Dark Mode (único — sem modo claro)
 > **Alvo:** Desktop First (1280px+), adaptado para tablet
-
----
+> ⚠️ **SUPERSEDED** por **Doc 17** (`17_arquitetura-interface-unica.md`). A visão vigente de UI/UX é a Mesa Real em página única (`/cockpit`). Doc 17 é a fonte de verdade; Doc 05 está retido para referência histórica.
 
 ## 1. Design System
 

@@ -1,6 +1,0 @@
-{"file":"src/lib/auth/operator-jwt.ts","action":"Edit","timestamp":"2026-06-03T03:34:17Z","important":false}
-{"file":"src/lib/auth/operator-guard.ts","action":"Edit","timestamp":"2026-06-03T04:17:40Z","important":false}
-{"file":"tsconfig.json","action":"Edit","timestamp":"2026-06-03T04:19:51Z","important":false}
-{"file":"src/app/api/operator/rate-limit-status/route.ts","action":"Edit","timestamp":"2026-06-03T04:50:52Z","important":false}
-{"file":"src/app/api/mesa-real/save/route.ts","action":"Edit","timestamp":"2026-06-03T04:54:17Z","important":false}
-{"file":".claude/scripts/cabala-loop-runner.sh","action":"Edit","timestamp":"2026-06-03T04:55:41Z","important":false}
