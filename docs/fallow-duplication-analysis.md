@@ -386,12 +386,11 @@ Os seguintes arquivos contêm dados espirituais canônicos e **NÃO devem ser mo
 
 ## Priorização Recomendada
 
-| Prioridade | Clone Group | Impacto | Esforço |
-|------------|-------------|---------|---------|
 | **1 - CRÍTICA** | Schema de validação (31 arquivos) | Manutenção difícil | Médio |
 | **2 - ALTA** | Tarot Card Definitions (3 arquivos) | Evolução de API | Médio |
 | **3 - MÉDIA** | Chakra Types (3 arquivos) | Consistência | Baixo |
-| **4 - BAIXA** | Spiritual Correlations (28 arquivos) | Dados canônicos | Alto |
+| **4 - BAIXA** | Spiritual Correlations (tarot) | ~200 linhas | ✅ Fase 36 |
+| **5 - BAIXA** | Date/Filtro Parse (4 arquivos) | parseDateFilters duplicado | Baixo |
 
 ---
 
