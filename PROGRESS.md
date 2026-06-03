@@ -670,3 +670,26 @@ matrixData[casaNum] = {
 **Resultado:** 1,408 testes core passando, 0 falhas.
 
 *Ultima atualizacao: 2026-06-03 - Fase 39.1*
+
+### Fase 40 — Schema Consolidation + LGPD Consent + CSP Headers (2026-06-03)
+
+**Schema consolidation (fallow-duplication-analysis.md):**
+- `src/lib/api/spiritual-filters.ts`: Added `SefirotWithDaatSchema` (11 Sefirot incl. Daat) and `ElementExtendedSchema`
+- 4 legacy API routes migrated from local schema definitions to shared imports: `divination/oracle`, `akashic/records`, `cabala/sefirot`, `search`
+- Removed duplicate `ElementSchema` definitions and unused imports
+
+**LGPD/GDPR consent (Doc 22 §8, MIGRATIONS.md):**
+- `prisma/schema.prisma`: `consentGiven Boolean @default(false)` + `consentAt DateTime?` on `Client` model
+- `prisma/migrations/20260603000000_add_consent_given/`: migration SQL
+- `src/components/cockpit/clients/ClientForm.tsx`: consent checkbox UI with ShieldCheck icon + legal text
+- `src/app/api/mesa-real/clients/route.ts`: accepts `consentGiven` in create schema
+- `src/lib/db/client-actions.ts`: stores `consentGiven` + sets `consentAt` to now when true
+
+**CSP headers (Doc 21 AD-23):**
+- `middleware.ts`: `COCKPIT_CSP` constant — `default-src 'self'`, `script-src 'self'`, `style-src 'self' 'unsafe-inline'` (Tailwind), `img-src` incl. OpenStreetMap tiles, `font-src 'self' data:`, `frame-ancestors 'none'`, `base-uri 'self'`
+- Applied to all `/cockpit*` routes in middleware response
+- `tests/middleware/security-headers.test.ts`: 9 new cockpit CSP tests
+
+**Resultado:** 1,747 testes passando, 17 skipped · Build 118 páginas OK · TypeScript 0 erros · lint warnings (pre-existentes).
+
+Commit: 761c123f
