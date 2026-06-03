@@ -39,7 +39,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 24 | **Ondas C/E: Cleanup B2C + Dashboard B2B** (116 arquivos removidos, API /operator/dashboard) | `85ed0608` | ✅ |
 | 25 | **Revisão Docs 16-21 + correções C2** (card divergences, IDEIA.md, Vitest partition) | `cebdca70` | ✅ |
 | 26 | **Doc 22 Observabilidade** (tokens, health/live, SSE timeout) | `2646c4bc` | ✅ |
-
+| 27 | **Alinhamento Final** (Docs 16-22: schema, numerology, cockpit, correlation, AI synthesis, observabilidade) | `2646c4bc` | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |

@@ -24,7 +24,7 @@ export type BirthProfile = {
 };
 
 export type NumerologyResults = {
-  vida: number;
+  lifePath: number;
   expressao: number;
   motivacao: number;
   impressao: number;
@@ -43,6 +43,8 @@ export type OduResults = {
   preceitos: string[];
   ebos: string[];
   elemento: string;
+  elementalForce: string;
+  lifeLesson: string;
   arcanoTarot: number;
   caminhoSephirah: string;
   raw?: DrawResult;

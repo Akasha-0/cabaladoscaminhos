@@ -81,7 +81,12 @@ export async function POST(request: NextRequest) {
 
   // 5) Persiste a pergunta do usuário
   await addChatMessage({ consultationId, role: 'USER', content: body.question });
-
+  // 5b) Carrega histórico da conversa (D4 — multi-turno)
+  const conversationHistory = await prisma.chatMessage.findMany({
+    where: { consultationId },
+    orderBy: { createdAt: 'asc' },
+    select: { role: true, content: true, createdAt: true },
+  });
   // 6) Monta contexto RAG-fechado
   const matrixAsString: Record<
     string,
@@ -96,7 +101,6 @@ export async function POST(request: NextRequest) {
         | { houses?: Record<string, { interpretation?: string; houseName?: string }> }
         | undefined
     )?.houses ?? undefined;
-
   const ragContext = buildConsultContext(
     body.question,
     {
@@ -108,7 +112,8 @@ export async function POST(request: NextRequest) {
       oduBirth: consultContext.client.maps.oduBirth,
     },
     matrixAsString as Parameters<typeof buildConsultContext>[2],
-    reportHouses
+    reportHouses,
+    conversationHistory
   );
 
   const systemPrompt = buildConsultSystemPrompt();

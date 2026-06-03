@@ -14,6 +14,11 @@ import { type MatrixEntry } from '@/types';
 
 type CumContent = {
   houses: Record<string, { interpretation: string; generatedAt: string; tokensUsed?: number | null }>;
+  synthesis?: {
+    chapters: Record<string, string>;
+    vereditoFinal: string;
+    generatedAt: string;
+  };
 };
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -110,18 +115,103 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
           const newContent: CumContent = { houses: cumHouses };
           await prisma.report.upsert({
             where: { readingId },
-            create: { readingId, content: newContent as object, llmModel, tokensUsed: tokensUsed ?? undefined },
             update: { content: newContent as object, llmModel },
           });
-
-          send({ event: 'house', data: { casa, houseName: `Casa ${casa}`, dossie, generatedAt } });
         } catch (err) {
+          send({ event: 'error', data: { message: `Casa ${casa}`, detail: err instanceof Error ? err.message : 'erro' } });
           errors++;
-          send({ event: 'error', data: { casa, message: err instanceof Error ? err.message : 'erro' } });
         }
       }
-
-      clearInterval(heartbeat);
+      // D5: Gerar Síntese (Doc 06 §3.2)
+      // D5: Gerar Síntese (Doc 06 §3.2)
+      const filledHousesForSynthesis = Object.keys(cumHouses).map((k) => parseInt(k, 10));
+      if (filledHousesForSynthesis.length > 0) {
+        const existingSynthesis = (reading.report?.content as CumContent | null)?.synthesis;
+        if (!existingSynthesis) {
+          // Agrupa casas preenchidas por capítulo temático (Doc 06 §3.2)
+          const chapterHouses: Record<string, { casa: number; houseName: string; interpretation: string }[]> = {
+            '1_trabalho_dinheiro': [],
+            '2_lar_familia': [],
+            '3_amor_relacionamentos': [],
+            '4_conselho_espiritual': [],
+          };
+          // Mapeamento direto de casa → capítulo
+          const houseToChapter: Record<number, string> = {
+            2: '1_trabalho_dinheiro',
+            15: '1_trabalho_dinheiro',
+            31: '1_trabalho_dinheiro',
+            34: '1_trabalho_dinheiro',
+            35: '1_trabalho_dinheiro',
+            4: '2_lar_familia',
+            5: '2_lar_familia',
+            24: '3_amor_relacionamentos',
+            25: '3_amor_relacionamentos',
+            29: '3_amor_relacionamentos',
+            30: '3_amor_relacionamentos',
+            7: '3_amor_relacionamentos',
+            16: '4_conselho_espiritual',
+            36: '4_conselho_espiritual',
+            26: '4_conselho_espiritual',
+            9: '4_conselho_espiritual',
+          };
+          for (const casa of filledHousesForSynthesis) {
+            const chapter = houseToChapter[casa] ?? '4_conselho_espiritual';
+            chapterHouses[chapter].push({
+              casa,
+              houseName: `Casa ${casa}`,
+              interpretation: cumHouses[String(casa)]?.interpretation ?? '',
+            });
+          }
+          const synthesisContext = Object.entries(chapterHouses)
+            .filter(([, houses]) => houses.length > 0)
+            .map(([chapter, houses]) => {
+              const chapterLabel = {
+                '1_trabalho_dinheiro': 'Capítulo 1 — Trabalho e Dinheiro',
+                '2_lar_familia': 'Capítulo 2 — Lar e Família',
+                '3_amor_relacionamentos': 'Capítulo 3 — Amor e Relacionamentos',
+                '4_conselho_espiritual': 'Capítulo 4 — Conselho Espiritual',
+              }[chapter];
+              const housesText = houses
+                .map((h) => `## ${h.houseName}\n${h.interpretation}`)
+                .join('\n\n');
+              return `${chapterLabel}\n\n${housesText}`;
+            })
+            .join('\n\n---\n\n');
+          const synthesisPrompt = `Você é o Oráculo da Cabala dos Caminhos. Analise a leitura completa abaixo e gere uma Síntese do Dossiê com:\n\n1. 4 capítulos temáticos (apenas os relevantes para as casas preenchidas):\n   - Capítulo 1 — Trabalho e Dinheiro\n   - Capítulo 2 — Lar e Família\n   - Capítulo 3 — Amor e Relacionamentos\n   - Capítulo 4 — Conselho Espiritual\n\n2. Veredito Final: um parágrafo que sintetiza a leitura como um todo.\n\nREGRAS:\n- Responda EM PORTUGUÊS.\n- Cada capítulo deve ter 2-3 parágrafos que sintetizam os insights das casas correspondentes.\n- O Veredito Final deve ser um único parágrafo que integra todos os capítulos.\n- Tom: místico-tecnológico e protetor, no espírito do Cigano Ramiro.\n- NUNCA invente informações fora das casas fornecidas.\n\nLEITURA:\n${synthesisContext}\n\nSÍNTESE:`;
+          try {
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ''}` },
+              body: JSON.stringify({
+                model: llmModel,
+                messages: [
+                  { role: 'system', content: 'Você é o Oráculo da Cabala dos Caminhos.' },
+                  { role: 'user', content: synthesisPrompt },
+                ],
+                temperature: 0.5,
+              }),
+            });
+            if (res.ok) {
+              const llmData = await res.json();
+              const synthesisText: string = llmData.choices?.[0]?.message?.content ?? '';
+              const generatedAt = new Date().toISOString();
+              const newContent: CumContent = { houses: cumHouses, synthesis: { chapters: {}, vereditoFinal: synthesisText, generatedAt } };
+              await prisma.report.upsert({
+                where: { readingId },
+                create: { readingId, content: newContent as object, llmModel },
+                update: { content: newContent as object },
+              });
+              send({ event: 'synthesis', data: { synthesis: synthesisText, generatedAt } });
+            }
+          } catch (err) {
+            // Não quebra o stream se síntese falhar
+            send({ event: 'error', data: { message: 'síntese', detail: err instanceof Error ? err.message : 'erro' } });
+          }
+        } else {
+          // Síntese já existe — envia como cached
+          send({ event: 'synthesis', data: { synthesis: existingSynthesis.vereditoFinal, generatedAt: existingSynthesis.generatedAt, cached: true } });
+        }
+      }
       send({ event: 'done', data: { ok: errors === 0, total: 36, errors, elapsed: Date.now() - startMs } });
       close();
     },

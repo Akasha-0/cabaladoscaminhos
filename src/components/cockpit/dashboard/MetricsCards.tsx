@@ -4,7 +4,7 @@
 import { Calendar, Users, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// fallow-ignore-next-line unused-types
+// fallow-ignore-next-line unused-file
 interface MetricsCardsProps {
   consultasMes: number;
   totalConsulentes: number;

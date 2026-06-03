@@ -66,7 +66,7 @@ export interface KabalisticMap {
   challenges?: { first: number; second: number; main: number; last: number };
   pinnacles?: { first: { number: number; ageEnd: number }; second: { number: number; ageStart: number; ageEnd: number }; third: { number: number; ageStart: number; ageEnd: number }; fourth: { number: number; ageStart: number } };
   karmicLessons?: number[];
-  karmaicDebts?: number[];
+  karmicDebts?: number[];
   rulingArcana?: { lifePathArcana: number; expressionArcana: number };
   lifeCycles?: { first: { number: number; ageStart: number; ageEnd: number }; second: { number: number; ageStart: number; ageEnd: number }; third: { number: number; ageStart: number } };
   personalCycles?: { personalYear: number; personalMonth: number; personalDay: number; referenceDate: string };

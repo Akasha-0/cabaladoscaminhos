@@ -4,9 +4,7 @@
 // Zone A (sidebar): Client info + 4 natal maps
 // Zone B (center): Mesa Real grid 9×4
 // Zone C (right): Dossier viewer + Consultation drawer (collapsible)
-
 'use client';
-
 import { FileText, MessageCircle, X, Sparkles } from 'lucide-react';
 import React, { useState, useCallback } from 'react';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
@@ -20,10 +18,17 @@ import { HouseInputPopover } from './HouseInputPopover';
 import { DossierViewer } from './dossier/DossierViewer';
 import { OraculoChat } from './consultation/OraculoChat';
 import { Button } from '@/components/ui/button';
-
+// C1: HouseInputPopover positioning helper — must be after 'use client'
+function getPopoverPosition(element: HTMLElement): { x: number; y: number } {
+  const rect = element.getBoundingClientRect();
+  // Position above the cell with 10px gap, centered on cell
+  return {
+    x: rect.left + rect.width / 2,
+    y: rect.top - 10,
+  };
+}
 // Zone C panel dimensions
 const RIGHT_PANEL_WIDTH = '480px';
-
 interface CockpitOracularProps {
   /** Optional reading ID to wire DossierViewer and OraculoChat. */
   readingId?: string;
@@ -190,7 +195,14 @@ export function CockpitOracular({ readingId: propReadingId, clientName: propClie
                   <div
                     key={house.number}
                     className="group"
-                    onClick={() => {
+                    onClick={(e) => {
+                      if (!isActive) {
+                        // C1: Capture position when opening popover
+                        const pos = getPopoverPosition(e.currentTarget);
+                        setPopoverPosition(pos);
+                      } else {
+                        setPopoverPosition(null);
+                      }
                       setActivePopover(isActive ? null : house.number);
                     }}
                   >
@@ -236,13 +248,13 @@ export function CockpitOracular({ readingId: propReadingId, clientName: propClie
         </div>
       </div>
 
-      {/* Popover - Positioned absolutely */}
-      {activePopover !== null && (
+      {/* Popover - Positioned above clicked cell (C1: fixed positioning) */}
+      {activePopover !== null && popoverPosition && (
         <div
           className="fixed z-50"
           style={{
-            top: popoverPosition?.y ? popoverPosition.y - 10 : undefined,
-            left: popoverPosition?.x ? `calc(${popoverPosition.x}px - 160px)` : undefined,
+            top: popoverPosition.y,
+            left: popoverPosition.x - 160, // Center on cell (popover is 320px wide)
             transform: 'translateY(-100%)',
           }}
         >

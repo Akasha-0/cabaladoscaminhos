@@ -153,8 +153,8 @@ export function calculateChallenges(birthDate: string): {
   const first = Math.abs(dayRed - monthRed);
   const second = Math.abs(dayRed - yearRed);
   const main = Math.abs(first - second);
-  const lastRaw = Math.abs(year - month - day);
-  const last = lastRaw === 0 ? 1 : reduceToSingleDigit(lastRaw);
+  const lastRaw = Math.abs(monthRed - yearRed);
+  const last = lastRaw === 0 ? 1 : lastRaw;
 
   return { first, second, main, last };
 }
@@ -346,16 +346,49 @@ export function buildKabalisticMap(fullName: string, birthDate: string): Partial
     challenges: calculateChallenges(birthDate),
     pinnacles: calculatePinnacles(birthDate, lifePath.number),
     karmicLessons: calculateKarmicLessons(fullName),
-    karmaicDebts: calculateKarmicDebts(fullName, birthDate),
+    karmicDebts: calculateKarmicDebts(fullName, birthDate),
     rulingArcana: calculateRulingArcana(lifePath.number, expression.number),
     lifeCycles: calculateLifeCycles(birthDate),
     personalCycles: calculatePersonalCycles(birthDate),
+    vibrationalNumber: expression.number,
+    chaliceNumber: motivation.number,
+    balanceNumber: calculateBalanceNumber(fullName),
+    maturityNumber: reduceToSingleDigit(lifePath.number + expression.number),
+    hiddenPassionNumber: calculateHiddenPassion(fullName),
   };
-}
 
 // ============================================================================
 // HELPERS
 // ============================================================================
+function calculateBalanceNumber(fullName: string): number {
+  const letters = normalizeName(fullName);
+  const positions: number[] = [];
+  for (let i = 0; i < letters.length; i++) {
+    const val = LETTER_VALUES[letters[i]];
+    if (val !== undefined) positions.push(val);
+  }
+  const sum = positions.reduce((s, v) => s + v, 0);
+  return reduceToSingleDigit(sum);
+}
+function calculateHiddenPassion(fullName: string): number {
+  const letters = normalizeName(fullName);
+  const counts: Record<number, number> = {};
+  for (const c of letters) {
+    const val = LETTER_VALUES[c];
+    if (val !== undefined) {
+      counts[val] = (counts[val] ?? 0) + 1;
+    }
+  }
+  let maxCount = 0;
+  let mostRepeated = 1;
+  for (const [num, count] of Object.entries(counts)) {
+    if (count > maxCount) {
+      maxCount = count;
+      mostRepeated = parseInt(num, 10);
+    }
+  }
+  return mostRepeated;
+}
 function normalizeName(name: string): string {
   return name
     .toUpperCase()

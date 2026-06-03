@@ -67,7 +67,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseId: 5, houseName: 'A Árvore',
     houseTheme: 'Saúde, vitalidade, energia vital, raízes, ancestralidade',
     astrology: { primaryHouses: [6], primaryPlanets: ['sun'], extractionKeys: ['houses.6', 'sun.sign', 'sun.house'] },
-    kabalah: { aspects: ['Número de Destino'], extractionKeys: ['expression'] },
+    kabalah: { aspects: ['Número de Destino'], extractionKeys: ['destiny'] },
     tantric: { aspects: ['Número de Alma'], extractionKeys: ['soul', 'soulDescription'] },
   },
   6: {
@@ -81,7 +81,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseId: 7, houseName: 'A Serpente',
     houseTheme: 'Perigo, traição, forças ocultas, sexualidade, sabedoria oculta',
     astrology: { primaryHouses: [8], primaryPlanets: ['lilith', 'pluto'], extractionKeys: ['planets.lilith.sign', 'planets.lilith.house', 'planets.pluto.sign', 'planets.pluto.house'] },
-    kabalah: { aspects: ['Dívidas Kármicas / Lições'], extractionKeys: ['karmaicDebts', 'karmicLessons'] },
+    kabalah: { aspects: ['Dívidas Kármicas / Lições'], extractionKeys: ['karmicDebts', 'karmicLessons'] },
     tantric: { aspects: ['Número de Karma'], extractionKeys: ['karma', 'karmaDescription'] },
   },
   8: {
@@ -108,7 +108,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
   11: {
     houseId: 11, houseName: 'O Chicote',
     houseTheme: 'Conflitos, repetição de padrões, estresse, agressividade, disputas',
-    astrology: { primaryHouses: [], primaryPlanets: ['mars'], extractionKeys: ['planets.mars.sign', 'planets.mars.house', 'aspects'] },
+    astrology: { primaryHouses: [], primaryPlanets: ['mars'], extractionKeys: ['planets.mars.sign', 'planets.mars.house'] },
     kabalah: { aspects: ['Números de Desafio'], extractionKeys: ['challenges.first', 'challenges.second', 'challenges.main'] },
     tantric: { aspects: ['Número de Karma (Corpo Prânico)'], extractionKeys: ['karma', 'karmaDescription'] },
   },
@@ -179,7 +179,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseId: 21, houseName: 'A Montanha',
     houseTheme: 'Obstáculos, bloqueios, atrasos, inimigos ocultos, desafios duradouros',
     astrology: { primaryHouses: [12], primaryPlanets: ['saturn'], extractionKeys: ['planets.saturn.sign', 'planets.saturn.house', 'houses.12', 'aspects'] },
-    kabalah: { aspects: ['Números de Desafio', 'Dívidas Kármicas'], extractionKeys: ['challenges.main', 'karmaicDebts'] },
+    kabalah: { aspects: ['Números de Desafio', 'Dívidas Kármicas'], extractionKeys: ['challenges.main', 'karmicDebts'] },
     tantric: { aspects: ['Número de Karma'], extractionKeys: ['karma', 'karmaDescription'] },
   },
   22: {
@@ -193,7 +193,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseId: 23, houseName: 'O Rato',
     houseTheme: 'Perdas graduais, desgaste, ansiedade, pensamentos que consomem, escassez',
     astrology: { primaryHouses: [12], primaryPlanets: ['neptune', 'saturn'], extractionKeys: ['houses.12', 'planets.neptune.sign', 'planets.neptune.house', 'planets.saturn.sign', 'planets.saturn.house'] },
-    kabalah: { aspects: ['Dívidas Kármicas / Lições'], extractionKeys: ['karmaicDebts', 'karmicLessons'] },
+    kabalah: { aspects: ['Dívidas Kármicas / Lições'], extractionKeys: ['karmicDebts', 'karmicLessons'] },
     tantric: { aspects: ['Número de Karma (Corpo Prânico)'], extractionKeys: ['karma', 'karmaDescription'] },
   },
   24: {
@@ -214,7 +214,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseId: 26, houseName: 'O Livro',
     houseTheme: 'Segredos, conhecimento oculto, estudos, mistérios guardados',
     astrology: { primaryHouses: [9, 12], primaryPlanets: ['mercury'], extractionKeys: ['houses.9', 'houses.12', 'planets.mercury.sign', 'planets.mercury.house'] },
-    kabalah: { aspects: ['Caminho de Vida', 'Número de Expressão'], extractionKeys: ['lifePath', 'expression'] },
+    kabalah: { aspects: ['Caminho de Vida', 'Número de Expressão'], extractionKeys: ['lifePath', 'lifePathMaster', 'expression'] },
     tantric: { aspects: ['Dom Divino'], extractionKeys: ['divineGift', 'divineGiftDescription'] },
   },
   27: {
@@ -284,7 +284,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseId: 36, houseName: 'A Cruz',
     houseTheme: 'Fardo kármico, teste espiritual máximo, responsabilidade, superação do destino',
     astrology: { primaryHouses: [12], primaryPlanets: ['southNode', 'saturn'], extractionKeys: ['southNode.sign', 'southNode.house', 'planets.saturn.sign', 'planets.saturn.house', 'houses.12'] },
-    kabalah: { aspects: ['Karma de Vida + Dívidas Kármicas'], extractionKeys: ['karmaicDebts', 'karmicLessons'] },
+    kabalah: { aspects: ['Karma de Vida + Dívidas Kármicas'], extractionKeys: ['karmicDebts', 'karmicLessons'] },
     tantric: { aspects: ['Número de Karma'], extractionKeys: ['karma', 'karmaDescription'] },
   },
 };

@@ -1,7 +1,6 @@
 // src/components/cockpit/CockpitSidebar.tsx
 // Left sidebar with client form and map badges (Doc 05 §4.2 / Doc 13 §4.3).
 // Tokens Ramiro v2: badges por sistema — astro/cabala/odu = royal, tantric = laranja.
-
 'use client';
 import {
   Sparkles,
@@ -20,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ClientSearchCombobox } from '@/components/ui/client-search-combobox';
 import { useCockpitStore, type ClienteInfo } from '@/stores/cockpit-store';
 
 interface CockpitSidebarProps {
@@ -51,6 +51,28 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
         alma: '2',
         karma: '8',
       },
+    });
+    setIsFormExpanded(false);
+  };
+  // C2: Handle client selection from search results
+  const handleSelectSearchedClient = (client: {
+    id?: string;
+    nome: string;
+    dataNascimento: string;
+    horaNascimento?: string;
+    localNascimento?: string;
+    mapa?: Record<string, string | undefined>;
+  }) => {
+    setFormData({
+      nome: client.nome,
+      dataNascimento: client.dataNascimento,
+      horaNascimento: client.horaNascimento || '',
+      localNascimento: client.localNascimento || '',
+      mapa: client.mapa as ClienteInfo['mapa'],
+    });
+    setCliente({
+      ...client,
+      mapa: client.mapa as ClienteInfo['mapa'],
     });
     setIsFormExpanded(false);
   };
@@ -152,6 +174,19 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
       <div className="flex-1 overflow-y-auto p-4">
         {isFormExpanded || !cliente ? (
           <div className="space-y-4">
+            {/* C2: Client Search Combobox */}
+            <ClientSearchCombobox
+              onSelectClient={handleSelectSearchedClient}
+              onCreateNew={() => setIsFormExpanded(true)}
+            />
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-border/30" />
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-card px-2 text-xs text-muted-foreground">ou cadastrar novo</span>
+              </div>
+            </div>
             <div className="space-y-2">
               <Label
                 htmlFor="nome"
@@ -287,14 +322,40 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
                     {cliente.mapa.karma && ` | Karma: ${cliente.mapa.karma}`}
                   </Badge>
                 )}
+                {/* C3: Odu Natal → royal (Doc 05 §4.2) */}
+                {cliente.mapa?.oduNatal && (
+                  <Badge
+                    variant="outline"
+                    className="w-full justify-start bg-secondary/15 border-secondary/40 text-secondary"
+                  >
+                    <Crown className="w-3 h-3 mr-2 text-secondary" />
+                    {cliente.mapa.oduNatal}
+                  </Badge>
+                )}
               </div>
             )}
           </div>
         )}
       </div>
-
       {/* Footer - Generate Dossiê Button (laranja, doc 13 §6.1) */}
-      <div className="p-4 border-t border-border/50">
+      <div className="p-4 border-t border-border/50 space-y-3">
+        {/* C4: Cartas Restantes Progress Bar (Doc 17 §2) */}
+        {cliente && (
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground/70">Cartas na Mesa:</span>
+              <span className="font-mono text-primary font-medium">
+                {houses.size}/36
+              </span>
+            </div>
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-primary/80 to-primary rounded-full transition-all duration-300"
+                style={{ width: `${Math.min((houses.size / 36) * 100, 100)}%` }}
+              />
+            </div>
+          </div>
+        )}
         <Button
           variant="spiritual"
           size="lg"
@@ -309,7 +370,7 @@ export function CockpitSidebar({ onNewAtendimento }: CockpitSidebarProps) {
           )}
           {isGenerating ? 'Salvando...' : 'Gerar Dossiê Cabalístico'}
         </Button>
-        <p className="text-xs text-muted-foreground/60 text-center mt-2">
+        <p className="text-xs text-muted-foreground/60 text-center">
           {!cliente ? 'Selecione um cliente para gerar o dossiê' : houses.size === 0 ? 'Preencha as casas para gerar o relatório' : `${houses.size} casa${houses.size !== 1 ? 's' : ''} preenchida${houses.size !== 1 ? 's' : ''}`}
         </p>
       </div>

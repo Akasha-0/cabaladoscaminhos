@@ -37,7 +37,7 @@ import { getOrixa } from '@/lib/orixa/types';
 // CORRESPONDENCE TABLES
 // ============================================================
 
-const VIDA_ODU_MAP: Record<number, number> = {
+const LIFEPATH_ODU_MAP: Record<number, number> = {
   1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 16,
 };
 
@@ -158,6 +158,8 @@ function calcOdu(profile: BirthProfile): OduResults {
     preceitos,
     ebos,
     elemento: principal.elementos,
+    elementalForce: `${principal.elementos} — ${principal.significado.split('.')[0]}.`,
+    lifeLesson: preceitos.join('; ') || principal.preceitos.join('; '),
     arcanoTarot: principal.numero % 22,
     caminhoSephirah: SEPHIRAH_MAP[principal.numero] ?? 'Malkuth',
     raw: oduDraw,
@@ -182,7 +184,7 @@ function getDominantChakra(dayOfBirth: number, ascendente: string): string {
 }
 
 function buildChakraResults(
-  vida: number,
+  lifePath: number,
   oduNumero: number,
   ascendente: string,
   dataNascimento: string
@@ -192,7 +194,7 @@ function buildChakraResults(
   const dayOfBirth = new Date(2000, 0, parts[2]).getDay();
   const dominantChakraId = getDominantChakra(dayOfBirth, ascendente);
 
-  const isHyperactive = vida % 2 !== 0;
+  const isHyperactive = lifePath % 2 !== 0;
   const isBlocked = oduNumero >= 10;
 
   const chakraInfos: ChakraInfo[] = chakras.map((c) => {
@@ -330,11 +332,11 @@ const ARCANO_NAMES = [
   'O Julgamento', 'O Mundo', 'O Louco',
 ];
 
-function buildTarotResults(vida: number, _anoPessoal: number): TarotResults {
+function buildTarotResults(lifePath: number, _anoPessoal: number): TarotResults {
   const currentYear = new Date().getFullYear();
-  const birthCardId = vida % 22;
-  const yearCardId = Math.abs(vida + currentYear) % 22 || 1;
-  const soulCardId = Math.abs(vida * 3) % 22 || 1;
+  const birthCardId = lifePath % 22;
+  const yearCardId = Math.abs(lifePath + currentYear) % 22 || 1;
+  const soulCardId = Math.abs(lifePath * 3) % 22 || 1;
 
   return {
     cartaNascimento: birthCardId,
@@ -363,12 +365,12 @@ function detectarConvergencias(
 ): Convergence[] {
   const convergencias: Convergence[] = [];
   // 1. Vida-Odú dual convergence
-  if (VIDA_ODU_MAP[numerologia.vida] === odu.regente.numero) {
+  if (LIFEPATH_ODU_MAP[numerologia.lifePath] === odu.regente.numero) {
     convergencias.push({
       sistemas: ['numerologia', 'odu'],
       energia: odu.orixas[0]?.toLowerCase() ?? 'oxum',
       forca: 'forte',
-      descricao: `Caminho de Vida ${numerologia.vida} alinha-se com ${odu.regente.nome}.`,
+      descricao: `Caminho de Vida ${numerologia.lifePath} alinha-se com ${odu.regente.nome}.`,
     });
   }
   // 2. Sol-Orixá convergence (astro-odu + potentially triple)
@@ -424,7 +426,7 @@ function detectSolOrixaConvergence(
         sistemas: ['numerologia', 'astrologia', 'odu'],
         energia: vidaEnergia,
         forca: 'forte',
-        descricao: `Tríplice convergência: Vida ${numerologia.vida}, Sol em ${solSigno}, ${solOrixa}.`,
+        descricao: `Tríplice convergência: Vida ${numerologia.lifePath}, Sol em ${solSigno}, ${solOrixa}.`,
       },
     };
   }
@@ -443,9 +445,8 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
   // 3. ASTROLOGIA
   const coords = CITY_COORDS[profile.cidade] || CITY_COORDS[profile.estado] || DEFAULT_COORDS;
   const astrologia = buildAstrologiaResults(profile, coords);
-  // 4–8. TAROT, CHAKRAS, CONVERGÊNCIAS, ORIXÁS
-  const tarot = buildTarotResults(numerologia.vida, numerologia.anoPessoal);
-  const chakras = buildChakraResults(numerologia.vida, odu.regente.numero, astrologia.ascendente, profile.dataNascimento);
+  const tarot = buildTarotResults(numerologia.lifePath, numerologia.anoPessoal);
+  const chakras = buildChakraResults(numerologia.lifePath, odu.regente.numero, astrologia.ascendente, profile.dataNascimento);
   const convergencias = detectarConvergencias(numerologia, odu, astrologia);
   const orixasDominantes = aggregateOrixas(odu, astrologia.ascendente, astrologia.sol.signo);
   // BUILD MAPA OBJECT
@@ -474,7 +475,7 @@ function buildNumerologiaResults(profile: BirthProfile, currentYear: number): Nu
   const numerologiaRaw = calculateNumerology(profile.nomeCompleto, profile.dataNascimento);
   const destino = numerologiaRaw.destino;
   return {
-    vida: numerologiaRaw.vida,
+    lifePath: numerologiaRaw.vida,
     expressao: numerologiaRaw.expressao,
     motivacao: numerologiaRaw.motivacao,
     impressao: numerologiaRaw.impressao,
@@ -540,11 +541,11 @@ function buildDeepCorrelationUserData(
     id: perfil.nomeCompleto,
     nome: perfil.nomeCompleto,
     dataNascimento: perfil.dataNascimento,
-    numeroPessoal: numerologia.vida,
+    numeroPessoal: numerologia.lifePath,
     arcoPessoal: tarot.cartaNascimento,
     odu: odu.regente.nome,
     orixaRegente: orixasDominantes[0] || '',
-    sefirotDominante: [SEPHIRAH_MAP[numerologia.vida] || 'Malkuth'],
+    sefirotDominante: [SEPHIRAH_MAP[numerologia.lifePath] || 'Malkuth'],
     arcoMaior: [tarot.cartaNascimento, tarot.cartaAlma],
     sign: astrologia.sol.signo,
     houses: {},
@@ -560,19 +561,19 @@ function attachHyperSynthesis(
 ): void {
   const orixaRegenteMapa = odu.orixas[0]?.toLowerCase() ?? 'oxala';
   const synthesis = hyperCorrelationEngine.answerDeepQuestion(
-    numerologia.vida,
+    numerologia.lifePath,
     astrologia.sol.signo,
     orixaRegenteMapa
   );
-  const harmonization = generateHarmonizationRecommendations(numerologia.vida, astrologia.sol.signo, orixaRegenteMapa, odu);
-  const vidaStr = [11, 22, 33].includes(numerologia.vida) ? `${numerologia.vida}M` : String(numerologia.vida);
+  const harmonization = generateHarmonizationRecommendations(numerologia.lifePath, astrologia.sol.signo, orixaRegenteMapa, odu);
+  const lifePathStr = [11, 22, 33].includes(numerologia.lifePath) ? `${numerologia.lifePath}M` : String(numerologia.lifePath);
   const signStr = astrologia.sol.signo.substring(0, 3).toLowerCase();
   const orixaStr = orixaRegenteMapa.substring(0, 3);
   (mapa as unknown as Record<string, unknown>).hyperSynthesis = {
-    signature: `${vidaStr}-${signStr}-${orixaStr}`,
+    signature: `${lifePathStr}-${signStr}-${orixaStr}`,
     explanation: synthesis,
     practices: [
-      `Meditação diária para harmonia do Caminho ${numerologia.vida}`,
+      `Meditação diária para harmonia do Caminho ${numerologia.lifePath}`,
       `Oração a ${orixaRegenteMapa} no dia correspondente`,
       `Prática de respiração elementar`,
     ],

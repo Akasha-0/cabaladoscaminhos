@@ -37,14 +37,21 @@ REGRAS:
 // CONTEXTO DA CONSULTA
 // ============================================================
 
+export interface ConversationHistoryItem {
+  role: 'USER' | 'ORACLE';
+  content: string;
+  createdAt: Date;
+}
 export interface ConsultContext {
   routing: RoutingResult;
-  /** Casas roteadas que FORAM tiradas na leitura (com carta/Odu + aspectos delegados). */
+  /** Casas roteadas que FORAM tiradas na leitura (com carta+Odu + aspectos delegados). */
   drawnHouses: HousePayload[];
   /** Casas roteadas que NÃO foram tiradas — entram só como contexto natal. */
   natalOnlyHouses: number[];
   /** Trecho do dossiê relevante às casas roteadas (Markdown), se houver. */
   dossierExcerpt: string;
+  /** Histórico da conversa (ChatMessages da Consultation) para contexto multi-turno. */
+  conversationHistory: ConversationHistoryItem[];
 }
 
 /** Extrai do dossiê salvo (ReportContent.houses) apenas as casas roteadas. */
@@ -66,23 +73,23 @@ function excerptDossier(
 /**
  * Monta o contexto RAG-fechado de uma pergunta sobre uma leitura.
  *
- * @param question   pergunta aberta do consulente
- * @param client     mapas natais cacheados do Client
- * @param matrixData tiragem da leitura (casas preenchidas)
- * @param reportHouses (opcional) ReportContent.houses do dossiê já gerado
+ * @param question            pergunta aberta do consulente
+ * @param client              mapas natais cacheados do Client
+ * @param matrixData          tiragem da leitura (casas preenchidas)
+ * @param reportHouses        (opcional) ReportContent.houses do dossiê já gerado
+ * @param conversationHistory  (opcional) ChatMessages da Consultation para contexto multi-turno
  */
 export function buildConsultContext(
   question: string,
   client: ClientMaps,
   matrixData: MatrixData,
-  reportHouses?: Record<string, { interpretation?: string; houseName?: string }>
+  reportHouses?: Record<string, { interpretation?: string; houseName?: string }>,
+  conversationHistory?: ConversationHistoryItem[]
 ): ConsultContext {
   const filledHouses = Object.keys(matrixData)
     .map((k) => parseInt(k, 10))
     .filter((n) => CORRELATION_MAP[n] !== undefined);
-
   const routing = routeQuestion(question, filledHouses);
-
   const drawnHouses: HousePayload[] = [];
   const natalOnlyHouses: number[] = [];
   for (const h of routing.houses) {
@@ -94,18 +101,23 @@ export function buildConsultContext(
       natalOnlyHouses.push(h);
     }
   }
-
   return {
     routing,
     drawnHouses,
     natalOnlyHouses,
     dossierExcerpt: excerptDossier(reportHouses, routing.houses),
+    conversationHistory: conversationHistory ?? [],
   };
 }
 
 /** Serializa o contexto em um payload de usuário para o LLM. */
 export function buildConsultUserPayload(question: string, context: ConsultContext): object {
   return {
+    historico_conversa: context.conversationHistory.map((m) => ({
+      role: m.role,
+      content: m.content,
+      createdAt: m.createdAt instanceof Date ? m.createdAt.toISOString() : m.createdAt,
+    })),
     pergunta: question,
     temas_roteados: context.routing.themes,
     casas_consultadas: context.routing.houses,
