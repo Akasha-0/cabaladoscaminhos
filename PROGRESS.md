@@ -376,3 +376,32 @@ Correções no vitest.config.ts (parse error) + UI component tests:
 - `consult.test.ts`: logging mock + `chatMessage.findMany` mock
 **Resultado**: 0 falhas em core-logic + core-ui + core-api, 678 testes passando
 *Última atualização: 2026-06-03 — Fase 28b*
+-`src/lib/ai/correlation-map.ts`
+-`vitest.config.ts`: git merge conflict resolvido; `poolOptions` removido; `pool: 'forks'`; `testTimeout: 5000` (AD-19.6 ✅)
+-`src/app/api/mesa-real/generate/route.ts`: `timeoutMs: 300_000` (5 min) — AD-22.7 ✅
+-`docs/21_registro-decisoes-roadmap.md`: duplicado §2.6 removido; AD-19.6/20.6/22.4/22.7 atualizados para ✅
+-`tests/lib/ai/correlation-map.test.ts`: 19 testes — extractFromMap com arrays (planetas, casas), normalizeBirthChart
+-`tests/lib/ai/oracle-prompt-builder.test.ts`: 3 testes — Casa 34 verificação de vazamento
+**Resultado:** 22/22 correlation tests passando. ~784 testes core passando. Falhas restantes: pre-existentes.
+*Última atualização: 2026-06-03 — Fase 31*
+*Versão: 1.3*
+### Fase 31 — Correlation Engine Array Fix + Doc Alignment (2026-06-03)
+
+**Bug crítico corrigido:** `extractFromMap` não lidava com formato array de planetas/casas.
+
+**Correções de código:**
+- `src/lib/ai/correlation-map.ts`: `extractFromMap` reescrito — detecta arrays e faz busca por `.planet` (planetas) e `.house/.numero` (casas); unwrapping de `.sign` para objetos de casa
+- `vitest.config.ts`: git merge conflict resolvido; `poolOptions` removido; `pool: 'forks'`; `testTimeout: 5000` (AD-19.6 ✅)
+- `src/app/api/mesa-real/generate/route.ts`: `timeoutMs: 300_000` (5 min) — AD-22.7 ✅
+
+**Documentação:**
+- `docs/21_registro-decisoes-roadmap.md`: duplicado §2.6 removido; AD-19.6 ✅ (timeout 5000); AD-20.6 ✅ (108 entradas com source/rationale); AD-22.4 ✅ (SecurityEvent table ativa); AD-22.7 ✅ (timeout 5min)
+
+**Testes (22 novos):**
+- `tests/lib/ai/correlation-map.test.ts`: 19 testes — extractFromMap com arrays (planetas, casas), normalizeBirthChart
+- `tests/lib/ai/oracle-prompt-builder.test.ts`: 3 testes — Casa 34 verificação de vazamento
+
+**Resultado:** 22/22 correlation tests passando. ~784 testes core passando. Falhas restantes: pre-existentes (stripe-webhook, health/Redis, SessionsList UI, OperatorAuthProvider, LoadingSpinner/ErrorState/MysticDivider mocks, mapa-insights).
+
+*Última atualização: 2026-06-03 — Fase 31*
+*Versão: 1.3*
