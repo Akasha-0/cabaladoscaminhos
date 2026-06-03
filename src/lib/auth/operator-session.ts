@@ -3,8 +3,12 @@
 //
 // Fluxo:
 //   1. Cookie `cockpit_session` (JWT assinado) — caminho produção.
-//   2. Header `x-dev-operator-id` — DEV/TEST ONLY (NODE_ENV !== 'production').
-//      Permite testar sem login, mantém compat com testes da Fase 7.
+//   2. Header `x-dev-operator-id` — DEV ONLY (requer ALLOW_DEV_AUTH_BYPASS=true).
+//      Permite testar sem login em dev local, mantém compat com testes.
+//
+// AVISO: Não use NODE_ENV para decisões de auth — preview/staging deployments
+// podem ter NODE_ENV != 'production' mas serem publicamente acessíveis.
+// Sempre use ALLOW_DEV_AUTH_BYPASS=true explicitamente para habilitar.
 //
 // A verificação do JWT é obrigatória: se o cookie existe mas o token é
 // inválido/expirado/adulterado, é ignorado (cai pra null → 401).
@@ -34,11 +38,11 @@ async function readJwtFromRequest(request: NextRequest): Promise<string | null> 
 }
 
 /**
- * Em dev/test, lê o operatorId do header de fallback.
- * Em produção, retorna sempre null (header desabilitado).
+ * Lê o operatorId do header de fallback para dev local.
+ * Requer ALLOW_DEV_AUTH_BYPASS=true explicitamente — não usa NODE_ENV.
  */
 async function readDevHeaderFromRequest(request: NextRequest): Promise<string | null> {
-  if (process.env.NODE_ENV === 'production') return null;
+  if (process.env.ALLOW_DEV_AUTH_BYPASS !== 'true') return null;
   return request.headers.get(DEV_HEADER);
 }
 
@@ -154,8 +158,8 @@ export async function getOperatorFromServerContext(): Promise<Operator | null> {
     return null;
   }
 
-  // 2) Dev header (apenas NODE_ENV !== 'production')
-  if (process.env.NODE_ENV !== 'production') {
+  // 2) Dev header (requer ALLOW_DEV_AUTH_BYPASS=true explicitamente)
+  if (process.env.ALLOW_DEV_AUTH_BYPASS === 'true') {
     const devId = headerStore.get(DEV_HEADER);
     if (devId) return loadOperator(devId);
   }

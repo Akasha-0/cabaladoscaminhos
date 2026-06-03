@@ -142,6 +142,8 @@ beforeEach(() => {
   cookieStore.current = { 'x-dev-operator-id': 'op-1' };
   // OPENAI_API_KEY ausente por padrão — testa o caminho de fallback
   delete process.env.OPENAI_API_KEY;
+  // Habilita dev auth bypass para testes (comportamento secure: opt-in explícito)
+  process.env.ALLOW_DEV_AUTH_BYPASS = 'true';
 });
 
 function makeRequest(body: unknown): NextRequest {
@@ -279,6 +281,7 @@ describe('AD-19.4 Invariant 6 — RAG-closed SSE routing structure', () => {
     vi.clearAllMocks();
     cookieStore.current = { 'x-dev-operator-id': 'op-1' };
     delete process.env.OPENAI_API_KEY;
+    process.env.ALLOW_DEV_AUTH_BYPASS = 'true';
     (prisma.operator.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue(mockOperator);
     (prisma.reading.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue(mockReadingWithContext);
     (prisma.consultation.create as ReturnType<typeof vi.fn>).mockResolvedValue(mockConsultation);

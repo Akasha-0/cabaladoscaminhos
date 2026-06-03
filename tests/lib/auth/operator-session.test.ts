@@ -82,6 +82,8 @@ function makeRequest(opts: {
 beforeEach(() => {
   mockFindUnique.mockReset();
   cookieStore.current = {};
+  // Habilita dev auth bypass para testes (comportamento secure: opt-in explícito)
+  process.env.ALLOW_DEV_AUTH_BYPASS = 'true';
 });
 
 // ============================================================================
@@ -196,6 +198,20 @@ describe('getOperatorFromRequest — dev header', () => {
     expect(consoleError).toHaveBeenCalled();
     consoleError.mockRestore();
   });
+
+  it('dev header ignored when ALLOW_DEV_AUTH_BYPASS is not set', async () => {
+    const savedFlag = process.env.ALLOW_DEV_AUTH_BYPASS;
+    delete process.env.ALLOW_DEV_AUTH_BYPASS;
+    mockFindUnique.mockResolvedValue(mockOperator);
+    const req = makeRequest({ devHeaderValue: 'op-dev' });
+
+    const result = await getOperatorFromRequest(req);
+
+    expect(result).toBeNull();
+    expect(mockFindUnique).not.toHaveBeenCalled();
+
+    if (savedFlag !== undefined) process.env.ALLOW_DEV_AUTH_BYPASS = savedFlag;
+  });
 });
 
 // ============================================================================
@@ -253,7 +269,7 @@ describe('getOperatorFromServerContext', () => {
     expect(result).toEqual(mockOperator);
   });
 
-  it('falls back to dev header in server context (NODE_ENV != production)', async () => {
+  it('falls back to dev header when ALLOW_DEV_AUTH_BYPASS=true', async () => {
     mockFindUnique.mockResolvedValue(mockOperator);
     cookieStore.current = { 'x-dev-operator-id': 'op-header' };
 
@@ -261,6 +277,20 @@ describe('getOperatorFromServerContext', () => {
 
     expect(mockFindUnique).toHaveBeenCalledWith({ where: { id: 'op-header' } });
     expect(result).toEqual(mockOperator);
+  });
+
+  it('dev header ignored when ALLOW_DEV_AUTH_BYPASS is not set', async () => {
+    const savedFlag = process.env.ALLOW_DEV_AUTH_BYPASS;
+    delete process.env.ALLOW_DEV_AUTH_BYPASS;
+    mockFindUnique.mockResolvedValue(mockOperator);
+    cookieStore.current = { 'x-dev-operator-id': 'op-header' };
+
+    const result = await getOperatorFromServerContext();
+
+    expect(result).toBeNull();
+    expect(mockFindUnique).not.toHaveBeenCalled();
+
+    if (savedFlag !== undefined) process.env.ALLOW_DEV_AUTH_BYPASS = savedFlag;
   });
 
   it('returns null when nothing is set', async () => {

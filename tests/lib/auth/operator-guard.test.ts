@@ -75,10 +75,12 @@ beforeEach(() => {
   cookieStore.current = {};
   headerStore.current = {};
   process.env.NODE_ENV = 'test';
+  // Habilita dev auth bypass para testes (comportamento secure: opt-in explícito)
+  process.env.ALLOW_DEV_AUTH_BYPASS = 'true';
 });
-
 afterEach(() => {
   process.env.NODE_ENV = originalNodeEnv;
+  delete process.env.ALLOW_DEV_AUTH_BYPASS;
 });
 
 function makeValidToken(operatorId: string, role: 'OPERATOR' | 'ADMIN' = 'OPERATOR'): string {

@@ -3,12 +3,16 @@ import type { ChatMessage, StreamChunk } from './types';
 // ============================================================
 // CONFIGURATION
 // ============================================================
-const MINIMAX_API_TOKEN = process.env.MINIMAX_API_TOKEN;
-if (!MINIMAX_API_TOKEN) {
-  throw new Error('MINIMAX_API_TOKEN environment variable is required');
-}
 const MINIMAX_API_BASE = process.env.MINIMAX_API_BASE_URL ?? 'https://api.minimaxi.chat/v1';
 const MINIMAX_MODEL = 'minimax/m3';
+
+function getApiToken(): string {
+  const token = process.env.MINIMAX_API_TOKEN;
+  if (!token) {
+    throw new Error('MINIMAX_API_TOKEN environment variable is required');
+  }
+  return token;
+}
 
 const DEFAULT_TEMPERATURE = 0.7;
 const DEFAULT_MAX_TOKENS = 1000;
@@ -52,7 +56,7 @@ export async function generateMinimaxResponse(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${MINIMAX_API_TOKEN}`,
+      Authorization: `Bearer ${getApiToken()}`,
     },
     body: JSON.stringify({
       model,
@@ -113,7 +117,7 @@ async function* streamMinimaxResponse(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${MINIMAX_API_TOKEN}`,
+      Authorization: `Bearer ${getApiToken()}`,
     },
     body: JSON.stringify({
       model,

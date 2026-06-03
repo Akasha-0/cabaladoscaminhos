@@ -81,8 +81,7 @@ export type DecryptResult = { ok: true; plaintext: string } | { ok: false; reaso
 // ============================================================================
 // Erros
 // ============================================================================
- 
-/** Lançado quando a MFA_ENCRYPTION_KEY não está configurada (em prod). */
+/** Erro lançado quando MFA_ENCRYPTION_KEY não está configurada. */
 class MfaKeyMissingError extends Error {
   constructor() {
     super(
@@ -98,25 +97,12 @@ class MfaKeyMissingError extends Error {
 
 /**
  * Resolve a chave de criptografia a partir de `MFA_ENCRYPTION_KEY`.
- * Aceita hex (64 chars) ou base64 (44 chars com padding).
- *
- * Em dev/test, gera uma chave aleatória por processo e avisa — não
- * persiste, então secret gravado antes do restart fica irrecuperável
- * (intencional: força setup de novo MFA em dev).
+ * Lança `MfaKeyMissingError` se a variável não estiver definida.
  */
 function getEncryptionKey(): Buffer {
   const raw = process.env.MFA_ENCRYPTION_KEY;
   if (!raw || raw === '') {
-    if (process.env.NODE_ENV === 'production') {
-      throw new MfaKeyMissingError();
-    }
-    if (typeof console !== 'undefined') {
-      console.warn(
-        '[operator-totp] MFA_ENCRYPTION_KEY ausente — usando chave aleatória DEV ONLY. ' +
-          'Dados MFA gravados não sobreviverão ao restart do processo.'
-      );
-    }
-    return crypto.randomBytes(AES_KEY_BYTES);
+    throw new MfaKeyMissingError();
   }
 
   // Tenta hex primeiro (mais comum em envs)

@@ -70,6 +70,8 @@ import { prisma } from '@/lib/prisma';
 beforeEach(() => {
   vi.clearAllMocks();
   cookieStore.current = {};
+  // Habilita dev auth bypass para testes (comportamento secure: opt-in explícito)
+  process.env.ALLOW_DEV_AUTH_BYPASS = 'true';
   // Por padrão, o operator está autenticado via dev header
   cookieStore.current['x-dev-operator-id'] = 'op-1';
 });

@@ -4,26 +4,29 @@
 // Motor que USA a Knowledge Base do Swarm para validação
 // cruzada antes de chamar a IA MiniMax M3.
 // ============================================================
-
-import {
-  buildDailyContext,
-  type DailyAgentContext,
-  type UserSpiritualProfile,
-} from './daily-context-builder';
+import { LIFE_AREAS, type LifeArea, type LifeAreaId } from '@/lib/life-areas';
+import { getKnowledgeBase, type KnowledgeEntry } from '@/lib/swarm';
 import {
   SYSTEM_PROMPT_V2,
   buildUnifiedPromptV2,
   buildAreaPromptV2,
   buildChatPromptV2,
 } from './agent-prompts-v2';
-import { getKnowledgeBase, type KnowledgeEntry } from '@/lib/swarm';
-import { LIFE_AREAS, type LifeArea, type LifeAreaId } from '@/lib/life-areas';
+import {
+  buildDailyContext,
+  type DailyAgentContext,
+  type UserSpiritualProfile,
+} from './daily-context-builder';
 
-const MINIMAX_API_TOKEN = process.env.MINIMAX_API_TOKEN;
-if (!MINIMAX_API_TOKEN) {
-  throw new Error('MINIMAX_API_TOKEN environment variable is required');
-}
 const MINIMAX_API_BASE = process.env.MINIMAX_API_BASE_URL ?? 'https://api.minimaxi.chat/v1';
+
+function getApiToken(): string {
+  const token = process.env.MINIMAX_API_TOKEN;
+  if (!token) {
+    throw new Error('MINIMAX_API_TOKEN environment variable is required');
+  }
+  return token;
+}
 const MINIMAX_MODEL = 'minimax-m3';
 
 export interface RecommendationResult {
@@ -57,7 +60,7 @@ async function callMinimaxV2(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${MINIMAX_API_TOKEN}`,
+        Authorization: `Bearer ${getApiToken()}`,
       },
       body: JSON.stringify({
         model: MINIMAX_MODEL,
@@ -110,7 +113,15 @@ export async function generateDailyRecommendationV2(
   knowledgeUsed: number;
 }> {
   const context = await buildDailyContext(user, options.currentDate);
-  const kb = await getRelevantKB(['quizilas', 'odu', 'orixas', 'chakras', 'flora-sagrada', 'lilith-casa8-sexo', 'corpos-pranicos']);
+  const kb = await getRelevantKB([
+    'quizilas',
+    'odu',
+    'orixas',
+    'chakras',
+    'flora-sagrada',
+    'lilith-casa8-sexo',
+    'corpos-pranicos',
+  ]);
 
   if (options.useAI !== false) {
     const prompt = buildUnifiedPromptV2(context, kb);
@@ -212,7 +223,15 @@ export async function askSpiritualAgentV2(
   knowledgeUsed: number;
 }> {
   const context = await buildDailyContext(user, options.currentDate);
-  const kb = await getRelevantKB(['quizilas', 'orixas', 'odu', 'chakras', 'lilith-casa8-sexo', 'flora-sagrada', 'corpos-pranicos']);
+  const kb = await getRelevantKB([
+    'quizilas',
+    'orixas',
+    'odu',
+    'chakras',
+    'lilith-casa8-sexo',
+    'flora-sagrada',
+    'corpos-pranicos',
+  ]);
 
   if (options.useAI !== false) {
     const prompt = buildChatPromptV2(context, question, kb);
@@ -249,11 +268,13 @@ function generateSmartFallback(
   const odu = context.user.oduNascimento || 'natal';
 
   // Encontra quizilas relevantes
-  const orixaQuizila = kb.find(k => k.domain === 'quizilas' && k.key.startsWith(orixa.toLowerCase()));
+  const orixaQuizila = kb.find(
+    (k) => k.domain === 'quizilas' && k.key.startsWith(orixa.toLowerCase())
+  );
   // Encontra planta recomendada
-  const plantas = kb.filter(k => k.domain === 'flora-sagrada').slice(0, 3);
+  const plantas = kb.filter((k) => k.domain === 'flora-sagrada').slice(0, 3);
   // Chakras
-  const chakras = kb.filter(k => k.domain === 'chakras').slice(0, 3);
+  const chakras = kb.filter((k) => k.domain === 'chakras').slice(0, 3);
 
   return `## 🔮 Síntese Energética — ${context.data}
 
@@ -283,8 +304,12 @@ A energia do dia (${context.dailyEnergy.overallEnergy}/100) ${context.dailyEnerg
 
 Trabalhe o chakra **${context.personalDay.chakra}** hoje. Beba água, alongue-se.
 
-${plantas.length > 0 ? `## 🌿 Medicina Sagrada
-${plantas.map(p => `- **${p.data.planta}**: ${p.data.indicacao?.[0] || 'uso geral'}`).join('\n')}` : ''}
+${
+  plantas.length > 0
+    ? `## 🌿 Medicina Sagrada
+${plantas.map((p) => `- **${p.data.planta}**: ${p.data.indicacao?.[0] || 'uso geral'}`).join('\n')}`
+    : ''
+}
 
 ## 🙏 Espiritualidade
 

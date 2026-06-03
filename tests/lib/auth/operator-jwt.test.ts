@@ -246,7 +246,7 @@ describe('signOperatorToken (back-compat)', () => {
 // signOperatorToken — produção sem secret
 // ============================================================================
 
-describe('signOperatorAccessToken — produção sem JWT_SECRET', () => {
+describe('signOperatorAccessToken — sem JWT_SECRET', () => {
   it('lança JwtSecretMissingError em produção', () => {
     const savedSecret = process.env.JWT_SECRET;
     delete process.env.JWT_SECRET;
@@ -257,17 +257,13 @@ describe('signOperatorAccessToken — produção sem JWT_SECRET', () => {
     process.env.JWT_SECRET = savedSecret;
   });
 
-  it('usa fallback DEV (com warning) quando secret ausente em dev', () => {
+  it('lança JwtSecretMissingError também em dev', () => {
     const savedSecret = process.env.JWT_SECRET;
     delete process.env.JWT_SECRET;
     (process.env as Record<string, string>).NODE_ENV = 'development';
-    const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    const token = signOperatorAccessToken({ id: 'op-1', role: 'OPERATOR' });
-    expect(token).toBeTruthy();
-    expect(consoleWarn).toHaveBeenCalledWith(expect.stringMatching(/JWT_SECRET/));
+    expect(() => signOperatorAccessToken({ id: 'op-1', role: 'OPERATOR' })).toThrow(JwtSecretMissingError);
 
-    consoleWarn.mockRestore();
     process.env.JWT_SECRET = savedSecret;
   });
 });

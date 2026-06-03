@@ -15,14 +15,37 @@ const RATE_LIMIT_CONFIG = {
 // ============================================
 // CORS Configuration
 // ============================================
-
-const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS || '*';
-
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': ALLOWED_ORIGINS,
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+function getCorsOrigin(requestOrigin: string | null): string | null {
+  const configured = process.env.ALLOWED_ORIGINS;
+  const isDev = (process.env.NODE_ENV ?? 'development') === 'development';
+  if (configured) {
+    // Validate against explicit allowlist (comma-separated)
+    const allowed = configured.split(',').map((o) => o.trim());
+    if (requestOrigin && allowed.includes(requestOrigin)) {
+      return requestOrigin;
+    }
+    return null; // Origin not in allowlist
+  }
+  // No ALLOWED_ORIGINS configured
+  if (isDev) {
+    // Safe fallback: only localhost in dev
+    if (requestOrigin?.startsWith('http://localhost:') || requestOrigin === 'http://localhost') {
+      return requestOrigin;
+    }
+    return null;
+  }
+  // Production without ALLOWED_ORIGINS: reject all cross-origin requests
+  console.warn('[middleware] ALLOWED_ORIGINS não definido — CORS desabilitado em produção');
+  return null;
+}
+function buildCorsHeaders(origin: string | null): Record<string, string> {
+  if (!origin) return {};
+  return {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+}
 
 // ============================================
 // Security Headers (Fase 18 — endurecido)
@@ -139,7 +162,10 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/api/')) {
     // Handle OPTIONS requests for CORS preflight
     if (request.method === 'OPTIONS') {
-      Object.entries(CORS_HEADERS).forEach(([key, value]) => {
+      const origin = request.headers.get('origin');
+      const allowedOrigin = getCorsOrigin(origin);
+      const corsHeaders = buildCorsHeaders(allowedOrigin);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
         response.headers.set(key, value);
       });
       return new NextResponse(null, { status: 204, headers: response.headers });
@@ -166,12 +192,13 @@ export async function middleware(request: NextRequest) {
       return tooMany;
     }
 
-    // Add CORS headers for API routes
-    Object.entries(CORS_HEADERS).forEach(([key, value]) => {
+    // Add CORS headers for API routes (only if origin is allowed)
+    const origin = request.headers.get('origin');
+    const allowedOrigin = getCorsOrigin(origin);
+    const corsHeaders = buildCorsHeaders(allowedOrigin);
+    Object.entries(corsHeaders).forEach(([key, value]) => {
       response.headers.set(key, value);
     });
-
-    return response;
   }
 
   // All client-side routes are allowed - auth is verified by SupabaseProvider

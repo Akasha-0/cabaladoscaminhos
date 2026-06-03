@@ -57,10 +57,10 @@ export async function POST(request: NextRequest) {
   }
   const { result: rlResult } = rl;
 
-  // Gate opcional (default: desligado em prod, ligado em dev/test)
-  const allowRegistration =
-    process.env.ALLOW_OPERATOR_REGISTRATION !== 'false' ||
-    process.env.NODE_ENV !== 'production';
+  // Gate de registro: explicitamente opt-in via variável de ambiente.
+  // Não usar NODE_ENV para decisões de auth — preview/staging deployments
+  // podem ter NODE_ENV != 'production' mas serem publicamente acessíveis.
+  const allowRegistration = process.env.ALLOW_OPERATOR_REGISTRATION === 'true';
   if (!allowRegistration) {
     const res = NextResponse.json(
       { error: 'Registro de Operator desabilitado neste ambiente' },

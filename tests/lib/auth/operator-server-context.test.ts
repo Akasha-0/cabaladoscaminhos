@@ -61,10 +61,12 @@ beforeEach(() => {
   cookieStore.current = {};
   headerStore.current = {};
   process.env.NODE_ENV = 'test';
+  // Habilita dev auth bypass para testes (comportamento secure: opt-in explícito)
+  process.env.ALLOW_DEV_AUTH_BYPASS = 'true';
 });
-
 afterEach(() => {
   process.env.NODE_ENV = originalNodeEnv;
+  delete process.env.ALLOW_DEV_AUTH_BYPASS;
 });
 
 function makeValidToken(operatorId: string, role: 'OPERATOR' | 'ADMIN' = 'OPERATOR'): string {
@@ -199,10 +201,9 @@ describe('getOperatorFromServerContext — sem cookie', () => {
 
   it('retorna null sem cookie em produção (mesmo com dev header)', async () => {
     process.env.NODE_ENV = 'production';
+    delete process.env.ALLOW_DEV_AUTH_BYPASS;
     headerStore.current = { 'x-dev-operator-id': 'op-dev' };
-
     const result = await getOperatorFromServerContext();
-
     expect(result).toBeNull();
     expect(mockFindUnique).not.toHaveBeenCalled();
   });
@@ -225,10 +226,9 @@ describe('getOperatorFromServerContext — dev header', () => {
 
   it('ignora dev header em produção', async () => {
     process.env.NODE_ENV = 'production';
+    delete process.env.ALLOW_DEV_AUTH_BYPASS;
     headerStore.current = { 'x-dev-operator-id': 'op-prod' };
-
     const result = await getOperatorFromServerContext();
-
     expect(result).toBeNull();
     expect(mockFindUnique).not.toHaveBeenCalled();
   });

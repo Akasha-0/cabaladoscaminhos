@@ -103,7 +103,7 @@ export interface OperatorTokenPayload {
 // ============================================================================
 // Erros
 // ============================================================================
-/** Erro lançado quando o secret não está configurado (em prod). */
+/** Erro lançado quando JWT_SECRET não está configurada. */
 export class JwtSecretMissingError extends Error {
   constructor() {
     super('JWT_SECRET não está configurado. Defina a env var antes de iniciar o servidor.');
@@ -118,17 +118,7 @@ export class JwtSecretMissingError extends Error {
 function getSecret(): string {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
-    if (process.env.NODE_ENV === 'production') {
-      throw new JwtSecretMissingError();
-    }
-    // Em dev/test, usa um fallback MAS avisa (segurança: nunca vai pra prod).
-    if (typeof console !== 'undefined') {
-      console.warn(
-        '[operator-jwt] JWT_SECRET ausente — usando fallback DEV ONLY. ' +
-          'Defina JWT_SECRET antes de subir para produção.'
-      );
-    }
-    return 'dev-only-fallback-secret-do-not-use-in-prod';
+    throw new JwtSecretMissingError();
   }
   return secret;
 }

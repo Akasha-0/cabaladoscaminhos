@@ -11,6 +11,8 @@
 process.env.AUTH_RL_LOGIN_MAX = '10000';
 process.env.AUTH_RL_REGISTER_MAX = '10000';
 process.env.AUTH_RL_REFRESH_MAX = '10000';
+// Habilita registro de operators para testes (comportamento secure: opt-in explícito)
+process.env.ALLOW_OPERATOR_REGISTRATION = 'true';
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
@@ -453,11 +455,26 @@ describe('POST /api/operator/auth/register', () => {
     if (savedFlag !== undefined) process.env.ALLOW_OPERATOR_REGISTRATION = savedFlag;
   });
 
-  it('em dev, registro funciona sem flag (default ligado)', async () => {
-    const savedEnv = process.env.NODE_ENV;
+  it('registro requer ALLOW_OPERATOR_REGISTRATION=true (não confia em NODE_ENV)', async () => {
+    // Testa que sem a flag explícita, registro é bloqueado mesmo em dev
     const savedFlag = process.env.ALLOW_OPERATOR_REGISTRATION;
-    (process.env as Record<string, string>).NODE_ENV = 'development';
     delete process.env.ALLOW_OPERATOR_REGISTRATION;
+
+    const { POST } = await import('@/app/api/operator/auth/register/route');
+    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
+      email: 'novo@cabala.com',
+      name: 'Novo',
+      password: 'senha12345',
+    }));
+    expect(res.status).toBe(403);
+
+    if (savedFlag !== undefined) process.env.ALLOW_OPERATOR_REGISTRATION = savedFlag;
+  });
+
+  it('registro funciona quando ALLOW_OPERATOR_REGISTRATION=true', async () => {
+    // Testa que com a flag explícita, registro é permitido
+    const savedFlag = process.env.ALLOW_OPERATOR_REGISTRATION;
+    process.env.ALLOW_OPERATOR_REGISTRATION = 'true';
 
     mockFindUnique.mockResolvedValue(null);
     mockCreate.mockResolvedValue(mockOperatorRecord);
@@ -471,7 +488,6 @@ describe('POST /api/operator/auth/register', () => {
     }));
     expect(res.status).toBe(201);
 
-    (process.env as Record<string, string>).NODE_ENV = savedEnv as string;
     if (savedFlag !== undefined) process.env.ALLOW_OPERATOR_REGISTRATION = savedFlag;
   });
 });
