@@ -34,7 +34,25 @@ vi.mock('@/lib/redis', () => ({
   inMemoryStore: new Map(),
   useMemory: true,
 }));
-
+// Mock odus/calculos
+vi.mock('@/lib/odus/calculos', () => ({
+  calcularOduNascimento: vi.fn().mockReturnValue({
+    principal: {
+      numero: 4,
+      nome: 'Irosun',
+      significado: 'O aviso, o sangue que corre nas veias.',
+      elementos: 'Fogo/Terra',
+      orixaRegente: 'Iemanjá',
+      quizilas: ['Olhar para buracos vazios'],
+      preceitos: ['Desenvolver a intuição'],
+      ebos: ['Ebó de Proteção'],
+    },
+    secundario: null,
+  }),
+  getQuizilasPorOdu: vi.fn().mockReturnValue(['Olhar para buracos vazios']),
+  getPreceitosPorOdu: vi.fn().mockReturnValue(['Desenvolver a intuição']),
+  getEbósPorOdu: vi.fn().mockReturnValue(['Ebó de Proteção']),
+}));
 // Mock numerologia/generator
 vi.mock('@/lib/numerologia/generator', () => ({
   calculateNumerology: vi.fn().mockImplementation((name: string) => {

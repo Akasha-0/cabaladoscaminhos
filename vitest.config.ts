@@ -30,6 +30,7 @@ export default defineConfig({
           exclude: [
             'tests/lib/divination/divination-methods.test.ts',
             'tests/lib/divination/reading-history.test.ts',
+            'tests/lib/engines/spiritual-engine.test.ts',
           ],
         },
         resolve: {
