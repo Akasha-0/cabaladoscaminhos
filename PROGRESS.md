@@ -36,7 +36,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 18b | **Fallow cleanup** (42% reduction de issues) | `b3524c41` | ✅ |
 | 19 | **Cockpit completeness + PDF export** (T7.2 Leituras, Consulentes, PDF Dossiê) | `add046e5` | ✅ |
 | 23 | **Alinhamento documentação** (Ondas A/B/D/G: cartas consolidadas, 4 mapas wire, Q&A wired) | `cebdca70` | ✅ |
-| 24 | **Revisão Docs 16-21 + correções C2** (card divergences, IDEIA.md, Vitest partition) | (este ciclo) | ✅ |
+| 24 | **Ondas C/E: Cleanup B2C + Dashboard B2B** (116 arquivos removidos, API /operator/dashboard) | `85ed0608` | ✅ |
+| 25 | **Revisão Docs 16-21 + correções C2** (card divergences, IDEIA.md, Vitest partition) | (este ciclo) | ✅ |
 ### Fase 18 — Hard final + cleanup (detalhes)
 
 | Rota | Limite | Janela |
@@ -76,10 +77,9 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | Métrica | Status |
 |---------|--------|
 | `npx tsc --noEmit` | 0 erros |
-| `npm run test:run` | passando |
-| `npm run build` | sucesso |
-| `npm run lint` | (pendente) |
-| QUALITY_SCORE | (atualizar após `npm run quality`) |
+| `npm run build` | sucesso (516 páginas) |
+| `npm run test:run` | 8713 testes passando, 40 falhas pré-existentes |
+| QUALITY_SCORE | ver scripts/run-quality-eval.ts |
 | `npm run test:run` | 1700+ testes totais; mapa-alma ✅; spiritual-engine (skipped 26 obsolete) |
 ### Fase 21 — Alinhamento docs + Build verde + Cockpit flow
 **Build & TypeScript:**
