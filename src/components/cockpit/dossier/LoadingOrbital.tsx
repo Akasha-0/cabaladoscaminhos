@@ -3,6 +3,7 @@
 
 'use client';
 
+import React from 'react';
 import { Sparkles } from 'lucide-react';
 
 interface LoadingOrbitalProps {
@@ -10,7 +11,7 @@ interface LoadingOrbitalProps {
   errors: number[];
 }
 
-export function LoadingOrbital({ progress, errors }: LoadingOrbitalProps) {
+function LoadingOrbitalInner({ progress, errors }: LoadingOrbitalProps) {
   const pct = progress.total > 0 ? Math.round((progress.current / progress.total) * 100) : 0;
 
   return (
@@ -39,3 +40,6 @@ export function LoadingOrbital({ progress, errors }: LoadingOrbitalProps) {
     </div>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const LoadingOrbital = React.memo(LoadingOrbitalInner);

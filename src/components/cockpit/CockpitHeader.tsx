@@ -18,7 +18,7 @@ interface CockpitHeaderProps {
   onAutoFill?: () => void;
 }
 
-export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: CockpitHeaderProps) {
+function CockpitHeaderInner({ showDebug = false, onClearAll, onAutoFill }: CockpitHeaderProps) {
   const router = useRouter();
   const { getFilledCount } = useCockpitStore();
   const filledCount = getFilledCount();
@@ -132,3 +132,6 @@ export function CockpitHeader({ showDebug = false, onClearAll, onAutoFill }: Coc
     </div>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const CockpitHeader = React.memo(CockpitHeaderInner);

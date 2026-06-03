@@ -1,8 +1,8 @@
 // src/components/cockpit/consultation/OracleBubble.tsx
 // Bolha da resposta do Oráculo (Doc 05 §9 — royal/secondary, à esquerda, Lora, streaming).
+import React from 'react';
 import { Sparkles } from 'lucide-react';
-
-export function OracleBubble({ content, pending }: { content: string; pending?: boolean }) {
+function OracleBubbleInner({ content, pending }: { content: string; pending?: boolean }) {
   return (
     <div className="flex justify-start gap-2">
       <div className="flex-shrink-0 w-7 h-7 rounded-full border border-[var(--color-ramiro-royal)]/30 flex items-center justify-center mt-1"
@@ -32,3 +32,6 @@ export function OracleBubble({ content, pending }: { content: string; pending?: 
     </div>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const OracleBubble = React.memo(OracleBubbleInner);

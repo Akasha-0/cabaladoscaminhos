@@ -1,7 +1,7 @@
 // src/components/cockpit/consultation/UserBubble.tsx
 // Bolha da mensagem do usuário (Doc 05 §9 — laranja, à direita).
-
-export function UserBubble({ content }: { content: string }) {
+import React from 'react';
+function UserBubbleInner({ content }: { content: string }) {
   return (
     <div className="flex justify-end">
       <div
@@ -17,3 +17,6 @@ export function UserBubble({ content }: { content: string }) {
     </div>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const UserBubble = React.memo(UserBubbleInner);

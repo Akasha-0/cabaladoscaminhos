@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { cn } from '@/lib/utils';
@@ -18,7 +18,7 @@ interface CasaData {
   cached?: boolean;
 }
 
-export function DossierViewer({ readingId }: { readingId: string }) {
+function DossierViewerInner({ readingId }: { readingId: string }) {
   const [houses, setHouses] = useState<Record<number, CasaData>>({});
   const [progress, setProgress] = useState({ current: 0, total: 36 });
   const [done, setDone] = useState(false);
@@ -122,3 +122,6 @@ export function DossierViewer({ readingId }: { readingId: string }) {
     </div>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const DossierViewer = React.memo(DossierViewerInner);

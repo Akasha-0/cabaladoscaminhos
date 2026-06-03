@@ -7,6 +7,7 @@
 
 import type { Operator } from '@prisma/client';
 import { Sparkles, Users, LayoutDashboard, FileText, LogOut, Settings } from 'lucide-react';
+import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -33,8 +34,7 @@ function isActive(pathname: string, href: string, match: 'exact' | 'prefix') {
   if (match === 'exact') return pathname === href;
   return pathname === href || pathname.startsWith(href + '/');
 }
-
-export function B2BNav({ operator }: B2BNavProps) {
+function B2BNavInner({ operator }: B2BNavProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -109,3 +109,6 @@ export function B2BNav({ operator }: B2BNavProps) {
     </aside>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const B2BNav = React.memo(B2BNavInner);

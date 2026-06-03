@@ -5,7 +5,7 @@
 'use client';
 
 import { Sparkles } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ConsultationInput } from './ConsultationInput';
 import { OracleBubble } from './OracleBubble';
 import { RoutingChips } from './RoutingChips';
@@ -43,7 +43,7 @@ interface SsePayload {
   fullAnswer?: string;
 }
 
-export function OraculoChat({ readingId, clientName, consultationId: consultationIdProp }: OraculoChatProps) {
+function OraculoChatInner({ readingId, clientName, consultationId: consultationIdProp }: OraculoChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -242,3 +242,6 @@ export function OraculoChat({ readingId, clientName, consultationId: consultatio
     </div>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const OraculoChat = React.memo(OraculoChatInner);

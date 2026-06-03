@@ -1,12 +1,12 @@
 // src/components/cockpit/consultation/RoutingChips.tsx
 // Chips de transparência do roteamento (Doc 05 §9 — royal, discreto).
-
+import React from 'react';
 interface RoutingChipsProps {
   themes: string[];
   houses: number[];
 }
 
-export function RoutingChips({ themes, houses }: RoutingChipsProps) {
+function RoutingChipsInner({ themes, houses }: RoutingChipsProps) {
   if (themes.length === 0 && houses.length === 0) return null;
   return (
     <div className="ml-9 flex flex-wrap items-center gap-1.5">
@@ -35,3 +35,6 @@ export function RoutingChips({ themes, houses }: RoutingChipsProps) {
     </div>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const RoutingChips = React.memo(RoutingChipsInner);

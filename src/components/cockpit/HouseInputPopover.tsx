@@ -32,7 +32,7 @@ const CARTAS_CIGANAS: CartaCiganaOption[] = LENORMAND_CARDS.map((carta) => ({
   significado: carta.keywords,
 }));
 
-export const HouseInputPopover = React.memo(function HouseInputPopoverInner({ casaNumero, onClose, onSave }: HouseInputPopoverProps) {
+function HouseInputPopoverInner({ casaNumero, onClose, onSave }: HouseInputPopoverProps) {
   const house = HOUSES_36.find((h) => h.number === casaNumero);
 
   // AD-17.2: Get used cards from store to filter available cards
@@ -312,3 +312,6 @@ export const HouseInputPopover = React.memo(function HouseInputPopoverInner({ ca
     </div>
   );
 }
+
+// T7.3: memoize — prevents re-render when cockpit parent re-renders
+export const HouseInputPopover = React.memo(HouseInputPopoverInner);
