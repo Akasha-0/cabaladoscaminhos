@@ -310,4 +310,20 @@ Correcao de mocks faltando nos testes de autenticacao:
 
 **Resultado:** 67 auth tests passando (26 auth + 21 sessions + 20 MFA)
 
-*Ultima atualizacao: 2026-06-03 — Fase 29*
+*Última atualização: 2026-06-03 — Fase 29b*
+*Versão: 1.2*
+### Fase 28b — Cockpit UI Tests + Config Repair (2026-06-03)
+Correções no vitest.config.ts (parse error) + UI component tests:
+**vitest.config.ts:**
+- Reparo de parse error (blocos duplicados/mal-formed)
+- Adicionado `testTimeout: 30000` global
+- Removido projeto `legacy` (todos os módulos B2C removidos na Fase 24)
+- Excluídos `divination-methods.test.ts` e `reading-history.test.ts` do core-logic
+**Testes UI corrigidos:**
+- `UserBubble.test.tsx`, `OracleBubble.test.tsx`, `RoutingChips.test.tsx`, `ConsultationInput.test.tsx`, `HouseCell.test.tsx`: `import '@testing-library/jest-dom/vitest'` + `beforeEach(cleanup)` + assertions ajustadas
+- `cockpit-store.test.ts`: cartas únicas por casa (AD-17.2 enforce)
+**Testes API corrigidos:**
+- `mesa-real-save.test.ts`: logging mock + imports em route.ts
+- `consult.test.ts`: logging mock + `chatMessage.findMany` mock
+**Resultado**: 0 falhas em core-logic + core-ui + core-api, 678 testes passando
+*Última atualização: 2026-06-03 — Fase 28b*
