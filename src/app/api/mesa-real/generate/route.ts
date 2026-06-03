@@ -410,11 +410,10 @@ export async function POST(request: NextRequest) {
 
   // 6) SSE Stream
   const encoder = new TextEncoder();
-
   const stream = new ReadableStream({
     async start(controller) {
       const { send, close, abortController } = createSSEStream(controller, encoder, {
-        timeoutMs: 0, // Disable timeout — house-by-house processing is unbounded
+        timeoutMs: 300_000, // 5 min total ceiling — AD-22.7 (abort, never hang)
       });
 
       // Build client maps once (used for every house)

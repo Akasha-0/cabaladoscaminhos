@@ -788,20 +788,36 @@ export function extractFromMap(
   keys: string[]
 ): Record<string, unknown> {
   if (!map || !keys.length) return {};
-
   const result: Record<string, unknown> = {};
   for (const key of keys) {
     const parts = key.split('.');
     let value: unknown = map;
-    for (const part of parts) {
-      if (value && typeof value === 'object' && part in value) {
+    let i = 0;
+    let found = true;
+    while (i < parts.length && found && value != null) {
+      const part = parts[i];
+      if (Array.isArray(value)) {
+        // Find element matching .planet, .house, or .numero
+        const match = value.find((item) => {
+          if (!item || typeof item !== 'object') return false;
+          const obj = item as Record<string, unknown>;
+          return obj.planet?.toString().toLowerCase() === part.toLowerCase() ||
+                 String(obj.house ?? obj.numero ?? '') === part;
+        });
+        value = match ?? undefined;
+      } else if (typeof value === 'object' && value !== null && part in value) {
         value = (value as Record<string, unknown>)[part];
       } else {
-        value = undefined;
+        found = false;
         break;
       }
+      i++;
     }
-    if (value !== undefined) {
+    if (found && value !== undefined) {
+      // If final value is a house object (has .sign), return the .sign string directly
+      if (typeof value === 'object' && value !== null && 'sign' in value) {
+        value = (value as Record<string, unknown>).sign;
+      }
       result[key] = value;
     }
   }

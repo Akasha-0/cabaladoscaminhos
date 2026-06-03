@@ -7,13 +7,8 @@ export default defineConfig({
   test: {
     globals: true,
     setupFiles: ['./tests/setup.ts'],
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: false,
-      },
-    },
-    testTimeout: 60000,
+    pool: 'forks',
+    testTimeout: 5000,
     env: {
       JWT_SECRET: 'test-secret-key-that-is-at-least-32-bytes-long',
       DATABASE_URL: 'postgresql://placeholder:placeholder@localhost/placeholder',
@@ -103,8 +98,6 @@ export default defineConfig({
             'tests/app/dashboard/orixa*',
             'tests/app/dashboard/ritual*',
             'tests/components/onboarding/**',
-            // Legacy hook tests — modules removed with B2C cleanup
-            // 'tests/hooks/*',
           ],
         },
         resolve: {

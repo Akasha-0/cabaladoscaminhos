@@ -108,6 +108,39 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
  - ✅ auth/rate-limit.test.ts: exportados AUTH_RATE_LIMITS, getClientIp, checkAuthRateLimit
  - ✅ quality/auto-evolution.test.ts: marcado como skip (módulo removido)
 ### Fase 22 — Testes + Rate-Limit Fixes
+
+### Fase 29 — Observabilidade + Cockpit + Spiritual Engines + Docs (Ondas S/C/M/O)
+**OBSERVABILIDADE (Doc 22):**
+- generate/route.ts: refatorado para SSE streaming (AD-18.8) — event:house × N + event:synthesis + event:done
+- token-budget.ts: LLM_DAILY_TOKEN_BUDGET env var + warn on exceed
+- All routes: llm.call events com model/tokens/durationMs em openai.ts + minimax.ts
+- docs/22_observabilidade-operacao.md: AD-22.10 (política de retenção) + AD-22.11 (runbook operacional) expandidos
+- consult/route.ts: tokensUsed no done event + tokensUsed persistidos
+- lib/sse.ts: send() suporta event+data fields corretamente
+
+**COCKPIT:**
+- city-autocomplete.tsx: componente novo (Nominatim/OpenStreetMap, debounce 350ms, ARIA)
+- ClientForm.tsx: birthCity usa autocomplete com auto-fill de state/country/coords
+
+**SPIRITUAL ENGINE:**
+- Chiron + Lilith em swiss-ephemeris.ts (fórmulas simplificadas de mean longitude)
+- birth-chart.ts + planet-positions.ts: chiron/lilith no MapaNatal + TEN_PLANETS
+- spiritual-engine.ts: chiron/lilith extraídos de raw.planets + elementos/modalidades calculados
+- mapa-alma.ts: chiron, lilith, elementos {fire/earth/air/water}, modalidades {cardinal/fixed/mutable} no AstrologyResults
+
+**MAPAS ENRIQUECIDOS:**
+- KabalisticMap: impression, rulingArcana {lifePath/expression com major/name/meaning}, pinnacles com significado, karmicLessons, personalCycles
+- numerology-kabalah.ts: NUMBER_MEANINGS/HEBREW_LETTERS/SEFIROT_PATHS/MAJOR_ARCANA lookup tables
+- TantricMap: bodies como {fisico/pranic/emocional/mental/espiritual} com number/description/qualities
+- numerology-tantric.ts: derive5Bodies() calcula 5 corpos a partir da data de nascimento
+
+**Testes Corrigidos:**
+- consult.test.ts: extractDoneFromSSE helper para parsing de SSE em fallback mode
+- mesa-real-save.test.ts: generateRequestId/createLogger mock já existia (corrigido por agente)
+- engines.test.ts: rulingArcana API (lifePath.major), bodies object format
+- operator-auth.test.ts: operatorMfa mock + session mock (corrigido por agente)
+- vitest.config.ts: legacy bucket removido, legacy tests excluídos
+**Build:** 110 páginas ✅
 ### Fase 28 — CRITICAL + Audit Exhaustivo (26 docs)
 **CRITICAL Fixes:**
 - Fix `extractFromMap`: planets array lookup (find by .planet name), houses array lookup (find by .house number), flat object fallback

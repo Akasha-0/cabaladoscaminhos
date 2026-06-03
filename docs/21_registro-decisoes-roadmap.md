@@ -67,19 +67,17 @@
 | AD-19.3 | Testes legados saem com a poda; não consertar | ✅ (legacy excluded) | T3 |
 | AD-19.4 | 6 testes-guardião de determinismo/anti-alucinação | 🟡 | T2 |
 | AD-19.5 | Gate = `test:core` + lint + tsc | 🟡 | T1 |
-| AD-19.6 | Tuning do runner do núcleo (node, threads, timeout 5s) | 🟡 | T1 |
-
-### 2.6 Observabilidade & operação (Doc 22)
+| AD-19.6 | Tuning do runner do núcleo (node, threads, timeout 5s) | ✅ (pool: forks, testTimeout: 5000, poolOptions removido) | T1 |
 ### 2.6 Observabilidade & operação (Doc 22)
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
 | AD-22.1 | Observabilidade só do núcleo B2B | ✅ (implementado) | O |
 | AD-22.2 | Privacidade por padrão: zero PII/segredos em log | ✅ (principio) | O |
 | AD-22.3 | Log estruturado JSON com `requestId` propagado | ✅ (em logging.ts) | O |
-| AD-22.4 | Auditar ações de negócio (não só login) | 🟡 (AuditEvent table) | O |
+| AD-22.4 | Auditar ações de negócio (não só login) | ✅ (SecurityEvent table + logSecurityEvent em login/logout/mfa/refresh) | O |
 | AD-22.5 | Instrumentar/contabilizar toda chamada de LLM; `consult` persiste tokens | ✅ (tokensUsed na ChatMessage) | O |
 | AD-22.6 | Modelo e parâmetros por env logados | ✅ | O |
-| AD-22.7 | SSE tolerante a falha + persistência incremental + status `ERROR` | ✅ (timeout 60s + abort) | O |
+| AD-22.7 | SSE tolerante a falha + persistência incremental + status `ERROR` | ✅ (timeout 300s + abort; persistência incremental house-a-house) | O |
 | AD-22.8 | Separar liveness × readiness | ✅ (/api/health/live) | O |
 ### 2.5 Governança de conteúdo & inteligência (Doc 20)
 | ID | Decisão (resumo) | Status | Onda |
@@ -89,7 +87,7 @@
 | AD-20.3 | Proveniência é dado, não comentário | 🟡 | G |
 | AD-20.4 | Conteúdo provisório (D1–D4) é explícito | ✅ | 0 |
 | AD-20.5 | Reinstaurar `IDEIA.md` como ledger canônico | ✅ (criado 783 linhas) | G |
-| AD-20.6 | `source`/`rationale` no `CorrelationEntry`; `lineage` no glossário | 🟡 | G |
+| AD-20.6 | `source`/`rationale` no `CorrelationEntry`; `lineage` no glossário | ✅ (108 entradas com source/rationale em astrology/kabalah/tantric) | G |
 | AD-20.7 | Crescimento aditivo/versionado (3 vetores) | ✅ (principio) | — |
 | AD-20.8 | Validador rejeita sem fonte | 🟡 | G |
 | AD-20.9 | `provisional` enquanto D1–D4 não confirmados | ✅ | 0 |
