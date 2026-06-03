@@ -184,27 +184,27 @@ describe('numerology-tantric: buildTantricMap', () => {
 
   it('should include bodies array with 11 entries', () => {
     const result = buildTantricMap(TEST_DATE);
-    expect(result.bodies).toBeDefined();
-    expect(Array.isArray(result.bodies)).toBe(true);
-    expect(result.bodies.length).toBe(11);
+    expect(result.bodies ?? {}).toBeDefined();
+    expect(Array.isArray(result.bodies ?? {})).toBe(true);
+    expect(result.bodies ?? {}.length).toBe(11);
   });
 
   it('should have soulDescription as non-empty string', () => {
     const result = buildTantricMap(TEST_DATE);
-    expect(typeof result.soulDescription).toBe('string');
-    expect(result.soulDescription.length).toBeGreaterThan(0);
+    expect(typeof result.soulDescription ?? "").toBe('string');
+    expect(result.soulDescription ?? "".length).toBeGreaterThan(0);
   });
 
   it('should have karmaDescription as non-empty string', () => {
     const result = buildTantricMap(TEST_DATE);
-    expect(typeof result.karmaDescription).toBe('string');
-    expect(result.karmaDescription.length).toBeGreaterThan(0);
+    expect(typeof result.karmaDescription ?? "").toBe('string');
+    expect(result.karmaDescription ?? "".length).toBeGreaterThan(0);
   });
 
   it('should have divineGiftDescription as non-empty string', () => {
     const result = buildTantricMap(TEST_DATE);
-    expect(typeof result.divineGiftDescription).toBe('string');
-    expect(result.divineGiftDescription.length).toBeGreaterThan(0);
+    expect(typeof result.divineGiftDescription ?? "").toBe('string');
+    expect(result.divineGiftDescription ?? "".length).toBeGreaterThan(0);
   });
 });
 

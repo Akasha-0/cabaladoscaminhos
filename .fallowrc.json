@@ -9,9 +9,7 @@
       "tests*.test.ts"
     ]
   },
-  "health": {
-    "enabled": false
-  },
+  "health": {},
   "rules": {
     "unused-types": "warn",
     "unused-dependencies": "warn"
