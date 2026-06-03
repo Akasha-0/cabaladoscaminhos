@@ -330,14 +330,15 @@ export function extractFromMap(
         }, map);
       }
     } else if (first === 'houses' && second) {
-      // Handle array-based houses: houses.2 → find by .house number
-      const houses = map['houses'] as Array<{ house: number; sign: string; degree?: number }> | undefined;
+      // Handle array-based houses: houses.2 → find by house number
+      const houses = map['houses'] as Array<Record<string, unknown>> | undefined;
       if (Array.isArray(houses)) {
         const houseNum = Number(second);
-        const house = houses.find(h => h.house === houseNum);
+        // normalizeBirthChart stores house: casa.numero; legacy data may use house or numero
+        const house = houses.find(h => h['house'] === houseNum || h['numero'] === houseNum);
         if (parts.length === 2) {
-          // Just 'houses.2' → return the sign string
-          value = house?.sign;
+          // Just 'houses.2' → return the sign string (try both 'sign' and 'signo')
+          value = house?.['sign'] ?? house?.['signo'];
         } else {
           // 'houses.2.degree' → drill further
           value = parts.slice(2).reduce<unknown>((obj, k) => {
@@ -346,8 +347,13 @@ export function extractFromMap(
           }, house);
         }
       } else {
-        // Fallback to old flat format: houses.2 → houses[2]
-        value = (map['houses'] as Record<string, unknown>)?.[second];
+        // Record format: houses['1'] → return sign string if present, else the record
+        const houseRecord = (map['houses'] as Record<string, unknown>)?.[second];
+        if (houseRecord && typeof houseRecord === 'object') {
+          value = (houseRecord as Record<string, unknown>)['sign'] ?? (houseRecord as Record<string, unknown>)['signo'] ?? houseRecord;
+        } else {
+          value = houseRecord;
+        }
       }
     } else {
       // Default: dot-path traversal

@@ -1,5 +1,5 @@
 // ============================================================
-// API ROUTE — Revogar 1 sessão ACCESS do Operator (Fase 16)
+// API ROUTE — Revogar 1 sessão ACCESS do Operator (Fase 16 + 24)
 // ============================================================
 // DELETE /api/operator/auth/sessions/[id]
 // Marca a OperatorSession (ACCESS) como revogada. Só permite
@@ -11,6 +11,10 @@
 //   200 — { success: true, id }
 //   401 — operator não autenticado
 //   404 — session não existe, não é ACCESS, ou pertence a outro operator
+//   429 — rate-limit excedido (Phase 24)
+//
+// Fase 24: rate-limit POR OPERATOR (10 deleções / min).
+// Protege contra abuso na listagem/revogação de sessões.
 //
 // Edge case importante: a UI chama essa rota para a sessão atual
 // também (ex: botão "Sair deste"). Como o cookie httpOnly é
@@ -22,6 +26,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireOperator } from '@/lib/auth/operator-session';
+import { checkOperatorRateLimit, OPERATOR_RATE_LIMITS } from '@/lib/auth/rate-limit';
+
+const OPERATOR_LIMIT = OPERATOR_RATE_LIMITS['sessions/delete'].max; // 10
+const OPERATOR_WINDOW = OPERATOR_RATE_LIMITS['sessions/delete'].windowSeconds; // 60s
 
 export async function DELETE(
   request: NextRequest,
@@ -30,6 +38,32 @@ export async function DELETE(
   const operatorOrResponse = await requireOperator(request);
   if (operatorOrResponse instanceof NextResponse) return operatorOrResponse;
   const operator = operatorOrResponse;
+
+  // Fase 24: rate-limit POR OPERATOR antes de fazer trabalho no banco
+  const rlResult = await checkOperatorRateLimit(
+    operator.id,
+    'sessions/delete',
+    OPERATOR_LIMIT,
+    OPERATOR_WINDOW
+  );
+
+  if (!rlResult.allowed) {
+    return NextResponse.json(
+      {
+        error: 'Limite de操作 por operador excedido. Tente novamente mais tarde.',
+        retryAfter: rlResult.retryAfterSeconds,
+      },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': rlResult.limit.toString(),
+          'X-RateLimit-Remaining': rlResult.remaining.toString(),
+          'X-RateLimit-Reset': rlResult.resetAt.toString(),
+          'Retry-After': rlResult.retryAfterSeconds.toString(),
+        },
+      }
+    );
+  }
 
   const { id } = await params;
   if (!id || typeof id !== 'string') {

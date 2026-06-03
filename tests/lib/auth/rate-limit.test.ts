@@ -202,3 +202,229 @@ describe('enforceAuthRateLimit', () => {
     }
   });
 });
+
+// ============================================================
+// TESTES — Per-Operator Rate Limiting (Phase 24)
+// ============================================================
+import {
+  checkOperatorRateLimit,
+  checkBothRateLimits,
+  OPERATOR_RATE_LIMITS,
+  resetOperatorRateLimit,
+} from '@/lib/auth/rate-limit';
+
+describe('OPERATOR_RATE_LIMITS (Phase 24)', () => {
+  it('sessions/revoke-all: 3 revogacoes / 60s', () => {
+    expect(OPERATOR_RATE_LIMITS['sessions/revoke-all'].max).toBe(3);
+    expect(OPERATOR_RATE_LIMITS['sessions/revoke-all'].windowSeconds).toBe(60);
+  });
+  it('sessions/delete: 10 delecoes / 60s', () => {
+    expect(OPERATOR_RATE_LIMITS['sessions/delete'].max).toBe(10);
+    expect(OPERATOR_RATE_LIMITS['sessions/delete'].windowSeconds).toBe(60);
+  });
+  it('logout: 10 logout / 60s', () => {
+    expect(OPERATOR_RATE_LIMITS['logout'].max).toBe(10);
+    expect(OPERATOR_RATE_LIMITS['logout'].windowSeconds).toBe(60);
+  });
+  it('refresh: 30 rotacoes / 60s', () => {
+    expect(OPERATOR_RATE_LIMITS['refresh'].max).toBe(30);
+    expect(OPERATOR_RATE_LIMITS['refresh'].windowSeconds).toBe(60);
+  });
+});
+
+describe('checkOperatorRateLimit', () => {
+  const testOpId = () => 'test-op-' + Date.now() + '-' + Math.floor(Math.random() * 99999);
+
+  it('1a chamada: allowed, remaining = max-1', async () => {
+    const opId = testOpId();
+    const r = await checkOperatorRateLimit(opId, 'refresh', 30, 60);
+    expect(r.allowed).toBe(true);
+    expect(r.limit).toBe(30);
+    expect(r.remaining).toBe(29);
+    await resetOperatorRateLimit(opId, 'refresh');
+  });
+
+  it('incrementa remaining a cada chamada', async () => {
+    const opId = testOpId();
+    const r1 = await checkOperatorRateLimit(opId, 'logout', 10, 60);
+    const r2 = await checkOperatorRateLimit(opId, 'logout', 10, 60);
+    const r3 = await checkOperatorRateLimit(opId, 'logout', 10, 60);
+    expect(r1.remaining).toBe(9);
+    expect(r2.remaining).toBe(8);
+    expect(r3.remaining).toBe(7);
+    await resetOperatorRateLimit(opId, 'logout');
+  });
+
+  it('bloqueia apos max+1 requests', async () => {
+    const opId = testOpId();
+    const limit = 10;
+    for (let i = 0; i < limit; i++) {
+      const r = await checkOperatorRateLimit(opId, 'logout', limit, 60);
+      expect(r.allowed).toBe(true);
+    }
+    const blocked = await checkOperatorRateLimit(opId, 'logout', limit, 60);
+    expect(blocked.allowed).toBe(false);
+    expect(blocked.remaining).toBe(0);
+    expect(blocked.retryAfterSeconds).toBeGreaterThan(0);
+    await resetOperatorRateLimit(opId, 'logout');
+  });
+
+  it('operadores diferentes tem contadores independentes', async () => {
+    const opA = testOpId();
+    const opB = testOpId();
+    const limit = 5;
+    for (let i = 0; i < limit; i++) {
+      await checkOperatorRateLimit(opA, 'sessions/delete', limit, 60);
+    }
+    const blockedA = await checkOperatorRateLimit(opA, 'sessions/delete', limit, 60);
+    expect(blockedA.allowed).toBe(false);
+    const okB = await checkOperatorRateLimit(opB, 'sessions/delete', limit, 60);
+    expect(okB.allowed).toBe(true);
+    expect(okB.remaining).toBe(limit - 1);
+    await resetOperatorRateLimit(opA, 'sessions/delete');
+    await resetOperatorRateLimit(opB, 'sessions/delete');
+  });
+
+  it('acoes diferentes para mesmo operador tem contadores independentes', async () => {
+    const opId = testOpId();
+    const limit = 5;
+    for (let i = 0; i < limit; i++) {
+      await checkOperatorRateLimit(opId, 'logout', limit, 60);
+    }
+    const blockedLogout = await checkOperatorRateLimit(opId, 'logout', limit, 60);
+    expect(blockedLogout.allowed).toBe(false);
+    const okRefresh = await checkOperatorRateLimit(opId, 'refresh', limit, 60);
+    expect(okRefresh.allowed).toBe(true);
+    expect(okRefresh.remaining).toBe(limit - 1);
+    await resetOperatorRateLimit(opId, 'logout');
+    await resetOperatorRateLimit(opId, 'refresh');
+  });
+
+  it('resetAt e Unix epoch futuro em segundos', async () => {
+    const opId = testOpId();
+    const before = Math.floor(Date.now() / 1000);
+    const r = await checkOperatorRateLimit(opId, 'refresh', 30, 60);
+    const after = Math.floor(Date.now() / 1000);
+    expect(r.resetAt).toBeGreaterThanOrEqual(before);
+    expect(r.resetAt).toBeLessThanOrEqual(after + 61);
+    await resetOperatorRateLimit(opId, 'refresh');
+  });
+
+  it('falha aberta se operatorId vazio retorna allowed=true', async () => {
+    const r1 = await checkOperatorRateLimit('', 'refresh', 30, 60);
+    const r2 = await checkOperatorRateLimit('  ', 'refresh', 30, 60);
+    expect(r1.allowed).toBe(true);
+    expect(r2.allowed).toBe(true);
+  });
+});
+
+describe('checkBothRateLimits (dual-layer IP + Operator)', () => {
+  const testOpId = () => 'test-op-' + Date.now() + '-' + Math.floor(Math.random() * 99999);
+  const testIp = () => '203.0.113.' + (Math.floor(Math.random() * 250) + 1);
+
+  function makeRequest(ip) {
+    const headers = {};
+    if (ip !== null) headers['x-forwarded-for'] = ip;
+    return new NextRequest('http://localhost/api/test', { method: 'POST', headers });
+  }
+
+  it('retorna ok quando ambas as camadas abaixo do limite', async () => {
+    const opId = testOpId();
+    const ip = testIp();
+    const r = await checkBothRateLimits(makeRequest(ip), opId, 'refresh', 5, 60, 5, 60);
+    expect(r.kind).toBe('ok');
+    if (r.kind === 'ok') {
+      expect(r.ipResult.allowed).toBe(true);
+      expect(r.operatorResult.allowed).toBe(true);
+    }
+    await resetOperatorRateLimit(opId, 'refresh');
+  });
+
+  it('retorna blocked by ip quando IP excede', async () => {
+    const opId = testOpId();
+    const ip = testIp();
+    const ipLimit = 3;
+    for (let i = 0; i < ipLimit; i++) {
+      await checkBothRateLimits(makeRequest(ip), opId, 'refresh', ipLimit, 60, 100, 60);
+    }
+    const blocked = await checkBothRateLimits(makeRequest(ip), opId, 'refresh', ipLimit, 60, 100, 60);
+    expect(blocked.kind).toBe('blocked');
+    if (blocked.kind === 'blocked') {
+      expect(blocked.by).toBe('ip');
+      expect(blocked.response.status).toBe(429);
+    }
+    await resetOperatorRateLimit(opId, 'refresh');
+  });
+
+  it('retorna blocked by operator quando Operator excede', async () => {
+    const opId = testOpId();
+    const ip = testIp();
+    const opLimit = 3;
+    for (let i = 0; i < opLimit; i++) {
+      await checkBothRateLimits(makeRequest(ip), opId, 'logout', 100, 60, opLimit, 60);
+    }
+    const blocked = await checkBothRateLimits(makeRequest(ip), opId, 'logout', 100, 60, opLimit, 60);
+    expect(blocked.kind).toBe('blocked');
+    if (blocked.kind === 'blocked') {
+      expect(blocked.by).toBe('operator');
+      expect(blocked.response.status).toBe(429);
+      expect(blocked.response.headers.get('X-RateLimit-Remaining')).toBe('0');
+    }
+    await resetOperatorRateLimit(opId, 'logout');
+  });
+
+  it('IP e Operator sao independentes', async () => {
+    const opId1 = testOpId();
+    const opId2 = testOpId();
+    const ip = testIp();
+    const ipLimit = 2;
+    for (let i = 0; i < ipLimit; i++) {
+      await checkBothRateLimits(makeRequest(ip), opId1, 'refresh', ipLimit, 60, 100, 60);
+    }
+    const blocked = await checkBothRateLimits(makeRequest(ip), opId2, 'refresh', ipLimit, 60, 100, 60);
+    expect(blocked.kind).toBe('blocked');
+    if (blocked.kind === 'blocked') expect(blocked.by).toBe('ip');
+    await resetOperatorRateLimit(opId1, 'refresh');
+    await resetOperatorRateLimit(opId2, 'refresh');
+  });
+
+  it('bloqueio por Operator nao afeta IP de outro operador', async () => {
+    const opId1 = testOpId();
+    const opId2 = testOpId();
+    const ip1 = testIp();
+    const ip2 = testIp();
+    const opLimit = 2;
+    for (let i = 0; i < opLimit; i++) {
+      await checkBothRateLimits(makeRequest(ip1), opId1, 'logout', 100, 60, opLimit, 60);
+    }
+    const ok = await checkBothRateLimits(makeRequest(ip2), opId2, 'logout', 100, 60, opLimit, 60);
+    expect(ok.kind).toBe('ok');
+    if (ok.kind === 'ok') expect(ok.operatorResult.remaining).toBe(opLimit - 1);
+    await resetOperatorRateLimit(opId1, 'logout');
+    await resetOperatorRateLimit(opId2, 'logout');
+  });
+
+  it('operadores diferentes com mesmo IP tem limites independentes', async () => {
+    const opId1 = testOpId();
+    const opId2 = testOpId();
+    const ip = testIp();
+    const opLimit = 3;
+    for (let i = 0; i < opLimit; i++) {
+      await checkBothRateLimits(makeRequest(ip), opId1, 'sessions/delete', 100, 60, opLimit, 60);
+    }
+    const ok = await checkBothRateLimits(makeRequest(ip), opId2, 'sessions/delete', 100, 60, opLimit, 60);
+    expect(ok.kind).toBe('ok');
+    if (ok.kind === 'ok') {
+      expect(ok.operatorResult.allowed).toBe(true);
+      expect(ok.operatorResult.remaining).toBe(opLimit - 1);
+    }
+    await resetOperatorRateLimit(opId1, 'sessions/delete');
+    await resetOperatorRateLimit(opId2, 'sessions/delete');
+  });
+
+  it('operador anonimo retorna ok', async () => {
+    const r = await checkBothRateLimits(makeRequest('203.0.113.1'), 'anonymous', 'refresh', 30, 60, 30, 60);
+    expect(r.kind).toBe('ok');
+  });
+});
+

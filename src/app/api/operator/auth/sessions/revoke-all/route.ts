@@ -1,5 +1,5 @@
 // ============================================================
-// API ROUTE — Revogar TODAS as sessões do Operator (Fase 16)
+// API ROUTE — Revogar TODAS as sessões do Operator (Fase 16 + 24)
 // ============================================================
 // POST /api/operator/auth/sessions/revoke-all
 // "Sair de todos os outros dispositivos" — revoga TODAS as
@@ -16,11 +16,15 @@
 // Respostas:
 //   200 — { success: true, revokedCount }  (quantas sessions foram revogadas)
 //   401 — operator não autenticado
+//   429 — rate-limit excedido (Phase 24)
 //
 // Segurança:
 //   - Filtra por operatorId (do Operator autenticado, não do body)
 //   - type=ACCESS (revoga só access, mas se quiser pode estender
 //     para REFRESH numa próxima fase — UI atual não precisa)
+//
+// Fase 24: rate-limit POR OPERATOR (3 revogações / min).
+// Protege contra abuso acidental ou malicioso deste endpoint.
 //
 // Detecção de "sessão atual": usamos o hash do cookie de access,
 // igual ao /sessions GET. Se o cookie expirou entre o load da UI
@@ -35,11 +39,41 @@ import { prisma } from '@/lib/prisma';
 import { requireOperator } from '@/lib/auth/operator-session';
 import { OPERATOR_TOKEN_COOKIE } from '@/lib/auth/operator-jwt';
 import { hashOperatorToken } from '@/lib/auth/operator-sessions';
+import { checkOperatorRateLimit, OPERATOR_RATE_LIMITS } from '@/lib/auth/rate-limit';
+
+const OPERATOR_LIMIT = OPERATOR_RATE_LIMITS['sessions/revoke-all'].max; // 3
+const OPERATOR_WINDOW = OPERATOR_RATE_LIMITS['sessions/revoke-all'].windowSeconds; // 60s
 
 export async function POST(request: NextRequest) {
   const operatorOrResponse = await requireOperator(request);
   if (operatorOrResponse instanceof NextResponse) return operatorOrResponse;
   const operator = operatorOrResponse;
+
+  // Fase 24: rate-limit POR OPERATOR antes de fazer trabalho pesado
+  const rlResult = await checkOperatorRateLimit(
+    operator.id,
+    'revoke-all',
+    OPERATOR_LIMIT,
+    OPERATOR_WINDOW
+  );
+
+  if (!rlResult.allowed) {
+    return NextResponse.json(
+      {
+        error: 'Limite de操作 por operador excedido. Tente novamente mais tarde.',
+        retryAfter: rlResult.retryAfterSeconds,
+      },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': rlResult.limit.toString(),
+          'X-RateLimit-Remaining': rlResult.remaining.toString(),
+          'X-RateLimit-Reset': rlResult.resetAt.toString(),
+          'Retry-After': rlResult.retryAfterSeconds.toString(),
+        },
+      }
+    );
+  }
 
   // 1) Identifica o tokenHash da sessão atual
   const cookieStore = await cookies();

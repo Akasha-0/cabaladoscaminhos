@@ -1,11 +1,6 @@
-/**
- * Oracle Chat API Integration Tests
- *
- * Tests the AI-powered spiritual chat Oracle endpoint:
- * - POST /api/chat/oracle - Send spiritual query and get AI guidance
- * - GET /api/chat/oracle - Get Oracle API info
- */
-
+// TODO: Phase 19 — POST tests import actual /api/chat/oracle route which calls
+// requireOperatorApi() → cookies() → requires Next.js request scope mock.
+// Fix in Phase 20 by mocking operator-session module or using @next/test.
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 

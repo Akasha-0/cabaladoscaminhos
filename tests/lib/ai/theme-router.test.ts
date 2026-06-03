@@ -7,6 +7,7 @@ import {
 } from '@/lib/ai/dossier/consult-context';
 import type { ClientMaps } from '@/lib/ai/dossier/oracle-prompt-builder';
 import type { MatrixData } from '@/types';
+import type { BirthChart } from '@/lib/astrologia/birth-chart';
 
 describe('THEME_TAXONOMY', () => {
   it('todo tema tem casas primárias, aspectos e keywords', () => {
@@ -59,22 +60,59 @@ describe('routeQuestion — roteamento determinístico (Doc 12 §4)', () => {
     expect(r.themes.length).toBeLessThanOrEqual(3);
   });
 });
-
 describe('buildConsultContext — RAG fechado (Doc 12 §5)', () => {
+  // Mock BirthChart covering Casa 24 extraction keys (Vênus, Lua, Casa 5)
+  // and Casa 34 extraction keys (Casa 2, Vênus)
+  const mockBirthChart: BirthChart = {
+    planets: [],
+    houses: [],
+    ascendant: 180, // ~0° Libra → libra
+    midheaven: 200,
+    aspects: [],
+    chart: {
+      planeta: {
+        sol: { planeta: 'sol', signo: 'aries' as const, casa: 10, grauNoSigno: 15 },
+        lua: { planeta: 'lua', signo: 'peixes' as const, casa: 4, grauNoSigno: 18 },
+        mercurio: { planeta: 'mercurio', signo: 'aries' as const, casa: 10, grauNoSigno: 5 },
+        venus: { planeta: 'venus', signo: 'touro' as const, casa: 7, grauNoSigno: 12 },
+        marte: { planeta: 'marte', signo: 'escorpio' as const, casa: 8, grauNoSigno: 22 },
+        jupiter: { planeta: 'jupiter', signo: 'cancer' as const, casa: 10, grauNoSigno: 8 },
+        saturno: { planeta: 'saturno', signo: 'libra' as const, casa: 1, grauNoSigno: 15 },
+        urano: { planeta: 'urano', signo: 'escorpio' as const, casa: 8, grauNoSigno: 2 },
+        netuno: { planeta: 'netuno', signo: 'sagitario' as const, casa: 9, grauNoSigno: 10 },
+        plutao: { planeta: 'plutao', signo: 'escorpio' as const, casa: 7, grauNoSigno: 25 },
+        chiron: { planeta: 'chiron', signo: 'peixes' as const, casa: 12, grauNoSigno: 3 },
+        lilith: { planeta: 'lilith', signo: 'aries' as const, casa: 2, grauNoSigno: 20 },
+        node_norte: { planeta: 'node_norte', signo: 'cancer' as const, casa: 5, grauNoSigno: 10 },
+        node_sul: { planeta: 'node_sul', signo: 'capricornio' as const, casa: 11, grauNoSigno: 10 },
+      },
+      casas: [
+        { numero: 1, signo: 'libra' as const, grauNoSigno: 5, planetaRegente: 'venus' },
+        { numero: 2, signo: 'escorpio' as const, grauNoSigno: 8, planetaRegente: 'marte' },
+        { numero: 3, signo: 'sagitario' as const, grauNoSigno: 20, planetaRegente: 'jupiter' },
+        { numero: 4, signo: 'capricornio' as const, grauNoSigno: 27, planetaRegente: 'saturno' },
+        { numero: 5, signo: 'aquario' as const, grauNoSigno: 15, planetaRegente: 'saturno' }, // Casa 5 for Casa 24 test
+        { numero: 6, signo: 'peixes' as const, grauNoSigno: 3, planetaRegente: 'jupiter' },
+        { numero: 7, signo: 'aries' as const, grauNoSigno: 12, planetaRegente: 'marte' },
+        { numero: 8, signo: 'touro' as const, grauNoSigno: 22, planetaRegente: 'venus' },
+        { numero: 9, signo: 'gemeos' as const, grauNoSigno: 6, planetaRegente: 'mercurio' },
+        { numero: 10, signo: 'cancer' as const, grauNoSigno: 18, planetaRegente: 'lua' },
+        { numero: 11, signo: 'leo' as const, grauNoSigno: 2, planetaRegente: 'sol' },
+        { numero: 12, signo: 'virgem' as const, grauNoSigno: 3, planetaRegente: 'mercurio' },
+      ],
+      ascendente: 182.5, // ~2.5° Libra → libra
+      mediumCoeli: 200,
+      nodes: {
+        norte: { planeta: 'node_norte', signo: 'cancer' as const, casa: 5, grauNoSigno: 10 },
+        sul: { planeta: 'node_sul', signo: 'capricornio' as const, casa: 11, grauNoSigno: 10 },
+      },
+    },
+  };
+
   const client: ClientMaps = {
     fullName: 'Maria Silva',
     birthDate: '1990-05-10',
-    astrologyMap: {
-      ascendant: 'Libra',
-      planets: [
-        { planet: 'venus', sign: 'Touro', degree: 12, house: 7 },
-        { planet: 'moon', sign: 'Peixes', degree: 18, house: 4 },
-      ],
-      houses: [
-        { house: 2, sign: 'Áries', degree: 5 },
-        { house: 5, sign: 'Câncer', degree: 22 },
-      ],
-    },
+    astrologyMap: mockBirthChart as unknown as Record<string, unknown>,
     kabalisticMap: { motivation: 6, expression: 3 },
     tantricMap: { soul: 1, soulDescription: 'Corpo da Alma', karma: 5, karmaDescription: 'Corpo Físico' },
     oduBirth: { oduNumber: 5, oduName: 'Oxê' },

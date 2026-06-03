@@ -1,11 +1,7 @@
-/**
- * Correlação — Tests for cross-system correlations in MapaAlmaCompleto
- * Tests POST /api/mapa with MapaAlmaCompleto response structure
- */
-
+// TODO: Phase 19 — Test expects body.numerologia.vida but API may return different structure.
+// Verify numerologia shape returned by /api/mapa and update test assertions accordingly.
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
-
 function createMapaRequest(body: unknown): NextRequest {
   return new NextRequest('http://localhost:3000/api/mapa', {
     method: 'POST',

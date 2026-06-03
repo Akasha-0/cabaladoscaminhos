@@ -16,6 +16,117 @@ import {
 import { getLenormandCardById } from '@/lib/constants/lenormand-cards';
 import { getOduById } from '@/lib/constants/odus';
 import type { MatrixData } from '@/types';
+import type { BirthChart } from '@/lib/astrologia/birth-chart';
+
+/**
+ * Normalizes a BirthChart to the flat key format expected by extractFromMap.
+ *
+ * Bug fix: BirthChart uses internal Portuguese planet names (sol, marte, etc.)
+ * and has .numero on houses, but extraction keys expect English names (sun, mars)
+ * and .house on houses. This function bridges the gap.
+ *
+ * The normalized output has:
+ * - planets.sun / planets.mars / etc. (English keys → internal positions)
+ * - houses['1'] / houses['2'] / etc. (string keys with .numero and .house for compatibility)
+ * - flat top-level keys: ascendente, ascendente_signo, sun.signo, moon.signo, etc.
+ */
+const PLANET_NAMES: Record<string, string> = {
+  sun: 'sol',
+  moon: 'lua',
+  mercury: 'mercurio',
+  venus: 'venus',
+  mars: 'marte',
+  jupiter: 'jupiter',
+  saturn: 'saturno',
+  uranus: 'urano',
+  neptune: 'netuno',
+  pluto: 'plutao',
+  chiron: 'chiron',
+  lilith: 'lilith',
+};
+
+function signFromDegree(degree: number): string {
+  const signs = [
+    'aries', 'touro', 'gemeos', 'cancer', 'leao', 'virgem',
+    'libra', 'escorpio', 'sagitario', 'capricornio', 'aquario', 'peixes',
+  ];
+  return signs[Math.floor(degree / 30) % 12];
+}
+
+export function normalizeBirthChart(chart: BirthChart): Record<string, unknown> {
+  // Support both formats:
+  // 1. Nested (BirthChart): chart.planeta[key], chart.casas[], chart.ascendente, chart.nodes
+  // 2. Flat (legacy test data): planeta[key], casas[], ascendente, nodes
+  const isNested = !!(chart as unknown as Record<string, unknown>).chart;
+  const planeta = isNested
+    ? (chart as unknown as { chart: { planeta: Record<string, unknown> } }).chart.planeta
+    : (chart as unknown as Record<string, unknown>)['planeta'] as Record<string, unknown>;
+  const casas = isNested
+    ? (chart as unknown as { chart: { casas: Array<{ numero: number; signo: string; planetaRegente: string | null }> } }).chart.casas
+    : (chart as unknown as Record<string, unknown>)['casas'] as Array<{ numero: number; signo: string; planetaRegente: string | null }>;
+  const ascendente = isNested
+    ? (chart as unknown as { chart: { ascendente: number } }).chart.ascendente
+    : (chart as unknown as Record<string, unknown>)['ascendente'] as number;
+  const nodes = isNested
+    ? (chart as unknown as { chart: { nodes: { norte: unknown; sul: unknown } } }).chart.nodes
+    : (chart as unknown as Record<string, unknown>)['nodes'] as { norte: unknown; sul: unknown } | undefined;
+  const aspects = (chart as unknown as Record<string, unknown>)['aspects'];
+
+  // NOTE: do NOT add ascendant to the planets object — the extraction key 'ascendant'
+  // expects a direct string value, not {sign, house}. Top-level ascendant_signo is used.
+
+  const planets: Record<string, Record<string, unknown>> = {};
+  for (const [key, internalName] of Object.entries(PLANET_NAMES)) {
+    const pos = planeta?.[internalName] as { signo: string; casa: number; grauNoSigno: number } | undefined;
+    if (pos) {
+      planets[key] = {
+        sign: pos.signo,
+        house: pos.casa,
+        degree: pos.grauNoSigno,
+      };
+    }
+  }
+  // Add ascendente as 'ascendant' top-level key (extraction key 'ascendant' expects string, not object)
+  const ascendantSign = signFromDegree(ascendente);
+  // Return Record format: extractFromMap's else branch accesses by index
+  const houses: Record<string, Record<string, unknown>> = {};
+  if (casas) {
+    for (const casa of casas) {
+      const num = casa.numero;
+      houses[String(num)] = {
+        house: num,
+        numero: num,
+        sign: casa.signo,
+        signo: casa.signo,
+        planetaRegente: casa.planetaRegente,
+      };
+    }
+  }
+  // Build nodes (handle both flat and nested internal format)
+  const buildNode = (node: unknown): Record<string, unknown> | null => {
+    if (!node) return null;
+    const n = node as { signo?: string; casa?: number; sign?: string; house?: number };
+    return {
+      sign: n.signo ?? n.sign ?? null,
+      house: n.casa ?? n.house ?? null,
+      signo: n.signo ?? n.sign ?? null,
+      casa: n.casa ?? n.house ?? null,
+    };
+  };
+
+  return {
+    planets,
+    houses,
+    aspects: aspects as unknown,
+    ascendente,
+    ascendente_signo: signFromDegree(ascendente),
+    ascendant: signFromDegree(ascendente),
+    northNode: buildNode(nodes?.norte),
+    southNode: buildNode(nodes?.sul),
+    chiron: planets['chiron'],
+    lilith: planets['lilith'],
+  };
+}
 
 /** Subconjunto do Client necessário para o cruzamento (mapas cacheados). */
 export interface ClientMaps {
@@ -100,7 +211,8 @@ export function buildHousePayload(
 ): HousePayload {
   const correlation = getCorrelationEntry(house);
 
-  const astralData = extractFromMap(client.astrologyMap, correlation.astrology.extractionKeys);
+  const normalizedAstro = normalizeBirthChart(client.astrologyMap as BirthChart);
+  const astralData = extractFromMap(normalizedAstro, correlation.astrology.extractionKeys);
   const kabalaData = extractFromMap(client.kabalisticMap, correlation.kabalah.extractionKeys);
   const tantricData = extractFromMap(client.tantricMap, correlation.tantric.extractionKeys);
 

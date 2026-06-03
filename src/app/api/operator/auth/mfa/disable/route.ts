@@ -13,6 +13,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireOperatorApi } from '@/lib/auth/operator-guard';
 import { disableMfa } from '@/lib/auth/operator-mfa';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
 
 const disableSchema = z.object({
   password: z.string().min(1, 'Senha é obrigatória'),
@@ -47,6 +48,11 @@ export async function POST(request: NextRequest) {
         { status: result.reason === 'wrong-password' ? 401 : 400 }
       );
     }
+    // Fase 21: MFA_DISABLED — operador desativou MFA (após re-autenticação).
+    logSecurityEvent({
+      type: 'MFA_DISABLED',
+      operatorId: operator.id,
+    });
     return NextResponse.json({ ok: true, disabled: true });
   } catch (err) {
     console.error('[mfa/disable] failed', err);

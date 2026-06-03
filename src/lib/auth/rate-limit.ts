@@ -35,28 +35,23 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getRedisClient } from '@/lib/redis';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
 
 // ============================================================
 // CONFIG
 // ============================================================
 
 /**
- * Limites por rota (Fase 18).
+ * Limites por rota (Fase 18 + Fase 25).
  * - login:    5 tentativas / 15 min / IP   (mitiga brute-force)
  * - register: 3 registros / 1h / IP        (mitiga account-stuffing)
  * - refresh:  30 rotações / 1 min / IP     (mitiga abuso de refresh)
- *
- * Ajuste aqui se algum tráfego legítimo for barrado — não exponha
- * como env var sem pensar: brute-force real também lê env vars.
- */
-/**
- * Limites por rota (Fase 18).
- * - login:    5 tentativas / 15 min / IP   (mitiga brute-force)
- * - register: 3 registros / 1h / IP        (mitiga account-stuffing)
- * - refresh:  30 rotações / 1 min / IP     (mitiga abuso de refresh)
+ * - forgot-password:  5 pedidos / 15 min / IP  (mitiga enumeração de emails)
+ * - reset-password:   10 tentativas / 5 min / IP (mitiga brute-force de token)
  *
  * **Testabilidade**: cada limite pode ser sobrescrito via env var
- * (`AUTH_RL_LOGIN_MAX`, `AUTH_RL_REGISTER_MAX`, `AUTH_RL_REFRESH_MAX`).
+ * (`AUTH_RL_LOGIN_MAX`, `AUTH_RL_REGISTER_MAX`, `AUTH_RL_REFRESH_MAX`,
+ * `AUTH_RL_FORGOT_PASSWORD_MAX`, `AUTH_RL_RESET_PASSWORD_MAX`).
  * Em testes, setamos valores altos (ex.: 10000) para desabilitar
  * efetivamente o rate-limit. Defaults são seguros para produção.
  *
@@ -75,8 +70,9 @@ export const AUTH_RATE_LIMITS = {
   login:    { windowSeconds: 15 * 60, max: readMax('AUTH_RL_LOGIN_MAX', 5),  label: 'login'    },
   register: { windowSeconds: 60 * 60, max: readMax('AUTH_RL_REGISTER_MAX', 3),  label: 'register' },
   refresh:  { windowSeconds: 60,      max: readMax('AUTH_RL_REFRESH_MAX', 30), label: 'refresh'  },
+  'forgot-password':  { windowSeconds: 15 * 60, max: readMax('AUTH_RL_FORGOT_PASSWORD_MAX', 5), label: 'forgot-password' },
+  'reset-password':   { windowSeconds: 5 * 60,  max: readMax('AUTH_RL_RESET_PASSWORD_MAX', 10), label: 'reset-password'  },
 } as const;
-
 export type AuthRoute = keyof typeof AUTH_RATE_LIMITS;
 
 // ============================================================
@@ -216,6 +212,12 @@ export async function enforceAuthRateLimit(
   const result = await checkAuthRateLimit(route, ip);
 
   if (!result.allowed) {
+    // Fase 21: RATE_LIMIT_EXCEEDED — fire-and-forget, nunca bloqueia
+    logSecurityEvent({
+      type: 'RATE_LIMIT_EXCEEDED',
+      ipAddress: ip,
+      metadata: { route, limit: result.limit, remaining: result.remaining },
+    });
     const res = NextResponse.json(
       {
         error: 'Muitas tentativas. Tente novamente mais tarde.',
@@ -226,7 +228,6 @@ export async function enforceAuthRateLimit(
     applyRateLimitHeaders(res, result);
     return { kind: 'blocked', response: res };
   }
-
   return { kind: 'ok', result };
 }
 
@@ -261,5 +262,269 @@ async function resetAuthRateLimit(
   } catch (err) {
     // Best-effort; testes podem não ter Redis.
     console.error(`[auth/rate-limit] reset failed for ${route}/${ip}`, err);
+  }
+}
+// ============================================================
+// PER-OPERATOR RATE LIMITING (Phase 24)
+// ============================================================
+// Rate-limit adicional POR OPERATOR (não só por IP).
+// Redis key pattern: `ratelimit:operator:{operatorId}:{action}`
+//
+// Camadas de proteção:
+//   1. IP-based rate limit (Fase 18) — primeira linha de defesa
+//   2. Operator-based rate limit — segunda linha (evita abuso por operator comprometido)
+//
+// Ambas são verificadas independentemente. Se qualquer uma exceder → 429.
+//
+// Estratégia: token bucket simplificado via `INCR` + `EXPIRE` atômico (mesmo
+// padrão do checkAuthRateLimit, mas com key diferente).
+//
+// Fail-open: se Redis estiver down,允许请求但记录警告。Auth不能因Redis down而阻塞。
+export interface OperatorRateLimitResult {
+  allowed: boolean;
+  limit: number;
+  remaining: number;
+  resetAt: number;
+  retryAfterSeconds: number;
+}
+/**
+ * Verifica e INCREMENTA o contador de rate-limit por operator.
+ *
+ * @param operatorId - ID do operador autenticado
+ * @param action     - nome da ação (ex: 'revoke-all', 'refresh', 'logout')
+ * @param limit      - máximo de requests permitidos na janela
+ * @param windowSecs - tamanho da janela em segundos
+ *
+ * Fail-open: se Redis falhar, permite o request e loga warning.
+ * Nunca bloqueia por causa de Redis down.
+ */
+export async function checkOperatorRateLimit(
+  operatorId: string,
+  action: string,
+  limit: number,
+  windowSecs: number
+): Promise<OperatorRateLimitResult> {
+  if (!operatorId || typeof operatorId !== 'string') {
+    // Sem operatorId válido, não podemos fazer rate-limit por operator.
+    // Mas IP limit já está lá — deixamos passar.
+    return {
+      allowed: true,
+      limit,
+      remaining: limit,
+      resetAt: Math.floor(Date.now() / 1000) + windowSecs,
+      retryAfterSeconds: 0,
+    };
+  }
+  const key = `ratelimit:operator:${operatorId}:${action}`;
+  let count: number;
+  let ttlSeconds: number;
+  try {
+    const redis = await getRedisClient();
+    count = await redis.incr(key);
+    if (count === 1) {
+      await redis.expire(key, windowSecs);
+    }
+    // Pega TTL atual
+    const redisAny = redis as unknown as {
+      ttl?: (k: string) => Promise<number>;
+    };
+    if (typeof redisAny.ttl === 'function') {
+      const ttl = await redisAny.ttl(key);
+      ttlSeconds = ttl > 0 ? ttl : windowSecs;
+    } else {
+      ttlSeconds = windowSecs;
+    }
+  } catch (err) {
+    // FAILED OPEN — loga e libera. Redis down não bloqueia auth.
+    console.error(
+      `[auth/rate-limit/operator] Redis error on ${action} for operatorId ${operatorId}`,
+      err
+    );
+    return {
+      allowed: true,
+      limit,
+      remaining: limit,
+      resetAt: Math.floor(Date.now() / 1000) + windowSecs,
+      retryAfterSeconds: windowSecs,
+    };
+  }
+  const allowed = count <= limit;
+  const remaining = Math.max(0, limit - count);
+  const resetAt = Math.floor(Date.now() / 1000) + ttlSeconds;
+  return {
+    allowed,
+    limit,
+    remaining,
+    resetAt,
+    retryAfterSeconds: allowed ? 0 : ttlSeconds,
+  };
+}
+/**
+ * Helper: combina verificação de rate-limit IP + Operator.
+ * Retorna 429 se QUALQUER um dos dois for excedido.
+ *
+ * Uso típico:
+ *   const rl = await checkBothRateLimits(request, operatorId, 'refresh', IP_LIMIT, OPERATOR_LIMIT, WINDOW);
+ *   if (!rl.allowed) return rl.response;
+ */
+export async function checkBothRateLimits(
+  request: NextRequest | undefined | null,
+  operatorId: string,
+  action: string,
+  ipLimit: number,
+  ipWindowSeconds: number,
+  operatorLimit: number,
+  operatorWindowSeconds: number
+): Promise<
+  | { kind: 'blocked'; response: NextResponse; by: 'ip' | 'operator' }
+  | {
+      kind: 'ok';
+      ipResult: RateLimitResult;
+      operatorResult: OperatorRateLimitResult;
+    }
+> {
+  // 1) IP-based (já existente)
+  const ip = getClientIp(request);
+  const ipResult = await checkAuthRateLimitFromConfig(ip, action, ipLimit, ipWindowSeconds);
+  if (!ipResult.allowed) {
+    // Fase 21: RATE_LIMIT_EXCEEDED — fire-and-forget
+    logSecurityEvent({
+      type: 'RATE_LIMIT_EXCEEDED',
+      ipAddress: ip,
+      metadata: { route: action, limit: ipResult.limit, remaining: ipResult.remaining, by: 'ip' },
+    });
+    const res = NextResponse.json(
+      {
+        error: 'Muitas tentativas. Tente novamente mais tarde.',
+        retryAfter: ipResult.retryAfterSeconds,
+        limitType: 'ip',
+      },
+      { status: 429 }
+    );
+    applyRateLimitHeaders(res, ipResult);
+    return { kind: 'blocked', response: res, by: 'ip' };
+  }
+  // 2) Operator-based
+  const operatorResult = await checkOperatorRateLimit(
+    operatorId,
+    action,
+    operatorLimit,
+    operatorWindowSeconds
+  );
+  if (!operatorResult.allowed) {
+    // Fase 21: RATE_LIMIT_EXCEEDED — fire-and-forget
+    logSecurityEvent({
+      type: 'RATE_LIMIT_EXCEEDED',
+      operatorId: operatorId,
+      ipAddress: ip,
+      metadata: { route: action, limit: operatorResult.limit, remaining: operatorResult.remaining, by: 'operator' },
+    });
+    const res = NextResponse.json(
+      {
+        error: 'Limite de操作 por operador excedido. Tente novamente mais tarde.',
+        retryAfter: operatorResult.retryAfterSeconds,
+        limitType: 'operator',
+      },
+      { status: 429 }
+    );
+    // Aplica headers de rate-limit (usando operador result)
+    res.headers.set('X-RateLimit-Limit', operatorResult.limit.toString());
+    res.headers.set('X-RateLimit-Remaining', operatorResult.remaining.toString());
+    res.headers.set('X-RateLimit-Reset', operatorResult.resetAt.toString());
+    res.headers.set('Retry-After', operatorResult.retryAfterSeconds.toString());
+    return { kind: 'blocked', response: res, by: 'operator' };
+  }
+  return { kind: 'ok', ipResult, operatorResult };
+}
+/**
+ * Wrapper sobre checkAuthRateLimit que aceita config customizada
+ * (limit + windowSeconds) em vez de usar AUTH_RATE_LIMITS.
+ * Usado por checkBothRateLimits.
+ */
+async function checkAuthRateLimitFromConfig(
+  ip: string,
+  action: string,
+  limit: number,
+  windowSeconds: number
+): Promise<RateLimitResult> {
+  let count: number;
+  let ttlSeconds: number;
+  try {
+    const redis = await getRedisClient();
+    const key = `auth:rl:${action}:${ip}`;
+    count = await redis.incr(key);
+    if (count === 1) {
+      await redis.expire(key, windowSeconds);
+    }
+    const redisAny = redis as unknown as {
+      ttl?: (k: string) => Promise<number>;
+    };
+    if (typeof redisAny.ttl === 'function') {
+      const ttl = await redisAny.ttl(key);
+      ttlSeconds = ttl > 0 ? ttl : windowSeconds;
+    } else {
+      ttlSeconds = windowSeconds;
+    }
+  } catch (err) {
+    console.error(`[auth/rate-limit] Redis error on ${action} for ${ip}`, err);
+    return {
+      allowed: true,
+      limit,
+      remaining: limit,
+      resetAt: Math.floor(Date.now() / 1000) + windowSeconds,
+      retryAfterSeconds: windowSeconds,
+    };
+  }
+  const allowed = count <= limit;
+  const remaining = Math.max(0, limit - count);
+  const resetAt = Math.floor(Date.now() / 1000) + ttlSeconds;
+  return {
+    allowed,
+    limit,
+    remaining,
+    resetAt,
+    retryAfterSeconds: allowed ? 0 : ttlSeconds,
+  };
+}
+/**
+ * Limites por rota para rate-limit POR OPERATOR (Phase 24).
+ * Estes são mais permissivos que os de IP (o operator autenticado é
+ * menos provável de ser atacante, mas um operator comprometido pode
+ * tentar abusar de suas próprias sessões).
+ */
+export const OPERATOR_RATE_LIMITS = {
+  'sessions/revoke-all': { windowSeconds: 60, max: 3 },
+  'sessions/delete':     { windowSeconds: 60, max: 10 },
+  'logout':              { windowSeconds: 60, max: 10 },
+  'refresh':             { windowSeconds: 60, max: 30 },
+} as const;
+export type OperatorRoute = keyof typeof OPERATOR_RATE_LIMITS;
+/**
+ * Helper de conveniência: obtém config de OPERATOR_RATE_LIMITS.
+ */
+export function getOperatorRateLimitConfig(route: OperatorRoute) {
+  return OPERATOR_RATE_LIMITS[route];
+}
+/**
+ * Reseta o contador de rate-limit por operator. Útil em testes.
+ * Em produção, NUNCA chamar — invalidaria a proteção.
+ */
+export async function resetOperatorRateLimit(
+  operatorId: string,
+  action: string
+): Promise<void> {
+  const key = `ratelimit:operator:${operatorId}:${action}`;
+  try {
+    const redis = await getRedisClient();
+    const redisAny = redis as unknown as {
+      del?: (k: string) => Promise<unknown>;
+    };
+    if (typeof redisAny.del === 'function') {
+      await redisAny.del(key);
+    } else {
+      await redis.set(key, '0', 'EX', 1);
+    }
+  } catch (err) {
+    console.error(`[auth/rate-limit/operator] reset failed for ${operatorId}/${action}`, err);
   }
 }

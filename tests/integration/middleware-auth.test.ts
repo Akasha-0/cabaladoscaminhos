@@ -10,7 +10,52 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { NextRequest, NextResponse } from 'next/server';
+
+// Mock next/server to avoid import errors in node environment
+// The actual middleware behavior is tested via simulateMiddleware()
+class MockNextResponse {
+  headers = new Map<string, string>();
+  statusCode = 200;
+  status = 200; // exposed for test assertions
+  redirected = false;
+  url = '';
+
+  static next() {
+    return new MockNextResponse();
+  }
+  static json(data: unknown, init?: { status?: number; headers?: Record<string, string> }) {
+    const r = new MockNextResponse();
+    r.statusCode = init?.status ?? 200;
+    r.status = r.statusCode;
+    if (init?.headers) {
+      Object.entries(init.headers).forEach(([k, v]) => r.headers.set(k, v));
+    }
+    return {
+      ...r,
+      body: JSON.stringify(data),
+      json: async () => data,
+    } as unknown as MockNextResponse & { body: string; json: () => Promise<unknown> };
+  }
+  static redirect(url: URL, existingHeaders?: Map<string, string>) {
+    const r = new MockNextResponse();
+    r.statusCode = 307; // Temporary redirect (same behavior as Next.js redirect())
+    r.status = 307;
+    r.redirected = true;
+    r.url = url.toString();
+    // Copy existing headers if provided
+    if (existingHeaders) {
+      existingHeaders.forEach((v, k) => r.headers.set(k, v));
+    }
+    r.headers.set('Location', url.toString());
+    return r as unknown as MockNextResponse;
+  }
+
+  set(key: string, value: string) { this.headers.set(key, value); }
+  get(key: string): string | null { return this.headers.get(key) ?? null; }
+}
+
+// Stub - not used in simulation but satisfies import
+type NextRequest = unknown;
 
 // ============================================
 const RATE_LIMIT_CONFIG = {
@@ -82,7 +127,7 @@ function checkRateLimitSimulated(
 // ============================================
 
 function simulateMiddleware(pathname: string, clientIp: string = '127.0.0.1') {
-  const response = NextResponse.next();
+  const response = MockNextResponse.next();
   
   // Security headers
   response.headers.set('X-Request-Id', 'test-request-id');
@@ -102,7 +147,7 @@ function simulateMiddleware(pathname: string, clientIp: string = '127.0.0.1') {
       Object.entries(CORS_HEADERS).forEach(([key, value]) => {
         response.headers.set(key, value);
       });
-      return new NextResponse(null, { status: 204, headers: response.headers });
+      return new MockNextResponse(null, { status: 204, headers: response.headers });
     }
     const identifier = clientIp;
     const rateLimitResult = checkRateLimitSimulated(identifier, RATE_LIMIT_CONFIG);
@@ -110,7 +155,7 @@ function simulateMiddleware(pathname: string, clientIp: string = '127.0.0.1') {
     response.headers.set('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
     response.headers.set('X-RateLimit-Reset', Math.ceil(rateLimitResult.resetIn / 1000).toString());
     if (!rateLimitResult.allowed) {
-      return NextResponse.json(
+      return MockNextResponse.json(
         {
           error: 'Rate limit exceeded',
           retryAfter: Math.ceil(rateLimitResult.resetIn / 1000),
@@ -137,7 +182,7 @@ function simulateMiddleware(pathname: string, clientIp: string = '127.0.0.1') {
 
   // Other routes redirect to login
   const url = new URL('http://localhost:3000/login');
-  return NextResponse.redirect(url);
+  return MockNextResponse.redirect(url, response.headers);
 }
 
 // ============================================

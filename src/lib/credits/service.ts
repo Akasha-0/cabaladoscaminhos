@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { TipoTransacao } from '@prisma/client';
 
-class CreditosInsuficientesError extends Error {
+export class CreditosInsuficientesError extends Error {
   constructor(
     public saldoAtual: number,
     public saldoNecessario: number
@@ -11,15 +11,14 @@ class CreditosInsuficientesError extends Error {
   }
 }
 
-async function getCreditos(userId: string): Promise<number> {
+export async function getCreditos(userId: string): Promise<number> {
   const credito = await prisma.credito.findUnique({
     where: { userId },
   });
-
   return credito?.saldo ?? 0;
 }
 
-async function getCreditosCompleto(userId: string) {
+export async function getCreditosCompleto(userId: string) {
   const credito = await prisma.credito.findUnique({
     where: { userId },
     include: {
@@ -110,7 +109,7 @@ export async function debitarCreditos(
   return { novoSaldo: creditoAtualizado.saldo };
 }
 
-async function verificarCreditos(
+export async function verificarCreditos(
   userId: string,
   quantidade: number
 ): Promise<boolean> {

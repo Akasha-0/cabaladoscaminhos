@@ -237,74 +237,87 @@ async function handleSubscriptionUpdated(subscription: {
 
 // POST /api/stripe/webhook - Handle Stripe webhook events
 export async function POST(request: NextRequest) {
-  // Return 200 quickly - Stripe expects acknowledgment
-  const body = await request.text();
+  // Read raw body for signature verification (must be before JSON parsing)
+  const rawBody = await request.text();
   const sig = request.headers.get('stripe-signature');
-
   if (!sig || !WEBHOOK_SECRET) {
     console.error('[Stripe Webhook] Missing signature or webhook secret');
-    return NextResponse.json({ error: 'Missing signature' }, { status: 400 });
+    return NextResponse.json({ error: 'Missing signature or webhook secret' }, { status: 400 });
   }
-
   if (!stripe) {
     console.error('[Stripe Webhook] Stripe client not initialized');
     return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 });
   }
-
   let event;
-
   try {
-    event = stripe.webhooks.constructEvent(body, sig, WEBHOOK_SECRET);
+    event = stripe.webhooks.constructEvent(rawBody, sig, WEBHOOK_SECRET);
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
     console.error('[Stripe Webhook] Signature verification failed:', errorMessage);
-    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+    return NextResponse.json({ error: `Invalid signature: ${errorMessage}` }, { status: 400 });
   }
-
-  // Handle events asynchronously to return 200 quickly
-  switch (event.type) {
-    case 'checkout.session.completed': {
-      const session = event.data.object as {
-        customer?: string;
-        customer_email?: string;
-        metadata?: SubscriptionMetadata;
-        subscription?: string;
-      };
-      // Fire and forget - process async
-      handleCheckoutCompleted(session).catch((error) => {
-        console.error('[Stripe Webhook] Error handling checkout.completed:', error);
-      });
-      break;
-    }
-
-    case 'customer.subscription.deleted': {
-      const subscription = event.data.object as {
-        id: string;
-        customer: string;
-      };
-      handleSubscriptionDeleted(subscription).catch((error) => {
-        console.error('[Stripe Webhook] Error handling subscription.deleted:', error);
-      });
-      break;
-    }
-
-    case 'customer.subscription.updated': {
-      const subscription = event.data.object as {
-        id: string;
-        customer: string;
-        status?: string;
-        items?: { data: Array<{ price: { id: string } }> };
-      };
-      handleSubscriptionUpdated(subscription).catch((error) => {
-        console.error('[Stripe Webhook] Error handling subscription.updated:', error);
-      });
-      break;
-    }
-
-    default:
-      console.log(`[Stripe Webhook] Unhandled event type: ${event.type}`);
+  // Idempotency: skip if already processed
+  const existingEvent = await prisma.webhookEvent.findUnique({
+    where: { stripeEventId: event.id },
+  });
+  if (existingEvent) {
+    console.log(`[Stripe Webhook] Event ${event.id} already processed, skipping`);
+    return NextResponse.json({ received: true, skipped: true });
   }
-
-  // Return 200 quickly to acknowledge receipt
+  // Route to handler, record as processed on success
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object as {
+          customer?: string;
+          customer_email?: string;
+          metadata?: SubscriptionMetadata;
+          subscription?: string;
+        };
+        await handleCheckoutCompleted(session);
+        break;
+      }
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as {
+          id: string;
+          customer: string;
+        };
+        await handleSubscriptionDeleted(subscription);
+        break;
+      }
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object as {
+          id: string;
+          customer: string;
+          status?: string;
+          items?: { data: Array<{ price: { id: string } }> };
+        };
+        await handleSubscriptionUpdated(subscription);
+        break;
+      }
+      default:
+        console.log(`[Stripe Webhook] Unhandled event type: ${event.type}`);
+    }
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+    console.error(`[Stripe Webhook] Handler error for ${event.type}:`, errorMessage);
+    // Return 500 so Stripe will retry — do NOT mark as processed
+    return NextResponse.json({ error: `Handler failed: ${errorMessage}` }, { status: 500 });
+  }
+  // Mark event as processed (only after all handlers succeeded)
+  try {
+    await prisma.webhookEvent.create({
+      data: {
+        stripeEventId: event.id,
+        type: event.type,
+      },
+    });
+  } catch (err: unknown) {
+    // If the record already exists (race condition), that's fine — idempotency holds
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+    if (!err || !(err instanceof Error) || !err.message.includes('Unique constraint')) {
+      console.error('[Stripe Webhook] Failed to record event:', errorMessage);
+    }
+  }
   return NextResponse.json({ received: true });
 }

@@ -6,7 +6,7 @@
 'use client';
 
 import type { Operator } from '@prisma/client';
-import { Sparkles, Users, LayoutDashboard, FileText, LogOut } from 'lucide-react';
+import { Sparkles, Users, LayoutDashboard, FileText, LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -26,6 +26,7 @@ const NAV_ITEMS = [
     match: 'exact' as const,
   },
   { label: 'Leituras', href: '/cockpit/leituras', icon: FileText, match: 'prefix' as const },
+  { label: 'Configurações', href: '/cockpit/settings', icon: Settings, match: 'exact' as const },
 ];
 
 function isActive(pathname: string, href: string, match: 'exact' | 'prefix') {

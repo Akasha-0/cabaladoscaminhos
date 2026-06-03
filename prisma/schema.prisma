@@ -31,7 +31,23 @@ enum OperatorSessionType {
   ACCESS
   REFRESH
 }
-
+///
+/// Fase 21 — Persistent Security Audit Log.
+/// Tipos de eventos de segurança rastreados para SRE e compliance.
+enum SecurityEventType {
+  LOGIN_SUCCESS
+  LOGIN_FAILURE
+  REFRESH_REUSE
+  RATE_LIMIT_EXCEEDED
+  MFA_ENABLED
+  MFA_DISABLED
+  PASSWORD_CHANGED
+  SESSION_REVOKED
+  ACCOUNT_LOCKED
+}
+// ============================================================================
+// ENUMS — END
+// ============================================================================
 enum ReadingStatus {
   PENDING // Mesa preenchida, dossiê ainda não gerado
   GENERATING // IA processando
@@ -53,13 +69,24 @@ model Operator {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  /// Fase 26: contagem de tentativas de login falhas consecutivas.
+  /// Resetada a 0 após login bem-sucedido ou unlock administrativo.
+  failedLoginAttempts Int      @default(0) @map("failed_login_attempts")
+
+  /// Fase 26: quando a conta está temporariamente bloqueada.
+  /// Null = não bloqueada. Após MAX_ATTEMPTS falhas consecutivas,
+  /// define para now() + LOCKOUT_DURATION_MINUTES.
+  lockedUntil DateTime? @map("locked_until")
+
   readings      Reading[]
   consultations Consultation[]
   sessions      OperatorSession[]
+  passwordResetTokens PasswordResetToken[]
+  /// Fase 21: audit trail de eventos de segurança.
+  securityEvents SecurityEvent[]
 
   /// Fase 20: MFA TOTP opt-in. Apenas role=ADMIN pode ativar.
   mfa           OperatorMfa?
-
   @@map("operators")
 }
 
@@ -176,6 +203,55 @@ model OperatorSession {
   @@index([expiresAt])
   @@index([type, revokedAt])
   @@map("operator_sessions")
+}
+
+ /// Fase 25 — Token de recuperação de senha para Operators.
+ ///
+ /// Fluxo:
+ ///   1. POST /api/operator/auth/forgot-password { email }
+ ///      → cria registro com token hasheado, TTL 1h
+ ///   2. Email com link: /operator/reset-password?token=<raw>
+ ///   3. POST /api/operator/auth/reset-password { token, newPassword }
+ ///      → valida token, atualiza senha, marca usedAt
+ ///
+ /// Segurança:
+ ///   - Token em si é 32 bytes randômicos (64 hex chars) — gerado com crypto.
+ ///   - No DB só persiste o SHA-256 do token — nunca o raw token.
+ ///   - Cada uso marca `usedAt`; tokens usados não são reutilizáveis.
+ ///   - Operador com token pendente pode pedir novo (invalida o anterior).
+ model PasswordResetToken {
+   id         String    @id @default(cuid())
+   operatorId String
+   operator   Operator  @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+   tokenHash  String    @unique
+   expiresAt  DateTime
+   usedAt     DateTime?
+   createdAt  DateTime  @default(now())
+
+  @@index([operatorId])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
+ }
+// ============================================================================
+// ÉPICO A — AUTENTICAÇÃO — END
+// ============================================================================
+// ============================================================================
+// FASE 21 — SECURITY EVENT AUDIT LOG
+// ============================================================================
+model SecurityEvent {
+  id String @id @default(cuid())
+  type SecurityEventType
+  operatorId String?
+  ipAddress String?
+  userAgent String?
+  metadata Json?
+  createdAt DateTime @default(now())
+  operator Operator? @relation(fields: [operatorId], references: [id])
+
+  @@index([type])
+  @@index([operatorId])
+  @@index([createdAt])
+  @@map("security_events")
 }
 
 /// Consulente — dados fixos do cliente. Os mapas calculados ficam
@@ -411,6 +487,26 @@ model Assinatura {
   @@index([dataProximoCobro])
   @@index([plano])
   @@map("assinaturas")
+}
+
+// ============================================================================
+// STRIPE WEBHOOK — Idempotency
+// ============================================================================
+
+/// Tracks processed Stripe webhook events to prevent duplicate handling.
+/// Each Stripe event has a unique id — we store it here to ensure
+/// at-least-once delivery semantics (Stripe retries on 2xx responses).
+/// Phase 27: signature verification + idempotency hardening.
+model WebhookEvent {
+  id            String   @id @default(cuid())
+  stripeEventId String   @unique
+  type          String
+
+  processedAt DateTime @default(now())
+
+  @@index([processedAt])
+  @@index([type])
+  @@map("webhook_events")
 }
 
 // =====================

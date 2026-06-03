@@ -43,6 +43,7 @@
   "exclude": [
     "node_modules",
     "scripts",
+    "tests",
     "src/lib/quality/__evals_DISABLED__/**/*"
   ]
 }

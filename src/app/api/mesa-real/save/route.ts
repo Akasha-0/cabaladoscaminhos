@@ -10,12 +10,11 @@
 //
 // AD-17.2: Validação de unicidade das cartas — cada carta (1-36) só pode
 // aparecer uma única vez na leitura (Grande Tableau).
-
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
 import { requireOperator } from '@/lib/auth/operator-session';
 import { generateRequestId, createLogger } from '@/lib/logging';
+import { prisma } from '@/lib/prisma';
 
 interface CasaData {
   carta: { numero: number; nome: string; significado: string } | null;
@@ -30,22 +29,20 @@ const saveReadingSchema = z.object({
     (data) => {
       if (typeof data !== 'object' || data === null) return false;
       // Pelo menos uma casa preenchida (carta + odu presentes)
-      return Object.values(data as MatrixData).some(
-        (h) => h && h.carta && h.odu
-      );
+      return Object.values(data as MatrixData).some((h) => h && h.carta && h.odu);
     },
     { message: 'matrixData deve ter ao menos uma casa preenchida (carta + odu)' }
   ),
 });
 
 // AD-17.2: Custom error class for card uniqueness violations
-class DuplicateCardError extends Error {
+export class DuplicateCardError extends Error {
   constructor(
     public readonly cardNumber: number,
     public readonly cardName: string,
     public readonly houses: number[]
   ) {
-    super(`Carta "${cardName}" (#${cardNumber}) aparece em mais de uma casa: ${houses.join(', ')}`);
+    super(`Carta ${cardNumber} (${cardName}) duplicada nas casas ${houses.join(', ')}`);
     this.name = 'DuplicateCardError';
   }
 }
@@ -54,7 +51,10 @@ class DuplicateCardError extends Error {
  * Valida que não há cartas duplicadas no matrixData (AD-17.2).
  * Returns array of duplicate cards with their house positions.
  */
-function validateCardUniqueness(matrixData: MatrixData): { valid: boolean; duplicates: DuplicateCardError[] } {
+function validateCardUniqueness(matrixData: MatrixData): {
+  valid: boolean;
+  duplicates: DuplicateCardError[];
+} {
   const cardToHouses = new Map<number, { name: string; houses: number[] }>();
 
   // Collect all placed cards and their houses
@@ -62,7 +62,7 @@ function validateCardUniqueness(matrixData: MatrixData): { valid: boolean; dupli
     if (data?.carta && data?.odu) {
       const cartaNum = data.carta.numero;
       const existing = cardToHouses.get(cartaNum);
-      
+
       if (existing) {
         existing.houses.push(parseInt(casa, 10));
       } else {
@@ -125,7 +125,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error: 'Cartas duplicadas detectadas (AD-17.2)',
-        message: 'Cada carta (1-36) só pode aparecer uma vez na leitura. Grande Tableau exige 36 cartas únicas.',
+        message:
+          'Cada carta (1-36) só pode aparecer uma vez na leitura. Grande Tableau exige 36 cartas únicas.',
         duplicates: duplicateInfo,
       },
       { status: 400 }
@@ -138,16 +139,11 @@ export async function POST(request: NextRequest) {
     select: { id: true },
   });
   if (!client) {
-    return NextResponse.json(
-      { error: `Cliente ${body.clientId} não encontrado` },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: `Cliente ${body.clientId} não encontrado` }, { status: 404 });
   }
 
   // 5) Conta casas preenchidas
-  const filledHouses = Object.values(matrixData).filter(
-    (h) => h?.carta && h?.odu
-  ).length;
+  const filledHouses = Object.values(matrixData).filter((h) => h?.carta && h?.odu).length;
 
   // 6) Cria a Reading
   const reading = await prisma.reading.create({

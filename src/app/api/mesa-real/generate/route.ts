@@ -387,6 +387,19 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
+    // AD-18.9: Impede re-processamento de leituras já concluídas ou em curso
+    if (existing.status === 'COMPLETED') {
+      return NextResponse.json(
+        { error: 'Leitura já foi concluída', code: 'READING_ALREADY_COMPLETED' },
+        { status: 409 }
+      );
+    }
+    if (existing.status === 'GENERATING') {
+      return NextResponse.json(
+        { error: 'Leitura já está sendo gerada', code: 'READING_ALREADY_GENERATING' },
+        { status: 409 }
+      );
+    }
   }
 
   // 5) Transição PENDING → GENERATING

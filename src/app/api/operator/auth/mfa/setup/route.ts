@@ -17,6 +17,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireOperatorApi } from '@/lib/auth/operator-guard';
 import { setupMfa } from '@/lib/auth/operator-mfa';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
 
 export async function POST(request: NextRequest) {
   const guard = await requireOperatorApi(request);
@@ -31,9 +32,14 @@ export async function POST(request: NextRequest) {
       { status: 403 }
     );
   }
-
   try {
     const result = await setupMfa({ id: operator.id, email: operator.email });
+    // Fase 21: MFA_ENABLED — setup iniciado (MFA ainda não ativo até verify-setup).
+    // Logging aqui indica que o ADMIN começou o fluxo de ativação.
+    logSecurityEvent({
+      type: 'MFA_ENABLED',
+      operatorId: operator.id,
+    });
     return NextResponse.json(result);
   } catch (err) {
     console.error('[mfa/setup] failed', err);

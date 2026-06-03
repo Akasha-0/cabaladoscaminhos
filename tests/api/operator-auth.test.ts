@@ -51,6 +51,15 @@ vi.mock('@/lib/prisma', () => ({
     },
   },
 }));
+// Fase 26: Account Lockout mocks
+const mockIsLocked = vi.fn();
+const mockRecordFailedAttempt = vi.fn();
+const mockRecordSuccessfulLogin = vi.fn();
+vi.mock('@/lib/auth/account-lockout', () => ({
+  isLocked: (...args: unknown[]) => mockIsLocked(...args),
+  recordFailedAttempt: (...args: unknown[]) => mockRecordFailedAttempt(...args),
+  recordSuccessfulLogin: (...args: unknown[]) => mockRecordSuccessfulLogin(...args),
+}));
 
 // Cookie store mockado (compartilhado pelos testes do /me)
 const cookieStore: { current: Record<string, string> } = { current: {} };
@@ -71,6 +80,10 @@ beforeEach(() => {
   mockBcryptHash.mockImplementation(async (pw: string) => `hashed:${pw}`);
   mockBcryptCompare.mockImplementation(async (pw: string, hash: string) => hash === `hashed:${pw}`);
   cookieStore.current = {};
+  // Fase 26: default = conta não bloqueada
+  mockIsLocked.mockResolvedValue({ locked: false });
+  mockRecordFailedAttempt.mockResolvedValue(undefined);
+  mockRecordSuccessfulLogin.mockResolvedValue(undefined);
 });
 
 // ----------------------------------------------------------------------------
@@ -229,7 +242,32 @@ describe('POST /api/operator/auth/login', () => {
   it('retorna 401 quando senha está errada', async () => {
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
     // mockBcryptCompare retorna false para senhas erradas por padrão
-
+    const { POST } = await import('@/app/api/operator/auth/login/route');
+    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
+      email: 'ramiro@cabala.com',
+      password: 'wrong',
+    }));
+    expect(res.status).toBe(401);
+  });
+  // Fase 26: lockout
+  it('retorna 423 quando conta está bloqueada', async () => {
+    mockIsLocked.mockResolvedValueOnce({
+      locked: true,
+      until: new Date(Date.now() + 30 * 60 * 1000),
+    });
+    const { POST } = await import('@/app/api/operator/auth/login/route');
+    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
+      email: 'ramiro@cabala.com',
+      password: 'secret123',
+    }));
+    expect(res.status).toBe(423);
+    const body = await res.json();
+    expect(body.error).toMatch(/bloqueada/);
+    expect(res.headers.get('Retry-After')).toBeTruthy();
+  });
+  it('retorna 401 quando email não existe', async () => {
+    mockFindUnique.mockResolvedValue(null);
+    // mockIsLocked retorna false por defeito (email não existe)
     const { POST } = await import('@/app/api/operator/auth/login/route');
     const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
       email: 'ramiro@cabala.com',
