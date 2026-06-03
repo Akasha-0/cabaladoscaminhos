@@ -838,3 +838,16 @@ Commit: 868d59bf
    pula `/cockpit/login` sem redir (evita loop infinito)
 **Resultado:** 1767 testes · TypeScript 0 erros · build 118 páginas OK.
 Commit: af7c56da
+### Fase 48 — Doc 21/22 AD-22.x completeness audit (2026-06-03)
+**Auditoria Doc 21 §2.6 — ADs faltando:**
+AD-22.5: tokensUsed em ChatMessage (schema) + consult route captura → ✅ verificado
+AD-22.9: taxonomia de erro { error, details } em todas as rotas → ✅ verificado
+AD-22.10: cleanup-tokens.ts existe cobrindo sessão + refresh token → ✅ verificado (scripts LGPD Doc 22 §8)
+AD-22.11: runbook é Doc 22 §9 → ✅ verificado
+**Correções Doc 21 v1.2:**
+AD-22.5/.9/.10/.11 adicionados à tabela §2.6 (Onda O)
+§5 test timing: "~21s" → "~17.67s test:core; ~21s full suite"
+**Correções Doc 22 v1.1:**
+Versão 1.0 → 1.1; data 2026-06-02 → 2026-06-03
+**Resultado:** 1767 testes · TypeScript 0 erros · build 118 páginas OK · ~18s.
+Commit: 6e1d61e6
