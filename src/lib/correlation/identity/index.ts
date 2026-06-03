@@ -221,6 +221,8 @@ export function generateConsolidatedProfile(
   };
   
   const crossInsights = generateCrossSystemAnalysis(fullCorrelation);
+  const cabalisticInfo = getCabalisticInfo(profile.cabalisticPath.number);
+  const elementInfo = getElementInfo(profile.dominantElement);
   
   // Gera orientações práticas
   const guidance = generateGuidance(profile, crossInsights);
