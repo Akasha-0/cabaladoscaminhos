@@ -53,11 +53,11 @@
 | AD-18.2 | Invariante de permutação (validação no `save` + UI) | ✅ (placedCards Set no store) | 2 |
 | AD-18.3 | Store guarda `clientId`/`readingId`/`status`; sem mapa stub | ✅ (cockpit-store.ts) | 1 |
 | AD-18.4 | Sem componentes fora da árvore do cockpit | ✅ (B2C quarantine) | 3 |
-| AD-18.5 | Cálculo dos 4 mapas server-side, único, cacheado | 🔵 (client creation wires maps) | 4 |
+| AD-18.5 | Cálculo dos 4 mapas server-side, único, cacheado | ✅ (createClientWithMaps + handleSaveCliente API wired — Fase 34) | 4 |
 | AD-18.6 | `save` adota `MatrixData` canônico + valida permutação | ✅ | 1–2 |
 | AD-18.7 | `generate` carrega mapas por `readingId` (não `mapaFixo`) | ✅ | 4 |
 | AD-18.8 | `generate` em SSE (dossiê completo + síntese) | ✅ | 4 |
-| AD-18.9 | `generate` transiciona `ReadingStatus` | 🟡 | 4 |
+| AD-18.9 | `generate` transiciona `ReadingStatus` | ✅ (PENDING→GENERATING→COMPLETED/ERROR — Fase 32) | 4 |
 
 ### 2.4 Testes, qualidade & CI (Doc 19)
 | ID | Decisão (resumo) | Status | Onda |
@@ -65,8 +65,8 @@
 | AD-19.1 | Gate de CI cobre só o núcleo B2B | ✅ (vitest exclude legacy) | T1 |
 | AD-19.2 | Partição em Vitest *projects* (node/jsdom; core/legacy) | ✅ (B2C quarantine) | T1 |
 | AD-19.3 | Testes legados saem com a poda; não consertar | ✅ (legacy excluded) | T3 |
-| AD-19.4 | 6 testes-guardião de determinismo/anti-alucinação | 🟡 | T2 |
-| AD-19.5 | Gate = `test:core` + lint + tsc | 🟡 | T1 |
+| AD-19.4 | 6 testes-guardião de determinismo/anti-alucinação | ✅ (determinism-guardians 19 pass + theme-router 47 pass + RAG 11 pass — Fase 32) | T2 |
+| AD-19.5 | Gate = `test:core` + lint + tsc | ✅ (core-logic/core-api como gate; legacy quarantine) | T1 |
 | AD-19.6 | Tuning do runner do núcleo (node, threads, timeout 5s) | ✅ (pool: forks, testTimeout: 5000, poolOptions removido) | T1 |
 ### 2.6 Observabilidade & operação (Doc 22)
 | ID | Decisão (resumo) | Status | Onda |
@@ -83,13 +83,13 @@
 | ID | Decisão (resumo) | Status | Onda |
 |---|---|---|---|
 | AD-20.1 | Nenhuma correspondência sem fonte | ✅ (IDEIA.md) | — |
-| AD-20.2 | Verdade injetada (glossário), nunca lembrada pelo LLM | 🟡 | 4 |
-| AD-20.3 | Proveniência é dado, não comentário | 🟡 | G |
+| AD-20.2 | Verdade injetada (glossário), nunca lembrada pelo LLM | ✅ (glossary-injection 5/5 pass — Fase 33) | 4 |
+| AD-20.3 | Proveniência é dado, não comentário | ✅ (source/rationale em CorrelationEntry + lineage em glossário — AD-20.6) | G |
 | AD-20.4 | Conteúdo provisório (D1–D4) é explícito | ✅ | 0 |
 | AD-20.5 | Reinstaurar `IDEIA.md` como ledger canônico | ✅ (criado 783 linhas) | G |
 | AD-20.6 | `source`/`rationale` no `CorrelationEntry`; `lineage` no glossário | ✅ (108 entradas com source/rationale em astrology/kabalah/tantric) | G |
 | AD-20.7 | Crescimento aditivo/versionado (3 vetores) | ✅ (principio) | — |
-| AD-20.8 | Validador rejeita sem fonte | 🟡 | G |
+| AD-20.8 | Validador rejeita sem fonte | ✅ (correlation-provenance 540/540 pass — Fase 32) | G |
 | AD-20.9 | `provisional` enquanto D1–D4 não confirmados | ✅ | 0 |
 
 ## 3. Decisões do Operador (Onda 0 — desbloqueiam o resto)
