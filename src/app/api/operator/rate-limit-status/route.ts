@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
       const remaining = Math.max(0, config.max - count);
 
       // Pega TTL para o resetAt
-      let ttlSeconds = config.windowSeconds;
+      let ttlSeconds: number = config.windowSeconds;
       if (typeof redisAny.ttl === 'function') {
         try {
           const ttl = await redisAny.ttl(key);

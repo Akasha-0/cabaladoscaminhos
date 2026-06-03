@@ -107,8 +107,8 @@ export async function POST(request: NextRequest) {
   }
 
   // 2) Verificar senha (bcrypt)
-  const ipAddress = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip');
-  const userAgent = request.headers.get('user-agent');
+  const ipAddress = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? undefined;
+  const userAgent = request.headers.get('user-agent') ?? undefined;
   const ok = await bcrypt.compare(body.password, operator.passwordHash);
   if (!ok) {
     // Fase 26: registrar tentativa falha (incrementa contador e possivelmente bloqueia)
