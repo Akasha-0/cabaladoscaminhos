@@ -209,7 +209,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     odu_primario: {
       odu: 'Odi',
       numero: 7,
-      elemento: 'Água',
+      elemento: 'Terra',
     },
     odu_secundario: {
       odu: 'Olobón',

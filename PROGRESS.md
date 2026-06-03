@@ -35,9 +35,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 18 | **Hard final + cleanup** (rate-limit Redis, security headers, PROGRESS.md) | (este commit) | ✅ |
 | 18b | **Fallow cleanup** (42% reduction de issues) | `b3524c41` | ✅ |
 | 19 | **Cockpit completeness + PDF export** (T7.2 Leituras, Consulentes, PDF Dossiê) | `add046e5` | ✅ |
-| 22 | **Test fixes** (mapa-alma, spiritual-engine, chakra-v4, rate-limit, quality) | `c543fc29` | ✅ |
 | 23 | **Alinhamento documentação** (Ondas A/B/D/G: cartas consolidadas, 4 mapas wire, Q&A wired) | `cebdca70` | ✅ |
-
+| 24 | **Revisão Docs 16-21 + correções C2** (card divergences, IDEIA.md, Vitest partition) | (este ciclo) | ✅ |
 ### Fase 18 — Hard final + cleanup (detalhes)
 
 | Rota | Limite | Janela |

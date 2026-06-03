@@ -82,7 +82,6 @@ describe('OraculoChat', () => {
   });
 
   it('displays user bubble after sending a question', async () => {
-  it('displays user bubble after sending a question', async () => {
     mockEmptyHistory();
     render(<OraculoChat readingId="reading-1" clientName="Maria" />);
     await waitFor(() => { expect(screen.getByText(/Faça uma pergunta/)).toBeInTheDocument(); });
@@ -176,7 +175,6 @@ describe('OraculoChat', () => {
     await waitFor(() => {
       expect((textarea as HTMLTextAreaElement).disabled).toBe(true);
     }, { timeout: 3000 });
-  });
   it('handles multi-line user message', async () => {
     mockEmptyHistory();
     render(<OraculoChat readingId="reading-1" clientName="Maria" />);
@@ -193,8 +191,6 @@ describe('OraculoChat', () => {
       await new Promise((r) => setTimeout(r, 0));
     });
     await waitFor(() => { expect(screen.getByText(/Linha um/)).toBeInTheDocument(); }, { timeout: 3000 });
-  });
-  it('displays error banner when SSE sends error event', async () => {
     mockEmptyHistory();
     render(<OraculoChat readingId="reading-1" clientName="Maria" />);
     await waitFor(() => { expect(screen.getByText(/Faça uma pergunta/)).toBeInTheDocument(); });
@@ -210,7 +206,6 @@ describe('OraculoChat', () => {
     await waitFor(() => { expect(screen.getByText('Erro de conexão')).toBeInTheDocument(); }, { timeout: 3000 });
   });
 
-  it('shows routing chips after done event', async () => {
     mockEmptyHistory();
     render(<OraculoChat readingId="reading-1" clientName="Maria" />);
     await waitFor(() => { expect(screen.getByText(/Faça uma pergunta/)).toBeInTheDocument(); });
@@ -228,7 +223,6 @@ describe('OraculoChat', () => {
     await waitFor(() => { expect(screen.getByText('amor')).toBeInTheDocument(); }, { timeout: 3000 });
   });
 
-  it('disables input while streaming', async () => {
     mockEmptyHistory();
     render(<OraculoChat readingId="reading-1" clientName="Maria" />);
     await waitFor(() => { expect(screen.getByText(/Faça uma pergunta/)).toBeInTheDocument(); });
@@ -246,7 +240,6 @@ describe('OraculoChat', () => {
     }, { timeout: 3000 });
   });
 
-  it('handles multi-line user message', async () => {
     mockEmptyHistory();
     render(<OraculoChat readingId="reading-1" clientName="Maria" />);
     await waitFor(() => { expect(screen.getByText(/Faça uma pergunta/)).toBeInTheDocument(); });
