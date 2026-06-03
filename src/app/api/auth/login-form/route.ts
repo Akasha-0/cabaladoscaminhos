@@ -3,6 +3,15 @@ import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
 export async function POST(request: Request) {
+  // DEV ONLY — uses SERVICE_ROLE_KEY and hardcoded demo credentials
+  const env = process.env.NODE_ENV ?? 'undefined';
+  if (env !== 'development' && env !== 'test') {
+    return NextResponse.json(
+      { error: 'Este endpoint só está disponível em desenvolvimento' },
+      { status: 403 }
+    );
+  }
+
   try {
     const formData = await request.formData()
     const email = formData.get('email') as string
@@ -16,7 +25,7 @@ export async function POST(request: Request) {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
-    
+
     // For demo, accept the test credentials
     if (email === 'demo@cabala.com' && password === 'Demo123456') {
       const cookieStore = await cookies()
@@ -30,7 +39,7 @@ export async function POST(request: Request) {
         sameSite: 'lax',
         maxAge: 60 * 60 * 24 * 7 // 1 week
       })
-      
+
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
 
@@ -58,7 +67,7 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.redirect(new URL('/dashboard', request.url))
-    
+
   } catch (err) {
     return NextResponse.redirect(new URL('/login?error=server', request.url))
   }

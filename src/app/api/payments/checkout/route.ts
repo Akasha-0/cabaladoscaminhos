@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { criarSessaoCheckout, PlanoInvalidoError, CheckoutError } from '@/lib/payments/service';
+import { requireOperator } from '@/lib/auth/operator-session';
 
 export async function POST(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
+
   try {
     const body = await request.json();
     const { userId, planoId } = body;

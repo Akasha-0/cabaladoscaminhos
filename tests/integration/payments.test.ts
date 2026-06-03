@@ -8,6 +8,21 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 
+// Mock auth — must precede module-level imports
+const OPERATOR_MOCK = {
+  id: 'operator_test_001',
+  email: 'test@operator.com',
+  name: 'Test Operator',
+  role: 'ADMIN' as const,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  ativo: true,
+};
+vi.mock('@/lib/auth/operator-session', () => ({
+  requireOperator: vi.fn(() => Promise.resolve(OPERATOR_MOCK)),
+  getOperatorFromRequest: vi.fn(() => Promise.resolve(OPERATOR_MOCK)),
+}));
+
 // ============================================
 // Test Constants
 // ============================================

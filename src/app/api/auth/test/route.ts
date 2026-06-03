@@ -2,18 +2,27 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
 export async function POST() {
+  // DEV ONLY
+  const env = process.env.NODE_ENV ?? 'undefined';
+  if (env !== 'development' && env !== 'test') {
+    return NextResponse.json(
+      { error: 'Endpoint não disponível em produção' },
+      { status: 403 }
+    );
+  }
+
   try {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
-    
+
     // The issue is email confirmation. Let me create a magic link test user
     // or skip confirmation
     const email = 'devtest' + Date.now() + '@test.local'
-    
+
     // For testing, let's just verify the API works and return instructions
-    return NextResponse.json({ 
+    return NextResponse.json({
       info: 'API is working',
       instructions: [
         '1. Go to http://localhost:3000/registro',

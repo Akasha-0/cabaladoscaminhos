@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { gerarMapaAlmaCompleto } from '@/lib/engines/spiritual-engine';
 import { getRedisClient } from '@/lib/redis';
 import { parseMapaBody } from '@/lib/mapa/mapa-utils';
+import { requireOperator } from '@/lib/auth/operator-session';
 
 // ============================================================
 // HELPERS
@@ -40,6 +41,9 @@ async function setCachedMapa(key: string, mapa: unknown): Promise<void> {
 // ============================================================
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
+
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get('userId');
 
@@ -64,6 +68,9 @@ export async function GET(request: NextRequest) {
 // ============================================================
 
 export async function POST(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
+
   try {
     const parsed = await parseMapaBody(request);
     if (parsed.error) {

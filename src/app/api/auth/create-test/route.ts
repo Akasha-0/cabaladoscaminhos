@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-
 export async function POST() {
+  // DEV ONLY — never accessible in production
+  const env = process.env.NODE_ENV ?? 'undefined';
+  if (env !== 'development' && env !== 'test') {
+    return NextResponse.json(
+      { error: 'Este endpoint só está disponível em desenvolvimento' },
+      { status: 403 }
+    );
+  }
   try {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,

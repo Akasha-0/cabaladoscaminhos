@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSwarm, type AgentRole, type AgentTask } from '@/lib/swarm';
+import { requireOperator } from '@/lib/auth/operator-session';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -11,6 +12,9 @@ interface SwarmRequest {
 }
 
 export async function POST(req: NextRequest) {
+  const authResult = await requireOperator(req);
+  if (authResult instanceof NextResponse) return authResult;
+
   try {
     const body = (await req.json()) as SwarmRequest;
     const swarm = getSwarm();

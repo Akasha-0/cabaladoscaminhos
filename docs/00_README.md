@@ -1,8 +1,8 @@
 # Cabala dos Caminhos — Documentação Oficial do Projeto
 
-> **Versão:** 1.0.0 | **Última atualização:** 2026  
-> **Proprietário:** Gabriel (Operador e Desenvolvedor)  
-> **Status:** Planejamento / Pré-Desenvolvimento
+> **Versão:** 1.1.0 | **Última atualização:** 2026-06-03
+> **Proprietário:** Gabriel (Operador e Desenvolvedor)
+> **Status:** Desenvolvimento Ativo — Fase 52 | Cockpit B2B operacional | MVP funcional
 
 ---
 
@@ -11,12 +11,12 @@
 | # | Documento | Descrição |
 |---|-----------|-----------|
 | 01 | [Product Brief](./01_product-brief.md) | Visão, proposta de valor, público-alvo e contexto estratégico |
-| 02 | [PRD — Product Requirements Document](./02_prd.md) | Módulos, funcionalidades, regras de negócio e critérios de aceitação |
-| 03 | [Arquitetura Técnica](./03_architecture-spec.md) | Stack, infraestrutura, fluxo de dados e integrações externas |
+| 02 | [PRD — Product Requirements Document](./02_prd.md) | Módulos, funcionalidades, regras de negócio e critérios de aceitação ⚠️ LEGADO B2C |
+| 03 | [Arquitetura Técnica](./03_architecture-spec.md) | Stack, infraestrutura, fluxo de dados e integrações externas ⚠️ SUPERSEDED (usar Doc 16) |
 | 04 | [Modelo de Dados](./04_data-model.md) | Prisma Schema, estruturas JSON, payloads de API |
-| 05 | [Especificação UI/UX](./05_uiux-spec.md) | Design system, layout, componentes e comportamento da interface |
+| 05 | [Especificação UI/UX](./05_uiux-spec.md) | Design system, layout, componentes e comportamento da interface ⚠️ SUPERSEDED (usar Doc 17) |
 | 06 | [Motor de IA & Matriz de Correlação](./06_ai-engine-spec.md) | Prompt engineering, cadeia de raciocínio e mapeamento das 36 casas |
-| 07 | [Épicos & User Stories](./07_epics-stories.md) | Backlog estruturado com critérios de aceitação técnicos |
+| 07 | [Épicos & User Stories](./07_epics-stories.md) | Backlog estruturado com critérios de aceitação técnicos ⚠️ LEGADO B2C |
 | 08 | [Roadmap](./08_roadmap.md) | Fases de desenvolvimento, milestones e entregáveis |
 | 09 | [Master Prompt para Agentes](./09_master-agent-prompt.md) | Contexto-mestre para o agente orquestrador/codificador |
 | 10 | [Revisão & Gap Analysis](./10_revisao-gap-analysis.md) | Auditoria de prontidão mecânica da documentação 00–09 |
@@ -31,32 +31,17 @@
 | 19 | [Estratégia de Testes, Qualidade & CI](./19_estrategia-testes-qualidade.md) | Partição core/legado (Vitest projects), pirâmide de testes, testes-guardião de determinismo, gate de CI, orçamento de performance |
 | 20 | [Governança de Conteúdo Oracular & Motor de Inteligência](./20_governanca-conteudo-oracular.md) | Proveniência das correspondências, ledger `IDEIA.md`, validação por fonte, crescimento governado das camadas de inteligência (AD-17.7) |
 | 21 | [Registro de Decisões (ADR Index) & Roadmap](./21_registro-decisoes-roadmap.md) | Painel único de todas as decisões AD-16…AD-20 com status e ordem de execução; roadmap consolidado em ondas |
-| 22 | [Observabilidade & Operação](./22_observabilidade-operacao.md) | Logging estruturado, auditoria do Operator, custo/uso de IA, resiliência de SSE, saúde, privacidade e runbook |
-| 23 | [Auditoria de Mapas Natais & Geolocalização](./23_auditoria-mapas-geolocalizacao.md) | Completude dos 4 mapas (código × visão): astrologia 46% (bloqueador) + geolocalização; decisões para precisão da IA por casa |
-| 24 | [Guia de Desenvolvimento para Agentes de IA](./24_guia-desenvolvimento-agentes-ia.md) | **Ponto de entrada do agente codificador**: mapa de leitura, precedência, regras invioláveis, workflow, anti-padrões, artefatos canônicos |
-
-> **Identidade visual:** o **Doc 13** é a fonte canônica da paleta (laranja + azul royal, consagração ao Cigano Ramiro). Em qualquer divergência de cor, ele prevalece sobre os demais.
->
-> **Arquitetura (Visão × Código):** o **Doc 16** é a fonte canônica das decisões de arquitetura. Onde um doc mais antigo divergir sobre stack, rotas ou estrutura de pastas, o Doc 16 prevalece.
->
-> **Interface & navegação:** o **Doc 17** é a fonte canônica da **interface única** (a Mesa Real numa só página). Onde um doc mais antigo descrever múltiplas telas/rotas, o Doc 17 prevalece.
->
-> **Contratos (dados/estado/API):** o **Doc 18** é a fonte canônica dos contratos técnicos (`MatrixData`, store, payloads de rota, orquestração da geração). Onde um doc mais antigo divergir sobre formato de dados ou payload, o Doc 18 prevalece — subordinado ao Doc 17 (visão) e ao Doc 06 (correlação).
+| 22 | [Observabilidade & Operações](./22_observabilidade-operacao.md) | Métricas, logs, health endpoints, runbook de incidentes |
+| 23 | [Auditoria de Mapas & Geolocalização](./23_auditoria-mapas-geolocalizacao.md) | Auditoria de completeness dos 4 mapas, timezone, ephemeris |
+| 24 | [Guia de Desenvolvimento com Agentes IA](./24_guia-desenvolvimento-agentes-ia.md) | Como usar agentes IA para desenvolver este projeto |
+| AUTH | [AUTH-AUDIT.md](../AUTH-AUDIT.md) | Auditoria completa de todos os fluxos de autenticação |
 
 ---
 
-## Resumo Executivo
+## Visão Geral
 
-**Cabala dos Caminhos** é um SaaS privado B2B destinado a terapeutas oraculistas. O sistema digitaliza o processo de leitura da **Mesa Real** (Baralho Cigano — 36 casas em matriz 9×4), cruzando os inputs dinâmicos de cada consulta com cálculos estáticos do mapa natal do consulente (Astrologia, Numerologia Cabalística, Numerologia Tântrica e Odu de Nascimento), utilizando um agente de Inteligência Artificial para gerar um **Dossiê interpretativo personalizado** casa por casa.
+Sistema de consultoria oracular B2B para terapeutas. Cockpit operacional com Mesa Real (36 casas), motores de cálculo, geração de dossiê com IA, e consulta interativa.
 
----
+**Stack:** Next.js 16 + React 19 + Prisma 7 + PostgreSQL + Redis + MiniMax API
 
-## Como Usar Esta Documentação
-
-> 🤖 **Agente de IA que vai CODIFICAR: comece pelo [Doc 24 — Guia de Desenvolvimento para Agentes de IA](./24_guia-desenvolvimento-agentes-ia.md).** Ele é o ponto de entrada: mapa de leitura, regras invioláveis, workflow e onde mora cada verdade. Depois, consulte o [Doc 21 (painel de decisões)](./21_registro-decisoes-roadmap.md) para escolher a próxima tarefa.
-
-- **Para o Agente de Codificação:** **Doc 24 primeiro** → escolha uma decisão 🟡 no Doc 21 → leia o doc-fonte da decisão (06, 11, 17, 18, 23 conforme o caso) → implemente cirúrgico → gate (build/lint/test:core) → atualize o painel.
-- **Para o Agente de Orquestração:** Leia 01, 02, **17** e **21** para entender escopo, visão da página única e o roadmap em ondas; divida o trabalho por decisões AD do painel.
-- **Para o Desenvolvedor (Gabriel):** Use o documento 08 para monitorar o progresso, o 02 para validar requisitos e o 10 §5 para as decisões de conteúdo pendentes (D1–D6) que só você pode definir.
-
-> **Comece pelo Doc 10 (Gap Analysis).** Ele mapeia o estado de prontidão da documentação e aponta exatamente o que cada documento ganhou nesta refatoração.
+**Status atual:** 1832 testes · TypeScript 0 erros · build 118 páginas · quality score ≥ 81%
