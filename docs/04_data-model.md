@@ -192,6 +192,8 @@ enum ChatRole {
 
 ## 2. Estruturas JSON dos Mapas Calculados
 
+> ⚠️ **Estado de completude real: Doc 23.** Auditoria 2026-06-02: cabalística e tântrica **100% completas**; Odu `provisional` (D3); **astrologia a 46%** (`getBirthChart` não emite o `AstrologyMap` abaixo — faltam Quíron/Lilith, `elements`/`modalities`, `planetsInHouses`, signo do Asc/MC e `nature` dos aspectos) e **sem geolocalização** (lat/lng/timezone manuais). Fechar isso é o caminho crítico para a precisão da IA — decisões em Doc 23 (AD-23.1/.2).
+
 ### 2.1 AstrologyMap (campo `astrologyMap` no Client)
 
 ```typescript

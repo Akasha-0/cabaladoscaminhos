@@ -32,6 +32,7 @@
 | 20 | [Governança de Conteúdo Oracular & Motor de Inteligência](./20_governanca-conteudo-oracular.md) | Proveniência das correspondências, ledger `IDEIA.md`, validação por fonte, crescimento governado das camadas de inteligência (AD-17.7) |
 | 21 | [Registro de Decisões (ADR Index) & Roadmap](./21_registro-decisoes-roadmap.md) | Painel único de todas as decisões AD-16…AD-20 com status e ordem de execução; roadmap consolidado em ondas |
 | 22 | [Observabilidade & Operação](./22_observabilidade-operacao.md) | Logging estruturado, auditoria do Operator, custo/uso de IA, resiliência de SSE, saúde, privacidade e runbook |
+| 23 | [Auditoria de Mapas Natais & Geolocalização](./23_auditoria-mapas-geolocalizacao.md) | Completude dos 4 mapas (código × visão): astrologia 46% (bloqueador) + geolocalização; decisões para precisão da IA por casa |
 
 > **Identidade visual:** o **Doc 13** é a fonte canônica da paleta (laranja + azul royal, consagração ao Cigano Ramiro). Em qualquer divergência de cor, ele prevalece sobre os demais.
 >

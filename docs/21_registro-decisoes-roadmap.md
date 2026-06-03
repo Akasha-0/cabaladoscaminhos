@@ -91,6 +91,16 @@
 | AD-20.8 | Validador rejeita sem fonte | ✅ (correlation-provenance 540/540 pass — Fase 32) | G |
 | AD-20.9 | `provisional` enquanto D1–D4 não confirmados | ✅ (oduBirth.provisional=true pelo codigo; glossario §2 marcado ⚠️ PROVISIONAL (D4)) | 0 |
 
+### 2.7 Completude dos mapas & geolocalização (Doc 23)
+| ID | Decisão (resumo) | Status | Onda |
+|---|---|---|---|
+| AD-23.1 | `AstrologyMap` canônico completo (Quíron/Lilith, elements/modalities, planetsInHouses, Asc/MC com signo, `nature`) | 🟡 (astro a 46% — bloqueador) | 4 |
+| AD-23.2 | Geolocalização obrigatória (cidade→lat/lng/timezone; Nominatim/Places) | 🟡 (inexistente hoje) | 4 |
+| AD-23.3 | Higiene de tipos: tipo reflete o que se produz (sem campos mortos) | 🟡 | 3 |
+| AD-23.4 | Odu: tabela de linhagem (D3) + `orixaRegency` completo | 🧭 (D3) | 0 |
+| AD-23.5 | "Mapas completos" é pré-condição da precisão por casa | 🟡 (princípio) | — |
+| AD-23.6 | Validador de completude dos mapas (teste-guardião) | 🟡 | T2 |
+
 ## 3. Decisões do Operador (Onda 0 — desbloqueiam o resto)
 
 | ID | Pendência | Efeito de não resolver |
