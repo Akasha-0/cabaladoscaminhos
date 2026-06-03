@@ -319,15 +319,17 @@ export async function POST(request: NextRequest) {
   const requestId = generateRequestId();
   const log = createLogger(requestId, '/api/mesa-real/generate');
   const startTime = Date.now();
-
   // 2) Parse + validação
   let body: GenerateInput;
   try {
     body = generateSchema.parse(await request.json());
   } catch (err) {
     if (err instanceof z.ZodError) {
+      const firstError = err.errors[0];
+      const fieldName = firstError?.path.join('.') ?? 'campo';
+      const message = firstError?.message ?? 'inválido';
       return NextResponse.json(
-        { error: 'Dados inválidos', details: err.flatten() },
+        { error: `${fieldName}: ${message}`, details: err.flatten() },
         { status: 400 }
       );
     }
