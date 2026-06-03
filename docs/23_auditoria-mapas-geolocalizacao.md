@@ -113,7 +113,7 @@ A análise por casa cruza **significado da casa + carta tirada + Odu tirado + as
 - [x] `AstrologyMap` — AD-23.1 ✅ (2026-06-03): `nature` em aspectos (trino/sextil=harmony, oposicao/quadratura=tension, conjuncao=neutral); `planetsInHouses` em `normalizeBirthChart`; Chiron/Lilith e elementos/modalidades presentes (Fase 29).
 - [ ] `AstrologyMap` canônico (Doc 04 2.1): tipo difere do formato `BirthChart` armazenado (AD-23.3 — baixa prioridade; bridge via `normalizeBirthChart`).
 - [ ] Odu com tabela de linhagem (D3) ou `provisional` sinalizado; `orixaRegency` completo (AD-23.4).
-- [ ] Validador de completude verde no gate (AD-23.6).
+- [x] Validador de completude dos mapas (AD-23.6 ✅ 2026-06-03): `tests/calculators/map-completeness.test.ts` — 6 testes guardioes: KabalaMap (todos os campos numericos e strings), TantricMap (5 bodies + geometria sagrada + chakra states + energy matrix), OduBirth (oduNumber + provisional), AstrologyMap (10 planetas + Chiron/Lilith via chart.planeta + casas + aspectos com nature AD-23.1), aspectos nature consistency, planetsInHouses.
 
 ---
 

@@ -115,9 +115,11 @@ export function normalizeBirthChart(chart: BirthChart): Record<string, unknown> 
   };
 
   // Build planetsInHouses: reverse lookup from planet → house
+  // Build planetsInHouses: reverse lookup from planet → house
+  // planets[key] has .house field from the normalization above
   const planetsInHouses: Record<string, string[]> = {};
-  for (const [key, pos] of Object.entries(planets)) {
-    const house = String(pos.house);
+  for (const [key, _] of Object.entries(planets)) {
+    const house = String(planets[key].house ?? 0);
     if (!planetsInHouses[house]) planetsInHouses[house] = [];
     planetsInHouses[house].push(key);
   }
