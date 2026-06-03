@@ -27,10 +27,10 @@
       "schedule": "7 * * * *",
       "prompt": "Execute ONE iteration of the cabala-autonomous-loop. Read /home/skynet/.claude/projects/-home-skynet-cabala-dos-caminhos/memory/loop-prompt.md for the full 5-step protocol (ASSESS → PLAN → EXECUTE → VERIFY → EVOLVE). Run for up to 45 minutes; if a Fase finishes, commit and update cycle memory. Be persistent: do NOT stop at minor blockers — register them in cycle memory as 'Pré-existentes' and pick the next task from the queue. Only stop if build fails 5x in a row, OR token budget at 90%, OR completely out of queued tasks.",
       "project_dir": "/home/skynet/cabala-dos-caminhos",
-      "enabled": true,
-      "comment": "Hourly autonomous cycle — ENABLED for multi-hour operation. Cron pattern '7 * * * *' = top of every hour, :07 (avoids the :00 round-number spike). Set enabled: false to pause.",
-      "last_run": null,
-      "last_status": null
+      "comment": "PAUSED — project production-ready, no queued tasks. Set enabled: true when new work is queued.",
+      "enabled": false,
+      "last_run": "2026-06-03T10:17:02Z",
+      "last_status": "success"
     },
     {
       "id": "cabala-quick-cycle",
@@ -38,9 +38,9 @@
       "schedule": "13,33,53 * * * *",
       "prompt": "Quick autonomous cycle. Read /home/skynet/.claude/projects/-home-skynet-cabala-dos-caminhos/memory/loop-prompt.md (5-step protocol) and execute ONE short iteration: pick a small task from task-queue.md (≤15 min), execute, run npm run build + npm run test:run, commit if green, update cycle memory. Designed to be FAST and CHEAP — don't start anything that needs >15 min. If task-queue.md is empty, do a small refactor or doc update; if nothing, just report status and exit. This runs alongside the hourly cycle for higher throughput during the day.",
       "project_dir": "/home/skynet/cabala-dos-caminhos",
-      "enabled": true,
-      "comment": "Quick cycle every 20 min — fills gaps between hourly cycles. Cron '13,33,53 * * * *' = :13, :33, :53 of every hour (off-round to avoid :00 spike).",
-      "last_run": "2026-06-03T02:23:35Z",
+      "enabled": false,
+      "comment": "PAUSED — project production-ready, no queued tasks. Set enabled: true when new work is queued.",
+      "last_run": "2026-06-03T09:53:39Z",
       "last_status": "success"
     },
     {

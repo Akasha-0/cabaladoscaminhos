@@ -12,6 +12,7 @@ export interface CityResult {
   country: string;
   latitude: string;
   longitude: string;
+  timezone?: string; // AD-23.2: extracted from Nominatim extratags
 }
 
 interface CityAutocompleteProps {
@@ -58,8 +59,9 @@ export function CityAutocomplete({
       try {
         // Use OpenStreetMap Nominatim — free, no API key required
         // Restricted to Brazil for this app
+        // AD-23.2: extratags includes timezone field
         const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&countrycodes=br&format=json&addressdetails=1&limit=8`,
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(value)}&countrycodes=br&format=json&addressdetails=1&limit=8&extratags=timezone`,
           {
             headers: {
               'Accept-Language': 'pt-BR, pt',
@@ -80,6 +82,7 @@ export function CityAutocomplete({
           };
           lat: string;
           lon: string;
+          extratags?: Record<string, string>;
         }> = await res.json();
 
         const cities: CityResult[] = data.map((item) => {
@@ -111,6 +114,7 @@ export function CityAutocomplete({
             country: addr.country ?? 'Brasil',
             latitude: item.lat,
             longitude: item.lon,
+            timezone: item.extratags?.timezone, // AD-23.2: timezone from Nominatim
           };
         });
 

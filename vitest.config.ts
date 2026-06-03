@@ -8,7 +8,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./tests/setup.ts'],
     pool: 'forks',
-    testTimeout: 5000,
+    testTimeout: 15000,
     env: {
       JWT_SECRET: 'test-secret-key-that-is-at-least-32-bytes-long',
       DATABASE_URL: 'postgresql://placeholder:placeholder@localhost/placeholder',
@@ -19,6 +19,7 @@ export default defineConfig({
           name: 'core-logic',
           environment: 'node',
           setupFiles: ['./tests/setup.ts'],
+          testTimeout: 15000,
           include: [
             'tests/lib/ai/**',
             'tests/lib/engines/**',

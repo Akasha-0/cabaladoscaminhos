@@ -197,6 +197,7 @@ export function ClientForm() {
                 setField('birthCountry', city.country || state.birthCountry);
                 if (city.latitude) setField('birthLatitude', city.latitude);
                 if (city.longitude) setField('birthLongitude', city.longitude);
+                if (city.timezone) setField('birthTimezone', city.timezone); // AD-23.2: timezone from Nominatim
               }}
               placeholder="Ex: São Paulo"
               error={errors.birthCity}
