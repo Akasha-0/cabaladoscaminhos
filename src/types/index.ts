@@ -85,57 +85,6 @@ export type MatrixData = {
 };
 
 // ============================================================================
-// §4 ReportContent — Dossiê gerado pelo LLM
-// ============================================================================
-
-export interface HouseReport {
-  houseNumber: number;
-  houseName: string;
-  carta: string;
-  odu: string;
-  /** Markdown gerado pelo LLM — três parágrafos obrigatórios */
-  interpretation: string;
-}
-
-// fallow-ignore-next-line unused-type
-export interface ReportContent {
-  houses: {
-    [houseNumber: string]: HouseReport;
-  };
-  synthesis: {
-    workAndMoney: string;
-    homeAndFamily: string;
-    loveAndRelationships: string;
-    spiritualPath: string;
-    finalVerdict: string;
-  };
-  generatedAt: string;
-  llmModel: string;
-  totalHousesAnalyzed: number;
-}
-
-// ============================================================================
-// Entidades Prisma (mínimo para o motor de IA)
-// ============================================================================
-// fallow-ignore-next-line unused-type
-export interface Client {
-  id: string;
-  fullName: string;
-  birthDate: Date | string;
-  birthTime: string;
-  birthCity: string;
-  birthState: string;
-  birthCountry: string;
-  birthLatitude: number | null;
-  birthLongitude: number | null;
-  birthTimezone: string | null;
-  astrologyMap: AstrologyMap | null;
-  kabalisticMap: KabalisticMap | null;
-  tantricMap: TantricMap | null;
-  oduBirth: OduBirth | null;
-  notes: string | null;
-}
-// ============================================================================
 // §2.2 KabalisticMap — Numerologia Cabalística (enriched)
 // ============================================================================
 export interface KabalisticMap {
@@ -161,8 +110,17 @@ export interface KabalisticMap {
     lifePath: { major: number; name: string; meaning: string };
     expression: { major: number; name: string; meaning: string };
   };
-  lifeCycles?: { first: { number: number; ageStart: number; ageEnd: number }; second: { number: number; ageStart: number; ageEnd: number }; third: { number: number; ageStart: number } };
-  personalCycles?: { personalYear: number; personalMonth: number; personalDay: number; referenceDate: string };
+  lifeCycles?: {
+    first: { number: number; ageStart: number; ageEnd: number };
+    second: { number: number; ageStart: number; ageEnd: number };
+    third: { number: number; ageStart: number };
+  };
+  personalCycles?: {
+    personalYear: number;
+    personalMonth: number;
+    personalDay: number;
+    referenceDate: string;
+  };
   hebrewLetter: string;
   sefirotPath: string;
   vibrationalNumber: number;
