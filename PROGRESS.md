@@ -806,3 +806,23 @@ Commit: e8a95a70
 **Resultado:** 1,761 testes · TypeScript 0 erros · build OK.
 
 Commit: e8a95a70
+
+### Fase 45 — AD-23.6 Map Completeness Guardian Test (2026-06-03)
+
+**AD-23.6 gap:** Nenhum teste validava que os 4 mapas contém todos os campos exigidos.
+
+**Fixes applied:**
+
+**AD-23.6 — Teste guardião `tests/calculators/map-completeness.test.ts` (6 testes novos):**
+- KabalaMap: todos campos numéricos/string do buildKabalisticMap verificados
+- TantricMap: 5 bodies + sacred geometry + chakra states + energy matrix
+- OduBirth: oduNumber + provisional (D3 pendente)
+- AstrologyMap: 10 planetas + Chiron/Lilith via chart.planeta + casas (12) + aspects com nature
+- Aspect nature consistency: trino/sextil=harmony, quadratura/oposicao=tension
+- planetsInHouses: reverse lookup house→planetas para correlation engine
+
+**Bug fix em normalizeBirthChart:** `Object.entries(planets)` num array produzia keys "0"/"1"/... em vez de nomes de planetas. Corrigido: itera `Object.entries(planets)` (objeto normalizado com .house) e usa `planets[key].house` para construir o reverse lookup.
+
+**Resultado:** 1767 testes (+6) · TypeScript 0 erros · build OK.
+
+Commit: 868d59bf
