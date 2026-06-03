@@ -75,8 +75,8 @@ export async function getReadingsByClient(clientId: string) {
 }
 
 /**
- * Gets readings by user ID
- * @deprecated use getReadingsByOperator (Doc 16 AD-03: Operator substitui User)
+ * Lista leituras do Operator (Doc 16 AD-03: Operator substitui User legado).
+ * Substitui a versão antiga baseada em userId.
  */
 export async function getReadingsByOperator(
   operatorId: string,
