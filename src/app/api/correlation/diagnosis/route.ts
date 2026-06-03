@@ -22,7 +22,7 @@ export async function POST(request: Request) {
         diagnosis,
         prescription,
         summary: diagnosis.length > 0
-          ? `${diagnosis.length} chakra(s) memerlukan perhatian`
+          ? `${diagnosis.length} chakra(s) necessitando de atenção`
           : 'Nenhum desalinhamento significativo detectado',
       },
     });
