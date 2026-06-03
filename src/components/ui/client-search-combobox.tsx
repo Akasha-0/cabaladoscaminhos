@@ -51,23 +51,52 @@ export function ClientSearchCombobox({ onSelectClient, onCreateNew }: ClientSear
       return;
     }
 
-    debounceRef.current = setTimeout(async () => {
-      setIsLoading(true);
-      try {
-        const res = await fetch(`/api/mesa-real/clients?search=${encodeURIComponent(searchTerm)}`);
-        if (res.ok) {
-          const data = await res.json();
-          setResults(data.clients || []);
-          setIsOpen(true);
-          setSelectedIndex(-1);
+      debounceRef.current = setTimeout(async () => {
+        setIsLoading(true);
+        try {
+          const res = await fetch(`/api/mesa-real/clients?q=${encodeURIComponent(searchTerm)}`);
+          if (res.ok) {
+            const data = await res.json();
+            // Transform raw Prisma snake_case fields to ClientSearchResult camelCase shape
+            const clients: ClientSearchResult[] = (data.clients || []).map((c: Record<string, unknown>) => {
+              const birthDate = c.birthDate instanceof Date
+                ? c.birthDate.toISOString().split('T')[0]
+                : String(c.birthDate || '').split('T')[0];
+              const astroMap = c.astrologyMap as Record<string, unknown> | null;
+              const sunSign: string =
+                typeof astroMap?.sun === 'string' ? astroMap.sun :
+                (astroMap?.planets as Array<{ planet: string; sign: string }> | null)?.find(p => p.planet === 'sol')?.sign || '';
+              const ascLong = typeof astroMap?.ascendant === 'number' ? (astroMap.ascendant as number) : 0;
+              const ascSign = ['aries','touro','gemeos','cancer','leao','virgem','libra','escorpio','sagitario','capricornio','aquario','peixes'][Math.floor(ascLong / 30) % 12] || '';
+              const kabalMap = c.kabalisticMap as Record<string, unknown> | null;
+              const tantricMap = c.tantricMap as Record<string, unknown> | null;
+              return {
+                id: String(c.id || ''),
+                nome: String(c.fullName || ''),
+                dataNascimento: birthDate,
+                horaNascimento: c.birthTime ? String(c.birthTime) : undefined,
+                localNascimento: c.birthCity ? String(c.birthCity) : undefined,
+                mapa: {
+                  sol: sunSign ? `Sol em ${sunSign}` : '',
+                  ascendente: ascSign ? `Asc: ${ascSign}` : '',
+                  caminho: kabalMap?.lifePath != null ? String(kabalMap.lifePath) : undefined,
+                  missao: kabalMap?.expression != null ? String(kabalMap.expression) : undefined,
+                  alma: tantricMap?.soul != null ? String(tantricMap.soul) : undefined,
+                  karma: tantricMap?.karma != null ? String(tantricMap.karma) : undefined,
+                },
+              };
+            });
+            setResults(clients);
+            setIsOpen(true);
+            setSelectedIndex(-1);
+          }
+        } catch (err) {
+          console.error('[ClientSearch] Search failed:', err);
+          setResults([]);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (err) {
-        console.error('[ClientSearch] Search failed:', err);
-        setResults([]);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 300);
+      }, 300);
 
     return () => {
       if (debounceRef.current) {
