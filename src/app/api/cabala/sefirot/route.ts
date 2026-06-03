@@ -2,23 +2,21 @@
 // CABALA SEFIROT API - CABALA DOS CAMINHOS
 // Enhanced with spiritual correlations
 // ============================================================
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { getMeanings, SefiraMeaning } from '@/lib/cabala/sefirot-meanings';
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+ import { NextRequest, NextResponse } from 'next/server';
+ import { z } from 'zod';
+ import { getMeanings, SefiraMeaning } from '@/lib/cabala/sefirot-meanings';
+ import {
+   SefirotWithDaatSchema,
+   ChakraSchema,
+   ElementSchema,
+ } from '@/lib/api/spiritual-filters';
 
-// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
-
+ // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
+ //
 const SefirotQuerySchema = z.object({
   sefira: z.string().optional(),
   language: z.enum(['pt', 'en', 'he']).optional().default('pt'),
-  sefirot: SefirotSchema.optional(),
+   sefirot: SefirotWithDaatSchema.optional(),
   chakra: ChakraSchema.optional(),
   element: ElementSchema.optional(),
   orixa: z.string().optional(),

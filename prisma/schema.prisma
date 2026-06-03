@@ -272,6 +272,10 @@ model Client {
   birthLongitude Float?
   birthTimezone  String?
 
+  // LGPD/GDPR — consentimento explícito para tratamento de dados pessoais do consulente
+  consentGiven   Boolean  @default(false)
+  consentAt      DateTime?
+
   // Mapas cacheados (calculados uma única vez no cadastro)
   astrologyMap  Json?
   kabalisticMap Json?

@@ -3,9 +3,9 @@
 // CLIENT ACTIONS - Cabala Dos Caminhos
 // Cockpit Oracular - Client Management
 // ============================================================
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
 
 // Schema for creating a client
 // Sem `userId`: o modelo Client não armazena dono por-operador (Doc 16 §2.2);
@@ -87,6 +87,7 @@ export type CreateClientWithMapsInput = {
   birthLongitude?: number;
   birthTimezone?: string;
   notes?: string;
+  consentGiven?: boolean;
 };
 
 export type CreateClientResult = { ok: true; id: string } | { ok: false; error: string };
@@ -153,11 +154,13 @@ export async function createClientWithMaps(
         birthLongitude: input.birthLongitude ?? null,
         birthTimezone: input.birthTimezone ?? null,
         notes: input.notes ?? null,
+        consentGiven: input.consentGiven ?? false,
+        consentAt: input.consentGiven ? new Date() : null,
         astrologyMap: astrologyMap ?? Prisma.JsonNull,
         kabalisticMap: kabalisticMap ?? Prisma.JsonNull,
         tantricMap: tantricMap ?? Prisma.JsonNull,
         oduBirth: oduMap ?? Prisma.JsonNull,
-      },
+      } as Parameters<typeof prisma.client.create>[0]['data'],
       select: { id: true },
     });
 

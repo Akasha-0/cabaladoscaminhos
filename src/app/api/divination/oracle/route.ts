@@ -1,23 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-const OracleTypeSchema = z.enum(['tarot', 'lenormand', 'ifa', 'ogbe', 'opalino', 'kabbalah']);
+ import { NextRequest, NextResponse } from 'next/server';
+ import { z } from 'zod';
+ import {
+   SefirotWithDaatSchema,
+   ChakraSchema,
+   ElementSchema,
+ } from '@/lib/api/spiritual-filters';
 
-const OracleQuerySchema = z.object({
-  type: OracleTypeSchema.optional().default('tarot'),
-  question: z.string().optional(),
-  cards: z.coerce.number().int().positive().max(78).optional(),
-  spread: z.enum(['single', 'three', 'celtic', 'horseshoe', 'grand']).optional(),
-  chakra: ChakraSchema.optional(),
-  sefirot: SefirotSchema.optional(),
-});
+ // ─── Zod Schemas ───────────────────────────────────────────────────────────
+ const OracleTypeSchema = z.enum(['tarot', 'lenormand', 'ifa', 'ogbe', 'opalino', 'kabbalah']);
+
+ const OracleQuerySchema = z.object({
+   type: OracleTypeSchema.optional().default('tarot'),
+   question: z.string().optional(),
+   cards: z.coerce.number().int().positive().max(78).optional(),
+   spread: z.enum(['single', 'three', 'celtic', 'horseshoe', 'grand']).optional(),
+   chakra: ChakraSchema.optional(),
+   sefirot: SefirotWithDaatSchema.optional(),
+ });
 
 const OracleSystemSchema = z.object({
   id: OracleTypeSchema,
@@ -27,7 +26,7 @@ const OracleSystemSchema = z.object({
   origin: z.string(),
   tradition: z.string(),
   element: z.string(),
-  sefirot: z.array(SefirotSchema),
+   sefirot: z.array(SefirotWithDaatSchema),
   chakra: z.number(),
   orixa: z.string().optional(),
   description: z.string(),

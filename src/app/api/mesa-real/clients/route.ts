@@ -2,11 +2,9 @@
 // MESA REAL API - Cabala Dos Caminhos
 // Cockpit Oracular - Client Management Routes
 // ============================================================
-
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
 import { requireOperator } from '@/lib/auth/operator-session';
-import { createLogger, generateRequestId } from '@/lib/logging';
 import {
   createClientWithMaps,
   getClient,
@@ -16,6 +14,7 @@ import {
   searchClients,
   saveClientMaps,
 } from '@/lib/db/client-actions';
+import { createLogger, generateRequestId } from '@/lib/logging';
 
 // ============================================================
 // CLIENT CRUD ROUTES
@@ -37,6 +36,7 @@ const createClientSchema = z.object({
   birthLongitude: z.number().optional(),
   birthTimezone: z.string().optional(),
   notes: z.string().optional(),
+  consentGiven: z.boolean().optional(),
 });
 
 // ============================================================
@@ -61,10 +61,7 @@ export async function GET(request: NextRequest) {
     if (clientId) {
       const client = await getClient(clientId);
       if (!client) {
-        return NextResponse.json(
-          { error: 'Cliente não encontrado' },
-          { status: 404 }
-        );
+        return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 });
       }
       return NextResponse.json({ client });
     }
@@ -72,13 +69,9 @@ export async function GET(request: NextRequest) {
     // List all clients
     const clients = await listClients();
     return NextResponse.json({ clients });
-
   } catch (error) {
     console.error('GET /api/mesa-real/clients error:', error);
-    return NextResponse.json(
-      { error: 'Erro ao buscar clientes' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao buscar clientes' }, { status: 500 });
   }
 }
 
@@ -95,7 +88,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const data = createClientSchema.parse(body);
 
-// Calcular 4 mapas automaticamente no cadastro (Onda D - Wire 4 Mapas)
+    // Calcular 4 mapas automaticamente no cadastro (Onda D - Wire 4 Mapas)
     const result = await createClientWithMaps({
       fullName: data.fullName,
       birthDate: data.birthDate,
@@ -107,6 +100,7 @@ export async function POST(request: NextRequest) {
       birthLongitude: data.birthLongitude,
       birthTimezone: data.birthTimezone,
       notes: data.notes,
+      consentGiven: data.consentGiven,
     });
     if (!result.ok) {
       return NextResponse.json(
@@ -115,10 +109,10 @@ export async function POST(request: NextRequest) {
       );
     }
     const client = await getClient(result.id);
-    if (!client) return NextResponse.json({ error: 'Cliente não encontrado após criação' }, { status: 500 });
+    if (!client)
+      return NextResponse.json({ error: 'Cliente não encontrado após criação' }, { status: 500 });
     log.info('client.created', { operatorId: operator.id, clientId: client.id });
     return NextResponse.json({ client }, { status: 201 });
-
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -127,10 +121,7 @@ export async function POST(request: NextRequest) {
       );
     }
     console.error('POST /api/mesa-real/clients error:', error);
-    return NextResponse.json(
-      { error: 'Erro ao criar cliente' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao criar cliente' }, { status: 500 });
   }
 }
 
@@ -149,10 +140,7 @@ export async function PATCH(request: NextRequest) {
     const { action, clientId, ...data } = body;
 
     if (!clientId) {
-      return NextResponse.json(
-        { error: 'clientId é obrigatório' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'clientId é obrigatório' }, { status: 400 });
     }
 
     switch (action) {
@@ -172,12 +160,8 @@ export async function PATCH(request: NextRequest) {
       }
 
       default:
-        return NextResponse.json(
-          { error: 'Ação desconhecida' },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Ação desconhecida' }, { status: 400 });
     }
-
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -186,10 +170,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
     console.error('PATCH /api/mesa-real/clients error:', error);
-    return NextResponse.json(
-      { error: 'Erro ao atualizar cliente' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao atualizar cliente' }, { status: 500 });
   }
 }
 
@@ -205,20 +186,13 @@ export async function DELETE(request: NextRequest) {
     const clientId = searchParams.get('clientId');
 
     if (!clientId) {
-      return NextResponse.json(
-        { error: 'clientId é obrigatório' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'clientId é obrigatório' }, { status: 400 });
     }
 
     await deleteClient(clientId);
     return NextResponse.json({ success: true });
-
   } catch (error) {
     console.error('DELETE /api/mesa-real/clients error:', error);
-    return NextResponse.json(
-      { error: 'Erro ao deletar cliente' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao deletar cliente' }, { status: 500 });
   }
 }

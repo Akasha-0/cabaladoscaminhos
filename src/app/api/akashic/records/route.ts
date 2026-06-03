@@ -1,29 +1,26 @@
-import { requireOperatorApi } from '@/lib/auth/operator-guard';
+ import { requireOperatorApi } from '@/lib/auth/operator-guard';
+ import { NextRequest, NextResponse } from 'next/server';
+ import { z } from 'zod';
+ import {
+   SefirotWithDaatSchema,
+   ChakraSchema,
+   ElementSchema,
+ } from '@/lib/api/spiritual-filters';
 
-// src/app/api/akashic/records/route.ts
-// Akashic Records API - skip linting
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Daat', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-const RecordTypeSchema = z.enum(['life', 'karma', 'soul', 'past_life', 'future', 'ancestral', 'universal']);
-const SoulAgeSchema = z.enum(['young', 'mature', 'old', 'ancient']);
-const AccessLevelSchema = z.enum(['basic', 'intermediate', 'advanced', 'master']);
+ // ─── Zod Schemas ───────────────────────────────────────────────────────────
+ const RecordTypeSchema = z.enum(['life', 'karma', 'soul', 'past_life', 'future', 'ancestral', 'universal']);
+ const SoulAgeSchema = z.enum(['young', 'mature', 'old', 'ancient']);
+ const AccessLevelSchema = z.enum(['basic', 'intermediate', 'advanced', 'master']);
 
-const AkashicQuerySchema = z.object({
-  recordType: RecordTypeSchema.optional(),
-  accessLevel: AccessLevelSchema.optional(),
-  soulAge: SoulAgeSchema.optional(),
-  theme: z.string().optional(),
-  limit: z.coerce.number().int().positive().max(10).optional(),
-  chakra: ChakraSchema.optional(),
-  sefirot: SefirotSchema.optional(),
-});
+ const AkashicQuerySchema = z.object({
+   recordType: RecordTypeSchema.optional(),
+   accessLevel: AccessLevelSchema.optional(),
+   soulAge: SoulAgeSchema.optional(),
+   theme: z.string().optional(),
+   limit: z.coerce.number().int().positive().max(10).optional(),
+   chakra: ChakraSchema.optional(),
+   sefirot: SefirotWithDaatSchema.optional(),
+ });
 
 const AkashicRecordSchema = z.object({
   id: z.string(),
@@ -37,7 +34,7 @@ const AkashicRecordSchema = z.object({
   practices: z.array(z.string()),
   timestamp: z.string(),
   operatorId: z.string().optional(),
-  sefirot: z.array(SefirotSchema).optional(),
+   sefirot: z.array(SefirotWithDaatSchema).optional(),
   chakra: z.number().int().min(1).max(7).optional(),
   orixa: z.string().optional(),
 });
@@ -51,7 +48,7 @@ export const dynamic = 'force-dynamic';
 
 // ─── Record Type Correlations ──────────────────────────────────────────────────────────
 const RECORD_CORRELATIONS: Record<RecordType, {
-  sefirot: z.infer<typeof SefirotSchema>[];
+   sefirot: z.infer<typeof SefirotWithDaatSchema>[];
   chakra: number;
   orixa: string;
   element: string;
