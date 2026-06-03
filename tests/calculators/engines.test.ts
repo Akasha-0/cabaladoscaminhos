@@ -108,9 +108,9 @@ describe('Numerologia Cabalística', () => {
 
   it('Arcanos Regentes mapeiam para 0..21', () => {
     const a = calculateRulingArcana(7, 8);
-    expect(a.lifePathArcana).toBe(7);
-    expect(a.expressionArcana).toBe(8);
-    expect(calculateRulingArcana(33, 22).lifePathArcana).toBeLessThanOrEqual(21);
+    expect(a.lifePath.major).toBe(7);
+    expect(a.expression.major).toBe(8);
+    expect(calculateRulingArcana(33, 22).lifePath.major).toBeLessThanOrEqual(21);
   });
 
   it('Ciclos Pessoais são determinísticos para uma data de referência fixa', () => {
@@ -130,7 +130,7 @@ describe('Numerologia Cabalística', () => {
     expect(map.karmicLessons).toEqual([2, 7, 8]);
     expect(map.impression).toBeDefined();
     expect(map.pinnacles?.first.ageEnd).toBe(29);
-    expect(map.rulingArcana?.lifePathArcana).toBe(7);
+    expect(map.rulingArcana?.lifePath.major).toBe(7);
     expect(map.personalCycles).toBeDefined();
   });
 });
@@ -183,9 +183,13 @@ describe('Numerologia Tântrica', () => {
     expect(map.destiny).toBe(6);
     expect(map.tantricPath).toBe(7);
     expect(map.soulDescription).toContain('Corpo Negativo');
-    // corpos canônicos explícitos (Doc 11 §3.2)
-    expect(map.bodies).toHaveLength(11);
-    expect(map.bodies?.[0]).toMatchObject({ id: 1, name: 'Corpo da Alma' });
+    // corpos canônicos explícitos (Doc 11 §3.2) — novo formato de 5 corpos
+    expect(map.bodies).toBeDefined();
+    expect(map.bodies.fisico).toBeDefined();
+    expect(map.bodies.pranic).toBeDefined();
+    expect(map.bodies.emocional).toBeDefined();
+    expect(map.bodies.mental).toBeDefined();
+    expect(map.bodies.espiritual).toBeDefined();
     expect(map.soulBody).toBe(2);
   });
 });

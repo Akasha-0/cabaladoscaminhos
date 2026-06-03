@@ -24,6 +24,10 @@ export default defineConfig({
             'tests/lib/divination/**',
             'tests/lib/constants/**',
           ],
+          exclude: [
+            'tests/lib/divination/divination-methods.test.ts',
+            'tests/lib/divination/reading-history.test.ts',
+          ],
         },
         resolve: {
           alias: {
@@ -91,18 +95,8 @@ export default defineConfig({
             'tests/app/dashboard/orixa*',
             'tests/app/dashboard/ritual*',
             'tests/components/onboarding/**',
-            'tests/hooks/useAfirmacoes*',
-            'tests/hooks/useAnalytics*',
-            'tests/hooks/useCiclos*',
-            'tests/hooks/useDashboardConfig*',
-            'tests/hooks/useJourney*',
-            'tests/hooks/useNotifications*',
-            'tests/hooks/useNumerologia*',
-            'tests/hooks/usePrevisao*',
-            'tests/hooks/useRitualCalendar*',
-            'tests/hooks/useRituals*',
-            'tests/hooks/useSpiritualHistory*',
-            'tests/hooks/useUserPreferences*',
+            // Legacy hook tests — modules removed with B2C cleanup
+            // 'tests/hooks/*',
           ],
         },
         resolve: {

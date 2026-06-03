@@ -38,7 +38,14 @@ export function createSSEStream(
   };
   const send = (data: unknown): void => {
     const payload = JSON.stringify(data);
-    controller.enqueue(encoder.encode(`data: ${payload}\n\n`));
+    if (typeof data === 'object' && data !== null && 'event' in data) {
+      const d = data as { event: string; data?: unknown };
+      const eventPart = `event: ${d.event}`;
+      const dataPart = d.data !== undefined ? JSON.stringify(d.data) : '{}';
+      controller.enqueue(encoder.encode(`${eventPart}\ndata: ${dataPart}\n\n`));
+    } else {
+      controller.enqueue(encoder.encode(`data: ${payload}\n\n`));
+    }
   };
   // Start heartbeat every 30 seconds
   heartbeatTimer = setInterval(() => {

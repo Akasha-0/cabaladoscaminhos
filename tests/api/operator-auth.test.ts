@@ -31,18 +31,22 @@ vi.mock('bcryptjs', () => {
   const compare = (...args: unknown[]) => mockBcryptCompare(...args);
   return { default: { hash, compare }, hash, compare };
 });
-
 // Prisma — Operator + OperatorSession models mockados
 const mockFindUnique = vi.fn();
 const mockCreate = vi.fn();
 const mockOperatorSessionCreate = vi.fn();
+
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     operator: {
       findUnique: (args: unknown) => mockFindUnique(args),
       create: (args: unknown) => mockCreate(args),
     },
+    operatorMfa: {
+      findUnique: vi.fn().mockResolvedValue(null),
+    },
     operatorSession: {
+      findUnique: vi.fn(),
       create: (args: unknown) => mockOperatorSessionCreate(args),
     },
   },

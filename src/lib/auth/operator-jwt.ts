@@ -17,8 +17,22 @@
 //   - Cookie de refresh só vai no endpoint /refresh → 99% do tempo fica
 //     "parado". Se XSS, atacante só consegue refresh uma vez antes da
 //     rotação detectar reuso e revogar tudo.
-
 import jwt from 'jsonwebtoken';
+// ============================================================================
+// Token dedicado, single-use, emitido pelo /login quando o operator
+// tem MFA ativo. Tipo: 'mfa-challenge'. TTL curto (5min). Trocado
+// pelo /verify (com código TOTP) ou /recovery-code (com recovery code)
+// por um par access+refresh.
+//
+// Diferente de access/refresh, este token:
+//   - Não é persistido no DB (não há OperatorSession com type=MFA).
+//   - Single-use é enforced pelo client flow: após o operador usar
+//     o token, o estado "challenge em andamento" é zerado e um novo
+//     login é necessário para gerar outro.
+//   - Carrega só o operatorId (sem role) — role é revisto na hora de
+//     emitir o par final.
+
+import crypto from 'node:crypto';
 
 // ============================================================================
 // Constantes
@@ -90,11 +104,9 @@ export interface OperatorTokenPayload {
 // Erros
 // ============================================================================
 /** Erro lançado quando o secret não está configurado (em prod). */
-class JwtSecretMissingError extends Error {
+export class JwtSecretMissingError extends Error {
   constructor() {
-    super(
-      'JWT_SECRET não está configurado. Defina a env var antes de iniciar o servidor.'
-    );
+    super('JWT_SECRET não está configurado. Defina a env var antes de iniciar o servidor.');
     this.name = 'JwtSecretMissingError';
   }
 }
@@ -168,10 +180,7 @@ export function signOperatorRefreshToken(operator: {
  * genérico de 7d). Em código novo, use `signOperatorAccessToken` ou
  * `signOperatorRefreshToken`.
  */
-export function signOperatorToken(operator: {
-  id: string;
-  role: 'OPERATOR' | 'ADMIN';
-}): string {
+export function signOperatorToken(operator: { id: string; role: 'OPERATOR' | 'ADMIN' }): string {
   // Assina como access por padrão — preserva comportamento de Fase 13
   // (cookie cockpit_session, 7d). Migrar para 15min nas próximas fases.
   return signOperatorAccessToken(operator);
@@ -215,20 +224,32 @@ export function verifyOperatorToken(
  * Seta o cookie de access token no response (15min).
  */
 export function setOperatorSessionCookie(
-  response: { cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void } },
+  response: {
+    cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
+  },
   token: string
 ): void {
-  response.cookies.set(OPERATOR_TOKEN_COOKIE, token, cookieOptions({ maxAge: OPERATOR_ACCESS_TTL_SECONDS }));
+  response.cookies.set(
+    OPERATOR_TOKEN_COOKIE,
+    token,
+    cookieOptions({ maxAge: OPERATOR_ACCESS_TTL_SECONDS })
+  );
 }
 
 /**
  * Seta o cookie de refresh token no response (30d).
  */
 export function setOperatorRefreshCookie(
-  response: { cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void } },
+  response: {
+    cookies: { set: (name: string, value: string, opts?: Record<string, unknown>) => void };
+  },
   token: string
 ): void {
-  response.cookies.set(OPERATOR_REFRESH_COOKIE, token, cookieOptions({ maxAge: OPERATOR_REFRESH_TTL_SECONDS }));
+  response.cookies.set(
+    OPERATOR_REFRESH_COOKIE,
+    token,
+    cookieOptions({ maxAge: OPERATOR_REFRESH_TTL_SECONDS })
+  );
 }
 
 /**
@@ -249,24 +270,8 @@ export function clearOperatorRefreshCookie(response: {
   response.cookies.set(OPERATOR_REFRESH_COOKIE, '', clearCookieOptions());
 }
 
-// ============================================================================
-// Token dedicado, single-use, emitido pelo /login quando o operator
-// tem MFA ativo. Tipo: 'mfa-challenge'. TTL curto (5min). Trocado
-// pelo /verify (com código TOTP) ou /recovery-code (com recovery code)
-// por um par access+refresh.
-//
-// Diferente de access/refresh, este token:
-//   - Não é persistido no DB (não há OperatorSession com type=MFA).
-//   - Single-use é enforced pelo client flow: após o operador usar
-//     o token, o estado "challenge em andamento" é zerado e um novo
-//     login é necessário para gerar outro.
-//   - Carrega só o operatorId (sem role) — role é revisto na hora de
-//     emitir o par final.
-
-import crypto from 'node:crypto';
-
 /** TTL do MFA challenge token: 5 minutos. */
-const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
+export const OPERATOR_MFA_CHALLENGE_TTL_SECONDS = 5 * 60;
 
 /** Tipo de token adicional aceito em verifyOperatorToken (Fase 20). */
 // fallow-ignore-next-line unused-type

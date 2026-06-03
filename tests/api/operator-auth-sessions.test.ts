@@ -34,6 +34,9 @@ vi.mock('@/lib/prisma', () => ({
       findUnique: (args: unknown) => mockFindUnique(args),
       create: (args: unknown) => mockCreate(args),
     },
+    operatorMfa: {
+      findUnique: vi.fn().mockResolvedValue(null),
+    },
     operatorSession: {
       findUnique: (args: unknown) => mockOperatorSessionFindUnique(args),
       create: (args: unknown) => mockOperatorSessionCreate(args),

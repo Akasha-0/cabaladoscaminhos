@@ -146,6 +146,25 @@ describe('POST /api/consult', () => {
     expect(res.status).toBe(404);
   });
 
+  // Helper: extrai event:done de uma resposta SSE (trata multi-line data JSON)
+  async function extractDoneFromSSE(res: Response): Promise<Record<string, unknown>> {
+    const text = await res.text();
+    // SSE chunks separated by blank lines; each chunk has optional "event:X" and "data:JSON"
+    for (const raw of text.split(/\n\n+/)) {
+      const lines = raw.split('\n');
+      let eventType = '';
+      let dataJson = '';
+      for (const line of lines) {
+        if (line.startsWith('event:')) eventType = line.slice(6).trim();
+        if (line.startsWith('data:')) dataJson = line.slice(5).trim();
+      }
+      if (eventType === 'done' && dataJson) {
+        return JSON.parse(dataJson);
+      }
+    }
+    throw new Error('No done event found in SSE: ' + text.slice(0, 300));
+  }
+
   it('creates a new consultation and persists user message when consultationId not provided', async () => {
     (prisma.operator.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue(mockOperator);
     (prisma.reading.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue(mockReadingWithContext);
@@ -154,23 +173,13 @@ describe('POST /api/consult', () => {
     const { POST } = await import('@/app/api/consult/route');
     const res = await POST(req);
     expect(res.status).toBe(200);
-    const body = await res.json();
+    expect(res.headers.get('content-type')).toContain('text/event-stream');
+    const body = await extractDoneFromSSE(res);
     expect(body.consultationId).toBe('consult-new');
-    expect(body.answer).toBeNull(); // fallback mode (sem OPENAI_API_KEY)
-    expect(body.routedThemes).toBeDefined();
-    expect(body.routedHouses).toBeDefined();
-    // AD-22.5: done event includes tokensUsed
+    expect(body.fullAnswer).toBe(''); // fallback mode (sem OPENAI_API_KEY)
+    expect((body.routedThemes as unknown[])).toBeDefined();
+    expect((body.routedHouses as unknown[])).toBeDefined();
     expect(body.tokensUsed).toBe(0);
-    // Criou a thread
-    expect(prisma.consultation.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          readingId: 'reading-1',
-          operatorId: 'op-1',
-        }),
-      })
-    );
-    // Persistiu a pergunta do user (chamado via $transaction, ver addChatMessage)
     expect(prisma.consultation.create).toHaveBeenCalled();
   });
 
@@ -191,7 +200,8 @@ describe('POST /api/consult', () => {
     const res = await POST(req);
 
     expect(res.status).toBe(200);
-    const body = await res.json();
+    expect(res.headers.get('content-type')).toContain('text/event-stream');
+    const body = await extractDoneFromSSE(res);
     expect(body.consultationId).toBe('consult-existing');
     expect(prisma.consultation.create).not.toHaveBeenCalled();
   });

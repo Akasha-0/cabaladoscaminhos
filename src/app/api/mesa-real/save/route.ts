@@ -15,6 +15,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { requireOperator } from '@/lib/auth/operator-session';
+import { generateRequestId, createLogger } from '@/lib/logging';
 
 interface CasaData {
   carta: { numero: number; nome: string; significado: string } | null;

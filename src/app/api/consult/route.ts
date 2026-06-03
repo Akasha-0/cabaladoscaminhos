@@ -149,6 +149,7 @@ export async function POST(request: NextRequest) {
             routedThemes: ragContext.routing.themes,
             routedHouses: ragContext.routing.houses,
             fullAnswer: '',
+            tokensUsed: 0,
           },
         });
         close();

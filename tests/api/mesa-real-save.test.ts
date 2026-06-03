@@ -42,7 +42,14 @@ const mockReading = {
   updatedAt: new Date('2026-06-01'),
   client: { id: 'client-1', fullName: 'Maria' },
 };
-
+vi.mock('@/lib/logging', () => ({
+  generateRequestId: vi.fn(() => 'test-request-id'),
+  createLogger: vi.fn(() => ({
+    info: vi.fn(),
+    error: vi.fn(),
+    warn: vi.fn(),
+  })),
+}));
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     operator: {
@@ -56,15 +63,6 @@ vi.mock('@/lib/prisma', () => ({
     },
   },
 }));
-vi.mock('@/lib/logging', () => ({
-  generateRequestId: vi.fn(() => 'test-request-id'),
-  createLogger: vi.fn(() => ({
-    info: vi.fn(),
-    error: vi.fn(),
-    warn: vi.fn(),
-  })),
-}));
-
 import { prisma } from '@/lib/prisma';
 
 // Setup ----------------------------------------------------------------------------
