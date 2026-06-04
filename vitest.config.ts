@@ -24,6 +24,7 @@ export default defineConfig({
             'tests/lib/ai/**',
             'tests/lib/engines/**',
             'tests/lib/correlation/**',
+            'tests/lib/security/**',
             'tests/calculators/**',
             'tests/lib/auth/**',
             'tests/lib/db/**',

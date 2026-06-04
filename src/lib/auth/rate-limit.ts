@@ -36,6 +36,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getRedisClient } from '@/lib/redis';
 import { logSecurityEvent } from '@/lib/auth/audit-service';
+import { hashIp } from '@/lib/security/ip-hash';
 
 // ============================================================
 // CONFIG
@@ -128,7 +129,10 @@ export async function checkAuthRateLimit(
   ip: string
 ): Promise<RateLimitResult> {
   const cfg = AUTH_RATE_LIMITS[route];
-  const key = `auth:rl:${cfg.label}:${ip}`;
+  // LGPD: usar hash do IP como chave Redis (não IP puro).
+  // O hash é determinístico (mesmo IP → mesmo hash) e unidirecional.
+  // Preserva o rate-limit por origem sem expor PII no Redis/logs.
+  const key = `auth:rl:${cfg.label}:${hashIp(ip)}`;
 
   let count: number;
   let ttlSeconds: number;
@@ -213,9 +217,10 @@ export async function enforceAuthRateLimit(
 
   if (!result.allowed) {
     // Fase 21: RATE_LIMIT_EXCEEDED — fire-and-forget, nunca bloqueia
+    // LGPD: passa o HASH do IP, não o IP em texto puro.
     logSecurityEvent({
       type: 'RATE_LIMIT_EXCEEDED',
-      ipAddress: ip,
+      ipAddress: hashIp(ip),
       metadata: { route, limit: result.limit, remaining: result.remaining },
     });
     const res = NextResponse.json(
@@ -242,7 +247,8 @@ async function resetAuthRateLimit(
   ip: string
 ): Promise<void> {
   const cfg = AUTH_RATE_LIMITS[route];
-  const key = `auth:rl:${cfg.label}:${ip}`;
+  // LGPD: hash determinístico (mesmo IP → mesmo hash), unidirecional.
+  const key = `auth:rl:${cfg.label}:${hashIp(ip)}`;
   try {
     const redis = await getRedisClient();
     // A interface RedisLike não tem `del`; usamos o `set` com TTL=1s
@@ -388,9 +394,10 @@ export async function checkBothRateLimits(
   const ipResult = await checkAuthRateLimitFromConfig(ip, action, ipLimit, ipWindowSeconds);
   if (!ipResult.allowed) {
     // Fase 21: RATE_LIMIT_EXCEEDED — fire-and-forget
+    // LGPD: passa o HASH do IP, não o IP em texto puro.
     logSecurityEvent({
       type: 'RATE_LIMIT_EXCEEDED',
-      ipAddress: ip,
+      ipAddress: hashIp(ip),
       metadata: { route: action, limit: ipResult.limit, remaining: ipResult.remaining, by: 'ip' },
     });
     const res = NextResponse.json(
@@ -451,7 +458,8 @@ async function checkAuthRateLimitFromConfig(
   let ttlSeconds: number;
   try {
     const redis = await getRedisClient();
-    const key = `auth:rl:${action}:${ip}`;
+    // LGPD: hash determinístico, unidirecional.
+    const key = `auth:rl:${action}:${hashIp(ip)}`;
     count = await redis.incr(key);
     if (count === 1) {
       await redis.expire(key, windowSeconds);
