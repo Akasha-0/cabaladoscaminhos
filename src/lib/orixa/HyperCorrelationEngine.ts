@@ -773,4 +773,3 @@ class HyperCorrelationEngine {
 
 export const hyperCorrelationEngine = new HyperCorrelationEngine();
 
-export default hyperCorrelationEngine;
