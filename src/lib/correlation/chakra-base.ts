@@ -25,8 +25,18 @@ export type Planeta = 'Sol' | 'Lua' | 'Marte' | 'Mercúrio' | 'Júpiter' | 'Vên
  * - standard Sanskrit names
  * - numbered Portuguese forms (1º básico, 2º sacro, etc.)
  * - short Portuguese forms (basic, sacro, plexo, etc.)
+ *
+ * Unknown chakra names are returned as-is (lowercased/trimmed) so that
+ * downstream callers (`getChakraDay`, `getChakraElement`, `getChakraPlanet`,
+ * etc.) can detect the miss via a lookup miss and return null/empty.
+ * Previously this function returned 'Muladhara' as a fallback, which
+ * masked unknown-chakra lookups and produced non-null results for
+ * inputs like "Unknown Chakra" — violating the contract of those callers.
+ *
+ * @see tests/lib/correlation/chakra-{day,element,planet}.test.ts
+ *      ("should return null/[] for unknown chakra")
  */
-export function normalizeChakraName(chakra: string): ChakraName {
+export function normalizeChakraName(chakra: string): ChakraName | string {
   const chakraMap: Record<string, ChakraName> = {
     'muladhara': 'Muladhara',
     'svadhisthana': 'Svadhisthana',
@@ -58,5 +68,6 @@ export function normalizeChakraName(chakra: string): ChakraName {
     'frontal': 'Ajna',
     'coronário': 'Sahasrara',
   };
-  return chakraMap[chakra.toLowerCase()] ?? 'Muladhara';
+  const lower = chakra.toLowerCase().trim();
+  return chakraMap[lower] ?? lower;
 }
