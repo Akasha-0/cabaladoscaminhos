@@ -47,12 +47,12 @@ export interface DossierPdfData {
 // ----------------------------------------------------------------------------
 
 /** Retorna o nome da carta Lenormand dado o número (1-36). */
-export function cartaNome(numero: number): string {
+function cartaNome(numero: number): string {
   return LENORMAND_CARDS[numero - 1]?.name ?? `Carta ${numero}`;
 }
 
 /** Retorna o label do Odu dado o número. */
-export function oduNome(numero: number): string {
+function oduNome(numero: number): string {
   const odus = [
     'Ogundá', 'Ogbe', 'Yekun', 'Irosun', 'Owonrin', 'Obara',
     'Okanran', 'Ogunda', 'Osa', 'Ika', 'Oturupon', 'Otura',
@@ -62,7 +62,7 @@ export function oduNome(numero: number): string {
 }
 
 /** Limpa markdown básico para texto legível em PDF. */
-export function stripMarkdown(text: string): string {
+function stripMarkdown(text: string): string {
   return text
     .replace(/\*\*(.*?)\*\*/g, '$1')
     .replace(/\*(.*?)\*/g, '$1')
