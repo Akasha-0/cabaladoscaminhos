@@ -88,6 +88,9 @@ export async function POST(request: NextRequest) {
 }
 // PATCH /api/notifications - Update notification status
 export async function PATCH(request: NextRequest) {
+  // Auth guard — PATCH modifies data, must require operator auth
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const body = await request.json();
     const parseResult = z.object({
