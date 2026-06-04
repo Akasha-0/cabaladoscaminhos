@@ -32,10 +32,7 @@ export const useAuth = () => {
 // Singleton client
 let supabaseClient: ReturnType<typeof createBrowserClient> | null = null;
 
-function getSupabaseClient(
-  url?: string,
-  anonKey?: string,
-) {
+function getSupabaseClient(url?: string, anonKey?: string) {
   if (supabaseClient) return supabaseClient;
   const resolvedUrl = url ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
   const resolvedKey = anonKey ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
