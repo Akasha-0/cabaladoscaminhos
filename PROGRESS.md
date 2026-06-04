@@ -1006,3 +1006,23 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 - page.tsx: redirect to /cockpit (not /dashboard)
 - DashboardPanel.tsx: MetricCard/StatusBadge/RecentReadingsTable memoized with React.memo
 **Result:** 1874 testes · TypeScript 0 erros · Build 116 páginas OK.
+
+### Fase 59 — Security audit + dead code cleanup + Phase 59 guard (2026-06-03)
+**CRITICAL security fix — Unaunted PATCH /api/notifications:**
+- Audit found 3 routes with no auth guards on mutating methods
+- `PATCH /api/notifications`: no auth check — anyone could toggle any notification status
+- Fixed: added `requireOperator()` guard before any processing
+- `swarm POST`: already has auth ✅
+- `favoritos POST/DELETE`: no auth but in-memory Map (architectural issue, MEDIUM)
+**Schema audit — 19 untested API routes categorized:**
+- HIGH: swarm (agent state), favoritos (unauth writes), notifications PATCH (unauth mutation)
+- MEDIUM: materials/offerings/audio/banking (unauth writes in-memory)
+- LOW: 10 public trivial routes (lenormand, ifa, calendar, divination, etc.)
+**Dead code cleanup:**
+- custos.ts deleted: no callers in src/ (grep confirmed)
+- 3 integration tests removed (tested dead code)
+**Knip config fix:** Added knip.config.ts excluding _index.js from project glob (root cause: module 'default' resolution error)
+**Phase 59 guard protocol established:**
+- Agent scope is explicit per assignment; agent deleting cockpit pages was cancelled mid-operation
+- All changes reverted; file integrity restored
+**Result:** 1871 testes · TypeScript 0 erros · Build 116 páginas OK.
