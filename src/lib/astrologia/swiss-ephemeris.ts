@@ -19,8 +19,9 @@ export function toJulianDate(data: Date): number {
 }
 
 export function normalizeDegrees(degrees: number): number {
+  // Euclidean modulo → always in [0, 360). Handles -0 edge case.
   let result = degrees % 360;
-  if (result < 0) result += 360;
+  if (result < 0 || Object.is(result, -0)) result += 360;
   return result;
 }
 
@@ -80,7 +81,9 @@ function calcularPlaneta(
 
   const lambda = normalizeDegrees(L + C);
 
-  return { longitude: lambda, velocidade: elementos.L1 };
+  // L1 is mean motion in deg / Julian century. Convert to deg / day (1 century ≈ 36525 days).
+  // The longitudes are correct because the formula was calibrated in century units.
+  return { longitude: lambda, velocidade: elementos.L1 / 36525 };
 }
 
 /**
@@ -170,11 +173,14 @@ export function calcularPosicao(planeta: Planeta, data: Date): PosicaoPlaneta {
       distancia = DISTANCIAS_APROX[planeta] ?? 1.0;
       break;
     case 'node_norte':
-    case 'node_sul':
-      longitude = calcularLua(data).longitude + 180;
+    case 'node_sul': {
+      const luaLong = calcularLua(data).longitude;
+      // North node = Moon's longitude, South node = 180° opposite.
+      longitude = planeta === 'node_norte' ? luaLong : normalizeDegrees(luaLong + 180);
       velocidade = 0;
       distancia = 0.00257;
       break;
+    }
     case 'quiron':
     case 'chiron':
       ({ longitude, velocidade } = calcularQuiron(data));

@@ -10,8 +10,11 @@ import type { MapaNatal, Planeta, Signo } from './tipos';
 
 export interface BirthChartInput {
   birthDate: Date;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
+  /** Aliases (lat/lon) supported for shorthand callers. */
+  lat?: number;
+  lon?: number;
   houseSystem?: HouseSystem;
 }
 
@@ -88,10 +91,13 @@ function findRegent(sign: Signo, planets: PlanetPosition[]): Planeta | null {
 }
 
 export function getBirthChart(input: BirthChartInput): BirthChart {
-  const { birthDate, latitude, longitude, houseSystem = 'placidus' } = input;
+  const { birthDate, latitude, longitude, lat, lon, houseSystem = 'placidus' } = input;
+  // Accept lat/lon as shorthand for latitude/longitude.
+  const finalLat: number = latitude ?? lat ?? 0;
+  const finalLon: number = longitude ?? lon ?? 0;
 
   const planets = getPositions(birthDate);
-  const houses = calculateHouses(birthDate, birthDate, latitude, longitude, houseSystem);
+  const houses = calculateHouses(birthDate, birthDate, finalLat, finalLon, houseSystem);
 
   const houseCusps = houses.cusps.map(c => c.longitude);
   const planetPositions = planets.map(p => {

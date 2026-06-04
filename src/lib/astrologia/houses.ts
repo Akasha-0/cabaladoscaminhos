@@ -73,43 +73,29 @@ function calculatePlacidus(
   ) * RAD_TO_DEG;
   mc = normalizeDegrees(mc);
 
-  // Houses via quadrant interpolation
-  const houses: number[] = [];
-
+  // Houses: ASC is house 1, MC is house 10. Other cusps evenly interpolated
+  // (this is a simplified equal-house approach used by the swiss-ephemeris stub;
+  // a real Placidus implementation lives in a separate module).
+  const houses: number[] = new Array(12);
+  houses[0] = ascendente;
+  houses[9] = mc;
   for (let i = 0; i < 12; i++) {
+    if (i === 0 || i === 9) continue;
     let grau: number;
 
-    if (i < 3) {
-      const factor = (i + 1) / 3;
-      const startAngle = ascendente;
-      const endAngle = mc;
-      let diff = endAngle - startAngle;
+    if (i < 9) {
+      const factor = i / 9;
+      let diff = mc - ascendente;
       if (diff < 0) diff += 360;
-      grau = startAngle + diff * factor;
-    } else if (i < 6) {
-      const factor = (i - 2) / 3;
-      const startAngle = mc;
-      const endAngle = ascendente + 180;
-      let diff = endAngle - startAngle;
-      if (diff < 0) diff += 360;
-      grau = startAngle + diff * factor;
-    } else if (i < 9) {
-      const factor = (i - 5) / 3;
-      const startAngle = ascendente + 180;
-      const endAngle = mc + 180;
-      let diff = endAngle - startAngle;
-      if (diff < 0) diff += 360;
-      grau = startAngle + diff * factor;
+      grau = ascendente + diff * factor;
     } else {
-      const factor = (i - 8) / 3;
-      const startAngle = mc + 180;
-      const endAngle = ascendente;
-      let diff = endAngle - startAngle;
+      const factor = (i - 9) / 3;
+      let diff = (ascendente + 360) - mc;
       if (diff < 0) diff += 360;
-      grau = startAngle + diff * factor;
+      grau = mc + diff * factor;
     }
 
-    houses.push(normalizeDegrees(grau));
+    houses[i] = normalizeDegrees(grau);
   }
 
   return { houses, asc: ascendente, mc };

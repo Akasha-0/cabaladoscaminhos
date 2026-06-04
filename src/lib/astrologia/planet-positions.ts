@@ -16,7 +16,7 @@ export interface PlanetPosition {
   retrograde: boolean;
 }
 
-const TEN_PLANETS: Planeta[] = [
+const THIRTEEN_PLANETS: Planeta[] = [
   'sol',
   'lua',
   'mercurio',
@@ -28,6 +28,7 @@ const TEN_PLANETS: Planeta[] = [
   'netuno',
   'plutao',
   'node_norte',
+  'node_sul',
   'chiron',
   'lilith',
 ];
@@ -73,7 +74,7 @@ function isRetrograde(planeta: Planeta, data: Date): boolean {
 }
 
 export function getPositions(date: Date): PlanetPosition[] {
-  return TEN_PLANETS.map((planet) => {
+  return THIRTEEN_PLANETS.map((planet) => {
     const pos = calcularPosicao(planet, date);
     return {
       planet,
