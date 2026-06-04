@@ -19,7 +19,13 @@
     "quality": "tsx scripts/run-quality-eval.ts",
     "quality:evolve": "tsx scripts/run-evolution.ts",
     "fallow": "fallow --skip dupes,health",
-    "fallow:all": "fallow"
+    "fallow:all": "fallow",
+    "cycle:assess": "tsx scripts/cycle-executor.ts assess",
+    "cycle:plan": "tsx scripts/cycle-executor.ts plan",
+    "cycle:execute": "tsx scripts/cycle-executor.ts execute",
+    "cycle:verify": "tsx scripts/cycle-executor.ts verify",
+    "cycle:evolve": "tsx scripts/cycle-executor.ts evolve",
+    "cycle:full": "tsx scripts/cycle-executor.ts full"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
