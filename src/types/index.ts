@@ -53,9 +53,6 @@ export interface AstrologyMap {
 // §2.4 OduBirth — Odu de Nascimento
 // ============================================================================
 
-// fallow-ignore-next-line unused-type — AD-23.3: only live fields remain
-// Dead: animal, owner, ebwe, message, initiationPath, prohibitions, sign,
-//       meaning (BirthOduResult.meaning ≠ OduBirth.meaning), odu (not returned)
 export interface OduBirth {
   oduNumber?: number;
   oduName?: string;
