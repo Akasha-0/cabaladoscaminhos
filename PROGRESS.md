@@ -925,25 +925,26 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
   275e24d6 (dead types), a05556de (T7.3), 7d73bd0b (T7.5),
   d4c96489 (CockpitSidebar fix), f3db7355 (knip cleanup),
   cf27cd1b (CockpitSidebar restore)
-### Fase 55 — Phase 55 findings + Stripe duplicate cleanup (2026-06-03)
-**Findings — confirmed not actionable:**
-- prisma.config.ts: EXISTS (Prisma 7 already migrated)
-- health/metrics POST: low-risk (in-memory metrics, public like other health routes)
-- Stripe idempotency: already handled (try/catch on create + @unique constraint on stripeEventId)
-- CORS Vary: Origin: already fixed in Fase 54
-**Findings — actionable:**
-- Duplicate Stripe webhook routes:
-  - `src/app/api/webhooks/stripe/route.ts` (172 lines, older, has signature verification, NO idempotency)
-  - `src/app/api/stripe/webhook/route.ts` (322 lines, newer, has signature verification + HAS idempotency)
-- Both handle same 3 events (checkout.session.completed, subscription.updated/deleted)
-- CRITICAL: older route lacked idempotency (double-processing risk on Stripe retries)
-- OpenAPI docs already pointed to `/webhooks/stripe` as canonical
-**Fixes applied:**
-- `src/app/api/webhooks/stripe/route.ts`: Added idempotency (prisma.webhookEvent findUnique + create)
-  - Imports prisma client; checks existingEvent before processing
-  - Records event after handlers succeed (ignore unique constraint violations)
-  - Returns `{ received: true, skipped: true }` for duplicate events
-  - Proper error handling: 500 retries on handler failure, 400 on signature failure
-- `src/app/api/stripe/webhook/route.ts`: DELETED (duplicate, consolidated to canonical route)
-**Result:** 1832 testes (rate-limit flaky in full suite, passes in isolation) · TypeScript 0 erros.
-Commit: cf27cd1b
+928:### Fase 55 — Phase 55 findings + Stripe duplicate cleanup (2026-06-03)
+929:10 parallel audit agents: OduCode, StripeWebhook, CORS, PrismaMigration, APIHealth, AuthMiddleware, SSE, Zustand, Numerology, PDFExport.
+930:**Findings — confirmed NOT actionable:**
+931:- prisma.config.ts: EXISTS (Prisma 7 already migrated — agent report was wrong)
+932:- health/metrics POST: low-risk (in-memory metrics, public like /health, /ready)
+933:- Stripe idempotency: already handled in newer route (try/catch + @unique on stripeEventId)
+934:- CORS Vary: Origin: already fixed in Fase 54 (middleware.ts buildCorsHeaders)
+935:**Findings — actionable (CRITICAL):**
+936:- Duplicate Stripe webhook routes:
+937:  - `src/app/api/webhooks/stripe/route.ts` (172 lines, older, NO idempotency)
+938:  - `src/app/api/stripe/webhook/route.ts` (322 lines, newer, HAS idempotency)
+939:  Both handle same 3 events. CRITICAL: older lacked idempotency (double-processing on Stripe retries).
+940:**Findings — actionable (minor):**
+941:- Odu data dual-source mismatch: constants/odus.ts vs mesa-real-data.ts (ODUS_IFA) — D4 table flagged ⚠️ VALIDAR (blocked on operator)
+942:- Numerology: 100% spec-compliant — all 8 Doc 11 §2.3-2.6 checkpoints pass (D1 Y as consonant ✓, D2 Expression=Destiny ✓)
+943:- Auth: 100% coverage — cockpit layout gate + per-page re-check + per-API requireOperator
+944:- PDF export: 3 low-severity (no rate-limit, lossy força mapping, unsanitized Content-Disposition filename)
+945:- Missing Prisma migrations: SecurityEvent and PasswordResetToken models have no migration (fresh DB would fail)
+946:**Fixes applied:**
+947:- `src/app/api/webhooks/stripe/route.ts`: Added idempotency — prisma.webhookEvent.findUnique before processing; create after handlers succeed; unique-constraint catch; 500 retry on handler failure.
+948:- `src/app/api/stripe/webhook/route.ts`: DELETED — duplicate, consolidated to canonical /webhooks/stripe.
+949:**Result:** 1832 testes · TypeScript 0 erros · Build 116 páginas OK.
+950:Commits: d1296e65 (Stripe dup + LogEntry rm) · b2f26004 (PROGRESS.md fix)
