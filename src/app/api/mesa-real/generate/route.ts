@@ -189,7 +189,8 @@ async function generateHouseContent(
   odu: { numero: number; nome: string },
   client: ClientMaps,
   apiKey: string,
-  llmModel: string
+  llmModel: string,
+  log: AppLogger,
 ): Promise<{ content: string; tokensUsed: number }> {
   const systemPrompt = buildSystemPrompt();
   const userPayload = buildHousePayload(
@@ -217,16 +218,13 @@ async function generateHouseContent(
     }),
   });
   const durationMs = Date.now() - t0;
-
   if (!res.ok) {
     const detail = await res.text();
     throw new Error(`LLM error ${res.status}: ${detail}`);
   }
-
   const data = await res.json();
   const content = data.choices?.[0]?.message?.content ?? '';
   const tokensUsed = data.usage?.total_tokens ?? 0;
-
   log.info('llm.call', {
     house,
     model: llmModel,
@@ -234,7 +232,6 @@ async function generateHouseContent(
     maxTokens,
     durationMs,
   });
-
   return { content, tokensUsed };
 }
 
@@ -464,7 +461,9 @@ export async function POST(request: NextRequest) {
       },
     });
     if (readingWithClient?.client) {
-      dbClientMaps = buildClientMapsFromDb(readingWithClient.client as Parameters<typeof buildClientMapsFromDb>[0]);
+      dbClientMaps = buildClientMapsFromDb(
+        readingWithClient.client as Parameters<typeof buildClientMapsFromDb>[0]
+      );
     }
   }
 
@@ -533,7 +532,8 @@ export async function POST(request: NextRequest) {
               h.odu,
               client,
               apiKey,
-              llmModel
+              llmModel,
+              log,
             );
 
             // AD-22.5: Incrementa contador de tokens

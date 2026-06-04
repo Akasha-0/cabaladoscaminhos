@@ -10,20 +10,19 @@
 // Protege contra logout-forçado (ex: atacante tenta deslogar o operator
 // em loop para causar inconvenience). O IP limit já existia na Fase 18
 // para o endpoint de login, mas logout agora também tem operador limit.
-
-import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
 import {
   OPERATOR_TOKEN_COOKIE,
   OPERATOR_REFRESH_COOKIE,
   clearOperatorSessionCookie,
   clearOperatorRefreshCookie,
 } from '@/lib/auth/operator-jwt';
+import { getOperatorFromRequest } from '@/lib/auth/operator-session';
 import { revokeSession } from '@/lib/auth/operator-sessions';
 import { checkOperatorRateLimit, OPERATOR_RATE_LIMITS } from '@/lib/auth/rate-limit';
-import { getOperatorFromRequest } from '@/lib/auth/operator-session';
-import { logSecurityEvent } from '@/lib/auth/audit-service';
-import { createLogger, generateRequestId } from '@/lib/logging';
+import { createLogger, generateRequestId, type AppLogger } from '@/lib/logging';
 
 const OPERATOR_LIMIT = OPERATOR_RATE_LIMITS['logout'].max; // 10
 const OPERATOR_WINDOW = OPERATOR_RATE_LIMITS['logout'].windowSeconds; // 60s
@@ -31,6 +30,7 @@ const OPERATOR_WINDOW = OPERATOR_RATE_LIMITS['logout'].windowSeconds; // 60s
 export async function POST(request?: NextRequest) {
   // Tenta obter o operatorId para rate-limit
   let operatorId = 'anonymous';
+  let log: AppLogger;
   if (request) {
     try {
       const operator = await getOperatorFromRequest(request);
@@ -42,9 +42,9 @@ export async function POST(request?: NextRequest) {
     }
     // Extrai requestId do header x-request-id (fallback: gera um novo)
     const requestId = request.headers.get('x-request-id') ?? generateRequestId();
-    var log = createLogger(requestId, '/api/operator/auth/logout');
+    log = createLogger(requestId, '/api/operator/auth/logout');
   } else {
-    var log = createLogger(generateRequestId(), '/api/operator/auth/logout');
+    log = createLogger(generateRequestId(), '/api/operator/auth/logout');
   }
 
   // Fase 24: rate-limit POR OPERATOR antes de trabalho no banco
@@ -84,10 +84,10 @@ export async function POST(request?: NextRequest) {
     if (refreshToken) {
       await revokeSession(refreshToken);
     }
-    // AD-22.4: аудит события выхода (SESSION_REVOKED)
-    const ipAddress = request.headers.get('x-forwarded-for')
-      ?? request.headers.get('x-real-ip')
-      ?? undefined;
+    // AD-22.4: auditoria de logout
+    const ipAddress = request
+      ? (request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? undefined)
+      : undefined;
     if (operatorId !== 'anonymous') {
       logSecurityEvent({
         type: 'SESSION_REVOKED',
