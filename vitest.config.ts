@@ -23,6 +23,7 @@ export default defineConfig({
           include: [
             'tests/lib/ai/**',
             'tests/lib/engines/**',
+            'tests/lib/correlation/**',
             'tests/calculators/**',
             'tests/lib/auth/**',
             'tests/lib/db/**',

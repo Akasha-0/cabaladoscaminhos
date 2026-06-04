@@ -657,6 +657,8 @@ Idades de troca: 1º até `36 − lifePath`; depois faixas de 9 anos.
 | 15 | Iká | Xangô, Oxum | Poder, estratégia, responsabilidade |
 | 16 | Ofurufu | Oxalá, Todos os Orixás | Completude, totalidade, bênção universal |
 
+> **Arquivos com grafia de variantes (D4):** `src/lib/correlation/oddu-zodiac.ts` (Okaran, Etaogundá, Oxé, Ejionlá, Iuní, Owonrin, Ejila, Logumí, Odí, Bejí, Ibí, Okandí), `src/lib/correlation/oddu-chakra.ts` (idem), `src/lib/numerologia/odu-correlations.ts` (Okaran, EjiOníle) — todos marcados `@provisional` no JSDoc. **Guardião:** `tests/lib/correlation/odu-canonical-names.test.ts` (12 testes) valida que toda grafia em paralelo é canônica ou variante reconhecida em §linha 639.
+
 ---
 
 ## 6. Glossário Oracular

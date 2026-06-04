@@ -2,6 +2,18 @@
  * Odú Ifá Chakra Correlation Module
  * Direct mappings of the 16 Odú Ifá (Merindilogun) to the 7 main chakras
  * With spiritual meaning for divination and energy work
+ *
+ * @provisional — Grafias de Odu usadas aqui (Okaran, Etaogundá, Oxé, Osí,
+ * Iuní, Owonrin, Ejila, Logumí, Odí, Bejí, Ibí, Okandí) são **variantes de
+ * linhagem** reconhecidas em IDEIA.md §linha 639 (D4 a resolver). O canônico
+ * está em `src/lib/constants/odus.ts` (Ogbe, Etogundá, Oxê, Ejionile, Ossá,
+ * Ofun, Owarin, Ejilaxebô, Oturupon, Oturá, Iká, Ofurufu).
+ *
+ * NÃO substituir as grafias locais — elas representam variantes legítimas
+ * da tradição Merindilogun. Quando D4 for resolvido pelo operador, este
+ * módulo deve ser migrado para usar `ODUS[i].name` do canônico.
+ *
+ * Veja: tests/lib/correlation/odu-canonical-names.test.ts (guardião)
  */
 
 import type { ChakraName, Elemento } from './chakra-element';

@@ -1,6 +1,17 @@
 /**
  * Numerology-Odú Correlations
  * Based on IDEIA.md "Matriz de Numerologia e Odús de Nascimento" pp.150-167
+ *
+ * @provisional — Grafias de Odu usadas aqui (Okaran, Etaogundá, EjiOníle)
+ * são **variantes de linhagem** reconhecidas em IDEIA.md §linha 639 (D4 a
+ * resolver). O canônico está em `src/lib/constants/odus.ts` (Ogbe, Etogundá,
+ * Ejionile).
+ *
+ * NÃO substituir as grafias locais — elas representam variantes legítimas
+ * da tradição Merindilogun. Quando D4 for resolvido pelo operador, este
+ * módulo deve ser migrado para usar `ODUS[i].name` do canônico.
+ *
+ * Veja: tests/lib/correlation/odu-canonical-names.test.ts (guardião)
  */
 
 export interface NumerologyOdúCorrelation {
