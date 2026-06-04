@@ -906,3 +906,20 @@ Docs: README status → Fase 52, Doc 03/05 flagged SUPERSEDED,
   Doc 02/07 flagged LEGADO B2C
 Result: 1832 testes · TypeScript 0 erros.
 Commit: 5e1df21a
+### Fase 54 — Sprint 8 UX completion + dead code cleanup (2026-06-03)
+Multi-agent cleanup + Sprint 8 tasks:
+**Sprint 8 UX:**
+  T7.1: Grid stagger entrance, glow pulse, hover scale, popover fade-in-up animation
+  T7.3: 10 cockpit components memoized with React.memo
+  T7.4: Grid responsive — lg: 6-col collapse, w-20 sidebar, right panel hidden
+  T7.5: Playwright v1.60.0 installed; smoke.test.ts; vitest excludes it
+**Dead code cleanup:**
+  366 files / 45,841 lines removed from src/lib/orixa/ (data + practice + matching.ts)
+  5 kept: HyperCorrelationEngine, types, odu-data, orixa-profiles, ritual-data (used)
+  numerologia/compatibility.ts (260 lines) removed
+**Auth fixes (HIGH):**
+  13 unauth routes protected with requireOperator
+**Result:** 1832 testes · TypeScript 0 erros.
+Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84+046b012b (auth),
+  e5c2d1d9 (compat), 9474221b (T7.1), a05556de (T7.3), 7d73bd0b (T7.5),
+  d4c96489 (fix CockpitSidebar React.memo closing )
