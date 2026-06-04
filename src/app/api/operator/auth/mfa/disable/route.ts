@@ -23,6 +23,14 @@ export async function POST(request: NextRequest) {
   const guard = await requireOperatorApi(request);
   if (guard instanceof NextResponse) return guard;
   const operator = guard;
+  // Fase 26: Bloqueio de conta — impede desativação de MFA em conta bloqueada.
+  const lockStatus = await import('@/lib/auth/account-lockout').then(m => m.isLockedById(operator.id));
+  if (lockStatus.locked) {
+    return NextResponse.json(
+      { error: 'Conta bloqueada temporariamente. Tente novamente mais tarde.', lockedUntil: lockStatus.until },
+      { status: 423 }
+    );
+  }
 
   let body: z.infer<typeof disableSchema>;
   try {

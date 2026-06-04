@@ -54,6 +54,16 @@ export async function POST(request: NextRequest) {
       { status: 401 }
     );
   }
+  // Fase 26: Bloqueio de conta — recovery codes não devem permitir bypass de lockout.
+  const lockStatus = await import('@/lib/auth/account-lockout').then(m => m.isLockedById(payload.sub));
+  if (lockStatus.locked) {
+    return NextResponse.json(
+      { error: 'Conta bloqueada temporariamente. Tente novamente mais tarde.', lockedUntil: lockStatus.until },
+      { status: 423 }
+    );
+  }
+
+  // 2) Valida recovery code
 
   const result = await consumeRecoveryCode({
     operatorId: payload.sub,

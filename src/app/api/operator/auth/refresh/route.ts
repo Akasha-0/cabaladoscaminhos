@@ -99,6 +99,18 @@ export async function POST(request: NextRequest) {
     applyRateLimitHeaders(res, ipResult);
     return res;
   }
+  // Fase 26: Bloqueio de conta — impede rotação de tokens em conta bloqueada.
+  const lockStatus = await import('@/lib/auth/account-lockout').then(m => m.isLockedById(payload.sub));
+  if (lockStatus.locked) {
+    const res = NextResponse.json(
+      { error: 'Conta bloqueada temporariamente. Tente novamente mais tarde.', lockedUntil: lockStatus.until },
+      { status: 423 }
+    );
+    clearOperatorSessionCookie(res);
+    clearOperatorRefreshCookie(res);
+    applyRateLimitHeaders(res, ipResult);
+    return res;
+  }
 
   // 4) Rotação (Fase 15): revoga refresh usado, emite novo par.
   //    Reuso → revoga TODAS as sessões do operator.

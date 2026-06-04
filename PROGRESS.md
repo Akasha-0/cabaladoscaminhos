@@ -948,3 +948,20 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 948:- `src/app/api/stripe/webhook/route.ts`: DELETED — duplicate, consolidated to canonical /webhooks/stripe.
 949:**Result:** 1832 testes · TypeScript 0 erros · Build 116 páginas OK.
 950:Commits: d1296e65 (Stripe dup + LogEntry rm) · b2f26004 (PROGRESS.md fix)
+### Fase 56 — Account lockout + Missing Prisma migrations (2026-06-03)
+6 parallel audit agents: AccountLockout, SecurityEvents, CSP, TestCoverage + 2 completed from Fase 55.
+**CRITICAL fix — Account lockout bypass (HIGH):**
+- Lockout ONLY enforced at login route; 4 bypass vectors identified:
+  1. `/api/operator/auth/refresh` — locked operator could refresh valid token
+  2. `/api/operator/auth/mfa/disable` — stolen access token could disable 2FA
+  3. `/api/operator/auth/mfa/verify` — MFA could bypass lockout via mfaToken
+  4. `/api/operator/auth/mfa/recovery-code` — recovery codes could bypass lockout
+- All 4 fixed: added `isLockedById()` to account-lockout.ts; lockout check (423) added to all 4 routes
+**Prisma migrations (missing):**
+- `prisma/migrations/20260603090000_add_security_events/` — SecurityEventType enum + security_events table + indexes
+- `prisma/migrations/20260603090001_add_password_reset_tokens/` — password_reset_tokens table + FK + indexes
+**Audit findings — not actionable:**
+- CSP: already covered (cockpit: strict in middleware, all pages: lenient via layout.tsx headers)
+- SecurityEvent types: 6/11 logged, 5 missing (REFRESH_SUCCESS, PASSWORD_RESET_REQUESTED/COMPLETED, MFA_VERIFIED, ACCOUNT_LOCKED) — MEDIUM backlog
+- Test coverage: account lockout has 13 unit tests + 1 mocked integration test; security events not asserted in route tests — LOW backlog
+**Result:** 1832 testes · TypeScript 0 erros · Build 116 páginas OK.

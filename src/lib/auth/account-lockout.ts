@@ -136,3 +136,33 @@ export async function unlockAccount(email: string): Promise<void> {
     // Ignora se o operador não existe
   });
 }
+
+/**
+ * Verifica se a conta está bloqueada via operator ID (usado em rotas
+ * que já têm o operator carregado via requireOperatorApi ou similar).
+ *
+ * Mesmo comportamento de isLocked(email) — retorna { locked: true, until }
+ * se failedLoginAttempts >= MAX_ATTEMPTS E lockedUntil > now.
+ *
+ * Usa findUnique por ID para evitar re-fetch do email quando o caller
+ * já tem o operator em escopo.
+ */
+export async function isLockedById(operatorId: string): Promise<{ locked: boolean; until?: Date }> {
+  const operator = await prisma.operator.findUnique({
+    where: { id: operatorId },
+    select: { failedLoginAttempts: true, lockedUntil: true },
+  });
+  if (!operator) {
+    // Operator não existe — não está bloqueado
+    return { locked: false };
+  }
+  const now = new Date();
+  if (
+    operator.failedLoginAttempts >= MAX_ATTEMPTS &&
+    operator.lockedUntil !== null &&
+    operator.lockedUntil > now
+  ) {
+    return { locked: true, until: operator.lockedUntil };
+  }
+  return { locked: false };
+}
