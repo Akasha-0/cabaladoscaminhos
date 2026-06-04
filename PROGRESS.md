@@ -227,14 +227,14 @@ Sugestões para os próximos ciclos. **Não fazer** sem planejar:
 | Fase | Tema | Esboço |
 |------|------|--------|
 | 19 | **Cleanup de integration tests pré-existentes** | Resolver `tests/integration/*` (ver §4) |
-| 20 | **MFA / TOTP** | Adicionar 2FA opcional para Operators ADMIN |
-| 21 | **Audit log persistente** | Tabela `SecurityEvent` (login failures, refresh reuso, rate-limit hits) — SRE / compliance |
-| 22 | **Health checks profundos** | `/api/health/db`, `/api/health/redis` (atual é shallow) |
-| 23 | **CSP para páginas (não só APIs)** | Next metadata `headers()` em layouts |
-| 24 | **Rate-limit mais granular** | Por operator (não só IP) em `/api/operator/sessions` etc. |
-| 25 | **Troca de senha / reset de senha** | Fluxo público de "esqueci minha senha" |
-| 26 | **Lockout de conta** | Após N falhas de login no MESMO email (não só IP) |
-| 27 | **Webhooks Stripe hardening** | Verificação de assinatura + idempotência |
+| 20 | **MFA / TOTP** | ✅ Adicionado 2FA opcional para Operators (Fase 20) |
+| 21 | **Audit log persistente** | ✅ Tabela `SecurityEvent` migrada (Fase 56) |
+| 22 | **Health checks profundos** | ✅ `/api/health/db`, `/api/health/redis` existem |
+| 23 | **CSP para páginas (não só APIs)** | ✅ Cockpit strict (middleware) + all pages lenient (layout.tsx) |
+| 24 | **Rate-limit mais granular** | ✅ Dual-layer IP+Operator em todas as rotas (Fase 24) |
+| 25 | **Troca de senha / reset de senha** | ✅ Fluxo completo (Fase 25) |
+| 26 | **Lockout de conta** | ✅ Bloqueio por IP+operator após N falhas (Fase 26+56) |
+| 27 | **Webhooks Stripe hardening** | ✅ Assinatura + idempotência (Fase 55) |
 
 ### Engines Espirituais — Próximas
 
