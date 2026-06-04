@@ -380,20 +380,6 @@ function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise
 // ============================================================
 // K.1 — STRUCTURED LOGGING (AD-22.3)
 // ============================================================
-// fallow-ignore-next-line unused-type
-export interface LogEntry {
-  ts: string;
-  level: 'error' | 'warn' | 'info' | 'debug';
-  requestId: string;
-  route: string;
-  operatorId?: string;
-  event: string; // 'reading.saved', 'dossier.generated', etc.
-  durationMs?: number;
-  status?: number;
-  meta?: Record<string, unknown>;
-}
-/**
- * Creates a structured logger bound to a single request context.
  * Logs are emitted as single-line JSON to stdout/stderr, suitable
  * for log aggregators (Datadog, CloudWatch, etc.).
  */
