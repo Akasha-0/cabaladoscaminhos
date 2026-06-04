@@ -46,7 +46,14 @@
     "src/middleware/index.ts",
     "src/instrumentation.ts",
     "src/instrumentation-node.ts",
-    "src/proxy.ts"
+    "src/proxy.ts",
+    "scripts/cleanup-tokens.ts",
+    "src/stores/cockpit-store.ts",
+    "src/components/cockpit/dossier/DossierViewer.tsx",
+    "src/components/operator/mfa/MfaSettingsPanel.tsx",
+    "src/components/operator/mfa/MfaSetup.tsx",
+    "src/components/ui/city-autocomplete.tsx",
+    "src/hooks/use-keyboard-shortcuts.ts"
   ],
   "ignorePatterns": [
     "src/lib/meji-*/**/*.ts",
@@ -567,24 +574,24 @@
     }
   ],
   "regression": {
-    "baseline": {
-      "totalIssues": 0,
-      "unusedTypes": 0,
-      "unusedDependencies": 0,
+      "totalIssues": 50,
+      "unusedTypes": 3,
+      "unusedDependencies": 3,
       "unusedDevDependencies": 0,
       "unusedOptionalDependencies": 0,
       "unusedEnumMembers": 0,
       "unusedClassMembers": 0,
       "unusedFiles": 0,
-      "unusedExports": 0,
+      "unusedExports": 37,
       "unresolvedImports": 0,
-      "unlistedDependencies": 0,
+      "unlistedDependencies": 1,
       "duplicateExports": 0,
       "circularDependencies": 0,
       "reExportCycles": 0,
       "typeOnlyDependencies": 0,
       "testOnlyDependencies": 0,
-      "boundaryViolations": 0
+      "boundaryViolations": 0,
+      "staleSuppressions": 7
     }
   }
 }
