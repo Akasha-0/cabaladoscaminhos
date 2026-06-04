@@ -44,6 +44,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 44 | **AD-23.2 Geolocalização + timezone** (Nominatim, MFA testTimeout 15s) | `f8a9da46` | ✅ |
 | 53 | **Validação + Correções** (Badge variants, SupabaseProvider removido, AI/UI validações) | `c2f8aab3` | ✅ |
 | 54 | **B2C Legacy Removal** (AD-17.4: 39 API routes + 3 pages + 9 tests removidos; 8716 tests passando) | `c456b8e0` | ✅ |
+| 55 | **Multi-Agent Validation + Gap Resolution** (4/4 agents PASS, CM-01 + S6 gaps fixed, 91.9% quality) | `23effc47` | ✅ |
+| 56 | **Test Isolation Fix** (resetMemoryStore para rate-limit; beforeEach em checkAuthRateLimit; 8716 testes passando) | `e3395392` | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
