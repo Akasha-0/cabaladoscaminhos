@@ -501,12 +501,6 @@ export const OPERATOR_RATE_LIMITS = {
 } as const;
 export type OperatorRoute = keyof typeof OPERATOR_RATE_LIMITS;
 /**
- * Helper de conveniência: obtém config de OPERATOR_RATE_LIMITS.
- */
-export function getOperatorRateLimitConfig(route: OperatorRoute) {
-  return OPERATOR_RATE_LIMITS[route];
-}
-/**
  * Reseta o contador de rate-limit por operator. Útil em testes.
  * Em produção, NUNCA chamar — invalidaria a proteção.
  */
