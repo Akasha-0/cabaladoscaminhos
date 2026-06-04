@@ -186,7 +186,12 @@ export default function RootLayout({
       <body
         className={`${cinzel.variable} ${cormorant.variable} ${raleway.variable} ${imFell.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen bg-background text-foreground antialiased`}
       >
-        <SupabaseProvider>{children}</SupabaseProvider>
+        <SupabaseProvider
+          url={process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''}
+          anonKey={process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''}
+        >
+          {children}
+        </SupabaseProvider>
       </body>
     </html>
   );

@@ -672,10 +672,10 @@
    ],
   "regression": {
     "baseline":     {
-      "totalIssues": 40,
+      "totalIssues": 0,
       "unusedFiles": 0,
-      "unusedExports": 37,
-      "unusedTypes": 3,
+      "unusedExports": 0,
+      "unusedTypes": 0,
       "unusedDependencies": 0,
       "unusedDevDependencies": 0,
       "unusedOptionalDependencies": 0,
