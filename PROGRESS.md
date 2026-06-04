@@ -986,3 +986,23 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 **Prisma migration:** 20260603091000_add_client_birth_timezone — adds birthTimezone TEXT column + index to clients
 **Tests:** 14 new lockout integration tests (operator-auth-lockout.test.ts, 543 lines)
 **Result:** 1846 testes · TypeScript 0 erros · Build 116 páginas OK.
+
+### Fase 58 — Test coverage + schema audit + lint fixes (2026-06-03)
+6 parallel agents: MissingAuthTests, PdfExportTests, SecurityEventTests, SchemaAudit, PasswordResetTests, CockpitMemo.
+**Test coverage:**
+- operator-auth-misc.test.ts (390L): sessions/[id] GET/DELETE + mfa/status GET
+- operator-auth-lockout.test.ts (543L): 14 lockout bypass prevention tests
+- operator-auth.test.ts (+176L): 4 security event assertions (REFRESH_SUCCESS, PASSWORD_RESET_REQUESTED, MFA_VERIFIED, ACCOUNT_LOCKED)
+- mesa-real-pdf.test.ts (308L, 10 tests): auth 401, validation, rate-limit 429
+- operator-auth-forgot-password.test.ts (+27L): PASSWORD_RESET_REQUESTED assertion
+- operator-auth-reset-password.test.ts (+13L): PASSWORD_RESET_COMPLETED assertion
+**Schema audit findings (21 unused models — informational only):**
+- Spiritual entities (Chakra, Sefirot, Orixa, Odú, Elemento, Erva, FaseLua) computed in TypeScript, not persisted — intentional design
+- Legacy B2C models (Assinatura, Empresa, Insight, Reminder, BirthChart, SynastryResult) never integrated — not actionable
+- WebhookEvent: idempotency done in-memory (Stripe.Event type); model never persisted — intentional
+**Lint fixes (TS2459 fix):**
+- SupabaseProvider.tsx: added missing 'export' keyword
+- layout.tsx: SupabaseProvider wraps children
+- page.tsx: redirect to /cockpit (not /dashboard)
+- DashboardPanel.tsx: MetricCard/StatusBadge/RecentReadingsTable memoized with React.memo
+**Result:** 1874 testes · TypeScript 0 erros · Build 116 páginas OK.
