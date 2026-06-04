@@ -3,8 +3,7 @@
 // ============================================================
 // Structured logging with spiritual context and monitoring
 // ============================================================
-
-import { ErrorCode } from "./error-handling";
+import { ErrorCode } from './error-handling';
 
 // ============================================================
 // LOG LEVELS
@@ -18,21 +17,21 @@ enum LogLevel {
   FATAL = 4,
 }
 const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: "DEBUG",
-  [LogLevel.INFO]: "INFO",
-  [LogLevel.WARN]: "WARN",
-  [LogLevel.ERROR]: "ERROR",
-  [LogLevel.FATAL]: "FATAL",
+  [LogLevel.DEBUG]: 'DEBUG',
+  [LogLevel.INFO]: 'INFO',
+  [LogLevel.WARN]: 'WARN',
+  [LogLevel.ERROR]: 'ERROR',
+  [LogLevel.FATAL]: 'FATAL',
 };
 const LOG_LEVEL_COLORS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: "\x1b[36m",    // Cyan
-  [LogLevel.INFO]: "\x1b[32m",     // Green
-  [LogLevel.WARN]: "\x1b[33m",     // Yellow
-  [LogLevel.ERROR]: "\x1b[31m",    // Red
-  [LogLevel.FATAL]: "\x1b[35m",   // Magenta
+  [LogLevel.DEBUG]: '\x1b[36m', // Cyan
+  [LogLevel.INFO]: '\x1b[32m', // Green
+  [LogLevel.WARN]: '\x1b[33m', // Yellow
+  [LogLevel.ERROR]: '\x1b[31m', // Red
+  [LogLevel.FATAL]: '\x1b[35m', // Magenta
 };
 
-const RESET_COLOR = "\x1b[0m";
+const RESET_COLOR = '\x1b[0m';
 
 // ============================================================
 // LOG CONTEXT
@@ -75,7 +74,7 @@ class Logger {
   private minLevel: LogLevel;
   private entries: LogRecord[] = [];
   private readonly maxEntries = 1000;
-  private isProduction = process.env.NODE_ENV === "production";
+  private isProduction = process.env.NODE_ENV === 'production';
 
   private constructor() {
     this.minLevel = this.isProduction ? LogLevel.INFO : LogLevel.DEBUG;
@@ -100,7 +99,7 @@ class Logger {
   private formatEntry(entry: LogRecord): string {
     const color = LOG_LEVEL_COLORS[entry.level];
     const timestamp = new Date(entry.timestamp).toISOString();
-    
+
     let formatted = `${color}[${timestamp}] [${entry.levelName}]${RESET_COLOR} ${entry.message}`;
 
     if (entry.context?.requestId) {
@@ -182,7 +181,6 @@ class Logger {
         console.error(formatted);
         break;
     }
-
   }
 
   debug(message: string, context?: LogContext): void {
@@ -270,7 +268,7 @@ class PerformanceMonitor {
 
     // Log slow requests
     if (metric.duration > 5000) {
-      logger.warn("Slow request detected", {
+      logger.warn('Slow request detected', {
         requestId: metric.requestId,
         path: metric.path,
         duration: metric.duration,
@@ -278,24 +276,20 @@ class PerformanceMonitor {
     }
   }
 
-  getMetrics(filter?: {
-    path?: string;
-    minDuration?: number;
-    since?: Date;
-  }): PerformanceMetrics[] {
+  getMetrics(filter?: { path?: string; minDuration?: number; since?: Date }): PerformanceMetrics[] {
     let filtered = this.metrics;
 
     if (filter?.path) {
-      filtered = filtered.filter(m => m.path === filter.path);
+      filtered = filtered.filter((m) => m.path === filter.path);
     }
 
     if (filter?.minDuration) {
-      filtered = filtered.filter(m => m.duration >= filter.minDuration!);
+      filtered = filtered.filter((m) => m.duration >= filter.minDuration!);
     }
 
     if (filter?.since) {
       const sinceTime = filter.since.getTime();
-      filtered = filtered.filter(m => new Date(m.timestamp).getTime() >= sinceTime);
+      filtered = filtered.filter((m) => new Date(m.timestamp).getTime() >= sinceTime);
     }
 
     return filtered;
@@ -315,7 +309,7 @@ class PerformanceMonitor {
     }
 
     const totalDuration = this.metrics.reduce((sum, m) => sum + m.duration, 0);
-    const slowRequests = this.metrics.filter(m => m.duration > 5000).length;
+    const slowRequests = this.metrics.filter((m) => m.duration > 5000).length;
 
     return {
       totalRequests: this.metrics.length,
@@ -380,6 +374,7 @@ function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise
 // ============================================================
 // K.1 — STRUCTURED LOGGING (AD-22.3)
 // ============================================================
+/**
  * Logs are emitted as single-line JSON to stdout/stderr, suitable
  * for log aggregators (Datadog, CloudWatch, etc.).
  */
@@ -387,19 +382,47 @@ export function createLogger(requestId: string, route: string) {
   return {
     info: (event: string, meta?: Record<string, unknown>) =>
       console.log(
-        JSON.stringify({ ts: new Date().toISOString(), level: 'info', requestId, route, event, ...meta })
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          level: 'info',
+          requestId,
+          route,
+          event,
+          ...meta,
+        })
       ),
     error: (event: string, meta?: Record<string, unknown>) =>
       console.error(
-        JSON.stringify({ ts: new Date().toISOString(), level: 'error', requestId, route, event, ...meta })
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          level: 'error',
+          requestId,
+          route,
+          event,
+          ...meta,
+        })
       ),
     warn: (event: string, meta?: Record<string, unknown>) =>
       console.warn(
-        JSON.stringify({ ts: new Date().toISOString(), level: 'warn', requestId, route, event, ...meta })
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          level: 'warn',
+          requestId,
+          route,
+          event,
+          ...meta,
+        })
       ),
     debug: (event: string, meta?: Record<string, unknown>) =>
       console.log(
-        JSON.stringify({ ts: new Date().toISOString(), level: 'debug', requestId, route, event, ...meta })
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          level: 'debug',
+          requestId,
+          route,
+          event,
+          ...meta,
+        })
       ),
   };
 }
