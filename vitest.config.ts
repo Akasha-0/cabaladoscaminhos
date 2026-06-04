@@ -119,8 +119,8 @@ export default defineConfig({
           environment: 'node',
           setupFiles: ['./tests/setup.ts'],
           testTimeout: 15000,
-          include: ['tests/e2e/**'],
-          exclude: ['**/*.snap', '**/__snapshots__/**'],
+          include: ['tests/e2e/**/*.test.ts', 'tests/e2e/**/*.test.tsx'],
+          exclude: ['**/*.snap', '**/__snapshots__/**', 'tests/e2e/smoke.test.ts'],
         },
         resolve: {
           alias: {

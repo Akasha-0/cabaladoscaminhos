@@ -419,4 +419,4 @@ export const CockpitSidebar = React.memo(function CockpitSidebarInner({ onNewAte
       </div>
     </div>
   );
-}
+});
