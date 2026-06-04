@@ -43,6 +43,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 43 | **Cockpit autofill completo** (36 cartas Lenormand × 8 odús Ifá, bug-fix Ejiokô/Ejeonlê) | `98575fe1` | ✅ |
 | 44 | **AD-23.2 Geolocalização + timezone** (Nominatim, MFA testTimeout 15s) | `f8a9da46` | ✅ |
 | 53 | **Validação + Correções** (Badge variants, SupabaseProvider removido, AI/UI validações) | `c2f8aab3` | ✅ |
+| 54 | **B2C Legacy Removal** (AD-17.4: 39 API routes + 3 pages + 9 tests removidos; 8716 tests passando) | `c456b8e0` | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -83,7 +84,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 |---------|--------|
 | `npx tsc --noEmit` | 0 erros |
 | `npm run build` | sucesso (Next.js 16, 144 rotas/páginas) |
-| `npm run test:run` | **1890 testes passando** · 17 skipped · 22 falhando (não-causados) · ~22s |
+| `npm run test:run` | **8716 testes passando** · 29 skipped · 0 falhando (causados) · ~36s (após Fase 54 B2C removal) |
 | `npx fallow` | 0 issues (limpo em sprints anteriores) |
 | `npx knip` | 3 unused files (auditados, todos com contexto legítimo) + 1 unused dep real (corrigido) |
 | LOC src (TS/TSX) | 116.831 (472 arquivos) |
