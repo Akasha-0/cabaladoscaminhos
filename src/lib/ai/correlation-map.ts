@@ -173,7 +173,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
       primaryHouses: [8], primaryPlanets: ['lilith', 'pluto'],
       extractionKeys: ['planets.lilith.sign', 'planets.lilith.house', 'planets.pluto.sign', 'planets.pluto.house'],
       source: 'Astrologia Ocidental Clássica',
-      rationale: 'Lilith = sombra, poder oculto e sexualidade, Plutão = transformação e perigo深层',
+      rationale: 'Lilith = sombra, poder oculto e sexualidade, Plutão = transformação e perigo',
     },
     kabalah: {
       aspects: ['Dívidas Kármicas / Lições'], extractionKeys: ['karmicDebts', 'karmicLessons'],
@@ -673,7 +673,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
       primaryHouses: [12], primaryPlanets: ['moon', 'neptune'],
       extractionKeys: ['planets.moon.sign', 'planets.moon.house', 'planets.neptune.sign', 'planets.neptune.house', 'houses.12'],
       source: 'Astrologia Ocidental Clássica',
-      rationale: 'Lua = intuição, emoções e ciclos; Netuno = psiquismo; 12ª Casa = inconsciente深处',
+      rationale: 'Lua = intuição, emoções e ciclos; Netuno = psiquismo; 12ª Casa = inconsciente',
     },
     kabalah: {
       aspects: ['Número de Motivação'], extractionKeys: ['motivation'],

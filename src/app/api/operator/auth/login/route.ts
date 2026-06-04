@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       operatorId: operator.id,
       ipAddress,
       userAgent,
-      metadata: { emailAttempted: body.email, reason: 'wrong-password' },
+      metadata: { reason: 'wrong-password' },
     });
     const res = NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
     applyRateLimitHeaders(res, rlResult);
