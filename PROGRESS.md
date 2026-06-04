@@ -1021,7 +1021,10 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 **Dead code cleanup:**
 - custos.ts deleted: no callers in src/ (grep confirmed)
 - 3 integration tests removed (tested dead code)
-**Knip config fix:** Added knip.config.ts excluding _index.js from project glob (root cause: module 'default' resolution error)
+**Knip config + devDependency:
+- knip.config.ts: excludes _index.js from project glob
+- knip added to devDependencies
+- fallow --fail-on-regression now active (baseline: 40 issues, delta: -1)
 **Phase 59 guard protocol established:**
 - Agent scope is explicit per assignment; agent deleting cockpit pages was cancelled mid-operation
 - All changes reverted; file integrity restored
