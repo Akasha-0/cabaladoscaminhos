@@ -136,7 +136,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
       rationale: '5ª Casa = vitalidade e energia vital; 6ª Casa = saúde e corpo; Sol = força de vida',
     },
     kabalah: {
-      aspects: ['Número de Destino'], extractionKeys: ['destiny'],
+      aspects: ['Número de Destino'], extractionKeys: ['expression'],
       source: 'Cabala Numérica Pitagórica',
       rationale: 'O destino físico, a resistência corporal e a saúde como destino',
     },

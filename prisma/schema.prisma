@@ -318,6 +318,8 @@ model Reading {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([clientId])
+  @@index([operatorId])
   @@map("readings")
 }
 
