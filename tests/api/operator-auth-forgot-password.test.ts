@@ -32,10 +32,16 @@ vi.mock('@/lib/prisma', () => ({
   },
 }));
 
+const mockLogSecurityEvent = vi.fn();
+vi.mock('@/lib/auth/audit-service', () => ({
+  logSecurityEvent: (...args: unknown[]) => mockLogSecurityEvent(...args),
+}));
+
 const mockConsoleInfo = vi.spyOn(console, 'info').mockReturnValue(undefined);
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mockLogSecurityEvent.mockResolvedValue(undefined);
 });
 
 // ---------------------------------------------------------------------------
@@ -93,6 +99,27 @@ describe('POST /api/operator/auth/forgot-password', () => {
     expect(mockConsoleInfo).toHaveBeenCalledWith(
       expect.stringContaining('[password-reset] Token gerado')
     );
+    // Fase 57: PASSWORD_RESET_REQUESTED security event
+    expect(mockLogSecurityEvent).toHaveBeenCalled();
+    const resetEvent = mockLogSecurityEvent.mock.calls.find(
+      (call: unknown[]) => (call[0] as { type?: string })?.type === 'PASSWORD_RESET_REQUESTED'
+    );
+    expect(resetEvent).toBeDefined();
+    expect((resetEvent[0] as { operatorId: string }).operatorId).toBe(operator.id);
+  });
+
+  it('NÃO loga PASSWORD_RESET_REQUESTED quando email não existe', async () => {
+    mockOperatorFindUnique.mockResolvedValue(null);
+
+    const req = makeJsonRequest({ email: 'naoexiste@test.com' });
+    const { POST } = await import('@/app/api/operator/auth/forgot-password/route');
+    const response = await POST(req);
+
+    expect(response.status).toBe(200);
+    const resetEvent = mockLogSecurityEvent.mock.calls.find(
+      (call: unknown[]) => (call[0] as { type?: string })?.type === 'PASSWORD_RESET_REQUESTED'
+    );
+    expect(resetEvent).toBeUndefined();
   });
 
   it('normaliza email para lowercase antes da busca', async () => {

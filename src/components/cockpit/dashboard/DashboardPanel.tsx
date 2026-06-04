@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, Users, Clock, Loader2, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -39,7 +39,7 @@ interface MetricCardProps {
   accent?: 'primary' | 'destructive' | 'muted';
 }
 
-function MetricCard({ label, value, icon: Icon, accent = 'primary' }: MetricCardProps) {
+const MetricCard = React.memo(function MetricCard({ label, value, icon: Icon, accent = 'primary' }: MetricCardProps) {
   const accentClass =
     accent === 'destructive'
       ? 'text-destructive'
@@ -58,11 +58,11 @@ function MetricCard({ label, value, icon: Icon, accent = 'primary' }: MetricCard
       </div>
     </div>
   );
-}
+});
 
 // ─── StatusBadge ──────────────────────────────────────────────────────────────
 
-function StatusBadge({ status }: { status: ReadingStatus }) {
+const StatusBadge = React.memo(function StatusBadge({ status }: { status: ReadingStatus }) {
   const styles: Record<ReadingStatus, string> = {
     PENDING: 'bg-primary/15 border-primary/40 text-primary',
     GENERATING: 'bg-secondary/15 border-secondary/40 text-secondary',
@@ -85,7 +85,7 @@ function StatusBadge({ status }: { status: ReadingStatus }) {
       {labels[status]}
     </span>
   );
-}
+});
 
 // ─── RecentReadingsTable ──────────────────────────────────────────────────────
 
@@ -98,7 +98,7 @@ function formatDate(d: string) {
   }).format(date);
 }
 
-function RecentReadingsTable({ readings }: { readings: DashboardReading[] }) {
+const RecentReadingsTable = React.memo(function RecentReadingsTable({ readings }: { readings: DashboardReading[] }) {
   if (readings.length === 0) {
     return (
       <div className="bg-card/40 border border-dashed border-border rounded-xl p-8 text-center">
@@ -156,7 +156,7 @@ function RecentReadingsTable({ readings }: { readings: DashboardReading[] }) {
       </table>
     </div>
   );
-}
+});
 
 // ─── DashboardPanel ────────────────────────────────────────────────────────────
 

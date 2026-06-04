@@ -104,6 +104,8 @@ const INFRA_PREFIXES = [
 ];
 
 function isAllowedWhenQuarantined(pathname: string): boolean {
+  // Root path serves the landing page (always accessible).
+  if (pathname === '/') return true;
   const prefixes = [...B2B_PREFIXES, ...INFRA_PREFIXES];
   return prefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
 }

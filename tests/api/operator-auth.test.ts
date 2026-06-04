@@ -57,11 +57,48 @@ vi.mock('@/lib/prisma', () => ({
 const mockIsLocked = vi.fn();
 const mockRecordFailedAttempt = vi.fn();
 const mockRecordSuccessfulLogin = vi.fn();
+const mockIsLockedById = vi.fn();
 vi.mock('@/lib/auth/account-lockout', () => ({
   isLocked: (...args: unknown[]) => mockIsLocked(...args),
+  isLockedById: (...args: unknown[]) => mockIsLockedById(...args),
   recordFailedAttempt: (...args: unknown[]) => mockRecordFailedAttempt(...args),
   recordSuccessfulLogin: (...args: unknown[]) => mockRecordSuccessfulLogin(...args),
 }));
+
+// Fase 57: Security event audit mocks
+const mockLogSecurityEvent = vi.fn();
+vi.mock('@/lib/auth/audit-service', () => ({
+  logSecurityEvent: (...args: unknown[]) => mockLogSecurityEvent(...args),
+}));
+
+// Fase 57: MFA mocks — partial mock that preserves real isMfaEnabled
+// while allowing consumeMfaChallenge to be controlled in tests.
+const { mockConsumeMfaChallenge } = vi.hoisted(() => ({ mockConsumeMfaChallenge: vi.fn() }));
+vi.mock('@/lib/auth/operator-mfa', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/auth/operator-mfa')>();
+  return {
+    ...actual,
+    consumeMfaChallenge: (...args: unknown[]) => mockConsumeMfaChallenge(...args),
+  };
+});
+
+// Fase 57: password-reset mock — controls generateResetToken for forgot-password tests
+const { mockGenerateResetToken } = vi.hoisted(() => ({ mockGenerateResetToken: vi.fn() }));
+vi.mock('@/lib/auth/password-reset', () => ({
+  generateResetToken: (...args: unknown[]) => mockGenerateResetToken(...args),
+}));
+
+// Fase 57: Sessions mocks — partial mock that preserves real createSession/createRefreshSession
+// while allowing rotateRefreshToken to be controlled in tests.
+// vi.hoisted() ensures the mock fn is available both in the factory AND in test bodies.
+const { mockRotateRefreshToken } = vi.hoisted(() => ({ mockRotateRefreshToken: vi.fn() }));
+vi.mock('@/lib/auth/operator-sessions', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/auth/operator-sessions')>();
+  return {
+    ...actual,
+    rotateRefreshToken: (...args: unknown[]) => mockRotateRefreshToken(...args),
+  };
+});
 
 // Cookie store mockado (compartilhado pelos testes do /me)
 const cookieStore: { current: Record<string, string> } = { current: {} };
@@ -84,8 +121,13 @@ beforeEach(() => {
   cookieStore.current = {};
   // Fase 26: default = conta não bloqueada
   mockIsLocked.mockResolvedValue({ locked: false });
+  mockIsLockedById.mockResolvedValue({ locked: false });
   mockRecordFailedAttempt.mockResolvedValue(undefined);
   mockRecordSuccessfulLogin.mockResolvedValue(undefined);
+  // Fase 57: consumeMfaChallenge default = failure
+  mockConsumeMfaChallenge.mockResolvedValue({ ok: false, reason: 'not-enabled' as const });
+  // Fase 57: generateResetToken default = resolved token
+  mockGenerateResetToken.mockResolvedValue('mock-reset-token');
 });
 
 // ----------------------------------------------------------------------------
@@ -577,5 +619,139 @@ describe('GET /api/operator/auth/me', () => {
     const { GET } = await import('@/app/api/operator/auth/me/route');
     const res = await GET(makeGetRequest('http://l/api/operator/auth/me'));
     expect(res.status).toBe(401);
+  });
+});
+
+// ============================================================================
+// Security event logging — Fase 57
+// Verifica que logSecurityEvent é chamado com o tipo correto em cada rota.
+// ============================================================================
+
+describe('Security event logging (Fase 57)', () => {
+  // ---------------------------------------------------------------------------
+  // REFRESH_SUCCESS — POST /api/operator/auth/refresh
+  // ---------------------------------------------------------------------------
+  it('REFRESH_SUCCESS is logged after successful token refresh', async () => {
+    // Create a valid refresh token
+    const refreshToken = jwt.sign(
+      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
+      TEST_SECRET,
+      { algorithm: 'HS256', expiresIn: '7d' }
+    );
+    cookieStore.current = { cockpit_refresh: refreshToken };
+
+    // Mock rotateRefreshToken to succeed (returns new tokens)
+    mockRotateRefreshToken.mockResolvedValue({
+      kind: 'ok',
+      operatorId: 'op-1',
+      newAccessToken: 'new-access-token',
+      newRefreshToken: 'new-refresh-token',
+    });
+
+    // Mock operator lookup for final operator data response
+    mockFindUnique.mockResolvedValue({
+      ...mockOperatorRecord,
+      id: 'op-1',
+    });
+
+    const { POST } = await import('@/app/api/operator/auth/refresh/route');
+    const res = await POST(new NextRequest('http://l/api/operator/auth/refresh'));
+
+    expect(res.status).toBe(200);
+    expect(mockLogSecurityEvent).toHaveBeenCalled();
+    expect(mockLogSecurityEvent.mock.calls.some(
+      (call) => (call[0] as { type: string }).type === 'REFRESH_SUCCESS'
+    )).toBe(true);
+  });
+
+  // ---------------------------------------------------------------------------
+  // PASSWORD_RESET_REQUESTED — POST /api/operator/auth/forgot-password
+  // ---------------------------------------------------------------------------
+  it('PASSWORD_RESET_REQUESTED is logged after valid forgot-password request', async () => {
+    mockFindUnique.mockResolvedValue({
+      ...mockOperatorRecord,
+      id: 'op-1',
+    });
+
+    mockGenerateResetToken.mockResolvedValue('mock-reset-token-64hex');
+
+    const { POST } = await import('@/app/api/operator/auth/forgot-password/route');
+    const res = await POST(makeJsonRequest('http://l/api/operator/auth/forgot-password', {
+      email: 'ramiro@cabala.com',
+    }));
+
+    expect(res.status).toBe(200);
+    expect(mockLogSecurityEvent).toHaveBeenCalled();
+    expect(mockLogSecurityEvent.mock.calls.some(
+      (call) => (call[0] as { type: string }).type === 'PASSWORD_RESET_REQUESTED'
+    )).toBe(true);
+  });
+
+  // ---------------------------------------------------------------------------
+  // MFA_VERIFIED — POST /api/operator/auth/mfa/verify
+  // ---------------------------------------------------------------------------
+  it('MFA_VERIFIED is logged after successful MFA challenge verification', async () => {
+    // Create a valid mfaToken (challenge token with 5min expiry)
+    const { signMfaChallengeToken } = await import('@/lib/auth/operator-jwt');
+    const mfaToken = signMfaChallengeToken({ operatorId: 'op-1' });
+
+    // Use module-level mock for consumeMfaChallenge
+    mockConsumeMfaChallenge.mockResolvedValue({ ok: true, method: 'totp' as const });
+
+    mockFindUnique.mockResolvedValue({
+      ...mockOperatorRecord,
+      id: 'op-1',
+    });
+    mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
+    mockIsLockedById.mockResolvedValue({ locked: false });
+
+    const { POST } = await import('@/app/api/operator/auth/mfa/verify/route');
+    const res = await POST(makeJsonRequest('http://l/api/operator/auth/mfa/verify', {
+      mfaToken,
+      code: '123456',
+    }));
+
+    expect(res.status).toBe(200);
+    expect(mockLogSecurityEvent).toHaveBeenCalled();
+    expect(mockLogSecurityEvent.mock.calls.some(
+      (call) => (call[0] as { type: string }).type === 'MFA_VERIFIED'
+    )).toBe(true);
+  });
+
+  // ---------------------------------------------------------------------------
+  // ACCOUNT_LOCKED — POST /api/operator/auth/login (5th failed attempt)
+  // ---------------------------------------------------------------------------
+  it('ACCOUNT_LOCKED is logged after 5th consecutive failed login', async () => {
+    // Simulate operator that is locked after the failed attempt increment.
+    // Strategy: isLocked returns false (allows past the first check),
+    // wrong password triggers recordFailedAttempt (mocked),
+    // then isLocked returns true → ACCOUNT_LOCKED fires.
+    mockFindUnique.mockResolvedValue({
+      ...mockOperatorRecord,
+      id: 'op-1',
+      failedLoginAttempts: 5,
+      lockedUntil: new Date(Date.now() + 30 * 60 * 1000),
+    });
+
+    // First call: not locked (allows password check), second call: locked
+    mockIsLocked
+      .mockResolvedValueOnce({ locked: false })
+      .mockResolvedValueOnce({ locked: true, until: new Date(Date.now() + 30 * 60 * 1000) });
+
+    // Password compare returns false (wrong password)
+    mockBcryptCompare.mockImplementation(async (pw: string, _hash: string) => false);
+
+    const { POST } = await import('@/app/api/operator/auth/login/route');
+    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
+      email: 'ramiro@cabala.com',
+      password: 'wrong-password',
+    }));
+
+    // Route returns 401 on wrong password (not 423, because first isLocked returned false)
+    expect(res.status).toBe(401);
+    expect(mockLogSecurityEvent).toHaveBeenCalled();
+    expect(mockLogSecurityEvent.mock.calls.some(
+      (call) => (call[0] as { type: string }).type === 'ACCOUNT_LOCKED'
+    )).toBe(true);
   });
 });

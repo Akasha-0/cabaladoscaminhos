@@ -41,6 +41,11 @@ vi.mock('@/lib/prisma', () => ({
 vi.spyOn(console, 'info').mockReturnValue(undefined);
 vi.spyOn(console, 'error').mockReturnValue(undefined);
 
+const mockLogSecurityEvent = vi.fn();
+vi.mock('@/lib/auth/audit-service', () => ({
+  logSecurityEvent: (...args: unknown[]) => mockLogSecurityEvent(...args),
+}));
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -68,6 +73,7 @@ function makeJsonRequest(body: unknown): NextRequest {
 describe('POST /api/operator/auth/reset-password', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockLogSecurityEvent.mockResolvedValue(undefined);
     mockTransaction.mockImplementation(async (ops) => {
       return (ops as never[]).map(() => ({}));
     });
@@ -94,6 +100,13 @@ describe('POST /api/operator/auth/reset-password', () => {
     const data = await response.json();
     expect(data.message).toContain('sucesso');
     expect(mockTransaction).toHaveBeenCalled();
+    // Fase 57: PASSWORD_RESET_COMPLETED security event
+    expect(mockLogSecurityEvent).toHaveBeenCalled();
+    const resetEvent = mockLogSecurityEvent.mock.calls.find(
+      (call: unknown[]) => (call[0] as { type?: string })?.type === 'PASSWORD_RESET_COMPLETED'
+    );
+    expect(resetEvent).toBeDefined();
+    expect((resetEvent[0] as { operatorId: string }).operatorId).toBe('op-123');
   });
 
   it('retorna 400 para token inexistente', async () => {

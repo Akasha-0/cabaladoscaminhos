@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react'
-import { createBrowserClient } from '@supabase/ssr'
-import { User } from '@supabase/supabase-js'
-import { useRouter } from 'next/navigation'
+import { createBrowserClient } from '@supabase/ssr';
+import { User } from '@supabase/supabase-js';
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
-  user: User | null
-  isLoading: boolean
-  isAuthenticated: boolean
-  signOut: () => Promise<void>
-  supabase: ReturnType<typeof createBrowserClient> | null
+  user: User | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  signOut: () => Promise<void>;
+  supabase: ReturnType<typeof createBrowserClient> | null;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -19,109 +19,111 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   signOut: async () => {},
   supabase: null,
-})
+});
 
 export const useAuth = () => {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within SupabaseProvider')
+    throw new Error('useAuth must be used within SupabaseProvider');
   }
-  return context
-}
+  return context;
+};
 
 // Singleton client
-let supabaseClient: ReturnType<typeof createBrowserClient> | null = null
+let supabaseClient: ReturnType<typeof createBrowserClient> | null = null;
 
 function getSupabaseClient() {
-  if (supabaseClient) return supabaseClient
-  
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  
+  if (supabaseClient) return supabaseClient;
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
   if (!url || !anonKey) {
-    console.error('[SupabaseProvider] Missing Supabase environment variables')
-    return null
+    console.error('[SupabaseProvider] Missing Supabase environment variables');
+    return null;
   }
-  
-  supabaseClient = createBrowserClient(url, anonKey)
-  return supabaseClient
+
+  supabaseClient = createBrowserClient(url, anonKey);
+  return supabaseClient;
 }
 
-function SupabaseProvider({ children }: { children: React.ReactNode }) {
+export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   // All hooks must be called unconditionally
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isHydrated, setIsHydrated] = useState(false)
-  const router = useRouter()
-  const initRef = useRef(false)
-  
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const router = useRouter();
+  const initRef = useRef(false);
+
   // Always get supabase client (this is safe to call)
-  const supabase = getSupabaseClient()
+  const supabase = getSupabaseClient();
 
   // Mark as hydrated on client mount
   useEffect(() => {
-    setIsHydrated(true)
-  }, [])
+    setIsHydrated(true);
+  }, []);
 
   // Initialize auth - hooks called after all initial hooks
   useEffect(() => {
     // Don't run if not hydrated or already initialized
     if (!isHydrated || initRef.current) {
-      return
+      return;
     }
-    
-    initRef.current = true
-    
+
+    initRef.current = true;
+
     // If no supabase, just mark as not loading
     if (!supabase) {
-      setIsLoading(false)
-      return
+      setIsLoading(false);
+      return;
     }
-    
+
     const initAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession()
-        setUser(session?.user ?? null)
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        setUser(session?.user ?? null);
       } catch (err) {
-        console.error('[SupabaseProvider] Error getting session:', err)
-        setUser(null)
+        console.error('[SupabaseProvider] Error getting session:', err);
+        setUser(null);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
-    
-    initAuth()
+    };
+
+    initAuth();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event: string, session: any) => {
-        console.log('[SupabaseProvider] Auth event:', event)
-        setUser(session?.user ?? null)
-        setIsLoading(false)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event: string, session: any) => {
+      console.log('[SupabaseProvider] Auth event:', event);
+      setUser(session?.user ?? null);
+      setIsLoading(false);
 
-        if (event === 'SIGNED_OUT') {
-          console.log('[SupabaseProvider] User signed out')
-          router.push('/login')
-        }
+      if (event === 'SIGNED_OUT') {
+        console.log('[SupabaseProvider] User signed out');
+        router.push('/login');
       }
-    )
+    });
 
     return () => {
-      subscription.unsubscribe()
-    }
-  }, [supabase, router, isHydrated])
+      subscription.unsubscribe();
+    };
+  }, [supabase, router, isHydrated]);
 
   const signOut = useCallback(async () => {
-    if (!supabase) return
-    
+    if (!supabase) return;
+
     try {
-      await supabase.auth.signOut()
-      setUser(null)
-      router.push('/login')
+      await supabase.auth.signOut();
+      setUser(null);
+      router.push('/login');
     } catch (err) {
-      console.error('[SupabaseProvider] Sign out error:', err)
+      console.error('[SupabaseProvider] Sign out error:', err);
     }
-  }, [supabase, router])
+  }, [supabase, router]);
 
   const value = {
     user,
@@ -129,11 +131,7 @@ function SupabaseProvider({ children }: { children: React.ReactNode }) {
     isAuthenticated: !!user && isHydrated,
     signOut,
     supabase,
-  }
+  };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
