@@ -19,6 +19,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
 import { generateResetToken } from '@/lib/auth/password-reset';
 import {
   applyRateLimitHeaders,
@@ -68,9 +69,16 @@ export async function POST(request: NextRequest) {
   });
 
   // Sempre retorna 200. Não revelar se o email existe.
-  // Se não encontrou, simplesmente não faz nada.
   if (operator) {
     const rawToken = await generateResetToken(operator.id);
+
+    // Fase 21: PASSWORD_RESET_REQUESTED — fire-and-forget, nunca bloqueia
+    logSecurityEvent({
+      type: 'PASSWORD_RESET_REQUESTED',
+      operatorId: operator.id,
+      ipAddress: request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? null,
+      userAgent: request.headers.get('user-agent'),
+    });
 
     // Log do link de reset (email real fora de scope).
     // O token é o raw (64 hex chars) — só existe em memória aqui.

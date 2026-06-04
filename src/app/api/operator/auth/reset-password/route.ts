@@ -17,7 +17,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { resetPassword } from '@/lib/auth/password-reset';
+import { resetPassword, validateResetToken } from '@/lib/auth/password-reset';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
 import {
   applyRateLimitHeaders,
   enforceAuthRateLimit,
@@ -57,9 +58,10 @@ export async function POST(request: NextRequest) {
     applyRateLimitHeaders(response, rl.result);
     return response;
   }
-
   const { token, newPassword } = parsed.data;
 
+  // Validar token primeiro para obter o operatorId antes do reset.
+  const tokenValidation = await validateResetToken(token);
   const result = await resetPassword(token, newPassword);
 
   if (!result.ok) {
@@ -78,6 +80,16 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ error: message }, { status });
     applyRateLimitHeaders(response, rl.result);
     return response;
+  }
+
+  // Fase 21: PASSWORD_RESET_COMPLETED — fire-and-forget, nunca bloqueia
+  if (tokenValidation) {
+    logSecurityEvent({
+      type: 'PASSWORD_RESET_COMPLETED',
+      operatorId: tokenValidation.operatorId,
+      ipAddress: request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? null,
+      userAgent: request.headers.get('user-agent'),
+    });
   }
 
   const response = NextResponse.json(

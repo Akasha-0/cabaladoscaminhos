@@ -509,7 +509,6 @@ export function generateDossierPDF(data: DossierPdfData): void {
   drawSynthesisSection(doc, state, data);
 
   // Download
-  const dateStr  = new Date(data.readingDate).toISOString().slice(0, 10);
-  const safeName = data.clientName.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '');
-  doc.save(`dossier-${safeName}-${dateStr}.pdf`);
+  const dateStr = new Date(data.readingDate).toISOString().slice(0, 10);
+  doc.save(`dossier-${encodeURIComponent(data.clientName)}-${dateStr}.pdf`);
 }

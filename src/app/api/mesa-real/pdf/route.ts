@@ -6,6 +6,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { requireOperator } from '@/lib/auth/operator-session';
+import { checkOperatorRateLimit, OPERATOR_RATE_LIMITS } from '@/lib/auth/rate-limit';
+
+const OPERATOR_LIMIT = OPERATOR_RATE_LIMITS['pdf-export'].max;
+const OPERATOR_WINDOW = OPERATOR_RATE_LIMITS['pdf-export'].windowSeconds;
 
 // Tipos que o cliente espera
 const pdfRequestSchema = z.object({
@@ -17,7 +21,21 @@ export async function POST(request: NextRequest) {
   const auth = await requireOperator(request);
   if (auth instanceof NextResponse) return auth;
 
-  // 2. Validar input
+  // 2. Rate-limit por operator
+  const rlResult = await checkOperatorRateLimit(
+    auth.id,
+    'pdf-export',
+    OPERATOR_LIMIT,
+    OPERATOR_WINDOW
+  );
+  if (!rlResult.allowed) {
+    return NextResponse.json(
+      { error: 'Limite de operações por operador excedido. Tente novamente mais tarde.', retryAfter: rlResult.retryAfterSeconds },
+      { status: 429, headers: { 'X-RateLimit-Limit': rlResult.limit.toString(), 'X-RateLimit-Remaining': rlResult.remaining.toString(), 'X-RateLimit-Reset': rlResult.resetAt.toString(), 'Retry-After': rlResult.retryAfterSeconds.toString() } }
+    );
+  }
+
+  // 3. Validar input
   let body: z.infer<typeof pdfRequestSchema>;
   try {
     body = pdfRequestSchema.parse(await request.json());
@@ -25,7 +43,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'readingId é obrigatório' }, { status: 400 });
   }
 
-  // 3. Buscar leitura + client + report + matrixData
+  // 4. Buscar leitura + client + report + matrixData
   const reading = await prisma.reading.findUnique({
     where: { id: body.readingId },
     include: {
@@ -52,17 +70,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Leitura não encontrada' }, { status: 404 });
   }
 
-  // 4. Verificar propriedade
+  // 5. Verificar propriedade
   if (reading.operatorId !== auth.id) {
     return NextResponse.json({ error: 'Acesso negado' }, { status: 403 });
   }
 
-  // 5. Verificar que há dossiê gerado
+  // 6. Verificar que há dossiê gerado
   if (!reading.report) {
     return NextResponse.json({ error: 'Dossiê ainda não foi gerado' }, { status: 400 });
   }
 
-  // 6. Retornar dados para o cliente montar o PDF
+  // 7. Retornar dados para o cliente montar o PDF
   return NextResponse.json({
     clientName: reading.client.fullName,
     readingDate: reading.date.toISOString(),

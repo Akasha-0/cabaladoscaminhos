@@ -190,6 +190,13 @@ export async function POST(request: NextRequest) {
     applyRateLimitHeaders(response, ipResult);
     return response;
   }
+  // Fase 21: REFRESH_SUCCESS — fire-and-forget, nunca bloqueia
+  logSecurityEvent({
+    type: 'REFRESH_SUCCESS',
+    operatorId: payload.sub,
+    ipAddress,
+    userAgent,
+  });
 
   const response = NextResponse.json({
     operator: {

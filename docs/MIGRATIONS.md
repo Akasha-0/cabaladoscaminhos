@@ -106,3 +106,6 @@ prisma/
   `20260602000000_init` (model `OperatorSession` + enum `OperatorSessionType`)
 - Adicionar `Reading.tags` para organização
 - Adicionar `Client.consentGiven` (LGPD/GDPR compliance)
+- ✅ `Client.birthTimezone` (IANA timezone string) — `20260603091000_add_client_birth_timezone`
+  Adiciona coluna `birthTimezone TEXT` com índice em `clients` para
+  cálculo astral preciso com conversão de horário local → UTC.

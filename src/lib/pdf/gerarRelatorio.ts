@@ -99,7 +99,7 @@ function mapaAlmaToMapaData(mapa: MapaAlmaCompleto): MapaData {
     sefirot: [mapa.odu.caminhoSephirah],
     convergencias: mapa.convergencias.map(c => ({
       energia: c.energia,
-      forca: c.forca === 'forte' ? 'dupla' : c.forca === 'medio' ? 'dupla' : 'simples',
+      forca: c.forca === 'fraco' ? 'tripla' : c.forca === 'medio' ? 'dupla' : 'simples',
       descricao: c.descricao,
     })),
   };

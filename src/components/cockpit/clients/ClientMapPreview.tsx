@@ -3,6 +3,7 @@
 // Tokens Ramiro: cada mapa em card bg-card com border-border, badges internas:
 //   Astrologia, Cabala, Odu = secondary (royal)
 //   Tântrica = primary (laranja)
+import React from 'react';
 import { Crown, Sparkles, Flame, Sun } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
@@ -73,7 +74,7 @@ function MapCard({
   );
 }
 
-export function ClientMapPreview({ astrology, kabalistic, tantric, odu }: ClientMapPreviewProps) {
+function ClientMapPreviewInner({ astrology, kabalistic, tantric, odu }: ClientMapPreviewProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <MapCard title="Astrologia" icon={Sun} map={astrology} accent="royal" />
@@ -83,3 +84,7 @@ export function ClientMapPreview({ astrology, kabalistic, tantric, odu }: Client
     </div>
   );
 }
+
+// T7.3: memoize — pure presentational, no hooks, no context; prevents re-render when
+// parent (e.g. CockpitSidebar) re-renders for unrelated state changes.
+export const ClientMapPreview = React.memo(ClientMapPreviewInner);

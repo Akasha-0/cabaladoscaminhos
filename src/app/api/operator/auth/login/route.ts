@@ -115,6 +115,17 @@ export async function POST(request: NextRequest) {
     await recordFailedAttempt(operator.email).catch((err) =>
       console.error('[operator/auth/login] recordFailedAttempt failed', err)
     );
+    // Fase 21: ACCOUNT_LOCKED — fire-and-forget, nunca bloqueia
+    const lockStatus = await isLocked(operator.email);
+    if (lockStatus.locked) {
+      logSecurityEvent({
+        type: 'ACCOUNT_LOCKED',
+        operatorId: operator.id,
+        ipAddress,
+        userAgent,
+        metadata: { lockedUntil: lockStatus.until?.toISOString() },
+      });
+    }
     // Fase 21: LOGIN_FAILURE — nunca bloqueia o fluxo
     logSecurityEvent({
       type: 'LOGIN_FAILURE',

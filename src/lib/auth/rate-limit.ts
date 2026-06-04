@@ -497,6 +497,7 @@ export const OPERATOR_RATE_LIMITS = {
   'sessions/delete':     { windowSeconds: 60, max: 10 },
   'logout':              { windowSeconds: 60, max: 10 },
   'refresh':             { windowSeconds: 60, max: 30 },
+  'pdf-export':          { windowSeconds: 60, max: 5 },
 } as const;
 export type OperatorRoute = keyof typeof OPERATOR_RATE_LIMITS;
 /**

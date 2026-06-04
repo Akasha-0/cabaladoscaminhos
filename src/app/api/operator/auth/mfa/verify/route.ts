@@ -27,6 +27,7 @@ import {
 } from '@/lib/auth/operator-jwt';
 import { createSession, createRefreshSession } from '@/lib/auth/operator-sessions';
 import { consumeMfaChallenge } from '@/lib/auth/operator-mfa';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
 
 const verifySchema = z.object({
   mfaToken: z.string().min(1, 'mfaToken obrigatório'),
@@ -112,6 +113,13 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error('[mfa/verify] failed to create session(s)', err);
   }
+  // Fase 21: MFA_VERIFIED — fire-and-forget, nunca bloqueia
+  logSecurityEvent({
+    type: 'MFA_VERIFIED',
+    operatorId: operator.id,
+    ipAddress,
+    userAgent,
+  });
 
   // 5) Setar 2 cookies httpOnly e responder
   const response = NextResponse.json({ operator: publicOperator(operator) });
