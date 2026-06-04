@@ -32,22 +32,30 @@ export const useAuth = () => {
 // Singleton client
 let supabaseClient: ReturnType<typeof createBrowserClient> | null = null;
 
-function getSupabaseClient() {
+function getSupabaseClient(
+  url?: string,
+  anonKey?: string,
+) {
   if (supabaseClient) return supabaseClient;
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!url || !anonKey) {
+  const resolvedUrl = url ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const resolvedKey = anonKey ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!resolvedUrl || !resolvedKey) {
     console.error('[SupabaseProvider] Missing Supabase environment variables');
     return null;
   }
-
-  supabaseClient = createBrowserClient(url, anonKey);
+  supabaseClient = createBrowserClient(resolvedUrl, resolvedKey);
   return supabaseClient;
 }
 
-export function SupabaseProvider({ children }: { children: React.ReactNode }) {
+export function SupabaseProvider({
+  children,
+  url,
+  anonKey,
+}: {
+  children: React.ReactNode;
+  url?: string;
+  anonKey?: string;
+}) {
   // All hooks must be called unconditionally
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,8 +63,8 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const initRef = useRef(false);
 
-  // Always get supabase client (this is safe to call)
-  const supabase = getSupabaseClient();
+  // Always get supabase client (passing explicit env vars from layout for clarity)
+  const supabase = getSupabaseClient(url, anonKey);
 
   // Mark as hydrated on client mount
   useEffect(() => {
