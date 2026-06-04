@@ -65,6 +65,25 @@ export interface OduBirth {
     oduNumber: number;
     meaning: string;
   }>;
+  // ────────────────────────────────────────────────────────────────────────
+  // @provisional — campos abaixo ainda não são produzidos por
+  // `calculateBirthOdu` (Doc 23 §2.3). Marcados opcionais + flag
+  // `provisional` indica que aguarda tabela de linhagem (D3) e
+  // expansão futura. Nenhum consumidor atual depende deles.
+  // ────────────────────────────────────────────────────────────────────────
+  sign?: string;
+  animal?: string;
+  owner?: string;
+  ebwe?: string;
+  message?: string;
+  initiationPath?: string;
+  prohibitions?: string[];
+  // nameHistory também não é produzido (Doc 23 §2.3 declara como morto)
+  nameHistory?: Array<{
+    name: string;
+    meaning: string;
+    source: string;
+  }>;
 }
 
 // ============================================================================
@@ -85,6 +104,7 @@ export type MatrixData = {
 // §2.2 KabalisticMap — Numerologia Cabalística (enriched)
 // ============================================================================
 export interface KabalisticMap {
+  // ─── Campos realmente produzidos por buildKabalisticMap (Doc 04 §2.2) ────
   // Life path and expression numbers
   lifePath?: number;
   lifePathMaster?: boolean;
@@ -118,25 +138,36 @@ export interface KabalisticMap {
     personalDay: number;
     referenceDate: string;
   };
-  hebrewLetter: string;
-  sefirotPath: string;
-  vibrationalNumber: number;
-  chaliceNumber: number;
-  destinyNumber: number;
-  soulUrgeNumber: number;
-  personalityNumber: number;
-  hiddenPassionNumber: number;
-  maturityNumber: number;
-  balanceNumber: number;
-  minorCycles: {
+
+  // ────────────────────────────────────────────────────────────────────────
+  // @provisional — campos abaixo NUNCA foram produzidos por
+  // `buildKabalisticMap` (Doc 23 §2.1 classifica como "expectativas
+  // falsas"). Marcados opcionais para não quebrar type-checking de
+  // consumidores que assumem sua presença, mas o guardião de completude
+  // (`tests/calculators/map-completeness.test.ts`) NÃO os exige.
+  //
+  // Quando forem implementados de fato, mover para a seção "Campos
+  // realmente produzidos" e adicionar teste em buildKabalisticMap.
+  // ────────────────────────────────────────────────────────────────────────
+  hebrewLetter?: string;
+  sefirotPath?: string;
+  vibrationalNumber?: number;
+  chaliceNumber?: number;
+  destinyNumber?: number;
+  soulUrgeNumber?: number;
+  personalityNumber?: number;
+  hiddenPassionNumber?: number;
+  maturityNumber?: number;
+  balanceNumber?: number;
+  minorCycles?: {
     years: number[];
     months: number[];
     days: number[];
   };
-  personalYear: number;
-  personalMonth: number;
-  personalDay: number;
-  nameHistory: Array<{
+  personalYear?: number;
+  personalMonth?: number;
+  personalDay?: number;
+  nameHistory?: Array<{
     name: string;
     meaning: string;
     source: string;
@@ -146,6 +177,7 @@ export interface KabalisticMap {
 // §2.3 TantricMap — Numerologia Tântrica (enriched)
 // ============================================================================
 export interface TantricMap {
+  // ─── Campos realmente produzidos por buildTantricMap (Doc 04 §2.3) ──────
   // Tantric body properties
   soul?: number;
   soulBody?: number;
@@ -166,7 +198,15 @@ export interface TantricMap {
     mental: { number: number; description: string; qualities: string[] };
     espiritual: { number: number; description: string; qualities: string[] };
   };
-  sacredGeometry: {
+
+  // ────────────────────────────────────────────────────────────────────────
+  // @provisional — campos abaixo NUNCA foram produzidos por
+  // `buildTantricMap` (Doc 23 §2.2 classifica como "5 campos mortos
+  // no tipo"). Marcados opcionais para que buildTantricMap não precise
+  // retornar stubs vazios. Quando forem implementados, mover para a
+  // seção "Campos realmente produzidos" e adicionar teste no guardião.
+  // ────────────────────────────────────────────────────────────────────────
+  sacredGeometry?: {
     merkabaActive: boolean;
     merkabahFields: string[];
     flowerOfLife: string[];
@@ -176,7 +216,7 @@ export interface TantricMap {
       intensity: number;
     };
   };
-  chakraStates: Array<{
+  chakraStates?: Array<{
     chakra: string;
     name: string;
     element: string;
@@ -184,20 +224,20 @@ export interface TantricMap {
     state: 'balanced' | 'overactive' | 'underactive';
     affirmation: string;
   }>;
-  energyMatrix: {
+  energyMatrix?: {
     physicalBody: number;
     emotionalBody: number;
     mentalBody: number;
     spiritualBody: number;
   };
-  elementBalances: {
+  elementBalances?: {
     fire: number;
     water: number;
     earth: number;
     air: number;
     ether: number;
   };
-  kundaliniState: {
+  kundaliniState?: {
     active: boolean;
     primaryChakra: string;
     secondaryChakras: string[];
