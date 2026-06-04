@@ -1,14 +1,13 @@
 // src/components/cockpit/dossier/DossierViewer.tsx
 // Orquestra o stream SSE do Dossiê (Doc 05 §5 + Doc 16 AD-12 §5).
 // 2 painéis: índice sticky à esquerda + conteúdo Lora à direita (react-markdown).
-
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { cn } from '@/lib/utils';
 import { DossierIndex } from './DossierIndex';
+import { DossierPdfButton } from './DossierPdfButton';
 import { LoadingOrbital } from './LoadingOrbital';
 
 interface CasaData {
@@ -84,16 +83,18 @@ function DossierViewerInner({ readingId }: { readingId: string }) {
         progress={progress}
         errors={errors}
       />
-
       <div className="flex-1 overflow-y-auto p-8">
         {!done && <LoadingOrbital progress={progress} errors={errors} />}
-
         {done && casaNumbers.length === 0 && (
           <div className="text-center text-muted-foreground py-12">
             Nenhuma casa foi gerada. Verifique se a mesa tem cartas e Odus preenchidos.
           </div>
         )}
-
+        {done && casaNumbers.length > 0 && (
+          <div className="flex justify-end mb-6">
+            <DossierPdfButton readingId={readingId} />
+          </div>
+        )}
         <article className="dossier font-dossier max-w-[720px] mx-auto text-foreground/90 leading-[1.8] text-[15px]">
           {casaNumbers.map((casa) => {
             const h = houses[casa];

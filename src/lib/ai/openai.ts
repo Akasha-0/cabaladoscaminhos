@@ -363,3 +363,11 @@ async function sendMessage(messages: ChatMessage[], systemPrompt?: string): Prom
 }
 
 // (circuit-breaker status/reset utilities removed — knip-flagged dead exports)
+// ============================================================
+// STREAMING COMPLETION (SSE via ReadableStream)
+// ============================================================
+// Note: Streaming is implemented at the route level via ReadableStream
+// (e.g. /api/mesa-real/dossier/[id]/route.ts).
+// createChatCompletion is non-streaming; SSE routes handle their own
+// streaming via TextEncoder + ReadableStream.
+// Future: expose createStreamingCompletion here when needed.

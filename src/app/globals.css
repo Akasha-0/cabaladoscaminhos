@@ -13,6 +13,8 @@
   --font-imfell: var(--font-imfell), serif;
   /* Corpo do dossiê gerado pela IA e bolhas do chat de consulta. */
   --font-dossier: var(--font-lora), Georgia, serif;
+  /* font-cormorant: tersedia utk body text dossiê (Doc 13 §3 spec). */
+  --font-cormorant: var(--font-cormorant), Georgia, serif;
 
   /* Colors - Sidebar */
   --color-sidebar-ring: #4338ca;
