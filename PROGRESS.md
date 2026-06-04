@@ -920,11 +920,12 @@ Multi-agent cleanup + Sprint 8 tasks:
 **Auth fixes (HIGH):**
   13 unauth routes protected with requireOperator
 **Result:** 1832 testes · TypeScript 0 erros.
-Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84+046b012b (auth),
-  e5c2d1d9 (compat), 9474221b (T7.1), a05556de (T7.3), 7d73bd0b (T7.5),
-  d4c96489 (fix CockpitSidebar React.memo closing )
+Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
+  046b012b (remaining auth), e5c2d1d9 (compat), 9474221b (T7.1),
+  275e24d6 (dead types), a05556de (T7.3), 7d73bd0b (T7.5),
+  d4c96489 (CockpitSidebar fix), f3db7355 (knip cleanup),
+  cf27cd1b (CockpitSidebar restore)
 ### Fase 55 — Phase 55 findings + Stripe duplicate cleanup (2026-06-03)
-Phase 55 agents audited: OduCode, StripeWebhook, CORS, PrismaMigration, APIHealth, AuthMiddleware, SSE, Zustand.
 **Findings — confirmed not actionable:**
 - prisma.config.ts: EXISTS (Prisma 7 already migrated)
 - health/metrics POST: low-risk (in-memory metrics, public like other health routes)
