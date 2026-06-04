@@ -960,8 +960,29 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 **Prisma migrations (missing):**
 - `prisma/migrations/20260603090000_add_security_events/` — SecurityEventType enum + security_events table + indexes
 - `prisma/migrations/20260603090001_add_password_reset_tokens/` — password_reset_tokens table + FK + indexes
-**Audit findings — not actionable:**
-- CSP: already covered (cockpit: strict in middleware, all pages: lenient via layout.tsx headers)
-- SecurityEvent types: 6/11 logged, 5 missing (REFRESH_SUCCESS, PASSWORD_RESET_REQUESTED/COMPLETED, MFA_VERIFIED, ACCOUNT_LOCKED) — MEDIUM backlog
-- Test coverage: account lockout has 13 unit tests + 1 mocked integration test; security events not asserted in route tests — LOW backlog
-**Result:** 1832 testes · TypeScript 0 erros · Build 116 páginas OK.
+**Audit findings — closed in Fase 57:**
+ SecurityEvent types: 6/11 → 10/11 logged (Phase 21 CLOSED ✅)
+ Missing: PASSWORD_CHANGED (no PATCH endpoint in /me route — BLOCKED)
+ Missing: RATE_LIMIT_EXCEEDED (already logged — incorrect finding in Fase 55)
+ Test coverage: 13 unit + 1 mocked → 14 new integration tests ✅
+**Result:** 1846 testes · TypeScript 0 erros.
+
+### Fase 57 — Security event logging + PDF fixes + lockout tests (2026-06-03)
+5 parallel agents: SecurityEventLogger, PDFExportFix, BirthTimezoneMigration, AccountLockoutTests, CockpitMemo.
+**Security event logging (Phase 21 closure — 5 of 6 missing types added):**
+- REFRESH_SUCCESS → refresh/route.ts after successful rotation
+- PASSWORD_RESET_REQUESTED → forgot-password/route.ts after token generation
+- PASSWORD_RESET_COMPLETED → reset-password/route.ts after password update
+- MFA_VERIFIED → mfa/verify/route.ts after TOTP verification
+- ACCOUNT_LOCKED → login/route.ts when lockout triggered
+- RATE_LIMIT_EXCEEDED → ✅ already logged in middleware
+- PASSWORD_CHANGED → SKIPPED (me/route.ts has no PATCH/POST for password changes)
+- schema.prisma: 4 new enum values; audit-service.ts: type union updated; prisma generate ✅
+**PDF export fixes (Phase 55 findings):**
+- api/mesa-real/pdf: per-operator rate-limit 5 req/min via checkOperatorRateLimit
+- lib/auth/rate-limit.ts: pdf-export entry added
+- lib/pdf/gerarRelatorio.ts: força mapping fixed (fraco→tripla, not falling through)
+- lib/pdf/dossier-pdf.ts: encodeURIComponent on clientName before jsPDF.save()
+**Prisma migration:** 20260603091000_add_client_birth_timezone — adds birthTimezone TEXT column + index to clients
+**Tests:** 14 new lockout integration tests (operator-auth-lockout.test.ts, 543 lines)
+**Result:** 1846 testes · TypeScript 0 erros · Build 116 páginas OK.
