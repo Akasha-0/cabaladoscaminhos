@@ -169,3 +169,9 @@ getRedisClient().catch(() => {
   useMemory = true;
   redisClient = createInMemoryStore();
 });
+// Clears the in-memory fallback store. Used exclusively in tests to ensure
+// test isolation — the in-memory store persists across all test cases within
+// the same Vitest worker. NEVER call this in production.
+export function resetMemoryStore(): void {
+  memoryStore.clear();
+}

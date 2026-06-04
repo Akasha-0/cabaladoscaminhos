@@ -9,7 +9,7 @@
 //   5. `enforceAuthRateLimit` retorna 429 com headers quando bloqueado
 //   6. Diferentes IPs são contados independentemente
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { NextRequest, NextResponse } from 'next/server';
 import {
   AUTH_RATE_LIMITS,
@@ -18,6 +18,7 @@ import {
   enforceAuthRateLimit,
   getClientIp,
 } from '@/lib/auth/rate-limit';
+import { resetMemoryStore } from '@/lib/redis';
 
 // Helper: cria um NextRequest fake com IP controlado.
 function makeRequest(ip: string | null): NextRequest {
@@ -78,7 +79,12 @@ describe('checkAuthRateLimit', () => {
   // Usa IPs únicos por teste para evitar colisão com o contador
   // (que é por-IP e persistente na instância singleton do Redis/in-memory).
   const TEST_IP = `203.0.113.${Math.floor(Math.random() * 250) + 1}`;
-
+  beforeEach(() => {
+    // Limpa o store in-memory entre cada teste para garantir isolamento.
+    // Sem isso, contadores residuais de testes anteriores fazem testes
+    // subsequentes falharem de forma não-determinística (random IP collision).
+    resetMemoryStore();
+  });
   it('1ª chamada: allowed, remaining = max-1', async () => {
     const r = await checkAuthRateLimit('login', TEST_IP);
     expect(r.allowed).toBe(true);
