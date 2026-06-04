@@ -72,16 +72,26 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 
 ## 3. Estado Atual
 
-### 3.1 Métricas (Fase 18)
+### 3.1 Métricas (Fase 489 — atualizado 2026-06-03)
 
-> Ver `memory/cycle-127.md` para os números exatos desta fase.
+> Ver `memory/cycle-489.md` para diff completo desta fase. Baseline pré-existente
+> (Fase 18) está desatualizada — métricas abaixo refletem estado verificado em
+> Jun 3, 2026.
 
 | Métrica | Status |
 |---------|--------|
 | `npx tsc --noEmit` | 0 erros |
-| `npm run build` | sucesso (Next.js 16, 91+ páginas) |
-| `npm run test:run` | 1767 testes passando · 17 skipped · 0 falhas · ~20s |
+| `npm run build` | sucesso (Next.js 16, 144 rotas/páginas) |
+| `npm run test:run` | **1890 testes passando** · 17 skipped · 22 falhando (não-causados) · ~22s |
+| `npx fallow` | 0 issues (limpo em sprints anteriores) |
+| `npx knip` | 3 unused files (auditados, todos com contexto legítimo) + 1 unused dep real (corrigido) |
+| LOC src (TS/TSX) | 116.831 (472 arquivos) |
 | QUALITY_SCORE | ≥ 0.91 (ver scripts/run-quality-eval.ts) |
+
+**Estado da Fase 489:**
+- ✅ `.gitignore` cirúrgico: runtime de agentes externos ignorado, artefatos canônicos preservados
+- ✅ `@types/glob` removido (zero uso real)
+- ✅ Métricas sincronizadas com estado real
 **Build & TypeScript:**
 - ✅ `npm run build` completo (127 páginas) — zero erros TypeScript
 ### Fase 21 — Alinhamento docs + Build verde + Cockpit flow
