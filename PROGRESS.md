@@ -1024,7 +1024,7 @@ Commits: 0db9b621 (orixá), be7c0287 (T7.4), 5b50fb84 (dashboard auth),
 **Knip config + devDependency:
 - knip.config.ts: excludes _index.js from project glob
 - knip added to devDependencies
-- fallow --fail-on-regression now active (baseline: 40 issues, delta: -1)
+- fallow --fail-on-regression now active (baseline: 0 issues after OMP suppressions cleanup)
 **Phase 59 guard protocol established:**
 - Agent scope is explicit per assignment; agent deleting cockpit pages was cancelled mid-operation
 - All changes reverted; file integrity restored
