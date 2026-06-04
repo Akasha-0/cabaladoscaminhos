@@ -29,6 +29,12 @@
     "generatePracticalAdvice",
     "toJSON"
   ],
+  "ignoreDependencies": [
+    "react-markdown",
+    "remark-gfm",
+    "zustand",
+    "knip"
+  ],
   "entry": [
     "middleware.ts",
     "next.config.ts",
@@ -571,15 +577,106 @@
     {
       "file": "src/lib/life-areas/life-areas-ai.ts",
       "exports": ["AIInsight"]
+    },
+    {
+      "file": "src/lib/auth/operator-totp.ts",
+      "exports": ["MFA_ISSUER", "TOTP_SECRET_BYTES", "TOTP_DIGITS", "TOTP_PERIOD_SECONDS", "TOTP_DRIFT_STEPS"]
+    },
+    {
+      "file": "src/lib/credits/service.ts",
+      "exports": ["CreditosInsuficientesError", "getCreditos", "getCreditosCompleto", "verificarCreditos"]
+    },
+    {
+      "file": "src/lib/payments/service.ts",
+      "exports": ["PLANOS", "extrairUserId", "extrairPlanoId", "extrairCreditos"]
+    },
+    {
+      "file": "src/lib/auth/operator-jwt.ts",
+      "exports": ["JwtSecretMissingError", "signOperatorToken", "OPERATOR_MFA_CHALLENGE_TTL_SECONDS"]
+    },
+    {
+      "file": "src/lib/auth/operator-sessions.ts",
+      "exports": ["isRefreshSessionActive", "revokeAllOperatorSessions", "cleanupExpiredSessions"]
+    },
+    {
+      "file": "src/lib/auth/password-reset.ts",
+      "exports": ["PASSWORD_RESET_TTL_MS", "hashToken", "consumeResetToken"]
+    },
+    {
+      "file": "src/lib/auth/account-lockout.ts",
+      "exports": ["MAX_ATTEMPTS", "LOCKOUT_DURATION_MINUTES"]
+    },
+    {
+      "file": "src/lib/auth/operator-guard.ts",
+      "exports": ["OPERATOR_LOGIN_PATH", "requireOperatorPage"]
+    },
+    {
+      "file": "src/app/api/mesa-real/save/route.ts",
+      "exports": ["DuplicateCardError"]
+    },
+    {
+      "file": "src/app/layout.tsx",
+      "exports": ["headers"]
+    },
+    {
+      "file": "src/lib/ai/mapa-insights/prompt-builder.ts",
+      "exports": ["gerarContextoUsuario"]
+    },
+    {
+      "file": "src/lib/quality/runner.ts",
+      "exports": ["runQualityEval"]
+    },
+    {
+      "file": "src/lib/api/spiritual-filters.ts",
+      "exports": ["ElementExtendedSchema"]
+    },
+    {
+      "file": "src/lib/ai/dossier/oracle-prompt-builder.ts",
+      "exports": ["normalizeBirthChart"]
+    },
+    {
+      "file": "src/lib/ai/mapa-insights/parser.ts",
+      "exports": ["extractJson"]
+    },
+    {
+      "file": "src/lib/constants/odus.ts",
+      "exports": ["ODUS"]
+    },
+    {
+      "file": "src/lib/ai/mapa-insights/generator.ts",
+      "exports": ["gerarCacheKey"]
+    },
+    {
+      "file": "src/lib/ai/theme-router.ts",
+      "exports": ["THEME_TAXONOMY"]
+    },
+    {
+      "file": "src/lib/token-budget.ts",
+      "exports": ["tokenBudgetLimit"]
+    },
+    {
+      "file": "src/lib/auth/audit-service.ts",
+      "exports": ["SecurityEventType"],
+      "isType": true
+    },
+    {
+      "file": "src/lib/quality/runner.ts",
+      "exports": ["EvalSuite"],
+      "isType": true
+    },
+    {
+      "file": "src/types/index.ts",
+      "exports": ["AstrologyMap"],
+      "isType": true
     }
-  ],
+   ],
   "regression": {
     "baseline":     {
-      "totalIssues": 43,
+      "totalIssues": 40,
       "unusedFiles": 0,
       "unusedExports": 37,
       "unusedTypes": 3,
-      "unusedDependencies": 3,
+      "unusedDependencies": 0,
       "unusedDevDependencies": 0,
       "unusedOptionalDependencies": 0,
       "unusedEnumMembers": 0,
