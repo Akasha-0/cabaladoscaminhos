@@ -30,6 +30,7 @@ export default defineConfig({
             'tests/lib/db/**',
             'tests/lib/divination/**',
             'tests/lib/constants/**',
+            'tests/lib/quality/run-quality-eval-guard.test.ts',
           ],
           exclude: [
             'tests/lib/divination/divination-methods.test.ts',
