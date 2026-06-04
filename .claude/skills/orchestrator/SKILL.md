@@ -23,15 +23,11 @@
 
 ## Fluxo de Execução
 
-### ASSESS (Avaliação de Contexto)
-
 ```bash
 # Verificar estado atual
 cat PROGRESS.md | head -60
-cat memory/cycle-505.md  # último ciclo
-npm run test:run
-npm run build
-npx tsc --noEmit
+cat memory/cycle-506.md  # ultimo ciclo
+pnpm run cycle:assess     # ou: pnpm run cycle:full
 ```
 
 **Verificar:**
@@ -53,19 +49,18 @@ Identificar 3 tarefas coesas da fase atual alinhadas com:
 - Quality Score >= 91%?
 
 ### EXECUTE (Execução Paralela)
-
-Disparar 5 agentes especializados em paralelo:
-
+Disparar 6 agentes especializados em paralelo:
 ```
-┌──────────────────────────────────────────┐
-│          5 AGENTES EM PARALELO           │
-│                                          │
-│ spiritual-validator   → correlações      │
-│ arch-ai-engineer     → arquitetura IA    │
-│ ui-ux-evolution      → interface         │
-│ devops-qa-tester     → DevOps/QA         │
-│ knowledge-validator  → base conhecimento │
-└──────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                 6 AGENTES EM PARALELO                    │
+│                                                          │
+│ spiritual-validator    → correlações espirituais         │
+│ arch-ai-engineer      → arquitetura IA + swarm          │
+│ ui-ux-evolution       → interface + UX                  │
+│ devops-qa-tester      → DevOps/QA + testes              │
+│ knowledge-validator    → base de conhecimento            │
+│ platform-evolver       → coordenação + evolução          │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ### VERIFY (Verificação)
