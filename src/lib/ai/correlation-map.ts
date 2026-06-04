@@ -130,10 +130,10 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseId: 5, houseName: 'A Árvore',
     houseTheme: 'Saúde, vitalidade, energia vital, raízes, ancestralidade',
     astrology: {
-      primaryHouses: [6], primaryPlanets: ['sun'],
-      extractionKeys: ['houses.6', 'sun.sign', 'sun.house'],
+      primaryHouses: [5], primaryPlanets: ['sun'],
+      extractionKeys: ['houses.5', 'houses.6', 'planets.sun.sign', 'planets.sun.house'],
       source: 'Astrologia Ocidental Clássica',
-      rationale: '6ª Casa = saúde e corpo, Sol = vitalidade e força de vida',
+      rationale: '5ª Casa = vitalidade e energia vital; 6ª Casa = saúde e corpo; Sol = força de vida',
     },
     kabalah: {
       aspects: ['Número de Destino'], extractionKeys: ['destiny'],
@@ -331,7 +331,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseTheme: 'Poder pessoal, autoridade, finanças de grande porte, proteção, liderança',
     astrology: {
       primaryHouses: [10], primaryPlanets: ['sun', 'pluto'],
-      extractionKeys: ['sun.sign', 'sun.house', 'houses.10', 'planets.pluto.sign', 'planets.pluto.house'],
+      extractionKeys: ['houses.10', 'planets.sun.sign', 'planets.sun.house', 'planets.pluto.sign', 'planets.pluto.house'],
       source: 'Astrologia Ocidental Clássica',
       rationale: 'Sol = poder, ego e autoridade pessoal; 10ª Casa = posição de poder e carreira pública',
     },
@@ -591,7 +591,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseTheme: 'O consulente masculino ou a energia masculina/ativa principal na situação',
     astrology: {
       primaryHouses: [], primaryPlanets: ['sun', 'mars'],
-      extractionKeys: ['sun.sign', 'sun.house', 'planets.mars.sign', 'planets.mars.house'],
+      extractionKeys: ['planets.sun.sign', 'planets.sun.house', 'planets.mars.sign', 'planets.mars.house'],
       source: 'Astrologia Ocidental Clássica',
       rationale: 'Sol = identidade e ego masculino/yang; Marte = ação, drive e iniciativa ativa',
     },
@@ -651,7 +651,7 @@ export const CORRELATION_MAP: Record<number, CorrelationEntry> = {
     houseTheme: 'Sucesso máximo, clareza total, vitória, o ápice da realização',
     astrology: {
       primaryHouses: [10], primaryPlanets: ['sun'],
-      extractionKeys: ['houses.10', 'sun.sign', 'sun.house'],
+      extractionKeys: ['houses.10', 'planets.sun.sign', 'planets.sun.house'],
       source: 'Astrologia Ocidental Clássica',
       rationale: '10ª Casa (Meio do Céu) = carreira e sucesso público; Sol = brilho e vitória no zênite',
     },

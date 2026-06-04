@@ -1,3 +1,7 @@
+import jwt from 'jsonwebtoken';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { NextRequest } from 'next/server';
+
 // tests/api/operator-auth-sessions.test.ts
 // Integração das rotas de auth com OperatorSession (Fase 13 + 15 + 18).
 // Cobre: login cria 2 sessions (ACCESS+REFRESH), logout revoga ambas,
@@ -9,10 +13,6 @@
 process.env.AUTH_RL_LOGIN_MAX = '10000';
 process.env.AUTH_RL_REGISTER_MAX = '10000';
 process.env.AUTH_RL_REFRESH_MAX = '10000';
-
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
 
 // ----------------------------------------------------------------------------
 // Mocks
@@ -110,10 +110,12 @@ describe('POST /api/operator/auth/login — OperatorSession (Fase 13 + 15)', () 
     mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'secret123',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'secret123',
+      })
+    );
 
     expect(res.status).toBe(200);
     expect(mockOperatorSessionCreate).toHaveBeenCalledTimes(2);
@@ -122,7 +124,7 @@ describe('POST /api/operator/auth/login — OperatorSession (Fase 13 + 15)', () 
       (call) => (call[0] as { data: { type: string } }).data.type === 'ACCESS'
     );
     expect(accessCall).toBeDefined();
-    const callArg = (accessCall![0] as {
+    const callArg = accessCall![0] as {
       data: {
         operatorId: string;
         tokenHash: string;
@@ -130,7 +132,7 @@ describe('POST /api/operator/auth/login — OperatorSession (Fase 13 + 15)', () 
         ipAddress: string | null;
         userAgent: string | null;
       };
-    });
+    };
     expect(callArg.data.operatorId).toBe('op-1');
     expect(callArg.data.tokenHash).toMatch(/^[a-f0-9]{64}$/);
     expect(callArg.data.expiresAt).toBeInstanceOf(Date);
@@ -141,10 +143,12 @@ describe('POST /api/operator/auth/login — OperatorSession (Fase 13 + 15)', () 
     mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-2' });
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'secret123',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'secret123',
+      })
+    );
 
     expect(res.status).toBe(200);
 
@@ -152,14 +156,14 @@ describe('POST /api/operator/auth/login — OperatorSession (Fase 13 + 15)', () 
       (call) => (call[0] as { data: { type: string } }).data.type === 'REFRESH'
     );
     expect(refreshCall).toBeDefined();
-    const callArg = (refreshCall![0] as {
+    const callArg = refreshCall![0] as {
       data: {
         operatorId: string;
         tokenHash: string;
         type: string;
         refreshExpiresAt: Date;
       };
-    });
+    };
     expect(callArg.data.operatorId).toBe('op-1');
     expect(callArg.data.type).toBe('REFRESH');
     expect(callArg.data.tokenHash).toMatch(/^[a-f0-9]{64}$/);
@@ -202,10 +206,12 @@ describe('POST /api/operator/auth/login — OperatorSession (Fase 13 + 15)', () 
     mockOperatorSessionCreate.mockRejectedValue(new Error('DB timeout'));
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'secret123',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'secret123',
+      })
+    );
 
     expect(res.status).toBe(200);
     const body = await res.json();
@@ -216,10 +222,12 @@ describe('POST /api/operator/auth/login — OperatorSession (Fase 13 + 15)', () 
     mockFindUnique.mockResolvedValue(null); // operator não existe
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ghost@cabala.com',
-      password: 'wrong',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ghost@cabala.com',
+        password: 'wrong',
+      })
+    );
 
     expect(res.status).toBe(401);
     expect(mockOperatorSessionCreate).not.toHaveBeenCalled();
@@ -232,11 +240,10 @@ describe('POST /api/operator/auth/login — OperatorSession (Fase 13 + 15)', () 
 
 describe('POST /api/operator/auth/logout — revoga OperatorSession (Fase 13 + 15)', () => {
   it('revoga a session do access token no cookie', async () => {
-    const token = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const token = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: token };
     mockOperatorSessionFindUnique.mockResolvedValue({
       id: 'sess-1',
@@ -245,7 +252,9 @@ describe('POST /api/operator/auth/logout — revoga OperatorSession (Fase 13 + 1
     mockOperatorSessionUpdate.mockResolvedValue({ id: 'sess-1', revokedAt: new Date() });
 
     const { POST } = await import('@/app/api/operator/auth/logout/route');
-    const res = await POST();
+    const res = await POST(
+      new NextRequest('http://localhost/api/operator/auth/logout', { method: 'POST' })
+    );
 
     expect(res.status).toBe(200);
     expect(mockOperatorSessionUpdate).toHaveBeenCalledWith({
@@ -255,16 +264,14 @@ describe('POST /api/operator/auth/logout — revoga OperatorSession (Fase 13 + 1
   });
 
   it('revoga também a session do refresh token (Fase 15)', async () => {
-    const accessToken = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
-    const refreshToken = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const accessToken = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
+    const refreshToken = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'refresh' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = {
       cockpit_session: accessToken,
       cockpit_refresh: refreshToken,
@@ -275,7 +282,9 @@ describe('POST /api/operator/auth/logout — revoga OperatorSession (Fase 13 + 1
     mockOperatorSessionUpdate.mockResolvedValue({ id: 'sess-1', revokedAt: new Date() });
 
     const { POST } = await import('@/app/api/operator/auth/logout/route');
-    const res = await POST();
+    const res = await POST(
+      new NextRequest('http://localhost/api/operator/auth/logout', { method: 'POST' })
+    );
 
     expect(res.status).toBe(200);
     // update foi chamado 2x (access + refresh)
@@ -286,18 +295,19 @@ describe('POST /api/operator/auth/logout — revoga OperatorSession (Fase 13 + 1
     cookieStore.current = {};
 
     const { POST } = await import('@/app/api/operator/auth/logout/route');
-    const res = await POST();
+    const res = await POST(
+      new NextRequest('http://localhost/api/operator/auth/logout', { method: 'POST' })
+    );
 
     expect(res.status).toBe(200);
     expect(mockOperatorSessionUpdate).not.toHaveBeenCalled();
   });
 
   it('falha de DB no revoke não bloqueia o logout (best-effort)', async () => {
-    const token = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const token = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: token };
     mockOperatorSessionFindUnique.mockResolvedValue({
       id: 'sess-1',
@@ -306,7 +316,9 @@ describe('POST /api/operator/auth/logout — revoga OperatorSession (Fase 13 + 1
     mockOperatorSessionUpdate.mockRejectedValue(new Error('DB timeout'));
 
     const { POST } = await import('@/app/api/operator/auth/logout/route');
-    const res = await POST();
+    const res = await POST(
+      new NextRequest('http://localhost/api/operator/auth/logout', { method: 'POST' })
+    );
 
     expect(res.status).toBe(200);
     // Cookie é limpo mesmo se revoke falhar
@@ -321,11 +333,10 @@ describe('POST /api/operator/auth/logout — revoga OperatorSession (Fase 13 + 1
 
 describe('GET /api/operator/auth/me — valida não-revogação (Fase 13 + 15)', () => {
   it('retorna 401 se session foi revogada (mesmo com JWT válido)', async () => {
-    const token = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const token = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: token };
     mockOperatorSessionFindUnique.mockResolvedValue({
       type: 'ACCESS',
@@ -346,11 +357,10 @@ describe('GET /api/operator/auth/me — valida não-revogação (Fase 13 + 15)',
   });
 
   it('retorna 401 se session não existe (token inválido/fabricado)', async () => {
-    const token = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const token = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: token };
     mockOperatorSessionFindUnique.mockResolvedValue(null);
 
@@ -366,11 +376,10 @@ describe('GET /api/operator/auth/me — valida não-revogação (Fase 13 + 15)',
   });
 
   it('retorna 401 se session expirou (expiresAt < now)', async () => {
-    const token = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const token = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: token };
     mockOperatorSessionFindUnique.mockResolvedValue({
       type: 'ACCESS',
@@ -391,11 +400,10 @@ describe('GET /api/operator/auth/me — valida não-revogação (Fase 13 + 15)',
   });
 
   it('retorna 200 se session é válida e ativa', async () => {
-    const token = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const token = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: token };
     mockOperatorSessionFindUnique.mockResolvedValue({
       type: 'ACCESS',
@@ -419,11 +427,10 @@ describe('GET /api/operator/auth/me — valida não-revogação (Fase 13 + 15)',
   });
 
   it('retorna 401 se cookie é REFRESH (não access) — Fase 15', async () => {
-    const refresh = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const refresh = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'refresh' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: refresh };
     // session ativa no DB — mas cookie errado
     mockOperatorSessionFindUnique.mockResolvedValue({
@@ -450,11 +457,13 @@ describe('GET /api/operator/auth/me — valida não-revogação (Fase 13 + 15)',
 // ============================================================================
 
 describe('POST /api/operator/auth/refresh — rotação (Fase 15)', () => {
-  function setupRefreshSession(opts: {
-    type?: string;
-    revoked?: boolean | null;
-    expiresIn?: number;
-  } = {}) {
+  function setupRefreshSession(
+    opts: {
+      type?: string;
+      revoked?: boolean | null;
+      expiresIn?: number;
+    } = {}
+  ) {
     const type = opts.type ?? 'REFRESH';
     const revokedAt = opts.revoked === true ? new Date() : null;
     const expiresAt = new Date(Date.now() + (opts.expiresIn ?? 60_000) * 1000);
@@ -469,11 +478,10 @@ describe('POST /api/operator/auth/refresh — rotação (Fase 15)', () => {
   }
 
   it('happy path: rotaciona refresh válido e seta 2 cookies novos', async () => {
-    const refresh = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '30d' }
-    );
+    const refresh = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'refresh' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '30d',
+    });
     cookieStore.current = { cockpit_refresh: refresh };
     setupRefreshSession({ type: 'REFRESH', revoked: false, expiresIn: 30 * 24 * 60 * 60 });
     mockFindUnique.mockResolvedValue(mockOperator);
@@ -514,11 +522,10 @@ describe('POST /api/operator/auth/refresh — rotação (Fase 15)', () => {
   });
 
   it('retorna 401 se JWT é access, não refresh', async () => {
-    const access = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const access = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_refresh: access };
 
     const { POST } = await import('@/app/api/operator/auth/refresh/route');
@@ -528,11 +535,10 @@ describe('POST /api/operator/auth/refresh — rotação (Fase 15)', () => {
   });
 
   it('retorna 401 se refresh session não existe no DB', async () => {
-    const refresh = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '30d' }
-    );
+    const refresh = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'refresh' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '30d',
+    });
     cookieStore.current = { cockpit_refresh: refresh };
     mockOperatorSessionFindUnique.mockResolvedValue(null); // hash não bate
 
@@ -543,11 +549,10 @@ describe('POST /api/operator/auth/refresh — rotação (Fase 15)', () => {
   });
 
   it('retorna 401 se refresh expirou', async () => {
-    const refresh = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '30d' }
-    );
+    const refresh = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'refresh' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '30d',
+    });
     cookieStore.current = { cockpit_refresh: refresh };
     setupRefreshSession({ type: 'REFRESH', revoked: false, expiresIn: -1 });
     mockOperatorSessionUpdate.mockResolvedValue({});
@@ -559,11 +564,10 @@ describe('POST /api/operator/auth/refresh — rotação (Fase 15)', () => {
   });
 
   it('retorna 403 + revoga TODAS as sessões se refresh revogado é reusado (roubo)', async () => {
-    const stolen = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '30d' }
-    );
+    const stolen = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'refresh' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '30d',
+    });
     cookieStore.current = { cockpit_refresh: stolen };
     setupRefreshSession({ type: 'REFRESH', revoked: true, expiresIn: 30 * 24 * 60 * 60 });
     mockOperatorSessionUpdateMany.mockResolvedValue({ count: 5 });

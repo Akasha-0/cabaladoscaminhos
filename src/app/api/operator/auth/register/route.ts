@@ -27,6 +27,7 @@ import {
   applyRateLimitHeaders,
   enforceAuthRateLimit,
 } from '@/lib/auth/rate-limit';
+import { createLogger, generateRequestId } from '@/lib/logging';
 
 const BCRYPT_COST = 12; // ~250ms em CPU moderna; bom balanço segurança/perf.
 
@@ -56,6 +57,10 @@ export async function POST(request: NextRequest) {
     return rl.response;
   }
   const { result: rlResult } = rl;
+
+  // Extrai requestId do header x-request-id (fallback: gera um novo)
+  const requestId = request.headers.get('x-request-id') ?? generateRequestId();
+  const log = createLogger(requestId, '/api/operator/auth/register');
 
   // Gate de registro: explicitamente opt-in via variável de ambiente.
   // Não usar NODE_ENV para decisões de auth — preview/staging deployments
@@ -133,7 +138,7 @@ export async function POST(request: NextRequest) {
       userAgent,
     });
   } catch (err) {
-    console.error('[operator/auth/register] failed to create session(s)', err);
+    log.error('auth.register.session_create_error', { error: String(err) });
   }
 
   const response = NextResponse.json(

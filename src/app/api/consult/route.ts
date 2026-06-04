@@ -168,9 +168,12 @@ export async function POST(request: NextRequest) {
       }
 
       // 7b) LLM com stream=true
+      const temperature = 0.6;
+      const maxTokens = 1500;
       let fullAnswer = '';
       let tokensUsed: number | undefined = undefined;
       try {
+        const t0 = Date.now();
         const res = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
@@ -180,16 +183,22 @@ export async function POST(request: NextRequest) {
               { role: 'system', content: systemPrompt },
               { role: 'user', content: JSON.stringify(userPayload) },
             ],
-            temperature: 0.6,
-            max_tokens: 1500,
+            temperature,
+            max_tokens: maxTokens,
             stream: true,
           }),
           signal: abortController.signal,
         });
+        const durationMs = Date.now() - t0;
         if (!res.ok || !res.body) {
           throw new Error(`LLM ${res.status}: ${await res.text()}`);
         }
-
+        log.info('llm.call', {
+          model: llmModel,
+          temperature,
+          maxTokens,
+          durationMs,
+        });
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
         let buffer = '';

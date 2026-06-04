@@ -28,7 +28,7 @@ import {
   type ClientMaps,
 } from '@/lib/ai/dossier/oracle-prompt-builder';
 import { requireOperator } from '@/lib/auth/operator-session';
-import { createLogger, generateRequestId } from '@/lib/logging';
+import { createLogger, generateRequestId, type AppLogger } from '@/lib/logging';
 import { prisma } from '@/lib/prisma';
 import { createSSEStream } from '@/lib/sse';
 import { checkTokenBudget, incrementTokenUsage } from '@/lib/token-budget';
@@ -197,7 +197,9 @@ async function generateHouseContent(
     { house, carta: carta.numero, odu: odu.numero },
     client
   );
-
+  const temperature = 0.7;
+  const maxTokens = 1500;
+  const t0 = Date.now();
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -210,10 +212,11 @@ async function generateHouseContent(
         { role: 'system', content: systemPrompt },
         { role: 'user', content: JSON.stringify(userPayload) },
       ],
-      temperature: 0.7,
-      max_tokens: 1500,
+      temperature,
+      max_tokens: maxTokens,
     }),
   });
+  const durationMs = Date.now() - t0;
 
   if (!res.ok) {
     const detail = await res.text();
@@ -223,6 +226,14 @@ async function generateHouseContent(
   const data = await res.json();
   const content = data.choices?.[0]?.message?.content ?? '';
   const tokensUsed = data.usage?.total_tokens ?? 0;
+
+  log.info('llm.call', {
+    house,
+    model: llmModel,
+    temperature,
+    maxTokens,
+    durationMs,
+  });
 
   return { content, tokensUsed };
 }
@@ -239,7 +250,8 @@ async function generateSynthesis(
     content: string;
   }>,
   apiKey: string,
-  llmModel: string
+  llmModel: string,
+  log: AppLogger
 ): Promise<{ content: string; tokensUsed: number }> {
   const synthesisInstruction = `
 ## Instrução de Síntese
@@ -268,6 +280,9 @@ Responda em português, com linguagem mística e direta, segunda pessoa.
     .map((h) => `Casa ${h.house}: Carta ${h.carta.nome} | Orixá ${h.odu.nome}\n${h.content}`)
     .join('\n\n---\n\n');
 
+  const temperature = 0.6;
+  const maxTokens = 2000;
+  const t0 = Date.now();
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -286,10 +301,11 @@ Responda em português, com linguagem mística e direta, segunda pessoa.
           content: `${synthesisInstruction}\n\n## Casas Interpretadas\n\n${housesSummary}`,
         },
       ],
-      temperature: 0.6,
-      max_tokens: 2000,
+      temperature,
+      max_tokens: maxTokens,
     }),
   });
+  const durationMs = Date.now() - t0;
 
   if (!res.ok) {
     const detail = await res.text();
@@ -299,6 +315,14 @@ Responda em português, com linguagem mística e direta, segunda pessoa.
   const data = await res.json();
   const content = data.choices?.[0]?.message?.content ?? '';
   const tokensUsed = data.usage?.total_tokens ?? 0;
+
+  log.info('llm.call', {
+    house: 'synthesis',
+    model: llmModel,
+    temperature,
+    maxTokens,
+    durationMs,
+  });
 
   return { content, tokensUsed };
 }
@@ -551,7 +575,8 @@ export async function POST(request: NextRequest) {
               client,
               housesResults,
               apiKey,
-              llmModel
+              llmModel,
+              log
             );
 
             if (synthTokens > 0) {

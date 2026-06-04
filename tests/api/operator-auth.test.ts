@@ -1,3 +1,7 @@
+import jwt from 'jsonwebtoken';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { NextRequest } from 'next/server';
+
 // tests/api/operator-auth.test.ts
 // Integração das rotas /api/operator/auth/* (Fase 8 + 13 + 15 + 18).
 // Cobre: login (emite par access+refresh, 2 cookies), logout (revoga
@@ -13,10 +17,6 @@ process.env.AUTH_RL_REGISTER_MAX = '10000';
 process.env.AUTH_RL_REFRESH_MAX = '10000';
 // Habilita registro de operators para testes (comportamento secure: opt-in explícito)
 process.env.ALLOW_OPERATOR_REGISTRATION = 'true';
-
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
 
 // ----------------------------------------------------------------------------
 // Mocks globais
@@ -185,10 +185,12 @@ describe('POST /api/operator/auth/login', () => {
     mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'secret123',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'secret123',
+      })
+    );
 
     expect(res.status).toBe(200);
     const body = await res.json();
@@ -212,10 +214,12 @@ describe('POST /api/operator/auth/login', () => {
     mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'secret123',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'secret123',
+      })
+    );
 
     const setCookie = getSetCookie(res);
     const tokenMatch = setCookie?.match(/cockpit_session=([^;]+)/);
@@ -233,10 +237,12 @@ describe('POST /api/operator/auth/login', () => {
     mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'secret123',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'secret123',
+      })
+    );
 
     const setCookie = getSetCookie(res);
     const tokenMatch = setCookie?.match(/cockpit_refresh=([^;]+)/);
@@ -253,10 +259,12 @@ describe('POST /api/operator/auth/login', () => {
     mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'secret123',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'secret123',
+      })
+    );
 
     expect(res.status).toBe(200);
     expect(mockOperatorSessionCreate).toHaveBeenCalledTimes(2);
@@ -272,10 +280,12 @@ describe('POST /api/operator/auth/login', () => {
     mockFindUnique.mockResolvedValue(null);
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'naoexiste@cabala.com',
-      password: 'qualquer',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'naoexiste@cabala.com',
+        password: 'qualquer',
+      })
+    );
 
     expect(res.status).toBe(401);
     const body = await res.json();
@@ -287,10 +297,12 @@ describe('POST /api/operator/auth/login', () => {
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
     // mockBcryptCompare retorna false para senhas erradas por padrão
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'wrong',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'wrong',
+      })
+    );
     expect(res.status).toBe(401);
   });
   // Fase 26: lockout
@@ -300,10 +312,12 @@ describe('POST /api/operator/auth/login', () => {
       until: new Date(Date.now() + 30 * 60 * 1000),
     });
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'secret123',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'secret123',
+      })
+    );
     expect(res.status).toBe(423);
     const body = await res.json();
     expect(body.error).toMatch(/bloqueada/);
@@ -313,28 +327,34 @@ describe('POST /api/operator/auth/login', () => {
     mockFindUnique.mockResolvedValue(null);
     // mockIsLocked retorna false por defeito (email não existe)
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'wrong',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'wrong',
+      })
+    );
 
     expect(res.status).toBe(401);
   });
 
   it('retorna 400 em input inválido (sem email)', async () => {
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      password: 'x',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        password: 'x',
+      })
+    );
     expect(res.status).toBe(400);
   });
 
   it('retorna 400 em email mal formatado', async () => {
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'not-an-email',
-      password: 'x',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'not-an-email',
+        password: 'x',
+      })
+    );
     expect(res.status).toBe(400);
   });
 
@@ -342,10 +362,12 @@ describe('POST /api/operator/auth/login', () => {
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: '  Ramiro@Cabala.COM  ',
-      password: 'secret123',
-    }));
+    await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: '  Ramiro@Cabala.COM  ',
+        password: 'secret123',
+      })
+    );
 
     expect(mockFindUnique).toHaveBeenCalledWith({
       where: { email: 'ramiro@cabala.com' },
@@ -360,7 +382,9 @@ describe('POST /api/operator/auth/login', () => {
 describe('POST /api/operator/auth/logout', () => {
   it('sempre retorna 200', async () => {
     const { POST } = await import('@/app/api/operator/auth/logout/route');
-    const res = await POST();
+    const res = await POST(
+      new NextRequest('http://localhost/api/operator/auth/logout', { method: 'POST' })
+    );
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.success).toBe(true);
@@ -368,7 +392,9 @@ describe('POST /api/operator/auth/logout', () => {
 
   it('limpa os 2 cookies cockpit_session + cockpit_refresh (Fase 15)', async () => {
     const { POST } = await import('@/app/api/operator/auth/logout/route');
-    const res = await POST();
+    const res = await POST(
+      new NextRequest('http://localhost/api/operator/auth/logout', { method: 'POST' })
+    );
     const setCookie = getSetCookie(res);
     expect(setCookie).toMatch(/cockpit_session=/);
     expect(setCookie).toMatch(/cockpit_refresh=/);
@@ -377,8 +403,9 @@ describe('POST /api/operator/auth/logout', () => {
 
   it('é idempotente — funciona mesmo sem login prévio', async () => {
     const { POST } = await import('@/app/api/operator/auth/logout/route');
-    const res1 = await POST();
-    const res2 = await POST();
+    const req = new NextRequest('http://localhost/api/operator/auth/logout', { method: 'POST' });
+    const res1 = await POST(req);
+    const res2 = await POST(req);
     expect(res1.status).toBe(200);
     expect(res2.status).toBe(200);
   });
@@ -395,11 +422,13 @@ describe('POST /api/operator/auth/register', () => {
     mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'novo@cabala.com',
-      name: 'Novo Operator',
-      password: 'senha12345',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'novo@cabala.com',
+        name: 'Novo Operator',
+        password: 'senha12345',
+      })
+    );
 
     expect(res.status).toBe(201);
     const body = await res.json();
@@ -424,11 +453,13 @@ describe('POST /api/operator/auth/register', () => {
     }));
 
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'novo@cabala.com',
-      name: 'Novo',
-      password: 'senha12345',
-    }));
+    await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'novo@cabala.com',
+        name: 'Novo',
+        password: 'senha12345',
+      })
+    );
 
     expect(mockBcryptHash).toHaveBeenCalledWith('senha12345', 12);
   });
@@ -437,11 +468,13 @@ describe('POST /api/operator/auth/register', () => {
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
 
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'ramiro@cabala.com',
-      name: 'Outro',
-      password: 'senha12345',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'ramiro@cabala.com',
+        name: 'Outro',
+        password: 'senha12345',
+      })
+    );
 
     expect(res.status).toBe(409);
     const body = await res.json();
@@ -451,31 +484,37 @@ describe('POST /api/operator/auth/register', () => {
 
   it('retorna 400 em senha muito curta', async () => {
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'novo@cabala.com',
-      name: 'Novo',
-      password: 'short',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'novo@cabala.com',
+        name: 'Novo',
+        password: 'short',
+      })
+    );
     expect(res.status).toBe(400);
   });
 
   it('retorna 400 em email inválido', async () => {
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'not-an-email',
-      name: 'Novo',
-      password: 'senha12345',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'not-an-email',
+        name: 'Novo',
+        password: 'senha12345',
+      })
+    );
     expect(res.status).toBe(400);
   });
 
   it('retorna 400 em nome vazio', async () => {
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'novo@cabala.com',
-      name: '',
-      password: 'senha12345',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'novo@cabala.com',
+        name: '',
+        password: 'senha12345',
+      })
+    );
     expect(res.status).toBe(400);
   });
 
@@ -486,11 +525,13 @@ describe('POST /api/operator/auth/register', () => {
     process.env.ALLOW_OPERATOR_REGISTRATION = 'false';
 
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'novo@cabala.com',
-      name: 'Novo',
-      password: 'senha12345',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'novo@cabala.com',
+        name: 'Novo',
+        password: 'senha12345',
+      })
+    );
     expect(res.status).toBe(403);
 
     (process.env as Record<string, string>).NODE_ENV = savedEnv as string;
@@ -503,11 +544,13 @@ describe('POST /api/operator/auth/register', () => {
     delete process.env.ALLOW_OPERATOR_REGISTRATION;
 
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'novo@cabala.com',
-      name: 'Novo',
-      password: 'senha12345',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'novo@cabala.com',
+        name: 'Novo',
+        password: 'senha12345',
+      })
+    );
     expect(res.status).toBe(403);
 
     if (savedFlag !== undefined) process.env.ALLOW_OPERATOR_REGISTRATION = savedFlag;
@@ -523,11 +566,13 @@ describe('POST /api/operator/auth/register', () => {
     mockOperatorSessionCreate.mockResolvedValue({ id: 'sess-1' });
 
     const { POST } = await import('@/app/api/operator/auth/register/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/register', {
-      email: 'novo@cabala.com',
-      name: 'Novo',
-      password: 'senha12345',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/register', {
+        email: 'novo@cabala.com',
+        name: 'Novo',
+        password: 'senha12345',
+      })
+    );
     expect(res.status).toBe(201);
 
     if (savedFlag !== undefined) process.env.ALLOW_OPERATOR_REGISTRATION = savedFlag;
@@ -540,11 +585,10 @@ describe('POST /api/operator/auth/register', () => {
 
 describe('GET /api/operator/auth/me', () => {
   it('retorna operator quando autenticado via JWT cookie (access)', async () => {
-    const token = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const token = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: token };
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
     mockOperatorSessionFindUnique.mockResolvedValue({
@@ -582,11 +626,10 @@ describe('GET /api/operator/auth/me', () => {
   });
 
   it('retorna 401 quando token é expirado', async () => {
-    const expired = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'access' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '-1s' }
-    );
+    const expired = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'access' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '-1s',
+    });
     cookieStore.current = { cockpit_session: expired };
     const { GET } = await import('@/app/api/operator/auth/me/route');
     const res = await GET(makeGetRequest('http://l/api/operator/auth/me'));
@@ -594,11 +637,10 @@ describe('GET /api/operator/auth/me', () => {
   });
 
   it('retorna 401 quando cookie é REFRESH (não access) — Fase 15', async () => {
-    const refresh = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const refresh = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'refresh' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_session: refresh };
     mockFindUnique.mockResolvedValue(mockOperatorRecord);
 
@@ -633,11 +675,10 @@ describe('Security event logging (Fase 57)', () => {
   // ---------------------------------------------------------------------------
   it('REFRESH_SUCCESS is logged after successful token refresh', async () => {
     // Create a valid refresh token
-    const refreshToken = jwt.sign(
-      { sub: 'op-1', role: 'OPERATOR', type: 'refresh' },
-      TEST_SECRET,
-      { algorithm: 'HS256', expiresIn: '7d' }
-    );
+    const refreshToken = jwt.sign({ sub: 'op-1', role: 'OPERATOR', type: 'refresh' }, TEST_SECRET, {
+      algorithm: 'HS256',
+      expiresIn: '7d',
+    });
     cookieStore.current = { cockpit_refresh: refreshToken };
 
     // Mock rotateRefreshToken to succeed (returns new tokens)
@@ -659,9 +700,11 @@ describe('Security event logging (Fase 57)', () => {
 
     expect(res.status).toBe(200);
     expect(mockLogSecurityEvent).toHaveBeenCalled();
-    expect(mockLogSecurityEvent.mock.calls.some(
-      (call) => (call[0] as { type: string }).type === 'REFRESH_SUCCESS'
-    )).toBe(true);
+    expect(
+      mockLogSecurityEvent.mock.calls.some(
+        (call) => (call[0] as { type: string }).type === 'REFRESH_SUCCESS'
+      )
+    ).toBe(true);
   });
 
   // ---------------------------------------------------------------------------
@@ -676,15 +719,19 @@ describe('Security event logging (Fase 57)', () => {
     mockGenerateResetToken.mockResolvedValue('mock-reset-token-64hex');
 
     const { POST } = await import('@/app/api/operator/auth/forgot-password/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/forgot-password', {
-      email: 'ramiro@cabala.com',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/forgot-password', {
+        email: 'ramiro@cabala.com',
+      })
+    );
 
     expect(res.status).toBe(200);
     expect(mockLogSecurityEvent).toHaveBeenCalled();
-    expect(mockLogSecurityEvent.mock.calls.some(
-      (call) => (call[0] as { type: string }).type === 'PASSWORD_RESET_REQUESTED'
-    )).toBe(true);
+    expect(
+      mockLogSecurityEvent.mock.calls.some(
+        (call) => (call[0] as { type: string }).type === 'PASSWORD_RESET_REQUESTED'
+      )
+    ).toBe(true);
   });
 
   // ---------------------------------------------------------------------------
@@ -706,16 +753,20 @@ describe('Security event logging (Fase 57)', () => {
     mockIsLockedById.mockResolvedValue({ locked: false });
 
     const { POST } = await import('@/app/api/operator/auth/mfa/verify/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/mfa/verify', {
-      mfaToken,
-      code: '123456',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/mfa/verify', {
+        mfaToken,
+        code: '123456',
+      })
+    );
 
     expect(res.status).toBe(200);
     expect(mockLogSecurityEvent).toHaveBeenCalled();
-    expect(mockLogSecurityEvent.mock.calls.some(
-      (call) => (call[0] as { type: string }).type === 'MFA_VERIFIED'
-    )).toBe(true);
+    expect(
+      mockLogSecurityEvent.mock.calls.some(
+        (call) => (call[0] as { type: string }).type === 'MFA_VERIFIED'
+      )
+    ).toBe(true);
   });
 
   // ---------------------------------------------------------------------------
@@ -742,16 +793,20 @@ describe('Security event logging (Fase 57)', () => {
     mockBcryptCompare.mockImplementation(async (pw: string, _hash: string) => false);
 
     const { POST } = await import('@/app/api/operator/auth/login/route');
-    const res = await POST(makeJsonRequest('http://l/api/operator/auth/login', {
-      email: 'ramiro@cabala.com',
-      password: 'wrong-password',
-    }));
+    const res = await POST(
+      makeJsonRequest('http://l/api/operator/auth/login', {
+        email: 'ramiro@cabala.com',
+        password: 'wrong-password',
+      })
+    );
 
     // Route returns 401 on wrong password (not 423, because first isLocked returned false)
     expect(res.status).toBe(401);
     expect(mockLogSecurityEvent).toHaveBeenCalled();
-    expect(mockLogSecurityEvent.mock.calls.some(
-      (call) => (call[0] as { type: string }).type === 'ACCOUNT_LOCKED'
-    )).toBe(true);
+    expect(
+      mockLogSecurityEvent.mock.calls.some(
+        (call) => (call[0] as { type: string }).type === 'ACCOUNT_LOCKED'
+      )
+    ).toBe(true);
   });
 });

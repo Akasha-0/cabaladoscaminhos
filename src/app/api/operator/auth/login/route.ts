@@ -38,6 +38,7 @@ import {
   applyRateLimitHeaders,
   enforceAuthRateLimit,
 } from '@/lib/auth/rate-limit';
+import { createLogger, generateRequestId } from '@/lib/logging';
 
 const loginSchema = z.object({
   // Preprocess normaliza o email (lowercase + trim) ANTES de validar
@@ -63,6 +64,10 @@ export async function POST(request: NextRequest) {
     return rl.response;
   }
   const { result: rlResult } = rl;
+
+  // Extrai requestId do header x-request-id (fallback: gera um novo)
+  const requestId = request.headers.get('x-request-id') ?? generateRequestId();
+  const log = createLogger(requestId, '/api/operator/auth/login');
 
   let body: z.infer<typeof loginSchema>;
   try {
@@ -113,7 +118,7 @@ export async function POST(request: NextRequest) {
   if (!ok) {
     // Fase 26: registrar tentativa falha (incrementa contador e possivelmente bloqueia)
     await recordFailedAttempt(operator.email).catch((err) =>
-      console.error('[operator/auth/login] recordFailedAttempt failed', err)
+      log.error('auth.login.record_failed_attempt_error', { error: String(err) })
     );
     // Fase 21: ACCOUNT_LOCKED — fire-and-forget, nunca bloqueia
     const lockStatus = await isLocked(operator.email);
@@ -148,7 +153,7 @@ export async function POST(request: NextRequest) {
     mfaEnabled = await isMfaEnabled(operator.id);
   } catch (err) {
     // DB error aqui NÃO bloqueia o login — degrada para sem MFA.
-    console.error('[operator/auth/login] mfa check failed', err);
+    log.error('auth.login.mfa_check_error', { error: String(err) });
   }
 
   if (mfaEnabled) {
@@ -182,7 +187,7 @@ export async function POST(request: NextRequest) {
       userAgent,
     });
   } catch (err) {
-    console.error('[operator/auth/login] failed to create session(s)', err);
+    log.error('auth.login.session_create_error', { error: String(err) });
   }
   // Fase 21: LOGIN_SUCCESS — fire-and-forget, nunca bloqueia
   logSecurityEvent({
@@ -193,7 +198,7 @@ export async function POST(request: NextRequest) {
   });
   // 5) Fase 26 — resetar contador de tentativas falhas (login completo)
   await recordSuccessfulLogin(operator.email).catch((err) =>
-    console.error('[operator/auth/login] recordSuccessfulLogin failed', err)
+    log.error('auth.login.record_successful_login_error', { error: String(err) })
   );
   // 6) Setar 2 cookies httpOnly e responder
   const response = NextResponse.json({ operator: publicOperator(operator) });

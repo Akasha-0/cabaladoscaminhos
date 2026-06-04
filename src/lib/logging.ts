@@ -426,3 +426,5 @@ export function createLogger(requestId: string, route: string) {
       ),
   };
 }
+
+export type AppLogger = ReturnType<typeof createLogger>;

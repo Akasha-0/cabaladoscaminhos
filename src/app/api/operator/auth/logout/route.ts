@@ -23,20 +23,28 @@ import { revokeSession } from '@/lib/auth/operator-sessions';
 import { checkOperatorRateLimit, OPERATOR_RATE_LIMITS } from '@/lib/auth/rate-limit';
 import { getOperatorFromRequest } from '@/lib/auth/operator-session';
 import { logSecurityEvent } from '@/lib/auth/audit-service';
+import { createLogger, generateRequestId } from '@/lib/logging';
 
 const OPERATOR_LIMIT = OPERATOR_RATE_LIMITS['logout'].max; // 10
 const OPERATOR_WINDOW = OPERATOR_RATE_LIMITS['logout'].windowSeconds; // 60s
 
-export async function POST(request: NextRequest) {
+export async function POST(request?: NextRequest) {
   // Tenta obter o operatorId para rate-limit
   let operatorId = 'anonymous';
-  try {
-    const operator = await getOperatorFromRequest(request);
-    if (operator) {
-      operatorId = operator.id;
+  if (request) {
+    try {
+      const operator = await getOperatorFromRequest(request);
+      if (operator) {
+        operatorId = operator.id;
+      }
+    } catch {
+      // Se falhar em obter operator, usamos 'anonymous' — IP limit ainda protege
     }
-  } catch {
-    // Se falhar em obter operator, usamos 'anonymous' — IP limit ainda protege
+    // Extrai requestId do header x-request-id (fallback: gera um novo)
+    const requestId = request.headers.get('x-request-id') ?? generateRequestId();
+    var log = createLogger(requestId, '/api/operator/auth/logout');
+  } else {
+    var log = createLogger(generateRequestId(), '/api/operator/auth/logout');
   }
 
   // Fase 24: rate-limit POR OPERATOR antes de trabalho no banco
@@ -89,7 +97,7 @@ export async function POST(request: NextRequest) {
       });
     }
   } catch (err) {
-    console.error('[operator/auth/logout] failed to revoke session(s)', err);
+    log.error('auth.logout.session_revoke_error', { error: String(err) });
   }
   const response = NextResponse.json({ success: true });
   clearOperatorSessionCookie(response);

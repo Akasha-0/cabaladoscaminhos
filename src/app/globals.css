@@ -128,8 +128,7 @@
   /* Spiritual Design Tokens (Light Mode) */
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
   --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.3), 0 0 40px rgba(212, 175, 55, 0.15);
-  --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.15);
+  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.3), 0 0 40px rgba(249, 115, 22, 0.15);
   --bg-mystic-gradient: linear-gradient(135deg, #FAFBFC 0%, #E0E7FF 50%, #F1F5F9 100%);
 }
 
@@ -186,7 +185,7 @@
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
   --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
-  --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(249, 115, 22, 0.2);
   --bg-mystic-gradient: linear-gradient(135deg, #020617 0%, #1E1B4B 50%, #0F172A 100%);
 }
 
@@ -199,10 +198,16 @@
   --spiritual-gold-dark: #B8860B;
   --spiritual-gold-muted: rgba(212, 175, 55, 0.15);
 
-  /* Secondary - Violet (Higher Consciousness) */
-  --spiritual-violet: #8B5CF6;
-  --spiritual-violet-deep: #6B21A8;
-  --spiritual-violet-muted: rgba(139, 92, 246, 0.12);
+  /* Accent - Amber (Ramiro: laranja, fogo, abertura de caminhos) */
+  --spiritual-amber: #F97316;
+  --spiritual-amber-light: #FB923C;
+  --spiritual-amber-dark: #C2410C;
+  --spiritual-amber-muted: rgba(249, 115, 22, 0.15);
+  /* Accent - Royal (Ramiro: profundidade, mistério, proteção) */
+  --spiritual-royal: #2547D0;
+  --spiritual-royal-bright: #3B5BDB;
+  --spiritual-royal-dim: #1E3A8A;
+  --spiritual-royal-muted: rgba(37, 71, 208, 0.12);
 
   /* Accent - Elements */
   --spiritual-amber: #F59E0B;
@@ -229,9 +234,8 @@
   /* Easing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
+  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(249, 115, 22, 0.2);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  /* Shadows */
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
   --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
@@ -474,12 +478,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.5);
+  background: rgba(37, 71, 208, 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.7);
+  background: rgba(37, 71, 208, 0.7);
 }
 
 /* Cosmic Background Patterns */
