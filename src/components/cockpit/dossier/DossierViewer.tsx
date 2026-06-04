@@ -84,10 +84,26 @@ function DossierViewerInner({ readingId }: { readingId: string }) {
         errors={errors}
       />
       <div className="flex-1 overflow-y-auto p-8">
-        {!done && <LoadingOrbital progress={progress} errors={errors} />}
+        {!done && (
+          <>
+            <LoadingOrbital progress={progress} errors={errors} />
+            <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+              {progress.current === 0
+                ? 'Gerando dossiê...'
+                : `Gerando casa ${progress.current} de ${progress.total}…`}
+            </div>
+          </>
+        )}
         {done && casaNumbers.length === 0 && (
           <div className="text-center text-muted-foreground py-12">
             Nenhuma casa foi gerada. Verifique se a mesa tem cartas e Odus preenchidos.
+          </div>
+        )}
+        {done && casaNumbers.length > 0 && errors.length > 0 && (
+          <div className="mb-4 p-3 rounded-lg bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 text-sm text-orange-800 dark:text-orange-200">
+            <span className="font-semibold">Casas não geradas:</span>{' '}
+            {errors.map((casa) => `#${casa}`).join(', ')}. O dossiê foi gerado com as{' '}
+            {casaNumbers.length} casas disponíveis.
           </div>
         )}
         {done && casaNumbers.length > 0 && (

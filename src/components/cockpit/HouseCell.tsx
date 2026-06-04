@@ -28,6 +28,7 @@ function HouseCellInner({ house, filledData, isActive, onClick, onClear }: House
       className={cn(
         // Base styles
         'relative h-[140px] rounded-xl cursor-pointer transition-all duration-200',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
         'flex flex-col overflow-hidden',
 
         // Empty state — Doc 13 §4.1 (laranja no hover)
