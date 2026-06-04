@@ -17,7 +17,3 @@ export const setupFetchMock = () => {
 export const clearFetchMock = () => {
   vi.clearAllMocks();
 };
-
-export const resetFetchMock = () => {
-  vi.resetAllMocks();
-};

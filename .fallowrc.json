@@ -600,7 +600,7 @@
     },
     {
       "file": "src/lib/auth/password-reset.ts",
-      "exports": ["PASSWORD_RESET_TTL_MS", "hashToken", "consumeResetToken"]
+      "exports": ["PASSWORD_RESET_TTL_MS", "hashToken"]
     },
     {
       "file": "src/lib/auth/account-lockout.ts",

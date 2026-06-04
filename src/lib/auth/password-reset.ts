@@ -11,9 +11,8 @@
 //
 // IMPORTANTE: raw token só existe em memória durante o fluxo. Nunca
 // persiste no DB. O hash SHA-256 é o que vai para o DB.
-
-import crypto from 'node:crypto';
 import bcrypt from 'bcryptjs';
+import crypto from 'node:crypto';
 import { prisma } from '@/lib/prisma';
 
 // ============================================================
@@ -81,11 +80,9 @@ export async function generateResetToken(operatorId: string): Promise<string> {
  * Retorna { operatorId } se válido (existe, não usado, não expirado).
  * Retorna null em qualquer caso de invalidade.
  *
- * NÃO consome o token — apenas valida. `consumeResetToken` faz o consume.
+ * NÃO consome o token — apenas valida.
  */
-export async function validateResetToken(
-  token: string
-): Promise<{ operatorId: string } | null> {
+export async function validateResetToken(token: string): Promise<{ operatorId: string } | null> {
   if (!token || typeof token !== 'string') return null;
 
   const hashed = hashToken(token);
@@ -100,26 +97,6 @@ export async function validateResetToken(
   if (record.expiresAt < now) return null;
 
   return { operatorId: record.operatorId };
-}
-
-/**
- * Consome um token de reset (marca usedAt).
- * Deve ser chamada APÓS a senha ser atualizada com sucesso.
- *
- * Não dá erro se o token já foi consumido ou não existe — idempotente.
- */
-export async function consumeResetToken(token: string): Promise<void> {
-  const hashed = hashToken(token);
-
-  await prisma.passwordResetToken.updateMany({
-    where: {
-      tokenHash: hashed,
-      usedAt: null, // só marca se ainda não foi usado
-    },
-    data: {
-      usedAt: new Date(),
-    },
-  });
 }
 
 /**
