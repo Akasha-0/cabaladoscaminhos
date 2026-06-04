@@ -4,7 +4,7 @@
 // POST /api/operator/auth/forgot-password
 //
 // Recebe { email } e, se o email corresponder a um Operator,
-// cria um token de reset (1h TTL) e loga o link de reset.
+// cria um token de reset (1h TTL) e registra evento de segurança.
 // Email real fica fora de scope nesta fase.
 //
 // SEGURANÇA:
@@ -13,8 +13,9 @@
 //   - Rate-limited por IP: 5 solicitações / 15min.
 //   - Um novo pedido invalida tokens pendentes anteriores.
 //
-// LOG: Token é logado como info (não como warn) já que é
-// comportamento esperado do endpoint. Log de acesso contém o email.
+// LOG: Operador, ID e timestamp são logados. O token NUNCA aparece
+// em logs — é uma credencial de alto privilégio.
+//
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -81,11 +82,9 @@ export async function POST(request: NextRequest) {
     });
 
     // Log do link de reset (email real fora de scope).
-    // O token é o raw (64 hex chars) — só existe em memória aqui.
-    const resetUrl = `/operator/reset-password?token=${rawToken}`;
+    // NUNCA logar o token — é uma credencial. Só metadados operacionais.
     console.info(
-      `[password-reset] Token gerado para operator=${operator.email} id=${operator.id}. ` +
-      `Reset URL: ${resetUrl}`
+      `[password-reset] Reset solicitado para operator=${operator.email} id=${operator.id}.`
     );
   }
 

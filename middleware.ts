@@ -83,7 +83,7 @@ const API_CSP = "default-src 'none'; frame-ancestors 'none'";
 // --------------------------------------------
 // O produto é o Cockpit Oracular (B2B). A plataforma B2C de bem-estar
 // (dashboard, mapa pessoal, rituais, billing…) é fora de escopo (Doc 09 §5.1/§9).
-// Esta quarentena a remove do roteamento de produção SEM apagar nada:
+// Esta cuarentena a remove do roteamento de produção SEM apagar nada:
 //   - `LEGACY_B2C=on`  → restaura o B2C (reversível por flag).
 //   - ausente/qualquer → B2C quarentenado: páginas → /cockpit; APIs → 404.
 // ============================================
@@ -123,19 +123,9 @@ export async function middleware(request: NextRequest) {
   // Add security headers to response
   const response = NextResponse.next();
   response.headers.set('X-Request-Id', requestId);
-  // Expor pathname para layouts server-side (evita self-redirect no /cockpit/login)
-  response.headers.set('x-pathname', pathname);
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
-  // CSP strict para APIs
-  if (pathname.startsWith('/api/')) {
-    response.headers.set('Content-Security-Policy', API_CSP);
-  }
-  // CSP para cockpit (páginas do produto B2B)
-  if (pathname.startsWith('/cockpit')) {
-    response.headers.set('Content-Security-Policy', COCKPIT_CSP);
-  }
 
   // ── Quarentena do B2C legado (Doc 16 AD-01) ──
   // Tudo que não é B2B nem infraestrutura é bloqueado quando a flag está desligada.
