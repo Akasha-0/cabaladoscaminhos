@@ -1,11 +1,10 @@
 // Chart library - skipped linting and formatting
-
 import type { Aspecto, Casa } from '../astrologia/tipos';
 
 /**
  * Chart types
  */
-export type ChartType = 
+export type ChartType =
   | 'natal'
   | 'transito'
   | 'progressao'
@@ -13,11 +12,7 @@ export type ChartType =
   | 'composito'
   | 'hora-igual';
 
-export type ChartStyle = 
-  | 'radix'
-  | 'quadrate'
-  | 'equal'
-  | 'whole-sign';
+export type ChartStyle = 'radix' | 'quadrate' | 'equal' | 'whole-sign';
 
 /**
  * Chart interface
@@ -38,17 +33,14 @@ export interface Chart {
   personalizado?: boolean;
 }
 
-//  fallow-ignore-next-line unused-type
-export interface ChartLibrary {
-  charts: Chart[];
-  total: number;
-  getChartById(id: string): Chart | undefined;
-}
-
 /**
  * Get all available charts
  */
-function getCharts(): ChartLibrary {
+function getCharts(): {
+  charts: Chart[];
+  total: number;
+  getChartById(id: string): Chart | undefined;
+} {
   const charts: Chart[] = [
     {
       id: 'natal',
@@ -101,7 +93,7 @@ function getCharts(): ChartLibrary {
   ];
 
   return {
-    getChartById: (id: string) => charts.find(c => c.id === id),
+    getChartById: (id: string) => charts.find((c) => c.id === id),
     charts,
     total: charts.length,
   };
@@ -111,12 +103,12 @@ function getCharts(): ChartLibrary {
  * Get chart by ID
  */
 export function getChartById(id: string): Chart | undefined {
-  return getCharts().charts.find(c => c.id === id);
+  return getCharts().charts.find((c: Chart) => c.id === id);
 }
 
 /**
  * Get charts by type
  */
 function getChartsByType(tipo: ChartType): Chart[] {
-  return getCharts().charts.filter(c => c.tipo === tipo);
+  return getCharts().charts.filter((c: Chart) => c.tipo === tipo);
 }

@@ -49,25 +49,3 @@ export interface HouseDefinition {
   /** Nome do ícone lucide-react. */
   icone: string;
 }
-
-// ============================================================================
-// CasaState — estado mutável de uma casa no store do Cockpit
-// ============================================================================
-
-/**
- * Estado de preenchimento de uma casa no Cockpit.
- * Separado de `HouseDefinition` (imutável) para que o store possa
- * carregar dados de CartaCigana + Odu sem mexer na definição canônica.
- *
- * Importante: este tipo é usado por `src/stores/cockpit-store.ts`.
- */
-// fallow-ignore-next-line unused-type
-export type CasaState =
-  | { status: 'empty' }
-  | {
-      status: 'filled';
-      cartaNumero: number;
-      cartaNome: string;
-      oduNumero: number;
-      oduNome: string;
-    };
