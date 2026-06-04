@@ -19,9 +19,12 @@ export function toJulianDate(data: Date): number {
 }
 
 export function normalizeDegrees(degrees: number): number {
-  // Euclidean modulo → always in [0, 360). Handles -0 edge case.
+  // Euclidean modulo → always in [0, 360).
+  // JS gotcha: `-360 % 360` returns `-0` (not 0). We need to handle that
+  // explicitly to avoid returning 360 (which is outside [0, 360)).
   let result = degrees % 360;
-  if (result < 0 || Object.is(result, -0)) result += 360;
+  if (result < 0) result += 360;
+  if (Object.is(result, -0)) result = 0;
   return result;
 }
 

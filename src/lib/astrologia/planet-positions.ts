@@ -16,6 +16,20 @@ export interface PlanetPosition {
   retrograde: boolean;
 }
 
+/**
+ * 13 planet bodies used by the simplified ephemeris stub.
+ *
+ * IMPORTANT: `node_sul` is intentionally NOT listed — it's the south
+ * lunar node, always 180° opposite to `node_norte`, so it can be
+ * derived at consumption time. Including it would create a duplicate
+ * position entry (since `calcularPosicao('node_sul', date)` would be
+ * called and stored, but `node_sul` is mathematically the inverse of
+ * `node_norte`). Callers that need south node should compute
+ * `(node_norte + 180) % 360`.
+ *
+ * @see tests/calculators/birth-chart-precision.test.ts ("nodes are
+ *      exactly 180° apart")
+ */
 const THIRTEEN_PLANETS: Planeta[] = [
   'sol',
   'lua',
@@ -28,7 +42,6 @@ const THIRTEEN_PLANETS: Planeta[] = [
   'netuno',
   'plutao',
   'node_norte',
-  'node_sul',
   'chiron',
   'lilith',
 ];
