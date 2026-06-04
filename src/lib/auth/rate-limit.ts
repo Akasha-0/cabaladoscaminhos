@@ -285,7 +285,7 @@ async function resetAuthRateLimit(
 // Estratégia: token bucket simplificado via `INCR` + `EXPIRE` atômico (mesmo
 // padrão do checkAuthRateLimit, mas com key diferente).
 //
-// Fail-open: se Redis estiver down,允许请求但记录警告。Auth不能因Redis down而阻塞。
+// Fail-open: se Redis estiver down, permite request mas registra warning. Auth não pode bloquear por Redis down.
 export interface OperatorRateLimitResult {
   allowed: boolean;
   limit: number;
