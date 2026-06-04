@@ -1,4 +1,3 @@
- 
 // @ts-nocheck
 
 /**
@@ -154,7 +153,8 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     mythology:
       'Ogum limpa o caminho para todos os orixás. Patrono dos ferreiros, agricultores e guerreiros. Conhece todos os caminhos, até os mais obscuros.',
     spiritualLesson: 'Cada batalha interna fortalece o guerreiro espiritual',
-    affirmation: 'Eu Atravesso barreiras com a força de Ogum, abrindo caminhos onde parecia impossível',
+    affirmation:
+      'Eu Atravesso barreiras com a força de Ogum, abrindo caminhos onde parecia impossível',
     meditation: 'Visualize uma espada de luz cortando todos os obstáculos à sua frente',
   },
   {
@@ -193,7 +193,14 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     numbersSacred: [1, 3],
     greeting: 'Ekô!',
     archetype: 'O Trickster',
-    qualities: ['Comunicação', 'Oportunidade', 'Flexibilidade', 'Iniciação', 'Energia', 'Dualidade'],
+    qualities: [
+      'Comunicação',
+      'Oportunidade',
+      'Flexibilidade',
+      'Iniciação',
+      'Energia',
+      'Dualidade',
+    ],
     challenges: ['Manipulação', 'Caos', 'Traição'],
     rulingPlanet: 'Mercúrio',
     sacredAnimals: ['Cachorro', 'Corvo'],
@@ -204,7 +211,8 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     mythology:
       'Elegba trouxe o sistema de Ifá para a Terra. Conhece todos os caminhos, até os mais obscuros. É invoked primeiro em qualquer ritual.',
     spiritualLesson: 'Cada encruzilhada é uma oportunidade de escolha consciente',
-    affirmation: 'Eu Abro novos caminhos com a energia de Elegba, transformando obstáculos em oportunidades',
+    affirmation:
+      'Eu Abro novos caminhos com a energia de Elegba, transformando obstáculos em oportunidades',
     meditation: 'Visualize uma encruzilhada iluminada, onde cada direção promete crescimento',
   },
   {
@@ -218,7 +226,14 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     numbersSacred: [3, 7, 12],
     greeting: 'Baba!',
     archetype: 'O Transformador',
-    qualities: ['Cura', 'Transformação', 'Regeneração', 'Sabedoria ocultada', 'Superação', 'Redenção'],
+    qualities: [
+      'Cura',
+      'Transformação',
+      'Regeneração',
+      'Sabedoria ocultada',
+      'Superação',
+      'Redenção',
+    ],
     challenges: ['Medo do novo', 'Ego ferido', 'Isolamento'],
     rulingPlanet: 'Saturno',
     sacredAnimals: ['Cachorro', 'Coruja'],
@@ -230,7 +245,8 @@ const ORIXA_PROFILES: OrixaProfile[] = [
       'Omulu foi um rei banido por uma doença terrível. Vagando, desenvolveu poderes de cura e retornou para ajudar seu povo.',
     spiritualLesson: 'Na escuridão da doença está a semente da transformação mais profunda',
     affirmation: 'Eu Transcendo minha escuridão com a força de Omulu, renascendo em luz',
-    meditation: 'Sinta a energia da terra curando cada parte do seu ser, das mais profundas feridas',
+    meditation:
+      'Sinta a energia da terra curando cada parte do seu ser, das mais profundas feridas',
   },
   {
     id: 'orunmila',
@@ -293,7 +309,14 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     numbersSacred: [9, 15],
     greeting: 'Epa!',
     archetype: 'A Ancestral',
-    qualities: ['Ancestralidade', 'Sapiência', 'Ciclos finais', 'Humildade', 'Paciência', 'Transformação'],
+    qualities: [
+      'Ancestralidade',
+      'Sapiência',
+      'Ciclos finais',
+      'Humildade',
+      'Paciência',
+      'Transformação',
+    ],
     challenges: ['Resistência ao novo', 'Melancolia', 'Rigidez'],
     rulingPlanet: 'Saturno',
     sacredAnimals: ['Marreco', 'Burro'],
@@ -343,7 +366,14 @@ const ORIXA_PROFILES: OrixaProfile[] = [
     numbersSacred: [4, 9],
     greeting: 'Elo!',
     archetype: 'O Curandeiro',
-    qualities: ['Cura', 'Ervas', 'Sabedoria natural', 'Transmutação', 'Conhecimento secreto', 'Magia'],
+    qualities: [
+      'Cura',
+      'Ervas',
+      'Sabedoria natural',
+      'Transmutação',
+      'Conhecimento secreto',
+      'Magia',
+    ],
     challenges: ['Segredos demais', 'Manipulação de energia', 'Isolamento'],
     rulingPlanet: 'Netuno',
     sacredAnimals: ['Pássaro', 'Cobra'],
@@ -438,7 +468,7 @@ export function getProfiles(): OrixaProfile[] {
   return ORIXA_PROFILES;
 }
 
-export function getProfileById(id: string): OrixaProfile | undefined {
+function getProfileById(id: string): OrixaProfile | undefined {
   return ORIXA_PROFILES.find((p) => p.id === id);
 }
 

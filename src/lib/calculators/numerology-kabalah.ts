@@ -11,7 +11,6 @@
 //   - Reduz para 1 dígito SOMENTE se não for número mestre (11, 22, 33).
 //   - Para 11/22/33, mantém-se o valor.
 //   - 16/19/26 etc. SÃO reduzidos (não são números mestres oficiais).
-
 import type { KabalisticMap } from '@/types';
 
 // ============================================================================
@@ -20,9 +19,32 @@ import type { KabalisticMap } from '@/types';
 // A=1, B=2, ... I=9, J=1, K=2, ... R=9, S=1, T=2, ... Z=8
 // (NR/LS/LL: Vogais = 1)
 const LETTER_VALUES: Record<string, number> = {
-  A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9,
-  J: 1, K: 2, L: 3, M: 4, N: 5, O: 6, P: 7, Q: 8, R: 9,
-  S: 1, T: 2, U: 3, V: 4, W: 5, X: 6, Y: 7, Z: 8,
+  A: 1,
+  B: 2,
+  C: 3,
+  D: 4,
+  E: 5,
+  F: 6,
+  G: 7,
+  H: 8,
+  I: 9,
+  J: 1,
+  K: 2,
+  L: 3,
+  M: 4,
+  N: 5,
+  O: 6,
+  P: 7,
+  Q: 8,
+  R: 9,
+  S: 1,
+  T: 2,
+  U: 3,
+  V: 4,
+  W: 5,
+  X: 6,
+  Y: 7,
+  Z: 8,
 };
 
 const VOGAIS = new Set(['A', 'E', 'I', 'O', 'U']);
@@ -66,7 +88,7 @@ export function calculateLifePath(birthDate: string): { number: number; master: 
 // Variante da data que olha especificamente para o dia + mês + ano reduzidos
 // separadamente e depois somados. Geralmente coincide com o Caminho de Vida
 // quando o consulente está alinhado com sua missão.
-export function calculateMission(birthDate: string): { number: number; master: boolean } {
+function calculateMission(birthDate: string): { number: number; master: boolean } {
   const match = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return { number: 0, master: false };
   const [, y, m, d] = match;
@@ -190,7 +212,9 @@ function collectKarmicDebts(rawSums: number[]): number[] {
     let n = sum;
     while (n > 9) {
       if (KARMIC_DEBT_NUMBERS.includes(n)) found.add(n);
-      n = String(n).split('').reduce((s, d) => s + parseInt(d, 10), 0);
+      n = String(n)
+        .split('')
+        .reduce((s, d) => s + parseInt(d, 10), 0);
     }
   }
   return [...found].sort((a, b) => a - b);
@@ -206,7 +230,10 @@ export function calculateKarmicDebts(fullName: string, birthDate: string): numbe
     .split('')
     .filter((c) => !VOGAIS.has(c))
     .reduce((s, c) => s + (LETTER_VALUES[c] ?? 0), 0);
-  const dateSum = birthDate.replace(/\D/g, '').split('').reduce((s, d) => s + parseInt(d, 10), 0);
+  const dateSum = birthDate
+    .replace(/\D/g, '')
+    .split('')
+    .reduce((s, d) => s + parseInt(d, 10), 0);
   const dayNum = (() => {
     const m = birthDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
     return m ? parseInt(m[3], 10) : 0;
@@ -238,8 +265,18 @@ export function calculatePinnacles(
   const firstEnd = 36 - (isMaster(lifePath) ? reduceToSingleDigit(lifePath, false) : lifePath);
   return {
     first: { number: first, ageEnd: firstEnd, meaning: getNumberMeaning(first) },
-    second: { number: second, ageStart: firstEnd + 1, ageEnd: firstEnd + 9, meaning: getNumberMeaning(second) },
-    third: { number: third, ageStart: firstEnd + 10, ageEnd: firstEnd + 18, meaning: getNumberMeaning(third) },
+    second: {
+      number: second,
+      ageStart: firstEnd + 1,
+      ageEnd: firstEnd + 9,
+      meaning: getNumberMeaning(second),
+    },
+    third: {
+      number: third,
+      ageStart: firstEnd + 10,
+      ageEnd: firstEnd + 18,
+      meaning: getNumberMeaning(third),
+    },
     fourth: { number: fourth, ageStart: firstEnd + 19, meaning: getNumberMeaning(fourth) },
   };
 }
@@ -247,20 +284,41 @@ export function calculatePinnacles(
 // 7d. ARCANOS REGENTES (correspondência com o Tarô) — Doc 11/Doc 04 §2.2
 // ============================================================================
 const MAJOR_ARCANA: Record<number, { name: string; meaning: string }> = {
-  0:  { name: 'O Louco', meaning: 'Inocência, espontaneidade, liberdade, novos começos, o viajante' },
-  1:  { name: 'O Mago', meaning: 'Vontade, habilidade, poder, criatividade, foco,manifestação' },
-  2:  { name: 'A Sacerdotisa', meaning: 'Intuição, conhecimento, mistério, sabedoria interior, segredos' },
-  3:  { name: 'A Imperatriz', meaning: 'Fertilidade, abundance, nuturing, natureza, mãe divina' },
-  4:  { name: 'O Imperador', meaning: 'Autoridade, estrutura, paternalismo, liderança, estabilidade' },
-  5:  { name: 'O Hierofante', meaning: 'Tradição, espiritualidade, educação, dogmas, guias' },
-  6:  { name: 'Os Enamorados', meaning: 'Amor, união, escolhas, duality, relacionamentos' },
-  7:  { name: 'O Carro', meaning: 'Vontade, vitória, autodisciplina, assertividade, triunfo' },
-  8:  { name: 'A Justiça', meaning: 'Equilíbrio, verdade, lei,因果, honestidade, karma' },
-  9:  { name: 'O Eremita', meaning: 'Introspecção, solidão, autoconhecimento, busca interior, sabedoria' },
-  10: { name: 'A Roda da Fortuna', meaning: 'Ciclos, destino, mudança, sorte, transformação, acaso' },
+  0: {
+    name: 'O Louco',
+    meaning: 'Inocência, espontaneidade, liberdade, novos começos, o viajante',
+  },
+  1: { name: 'O Mago', meaning: 'Vontade, habilidade, poder, criatividade, foco,manifestação' },
+  2: {
+    name: 'A Sacerdotisa',
+    meaning: 'Intuição, conhecimento, mistério, sabedoria interior, segredos',
+  },
+  3: { name: 'A Imperatriz', meaning: 'Fertilidade, abundance, nuturing, natureza, mãe divina' },
+  4: {
+    name: 'O Imperador',
+    meaning: 'Autoridade, estrutura, paternalismo, liderança, estabilidade',
+  },
+  5: { name: 'O Hierofante', meaning: 'Tradição, espiritualidade, educação, dogmas, guias' },
+  6: { name: 'Os Enamorados', meaning: 'Amor, união, escolhas, duality, relacionamentos' },
+  7: { name: 'O Carro', meaning: 'Vontade, vitória, autodisciplina, assertividade, triunfo' },
+  8: { name: 'A Justiça', meaning: 'Equilíbrio, verdade, lei,因果, honestidade, karma' },
+  9: {
+    name: 'O Eremita',
+    meaning: 'Introspecção, solidão, autoconhecimento, busca interior, sabedoria',
+  },
+  10: {
+    name: 'A Roda da Fortuna',
+    meaning: 'Ciclos, destino, mudança, sorte, transformação, acaso',
+  },
   11: { name: 'A Força', meaning: 'Coragem, perseverança, compaixão, autocontrole, poder suave' },
-  12: { name: 'O Enforcado', meaning: 'Nova perspectiva, sacrifício, pausa, rendição, visão invertida' },
-  13: { name: 'A Morte', meaning: 'Transformação, fim de ciclo, renovação, transição, metamorfose' },
+  12: {
+    name: 'O Enforcado',
+    meaning: 'Nova perspectiva, sacrifício, pausa, rendição, visão invertida',
+  },
+  13: {
+    name: 'A Morte',
+    meaning: 'Transformação, fim de ciclo, renovação, transição, metamorfose',
+  },
   14: { name: 'A Temperança', meaning: 'Equilíbrio, paciência, propósito, significado, moderação' },
   15: { name: 'O Diabo', meaning: 'Apego material, sombras, tentação, cadeias, manipulação' },
   16: { name: 'A Torre', meaning: 'Destruição criativa, revelação, upheaval, despertar súbito' },
@@ -310,7 +368,9 @@ export function calculatePersonalCycles(
   const curMonth = referenceDate.getMonth() + 1;
   const curDay = referenceDate.getDate();
   const yearReduced = reduceToSingleDigit(
-    String(curYear).split('').reduce((s, d) => s + parseInt(d, 10), 0),
+    String(curYear)
+      .split('')
+      .reduce((s, d) => s + parseInt(d, 10), 0),
     false
   );
 
@@ -396,13 +456,21 @@ export function buildKabalisticMap(fullName: string, birthDate: string): Partial
     destinyNumber: expressionReduced,
     soulUrgeNumber: motivation.number,
     personalityNumber: impression.number,
-    hebrewLetter: HEBREW_LETTERS[lifePathReduced] ?? HEBREW_LETTERS[reduceToSingleDigit(lifePathReduced, false)] ?? 'Aleph',
-    sefirotPath: SEFIROT_PATHS[lifePathReduced] ?? SEFIROT_PATHS[reduceToSingleDigit(lifePathReduced, false)] ?? 'Keter (Coroa)',
+    hebrewLetter:
+      HEBREW_LETTERS[lifePathReduced] ??
+      HEBREW_LETTERS[reduceToSingleDigit(lifePathReduced, false)] ??
+      'Aleph',
+    sefirotPath:
+      SEFIROT_PATHS[lifePathReduced] ??
+      SEFIROT_PATHS[reduceToSingleDigit(lifePathReduced, false)] ??
+      'Keter (Coroa)',
     personalYear: calculatePersonalCycles(birthDate).personalYear,
     personalMonth: calculatePersonalCycles(birthDate).personalMonth,
     personalDay: calculatePersonalCycles(birthDate).personalDay,
     minorCycles: { years: [], months: [], days: [] },
-    nameHistory: [{ name: fullName, meaning: `Número de expressão ${expressionReduced}`, source: 'fornecido' }],
+    nameHistory: [
+      { name: fullName, meaning: `Número de expressão ${expressionReduced}`, source: 'fornecido' },
+    ],
   };
 }
 // ============================================================================
@@ -462,14 +530,33 @@ const NUMBER_MEANINGS: Record<number, string> = {
   33: 'Mestre professor, serviço espiritual sem ego, cura em massa',
 };
 function getNumberMeaning(n: number): string {
-  return NUMBER_MEANINGS[n] ?? NUMBER_MEANINGS[reduceToSingleDigit(n, true)] ?? `Energia do número ${n}`;
+  return (
+    NUMBER_MEANINGS[n] ?? NUMBER_MEANINGS[reduceToSingleDigit(n, true)] ?? `Energia do número ${n}`
+  );
 }
 const HEBREW_LETTERS: Record<number, string> = {
-  1: 'Aleph', 2: 'Bet', 3: 'Gimel', 4: 'Dalet', 5: 'He',
-  6: 'Vav', 7: 'Zayin', 8: 'Het', 9: 'Tet', 10: 'Yod',
-  11: 'Kaf', 12: 'Lamed', 13: 'Mem', 14: 'Nun', 15: 'Samekh',
-  16: 'Ayin', 17: 'Pe', 18: 'Tsade', 19: 'Qof', 20: 'Resh',
-  21: 'Shin', 22: 'Tav',
+  1: 'Aleph',
+  2: 'Bet',
+  3: 'Gimel',
+  4: 'Dalet',
+  5: 'He',
+  6: 'Vav',
+  7: 'Zayin',
+  8: 'Het',
+  9: 'Tet',
+  10: 'Yod',
+  11: 'Kaf',
+  12: 'Lamed',
+  13: 'Mem',
+  14: 'Nun',
+  15: 'Samekh',
+  16: 'Ayin',
+  17: 'Pe',
+  18: 'Tsade',
+  19: 'Qof',
+  20: 'Resh',
+  21: 'Shin',
+  22: 'Tav',
 };
 const SEFIROT_PATHS: Record<number, string> = {
   1: 'Keter (Coroa)',

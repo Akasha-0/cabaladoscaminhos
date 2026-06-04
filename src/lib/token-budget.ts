@@ -10,7 +10,6 @@
  *   LLM_DAILY_TOKEN_BUDGET  — maximum tokens allowed per day (e.g. 100000).
  *                             If not set, budget checks are skipped (no limit).
  */
-
 import { getRedisClient } from '@/lib/redis';
 
 // ----------------------------------------------------------------------------
@@ -113,7 +112,7 @@ export async function incrementTokenUsage(tokens: number): Promise<void> {
  * Returns the numeric budget limit from LLM_DAILY_TOKEN_BUDGET env var,
  * or null if the variable is unset or invalid.
  */
-export function tokenBudgetLimit(): number | null {
+function tokenBudgetLimit(): number | null {
   const raw = process.env.LLM_DAILY_TOKEN_BUDGET;
   if (!raw) return null;
   const parsed = parseInt(raw, 10);

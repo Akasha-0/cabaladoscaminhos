@@ -21,9 +21,8 @@
 //      depois) para mitigar drift legítimo de relógio.
 //   4. Recovery codes: bcrypt no DB, single-use. Operador que perde
 //      o app pode usar 1 dos 10 para entrar; deve rotacionar depois.
-
-import crypto from 'node:crypto';
 import bcrypt from 'bcryptjs';
+import crypto from 'node:crypto';
 import { TOTP, Secret } from 'otpauth';
 import QRCode from 'qrcode';
 
@@ -45,7 +44,7 @@ const TOTP_ALGORITHM = 'SHA1' as const;
  * Drift permitido em passos (RFC 6238 §5.2): aceita o passo anterior
  * e o próximo. Para período de 30s, isso dá ±30s de tolerância.
  */
-export const TOTP_DRIFT_STEPS = 1;
+const TOTP_DRIFT_STEPS = 1;
 
 /** Quantidade de recovery codes gerados no setup. */
 const RECOVERY_CODE_BYTES = 8; // 8 bytes = 16 hex chars
@@ -76,7 +75,9 @@ export type TotpVerifyResult =
  * tag MISMATCH), retorna `null` e a operação deve ser tratada como
  * erro de integridade — NÃO cair para fallback.
  */
-export type DecryptResult = { ok: true; plaintext: string } | { ok: false; reason: 'malformed' | 'tag-mismatch' };
+export type DecryptResult =
+  | { ok: true; plaintext: string }
+  | { ok: false; reason: 'malformed' | 'tag-mismatch' };
 
 // ============================================================================
 // Erros

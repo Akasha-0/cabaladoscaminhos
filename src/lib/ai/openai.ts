@@ -38,7 +38,7 @@ export class AIError extends Error {
   }
 }
 
-export class CircuitBreakerOpenError extends AIError {
+class CircuitBreakerOpenError extends AIError {
   constructor() {
     super(
       'Circuit breaker is open - service temporarily unavailable',
@@ -50,10 +50,8 @@ export class CircuitBreakerOpenError extends AIError {
   }
 }
 
-export class RateLimitError extends AIError {
-  constructor(
-    public readonly retryAfterMs?: number
-  ) {
+class RateLimitError extends AIError {
+  constructor(public readonly retryAfterMs?: number) {
     super('Rate limit exceeded', 'RATE_LIMIT_EXCEEDED', 429, true);
     this.name = 'RateLimitError';
   }
@@ -77,7 +75,7 @@ const circuitState: CircuitState = {
 
 function shouldRetryAfterFailure(): boolean {
   const now = Date.now();
-  
+
   if (circuitState.isOpen) {
     const timeSinceLastFailure = now - circuitState.lastFailureTime;
     if (timeSinceLastFailure > CIRCUIT_BREAKER_TIMEOUT_MS) {
@@ -87,14 +85,14 @@ function shouldRetryAfterFailure(): boolean {
     }
     return false;
   }
-  
+
   return true;
 }
 
 function recordFailure(): void {
   circuitState.failures++;
   circuitState.lastFailureTime = Date.now();
-  
+
   if (circuitState.failures >= CIRCUIT_BREAKER_THRESHOLD) {
     circuitState.isOpen = true;
     console.warn(`[OpenAI] Circuit breaker opened after ${circuitState.failures} failures`);
@@ -145,43 +143,6 @@ function resetOpenAIClient(): void {
 // STREAMS (for future streaming support)
 // ============================================================
 
-export interface StreamChunk {
-  content: string;
-  done: boolean;
-}
-
-export async function createChatCompletionStream(
-  options: ChatCompletionOptions
-): Promise<AsyncIterable<StreamChunk>> {
-  const client = getOpenAIClient();
-  const model = options.model || DEFAULT_MODEL;
-  const temperature = options.temperature ?? DEFAULT_TEMPERATURE;
-  const max_tokens = options.max_tokens ?? DEFAULT_MAX_TOKENS;
-
-  const stream = await client.chat.completions.create({
-    model,
-    messages: options.messages,
-    temperature,
-    max_tokens,
-    stream: true,
-  });
-
-  return {
-    async *[Symbol.asyncIterator]() {
-      for await (const chunk of stream) {
-        const content = chunk.choices[0]?.delta?.content || '';
-        if (content) {
-          yield { content, done: false };
-        }
-        if (chunk.choices[0]?.finish_reason === 'stop') {
-          yield { content: '', done: true };
-          break;
-        }
-      }
-    },
-  };
-}
-
 // ============================================================
 // MAIN COMPLETION FUNCTION WITH RETRY & CIRCUIT BREAKER
 // ============================================================
@@ -196,7 +157,7 @@ function isRetryableError(error: unknown): boolean {
   if (error instanceof AIError) {
     return error.isRetryable;
   }
-  
+
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
     const retryablePatterns = [
@@ -208,18 +169,18 @@ function isRetryableError(error: unknown): boolean {
       'fetch',
       'stream',
     ];
-    
-    if (retryablePatterns.some(p => message.includes(p))) {
+
+    if (retryablePatterns.some((p) => message.includes(p))) {
       return true;
     }
-    
+
     const statusMatch = message.match(/status\s*(\d{3})/i);
     if (statusMatch) {
       const status = parseInt(statusMatch[1], 10);
       return status === 429 || (status >= 500 && status < 600);
     }
   }
-  
+
   return false;
 }
 
@@ -279,12 +240,7 @@ function transformResponse(completion: OpenAI.Chat.ChatCompletion): AIResponse {
 
 function detectApiErrorType(error: unknown, model: string): never {
   if (!(error instanceof Error)) {
-    throw new AIError(
-      'Erro desconhecido na API OpenAI',
-      'UNKNOWN_ERROR',
-      undefined,
-      true
-    );
+    throw new AIError('Erro desconhecido na API OpenAI', 'UNKNOWN_ERROR', undefined, true);
   }
 
   const msg = error.message;
@@ -320,7 +276,7 @@ async function executeRetryOrThrow(
 
   console.warn(
     `[OpenAI] Request failed (attempt ${retryCount + 1}/${MAX_RETRIES + 1}), ` +
-    `retrying in ${Math.round(delay)}ms: ${errorMsg}`
+      `retrying in ${Math.round(delay)}ms: ${errorMsg}`
   );
 
   await sleep(delay);
@@ -333,10 +289,7 @@ async function executeRetryOrThrow(
 
   const shouldUseFallback = retryCount === MAX_RETRIES - 1 && !useFallback;
 
-  return createChatCompletion(
-    { ...options, useFallback: shouldUseFallback },
-    retryCount + 1
-  );
+  return createChatCompletion({ ...options, useFallback: shouldUseFallback }, retryCount + 1);
 }
 
 // ============================================================
@@ -397,10 +350,7 @@ export async function createChatCompletion(
 // SEND MESSAGE WITH SYSTEM PROMPT
 // ============================================================
 
-async function sendMessage(
-  messages: ChatMessage[],
-  systemPrompt?: string
-): Promise<AIResponse> {
+async function sendMessage(messages: ChatMessage[], systemPrompt?: string): Promise<AIResponse> {
   const allMessages: ChatMessage[] = [];
 
   if (systemPrompt) {
@@ -412,28 +362,4 @@ async function sendMessage(
   return createChatCompletion({ messages: allMessages });
 }
 
-// ============================================================
-// UTILITY: Get circuit breaker status
-// ============================================================
-
-export function getCircuitBreakerStatus(): {
-  isOpen: boolean;
-  failures: number;
-  timeSinceLastFailure: number;
-} {
-  return {
-    isOpen: circuitState.isOpen,
-    failures: circuitState.failures,
-    timeSinceLastFailure: Date.now() - circuitState.lastFailureTime,
-  };
-}
-
-// ============================================================
-// UTILITY: Reset circuit breaker
-// ============================================================
-
-export function resetCircuitBreaker(): void {
-  circuitState.failures = 0;
-  circuitState.lastFailureTime = 0;
-  circuitState.isOpen = false;
-}
+// (circuit-breaker status/reset utilities removed — knip-flagged dead exports)
