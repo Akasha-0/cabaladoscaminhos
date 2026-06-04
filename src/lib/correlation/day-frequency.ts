@@ -409,23 +409,3 @@ export function getDayByFrequency(frequencia: number): string | undefined {
   const entry = Object.entries(DAY_FREQUENCY_MAP).find(([_, day]) => day.frequencia === frequencia);
   return entry?.[0];
 }
-
-export default {
-  getDayFrequency,
-  getFrequencyDay,
-  getAllDays,
-  getDaysByFrequency,
-  getAllDayFrequencies,
-  getFrequencyName,
-  getElementByDay,
-  getChakraByDay,
-  getChakraNumberByDay,
-  getDaySpiritualMeaning,
-  getHealingProperties,
-  getColorByDay,
-  getOrixaByDay,
-  getPlanetByDay,
-  getDayPractices,
-  getAllFrequencies,
-  getDayByFrequency,
-};

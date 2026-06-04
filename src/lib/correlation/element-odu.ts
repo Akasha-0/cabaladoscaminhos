@@ -343,14 +343,3 @@ export function getOduByNumber(numero: number): ElementOduMapping | null {
   }
   return null;
 }
-
-export default {
-  getElementOdu,
-  getOduElement,
-  getAllElementOdus,
-  getAllElements,
-  hasElementOdu,
-  getOdusForElement,
-  getOduByNumber,
-  ELEMENT_ODU_MAPPINGS,
-};

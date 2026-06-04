@@ -465,17 +465,3 @@ export function getNumerologyElement(odu: string): Elemento | null {
 export function getNumerologyEnergy(odu: string): string | null {
   return ODU_NUMEROLOGY_MAPPINGS[odu]?.alinhamento_energetico ?? null;
 }
-
-export default {
-  getOduNumerology,
-  getNumerologyForOdu,
-  getAllOduNumerology,
-  getAllOduNames,
-  hasOduNumerology,
-  getOduByNumber,
-  getElementOdu,
-  getOdusForNumber,
-  getNumerologyElement,
-  getNumerologyEnergy,
-  ODU_NUMEROLOGY_MAPPINGS,
-};

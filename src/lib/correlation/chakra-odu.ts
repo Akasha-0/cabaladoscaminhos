@@ -419,13 +419,3 @@ function normalizeElementName(elemento: string): Elemento {
 }
 
 // Default export
-export default {
-  getChakraOdu,
-  getOduChakra,
-  getAllChakraOdus,
-  getOduNumbersByChakra,
-  getPrimaryOdu,
-  getSecondaryOdu,
-  getChakrasByElement,
-  CHAKRA_ODU_MAPPINGS,
-};

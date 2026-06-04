@@ -268,15 +268,3 @@ export function getDayNumerologyPractices(dia: string): string[] | undefined {
 /**
  * Default export with all public functions
  */
-export default {
-  getDayNumerology,
-  getNumerologyByDay,
-  getNumerologyDay,
-  getNumerologyDays,
-  getAllDayNumerologies,
-  getAllDayNumerology,
-  getDaySpiritualMeaning,
-  getNumerologyProperties,
-  getDaysByNumero,
-  getDayNumerologyPractices,
-};

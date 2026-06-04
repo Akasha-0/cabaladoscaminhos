@@ -281,23 +281,3 @@ export function getDayByNumber(numero: number): string | undefined {
   const entry = Object.values(DAY_TAROT_MAP).find((mapping) => mapping.numero_carta === numero);
   return entry?.dia;
 }
-
-export default {
-  getDayTarot,
-  getArcanoByDay,
-  getTarotDay,
-  getCardNumberByDay,
-  getElementByDay,
-  getAllDays,
-  getDayPlanet,
-  getDaysByArcano,
-  getDaysByElemento,
-  getDaySignificado,
-  getDayMystere,
-  getDayKeywords,
-  getDayQuality,
-  getDayColor,
-  getAllDayTarots,
-  getArcanoByNumber,
-  getDayByNumber,
-};

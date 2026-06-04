@@ -914,14 +914,3 @@ export function getAspectBetweenSigns(
 
   return mapping?.aspect_type ?? null;
 }
-
-export default {
-  getZodiacZodiac,
-  getAllZodiacRelations,
-  getRelationsForSign,
-  getRelationsByAspect,
-  getAllAspectTypes,
-  getAllRelatedSigns,
-  getRelationBetweenSigns,
-  getAspectBetweenSigns,
-};

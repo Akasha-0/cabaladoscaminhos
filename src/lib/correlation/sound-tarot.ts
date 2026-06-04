@@ -472,19 +472,3 @@ export function getSoundsByArcano(arcanoNumero: number): SoundTarot[] {
 /**
  * Default export with all functions
  */
-export default {
-  getSoundTarot,
-  getTarotSound,
-  getArcanoBySound,
-  getArcanoNomeBySound,
-  getElementBySound,
-  getHealingProperties,
-  getPractice,
-  getAllSoundTarots,
-  getAllSounds,
-  getAllArcanoNumbers,
-  getAllArcanoNomes,
-  hasSoundTarot,
-  getSoundsByElement,
-  getSoundsByArcano,
-};

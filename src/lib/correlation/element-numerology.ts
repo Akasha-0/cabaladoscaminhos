@@ -316,18 +316,3 @@ export function getAllNumerologyNumbers(): number[] {
   }
   return Array.from(numbers).sort((a, b) => a - b);
 }
-
-export default {
-  getElementNumerology,
-  getAllElementNumerologies,
-  getNumerologyByElement,
-  getNumerologyElement,
-  getArquetipoByElement,
-  getQualidadesByElement,
-  getSignificadoByElement,
-  getEnergiaByElement,
-  getPolaridadeByElement,
-  getAllElementTypes,
-  getAllNumerologyNumbers,
-  ELEMENT_NUMEROLOGY_MAP,
-};

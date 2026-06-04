@@ -306,13 +306,3 @@ export function getBidirectionalOrixas(orixa: string): string[] {
 const getOrixaOrixas = getAllOrixaOrixas;
 const getAllOrixaRellations = getAllOrixaRelations;
 const getOrixaRelations = getAllOrixaRelations;
-
-export default {
-  getOrixaOrixa,
-  getAllOrixaRelations,
-  getAllOrixaOrixas,
-  getRelationshipsByType,
-  getBidirectionalOrixas,
-  getOrixaOrixas,
-  getAllOrixaRellations,
-};

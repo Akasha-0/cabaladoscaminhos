@@ -343,21 +343,3 @@ export function getAllElementTypes(): ElementoTipo[] {
 export function getAllFrequencies(): number[] {
   return [396, 417, 528, 741, 963];
 }
-
-export default {
-  getElementFrequency,
-  getFrequencyElement,
-  getAllElementFrequencies,
-  getFrequencyByElement,
-  getElementByFrequency,
-  getChakraByElement,
-  getHealingByElement,
-  getQualidadesByElement,
-  getOrixaByElement,
-  getPlanetaByElement,
-  getColorByElement,
-  getDirectionByElement,
-  getAllElementTypes,
-  getAllFrequencies,
-  ELEMENT_FREQUENCY_MAP,
-};

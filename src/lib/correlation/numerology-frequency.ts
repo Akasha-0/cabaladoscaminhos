@@ -434,18 +434,3 @@ export function getNumerologyByChakra(chakra: string): NumerologyFrequencyMappin
 /**
  * Default export for convenience
  */
-export default {
-  getNumerologyFrequency,
-  getFrequencyNumerology,
-  getAllNumerologyFrequencies,
-  getFrequencyByNumerologyNumber,
-  getElementByNumerologyNumber,
-  getChakraByNumerologyNumber,
-  getHealingByNumerologyNumber,
-  getSpiritualMeaningByNumerologyNumber,
-  getAllNumerologyNumbers,
-  getAllFrequencies,
-  getNumerologyByElement,
-  getNumerologyByChakra,
-  NUMEROLOGY_FREQUENCY_MAP,
-};

@@ -383,17 +383,3 @@ export function getPlanetaryHours(dia: string): DayPlanet['horas_planetarias'] |
 export function getDayPractices(dia: string): string[] | undefined {
   return DAY_PLANET_MAP[dia]?.praticas_espirituais;
 }
-
-export default {
-  getDayPlanet,
-  getPlanetDay,
-  getAllDays,
-  getDaysByPlaneta,
-  getAllDayPlanets,
-  getDaySpiritualMeaning,
-  getPlanetProperties,
-  getPlanetSymbol,
-  getElementByDay,
-  getPlanetaryHours,
-  getDayPractices,
-};

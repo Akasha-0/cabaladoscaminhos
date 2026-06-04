@@ -119,5 +119,3 @@ export function getUsedElements(): ElementType[] {
   Object.values(ODTU_FREQUENCY_MAPPINGS).forEach((m) => { elements.add(m.elemento); });
   return Array.from(elements);
 }
-
-export default { getOduFrequency, getFrequencyByOdu, getAllOduFrequencies, getAllOduNumbers, getAllOduNames, getAllOduNamesYoruba, getOduByElement, getOduByFrequency, getElementByOdu, getMessageByOdu, getHealingByOdu, hasOduFrequency, getUsedFrequencies, getUsedElements };

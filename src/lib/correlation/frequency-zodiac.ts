@@ -272,16 +272,3 @@ export function getFrequencyZodiacBySigno(signo: string): FrequencyZodiacMapping
   );
   return found ?? null;
 }
-
-export default {
-  getFrequencyZodiac,
-  getZodiacFrequency,
-  getAllFrequencyZodiacs,
-  getFrequencyZodiacElement,
-  getFrequencyZodiacHealing,
-  getFrequenciesBySigno,
-  getFrequencyZodiacBestEpoch,
-  getFrequenciesZodiacByElement,
-  getAllZodiacSigns,
-  getFrequencyZodiacBySigno,
-};

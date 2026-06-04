@@ -147,9 +147,3 @@ export function getNumerologyPlanet(): Record<Numerologia, string[]> {
 export function getAllPlanetNumerologies(): PlanetNumerologyMapping[] {
   return Object.values(PLANET_NUMEROLOGY_MAP);
 }
-
-export default {
-  getPlanetNumerology,
-  getNumerologyPlanet,
-  getAllPlanetNumerologies,
-};

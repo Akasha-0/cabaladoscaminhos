@@ -335,16 +335,3 @@ export function getDayMystere(dia: string): string | undefined {
 /**
  * Default export with all functions
  */
-export default {
-  getDaySephirot,
-  getSephirotByDay,
-  getSephirotDay,
-  getAllDaySephiroth,
-  getAllDaySephiroths,
-  getAllDays,
-  getDaysBySephirah,
-  getElementByDay,
-  getPathByDay,
-  getDayPractices,
-  getDayMystere,
-};

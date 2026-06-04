@@ -241,12 +241,3 @@ export function getElementOrixa(): Record<OrixaElement['elemento_principal'], st
 export function getAllOrixaElements(): OrixaElement[] {
   return Object.values(ORIXAS_MAP);
 }
-
-export default {
-  getOrixaElement,
-  getAllOrixas,
-  getOrixasByElement,
-  getOrixasByDay,
-  getElementOrixa,
-  getAllOrixaElements,
-};

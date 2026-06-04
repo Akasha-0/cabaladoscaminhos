@@ -209,14 +209,3 @@ export function getOrixasByChakra(chakra: string): OrixaFrequency[] {
 export function getAllOrixaFrequencies(): OrixaFrequency[] {
   return Object.values(ORIXA_FREQUENCY_MAP);
 }
-
-export default {
-  getOrixaFrequency,
-  getFrequencyOrixa,
-  getOrixaProperty,
-  getAllOrixas,
-  getOrixasByFrequency,
-  getOrixasByElement,
-  getOrixasByChakra,
-  getAllOrixaFrequencies,
-};

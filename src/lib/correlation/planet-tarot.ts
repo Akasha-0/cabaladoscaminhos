@@ -163,13 +163,3 @@ export function getArcanoByNumber(numero: number): string | null {
   }
   return null;
 }
-
-export default {
-  getPlanetTarot,
-  getTarotPlanet,
-  getAllPlanetTarots,
-  getAllPlanets,
-  hasPlanetTarot,
-  getPlanetByNumber,
-  getArcanoByNumber,
-};

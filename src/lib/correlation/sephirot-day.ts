@@ -310,19 +310,3 @@ function getSephirotDayMeaning(sephirah: string): string | null {
 /**
  * Default export with all functions
  */
-export default {
-  getSephirotDay,
-  getSephirahDay,
-  getDaySephirot,
-  getDaySephirah,
-  getAllSephirotDays,
-  getAllSephirahDays,
-  getAllSephiroth,
-  hasSephirotDay,
-  hasDaySephirot,
-  getSephirotDayPractices,
-  getSephirotDayColor,
-  getSephirotByDayNumber,
-  getSephirotDayElement,
-  getSephirotDayMeaning,
-};

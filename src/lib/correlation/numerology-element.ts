@@ -190,17 +190,3 @@ export function getAllElementsFromNumerology(): ElementoTipo[] {
   }
   return elements;
 }
-
-export default {
-  getNumerologyElement,
-  getAllNumerologyElements,
-  getElementNumerology,
-  getNumerologyArquetipo,
-  getNumerologySignificado,
-  getNumerologyQualidades,
-  getNumerologyEnergia,
-  getNumerologyPolaridade,
-  getAllNumerologyNumbers,
-  getAllElementsFromNumerology,
-  NUMEROLOGY_ELEMENT_MAP,
-};

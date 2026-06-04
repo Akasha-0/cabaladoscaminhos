@@ -338,20 +338,3 @@ export function getAllSigns(): SignoZodiac[] {
 export function getZodiacFrequencyBySigno(signo: string): ZodiacFrequencyMapping | null {
   return getZodiacFrequency(signo);
 }
-
-export default {
-  getZodiacFrequency,
-  getFrequencyZodiac,
-  getAllZodiacFrequencies,
-  getFrequenciaFromSigno,
-  getElementFromSigno,
-  getHealingFromSigno,
-  getSignosByFrequencia,
-  getBestEpochFromSigno,
-  getSignosByElement,
-  getAllSigns,
-  getZodiacFrequencyBySigno,
-  ZODIAC_FREQUENCY_MAP,
-  SOLFEGGIO_FREQUENCIES,
-  TODOS_SIGNOS,
-};

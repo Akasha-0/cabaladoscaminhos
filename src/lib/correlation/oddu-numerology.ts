@@ -458,19 +458,3 @@ export function hasOduNumerology(oduNumero: number): boolean {
 }
 
 // ─── Default Export ───────────────────────────────────────────────────────────
-
-export default {
-  getOduNumerology,
-  getNumerologyOdu,
-  getAllOduNumerologies,
-  getAllOduNumbers,
-  getAllOduNames,
-  getAllNumerologyNumbers,
-  getOduByElement,
-  getOdusForNumber,
-  getOduElement,
-  getOduMessage,
-  getOduNumbers,
-  hasOduNumerology,
-  ODDU_NUMEROLOGY_MAPPINGS,
-};

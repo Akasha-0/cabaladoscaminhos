@@ -317,17 +317,3 @@ function getSephirotOrixaByDay(dia: string): SephirotOrixa[] {
 /**
  * Default export for convenience
  */
-export default {
-  getSephirotOrixa,
-  getOrixaSephirot,
-  getAllSephirotOrixas,
-  getAllSephiroth,
-  hasSephirotOrixa,
-  getSephirotByPath,
-  getAllOrixas,
-  getOrixaBySephirah,
-  getSephirahByOrixa,
-  getSephirotOrixaByElement,
-  getSephirotOrixaByDay,
-  SEPHIROT_ORIXA_MAPPINGS,
-};

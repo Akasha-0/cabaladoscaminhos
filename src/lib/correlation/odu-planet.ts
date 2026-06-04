@@ -660,15 +660,3 @@ export function getAllPlanets(): Planeta[] {
   const planets = new Set(Object.values(ODU_PLANET_MAPPINGS).map(m => m.planeta));
   return Array.from(planets) as Planeta[];
 }
-
-export default {
-  getOduPlanet,
-  getPlanetOdu,
-  getAllOduPlanets,
-  getAllOduNames,
-  hasOduPlanet,
-  getOduByNumber,
-  getOdusForPlanet,
-  getAllPlanets,
-  ODU_PLANET_MAPPINGS,
-};

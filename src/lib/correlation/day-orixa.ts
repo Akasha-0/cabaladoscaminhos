@@ -176,12 +176,3 @@ export function getDaysByOrixa(orixa: string): string[] {
       d.orixa_secundario?.toLowerCase() === orixaLower
   ).map((d) => d.dia);
 }
-
-export default {
-  getDayOrixa,
-  getOrixaDay,
-  getAllDays,
-  getAllDayOrixas,
-  getOrixasForDay,
-  getDaysByOrixa,
-};
