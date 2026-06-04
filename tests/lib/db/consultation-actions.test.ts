@@ -248,6 +248,50 @@ describe('addChatMessage', () => {
       },
     });
   });
+
+  // ─── AD-22.5: tokensUsed persistido para mensagens do ORACLE ─────────
+  // Garante que o pipeline de custo de IA (consult → addChatMessage → DB)
+  // continua passando tokensUsed adiante. Sem este teste, alguém poderia
+  // acidentalmente remover a persistência de tokens (voltando ao bug
+  // pré-Fase 495b) e a regressão só apareceria no painel de custos.
+  it('AD-22.5: persists tokensUsed for ORACLE messages (AI cost tracking)', async () => {
+    txMock.chatMessage.create.mockResolvedValue({ ...mockChatMessage, tokensUsed: 1500 });
+    txMock.consultation.update.mockResolvedValue(mockConsultation);
+
+    await addChatMessage({
+      consultationId: 'consult-1',
+      role: 'ORACLE',
+      content: 'Resposta com custo rastreável',
+      routedThemes: ['amor'],
+      routedHouses: [1],
+      tokensUsed: 1500,
+    });
+
+    expect(txMock.chatMessage.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        consultationId: 'consult-1',
+        role: 'ORACLE',
+        tokensUsed: 1500,
+      }),
+    });
+  });
+
+  it('AD-22.5: omits tokensUsed from data when not provided (Prisma treats undefined as "not set")', async () => {
+    txMock.chatMessage.create.mockResolvedValue({ ...mockChatMessage, role: 'USER' });
+    txMock.consultation.update.mockResolvedValue(mockConsultation);
+
+    await addChatMessage({
+      consultationId: 'consult-1',
+      role: 'USER',
+      content: 'Mensagem do usuário sem tokens (não-LLM)',
+    });
+
+    const callArg = txMock.chatMessage.create.mock.calls[0][0];
+    // tokensUsed key pode estar presente com valor undefined (Prisma
+    // ignora chaves undefined automaticamente), mas nunca deve ter
+    // valor numérico espúrio.
+    expect(callArg.data.tokensUsed).toBeUndefined();
+  });
 });
 
 // ============================================================================
