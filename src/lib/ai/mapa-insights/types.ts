@@ -3,6 +3,7 @@
  * @module ai/mapa-insights/types
  */
 import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+
 /**
  * Insight sections for POI/POA analysis
  */
@@ -35,7 +36,7 @@ export interface InsightMente {
 /**
  * Corpo / Sagrado section
  */
-export interface InsightCorpo {
+interface InsightCorpo {
   tema: string;
   descricao: string;
   sistemas: string[];
@@ -48,7 +49,7 @@ export interface InsightCorpo {
 /**
  * Caminho / Destino section
  */
-export interface InsightCaminho {
+interface InsightCaminho {
   tema: string;
   descricao: string;
   sistemas: string[];
@@ -59,7 +60,7 @@ export interface InsightCaminho {
 /**
  * Retorno / Lições section
  */
-export interface InsightRetorno {
+interface InsightRetorno {
   tema: string;
   descricao: string;
   sistemas: string[];
