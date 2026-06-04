@@ -5,6 +5,12 @@
 // Fase 17: rotas de leitura são Operator-only (Doc 16 AD-03). O
 // `userId`/`clientId` na URL é só filtro — a autorização vem sempre
 // do cookie de sessão, nunca do body.
+//
+// SEGURANÇA (fix CRITICAL-1 + CRITICAL-2):
+// - CRITICAL-1: GET/PATCH/DELETE por readingId verificam ownership
+//   (reading.operatorId === operator.id) antes de operar.
+// - CRITICAL-2: createReadingSchema NÃO aceita operatorId do body;
+//   o operatorId é extraído da sessão autenticada.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
@@ -25,11 +31,9 @@ import {
 // ROUTE HANDLERS
 // ============================================================
 
-// Schema for reading creation
+// CRITICAL-2 fix: operatorId NÃO vem do body — extraído da sessão.
 const createReadingSchema = z.object({
   clientId: z.string().min(1),
-  operatorId: z.string().min(1),
-  userId: z.string().min(1),
   matrixData: z.record(z.any()).optional(),
 });
 
@@ -42,6 +46,7 @@ export async function GET(request: NextRequest) {
   try {
     const auth = await requireOperator(request);
     if (auth instanceof NextResponse) return auth;
+    const operator = auth;
 
     const { searchParams } = new URL(request.url);
     const readingId = searchParams.get('readingId');
@@ -49,11 +54,18 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId');
 
     if (readingId) {
+      // CRITICAL-1 fix: verificar ownership antes de retornar dados.
       const reading = await getReading(readingId);
       if (!reading) {
         return NextResponse.json(
           { error: 'Leitura não encontrada' },
           { status: 404 }
+        );
+      }
+      if (reading.operatorId !== operator.id) {
+        return NextResponse.json(
+          { error: 'Acesso negado' },
+          { status: 403 }
         );
       }
       return NextResponse.json({ reading });
@@ -97,6 +109,7 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireOperator(request);
     if (auth instanceof NextResponse) return auth;
+    const operator = auth;
 
     const body = await request.json();
     const { action, ...data } = body;
@@ -120,9 +133,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // CRITICAL-2 fix: operatorId vem da sessão, não do body.
     const reading = await createReading({
       clientId: parseResult.data.clientId,
-      operatorId: parseResult.data.operatorId,
+      operatorId: operator.id,
       matrixData: parseResult.data.matrixData,
     });
 
@@ -150,6 +164,7 @@ export async function PATCH(request: NextRequest) {
   try {
     const auth = await requireOperator(request);
     if (auth instanceof NextResponse) return auth;
+    const operator = auth;
 
     const body = await request.json();
     const { readingId, matrixData, status } = body;
@@ -161,14 +176,27 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
+    // CRITICAL-1 fix: verificar ownership antes de modificar.
+    const reading = await getReading(readingId);
+    if (!reading) {
+      return NextResponse.json(
+        { error: 'Leitura não encontrada' },
+        { status: 404 }
+      );
+    }
+    if (reading.operatorId !== operator.id) {
+      return NextResponse.json(
+        { error: 'Acesso negado' },
+        { status: 403 }
+      );
+    }
+
     if (matrixData) {
-      // Update matrix data
       const updated = await updateMatrixData(readingId, matrixData);
       return NextResponse.json({ reading: updated });
     }
 
     if (status) {
-      // Update status
       const validStatuses = ['PENDING', 'COMPLETED'];
       if (!validStatuses.includes(status)) {
         return NextResponse.json(
@@ -201,6 +229,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const auth = await requireOperator(request);
     if (auth instanceof NextResponse) return auth;
+    const operator = auth;
 
     const { searchParams } = new URL(request.url);
     const readingId = searchParams.get('readingId');
@@ -209,6 +238,21 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json(
         { error: 'readingId é obrigatório' },
         { status: 400 }
+      );
+    }
+
+    // CRITICAL-1 fix: verificar ownership antes de deletar.
+    const reading = await getReading(readingId);
+    if (!reading) {
+      return NextResponse.json(
+        { error: 'Leitura não encontrada' },
+        { status: 404 }
+      );
+    }
+    if (reading.operatorId !== operator.id) {
+      return NextResponse.json(
+        { error: 'Acesso negado' },
+        { status: 403 }
       );
     }
 
