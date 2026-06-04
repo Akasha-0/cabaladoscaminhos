@@ -75,6 +75,8 @@ next-env.d.ts
 /.claude/scripts/autonomous/
 /.claude/memory/
 /.claude/rules/
+/.claude/scheduled_tasks.json
+/.hermes/
 /.remember/
 /.mavis/plans.tmp/
 /.omp/runtime/
