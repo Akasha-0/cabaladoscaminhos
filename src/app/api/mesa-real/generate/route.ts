@@ -190,7 +190,7 @@ async function generateHouseContent(
   client: ClientMaps,
   apiKey: string,
   llmModel: string,
-  log: AppLogger,
+  log: AppLogger
 ): Promise<{ content: string; tokensUsed: number }> {
   const systemPrompt = buildSystemPrompt();
   const userPayload = buildHousePayload(
@@ -533,7 +533,7 @@ export async function POST(request: NextRequest) {
               client,
               apiKey,
               llmModel,
-              log,
+              log
             );
 
             // AD-22.5: Incrementa contador de tokens

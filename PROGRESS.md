@@ -42,6 +42,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 27 | **Alinhamento Final** (Docs 16-22: schema, numerology, cockpit, correlation, AI synthesis, observabilidade) | `2646c4bc` | ✅ |
 | 43 | **Cockpit autofill completo** (36 cartas Lenormand × 8 odús Ifá, bug-fix Ejiokô/Ejeonlê) | `98575fe1` | ✅ |
 | 44 | **AD-23.2 Geolocalização + timezone** (Nominatim, MFA testTimeout 15s) | `f8a9da46` | ✅ |
+| 53 | **Validação + Correções** (Badge variants, SupabaseProvider removido, AI/UI validações) | `c2f8aab3` | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
