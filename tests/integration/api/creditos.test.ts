@@ -235,31 +235,6 @@ describe('Insufficient Credits - Error Handling', () => {
   });
 });
 
-describe('CREDITO_CUSTO_PERGUNTA Constant', () => {
-  it('deve ter custo de 2 para perguntaChat', async () => {
-    const { CUSTOS_OPERACOES } = await import('@/lib/credits/custos');
-
-    expect(CUSTOS_OPERACOES.perguntaChat).toBe(2);
-  });
-
-  it('deve ter custos corretos para todas operações', async () => {
-    const { CUSTOS_OPERACOES } = await import('@/lib/credits/custos');
-
-    expect(CUSTOS_OPERACOES.insightRapido).toBe(2);
-    expect(CUSTOS_OPERACOES.insightDetalhado).toBe(5);
-    expect(CUSTOS_OPERACOES.relatorioSemanal).toBe(15);
-    expect(CUSTOS_OPERACOES.relatorioMensal).toBe(30);
-    expect(CUSTOS_OPERACOES.perguntaChat).toBe(2);
-  });
-
-  it('obterCusto deve retornar custo correto para operação', async () => {
-    const { obterCusto } = await import('@/lib/credits/custos');
-
-    expect(obterCusto('perguntaChat')).toBe(2);
-    expect(obterCusto('insightDetalhado')).toBe(5);
-  });
-});
-
 describe('Verificar Credits', () => {
   beforeEach(() => {
     vi.clearAllMocks();

@@ -574,24 +574,24 @@
     }
   ],
   "regression": {
-      "totalIssues": 50,
+    "baseline":     {
+      "totalIssues": 43,
+      "unusedFiles": 0,
+      "unusedExports": 37,
       "unusedTypes": 3,
       "unusedDependencies": 3,
       "unusedDevDependencies": 0,
       "unusedOptionalDependencies": 0,
       "unusedEnumMembers": 0,
       "unusedClassMembers": 0,
-      "unusedFiles": 0,
-      "unusedExports": 37,
       "unresolvedImports": 0,
-      "unlistedDependencies": 1,
+      "unlistedDependencies": 0,
       "duplicateExports": 0,
       "circularDependencies": 0,
       "reExportCycles": 0,
       "typeOnlyDependencies": 0,
       "testOnlyDependencies": 0,
-      "boundaryViolations": 0,
-      "staleSuppressions": 7
+      "boundaryViolations": 0
     }
   }
 }
