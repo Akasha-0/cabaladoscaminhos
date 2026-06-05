@@ -292,10 +292,109 @@ describe('getOperatorFromServerContext', () => {
 
     if (savedFlag !== undefined) process.env.ALLOW_DEV_AUTH_BYPASS = savedFlag;
   });
-
   it('returns null when nothing is set', async () => {
     cookieStore.current = {};
     const result = await getOperatorFromServerContext();
     expect(result).toBeNull();
+  });
+
+  // ========================================================================
+  // COCKPIT_BYPASS_TOKEN (Fase 510)
+  // ========================================================================
+  // O env COCKPIT_BYPASS_TOKEN bypassa auth SOMENTE quando o request
+  // carrega o mesmo token. Não confundir com COCKPIT_AUTH_BYPASS=true
+  // (wide-open, sem token).
+  // ========================================================================
+
+  it('COCKPIT_BYPASS_TOKEN: returns mock when header carries matching token', async () => {
+    const saved = process.env.COCKPIT_BYPASS_TOKEN;
+    process.env.COCKPIT_BYPASS_TOKEN = 'omokomorode';
+    cookieStore.current = { 'x-cockpit-bypass': 'omokomorode' };
+    mockFindUnique.mockClear();
+
+    const result = await getOperatorFromServerContext();
+
+    expect(result).toMatchObject({ role: 'ADMIN', id: 'cockpit-bypass-dev' });
+    expect(mockFindUnique).not.toHaveBeenCalled(); // mock operator, no DB
+
+    if (saved !== undefined) process.env.COCKPIT_BYPASS_TOKEN = saved;
+    else delete process.env.COCKPIT_BYPASS_TOKEN;
+  });
+
+  it('COCKPIT_BYPASS_TOKEN: returns mock when cookie carries matching token', async () => {
+    const saved = process.env.COCKPIT_BYPASS_TOKEN;
+    process.env.COCKPIT_BYPASS_TOKEN = 'omokomorode';
+    cookieStore.current = { cockpit_bypass: 'omokomorode' };
+    mockFindUnique.mockClear();
+
+    const result = await getOperatorFromServerContext();
+
+    expect(result).toMatchObject({ role: 'ADMIN' });
+    expect(mockFindUnique).not.toHaveBeenCalled();
+
+    if (saved !== undefined) process.env.COCKPIT_BYPASS_TOKEN = saved;
+    else delete process.env.COCKPIT_BYPASS_TOKEN;
+  });
+
+  it('COCKPIT_BYPASS_TOKEN: returns null when token does not match', async () => {
+    const saved = process.env.COCKPIT_BYPASS_TOKEN;
+    process.env.COCKPIT_BYPASS_TOKEN = 'omokomorode';
+    cookieStore.current = { 'x-cockpit-bypass': 'wrong-token' };
+    mockFindUnique.mockClear();
+
+    const result = await getOperatorFromServerContext();
+
+    expect(result).toBeNull();
+    expect(mockFindUnique).not.toHaveBeenCalled();
+
+    if (saved !== undefined) process.env.COCKPIT_BYPASS_TOKEN = saved;
+    else delete process.env.COCKPIT_BYPASS_TOKEN;
+  });
+
+  it('COCKPIT_BYPASS_TOKEN: returns null when token not present in request', async () => {
+    const saved = process.env.COCKPIT_BYPASS_TOKEN;
+    process.env.COCKPIT_BYPASS_TOKEN = 'omokomorode';
+    cookieStore.current = {};
+    mockFindUnique.mockClear();
+
+    const result = await getOperatorFromServerContext();
+
+    expect(result).toBeNull();
+
+    if (saved !== undefined) process.env.COCKPIT_BYPASS_TOKEN = saved;
+    else delete process.env.COCKPIT_BYPASS_TOKEN;
+  });
+
+  it('COCKPIT_BYPASS_TOKEN: length-mismatch rejects without DB lookup', async () => {
+    const saved = process.env.COCKPIT_BYPASS_TOKEN;
+    process.env.COCKPIT_BYPASS_TOKEN = 'omokomorode';
+    cookieStore.current = { 'x-cockpit-bypass': 'omokomorodeEXTRA' };
+    mockFindUnique.mockClear();
+
+    const result = await getOperatorFromServerContext();
+
+    expect(result).toBeNull();
+    expect(mockFindUnique).not.toHaveBeenCalled();
+
+    if (saved !== undefined) process.env.COCKPIT_BYPASS_TOKEN = saved;
+    else delete process.env.COCKPIT_BYPASS_TOKEN;
+  });
+
+  it('COCKPIT_AUTH_BYPASS=true wins over COCKPIT_BYPASS_TOKEN (wide-open)', async () => {
+    const savedFlag = process.env.COCKPIT_AUTH_BYPASS;
+    const savedToken = process.env.COCKPIT_BYPASS_TOKEN;
+    process.env.COCKPIT_AUTH_BYPASS = 'true';
+    process.env.COCKPIT_BYPASS_TOKEN = 'omokomorode';
+    cookieStore.current = {}; // no token, mas wide-open deve ganhar
+    mockFindUnique.mockClear();
+
+    const result = await getOperatorFromServerContext();
+
+    expect(result).toMatchObject({ role: 'ADMIN' });
+
+    if (savedFlag !== undefined) process.env.COCKPIT_AUTH_BYPASS = savedFlag;
+    else delete process.env.COCKPIT_AUTH_BYPASS;
+    if (savedToken !== undefined) process.env.COCKPIT_BYPASS_TOKEN = savedToken;
+    else delete process.env.COCKPIT_BYPASS_TOKEN;
   });
 });
