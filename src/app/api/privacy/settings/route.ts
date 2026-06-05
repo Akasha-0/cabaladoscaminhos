@@ -1,6 +1,7 @@
 import { requireOperator } from '@/lib/auth/operator-session';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { searchParamsToObject } from '@/lib/api/query-params';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 
@@ -79,9 +80,9 @@ const DEMO_PRIVACY_SETTINGS: z.infer<typeof PrivacySettingsSchema> = {
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const parseResult = PrivacySettingsQuerySchema.safeParse({
-    include: searchParams.get('include'),
-  });
+  const parseResult = PrivacySettingsQuerySchema.safeParse(
+    searchParamsToObject(searchParams, ['include'])
+  );
 
   if (!parseResult.success) {
     return NextResponse.json({

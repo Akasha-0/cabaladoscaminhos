@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { orixas, odus } from '@/lib/data/spiritual-data';
 import { TAROT_DECK } from '@/lib/tarot/cards';
+import { searchParamsToObject } from '@/lib/api/query-params';
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const SearchQuerySchema = z.object({
@@ -295,14 +296,9 @@ function searchTarot(query: string): SearchResult[] {
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
-    const parseResult = SearchQuerySchema.safeParse({
-      q: url.searchParams.get('q'),
-      type: url.searchParams.get('type'),
-      element: url.searchParams.get('element'),
-      sefirot: url.searchParams.get('sefirot'),
-      chakra: url.searchParams.get('chakra'),
-      orixa: url.searchParams.get('orixa'),
-    });
+    const parseResult = SearchQuerySchema.safeParse(
+      searchParamsToObject(url.searchParams, ['q', 'type', 'element', 'sefirot', 'chakra', 'orixa'])
+    );
 
     if (!parseResult.success) {
       return NextResponse.json({

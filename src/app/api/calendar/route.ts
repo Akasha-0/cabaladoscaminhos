@@ -4,6 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
+import { searchParamsToObject } from '@/lib/api/query-params';
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const CalendarQuerySchema = z.object({
@@ -249,15 +250,9 @@ function getLunarPhase(date: Date): { phase: LunarPhase['phase']; illumination: 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const parseResult = CalendarQuerySchema.safeParse({
-      month: searchParams.get('month'),
-      year: searchParams.get('year'),
-      orixa: searchParams.get('orixa'),
-      type: searchParams.get('type'),
-      sefirot: searchParams.get('sefirot'),
-      chakra: searchParams.get('chakra'),
-      element: searchParams.get('element'),
-    });
+    const parseResult = CalendarQuerySchema.safeParse(
+      searchParamsToObject(searchParams, ['month', 'year', 'orixa', 'type', 'sefirot', 'chakra', 'element'])
+    );
 
     if (!parseResult.success) {
       return NextResponse.json({

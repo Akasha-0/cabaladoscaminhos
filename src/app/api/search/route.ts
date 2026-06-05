@@ -5,10 +5,11 @@
 // Includes filters by category, element, orixa
 // ============================================================
 
- import { NextRequest, NextResponse } from 'next/server';
- import { z } from 'zod';
- import { orixas, odus } from '@/lib/data/spiritual-data';
- import { TAROT_DECK } from '@/lib/tarot/cards';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { orixas, odus } from '@/lib/data/spiritual-data';
+import { TAROT_DECK } from '@/lib/tarot/cards';
+import { searchParamsToObject } from '@/lib/api/query-params';
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SearchTypeSchema = z.enum(['odu', 'orixa', 'ritual', 'tarot']);
 
@@ -376,14 +377,9 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
 
-    const parseResult = SearchQuerySchema.safeParse({
-      q: searchParams.get('q'),
-      query: searchParams.get('query'),
-      categories: searchParams.get('categories'),
-      elements: searchParams.get('elements'),
-      orixas: searchParams.get('orixas'),
-      limit: searchParams.get('limit'),
-    });
+    const parseResult = SearchQuerySchema.safeParse(
+      searchParamsToObject(searchParams, ['q', 'query', 'categories', 'elements', 'orixas', 'limit'])
+    );
 
     if (!parseResult.success) {
       return NextResponse.json({
