@@ -48,6 +48,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 56 | **Test Isolation Fix** (resetMemoryStore para rate-limit; beforeEach em checkAuthRateLimit; 8716 testes passando) | `e3395392` | ✅ |
 | Fase A | **Fundações do Monorepo** (Extração de engines em packages e redirect de imports; 8.780 testes passando) | `9fb64489` | ✅ |
 | Fase B | **Grimório & pgvector** (Modelos AkashaUser/GrimoireEntry, sincronizador de Markdown via Ollama e webhook; 8.784 testes passando) | (este commit) | ✅ |
+| Fase C | **Schema B2C + Auth Akasha + Portal Onboarding** (9 modelos B2C, enums, migration; akasha-jwt/guard; 5 rotas auth + /api/akasha/chart; grupo (akasha)/ com layout + onboarding 4-steps + 4 placeholders; 8.783 testes passando) | `2a1b1eb` | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -87,7 +88,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 |---------|--------|
 | `npx tsc --noEmit` | 0 erros |
 | `npm run build` | sucesso (Next.js 16, 145 rotas/páginas) |
-| `npm run test:run` | **8784 testes passando** · 29 skipped · 0 falhando · ~37s (Fase B Grimório) |
+| `npm run test:run` | **8783 testes passando** · 29 skipped · 1 falhando (pré-existente: mapa-alma orixá correlation) · ~44s (Fase C B2C) |
 | `npx fallow` | 0 issues (limpo em sprints anteriores) |
 | `npx knip` | 3 unused files (auditados, todos com contexto legítimo) + 1 unused dep real (corrigido) |
 | LOC src (TS/TSX) | 117.100 (478 arquivos) |
