@@ -175,11 +175,11 @@ metadata:
    - [ ] Test:core passa
    - [ ] Mensagem de commit segue AGENTS.md §10
 10. **Quando parar e perguntar** — gatilhos de dúvida (NÃO adivinhar):
-    - Brief diz "componente de Tarot" mas não diz qual arcano/dado
+    - Brief diz "nó da Mandala" mas não diz qual pilar/dado (casa, corpo, Odu)
     - Múltiplas interpretações de layout equally válidas
-    - Pedido toca engine espiritual (regra do AGENTS.md §5 — parar
-      e pedir)
-    - Mudança no `akasha-tokens.css` (afeta tema inteiro)
+    - Pedido toca motor espiritual `packages/core-*` (regra do AGENTS.md §5 —
+      parar e pedir)
+    - Mudança nos tokens cósmicos / `@theme` (afeta tema inteiro — Doc 26)
     - Qualquer `rm` ou mudança destrutiva
 
 ### 4.2 Profile `frontend`
@@ -297,16 +297,17 @@ exec hermes --profile frontend --skill frontend-cabala,requesting-code-review \
 ## 5. Fluxo de uso típico
 
 ```bash
-# 1) Gabriel decide criar um widget de leitura
-$ frontend-task "Cria widget de leitura de Odu com búzios usando shadcn Card.
-  Mostra o Odu sorteado, o significado e o signo (Orixá regente).
-  Deve ter teste em tests/components/cockpit/leituras/."
+# 1) Gabriel decide criar um nó da Mandala
+$ frontend-task "Cria o nó do núcleo (Ori/Odus) da Mandala: búzio/ponto de luz
+  pulsante no centro, glow dourado (token ori), clicável, com tooltip do Odu
+  regente e Orixás. SVG/D3, mobile-first. Teste em
+  apps/b2c-portal/__tests__/components/mandala/."
 
 # 2) Hermes (com skill carregada) executa o workflow de 10 passos
 #    e ao final imprime:
-# ✅ Branch feat/odu-reading-widget criada
+# ✅ Branch feat/mandala-ori-node criada
 # ✅ Componente + teste implementados
-# ✅ npm run test:core -- odu-reading passou
+# ✅ npm run test:core -- mandala-ori passou
 # ✅ tsc --noEmit limpo
 # ✅ Commit + PR draft criados
 # 🔗 https://github.com/Akasha-0/cabala-dos-caminhos/pull/NNN
@@ -338,8 +339,8 @@ $ frontend-review 487
 | `npx tsc --noEmit` falha | Agente roda no passo 8 | Itera até 3x corrigindo, depois para e pede input |
 | `npm run test:core` falha | Passo 7 | Itera até 3x corrigindo, depois para |
 | Branch já existe | `git rev-parse --verify` antes de criar | Pergunta: reaproveitar ou nome novo |
-| Touch em arquivo espiritual (`src/lib/engines/**`) | Pattern de path no workflow | Para e lembra: regra do AGENTS.md §5, escalar para agente principal |
-| Touch em `akasha-tokens.css` | Pattern no workflow | Para e pergunta: mudança de tema é decisão grande |
+| Touch em motor espiritual (`packages/core-*/**`) | Pattern de path no workflow | Para e lembra: regra do AGENTS.md §5, escalar para agente principal |
+| Touch nos tokens cósmicos / `@theme` (Doc 26) | Pattern no workflow | Para e pergunta: mudança de tema é decisão grande |
 | Token da LLM cai / rate limit | Mensagem de erro do provider | Reporta e para; não tenta fallback automático |
 
 ## 7. Testes / validação da implementação
@@ -357,9 +358,9 @@ manualmente após implementação:
 6. Skill passa pelo validador do `skill_manage` (frontmatter
    válido, ≤ 1024 chars descrição, ≤ 100k chars total)
 7. Smoke test real: `frontend-task "Lista os componentes em
-   src/components/ui/"` — agente responde com a lista correta
+   apps/b2c-portal/components/ui/"` — agente responde com a lista correta
 8. Smoke test de PR: `frontend-task "Adiciona um comentário
-   "// frontend-agent test" em src/components/ui/button.tsx, abre
+   "// frontend-agent test" em apps/b2c-portal/components/ui/button.tsx, abre
    PR draft e reverte o comentário"` — verifica fluxo completo
 
 > **Nota:** os smoke tests com efeito colateral (item 8) devem ser
