@@ -12,7 +12,7 @@
 //   passadas ligadas diretamente às dívidas cabalísticas (13, 14, 16, 19).
 
 import type { EnergyHealingMap } from '@/types';
-import { buildKabalisticMap } from './numerology-kabalah';
+import { buildKabalisticMap } from '@akasha/core-cabala';
 
 export function buildEnergyHealingMap(
   birthDate: string,

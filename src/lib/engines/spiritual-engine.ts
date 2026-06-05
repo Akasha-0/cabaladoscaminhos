@@ -6,9 +6,9 @@
  * @version 1.0.0
  */
 
-import { calculateNumerology } from '@/lib/numerologia/generator';
-import { drawOdu, type Odu, type DrawResult } from '@/lib/ifa/draw';
-import { getBirthChart } from '@/lib/astrologia/birth-chart';
+import { calculateNumerology } from '@akasha/core-cabala';
+import { drawOdu, type Odu, type DrawResult } from '@akasha/core-odus';
+import { getBirthChart } from '@akasha/core-astrology';
 import { getData as getChakraData } from '@/lib/chakra/v4/chakra-v4-data';
 import { DeepCorrelationEngine } from '@/lib/ai/deep-correlation-engine';
 import type { UserSpiritualData } from '@/lib/ai/types';
@@ -17,8 +17,8 @@ import {
   getQuizilasPorOdu,
   getPreceitosPorOdu,
   getEbósPorOdu,
-} from '@/lib/odus/calculos';
-import type { Signo } from '@/lib/astrologia/tipos';
+} from '@akasha/core-odus';
+import type { Signo } from '@akasha/core-astrology';
 import type {
   BirthProfile,
   MapaAlmaCompleto,
@@ -277,7 +277,7 @@ function parseAstrologyResults(
   const sol = raw.planets.find((p) => p.planet === 'sol');
   const sign = (sol?.sign ?? 'aries') as Signo;
   const toPos = (p: { planet: string; longitude: number; sign: string } | undefined) =>
-    ({ planeta: (p?.planet ?? 'sol') as import('@/lib/astrologia/tipos').Planeta, longitude: p?.longitude ?? 0, latitude: 0, distancia: 1, velocidade: 0, signo: (p?.sign ?? 'aries') as Signo, casa: 1, grauNoSigno: Math.floor((p?.longitude ?? 0) % 30) + 1 });
+    ({ planeta: (p?.planet ?? 'sol') as import('@akasha/core-astrology').Planeta, longitude: p?.longitude ?? 0, latitude: 0, distancia: 1, velocidade: 0, signo: (p?.sign ?? 'aries') as Signo, casa: 1, grauNoSigno: Math.floor((p?.longitude ?? 0) % 30) + 1 });
   const chironP = raw.planets.find((p) => p.planet === 'chiron');
   const lilithP = raw.planets.find((p) => p.planet === 'lilith');
   // Count planets by element
@@ -343,8 +343,8 @@ const ASTROLOGY_FALLBACK: AstrologyResults = {
   urano: { planeta: 'urano', longitude: 210, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario', casa: 11, grauNoSigno: 1 },
   netuno: { planeta: 'netuno', longitude: 240, latitude: 0, distancia: 1, velocidade: 0, signo: 'peixes', casa: 12, grauNoSigno: 1 },
   plutao: { planeta: 'plutao', longitude: 270, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio', casa: 8, grauNoSigno: 1 },
-  chiron: { planeta: 'chiron' as import('@/lib/astrologia/tipos').Planeta, longitude: 0, latitude: 0, distancia: 13.7, velocidade: 0.05295, signo: 'aries', casa: 1, grauNoSigno: 1 },
-  lilith: { planeta: 'lilith' as import('@/lib/astrologia/tipos').Planeta, longitude: 120, latitude: 0, distancia: 0.00257, velocidade: 0.054, signo: 'leao', casa: 5, grauNoSigno: 1 },
+  chiron: { planeta: 'chiron' as import('@akasha/core-astrology').Planeta, longitude: 0, latitude: 0, distancia: 13.7, velocidade: 0.05295, signo: 'aries', casa: 1, grauNoSigno: 1 },
+  lilith: { planeta: 'lilith' as import('@akasha/core-astrology').Planeta, longitude: 120, latitude: 0, distancia: 0.00257, velocidade: 0.054, signo: 'leao', casa: 5, grauNoSigno: 1 },
   elementos: { fire: 3, earth: 3, air: 3, water: 3 },
   modalidades: { cardinal: 3, fixed: 3, mutable: 3 },
   casas: Array.from({ length: 12 }, (_, i) => ({

@@ -34,13 +34,13 @@ vi.mock('@/lib/redis', () => ({
 import {
   calcularTantrica,
   getInterpretacao,
-} from '@/lib/numerologia/calculos';
+  NUMEROLOGY_ODU_CORRELATIONS,
+} from '@akasha/core-cabala';
 import {
   calcularOduNascimento,
   odusData,
-} from '@/lib/odus/calculos';
+} from '@akasha/core-odus';
 import { ODU_TAROT_CORRELATIONS } from '@/lib/correlation/correlation-types';
-import { NUMEROLOGY_ODU_CORRELATIONS } from '@/lib/numerologia/odu-correlations';
 import { getData as getChakraData } from '@/lib/chakra/v4/chakra-v4-data';
 import { DAY_CORRELATIONS } from '@/lib/correlation/SpiritualCorrelationEngine';
 

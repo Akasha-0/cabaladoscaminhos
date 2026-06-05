@@ -23,11 +23,20 @@ export {
 
 // Numerologia auxiliar
 // Numerologia auxiliar — cálculos base
-export { somarDigitos, calcularPitagorica, calcularCaldeia, calcularCabalistica, calcularTantrica, calcularPitagoricaData, isMasterNumber, tabelaPitagorica, tabelaCaldeia, tabelaCabalistica } from './calculos';
+export { somarDigitos, calcularPitagorica, calcularCaldeia, calcularCabalistica, calcularTantrica, calcularPitagoricaData, isMasterNumber, tabelaPitagorica, tabelaCaldeia, tabelaCabalistica, getInterpretacao } from './calculos';
 export { getMeaning, getMeanings, getMasterNumbers, getCoreNumbers } from './number-meanings';
 export { getCiclosTemporais, calcularAnoPessoal } from './ciclos';
 export { calcularCaminhoVida } from './life-path';
 
+// Generator
+export type { NumerologyResult, NumerologyReport } from './generator';
+export { calculateNumerology, numerologyMethods } from './generator';
+
 // Sefirot — Árvore da Vida
 export type { SefiraMeaning } from './sefirot-meanings';
 export { getMeanings as getSefirotMeanings } from './sefirot-meanings';
+
+// Odu Correlations
+export { NUMEROLOGY_ODU_CORRELATIONS } from './odu-correlations';
+export type { NumerologyOdúCorrelation } from './odu-correlations';
+

@@ -96,8 +96,8 @@ function makeValidToken(operatorId: string, role: 'OPERATOR' | 'ADMIN' = 'OPERAT
 // ============================================================================
 
 describe('OPERATOR_LOGIN_PATH', () => {
-  it('aponta para /cockpit/login', () => {
-    expect(OPERATOR_LOGIN_PATH).toBe('/cockpit/login');
+  it('aponta para /login', () => {
+    expect(OPERATOR_LOGIN_PATH).toBe('/login');
   });
 });
 
@@ -121,18 +121,18 @@ describe('requireOperatorPage', () => {
     expect(mockRedirect).not.toHaveBeenCalled();
   });
 
-  it('redireciona para /cockpit/login quando não há cookie', async () => {
+  it('redireciona para /login quando não há cookie', async () => {
     cookieStore.current = {};
 
-    await expect(requireOperatorPage()).rejects.toThrow('NEXT_REDIRECT:/cockpit/login');
-    expect(mockRedirect).toHaveBeenCalledWith('/cockpit/login');
+    await expect(requireOperatorPage()).rejects.toThrow('NEXT_REDIRECT:/login');
+    expect(mockRedirect).toHaveBeenCalledWith('/login');
   });
 
   it('redireciona quando o cookie JWT é inválido', async () => {
     cookieStore.current = { cockpit_session: 'invalid.jwt' };
 
-    await expect(requireOperatorPage()).rejects.toThrow('NEXT_REDIRECT:/cockpit/login');
-    expect(mockRedirect).toHaveBeenCalledWith('/cockpit/login');
+    await expect(requireOperatorPage()).rejects.toThrow('NEXT_REDIRECT:/login');
+    expect(mockRedirect).toHaveBeenCalledWith('/login');
   });
 
   it('redireciona quando a session foi revogada', async () => {
@@ -143,15 +143,15 @@ describe('requireOperatorPage', () => {
       revokedAt: new Date(),
     });
 
-    await expect(requireOperatorPage()).rejects.toThrow('NEXT_REDIRECT:/cockpit/login');
-    expect(mockRedirect).toHaveBeenCalledWith('/cockpit/login');
+    await expect(requireOperatorPage()).rejects.toThrow('NEXT_REDIRECT:/login');
+    expect(mockRedirect).toHaveBeenCalledWith('/login');
   });
 
   it('NÃO redireciona via dev header em produção', async () => {
     process.env.NODE_ENV = 'production';
     headerStore.current = { 'x-dev-operator-id': 'op-dev' };
 
-    await expect(requireOperatorPage()).rejects.toThrow('NEXT_REDIRECT:/cockpit/login');
+    await expect(requireOperatorPage()).rejects.toThrow('NEXT_REDIRECT:/login');
   });
 });
 

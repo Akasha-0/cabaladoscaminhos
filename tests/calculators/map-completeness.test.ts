@@ -8,10 +8,10 @@
 // Coords: Sao Paulo, SP (lat=-23.5505, lon=-46.6333)
 
 import { describe, it, expect } from 'vitest';
-import { buildKabalisticMap } from '@/lib/calculators/numerology-kabalah';
-import { buildTantricMap } from '@/lib/calculators/numerology-tantric';
-import { calculateBirthOdu } from '@/lib/calculators/odu-birth';
-import { getBirthChart, type BirthChart } from '@/lib/astrologia/birth-chart';
+import { buildKabalisticMap } from '@akasha/core-cabala';
+import { buildTantricMap } from '@akasha/core-tantra';
+import { calculateBirthOdu } from '@akasha/core-odus';
+import { getBirthChart, type BirthChart } from '@akasha/core-astrology';
 
 const NOME_ELIANE = 'Eliane Simao de Almeida';
 const DATA_ELIANE = '20/08/1986';

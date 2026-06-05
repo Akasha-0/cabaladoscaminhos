@@ -8,9 +8,9 @@ import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } fr
  * @version 1.0.0
  */
 
-import type { NumerologyResult } from '../../numerologia/calculator';
-import type { Odu, DrawResult } from '../../ifa/draw';
-import type { MapaNatal, Planeta, Signo, Aspecto, Casa, PosicaoPlaneta } from '../../astrologia/tipos';
+import type { NumerologyResult } from '@akasha/core-cabala';
+import type { Odu, DrawResult } from '@akasha/core-odus';
+import type { MapaNatal, Planeta, Signo, Aspecto, Casa, PosicaoPlaneta } from '@akasha/core-astrology';
 import type { CardMeaning } from '../../tarot/meanings';
 import type { ChakraV4Data } from '../../chakra/v4/chakra-v4-data';
 

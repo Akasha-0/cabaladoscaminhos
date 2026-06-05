@@ -97,7 +97,7 @@ describe('POST /api/operator/auth/forgot-password', () => {
     });
     expect(mockCreate).toHaveBeenCalled();
     expect(mockConsoleInfo).toHaveBeenCalledWith(
-      expect.stringContaining('[password-reset] Token gerado')
+      expect.stringContaining('[password-reset] Reset solicitado')
     );
     // Fase 57: PASSWORD_RESET_REQUESTED security event
     expect(mockLogSecurityEvent).toHaveBeenCalled();

@@ -10,7 +10,7 @@ import React, { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { useKeyboardShortcuts, type KeyboardShortcut } from '@/hooks/use-keyboard-shortcuts';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
-import { type OduInfo } from '@/lib/ifa/odu-data';
+import { type OduInfo } from '@akasha/core-odus';
 import { cn } from '@/lib/utils';
 import { useCockpitStore, type CartaCiganaOption } from '@/stores/cockpit-store';
 import { CockpitHeader } from './CockpitHeader';

@@ -35,9 +35,9 @@ async function ensureUserExists(user: { id: string; email: string; name: string 
         data: {
           id: user.id,
           email: user.email,
-          name: user.name,
+          nomeCompleto: user.name,
+          dataNascimento: new Date(0),
           passwordHash: '!bypass-no-password!',
-          role: 'ADMIN',
         },
       });
     }

@@ -24,6 +24,21 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@akasha/types": [
+        "./packages/types/src/index.ts"
+      ],
+      "@akasha/core-astrology": [
+        "./packages/core-astrology/src/index.ts"
+      ],
+      "@akasha/core-cabala": [
+        "./packages/core-cabala/src/index.ts"
+      ],
+      "@akasha/core-odus": [
+        "./packages/core-odus/src/index.ts"
+      ],
+      "@akasha/core-tantra": [
+        "./packages/core-tantra/src/index.ts"
       ]
     },
     "lib": [

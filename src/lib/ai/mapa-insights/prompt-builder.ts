@@ -5,7 +5,7 @@
 
 import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 import type { InsightData } from './types';
-import type { PosicaoPlaneta } from '@/lib/astrologia/tipos';
+import type { PosicaoPlaneta } from '@akasha/core-astrology';
 
 // ============================================================
 // SYSTEM PROMPT

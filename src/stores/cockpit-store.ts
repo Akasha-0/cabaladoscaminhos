@@ -2,7 +2,7 @@
 // Global state for Cockpit Oracular
 
 import { create } from 'zustand';
-import type { OduInfo } from '@/lib/ifa/odu-data';
+import type { OduInfo } from '@akasha/core-odus';
 
 export interface CartaCiganaOption {
   numero: number;

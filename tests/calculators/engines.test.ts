@@ -17,7 +17,7 @@ import {
   calculateRulingArcana,
   calculatePersonalCycles,
   buildKabalisticMap,
-} from '@/lib/calculators/numerology-kabalah';
+} from '@akasha/core-cabala';
 import {
   calculateSoul,
   calculateKarma,
@@ -25,8 +25,8 @@ import {
   calculateDestiny,
   calculateTantricPath,
   buildTantricMap,
-} from '@/lib/calculators/numerology-tantric';
-import { calculateBirthOdu } from '@/lib/calculators/odu-birth';
+} from '@akasha/core-tantra';
+import { calculateBirthOdu } from '@akasha/core-odus';
 
 const NOME_ELIANE = 'Eliane Simão de Almeida';
 const DATA_ELIANE = '1986-08-20';

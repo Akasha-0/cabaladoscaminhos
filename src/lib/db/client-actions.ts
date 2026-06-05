@@ -97,10 +97,10 @@ export async function createClientWithMaps(
 ): Promise<CreateClientResult> {
   try {
     // Lazy imports para evitar custo de boot no módulo (estes arquivos não são leves)
-    const { buildKabalisticMap } = await import('@/lib/calculators/numerology-kabalah');
-    const { buildTantricMap } = await import('@/lib/calculators/numerology-tantric');
-    const { calculateBirthOdu } = await import('@/lib/calculators/odu-birth');
-    const { getBirthChart } = await import('@/lib/astrologia/birth-chart');
+    const { buildKabalisticMap } = await import('@akasha/core-cabala');
+    const { buildTantricMap } = await import('@akasha/core-tantra');
+    const { calculateBirthOdu } = await import('@akasha/core-odus');
+    const { getBirthChart } = await import('@akasha/core-astrology');
 
     // Cálculo dos 4 mapas
     let astrologyMap: unknown = null;

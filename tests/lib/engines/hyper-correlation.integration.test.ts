@@ -13,7 +13,7 @@ import {
   getSignature,
   MASTER_NUMBER_CORRELATIONS
 } from '@/lib/correlation/cross-tradition';
-import { isMasterNumber } from '@/lib/numerologia/calculos';
+import { isMasterNumber } from '@akasha/core-cabala';
 
 const PROFILES = {
   standard: { nomeCompleto: 'Maria da Silva', dataNascimento: '1990-05-15', hora: '14:30', cidade: 'São Paulo', estado: 'SP', pais: 'Brasil' },

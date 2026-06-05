@@ -22,8 +22,7 @@ export default async function DadosNataisPage() {
   const operator = await getOperatorFromServerContext();
   if (!operator) redirect('/login');
 
-  const client = await prisma.soulBlueprint.findUnique({
-    where: { userId: operator.id },
+  const client = await prisma.client.findFirst({
     select: {
       id: true,
       fullName: true,
@@ -37,8 +36,6 @@ export default async function DadosNataisPage() {
       kabalisticMap: true,
       tantricMap: true,
       oduBirth: true,
-      forestMedicineMap: true,
-      energyHealingMap: true,
     },
   });
 
@@ -79,12 +76,6 @@ export default async function DadosNataisPage() {
           kabalistic={client.kabalisticMap}
           tantric={client.tantricMap}
           odu={client.oduBirth}
-          forestMedicine={client.forestMedicineMap}
-          energyHealing={client.energyHealingMap}
-          clientId={client.id}
-          birthCity={client.birthCity}
-          birthState={client.birthState}
-          birthCountry={client.birthCountry}
         />
       </section>
     </div>

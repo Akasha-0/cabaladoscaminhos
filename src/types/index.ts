@@ -244,3 +244,39 @@ export interface TantricMap {
     kundaliniMessage: string;
   };
 }
+
+export interface ReikiSymbol {
+  symbol: string;
+  name: string;
+  purpose: string;
+  chakraTarget: string;
+}
+
+export interface GroundingProtocol {
+  technique: string;
+  purpose: string;
+  rationale: string;
+}
+
+export interface EnergyHealingMap {
+  reikiSymbols: ReikiSymbol[];
+  groundingProtocol: GroundingProtocol;
+}
+
+export interface AyahuascaProtocol {
+  name: string;
+  dosage: string;
+  rationale: string;
+}
+
+export interface RecomendedRape {
+  name: string;
+  purpose: string;
+  indication: string;
+}
+
+export interface ForestMedicineMap {
+  ayahuascaProtocol: AyahuascaProtocol;
+  recomendedRapes: RecomendedRape[];
+  spiritualWarning: string;
+}

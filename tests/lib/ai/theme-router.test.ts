@@ -7,7 +7,7 @@ import {
 } from '@/lib/ai/dossier/consult-context';
 import type { ClientMaps } from '@/lib/ai/dossier/oracle-prompt-builder';
 import type { MatrixData } from '@/types';
-import type { BirthChart } from '@/lib/astrologia/birth-chart';
+import type { BirthChart } from '@akasha/core-astrology';
 
 describe('THEME_TAXONOMY', () => {
   it('todo tema tem casas primárias, aspectos e keywords', () => {

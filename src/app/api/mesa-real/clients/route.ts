@@ -5,6 +5,7 @@
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireOperator } from '@/lib/auth/operator-session';
+import { prisma } from '@/lib/prisma';
 import {
   createClientWithMaps,
   getClient,
@@ -154,6 +155,33 @@ export async function PATCH(request: NextRequest) {
       }
 
       case 'update': {
+        const existing = await prisma.client.findUnique({
+          where: { id: clientId },
+          select: { fullName: true, birthDate: true }
+        });
+        
+        if (!existing) {
+          return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 });
+        }
+        
+        const finalName = data.fullName ?? existing.fullName;
+        const finalBirthDate = data.birthDate ? new Date(data.birthDate) : existing.birthDate;
+        
+        const duplicate = await prisma.client.findFirst({
+          where: {
+            fullName: finalName,
+            birthDate: finalBirthDate,
+            id: { not: clientId },
+          },
+        });
+        
+        if (duplicate) {
+          return NextResponse.json(
+            { error: 'Consulente com este nome e data de nascimento já cadastrado' },
+            { status: 409 }
+          );
+        }
+
         const client = await updateClient(clientId, data);
         log.info('client.updated', { operatorId: operator.id, clientId });
         return NextResponse.json({ client });

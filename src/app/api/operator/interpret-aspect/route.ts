@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Fetch Client profile
-    const client = await prisma.soulBlueprint.findUnique({
+    const client = await prisma.client.findUnique({
       where: { id: clientId },
       select: {
         fullName: true,

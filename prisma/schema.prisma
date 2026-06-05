@@ -423,12 +423,43 @@ model User {
   stripeSubscriptionId String? @unique
   planoAssinatura      String?
 
+  llmSetting UserLlmSetting?
+
   @@index([planoAssinatura])
   @@index([createdAt])
   @@index([dataNascimento])
   @@index([stripeSubscriptionId])
   @@map("users")
 }
+
+model UserLlmSetting {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  provider        String   @default("openai")
+  openaiKey       String?
+  openaiModel     String   @default("gpt-4o")
+  minimaxKey      String?
+  minimaxModel    String   @default("minimax/m3")
+  anthropicKey    String?
+  anthropicModel  String   @default("claude-3-5-sonnet")
+  localEndpoint   String   @default("http://localhost:1234/v1")
+  localModel      String   @default("meta-llama-3-8b-instruct")
+  geminiKey       String?
+  geminiModel     String   @default("gemini-1.5-flash")
+  groqKey         String?
+  groqModel       String   @default("llama-3.3-70b-versatile")
+  deepseekKey     String?
+  deepseekModel   String   @default("deepseek-chat")
+  openrouterKey   String?
+  openrouterModel String   @default("google/gemini-2.5-flash")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_llm_settings")
+}
+
 
 // =====================
 // MAPA NATAL (Cálculos)

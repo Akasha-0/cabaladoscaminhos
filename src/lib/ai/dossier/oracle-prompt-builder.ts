@@ -16,7 +16,7 @@ import {
 import { getLenormandCardById } from '@/lib/constants/lenormand-cards';
 import { getOduById } from '@/lib/constants/odus';
 import type { MatrixData } from '@/types';
-import type { BirthChart } from '@/lib/astrologia/birth-chart';
+import type { BirthChart } from '@akasha/core-astrology';
 
 /**
  * Normalizes a BirthChart to the flat key format expected by extractFromMap.

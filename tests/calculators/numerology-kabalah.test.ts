@@ -18,7 +18,7 @@ import {
   calculateKarmicDebts,
   calculatePersonalCycles,
   buildKabalisticMap,
-} from '@/lib/calculators/numerology-kabalah';
+} from '@akasha/core-cabala';
 
 const TEST_NAME = 'Eliane Simão de Almeida';
 const TEST_DATE = '1986-08-20';

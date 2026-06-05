@@ -4,7 +4,7 @@ import {
   buildHousePayload,
   type ClientMaps,
 } from '@/lib/ai/dossier/oracle-prompt-builder';
-import type { BirthChart } from '@/lib/astrologia/birth-chart';
+import type { BirthChart } from '@akasha/core-astrology';
 
 // Mock BirthChart with all required fields for Casa 1 and Casa 34 extractions
 const mockBirthChart: BirthChart = {

@@ -26,8 +26,8 @@ import {
   type TransitAspect,
   type MoonPhase,
 } from './transit-engine';
-import { getBirthChart, type BirthChart } from '@/lib/astrologia/birth-chart';
-import { calculateNumerology } from '@/lib/numerologia/generator';
+import { getBirthChart, type BirthChart } from '@akasha/core-astrology';
+import { calculateNumerology } from '@akasha/core-cabala';
 
 // ============================================================
 // TYPES

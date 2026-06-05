@@ -1,5 +1,5 @@
 // Chart library - skipped linting and formatting
-import type { Aspecto, Casa } from '../astrologia/tipos';
+import type { Aspecto, Casa } from '@akasha/core-astrology';
 
 /**
  * Chart types

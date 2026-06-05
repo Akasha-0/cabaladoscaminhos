@@ -46,6 +46,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | 54 | **B2C Legacy Removal** (AD-17.4: 39 API routes + 3 pages + 9 tests removidos; 8716 tests passando) | `c456b8e0` | ✅ |
 | 55 | **Multi-Agent Validation + Gap Resolution** (4/4 agents PASS, CM-01 + S6 gaps fixed, 91.9% quality) | `23effc47` | ✅ |
 | 56 | **Test Isolation Fix** (resetMemoryStore para rate-limit; beforeEach em checkAuthRateLimit; 8716 testes passando) | `e3395392` | ✅ |
+| Fase A | **Fundações do Monorepo** (Extração de engines em packages e redirect de imports; 8.780 testes passando) | (este commit) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -76,17 +77,16 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 
 ## 3. Estado Atual
 
-### 3.1 Métricas (Fase 489 — atualizado 2026-06-03)
+### 3.1 Métricas (Fase A — atualizado 2026-06-05)
 
-> Ver `memory/cycle-489.md` para diff completo desta fase. Baseline pré-existente
-> (Fase 18) está desatualizada — métricas abaixo refletem estado verificado em
-> Jun 3, 2026.
+> Ver `memory/cycle-515.md` para diff completo de Fase A. Baseline pré-existente
+> reflete estado verificado em Jun 5, 2026.
 
 | Métrica | Status |
 |---------|--------|
 | `npx tsc --noEmit` | 0 erros |
 | `npm run build` | sucesso (Next.js 16, 144 rotas/páginas) |
-| `npm run test:run` | **8716 testes passando** · 29 skipped · 0 falhando (causados) · ~36s (após Fase 54 B2C removal) |
+| `npm run test:run` | **8780 testes passando** · 29 skipped · 0 falhando · ~39s (Fase A Monorepo) |
 | `npx fallow` | 0 issues (limpo em sprints anteriores) |
 | `npx knip` | 3 unused files (auditados, todos com contexto legítimo) + 1 unused dep real (corrigido) |
 | LOC src (TS/TSX) | 116.831 (472 arquivos) |

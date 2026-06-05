@@ -92,7 +92,7 @@ function makeValidToken(operatorId: string, role: 'OPERATOR' | 'ADMIN' = 'OPERAT
 // ============================================================================
 
 describe('SMOKE — Operator auth gate', () => {
-  // Lista de páginas Operator que DEVEM redirecionar para /cockpit/login
+  // Lista de páginas Operator que DEVEM redirecionar para /login
   // quando não há cookie. O gate em si é o mesmo helper em todas —
   // /cockpit/* via /cockpit/layout.tsx; /dashboard/mesa-real e
   // /dashboard/clientes via layouts próprios. Aqui validamos o
@@ -107,7 +107,7 @@ describe('SMOKE — Operator auth gate', () => {
     '/dashboard/clientes',
   ];
 
-  it('SMOKE: cada rota Operator redireciona para /cockpit/login sem cookie', async () => {
+  it('SMOKE: cada rota Operator redireciona para /login sem cookie', async () => {
     cookieStore.current = {}; // sem cookie
     headerStore.current = {}; // sem dev header
 
@@ -115,11 +115,11 @@ describe('SMOKE — Operator auth gate', () => {
       mockRedirect.mockReset();
       // O smoke test chama o helper. Cada página (page.tsx) chama
       // requireOperatorPage() no topo; o layout faz o mesmo. Sem
-      // cookie, ambos devem lançar NEXT_REDIRECT para /cockpit/login.
+      // cookie, ambos devem lançar NEXT_REDIRECT para /login.
       await expect(
         requireOperatorPage().then(() => 'rendered')
-      ).rejects.toThrow('NEXT_REDIRECT:/cockpit/login');
-      expect(mockRedirect).toHaveBeenCalledWith('/cockpit/login');
+      ).rejects.toThrow('NEXT_REDIRECT:/login');
+      expect(mockRedirect).toHaveBeenCalledWith('/login');
       // Pequena pausa para isolar logs entre rotas
       await new Promise((r) => setImmediate(r));
     }

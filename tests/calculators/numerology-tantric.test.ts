@@ -19,7 +19,7 @@ import {
   calculateDestiny,
   calculateTantricPath,
   buildTantricMap,
-} from '@/lib/calculators/numerology-tantric';
+} from '@akasha/core-tantra';
 
 const TEST_DATE = '1986-08-20';
 

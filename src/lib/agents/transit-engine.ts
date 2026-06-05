@@ -11,9 +11,7 @@
 // 100% DINÂMICO - funciona para QUALQUER data.
 // ============================================================
 
-import { getPositions, type PlanetPosition } from '@/lib/astrologia/planet-positions';
-import { getBirthChart, type BirthChart } from '@/lib/astrologia/birth-chart';
-import { findAspects } from '@/lib/astrologia/aspect-finder';
+import { getPositions, type PlanetPosition, getBirthChart, type BirthChart, findAspects } from '@akasha/core-astrology';
 
 // ============================================================
 // TYPES

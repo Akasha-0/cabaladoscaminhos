@@ -12,7 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LENORMAND_CARDS } from '@/lib/constants/lenormand-cards';
 import { HOUSES_36 } from '@/lib/divination/house-delegation';
-import { oduData, type OduInfo } from '@/lib/ifa/odu-data';
+import { ODUS_IFA, type OduInfo } from '@akasha/core-odus';
+const oduData: OduInfo[] = ODUS_IFA;
 import { cn } from '@/lib/utils';
 import { useCockpitStore, type CartaCiganaOption } from '@/stores/cockpit-store';
 
@@ -236,7 +237,7 @@ function HouseInputPopoverInner({ casaNumero, onClose, onSave }: HouseInputPopov
                   Odu {selectedOdu.numero} - {selectedOdu.nome}
                 </span>
                 <div className="flex gap-1 mt-1">
-                  {selectedOdu.orixas.map((orixa) => (
+                  {selectedOdu.orixaRegente.split(',').map(s => s.trim()).map((orixa) => (
                     <Badge
                       key={orixa}
                       variant="outline"
@@ -277,7 +278,7 @@ function HouseInputPopoverInner({ casaNumero, onClose, onSave }: HouseInputPopov
                     <span className="text-xs text-secondary font-mono w-6">{odu.numero}</span>
                     <span className="text-sm">{odu.nome}</span>
                     <span className="text-xs text-muted-foreground/70 ml-auto">
-                      {odu.orixas[0]}
+                      {odu.orixaRegente.split(',')[0]?.trim()}
                     </span>
                   </button>
                 ))

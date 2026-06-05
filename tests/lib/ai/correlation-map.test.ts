@@ -5,7 +5,7 @@ import {
   extractFromMap,
 } from '@/lib/ai/correlation-map';
 import { normalizeBirthChart } from '@/lib/ai/dossier/oracle-prompt-builder';
-import type { BirthChart } from '@/lib/astrologia/birth-chart';
+import type { BirthChart } from '@akasha/core-astrology';
 
 describe('CORRELATION_MAP — as 36 casas da Mesa Real', () => {
   it('tem exatamente 36 entradas', () => {

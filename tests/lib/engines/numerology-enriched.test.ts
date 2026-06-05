@@ -6,8 +6,8 @@ import {
   calculatePinnacles,
   calculateLifeCycles,
   buildKabalisticMap,
-} from '@/lib/calculators/numerology-kabalah';
-import { buildTantricMap } from '@/lib/calculators/numerology-tantric';
+} from '@akasha/core-cabala';
+import { buildTantricMap } from '@akasha/core-tantra';
 
 describe('numerology-kabalah — enriched fields (Doc 04 §2.2)', () => {
 

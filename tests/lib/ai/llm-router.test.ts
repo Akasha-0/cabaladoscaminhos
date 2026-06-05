@@ -12,7 +12,7 @@ vi.mock('@/lib/auth/operator-session', () => ({
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
   prisma: {
-    operatorLlmSetting: {
+    userLlmSetting: {
       findUnique: vi.fn(),
     },
   },
@@ -56,7 +56,7 @@ describe('llm-router - Configuration & Fallbacks', () => {
 
   it('uses env fallbacks when operator has no custom settings', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue(null);
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue(null);
 
     process.env.LLM_PROVIDER = 'minimax';
     process.env.MINIMAX_API_TOKEN = 'env-minimax-key';
@@ -71,7 +71,7 @@ describe('llm-router - Configuration & Fallbacks', () => {
 
   it('loads operator LLM settings from database', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       operatorId: 'op-1',
       provider: 'local',
       localEndpoint: 'http://my-local-llama:11434/v1',
@@ -99,7 +99,7 @@ describe('llm-router - Completion Execution', () => {
 
   it('calls OpenAI sdk when provider is openai', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'openai',
       openaiKey: 'key-123',
       openaiModel: 'gpt-4o-custom',
@@ -127,7 +127,7 @@ describe('llm-router - Completion Execution', () => {
 
   it('routes to custom endpoint when provider is local', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'local',
       localEndpoint: 'http://localhost:11434/v1',
       localModel: 'llama-local',
@@ -153,7 +153,7 @@ describe('llm-router - Completion Execution', () => {
 
   it('calls Minimax REST API v2 when provider is minimax', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'minimax',
       minimaxKey: 'mini-key',
       minimaxModel: 'minimax/m3-custom',
@@ -187,7 +187,7 @@ describe('llm-router - Completion Execution', () => {
 
   it('calls Anthropic REST API when provider is anthropic', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'anthropic',
       anthropicKey: 'claude-key',
       anthropicModel: 'claude-3-custom',
@@ -232,7 +232,7 @@ describe('llm-router - Completion Execution', () => {
 
   it('calls Gemini when provider is gemini', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'gemini',
       geminiKey: 'gemini-key-123',
       geminiModel: 'gemini-1.5-pro-custom',
@@ -259,7 +259,7 @@ describe('llm-router - Completion Execution', () => {
 
   it('calls Groq when provider is groq', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'groq',
       groqKey: 'groq-key-123',
       groqModel: 'llama-custom',
@@ -286,7 +286,7 @@ describe('llm-router - Completion Execution', () => {
 
   it('calls DeepSeek when provider is deepseek', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'deepseek',
       deepseekKey: 'ds-key-123',
       deepseekModel: 'deepseek-chat-custom',
@@ -313,7 +313,7 @@ describe('llm-router - Completion Execution', () => {
 
   it('calls OpenRouter when provider is openrouter', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'openrouter',
       openrouterKey: 'or-key-123',
       openrouterModel: 'or-model-custom',
@@ -353,7 +353,7 @@ describe('llm-router - Streaming Execution', () => {
 
   it('streams OpenAI tokens using async generators', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'openai',
       openaiKey: 'key-123',
       openaiModel: 'gpt-4o',
@@ -384,7 +384,7 @@ describe('llm-router - Streaming Execution', () => {
 
   it('streams Anthropic token events using readable streams', async () => {
     vi.mocked(getOperatorFromServerContext).mockResolvedValue({ id: 'op-1' } as any);
-    vi.mocked(prisma.operatorLlmSetting.findUnique).mockResolvedValue({
+    vi.mocked(prisma.userLlmSetting.findUnique).mockResolvedValue({
       provider: 'anthropic',
       anthropicKey: 'claude-key',
       anthropicModel: 'claude-3',

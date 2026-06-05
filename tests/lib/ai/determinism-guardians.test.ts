@@ -7,8 +7,8 @@ import { describe, it, expect } from 'vitest';
 import { CORRELATION_MAP } from '@/lib/ai/correlation-map';
 import { routeQuestion } from '@/lib/ai/theme-router';
 import { getLenormandCardById } from '@/lib/constants/lenormand-cards';
-import { calculateLifePath } from '@/lib/calculators/numerology-kabalah';
-import { calculateSoul, calculateKarma, calculateDivineGift } from '@/lib/calculators/numerology-tantric';
+import { calculateLifePath } from '@akasha/core-cabala';
+import { calculateSoul, calculateKarma, calculateDivineGift } from '@akasha/core-tantra';
 
 // Helper types — match the internal shape of POST /api/mesa-real/save
 type CasaData = {

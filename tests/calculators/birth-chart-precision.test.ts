@@ -20,9 +20,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { calcularPosicao, getSigno, getGrauNoSigno, normalizeDegrees } from '@/lib/astrologia/swiss-ephemeris';
-import { getBirthChart, type BirthChart } from '@/lib/astrologia/birth-chart';
-import type { Planeta, Signo } from '@/lib/astrologia/tipos';
+import { calcularPosicao, getSigno, getGrauNoSigno, normalizeDegrees, getBirthChart, type BirthChart, type Planeta, type Signo } from '@akasha/core-astrology';
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 
