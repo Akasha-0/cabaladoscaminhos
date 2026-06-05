@@ -1,8 +1,10 @@
-# Sistema Multi-Agente de Evolução Contínua — Cabala dos Caminhos
+# Sistema Multi-Agente de Evolução Contínua — Sistema Akasha
 
-> **Versão:** 1.0 | **Data:** 2026-06-04
-> **Baseado em:** Doc 20 (Governança de Conteúdo), Doc 24 (Guia de Agentes IA), Doc 06 (Motor de IA), Doc 17 (Arquitetura Interface)
+> **Norte:** Doc 25.
+> **Versão:** 1.1 | **Data:** 2026-06-04
+> **Baseado em:** Doc 25 (Visão Akasha) + Doc 26 (Identidade Akasha) no topo da hierarquia; Doc 20 (Governança do Grimório), Doc 24 (Guia de Agentes IA), Doc 06 (Motor de IA)
 > **Operacionaliza:** AD-20.7 (crescimento aditivo versionado) e o fluxo de fases do AGENTS.md §11
+> **Alvo de produto:** os agentes evoluem o `apps/b2c-portal` (Akasha) e os `packages/core-*` (Doc 25 §11). O `apps/legacy-cockpit` (Mesa Real B2B) só é tocado para manutenção até o desligamento (AD-25.2).
 
 ---
 
@@ -50,11 +52,12 @@ O sistema opera em **ciclos de evolução** (fases). Cada ciclo produz:
 **Responsabilidade:** Validar correlações esotéricas, glossários, e a integridade da base de conhecimento oracular.
 
 **Domínio:**
-- `src/lib/ai/correlation-map.ts` (36 casas)
-- `src/lib/constants/lenormand-cards.ts` (36 cartas)
-- `src/lib/constants/odus.ts` (16 Odus)
+- `src/lib/ai/correlation-map.ts` (o Grafo de cruzamento dos 4 Pilares)
+- `src/lib/constants/odus.ts` (16 Odus — Pilar da Terra)
+- `grimorio/**` (as 4 bibliotecas: botanica/vibracional/ancestral/diagnostico — Doc 25 §5)
 - `IDEIA.md` (ledger de correspondências)
-- Doc 06 (Matriz de Correlação), Doc 15 (Glossário), Doc 20 (Governança)
+- `src/lib/constants/lenormand-cards.ts` (36 cartas — *legacy-cockpit*, fora do Akasha)
+- Doc 06 (Matriz de Correlação), Doc 15 (Glossário), Doc 20 (Governança do Grimório), Doc 25 (Visão), Doc 26 (Identidade/voz)
 
 **Gate (Cabala Corr Validator):**
 ```
@@ -89,42 +92,44 @@ AD-20.6: proveniência rastreável?
 **Gate:**
 ```
 AD-20.7: crescimento é aditivo e versionado?
-Motor de IA: 0 perguntas abertas no dossiê (Doc 06)?
-RAG: contexto fechado ao que foi calculado (Doc 12)?
-Swarm: 12 agentes cobrem os domínios do IDEIA.md?
+3 camadas: Determinístico → Grafo → Síntese separados (Doc 25 §4)?
+RAG: busca híbrida (JSONB + pgvector) injeta só o Grimório (Doc 25 §5)?
+Anti-alucinação: síntese nunca inventa ritual/erva fora do contexto?
+Embeddings: Ollama local (localhost:11434), fallback cloud opcional?
 ```
 
 **Output:**
 - Validação de arquitetura (✅/⚠️/❌)
-- Melhorias propostas (circuit breaker, fallback, cache, streaming)
-- Novas capacidades de swarm sugeridas
+- Melhorias propostas (circuit breaker, fallback, cache do céu no Redis, streaming SSE)
+- Refino do Grafo de Conhecimento e da busca híbrida
 - Gaps de CM-01 (Casa 5 Kabalah extractionKey)
 
 ---
 
 ### 3.3 `ui-ux-evolution` — Evolução UI/UX
 
-**Responsabilidade:** Validar a interface contra o Doc 17 (Arquitetura da Mesa Real) e propor melhorias de UX.
+**Responsabilidade:** Validar a interface do `apps/b2c-portal` contra o Doc 26 (Identidade Akasha) e propor melhorias de UX mobile-first.
 
 **Domínio:**
-- `src/components/cockpit/*` (CockpitSidebar, HouseCell, HouseInputPopover, DossierViewer)
-- `src/stores/cockpit-store.ts`
-- `src/app/cockpit/page.tsx`
-- Doc 13 (Identidade Ramiro v2), Doc 17 (Interface Única), Doc 05 (UI/UX — superseded)
+- `apps/b2c-portal/**` — onboarding (Quiz Espiritual), Mandala Toroidal, Dashboard Diário, Manifesto, Agente Oracular
+- componentes da Mandala (Three.js/R3F atmosfera + SVG/D3 dados + glassmorphism)
+- estado de UI (Zustand)
+- Doc 26 (Identidade Akasha — paleta cósmica, voz), Doc 25 §2/§8 (Mandala, frontend)
 
 **Gate:**
 ```
-AD-17.3: ZERO modais (só popovers)?
-AD-17.5: 3 zonas (Sidebar/Cells/Dossier)?
-Paleta Ramiro: laranja (#F97316) + royal (#2547D0)?
-Tipografia: Cinzel/Cormorant/JetBrains Mono/Lora?
-Grid 9×4 cells?
+Mandala: WebGL (atmosfera) separado de SVG/D3 (dados clicáveis)?
+Paleta cósmica: violeta #7C5CFF / aurora #2DD4BF / ori #F0B429 (Doc 26 §3)?
+Tipografia: Cinzel/Cormorant/Lora/JetBrains Mono + Inter (UI mobile)?
+Mobile-first absoluto + PWA (Doc 25 §8)?
+Voz do Oráculo: magnética/cósmica, nunca genérica/fatalista (Doc 26 §7)?
+i18n: next-intl (pt-BR/en) desde o dia zero?
 ```
 
 **Output:**
-- Validação de UI (22/24 checks)
-- Melhorias de UX propostas (interações, estados, feedback)
-- Anomalias visuais detectadas
+- Validação de UI contra o Design System Akasha
+- Melhorias de UX propostas (descoberta progressiva, glows, animações, estados)
+- Anomalias visuais / resíduos da identidade Ramiro (laranja+royal) a aposentar
 
 ---
 
@@ -163,11 +168,12 @@ Health checks: /api/health + /api/health/live?
 **Responsabilidade:** Validar que a base de conhecimento está fundamentada com fontes reais e não contém alucinações.
 
 **Domínio:**
+- `grimorio/**` (as 4 bibliotecas em Markdown+YAML — a verdade do RAG, Doc 25 §5)
 - `src/lib/swarm/knowledge-base.ts` (dados espirituais seededs)
-- `src/lib/constants/lenormand-cards.ts`
 - `src/lib/constants/odus.ts`
 - `IDEIA.md` (ledger)
-- Doc 11 (Cálculo Determinístico), Doc 15 (Glossário)
+- `src/lib/constants/lenormand-cards.ts` (*legacy-cockpit*)
+- Doc 11 (Cálculo Determinístico), Doc 15 (Glossário), Doc 20 (Governança do Grimório)
 
 **Gate:**
 ```
@@ -269,10 +275,10 @@ Serial (dependências):
 | Tests | `npm run test:run` = 0 falhas | Vitest |
 | Lint | `npm run lint` = 0 warnings | ESLint |
 | Correlação | AD-20.1..20.9 validados | cabala-corr-validator |
-| Arquitetura | Doc 06 + Doc 12 respeitados | arch-ai-engineer |
-| UI/UX | Doc 17 + Doc 13 respeitados | ui-ux-evolution |
+| Arquitetura | Doc 25 §4–5 (3 camadas + RAG) + Doc 06 | arch-ai-engineer |
+| UI/UX | Doc 26 (Identidade Akasha) + Doc 25 §2/§8 | ui-ux-evolution |
 | DevOps | Doc 19 + Doc 22 respeitados | devops-qa-tester |
-| Conhecimento | Doc 15 + Doc 20 respeitados | knowledge-validator |
+| Conhecimento | Doc 15 + Doc 20 (Grimório) respeitados | knowledge-validator |
 
 **QUALITY_SCORE** = (gates_aprovados / total_gates)
 
@@ -288,12 +294,12 @@ Cada ciclo gera:
 
 ### 6.2 Ledger de Correlações
 
-`IDEIA.md` = fonte da verdade para todas as correspondências esotéricas.
+`IDEIA.md` = fonte da verdade para todas as correspondências esotéricas (precede o frontmatter do Grimório, Doc 20 AD-20.5).
 Formato por entrada:
 ```md
 ## <Sistema A> ↔ <Sistema B>: <correspondência>
-- Afirmação: <ex.: "Casa 24 (O Coração) delega Vênus + Lua + 5ª Casa">
-- Tradição: <Cabalística | Lenormand | Ifá/Merindilogun | Astrologia | …>
+- Afirmação: <ex.: "Manjericão (erva fria) atua sobre Lua em Escorpião + Odu Ejioko para aterrar o Ori">
+- Tradição: <Cabalística | Tântrica | Ifá/Merindilogun | Astrologia | Magia natural | …>
 - Fonte: <livro, autor, edição/página | Doc interno nº | tradição oral verificável>
 - Status: <validado | provisório (D#) >
 - Data / Autor: <YYYY-MM-DD / nome>
@@ -348,15 +354,15 @@ npm run validate:devops        # devops-qa-tester
 
 ## 9. Regras de Ouro do Sistema
 
-1. **Nunca inventar correspondência.** Toda correlação precisa de fonte (AD-20.1).
-2. **Nunca fugir da documentação.** Hierarquia: Doc 17 → Doc 18 → Doc 23 → Doc 16 → Doc 13 → Doc 11 → Doc 06 → Doc 20.
+1. **Nunca inventar correspondência.** Toda correlação precisa de fonte (AD-20.1); a síntese só redige o Grimório (Doc 25 §5).
+2. **Nunca fugir da documentação.** Hierarquia: **Doc 25 (Visão) → Doc 26 (Identidade) →** Doc 04 → Doc 03 → Doc 06 → Doc 11 → Doc 20. Docs B2B (13, 16, 17, 18) são legado/referência histórica.
 3. **Testes antes de assertar.** `npm run test:run` deve passar antes de declarar vitória.
 4. **Qualitative Score mínimo: 91%.** Se abaixo, gap antes de nova feature.
 5. **Cada ciclo gera memória.** `memory/cycle-NNN.md` é obrigatório.
 6. **Cirúrgico.** Não melhorar código adjacente fora do escopo.
-7. **Fonte única por conceito.** Lenormand → `lenormand-cards.ts`, Odus → `odus.ts`, Correlação → `correlation-map.ts`.
+7. **Fonte única por conceito.** Odus → `odus.ts`, Correlação/Grafo → `correlation-map.ts`, magia natural → `grimorio/**`. (Lenormand → `lenormand-cards.ts`, só no `legacy-cockpit`.)
 
 ---
 
-*Doc superpowers/multi-agent/MULTI-AGENT-SYSTEM.md — Sistema de Evolução Contínua*
-*Operacionaliza: Doc 20 §6 (Motor de Inteligência) + AGENTS.md §11 (workflow de fases)*
+*Doc superpowers/multi-agent/MULTI-AGENT-SYSTEM.md — Sistema de Evolução Contínua do Akasha*
+*Operacionaliza: Doc 20 §6 (Motor de Inteligência) + AGENTS.md §11 (workflow de fases). Norte: Doc 25 + Doc 26.*

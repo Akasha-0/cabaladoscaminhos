@@ -1,6 +1,8 @@
 # Documento 16 — Revisão de Arquitetura & Plano de Decisões
 
-## Cabala dos Caminhos
+## Cabala dos Caminhos — LEGADO B2B
+
+> ⚠️ **LEGADO B2B — referência histórica (não-canônico).** Este documento pertence ao produto **Cockpit Oracular / Mesa Real (B2B)**, descontinuado com o pivô para o **Sistema Akasha (B2C)**. Permanece apenas como registro do `apps/legacy-cockpit` (mantido durante a migração, depois desligado). **Visão vigente: Doc 25 (Visão Akasha) + Doc 26 (Identidade Akasha).** Não usar como fonte para o produto Akasha. As decisões de arquitetura (ADRs AD-16.x) e o veredito de plataforma B2B aqui registrados referem-se ao Cockpit legado.
 
 > **Tipo:** Auditoria de arquitetura (Visão × Realidade) + Registro de Decisões (ADR) + Plano priorizado
 > **Versão:** 1.0 | **Data:** 2026-06-02

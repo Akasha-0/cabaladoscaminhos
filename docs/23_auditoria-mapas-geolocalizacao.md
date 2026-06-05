@@ -1,9 +1,10 @@
 # Documento 23 — Auditoria de Completude dos Mapas Natais, Geolocalização & Precisão da IA
-## Cabala dos Caminhos
-> **Tipo:** Auditoria (código × visão) + decisões de arquitetura para **precisão dos 4 mapas** e da análise por casa.
-> **Versão:** 1.1 | **Data:** 2026-06-03
-> **Motivação:** a visão exige que a IA gere o **diagnóstico preciso de cada uma das 36 casas** cruzando os 4 mapas natais. Isso só é possível se os mapas estiverem **completos, com todos os aspectos**. Esta auditoria mede o estado real e decide como fechar as lacunas.
-> **Relação:** confronta o código com Doc 04 §2 (estrutura dos mapas) e Doc 11 (cálculo); alimenta o Doc 18 (contratos) e o Doc 06 (correlação por casa). Registrado no painel (Doc 21).
+## Sistema Akasha
+> **Norte:** Doc 25.
+> **Tipo:** Auditoria (código × visão) + decisões de arquitetura para **precisão dos 4 mapas (os 4 Pilares)** e do cruzamento que alimenta a Mandala/Dashboard.
+> **Versão:** 1.2 | **Data:** 2026-06-03
+> **Motivação:** a visão exige que a IA emita o **diagnóstico unificado** cruzando os 4 mapas natais (os 4 Pilares — Doc 25 §1) com o céu de hoje. Isso só é possível se os mapas estiverem **completos, com todos os aspectos**. Esta auditoria mede o estado real e decide como fechar as lacunas — e é **pré-condição da precisão** do produto.
+> **Relação:** confronta o código com Doc 04 §3 (estrutura dos 4 mapas, agnóstica e preservada) e Doc 11 (cálculo); alimenta o Grafo de Conhecimento (Doc 25 §4) e a geolocalização do onboarding (Doc 25 §6). Os engines auditados aqui são os `packages/core-*` (Doc 25 §11).
 
 ---
 
@@ -17,7 +18,7 @@
 | **Astrologia** | 13 | 6 | **46%** | 🔴 **bloqueador crítico** |
 | **Geral** | 44 | 37 | **84%** | 🔴 astrologia + geolocalização travam a precisão |
 
-> **Conclusão:** numerologias (cabalística e tântrica) estão **sólidas e completas**. O **elo fraco é a Astrologia** — e, por trás dela, a **ausência de geolocalização**. Sem Ascendente/casas confiáveis e sem elementos/modalidades, o cruzamento por casa (Doc 06) perde profundidade exatamente onde a visão pede precisão.
+> **Conclusão:** numerologias (cabalística e tântrica) estão **sólidas e completas** — dois dos quatro Pilares já blindados. O **elo fraco é a Astrologia** (Pilar do Céu/Macro) — e, por trás dela, a **ausência de geolocalização**. Sem Ascendente/casas confiáveis e sem elementos/modalidades, o cruzamento dos pilares (Grafo, Doc 25 §4) perde profundidade exatamente onde a visão pede precisão. O Anel Cósmico da Mandala (Doc 26 §6) depende deste mapa.
 
 ---
 
@@ -32,15 +33,15 @@ Produz `soul/karma/divineGift` (+ `*Body` + `*Description`), `destiny` (soma dos
 - **Higiene:** tipo com 5 campos mortos (`sacredGeometry`, `chakraStates`, `energyMatrix`, `elementBalances`, `kundaliniState`) + `tantricBodies` genérico redundante com `bodies[]`.
 
 ### 2.3 Odu de Nascimento — ⚠️ provisório
-Produz `oduNumber`, `oduName`, `orixaRegency[]`, `elementalForce`, `lifeLesson`, `provisional`.
-- **`provisional` é sempre `true`** — algoritmo default dia+mês (Doc 11 §4.1); aguarda a **tabela de linhagem do operador (D3)**.
-- `orixaRegency` retorna **só o primeiro** orixá; o Doc 04 §2.4 prevê vários (ex.: `["Xangô","Oxalá"]`).
+Produz `oduNumber`, `oduName`, `orixaRegency[]`, `elementalForce`, `lifeLesson`, `provisional`. Este é o Pilar da Terra/Ori (Doc 25 §1), o núcleo da Mandala (Doc 26 §6).
+- **`provisional` é sempre `true`** — algoritmo default dia+mês (Doc 11 §4.1); aguarda a **tabela de linhagem do curador (D3)**.
+- `orixaRegency` retorna **só o primeiro** orixá; o Doc 04 §3.4 prevê vários (ex.: `["Xangô","Oxalá"]`).
 - **Higiene:** tipo com ~10 campos mortos (`sign`, `animal`, `owner`, `ebwe`, `message`, `initiationPath`, `prohibitions`, `birthOdu`…).
 
 ### 2.4 Astrologia — 🔴 bloqueador
-`getBirthChart({ birthDate, latitude, longitude })` retorna um shape **`BirthChart`** que **não bate** com o tipo `AstrologyMap` (Doc 04 §2.1). Faltam/diferem:
+`getBirthChart({ birthDate, latitude, longitude })` retorna um shape **`BirthChart`** que **não bate** com o tipo `AstrologyMap` (Doc 04 §3.1). Faltam/diferem:
 
-| Campo exigido (Doc 04 §2.1) | Código | Estado |
+| Campo exigido (Doc 04 §3.1) | Código | Estado |
 |---|---|---|
 | `sun/moon/ascendant` como `{sign,degree,house}` | planetas em array; ascendente como **número (grau)** | ⚠️ estrutura difere; **falta o signo** do Asc/MC |
 | 10 planetas **+ Quíron + Lilith** | só **10 planetas** | ❌ **Quíron e Lilith ausentes** |
@@ -51,44 +52,44 @@ Produz `oduNumber`, `oduName`, `orixaRegency[]`, `elementalForce`, `lifeLesson`,
 | `modalities{cardinal,fixo,mutável}` | — | ❌ ausente |
 | `northNode/southNode` | via `nodes` | ✅ presente |
 
-- **Pré-requisito não atendido:** Ascendente e casas exigem **hora + local exatos**. Sem `lat/lng/timezone`, `createClientWithMaps` cai num **stub** (`sun:'—', ascendant:'—'`).
-- A base de efemérides é a **aproximação própria** (`swiss-ephemeris.ts`), não a Swiss Ephemeris real (Doc 16 AD-04).
+- **Pré-requisito não atendido:** Ascendente e casas exigem **hora + local exatos**. Sem `lat/lng/timezone`, o cálculo cai num **stub** (`sun:'—', ascendant:'—'`).
+- A base de efemérides é a **aproximação própria** (`swiss-ephemeris.ts`), não a Swiss Ephemeris real exigida pela visão (Doc 25 §4: o motor determinístico conecta ao Swiss Ephemeris para o céu exato).
 
 ---
 
 ## 3. Geolocalização — lacuna que trava a precisão astral
 
-> **Achado:** **não existe serviço de geocodificação** no projeto (busca por `geocode`/`nominatim`/`places`/`timezone` = vazio). O `Client` tem `birthLatitude/birthLongitude/birthTimezone` (nullable), mas **nunca são preenchidos automaticamente** a partir da cidade.
+> **Achado:** **não existe serviço de geocodificação** no projeto (busca por `geocode`/`nominatim`/`places`/`timezone` = vazio). O `User` tem `birthLatitude/birthLongitude/birthTimezone` (nullable, Doc 04 §1), mas **nunca são preenchidos automaticamente** a partir da cidade.
 
-Isso contraria o requisito da visão: *"o local de nascimento deveria ser preenchido por geolocalização para maior precisão"*. Sem coordenadas e fuso corretos, **o Ascendente e as 12 casas ficam errados ou ausentes** — degradando justamente a camada astrológica do diagnóstico.
+Isso contraria o requisito da visão: no onboarding ("A Coleta Sagrada", Doc 25 §6), o campo *"Onde você aterrissou?"* deve ser geolocalizado. Sem coordenadas e fuso corretos, **o Ascendente e as 12 casas ficam errados ou ausentes** — degradando justamente o Anel Cósmico (Astrologia) da Mandala.
 
 ---
 
 ## 4. Decisões de Arquitetura
 
 ### AD-23.1 — Astrologia é o bloqueador nº1; fechar o `AstrologyMap` canônico.
-- **Decisão:** definir **um** contrato `AstrologyMap` (o do Doc 04 §2.1) e um **adaptador** que converte a saída de `getBirthChart` para ele — ou realinhar `getBirthChart` para emiti-lo diretamente. O mapa deve conter **todos os aspectos**:
-  - **Quíron + Lilith** (além dos 10 planetas) — exigidos pela Matriz (Casa 7=Lilith, etc., Doc 06).
+- **Decisão:** definir **um** contrato `AstrologyMap` (o do Doc 04 §3.1) e um **adaptador** que converte a saída de `getBirthChart` para ele — ou realinhar `getBirthChart` para emiti-lo diretamente. O mapa deve conter **todos os aspectos**:
+  - **Quíron + Lilith** (além dos 10 planetas) — exigidos pela correlação (Casa 7=Lilith, etc., Doc 06).
   - **`elements` e `modalities`** (contagens) — exigidos pela visão.
   - **`planetsInHouses`** (lookup) — o PromptBuilder depende disso por casa.
   - **Ascendente/MC como `{sign,degree}`** (não só grau).
   - **`nature: harmony|tension`** em cada aspecto.
-- **Justificativa:** sem isso, ~metade das delegações da Matriz (Doc 09 §3) não têm dado para injetar → dossiê genérico onde a visão exige precisão.
+- **Justificativa:** sem isso, ~metade das delegações do Grafo (Doc 06 / Doc 25 §4) não têm dado para cruzar → Dashboard/Manifesto genérico onde a visão exige precisão.
 
-### AD-23.2 — Geolocalização obrigatória para o mapa astral.
-- **Decisão:** criar um serviço `geolocation` (ex.: **Nominatim/OpenStreetMap**, gratuito, ou Google Places — Doc 03 §2) que, no cadastro, converte **cidade/estado/país → `lat/lng/timezone`** e os persiste no `Client` **antes** de calcular o mapa. Cache por localidade.
-- **Regra:** o `astrologyMap` só é considerado **completo** quando há coordenadas + fuso; sem eles, marca-se `incomplete: true` e a UI pede a localização (não gera dossiê astral "estimado" silenciosamente).
-- **UX (Doc 17 Zona A):** o campo "Local de nascimento" é um **autocomplete geolocalizado** que devolve coordenadas — fricção zero, precisão alta.
+### AD-23.2 — Geolocalização obrigatória para o mapa astral (Nominatim no onboarding).
+- **Decisão:** criar um serviço `geolocation` (**Nominatim/OpenStreetMap**, gratuito e soberano — `NOMINATIM_URL`, Doc 03 §5) que, no onboarding, converte **cidade/estado/país → `lat/lng/timezone`** e os persiste no `User` **antes** de calcular o mapa. Cache por localidade.
+- **Regra:** o `astrologyMap` só é considerado **completo** quando há coordenadas + fuso; sem eles, marca-se `incomplete: true` (campo em `BirthChart`, Doc 04 §1) e a UI pede a localização (não gera leitura astral "estimada" silenciosamente — anti-alucinação, Doc 20 AD-20.2).
+- **UX (Doc 25 §6 — "A Coleta Sagrada"):** o campo *"Onde você aterrissou?"* é um **autocomplete geolocalizado** que devolve coordenadas — fricção zero, precisão alta, dentro do ritual cerimonial do onboarding.
 
 ### AD-23.3 — Higiene de tipos: o tipo reflete o que se produz.
 - **Decisão:** os tipos `KabalisticMap`/`TantricMap`/`OduBirth`/`AstrologyMap` devem listar **apenas** campos efetivamente populados. Campos "de futuro" (ex.: `chakraStates`, `sefirotPath`) saem do tipo ou viram um bloco `extensions?` opcional explicitamente marcado como **não calculado ainda**. Elimina expectativa falsa para os agentes de IA que leem os tipos.
-- **Fonte única do shape dos mapas:** os tipos em `src/types` são a verdade; o Doc 04 §2 e os builders seguem-nos (e vice-versa) — sem divergência.
+- **Fonte única do shape dos mapas:** no monorepo, os tipos exportados pelos `packages/core-*` são a verdade; o Doc 04 §3 e os builders seguem-nos (e vice-versa) — sem divergência.
 
 ### AD-23.4 — Odu: linhagem (D3) + regência completa.
-- **Decisão:** substituir o algoritmo provisório dia+mês pela **tabela data→Odu da linhagem do operador (D3)**; enquanto não vier, manter `provisional:true` sinalizado (Doc 20 AD-20.9). `orixaRegency` passa a trazer **todos** os orixás regentes do Odu (Doc 04 §2.4 / glossário Doc 15).
+- **Decisão:** substituir o algoritmo provisório dia+mês pela **tabela data→Odu da linhagem do curador (D3)**; enquanto não vier, manter `provisional:true` sinalizado (Doc 20 AD-20.9). `orixaRegency` passa a trazer **todos** os orixás regentes do Odu (Doc 04 §3.4 / glossário Doc 15).
 
-### AD-23.5 — "Mapas completos" é pré-condição da precisão por casa.
-- **Decisão:** o motor de dossiê (Doc 06/18) só promete precisão se os 4 mapas estiverem completos. Formaliza-se a regra: **cada casa injeta exatamente os aspectos que a Matriz delega** (Doc 09 §3) — e esses aspectos **precisam existir** no mapa. Mapas incompletos ⇒ o dossiê **sinaliza** a lacuna ("dado astral indisponível para esta casa"), nunca inventa (Doc 20 AD-20.2).
+### AD-23.5 — "Mapas completos" é pré-condição da precisão do cruzamento.
+- **Decisão:** o motor de síntese (Grafo + Camada 3, Doc 25 §4) só promete precisão se os 4 mapas estiverem completos. Formaliza-se a regra: **cada nó do cruzamento injeta exatamente os aspectos delegados** (Doc 06 §3) — e esses aspectos **precisam existir** no mapa. Mapas incompletos ⇒ a leitura **sinaliza** a lacuna ("dado astral indisponível"), nunca inventa (Doc 20 AD-20.2).
 
 ### AD-23.6 — Validador de completude dos mapas (teste-guardião).
 - **Decisão:** um validador (teste-guardião, Doc 19 §4.1) verifica, para um cliente de referência, que cada mapa contém **todos** os campos exigidos pelo Doc 04 §2 — e falha o gate se faltar aspecto. Impede regressão silenciosa de completude.
@@ -96,22 +97,22 @@ Isso contraria o requisito da visão: *"o local de nascimento deveria ser preenc
 ---
 
 ## 5. Impacto na IA (por que isto importa para o diagnóstico)
-A análise por casa cruza **significado da casa + carta tirada + Odu tirado + aspecto natal delegado** (Doc 06 §1). A qualidade depende, na ordem:
-1. **Glossário** (significados-base) — ✅ existe (Doc 15).
-2. **Correlação determinística** — ✅ as 36 entradas existem (Doc 06).
+O diagnóstico unificado do Akasha cruza **os 4 Pilares + o céu de hoje** (Doc 25 §1, §4). A qualidade depende, na ordem:
+1. **Grimório/Glossário** (significados-base, magia natural) — ✅ base existe (Doc 15 / Doc 20).
+2. **Correlação determinística** (o Grafo) — ✅ as entradas de cruzamento existem (Doc 06 / Doc 25 §4).
 3. **Mapas natais completos** — ✅ astrologia (AD-23.1) + geolocalização (AD-23.2) resolvidos; AD-23.6 garante que não regride.
-4. **Validador guardião** — ✅ AD-23.6 (Fase 45): `tests/calculators/map-completeness.test.ts` — 6 testes cobrindo os 4 mapas.
-> **Estado atual:** AD-23.1 (astrologia completa com nature+planetsInHouses) e AD-23.2 (timezone) resolvidos. AD-23.6 impede regressão. O gargalo restante é AD-23.4 (D3 — aguardando operador).
+4. **Validador guardião** — ✅ AD-23.6 (Fase 45): `tests/calculators/map-completeness.test.ts` — 6 testes cobrindo os 4 mapas (migram para `packages/core-*` na Cirurgia de Extração).
+> **Estado atual:** AD-23.1 (astrologia completa com nature+planetsInHouses) e AD-23.2 (timezone) resolvidos. AD-23.6 impede regressão. O gargalo restante é AD-23.4 (D3 — aguardando o curador para a tabela de linhagem).
 
 ---
 
 ## 6. Critério de "pronto" (mapas prontos para diagnóstico preciso)
 
 - [x] `AstrologyMap` — AD-23.1 ✅ (2026-06-03): `nature` em aspectos (trino/sextil=harmony, oposicao/quadratura=tension, conjuncao=neutral); `planetsInHouses` em `normalizeBirthChart`; Chiron/Lilith e elementos/modalidades presentes (Fase 29).
-- [ ] `AstrologyMap` canônico (Doc 04 2.1): tipo difere do formato `BirthChart` armazenado (AD-23.3 — baixa prioridade; bridge via `normalizeBirthChart`).
+- [ ] `AstrologyMap` canônico (Doc 04 §3.1): tipo difere do formato `BirthChart` armazenado (AD-23.3 — baixa prioridade; bridge via `normalizeBirthChart`).
 - [ ] Odu com tabela de linhagem (D3) ou `provisional` sinalizado; `orixaRegency` completo (AD-23.4).
 - [x] Validador de completude dos mapas (AD-23.6 ✅ 2026-06-03): `tests/calculators/map-completeness.test.ts` — 6 testes guardioes: KabalaMap (todos os campos numericos e strings), TantricMap (5 bodies + geometria sagrada + chakra states + energy matrix), OduBirth (oduNumber + provisional), AstrologyMap (10 planetas + Chiron/Lilith via chart.planeta + casas + aspectos com nature AD-23.1), aspectos nature consistency, planetsInHouses.
 
 ---
 
-*Doc 23 é a auditoria canônica de completude dos mapas e a decisão de geolocalização. AD-23.1/.2/.6 resolvidos (Fase 43/44/45). Gargalo restante: AD-23.4 (D3 — aguardando operador para tabela de linhagem dos Odus). Registrado no painel (Doc 21 v1.1) como parte da Onda 4/5.*
+*Doc 23 é a auditoria canônica de completude dos 4 Pilares e a decisão de geolocalização (Nominatim no onboarding, Doc 25 §6) — pré-condição da precisão do Akasha. AD-23.1/.2/.6 resolvidos (Fase 43/44/45). Gargalo restante: AD-23.4 (D3 — aguardando o curador para a tabela de linhagem dos Odus). Auditoria agnóstica, válida para os engines `packages/core-*` (Doc 25 §11).*

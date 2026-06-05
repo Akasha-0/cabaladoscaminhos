@@ -1,5 +1,7 @@
 # PROGRESS — Fases 21–29 (resumos detalhados)
 
+> 🗄️ **HISTÓRICO B2B.** Registro das fases do Cockpit Oracular (legado). Para a visão vigente, ver Doc 25. As fases do Akasha B2C começam pela Cirurgia de Extração (Doc 08).
+
 > **Fonte:** `PROGRESS.md` §3.1 — extraído em Fase 501 (cycle 501) para
 > reduzir o `PROGRESS.md` raiz de 1041 → ~960 linhas. Conteúdo histórico
 > preservado verbatim.

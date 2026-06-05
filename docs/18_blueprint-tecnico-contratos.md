@@ -1,6 +1,8 @@
 # Documento 18 — Blueprint Técnico da Interface Única & Contratos
 
-## Cabala dos Caminhos
+## Cabala dos Caminhos — LEGADO B2B
+
+> ⚠️ **LEGADO B2B — referência histórica (não-canônico).** Este documento pertence ao produto **Cockpit Oracular / Mesa Real (B2B)**, descontinuado com o pivô para o **Sistema Akasha (B2C)**. Permanece apenas como registro do `apps/legacy-cockpit` (mantido durante a migração, depois desligado). **Visão vigente: Doc 25 (Visão Akasha) + Doc 26 (Identidade Akasha).** Não usar como fonte para o produto Akasha. Os contratos técnicos da Mesa Real (`MatrixData`, rotas `mesa-real/*`, store Zustand do cockpit) especificados aqui pertencem ao `apps/legacy-cockpit` e não regem o Akasha.
 
 > **Tipo:** Especificação técnica **acionável** — contratos de dados, estado, API e sequência.
 > **Versão:** 1.0 | **Data:** 2026-06-02
