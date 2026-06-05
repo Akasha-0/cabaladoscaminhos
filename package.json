@@ -18,6 +18,7 @@
     "db:studio": "prisma studio",
     "quality": "tsx scripts/run-quality-eval.ts",
     "quality:evolve": "tsx scripts/run-evolution.ts",
+    "grimoire:sync": "tsx scripts/sync-grimoire.ts",
     "fallow": "fallow --skip dupes,health",
     "fallow:all": "fallow",
     "cycle:assess": "tsx scripts/cycle-executor.ts assess",

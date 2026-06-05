@@ -2,6 +2,7 @@
 
 Índice das últimas fases e ciclos de evolução do Cockpit Oracular.
 
+- [Cycle 516](./memory/cycle-516.md) — Criação de base de dados B2C (AkashaUser), grimoire e RAG webhook de sincronização (Fase B).
 - [Cycle 515](./memory/cycle-515.md) — Extração das engines para o monorepo pnpm e redirecionamento de imports (Fase A).
 - [Cycle 514](./memory/cycle-514.md) — Descrições tântricas dinâmicas e auto-registro de operador bypass nas configurações de LLM.
 - [Cycle 513](./memory/cycle-513.md) — Arquitetura de dados dinâmica orientada a IA e configurações de múltiplos provedores LLM.

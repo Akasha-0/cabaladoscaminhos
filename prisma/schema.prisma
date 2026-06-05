@@ -1,9 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider   = "postgresql"
+  extensions = [pgvector(map: "vector")]
 }
 
 // ============================================================================
@@ -931,4 +933,59 @@ model JournalEntry {
   @@index([mood])
   @@index([createdAt])
   @@map("journal_entries")
+}
+
+// ============================================================================
+// SISTEMA AKASHA — B2C MODELOS (Fase B)
+// ============================================================================
+
+model GrimoireEntry {
+  id        String   @id @default(cuid())
+  category  String
+  metadata  Json?
+  content   String
+  embedding Unsupported("vector(768)")?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("grimoire_entries")
+}
+
+model AkashaUser {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  passwordHash   String?
+  fullName       String
+  birthDate      DateTime
+  birthTime      String
+  birthCity      String
+  birthState     String
+  birthCountry   String
+  birthLatitude  Float?
+  birthLongitude Float?
+  birthTimezone  String?
+  
+  // Consent
+  consentGiven   Boolean  @default(false)
+  consentAt      DateTime?
+
+  // Spiritual maps cached
+  astrologyMap   Json?
+  kabalisticMap  Json?
+  tantricMap     Json?
+  oduBirth       Json?
+
+  // Stripe & Subscriptions
+  stripeCustomerId     String? @unique
+  stripeSubscriptionId String? @unique
+  planoAssinatura      String?
+
+  // Credits
+  creditBalance        Int     @default(0)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("akasha_users")
 }
