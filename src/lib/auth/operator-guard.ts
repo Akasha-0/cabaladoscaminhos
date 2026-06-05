@@ -28,14 +28,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getOperatorFromRequest, getOperatorFromServerContext } from './operator-session';
 
 /** Caminho de login do Operator (B2B). */
-export const OPERATOR_LOGIN_PATH = '/cockpit/login';
+export const OPERATOR_LOGIN_PATH = '/login';
 
 /**
  * Server Component: garante que há um Operator logado.
  *
  * Resolve o Operator a partir dos cookies/headers da requisição atual
  * (JWT de access + check de session não-revogada). Se não houver,
- * REDIRECIONA para /cockpit/login (lança via `next/navigation`).
+ * REDIRECIONA para /login (lança via `next/navigation`).
  *
  * Usar no topo de toda page.tsx que renderiza conteúdo Operator-only:
  *
