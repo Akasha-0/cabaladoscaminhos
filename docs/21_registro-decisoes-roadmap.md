@@ -1,5 +1,8 @@
 # Documento 21 — Registro de Decisões de Arquitetura (ADR Index) & Roadmap de Execução
-## Cabala dos Caminhos
+## Cabala dos Caminhos — LEGADO B2B
+
+> ⚠️ **LEGADO B2B — referência histórica (não-canônico).** Este documento pertence ao produto **Cockpit Oracular / Mesa Real (B2B)**, descontinuado com o pivô para o **Sistema Akasha (B2C)**. Permanece apenas como registro do `apps/legacy-cockpit` (mantido durante a migração, depois desligado). **Visão vigente: Doc 25 (Visão Akasha) + Doc 26 (Identidade Akasha).** Não usar como fonte para o produto Akasha. O índice de ADRs e o roadmap aqui consolidados (AD-16 … AD-20) rastreiam decisões do Cockpit legado.
+
 > **Versão:** 1.2 | **Data:** 2026-06-03
 > **Regra:** este doc **não cria** decisões novas; ele **rastreia** as existentes. A fonte de cada decisão é o doc indicado.
 
@@ -14,6 +17,8 @@
 ---
 
 ## 2. Registro de Decisões (AD-16 … AD-20)
+
+> 🧭 **Vigência (pós-pivô Akasha):** as decisões **AD-25.x** do **Doc 25 (Visão Akasha)** são as **vigentes** e prevalecem sobre tudo abaixo. As decisões **AD-16 … AD-20** registradas neste documento referem-se ao **legado B2B (Cockpit Oracular / Mesa Real)** e permanecem apenas como histórico do `apps/legacy-cockpit`.
 
 ### 2.1 Plataforma, escopo & stack (Doc 16)
 | ID | Decisão (resumo) | Status | Onda |

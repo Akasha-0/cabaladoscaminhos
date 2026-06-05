@@ -1,5 +1,7 @@
 # Documento 10 — Revisão, Validação e Gap Analysis
-## Cabala dos Caminhos
+## Cabala dos Caminhos — LEGADO B2B
+
+> ⚠️ **LEGADO B2B — referência histórica (não-canônico).** Este documento pertence ao produto **Cockpit Oracular / Mesa Real (B2B)**, descontinuado com o pivô para o **Sistema Akasha (B2C)**. Permanece apenas como registro do `apps/legacy-cockpit` (mantido durante a migração, depois desligado). **Visão vigente: Doc 25 (Visão Akasha) + Doc 26 (Identidade Akasha).** Não usar como fonte para o produto Akasha. Esta auditoria/gap analysis avaliava a documentação B2B (00–09) e não reflete o escopo do Akasha.
 
 > **Tipo:** Auditoria técnica e de visão da documentação 00–09
 > **Objetivo:** Levar a base documental ao estado de "prontidão mecânica" — pronta para um agente de IA implementar sem decisões em aberto.

@@ -1,4 +1,36 @@
-# Database Migrations — Cabala dos Caminhos
+# Database Migrations — Sistema Akasha
+
+> **Norte:** Doc 25.
+
+> ## pgvector & Monorepo (notas do pivô Akasha)
+>
+> Dois fatos novos do Sistema Akasha (Doc 25) afetam as migrations:
+>
+> 1. **pgvector — coluna `vector` via SQL manual.** O Grimório Digital (Doc 25 §5,
+>    Doc 04 §1) guarda embeddings na tabela `grimoire`. O Prisma **não tipa**
+>    `vector` nativamente: a coluna fica como `embedding Unsupported("vector(768)")`
+>    (ou comentada) no schema, e a coluna real + o índice (`ivfflat`/`hnsw`) são
+>    criados por **migration SQL manual**. A extensão precede tudo:
+>    ```sql
+>    -- prisma/migrations/<ts>_grimoire_pgvector/migration.sql
+>    CREATE EXTENSION IF NOT EXISTS vector;
+>    ALTER TABLE "grimoire" ADD COLUMN IF NOT EXISTS "embedding" vector(768);
+>    CREATE INDEX IF NOT EXISTS grimoire_embedding_idx
+>      ON "grimoire" USING ivfflat ("embedding" vector_cosine_ops) WITH (lists = 100);
+>    ```
+>    `prisma migrate diff` ignora a coluna `Unsupported`; portanto **revise sempre**
+>    o SQL gerado e garanta que a migration do pgvector exista e rode **antes** do
+>    `npm run grimoire:sync` (que popula os vetores via Ollama). A dimensão `768`
+>    corresponde ao `nomic-embed-text` (Doc 03 §5).
+>
+> 2. **Monorepo — `prisma/` compartilhado.** No monorepo (Turborepo/pnpm, Doc 25 §11),
+>    o `prisma/` (schema + migrations) é **compartilhado** entre `apps/b2c-portal` e
+>    `apps/legacy-cockpit`; os `packages/core-*` são agnósticos e **não** tocam o banco.
+>    `prisma migrate deploy` roda na **raiz** do monorepo; o deploy no VPS Linux
+>    (Doc 25 §10) executa-o antes de `pm2 reload b2c-portal` (runbook no Doc 22 §9).
+>    O esquema migra de B2B (`Operator`/`Reading`/Mesa Real) para B2C
+>    (`User`/`BirthChart`/`Manifesto`/`DailyReading`/`GrimoireEntry`, Doc 04); os
+>    modelos legados permanecem até o desligamento do `legacy-cockpit` (AD-25.2).
 
 ## Status
 
@@ -104,8 +136,14 @@ prisma/
 
 - ✅ `Operator.sessions` (Fase 13) — entregue via migration inicial
   `20260602000000_init` (model `OperatorSession` + enum `OperatorSessionType`)
-- Adicionar `Reading.tags` para organização
-- Adicionar `Client.consentGiven` (LGPD/GDPR compliance)
+  — *legado (`legacy-cockpit`), permanece até o desligamento (AD-25.2)*
+- ⏳ **Akasha B2C** (Doc 04): models `User`/`BirthChart`/`Subscription`/`CreditEntry`/
+  `Manifesto`/`DailyReading`/`Consultation`/`ChatMessage` + enums `UserRole`/`Plan`/
+  `SubStatus`/`ChatRole` — substituem o núcleo B2B no schema.
+- ⏳ **`grimoire` + pgvector** — model `GrimoireEntry` + **migration SQL manual** da
+  coluna `embedding vector(768)` e índice `ivfflat`/`hnsw` (ver a nota do topo).
+- `Reading.tags` para organização (*legado*)
 - ✅ `Client.birthTimezone` (IANA timezone string) — `20260603091000_add_client_birth_timezone`
   Adiciona coluna `birthTimezone TEXT` com índice em `clients` para
-  cálculo astral preciso com conversão de horário local → UTC.
+  cálculo astral preciso com conversão de horário local → UTC. No B2C, o campo
+  equivalente é `User.birthTimezone` (Doc 04 §1), preenchido por Nominatim (Doc 23 AD-23.2).

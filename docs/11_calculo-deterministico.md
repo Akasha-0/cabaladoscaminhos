@@ -1,15 +1,18 @@
 # Documento 11 — Referência de Cálculo Determinístico
-## Cabala dos Caminhos
+## Sistema Akasha
 
+> **Norte:** Doc 25 (Visão Akasha). Conteúdo matemático/esotérico preservado e agnóstico; reenquadrado para o produto B2C Akasha.
+>
 > **Tipo:** Especificação de algoritmos (zero ambiguidade)
-> **Versão:** 1.0 | **Resolve:** G6, G7, G8 do Doc 10
+> **Versão:** 2.0 | **Resolve:** G6, G7, G8 do Doc 10
 > **Objetivo:** Toda função de cálculo deve produzir o mesmo resultado para a mesma entrada, sem "método cabalístico" implícito.
+> **Papel no Akasha:** este é o **Motor Determinístico (Camada 1)** — código puro em `packages/core-*` que devolve JSON estruturado (Caminho de Vida, 11 Corpos, Odu de Nascimento) para alimentar o Grafo de Cruzamento e a Voz do Akasha. A matemática é agnóstica de produto: vale igual no B2B legado e no B2C Akasha.
 
 ---
 
 ## 0. Como ler este documento
 
-Pontos marcados com **`⚠️ VALIDAR (Dx)`** são **decisões de metodologia do operador** (linhagem do Cigano Ramiro) — Doc 10 §5. Os valores apresentados são **defaults canônicos e executáveis** (o sistema roda com eles), mas o operador deve confirmá-los ou substituí-los pela sua tradição antes do go-live. Onde o operador validar/alterar, **este documento é a fonte da verdade** e o código deve refletir exatamente o que está aqui.
+Pontos marcados com **`⚠️ VALIDAR (Dx)`** são **decisões de metodologia validadas por linhagem/fonte** (a tradição ancestral consolidada na matriz Cabala dos Caminhos) — Doc 10 §5. Os valores apresentados são **defaults canônicos e executáveis** (o sistema roda com eles), mas devem ser confirmados ou substituídos pela fonte/linhagem de referência antes do go-live. Onde a linhagem validar/alterar, **este documento é a fonte da verdade** e o código deve refletir exatamente o que está aqui.
 
 ---
 
@@ -47,7 +50,7 @@ Cada função abaixo declara explicitamente se usa `keepMasters = true` ou `fals
 
 ### 2.1 Tabela de Conversão Alfanumérica
 
-**`⚠️ VALIDAR (D1)`** — Default canônico: **tabela Pitagórica 1–9** (a mais usada na numerologia cabalística brasileira). Substituir pela tabela Caldaica/Hebraica se for a linhagem do operador.
+**`⚠️ VALIDAR (D1)`** — Default canônico: **tabela Pitagórica 1–9** (a mais usada na numerologia cabalística brasileira). Substituir pela tabela Caldaica/Hebraica se for a linhagem/fonte de referência adotada.
 
 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
 |---|---|---|---|---|---|---|---|---|
@@ -145,7 +148,7 @@ Idades de troca: 1º até `36 − lifePath`; depois faixas de 9 anos.
 - `nativeDayNumber`: **20**
 - `personalYear` (para 2026): reduce(20+8 + reduce(2026)) ... ver §2.4.
 
-> Demais números do nome dependem da tabela validada em §2.1. Após o operador confirmar D1, adicionar aqui os valores esperados de `expression`, `motivation` e `impression` para fechar o teste unitário.
+> Demais números do nome dependem da tabela validada em §2.1. Após a confirmação de D1 pela linhagem/fonte (curadoria do Grimório, Doc 20), adicionar aqui os valores esperados de `expression`, `motivation` e `impression` para fechar o teste unitário.
 
 ---
 
@@ -202,7 +205,7 @@ Cada número tântrico carrega a descrição do seu corpo (campo `*Description`)
 
 ### 4.1 Algoritmo Data → Odu
 
-**`⚠️ VALIDAR (D3)` — BLOQUEADOR DE CONTEÚDO.** Não existe padrão universal; a tabela/algoritmo é **escolha da linhagem do Cigano Ramiro**. Até o operador definir, o sistema usa o **default provisório determinístico** abaixo (executável, porém **deve ser substituído** antes do go-live).
+**`⚠️ VALIDAR (D3)` — BLOQUEADOR DE CONTEÚDO.** Não existe padrão universal; a tabela/algoritmo é **escolha da linhagem/fonte de referência** consolidada na matriz Cabala dos Caminhos. Até a linhagem definir, o sistema usa o **default provisório determinístico** abaixo (executável, porém **deve ser substituído** antes do go-live).
 **Algoritmo implementado** (`src/lib/calculators/odu-birth.ts:calculateBirthOdu`):
 1. Extrai dia e mês da data de nascimento (YYYY-MM-DD).
 2. Soma dia + mês.
@@ -217,9 +220,9 @@ function reduceOduNumber(n: number): number {
   return r; // 1..16
 }
 // Exemplo: 20/08 → 20+8=28 → 2+8=10 → Odu 10 (Ofun)
-// Algoritmo default (dia+mês). A tabela definitiva da linhagem é decisão do operador (D3).
+// Algoritmo default (dia+mês). A tabela definitiva é decisão da linhagem/fonte de referência (D3).
 ```
-> O campo `provisional: true` é definido **pelo código** enquanto o algoritmo default estiver em uso — a UI deve sinalizar visualmente. Quando o operador fornecer a tabela definitiva (por faixa de data, jogo ritual, ou correspondência astrológica→Odu), substituir `calculateBirthOdu` e remover o flag `provisional`.
+> O campo `provisional: true` é definido **pelo código** enquanto o algoritmo default estiver em uso — a UI deve sinalizar visualmente. Quando a curadoria da linhagem/fonte (Doc 20) fornecer a tabela definitiva (por faixa de data, jogo ritual, ou correspondência astrológica→Odu), substituir `calculateBirthOdu` e remover o flag `provisional`.
 
 ### 4.2 Estrutura de Saída
 
@@ -238,7 +241,7 @@ interface OduBirth {
 
 ## 5. Os 16 Odus (Merindilogun) — Tabela Canônica
 
-**`⚠️ VALIDAR (D4)`** — Grafias, numeração, orixás e essência variam entre tradições. A tabela abaixo é o default herdado do Doc 04 §5.2; o operador deve **confirmar ou corrigir** cada linha segundo sua linhagem antes de tornar a constante imutável.
+**`⚠️ VALIDAR (D4)`** — Grafias, numeração, orixás e essência variam entre tradições. A tabela abaixo é o default herdado do Doc 04 §5.2; a curadoria da linhagem/fonte (Doc 20) deve **confirmar ou corrigir** cada linha segundo a tradição de referência antes de tornar a constante imutável.
 
 | # | Odu | Orixás | Essência |
 |---|---|---|---|

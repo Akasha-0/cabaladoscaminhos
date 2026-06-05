@@ -1,16 +1,22 @@
-# Pacote Agente Frontend — Cabala dos Caminhos
+# Pacote Agente Frontend — Sistema Akasha
 
+> **Norte:** Doc 25 + Doc 26.
 **Data:** 2026-06-03
 **Autor:** Hermes (sessão de design)
 **Status:** Draft para revisão de Gabriel
 
 ## 1. Contexto e objetivo
 
-O Cabala dos Caminhos é um app Next.js 16 / React 19 com 16+ tradições
-espirituais, design system próprio ("Cigano Ramiro") e 10.531+ testes
-passando. Trabalhos de frontend (novo widget, refactor de componente,
-ajuste de design system, página nova) são feitos manualmente por
-Gabriel em sessões de chat ou sprint, sem um fluxo dedicado.
+O **Sistema Akasha** (`apps/b2c-portal`) é um app B2C Next.js 16 / React 19,
+mobile-first, cuja interface é a **Mandala Toroidal** (Three.js/R3F de atmosfera
++ SVG/D3 de dados + glassmorphism) sob o **Design System cósmico Akasha** (Doc 26).
+Os ~9k testes dos motores espirituais vivem nos `packages/core-*` (Doc 25 §11).
+Trabalhos de frontend (Mandala, onboarding, Dashboard Diário, Manifesto, Agente
+Oracular) eram feitos manualmente por Gabriel em sessões de chat ou sprint, sem
+um fluxo dedicado.
+
+> **Aposentado:** a identidade "Cigano Ramiro" (laranja+royal) e o `apps/legacy-cockpit`
+> (Mesa Real B2B) saem do alvo deste agente — ver Doc 26 §0/§8 (checklist de migração).
 
 **Objetivo:** criar um pacote de "agente de frontend" que
 **a)** carregue automaticamente as convenções, tokens e padrões do
@@ -77,71 +83,67 @@ responsabilidade única.
 
 ```yaml
 ---
-name: frontend-cabala
-description: Use when creating, editing or reviewing UI components, pages, layouts, styles, or design-system work in the Cabala dos Caminhos project. Triggers include "componente", "página", "tela", "card", "modal", "refactor visual", "design system", "tailwind", "shadcn", "ramiro", "cockpit", "style". Loads project conventions for Next.js 16 App Router, Tailwind v4, Base UI primitives, the Ramiro design tokens, and the spiritual guardrails.
-version: 1.0.0
+name: frontend-akasha
+description: Use when creating, editing or reviewing UI components, pages, layouts, styles, or design-system work in the Sistema Akasha (apps/b2c-portal). Triggers include "componente", "página", "tela", "card", "mandala", "toroide", "onboarding", "dashboard", "refactor visual", "design system", "tailwind", "three.js", "d3", "glassmorphism", "akasha", "style". Loads project conventions for Next.js 16 App Router, Tailwind v4, the Akasha cosmic design tokens (Doc 26), mobile-first PWA, next-intl, and the spiritual guardrails.
+version: 1.1.0
 author: Hermes Agent
 license: MIT
 metadata:
   hermes:
-    tags: [frontend, ui, nextjs, react, tailwind, shadcn, design-system, cabala]
+    tags: [frontend, ui, nextjs, react, tailwind, three.js, d3, design-system, akasha]
     related_skills: [requesting-code-review, brainstorming]
 ---
 ```
 
 **Estrutura do body (≤ 12k chars):**
 
-1. **Overview** — agente especialista em UI do Cabala; carrega
-   contexto espiritual e técnico.
+1. **Overview** — agente especialista em UI do Akasha; carrega
+   contexto cósmico (Doc 26) e técnico (Doc 25 §8). Tudo mobile-first,
+   PWA, com a Mandala Toroidal no centro.
 2. **When to Use** — lista de gatilhos (componente, página, layout,
-   style, design system) e quando **NÃO** usar (API routes, schema
-   Prisma, lógica espiritual de engine).
+   Mandala, onboarding, dashboard, style, design system) e quando
+   **NÃO** usar (API routes, schema Prisma, motores `packages/core-*`).
 3. **Stack Quick Reference** — tabela com:
-   - Framework: Next.js 16 App Router (`src/app/<rota>/page.tsx`)
-   - UI primitives: Base UI (`@base-ui/react/<componente>`) — **NÃO** Radix
+   - Framework: Next.js 16 App Router (`apps/b2c-portal/...`), rotas `/(pt-br|en)/…` (next-intl)
+   - Atmosfera (Mandala fundo): Three.js / React Three Fiber — Toroide wireframe/partículas (não carrega dados)
+   - Dados (Mandala operacional): **SVG 2D + D3.js** (coordenadas polares: 12 casas, 11 nós, centro) — nós clicáveis no DOM
+   - Efeitos: glassmorphism (`backdrop-filter`), glows de nebulosa, Framer Motion / GSAP
    - Variantes: `class-variance-authority` (`cva`)
    - Merge: `cn()` de `@/lib/utils` (clsx + tailwind-merge)
-   - Style: Tailwind v4 com CSS variables em `@theme` (`src/app/globals.css`)
-   - Tokens do projeto: `src/styles/ramiro-tokens.css` (escopo `.ramiro`)
-   - Variantes únicas de Button: `golden`, `spiritual` (gradient spiritual-gold)
-   - Ícones: `lucide-react`
-   - State: `zustand` (`src/stores/`)
-   - Forms/validação: `zod` + `react-hook-form` (quando aplicável)
-   - Markdown: `react-markdown` + `remark-gfm`
-   - **Convention: `data-slot="<name>"`** em vez de class-based slots
-     (estilo Base UI / shadcn base-nova)
-4. **Estrutura de pastas do projeto** — mapa de decisão:
-   - UI primitivo reutilizável → `src/components/ui/`
-   - UI composto de domínio → `src/components/<domínio>/`
-   - UI compartilhado espiritual (MysticButton etc) → `src/components/shared/`
-   - UI do Cockpit Oracular → `src/components/cockpit/`
-   - Sistema de design (tipografia, background) → `src/components/design-system/`
-   - Página → `src/app/<rota>/page.tsx`
+   - Style: Tailwind v4 com CSS variables em `@theme`; tokens cósmicos `akasha`/`aurora`/`ori` (Doc 26 §3)
+   - State: `zustand`
+   - Forms/validação: `zod` + `react-hook-form` (onboarding)
+   - Markdown: `react-markdown` + `remark-gfm` (Manifesto, Dashboard, voz do Oráculo)
+   - PDF do Manifesto: `@react-pdf/renderer` (NUNCA Puppeteer — Doc 25 §3)
+4. **Estrutura de pastas do projeto** — mapa de decisão (dentro de `apps/b2c-portal`):
+   - UI primitivo reutilizável → `components/ui/`
+   - Mandala (atmosfera WebGL + dados SVG/D3) → `components/mandala/`
+   - Telas-chave (onboarding, dashboard, manifesto, oráculo) → `components/<feature>/`
+   - Sistema de design cósmico (tipografia, background toroidal, glass) → `components/design-system/`
+   - Página → `app/[locale]/<rota>/page.tsx`
 5. **Regra de reuso (não-violável)** — antes de criar componente
    novo, agente DEVE:
-   1. Listar `src/components/ui/*` e verificar se já existe
-   2. Listar `src/components/shared/*` e `src/components/cockpit/*`
-   3. Listar `src/components/design-system/*`
+   1. Listar `components/ui/*` e verificar se já existe
+   2. Listar `components/mandala/*` e `components/<feature>/*`
+   3. Listar `components/design-system/*`
    4. Se nada servir, **criar com justificativa** registrada no
-      commit message (ex: "feat: novo ReadingCard — reuso insuficiente
-      porque combina Card + Markdown + MysticButton em fluxo único")
+      commit message (ex: "feat: novo PillarNode — reuso insuficiente
+      porque combina nó SVG/D3 + glow + tooltip do pilar em fluxo único")
 6. **Padrões copy-paste** — snippets prontos para:
-   - **Card de leitura** (Tarot/Odu/Runa) com `Card`, `CardHeader`,
-     `CardTitle`, `CardContent` + variante `spiritual` no botão
-   - **Empty state** espiritual usando `ErrorState` ou composição
-     própria com `✦` glyph
-   - **Form de consulta** com Zod + `useForm` (apenas se for escopo)
-   - **Loading** com `<CosmicBackground />` ou skeleton simples
-     (`animate-pulse` + `bg-muted`)
-   - **Página de resultado** com `react-markdown` para o dossiê
+   - **Nó da Mandala** (casa astrológica, corpo tântrico, núcleo Ori) —
+     elemento SVG clicável com glow por estado (ciano=aberto, magenta=curto-circuito)
+   - **Card de diagnóstico** (Clima / Ritual / Alerta do Dashboard) com glassmorphism
+   - **Onboarding step** ("Coleta Sagrada"/Quiz) com Zod + `useForm` e tom cerimonial
+   - **Loading ritualístico** — Toroide Three.js acendendo + frases em sincronia (Doc 25 §6)
+   - **Página de resultado** com `react-markdown` para o Manifesto / voz do Oráculo
 7. **Guardrails espirituais** — não-fazer:
    - **Sem cores hardcoded** — sempre `bg-primary`, `text-foreground`,
      `bg-card` etc. (apontam para CSS vars)
-   - **Sem gradientes bregas** — só `spiritual-gold` ou `ramiro-*`
-     são aceitos
-   - **Sem copy que promete resultado espiritual** ("você vai
-     encontrar o amor", "vai curar tal doença") — usar "orientação
-     simbólica" e marcar incerteza
+   - **Sem gradientes bregas** — só os tokens cósmicos `akasha`,
+     `aurora` ou `ori` são aceitos (Doc 26 §3)
+   - **Voz do Oráculo (Doc 26 §7)** — magnética e situada, nunca genérica
+     nem fatalista; sem copy que prometa resultado garantido ou determinação
+     médica/jurídica/financeira; alerta é cuidado, não sentença
    - **Sem emojis religiosos exagerados** — `✦`, `✧` (já usados
      pelo projeto) são OK; 🕉️🔮✨ em massa não
    - **Sem animações invasivas** — respeitar `prefers-reduced-motion`
@@ -177,7 +179,7 @@ metadata:
     - Múltiplas interpretações de layout equally válidas
     - Pedido toca engine espiritual (regra do AGENTS.md §5 — parar
       e pedir)
-    - Mudança no `ramiro-tokens.css` (afeta tema inteiro)
+    - Mudança no `akasha-tokens.css` (afeta tema inteiro)
     - Qualquer `rm` ou mudança destrutiva
 
 ### 4.2 Profile `frontend`
@@ -337,7 +339,7 @@ $ frontend-review 487
 | `npm run test:core` falha | Passo 7 | Itera até 3x corrigindo, depois para |
 | Branch já existe | `git rev-parse --verify` antes de criar | Pergunta: reaproveitar ou nome novo |
 | Touch em arquivo espiritual (`src/lib/engines/**`) | Pattern de path no workflow | Para e lembra: regra do AGENTS.md §5, escalar para agente principal |
-| Touch em `ramiro-tokens.css` | Pattern no workflow | Para e pergunta: mudança de tema é decisão grande |
+| Touch em `akasha-tokens.css` | Pattern no workflow | Para e pergunta: mudança de tema é decisão grande |
 | Token da LLM cai / rate limit | Mensagem de erro do provider | Reporta e para; não tenta fallback automático |
 
 ## 7. Testes / validação da implementação
@@ -402,7 +404,7 @@ Tudo é **escopo da Hermes-home**, não toca o repo
 
 - Backend / API routes / lógica de engine
 - Banco / Prisma
-- Mudanças no design system Ramiro que alterem paleta de marca
+- Mudanças no design system Akasha (Doc 26) que alterem a paleta de marca
 - CI/CD
 - Merge de PRs
 - Integração com Kanban ou cron

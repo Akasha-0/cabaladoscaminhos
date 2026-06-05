@@ -1,9 +1,32 @@
-# AUTH-AUDIT — Cabala dos Caminhos
+# AUTH-AUDIT — Sistema Akasha
+
+> **Norte:** Doc 25.
 > Audit de auth (Fase 17) realizado em `src/app/**/page.tsx` e `src/app/**/route.ts`.
 > Categoriza cada página/rota como Operator (B2B), B2C User ou pública,
 > e documenta o mecanismo de auth gate de cada uma.
 **Última atualização:** 2026-06-03 (Fase 47 — cockpit/layout.tsx x-pathname auth gate)
-**Branch:** `claude/docs-refactor-alignment-FOUqN`
+
+---
+
+> ## ⚠️ Transição de auth: Operator (B2B) → User (B2C self-service)
+>
+> Com o pivô para o **Sistema Akasha** (Doc 25), o modelo de identidade muda:
+> o **`Operator`** (terapeuta que operava o Cockpit) é substituído pelo **`User`**
+> B2C **self-service** (o cliente final que se cadastra, compra e consulta sozinho — Doc 04 §1–2).
+>
+> | Eixo | Antes (Cockpit B2B) | Agora (Akasha B2C) |
+> |---|---|---|
+> | Identidade | `Operator` / `OperatorSession` | `User` (auto-cadastro) |
+> | Cadastro | criado pelo time / convite | **self-service** (e-mail+senha e/ou OAuth Google/Apple) |
+> | Sessão | JWT Operator (`operator-jwt.ts`) | JWT/cookie httpOnly do `User` |
+> | Papel elevado | Operator full | `role = ADMIN` (painel do Grimório, sync manual — Doc 04) |
+> | App-alvo | `apps/legacy-cockpit` (a desligar) | `apps/b2c-portal` |
+>
+> **O que a matriz abaixo significa hoje:** as linhas **Operator (B2B)** descrevem o
+> `legacy-cockpit`, que roda até o desligamento (AD-25.2) — sua defense-in-depth
+> permanece válida enquanto existir. As linhas **B2C User** são a base do `b2c-portal`
+> e o destino da migração; o padrão de gate (server + API, "nunca confiar no body")
+> **carrega-se inteiro** para o `User`. As rotas legadas listadas no §7 saem com o Cockpit.
 
 ---
 

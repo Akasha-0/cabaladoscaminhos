@@ -1,5 +1,7 @@
 # Análise de Duplicação de Código - Cabala dos Caminhos
 
+> 🗄️ **HISTÓRICO.** Análise de duplicação no código legado B2B. Referência de manutenção do apps/legacy-cockpit. Norte vigente: Doc 25.
+
 **Data:** 2026-06-02  
 **Escopo:** Clone groups críticos identificados em fallow-baseline-dupes.json
 
