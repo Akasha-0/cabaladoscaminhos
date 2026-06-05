@@ -1,5 +1,5 @@
 // REMOVIDO: AD-17.6 — B2B não usa SupabaseProvider
-// B2B Authentication usa /cockpit/login com JWT próprio (Operator JWT)
+// B2B Authentication usa /login com JWT próprio (Operator JWT)
 // import { SupabaseProvider } from '@/components/providers/SupabaseProvider';
 import type { Metadata, Viewport } from 'next';
 import {
@@ -11,6 +11,7 @@ import {
   JetBrains_Mono,
 } from 'next/font/google';
 import './globals.css';
+
 const cinzel = Cinzel({
   variable: '--font-cinzel',
   subsets: ['latin'],
@@ -180,9 +181,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark">
       <head>
-        <link rel="canonical" href={BASE_URL} />
-        <link rel="sitemap" href="/sitemap.xml" type="application/xml" />
-        <link rel="robots" href="/robots.txt" />
+        <link key="canonical" rel="canonical" href={BASE_URL} />
+        <link key="sitemap" rel="sitemap" href="/sitemap.xml" type="application/xml" />
+        <link key="robots" rel="robots" href="/robots.txt" />
       </head>
       <body
         className={`${cinzel.variable} ${cormorant.variable} ${raleway.variable} ${imFell.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen bg-background text-foreground antialiased`}
