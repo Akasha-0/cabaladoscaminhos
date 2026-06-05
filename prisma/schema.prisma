@@ -393,6 +393,22 @@ enum ChatRole {
   ORACLE
 }
 
+enum AkashaPlan {
+  FREEMIUM
+  AKASHA_PRO
+}
+
+enum AkashaSubStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum AkashaChatRole {
+  USER
+  ORACLE
+}
+
 // =====================
 // USUÁRIO E AUTENTICAÇÃO
 // =====================
@@ -940,23 +956,31 @@ model JournalEntry {
 // ============================================================================
 
 model GrimoireEntry {
-  id        String   @id @default(cuid())
-  category  String
-  metadata  Json?
-  content   String
-  embedding Unsupported("vector(768)")?
+  id         String  @id @default(cuid())
+  slug       String  @unique
+  categoria  String
+  biblioteca String
+  metadata   Json?
+  conteudo   String
+  sourcePath String?
+  embedding  Unsupported("vector(768)")?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
+  @@index([categoria])
+  @@index([biblioteca])
   @@map("grimoire_entries")
 }
 
 model AkashaUser {
   id             String   @id @default(cuid())
   email          String   @unique
+  emailVerified  Boolean  @default(false)
   passwordHash   String?
   fullName       String
+  locale         String   @default("pt-BR")
+
   birthDate      DateTime
   birthTime      String
   birthCity      String
@@ -965,27 +989,156 @@ model AkashaUser {
   birthLatitude  Float?
   birthLongitude Float?
   birthTimezone  String?
-  
-  // Consent
+
+  intentionProfile Json?
+
   consentGiven   Boolean  @default(false)
   consentAt      DateTime?
 
-  // Spiritual maps cached
-  astrologyMap   Json?
-  kabalisticMap  Json?
-  tantricMap     Json?
-  oduBirth       Json?
-
-  // Stripe & Subscriptions
+  // Stripe (denormalized cache — canonical data em AkashaSubscription)
   stripeCustomerId     String? @unique
   stripeSubscriptionId String? @unique
-  planoAssinatura      String?
 
-  // Credits
-  creditBalance        Int     @default(0)
+  // Relations
+  birthChart         AkashaBirthChart?
+  subscription       AkashaSubscription?
+  creditLedger       AkashaCreditEntry[]
+  manifesto          AkashaManifesto?
+  dailyReadings      AkashaDailyReading[]
+  ritualCompletions  AkashaRitualCompletion[]
+  consultations      AkashaConsultation[]
+  refreshTokens      AkashaRefreshToken[]
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   @@map("akasha_users")
+}
+
+model AkashaBirthChart {
+  id            String     @id @default(cuid())
+  userId        String     @unique
+  user          AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  astrologyMap  Json
+  kabalisticMap Json
+  tantricMap    Json
+  oduBirth      Json
+
+  incomplete    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("akasha_birth_charts")
+}
+
+model AkashaRefreshToken {
+  id        String     @id @default(cuid())
+  userId    String
+  user      AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String     @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime   @default(now())
+
+  @@index([userId])
+  @@map("akasha_refresh_tokens")
+}
+
+model AkashaSubscription {
+  id                   String          @id @default(cuid())
+  userId               String          @unique
+  user                 AkashaUser      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                 AkashaPlan      @default(FREEMIUM)
+  status               AkashaSubStatus @default(ACTIVE)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  monthlyCreditQuota   Int             @default(0)
+  dashboardUntil       DateTime?
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  @@map("akasha_subscriptions")
+}
+
+model AkashaCreditEntry {
+  id        String     @id @default(cuid())
+  userId    String
+  user      AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  delta     Int
+  reason    String
+  balance   Int
+  createdAt DateTime   @default(now())
+
+  @@index([userId])
+  @@map("akasha_credit_entries")
+}
+
+model AkashaManifesto {
+  id         String     @id @default(cuid())
+  userId     String     @unique
+  user       AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content    Json
+  pdfUrl     String?
+  llmModel   String?
+  tokensUsed Int?
+  createdAt  DateTime   @default(now())
+
+  @@map("akasha_manifestos")
+}
+
+model AkashaDailyReading {
+  id           String     @id @default(cuid())
+  userId       String
+  user         AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date         DateTime   @db.Date
+  climate      String
+  ritual       Json
+  alert        String
+  tensionPoint Json
+  llmModel     String?
+  createdAt    DateTime   @default(now())
+
+  @@unique([userId, date])
+  @@map("akasha_daily_readings")
+}
+
+model AkashaRitualCompletion {
+  id         String     @id @default(cuid())
+  userId     String
+  user       AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grimoireId String
+  date       DateTime   @default(now())
+
+  @@index([userId])
+  @@map("akasha_ritual_completions")
+}
+
+model AkashaConsultation {
+  id        String              @id @default(cuid())
+  userId    String
+  user      AkashaUser          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  messages  AkashaChatMessage[]
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  @@index([userId])
+  @@map("akasha_consultations")
+}
+
+model AkashaChatMessage {
+  id             String             @id @default(cuid())
+  consultationId String
+  consultation   AkashaConsultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  role           AkashaChatRole
+  content        String
+  routedPillars  String[]
+  grimoireRefs   String[]
+  creditCost     Int                @default(0)
+  createdAt      DateTime           @default(now())
+
+  @@index([consultationId])
+  @@map("akasha_chat_messages")
 }

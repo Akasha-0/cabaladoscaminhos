@@ -111,26 +111,31 @@ export async function syncGrimoire(): Promise<{ success: boolean; count: number;
       const { metadata, content } = parseFrontmatter(rawContent);
       
       const id = metadata.id || path.basename(file, '.md');
-      const category = metadata.category || 'general';
+      const categoria = metadata.category || metadata.categoria || 'general';
+      const biblioteca = metadata.biblioteca || 'diagnostico';
+      const slug = metadata.slug || id;
       const title = metadata.title || id;
-      
-      // Generate embedding from title + content
-      const textToEmbed = `Title: ${title}\n\nCategory: ${category}\n\nContent: ${content}`;
+
+      const textToEmbed = `Title: ${title}\n\nCategory: ${categoria}\n\nContent: ${content}`;
       const embedding = await getEmbedding(textToEmbed);
-      
-      // Upsert database record
+
       await prisma.grimoireEntry.upsert({
-        where: { id },
+        where: { slug },
         update: {
-          category,
+          categoria,
+          biblioteca,
           metadata: metadata as any,
-          content,
+          conteudo: content,
+          sourcePath: file,
         },
         create: {
           id,
-          category,
+          slug,
+          categoria,
+          biblioteca,
           metadata: metadata as any,
-          content,
+          conteudo: content,
+          sourcePath: file,
         },
       });
       
