@@ -1,6 +1,8 @@
 # Documento 17 — Arquitetura da Interface Única (Mesa Real) & Plano de Enxugamento
 
-## Cabala dos Caminhos
+## Cabala dos Caminhos — LEGADO B2B
+
+> ⚠️ **LEGADO B2B — referência histórica (não-canônico).** Este documento pertence ao produto **Cockpit Oracular / Mesa Real (B2B)**, descontinuado com o pivô para o **Sistema Akasha (B2C)**. Permanece apenas como registro do `apps/legacy-cockpit` (mantido durante a migração, depois desligado). **Visão vigente: Doc 25 (Visão Akasha) + Doc 26 (Identidade Akasha).** Não usar como fonte para o produto Akasha. A arquitetura de "interface única / página única" da Mesa Real (rota `/cockpit`, 36 casas) descrita aqui é do Cockpit legado; o Akasha adota a Mandala Toroidal mobile-first (Doc 25 §2, §8).
 
 > **Tipo:** Decisão de arquitetura **canônica** — interface única + poda de escopo
 > **Versão:** 1.0 | **Data:** 2026-06-02

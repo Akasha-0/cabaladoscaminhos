@@ -1,253 +1,182 @@
 # Documento 02 — PRD (Product Requirements Document)
-## Cabala dos Caminhos
+## Sistema Akasha
 
-> **Versão:** 1.0 | **Escopo:** MVP (Fase 1)
+> **Versão:** 2.0 | **Escopo:** Portal B2C (Oráculo Vivo)
+> **Norte:** Doc 25 · **Identidade:** Doc 26 · **Arquitetura:** Doc 03
 
 ---
 
 ## 1. Escopo do Produto
 
-O PRD cobre o **MVP da Fase 1**: um sistema funcional de ponta a ponta com os três módulos core — Gestão de Consulentes, Mesa Real Interativa e Geração de Dossiê via IA. Funcionalidades de escala (multi-tenant, app mobile, marketplace) são escopo das fases 2 e 3, documentadas no Roadmap.
+O PRD cobre o **portal B2C `apps/b2c-portal`**: a experiência do cliente final, do onboarding ritualístico ao hábito diário com o Oráculo. Os **engines de cálculo** vivem em `packages/core-*` (Doc 03). O **Cockpit B2B / Mesa Real** está em quarentena como `apps/legacy-cockpit` e **fora deste escopo** (Doc 25 §11).
+
+Pré-condição arquitetural: a **Cirurgia de Extração** (Doc 08, Fase 1) move os motores espirituais para `packages/core-*` antes da construção do portal.
 
 ---
 
 ## 2. Módulos e Funcionalidades
 
-### Módulo A — Autenticação e Acesso
+### Módulo A — Conta & Autenticação (B2C self-service)
 
-**A.1 — Login do Operador**
-- O sistema deve ter uma tela de login segura (`/login`).
-- Autenticação via e-mail + senha com sessão persistente (JWT ou NextAuth.js).
-- Apenas usuários autorizados (o próprio Gabriel/operador) acessam o sistema.
-- Sem auto-cadastro público: contas são criadas manualmente no banco de dados ou via script de seed.
+**A.1 — Cadastro e Login do Usuário**
+- Auto-cadastro público: e-mail + senha (e/ou OAuth social — Google/Apple).
+- Sessão persistente (JWT/cookie httpOnly). Verificação de e-mail.
+- Recuperação de senha. Suporte a MFA opcional (Fase posterior).
+- Perfil editável: dados de nascimento, idioma (`pt-BR`/`en`), preferências de notificação.
 
 **Critérios de Aceitação:**
-- [ ] Login com credenciais válidas redireciona para `/dashboard`.
-- [ ] Login com credenciais inválidas exibe mensagem de erro sem revelar qual campo está errado.
-- [ ] Sessão expira após 24h de inatividade.
-- [ ] Rota `/dashboard` é protegida — redireciona para `/login` se não autenticado.
+- [ ] Cadastro com e-mail válido cria conta no estado Freemium e dispara verificação.
+- [ ] Login redireciona para a Mandala do usuário (`/mandala`).
+- [ ] Rotas privadas protegidas; não-autenticado vai para `/entrar`.
+- [ ] Editar data/hora/local recalcula os mapas natais (server-side) e regenera a Mandala.
 
 ---
 
-### Módulo B — Gestão de Consulentes
+### Módulo B — Onboarding Ritualístico (o Primeiro Portal)
 
-**B.1 — Cadastro de Novo Consulente**
-O operador acessa `/dashboard/clientes/novo` e preenche:
-- Nome Completo (conforme certidão de nascimento) — *obrigatório, usado nos cálculos de Numerologia Cabalística*
-- Data de Nascimento — *obrigatório*
-- Hora de Nascimento (HH:MM) — *obrigatório para cálculo do Ascendente*
-- Cidade de Nascimento — *obrigatório*
-- Estado/Região — *obrigatório*
-- País de Nascimento — *obrigatório*
+Detalhe de UX no Doc 05; estratégia no Doc 25 §6. O onboarding usa **Labor Illusion** + **Efeito IKEA**.
 
-**B.2 — Processamento Automático dos Mapas**
-Ao salvar o cadastro, o sistema executa em background:
+**B.1 — A Coleta Sagrada (Input sequencial)**
+- *"Como você é chamado neste plano?"* → Nome completo (conforme certidão) — usado na Numerologia Cabalística.
+- *"Em qual instante sua jornada começou?"* → Data + Hora de nascimento (hora obrigatória para Ascendente).
+- *"Onde você aterrissou?"* → Local (autocomplete via Nominatim → lat/lng/timezone para Astrologia/Odus).
 
-1. **Motor de Numerologia Cabalística** (processado localmente no servidor — fórmulas exatas no **Doc 11 §2**):
-   - Caminho de Vida (soma reduzida de todos os dígitos da data)
-   - Número de Missão (síntese da data + expressão)
-   - Número de Expressão (conversão alfanumérica do nome completo)
-   - Número de Motivação (vogais do nome)
-   - Número de Impressão (consoantes do nome) — *novo (G3)*
-   - Número de Dons Nativos (dia de nascimento)
-   - Desafios e Pináculos (ciclos de realização) — *Pináculos novos (G3)*
-   - Lições e Dívidas Kármicas (números ausentes / dívidas) — *Lições novas (G3)*
-   - Ciclos Pessoais: dia/mês/ano pessoais — *novo e crítico para o Q&A (G3)*
+**B.2 — O Quiz de Ancoragem**
+- 3–4 perguntas de múltipla escolha que **não alteram a matemática**, mas alimentam o Agente IA (ex.: *"O que te traz ao Akasha hoje?"*; *"Como você sente sua energia neste ciclo?"*).
+- Respostas salvas no perfil (`intentionProfile`) para personalizar o primeiro Manifesto e o roteamento do Grimório.
 
-2. **Motor de Numerologia Tântrica** (processado localmente no servidor — fórmulas exatas no **Doc 11 §3**):
-   - Número de Alma (dia de nascimento reduzido)
-   - Número de Karma (mês de nascimento)
-   - Número de Dom Divino (**dois últimos dígitos do ano**, reduzidos: ex. 1986 → 86 → 8+6=14 → 1+4=5)
-   - Número de Destino (soma dos 4 dígitos do ano, reduzida: ex. 1+9+8+6=24 → 6)
-   - Número de Caminho Total (soma total de toda a data, reduzida)
-   - Os 11 Corpos Tântricos explícitos (não dicionário genérico) — *resolve conflito de rótulos da G3/D2; ver Doc 11 §3.1*
+**B.3 — Processamento dos 4 Mapas (server-side, em `packages/core-*`)**
+Ao concluir a coleta, o sistema calcula e persiste:
 
-3. **Motor de Astrologia** (via API externa ou biblioteca de efemérides):
-   - Signo Solar
-   - Signo Lunar
-   - Signo Ascendente (requer hora e local exatos)
-   - Posição dos 10 planetas clássicos (Sol, Lua, Mercúrio, Vênus, Marte, Júpiter, Saturno, Urano, Netuno, Plutão)
-   - Posição de Quíron e Lilith (asteroides relevantes)
-   - Casa Astrológica de cada planeta
-   - Signo regente de cada uma das 12 Casas Astrológicas
-   - Nodo Norte e Nodo Sul (eixo do karma e destino)
-   - Aspectos principais (conjunção, oposição, trígono, quadratura, sextil) com rótulo `harmony | tension` — *rótulo novo (G3)*
-   - Distribuição de Elementos (fogo/terra/ar/água) e Modalidades (cardinal/fixo/mutável) — *novo (G3)*
+1. **Numerologia Cabalística** (`core-cabala`, fórmulas no Doc 11 §2): Caminho de Vida, Expressão, Motivação, Impressão, Missão, Dons Nativos, Desafios/Pináculos, Lições/Dívidas Kármicas, Ciclos Pessoais.
+2. **Numerologia Tântrica** (`core-tantra`, Doc 11 §3): os **11 Corpos Espirituais** explícitos (Alma, Mente Negativa/Positiva/Neutra, Corpo Físico, Arco, Aura, Corpo Pranayama, Corpo Sutil, Corpo Radiante, etc.) + Alma/Karma/Dom Divino/Destino/Caminho Total.
+3. **Astrologia** (`core-astrology`, Swiss Ephemeris): Sol, Lua, Ascendente, 10 planetas + Quíron/Lilith, casas, signos regentes, nodos, aspectos (harmony/tension), distribuição de elementos/modalidades.
+4. **Odu de Nascimento / Ori** (`core-odus`, Doc 11 §4): Odu regente, Orixás/Elementos, caminhos abertos e sombras.
 
-4. **Odu de Nascimento** (calculado por regra interna — algoritmo/tabela no **Doc 11 §4**):
-   - Determinado pela data de nascimento conforme tabela fixa de mapeamento. *A tabela definitiva é decisão de metodologia do operador (D3); até lá, usa-se o algoritmo default provisório do Doc 11 §4.1.*
+Persistidos em `User`/`BirthChart` como JSON. **Calculados uma vez e cacheados** (exceto Ciclos Pessoais e trânsitos diários, voláteis).
 
-Os resultados são salvos no banco de dados nos campos `astrologyMap`, `kabalisticMap` e `tantricMap` como JSON.
-
-**B.3 — Listagem e Busca de Consulentes**
-- Tela `/dashboard/clientes` com tabela paginada.
-- Busca por nome em tempo real.
-- Ao clicar em um consulente, abre um painel lateral (Drawer) com:
-  - Resumo dos mapas calculados (badges visuais).
-  - Lista de leituras anteriores com datas.
-  - Botão "Nova Consulta" que pré-carrega o cliente na tela da Mesa Real.
+**B.4 — A Renderização Ritualística**
+- Loading cerimonial: fundo Three.js acende; frases piscam em sincronia com o Toroide sendo desenhado (*"Calculando trânsitos…"*, *"Sintetizando os 11 Corpos Tântricos…"*, *"Ancorando as forças dos Odus…"*).
 
 **Critérios de Aceitação:**
-- [ ] Formulário valida todos os campos obrigatórios antes de submeter.
-- [ ] O campo "Cidade" usa autocomplete (Google Places API ou Geonames) para capturar Latitude, Longitude e Timezone corretos para o cálculo astral.
-- [ ] Após salvar, o perfil exibe os números calculados e o mapa astral em menos de 10 segundos.
-- [ ] Os dados dos mapas são persistidos no banco e não recalculados a cada leitura.
-- [ ] Consulente pode ser editado — ao editar data/hora/local, os mapas são recalculados automaticamente.
+- [ ] A coleta valida cada campo antes de avançar; local resolve lat/lng/timezone.
+- [ ] Os 4 mapas são calculados e persistidos em < 10s.
+- [ ] Sem hora/local, a astrologia marca `incomplete:true` e a UI pede a informação (Doc 23).
 
 ---
 
-### Módulo C — Mesa Real Interativa (O Cockpit)
+### Módulo C — A Mandala Toroidal (a Interface Central)
 
-**C.1 — Seleção do Consulente**
-- Tela `/dashboard/nova-consulta`.
-- Primeiro passo: buscar e selecionar o consulente cadastrado (buscador typeahead).
-- O painel lateral exibe o resumo do mapa do consulente selecionado (sempre visível durante o preenchimento).
+Especificação visual no Doc 05; conceito no Doc 25 §2.
 
-**C.2 — Grid da Mesa Real (9×4)**
-- Uma matriz visual fixa de **9 colunas por 4 linhas**, totalizando exatamente **36 slots** (casas).
-- Cada slot tem um número fixo de 1 a 36 e o nome original da casa como label (ex: "Casa 1 — O Cavaleiro").
-- Os 36 slots aparecem simultaneamente na tela sem necessidade de scroll.
+**C.1 — Quatro camadas concêntricas**
+- **Núcleo:** Ori + Odus (dourado, pulsante).
+- **Geometria Interna:** Numerologia Cabalística (violeta; Números Mestres elétricos).
+- **Teia:** 11 Corpos Tântricos (ciano; corpo em desequilíbrio fica magenta/apagado).
+- **Anel Cósmico:** Roda Astrológica (gira com o tempo; trânsitos como feixes).
 
-**Ordem e nomenclatura fixa dos slots (imutável):**
+**C.2 — Painel de Sintonia (dinâmico)**
+- Ilumina **sincronicidade** (caminhos abertos, ciano) vs. **curto-circuito** (desalinhamento, magenta).
+- Linhas de conexão D3/SVG ligam a borda astrológica aos nós tântricos, à geometria cabalística e ao Ori.
 
-| # | Nome | # | Nome | # | Nome |
-|---|------|---|------|---|------|
-| 1 | O Cavaleiro | 13 | A Criança | 25 | O Anel |
-| 2 | O Trevo | 14 | A Raposa | 26 | O Livro |
-| 3 | O Navio | 15 | O Urso | 27 | A Carta |
-| 4 | A Casa | 16 | A Estrela | 28 | O Cigano |
-| 5 | A Árvore | 17 | A Cegonha | 29 | A Cigana |
-| 6 | As Nuvens | 18 | O Cachorro | 30 | Os Lírios |
-| 7 | A Serpente | 19 | A Torre | 31 | O Sol |
-| 8 | O Caixão | 20 | O Jardim | 32 | A Lua |
-| 9 | Os Buquês | 21 | A Montanha | 33 | A Chave |
-| 10 | A Foice | 22 | Os Caminhos | 34 | Os Peixes |
-| 11 | O Chicote | 23 | O Rato | 35 | A Âncora |
-| 12 | Os Pássaros | 24 | O Coração | 36 | A Cruz |
-
-**C.3 — Preenchimento dos Slots**
-- Ao clicar em um slot vazio, abre um **Popover contextual** (não Modal — não bloqueia a visão da mesa) ancorado ao slot clicado.
-- O Popover contém:
-  - Label: "Preenchendo: Casa [N] — [Nome da Casa]"
-  - **Campo 1 — Carta Cigana:** ComboBox com busca (digitar "Anc" filtra "35 — A Âncora"). Lista as 36 cartas com número e nome.
-  - **Campo 2 — Odu:** ComboBox com os 16 Odus com número e nome do Orixá regente.
-  - Confirmação: botão "Confirmar" ou tecla Enter.
-  - Cancelamento: tecla Esc ou clicar fora.
-- Após confirmar, o slot é atualizado visualmente com os dados inseridos e o Popover fecha.
-- Cada slot pode ser editado: clicar em um slot preenchido reabre o Popover com os valores atuais para edição.
-- Opção de limpar slot individual (ícone de reset no slot preenchido).
-
-**C.4 — Controle de Estado e Progresso**
-- Um indicador no topo da tela exibe o progresso: "Cartas na Mesa: X/36".
-- O botão "Gerar Dossiê" fica desabilitado até que pelo menos 1 casa seja preenchida (não é necessário preencher todas as 36 para gerar — o sistema interpreta apenas as casas com dados).
-- Um botão "Limpar Mesa" permite resetar todas as 36 casas (com diálogo de confirmação).
+**C.3 — Descoberta Progressiva**
+- Freemium vê a Mandala **base** (geometria + resumo superficial).
+- Clicar numa camada abre um painel limpo (glassmorphism) com o conteúdo daquela vertente — desbloqueado conforme o nível do usuário.
 
 **Critérios de Aceitação:**
-- [ ] O grid renderiza exatamente 36 slots nas posições corretas (9×4).
-- [ ] O Popover não cobre o restante do grid — posiciona-se inteligentemente (acima, abaixo, à esquerda ou à direita conforme o espaço disponível na tela).
-- [ ] Os ComboBoxes têm busca funcional: digitar caracteres filtra as opções em tempo real.
-- [ ] O estado da matriz persiste enquanto o usuário está na tela (não perde ao re-render).
-- [ ] Em telas desktop (≥1280px), todos os 36 slots são visíveis sem scroll vertical.
+- [ ] A Mandala renderiza no mobile com clique cirúrgico em cada nó (SVG, não raycasting).
+- [ ] Nós tântricos em desequilíbrio aparecem em estado de alerta visual.
+- [ ] O anel astrológico reflete os trânsitos do dia (Redis).
 
 ---
 
-### Módulo D — Motor de IA e Geração do Dossiê
+### Módulo D — Dashboard Diário (o Oráculo de Bolso)
 
-**D.1 — Disparo do Processamento**
-- Botão "Gerar Dossiê Cabalístico" na sidebar.
-- O sistema envia para a API route `/api/generate-dossier`:
-  - O ID do consulente (para buscar os mapas calculados).
-  - O objeto `matrixData` com as casas preenchidas (formato: `{ "1": { "carta": 19, "odu": 10 }, "5": { "carta": 3, "odu": 6 } ... }`).
+O hábito diário (Doc 25 §3). Mobile-first, cards expansíveis / snap-scroll.
 
-**D.2 — Pipeline de Processamento (Backend)**
-1. Busca o `Client` no banco de dados (mapas já calculados).
-2. Para cada casa preenchida em `matrixData`, o `PromptBuilder` monta um bloco interpretativo específico.
-3. O `PromptBuilder` injeta no prompt: significado base da casa + aspecto astrológico/numerológico delegado àquela casa + carta tirada + Odu tirado.
-4. Envia o payload completo para a API do LLM (OpenAI GPT-4o ou Anthropic Claude).
-5. Recebe o relatório em Markdown.
-6. Salva o resultado no modelo `Report` associado ao `Reading`.
-7. Retorna o Markdown para o frontend.
+**D.1 — Os três blocos do dia**
+1. **Clima Energético:** como o céu de hoje afeta *seu* corpo espiritual (resumo em 2 linhas + detalhe).
+2. **A Prática / Ritual:** o banho de ervas, cor ou mantra do dia, com botão "Realizado".
+3. **O Alerta:** gatilhos emocionais a evitar nas próximas 24h.
 
-**D.3 — Exibição do Dossiê na Tela**
-- O Markdown é renderizado na tela em uma área de leitura elegante ao lado/abaixo do grid.
-- O dossiê é estruturado em:
-  - Seção por casa (Casa 1, Casa 2... até a última casa preenchida).
-  - Seção final de Síntese Integradora.
-- Opção de expandir/colapsar cada seção de casa.
-
-**D.4 — Exportação para PDF**
-- Botão "Exportar PDF" gera um arquivo com:
-  - Capa com nome do consulente, data da consulta e logomarca.
-  - Página de resumo dos mapas (Astrologia, Numerologias).
-  - Análise de cada casa preenchida.
-  - Capítulo de Síntese Final.
-- O PDF é disponibilizado para download imediato.
-- O link do PDF é salvo no campo `pdfUrl` do modelo `Report`.
+**D.2 — Geração (pipeline de 3 camadas — Doc 06)**
+1. Busca o céu de hoje no **Redis** (cronjob de madrugada via `core-astrology`).
+2. Cruza com o mapa natal do usuário (Camada 1) → Grafo detecta o **Ponto de Tensão** (Camada 2).
+3. O **Agente de Síntese** (Camada 3) consulta o Grimório (busca híbrida pgvector + JSONB) e escreve os três blocos com dados 100% da tradição.
 
 **Critérios de Aceitação:**
-- [ ] O processamento completo (para 36 casas) não deve exceder 60 segundos. Para 10 casas, máximo 20 segundos.
-- [ ] O frontend exibe um estado de carregamento (spinner + mensagem de progresso) durante o processamento.
-- [ ] Se o processamento falhar, um estado de erro claro é exibido com opção de tentar novamente.
-- [ ] O dossiê gerado é salvo no banco de dados e pode ser acessado novamente no histórico do consulente.
-- [ ] O PDF exportado contém todos os capítulos sem truncamento.
+- [ ] O Dashboard carrega instantâneo (céu já cacheado no Redis).
+- [ ] O ritual prescrito existe no Grimório (nenhuma erva/banho inventado — Doc 06/20).
+- [ ] "Realizado" registra o ritual no histórico do usuário.
 
 ---
 
-### Módulo E — Histórico de Consultas
+### Módulo E — Manifesto Akáshico (o Relatório Base)
 
-**E.1 — Histórico por Consulente**
-- Na tela de perfil do consulente, uma seção "Histórico de Leituras" lista todas as consultas anteriores com data e status.
-- Clicar em uma leitura anterior abre o dossiê correspondente (somente leitura).
-- Botão para baixar o PDF de leituras antigas.
+**E.1 — Geração única**
+- Gerado na compra (Nível 2) a partir dos 4 mapas + quiz de intenção.
+- Estrutura: as quatro camadas do usuário (Ori/Odus, Cabala, 11 Corpos Tântricos, Astrologia) + síntese integradora.
 
-**E.2 — Dashboard Geral**
-- Tela `/dashboard` exibe:
-  - Card: "Consultas realizadas este mês"
-  - Card: "Total de consulentes cadastrados"
-  - Tabela: "Últimas 10 consultas" com nome, data e link para o dossiê.
+**E.2 — Entrega**
+- Renderizado na interface (descoberta progressiva) **e** exportável em **PDF via `@react-pdf/renderer`** (vetorial, leve, texto selecionável — **nunca** Puppeteer/headless Chrome no VPS, Doc 25 §10).
+
+**Critérios de Aceitação:**
+- [ ] O Manifesto cita dados específicos do mapa do usuário (não genérico).
+- [ ] O PDF é gerado no backend consumindo zero RAM gráfica.
+- [ ] Comprar o Manifesto concede 30 dias de Dashboard Diário.
 
 ---
 
-### Módulo F — Consulta Interativa (Q&A) — *Fase 2 (D5)*
+### Módulo F — Agente Oracular Interativo (Consulta por Créditos)
 
-**Escopo (D5):** recomendado para a **Fase 2**, após o MVP do dossiê. Pode ser entregue atrás de feature flag. Especificação completa no **Doc 12**.
+A Camada 3 conversacional. Especificação completa no Doc 12.
 
-**F.1 — Perguntar ao Oráculo sobre uma leitura**
-- A partir de um dossiê gerado (`/dashboard/leituras/[id]`), o operador abre o painel "Consultar o Oráculo".
-- Faz **perguntas abertas** ("e quanto ao amor?", "esse dinheiro vem este ano?").
-- O sistema **roteia deterministicamente** a pergunta para as casas e aspectos natais relevantes (roteador de temas, Doc 12 §4) e responde **ancorado exclusivamente** na leitura já realizada (RAG fechado, Doc 12 §5).
+**F.1 — Perguntar ao Oráculo**
+- O usuário faz perguntas abertas (*"Como meu Odu 8 lida com o trânsito de Plutão na minha carreira hoje?"*).
+- O sistema roteia deterministicamente para os pilares/aspectos relevantes e responde **ancorado no Grimório + no mapa do usuário** (RAG fechado — nunca conhecimento aberto, nunca inventa ritual).
 
-**F.2 — Garantias**
-- A resposta nunca cita carta/Odu fora da tiragem da leitura.
-- A resposta nunca contradiz o dossiê gerado.
-- Sem determinações médicas/jurídicas/financeiras categóricas — apenas tendências e direções.
-- Conversa persistida (`Consultation` + `ChatMessage`, Doc 04).
+**F.2 — Economia de Créditos**
+- Pedir o ritual do dia = **1 crédito**; pergunta complexa = **3 créditos** (Doc 25 §7).
+- A assinatura concede uma franquia mensal; esgotada, oferece pacotes avulsos (Stripe).
 
 **Critérios de Aceitação:**
-- [ ] `POST /api/consult` exige sessão e valida o body (`readingId`, `question`).
-- [ ] Pergunta sobre amor roteia para a Casa 24 (+ Vênus/Lua) e responde ancorada no dossiê.
-- [ ] Resposta em streaming começa em menos de 3s.
-- [ ] Cada resposta exibe, de forma discreta, quais casas foram consultadas (transparência do roteamento).
+- [ ] `POST /api/consult` exige sessão, valida créditos disponíveis e debita ao responder.
+- [ ] A resposta nunca cita erva/ritual fora do Grimório nem contradiz o Manifesto.
+- [ ] Resposta em streaming (SSE) começa em < 3s; transparência das vertentes consultadas.
+- [ ] Sem determinações médicas/jurídicas/financeiras categóricas.
 
-> **Resolve I3 do Doc 10:** a frase "a IA nunca recebe perguntas abertas" (Doc 06 §1) vale para o **motor por-casa do dossiê**. Na **camada de consulta**, perguntas abertas são aceitas e roteadas deterministicamente. Ver Doc 12 §1.
+---
+
+### Módulo G — Monetização & Conta (Stripe)
+
+**G.1 — Planos e Créditos**
+- Freemium (default), compra do Manifesto (one-time), assinatura Akasha Pro (recorrente), pacotes avulsos de créditos.
+- Webhooks Stripe atualizam `Subscription` e saldo de `Credits`.
+
+**G.2 — PWA**
+- Instalável na tela inicial; prompt pós-checkout *"Adicione o Oráculo Akasha à sua Tela Inicial"*.
+
+**Critérios de Aceitação:**
+- [ ] Webhook Stripe (assinado) ativa plano e credita a franquia mensal.
+- [ ] Saldo de créditos visível; bloqueio gracioso quando zerado (oferta de upsell).
 
 ---
 
 ## 3. Restrições e Requisitos Não-Funcionais
 
-**Segurança:**
-- Todas as chaves de API (OpenAI, Anthropic, serviços de astrologia) ficam exclusivamente no servidor (variáveis de ambiente `.env`). Nunca expostas no frontend.
-- Banco de dados não é acessível publicamente — apenas via ORM do servidor.
-- Autenticação obrigatória para todas as rotas do dashboard.
+**Segurança & Soberania:**
+- Chaves de API (LLM, Stripe) só no servidor. Embeddings via **Ollama local** (`localhost:11434`) — conhecimento do Grimório não trafega na internet pública (Doc 25 §5).
+- Webhook do Grimório com assinatura criptográfica verificada.
 
 **Performance:**
-- O grid da Mesa Real (componente React) deve renderizar sem lag perceptível ao clicar nos slots (re-renders otimizados com `useState` ou `Zustand`).
-- Os mapas do consulente (astrologia, numerologias) são calculados **uma única vez** no cadastro e cacheados. Nunca recalculados em tempo de consulta.
+- Mandala e Dashboard carregam instantâneo (céu cacheado no Redis; "Calcule Uma Vez, Sirva Infinitamente").
+- Mapas natais calculados uma vez no onboarding e cacheados.
 
-**Usabilidade:**
-- A interface deve funcionar em monitores de 13" a 27".
-- Dark mode obrigatório (não há modo claro no MVP).
-- Sem necessidade de treinamento formal — um terapeuta familiarizado com a Mesa Real deve conseguir operar o sistema sem tutorial após 15 minutos de exploração.
+**Mobile-first:**
+- Prioridade absoluta ao celular (cards/snap-scroll). Desktop é "Centro de Comando" para estudo profundo. PWA nativo.
+
+**Internacionalização:**
+- `next-intl` desde o dia zero; UI em dicionários `pt.json`/`en.json`; rotas localizadas. Conteúdo pt-BR no piloto.
 
 **Disponibilidade:**
-- Sistema hospedado em plataforma com SLA de 99.5% (Vercel + Supabase/Neon são adequados).
+- VPS Linux (Docker + PM2). Cronjob de trânsitos à meia-noite UTC. Backup do PostgreSQL (usuários + pgvector).

@@ -1,5 +1,7 @@
 # Documento 13 — Identidade Cigano Ramiro & Design System v2
-## Cabala dos Caminhos
+## Cabala dos Caminhos — LEGADO B2B
+
+> ⚠️ **LEGADO B2B — referência histórica (não-canônico).** Este documento pertence ao produto **Cockpit Oracular / Mesa Real (B2B)**, descontinuado com o pivô para o **Sistema Akasha (B2C)**. Permanece apenas como registro do `apps/legacy-cockpit` (mantido durante a migração, depois desligado). **Visão vigente: Doc 25 (Visão Akasha) + Doc 26 (Identidade Akasha).** Não usar como fonte para o produto Akasha. A identidade Cigano Ramiro (paleta laranja + azul royal, persona umbandista) aqui descrita foi integralmente aposentada e **substituída pelo Doc 26 (Identidade Akasha cósmica)**.
 
 > **Tipo:** Identidade de marca + Design System (fonte canônica da paleta)
 > **Versão:** 2.0 | **Resolve:** G1, G2 e as inconsistências I1, I2 do Doc 10
