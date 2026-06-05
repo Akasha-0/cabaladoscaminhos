@@ -1,0 +1,10 @@
+  const orb = RETROGRADE_ORBS[planeta] ?? 0.15;
+
+  const day = 1 / 1440;
+  const pos0 = calcularPosicao(planeta, data);
+  const pos1 = calcularPosicao(planeta, new Date(data.getTime() - day * 86400000));
+  const pos2 = calcularPosicao(planeta, new Date(data.getTime() + day * 86400000));
+
+  const speed0 = (pos0.longitude - pos1.longitude + 360) % 360;
+  const speed1 = (pos2.longitude - pos0.longitude + 360) % 360;
+  const accel = speed1 - speed0;
