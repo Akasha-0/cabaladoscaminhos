@@ -1,8 +1,9 @@
-import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
+import { NextRequest, NextResponse } from 'next/server';
+import { searchParamsToObject } from '@/lib/api/query-params';
 import type { SpiritualCorrelations } from '@/lib/api/spiritual-correlations';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
+import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
 
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
@@ -131,14 +132,9 @@ const metricsData: HealthMetric[] = [];
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const parseResult = HealthMetricsQuerySchema.safeParse({
-    date: searchParams.get('date'),
-    type: searchParams.get('type'),
-    sefirot: searchParams.get('sefirot'),
-    chakra: searchParams.get('chakra'),
-    element: searchParams.get('element'),
-    orixa: searchParams.get('orixa'),
-  });
+  const parseResult = HealthMetricsQuerySchema.safeParse(
+    searchParamsToObject(searchParams, ['date', 'type', 'sefirot', 'chakra', 'element', 'orixa'])
+  );
 
   if (!parseResult.success) {
     return NextResponse.json(
