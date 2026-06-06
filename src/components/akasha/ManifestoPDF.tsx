@@ -234,6 +234,8 @@ export interface ManifestoContent {
   userName: string;
   generatedAt: string;
   synthesis: string;
+  /** AD-T5-F (AD-20.2): bloco de glossário injetado para downstream IA. */
+  glossarySection?: string;
   odus: {
     title: string;
     oduName: string;
