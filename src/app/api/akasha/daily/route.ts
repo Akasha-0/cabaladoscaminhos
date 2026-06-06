@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const existing = await prisma.akashaDailyReading.findUnique({
+  const existing = await prisma.dailyReading.findUnique({
     where: { userId_date: { userId, date: today } },
   });
 
@@ -23,13 +23,10 @@ export async function GET(request: NextRequest) {
       ritual: existing.ritual,
       alert: existing.alert,
       tensionPoint: existing.tensionPoint,
-      // Campos opcionais — podem não existir no schema antigo
-      moonPhase: (existing as Record<string, unknown>)['moonPhase'] ?? null,
-      overallTheme: (existing as Record<string, unknown>)['overallTheme'] ?? null,
     });
   }
 
-  const birthChart = await prisma.akashaBirthChart.findUnique({
+  const birthChart = await prisma.birthChart.findUnique({
     where: { userId },
   });
 
@@ -45,7 +42,7 @@ export async function GET(request: NextRequest) {
     today
   );
 
-  const record = await prisma.akashaDailyReading.create({
+  const record = await prisma.dailyReading.create({
     data: {
       userId,
       date: today,
@@ -62,7 +59,5 @@ export async function GET(request: NextRequest) {
     ritual: record.ritual,
     alert: record.alert,
     tensionPoint: record.tensionPoint,
-    moonPhase: (record as Record<string, unknown>)['moonPhase'] ?? content.moonPhase,
-    overallTheme: (record as Record<string, unknown>)['overallTheme'] ?? content.overallTheme,
   });
 }

@@ -6,9 +6,9 @@ export async function GET(request: NextRequest) {
   const userOrResponse = await requireAkashaApi(request);
   if (userOrResponse instanceof NextResponse) return userOrResponse;
 
-  const user = await prisma.akashaUser.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: userOrResponse.id },
-    select: { id: true, email: true, fullName: true, emailVerified: true, locale: true },
+    select: { id: true, email: true, name: true, emailVerified: true, locale: true },
   });
 
   if (!user) {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     id: user.id,
     email: user.email,
-    fullName: user.fullName,
+    name: user.name,
     emailVerified: user.emailVerified,
     locale: user.locale,
   });

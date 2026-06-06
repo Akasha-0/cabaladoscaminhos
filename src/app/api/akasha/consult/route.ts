@@ -5,20 +5,26 @@ import { prisma } from '@/lib/prisma';
 import { streamCompletion } from '@/lib/ai/llm-router';
 import { createSSEStream } from '@/lib/sse';
 import { searchGrimoire, type ChartContext, type GrimoireContext } from '@/lib/grimoire/search';
+import { buildOduGlossary, formatGlossarySection } from '@/lib/akasha/glossary';
 
 const bodySchema = z.object({
   question: z.string().min(3).max(1000),
   consultationId: z.string().optional(),
 });
 
-function getDominantElement(astro: Record<string, unknown>): string {
+export function getDominantElement(astro: Record<string, unknown>): string {
   const balance = astro?.elementalChart as Record<string, number> | undefined ?? {};
   const entries = Object.entries(balance);
   if (entries.length === 0) return 'Água';
   return entries.sort((a, b) => b[1] - a[1])[0][0];
 }
 
-function buildAkashaSystemPrompt(
+/**
+ * Constrói o System Prompt da consulta. Equivalente à antiga
+ * `buildConsultSystemPrompt` — preserva as regras anti-alucinação (Rule 1–6)
+ * e injeta o glossário-base do Odu (AD-20.2 / AD-T5-F) para ancorar a verdade.
+ */
+export function buildConsultSystemPrompt(
   chart: { astrologyMap: unknown; kabalisticMap: unknown; oduBirth: unknown } | null,
   ctx: GrimoireContext
 ): string {
@@ -31,6 +37,9 @@ function buildAkashaSystemPrompt(
         .join('\n\n---\n\n')}`
     : '';
 
+  // AD-T5-F (AD-20.2): injeção do glossário do Odu (verdade-base).
+  const glossarySection = formatGlossarySection(buildOduGlossary(chart?.oduBirth));
+
   return `Você é a Voz do Akasha — um oráculo espiritual de alta voltagem intuitiva.
 
 IDENTIDADE DO CONSULTANTE:
@@ -38,6 +47,8 @@ IDENTIDADE DO CONSULTANTE:
 - Orixá(s) regente(s): ${((oduBirth?.orixaRegency as string[]) ?? []).join(', ') || 'Não identificado'}
 - Caminho de Vida: ${(kab?.lifePath as string | number) ?? '—'}
 - Elemento dominante: ${ctx.pillarsConsulted.includes('Botânica') ? 'identificado no Grimório' : 'calculado'}
+
+${glossarySection}
 
 REGRAS ABSOLUTAS:
 1. NUNCA invente rituais, propriedades de ervas ou correspondências que não estejam na Biblioteca Akasha abaixo.
@@ -66,7 +77,7 @@ export async function POST(request: NextRequest) {
   const { question, consultationId } = parsed;
 
   // 3. Check credit balance
-  const ledger = await prisma.akashaCreditEntry.aggregate({
+  const ledger = await prisma.creditEntry.aggregate({
     where: { userId },
     _sum: { delta: true },
   });
@@ -86,7 +97,7 @@ export async function POST(request: NextRequest) {
   // 5. Create or fetch consultation
   let consultation: { id: string };
   if (consultationId) {
-    const existing = await prisma.akashaConsultation.findUnique({
+    const existing = await prisma.consultation.findFirst({
       where: { id: consultationId, userId },
       select: { id: true },
     });
@@ -95,14 +106,14 @@ export async function POST(request: NextRequest) {
     }
     consultation = existing;
   } else {
-    consultation = await prisma.akashaConsultation.create({
+    consultation = await prisma.consultation.create({
       data: { userId, title: question.slice(0, 80) },
       select: { id: true },
     });
   }
 
   // 6. Persist user message
-  await prisma.akashaChatMessage.create({
+  await prisma.chatMessage.create({
     data: {
       consultationId: consultation.id,
       role: 'USER',
@@ -114,7 +125,7 @@ export async function POST(request: NextRequest) {
   });
 
   // 7. Fetch mapa natal do usuário
-  const chart = await prisma.akashaBirthChart.findUnique({
+  const chart = await prisma.birthChart.findUnique({
     where: { userId },
     select: {
       astrologyMap: true,
@@ -136,7 +147,7 @@ export async function POST(request: NextRequest) {
   const grimoireCtx = await searchGrimoire(question, chartCtx, 4);
 
   // 9. Build enriched system prompt
-  const systemPrompt = buildAkashaSystemPrompt(chart, grimoireCtx);
+  const systemPrompt = buildConsultSystemPrompt(chart, grimoireCtx);
 
   // 10. Open SSE stream
   const encoder = new TextEncoder();
@@ -172,7 +183,7 @@ export async function POST(request: NextRequest) {
         // 11. Persist oracle response and debit credits
         const grimoireRefs = grimoireCtx.entries.map((e) => e.titulo);
 
-        await prisma.akashaChatMessage.create({
+        await prisma.chatMessage.create({
           data: {
             consultationId: consultation.id,
             role: 'ORACLE',
@@ -185,7 +196,7 @@ export async function POST(request: NextRequest) {
 
         const newBalance = balance - creditCost;
 
-        await prisma.akashaCreditEntry.create({
+        await prisma.creditEntry.create({
           data: {
             userId,
             delta: -creditCost,

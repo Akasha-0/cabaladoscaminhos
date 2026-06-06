@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   const auth = await requireAkashaApi(request);
   if (auth instanceof NextResponse) return auth;
 
-  const chart = await prisma.akashaBirthChart.findUnique({
+  const chart = await prisma.birthChart.findUnique({
     where: { userId: auth.id },
   });
 

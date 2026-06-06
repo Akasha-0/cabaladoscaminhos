@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const auth = await requireAkashaApi(request);
   if (auth instanceof NextResponse) return auth;
 
-  const sub = await prisma.akashaSubscription.findUnique({
+  const sub = await prisma.subscription.findUnique({
     where: { userId: auth.id },
     select: { plan: true, status: true, currentPeriodEnd: true, stripeSubscriptionId: true },
   });

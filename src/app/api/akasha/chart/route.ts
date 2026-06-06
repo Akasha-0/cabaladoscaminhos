@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
   const { id: userId } = authResult;
 
-  const existing = await prisma.akashaBirthChart.findUnique({
+  const existing = await prisma.birthChart.findUnique({
     where: { userId },
     select: { id: true },
   });
@@ -16,10 +16,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'Mapa natal já calculado', chartId: existing.id });
   }
 
-  const user = await prisma.akashaUser.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
-      fullName: true,
+      name: true,
       birthDate: true,
       birthTime: true,
       birthLatitude: true,
@@ -29,6 +29,13 @@ export async function POST(request: NextRequest) {
   });
   if (!user) {
     return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });
+  }
+
+  if (!user.birthDate) {
+    return NextResponse.json(
+      { error: 'birthDate ausente. Complete seu cadastro.' },
+      { status: 400 }
+    );
   }
 
   const birthDateStr = user.birthDate.toISOString().split('T')[0];
@@ -58,7 +65,7 @@ export async function POST(request: NextRequest) {
 
   let kabalisticMap: unknown;
   try {
-    kabalisticMap = buildKabalisticMap(user.fullName, birthDateStr);
+    kabalisticMap = buildKabalisticMap(user.name, birthDateStr);
   } catch (err) {
     kabalisticMap = { error: 'Falha no cálculo cabalístico', detail: String(err) };
   }
@@ -79,7 +86,7 @@ export async function POST(request: NextRequest) {
 
   const incomplete = user.birthLatitude == null || user.birthLongitude == null;
 
-  const chart = await prisma.akashaBirthChart.create({
+  const chart = await prisma.birthChart.create({
     data: {
       userId,
       astrologyMap: astrologyMap ?? {},

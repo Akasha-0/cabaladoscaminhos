@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const authResult = await requireAkashaApi(request);
   if (authResult instanceof NextResponse) return authResult;
 
-  const result = await prisma.akashaCreditEntry.aggregate({
+  const result = await prisma.creditEntry.aggregate({
     where: { userId: authResult.id },
     _sum: { delta: true },
   });
@@ -27,19 +27,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'userId (string) e amount (number) são obrigatórios' }, { status: 400 });
   }
 
-  const user = await prisma.akashaUser.findUnique({ where: { id: body.userId } });
+  const user = await prisma.user.findUnique({ where: { id: body.userId } });
   if (!user) {
     return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });
   }
 
-  const ledger = await prisma.akashaCreditEntry.aggregate({
+  const ledger = await prisma.creditEntry.aggregate({
     where: { userId: body.userId },
     _sum: { delta: true },
   });
   const currentBalance = ledger._sum.delta ?? 0;
   const newBalance = currentBalance + body.amount;
 
-  const entry = await prisma.akashaCreditEntry.create({
+  const entry = await prisma.creditEntry.create({
     data: {
       userId: body.userId,
       delta: body.amount,

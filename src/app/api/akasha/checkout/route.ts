@@ -34,9 +34,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Stripe não configurado' }, { status: 503 });
   }
 
-  const user = await prisma.akashaUser.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: auth.id },
-    select: { email: true, fullName: true },
+    select: { email: true },
   });
   if (!user) {
     return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });

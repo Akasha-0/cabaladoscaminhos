@@ -1,4 +1,5 @@
 import type { ManifestoContent } from '@/components/akasha/ManifestoPDF';
+import { buildOduGlossary, formatGlossarySection } from './glossary';
 
 export function buildManifestoContent(
   userName: string,
@@ -32,9 +33,14 @@ export function buildManifestoContent(
     year: 'numeric',
   });
 
+  // AD-T5-F (AD-20.2): glossário mínimo (essência/quizila/conselho) injetado
+  // no payload para que qualquer consumidor IA tenha verdade-base do Odu.
+  const glossarySection = formatGlossarySection(buildOduGlossary(oduBirth));
+
   return {
     userName,
     generatedAt,
+    glossarySection,
     synthesis: buildSynthesis(oduName, lifePath, ascendant, tantricPath),
     odus: {
       title: 'Bússola Ancestral',
