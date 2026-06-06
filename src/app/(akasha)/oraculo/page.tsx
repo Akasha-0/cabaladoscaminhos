@@ -2,13 +2,29 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-interface Message {
+interface OracleMessage {
   role: 'user' | 'oracle';
   content: string;
+  pillarsConsulted?: string[];
+}
+
+const PILLAR_COLORS: Record<string, string> = {
+  Botânica: '#2DD4BF',
+  Odus: '#F0B429',
+  Diagnóstico: '#FB5781',
+  Astrologia: '#7C5CFF',
+  Tarot: '#F0B429',
+  Numerologia: '#2DD4BF',
+  Chakras: '#FB5781',
+  Kabala: '#7C5CFF',
+};
+
+function getPillarColor(pillar: string): string {
+  return PILLAR_COLORS[pillar] ?? '#A7AECF';
 }
 
 export default function OraculoPage() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<OracleMessage[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<number | null>(null);
@@ -58,7 +74,10 @@ export default function OraculoPage() {
         const err = await res.json().catch(() => ({ error: 'Erro desconhecido' }));
         setMessages((prev) => {
           const next = [...prev];
-          next[next.length - 1] = { role: 'oracle', content: `⚠ ${err.error ?? 'Erro ao consultar o oráculo.'}` };
+          next[next.length - 1] = {
+            role: 'oracle',
+            content: `⚠ ${err.error ?? 'Erro ao consultar o oráculo.'}`,
+          };
           return next;
         });
         setLoading(false);
@@ -90,12 +109,23 @@ export default function OraculoPage() {
                   next[next.length - 1] = {
                     role: 'oracle',
                     content: next[next.length - 1].content + data.delta,
+                    pillarsConsulted: next[next.length - 1].pillarsConsulted,
                   };
                   return next;
                 });
               } else if (currentEvent === 'done') {
                 if (data.consultationId) setConsultationId(data.consultationId);
                 if (typeof data.remainingBalance === 'number') setBalance(data.remainingBalance);
+                if (Array.isArray(data.pillarsConsulted)) {
+                  setMessages((prev) => {
+                    const next = [...prev];
+                    next[next.length - 1] = {
+                      ...next[next.length - 1],
+                      pillarsConsulted: data.pillarsConsulted as string[],
+                    };
+                    return next;
+                  });
+                }
               } else if (currentEvent === 'error') {
                 setMessages((prev) => {
                   const next = [...prev];
@@ -116,7 +146,10 @@ export default function OraculoPage() {
     } catch {
       setMessages((prev) => {
         const next = [...prev];
-        next[next.length - 1] = { role: 'oracle', content: '⚠ Falha de conexão com o oráculo.' };
+        next[next.length - 1] = {
+          role: 'oracle',
+          content: '⚠ Falha de conexão com o oráculo.',
+        };
         return next;
       });
     } finally {
@@ -130,8 +163,8 @@ export default function OraculoPage() {
         display: 'flex',
         flexDirection: 'column',
         height: 'calc(100vh - 56px)',
-        background: 'linear-gradient(135deg, #0f0a1e 0%, #1a0e35 50%, #0d1a2e 100%)',
-        color: '#E2E8F0',
+        background: '#06070F',
+        color: '#F4F5FF',
       }}
     >
       {/* Header */}
@@ -141,114 +174,216 @@ export default function OraculoPage() {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '16px 24px',
-          borderBottom: '1px solid rgba(139,92,246,0.2)',
-          background: 'rgba(15,10,30,0.8)',
+          borderBottom: '1px solid rgba(124,92,255,0.2)',
+          background: 'rgba(11,14,28,0.95)',
           backdropFilter: 'blur(12px)',
           flexShrink: 0,
         }}
       >
         <h1
           style={{
-            fontFamily: 'var(--font-cinzel), serif',
-            fontSize: '1.5rem',
-            fontWeight: 600,
-            color: '#a78bfa',
-            letterSpacing: '0.1em',
+            fontFamily: 'var(--font-cinzel, serif)',
+            fontSize: '1.3rem',
+            fontWeight: 700,
+            background: 'linear-gradient(90deg, #7C5CFF 0%, #2DD4BF 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            letterSpacing: '0.12em',
             margin: 0,
           }}
         >
-          ORÁCULO AKASHA
+          ✦ ORÁCULO AKASHA
         </h1>
         <div
           style={{
-            padding: '6px 14px',
+            padding: '6px 16px',
             borderRadius: '9999px',
-            background: 'rgba(139,92,246,0.15)',
-            border: '1px solid rgba(139,92,246,0.3)',
-            fontSize: '0.85rem',
-            color: '#c4b5fd',
+            background: 'rgba(124,92,255,0.1)',
+            border: '1px solid rgba(124,92,255,0.3)',
+            fontSize: '0.82rem',
+            color: '#A7AECF',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
           }}
         >
-          Créditos:{' '}
-          <span style={{ fontWeight: 700, color: '#a78bfa' }}>
-            {balance === null ? '…' : balance}
+          <span style={{ color: '#7C5CFF' }}>✦</span>
+          <span>
+            <span style={{ fontWeight: 700, color: '#F4F5FF' }}>
+              {balance === null ? '…' : balance}
+            </span>{' '}
+            créditos
           </span>
         </div>
       </header>
 
-      {/* Messages */}
+      {/* Messages area */}
       <div
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '24px',
+          padding: '28px 24px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px',
+          gap: '20px',
         }}
       >
+        {/* Welcome state */}
         {messages.length === 0 && (
           <div
             style={{
+              margin: 'auto',
               textAlign: 'center',
-              marginTop: 'auto',
-              marginBottom: 'auto',
-              color: 'rgba(167,139,250,0.4)',
-              fontStyle: 'italic',
-              fontSize: '1rem',
+              maxWidth: '520px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '16px',
             }}
           >
-            O Akasha aguarda sua pergunta…
+            <div
+              style={{
+                width: '64px',
+                height: '64px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(124,92,255,0.3) 0%, rgba(45,212,191,0.1) 100%)',
+                border: '1px solid rgba(124,92,255,0.4)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.8rem',
+              }}
+            >
+              ✦
+            </div>
+            <div
+              style={{
+                padding: '20px 28px',
+                borderRadius: '16px',
+                background: 'rgba(11,14,28,0.8)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(45,212,191,0.2)',
+                boxShadow: '0 0 32px rgba(45,212,191,0.06)',
+              }}
+            >
+              <p
+                style={{
+                  margin: 0,
+                  color: '#A7AECF',
+                  fontSize: '1rem',
+                  lineHeight: 1.7,
+                  fontStyle: 'italic',
+                }}
+              >
+                Saudações. Sou a Voz do Akasha.
+                <br />
+                Seu mapa está aberto diante de mim.{' '}
+                <span style={{ color: '#2DD4BF' }}>
+                  O que você precisa compreender hoje?
+                </span>
+              </p>
+            </div>
           </div>
         )}
 
+        {/* Message list */}
         {messages.map((msg, i) => (
           <div
             key={i}
             style={{
               display: 'flex',
-              justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+              flexDirection: 'column',
+              alignItems: msg.role === 'user' ? 'flex-end' : 'flex-start',
+              gap: '6px',
             }}
           >
             <div
               style={
                 msg.role === 'user'
                   ? {
-                      maxWidth: '70%',
-                      padding: '12px 16px',
+                      maxWidth: '68%',
+                      padding: '12px 18px',
                       borderRadius: '18px 18px 4px 18px',
-                      background: 'linear-gradient(135deg, #7c3aed, #9333ea)',
-                      color: '#fff',
+                      background: 'rgba(124,92,255,0.15)',
+                      border: '1px solid rgba(124,92,255,0.3)',
+                      color: '#F4F5FF',
                       fontSize: '0.95rem',
-                      lineHeight: 1.6,
-                      boxShadow: '0 2px 12px rgba(124,58,237,0.35)',
+                      lineHeight: 1.65,
                     }
                   : {
                       maxWidth: '75%',
-                      padding: '14px 18px',
+                      padding: '16px 20px',
                       borderRadius: '18px 18px 18px 4px',
-                      background: 'rgba(255,255,255,0.04)',
+                      background: 'rgba(11,14,28,0.8)',
                       backdropFilter: 'blur(16px)',
-                      border: '1px solid rgba(139,92,246,0.25)',
-                      color: '#e2e8f0',
+                      border: '1px solid rgba(45,212,191,0.2)',
+                      color: '#F4F5FF',
                       fontSize: '0.95rem',
-                      lineHeight: 1.7,
-                      boxShadow:
-                        '0 0 24px rgba(139,92,246,0.12), 0 2px 8px rgba(0,0,0,0.3)',
+                      lineHeight: 1.75,
+                      boxShadow: '0 0 24px rgba(45,212,191,0.06), 0 2px 8px rgba(0,0,0,0.4)',
                       whiteSpace: 'pre-wrap',
                     }
               }
             >
+              {msg.role === 'oracle' && (
+                <span
+                  style={{
+                    color: '#2DD4BF',
+                    marginRight: '8px',
+                    fontSize: '0.8rem',
+                    verticalAlign: 'middle',
+                  }}
+                >
+                  ✦
+                </span>
+              )}
               {msg.role === 'oracle' && msg.content === '' && loading ? (
-                <span style={{ color: 'rgba(167,139,250,0.6)', fontStyle: 'italic' }}>
+                <span style={{ color: '#5C6691', fontStyle: 'italic' }}>
                   O Akasha contempla…
                 </span>
               ) : (
-                msg.content
+                <span style={{ verticalAlign: 'middle' }}>{msg.content}</span>
               )}
             </div>
+
+            {/* Pillar chips — shown after oracle messages with pillarsConsulted */}
+            {msg.role === 'oracle' &&
+              msg.pillarsConsulted &&
+              msg.pillarsConsulted.length > 0 && (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '6px',
+                    paddingLeft: '4px',
+                  }}
+                >
+                  {msg.pillarsConsulted.map((pillar) => {
+                    const color = getPillarColor(pillar);
+                    return (
+                      <span
+                        key={pillar}
+                        style={{
+                          padding: '2px 10px',
+                          borderRadius: '9999px',
+                          fontSize: '0.72rem',
+                          fontWeight: 600,
+                          letterSpacing: '0.05em',
+                          color,
+                          background: `${color}18`,
+                          border: `1px solid ${color}40`,
+                        }}
+                      >
+                        {pillar}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
           </div>
         ))}
+
         <div ref={bottomRef} />
       </div>
 
@@ -257,8 +392,8 @@ export default function OraculoPage() {
         onSubmit={handleSubmit}
         style={{
           padding: '16px 24px',
-          borderTop: '1px solid rgba(139,92,246,0.2)',
-          background: 'rgba(15,10,30,0.9)',
+          borderTop: '1px solid rgba(124,92,255,0.2)',
+          background: 'rgba(11,14,28,0.95)',
           backdropFilter: 'blur(12px)',
           display: 'flex',
           flexDirection: 'column',
@@ -283,20 +418,27 @@ export default function OraculoPage() {
             resize: 'none',
             padding: '12px 16px',
             borderRadius: '12px',
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(139,92,246,0.3)',
-            color: '#e2e8f0',
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid rgba(124,92,255,0.3)',
+            color: '#F4F5FF',
             fontSize: '0.95rem',
             outline: 'none',
             fontFamily: 'inherit',
             lineHeight: 1.5,
             boxSizing: 'border-box',
+            transition: 'border-color 0.2s ease',
           }}
         />
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '0.8rem', color: 'rgba(167,139,250,0.6)' }}>
-            custo estimado:{' '}
-            <strong style={{ color: '#c4b5fd' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <span style={{ fontSize: '0.78rem', color: '#5C6691' }}>
+            Custo estimado:{' '}
+            <strong style={{ color: '#A7AECF' }}>
               {estimatedCost} {estimatedCost === 1 ? 'crédito' : 'créditos'}
             </strong>
           </span>
@@ -304,22 +446,23 @@ export default function OraculoPage() {
             type="submit"
             disabled={loading || !input.trim()}
             style={{
-              padding: '10px 28px',
+              padding: '10px 32px',
               borderRadius: '9999px',
               background:
                 loading || !input.trim()
-                  ? 'rgba(124,58,237,0.3)'
-                  : 'linear-gradient(135deg, #7c3aed, #9333ea)',
-              color: loading || !input.trim() ? 'rgba(255,255,255,0.4)' : '#fff',
+                  ? 'rgba(124,92,255,0.2)'
+                  : '#7C5CFF',
+              color: loading || !input.trim() ? '#5C6691' : '#F4F5FF',
               border: 'none',
               cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
               fontSize: '0.9rem',
-              fontWeight: 600,
-              letterSpacing: '0.05em',
+              fontWeight: 700,
+              letterSpacing: '0.06em',
               transition: 'all 0.2s ease',
+              boxShadow: loading || !input.trim() ? 'none' : '0 0 20px rgba(124,92,255,0.4)',
             }}
           >
-            {loading ? 'Consultando…' : 'Enviar'}
+            {loading ? 'Consultando…' : 'Consultar'}
           </button>
         </div>
       </form>
