@@ -79,38 +79,6 @@ const SECURITY_HEADERS = {
 const API_CSP = "default-src 'none'; frame-ancestors 'none'";
 
 // ============================================
-// Quarentena do B2C legado (Doc 16 AD-01)
-// --------------------------------------------
-// O produto é o Cockpit Oracular (B2B). A plataforma B2C de bem-estar
-// (dashboard, mapa pessoal, rituais, billing…) é fora de escopo (Doc 09 §5.1/§9).
-// Esta cuarentena a remove do roteamento de produção SEM apagar nada:
-//   - `LEGACY_B2C=on`  → restaura o B2C (reversível por flag).
-//   - ausente/qualquer → B2C quarentenado: páginas → /cockpit; APIs → 404.
-// ============================================
-
-const LEGACY_B2C_ENABLED = process.env.LEGACY_B2C === 'on';
-
-// Prefixos do produto B2B — sempre acessíveis.
-const B2B_PREFIXES = ['/cockpit', '/api/mesa-real', '/api/consult', '/api/operator', '/api/health'];
-// Infraestrutura/PWA — sempre acessível.
-const INFRA_PREFIXES = [
-  '/_next',
-  '/favicon.ico',
-  '/manifest',
-  '/icons',
-  '/offline',
-  '/sw',
-  '/api/og',
-];
-
-function isAllowedWhenQuarantined(pathname: string): boolean {
-  // Root path serves the landing page (always accessible).
-  if (pathname === '/') return true;
-  const prefixes = [...B2B_PREFIXES, ...INFRA_PREFIXES];
-  return prefixes.some((p) => pathname === p || pathname.startsWith(p + '/'));
-}
-
-// ============================================
 // Middleware - Auth is handled client-side
 // ============================================
 
@@ -126,23 +94,6 @@ export async function middleware(request: NextRequest) {
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
-
-  // ── Quarentena do B2C legado (Doc 16 AD-01) ──
-  // Tudo que não é B2B nem infraestrutura é bloqueado quando a flag está desligada.
-  if (!LEGACY_B2C_ENABLED && !isAllowedWhenQuarantined(pathname)) {
-    if (pathname.startsWith('/api/')) {
-      // APIs legadas não existem no produto B2B.
-      const notFound = NextResponse.json({ error: 'Not found' }, { status: 404 });
-      // Aplica headers de segurança + CSP também no 404 (defense in depth).
-      Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
-        notFound.headers.set(key, value);
-      });
-      notFound.headers.set('Content-Security-Policy', API_CSP);
-      return notFound;
-    }
-    // Raiz e páginas legadas levam ao Cockpit (entrada única do produto).
-    return NextResponse.redirect(new URL('/cockpit', request.url));
-  }
 
   // Skip rate limiting for excluded paths
   const EXCLUDED_PATHS = ['/_next', '/favicon.ico', '/api/health'];
@@ -201,24 +152,3 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };
-
-// ============================================
-// CSP for Cockpit Pages (Fase 23)
-// ============================================
-// Restrictive CSP for cockpit — no external scripts, no iframes.
-// 'unsafe-inline' for style-src is REQUIRED: Tailwind CSS inlines critical
-// styles in production (Next.js extracts and inlines Tailwind classes).
-// nonce-based approach is ideal but requires more setup; unsafe-inline
-// with strict default-src 'self' is an acceptable balance for internal tools.
-const COCKPIT_CSP = [
-  "default-src 'self'",
-  "script-src 'self'",
-  // unsafe-inline required for Tailwind critical CSS inlining in production
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: https://*.openstreetmap.org https://*.tile.openstreetmap.org",
-  "font-src 'self' data:",
-  "connect-src 'self'",
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-].join('; ');
