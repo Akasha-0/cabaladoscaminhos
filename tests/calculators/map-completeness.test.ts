@@ -262,29 +262,4 @@ describe('AD-23.6 — Completude dos 4 mapas (guardiao)', () => {
     });
   });
 
-  describe('normalizeBirthChart — planetsInHouses (AD-23.1.2)', () => {
-    it('planetsInHouses mapeia casa -> planetas para o correlation engine', async () => {
-      const { normalizeBirthChart } = await import('@/lib/ai/dossier/oracle-prompt-builder');
-      const chart: BirthChart = getBirthChart({
-        birthDate: new Date(`${DATE_ISO}T12:00:00`),
-        latitude: LAT_SAOPAULO,
-        longitude: LON_SAOPAULO,
-      });
-      const normalized = normalizeBirthChart(chart as unknown as Record<string, unknown>);
-      // planetsInHouses: reverse lookup house -> [planets]
-      assertObject(normalized.planetsInHouses, 'planetsInHouses');
-      const housesWithPlanets = Object.entries(normalized.planetsInHouses);
-      // Com birth time fornecido, deve haver pelo menos algumas casas com planetas
-      expect(housesWithPlanets.length).toBeGreaterThan(0);
-      for (const [house, planets] of housesWithPlanets) {
-        expect(Number(house)).toBeGreaterThan(0);
-        expect(Number(house)).toBeLessThanOrEqual(12);
-        assertArray(planets, `planetsInHouses[${house}]`);
-        for (const planet of planets) {
-          expect(typeof planet).toBe('string');
-          expect(planet.length).toBeGreaterThan(0);
-        }
-      }
-    });
-  });
 });

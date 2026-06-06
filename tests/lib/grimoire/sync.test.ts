@@ -89,9 +89,10 @@ number: 1
     expect(result.warnings.length).toBe(0);
     
     expect(mockGrimoireEntryUpsert).toHaveBeenCalledWith({
-      where: { id: 'odu-1' },
+      where: { slug: 'odu-1' },
       update: {
-        category: 'diagnostico',
+        categoria: 'diagnostico',
+        biblioteca: 'diagnostico',
         metadata: {
           id: 'odu-1',
           title: 'Ogbe',
@@ -99,11 +100,14 @@ number: 1
           type: 'odu',
           number: 1,
         },
-        content: '# Content of Ogbe',
+        conteudo: '# Content of Ogbe',
+        sourcePath: expect.stringContaining('odu-01-ogbe.md'),
       },
       create: {
         id: 'odu-1',
-        category: 'diagnostico',
+        slug: 'odu-1',
+        categoria: 'diagnostico',
+        biblioteca: 'diagnostico',
         metadata: {
           id: 'odu-1',
           title: 'Ogbe',
@@ -111,7 +115,8 @@ number: 1
           type: 'odu',
           number: 1,
         },
-        content: '# Content of Ogbe',
+        conteudo: '# Content of Ogbe',
+        sourcePath: expect.stringContaining('odu-01-ogbe.md'),
       },
     });
 
