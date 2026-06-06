@@ -7,6 +7,7 @@ import {
   JetBrains_Mono,
 } from 'next/font/google';
 import './globals.css';
+import { PwaInstallPrompt } from '@/components/akasha/PwaInstallPrompt';
 
 const cinzel = Cinzel({
   variable: '--font-cinzel',
@@ -174,12 +175,26 @@ export default function RootLayout({
         <link key="canonical" rel="canonical" href={BASE_URL} />
         <link key="sitemap" rel="sitemap" href="/sitemap.xml" type="application/xml" />
         <link key="robots" rel="robots" href="/robots.txt" />
+        {/* SW Registration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js')
+                    .catch(function(err) { console.warn('SW registration failed:', err); });
+                });
+              }
+            `,
+          }}
+        />
       </head>
       <body
         className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen antialiased`}
         style={{ background: '#06070F', color: '#F4F5FF' }}
       >
         {children}
+        <PwaInstallPrompt />
       </body>
     </html>
   );
