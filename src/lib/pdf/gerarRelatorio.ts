@@ -4,8 +4,10 @@ import type { MapaAlmaCompleto } from '../engines/types/mapa-alma';
 
 // ============================================================
 // Types
+// Types
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface MapaData {
   id: string;
   created_at: string;
@@ -56,12 +58,12 @@ const ARCANOS_MAIORES = [
 // MapaAlma Completo Adapter
 // ============================================================
 
-export function mapaAlmaToMapaData(mapa: MapaAlmaCompleto): MapaData {
+function mapaAlmaToMapaData(mapa: MapaAlmaCompleto): MapaData {
   return {
     id: crypto.randomUUID(),
     created_at: mapa.dataCalculo,
     numerologia: {
-      numero_vida: mapa.numerologia.vida,
+      numero_vida: mapa.numerologia.lifePath,
       numero_destino: mapa.numerologia.destino,
       numero_alma: mapa.numerologia.motivacao,
       numero_personalidade: mapa.numerologia.expressao,
@@ -97,7 +99,7 @@ export function mapaAlmaToMapaData(mapa: MapaAlmaCompleto): MapaData {
     sefirot: [mapa.odu.caminhoSephirah],
     convergencias: mapa.convergencias.map(c => ({
       energia: c.energia,
-      forca: c.forca === 'forte' ? 'dupla' : c.forca === 'medio' ? 'dupla' : 'simples',
+      forca: c.forca === 'fraco' ? 'tripla' : c.forca === 'medio' ? 'dupla' : 'simples',
       descricao: c.descricao,
     })),
   };
@@ -436,7 +438,7 @@ function adicionarFooter(doc: any, largura: number, margem: number, pageNum: num
 // Main export function
 // ============================================================
 
-export async function gerarRelatorioPDF(data: MapaData): Promise<Blob> {
+async function gerarRelatorioPDF(data: MapaData): Promise<Blob> {
   // Dynamic import at call time - jsPDF is ~1MB, only load when needed
    
   const jsPDF = (await import('jspdf') as any).default;

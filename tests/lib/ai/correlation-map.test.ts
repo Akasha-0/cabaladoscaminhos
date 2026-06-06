@@ -1,241 +1,213 @@
-/**
- * Testes do PromptBuilder e da Matriz de Correlação
- * @see docs/06_ai-engine-spec.md
- */
-
 import { describe, it, expect } from 'vitest';
 import {
   CORRELATION_MAP,
-  getCorrelation,
-  hasCorrelation,
+  getCorrelationEntry,
+  extractFromMap,
 } from '@/lib/ai/correlation-map';
-import {
-  buildFullPayload,
-  buildHousePayload,
-  buildSystemPrompt,
-  payloadToUserContent,
-} from '@/lib/ai/prompt-builder';
-import { LENORMAND_CARDS } from '@/lib/constants/lenormand-cards';
-import { ODUS } from '@/lib/constants/odus';
+import { normalizeBirthChart } from '@/lib/ai/dossier/oracle-prompt-builder';
+import type { BirthChart } from '@akasha/core-astrology';
 
-describe('Correlation Map — 36 entries', () => {
+describe('CORRELATION_MAP — as 36 casas da Mesa Real', () => {
   it('tem exatamente 36 entradas', () => {
-    expect(Object.keys(CORRELATION_MAP).length).toBe(36);
+    expect(Object.keys(CORRELATION_MAP)).toHaveLength(36);
   });
 
-  it('cobre as casas de 1 a 36', () => {
-    for (let h = 1; h <= 36; h++) {
-      expect(hasCorrelation(h)).toBe(true);
+  it('cobre as casas 1..36 sequencialmente, com houseId coerente', () => {
+    for (let i = 1; i <= 36; i++) {
+      const entry = CORRELATION_MAP[i];
+      expect(entry, `casa ${i} ausente`).toBeDefined();
+      expect(entry.houseId).toBe(i);
+      expect(entry.houseName.length).toBeGreaterThan(0);
+      expect(entry.houseTheme.length).toBeGreaterThan(0);
     }
   });
 
-  it('cada entrada tem tema, astrologia, cabala e tantrica', () => {
-    for (let h = 1; h <= 36; h++) {
-      const c = getCorrelation(h);
-      expect(c.houseName.length).toBeGreaterThan(0);
-      expect(c.houseTheme.length).toBeGreaterThan(0);
-      expect(c.astrology.extractionKeys.length).toBeGreaterThan(0);
-      expect(c.kabalah.extractionKeys.length).toBeGreaterThan(0);
-      expect(c.tantric.extractionKeys.length).toBeGreaterThan(0);
+  it('toda casa delega ao menos um aspecto em cada sistema', () => {
+    for (let i = 1; i <= 36; i++) {
+      const e = CORRELATION_MAP[i];
+      const astroKeys = e.astrology.extractionKeys.length;
+      expect(astroKeys, `casa ${i} sem extractionKeys astrológicas`).toBeGreaterThan(0);
+      expect(e.kabalah.extractionKeys.length, `casa ${i} cabalística vazia`).toBeGreaterThan(0);
+      expect(e.tantric.extractionKeys.length, `casa ${i} tântrica vazia`).toBeGreaterThan(0);
+      expect(e.kabalah.aspects.length).toBeGreaterThan(0);
+      expect(e.tantric.aspects.length).toBeGreaterThan(0);
     }
   });
 
-  it('casa 1 (Cavaleiro) injeta Ascendente + Marte + Alma', () => {
-    const c = getCorrelation(1);
-    expect(c.houseName).toBe('O Cavaleiro');
-    expect(c.astrology.primaryPlanets).toContain('ascendant');
-    expect(c.astrology.primaryPlanets).toContain('mars');
-    expect(c.tantric.aspects).toContain('Número de Alma');
+  it('Casa 1 (Cavaleiro) delega Ascendente+Marte | Expressão | Alma', () => {
+    const e = getCorrelationEntry(1);
+    expect(e.astrology.primaryPlanets).toEqual(['ascendant', 'mars']);
+    expect(e.kabalah.extractionKeys).toContain('expression');
+    expect(e.tantric.extractionKeys).toContain('soul');
   });
 
-  it('casa 34 (Peixes) injeta Casa 2 + Vênus + Karma (Doc 06 §2)', () => {
-    const c = getCorrelation(34);
-    expect(c.houseName).toBe('Os Peixes');
-    expect(c.astrology.primaryHouses).toContain(2);
-    expect(c.astrology.primaryPlanets).toContain('venus');
-    expect(c.tantric.aspects[0]).toMatch(/Karma/);
+  it('Casa 34 (Peixes) delega 2ª Casa+Vênus | Expressão | Karma — e NÃO o Ascendente', () => {
+    const e = getCorrelationEntry(34);
+    expect(e.astrology.primaryHouses).toContain(2);
+    expect(e.astrology.primaryPlanets).toContain('venus');
+    expect(e.tantric.extractionKeys).toContain('karma');
+    // determinismo: a casa 34 não puxa dados do Ascendente nem da Lua
+    expect(e.astrology.extractionKeys.join(' ')).not.toContain('ascendant');
+    expect(e.astrology.extractionKeys.join(' ')).not.toContain('moon');
   });
 
-  it('casa 16 (Estrela) considera mestre no Caminho de Vida', () => {
-    const c = getCorrelation(16);
-    expect(c.houseName).toBe('A Estrela');
-    expect(c.kabalah.aspects[0]).toMatch(/11.*22.*33|mestre/);
-  });
-
-  it('hasCorrelation retorna false para casa inválida', () => {
-    expect(hasCorrelation(0)).toBe(false);
-    expect(hasCorrelation(37)).toBe(false);
-    expect(hasCorrelation(-1)).toBe(false);
+  it('getCorrelationEntry lança para casa fora do intervalo', () => {
+    expect(() => getCorrelationEntry(0)).toThrow();
+    expect(() => getCorrelationEntry(37)).toThrow();
   });
 });
 
-describe('Constants — 36 cartas e 16 odus', () => {
-  it('LENORMAND_CARDS tem 36 cartas', () => {
-    expect(LENORMAND_CARDS.length).toBe(36);
-    expect(LENORMAND_CARDS[0].id).toBe(1);
-    expect(LENORMAND_CARDS[0].name).toBe('O Cavaleiro');
-    expect(LENORMAND_CARDS[35].id).toBe(36);
-    expect(LENORMAND_CARDS[35].name).toBe('A Cruz');
+describe('extractFromMap — extração determinística por dot-path', () => {
+  // Array format with both .house and .numero (normalized BirthChart uses .numero)
+  const astrologyMap = {
+    ascendant: 'Virgem',
+    planets: [
+      { planet: 'mars', sign: 'Leão', degree: 22, house: 11 },
+      { planet: 'venus', sign: 'Câncer', degree: 5, house: 10 },
+    ],
+    houses: [
+      { house: 1, numero: 1, sign: 'Virgem', degree: 12 },
+      { house: 2, numero: 2, sign: 'Libra', degree: 8 },
+    ],
+  };
+  it('extrai planets array por nome (planets.mars.house)', () => {
+    const out = extractFromMap(astrologyMap, ['planets.mars.house', 'planets.venus.sign']);
+    expect(out).toEqual({ 'planets.mars.house': 11, 'planets.venus.sign': 'Câncer' });
   });
-
-  it('ODUS tem 16 odus', () => {
-    expect(ODUS.length).toBe(16);
-    expect(ODUS[0].id).toBe(1);
-    expect(ODUS[0].name).toBe('Ogbe');
-    expect(ODUS[15].id).toBe(16);
-    expect(ODUS[15].name).toBe('Ofurufu');
+  it('extrai houses array por número (houses.2) — usa .numero', () => {
+    const out = extractFromMap(astrologyMap, ['houses.2', 'houses.1']);
+    expect(out).toEqual({ 'houses.2': 'Libra', 'houses.1': 'Virgem' });
+  });
+  it('ignora keys ausentes sem quebrar', () => {
+    const out = extractFromMap(astrologyMap, ['planets.pluto.sign']);
+    expect(Object.keys(out).length).toBe(0);
+  });
+  it('retorna objeto vazio para mapa nulo/indefinido', () => {
+    expect(extractFromMap(null, ['x'])).toEqual({});
+    expect(extractFromMap(undefined, ['x'])).toEqual({});
+  });
+  it('a extração da Casa 1 só traz dados delegados (sem vazamento)', () => {
+    const e = getCorrelationEntry(1);
+    const out = extractFromMap(astrologyMap, e.astrology.extractionKeys);
+    expect(out).toHaveProperty('planets.mars.sign', 'Leão');
+    expect(Object.keys(out).some((k) => k.includes('venus'))).toBe(false);
+  });
+  it('extrai nodes e ascendente (flat key)', () => {
+    const nodeMap = { northNode: { sign: 'cancer', house: 5 }, southNode: { sign: 'capricornio', house: 11 } };
+    const out = extractFromMap(nodeMap, ['northNode.sign', 'southNode.sign']);
+    expect(out).toEqual({ 'northNode.sign': 'cancer', 'southNode.sign': 'capricornio' });
+  });
+  it('extrai aspekte (flat top-level)', () => {
+    const map = { aspects: [{ type: 'trine', planets: ['sun', 'moon'] }] };
+    const out = extractFromMap(map, ['aspects']);
+    expect(out).toHaveProperty('aspects');
   });
 });
 
-describe('PromptBuilder', () => {
-  const sampleMatrixData = {
-    '1': { carta: 19, cartaName: 'A Torre', odu: 10, oduName: 'Ofun' },
-    '4': { carta: 4, cartaName: 'A Casa', odu: 8, oduName: 'Ejionile' },
-    '34': { carta: 34, cartaName: 'Os Peixes', odu: 4, oduName: 'Irosun' },
-  };
-
-  const sampleClient = {
-    fullName: 'Eliane Simão de Almeida',
-    birthDate: '1986-08-20',
-    birthCity: 'São Paulo',
-    birthState: 'SP',
-    birthCountry: 'Brasil',
-    astrologyMap: {
-      sun: { sign: 'Leo', degree: 27.5, house: 10 },
-      moon: { sign: 'Scorpio', degree: 3, house: 1 },
-      ascendant: { sign: 'Leo', degree: 5 },
-      houses: { 1: 'Leo', 2: 'Virgo', 10: 'Gemini' },
-      planets: {
-        venus: { sign: 'Leo', degree: 15, house: 1, retrograde: false },
-        mars: { sign: 'Aries', degree: 8, house: 9, retrograde: false },
+describe('normalizeBirthChart — BirthChart → extractFromMap format', () => {
+  // Minimal mock BirthChart covering the key structures
+  const mockBirthChart: BirthChart = {
+    planets: [],
+    houses: [],
+    ascendant: 127.5,
+    midheaven: 200,
+    aspects: [{ type: 'trine', planets: ['sol', 'lua'] }] as unknown[],
+    chart: {
+      planeta: {
+        sol: { planeta: 'sol', signo: 'leao' as const, casa: 5, grauNoSigno: 17 },
+        lua: { planeta: 'lua', signo: 'aries' as const, casa: 1, grauNoSigno: 3 },
+        marte: { planeta: 'marte', signo: 'escorpio' as const, casa: 8, grauNoSigno: 22 },
+        jupiter: { planeta: 'jupiter', signo: 'touro' as const, casa: 2, grauNoSigno: 10 },
+        venus: { planeta: 'venus', signo: 'cancer' as const, casa: 10, grauNoSigno: 5 },
+        mercurio: { planeta: 'mercurio', signo: 'virgem' as const, casa: 6, grauNoSigno: 14 },
+        saturno: { planeta: 'saturno', signo: 'peixes' as const, casa: 12, grauNoSigno: 28 },
+        netuno: { planeta: 'netuno', signo: 'aquario' as const, casa: 11, grauNoSigno: 2 },
+        urano: { planeta: 'urano', signo: 'gemeos' as const, casa: 9, grauNoSigno: 8 },
+        plutao: { planeta: 'plutao', signo: 'sagitario' as const, casa: 7, grauNoSigno: 15 },
+        chiron: { planeta: 'chiron', signo: 'libra' as const, casa: 4, grauNoSigno: 1 },
+        lilith: { planeta: 'lilith', signo: 'aries' as const, casa: 1, grauNoSigno: 20 },
+        node_norte: { planeta: 'node_norte', signo: 'cancer' as const, casa: 5, grauNoSigno: 10 },
+        node_sul: { planeta: 'node_sul', signo: 'capricornio' as const, casa: 11, grauNoSigno: 10 },
       },
-      northNode: { sign: 'Aquarius', house: 7 },
-      southNode: { sign: 'Leo', house: 1 },
-      aspects: [],
-      planetsInHouses: { 2: ['Sun'] },
-    },
-    kabalisticMap: {
-      lifePath: 7,
-      lifePathMaster: false,
-      mission: 5,
-      expression: 11,
-      expressionMaster: true,
-      motivation: 3,
-      nativeDayNumber: 20,
-      challenges: { first: 2, second: 1, main: 1, last: 5 },
-      karmaicDebts: [4, 8],
-      lifeCycles: {
-        first: { number: 7, ageStart: 0, ageEnd: 27 },
-        second: { number: 11, ageStart: 28, ageEnd: 53 },
-        third: { number: 5, ageStart: 54 },
+      casas: [
+        { numero: 1, signo: 'aries' as const, grauNoSigno: 5, planetaRegente: 'marte' },
+        { numero: 2, signo: 'touro' as const, grauNoSigno: 10, planetaRegente: 'venus' },
+        { numero: 3, signo: 'gemeos' as const, grauNoSigno: 20, planetaRegente: 'mercurio' },
+        { numero: 4, signo: 'cancer' as const, grauNoSigno: 8, planetaRegente: 'lua' },
+        { numero: 5, signo: 'leao' as const, grauNoSigno: 15, planetaRegente: 'sol' },
+        { numero: 6, signo: 'virgem' as const, grauNoSigno: 3, planetaRegente: 'mercurio' },
+        { numero: 7, signo: 'libra' as const, grauNoSigno: 12, planetaRegente: 'venus' },
+        { numero: 8, signo: 'escorpio' as const, grauNoSigno: 22, planetaRegente: 'marte' },
+        { numero: 9, signo: 'sagitario' as const, grauNoSigno: 6, planetaRegente: 'jupiter' },
+        { numero: 10, signo: 'capricornio' as const, grauNoSigno: 18, planetaRegente: 'saturno' },
+        { numero: 11, signo: 'aquario' as const, grauNoSigno: 2, planetaRegente: 'saturno' },
+        { numero: 12, signo: 'peixes' as const, grauNoSigno: 25, planetaRegente: 'jupiter' },
+      ],
+      ascendente: 17.5, // 17.5° → 0° Aries
+      mediumCoeli: 127.5,
+      nodes: {
+        norte: { planeta: 'node_norte', signo: 'cancer' as const, casa: 5, grauNoSigno: 10 },
+        sul: { planeta: 'node_sul', signo: 'capricornio' as const, casa: 11, grauNoSigno: 10 },
       },
-    },
-    tantricMap: {
-      soul: 2,
-      soulDescription: 'Corpo Negativo',
-      karma: 8,
-      karmaDescription: 'Corpo Prânico',
-      divineGift: 5,
-      divineGiftDescription: 'Corpo Físico',
-      destiny: 6,
-      tantricPath: 3,
-      tantricBodies: { 1: 'Corpo Sutil', 2: 'Corpo Negativo' },
-    },
-    oduBirth: {
-      oduNumber: 8,
-      oduName: 'Ejionile',
-      orixaRegency: ['Xangô', 'Oxalá'],
-      elementalForce: 'Justiça, Força, Liderança',
-      lifeLesson: 'Justiça e liderança',
     },
   };
 
-  it('buildSystemPrompt instrui 3 parágrafos e síntese em 4 capítulos', () => {
-    const sp = buildSystemPrompt();
-    expect(sp).toMatch(/3 parágrafos/i);
-    expect(sp).toMatch(/O TERRENO/);
-    expect(sp).toMatch(/O EVENTO/);
-    expect(sp).toMatch(/A DIREÇÃO/);
-    expect(sp).toMatch(/4 capítulos/i);
-    expect(sp).toMatch(/Trabalho e Dinheiro/);
-    expect(sp).toMatch(/Amor e Relacionamentos/);
-    expect(sp).toMatch(/Conselho Espiritual/);
+  it('mapeia planetas internos → nomes em inglês', () => {
+    const normalized = normalizeBirthChart(mockBirthChart);
+    // normalizeBirthChart stores 'sign'/'house' (not 'signo'/'casa') to match extraction key format
+    expect(normalized).toHaveProperty('planets.sun.sign', 'leao');
+    expect(normalized).toHaveProperty('planets.mars.sign', 'escorpio');
+    expect(normalized).toHaveProperty('planets.jupiter.sign', 'touro');
+    expect(normalized).toHaveProperty('planets.venus.sign', 'cancer');
+    expect(normalized).toHaveProperty('planets.mercury.sign', 'virgem');
+    expect(normalized).toHaveProperty('planets.saturn.sign', 'peixes');
+    expect(normalized).toHaveProperty('planets.neptune.sign', 'aquario');
+    expect(normalized).toHaveProperty('planets.uranus.sign', 'gemeos');
+    expect(normalized).toHaveProperty('planets.pluto.sign', 'sagitario');
+    expect(normalized).toHaveProperty('planets.chiron.sign', 'libra');
+    expect(normalized).toHaveProperty('planets.lilith.sign', 'aries');
   });
 
-  it('buildHousePayload(1) injeta carta + odu + correlação', () => {
-    const payload = buildHousePayload(1, sampleMatrixData['1']);
-    expect(payload.casa_numero).toBe(1);
-    expect(payload.casa_nome).toBe('O Cavaleiro');
-    expect(payload.tiragem_do_dia.carta_numero).toBe(19);
-    expect(payload.tiragem_do_dia.carta_nome).toBe('A Torre');
-    expect(payload.tiragem_do_dia.odu_nome).toBe('Ofun');
+  it('inclui ascendente como flat key (signo derivado do grau)', () => {
+    const normalized = normalizeBirthChart(mockBirthChart);
+    // 17.5° → 0° Aries; ascendant stored as flat key (sign string)
+    expect(normalized).toHaveProperty('ascendant', 'aries');
+    expect(normalized).toHaveProperty('ascendente_signo', 'aries');
   });
 
-  it('buildHousePayload(34) injeta keywords da casa Peixes', () => {
-    const payload = buildHousePayload(34, sampleMatrixData['34']);
-    expect(payload.casa_nome).toBe('Os Peixes');
-    expect(payload.tiragem_do_dia.carta_nome).toBe('Os Peixes');
+  it('mapeia casas como Record com .numero e .house', () => {
+    const normalized = normalizeBirthChart(mockBirthChart);
+    const h = normalized.houses as Record<string, Record<string, unknown>>;
+    expect(h['1'].house).toBe(1);
+    expect(h['1'].numero).toBe(1);
+    expect(h['1'].sign).toBe('aries');
+    expect(h['8'].house).toBe(8);
+    expect(h['8'].numero).toBe(8);
+    expect(h['8'].sign).toBe('escorpio');
   });
 
-  it('buildFullPayload ordena casas numericamente', () => {
-    const payload = buildFullPayload({
-      client: sampleClient,
-      matrixData: sampleMatrixData,
-    });
-    expect(payload.casas.map(c => c.casa_numero)).toEqual([1, 4, 34]);
+  it('inclui nodes e aspects no top-level', () => {
+    const normalized = normalizeBirthChart(mockBirthChart);
+    expect(normalized).toHaveProperty('northNode.sign', 'cancer');
+    expect(normalized).toHaveProperty('southNode.sign', 'capricornio');
+    expect(normalized).toHaveProperty('aspects');
   });
 
-  it('buildFullPayload injeta apenas os dados mapeados para cada casa (Doc 06 §3.1)', () => {
-    const payload = buildFullPayload({
-      client: sampleClient,
-      matrixData: sampleMatrixData,
-    });
-    // Casa 1 deve ter venus (não está em primaryPlanets) → não deve vir
-    const casa1 = payload.casas.find(c => c.casa_numero === 1)!;
-    expect(casa1.dados_natais_consultante.astrologia.aspectos_relevantes).toContain('mars');
-    expect(casa1.dados_natais_consultante.astrologia.aspectos_relevantes).toContain('ascendant');
-    // venus não está nos planetas primários da casa 1, deve estar fora
-    expect(casa1.dados_natais_consultante.astrologia.aspectos_relevantes).not.toContain('venus');
+  it('extractFromMap extrai corretamente com extraction keys reais', () => {
+    const normalized = normalizeBirthChart(mockBirthChart);
+    // Casa 1: ['ascendant', 'planets.mars.sign', 'planets.mars.house', 'houses.1']
+    const out = extractFromMap(normalized, ['ascendant', 'planets.mars.sign', 'planets.mars.house', 'houses.1']);
+    expect(out).toHaveProperty('ascendant', 'aries');
+    expect(out).toHaveProperty('planets.mars.sign', 'escorpio');
+    expect(out).toHaveProperty('planets.mars.house', 8);
+    expect(out).toHaveProperty('houses.1', 'aries');
   });
 
-  it('buildFullPayload injeta dados do odu natal em todas as casas', () => {
-    const payload = buildFullPayload({
-      client: sampleClient,
-      matrixData: sampleMatrixData,
-    });
-    for (const c of payload.casas) {
-      expect(c.dados_natais_consultante.odu_natal).toEqual(sampleClient.oduBirth);
-    }
-  });
-
-  it('buildFullPayload inclui consulente com nome e cidade', () => {
-    const payload = buildFullPayload({
-      client: sampleClient,
-      matrixData: sampleMatrixData,
-    });
-    expect(payload.consulente.nome).toBe('Eliane Simão de Almeida');
-    expect(payload.consulente.cidade_nascimento).toContain('São Paulo');
-  });
-
-  it('payloadToUserContent serializa para JSON', () => {
-    const payload = buildFullPayload({
-      client: sampleClient,
-      matrixData: sampleMatrixData,
-    });
-    const str = payloadToUserContent(payload);
-    expect(() => JSON.parse(str)).not.toThrow();
-    expect(str).toContain('Eliane');
-  });
-
-  it('buildHousePayload lança para carta inválida', () => {
-    expect(() =>
-      buildHousePayload(1, { carta: 99, cartaName: 'X', odu: 1, oduName: 'Ogbe' })
-    ).toThrow();
-  });
-
-  it('buildHousePayload lança para odu inválido', () => {
-    expect(() =>
-      buildHousePayload(1, { carta: 1, cartaName: 'O Cavaleiro', odu: 99, oduName: 'X' })
-    ).toThrow();
+  it('extractFromMap com keys de casa real (houses.2)', () => {
+    const normalized = normalizeBirthChart(mockBirthChart);
+    // Casa 2: ['planets.jupiter.sign', 'planets.jupiter.house']
+    const out = extractFromMap(normalized, ['planets.jupiter.sign', 'planets.jupiter.house']);
+    expect(out).toHaveProperty('planets.jupiter.sign', 'touro');
+    expect(out).toHaveProperty('planets.jupiter.house', 2);
   });
 });

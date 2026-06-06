@@ -177,7 +177,7 @@ export function getSephirotDay(sephirah: string): SephirahDay | null {
  * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah', 'Tiphereth')
  * @returns The correlation mapping or null if not found
  */
-export function getSephirahDay(sephirah: string): SephirahDay | null {
+function getSephirahDay(sephirah: string): SephirahDay | null {
   return getSephirotDay(sephirah);
 }
 
@@ -198,7 +198,7 @@ export function getDaySephirot(dia: string): SephirahDay[] {
  * @param dia - The day name in Portuguese or English
  * @returns Array of SephirahDay mappings for that day
  */
-export function getDaySephirah(dia: string): SephirahDay[] {
+function getDaySephirah(dia: string): SephirahDay[] {
   return getDaySephirot(dia);
 }
 
@@ -214,7 +214,7 @@ export function getAllSephirotDays(): SephirahDay[] {
  * Alias for getAllSephirotDays - Get all Sephirah-day mappings
  * @returns Array of all correlation mappings
  */
-export function getAllSephirahDays(): SephirahDay[] {
+function getAllSephirahDays(): SephirahDay[] {
   return getAllSephirotDays();
 }
 
@@ -222,7 +222,7 @@ export function getAllSephirahDays(): SephirahDay[] {
  * Get all unique Sephirah names (without duplicates like Tiphereth-Sabado)
  * @returns Array of unique Sephirah names
  */
-export function getAllSephiroth(): string[] {
+function getAllSephiroth(): string[] {
   const sephirothSet = new Set<string>();
   Object.values(SEPHIROT_DAY_MAPPINGS).forEach(mapping => {
     sephirothSet.add(mapping.sephirah);
@@ -235,7 +235,7 @@ export function getAllSephiroth(): string[] {
  * @param sephirah - The name of the Sephirah to check
  * @returns True if Sephirah exists in mapping
  */
-export function hasSephirotDay(sephirah: string): boolean {
+function hasSephirotDay(sephirah: string): boolean {
   return sephirah in SEPHIROT_DAY_MAPPINGS;
 }
 
@@ -244,7 +244,7 @@ export function hasSephirotDay(sephirah: string): boolean {
  * @param dia - The day name to check
  * @returns True if day exists in mapping
  */
-export function hasDaySephirot(dia: string): boolean {
+function hasDaySephirot(dia: string): boolean {
   return getDaySephirot(dia).length > 0;
 }
 
@@ -253,7 +253,7 @@ export function hasDaySephirot(dia: string): boolean {
  * @param sephirah - The name of the Sephirah
  * @returns Array of spiritual practices or null if not found
  */
-export function getSephirotDayPractices(sephirah: string): string[] | null {
+function getSephirotDayPractices(sephirah: string): string[] | null {
   const mapping = getSephirotDay(sephirah);
   return mapping?.praticas ?? null;
 }
@@ -263,7 +263,7 @@ export function getSephirotDayPractices(sephirah: string): string[] | null {
  * @param sephirah - The name of the Sephirah
  * @returns Primary color hex code or null if not found
  */
-export function getSephirotDayColor(sephirah: string): string | null {
+function getSephirotDayColor(sephirah: string): string | null {
   return getSephirotDay(sephirah)?.cor_primaria ?? null;
 }
 
@@ -272,7 +272,7 @@ export function getSephirotDayColor(sephirah: string): string | null {
  * @param dayNumber - Day number (0=Sunday, 1=Monday, ..., 6=Saturday)
  * @returns Array of SephirahDay mappings for that day
  */
-export function getSephirotByDayNumber(dayNumber: number): SephirahDay[] {
+function getSephirotByDayNumber(dayNumber: number): SephirahDay[] {
   const dayMap: Record<number, string> = {
     0: 'sunday',
     1: 'monday',
@@ -294,7 +294,7 @@ export function getSephirotByDayNumber(dayNumber: number): SephirahDay[] {
  * @param sephirah - The name of the Sephirah
  * @returns Element name or null if not found
  */
-export function getSephirotDayElement(sephirah: string): string | null {
+function getSephirotDayElement(sephirah: string): string | null {
   return getSephirotDay(sephirah)?.elemento ?? null;
 }
 
@@ -303,26 +303,10 @@ export function getSephirotDayElement(sephirah: string): string | null {
  * @param sephirah - The name of the Sephirah
  * @returns Spiritual meaning or null if not found
  */
-export function getSephirotDayMeaning(sephirah: string): string | null {
+function getSephirotDayMeaning(sephirah: string): string | null {
   return getSephirotDay(sephirah)?.significado_espiritual ?? null;
 }
 
 /**
  * Default export with all functions
  */
-export default {
-  getSephirotDay,
-  getSephirahDay,
-  getDaySephirot,
-  getDaySephirah,
-  getAllSephirotDays,
-  getAllSephirahDays,
-  getAllSephiroth,
-  hasSephirotDay,
-  hasDaySephirot,
-  getSephirotDayPractices,
-  getSephirotDayColor,
-  getSephirotByDayNumber,
-  getSephirotDayElement,
-  getSephirotDayMeaning,
-};

@@ -7,6 +7,8 @@ import type { AIResponse, ChatCompletionOptions, ChatMessage } from './types';
 
 const DEFAULT_MODEL = process.env.OPENAI_MODEL || 'gpt-4o';
 const FALLBACK_MODEL = process.env.OPENAI_FALLBACK_MODEL || 'gpt-4o-mini';
+// ANTHROPIC_MODEL: future support for Claude models via Anthropic API
+const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || '';
 const DEFAULT_MAX_TOKENS = parseInt(process.env.OPENAI_MAX_TOKENS || '1000', 10);
 const DEFAULT_TEMPERATURE = parseFloat(process.env.OPENAI_TEMPERATURE || '0.7');
 
@@ -36,7 +38,7 @@ export class AIError extends Error {
   }
 }
 
-export class CircuitBreakerOpenError extends AIError {
+class CircuitBreakerOpenError extends AIError {
   constructor() {
     super(
       'Circuit breaker is open - service temporarily unavailable',
@@ -48,10 +50,8 @@ export class CircuitBreakerOpenError extends AIError {
   }
 }
 
-export class RateLimitError extends AIError {
-  constructor(
-    public readonly retryAfterMs?: number
-  ) {
+class RateLimitError extends AIError {
+  constructor(public readonly retryAfterMs?: number) {
     super('Rate limit exceeded', 'RATE_LIMIT_EXCEEDED', 429, true);
     this.name = 'RateLimitError';
   }
@@ -75,7 +75,7 @@ const circuitState: CircuitState = {
 
 function shouldRetryAfterFailure(): boolean {
   const now = Date.now();
-  
+
   if (circuitState.isOpen) {
     const timeSinceLastFailure = now - circuitState.lastFailureTime;
     if (timeSinceLastFailure > CIRCUIT_BREAKER_TIMEOUT_MS) {
@@ -85,14 +85,14 @@ function shouldRetryAfterFailure(): boolean {
     }
     return false;
   }
-  
+
   return true;
 }
 
 function recordFailure(): void {
   circuitState.failures++;
   circuitState.lastFailureTime = Date.now();
-  
+
   if (circuitState.failures >= CIRCUIT_BREAKER_THRESHOLD) {
     circuitState.isOpen = true;
     console.warn(`[OpenAI] Circuit breaker opened after ${circuitState.failures} failures`);
@@ -109,7 +109,9 @@ function recordSuccess(): void {
 // ============================================================
 
 async function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  const { promise, resolve } = Promise.withResolvers<void>();
+  setTimeout(resolve, ms);
+  return promise;
 }
 
 function calculateBackoffDelay(attempt: number): number {
@@ -133,50 +135,13 @@ function getOpenAIClient(): OpenAI {
   return openaiClient;
 }
 
-export function resetOpenAIClient(): void {
+function resetOpenAIClient(): void {
   openaiClient = null;
 }
 
 // ============================================================
 // STREAMS (for future streaming support)
 // ============================================================
-
-export interface StreamChunk {
-  content: string;
-  done: boolean;
-}
-
-export async function createChatCompletionStream(
-  options: ChatCompletionOptions
-): Promise<AsyncIterable<StreamChunk>> {
-  const client = getOpenAIClient();
-  const model = options.model || DEFAULT_MODEL;
-  const temperature = options.temperature ?? DEFAULT_TEMPERATURE;
-  const max_tokens = options.max_tokens ?? DEFAULT_MAX_TOKENS;
-
-  const stream = await client.chat.completions.create({
-    model,
-    messages: options.messages,
-    temperature,
-    max_tokens,
-    stream: true,
-  });
-
-  return {
-    async *[Symbol.asyncIterator]() {
-      for await (const chunk of stream) {
-        const content = chunk.choices[0]?.delta?.content || '';
-        if (content) {
-          yield { content, done: false };
-        }
-        if (chunk.choices[0]?.finish_reason === 'stop') {
-          yield { content: '', done: true };
-          break;
-        }
-      }
-    },
-  };
-}
 
 // ============================================================
 // MAIN COMPLETION FUNCTION WITH RETRY & CIRCUIT BREAKER
@@ -192,7 +157,7 @@ function isRetryableError(error: unknown): boolean {
   if (error instanceof AIError) {
     return error.isRetryable;
   }
-  
+
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
     const retryablePatterns = [
@@ -204,18 +169,18 @@ function isRetryableError(error: unknown): boolean {
       'fetch',
       'stream',
     ];
-    
-    if (retryablePatterns.some(p => message.includes(p))) {
+
+    if (retryablePatterns.some((p) => message.includes(p))) {
       return true;
     }
-    
+
     const statusMatch = message.match(/status\s*(\d{3})/i);
     if (statusMatch) {
       const status = parseInt(statusMatch[1], 10);
       return status === 429 || (status >= 500 && status < 600);
     }
   }
-  
+
   return false;
 }
 
@@ -230,6 +195,107 @@ function isRateLimitError(error: unknown): boolean {
   return false;
 }
 
+// ============================================================
+// API PARAMETERS EXTRACTION
+// ============================================================
+
+interface ApiParams {
+  model: string;
+  temperature: number;
+  max_tokens: number;
+  useFallback: boolean;
+}
+
+function extractApiParams(options: ChatCompletionOptions): ApiParams {
+  return {
+    model: options.model || DEFAULT_MODEL,
+    temperature: options.temperature ?? DEFAULT_TEMPERATURE,
+    max_tokens: options.max_tokens ?? DEFAULT_MAX_TOKENS,
+    useFallback: options.useFallback ?? false,
+  };
+}
+
+// ============================================================
+// RESPONSE TRANSFORMATION
+// ============================================================
+
+function transformResponse(completion: OpenAI.Chat.ChatCompletion): AIResponse {
+  const choice = completion.choices[0];
+  return {
+    content: choice.message.content || '',
+    usage: completion.usage
+      ? {
+          prompt_tokens: completion.usage.prompt_tokens,
+          completion_tokens: completion.usage.completion_tokens,
+          total_tokens: completion.usage.total_tokens,
+        }
+      : undefined,
+    model: completion.model,
+  };
+}
+
+// ============================================================
+// ERROR TYPE DETECTION
+// ============================================================
+
+function detectApiErrorType(error: unknown, model: string): never {
+  if (!(error instanceof Error)) {
+    throw new AIError('Erro desconhecido na API OpenAI', 'UNKNOWN_ERROR', undefined, true);
+  }
+
+  const msg = error.message;
+
+  if (msg.includes('401') || msg.includes('api key')) {
+    throw new AIError('API key inválida ou não configurada', 'INVALID_API_KEY', 401, false);
+  }
+  if (msg.includes('403') || msg.includes('forbidden')) {
+    throw new AIError('Acesso à API negado - verifique permissões', 'ACCESS_DENIED', 403, false);
+  }
+  if (msg.includes('429')) {
+    throw new RateLimitError();
+  }
+  if (msg.includes('model')) {
+    throw new AIError(`Modelo '${model}' não disponível`, 'MODEL_UNAVAILABLE', 400, false);
+  }
+
+  throw new AIError(msg, 'UNKNOWN_ERROR', undefined, true);
+}
+
+async function executeRetryOrThrow(
+  error: unknown,
+  options: ChatCompletionOptions,
+  retryCount: number,
+  useFallback: boolean
+): Promise<AIResponse> {
+  if (!isRetryableError(error)) {
+    throw error;
+  }
+
+  const delay = calculateBackoffDelay(retryCount);
+  const errorMsg = error instanceof Error ? error.message : String(error);
+
+  console.warn(
+    `[OpenAI] Request failed (attempt ${retryCount + 1}/${MAX_RETRIES + 1}), ` +
+      `retrying in ${Math.round(delay)}ms: ${errorMsg}`
+  );
+
+  await sleep(delay);
+
+  if (isRateLimitError(error)) {
+    const rateLimitDelay = Math.min(delay * 2, MAX_DELAY_MS);
+    console.info(`[OpenAI] Rate limited, waiting ${Math.round(rateLimitDelay)}ms before retry`);
+    await sleep(rateLimitDelay);
+  }
+
+  const shouldUseFallback = retryCount === MAX_RETRIES - 1 && !useFallback;
+
+  return createChatCompletion({ ...options, useFallback: shouldUseFallback }, retryCount + 1);
+}
+
+// ============================================================
+// MAIN COMPLETION FUNCTION WITH RETRY & CIRCUIT BREAKER
+// ============================================================
+
 export async function createChatCompletion(
   options: ChatCompletionOptions,
   retryCount = 0
@@ -237,100 +303,46 @@ export async function createChatCompletion(
   if (!shouldRetryAfterFailure()) {
     throw new CircuitBreakerOpenError();
   }
-
-  const model = options.model || DEFAULT_MODEL;
-  const temperature = options.temperature ?? DEFAULT_TEMPERATURE;
-  const max_tokens = options.max_tokens ?? DEFAULT_MAX_TOKENS;
-  const useFallback = options.useFallback ?? false;
+  const params = extractApiParams(options);
+  const { model, temperature, max_tokens, useFallback } = params;
+  const effectiveModel = useFallback ? FALLBACK_MODEL : model;
 
   try {
+    const startMs = Date.now();
     const completion = await getOpenAIClient().chat.completions.create({
-      model: useFallback ? FALLBACK_MODEL : model,
+      model: effectiveModel,
       messages: options.messages,
       temperature,
       max_tokens,
     });
-
     recordSuccess();
 
-    const choice = completion.choices[0];
-
-    return {
-      content: choice.message.content || '',
-      usage: completion.usage
-        ? {
-            prompt_tokens: completion.usage.prompt_tokens,
-            completion_tokens: completion.usage.completion_tokens,
-            total_tokens: completion.usage.total_tokens,
-          }
-        : undefined,
-      model: completion.model,
+    // Structured log: llm.call event (AD-22.6)
+    const durationMs = Date.now() - startMs;
+    const logEntry = {
+      ts: new Date().toISOString(),
+      level: 'info',
+      event: 'llm.call',
+      model: effectiveModel,
+      temperature,
+      max_tokens,
+      promptTokens: completion.usage?.prompt_tokens,
+      completionTokens: completion.usage?.completion_tokens,
+      totalTokens: completion.usage?.total_tokens,
+      durationMs,
+      cached: false,
     };
+    console.log(JSON.stringify(logEntry));
+
+    return transformResponse(completion);
   } catch (error) {
     recordFailure();
 
-    if (retryCount < MAX_RETRIES && isRetryableError(error)) {
-      const delay = calculateBackoffDelay(retryCount);
-      console.warn(
-        `[OpenAI] Request failed (attempt ${retryCount + 1}/${MAX_RETRIES + 1}), ` +
-        `retrying in ${Math.round(delay)}ms: ${error instanceof Error ? error.message : String(error)}`
-      );
-
-      await sleep(delay);
-
-      if (isRateLimitError(error)) {
-        const rateLimitDelay = Math.min(delay * 2, MAX_DELAY_MS);
-        console.info(`[OpenAI] Rate limited, waiting ${Math.round(rateLimitDelay)}ms before retry`);
-        await sleep(rateLimitDelay);
-      }
-
-      const shouldUseFallback = retryCount === MAX_RETRIES - 1 && !useFallback;
-      
-      return createChatCompletion(
-        { ...options, useFallback: shouldUseFallback },
-        retryCount + 1
-      );
+    if (retryCount < MAX_RETRIES) {
+      return await executeRetryOrThrow(error, options, retryCount, useFallback);
     }
 
-    if (error instanceof Error) {
-      if (error.message.includes('401') || error.message.includes('api key')) {
-        throw new AIError(
-          'API key inválida ou não configurada',
-          'INVALID_API_KEY',
-          401,
-          false
-        );
-      }
-      
-      if (error.message.includes('403') || error.message.includes('forbidden')) {
-        throw new AIError(
-          'Acesso à API negado - verifique permissões',
-          'ACCESS_DENIED',
-          403,
-          false
-        );
-      }
-
-      if (error.message.includes('429')) {
-        throw new RateLimitError();
-      }
-
-      if (error.message.includes('model')) {
-        throw new AIError(
-          `Modelo '${model}' não disponível`,
-          'MODEL_UNAVAILABLE',
-          400,
-          false
-        );
-      }
-    }
-
-    throw new AIError(
-      error instanceof Error ? error.message : 'Erro desconhecido na API OpenAI',
-      'UNKNOWN_ERROR',
-      undefined,
-      true
-    );
+    return detectApiErrorType(error, model);
   }
 }
 
@@ -338,10 +350,7 @@ export async function createChatCompletion(
 // SEND MESSAGE WITH SYSTEM PROMPT
 // ============================================================
 
-export async function sendMessage(
-  messages: ChatMessage[],
-  systemPrompt?: string
-): Promise<AIResponse> {
+async function sendMessage(messages: ChatMessage[], systemPrompt?: string): Promise<AIResponse> {
   const allMessages: ChatMessage[] = [];
 
   if (systemPrompt) {
@@ -353,28 +362,12 @@ export async function sendMessage(
   return createChatCompletion({ messages: allMessages });
 }
 
+// (circuit-breaker status/reset utilities removed — knip-flagged dead exports)
 // ============================================================
-// UTILITY: Get circuit breaker status
+// STREAMING COMPLETION (SSE via ReadableStream)
 // ============================================================
-
-export function getCircuitBreakerStatus(): {
-  isOpen: boolean;
-  failures: number;
-  timeSinceLastFailure: number;
-} {
-  return {
-    isOpen: circuitState.isOpen,
-    failures: circuitState.failures,
-    timeSinceLastFailure: Date.now() - circuitState.lastFailureTime,
-  };
-}
-
-// ============================================================
-// UTILITY: Reset circuit breaker
-// ============================================================
-
-export function resetCircuitBreaker(): void {
-  circuitState.failures = 0;
-  circuitState.lastFailureTime = 0;
-  circuitState.isOpen = false;
-}
+// Note: Streaming is implemented at the route level via ReadableStream
+// (e.g. /api/mesa-real/dossier/[id]/route.ts).
+// createChatCompletion is non-streaming; SSE routes handle their own
+// streaming via TextEncoder + ReadableStream.
+// Future: expose createStreamingCompletion here when needed.

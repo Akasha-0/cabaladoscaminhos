@@ -196,10 +196,3 @@ export function getChakrasPorElemento(elemento: string): { primario: ChakraName;
     secundario: mapping.chakra_secundario
   };
 }
-
-export default {
-  getElementChakra,
-  getChakraElement,
-  getAllElementChakras,
-  getChakrasPorElemento
-};

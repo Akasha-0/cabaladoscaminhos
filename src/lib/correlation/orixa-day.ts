@@ -109,9 +109,3 @@ export function getDayOrixa(day: string): OrixaDay | undefined {
 export function getAllOrixaDays(): OrixaDay[] {
   return Object.values(ORIXAS_DAY_MAP);
 }
-
-export default {
-  getOrixaDay,
-  getDayOrixa,
-  getAllOrixaDays,
-};

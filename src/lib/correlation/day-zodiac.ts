@@ -200,16 +200,3 @@ export function getDaySignificado(dia: string): string | undefined {
 export function getAllDayZodiacs(): DayZodiac[] {
   return Object.values(DAY_ZODIAC_MAP);
 }
-
-export default {
-  getDayZodiac,
-  getZodiacByDay,
-  getZodiacDay,
-  getDayElement,
-  getAllDays,
-  getDayPlanet,
-  getDaysBySigno,
-  getDaysByElemento,
-  getDaySignificado,
-  getAllDayZodiacs,
-};

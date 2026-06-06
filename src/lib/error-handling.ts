@@ -30,6 +30,7 @@ export enum ErrorCode {
   SUBSCRIPTION_EXPIRED = 7003,
 }
 
+// fallow-ignore-next-line unused-type
 export interface AppErrorOptions {
   code: ErrorCode;
   message: string;
@@ -38,7 +39,7 @@ export interface AppErrorOptions {
   cause?: Error;
 }
 
-export class AppError extends Error {
+class AppError extends Error {
   public readonly code: ErrorCode;
   public readonly statusCode: number;
   public readonly details?: Record<string, unknown>;
@@ -87,7 +88,7 @@ function getDefaultStatusCode(code: ErrorCode): number {
   return 500;
 }
 
-export const errors = {
+const errors = {
   auth: {
     invalidCredentials: (details?: Record<string, unknown>) =>
       new AppError({ code: ErrorCode.AUTH_INVALID_CREDENTIALS, message: "Credenciais inválidas", details }),
@@ -150,7 +151,7 @@ export const errors = {
   },
 };
 
-export function handleApiError(error: unknown) {
+function handleApiError(error: unknown): { status: number; body: Record<string, unknown> } {
   if (error instanceof AppError) {
     return { status: error.statusCode, body: error.toJSON() };
   }

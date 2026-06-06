@@ -1,0 +1,106 @@
+// ============================================================
+// API ROUTE — Logout do Operator (Fase 8 + 13 + 15 + 24)
+// ============================================================
+// Revoga AS DUAS OperatorSession (access + refresh) e limpa OS DOIS
+// cookies: `cockpit_session` (access) + `cockpit_refresh` (refresh).
+// Idempotente — sempre retorna 200 (logout não precisa falhar se o
+// usuário não estava autenticado).
+//
+// Fase 24: rate-limit POR OPERATOR (10 logout / min).
+// Protege contra logout-forçado (ex: atacante tenta deslogar o operator
+// em loop para causar inconvenience). O IP limit já existia na Fase 18
+// para o endpoint de login, mas logout agora também tem operador limit.
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import { logSecurityEvent } from '@/lib/auth/audit-service';
+import {
+  OPERATOR_TOKEN_COOKIE,
+  OPERATOR_REFRESH_COOKIE,
+  clearOperatorSessionCookie,
+  clearOperatorRefreshCookie,
+} from '@/lib/auth/operator-jwt';
+import { getOperatorFromRequest } from '@/lib/auth/operator-session';
+import { revokeSession } from '@/lib/auth/operator-sessions';
+import { checkOperatorRateLimit, OPERATOR_RATE_LIMITS } from '@/lib/auth/rate-limit';
+import { createLogger, generateRequestId, type AppLogger } from '@/lib/logging';
+
+const OPERATOR_LIMIT = OPERATOR_RATE_LIMITS['logout'].max; // 10
+const OPERATOR_WINDOW = OPERATOR_RATE_LIMITS['logout'].windowSeconds; // 60s
+
+export async function POST(request?: NextRequest) {
+  // Tenta obter o operatorId para rate-limit
+  let operatorId = 'anonymous';
+  let log: AppLogger;
+  if (request) {
+    try {
+      const operator = await getOperatorFromRequest(request);
+      if (operator) {
+        operatorId = operator.id;
+      }
+    } catch {
+      // Se falhar em obter operator, usamos 'anonymous' — IP limit ainda protege
+    }
+    // Extrai requestId do header x-request-id (fallback: gera um novo)
+    const requestId = request.headers.get('x-request-id') ?? generateRequestId();
+    log = createLogger(requestId, '/api/operator/auth/logout');
+  } else {
+    log = createLogger(generateRequestId(), '/api/operator/auth/logout');
+  }
+
+  // Fase 24: rate-limit POR OPERATOR antes de trabalho no banco
+  const rlResult = await checkOperatorRateLimit(
+    operatorId,
+    'logout',
+    OPERATOR_LIMIT,
+    OPERATOR_WINDOW
+  );
+
+  if (!rlResult.allowed) {
+    return NextResponse.json(
+      {
+        error: 'Limite de操作 por operador excedido. Tente novamente mais tarde.',
+        retryAfter: rlResult.retryAfterSeconds,
+      },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': rlResult.limit.toString(),
+          'X-RateLimit-Remaining': rlResult.remaining.toString(),
+          'X-RateLimit-Reset': rlResult.resetAt.toString(),
+          'Retry-After': rlResult.retryAfterSeconds.toString(),
+        },
+      }
+    );
+  }
+  // Tenta revogar ambas as sessões (se houver cookies).
+  // Falha aqui é logged mas NÃO bloqueia o logout.
+  try {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get(OPERATOR_TOKEN_COOKIE)?.value;
+    if (accessToken) {
+      await revokeSession(accessToken);
+    }
+    const refreshToken = cookieStore.get(OPERATOR_REFRESH_COOKIE)?.value;
+    if (refreshToken) {
+      await revokeSession(refreshToken);
+    }
+    // AD-22.4: auditoria de logout
+    const ipAddress = request
+      ? (request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? undefined)
+      : undefined;
+    if (operatorId !== 'anonymous') {
+      logSecurityEvent({
+        type: 'SESSION_REVOKED',
+        operatorId,
+        ipAddress,
+        metadata: { reason: 'logout' },
+      });
+    }
+  } catch (err) {
+    log.error('auth.logout.session_revoke_error', { error: String(err) });
+  }
+  const response = NextResponse.json({ success: true });
+  clearOperatorSessionCookie(response);
+  clearOperatorRefreshCookie(response);
+  return response;
+}

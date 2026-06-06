@@ -32,13 +32,22 @@ function createPrismaClient(): PrismaClient {
   });
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+// Lazy proxy — real PrismaClient is only instantiated on first property access.
+// Prevents build-time failures when DATABASE_URL is not set.
+let _prisma: PrismaClient | undefined;
 
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
+function getPrisma(): PrismaClient {
+  if (!_prisma) {
+    _prisma = globalForPrisma.prisma ?? createPrismaClient();
+    if (process.env.NODE_ENV !== 'production') {
+      globalForPrisma.prisma = _prisma;
+    }
+  }
+  return _prisma;
 }
 
-// Handle graceful shutdown
-process.on('beforeExit', async () => {
-  await prisma.$disconnect();
+export const prisma: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    return (getPrisma() as unknown as Record<string | symbol, unknown>)[prop];
+  },
 });

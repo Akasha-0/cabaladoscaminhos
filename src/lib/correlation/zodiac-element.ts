@@ -257,16 +257,3 @@ export function getSignosByElement(elemento: string): SignoZodiac[] {
 export function getAllSigns(): SignoZodiac[] {
   return Object.values(ZODIAC_ELEMENT_MAP).map((m) => m.signo);
 }
-
-export default {
-  getZodiacElement,
-  getElementZodiac,
-  getAllZodiacElements,
-  getElementFromSigno,
-  getChakraFromSigno,
-  getSignificadoFromSigno,
-  getSignosByElement,
-  getAllSigns,
-  ZODIAC_ELEMENT_MAP,
-  TODOS_SIGNOS,
-};

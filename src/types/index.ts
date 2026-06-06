@@ -1,11 +1,6 @@
 /**
  * Tipos canônicos do sistema Cabala dos Caminhos.
- *
- * Estas estruturas refletem EXATAMENTE o Documento 04 — Modelo de Dados.
- * São as estruturas JSON que ficam armazenadas nos campos `Json` do
- * Prisma e trafegam entre o backend e o motor de IA.
- *
- * @see docs/04_data-model.md
+ * Coordenação centralizada de tipos para todo o sistema.
  */
 
 // ============================================================================
@@ -13,126 +8,45 @@
 // ============================================================================
 
 export interface PlanetPosition {
-  sign: string;        // Ex: "Leo"
-  degree: number;      // Ex: 27.5
-  house: number;       // Ex: 10
-  retrograde: boolean;
+  planet: string;
+  sign: string;
+  degree: number;
+  house: number;
 }
 
 export interface HouseCuspPosition {
+  house: number;
   sign: string;
   degree: number;
 }
 
 export interface AstrologyMap {
-  /** Sol natal */
-  sun: { sign: string; degree: number; house: number };
-  /** Lua natal */
-  moon: { sign: string; degree: number; house: number };
-  /** Ascendente (signo e grau) */
-  ascendant: { sign: string; degree: number };
-
-  /** 10 planetas clássicos + Quíron + Lilith */
-  planets: {
-    mercury: PlanetPosition;
-    venus: PlanetPosition;
-    mars: PlanetPosition;
-    jupiter: PlanetPosition;
-    saturn: PlanetPosition;
-    uranus: PlanetPosition;
-    neptune: PlanetPosition;
-    pluto: PlanetPosition;
-    chiron: PlanetPosition;  // Ferida e cura
-    lilith: PlanetPosition;  // Sombra e poder oculto
+  planets: PlanetPosition[];
+  houses: HouseCuspPosition[];
+  ascendant: string;
+  midheaven: string;
+  lunarPhase: string;
+  elementalChart: {
+    fire: number;
+    earth: number;
+    air: number;
+    water: number;
   };
-
-  /** Nodos Lunares (karma e destino) */
-  northNode: { sign: string; house: number };
-  southNode: { sign: string; house: number };
-
-  /** Signo regente de cada uma das 12 casas astrológicas */
-  houses: {
-    1: string; 2: string; 3: string; 4: string; 5: string; 6: string;
-    7: string; 8: string; 9: string; 10: string; 11: string; 12: string;
+  modality: {
+    cardinal: number;
+    fixed: number;
+    mutable: number;
   };
-
-  /** Cuspides das 12 casas (para cruzar com o PromptBuilder) */
-  housesCusp?: {
-    [houseNumber: number]: HouseCuspPosition;
+  quality: {
+    individual: number;
+    relational: number;
+    transform: number;
+    social: number;
+    traditional: number;
   };
-
-  /** Planetas em casas específicas para lookup rápido */
-  planetsInHouses: {
-    [houseNumber: string]: string[];
-  };
-
-  /** Aspectos principais entre planetas */
-  aspects: Array<{
-    planet1: string;
-    planet2: string;
-    type: 'conjunction' | 'opposition' | 'trine' | 'square' | 'sextile';
-    orb: number;
-  }>;
-
-  /** Sinaliza se o mapa foi calculado com dados completos */
-  incomplete?: boolean;
-}
-
-// ============================================================================
-// §2.2 KabalisticMap — Numerologia Cabalística
-// ============================================================================
-
-export interface KabalisticMap {
-  lifePath: number;
-  lifePathMaster: boolean;     // true se for 11, 22 ou 33
-
-  mission: number;
-  expression: number;
-  expressionMaster: boolean;
-
-  motivation: number;
-
-  /** Dons Nativos (dia de nascimento não reduzido) */
-  nativeDayNumber: number;     // Ex: 20
-
-  challenges: {
-    first: number;
-    second: number;
-    main: number;
-    last: number;
-  };
-
-  /** Karmas da Vida (números ausentes entre 1-9 no nome) */
-  karmaicDebts: number[];
-
-  lifeCycles: {
-    first: { number: number; ageStart: number; ageEnd: number };
-    second: { number: number; ageStart: number; ageEnd: number };
-    third: { number: number; ageStart: number };
-  };
-}
-
-// ============================================================================
-// §2.3 TantricMap — Numerologia Tântrica
-// ============================================================================
-
-export interface TantricMap {
-  soul: number;                    // dia de nascimento reduzido
-  soulDescription: string;         // Ex: "Corpo Negativo — Mente Protetora"
-
-  karma: number;                   // mês de nascimento
-  karmaDescription: string;
-
-  divineGift: number;              // ano reduzido em dois passos
-  divineGiftDescription: string;
-
-  destiny: number;                 // ano de 4 dígitos reduzido
-
-  tantricPath: number;             // soma total de dia+mês+ano reduzida
-
-  tantricBodies: {
-    [key: number]: string;         // Ex: { 1: "Corpo Sutil", 2: "Corpo Negativo", ... }
-  };
+  dominantPlanet: string;
+  signRuler: string;
+  houseRuler: string;
 }
 
 // ============================================================================
@@ -140,11 +54,36 @@ export interface TantricMap {
 // ============================================================================
 
 export interface OduBirth {
-  oduNumber: number;            // 1..16
-  oduName: string;              // Ex: "Ejionile"
-  orixaRegency: string[];       // Ex: ["Xangô", "Oxalá"]
-  elementalForce: string;       // Ex: "Justiça, Força, Liderança"
-  lifeLesson: string;           // Síntese do ensinamento central
+  oduNumber?: number;
+  oduName?: string;
+  orixaRegency?: string[];
+  elementalForce?: string;
+  lifeLesson?: string;
+  provisional?: boolean;
+  birthOdu?: Array<{
+    dayOfBirth: string;
+    oduNumber: number;
+    meaning: string;
+  }>;
+  // ────────────────────────────────────────────────────────────────────────
+  // @provisional — campos abaixo ainda não são produzidos por
+  // `calculateBirthOdu` (Doc 23 §2.3). Marcados opcionais + flag
+  // `provisional` indica que aguarda tabela de linhagem (D3) e
+  // expansão futura. Nenhum consumidor atual depende deles.
+  // ────────────────────────────────────────────────────────────────────────
+  sign?: string;
+  animal?: string;
+  owner?: string;
+  ebwe?: string;
+  message?: string;
+  initiationPath?: string;
+  prohibitions?: string[];
+  // nameHistory também não é produzido (Doc 23 §2.3 declara como morto)
+  nameHistory?: Array<{
+    name: string;
+    meaning: string;
+    source: string;
+  }>;
 }
 
 // ============================================================================
@@ -152,10 +91,9 @@ export interface OduBirth {
 // ============================================================================
 
 export interface MatrixEntry {
-  carta: number;       // 1..36
-  cartaName: string;   // Ex: "A Torre"
-  odu: number;         // 1..16
-  oduName: string;     // Ex: "Osá"
+  house: number;
+  carta: number;
+  odu: number;
 }
 
 export type MatrixData = {
@@ -163,52 +101,182 @@ export type MatrixData = {
 };
 
 // ============================================================================
-// §4 ReportContent — Dossiê gerado pelo LLM
+// §2.2 KabalisticMap — Numerologia Cabalística (enriched)
 // ============================================================================
+export interface KabalisticMap {
+  // ─── Campos realmente produzidos por buildKabalisticMap (Doc 04 §2.2) ────
+  // Life path and expression numbers
+  lifePath?: number;
+  lifePathMaster?: boolean;
+  mission?: number;
+  expression?: number;
+  expressionMaster?: boolean;
+  motivation?: number;
+  impression?: number;
+  nativeDayNumber?: number;
+  challenges?: { first: number; second: number; main: number; last: number };
+  pinnacles?: {
+    first: { number: number; ageEnd: number; meaning: string };
+    second: { number: number; ageStart: number; ageEnd: number; meaning: string };
+    third: { number: number; ageStart: number; ageEnd: number; meaning: string };
+    fourth: { number: number; ageStart: number; meaning: string };
+  };
+  karmicLessons?: number[];
+  karmicDebts?: number[];
+  rulingArcana?: {
+    lifePath: { major: number; name: string; meaning: string };
+    expression: { major: number; name: string; meaning: string };
+  };
+  lifeCycles?: {
+    first: { number: number; ageStart: number; ageEnd: number };
+    second: { number: number; ageStart: number; ageEnd: number };
+    third: { number: number; ageStart: number };
+  };
+  personalCycles?: {
+    personalYear: number;
+    personalMonth: number;
+    personalDay: number;
+    referenceDate: string;
+  };
 
-export interface HouseReport {
-  houseNumber: number;
-  houseName: string;
-  carta: string;
-  odu: string;
-  /** Markdown gerado pelo LLM — três parágrafos obrigatórios */
-  interpretation: string;
+  // ────────────────────────────────────────────────────────────────────────
+  // @provisional — campos abaixo NUNCA foram produzidos por
+  // `buildKabalisticMap` (Doc 23 §2.1 classifica como "expectativas
+  // falsas"). Marcados opcionais para não quebrar type-checking de
+  // consumidores que assumem sua presença, mas o guardião de completude
+  // (`tests/calculators/map-completeness.test.ts`) NÃO os exige.
+  //
+  // Quando forem implementados de fato, mover para a seção "Campos
+  // realmente produzidos" e adicionar teste em buildKabalisticMap.
+  // ────────────────────────────────────────────────────────────────────────
+  hebrewLetter?: string;
+  sefirotPath?: string;
+  vibrationalNumber?: number;
+  chaliceNumber?: number;
+  destinyNumber?: number;
+  soulUrgeNumber?: number;
+  personalityNumber?: number;
+  hiddenPassionNumber?: number;
+  maturityNumber?: number;
+  balanceNumber?: number;
+  minorCycles?: {
+    years: number[];
+    months: number[];
+    days: number[];
+  };
+  personalYear?: number;
+  personalMonth?: number;
+  personalDay?: number;
+  nameHistory?: Array<{
+    name: string;
+    meaning: string;
+    source: string;
+  }>;
+}
+// ============================================================================
+// §2.3 TantricMap — Numerologia Tântrica (enriched)
+// ============================================================================
+export interface TantricMap {
+  // ─── Campos realmente produzidos por buildTantricMap (Doc 04 §2.3) ──────
+  // Tantric body properties
+  soul?: number;
+  soulBody?: number;
+  soulDescription?: string;
+  karma?: number;
+  karmaBody?: number;
+  karmaDescription?: string;
+  divineGift?: number;
+  divineGiftBody?: number;
+  divineGiftDescription?: string;
+  destiny?: number;
+  tantricPath?: number;
+  tantricBodies?: Record<string, unknown>;
+  bodies?: {
+    fisico: { number: number; description: string; qualities: string[] };
+    pranic: { number: number; description: string; qualities: string[] };
+    emocional: { number: number; description: string; qualities: string[] };
+    mental: { number: number; description: string; qualities: string[] };
+    espiritual: { number: number; description: string; qualities: string[] };
+  };
+
+  // ────────────────────────────────────────────────────────────────────────
+  // @provisional — campos abaixo NUNCA foram produzidos por
+  // `buildTantricMap` (Doc 23 §2.2 classifica como "5 campos mortos
+  // no tipo"). Marcados opcionais para que buildTantricMap não precise
+  // retornar stubs vazios. Quando forem implementados, mover para a
+  // seção "Campos realmente produzidos" e adicionar teste no guardião.
+  // ────────────────────────────────────────────────────────────────────────
+  sacredGeometry?: {
+    merkabaActive: boolean;
+    merkabahFields: string[];
+    flowerOfLife: string[];
+    torusEnergy: {
+      active: boolean;
+      frequency: number;
+      intensity: number;
+    };
+  };
+  chakraStates?: Array<{
+    chakra: string;
+    name: string;
+    element: string;
+    frequency: number;
+    state: 'balanced' | 'overactive' | 'underactive';
+    affirmation: string;
+  }>;
+  energyMatrix?: {
+    physicalBody: number;
+    emotionalBody: number;
+    mentalBody: number;
+    spiritualBody: number;
+  };
+  elementBalances?: {
+    fire: number;
+    water: number;
+    earth: number;
+    air: number;
+    ether: number;
+  };
+  kundaliniState?: {
+    active: boolean;
+    primaryChakra: string;
+    secondaryChakras: string[];
+    kundaliniMessage: string;
+  };
 }
 
-export interface ReportContent {
-  houses: {
-    [houseNumber: string]: HouseReport;
-  };
-  synthesis: {
-    workAndMoney: string;        // Caminho do Trabalho e Dinheiro
-    homeAndFamily: string;       // Caminho do Lar e Família
-    loveAndRelationships: string;// Caminho do Amor e Relacionamentos
-    spiritualPath: string;       // Grande Conselho Espiritual
-    finalVerdict: string;        // Veredito Final e Direcionamento
-  };
-  generatedAt: string;           // ISO timestamp
-  llmModel: string;
-  totalHousesAnalyzed: number;
+export interface ReikiSymbol {
+  symbol: string;
+  name: string;
+  purpose: string;
+  chakraTarget: string;
 }
 
-// ============================================================================
-// Entidades Prisma (mínimo para o motor de IA)
-// ============================================================================
+export interface GroundingProtocol {
+  technique: string;
+  purpose: string;
+  rationale: string;
+}
 
-export interface Client {
-  id: string;
-  fullName: string;
-  birthDate: Date | string;
-  birthTime: string;
-  birthCity: string;
-  birthState: string;
-  birthCountry: string;
-  birthLatitude: number | null;
-  birthLongitude: number | null;
-  birthTimezone: string | null;
-  astrologyMap: AstrologyMap | null;
-  kabalisticMap: KabalisticMap | null;
-  tantricMap: TantricMap | null;
-  oduBirth: OduBirth | null;
-  notes: string | null;
+export interface EnergyHealingMap {
+  reikiSymbols: ReikiSymbol[];
+  groundingProtocol: GroundingProtocol;
+}
+
+export interface AyahuascaProtocol {
+  name: string;
+  dosage: string;
+  rationale: string;
+}
+
+export interface RecomendedRape {
+  name: string;
+  purpose: string;
+  indication: string;
+}
+
+export interface ForestMedicineMap {
+  ayahuascaProtocol: AyahuascaProtocol;
+  recomendedRapes: RecomendedRape[];
+  spiritualWarning: string;
 }

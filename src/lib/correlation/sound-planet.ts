@@ -50,7 +50,7 @@ export interface SoundPlanet {
  * Based on classical Western astrology and sound healing traditions.
  * Keys are normalized to uppercase ASCII for case-insensitive lookup.
  */
-export const SOUND_PLANET_MAP: Record<string, SoundPlanet> = {
+const SOUND_PLANET_MAP: Record<string, SoundPlanet> = {
   "RAM": {
     som: "RAM",
     pronunciacao: "Rahm (vibração solar, luz interior)",

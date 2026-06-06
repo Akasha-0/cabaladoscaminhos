@@ -115,10 +115,3 @@ export function getPlanetOrixa(planeta: string): OrixaPlanet[] {
 export function getAllOrixaPlanets(): OrixaPlanet[] {
   return Object.values(ORIXAS_PLANETS_MAP);
 }
-
-export default {
-  getOrixaPlanet,
-  getAllOrixas,
-  getPlanetOrixa,
-  getAllOrixaPlanets,
-};

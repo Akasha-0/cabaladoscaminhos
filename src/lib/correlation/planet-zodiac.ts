@@ -195,14 +195,3 @@ export function getPlanetQualidade(planeta: string): string | null {
 export function getPlanetElemento(planeta: string): string | null {
   return PLANET_ZODIAC_MAPPINGS[planeta]?.elemento_conexao ?? null;
 }
-
-export default {
-  getPlanetZodiac,
-  getZodiacPlanet,
-  getAllPlanetZodiacs,
-  getAllPlanets,
-  hasPlanetZodiac,
-  getPlanetDomicilio,
-  getPlanetQualidade,
-  getPlanetElemento,
-};

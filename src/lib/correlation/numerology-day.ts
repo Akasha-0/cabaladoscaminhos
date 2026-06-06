@@ -260,14 +260,3 @@ export function getNumerologyDayPractices(numero: number): string[] | undefined 
 /**
  * Default export with all public functions
  */
-export default {
-  getNumerologyDay,
-  getDayNumerology,
-  getNumerologyElement,
-  getNumerologyPlanet,
-  getAllNumerologyDays,
-  getAllNumerologyDayCorrelations,
-  getNumerologyDaySpiritualMeaning,
-  getNumerologyDayProperties,
-  getNumerologyDayPractices,
-};

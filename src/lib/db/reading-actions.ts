@@ -2,9 +2,8 @@
 // READING ACTIONS - Cabala Dos Caminhos
 // Cockpit Oracular - Mesa Real Reading Management
 // ============================================================
-
-import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
 
 // Type for matrix data (Casa 1-36 mapping to Carta e Odu)
 export interface MatrixData {
@@ -15,16 +14,16 @@ export interface MatrixData {
 }
 
 // Schema for creating a reading
-export const createReadingSchema = z.object({
+const createReadingSchema = z.object({
   clientId: z.string().min(1, 'clientId é obrigatório'),
-  userId: z.string().min(1, 'userId é obrigatório'),
+  operatorId: z.string().min(1, 'operatorId é obrigatório'),
   matrixData: z.record(z.number(z.any())).optional(),
 });
 
 export type CreateReadingInput = z.infer<typeof createReadingSchema>;
 
 // Status type
-export type ReadingStatus = 'PENDING' | 'COMPLETED';
+export type ReadingStatus = 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR';
 
 // ============================================================
 // READING CRUD OPERATIONS
@@ -39,7 +38,7 @@ export async function createReading(input: CreateReadingInput) {
   return prisma.reading.create({
     data: {
       clientId: data.clientId,
-      userId: data.userId,
+      operatorId: data.operatorId,
       matrixData: data.matrixData || {},
       status: 'PENDING',
     },
@@ -76,26 +75,59 @@ export async function getReadingsByClient(clientId: string) {
 }
 
 /**
- * Gets readings by user ID
+ * Lista leituras do Operator (Doc 16 AD-03: Operator substitui User legado).
+ * Substitui a versão antiga baseada em userId.
  */
-export async function getReadingsByUser(userId: string) {
+export async function getReadingsByOperator(
+  operatorId: string,
+  opts?: { limit?: number; status?: 'PENDING' | 'GENERATING' | 'COMPLETED' | 'ERROR' }
+) {
   return prisma.reading.findMany({
-    where: { userId },
+    where: {
+      operatorId,
+      ...(opts?.status ? { status: opts.status } : {}),
+    },
     include: {
       client: true,
       report: true,
     },
     orderBy: { createdAt: 'desc' },
+    ...(opts?.limit ? { take: opts.limit } : {}),
+  });
+}
+
+/**
+ * Lista leituras do Operator autenticado (Doc 16 AD-03).
+ * Filtra por operatorId (não userId legado).
+ */
+
+/**
+ * Conta leituras criadas no mês corrente pelo Operator.
+ */
+async function countReadingsThisMonth(operatorId: string): Promise<number> {
+  const start = new Date();
+  start.setDate(1);
+  start.setHours(0, 0, 0, 0);
+  return prisma.reading.count({
+    where: { operatorId, date: { gte: start } },
+  });
+}
+
+/**
+ * Conta leituras pendentes (PENDING) criadas hoje pelo Operator.
+ */
+async function countPendingToday(operatorId: string): Promise<number> {
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
+  return prisma.reading.count({
+    where: { operatorId, status: 'PENDING', date: { gte: start } },
   });
 }
 
 /**
  * Updates matrix data for a reading (save current state)
  */
-export async function updateMatrixData(
-  readingId: string,
-  matrixData: MatrixData
-) {
+export async function updateMatrixData(readingId: string, matrixData: MatrixData) {
   return prisma.reading.update({
     where: { id: readingId },
     data: {
@@ -107,10 +139,7 @@ export async function updateMatrixData(
 /**
  * Updates reading status
  */
-export async function updateReadingStatus(
-  readingId: string,
-  status: ReadingStatus
-) {
+export async function updateReadingStatus(readingId: string, status: ReadingStatus) {
   return prisma.reading.update({
     where: { id: readingId },
     data: { status },
@@ -131,7 +160,7 @@ export async function deleteReading(readingId: string) {
 // ============================================================
 
 // Schema for creating/updating a report
-export const saveReportSchema = z.object({
+const saveReportSchema = z.object({
   readingId: z.string().min(1, 'readingId é obrigatório'),
   content: z.record(z.unknown()),
   pdfUrl: z.string().url().optional().nullable(),
@@ -186,7 +215,7 @@ export async function getReportByReading(readingId: string) {
 /**
  * Gets a report by ID
  */
-export async function getReport(reportId: string) {
+async function getReport(reportId: string) {
   return prisma.report.findUnique({
     where: { id: reportId },
     include: {

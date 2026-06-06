@@ -74,7 +74,7 @@ export function getAllOduNames(): string[] {
   return Object.values(ODTU_FREQUENCY_MAPPINGS).map((m) => m.odu_nome).sort((a, b) => a.localeCompare(b, 'pt-BR'));
 }
 
-export function getAllOduNamesYoruba(): string[] {
+function getAllOduNamesYoruba(): string[] {
   return Object.values(ODTU_FREQUENCY_MAPPINGS).map((m) => m.odu_nome_yoruba).sort((a, b) => a.localeCompare(b, 'pt-BR'));
 }
 
@@ -119,5 +119,3 @@ export function getUsedElements(): ElementType[] {
   Object.values(ODTU_FREQUENCY_MAPPINGS).forEach((m) => { elements.add(m.elemento); });
   return Array.from(elements);
 }
-
-export default { getOduFrequency, getFrequencyByOdu, getAllOduFrequencies, getAllOduNumbers, getAllOduNames, getAllOduNamesYoruba, getOduByElement, getOduByFrequency, getElementByOdu, getMessageByOdu, getHealingByOdu, hasOduFrequency, getUsedFrequencies, getUsedElements };

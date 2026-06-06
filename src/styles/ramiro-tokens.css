@@ -1,0 +1,90 @@
+/**
+ * Cabala dos Caminhos — Paleta v2 "Cigano Ramiro"
+ * Fonte canônica: docs/13_identidade-ramiro-design-v2.md §3.
+ *
+ * Identidade dual: LARANJA = ação/fogo/abertura de caminhos;
+ * AZUL ROYAL = estrutura/profundidade/proteção.
+ *
+ * Uso: aplique a classe `.ramiro` no contêiner do Cockpit Oracular.
+ * Dentro desse escopo, os tokens semânticos do Tailwind v4 (--color-primary
+ * etc.) são remapeados para a paleta Ramiro — sem afetar o app legado.
+ */
+
+:root {
+  /* Backgrounds — azul-noite (harmoniza com o royal) */
+  --bg-canvas: #0a0e1a;
+  --bg-surface: #111726;
+  --bg-elevated: #1a2236;
+  --bg-border: #2a3550;
+
+  /* Primária — LARANJA */
+  --accent-orange: #f97316;
+  --accent-orange-bright: #fb923c;
+  --accent-orange-dim: #c2410c;
+  --accent-orange-glow: rgba(249, 115, 22, 0.18);
+
+  /* Secundária — AZUL ROYAL */
+  --accent-royal: #2547d0;
+  --accent-royal-bright: #3b5bdb;
+  --accent-royal-dim: #1e3a8a;
+  --accent-royal-glow: rgba(37, 71, 208, 0.18);
+
+  /* Alerta */
+  --accent-alert: #f43f5e;
+
+  /* Texto */
+  --ramiro-text-primary: #f5f7ff;
+  --ramiro-text-secondary: #9aa7c7;
+  --ramiro-text-muted: #56618a;
+}
+
+/**
+ * Escopo do Cockpit — remapeia os tokens semânticos do Tailwind v4
+ * para a paleta Ramiro. Como as utilities (bg-primary, border-secondary…)
+ * referenciam estas vars em runtime, todo o cockpit herda a paleta v2.
+ */
+/* === LIGHT MODE CSS VARIABLES (Default) === */
+/* Ramiro v2 base — @theme now references var() chains so both legacy and v4 vars are aligned. */
+/* Legacy var (--primary, --secondary) for code that reads CSS vars directly (not Tailwind utilities). */
+.ramiro {
+  /* Tailwind v4 @theme variable overrides */
+  --color-background: var(--bg-canvas);
+  --color-foreground: var(--ramiro-text-primary);
+  --color-card: var(--bg-surface);
+  --color-card-foreground: var(--ramiro-text-primary);
+  --color-popover: var(--bg-surface);
+  --color-popover-foreground: var(--ramiro-text-primary);
+
+  /* Legacy CSS vars (used by code reading --primary / --secondary directly) */
+  --primary: var(--accent-orange);
+  --primary-foreground: #1a0d03;
+  --secondary: var(--accent-royal);
+  --secondary-foreground: var(--ramiro-text-primary);
+  --accent: var(--accent-royal-dim);
+  --accent-foreground: var(--ramiro-text-primary);
+  --ring: var(--accent-orange);
+
+  --muted: var(--bg-elevated);
+  --muted-foreground: var(--ramiro-text-secondary);
+  --border: var(--bg-border);
+  --input: var(--bg-border);
+  --destructive: var(--accent-alert);
+  --destructive-foreground: #ffffff;
+
+  /* Tailwind v4 @theme variable overrides */
+  --color-primary: var(--accent-orange);
+  --color-primary-foreground: #1a0d03;
+  --color-secondary: var(--accent-royal);
+  --color-secondary-foreground: var(--ramiro-text-primary);
+  --color-accent: var(--accent-royal-dim);
+  --color-accent-foreground: var(--ramiro-text-primary);
+  --color-muted: var(--bg-elevated);
+  --color-muted-foreground: var(--ramiro-text-secondary);
+  --color-border: var(--bg-border);
+  --color-input: var(--bg-border);
+  --color-ring: var(--accent-orange);
+  --color-destructive: var(--accent-alert);
+  --color-destructive-foreground: #ffffff;
+  --color-background: var(--bg-canvas);
+  --color-foreground: var(--ramiro-text-primary);
+}

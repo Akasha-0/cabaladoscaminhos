@@ -386,17 +386,3 @@ export function getPlanetHours(planeta: string): PlanetDay['horas_planetarias'] 
 export function getPlanetProperties(planeta: string): PlanetDay['propriedades'] | undefined {
   return PLANET_DAY_MAP[planeta as Planet]?.propriedades;
 }
-
-export default {
-  getPlanetDay,
-  getDayPlanet,
-  getAllPlanets,
-  getPlanetsByElemento,
-  getAllPlanetDays,
-  getPlanetSpiritualMeaning,
-  getElementByPlanet,
-  getPlanetSymbol,
-  getPlanetPractices,
-  getPlanetHours,
-  getPlanetProperties,
-};

@@ -605,15 +605,3 @@ export function hasSignoOdu(signo: string, oduNome: string): boolean {
     mapping.odus_secundarios.some(o => o.nome === oduNome)
   );
 }
-
-export default {
-  getZodiacOdu,
-  getOduZodiac,
-  getAllZodiacOdus,
-  getSignoOduPrincipal,
-  getSignoOdusSecundarios,
-  getSignoOrixa,
-  getSignosByElement,
-  getZodiacOduSignificado,
-  hasSignoOdu,
-};

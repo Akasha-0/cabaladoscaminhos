@@ -164,7 +164,7 @@ export function getSephirotChakra(sephirah: string): SephirotChakra | null {
  * @param sephirah - The name of the Sephirah (e.g., 'Kether', 'Chokmah')
  * @returns The correlation mapping or null if not found
  */
-export function getSephirahChakra(sephirah: string): SephirotChakra | null {
+function getSephirahChakra(sephirah: string): SephirotChakra | null {
   return getSephirotChakra(sephirah);
 }
 
@@ -185,7 +185,7 @@ export function getChakraSephirot(chakra: string): SephirotChakra[] {
  * @param chakra - The chakra name (e.g., 'Sahasrara', 'Ajna', 'Muladhara')
  * @returns Array of SephirotChakra mappings for the given chakra
  */
-export function getChakraSephiroth(chakra: string): SephirotChakra[] {
+function getChakraSephiroth(chakra: string): SephirotChakra[] {
   return getChakraSephirot(chakra);
 }
 

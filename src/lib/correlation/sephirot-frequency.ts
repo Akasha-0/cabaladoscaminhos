@@ -227,16 +227,3 @@ export function getAllFrequencies(): number[] {
 }
 
 // Default export for convenience
-export default {
-  getSephirotFrequency,
-  getFrequencySephirot,
-  getAllSephirotFrequencies,
-  getAllSephiroth,
-  hasSephirotFrequency,
-  getChakraBySephirah,
-  getElementBySephirah,
-  getSephirothByFrequency,
-  getAllFrequencies,
-  SEPHIROT_FREQUENCY_MAPPINGS,
-  SOLFEGGIO_FREQUENCIES,
-};

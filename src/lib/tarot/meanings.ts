@@ -7,6 +7,7 @@ export interface CardMeaning {
   reversed: string;
 }
 
+// fallow-ignore-next-line unused-type
 export interface TarotDeck {
   majorArcana: CardMeaning[];
   minorArcana: {
@@ -422,13 +423,13 @@ const pentacles: CardMeaning[] = [
   },
 ];
 
-export const tarotDeck: TarotDeck = {
+const tarotDeck: TarotDeck = {
   majorArcana,
   minorArcana: { wands, cups, swords, pentacles },
 };
 
 /** Returns all 78 card meanings flat */
-export function getAllMeanings(): CardMeaning[] {
+function getAllMeanings(): CardMeaning[] {
   return [
     ...majorArcana,
     ...wands,
@@ -439,7 +440,7 @@ export function getAllMeanings(): CardMeaning[] {
 }
 
 /** Looks up a card by name (case-insensitive, partial match) */
-export function getCardMeaning(name: string): CardMeaning | undefined {
+function getCardMeaning(name: string): CardMeaning | undefined {
   const lower = name.toLowerCase().trim();
   return getAllMeanings().find(
     (c) => c.name.toLowerCase() === lower || c.name.toLowerCase().includes(lower)

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { checkRateLimit } from '@/lib/rate-limit';
 
-export function rateLimitMiddleware(
+function rateLimitMiddleware(
   identifier: string,
   windowMs: number = 60000,
   maxRequests: number = 10

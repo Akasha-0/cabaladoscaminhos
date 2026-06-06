@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calcularPitagorica, calcularCabalistica, calcularTantrica } from '@/lib/numerologia';
+import { calcularPitagorica, calcularCabalistica, calcularTantrica } from '@akasha/core-cabala';
 
 describe('Cálculos Numerológicos', () => {
   it('deve calcular numerologia pitagórica corretamente', () => {

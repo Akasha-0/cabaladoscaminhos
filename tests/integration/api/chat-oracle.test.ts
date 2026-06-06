@@ -1,3 +1,6 @@
+// TODO: Phase 19 — These tests import actual /api/chat/oracle route which calls
+// requireOperatorApi() → cookies() → requires Next.js request scope mock.
+// Fix in Phase 20 by mocking operator-session module or using @next/test.
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 

@@ -239,9 +239,3 @@ export function getChakraPlanet(): Record<ChakraName, string[]> {
 export function getAllPlanetChakras(): PlanetChakraMapping[] {
   return Object.values(PLANET_CHAKRA_MAP);
 }
-
-export default {
-  getPlanetChakra,
-  getChakraPlanet,
-  getAllPlanetChakras,
-};

@@ -1013,11 +1013,11 @@ export function getData(): OduData[] {
   return ODU_DATA;
 }
 
-export function getDataById(id: string): OduData | undefined {
+function getDataById(id: string): OduData | undefined {
   return ODU_DATA.find((o) => o.id === id);
 }
 
-export function searchData(query: string): OduData[] {
+function searchData(query: string): OduData[] {
   const lowerQuery = query.toLowerCase();
   return ODU_DATA.filter(
     (o) =>
@@ -1032,38 +1032,38 @@ export function searchData(query: string): OduData[] {
   );
 }
 
-export function getOduByDay(day: string): OduData[] {
+function getOduByDay(day: string): OduData[] {
   return ODU_DATA.filter((o) => o.dayOfWeek.toLowerCase().includes(day.toLowerCase()));
 }
 
-export function getOduByElement(element: string): OduData[] {
+function getOduByElement(element: string): OduData[] {
   return ODU_DATA.filter((o) => o.element.toLowerCase().includes(element.toLowerCase()));
 }
 
-export function getOduByPlanet(planet: string): OduData[] {
+function getOduByPlanet(planet: string): OduData[] {
   return ODU_DATA.filter((o) => o.rulingPlanet.toLowerCase().includes(planet.toLowerCase()));
 }
 
-export function getOduByNumber(num: number): OduData[] {
+function getOduByNumber(num: number): OduData[] {
   return ODU_DATA.filter((o) => o.numbersSacred.includes(num));
 }
 
-export function getEshemu(oduId: string): string[] {
+function getEshemu(oduId: string): string[] {
   const odu = getDataById(oduId);
   return odu ? odu.eshemus : [];
 }
 
-export function getAwose(oduId: string): string[] {
+function getAwose(oduId: string): string[] {
   const odu = getDataById(oduId);
   return odu ? odu.awose : [];
 }
 
-export function getRituals(oduId: string): OduRitual[] {
+function getRituals(oduId: string): OduRitual[] {
   const odu = getDataById(oduId);
   return odu ? odu.rituals : [];
 }
 
-export function getOfferings(oduId: string): OduOfferings | undefined {
+function getOfferings(oduId: string): OduOfferings | undefined {
   const odu = getDataById(oduId);
   return odu ? odu.offerings : undefined;
 }

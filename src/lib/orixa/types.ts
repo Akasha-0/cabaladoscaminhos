@@ -24,27 +24,27 @@ import { z } from 'zod';
 
 // ─── Base Enums ─────────────────────────────────────────────────────────────
 
-export const ORIXAS_PRINCIPAIS = [
+const ORIXAS_PRINCIPAIS = [
   'Oxalá', 'Iemanjá', 'Ogum', 'Xangô', 'Oxum', 'Iansã',
   'Obatalá', 'Nanã', 'Ibeji', 'Omolu', 'Oxóssi', 'Logunedé',
   'Ewa', 'Oba', 'Ori', 'Osain', 'Oxumar', 'Olokun',
   'Exu', 'Pomba Gira', 'Yemanjá', 'Obaluwaiê', 'Xapanã', 'Aroeira'
 ] as const;
 
-export const ELEMENTOS = ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'] as const;
+const ELEMENTOS = ['Fogo', 'Água', 'Terra', 'Ar', 'Éter'] as const;
 
-export const PLANETAS_ORIXAS = [
+const PLANETAS_ORIXAS = [
   'Sol', 'Lua', 'Marte', 'Mercúrio', 'Júpiter', 'Vênus', 'Saturno'
 ] as const;
 
-export const DIAS_SEMANA = [
+const DIAS_SEMANA = [
   'Segunda-feira', 'Terça-feira', 'Quarta-feira', 
   'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'
 ] as const;
 
 // ─── Zod Schemas ────────────────────────────────────────────────────────────
 
-export const OrixaSchema = z.object({
+const OrixaSchema = z.object({
   id: z.string(),
   nome: z.string(),
   nomeYoruba: z.string().optional(),
@@ -528,28 +528,28 @@ export function getAllOrixas(): OrixaCore[] {
 /**
  * Get Orixás by element
  */
-export function getOrixasByElement(elemento: string): OrixaCore[] {
+function getOrixasByElement(elemento: string): OrixaCore[] {
   return getAllOrixas().filter(o => o.elemento.toLowerCase() === elemento.toLowerCase());
 }
 
 /**
  * Get Orixás by day of week
  */
-export function getOrixasByDay(dia: string): OrixaCore[] {
+function getOrixasByDay(dia: string): OrixaCore[] {
   return getAllOrixas().filter(o => o.diaSemana.toLowerCase() === dia.toLowerCase());
 }
 
 /**
  * Get Orixás by planet
  */
-export function getOrixasByPlanet(planeta: string): OrixaCore[] {
+function getOrixasByPlanet(planeta: string): OrixaCore[] {
   return getAllOrixas().filter(o => o.planeta.toLowerCase() === planeta.toLowerCase());
 }
 
 /**
  * Get Orixás by chakra
  */
-export function getOrixasByChakra(chakraNum: number): OrixaCore[] {
+function getOrixasByChakra(chakraNum: number): OrixaCore[] {
   return getAllOrixas().filter(o => o.chakraPrincipal === chakraNum);
 }
 
@@ -636,7 +636,7 @@ export function getOrixaSephirah(orixa: string): { sephirah: number; nome: strin
 /**
  * Get Orixá-Sign correlation (Astrology)
  */
-export function getOrixaSigno(orixa: string): { signo: string; elemento: string } | null {
+function getOrixaSigno(orixa: string): { signo: string; elemento: string } | null {
   const map: Record<string, { signo: string; elemento: string }> = {
     'oxala': { signo: 'Libra', elemento: 'Ar' },
     'iemanja': { signo: 'Câncer', elemento: 'Água' },
@@ -653,7 +653,7 @@ export function getOrixaSigno(orixa: string): { signo: string; elemento: string 
 /**
  * Get Orixá-Odu correlation (Ifá system)
  */
-export function getOrixaOdu(orixa: string): { odu: number; nome: string }[] {
+function getOrixaOdu(orixa: string): { odu: number; nome: string }[] {
   const map: Record<string, { odu: number; nome: string }[]> = {
     'oxala': [{ odu: 1, nome: 'Ogbe' }],
     'iemanja': [{ odu: 2, nome: 'Oyeku' }],
@@ -668,11 +668,11 @@ export function getOrixaOdu(orixa: string): { odu: number; nome: string }[] {
 // VALIDATORS
 // ════════════════════════════════════════════════════════════════════════════
 
-export function isValidOrixa(nome: string): boolean {
+function isValidOrixa(nome: string): boolean {
   return getOrixa(nome) !== undefined;
 }
 
-export function validateOrixaInput(input: unknown): { valid: boolean; errors?: string[] } {
+function validateOrixaInput(input: unknown): { valid: boolean; errors?: string[] } {
   try {
     const result = OrixaSchema.safeParse(input);
     return {

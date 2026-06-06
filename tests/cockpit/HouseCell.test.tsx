@@ -1,12 +1,14 @@
 // tests/cockpit/HouseCell.test.tsx
 // Tests for HouseCell component
-
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import React from 'react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { HouseCell } from '@/components/cockpit/HouseCell';
 import type { HouseDefinition } from '@/lib/divination/house-types';
 import type { FilledHouse } from '@/stores/cockpit-store';
+
+beforeEach(cleanup);
 
 const mockHouse: HouseDefinition = {
   number: 1,
@@ -34,13 +36,9 @@ describe('HouseCell', () => {
       />
     );
 
-    // Should show house number
     expect(screen.getByText('01')).toBeInTheDocument();
-    
-    // Should show house original name
     expect(screen.getByText('O Cavaleiro')).toBeInTheDocument();
-    
-    // Should show plus icon (empty state indicator)
+    // Plus icon renders as SVG with lucide class
     const plusIcon = document.querySelector('[class*="lucide"]');
     expect(plusIcon).toBeInTheDocument();
   });
@@ -49,7 +47,16 @@ describe('HouseCell', () => {
     const filledData: FilledHouse = {
       casaNumero: 1,
       carta: { numero: 4, nome: 'A Casa', significado: 'Família' },
-      odu: { numero: 1, nome: 'Okaran', significado: 'O começo', elementos: 'Terra / Fogo', orixas: ['Exu', 'Omolu'], quizilas: [], preceitos: '', ebo: '' },
+      odu: {
+        numero: 1,
+        nome: 'Okaran',
+        significado: 'O começo',
+        elementos: 'Terra / Fogo',
+        orixas: ['Exu', 'Omolu'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
     };
 
     render(
@@ -62,16 +69,13 @@ describe('HouseCell', () => {
       />
     );
 
-    // Should show carta number and name
     expect(screen.getByText('04. A Casa')).toBeInTheDocument();
-    
-    // Should show odu badge
     expect(screen.getByText(/Odu 1 - Okaran/)).toBeInTheDocument();
   });
 
   it('calls onClick when clicked', () => {
     const handleClick = vi.fn();
-    
+
     render(
       <HouseCell
         house={mockHouse}
@@ -83,11 +87,10 @@ describe('HouseCell', () => {
     );
 
     fireEvent.click(screen.getByText('01'));
-    
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it('shows active state styling', () => {
+  it('shows active state styling with glow-pulse animation', () => {
     const { container } = render(
       <HouseCell
         house={mockHouse}
@@ -97,10 +100,51 @@ describe('HouseCell', () => {
         onClear={() => {}}
       />
     );
-
-    // Check for ring class (active state indicator)
     const cell = container.firstChild as HTMLElement;
     expect(cell.className).toContain('ring-2');
-    expect(cell.className).toContain('ring-amber-500');
+    // Active state uses ring-primary per Doc 13 §4.1
+    expect(cell.className).toContain('ring-primary');
+    // T7.1: animate-glow-pulse on motion-safe for prefers-reduced-motion
+    expect(cell.className).toContain('motion-safe:animate-glow-pulse');
+  });
+
+  // T7.1 a11y: hover-transform gated on motion-safe (prefers-reduced-motion)
+  it('gates hover scale on motion-safe (a11y)', () => {
+    const { container: emptyContainer } = render(
+      <HouseCell
+        house={mockHouse}
+        filledData={undefined}
+        isActive={false}
+        onClick={() => {}}
+        onClear={() => {}}
+      />
+    );
+    const emptyCell = emptyContainer.firstChild as HTMLElement;
+    expect(emptyCell.className).toContain('motion-safe:hover:scale-105');
+    const filledData: FilledHouse = {
+      casaNumero: 1,
+      carta: { numero: 4, nome: 'A Casa', significado: 'Família' },
+      odu: {
+        numero: 1,
+        nome: 'Okaran',
+        significado: 'O começo',
+        elementos: 'Terra / Fogo',
+        orixas: ['Exu', 'Omolu'],
+        quizilas: [],
+        preceitos: '',
+        ebo: '',
+      },
+    };
+    const { container: filledContainer } = render(
+      <HouseCell
+        house={mockHouse}
+        filledData={filledData}
+        isActive={false}
+        onClick={() => {}}
+        onClear={() => {}}
+      />
+    );
+    const filledCell = filledContainer.firstChild as HTMLElement;
+    expect(filledCell.className).toContain('motion-safe:hover:scale-105');
   });
 });

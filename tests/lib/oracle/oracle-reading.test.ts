@@ -3,10 +3,10 @@ import {
   getSpreads,
   getSpreadByName,
   performReading,
+  LENORMAND_CARDS,
   type OracleReading,
   type ReadingSpread,
 } from '@/lib/oracle/oracle-reading';
-import { getAllOracleCards } from '@/lib/divination/oracle-cards';
 
 describe('oracle-reading', () => {
   // Mock crypto.randomUUID for consistent IDs
@@ -39,7 +39,7 @@ describe('oracle-reading', () => {
 
     it('returns expected spread names', () => {
       const spreads = getSpreads();
-      const names = spreads.map(s => s.name);
+      const names = spreads.map((s) => s.name);
       expect(names).toContain('single');
       expect(names).toContain('past-present-future');
       expect(names).toContain('guidance');
@@ -150,7 +150,7 @@ describe('oracle-reading', () => {
 
       it('cards are unique (no duplicates)', () => {
         const reading = performReading('past-present-future');
-        const ids = reading.cards.map(c => c.id);
+        const ids = reading.cards.map((c) => c.id);
         const uniqueIds = new Set(ids);
         expect(uniqueIds.size).toBe(3);
       });
@@ -171,7 +171,7 @@ describe('oracle-reading', () => {
 
       it('cards are unique', () => {
         const reading = performReading('cross');
-        const ids = reading.cards.map(c => c.id);
+        const ids = reading.cards.map((c) => c.id);
         const uniqueIds = new Set(ids);
         expect(uniqueIds.size).toBe(4);
       });
@@ -185,7 +185,7 @@ describe('oracle-reading', () => {
 
       it('cards are unique', () => {
         const reading = performReading('five-elements');
-        const ids = reading.cards.map(c => c.id);
+        const ids = reading.cards.map((c) => c.id);
         const uniqueIds = new Set(ids);
         expect(uniqueIds.size).toBe(5);
       });
@@ -199,7 +199,7 @@ describe('oracle-reading', () => {
 
       it('for multiple cards, interpretation joins all messages with spaces', () => {
         const reading = performReading('guidance');
-        const expectedInterpretation = reading.cards.map(c => c.message).join(' ');
+        const expectedInterpretation = reading.cards.map((c) => c.message).join(' ');
         expect(reading.interpretation).toBe(expectedInterpretation);
       });
     });
@@ -212,7 +212,7 @@ describe('oracle-reading', () => {
 
       it('for multiple cards, affirmation joins all affirmations with spaces', () => {
         const reading = performReading('guidance');
-        const expectedAffirmation = reading.cards.map(c => c.affirmation).join(' ');
+        const expectedAffirmation = reading.cards.map((c) => c.affirmation).join(' ');
         expect(reading.affirmation).toBe(expectedAffirmation);
       });
     });
@@ -248,8 +248,7 @@ describe('oracle-reading', () => {
 
     describe('random selection', () => {
       it('can return different cards on multiple calls (tests randomization)', () => {
-        const allCards = getAllOracleCards();
-        const seenCards = new Set<string>();
+        const seenCards = new Set<number>();
         let differentCardsSeen = false;
 
         // Try multiple times to get different cards

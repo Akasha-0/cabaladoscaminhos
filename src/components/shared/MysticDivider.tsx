@@ -64,4 +64,3 @@ export function MysticDivider({
   );
 }
 
-export { SYMBOLS };

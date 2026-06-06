@@ -11,9 +11,7 @@
 // 100% DINÂMICO - funciona para QUALQUER data.
 // ============================================================
 
-import { getPositions, type PlanetPosition } from '@/lib/astrologia/planet-positions';
-import { getBirthChart, type BirthChart } from '@/lib/astrologia/birth-chart';
-import { findAspects } from '@/lib/astrologia/aspect-finder';
+import { getPositions, type PlanetPosition, getBirthChart, type BirthChart, findAspects } from '@akasha/core-astrology';
 
 // ============================================================
 // TYPES
@@ -245,7 +243,7 @@ const TRANSIT_ORBS: Record<AspectType, number> = {
 // CÁLCULO DE FASE LUNAR
 // ============================================================
 
-export function calculateMoonPhase(date: Date): MoonPhase {
+function calculateMoonPhase(date: Date): MoonPhase {
   // Algoritmo simplificado de fase lunar
   // Referência: Lua Nova 2000-01-06
   const reference = new Date('2000-01-06T18:14:00Z');
@@ -349,7 +347,7 @@ export function calculateMoonPhase(date: Date): MoonPhase {
 // CÁLCULO DE TRÂNSITOS DO DIA
 // ============================================================
 
-export function calculateTransits(
+function calculateTransits(
   birthChart: BirthChart,
   currentDate: Date = new Date(),
   orbs: Record<AspectType, number> = TRANSIT_ORBS

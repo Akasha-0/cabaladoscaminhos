@@ -5,7 +5,7 @@
 // baseadas em Cabala, Orixás, Odús, Tarot, Numerologia e Lua
 // ============================================================
 
-export interface DiaSemanaData {
+interface DiaSemanaData {
   dia: string;
   chakras: string[];
   cores: string[];
@@ -45,15 +45,14 @@ export interface OduData {
   ebo: string;
 }
 
-export interface CartaLenormand {
+interface CartaLenormand {
   numero: number;
   nome: string;
   significado: string;
   area: string;
   interpretacao: string;
 }
-
-export interface ChakraData {
+interface ChakraData {
   numero: number;
   nome: string;
   cor: string;
@@ -66,19 +65,18 @@ export interface ChakraData {
   funcao: string;
 }
 
-export interface CartaTarot {
+interface CartaTarot {
   numero: number;
   nome: string;
   arcano: string;
   significado: string;
   keywords: string[];
 }
-
 // ============================================================
 // DIAS DA SEMANA E SUAS CORRESPONDÊNCIAS
 // ============================================================
 
-export const diasSemana: Record<string, DiaSemanaData> = {
+const diasSemana: Record<string, DiaSemanaData> = {
   segunda: {
     dia: "Segunda-feira",
     chakras: ["1º Básico", "6º Frontal"],
@@ -327,16 +325,16 @@ export const odus: OduData[] = [
 // CARTAS DO BARALHO CIGANO (LENORMAND)
 // ============================================================
 
-export const cartasLenormand: CartaLenormand[] = [
+const cartasLenormand: CartaLenormand[] = [
   { numero: 1, nome: "O Cavaleiro", significado: "Início, velocidade, notícias que chegam, movimentos rápidos.", area: "Ações imediatas, projetos novos, novos caminhos.", interpretacao: "Mostra o que está entrando na vida do consulente logo no início do jogo." },
   { numero: 2, nome: "O Trevo", significado: "Pequenos obstáculos, imprevistos, sorte rápida ou testes cotidianos.", area: "Desafios diários, sorte, pequenas dificuldades de percurso.", interpretacao: "Indica as pequenas pedras no caminho ou golpes de sorte momentâneos." },
   { numero: 3, nome: "O Navio", significado: "Viagens, transições de longo prazo, mudanças profundas, horizontes.", area: "Mudanças geográficas ou de estado civil/emocional, comércio exterior.", interpretacao: "Revela para onde a vida do consulente está navegando e o ritmo dessa mudança." },
   { numero: 4, nome: "A Casa", significado: "Família, base estrutural, estabilidade, o corpo físico.", area: "Assuntos domésticos, imóveis, o lar, antepassados.", interpretacao: "Mostra a segurança íntima, a relação com parentes e a saúde do corpo/lar." },
   { numero: 5, nome: "A Árvore", significado: "Saúde, crescimento lento, ancestralidade, colheita duradoura.", area: "Saúde física/espiritual, projetos de longo prazo, evolução vital.", interpretacao: "Indica a vitalidade do consulente e a firmeza de suas raízes e planos." },
   { numero: 6, nome: "As Nuvens", significado: "Dúvidas, confusão mental, instabilidade, clareza que falta.", area: "Estado psicológico, incertezas temporárias, tempestades emocionais.", interpretacao: "Revela onde o consulente está cego ou confuso na vida atual." },
-  { numero: 7, nome: "A Cobra", significado: "Traição, autossabotagem, astúcia, energia sexual, rivalidades.", area: "Alertas, pessoas mal-intencionadas, desejos ocultos, magnetismo.", interpretacao: "Alerta sobre perigos ocultos, inveja ou a necessidade de ser esperto." },
+  { numero: 7, nome: "A Serpente", significado: "Traição, autossabotagem, astúcia, energia sexual, rivalidades.", area: "Alertas, pessoas mal-intencionadas, desejos ocultos, magnetismo.", interpretacao: "Alerta sobre perigos ocultos, inveja ou a necessidade de ser esperto." },
   { numero: 8, nome: "O Caixão", significado: "Fim de ciclo, transformações radicais, perdas necessárias, renascimento.", area: "Rupturas, luto (literal ou figurado), encerramentos, regeneração.", interpretacao: "Mostra o que precisa morrer ou ser enterrado na vida do consulente." },
-  { numero: 9, nome: "As Flores", significado: "Felicidade, presentes do destino, cura, celebração, convites.", area: "Bem-estar, reconciliações, vida social, surpresas positivas.", interpretacao: "É a casa da alegria; mostra onde o consulente receberá um 'mimo' da vida." },
+  { numero: 9, nome: "Os Buquês", significado: "Felicidade, presentes do destino, cura, celebração, convites.", area: "Bem-estar, reconciliações, vida social, surpresas positivas.", interpretacao: "É a casa da alegria; mostra onde o consulente receberá um 'mimo' da vida." },
   { numero: 10, nome: "A Foice", significado: "Cortes abruptos, decisões radicais, colheita rápida, cirurgias.", area: "Decisões definitivas, encerramentos drásticos, o resultado do plantio.", interpretacao: "Indica onde o consulente sofrerá ou provocará um corte drástico e sem volta." },
   { numero: 11, nome: "O Chicote", significado: "Conflitos, estresse, demandas espirituais, repetição de padrões, abuso.", area: "Brigas, discussões, força de vontade, desgaste físico/emocional.", interpretacao: "Mostra onde há atrito constante, punição ou necessidade de impor limites." },
   { numero: 12, nome: "Os Pássaros", significado: "Comunicação, conversas cotidianas, flertes, agitação, estresse leve.", area: "Vida social, conversas fiadas, reuniões, parcerias dinâmicas.", interpretacao: "Revela o movimento do dia a dia, a comunicação e o estado de ansiedade." },
@@ -370,7 +368,7 @@ export const cartasLenormand: CartaLenormand[] = [
 // CHAKRAS E SUAS CORRESPONDÊNCIAS
 // ============================================================
 
-export const chakras: ChakraData[] = [
+const chakras: ChakraData[] = [
   { numero: 1, nome: "1º Básico (Muladhara)", cor: "Vermelho", planeta: "Saturno", elemento: "Terra", freqSolfeggio: "396 Hz", mantram: "LAM", nomeDivino: "ADONAI HA-ARETZ", poliedro: "Cubo", funcao: "Dissolução de medos de sobrevivência, ancoramento e firmeza material." },
   { numero: 2, nome: "2º Sacro (Swadhisthana)", cor: "Laranja", planeta: "Lua", elemento: "Água", freqSolfeggio: "417 Hz", mantram: "VAM", nomeDivino: "ELOHIM GIBOR", poliedro: "Cubo / Hexaedro", funcao: "Limpeza de traumas do passado, transmutação criativa e fluidez vital." },
   { numero: 3, nome: "3º Plexo Solar (Manipura)", cor: "Amarelo", planeta: "Sol", elemento: "Fogo", freqSolfeggio: "528 Hz", mantram: "RAM", nomeDivino: "SHADDAI EL CHAI", poliedro: "Tetraedro", funcao: "Transformação da força de vontade, quebra de medos e ativação do brilho." },
@@ -381,7 +379,7 @@ export const chakras: ChakraData[] = [
 ];
 
 // ============================================================
-export const fasesLua = [
+const fasesLua = [
   { fase: "Lua Nova", estado: "Introspecção, silêncio, planejamento invisível.", janela: "Das 00:00 às 03:00 (Hora Astrológica).", ritual: "Início de projetos secretos, firmezas de proteção profunda, assentamento de Exu.", orixas: "Exu, Omolu, Ogum", cartas: "Casa 1 (O Cavaleiro) / Casa 26 (O Livro)", praticas: "Meditação silenciosa, journaling, firmezas de proteção" },
   { fase: "Lua Crescente", estado: "Foco, ação disciplinada, força de vontade.", janela: "Das 06:00 às 12:00 (Amanhecer/Zênite).", ritual: "Rituais de abertura de caminhos comerciais, banhos de prosperidade e atração.", orixas: "Oxóssi, Ogum, Xangô", cartas: "Casa 13 (A Criança) / Casa 34 (Os Peixes)", praticas: "Iniciação de projetos e usaha, trabalho com intenção e disciplina" },
   { fase: "Lua Cheia", estado: "Expansão áurica máxima, magnetismo, êxtase.", janela: "Das 18:00 às 00:00 (Ascensão da Lua).", ritual: "Alta magia de atração, consagração de patuás, boris, rituais de amor e cura de Ori.", orixas: "Oxalá, Oxum, Iemanjá", cartas: "Casa 16 (A Estrela) / Casa 31 (O Sol)", praticas: "Rituais de alta magia, cura, amor, consagrações" },
@@ -392,33 +390,15 @@ export const fasesLua = [
 // UTILITÁRIOS
 // ============================================================
 
-export function getDiaSemanaAtual(): DiaSemanaData {
+function getDiaSemanaAtual(): DiaSemanaData {
   const dias = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
   const hoje = new Date().getDay();
   const diaKey = dias[hoje];
   return diasSemana[diaKey];
 }
 
-export function getOrixasDoDia(): OrixaData[] {
+function getOrixasDoDia(): OrixaData[] {
   const diaAtual = getDiaSemanaAtual();
   return orixas.filter(o => diaAtual.orixas.some(orixa => o.nome.includes(orixa.split('/')[0].trim())));
 }
 
-export function getFaseLuaAtual(): typeof fasesLua[0] | null {
-  // Cálculo simplificado - em produção usar biblioteca de astronomia
-  const dia = new Date().getDate();
-  const faseIndex = Math.floor((dia % 30) / 7.5);
-  return fasesLua[faseIndex] || null;
-}
-
-export function getCorrespondenciasDia(): {
-  dia: DiaSemanaData;
-  orixas: OrixaData[];
-  faseLua: typeof fasesLua[0] | null;
-} {
-  return {
-    dia: getDiaSemanaAtual(),
-    orixas: getOrixasDoDia(),
-    faseLua: getFaseLuaAtual()
-  };
-}

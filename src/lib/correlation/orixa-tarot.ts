@@ -310,18 +310,3 @@ export function getTarotsByElement(elemento: string): string[] {
     .filter(mapping => mapping.elemento.toLowerCase() === elemento.toLowerCase())
     .map(mapping => mapping.arcano);
 }
-
-export default {
-  getOrixaTarot,
-  getTarotOrixa,
-  getAllOrixaTarots,
-  getAllOrixaNames,
-  hasOrixaTarot,
-  getOrixaTarotNumber,
-  getOrixaElement,
-  getArcanoByNumber,
-  getOrixaByNumber,
-  getOrixasByElement,
-  getTarotsByElement,
-  ORIXA_TAROT_MAPPINGS,
-};

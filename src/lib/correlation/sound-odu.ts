@@ -507,13 +507,3 @@ export function getOrixaBySound(som: string): string | undefined {
 }
 
 // Default export for convenience
-export default {
-  getSoundOdu,
-  getOduSound,
-  getAllSoundOdus,
-  getAllOdus,
-  getSoundsByOdu,
-  getHealingProperties,
-  getElementSoundOdu,
-  getOrixaBySound,
-};

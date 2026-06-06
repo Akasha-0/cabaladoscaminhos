@@ -327,17 +327,3 @@ function normalizeChakraName(chakra: string): ChakraName | null {
 }
 
 // Default export with main functions
-export default {
-  getDayChakra,
-  getChakraDay,
-  getAllDays,
-  getAllDayChakras,
-  getChakraNumberDay,
-  getColorByDay,
-  getDaySpiritualMeaning,
-  getDayRitualPractices,
-  getDayKeywords,
-  getDayIndex,
-  getDayEnglishName,
-  getDaysForChakra,
-};

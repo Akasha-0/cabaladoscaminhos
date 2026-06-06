@@ -7,7 +7,6 @@ interface UseMapaInsightsOptions {
   enabled?: boolean;
   usarCache?: boolean;
 }
-
 /**
  * Hook to fetch AI-generated MapaAlma insights from /api/mapa/insights
  * Reads the birth profile from localStorage (key: 'mapa_perfil') to make the API call.

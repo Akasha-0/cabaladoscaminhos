@@ -1,15 +1,20 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../styles/ramiro-tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Fonts */
-  --font-sans: var(--font-raleway), system-ui, sans-serif;
+  /* Fonts (Doc 05 §1.2 / Doc 13 §5) */
+  --font-sans: var(--font-cormorant), system-ui, sans-serif;
   --font-serif: var(--font-cormorant), Georgia, serif;
-  --font-mono: var(--font-mono);
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --font-cinzel: var(--font-cinzel), serif;
   --font-imfell: var(--font-imfell), serif;
+  /* Corpo do dossiê gerado pela IA e bolhas do chat de consulta. */
+  --font-dossier: var(--font-lora), Georgia, serif;
+  /* font-cormorant: tersedia utk body text dossiê (Doc 13 §3 spec). */
+  --font-cormorant: var(--font-cormorant), Georgia, serif;
 
   /* Colors - Sidebar */
   --color-sidebar-ring: #4338ca;
@@ -27,24 +32,24 @@
   --color-chart-3: #22c55e;
   --color-chart-2: #7c3aed;
   --color-chart-1: #4338ca;
-  --color-ring: #4338ca;
-  --color-input: rgba(255, 255, 255, 0.1);
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-destructive: #ef4444;
-  --color-accent-foreground: #f8fafc;
-  --color-accent: #1e293b;
-  --color-muted-foreground: #94a3b8;
-  --color-muted: #1e293b;
-  --color-secondary-foreground: #f8fafc;
-  --color-secondary: #1e293b;
-  --color-primary-foreground: #f8fafc;
-  --color-primary: #4338ca;
-  --color-popover-foreground: #f8fafc;
-  --color-popover: #0f172a;
-  --color-card-foreground: #f8fafc;
-  --color-card: #0f172a;
-  --color-background: #020617;
-  --color-foreground: #f8fafc;
+  --color-ring: var(--color-ramiro-orange);
+  --color-input: var(--color-ramiro-border);
+  --color-border: var(--color-ramiro-border);
+  --color-destructive: var(--color-ramiro-alert);
+  --color-accent-foreground: var(--color-ramiro-text);
+  --color-accent: var(--color-ramiro-royal-dim);
+  --color-muted-foreground: var(--color-ramiro-muted);
+  --color-muted: var(--color-ramiro-elevated);
+  --color-secondary-foreground: var(--color-ramiro-text);
+  --color-secondary: var(--color-ramiro-royal);
+  --color-primary-foreground: var(--color-ramiro-orange);
+  --color-primary: var(--color-ramiro-orange);
+  --color-popover-foreground: var(--color-ramiro-text);
+  --color-popover: var(--color-ramiro-surface);
+  --color-card-foreground: var(--color-ramiro-text);
+  --color-card: var(--color-ramiro-surface);
+  --color-background: var(--color-ramiro-canvas);
+  --color-foreground: var(--color-ramiro-text);
 
   /* Radius */
   --radius-sm: calc(var(--radius) * 0.6);
@@ -54,6 +59,23 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Colors - Ramiro Palette v2 (Doc 13 AD-08 — promoted from .ramiro scope) */
+  --color-ramiro-orange: #f97316;
+  --color-ramiro-orange-bright: #fb923c;
+  --color-ramiro-orange-dim: #c2410c;
+  --color-ramiro-royal: #2547d0;
+  --color-ramiro-royal-bright: #3b5bdb;
+  --color-ramiro-royal-dim: #1e3a8a;
+  --color-ramiro-alert: #f43f5e;
+  --color-ramiro-canvas: #0a0e1a;
+  --color-ramiro-surface: #111726;
+  --color-ramiro-elevated: #1a2236;
+  --color-ramiro-border: #2a3550;
+  --color-ramiro-text: #f5f7ff;
+  --color-ramiro-muted: #9aa7c7;
+  --color-ramiro-muted-text: #56618a;
+
 }
 
 /* === LIGHT MODE CSS VARIABLES (Default) === */
@@ -108,8 +130,7 @@
   /* Spiritual Design Tokens (Light Mode) */
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
   --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.3), 0 0 40px rgba(212, 175, 55, 0.15);
-  --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.15);
+  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.3), 0 0 40px rgba(249, 115, 22, 0.15);
   --bg-mystic-gradient: linear-gradient(135deg, #FAFBFC 0%, #E0E7FF 50%, #F1F5F9 100%);
 }
 
@@ -166,7 +187,7 @@
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
   --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
-  --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(249, 115, 22, 0.2);
   --bg-mystic-gradient: linear-gradient(135deg, #020617 0%, #1E1B4B 50%, #0F172A 100%);
 }
 
@@ -179,10 +200,16 @@
   --spiritual-gold-dark: #B8860B;
   --spiritual-gold-muted: rgba(212, 175, 55, 0.15);
 
-  /* Secondary - Violet (Higher Consciousness) */
-  --spiritual-violet: #8B5CF6;
-  --spiritual-violet-deep: #6B21A8;
-  --spiritual-violet-muted: rgba(139, 92, 246, 0.12);
+  /* Accent - Amber (Ramiro: laranja, fogo, abertura de caminhos) */
+  --spiritual-amber: #F97316;
+  --spiritual-amber-light: #FB923C;
+  --spiritual-amber-dark: #C2410C;
+  --spiritual-amber-muted: rgba(249, 115, 22, 0.15);
+  /* Accent - Royal (Ramiro: profundidade, mistério, proteção) */
+  --spiritual-royal: #2547D0;
+  --spiritual-royal-bright: #3B5BDB;
+  --spiritual-royal-dim: #1E3A8A;
+  --spiritual-royal-muted: rgba(37, 71, 208, 0.12);
 
   /* Accent - Elements */
   --spiritual-amber: #F59E0B;
@@ -209,9 +236,8 @@
   /* Easing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
+  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(249, 115, 22, 0.2);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  /* Shadows */
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
   --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
@@ -454,12 +480,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.5);
+  background: rgba(37, 71, 208, 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.7);
+  background: rgba(37, 71, 208, 0.7);
 }
 
 /* Cosmic Background Patterns */

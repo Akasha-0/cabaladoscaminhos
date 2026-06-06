@@ -37,7 +37,18 @@ export function parseInsightResponse(raw: string): InsightData {
   const result = {
     id: crypto.randomUUID(),
     dataGeracao: new Date().toISOString(),
-    ...data,
+    titulo: data.titulo || data.overview || 'Mapa da Alma',
+    overview: data.overview || '',
+    resumo: data.resumo!,
+    proposito: data.proposito!,
+    coração: { tema: '', descricao: '', sistemas: [] },
+    mente: { tema: '', descricao: '', sistemas: [] },
+    corpo: { tema: '', descricao: '', sistemas: [] },
+    caminho: { tema: '', descricao: '', sistemas: [] },
+    retorno: { tema: '', descricao: '', sistemas: [] },
+    convergencias: { triplices: [], duplas: [] },
+    dons: data.dons ?? [],
+    desafios: data.desafios ?? [],
   } as unknown as InsightData;
   // Default optional fields to empty arrays
   if (!result.preceitos) result.preceitos = [];
@@ -52,21 +63,22 @@ export function parseInsightResponse(raw: string): InsightData {
  * Extract JSON from AI response that may contain markdown code blocks
  */
 export function extractJson(raw: string): string {
-  // Try direct parse first
-  try {
-    JSON.parse(raw);
-    return raw;
-  } catch {
-    // not direct JSON, try alternatives below
+  const jsonMatch = raw.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  if (jsonMatch) return jsonMatch[1].trim();
+
+  const firstBrace = raw.indexOf('{');
+  if (firstBrace !== -1) {
+    const candidate = raw.slice(firstBrace);
+    // Try to find matching closing brace
+    let depth = 0;
+    for (let i = 0; i < candidate.length; i++) {
+      if (candidate[i] === '{') depth++;
+      else if (candidate[i] === '}') {
+        depth--;
+        if (depth === 0) return candidate.slice(0, i + 1);
+      }
+    }
   }
-
-  // Try markdown code block
-  const codeBlock = raw.match(/```json\n?([\s\S]*?)```/);
-  if (codeBlock) return codeBlock[1].trim();
-
-  // Try raw JSON object in text
-  const jsonMatch = raw.match(/\{[\s\S]*\}/);
-  if (jsonMatch) return jsonMatch[0];
 
   // Last resort: return raw
   return raw.trim();
@@ -86,8 +98,8 @@ export function criarInsightFallback(mapa: MapaAlmaCompleto): InsightData {
     id: crypto.randomUUID(),
     dataGeracao: new Date().toISOString(),
     titulo,
-    overview: `Regência de ${odu.nome} (${odu.numero}) com Número de Vida ${numerologia.vida}.`,
-    resumo: `Mapa da Alma de ${mapa.perfil.nomeCompleto} — Regência de ${odu.nome} (${odu.numero}) com Número de Vida ${numerologia.vida}. ${mapa.convergencias.length > 0 ? `Identificadas ${mapa.convergencias.length} convergências espirituais.` : 'Análise em profundidade disponível via IA.'}`,
+    overview: `Regência de ${odu.nome} (${odu.numero}) com Número de Vida ${numerologia.lifePath}.`,
+    resumo: `Mapa da Alma de ${mapa.perfil.nomeCompleto} — Regência de ${odu.nome} (${odu.numero}) com Número de Vida ${numerologia.lifePath}. ${mapa.convergencias.length > 0 ? `Identificadas ${mapa.convergencias.length} convergências espirituais.` : 'Análise em profundidade disponível via IA.'}`,
     proposito: `Alinhar-se com a energia de ${odu.nome} através dos preceitos e práticas do seu Odú de nascimento.`,
     coração: { tema: odu.nome, descricao: '', sistemas: ['Ifá'] },
     mente: { tema: '', descricao: '', sistemas: [] },

@@ -3,10 +3,16 @@ import type { ChatMessage, StreamChunk } from './types';
 // ============================================================
 // CONFIGURATION
 // ============================================================
-
-const MINIMAX_API_TOKEN = 'sk-cp-Kpz6_rV0uxSFKNFwhXXsj1ZNE_sd7_nSHd_KBOGPvjZ2l00J8tvlE8lA7gDwyuI-vUm_xxX66bALC4952KyRulzaosepLhGmkuIvIGU2OVmHESpWTUR0GGQ';
-const MINIMAX_API_BASE = 'https://api.minimaxi.chat/v1';
+const MINIMAX_API_BASE = process.env.MINIMAX_API_BASE_URL ?? 'https://api.minimaxi.chat/v1';
 const MINIMAX_MODEL = 'minimax/m3';
+
+function getApiToken(): string {
+  const token = process.env.MINIMAX_API_TOKEN;
+  if (!token) {
+    throw new Error('MINIMAX_API_TOKEN environment variable is required');
+  }
+  return token;
+}
 
 const DEFAULT_TEMPERATURE = 0.7;
 const DEFAULT_MAX_TOKENS = 1000;
@@ -15,7 +21,7 @@ const DEFAULT_MAX_TOKENS = 1000;
 // ERROR TYPES
 // ============================================================
 
-export class MinimaxError extends Error {
+class MinimaxError extends Error {
   constructor(
     message: string,
     public statusCode?: number,
@@ -45,11 +51,12 @@ export async function generateMinimaxResponse(
   const temperature = options.temperature ?? DEFAULT_TEMPERATURE;
   const max_tokens = options.max_tokens ?? DEFAULT_MAX_TOKENS;
 
+  const startMs = Date.now();
   const response = await fetch(`${MINIMAX_API_BASE}/text/chatcompletion_v2`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${MINIMAX_API_TOKEN}`,
+      Authorization: `Bearer ${getApiToken()}`,
     },
     body: JSON.stringify({
       model,
@@ -58,6 +65,7 @@ export async function generateMinimaxResponse(
       max_tokens,
     }),
   });
+  const durationMs = Date.now() - startMs;
 
   if (!response.ok) {
     const errorText = await response.text().catch(() => 'Unknown error');
@@ -68,17 +76,32 @@ export async function generateMinimaxResponse(
   }
 
   const data = await response.json();
+  const usage = data.usage ? { total_tokens: data.usage.total_tokens } : undefined;
+
+  // Structured log: llm.call event (AD-22.6)
+  const logEntry = {
+    ts: new Date().toISOString(),
+    level: 'info',
+    event: 'llm.call',
+    model,
+    temperature,
+    max_tokens,
+    totalTokens: usage?.total_tokens,
+    durationMs,
+    provider: 'minimax',
+  };
+  console.log(JSON.stringify(logEntry));
 
   return {
     content: data.choices?.[0]?.message?.content || '',
-    usage: data.usage ? { total_tokens: data.usage.total_tokens } : undefined,
+    usage,
   };
 }
 
 /**
  * Stream a response from Minimax
  */
-export async function* streamMinimaxResponse(
+async function* streamMinimaxResponse(
   messages: ChatMessage[],
   options: {
     model?: string;
@@ -94,7 +117,7 @@ export async function* streamMinimaxResponse(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${MINIMAX_API_TOKEN}`,
+      Authorization: `Bearer ${getApiToken()}`,
     },
     body: JSON.stringify({
       model,

@@ -4,6 +4,8 @@
  * @module lenormand/mesa-real-types
  */
 
+import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+
 /**
  * Card position in a Mesa Real spread
  */
@@ -37,33 +39,39 @@ export interface TiragemMesaReal {
   odus: OduCarta[];
   timestamp: string;
   seed?: number;
+  /**
+   * Index por número da casa (1..36) → { carta, odu }.
+   * Usado pelo engine para construção rápida do dossiê.
+   */
+  [casaNumero: number]: { carta: number; odu: number };
 }
 
 /**
- * Dossier architecture item for a single house
- * Contains the spiritual injection data for AI analysis
+ * Dossier architecture item for a single house.
+ * Shape usada pelo engine (mesa-real.ts): nested objects + camelCase.
+ * Compatível com a forma canônica consumida pela UI e pelo LLM.
  */
 export interface ArquiteturaDossiê {
-  casa_numero: number;
-  casa_nome: string;
-  casa_significado: string;
-  carta_numero: number;
-  carta_nome: string;
-  carta_significado: string;
-  carta_orientacao: 'normal' | 'invertida';
-  odu_numero?: number;
-  odu_nome?: string;
-  odu_significado?: string;
-  odu_conselho?: string;
-  odu_orixa?: string;
-  injeccao_terreno?: {
-    tipo: 'ascendente' | 'numero_alma' | 'fundo_ceus' | 'numero_motivacao' | 'dom_divino' | 'numero_karma';
-    valor: string | number;
-    fonte: 'astrologia' | 'numerologia' | 'tantrica' | 'cabala';
-  }[];
-  element?: string;
-  sefirot?: string[];
-  chakra?: number;
+  casaNumero: number;
+  casaNome: string;
+  casaSignificado: string;
+  posicaoGrid: { row: number; col: number };
+  carta: {
+    numero: number;
+    nome: string;
+    significado: string;
+  };
+  odu: {
+    numero: number;
+    nome: string;
+    significado: string;
+  };
+  correlacao: CorrelacaoCasa;
+  dadosConsulente: DadosConsulente;
+  integracao?: string;
+  sefirot?: string;
+  tarot?: string;
+  tiragem?: string;
 }
 
 /**
@@ -115,89 +123,106 @@ export interface ResultadoGeracaoDossiê {
  */
 export interface EntradaGeracaoDossiê {
   clientId: string;
-  data?: string;
-  matrixData?: Record<number, {
-    carta: { numero: number; nome: string; significado: string };
-    odu?: { numero: number; nome: string; significado: string };
-  }>;
-  options?: OpcoesGeracaoDossiê;
+  matrixData: TiragemMesaReal;
+  mapaAlma?: MapaAlmaCompleto;
 }
 
+// ============================================================================
+// Tipos legados — mantidos para compat com componentes pré-Fase 10
+// (mesa-real-data.ts e mesa-real.ts). Shape alinhada com os dados
+// canônicos em mesa-real-data.ts (36 casas / 16 odus).
+// ============================================================================
+
 /**
- * Casa Cigana — the 36 houses of the Mesa Real
- * Matches the shape used in mesa-real-data.ts (houseNumber, name, meaning, etc.)
+ * Casa da Mesa Real — 1..36.
+ * Shape alinhada com `CASAS_MESA_REAL` em mesa-real-data.ts.
  */
 export interface CasaCigana {
   houseNumber: number;
   name: string;
   meaning: string;
-  element: string;
+  element: 'fogo' | 'água' | 'terra' | 'ar' | 'éter' | 'madeira' | 'metal';
   archetype: string;
-  associatedPlanet?: string;
-  astrologyHouse?: number;
+  astrologyHouse: number;
+  associatedPlanet: string;
   numerologyAspects: string[];
   oduAspects: string[];
 }
 
 /**
- * Carta Cigana — Lenormand card drawn for a house
+ * Carta Cigana (alias de CasaCigana no Baralho Cigano brasileiro).
+ * Shape alinhada com `CARTAS_CIGANAS` em mesa-real-data.ts.
  */
 export interface CartaCigana {
   numero: number;
   nome: string;
   significado: string;
-  palavrasChave?: string[];
+  palavrasChave: string[];
 }
 
 /**
- * Odu information for Ifá correlation
+ * Odú do Ifá — 1..16.
+ * Shape alinhada com `ODUS_IFA` em mesa-real-data.ts.
  */
 export interface OduInfo {
   numero: number;
   nome: string;
   significado: string;
   elemento: string;
-  orixas: string[];
+  orixaRegente: string;
   quizilas: string[];
+  preceptos: string[];
 }
 
 /**
- * Dados do Consulente (client data for reading)
+ * Dados do consulente (parcial) usados pelo engine de leitura.
  */
 export interface DadosConsulente {
-  nome: string;
-  dataNascimento: string;
-  localNascimento?: string;
-  horaNascimento?: string;
+  nome?: string;
+  signoSolar?: string;
+  ascendente?: string;
+  caminhoDeVida?: number;
+  oduNascimento?: string;
+  orixaRegente?: string;
+  numerologia?: string;
+  sefira?: string;
 }
 
 /**
- * Correlação entre casa e cartas/Odus
+ * Correlação de arquétipo para uma casa.
  */
 export interface CorrelacaoCasa {
   casaNumero: number;
-  carta: CartaCigana;
-  odu?: OduInfo;
-  convergencias?: string[];
+  casaNome: string;
+  casaSignificado: string;
+  arquetipo: string;
+  casaAstrologica: number;
+  planetaRegente: string;
+  numerologia: string[];
+  odus: string[];
+  sefirot?: string;
+  tarot?: string;
+  integracao: string;
 }
 
 /**
- * Resultado de uma leitura completa
+ * Resultado de uma leitura completa.
  */
 export interface ResultadoLeitura {
-  clienteId: string;
-  consulente: DadosConsulente;
-  tiragem: TiragemMesaReal;
-  dossiê?: DossiêCompleto;
-  dataLeitura: string;
+  data: string;
+  consulente?: string;
+  tipoTiragem: '9x4' | '8x4+4';
+  posicoes: PosicaoTiragem[];
+  dossiê: ArquiteturaDossiê[];
+  sintese: string;
 }
 
 /**
- * Posição em uma tiragem
+ * Posição de uma carta+Odu na Mesa Real.
+ * Forma leve para construir uma tiragem.
  */
 export interface PosicaoTiragem {
-  posicao: number;
-  casa: CasaCigana;
-  carta?: CartaCigana;
-  odu?: OduInfo;
+  casa: number;
+  carta: number;
+  odu: number;
 }

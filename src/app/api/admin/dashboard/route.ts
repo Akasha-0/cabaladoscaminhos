@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { requireOperator } from '@/lib/auth/operator-session';
 
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 
@@ -62,6 +63,9 @@ const ADMIN_DASHBOARD: z.infer<typeof DashboardDataSchema> = {
 };
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireOperator(request);
+  if (authResult instanceof NextResponse) return authResult;
+
   const searchParams = request.nextUrl.searchParams;
   const parseResult = DashboardQuerySchema.safeParse({
     period: searchParams.get('period'),

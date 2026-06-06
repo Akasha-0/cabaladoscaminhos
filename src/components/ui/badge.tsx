@@ -19,6 +19,13 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
+        // Doc 13 §4.3 — Badge variants for spiritual systems
+        astro: "bg-[#1E3A8A]/15 border-[#2547D0]/40 text-[#3B5BDB]",
+        kabala: "bg-[#2547D0]/10 border-[#3B5BDB]/40 text-[#F5F7FF]",
+        tantric: "bg-[#C2410C]/15 border-[#F97316]/40 text-[#FB923C]",
+        odu: "bg-[#2547D0]/15 border-[#3B5BDB]/50 text-[#3B5BDB]",
+        // Doc 13 §1 — spiritual for active elements (laranja)
+        spiritual: "bg-[#F97316]/15 border-[#F97316]/40 text-[#FB923C]",
       },
     },
     defaultVariants: {
@@ -49,4 +56,4 @@ function Badge({
   })
 }
 
-export { Badge, badgeVariants }
+export { Badge }

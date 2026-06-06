@@ -591,3 +591,75 @@ export const ODUS_IFA: OduInfo[] = [
     preceptos: ['Buscar a totalidade', 'Integrar todas as lições'],
   },
 ];
+
+// ============================================================================
+// LOOKUP HELPERS
+// ============================================================================
+
+/** Busca casa por houseNumber (1..36). */
+export function getCasaPorNumero(numero: number): CasaCigana | undefined {
+  return CASAS_MESA_REAL.find((c) => c.houseNumber === numero);
+}
+
+/** Busca carta por numero (1..36). */
+export function getCartaPorNumero(numero: number): CartaCigana | undefined {
+  return CARTAS_CIGANAS.find((c) => c.numero === numero);
+}
+/** Busca odu por numero. */
+export function getOduPorNumero(numero: number): OduInfo | undefined {
+  return ODUS_IFA.find((o) => o.numero === numero);
+}
+//  fallow-ignore-next-line unused-export
+export function getPosicaoGrid(casaNumero: number): { row: number; col: number } {
+  const idx = casaNumero - 1;
+  return { row: Math.floor(idx / 9) + 1, col: (idx % 9) + 1 };
+}
+
+/**
+ * Correlação especial por casa (1..36) — complementa o Doc 06 §2 com
+ * camadas祭祀: numerologia cabalística, tântrica, cabalística.
+ */
+export interface CorrelacaoEspecial {
+  numerologia: string[];
+  tantrica: string[];
+  cabalistica: string[];
+}
+
+export const CORRELACOES_ESPECIAIS: Record<number, CorrelacaoEspecial> = {
+  1:  { numerologia: ['Expressão 1'], tantrica: ['Alma 1'], cabalistica: ['Kether'] },
+  2:  { numerologia: ['Motivação 2'], tantrica: ['Dom Divino 2'], cabalistica: ['Chokmah'] },
+  3:  { numerologia: ['Expressão 3'], tantrica: ['Caminho 3'], cabalistica: ['Binah'] },
+  4:  { numerologia: ['Motivação 4'], tantrica: ['Karma 4'], cabalistica: ['Chesed'] },
+  5:  { numerologia: ['Destino 5'], tantrica: ['Alma 5'], cabalistica: ['Geburah'] },
+  6:  { numerologia: ['Desafios 1+2'], tantrica: ['Karma 6'], cabalistica: ['Tiphareth'] },
+  7:  { numerologia: ['Dívidas 7'], tantrica: ['Sombra 7'], cabalistica: ['Netzach'] },
+  8:  { numerologia: ['Missão 8'], tantrica: ['Karma 8'], cabalistica: ['Hod'] },
+  9:  { numerologia: ['Dons 9'], tantrica: ['Plenitude 9'], cabalistica: ['Yesod'] },
+  10: { numerologia: ['Desafio principal 10'], tantrica: ['Karma 10'], cabalistica: ['Malkuth'] },
+  11: { numerologia: ['Desafios destrutivos 11'], tantrica: ['Conflito 11'], cabalistica: ['Daath (sombra)'] },
+  12: { numerologia: ['Expressão 12'], tantrica: ['Voz 12'], cabalistica: ['Comunicação (Hod)'] },
+  13: { numerologia: ['Missão recomeço 13'], tantrica: ['Pureza 13'], cabalistica: ['Renovação (Tiphareth)'] },
+  14: { numerologia: ['Expressão estratégica 14'], tantrica: ['Percepção 14'], cabalistica: ['Astúcia (Netzach)'] },
+  15: { numerologia: ['Caminho 15'], tantrica: ['Força 15'], cabalistica: ['Poder (Geburah)'] },
+  16: { numerologia: ['Caminho 11/22/33'], tantrica: ['Iluminação 16'], cabalistica: ['Estrela (Tiphareth)'] },
+  17: { numerologia: ['Missão mudança 17'], tantrica: ['Transformação 17'], cabalistica: ['Urano (Hod)'] },
+  18: { numerologia: ['Motivação 18'], tantrica: ['Vínculos 18'], cabalistica: ['Vênus (Netzach)'] },
+  19: { numerologia: ['Desafio ego 19'], tantrica: ['Isolamento 19'], cabalistica: ['Saturno (Binah)'] },
+  20: { numerologia: ['Expressão pública 20'], tantrica: ['Dom público 20'], cabalistica: ['Vênus (Tiphareth)'] },
+  21: { numerologia: ['Desafios + Dívidas 21'], tantrica: ['Bloqueio 21'], cabalistica: ['Saturno (Geburah)'] },
+  22: { numerologia: ['Caminho 22'], tantrica: ['Direção 22'], cabalistica: ['Caminhos (Tiphareth)'] },
+  23: { numerologia: ['Dívidas ausentes 23'], tantrica: ['Drenagem 23'], cabalistica: ['Netuno (Kether)'] },
+  24: { numerologia: ['Motivação 24'], tantrica: ['Amor 24'], cabalistica: ['Vênus (Tiphareth)'] },
+  25: { numerologia: ['Missão selada 25'], tantrica: ['Aliança 25'], cabalistica: ['Saturno (Malkuth)'] },
+  26: { numerologia: ['Caminho 7'], tantrica: ['Sabedoria 26'], cabalistica: ['Mercúrio (Hod)'] },
+  27: { numerologia: ['Expressão formal 27'], tantrica: ['Palavra 27'], cabalistica: ['Mercúrio (Hod)'] },
+  28: { numerologia: ['Caminho ativo 28'], tantrica: ['Masculino 28'], cabalistica: ['Sol (Tiphareth)'] },
+  29: { numerologia: ['Motivação 29'], tantrica: ['Feminino 29'], cabalistica: ['Lua (Tiphareth)'] },
+  30: { numerologia: ['Caminho 30'], tantrica: ['Colheita 30'], cabalistica: ['Júpiter (Chesed)'] },
+  31: { numerologia: ['Missão 31'], tantrica: ['Plenitude 31'], cabalistica: ['Sol (Tiphareth)'] },
+  32: { numerologia: ['Motivação 32'], tantrica: ['Psiquismo 32'], cabalistica: ['Lua (Tiphareth)'] },
+  33: { numerologia: ['Missão chave 33'], tantrica: ['Solução 33'], cabalistica: ['Júpiter (Chesed)'] },
+  34: { numerologia: ['Expressão talento 34'], tantrica: ['Teste material 34'], cabalistica: ['Vênus (Netzach)'] },
+  35: { numerologia: ['Missão ancorada 35'], tantrica: ['Sustento 35'], cabalistica: ['Saturno (Malkuth)'] },
+  36: { numerologia: ['Karma + Dívidas 36'], tantrica: ['Teste máximo 36'], cabalistica: ['Kether (todo)'] },
+};

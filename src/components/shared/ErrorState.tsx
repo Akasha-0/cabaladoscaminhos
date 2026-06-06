@@ -4,6 +4,7 @@ import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/design-system/Typography';
 
+// fallow-ignore-next-line unused-file
 interface ErrorStateProps {
   title?: string;
   message?: string;
@@ -95,7 +96,7 @@ export function ErrorState({
   );
 }
 
-export class ErrorBoundary extends React.Component<
+class ErrorBoundary extends React.Component<
   { children: React.ReactNode; fallback?: React.ReactNode },
   { hasError: boolean; error: Error | null }
 > {

@@ -1,24 +1,26 @@
+'use server';
 // ============================================================
 // CLIENT ACTIONS - Cabala Dos Caminhos
 // Cockpit Oracular - Client Management
 // ============================================================
-
-import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
+import { prisma } from '@/lib/prisma';
 
 // Schema for creating a client
-export const createClientSchema = z.object({
+// Sem `userId`: o modelo Client não armazena dono por-operador (Doc 16 §2.2);
+// a autorização vem do Operator autenticado na rota, não de um campo no corpo.
+const createClientSchema = z.object({
   fullName: z.string().min(1, 'Nome completo é obrigatório'),
   birthDate: z.string().datetime({ message: 'Data de nascimento inválida' }),
   birthTime: z.string().optional(),
   birthCity: z.string().optional(),
   birthState: z.string().optional(),
   birthCountry: z.string().optional(),
-  userId: z.string().min(1, 'userId é obrigatório'),
 });
 
 // Schema for updating a client
-export const updateClientSchema = z.object({
+const updateClientSchema = z.object({
   fullName: z.string().min(1).optional(),
   birthDate: z.string().datetime().optional(),
   birthTime: z.string().optional(),
@@ -28,7 +30,7 @@ export const updateClientSchema = z.object({
 });
 
 // Schema for saving calculation maps
-export const saveClientMapsSchema = z.object({
+const saveClientMapsSchema = z.object({
   astrologyMap: z.record(z.unknown()).optional(),
   kabalisticMap: z.record(z.unknown()).optional(),
   tantricMap: z.record(z.unknown()).optional(),
@@ -45,19 +47,127 @@ export type SaveClientMapsInput = z.infer<typeof saveClientMapsSchema>;
 /**
  * Creates a new client with optional calculation maps
  */
-export async function createClient(input: CreateClientInput) {
+async function createClient(input: CreateClientInput) {
   const data = createClientSchema.parse(input);
 
   return prisma.client.create({
     data: {
       fullName: data.fullName,
       birthDate: new Date(data.birthDate),
-      birthTime: data.birthTime,
-      birthCity: data.birthCity,
-      birthState: data.birthState,
-      birthCountry: data.birthCountry,
+      birthTime: data.birthTime ?? '',
+      birthCity: data.birthCity ?? '',
+      birthState: data.birthState ?? '',
+      birthCountry: data.birthCountry ?? '',
     },
   });
+}
+
+/**
+ * Server action (Onda C.4): cria cliente + calcula 4 mapas (Doc 16 §2 + Doc 11).
+ * Retorna { ok: true, id } | { ok: false, error }.
+ *
+ * Os 4 mapas são cacheados no Client (astrologyMap, kabalisticMap, tantricMap, oduBirth)
+ * conforme Doc 04 §1: cálculo único no cadastro, reusado em todas as leituras futuras.
+ *
+ * Mapas:
+ *   - Astrologia: getBirthChart (lib/astrologia) — requer lat/lng/timezone.
+ *     Se ausentes, devolve mapa simplificado (sun/moon/asc estimados por default).
+ *   - Cabala: buildKabalisticMap (lib/calculators/numerology-kabalah) — fullName + birthDate.
+ *   - Tântrica: buildTantricMap (lib/calculators/numerology-tantric) — birthDate.
+ *   - Odu: calculateBirthOdu (lib/calculators/odu-birth) — birthDate.
+ */
+export type CreateClientWithMapsInput = {
+  fullName: string;
+  birthDate: string;
+  birthTime: string;
+  birthCity: string;
+  birthState: string;
+  birthCountry: string;
+  birthLatitude?: number;
+  birthLongitude?: number;
+  birthTimezone?: string;
+  notes?: string;
+  consentGiven?: boolean;
+};
+
+export type CreateClientResult = { ok: true; id: string } | { ok: false; error: string };
+
+export async function createClientWithMaps(
+  input: CreateClientWithMapsInput
+): Promise<CreateClientResult> {
+  try {
+    // Lazy imports para evitar custo de boot no módulo (estes arquivos não são leves)
+    const { buildKabalisticMap } = await import('@akasha/core-cabala');
+    const { buildTantricMap } = await import('@akasha/core-tantra');
+    const { calculateBirthOdu } = await import('@akasha/core-odus');
+    const { getBirthChart } = await import('@akasha/core-astrology');
+
+    // Cálculo dos 4 mapas
+    let astrologyMap: unknown = null;
+    try {
+      if (input.birthLatitude != null && input.birthLongitude != null) {
+        astrologyMap = getBirthChart({
+          birthDate: new Date(input.birthDate),
+          latitude: input.birthLatitude,
+          longitude: input.birthLongitude,
+        });
+      } else {
+        astrologyMap = {
+          note: 'Coordenadas ausentes; mapa simplificado. Preencha lat/lng para refinar.',
+          sun: '—',
+          moon: '—',
+          ascendant: '—',
+        };
+      }
+    } catch (err) {
+      astrologyMap = { error: 'Falha ao calcular mapa astral', detail: String(err) };
+    }
+
+    let kabalisticMap: unknown;
+    let tantricMap: unknown;
+    let oduMap: unknown;
+    try {
+      kabalisticMap = buildKabalisticMap(input.fullName, input.birthDate);
+    } catch (err) {
+      kabalisticMap = { error: 'Falha ao calcular mapa cabalístico', detail: String(err) };
+    }
+    try {
+      tantricMap = buildTantricMap(input.birthDate);
+    } catch (err) {
+      tantricMap = { error: 'Falha ao calcular mapa tântrico', detail: String(err) };
+    }
+    try {
+      oduMap = calculateBirthOdu(input.birthDate);
+    } catch (err) {
+      oduMap = { error: 'Falha ao calcular Odu de Nascimento', detail: String(err) };
+    }
+
+    const created = await prisma.client.create({
+      data: {
+        fullName: input.fullName,
+        birthDate: new Date(input.birthDate),
+        birthTime: input.birthTime,
+        birthCity: input.birthCity,
+        birthState: input.birthState,
+        birthCountry: input.birthCountry,
+        birthLatitude: input.birthLatitude ?? null,
+        birthLongitude: input.birthLongitude ?? null,
+        birthTimezone: input.birthTimezone ?? null,
+        notes: input.notes ?? null,
+        consentGiven: input.consentGiven ?? false,
+        consentAt: input.consentGiven ? new Date() : null,
+        astrologyMap: astrologyMap ?? Prisma.JsonNull,
+        kabalisticMap: kabalisticMap ?? Prisma.JsonNull,
+        tantricMap: tantricMap ?? Prisma.JsonNull,
+        oduBirth: oduMap ?? Prisma.JsonNull,
+      } as Parameters<typeof prisma.client.create>[0]['data'],
+      select: { id: true },
+    });
+
+    return { ok: true, id: created.id };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : 'Erro desconhecido' };
+  }
 }
 
 /**
@@ -79,11 +189,29 @@ export async function getClient(clientId: string) {
 
 /**
  * Lists all clients (for oraculista dashboard)
+ * @deprecated use getClientsByOperator (Doc 16 AD-03)
  */
 export async function listClients() {
   return prisma.client.findMany({
     orderBy: { createdAt: 'desc' },
   });
+}
+
+/**
+ * Lista os consulentes que o Operator autenticado atendeu (Doc 16 AD-03).
+ * O modelo Client não tem operatorId direto; filtra via readings.distinct(clientId).
+ */
+async function getClientsByOperator(operatorId: string) {
+  const readings = await prisma.reading.findMany({
+    where: { operatorId },
+    select: {
+      clientId: true,
+      client: { select: { id: true, fullName: true, birthDate: true } },
+    },
+    distinct: ['clientId'],
+    orderBy: { date: 'desc' },
+  });
+  return readings.map((r) => r.client);
 }
 
 /**
@@ -108,10 +236,7 @@ export async function updateClient(clientId: string, input: UpdateClientInput) {
 /**
  * Saves calculation maps for a client (Numerologia, Astrologia, Tântrica)
  */
-export async function saveClientMaps(
-  clientId: string,
-  maps: SaveClientMapsInput
-) {
+export async function saveClientMaps(clientId: string, maps: SaveClientMapsInput) {
   const data = saveClientMapsSchema.parse(maps);
 
   return prisma.client.update({

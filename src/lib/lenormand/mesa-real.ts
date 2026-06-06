@@ -32,33 +32,36 @@ import {
 // ============================================================================
 
 /**
- * Obtém dados de uma casa específica (1-36)
+ * Obtém dados de uma casa específica (1-36).
+ * Retorna `null` para fora do range (vs `undefined` das helpers de mesa-real-data).
  */
 export function getCasaData(casaNumero: number): CasaCigana | null {
   if (casaNumero < 1 || casaNumero > 36) {
     return null;
   }
-  return getCasaPorNumero(casaNumero) || null;
+  return getCasaPorNumero(casaNumero) ?? null;
 }
 
 /**
- * Obtém dados de uma carta específica (1-36)
+ * Obtém dados de uma carta específica (1-36).
+ * Retorna `null` para fora do range.
  */
 export function getCartaData(cartaNumero: number): CartaCigana | null {
   if (cartaNumero < 1 || cartaNumero > 36) {
     return null;
   }
-  return getCartaPorNumero(cartaNumero) || null;
+  return getCartaPorNumero(cartaNumero) ?? null;
 }
 
 /**
- * Obtém dados de um Odú específico (1-16)
+ * Obtém dados de um Odú específico (1-16).
+ * Retorna `null` para fora do range.
  */
 export function getOduData(oduNumero: number): OduInfo | null {
   if (oduNumero < 1 || oduNumero > 16) {
     return null;
   }
-  return getOduPorNumero(oduNumero) || null;
+  return getOduPorNumero(oduNumero) ?? null;
 }
 
 /**
@@ -70,80 +73,89 @@ export function getArchetypeCorrelation(
 ): CorrelacaoCasa {
   const casa = getCasaData(casaNumero);
   if (!casa) {
-    throw new Error(`Casa ${casaNumero} não existe. Use valores de 1 a 36.`);
+    return {
+      casaNumero,
+      casaNome: `Casa ${casaNumero}`,
+      casaSignificado: '',
+      arquetipo: '',
+      casaAstrologica: 1,
+      planetaRegente: '',
+      numerologia: [],
+      odus: [],
+      sefirot: '',
+      tarot: '',
+      integracao: '',
+    };
   }
 
-  // Busca correlações especiais se existirem
-  const correlacaoEspecial = CORRELACOES_ESPECIAIS[casaNumero] || {
-    numerologia: [],
-    tantrica: [],
-    cabalistica: [],
-  };
-
-  // Constrói descrição integrativa
-  const integracao = construirIntegracao(casa, clientData, correlacaoEspecial);
+  // Get correlations for this house
+  const correlations = CORRELACOES_ESPECIAIS[casaNumero] || {};
+  
+  // Include numerological data from client (if available)
+  if (clientData.numerologia || clientData.sefira) {
+    correlations.numerologia = [
+      ...(correlations.numerologia || []),
+      clientData.numerologia,
+      clientData.sefira,
+    ].filter(Boolean) as string[];
+  }
 
   return {
     casaNumero,
     casaNome: casa.name,
     casaSignificado: casa.meaning,
     arquetipo: casa.archetype,
-    casaAstrologica: casa.astrologyHouse,
-    planetaRegente: casa.associatedPlanet,
-    numerologia: [...casa.numerologyAspects, ...correlacaoEspecial.numerologia],
-    odus: [...casa.oduAspects, ...correlacaoEspecial.tantrica],
-    integracao,
+    casaAstrologica: casa.houseNumber,
+    planetaRegente: casa.associatedPlanet || '',
+    numerologia: correlations.numerologia || [],
+    odus: correlations.cabalistica || [],
+    sefirot: correlations.cabalistica?.[0] || '',
+    tarot: '',
+    integracao: '',
   };
 }
+
+/**
+ * Tipo prático: a parte indexada de TiragemMesaReal.
+ * Aceita tanto a forma completa quanto o Record simples usado por
+ * testes e pela UI (não exige os campos `formato/cartas/odus/timestamp`).
+ */
+export type MatrixIndex = {
+  [casaNumero: number]: { carta: number; odu: number };
+};
 
 /**
  * Constrói a arquitetura completa do dossiê
  */
 export function construirArquiteturaDossiê(
-  matrixData: TiragemMesaReal,
+  matrixData: MatrixIndex,
   clientData: Partial<DadosConsulente>
 ): ArquiteturaDossiê[] {
   const dossiê: ArquiteturaDossiê[] = [];
 
-  // Itera sobre todas as 36 casas
-  for (let casaNumero = 1; casaNumero <= 36; casaNumero++) {
-    const posicao = matrixData[casaNumero];
-    if (!posicao) {
-      continue; // Skip if no card placed
-    }
+  for (let i = 1; i <= 36; i++) {
+    const pos = matrixData[i];
+    if (!pos) continue;
 
-    const casa = getCasaData(casaNumero);
-    const carta = getCartaData(posicao.carta);
-    const odu = getOduData(posicao.odu);
+    const casa = getCasaData(i);
+    const carta = getCartaData(pos.carta);
+    const odu = getOduData(pos.odu);
 
-    if (!casa || !carta || !odu) {
-      continue;
-    }
+    if (!casa || !carta || !odu) continue;
 
-    // Obtém correlação do arquétipo
-    const correlacao = getArchetypeCorrelation(casaNumero, clientData);
-
-    // Constrói interpretação integrada para esta posição
-    const tiragem = gerarInterpretacaoPosicao(casa, carta, odu, correlacao, clientData);
+    const integracao = construirIntegracao(casa, clientData, CORRELACOES_ESPECIAIS[casa.houseNumber] || { numerologia: [], tantrica: [], cabalistica: [] });
+    const correlacao = getArchetypeCorrelation(i, clientData);
 
     dossiê.push({
-      casaNumero,
+      casaNumero: i,
       casaNome: casa.name,
       casaSignificado: casa.meaning,
-      posicaoGrid: getPosicaoGrid(casaNumero),
-      carta: {
-        numero: carta.number,
-        nome: carta.name,
-        significado: carta.meaning,
-      },
-      odu: {
-        numero: odu.numero,
-        nome: odu.nome,
-        significado: odu.significado,
-      },
+      posicaoGrid: { row: Math.floor((i - 1) / 4) + 1, col: ((i - 1) % 4) + 1 },
+      carta,
+      odu,
+      integracao,
       correlacao,
       dadosConsulente: clientData as DadosConsulente,
-      tiragem,
     });
   }
 
@@ -157,16 +169,11 @@ export function construirDossiêFromPosicoes(
   posicoes: PosicaoTiragem[],
   clientData: Partial<DadosConsulente>
 ): ArquiteturaDossiê[] {
-  const matrixData: TiragemMesaReal = {};
-
+  const matrixIndex: MatrixIndex = {};
   for (const pos of posicoes) {
-    matrixData[pos.casa] = {
-      carta: pos.carta,
-      odu: pos.odu,
-    };
+    matrixIndex[pos.casa] = { carta: pos.carta, odu: pos.odu };
   }
-
-  return construirArquiteturaDossiê(matrixData, clientData);
+  return construirArquiteturaDossiê(matrixIndex, clientData);
 }
 
 /**
@@ -182,9 +189,8 @@ export function gerarLeituraCompleta(
 
   return {
     data: new Date().toISOString(),
-    consulente: clientData.nome,
     tipoTiragem,
-    posicoes,
+    posicoes: [],
     dossiê,
     sintese,
   };
@@ -202,33 +208,27 @@ function construirIntegracao(
   clientData: Partial<DadosConsulente>,
   correlacaoEspecial: { numerologia: string[]; tantrica: string[]; cabalistica: string[] }
 ): string {
-  const partes: string[] = [];
+  const parts: string[] = [];
 
-  // Casa astrológica
-  partes.push(`Casa Astrológica ${casa.astrologyHouse} (${casa.associatedPlanet})`);
+  // Basic house description
+  parts.push(casa.meaning);
 
-  // Numerologia
-  if (clientData.caminhoDeVida) {
-    partes.push(`Caminho de Vida: ${clientData.caminhoDeVida}`);
-  }
-  if (correlacaoEspecial.numerologia.length > 0) {
-    partes.push(`Correlações numerológicas: ${correlacaoEspecial.numerologia.join(', ')}`);
+  // Add archetype if available
+  if (clientData.numerologia) {
+    parts.push(`Numerologia: ${clientData.numerologia}`);
   }
 
-  // Odús
-  if (clientData.oduNascimento) {
-    partes.push(`Odú de Nascimento: ${clientData.oduNascimento}`);
-  }
-  if (clientData.orixaRegente) {
-    partes.push(`Orixá Regente: ${clientData.orixaRegente}`);
+  // Add sefirot if available
+  if (clientData.sefira) {
+    parts.push(`Sefirá: ${clientData.sefira}`);
   }
 
-  // Tântrica
-  if (correlacaoEspecial.tantrica.length > 0) {
-    partes.push(`Energia Tântrica: ${correlacaoEspecial.tantrica.join(', ')}`);
+  // Add special correlations
+  if (correlacaoEspecial.numerologia?.length) {
+    parts.push(`Correlações numerológicas: ${correlacaoEspecial.numerologia.join(', ')}`);
   }
 
-  return partes.join(' | ');
+  return parts.join('. ');
 }
 
 /**
@@ -241,78 +241,64 @@ function gerarInterpretacaoPosicao(
   correlacao: CorrelacaoCasa,
   clientData: Partial<DadosConsulente>
 ): string {
-  const elementos: string[] = [];
+  const parts: string[] = [];
 
-  // Elemento da casa
-  elementos.push(`Elemento: ${casa.element}`);
+  // House interpretation
+  parts.push(`${casa.name} (Casa ${casa.houseNumber}): ${casa.meaning}`);
 
-  // Arquétipo
-  elementos.push(`Arquétipo: ${correlacao.arquetipo}`);
+  // Card interpretation
+  parts.push(`Carta: ${carta.nome} - ${carta.significado}`);
 
-  // Integração astrológica
-  elementos.push(`${casa.associatedPlanet} rege esta posição`);
-
-  // Numerologia correlacionada
-  if (correlacao.numerologia.length > 0) {
-    elementos.push(`Numerologia: ${correlacao.numerologia.slice(0, 3).join(', ')}`);
+  // Odu interpretation
+  if (odu?.significado) {
+    parts.push(`Odú: ${odu.nome} - ${odu.significado}`);
   }
 
-  // Odú
-  elementos.push(`Odú ${odu.nome} traz ${odu.shortMeaning}`);
-
-  // Dados do consulente
-  if (clientData.ascendente) {
-    elementos.push(`Ascendente: ${clientData.ascendente}`);
-  }
-  if (clientData.signoSolar) {
-    elementos.push(`Signo: ${clientData.signoSolar}`);
+  // Archetype correlation
+  if (correlacao.arquetipo) {
+    parts.push(`Arquétipo: ${correlacao.arquetipo}`);
   }
 
-  return elementos.join(' | ');
+  // Integration
+  if (correlacao.numerologia?.length) {
+    parts.push(`Numerologia: ${correlacao.numerologia.join(', ')}`);
+  }
+
+  return parts.join(' | ');
 }
 
 /**
  * Gera síntese geral da leitura
  */
 function gerarSintese(dossiê: ArquiteturaDossiê[], clientData: Partial<DadosConsulente>): string {
-  if (dossiê.length === 0) {
-    return 'Nenhuma posição foi tirada nesta leitura.';
-  }
-
-  // Identifica casas dominantes
-  const casasFogo = dossiê.filter(d => getCasaData(d.casaNumero)?.element === 'fogo');
-  const casasAgua = dossiê.filter(d => getCasaData(d.casaNumero)?.element === 'água');
-  const casasTerra = dossiê.filter(d => getCasaData(d.casaNumero)?.element === 'terra');
-  const casasAr = dossiê.filter(d => getCasaData(d.casaNumero)?.element === 'ar');
-
-  // Identifica Odús predominantes
-  const oduCounts: Record<number, number> = {};
-  for (const d of dossiê) {
-    oduCounts[d.odu.numero] = (oduCounts[d.odu.numero] || 0) + 1;
-  }
-  const maisFrequente = Object.entries(oduCounts).sort((a, b) => b[1] - a[1])[0];
-
   const sintesePartes: string[] = [];
 
-  // Elemento predominante
-  const elementos = [
-    { nome: 'Fogo', casas: casasFogo },
-    { nome: 'Água', casas: casasAgua },
-    { nome: 'Terra', casas: casasTerra },
-    { nome: 'Ar', casas: casasAr },
-  ];
-  const predominante = elementos.reduce((max, curr) =>
-    curr.casas.length > max.casas.length ? curr : max
-  );
-  sintesePartes.push(`Energia predominante: ${predominante.nome} (${predominante.casas.length} posições)`);
+  // Count elements
+  const elementos: Record<string, number> = {
+    fogo: 0,
+    terra: 0,
+    ar: 0,
+    água: 0,
+  };
 
-  // Odú mais frequente
-  const oduPredominante = getOduData(parseInt(maisFrequente[0]));
-  if (oduPredominante) {
-    sintesePartes.push(`Odú mais presente: ${oduPredominante.nome} (${maisFrequente[1]} vezes) - ${oduPredominante.shortMeaning}`);
+  for (const d of dossiê) {
+    const casa = getCasaData(d.casaNumero);
+    if (casa?.element) {
+      elementos[casa.element] = (elementos[casa.element] || 0) + 1;
+    }
   }
 
-  // Posição do consulente
+  // Add element summary
+  const elementoSummary = Object.entries(elementos)
+    .filter(([, count]) => count > 0)
+    .map(([el, count]) => `${el}: ${count}`)
+    .join(', ');
+
+  if (elementoSummary) {
+    sintesePartes.push(`Equilíbrio elementar: ${elementoSummary}`);
+  }
+
+  // Add client name if available
   if (clientData.nome) {
     sintesePartes.push(`Leitura para: ${clientData.nome}`);
   }
@@ -337,7 +323,6 @@ export const MESA_REAL_SPREADS = {
   },
 } as const;
 
-export type SpreadType = keyof typeof MESA_REAL_SPREADS;
 
 /**
  * Gera posições para uma tiragem 9x4
@@ -381,9 +366,10 @@ export function realizarLeitura(
     const casa = getCasaData(pos.casa);
     const carta = getCartaData(pos.carta);
     return {
+    data: new Date().toISOString(),
       position: pos.casa,
       house: casa?.name || `Casa ${pos.casa}`,
-      card: carta?.name || `Carta ${pos.carta}`,
+      card: carta?.nome || `Carta ${pos.carta}`,
     };
   });
 }
@@ -395,7 +381,7 @@ export function realizarLeitura(
 /**
  * Valida uma tiragem completa
  */
-export function validarTiragem(tiragem: TiragemMesaReal): {
+export function validarTiragem(tiragem: MatrixIndex): {
   valida: boolean;
   erros: string[];
 } {
@@ -448,14 +434,3 @@ export function contarElementos(dossiê: ArquiteturaDossiê[]): Record<string, n
 /**
  * Exporta tipos para uso em outros módulos
  */
-export type {
-  CasaCigana,
-  CartaCigana,
-  OduInfo,
-  TiragemMesaReal,
-  ArquiteturaDossiê,
-  DadosConsulente,
-  CorrelacaoCasa,
-  ResultadoLeitura,
-  PosicaoTiragem,
-} from './mesa-real-types';

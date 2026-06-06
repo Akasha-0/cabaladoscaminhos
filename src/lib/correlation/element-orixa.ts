@@ -263,11 +263,3 @@ export function getOrixasPorElemento(elemento: string): { principal: string; sec
     secundarios: mapping.orixas_secundarios
   };
 }
-
-export default {
-  getElementOrixa,
-  getOrixaElement,
-  getAllElementOrixas,
-  getElementoQualidade,
-  getOrixasPorElemento
-};

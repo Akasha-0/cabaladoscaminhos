@@ -8,8 +8,14 @@ import { LifeArea, LifeAreaId, LIFE_AREAS } from './life-areas-engine';
 import { AreaCorrelation, LifeMapResult, UserProfile } from './life-areas-correlator';
 
 const MINIMAX_API_BASE = 'https://api.minimaxi.chat/v1';
-const MINIMAX_API_TOKEN = process.env.MINIMAX_API_TOKEN || 'sk-cp-Kpz6_rV0uxSFKNFwhXXsj1ZNE_sd7_nSHd_KBOGPvjZ2l00J8tvlE8lA7gDwyuI-vUm_xxX66bALC4952KyRulzaosepLhGmkuIvIGU2OVmHESpWTUR0GGQ';
 const MINIMAX_MODEL = 'minimax-m3';
+function getMiniMaxToken(): string {
+  const token = process.env.MINIMAX_API_TOKEN;
+  if (!token) {
+    throw new Error('MINIMAX_API_TOKEN não está definida. Configure a variável de ambiente.');
+  }
+  return token;
+}
 
 // ============================================================
 // TYPES
@@ -101,11 +107,12 @@ Tom: caloroso, místico, profundo, com linguagem acessível. Use emojis com mode
 
 async function callMinimax(prompt: string): Promise<string | null> {
   try {
+    const token = getMiniMaxToken();
     const response = await fetch(`${MINIMAX_API_BASE}/text/chatcompletion_v2`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${MINIMAX_API_TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         model: MINIMAX_MODEL,
@@ -123,7 +130,6 @@ async function callMinimax(prompt: string): Promise<string | null> {
         max_tokens: 1200,
       }),
     });
-
     if (!response.ok) {
       console.error(`[LifeAreas AI] Minimax error: ${response.status}`);
       return null;
@@ -185,7 +191,7 @@ Que sua jornada seja leve e profunda. 🙏`;
 // MAIN: Generate insight for a single area
 // ============================================================
 
-export async function generateAreaInsight(
+async function generateAreaInsight(
   user: UserProfile,
   areaId: LifeAreaId,
   correlation: AreaCorrelation,
@@ -223,7 +229,7 @@ export async function generateAreaInsight(
 // MAIN: Generate insights for top areas
 // ============================================================
 
-export async function generateTopAreasInsights(
+async function generateTopAreasInsights(
   result: LifeMapResult,
   options: { useAI?: boolean; maxAreas?: number } = {}
 ): Promise<AIInsight[]> {
@@ -247,7 +253,7 @@ export async function generateTopAreasInsights(
 // MAIN: Generate insight for ONE specific area (used by detail page)
 // ============================================================
 
-export async function generateDetailedAreaInsight(
+async function generateDetailedAreaInsight(
   user: UserProfile,
   areaId: LifeAreaId,
   correlation: AreaCorrelation

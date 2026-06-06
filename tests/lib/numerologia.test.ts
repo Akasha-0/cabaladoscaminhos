@@ -16,6 +16,7 @@ import {
   tabelaPitagorica,
   tabelaCaldeia,
   tabelaCabalistica,
+  somarDigitos,
 } from '@/lib/numerologia/calculos';
 import {
   calcularAnoPessoal,
@@ -200,6 +201,41 @@ describe('calcularPitagoricaData', () => {
     const resultado1 = calcularPitagoricaData('1990-06-15');
     const resultado2 = calcularPitagoricaData('1990-06-15');
     expect(resultado1).toBe(resultado2);
+  });
+});
+// ============================================
+// Doc 11 §2.7 Canonical Test Cases
+// ============================================
+describe('Doc 11 Canonical Life Path Validation', () => {
+  it('Eliane Simao de Almeida + 1986-08-20 should yield lifePath = 7', () => {
+    // Canonical case from Doc 11 §2.7
+    // Date contribution: 1986-08-20 → 1+9+8+6 + 0+8 + 2+0 = 24+8+2 = 34 → 7
+    const dateResult = calcularPitagoricaData('1986-08-20');
+    expect(dateResult).toBe(7);
+  });
+  it('Eliane Simao de Almeida name should produce valid number', () => {
+    // Name contributes to expression/destiny number
+    const nameResult = calcularPitagorica('Eliane Simao de Almeida');
+    expect(nameResult).toBeGreaterThanOrEqual(1);
+    expect(nameResult).toBeLessThanOrEqual(33);
+  });
+});
+describe('somarDigitos (reduceToSingleDigit)', () => {
+  it('34 → 7', () => {
+    expect(somarDigitos(34)).toBe(7);
+  });
+  it('86 → 14 → 5', () => {
+    expect(somarDigitos(86)).toBe(5);
+  });
+  it('should preserve master numbers 11, 22, 33', () => {
+    expect(somarDigitos(11)).toBe(11);
+    expect(somarDigitos(22)).toBe(22);
+    expect(somarDigitos(33)).toBe(33);
+  });
+  it('should return single digits unchanged', () => {
+    for (let i = 1; i <= 9; i++) {
+      expect(somarDigitos(i)).toBe(i);
+    }
   });
 });
 

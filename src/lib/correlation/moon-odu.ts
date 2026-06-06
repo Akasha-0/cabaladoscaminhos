@@ -209,7 +209,7 @@ export const MOON_ODU_MAPPINGS: Record<FaseLua, MoonOduMapping> = {
     odu_primario: {
       odu: 'Odi',
       numero: 7,
-      elemento: 'Água',
+      elemento: 'Terra',
     },
     odu_secundario: {
       odu: 'Olobón',
@@ -415,19 +415,3 @@ export function getMoonByOrixa(orixa: string): MoonOduMapping[] {
 export function getMoonByElement(elemento: string): MoonOduMapping[] {
   return getAllMoonOdus().filter(mapping => mapping.elemento === elemento);
 }
-
-export default {
-  getMoonOdu,
-  getOduMoon,
-  getAllMoonOdus,
-  getAvailablePhases,
-  getSecondaryOdu,
-  getOduElement,
-  getOrixaMoon,
-  getRitualMoon,
-  getSpiritualMeaning,
-  getMoonByOdu,
-  getMoonByOrixa,
-  getMoonByElement,
-  MOON_ODU_MAPPINGS,
-};

@@ -190,9 +190,3 @@ function normalizeChakraName(chakra: string): ChakraName {
   const lower = chakra.toLowerCase().trim();
   return mapping[lower] ?? (chakra as ChakraName);
 }
-
-export default {
-  getChakraSephirot,
-  getSephirotChakra,
-  getAllChakraSephiroth,
-};

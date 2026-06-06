@@ -370,24 +370,3 @@ export function getOduFrequency(odu: string): FrequencyOduMapping | null {
   const found = Object.values(FREQUENCY_ODU_MAP).find((mapping) => mapping.odu === odu);
   return found ?? null;
 }
-
-export default {
-  getFrequencyOdu,
-  getOduByFrequency,
-  getOduNumberByFrequency,
-  getFrequenciesByOdu,
-  getHealingByFrequency,
-  getEnergyQualityByFrequency,
-  getOrixaByFrequency,
-  getSephirahByFrequency,
-  getChakraByFrequency,
-  getElementByFrequency,
-  getAllOduNames,
-  getAllFrequencyOdus,
-  getFrequenciesByTemperature,
-  getFrequenciesByMoisture,
-  getFrequenciesByElement,
-  getOduFrequency,
-  FREQUENCY_ODU_MAP,
-  SOLFEGGIO_FREQUENCIES,
-};

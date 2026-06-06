@@ -218,7 +218,7 @@ class RateLimitMonitor {
 export const rateLimitMonitor = RateLimitMonitor.getInstance();
 
 // Middleware integration
-export function recordRateLimitEvent(
+function recordRateLimitEvent(
   identifier: string,
   allowed: boolean,
   endpoint?: string,

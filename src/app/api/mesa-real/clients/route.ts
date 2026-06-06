@@ -2,11 +2,12 @@
 // MESA REAL API - Cabala Dos Caminhos
 // Cockpit Oracular - Client Management Routes
 // ============================================================
-
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
+import { requireOperator } from '@/lib/auth/operator-session';
+import { prisma } from '@/lib/prisma';
 import {
-  createClient,
+  createClientWithMaps,
   getClient,
   listClients,
   updateClient,
@@ -14,12 +15,17 @@ import {
   searchClients,
   saveClientMaps,
 } from '@/lib/db/client-actions';
+import { createLogger, generateRequestId } from '@/lib/logging';
 
 // ============================================================
 // CLIENT CRUD ROUTES
+// Todas exigem um Operator autenticado (Doc 16 AD-03 / Doc 09 §5.2):
+// dados de consulente são confidenciais e nunca devem ser acessíveis
+// sem sessão. O operador vem da sessão — nunca do corpo da requisição.
 // ============================================================
 
-// Schema for client creation
+// Schema for client creation (sem userId: a identidade vem da sessão, e o
+// modelo Client não é dono por-operador — Doc 16 §2.2 / AD-03).
 const createClientSchema = z.object({
   fullName: z.string().min(1),
   birthDate: z.string().datetime(),
@@ -27,7 +33,11 @@ const createClientSchema = z.object({
   birthCity: z.string().optional(),
   birthState: z.string().optional(),
   birthCountry: z.string().optional(),
-  userId: z.string().min(1),
+  birthLatitude: z.number().optional(),
+  birthLongitude: z.number().optional(),
+  birthTimezone: z.string().optional(),
+  notes: z.string().optional(),
+  consentGiven: z.boolean().optional(),
 });
 
 // ============================================================
@@ -35,6 +45,9 @@ const createClientSchema = z.object({
 // ============================================================
 export async function GET(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q');
     const clientId = searchParams.get('clientId');
@@ -49,10 +62,7 @@ export async function GET(request: NextRequest) {
     if (clientId) {
       const client = await getClient(clientId);
       if (!client) {
-        return NextResponse.json(
-          { error: 'Cliente não encontrado' },
-          { status: 404 }
-        );
+        return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 });
       }
       return NextResponse.json({ client });
     }
@@ -60,13 +70,9 @@ export async function GET(request: NextRequest) {
     // List all clients
     const clients = await listClients();
     return NextResponse.json({ clients });
-
   } catch (error) {
     console.error('GET /api/mesa-real/clients error:', error);
-    return NextResponse.json(
-      { error: 'Erro ao buscar clientes' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao buscar clientes' }, { status: 500 });
   }
 }
 
@@ -75,21 +81,39 @@ export async function GET(request: NextRequest) {
 // ============================================================
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+    const operator = auth;
+    const requestId = generateRequestId();
+    const log = createLogger(requestId, '/api/mesa-real/clients');
     const body = await request.json();
     const data = createClientSchema.parse(body);
 
-    const client = await createClient({
+    // Calcular 4 mapas automaticamente no cadastro (Onda D - Wire 4 Mapas)
+    const result = await createClientWithMaps({
       fullName: data.fullName,
       birthDate: data.birthDate,
-      birthTime: data.birthTime,
-      birthCity: data.birthCity,
-      birthState: data.birthState,
-      birthCountry: data.birthCountry,
-      userId: data.userId,
+      birthTime: data.birthTime ?? '',
+      birthCity: data.birthCity ?? '',
+      birthState: data.birthState ?? '',
+      birthCountry: data.birthCountry ?? '',
+      birthLatitude: data.birthLatitude,
+      birthLongitude: data.birthLongitude,
+      birthTimezone: data.birthTimezone,
+      notes: data.notes,
+      consentGiven: data.consentGiven,
     });
-
+    if (!result.ok) {
+      return NextResponse.json(
+        { error: 'Erro ao criar cliente com mapas', detail: result.error },
+        { status: 500 }
+      );
+    }
+    const client = await getClient(result.id);
+    if (!client)
+      return NextResponse.json({ error: 'Cliente não encontrado após criação' }, { status: 500 });
+    log.info('client.created', { operatorId: operator.id, clientId: client.id });
     return NextResponse.json({ client }, { status: 201 });
-
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -98,10 +122,7 @@ export async function POST(request: NextRequest) {
       );
     }
     console.error('POST /api/mesa-real/clients error:', error);
-    return NextResponse.json(
-      { error: 'Erro ao criar cliente' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao criar cliente' }, { status: 500 });
   }
 }
 
@@ -110,14 +131,17 @@ export async function POST(request: NextRequest) {
 // ============================================================
 export async function PATCH(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+    const operator = auth;
+    const requestId = generateRequestId();
+    const log = createLogger(requestId, '/api/mesa-real/clients');
+
     const body = await request.json();
     const { action, clientId, ...data } = body;
 
     if (!clientId) {
-      return NextResponse.json(
-        { error: 'clientId é obrigatório' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'clientId é obrigatório' }, { status: 400 });
     }
 
     switch (action) {
@@ -131,17 +155,41 @@ export async function PATCH(request: NextRequest) {
       }
 
       case 'update': {
+        const existing = await prisma.client.findUnique({
+          where: { id: clientId },
+          select: { fullName: true, birthDate: true }
+        });
+        
+        if (!existing) {
+          return NextResponse.json({ error: 'Cliente não encontrado' }, { status: 404 });
+        }
+        
+        const finalName = data.fullName ?? existing.fullName;
+        const finalBirthDate = data.birthDate ? new Date(data.birthDate) : existing.birthDate;
+        
+        const duplicate = await prisma.client.findFirst({
+          where: {
+            fullName: finalName,
+            birthDate: finalBirthDate,
+            id: { not: clientId },
+          },
+        });
+        
+        if (duplicate) {
+          return NextResponse.json(
+            { error: 'Consulente com este nome e data de nascimento já cadastrado' },
+            { status: 409 }
+          );
+        }
+
         const client = await updateClient(clientId, data);
+        log.info('client.updated', { operatorId: operator.id, clientId });
         return NextResponse.json({ client });
       }
 
       default:
-        return NextResponse.json(
-          { error: 'Ação desconhecida' },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Ação desconhecida' }, { status: 400 });
     }
-
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -150,10 +198,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
     console.error('PATCH /api/mesa-real/clients error:', error);
-    return NextResponse.json(
-      { error: 'Erro ao atualizar cliente' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao atualizar cliente' }, { status: 500 });
   }
 }
 
@@ -162,24 +207,20 @@ export async function PATCH(request: NextRequest) {
 // ============================================================
 export async function DELETE(request: NextRequest) {
   try {
+    const auth = await requireOperator(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { searchParams } = new URL(request.url);
     const clientId = searchParams.get('clientId');
 
     if (!clientId) {
-      return NextResponse.json(
-        { error: 'clientId é obrigatório' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'clientId é obrigatório' }, { status: 400 });
     }
 
     await deleteClient(clientId);
     return NextResponse.json({ success: true });
-
   } catch (error) {
     console.error('DELETE /api/mesa-real/clients error:', error);
-    return NextResponse.json(
-      { error: 'Erro ao deletar cliente' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao deletar cliente' }, { status: 500 });
   }
 }

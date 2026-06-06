@@ -1,13 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { NextRequest, NextResponse } from 'next/server';
+import { searchParamsToObject } from '@/lib/api/query-params';
+import type { SpiritualCorrelations } from '@/lib/api/spiritual-correlations';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
+import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const HealthMetricSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD'),
@@ -23,7 +21,10 @@ const HealthMetricSchema = z.object({
 });
 
 const HealthMetricsQuerySchema = z.object({
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD').optional(),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Formato: YYYY-MM-DD')
+    .optional(),
   type: z.string().optional(),
   sefirot: SefirotSchema.optional(),
   chakra: ChakraSchema.optional(),
@@ -32,14 +33,17 @@ const HealthMetricsQuerySchema = z.object({
 });
 
 // ─── Spiritual Correlations for Health Metrics ──────────────────────────────────────────
-const METRIC_SPIRITUAL_CORRELATIONS: Record<string, {
-  sefirot: string[];
-  chakra: number;
-  element: string;
-  orixa: string;
-  affirmation: string;
-  frequency: string;
-}> = {
+const METRIC_SPIRITUAL_CORRELATIONS: Record<
+  string,
+  {
+    sefirot: string[];
+    chakra: number;
+    element: string;
+    orixa: string;
+    affirmation: string;
+    frequency: string;
+  }
+> = {
   energy: {
     sefirot: ['Gevurah', 'Netzach'],
     chakra: 3,
@@ -121,35 +125,26 @@ interface HealthMetric {
   orixa: string;
   affirmation: string;
   frequency: string;
-  spiritualCorrelations: {
-    sefirot: string[];
-    chakra: number;
-    element: string;
-    orixa: string;
-    affirmation: string;
-    frequency: string;
-  };
+  spiritualCorrelations: SpiritualCorrelations;
 }
 
 const metricsData: HealthMetric[] = [];
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const parseResult = HealthMetricsQuerySchema.safeParse({
-    date: searchParams.get('date'),
-    type: searchParams.get('type'),
-    sefirot: searchParams.get('sefirot'),
-    chakra: searchParams.get('chakra'),
-    element: searchParams.get('element'),
-    orixa: searchParams.get('orixa'),
-  });
+  const parseResult = HealthMetricsQuerySchema.safeParse(
+    searchParamsToObject(searchParams, ['date', 'type', 'sefirot', 'chakra', 'element', 'orixa'])
+  );
 
   if (!parseResult.success) {
-    return NextResponse.json({
-      success: false,
-      error: 'Parâmetros inválidos',
-      details: parseResult.error.flatten().fieldErrors,
-    }, { status: 400 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Parâmetros inválidos',
+        details: parseResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
   }
 
   const { date, type, sefirot, chakra, element, orixa } = parseResult.data;
@@ -179,65 +174,39 @@ export async function GET(request: NextRequest) {
     entries = entries.filter((e) => e.spiritualCorrelations?.orixa === orixa);
   }
 
-  // Calculate spiritual stats
+  // Calculate spiritual stats using shared utility
+  const spiritualStatsBase = calculateSpiritualStatsInline(entries);
   const spiritualStats = {
-    byType: entries.reduce((acc, e) => {
-      acc[e.metricType] = (acc[e.metricType] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
+    ...spiritualStatsBase,
     avgValue: entries.reduce((sum, e) => sum + e.value, 0) / (entries.length || 1),
-    bySefirot: entries.reduce((acc, e) => {
-      e.spiritualCorrelations?.sefirot.forEach(s => {
-        acc[s] = (acc[s] || 0) + 1;
-      });
-      return acc;
-    }, {} as Record<string, number>),
-    byChakra: entries.reduce((acc, e) => {
-      const c = e.spiritualCorrelations?.chakra;
-      if (c) acc[c] = (acc[c] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
-    byElement: entries.reduce((acc, e) => {
-      const el = e.spiritualCorrelations?.element;
-      if (el) acc[el] = (acc[el] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
-    byOrixa: entries.reduce((acc, e) => {
-      const o = e.spiritualCorrelations?.orixa;
-      if (o) acc[o] = (acc[o] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>),
   };
-
   return NextResponse.json({
-    success: true,
-    entries,
-    total: entries.length,
-    spiritualCorrelations: METRIC_SPIRITUAL_CORRELATIONS,
+    filters: { date, type, sefirot, chakra, element, orixa },
     spiritualStats,
-    meta: {
-      filters: { date, type, sefirot, chakra, element, orixa },
-    },
   });
 }
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const parseResult = HealthMetricSchema.safeParse(body);
 
     if (!parseResult.success) {
-      return NextResponse.json({
-        success: false,
-        error: 'Dados inválidos',
-        details: parseResult.error.flatten().fieldErrors,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Dados inválidos',
+          details: parseResult.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
 
-    const { date, metricType, value, unit, source, notes, sefirot, chakra, element, orixa } = parseResult.data;
+    const { date, metricType, value, unit, source, notes, sefirot, chakra, element, orixa } =
+      parseResult.data;
 
     // Get spiritual correlations based on metric type
-    const baseCorrelations = METRIC_SPIRITUAL_CORRELATIONS[metricType] || METRIC_SPIRITUAL_CORRELATIONS.energy;
+    const baseCorrelations =
+      METRIC_SPIRITUAL_CORRELATIONS[metricType] || METRIC_SPIRITUAL_CORRELATIONS.energy;
 
     const metric: HealthMetric = {
       id: crypto.randomUUID(),
@@ -259,15 +228,21 @@ export async function POST(request: NextRequest) {
 
     metricsData.push(metric);
 
-    return NextResponse.json({
-      success: true,
-      metric,
-      spiritualCorrelations: baseCorrelations,
-    }, { status: 201 });
+    return NextResponse.json(
+      {
+        success: true,
+        metric,
+        spiritualCorrelations: baseCorrelations,
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erro ao processar requisição',
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : 'Erro ao processar requisição',
+      },
+      { status: 500 }
+    );
   }
 }

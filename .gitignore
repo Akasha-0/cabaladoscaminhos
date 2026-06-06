@@ -66,3 +66,24 @@ next-env.d.ts
 **/*.skip
 **/*.test.disabled
 **/*.disabled
+
+# Harness runtime files (transitórios — não versionar)
+# Estado de runtime de outros agentes (logs, tmp, sessions, locks).
+# Manter .claude/{plans,agents,skills,reviews,projects,workflows,scripts} tracked.
+/.claude/sessions/
+/.claude/state/
+/.claude/scripts/autonomous/
+/.claude/memory/
+/.claude/rules/
+/.claude/scheduled_tasks.json
+/.hermes/
+/.remember/
+/.mavis/plans.tmp/
+/.omp/runtime/
+/.omp/logs/
+/.omp/state/
+/.trae/runtime/
+/.trae/logs/
+/.trae/state/
+/.swarm/runtime/
+/.swarm/logs/

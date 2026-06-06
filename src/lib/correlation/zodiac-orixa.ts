@@ -627,17 +627,3 @@ export function getSignosByPlaneta(planeta: string): Signo[] {
     .filter(m => m.planeta_regente === planeta)
     .map(m => m.signo);
 }
-
-export default {
-  getZodiacOrixa,
-  getOrixaZodiac,
-  getAllZodiacOrixas,
-  getSignoOrixaPrincipal,
-  getSignoOrixasSecundarios,
-  getZodiacOrixaSignificado,
-  getSignosByElement,
-  hasSignoOrixa,
-  getSignoDiaSagrado,
-  getSignosByPlaneta,
-  ZODIAC_ORIXA_MAPPINGS,
-};

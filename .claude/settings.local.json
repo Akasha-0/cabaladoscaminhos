@@ -1,0 +1,25 @@
+{
+  "env": {
+    "NODE_ENV": "development",
+    "NEXT_TELEMETRY_DISABLED": "1",
+    "LOG_LEVEL": "info",
+    "PRISMA_GENERATE_DATAPROXY": "false",
+    "PRISMA_CLIENT_OUTPUT": "../node_modules/.prisma/client"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx vitest *)",
+      "Bash(npx prisma *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(ls *)",
+      "Bash(grep *)",
+      "Bash(cat *.json)",
+      "Bash(find * -name * -maxdepth *)",
+      "Bash(mkdir -p *)"
+    ]
+  }
+}

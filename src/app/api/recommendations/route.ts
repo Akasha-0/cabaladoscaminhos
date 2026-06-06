@@ -1,3 +1,4 @@
+import { requireOperator } from '@/lib/auth/operator-session';
 import { NextRequest, NextResponse } from 'next/server';
 import {
   buildDailyContext,
@@ -21,6 +22,9 @@ interface RequestBody {
 }
 
 export async function POST(req: NextRequest) {
+  // Auth guard
+  const authResult = await requireOperator(req);
+  if (authResult instanceof NextResponse) return authResult;
   try {
     const body = (await req.json()) as RequestBody;
 

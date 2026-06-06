@@ -131,7 +131,7 @@ async function createRedisClient(
 
 // Singleton client
 let redisClient: RedisLike | null = null;
-export let useMemory = false;
+let useMemory = false;
 
 export async function getRedisClient(): Promise<RedisLike> {
   if (redisClient) return redisClient;
@@ -169,5 +169,9 @@ getRedisClient().catch(() => {
   useMemory = true;
   redisClient = createInMemoryStore();
 });
-
-export { memoryStore as inMemoryStore };
+// Clears the in-memory fallback store. Used exclusively in tests to ensure
+// test isolation — the in-memory store persists across all test cases within
+// the same Vitest worker. NEVER call this in production.
+export function resetMemoryStore(): void {
+  memoryStore.clear();
+}

@@ -1,464 +1,417 @@
 # Documento 04 — Modelo de Dados
-## Cabala dos Caminhos
+## Sistema Akasha
 
-> **Versão:** 1.0 | **ORM:** Prisma | **Banco:** PostgreSQL
+> **Versão:** 2.0 | **ORM:** Prisma 7 | **Banco:** PostgreSQL + **pgvector**
+> **Norte:** Doc 25 · **Arquitetura:** Doc 03. As estruturas dos 4 mapas (§3) são **agnósticas e preservadas**; os modelos B2C (§1–2) substituem o esquema B2B (Operator/Reading/Mesa Real → legado, §6).
 
 ---
 
-## 1. Prisma Schema Completo
+## 1. Prisma Schema — Núcleo B2C (Akasha)
 
 ```prisma
 // prisma/schema.prisma
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+generator client { provider = "prisma-client-js" }
+// datasource fica em prisma.config.ts (Prisma 7) + adapter pg
 
 // ─────────────────────────────────────────────
-// USUÁRIO — O Operador/Terapeuta do sistema
+// USUÁRIO — o cliente final (self-service B2C)
 // ─────────────────────────────────────────────
 model User {
-  id           String    @id @default(cuid())
-  email        String    @unique
-  name         String
-  passwordHash String
-  role         UserRole  @default(OPERATOR)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  passwordHash  String?               // null se OAuth-only
+  name          String                // nome usado na Numerologia Cabalística
+  locale        String    @default("pt-BR")
+  role          UserRole  @default(MEMBER)
 
-  readings     Reading[]
+  // Dados natais (base dos 4 mapas)
+  birthDate     DateTime?
+  birthTime     String?               // "HH:MM" — necessário para Ascendente
+  birthCity     String?
+  birthLatitude  Float?
+  birthLongitude Float?
+  birthTimezone  String?              // ex: "America/Sao_Paulo"
 
+  // Perfil de intenção (quiz de ancoragem do onboarding) — alimenta o Agente IA
+  intentionProfile Json?
+
+  // Os 4 mapas calculados e cacheados (uma vez; nunca recalculados)
+  birthChart    BirthChart?
+
+  // Monetização e oráculo
+  subscription  Subscription?
+  creditLedger  CreditEntry[]
+  manifesto     Manifesto?
+  dailyReadings DailyReading[]
+  consultations Consultation[]
+  ritualLog     RitualCompletion[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   @@map("users")
 }
 
-enum UserRole {
-  OPERATOR
-  ADMIN
+enum UserRole { MEMBER  ADMIN }
+
+// ─────────────────────────────────────────────
+// MAPA NATAL — os 4 pilares cacheados (1:1 com User)
+// ─────────────────────────────────────────────
+model BirthChart {
+  id             String  @id @default(cuid())
+  userId         String  @unique
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  astrologyMap   Json    // AstrologyMap  (§3.1)
+  kabalisticMap  Json    // KabalisticMap (§3.2)
+  tantricMap     Json    // TantricMap    (§3.3) — 11 Corpos
+  oduBirth       Json    // OduBirth      (§3.4) — Ori/Odus
+
+  incomplete     Boolean @default(false)  // true se falta hora/local (astrologia, Doc 23)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  @@map("birth_charts")
 }
 
 // ─────────────────────────────────────────────
-// CONSULENTE — Dados fixos do cliente
+// ASSINATURA & CRÉDITOS (Stripe)
 // ─────────────────────────────────────────────
-model Client {
-  id           String   @id @default(cuid())
-
-  // Dados de identificação
-  fullName     String   // Nome conforme certidão (usado na Numerologia Cabalística)
-  birthDate    DateTime // Data de nascimento
-  birthTime    String   // Hora exata "HH:MM" (ex: "14:35") — necessária para Ascendente
-  birthCity    String
-  birthState   String
-  birthCountry String
-
-  // Coordenadas geográficas (salvas junto com a cidade para cálculo astral)
-  birthLatitude  Float?
-  birthLongitude Float?
-  birthTimezone  String?  // Ex: "America/Sao_Paulo"
-
-  // Mapas calculados e cacheados (calculados no cadastro, nunca recalculados)
-  astrologyMap   Json?   // Ver estrutura AstrologyMap abaixo
-  kabalisticMap  Json?   // Ver estrutura KabalisticMap abaixo
-  tantricMap     Json?   // Ver estrutura TantricMap abaixo
-  oduBirth       Json?   // Ver estrutura OduBirth abaixo
-
-  notes        String?  // Campo livre para o terapeuta anotar observações
-
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  readings     Reading[]
-
-  @@map("clients")
+model Subscription {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan               Plan     @default(FREEMIUM)
+  status             SubStatus @default(ACTIVE)
+  stripeCustomerId   String?
+  stripeSubscriptionId String?
+  monthlyCreditQuota Int      @default(0)   // franquia mensal de créditos do plano
+  dashboardUntil     DateTime?              // janela de Dashboard liberada (ex.: 30 dias do Manifesto)
+  currentPeriodEnd   DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  @@map("subscriptions")
 }
 
-// ─────────────────────────────────────────────
-// LEITURA — Uma sessão de Mesa Real
-// ─────────────────────────────────────────────
-model Reading {
-  id          String        @id @default(cuid())
-  date        DateTime      @default(now())
-  status      ReadingStatus @default(PENDING)
-  notes       String?       // Observações do terapeuta sobre a sessão
+enum Plan      { FREEMIUM  AKASHA_PRO }
+enum SubStatus { ACTIVE  PAST_DUE  CANCELED }
 
-  // A Matriz Mesa Real 9x4 salva como JSON
-  // Estrutura: { "1": { "carta": 19, "cartaName": "A Torre", "odu": 10, "oduName": "Osá" }, ... }
-  matrixData  Json
-
-  // Relacionamentos
-  clientId    String
-  client      Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  userId      String
-  user        User          @relation(fields: [userId], references: [id])
-
-  report      Report?
-
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  @@map("readings")
-}
-
-enum ReadingStatus {
-  PENDING     // Mesa preenchida, dossiê ainda não gerado
-  GENERATING  // IA processando
-  COMPLETED   // Dossiê gerado com sucesso
-  ERROR       // Falha na geração
-}
-
-// ─────────────────────────────────────────────
-// DOSSIÊ — O relatório gerado pela IA
-// ─────────────────────────────────────────────
-model Report {
+// Razão (ledger) de créditos: franquia, compra avulsa, consumo
+model CreditEntry {
   id        String   @id @default(cuid())
-
-  // Conteúdo gerado pelo LLM
-  // Estrutura: { "houses": { "1": "Markdown...", "4": "Markdown..." }, "synthesis": "Markdown..." }
-  content   Json
-
-  // Metadata
-  llmModel  String?  // Ex: "gpt-4o" ou "claude-3-5-sonnet"
-  tokensUsed Int?
-  pdfUrl    String?  // URL do PDF armazenado no storage
-
-  readingId String   @unique
-  reading   Reading  @relation(fields: [readingId], references: [id], onDelete: Cascade)
-
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  delta     Int      // +franquia/+compra / −consumo (ritual=−1, pergunta=−3)
+  reason    String   // "monthly_quota" | "purchase" | "consult_simple" | "consult_complex"
+  balance   Int      // saldo resultante (snapshot)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@index([userId])
+  @@map("credit_entries")
+}
 
-  @@map("reports")
+// ─────────────────────────────────────────────
+// MANIFESTO AKÁSHICO — relatório base (gerado uma vez)
+// ─────────────────────────────────────────────
+model Manifesto {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   Json     // ManifestoContent (§4) — as 4 camadas + síntese
+  pdfUrl    String?  // PDF via @react-pdf/renderer
+  llmModel  String?
+  tokensUsed Int?
+  createdAt DateTime @default(now())
+  @@map("manifestos")
+}
+
+// ─────────────────────────────────────────────
+// DASHBOARD DIÁRIO — o Oráculo de Bolso (1 por usuário/dia)
+// ─────────────────────────────────────────────
+model DailyReading {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date          DateTime @db.Date
+  climate       String   // Clima Energético (Markdown)
+  ritual        Json     // { grimoireId, titulo, instrucao } — prescrição do dia
+  alert         String   // Alerta das próximas 24h
+  tensionPoint  Json     // diagnóstico do Grafo (Camada 2) — rastreabilidade
+  llmModel      String?
+  createdAt     DateTime @default(now())
+  @@unique([userId, date])
+  @@map("daily_readings")
+}
+
+model RitualCompletion {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grimoireId String  // referência ao GrimoireEntry
+  date      DateTime @default(now())
+  @@index([userId])
+  @@map("ritual_completions")
+}
+
+// ─────────────────────────────────────────────
+// AGENTE ORACULAR — consultas conversacionais (Doc 12), debita créditos
+// ─────────────────────────────────────────────
+model Consultation {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  messages  ChatMessage[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  @@index([userId])
+  @@map("consultations")
+}
+
+model ChatMessage {
+  id             String       @id @default(cuid())
+  role           ChatRole     // USER | ORACLE
+  content        String
+  routedPillars  String[]     // ["astrologia","tantra","odus"] — vertentes consultadas
+  grimoireRefs   String[]     // ids dos fragmentos do Grimório injetados (transparência)
+  creditCost     Int          @default(0)  // 1 (simples) ou 3 (complexa)
+  consultationId String
+  consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  @@index([consultationId])
+  @@map("chat_messages")
+}
+
+enum ChatRole { USER  ORACLE }
+
+// ─────────────────────────────────────────────
+// GRIMÓRIO DIGITAL — RAG (Markdown → pgvector)  (Doc 25 §5)
+// ─────────────────────────────────────────────
+model GrimoireEntry {
+  id         String  @id @default(cuid())
+  slug       String  @unique               // ex.: "ritual_045_manjericao"
+  categoria  String                         // Ervas | Cristais | Mantra | Itan | Transito ...
+  biblioteca String                         // botanica | vibracional | ancestral | diagnostico
+  metadata   Json                           // tags YAML (elementos, signos, odus, corpos…)
+  conteudo   String                         // Markdown puro
+  // embedding  Unsupported("vector(768)")   // pgvector — nomic-embed-text (via SQL/migration)
+  sourcePath String                         // caminho do .md no repositório
+  updatedAt  DateTime @updatedAt
+  @@index([categoria])
+  @@index([biblioteca])
+  @@map("grimoire")
 }
 ```
 
+> **Volatilidade:** `personalCycles` (KabalisticMap §3.2) e os **trânsitos diários** são derivados sob demanda (data atual / Redis), **não** persistidos no mapa imutável — preservando "mapas natais nunca são recalculados".
+
+> **pgvector:** a coluna `embedding vector(768)` e o índice `ivfflat`/`hnsw` são criados via migration SQL manual (Prisma não tipa `vector` nativamente). Ver Doc MIGRATIONS.
+
 ---
 
-## 2. Estruturas JSON dos Mapas Calculados
+## 2. Auth & Conta (B2C)
+- `User` substitui `Operator`: auto-cadastro, e-mail+senha e/ou OAuth (Google/Apple), verificação de e-mail, recuperação de senha, MFA opcional.
+- Sessão via JWT/cookie httpOnly. `role = ADMIN` habilita o painel do Grimório (sync manual).
+- Transição de auth detalhada no AUTH-AUDIT.
 
-### 2.1 AstrologyMap (campo `astrologyMap` no Client)
+---
+
+## 3. Estruturas JSON dos 4 Mapas (agnósticas — preservadas)
+
+> Estado de completude: **Doc 23**. Numerologias 100%; Odu natal ⚠️ `provisional` (D3); Astrologia com Quíron/Lilith, elementos/modalidades, `nature` de aspectos. Fórmulas: **Doc 11**.
+
+### 3.1 AstrologyMap
 
 ```typescript
 interface AstrologyMap {
-  // Luminares e Ascendente
-  sun: {
-    sign: string;        // Ex: "Leo"
-    degree: number;      // Ex: 27.5
-    house: number;       // Ex: 10
-  };
-  moon: {
-    sign: string;
-    degree: number;
-    house: number;
-  };
-  ascendant: {
-    sign: string;
-    degree: number;
-  };
-
-  // 10 Planetas Clássicos
+  sun:       { sign: string; degree: number; house: number };
+  moon:      { sign: string; degree: number; house: number };
+  ascendant: { sign: string; degree: number };
   planets: {
-    mercury: PlanetPosition;
-    venus: PlanetPosition;
-    mars: PlanetPosition;
-    jupiter: PlanetPosition;
-    saturn: PlanetPosition;
-    uranus: PlanetPosition;
-    neptune: PlanetPosition;
-    pluto: PlanetPosition;
-    chiron: PlanetPosition;  // Asteroide — ferida e cura
+    mercury: PlanetPosition; venus: PlanetPosition; mars: PlanetPosition;
+    jupiter: PlanetPosition; saturn: PlanetPosition; uranus: PlanetPosition;
+    neptune: PlanetPosition; pluto: PlanetPosition;
+    chiron: PlanetPosition;  // ferida e cura
     lilith: PlanetPosition;  // Lua Negra — sombra e poder oculto
   };
-
-  // Nodos Lunares (karma e destino)
   northNode: { sign: string; house: number };
   southNode: { sign: string; house: number };
-
-  // As 12 Casas Astrológicas (signo regente de cada casa)
-  houses: {
-    1: string;   // Ascendente / Self
-    2: string;   // Finanças pessoais / Valores
-    3: string;   // Comunicação / Irmãos / Vizinhança
-    4: string;   // Lar / Família / Fundo do Céu
-    5: string;   // Criatividade / Romance / Filhos
-    6: string;   // Trabalho diário / Saúde / Rotina
-    7: string;   // Parcerias / Casamento / Contratos
-    8: string;   // Transformação / Morte / Recursos Partilhados
-    9: string;   // Filosofia / Viagens / Espiritualidade
-    10: string;  // Carreira / Meio do Céu / Status
-    11: string;  // Amigos / Grupos / Esperanças
-    12: string;  // Inconsciente / Isolamento / Karma oculto
-  };
-
-  // Planetas em casas específicas (para lookup rápido pelo PromptBuilder)
-  planetsInHouses: {
-    [houseNumber: string]: string[];  // Ex: { "10": ["Sun", "Mercury"] }
-  };
-
-  // Aspectos principais
+  houses: { [n: string]: string };              // signo regente de cada casa 1..12
+  planetsInHouses: { [houseNumber: string]: string[] };
   aspects: Array<{
-    planet1: string;
-    planet2: string;
+    planet1: string; planet2: string;
     type: "conjunction" | "opposition" | "trine" | "square" | "sextile";
     orb: number;
+    nature: "harmony" | "tension";              // trígono/sextil=harmony; oposição/quadratura=tension
   }>;
+  elements:   { fire: number; earth: number; air: number; water: number };
+  modalities: { cardinal: number; fixed: number; mutable: number };
 }
 
-interface PlanetPosition {
-  sign: string;
-  degree: number;
-  house: number;
-  retrograde: boolean;
-}
+interface PlanetPosition { sign: string; degree: number; house: number; retrograde: boolean }
 ```
 
-### 2.2 KabalisticMap (campo `kabalisticMap` no Client)
+### 3.2 KabalisticMap
 
 ```typescript
 interface KabalisticMap {
-  // Número de Caminho de Vida (soma de todos os dígitos da data, reduzida)
-  lifePath: number;            // Ex: 7
-  lifePathMaster: boolean;     // true se for 11, 22 ou 33
-
-  // Número de Missão (variante da data, pode coincidir com lifePath)
+  lifePath: number; lifePathMaster: boolean;     // 11/22/33
   mission: number;
-
-  // Número de Expressão (conversão alfanumérica do nome completo, reduzida)
-  expression: number;
-  expressionMaster: boolean;
-
-  // Número de Motivação / Impulso da Alma (apenas vogais do nome, reduzidas)
-  motivation: number;
-
-  // Dons Nativos (dia de nascimento não reduzido se for 10-31)
-  nativeDayNumber: number;     // Ex: 20
-
-  // Números de Desafio (gerados pela data, representam os obstáculos de vida)
-  challenges: {
-    first: number;
-    second: number;
-    main: number;
-    last: number;
-  };
-
-  // Karmas da Vida (números ausentes entre 1-9 no nome completo)
-  karmaicDebts: number[];      // Ex: [4, 8] = ausência dos números 4 e 8 no nome
-
-  // Ciclos de Vida (3 grandes períodos)
-  lifeCycles: {
-    first: { number: number; ageStart: number; ageEnd: number };
+  expression: number; expressionMaster: boolean;
+  motivation: number;                            // vogais do nome
+  impression: number;                            // consoantes do nome
+  nativeDayNumber: number;                       // dia de nascimento
+  challenges: { first: number; second: number; main: number; last: number };
+  pinnacles: {
+    first:  { number: number; ageEnd: number };
     second: { number: number; ageStart: number; ageEnd: number };
-    third: { number: number; ageStart: number };
+    third:  { number: number; ageStart: number; ageEnd: number };
+    fourth: { number: number; ageStart: number };
+  };
+  karmicLessons: number[];                        // números ausentes no nome
+  karmaicDebts:  number[];                        // 13/14/16/19 nos totais
+  lifeCycles: {
+    first:  { number: number; ageStart: number; ageEnd: number };
+    second: { number: number; ageStart: number; ageEnd: number };
+    third:  { number: number; ageStart: number };
+  };
+  personalCycles: {                               // VOLÁTIL — derivado da data atual
+    personalYear: number; personalMonth: number; personalDay: number; referenceDate: string;
   };
 }
 ```
 
-### 2.3 TantricMap (campo `tantricMap` no Client)
+### 3.3 TantricMap — os 11 Corpos (Pilar "A Anatomia")
+
+> `divineGift` = dois últimos dígitos do ano; `destiny` = soma dos 4 dígitos do ano; `tantricPath` = data completa (Doc 11 §3.1).
 
 ```typescript
 interface TantricMap {
-  // Corpo Negativo / Número de Alma (dia de nascimento, reduzido)
-  soul: number;                // Ex: 20 → 2+0 = 2
-  soulDescription: string;     // Ex: "Corpo Negativo — Mente Protetora"
-
-  // Corpo Prânico / Número de Karma (mês de nascimento)
-  karma: number;               // Ex: 8
-  karmaDescription: string;    // Ex: "Corpo Prânico — Energia Vital"
-
-  // Número de Dom Divino (ano de nascimento reduzido em dois passos)
-  divineGift: number;          // Ex: 1986 → 8+6=14 → 1+4=5
-  divineGiftDescription: string; // Ex: "Corpo Físico — A Palavra e o Dom"
-
-  // Número de Destino (ano completo de 4 dígitos, reduzido)
-  destiny: number;             // Ex: 1+9+8+6=24 → 2+4=6
-
-  // Número de Caminho Tântrico (soma total de dia+mês+ano, reduzida)
+  soul: number;       soulBody: number;       soulDescription: string;
+  karma: number;      karmaBody: number;      karmaDescription: string;
+  divineGift: number; divineGiftBody: number; divineGiftDescription: string;
+  destiny: number;
   tantricPath: number;
-
-  // Atributo de cada número tântrico (1 a 11)
-  tantricBodies: {
-    [key: number]: string;     // Ex: { 1: "Corpo Sutil", 2: "Corpo Negativo", ... }
-  };
+  bodies: Array<{ id: number; name: string; essence: string; balanced: boolean }>;  // 1..11
 }
+
+export const TANTRIC_BODIES = [
+  { id: 1,  name: "Corpo da Alma",                    essence: "Núcleo, pureza, origem" },
+  { id: 2,  name: "Corpo Negativo / Mente Protetora", essence: "Cautela, discernimento, proteção" },
+  { id: 3,  name: "Corpo Positivo / Mente Projetiva", essence: "Expansão, otimismo, ação" },
+  { id: 4,  name: "Corpo Neutro / Mente Meditativa",  essence: "Equilíbrio, julgamento sereno" },
+  { id: 5,  name: "Corpo Físico",                     essence: "Manifestação, a palavra, o dom" },
+  { id: 6,  name: "Arco da Linha",                    essence: "Integridade, projeção, intuição" },
+  { id: 7,  name: "Aura",                             essence: "Campo de proteção, presença" },
+  { id: 8,  name: "Corpo Prânico",                    essence: "Energia vital, respiração, força" },
+  { id: 9,  name: "Corpo Sutil",                      essence: "Maestria, sabedoria refinada" },
+  { id: 10, name: "Corpo Radiante",                   essence: "Realeza, coragem, brilho" },
+  { id: 11, name: "Corpo do Infinito",                essence: "Transcendência, totalidade" },
+] as const;
 ```
 
-### 2.4 OduBirth (campo `oduBirth` no Client)
+### 3.4 OduBirth — o Ori (Pilar "A Terra")
 
 ```typescript
 interface OduBirth {
-  oduNumber: number;           // 1 a 16
-  oduName: string;             // Ex: "Ejionile"
-  orixaRegency: string[];      // Ex: ["Xangô", "Oxalá"]
-  elementalForce: string;      // Ex: "Justiça, Força, Liderança"
-  lifeLesson: string;          // Síntese do ensinamento central do Odu
+  oduNumber: number;        // 1..16
+  oduName: string;          // ex: "Ejionile"
+  orixaRegency: string[];   // ex: ["Xangô","Oxalá"]
+  elementalForce: string;   // ex: "Justiça, Força, Liderança"
+  oriAlignment: string;     // estado/conselho do Ori
+  openPaths: string[];      // caminhos abertos
+  shadows: string[];        // sombras (cuidado, não sentença)
 }
 ```
 
----
+### 3.5 Os 16 Odus com Regências (constante — Pilar Odus)
 
-## 3. Estrutura JSON da Matriz da Mesa Real (matrixData)
-
-Este é o objeto salvo no campo `matrixData` do modelo `Reading`. É gerado pelo Zustand store no frontend e enviado para a API.
+> A grafia/regência dos 16 Odus está sujeita à validação de linhagem **D4** (Doc 11 §5 / Doc 15).
 
 ```typescript
-interface MatrixData {
-  [houseNumber: string]: {
-    carta: number;       // Número da carta (1-36)
-    cartaName: string;   // Ex: "A Torre"
-    odu: number;         // Número do Odu (1-16)
-    oduName: string;     // Ex: "Ejionile"
-  };
-}
-
-// Exemplo real de um matrixData parcialmente preenchido:
-const matrixDataExample: MatrixData = {
-  "1":  { carta: 19, cartaName: "A Torre",    odu: 10, oduName: "Osá" },
-  "4":  { carta: 4,  cartaName: "A Casa",     odu: 8,  oduName: "Ejionile" },
-  "12": { carta: 12, cartaName: "Os Pássaros",odu: 6,  oduName: "Obará" },
-  "31": { carta: 31, cartaName: "O Sol",      odu: 6,  oduName: "Obará" },
-  "34": { carta: 34, cartaName: "Os Peixes",  odu: 4,  oduName: "Irosun" },
-  // ... demais casas preenchidas
-};
-```
-
----
-
-## 4. Estrutura JSON do Relatório Gerado (content no Report)
-
-```typescript
-interface ReportContent {
-  // Análise de cada casa preenchida (chave = número da casa como string)
-  houses: {
-    [houseNumber: string]: {
-      houseNumber: number;
-      houseName: string;
-      carta: string;
-      odu: string;
-      interpretation: string;  // Markdown gerado pelo LLM para esta casa
-    };
-  };
-
-  // Síntese final integrando todas as casas
-  synthesis: {
-    workAndMoney: string;      // Caminho do Trabalho e Dinheiro — Markdown
-    homeAndFamily: string;     // Caminho do Lar e Família — Markdown
-    loveAndRelationships: string; // Caminho do Amor e Relacionamentos — Markdown
-    spiritualPath: string;     // O Grande Conselho Espiritual — Markdown
-    finalVerdict: string;      // Veredito Final e Direcionamento — Markdown
-  };
-
-  // Metadata da geração
-  generatedAt: string;         // ISO timestamp
-  llmModel: string;
-  totalHousesAnalyzed: number;
-}
-```
-
----
-
-## 5. Constantes Imutáveis do Sistema
-
-### 5.1 As 36 Cartas Ciganas (Lenormand)
-
-```typescript
-// src/lib/constants/lenormand-cards.ts
-export const LENORMAND_CARDS = [
-  { id: 1,  name: "O Cavaleiro",   keywords: "Notícias, movimento, mensagens, velocidade" },
-  { id: 2,  name: "O Trevo",       keywords: "Sorte, pequenas oportunidades, esperança" },
-  { id: 3,  name: "O Navio",       keywords: "Viagem, negócios, distância, importação/exportação" },
-  { id: 4,  name: "A Casa",        keywords: "Lar, família, estabilidade, propriedade" },
-  { id: 5,  name: "A Árvore",      keywords: "Saúde, raízes, crescimento, ancestralidade" },
-  { id: 6,  name: "As Nuvens",     keywords: "Confusão, dúvidas, instabilidade mental, nebulosidade" },
-  { id: 7,  name: "A Serpente",    keywords: "Perigo, traição, sexualidade, sabedoria oculta" },
-  { id: 8,  name: "O Caixão",      keywords: "Fim, transformação, encerramento de ciclos, crise" },
-  { id: 9,  name: "Os Buquês",     keywords: "Presentes, surpresas felizes, beleza, reconhecimento" },
-  { id: 10, name: "A Foice",       keywords: "Corte, decisão, colheita, separação" },
-  { id: 11, name: "O Chicote",     keywords: "Conflito, repetição, estresse, padrões destrutivos" },
-  { id: 12, name: "Os Pássaros",   keywords: "Comunicação, parceria, nervosismo, conversas" },
-  { id: 13, name: "A Criança",     keywords: "Novo começo, inocência, projeto inicial, juventude" },
-  { id: 14, name: "A Raposa",      keywords: "Astúcia, estratégia, autossuficiência, cautela" },
-  { id: 15, name: "O Urso",        keywords: "Poder, autoridade, finanças, força, chefe" },
-  { id: 16, name: "A Estrela",     keywords: "Esperança, espiritualidade, guia, brilho, sonhos" },
-  { id: 17, name: "A Cegonha",     keywords: "Mudança, renovação, melhoria, gestação" },
-  { id: 18, name: "O Cachorro",    keywords: "Lealdade, amizade, confiança, proteção" },
-  { id: 19, name: "A Torre",       keywords: "Isolamento, autoridade, ego, solidão consciente" },
-  { id: 20, name: "O Jardim",      keywords: "Vida social, público, eventos, natureza" },
-  { id: 21, name: "A Montanha",    keywords: "Obstáculo, bloqueio, desafio, inimigo oculto" },
-  { id: 22, name: "Os Caminhos",   keywords: "Escolha, bifurcação, decisão, múltiplas direções" },
-  { id: 23, name: "O Rato",        keywords: "Perda, desgaste, ansiedade, roubo de energia" },
-  { id: 24, name: "O Coração",     keywords: "Amor, sentimentos, emoções, desejo" },
-  { id: 25, name: "O Anel",        keywords: "Comprometimento, contrato, ciclo, aliança" },
-  { id: 26, name: "O Livro",       keywords: "Segredo, conhecimento, educação, mistério" },
-  { id: 27, name: "A Carta",       keywords: "Documento, notícia escrita, comunicação formal" },
-  { id: 28, name: "O Cigano",      keywords: "Figura masculina, ação, protagonismo, o consulente homem" },
-  { id: 29, name: "A Cigana",      keywords: "Figura feminina, intuição, receptividade, a consulente mulher" },
-  { id: 30, name: "Os Lírios",     keywords: "Paz, maturidade, pureza, sabedoria, sexualidade madura" },
-  { id: 31, name: "O Sol",         keywords: "Sucesso máximo, clareza, vitalidade, conquista" },
-  { id: 32, name: "A Lua",         keywords: "Intuição, reconhecimento, honrarias, emoções profundas" },
-  { id: 33, name: "A Chave",       keywords: "Solução, abertura, resposta, importância" },
-  { id: 34, name: "Os Peixes",     keywords: "Dinheiro, abundância, fluxo financeiro, negócios" },
-  { id: 35, name: "A Âncora",      keywords: "Estabilidade, trabalho fixo, permanência, segurança" },
-  { id: 36, name: "A Cruz",        keywords: "Fardo, karma, destino, teste espiritual, responsabilidade" },
-] as const;
-```
-
-### 5.2 Os 16 Odus com Regências
-
-```typescript
-// src/lib/constants/odus.ts
 export const ODUS = [
-  { id: 1,  name: "Ogbe",      orixas: ["Oxalá"],              essence: "Luz, origem, criação, renovação" },
-  { id: 2,  name: "Ejiokô",    orixas: ["Ibeji", "Ogum"],      essence: "Dualidade, movimento, parcerias" },
-  { id: 3,  name: "Etogundá",  orixas: ["Ogum", "Ogun"],       essence: "Batalha, conquista, abertura de caminhos" },
-  { id: 4,  name: "Irosun",    orixas: ["Oxum", "Iemanjá"],    essence: "Atenção, sangue, cuidado com traições" },
-  { id: 5,  name: "Oxê",       orixas: ["Oxum", "Iemanjá"],    essence: "Beleza, amor, fertilidade, magnetismo" },
-  { id: 6,  name: "Obará",     orixas: ["Xangô", "Oxóssi"],    essence: "Riqueza, glória, abundância, fartura" },
-  { id: 7,  name: "Odi",       orixas: ["Exu", "Omolu"],       essence: "Segredos, transformação, cautela, limpeza" },
-  { id: 8,  name: "Ejionile",  orixas: ["Xangô", "Oxalá"],     essence: "Justiça, liderança, força, vitória" },
-  { id: 9,  name: "Ossá",      orixas: ["Iemanjá", "Oyá"],     essence: "Proteção feminina, sabedoria, turbulência" },
-  { id: 10, name: "Ofun",      orixas: ["Oxalufan", "Oxalá"],  essence: "Espiritualidade profunda, equilíbrio mental" },
-  { id: 11, name: "Owarin",    orixas: ["Exu", "Oyá"],         essence: "Dinâmica, perigo, astúcia, movimento rápido" },
-  { id: 12, name: "Ejilaxebô", orixas: ["Ogum", "Oxum"],       essence: "Honra, proteção, caminho aberto" },
-  { id: 13, name: "Oturupon",  orixas: ["Omolu", "Nanã"],      essence: "Cura, purificação, ancestralidade" },
-  { id: 14, name: "Oturá",     orixas: ["Oxalá", "Iemanjá"],   essence: "Paz, benevolência, proteção divina" },
-  { id: 15, name: "Iká",       orixas: ["Xangô", "Oxum"],      essence: "Poder, estratégia, responsabilidade" },
-  { id: 16, name: "Ofurufu",   orixas: ["Oxalá", "Todos os Orixás"], essence: "Completude, totalidade, bênção universal" },
+  { id: 1,  name: "Ogbe",      orixas: ["Oxalá"],                    essence: "Luz, origem, criação, renovação" },
+  { id: 2,  name: "Ejiokô",    orixas: ["Ibeji","Ogum"],            essence: "Dualidade, movimento, parcerias" },
+  { id: 3,  name: "Etogundá",  orixas: ["Ogum"],                    essence: "Batalha, conquista, abertura de caminhos" },
+  { id: 4,  name: "Irosun",    orixas: ["Oxum","Iemanjá"],          essence: "Atenção, sangue, cuidado com traições" },
+  { id: 5,  name: "Oxê",       orixas: ["Oxum","Iemanjá"],          essence: "Beleza, amor, fertilidade, magnetismo" },
+  { id: 6,  name: "Obará",     orixas: ["Xangô","Oxóssi"],          essence: "Riqueza, glória, abundância, fartura" },
+  { id: 7,  name: "Odi",       orixas: ["Exu","Omolu"],             essence: "Segredos, transformação, cautela, limpeza" },
+  { id: 8,  name: "Ejionile",  orixas: ["Xangô","Oxalá"],           essence: "Justiça, liderança, força, vitória" },
+  { id: 9,  name: "Ossá",      orixas: ["Iemanjá","Oyá"],           essence: "Proteção feminina, sabedoria, turbulência" },
+  { id: 10, name: "Ofun",      orixas: ["Oxalufan","Oxalá"],        essence: "Espiritualidade profunda, equilíbrio mental" },
+  { id: 11, name: "Owarin",    orixas: ["Exu","Oyá"],               essence: "Dinâmica, perigo, astúcia, movimento rápido" },
+  { id: 12, name: "Ejilaxebô", orixas: ["Ogum","Oxum"],             essence: "Honra, proteção, caminho aberto" },
+  { id: 13, name: "Oturupon",  orixas: ["Omolu","Nanã"],            essence: "Cura, purificação, ancestralidade" },
+  { id: 14, name: "Oturá",     orixas: ["Oxalá","Iemanjá"],         essence: "Paz, benevolência, proteção divina" },
+  { id: 15, name: "Iká",       orixas: ["Xangô","Oxum"],            essence: "Poder, estratégia, responsabilidade" },
+  { id: 16, name: "Ofurufu",   orixas: ["Oxalá","Todos os Orixás"], essence: "Completude, totalidade, bênção universal" },
 ] as const;
 ```
 
 ---
 
-## 6. Script de Seed (Usuário Inicial)
+## 4. ManifestoContent (campo `content` no Manifesto)
+
+```typescript
+interface ManifestoContent {
+  // As 4 camadas da Mandala (Doc 25 §2)
+  nucleo:   string;  // Ori + Odus (Markdown)
+  geometria: string; // Numerologia Cabalística
+  teia:     string;  // 11 Corpos Tântricos
+  anel:     string;  // Astrologia
+  synthesis: string; // Diagnóstico unificado integrador
+  generatedAt: string; llmModel: string;
+}
+```
+
+---
+
+## 5. DailyReading — payload do Dashboard
+
+```typescript
+interface RitualPrescription {
+  grimoireId: string;   // GrimoireEntry usado (rastreabilidade anti-alucinação)
+  titulo: string;       // ex: "Banho de manjericão"
+  instrucao: string;    // modo de preparo (texto do Grimório)
+  cor?: string; mantra?: string;
+}
+```
+
+---
+
+## 6. Legado B2B (quarentenado — `apps/legacy-cockpit`)
+
+> Os modelos abaixo pertencem ao **Cockpit / Mesa Real** e **saem do produto Akasha** (Doc 25 §11, AD-25.2). Permanecem no schema apenas enquanto o `legacy-cockpit` roda; serão removidos após o desligamento.
+
+- **`Operator` / `OperatorSession`** — substituídos por `User` (B2C).
+- **`Client`** — substituído por `User` + `BirthChart`.
+- **`Reading` / `Report` / `matrixData`** — a sessão de Mesa Real (9×4, 36 casas) e o dossiê por casa. O Akasha não usa o Baralho Cigano.
+- **Constante `LENORMAND_CARDS` (36 cartas)** — pertence à Mesa Real (legado). Os 16 Odus e os 11 Corpos permanecem (são pilares do Akasha).
+
+> A estrutura canônica do `MatrixData` e as invariantes de permutação seguem documentadas no Doc 18 (legado), para manutenção do `legacy-cockpit` até o desligamento.
+
+---
+
+## 7. Script de Seed (Admin)
 
 ```typescript
 // prisma/seed.ts
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-
 const prisma = new PrismaClient();
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('sua-senha-segura-aqui', 12);
-
   await prisma.user.upsert({
-    where: { email: 'gabriel@cabala.com' },
+    where: { email: 'gabriel@cabaladoscaminhos.com' },
     update: {},
     create: {
-      email: 'gabriel@cabala.com',
+      email: 'gabriel@cabaladoscaminhos.com',
       name: 'Gabriel',
-      passwordHash: hashedPassword,
+      emailVerified: true,
+      passwordHash: await bcrypt.hash(process.env.SEED_ADMIN_PASSWORD!, 12),
       role: 'ADMIN',
     },
   });
-
-  console.log('✅ Usuário admin criado com sucesso.');
+  console.log('✅ Usuário admin criado.');
 }
-
-main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+main().catch(console.error).finally(() => prisma.$disconnect());
 ```

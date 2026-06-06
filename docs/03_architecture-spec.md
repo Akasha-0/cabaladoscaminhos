@@ -1,259 +1,155 @@
 # Documento 03 — Arquitetura Técnica
-## Cabala dos Caminhos
+## Sistema Akasha · Matriz Cabala dos Caminhos
 
-> **Versão:** 1.0 | **Padrão:** Clean Architecture + Next.js App Router
+> **Versão:** 2.0 | **Padrão:** Monorepo (engines puros + apps) · VPS Linux soberano
+> **Norte:** Doc 25 (Visão Akasha). Substitui a arquitetura monolítica B2B (Doc 03 v1, agora no legado).
 
 ---
 
 ## 1. Visão Geral da Arquitetura
 
-O sistema segue uma arquitetura **monolítica modular** com separação clara entre camadas de apresentação, lógica de negócio e persistência. O uso do Next.js App Router permite que componentes de servidor e de cliente coexistam no mesmo repositório, com comunicação via Server Actions e API Routes tipadas.
+O sistema é um **monorepo** (Turborepo / pnpm workspaces) que separa **motores espirituais agnósticos** (`packages/core-*`) das **aplicações** (`apps/*`). A inteligência opera em **três camadas** (Determinístico → Grafo → Síntese) e roda em um **VPS Linux soberano** (Docker + PM2), com Ollama local para embeddings e Redis para o céu do dia.
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        BROWSER (CLIENT)                         │
-│  React Components (Client Components — "use client")            │
-│  MesaRealGrid | ClientForm | DossierViewer | PDFExporter        │
-└────────────────────────────┬────────────────────────────────────┘
-                             │  HTTP / Server Actions
-┌────────────────────────────▼────────────────────────────────────┐
-│                     NEXT.JS SERVER LAYER                        │
-│  App Router Pages | Server Components | API Routes             │
-│  /api/generate-dossier | /api/clients | /api/readings          │
-└──────┬─────────────────────┬───────────────────────────────────┘
-       │                     │
-┌──────▼──────┐    ┌─────────▼──────────────────────────────────┐
-│   PRISMA    │    │            SERVICE LAYER                    │
-│     ORM     │    │  CalculatorService | PromptBuilderService  │
-│             │    │  AstrologyService  | NumerologyService      │
-└──────┬──────┘    └─────────────────────────┬───────────────────┘
-       │                                     │
-┌──────▼──────┐    ┌──────────────┐  ┌───────▼──────────────────┐
-│ PostgreSQL  │    │  Astrology   │  │   LLM API                │
-│  Database  │    │  API / Swiss │  │  OpenAI GPT-4o            │
-│ (Supabase) │    │  Ephemeris   │  │  OR Anthropic Claude      │
-└─────────────┘    └──────────────┘  └──────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                     CLIENTE (Mobile-first PWA)                    │
+│   Mandala Toroidal (WebGL atmosfera + SVG/D3 dados + glass)       │
+│   Onboarding · Dashboard Diário · Manifesto · Agente Oracular     │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │  HTTP / SSE
+┌────────────────────────────▼─────────────────────────────────────┐
+│              apps/b2c-portal  (Next.js 16 · next-intl)            │
+│   Rotas: /onboarding /mandala /diario /manifesto /oraculo /conta  │
+│   API: /api/{chart,daily,manifesto,consult,stripe,grimoire-sync}  │
+└──────┬───────────────────────┬───────────────────┬───────────────┘
+       │                       │                   │
+┌──────▼──────────┐  ┌─────────▼──────────┐ ┌──────▼──────────────┐
+│ CAMADA 1        │  │ CAMADA 2           │ │ CAMADA 3            │
+│ Motor Determ.   │  │ Grafo de           │ │ Agente de Síntese   │
+│ packages/core-* │  │ Conhecimento       │ │ (IA + RAG)          │
+│ Swiss Ephemeris │  │ (cruzamento de     │ │ Busca híbrida no    │
+│ Cabala/Tantra/  │  │  correspondências) │ │ Grimório → LLM      │
+│ Odus → JSON     │  │                    │ │                     │
+└──────┬──────────┘  └─────────┬──────────┘ └──────┬──────────────┘
+       │                       │                   │
+┌──────▼──────┐  ┌─────────────▼─────┐  ┌──────────▼──────┐  ┌──────────┐
+│ PostgreSQL  │  │ Redis             │  │ Ollama          │  │ LLM API  │
+│ + pgvector  │  │ (céu do dia,      │  │ nomic-embed-    │  │ (OpenAI/ │
+│ (users,     │  │  cache, créditos) │  │ text (embeddings│  │ Gemini)  │
+│  grimório)  │  │                   │  │ localhost:11434)│  │ síntese  │
+└─────────────┘  └───────────────────┘  └─────────────────┘  └──────────┘
 ```
 
 ---
 
-## 2. Tech Stack Definitivo
+## 2. Estrutura do Monorepo
 
-### Frontend
+```
+cabaladoscaminhos/                 # monorepo (Turborepo / pnpm workspaces)
+├── packages/
+│   ├── core-astrology/            # Swiss Ephemeris, casas, planetas, trânsitos
+│   ├── core-tantra/               # 11 Corpos Espirituais
+│   ├── core-cabala/               # Caminho de Vida, nome, ciclos
+│   ├── core-odus/                 # Odu de nascimento, Ori, Orixás
+│   ├── core-graph/                # Grafo de Conhecimento (cruzamento)
+│   └── grimoire/                  # ingestão Markdown→pgvector, busca híbrida
+├── apps/
+│   ├── b2c-portal/                # ⭐ Next.js 16 — o Akasha (Mandala, onboarding…)
+│   └── legacy-cockpit/            # Mesa Real B2B — roda até a migração, depois desligado
+├── grimorio/                      # 📚 conteúdo Markdown + YAML (as 4 bibliotecas)
+│   ├── botanica/  ├── vibracional/  ├── ancestral/  └── diagnostico/
+├── prisma/                        # schema + migrations (compartilhado)
+├── turbo.json
+└── pnpm-workspace.yaml
+```
+
+### 2.1 Os pacotes `core-*` são agnósticos
+Não conhecem React, HTTP, botão ou CSS. **Recebem dados, fazem a matemática pesada, devolvem JSON.** São cobertos pelos ~9.000 testes preservados (a matemática não muda). Exemplo de contrato:
+
+```ts
+// @akasha/core-astrology
+calcularMapaNatal(input: { data: Date; hora: string; lat: number; lng: number; tz: string }): MapaAstral
+calcularTransitos(dia: Date): Transitos   // usado pelo cronjob de madrugada
+```
+
+---
+
+## 3. Tech Stack Definitivo
+
+### Frontend (`apps/b2c-portal`)
 | Tecnologia | Versão | Justificativa |
 |---|---|---|
-| Next.js | 14+ (App Router) | SSR, Server Actions, roteamento moderno |
-| React | 18+ | Base do framework |
-| TypeScript | 5+ (strict mode) | Tipagem completa evita erros em runtime |
-| Tailwind CSS | 3.4+ | Estilização rápida, design system consistente |
-| Shadcn/ui | Latest | Componentes acessíveis (Popover, Select, Dialog, Toast) |
-| Zustand | 4+ | Gerenciamento de estado do grid (evita prop drilling) |
-| React Hook Form | 7+ | Formulários performáticos com validação |
-| Zod | 3+ | Validação de schemas TypeScript-first |
+| Next.js | **16** (App Router, Turbopack) | SSR, Server Actions, PWA |
+| React | **19** | Base |
+| TypeScript | 5+ (strict) | Tipagem completa |
+| `next-intl` | latest | i18n desde o dia zero (pt-BR/en) |
+| Tailwind CSS | **v4** (`@theme`) | Tokens da paleta cósmica (Doc 26) |
+| Three.js / React Three Fiber | latest | Camada de atmosfera (Toroide WebGL) |
+| D3.js | latest | Geometria da Mandala (coordenadas polares) — sob o capô |
+| SVG + Framer Motion / GSAP | latest | Mandala interativa, glassmorphism, animações |
+| Zustand | 5+ | Estado de UI |
+| React Hook Form + Zod | latest | Onboarding e formulários |
 
-### Backend / Servidor
+### Backend / Engines
 | Tecnologia | Versão | Justificativa |
 |---|---|---|
-| Next.js API Routes | — | Mesmo repositório, sem servidor separado |
-| Prisma ORM | 5+ | Type-safe, migrations automáticas |
-| PostgreSQL | 15+ | Banco relacional com suporte nativo a JSON |
-| NextAuth.js | 4+ | Autenticação com sessão, JWT |
-| bcryptjs | — | Hash de senhas |
+| `packages/core-*` (TS puro) | — | Motores determinísticos agnósticos |
+| Swiss Ephemeris (`swisseph`) | — | Padrão-ouro de precisão astrológica (local, soberano) |
+| Prisma ORM | **7** | Type-safe; datasource em `prisma.config.ts` + adapter `pg` |
+| PostgreSQL + **pgvector** | 16+ | Usuários, cache de relatórios, vetores do Grimório |
+| Redis | 7+ | Céu do dia, cache, saldo de créditos |
+| **Ollama** (`nomic-embed-text`) | — | Embeddings locais soberanos (`localhost:11434`) |
+| LLM (OpenAI / Gemini SDK) | — | Camada 3 (síntese) e fallback de embeddings |
+| JWT (`jsonwebtoken`) + bcrypt | — | Sessão do `User` B2C |
+| Stripe | — | Assinaturas, Manifesto one-time, créditos |
+| `@react-pdf/renderer` | — | Manifesto em PDF (vetorial, zero RAM gráfica) |
 
-### Integrações Externas
-| Serviço | Propósito | Alternativa |
-|---|---|---|
-| OpenAI API (GPT-4o) | Geração do Dossiê via LLM | Anthropic Claude 3.5 Sonnet |
-| Astronomia API / Astrology.com API | Cálculo do Mapa Astral | Biblioteca `swisseph` (local) |
-| Google Places API | Autocomplete de cidade de nascimento | Nominatim (OpenStreetMap, gratuito) |
-| Vercel | Hosting e deploy automático | Railway, Render |
-| Supabase | PostgreSQL gerenciado | Neon, PlanetScale |
-| Vercel Blob / AWS S3 | Armazenamento dos PDFs gerados | Cloudflare R2 |
-
-### Geração de PDF
-| Tecnologia | Uso |
+### Infraestrutura (VPS Linux — Doc 25 §10)
+| Componente | Papel |
 |---|---|
-| `@react-pdf/renderer` | Geração de PDF no servidor com layout customizado |
-| OU `puppeteer` (headless Chrome) | Renderizar HTML/CSS como PDF (mais fiel ao design) |
+| Ubuntu + Docker + PM2 | Orquestração e processos persistentes |
+| Contêiner: PostgreSQL+pgvector | Dados + vetores |
+| Contêiner: Redis | Memória rápida |
+| Contêiner: Ollama | Embeddings blindados |
+| Processo PM2: Next.js + cronjobs | App + motor astrológico diário |
+
+> **Vercel/serverless descartado:** timeouts e impossibilidade de embutir Ollama/cronjobs (Doc 25 §10).
 
 ---
 
-## 3. Estrutura de Diretórios do Repositório
+## 4. Fluxos de Dados (End-to-End)
 
+### Fluxo A — Onboarding → 4 Mapas
 ```
-cabala-dos-caminhos/
-├── prisma/
-│   ├── schema.prisma              # Modelo de dados
-│   └── seed.ts                    # Seed inicial (criar usuário admin)
-│
-├── src/
-│   ├── app/                       # Next.js App Router
-│   │   ├── (auth)/
-│   │   │   └── login/
-│   │   │       └── page.tsx
-│   │   ├── (dashboard)/
-│   │   │   ├── layout.tsx         # Layout com sidebar fixa
-│   │   │   ├── dashboard/
-│   │   │   │   └── page.tsx       # Dashboard com métricas
-│   │   │   ├── nova-consulta/
-│   │   │   │   └── page.tsx       # O Cockpit principal
-│   │   │   ├── clientes/
-│   │   │   │   ├── page.tsx       # Listagem de consulentes
-│   │   │   │   ├── novo/
-│   │   │   │   │   └── page.tsx   # Formulário de cadastro
-│   │   │   │   └── [id]/
-│   │   │   │       └── page.tsx   # Perfil do consulente
-│   │   │   └── leituras/
-│   │   │       └── [id]/
-│   │   │           └── page.tsx   # Dossiê salvo
-│   │   └── api/
-│   │       ├── auth/              # NextAuth routes
-│   │       ├── clients/
-│   │       │   ├── route.ts       # GET (listagem) / POST (criar)
-│   │       │   └── [id]/
-│   │       │       └── route.ts   # GET / PUT / DELETE
-│   │       ├── readings/
-│   │       │   └── route.ts       # POST (criar leitura)
-│   │       └── generate-dossier/
-│   │           └── route.ts       # POST (dispara a IA)
-│   │
-│   ├── components/
-│   │   ├── ui/                    # Componentes Shadcn (auto-gerados)
-│   │   ├── layout/
-│   │   │   ├── Sidebar.tsx
-│   │   │   ├── Header.tsx
-│   │   │   └── DashboardLayout.tsx
-│   │   ├── clients/
-│   │   │   ├── ClientForm.tsx
-│   │   │   ├── ClientCard.tsx
-│   │   │   └── ClientMapsPanel.tsx  # Exibe os badges dos mapas
-│   │   └── mesa-real/
-│   │       ├── MesaRealGrid.tsx     # Componente principal do grid 9x4
-│   │       ├── CasaSlot.tsx         # Cada casa individual
-│   │       ├── CasaPopover.tsx      # Popover de input (Carta + Odu)
-│   │       ├── CartaSelect.tsx      # ComboBox das 36 cartas
-│   │       ├── OduSelect.tsx        # ComboBox dos 16 odus
-│   │       └── DossierViewer.tsx    # Renderizador do Markdown final
-│   │
-│   ├── lib/
-│   │   ├── calculators/
-│   │   │   ├── numerology-kabalah.ts   # Funções de Numerologia Cabalística
-│   │   │   ├── numerology-tantric.ts   # Funções de Numerologia Tântrica
-│   │   │   └── odu-birth.ts            # Cálculo do Odu de Nascimento
-│   │   ├── astrology/
-│   │   │   ├── ephemeris.ts            # Integração com API de efemérides
-│   │   │   └── houses.ts               # Cálculo das 12 casas astrológicas
-│   │   ├── ai/
-│   │   │   ├── prompt-builder.ts       # O motor de cruzamento de dados
-│   │   │   ├── llm-client.ts           # Wrapper para OpenAI/Anthropic
-│   │   │   └── correlation-map.ts      # Dicionário de correlação das 36 casas
-│   │   ├── constants/
-│   │   │   ├── lenormand-cards.ts      # Dados das 36 cartas ciganas
-│   │   │   └── odus.ts                 # Dados dos 16 odus
-│   │   ├── pdf/
-│   │   │   └── dossier-template.tsx    # Template do PDF com react-pdf
-│   │   └── prisma.ts                   # Singleton do Prisma Client
-│   │
-│   ├── store/
-│   │   └── mesa-real-store.ts          # Zustand store para o estado do grid
-│   │
-│   ├── types/
-│   │   ├── index.ts                    # Types globais
-│   │   ├── astrology.ts
-│   │   └── numerology.ts
-│   │
-│   └── middleware.ts                   # Proteção de rotas autenticadas
-│
-├── public/
-│   ├── logo.svg
-│   └── fonts/                          # Fontes locais (Cinzel, etc.)
-│
-├── .env.local                          # Variáveis de ambiente (nunca commitado)
-├── .env.example                        # Template das variáveis
-├── next.config.ts
-├── tailwind.config.ts
-├── tsconfig.json
-└── package.json
+[Coleta Sagrada + Quiz] → [POST /api/chart]
+   → core-cabala.calcular(nome, data)
+   → core-tantra.calcular(data)         (11 corpos)
+   → core-astrology.calcularMapaNatal(data, hora, lat, lng, tz)   (Swiss Ephemeris)
+   → core-odus.calcular(data)           (Ori, Orixás)
+→ Prisma: persiste User.birthChart (JSON, cacheado)
+→ Renderização da Mandala (SVG/D3 + WebGL)
 ```
 
----
-
-## 4. Fluxo de Dados Completo (End-to-End)
-
-### Fluxo A — Cadastro de Consulente
-
+### Fluxo B — Dashboard Diário (3 camadas)
 ```
-[Operador preenche formulário]
-        │
-        ▼
-[React Hook Form valida com Zod]
-        │
-        ▼
-[POST /api/clients]
-        │
-        ▼
-[Server: recebe dados brutos]
-        │
-        ├──► [NumerologyService.calculateKabalah(name, date)]
-        │         └── Retorna: { lifePath, mission, expression, motivation, gifts }
-        │
-        ├──► [NumerologyService.calculateTantric(date)]
-        │         └── Retorna: { soul, karma, divineGift, destiny, path }
-        │
-        ├──► [AstrologyService.calculateChart(date, time, lat, lng)]
-        │         └── Retorna: { sun, moon, ascendant, planets, houses, nodes }
-        │
-        └──► [OduService.calculateBirthOdu(date)]
-                  └── Retorna: { odu_number, odu_name, regency }
-        │
-        ▼
-[Prisma: CREATE Client com todos os mapas em JSON]
-        │
-        ▼
-[Response: { success: true, clientId }]
-        │
-        ▼
-[Frontend redireciona para perfil do cliente]
+[Cronjob 00:00 UTC] core-astrology.calcularTransitos(hoje)
+   → Redis SETEX transitos_diarios:AAAA-MM-DD 86400 {...}
+
+[Usuário abre o app 07:00]
+→ busca mapa natal (PostgreSQL) + céu de hoje (Redis, ms)
+→ core-graph cruza geometrias → Ponto de Tensão (Camada 2)
+→ grimoire.buscaHibrida(metadata JSONB + pgvector) → fragmentos
+→ Agente IA (Camada 3) sintetiza Clima + Ritual + Alerta (SSE)
 ```
 
-### Fluxo B — Geração do Dossiê
-
+### Fluxo C — Sincronização do Grimório
 ```
-[Operador preenche a Mesa Real e clica "Gerar Dossiê"]
-        │
-        ▼
-[Zustand Store: { matrixData: { "1": {carta, odu}, "4": {...}, ... } }]
-        │
-        ▼
-[POST /api/generate-dossier { clientId, matrixData }]
-        │
-        ▼
-[Server: busca Client no banco (mapas já calculados)]
-        │
-        ▼
-[PromptBuilder.build(client, matrixData)]
-        │   Para cada casa em matrixData:
-        │   1. Busca CorrelationMap[casa] → { astroAspect, kabalaAspect, tantricAspect }
-        │   2. Extrai os valores correspondentes do client.astrologyMap / kabalisticMap / tantricMap
-        │   3. Monta o bloco de contexto daquela casa
-        │
-        ▼
-[Payload final formatado → API do LLM (OpenAI / Anthropic)]
-        │
-        ▼
-[LLM retorna Dossiê em Markdown]
-        │
-        ▼
-[Prisma: CREATE Reading + CREATE Report (com o Markdown)]
-        │
-        ▼
-[Response: stream do Markdown para o frontend]
-        │
-        ▼
-[DossierViewer renderiza o Markdown em tempo real (streaming)]
-        │
-        ▼
-[Botão "Exportar PDF" disponível → /api/generate-pdf]
+[git push de novo ritual .md na main]
+→ GitHub Webhook (POST assinado) → /api/grimoire-sync
+→ verifica assinatura → npm run grimoire:sync
+→ git pull → lê YAML+Markdown → Ollama gera embeddings (localhost)
+→ UPSERT em pgvector (tabela grimorio)
+   (botão "Sincronizar Grimório" no admin engatilha a mesma rota)
 ```
 
 ---
@@ -261,50 +157,58 @@ cabala-dos-caminhos/
 ## 5. Variáveis de Ambiente (`.env.example`)
 
 ```env
-# Banco de Dados
-DATABASE_URL="postgresql://user:password@host:5432/cabala_dos_caminhos"
+# Banco
+DATABASE_URL="postgresql://user:pass@localhost:5432/akasha"
+# (pgvector habilitado: CREATE EXTENSION vector;)
 
-# Autenticação
-NEXTAUTH_SECRET="seu-secret-aqui"
-NEXTAUTH_URL="http://localhost:3000"
+# Redis
+REDIS_URL="redis://localhost:6379"
 
-# APIs de Inteligência Artificial (escolher uma)
+# Embeddings locais (Ollama)
+OLLAMA_URL="http://localhost:11434"
+EMBEDDING_MODEL="nomic-embed-text"
+# Fallback de embeddings/síntese na nuvem (opcional)
 OPENAI_API_KEY="sk-..."
-ANTHROPIC_API_KEY="sk-ant-..."
+GEMINI_API_KEY="..."
+SYNTHESIS_MODEL="gpt-4o"          # Camada 3 (Agente de Síntese)
 
-# API de Astrologia (escolher uma)
-ASTROLOGY_API_KEY="..."
-ASTROLOGY_API_URL="https://api.astrology-provider.com/v1"
+# Auth (User B2C)
+JWT_SECRET="..."
 
-# Google Places (autocomplete de cidades)
-NEXT_PUBLIC_GOOGLE_PLACES_KEY="..."
+# Stripe (assinatura + Manifesto + créditos)
+STRIPE_SECRET_KEY="sk_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
 
-# Storage para PDFs (Vercel Blob ou S3)
-BLOB_READ_WRITE_TOKEN="..."
-# OU
-AWS_ACCESS_KEY_ID="..."
-AWS_SECRET_ACCESS_KEY="..."
-AWS_S3_BUCKET="cabala-dossiers"
+# Grimório sync (webhook do GitHub)
+GITHUB_WEBHOOK_SECRET="..."
 
-# Ambiente
+# Geolocalização (onboarding)
+NOMINATIM_URL="https://nominatim.openstreetmap.org"
+
+# i18n
+DEFAULT_LOCALE="pt-BR"
+
 NODE_ENV="development"
 ```
 
 ---
 
-## 6. Decisões de Arquitetura e Justificativas
+## 6. Decisões de Arquitetura
 
-### Por que Next.js e não separar frontend/backend?
-Para o MVP de um sistema usado por 1-2 pessoas, um monólito Next.js reduz drasticamente a complexidade de deploy, manutenção e custo. A separação frontend/backend só vale a pena quando há necessidade de escalar os serviços independentemente.
+### Por que monorepo?
+Isola a lógica espiritual validada (~9k testes) em `packages/core-*` agnósticos, permitindo construir o `b2c-portal` do zero sem acoplar ao Cockpit antigo. O `legacy-cockpit` segue importando os mesmos engines até ser desligado (retrocompatibilidade — Doc 25 §11).
 
-### Por que Zustand para o grid?
-O estado do grid (36 casas com carta e Odu em cada) é complexo o suficiente para justificar um store global, mas simples o suficiente para não precisar de Redux. Zustand é leve, sem boilerplate e funciona perfeitamente com React 18.
+### Por que três camadas de IA?
+IA pura alucina rituais e erra cálculos; matriz fixa gera texto robótico. Separar Determinístico (precisão) + Grafo (cruzamento) + Síntese (fluidez com RAG) é o que torna o Akasha impecável (Doc 06).
 
-### Por que salvar os mapas como JSON e não em tabelas relacionais?
-Os mapas astrológicos e numerológicos têm estrutura semi-variável (alguns aspectos podem ou não estar presentes) e nunca precisam ser filtrados individualmente via SQL. Armazená-los como JSON no PostgreSQL (suportado natively pelo Prisma) é mais performático e flexível.
+### Por que pgvector + Ollama local (e não Pinecone/Neo4j)?
+Soberania de dados, latência zero, custo fixo. O conhecimento do Grimório nunca trafega na internet pública. Neo4j é pesado (JVM); Pinecone/Weaviate adicionam dependência cloud e custo recorrente (Doc 25 §5).
 
-### Por que não usar `localStorage` no frontend?
-O estado da mesa real é processual (uma sessão de atendimento) e não precisa persistir entre navegações. O Zustand mantém o estado na memória durante a sessão. Para persistência real, o backend com Prisma é a fonte da verdade.
+### Por que Swiss Ephemeris + Redis?
+Precisão de padrão-ouro (local) + "Calcule Uma Vez, Sirva Infinitamente": o céu é o mesmo para todos num instante; calcular uma vez por dia e cachear no Redis elimina recomputação e custo (Doc 25 §10).
 
-### LLM: OpenAI vs Anthropic?
-Ambos são suportados. Para o MVP, recomenda-se OpenAI GPT-4o por sua velocidade de resposta e custo. O código deve ser construído com um wrapper abstrato (`llm-client.ts`) que permita trocar o provider sem refatorar o `PromptBuilder`.
+### Por que VPS e não serverless?
+Ollama e cronjobs de madrugada são incompatíveis com funções serverless (timeout, sem processos persistentes). VPS Linux com Docker+PM2 dá controle total e custo previsível.
+
+### Por que `@react-pdf/renderer` e não Puppeteer?
+Puppeteer/headless Chrome consome RAM gráfica absurda no VPS (pode derrubar DB/IA). `@react-pdf/renderer` compila PDF vetorial no backend com texto selecionável e quase zero RAM (Doc 25 §3).

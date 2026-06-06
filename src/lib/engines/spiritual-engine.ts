@@ -6,9 +6,9 @@
  * @version 1.0.0
  */
 
-import { calculateNumerology } from '@/lib/numerologia/generator';
-import { drawOdu, type Odu, type DrawResult } from '@/lib/ifa/draw';
-import { getBirthChart } from '@/lib/astrologia/birth-chart';
+import { calculateNumerology } from '@akasha/core-cabala';
+import { drawOdu, type Odu, type DrawResult } from '@akasha/core-odus';
+import { getBirthChart } from '@akasha/core-astrology';
 import { getData as getChakraData } from '@/lib/chakra/v4/chakra-v4-data';
 import { DeepCorrelationEngine } from '@/lib/ai/deep-correlation-engine';
 import type { UserSpiritualData } from '@/lib/ai/types';
@@ -17,8 +17,8 @@ import {
   getQuizilasPorOdu,
   getPreceitosPorOdu,
   getEbósPorOdu,
-} from '@/lib/odus/calculos';
-import type { Signo } from '@/lib/astrologia/tipos';
+} from '@akasha/core-odus';
+import type { Signo } from '@akasha/core-astrology';
 import type {
   BirthProfile,
   MapaAlmaCompleto,
@@ -37,7 +37,7 @@ import { getOrixa } from '@/lib/orixa/types';
 // CORRESPONDENCE TABLES
 // ============================================================
 
-const VIDA_ODU_MAP: Record<number, number> = {
+const LIFEPATH_ODU_MAP: Record<number, number> = {
   1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 16,
 };
 
@@ -158,6 +158,8 @@ function calcOdu(profile: BirthProfile): OduResults {
     preceitos,
     ebos,
     elemento: principal.elementos,
+    elementalForce: `${principal.elementos} — ${principal.significado.split('.')[0]}.`,
+    lifeLesson: preceitos.join('; ') || principal.preceitos.join('; '),
     arcanoTarot: principal.numero % 22,
     caminhoSephirah: SEPHIRAH_MAP[principal.numero] ?? 'Malkuth',
     raw: oduDraw,
@@ -182,7 +184,7 @@ function getDominantChakra(dayOfBirth: number, ascendente: string): string {
 }
 
 function buildChakraResults(
-  vida: number,
+  lifePath: number,
   oduNumero: number,
   ascendente: string,
   dataNascimento: string
@@ -192,21 +194,22 @@ function buildChakraResults(
   const dayOfBirth = new Date(2000, 0, parts[2]).getDay();
   const dominantChakraId = getDominantChakra(dayOfBirth, ascendente);
 
-  const isHyperactive = vida % 2 !== 0;
+  const isHyperactive = lifePath % 2 !== 0;
   const isBlocked = oduNumero >= 10;
 
   const chakraInfos: ChakraInfo[] = chakras.map((c) => {
-    let estado: ChakraInfo['estado'] = 'equilibrado';
-    if (isHyperactive && c.sequence <= 3) estado = 'hiperativo';
-    if (isBlocked && c.sequence >= 6) estado = 'bloqueado';
+    let estado: 'equilibrado' | 'hiperativo' | 'bloqueado' = 'equilibrado';
+    const seq = (c as unknown as { sequence?: number }).sequence ?? 0;
+    if (isHyperactive && seq <= 3) estado = 'hiperativo';
+    if (isBlocked && seq >= 6) estado = 'bloqueado';
     const intensidade = c.id === dominantChakraId ? 85 : 50;
     return {
-      numero: c.sequence,
-      nome: c.namePt,
+      numero: seq,
+      nome: c.name,
       estado,
       intensidade,
       elemento: c.element,
-      cor: c.colorHex ?? c.color,
+      cor: c.color,
     };
   });
 
@@ -219,8 +222,8 @@ function buildChakraResults(
 
   return {
     chakras: chakraInfos,
-    dominante: dominante?.namePt ?? 'Plexo Solar',
-    bloqueado: bloqueado?.namePt ?? 'Raiz',
+    dominante: dominante?.name ?? 'Plexo Solar',
+    bloqueado: bloqueado?.name ?? 'Raiz',
     equilibrio,
     raw: chakras,
   };
@@ -273,18 +276,50 @@ function parseAstrologyResults(
 ): AstrologyResults {
   const sol = raw.planets.find((p) => p.planet === 'sol');
   const sign = (sol?.sign ?? 'aries') as Signo;
+  const toPos = (p: { planet: string; longitude: number; sign: string } | undefined) =>
+    ({ planeta: (p?.planet ?? 'sol') as import('@akasha/core-astrology').Planeta, longitude: p?.longitude ?? 0, latitude: 0, distancia: 1, velocidade: 0, signo: (p?.sign ?? 'aries') as Signo, casa: 1, grauNoSigno: Math.floor((p?.longitude ?? 0) % 30) + 1 });
+  const chironP = raw.planets.find((p) => p.planet === 'chiron');
+  const lilithP = raw.planets.find((p) => p.planet === 'lilith');
+  // Count planets by element
+  const PLANET_SIGNS = raw.planets.map((p) => p.sign);
+  const ELEMENT_SIGNS: Record<string, string[]> = {
+    fire: ['aries', 'leao', 'sagitario'],
+    earth: ['touro', 'virgem', 'capricornio'],
+    air: ['gemeos', 'libra', 'aquario'],
+    water: ['cancer', 'escorpio', 'peixes'],
+  };
+  const MODALITY_SIGNS: Record<string, string[]> = {
+    cardinal: ['aries', 'cancer', 'libra', 'capricornio'],
+    fixed: ['touro', 'leao', 'escorpio', 'aquario'],
+    mutable: ['gemeos', 'virgem', 'sagitario', 'peixes'],
+  };
+  const elementos = {
+    fire: PLANET_SIGNS.filter((s) => ELEMENT_SIGNS.fire.includes(s)).length,
+    earth: PLANET_SIGNS.filter((s) => ELEMENT_SIGNS.earth.includes(s)).length,
+    air: PLANET_SIGNS.filter((s) => ELEMENT_SIGNS.air.includes(s)).length,
+    water: PLANET_SIGNS.filter((s) => ELEMENT_SIGNS.water.includes(s)).length,
+  };
+  const modalidades = {
+    cardinal: PLANET_SIGNS.filter((s) => MODALITY_SIGNS.cardinal.includes(s)).length,
+    fixed: PLANET_SIGNS.filter((s) => MODALITY_SIGNS.fixed.includes(s)).length,
+    mutable: PLANET_SIGNS.filter((s) => MODALITY_SIGNS.mutable.includes(s)).length,
+  };
   return {
     ascendente: ascendenteFromDegree(raw.ascendant),
-    sol: { planeta: 'sol', longitude: sol?.longitude ?? 0, latitude: 0, distancia: 1, velocidade: 0, signo: sign, casa: 1, grauNoSigno: Math.floor((sol?.longitude ?? 0) % 30) + 1 },
-    lua: { planeta: 'lua', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'cancer', casa: 1, grauNoSigno: 1 },
-    mercurio: { planeta: 'mercurio', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'gemeos', casa: 1, grauNoSigno: 1 },
-    venus: { planeta: 'venus', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'touro', casa: 1, grauNoSigno: 1 },
-    marte: { planeta: 'marte', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'aries', casa: 1, grauNoSigno: 1 },
-    jupiter: { planeta: 'jupiter', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'sagitario', casa: 1, grauNoSigno: 1 },
-    saturno: { planeta: 'saturno', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'capricornio', casa: 1, grauNoSigno: 1 },
-    urano: { planeta: 'urano', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario', casa: 1, grauNoSigno: 1 },
-    netuno: { planeta: 'netuno', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'peixes', casa: 1, grauNoSigno: 1 },
-    plutao: { planeta: 'plutao', longitude: 0, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio', casa: 1, grauNoSigno: 1 },
+    sol: toPos(sol),
+    lua: toPos(raw.planets.find((p) => p.planet === 'lua')),
+    mercurio: toPos(raw.planets.find((p) => p.planet === 'mercurio')),
+    venus: toPos(raw.planets.find((p) => p.planet === 'venus')),
+    marte: toPos(raw.planets.find((p) => p.planet === 'marte')),
+    jupiter: toPos(raw.planets.find((p) => p.planet === 'jupiter')),
+    saturno: toPos(raw.planets.find((p) => p.planet === 'saturno')),
+    urano: toPos(raw.planets.find((p) => p.planet === 'urano')),
+    netuno: toPos(raw.planets.find((p) => p.planet === 'netuno')),
+    plutao: toPos(raw.planets.find((p) => p.planet === 'plutao')),
+    chiron: toPos(chironP),
+    lilith: toPos(lilithP),
+    elementos,
+    modalidades,
     casas: raw.houses.map((h, i) => ({
       numero: i + 1,
       signo: sign,
@@ -308,6 +343,10 @@ const ASTROLOGY_FALLBACK: AstrologyResults = {
   urano: { planeta: 'urano', longitude: 210, latitude: 0, distancia: 1, velocidade: 0, signo: 'aquario', casa: 11, grauNoSigno: 1 },
   netuno: { planeta: 'netuno', longitude: 240, latitude: 0, distancia: 1, velocidade: 0, signo: 'peixes', casa: 12, grauNoSigno: 1 },
   plutao: { planeta: 'plutao', longitude: 270, latitude: 0, distancia: 1, velocidade: 0, signo: 'escorpio', casa: 8, grauNoSigno: 1 },
+  chiron: { planeta: 'chiron' as import('@akasha/core-astrology').Planeta, longitude: 0, latitude: 0, distancia: 13.7, velocidade: 0.05295, signo: 'aries', casa: 1, grauNoSigno: 1 },
+  lilith: { planeta: 'lilith' as import('@akasha/core-astrology').Planeta, longitude: 120, latitude: 0, distancia: 0.00257, velocidade: 0.054, signo: 'leao', casa: 5, grauNoSigno: 1 },
+  elementos: { fire: 3, earth: 3, air: 3, water: 3 },
+  modalidades: { cardinal: 3, fixed: 3, mutable: 3 },
   casas: Array.from({ length: 12 }, (_, i) => ({
     numero: i + 1,
     signo: 'aries' as Signo,
@@ -329,11 +368,11 @@ const ARCANO_NAMES = [
   'O Julgamento', 'O Mundo', 'O Louco',
 ];
 
-function buildTarotResults(vida: number, _anoPessoal: number): TarotResults {
+function buildTarotResults(lifePath: number, _anoPessoal: number): TarotResults {
   const currentYear = new Date().getFullYear();
-  const birthCardId = vida % 22;
-  const yearCardId = Math.abs(vida + currentYear) % 22 || 1;
-  const soulCardId = Math.abs(vida * 3) % 22 || 1;
+  const birthCardId = lifePath % 22;
+  const yearCardId = Math.abs(lifePath + currentYear) % 22 || 1;
+  const soulCardId = Math.abs(lifePath * 3) % 22 || 1;
 
   return {
     cartaNascimento: birthCardId,
@@ -355,49 +394,28 @@ function buildTarotResults(vida: number, _anoPessoal: number): TarotResults {
 // CONVERGENCE DETECTION
 // ============================================================
 
-export function detectarConvergencias(
+function detectarConvergencias(
   numerologia: NumerologyResults,
   odu: OduResults,
   astrologia: AstrologyResults
 ): Convergence[] {
   const convergencias: Convergence[] = [];
-
-  if (VIDA_ODU_MAP[numerologia.vida] === odu.regente.numero) {
+  // 1. Vida-Odú dual convergence
+  if (LIFEPATH_ODU_MAP[numerologia.lifePath] === odu.regente.numero) {
     convergencias.push({
       sistemas: ['numerologia', 'odu'],
       energia: odu.orixas[0]?.toLowerCase() ?? 'oxum',
       forca: 'forte',
-      descricao: `Caminho de Vida ${numerologia.vida} alinha-se com ${odu.regente.nome}.`,
+      descricao: `Caminho de Vida ${numerologia.lifePath} alinha-se com ${odu.regente.nome}.`,
     });
   }
+  // 2. Sol-Orixá convergence (astro-odu + potentially triple)
+  const solConvergencia = detectSolOrixaConvergence(numerologia, odu, astrologia);
+  if (solConvergencia) convergencias.push(solConvergencia.dual);
+  if (solConvergencia?.triple) convergencias.push(solConvergencia.triple);
 
-  const solSigno = astrologia.sol.signo;
-  const solPlaneta = ZODIAC_TO_PLANET[solSigno.toLowerCase()] ?? solSigno;
-  const solOrixa = PLANETA_SIGNO_ORIXÁ[solPlaneta];
-  if (solOrixa && odu.orixas.includes(solOrixa)) {
-    convergencias.push({
-      sistemas: ['astrologia', 'odu'],
-      energia: solOrixa.toLowerCase(),
-      forca: 'medio',
-      descricao: `Sol em ${solSigno} conecta-se a ${solOrixa} (${odu.regente.nome}).`,
-    });
-  }
-
-  if (solOrixa && odu.orixas.includes(solOrixa)) {
-    const vidaEnergia = odu.orixas[0]?.toLowerCase() ?? '';
-    if (vidaEnergia === solOrixa.toLowerCase()) {
-      convergencias.push({
-        sistemas: ['numerologia', 'astrologia', 'odu'],
-        energia: vidaEnergia,
-        forca: 'forte',
-        descricao: `Tríplice convergência: Vida ${numerologia.vida}, Sol em ${solSigno}, ${solOrixa}.`,
-      });
-    }
-  }
-
-  const ascSigno = astrologia.ascendente;
-  const ascPlaneta = ZODIAC_TO_PLANET[ascSigno.toLowerCase()] ?? ascSigno;
-  const ascOrixa = PLANETA_SIGNO_ORIXÁ[ascPlaneta];
+  // 3. Ascendente-Orixá convergence
+  const ascOrixa = getPlanetaOrixa(astrologia.ascendente);
   if (ascOrixa && odu.orixas.includes(ascOrixa)) {
     convergencias.push({
       sistemas: ['astrologia', 'odu'],
@@ -410,75 +428,64 @@ export function detectarConvergencias(
   return convergencias;
 }
 
+// ─── Convergence Helpers ─────────────────────────────────────────────────────
+
+/** Returns the orixá linked to a planet via ZODIAC_TO_PLANET → PLANETA_SIGNO_ORIXÁ chain. */
+function getPlanetaOrixa(sign: string): string | undefined {
+  const planeta = ZODIAC_TO_PLANET[sign.toLowerCase()] ?? sign;
+  return PLANETA_SIGNO_ORIXÁ[planeta];
+}
+
+/**
+ * Detects Sol-Orixá convergence (dual astro-odu + triple numerologia-astrologia-odu).
+ * Consolidates two redundant if-blocks into one structured check.
+ */
+function detectSolOrixaConvergence(
+  numerologia: NumerologyResults,
+  odu: OduResults,
+  astrologia: AstrologyResults
+): { dual: Convergence; triple?: Convergence } | null {
+  const solSigno = astrologia.sol.signo;
+  const solOrixa = getPlanetaOrixa(solSigno);
+  if (!solOrixa || !odu.orixas.includes(solOrixa)) return null;
+  const dual: Convergence = {
+    sistemas: ['astrologia', 'odu'],
+    energia: solOrixa.toLowerCase(),
+    forca: 'medio',
+    descricao: `Sol em ${solSigno} conecta-se a ${solOrixa} (${odu.regente.nome}).`,
+  };
+  const vidaEnergia = odu.orixas[0]?.toLowerCase() ?? '';
+  if (vidaEnergia === solOrixa.toLowerCase()) {
+    return {
+      dual,
+      triple: {
+        sistemas: ['numerologia', 'astrologia', 'odu'],
+        energia: vidaEnergia,
+        forca: 'forte',
+        descricao: `Tríplice convergência: Vida ${numerologia.lifePath}, Sol em ${solSigno}, ${solOrixa}.`,
+      },
+    };
+  }
+  return { dual };
+}
+
 // ============================================================
 // MAIN ENGINE FUNCTION
 // ============================================================
-
 export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<MapaAlmaCompleto> {
   const currentYear = new Date().getFullYear();
-
   // 1. NUMEROLOGIA
-  const numerologiaRaw = calculateNumerology(profile.nomeCompleto, profile.dataNascimento);
-  const numerologiaDestino = numerologiaRaw.destino;
-  const numerologia: NumerologyResults = {
-    vida: numerologiaRaw.vida,
-    expressao: numerologiaRaw.expressao,
-    motivacao: numerologiaRaw.motivacao,
-    impressao: numerologiaRaw.impressao,
-    destino: typeof numerologiaDestino === 'object' && numerologiaDestino !== null
-      ? (numerologiaDestino as { numero: number }).numero
-      : 0,
-    cicloAtual: reduceToBase(currentYear),
-    anoPessoal: calcularAnoPessoal(profile.dataNascimento),
-    metodoUsado: 'pitagorica',
-    raw: undefined,
-  };
-
+  const numerologia = buildNumerologiaResults(profile, currentYear);
   // 2. ODU
   const odu = calcOdu(profile);
-
   // 3. ASTROLOGIA
-  const coords =
-    CITY_COORDS[profile.cidade] ||
-    CITY_COORDS[profile.estado] ||
-    DEFAULT_COORDS;
-
-  let astrologia: AstrologyResults;
-  try {
-    const birthDate = new Date(profile.dataNascimento);
-    const birthTime = profile.hora
-      ? new Date(`${profile.dataNascimento}T${profile.hora}`)
-      : birthDate;
-
-    const chartRaw = getBirthChart({
-      birthDate: birthTime,
-      latitude: coords.lat,
-      longitude: coords.lon,
-    });
-    astrologia = parseAstrologyResults(chartRaw);
-  } catch {
-    astrologia = ASTROLOGY_FALLBACK;
-  }
-
-  // 4. TAROT
-  const tarot = buildTarotResults(numerologia.vida, numerologia.anoPessoal);
-
-  // 5. CHAKRAS
-  const chakras = buildChakraResults(
-    numerologia.vida,
-    odu.regente.numero,
-    astrologia.ascendente,
-    profile.dataNascimento
-  );
-  // 6. CONVERGÊNCIAS
+  const coords = CITY_COORDS[profile.cidade] || CITY_COORDS[profile.estado] || DEFAULT_COORDS;
+  const astrologia = buildAstrologiaResults(profile, coords);
+  const tarot = buildTarotResults(numerologia.lifePath, numerologia.anoPessoal);
+  const chakras = buildChakraResults(numerologia.lifePath, odu.regente.numero, astrologia.ascendente, profile.dataNascimento);
   const convergencias = detectarConvergencias(numerologia, odu, astrologia);
-  // 7. ORIXÁS DOMINANTES
-  const orixasDominantes = aggregateOrixas(
-    odu,
-    astrologia.ascendente,
-    astrologia.sol.signo
-  );
-  //8. BUILD MAPA OBJECT
+  const orixasDominantes = aggregateOrixas(odu, astrologia.ascendente, astrologia.sol.signo);
+  // BUILD MAPA OBJECT
   const mapa: MapaAlmaCompleto = {
     perfil: profile,
     numerologia,
@@ -492,59 +499,123 @@ export async function gerarMapaAlmaCompleto(profile: BirthProfile): Promise<Mapa
     versao: '1.0.0',
     deepCorrelations: null,
   };
-  // 9. DEEP CORRELATION ANALYSIS
-  const deepEngine = new DeepCorrelationEngine();
-  const userData: UserSpiritualData = {
-    id: profile.nomeCompleto,
-    nome: profile.nomeCompleto,
-    dataNascimento: profile.dataNascimento,
-    numeroPessoal: numerologia.vida,
-    arcoPessoal: tarot.cartaNascimento,
-    odu: odu.regente.nome,
-    orixaRegente: orixasDominantes[0] || '',
-    sefirotDominante: [SEPHIRAH_MAP[numerologia.vida] || 'Malkuth'],
-    arcoMaior: [tarot.cartaNascimento, tarot.cartaAlma],
-    sign: astrologia.sol.signo,
-    houses: {},
-    rashi: astrologia.sol.signo,
+  // 9. DEEP CORRELATION ANALYSIS (graceful degradation)
+  attachDeepCorrelations(mapa, numerologia, tarot, odu, orixasDominantes, astrologia);
+  // 10. HYPER CORRELATION SYNTHESIS
+  attachHyperSynthesis(mapa, numerologia, astrologia, odu);
+  return mapa;
+}
+// ─── Main Engine Helpers ─────────────────────────────────────────────────────
+/** Builds the NumerologyResults from a birth profile and current year. */
+function buildNumerologiaResults(profile: BirthProfile, currentYear: number): NumerologyResults {
+  const numerologiaRaw = calculateNumerology(profile.nomeCompleto, profile.dataNascimento);
+  const destino = numerologiaRaw.destino;
+  return {
+    lifePath: numerologiaRaw.vida,
+    expressao: numerologiaRaw.expressao,
+    motivacao: numerologiaRaw.motivacao,
+    impressao: numerologiaRaw.impressao,
+    destino: typeof destino === 'object' && destino !== null
+      ? (destino as { numero: number }).numero
+      : 0,
+    cicloAtual: reduceToBase(currentYear),
+    anoPessoal: calcularAnoPessoal(profile.dataNascimento),
+    metodoUsado: 'pitagorica',
+    raw: undefined,
   };
+}
+/** Builds AstrologyResults from a birth profile and coordinates, with graceful fallback. */
+function buildAstrologiaResults(profile: BirthProfile, coords: { lat: number; lon: number }): AstrologyResults {
   try {
+    const birthDate = new Date(profile.dataNascimento);
+    const birthTime = profile.hora
+      ? new Date(`${profile.dataNascimento}T${profile.hora}`)
+      : birthDate;
+    const chartRaw = getBirthChart({
+      birthDate: birthTime,
+      latitude: coords.lat,
+      longitude: coords.lon,
+    });
+    return parseAstrologyResults(chartRaw);
+  } catch {
+    return ASTROLOGY_FALLBACK;
+  }
+}
+/**
+ * Attaches deep correlations to the mapa, with graceful degradation.
+ * Failures are logged but do not break the calculation.
+ */
+function attachDeepCorrelations(
+  mapa: MapaAlmaCompleto,
+  numerologia: NumerologyResults,
+  tarot: TarotResults,
+  odu: OduResults,
+  orixasDominantes: string[],
+  astrologia: AstrologyResults
+): void {
+  try {
+    const deepEngine = new DeepCorrelationEngine();
+    const userData = buildDeepCorrelationUserData(numerologia, tarot, odu, orixasDominantes, mapa.perfil, astrologia);
     const correlations = deepEngine.analyzeCorrelations(userData);
     const patterns = deepEngine.findCrossSystemPatterns(userData);
     const energyHarmony = deepEngine.calculateEnergyHarmony(userData);
     mapa.deepCorrelations = { correlations, patterns, energyHarmony };
   } catch (err) {
-    // Graceful degradation — deep correlations are enhancement, not critical
     console.warn('[MapaAlma] Deep correlation analysis failed:', err instanceof Error ? err.message : String(err));
   }
-  // ─── HyperCorrelation Synthesis (Sprint 218) ──────────────────────────
-  // Generate cross-tradition synthesis using HyperCorrelationEngine
+}
+/** Builds the UserSpiritualData shape required by DeepCorrelationEngine. */
+function buildDeepCorrelationUserData(
+  numerologia: NumerologyResults,
+  tarot: TarotResults,
+  odu: OduResults,
+  orixasDominantes: string[],
+  perfil: BirthProfile,
+  astrologia: AstrologyResults
+): UserSpiritualData {
+  return {
+    id: perfil.nomeCompleto,
+    nome: perfil.nomeCompleto,
+    dataNascimento: perfil.dataNascimento,
+    numeroPessoal: numerologia.lifePath,
+    arcoPessoal: tarot.cartaNascimento,
+    odu: odu.regente.nome,
+    orixaRegente: orixasDominantes[0] || '',
+    sefirotDominante: [SEPHIRAH_MAP[numerologia.lifePath] || 'Malkuth'],
+    arcoMaior: [tarot.cartaNascimento, tarot.cartaAlma],
+    sign: astrologia.sol.signo,
+    houses: {},
+    rashi: astrologia.sol.signo,
+  };
+}
+/** Attaches HyperCorrelation synthesis and signature to the mapa. */
+function attachHyperSynthesis(
+  mapa: MapaAlmaCompleto,
+  numerologia: NumerologyResults,
+  astrologia: AstrologyResults,
+  odu: OduResults
+): void {
   const orixaRegenteMapa = odu.orixas[0]?.toLowerCase() ?? 'oxala';
   const synthesis = hyperCorrelationEngine.answerDeepQuestion(
-    numerologia.vida,
+    numerologia.lifePath,
     astrologia.sol.signo,
     orixaRegenteMapa
   );
-  // Build signature with master number support
-  const isMasterNum = [11, 22, 33].includes(numerologia.vida);
-  const vidaStr = isMasterNum ? `${numerologia.vida}M` : String(numerologia.vida);
+  const harmonization = generateHarmonizationRecommendations(numerologia.lifePath, astrologia.sol.signo, orixaRegenteMapa, odu);
+  const lifePathStr = [11, 22, 33].includes(numerologia.lifePath) ? `${numerologia.lifePath}M` : String(numerologia.lifePath);
   const signStr = astrologia.sol.signo.substring(0, 3).toLowerCase();
   const orixaStr = orixaRegenteMapa.substring(0, 3);
-  // Generate harmonization recommendations
-  const harmonization = generateHarmonizationRecommendations(numerologia.vida, astrologia.sol.signo, orixaRegenteMapa, odu);
-  // Add hyperSynthesis to mapa
   (mapa as unknown as Record<string, unknown>).hyperSynthesis = {
-    signature: `${vidaStr}-${signStr}-${orixaStr}`,
+    signature: `${lifePathStr}-${signStr}-${orixaStr}`,
     explanation: synthesis,
     practices: [
-      `Meditação diária para harmonia do Caminho ${numerologia.vida}`,
+      `Meditação diária para harmonia do Caminho ${numerologia.lifePath}`,
       `Oração a ${orixaRegenteMapa} no dia correspondente`,
       `Prática de respiração elementar`,
     ],
     harmonization,
     conflicts: harmonization.filter(h => h.type === 'conflict'),
   };
-  return mapa;
 }
 // ─── Harmonization Helper ─────────────────────────────────────────────────
 interface HarmonizationItem {

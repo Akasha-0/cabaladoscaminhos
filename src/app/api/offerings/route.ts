@@ -4,17 +4,12 @@
 // ============================================================
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
+import { searchParamsToObject } from '@/lib/api/query-params';
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 const OfferingTypeSchema = z.enum(['ebo', 'oferenda', 'libacao', 'defumacao', 'vela']);
 const ElementTypeSchema = z.enum(['agua', 'terra', 'fogo', 'ar', 'orixa']);
 const IntensityLevelSchema = z.enum(['suave', 'medio', 'forte']);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 const OfferingQuerySchema = z.object({
   type: OfferingTypeSchema.optional(),
@@ -79,7 +74,7 @@ interface Offering {
     frequency: string;
   };
 }
-
+// fallow-ignore-next-line unused-type
 export type { Offering, OfferingItem, OfferingType, ElementType, IntensityLevel };
 export const dynamic = 'force-dynamic';
 
@@ -402,17 +397,11 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
 
-    const parseResult = OfferingQuerySchema.safeParse({
-      type: searchParams.get('type'),
-      orixa: searchParams.get('orixa'),
-      element: searchParams.get('element'),
-      dia: searchParams.get('dia'),
-      id: searchParams.get('id'),
-      limit: searchParams.get('limit'),
-      chakra: searchParams.get('chakra'),
-      sefirot: searchParams.get('sefirot'),
-      frequency: searchParams.get('frequency'),
-    });
+    const parseResult = OfferingQuerySchema.safeParse(
+      searchParamsToObject(searchParams, [
+        'type', 'orixa', 'element', 'dia', 'id', 'limit', 'chakra', 'sefirot', 'frequency',
+      ])
+    );
 
     if (!parseResult.success) {
       return NextResponse.json({

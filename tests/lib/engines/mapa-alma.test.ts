@@ -34,13 +34,13 @@ vi.mock('@/lib/redis', () => ({
 import {
   calcularTantrica,
   getInterpretacao,
-} from '@/lib/numerologia/calculos';
+  NUMEROLOGY_ODU_CORRELATIONS,
+} from '@akasha/core-cabala';
 import {
   calcularOduNascimento,
   odusData,
-} from '@/lib/odus/calculos';
+} from '@akasha/core-odus';
 import { ODU_TAROT_CORRELATIONS } from '@/lib/correlation/correlation-types';
-import { getAllNumerologyOdúCorrelations } from '@/lib/numerologia/odu-correlations';
 import { getData as getChakraData } from '@/lib/chakra/v4/chakra-v4-data';
 import { DAY_CORRELATIONS } from '@/lib/correlation/SpiritualCorrelationEngine';
 
@@ -144,7 +144,7 @@ function calculateMapaAlma(profile: BirthProfile): MapaAlma {
 
   // 5. Detect Convergence (Numerologia-Odu alignment)
   const convergencias: MapaAlmaConvergencia[] = [];
-  const correlations = getAllNumerologyOdúCorrelations();
+  const correlations = NUMEROLOGY_ODU_CORRELATIONS;
 
   // Reduce master numbers to single digit for correlation lookup
   let reducedNumero = numeroVida;
@@ -187,10 +187,10 @@ function calculateMapaAlma(profile: BirthProfile): MapaAlma {
   const chakras: MapaAlmaChakra[] = chakraData.slice(0, 7).map(c => ({
     id: c.id,
     nome: c.name,
-    nomePt: c.namePt,
+    nomePt: c.name,
     cor: c.color,
     localizacao: c.location,
-    qualidade: c.qualities[0] || '',
+    qualidade: c.meaning.split('.')[0] || '',
   }));
 
   // 8. Determine Orixás Dominantes

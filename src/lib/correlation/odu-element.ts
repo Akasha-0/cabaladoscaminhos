@@ -714,16 +714,3 @@ export function getElementDistribution(): Record<Elemento, number> {
   }
   return distribution as Record<Elemento, number>;
 }
-
-export default {
-  getOduElement,
-  getElementOdu,
-  getAllOduElements,
-  getAllOduNames,
-  hasOduElement,
-  getOduByNumber,
-  getOdusForElement,
-  getAllElements,
-  getElementDistribution,
-  ODU_ELEMENT_MAPPINGS,
-};

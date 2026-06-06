@@ -8,9 +8,9 @@ import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } fr
  * @version 1.0.0
  */
 
-import type { NumerologyResult } from '../../numerologia/calculator';
-import type { Odu, DrawResult } from '../../ifa/draw';
-import type { MapaNatal, Planeta, Signo, Aspecto, Casa, PosicaoPlaneta } from '../../astrologia/tipos';
+import type { NumerologyResult } from '@akasha/core-cabala';
+import type { Odu, DrawResult } from '@akasha/core-odus';
+import type { MapaNatal, Planeta, Signo, Aspecto, Casa, PosicaoPlaneta } from '@akasha/core-astrology';
 import type { CardMeaning } from '../../tarot/meanings';
 import type { ChakraV4Data } from '../../chakra/v4/chakra-v4-data';
 
@@ -24,7 +24,7 @@ export type BirthProfile = {
 };
 
 export type NumerologyResults = {
-  vida: number;
+  lifePath: number;
   expressao: number;
   motivacao: number;
   impressao: number;
@@ -43,6 +43,8 @@ export type OduResults = {
   preceitos: string[];
   ebos: string[];
   elemento: string;
+  elementalForce: string;
+  lifeLesson: string;
   arcanoTarot: number;
   caminhoSephirah: string;
   raw?: DrawResult;
@@ -60,6 +62,19 @@ export type AstrologyResults = {
   urano: PosicaoPlaneta;
   netuno: PosicaoPlaneta;
   plutao: PosicaoPlaneta;
+  chiron: PosicaoPlaneta;
+  lilith: PosicaoPlaneta;
+  elementos: {
+    fire: number;
+    earth: number;
+    air: number;
+    water: number;
+  };
+  modalidades: {
+    cardinal: number;
+    fixed: number;
+    mutable: number;
+  };
   casas: Casa[];
   aspectos: Aspecto[];
   raw?: MapaNatal;
@@ -139,6 +154,7 @@ export type {
   DrawResult,
   MapaNatal,
   PosicaoPlaneta,
+// fallow-ignore-next-line unused-type
   Planeta,
   Signo,
   Aspecto,

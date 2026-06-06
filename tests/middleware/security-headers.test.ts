@@ -9,46 +9,69 @@
 import { describe, it, expect } from 'vitest';
 import { NextResponse } from 'next/server';
 
-// ============================================
-// Security Headers Configuration (from middleware.ts)
-// ============================================
+ // ============================================
+ // Security Headers Configuration (from middleware.ts)
+ // ============================================
 
-const SECURITY_HEADERS: Record<string, string> = {
-  'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'DENY',
-  'X-XSS-Protection': '1; mode=block',
-  'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
-};
+ const SECURITY_HEADERS: Record<string, string> = {
+   'X-Content-Type-Options': 'nosniff',
+   'X-Frame-Options': 'DENY',
+   'X-XSS-Protection': '1; mode=block',
+   'Referrer-Policy': 'strict-origin-when-cross-origin',
+   'Permissions-Policy': 'geolocation=(), microphone=(), camera=()',
+ };
 
-const EXCLUDED_PATHS = ['/_next', '/favicon.ico', '/api/health'];
+ const API_CSP = "default-src 'none'; frame-ancestors 'none'";
+
+ const COCKPIT_CSP = [
+   "default-src 'self'",
+   "script-src 'self'",
+   "style-src 'self' 'unsafe-inline'",
+   "img-src 'self' data: https://*.openstreetmap.org https://*.tile.openstreetmap.org",
+   "font-src 'self' data:",
+   "connect-src 'self'",
+   "frame-ancestors 'none'",
+   "base-uri 'self'",
+   "form-action 'self'",
+ ].join('; ');
+
+ const EXCLUDED_PATHS = ['/_next', '/favicon.ico', '/api/health'];
 
 // ============================================
 // Simulated Middleware Logic
 // ============================================
 
-function simulateMiddlewareResponse(
-  pathname: string,
-  options: { status?: number; body?: string | null } = {}
-): NextResponse {
-  const { status = 200, body = null } = options;
-  
-  const response = body !== null
-    ? NextResponse.json(body || {}, { status })
-    : NextResponse.next();
+ function simulateMiddlewareResponse(
+   pathname: string,
+   options: { status?: number; body?: string | null } = {}
+ ): NextResponse {
+   const { status = 200, body = null } = options;
 
-  // Apply security headers (same logic as middleware.ts)
-  Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
-    response.headers.set(key, value);
-  });
+   const response = body !== null
+     ? NextResponse.json(body || {}, { status })
+     : NextResponse.next();
 
-  // Skip further processing for excluded paths
-  if (EXCLUDED_PATHS.some(path => pathname.startsWith(path))) {
-    return response;
-  }
+   // Apply security headers (same logic as middleware.ts)
+   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
+     response.headers.set(key, value);
+   });
 
-  return response;
-}
+   // Skip further processing for excluded paths
+   if (EXCLUDED_PATHS.some(path => pathname.startsWith(path))) {
+     return response;
+   }
+
+   // CSP for API routes
+   if (pathname.startsWith('/api/')) {
+     response.headers.set('Content-Security-Policy', API_CSP);
+   }
+   // CSP for cockpit pages
+   if (pathname.startsWith('/cockpit')) {
+     response.headers.set('Content-Security-Policy', COCKPIT_CSP);
+   }
+
+   return response;
+ }
 
 function simulateErrorResponse(pathname: string, statusCode: number): NextResponse {
   const response = NextResponse.json(
@@ -338,9 +361,80 @@ describe('Security Headers', () => {
           headerNames.push(key);
         }
       });
-      
       const uniqueHeaders = new Set(headerNames);
       expect(uniqueHeaders.size).toBe(headerNames.length);
-    });
-  });
+     });
+   });
+
+   describe('Cockpit CSP', () => {
+     const cockpitRoutes = [
+       '/cockpit',
+       '/cockpit/dashboard',
+       '/cockpit/consulentes',
+       '/cockpit/leituras',
+       '/cockpit/settings',
+     ];
+
+     it('should set Content-Security-Policy on cockpit routes', () => {
+       cockpitRoutes.forEach(route => {
+         const response = simulateMiddlewareResponse(route);
+         const csp = response.headers.get('Content-Security-Policy');
+         expect(csp).toBeDefined();
+         expect(typeof csp).toBe('string');
+         expect(csp!.length).toBeGreaterThan(0);
+       });
+     });
+
+     it('should set frame-ancestors none in cockpit CSP', () => {
+       const response = simulateMiddlewareResponse('/cockpit');
+       const csp = response.headers.get('Content-Security-Policy') ?? '';
+       expect(csp).toContain("frame-ancestors 'none'");
+     });
+
+     it('should restrict default-src to self in cockpit CSP', () => {
+       const response = simulateMiddlewareResponse('/cockpit');
+       const csp = response.headers.get('Content-Security-Policy') ?? '';
+       expect(csp).toContain("default-src 'self'");
+     });
+
+     it('should restrict scripts to self only in cockpit CSP', () => {
+       const response = simulateMiddlewareResponse('/cockpit');
+       const csp = response.headers.get('Content-Security-Policy') ?? '';
+       expect(csp).toContain("script-src 'self'");
+       // Only self is allowed — no unsafe-inline or external sources
+       expect(csp).toMatch(/script-src 'self'(?!.*script-src)/);
+     });
+     it('should allow unsafe-inline for styles (Tailwind CSS)', () => {
+       const response = simulateMiddlewareResponse('/cockpit');
+       const csp = response.headers.get('Content-Security-Policy') ?? '';
+       // unsafe-inline is required for Tailwind's critical CSS inlining
+       expect(csp).toContain("style-src 'self' 'unsafe-inline'");
+     });
+
+     it('should allow OpenStreetMap tiles for city autocomplete', () => {
+       const response = simulateMiddlewareResponse('/cockpit');
+       const csp = response.headers.get('Content-Security-Policy') ?? '';
+       expect(csp).toContain('https://*.openstreetmap.org');
+     });
+
+     it('should set base-uri to self', () => {
+       const response = simulateMiddlewareResponse('/cockpit');
+       const csp = response.headers.get('Content-Security-Policy') ?? '';
+       expect(csp).toContain("base-uri 'self'");
+     });
+
+     it('should not set API CSP on cockpit routes', () => {
+       const response = simulateMiddlewareResponse('/cockpit');
+       const csp = response.headers.get('Content-Security-Policy') ?? '';
+       // Cockpit CSP should NOT be the restrictive API CSP
+       expect(csp).not.toBe(API_CSP);
+     });
+
+     it('should have consistent CSP across all cockpit routes', () => {
+       cockpitRoutes.forEach(route => {
+         const response = simulateMiddlewareResponse(route);
+         expect(response.headers.get('Content-Security-Policy')).toBe(COCKPIT_CSP);
+       });
+     });
+   });
 });

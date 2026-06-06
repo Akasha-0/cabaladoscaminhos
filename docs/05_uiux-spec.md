@@ -1,508 +1,137 @@
 # Documento 05 — Especificação UI/UX
-## Cabala dos Caminhos
+## Sistema Akasha
 
-> **Versão:** 1.0 | **Modo:** Dark Mode (único — sem modo claro)  
-> **Alvo:** Desktop First (1280px+), adaptado para tablet
-
----
-
-## 1. Design System
-
-### 1.1 Paleta de Cores (CSS Variables)
-
-```css
-/* tailwind.config.ts — extend colors */
-:root {
-  /* Backgrounds */
-  --bg-canvas:     #020817;  /* slate-950 — fundo principal */
-  --bg-surface:    #0f172a;  /* slate-900 — cards e painéis */
-  --bg-elevated:   #1e293b;  /* slate-800 — elementos elevados */
-  --bg-border:     #334155;  /* slate-700 — bordas */
-
-  /* Primária — Dourado/Âmbar (Sagrado, Luz, Oráculo) */
-  --accent-gold:   #f59e0b;  /* amber-500 */
-  --accent-gold-dim: #92400e; /* amber-800 — hover states */
-  --accent-gold-glow: rgba(245, 158, 11, 0.15); /* glow effects */
-
-  /* Secundária — Esmeralda (Odus, Natureza, Abertura) */
-  --accent-emerald: #10b981;  /* emerald-500 */
-  --accent-emerald-dim: #065f46;
-
-  /* Alerta — Rosa (Atenção, Corte, Urgência) */
-  --accent-rose:   #f43f5e;   /* rose-500 */
-
-  /* Texto */
-  --text-primary:  #f8fafc;   /* slate-50 */
-  --text-secondary:#94a3b8;   /* slate-400 */
-  --text-muted:    #475569;   /* slate-600 */
-}
-```
-
-### 1.2 Tipografia
-
-```css
-/* Fontes via Google Fonts ou local */
-
-/* Títulos místicos, nomes de casas, elementos de destaque */
-font-family: 'Cinzel', serif;
-/* Peso: 400, 600, 700 */
-
-/* Dados, labels, textos de interface */
-font-family: 'Cormorant Garamond', serif;
-/* Peso: 300, 400, 600 */
-
-/* Números de casas, dados técnicos, IDs */
-font-family: 'JetBrains Mono', monospace;
-/* Peso: 400 */
-
-/* Corpo do dossiê gerado pela IA */
-font-family: 'Lora', serif;
-/* Peso: 400, 500 */
-```
-
-### 1.3 Escala de Espaçamento e Raios
-- Espaçamento: múltiplos de 4px (sistema Tailwind padrão)
-- Border radius padrão de cards: `rounded-xl` (12px)
-- Border radius de badges: `rounded-full`
-- Sombras: custom glow effects para elementos ativos
+> **Versão:** 2.0 | **Norte:** Doc 25 · **Identidade:** Doc 26 (fonte canônica da paleta/voz)
+> Substitui a v1 (Cockpit B2B / grid 9×4 da Mesa Real), agora legado. Foco: **Mandala Toroidal**, **mobile-first PWA**, glassmorphism cósmico.
 
 ---
 
-## 2. Layout Global das Telas do Dashboard
+## 1. Princípios de Design
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  SIDEBAR FIXA (w-72 = 288px)    │  ÁREA PRINCIPAL (flex-1)      │
-│                                  │                               │
-│  ┌──────────────────────────┐   │  ┌───────────────────────┐   │
-│  │  [Logo]                  │   │  │  TOPBAR (h-14)        │   │
-│  │  Cabala dos Caminhos     │   │  │  Título da tela atual │   │
-│  └──────────────────────────┘   │  └───────────────────────┘   │
-│                                  │                               │
-│  ┌──────────────────────────┐   │  ┌───────────────────────┐   │
-│  │  [Nav Items]             │   │  │                       │   │
-│  │  🔮 Nova Consulta        │   │  │   CONTEÚDO DA PÁGINA  │   │
-│  │  👥 Consulentes          │   │  │                       │   │
-│  │  📋 Dashboard            │   │  │                       │   │
-│  │  📄 Leituras             │   │  │                       │   │
-│  └──────────────────────────┘   │  └───────────────────────┘   │
-│                                  │                               │
-│  [Bottom: Perfil do operador]   │                               │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**Implementação (`DashboardLayout.tsx`):**
-```tsx
-<div className="flex h-screen bg-[#020817] overflow-hidden">
-  <Sidebar className="w-72 flex-shrink-0 border-r border-slate-800" />
-  <div className="flex-1 flex flex-col overflow-hidden">
-    <Topbar />
-    <main className="flex-1 overflow-y-auto p-6">
-      {children}
-    </main>
-  </div>
-</div>
-```
+1. **Mobile-first absoluto.** A batalha pela atenção é nos primeiros minutos do dia. Tudo é desenhado primeiro para o celular; desktop é o "Centro de Comando" de estudo profundo (Doc 25 §8).
+2. **Organismo vivo, não planilha.** A interface respira, gira e pulsa com o céu de hoje. O Toroide é o coração visual.
+3. **Descoberta progressiva.** Micro-doses de autoconhecimento. Nunca despejar tudo de uma vez.
+4. **Ritual, não formulário.** Cada interação tem peso cerimonial — especialmente o onboarding.
+5. **Glassmorphism cósmico.** Painéis translúcidos flutuando sobre o vazio (Doc 26 §4).
 
 ---
 
-## 3. Tela: Dashboard (`/dashboard`)
+## 2. Design System (resumo — canônico no Doc 26)
 
-**Objetivo:** Visão geral rápida. O operador chega aqui após o login.
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  TOPBAR: "Painel Principal" + [Botão: + Nova Consulta]          │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                   │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐             │
-│  │  12          │  │  47          │  │  3           │             │
-│  │  Consultas   │  │  Consulentes │  │  Hoje        │             │
-│  │  este mês    │  │  cadastrados │  │  pendentes   │             │
-│  └─────────────┘  └─────────────┘  └─────────────┘             │
-│                                                                   │
-│  ÚLTIMAS LEITURAS                                                │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │  Nome            │  Data        │  Status    │  Ação     │   │
-│  │  Maria Silva     │  01/06/2026  │  ✅ Pronto │ Ver PDF   │   │
-│  │  João Santos     │  31/05/2026  │  ✅ Pronto │ Ver PDF   │   │
-│  └─────────────────────────────────────────────────────────┘    │
-│                                                                   │
-└─────────────────────────────────────────────────────────────────┘
-```
+- **Paleta:** vazio cósmico (`--bg-void #06070F`) + violeta akáshico (`#7C5CFF`, o campo) + ciano/aurora (`#2DD4BF`, o fluxo/sincronicidade) + dourado Ori (`#F0B429`, o núcleo) + magenta alerta (`#FB5781`, curto-circuito).
+- **Tipografia:** Cinzel (títulos cósmicos) · Cormorant Garamond (subtítulos) · Lora (corpo/Manifesto/voz) · JetBrains Mono (graus/números/IDs) · **Inter** (UI mobile).
+- **Efeitos:** `backdrop-filter: blur()`, glows de nebulosa (`--accent-*-glow`), gradientes radiais.
+- **Movimento:** Framer Motion / GSAP — pulse suave, rotação do anel, revelação progressiva.
 
 ---
 
-## 4. Tela: Nova Consulta (`/dashboard/nova-consulta`) — O COCKPIT
+## 3. Arquitetura de Renderização (duas camadas)
 
-Esta é a tela principal do produto. Deve ser projetada para **operação em tempo real** durante o atendimento.
+Decisão técnica (Doc 25 §8): nunca um Toroide 3D monolítico onde o clique compete com a câmera.
 
-### 4.1 Layout Macro (Duas Zonas)
+**Camada de Fundo (Atmosfera) — WebGL/Three.js (React Three Fiber):**
+- Toroide etéreo girando lentamente (wireframe brilhante / partículas).
+- Roda assíncrona; **não carrega dados**. Define a "frequência vibracional" da tela.
+- Leve: shader simples; degrada graciosamente em aparelhos antigos.
 
-```
-┌──────────────────────────┬────────────────────────────────────────────┐
-│  PAINEL DO CONSULENTE    │  MESA REAL — GRID 9×4                       │
-│  (w-80 = 320px, fixo)   │  (flex-1, área central)                     │
-│                          │                                              │
-│  [Buscador de cliente]   │  ┌──┬──┬──┬──┬──┬──┬──┬──┬──┐             │
-│                          │  │01│02│03│04│05│06│07│08│09│             │
-│  ──────────────────────  │  ├──┼──┼──┼──┼──┼──┼──┼──┼──┤             │
-│                          │  │10│11│12│13│14│15│16│17│18│             │
-│  Nome completo           │  ├──┼──┼──┼──┼──┼──┼──┼──┼──┤             │
-│  "João da Silva"         │  │19│20│21│22│23│24│25│26│27│             │
-│                          │  ├──┼──┼──┼──┼──┼──┼──┼──┼──┤             │
-│  ──────────────────────  │  │28│29│30│31│32│33│34│35│36│             │
-│                          │  └──┴──┴──┴──┴──┴──┴──┴──┴──┘             │
-│  MAPAS CALCULADOS:       │                                              │
-│  ☀ Sol: Leão             │  Cartas na Mesa: 12/36                      │
-│  ↑ Asc: Virgem           │                                              │
-│  🔢 Vida: 7              │  [Limpar Mesa]         [✨ Gerar Dossiê]    │
-│  🕉 Alma: 2              │                                              │
-│  🌊 Karma: 8             │                                              │
-│  🎁 Dom: 5               │                                              │
-│  🏺 Odu: Ejionile (8)    │                                              │
-│                          │                                              │
-│  ──────────────────────  │                                              │
-│                          │                                              │
-│  [✨ GERAR DOSSIÊ]       │                                              │
-│  (botão master aqui      │                                              │
-│  também para acesso       │                                              │
-│  rápido)                 │                                              │
-└──────────────────────────┴────────────────────────────────────────────┘
-```
+**Camada de Dados (Mandala Operacional) — SVG + D3.js + Glassmorphism:**
+- **D3.js sob o capô** calcula coordenadas polares (12 casas astrológicas, 11 nós tântricos, centro).
+- Coordenadas injetadas em **elementos SVG** do DOM — cada nó/linha/planeta é clicável e nítido em qualquer tela.
+- Filtros CSS (backdrop-filter, drop-shadow, gradientes) dão o Glassmorphism.
 
-### 4.2 Painel do Consulente (Sidebar Esquerda da Consulta)
-
-**Seção 1 — Seleção do Consulente:**
-```tsx
-<div className="p-4 border-b border-slate-800">
-  <label className="text-xs text-slate-400 uppercase tracking-widest mb-2 block">
-    Consulente
-  </label>
-  <ClientSearchCombobox
-    onSelect={(client) => store.setClient(client)}
-    placeholder="Buscar por nome..."
-  />
-</div>
-```
-
-**Seção 2 — Resumo dos Mapas (após selecionar cliente):**
-
-Cada mapa é exibido como um grupo de badges compactos:
-
-```tsx
-// Grupo Astrológico
-<div className="space-y-1">
-  <span className="text-xs text-slate-500 uppercase">Astrologia</span>
-  <div className="flex flex-wrap gap-1">
-    <Badge variant="astro">☀ Leão</Badge>
-    <Badge variant="astro">🌙 Escorpião</Badge>
-    <Badge variant="astro">↑ Virgem</Badge>
-  </div>
-</div>
-
-// Grupo Numerológico
-<div className="space-y-1">
-  <span className="text-xs text-slate-500 uppercase">Numerologia</span>
-  <div className="flex flex-wrap gap-1">
-    <Badge variant="kabala">Vida: 7</Badge>
-    <Badge variant="kabala">Missão: 11</Badge>
-    <Badge variant="tantric">Alma: 2</Badge>
-    <Badge variant="tantric">Karma: 8</Badge>
-    <Badge variant="tantric">Dom: 5</Badge>
-  </div>
-</div>
-
-// Odu de Nascimento
-<div className="space-y-1">
-  <span className="text-xs text-slate-500 uppercase">Odu Natal</span>
-  <Badge variant="odu">Ejionile (8) — Xangô</Badge>
-</div>
-```
-
-**Estilos dos Badges:**
-- `variant="astro"`: bg-blue-950 border-blue-700 text-blue-300
-- `variant="kabala"`: bg-purple-950 border-purple-700 text-purple-300
-- `variant="tantric"`: bg-amber-950 border-amber-700 text-amber-300
-- `variant="odu"`: bg-emerald-950 border-emerald-700 text-emerald-300
+> Resultado: clique cirúrgico no celular, sem raycasting; animações fáceis de programar/debugar.
 
 ---
 
-### 4.3 O Grid da Mesa Real (Área Central)
+## 4. A Mandala Toroidal (a tela central — `/mandala`)
 
-**Container do Grid:**
-```tsx
-<div
-  className="
-    grid grid-cols-9 gap-2
-    p-4 rounded-2xl
-    bg-gradient-to-br from-slate-900/60 to-slate-950/80
-    border border-slate-800
-    shadow-[inset_0_0_60px_rgba(245,158,11,0.03)]
-  "
->
-  {HOUSES.map((house) => (
-    <CasaSlot key={house.id} house={house} />
-  ))}
-</div>
-```
+Quatro camadas concêntricas (Doc 25 §2 · cores no Doc 26 §6):
 
-**Componente `CasaSlot` — Estado Vazio:**
-```tsx
-// Dimensão: height: 140px, width: auto (proporcional ao grid)
-<div
-  className="
-    relative flex flex-col items-center justify-center
-    h-36 rounded-xl cursor-pointer
-    bg-slate-900/50
-    border border-dashed border-slate-700/60
-    hover:border-amber-600/40 hover:bg-slate-800/60
-    hover:-translate-y-0.5
-    transition-all duration-200
-  "
-  onClick={() => openPopover(house.id)}
->
-  {/* Número da casa */}
-  <span className="absolute top-1.5 left-2 text-[10px] font-mono text-slate-600">
-    {String(house.id).padStart(2, '0')}
-  </span>
+| Camada | Conteúdo | Visual |
+|---|---|---|
+| **Núcleo** | Ori + Odus | Búzio/ponto dourado pulsante no centro; glow dourado |
+| **Geometria Interna** | Numerologia Cabalística | Triângulo/pirâmide violeta; Números Mestres com traços elétricos |
+| **Teia** | 11 Corpos Tântricos | 11 nós ciano interligados; corpo em desequilíbrio → magenta apagado |
+| **Anel Cósmico** | Roda Astrológica | 12 signos/casas; gira com o tempo; trânsitos como feixes |
 
-  {/* Ícone de adicionar */}
-  <div className="text-slate-700 text-2xl opacity-40">+</div>
+**Painel de Sintonia (dinâmico):**
+- Linhas D3/SVG conectam a borda astrológica → nós tântricos → geometria cabalística → Ori.
+- **Sincronicidade** (caminho aberto) = traço ciano luminoso. **Curto-circuito** (desalinhamento) = traço magenta pulsante.
+- Mobile: o usuário **gira o anel externo com o polegar** e as informações mudam no centro (navegador espacial). Não precisa mostrar os 4 anéis o tempo todo.
 
-  {/* Nome da casa */}
-  <span className="
-    absolute bottom-1.5 left-0 right-0 text-center
-    text-[9px] uppercase tracking-widest text-slate-600
-    px-1 leading-tight
-  ">
-    {house.name}
-  </span>
-</div>
-```
-
-**Componente `CasaSlot` — Estado Preenchido:**
-```tsx
-<div
-  className="
-    relative flex flex-col items-center justify-center gap-1
-    h-36 rounded-xl cursor-pointer
-    bg-gradient-to-b from-slate-800/70 to-slate-900/70
-    border border-amber-600/40
-    shadow-[0_0_12px_rgba(245,158,11,0.08)]
-    hover:border-amber-500/60 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]
-    hover:-translate-y-0.5
-    transition-all duration-200
-  "
-  onClick={() => openPopover(house.id)}
->
-  {/* Número da casa */}
-  <span className="absolute top-1.5 left-2 text-[10px] font-mono text-slate-500">
-    {String(house.id).padStart(2, '0')}
-  </span>
-
-  {/* Nome da carta tirada */}
-  <span className="text-xs font-semibold text-amber-400 text-center px-2 leading-tight font-['Cinzel']">
-    {slotData.cartaName}
-  </span>
-
-  {/* Odu tirado */}
-  <span className="
-    text-[10px] font-medium text-emerald-400
-    bg-emerald-950/60 border border-emerald-800/40
-    px-2 py-0.5 rounded-full
-  ">
-    {slotData.oduName}
-  </span>
-
-  {/* Nome da casa no rodapé */}
-  <span className="
-    absolute bottom-1.5 left-0 right-0 text-center
-    text-[9px] uppercase tracking-widest text-slate-600
-    px-1 leading-tight
-  ">
-    {house.name}
-  </span>
-</div>
-```
+**Interação:** tocar uma camada abre um painel glassmorphism (bottom-sheet no mobile, drawer no desktop) com o conteúdo daquela vertente — desbloqueado conforme o nível do usuário (Freemium vê a base).
 
 ---
 
-### 4.4 O Popover de Input (Fricção Zero)
+## 5. Onboarding Ritualístico (`/onboarding`)
 
-**Comportamento:**
-- Abre ao clicar no slot
-- Se ancora ao slot clicado (Radix Popover com `side="top"` ou `"bottom"` automático)
-- **Não** bloqueia a visão do restante do grid
-- Fecha ao pressionar Esc, Enter (após preencher) ou clicar fora
+UX do "primeiro portal" (Doc 25 §6). Sequencial, cerimonial, uma pergunta por tela.
 
-**Estrutura do Popover:**
-```tsx
-<PopoverContent
-  className="w-72 p-4 bg-slate-900 border border-slate-700 shadow-2xl shadow-black/50 rounded-2xl"
-  align="start"
-  sideOffset={8}
->
-  {/* Header */}
-  <div className="mb-4">
-    <p className="text-[10px] uppercase tracking-widest text-slate-500">Preenchendo</p>
-    <p className="text-sm font-semibold text-amber-400 font-['Cinzel']">
-      Casa {house.id} — {house.name}
-    </p>
-  </div>
+**Passo 1 — A Coleta Sagrada** (campos sequenciais, fundo cósmico, foco único):
+- *"Como você é chamado neste plano?"* → nome completo.
+- *"Em qual instante sua jornada começou?"* → data + hora.
+- *"Onde você aterrissou?"* → cidade (autocomplete Nominatim → lat/lng/tz).
 
-  {/* Campo 1: Carta Cigana */}
-  <div className="mb-3">
-    <label className="text-xs text-slate-400 mb-1.5 block">Carta Cigana</label>
-    <CartaCombobox
-      value={selectedCarta}
-      onChange={setSelectedCarta}
-      placeholder="Buscar carta..."
-    />
-  </div>
+**Passo 2 — O Quiz de Ancoragem** (3–4 cards de múltipla escolha):
+- *"O que te traz ao Akasha hoje?"* (propósito / cura emocional / alinhamento material / despertar ancestral).
+- *"Como você sente sua energia neste ciclo?"* (acelerada / dispersa / estagnada / em fluxo).
 
-  {/* Campo 2: Odu */}
-  <div className="mb-4">
-    <label className="text-xs text-slate-400 mb-1.5 block">Odu</label>
-    <OduCombobox
-      value={selectedOdu}
-      onChange={setSelectedOdu}
-      placeholder="Selecionar Odu..."
-    />
-  </div>
+**Passo 3 — A Renderização Ritualística (o "Loading" mágico):**
+- Fundo Three.js acende; o Toroide é desenhado linha por linha em SVG.
+- Frases piscam em sincronia: *"Calculando trânsitos astrológicos…"* · *"Acessando o Caminho de Vida…"* · *"Sintetizando os 11 Corpos Tântricos…"* · *"Ancorando as forças dos Odus…"*.
 
-  {/* Ações */}
-  <div className="flex gap-2">
-    <Button variant="ghost" size="sm" onClick={close} className="flex-1">
-      Cancelar
-    </Button>
-    <Button
-      size="sm"
-      onClick={handleConfirm}
-      disabled={!selectedCarta || !selectedOdu}
-      className="flex-1 bg-amber-600 hover:bg-amber-500 text-white"
-    >
-      Confirmar ↵
-    </Button>
-  </div>
-</PopoverContent>
-```
-
-**O ComboBox de Cartas (`CartaCombobox`):**
-- Usa `Command` do Shadcn/ui (Combobox com busca)
-- Lista as 36 cartas no formato: `"19 — A Torre"`
-- Busca por número OU nome: digitar "19" ou "torre" retorna A Torre
-- Resultado em lista com scroll, max 8 itens visíveis
-
-**O ComboBox de Odus (`OduCombobox`):**
-- Lista os 16 Odus no formato: `"8 — Ejionile (Xangô/Oxalá)"`
-- Busca por número, nome ou Orixá
+**Passo 4 — A Revelação & Freemium:**
+- A Mandala base se abre, brilhante e interativa. Entrega uma "pílula" de sabedoria profunda (Quiz + Mapa) e oferece o desbloqueio do **Manifesto** + créditos.
 
 ---
 
-## 5. Tela: Visualização do Dossiê
+## 6. Dashboard Diário (`/diario` — o Oráculo de Bolso)
 
-Após clicar "Gerar Dossiê", a tela faz uma transição suave para o modo de visualização.
+Mobile-first; cards expansíveis / **snap-scrolling** magnético. Três telas (Doc 25 §3):
 
-**Layout durante processamento:**
-```
-┌──────────────────────────────────────────────────────────────┐
-│  [Loader orbital animado em âmbar]                           │
-│  "Cruzando os mapas das 36 casas..."                        │
-│  "Consultando os Odus..."                                    │
-│  "Tecendo o Dossiê Cabalístico..."                          │
-│                         ▓▓▓▓▓▓▓▓░░  18/36 casas            │
-└──────────────────────────────────────────────────────────────┘
-```
+- **Tela 1 — Clima Energético:** resumo em 2 linhas (céu de hoje × seu corpo espiritual) + detalhe expansível.
+- **Tela 2 — O Desafio do Dia:** baseado no Corpo Tântrico em tensão; o nó correspondente pisca na mini-Mandala.
+- **Tela 3 — A Prescrição:** o banho/cor/mantra do dia, com botão **"Realizado"**.
 
-**Layout do dossiê (após geração — dois painéis):**
-```
-┌────────────────────────────────────────────────────────────────────┐
-│  [← Voltar à Mesa]          DOSSIÊ CABALÍSTICO         [📄 PDF]    │
-│  Nome: Maria Silva  |  Data: 01/06/2026  |  36 casas analisadas    │
-├──────────────────────────────┬─────────────────────────────────────┤
-│  ÍNDICE (sticky)             │  CONTEÚDO                           │
-│                              │                                      │
-│  ▸ Resumo dos Mapas Natais  │  ## Casa 1 — O Cavaleiro             │
-│  ▸ Casa 1 — O Cavaleiro     │  *Carta: A Torre (19) | Odu: Osá*    │
-│  ▸ Casa 2 — O Trevo         │                                      │
-│  ▸ Casa 3 — O Navio         │  [Texto interpretativo gerado        │
-│  ...                         │   pela IA, renderizado em           │
-│  ▸ Síntese Final             │   Markdown com tipografia           │
-│    ├ Trabalho & Dinheiro     │   elegante (Lora, serif)]           │
-│    ├ Lar & Família           │                                      │
-│    ├ Amor & Relacionamentos  │  ---                                 │
-│    └ Conselho Espiritual     │                                      │
-│                              │  ## Casa 4 — A Casa                 │
-│                              │  ...                                 │
-└──────────────────────────────┴─────────────────────────────────────┘
-```
-
-**Estilo do conteúdo do dossiê:**
-```css
-.dossier-content {
-  font-family: 'Lora', serif;
-  font-size: 15px;
-  line-height: 1.8;
-  color: #e2e8f0; /* slate-200 */
-  max-width: 720px;
-}
-
-.dossier-content h2 {
-  font-family: 'Cinzel', serif;
-  color: #f59e0b; /* amber-500 */
-  font-size: 18px;
-  border-bottom: 1px solid #1e293b;
-  padding-bottom: 8px;
-  margin-top: 36px;
-}
-
-.dossier-content em {
-  color: #10b981; /* emerald-500 */
-  font-style: normal;
-  font-size: 12px;
-}
-```
+Topo: saudação magnética e situada (Voz do Akasha, Doc 26 §7) — nunca "Olá, veja seu horóscopo".
 
 ---
 
-## 6. Tela: Cadastro de Consulentes
+## 7. Manifesto Akáshico (`/manifesto`)
 
-**Formulário (`/dashboard/clientes/novo`):**
-- Dividido em dois grupos lógicos com separação visual:
-
-**Grupo 1 — Identificação:**
-- Nome Completo (campo de texto longo, full width)
-- Data de Nascimento (date picker)
-- Hora de Nascimento (time picker, HH:MM)
-
-**Grupo 2 — Local de Nascimento:**
-- Cidade (Combobox com autocomplete via Google Places)
-- Estado/Região (auto-preenchido após selecionar cidade)
-- País (auto-preenchido após selecionar cidade)
-
-**Grupo 3 — Anotações (opcional):**
-- Textarea livre para observações do terapeuta
-
-Após salvar: indicador de progresso animado enquanto os mapas são calculados ("Calculando mapa astral...", "Processando numerologias..."), depois redireciona para o perfil do cliente.
+- Leitura longa e diagramada (Lora), descoberta progressiva pelas 4 camadas + síntese.
+- Botão **"Exportar PDF"** → `@react-pdf/renderer` (vetorial, texto selecionável).
+- No desktop, layout de duas colunas (índice sticky + conteúdo); no mobile, coluna única com navegação por seção.
 
 ---
 
-## 7. Responsividade
+## 8. Agente Oracular (`/oraculo`)
 
-| Breakpoint | Comportamento |
-|---|---|
-| `xl` (1280px+) | Layout completo: sidebar fixa + grid 9×4 + painel de mapas |
-| `lg` (1024px) | Painel de mapas colapsa para badge compacto clicável |
-| `md` (768px — iPad) | Sidebar vira drawer hamburguer. Grid 9×4 mantido com fonte menor |
-| `sm` (640px) | Grid vira lista accordion de 36 itens. Botão "Gerar Dossiê" fixo no bottom |
+Chat com a Voz do Akasha (Doc 12). Bolhas: usuário (violeta, à direita) · Oráculo (glassmorphism com glow aurora, à esquerda). Chips discretos mostram as **vertentes consultadas** (transparência) e o **custo em créditos** antes de enviar. Resposta em streaming (SSE). Saldo de créditos visível; upsell gracioso quando zera.
 
 ---
 
-## 8. Micro-interações e Animações
+## 9. Conta & Monetização (`/conta`)
 
-- **Slot preenchido:** animação de `scale(1.02)` + glow pulse de 0.3s ao confirmar.
-- **Botão "Gerar Dossiê":** pulsa suavemente em âmbar quando todas as casas estão preenchidas.
-- **Transição de estado vazio → preenchido:** fade + slide-up da carta e Odu no slot.
-- **Loading do Dossiê:** animação orbital de partículas ao redor do símbolo do projeto.
-- **Streaming do texto:** o Markdown aparece token a token (efeito máquina de escrever) via SSE/streaming da API.
+- Estado do plano (Freemium / Akasha Pro), saldo de créditos, janela de Dashboard.
+- Checkout Stripe inline (Manifesto one-time, assinatura, pacotes de créditos).
+- Prompt PWA pós-checkout: *"Adicione o Oráculo Akasha à sua Tela Inicial."*
+- Seletor de idioma (pt-BR/en), dados natais, notificações.
+
+---
+
+## 10. Responsividade & PWA
+
+- **Mobile (base):** coluna única, bottom-sheets, snap-scroll, anel girável com o polegar.
+- **Desktop (Centro de Comando):** Mandala completa de 4 anéis, painéis laterais, leitura densa, impressão do Manifesto.
+- **PWA nativo (Next.js):** manifest + service worker; instalável na tela inicial; vendido como "WebApp" (evita taxas de 30% das app stores — Doc 25 §8).
+- **i18n:** todos os textos de UI em dicionários `pt.json`/`en.json` (`next-intl`); nada hardcoded.
+
+---
+
+## 11. Acessibilidade & Performance
+
+- Contraste AA no dark cósmico (texto `--text-primary` sobre `--bg-void/deep`).
+- Nós SVG com área de toque ≥ 44px; navegação por teclado no desktop.
+- WebGL com fallback estático (imagem do Toroide) para aparelhos sem GPU adequada.
+- Mandala e Dashboard carregam instantâneo (céu cacheado no Redis); lazy-load das camadas profundas.

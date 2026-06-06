@@ -6,16 +6,11 @@
  * Based on Cabala dos Caminhos hermetic principles and IDEIA.md system data.
  */
 
-export type Elemento = 'Fogo' | 'Água' | 'Ar' | 'Terra' | 'Éter';
+import type { ChakraName, Elemento } from './chakra-base';
+import { normalizeChakraName } from './chakra-base';
 
-export type ChakraName = 
-  | 'Muladhara'
-  | 'Svadhisthana'
-  | 'Manipura'
-  | 'Anahata'
-  | 'Vishuddha'
-  | 'Ajna'
-  | 'Sahasrara';
+// Re-export for backward compatibility with existing importers
+export type { ChakraName, Elemento };
 
 export interface ChakraElementMapping {
   chakra: ChakraName;
@@ -184,36 +179,6 @@ export function getElementChakras(elemento: string): ChakraElementMapping[] {
  */
 export function getAllChakraElements(): ChakraElementMapping[] {
   return Object.values(CHAKRA_ELEMENT_MAPPINGS);
-}
-
-/**
- * Normalizes chakra name to match ChakraName type.
- */
-function normalizeChakraName(chakra: string): string {
-  const chakraMap: Record<string, string> = {
-    'muladhara': 'Muladhara',
-    'svadhisthana': 'Svadhisthana',
-    'manipura': 'Manipura',
-    'anahata': 'Anahata',
-    'vishuddha': 'Vishuddha',
-    'ajna': 'Ajna',
-    'sahasrara': 'Sahasrara',
-    '1º básico': 'Muladhara',
-    '1º Básico': 'Muladhara',
-    '2º sacro': 'Svadhisthana',
-    '2º Sacro': 'Svadhisthana',
-    '3º plexo solar': 'Manipura',
-    '3º Plexo Solar': 'Manipura',
-    '4º cardíaco': 'Anahata',
-    '4º Cardíaco': 'Anahata',
-    '5º laríngeo': 'Vishuddha',
-    '5º Laríngeo': 'Vishuddha',
-    '6º frontal': 'Ajna',
-    '6º Frontal': 'Ajna',
-    '7º coronário': 'Sahasrara',
-    '7º Coronário': 'Sahasrara',
-  };
-  return chakraMap[chakra.toLowerCase()] ?? chakra;
 }
 
 /**

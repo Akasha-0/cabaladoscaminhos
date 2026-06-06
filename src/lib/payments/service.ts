@@ -2,6 +2,7 @@ import { stripe } from './stripe';
 import { prisma } from '@/lib/prisma';
 import Stripe from 'stripe';
 
+// fallow-ignore-next-line unused-type
 export interface PlanoInfo {
   id: string;
   nome: string;
@@ -109,7 +110,7 @@ export async function criarSessaoCheckout(
   }
 }
 
-export async function verificarAssinatura(userId: string) {
+async function verificarAssinatura(userId: string) {
   if (!stripe) {
     throw new CheckoutError('Stripe não está configurado');
   }
@@ -181,7 +182,7 @@ export async function criarPortalSession(
   }
 }
 
-export async function obterCustomerId(userId: string): Promise<string | null> {
+async function obterCustomerId(userId: string): Promise<string | null> {
   if (!stripe) {
     return null;
   }

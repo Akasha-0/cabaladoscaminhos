@@ -152,9 +152,3 @@ export function getSephirotOrixa(): Record<string, string[]> {
 export function getAllOrixaSephiroths(): OrixaSephirah[] {
   return Object.values(ORIXAS_SEPHIROT_MAP);
 }
-
-export default {
-  getOrixaSephirot,
-  getSephirotOrixa,
-  getAllOrixaSephiroths,
-};

@@ -351,18 +351,3 @@ export function getDirectionByElement(elemento: string): string | null {
 export function getAllElementTypes(): ElementoTipo[] {
   return ['fogo', 'água', 'terra', 'ar', 'éter'];
 }
-
-export default {
-  getElementSephirot,
-  getSephirotElement,
-  getAllElementSephiroths,
-  getSephirahByElement,
-  getElementBySephirah,
-  getChakraByElement,
-  getSignificadoByElement,
-  getQualidadesByElement,
-  getOrixaByElement,
-  getColorByElement,
-  getDirectionByElement,
-  getAllElementTypes,
-};

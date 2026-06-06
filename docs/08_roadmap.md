@@ -1,179 +1,127 @@
 # Documento 08 — Roadmap de Desenvolvimento
-## Cabala dos Caminhos
+## Sistema Akasha
 
-> **Versão:** 1.0 | **Horizonte:** 5 meses até lançamento do MVP estável  
-> **Metodologia:** Sprints de 2 semanas
+> **Versão:** 2.0 | **Atualizado:** 2026-06-05 | **Norte:** Doc 25
+> Substitui o roadmap B2B (Fundação → Cockpit MVP → Escala), agora legado. Metodologia: ondas incrementais sobre o monorepo.
 
 ---
 
-## Visão Geral das Fases
+## Visão Geral das Ondas
 
 ```
-FASE 1 — FUNDAÇÃO         FASE 2 — COCKPIT MVP       FASE 3 — ESCALA
-(Semanas 1–4)              (Semanas 5–10)              (Semanas 11–20)
-──────────────────         ──────────────────          ──────────────────
-✦ Setup & Infra            ✦ Mesa Real 9x4             ✦ PDF Premium
-✦ Banco de Dados           ✦ Motor IA                  ✦ Multi-tenant
-✦ Autenticação             ✦ Geração Dossiê            ✦ App Mobile
-✦ Motores de Cálculo       ✦ Histórico                 ✦ SaaS / Billing
-──────────────────         ──────────────────          ──────────────────
-Entregável:                Entregável:                 Entregável:
-Sistema rodando            MVP funcional               Produto comercial
-localmente com             para uso real em            para outros
-banco configurado          atendimentos               terapeutas
+ONDA 1 — EXTRAÇÃO        ONDA 2 — PORTAL B2C       ONDA 3 — ORÁCULO VIVO     ONDA 4 — ESCALA
+(Cirurgia de Extração)   (Fundação Akasha)         (Inteligência + Grimório)  (Monetização + Global)
+─────────────────────    ─────────────────────     ──────────────────────     ──────────────────────
+✦ Monorepo (Turbo/pnpm)  ✦ apps/b2c-portal         ✦ Grimório (Markdown→       ✦ Stripe: créditos
+✦ packages/core-*        ✦ Auth User (B2C)            pgvector via Ollama)      ✦ Agente Oracular
+✦ Religar legacy-cockpit ✦ Onboarding ritual       ✦ Motor 3 camadas          ✦ PWA + push
+✦ Preservar ~9k testes   ✦ Mandala Toroidal        ✦ Dashboard Diário         ✦ i18n EN (global)
+                         ✦ Manifesto (PDF)         ✦ Swiss Ephemeris+Redis    ✦ VPS hardening
+─────────────────────    ─────────────────────     ──────────────────────     ──────────────────────
+Entregável:              Entregável:               Entregável:                Entregável:
+Engines isolados,        Usuário se cadastra,      Oráculo vivo: ritual       Produto comercial
+testes verdes            vê sua Mandala e          diário + conversa          B2C escalável e
+                         compra o Manifesto        ancorada no Grimório       internacional
 ```
 
 ---
 
-## FASE 1 — Fundação e Motores de Cálculo
-**Duração:** 4 semanas (Sprints 1 e 2)  
-**Objetivo:** Sistema com infraestrutura sólida, autenticação funcional e motores matemáticos precisos.
-
-### Sprint 1 (Semanas 1–2): Setup e Banco de Dados
-
-| ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T1.1 | Setup Next.js, Tailwind, Shadcn/ui | E1 | 🔴 | 4h |
-| T1.2 | Configurar Prisma + PostgreSQL + Migrations | E1 | 🔴 | 4h |
-| T1.3 | Implementar NextAuth + tela de Login | E1 | 🔴 | 6h |
-| T1.4 | Criar layout base do Dashboard (Sidebar + Topbar) | E1 | 🔴 | 6h |
-| T1.5 | Configurar fontes e design system (CSS vars) | E1 | 🟡 | 3h |
-| T1.6 | Criar constantes: 36 cartas e 16 Odus | E2 | 🔴 | 3h |
-| T1.7 | Script de seed do usuário admin | E1 | 🔴 | 1h |
-
-**Milestone Sprint 1:** Sistema rodando localmente com login funcional e banco configurado. Um usuário admin criado. Layout base visível.
-
----
-
-### Sprint 2 (Semanas 3–4): Motores de Cálculo e Cadastro
-
-| ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T2.1 | Motor de Numerologia Cabalística completo + testes | E2 | 🔴 | 8h |
-| T2.2 | Motor de Numerologia Tântrica completo + testes | E2 | 🔴 | 4h |
-| T2.3 | Integração com API de Astrologia + AstrologyMap | E2 | 🔴 | 12h |
-| T2.4 | Motor de Odu de Nascimento | E2 | 🟡 | 3h |
-| T2.5 | Formulário de cadastro de consulente (validação Zod) | E2 | 🔴 | 8h |
-| T2.6 | Server Action: createClient com todos os mapas | E2 | 🔴 | 6h |
-| T2.7 | Página de listagem e perfil de consulente | E2 | 🟡 | 6h |
-
-**Milestone Sprint 2:** Cadastrar um consulente calcula e salva todos os mapas. Perfil exibe badges dos mapas corretamente.
-
-**Validação da Fase 1:** Cadastrar "Eliane Simão de Almeida, 20/08/1986" e verificar:
-- Caminho de Vida = 7
-- Alma Tântrica = 2, Karma = 8, Dom = 5
-- Sol em Leão no mapa astral
-
----
-
-## FASE 2 — O Cockpit e o Motor de IA (MVP)
-**Duração:** 6 semanas (Sprints 3, 4 e 5)  
-**Objetivo:** Sistema totalmente funcional para conduzir uma consulta real de ponta a ponta.
-
-### Sprint 3 (Semanas 5–6): Grid da Mesa Real
-
-| ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T3.1 | Zustand store do grid (mesa-real-store.ts) | E3 | 🔴 | 4h |
-| T3.2 | Componente MesaRealGrid 9×4 (layout CSS Grid) | E3 | 🔴 | 6h |
-| T3.3 | CasaSlot: estado vazio (design e hover) | E3 | 🔴 | 4h |
-| T3.4 | CasaSlot: estado preenchido (design e animação) | E3 | 🔴 | 4h |
-| T3.5 | CartaCombobox (ComboBox Shadcn com busca) | E3 | 🔴 | 4h |
-| T3.6 | OduCombobox (ComboBox Shadcn com busca) | E3 | 🔴 | 3h |
-| T3.7 | CasaPopover: integrar os dois ComboBoxes | E3 | 🔴 | 5h |
-
-**Milestone Sprint 3:** Grid 9×4 visível na tela. É possível clicar em um slot, selecionar carta e Odu, e ver o slot atualizado.
-
----
-
-### Sprint 4 (Semanas 7–8): Painel do Consulente e Integração da Tela
-
-| ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T4.1 | ClientSearchCombobox no painel lateral | E3 | 🔴 | 5h |
-| T4.2 | Exibição dos badges de mapas ao selecionar cliente | E3 | 🔴 | 4h |
-| T4.3 | Indicador de progresso (X/36 cartas) | E3 | 🟡 | 2h |
-| T4.4 | Botão "Limpar Mesa" com Dialog de confirmação | E3 | 🟡 | 2h |
-| T4.5 | Correlation Map completo: as 36 entradas | E4 | 🔴 | 8h |
-| T4.6 | PromptBuilder: buildHousePayload + buildFullPayload | E4 | 🔴 | 8h |
-| T4.7 | LLM Client abstrato (OpenAI + Anthropic) | E4 | 🔴 | 4h |
-
-**Milestone Sprint 4:** Cockpit completo: selecionar consulente, preencher grid, ver mapas no painel. PromptBuilder testado localmente gerando payloads corretos.
-
----
-
-### Sprint 5 (Semanas 9–10): Geração do Dossiê e Histórico
-
-| ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T5.1 | API Route /api/generate-dossier com streaming | E4 | 🔴 | 8h |
-| T5.2 | DossierViewer: consumir stream + render Markdown | E4 | 🔴 | 8h |
-| T5.3 | Criação de Reading + Report no banco | E4 | 🔴 | 4h |
-| T5.4 | Estados de loading, erro e sucesso na UI | E4 | 🟡 | 4h |
-| T5.5 | Dashboard principal com métricas e últimas leituras | E6 | 🟡 | 6h |
-| T5.6 | Histórico de leituras por consulente | E6 | 🟡 | 4h |
-| T5.7 | Página de visualização de dossiê salvo (/leituras/[id]) | E6 | 🟡 | 4h |
-
-**Milestone Sprint 5:** 🎉 **MVP FUNCIONAL** — É possível conduzir uma consulta completa: selecionar cliente → preencher grid → gerar dossiê → ver o relatório na tela → acessar no histórico.
-
-**Validação da Fase 2:** Conduzir uma consulta real com um cliente. O dossiê gerado deve:
-- Mencionar dados específicos do mapa do cliente (não ser genérico)
-- Ter a estrutura de 3 parágrafos por casa
-- Ter a síntese final com 4 capítulos e veredito
-
----
-
-## FASE 3 — Refinamentos, PDF e Escala
-**Duração:** 10 semanas (Sprints 6 ao 10)  
-**Objetivo:** Produto polido, exportação de PDF, e infraestrutura para escala comercial.
-
-### Sprint 6 (Semanas 11–12): Exportação de PDF
-
-| ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T6.1 | Template do PDF (react-pdf ou Puppeteer) | E5 | 🔴 | 12h |
-| T6.2 | API Route /api/generate-pdf | E5 | 🔴 | 6h |
-| T6.3 | Upload para Vercel Blob / S3 + salvar URL | E5 | 🟡 | 4h |
-| T6.4 | Botão de download integrado ao DossierViewer | E5 | 🔴 | 3h |
-
-**Milestone Sprint 6:** Dossiê exportável como PDF com capa, mapas e análise formatada.
-
----
-
-### Sprint 7–8 (Semanas 13–16): UX Avançada e Performance
-
-| ID | Tarefa | Épico | Prioridade | Estimativa |
-|---|---|---|---|---|
-| T7.1 | Micro-interações e animações do grid | E7 | 🟢 | 8h |
-| T7.2 | Atalhos de teclado globais | E7 | 🟢 | 4h |
-| T7.3 | Otimização de re-renders com React.memo e useCallback | E7 | 🟡 | 6h |
-| T7.4 | Responsividade para tablet (iPad Pro landscape) | E7 | 🟡 | 8h |
-| T7.5 | Testes de integração E2E com Playwright | E7 | 🟡 | 12h |
-
----
-
-### Sprint 9–10 (Semanas 17–20): Escala e Monetização (Opcional)
-
-Estas tarefas são opcionais para o MVP e entram apenas se o objetivo for abrir o sistema para outros terapeutas:
+## ONDA 1 — A Cirurgia de Extração (Monorepo)
+**Objetivo:** isolar os motores espirituais validados sem quebrar o legado. Esta é a **verdadeira Fase 1** (Doc 25 §11) — não construir UI antes dos motores ("arranha-céu num pântano").
 
 | ID | Tarefa | Prioridade |
 |---|---|---|
-| T8.1 | Sistema multi-tenant: UserProfile e hierarquia de acessos | 🟢 |
-| T8.2 | Integração com Stripe para assinaturas | 🟢 |
-| T8.3 | Limites de uso por plano (consultas/mês) | 🟢 |
-| T8.4 | Dashboard admin para gerenciar usuários | 🟢 |
-| T8.5 | App mobile React Native (leitura de dossiês) | 🟢 |
+| 1.1 | Setup Turborepo / pnpm workspaces; TS + Vitest compilando módulos | 🔴 |
+| 1.2 | Extrair `packages/core-astrology` (Swiss Ephemeris, casas, planetas, trânsitos) | 🔴 |
+| 1.3 | Extrair `packages/core-tantra` (11 Corpos) | 🔴 |
+| 1.4 | Extrair `packages/core-cabala` (Caminho de Vida, nome, ciclos) | 🔴 |
+| 1.5 | Extrair `packages/core-odus` (Odu de nascimento, Ori) | 🔴 |
+| 1.6 | `packages/core-graph` (Grafo de Conhecimento — Camada 2) | 🟡 |
+| 1.7 | **Religamento:** `apps/legacy-cockpit` importa de `@akasha/core-*` (retrocompat) | 🔴 |
+| 1.8 | Rodar a suíte completa: **os ~9k testes devem permanecer verdes** | 🔴 |
+
+**Milestone Onda 1:** engines agnósticos isolados em `packages/`; legado funcionando via imports; testes verdes. A lógica está blindada.
 
 ---
 
-## Critérios de Sucesso do MVP (Fase 1 + Fase 2)
+## ONDA 2 — Fundação do Portal B2C (Akasha)
+**Objetivo:** o usuário se cadastra, faz o onboarding ritual e vê sua Mandala.
 
-O MVP é considerado bem-sucedido quando:
+| ID | Tarefa | Prioridade |
+|---|---|---|
+| 2.1 | `apps/b2c-portal` (Next.js 16 + `next-intl` pt-BR/en) | 🔴 |
+| 2.2 | Auth B2C: cadastro/login `User`, verificação de e-mail, OAuth social | 🔴 |
+| 2.3 | Schema B2C (User, BirthChart, Subscription, Credits — Doc 04) + migrations | 🔴 |
+| 2.4 | Onboarding ritualístico (Coleta Sagrada + Quiz de Ancoragem) | 🔴 |
+| 2.5 | Cálculo dos 4 mapas no onboarding (via `packages/core-*`) | 🔴 |
+| 2.6 | Mandala Toroidal: WebGL atmosfera (R3F) + SVG/D3 dados + glassmorphism | 🔴 |
+| 2.7 | Renderização ritualística (loading mágico) | 🟡 |
+| 2.8 | Manifesto Akáshico + export PDF (`@react-pdf/renderer`) | 🔴 |
+| 2.9 | Identidade Akasha aplicada (paleta cósmica, tipografia — Doc 26) | 🔴 |
 
-1. **Funcional:** É possível conduzir uma consulta completa do zero em menos de 10 minutos (incluindo cadastrar o cliente se necessário).
-2. **Preciso:** O dossiê gerado menciona aspectos específicos do mapa natal do consulente em pelo menos 80% das casas.
-3. **Confiável:** O sistema fica disponível durante os horários de atendimento sem erros de API.
-4. **Valioso:** O consulente recebe um dossiê que justifica o valor cobrado pelo atendimento.
+**Milestone Onda 2:** do cadastro à revelação da Mandala base (Freemium) + compra do Manifesto.
+
+**Validação:** cadastrar um usuário-teste e verificar mapas (ex.: Caminho de Vida correto, Sol no signo esperado, Odu regente, 11 corpos).
+
+---
+
+## ONDA 3 — O Oráculo Vivo (Inteligência + Grimório)
+**Objetivo:** o hábito diário e a conversa ancorada.
+
+| ID | Tarefa | Prioridade |
+|---|---|---|
+| 3.1 | Estrutura do Grimório (`grimorio/*.md` + YAML) — 4 bibliotecas | 🔴 |
+| 3.2 | Pipeline de ingestão Markdown → embeddings (Ollama) → pgvector | 🔴 |
+| 3.3 | Busca híbrida (filtro JSONB + semântico pgvector) | 🔴 |
+| 3.4 | Camada 2 (Grafo): cruzamento dos 4 pilares → Ponto de Tensão | 🔴 |
+| 3.5 | Camada 3 (Agente de Síntese): System Prompt + RAG → SSE | 🔴 |
+| 3.6 | Motor Astrológico Diário: cronjob meia-noite UTC → Redis (SETEX) | 🔴 |
+| 3.7 | Dashboard Diário (Clima + Ritual + Alerta) | 🔴 |
+| 3.8 | Agente Oracular conversacional (Doc 12) — roteamento por pilares | 🟡 |
+| 3.9 | Webhook GitHub `grimoire-sync` + botão admin de reindexação | 🟡 |
+| 3.10 | Conteúdo do Grimório: 16 Odus, 11 Corpos, ~50 ervas (curadoria, Doc 20) | 🔴 |
+
+**Milestone Onda 3:** abrir o app de manhã e receber Clima + Ritual + Alerta do dia, com a IA usando 100% dados do Grimório.
+
+---
+
+## ONDA 4 — Monetização & Escala Global
+**Objetivo:** transformar em economia interna e expandir.
+
+| ID | Tarefa | Prioridade |
+|---|---|---|
+| 4.1 | Stripe: assinatura Akasha Pro + Manifesto one-time | 🔴 |
+| 4.2 | Motor de Créditos (franquia mensal, débito por consulta, pacotes avulsos) | 🔴 |
+| 4.3 | Webhooks Stripe (assinados) → Subscription/Credits | 🔴 |
+| 4.4 | PWA (manifest + service worker + prompt de instalação) | 🟡 |
+| 4.5 | Notificações (ritual do dia) | 🟢 |
+| 4.6 | i18n EN: tradução das bibliotecas do Grimório + persona em inglês | 🟢 |
+| 4.7 | Checkout multi-moeda | 🟢 |
+| 4.8 | Desligar `apps/legacy-cockpit` quando o portal estiver 100% autônomo | 🟢 |
+
+**Milestone Onda 4:** economia de créditos rodando; PWA instalável; base para expansão anglofone (competir com Gene Keys/Human Design).
+
+---
+
+## Infraestrutura (transversal a todas as ondas)
+
+| Item | Tarefa |
+|---|---|
+| VPS Linux | Ubuntu + Docker + PM2 (Doc 25 §10) |
+| Contêineres | PostgreSQL+pgvector · Redis · Ollama (`nomic-embed-text`) · App Next.js |
+| Cronjobs | Trânsitos diários (madrugada UTC) |
+| Backup | PostgreSQL (usuários + vetores do Grimório) |
+| Observabilidade | Logs estruturados, health, custo de IA/créditos (Doc 22) |
+
+---
+
+## Critérios de Sucesso (B2C)
+
+1. **Funcional:** do cadastro à Mandala em < 2 min; Dashboard diário gerado todo dia.
+2. **Preciso:** mapas natais corretos (validados contra casos conhecidos); rituais 100% do Grimório (zero alucinação).
+3. **Vivo:** o conteúdo do dia muda com o céu; nunca repete texto, nunca foge das regras.
+4. **Soberano:** embeddings e dados sensíveis nunca saem do VPS.
+5. **Retentivo:** o usuário volta de manhã (hábito); converte de Freemium → Manifesto → Akasha Pro.
 
 ---
 
@@ -181,36 +129,8 @@ O MVP é considerado bem-sucedido quando:
 
 | Dependência | Risco | Mitigação |
 |---|---|---|
-| API de Astrologia | Alta — sem ela, o mapa astral fica incompleto | Ter fallback com biblioteca `astronomia` local (precisão menor) |
-| API do LLM (OpenAI/Anthropic) | Alta — core do produto | Implementar com ambos os providers e failover automático |
-| Google Places API | Baixo — apenas autocomplete | Fallback: input manual de cidade + timezone |
-| Cálculos Numerológicos | Nenhum — algoritmos próprios | Validar com casos conhecidos antes de produção |
-
----
-
-## Stack de Deploy Recomendada
-
-| Serviço | Propósito | Custo Estimado/mês |
-|---|---|---|
-| Vercel (Hobby/Pro) | Hosting do Next.js | $0–$20 |
-| Supabase (Free/Pro) | PostgreSQL gerenciado | $0–$25 |
-| Vercel Blob | Storage dos PDFs | ~$0.02/GB |
-| OpenAI API | Geração dos dossiês | ~$0.005/1k tokens (GPT-4o) |
-| Google Places API | Autocomplete de cidades | Free (28k reqs/mês) |
-
-**Custo total estimado para uso pessoal (MVP):** $0 a $50/mês dependendo do volume de consultas.
-
----
-
-## Checklist de Go-Live
-
-Antes de usar o sistema em atendimentos reais:
-
-- [ ] Todos os motores de cálculo validados com pelo menos 5 casos conhecidos
-- [ ] Dossiê gerado para 1 consulta completa de teste (36 casas)
-- [ ] PDF exportado e formatado corretamente
-- [ ] Backup automático do banco configurado
-- [ ] Chaves de API rotacionadas (não usar as de desenvolvimento)
-- [ ] NEXTAUTH_SECRET seguro gerado em produção
-- [ ] Deploy em Vercel com domínio personalizado
-- [ ] Teste de carga: gerar 3 dossiês simultâneos sem timeout
+| Cirurgia de Extração íntegra | Alta — base de tudo | Religamento + suíte de testes verde antes de avançar |
+| Swiss Ephemeris no VPS | Alta — precisão astral | Já validado no legado; cronjob + Redis |
+| Ollama no VPS (RAM) | Média | Fallback de embeddings na nuvem (custo irrisório — Doc 25 §5) |
+| Curadoria do Grimório | Alta — qualidade do oráculo | Geração em lote assistida + curadoria humana (Doc 20) |
+| Tabela data→Odu (D3) | Média | Algoritmo default provisório (Doc 11 §4.1) até a linhagem |

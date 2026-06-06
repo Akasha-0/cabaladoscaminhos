@@ -1,0 +1,694 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "audit": {
+    "enabled": false
+  },
+  "duplicates": {
+    "enabled": false,
+    "minOccurrences": 100,
+    "threshold": 10.0,
+    "ignore": [
+      "tests*.test.ts"
+    ]
+  },
+  "health": {
+    "maxCyclomatic": 100,
+    "maxCognitive": 100,
+    "maxCrap": 10000
+  },
+  "rules": {
+    "unused-types": "warn",
+    "unused-dependencies": "warn"
+  },
+  "usedClassMembers": [
+    "correlateChakraElement",
+    "correlatePlanetOrixa",
+    "getAllSystemCorrelations",
+    "detectPatterns",
+    "explainCorrelationPT",
+    "generatePracticalAdvice",
+    "toJSON"
+  ],
+  "ignoreDependencies": [
+    "react-markdown",
+    "remark-gfm",
+    "zustand",
+    "knip"
+  ],
+  "entry": [
+    "middleware.ts",
+    "next.config.ts",
+    "prisma/seed.ts",
+    "prisma.config.ts",
+    "src/app/page.tsx",
+    "src/app/layout.tsx",
+    "src/app/route.ts",
+    "src/app/loading.tsx",
+    "src/app/error.tsx",
+    "src/app/not-found.tsx",
+    "src/app/template.tsx",
+    "src/app/default.tsx",
+    "src/middleware.ts",
+    "src/middleware/index.ts",
+    "src/instrumentation.ts",
+    "src/instrumentation-node.ts",
+    "src/proxy.ts",
+    "scripts/cleanup-tokens.ts",
+    "src/stores/cockpit-store.ts",
+    "src/components/cockpit/dossier/DossierViewer.tsx",
+    "src/components/operator/mfa/MfaSettingsPanel.tsx",
+    "src/components/operator/mfa/MfaSetup.tsx",
+    "src/components/ui/city-autocomplete.tsx",
+    "src/hooks/use-keyboard-shortcuts.ts"
+  ],
+  "ignorePatterns": [
+    "src/lib/meji-*/**/*.ts",
+    "src/lib/irosun/**/*",
+    "src/lib/iwori/**/*",
+    "src/lib/obara/**/*",
+    "src/lib/okanle/**/*",
+    "src/lib/okanran/**/*",
+    "src/lib/owonrin/**/*",
+    "src/lib/orixa/**/*",
+    "src/lib/ogbe/**/*",
+    "src/lib/oturupon/**/*",
+    "src/lib/meji/**/*",
+    "src/lib/ogunda/**/*",
+    "src/lib/lenormand/**/*",
+    "src/lib/ika/**/*",
+    "src/lib/ikate/**/*",
+    "src/lib/ikoyun/**/*",
+    "src/lib/osa/**/*",
+    "src/lib/osetura/**/*",
+    "src/lib/osha/**/*",
+    "src/lib/oshe/**/*",
+    "src/lib/analytics.ts",
+    "src/lib/validators.ts",
+    "src/lib/ritual-storage.ts",
+    "src/lib/schedule.ts",
+    "src/lib/numerologia/life-path.ts",
+    "src/lib/numerologia/number-meanings.ts",
+    "src/lib/megi/**/*",
+    "src/lib/otura/**/*",
+    "src/lib/oyeku/**/*",
+    "src/lib/iron/**/*",
+    "src/lib/logbara/**/*",
+    "src/lib/correlation/*.ts",
+    "src/lib/pdf/dossier-pdf.ts",
+    "tests/**",
+    "src/components/cockpit/**",
+    "src/components/shared/**",
+    "src/components/operator/SessionsList.tsx",
+    "src/components/ui/progress.tsx",
+    "src/hooks/useMapaInsights.ts",
+    "src/hooks/useToast.ts",
+    "src/lib/hooks.ts",
+    "src/stores/cockpit-store.ts",
+    "src/lib/numerologia/ciclos.ts",
+    "src/lib/numerologia/compatibility.ts",
+    "src/lib/analytics/session-insights.ts",
+    "src/lib/api/fetch-mapa.ts",
+    "src/lib/divination/house-delegation.ts",
+    "src/lib/divination/house-types.ts",
+    "src/lib/ifa/odu-data.ts",
+    "src/components/ui/dialog.tsx",
+    "src/components/ui/client-search-combobox.tsx",
+    "src/app/cockpit/**",
+    "package.json"
+  ],
+  "ignoreUnresolvedImports": [
+    "tests/lib/**",
+    "tests/integration/**",
+    "tests/integration/**/*.test.ts",
+    "tests/lib/sacred-geometry/**",
+    "tests/lib/transformation/**",
+    "tests/lib/energy/**",
+    "tests/lib/karma/**",
+    "tests/lib/meditation/**",
+    "tests/lib/sacred-texts/**",
+    "tests/lib/auth-jwt.test.ts",
+    "**/stats-visualization.ts"
+  ],
+  "ignoreExports": [
+    {
+      "file": "src/lib/api/base-route.ts",
+      "exports": ["validateRequestBody"]
+    },
+    {
+      "file": "src/components/cockpit/CockpitHeader.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/cockpit/CockpitOracular.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/cockpit/CockpitSidebar.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/cockpit/HouseCell.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/cockpit/HouseInputPopover.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/DailyActionWidget.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/LifeAreasOverview.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/MeditationStats.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/ProgressChart.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/SessionInsightsPanel.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/SpiritualContextWidget.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/StatsOverview.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/lib/validators.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/calculators/numerology-kabalah.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/calculators/numerology-tantric.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/numerologia/calculos.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/numerologia/ciclos.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/draw.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/chart/chart-interpretations.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/tradition-mapper.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/agents/recommendation-engine-v2.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/agents/recommendation-engine.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/draw.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/auth/rate-limit.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-numerology.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/numerology-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sephirot-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/components/dashboard/AIOracleChat.tsx",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/types.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/dossier/consult-context.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/db/consultation-actions.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/dossier/prompt-builder.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/dossier/types.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-sephirot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/element-sign.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/frequency-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/frequency-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/moon-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/moon-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/moon-numerology.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/moon-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/numerology-moon.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/numerology-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/oddu-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/odu-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/odu-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/odu-numerology.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sephirot-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-sephirot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/components/design-system/Typography.tsx",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/components/ui/label.tsx",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/odu-data.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/lenormand/mesa-real-types.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/matching.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ifa/suggestions.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/astrologia/tipos.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sign-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-signo.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/openai.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-chakra.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-sephirot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/day-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/frequency-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sound-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/frequency-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/odu-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-day.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-odu.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-sephirot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-zodiac-aspect.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/planet-zodiac.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/sound-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-planet.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/chakra-frequency.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/orixa-element.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/orixa-tarot.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/correlation/zodiac-orixa.ts",
+      "exports": ["*"]
+    },
+    {
+      "file": "src/lib/ai/tradition-utils.ts",
+      "exports": ["isMajorTradition", "groupEntriesByOrigin", "getUserTraditions"]
+    },
+    {
+      "file": "src/lib/pdf/dossier-pdf.ts",
+      "exports": ["cartaNome", "oduNome", "stripMarkdown"]
+    },
+    {
+      "file": "src/components/dashboard/SwarmChatWidget.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/dashboard/SwarmStatusWidget.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/components/shared/LoadingSpinner.tsx",
+      "exports": ["default"]
+    },
+    {
+      "file": "src/lib/db/client-actions.ts",
+      "exports": ["CreateClientInput"]
+    },
+    {
+      "file": "src/lib/life-areas/life-areas-ai.ts",
+      "exports": ["AIInsight"]
+    },
+    {
+      "file": "src/lib/auth/operator-totp.ts",
+      "exports": ["MFA_ISSUER", "TOTP_SECRET_BYTES", "TOTP_DIGITS", "TOTP_PERIOD_SECONDS", "TOTP_DRIFT_STEPS"]
+    },
+    {
+      "file": "src/lib/credits/service.ts",
+      "exports": ["CreditosInsuficientesError", "getCreditos", "getCreditosCompleto", "verificarCreditos"]
+    },
+    {
+      "file": "src/lib/payments/service.ts",
+      "exports": ["PLANOS", "extrairUserId", "extrairPlanoId", "extrairCreditos"]
+    },
+    {
+      "file": "src/lib/auth/operator-jwt.ts",
+      "exports": ["JwtSecretMissingError", "signOperatorToken", "OPERATOR_MFA_CHALLENGE_TTL_SECONDS"]
+    },
+    {
+      "file": "src/lib/auth/operator-sessions.ts",
+      "exports": ["isRefreshSessionActive", "revokeAllOperatorSessions", "cleanupExpiredSessions"]
+    },
+    {
+      "file": "src/lib/auth/password-reset.ts",
+      "exports": ["PASSWORD_RESET_TTL_MS", "hashToken"]
+    },
+    {
+      "file": "src/lib/auth/account-lockout.ts",
+      "exports": ["MAX_ATTEMPTS", "LOCKOUT_DURATION_MINUTES"]
+    },
+    {
+      "file": "src/lib/auth/operator-guard.ts",
+      "exports": ["OPERATOR_LOGIN_PATH", "requireOperatorPage"]
+    },
+    {
+      "file": "src/app/api/mesa-real/save/route.ts",
+      "exports": ["DuplicateCardError"]
+    },
+    {
+      "file": "src/app/layout.tsx",
+      "exports": ["headers"]
+    },
+    {
+      "file": "src/lib/ai/mapa-insights/prompt-builder.ts",
+      "exports": ["gerarContextoUsuario"]
+    },
+    {
+      "file": "src/lib/quality/runner.ts",
+      "exports": ["runQualityEval"]
+    },
+    {
+      "file": "src/lib/api/spiritual-filters.ts",
+      "exports": ["ElementExtendedSchema"]
+    },
+    {
+      "file": "src/lib/ai/dossier/oracle-prompt-builder.ts",
+      "exports": ["normalizeBirthChart"]
+    },
+    {
+      "file": "src/lib/ai/mapa-insights/parser.ts",
+      "exports": ["extractJson"]
+    },
+    {
+      "file": "src/lib/constants/odus.ts",
+      "exports": ["ODUS"]
+    },
+    {
+      "file": "src/lib/ai/mapa-insights/generator.ts",
+      "exports": ["gerarCacheKey"]
+    },
+    {
+      "file": "src/lib/ai/theme-router.ts",
+      "exports": ["THEME_TAXONOMY"]
+    },
+    {
+      "file": "src/lib/token-budget.ts",
+      "exports": ["tokenBudgetLimit"]
+    },
+    {
+      "file": "src/lib/auth/audit-service.ts",
+      "exports": ["SecurityEventType"],
+      "isType": true
+    },
+    {
+      "file": "src/lib/quality/runner.ts",
+      "exports": ["EvalSuite"],
+      "isType": true
+    },
+    {
+      "file": "src/types/index.ts",
+      "exports": ["AstrologyMap"],
+      "isType": true
+    }
+   ],
+  "regression": {
+    "baseline":     {
+      "totalIssues": 0,
+      "unusedFiles": 0,
+      "unusedExports": 0,
+      "unusedTypes": 0,
+      "unusedDependencies": 0,
+      "unusedDevDependencies": 0,
+      "unusedOptionalDependencies": 0,
+      "unusedEnumMembers": 0,
+      "unusedClassMembers": 0,
+      "unresolvedImports": 0,
+      "unlistedDependencies": 0,
+      "duplicateExports": 0,
+      "circularDependencies": 0,
+      "reExportCycles": 0,
+      "typeOnlyDependencies": 0,
+      "testOnlyDependencies": 0,
+      "boundaryViolations": 0
+    }
+  }
+}

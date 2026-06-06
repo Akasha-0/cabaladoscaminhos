@@ -4,7 +4,7 @@
  * Testa endpoints de análise de correlação profunda.
  */
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 
 // Mock the CorrelationEngineV2
 const mockEngine = {

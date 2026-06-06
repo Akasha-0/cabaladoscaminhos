@@ -9,20 +9,14 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
-// ─── Zod Schemas ───────────────────────────────────────────────────────────
+// ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 const CategorySchema = z.enum([
   'readings', 'rituals', 'meditation', 'credits', 'streaks', 'exploration'
 ]);
 const RaritySchema = z.enum(['common', 'uncommon', 'rare', 'epic', 'legendary']);
-const SefirotSchema = z.enum([
-  'Kether', 'Chokhmah', 'Binah', 'Chesed', 'Gevurah',
-  'Tipheret', 'Netzach', 'Hod', 'Yesod', 'Malkuth'
-]);
-const ChakraSchema = z.coerce.number().int().min(1).max(7);
-const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
-
 const AchievementSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -94,13 +88,18 @@ const CreditsProgressSchema = z.object({
   currentBalance: z.number().int(),
   mostExpensiveFeature: z.string().nullable(),
 });
-
+// fallow-ignore-next-line unused-type
 export type Achievement = z.infer<typeof AchievementSchema>;
-export type ProgressStats = z.infer<typeof ProgressStatsSchema>;
-export type ReadingProgress = z.infer<typeof ReadingProgressSchema>;
-export type RitualProgress = z.infer<typeof RitualProgressSchema>;
-export type MeditationProgress = z.infer<typeof MeditationProgressSchema>;
+// fallow-ignore-next-line unused-type
 export type CreditsProgress = z.infer<typeof CreditsProgressSchema>;
+// fallow-ignore-next-line unused-type
+export type ProgressStats = z.infer<typeof ProgressStatsSchema>;
+// fallow-ignore-next-line unused-type
+export type ReadingProgress = z.infer<typeof ReadingProgressSchema>;
+// fallow-ignore-next-line unused-type
+export type RitualProgress = z.infer<typeof RitualProgressSchema>;
+// fallow-ignore-next-line unused-type
+export type MeditationProgress = z.infer<typeof MeditationProgressSchema>;
 export const dynamic = 'force-dynamic';
 
 // ─── Achievement Spiritual Correlations ──────────────────────────────────────────
@@ -340,7 +339,11 @@ const ACHIEVEMENTS: AchievementBase[] = [
 ];
 
 // ─── Achievement Helper Functions ──────────────────────────────────────────────────────────
-function calculateLevel(experience: number): { level: number; expToNext: number } {
+interface LevelResult {
+  level: number;
+  expToNext: number;
+}
+function calculateLevel(experience: number): LevelResult {
   const baseExp = 100;
   const multiplier = 1.5;
   let level = 1;
@@ -354,7 +357,6 @@ function calculateLevel(experience: number): { level: number; expToNext: number 
   const expToNext = baseExp * Math.pow(multiplier, level - 1);
   return { level, expToNext };
 }
-
 function enrichAchievement(
   base: AchievementBase,
   currentProgress: number,
@@ -378,8 +380,16 @@ function enrichAchievement(
     spiritualCorrelations: base.spiritualCorrelations,
   } as Achievement;
 }
-
-function calculateSpiritualStats(achievements: Achievement[]) {
+// fallow-ignore-next-line unused-type
+export interface SpiritualStats {
+  bySefirot: Record<string, number>;
+  byChakra: Record<string, number>;
+  byElement: Record<string, number>;
+  byOrixa: Record<string, number>;
+  byRarity: Record<string, number>;
+  byCategory: Record<string, number>;
+}
+function calculateSpiritualStats(achievements: Achievement[]): SpiritualStats {
   return {
     bySefirot: achievements.reduce((acc, a) => {
       if (a.spiritualCorrelations) {
@@ -421,15 +431,225 @@ function calculateSpiritualStats(achievements: Achievement[]) {
   };
 }
 
+// ─── Data Types ─────────────────────────────────────────────────────────────────────
+
+interface ProgressData {
+  experience: number;
+  totalPoints: number;
+  readingsCount: number;
+  readingsByType: Record<string, number>;
+  readingsThisWeek: number;
+  readingsThisMonth: number;
+  ritualsCount: number;
+  ritualsStreak: number;
+  ritualsLongestStreak: number;
+  ritualsCompletionRate: number;
+  favoriteRitual: string | null;
+  meditationSessions: number;
+  meditationMinutes: number;
+  meditationStreak: number;
+  meditationLongestStreak: number;
+  creditsEarned: number;
+  creditsSpent: number;
+  creditsBalance: number;
+  mostExpensiveFeature: string | null;
+}
+
+interface AchievementProgressMap {
+  progress: number;
+  unlockedAt: string | null;
+}
+
+type ParsedProgressQuery = z.infer<typeof ProgressQuerySchema>;
+type SupabaseClient = ReturnType<typeof createSupabaseClient>;
+
+// ─── Data Fetching Functions ──────────────────────────────────────────────────────────
+
+function createSupabase(): SupabaseClient {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
+
+async function getAuthenticatedUser(supabase: SupabaseClient) {
+  const { data: { user }, error } = await supabase.auth.getUser();
+  return { user, error };
+}
+
+async function getUserProgress(supabase: SupabaseClient, userId: string) {
+  const { data, error } = await supabase
+    .from('user_progress')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('Error fetching progress:', error);
+  }
+
+  return data;
+}
+
+async function getUserAchievementProgress(supabase: SupabaseClient, userId: string) {
+  const { data } = await supabase
+    .from('user_achievements')
+    .select('*')
+    .eq('user_id', userId);
+
+  const progressMap = new Map<string, AchievementProgressMap>();
+  if (data) {
+    data.forEach((a: { achievement_id: string; progress: number; unlocked_at: string | null }) => {
+      progressMap.set(a.achievement_id, {
+        progress: a.progress,
+        unlockedAt: a.unlocked_at,
+      });
+    });
+  }
+  return progressMap;
+}
+
+// ─── Query Parsing Functions ─────────────────────────────────────────────────────────
+
+function parseQueryParams(searchParams: URLSearchParams): { 
+  success: true; 
+  data: ParsedProgressQuery 
+} | { 
+  success: false; 
+  error: z.ZodError 
+} {
+  const result = ProgressQuerySchema.safeParse({
+    userId: searchParams.get('userId'),
+    achievements: searchParams.get('achievements'),
+    stats: searchParams.get('stats'),
+    sefirot: searchParams.get('sefirot'),
+    chakra: searchParams.get('chakra'),
+    element: searchParams.get('element'),
+    orixa: searchParams.get('orixa'),
+  });
+
+  if (result.success) {
+    return { success: true, data: result.data };
+  }
+  return { success: false, error: result.error };
+}
+
+// ─── Filtering Functions ─────────────────────────────────────────────────────────────
+
+// fallow-ignore-next-line unused-type
+export interface SpiritualFilters {
+  sefirot?: string;
+  chakra?: number;
+  element?: string;
+  orixa?: string;
+}
+function applySpiritualFilters(
+  achievements: Achievement[],
+  filters: SpiritualFilters
+): Achievement[] {
+  let filtered = achievements;
+
+  if (filters.sefirot) {
+    filtered = filtered.filter(a =>
+      (a.spiritualCorrelations?.sefirot as readonly string[])?.includes(filters.sefirot!)
+    );
+  }
+  if (filters.chakra) {
+    filtered = filtered.filter(a => 
+      a.spiritualCorrelations?.chakra === filters.chakra
+    );
+  }
+  if (filters.element) {
+    filtered = filtered.filter(a => 
+      a.spiritualCorrelations?.element === filters.element
+    );
+  }
+  if (filters.orixa) {
+    filtered = filtered.filter(a => 
+      a.spiritualCorrelations?.orixa === filters.orixa
+    );
+  }
+
+  return filtered;
+}
+// ─── Data Normalization Functions ────────────────────────────────────────────────────
+function normalizeProgressData(rawData: unknown): ProgressData | null {
+  if (!rawData || typeof rawData !== 'object') return null;
+  const d = rawData as Record<string, unknown>;
+  return {
+    experience: (d.experience as number) || 0,
+    totalPoints: (d.total_points as number) || 0,
+    readingsCount: (d.readings_count as number) || 0,
+    readingsByType: (d.readings_by_type as Record<string, number>) || {},
+    readingsThisWeek: (d.readings_this_week as number) || 0,
+    readingsThisMonth: (d.readings_this_month as number) || 0,
+    ritualsCount: (d.rituals_count as number) || 0,
+    ritualsStreak: (d.rituals_streak as number) || 0,
+    ritualsLongestStreak: (d.rituals_longest_streak as number) || 0,
+    ritualsCompletionRate: (d.rituals_completion_rate as number) || 0,
+    favoriteRitual: (d.favorite_ritual as string) || null,
+    meditationSessions: (d.meditation_sessions as number) || 0,
+    meditationMinutes: (d.meditation_minutes as number) || 0,
+    meditationStreak: (d.meditation_streak as number) || 0,
+    meditationLongestStreak: (d.meditation_longest_streak as number) || 0,
+    creditsEarned: (d.credits_earned as number) || 0,
+    creditsSpent: (d.credits_spent as number) || 0,
+    creditsBalance: (d.credits_balance as number) || 0,
+    mostExpensiveFeature: (d.most_expensive_feature as string) || null,
+  };
+}
+// ─── Response Building Functions ────────────────────────────────────────────────────
+function buildProgressStatsFromExp(experience: number, totalPoints: number): ProgressStats {
+  const { level, expToNext } = calculateLevel(experience);
+  return {
+    level,
+    experience,
+    experienceToNextLevel: expToNext,
+    totalPoints,
+  };
+}
+function buildReadingProgress(progressData: ProgressData | null): ReadingProgress {
+  return {
+    total: progressData?.readingsCount || 0,
+    byType: progressData?.readingsByType || {},
+    thisWeek: progressData?.readingsThisWeek || 0,
+    thisMonth: progressData?.readingsThisMonth || 0,
+  };
+}
+function buildRitualProgress(progressData: ProgressData | null): RitualProgress {
+  return {
+    totalCompletions: progressData?.ritualsCount || 0,
+    currentStreak: progressData?.ritualsStreak || 0,
+    longestStreak: progressData?.ritualsLongestStreak || 0,
+    completionRate: progressData?.ritualsCompletionRate || 0,
+    favoriteRitual: progressData?.favoriteRitual || null,
+  };
+}
+function buildMeditationProgress(progressData: ProgressData | null): MeditationProgress {
+  const sessions = progressData?.meditationSessions || 0;
+  const minutes = progressData?.meditationMinutes || 0;
+  return {
+    totalSessions: sessions,
+    totalMinutes: minutes,
+    averageSessionLength: sessions > 0 ? Math.round(minutes / sessions) : 0,
+    currentMeditationStreak: progressData?.meditationStreak || 0,
+    longestMeditationStreak: progressData?.meditationLongestStreak || 0,
+  };
+}
+function buildCreditsProgress(progressData: ProgressData | null): CreditsProgress {
+  return {
+    totalEarned: progressData?.creditsEarned || 0,
+    totalSpent: progressData?.creditsSpent || 0,
+    currentBalance: progressData?.creditsBalance || 0,
+    mostExpensiveFeature: progressData?.mostExpensiveFeature || null,
+  };
+}
+
 // ─── API Route Handlers ──────────────────────────────────────────────────────────────
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const supabase = createSupabase();
+    const { user, error: authError } = await getAuthenticatedUser(supabase);
 
     if (authError || !user) {
       return NextResponse.json({
@@ -439,93 +659,31 @@ export async function GET(request: NextRequest) {
     }
 
     const searchParams = request.nextUrl.searchParams;
+    const queryResult = parseQueryParams(searchParams);
 
-    const parseResult = ProgressQuerySchema.safeParse({
-      userId: searchParams.get('userId'),
-      achievements: searchParams.get('achievements'),
-      stats: searchParams.get('stats'),
-      sefirot: searchParams.get('sefirot'),
-      chakra: searchParams.get('chakra'),
-      element: searchParams.get('element'),
-      orixa: searchParams.get('orixa'),
-    });
-
-    if (!parseResult.success) {
+    if (!queryResult.success) {
       return NextResponse.json({
         success: false,
         error: 'Parâmetros inválidos',
-        details: parseResult.error.flatten().fieldErrors,
+        details: queryResult.error.flatten().fieldErrors,
       }, { status: 400 });
     }
 
-    const { achievements: includeAchievements, stats: includeStats, sefirot, chakra, element, orixa } = parseResult.data;
+    const { achievements: includeAchievements, stats: includeStats, sefirot, chakra, element, orixa } = queryResult.data;
 
-    // Get user progress from database
-    const { data: progressData, error: progressError } = await supabase
-      .from('user_progress')
-      .select('*')
-      .eq('user_id', user.id)
-      .single();
-
-    if (progressError && progressError.code !== 'PGRST116') {
-      console.error('Error fetching progress:', progressError);
-    }
-
+    const rawProgressData = await getUserProgress(supabase, user.id);
+    const progressData = normalizeProgressData(rawProgressData);
     const experience = progressData?.experience || 0;
-    const { level, expToNext } = calculateLevel(experience);
 
-    const stats: ProgressStats = {
-      level,
-      experience,
-      experienceToNextLevel: expToNext,
-      totalPoints: progressData?.total_points || 0,
-    };
+    const achievementProgress = await getUserAchievementProgress(supabase, user.id);
 
-    // Get achievement progress
-    const { data: achievementData } = await supabase
-      .from('user_achievements')
-      .select('*')
-      .eq('user_id', user.id);
-
-    const achievementProgress = new Map<string, { progress: number; unlockedAt: string | null }>();
-    if (achievementData) {
-      achievementData.forEach((a: { achievement_id: string; progress: number; unlocked_at: string | null }) => {
-        achievementProgress.set(a.achievement_id, {
-          progress: a.progress,
-          unlockedAt: a.unlocked_at,
-        });
-      });
-    }
-
-    let enrichedAchievements = ACHIEVEMENTS.map(a => {
+    const enrichedAchievements = ACHIEVEMENTS.map(a => {
       const progress = achievementProgress.get(a.id);
       return enrichAchievement(a, progress?.progress || 0, progress?.unlockedAt || null);
     });
 
-    // Apply spiritual filters
-    if (sefirot) {
-      enrichedAchievements = enrichedAchievements.filter(a => 
-        a.spiritualCorrelations?.sefirot.includes(sefirot)
-      );
-    }
-    if (chakra) {
-      enrichedAchievements = enrichedAchievements.filter(a => 
-        a.spiritualCorrelations?.chakra === chakra
-      );
-    }
-    if (element) {
-      enrichedAchievements = enrichedAchievements.filter(a => 
-        a.spiritualCorrelations?.element === element
-      );
-    }
-    if (orixa) {
-      enrichedAchievements = enrichedAchievements.filter(a => 
-        a.spiritualCorrelations?.orixa === orixa
-      );
-    }
-
-    // Calculate spiritual stats
-    const spiritualStats = calculateSpiritualStats(enrichedAchievements);
+    const filteredAchievements = applySpiritualFilters(enrichedAchievements, { sefirot, chakra, element, orixa });
+    const spiritualStats = calculateSpiritualStats(filteredAchievements);
 
     const response: Record<string, unknown> = {
       success: true,
@@ -534,47 +692,21 @@ export async function GET(request: NextRequest) {
     };
 
     if (includeStats !== false) {
-      response.stats = stats;
-      response.readings = {
-        total: progressData?.readings_count || 0,
-        byType: progressData?.readings_by_type || {},
-        thisWeek: progressData?.readings_this_week || 0,
-        thisMonth: progressData?.readings_this_month || 0,
-      } as ReadingProgress;
-      response.rituals = {
-        totalCompletions: progressData?.rituals_count || 0,
-        currentStreak: progressData?.rituals_streak || 0,
-        longestStreak: progressData?.rituals_longest_streak || 0,
-        completionRate: progressData?.rituals_completion_rate || 0,
-        favoriteRitual: progressData?.favorite_ritual || null,
-      } as RitualProgress;
-      response.meditation = {
-        totalSessions: progressData?.meditation_sessions || 0,
-        totalMinutes: progressData?.meditation_minutes || 0,
-        averageSessionLength: progressData?.meditation_sessions 
-          ? Math.round(progressData.meditation_minutes / progressData.meditation_sessions)
-          : 0,
-        currentMeditationStreak: progressData?.meditation_streak || 0,
-        longestMeditationStreak: progressData?.meditation_longest_streak || 0,
-      } as MeditationProgress;
-      response.credits = {
-        totalEarned: progressData?.credits_earned || 0,
-        totalSpent: progressData?.credits_spent || 0,
-        currentBalance: progressData?.credits_balance || 0,
-        mostExpensiveFeature: progressData?.most_expensive_feature || null,
-      } as CreditsProgress;
+      response.stats = buildProgressStatsFromExp(experience, progressData?.totalPoints || 0);
+      response.readings = buildReadingProgress(progressData);
+      response.rituals = buildRitualProgress(progressData);
+      response.meditation = buildMeditationProgress(progressData);
+      response.credits = buildCreditsProgress(progressData);
     }
 
     if (includeAchievements !== false) {
-      response.achievements = enrichedAchievements;
-      response.unlockedCount = enrichedAchievements.filter(a => a.unlockedAt !== null).length;
-      response.totalCount = enrichedAchievements.length;
+      response.achievements = filteredAchievements;
+      response.unlockedCount = filteredAchievements.filter(a => a.unlockedAt !== null).length;
+      response.totalCount = filteredAchievements.length;
     }
 
     response.spiritualStats = spiritualStats;
-    response.meta = {
-      filters: { sefirot, chakra, element, orixa },
-    };
+    response.meta = { filters: { sefirot, chakra, element, orixa } };
 
     return NextResponse.json(response);
   } catch (error) {

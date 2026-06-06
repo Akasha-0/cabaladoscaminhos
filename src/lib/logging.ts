@@ -3,14 +3,13 @@
 // ============================================================
 // Structured logging with spiritual context and monitoring
 // ============================================================
-
-import { ErrorCode } from "./error-handling";
+import { ErrorCode } from './error-handling';
 
 // ============================================================
 // LOG LEVELS
 // ============================================================
 
-export enum LogLevel {
+enum LogLevel {
   DEBUG = 0,
   INFO = 1,
   WARN = 2,
@@ -18,26 +17,27 @@ export enum LogLevel {
   FATAL = 4,
 }
 const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: "DEBUG",
-  [LogLevel.INFO]: "INFO",
-  [LogLevel.WARN]: "WARN",
-  [LogLevel.ERROR]: "ERROR",
-  [LogLevel.FATAL]: "FATAL",
+  [LogLevel.DEBUG]: 'DEBUG',
+  [LogLevel.INFO]: 'INFO',
+  [LogLevel.WARN]: 'WARN',
+  [LogLevel.ERROR]: 'ERROR',
+  [LogLevel.FATAL]: 'FATAL',
 };
 const LOG_LEVEL_COLORS: Record<LogLevel, string> = {
-  [LogLevel.DEBUG]: "\x1b[36m",    // Cyan
-  [LogLevel.INFO]: "\x1b[32m",     // Green
-  [LogLevel.WARN]: "\x1b[33m",     // Yellow
-  [LogLevel.ERROR]: "\x1b[31m",    // Red
-  [LogLevel.FATAL]: "\x1b[35m",    // Magenta
+  [LogLevel.DEBUG]: '\x1b[36m', // Cyan
+  [LogLevel.INFO]: '\x1b[32m', // Green
+  [LogLevel.WARN]: '\x1b[33m', // Yellow
+  [LogLevel.ERROR]: '\x1b[31m', // Red
+  [LogLevel.FATAL]: '\x1b[35m', // Magenta
 };
 
-const RESET_COLOR = "\x1b[0m";
+const RESET_COLOR = '\x1b[0m';
 
 // ============================================================
 // LOG CONTEXT
 // ============================================================
 
+// fallow-ignore-next-line unused-type
 export interface LogContext {
   requestId?: string;
   userId?: string;
@@ -49,7 +49,7 @@ export interface LogContext {
   [key: string]: unknown;
 }
 
-export interface LogEntry {
+interface LogRecord {
   timestamp: string;
   level: LogLevel;
   levelName: string;
@@ -61,12 +61,10 @@ export interface LogEntry {
     stack?: string;
   };
   duration?: number;
-  performance?: {
-    memory?: number;
-    cpu?: number;
-  };
+  requestId?: string;
+  userId?: string;
+  ip?: string;
 }
-
 // ============================================================
 // LOGGER CLASS
 // ============================================================
@@ -74,9 +72,9 @@ export interface LogEntry {
 class Logger {
   private static instance: Logger;
   private minLevel: LogLevel;
-  private entries: LogEntry[] = [];
+  private entries: LogRecord[] = [];
   private readonly maxEntries = 1000;
-  private isProduction = process.env.NODE_ENV === "production";
+  private isProduction = process.env.NODE_ENV === 'production';
 
   private constructor() {
     this.minLevel = this.isProduction ? LogLevel.INFO : LogLevel.DEBUG;
@@ -98,10 +96,10 @@ class Logger {
     // Already using console methods, just configure formatting
   }
 
-  private formatEntry(entry: LogEntry): string {
+  private formatEntry(entry: LogRecord): string {
     const color = LOG_LEVEL_COLORS[entry.level];
     const timestamp = new Date(entry.timestamp).toISOString();
-    
+
     let formatted = `${color}[${timestamp}] [${entry.levelName}]${RESET_COLOR} ${entry.message}`;
 
     if (entry.context?.requestId) {
@@ -144,7 +142,7 @@ class Logger {
   private log(level: LogLevel, message: string, context?: LogContext, error?: Error): void {
     if (level < this.minLevel) return;
 
-    const entry: LogEntry = {
+    const entry: LogRecord = {
       timestamp: new Date().toISOString(),
       level,
       levelName: LOG_LEVEL_NAMES[level],
@@ -154,7 +152,7 @@ class Logger {
 
     if (error) {
       entry.error = {
-       code: ((error as { code?: string }).code ?? ErrorCode.INTERNAL_ERROR) as ErrorCode,
+        code: ((error as { code?: string }).code ?? ErrorCode.INTERNAL_ERROR) as ErrorCode,
         message: error.message,
         stack: error.stack,
       };
@@ -182,20 +180,6 @@ class Logger {
       case LogLevel.FATAL:
         console.error(formatted);
         break;
-    }
-
-    // In production, send to external service (e.g., Sentry, Datadog)
-    if (this.isProduction && level >= LogLevel.ERROR) {
-      this.sendToMonitoring(entry);
-    }
-  }
-
-  private async sendToMonitoring(_entry: LogEntry): Promise<void> {
-    // TODO: Integrate with Sentry, Datadog, or similar
-    if (process.env.SENTRY_DSN) {
-      // await import('@sentry/node').then(({ captureException }) => {
-      //   captureException(new Error(entry.message), { extra: entry });
-      // });
     }
   }
 
@@ -228,7 +212,7 @@ class Logger {
   }
 
   // Get recent logs (for debugging)
-  getRecentLogs(count = 100): LogEntry[] {
+  getRecentLogs(count = 100): LogRecord[] {
     return this.entries.slice(-count);
   }
 
@@ -238,14 +222,13 @@ class Logger {
   }
 }
 
-// Export singleton instance
-export const logger = Logger.getInstance();
+// Singleton logger instance (internal use by functions in this file)
+const logger = Logger.getInstance();
 
 // ============================================================
 // PERFORMANCE MONITORING
-// ============================================================
-
-export interface PerformanceMetrics {
+// ====================================
+interface PerformanceMetrics {
   requestId: string;
   path: string;
   method: string;
@@ -259,6 +242,9 @@ export interface PerformanceMetrics {
   };
   userId?: string;
 }
+// ============================================================
+// INTERNAL MONITOR
+// ====================================
 
 class PerformanceMonitor {
   private static instance: PerformanceMonitor;
@@ -282,7 +268,7 @@ class PerformanceMonitor {
 
     // Log slow requests
     if (metric.duration > 5000) {
-      logger.warn("Slow request detected", {
+      logger.warn('Slow request detected', {
         requestId: metric.requestId,
         path: metric.path,
         duration: metric.duration,
@@ -290,15 +276,11 @@ class PerformanceMonitor {
     }
   }
 
-  getMetrics(filter?: {
-    path?: string;
-    minDuration?: number;
-    since?: Date;
-  }): PerformanceMetrics[] {
+  getMetrics(filter?: { path?: string; minDuration?: number; since?: Date }): PerformanceMetrics[] {
     let filtered = this.metrics;
 
     if (filter?.path) {
-      filtered = filtered.filter((m) => m.path.includes(filter.path!));
+      filtered = filtered.filter((m) => m.path === filter.path);
     }
 
     if (filter?.minDuration) {
@@ -306,52 +288,38 @@ class PerformanceMonitor {
     }
 
     if (filter?.since) {
-      filtered = filtered.filter((m) => new Date(m.timestamp) >= filter.since!);
+      const sinceTime = filter.since.getTime();
+      filtered = filtered.filter((m) => new Date(m.timestamp).getTime() >= sinceTime);
     }
 
     return filtered;
   }
 
-  getStats(path?: string): {
-    count: number;
-    avgDuration: number;
-    p50Duration: number;
-    p95Duration: number;
-    p99Duration: number;
-    errorRate: number;
-  } {
-    const metrics = path ? this.getMetrics({ path }) : this.metrics;
-
-    if (metrics.length === 0) {
-      return {
-        count: 0,
-        avgDuration: 0,
-        p50Duration: 0,
-        p95Duration: 0,
-        p99Duration: 0,
-        errorRate: 0,
-      };
-    }
-
-    const durations = metrics.map((m) => m.duration).sort((a, b) => a - b);
-    const errors = metrics.filter((m) => m.statusCode && m.statusCode >= 400).length;
-
-    return {
-      count: metrics.length,
-      avgDuration: Math.round(durations.reduce((a, b) => a + b, 0) / durations.length),
-      p50Duration: durations[Math.floor(durations.length * 0.5)],
-      p95Duration: durations[Math.floor(durations.length * 0.95)],
-      p99Duration: durations[Math.floor(durations.length * 0.99)],
-      errorRate: Math.round((errors / metrics.length) * 100 * 100) / 100,
-    };
-  }
-
   clearMetrics(): void {
     this.metrics = [];
   }
+
+  getSummary(): {
+    totalRequests: number;
+    avgDuration: number;
+    slowRequests: number;
+  } {
+    if (this.metrics.length === 0) {
+      return { totalRequests: 0, avgDuration: 0, slowRequests: 0 };
+    }
+
+    const totalDuration = this.metrics.reduce((sum, m) => sum + m.duration, 0);
+    const slowRequests = this.metrics.filter((m) => m.duration > 5000).length;
+
+    return {
+      totalRequests: this.metrics.length,
+      avgDuration: Math.round(totalDuration / this.metrics.length),
+      slowRequests,
+    };
+  }
 }
 
-export const performanceMonitor = PerformanceMonitor.getInstance();
+const performanceMonitor = PerformanceMonitor.getInstance();
 
 // ============================================================
 // UTILITY FUNCTIONS
@@ -361,37 +329,102 @@ export function generateRequestId(): string {
   return `req_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
 }
 
-export function createLogContext(request: Request): LogContext {
+function createLogContext(request: Request): LogContext {
   return {
     requestId: generateRequestId(),
-    ip: request.headers.get("x-forwarded-for") || undefined,
-    userAgent: request.headers.get("user-agent") || undefined,
+    ip: request.headers.get('x-forwarded-for') || undefined,
+    userAgent: request.headers.get('user-agent') || undefined,
     path: new URL(request.url).pathname,
     method: request.method,
   };
 }
 
-export function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise<Response>>(
+function withLogging<T extends (request: Request, ...rest: unknown[]) => Promise<Response>>(
   handler: T,
   options?: { path?: string }
 ): T {
   return (async (request: Request, ...rest: unknown[]) => {
-    const endTimer = logger.startTimer();
-    logger.info(`→ ${request.method} ${options?.path || request.url}`, { requestId: request.headers.get('x-request-id') ?? undefined });
+    const context = createLogContext(request);
+    const startTime = performance.now();
+
     try {
       const response = await handler(request, ...rest);
-      const duration = endTimer();
-      logger.info(`← ${response.status} ${request.method} ${request.url}`, {
+      const duration = Math.round(performance.now() - startTime);
+
+      logger.info(`${options?.path || request.method} ${request.url}`, {
+        ...context,
         duration,
-        statusCode: response.status,
+        status: (response as Response).status,
       });
+
       return response;
     } catch (error) {
-      const duration = endTimer();
-      logger.error(`✗ ${request.method} ${request.url}`, error as Error, {
+      const duration = Math.round(performance.now() - startTime);
+
+      logger.error(`${options?.path || request.method} ${request.url} failed`, error as Error, {
+        ...context,
         duration,
       });
+
       throw error;
     }
   }) as T;
 }
+
+// ============================================================
+// K.1 — STRUCTURED LOGGING (AD-22.3)
+// ============================================================
+/**
+ * Logs are emitted as single-line JSON to stdout/stderr, suitable
+ * for log aggregators (Datadog, CloudWatch, etc.).
+ */
+export function createLogger(requestId: string, route: string) {
+  return {
+    info: (event: string, meta?: Record<string, unknown>) =>
+      console.log(
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          level: 'info',
+          requestId,
+          route,
+          event,
+          ...meta,
+        })
+      ),
+    error: (event: string, meta?: Record<string, unknown>) =>
+      console.error(
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          level: 'error',
+          requestId,
+          route,
+          event,
+          ...meta,
+        })
+      ),
+    warn: (event: string, meta?: Record<string, unknown>) =>
+      console.warn(
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          level: 'warn',
+          requestId,
+          route,
+          event,
+          ...meta,
+        })
+      ),
+    debug: (event: string, meta?: Record<string, unknown>) =>
+      console.log(
+        JSON.stringify({
+          ts: new Date().toISOString(),
+          level: 'debug',
+          requestId,
+          route,
+          event,
+          ...meta,
+        })
+      ),
+  };
+}
+
+export type AppLogger = ReturnType<typeof createLogger>;

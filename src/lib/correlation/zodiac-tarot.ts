@@ -276,19 +276,3 @@ export function getZodiacTarotsByElement(elemento: string): ZodiacTarotMapping[]
 export function getAllSigns(): SignoZodiac[] {
   return Object.values(ZODIAC_TAROT_MAP).map((m) => m.signo);
 }
-
-export default {
-  getZodiacTarot,
-  getTarotZodiac,
-  getAllZodiacTarots,
-  getArcanoFromSigno,
-  getElementoFromSigno,
-  getSignificadoEspiritualFromSigno,
-  getNumeroCartaFromSigno,
-  getSignoFromArcano,
-  getAllArcanos,
-  getZodiacTarotsByElement,
-  getAllSigns,
-  ZODIAC_TAROT_MAP,
-  TODOS_SIGNOS_ZODIAC_TAROT,
-};

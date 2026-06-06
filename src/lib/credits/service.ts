@@ -15,7 +15,6 @@ export async function getCreditos(userId: string): Promise<number> {
   const credito = await prisma.credito.findUnique({
     where: { userId },
   });
-
   return credito?.saldo ?? 0;
 }
 
@@ -72,6 +71,7 @@ export async function adicionarCreditos(
   return { novoSaldo: credito.saldo };
 }
 
+// fallow-ignore-next-line unused-export
 export async function debitarCreditos(
   userId: string,
   quantidade: number,
@@ -117,7 +117,7 @@ export async function verificarCreditos(
   return saldo >= quantidade;
 }
 
-export async function usarCreditos(
+async function usarCreditos(
   userId: string,
   quantidade: number,
   operacao: string,

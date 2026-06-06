@@ -242,18 +242,3 @@ export function getSpiritualMeaning(sephirah: string): string | null {
 }
 
 // Default export for convenience
-export default {
-  getSephirotZodiac,
-  getZodiacSephirot,
-  getAllSephirotZodiacs,
-  getAllSephiroth,
-  hasSephirotZodiac,
-  getSignoBySephirah,
-  getElementBySephirah,
-  getSephirothBySigno,
-  getAllSignos,
-  getAllElements,
-  getSpiritualMeaning,
-  SEPHIROT_ZODIAC_MAPPINGS,
-  SIGNOS,
-};

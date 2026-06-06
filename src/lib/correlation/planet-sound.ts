@@ -212,9 +212,3 @@ export function getSoundPlanet(som: string | number): PlanetSound | undefined {
 export function getAllPlanetSounds(): PlanetSound[] {
   return Object.values(PLANET_SOUNDS).sort((a, b) => a.planeta_numero - b.planeta_numero);
 }
-
-export default {
-  getPlanetSound,
-  getSoundPlanet,
-  getAllPlanetSounds,
-};

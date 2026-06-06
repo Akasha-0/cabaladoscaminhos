@@ -92,5 +92,3 @@ export function MysticButton({
     </Button>
   );
 }
-
-export { mysticButtonVariants };

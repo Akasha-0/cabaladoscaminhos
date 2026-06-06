@@ -2,26 +2,21 @@
  * Mapa Insights Module Types
  * @module ai/mapa-insights/types
  */
-
 import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
-
-// Re-export MapaAlmaCompleto for convenience
-export type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
 
 /**
  * Insight sections for POI/POA analysis
  */
-export interface InsightSection {
+interface InsightSection {
   titulo: string;
   descricao: string;
   sistemas: string[];
   convergencias?: 'tríplice' | 'dual' | 'simples';
 }
-
 /**
  * Coração / Alma section
  */
-export interface InsightCoracao {
+interface InsightCoracao {
   tema: string;
   descricao: string;
   sistemas: string[];
@@ -41,7 +36,7 @@ export interface InsightMente {
 /**
  * Corpo / Sagrado section
  */
-export interface InsightCorpo {
+interface InsightCorpo {
   tema: string;
   descricao: string;
   sistemas: string[];
@@ -54,7 +49,7 @@ export interface InsightCorpo {
 /**
  * Caminho / Destino section
  */
-export interface InsightCaminho {
+interface InsightCaminho {
   tema: string;
   descricao: string;
   sistemas: string[];
@@ -65,7 +60,7 @@ export interface InsightCaminho {
 /**
  * Retorno / Lições section
  */
-export interface InsightRetorno {
+interface InsightRetorno {
   tema: string;
   descricao: string;
   sistemas: string[];

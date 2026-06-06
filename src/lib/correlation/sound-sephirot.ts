@@ -602,19 +602,3 @@ export function getPathBySound(som: string): number | undefined {
 }
 
 // Default export for convenience
-export default {
-  getSoundSephirot,
-  getSephirotSound,
-  getAllSoundSephiroth,
-  getAllSounds,
-  getAllSephiroth,
-  getSoundsBySephirah,
-  getHealingProperties,
-  getElementBySound,
-  getPlanetBySound,
-  getSoundsByElement,
-  getSoundsByPlanet,
-  hasSoundSephirot,
-  getPathBySound,
-  SOUND_SEPHIROT_MAPPINGS,
-};

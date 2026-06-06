@@ -141,7 +141,7 @@ export function getOrixaFrequency(orixa: string): OrixaFrequency | undefined {
 
 /**
  * Get the frequency associated with an Orixá
- * @param orixa - Name of the Orixá (case-insensitive)
+ * @param orixa - Name of the Orixá
  * @returns Frequency in Hz or null if not found
  */
 export function getFrequencyOrixa(orixa: string): number | null {
@@ -151,7 +151,7 @@ export function getFrequencyOrixa(orixa: string): number | null {
 
 /**
  * Get the spiritual property associated with an Orixá
- * @param orixa - Name of the Orixá (case-insensitive)
+ * @param orixa - Name of the Orixá
  * @returns Property string or null if not found
  */
 export function getOrixaProperty(orixa: string): string | null {
@@ -209,14 +209,3 @@ export function getOrixasByChakra(chakra: string): OrixaFrequency[] {
 export function getAllOrixaFrequencies(): OrixaFrequency[] {
   return Object.values(ORIXA_FREQUENCY_MAP);
 }
-
-export default {
-  getOrixaFrequency,
-  getFrequencyOrixa,
-  getOrixaProperty,
-  getAllOrixas,
-  getOrixasByFrequency,
-  getOrixasByElement,
-  getOrixasByChakra,
-  getAllOrixaFrequencies,
-};
