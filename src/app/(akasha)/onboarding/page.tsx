@@ -123,17 +123,34 @@ export default function OnboardingPage() {
     }, 1600);
 
     const intentionProfile = { quest: form.quiz1, energy: form.quiz2 };
+    const registerPayload = {
+      email: form.email,
+      password: form.password,
+      fullName: form.fullName,
+      birthDate: form.birthDate,
+      birthTime: form.birthTime,
+      birthCity: form.birthCity,
+      birthState: form.birthState,
+      birthCountry: form.birthCountry,
+      consentGiven: true,
+      intentionProfile,
+    };
 
     (async () => {
       try {
         const reg = await fetch('/api/akasha/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...form, intentionProfile }),
+          body: JSON.stringify(registerPayload),
         });
         if (!reg.ok) {
           const body = await reg.json().catch(() => ({}));
-          throw new Error(body?.message ?? 'Erro ao criar conta.');
+          const msg =
+            body?.error ??
+            body?.message ??
+            (typeof body?.details?.formErrors?.[0] === 'string' ? body.details.formErrors[0] : null) ??
+            'Erro ao criar conta.';
+          throw new Error(msg);
         }
 
         const login = await fetch('/api/akasha/auth/login', {
