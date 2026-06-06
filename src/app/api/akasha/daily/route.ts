@@ -23,6 +23,9 @@ export async function GET(request: NextRequest) {
       ritual: existing.ritual,
       alert: existing.alert,
       tensionPoint: existing.tensionPoint,
+      // Campos opcionais — podem não existir no schema antigo
+      moonPhase: (existing as Record<string, unknown>)['moonPhase'] ?? null,
+      overallTheme: (existing as Record<string, unknown>)['overallTheme'] ?? null,
     });
   }
 
@@ -59,7 +62,7 @@ export async function GET(request: NextRequest) {
     ritual: record.ritual,
     alert: record.alert,
     tensionPoint: record.tensionPoint,
-    moonPhase: content.moonPhase,
-    overallTheme: content.overallTheme,
+    moonPhase: (record as Record<string, unknown>)['moonPhase'] ?? content.moonPhase,
+    overallTheme: (record as Record<string, unknown>)['overallTheme'] ?? content.overallTheme,
   });
 }
