@@ -1,55 +1,63 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "../styles/ramiro-tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Fonts (Doc 05 §1.2 / Doc 13 §5) */
-  --font-sans: var(--font-cormorant), system-ui, sans-serif;
-  --font-serif: var(--font-cormorant), Georgia, serif;
+  /* Fonts — Doc 26 §5 */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-lora), Georgia, serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
   --font-cinzel: var(--font-cinzel), serif;
-  --font-imfell: var(--font-imfell), serif;
-  /* Corpo do dossiê gerado pela IA e bolhas do chat de consulta. */
-  --font-dossier: var(--font-lora), Georgia, serif;
-  /* font-cormorant: tersedia utk body text dossiê (Doc 13 §3 spec). */
   --font-cormorant: var(--font-cormorant), Georgia, serif;
+  --font-dossier: var(--font-lora), Georgia, serif;
 
   /* Colors - Sidebar */
-  --color-sidebar-ring: #4338ca;
-  --color-sidebar-border: rgba(255, 255, 255, 0.1);
-  --color-sidebar-accent-foreground: #f8fafc;
-  --color-sidebar-accent: #1e293b;
-  --color-sidebar-primary-foreground: #f8fafc;
-  --color-sidebar-primary: #4338ca;
-  --color-sidebar-foreground: #f8fafc;
-  --color-sidebar: #0f172a;
+  --color-sidebar-ring: #7C5CFF;
+  --color-sidebar-border: rgba(124, 92, 255, 0.2);
+  --color-sidebar-accent-foreground: #F4F5FF;
+  --color-sidebar-accent: #141A33;
+  --color-sidebar-primary-foreground: #F4F5FF;
+  --color-sidebar-primary: #7C5CFF;
+  --color-sidebar-foreground: #A7AECF;
+  --color-sidebar: #0B0E1C;
 
   /* Colors - Chart */
-  --color-chart-5: #dc2626;
-  --color-chart-4: #f59e0b;
-  --color-chart-3: #22c55e;
-  --color-chart-2: #7c3aed;
-  --color-chart-1: #4338ca;
-  --color-ring: var(--color-ramiro-orange);
-  --color-input: var(--color-ramiro-border);
-  --color-border: var(--color-ramiro-border);
-  --color-destructive: var(--color-ramiro-alert);
-  --color-accent-foreground: var(--color-ramiro-text);
-  --color-accent: var(--color-ramiro-royal-dim);
-  --color-muted-foreground: var(--color-ramiro-muted);
-  --color-muted: var(--color-ramiro-elevated);
-  --color-secondary-foreground: var(--color-ramiro-text);
-  --color-secondary: var(--color-ramiro-royal);
-  --color-primary-foreground: var(--color-ramiro-orange);
-  --color-primary: var(--color-ramiro-orange);
-  --color-popover-foreground: var(--color-ramiro-text);
-  --color-popover: var(--color-ramiro-surface);
-  --color-card-foreground: var(--color-ramiro-text);
-  --color-card: var(--color-ramiro-surface);
-  --color-background: var(--color-ramiro-canvas);
-  --color-foreground: var(--color-ramiro-text);
+  --color-chart-5: #FB5781;
+  --color-chart-4: #F0B429;
+  --color-chart-3: #2DD4BF;
+  --color-chart-2: #9D86FF;
+  --color-chart-1: #7C5CFF;
+
+  /* Semantic UI tokens — Akasha palette (Doc 26 §3) */
+  --color-ring: #7C5CFF;
+  --color-input: #26304F;
+  --color-border: #26304F;
+  --color-destructive: #FB5781;
+  --color-accent-foreground: #F4F5FF;
+  --color-accent: #5B3FD6;
+  --color-muted-foreground: #A7AECF;
+  --color-muted: #141A33;
+  --color-secondary-foreground: #F4F5FF;
+  --color-secondary: #2DD4BF;
+  --color-primary-foreground: #F4F5FF;
+  --color-primary: #7C5CFF;
+  --color-popover-foreground: #F4F5FF;
+  --color-popover: #0B0E1C;
+  --color-card-foreground: #F4F5FF;
+  --color-card: #0B0E1C;
+  --color-background: #06070F;
+  --color-foreground: #F4F5FF;
+
+  /* Custom Akasha brand colors (Tailwind utilities) */
+  --color-akasha: #7C5CFF;
+  --color-akasha-bright: #9D86FF;
+  --color-akasha-dim: #5B3FD6;
+  --color-aurora: #2DD4BF;
+  --color-aurora-bright: #5EEAD4;
+  --color-aurora-dim: #0D9488;
+  --color-ori: #F0B429;
+  --color-alert: #FB5781;
 
   /* Radius */
   --radius-sm: calc(var(--radius) * 0.6);
@@ -59,189 +67,58 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-
-  /* Colors - Ramiro Palette v2 (Doc 13 AD-08 — promoted from .ramiro scope) */
-  --color-ramiro-orange: #f97316;
-  --color-ramiro-orange-bright: #fb923c;
-  --color-ramiro-orange-dim: #c2410c;
-  --color-ramiro-royal: #2547d0;
-  --color-ramiro-royal-bright: #3b5bdb;
-  --color-ramiro-royal-dim: #1e3a8a;
-  --color-ramiro-alert: #f43f5e;
-  --color-ramiro-canvas: #0a0e1a;
-  --color-ramiro-surface: #111726;
-  --color-ramiro-elevated: #1a2236;
-  --color-ramiro-border: #2a3550;
-  --color-ramiro-text: #f5f7ff;
-  --color-ramiro-muted: #9aa7c7;
-  --color-ramiro-muted-text: #56618a;
-
 }
 
-/* === LIGHT MODE CSS VARIABLES (Default) === */
+/* === AKASHA CANONICAL TOKENS — Doc 26 §3 === */
 :root {
-  /* Background & Foreground */
-  --background: #FAFBFC;
-  --foreground: #0F172A;
-  
-  /* Card */
-  --card: #FFFFFF;
-  --card-foreground: #0F172A;
-  
-  /* Popover */
-  --popover: #FFFFFF;
-  --popover-foreground: #0F172A;
-  
-  /* Primary */
-  --primary: #4338CA;
-  --primary-foreground: #FFFFFF;
-  
-  /* Secondary */
-  --secondary: #F1F5F9;
-  --secondary-foreground: #0F172A;
-  
-  /* Muted */
-  --muted: #F1F5F9;
-  --muted-foreground: #64748B;
-  
-  /* Accent */
-  --accent: #F1F5F9;
-  --accent-foreground: #0F172A;
-  
-  /* Destructive */
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  
-  /* Border & Input */
-  --border: #E2E8F0;
-  --input: #E2E8F0;
-  --ring: #4338CA;
-  
-  /* Sidebar (Light) */
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #0F172A;
-  --sidebar-primary: #4338CA;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F1F5F9;
-  --sidebar-accent-foreground: #0F172A;
-  --sidebar-border: #E2E8F0;
-  --sidebar-ring: #4338CA;
-  
-  /* Spiritual Design Tokens (Light Mode) */
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.3), 0 0 40px rgba(249, 115, 22, 0.15);
-  --bg-mystic-gradient: linear-gradient(135deg, #FAFBFC 0%, #E0E7FF 50%, #F1F5F9 100%);
-}
+  /* Backgrounds — vazio cósmico / espaço profundo */
+  --bg-void:   #06070F;
+  --bg-deep:   #0B0E1C;
+  --bg-nebula: #141A33;
+  --bg-border: #26304F;
 
-/* === DARK MODE CSS VARIABLES === */
-.dark {
-  /* Background & Foreground */
-  --background: #020617;
-  --foreground: #F8FAFC;
-  
-  /* Card */
-  --card: #0F172A;
-  --card-foreground: #F8FAFC;
-  
-  /* Popover */
-  --popover: #0F172A;
-  --popover-foreground: #F8FAFC;
-  
-  /* Primary */
-  --primary: #4338CA;
-  --primary-foreground: #F8FAFC;
-  
-  /* Secondary */
-  --secondary: #1E293B;
-  --secondary-foreground: #F8FAFC;
-  
-  /* Muted */
-  --muted: #1E293B;
-  --muted-foreground: #94A3B8;
-  
-  /* Accent */
-  --accent: #1E293B;
-  --accent-foreground: #F8FAFC;
-  
-  /* Destructive */
-  --destructive: #EF4444;
-  --destructive-foreground: #F8FAFC;
-  
-  /* Border & Input */
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: #4338CA;
-  
-  /* Sidebar (Dark) */
-  --sidebar: #0F172A;
-  --sidebar-foreground: #F8FAFC;
-  --sidebar-primary: #4338CA;
-  --sidebar-primary-foreground: #F8FAFC;
-  --sidebar-accent: #1E293B;
-  --sidebar-accent-foreground: #F8FAFC;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: #4338CA;
-  
-  /* Spiritual Design Tokens (Dark Mode) */
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
-  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(249, 115, 22, 0.2);
-  --bg-mystic-gradient: linear-gradient(135deg, #020617 0%, #1E1B4B 50%, #0F172A 100%);
-}
+  /* Primária — Violeta Akáshico (o campo, a consciência, o éter) */
+  --accent-akasha:        #7C5CFF;
+  --accent-akasha-bright: #9D86FF;
+  --accent-akasha-dim:    #5B3FD6;
+  --accent-akasha-glow:   rgba(124, 92, 255, 0.20);
 
-/* === SPIRITUAL DESIGN TOKENS === */
+  /* Secundária — Ciano/Aurora (o fluxo toroidal, a energia em movimento) */
+  --accent-aurora:        #2DD4BF;
+  --accent-aurora-bright: #5EEAD4;
+  --accent-aurora-dim:    #0D9488;
+  --accent-aurora-glow:   rgba(45, 212, 191, 0.18);
 
-/* Primary - Gold (Divine Light) */
-:root {
-  --spiritual-gold: #D4AF37;
-  --spiritual-gold-light: #FFD700;
-  --spiritual-gold-dark: #B8860B;
-  --spiritual-gold-muted: rgba(212, 175, 55, 0.15);
+  /* Terciária — Dourado Ori (o núcleo, a centelha ancestral / Odus) */
+  --accent-ori:      #F0B429;
+  --accent-ori-glow: rgba(240, 180, 41, 0.16);
 
-  /* Accent - Amber (Ramiro: laranja, fogo, abertura de caminhos) */
-  --spiritual-amber: #F97316;
-  --spiritual-amber-light: #FB923C;
-  --spiritual-amber-dark: #C2410C;
-  --spiritual-amber-muted: rgba(249, 115, 22, 0.15);
-  /* Accent - Royal (Ramiro: profundidade, mistério, proteção) */
-  --spiritual-royal: #2547D0;
-  --spiritual-royal-bright: #3B5BDB;
-  --spiritual-royal-dim: #1E3A8A;
-  --spiritual-royal-muted: rgba(37, 71, 208, 0.12);
+  /* Alerta — rosa magenta (sincronicidade de tensão) */
+  --accent-alert: #FB5781;
 
-  /* Accent - Elements */
-  --spiritual-amber: #F59E0B;
-  --spiritual-emerald: #10B981;
-  --spiritual-rose: #F43F5E;
-  --spiritual-sky: #0EA5E9;
+  /* Texto */
+  --text-primary:   #F4F5FF;
+  --text-secondary: #A7AECF;
+  --text-muted:     #5C6691;
 
-  /* Chakra Colors */
-  --chakra-root: #EF4444;
-  --chakra-sacral: #F97316;
-  --chakra-solar: #EAB308;
-  --chakra-heart: #22C55E;
-  --chakra-throat: #38BDF8;
-  --chakra-third-eye: #6366F1;
-  --chakra-crown: #A855F7;
+  /* Shadows */
+  --shadow-card:       0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-modal:      0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --shadow-glow-akasha: 0 0 24px var(--accent-akasha-glow);
+  --shadow-glow-ori:   0 0 20px var(--accent-ori-glow);
+  --shadow-glow-aurora: 0 0 20px var(--accent-aurora-glow);
+  --shadow-glow-violet: 0 0 20px rgba(124, 92, 255, 0.4), 0 0 40px rgba(124, 92, 255, 0.2);
+  --shadow-glow-gold:   0 0 20px rgba(240, 180, 41, 0.4), 0 0 40px rgba(240, 180, 41, 0.2);
 
-  /* Animation Tokens */
+  /* Animation */
   --duration-instant: 75ms;
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 400ms;
-  --duration-slower: 600ms;
-
-  /* Easing */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast:    150ms;
+  --duration-normal:  250ms;
+  --duration-slow:    400ms;
+  --duration-slower:  600ms;
+  --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
-  --shadow-glow-amber: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(249, 115, 22, 0.2);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
-  --shadow-glow-violet: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+  --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -249,15 +126,63 @@
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
+
+  /* Orixá calendar colors (Afro-Brazilian spiritual calendar — unchanged) */
+  --orixa-sun:          #D4A843;
+  --orixa-sun-light:    #E8C878;
+  --orixa-sun-muted:    rgba(212, 168, 67, 0.15);
+  --orixa-sun-glow:     0 0 20px rgba(212, 168, 67, 0.4);
+  --orixa-moon:         #1E3A5F;
+  --orixa-moon-light:   #2B5282;
+  --orixa-moon-muted:   rgba(30, 58, 95, 0.15);
+  --orixa-moon-glow:    0 0 20px rgba(30, 58, 95, 0.4);
+  --orixa-mars:         #C45C26;
+  --orixa-mars-light:   #E07040;
+  --orixa-mars-muted:   rgba(196, 92, 38, 0.15);
+  --orixa-mars-glow:    0 0 20px rgba(196, 92, 38, 0.4);
+  --orixa-mercury:      #F0B429;
+  --orixa-mercury-light:#F5C75A;
+  --orixa-mercury-muted:rgba(240, 180, 41, 0.15);
+  --orixa-mercury-glow: 0 0 20px rgba(240, 180, 41, 0.4);
+  --orixa-jupiter:      #2D6A4F;
+  --orixa-jupiter-light:#3D8A6F;
+  --orixa-jupiter-muted:rgba(45, 106, 79, 0.15);
+  --orixa-jupiter-glow: 0 0 20px rgba(45, 106, 79, 0.4);
+  --orixa-venus:        #7C6EB3;
+  --orixa-venus-light:  #9A8ED4;
+  --orixa-venus-muted:  rgba(124, 110, 179, 0.15);
+  --orixa-venus-glow:   0 0 20px rgba(124, 110, 179, 0.4);
+  --orixa-saturn:       #D4728C;
+  --orixa-saturn-light: #E894A8;
+  --orixa-saturn-muted: rgba(212, 114, 140, 0.15);
+  --orixa-saturn-glow:  0 0 20px rgba(212, 114, 140, 0.4);
+
+  /* Chakra colors */
+  --chakra-root:       #EF4444;
+  --chakra-sacral:     #F97316;
+  --chakra-solar:      #EAB308;
+  --chakra-heart:      #22C55E;
+  --chakra-throat:     #38BDF8;
+  --chakra-third-eye:  #6366F1;
+  --chakra-crown:      #A855F7;
+
+  /* Card helpers */
+  --card-border-subtle: rgba(38, 48, 79, 0.6);
+  --card-gradient-from: rgba(124, 92, 255, 0.08);
+  --card-gradient-to:   rgba(20, 26, 51, 0.3);
+
+  /* Background gradient */
+  --bg-cosmic-gradient: linear-gradient(135deg, #06070F 0%, #141A33 50%, #0B0E1C 100%);
 }
+
 
 @layer base {
   * {
-    border-color: var(--border);
+    border-color: var(--bg-border);
   }
   body {
-    background-color: var(--background);
-    color: var(--foreground);
+    background-color: var(--bg-void);
+    color: var(--text-primary);
     font-family: var(--font-sans);
   }
   html {
@@ -270,13 +195,13 @@
 
 @layer utilities {
   .glow {
-    box-shadow: 0 0 20px rgba(147, 51, 234, 0.5),
-      0 0 40px rgba(147, 51, 234, 0.3),
-      0 0 60px rgba(147, 51, 234, 0.1);
+    box-shadow: 0 0 20px rgba(124, 92, 255, 0.5),
+      0 0 40px rgba(124, 92, 255, 0.3),
+      0 0 60px rgba(124, 92, 255, 0.1);
   }
   .glow-hover:hover {
-    box-shadow: 0 0 30px rgba(147, 51, 234, 0.7),
-      0 0 60px rgba(147, 51, 234, 0.5);
+    box-shadow: 0 0 30px rgba(124, 92, 255, 0.7),
+      0 0 60px rgba(124, 92, 255, 0.5);
   }
 }
 /* Card Flip Animation Utilities */
@@ -480,20 +405,20 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(37, 71, 208, 0.5);
+  background: rgba(124, 92, 255, 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(37, 71, 208, 0.7);
+  background: rgba(124, 92, 255, 0.7);
 }
 
 /* Cosmic Background Patterns */
 .cosmic-bg {
   background:
-    radial-gradient(ellipse at 20% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
-    var(--background);
+    radial-gradient(ellipse at 20% 30%, rgba(124, 92, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(240, 180, 41, 0.08) 0%, transparent 50%),
+    var(--bg-void);
 }
 
 /* Zodiac Symbol Base */
@@ -687,49 +612,6 @@
 }
 .animate-fade-in-scale {
   animation: fadeInScale 0.2s ease-out;
-}
-/* === DAY-PLANET-ORIXÁ SPIRITUAL COLOR SYSTEM === */
-/* Based on Afro-Brazilian spiritual calendar */
-:root {
-  /* Domingo - Sol/Xangô - Golden Yellow */
-  --orixa-sun: #D4A843;
-  --orixa-sun-light: #E8C878;
-  --orixa-sun-muted: rgba(212, 168, 67, 0.15);
-  --orixa-sun-glow: 0 0 20px rgba(212, 168, 67, 0.4);
-  /* Segunda - Lua/Iemanjá - Deep Blue */
-  --orixa-moon: #1E3A5F;
-  --orixa-moon-light: #2B5282;
-  --orixa-moon-muted: rgba(30, 58, 95, 0.15);
-  --orixa-moon-glow: 0 0 20px rgba(30, 58, 95, 0.4);
-  /* Terça - Marte/Iansã - Lava Orange */
-  --orixa-mars: #C45C26;
-  --orixa-mars-light: #E07040;
-  --orixa-mars-muted: rgba(196, 92, 38, 0.15);
-  --orixa-mars-glow: 0 0 20px rgba(196, 92, 38, 0.4);
-  /* Quarta - Mercúrio/Xangô - Amber */
-  --orixa-mercury: #F0B429;
-  --orixa-mercury-light: #F5C75A;
-  --orixa-mercury-muted: rgba(240, 180, 41, 0.15);
-  --orixa-mercury-glow: 0 0 20px rgba(240, 180, 41, 0.4);
-  /* Quinta - Júpiter/Oxóssi - Forest Green */
-  --orixa-jupiter: #2D6A4F;
-  --orixa-jupiter-light: #3D8A6F;
-  --orixa-jupiter-muted: rgba(45, 106, 79, 0.15);
-  --orixa-jupiter-glow: 0 0 20px rgba(45, 106, 79, 0.4);
-  /* Sexta - Vênus/Oxalá - Violet-White */
-  --orixa-venus: #7C6EB3;
-  --orixa-venus-light: #9A8ED4;
-  --orixa-venus-muted: rgba(124, 110, 179, 0.15);
-  --orixa-venus-glow: 0 0 20px rgba(124, 110, 179, 0.4);
-  /* Sábado - Saturno/Oxum - Rose */
-  --orixa-saturn: #D4728C;
-  --orixa-saturn-light: #E894A8;
-  --orixa-saturn-muted: rgba(212, 114, 140, 0.15);
-  --orixa-saturn-glow: 0 0 20px rgba(212, 114, 140, 0.4);
-  /* Common spiritual tokens */
-  --card-border-subtle: rgba(255, 255, 255, 0.08);
-  --card-gradient-from: rgba(139, 92, 246, 0.08);
-  --card-gradient-to: rgba(30, 27, 75, 0.3);
 }
 /* Sacred Geometry SVG Patterns */
 .sacred-circle {

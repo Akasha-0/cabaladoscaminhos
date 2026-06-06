@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 type FormData = {
@@ -13,6 +13,8 @@ type FormData = {
   birthCity: string;
   birthState: string;
   birthCountry: string;
+  quiz1: string;
+  quiz2: string;
   consent: boolean;
 };
 
@@ -26,21 +28,48 @@ const INITIAL: FormData = {
   birthCity: '',
   birthState: '',
   birthCountry: 'Brasil',
+  quiz1: '',
+  quiz2: '',
   consent: false,
 };
 
+const STEPS = ['Coleta', 'Nascimento', 'Local', 'Ancoragem', 'Revelando...'];
+
+const RITUAL_PHRASES = [
+  'Calculando trânsitos astrológicos…',
+  'Acessando o Caminho de Vida…',
+  'Sintetizando os 11 Corpos Tântricos…',
+  'Ancorando as forças dos Odus…',
+  'Traçando a geometria sagrada…',
+  'Abrindo o Campo Akáshico…',
+];
+
+const QUIZ1_OPTIONS = [
+  { value: 'proposito', label: 'Propósito', desc: 'Encontrar minha missão de vida' },
+  { value: 'cura', label: 'Cura emocional', desc: 'Transmutar padrões e feridas' },
+  { value: 'alinhamento', label: 'Alinhamento material', desc: 'Abundância e manifestação' },
+  { value: 'despertar', label: 'Despertar ancestral', desc: 'Conectar com minhas raízes espirituais' },
+];
+
+const QUIZ2_OPTIONS = [
+  { value: 'acelerada', label: 'Acelerada', desc: 'Muita energia, difícil de focar' },
+  { value: 'dispersa', label: 'Dispersa', desc: 'Fora de eixo, sem clareza' },
+  { value: 'estagnada', label: 'Estagnada', desc: 'Travada, esperando mover' },
+  { value: 'fluxo', label: 'Em fluxo', desc: 'Alinhada e em movimento' },
+];
+
 const glassCard: React.CSSProperties = {
-  background: 'rgba(124, 58, 237, 0.05)',
-  border: '1px solid rgba(124, 58, 237, 0.2)',
-  backdropFilter: 'blur(10px)',
+  background: 'rgba(20, 26, 51, 0.6)',
+  border: '1px solid rgba(124, 92, 255, 0.2)',
+  backdropFilter: 'blur(12px)',
   borderRadius: '16px',
 };
 
 const inputStyle: React.CSSProperties = {
   background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(124, 58, 237, 0.25)',
+  border: '1px solid rgba(124, 92, 255, 0.25)',
   borderRadius: '8px',
-  color: '#E2E8F0',
+  color: '#F4F5FF',
   outline: 'none',
   width: '100%',
   padding: '10px 14px',
@@ -51,18 +80,17 @@ const labelStyle: React.CSSProperties = {
   display: 'block',
   marginBottom: '6px',
   fontSize: '0.8125rem',
-  color: 'rgba(226,232,240,0.65)',
+  color: 'rgba(167,174,207,0.8)',
   letterSpacing: '0.04em',
 };
-
-const STEPS = ['Identidade', 'Nascimento', 'Local', 'Confirmação'];
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormData>(INITIAL);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   function set<K extends keyof FormData>(key: K, value: FormData[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -78,69 +106,124 @@ export default function OnboardingPage() {
     setStep((s) => Math.max(s - 1, 0));
   }
 
-  async function handleSubmit() {
+  async function startRevelation() {
     if (!form.consent) {
       setError('É necessário consentir com o processamento dos dados.');
       return;
     }
-    setLoading(true);
     setError('');
-    try {
-      const reg = await fetch('/api/akasha/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      if (!reg.ok) {
-        const body = await reg.json().catch(() => ({}));
-        throw new Error(body?.message ?? 'Erro ao criar conta.');
+    setStep(4);
+  }
+
+  useEffect(() => {
+    if (step !== 4) return;
+
+    intervalRef.current = setInterval(() => {
+      setPhraseIdx((i) => (i + 1) % RITUAL_PHRASES.length);
+    }, 1600);
+
+    const intentionProfile = { quest: form.quiz1, energy: form.quiz2 };
+
+    (async () => {
+      try {
+        const reg = await fetch('/api/akasha/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...form, intentionProfile }),
+        });
+        if (!reg.ok) {
+          const body = await reg.json().catch(() => ({}));
+          throw new Error(body?.message ?? 'Erro ao criar conta.');
+        }
+
+        const login = await fetch('/api/akasha/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: form.email, password: form.password }),
+        });
+        if (!login.ok) throw new Error('Conta criada! Faça login para continuar.');
+
+        await fetch('/api/akasha/chart', { method: 'POST' });
+
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        router.push('/mandala');
+      } catch (e: unknown) {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        setError(e instanceof Error ? e.message : 'Ocorreu um erro inesperado.');
+        setStep(3);
       }
+    })();
 
-      const login = await fetch('/api/akasha/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, password: form.password }),
-      });
-      if (!login.ok) {
-        throw new Error('Conta criada! Faça login para continuar.');
-      }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
 
-      await fetch('/api/akasha/chart', { method: 'POST' });
-
-      router.push('/mandala');
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Ocorreu um erro inesperado.');
-    } finally {
-      setLoading(false);
-    }
+  if (step === 4) {
+    return (
+      <div
+        className="min-h-screen flex flex-col items-center justify-center px-4"
+        style={{ background: '#06070F' }}
+      >
+        <div className="text-center max-w-sm">
+          <div
+            className="w-20 h-20 rounded-full mx-auto mb-8 flex items-center justify-center"
+            style={{
+              background: 'radial-gradient(circle, rgba(124,92,255,0.3) 0%, transparent 70%)',
+              border: '1px solid rgba(124,92,255,0.4)',
+              animation: 'spin 4s linear infinite',
+            }}
+          >
+            <div
+              className="w-10 h-10 rounded-full"
+              style={{
+                background: 'radial-gradient(circle, #9D86FF 0%, #7C5CFF 60%, transparent 100%)',
+                animation: 'pulse 2s ease-in-out infinite',
+              }}
+            />
+          </div>
+          <p
+            className="text-lg font-medium mb-2"
+            style={{ fontFamily: 'var(--font-cinzel), serif', color: '#F4F5FF' }}
+          >
+            {RITUAL_PHRASES[phraseIdx]}
+          </p>
+          <p style={{ color: 'rgba(167,174,207,0.6)', fontSize: '0.875rem' }}>
+            Seu mapa está sendo traçado nos Registros Akáshicos…
+          </p>
+        </div>
+        <style>{`
+          @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+          @keyframes pulse { 0%,100%{opacity:0.7;transform:scale(1);} 50%{opacity:1;transform:scale(1.15);} }
+        `}</style>
+      </div>
+    );
   }
 
   return (
     <div
       className="min-h-[calc(100vh-56px)] flex flex-col items-center justify-center px-4 py-12"
-      style={{ background: '#030711' }}
+      style={{ background: '#06070F' }}
     >
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1
             className="text-2xl font-semibold mb-2"
-            style={{ fontFamily: 'var(--font-cinzel), serif', color: '#E2E8F0' }}
+            style={{ fontFamily: 'var(--font-cinzel), serif', color: '#F4F5FF' }}
           >
             Iniciar Jornada
           </h1>
-          <p style={{ color: 'rgba(226,232,240,0.55)', fontSize: '0.875rem' }}>
-            Passo {step + 1} de {STEPS.length} — {STEPS[step]}
+          <p style={{ color: 'rgba(167,174,207,0.6)', fontSize: '0.875rem' }}>
+            Passo {step + 1} de {STEPS.length - 1} — {STEPS[step]}
           </p>
         </div>
 
         <div className="flex gap-2 mb-8">
-          {STEPS.map((_, i) => (
+          {STEPS.slice(0, -1).map((_, i) => (
             <div
               key={i}
               className="flex-1 h-1 rounded-full transition-all duration-300"
-              style={{
-                background: i <= step ? '#7C3AED' : 'rgba(124,58,237,0.15)',
-              }}
+              style={{ background: i <= step ? '#7C5CFF' : 'rgba(124,92,255,0.15)' }}
             />
           ))}
         </div>
@@ -149,11 +232,11 @@ export default function OnboardingPage() {
           {step === 0 && (
             <div className="flex flex-col gap-4">
               <div>
-                <label style={labelStyle}>Nome completo</label>
+                <label style={labelStyle}>Como você é chamado neste plano?</label>
                 <input
                   style={inputStyle}
                   type="text"
-                  placeholder="Seu nome"
+                  placeholder="Seu nome completo"
                   value={form.fullName}
                   onChange={(e) => set('fullName', e.target.value)}
                   autoFocus
@@ -180,10 +263,10 @@ export default function OnboardingPage() {
                 />
               </div>
               <div>
-                <label style={labelStyle}>Por que você busca o Oráculo?</label>
+                <label style={labelStyle}>Por que você busca o Akasha?</label>
                 <textarea
                   style={{ ...inputStyle, resize: 'vertical', minHeight: '80px' }}
-                  placeholder="Uma frase sobre sua intenção..."
+                  placeholder="Uma frase sobre sua intenção…"
                   value={form.intention}
                   onChange={(e) => set('intention', e.target.value)}
                 />
@@ -193,6 +276,9 @@ export default function OnboardingPage() {
 
           {step === 1 && (
             <div className="flex flex-col gap-4">
+              <p style={{ color: 'rgba(45,212,191,0.8)', fontSize: '0.8125rem', lineHeight: '1.5' }}>
+                Em qual instante sua jornada neste plano começou?
+              </p>
               <div>
                 <label style={labelStyle}>Data de nascimento</label>
                 <input
@@ -216,11 +302,8 @@ export default function OnboardingPage() {
 
           {step === 2 && (
             <div className="flex flex-col gap-4">
-              <p
-                className="text-xs mb-1"
-                style={{ color: 'rgba(6,182,212,0.8)', lineHeight: '1.5' }}
-              >
-                Usaremos sua cidade para calcular seu mapa astrológico com precisão.
+              <p style={{ color: 'rgba(45,212,191,0.8)', fontSize: '0.8125rem', lineHeight: '1.5' }}>
+                Onde você aterrissou? Usaremos sua cidade para o mapa astrológico.
               </p>
               <div>
                 <label style={labelStyle}>Cidade</label>
@@ -256,38 +339,84 @@ export default function OnboardingPage() {
           )}
 
           {step === 3 && (
-            <div className="flex flex-col gap-4">
-              <h2
-                className="text-base font-medium mb-2"
-                style={{ color: '#7C3AED', fontFamily: 'var(--font-cinzel), serif' }}
-              >
-                Resumo da Jornada
-              </h2>
-              <dl className="flex flex-col gap-2 text-sm">
-                {[
-                  ['Nome', form.fullName],
-                  ['E-mail', form.email],
-                  ['Intenção', form.intention],
-                  ['Data de nascimento', form.birthDate],
-                  ['Hora', form.birthTime || '—'],
-                  ['Cidade natal', [form.birthCity, form.birthState, form.birthCountry].filter(Boolean).join(', ')],
-                ].map(([label, value]) => (
-                  <div key={label} className="flex gap-2">
-                    <dt style={{ color: 'rgba(226,232,240,0.5)', minWidth: '140px' }}>{label}</dt>
-                    <dd style={{ color: '#E2E8F0' }}>{value || '—'}</dd>
-                  </div>
-                ))}
-              </dl>
+            <div className="flex flex-col gap-6">
+              <div>
+                <p
+                  className="text-sm font-medium mb-3"
+                  style={{ color: '#F4F5FF', fontFamily: 'var(--font-cinzel), serif' }}
+                >
+                  O que te traz ao Akasha hoje?
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {QUIZ1_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => set('quiz1', opt.value)}
+                      className="text-left p-3 rounded-xl transition-all duration-200"
+                      style={{
+                        background: form.quiz1 === opt.value
+                          ? 'rgba(124,92,255,0.25)'
+                          : 'rgba(255,255,255,0.03)',
+                        border: form.quiz1 === opt.value
+                          ? '1px solid rgba(124,92,255,0.7)'
+                          : '1px solid rgba(124,92,255,0.15)',
+                      }}
+                    >
+                      <span className="block text-xs font-semibold mb-0.5" style={{ color: '#F4F5FF' }}>
+                        {opt.label}
+                      </span>
+                      <span className="block text-xs leading-snug" style={{ color: 'rgba(167,174,207,0.7)' }}>
+                        {opt.desc}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-              <label className="flex items-start gap-3 mt-3 cursor-pointer">
+              <div>
+                <p
+                  className="text-sm font-medium mb-3"
+                  style={{ color: '#F4F5FF', fontFamily: 'var(--font-cinzel), serif' }}
+                >
+                  Como você sente sua energia neste ciclo?
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {QUIZ2_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => set('quiz2', opt.value)}
+                      className="text-left p-3 rounded-xl transition-all duration-200"
+                      style={{
+                        background: form.quiz2 === opt.value
+                          ? 'rgba(45,212,191,0.2)'
+                          : 'rgba(255,255,255,0.03)',
+                        border: form.quiz2 === opt.value
+                          ? '1px solid rgba(45,212,191,0.6)'
+                          : '1px solid rgba(45,212,191,0.1)',
+                      }}
+                    >
+                      <span className="block text-xs font-semibold mb-0.5" style={{ color: '#F4F5FF' }}>
+                        {opt.label}
+                      </span>
+                      <span className="block text-xs leading-snug" style={{ color: 'rgba(167,174,207,0.7)' }}>
+                        {opt.desc}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <label className="flex items-start gap-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={form.consent}
                   onChange={(e) => set('consent', e.target.checked)}
-                  className="mt-0.5 accent-[#7C3AED]"
-                  style={{ width: '16px', height: '16px', flexShrink: 0 }}
+                  className="mt-0.5"
+                  style={{ width: '16px', height: '16px', flexShrink: 0, accentColor: '#7C5CFF' }}
                 />
-                <span className="text-xs leading-relaxed" style={{ color: 'rgba(226,232,240,0.65)' }}>
+                <span className="text-xs leading-relaxed" style={{ color: 'rgba(167,174,207,0.65)' }}>
                   Consinto com o processamento dos meus dados para geração do mapa natal.
                 </span>
               </label>
@@ -299,9 +428,9 @@ export default function OnboardingPage() {
           <p
             className="text-sm mb-4 px-4 py-3 rounded-lg"
             style={{
-              background: 'rgba(244,63,94,0.1)',
-              border: '1px solid rgba(244,63,94,0.3)',
-              color: '#f87171',
+              background: 'rgba(251,87,129,0.1)',
+              border: '1px solid rgba(251,87,129,0.3)',
+              color: '#FB5781',
             }}
           >
             {error}
@@ -315,33 +444,32 @@ export default function OnboardingPage() {
               onClick={back}
               className="flex-1 py-3 rounded-xl text-sm transition-colors"
               style={{
-                background: 'rgba(124,58,237,0.08)',
-                border: '1px solid rgba(124,58,237,0.2)',
-                color: '#E2E8F0',
+                background: 'rgba(124,92,255,0.08)',
+                border: '1px solid rgba(124,92,255,0.2)',
+                color: '#F4F5FF',
               }}
             >
               Voltar
             </button>
           )}
 
-          {step < STEPS.length - 1 ? (
+          {step < 3 ? (
             <button
               type="button"
               onClick={next}
-              className="flex-1 py-3 rounded-xl text-sm font-medium transition-colors hover:bg-[#6D28D9]"
-              style={{ background: '#7C3AED', color: '#fff' }}
+              className="flex-1 py-3 rounded-xl text-sm font-medium transition-colors"
+              style={{ background: '#7C5CFF', color: '#fff' }}
             >
               Continuar
             </button>
           ) : (
             <button
               type="button"
-              onClick={handleSubmit}
-              disabled={loading}
-              className="flex-1 py-3 rounded-xl text-sm font-semibold transition-colors hover:bg-[#6D28D9] disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ background: '#7C3AED', color: '#fff' }}
+              onClick={startRevelation}
+              className="flex-1 py-3 rounded-xl text-sm font-semibold transition-colors"
+              style={{ background: '#7C5CFF', color: '#fff' }}
             >
-              {loading ? 'Processando...' : 'Revelar meu Mapa'}
+              Revelar meu Mapa
             </button>
           )}
         </div>
