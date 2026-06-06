@@ -36,9 +36,23 @@ export default async function MandalaPage() {
 
   return (
     <main
-      style={{ background: '#06070F', minHeight: 'calc(100vh - 56px)' }}
+      style={{ background: '#06070F', minHeight: 'calc(100vh - 56px)', position: 'relative' }}
       className="flex flex-col items-center py-8 px-4"
     >
+      <div
+        aria-hidden
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          background:
+            'radial-gradient(ellipse at top, rgba(240,180,41,0.08) 0%, transparent 60%), radial-gradient(ellipse at bottom, rgba(124,92,255,0.05) 0%, transparent 50%)',
+          animation: 'akasha-pulse 8s ease-in-out infinite',
+        }}
+      />
+      <style>{`@keyframes akasha-pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }`}</style>
+
       <h1
         style={{
           fontFamily: 'var(--font-cinzel, serif)',

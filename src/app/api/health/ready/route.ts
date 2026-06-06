@@ -18,15 +18,21 @@ import { getRedisClient } from '@/lib/redis';
  * - Kubernetes readinessProbe
  * - Load balancer health checks
  * - Rolling deployment gates
+ *
+ * Doc 25 §10 / Doc 22 AD-22.8: também verifica a presença do céu do dia
+ * (chave `transitos_diarios:YYYY-MM-DD`) como **sinal extra** — a ausência
+ * NÃO falha o readiness (a app continua servindo) mas é reportada para
+ * alerting.
  */
 
-type CheckStatus = 'ok' | 'error';
+type CheckStatus = 'ok' | 'missing' | 'error';
 
 interface ReadinessResponse {
-  status: 'ok' | 'error';
+  status: 'ok' | 'degraded' | 'error';
   checks: {
     db: CheckStatus;
     redis: CheckStatus;
+    transits: { status: CheckStatus; date: string };
   };
   timestamp: string;
 }
@@ -50,17 +56,41 @@ async function checkRedis(): Promise<CheckStatus> {
   }
 }
 
+async function checkTransits(): Promise<{ status: CheckStatus; date: string }> {
+  const date = new Date().toISOString().split('T')[0];
+  const cacheKey = `transitos_diarios:${date}`;
+  try {
+    const client = await getRedisClient();
+    const value = await client.get(cacheKey);
+    return { status: value ? 'ok' : 'missing', date };
+  } catch {
+    return { status: 'missing', date };
+  }
+}
+
 export async function GET() {
-  const [dbStatus, redisStatus] = await Promise.all([checkDb(), checkRedis()]);
+  const [dbStatus, redisStatus, transits] = await Promise.all([
+    checkDb(),
+    checkRedis(),
+    checkTransits(),
+  ]);
 
   const isReady = dbStatus === 'ok' && redisStatus === 'ok';
-  const status: CheckStatus = isReady ? 'ok' : 'error';
+  // degraded: deps OK mas trânsitos ainda não computados (cronjob atrasado)
+  const isDegraded = isReady && transits.status === 'missing';
+
+  const status: ReadinessResponse['status'] = isDegraded
+    ? 'degraded'
+    : isReady
+      ? 'ok'
+      : 'error';
 
   const body: ReadinessResponse = {
     status,
     checks: {
       db: dbStatus,
       redis: redisStatus,
+      transits,
     },
     timestamp: new Date().toISOString(),
   };
