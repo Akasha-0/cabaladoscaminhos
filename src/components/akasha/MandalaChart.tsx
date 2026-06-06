@@ -106,6 +106,24 @@ const TANTRIC_BODY_WISDOM: Record<number, { desc: string; challenge: string; act
   11: { desc: 'Mente Divina', challenge: 'Manter-se aberto ao infinito', activate: 'Gratidão e rendição' },
 };
 
+// Stars data — fixed positions seeded deterministically
+const STARS = Array.from({ length: 30 }, (_, i) => {
+  const angle = (i * 137.508) % 360; // golden angle spacing
+  const radius = 60 + (i * 47) % 130;
+  const pos = toXY(angle, radius);
+  const opacity = 0.08 + (i % 5) * 0.03;
+  const delay = (i * 0.37) % 3;
+  return { x: pos.x, y: pos.y, opacity, delay };
+});
+
+// Particle dots on outer edge
+const PARTICLES = Array.from({ length: 12 }, (_, i) => {
+  const angle = i * 30;
+  const pos = toXY(angle, 198);
+  const delay = (i * 0.4) % 4;
+  return { x: pos.x, y: pos.y, delay };
+});
+
 function describeArc(cx: number, cy: number, r: number, startDeg: number, endDeg: number): string {
   const start = toXY(startDeg, r, cx, cy);
   const end = toXY(endDeg, r, cx, cy);
@@ -124,6 +142,9 @@ export default function MandalaChart({ data }: Props) {
 
   const opacity = (layer: Layer) =>
     activeLayer === null ? 1 : activeLayer === layer ? 1 : 0.3;
+
+  // Pause ring rotation when Layer 4 is selected
+  const ringPaused = activeLayer === 4;
 
   const astroSegments = ZODIAC_SIGNS.map((sym, i) => {
     const startDeg = i * 30;
@@ -162,9 +183,37 @@ export default function MandalaChart({ data }: Props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', width: '100%', maxWidth: 460 }}>
       <style>{`
-        @keyframes pulse-ori { 0%,100%{opacity:0.65;} 50%{opacity:1;} }
-        @keyframes spin-ring { from{transform-origin:200px 200px;transform:rotate(0deg);} to{transform-origin:200px 200px;transform:rotate(360deg);} }
+        @keyframes pulse-ori {
+          0%, 100% { opacity: 0.65; }
+          50% { opacity: 1; }
+        }
+        @keyframes ring-rotate {
+          from { transform-origin: 200px 200px; transform: rotate(0deg); }
+          to { transform-origin: 200px 200px; transform: rotate(360deg); }
+        }
+        @keyframes dash-flow {
+          to { stroke-dashoffset: -20; }
+        }
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.08; }
+          50% { opacity: 0.25; }
+        }
+        @keyframes particle-blink {
+          0%, 100% { opacity: 0.1; }
+          50% { opacity: 0.55; }
+        }
         .mandala-pulse { animation: pulse-ori 3s ease-in-out infinite; }
+        .mandala-pulse-2 { animation: pulse-ori 3s ease-in-out infinite; animation-delay: 0.5s; }
+        .mandala-pulse-3 { animation: pulse-ori 3s ease-in-out infinite; animation-delay: 1s; }
+        .ring-astrological { animation: ring-rotate 120s linear infinite; }
+        .ring-astrological-paused { animation: ring-rotate 120s linear infinite; animation-play-state: paused; }
+        .synergy-active { animation: dash-flow 3s linear infinite; }
+        .synergy-alert { animation: dash-flow 1.5s linear infinite; }
+        .star-twinkle { animation: twinkle 4s ease-in-out infinite; }
+        .particle-blink { animation: particle-blink 2.5s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          * { animation: none !important; }
+        }
       `}</style>
 
       {/* Layer selector */}
@@ -217,6 +266,20 @@ export default function MandalaChart({ data }: Props) {
         </defs>
         <circle cx="200" cy="200" r="200" fill="url(#bgGrad)" />
 
+        {/* ── E — Stars background ── */}
+        {STARS.map((s, i) => (
+          <circle
+            key={`star-${i}`}
+            cx={s.x}
+            cy={s.y}
+            r="1"
+            fill="white"
+            opacity={s.opacity}
+            className="star-twinkle"
+            style={{ animationDelay: `${s.delay}s` }}
+          />
+        ))}
+
         {/* Faint cross-layer synergy lines */}
         {[0, 72, 144, 216, 288].map((deg, i) => {
           const outer = toXY(deg, 178);
@@ -233,8 +296,13 @@ export default function MandalaChart({ data }: Props) {
           );
         })}
 
-        {/* ── Layer 4 — Astrological Ring ── */}
-        <g opacity={opacity(4)} onClick={() => setActiveLayer(activeLayer === 4 ? null : 4)} style={{ cursor: 'pointer' }}>
+        {/* ── Layer 4 — Astrological Ring (rotating) ── */}
+        <g
+          opacity={opacity(4)}
+          onClick={() => setActiveLayer(activeLayer === 4 ? null : 4)}
+          style={{ cursor: 'pointer' }}
+          className={ringPaused ? 'ring-astrological-paused' : 'ring-astrological'}
+        >
           <circle cx="200" cy="200" r="196" fill="none" stroke="rgba(124,92,255,0.12)" strokeWidth="0.5" />
           <circle cx="200" cy="200" r="170" fill="none" stroke="rgba(124,92,255,0.12)" strokeWidth="0.5" />
           {astroSegments.map(({ startDeg, endDeg, sym, labelPos }, i) => (
@@ -256,14 +324,29 @@ export default function MandalaChart({ data }: Props) {
               </text>
             </g>
           ))}
-          {/* Planet dots */}
+          {/* Planet dots with tooltip */}
           {planetDots.map((p, i) => (
             <g key={i} filter="url(#glow-akasha)">
-              <circle cx={p.pos.x} cy={p.pos.y} r="3.5" fill="#7C5CFF" opacity="0.9" />
+              <circle cx={p.pos.x} cy={p.pos.y} r="3.5" fill="#7C5CFF" opacity="0.9">
+                <title>{p.name}: {p.sign} casa {p.house}</title>
+              </circle>
             </g>
           ))}
           {/* Ring label */}
           <text x="200" y="14" textAnchor="middle" fontSize="7" fill="rgba(124,92,255,0.5)" letterSpacing="2">ASTROLOGIA</text>
+
+          {/* ── D — Particle dots on outer edge ── */}
+          {PARTICLES.map((pt, i) => (
+            <circle
+              key={`particle-${i}`}
+              cx={pt.x}
+              cy={pt.y}
+              r="1.5"
+              fill="white"
+              className="particle-blink"
+              style={{ animationDelay: `${pt.delay}s` }}
+            />
+          ))}
         </g>
 
         {/* ── Layer 3 — Tantric Web ── */}
@@ -306,6 +389,22 @@ export default function MandalaChart({ data }: Props) {
           ))}
         </g>
 
+        {/* ── B — Toroidal synergy lines (between Layer 3 and Layer 2) ── */}
+        {tantricNodes.map(({ pos, active }, i) => (
+          <line
+            key={`synergy-${i}`}
+            x1={pos.x} y1={pos.y}
+            x2={200} y2={200}
+            stroke={active ? '#2DD4BF' : '#FB5781'}
+            strokeWidth="0.6"
+            strokeDasharray="4 6"
+            opacity={active ? 0.35 : 0.25}
+            strokeDashoffset="0"
+            className={active ? 'synergy-active' : 'synergy-alert'}
+            style={{ animationDelay: `${(i * 0.27) % 2}s` }}
+          />
+        ))}
+
         {/* ── Layer 2 — Kabbalistic Geometry ── */}
         <g opacity={opacity(2)} onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)} style={{ cursor: 'pointer' }}>
           <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(124,92,255,0.2)" strokeWidth="1" strokeDasharray="2 3" />
@@ -344,6 +443,9 @@ export default function MandalaChart({ data }: Props) {
 
         {/* ── Layer 1 — Odus Core ── */}
         <g opacity={opacity(1)} onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)} style={{ cursor: 'pointer' }}>
+          {/* ── C — Animated glow rings (3 concentric, phase-offset) ── */}
+          <circle cx="200" cy="200" r="50" fill="none" stroke="#F0B429" strokeWidth="0.5" opacity="0.15" className="mandala-pulse-3" />
+          <circle cx="200" cy="200" r="44" fill="none" stroke="#F0B429" strokeWidth="0.75" opacity="0.2" className="mandala-pulse-2" />
           {/* Ori glow */}
           <circle cx="200" cy="200" r="40" fill="url(#oriGlow)" className="mandala-pulse" />
           <circle cx="200" cy="200" r="34" fill="rgba(240,180,41,0.08)" stroke="#F0B429" strokeWidth="1.5" className="mandala-pulse" />
@@ -357,6 +459,13 @@ export default function MandalaChart({ data }: Props) {
             </text>
           )}
         </g>
+
+        {/* ── F — Incomplete data badge ── */}
+        {data.incomplete && (
+          <text x="200" y="390" textAnchor="middle" fontSize="7" fill="#FB5781" opacity="0.7">
+            * dados parciais — complete o perfil
+          </text>
+        )}
       </svg>
 
       {/* === Info Panels === */}

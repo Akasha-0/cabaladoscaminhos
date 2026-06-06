@@ -2,6 +2,18 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import MandalaChart from '@/components/akasha/MandalaChart';
 
+export const metadata = {
+  title: 'Minha Mandala',
+  description: 'Sua Mandala Akáshica — os 4 pilares da sua existência.',
+};
+
+function getSaudacao(): string {
+  const h = new Date().getHours();
+  if (h < 12) return 'Bom despertar —';
+  if (h < 18) return 'Boa tarde —';
+  return 'Boa noite —';
+}
+
 export default async function MandalaPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get('akasha_session')?.value;
@@ -20,6 +32,8 @@ export default async function MandalaPage() {
 
   const data = await res.json();
 
+  const saudacao = getSaudacao();
+
   return (
     <main
       style={{ background: '#06070F', minHeight: 'calc(100vh - 56px)' }}
@@ -30,13 +44,63 @@ export default async function MandalaPage() {
           fontFamily: 'var(--font-cinzel, serif)',
           color: '#F4F5FF',
           fontSize: '1.25rem',
-          marginBottom: '1.5rem',
+          marginBottom: '0.35rem',
           letterSpacing: '0.1em',
         }}
       >
         MANDALA AKÁSHICA
       </h1>
+
+      {/* Dynamic greeting */}
+      <p
+        style={{
+          fontFamily: 'var(--font-cinzel, serif)',
+          color: '#A7AECF',
+          fontSize: '0.75rem',
+          marginBottom: '1.25rem',
+          letterSpacing: '0.05em',
+        }}
+      >
+        {saudacao} sua Mandala Akáshica aguarda
+      </p>
+
+      {/* Incomplete data badge */}
+      {data.incomplete && (
+        <a
+          href="/conta"
+          style={{
+            display: 'inline-block',
+            marginBottom: '1rem',
+            padding: '5px 14px',
+            borderRadius: '100px',
+            border: '1px solid rgba(251,87,129,0.4)',
+            background: 'rgba(251,87,129,0.08)',
+            color: '#FB5781',
+            fontSize: '0.75rem',
+            textDecoration: 'none',
+            letterSpacing: '0.03em',
+          }}
+        >
+          ⚠ Dados incompletos — complete seu perfil para uma leitura plena
+        </a>
+      )}
+
       <MandalaChart data={data} />
+
+      {/* Quick link to diary */}
+      <a
+        href="/diario"
+        style={{
+          marginTop: '1.25rem',
+          color: '#5C6691',
+          fontSize: '0.75rem',
+          textDecoration: 'none',
+          letterSpacing: '0.03em',
+          transition: 'color 0.2s',
+        }}
+      >
+        → Ver Diário Energético de hoje
+      </a>
     </main>
   );
 }
