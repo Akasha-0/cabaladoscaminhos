@@ -1,12 +1,8 @@
-// REMOVIDO: AD-17.6 — B2B não usa SupabaseProvider
-// B2B Authentication usa /login com JWT próprio (Operator JWT)
-// import { SupabaseProvider } from '@/components/providers/SupabaseProvider';
 import type { Metadata, Viewport } from 'next';
 import {
   Cinzel,
   Cormorant_Garamond,
-  Raleway,
-  IM_Fell_English,
+  Inter,
   Lora,
   JetBrains_Mono,
 } from 'next/font/google';
@@ -24,19 +20,13 @@ const cormorant = Cormorant_Garamond({
   weight: ['400', '500', '600', '700'],
 });
 
-const raleway = Raleway({
-  variable: '--font-raleway',
+// UI mobile-first — Doc 26 §5
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600'],
 });
 
-const imFell = IM_Fell_English({
-  variable: '--font-imfell',
-  subsets: ['latin'],
-  weight: ['400'],
-});
-
-// Corpo do dossiê e bolhas do chat de consulta (Doc 05 §5 / Doc 13 §5).
 const lora = Lora({
   variable: '--font-lora',
   subsets: ['latin'],
@@ -75,16 +65,16 @@ export const headers = [
     headers: [{ key: 'Content-Security-Policy', value: PAGE_CSP }],
   },
 ];
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://cabaladoscaminhos.com';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://akasha.cabaladoscaminhos.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Cabala dos Caminhos',
-    template: '%s | Cabala dos Caminhos',
+    default: 'Sistema Akasha',
+    template: '%s | Sistema Akasha',
   },
   description:
-    'Plataforma de autoconhecimento espiritual unificado. Correlacionando Cabala, Ifá, Astrologia, Numerologia, Tarot e Chakras para seu despertar.',
+    'Tecnologia espiritual viva. O Sistema Akasha cruza Astrologia, Numerologia Cabalística, Numerologia Tântrica e Odus para revelar seu diagnóstico e ritual personalizados.',
   keywords: [
     'cabala',
     'espiritualidade',
@@ -153,9 +143,9 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Cabala',
+    title: 'Akasha',
   },
-  applicationName: 'Cabala dos Caminhos',
+  applicationName: 'Sistema Akasha',
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
@@ -166,7 +156,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#fbbf24',
+  themeColor: '#7C5CFF',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -186,9 +176,9 @@ export default function RootLayout({
         <link key="robots" rel="robots" href="/robots.txt" />
       </head>
       <body
-        className={`${cinzel.variable} ${cormorant.variable} ${raleway.variable} ${imFell.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen bg-background text-foreground antialiased`}
+        className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen antialiased`}
+        style={{ background: '#06070F', color: '#F4F5FF' }}
       >
-        {/* AD-17.6: Root layout é enxuto — sem SupabaseProvider (B2B usa Operator JWT) */}
         {children}
       </body>
     </html>

@@ -48,6 +48,8 @@ export async function GET(request: NextRequest) {
       orixaRegency: oduBirth?.orixaRegency ?? [],
       elementalForce: oduBirth?.elementalForce ?? null,
       provisional: oduBirth?.provisional ?? true,
+      preceitos: oduBirth?.preceitos ?? [],
+      quizilas: oduBirth?.quizilas ?? [],
     },
 
     // Kabala (Layer 2)

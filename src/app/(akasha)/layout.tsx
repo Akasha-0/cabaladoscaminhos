@@ -4,13 +4,13 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
   return (
     <div
       className="min-h-screen flex flex-col antialiased"
-      style={{ background: '#030711', color: '#E2E8F0' }}
+      style={{ background: '#06070F', color: '#F4F5FF' }}
     >
       <header
         style={{
-          background: 'rgba(3, 7, 17, 0.85)',
-          borderBottom: '1px solid rgba(124, 58, 237, 0.2)',
-          backdropFilter: 'blur(10px)',
+          background: 'rgba(6, 7, 15, 0.88)',
+          borderBottom: '1px solid rgba(124, 92, 255, 0.2)',
+          backdropFilter: 'blur(12px)',
           position: 'sticky',
           top: 0,
           zIndex: 50,
@@ -19,22 +19,22 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
         <nav className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link
             href="/mandala"
-            className="text-lg font-semibold tracking-widest"
+            className="text-lg font-semibold"
             style={{
               fontFamily: 'var(--font-cinzel), serif',
-              color: '#7C3AED',
-              letterSpacing: '0.15em',
+              color: '#7C5CFF',
+              letterSpacing: '0.18em',
             }}
           >
             ✦ AKASHA
           </Link>
 
-          <ul className="flex items-center gap-6 text-sm">
+          <ul className="flex items-center gap-5 text-sm" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
             <li>
               <Link
                 href="/mandala"
-                className="transition-colors hover:text-[#7C3AED]"
-                style={{ color: '#E2E8F0' }}
+                className="transition-colors"
+                style={{ color: '#A7AECF' }}
               >
                 Mandala
               </Link>
@@ -42,8 +42,8 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
             <li>
               <Link
                 href="/diario"
-                className="transition-colors hover:text-[#7C3AED]"
-                style={{ color: '#E2E8F0' }}
+                className="transition-colors"
+                style={{ color: '#A7AECF' }}
               >
                 Diário
               </Link>
@@ -51,8 +51,8 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
             <li>
               <Link
                 href="/oraculo"
-                className="transition-colors hover:text-[#06B6D4]"
-                style={{ color: '#E2E8F0' }}
+                className="transition-colors"
+                style={{ color: '#A7AECF' }}
               >
                 Oráculo
               </Link>
@@ -60,8 +60,8 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
             <li>
               <Link
                 href="/conta"
-                className="transition-colors hover:text-[#F59E0B]"
-                style={{ color: '#E2E8F0' }}
+                className="transition-colors"
+                style={{ color: '#A7AECF' }}
               >
                 Conta
               </Link>
@@ -72,8 +72,8 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
 
       <main className="flex-1 w-full">{children}</main>
 
-      <footer className="py-6 text-center text-xs" style={{ color: 'rgba(226,232,240,0.3)' }}>
-        Cabala dos Caminhos · Tecnologia Sagrada
+      <footer className="py-6 text-center text-xs" style={{ color: '#5C6691' }}>
+        Sistema Akasha · Cabala dos Caminhos · Tecnologia Espiritual Viva
       </footer>
     </div>
   );
