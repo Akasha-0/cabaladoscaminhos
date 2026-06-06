@@ -82,6 +82,7 @@ next-env.d.ts
 /.omp/runtime/
 /.omp/logs/
 /.omp/state/
+/.trae/documents/
 /.trae/runtime/
 /.trae/logs/
 /.trae/state/
