@@ -4,11 +4,49 @@ import { requireAkashaApi } from '@/lib/auth/akasha-guard';
 import { prisma } from '@/lib/prisma';
 import { streamCompletion } from '@/lib/ai/llm-router';
 import { createSSEStream } from '@/lib/sse';
+import { searchGrimoire, type ChartContext, type GrimoireContext } from '@/lib/grimoire/search';
 
 const bodySchema = z.object({
   question: z.string().min(3).max(1000),
   consultationId: z.string().optional(),
 });
+
+function getDominantElement(astro: Record<string, unknown>): string {
+  const balance = astro?.elementalChart as Record<string, number> | undefined ?? {};
+  const entries = Object.entries(balance);
+  if (entries.length === 0) return 'Água';
+  return entries.sort((a, b) => b[1] - a[1])[0][0];
+}
+
+function buildAkashaSystemPrompt(
+  chart: { astrologyMap: unknown; kabalisticMap: unknown; oduBirth: unknown } | null,
+  ctx: GrimoireContext
+): string {
+  const oduBirth = chart?.oduBirth as Record<string, unknown> | null ?? {};
+  const kab = chart?.kabalisticMap as Record<string, unknown> | null ?? {};
+
+  const grimoireSection = ctx.entries.length > 0
+    ? `\n\n## BIBLIOTECA AKASHA (use APENAS estas fontes)\n\n${ctx.entries
+        .map((e) => `### ${e.titulo} [${e.categoria}]\n${e.conteudo}`)
+        .join('\n\n---\n\n')}`
+    : '';
+
+  return `Você é a Voz do Akasha — um oráculo espiritual de alta voltagem intuitiva.
+
+IDENTIDADE DO CONSULTANTE:
+- Odu de nascimento: ${(oduBirth?.oduName as string) ?? 'Desconhecido'}
+- Orixá(s) regente(s): ${((oduBirth?.orixaRegency as string[]) ?? []).join(', ') || 'Não identificado'}
+- Caminho de Vida: ${(kab?.lifePath as string | number) ?? '—'}
+- Elemento dominante: ${ctx.pillarsConsulted.includes('Botânica') ? 'identificado no Grimório' : 'calculado'}
+
+REGRAS ABSOLUTAS:
+1. NUNCA invente rituais, propriedades de ervas ou correspondências que não estejam na Biblioteca Akasha abaixo.
+2. Se não souber, diga: "Consulte um Babalorixá ou Babalaô de sua confiança para este Odu."
+3. Tom: magnético, profundo, poético. Nunca genérico, nunca alarmista.
+4. Sempre entregue uma ação prática (banho, cor, mantra, atitude).
+5. Nunca faça diagnósticos médicos, jurídicos ou financeiros categóricos.
+6. Responda em português brasileiro. Máximo 3 parágrafos.${grimoireSection}`;
+}
 
 export async function POST(request: NextRequest) {
   // 1. Auth
@@ -75,64 +113,32 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // 7. Fetch grimoire context
-  const grimoireEntries = await prisma.grimoireEntry.findMany({
-    where: { biblioteca: 'akasha' },
-    take: 3,
-    select: { slug: true, categoria: true, conteudo: true },
-  });
-
-  const grimoireContext = grimoireEntries.length > 0
-    ? grimoireEntries.map((e) => `[${e.categoria}] ${e.conteudo.slice(0, 300)}`).join('\n---\n')
-    : 'Nenhum fragmento do Grimório disponível.';
-
-  // 8. Build user context from birth chart
-  const user = await prisma.akashaUser.findUnique({
-    where: { id: userId },
+  // 7. Fetch mapa natal do usuário
+  const chart = await prisma.akashaBirthChart.findUnique({
+    where: { userId },
     select: {
-      fullName: true,
-      birthDate: true,
-      birthCity: true,
-      birthChart: {
-        select: {
-          astrologyMap: true,
-          kabalisticMap: true,
-        },
-      },
+      astrologyMap: true,
+      kabalisticMap: true,
+      oduBirth: true,
     },
   });
 
-  let birthChartInfo = 'Mapa natal não calculado.';
-  if (user?.birthChart) {
-    const astro = user.birthChart.astrologyMap as Record<string, unknown> | null;
-    const kab = user.birthChart.kabalisticMap as Record<string, unknown> | null;
-    const parts: string[] = [];
-    if (astro && typeof astro === 'object') {
-      if (astro.sunSign) parts.push(`Sol: ${astro.sunSign}`);
-      if (astro.moonSign) parts.push(`Lua: ${astro.moonSign}`);
-      if (astro.ascendant) parts.push(`Asc: ${astro.ascendant}`);
-    }
-    if (kab && typeof kab === 'object') {
-      if (kab.lifePathNumber) parts.push(`Caminho de Vida: ${kab.lifePathNumber}`);
-      if (kab.destinyNumber) parts.push(`Destino: ${kab.destinyNumber}`);
-    }
-    if (parts.length > 0) birthChartInfo = parts.join(', ');
-  }
+  const astrologyMap = (chart?.astrologyMap as Record<string, unknown>) ?? {};
+  const oduBirth = (chart?.oduBirth as Record<string, unknown>) ?? {};
 
-  const userContext = `Nome: ${user?.fullName ?? 'Peregrino'} | Cidade natal: ${user?.birthCity ?? 'desconhecida'} | ${birthChartInfo}`;
+  const chartCtx: ChartContext = {
+    element: getDominantElement(astrologyMap),
+    oduId: (oduBirth?.oduName as string) ?? undefined,
+    lifePath: ((chart?.kabalisticMap as Record<string, unknown>)?.lifePath as number) ?? undefined,
+  };
 
-  const systemPrompt = `Você é o Akasha, oráculo vivo de tecnologia espiritual.
-Você integra Astrologia, Numerologia Cabalística, Numerologia Tântrica e Odus de Nascimento.
-Nunca invente rituais ou correspondências — use apenas o que foi fornecido no contexto do Grimório.
-Responda em português brasileiro, com voz magnética, profunda e poética.
-Seja direto e prático — entregue sempre uma ação (banho, cor, mantra, alerta).
-Máximo 3 parágrafos.
-[DADOS DO USUÁRIO]:
-${userContext}
-[GRIMÓRIO]:
-${grimoireContext}`;
+  // 8. Buscar Grimório contextual (RAG)
+  const grimoireCtx = await searchGrimoire(question, chartCtx, 4);
 
-  // 9. Open SSE stream
+  // 9. Build enriched system prompt
+  const systemPrompt = buildAkashaSystemPrompt(chart, grimoireCtx);
+
+  // 10. Open SSE stream
   const encoder = new TextEncoder();
   let sseController!: ReturnType<typeof createSSEStream>;
 
@@ -163,15 +169,15 @@ ${grimoireContext}`;
           if (chunk.done) break;
         }
 
-        // 10. Persist oracle response and debit credits
-        const grimoireRefs = grimoireEntries.map((e) => e.slug);
+        // 11. Persist oracle response and debit credits
+        const grimoireRefs = grimoireCtx.entries.map((e) => e.titulo);
 
         await prisma.akashaChatMessage.create({
           data: {
             consultationId: consultation.id,
             role: 'ORACLE',
             content: fullResponse,
-            routedPillars: [],
+            routedPillars: grimoireCtx.pillarsConsulted,
             grimoireRefs,
             creditCost,
           },
@@ -190,7 +196,12 @@ ${grimoireContext}`;
 
         sseController.send({
           event: 'done',
-          data: { consultationId: consultation.id, creditCost, remainingBalance: newBalance },
+          data: {
+            consultationId: consultation.id,
+            creditCost,
+            remainingBalance: newBalance,
+            pillarsConsulted: grimoireCtx.pillarsConsulted,
+          },
         });
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Erro interno do oráculo';
