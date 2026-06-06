@@ -2,7 +2,7 @@
 ## Sistema Akasha · Matriz Cabala dos Caminhos
 
 > **Versão:** 2.0 | **Padrão:** Monorepo (engines puros + apps) · VPS Linux soberano
-> **Norte:** Doc 25 (Visão Akasha). Substitui a arquitetura monolítica B2B (Doc 03 v1, agora no legado).
+> **Norte:** Doc 25 (Visão Akasha). Arquitetura canônica do Sistema Akasha.
 
 ---
 
@@ -54,8 +54,7 @@ cabaladoscaminhos/                 # monorepo (Turborepo / pnpm workspaces)
 │   ├── core-graph/                # Grafo de Conhecimento (cruzamento)
 │   └── grimoire/                  # ingestão Markdown→pgvector, busca híbrida
 ├── apps/
-│   ├── b2c-portal/                # ⭐ Next.js 16 — o Akasha (Mandala, onboarding…)
-│   └── legacy-cockpit/            # Mesa Real B2B — roda até a migração, depois desligado
+│   └── b2c-portal/                # ⭐ Next.js 16 — o Akasha (Mandala, onboarding…)
 ├── grimorio/                      # 📚 conteúdo Markdown + YAML (as 4 bibliotecas)
 │   ├── botanica/  ├── vibracional/  ├── ancestral/  └── diagnostico/
 ├── prisma/                        # schema + migrations (compartilhado)
@@ -196,7 +195,7 @@ NODE_ENV="development"
 ## 6. Decisões de Arquitetura
 
 ### Por que monorepo?
-Isola a lógica espiritual validada (~9k testes) em `packages/core-*` agnósticos, permitindo construir o `b2c-portal` do zero sem acoplar ao Cockpit antigo. O `legacy-cockpit` segue importando os mesmos engines até ser desligado (retrocompatibilidade — Doc 25 §11).
+Isola a lógica espiritual validada (~9k testes) em `packages/core-*` agnósticos, permitindo construir o `b2c-portal` do zero sem acoplar a camadas legadas. Os engines permanecem a única fonte da verdade do cálculo espiritual (Doc 25 §11).
 
 ### Por que três camadas de IA?
 IA pura alucina rituais e erra cálculos; matriz fixa gera texto robótico. Separar Determinístico (precisão) + Grafo (cruzamento) + Síntese (fluidez com RAG) é o que torna o Akasha impecável (Doc 06).
