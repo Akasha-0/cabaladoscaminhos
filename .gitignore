@@ -86,4 +86,5 @@ next-env.d.ts
 /.trae/logs/
 /.trae/state/
 /.swarm/runtime/
-/.swarm/logs/.claude/worktrees/
+/.swarm/logs/
+.claude/
