@@ -57,6 +57,15 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
                 Oráculo
               </Link>
             </li>
+            <li>
+              <Link
+                href="/conta"
+                className="transition-colors hover:text-[#F59E0B]"
+                style={{ color: '#E2E8F0' }}
+              >
+                Conta
+              </Link>
+            </li>
           </ul>
         </nav>
       </header>

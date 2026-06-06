@@ -49,6 +49,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | Fase A | **Fundações do Monorepo** (Extração de engines em packages e redirect de imports; 8.780 testes passando) | `9fb64489` | ✅ |
 | Fase B | **Grimório & pgvector** (Modelos AkashaUser/GrimoireEntry, sincronizador de Markdown via Ollama e webhook; 8.784 testes passando) | (este commit) | ✅ |
 | Fase C | **Schema B2C + Auth Akasha + Portal Onboarding** (9 modelos B2C, enums, migration; akasha-jwt/guard; 5 rotas auth + /api/akasha/chart; grupo (akasha)/ com layout + onboarding 4-steps + 4 placeholders; 8.783 testes passando) | `2a1b1eb` | ✅ |
+| Onda 4 (D–H) | **Mandala, Manifesto PDF, Daily Engine, Oráculo SSE, Grimório 39 arquivos** (MandalaChart SVG, ManifestoPDF react-pdf, daily-engine 3 camadas, consult SSE créditos, grimório curado) | `93b13d7` | ✅ |
+| Onda 4 (I) | **Stripe Checkout + Motor de Créditos** (stripe-akasha lib; checkout dinâmico/price-id; webhook akasha-stripe assinado; /api/akasha/subscription; /conta page com plano/créditos/checkout; 8.783 testes passando) | (este commit) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
