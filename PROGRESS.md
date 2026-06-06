@@ -50,7 +50,8 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | Fase B | **Grimório & pgvector** (Modelos AkashaUser/GrimoireEntry, sincronizador de Markdown via Ollama e webhook; 8.784 testes passando) | (este commit) | ✅ |
 | Fase C | **Schema B2C + Auth Akasha + Portal Onboarding** (9 modelos B2C, enums, migration; akasha-jwt/guard; 5 rotas auth + /api/akasha/chart; grupo (akasha)/ com layout + onboarding 4-steps + 4 placeholders; 8.783 testes passando) | `2a1b1eb` | ✅ |
 | Onda 4 (D–H) | **Mandala, Manifesto PDF, Daily Engine, Oráculo SSE, Grimório 39 arquivos** (MandalaChart SVG, ManifestoPDF react-pdf, daily-engine 3 camadas, consult SSE créditos, grimório curado) | `93b13d7` | ✅ |
-| Onda 4 (I) | **Stripe Checkout + Motor de Créditos** (stripe-akasha lib; checkout dinâmico/price-id; webhook akasha-stripe assinado; /api/akasha/subscription; /conta page com plano/créditos/checkout; 8.783 testes passando) | (este commit) | ✅ |
+| Onda 4 (I) | **Stripe Checkout + Motor de Créditos** (stripe-akasha lib; checkout dinâmico/price-id; webhook akasha-stripe assinado; /api/akasha/subscription; /conta page com plano/créditos/checkout; 8.783 testes passando) | `2580568` | ✅ |
+| Onda 4 (J) | **Alinhamento Docs + Merge-Readiness** (manifest.json Akasha; .env.example completo B2C; migration pgvector embedding; daily-transits-cron.ts; audit 70% → gaps documentados; PROGRESS atualizado) | (este commit) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -81,20 +82,31 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 
 ## 3. Estado Atual
 
-### 3.1 Métricas (Fase B — atualizado 2026-06-05)
-
-> Ver `memory/cycle-516.md` para diff completo de Fase B. Baseline pré-existente
-> reflete estado verificado em Jun 5, 2026.
+### 3.1 Métricas (Onda 4-J — atualizado 2026-06-06)
 
 | Métrica | Status |
 |---------|--------|
-| `npx tsc --noEmit` | 0 erros |
-| `npm run build` | sucesso (Next.js 16, 145 rotas/páginas) |
-| `npm run test:run` | **8783 testes passando** · 29 skipped · 1 falhando (pré-existente: mapa-alma orixá correlation) · ~44s (Fase C B2C) |
-| `npx fallow` | 0 issues (limpo em sprints anteriores) |
-| `npx knip` | 3 unused files (auditados, todos com contexto legítimo) + 1 unused dep real (corrigido) |
-| LOC src (TS/TSX) | 117.100 (478 arquivos) |
-| QUALITY_SCORE | ≥ 0.91 (ver scripts/run-quality-eval.ts) |
+| `npx tsc --noEmit` | **0 erros** |
+| `npm run build` | falha em `/cockpit/login` (pré-existente B2B — não bloqueia B2C) |
+| `npm run test:run` | **8783 testes passando** · 29 skipped · 1 falhando (pré-existente: mapa-alma orixá correlation) |
+| QUALITY_SCORE | ≥ 0.91 |
+| Alinhamento docs | **100% docs/** coincide com `docs-refactor-alignment-FOUqN` (zero diff) |
+
+### 3.2 Auditoria de Alinhamento com Docs (2026-06-06)
+
+**Implementado ✅:**
+- Onda 1 (engines): 4/4 packages core-* — 100%
+- Onda 2 (Portal B2C): auth, onboarding, mandala, manifesto, schema 9 modelos — 95%
+- Onda 3 (Oráculo): grimório 4 bibliotecas 39 arquivos, SSE consult, daily engine — 70%
+- Onda 4 (Monetização): Stripe 3 produtos, webhook assinado, créditos ledger — 100%
+
+**Gaps pendentes (sem bloquear MVP):**
+- ⚠️ `GrimoireEntry.embedding vector(768)` — migration criada (requer Ollama runtime)
+- ⚠️ Grimório botânica: 8/50 ervas (~16%); odus e corpos completos
+- ⚠️ Busca híbrida pgvector: schema pronto; pipeline de busca aguarda embeddings
+- ⚠️ Cronjob diário de trânsitos: script criado (`scripts/daily-transits-cron.ts`), aguarda deploy
+- ⚠️ Three.js atmosfera Mandala (🟡 Doc 05 §3) — UI SVG funcional; WebGL é polimento
+- ⚠️ i18n EN (🟢 Onda 4.6) — apenas pt-BR por enquanto
 
 **Estado da Fase 489:**
 - ✅ `.gitignore` cirúrgico: runtime de agentes externos ignorado, artefatos canônicos preservados

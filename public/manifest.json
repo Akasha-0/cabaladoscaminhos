@@ -1,15 +1,15 @@
 {
-  "name": "Cabala dos Caminhos",
-  "short_name": "Cabala",
-  "description": "Tecnologia Sagrada de Alinhamento Espiritual",
-  "start_url": "/",
+  "name": "Sistema Akasha",
+  "short_name": "Akasha",
+  "description": "Oráculo pessoal de tecnologia espiritual — cruzamento de Astrologia, Numerologia Cabalística, Tântrica e Odus de Nascimento.",
+  "start_url": "/mandala",
   "display": "standalone",
-  "background_color": "#0a0a0f",
-  "theme_color": "#fbbf24",
+  "background_color": "#030711",
+  "theme_color": "#7C3AED",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "pt-BR",
-  "categories": ["lifestyle", "education", "spiritual"],
+  "categories": ["lifestyle", "education", "health"],
   "icons": [
     {
       "src": "/favicon.ico",
@@ -36,50 +36,43 @@
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Mapa da Alma"
+      "label": "Mandala Toroidal — seus 4 pilares"
     },
     {
       "src": "/screenshot-2.png",
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Calendário Espiritual"
+      "label": "Dashboard Diário — Clima, Ritual e Alerta"
     }
   ],
   "shortcuts": [
     {
-      "name": "Criar Mapa",
-      "short_name": "Mapa",
-      "description": "Iniciar criação do mapa da alma",
-      "url": "/onboarding",
+      "name": "Minha Mandala",
+      "short_name": "Mandala",
+      "description": "Ver sua Mandala Toroidal com os 4 pilares",
+      "url": "/mandala",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Oráculo IA",
+      "name": "Diário Energético",
+      "short_name": "Diário",
+      "description": "Clima, Ritual e Alerta do dia",
+      "url": "/diario",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Oráculo",
       "short_name": "Oráculo",
-      "description": "Consultar o oráculo espiritual",
-      "url": "/dashboard/oraculo",
+      "description": "Consultar o Agente Oracular",
+      "url": "/oraculo",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Calendário",
-      "short_name": "Calendário",
-      "description": "Ver calendário energético",
-      "url": "/calendario",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Dashboard",
-      "short_name": "Dashboard",
-      "description": "Acessar dashboard pessoal",
-      "url": "/dashboard",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Tarot",
-      "short_name": "Tarot",
-      "description": "Jogar tarot",
-      "url": "/dashboard/tarot",
+      "name": "Iniciar Jornada",
+      "short_name": "Jornada",
+      "description": "Criar conta e revelar seu mapa",
+      "url": "/onboarding",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ],
