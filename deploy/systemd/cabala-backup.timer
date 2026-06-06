@@ -1,0 +1,15 @@
+[Unit]
+Description=Cabala dos Caminhos — PostgreSQL Daily Backup Timer (03:00 UTC)
+Documentation=https://docs.akasha.local/runbook/cron-backup
+
+[Timer]
+# Roda todos os dias às 03:00 UTC (depois do cabala-transits às 00:00)
+OnCalendar=*-*-* 03:00:00 UTC
+# Persiste a execução se o host estava off na hora (pega atrasados)
+Persistent=true
+# Jitter para evitar thundering herd com outros crons
+RandomizedDelaySec=60
+Unit=cabala-backup.service
+
+[Install]
+WantedBy=timers.target

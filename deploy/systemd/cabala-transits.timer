@@ -1,0 +1,15 @@
+[Unit]
+Description=Cabala dos Caminhos — Daily Transits Timer (00:00 UTC daily)
+Documentation=https://docs.akasha.local/runbook/cron-transits
+
+[Timer]
+# Roda todos os dias à meia-noite UTC
+OnCalendar=*-*-* 00:00:00 UTC
+# Persiste a execução se o host estava off na hora (pega atrasados)
+Persistent=true
+# Pequeno jitter para evitar thundering herd
+RandomizedDelaySec=30
+Unit=cabala-transits.service
+
+[Install]
+WantedBy=timers.target
