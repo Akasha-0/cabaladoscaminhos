@@ -1,90 +1,107 @@
-const CACHE_NAME = 'akasha-v1';
-const STATIC_ASSETS = [
+/**
+ * Service Worker — Akasha PWA
+ *
+ * Estratégia:
+ * - App shell: network-first com fallback cache
+ * - Dados dinâmicos (consult, daily-reading): network-only (NUNCA cache)
+ * - Ativos estáticos (imagens, fontes): cache-first
+ *
+ * Versão: SW-v1. Incrementar a constante abaixo invalida caches antigos.
+ */
+
+const CACHE_VERSION = 'SW-v1';
+const SHELL_CACHE = `akasha-shell-${CACHE_VERSION}`;
+const STATIC_CACHE = `akasha-static-${CACHE_VERSION}`;
+
+const APP_SHELL = [
   '/',
   '/mandala',
   '/diario',
-  '/oraculo',
-  '/manifesto',
   '/manifest.json',
-  '/favicon.ico',
+  '/offline',
 ];
 
-// Install: pre-cache estáticos
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(SHELL_CACHE).then((cache) => cache.addAll(APP_SHELL)).catch(() => {
+      // Ignore se algum recurso do shell falhar (ex.: /offline ainda não existe)
+    })
   );
   self.skipWaiting();
 });
 
-// Activate: limpar caches antigos
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter((k) => k !== SHELL_CACHE && k !== STATIC_CACHE)
+          .map((k) => caches.delete(k))
+      );
+      await self.clients.claim();
+    })()
   );
-  self.clients.claim();
 });
 
-// Fetch: cache-first para estáticos, network-first para APIs
 self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
+  const { request } = event;
+  const url = new URL(request.url);
 
-  // APIs sempre network-first (nunca cachear dados pessoais)
-  if (url.pathname.startsWith('/api/')) {
+  // 1. POST/PUT/DELETE: nunca cacheia
+  if (request.method !== 'GET') return;
+
+  // 2. Endpoints dinâmicos sensíveis: network-only (NUNCA cachear)
+  if (
+    url.pathname.startsWith('/api/') ||
+    url.pathname.includes('/consult') ||
+    url.pathname.includes('/transits/today') ||
+    url.pathname.includes('/admin/')
+  ) {
+    return; // bypass SW
+  }
+
+  // 3. Ativos estáticos: cache-first
+  if (
+    url.pathname.startsWith('/_next/static/') ||
+    url.pathname.match(/\.(?:png|jpg|jpeg|svg|gif|webp|woff2?)$/i)
+  ) {
     event.respondWith(
-      fetch(event.request).catch(() =>
-        new Response(JSON.stringify({ error: 'Offline — reconecte para consultar o Akasha.' }), {
-          status: 503,
-          headers: { 'Content-Type': 'application/json' },
-        })
-      )
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+        return fetch(request).then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(STATIC_CACHE).then((cache) => cache.put(request, clone));
+          }
+          return response;
+        });
+      })
     );
     return;
   }
 
-  // Assets estáticos: cache-first
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
+  // 4. Páginas do app shell: network-first com fallback cache
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
         .then((response) => {
-          if (response.ok && event.request.method === 'GET') {
+          if (response.ok) {
             const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+            caches.open(SHELL_CACHE).then((cache) => cache.put(request, clone));
           }
           return response;
         })
-        .catch(() => caches.match('/'));
-    })
-  );
+        .catch(() => caches.match(request).then((cached) => cached || caches.match('/')))
+    );
+    return;
+  }
+
+  // 5. Default: network com timeout implícito
+  return;
 });
 
-// Push notifications
-self.addEventListener('push', (event) => {
-  const data = event.data?.json() ?? { title: 'Akasha', body: 'Seu ritual do dia está pronto.' };
-  event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: '/icon-192.png',
-      badge: '/favicon.ico',
-      data: { url: data.url ?? '/diario' },
-      vibrate: [200, 100, 200],
-    })
-  );
-});
-
-// Notification click: abre a URL
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(
-    clients.matchAll({ type: 'window' }).then((clientList) => {
-      const url = event.notification.data?.url ?? '/diario';
-      for (const client of clientList) {
-        if (client.url.includes(url) && 'focus' in client) return client.focus();
-      }
-      if (clients.openWindow) return clients.openWindow(url);
-    })
-  );
+// Mensagem de SKIP_WAITING para forçar ativação de nova versão
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
