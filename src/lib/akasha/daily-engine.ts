@@ -1,5 +1,6 @@
 import type { BirthChart } from '@akasha/core-astrology';
 import { buildDailyEnergy } from '@/lib/agents/transit-engine';
+import { crossAnalyze } from './cross-engine';
 
 export interface DailyContent {
   date: string;
@@ -9,12 +10,15 @@ export interface DailyContent {
     instrucao: string;
     cor: string;
     elemento: string;
+    herbs?: string[];
   };
   alert: string;
   tensionPoint: {
     pillar: string;
     theme: string;
     intensity: number;
+    affectedBody?: number;
+    affectedElement?: string;
   };
   moonPhase: string;
   overallTheme: string;
@@ -37,86 +41,27 @@ export function buildDailyContent(
     energy = buildFallbackEnergy(date);
   }
 
-  const kab = kabalisticMap as Record<string, unknown>;
-  const tantra = tantricMap as Record<string, unknown>;
-  const odu = oduBirth as Record<string, unknown>;
+  // Enriquecer o mapa astrológico com dados calculados do trânsito
+  const enrichedAstroMap = {
+    ...(astrologyMap as Record<string, unknown>),
+    majorAspects: energy.majorAspects ?? [],
+    overallEnergy: energy.overallEnergy ?? 60,
+    moonPhase: energy.moonPhase,
+    luckyColor: energy.luckyColor,
+    overallTheme: energy.overallTheme,
+  };
 
-  const tensionPoint = detectTensionPoint(energy, kab, tantra, odu);
-  const climate = buildClimateText(energy, tensionPoint);
-  const ritual = buildRitualSuggestion(energy, odu);
-  const alert = buildAlertText(energy, tensionPoint);
+  const cross = crossAnalyze(enrichedAstroMap, kabalisticMap, tantricMap, oduBirth, date);
 
   return {
     date: dateStr,
-    climate,
-    ritual,
-    alert,
-    tensionPoint,
+    climate: cross.climate,
+    ritual: cross.dailyRitual,
+    alert: cross.dailyAlert,
+    tensionPoint: cross.tensionPoint,
     moonPhase: energy.moonPhase?.name ?? 'Lua',
     overallTheme: energy.overallTheme ?? 'Equilíbrio',
   };
-}
-
-function detectTensionPoint(
-  energy: ReturnType<typeof buildDailyEnergy>,
-  _kab: Record<string, unknown>,
-  _tantra: Record<string, unknown>,
-  _odu: Record<string, unknown>
-): DailyContent['tensionPoint'] {
-  const hasChallengingAspects = energy.majorAspects?.some(
-    (a) => a.energy === 'desafiador'
-  );
-  const pillar = hasChallengingAspects ? 'astrologia' : 'tantra';
-  return {
-    pillar,
-    theme: energy.overallTheme ?? 'Integração',
-    intensity: energy.overallEnergy ?? 50,
-  };
-}
-
-function buildClimateText(
-  energy: ReturnType<typeof buildDailyEnergy>,
-  tension: DailyContent['tensionPoint']
-): string {
-  const moon = energy.moonPhase;
-  const aspects = energy.majorAspects?.slice(0, 2) ?? [];
-  let text = `${moon?.name ?? 'Lua'} — ${moon?.energy ?? 'energia em fluxo'}.`;
-  if (aspects.length > 0 && aspects[0]?.interpretation) {
-    text += ` ${aspects[0].interpretation}`;
-  }
-  if (energy.overallTheme) {
-    text += ` Tema do dia: ${energy.overallTheme}.`;
-  }
-  return text.trim();
-}
-
-function buildRitualSuggestion(
-  energy: ReturnType<typeof buildDailyEnergy>,
-  odu: Record<string, unknown>
-): DailyContent['ritual'] {
-  const rituals = energy.moonPhase?.rituals ?? [];
-  const cor = energy.luckyColor ?? 'branco';
-  const primeiroRitual = rituals[0] ?? 'Meditação de ancoragem';
-  return {
-    titulo: primeiroRitual,
-    instrucao: `Dedique 5 minutos à ${primeiroRitual.toLowerCase()} para alinhar sua energia com o campo de hoje. Use a cor ${cor} ao seu redor.`,
-    cor,
-    elemento: typeof odu?.elementalForce === 'string' ? odu.elementalForce : 'Terra',
-  };
-}
-
-function buildAlertText(
-  energy: ReturnType<typeof buildDailyEnergy>,
-  tension: DailyContent['tensionPoint']
-): string {
-  const desafiadores = energy.majorAspects?.filter((a) => a.energy === 'desafiador') ?? [];
-  if (desafiadores.length === 0) {
-    return `Campo favorável hoje. Evite dispersão e mantenha o foco no ${tension.theme}.`;
-  }
-  return (
-    desafiadores[0]?.recommendation ??
-    `Atenção ao campo emocional nas próximas 24h. Tema: ${tension.theme}.`
-  );
 }
 
 function buildFallbackEnergy(date: Date): ReturnType<typeof buildDailyEnergy> {
