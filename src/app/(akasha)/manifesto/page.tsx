@@ -1,15 +1,19 @@
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type ManifestoContent = {
   userName: string;
   generatedAt: string;
+  synthesis: string;
   odus: {
     oduName: string;
     oduNumber: number | null;
     orixas: string[];
     elementalForce: string | null;
     description: string;
+    preceitos?: string[];
     provisional: boolean;
   };
   kabala: {
@@ -35,20 +39,24 @@ type ManifestoContent = {
   };
 };
 
-const cardStyle: React.CSSProperties = {
-  background: 'rgba(11,14,28,0.8)',
-  border: '1px solid rgba(38,48,79,0.8)',
-  borderRadius: 12,
-  padding: 20,
-  marginBottom: 16,
+// ─── Styles ────────────────────────────────────────────────────────────────
+
+const glass: React.CSSProperties = {
+  background: 'rgba(11,14,28,0.72)',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+  border: '1px solid rgba(38,48,79,0.7)',
+  borderRadius: 16,
+  padding: '24px 28px',
+  marginBottom: 20,
 };
 
 const labelStyle: React.CSSProperties = {
-  fontSize: '0.7rem',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase' as const,
-  color: 'rgba(244,245,255,0.45)',
-  marginBottom: 4,
+  fontSize: '0.68rem',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'rgba(244,245,255,0.38)',
+  marginBottom: 3,
 };
 
 const valueStyle: React.CSSProperties = {
@@ -57,43 +65,41 @@ const valueStyle: React.CSSProperties = {
 };
 
 const descriptionStyle: React.CSSProperties = {
-  color: 'rgba(244,245,255,0.7)',
+  color: 'rgba(244,245,255,0.68)',
   fontSize: '0.875rem',
-  lineHeight: 1.65,
-  marginTop: 12,
+  lineHeight: 1.7,
+  marginTop: 14,
 };
 
-function SectionTitle({ children, color }: { children: React.ReactNode; color: string }) {
-  return (
-    <h2
-      style={{
-        fontFamily: 'var(--font-cinzel, serif)',
-        color,
-        fontSize: '0.8rem',
-        letterSpacing: '0.15em',
-        textTransform: 'uppercase',
-        marginBottom: 16,
-        paddingBottom: 10,
-        borderBottom: `1px solid ${color}33`,
-      }}
-    >
-      {children}
-    </h2>
-  );
-}
+const sectionTitleStyle = (color: string): React.CSSProperties => ({
+  fontFamily: 'var(--font-cinzel, "Cinzel", serif)',
+  color,
+  fontSize: '0.78rem',
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  marginBottom: 18,
+  paddingBottom: 12,
+  borderBottom: `1px solid ${color}28`,
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
+// ─── Sub-components ─────────────────────────────────────────────────────────
 
 function DataPair({ label, value }: { label: string; value: React.ReactNode }) {
+  if (value === null || value === undefined) return null;
   return (
     <div style={{ marginBottom: 10 }}>
       <div style={labelStyle}>{label}</div>
-      <div style={valueStyle}>{value ?? '—'}</div>
+      <div style={valueStyle}>{value}</div>
     </div>
   );
 }
 
 function DataRow({ pairs }: { pairs: Array<{ label: string; value: React.ReactNode }> }) {
   return (
-    <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' as const, marginBottom: 2 }}>
+    <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 4 }}>
       {pairs.map((p) => (
         <DataPair key={p.label} label={p.label} value={p.value} />
       ))}
@@ -101,47 +107,125 @@ function DataRow({ pairs }: { pairs: Array<{ label: string; value: React.ReactNo
   );
 }
 
-export default async function ManifestoPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('akasha_session')?.value;
-
-  if (!token) redirect('/onboarding');
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/manifesto/generate`,
-    {
-      method: 'POST',
-      headers: { Cookie: `akasha_session=${token}`, 'Content-Type': 'application/json' },
-      cache: 'no-store',
-    }
+function ExpandToggle({
+  expanded,
+  onToggle,
+  color,
+}: {
+  expanded: boolean;
+  onToggle: () => void;
+  color: string;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      style={{
+        background: 'none',
+        border: `1px solid ${color}44`,
+        borderRadius: 6,
+        color,
+        fontSize: '0.65rem',
+        letterSpacing: '0.1em',
+        padding: '3px 10px',
+        cursor: 'pointer',
+        textTransform: 'uppercase',
+        transition: 'border-color 0.2s',
+      }}
+    >
+      {expanded ? 'Ver menos' : 'Ver mais'}
+    </button>
   );
+}
 
-  if (res.status === 401 || res.status === 404) redirect('/onboarding');
+// ─── Main Page ───────────────────────────────────────────────────────────────
 
-  const { content }: { manifestoId: string; content: ManifestoContent } = await res.json();
+export default function ManifestoPage() {
+  const router = useRouter();
+  const [content, setContent] = useState<ManifestoContent | null>(null);
+  const [incomplete, setIncomplete] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const { userName, odus, kabala, tantra, astrology } = content;
+  // Expandable section state
+  const [expandedOdu, setExpandedOdu] = useState(false);
+  const [expandedKabala, setExpandedKabala] = useState(false);
+  const [expandedTantra, setExpandedTantra] = useState(false);
+  const [expandedAstro, setExpandedAstro] = useState(false);
+
+  useEffect(() => {
+    async function loadManifesto() {
+      try {
+        const res = await fetch('/api/akasha/manifesto/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        });
+
+        if (res.status === 401 || res.status === 403) {
+          router.replace('/onboarding');
+          return;
+        }
+        if (res.status === 404) {
+          router.replace('/onboarding');
+          return;
+        }
+
+        const data: { manifestoId: string; content: ManifestoContent; incomplete?: boolean } =
+          await res.json();
+        setContent(data.content);
+        setIncomplete(data.incomplete ?? false);
+      } catch {
+        router.replace('/onboarding');
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadManifesto();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <main
+        style={{
+          background: '#06070F',
+          minHeight: 'calc(100vh - 56px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            textAlign: 'center',
+            color: 'rgba(244,245,255,0.38)',
+            fontFamily: 'var(--font-lora, "Lora", serif)',
+            fontSize: '0.9rem',
+            letterSpacing: '0.06em',
+          }}
+        >
+          Tecendo seu mapa akáshico…
+        </div>
+      </main>
+    );
+  }
+
+  if (!content) return null;
+
+  const { userName, generatedAt, synthesis, odus, kabala, tantra, astrology } = content;
 
   return (
     <main
-      style={{ background: '#06070F', minHeight: 'calc(100vh - 56px)' }}
+      style={{ background: '#06070F', minHeight: 'calc(100vh - 56px)', paddingBottom: 100 }}
       className="flex flex-col items-center py-10 px-4"
     >
-      {/* Header */}
-      <div
-        style={{
-          textAlign: 'center',
-          marginBottom: 32,
-          maxWidth: 680,
-          width: '100%',
-        }}
-      >
+
+      {/* ── Header ─────────────────────────────────────────────── */}
+      <div style={{ textAlign: 'center', marginBottom: 36, maxWidth: 700, width: '100%' }}>
         <h1
           style={{
-            fontFamily: 'var(--font-cinzel, serif)',
+            fontFamily: 'var(--font-cinzel, "Cinzel", serif)',
             color: '#F0B429',
-            fontSize: 'clamp(1.1rem, 3vw, 1.5rem)',
-            letterSpacing: '0.2em',
+            fontSize: 'clamp(1.05rem, 3vw, 1.45rem)',
+            letterSpacing: '0.22em',
             textTransform: 'uppercase',
             marginBottom: 8,
           }}
@@ -150,56 +234,91 @@ export default async function ManifestoPage() {
         </h1>
         <p
           style={{
-            color: 'rgba(244,245,255,0.55)',
-            fontSize: '0.9rem',
+            color: 'rgba(244,245,255,0.62)',
+            fontSize: '0.88rem',
             letterSpacing: '0.06em',
+            fontFamily: 'var(--font-lora, "Lora", serif)',
           }}
         >
           {userName}
         </p>
-      </div>
-
-      {/* Download button */}
-      <div style={{ marginBottom: 32 }}>
-        <a
-          href="/api/akasha/manifesto/pdf"
-          download
+        <p
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            background: 'rgba(240,180,41,0.12)',
-            border: '1px solid rgba(240,180,41,0.45)',
-            borderRadius: 8,
-            padding: '9px 20px',
-            color: '#F0B429',
-            fontSize: '0.85rem',
+            color: 'rgba(244,245,255,0.28)',
+            fontSize: '0.72rem',
             letterSpacing: '0.08em',
-            textDecoration: 'none',
-            transition: 'background 0.2s',
+            marginTop: 4,
           }}
         >
-          <span>↓</span>
-          <span>Baixar PDF</span>
-        </a>
+          Gerado em {generatedAt}
+        </p>
       </div>
 
-      {/* Sections */}
-      <div style={{ maxWidth: 680, width: '100%' }}>
+      {/* ── Incomplete banner ──────────────────────────────────── */}
+      {incomplete && (
+        <div
+          style={{
+            maxWidth: 700,
+            width: '100%',
+            marginBottom: 20,
+            background: 'rgba(240,180,41,0.08)',
+            border: '1px solid rgba(240,180,41,0.4)',
+            borderRadius: 10,
+            padding: '12px 18px',
+            display: 'flex',
+            gap: 10,
+            alignItems: 'flex-start',
+          }}
+        >
+          <span style={{ color: '#F0B429', fontSize: '0.9rem' }}>⚠</span>
+          <p
+            style={{
+              color: '#F0B429',
+              fontSize: '0.8rem',
+              lineHeight: 1.5,
+              margin: 0,
+            }}
+          >
+            Seu mapa está incompleto — alguns dados podem ser genéricos. Complete seu onboarding para
+            uma leitura precisa.
+          </p>
+        </div>
+      )}
+
+      {/* ── Sections ─────────────────────────────────────────── */}
+      <div style={{ maxWidth: 700, width: '100%' }}>
+
+        {/* 0 — Síntese */}
+        <div style={glass}>
+          <div style={sectionTitleStyle('#FB5781')}>
+            <span>Síntese dos 4 Pilares</span>
+          </div>
+          <p
+            style={{
+              ...descriptionStyle,
+              marginTop: 0,
+              color: 'rgba(244,245,255,0.82)',
+              fontFamily: 'var(--font-lora, "Lora", serif)',
+              fontSize: '0.9rem',
+              lineHeight: 1.75,
+            }}
+          >
+            {synthesis}
+          </p>
+        </div>
 
         {/* I — Odus */}
-        <div style={cardStyle}>
-          <SectionTitle color="#F0B429">I. Bússola Ancestral — Odus</SectionTitle>
+        <div style={glass}>
+          <div style={sectionTitleStyle('#F0B429')}>
+            <span>I. Bússola Ancestral — Odus</span>
+            <ExpandToggle expanded={expandedOdu} onToggle={() => setExpandedOdu(!expandedOdu)} color="#F0B429" />
+          </div>
 
           <DataRow
             pairs={[
-              { label: 'Odu', value: odus.oduName },
-              ...(odus.oduNumber !== null
-                ? [{ label: 'Número', value: String(odus.oduNumber) }]
-                : []),
-              ...(odus.elementalForce
-                ? [{ label: 'Força Elemental', value: odus.elementalForce }]
-                : []),
+              { label: 'Odu', value: odus.oduName || '—' },
+              ...(odus.oduNumber !== null ? [{ label: 'Número', value: String(odus.oduNumber) }] : []),
+              ...(odus.elementalForce ? [{ label: 'Força Elemental', value: odus.elementalForce }] : []),
             ]}
           />
 
@@ -209,16 +328,37 @@ export default async function ManifestoPage() {
 
           <p style={descriptionStyle}>{odus.description}</p>
 
+          {expandedOdu && odus.preceitos && odus.preceitos.length > 0 && (
+            <div style={{ marginTop: 16 }}>
+              <div style={labelStyle}>Preceitos</div>
+              <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
+                {odus.preceitos.map((p, i) => (
+                  <li
+                    key={i}
+                    style={{
+                      color: 'rgba(244,245,255,0.6)',
+                      fontSize: '0.83rem',
+                      lineHeight: 1.6,
+                      marginBottom: 4,
+                    }}
+                  >
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {odus.provisional && (
             <div
               style={{
                 display: 'inline-block',
-                marginTop: 12,
-                background: 'rgba(240,180,41,0.12)',
-                border: '1px solid rgba(240,180,41,0.35)',
+                marginTop: 14,
+                background: 'rgba(240,180,41,0.1)',
+                border: '1px solid rgba(240,180,41,0.3)',
                 borderRadius: 6,
                 padding: '3px 10px',
-                fontSize: '0.7rem',
+                fontSize: '0.68rem',
                 letterSpacing: '0.1em',
                 color: '#F0B429',
                 textTransform: 'uppercase',
@@ -230,8 +370,11 @@ export default async function ManifestoPage() {
         </div>
 
         {/* II — Kabala */}
-        <div style={cardStyle}>
-          <SectionTitle color="#7C5CFF">II. O Verbo — Numerologia Cabalística</SectionTitle>
+        <div style={glass}>
+          <div style={sectionTitleStyle('#7C5CFF')}>
+            <span>II. O Verbo — Numerologia Cabalística</span>
+            <ExpandToggle expanded={expandedKabala} onToggle={() => setExpandedKabala(!expandedKabala)} color="#7C5CFF" />
+          </div>
 
           <DataRow
             pairs={[
@@ -251,11 +394,38 @@ export default async function ManifestoPage() {
           />
 
           <p style={descriptionStyle}>{kabala.description}</p>
+
+          {expandedKabala && (
+            <div
+              style={{
+                marginTop: 14,
+                padding: '12px 16px',
+                background: 'rgba(124,92,255,0.06)',
+                border: '1px solid rgba(124,92,255,0.18)',
+                borderRadius: 8,
+              }}
+            >
+              <p
+                style={{
+                  color: 'rgba(244,245,255,0.45)',
+                  fontSize: '0.78rem',
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                Os números cabalísticos revelam a geometria do seu contrato de alma — as frequências
+                inscritas no seu nome e data de nascimento que definem o roteiro desta encarnação.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* III — Tântrica */}
-        <div style={cardStyle}>
-          <SectionTitle color="#2DD4BF">III. A Anatomia Sutil — Tântrica</SectionTitle>
+        <div style={glass}>
+          <div style={sectionTitleStyle('#2DD4BF')}>
+            <span>III. A Anatomia Sutil — Tântrica</span>
+            <ExpandToggle expanded={expandedTantra} onToggle={() => setExpandedTantra(!expandedTantra)} color="#2DD4BF" />
+          </div>
 
           <DataRow
             pairs={[
@@ -269,11 +439,39 @@ export default async function ManifestoPage() {
           />
 
           <p style={descriptionStyle}>{tantra.description}</p>
+
+          {expandedTantra && (
+            <div
+              style={{
+                marginTop: 14,
+                padding: '12px 16px',
+                background: 'rgba(45,212,191,0.05)',
+                border: '1px solid rgba(45,212,191,0.16)',
+                borderRadius: 8,
+              }}
+            >
+              <p
+                style={{
+                  color: 'rgba(244,245,255,0.45)',
+                  fontSize: '0.78rem',
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                Os 11 Corpos Espirituais da Numerologia Tântrica mapeiam cada camada do seu ser:
+                do corpo físico ao corpo de luz, revelando onde a energia flui livremente e onde
+                há bloqueios a transmutar.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* IV — Astrologia */}
-        <div style={cardStyle}>
-          <SectionTitle color="#7C5CFF">IV. O Mapa de Bordo — Astrologia</SectionTitle>
+        <div style={glass}>
+          <div style={sectionTitleStyle('#7C5CFF')}>
+            <span>IV. O Mapa de Bordo — Astrologia</span>
+            <ExpandToggle expanded={expandedAstro} onToggle={() => setExpandedAstro(!expandedAstro)} color="#7C5CFF" />
+          </div>
 
           <DataRow
             pairs={[
@@ -285,24 +483,17 @@ export default async function ManifestoPage() {
           {astrology.mainPlanets.length > 0 && (
             <div style={{ marginBottom: 10 }}>
               <div style={labelStyle}>Planetas Principais</div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 8,
-                  marginTop: 4,
-                }}
-              >
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 5 }}>
                 {astrology.mainPlanets.map((planet) => (
                   <span
                     key={planet.name}
                     style={{
-                      background: 'rgba(124,92,255,0.12)',
-                      border: '1px solid rgba(124,92,255,0.3)',
+                      background: 'rgba(124,92,255,0.1)',
+                      border: '1px solid rgba(124,92,255,0.25)',
                       borderRadius: 6,
                       padding: '3px 10px',
-                      fontSize: '0.8rem',
-                      color: 'rgba(244,245,255,0.85)',
+                      fontSize: '0.78rem',
+                      color: 'rgba(244,245,255,0.78)',
                     }}
                   >
                     {planet.name} em {planet.sign}
@@ -313,9 +504,65 @@ export default async function ManifestoPage() {
           )}
 
           <p style={descriptionStyle}>{astrology.description}</p>
+
+          {expandedAstro && (
+            <div
+              style={{
+                marginTop: 14,
+                padding: '12px 16px',
+                background: 'rgba(124,92,255,0.06)',
+                border: '1px solid rgba(124,92,255,0.18)',
+                borderRadius: 8,
+              }}
+            >
+              <p
+                style={{
+                  color: 'rgba(244,245,255,0.45)',
+                  fontSize: '0.78rem',
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                Seu mapa astral natal registra o céu exato no momento do seu nascimento — uma
+                impressão cósmica única que codifica os grandes temas, talentos e desafios desta
+                encarnação.
+              </p>
+            </div>
+          )}
         </div>
 
       </div>
+
+      {/* ── Floating PDF button ──────────────────────────────── */}
+      <a
+        href="/api/akasha/manifesto/pdf"
+        download
+        style={{
+          position: 'fixed',
+          bottom: 28,
+          right: 24,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 8,
+          background: 'linear-gradient(135deg, rgba(240,180,41,0.18) 0%, rgba(240,180,41,0.08) 100%)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(240,180,41,0.5)',
+          borderRadius: 12,
+          padding: '11px 22px',
+          color: '#F0B429',
+          fontSize: '0.82rem',
+          letterSpacing: '0.08em',
+          textDecoration: 'none',
+          boxShadow: '0 4px 24px rgba(240,180,41,0.15)',
+          transition: 'box-shadow 0.2s, border-color 0.2s',
+          zIndex: 50,
+        }}
+      >
+        <span style={{ fontSize: '1rem' }}>⬇</span>
+        <span>Exportar Manifesto</span>
+      </a>
+
     </main>
   );
 }
