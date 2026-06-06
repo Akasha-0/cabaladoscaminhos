@@ -1,0 +1,70 @@
+{
+  "common": {
+    "appName": "Cabala dos Caminhos",
+    "tagline": "Ancient wisdom meets technical precision",
+    "carregando": "Loading...",
+    "erro": "Something went wrong. Try again.",
+    "voltar": "Back",
+    "proximo": "Next",
+    "anterior": "Previous",
+    "salvar": "Save",
+    "cancelar": "Cancel",
+    "sim": "Yes",
+    "nao": "No",
+    "idioma": "Language"
+  },
+  "nav": {
+    "mandala": "Mandala",
+    "oraculo": "Oracle",
+    "diario": "Diary",
+    "conta": "Account",
+    "manifesto": "Manifesto",
+    "sair": "Sign out"
+  },
+  "mandala": {
+    "titulo": "AKASHIC MANDALA",
+    "saudacaoManha": "Good awakening —",
+    "saudacaoTarde": "Good afternoon —",
+    "saudacaoNoite": "Good evening —",
+    "saudacaoCompleta": "{saudacao} your Akashic Mandala awaits",
+    "dadosIncompletos": "⚠ Incomplete data — complete your profile for a full reading",
+    "linkDiario": "→ See today's Energetic Diary"
+  },
+  "oraculo": {
+    "titulo": "Oracle",
+    "placeholder": "Ask the oracle...",
+    "enviar": "Send",
+    "creditos": "{count, plural, =0 {No credits} one {# credit} other {# credits}}",
+    "creditosRestantes": "Remaining: {count}",
+    "erroCreditos": "Insufficient credits",
+    "consultaSimples": "Simple query",
+    "consultaComplexa": "Complex query"
+  },
+  "diario": {
+    "titulo": "Energetic Diary",
+    "hoje": "Today",
+    "amanha": "Tomorrow",
+    "ritual": "Ritual",
+    "alerta": "Alert",
+    "clima": "Day climate"
+  },
+  "onboarding": {
+    "bemVindo": "Welcome to Cabala dos Caminhos",
+    "passo": "Step {atual} of {total}",
+    "nome": "Your full name",
+    "dataNascimento": "Date of birth",
+    "horaNascimento": "Time of birth (if known)",
+    "localNascimento": "Place of birth",
+    "iniciar": "Begin journey"
+  },
+  "creditos": {
+    "titulo": "Credits",
+    "compra": "Buy more credits",
+    "historico": "Usage history"
+  },
+  "erros": {
+    "naoAutorizado": "You must be logged in to access this page.",
+    "creditosInsuficientes": "Insufficient credits for this query.",
+    "rede": "Connection error. Try again."
+  }
+}

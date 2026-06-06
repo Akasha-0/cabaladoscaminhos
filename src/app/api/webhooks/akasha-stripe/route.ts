@@ -66,7 +66,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     const sub = await stripe.subscriptions.retrieve(session.subscription as string);
     const periodEnd = sub.items.data[0]?.current_period_end;
 
-    await prisma.akashaSubscription.upsert({
+    await prisma.subscription.upsert({
       where: { userId },
       create: {
         userId,
@@ -91,11 +91,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
   } else if (session.mode === 'payment') {
     if (productType === 'manifesto') {
-      // Mark user as having the manifesto, grant 30 days access
-      await prisma.akashaUser.update({
+      const existing = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { intentionProfile: true },
+      });
+      const prev = (existing?.intentionProfile as Record<string, unknown> | null) ?? {};
+
+      await prisma.user.update({
         where: { id: userId },
         data: {
           intentionProfile: {
+            ...prev,
             manifestoPurchased: true,
             manifestoPurchasedAt: new Date().toISOString(),
           },
@@ -111,7 +117,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   const customerId = subscription.customer as string;
-  const sub = await prisma.akashaSubscription.findFirst({
+  const sub = await prisma.subscription.findFirst({
     where: { stripeCustomerId: customerId },
   });
   if (!sub) return;
@@ -126,7 +132,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   };
   const newStatus = statusMap[subscription.status] ?? 'ACTIVE';
 
-  await prisma.akashaSubscription.update({
+  await prisma.subscription.update({
     where: { id: sub.id },
     data: {
       status: newStatus,
@@ -138,12 +144,12 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   const customerId = subscription.customer as string;
-  const sub = await prisma.akashaSubscription.findFirst({
+  const sub = await prisma.subscription.findFirst({
     where: { stripeCustomerId: customerId },
   });
   if (!sub) return;
 
-  await prisma.akashaSubscription.update({
+  await prisma.subscription.update({
     where: { id: sub.id },
     data: { status: 'CANCELED', plan: 'FREEMIUM' },
   });
@@ -157,7 +163,7 @@ async function handleInvoicePaid(invoice: Stripe.Invoice) {
   if (!hasSubscription || invoice.billing_reason !== 'subscription_cycle') return;
 
   const customerId = invoice.customer as string;
-  const sub = await prisma.akashaSubscription.findFirst({
+  const sub = await prisma.subscription.findFirst({
     where: { stripeCustomerId: customerId, plan: 'AKASHA_PRO' },
   });
   if (!sub) return;
