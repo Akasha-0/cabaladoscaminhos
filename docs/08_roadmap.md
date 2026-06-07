@@ -1,8 +1,8 @@
 # Documento 08 — Roadmap de Desenvolvimento
 ## Sistema Akasha
 
-> **Versão:** 3.0 | **Atualizado:** 2026-06-06 | **Norte:** Doc 25
-> Substitui o roadmap B2B (Fundação → Cockpit MVP → Escala), agora legado. Metodologia: ondas incrementais sobre o monorepo. **Onda 3 ✅ concluída (Oráculo Vivo)** e **Onda 4 ✅ concluída (Monetização + Global)** — release v1.0.0-akasha.
+> **Versão:** 3.1 | **Atualizado:** 2026-06-07 | **Norte:** Doc 25
+> Substitui o roadmap B2B (Fundação → Cockpit MVP → Escala), agora legado. Metodologia: ondas incrementais sobre o monorepo. **Onda 3 ✅ concluída (Oráculo Vivo)** e **Onda 4 ✅ concluída (Monetização + Global + legacy-cockpit desligado)** — release v1.0.0-akasha.
 
 ---
 
@@ -97,7 +97,7 @@ testes verdes            vê sua Mandala e          diário + conversa          
 | 4.5 | Notificações (ritual do dia) | 🟢 |
 | 4.6 | i18n EN: tradução das bibliotecas do Grimório + persona em inglês | 🟢 |
 | 4.7 | Checkout multi-moeda | 🟢 |
-| 4.8 | Desligar `apps/legacy-cockpit` quando o portal estiver 100% autônomo | 🟢 |
+| 4.8 | Desligar `apps/legacy-cockpit` quando o portal estiver 100% autônomo | ✅ |
 
 **Milestone Onda 4:** economia de créditos rodando; PWA instalável; base para expansão anglofone (competir com Gene Keys/Human Design). ✅ Concluído (2026-06-06)
 

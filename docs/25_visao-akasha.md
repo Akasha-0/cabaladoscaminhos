@@ -2,7 +2,7 @@
 ## Sistema Akasha · Matriz Cabala dos Caminhos
 
 > **Tipo:** Documento-mestre da visão. Síntese acionável de `NOVAVISAO.md`.
-> **Versão:** 1.0 | **Status:** CANÔNICO — topo da hierarquia de precedência.
+> **Versão:** 1.1 | **Status:** CANÔNICO — topo da hierarquia de precedência.
 > **Regra:** Em qualquer divergência de **visão de produto** entre documentos, **este documento prevalece**. A fonte bruta da cadeia de raciocínio é `docs/NOVAVISAO.md` (não editar — é o registro original).
 
 ---
@@ -193,13 +193,12 @@ cabaladoscaminhos/ (monorepo)
 │   ├── core-cabala      # Caminho de Vida, nome
 │   └── core-odus        # Odu de nascimento, Ori
 ├── apps/
-│   ├── b2c-portal       # NOVO Next.js — Akasha (Mandala, onboarding, dashboard)
-│   └── legacy-cockpit   # Mesa Real antiga — roda até a migração terminar, depois desligada
+│   └── b2c-portal       # NOVO Next.js — Akasha (Mandala, onboarding, dashboard)
 ```
 
 **Os pacotes `core-*` são bibliotecas agnósticas:** não sabem o que é React, HTTP, botão ou CSS. Recebem dados, fazem a matemática pesada, devolvem JSON. Rodam os testes; se passam, a lógica está blindada.
 
-> **Sobre o legado (AD-25.2):** a **Mesa Real (36 casas / Baralho Cigano / Lenormand)** e o **Cockpit B2B** saem do produto Akasha. Tornam-se `apps/legacy-cockpit`, mantidos durante a migração e **desligados** quando o portal B2C estiver 100% autônomo. Nenhum conceito novo do Akasha depende do Baralho Cigano.
+> **Sobre o legado (AD-25.2):** a **Mesa Real (36 casas / Baralho Cigano / Lenormand)** e o **Cockpit B2B** saíram do produto Akasha (Doc 08 Onda 4.8 ✅ concluída em 2026-06-07 — `apps/legacy-cockpit/` removido no refactor Akasha v2 + middleware sem allowlist B2B confirmado). Nenhum conceito novo do Akasha depende do Baralho Cigano.
 
 ### Fase 1 — A Cirurgia de Extração (a verdadeira primeira fase do código)
 1. **Setup do ecossistema:** Turborepo / pnpm workspaces; TS + Vitest compilando módulos independentes.
@@ -216,7 +215,7 @@ cabaladoscaminhos/ (monorepo)
 | ID | Decisão | Status |
 |---|---|---|
 | **AD-25.1** | Marca dupla: Akasha (produto público) + Cabala dos Caminhos (matriz/monorepo) | ✅ Firme |
-| **AD-25.2** | Mesa Real / Baralho Cigano / Cockpit B2B → `apps/legacy-cockpit`, fora do Akasha, a desligar | ✅ Firme |
+| **AD-25.2** | Mesa Real / Baralho Cigano / Cockpit B2B → `apps/legacy-cockpit`, fora do Akasha, a desligar | ✅ Desligado (2026-06-07) |
 | **AD-25.3** | Produto = 4 Pilares (Astrologia, Cabalística, Tântrica, Odus) + Mandala Toroidal | ✅ Firme |
 | **AD-25.4** | Identidade Akasha cósmica substitui integralmente a identidade Cigano Ramiro (ver Doc 26) | ✅ Firme |
 | **AD-25.5** | Arquitetura agêntica de 3 camadas (Determinístico + Grafo + Síntese) | ✅ Firme |
