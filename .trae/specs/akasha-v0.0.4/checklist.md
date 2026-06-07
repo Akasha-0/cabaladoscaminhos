@@ -27,13 +27,13 @@
 - [ ] `npm run build` (retrocompat) verde
 
 ### Task 2 — Shutdown formal do legacy-cockpit
-- [ ] `apps/legacy-cockpit/` (se existir) removido definitivamente
-- [ ] `apps/akasha-portal/src/middleware.ts` sem allowlist de prefixos B2B (`/cockpit`, `/api/mesa-real`, `/api/consult`, `/api/operator`)
-- [ ] `apps/akasha-portal/src/app/api/operator/`, `mesa-real/`, `consult/` (legado) — não existem
-- [ ] `AUTH-AUDIT.md` reflete zero rotas/páginas B2B
-- [ ] `Doc 08` v3.1 — Onda 4.8 (desligar legacy-cockpit) marcado como ✅
-- [ ] `Doc 25 §11` — `apps/legacy-cockpit` removido do diagrama
-- [ ] Teste E2E: `GET /api/operator/auth/login` → 404; `GET /cockpit` → 404
+- [x] `apps/legacy-cockpit/` (se existir) removido definitivamente _(refactor Akasha v2 `53c8501c`, cycle 334)_
+- [x] `apps/akasha-portal/src/middleware.ts` sem allowlist de prefixos B2B (`/cockpit`, `/api/mesa-real`, `/api/consult`, `/api/operator`) _(audit `00d4328a`, cycle 351)_
+- [x] `apps/akasha-portal/src/app/api/operator/`, `mesa-real/`, `consult/` (legado) — não existem _(audit `00d4328a`, cycle 351)_
+- [x] `AUTH-AUDIT.md` reflete zero rotas/páginas B2B _(stamp `bb33dcee`, cycle 350)_
+- [x] `Doc 08` v3.1 — Onda 4.8 (desligar legacy-cockpit) marcado como ✅ _(formalização `8ecbbfff`)_
+- [x] `Doc 25 §11` — `apps/legacy-cockpit` removido do diagrama _(formalização `8ecbbfff`)_
+- [ ] Teste E2E: `GET /api/operator/auth/login` → 404; `GET /cockpit` → 404 _(deferido para T1 — requer `apps/akasha-portal/`)_
 
 ### Task 3 — Validação D4 (16 Odus)
 - [ ] Auditoria de `grimoire/ancestral/odu-*.md` — proveniência atual mapeada
