@@ -134,7 +134,7 @@ export async function syncGrimoire(): Promise<{ success: boolean; count: number;
           slug,
           categoria,
           biblioteca,
-          metadata: metadata as any,
+          metadata: metadata as Prisma.InputJsonValue,
           conteudo: content,
           sourcePath: file,
         },
