@@ -8,10 +8,12 @@
 
 ## 1. Visão Geral
 
-**Cabala dos Caminhos** é um sistema de tecnologia espiritual que integra
-múltiplas tradições (Numerologia Cabalística, Odu Ifá, Astrologia, Tarot,
-Cabala, Orixás, Chakras, Geometria Sagrada, Frequências Solfeggio) em
-um produto B2B (Cockpit Oracular) com correlações verificáveis.
+**Cabala dos Caminhos** (matriz tecnológica — Doc 25 §0) é um sistema
+de tecnologia espiritual que integra múltiplas tradições (Numerologia
+Cabalística, Odu Ifá, Astrologia, Tarot, Cabala, Orixás, Chakras,
+Geometria Sagrada, Frequências Solfeggio) no **Sistema Akasha**
+— produto B2C público (oráculo vivo, mobile-first) com correlações
+verificáveis.
 
 - **Stack**: Next.js 16 + React 19 + App Router (Turbopack) · Prisma 7 + PostgreSQL · Redis/ioredis · JWT próprio (bcryptjs) · OpenAI + Minimax · Stripe · Vitest · Zod · Zustand
 - **Tradições suportadas**: 9+ (ver `IDEIA.md` para banco de correspondências)
