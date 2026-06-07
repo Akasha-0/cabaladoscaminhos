@@ -20,9 +20,9 @@ export function getDominantElement(astro: Record<string, unknown>): string {
 }
 
 /**
- * Constrói o System Prompt da consulta. Equivalente à antiga
- * `buildConsultSystemPrompt` — preserva as regras anti-alucinação (Rule 1–6)
- * e injeta o glossário-base do Odu (AD-20.2 / AD-T5-F) para ancorar a verdade.
+ * Constrói o System Prompt da consulta. Preserva as regras
+ * anti-alucinação (Rule 1–6) e injeta o glossário-base do Odu
+ * (AD-20.2 / AD-T5-F) para ancorar a verdade.
  */
 export function buildConsultSystemPrompt(
   chart: { astrologyMap: unknown; kabalisticMap: unknown; oduBirth: unknown } | null,

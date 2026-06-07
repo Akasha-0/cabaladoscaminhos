@@ -31,7 +31,8 @@ export interface GrimoireSearchResult {
   metadata: Record<string, unknown>;
 }
 
-/** Contexto de GrimoireCtx legado (Camada 3, retrocompat). */
+/** Contexto de retorno da busca do Grimório (consumido pela Camada 3
+ *  do prompt do LLM em /api/akasha/consult). */
 export interface GrimoireContext {
   entries: Array<{
     titulo: string;
