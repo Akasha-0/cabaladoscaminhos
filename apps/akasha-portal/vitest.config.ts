@@ -3,12 +3,12 @@ import path from 'path';
 import { defineConfig } from 'vitest/config';
 
 const sharedAliases = {
-  '@': path.resolve(__dirname, './apps/akasha-portal/src'),
-  '@akasha/types': path.resolve(__dirname, './packages/types/src/index.ts'),
-  '@akasha/core-astrology': path.resolve(__dirname, './packages/core-astrology/src/index.ts'),
-  '@akasha/core-cabala': path.resolve(__dirname, './packages/core-cabala/src/index.ts'),
-  '@akasha/core-odus': path.resolve(__dirname, './packages/core-odus/src/index.ts'),
-  '@akasha/core-tantra': path.resolve(__dirname, './packages/core-tantra/src/index.ts'),
+  '@': path.resolve(__dirname, './src'),
+  '@akasha/types': path.resolve(__dirname, '../../packages/types/src/index.ts'),
+  '@akasha/core-astrology': path.resolve(__dirname, '../../packages/core-astrology/src/index.ts'),
+  '@akasha/core-cabala': path.resolve(__dirname, '../../packages/core-cabala/src/index.ts'),
+  '@akasha/core-odus': path.resolve(__dirname, '../../packages/core-odus/src/index.ts'),
+  '@akasha/core-tantra': path.resolve(__dirname, '../../packages/core-tantra/src/index.ts'),
 };
 
 export default defineConfig({
@@ -81,7 +81,8 @@ export default defineConfig({
             'tests/api/health.test.ts',
             '**/*.snap',
             '**/__snapshots__/**',
-          ],        },
+          ],
+        },
         resolve: {
           alias: sharedAliases,
         },

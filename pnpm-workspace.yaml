@@ -11,3 +11,11 @@ packages:
   - 'packages/*'
   - 'apps/*'
 
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - core-js
+  - esbuild
+  - msw
+  - prisma
+  - sharp
+  - unrs-resolver

@@ -58,7 +58,7 @@ function walk(dir: string): string[] {
   return files;
 }
 
-const GRIMOIRE_DIR = join(process.cwd(), 'grimoire');
+const GRIMOIRE_DIR = join(__dirname, '..', '..', '..', '..', '..', 'grimoire');
 const TARGET_SUBDIRS = ['botanica', 'ancestral', 'vibracional', 'diagnostico'];
 
 describe('grimório: completude i18n EN', () => {
