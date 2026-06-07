@@ -4,7 +4,7 @@
 > Audit de auth (Fase 17) realizado em `src/app/**/page.tsx` e `src/app/**/route.ts`.
 > Categoriza cada página/rota como B2C User ou pública,
 > e documenta o mecanismo de auth gate de cada uma.
-**Última atualização:** 2026-06-06 (refactor-akasha-v2 — focado em B2C)
+**Última atualização:** 2026-06-07 (v0.0.4-T2 — audit zero B2B confirmado)
 
 ---
 
@@ -207,3 +207,35 @@ export async function myAction() {
 - ❌ Permitir que o body determine o dono de um recurso
 - ❌ Esquecer de re-checar auth em cada `page.tsx` (defense in depth)
 - ❌ Pular `requireAkashaApi` em uma rota B2C "porque está dentro do layout"
+
+---
+
+## 11. Audit v0.0.4-T2 (2026-06-07)
+
+**Tarefa:** v0.0.4-T2 SubTask 2.5 — confirmar zero rotas/páginas B2B remanescentes.
+
+**Método (read-only survey):**
+
+| Verificação | Comando | Resultado |
+|-------------|---------|-----------|
+| `apps/legacy-cockpit/` removido | `ls apps/` | ✅ Apenas `akasha-portal/` |
+| `src/app/api/operator/` removido | `find src -type d -name "operator"` | ✅ Sem matches |
+| `src/app/api/mesa-real/` removido | `find src -type d -name "mesa-real"` | ✅ Sem matches |
+| `src/app/api/consult/` (legado) removido | `find src -type d -name "consult"` | ✅ Apenas `api/akasha/consult/` (B2C) |
+| `src/app/api/cockpit/` removido | `find src -type d -name "cockpit"` | ✅ Sem matches |
+| Middleware sem allowlist B2B | `find . -name "middleware*" -not -path "*/node_modules/*" -not -path "*/.next/*"` | ✅ Sem middleware em `src/` ou `apps/akasha-portal/src/` |
+| Referências B2B no código-fonte | `grep -rn "allowlist\|legacy-cockpit\|B2B" src/` | ✅ Sem matches |
+
+**Conclusão:** zero rotas, páginas, layouts, diretórios ou middleware B2B remanescentes no branch atual. O modelo canônico é exclusivamente **User B2C self-service** (Doc 04 §1–2, Doc 25).
+
+**Não-verificado (fora do escopo do quick):**
+- Auditoria dinâmica (curl) `/api/operator/auth/login` → 404, `/cockpit` → 404 (SubTask 2 verify). Pode ser feita em teste E2E dedicado quando o monorepo migrar para `apps/akasha-portal/` (v0.0.4-T1).
+- `tests/` com referências B2B (SubTask 2.1 follow-up). Coberto pelo dead-code cleanup dos ciclos 335–345.
+
+**Refs cruzadas:**
+- `docs/08_roadmap.md` v3.1 — Onda 4.8 (desligar legacy-cockpit) ✅
+- `docs/25_visao-akasha.md` v1.1 §11 + §12 — diagrama monorepo + AD-25.2
+- `.trae/specs/akasha-v0.0.4/tasks.md` — Task 2 SubTask 2.5
+- `8ecbbfff` (cycle 347) — formalização Doc 08 + Doc 25
+- `b58564c8` (cycle 345) — rm 4 cockpit B2B e2e scripts
+- `53c8501c` (cycle 334) — refactor Akasha v2 (purge B2B)
