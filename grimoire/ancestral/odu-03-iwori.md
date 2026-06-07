@@ -2,6 +2,7 @@
 id: odu-03-iwori
 slug: odu-03-iwori
 title: "Iwori — O Coração que Vê"
+title_en: "Iwori — O Coracao que Ve"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Fogo]

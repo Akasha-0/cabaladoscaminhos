@@ -2,6 +2,7 @@
 id: tensao-saturno-retrogrado
 slug: tensao-saturno-retrogrado
 title: "Tensão: Saturno Retrógrado"
+title_en: "Tension: Saturn Retrograde"
 categoria: Ritual
 biblioteca: diagnostico
 Elementos_Regentes: [Terra]

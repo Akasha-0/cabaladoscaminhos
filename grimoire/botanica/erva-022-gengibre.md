@@ -2,6 +2,7 @@
 id: erva-022-gengibre
 slug: erva-022-gengibre
 title: "Gengibre — Calor, Fogo Interno e Ação Corajosa"
+title_en: "Ginger — Calor, Fogo Interno e Acao Corajosa"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Terra]

@@ -2,6 +2,7 @@
 id: alerta-mercurio-retrogrado
 slug: alerta-mercurio-retrogrado
 title: "Alerta: Mercúrio Retrógrado"
+title_en: "Alert: Mercury Retrograde"
 categoria: Ritual
 biblioteca: diagnostico
 Elementos_Regentes: [Ar]

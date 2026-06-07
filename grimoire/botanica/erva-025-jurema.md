@@ -2,6 +2,7 @@
 id: erva-025-jurema
 slug: erva-025-jurema
 title: "Jurema — Visão, Mistério e Abertura do Véu"
+title_en: "Jurema — Vision, Mystery e Abertura do Veu"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Éter, Água]

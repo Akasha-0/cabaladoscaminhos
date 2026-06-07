@@ -2,6 +2,7 @@
 id: odu-11-owarin
 slug: odu-11-owarin
 title: "Owarin — O Equilíbrio entre os Mundos"
+title_en: "Owarin — O Balance entre os Mundos"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Ar]

@@ -2,6 +2,7 @@
 id: erva-005-canela
 slug: erva-005-canela
 title: "Canela — Abundância, Aquecimento e Aceleração"
+title_en: "Cinnamon — Abundance, Aquecimento e Aceleracao"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo]

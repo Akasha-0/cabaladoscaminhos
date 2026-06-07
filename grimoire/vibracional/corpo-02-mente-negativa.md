@@ -2,6 +2,7 @@
 id: corpo-02-mente-negativa
 slug: corpo-02-mente-negativa
 title: "Mente Negativa — O Guardião dos Limites"
+title_en: "Negative Mind — O Guardiao dos Limites"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Terra, Água]

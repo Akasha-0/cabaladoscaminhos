@@ -2,6 +2,7 @@
 id: erva-016-capim-limao
 slug: erva-016-capim-limao
 title: "Capim-Limão — Limpeza Profunda, Despojo e Sorte"
+title_en: "Capim-Limao — Cleansing Profunda, Despojo e Sorte"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Água]

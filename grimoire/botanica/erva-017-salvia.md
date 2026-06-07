@@ -2,6 +2,7 @@
 id: erva-017-salvia
 slug: erva-017-salvia
 title: "Sálvia — Sabedoria Ancestral, Palavra Verdadeira e Cura"
+title_en: "Sage — Wisdom Ancestral, Palavra Verdadeira e Healing"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Éter]

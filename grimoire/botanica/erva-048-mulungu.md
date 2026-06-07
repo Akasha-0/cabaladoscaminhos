@@ -2,6 +2,7 @@
 id: erva-048-mulungu
 slug: erva-048-mulungu
 title: "Mulungu — Calmante Profundo, Ansiedade e Sistema Nervoso"
+title_en: "Mulungu — Calming Profundo, Anxiety e Sistema Nervoso"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Água, Éter]

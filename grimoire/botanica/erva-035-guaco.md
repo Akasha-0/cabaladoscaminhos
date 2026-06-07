@@ -2,6 +2,7 @@
 id: erva-035-guaco
 slug: erva-035-guaco
 title: "Guaco — Respiração, Cura do Peito e Abertura"
+title_en: "Guaco — Breath, Healing do Peito e Abertura"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Água]

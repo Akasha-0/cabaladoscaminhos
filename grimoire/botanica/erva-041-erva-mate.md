@@ -2,6 +2,7 @@
 id: erva-041-erva-mate
 slug: erva-041-erva-mate
 title: "Erva-Mate — Companhia, Foco e Presença no Cotidiano"
+title_en: "Erva-Mate — Companhia, Foco e Presenca no Cotidiano"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Fogo]

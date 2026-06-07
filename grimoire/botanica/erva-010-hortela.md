@@ -2,6 +2,7 @@
 id: erva-010-hortela
 slug: erva-010-hortela
 title: "Hortelã — Clareza Mental, Proteção e Renovação"
+title_en: "Mint — Clareza Mental, Protection e Renewal"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Fogo]

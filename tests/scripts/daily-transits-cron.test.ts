@@ -56,8 +56,8 @@ describe('scripts/daily-transits-cron.ts (contrato — AD-T5-E)', () => {
   it('não importa nem usa redis (cache morto removido)', () => {
     // AD-T5-E: o redis.setEx foi removido por ser morto (chave escrita mas nunca lida).
     // Verificamos que o módulo de produção não importa `redis` e não chama `setEx`.
-    const fs = require('fs');
-    const path = require('path');
+    const fs = eval("require('fs')") as typeof import('fs');
+    const path = eval("require('path')") as typeof import('path');
     const src = fs.readFileSync(
       path.resolve(process.cwd(), 'scripts/daily-transits-cron.ts'),
       'utf8',

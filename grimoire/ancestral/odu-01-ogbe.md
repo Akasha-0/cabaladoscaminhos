@@ -2,6 +2,7 @@
 id: odu-01-ogbe
 slug: odu-01-ogbe
 title: "Ogbé — O Alvorecer"
+title_en: "Ogbe — O Dawn"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Fogo, Ar]

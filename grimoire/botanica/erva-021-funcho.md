@@ -2,6 +2,7 @@
 id: erva-021-funcho
 slug: erva-021-funcho
 title: "Funcho — Digestão, Fertilidade e Suavidade"
+title_en: "Fennel — Digestion, Fertilidade e Suavidade"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Água]

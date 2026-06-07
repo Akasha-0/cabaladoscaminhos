@@ -2,6 +2,7 @@
 id: erva-020-anis-estrelado
 slug: erva-020-anis-estrelado
 title: "Anis-Estrelado — Proteção de Criança, Sono Tranquilo e Sorte"
+title_en: "Anis-Estrelado — Protection de Crianca, Sono Tranquilo e Sorte"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Éter, Ar]

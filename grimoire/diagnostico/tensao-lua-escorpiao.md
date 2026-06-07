@@ -2,6 +2,7 @@
 id: tensao-lua-escorpiao
 slug: tensao-lua-escorpiao
 title: "Tensão: Lua em Escorpião"
+title_en: "Tension: Moon in Scorpio"
 categoria: Ritual
 biblioteca: diagnostico
 Elementos_Regentes: [Água]

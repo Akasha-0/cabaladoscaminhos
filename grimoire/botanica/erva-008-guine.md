@@ -2,6 +2,7 @@
 id: erva-008-guine
 slug: erva-008-guine
 title: "Guiné — Limpeza Pesada e Descarrego"
+title_en: "Guinea — Cleansing Pesada e Descarrego"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

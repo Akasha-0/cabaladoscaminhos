@@ -2,6 +2,7 @@
 id: erva-012-boldo
 slug: erva-012-boldo
 title: "Boldo — Limpeza do Fígado e Coragem para Soltar"
+title_en: "Boldo — Cleansing do Liver e Courage para Suntar"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

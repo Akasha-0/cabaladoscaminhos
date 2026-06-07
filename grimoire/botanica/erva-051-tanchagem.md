@@ -2,6 +2,7 @@
 id: erva-051-tanchagem
 slug: erva-051-tanchagem
 title: "Tanchagem — Cura de Feridas, Garganta e Ouvido"
+title_en: "Plantain — Healing de Feridas, Garganta e Ouvido"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Água]

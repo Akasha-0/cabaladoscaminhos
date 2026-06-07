@@ -2,6 +2,7 @@
 id: erva-019-cominho
 slug: erva-019-cominho
 title: "Cominho — Digestão Forte, Vínculo e Proteção da Mãe"
+title_en: "Cumin — Digestion Forte, Vinculo e Protection da Mae"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

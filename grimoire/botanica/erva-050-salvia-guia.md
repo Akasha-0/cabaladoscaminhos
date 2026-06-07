@@ -2,6 +2,7 @@
 id: erva-050-salvia-guia
 slug: erva-050-salvia-guia
 title: "Sálvia-Guia — Paz do Lar, Sonhos e Proteção do Sono"
+title_en: "Sage-Guia — Peace do Lar, Dreams e Protection do Sono"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Éter]

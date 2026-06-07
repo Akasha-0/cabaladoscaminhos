@@ -2,6 +2,7 @@
 id: erva-023-acafrao-da-terra
 slug: erva-023-acafrao-da-terra
 title: "Açafrão-da-Terra — Cura Profunda, Sol Interior e Proteção do Fígado"
+title_en: "Acafrao-da-Earth — Healing Profunda, Sun Interior e Protection do Liver"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Terra]

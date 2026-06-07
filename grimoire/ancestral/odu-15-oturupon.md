@@ -2,6 +2,7 @@
 id: odu-15-oturupon
 slug: odu-15-oturupon
 title: "Oturupon — As Águas que Curam e Renovam"
+title_en: "Oturupon — As Aguas que Healingm e Renovam"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Água]

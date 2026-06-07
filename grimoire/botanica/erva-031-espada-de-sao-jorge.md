@@ -2,6 +2,7 @@
 id: erva-031-espada-de-sao-jorge
 slug: erva-031-espada-de-sao-jorge
 title: "Espada-de-São-Jorge — Proteção do Lar, Corte e Firmeza"
+title_en: "Espada-de-Sao-Jorge — Protection do Lar, Corte e Firmeza"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Terra]

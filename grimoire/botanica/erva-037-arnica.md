@@ -2,6 +2,7 @@
 id: erva-037-arnica
 slug: erva-037-arnica
 title: "Arnica — Cura de Pancadas, Dor e Inflamação Local"
+title_en: "Arnica — Healing de Pancadas, Dor e Inflammation Local"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Terra]

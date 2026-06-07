@@ -4,7 +4,8 @@
 > **Norte:** Doc 25 (Visão Akasha). Conteúdo matemático/esotérico preservado e agnóstico; reenquadrado para o produto B2C Akasha.
 >
 > **Tipo:** Base de conteúdo curada (anti-alucinação) — semente do Grimório Digital
-> **Versão:** 2.0 | **Data:** 2026-06-05
+> **Versão:** 2.1 | **Data:** 2026-06-06
+> **i18n EN:** Frontmatter `title_en` adicionado a todos os 78 arquivos do Grimório (51 ervas, 16 Odus, 11 Corpos Tântricos, 4 Diagnósticos). Cobertura validada pelo teste-guardião `tests/lib/i18n/grimoire-completeness.test.ts`. Corpo completo em EN será traduzido em ciclo futuro (Doc 25 §9 Fase 2 — parcialmente completo).
 > **⚠️ PROVISIONAL (D4) — Seção 1 dos Odus não validada pela linhagem/fonte de referência.**
 > O conteúdo oracular dos Odus (essência, quizilas, conselhos) deve ser confirmado ou corrigido
 > antes do go-live.

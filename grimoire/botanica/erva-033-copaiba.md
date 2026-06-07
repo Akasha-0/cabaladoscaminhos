@@ -2,6 +2,7 @@
 id: erva-033-copaiba
 slug: erva-033-copaiba
 title: "Copaíba — Cura Profunda, Cicatrização e Equilíbrio"
+title_en: "Copaiba — Healing Profunda, Healing e Balance"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

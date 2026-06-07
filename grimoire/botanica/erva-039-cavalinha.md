@@ -2,6 +2,7 @@
 id: erva-039-cavalinha
 slug: erva-039-cavalinha
 title: "Cavalinha — Desintoxicação, Ossos Fortes e Renovação"
+title_en: "Horsetail — Desintoxicacao, Ossos Fortes e Renewal"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Água]

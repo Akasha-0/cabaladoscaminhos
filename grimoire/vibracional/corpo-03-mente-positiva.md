@@ -2,6 +2,7 @@
 id: corpo-03-mente-positiva
 slug: corpo-03-mente-positiva
 title: "Mente Positiva — O Impulso da Expansão"
+title_en: "Positive Mind — O Impulso da Expansao"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Fogo, Ar]

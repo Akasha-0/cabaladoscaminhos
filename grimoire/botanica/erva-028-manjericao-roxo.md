@@ -2,6 +2,7 @@
 id: erva-028-manjericao-roxo
 slug: erva-028-manjericao-roxo
 title: "Manjericão-Roxo — Proteção do Lar, Quebra de Feitiço e Sorte"
+title_en: "Basil-Roxo — Protection do Lar, Quebra de Feitico e Sorte"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Éter]

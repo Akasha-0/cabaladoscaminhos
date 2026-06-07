@@ -2,6 +2,7 @@
 id: erva-011-erva-cidreira
 slug: erva-011-erva-cidreira
 title: "Erva-Cidreira — Paz, Leveza e Calma do Coração"
+title_en: "Erva-Cidreira — Peace, Leveza e Calm do Coracao"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Água, Ar]

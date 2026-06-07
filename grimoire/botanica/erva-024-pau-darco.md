@@ -2,6 +2,7 @@
 id: erva-024-pau-darco
 slug: erva-024-pau-darco
 title: "Pau-d'Arco — Imunidade Profunda, Ancestralidade e Resistência"
+title_en: "Pau-d'Arco — Immunity Profunda, Ancestralidade e Resistencia"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

@@ -2,6 +2,7 @@
 id: odu-10-ofun
 slug: odu-10-ofun
 title: "Ofun — O Mistério das Profundezas"
+title_en: "Ofun — O Mystery das Profundezas"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Água]

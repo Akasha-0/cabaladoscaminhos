@@ -2,6 +2,7 @@
 id: corpo-01-alma
 slug: corpo-01-alma
 title: "Corpo da Alma — A Essência Criativa"
+title_en: "Soul Body — A Creative Essence"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Éter]

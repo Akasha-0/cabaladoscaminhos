@@ -2,6 +2,7 @@
 id: corpo-11-mente-divina
 slug: corpo-11-mente-divina
 title: "Mente Divina — A Graça da Onipresença"
+title_en: "Divine Mind — A Graca da Onipresenca"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Éter]

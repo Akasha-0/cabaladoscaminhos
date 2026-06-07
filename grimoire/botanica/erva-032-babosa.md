@@ -2,6 +2,7 @@
 id: erva-032-babosa
 slug: erva-032-babosas
 title: "Babosa (Aloe Vera) — Cura, Renovação da Pele e do Corpo"
+title_en: "Aloe Vera (Aloe Vera) — Healing, Renewal da Pele e do Corpo"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Água, Terra]

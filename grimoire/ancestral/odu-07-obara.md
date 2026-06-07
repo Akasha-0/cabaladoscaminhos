@@ -2,6 +2,7 @@
 id: odu-07-obara
 slug: odu-07-obara
 title: "Obara — A Realeza do Espírito"
+title_en: "Obara — A Realeza do Espirito"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Fogo]

@@ -2,6 +2,7 @@
 id: erva-052-unha-de-gato
 slug: erva-052-unha-de-gato
 title: "Unha-de-Gato — Imunoestimulante, Anti-inflamatório e Defesa Profunda"
+title_en: "Unha-de-Gato — Imunoestimulante, Anti-inflammatory e Defesa Profunda"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

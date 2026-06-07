@@ -2,6 +2,7 @@
 id: erva-044-jurubeba
 slug: erva-044-jurubeba
 title: "Jurubeba — Fígado, Digestão e Coragem Interior"
+title_en: "Jurubeba — Liver, Digestion e Courage Interior"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

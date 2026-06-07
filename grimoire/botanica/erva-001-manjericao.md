@@ -2,6 +2,7 @@
 id: erva-001-manjericao
 slug: erva-001-manjericao
 title: "Manjericão — Proteção, Amor e Atração"
+title_en: "Basil — Protection, Love e Attraction"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Ar]

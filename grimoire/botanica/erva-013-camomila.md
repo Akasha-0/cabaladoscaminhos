@@ -2,6 +2,7 @@
 id: erva-013-camomila
 slug: erva-013-camomila
 title: "Camomila — Doçura, Cura Interior e Paciência do Renascimento"
+title_en: "Chamomile — Docura, Healing Interior e Paciencia do Renascimento"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Água, Terra]

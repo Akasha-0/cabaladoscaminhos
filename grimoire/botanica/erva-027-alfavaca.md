@@ -2,6 +2,7 @@
 id: erva-027-alfavaca
 slug: erva-027-alfavaca
 title: "Alfavaca — Proteção Forte, Abertura de Caminhos e Cura"
+title_en: "Basil — Protection Forte, Abertura de Paths e Healing"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Ar]

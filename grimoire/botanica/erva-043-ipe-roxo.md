@@ -2,6 +2,7 @@
 id: erva-043-ipe-roxo
 slug: erva-043-ipe-roxo
 title: "Ipê-Roxo — Árvore da Cura Profunda, Micoses e Imunidade"
+title_en: "Ipe-Roxo — Arvore da Healing Profunda, Micoses e Immunity"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

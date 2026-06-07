@@ -2,6 +2,7 @@
 id: erva-029-cipo-cruz
 slug: erva-029-cipo-cruz
 title: "Cipó-Cruz — Proteção, Sinal da Cruz e Trindade"
+title_en: "Cipo-Cruz — Protection, Sinal da Cruz e Trindade"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Éter]

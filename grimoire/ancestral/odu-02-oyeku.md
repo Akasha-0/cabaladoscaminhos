@@ -2,6 +2,7 @@
 id: odu-02-oyeku
 slug: odu-02-oyeku
 title: "Oyeku — A Noite Profunda"
+title_en: "Oyeku — A Night Profunda"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Terra]

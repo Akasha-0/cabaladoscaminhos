@@ -2,6 +2,7 @@
 id: odu-12-ejila-xebora
 slug: odu-12-ejila-xebora
 title: "Ejilá-Xeborá — A Completude dos Caminhos"
+title_en: "Ejila-Xebora — A Completude dos Paths"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Fogo, Água, Terra, Ar]

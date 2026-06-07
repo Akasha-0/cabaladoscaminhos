@@ -2,6 +2,7 @@
 id: erva-040-carqueja
 slug: erva-040-carqueja
 title: "Carqueja — Digestão Amarga, Desintoxicação do Fígado e Limpa"
+title_en: "Carqueja — Digestion Amarga, Desintoxicacao do Liver e Limpa"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

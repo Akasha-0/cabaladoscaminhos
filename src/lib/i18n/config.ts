@@ -38,7 +38,9 @@ export function getMessages(locale: Locale): Record<string, unknown> {
   // Esta função é substituível por `getMessages` do next-intl quando instalado.
   // Usa fs.readFileSync para evitar problemas de path resolution do `require()`
   // em diferentes bundlers (jest/vitest/Next).
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const fs = require('fs') as typeof import('fs');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const path = require('path') as typeof import('path');
 
   const rel = locale === 'en' ? 'messages/en.json' : 'messages/pt-BR.json';

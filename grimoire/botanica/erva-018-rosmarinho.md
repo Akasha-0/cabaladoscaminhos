@@ -2,6 +2,7 @@
 id: erva-018-rosmarinho
 slug: erva-018-rosmarinho
 title: "Rosmarinho — Memória, Lealdade e Proteção do Lar"
+title_en: "Rosemary — Memory, Lealdade e Protection do Lar"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Sol]

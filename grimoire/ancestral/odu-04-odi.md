@@ -2,6 +2,7 @@
 id: odu-04-odi
 slug: odu-04-odi
 title: "Odi — As Águas do Ventre"
+title_en: "Odi — As Aguas do Ventre"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Água]

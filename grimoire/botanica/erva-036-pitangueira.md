@@ -2,6 +2,7 @@
 id: erva-036-pitangueira
 slug: erva-036-pitangueira
 title: "Pitangueira — Fruto Sagrado, Fartura e Proteção do Cerrado"
+title_en: "Pitanga — Fruto Sagrado, Fartura e Protection do Cerrado"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Fogo]

@@ -2,6 +2,7 @@
 id: odu-13-eji-ogbe
 slug: odu-13-eji-ogbe
 title: "Eji Ogbé — A Luz Dobrada"
+title_en: "Eji Ogbe — A Light Dobrada"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Fogo, Ar]

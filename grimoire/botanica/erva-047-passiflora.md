@@ -2,6 +2,7 @@
 id: erva-047-passiflora
 slug: erva-047-passiflora
 title: "Passiflora (Maracujá-Azul) — Calmante, Indução do Sono e Cura da Ansiedade"
+title_en: "Passionflower (Passionflower-Azul) — Calming, Inducao do Sono e Healing da Anxiety"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Água, Éter]

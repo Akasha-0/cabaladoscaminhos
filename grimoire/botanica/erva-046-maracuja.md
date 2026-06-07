@@ -2,6 +2,7 @@
 id: erva-046-maracuja
 slug: erva-046-maracuja
 title: "Maracujá — Calmante Profundo, Sono e Abraço da Noite"
+title_en: "Passionflower — Calming Profundo, Sono e Abraco da Night"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Água, Éter]

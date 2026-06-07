@@ -2,6 +2,7 @@
 id: corpo-07-aura
 slug: corpo-07-aura
 title: "Aura — O Campo de Projeção"
+title_en: "Aura — O Campo de Projecao"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Éter, Ar]

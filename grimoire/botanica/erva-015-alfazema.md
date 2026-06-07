@@ -2,6 +2,7 @@
 id: erva-015-alfazema
 slug: erva-015-alfazema
 title: "Alfazema — Elevação, Sonhos Proféticos e Paz Profunda"
+title_en: "Lavender — Elevacao, Dreams Profeticos e Peace Profunda"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Éter]

@@ -2,6 +2,7 @@
 id: corpo-10-radiante
 slug: corpo-10-radiante
 title: "Corpo Radiante — O Brilho do Ser"
+title_en: "Corpo Radiant — O Radiance do Ser"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Fogo, Éter]

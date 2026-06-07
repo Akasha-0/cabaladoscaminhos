@@ -2,6 +2,7 @@
 id: erva-030-douradinha
 slug: erva-030-douradinha
 title: "Douradinha — Cura do Estômago, Limpeza Profunda e Raiz"
+title_en: "Douradinha — Healing do Estomago, Cleansing Profunda e Root"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Água]

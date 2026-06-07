@@ -2,6 +2,7 @@
 id: erva-049-pata-de-vaca
 slug: erva-049-pata-de-vaca
 title: "Pata-de-Vaca — Diabetes, Diurese e Purificação do Sangue"
+title_en: "Pata-de-Vaca — Diabetes, Diurese e Purification do Sangue"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Água]

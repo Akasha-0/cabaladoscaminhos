@@ -2,6 +2,7 @@
 id: erva-034-eucalipto
 slug: erva-034-eucalipto
 title: "Eucalipto — Limpeza do Ar, Respiração e Abertura"
+title_en: "Eucalyptus — Cleansing do Ar, Breath e Abertura"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Fogo]

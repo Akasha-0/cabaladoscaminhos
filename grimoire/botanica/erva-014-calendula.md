@@ -2,6 +2,7 @@
 id: erva-014-calendula
 slug: erva-014-calendula
 title: "Calêndula — Cura Solar, Vitalidade e Proteção do Coração"
+title_en: "Calendula — Healing Sunar, Vitality e Protection do Coracao"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Terra]

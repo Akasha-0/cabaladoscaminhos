@@ -2,6 +2,7 @@
 id: corpo-09-sutil
 slug: corpo-09-sutil
 title: "Corpo Sutil — A Elegância da Transição"
+title_en: "Corpo Subtle — A Elegancia da Transicao"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Éter]

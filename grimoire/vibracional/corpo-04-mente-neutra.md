@@ -2,6 +2,7 @@
 id: corpo-04-mente-neutra
 slug: corpo-04-mente-neutra
 title: "Mente Neutra — A Sabedoria do Centro"
+title_en: "Neutral Mind — A Wisdom do Centro"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Éter]

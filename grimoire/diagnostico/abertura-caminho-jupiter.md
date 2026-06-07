@@ -2,6 +2,7 @@
 id: abertura-caminho-jupiter
 slug: abertura-caminho-jupiter
 title: "Abertura de Caminho: Júpiter em Trânsito Favorável"
+title_en: "Path Opening: Jupiter em Favorable Transit"
 categoria: Ritual
 biblioteca: diagnostico
 Elementos_Regentes: [Fogo, Ar]

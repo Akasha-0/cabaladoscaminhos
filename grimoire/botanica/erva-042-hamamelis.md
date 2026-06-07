@@ -2,6 +2,7 @@
 id: erva-042-hamamelis
 slug: erva-042-hamamelis
 title: "Hamamélis — Circulação, Adstringência e Cura de Vasos"
+title_en: "Hamamelis — Circulation, Adstringencia e Healing de Vasos"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Água, Terra]

@@ -2,6 +2,7 @@
 id: odu-14-ika
 slug: odu-14-ika
 title: "Ika — A Força que Abre o Caminho"
+title_en: "Ika — A Strength que Abre o Path"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Terra]

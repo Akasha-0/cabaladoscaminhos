@@ -2,6 +2,7 @@
 id: erva-038-barbatimao
 slug: erva-038-barbatimao
 title: "Barbatimão — Cicatrização Profunda, Cura Feminina e Cerrado"
+title_en: "Barbatimao — Healing Profunda, Healing Feminina e Cerrado"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra, Água]

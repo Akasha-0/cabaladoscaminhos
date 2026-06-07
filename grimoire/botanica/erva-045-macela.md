@@ -2,6 +2,7 @@
 id: erva-045-macela
 slug: erva-045-macela
 title: "Macela — Calmante Suave, Digestão e Paz do Estômago"
+title_en: "Macela — Calming Suave, Digestion e Peace do Estomago"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Água]

@@ -2,6 +2,7 @@
 id: erva-026-erva-de-sao-joao
 slug: erva-026-erva-de-sao-joao
 title: "Erva-de-São-João — Luz Solar, Humor e Cura da Melancolia"
+title_en: "Erva-de-Sao-Joao — Light Sunar, Humor e Healing da Melancolia"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Sol]
