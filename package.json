@@ -21,13 +21,7 @@
     "grimoire:sync": "tsx scripts/sync-grimoire.ts",
     "grimoire:status": "tsx scripts/grimoire-status.ts",
     "fallow": "fallow --skip dupes,health",
-    "fallow:all": "fallow",
-    "cycle:assess": "tsx scripts/cycle-executor.ts assess",
-    "cycle:plan": "tsx scripts/cycle-executor.ts plan",
-    "cycle:execute": "tsx scripts/cycle-executor.ts execute",
-    "cycle:verify": "tsx scripts/cycle-executor.ts verify",
-    "cycle:evolve": "tsx scripts/cycle-executor.ts evolve",
-    "cycle:full": "tsx scripts/cycle-executor.ts full"
+    "fallow:all": "fallow"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
