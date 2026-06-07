@@ -58,13 +58,13 @@ export function getStripeAkasha(): Stripe {
 }
 
 export async function getOrCreateStripeCustomer(userId: string, email: string): Promise<string> {
-  const sub = await prisma.akashaSubscription.findUnique({ where: { userId } });
+  const sub = await prisma.subscription.findUnique({ where: { userId } });
   if (sub?.stripeCustomerId) return sub.stripeCustomerId;
 
   const stripe = getStripeAkasha();
   const customer = await stripe.customers.create({ email, metadata: { akashaUserId: userId } });
 
-  await prisma.akashaSubscription.upsert({
+  await prisma.subscription.upsert({
     where: { userId },
     create: { userId, stripeCustomerId: customer.id },
     update: { stripeCustomerId: customer.id },
@@ -74,7 +74,7 @@ export async function getOrCreateStripeCustomer(userId: string, email: string): 
 }
 
 export async function getCreditBalance(userId: string): Promise<number> {
-  const result = await prisma.akashaCreditEntry.aggregate({
+  const result = await prisma.creditEntry.aggregate({
     where: { userId },
     _sum: { delta: true },
   });
@@ -88,7 +88,7 @@ export async function addCredits(
 ): Promise<{ balance: number }> {
   const current = await getCreditBalance(userId);
   const newBalance = current + amount;
-  await prisma.akashaCreditEntry.create({
+  await prisma.creditEntry.create({
     data: { userId, delta: amount, reason, balance: newBalance },
   });
   return { balance: newBalance };

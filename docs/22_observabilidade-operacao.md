@@ -2,7 +2,7 @@
 ## Sistema Akasha
 > **Norte:** Doc 25.
 > **Tipo:** Decisão de arquitetura — observabilidade, auditoria, custo de IA (atrelado a créditos), resiliência e operação no **VPS Linux soberano**.
-> **Versão:** 2.0 | **Data:** 2026-06-03
+> **Versão:** 2.1 | **Data:** 2026-06-06
 > **Função:** tornar o Akasha **operável e auditável** — não se evolui rápido o que não se observa. Foca o portal B2C (`apps/b2c-portal`) sobre VPS Linux (Docker + PM2, Doc 25 §10); o Cockpit legado (`apps/legacy-cockpit`) está fora.
 
 ---
@@ -152,95 +152,176 @@ O Manifesto, o Dashboard Diário e a Consulta Oracular usam SSE (Doc 03 §4). St
 >
 > **Segredos:** `JWT_SECRET`/`OPENAI_API_KEY`/`STRIPE_SECRET_KEY`/`GITHUB_WEBHOOK_SECRET` só em env do servidor (`.env` do VPS, fora do git; gerido por PM2/Docker secrets); rotação documentada no runbook (§9). Fallback dev de `JWT_SECRET` **proibido em produção** (já lança erro). O `OLLAMA_URL` aponta para `localhost` — nunca exposto externamente.
 
-## 9. Runbook Operacional (mínimo)
+## 9. Runbook Operacional (VPS Linux soberano)
 
-> **AD-22.11 — Runbook versionado.** Procedimentos essenciais para operação em produção.
+> **AD-22.11 — Runbook versionado.** Procedimentos essenciais para operação em produção. Aplica-se ao portal B2C (`apps/b2c-portal`) sobre VPS Linux (systemd + Node.js, Doc 25 §10). Última atualização: 2026-06-06 (Onda 3 launch readiness).
 
-> ### Deploy Checklist (VPS Linux — Docker + PM2)
+> ### 9.1 Topologia
+>
+> | Componente | Hospedagem | Portas | Saúde |
+> |---|---|---|---|
+> | Next.js 16 (`b2c-portal`) | systemd `cabala-app.service` (Node 20+ direto, sem Docker) | 3000 (interna, atrás de nginx) | `systemctl status cabala-app` |
+> | PostgreSQL 16 + pgvector | systemd `postgresql.service` (nativo) | 5432 | `pg_isready` |
+> | Redis 7 | systemd `redis-server.service` | 6379 | `redis-cli ping` |
+> | Ollama (`nomic-embed-text`) | systemd `ollama.service` | 11434 (localhost) | `curl localhost:11434/api/tags` |
+> | Cron trânsitos diários | systemd timer `cabala-transits.timer` (00:00 UTC) | — | `systemctl list-timers cabala-transits` |
+> | Cron backup DB | systemd timer `cabala-backup.timer` (03:00 UTC) | — | `systemctl list-timers cabala-backup` |
+> | nginx | reverse proxy + TLS (Let's Encrypt) | 80/443 | `nginx -t` |
+>
+> ### 9.2 Deploy (VPS soberano, Next.js monolith)
 >
 > **Pré-requisitos:**
-> - Acesso SSH ao VPS Ubuntu com Docker e PM2 instalados
-> - Contêineres ativos: `postgres` (com pgvector), `redis`, `ollama` (modelo `nomic-embed-text` puxado)
-> - `apps/legacy-cockpit` **não** servido em produção (só os engines `core-*` e o `b2c-portal`)
+> - Acesso SSH ao VPS Ubuntu 22.04+ com systemd, Node.js 20+, PostgreSQL 16, Redis 7, Ollama, nginx
+> - `pgvector` instalado no Postgres: `CREATE EXTENSION IF NOT EXISTS vector;`
+> - Ollama com modelo: `ollama pull nomic-embed-text`
+> - Usuário deploy com permissões `systemctl` (sudo) e ownership de `/opt/cabala`
 >
-> **Passos do deploy:**
-> 1. `git pull` na branch de produção no VPS (ou merge de PR na `main` + pull)
-> 2. `pnpm install && pnpm turbo run build --filter=b2c-portal` (monorepo, Doc 25 §11)
-> 3. Migrar o banco: `npx prisma migrate deploy` (inclui a migration SQL manual do pgvector — ver Doc MIGRATIONS)
-> 4. Reindexar o Grimório se houve conteúdo novo: `npm run grimoire:sync`
-> 5. Recarregar o app sem downtime: `pm2 reload b2c-portal` (e conferir o cronjob astrológico no `pm2 list`)
-> 6. **Variáveis de ambiente obrigatórias em produção** (`.env` do VPS, fora do git — Doc 03 §5):
->    | Variável | Obrigatória | Notas |
->    |---|---|---|
->    | `DATABASE_URL` | ✅ | Postgres+pgvector do VPS (`CREATE EXTENSION vector;`) |
->    | `REDIS_URL` | ✅ | Redis do VPS (céu do dia, créditos) |
->    | `OLLAMA_URL` | ✅ | `http://localhost:11434` (embeddings locais) |
->    | `EMBEDDING_MODEL` | ✅ | `nomic-embed-text` |
->    | `SYNTHESIS_MODEL` | ✅ | ex.: `gpt-4o` (Camada 3, AD-22.6) |
->    | `OPENAI_API_KEY` / `GEMINI_API_KEY` | ✅ | Síntese (Camada 3) + fallback de embeddings |
->    | `JWT_SECRET` | ✅ | `openssl rand -hex 32`; 32+ bytes |
->    | `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | ✅ | Assinatura + Manifesto + créditos |
->    | `GITHUB_WEBHOOK_SECRET` | ✅ | Assina o webhook do `grimoire-sync` |
->    | `NOMINATIM_URL` | ✅ | Geolocalização do onboarding (Doc 23) |
->    | `DEFAULT_LOCALE` | ✅ | `pt-BR` (i18n, Doc 25 §9) |
+> **Passos do deploy (rolling):**
+> 1. `cd /opt/cabala && git fetch origin && git checkout main && git pull`
+> 2. `npm ci` (instala dependências de produção; sem `devDependencies` desnecessárias em prod)
+> 3. `npx prisma migrate deploy` (aplica migrations não-aplicadas; idempotente)
+> 4. `npm run build` (Next.js build; gera `.next/`)
+> 5. `npm run grimoire:sync` (reindexa apenas entries novos/modificados)
+> 6. `sudo systemctl reload cabala-app` (systemd recarrega Node.js; zero downtime)
+> 7. Conferir: `curl -fsS https://akasha.seudominio.com/api/health/ready`
+> 8. Conferir cron: `systemctl list-timers cabala-transits cabala-backup`
 >
-> ### Verificação pós-deploy (Smoke Test)
+> **Variáveis obrigatórias** (em `/etc/cabala/app.env`, mode 600, owner root):
+> | Variável | Obrigatória | Notas |
+> |---|---|---|
+> | `DATABASE_URL` | ✅ | `postgresql://cabala:***@localhost:5432/cabala` |
+> | `REDIS_URL` | ✅ | `redis://localhost:6379/0` |
+> | `OLLAMA_URL` | ✅ | `http://localhost:11434` (rede local) |
+> | `EMBEDDING_MODEL` | ✅ | `nomic-embed-text` |
+> | `SYNTHESIS_MODEL` | ✅ | ex.: `gpt-4o` (Camada 3) |
+> | `OPENAI_API_KEY` / `MINIMAX_API_TOKEN` | ✅ | Síntese |
+> | `JWT_SECRET` | ✅ | `openssl rand -hex 32`; ≥ 32 bytes |
+> | `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | ✅ | Pagamentos |
+> | `GITHUB_WEBHOOK_SECRET` | ✅ | Assina `grimoire-sync` |
+> | `VAPID_PRIVATE_KEY` / `VAPID_PUBLIC_KEY` / `VAPID_SUBJECT` | ✅ | Web Push |
+> | `NOMINATIM_URL` | ✅ | Geolocalização (Doc 23) |
+> | `TRANSITS_FALLBACK_PATH` | opcional | `/var/lib/cabala/transitos_fallback.json` (default `/tmp/transitos_diarios.json`) |
+> | `BACKUP_DIR` | opcional | `/var/backups/cabala` (default) |
+> | `BACKUP_RETENTION_DAYS` | opcional | `7` (default) |
+> | `ALLOWED_ORIGINS` | ✅ | Origens CORS (Doc 22 §2) |
+> | `SLACK_WEBHOOK_URL` | opcional | Alertas de healthcheck em `#akasha-ops` |
+>
+> **Rotação de segredos (trimestral):**
+> 1. Gerar novo `JWT_SECRET` / `STRIPE_WEBHOOK_SECRET` / etc. (`openssl rand -hex 32`)
+> 2. Atualizar `/etc/cabala/app.env`
+> 3. `sudo systemctl reload cabala-app`
+> 4. **JWT_SECRET**: todos os tokens existentes são invalidados; usuários precisarão logar novamente (sessões persistidas em cookie httpOnly são perdidas — esperado)
+> 5. **STRIPE_WEBHOOK_SECRET**: rotação exige atualizar endpoint no dashboard Stripe
+>
+> ### 9.3 Verificação pós-deploy (Smoke Test)
 >
 > ```bash
-> # 1. Health check (readiness: db + redis + ollama)
-> curl https://akasha.seudominio.com/api/health
-> # Resposta esperada: { "status": "ok", "db": "ok", "redis": "ok", "ollama": "ok" }
+> # 1. Health readiness (db + redis + ollama + transitos)
+> curl -fsS https://akasha.seudominio.com/api/health/ready
+> # Esperado: { "status": "ready", "checks": { "db": "ok", "redis": "ok", "ollama": "ok" } }
 >
-> # 2. Login do usuário B2C
-> curl -X POST https://akasha.seudominio.com/api/auth/login \
->   -H "Content-Type: application/json" \
->   -d '{"email":"usuario@exemplo.com","password":"senhaforte"}'
-> # Resposta esperada: { "token": "...", "userId": "..." }
+> # 2. Cronjobs rodando
+> systemctl list-timers cabala-transits cabala-backup
+> # Esperado: ambos com NEXT < 24h
 >
-> # 3. Céu do dia presente no Redis (cronjob da meia-noite rodou)
-> docker exec redis redis-cli EXISTS transitos_diarios:$(date -u +%Y-%m-%d)
-> # Resposta esperada: 1
+> # 3. Céu do dia presente no Redis
+> redis-cli EXISTS transitos_diarios:$(date -u +%Y-%m-%d)
+> # Esperado: 1
 >
-> # 4. Fluxo completo: onboarding → 4 mapas → Mandala → Dashboard → consulta
-> # (via UI do b2c-portal — não automatizado em runbook)
+> # 4. Grimoire status
+> npm run grimoire:status
+> # Esperado: total ≥ 50 (botânica), withEmbedding > 0, biblioteca=botanica populada
 > ```
 >
-> ### Resposta a Incidentes
+> ### 9.4 Backup & Restore
 >
-> **LLM de síntese 5xx (OpenAI/Gemini retorna HTTP 500/502/503):**
-> - A geração (Manifesto/Dashboard/consulta) marca estado `ERROR`; **nenhum crédito é debitado** (AD-22.5)
-> - Retry é idempotente: o usuário reabre e a UI retransmite via SSE
-> - Logs: buscar `llm.call` com `status: 5xx`
-> - Ação: verificar status da API em [status.openai.com](https://status.openai.com)
+> **Estratégia de backup (3-2-1 simplificado):**
+> - **Postgres**: `pg_dump` diário às 03:00 UTC → `/var/backups/cabala/db-YYYY-MM-DD.sql.gz` (retenção 7 dias local; replicação off-site via `rsync` ou `restic` configurada pelo operador)
+> - **pgvector**: incluído no `pg_dump` (vetores são bytea; embutidos no dump)
+> - **Grimório**: a fonte de verdade é o **repositório Git** (`grimoire/**/*.md`); reindexável a qualquer momento via `npm run grimoire:sync` — não exige backup do banco
+> - **Redis**: efêmero por design (céu do dia recalculável a partir do cronjob); não exige restore
 >
-> **Ollama indisponível (embeddings / `grimoire-sync`):**
-> - Sintoma: readiness `ollama: down`; `/api/grimoire-sync` falha; busca híbrida sem vetores
-> - Ação: `docker restart ollama`; confirmar o modelo (`docker exec ollama ollama list` mostra `nomic-embed-text`); rerodar `npm run grimoire:sync`
-> - A síntese (Camada 3) pode cair no fallback de embeddings na nuvem (Doc 25 §5) enquanto o local não volta
+> **Backup manual:**
+> ```bash
+> sudo /opt/cabala/scripts/backup-db.sh
+> # Cria /var/backups/cabala/db-$(date +%F).sql.gz
+> ```
 >
-> **Cronjob astrológico não rodou (Dashboard sem céu do dia):**
-> - Sintoma: smoke test #3 retorna `0`; Dashboards degradam (`502`/aviso)
-> - Ação: `pm2 logs` do processo de cron; rodar a tarefa manualmente (`core-astrology.calcularTransitos(hoje)` → `SETEX transitos_diarios:...`)
+> **Restore (em staging, ANTES de produção):**
+> ```bash
+> sudo /opt/cabala/scripts/restore-db.sh /var/backups/cabala/db-2026-06-06.sql.gz
+> # Drop + recreate DB, aplica dump, reindexa grimório
+> ```
+>
+> **Smoke test de restore (mensal, recomendado):**
+> 1. Subir contêiner Postgres staging com a mesma versão
+> 2. Rodar `restore-db.sh` contra o staging
+> 3. Verificar: contagem de usuários ≥ produção, contagem de embeddings > 0, índice `grimoire_embedding_idx` existe
+> 4. Documentar resultado em `logs/restore-test-YYYY-MM-DD.log`
+>
+> **Falha de restore:** se `pgvector` não carregar, o dump é de versão incompatível — restaurar Postgres exato (`apt install postgresql-16-pgvector`) antes de aplicar.
+>
+> ### 9.5 Resposta a Incidentes
+>
+> **LLM de síntese 5xx (OpenAI/Minimax retorna HTTP 500/502/503):**
+> - A geração marca estado `ERROR`; **nenhum crédito é debitado** (AD-22.5)
+> - Logs: `journalctl -u cabala-app | grep 'event.*llm.call' | grep 'status.*5'`
+> - Ação: verificar status do provedor; se prolongada, ajustar `SYNTHESIS_MODEL` para modelo mais barato como fallback
+>
+> **Ollama indisponível (embeddings):**
+> - Sintoma: `ollama: down` no readiness; `grimoire:sync` falha; busca híbrida degrada para JSONB puro
+> - Ação: `sudo systemctl restart ollama && sudo -u ollama ollama pull nomic-embed-text`
+> - Camada 3 anti-alucinação continua funcional (usa apenas os IDs retornados pelo `searchGrimoire`)
+>
+> **Cronjob de trânsitos falhou (`event: transits.fallback` no log):**
+> - Sintoma: smoke test #3 retorna 0; Dashboard Diário degrada
+> - Ação: `sudo systemctl start cabala-transits.service` (roda imediatamente); conferir `/var/lib/cabala/transitos_fallback.json` foi escrito
+> - Investigar causa raiz nos logs: `journalctl -u cabala-transits.service -n 50`
 >
 > **Rate limit (HTTP 429):**
-> - Ler `X-RateLimit-Remaining` no header de resposta
-> - Ajuste: modificar `RATE_LIMIT_CONFIG` em `middleware.ts`
-> - Limite atual: 100 req/min por IP (configurável via env)
+> - Ler `X-RateLimit-Remaining` no header
+> - Ajustar `RATE_LIMIT_*` em `middleware.ts` ou env vars
 >
-> **Créditos insuficientes (HTTP 402 na consulta oracular):**
-> - Comportamento esperado, não incidente: a UI oferece compra de pacote avulso (Stripe, Doc 25 §7)
-> - Investigar só se o saldo divergir do `CreditEntry` — reconciliar pelo ledger (fonte de verdade)
+> **Créditos divergentes (reconciliação):**
+> - Rodar `POST /api/admin/credits/reconcile` (Doc 25 §8) — devolve over-debits automaticamente; under-debits marcados para revisão manual
+> - Painel admin: `admin/credits` (a implementar)
 >
-> **Orçamento de tokens excedido:**
-> - Sintoma: gerações param com `LLM_DAILY_TOKEN_BUDGET`
-> - Ação: verificar painel de custo × créditos (AD-22.5); se legítimo, aumentar `LLM_DAILY_TOKEN_BUDGET`
-> - Alternativa: trocar `SYNTHESIS_MODEL` para modelo mais barato (`gpt-4o-mini`)
+> **Postgres indisponível:**
+> - Sintoma: readiness `db: down`; rotas 5xx
+> - Ação: `sudo systemctl restart postgresql`; conferir `journalctl -u postgresql -n 50`
+> - Se corrupção: `restore-db.sh` a partir do último backup íntegro
 >
-> **Backup e Restore (VPS soberano):**
-> - Postgres: `pg_dump` diário agendado (cron/PM2) para volume/objeto externo; inclui a tabela `grimorio` (vetores)
-> - Redis: efêmero por design (céu do dia recalculável pelo cronjob); não exige restore crítico
-> - Grimório: a fonte é o **repositório Markdown** — reindexável a qualquer momento por `npm run grimoire:sync` (a verdade nunca está só no banco)
-> - **Testar restore antes do go-live:** subir cópia do `pg_dump` em contêiner staging e verificar integridade (inclusive `embedding` e índice pgvector)
+> **Disco cheio (pgvector dumps + logs):**
+> - Sintoma: erros `ENOSPC` em logs
+> - Ação: `journalctl --vacuum-size=100M` (rotação); verificar `/var/backups/cabala` e rotacionar
+>
+> ### 9.6 Rollback
+>
+> **Migration com problema:**
+> 1. `npx prisma migrate resolve --rolled-back <migration_name>` (marca como revertida)
+> 2. **Manter backup de DB dos últimos 7 dias** (config `BACKUP_RETENTION_DAYS=7`); restore se necessário
+> 3. Aplicar migration corrigida em branch separada, re-mergear
+>
+> **Deploy com problema:**
+> 1. `cd /opt/cabala && git checkout HEAD~1` (volta 1 commit)
+> 2. `npm ci && npx prisma migrate deploy && npm run build`
+> 3. `sudo systemctl reload cabala-app`
+>
+> **Backup de banco mantido por 7 dias** (regra LGPD + segurança operacional). Backups mais antigos são purgados por `backup-db.sh` automaticamente.
+>
+> ### 9.7 Alertas Slack (`#akasha-ops`)
+>
+> Quando `SLACK_WEBHOOK_URL` está configurado, o endpoint `/api/health/ready` posta no canal quando:
+> - qualquer check retornar `down` ou `degraded` (Postgres / Redis / Ollama / céu do dia)
+> - há 3 falhas consecutivas em 5 minutos (debounce)
+>
+> Formato da mensagem:
+> ```
+> 🚨 [akasha-prod] Readiness degraded
+> Check: redis → down (transitos_diarios:2026-06-06 ausente)
+> Time: 2026-06-06T03:14:22Z
+> Action: sudo systemctl restart redis-server
+> ```
 Estado da Onda O (observabilidade) — base herdada do Cockpit, a reaplicar no `b2c-portal`:
 
 - [x] Log estruturado JSON com `requestId` propagado; zero PII/segredos (AD-22.2/.3).

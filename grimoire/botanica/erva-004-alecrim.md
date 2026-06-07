@@ -2,6 +2,7 @@
 id: erva-004-alecrim
 slug: erva-004-alecrim
 title: "Alecrim — Memória, Proteção e Purificação"
+title_en: "Rosemary — Memory, Protection e Purification"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Ar]

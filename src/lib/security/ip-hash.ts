@@ -78,8 +78,8 @@ export function getClientIpInfo(request: {
 }
 
 /**
- * Extração de IP do request — preserva a lógica defensiva de
- * src/lib/auth/rate-limit.ts (suporta x-forwarded-for, x-real-ip, fallback 'unknown').
+ * Extração de IP do request. Suporta x-forwarded-for, x-real-ip,
+ * com fallback 'unknown' quando o header está ausente.
  */
 function getClientIp(request: {
   headers: { get(name: string): string | null };

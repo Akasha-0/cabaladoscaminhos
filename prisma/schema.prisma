@@ -8,384 +8,175 @@ datasource db {
   extensions = [pgvector(map: "vector")]
 }
 
-// ============================================================================
-// ENUMS
-// ============================================================================
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  passwordHash  String?
+  name          String
+  locale        String   @default("pt-BR")
+  role          UserRole @default(MEMBER)
 
-enum TipoTransacao {
-  CREDITO
-  DEBITO
-}
-
-// ============================================================================
-// ÉPICO A — AUTENTICAÇÃO (Doc 04 §1)
-// ============================================================================
-
-enum OperatorRole {
-  OPERATOR
-  ADMIN
-}
-
-/// Tipo de token de sessão (Fase 15 — refresh tokens).
-/// ACCESS: token de curta duração (15min) usado em toda request.
-/// REFRESH: token de longa duração (30d) usado SÓ no endpoint /refresh.
-enum OperatorSessionType {
-  ACCESS
-  REFRESH
-}
-///
-/// Fase 21 — Persistent Security Audit Log.
-/// Tipos de eventos de segurança rastreados para SRE e compliance.
-enum SecurityEventType {
-  LOGIN_SUCCESS
-  LOGIN_FAILURE
-  REFRESH_REUSE
-  REFRESH_SUCCESS
-  RATE_LIMIT_EXCEEDED
-  MFA_ENABLED
-  MFA_DISABLED
-  MFA_VERIFIED
-  PASSWORD_CHANGED
-  PASSWORD_RESET_REQUESTED
-  PASSWORD_RESET_COMPLETED
-  SESSION_REVOKED
-  ACCOUNT_LOCKED
-}
-// ============================================================================
-// ENUMS — END
-// ============================================================================
-enum ReadingStatus {
-  PENDING // Mesa preenchida, dossiê ainda não gerado
-  GENERATING // IA processando
-  COMPLETED // Dossiê gerado com sucesso
-  ERROR // Falha na geração
-}
-
-// ============================================================================
-// MODELOS CANÔNICOS (Doc 04 §1) — Client / Reading / Report
-// ============================================================================
-
-/// Usuário operador (terapeuta) — modelo canônico da Fase 1.
-model Operator {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String
-  passwordHash String
-  role         OperatorRole @default(OPERATOR)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  /// Fase 26: contagem de tentativas de login falhas consecutivas.
-  /// Resetada a 0 após login bem-sucedido ou unlock administrativo.
-  failedLoginAttempts Int      @default(0) @map("failed_login_attempts")
-
-  /// Fase 26: quando a conta está temporariamente bloqueada.
-  /// Null = não bloqueada. Após MAX_ATTEMPTS falhas consecutivas,
-  /// define para now() + LOCKOUT_DURATION_MINUTES.
-  lockedUntil DateTime? @map("locked_until")
-
-  readings      Reading[]
-  consultations Consultation[]
-  sessions      OperatorSession[]
-  passwordResetTokens PasswordResetToken[]
-  /// Fase 21: audit trail de eventos de segurança.
-  securityEvents SecurityEvent[]
-
-  /// Fase 20: MFA TOTP opt-in. Apenas role=ADMIN pode ativar.
-  mfa           OperatorMfa?
-  @@map("operators")
-}
-
-/// Fase 20 — MFA / TOTP para Operators ADMIN (RFC 6238).
-///
-/// Opt-in: apenas Operators com role=ADMIN podem ativar. Operadores
-/// comuns (role=OPERATOR) NÃO exigem MFA nesta fase.
-///
-/// Fluxo de setup:
-///   1. POST /api/operator/auth/mfa/setup     → gera secret + 10 recovery codes
-///   2. POST /api/operator/auth/mfa/verify-setup { code } → valida primeiro TOTP
-///   3. Marca `enabled=true` (secretEncrypted + recoveryCodesHash gravados)
-///
-/// Login com MFA:
-///   - Senha OK + MFA ativo → resposta 200 { mfaRequired: true, mfaToken }
-///   - Cliente: POST /api/operator/auth/mfa/verify { mfaToken, code }
-///     → recebe par access+refresh cookies
-///
-/// Armazenamento:
-///   - `secretEncrypted`: secret TOTP (32 chars base32) cifrado com
-///     AES-256-GCM usando MFA_ENCRYPTION_KEY (env). NUNCA plain.
-///   - `recoveryCodesHash`: array JSON com bcrypts dos 10 recovery
-///     codes single-use. Para usar, o cliente submete um código em
-///     /mfa/recovery-code; o sistema encontra o bcrypt, valida e
-///     remove o slot (replace com string vazia = consumido).
-///
-/// `recoveryCodesHash` é `String` (JSON stringificado) porque o
-/// SQLite/Postgres do Prisma não tem suporte nativo a String[].
-/// Custo: serializar uma vez no read/write.
-model OperatorMfa {
-  id String @id @default(cuid())
-
-  operatorId String   @unique
-  operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
-
-  /// Secret TOTP (base32) cifrado AES-256-GCM.
-  /// Formato armazenado: "iv:authTag:ciphertext" (hex).
-  /// Plain secret NUNCA persiste no DB — se vazar o DB sem a key de
-  /// env, o secret continua protegido.
-  secretEncrypted String
-
-  /// true após verify-setup bem-sucedido. Antes disso, o secret
-  /// existe mas o MFA não está ativo (operator pode abortar setup).
-  enabled Boolean @default(false)
-
-  /// Array JSON de hashes bcrypt dos 10 recovery codes.
-  /// Cada posição é "" se o código já foi consumido (single-use).
-  /// Mantemos 10 posições fixas para simplicidade — pool esgota →
-  /// admin deve regenerar (não implementado nesta fase, apenas disable+reenable).
-  recoveryCodesHash String
-
-  /// Último step (TOTP step = unix_seconds / 30) usado com sucesso.
-  /// Single-use: rejeita códigos no mesmo step na próxima chamada.
-  /// Null = nenhum código usado ainda.
-  lastUsedStep BigInt?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([operatorId])
-  @@map("operator_mfa")
-}
-
-/// Sessão ativa do Operator (B2B) — Fase 13 + Fase 15 (refresh).
-///
-/// Cada login cria DUAS OperatorSession:
-///   - type=ACCESS com hash do access token (15min, cookie `cockpit_session`)
-///   - type=REFRESH com hash do refresh token (30d, cookie `cockpit_refresh`)
-///
-/// O endpoint /refresh faz rotação: revoga o refresh usado e emite um
-/// novo par access+refresh. Detecção de reuso de refresh revogado →
-/// revoga TODAS as sessões do operator (sinal de roubo de cookie).
-///
-/// Logout marca `revokedAt` (soft revoke) — permite auditoria de quem
-/// logou de onde, sem expor credenciais.
-///
-/// Trade-off: 1 query extra em /api/operator/auth/me para verificar
-/// não-revogação. Para o cockpit B2B (não high-traffic), é OK.
-model OperatorSession {
-  id String @id @default(cuid())
-
-  /// Hash SHA-256 do JWT (NUNCA o token em si). 64 chars hex.
-  tokenHash String @unique
-
-  /// Tipo do token: ACCESS (curta duração) ou REFRESH (longa duração).
-  /// Fase 15: substituiu o single-token por par access+refresh.
-  type OperatorSessionType @default(ACCESS)
-
-  /// Quando o JWT expira — usado para cleanup automático.
-  /// Para type=ACCESS: ~15min. Para type=REFRESH: ~30d.
-  expiresAt DateTime
-
-  /// (Fase 15) Expiração específica do refresh, para o caso do
-  /// access de 15min ser revogado/logout mantendo o refresh ativo.
-  /// Default: igual a expiresAt (mantém compat com Fase 13).
-  refreshExpiresAt DateTime?
-
-  /// Soft revoke: se != null, sessão está revogada.
-  /// Mantida para auditoria (quem logou de onde, quando foi revogada).
-  revokedAt DateTime?
-
-  /// Metadados de auditoria
-  ipAddress String?
-  userAgent String?
-
-  operatorId String
-  operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([operatorId])
-  @@index([operatorId, type])
-  @@index([expiresAt])
-  @@index([type, revokedAt])
-  @@map("operator_sessions")
-}
-
- /// Fase 25 — Token de recuperação de senha para Operators.
- ///
- /// Fluxo:
- ///   1. POST /api/operator/auth/forgot-password { email }
- ///      → cria registro com token hasheado, TTL 1h
- ///   2. Email com link: /operator/reset-password?token=<raw>
- ///   3. POST /api/operator/auth/reset-password { token, newPassword }
- ///      → valida token, atualiza senha, marca usedAt
- ///
- /// Segurança:
- ///   - Token em si é 32 bytes randômicos (64 hex chars) — gerado com crypto.
- ///   - No DB só persiste o SHA-256 do token — nunca o raw token.
- ///   - Cada uso marca `usedAt`; tokens usados não são reutilizáveis.
- ///   - Operador com token pendente pode pedir novo (invalida o anterior).
- model PasswordResetToken {
-   id         String    @id @default(cuid())
-   operatorId String
-   operator   Operator  @relation(fields: [operatorId], references: [id], onDelete: Cascade)
-   tokenHash  String    @unique
-   expiresAt  DateTime
-   usedAt     DateTime?
-   createdAt  DateTime  @default(now())
-
-  @@index([operatorId])
-  @@index([expiresAt])
-  @@map("password_reset_tokens")
- }
-// ============================================================================
-// ÉPICO A — AUTENTICAÇÃO — END
-// ============================================================================
-// ============================================================================
-// FASE 21 — SECURITY EVENT AUDIT LOG
-// ============================================================================
-model SecurityEvent {
-  id String @id @default(cuid())
-  type SecurityEventType
-  operatorId String?
-  ipAddress String?
-  userAgent String?
-  metadata Json?
-  createdAt DateTime @default(now())
-  operator Operator? @relation(fields: [operatorId], references: [id])
-
-  @@index([type])
-  @@index([operatorId])
-  @@index([createdAt])
-  @@map("security_events")
-}
-
-/// Consulente — dados fixos do cliente. Os mapas calculados ficam
-/// armazenados em JSON conforme estruturas do Doc 04 §2.
-model Client {
-  id String @id @default(cuid())
-
-  // Identificação
-  fullName     String
-  birthDate    DateTime
-  birthTime    String
-  birthCity    String
-  birthState   String
-  birthCountry String
-
-  // Coordenadas para cálculo astral
+  birthDate      DateTime?
+  birthTime      String?
+  birthCity      String?
   birthLatitude  Float?
   birthLongitude Float?
   birthTimezone  String?
 
-  // LGPD/GDPR — consentimento explícito para tratamento de dados pessoais do consulente
-  consentGiven   Boolean  @default(false)
-  consentAt      DateTime?
+  intentionProfile Json?
 
-  // Mapas cacheados (calculados uma única vez no cadastro)
-  astrologyMap  Json?
-  kabalisticMap Json?
-  tantricMap    Json?
-  oduBirth      Json?
+  consentAt      DateTime?  // AD-T5-C: LGPD consent timestamp (min. persistence)
 
-  notes     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  readings Reading[]
-
-  @@map("clients")
-}
-
-/// Leitura — uma sessão de Mesa Real.
-model Reading {
-  id     String        @id @default(cuid())
-  date   DateTime      @default(now())
-  status ReadingStatus @default(PENDING)
-  notes  String?
-
-  /// Matriz 9x4 salva como JSON. Estrutura: MatrixData
-  matrixData Json
-
-  // Relacionamentos
-  clientId String
-  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  operatorId String
-  operator   Operator @relation(fields: [operatorId], references: [id])
-
-  report        Report?
-  consultations Consultation[] // Threads de Q&A ancoradas nesta leitura (Doc 12)
+  birthChart         BirthChart?
+  subscription       Subscription?
+  creditLedger       CreditEntry[]
+  manifesto          Manifesto?
+  dailyReadings      DailyReading[]
+  consultations      Consultation[]
+  ritualLog          RitualCompletion[]
+  pushSubscriptions  PushSubscription[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@index([clientId])
-  @@index([operatorId])
-  @@map("readings")
+  @@map("users")
 }
 
-/// Dossiê — relatório interpretativo gerado pelo LLM.
-model Report {
-  id String @id @default(cuid())
+enum UserRole {
+  MEMBER
+  ADMIN
+}
 
-  /// Conteúdo gerado pelo LLM. Estrutura: ReportContent
-  content Json
+model BirthChart {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  astrologyMap  Json
+  kabalisticMap Json
+  tantricMap    Json
+  oduBirth      Json
+
+  incomplete Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@map("birth_charts")
+}
+
+model Subscription {
+  id                   String    @id @default(cuid())
+  userId               String    @unique
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                 Plan      @default(FREEMIUM)
+  status               SubStatus @default(ACTIVE)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  monthlyCreditQuota   Int       @default(0)
+  dashboardUntil       DateTime?
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  @@map("subscriptions")
+}
+
+enum Plan {
+  FREEMIUM
+  AKASHA_PRO
+}
+
+enum SubStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+model CreditEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  delta     Int
+  reason    String
+  balance   Int
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("credit_entries")
+}
+
+model Manifesto {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content    Json
+  pdfUrl     String?
   llmModel   String?
   tokensUsed Int?
-  pdfUrl     String?
-
-  readingId String  @unique
-  reading   Reading @relation(fields: [readingId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("reports")
+  createdAt  DateTime @default(now())
+  @@map("manifestos")
 }
 
-/// Consulta Interativa — thread de Q&A ancorada numa leitura (Doc 12 §3).
-/// A conversa herda todo o contexto do Reading (e, por ele, do Client e do Report).
+model DailyReading {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date         DateTime @db.Date
+  climate      String
+  ritual       Json
+  alert        String
+  tensionPoint Json
+  llmModel     String?
+  createdAt    DateTime @default(now())
+  @@unique([userId, date])
+  @@map("daily_readings")
+}
+
+model RitualCompletion {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grimoireId String
+  date      DateTime @default(now())
+  @@index([userId])
+  @@map("ritual_completions")
+}
+
 model Consultation {
-  id    String  @id @default(cuid())
-  title String? // Resumo opcional do tema dominante da conversa
-
-  readingId String
-  reading   Reading @relation(fields: [readingId], references: [id], onDelete: Cascade)
-
-  operatorId String
-  operator   Operator @relation(fields: [operatorId], references: [id])
-
-  messages ChatMessage[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([readingId])
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  messages  ChatMessage[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  @@index([userId])
   @@map("consultations")
 }
 
-/// Mensagem de uma consulta interativa (Doc 12 §3).
 model ChatMessage {
-  id      String   @id @default(cuid())
-  role    ChatRole
-  content String // Markdown da mensagem
-
-  // Rastreabilidade do roteamento (somente mensagens do ORACLE)
-  routedThemes String[] // Ex: ["amor", "decisao"]
-  routedHouses Int[] // Ex: [24, 22]
-  /// Contagem de tokens consumidos pelo LLM (apenas mensagens do ORACLE).
-  /// AD-22.5: usado para rastreamento de custos por consulta.
-  tokensUsed Int?
-
+  id             String       @id @default(cuid())
+  role           ChatRole
+  content        String
+  routedPillars  String[]     @default([])
+  grimoireRefs   String[]     @default([])
+  creditCost     Int          @default(0)
   consultationId String
   consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-
+  createdAt      DateTime     @default(now())
   @@index([consultationId])
   @@map("chat_messages")
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([userId])
+  @@map("push_subscriptions")
 }
 
 enum ChatRole {
@@ -393,752 +184,17 @@ enum ChatRole {
   ORACLE
 }
 
-enum AkashaPlan {
-  FREEMIUM
-  AKASHA_PRO
-}
-
-enum AkashaSubStatus {
-  ACTIVE
-  PAST_DUE
-  CANCELED
-}
-
-enum AkashaChatRole {
-  USER
-  ORACLE
-}
-
-// =====================
-// USUÁRIO E AUTENTICAÇÃO
-// =====================
-
-model User {
-  id              String         @id @default(cuid())
-  email           String         @unique
-  passwordHash    String?
-  nomeCompleto    String
-  dataNascimento  DateTime
-  horaNascimento  String?
-  localNascimento String?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  journalEntries  JournalEntry[]
-
-  mapaNatal MapaNatal?
-
-  assinatura Assinatura?
-
-  credito           Credito?
-  empresas          Empresa[]
-  favoritos         Favorito[]
-  historicoLeituras LeituraHistorico[]
-  temaPreferido     String             @default("mystical")
-
-  supabaseUserId String? @unique
-
-  stripeCustomerId     String? @unique
-  stripeSubscriptionId String? @unique
-  planoAssinatura      String?
-
-  llmSetting UserLlmSetting?
-
-  @@index([planoAssinatura])
-  @@index([createdAt])
-  @@index([dataNascimento])
-  @@index([stripeSubscriptionId])
-  @@map("users")
-}
-
-model UserLlmSetting {
-  id              String   @id @default(cuid())
-  userId          String   @unique
-  provider        String   @default("openai")
-  openaiKey       String?
-  openaiModel     String   @default("gpt-4o")
-  minimaxKey      String?
-  minimaxModel    String   @default("minimax/m3")
-  anthropicKey    String?
-  anthropicModel  String   @default("claude-3-5-sonnet")
-  localEndpoint   String   @default("http://localhost:1234/v1")
-  localModel      String   @default("meta-llama-3-8b-instruct")
-  geminiKey       String?
-  geminiModel     String   @default("gemini-1.5-flash")
-  groqKey         String?
-  groqModel       String   @default("llama-3.3-70b-versatile")
-  deepseekKey     String?
-  deepseekModel   String   @default("deepseek-chat")
-  openrouterKey   String?
-  openrouterModel String   @default("google/gemini-2.5-flash")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("user_llm_settings")
-}
-
-
-// =====================
-// MAPA NATAL (Cálculos)
-// =====================
-
-model MapaNatal {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  signoSolar String?
-  signoLunar String?
-  ascendente String?
-
-  numeroCabalistico Int?
-  numeroTantrico    Int?
-  numeroPitagorico  Int?
-  numeroCaldeu      Int?
-  numeroCarmico     Int?
-
-  oduPrincipal  String?
-  oduSecundario String?
-
-  arcanoPessoal Int?
-  cartaCaminho  String?
-
-  sefirotDominante String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([signoSolar])
-  @@index([numeroPitagorico])
-  @@index([arcanoPessoal])
-  @@index([createdAt])
-  @@map("mapa_natal")
-}
-
-// =====================
-// ASSINATURA
-// =====================
-
-model Assinatura {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  plano                String  @default("iniciante")
-  status               String  @default("active")
-  stripeCustomerId     String? @unique
-  stripeSubscriptionId String? @unique
-
-  dataInicio       DateTime  @default(now())
-  dataProximoCobro DateTime?
-
-  moduloPlanetas    Boolean @default(false)
-  moduloLetras      Boolean @default(false)
-  moduloGeometria   Boolean @default(false)
-  moduloFrequencias Boolean @default(false)
-  moduloEmpresa     Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([status])
-  @@index([dataProximoCobro])
-  @@index([plano])
-  @@map("assinaturas")
-}
-
-// ============================================================================
-// STRIPE WEBHOOK — Idempotency
-// ============================================================================
-
-/// Tracks processed Stripe webhook events to prevent duplicate handling.
-/// Each Stripe event has a unique id — we store it here to ensure
-/// at-least-once delivery semantics (Stripe retries on 2xx responses).
-/// Phase 27: signature verification + idempotency hardening.
-model WebhookEvent {
-  id            String   @id @default(cuid())
-  stripeEventId String   @unique
-  type          String
-
-  processedAt DateTime @default(now())
-
-  @@index([processedAt])
-  @@index([type])
-  @@map("webhook_events")
-}
-
-// =====================
-// CRÉDITOS
-// =====================
-
-model Credito {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  saldo Int @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  transacoes TransacaoCredito[]
-
-  @@index([saldo])
-  @@index([createdAt])
-  @@map("creditos")
-}
-
-model TransacaoCredito {
-  id         String        @id @default(cuid())
-  creditoId  String
-  credito    Credito       @relation(fields: [creditoId], references: [id], onDelete: Cascade)
-  tipo       TipoTransacao
-  quantidade Int
-  descricao  String?
-  operacao   String?
-  createdAt  DateTime      @default(now())
-
-  @@index([creditoId, createdAt])
-  @@index([tipo])
-  @@index([createdAt])
-  @@map("transacoes_credito")
-}
-
-// =====================
-// EMPRESA (FUTURO)
-// =====================
-
-model Empresa {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  nomeFantasia String
-  razaoSocial  String?
-  cnpj         String?
-  dataFundacao DateTime?
-
-  numeroNome  Int?
-  numeroRazao Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([cnpj])
-  @@map("empresas")
-}
-
-// =====================
-// BASE DE CONHECIMENTO
-// =====================
-
-model DiaSemana {
-  id       String @id @default(cuid())
-  nome     String @unique
-  numero   Int    @unique
-  planeta  String
-  elemento String
-  cor      String
-
-  orixas Orixa[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("dias_semana")
-}
-
-model Orixa {
-  id              String   @id @default(cuid())
-  nome            String   @unique
-  saudacao        String
-  planeta         String
-  elemento        String
-  cores           String[]
-  chakraPrincipal Int
-
-  hierbas Erva[]
-
-  quizilas String[]
-
-  dias DiaSemana[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("orixas")
-}
-
-model Chakra {
-  id       String   @id @default(cuid())
-  numero   Int      @unique
-  nome     String   @unique
-  cor      String
-  elemento String
-  glandula String?
-  mantras  String[]
-  funcoes  String[]
-
-  sefirotId String?  @unique
-  sefirot   Sefirot? @relation(fields: [sefirotId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("chakras")
-}
-
-model Sefirot {
-  id      String @id @default(cuid())
-  numero  Int    @unique
-  nome    String @unique
-  caminho String
-  aspecto String
-  cor     String
-
-  planeta String?
-
-  chakra Chakra?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("sefirots")
-}
-
-model Odú {
-  id           String @id @default(cuid())
-  numero       Int    @unique
-  nome         String @unique
-  significado  String
-  elemento     String
-  planeta      String
-  orixaRegente String
-
-  quizilas  String[]
-  preceptos String[]
-  ebos      String[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("odus")
-}
-
-model Erva {
-  id   String   @id @default(cuid())
-  nome String   @unique
-  tipo String
-  uso  String[]
-
-  orixas Orixa[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("ervas")
-}
-
-model FaseLua {
-  id      String   @id @default(cuid())
-  nome    String   @unique
-  energia String
-  rituais String[]
-  evitar  String[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("fases_lua")
-}
-
-model Elemento {
-  id         String   @id @default(cuid())
-  nome       String   @unique
-  simbolo    String
-  qualidades String[]
-  direcoes   String[]
-  cores      String[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("elementos")
-}
-
-// =====================
-// INSIGHTS E CONVERSAS
-// =====================
-
-model Insight {
-  id     String @id @default(cuid())
-  userId String
-
-  titulo          String
-  descricao       String
-  acaoRecomendada String?
-  mantra          String?
-
-  diaSemana     String?
-  faseLua       String?
-  numeroPessoal Int?
-  odu           String?
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([createdAt])
-  @@index([titulo])
-  @@map("insights")
-}
-
-model Conversa {
-  id     String @id @default(cuid())
-  userId String
-  tema   String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  mensagens Mensagem[]
-
-  @@index([userId])
-  @@index([updatedAt])
-  @@map("conversas")
-}
-
-model Mensagem {
-  id         String   @id @default(cuid())
-  conversaId String
-  conversa   Conversa @relation(fields: [conversaId], references: [id], onDelete: Cascade)
-
-  tipo     String
-  conteudo String
-
-  createdAt DateTime @default(now())
-
-  @@index([conversaId, createdAt])
-  @@index([conversaId])
-  @@map("mensagens")
-}
-
-// =====================
-// REMINDERS
-// =====================
-
-model Reminder {
-  id              String    @id @default(cuid())
-  userId          String
-  type            String
-  frequency       String
-  title           String?
-  message         String?
-  time            String
-  timezone        String?
-  schedule        Json?
-  enabled         Boolean   @default(true)
-  lastTriggeredAt DateTime?
-  nextTriggerAt   DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([enabled])
-  @@index([nextTriggerAt])
-  @@map("reminders")
-}
-
-// =====================
-// MAPA NATAL - GRAPHICS/STORAGE
-// =====================
-
-model BirthChart {
-  id     String @id @default(cuid())
-  userId String
-
-  birthDate DateTime
-  birthTime String?
-  latitude  Float?
-  longitude Float?
-  chartData Json?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([birthDate])
-  @@index([createdAt])
-  @@map("birth_charts")
-}
-
-model SynastryResult {
-  id        String  @id @default(cuid())
-  userId    String
-  partnerId String?
-
-  chart1Id String?
-  chart2Id String?
-
-  resultData Json
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([partnerId])
-  @@index([createdAt])
-  @@map("synastry_results")
-}
-
-// =====================
-// FAVORITOS
-// =====================
-
-model Favorito {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  type        String
-  referenceId String
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([type])
-  @@index([referenceId])
-  @@index([userId, type])
-  @@map("favoritos")
-}
-
-// =====================
-// LEITURA HISTÓRICO
-// =====================
-
-model LeituraHistorico {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  type String
-  data Json
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([type])
-  @@index([createdAt])
-}
-
-model JournalEntry {
-  id      String   @id @default(cuid())
-  userId  String
-  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title   String?
-  content String
-  mood    String?
-  tags    String[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId])
-  @@index([mood])
-  @@index([createdAt])
-  @@map("journal_entries")
-}
-
-// ============================================================================
-// SISTEMA AKASHA — B2C MODELOS (Fase B)
-// ============================================================================
-
 model GrimoireEntry {
   id         String  @id @default(cuid())
   slug       String  @unique
   categoria  String
   biblioteca String
-  metadata   Json?
+  metadata   Json
   conteudo   String
-  sourcePath String?
   embedding  Unsupported("vector(768)")?
-
-  createdAt  DateTime @default(now())
+  sourcePath String
   updatedAt  DateTime @updatedAt
-
   @@index([categoria])
   @@index([biblioteca])
-  @@map("grimoire_entries")
-}
-
-model AkashaUser {
-  id             String   @id @default(cuid())
-  email          String   @unique
-  emailVerified  Boolean  @default(false)
-  passwordHash   String?
-  fullName       String
-  locale         String   @default("pt-BR")
-
-  birthDate      DateTime
-  birthTime      String
-  birthCity      String
-  birthState     String
-  birthCountry   String
-  birthLatitude  Float?
-  birthLongitude Float?
-  birthTimezone  String?
-
-  intentionProfile Json?
-
-  consentGiven   Boolean  @default(false)
-  consentAt      DateTime?
-
-  // Stripe (denormalized cache — canonical data em AkashaSubscription)
-  stripeCustomerId     String? @unique
-  stripeSubscriptionId String? @unique
-
-  // Relations
-  birthChart         AkashaBirthChart?
-  subscription       AkashaSubscription?
-  creditLedger       AkashaCreditEntry[]
-  manifesto          AkashaManifesto?
-  dailyReadings      AkashaDailyReading[]
-  ritualCompletions  AkashaRitualCompletion[]
-  consultations      AkashaConsultation[]
-  refreshTokens      AkashaRefreshToken[]
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  @@map("akasha_users")
-}
-
-model AkashaBirthChart {
-  id            String     @id @default(cuid())
-  userId        String     @unique
-  user          AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  astrologyMap  Json
-  kabalisticMap Json
-  tantricMap    Json
-  oduBirth      Json
-
-  incomplete    Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  @@map("akasha_birth_charts")
-}
-
-model AkashaRefreshToken {
-  id        String     @id @default(cuid())
-  userId    String
-  user      AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tokenHash String     @unique
-  expiresAt DateTime
-  revokedAt DateTime?
-  createdAt DateTime   @default(now())
-
-  @@index([userId])
-  @@map("akasha_refresh_tokens")
-}
-
-model AkashaSubscription {
-  id                   String          @id @default(cuid())
-  userId               String          @unique
-  user                 AkashaUser      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  plan                 AkashaPlan      @default(FREEMIUM)
-  status               AkashaSubStatus @default(ACTIVE)
-  stripeCustomerId     String?
-  stripeSubscriptionId String?
-  monthlyCreditQuota   Int             @default(0)
-  dashboardUntil       DateTime?
-  currentPeriodEnd     DateTime?
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
-
-  @@map("akasha_subscriptions")
-}
-
-model AkashaCreditEntry {
-  id        String     @id @default(cuid())
-  userId    String
-  user      AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-  delta     Int
-  reason    String
-  balance   Int
-  createdAt DateTime   @default(now())
-
-  @@index([userId])
-  @@map("akasha_credit_entries")
-}
-
-model AkashaManifesto {
-  id         String     @id @default(cuid())
-  userId     String     @unique
-  user       AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-  content    Json
-  pdfUrl     String?
-  llmModel   String?
-  tokensUsed Int?
-  createdAt  DateTime   @default(now())
-
-  @@map("akasha_manifestos")
-}
-
-model AkashaDailyReading {
-  id           String     @id @default(cuid())
-  userId       String
-  user         AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-  date         DateTime   @db.Date
-  climate      String
-  ritual       Json
-  alert        String
-  tensionPoint Json
-  llmModel     String?
-  createdAt    DateTime   @default(now())
-
-  @@unique([userId, date])
-  @@map("akasha_daily_readings")
-}
-
-model AkashaRitualCompletion {
-  id         String     @id @default(cuid())
-  userId     String
-  user       AkashaUser @relation(fields: [userId], references: [id], onDelete: Cascade)
-  grimoireId String
-  date       DateTime   @default(now())
-
-  @@index([userId])
-  @@map("akasha_ritual_completions")
-}
-
-model AkashaConsultation {
-  id        String              @id @default(cuid())
-  userId    String
-  user      AkashaUser          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title     String?
-  messages  AkashaChatMessage[]
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @updatedAt
-
-  @@index([userId])
-  @@map("akasha_consultations")
-}
-
-model AkashaChatMessage {
-  id             String             @id @default(cuid())
-  consultationId String
-  consultation   AkashaConsultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
-  role           AkashaChatRole
-  content        String
-  routedPillars  String[]
-  grimoireRefs   String[]
-  creditCost     Int                @default(0)
-  createdAt      DateTime           @default(now())
-
-  @@index([consultationId])
-  @@map("akasha_chat_messages")
+  @@map("grimoire")
 }

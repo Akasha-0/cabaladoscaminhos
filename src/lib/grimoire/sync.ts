@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 
 interface Frontmatter {
@@ -124,7 +125,7 @@ export async function syncGrimoire(): Promise<{ success: boolean; count: number;
         update: {
           categoria,
           biblioteca,
-          metadata: metadata as any,
+          metadata: metadata as Prisma.InputJsonValue,
           conteudo: content,
           sourcePath: file,
         },
@@ -133,7 +134,7 @@ export async function syncGrimoire(): Promise<{ success: boolean; count: number;
           slug,
           categoria,
           biblioteca,
-          metadata: metadata as any,
+          metadata: metadata as Prisma.InputJsonValue,
           conteudo: content,
           sourcePath: file,
         },
@@ -143,8 +144,8 @@ export async function syncGrimoire(): Promise<{ success: boolean; count: number;
       if (embedding && embedding.length === 768) {
         const vectorStr = `[${embedding.join(',')}]`;
         await prisma.$executeRaw`
-          UPDATE grimoire_entries 
-          SET embedding = cast(${vectorStr} as vector) 
+          UPDATE grimoire
+          SET embedding = cast(${vectorStr} as vector)
           WHERE id = ${id}
         `;
       } else if (embedding) {

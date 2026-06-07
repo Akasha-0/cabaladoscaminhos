@@ -9,9 +9,10 @@ type Subscription = {
 };
 
 type Props = {
-  user: { fullName: string; email: string };
+  user: { name: string; email: string };
   balance: number;
   subscription: Subscription;
+  subscriptionError?: boolean;
   checkoutStatus?: string;
 };
 
@@ -28,7 +29,7 @@ const CREDIT_PACKS = [
   { type: 'credits_60', label: '60 Créditos', price: 'R$44,90', description: '60 consultas simples' },
 ];
 
-export default function ContaClient({ user, balance, subscription, checkoutStatus }: Props) {
+export default function ContaClient({ user, balance, subscription, subscriptionError, checkoutStatus }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState('');
 
@@ -85,13 +86,26 @@ export default function ContaClient({ user, balance, subscription, checkoutStatu
           </div>
         )}
 
+        {subscriptionError && (
+          <div
+            className="px-4 py-3 rounded-xl text-sm"
+            style={{
+              background: 'rgba(245,158,11,0.1)',
+              border: '1px solid rgba(245,158,11,0.3)',
+              color: '#F59E0B',
+            }}
+          >
+            Não foi possível carregar os dados da sua assinatura. O restante da conta continua disponível.
+          </div>
+        )}
+
         {/* Profile */}
         <div style={glassCard} className="p-6">
           <h1
             className="text-xl font-semibold mb-1"
             style={{ fontFamily: 'var(--font-cinzel), serif', color: '#E2E8F0' }}
           >
-            {user.fullName}
+            {user.name}
           </h1>
           <p className="text-sm" style={{ color: 'rgba(226,232,240,0.5)' }}>{user.email}</p>
         </div>

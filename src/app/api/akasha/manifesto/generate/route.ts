@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
 import { prisma } from '@/lib/prisma';
 import { buildManifestoContent } from '@/lib/akasha/manifesto-builder';
+import type { Prisma } from '@prisma/client';
 
 export async function POST(request: NextRequest) {
   const auth = await requireAkashaApi(request);
   if (auth instanceof NextResponse) return auth;
 
   // Retornar manifesto existente se já gerado
-  const existing = await prisma.akashaManifesto.findUnique({
+  const existing = await prisma.manifesto.findUnique({
     where: { userId: auth.id },
     select: { id: true, content: true },
   });
@@ -17,8 +18,8 @@ export async function POST(request: NextRequest) {
   }
 
   const [user, chart] = await Promise.all([
-    prisma.akashaUser.findUnique({ where: { id: auth.id }, select: { fullName: true } }),
-    prisma.akashaBirthChart.findUnique({ where: { userId: auth.id } }),
+    prisma.user.findUnique({ where: { id: auth.id }, select: { name: true } }),
+    prisma.birthChart.findUnique({ where: { userId: auth.id } }),
   ]);
 
   if (!user || !chart) {
@@ -29,17 +30,17 @@ export async function POST(request: NextRequest) {
   }
 
   const content = buildManifestoContent(
-    user.fullName,
+    user.name,
     chart.astrologyMap,
     chart.kabalisticMap,
     chart.tantricMap,
     chart.oduBirth
   );
 
-  const manifesto = await prisma.akashaManifesto.create({
+  const manifesto = await prisma.manifesto.create({
     data: {
       userId: auth.id,
-      content: content as unknown as Parameters<typeof prisma.akashaManifesto.create>[0]['data']['content'],
+      content: content as unknown as Prisma.InputJsonValue,
     },
     select: { id: true },
   });

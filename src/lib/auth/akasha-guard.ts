@@ -9,7 +9,7 @@ import { AKASHA_TOKEN_COOKIE, verifyAkashaToken } from './akasha-jwt';
 
 async function loadAkashaUser(id: string) {
   try {
-    return await prisma.akashaUser.findUnique({ where: { id } });
+    return await prisma.user.findUnique({ where: { id } });
   } catch (err) {
     console.error('[akasha-guard] DB lookup failed', err);
     return null;
@@ -46,12 +46,12 @@ async function resolveAkashaUser(request: NextRequest) {
  */
 export async function requireAkashaApi(
   request: NextRequest
-): Promise<{ id: string; email: string; fullName: string } | NextResponse> {
+): Promise<{ id: string; email: string; name: string } | NextResponse> {
   const user = await resolveAkashaUser(request);
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  return { id: user.id, email: user.email, fullName: user.fullName };
+  return { id: user.id, email: user.email, name: user.name };
 }
 
 /**
@@ -62,10 +62,10 @@ export async function requireAkashaApi(
  */
 export async function requireAkashaUser(
   request: NextRequest
-): Promise<{ id: string; email: string; fullName: string }> {
+): Promise<{ id: string; email: string; name: string }> {
   const user = await resolveAkashaUser(request);
   if (!user) {
     throw new Error('Unauthorized');
   }
-  return { id: user.id, email: user.email, fullName: user.fullName };
+  return { id: user.id, email: user.email, name: user.name };
 }

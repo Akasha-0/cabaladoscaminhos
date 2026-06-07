@@ -13,10 +13,7 @@ const mockCreate = vi.fn();
 
 vi.mock('@/lib/prisma', () => ({
   prisma: {
-    akashaUser: {
-      findUnique: (args: unknown) => mockFindUnique(args),
-      create: (args: unknown) => mockCreate(args),
-    },
+    user: { findUnique: (args: unknown) => mockFindUnique(args), create: (args: unknown) => mockCreate(args) },
   },
 }));
 
@@ -31,13 +28,14 @@ function makeJsonRequest(url: string, body: unknown): NextRequest {
 const validBody = {
   email: 'novo@akasha.com',
   password: 'senha12345',
-  fullName: 'Nome Completo',
+  name: 'Nome Completo',
   birthDate: '2000-01-02',
   birthTime: '10:30',
   birthCity: 'São Paulo',
-  birthState: 'SP',
-  birthCountry: 'Brasil',
-  consentGiven: true as const,
+  birthLatitude: -23.5505,
+  birthLongitude: -46.6333,
+  birthTimezone: 'America/Sao_Paulo',
+  consent: true as const, // AD-T5-C: LGPD consentimento explícito
 };
 
 describe('POST /api/akasha/auth/register', () => {
@@ -46,13 +44,19 @@ describe('POST /api/akasha/auth/register', () => {
     mockBcryptHash.mockResolvedValue('hashed:senha12345');
   });
 
-  it('retorna 400 quando consentGiven está ausente', async () => {
+  it('retorna 400 quando payload é inválido', async () => {
     const { POST } = await import('@/app/api/akasha/auth/register/route');
-    const { consentGiven: _consentGiven, ...withoutConsent } = validBody;
-    const res = await POST(makeJsonRequest('http://l/api/akasha/auth/register', withoutConsent));
+    const { name: _name, consent: _c, ...invalid } = validBody;
+    const res = await POST(makeJsonRequest('http://l/api/akasha/auth/register', invalid));
     expect(res.status).toBe(400);
     const body = await res.json();
     expect(body.error).toBe('Dados inválidos');
+  });
+
+  it('retorna 400 quando consent não é true (LGPD)', async () => {
+    const { POST } = await import('@/app/api/akasha/auth/register/route');
+    const res = await POST(makeJsonRequest('http://l/api/akasha/auth/register', { ...validBody, consent: false }));
+    expect(res.status).toBe(400);
   });
 
   it('retorna 201 genérico quando email já existe (anti-enumeração)', async () => {
@@ -65,7 +69,7 @@ describe('POST /api/akasha/auth/register', () => {
     expect(mockCreate).not.toHaveBeenCalled();
   });
 
-  it('cria usuário e retorna 201 quando payload é válido', async () => {
+  it('cria usuário e retorna 201 quando payload é válido (consentAt persistido)', async () => {
     mockFindUnique.mockResolvedValue(null);
     mockCreate.mockResolvedValue({ id: 'user-1' });
     const { POST } = await import('@/app/api/akasha/auth/register/route');
@@ -73,6 +77,8 @@ describe('POST /api/akasha/auth/register', () => {
     expect(res.status).toBe(201);
     expect(mockBcryptHash).toHaveBeenCalledWith('senha12345', 12);
     expect(mockCreate).toHaveBeenCalledTimes(1);
+    // AD-T5-C: o consentAt deve ser persistido como Date
+    const createCall = mockCreate.mock.calls[0][0] as { data: { consentAt: Date } };
+    expect(createCall.data.consentAt).toBeInstanceOf(Date);
   });
 });
-

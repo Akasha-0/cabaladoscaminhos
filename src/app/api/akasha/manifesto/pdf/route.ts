@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const auth = await requireAkashaApi(request);
   if (auth instanceof NextResponse) return auth;
 
-  const manifesto = await prisma.akashaManifesto.findUnique({
+  const manifesto = await prisma.manifesto.findUnique({
     where: { userId: auth.id },
   });
 

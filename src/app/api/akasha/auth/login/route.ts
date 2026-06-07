@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     throw err;
   }
 
-  const user = await prisma.akashaUser.findUnique({
+  const user = await prisma.user.findUnique({
     where: { email: body.email },
   });
 
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
   const refreshToken = signAkashaRefreshToken({ id: user.id, email: user.email });
 
   const response = NextResponse.json({
-    user: { id: user.id, email: user.email, fullName: user.fullName },
+    user: { id: user.id, email: user.email, name: user.name },
   });
   setAkashaSessionCookie(response, accessToken);
   setAkashaRefreshCookie(response, refreshToken);

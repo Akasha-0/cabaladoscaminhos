@@ -2,7 +2,7 @@
 ## Sistema Akasha
 
 > **Versão:** 2.0 | **ORM:** Prisma 7 | **Banco:** PostgreSQL + **pgvector**
-> **Norte:** Doc 25 · **Arquitetura:** Doc 03. As estruturas dos 4 mapas (§3) são **agnósticas e preservadas**; os modelos B2C (§1–2) substituem o esquema B2B (Operator/Reading/Mesa Real → legado, §6).
+> **Norte:** Doc 25 · **Arquitetura:** Doc 03. As estruturas dos 4 mapas (§3) são **agnósticas e preservadas**; o modelo canônico é o B2C Akasha descrito em §1–2.
 
 ---
 
@@ -208,9 +208,9 @@ model GrimoireEntry {
 ---
 
 ## 2. Auth & Conta (B2C)
-- `User` substitui `Operator`: auto-cadastro, e-mail+senha e/ou OAuth (Google/Apple), verificação de e-mail, recuperação de senha, MFA opcional.
+- `User` é a única identidade canônica: auto-cadastro, e-mail+senha e/ou OAuth (Google/Apple), verificação de e-mail, recuperação de senha, MFA opcional.
 - Sessão via JWT/cookie httpOnly. `role = ADMIN` habilita o painel do Grimório (sync manual).
-- Transição de auth detalhada no AUTH-AUDIT.
+- Detalhes do modelo de auth canônico no AUTH-AUDIT.
 
 ---
 
@@ -378,20 +378,7 @@ interface RitualPrescription {
 
 ---
 
-## 6. Legado B2B (quarentenado — `apps/legacy-cockpit`)
-
-> Os modelos abaixo pertencem ao **Cockpit / Mesa Real** e **saem do produto Akasha** (Doc 25 §11, AD-25.2). Permanecem no schema apenas enquanto o `legacy-cockpit` roda; serão removidos após o desligamento.
-
-- **`Operator` / `OperatorSession`** — substituídos por `User` (B2C).
-- **`Client`** — substituído por `User` + `BirthChart`.
-- **`Reading` / `Report` / `matrixData`** — a sessão de Mesa Real (9×4, 36 casas) e o dossiê por casa. O Akasha não usa o Baralho Cigano.
-- **Constante `LENORMAND_CARDS` (36 cartas)** — pertence à Mesa Real (legado). Os 16 Odus e os 11 Corpos permanecem (são pilares do Akasha).
-
-> A estrutura canônica do `MatrixData` e as invariantes de permutação seguem documentadas no Doc 18 (legado), para manutenção do `legacy-cockpit` até o desligamento.
-
----
-
-## 7. Script de Seed (Admin)
+## 6. Script de Seed (Admin)
 
 ```typescript
 // prisma/seed.ts

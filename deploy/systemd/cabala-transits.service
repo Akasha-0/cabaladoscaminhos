@@ -1,0 +1,21 @@
+[Unit]
+Description=Cabala dos Caminhos — Daily Transits Cron (00:00 UTC)
+Documentation=https://docs.akasha.local/runbook/cron-transits
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/akasha
+ExecStart=/usr/bin/npx ts-node -P tsconfig.json scripts/daily-transits-cron.ts
+StandardOutput=append:/var/log/akasha-daily.log
+StandardError=append:/var/log/akasha-daily.log
+EnvironmentFile=/opt/akasha/.env
+User=akasha
+Group=akasha
+TimeoutStartSec=600
+# Falha não derruba a app (Doc 22 AD-22.8) — apenas marca o serviço como falho
+# para inspeção via `systemctl status cabala-transits.service`.
+
+[Install]
+WantedBy=multi-user.target

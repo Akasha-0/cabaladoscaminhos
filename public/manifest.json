@@ -1,83 +1,46 @@
 {
-  "name": "Sistema Akasha",
+  "name": "Cabala dos Caminhos",
   "short_name": "Akasha",
-  "description": "Oráculo pessoal de tecnologia espiritual — cruzamento de Astrologia, Numerologia Cabalística, Tântrica e Odus de Nascimento.",
-  "id": "/mandala",
+  "description": "A sabedoria ancestral encontra a precisão técnica — seu mapa espiritual personalizado.",
   "start_url": "/mandala",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#06070F",
-  "theme_color": "#7C5CFF",
-  "orientation": "portrait-primary",
-  "scope": "/",
+  "theme_color": "#F0B429",
   "lang": "pt-BR",
-  "categories": ["lifestyle", "education", "health"],
+  "dir": "ltr",
+  "orientation": "portrait",
+  "scope": "/",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "any",
-      "type": "image/x-icon",
-      "purpose": "any"
-    },
-    {
-      "src": "/icon-192.png",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot-1.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Mandala Toroidal — seus 4 pilares"
-    },
-    {
-      "src": "/screenshot-2.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Dashboard Diário — Clima, Ritual e Alerta"
-    }
-  ],
+  "categories": ["lifestyle", "spirituality", "health"],
+  "screenshots": [],
   "shortcuts": [
-    {
-      "name": "Minha Mandala",
-      "short_name": "Mandala",
-      "description": "Ver sua Mandala Toroidal com os 4 pilares",
-      "url": "/mandala",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Diário Energético",
-      "short_name": "Diário",
-      "description": "Clima, Ritual e Alerta do dia",
-      "url": "/diario",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
-    },
     {
       "name": "Oráculo",
       "short_name": "Oráculo",
-      "description": "Consultar o Agente Oracular",
+      "description": "Pergunte ao Oráculo Akáshico",
       "url": "/oraculo",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Iniciar Jornada",
-      "short_name": "Jornada",
-      "description": "Criar conta e revelar seu mapa",
-      "url": "/onboarding",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "name": "Diário",
+      "short_name": "Diário",
+      "description": "Diário Energético de hoje",
+      "url": "/diario",
+      "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     }
   ],
-  "related_applications": [],
   "prefer_related_applications": false
 }

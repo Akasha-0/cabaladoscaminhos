@@ -34,7 +34,7 @@ export async function POST(_request: NextRequest) {
     return res;
   }
 
-  const user = await prisma.akashaUser.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: payload.sub },
     select: { id: true, email: true },
   });

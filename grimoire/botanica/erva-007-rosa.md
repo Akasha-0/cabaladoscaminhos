@@ -2,6 +2,7 @@
 id: erva-007-rosa
 slug: erva-007-rosa
 title: "Rosa — Amor Universal e Abertura do Coração"
+title_en: "Rose — Love Universal e Abertura do Coracao"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Água, Fogo]

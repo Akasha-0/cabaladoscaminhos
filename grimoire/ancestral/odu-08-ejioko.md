@@ -2,6 +2,7 @@
 id: odu-08-ejioko
 slug: odu-08-ejioko
 title: "Ejiokô — As Águas da Memória"
+title_en: "Ejioko — As Aguas da Memory"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Água]

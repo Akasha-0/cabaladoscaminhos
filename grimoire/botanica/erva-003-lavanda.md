@@ -2,6 +2,7 @@
 id: erva-003-lavanda
 slug: erva-003-lavanda
 title: "Lavanda — Paz, Sono e Equilíbrio Emocional"
+title_en: "Lavender — Peace, Sono e Balance Emocional"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Ar, Água]

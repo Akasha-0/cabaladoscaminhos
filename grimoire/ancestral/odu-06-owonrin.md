@@ -2,6 +2,7 @@
 id: odu-06-owonrin
 slug: odu-06-owonrin
 title: "Owonrin — O Trovão que Transforma"
+title_en: "Owonrin — O Trovao que Transforma"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Ar]

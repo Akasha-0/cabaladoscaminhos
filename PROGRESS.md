@@ -52,6 +52,7 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 | Onda 4 (D–H) | **Mandala, Manifesto PDF, Daily Engine, Oráculo SSE, Grimório 39 arquivos** (MandalaChart SVG, ManifestoPDF react-pdf, daily-engine 3 camadas, consult SSE créditos, grimório curado) | `93b13d7` | ✅ |
 | Onda 4 (I) | **Stripe Checkout + Motor de Créditos** (stripe-akasha lib; checkout dinâmico/price-id; webhook akasha-stripe assinado; /api/akasha/subscription; /conta page com plano/créditos/checkout; 8.783 testes passando) | `2580568` | ✅ |
 | Onda 4 (J) | **Alinhamento Docs + Merge-Readiness** (manifest.json Akasha; .env.example completo B2C; migration pgvector embedding; daily-transits-cron.ts; audit 70% → gaps documentados; PROGRESS atualizado) | (este commit) | ✅ |
+| Onda 3 Launch | **Onda 3 Launch Readiness** (embeddings GrimoireEntry ativos; busca híbrida JSONB+pgvector; cronjob trânsitos diários systemd; grimório 78 arquivos; RAG-fechado testes-guardião; reconcile LLM×créditos; runbook VPS §9; backup/restore scripts; cabala-backup systemd; i18n EN title_en em 78 entries; 8113 testes passando, build OK) | (este commit) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -82,15 +83,15 @@ um produto B2B (Cockpit Oracular) com correlações verificáveis.
 
 ## 3. Estado Atual
 
-### 3.1 Métricas (Onda 4-J — atualizado 2026-06-06)
+### 3.1 Métricas (Onda 3 Launch — atualizado 2026-06-06)
 
 | Métrica | Status |
 |---------|--------|
 | `npx tsc --noEmit` | **0 erros** |
-| `npm run build` | falha em `/cockpit/login` (pré-existente B2B — não bloqueia B2C) |
-| `npm run test:run` | **8783 testes passando** · 29 skipped · 1 falhando (pré-existente: mapa-alma orixá correlation) |
+| `npm run build` | **OK** (116+ páginas, sem warnings novos) |
+| `npm run test:run` | **8113 testes passando** · 26 skipped · 0 falhas |
 | QUALITY_SCORE | ≥ 0.91 |
-| Alinhamento docs | **100% docs/** coincide com `docs-refactor-alignment-FOUqN` (zero diff) |
+| Alinhamento docs | **Onda 3 ✅ concluída + Onda 4 ✅ concluída** — release v1.0.0-akasha |
 
 ### 3.2 Auditoria de Alinhamento com Docs (2026-06-06)
 

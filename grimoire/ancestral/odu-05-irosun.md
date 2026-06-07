@@ -2,6 +2,7 @@
 id: odu-05-irosun
 slug: odu-05-irosun
 title: "Irosun — O Sangue que Flui"
+title_en: "Irosun — O Sangue que Flui"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Fogo]

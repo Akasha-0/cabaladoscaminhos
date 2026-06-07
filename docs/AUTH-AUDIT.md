@@ -2,31 +2,27 @@
 
 > **Norte:** Doc 25.
 > Audit de auth (Fase 17) realizado em `src/app/**/page.tsx` e `src/app/**/route.ts`.
-> Categoriza cada página/rota como Operator (B2B), B2C User ou pública,
+> Categoriza cada página/rota como B2C User ou pública,
 > e documenta o mecanismo de auth gate de cada uma.
-**Última atualização:** 2026-06-03 (Fase 47 — cockpit/layout.tsx x-pathname auth gate)
+**Última atualização:** 2026-06-06 (refactor-akasha-v2 — focado em B2C)
 
 ---
 
-> ## ⚠️ Transição de auth: Operator (B2B) → User (B2C self-service)
+> ## Transição de auth (modelo canônico B2C)
 >
-> Com o pivô para o **Sistema Akasha** (Doc 25), o modelo de identidade muda:
-> o **`Operator`** (terapeuta que operava o Cockpit) é substituído pelo **`User`**
-> B2C **self-service** (o cliente final que se cadastra, compra e consulta sozinho — Doc 04 §1–2).
+> O Sistema Akasha (Doc 25) usa exclusivamente o modelo **User B2C self-service**
+> (Doc 04 §1–2): o cliente final se cadastra, compra e consulta sozinho.
 >
-> | Eixo | Antes (Cockpit B2B) | Agora (Akasha B2C) |
-> |---|---|---|
-> | Identidade | `Operator` / `OperatorSession` | `User` (auto-cadastro) |
-> | Cadastro | criado pelo time / convite | **self-service** (e-mail+senha e/ou OAuth Google/Apple) |
-> | Sessão | JWT Operator (`operator-jwt.ts`) | JWT/cookie httpOnly do `User` |
-> | Papel elevado | Operator full | `role = ADMIN` (painel do Grimório, sync manual — Doc 04) |
-> | App-alvo | `apps/legacy-cockpit` (a desligar) | `apps/b2c-portal` |
+> | Eixo | Modelo canônico (Akasha) |
+> |---|---|
+> | Identidade | `User` (auto-cadastro) |
+> | Cadastro | **self-service** (e-mail+senha e/ou OAuth Google/Apple) |
+> | Sessão | JWT/cookie httpOnly do `User` (akasha-jwt) |
+> | Papel elevado | `role = ADMIN` (painel do Grimório, sync manual — Doc 04) |
+> | App-alvo | `apps/b2c-portal` |
 >
-> **O que a matriz abaixo significa hoje:** as linhas **Operator (B2B)** descrevem o
-> `legacy-cockpit`, que roda até o desligamento (AD-25.2) — sua defense-in-depth
-> permanece válida enquanto existir. As linhas **B2C User** são a base do `b2c-portal`
-> e o destino da migração; o padrão de gate (server + API, "nunca confiar no body")
-> **carrega-se inteiro** para o `User`. As rotas legadas listadas no §7 saem com o Cockpit.
+> Defense in depth: cada Server Component deve re-checar auth.
+> NUNCA confiar no `userId` do body — sempre usar o `userId` derivado do gate.
 
 ---
 
@@ -34,108 +30,71 @@
 
 | Categoria | Auth | Onde mora |
 |-----------|------|-----------|
-| **Operator (B2B)** | `requireOperatorPage()` (layout/page) ou `requireOperator()` (API) | `/cockpit/*`, `/dashboard/mesa-real/*`, `/dashboard/clientes/*`, `/api/operator/*`, `/api/mesa-real/*`, `/api/consult/*` |
-| **B2C User** | `SupabaseProvider` (`useAuth`) + middleware de cookies | `/dashboard/*` (B2C), `/profile`, `/conta`, `/onboarding`, `/pagamento/*` |
-| **Público** | nenhum | `/`, `/login`, `/register`, `/pricing`, `/privacy`, `/terms`, `/cockpit/login`, `/operator/login`, `/operator/register`, `/mapa/shared/[hash]` |
+| **B2C User** | `requireAkashaApi()` (API) / cookie check + `redirect` (Server Component) | `(akasha)/conta`, `(akasha)/mandala`, `(akasha)/diario`, `(akasha)/manifesto`, `(akasha)/oraculo` |
+| **Público** | nenhum | `/` |
 
-> **Regra de ouro (Doc 16 AD-03):** toda rota Operator DEVEM ter
-> **defense in depth** — gate no Server Component (layout/page) +
-> `requireOperator()` na API correspondente. NUNCA confiar no
-> `userId`/`operatorId` do body.
+> **Regra de ouro:** toda rota B2C DEVEM ter
+> **defense in depth** — gate no Server Component (page) +
+> `requireAkashaApi()` na API correspondente. NUNCA confiar no
+> `userId` do body.
 
 ---
 
-## 2. Operator — Páginas e layouts (gate server-side)
+## 2. B2C User — Páginas e layouts (gate server-side)
 
 | Path | Tipo | Gate | Status |
 |------|------|------|--------|
-| `src/app/cockpit/page.tsx` | Server | `getOperatorFromServerContext` + `redirect('/cockpit/login')` | OK Fase 14 |
-| `src/app/cockpit/layout.tsx` | Server | `x-pathname` header (middleware) → `PUBLIC_PATHS` set → `getOperatorFromServerContext` + `redirect('/cockpit/login')` | OK Fase 47 (previne loop infinito no /cockpit/login) |
-| `src/app/cockpit/consulentes/page.tsx` | Server | `getOperatorFromServerContext` + `redirect` | OK |
-| `src/app/cockpit/consulentes/[id]/page.tsx` | Server | `getOperatorFromServerContext` + `redirect` | OK |
-| `src/app/cockpit/consulentes/novo/page.tsx` | Server | `getOperatorFromServerContext` + `redirect` | OK |
-| `src/app/dashboard/mesa-real/layout.tsx` | Server | **`requireOperatorPage()`** (novo Fase 17) | **NOVO** |
-| `src/app/dashboard/mesa-real/page.tsx` | Client | layout gate | OK Fase 17 |
-| `src/app/dashboard/clientes/layout.tsx` | Server | **`requireOperatorPage()`** (novo Fase 17) | **NOVO** |
-| `src/app/dashboard/clientes/page.tsx` | Client | layout gate | OK Fase 17 |
+| `src/app/(akasha)/conta/page.tsx` | Server | cookie `akasha_session` + `redirect('/onboarding')` | OK Fase C |
+| `src/app/(akasha)/mandala/page.tsx` | Server | cookie `akasha_session` + `redirect('/onboarding')` | OK Onda 4 |
+| `src/app/(akasha)/diario/page.tsx` | Server | cookie `akasha_session` + `redirect('/onboarding')` | OK Onda 4 |
+| `src/app/(akasha)/manifesto/page.tsx` | Client | fetch `/api/akasha/manifesto/generate` + redirect 401/403/404 | OK Onda 4 |
+| `src/app/(akasha)/onboarding/page.tsx` | Client | rota de entrada (cadastro/login) | OK Fase C |
+| `src/app/(akasha)/oraculo/page.tsx` | Client | fetch SSE `/api/akasha/consult` | OK Onda 4 |
 
-> Defense in depth: as Server Pages do cockpit RE-checam auth
-> (`getOperatorFromServerContext`) mesmo já estando dentro do layout
-> gate. Doc 16 AD-03 — "nunca confie só no layout".
+> Defense in depth: as Server Pages do portal B2C RE-checam auth
+> (cookie + redirect) antes de qualquer fetch interno. API
+> correspondente re-checa via `requireAkashaApi`.
 
 ---
 
-## 3. Operator — API routes (requireOperator)
+## 3. B2C User — API routes (`requireAkashaApi`)
+
+> Assinatura: `requireAkashaApi(request)` retorna
+> `{ id, email, name } | NextResponse(401)`. O caller deve checar
+> `instanceof NextResponse` antes de usar o usuário (ver §9).
 
 | Path | Métodos | Gate | Status |
 |------|---------|------|--------|
-| `src/app/api/operator/auth/me/route.ts` | GET | `requireOperator` | OK Fase 14 |
-| `src/app/api/operator/auth/sessions/route.ts` | GET | `requireOperator` | OK Fase 16 |
-| `src/app/api/operator/auth/sessions/[id]/route.ts` | DELETE | `requireOperator` | OK Fase 16 |
-| `src/app/api/operator/auth/sessions/revoke-all/route.ts` | POST | `requireOperator` | OK Fase 16 |
-| `src/app/api/operator/auth/login/route.ts` | POST | público (cria session) | correto |
-| `src/app/api/operator/auth/register/route.ts` | POST | público (cria Operator) | correto |
-| `src/app/api/operator/auth/logout/route.ts` | POST | público (revoga session) | correto |
-| `src/app/api/operator/auth/refresh/route.ts` | POST | público (rotaciona) | correto |
-| `src/app/api/mesa-real/clients/route.ts` | GET/POST/PATCH/DELETE | `requireOperator` | OK |
-| `src/app/api/mesa-real/save/route.ts` | POST | `requireOperator` | OK |
-| `src/app/api/mesa-real/generate/route.ts` | POST | `requireOperator` | OK |
-| `src/app/api/mesa-real/readings/route.ts` | GET/POST/PATCH/DELETE | **`requireOperator`** (Fase 17) | **ADICIONADO** |
-| `src/app/api/consult/route.ts` | POST | `requireOperator` | OK |
-## 3.1 Operator MFA Routes (TOTP 2FA)
-
-| Path | Métodos | Gate | Status |
-|------|---------|------|--------|
-| `src/app/api/operator/auth/mfa/setup/route.ts` | POST | público (gera secret + QR) | ✅ |
-| `src/app/api/operator/auth/mfa/verify-setup/route.ts` | POST | público (verifica TOTP no setup) | ✅ |
-| `src/app/api/operator/auth/mfa/verify/route.ts` | POST | público (verifica TOTP no login) | ✅ |
-| `src/app/api/operator/auth/mfa/disable/route.ts` | POST | `requireOperator` (desabilita MFA) | ✅ |
-| `src/app/api/operator/auth/mfa/status/route.ts` | GET | `requireOperator` (retorna enabled/verified) | ✅ |
-| `src/app/api/operator/auth/mfa/recovery-code/route.ts` | POST | `requireOperator` (gera/revoga recovery codes) | ✅ |
-
-## 3.2 Operator Password Recovery Routes
-
-| Path | Métodos | Gate | Status |
-|------|---------|------|--------|
-| `src/app/api/operator/auth/forgot-password/route.ts` | POST | público (gera token de reset) | ✅ |
-| `src/app/api/operator/auth/reset-password/route.ts` | POST | público (reseta com token) | ✅ |
-
-## 3.3 Operator Sessions Routes
-
-| Path | Métodos | Gate | Status |
-|------|---------|------|--------|
-| `src/app/api/operator/auth/sessions/route.ts` | GET | `requireOperator` (lista sessões ativas) | OK Fase 16 |
-| `src/app/api/operator/auth/sessions/[id]/route.ts` | DELETE | `requireOperator` (revoga sessão) | OK Fase 16 |
-| `src/app/api/operator/auth/sessions/revoke-all/route.ts` | POST | `requireOperator` (revoga todas exceto atual) | OK Fase 16 |
+| `src/app/api/akasha/auth/me/route.ts` | GET | `requireAkashaApi` | OK Fase C |
+| `src/app/api/akasha/auth/login/route.ts` | POST | público (cria session) | OK Fase C |
+| `src/app/api/akasha/auth/register/route.ts` | POST | público (cria User) | OK Fase C |
+| `src/app/api/akasha/auth/logout/route.ts` | POST | público (revoga session) | OK Fase C |
+| `src/app/api/akasha/auth/refresh/route.ts` | POST | público (rotaciona) | OK Fase C |
+| `src/app/api/akasha/chart/route.ts` | GET/POST | `requireAkashaApi` | OK Fase C |
+| `src/app/api/akasha/daily/route.ts` | GET | `requireAkashaApi` | OK Onda 4 |
+| `src/app/api/akasha/mandala/route.ts` | GET | `requireAkashaApi` | OK Onda 4 |
+| `src/app/api/akasha/manifesto/generate/route.ts` | POST | `requireAkashaApi` | OK Onda 4 |
+| `src/app/api/akasha/manifesto/pdf/route.ts` | GET | `requireAkashaApi` | OK Onda 4 |
+| `src/app/api/akasha/consult/route.ts` | POST (SSE) | `requireAkashaApi` | OK Onda 4 |
+| `src/app/api/akasha/credits/route.ts` | GET | `requireAkashaApi` | OK Onda 4 |
+| `src/app/api/akasha/subscription/route.ts` | GET | `requireAkashaApi` | OK Onda 4 |
+| `src/app/api/akasha/checkout/route.ts` | POST | `requireAkashaApi` | OK Onda 4 |
+| `src/app/api/akasha/transits/today/route.ts` | GET | `requireAkashaApi` | OK Onda 4 |
 
 ---
 
-## 4. B2C User (Supabase) — fora de escopo da Fase 17
+## 4. Páginas autenticadas B2C (gate client-side)
 
-Páginas que usam `useAuth` (SupabaseProvider) — autenticação separada
-e gerida por outro time/escopo:
+Páginas (akasha) que delegam o gate para a API chamada no `useEffect`
+(fetch + tratamento de 401/403/404 → `router.replace('/onboarding')`):
 
 | Path | Auth |
 |------|------|
-| `src/app/dashboard/page.tsx` | mock + SupabaseProvider (B2C) |
-| `src/app/dashboard/insights/page.tsx` | B2C (sample) |
-| `src/app/dashboard/life-areas/page.tsx` | B2C (sample) |
-| `src/app/dashboard/calendario/page.tsx` | B2C (sample) |
-| `src/app/dashboard/relatorios/page.tsx` | B2C (mock) |
-| `src/app/dashboard/oraculo/page.tsx` | B2C (mock) |
-| `src/app/dashboard/mapa/page.tsx` | B2C (localStorage) |
-| `src/app/dashboard/perfil/page.tsx` | B2C (SupabaseProvider) |
-| `src/app/mapa/page.tsx` | B2C (localStorage) |
-| `src/app/conta/page.tsx` | B2C (mock) |
-| `src/app/profile/page.tsx` | B2C (SupabaseProvider) |
-| `src/app/onboarding/page.tsx` | B2C (SupabaseProvider) |
-| `src/app/pagamento/sucesso/page.tsx` | B2C |
-| `src/app/pagamento/cancelado/page.tsx` | B2C |
-| `src/app/calendario/page.tsx` | B2C |
-| `src/app/analytics/page.tsx` | B2C |
+| `src/app/(akasha)/manifesto/page.tsx` | fetch `/api/akasha/manifesto/generate` |
+| `src/app/(akasha)/oraculo/page.tsx` | fetch SSE `/api/akasha/consult` |
 
-API B2C (Supabase) — fora de escopo:
-- `src/app/api/auth/*` (login-form, login, logout, register, status, test, create-test)
+> As demais páginas (akasha) (`conta`, `mandala`, `diario`) usam
+> gate **server-side** via cookie + `redirect` — ver §2.
 
 ---
 
@@ -143,16 +102,7 @@ API B2C (Supabase) — fora de escopo:
 
 | Path | Notas |
 |------|-------|
-| `src/app/page.tsx` | Landing — usa SupabaseProvider (B2C) |
-| `src/app/login/page.tsx` | Login B2C |
-| `src/app/register/page.tsx` | Cadastro B2C |
-| `src/app/operator/login/page.tsx` | Login Operator (B2B) |
-| `src/app/operator/register/page.tsx` | Cadastro Operator (B2B) |
-| `src/app/cockpit/login/page.tsx` | Login Operator (legado, mantida) |
-| `src/app/mapa/shared/[hash]/page.tsx` | Link público de mapa compartilhado (validado por hash) |
-| `src/app/pricing/page.tsx` | Pricing |
-| `src/app/privacy/page.tsx` | Privacy |
-| `src/app/terms/page.tsx` | Terms |
+| `src/app/page.tsx` | Landing |
 
 ---
 
@@ -160,82 +110,49 @@ API B2C (Supabase) — fora de escopo:
 
 | Path | Por quê |
 |------|---------|
-| `src/app/api/stripe/webhook/route.ts` | Webhook externo Stripe — valida assinatura própria |
-| `src/app/api/webhooks/stripe/route.ts` | Webhook externo Stripe (variante) |
+| `src/app/api/webhooks/akasha-stripe/route.ts` | Webhook Stripe do Akasha — valida assinatura |
+| `src/app/api/admin/webhooks/grimoire-sync/route.ts` | Webhook GitHub do Grimório — valida assinatura |
 | `src/app/api/health/route.ts` | Health check — público por design |
+| `src/app/api/health/live/route.ts` | Liveness probe — público por design |
+| `src/app/api/health/ready/route.ts` | Readiness probe — público por design |
+| `src/app/api/health/db/route.ts` | Health DB — público por design |
+| `src/app/api/health/redis/route.ts` | Health Redis — público por design |
 | `src/app/api/health/metrics/route.ts` | Métricas — público por design |
-| `src/app/api/mapa/share/route.ts` | Hash público de mapa compartilhado |
+| `src/app/api/security/headers/route.ts` | Inspeção de security headers — debug |
 
 ---
 
-## 7. Legado sem auth (não-Operator, não-B2C)
+## 7. Endpoints de domínio (motor público)
 
-> Estas APIs existem mas NÃO são consumidas pelo produto atual
-> (verificado em Fase 17). Mantidas para retrocompat.
+> Endpoints que **não** exigem auth: leitura de dados de referência
+> (busca, progresso, health) usados pela UI B2C e integrações.
 
-- `src/app/api/admin/dashboard/route.ts`
-- `src/app/api/admin/rate-limit/route.ts`
-- `src/app/api/akashic/records/route.ts`
-- `src/app/api/ancestor/connection/route.ts`
-- `src/app/api/astrologia/*`
-- `src/app/api/astrology/*`
-- `src/app/api/audio/*`
-- `src/app/api/banking/route.ts`
-- `src/app/api/cabala/*`
-- `src/app/api/calendar/route.ts`
-- `src/app/api/chart/*`
-- `src/app/api/chat/oracle/route.ts`
-- `src/app/api/correlation/*`
-- `src/app/api/dashboard/*`
-- `src/app/api/divination/*`
-- `src/app/api/divine/connection/route.ts`
-- `src/app/api/docs/route.ts`
-- `src/app/api/energy/*`
-- `src/app/api/favoritos/route.ts`
-- `src/app/api/gamification/achievements/route.ts`
-- `src/app/api/guidance/types/route.ts`
-- `src/app/api/healing/types/route.ts`
-- `src/app/api/ifa/*`
-- `src/app/api/journal/spiritual/route.ts`
-- `src/app/api/lenormand/route.ts`
-- `src/app/api/mapa/insights/route.ts`
-- `src/app/api/mapa/pdf/route.ts`
-- `src/app/api/mapa/route.ts`
-- `src/app/api/materials/route.ts`
-- `src/app/api/notifications/*`
-- `src/app/api/numerologia/route.ts`
-- `src/app/api/numerology/readings/route.ts`
-- `src/app/api/odus/route.ts`
-- `src/app/api/offerings/route.ts`
-- `src/app/api/onboarding/route.ts`
-- `src/app/api/orixa/*`
-- `src/app/api/payments/*` (B2C)
-- `src/app/api/planetary/route.ts`
-- `src/app/api/privacy/settings/route.ts`
-- `src/app/api/profile/route.ts`
 - `src/app/api/progresso/route.ts`
-- `src/app/api/progress/route.ts`
-- `src/app/api/recommendations/route.ts`
-- `src/app/api/search/*`
+- `src/app/api/search/route.ts`
+- `src/app/api/search/spiritual/route.ts`
+- `src/app/api/search/index/route.ts`
 - `src/app/api/security/headers/route.ts`
-- `src/app/api/stats/route.ts`
-- `src/app/api/swarm/*`
-- `src/app/api/tarot/*`
-- `src/app/api/user/profile/route.ts`
-- `src/app/api/users/profile/route.ts`
 
 ---
 
-## 8. Helpers (Fase 17)
+## 8. Helpers (auth)
 
-- `src/lib/auth/operator-guard.ts` — **NOVO**
-  - `requireOperatorPage()` — Server Components; redireciona se não houver Operator.
-  - `requireOperatorApi(request)` — Route Handlers; devolve 401 se não houver Operator.
-  - `OPERATOR_LOGIN_PATH` — constante `'/cockpit/login'`.
+- `src/lib/auth/akasha-guard.ts` — **canônico B2C**
+  - `requireAkashaApi(request)` — Route Handlers (API). Retorna
+    `{ id, email, name }` se autenticado, ou `NextResponse(401)`
+    caso contrário. Caller deve checar `instanceof NextResponse`
+    antes de usar.
+  - `requireAkashaUser(request)` — Server Actions / contextos
+    que **lançam**. Retorna `{ id, email, name }` ou `throw new
+    Error('Unauthorized')` se não houver User.
+  - `AKASHA_LOGIN_PATH` — constante do path de login B2C.
 
-- Testes:
-  - `tests/lib/auth/operator-guard.test.ts` — **NOVO** (helper)
-  - `tests/integration/cockpit-auth-gate.test.ts` — **NOVO** (smoke gate)
+> **Não há helper `requireAkashaPage()`** — Server Components
+> usam `cookies()` + `redirect()` diretamente (ver §2 e §9).
+
+> **Testes do helper:** o canônico B2C é exercitado indiretamente
+> por `tests/api/akasha-auth-register.test.ts`. Não há suite
+> unitária dedicada para `akasha-guard.ts` no momento.
 
 ---
 
@@ -243,28 +160,41 @@ API B2C (Supabase) — fora de escopo:
 
 ### Server Component (page.tsx, layout.tsx)
 ```ts
-import { requireOperatorPage } from '@/lib/auth/operator-guard';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-export default async function MyOperatorPage() {
-  const operator = await requireOperatorPage();
-  // ... usa operator.id para queries
+export default async function MyB2CPage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('akasha_session')?.value;
+  if (!token) redirect('/onboarding');
+  // ... usa token para fetch interno à API
 }
 ```
 
 ### API route (route.ts)
 ```ts
-import { requireOperatorApi } from '@/lib/auth/operator-guard';
+import { requireAkashaApi } from '@/lib/auth/akasha-guard';
 
 export async function POST(request: NextRequest) {
-  const operatorOrResponse = await requireOperatorApi(request);
-  if (operatorOrResponse instanceof NextResponse) return operatorOrResponse;
-  const operator = operatorOrResponse;
+  const userOrResponse = await requireAkashaApi(request);
+  if (userOrResponse instanceof NextResponse) return userOrResponse;
+  const user = userOrResponse;
 
-  // NUNCA confiar no `userId` do body — sempre usar `operator.id`
+  // NUNCA confiar no `userId` do body — sempre usar `user.id`
   const { clientId } = await request.json();
   // ...
+}
+```
+
+### Server Action (que lança em vez de devolver NextResponse)
+```ts
+import { requireAkashaUser } from '@/lib/auth/akasha-guard';
+
+export async function myAction() {
+  const user = await requireAkashaUser(request); // throws se 401
+  // ... usa user.id
 }
 ```
 
@@ -274,6 +204,6 @@ export async function POST(request: NextRequest) {
 
 - ❌ Usar `userId` ou `clientId` do body para autorização
 - ❌ Confiar só no gate do client (`'use client'` com fetch — data leak)
-- ❌ Permitir que o body determine o operator dono de um recurso
+- ❌ Permitir que o body determine o dono de um recurso
 - ❌ Esquecer de re-checar auth em cada `page.tsx` (defense in depth)
-- ❌ Pular `requireOperator` em uma rota Operator "porque está dentro do layout"
+- ❌ Pular `requireAkashaApi` em uma rota B2C "porque está dentro do layout"

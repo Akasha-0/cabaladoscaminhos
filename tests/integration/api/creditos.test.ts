@@ -1,269 +1,115 @@
-/**
- * Credits API Integration Tests
- * 
- * Tests the credits management API endpoints:
- * - GET /api/creditos - Returns current balance
- * - POST /api/creditos/adicionar - Adds credits
- * - POST /api/creditos/debitar - Deducts credits
- * 
- * Test Areas:
- * 1. Saldo: Verify GET returns current balance
- * 2. Adicionar: Verify credit purchase works
- * 3. Debitar: Verify CREDITO_CUSTO_PERGUNTA = 2 is deducted
- * 4. Insufficient credits: Test 400 when balance too low
- */
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { NextRequest, NextResponse } from 'next/server';
 
-// ============================================================
-// MOCK PRISMA DEPENDENCIES
-// ============================================================
+process.env.AKASHA_ADMIN_SECRET = 'secret';
 
-const mockPrismaCreditoFindUnique = vi.fn();
-const mockPrismaCreditoUpsert = vi.fn();
-const mockPrismaCreditoUpdate = vi.fn();
-const mockPrismaTransacaoCreate = vi.fn();
+const mockRequireAkashaApi = vi.fn();
+vi.mock('@/lib/auth/akasha-guard', () => ({
+  requireAkashaApi: (req: NextRequest) => mockRequireAkashaApi(req),
+}));
+
+const mockCreditAggregate = vi.fn();
+const mockCreditCreate = vi.fn();
+const mockUserFindUnique = vi.fn();
 
 vi.mock('@/lib/prisma', () => ({
   prisma: {
-    credito: {
-      findUnique: mockPrismaCreditoFindUnique,
-      upsert: mockPrismaCreditoUpsert,
-      update: mockPrismaCreditoUpdate,
-      create: vi.fn(),
+    creditEntry: {
+      aggregate: (...args: unknown[]) => mockCreditAggregate(...args),
+      create: (...args: unknown[]) => mockCreditCreate(...args),
     },
-    transacaoCredito: {
-      create: mockPrismaTransacaoCreate,
+    user: {
+      findUnique: (...args: unknown[]) => mockUserFindUnique(...args),
     },
   },
 }));
 
-// ============================================================
-// TESTS
-// ============================================================
+function makeGetRequest(): NextRequest {
+  return new NextRequest('http://localhost/api/akasha/credits', { method: 'GET' });
+}
 
-describe('GET /api/creditos - Balance Endpoint', () => {
+function makePostRequest(body: unknown, headers: Record<string, string> = {}): NextRequest {
+  return new NextRequest('http://localhost/api/akasha/credits', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', ...headers },
+    body: JSON.stringify(body),
+  });
+}
+
+describe('GET /api/akasha/credits', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('deve retornar saldo 0 quando usuario não tem créditos', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue(null);
+  it('retorna 401 quando não autenticado', async () => {
+    mockRequireAkashaApi.mockResolvedValueOnce(
+      NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
+    );
 
-    const { getCreditos } = await import('@/lib/credits/service');
-    const saldo = await getCreditos('user-no-credits');
+    const { GET } = await import('@/app/api/akasha/credits/route');
+    const res = await GET(makeGetRequest());
 
-    expect(saldo).toBe(0);
-    expect(mockPrismaCreditoFindUnique).toHaveBeenCalledWith({
-      where: { userId: 'user-no-credits' },
-    });
+    expect(res.status).toBe(401);
   });
 
-  it('deve retornar saldo existente do usuario', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue({ saldo: 100 });
+  it('retorna balance agregado do ledger', async () => {
+    mockRequireAkashaApi.mockResolvedValueOnce({ id: 'user-1' });
+    mockCreditAggregate.mockResolvedValueOnce({ _sum: { delta: 7 } });
 
-    const { getCreditos } = await import('@/lib/credits/service');
-    const saldo = await getCreditos('user-with-credits');
+    const { GET } = await import('@/app/api/akasha/credits/route');
+    const res = await GET(makeGetRequest());
 
-    expect(saldo).toBe(100);
-  });
-
-  it('deve retornar getCreditosCompleto com transacoes', async () => {
-    const mockTransacoes = [
-      { id: '1', tipo: 'CREDITO', quantidade: 50, createdAt: new Date() },
-      { id: '2', tipo: 'DEBITO', quantidade: 10, createdAt: new Date() },
-    ];
-
-    mockPrismaCreditoFindUnique.mockResolvedValue({
-      saldo: 40,
-      transacoes: mockTransacoes,
-    });
-
-    const { getCreditosCompleto } = await import('@/lib/credits/service');
-    const resultado = await getCreditosCompleto('user-with-transactions');
-
-    expect(resultado.saldo).toBe(40);
-    expect(resultado.transacoes).toHaveLength(2);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ balance: 7 });
   });
 });
 
-describe('POST /api/creditos/adicionar - Add Credits', () => {
+describe('POST /api/akasha/credits', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('deve adicionar créditos e retornar novo saldo', async () => {
-    mockPrismaCreditoUpsert.mockResolvedValue({ id: 'credito-1', saldo: 150 });
-    mockPrismaTransacaoCreate.mockResolvedValue({
-      id: 'trans-1',
-      tipo: 'CREDITO',
-      quantidade: 100,
+  it('retorna 403 quando x-admin-secret é inválido', async () => {
+    const { POST } = await import('@/app/api/akasha/credits/route');
+    const res = await POST(makePostRequest({ userId: 'user-1', amount: 10 }, { 'x-admin-secret': 'nope' }));
+
+    expect(res.status).toBe(403);
+  });
+
+  it('retorna 400 quando body é inválido', async () => {
+    const { POST } = await import('@/app/api/akasha/credits/route');
+    const res = await POST(makePostRequest({ amount: 10 }, { 'x-admin-secret': 'secret' }));
+
+    expect(res.status).toBe(400);
+  });
+
+  it('retorna 404 quando usuário não existe', async () => {
+    mockUserFindUnique.mockResolvedValueOnce(null);
+
+    const { POST } = await import('@/app/api/akasha/credits/route');
+    const res = await POST(makePostRequest({ userId: 'user-404', amount: 10 }, { 'x-admin-secret': 'secret' }));
+
+    expect(res.status).toBe(404);
+  });
+
+  it('credita e retorna o novo saldo', async () => {
+    mockUserFindUnique.mockResolvedValueOnce({ id: 'user-1' });
+    mockCreditAggregate.mockResolvedValueOnce({ _sum: { delta: 5 } });
+    mockCreditCreate.mockResolvedValueOnce({ id: 'ce-1' });
+
+    const { POST } = await import('@/app/api/akasha/credits/route');
+    const res = await POST(
+      makePostRequest(
+        { userId: 'user-1', amount: 3, reason: 'admin_credit' },
+        { 'x-admin-secret': 'secret' }
+      )
+    );
+
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.balance).toBe(8);
+    expect(mockCreditCreate).toHaveBeenCalledWith({
+      data: { userId: 'user-1', delta: 3, reason: 'admin_credit', balance: 8 },
     });
-
-    const { adicionarCreditos } = await import('@/lib/credits/service');
-    const resultado = await adicionarCreditos('user-123', 100, 'Compra de créditos');
-
-    expect(resultado.novoSaldo).toBe(150);
-    expect(mockPrismaCreditoUpsert).toHaveBeenCalledWith({
-      where: { userId: 'user-123' },
-      update: { saldo: { increment: 100 } },
-      create: { userId: 'user-123', saldo: 100 },
-    });
-    expect(mockPrismaTransacaoCreate).toHaveBeenCalledWith({
-      data: expect.objectContaining({
-        tipo: 'CREDITO',
-        quantidade: 100,
-        descricao: 'Compra de créditos',
-      }),
-    });
-  });
-
-  it('deve criar registro de credito se usuario nao tem nenhum (upsert creates)', async () => {
-    mockPrismaCreditoUpsert.mockResolvedValue({ id: 'credito-new', saldo: 50 });
-    mockPrismaTransacaoCreate.mockResolvedValue({
-      id: 'trans-new',
-      tipo: 'CREDITO',
-      quantidade: 50,
-    });
-
-    const { adicionarCreditos } = await import('@/lib/credits/service');
-    const resultado = await adicionarCreditos('new-user', 50, 'Primeira compra');
-
-    expect(resultado.novoSaldo).toBe(50);
-  });
-
-  it('deve validar quantidade maior que zero', async () => {
-    const { adicionarCreditos } = await import('@/lib/credits/service');
-
-    await expect(
-      adicionarCreditos('user-123', 0, 'Test')
-    ).rejects.toThrow('A quantidade deve ser maior que zero.');
-  });
-});
-
-describe('POST /api/creditos/debitar - Debit Credits', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('deve debitar 2 créditos (CREDITO_CUSTO_PERGUNTA) e retornar novo saldo', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue({ id: 'credito-2', saldo: 10 });
-    mockPrismaCreditoUpdate.mockResolvedValue({ id: 'credito-2', saldo: 8 });
-    mockPrismaTransacaoCreate.mockResolvedValue({
-      id: 'trans-debit-1',
-      tipo: 'DEBITO',
-      quantidade: 2,
-    });
-
-    const { debitarCreditos } = await import('@/lib/credits/service');
-    const resultado = await debitarCreditos('user-123', 2, 'perguntaChat');
-
-    expect(resultado.novoSaldo).toBe(8);
-    expect(mockPrismaCreditoUpdate).toHaveBeenCalledWith({
-      where: { userId: 'user-123' },
-      data: { saldo: { decrement: 2 } },
-    });
-  });
-
-  it('deve lançar CreditosInsuficientesError quando saldo é insuficiente', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue({ id: 'credito-poor', saldo: 1 });
-
-    const { debitarCreditos, CreditosInsuficientesError } = await import('@/lib/credits/service');
-
-    await expect(
-      debitarCreditos('user-poor', 2, 'perguntaChat')
-    ).rejects.toThrow(CreditosInsuficientesError);
-
-    try {
-      await debitarCreditos('user-poor', 2, 'perguntaChat');
-    } catch (error) {
-      expect(error).toBeInstanceOf(CreditosInsuficientesError);
-      expect((error as { saldoAtual: number }).saldoAtual).toBe(1);
-      expect((error as { saldoNecessario: number }).saldoNecessario).toBe(2);
-    }
-  });
-
-  it('deve funcionar quando usuario não tem registro de crédito (saldo 0)', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue(null);
-
-    const { debitarCreditos, CreditosInsuficientesError } = await import('@/lib/credits/service');
-
-    await expect(
-      debitarCreditos('new-user', 2, 'perguntaChat')
-    ).rejects.toThrow(CreditosInsuficientesError);
-
-    try {
-      await debitarCreditos('new-user', 2, 'perguntaChat');
-    } catch (error) {
-      expect(error).toBeInstanceOf(CreditosInsuficientesError);
-      expect((error as { saldoAtual: number }).saldoAtual).toBe(0);
-    }
-  });
-
-  it('deve validar quantidade maior que zero', async () => {
-    const { debitarCreditos } = await import('@/lib/credits/service');
-
-    await expect(
-      debitarCreditos('user-123', 0, 'perguntaChat')
-    ).rejects.toThrow();
-  });
-});
-
-describe('Insufficient Credits - Error Handling', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('CreditosInsuficientesError deve ter saldoAtual e saldoNecessario', async () => {
-    const { CreditosInsuficientesError } = await import('@/lib/credits/service');
-    const error = new CreditosInsuficientesError(5, 10);
-
-    expect(error.saldoAtual).toBe(5);
-    expect(error.saldoNecessario).toBe(10);
-    expect(error.message).toContain('5');
-    expect(error.message).toContain('10');
-  });
-
-  it('deve falhar quando tentando debit maior que saldo disponível', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue({ saldo: 5 });
-
-    const { debitarCreditos } = await import('@/lib/credits/service');
-
-    await expect(
-      debitarCreditos('user-low-balance', 10, 'perguntaChat')
-    ).rejects.toThrow();
-  });
-});
-
-describe('Verificar Credits', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('deve retornar true quando usuario tem créditos suficientes', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue({ saldo: 10 });
-
-    const { verificarCreditos } = await import('@/lib/credits/service');
-    const resultado = await verificarCreditos('user-rich', 5);
-
-    expect(resultado).toBe(true);
-  });
-
-  it('deve retornar false quando usuario não tem créditos suficientes', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue({ saldo: 3 });
-
-    const { verificarCreditos } = await import('@/lib/credits/service');
-    const resultado = await verificarCreditos('user-poor', 5);
-
-    expect(resultado).toBe(false);
-  });
-
-  it('deve retornar false quando usuario não tem registro de créditos', async () => {
-    mockPrismaCreditoFindUnique.mockResolvedValue(null);
-
-    const { verificarCreditos } = await import('@/lib/credits/service');
-    const resultado = await verificarCreditos('new-user', 1);
-
-    expect(resultado).toBe(false);
   });
 });

@@ -1,0 +1,25 @@
+[Unit]
+Description=Cabala dos Caminhos — PostgreSQL Daily Backup
+Documentation=https://docs.akasha.local/runbook/cron-backup
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# /opt/cabala é o working directory esperado
+WorkingDirectory=/opt/cabala
+ExecStart=/opt/cabala/scripts/backup-db.sh
+# Logs em journald (visível via journalctl -u cabala-backup)
+StandardOutput=journal
+StandardError=journal
+# Envs adicionais necessários
+Environment=BACKUP_DIR=/var/backups/cabala
+Environment=BACKUP_RETENTION_DAYS=7
+# Carrega DATABASE_URL de /etc/cabala/app.env via script
+User=root
+Group=root
+# Falha de backup é alertada por Slack (Doc 22 §9.7) e visível em journald
+TimeoutStartSec=1800
+
+[Install]
+WantedBy=multi-user.target

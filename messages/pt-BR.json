@@ -1,0 +1,70 @@
+{
+  "common": {
+    "appName": "Cabala dos Caminhos",
+    "tagline": "A sabedoria ancestral encontra a precisão técnica",
+    "carregando": "Carregando...",
+    "erro": "Algo deu errado. Tente novamente.",
+    "voltar": "Voltar",
+    "proximo": "Próximo",
+    "anterior": "Anterior",
+    "salvar": "Salvar",
+    "cancelar": "Cancelar",
+    "sim": "Sim",
+    "nao": "Não",
+    "idioma": "Idioma"
+  },
+  "nav": {
+    "mandala": "Mandala",
+    "oraculo": "Oráculo",
+    "diario": "Diário",
+    "conta": "Conta",
+    "manifesto": "Manifesto",
+    "sair": "Sair"
+  },
+  "mandala": {
+    "titulo": "MANDALA AKÁSHICA",
+    "saudacaoManha": "Bom despertar —",
+    "saudacaoTarde": "Boa tarde —",
+    "saudacaoNoite": "Boa noite —",
+    "saudacaoCompleta": "{saudacao} sua Mandala Akáshica aguarda",
+    "dadosIncompletos": "⚠ Dados incompletos — complete seu perfil para uma leitura plena",
+    "linkDiario": "→ Ver Diário Energético de hoje"
+  },
+  "oraculo": {
+    "titulo": "Oráculo",
+    "placeholder": "Pergunte ao oráculo...",
+    "enviar": "Enviar",
+    "creditos": "{count, plural, =0 {Sem créditos} one {# crédito} other {# créditos}}",
+    "creditosRestantes": "Restantes: {count}",
+    "erroCreditos": "Créditos insuficientes",
+    "consultaSimples": "Consulta simples",
+    "consultaComplexa": "Consulta complexa"
+  },
+  "diario": {
+    "titulo": "Diário Energético",
+    "hoje": "Hoje",
+    "amanha": "Amanhã",
+    "ritual": "Ritual",
+    "alerta": "Alerta",
+    "clima": "Clima do dia"
+  },
+  "onboarding": {
+    "bemVindo": "Bem-vindo à Cabala dos Caminhos",
+    "passo": "Passo {atual} de {total}",
+    "nome": "Seu nome completo",
+    "dataNascimento": "Data de nascimento",
+    "horaNascimento": "Hora de nascimento (se souber)",
+    "localNascimento": "Local de nascimento",
+    "iniciar": "Iniciar jornada"
+  },
+  "creditos": {
+    "titulo": "Créditos",
+    "compra": "Comprar mais créditos",
+    "historico": "Histórico de uso"
+  },
+  "erros": {
+    "naoAutorizado": "Você precisa estar logado para acessar esta página.",
+    "creditosInsuficientes": "Créditos insuficientes para esta consulta.",
+    "rede": "Erro de conexão. Tente novamente."
+  }
+}

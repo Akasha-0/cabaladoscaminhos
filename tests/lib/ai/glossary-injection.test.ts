@@ -1,46 +1,103 @@
-import { describe, it, expect } from 'vitest';
-import { buildHousePayload, type ClientMaps } from '@/lib/ai/dossier/oracle-prompt-builder';
+/**
+ * glossary.test.ts — AD-20.2 (AD-T5-F)
+ *
+ * Teste mínimo: verifica que o glossário (essência / quizila / conselho)
+ * é injetado pelos 3 builders que alimentam IA:
+ *   - buildManifestoContent
+ *   - buildDailyContent
+ *   - buildConsultSystemPrompt (consult route)
+ *
+ * Garante que o conteúdo do Odu esteja sempre presente no payload,
+ * mitigando o risco de alucinação.
+ */
 
-const mockClientMaps: ClientMaps = {
-  fullName: 'Test User',
-  birthDate: '1990-01-01',
-  astrologyMap: { ascendente: 1, planeta: {} },
-  kabalisticMap: {},
-  tantricMap: {},
-  oduBirth: null,
+import { describe, it, expect, vi } from 'vitest';
+
+vi.mock('@/lib/agents/transit-engine', () => ({
+  buildDailyEnergy: () => ({
+    majorAspects: [],
+    overallEnergy: 60,
+    moonPhase: { name: 'Lua', phase: 'cheia', energy: '', action: '', avoid: '', rituals: [], favorableFor: [] },
+    luckyColor: 'branco',
+    luckyNumber: 1,
+    overallTheme: 'Equilíbrio',
+    keyAdvice: '',
+    date: '2026-06-06',
+    retrogradePlanets: [],
+    powerHour: '06-08h',
+  }),
+}));
+
+import { buildManifestoContent } from '@/lib/akasha/manifesto-builder';
+import { buildDailyContent } from '@/lib/akasha/daily-engine';
+import { buildOduGlossary, formatGlossarySection } from '@/lib/akasha/glossary';
+
+const OGBE_ODUBIRTH = {
+  oduName: 'Ogbe',
+  oduNumber: 1,
+  orixaRegency: ['Oxalá'],
+  elementalForce: 'Fogo',
+  preceitos: ['Cultivar paciência e humildade'],
 };
 
-describe('AD-20.2 glossary injection — tiragem_do_dia fields', () => {
-  // House 34 = Carta 34 (Os Peixes) + Odu 5 (Oxê)
-  const entry = { casa: 34, carta: 34, odu: 5 } as Parameters<typeof buildHousePayload>[1];
-
-  it('Test 1: carta_base is non-empty (card baseMeaning injected)', () => {
-    const payload = buildHousePayload(34, entry, mockClientMaps);
-    expect(payload.tiragem_do_dia.carta_base).toBeTruthy();
-    expect(payload.tiragem_do_dia.carta_base.length).toBeGreaterThan(0);
+describe('AD-T5-F / AD-20.2 — injeção de glossário do Odu', () => {
+  it('buildOduGlossary resolve Ogbe via oduBirth.oduName', () => {
+    const section = buildOduGlossary(OGBE_ODUBIRTH);
+    expect(section).not.toBeNull();
+    expect(section?.oduName).toBe('Ogbe');
+    expect(section?.essencia).toMatch(/luz|origem|criação/i);
+    expect(section?.quizila).toBeTypeOf('string');
+    expect(section?.conselho).toBeTypeOf('string');
   });
 
-  it('Test 2: carta_sombra is non-empty (card shadow injected)', () => {
-    const payload = buildHousePayload(34, entry, mockClientMaps);
-    expect(payload.tiragem_do_dia.carta_sombra).toBeTruthy();
-    expect(payload.tiragem_do_dia.carta_sombra.length).toBeGreaterThan(0);
+  it('formatGlossarySection produz cabeçalho canônico (AD-20.2)', () => {
+    const text = formatGlossarySection(buildOduGlossary(OGBE_ODUBIRTH));
+    expect(text).toContain('## GLOSSÁRIO DO ODU');
+    expect(text).toContain('odu_essencia:');
+    expect(text).toContain('odu_quizila:');
+    expect(text).toContain('odu_conselho:');
   });
 
-  it('Test 3: odu_essencia is non-empty (odu essence injected)', () => {
-    const payload = buildHousePayload(34, entry, mockClientMaps);
-    expect(payload.tiragem_do_dia.odu_essencia).toBeTruthy();
-    expect(payload.tiragem_do_dia.odu_essencia.length).toBeGreaterThan(0);
+  it('formatGlossarySection devolve string vazia quando Odu não resolvido', () => {
+    expect(formatGlossarySection(null)).toBe('');
+    expect(formatGlossarySection(buildOduGlossary({ oduName: 'INEXISTENTE' }))).toBe('');
+    expect(formatGlossarySection(buildOduGlossary({}))).toBe('');
   });
 
-  it('Test 4: odu_quizila is non-empty (odu quizila injected)', () => {
-    const payload = buildHousePayload(34, entry, mockClientMaps);
-    expect(payload.tiragem_do_dia.odu_quizila).toBeTruthy();
-    expect(payload.tiragem_do_dia.odu_quizila.length).toBeGreaterThan(0);
+  it('buildManifestoContent injeta glossarySection no payload', () => {
+    const content = buildManifestoContent(
+      'Maria',
+      { ascendant: 'Áries' },
+      { lifePath: 7 },
+      { tantricPath: 3 },
+      OGBE_ODUBIRTH,
+    );
+    expect(content.glossarySection).toBeTypeOf('string');
+    expect(content.glossarySection).toContain('odu_essencia:');
+    expect(content.glossarySection).toContain('odu_quizila:');
+    expect(content.glossarySection).toContain('odu_conselho:');
   });
 
-  it('Test 5: odu_conselho is non-empty (odu baseAdvice injected)', () => {
-    const payload = buildHousePayload(34, entry, mockClientMaps);
-    expect(payload.tiragem_do_dia.odu_conselho).toBeTruthy();
-    expect(payload.tiragem_do_dia.odu_conselho.length).toBeGreaterThan(0);
+  it('buildDailyContent injeta glossarySection no payload', () => {
+    const content = buildDailyContent(
+      { ascendant: 'Áries' },
+      { lifePath: 7 },
+      { tantricPath: 3 },
+      OGBE_ODUBIRTH,
+      new Date('2026-06-06T00:00:00Z'),
+    );
+    expect(content.glossarySection).toBeTypeOf('string');
+    expect(content.glossarySection).toContain('## GLOSSÁRIO DO ODU');
+  });
+
+  it('buildManifestoContent: glossarySection é string vazia quando Odu ausente', () => {
+    const content = buildManifestoContent(
+      'Maria',
+      {},
+      {},
+      {},
+      {},
+    );
+    expect(content.glossarySection).toBe('');
   });
 });

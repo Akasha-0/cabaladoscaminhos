@@ -2,6 +2,7 @@
 id: corpo-05-fisico
 slug: corpo-05-fisico
 title: "Corpo Físico — O Templo Presente"
+title_en: "Corpo Physical — O Templo Presente"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Terra]

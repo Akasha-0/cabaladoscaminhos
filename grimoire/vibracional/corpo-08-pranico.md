@@ -2,6 +2,7 @@
 id: corpo-08-pranico
 slug: corpo-08-pranico
 title: "Corpo Prânico — A Energia Vital"
+title_en: "Corpo Pranic — A Energy Vital"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Ar, Fogo]

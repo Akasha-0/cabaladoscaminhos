@@ -2,6 +2,7 @@
 id: erva-002-arruda
 slug: erva-002-arruda
 title: "Arruda — Limpeza, Proteção e Corte de Laços"
+title_en: "Rue — Cleansing, Protection e Corte de Lacos"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Fogo, Terra]

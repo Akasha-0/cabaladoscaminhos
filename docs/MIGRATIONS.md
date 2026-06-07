@@ -25,19 +25,27 @@
 >
 > 2. **Monorepo — `prisma/` compartilhado.** No monorepo (Turborepo/pnpm, Doc 25 §11),
 >    o `prisma/` (schema + migrations) é **compartilhado** entre `apps/b2c-portal` e
->    `apps/legacy-cockpit`; os `packages/core-*` são agnósticos e **não** tocam o banco.
->    `prisma migrate deploy` roda na **raiz** do monorepo; o deploy no VPS Linux
->    (Doc 25 §10) executa-o antes de `pm2 reload b2c-portal` (runbook no Doc 22 §9).
->    O esquema migra de B2B (`Operator`/`Reading`/Mesa Real) para B2C
->    (`User`/`BirthChart`/`Manifesto`/`DailyReading`/`GrimoireEntry`, Doc 04); os
->    modelos legados permanecem até o desligamento do `legacy-cockpit` (AD-25.2).
+>    outros apps que rodem no mesmo banco; os `packages/core-*` são agnósticos e
+>    **não** tocam o banco. `prisma migrate deploy` roda na **raiz** do monorepo;
+>    o deploy no VPS Linux (Doc 25 §10) executa-o antes de
+>    `pm2 reload b2c-portal` (runbook no Doc 22 §9). O esquema canônico é o
+>    B2C do Akasha (`User`/`BirthChart`/`Manifesto`/`DailyReading`/`GrimoireEntry`,
+>    Doc 04).
 
 ## Status
 
-**Initial migration:** `prisma/migrations/20260602000000_init/`
-- Cria **31 tabelas** (29 models Prisma + 2 tabelas M2M implícitas: `_DiaSemanaToOrixa`, `_ErvaToOrixa`)
-- Cria **4 enums** (TipoTransacao, UserRole, ReadingStatus, ChatRole)
-- Cria **48 indexes** + **24 unique indexes** + **20 foreign keys**
+**Migration inicial Akasha v2:** `prisma/migrations/20260606000000_init_akasha_v2/`
+- Cria **10 modelos** do núcleo B2C canônico (User, BirthChart, Subscription, CreditEntry, Manifesto, DailyReading, RitualCompletion, Consultation, ChatMessage, GrimoireEntry)
+- Cria **4 enums** (UserRole, Plan, SubStatus, ChatRole)
+- Cria **12 indexes** + **4 unique indexes** + **9 foreign keys**
+- **Ativa pgvector (Doc 25 §5):** `CREATE EXTENSION IF NOT EXISTS "vector"`, coluna `embedding vector(768)` em `grimoire`, índice `grimoire_embedding_idx` (`ivfflat` + `vector_cosine_ops`, `lists = 100`)
+- ⚠️ Substitui qualquer esquema anterior — a migração inicial canônica do
+  Akasha v2 destrói e recria as tabelas. Garanta backup antes de aplicar.
+
+**Migration de consentimento LGPD:** `prisma/migrations/20260606000001_add_user_consent_at/`
+- Adiciona coluna `consentAt DateTime?` em `users` (AD-T5-C: timestamp de consentimento LGPD)
+
+A migration `20260606000000_init_akasha_v2` é a **fonte canônica de ativação do pgvector**: a coluna `embedding vector(768)` e o índice `ivfflat` são criados nela (não em uma migration separada). A coluna é `Unsupported` no Prisma (não tipa nativamente) — populada via `$executeRaw` por `src/lib/grimoire/sync.ts` (Ollama `nomic-embed-text`).
 
 Esta migration **ainda não foi aplicada** — o `DATABASE_URL` configurado em
 `.env` é um placeholder. Para um ambiente real, edite `.env` e rode
@@ -122,28 +130,22 @@ npx prisma generate              # client gerado
 
 ```
 prisma/
-├── schema.prisma                 # Fonte canônica (29 models)
+├── schema.prisma                 # Fonte canônica (10 models)
 ├── seed.ts                       # Seed (carrega dados iniciais)
 ├── migrations/
 │   ├── README.md                 # Doc antiga (mantida p/ contexto)
 │   ├── migration_lock.toml       # Lock do provider
-│   └── 20260602000000_init/
-│       └── migration.sql         # ⭐ Migration inicial — TODOS os models
+│   ├── 20260606000000_init_akasha_v2/
+│   │   └── migration.sql         # ⭐ Migration inicial — 10 models B2C + pgvector
+│   └── 20260606000001_add_user_consent_at/
+│       └── migration.sql         # LGPD — coluna consentAt em users
 └── ...
 ```
 
 ## Próximas migrations (quando aplicável)
 
-- ✅ `Operator.sessions` (Fase 13) — entregue via migration inicial
-  `20260602000000_init` (model `OperatorSession` + enum `OperatorSessionType`)
-  — *legado (`legacy-cockpit`), permanece até o desligamento (AD-25.2)*
-- ⏳ **Akasha B2C** (Doc 04): models `User`/`BirthChart`/`Subscription`/`CreditEntry`/
-  `Manifesto`/`DailyReading`/`Consultation`/`ChatMessage` + enums `UserRole`/`Plan`/
-  `SubStatus`/`ChatRole` — substituem o núcleo B2B no schema.
 - ⏳ **`grimoire` + pgvector** — model `GrimoireEntry` + **migration SQL manual** da
   coluna `embedding vector(768)` e índice `ivfflat`/`hnsw` (ver a nota do topo).
-- `Reading.tags` para organização (*legado*)
-- ✅ `Client.birthTimezone` (IANA timezone string) — `20260603091000_add_client_birth_timezone`
-  Adiciona coluna `birthTimezone TEXT` com índice em `clients` para
-  cálculo astral preciso com conversão de horário local → UTC. No B2C, o campo
-  equivalente é `User.birthTimezone` (Doc 04 §1), preenchido por Nominatim (Doc 23 AD-23.2).
+  A coluna e o índice já são criados pela `20260606000000_init_akasha_v2`; resta
+  validar a rotina de sincronização Ollama (`src/lib/grimoire/sync.ts`) e a
+  busca híbrida.

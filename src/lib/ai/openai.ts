@@ -367,7 +367,7 @@ async function sendMessage(messages: ChatMessage[], systemPrompt?: string): Prom
 // STREAMING COMPLETION (SSE via ReadableStream)
 // ============================================================
 // Note: Streaming is implemented at the route level via ReadableStream
-// (e.g. /api/mesa-real/dossier/[id]/route.ts).
+// (e.g. /api/akasha/consult/route.ts).
 // createChatCompletion is non-streaming; SSE routes handle their own
 // streaming via TextEncoder + ReadableStream.
 // Future: expose createStreamingCompletion here when needed.

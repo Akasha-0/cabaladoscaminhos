@@ -20,11 +20,15 @@ export default async function ContaPage({
     fetch(`${baseUrl}/api/akasha/subscription`, { headers, cache: 'no-store' }),
   ]);
 
-  if (meRes.status === 401) redirect('/onboarding');
+  // AD-T5-D: redirecionar em qualquer falha de /me (não só 401)
+  if (!meRes.ok) redirect('/onboarding');
 
-  const user = meRes.ok ? await meRes.json() : { fullName: '', email: '' };
+  const user = await meRes.json();
   const { balance = 0 } = credRes.ok ? await credRes.json() : {};
-  const subscription = subRes.ok ? await subRes.json() : { plan: 'FREEMIUM', status: 'ACTIVE' };
+  const subscription = subRes.ok
+    ? await subRes.json()
+    : { plan: 'FREEMIUM', status: 'ACTIVE' };
+  const subscriptionError = !subRes.ok;
 
   const params = await searchParams;
   const checkoutStatus = params.checkout;
@@ -34,6 +38,7 @@ export default async function ContaPage({
       user={user}
       balance={balance}
       subscription={subscription}
+      subscriptionError={subscriptionError}
       checkoutStatus={checkoutStatus}
     />
   );

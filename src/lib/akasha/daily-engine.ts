@@ -1,6 +1,7 @@
 import type { BirthChart } from '@akasha/core-astrology';
 import { buildDailyEnergy } from '@/lib/agents/transit-engine';
 import { crossAnalyze } from './cross-engine';
+import { buildOduGlossary, formatGlossarySection } from './glossary';
 
 export interface DailyContent {
   date: string;
@@ -22,6 +23,8 @@ export interface DailyContent {
   };
   moonPhase: string;
   overallTheme: string;
+  /** AD-T5-F (AD-20.2): bloco de glossário injetado para downstream IA. */
+  glossarySection?: string;
 }
 
 export function buildDailyContent(
@@ -61,6 +64,8 @@ export function buildDailyContent(
     tensionPoint: cross.tensionPoint,
     moonPhase: energy.moonPhase?.name ?? 'Lua',
     overallTheme: energy.overallTheme ?? 'Equilíbrio',
+    // AD-T5-F (AD-20.2): glossário mínimo do Odu injetado no payload
+    glossarySection: formatGlossarySection(buildOduGlossary(oduBirth)),
   };
 }
 

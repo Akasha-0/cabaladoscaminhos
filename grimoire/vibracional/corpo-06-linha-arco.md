@@ -2,6 +2,7 @@
 id: corpo-06-linha-arco
 slug: corpo-06-linha-arco
 title: "Linha do Arco — O Escudo Áurico"
+title_en: "Linha do Arco — O Escudo Aurico"
 categoria: Corpo Tântrico
 biblioteca: vibracional
 Elementos_Regentes: [Ar, Éter]

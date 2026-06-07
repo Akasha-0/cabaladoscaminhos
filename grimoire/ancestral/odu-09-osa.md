@@ -2,6 +2,7 @@
 id: odu-09-osa
 slug: odu-09-osa
 title: "Osá — O Vento da Transformação"
+title_en: "Osa — O Vento da Transformation"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Ar]

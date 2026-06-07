@@ -45,13 +45,6 @@ export interface OduData {
   ebo: string;
 }
 
-interface CartaLenormand {
-  numero: number;
-  nome: string;
-  significado: string;
-  area: string;
-  interpretacao: string;
-}
 interface ChakraData {
   numero: number;
   nome: string;
@@ -319,49 +312,6 @@ export const odus: OduData[] = [
   { numero: 14, nome: "Iká", significado: "A traição, a cobra que morde, a sabedoria oculta e a renovação da pele.", elementos: "Água / Terra", orixas: ["Oxumaré", "Ossain"], quizilas: ["Falsidade", "Maltratar animais (especialmente répteis)", "Revelar segredos confiados a você"], preceitos: "Manter a discrição absoluta sobre sua vida pessoal; cultivar a flexibilidade perante os obstáculos.", ebo: "Ebó de Renovação: Banhos com folhas de fortuna e dinheiro-em-penca, amarrar fitas coloridas (7 cores)." },
   { numero: 15, nome: "Ogbogbé", significado: "A feitiçaria, o corte pesado, as disputas por espaço ou poder.", elementos: "Fogo / Terra", orixas: ["Obá", "Ewá", "Ogum"], quizilas: ["Invejar o espaço alheio", "Comer comidas muito apimentadas perto de dormir", "Brigas domésticas"], preceitos: "Buscar a paz no lar; proteger a própria energia contra feitiçarias e inveja; focar no amor próprio.", ebo: "Ebó de Defesa: Oferendas com acarajés recheados, banhos de erva-de-bicho ou espada-de-santa-bárbara." },
   { numero: 16, nome: "Alafia", significado: "A paz absoluta, a luz total, a confirmação dos Deuses. Tudo está bem.", elementos: "Ar / Luz", orixas: ["Orunmilá", "Oxalá"], quizilas: ["Duvidar da própria espiritualidade", "Orgulho", "Arrogância", "Não ouvir conselhos"], preceitos: "Manter as práticas espirituais em dia; compartilhar a sabedoria com quem precisa; ser grato.", ebo: "Ebó de Agradecimento: Flores brancas, oferendas de frutas doces e claras, acender lâmpadas ou muitas velas brancas." }
-];
-
-// ============================================================
-// CARTAS DO BARALHO CIGANO (LENORMAND)
-// ============================================================
-
-const cartasLenormand: CartaLenormand[] = [
-  { numero: 1, nome: "O Cavaleiro", significado: "Início, velocidade, notícias que chegam, movimentos rápidos.", area: "Ações imediatas, projetos novos, novos caminhos.", interpretacao: "Mostra o que está entrando na vida do consulente logo no início do jogo." },
-  { numero: 2, nome: "O Trevo", significado: "Pequenos obstáculos, imprevistos, sorte rápida ou testes cotidianos.", area: "Desafios diários, sorte, pequenas dificuldades de percurso.", interpretacao: "Indica as pequenas pedras no caminho ou golpes de sorte momentâneos." },
-  { numero: 3, nome: "O Navio", significado: "Viagens, transições de longo prazo, mudanças profundas, horizontes.", area: "Mudanças geográficas ou de estado civil/emocional, comércio exterior.", interpretacao: "Revela para onde a vida do consulente está navegando e o ritmo dessa mudança." },
-  { numero: 4, nome: "A Casa", significado: "Família, base estrutural, estabilidade, o corpo físico.", area: "Assuntos domésticos, imóveis, o lar, antepassados.", interpretacao: "Mostra a segurança íntima, a relação com parentes e a saúde do corpo/lar." },
-  { numero: 5, nome: "A Árvore", significado: "Saúde, crescimento lento, ancestralidade, colheita duradoura.", area: "Saúde física/espiritual, projetos de longo prazo, evolução vital.", interpretacao: "Indica a vitalidade do consulente e a firmeza de suas raízes e planos." },
-  { numero: 6, nome: "As Nuvens", significado: "Dúvidas, confusão mental, instabilidade, clareza que falta.", area: "Estado psicológico, incertezas temporárias, tempestades emocionais.", interpretacao: "Revela onde o consulente está cego ou confuso na vida atual." },
-  { numero: 7, nome: "A Serpente", significado: "Traição, autossabotagem, astúcia, energia sexual, rivalidades.", area: "Alertas, pessoas mal-intencionadas, desejos ocultos, magnetismo.", interpretacao: "Alerta sobre perigos ocultos, inveja ou a necessidade de ser esperto." },
-  { numero: 8, nome: "O Caixão", significado: "Fim de ciclo, transformações radicais, perdas necessárias, renascimento.", area: "Rupturas, luto (literal ou figurado), encerramentos, regeneração.", interpretacao: "Mostra o que precisa morrer ou ser enterrado na vida do consulente." },
-  { numero: 9, nome: "Os Buquês", significado: "Felicidade, presentes do destino, cura, celebração, convites.", area: "Bem-estar, reconciliações, vida social, surpresas positivas.", interpretacao: "É a casa da alegria; mostra onde o consulente receberá um 'mimo' da vida." },
-  { numero: 10, nome: "A Foice", significado: "Cortes abruptos, decisões radicais, colheita rápida, cirurgias.", area: "Decisões definitivas, encerramentos drásticos, o resultado do plantio.", interpretacao: "Indica onde o consulente sofrerá ou provocará um corte drástico e sem volta." },
-  { numero: 11, nome: "O Chicote", significado: "Conflitos, estresse, demandas espirituais, repetição de padrões, abuso.", area: "Brigas, discussões, força de vontade, desgaste físico/emocional.", interpretacao: "Mostra onde há atrito constante, punição ou necessidade de impor limites." },
-  { numero: 12, nome: "Os Pássaros", significado: "Comunicação, conversas cotidianas, flertes, agitação, estresse leve.", area: "Vida social, conversas fiadas, reuniões, parcerias dinâmicas.", interpretacao: "Revela o movimento do dia a dia, a comunicação e o estado de ansiedade." },
-  { numero: 13, nome: "A Criança", significado: "Novos começos, pureza, imaturidade, filhos, espontaneidade.", area: "Início de projetos, infância, vulnerabilidade, novidades puras.", interpretacao: "Indica o que está nascendo ou onde o consulente está agindo de forma ingênua." },
-  { numero: 14, nome: "A Raposa", significado: "Estratégia, armadilhas, falsidade, inteligência voltada ao ganho.", area: "Trabalho assalariado, cautela necessária, emboscadas, concorrência.", interpretacao: "Alerta sobre onde é preciso ser extremamente estratégico para não ser passado para trás." },
-  { numero: 15, nome: "O Urso", significado: "Poder, autoridade, proteção excessiva, ciúmes, finanças pesadas.", area: "Figuras de autoridade (chefes, pais), finanças, proteção, opressão.", interpretacao: "Mostra onde o consulente exerce poder ou onde está sendo sufocado/protegido." },
-  { numero: 16, nome: "A Estrela", significado: "Sucesso, brilho pessoal, proteção espiritual, destino, esperança.", area: "Espiritualidade alta, rumo de vida, fama, reconhecimento, sonhos.", interpretacao: "É a casa do norte espiritual; indica onde há bênçãos e boa estrela guiando." },
-  { numero: 17, nome: "A Cegonha", significado: "Novidades, mudanças positivas, gravidez, renovação de ares.", area: "Viagens rápidas, quebra de rotina, novos ciclos favoráveis.", interpretacao: "Revela o que trará uma lufada de ar fresco e novidade para o consulente." },
-  { numero: 18, nome: "O Cachorro", significado: "Fidelidade, amizade verdadeira, aliados, proteção, lealdade.", area: "Relações sociais próximas, amigos, mentores, fidelidade a si mesmo.", interpretacao: "Mostra em quem ou em que o consulente pode confiar de olhos fechados." },
-  { numero: 19, nome: "A Torre", significado: "Isolamento, instituições governamentais, o mundo interior, o Eu espiritual.", area: "Edifícios públicos, bancos, hospitais, solidão, autoconhecimento.", interpretacao: "Indica processos burocráticos, isolamento necessário ou o estado da alma." },
-  { numero: 20, nome: "O Jardim", significado: "Vida pública, sociedade, festas, o impacto das suas ações no coletivo.", area: "Redes sociais, eventos, reuniões públicas, colheita do que foi exposto.", interpretacao: "Mostra como a sociedade enxerga o consulente e a sua vida social externa." },
-  { numero: 21, nome: "A Montanha", significado: "Grandes bloqueios, justiça terrena, desafios rígidos, resiliência.", area: "Obstáculos difíceis de mover, processos judiciais, barreiras.", interpretacao: "Indica onde a vida do consulente está travada ou exige paciência monumental." },
-  { numero: 22, nome: "Os Caminhos", significado: "Escolhas, livre-arbítrio, bifurcações na vida, direções a tomar.", area: "Decisões de vida, caminhos alternativos, independência.", interpretacao: "Mostra o momento em que o consulente terá que escolher entre duas opções." },
-  { numero: 23, nome: "O Rato", significado: "Desgaste, roubo de energia ou material, estresse crônico, perdas.", area: "Preocupações financeiras, vampirismo energético, perdas graduais.", interpretacao: "Alerta sobre o que está roendo a paz, a saúde ou as finanças do consulente." },
-  { numero: 24, nome: "O Coração", significado: "Amor, paixão, entrega emocional, sentimentos profundos.", area: "Relacionamentos amorosos, o que o consulente ama fazer, afeto.", interpretacao: "Central para o amor; mostra o estado emocional e o que move o sentimento." },
-  { numero: 25, nome: "O Anel", significado: "Contratos, parcerias, casamentos, alianças comerciais ou afetivas.", area: "Compromissos firmados, sociedades de negócios, uniões.", interpretacao: "Revela a qualidade das alianças e pactos que o consulente possui ou fará." },
-  { numero: 26, nome: "O Livro", significado: "Segredos, estudos, trabalho intelectual, o que ainda não foi revelado.", area: "Vida acadêmica, carreira profunda, mistérios, arquivos ocultos.", interpretacao: "Indica o que está escondido do consulente ou a necessidade de estudar mais." },
-  { numero: 27, nome: "A Carta", significado: "Documentos oficiais, mensagens escritas, e-mails, notícias formais.", area: "Burocracia, avisos, papéis de contratos, exames médicos escritos.", interpretacao: "Mostra a chegada de papéis importantes ou comunicações formais e diretas." },
-  { numero: 28, nome: "O Cigano", significado: "A energia masculina, a ação, a razão, o próprio consulente (homem).", area: "O Consulente (se homem) ou o parceiro/homem importante (se mulher).", interpretacao: "Analisa a mente racional, o foco e as ações do homem central do jogo." },
-  { numero: 29, nome: "A Cigana", significado: "A energia feminina, a intuição, a emoção, a própria consulente (mulher).", area: "A Consulente (se mulher) ou a parceira/mulher importante (se homem).", interpretacao: "Analisa a intuição, a receptividade e as emoções da mulher central do jogo." },
-  { numero: 30, nome: "Os Lírios", significado: "Paz, maturidade, velhice, pureza, sexualidade fria ou madura.", area: "Harmonia familiar, paz de espírito, aposentadoria, virtudes.", interpretacao: "Mostra onde o consulente encontrará paz de espírito ou a proteção de idosos." },
-  { numero: 31, nome: "O Sol", significado: "Sucesso absoluto, clareza, energia vital, ego positivo, verdade.", area: "Sucesso financeiro, cura de doenças, exposição positiva, energia.", interpretacao: "É a casa do ouro e da verdade; onde ela estiver, haverá luz e triunfo total." },
-  { numero: 32, nome: "A Lua", significado: "Reconhecimento, honras, intuição, ilusões, flutuação emocional.", area: "Carreira (sucesso público), a psique, o misticismo, a reputação.", interpretacao: "Revela os desejos profundos da alma e o reconhecimento que receberá." },
-  { numero: 33, nome: "A Chave", significado: "Soluções, abertura de portas, respostas definitivas, saída de crises.", area: "Resolução de problemas, saídas estratégicas, o poder de decidir.", interpretacao: "Mostra onde o consulente tem o controle absoluto e a resposta nas mãos." },
-  { numero: 34, nome: "Os Peixes", significado: "Dinheiro, bens materiais, fluxo financeiro, comércio, fertilidade.", area: "Finanças, negócios, lucros, investimentos, multiplicação.", interpretacao: "A casa do dinheiro por excelência; indica como anda o fluxo financeiro." },
-  { numero: 35, nome: "A Âncora", significado: "Estabilidade, segurança a longo prazo, trabalho fixo, apego excessivo.", area: "Carreira estável, porto seguro, contratos de longo prazo, rigidez.", interpretacao: "Mostra o que sustenta o consulente ou onde ele está preso por comodismo." },
-  { numero: 36, nome: "A Cruz", significado: "O destino, provações necessárias, karma, vitória após o sacrifício.", area: "Lições espirituais profundas, fardos, final do caminho, fé testada.", interpretacao: "Indica o maior fardo atual do consulente, mas também o seu ponto de vitória final." }
 ];
 
 // ============================================================

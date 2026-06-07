@@ -9,17 +9,16 @@ const registerSchema = z.object({
     z.string().email('Email inválido')
   ),
   password: z.string().min(8, 'Senha deve ter ao menos 8 caracteres'),
-  fullName: z.string().min(2, 'Nome completo obrigatório'),
+  name: z.string().min(2, 'Nome obrigatório'),
   birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'birthDate deve ser YYYY-MM-DD'),
-  birthTime: z.string().min(1, 'Horário de nascimento obrigatório'),
+  birthTime: z.string().optional(),
   birthCity: z.string().min(1, 'Cidade de nascimento obrigatória'),
-  birthState: z.string().min(1, 'Estado de nascimento obrigatório'),
-  birthCountry: z.string().min(1, 'País de nascimento obrigatório'),
   birthLatitude: z.number().optional(),
   birthLongitude: z.number().optional(),
   birthTimezone: z.string().optional(),
-  consentGiven: z.literal(true, {
-    errorMap: () => ({ message: 'Consentimento é obrigatório' }),
+  // AD-T5-C: LGPD — consent deve ser explicitamente true no cadastro
+  consent: z.literal(true, {
+    errorMap: () => ({ message: 'É necessário consentir com o tratamento dos dados' }),
   }),
 });
 
@@ -37,7 +36,7 @@ export async function POST(request: NextRequest) {
     throw err;
   }
 
-  const existing = await prisma.akashaUser.findUnique({
+  const existing = await prisma.user.findUnique({
     where: { email: body.email },
     select: { id: true },
   });
@@ -51,20 +50,18 @@ export async function POST(request: NextRequest) {
 
   const passwordHash = await bcrypt.hash(body.password, 12);
 
-  await prisma.akashaUser.create({
+  await prisma.user.create({
     data: {
       email: body.email,
       passwordHash,
-      fullName: body.fullName,
+      name: body.name,
       birthDate: new Date(body.birthDate),
       birthTime: body.birthTime,
       birthCity: body.birthCity,
-      birthState: body.birthState,
-      birthCountry: body.birthCountry,
       birthLatitude: body.birthLatitude,
       birthLongitude: body.birthLongitude,
       birthTimezone: body.birthTimezone,
-      consentGiven: true,
+      // AD-T5-C: persistência mínima do consentimento LGPD
       consentAt: new Date(),
     },
   });

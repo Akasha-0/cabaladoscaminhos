@@ -2,6 +2,7 @@
 id: odu-16-otura
 slug: odu-16-otura
 title: "Otura — O Retorno à Fonte"
+title_en: "Otura — O Retorno a Fonte"
 categoria: Odu
 biblioteca: ancestral
 Elementos_Regentes: [Fogo]

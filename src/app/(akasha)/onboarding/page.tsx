@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { geocodeCity } from '@/lib/geocoding/nominatim';
 
 type FormData = {
-  fullName: string;
+  name: string;
   email: string;
   password: string;
   intention: string;
@@ -12,14 +13,16 @@ type FormData = {
   birthTime: string;
   birthCity: string;
   birthState: string;
-  birthCountry: string;
+  birthLatitude: number;
+  birthLongitude: number;
+  birthTimezone: string;
   quiz1: string;
   quiz2: string;
   consent: boolean;
 };
 
 const INITIAL: FormData = {
-  fullName: '',
+  name: '',
   email: '',
   password: '',
   intention: '',
@@ -27,7 +30,9 @@ const INITIAL: FormData = {
   birthTime: '',
   birthCity: '',
   birthState: '',
-  birthCountry: 'Brasil',
+  birthLatitude: 0,
+  birthLongitude: 0,
+  birthTimezone: '',
   quiz1: '',
   quiz2: '',
   consent: false,
@@ -90,10 +95,44 @@ export default function OnboardingPage() {
   const [form, setForm] = useState<FormData>(INITIAL);
   const [error, setError] = useState('');
   const [phraseIdx, setPhraseIdx] = useState(0);
+  const [geocoding, setGeocoding] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   function set<K extends keyof FormData>(key: K, value: FormData[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  // AD-T5-A: detectar timezone do browser uma vez no mount
+  // (fallback quando birthCity não retorna timezone via Nominatim).
+  useEffect(() => {
+    if (form.birthTimezone) return;
+    if (typeof Intl === 'undefined') return;
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tz) set('birthTimezone', tz);
+    } catch {
+      /* ignore — manter '' até geocoding preencher */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // AD-T5-A: geocodificar birthCity no blur para preencher lat/long/timezone.
+  async function handleCityBlur() {
+    const city = form.birthCity.trim();
+    if (city.length < 2) return;
+    if (geocoding) return;
+    setGeocoding(true);
+    try {
+      const result = await geocodeCity(city, { countryCodes: 'br' });
+      if (!result) return;
+      setForm((prev) => ({
+        ...prev,
+        birthLatitude: result.latitude,
+        birthLongitude: result.longitude,
+      }));
+    } finally {
+      setGeocoding(false);
+    }
   }
 
   function next() {
@@ -126,14 +165,16 @@ export default function OnboardingPage() {
     const registerPayload = {
       email: form.email,
       password: form.password,
-      fullName: form.fullName,
+      name: form.name,
       birthDate: form.birthDate,
       birthTime: form.birthTime,
       birthCity: form.birthCity,
-      birthState: form.birthState,
-      birthCountry: form.birthCountry,
-      consentGiven: true,
+      birthLatitude: form.birthLatitude,
+      birthLongitude: form.birthLongitude,
+      birthTimezone: form.birthTimezone,
       intentionProfile,
+      // AD-T5-C: enviar consentimento explícito (LGPD)
+      consent: form.consent,
     };
 
     (async () => {
@@ -254,8 +295,8 @@ export default function OnboardingPage() {
                   style={inputStyle}
                   type="text"
                   placeholder="Seu nome completo"
-                  value={form.fullName}
-                  onChange={(e) => set('fullName', e.target.value)}
+                  value={form.name}
+                  onChange={(e) => set('name', e.target.value)}
                   autoFocus
                 />
               </div>
@@ -330,7 +371,13 @@ export default function OnboardingPage() {
                   placeholder="São Paulo"
                   value={form.birthCity}
                   onChange={(e) => set('birthCity', e.target.value)}
+                  onBlur={handleCityBlur}
                 />
+                {geocoding && (
+                  <p style={{ color: 'rgba(167,174,207,0.5)', fontSize: '0.75rem', marginTop: '4px' }}>
+                    Localizando coordenadas…
+                  </p>
+                )}
               </div>
               <div>
                 <label style={labelStyle}>Estado</label>
@@ -340,16 +387,6 @@ export default function OnboardingPage() {
                   placeholder="SP"
                   value={form.birthState}
                   onChange={(e) => set('birthState', e.target.value)}
-                />
-              </div>
-              <div>
-                <label style={labelStyle}>País</label>
-                <input
-                  style={inputStyle}
-                  type="text"
-                  placeholder="Brasil"
-                  value={form.birthCountry}
-                  onChange={(e) => set('birthCountry', e.target.value)}
                 />
               </div>
             </div>

@@ -2,6 +2,7 @@
 id: erva-006-patchouli
 slug: erva-006-patchouli
 title: "Patchouli — Aterramento, Sensualidade e Terra"
+title_en: "Patchouli — Aterramento, Sensualidade e Earth"
 categoria: Erva
 biblioteca: botanica
 Elementos_Regentes: [Terra]

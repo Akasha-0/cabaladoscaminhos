@@ -1,6 +1,4 @@
 import OpenAI from 'openai';
-import { prisma } from '@/lib/prisma';
-import { getOperatorFromServerContext } from '@/lib/auth/operator-session';
 import type { ChatMessage, AIResponse } from './types';
 
 export interface RouterCompletionOptions {
@@ -66,47 +64,10 @@ const DEFAULT_CONFIG: LlmConfig = {
 };
 
 /**
- * Resolves the LLM configuration for the operator.
+ * Resolves the LLM configuration from env vars.
  * Falls back to env variables.
  */
-export async function getLlmConfig(operatorId?: string): Promise<LlmConfig> {
-  let resolvedOperatorId = operatorId;
-
-  if (!resolvedOperatorId) {
-    const operator = await getOperatorFromServerContext();
-    if (operator) resolvedOperatorId = operator.id;
-  }
-
-  if (resolvedOperatorId) {
-    const setting = await prisma.userLlmSetting.findUnique({
-      where: { userId: resolvedOperatorId },
-    });
-
-    if (setting) {
-      return {
-        provider: setting.provider as LlmConfig['provider'],
-        openaiKey: setting.openaiKey,
-        openaiModel: setting.openaiModel ?? 'gpt-4o',
-        minimaxKey: setting.minimaxKey,
-        minimaxModel: setting.minimaxModel ?? 'minimax/m3',
-        anthropicKey: setting.anthropicKey,
-        anthropicModel: setting.anthropicModel ?? 'claude-3-5-sonnet',
-        localEndpoint: setting.localEndpoint ?? 'http://localhost:1234/v1',
-        localModel: setting.localModel ?? 'meta-llama-3-8b-instruct',
-        
-        geminiKey: setting.geminiKey,
-        geminiModel: setting.geminiModel ?? 'gemini-1.5-flash',
-        groqKey: setting.groqKey,
-        groqModel: setting.groqModel ?? 'llama-3.3-70b-versatile',
-        deepseekKey: setting.deepseekKey,
-        deepseekModel: setting.deepseekModel ?? 'deepseek-chat',
-        openrouterKey: setting.openrouterKey,
-        openrouterModel: setting.openrouterModel ?? 'google/gemini-2.5-flash',
-      };
-    }
-  }
-
-  // Fallback to Environment Variables
+export async function getLlmConfig(): Promise<LlmConfig> {
   return {
     provider: (process.env.LLM_PROVIDER as LlmConfig['provider']) || DEFAULT_CONFIG.provider,
     openaiKey: process.env.OPENAI_API_KEY || null,
@@ -134,9 +95,8 @@ export async function getLlmConfig(operatorId?: string): Promise<LlmConfig> {
  */
 export async function generateCompletion(
   options: RouterCompletionOptions,
-  operatorId?: string
 ): Promise<AIResponse> {
-  const config = await getLlmConfig(operatorId);
+  const config = await getLlmConfig();
   const startMs = Date.now();
 
   const openAiCompatibleProviders = ['openai', 'local', 'gemini', 'groq', 'deepseek', 'openrouter'];
@@ -315,9 +275,8 @@ export async function generateCompletion(
  */
 export async function* streamCompletion(
   options: RouterCompletionOptions,
-  operatorId?: string
 ): AsyncGenerator<RouterStreamChunk> {
-  const config = await getLlmConfig(operatorId);
+  const config = await getLlmConfig();
 
   const openAiCompatibleProviders = ['openai', 'local', 'gemini', 'groq', 'deepseek', 'openrouter'];
 
