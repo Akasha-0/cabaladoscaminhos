@@ -11,6 +11,8 @@
 - [ ] `grimoire/ancestral/odu-*.md` tem 16 arquivos
 - [ ] `grimoire/vibracional/corpo-*.md` tem 11 arquivos
 - [ ] `grimoire/diagnostico/*.md` tem 4 arquivos
+- [ ] `docs/15_glossario-oracular.md §1` ainda tem `⚠️ PROVISIONAL (D4)` — GAP CONFIRMADO _(bloqueia T3.4)_
+- [ ] `apps/akasha-portal/` está vazio (apenas `next-env.d.ts` e `tsconfig.tsbuildinfo`) — GAP CONFIRMADO _(bloqueia T1.2)_
 - [ ] `packages/core-{astrology,cabala,odus,tantra,types}/` existem (Fase A ✅)
 
 ## Fase 1 — CONCLUSÃO TÉCNICA
