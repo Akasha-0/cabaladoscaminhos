@@ -2,19 +2,21 @@
 
 ## Fase 0 — PRÉ-REQUISITO (verificar, não executar)
 
-- [ ] **Task 0: Confirmar v0.0.1 + v0.0.2 concluídos**
-  - [ ] `prisma/schema.prisma` contém os 9 modelos B2C canônicos (User, BirthChart, Subscription, CreditEntry, Manifesto, DailyReading, RitualCompletion, Consultation, ChatMessage, GrimoireEntry) + 4 enums
-  - [ ] `npx prisma validate` + `npx prisma generate` → 0 erros
-  - [ ] `npx tsc --noEmit` → 0 erros
-  - [ ] `npm run test:run` → ≥ 8113 testes passando, 0 falhas
-  - [ ] `npm run build` → OK
-  - [ ] `grimoire/botanica/*.md` tem ≥ 50 arquivos com `title_en` e frontmatter YAML válido
-  - [ ] `grimoire/ancestral/odu-*.md` tem 16 arquivos (D4 ainda pendente de proveniência)
-  - [ ] `grimoire/vibracional/corpo-*.md` tem 11 arquivos
-  - [ ] `grimoire/diagnostico/*.md` tem 4 arquivos
-  - [ ] `docs/15_glossario-oracular.md §1` ainda tem `⚠️ PROVISIONAL (D4)` — GAP CONFIRMADO
-  - [ ] `apps/akasha-portal/` está vazio (apenas `next-env.d.ts` e `tsconfig.tsbuildinfo`) — GAP CONFIRMADO
-  - [ ] `packages/core-{astrology,cabala,odus,tantra,types}/` existem (Fase A ✅)
+- [ ] **Task 0: Confirmar v0.0.1 + v0.0.2 concluídos** _(9/12 ✅ verificados no cycle 355; 3 gaps remanescentes: build pre-existente, Doc 15 §1 PROVISIONAL, apps/akasha-portal vazio — gate da Fase 1 ainda não liberado)_
+  - [x] `prisma/schema.prisma` contém os 9 modelos B2C canônicos (User, BirthChart, Subscription, CreditEntry, Manifesto, DailyReading, RitualCompletion, Consultation, ChatMessage, GrimoireEntry) + 4 enums _(verificado cycle 355: 11 modelos presentes — 10 canônicos + PushSubscription; 4 enums ✅)_
+  - [x] `npx prisma validate` + `npx prisma generate` → 0 erros _(cycle 355: schema valid, Prisma Client v7.8.0 gerado)_
+  - [x] `npx tsc --noEmit` → 0 erros _(cycle 355: exit 0)_
+  - [x] `npm run test:run` → ≥ 8113 testes passando, 0 falhas _(cycle 355: 8113 passed / 26 skipped, delta 0)_
+  - [ ] `npm run build` → OK _(PRÉ-EXISTENTE: `/_global-error` useContext, registrado cycle 211-212 — fora de escopo)_
+  - [x] `grimoire/botanica/*.md` tem ≥ 50 arquivos com `title_en` e frontmatter YAML válido _(cycle 355: 51/51 ✅)_
+  - [x] `grimoire/ancestral/odu-*.md` tem 16 arquivos (D4 ainda pendente de proveniência)
+  - [x] `grimoire/vibracional/corpo-*.md` tem 11 arquivos
+  - [x] `grimoire/diagnostico/*.md` tem 4 arquivos
+  - [ ] `docs/15_glossario-oracular.md §1` ainda tem `⚠️ PROVISIONAL (D4)` — GAP CONFIRMADO _(3 ocorrências em §1, linhas 9/28/32)_
+  - [ ] `apps/akasha-portal/` está vazio (apenas `next-env.d.ts` e `tsconfig.tsbuildinfo` + `.next/`) — GAP CONFIRMADO
+  - [x] `packages/core-{astrology,cabala,odus,tantra,types}/` existem (Fase A ✅) _(cycle 355: 5/5 presentes)_
+
+> **Gate de entrada da Fase 1:** 9/12 verdes — bloqueado em build pre-existente (registrado, fora de escopo), Doc 15 §1 PROVISIONAL (D4) e skeleton `apps/akasha-portal/`. T1.2 (skeleton) destrava o último gap; T3.2-3.5 destrava D4.
 
 > **Gate de entrada da Fase 1:** todos os 12 itens acima verdes.
 
