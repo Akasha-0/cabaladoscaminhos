@@ -61,6 +61,8 @@ verificáveis.
 | v0.0.4-T5 | **Three.js atmosfera WebGL** — Toroide etéreo (wireframe) + 50/80/100 partículas, rotação 0.1 rad/s, `dpr=[1,2]`, `frameloop="demand"` em `prefers-reduced-motion: reduce`; toggle low/medium/high no `cockpit-store`; 5 testes (`atmosphere.test.tsx`); deps: three + @react-three/fiber + @react-three/drei | (v0.0.4-T5) | ✅ |
 | v0.0.4-T6 | **PWA full-install** — `manifest.json` (Sistema Akasha, 3 ícones, 2 shortcuts), `sw.js` 141L (cache-first/network-first/SWR), 4 PNGs procedurais, `ServiceWorkerRegistrar.tsx` registrado em layout | (v0.0.4-T6) | ✅ |
 | v0.0.4-T7 | **Push notifications (VAPID + Web Push)** — schema `User.pushEnabled` + migration, `lib/push/{subscribe,send}.ts`, `POST/DELETE /api/akasha/push/subscribe`, toggle em `/conta` (LGPD), integração no `daily-transits-cron.ts`, eventos `push.{subscribed,unsubscribed,sent}`, Doc 22 §4 atualizado, 14 testes (privacy guard + API) | (v0.0.4-T7) | ✅ |
+| v0.0.4-T9 | **i18n EN completa (estrutural)** — `## EN` em todos os 82 grimoire files (botanica 51 + ancestral 16 + vibracional 11 + diagnostico 4); `src/i18n/{config,pt-BR,en}`; `LocaleSwitcher`; middleware locale detection (cookie+Accept-Language); Doc 15 v2.2→v2.3; AD-25.12 ✅ Estrutural; 2 testes de cobertura. Tradução nativa do corpo é ciclo futuro. | (v0.0.4-T9) | ✅ |
+| v0.0.4-T10 | **I-Ching 5º sistema (OPCIONAL — adiado para v0.0.5)** — Spec marcou como opcional e dependente de prioridade de lançamento | (não executado) | ⏭️ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -97,9 +99,9 @@ verificáveis.
 |---------|--------|
 | `npx tsc --noEmit` | **0 erros** |
 | `npm run build` | **OK** (116+ páginas, sem warnings novos) |
-| `npm run test:run` | **8138 testes passando** · 26 skipped · 0 falhas |
+| `npm run test:run` | **8133 testes passando** · 26 skipped · 0 falhas |
 | QUALITY_SCORE | ≥ 0.91 |
-| Alinhamento docs | **Onda 3 ✅ concluída + Onda 4 ✅ concluída** — release v1.0.0-akasha |
+| Alinhamento docs | **Onda 3 ✅ + Onda 4 ✅ + v0.0.4 (Onda 5) ✅** — release v1.1.0-akasha |
 
 ### 3.2 Auditoria de Alinhamento com Docs (2026-06-06)
 
