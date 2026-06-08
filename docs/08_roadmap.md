@@ -1,8 +1,8 @@
 # Documento 08 — Roadmap de Desenvolvimento
 ## Sistema Akasha
 
-> **Versão:** 3.2 | **Atualizado:** 2026-06-07 | **Norte:** Doc 25
-> Substitui o roadmap B2B (Fundação → Cockpit MVP → Escala), agora legado. Metodologia: ondas incrementais sobre o monorepo. **Onda 3 ✅ concluída (Oráculo Vivo)**, **Onda 4 ✅ concluída (Monetização + Global)** e **Onda 5 ✅ concluída (Pós-Launch: Conclusão, Atmosfera & Escala)** — release v1.1.0-akasha.
+> **Versão:** 3.3 | **Atualizado:** 2026-06-08 | **Norte:** Doc 25
+> Substitui o roadmap B2B (Fundação → Cockpit MVP → Escala), agora legado. Metodologia: ondas incrementais sobre o monorepo. **Onda 3 ✅ concluída (Oráculo Vivo)**, **Onda 4 ✅ concluída (Monetização + Global)**, **Onda 5 ✅ concluída (Pós-Launch: Conclusão, Atmosfera & Escala)** e **Onda 7 ✅ concluída (Refatoração Arquitetural + Curadoria Pendente)** — release v0.0.6.
 
 ---
 
@@ -99,7 +99,23 @@ testes verdes            vê sua Mandala e          diário + conversa          
 | 4.7 | Checkout multi-moeda | 🟢 |
 | 4.8 | Desligar `apps/legacy-cockpit` quando o portal estiver 100% autônomo | ✅ |
 
-**Milestone Onda 4:** economia de créditos rodando; PWA instalável; base para expansão anglofone (competir com Gene Keys/Human Design). ✅ Concluído (2026-06-06)
+**Milestone Onda 4:** economia de créditos rodando; PWA instalável; base para expansão anglofona (competir com Gene Keys/Human Design). ✅ Concluído (2026-06-06)
+
+---
+
+## ONDA 7 — Refatoração Arquitetural + Curadoria Pendente
+**Objetivo:** aplicar layout de Clean Architecture em 5 camadas (`domain/application/infrastructure/interface/shared`) e preparar terreno para curadoria humana do Grimório.
+
+| ID | Tarefa | Prioridade |
+|---|---|---|
+| 7.1 | `src/lib/` em 5 camadas (Clean Architecture) | 🔴 |
+| 7.2 | `apps/akasha-portal/tests/` → `tests/` (raiz monorepo) | 🔴 |
+| 7.3 | `src/lib/prisma.ts` → `src/lib/infrastructure/prisma.ts` | 🔴 |
+| 7.4 | Testes-guardião arquiteturais (`tests/architecture/`) | 🟡 |
+| 7.5 | IDEIA.md §7.4-§7.6 placeholders (curadoria v0.0.7) | 🟡 |
+| 7.6 | `grimoire:audit` script | 🟢 |
+
+**Milestone Onda 7:** arquitetura alinhada com Clean Architecture; `tests/` na raiz; curadoria pendente documentada para v0.0.7. ✅ Concluído (2026-06-08)
 
 ---
 
