@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [6, 3]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Linha do Arco (6)"]
 Odus_Associados: [Owonrin]
 Acao_Principal: "Transformação súbita, ruptura necessária, movimento imprevisto"
+metadata:
+  source: "Pe. Francisco Luciano de Souza Filho, \"Os 16 Odus do Ifá\", p. 60-66"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Owonrin — O Trovão que Transforma

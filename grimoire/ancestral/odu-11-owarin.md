@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [11, 2]
 Corpos_Tantricos_Alvo: ["Mente Divina (11)", "Linha do Arco (6)"]
 Odus_Associados: [Owonrin]
 Acao_Principal: "Mediação, equilíbrio, comunicação entre planos visíveis e invisíveis"
+metadata:
+  source: "Jose Beniste, \"Odus do Candomblé\", p. 100-108"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Owarin — O Equilíbrio entre os Mundos

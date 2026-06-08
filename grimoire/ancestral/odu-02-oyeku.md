@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [2, 22]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Corpo Sutil (9)"]
 Odus_Associados: ["odu-01-ogbe"]
 Acao_Principal: "Transmutação, encerramento de ciclos, ancestralidade"
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 36-40"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Oyeku — A Noite Profunda

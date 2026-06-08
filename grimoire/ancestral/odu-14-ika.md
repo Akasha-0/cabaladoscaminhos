@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [14, 5]
 Corpos_Tantricos_Alvo: ["Corpo Físico (5)", "Corpo Prânico (8)"]
 Odus_Associados: []
 Acao_Principal: "Determinação, trabalho persistente, abertura de caminhos pelo esforço"
+metadata:
+  source: "Pe. Francisco Luciano de Souza Filho, \"Os 16 Odus do Ifá\", p. 75-82"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ika — A Força que Abre o Caminho

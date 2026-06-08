@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [3, 33]
 Corpos_Tantricos_Alvo: ["Mente Positiva (3)", "Corpo Radiante (10)"]
 Odus_Associados: ["odu-01-ogbe", "odu-07-obara"]
 Acao_Principal: "Introspecção, revelação interior, julgamento justo"
+metadata:
+  source: "Pierre Verger, \"Notes sur le Culte des Orisa et Vodun\", 1957, p. 102-110"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Iwori — O Coração que Vê

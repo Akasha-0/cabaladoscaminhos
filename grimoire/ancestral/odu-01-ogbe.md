@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [1, 11]
 Corpos_Tantricos_Alvo: ["Corpo da Alma (1)", "Corpo Radiante (10)"]
 Odus_Associados: []
 Acao_Principal: "Inauguração, novo ciclo, pureza de intenção"
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 30-35"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ogbé — O Alvorecer

@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [10, 1]
 Corpos_Tantricos_Alvo: ["Mente Neutra (4)", "Corpo Sutil (9)"]
 Odus_Associados: []
 Acao_Principal: "Mistério, sabedoria oculta, renovação pelo enfrentamento das sombras"
+metadata:
+  source: "Reginaldo Prandi, \"Mitologia dos Orixás\", 2001, p. 220-228"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ofun — O Mistério das Profundezas

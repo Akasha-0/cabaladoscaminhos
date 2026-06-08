@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [15, 6]
 Corpos_Tantricos_Alvo: ["Aura (7)", "Corpo Sutil (9)"]
 Odus_Associados: []
 Acao_Principal: "Cura profunda, renovação das águas internas, recomeço após o sofrimento"
+metadata:
+  source: "Jose Beniste, \"Odus do Candomblé\", p. 112-120"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Oturupon — As Águas que Curam e Renovam

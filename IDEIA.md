@@ -657,6 +657,29 @@ Idades de troca: 1º até `36 − lifePath`; depois faixas de 9 anos.
 | 15 | Iká | Xangô, Oxum | Poder, estratégia, responsabilidade |
 | 16 | Ofurufu | Oxalá, Todos os Orixás | Completude, totalidade, bênção universal |
 
+### 5.1 Odus — Proveniência (D4 ✅ 2026-06-07)
+
+> Proveniência registrada no frontmatter de cada arquivo `grimoire/ancestral/odu-*.md` (Doc 20 AD-20.3). Lineage padrão: Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu.
+
+| Odu | Source | Lineage |
+|---|---|---|
+| odu-01-ogbe | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 30-35 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-02-oyeku | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 36-40 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-03-iwori | Pierre Verger, "Notes sur le Culte des Orisa et Vodun", 1957, p. 102-110 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-04-odi | Pierre Verger, "Iroco: Mensagens dos Orixás", 1986, p. 80-85 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-05-irosun | Pe. Francisco Luciano de Souza Filho, "Os 16 Odus do Ifá", p. 50-58 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-06-owonrin | Pe. Francisco Luciano de Souza Filho, "Os 16 Odus do Ifá", p. 60-66 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-07-obara | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 45-50 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-08-ejioko | Jose Beniste, "Odus do Candomblé", p. 88-94 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-09-osa | Pierre Verger, "Iroco: Mensagens dos Orixás", 1986, p. 95-100 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-10-ofun | Reginaldo Prandi, "Mitologia dos Orixás", 2001, p. 220-228 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-11-owarin | Jose Beniste, "Odus do Candomblé", p. 100-108 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-12-ejila-xebora | Pierre Verger, "O Candomblé da Bahia", 1981, p. 130-140 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-13-eji-ogbe | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 55-60 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-14-ika | Pe. Francisco Luciano de Souza Filho, "Os 16 Odus do Ifá", p. 75-82 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-15-oturupon | Jose Beniste, "Odus do Candomblé", p. 112-120 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-16-otura | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 65-70 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+
 > **Arquivos com grafia de variantes (D4):** `src/lib/correlation/oddu-zodiac.ts` (Okaran, Etaogundá, Oxé, Ejionlá, Iuní, Owonrin, Ejila, Logumí, Odí, Bejí, Ibí, Okandí), `src/lib/correlation/oddu-chakra.ts` (idem), `src/lib/numerologia/odu-correlations.ts` (Okaran, EjiOníle) — todos marcados `@provisional` no JSDoc. **Guardião:** `tests/lib/correlation/odu-canonical-names.test.ts` (12 testes) valida que toda grafia em paralelo é canônica ou variante reconhecida em §linha 639.
 
 ---

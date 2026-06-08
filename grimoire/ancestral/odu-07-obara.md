@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [7, 4]
 Corpos_Tantricos_Alvo: ["Corpo Radiante (10)", "Mente Positiva (3)"]
 Odus_Associados: []
 Acao_Principal: "Liderança, dignidade, poder manifesto e reconhecimento"
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 45-50"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Obara — A Realeza do Espírito

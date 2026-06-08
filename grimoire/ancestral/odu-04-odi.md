@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [4, 13]
 Corpos_Tantricos_Alvo: ["Mente Neutra (4)", "Corpo da Alma (1)"]
 Odus_Associados: ["odu-08-ejoko", "odu-10-ofun"]
 Acao_Principal: "Fertilidade, gestação, criatividade profunda, mistério feminino"
+metadata:
+  source: "Pierre Verger, \"Iroco: Mensagens dos Orixás\", 1986, p. 80-85"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Odi — As Águas do Ventre

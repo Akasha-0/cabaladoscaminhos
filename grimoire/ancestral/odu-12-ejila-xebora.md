@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [12, 3]
 Corpos_Tantricos_Alvo: ["Mente Neutra (4)", "Corpo Radiante (10)", "Mente Divina (11)"]
 Odus_Associados: []
 Acao_Principal: "Plenitude, julgamento justo, integração de todas as forças"
+metadata:
+  source: "Pierre Verger, \"O Candomblé da Bahia\", 1981, p. 130-140"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ejilá-Xeborá — A Completude dos Caminhos

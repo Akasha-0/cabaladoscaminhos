@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [5, 14]
 Corpos_Tantricos_Alvo: ["Corpo Físico (5)", "Corpo Prânico (8)"]
 Odus_Associados: ["odu-03-iwori", "odu-07-obara"]
 Acao_Principal: "Vitalidade, fluxo vital, superação de obstáculos com força"
+metadata:
+  source: "Pe. Francisco Luciano de Souza Filho, \"Os 16 Odus do Ifá\", p. 50-58"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Irosun — O Sangue que Flui

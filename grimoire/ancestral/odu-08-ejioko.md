@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [8, 2]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Corpo da Alma (1)"]
 Odus_Associados: []
 Acao_Principal: "Memória ancestral, cura emocional profunda, pertencimento"
+metadata:
+  source: "Jose Beniste, \"Odus do Candomblé\", p. 88-94"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ejiokô — As Águas da Memória

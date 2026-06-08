@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [9, 6]
 Corpos_Tantricos_Alvo: ["Linha do Arco (6)", "Corpo Prânico (8)"]
 Odus_Associados: []
 Acao_Principal: "Transformação acelerada, liberação, coragem diante do desconhecido"
+metadata:
+  source: "Pierre Verger, \"Iroco: Mensagens dos Orixás\", 1986, p. 95-100"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Osá — O Vento da Transformação

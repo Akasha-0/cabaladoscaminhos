@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [13, 4]
 Corpos_Tantricos_Alvo: ["Corpo da Alma (1)", "Mente Positiva (3)", "Corpo Radiante (10)"]
 Odus_Associados: [Ogbe]
 Acao_Principal: "Amplificação da luz, confirmação do caminho, bênção dupla"
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 55-60"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Eji Ogbé — A Luz Dobrada

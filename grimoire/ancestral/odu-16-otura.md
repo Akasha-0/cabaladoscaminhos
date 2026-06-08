@@ -11,6 +11,10 @@ Numeros_Kabalisticos: [16, 7]
 Corpos_Tantricos_Alvo: ["Mente Divina (11)", "Corpo da Alma (1)"]
 Odus_Associados: []
 Acao_Principal: "Retorno espiritual, sabedoria madura, integração da jornada completa"
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 65-70"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Otura — O Retorno à Fonte
