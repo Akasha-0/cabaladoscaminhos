@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [7, 4]
 Corpos_Tantricos_Alvo: ["Corpo Radiante (10)", "Mente Positiva (3)"]
 Odus_Associados: []
 Acao_Principal: "Liderança, dignidade, poder manifesto e reconhecimento"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Obara — A Realeza do Espírito

@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [14, 5]
 Corpos_Tantricos_Alvo: ["Corpo Físico (5)", "Corpo Prânico (8)"]
 Odus_Associados: []
 Acao_Principal: "Determinação, trabalho persistente, abertura de caminhos pelo esforço"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Ika — A Força que Abre o Caminho

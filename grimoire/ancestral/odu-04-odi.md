@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [4, 13]
 Corpos_Tantricos_Alvo: ["Mente Neutra (4)", "Corpo da Alma (1)"]
 Odus_Associados: ["odu-08-ejoko", "odu-10-ofun"]
 Acao_Principal: "Fertilidade, gestação, criatividade profunda, mistério feminino"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Odi — As Águas do Ventre

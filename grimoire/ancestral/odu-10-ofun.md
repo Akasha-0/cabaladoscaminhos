@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [10, 1]
 Corpos_Tantricos_Alvo: ["Mente Neutra (4)", "Corpo Sutil (9)"]
 Odus_Associados: []
 Acao_Principal: "Mistério, sabedoria oculta, renovação pelo enfrentamento das sombras"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Ofun — O Mistério das Profundezas

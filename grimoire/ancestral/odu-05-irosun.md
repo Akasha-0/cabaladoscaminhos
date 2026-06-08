@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [5, 14]
 Corpos_Tantricos_Alvo: ["Corpo Físico (5)", "Corpo Prânico (8)"]
 Odus_Associados: ["odu-03-iwori", "odu-07-obara"]
 Acao_Principal: "Vitalidade, fluxo vital, superação de obstáculos com força"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Irosun — O Sangue que Flui

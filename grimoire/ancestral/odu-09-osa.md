@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [9, 6]
 Corpos_Tantricos_Alvo: ["Linha do Arco (6)", "Corpo Prânico (8)"]
 Odus_Associados: []
 Acao_Principal: "Transformação acelerada, liberação, coragem diante do desconhecido"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Osá — O Vento da Transformação

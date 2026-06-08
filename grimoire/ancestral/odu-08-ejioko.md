@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [8, 2]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Corpo da Alma (1)"]
 Odus_Associados: []
 Acao_Principal: "Memória ancestral, cura emocional profunda, pertencimento"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Ejiokô — As Águas da Memória

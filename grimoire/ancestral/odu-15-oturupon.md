@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [15, 6]
 Corpos_Tantricos_Alvo: ["Aura (7)", "Corpo Sutil (9)"]
 Odus_Associados: []
 Acao_Principal: "Cura profunda, renovação das águas internas, recomeço após o sofrimento"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Oturupon — As Águas que Curam e Renovam

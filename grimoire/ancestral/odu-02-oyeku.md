@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [2, 22]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Corpo Sutil (9)"]
 Odus_Associados: ["odu-01-ogbe"]
 Acao_Principal: "Transmutação, encerramento de ciclos, ancestralidade"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Oyeku — A Noite Profunda

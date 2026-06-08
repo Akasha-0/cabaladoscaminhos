@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [12, 3]
 Corpos_Tantricos_Alvo: ["Mente Neutra (4)", "Corpo Radiante (10)", "Mente Divina (11)"]
 Odus_Associados: []
 Acao_Principal: "Plenitude, julgamento justo, integração de todas as forças"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Ejilá-Xeborá — A Completude dos Caminhos

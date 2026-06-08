@@ -85,13 +85,13 @@ verificáveis.
 
 ## 3. Estado Atual
 
-### 3.1 Métricas (Onda 3 Launch — atualizado 2026-06-06)
+### 3.1 Métricas (Curadoria D4-infra — atualizado 2026-06-07)
 
 | Métrica | Status |
 |---------|--------|
 | `npx tsc --noEmit` | **0 erros** |
 | `npm run build` | **OK** (116+ páginas, sem warnings novos) |
-| `npm run test:run` | **8113 testes passando** · 26 skipped · 0 falhas |
+| `npm run test:run` (por projeto) | `core-logic` 7904 + `core-api` 105 + `integration` 123 + `core-ui` 14 = **8146 testes passando** · 26 skipped · 0 falhas |
 | QUALITY_SCORE | ≥ 0.91 |
 | Alinhamento docs | **Onda 3 ✅ concluída + Onda 4 ✅ concluída** — release v1.0.0-akasha |
 
@@ -146,6 +146,22 @@ verificáveis.
 - `LEGACY_B2C=on` reativa B2C legado
 - Default: B2C quarentenado, raiz → `/cockpit`, APIs legadas → 404
 - Reversível por flag (não por hard delete)
+
+### 3.5 Curadoria D4 — Infraestrutura de proveniência (2026-06-07)
+
+> **Status:** Infraestrutura completa · Conteúdo (fontes específicas) **pendente de curador humano** (AD-20.8).
+> Não destrava o gate do v0.0.5 sozinho; combinado com a curadoria do Gabriel, fecha T3 (D4) do v0.0.4.
+
+- **T3.2 (parcial):** 16/16 arquivos `grimoire/ancestral/odu-NN-*.md` agora carregam `source` + `lineage` + `provisional: true` no frontmatter. `source`/`lineage` carregam `PENDENTE_CURADOR (D4)` como placeholder explícito — **não inventamos fontes** (regra AD-20.8). `provisional: true` é explícito (AD-20.4) até a curadoria preencher a obra específica.
+- **T3.3:** `IDEIA.md §7.2` lista os 16 Odus como slots de curadoria, com tabela de obras sugeridas (Abimbola, Alexankan, Machado, Verger, Mãe Beata, Ogã Afolabi) e nota sobre divergência de numeração/grafia arquivo↔runtime.
+- **T3.6:** `tests/lib/grimoire/odus-validation.test.ts` (65 sub-testes) — teste-guardião que valida `source` + `lineage` + `provisional` em todos os 16 Odus. Falha com referência à regra violada (Doc 20 AD-20.X). CI bloqueia regressão.
+- **Audit base:** `audit-odus-d4.md` (cycle 349, `a0183acb`) — 16/16 sem proveniência → agora 16/16 com proveniência *provisional*.
+
+**Dívida explícita para o curador humano (Gabriel ou babalaô/ioláxi de confiança):**
+1. Para cada Odu, indicar **obra/autor/edição/página** específica para preencher `source` (AD-20.3).
+2. Confirmar **linhagem** exata (Yorubá/Ifá/Candomblé/Umbanda/Merindilogun) por Odu (AD-20.6).
+3. Resolver **divergência de numeração/grafia** entre `grimoire/ancestral/odu-*.md` e `src/lib/constants/odus.ts` (decisão editorial, não técnica).
+4. Quando todos os 16 tiverem `source` com obra rastreável: mudar `provisional: true` → `provisional: false` e remover `⚠️ PROVISIONAL (D4)` do `docs/15_glossario-oracular.md §1`.
 
 ---
 

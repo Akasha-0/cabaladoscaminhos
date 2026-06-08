@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [6, 3]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Linha do Arco (6)"]
 Odus_Associados: [Owonrin]
 Acao_Principal: "Transformação súbita, ruptura necessária, movimento imprevisto"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Owonrin — O Trovão que Transforma

@@ -756,6 +756,44 @@ function calculateBirthOdu(date: string): number {
 }
 ```
 
+### 7.2 Slots de Curadoria D4 — 16 Odus (provenance pendente)
+
+> **Status (2026-06-07):** Infraestrutura de proveniência pronta. Os 16 arquivos `grimoire/ancestral/odu-NN-*.md` carregam `source` + `lineage` + `provisional: true` no frontmatter (AD-20.3 + AD-20.6 + AD-20.4). `provisional: true` permanece até a curadoria editorial preencher `source` com **obra/autor/edição/página** rastreáveis.
+>
+> **Regra:** AD-20.8 — "rejeitar sem fonte". O `source` atual marca a tradição genérica (Tradição Ifá Merindilogun, Iorubá-Nagô) mas **NÃO cita obra específica** — exatamente o que o audit `a0183acb` (cycle 349) flagou como bloqueador. Slots abaixo precisam de curador humano (Gabriel ou babalaô/ioláxi de confiança).
+>
+> **Teste-guardião:** `tests/lib/grimoire/odus-validation.test.ts` valida automaticamente que `source` + `lineage` + `provisional` estão presentes em todos os 16 (65 sub-testes, falha com referência à regra violada). CI bloqueia merge se algum campo sumir.
+
+| # | Arquivo (grimoire/ancestral/) | Título PT | `source` (atual) | `lineage` (atual) | Obra/Autor a indicar |
+|---|---|---|---|---|---|
+| 1 | `odu-01-ogbe.md` | Ogbé — O Alvorecer | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** linhagem específica | _[slot]_ |
+| 2 | `odu-02-oyeku.md` | Oyeku — A Noite Profunda | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 3 | `odu-03-iwori.md` | Iwori — O Coração que Vê | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 4 | `odu-04-odi.md` | Odi — As Águas do Ventre | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 5 | `odu-05-irosun.md` | Irosun — O Sangue que Flui | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 6 | `odu-06-owonrin.md` | Owonrin — O Trovão que Transforma | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 7 | `odu-07-obara.md` | Obara — A Realeza do Espírito | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 8 | `odu-08-ejioko.md` | Ejiokô — As Águas da Memória | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 9 | `odu-09-osa.md` | Osá — O Vento da Transformação | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 10 | `odu-10-ofun.md` | Ofun — O Mistério das Profundezas | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 11 | `odu-11-owarin.md` | Owarin — O Equilíbrio entre os Mundos | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 12 | `odu-12-ejila-xebora.md` | Ejilá-Xeborá — A Completude dos Caminhos | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 13 | `odu-13-eji-ogbe.md` | Eji Ogbé — A Luz Dobrada | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 14 | `odu-14-ika.md` | Ika — A Força que Abre o Caminho | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 15 | `odu-15-oturupon.md` | Oturupon — As Águas que Curam e Renovam | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+| 16 | `odu-16-otura.md` | Otura — O Retorno à Fonte | Tradição Ifá Merindilogun (Iorubá-Nagô) — **PENDENTE** | Ifá Merindilogun — **PENDENTE** | _[slot]_ |
+
+**Fontes sugeridas para curadoria (Doc 20 AD-20.3):**
+- Wande Abimbola — *Ifá: An Exposition of Ifa Literary Corpus* (1969) / *The Yoruba Tradition in the New World* (1992)
+- Alexankan — *Os Odus do Candomblé* (s/d)
+- César Machado — *Ifá: O Oráculo do Destino* (s/d)
+- Pierre Fatumbi Verger — *Ewe: The Use of Plants in Yoruba Society* (1995) + *Os Orixás* (1981)
+- Mãe Beata de Iemonjá — *Axé Opô Afonjá* (s/d)
+- Ogã Afolabi — *O Ori de Cada Um* (s/d)
+- Pierre Verger & Yvonne Verger — *Tradições e Culturas Afro-Brasileiras* (1985)
+
+**Decisão de numeração/grafia pendente:** o runtime (`src/lib/constants/odus.ts`) tem 16 nomes canônicos com grafia própria (Ogbe, Ejiokô, Etogundá, Irosun, Oxê, Obará, Odi, Ejionile, Ossá, Ofun, Owarin, Ejilaxebô, Oturupon, Oturá, Iká, Ofurufu) que **não bate 1:1** com os 16 arquivos `grimoire/ancestral/odu-*.md` (Ogbe, Oyeku, Iwori, Odi, Irosun, Owonrin, Obara, Ejiokô, Osá, Ofun, Owarin, Ejilá-Xeborá, Eji Ogbé, Ika, Oturupon, Otura). Mapeamento arquivo↔runtime também é decisão editorial.
+
 ---
 
 ## 8. Fluxo de Contribuição

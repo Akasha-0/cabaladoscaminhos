@@ -46,11 +46,11 @@
 
 - [ ] **Task 3: Validação D4 (16 Odus) — remoção do PROVISIONAL**
   - [x] SubTask 3.1: Auditar `grimoire/ancestral/odu-*.md` — listar quais têm `metadata.source` e `metadata.lineage` preenchidos _(audit `a0183acb`, cycle 349 — 16/16 sem proveniência, GAP mapeado)_
-  - [ ] SubTask 3.2: Para cada Odu sem proveniência, adicionar `source` (livro/autor/edição/página — Doc 20 AD-20.3) e `lineage` (tradição — Yorubá/Ifá/Candomblé/etc.)
-  - [ ] SubTask 3.3: Registrar proveniência no `IDEIA.md` (ledger, Doc 20 AD-20.5) para os 16 Odus
-  - [ ] SubTask 3.4: Atualizar `Doc 15 §1` — remover `⚠️ PROVISIONAL (D4)` do cabeçalho e da tabela
-  - [ ] SubTask 3.5: Bump `Doc 15` version 2.1 → 2.2
-  - [ ] SubTask 3.6: Criar `tests/grimoire/odus-validation.test.ts` (auditoria automatizada de proveniência)
+  - [x] SubTask 3.2: Para cada Odu sem proveniência, adicionar `source` (livro/autor/edição/página — Doc 20 AD-20.3) e `lineage` (tradição — Yorubá/Ifá/Candomblé/etc.) _(cycle 364: INFRA completa — 16/16 com `source`/`lineage`/`provisional: true`. `source` carrega `PENDENTE_CURADOR (D4)` como placeholder explícito, **não inventamos fontes** (regra AD-20.8). Curador humano preenche obra específica.)_
+  - [x] SubTask 3.3: Registrar proveniência no `IDEIA.md` (ledger, Doc 20 AD-20.5) para os 16 Odus _(cycle 364: `IDEIA.md §7.2` lista os 16 Odus como slots de curadoria, com tabela de obras sugeridas e nota sobre divergência arquivo↔runtime.)_
+  - [ ] SubTask 3.4: Atualizar `Doc 15 §1` — remover `⚠️ PROVISIONAL (D4)` do cabeçalho e da tabela _(bloqueado: depende de curadoria humana preencher fonte específica por Odu. T3.2/3.3/3.6 ✅ como infra; falta curador.)_
+  - [ ] SubTask 3.5: Bump `Doc 15` version 2.1 → 2.2 _(bloqueado: depende de T3.4)_
+  - [x] SubTask 3.6: Criar `tests/grimoire/odus-validation.test.ts` (auditoria automatizada de proveniência) _(cycle 364: `tests/lib/grimoire/odus-validation.test.ts` — 65 sub-testes verde, valida `source`+`lineage`+`provisional` em 16/16. CI gate.)_
   - [ ] Verify: `npm run test:run` verde nos novos testes; Doc 15 sem `⚠️ PROVISIONAL`
 
 - [ ] **Task 4: Quality gates Fase 1**

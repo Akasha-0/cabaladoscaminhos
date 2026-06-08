@@ -11,6 +11,9 @@ Numeros_Kabalisticos: [13, 4]
 Corpos_Tantricos_Alvo: ["Corpo da Alma (1)", "Mente Positiva (3)", "Corpo Radiante (10)"]
 Odus_Associados: [Ogbe]
 Acao_Principal: "Amplificação da luz, confirmação do caminho, bênção dupla"
+source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
+lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
+provisional: true
 ---
 
 # Eji Ogbé — A Luz Dobrada
