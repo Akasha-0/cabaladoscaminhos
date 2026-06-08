@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project uses Prisma with PostgreSQL for database management. All migrations are stored in `prisma/migrations/`.
+This project uses Prisma with PostgreSQL for database management. All migrations are stored in `apps/akasha-portal/prisma/migrations/`.
 
 ## Environment Variables
 
@@ -72,7 +72,7 @@ npm run db:studio
 
 ## Seeding
 
-Seed data is defined in `prisma/seed.ts`. To seed the database:
+Seed data is defined in `apps/akasha-portal/prisma/seed.ts`. To seed the database:
 
 ```bash
 npx prisma db seed
@@ -82,13 +82,13 @@ For this to work, add the following to `package.json`:
 
 ```json
 "prisma": {
-  "seed": "tsx prisma/seed.ts"
+  "seed": "tsx apps/akasha-portal/prisma/seed.ts"
 }
 ```
 
 ## Schema Changes Workflow
 
-1. **Development**: Modify `prisma/schema.prisma`
+1. **Development**: Modify `apps/akasha-portal/prisma/schema.prisma`
 2. **Test locally**: Run `npx prisma migrate dev` or `npx prisma db push`
 3. **Commit**: Include both schema changes and migration files
 4. **Production**: Run `npx prisma migrate deploy`
