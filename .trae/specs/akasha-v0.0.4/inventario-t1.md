@@ -180,11 +180,13 @@ Verificado: zero arquivos `akasha*` em `src/types/`.
 
 → **Decisão Gabriel:** apagar rotas legacy B2B? Ou duplicar PrismaClient em `apps/akasha-portal/src/lib/prisma.ts` mantendo root para legacy?
 
-### 4.2 `src/middleware/rateLimit.ts` é Akasha-only ou shared?
+### 4.2 `src/middleware/rateLimit.ts` é Akasha-only ou shared? ✅ Resolvido (cycle 374)
 
-1 arquivo, 37 LOC. Não há import declaration no middleware.ts root que confirme escopo.
+1 arquivo, 37 LOC.
 
-→ **Decisão:** auditar `src/middleware.ts` (raiz) e middleware.ts dentro do scope Akasha para confirmar se `rateLimit.ts` é importado só por rotas Akasha.
+→ **Audit (cycle 374):** `grep -rE "middleware/rateLimit" **/*.{ts,tsx,js,mjs}` retorna **1 hit** — apenas `src/middleware.ts:4: import { extractIdentifier } from '@/middleware/rateLimit';`. **SHARED**: o middleware raiz (`src/middleware.ts`) serve rotas Akasha + legadas, então `rateLimit.ts` não pode mover para `apps/akasha-portal/src/middleware/` sem quebrar o middleware raiz.
+
+→ **Solução proposta (T1.3c, fora do escopo quick):** extrair `rateLimit.ts` para `packages/auth-rate-limit/` (mesmo padrão dos packages Fase A) — agnóstico, sem imports `@/lib/*`, compartilhado por ambos os apps. OU duplicar em `apps/akasha-portal/src/middleware/rateLimit.ts` mantendo a raiz para o legado (T1.3a pragmatica).
 
 ### 4.3 Path alias `@/lib/akasha` em apps/akasha-portal
 
@@ -198,11 +200,13 @@ A spec §26 não menciona `src/app/api/webhooks/akasha-stripe/` (vive fora de `a
 
 → **Ação:** incluir no escopo de T1.2 — mover para `apps/akasha-portal/src/app/api/akasha/webhooks/akasha-stripe/` (renomear para uniformizar com `api/akasha/`).
 
-### 4.5 `tests/lib/i18n/grimoire-completeness.test.ts` — não-Akasha
+### 4.5 `tests/lib/i18n/grimoire-completeness.test.ts` — não-Akasha ✅ Resolvido (cycle 374)
 
-Test em `tests/lib/i18n/` valida completeness do grimório. Importa indiretamente lib/grimoire (provavelmente via fixtures). **Não** está em `tests/api/akasha*`, `tests/lib/grimoire*` (lib puro), `tests/integration/*` — mas a spec T1.7 lista `tests/lib/grimoire*`.
+Test em `tests/lib/i18n/` valida completeness do grimório.
 
-→ **Verificar:** se importa `@/lib/grimoire/*`, mover junto. Se usa só fixtures, fica na raiz.
+→ **Audit (cycle 374):** `grep -E '@/lib/grimoire' tests/lib/i18n/grimoire-completeness.test.ts` → **0 hits**. O teste usa apenas `fs` (`readFileSync`/`readdirSync`/`statSync`) + `path` (`join`) — sem imports de `@/lib/grimoire/*`. É um teste **puramente filesystem-driven** sobre os arquivos `.md` do Grimório.
+
+→ **Conclusão:** **NÃO precisa mover** com T1.7. Pode ficar na raiz `tests/lib/i18n/`. Movê-lo para `apps/akasha-portal/tests/` sem necessidade apenas cria fricção de path-alias para o gate de CI.
 
 ---
 

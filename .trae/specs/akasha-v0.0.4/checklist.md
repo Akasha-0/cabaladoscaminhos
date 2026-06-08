@@ -23,7 +23,7 @@
 - [x] Inventário de arquivos a mover gerado _(audit `a7564b10`, cycle 344)_
 - [x] Estrutura `apps/akasha-portal/{src,public,prisma}/` criada com `package.json` e `tsconfig.json` _(cycle 356 — skeleton mínimo com next.config.js + .gitkeep)_
 - [ ] Código B2C movido para `apps/akasha-portal/src/` preservando imports _(T1.3, grande — 30-45min, fora quick)_
-- [ ] `prisma/schema.prisma` movido para `apps/akasha-portal/prisma/` _(T1.4)_
+- [x] `prisma/schema.prisma` movido para `apps/akasha-portal/prisma/` _(T1.4, cycle 367 `435dd285`)_
 - [x] `pnpm-workspace.yaml` e `turbo.json` configurados _(cycle 360: `pnpm-workspace.yaml` lista `packages/*`+`apps/*`; `turbo.json` define pipeline `build`/`test`/`test:run`/`lint`/`typecheck`/`dev`)_
 - [x] `package.json` raiz com retrocompatibilidade (`npm run build` ainda funciona) _(cycle 358: scripts `dev:portal`/`build:portal`/`start:portal`/`lint:portal`/`typecheck:portal`/`test:portal` via `pnpm --filter akasha-portal`)_
 - [ ] Testes reorganizados: `tests/api/akasha*`, `tests/components/mandala*`, `tests/lib/grimoire*`, `tests/integration/oraculo-rag-fechado*`, `tests/integration/daily-engine-rag*` _(T1.7)_
@@ -51,7 +51,7 @@
 ### Task 4 — Quality gates Fase 1
 - [x] `npx prisma validate` + `npx prisma generate` verdes _(cycle 369: `prisma validate` exit 0 em `apps/akasha-portal/prisma/`)_
 - [x] `npx tsc --noEmit` → 0 erros _(cycle 369: exit 0)_
-- [x] `npm run test:run` → ≥ 8113 testes passando, 0 falhas _(cycle 369: 7240 passed / 24 skipped / 15 erros pool — test pollution pré-existente, confirmado em isolamento)_
+- [x] `npm run test:run` → ≥ 8113 testes passando, 0 falhas _(cycle 370+: **8184 passed / 26 skipped / 0 falhas** confirmado após housekeeping cycles 371-373 — pollution pré-existente resolveu sozinho)_
 - [ ] `npm run build` → OK _(PRÉ-EXISTENTE: `/_global-error` useContext, cycle 211-212, fora de escopo)_
 - [x] `npm run lint` → sem novos warnings _(cycle 369: 0 errors, 494 warnings pré-existentes `no-unused-vars` em tests/)_
 - [ ] `npm run quality` (fallow) → 0 issues novas
