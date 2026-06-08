@@ -99,7 +99,7 @@ verificáveis.
 | QUALITY_SCORE | ≥ 0.91 |
 | Alinhamento docs | **Onda 3 ✅ concluída + Onda 4 ✅ concluída** — release v1.0.0-akasha |
 
-### 3.2 Auditoria de Alinhamento com Docs (2026-06-06)
+### 3.2 Auditoria de Alinhamento com Docs (2026-06-08)
 
 **Implementado ✅:**
 - Onda 1 (engines): 4/4 packages core-* — 100%
@@ -112,8 +112,8 @@ verificáveis.
 - ⚠️ Grimório botânica: 8/50 ervas (~16%); odus e corpos completos
 - ⚠️ Busca híbrida pgvector: schema pronto; pipeline de busca aguarda embeddings
 - ⚠️ Cronjob diário de trânsitos: script criado (`scripts/daily-transits-cron.ts`), aguarda deploy
-- ⚠️ Three.js atmosfera Mandala (🟡 Doc 05 §3) — UI SVG funcional; WebGL é polimento
-- ⚠️ i18n EN (🟢 Onda 4.6) — apenas pt-BR por enquanto
+- ⚠️ Three.js atmosfera Mandala (🟡 Doc 05 §3) — UI SVG funcional; WebGL é polimento → tracked em **v0.0.4-T5** (Phase 2 — `apps/akasha-portal/` + Toroide etéreo)
+- ⚠️ i18n EN (🟢 Onda 4.6) — apenas pt-BR por enquanto → tracked em **v0.0.4-T9** (Phase 3 — 52 ervas + 16 Odus + 11 Corpos + 4 Diagnósticos)
 
 **Estado da Fase 489:**
 - ✅ `.gitignore` cirúrgico: runtime de agentes externos ignorado, artefatos canônicos preservados
