@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared/utils';
 
 export interface CityResult {
   name: string;

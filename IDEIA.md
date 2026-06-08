@@ -763,10 +763,13 @@ Idades de troca: 1º até `36 − lifePath`; depois faixas de 9 anos.
 |---|---|---|---|
 | **D1** | Tabela alfanumérica + vogais/Y/acentos (§3.1–3.3) | `expression`, `motivation`, `impression`, `challenges`, `karmicLessons` | **provisional** |
 | **D2** | Rótulos tântricos (Destino × Caminho × Dom) + Corpos Tântricos | `soul`, `karma`, `divineGift`, `destiny`, `tantricPath`, Corpos Tântricos | **provisional** |
-| **D3** | Tabela data → Odu natal (§8) | Odu de Nascimento | **provisional** |
+| **D3** | Tabela data → Odu natal (§7.4) | Odu de Nascimento | **provisional** |
 | **D4** | Validação dos 16 Odus (§5 e §6.2) | Glossário de Odus (grafias, regências, quizilas) | **provisional** |
+| **D5** | Tabela Ervas Brasileiras/Afro-brasileiras (§7.5) | Grimório Botânica (20 ervas) | **provisional** |
+| **D6** | Tabela Corpos Clássicos (§7.6) | Mapeamento de corpos | **provisional** |
+| **D7** | Mapeamento I-Ching × Sefirot (§7.3) | Correlação hexagramas × Sefirot | **provisional** |
 
-> **AD-20.9** — `provisional` é o estado honesto. Enquanto D1–D4 não forem confirmados pelo operador, o conteúdo afetado roda com defaults **sinalizados** — nunca apresentado como verdade de linhagem fechada.
+> **AD-20.9** — `provisional` é o estado honesto. Enquanto D1–D7 não forem confirmados pelo operador, o conteúdo afetado roda com defaults **sinalizados** — nunca apresentado como verdade de linhagem fechada.
 
 ### 7.1 Algoritmo Provisório — Odu de Nascimento
 
@@ -844,6 +847,79 @@ function calculateBirthOdu(date: string): number {
 
 **Decisões editoriais (v0.0.5 Fase 3, Tabela de Mapeamento I-Ching × Sefirot):**
 - A spec T2.4 menciona "8 derivados → 8 Sefirot". O mapeamento I-Ching × Sefirot ainda não está curado nesta release (Fase 3). A curadoria editorial (Gabriel) precisa decidir: (a) qual Sefirá ecoa cada hexagrama; (b) se a Sefirá é a "ressonância triádica" (3 hexagramas por Sefirá) ou direta (1:1). Veja T18 do `tasks.md`.
+
+---
+
+### 7.4 Odu de Nascimento (v0.0.7 — awaiting curador humano per AD-20.8)
+
+**Placeholder** — preenchido por curador humano na v0.0.7 (AD-20.8)
+
+| # | Odu | Significado | Orixás | Correspondências | Status |
+|---|---|---|---|---|---|
+| 1 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 2 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 3 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 4 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 5 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 6 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 7 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 8 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 9 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 10 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 11 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 12 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 13 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 14 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 15 | — | Placeholder | Placeholder | Placeholder | provisional |
+| 16 | — | Placeholder | Placeholder | Placeholder | provisional |
+
+> **⚠️ D3 — BLOQUEADOR DE CONTEÚDO.** A tabela acima será preenchida com a correlação data→Odu por curador humano na v0.0.7. O algoritmo provisório em §7.1 fornece o default determinístico até lá.
+
+---
+
+### 7.5 Ervas Brasileiras / Afro-brasileiras (v0.0.7 — awaiting curador humano per AD-20.8)
+
+**Placeholder** — preenchido por curador humano na v0.0.7 (AD-20.8)
+
+| # | Erva | Nome Científico | Tradição | Ação | Orixás | Correspondências | Status |
+|---|---|---|---|---|---|---|---|
+| 1 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 2 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 3 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 4 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 5 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 6 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 7 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 8 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 9 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 10 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 11 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 12 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 13 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 14 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 15 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 16 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 17 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 18 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 19 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+| 20 | — | Placeholder | Placeholder | Placeholder | Placeholder | Placeholder | provisional |
+
+> **AD-20.8 — Rejeitar sem fonte.** Cada entrada deve citar tradição (Candomblé, Umbanda, Ayahuasca, Fitoterapia afro-brasileira) e fonte verificável antes de codificação.
+
+---
+
+### 7.6 Corpos Clássicos (v0.0.7 — awaiting curador humano per AD-20.8)
+
+**Placeholder** — preenchido por curador humano na v0.0.7 (AD-20.8)
+
+| # | Corpo | Essência | Correspondências | Status |
+|---|---|---|---|---|
+| 1 | — | Placeholder | Placeholder | provisional |
+| 2 | — | Placeholder | Placeholder | provisional |
+| 3 | — | Placeholder | Placeholder | provisional |
+| 4 | — | Placeholder | Placeholder | provisional |
+
+> **Nota:** Corpos clássicos da tradição tântrica/cabalística (cf. §4.2 para os 11 Corpos Tântricos já documentados). Esta seção destina-se a mapeamentos adicionais de corpos de outras tradições.
 
 ---
 

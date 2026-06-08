@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared/utils';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Heading } from '@/components/design-system/Typography';

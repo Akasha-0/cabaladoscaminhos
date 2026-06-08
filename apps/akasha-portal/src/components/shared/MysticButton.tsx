@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/shared/utils';
 
 const mysticButtonVariants = cva(
   'inline-flex shrink-0 items-center justify-center gap-2 text-sm font-medium whitespace-nowrap transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 font-cinzel',

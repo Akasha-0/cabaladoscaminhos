@@ -111,16 +111,19 @@ Toda mudança de conteúdo segue 5 passos (gate = `cabala-corr-validator`):
 
 ---
 
-## 8. Decisões de Linhagem Pendentes (D1–D4) — situá-las na governança
+## 8. Decisões de Linhagem Pendentes (D1–D7) — situá-las na governança
 
 | Decisão (Doc 10/11) | O que trava | Governança até resolver |
 |---|---|---|
 | **D1** Tabela alfanumérica (cabalística) | Numerologia do nome | Default Pitagórico marcado `provisional` |
 | **D2** Rótulos tântricos (Destino × Caminho × Dom) | Mapa tântrico | Fórmulas do Doc 11 §3, `provisional` |
-| **D3** Tabela data → Odu natal | Odu de Nascimento | Algoritmo default do Doc 11 §4.1, `provisional` |
-| **D4** Linhagem dos 16 Odus | Glossário de Odus | Grafias/regências atuais, `provisional` até validação do curador (ADMIN) |
+| **D3** Tabela data → Odu natal | Odu de Nascimento | §7.4 IDEIA.md (placeholder — algoritmo default em §7.1) |
+| **D4** Linhagem dos 16 Odus | Glossário de Odus | §7.2 IDEIA.md — grafias/regências `provisional` até validação do curador (ADMIN) |
+| **D5** Tabela Ervas Brasileiras/Afro-brasileiras | Grimório Botânica | §7.5 IDEIA.md (placeholder 20 ervas — awaiting v0.0.7 curator) |
+| **D6** Tabela Corpos Clássicos | Mapeamento de corpos | §7.6 IDEIA.md (placeholder 4 corpos — awaiting v0.0.7 curator) |
+| **D7** I-Ching × Sefirot | Decisão editorial | §7.3 IDEIA.md — mapeamento 16 hexagramas × Sefirot pendente |
 
-> **AD-20.9 — `provisional` é o estado honesto.** Enquanto D1–D4 não forem confirmados pelo curador do Grimório (`role = ADMIN`, Doc 04), o conteúdo afetado roda com defaults **sinalizados** — nunca apresentado como verdade de linhagem fechada. A voz do Oráculo (Doc 26 §7) não declara como certeza ancestral o que está `provisional`.
+> **AD-20.9 — `provisional` é o estado honesto.** Enquanto D1–D7 não forem confirmados pelo curador do Grimório (`role = ADMIN`, Doc 04), o conteúdo afetado roda com defaults **sinalizados** — nunca apresentado como verdade de linhagem fechada. A voz do Oráculo (Doc 26 §7) não declara como certeza ancestral o que está `provisional`.
 
 ---
 
