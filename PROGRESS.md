@@ -58,6 +58,9 @@ verificáveis.
 | v0.0.4-T1 | **Migração monorepo (apps/akasha-portal/)** — Next.js, prisma, public, messages, scripts, tests movidos para `apps/akasha-portal/`; pnpm-workspace + turbo.json + tsconfig.base.json; root scripts com retrocompat (cd + npm); 8113 testes passando, build OK | (v0.0.4-T1) | ✅ |
 | v0.0.4-T2 | **Shutdown formal do legacy-cockpit** (verificação + docs: `apps/legacy-cockpit` ausente; middleware sem allowlist B2B; zero `/api/operator|mesa-real|consult` em `src/`; `docs/AUTH-AUDIT.md` data atualizada; `docs/08_roadmap.md` v3.0→v3.1, Onda 4.8 ✅; `docs/25_visao-akasha.md` v1.0→v1.1, AD-25.2 Desligado, diagrama monorepo §11 sem `legacy-cockpit`) | `cc94269b` | ✅ |
 | v0.0.4-T3 | **Validação D4 (16 Odus)** — `metadata.source`/`lineage`/`validated_at` em todos os 16 Odu files; IDEIA.md §5.1 com tabela de proveniência (Doc 20 AD-20.5); Doc 15 §1 sem `⚠️ PROVISIONAL (D4)`, version 2.1 → 2.2; novo test `odus-validation.test.ts` (6 testes) | (v0.0.4-T3) | ✅ |
+| v0.0.4-T5 | **Three.js atmosfera WebGL** — Toroide etéreo (wireframe) + 50/80/100 partículas, rotação 0.1 rad/s, `dpr=[1,2]`, `frameloop="demand"` em `prefers-reduced-motion: reduce`; toggle low/medium/high no `cockpit-store`; 5 testes (`atmosphere.test.tsx`); deps: three + @react-three/fiber + @react-three/drei | (v0.0.4-T5) | ✅ |
+| v0.0.4-T6 | **PWA full-install** — `manifest.json` (Sistema Akasha, 3 ícones, 2 shortcuts), `sw.js` 141L (cache-first/network-first/SWR), 4 PNGs procedurais, `ServiceWorkerRegistrar.tsx` registrado em layout | (v0.0.4-T6) | ✅ |
+| v0.0.4-T7 | **Push notifications (VAPID + Web Push)** — schema `User.pushEnabled` + migration, `lib/push/{subscribe,send}.ts`, `POST/DELETE /api/akasha/push/subscribe`, toggle em `/conta` (LGPD), integração no `daily-transits-cron.ts`, eventos `push.{subscribed,unsubscribed,sent}`, Doc 22 §4 atualizado, 14 testes (privacy guard + API) | (v0.0.4-T7) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -94,7 +97,7 @@ verificáveis.
 |---------|--------|
 | `npx tsc --noEmit` | **0 erros** |
 | `npm run build` | **OK** (116+ páginas, sem warnings novos) |
-| `npm run test:run` | **8119 testes passando** · 26 skipped · 0 falhas |
+| `npm run test:run` | **8138 testes passando** · 26 skipped · 0 falhas |
 | QUALITY_SCORE | ≥ 0.91 |
 | Alinhamento docs | **Onda 3 ✅ concluída + Onda 4 ✅ concluída** — release v1.0.0-akasha |
 
