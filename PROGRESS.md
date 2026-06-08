@@ -93,6 +93,7 @@ verificáveis.
 | `npx prisma validate` | **valid** (`apps/akasha-portal/prisma/schema.prisma`, pós-T1.4) |
 | `npm run lint` | **0 erros** · 494 warnings (todos pré-existentes `@typescript-eslint/no-unused-vars` em `tests/`) |
 | `npm run test:run` | **7240 testes passando** · 24 skipped · 15 erros de pool worker (test pollution pré-existente — confirmado em isolamento cycle 369: `tests/lib/correlation/zodiac-frequency.test.ts` passa 81/81 sozinho, falha no suite por forks-pool timeout) |
+| Delta de testes (cycles 345→369) | **−879** (housekeeping, **não regressão**). Decomposição: refactor Akasha v2 `53c8501c` (cycle 334) removeu 1094 arquivos B2B; purges B2C legacy (cycle 342, `c456b8e0`); drift B2B cleanup cycles 335-345 (~50 arquivos); parcialmente compensado por cycle 364 T3.6 (+65 sub-testes). Ver `cycle-369.md` para auditoria completa. |
 | `npm run build` | **⏸️ NÃO VERIFICADO** — pré-existente `/_global-error` useContext (cycle 211-212, fora de escopo) |
 | `pnpm --filter akasha-portal build` | **⏸️ NÃO VERIFICADO** — bloqueado em T1.3 (mover código B2C → `apps/akasha-portal/src/`) |
 | QUALITY_SCORE | ≥ 0.91 |
