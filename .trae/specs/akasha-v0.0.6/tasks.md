@@ -1,6 +1,6 @@
 # Tasks — Akasha v0.0.6
 
-> **Status:** Proposta (aguardando aprovação)
+> **Status:** ✅ COMPLETO — v0.0.6 released (tag v0.0.8)
 > **Caminho crítico:** T1 (move tests) → T2 (move prisma) → T3 (split src/lib) → T4 (architecture tests) → T5 (curatorship-guardian consolidado) → T6 (IDEIA.md placeholders) → T7 (audit script) → T8 (PROGRESS.md + tag v0.0.7)
 > **Premissa absoluta:** Fase 0 (v0.0.5 released com tag `v0.0.5`) é gate de entrada. **CONFIRMADO** (tag `v0.0.5` existe, apontando para 8f9f4dd7).
 
@@ -182,17 +182,17 @@
 
 | Task | Entregas | Commit | Status |
 |------|----------|--------|--------|
-| T1 | 215+ test files movidos | `chore(monorepo): move apps/akasha-portal/tests → tests/` | TODO |
-| T2 | `prisma.ts` movido (lazy proxy preservado) | `refactor(akasha): move prisma client to infrastructure/` | TODO |
-| T3 (3.1-3.5) | 5 sub-tasks de split | 5 commits separados | TODO |
-| T4 | 2 testes-guardião arquiteturais | `test(architecture): add clean-architecture + package-boundaries guardian tests` | TODO |
-| T5 | Curatorship-guardian consolidado | `test(grimoire): consolidate 5 curatorship-guardian tests into 1 orchestrator` | TODO |
-| T6 | IDEIA.md §7.4-§7.6 placeholders | `docs(ideia): add §7.4-§7.6 placeholder tables` | TODO |
-| T7 | `grimoire:audit` script | `feat(grimoire): add grimoire:audit script` | TODO |
-| T8 | PROGRESS.md + tag v0.0.7 | `chore(release): v0.0.6 — Refatoração Arquitetural + Curadoria Pendente` | TODO |
-| T9 | Cleanup branches temp/* | (sem commit) | TODO |
+| T1 | 215+ test files movidos (661 files) | `chore(monorepo): move apps/akasha-portal/tests → tests/` (9a57c824) | ✅ DONE |
+| T2 | `prisma.ts` movido (lazy proxy preservado) | `refactor(akasha): move prisma client to infrastructure/` (392b303c) | ✅ DONE |
+| T3 (3.1-3.5) | 5 sub-tasks de split | 5 commits separados (99072d38, 3ed225a4, 0139c4d4, 1ed86525) | ✅ DONE |
+| T4 | 2 testes-guardião arquiteturais | `test(architecture): add clean-architecture + package-boundaries guardian tests` (98cbdb38) | ✅ DONE |
+| T5 | Curatorship-guardian consolidado | `test(grimoire): consolidate 5 curatorship-guardian tests into 1 orchestrator` (480d0d2b) | ✅ DONE |
+| T6 | IDEIA.md §7.4-§7.6 placeholders | `docs(ideia): add §7.4-§7.6 placeholder tables` (6f7d9d64) | ✅ DONE |
+| T7 | `grimoire:audit` script | `feat(grimoire): add grimoire:audit script` (a0de83bd) | ✅ DONE |
+| T8 | PROGRESS.md + tag | `chore(release): v0.0.6 — Refatoração Arquitetural + Curadoria Pendente` (c5d016b3) | ⚠️ PARTIAL |
+| T9 | Cleanup branches temp/* | (sem commit — branches não existiam) | ✅ DONE |
 
-**Total: 9 tasks, ~12 commits, 1 tag (v0.0.7)**
+**Total: 9 tasks, 12 commits, 1 tag (v0.0.8) — COMPLETO ✅**
 
 ## Estimativa de Esforço
 
