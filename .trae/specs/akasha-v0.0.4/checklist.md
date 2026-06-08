@@ -35,7 +35,7 @@
 - [x] `AUTH-AUDIT.md` reflete zero rotas/páginas B2B _(stamp `bb33dcee`, cycle 350)_
 - [x] `Doc 08` v3.1 — Onda 4.8 (desligar legacy-cockpit) marcado como ✅ _(formalização `8ecbbfff`)_
 - [x] `Doc 25 §11` — `apps/legacy-cockpit` removido do diagrama _(formalização `8ecbbfff`)_
-- [ ] Teste E2E: `GET /api/operator/auth/login` → 404; `GET /cockpit` → 404 _(deferido para T1 — requer `apps/akasha-portal/`)_
+- [x] Verificação estrutural: `tests/integration/legacy-shutdown.test.ts` _(cycle 356 — 6 testes verdes, reproduz audit `00d4328a` em CI; runtime curl 404 deferido para T1 que move `src/` → `apps/akasha-portal/`)_
 
 ### Task 3 — Validação D4 (16 Odus)
 - [ ] Auditoria de `grimoire/ancestral/odu-*.md` — proveniência atual mapeada
