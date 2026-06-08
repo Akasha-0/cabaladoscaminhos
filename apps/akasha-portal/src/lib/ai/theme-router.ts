@@ -179,3 +179,112 @@ export function routeQuestion(question: string, filledHouses: number[] = []): Ro
     natalAspects: [...aspectSet],
   };
 }
+
+// ============================================================
+// ROUTER DE PILARES — v0.0.4 T10.6
+// ============================================================
+// Roteia uma pergunta aberta para 1..3 dos 5 pilares oraculares do
+// Akasha. Diferente do `routeQuestion` (que roteia por TEMA — amor,
+// dinheiro, etc. → casas da Mesa Real), este roteador classifica por
+// PILAR (qual sistema/escola a pergunta evoca). O resultado é usado
+// pelo Camada 2 (RAG) para filtrar entradas do Grimório por pilar.
+//
+// Importante: keywords com acento + variações PT/EN. O matching
+// reaproveita o `normalize()` já existente acima.
+//
+// v0.0.4 T10.6: adicionado o pilar `iching` (I-Ching chinês).
+
+export type Pillar = 'astrology' | 'kabala' | 'tantra' | 'odus' | 'iching';
+
+// fallow-ignore-next-line unused-type
+export interface PillarEntry {
+  id: Pillar;
+  /** Palavras-gatilho (lematizadas, sem acento) — PT e EN. */
+  keywords: string[];
+}
+
+// Taxonomia canônica dos 5 pilares (Doc 14 §2).
+export const PILLAR_TAXONOMY: Record<Pillar, PillarEntry> = {
+  astrology: {
+    id: 'astrology',
+    keywords: [
+      // PT
+      'astrologia', 'astrologico', 'astrologica', 'mapa astral', 'signo', 'signos',
+      'ascendente', 'horoscopo', 'planeta', 'planetas', 'lua', 'sol', 'mercurio',
+      'venus', 'marte', 'jupiter', 'saturno', 'urano', 'netuno', 'plutao',
+      'casa astral', 'casas astrologicas', 'transito', 'retrogado',
+      // EN
+      'astrology', 'horoscope', 'zodiac', 'planetary', 'natal chart', 'sun sign',
+    ],
+  },
+  kabala: {
+    id: 'kabala',
+    keywords: [
+      // PT
+      'cabala', 'kabbalah', 'kabala', 'arvore da vida', 'sephira', 'sephirot',
+      'sefirot', 'tipheret', 'chesed', 'geburah', 'netzach', 'hod', 'yesod',
+      'malkuth', 'binah', 'chokhmah', 'kether', 'daat', 'cabalistico',
+      // EN
+      'kabbalah', 'sephiroth', 'tree of life', 'ein sof',
+    ],
+  },
+  tantra: {
+    id: 'tantra',
+    keywords: [
+      // PT
+      'tantra', 'tantrico', 'tantrica', 'corpo sutil', 'corpos sutis',
+      'kundalini', 'chacra', 'chakras', 'prana', 'nadi', 'bandha', 'kosha',
+      'meditacao tantrica', 'kriya',
+      // EN
+      'tantric', 'subtle body', 'chakra', 'kundalini',
+    ],
+  },
+  odus: {
+    id: 'odus',
+    keywords: [
+      // PT
+      'odu', 'odus', 'ifa', 'orixa', 'orixas', 'candomble', 'umbanda',
+      'babalorixa', 'babalao', 'ebó', 'ebo', 'quizila', 'preceito', 'orunmila',
+      // EN
+      'orisha', 'ifa divination', 'candomble',
+    ],
+  },
+  iching: {
+    id: 'iching',
+    keywords: [
+      // PT
+      'sabedoria chinesa', 'hexagrama', 'hexagrama natal', 'i ching', 'iching',
+      'yin-yang', 'yin yang', 'trigrama', 'bagua', 'consulta chinesa',
+      'sabedoria ancestral chinesa', 'livro das mutacoes', 'rei wen', 'king wen',
+      // EN
+      'chinese wisdom', 'i ching', 'iching', 'yijing', 'yin-yang', 'trigram',
+      'bagua', 'chinese oracle', 'book of changes', 'ancestral wisdom',
+    ],
+  },
+};
+
+/**
+ * Roteia uma pergunta aberta para 1..3 pilares do Akasha (T10.6).
+ * Determinístico: mesma pergunta → mesmos pilares. Sem match → `[]`
+ * (caller decide o fallback). Não confundir com `routeQuestion` que
+ * roteia por TEMA (amor/dinheiro/etc.).
+ *
+ * @param question pergunta do consulente (em PT ou EN, com ou sem acento)
+ * @returns pilares reconhecidos, ordenados por nº de keywords (desc)
+ */
+export function routeByPillar(question: string): Pillar[] {
+  const normalized = normalize(question);
+  if (!normalized) return [];
+
+  const scored: Array<{ id: Pillar; score: number }> = [];
+  for (const entry of Object.values(PILLAR_TAXONOMY)) {
+    let score = 0;
+    for (const kw of entry.keywords) {
+      if (normalized.includes(normalize(kw))) score += 1;
+    }
+    if (score > 0) scored.push({ id: entry.id, score });
+  }
+
+  scored.sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+  return scored.slice(0, 3).map((s) => s.id);
+}

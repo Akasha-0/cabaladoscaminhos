@@ -28,6 +28,7 @@
   "dependencies": {
     "@akasha/core-astrology": "workspace:*",
     "@akasha/core-cabala": "workspace:*",
+    "@akasha/core-iching": "workspace:*",
     "@akasha/core-odus": "workspace:*",
     "@akasha/core-tantra": "workspace:*",
     "@akasha/types": "workspace:*",

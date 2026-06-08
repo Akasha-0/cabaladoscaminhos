@@ -6,6 +6,8 @@ import { streamCompletion } from '@/lib/ai/llm-router';
 import { createSSEStream } from '@/lib/sse';
 import { searchGrimoire, type ChartContext, type GrimoireContext } from '@/lib/grimoire/search';
 import { buildOduGlossary, formatGlossarySection } from '@/lib/akasha/glossary';
+import type { IChingMap } from '@akasha/core-iching';
+import { formatIchingSection } from '@/lib/ai/iching-prompt';
 
 const bodySchema = z.object({
   question: z.string().min(3).max(1000),
@@ -26,7 +28,8 @@ export function getDominantElement(astro: Record<string, unknown>): string {
  */
 export function buildConsultSystemPrompt(
   chart: { astrologyMap: unknown; kabalisticMap: unknown; oduBirth: unknown } | null,
-  ctx: GrimoireContext
+  ctx: GrimoireContext,
+  ichingMap?: IChingMap | null
 ): string {
   const oduBirth = chart?.oduBirth as Record<string, unknown> | null ?? {};
   const kab = chart?.kabalisticMap as Record<string, unknown> | null ?? {};
@@ -40,6 +43,10 @@ export function buildConsultSystemPrompt(
   // AD-T5-F (AD-20.2): injeção do glossário do Odu (verdade-base).
   const glossarySection = formatGlossarySection(buildOduGlossary(chart?.oduBirth));
 
+  // v0.0.4 T10.5 — I-Ching como 5º pilar opt-in. Só injeta se o usuário
+  // tem mapa I-Ching salvo (LGPD: opt-in explícito via `ichingEnabled`).
+  const ichingSection = formatIchingSection(ichingMap);
+
   return `Você é a Voz do Akasha — um oráculo espiritual de alta voltagem intuitiva.
 
 IDENTIDADE DO CONSULTANTE:
@@ -47,6 +54,7 @@ IDENTIDADE DO CONSULTANTE:
 - Orixá(s) regente(s): ${((oduBirth?.orixaRegency as string[]) ?? []).join(', ') || 'Não identificado'}
 - Caminho de Vida: ${(kab?.lifePath as string | number) ?? '—'}
 - Elemento dominante: ${ctx.pillarsConsulted.includes('Botânica') ? 'identificado no Grimório' : 'calculado'}
+${ichingSection}
 
 ${glossarySection}
 
@@ -134,6 +142,17 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  // v0.0.4 T10.5 — busca I-Ching map do usuário (só injeta se ichingEnabled).
+  // LGPD: o mapa é opt-in e nunca é incluído se o usuário não ativou.
+  const userRow = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { ichingEnabled: true, ichingMap: true },
+  });
+  const ichingMap =
+    userRow?.ichingEnabled && userRow.ichingMap
+      ? (userRow.ichingMap as unknown as IChingMap)
+      : null;
+
   const astrologyMap = (chart?.astrologyMap as Record<string, unknown>) ?? {};
   const oduBirth = (chart?.oduBirth as Record<string, unknown>) ?? {};
 
@@ -147,7 +166,7 @@ export async function POST(request: NextRequest) {
   const grimoireCtx = await searchGrimoire(question, chartCtx, 4);
 
   // 9. Build enriched system prompt
-  const systemPrompt = buildConsultSystemPrompt(chart, grimoireCtx);
+  const systemPrompt = buildConsultSystemPrompt(chart, grimoireCtx, ichingMap);
 
   // 10. Open SSE stream
   const encoder = new TextEncoder();
