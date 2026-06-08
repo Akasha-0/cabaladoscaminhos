@@ -55,6 +55,7 @@ verificáveis.
 | Onda 4 (I) | **Stripe Checkout + Motor de Créditos** (stripe-akasha lib; checkout dinâmico/price-id; webhook akasha-stripe assinado; /api/akasha/subscription; /conta page com plano/créditos/checkout; 8.783 testes passando) | `2580568` | ✅ |
 | Onda 4 (J) | **Alinhamento Docs + Merge-Readiness** (manifest.json Akasha; .env.example completo B2C; migration pgvector embedding; daily-transits-cron.ts; audit 70% → gaps documentados; PROGRESS atualizado) | (este commit) | ✅ |
 | Onda 3 Launch | **Onda 3 Launch Readiness** (embeddings GrimoireEntry ativos; busca híbrida JSONB+pgvector; cronjob trânsitos diários systemd; grimório 78 arquivos; RAG-fechado testes-guardião; reconcile LLM×créditos; runbook VPS §9; backup/restore scripts; cabala-backup systemd; i18n EN title_en em 78 entries; 8113 testes passando, build OK) | (este commit) | ✅ |
+| v0.0.4-T2 | **Shutdown formal do legacy-cockpit** (verificação + docs: `apps/legacy-cockpit` ausente; middleware sem allowlist B2B; zero `/api/operator|mesa-real|consult` em `src/`; `docs/AUTH-AUDIT.md` data atualizada; `docs/08_roadmap.md` v3.0→v3.1, Onda 4.8 ✅; `docs/25_visao-akasha.md` v1.0→v1.1, AD-25.2 Desligado, diagrama monorepo §11 sem `legacy-cockpit`) | `cc94269b` | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
