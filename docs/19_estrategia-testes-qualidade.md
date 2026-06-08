@@ -76,6 +76,7 @@ Mapeada às três camadas de inteligência (Doc 25 §4: Determinístico → Graf
 > 4. **Fonte única das cartas/Odus** (Doc 16 AD-02 — cartas em *legacy-cockpit*; Odus permanecem no Akasha): Casa 24 = "O Coração" em **todas** as fontes; nenhuma lista paralela diverge.
 > 5. **Cálculo determinístico** (Doc 11 / `core-cabala`, `core-tantra`, `core-odus`): casos-âncora (ex.: "Eliane…20/08/1986" → Caminho 7, Alma 2, Karma 8, Dom 5).
 > 6. **RAG fechado** (Doc 25 §5 / Doc 12): a síntese nunca cita ritual/erva/Odu fora dos fragmentos injetados do Grimório; sem match, recusa em vez de inventar.
+> 7. **Teste-guardião arquitetural** (v0.0.6 T4): `tests/architecture/clean-architecture.test.ts` — garante que a camada `domain/` não importa concerns de infraestrutura (next/, @prisma/, @supabase/, pg, ioredis, process.env). `tests/architecture/package-boundaries.test.ts` — garante que nenhum workspace importa de paths internos de `packages/core-*/src/<internal>/`; apenas superfície pública (`index.ts`) é permitida.
 
 ### 4.2 O que **não** testar
 - Integrações externas reais (LLM, Swiss Ephemeris, Ollama/embeddings) — **mockar** nas fronteiras; testar o *payload determinístico*, não a resposta do modelo.

@@ -92,8 +92,6 @@ const GRIMOIRE_ODUS_DIR = join(
   '..',
   '..',
   '..',
-  '..',
-  '..',
   'grimoire',
   'ancestral'
 );
