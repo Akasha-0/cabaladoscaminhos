@@ -21,9 +21,13 @@ export async function GET(request: NextRequest) {
   const auth = await requireAkashaApi(request);
   if (auth instanceof NextResponse) return auth;
 
-  const chart = await prisma.birthChart.findUnique({
-    where: { userId: auth.id },
-  });
+  const [chart, user] = await Promise.all([
+    prisma.birthChart.findUnique({ where: { userId: auth.id } }),
+    prisma.user.findUnique({
+      where: { id: auth.id },
+      select: { ichingMap: true, birthDate: true, birthTime: true },
+    }),
+  ]);
 
   // Se não tem chart, retornar 404 para redirecionar ao onboarding
   if (!chart) {
@@ -36,6 +40,9 @@ export async function GET(request: NextRequest) {
   const kabalisticMap = chart.kabalisticMap as any;
   const tantricMap = chart.tantricMap as any;
   const oduBirth = chart.oduBirth as any;
+  const ichingMap = (user?.ichingMap ?? null) as any;
+  const userBirthDate = user?.birthDate ?? null;
+  const userBirthTime = user?.birthTime ?? null;
 
   // Retornar estrutura MandalaData
   const data = {
@@ -96,6 +103,30 @@ export async function GET(request: NextRequest) {
         house: p.house ?? 1,
       })),
       elementalBalance: astrologyMap?.elementalChart ?? { fire: 0, earth: 0, air: 0, water: 0 },
+    },
+
+    // I-Ching (Layer 5) — v0.0.5 T6
+    iching: {
+      hexagramNumber: ichingMap?.hexagramNumber ?? null,
+      hexagramName: ichingMap?.hexagramName ?? null,
+      hexagramChineseName: ichingMap?.hexagramChineseName ?? null,
+      upperTrigram: ichingMap?.upperTrigram ?? null,
+      lowerTrigram: ichingMap?.lowerTrigram ?? null,
+      upperTrigramName: ichingMap?.upperTrigramName ?? null,
+      lowerTrigramName: ichingMap?.lowerTrigramName ?? null,
+      lines: Array.isArray(ichingMap?.lines) ? ichingMap.lines : [],
+      algorithm: ichingMap?.algorithm ?? null,
+      provisional: ichingMap?.provisional ?? true,
+      birthDate: ichingMap?.birthDate ?? null,
+      birthTime: ichingMap?.birthTime ?? null,
+      available: !!ichingMap && !ichingMap.error,
+      error: ichingMap?.error ?? null,
+    },
+
+    // birthDate/birthTime do User (apenas para computeIchingNode no front)
+    _user: {
+      birthDate: userBirthDate ? userBirthDate.toISOString() : null,
+      birthTime: userBirthTime ?? null,
     },
   };
 

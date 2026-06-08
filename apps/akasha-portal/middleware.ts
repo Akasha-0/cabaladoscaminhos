@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { generateRequestId } from '@/lib/logging';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { extractIdentifier } from '@/middleware/rateLimit';
+import { defaultLocale, locales, type Locale } from '@/i18n/config';
 
 // ============================================
 // Rate Limiting Configuration
@@ -88,18 +89,59 @@ export async function middleware(request: NextRequest) {
   // Generate request ID for tracing
   const requestId = generateRequestId();
 
-  // Add security headers to response
-  const response = NextResponse.next();
-  response.headers.set('X-Request-Id', requestId);
-
   // Locale detection — Doc 25 §9 / v0.0.4-T9
   // Cookie takes priority; fallback to Accept-Language; default pt-BR.
   const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
   const acceptLang = request.headers.get('accept-language') ?? '';
   const headerLocale = acceptLang.toLowerCase().includes('en') ? 'en' : null;
-  const locale = cookieLocale === 'en' || cookieLocale === 'pt-BR'
-    ? cookieLocale
-    : (headerLocale === 'en' ? 'en' : 'pt-BR');
+  const locale: Locale = cookieLocale === 'en' || cookieLocale === 'pt-BR'
+    ? (cookieLocale as Locale)
+    : (headerLocale === 'en' ? 'en' : defaultLocale);
+
+  // ============================================
+  // Locale prefix redirect — Doc 25 §9 / v0.0.4-T9.9
+  // ============================================
+  // Paths that should NOT be locale-prefixed: API routes, Next internals,
+  // static assets, PWA shell files. Everything else (page routes) must live
+  // under `/{pt-BR|en}/...` per the [locale] segment in app/.
+  const LOCALE_EXEMPT_PREFIXES = [
+    '/_next',
+    '/api',
+    '/icons',
+    '/fonts',
+    '/sw.js',
+    '/manifest.json',
+    '/favicon.ico',
+    '/robots.txt',
+    '/sitemap.xml',
+    '/og-default.svg',
+  ];
+  const isLocaleExempt = LOCALE_EXEMPT_PREFIXES.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`)
+  );
+
+  const firstSegment = pathname.split('/')[1] ?? '';
+  const hasLocalePrefix = (locales as readonly string[]).includes(firstSegment);
+
+  if (!isLocaleExempt && !hasLocalePrefix) {
+    const target = pathname === '/' ? `/${locale}` : `/${locale}${pathname}`;
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = target;
+    // Preserve query string on the redirect.
+    redirectUrl.search = request.nextUrl.search;
+    const redirectResponse = NextResponse.redirect(redirectUrl, 307);
+    // Propagate locale header even on the redirect (helps downstream tools).
+    redirectResponse.headers.set('x-akasha-locale', locale);
+    Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
+      redirectResponse.headers.set(key, value);
+    });
+    redirectResponse.headers.set('X-Request-Id', requestId);
+    return redirectResponse;
+  }
+
+  // Add security headers to response
+  const response = NextResponse.next();
+  response.headers.set('X-Request-Id', requestId);
   response.headers.set('x-akasha-locale', locale);
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);

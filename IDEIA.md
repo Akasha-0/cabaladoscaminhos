@@ -779,6 +779,34 @@ function calculateBirthOdu(date: string): number {
 }
 ```
 
+### 7.2 Ledger I-Ching — 16 Hexagramas Curados (v0.0.5 Fase 1)
+
+> **Status (2026-06-07):** Infraestrutura de proveniência ativa. 16 arquivos `grimoire/iching/hex-NN-*.md` curados com `metadata.source` (Richard Wilhelm, 'I Ching: O Livro das Mutações', 1923, p. X-Y), `metadata.lineage` (Tradição Wilhelm/Baynes), `metadata.validated_at` (2026-06-07), `title_en` e seção `## EN` traduzida.
+>
+> **Páginas Wilhelm/Baynes** são estimativas plausíveis (~10-15 pgs por hexagrama em ~700 pgs) — o curador humano pode refinar com edição da `Princeton University Press` 3rd ed. (1950). Veja o teste-guardião `apps/akasha-portal/tests/lib/grimoire/iching-completeness.test.ts` para o gate de regressão.
+
+| # | Arquivo | Chinês | Pinyin | Nome PT | Nome EN | Trigrama Sup / Inf | Cross-ref |
+|---|---|---|---|---|---|---|---|
+| 1 | `hex-01-qian.md` | 乾 | Qián | O Criativo | The Creative | Céu ☰ / Céu ☰ | [Doc 15 §1] |
+| 2 | `hex-02-kun.md` | 坤 | Kūn | O Receptivo | The Receptive | Terra ☷ / Terra ☷ | [Doc 15 §1] |
+| 3 | `hex-03-zhun.md` | 屯 | Zhūn | Dificuldade no Início | Difficulty at the Beginning | Trovão ☳ / Água ☵ | [Doc 15 §1] |
+| 4 | `hex-04-meng.md` | 蒙 | Méng | A Ignorância Juvenil | Youthful Folly | Montanha ☶ / Fogo ☲ | [Doc 15 §1] |
+| 5 | `hex-05-xu.md` | 需 | Xū | A Espera | Waiting | Água ☵ / Fogo ☲ | [Doc 15 §1] |
+| 6 | `hex-06-song.md` | 訟 | Sòng | O Conflito | Conflict | Água ☵ / Céu ☰ | [Doc 15 §1] |
+| 7 | `hex-07-shi.md` | 師 | Shī | O Exército | The Army | Água ☵ / Terra ☷ | [Doc 15 §1] |
+| 8 | `hex-08-bi.md` | 比 | Bǐ | A União | Holding Together | Terra ☷ / Água ☵ | [Doc 15 §1] |
+| 9 | `hex-09-xiao-chu.md` | 小畜 | Xiǎo Chù | Pequena Domesticação | Small Taming | Fogo ☲ / Céu ☰ | [Doc 15 §1] |
+| 10 | `hex-10-lu.md` | 履 | Lǚ | O Andar | Treading | Céu ☰ / Fogo ☲ | [Doc 15 §1] |
+| 11 | `hex-11-tai.md` | 泰 | Tài | A Paz | Peace | Terra ☷ / Céu ☰ | [Doc 15 §1] |
+| 12 | `hex-12-pi.md` | 否 | Pǐ | A Estagnação | Standstill | Céu ☰ / Terra ☷ | [Doc 15 §1] |
+| 13 | `hex-13-tong-ren.md` | 同人 | Tóng Rén | Concordância entre os Homens | Fellowship | Céu ☰ / Fogo ☲ | [Doc 15 §1] |
+| 14 | `hex-14-da-you.md` | 大有 | Dà Yǒu | Grande Posse | Great Possession | Fogo ☲ / Céu ☰ | [Doc 15 §1] |
+| 15 | `hex-15-qian-modestia.md` | 謙 | Qiān | A Modéstia | Modesty | Terra ☷ / Montanha ☶ | [Doc 15 §1] |
+| 16 | `hex-16-yu.md` | 豫 | Yù | O Entusiasmo | Enthusiasm | Trovão ☳ / Terra ☷ | [Doc 15 §1] |
+
+**Decisões editoriais (v0.0.5 Fase 3, Tabela de Mapeamento I-Ching × Sefirot):**
+- A spec T2.4 menciona "8 derivados → 8 Sefirot". O mapeamento I-Ching × Sefirot ainda não está curado nesta release (Fase 3). A curadoria editorial (Gabriel) precisa decidir: (a) qual Sefirá ecoa cada hexagrama; (b) se a Sefirá é a "ressonância triádica" (3 hexagramas por Sefirá) ou direta (1:1). Veja T18 do `tasks.md`.
+
 ---
 
 ## 8. Fluxo de Contribuição

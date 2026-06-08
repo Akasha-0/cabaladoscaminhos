@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
 import { prisma } from '@/lib/prisma';
 import { buildDailyContent } from '@/lib/akasha/daily-engine';
+import { computeDailyHexagram } from '@/lib/daily-engine/iching';
 
 export async function GET(request: NextRequest) {
   const authResult = await requireAkashaApi(request);
@@ -23,6 +24,8 @@ export async function GET(request: NextRequest) {
       ritual: existing.ritual,
       alert: existing.alert,
       tensionPoint: existing.tensionPoint,
+      hexagram: existing.hexagram,
+      hexagramLines: existing.hexagramLines,
     });
   }
 
@@ -42,6 +45,10 @@ export async function GET(request: NextRequest) {
     today
   );
 
+  // v0.0.5 T7: hexagrama do dia (5º sistema oracular) — fallback se o
+  // cronjob diário ainda não persistiu o registro (GET antes da meia-noite UTC).
+  const dailyHex = computeDailyHexagram(today);
+
   const record = await prisma.dailyReading.create({
     data: {
       userId,
@@ -50,6 +57,8 @@ export async function GET(request: NextRequest) {
       ritual: content.ritual as object,
       alert: content.alert,
       tensionPoint: content.tensionPoint as object,
+      hexagram: String(dailyHex.hexagramNumber),
+      hexagramLines: dailyHex.lines as object,
     },
   });
 
@@ -59,5 +68,7 @@ export async function GET(request: NextRequest) {
     ritual: record.ritual,
     alert: record.alert,
     tensionPoint: record.tensionPoint,
+    hexagram: record.hexagram,
+    hexagramLines: record.hexagramLines,
   });
 }

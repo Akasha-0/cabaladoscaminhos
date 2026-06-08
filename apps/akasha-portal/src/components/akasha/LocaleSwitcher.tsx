@@ -1,10 +1,12 @@
 'use client';
 
-// LocaleSwitcher — Doc 25 §9 / v0.0.4-T9
-// Persists preference in `NEXT_LOCALE` httpOnly-incompatible cookie (client-readable).
-// Reloads to apply since the i18n wiring is currently a stub.
+// LocaleSwitcher — Doc 25 §9 / v0.0.4-T9.10
+// Persists preference in `NEXT_LOCALE` cookie (client-readable, non-httpOnly)
+// and navigates to the same route under the new locale prefix
+// (e.g. /pt-BR/conta → /en/conta) using Next.js router for a smooth SPA transition.
 
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';
 
 function getCookieLocale(): Locale {
@@ -14,8 +16,26 @@ function getCookieLocale(): Locale {
   return value && (locales as readonly string[]).includes(value) ? value : defaultLocale;
 }
 
+/**
+ * Strip the leading locale segment (if any) from a pathname.
+ * `/pt-BR/conta` → `/conta`
+ * `/en/mandala/sub` → `/mandala/sub`
+ * `/conta` → `/conta`
+ * `/` → `/`
+ */
+function stripLocale(pathname: string): string {
+  const segments = pathname.split('/');
+  // segments[0] is always '' (leading slash)
+  if (segments.length > 1 && (locales as readonly string[]).includes(segments[1] ?? '')) {
+    return '/' + segments.slice(2).join('/');
+  }
+  return pathname;
+}
+
 export function LocaleSwitcher() {
   const [locale, setLocale] = useState<Locale>(defaultLocale);
+  const router = useRouter();
+  const pathname = usePathname() ?? '/';
 
   useEffect(() => {
     setLocale(getCookieLocale());
@@ -25,7 +45,10 @@ export function LocaleSwitcher() {
     const next: Locale = locale === 'pt-BR' ? 'en' : 'pt-BR';
     document.cookie = `NEXT_LOCALE=${next}; path=/; max-age=31536000; samesite=lax`;
     setLocale(next);
-    if (typeof window !== 'undefined') window.location.reload();
+    const rest = stripLocale(pathname);
+    // Normalise: root + locale must point to a real page, not just '/'
+    const target = rest === '/' || rest === '' ? `/${next}` : `/${next}${rest}`;
+    router.push(target);
   };
 
   return (

@@ -25,6 +25,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import { buildDailyContent } from '../src/lib/akasha/daily-engine';
+import { computeDailyHexagram } from '../src/lib/daily-engine/iching';
 import { configureVapid, sendPush } from '../src/lib/push/send';
 import { logSecurityEvent } from '../src/lib/logging';
 
@@ -62,6 +63,10 @@ async function main() {
         today,
       );
 
+      // v0.0.5 T7: hexagrama do dia (5º sistema oracular) persistido.
+      // Determinístico por data — mesmo input para todos os usuários no batch.
+      const dailyHex = computeDailyHexagram(today);
+
       // AD-T5-E: upsert idempotente (chave única userId+date).
       // Antes: findUnique + create (vulnerável a corrida/duplicidade em re-execuções).
       await prisma.dailyReading.upsert({
@@ -73,12 +78,16 @@ async function main() {
           ritual: content.ritual as object,
           alert: content.alert,
           tensionPoint: content.tensionPoint as object,
+          hexagram: String(dailyHex.hexagramNumber),
+          hexagramLines: dailyHex.lines as object,
         },
         update: {
           climate: content.climate,
           ritual: content.ritual as object,
           alert: content.alert,
           tensionPoint: content.tensionPoint as object,
+          hexagram: String(dailyHex.hexagramNumber),
+          hexagramLines: dailyHex.lines as object,
         },
       });
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 type ManifestoContent = {
   userName: string;
@@ -141,6 +141,8 @@ function ExpandToggle({
 
 export default function ManifestoPage() {
   const router = useRouter();
+  const params = useParams<{ locale: string }>();
+  const locale = params?.locale ?? 'pt-BR';
   const [content, setContent] = useState<ManifestoContent | null>(null);
   const [incomplete, setIncomplete] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -161,11 +163,11 @@ export default function ManifestoPage() {
         });
 
         if (res.status === 401 || res.status === 403) {
-          router.replace('/onboarding');
+          router.replace(`/${locale}/onboarding`);
           return;
         }
         if (res.status === 404) {
-          router.replace('/onboarding');
+          router.replace(`/${locale}/onboarding`);
           return;
         }
 
@@ -174,13 +176,13 @@ export default function ManifestoPage() {
         setContent(data.content);
         setIncomplete(data.incomplete ?? false);
       } catch {
-        router.replace('/onboarding');
+        router.replace(`/${locale}/onboarding`);
       } finally {
         setLoading(false);
       }
     }
     loadManifesto();
-  }, [router]);
+  }, [router, locale]);
 
   if (loading) {
     return (
@@ -394,82 +396,31 @@ export default function ManifestoPage() {
           />
 
           <p style={descriptionStyle}>{kabala.description}</p>
-
-          {expandedKabala && (
-            <div
-              style={{
-                marginTop: 14,
-                padding: '12px 16px',
-                background: 'rgba(124,92,255,0.06)',
-                border: '1px solid rgba(124,92,255,0.18)',
-                borderRadius: 8,
-              }}
-            >
-              <p
-                style={{
-                  color: 'rgba(244,245,255,0.45)',
-                  fontSize: '0.78rem',
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                Os números cabalísticos revelam a geometria do seu contrato de alma — as frequências
-                inscritas no seu nome e data de nascimento que definem o roteiro desta encarnação.
-              </p>
-            </div>
-          )}
         </div>
 
-        {/* III — Tântrica */}
+        {/* III — Tantra */}
         <div style={glass}>
           <div style={sectionTitleStyle('#2DD4BF')}>
-            <span>III. A Anatomia Sutil — Tântrica</span>
+            <span>III. A Anatomia — Tantra</span>
             <ExpandToggle expanded={expandedTantra} onToggle={() => setExpandedTantra(!expandedTantra)} color="#2DD4BF" />
           </div>
 
           <DataRow
             pairs={[
-              { label: 'Corpo da Alma', value: tantra.soul },
+              { label: 'Alma', value: tantra.soul },
               { label: 'Karma', value: tantra.karma },
-              { label: 'Dom Divino', value: tantra.divineGift },
-              ...(tantra.tantricPath !== null
-                ? [{ label: 'Caminho Tântrico', value: String(tantra.tantricPath) }]
-                : []),
+              { label: 'Dádiva Divina', value: tantra.divineGift },
+              { label: 'Caminho Tântrico', value: tantra.tantricPath },
             ]}
           />
 
           <p style={descriptionStyle}>{tantra.description}</p>
-
-          {expandedTantra && (
-            <div
-              style={{
-                marginTop: 14,
-                padding: '12px 16px',
-                background: 'rgba(45,212,191,0.05)',
-                border: '1px solid rgba(45,212,191,0.16)',
-                borderRadius: 8,
-              }}
-            >
-              <p
-                style={{
-                  color: 'rgba(244,245,255,0.45)',
-                  fontSize: '0.78rem',
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                Os 11 Corpos Espirituais da Numerologia Tântrica mapeiam cada camada do seu ser:
-                do corpo físico ao corpo de luz, revelando onde a energia flui livremente e onde
-                há bloqueios a transmutar.
-              </p>
-            </div>
-          )}
         </div>
 
         {/* IV — Astrologia */}
         <div style={glass}>
           <div style={sectionTitleStyle('#7C5CFF')}>
-            <span>IV. O Mapa de Bordo — Astrologia</span>
+            <span>IV. O Céu — Astrologia</span>
             <ExpandToggle expanded={expandedAstro} onToggle={() => setExpandedAstro(!expandedAstro)} color="#7C5CFF" />
           </div>
 
@@ -481,54 +432,19 @@ export default function ManifestoPage() {
           />
 
           {astrology.mainPlanets.length > 0 && (
-            <div style={{ marginBottom: 10 }}>
-              <div style={labelStyle}>Planetas Principais</div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 5 }}>
-                {astrology.mainPlanets.map((planet) => (
-                  <span
-                    key={planet.name}
-                    style={{
-                      background: 'rgba(124,92,255,0.1)',
-                      border: '1px solid rgba(124,92,255,0.25)',
-                      borderRadius: 6,
-                      padding: '3px 10px',
-                      fontSize: '0.78rem',
-                      color: 'rgba(244,245,255,0.78)',
-                    }}
-                  >
-                    {planet.name} em {planet.sign}
-                  </span>
+            <div style={{ marginTop: 14 }}>
+              <div style={labelStyle}>Posições Planetárias</div>
+              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+                {astrology.mainPlanets.map((p, i) => (
+                  <div key={i} style={{ color: 'rgba(244,245,255,0.78)', fontSize: '0.85rem' }}>
+                    <strong style={{ color: '#F4F5FF' }}>{p.name}</strong> em {p.sign}
+                  </div>
                 ))}
               </div>
             </div>
           )}
 
           <p style={descriptionStyle}>{astrology.description}</p>
-
-          {expandedAstro && (
-            <div
-              style={{
-                marginTop: 14,
-                padding: '12px 16px',
-                background: 'rgba(124,92,255,0.06)',
-                border: '1px solid rgba(124,92,255,0.18)',
-                borderRadius: 8,
-              }}
-            >
-              <p
-                style={{
-                  color: 'rgba(244,245,255,0.45)',
-                  fontSize: '0.78rem',
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                Seu mapa astral natal registra o céu exato no momento do seu nascimento — uma
-                impressão cósmica única que codifica os grandes temas, talentos e desafios desta
-                encarnação.
-              </p>
-            </div>
-          )}
         </div>
 
       </div>

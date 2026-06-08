@@ -232,11 +232,16 @@ function buildGreeting(reading: DailyReading): string {
 
 // ── Página ───────────────────────────────────────────────────────────────────
 
-export default async function DiarioPage() {
+export default async function DiarioPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get('akasha_session')?.value;
 
-  if (!token) redirect('/onboarding');
+  if (!token) redirect(`/${locale}/onboarding`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/daily`,
@@ -247,7 +252,7 @@ export default async function DiarioPage() {
     }
   );
 
-  if (res.status === 401 || res.status === 404) redirect('/onboarding');
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
 
   const reading: DailyReading = await res.json();
 
@@ -382,7 +387,7 @@ export default async function DiarioPage() {
           </button>
 
           {/* Link para o Oráculo */}
-          <Link href="/oraculo" style={btnStyle}>
+          <Link href={`/${locale}/oraculo`} style={btnStyle}>
             Consultar Oráculo →
           </Link>
         </div>

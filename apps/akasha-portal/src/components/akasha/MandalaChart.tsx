@@ -38,13 +38,33 @@ interface MandalaData {
     planets: Array<{ name: string; sign: string; degree: number; house: number }>;
     elementalBalance: { fire: number; earth: number; air: number; water: number };
   };
+  iching: {
+    hexagramNumber: number | null;
+    hexagramName: string | null;
+    hexagramChineseName: string | null;
+    upperTrigram: number | null;
+    lowerTrigram: number | null;
+    upperTrigramName: string | null;
+    lowerTrigramName: string | null;
+    lines: boolean[];
+    algorithm: string | null;
+    provisional: boolean;
+    birthDate: string | null;
+    birthTime: string | null;
+    available: boolean;
+    error: string | null;
+  };
+  _user?: {
+    birthDate: string | null;
+    birthTime: string | null;
+  };
 }
 
 interface Props {
   data: MandalaData;
 }
 
-type Layer = 1 | 2 | 3 | 4;
+type Layer = 1 | 2 | 3 | 4 | 5;
 
 const toXY = (angleDeg: number, r: number, cx = 200, cy = 200) => ({
   x: cx + r * Math.cos((angleDeg - 90) * Math.PI / 180),
@@ -224,6 +244,7 @@ export default function MandalaChart({ data }: Props) {
         {([
           { layer: 4 as Layer, label: 'Astrologia', color: '#7C5CFF' },
           { layer: 3 as Layer, label: 'Tântrica', color: '#2DD4BF' },
+          { layer: 5 as Layer, label: 'I-Ching', color: '#A0763A' },
           { layer: 2 as Layer, label: 'Cabala', color: '#7C5CFF' },
           { layer: 1 as Layer, label: 'Odus', color: '#F0B429' },
         ] as const).map(({ layer, label, color }) => (
@@ -393,6 +414,46 @@ export default function MandalaChart({ data }: Props) {
               </text>
             </g>
           ))}
+        </g>
+
+        {/* ── Layer 5 — I-Ching (5º sistema, v0.0.5 T6) ── */}
+        <g opacity={opacity(5)} onClick={() => setActiveLayer(activeLayer === 5 ? null : 5)} style={{ cursor: 'pointer' }}>
+          <circle cx="200" cy="200" r="110" fill="none" stroke="rgba(160,118,58,0.2)" strokeWidth="1" strokeDasharray="2 4" />
+          {/* I-Ching node at top (200, 110) */}
+          <g>
+            <circle cx="200" cy="110" r="20" fill="rgba(160,118,58,0.12)" />
+            <circle
+              cx="200" cy="110" r="13"
+              fill={data.iching.available ? '#A0763A' : 'rgba(160,118,58,0.35)'}
+              opacity={data.iching.available ? 0.9 : 0.6}
+              filter="url(#glow-akasha)"
+            >
+              <title>
+                {data.iching.available
+                  ? `Hexagrama ${data.iching.hexagramNumber} — ${data.iching.hexagramName} (${data.iching.hexagramChineseName})`
+                  : 'Hexagrama do Ori ainda não calculado'}
+              </title>
+            </circle>
+            <text
+              x="200" y="110"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="9"
+              fill="#F4F5FF"
+              fontWeight="700"
+            >
+              {data.iching.hexagramNumber ?? '?'}
+            </text>
+            <text
+              x="200" y="86"
+              textAnchor="middle"
+              fontSize="5.5"
+              fill="rgba(160,118,58,0.7)"
+              letterSpacing="1.5"
+            >
+              I-CHING
+            </text>
+          </g>
         </g>
 
         {/* ── B — Toroidal synergy lines (between Layer 3 and Layer 2) ── */}
@@ -595,6 +656,71 @@ export default function MandalaChart({ data }: Props) {
             <Insight color="#F0B429">
               As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for sincronizado.
               Consulte o Oráculo para orientação ancestral personalizada.
+            </Insight>
+          )}
+        </InfoPanel>
+      )}
+
+      {activeLayer === 5 && (
+        <InfoPanel color="#A0763A" title="I-Ching — O Hexagrama do Ori" subtitle="Sabedoria Ancestral Chinesa · Camada 5">
+          {data.iching.available ? (
+            <>
+              <Row
+                label="Hexagrama"
+                value={data.iching.hexagramChineseName
+                  ? `${data.iching.hexagramNumber} — ${data.iching.hexagramName} (${data.iching.hexagramChineseName})`
+                  : `${data.iching.hexagramNumber} — ${data.iching.hexagramName}`}
+              />
+              <Row
+                label="Trigrama superior"
+                value={data.iching.upperTrigram != null && data.iching.upperTrigramName
+                  ? `${data.iching.upperTrigram} — ${data.iching.upperTrigramName}`
+                  : data.iching.upperTrigramName}
+              />
+              <Row
+                label="Trigrama inferior"
+                value={data.iching.lowerTrigram != null && data.iching.lowerTrigramName
+                  ? `${data.iching.lowerTrigram} — ${data.iching.lowerTrigramName}`
+                  : data.iching.lowerTrigramName}
+              />
+              {Array.isArray(data.iching.lines) && data.iching.lines.length === 6 && (
+                <>
+                  <Divider />
+                  <p style={{ fontSize: '0.75rem', color: '#A0763A', fontWeight: 600, marginBottom: '0.35rem' }}>
+                    As 6 Linhas (de baixo para cima)
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: '4px', alignItems: 'center' }}>
+                    {data.iching.lines.map((yang, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          fontFamily: 'monospace',
+                          fontSize: '0.875rem',
+                          color: yang ? '#F4F5FF' : '#A0763A',
+                          letterSpacing: '0.15em',
+                        }}
+                      >
+                        {yang ? '———' : '— — —'}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+              <Divider />
+              <Row label="Data de nascimento" value={data.iching.birthDate} />
+              {data.iching.birthTime && <Row label="Hora" value={data.iching.birthTime} />}
+              {data.iching.provisional && (
+                <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
+                  * Cálculo provisório — hora de nascimento não informada.
+                </p>
+              )}
+            </>
+          ) : (
+            <Insight color="#A0763A">
+              O hexagrama do seu Ori será calculado quando você completar o perfil.
+              Forneça data e hora de nascimento para que o algoritmo determinístico
+              (akasha.v0.0.4.trigramas-mod8) revele o trigrama superior e inferior
+              do seu nascimento.
             </Insight>
           )}
         </InfoPanel>

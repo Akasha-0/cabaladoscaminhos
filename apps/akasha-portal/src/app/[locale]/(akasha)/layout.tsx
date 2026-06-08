@@ -1,6 +1,20 @@
 import Link from 'next/link';
 
-export default function AkashaLayout({ children }: { children: React.ReactNode }) {
+/**
+ * (akasha) group layout inside the [locale] segment.
+ * Doc 25 §9 / v0.0.4-T9.8 — the previous `apps/akasha-portal/src/app/(akasha)/layout.tsx`
+ * lived at the route root; now it sits one level deeper so all nav links are
+ * locale-prefixed.
+ */
+export default async function AkashaLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
   return (
     <div
       className="min-h-screen flex flex-col antialiased"
@@ -18,7 +32,7 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
       >
         <nav className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link
-            href="/mandala"
+            href={`/${locale}/mandala`}
             className="text-lg font-semibold"
             style={{
               fontFamily: 'var(--font-cinzel), serif',
@@ -32,7 +46,7 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
           <ul className="flex items-center gap-5 text-sm" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
             <li>
               <Link
-                href="/mandala"
+                href={`/${locale}/mandala`}
                 className="transition-colors"
                 style={{ color: '#A7AECF' }}
               >
@@ -41,7 +55,7 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
             </li>
             <li>
               <Link
-                href="/diario"
+                href={`/${locale}/diario`}
                 className="transition-colors"
                 style={{ color: '#A7AECF' }}
               >
@@ -50,7 +64,7 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
             </li>
             <li>
               <Link
-                href="/oraculo"
+                href={`/${locale}/oraculo`}
                 className="transition-colors"
                 style={{ color: '#A7AECF' }}
               >
@@ -59,7 +73,7 @@ export default function AkashaLayout({ children }: { children: React.ReactNode }
             </li>
             <li>
               <Link
-                href="/conta"
+                href={`/${locale}/conta`}
                 className="transition-colors"
                 style={{ color: '#A7AECF' }}
               >

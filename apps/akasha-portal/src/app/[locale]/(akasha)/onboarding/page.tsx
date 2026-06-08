@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { geocodeCity } from '@/lib/geocoding/nominatim';
 
 type FormData = {
@@ -91,6 +91,8 @@ const labelStyle: React.CSSProperties = {
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const params = useParams<{ locale: string }>();
+  const locale = params?.locale ?? 'pt-BR';
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormData>(INITIAL);
   const [error, setError] = useState('');
@@ -204,7 +206,7 @@ export default function OnboardingPage() {
         await fetch('/api/akasha/chart', { method: 'POST' });
 
         if (intervalRef.current) clearInterval(intervalRef.current);
-        router.push('/mandala');
+        router.push(`/${locale}/mandala`);
       } catch (e: unknown) {
         if (intervalRef.current) clearInterval(intervalRef.current);
         setError(e instanceof Error ? e.message : 'Ocorreu um erro inesperado.');

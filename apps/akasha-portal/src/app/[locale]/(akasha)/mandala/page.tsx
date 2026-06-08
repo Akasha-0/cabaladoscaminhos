@@ -14,11 +14,16 @@ function getSaudacao(): string {
   return 'Boa noite —';
 }
 
-export default async function MandalaPage() {
+export default async function MandalaPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get('akasha_session')?.value;
 
-  if (!token) redirect('/onboarding');
+  if (!token) redirect(`/${locale}/onboarding`);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandala`,
@@ -28,7 +33,7 @@ export default async function MandalaPage() {
     }
   );
 
-  if (res.status === 401 || res.status === 404) redirect('/onboarding');
+  if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
 
   const data = await res.json();
 
@@ -81,7 +86,7 @@ export default async function MandalaPage() {
       {/* Incomplete data badge */}
       {data.incomplete && (
         <a
-          href="/conta"
+          href={`/${locale}/conta`}
           style={{
             display: 'inline-block',
             marginBottom: '1rem',
@@ -103,7 +108,7 @@ export default async function MandalaPage() {
 
       {/* Quick link to diary */}
       <a
-        href="/diario"
+        href={`/${locale}/diario`}
         style={{
           marginTop: '1.25rem',
           color: '#5C6691',

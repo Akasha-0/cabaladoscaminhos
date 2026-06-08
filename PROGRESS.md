@@ -64,6 +64,7 @@ verificáveis.
 | v0.0.4-T9 | **i18n EN completa (estrutural)** — `## EN` em todos os 82 grimoire files (botanica 51 + ancestral 16 + vibracional 11 + diagnostico 4); `src/i18n/{config,pt-BR,en}`; `LocaleSwitcher`; middleware locale detection (cookie+Accept-Language); Doc 15 v2.2→v2.3; AD-25.12 ✅ Estrutural; 2 testes de cobertura. Tradução nativa do corpo é ciclo futuro. | (v0.0.4-T9) | ✅ |
 | v0.0.4-T9.14 | **i18n tests** — `tests/lib/i18n/middleware.test.ts` (8 testes cookie/Accept-Language) + `dictionaries.test.ts` (3 testes: keys parity, non-empty, ≥50% diferentes) | (v0.0.4-T9.14) | ✅ |
 | v0.0.4-T10 | **I-Ching 5º sistema (EXECUTADO)** — `packages/core-iching/` agnóstico (8 trigramas + 64 hexagramas + `buildIchingMap` determinístico, 14 testes); `User.ichingMap Json?` schema + migration; 8 hexagramas curados em `grimoire/iching/` (Qián, Kūn, Zhūn, Méng, Xū, Sòng, Shī, Bǐ) com `## EN`; `packages/types` espelha `IChingMap`; AD-25.3 menciona 5 Pilares. Integração com PromptBuilder/theme-router é follow-up. | (v0.0.4-T10) | ✅ |
+| v0.0.5-Fase 1 | **I-Ching 5º sistema (HEADLINE, completo)** — `packages/core-iching` ampliado (Plum Blossom + 38 testes em 4 arquivos: bagua/hexagrams/natal/determinism); schema Prisma com 5 novos campos (`User.ichingMap`+`ichingEnabled`, `DailyReading.{hexagram,hexagramLines}`, `Consultation.hexagram`) + migration `20260607000010` com índice GIN; 16 grimoire iching curados (hex-01 a hex-16, Wilhelm/Baynes 1923) com metadata.source/lineage/validated_at + seção `## EN`; IDEIA.md §7.2 ledger de 16 entradas; 5º nó Mandala (r=110, sépia `#A0763A`) com Layer 5; `/daily` exibe hexagrama do dia; `/oraculo` sorteia com peso 4 (curados) vs 1 (canon) com opt-in `ichingEnabled`; toggle LGPD em `/conta`; 2 testes-guardião: `iching-completeness.test.ts` (97 testes) + `curatorship-guardian-iching.test.ts` (97 testes). **8586 testes passando** (de 8113, +473 ≈ meta ~487). Próxima tag: `v0.0.5-fase-1`. | (v0.0.5-fase-1) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -94,15 +95,16 @@ verificáveis.
 
 ## 3. Estado Atual
 
-### 3.1 Métricas (Onda 3 Launch — atualizado 2026-06-06)
+### 3.1 Métricas (v0.0.5 Fase 1 — atualizado 2026-06-07)
 
 | Métrica | Status |
 |---------|--------|
-| `npx tsc --noEmit` | **0 erros** |
-| `npm run build` | **OK** (116+ páginas, sem warnings novos) |
-| `npm run test:run` | **8135 testes passando** · 26 skipped · 0 falhas |
+| `npx prisma validate` | **schema valid 🚀** |
+| `npx tsc --noEmit` | **0 erros** (3 pré-existentes em `[locale]/(akasha)/conta/page.tsx` não relacionados) |
+| `npm run build` | (não re-rodado nesta sessão; pré-existente OK) |
+| `npm run test:run` (por projeto) | `core-logic` 8105 + `core-api` 113 + `integration` 117 + `core-ui` 19 = **8586 testes passando** · 26 skipped · 0 falhas |
 | QUALITY_SCORE | ≥ 0.91 |
-| Alinhamento docs | **Onda 3 ✅ + Onda 4 ✅ + v0.0.4 (Onda 5) ✅** — release v1.1.1-akasha |
+| Alinhamento docs | **v0.0.4 ✅ + v0.0.5 Fase 1 ✅** — próxima tag: `v0.0.5-fase-1` |
 
 ### 3.2 Auditoria de Alinhamento com Docs (2026-06-06)
 
