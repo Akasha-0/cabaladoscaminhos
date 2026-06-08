@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
+import { useCockpitStore } from '@/stores/cockpit-store';
 
 interface MandalaData {
   incomplete: boolean;
@@ -139,6 +141,7 @@ function dominantElement(balance: { fire: number; earth: number; air: number; wa
 
 export default function MandalaChart({ data }: Props) {
   const [activeLayer, setActiveLayer] = useState<null | Layer>(null);
+  const atmosphereIntensity = useCockpitStore((s) => s.atmosphereIntensity);
 
   const opacity = (layer: Layer) =>
     activeLayer === null ? 1 : activeLayer === layer ? 1 : 0.3;
@@ -243,12 +246,15 @@ export default function MandalaChart({ data }: Props) {
         ))}
       </div>
 
-      <svg
-        viewBox="0 0 400 400"
-        width="100%"
-        style={{ maxWidth: 400 }}
-        aria-label="Mandala Akáshica Toroidal"
-      >
+      <div className="relative w-full" style={{ maxWidth: 400 }}>
+        <MandalaAtmosphere intensity={atmosphereIntensity} />
+
+        <svg
+          viewBox="0 0 400 400"
+          width="100%"
+          style={{ maxWidth: 400, display: 'block', position: 'relative', zIndex: 1 }}
+          aria-label="Mandala Akáshica Toroidal"
+        >
         {/* Deep space background */}
         <defs>
           <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
@@ -467,6 +473,7 @@ export default function MandalaChart({ data }: Props) {
           </text>
         )}
       </svg>
+      </div>
 
       {/* === Info Panels === */}
       {activeLayer === 4 && (
