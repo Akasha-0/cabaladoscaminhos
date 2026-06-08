@@ -63,7 +63,9 @@ verificáveis.
 | v0.0.4-T7 | **Push notifications (VAPID + Web Push)** — schema `User.pushEnabled` + migration, `lib/push/{subscribe,send}.ts`, `POST/DELETE /api/akasha/push/subscribe`, toggle em `/conta` (LGPD), integração no `daily-transits-cron.ts`, eventos `push.{subscribed,unsubscribed,sent}`, Doc 22 §4 atualizado, 14 testes (privacy guard + API) | (v0.0.4-T7) | ✅ |
 | v0.0.4-T9 | **i18n EN completa (estrutural)** — `## EN` em todos os 82 grimoire files (botanica 51 + ancestral 16 + vibracional 11 + diagnostico 4); `src/i18n/{config,pt-BR,en}`; `LocaleSwitcher`; middleware locale detection (cookie+Accept-Language); Doc 15 v2.2→v2.3; AD-25.12 ✅ Estrutural; 2 testes de cobertura. Tradução nativa do corpo é ciclo futuro. | (v0.0.4-T9) | ✅ |
 | v0.0.4-T9.14 | **i18n tests** — `tests/lib/i18n/middleware.test.ts` (8 testes cookie/Accept-Language) + `dictionaries.test.ts` (3 testes: keys parity, non-empty, ≥50% diferentes) | (v0.0.4-T9.14) | ✅ |
-| v0.0.4-T10 | **I-Ching 5º sistema (EXECUTADO)** — `packages/core-iching/` agnóstico (8 trigramas + 64 hexagramas + `buildIchingMap` determinístico, 14 testes); `User.ichingMap Json?` schema + migration; 8 hexagramas curados em `grimoire/iching/` (Qián, Kūn, Zhūn, Méng, Xū, Sòng, Shī, Bǐ) com `## EN`; `packages/types` espelha `IChingMap`; AD-25.3 menciona 5 Pilares. Integração com PromptBuilder/theme-router é follow-up. | (v0.0.4-T10) | ✅ |
+| v0.0.4-T10 | **I-Ching 5º sistema (EXECUTADO + INTEGRADO)** — `packages/core-iching/` agnóstico (8 trigramas + 64 hexagramas + `buildIchingMap` determinístico, 38 testes); `User.ichingMap Json?` schema + migration; 8 hexagramas curados em `grimoire/iching/` (Qián, Kūn, Zhūn, Méng, Xū, Sòng, Shī, Bǐ) com `## EN`; `packages/types` espelha `IChingMap`; **T10.5 PromptBuilder integration** (`formatIchingSection`); **T10.6 theme-router** com `PILLAR_TAXONOMY[iching]`; **T10.8 grimoire:sync** (recursivo, automático); 5º pilar em `Doc 25 §1`. | (v0.0.4-T10) | ✅ |
+| v0.0.4-T9.5 | **Tradução estrutural (82 grimoire files)** — script `translate-en-sections.mjs` gera `## EN` substancial (>200 chars) categoria-aware (Erva/Odu/Corpo/Diagnóstico/Hexagrama); nota explícita "native-quality follow-up Doc 25 §9 Fase 2"; 82/82 arquivos atualizados | (v0.0.4-T9.5) | ✅ |
+| v0.0.4-T9.8-10 | **Locale routing (Next.js App Router)** — `[locale]/(akasha)/` structure com 6 páginas (conta, diario, mandala, manifesto, onboarding, oraculo); middleware redirect pt-BR default + cookie override; LocaleSwitcher com `usePathname` + `router.push` preservando rota | (v0.0.4-T9.8-10) | ✅ |
 | v0.0.5-Fase 1 | **I-Ching 5º sistema (HEADLINE, completo)** — `packages/core-iching` ampliado (Plum Blossom + 38 testes em 4 arquivos: bagua/hexagrams/natal/determinism); schema Prisma com 5 novos campos (`User.ichingMap`+`ichingEnabled`, `DailyReading.{hexagram,hexagramLines}`, `Consultation.hexagram`) + migration `20260607000010` com índice GIN; 16 grimoire iching curados (hex-01 a hex-16, Wilhelm/Baynes 1923) com metadata.source/lineage/validated_at + seção `## EN`; IDEIA.md §7.2 ledger de 16 entradas; 5º nó Mandala (r=110, sépia `#A0763A`) com Layer 5; `/daily` exibe hexagrama do dia; `/oraculo` sorteia com peso 4 (curados) vs 1 (canon) com opt-in `ichingEnabled`; toggle LGPD em `/conta`; 2 testes-guardião: `iching-completeness.test.ts` (97 testes) + `curatorship-guardian-iching.test.ts` (97 testes). **8586 testes passando** (de 8113, +473 ≈ meta ~487). Próxima tag: `v0.0.5-fase-1`. | (v0.0.5-fase-1) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
@@ -102,9 +104,9 @@ verificáveis.
 | `npx prisma validate` | **schema valid 🚀** |
 | `npx tsc --noEmit` | **0 erros** (3 pré-existentes em `[locale]/(akasha)/conta/page.tsx` não relacionados) |
 | `npm run build` | (não re-rodado nesta sessão; pré-existente OK) |
-| `npm run test:run` (por projeto) | `core-logic` 8105 + `core-api` 113 + `integration` 117 + `core-ui` 19 = **8586 testes passando** · 26 skipped · 0 falhas |
+| `npm run test:run` (por projeto) | `core-logic` 8004 + `core-api` 251 + `integration` 117 + `core-ui` 103 = **8475 testes passando** · 26 skipped · 0 falhas |
 | QUALITY_SCORE | ≥ 0.91 |
-| Alinhamento docs | **v0.0.4 ✅ + v0.0.5 Fase 1 ✅** — próxima tag: `v0.0.5-fase-1` |
+| Alinhamento docs | **v0.0.4 ✅ + v0.0.5 Fase 1 ✅ + T9.5 + T9.8-10 + T10.5-8 ✅** — release v1.1.2-akasha |
 
 ### 3.2 Auditoria de Alinhamento com Docs (2026-06-06)
 
