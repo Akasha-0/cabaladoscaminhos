@@ -7,6 +7,7 @@
     "build": "NODE_OPTIONS='--max-old-space-size=4096' next build --experimental-build-mode=compile && next build --experimental-build-mode=generate",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
     "test:core": "vitest run --project core-logic --project core-api --project core-ui",
@@ -21,7 +22,13 @@
     "grimoire:sync": "tsx scripts/sync-grimoire.ts",
     "grimoire:status": "tsx scripts/grimoire-status.ts",
     "fallow": "fallow --skip dupes,health",
-    "fallow:all": "fallow"
+    "fallow:all": "fallow",
+    "dev:portal": "pnpm --filter akasha-portal dev",
+    "build:portal": "pnpm --filter akasha-portal build",
+    "start:portal": "pnpm --filter akasha-portal start",
+    "lint:portal": "pnpm --filter akasha-portal lint",
+    "typecheck:portal": "pnpm --filter akasha-portal typecheck",
+    "test:portal": "pnpm --filter akasha-portal test:run"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

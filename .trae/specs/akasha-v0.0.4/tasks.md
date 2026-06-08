@@ -27,6 +27,7 @@
 - [ ] **Task 1: Conclusão da migração monorepo (apps/akasha-portal/)**
   - [x] SubTask 1.1: Inventariar arquivos a mover: `src/app/(akasha)/`, `src/app/api/akasha/`, `src/app/api/admin/webhooks/grimoire-sync/`, `src/lib/akasha/`, `src/lib/grimoire/`, `src/lib/stripe-akasha/`, `src/components/mandala/`, `src/middleware/` (apenas a parte Akasha), `src/hooks/akasha*`, `src/types/akasha*` _(audit `a7564b10`, cycle 344)_
   - [x] SubTask 1.2: Criar estrutura `apps/akasha-portal/{src,public,prisma}/` com `package.json` próprio e `tsconfig.json` estendendo a raiz _(skeleton cycle 356: `package.json` workspace + `tsconfig.json` extends raiz + `next.config.js` com transpilePackages + dirs com .gitkeep)_
+  - [x] SubTask 1.6: Atualizar `package.json` raiz para delegar scripts ao `apps/akasha-portal` (preservando retrocompatibilidade: `npm run build` ainda funciona do root) _(cycle 358: adicionados `dev:portal` / `build:portal` / `start:portal` / `lint:portal` / `typecheck:portal` / `test:portal` via `pnpm --filter akasha-portal` + `typecheck` global; retrocompat preservada — scripts legados `dev`/`build`/`start`/`lint`/`test:run` intactos)_
   - [ ] SubTask 1.3: Mover arquivos preservando a árvore de imports (`@/lib/akasha/*` deve resolver para `apps/akasha-portal/src/lib/akasha/*`)
   - [ ] SubTask 1.4: Mover `prisma/schema.prisma` para `apps/akasha-portal/prisma/schema.prisma` e ajustar `prisma.config.ts`
   - [ ] SubTask 1.5: Configurar `pnpm-workspace.yaml` e `turbo.json` para incluir `apps/*` e `packages/*`
