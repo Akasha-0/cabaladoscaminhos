@@ -1,5 +1,5 @@
 import type { InsightData } from './types';
-import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
 
 const REQUIRED_FIELDS = ['resumo', 'proposito', 'dons', 'desafios'] as const;
 

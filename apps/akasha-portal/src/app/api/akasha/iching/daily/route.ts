@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { computeDailyHexagram } from '@/lib/daily-engine/iching';
+import { computeDailyHexagram } from '@/lib/domain/iching';
 
 /**
  * GET /api/akasha/iching/daily

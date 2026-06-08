@@ -1,5 +1,5 @@
 import { createHash } from 'crypto';
-import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
 import { createChatCompletion } from '@/lib/ai/openai';
 import type { ChatMessage } from '@/lib/ai/types';
 import { getRedisClient } from '@/lib/redis';

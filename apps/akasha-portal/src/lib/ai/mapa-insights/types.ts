@@ -2,7 +2,7 @@
  * Mapa Insights Module Types
  * @module ai/mapa-insights/types
  */
-import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
 
 /**
  * Insight sections for POI/POA analysis

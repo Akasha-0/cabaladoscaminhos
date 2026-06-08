@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { orixas, odus } from '@/lib/data/spiritual-data';
+import { orixas, odus } from '@/lib/domain/data/spiritual-data';
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SpiritualSearchQuerySchema = z.object({
   q: z.string().min(1, 'Query é obrigatória'),

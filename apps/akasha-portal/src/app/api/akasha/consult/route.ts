@@ -5,7 +5,7 @@ import { prisma } from '@/lib/infrastructure/prisma';
 import { streamCompletion } from '@/lib/ai/llm-router';
 import { createSSEStream } from '@/lib/sse';
 import { searchGrimoire, type ChartContext, type GrimoireContext } from '@/lib/grimoire/search';
-import { buildOduGlossary, formatGlossarySection } from '@/lib/akasha/glossary';
+import { buildOduGlossary, formatGlossarySection } from '@/lib/domain/glossary';
 import type { IChingMap } from '@akasha/core-iching';
 import { formatIchingSection } from '@/lib/ai/iching-prompt';
 

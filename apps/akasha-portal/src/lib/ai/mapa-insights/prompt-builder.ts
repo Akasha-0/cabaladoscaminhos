@@ -3,7 +3,7 @@
  * @module ai/mapa-insights/prompt-builder
  */
 
-import type { MapaAlmaCompleto } from '@/lib/engines/types/mapa-alma';
+import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
 import type { InsightData } from './types';
 import type { PosicaoPlaneta } from '@akasha/core-astrology';
 

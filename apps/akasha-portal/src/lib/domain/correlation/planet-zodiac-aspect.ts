@@ -4,8 +4,8 @@
  * Based on classical Western astrology traditions integrated with Cabala dos Caminhos
  */
 
-import { getPlanetZodiac, PLANET_ZODIAC_MAPPINGS, type PlanetZodiacMapping } from '@/lib/correlation/planet-zodiac';
-import { getPlanetAspect, PLANET_ASPECTS, type PlanetAspect } from '@/lib/correlation/planet-aspect';
+import { getPlanetZodiac, PLANET_ZODIAC_MAPPINGS, type PlanetZodiacMapping } from '@/lib/domain/correlation/planet-zodiac';
+import { getPlanetAspect, PLANET_ASPECTS, type PlanetAspect } from '@/lib/domain/correlation/planet-aspect';
 
 export interface PlanetZodiacAspectMapping {
   planeta: string;

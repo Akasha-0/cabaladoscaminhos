@@ -9,7 +9,7 @@
 import { calculateNumerology } from '@akasha/core-cabala';
 import { drawOdu, type Odu, type DrawResult } from '@akasha/core-odus';
 import { getBirthChart } from '@akasha/core-astrology';
-import { getData as getChakraData } from '@/lib/chakra/v4/chakra-v4-data';
+import { getData as getChakraData } from '@/lib/domain/chakra/v4/chakra-v4-data';
 import { DeepCorrelationEngine } from '@/lib/ai/deep-correlation-engine';
 import type { UserSpiritualData } from '@/lib/ai/types';
 import {
@@ -31,8 +31,8 @@ import type {
   ChakraInfo,
 } from './types/mapa-alma';
 // HyperCorrelationEngine for cross-tradition analysis
-import { hyperCorrelationEngine } from '@/lib/orixa/HyperCorrelationEngine';
-import { getOrixa } from '@/lib/orixa/types';
+import { hyperCorrelationEngine } from '@/lib/domain/orixa/HyperCorrelationEngine';
+import { getOrixa } from '@/lib/domain/orixa/types';
 // ============================================================
 // CORRESPONDENCE TABLES
 // ============================================================

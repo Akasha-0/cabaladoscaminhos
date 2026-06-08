@@ -8,8 +8,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
-import { orixas, odus } from '@/lib/data/spiritual-data';
-import { TAROT_DECK } from '@/lib/tarot/cards';
+import { orixas, odus } from '@/lib/domain/data/spiritual-data';
+import { TAROT_DECK } from '@/lib/domain/tarot/cards';
 import { searchParamsToObject } from '@/lib/api/query-params';
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
