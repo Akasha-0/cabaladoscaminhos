@@ -23,7 +23,7 @@
 ## Fase 1 — CONCLUSÃO TÉCNICA
 
 - [ ] **Task 1: Conclusão da migração monorepo (apps/akasha-portal/)**
-  - [ ] SubTask 1.1: Inventariar arquivos a mover: `src/app/(akasha)/`, `src/app/api/akasha/`, `src/app/api/admin/webhooks/grimoire-sync/`, `src/lib/akasha/`, `src/lib/grimoire/`, `src/lib/stripe-akasha/`, `src/components/mandala/`, `src/middleware/` (apenas a parte Akasha), `src/hooks/akasha*`, `src/types/akasha*`
+  - [x] SubTask 1.1: Inventariar arquivos a mover: `src/app/(akasha)/`, `src/app/api/akasha/`, `src/app/api/admin/webhooks/grimoire-sync/`, `src/lib/akasha/`, `src/lib/grimoire/`, `src/lib/stripe-akasha/`, `src/components/mandala/`, `src/middleware/` (apenas a parte Akasha), `src/hooks/akasha*`, `src/types/akasha*` _(audit `a7564b10`, cycle 344)_
   - [ ] SubTask 1.2: Criar estrutura `apps/akasha-portal/{src,public,prisma}/` com `package.json` próprio e `tsconfig.json` estendendo a raiz
   - [ ] SubTask 1.3: Mover arquivos preservando a árvore de imports (`@/lib/akasha/*` deve resolver para `apps/akasha-portal/src/lib/akasha/*`)
   - [ ] SubTask 1.4: Mover `prisma/schema.prisma` para `apps/akasha-portal/prisma/schema.prisma` e ajustar `prisma.config.ts`
@@ -33,17 +33,17 @@
   - [ ] Verify: `pnpm install` + `pnpm --filter akasha-portal build` + `pnpm test:core` verdes; `npm run build` (retrocompat) também verde
 
 - [ ] **Task 2: Shutdown formal do legacy-cockpit**
-  - [ ] SubTask 2.1: Auditar `apps/legacy-cockpit/` (se ainda existir) e listar dependências
-  - [ ] SubTask 2.2: Remover `apps/legacy-cockpit/` definitivamente
-  - [ ] SubTask 2.3: Auditar `apps/akasha-portal/src/middleware.ts` — remover allowlist de prefixos B2B (`/cockpit`, `/api/mesa-real`, `/api/consult`, `/api/operator`)
-  - [ ] SubTask 2.4: Verificar `apps/akasha-portal/src/app/api/operator/`, `mesa-real/`, `consult/` (legado) — não devem existir
-  - [ ] SubTask 2.5: Atualizar `AUTH-AUDIT.md` para refletir zero rotas/páginas B2B
-  - [ ] SubTask 2.6: Atualizar `Doc 08` v3.0 → v3.1: marcar Onda 4.8 (desligar legacy-cockpit) como ✅
-  - [ ] SubTask 2.7: Atualizar `Doc 25 §11` — `apps/legacy-cockpit` removido do diagrama
-  - [ ] Verify: testes E2E (curl) — `/api/operator/auth/login` → 404; `/cockpit` → 404; middleware não tem allowlist B2B
+  - [x] SubTask 2.1: Auditar `apps/legacy-cockpit/` (se ainda existir) e listar dependências _(refactor Akasha v2 `53c8501c`, cycle 334 — já removido)_
+  - [x] SubTask 2.2: Remover `apps/legacy-cockpit/` definitivamente _(refactor Akasha v2 `53c8501c`, cycle 334)_
+  - [x] SubTask 2.3: Auditar `apps/akasha-portal/src/middleware.ts` — remover allowlist de prefixos B2B (`/cockpit`, `/api/mesa-real`, `/api/consult`, `/api/operator`) _(audit `00d4328a`, cycle 351)_
+  - [x] SubTask 2.4: Verificar `apps/akasha-portal/src/app/api/operator/`, `mesa-real/`, `consult/` (legado) — não devem existir _(audit `00d4328a`, cycle 351)_
+  - [x] SubTask 2.5: Atualizar `AUTH-AUDIT.md` para refletir zero rotas/páginas B2B _(stamp `bb33dcee`, cycle 350)_
+  - [x] SubTask 2.6: Atualizar `Doc 08` v3.0 → v3.1: marcar Onda 4.8 (desligar legacy-cockpit) como ✅ _(formalização `8ecbbfff`, cycle 349)_
+  - [x] SubTask 2.7: Atualizar `Doc 25 §11` — `apps/legacy-cockpit` removido do diagrama _(formalização `8ecbbfff`, cycle 349)_
+  - [x] Verify (audit only — 2.1–2.7 ✅): testes E2E (curl) — `/api/operator/auth/login` → 404; `/cockpit` → 404 _(deferido para Fase 1 — depende de `apps/akasha-portal/` em T1.2)_
 
 - [ ] **Task 3: Validação D4 (16 Odus) — remoção do PROVISIONAL**
-  - [ ] SubTask 3.1: Auditar `grimoire/ancestral/odu-*.md` — listar quais têm `metadata.source` e `metadata.lineage` preenchidos
+  - [x] SubTask 3.1: Auditar `grimoire/ancestral/odu-*.md` — listar quais têm `metadata.source` e `metadata.lineage` preenchidos _(audit `a0183acb`, cycle 349 — 16/16 sem proveniência, GAP mapeado)_
   - [ ] SubTask 3.2: Para cada Odu sem proveniência, adicionar `source` (livro/autor/edição/página — Doc 20 AD-20.3) e `lineage` (tradição — Yorubá/Ifá/Candomblé/etc.)
   - [ ] SubTask 3.3: Registrar proveniência no `IDEIA.md` (ledger, Doc 20 AD-20.5) para os 16 Odus
   - [ ] SubTask 3.4: Atualizar `Doc 15 §1` — remover `⚠️ PROVISIONAL (D4)` do cabeçalho e da tabela
