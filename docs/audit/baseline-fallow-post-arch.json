@@ -1,0 +1,179 @@
+$ fallow --skip dupes,health --skip dupes,health
+loaded config: /home/skynet/cabala-dos-caminhos/.fallowrc.json
+  68 entry points detected (55 plugin, 11 package.json, 2 manual entry)
+
+── Dead Code ──────────────────────────────────────
+
+  Note: 96% of unused files are under apps/ — run `fallow list --entry-points` to verify entry-point detection — https://docs.fallow.tools/explanations/dead-code#unused-files
+── Unused Code ─────────────────────────────────────
+
+● Unused files (237)
+  apps/akasha-portal/  228 files
+  packages/  4 files
+  (project root)  3 files
+  scripts/  2 files
+  Files not reachable from any entry point — https://docs.fallow.tools/explanations/dead-code#unused-files
+  To suppress a directory: add to ignorePatterns in .fallowrc.json
+
+● Unused exports (33)
+  packages/core-iching/src/natal.ts (5)
+    :145 TRIGRAMS (re-export)
+    :145 getTrigram (re-export)
+    :146 HEXAGRAMS (re-export)
+    :146 getAllHexagrams (re-export)
+    :146 getHexagram (re-export)
+  apps/akasha-portal/src/lib/application/auth/akasha-jwt.ts (3)
+    :11 AKASHA_ACCESS_TTL_SECONDS
+    :12 AKASHA_REFRESH_TTL_SECONDS
+    :31 AkashaJwtSecretMissingError
+  apps/akasha-portal/src/lib/domain/tarot/cards.ts (3)
+    :21 MAJOR_ARCANA
+    :314 drawCards
+    :321 MINOR_ARCANA
+  apps/akasha-portal/src/app/api/akasha/consult/route.ts (2)
+    :17 getDominantElement
+    :29 buildConsultSystemPrompt
+  apps/akasha-portal/src/lib/application/ai/llm-router.ts (2)
+    :70 getLlmConfig
+    :96 generateCompletion
+  apps/akasha-portal/src/lib/domain/odu-data.ts (2)
+    :30 ODU_DATABASE
+    :476 getOduByNumber
+  apps/akasha-portal/src/lib/shared/logging.ts (2)
+    :328 generateRequestId
+    :381 createLogger
+  packages/core-cabala/src/ciclos.ts (2)
+    :56 calcularMesPessoal
+    :65 calcularDiaPessoal
+  apps/akasha-portal/src/app/layout.tsx
+    :65 headers
+  apps/akasha-portal/src/components/design-system/Typography.tsx
+    :450 BodyText
+  ... and 10 more in 10 files (--format json for full list)
+  Exported symbols with no known consumers — https://docs.fallow.tools/explanations/dead-code#unused-exports
+  To auto-fix: fallow fix --dry-run
+  To suppress: // fallow-ignore-next-line unused-exports
+  (198 more in files already reported as unused)
+
+● Unused type exports (5)
+  apps/akasha-portal/src/components/design-system/Typography.tsx (3)
+    :271 HeadingProps
+    :337 BodyTextProps
+    :412 LabelProps
+  apps/akasha-portal/src/lib/shared/logging.ts
+    :430 AppLogger
+  apps/akasha-portal/src/stores/cockpit-store.ts
+    :7 CockpitState
+  Type exports with no known consumers — https://docs.fallow.tools/explanations/dead-code#unused-types
+  To auto-fix: fallow fix --dry-run
+  To suppress: // fallow-ignore-next-line unused-types
+  (30 more in files already reported as unused)
+
+── Dependencies ─────────────────────────────────────
+
+● Unused dependencies (6)
+  @akasha/types (apps/akasha-portal/package.json; imported in packages/core-cabala, packages/core-odus, packages/core-tantra)
+  @react-three/drei (apps/akasha-portal/package.json)
+  @vercel/og
+  jspdf
+  otpauth
+  qrcode
+  Listed in dependencies but never imported — https://docs.fallow.tools/explanations/dead-code#unused-dependencies
+  To suppress: // fallow-ignore-next-line unused-dependencies
+
+● Unresolved imports (39)
+  apps/akasha-portal/scripts/run-evolution.ts (7)
+    :6 ../src/lib/quality/runner
+    :6 ../src/lib/quality/runner
+    :8 ../src/lib/quality/metrics-framework
+    :9 ../src/lib/quality/metrics-framework
+    :10 ../src/lib/quality/metrics-framework
+    ... and 2 more (--format json for full list)
+  apps/akasha-portal/src/lib/infrastructure/grimoire-search.ts (6)
+    :3 ./types
+    :3 ./types
+    :5 ./types
+    :6 ./types
+    :7 ./types
+    ... and 1 more (--format json for full list)
+  apps/akasha-portal/scripts/daily-transits-cron.ts (5)
+    :27 ../src/lib/akasha/daily-engine
+    :28 ../src/lib/daily-engine/iching
+    :29 ../src/lib/push/send
+    :29 ../src/lib/push/send
+    :30 ../src/lib/logging
+  apps/akasha-portal/src/lib/application/agents/recommendation-engine-v2.ts (5)
+    :7 @/lib/life-areas
+    :7 @/lib/life-areas
+    :7 @/lib/life-areas
+    :8 @/lib/swarm
+    :8 @/lib/swarm
+  apps/akasha-portal/src/lib/application/akasha/cross-engine.ts (3)
+    :13 ./odu-data
+    :13 ./odu-data
+    :13 ./odu-data
+  apps/akasha-portal/middleware.ts (2)
+    :2 @/lib/logging
+    :3 @/lib/rate-limit
+  apps/akasha-portal/scripts/sync-grimoire.ts (2)
+    :2 ../src/lib/grimoire/sync
+    :3 ../src/lib/prisma
+  apps/akasha-portal/src/lib/application/agents/agent-prompts-v2.ts (2)
+    :5 @/lib/life-areas
+    :6 @/lib/swarm
+  apps/akasha-portal/src/lib/application/akasha/daily-engine.ts (2)
+    :4 ./glossary
+    :4 ./glossary
+  apps/akasha-portal/src/lib/application/akasha/manifesto-builder.ts (2)
+    :2 ./glossary
+    :2 ./glossary
+  ... and 3 more in 3 files (--format json for full list)
+  Import paths that could not be resolved — check for missing packages or broken paths. Framework-specific imports may need a plugin: https://docs.fallow.tools/plugins — https://docs.fallow.tools/explanations/dead-code#unresolved-imports
+  To suppress: // fallow-ignore-next-line unresolved-imports
+
+── Structure ─────────────────────────────────────
+
+● Duplicate exports (6)
+  packages/core-cabala/src/calculos.ts
+    ↔ numerology-kabalah.ts (2 exports)
+    calculateExpression, calculateLifePath
+
+  apps/akasha-portal/src/components/akasha/MandalaAtmosphere.tsx
+    ↔ stores/cockpit-store.ts (1 export)
+    AtmosphereIntensity
+
+  packages/core-odus/src/calculos.ts
+    ↔ odus-ifa-data.ts (1 export)
+    OduInfo
+
+  packages/core-odus/src/matching.ts
+    ↔ suggestions.ts (1 export)
+    RitualSuggestion
+
+  packages/core-cabala/src/number-meanings.ts
+    ↔ sefirot-meanings.ts (1 export)
+    getMeanings
+
+  Same export name defined in multiple files; barrel re-exports may resolve ambiguously — https://docs.fallow.tools/explanations/dead-code#duplicate-exports
+  To suppress: // fallow-ignore-next-line duplicate-exports
+
+── Maintenance ─────────────────────────────────────
+
+● Stale suppressions (10)
+  apps/akasha-portal/src/components/shared/ErrorState.tsx:7:0 // fallow-ignore-next-line unused-file (no unused-file issue found on the next line)
+  apps/akasha-portal/src/lib/application/ai/theme-router.ts:28:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  apps/akasha-portal/src/lib/application/ai/theme-router.ts:199:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  apps/akasha-portal/src/lib/application/payments/service.ts:5:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  apps/akasha-portal/src/lib/application/swarm/swarm-orchestrator.ts:340:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  apps/akasha-portal/src/lib/domain/tarot/spread-calculator.ts:22:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  apps/akasha-portal/src/lib/interface/api/auth-utils.ts:21:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  apps/akasha-portal/src/lib/interface/api/base-route.ts:191:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  apps/akasha-portal/src/lib/interface/api/error-handler.ts:12:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  packages/core-cabala/src/calculator.ts:17:0 // fallow-ignore-next-line unused-type (no unused-type issue found on the next line)
+  Suppression comments or JSDoc tags that no longer match any issue — https://docs.fallow.tools/explanations/dead-code#stale-suppressions
+
+✗ 237 files · 33 exports · 5 types · 6 unused dependencies · 39 unresolved imports · 5 duplicate pairs · 10 stale suppressions (0.25s)
+  564 issues · 23 suppressed · 10 stale suppressions
+
+Failed: dead-code (564 issues)
+[ELIFECYCLE] Command failed with exit code 1.
