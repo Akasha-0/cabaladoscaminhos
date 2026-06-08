@@ -198,7 +198,7 @@ cabaladoscaminhos/ (monorepo)
 
 **Os pacotes `core-*` são bibliotecas agnósticas:** não sabem o que é React, HTTP, botão ou CSS. Recebem dados, fazem a matemática pesada, devolvem JSON. Rodam os testes; se passam, a lógica está blindada.
 
-> **Sobre o legado (AD-25.2):** a **Mesa Real (36 casas / Baralho Cigano / Lenormand)** e o **Cockpit B2B** saem do produto Akasha. Tornam-se `apps/legacy-cockpit`, mantidos durante a migração e **desligados** quando o portal B2C estiver 100% autônomo. Nenhum conceito novo do Akasha depende do Baralho Cigano.
+> **Sobre o legado (AD-25.2):** a **Mesa Real (36 casas / Baralho Cigano / Lenormand)** e o **Cockpit B2B** saíram do produto Akasha (Doc 08 Onda 4.8 ✅ concluída em 2026-06-07 — `apps/legacy-cockpit/` removido no refactor Akasha v2 + middleware sem allowlist B2B confirmado). Nenhum conceito novo do Akasha depende do Baralho Cigano.
 
 ### Fase 1 — A Cirurgia de Extração (a verdadeira primeira fase do código)
 1. **Setup do ecossistema:** Turborepo / pnpm workspaces; TS + Vitest compilando módulos independentes.
@@ -215,7 +215,7 @@ cabaladoscaminhos/ (monorepo)
 | ID | Decisão | Status |
 |---|---|---|
 | **AD-25.1** | Marca dupla: Akasha (produto público) + Cabala dos Caminhos (matriz/monorepo) | ✅ Firme |
-| **AD-25.2** | Mesa Real / Baralho Cigano / Cockpit B2B → `apps/legacy-cockpit`, fora do Akasha, a desligar | ✅ Desligado |
+| **AD-25.2** | Mesa Real / Baralho Cigano / Cockpit B2B → `apps/legacy-cockpit`, fora do Akasha, a desligar | ✅ Desligado (2026-06-07) |
 | **AD-25.3** | Produto = 4 Pilares (Astrologia, Cabalística, Tântrica, Odus) + Mandala Toroidal | ✅ Firme |
 | **AD-25.4** | Identidade Akasha cósmica substitui integralmente a identidade Cigano Ramiro (ver Doc 26) | ✅ Firme |
 | **AD-25.5** | Arquitetura agêntica de 3 camadas (Determinístico + Grafo + Síntese) | ✅ Firme |
