@@ -9,6 +9,8 @@ const sharedAliases = {
   '@akasha/core-cabala': path.resolve(__dirname, '../../packages/core-cabala/src/index.ts'),
   '@akasha/core-odus': path.resolve(__dirname, '../../packages/core-odus/src/index.ts'),
   '@akasha/core-tantra': path.resolve(__dirname, '../../packages/core-tantra/src/index.ts'),
+  // v0.0.5 Fase 1 (T1, T2.6) — I-Ching como 5º sistema oracular
+  '@akasha/core-iching': path.resolve(__dirname, '../../packages/core-iching/src/index.ts'),
 };
 
 export default defineConfig({
@@ -43,6 +45,7 @@ export default defineConfig({
             'tests/lib/i18n/**',
             'tests/lib/push/**',
             'tests/lib/admin/**',
+            'tests/lib/core-iching/**',
             'tests/scripts/**',
             'tests/lib/quality/run-quality-eval-guard.test.ts',
           ],
