@@ -11,7 +11,8 @@ import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 
-const ROOT = path.resolve(process.cwd());
+// vitest runs from apps/akasha-portal, so we need to go up to monorepo root
+const ROOT = path.resolve(process.cwd(), '../..');
 
 // Packages that expose internal paths that should NOT be imported directly
 const CORE_PACKAGES = [
