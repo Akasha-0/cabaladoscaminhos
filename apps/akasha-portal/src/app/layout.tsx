@@ -8,6 +8,7 @@ import {
 } from 'next/font/google';
 import './globals.css';
 import { PwaInstallPrompt } from '@/components/akasha/PwaInstallPrompt';
+import { ServiceWorkerRegistrar } from '@/components/akasha/ServiceWorkerRegistrar';
 
 const cinzel = Cinzel({
   variable: '--font-cinzel',
@@ -148,8 +149,15 @@ export const metadata: Metadata = {
   },
   applicationName: 'Sistema Akasha',
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: [
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: {
+      url: '/icons/apple-touch-icon-180.png',
+      sizes: '180x180',
+      type: 'image/png',
+    },
   },
   verification: {
     google: 'your-google-verification-code',
@@ -157,7 +165,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#7C5CFF',
+  themeColor: '#06070F',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -175,25 +183,13 @@ export default function RootLayout({
         <link key="canonical" rel="canonical" href={BASE_URL} />
         <link key="sitemap" rel="sitemap" href="/sitemap.xml" type="application/xml" />
         <link key="robots" rel="robots" href="/robots.txt" />
-        {/* SW Registration */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js')
-                    .catch(function(err) { console.warn('SW registration failed:', err); });
-                });
-              }
-            `,
-          }}
-        />
       </head>
       <body
         className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen antialiased`}
         style={{ background: '#06070F', color: '#F4F5FF' }}
       >
         {children}
+        <ServiceWorkerRegistrar />
         <PwaInstallPrompt />
       </body>
     </html>
