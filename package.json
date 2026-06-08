@@ -21,6 +21,7 @@
     "quality:evolve": "tsx scripts/run-evolution.ts",
     "grimoire:sync": "tsx scripts/sync-grimoire.ts",
     "grimoire:status": "tsx scripts/grimoire-status.ts",
+    "grimoire:audit": "cd apps/akasha-portal && npm run grimoire:audit",
     "fallow": "fallow --skip dupes,health",
     "fallow:all": "fallow",
     "dev:portal": "pnpm --filter akasha-portal dev",
