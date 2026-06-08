@@ -20,6 +20,9 @@ importers:
       '@akasha/core-cabala':
         specifier: workspace:*
         version: link:../../packages/core-cabala
+      '@akasha/core-iching':
+        specifier: workspace:*
+        version: link:../../packages/core-iching
       '@akasha/core-odus':
         specifier: workspace:*
         version: link:../../packages/core-odus
@@ -230,6 +233,12 @@ importers:
         version: 5.9.3
 
   packages/core-cabala:
+    devDependencies:
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
+  packages/core-iching:
     devDependencies:
       typescript:
         specifier: ^5.0.0
