@@ -1,7 +1,0 @@
-:HL["/_next/static/chunks/041ka8dx_2xik.css","style"]
-:HL["/_next/static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/_next/static/media/051742360c26797e-s.p.0f97p8c3305p~.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/_next/static/media/83afe278b6a6bb3c-s.p.0q-301v4kxxnr.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/_next/static/media/8c2eb9ceedecfc8e-s.p.0oeo8epbafgia.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-:HL["/_next/static/media/cc014fcb166cf364-s.p.0rbrcy8kuidpb.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"(akasha)","param":null,"prefetchHints":0,"slots":{"children":{"name":"manifesto","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}}}},"staleTime":300,"buildId":"kyZuMdJhdo41heJt64aaj"}
