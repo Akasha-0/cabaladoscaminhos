@@ -279,3 +279,47 @@ export interface EnergyHealingMap {
   };
 }
 
+// ============================================================================
+// §2.7 IChingMap — 5º sistema oracular (v0.0.5 Fase 1, Doc 14 §2)
+// ============================================================================
+//
+// Espelha `@akasha/core-iching/src/types.ts::IChingMap` para que o portal
+// B2C consuma o tipo sem importar o package agnóstico (mantém `types/`
+// zero-dependência, conforme `packages/types/package.json`).
+//
+// Fonte única de verdade: `packages/core-iching/src/types.ts`.
+// Se divergir, REGENERE este bloco a partir de lá (Doc 24 §8 — fonte única).
+
+export type IChingTrigramId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+export interface IChingMap {
+  /** Hexagrama natal (1-64) ou null se dados inválidos. */
+  hexagramNumber: number | null;
+  /** Nome do hexagrama em PT-BR. */
+  hexagramName: string | null;
+  /** Nome do hexagrama em chinês (pinyin). */
+  hexagramChineseName: string | null;
+  /** Trigrama superior (1-8) ou null. */
+  upperTrigram: IChingTrigramId | null;
+  /** Trigrama inferior (1-8) ou null. */
+  lowerTrigram: IChingTrigramId | null;
+  /** Nome do trigrama superior em PT-BR. */
+  upperTrigramName: string | null;
+  /** Nome do trigrama inferior em PT-BR. */
+  lowerTrigramName: string | null;
+  /** 6 linhas (de baixo para cima, true=yang). */
+  lines: boolean[];
+  /** Aspectos espirituais para extração no PromptBuilder. */
+  aspects: string[];
+  /** YYYY-MM-DD ou null. */
+  birthDate: string | null;
+  /** HH:MM ou null. */
+  birthTime: string | null;
+  /** Tag do algoritmo (auditoria/rollback). */
+  algorithm: string;
+  /** True se cálculo foi feito com data incompleta. */
+  provisional: boolean;
+  /** Mensagem de erro se cálculo falhou (do contrário undefined). */
+  error?: string;
+}
+
