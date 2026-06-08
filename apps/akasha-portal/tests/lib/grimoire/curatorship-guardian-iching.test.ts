@@ -6,7 +6,7 @@
  * referenciando a Doc 20 (Governança de Conteúdo Oracular):
  *
  *  - Doc 20 AD-20.3 — `metadata.source` obrigatório
- *  - Doc 20 AD-20.5 — afixação no ledger central (`IDEIA.md §7.2`)
+ *  - Doc 20 AD-20.5 — afixação no ledger central (`IDEIA.md §7.3`, renumerado pós-merge)
  *  - Doc 20 AD-20.6 — `metadata.lineage` obrigatório
  *  - Doc 25 AD-25.6 — i18n EN (`title_en` + seção `## EN`)
  *
@@ -87,13 +87,14 @@ describe('v0.0.5 Fase 1 (T9) — Curadoria I-Ching (Doc 20 AD-20.3/5/6 + Doc 25 
 
   describe('2. cada hexagrama carrega proveniência, lineage, i18n EN e cross-ref no ledger', () => {
     const files = listIchingFiles();
-    // Pré-carrega a região §7.2 do IDEIA.md (linhas ~780-820 segundo a spec)
+    // Pré-carrega a região §7.3 do IDEIA.md (linhas ~820-860, renumerada pós-merge v0.0.5)
     const ideiaExists = fs.existsSync(IDEIA_MD);
     const ideiaFull = ideiaExists ? fs.readFileSync(IDEIA_MD, 'utf8') : '';
     const ideiaLines = ideiaFull.split('\n');
-    // Janela de linhas para o ledger §7.2: cobre header + tabela + decisões
-    const LEDGER_START = 780;
-    const LEDGER_END = 820;
+    // Janela de linhas para o ledger §7.3: cobre header + tabela + decisões
+    // (v0.0.5 Fase 1: §7.2 reservado para D4 Odu, §7.3 para I-Ching ledger)
+    const LEDGER_START = 815;
+    const LEDGER_END = 870;
     const ideiaWindow = ideiaLines
       .slice(Math.max(0, LEDGER_START - 1), Math.min(ideiaLines.length, LEDGER_END))
       .join('\n');
@@ -164,10 +165,10 @@ describe('v0.0.5 Fase 1 (T9) — Curadoria I-Ching (Doc 20 AD-20.3/5/6 + Doc 25 
           ).toBe(true);
         });
 
-        it('2f. cross-ref no ledger §7.2 de IDEIA.md (Doc 20 AD-20.5)', () => {
+        it('2f. cross-ref no ledger §7.3 de IDEIA.md (Doc 20 AD-20.5)', () => {
           if (!ideiaExists) return; // skip já tratado acima
           // Tabela: linha `| N | `hex-XX-name.md` | …` — busca simples do nome
-          // do arquivo dentro da janela §7.2.
+          // do arquivo dentro da janela §7.3.
           const fileRefPattern = new RegExp(
             '`\\s*' + file.replace(/\./g, '\\.') + '\\s*`'
           );
@@ -178,7 +179,7 @@ describe('v0.0.5 Fase 1 (T9) — Curadoria I-Ching (Doc 20 AD-20.3/5/6 + Doc 25 
             fileRefPattern.test(ideiaWindow) || bareRefPattern.test(ideiaWindow);
           expect(
             found,
-            `Doc 20 AD-20.5 — ${file}: ausente do ledger §7.2 de IDEIA.md ` +
+            `Doc 20 AD-20.5 — ${file}: ausente do ledger §7.3 de IDEIA.md ` +
               `(linhas ${LEDGER_START}-${LEDGER_END}). Curadoria deve ` +
               `registrar a entrada na tabela de afixação central.`
           ).toBe(true);
