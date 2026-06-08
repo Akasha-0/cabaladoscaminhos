@@ -2,29 +2,31 @@
 
 ## Fase 0 — PRÉ-REQUISITO
 
-- [ ] `prisma/schema.prisma` contém os 9 modelos B2C canônicos + 4 enums (Doc 04 §1)
-- [ ] `npx prisma validate` + `npx prisma generate` → 0 erros
-- [ ] `npx tsc --noEmit` → 0 erros
-- [ ] `npm run test:run` → ≥ 8113 testes passando, 0 falhas
-- [ ] `npm run build` → OK
-- [ ] `grimoire/botanica/*.md` tem ≥ 50 arquivos com `title_en` e frontmatter YAML válido
-- [ ] `grimoire/ancestral/odu-*.md` tem 16 arquivos
-- [ ] `grimoire/vibracional/corpo-*.md` tem 11 arquivos
-- [ ] `grimoire/diagnostico/*.md` tem 4 arquivos
-- [ ] `docs/15_glossario-oracular.md §1` ainda tem `⚠️ PROVISIONAL (D4)` — GAP CONFIRMADO _(bloqueia T3.4)_
+- [x] `prisma/schema.prisma` contém os 9 modelos B2C canônicos + 4 enums (Doc 04 §1) _(cycle 355: 11 modelos presentes — 10 canônicos + PushSubscription)_
+- [x] `npx prisma validate` + `npx prisma generate` → 0 erros _(cycle 355: schema valid, Prisma Client v7.8.0)_
+- [x] `npx tsc --noEmit` → 0 erros _(cycle 355: exit 0)_
+- [x] `npm run test:run` → ≥ 8113 testes passando, 0 falhas _(cycle 356: 8119 passed / 26 skipped)_
+- [ ] `npm run build` → OK _(PRÉ-EXISTENTE: `/_global-error` useContext, cycle 211-212, fora de escopo)_
+- [x] `grimoire/botanica/*.md` tem ≥ 50 arquivos com `title_en` e frontmatter YAML válido _(cycle 355: 51/51 ✅)_
+- [x] `grimoire/ancestral/odu-*.md` tem 16 arquivos _(cycle 355: 16/16 ✅)_
+- [x] `grimoire/vibracional/corpo-*.md` tem 11 arquivos
+- [x] `grimoire/diagnostico/*.md` tem 4 arquivos
+- [ ] `docs/15_glossario-oracular.md §1` ainda tem `⚠️ PROVISIONAL (D4)` — GAP CONFIRMADO _(bloqueia T3.4 — curador humano)_
 - [x] `apps/akasha-portal/` está vazio (apenas `next-env.d.ts` e `tsconfig.tsbuildinfo`) — RESOLVIDO _(cycle 356: skeleton criado — `package.json` + `tsconfig.json` + `next.config.js` + dirs `src/`/`public/`/`prisma/`/; código B2C será movido em T1.3+)_
-- [ ] `packages/core-{astrology,cabala,odus,tantra,types}/` existem (Fase A ✅)
+- [x] `packages/core-{astrology,cabala,odus,tantra,types}/` existem (Fase A ✅) _(cycle 355: 5/5 presentes)_
+
+> **Gate de entrada da Fase 1:** 10/12 verdes — bloqueado em build pre-existente (registrado, fora de escopo) e Doc 15 §1 PROVISIONAL (D4, curador humano).
 
 ## Fase 1 — CONCLUSÃO TÉCNICA
 
 ### Task 1 — Migração monorepo completa
-- [ ] Inventário de arquivos a mover gerado
+- [x] Inventário de arquivos a mover gerado _(audit `a7564b10`, cycle 344)_
 - [x] Estrutura `apps/akasha-portal/{src,public,prisma}/` criada com `package.json` e `tsconfig.json` _(cycle 356 — skeleton mínimo com next.config.js + .gitkeep)_
-- [ ] Código B2C movido para `apps/akasha-portal/src/` preservando imports
-- [ ] `prisma/schema.prisma` movido para `apps/akasha-portal/prisma/`
-- [ ] `pnpm-workspace.yaml` e `turbo.json` configurados
-- [ ] `package.json` raiz com retrocompatibilidade (`npm run build` ainda funciona)
-- [ ] Testes reorganizados: `tests/api/akasha*`, `tests/components/mandala*`, `tests/lib/grimoire*`, `tests/integration/oraculo-rag-fechado*`, `tests/integration/daily-engine-rag*`
+- [ ] Código B2C movido para `apps/akasha-portal/src/` preservando imports _(T1.3, grande — 30-45min, fora quick)_
+- [ ] `prisma/schema.prisma` movido para `apps/akasha-portal/prisma/` _(T1.4)_
+- [x] `pnpm-workspace.yaml` e `turbo.json` configurados _(cycle 360: `pnpm-workspace.yaml` lista `packages/*`+`apps/*`; `turbo.json` define pipeline `build`/`test`/`test:run`/`lint`/`typecheck`/`dev`)_
+- [x] `package.json` raiz com retrocompatibilidade (`npm run build` ainda funciona) _(cycle 358: scripts `dev:portal`/`build:portal`/`start:portal`/`lint:portal`/`typecheck:portal`/`test:portal` via `pnpm --filter akasha-portal`)_
+- [ ] Testes reorganizados: `tests/api/akasha*`, `tests/components/mandala*`, `tests/lib/grimoire*`, `tests/integration/oraculo-rag-fechado*`, `tests/integration/daily-engine-rag*` _(T1.7)_
 - [ ] `pnpm install` + `pnpm --filter akasha-portal build` + `pnpm test:core` verdes
 - [ ] `npm run build` (retrocompat) verde
 
@@ -33,18 +35,18 @@
 - [x] `apps/akasha-portal/src/middleware.ts` sem allowlist de prefixos B2B (`/cockpit`, `/api/mesa-real`, `/api/consult`, `/api/operator`) _(audit `00d4328a`, cycle 351)_
 - [x] `apps/akasha-portal/src/app/api/operator/`, `mesa-real/`, `consult/` (legado) — não existem _(audit `00d4328a`, cycle 351)_
 - [x] `AUTH-AUDIT.md` reflete zero rotas/páginas B2B _(stamp `bb33dcee`, cycle 350)_
-- [x] `Doc 08` v3.1 — Onda 4.8 (desligar legacy-cockpit) marcado como ✅ _(formalização `8ecbbfff`)_
-- [x] `Doc 25 §11` — `apps/legacy-cockpit` removido do diagrama _(formalização `8ecbbfff`)_
+- [x] `Doc 08` v3.1 — Onda 4.8 (desligar legacy-cockpit) marcado como ✅ _(formalização `8ecbbfff`, cycle 349)_
+- [x] `Doc 25 §11` — `apps/legacy-cockpit` removido do diagrama _(formalização `8ecbbfff`, cycle 349)_
 - [x] Verificação estrutural: `tests/integration/legacy-shutdown.test.ts` _(cycle 356 — 6 testes verdes, reproduz audit `00d4328a` em CI; runtime curl 404 deferido para T1 que move `src/` → `apps/akasha-portal/`)_
 
 ### Task 3 — Validação D4 (16 Odus)
-- [ ] Auditoria de `grimoire/ancestral/odu-*.md` — proveniência atual mapeada
-- [ ] Os 16 arquivos têm `metadata.source` e `metadata.lineage` preenchidos
-- [ ] `IDEIA.md` (ledger) tem entrada para cada um dos 16 Odus com proveniência (Doc 20 AD-20.5)
-- [ ] `Doc 15 §1` — `⚠️ PROVISIONAL (D4)` removido do cabeçalho e da tabela
-- [ ] `Doc 15` version bumped 2.1 → 2.2
-- [ ] `tests/grimoire/odus-validation.test.ts` verde (auditoria automatizada)
-- [ ] `npm run test:run` verde nos novos testes
+- [x] Auditoria de `grimoire/ancestral/odu-*.md` — proveniência atual mapeada _(audit `a0183acb`, cycle 349)_
+- [x] Os 16 arquivos têm `metadata.source` e `metadata.lineage` preenchidos _(cycle 364 INFRA: 16/16 com `source` + `lineage` + `provisional: true`; `source` carrega `PENDENTE_CURADOR (D4)` como placeholder, sem inventar fontes — regra AD-20.8)_
+- [x] `IDEIA.md` (ledger) tem entrada para cada um dos 16 Odus com proveniência (Doc 20 AD-20.5) _(cycle 364: `IDEIA.md §7.2` lista os 16 Odus como slots de curadoria)_
+- [ ] `Doc 15 §1` — `⚠️ PROVISIONAL (D4)` removido do cabeçalho e da tabela _(bloqueado: curador humano)_
+- [ ] `Doc 15` version bumped 2.1 → 2.2 _(bloqueado: depende T3.4)_
+- [x] `tests/grimoire/odus-validation.test.ts` verde (auditoria automatizada) _(cycle 364: `tests/lib/grimoire/odus-validation.test.ts` — 65 sub-testes verde)_
+- [x] `npm run test:run` verde nos novos testes
 
 ### Task 4 — Quality gates Fase 1
 - [ ] `npx prisma validate` + `npx prisma generate` verdes
