@@ -55,7 +55,9 @@ verificáveis.
 | Onda 4 (I) | **Stripe Checkout + Motor de Créditos** (stripe-akasha lib; checkout dinâmico/price-id; webhook akasha-stripe assinado; /api/akasha/subscription; /conta page com plano/créditos/checkout; 8.783 testes passando) | `2580568` | ✅ |
 | Onda 4 (J) | **Alinhamento Docs + Merge-Readiness** (manifest.json Akasha; .env.example completo B2C; migration pgvector embedding; daily-transits-cron.ts; audit 70% → gaps documentados; PROGRESS atualizado) | (este commit) | ✅ |
 | Onda 3 Launch | **Onda 3 Launch Readiness** (embeddings GrimoireEntry ativos; busca híbrida JSONB+pgvector; cronjob trânsitos diários systemd; grimório 78 arquivos; RAG-fechado testes-guardião; reconcile LLM×créditos; runbook VPS §9; backup/restore scripts; cabala-backup systemd; i18n EN title_en em 78 entries; 8113 testes passando, build OK) | (este commit) | ✅ |
+| v0.0.4-T1 | **Migração monorepo (apps/akasha-portal/)** — Next.js, prisma, public, messages, scripts, tests movidos para `apps/akasha-portal/`; pnpm-workspace + turbo.json + tsconfig.base.json; root scripts com retrocompat (cd + npm); 8113 testes passando, build OK | (v0.0.4-T1) | ✅ |
 | v0.0.4-T2 | **Shutdown formal do legacy-cockpit** (verificação + docs: `apps/legacy-cockpit` ausente; middleware sem allowlist B2B; zero `/api/operator|mesa-real|consult` em `src/`; `docs/AUTH-AUDIT.md` data atualizada; `docs/08_roadmap.md` v3.0→v3.1, Onda 4.8 ✅; `docs/25_visao-akasha.md` v1.0→v1.1, AD-25.2 Desligado, diagrama monorepo §11 sem `legacy-cockpit`) | `cc94269b` | ✅ |
+| v0.0.4-T3 | **Validação D4 (16 Odus)** — `metadata.source`/`lineage`/`validated_at` em todos os 16 Odu files; IDEIA.md §5.1 com tabela de proveniência (Doc 20 AD-20.5); Doc 15 §1 sem `⚠️ PROVISIONAL (D4)`, version 2.1 → 2.2; novo test `odus-validation.test.ts` (6 testes) | (v0.0.4-T3) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -92,7 +94,7 @@ verificáveis.
 |---------|--------|
 | `npx tsc --noEmit` | **0 erros** |
 | `npm run build` | **OK** (116+ páginas, sem warnings novos) |
-| `npm run test:run` | **8113 testes passando** · 26 skipped · 0 falhas |
+| `npm run test:run` | **8119 testes passando** · 26 skipped · 0 falhas |
 | QUALITY_SCORE | ≥ 0.91 |
 | Alinhamento docs | **Onda 3 ✅ concluída + Onda 4 ✅ concluída** — release v1.0.0-akasha |
 
