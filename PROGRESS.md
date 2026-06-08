@@ -125,15 +125,6 @@ verificáveis.
 
 > **Resumos detalhados das Fases 21–29** (alinhamento docs, build verde, cockpit flow, testes + rate-limit fixes, ondas A/B/D/G, CRITICAL + audit exhaustivo, observabilidade + engines + mapas enriquecidos): ver `docs/PROGRESS-fases-21-29.md` (extraído em Fase 501).
 
-### 3.2 Cobertura de Testes
-
-- `tests/lib/auth/` — operator-jwt, operator-session, operator-sessions, operator-guard, operator-server-context, **rate-limit (novo)**
-- `tests/api/operator-auth/` — login, register, refresh, me, sessions, logout
-- `tests/api/mesa-real/`, `tests/api/consult/`
-- `tests/integration/`
-- `tests/components/operator/`
-- `tests/lib/<espiritual>/` — numerology, ifa, astrology, lenormand, etc.
-
 ### 3.3 Auth Stack (Fase 8 + 13 + 15 + 18)
 
 - JWT próprio (HS256), bcrypt cost 12
