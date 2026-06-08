@@ -1,5 +1,5 @@
 import { stripe } from './stripe';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import Stripe from 'stripe';
 
 // fallow-ignore-next-line unused-type

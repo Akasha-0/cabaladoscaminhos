@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import { renderToBuffer } from '@react-pdf/renderer';
 import React from 'react';
 import ManifestoPDF from '@/components/akasha/ManifestoPDF';

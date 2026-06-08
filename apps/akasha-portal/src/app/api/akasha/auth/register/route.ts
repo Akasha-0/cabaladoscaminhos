@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 const registerSchema = z.object({
   email: z.preprocess(

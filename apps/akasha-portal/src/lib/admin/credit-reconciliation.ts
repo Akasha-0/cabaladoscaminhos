@@ -12,7 +12,7 @@
  * Roda sob demanda via painel admin ou como job (cron semanal).
  */
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export interface ReconciliationDiscrepancy {
   userId: string;

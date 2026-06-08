@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
 
 export async function GET(request: NextRequest) {

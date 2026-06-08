@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
 import { upsertPushSubscription, deletePushSubscription } from '@/lib/push/push-subscription-service';
 import { getPublicVapidKey } from '@/lib/push/web-push-server';

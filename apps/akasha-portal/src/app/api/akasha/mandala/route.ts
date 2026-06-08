@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 // Os 11 nomes dos Corpos Tântricos (Kundalini Yoga / Yogi Bhajan)
 const TANTRIC_BODY_NAMES = [

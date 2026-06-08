@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export async function POST(request: NextRequest) {
   const authResult = await requireAkashaApi(request);

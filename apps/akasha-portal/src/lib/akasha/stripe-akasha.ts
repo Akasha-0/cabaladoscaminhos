@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export const AKASHA_PRODUCTS = {
   manifesto: {

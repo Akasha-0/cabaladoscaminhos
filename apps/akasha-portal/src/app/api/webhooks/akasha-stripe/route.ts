@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { getStripeAkasha, addCredits } from '@/lib/akasha/stripe-akasha';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 export const runtime = 'nodejs';
 

@@ -11,7 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import { getCreditBalance, addCredits } from '@/lib/akasha/stripe-akasha';
 import { drawIchingHexagram } from '@/lib/oracle/iching-draw';
 

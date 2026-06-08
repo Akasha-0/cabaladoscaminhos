@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import { streamCompletion } from '@/lib/ai/llm-router';
 import { createSSEStream } from '@/lib/sse';
 import { searchGrimoire, type ChartContext, type GrimoireContext } from '@/lib/grimoire/search';

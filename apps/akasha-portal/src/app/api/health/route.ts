@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import { getRedisClient } from '@/lib/redis';
 
 const APP_VERSION = process.env.npm_package_version ?? '0.1.0';

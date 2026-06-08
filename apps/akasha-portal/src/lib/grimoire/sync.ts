@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Prisma } from '@prisma/client';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 
 interface Frontmatter {
   id?: string;

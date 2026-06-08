@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import { AKASHA_TOKEN_COOKIE, verifyAkashaToken } from './akasha-jwt';
 
 // ============================================================================

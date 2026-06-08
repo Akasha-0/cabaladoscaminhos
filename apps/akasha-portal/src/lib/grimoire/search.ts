@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 // Re-export para retrocompat com consult/route.ts
 export type { ChartContext, GrimoireContext } from './types';
 import type {

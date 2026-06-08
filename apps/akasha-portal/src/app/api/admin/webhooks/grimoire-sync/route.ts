@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
 import { syncGrimoire } from '@/lib/grimoire/sync';
 

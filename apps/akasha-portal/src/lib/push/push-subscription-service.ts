@@ -5,7 +5,7 @@
  * O modelo `pushSubscription` está no schema Prisma com FK para `userId`.
  */
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/infrastructure/prisma';
 import type { PushSubscriptionJSON } from './web-push-server';
 
 /**
