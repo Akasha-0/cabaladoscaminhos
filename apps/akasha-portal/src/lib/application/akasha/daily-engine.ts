@@ -1,5 +1,5 @@
 import type { BirthChart } from '@akasha/core-astrology';
-import { buildDailyEnergy } from '@/lib/agents/transit-engine';
+import { buildDailyEnergy } from '@/lib/application/agents/transit-engine';
 import { crossAnalyze } from './cross-engine';
 import { buildOduGlossary, formatGlossarySection } from './glossary';
 

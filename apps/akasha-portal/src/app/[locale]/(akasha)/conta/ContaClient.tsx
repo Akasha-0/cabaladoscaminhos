@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { subscribeToPush, unsubscribeFromPush } from '@/lib/push/subscribe';
+import { subscribeToPush, unsubscribeFromPush } from '@/lib/application/push/subscribe';
 
 type Subscription = {
   plan: 'FREEMIUM' | 'AKASHA_PRO';

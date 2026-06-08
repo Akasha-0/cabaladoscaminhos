@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
 
 const ADMIN_SECRET = process.env.AKASHA_ADMIN_SECRET ?? '';

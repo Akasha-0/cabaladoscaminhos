@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
-import { searchParamsToObject } from '@/lib/api/query-params';
-import type { SpiritualCorrelations } from '@/lib/api/spiritual-correlations';
-import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
-import { calculateSpiritualStatsInline } from '@/lib/api/spiritual-stats';
+import { searchParamsToObject } from '@/lib/interface/api/query-params';
+import type { SpiritualCorrelations } from '@/lib/interface/api/spiritual-correlations';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/interface/api/spiritual-filters';
+import { calculateSpiritualStatsInline } from '@/lib/interface/api/spiritual-stats';
 
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 

@@ -1,4 +1,4 @@
-import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } from '@/lib/ai/deep-correlation-engine';
+import type { SpiritualCorrelation, CrossSystemPattern, EnergyHarmonyReport } from '@/lib/application/ai/deep-correlation-engine';
 /**
  * MapaAlmaCompleto Type Definitions
  * Complete TypeScript types for the full spiritual map (Mapa da Alma Completo)

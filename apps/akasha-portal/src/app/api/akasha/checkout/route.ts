@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
 import {
   AKASHA_PRODUCTS,
@@ -8,7 +8,7 @@ import {
   getStripeAkasha,
   getOrCreateStripeCustomer,
   getPriceId,
-} from '@/lib/akasha/stripe-akasha';
+} from '@/lib/application/akasha/stripe-akasha';
 
 const BodySchema = z.object({
   type: z.enum(['manifesto', 'pro', 'credits_10', 'credits_30', 'credits_60']),

@@ -1,7 +1,7 @@
 import { createHash } from 'crypto';
 import type { MapaAlmaCompleto } from '@/lib/domain/engines/types/mapa-alma';
-import { createChatCompletion } from '@/lib/ai/openai';
-import type { ChatMessage } from '@/lib/ai/types';
+import { createChatCompletion } from '@/lib/application/ai/openai';
+import type { ChatMessage } from '@/lib/application/ai/types';
 import { getRedisClient } from '@/lib/infrastructure/redis';
 import { gerarSystemPrompt, gerarPromptInsight } from './prompt-builder';
 import { parseInsightResponse, criarInsightFallback } from './parser';

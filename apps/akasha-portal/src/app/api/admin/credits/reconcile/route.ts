@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { reconcileCredits } from '@/lib/admin/credit-reconciliation';
+import { reconcileCredits } from '@/lib/application/admin/credit-reconciliation';
 
 export const dynamic = 'force-dynamic';
 

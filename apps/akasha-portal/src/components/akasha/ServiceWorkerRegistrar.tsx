@@ -1,6 +1,6 @@
 'use client';
 
-import { useServiceWorker } from '@/lib/pwa/use-service-worker';
+import { useServiceWorker } from '@/lib/application/pwa/use-service-worker';
 
 /**
  * Client component que registra o Service Worker do Akasha PWA.

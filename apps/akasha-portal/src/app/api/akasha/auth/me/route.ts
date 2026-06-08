@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 
 export async function GET(request: NextRequest) {
   const userOrResponse = await requireAkashaApi(request);

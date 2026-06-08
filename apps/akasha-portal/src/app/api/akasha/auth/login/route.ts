@@ -7,7 +7,7 @@ import {
   signAkashaRefreshToken,
   setAkashaSessionCookie,
   setAkashaRefreshCookie,
-} from '@/lib/auth/akasha-jwt';
+} from '@/lib/application/auth/akasha-jwt';
 
 const loginSchema = z.object({
   email: z.preprocess(

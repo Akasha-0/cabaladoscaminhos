@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { streamCompletion } from '@/lib/ai/llm-router';
+import { streamCompletion } from '@/lib/application/ai/llm-router';
 import { createSSEStream } from '@/lib/infrastructure/sse';
 import { searchGrimoire, type ChartContext, type GrimoireContext } from '@/lib/infrastructure/grimoire-search';
 import { buildOduGlossary, formatGlossarySection } from '@/lib/domain/glossary';
 import type { IChingMap } from '@akasha/core-iching';
-import { formatIchingSection } from '@/lib/ai/iching-prompt';
+import { formatIchingSection } from '@/lib/application/ai/iching-prompt';
 
 const bodySchema = z.object({
   question: z.string().min(3).max(1000),

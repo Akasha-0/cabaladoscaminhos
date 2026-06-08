@@ -10,7 +10,7 @@ import {
   setAkashaRefreshCookie,
   clearAkashaSessionCookie,
   clearAkashaRefreshCookie,
-} from '@/lib/auth/akasha-jwt';
+} from '@/lib/application/auth/akasha-jwt';
 
 export async function POST(_request: NextRequest) {
   const cookieStore = await cookies();

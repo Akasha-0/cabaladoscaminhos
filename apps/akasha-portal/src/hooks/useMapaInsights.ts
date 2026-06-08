@@ -1,7 +1,7 @@
   
 'use client';
 import { useState, useEffect } from 'react';
-import type { InsightData } from '@/lib/ai/mapa-insights/types';
+import type { InsightData } from '@/lib/application/ai/mapa-insights/types';
 
 interface UseMapaInsightsOptions {
   enabled?: boolean;

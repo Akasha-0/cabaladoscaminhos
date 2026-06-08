@@ -10,9 +10,9 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { getCreditBalance, addCredits } from '@/lib/akasha/stripe-akasha';
+import { getCreditBalance, addCredits } from '@/lib/application/akasha/stripe-akasha';
 import { drawIchingHexagram } from '@/lib/domain/oracle/iching-draw';
 
 const bodySchema = z.object({

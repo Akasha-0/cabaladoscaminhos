@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { buildDailyContent } from '@/lib/akasha/daily-engine';
+import { buildDailyContent } from '@/lib/application/akasha/daily-engine';
 import { computeDailyHexagram } from '@/lib/domain/iching';
 
 export async function GET(request: NextRequest) {

@@ -9,7 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/api/spiritual-filters';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/interface/api/spiritual-filters';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────

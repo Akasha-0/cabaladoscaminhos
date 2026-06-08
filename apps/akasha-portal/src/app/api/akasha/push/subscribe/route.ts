@@ -13,12 +13,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
 import {
   upsertPushSubscription,
   deletePushSubscription,
   getUserPushSubscriptions,
-} from '@/lib/push/push-subscription-service';
+} from '@/lib/application/push/push-subscription-service';
 import { logSecurityEvent } from '@/lib/shared/logging';
 
 export const dynamic = 'force-dynamic';

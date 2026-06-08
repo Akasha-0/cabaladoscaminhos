@@ -10,8 +10,8 @@ import { calculateNumerology } from '@akasha/core-cabala';
 import { drawOdu, type Odu, type DrawResult } from '@akasha/core-odus';
 import { getBirthChart } from '@akasha/core-astrology';
 import { getData as getChakraData } from '@/lib/domain/chakra/v4/chakra-v4-data';
-import { DeepCorrelationEngine } from '@/lib/ai/deep-correlation-engine';
-import type { UserSpiritualData } from '@/lib/ai/types';
+import { DeepCorrelationEngine } from '@/lib/application/ai/deep-correlation-engine';
+import type { UserSpiritualData } from '@/lib/application/ai/types';
 import {
   calcularOduNascimento,
   getQuizilasPorOdu,

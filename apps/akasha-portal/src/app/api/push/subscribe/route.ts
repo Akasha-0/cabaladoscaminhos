@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { requireAkashaApi } from '@/lib/auth/akasha-guard';
-import { upsertPushSubscription, deletePushSubscription } from '@/lib/push/push-subscription-service';
-import { getPublicVapidKey } from '@/lib/push/web-push-server';
+import { requireAkashaApi } from '@/lib/application/auth/akasha-guard';
+import { upsertPushSubscription, deletePushSubscription } from '@/lib/application/push/push-subscription-service';
+import { getPublicVapidKey } from '@/lib/application/push/web-push-server';
 
 export const dynamic = 'force-dynamic';
 
