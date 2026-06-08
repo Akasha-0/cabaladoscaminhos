@@ -12,14 +12,14 @@
 - [ ] `grimoire/vibracional/corpo-*.md` tem 11 arquivos
 - [ ] `grimoire/diagnostico/*.md` tem 4 arquivos
 - [ ] `docs/15_glossario-oracular.md §1` ainda tem `⚠️ PROVISIONAL (D4)` — GAP CONFIRMADO _(bloqueia T3.4)_
-- [ ] `apps/akasha-portal/` está vazio (apenas `next-env.d.ts` e `tsconfig.tsbuildinfo`) — GAP CONFIRMADO _(bloqueia T1.2)_
+- [x] `apps/akasha-portal/` está vazio (apenas `next-env.d.ts` e `tsconfig.tsbuildinfo`) — RESOLVIDO _(cycle 356: skeleton criado — `package.json` + `tsconfig.json` + `next.config.js` + dirs `src/`/`public/`/`prisma/`/; código B2C será movido em T1.3+)_
 - [ ] `packages/core-{astrology,cabala,odus,tantra,types}/` existem (Fase A ✅)
 
 ## Fase 1 — CONCLUSÃO TÉCNICA
 
 ### Task 1 — Migração monorepo completa
 - [ ] Inventário de arquivos a mover gerado
-- [ ] Estrutura `apps/akasha-portal/{src,public,prisma}/` criada com `package.json` e `tsconfig.json`
+- [x] Estrutura `apps/akasha-portal/{src,public,prisma}/` criada com `package.json` e `tsconfig.json` _(cycle 356 — skeleton mínimo com next.config.js + .gitkeep)_
 - [ ] Código B2C movido para `apps/akasha-portal/src/` preservando imports
 - [ ] `prisma/schema.prisma` movido para `apps/akasha-portal/prisma/`
 - [ ] `pnpm-workspace.yaml` e `turbo.json` configurados

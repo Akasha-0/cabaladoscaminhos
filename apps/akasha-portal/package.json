@@ -1,0 +1,22 @@
+{
+  "name": "akasha-portal",
+  "version": "0.0.4",
+  "description": "Sistema Akasha — Portal B2C (Next.js 16 + App Router). Migração v0.0.4-T1 do monorepo.",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@akasha/core-astrology": "workspace:*",
+    "@akasha/core-cabala": "workspace:*",
+    "@akasha/core-odus": "workspace:*",
+    "@akasha/core-tantra": "workspace:*",
+    "@akasha/types": "workspace:*"
+  }
+}

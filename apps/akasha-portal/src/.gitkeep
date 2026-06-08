@@ -1,0 +1,3 @@
+# v0.0.4-T1.2 — src/ do portal (skeleton)
+# Conteúdo de `src/app/(akasha)/`, `src/app/api/akasha/`, `src/lib/akasha/`, etc.
+# será movido em T1.3 preservando a árvore de imports.

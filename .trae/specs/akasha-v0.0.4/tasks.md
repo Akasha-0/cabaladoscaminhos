@@ -2,7 +2,7 @@
 
 ## Fase 0 — PRÉ-REQUISITO (verificar, não executar)
 
-- [ ] **Task 0: Confirmar v0.0.1 + v0.0.2 concluídos** _(9/12 ✅ verificados no cycle 355; 3 gaps remanescentes: build pre-existente, Doc 15 §1 PROVISIONAL, apps/akasha-portal vazio — gate da Fase 1 ainda não liberado)_
+- [ ] **Task 0: Confirmar v0.0.1 + v0.0.2 concluídos** _(10/12 ✅ verificados no cycle 356; 2 gaps remanescentes: build pre-existente registrado, Doc 15 §1 PROVISIONAL — gate da Fase 1 destravado parcialmente pelo skeleton do portal)_
   - [x] `prisma/schema.prisma` contém os 9 modelos B2C canônicos (User, BirthChart, Subscription, CreditEntry, Manifesto, DailyReading, RitualCompletion, Consultation, ChatMessage, GrimoireEntry) + 4 enums _(verificado cycle 355: 11 modelos presentes — 10 canônicos + PushSubscription; 4 enums ✅)_
   - [x] `npx prisma validate` + `npx prisma generate` → 0 erros _(cycle 355: schema valid, Prisma Client v7.8.0 gerado)_
   - [x] `npx tsc --noEmit` → 0 erros _(cycle 355: exit 0)_
@@ -13,7 +13,7 @@
   - [x] `grimoire/vibracional/corpo-*.md` tem 11 arquivos
   - [x] `grimoire/diagnostico/*.md` tem 4 arquivos
   - [ ] `docs/15_glossario-oracular.md §1` ainda tem `⚠️ PROVISIONAL (D4)` — GAP CONFIRMADO _(3 ocorrências em §1, linhas 9/28/32)_
-  - [ ] `apps/akasha-portal/` está vazio (apenas `next-env.d.ts` e `tsconfig.tsbuildinfo` + `.next/`) — GAP CONFIRMADO
+  - [x] `apps/akasha-portal/` está vazio (apenas `next-env.d.ts` e `tsconfig.tsbuildinfo` + `.next/`) — RESOLVIDO _(cycle 356: skeleton criado com `package.json` + `tsconfig.json` + `next.config.js` + dirs `src/`/`public/`/`prisma/`/; código B2C movido em T1.3+)_
   - [x] `packages/core-{astrology,cabala,odus,tantra,types}/` existem (Fase A ✅) _(cycle 355: 5/5 presentes)_
 
 > **Gate de entrada da Fase 1:** 9/12 verdes — bloqueado em build pre-existente (registrado, fora de escopo), Doc 15 §1 PROVISIONAL (D4) e skeleton `apps/akasha-portal/`. T1.2 (skeleton) destrava o último gap; T3.2-3.5 destrava D4.
@@ -26,7 +26,7 @@
 
 - [ ] **Task 1: Conclusão da migração monorepo (apps/akasha-portal/)**
   - [x] SubTask 1.1: Inventariar arquivos a mover: `src/app/(akasha)/`, `src/app/api/akasha/`, `src/app/api/admin/webhooks/grimoire-sync/`, `src/lib/akasha/`, `src/lib/grimoire/`, `src/lib/stripe-akasha/`, `src/components/mandala/`, `src/middleware/` (apenas a parte Akasha), `src/hooks/akasha*`, `src/types/akasha*` _(audit `a7564b10`, cycle 344)_
-  - [ ] SubTask 1.2: Criar estrutura `apps/akasha-portal/{src,public,prisma}/` com `package.json` próprio e `tsconfig.json` estendendo a raiz
+  - [x] SubTask 1.2: Criar estrutura `apps/akasha-portal/{src,public,prisma}/` com `package.json` próprio e `tsconfig.json` estendendo a raiz _(skeleton cycle 356: `package.json` workspace + `tsconfig.json` extends raiz + `next.config.js` com transpilePackages + dirs com .gitkeep)_
   - [ ] SubTask 1.3: Mover arquivos preservando a árvore de imports (`@/lib/akasha/*` deve resolver para `apps/akasha-portal/src/lib/akasha/*`)
   - [ ] SubTask 1.4: Mover `prisma/schema.prisma` para `apps/akasha-portal/prisma/schema.prisma` e ajustar `prisma.config.ts`
   - [ ] SubTask 1.5: Configurar `pnpm-workspace.yaml` e `turbo.json` para incluir `apps/*` e `packages/*`
