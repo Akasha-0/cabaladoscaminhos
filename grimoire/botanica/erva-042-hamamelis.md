@@ -38,3 +38,11 @@ Regida pela Água (sangue, linfa, fluido) e pela Terra (casca, tanino), a Hamam�
 ## Aviso de Segurança
 
 A Hamamélis é segura para uso tópico e em banhos de assento. NÃO INGERIR sem orientação — pode causar desconforto gástrico, hepático e renal em doses altas. Pode interagir com medicamentos anticoagulantes. Gestantes devem evitar uso medicinal intenso.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Hamamelis — Circulation, Adstringencia e Healing de Vasos
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

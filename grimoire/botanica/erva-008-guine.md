@@ -40,3 +40,11 @@ Regido pela Terra e pelo Fogo, o Guiné tem a solidez da terra para ancorar a li
 ## Aviso de Segurança
 
 **IMPORTANTE**: O Guiné contém compostos potencialmente tóxicos em doses elevadas. **Não deve ser ingerido** — seu uso é restrito a banhos externos e defumação. **Contraindicado para mulheres grávidas** em qualquer forma. O odor é muito intenso e pode ser desconfortável para pessoas sensíveis — usar em ambientes ventilados. Não usar em crianças pequenas. Para banhos, lavar bem o corpo com água limpa após o descarrego.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Guinea — Cleansing Pesada e Descarrego
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -50,3 +50,11 @@ O Fogo de Obara é o fogo do sol no meio do dia — pleno, quente, irresistível
 ## Ação Prática
 
 Obara convida você a assumir plenamente um espaço de liderança em alguma área da sua vida que você tem evitado por medo de julgamento ou por falsa humildade. Identifique um contexto — família, trabalho, comunidade — onde sua voz e sua visão são necessárias e estão sendo contidas. Dê um passo concreto nessa direção esta semana: convoque uma conversa, proponha uma ideia, ou simplesmente posicione-se com clareza em uma situação onde você costuma recuar. Xangô honra aqueles que usam seu poder com dignidade e propósito.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Obara — A Realeza do Espirito
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -38,3 +38,11 @@ Regido pelo Éter (forma, geometria sagrada) e pelo Ar (respiração, leveza), o
 ## Aviso de Segurança
 
 O Anis-Estrelado é seguro em uso culinário. Atenção: o anis-estrelado japonês (Illicium anisatum) é tóxico e não deve ser confundido com o verdadeiro (Illicium verum). Comprar de fontes confiáveis. Em doses altas pode causar náusea. Evitar uso medicinal intenso em gestantes (sempre sob orientação).
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Anis-Estrelado — Protection de Crianca, Sono Tranquilo e Sorte
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

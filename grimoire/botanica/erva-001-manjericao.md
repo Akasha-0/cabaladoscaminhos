@@ -40,3 +40,11 @@ Regido pelo Fogo e pelo Ar, o Manjericão combina a vibração quente da atraç�
 ## Aviso de Segurança
 
 O Manjericão é geralmente seguro para uso externo e interno em quantidades culinárias. Mulheres grávidas devem evitar o consumo de grandes quantidades em forma de suplemento ou chá concentrado, pois pode ter efeito estimulante uterino. Para uso espiritual externo (banhos, defumação), não há restrições gerais.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Basil — Protection, Love e Attraction
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

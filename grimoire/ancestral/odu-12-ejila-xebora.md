@@ -50,3 +50,11 @@ A presença de todos os quatro elementos torna Ejilá-Xeborá um Odu de totalida
 ## Ação Prática
 
 Ejilá-Xeborá convida a uma revisão abrangente do estado atual da sua vida. Divida uma folha em quatro partes representando as quatro dimensões: fisica, emocional, mental e espiritual. Em cada quadrante, escreva honestamente onde você está e onde deseja estar. Identifique um passo prático em cada dimensão para o próximo mês. Xangô recompensa quem traz ordem ao caos com sabedoria e discernimento, e Ejilá-Xeborá abraça aqueles que têm coragem de ver a si mesmos de forma integral e compassiva.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Ejila-Xebora — A Completude dos Paths
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

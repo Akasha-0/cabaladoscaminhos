@@ -38,3 +38,11 @@ Regida pelo Ar (fumaça que sobe, conversa) e pelo Fogo (água quente que desper
 ## Aviso de Segurança
 
 A Erva-Mate é segura em uso moderado (até 3-4 cuias por dia). Em doses altas pode causar insônia, ansiedade, taquicardia, desconforto gástrico. Contraindicada para gestantes, lactantes, crianças, pessoas com hipertensão, ansiedade, úlcera, arritmias. Pode interagir com medicamentos. O mate muito quente tomado com bomba pode estar associado a risco aumentado de câncer esofágico (segundo estudos).
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Erva-Mate — Companhia, Foco e Presenca no Cotidiano
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -38,3 +38,11 @@ Regido pela Terra (raiz, madeira, cerrado) e pelo Fogo (floração que rompe a s
 ## Aviso de Segurança
 
 O Ipê-Roxo é seguro em uso medicinal moderado. Em doses altas pode causar desconforto gástrico. Contraindicado para gestantes, lactantes, anticoagulados. Pode interagir com medicamentos metabolizados pelo fígado. Compra de casca deve ser de fonte sustentável (manejo florestal). Não confundir com o Pau-d'Arco (que também é chamado de ipê-roxo, mas é espécie diferente — Handroanthus impetiginosus).
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Ipe-Roxo — Arvore da Healing Profunda, Micoses e Immunity
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

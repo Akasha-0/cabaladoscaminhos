@@ -34,3 +34,11 @@ Quando dominante ou desequilibrada, a Mente Negativa produz medo crônico, paran
 **Meditação de limites**: Visualizar uma esfera de luz ao redor do corpo, definindo claramente onde "você" termina e onde o "mundo" começa. Praticar a sensação de estar contido e protegido.
 
 **Prática comportamental**: Identificar uma situação onde você tem dificuldade em estabelecer limites e praticar dizer "não" de forma gentil mas firme, começando com situações de baixo risco.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Negative Mind — O Guardiao dos Limites
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

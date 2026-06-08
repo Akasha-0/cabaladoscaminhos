@@ -38,3 +38,11 @@ Regida pelo Ar (comunicação, mente) e pelo Fogo (coragem, iniciativa), a Horte
 ## Aviso de Segurança
 
 A Hortelã é segura para uso culinário e em chás moderados. Pode causar refluxo em pessoas sensíveis. Evitar uso medicinal intenso em gestantes e lactantes. Não há contraindicações para defumação e banhos externos.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Mint — Clareza Mental, Protection e Renewal
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

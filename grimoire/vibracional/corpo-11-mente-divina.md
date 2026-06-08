@@ -34,3 +34,11 @@ Quando bloqueada ou inacessível, a Mente Divina deixa o ser humano preso na ilu
 **Prática de serviço**: Realizar um ato de serviço semanal completamente anônimo — algo que beneficie outro ser sem nenhuma possibilidade de reconhecimento. Observar como isso expande a consciência além dos limites do ego.
 
 **Meditação da gratidão profunda**: Sentar em silêncio e deixar surgir, espontaneamente, gratidão por aspectos da existência que geralmente são dados como certos — a respiração, a visão, a capacidade de pensar. Deixar essa gratidão se expandir até tocar o sagrado no ordinário.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Divine Mind — A Graca da Onipresenca
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

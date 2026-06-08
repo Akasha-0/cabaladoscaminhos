@@ -38,3 +38,11 @@ Regida pelo Ar (palavra, pensamento) e pelo Éter (conexão superior), a Sálvia
 ## Aviso de Segurança
 
 A Sálvia é segura em uso culinário e em doses moderadas de chá. Não usar medicinalmente por mais de 2 semanas seguidas. Contraindicada para gestantes, lactantes, pessoas com diabetes, epilepsia ou convulsões. Não associar com sedativos ou álcool. Defumação deve ser feita em ambiente ventilado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Sage — Wisdom Ancestral, Palavra Verdadeira e Healing
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

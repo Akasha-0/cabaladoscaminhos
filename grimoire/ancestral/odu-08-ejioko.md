@@ -50,3 +50,11 @@ A Água de Ejiokô é o oceano — vasta, insondável, capaz de criar e destruir
 ## Ação Prática
 
 Em Ejiokô, a prática mais poderosa é a reconexão com sua linhagem ancestral de forma consciente e amorosa. Reserve um tempo para olhar fotografias antigas de familiares, conhecer histórias de seus avós, ou simplesmente sentar em silêncio e pedir internamente que os ancestrais que te acompanham com amor se manifestem. Você não precisa ter respostas — apenas a abertura para receber. Iemanjá cuida de seus filhos como o oceano cuida do sal: completamente, sem distinção, sem julgamento. Deixe-se ser cuidado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Ejioko — As Aguas da Memory
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

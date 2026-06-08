@@ -50,3 +50,11 @@ O Fogo de Irosun é vital e circulante — é o calor do corpo, o impulso que mo
 ## Ação Prática
 
 Irosun pede atenção ao corpo físico como templo. Avalie: você tem dormido bem, se alimentado com qualidade, movimentado seu corpo? A espiritualidade em Irosun não dispensa a materialidade — pelo contrário, honra o sagrado que pulsa no sangue e nos ossos. Se há conflito familiar em aberto, este Odu indica que o momento de resolver chegou. Não com guerra, mas com a clareza e firmeza de quem conhece seu valor e suas raízes. Ogum abre o caminho para quem avança com propósito, não com ira.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Irosun — O Sangue que Flui
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

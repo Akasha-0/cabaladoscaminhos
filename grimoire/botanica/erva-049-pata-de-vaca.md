@@ -38,3 +38,11 @@ Regida pela Terra (raiz, folha em formato animal) e pela Água (sangue, diurese)
 ## Aviso de Segurança
 
 A Pata-de-Vaca é segura em uso moderado. Pode potencializar o efeito de medicamentos antidiabéticos (risco de hipoglicemia). Contraindicada para gestantes, lactantes, pessoas com hipoglicemia, insuficiência renal ou hepática. Sempre usar com acompanhamento médico em casos de diabetes.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Pata-de-Vaca — Diabetes, Diurese e Purification do Sangue
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

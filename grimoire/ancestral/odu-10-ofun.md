@@ -50,3 +50,11 @@ A Água de Ofun é a água de nascente, que vem do subterrâneo com uma pureza q
 ## Ação Prática
 
 Ofun convida a uma prática de introspecção honesta. Escolha uma área da sua vida onde você sente que há algo que ainda não compreendeu completamente — um padrão que se repete, uma relação que não faz sentido, uma emoção que surge sem causa aparente. Dedique sete dias a observar essa área com curiosidade em vez de julgamento, registrando percepções, sonhos e insights. No sétimo dia, releia suas anotações e procure o fio condutor. Oxum revela suas respostas lentamente, como ouro que precisa ser garimpado, mas o que ela revela tem valor eterno.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Ofun — O Mystery das Profundezas
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

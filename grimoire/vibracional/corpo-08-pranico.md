@@ -34,3 +34,11 @@ Quando o Corpo Prânico está debilitado, a pessoa experimenta fadiga crônica s
 **Prática de Yoga**: Posturas de torção suave seguidas de Savasana prolongada (10 minutos), permitindo que o Prana se redistribua pelo corpo após o trabalho energético.
 
 **Gestão de energia**: Identificar e reduzir as três maiores "drenagens de Prana" na vida atual — sejam relações, hábitos ou situações — e substituir por fontes de nutrição energética genuína.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Corpo Pranic — A Energy Vital
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

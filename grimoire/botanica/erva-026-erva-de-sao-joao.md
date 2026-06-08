@@ -38,3 +38,11 @@ Regida pelo Fogo (sol, luz) e conectada ao astro solar, a Erva-de-São-João tra
 ## Aviso de Segurança
 
 **ATENÇÃO**: A Erva-de-São-João tem interações medicamentosas sérias. Pode reduzir o efeito de contraceptivos hormonais, anticoagulantes, antidepressivos, antirretrovirais e muitos outros medicamentos. NÃO USE sem orientação médica se tomar qualquer medicação contínua. Pode causar fotossensibilidade (queimaduras solares mais fáceis). Contraindicada para gestantes e lactantes. Respeite os avisos.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Erva-de-Sao-Joao — Light Sunar, Humor e Healing da Melancolia
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

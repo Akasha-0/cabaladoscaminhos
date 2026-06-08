@@ -50,3 +50,11 @@ Fogo e Ar se combinam em Ogbé: o Fogo como impulso vital, o Ar como clareza men
 ## Ação Prática
 
 Quando Ogbé se manifesta em sua vida, reserve um tempo — mesmo que breve — para escrever com honestidade o que você deseja inaugurar. Não a lista de tarefas, mas a qualidade de presença que você quer encarnar. Ogbé pede que o início seja sagrado: uma oração, um momento de silêncio, uma oferenda simbólica antes de dar o primeiro passo. Esse gesto de reconhecimento ao sagrado sinaliza ao universo que você está consciente da oportunidade que se abre, e o Axé flui com mais força quando é honrado com atenção.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Ogbe — O Dawn
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

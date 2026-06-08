@@ -54,3 +54,11 @@ Durante um trânsito favorável de Júpiter, as seguintes áreas tendem a flores
 ## Orientações para o Período
 
 Este não é o momento de se encolher. Júpiter amplia o que está em movimento — portanto, mova-se! Invista em educação, inicie projetos que demandam crescimento, expanda sua rede de contatos, viaje, estude. A janela é generosa mas não permanente: use a expansão disponível com sabedoria e ação.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Path Opening: Jupiter em Favorable Transit
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

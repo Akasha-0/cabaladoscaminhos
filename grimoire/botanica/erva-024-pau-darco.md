@@ -38,3 +38,11 @@ Regido pela Terra (raiz, densidade) e pelo Fogo (madeira que arde, transformaç�
 ## Aviso de Segurança
 
 O Pau-d'Arco é seguro em uso moderado. Em doses altas pode causar náusea e desconforto gástrico. Contraindicado para gestantes, lactantes e pessoas com anticoagulantes. Pode interagir com medicamentos metabolizados pelo fígado (citocromo P450). Uso medicinal prolongado deve ser supervisionado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Pau-d'Arco — Immunity Profunda, Ancestralidade e Resistencia
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

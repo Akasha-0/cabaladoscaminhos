@@ -38,3 +38,11 @@ Regida pelo Ar (mente, respiração) e pelo Éter (espaço, transcendência), a 
 ## Aviso de Segurança
 
 A Alfazema é segura para uso tópico diluído e em inalações. O óleo essencial puro não deve ser ingerido sem orientação. Evitar em gestantes e lactantes. Pode causar sonolência em pessoas sensíveis.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Lavender — Elevacao, Dreams Profeticos e Peace Profunda
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

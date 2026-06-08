@@ -38,3 +38,11 @@ Regido pela Água (calmante, sedação) e pelo Éter (alívio sutil), o Mulungu 
 ## Aviso de Segurança
 
 O Mulungu é seguro em uso medicinal moderado. Em doses altas pode causar sonolência excessiva, hipotensão, bradicardia. Contraindicado para gestantes, lactantes, crianças, pessoas com hipotensão, bradicardia, depressão do sistema nervoso central. Pode potencializar efeito de sedativos, ansiolíticos, anti-hipertensivos. Não associar com álcool.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Mulungu — Calming Profundo, Anxiety e Sistema Nervoso
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

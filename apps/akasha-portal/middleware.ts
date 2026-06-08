@@ -91,6 +91,16 @@ export async function middleware(request: NextRequest) {
   // Add security headers to response
   const response = NextResponse.next();
   response.headers.set('X-Request-Id', requestId);
+
+  // Locale detection — Doc 25 §9 / v0.0.4-T9
+  // Cookie takes priority; fallback to Accept-Language; default pt-BR.
+  const cookieLocale = request.cookies.get('NEXT_LOCALE')?.value;
+  const acceptLang = request.headers.get('accept-language') ?? '';
+  const headerLocale = acceptLang.toLowerCase().includes('en') ? 'en' : null;
+  const locale = cookieLocale === 'en' || cookieLocale === 'pt-BR'
+    ? cookieLocale
+    : (headerLocale === 'en' ? 'en' : 'pt-BR');
+  response.headers.set('x-akasha-locale', locale);
   Object.entries(SECURITY_HEADERS).forEach(([key, value]) => {
     response.headers.set(key, value);
   });

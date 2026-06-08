@@ -34,3 +34,11 @@ Quando o Corpo da Alma está fraco ou bloqueado, a pessoa experimenta uma sensa�
 **Meditação**: Sentar em Sukhasana (posição fácil), fechar os olhos e fazer a pergunta interna: "Quem sou eu antes de todos os meus papéis?" Observar o que surge sem julgamento por 10 minutos.
 
 **Expressão criativa**: Dedicar pelo menos 20 minutos diários a uma atividade criativa sem julgamento de qualidade — escrever, desenhar, dançar, cantar — apenas como expressão da alma sem expectativa de resultado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Soul Body — A Creative Essence
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

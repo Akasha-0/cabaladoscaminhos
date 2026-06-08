@@ -38,3 +38,11 @@ Regida pelo Ar (perfume delicado, respiração) e pela Água (calmante, fluido),
 ## Aviso de Segurança
 
 A Macela é geralmente muito segura. Raramente causa efeitos adversos. Em doses muito altas pode ter efeito sedativo. Não usar medicinalmente em doses altas em gestantes (sempre sob orientação). Pode interagir com sedativos em doses altas.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Macela — Calming Suave, Digestion e Peace do Estomago
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -50,3 +50,11 @@ O Fogo de Otura é o fogo suave das brasas — não a chama impetuosa do início
 ## Ação Prática
 
 Otura pede uma cerimônia pessoal de encerramento e gratidão. Reserve um tempo — pode ser uma tarde, uma noite, uma manhã silenciosa — para fazer um inventário não dos fracassos, mas das conquistas, aprendizados e crescimentos do ciclo que está se encerrando. Escreva uma carta para si mesmo reconhecendo tudo que você atravessou e como isso te moldou. Ao terminar, acenda uma vela branca, leia a carta em voz alta como testemunha de sua própria jornada, e então dobre o papel e guarde ou entregue ao fogo com gratidão. Oxalá recebe com amor a oferta de quem sabe honrar o caminho percorrido.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Otura — O Retorno a Fonte
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

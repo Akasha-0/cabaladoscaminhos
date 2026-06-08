@@ -38,3 +38,11 @@ Regida pela Terra (raiz, cerrado) e pelo Fogo (amargor transformador, fruto amar
 ## Aviso de Segurança
 
 A Jurubeba é segura em uso culinário e em chás moderados. Em doses altas pode causar desconforto gástrico. Contraindicada medicinalmente em doses altas para gestantes, lactantes, crianças, pessoas com úlcera, gastrite aguda. Pode ter efeito anticolinérgico em doses altas.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Jurubeba — Liver, Digestion e Courage Interior
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

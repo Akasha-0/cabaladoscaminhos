@@ -50,3 +50,11 @@ A Terra em Oyeku é receptiva, densa e transformadora. É o elemento que absorve
 ## Ação Prática
 
 Oyeku convoca para uma revisão honesta: o que em sua vida está clinicamente morto mas você ainda carrega como vivo? Um relacionamento encerrado emocionalmente, um projeto sem energia, uma identidade que já não serve. Identifique com clareza e crie um ritual de encerramento — não de abandono, mas de honra. Agradeça, solte, enterre simbolicamente. Omolu cuida do que é depositado na terra com respeito, e em troca, abre o solo para nova semeadura. Oyeku bem honrado se transforma em Ogbé — o alvorecer depois da noite mais profunda.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Oyeku — A Night Profunda
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

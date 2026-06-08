@@ -9,6 +9,7 @@ import {
 import './globals.css';
 import { PwaInstallPrompt } from '@/components/akasha/PwaInstallPrompt';
 import { ServiceWorkerRegistrar } from '@/components/akasha/ServiceWorkerRegistrar';
+import { LocaleSwitcher } from '@/components/akasha/LocaleSwitcher';
 
 const cinzel = Cinzel({
   variable: '--font-cinzel',
@@ -191,6 +192,9 @@ export default function RootLayout({
         {children}
         <ServiceWorkerRegistrar />
         <PwaInstallPrompt />
+        <div className="fixed top-4 right-4 z-50">
+          <LocaleSwitcher />
+        </div>
       </body>
     </html>
   );

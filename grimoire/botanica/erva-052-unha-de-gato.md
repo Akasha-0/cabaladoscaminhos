@@ -38,3 +38,11 @@ Regida pela Terra (casca, raiz) e pelo Fogo (propriedades ativas potentes), a Un
 ## Aviso de Segurança
 
 A Unha-de-Gato é segura em uso medicinal moderado. Contraindicada para gestantes, lactantes, crianças, pessoas com doenças autoimunes, transplantados, pessoas em uso de imunossupressores. Pode interagir com medicamentos metabolizados pelo citocromo P450, anticoagulantes, anti-hipertensivos, antirretrovirais. Compra deve ser de fonte sustentável (certificação). Não usar por mais de 4 semanas consecutivas sem orientação.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Unha-de-Gato — Imunoestimulante, Anti-inflammatory e Defesa Profunda
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -38,3 +38,11 @@ Regido pelo Fogo (coragem, calor) e conectado ao Sol (vitalidade, claridade), o 
 ## Aviso de Segurança
 
 O Rosmarinho é seguro em uso culinário. Em doses medicinais altas pode causar desconforto gástrico, pressão alta e irritação renal. Contraindicado para gestantes (pode induzir contrações), pessoas com epilepsia ou com úlcera. Não usar medicinalmente por mais de 2 semanas consecutivas.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Rosemary — Memory, Lealdade e Protection do Lar
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

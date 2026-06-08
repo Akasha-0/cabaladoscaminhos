@@ -50,3 +50,11 @@ A Água de Odi é a das profundezas interiores — não o rio corrente, mas o la
 ## Ação Prática
 
 Odi convida à quietude criativa. Se você tem um projeto, uma ideia ou uma intenção que ainda não deu frutos, não desista — verifique se está nutrido adequadamente. O que você tem alimentado com atenção, tempo e cuidado? Oxum não abandona o que é honrado. Crie um espaço sagrado — mesmo que pequeno — para aquilo que está em gestação: um caderno, uma vela amarela, um momento diário de silêncio dedicado àquele projeto. A presença constante e amorosa é o adubo que Odi pede.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Odi — As Aguas do Ventre
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

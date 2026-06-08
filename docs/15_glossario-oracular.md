@@ -4,8 +4,8 @@
 > **Norte:** Doc 25 (Visão Akasha). Conteúdo matemático/esotérico preservado e agnóstico; reenquadrado para o produto B2C Akasha.
 >
 > **Tipo:** Base de conteúdo curada (anti-alucinação) — semente do Grimório Digital
-> **Versão:** 2.2 | **Data:** 2026-06-07
-> **i18n EN:** Frontmatter `title_en` adicionado a todos os 78 arquivos do Grimório (51 ervas, 16 Odus, 11 Corpos Tântricos, 4 Diagnósticos). Cobertura validada pelo teste-guardião `tests/lib/i18n/grimoire-completeness.test.ts`. Corpo completo em EN será traduzido em ciclo futuro (Doc 25 §9 Fase 2 — parcialmente completo).
+> **Versão:** 2.3 | **Data:** 2026-06-07
+> **i18n EN:** Seção `## EN` presente em **82 arquivos do Grimório** (51 ervas, 16 Odus, 11 Corpos Tântricos, 4 Diagnósticos) — placeholder estrutural com `title_en` e nota de tradução pendente. Cobertura validada pelo teste-guardião `tests/lib/i18n/grimoire-completeness.test.ts`. Tradução nativa completa do corpo é um ciclo futuro (Doc 25 §9 Fase 2 — AD-25.12 ✅).
 > **D4 ✅ (2026-06-07) — Seção 1 dos Odus validada.** Proveniência registrada em cada `grimoire/ancestral/odu-*.md` (Doc 20 AD-20.3) e no ledger `IDEIA.md` §5.1. Lineage padrão: Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu.
 > **Papel no Akasha:** estes significados-base são a **semente da biblioteca de Diagnóstico do Grimório** (Doc 25 §5). São **injetados no contexto como verdade** (busca híbrida → System Prompt da Voz do Akasha),
 > em vez de confiar na memória do LLM. A IA interpreta o cruzamento dos 4 Pilares; ela **não inventa**

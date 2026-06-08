@@ -38,3 +38,11 @@ Regida pela Água (fluido, suco) e pelo Éter (calma sutil, paz), a Passiflora u
 ## Aviso de Segurança
 
 A Passiflora é segura em uso medicinal moderado. Em doses altas pode causar sonolência excessiva. Não associar com sedativos, álcool ou antidepressivos sem orientação médica. Contraindicada medicinalmente em doses altas para gestantes, lactantes, crianças menores de 6 anos, pessoas que vão dirigir. Pode interagir com anticoagulantes e antiagregantes plaquetários.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Passionflower (Passionflower-Azul) — Calming, Inducao do Sono e Healing da Anxiety
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

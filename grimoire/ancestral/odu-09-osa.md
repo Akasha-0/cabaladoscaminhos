@@ -50,3 +50,11 @@ O Ar de Osá é o vento tempestuoso que limpa, purifica e reorganiza. Não é co
 ## Ação Prática
 
 Quando Osá se manifesta, a ação mais sábia é fazer um inventário honesto do que em sua vida já cumpriu seu ciclo mas ainda ocupa espaço — seja uma relação, um emprego, um hábito, uma crença. Escolha um item dessa lista e tome uma ação concreta para iniciar o processo de encerramento ou transformação. Não precisa ser radical de imediato; pode ser uma conversa, uma decisão interna, ou simplesmente o reconhecimento em voz alta de que algo mudou. Iansã dança mais graciosamente com quem não teme sua dança.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Osa — O Vento da Transformation
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

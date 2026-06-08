@@ -42,3 +42,11 @@ Puramente Fogo, a Canela é uma das ervas mais quentes do ponto de vista energé
 ## Aviso de Segurança
 
 Preferir a canela-do-Ceilão (*Cinnamomum verum*) para consumo frequente, pois tem menor teor de cumarina do que a canela-cássia. Consumo excessivo da cássia pode afetar a função hepática. Não usar em quantidades medicinais durante a gravidez. Externamente, o óleo essencial puro pode causar irritação na pele — sempre diluir.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Cinnamon — Abundance, Aquecimento e Aceleracao
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

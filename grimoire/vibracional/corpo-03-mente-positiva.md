@@ -34,3 +34,11 @@ Quando excessiva, a Mente Positiva produz otimismo ingênuo, negação de riscos
 **Meditação de possibilidades**: Visualizar um objetivo desejado como se já fosse realidade, sentindo as emoções correspondentes no corpo por 10 minutos.
 
 **Prática comportamental**: Por 7 dias, antes de dormir, escrever três coisas que funcionaram bem no dia, treinando a atenção para o que cresce e floresce.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Positive Mind — O Impulso da Expansao
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -34,3 +34,11 @@ Quando contraída ou danificada, a Aura faz a pessoa "desaparecer" em ambientes 
 **Meditação de expansão**: Visualizar a própria Aura como uma esfera de luz dourada se expandindo com cada inalação e se consolidando (mas não contraindo) com cada exalação. Começar com 9 minutos e aumentar progressivamente.
 
 **Autocuidado áurico**: Tomar banhos de sal grosso periodicamente, usar branco ou cores luminosas frequentemente, e praticar gratidão ativa — emoções elevadas nutrem e expandem o campo áurico naturalmente.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Aura — O Campo de Projecao
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

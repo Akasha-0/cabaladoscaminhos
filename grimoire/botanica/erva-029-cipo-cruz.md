@@ -38,3 +38,11 @@ Regido pela Terra (enraizamento, cipó) e pelo Éter (forma, geometria sagrada d
 ## Aviso de Segurança
 
 O Cipó-Cruz é seguro para uso ritual e em chás suaves. Em doses altas pode causar desconforto gástrico. Não há contraindicações sérias conhecidas. Não substitui acompanhamento médico ou psicológico. Respeite a tradição cristã sincrética da qual a erva faz parte.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Cipo-Cruz — Protection, Sinal da Cruz e Trindade
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

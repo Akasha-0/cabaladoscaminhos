@@ -38,3 +38,11 @@ Regido pelo Fogo (sol, calor dourado) e pela Terra (rizoma, enraizamento), o Aç
 ## Aviso de Segurança
 
 O Açafrão-da-Terra é seguro em uso culinário. Em doses terapêuticas altas pode causar desconforto gástrico. Pode interagir com anticoagulantes e medicamentos para diabetes. Contraindicado em doses altas para pessoas com obstrução das vias biliares, cálculos biliares ou úlcera ativa. Gestantes devem evitar doses terapêuticas.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Acafrao-da-Earth — Healing Profunda, Sun Interior e Protection do Liver
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

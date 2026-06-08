@@ -34,3 +34,11 @@ Quando bloqueada, a Mente Neutra se manifesta como indecisão crônica, dificuld
 **Prática de decisão consciente**: Antes de tomar decisões importantes, sentar em silêncio por 5 minutos, respirar profundamente, e perguntar internamente: "O que serve ao bem maior aqui?" Aguardar a resposta sem pressionar.
 
 **Journaling de sabedoria**: Escrever diariamente sobre situações do dia a partir da perspectiva do "observador neutro" — sem julgamento, apenas descrevendo o que foi observado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Neutral Mind — A Wisdom do Centro
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

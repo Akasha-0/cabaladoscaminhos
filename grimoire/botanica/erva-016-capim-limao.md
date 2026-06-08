@@ -38,3 +38,11 @@ Regido pelo Ar (corte, ventilação) e pela Água (fluido, fluidez), o Capim-Lim
 ## Aviso de Segurança
 
 O Capim-Limão é seguro para uso culinário e em chás moderados. Em doses altas pode causar desconforto gástrico. Evitar uso medicinal intenso em gestantes, lactantes e pessoas com úlcera. Pode interagir com medicamentos diuréticos.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Capim-Limao — Cleansing Profunda, Despojo e Sorte
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

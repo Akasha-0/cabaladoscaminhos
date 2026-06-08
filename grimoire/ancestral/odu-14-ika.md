@@ -50,3 +50,11 @@ A Terra de Ika é firme, sólida e carregada de potencial. É a terra que resist
 ## Ação Prática
 
 Ika convida você a identificar o projeto ou objetivo mais importante da sua vida neste momento — aquele que você sabe que pode mudar sua trajetória se realizado com comprometimento. Em seguida, defina a menor ação possível que você poderia realizar hoje para avançar nessa direção. Pode ser uma ligação, um estudo de 30 minutos, uma conversa, ou colocar algo no papel. Ogum abençoa quem começa, mesmo que imperfeito, mesmo que lento. O caminho se faz caminhando, e cada passo honesto no esforço físico e concreto tem o Axé de Ogum como aliado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Ika — A Strength que Abre o Path
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

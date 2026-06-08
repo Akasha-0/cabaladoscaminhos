@@ -38,3 +38,11 @@ Regida pela Terra (raiz do cerrado) e pelo Fogo (amargor transformador), a Carqu
 ## Aviso de Segurança
 
 A Carqueja é segura em uso medicinal moderado. Em doses altas pode causar desconforto gástrico, hipotensão, hipoglicemia. Contraindicada para gestantes (pode induzir contrações), lactantes, pessoas com diabetes descompensada, hipotensão, doenças hepáticas graves. Pode interagir com medicamentos para diabetes e pressão. Não usar por mais de 4 semanas consecutivas.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Carqueja — Digestion Amarga, Desintoxicacao do Liver e Limpa
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

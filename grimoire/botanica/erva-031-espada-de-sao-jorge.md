@@ -38,3 +38,11 @@ Regida pelo Fogo (lâmina, calor) e pela Terra (enraizamento profundo), a Espada
 ## Aviso de Segurança
 
 **ATENÇÃO**: A Espada-de-São-Jorge é tóxica se ingerida. Manter fora do alcance de crianças e animais domésticos. Não usar internamente — sua ação é de presença protetora, não de consumo. Respeite a planta como guardiã.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Espada-de-Sao-Jorge — Protection do Lar, Corte e Firmeza
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

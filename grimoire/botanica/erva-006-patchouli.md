@@ -40,3 +40,11 @@ Puramente Terra, o Patchouli vibra na frequência da estabilidade, da fertilidad
 ## Aviso de Segurança
 
 O Patchouli é geralmente muito seguro para uso externo e aromático. O óleo essencial pode ser fotossensibilizante — evitar exposição ao sol após aplicação na pele. Diluir sempre em óleo carreador antes do uso tópico. Não ingerir óleo essencial.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Patchouli — Aterramento, Sensualidade e Earth
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

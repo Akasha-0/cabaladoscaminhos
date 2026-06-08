@@ -40,3 +40,11 @@ Regida pelo Ar e pela Água, a Lavanda combina a leveza mental do Ar com a fluid
 ## Aviso de Segurança
 
 A Lavanda é geralmente muito segura para uso externo e interno em quantidades moderadas. Pessoas com hipotensão (pressão baixa) devem usar com moderação, pois pode intensificar o efeito hipotensor. O óleo essencial puro não deve ser aplicado diretamente na pele sem diluição em óleo carreador.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Lavender — Peace, Sono e Balance Emocional
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

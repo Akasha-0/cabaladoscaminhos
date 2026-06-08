@@ -38,3 +38,11 @@ Regido pela Terra (raiz, cerrado, casca) e pela Água (taninos dissolvidos, muco
 ## Aviso de Segurança
 
 O Barbatimão é seguro em uso tópico e em banhos de assento. NÃO INGERIR sem orientação — os taninos em doses altas podem causar desconforto gástrico, hepático e renal. Contraindicado medicinalmente em doses altas para gestantes, lactantes, crianças. Respeite a extração sustentável do cerrado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Barbatimao — Healing Profunda, Healing Feminina e Cerrado
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

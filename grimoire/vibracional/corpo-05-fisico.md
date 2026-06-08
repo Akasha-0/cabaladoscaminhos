@@ -34,3 +34,11 @@ Quando fraco ou negligenciado, o Corpo Físico se manifesta como desconexão com
 **Prática de presença corporal**: Body scan diário — percorrer mentalmente cada parte do corpo por 10 minutos, sem julgamento, apenas observando sensações com curiosidade e gentileza.
 
 **Alinhamento vida-valores**: Identificar uma área onde suas ações não refletem seus valores e tomar uma ação pequena e concreta para alinhar o que faz com o que acredita.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Corpo Physical — O Templo Presente
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

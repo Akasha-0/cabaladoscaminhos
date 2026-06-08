@@ -38,3 +38,11 @@ Regida pelo Éter (transcendência) e pela Água (fluido sutil, mundo onírico),
 ## Aviso de Segurança
 
 **ATENÇÃO**: A Jurema contém DMT (dimetiltriptamina) em sua composição. Seu uso ritual é parte de tradições sagradas, mas seu uso doméstico sem supervisão espiritual pode causar efeitos psicotrópicos intensos, crises de ansiedade e surtos em pessoas com histórico psiquiátrico. NÃO USE SEM DIREÇÃO ESPIRITUAL. Contraindicada para pessoas com esquizofrenia, bipolaridade, ansiedade severa, gestantes, lactantes, pessoas com doenças cardíacas. Respeite a tradição.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Jurema — Vision, Mystery e Abertura do Veu
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

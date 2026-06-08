@@ -50,3 +50,11 @@ A Água de Oturupon é a água que retorna — a chuva que alimenta o rio, o rio
 ## Ação Prática
 
 Se você está em um processo de cura — de uma perda, um trauma, uma decepção — Oturupon pede que você pratique a gentileza radical consigo mesmo esta semana. Cancele compromissos desnecessários, coma alimentos que nutrem de verdade, durma mais, tome banhos longos e quentes. Mas também: busque uma conversa com alguém de confiança onde você possa falar honestamente sobre o que está atravessando. A cura de Oturupon não acontece no isolamento — ela acontece no acolhimento, quando nos permitimos ser vistos em nossa vulnerabilidade por quem pode segurar o espaço com amor.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Oturupon — As Aguas que Healingm e Renovam
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

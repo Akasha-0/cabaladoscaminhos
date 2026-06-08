@@ -38,3 +38,11 @@ Regida pelo Fogo (calor, transformação) e pela Terra (corpo, enraizamento), a 
 ## Aviso de Segurança
 
 A Calêndula é segura para uso tópico e culinário. Raramente causa alergia (exceto em pessoas sensíveis a Asteraceae). Pode interagir com sedativos. Não é recomendada para uso interno intenso em gestantes. Aplicação tópica em feridas abertas profundas deve ser supervisionada.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Calendula — Healing Sunar, Vitality e Protection do Coracao
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

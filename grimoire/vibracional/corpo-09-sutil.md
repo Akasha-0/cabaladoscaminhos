@@ -34,3 +34,11 @@ Quando bloqueado, o Corpo Sutil cria dificuldade com transições e mudanças �
 **Prática de percepção sutil**: Passar 10 minutos por dia em silêncio total, praticando perceber as camadas de informação que chegam pelos sentidos — sons distantes, texturas sutis, estados emocionais leves — sem julgamento ou análise.
 
 **Estudo da impermanência**: Ler, contemplar e absorver ensinamentos sobre impermanência de qualquer tradição sapiencial, usando esse conhecimento para praticar o desapego saudável no cotidiano.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Corpo Subtle — A Elegancia da Transicao
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

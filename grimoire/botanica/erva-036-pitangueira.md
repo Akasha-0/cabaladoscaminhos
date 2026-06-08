@@ -38,3 +38,11 @@ Regida pela Terra (cerrado, raiz nativa) e pelo Fogo (fruto vermelho, sol), a Pi
 ## Aviso de Segurança
 
 A Pitangueira é segura em uso culinário. Folhas em chás medicinais devem ser usadas com moderação. Não há contraindicações sérias conhecidas para uso culinário. Gestantes devem evitar uso medicinal intenso das folhas.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Pitanga — Fruto Sagrado, Fartura e Protection do Cerrado
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

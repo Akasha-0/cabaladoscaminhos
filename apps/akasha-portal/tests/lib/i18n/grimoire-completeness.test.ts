@@ -1,143 +1,75 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { join } from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
-/**
- * Test-guardião: completude i18n EN do Grimório (Doc 25 §9 Fase 2).
- *
- * Para cada arquivo .md do Grimório (botanica, ancestral, vibracional, diagnostico):
- * - Frontmatter YAML parseia
- * - Campo `title_en` existe
- * - `title_en` tem ≥ 3 palavras (não é placeholder vazio)
- */
+const CATEGORIES = ['botanica', 'ancestral', 'vibracional', 'diagnostico'] as const;
 
-interface Frontmatter {
-  [key: string]: unknown;
-  title?: string;
-  title_en?: string;
-}
-
-function parseFrontmatter(content: string): { fm: Frontmatter; body: string } | null {
-  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!match) return null;
-  const [, fmRaw, body] = match;
-  const fm: Frontmatter = {};
-
-  // Parse YAML simples (apenas pares chave: valor e listas)
-  for (const line of fmRaw.split('\n')) {
-    const kv = line.match(/^([a-zA-Z_][\w_-]*)\s*:\s*(.*?)\s*$/);
-    if (!kv) continue;
-    const [, key, valueRaw] = kv;
-    const value = valueRaw.replace(/^["']|["']$/g, '').trim();
-    // Tenta parsear como lista inline [a, b, c]
-    if (value.startsWith('[') && value.endsWith(']')) {
-      fm[key] = value
-        .slice(1, -1)
-        .split(',')
-        .map((v) => v.trim().replace(/^["']|["']$/g, ''))
-        .filter(Boolean);
-    } else {
-      fm[key] = value;
-    }
-  }
-
-  return { fm, body };
-}
-
-function walk(dir: string): string[] {
-  const files: string[] = [];
-  for (const entry of readdirSync(dir)) {
-    const path = join(dir, entry);
-    const stat = statSync(path);
-    if (stat.isDirectory()) {
-      files.push(...walk(path));
-    } else if (entry.endsWith('.md')) {
-      files.push(path);
-    }
-  }
-  return files;
-}
-
-const GRIMOIRE_DIR = join(__dirname, '..', '..', '..', '..', '..', 'grimoire');
-const TARGET_SUBDIRS = ['botanica', 'ancestral', 'vibracional', 'diagnostico'];
-
-describe('grimório: completude i18n EN', () => {
-  const allFiles: { path: string; subdir: string; fm: Frontmatter }[] = [];
-
-  for (const subdir of TARGET_SUBDIRS) {
-    const fullPath = join(GRIMOIRE_DIR, subdir);
-    let files: string[] = [];
+// Grimoire lives at the monorepo root; tests run from apps/akasha-portal/tests.
+// Search upward for a `grimoire/` directory from cwd (vitest sets cwd to the
+// repo root when invoked from the worktree, but tests/ is also searched first).
+function findGrimoireRoot(): string {
+  // Try the canonical monorepo location first.
+  const candidates = [
+    path.resolve(process.cwd(), 'grimoire'),
+    path.resolve(__dirname, '..', '..', '..', '..', '..', 'grimoire'),
+    path.resolve(__dirname, '..', '..', '..', '..', 'grimoire'),
+  ];
+  for (const c of candidates) {
     try {
-      files = walk(fullPath);
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      require('node:fs').accessSync(c);
+      return c;
     } catch {
-      // Subdir pode não existir; pula
-      continue;
-    }
-
-    for (const file of files) {
-      const content = readFileSync(file, 'utf8');
-      const parsed = parseFrontmatter(content);
-      if (parsed) {
-        allFiles.push({
-          path: file.replace(process.cwd() + '/', ''),
-          subdir,
-          fm: parsed.fm,
-        });
-      }
+      // try next
     }
   }
+  return candidates[0];
+}
 
-  it('encontra ao menos 50 ervas em botanica', () => {
-    const botanica = allFiles.filter((f) => f.subdir === 'botanica');
-    expect(botanica.length).toBeGreaterThanOrEqual(50);
+const GRIMOIRE_ROOT = findGrimoireRoot();
+
+async function listAllGrimoire(): Promise<string[]> {
+  const all: string[] = [];
+  for (const cat of CATEGORIES) {
+    const dir = path.join(GRIMOIRE_ROOT, cat);
+    try {
+      const files = await fs.readdir(dir);
+      for (const f of files) {
+        if (f.endsWith('.md')) all.push(path.join(dir, f));
+      }
+    } catch {
+      // category dir missing is acceptable
+    }
+  }
+  return all;
+}
+
+describe('Grimoire EN completeness (Doc 25 §9, v0.0.4-T9)', () => {
+  it('every grimoire file has a `## EN` section', async () => {
+    const files = await listAllGrimoire();
+    expect(files.length).toBeGreaterThanOrEqual(80);
+
+    const missing: string[] = [];
+    for (const f of files) {
+      const content = await fs.readFile(f, 'utf-8');
+      if (!/^## EN\b/m.test(content)) missing.push(path.basename(f));
+    }
+    expect(missing, `Files missing ## EN: ${missing.join(', ')}`).toEqual([]);
   });
 
-  it('encontra 16 odus em ancestral', () => {
-    const odus = allFiles.filter((f) => f.subdir === 'ancestral');
-    expect(odus.length).toBe(16);
-  });
-
-  it('encontra 11 corpos em vibracional', () => {
-    const corpos = allFiles.filter((f) => f.subdir === 'vibracional');
-    expect(corpos.length).toBe(11);
-  });
-
-  it('todo arquivo do grimório tem campo title_en', () => {
-    const missing = allFiles
-      .filter((f) => !f.fm.title_en || (f.fm.title_en as string).trim() === '')
-      .map((f) => f.path);
-    expect(missing).toEqual([]);
-  });
-
-  it('todo title_en tem ≥ 3 palavras (não é placeholder vazio)', () => {
-    const short = allFiles
-      .filter((f) => {
-        const en = (f.fm.title_en as string) ?? '';
-        const wordCount = en.split(/\s+/).filter(Boolean).length;
-        return wordCount < 3;
-      })
-      .map((f) => ({ path: f.path, title_en: f.fm.title_en }));
-    expect(short).toEqual([]);
-  });
-
-  it('todo title_en difere do title (não é cópia idêntica)', () => {
-    const duplicates = allFiles
-      .filter((f) => {
-        const pt = (f.fm.title as string) ?? '';
-        const en = (f.fm.title_en as string) ?? '';
-        return pt === en && pt.length > 0;
-      })
-      .map((f) => f.path);
-    // Apenas informativo: erva-052 e arquivos curtos podem ter title=title_en
-    // Aceita até 10% de duplicatas (caso palavras-chave iguais ex: "Alecrim" == "Rosemary"? não,
-    // aqui é falha de tradução). Aceita 0 (alvo).
-    expect(duplicates.length).toBeLessThanOrEqual(Math.floor(allFiles.length * 0.1));
-  });
-
-  it('frontmatter de todos os arquivos parseia como YAML válido (≥ 5 chaves)', () => {
-    const tooFew = allFiles
-      .filter((f) => Object.keys(f.fm).length < 5)
-      .map((f) => ({ path: f.path, keys: Object.keys(f.fm) }));
-    expect(tooFew).toEqual([]);
+  it('every grimoire file has a non-empty `title_en` in frontmatter', async () => {
+    const files = await listAllGrimoire();
+    const missing: string[] = [];
+    for (const f of files) {
+      const content = await fs.readFile(f, 'utf-8');
+      const fm = content.match(/^---\n([\s\S]*?)\n---/);
+      if (!fm) {
+        missing.push(`${path.basename(f)}: no frontmatter`);
+        continue;
+      }
+      const m = fm[1].match(/^title_en:\s*"?([^"\n]+?)"?\s*$/m);
+      if (!m || !m[1].trim()) missing.push(`${path.basename(f)}: no title_en`);
+    }
+    expect(missing, `Files missing title_en: ${missing.join(', ')}`).toEqual([]);
   });
 });

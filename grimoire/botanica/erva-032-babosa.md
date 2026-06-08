@@ -38,3 +38,11 @@ Regida pela Água (gel, mucilagem, fluido) e pela Terra (raiz, folha carnuda), a
 ## Aviso de Segurança
 
 **ATENÇÃO**: Uso interno da babosa pode causar desconforto gástrico, diarreia e desequilíbrio eletrolítico. NÃO USE internamente em doses altas ou por períodos prolongados sem orientação médica. A aloína (substância amarelada entre a casca e o gel) é laxante e potencialmente tóxica. Uso tópico é seguro. Gestantes devem evitar uso interno.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Aloe Vera (Aloe Vera) — Healing, Renewal da Pele e do Corpo
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

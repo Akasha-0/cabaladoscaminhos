@@ -50,3 +50,11 @@ Fogo e Ar em dobro criam uma chama inextinguível. O Fogo de Eji Ogbé é eterno
 ## Ação Prática
 
 Na presença de Eji Ogbé, o melhor que você pode fazer é sustentar o que já está funcionando e expandir com confiança. Identifique uma área da sua vida que está fluindo bem e pergunte-se: "O que eu poderia fazer para honrar e amplificar esse fluxo?" Pode ser dedicar mais tempo a algo que está crescendo, agradecer às pessoas que colaboram com sua jornada, ou simplesmente manter a constância do que já está dando frutos. Oxalá em sua plenitude abençoa quem cuida da luz que já recebeu.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Eji Ogbe — A Light Dobrada
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

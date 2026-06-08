@@ -38,3 +38,11 @@ Regida pelo Ar (vento, perfume) e pelo Éter (sonho, paz), a Sálvia-Guia une o 
 ## Aviso de Segurança
 
 A Sálvia-Guia é segura em uso culinário e em chás medicinais. Em doses altas pode causar sonolência. Contraindicada medicinalmente em doses altas para gestantes, lactantes, crianças pequenas. Pode interagir com sedativos. Não usar medicinalmente por mais de 2 semanas consecutivas.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Sage-Guia — Peace do Lar, Dreams e Protection do Sono
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

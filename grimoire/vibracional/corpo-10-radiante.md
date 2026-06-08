@@ -34,3 +34,11 @@ Quando fraco, o Corpo Radiante cria uma pessoa que se apaga, que tem medo de se 
 **Prática de visibilidade**: Tomar uma ação que coloque sua obra, sua voz ou sua presença no mundo de forma pública — publicar algo, falar em público, liderar uma reunião. Começar pequeno e ir ampliando.
 
 **Cultivo da coragem**: Identificar um medo específico relacionado a ser visto ou julgado e tomar uma ação pequena e deliberada em direção a esse medo esta semana, celebrando a coragem independentemente do resultado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Corpo Radiant — O Radiance do Ser
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

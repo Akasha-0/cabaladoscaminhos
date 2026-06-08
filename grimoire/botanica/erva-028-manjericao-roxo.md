@@ -38,3 +38,11 @@ Regido pelo Fogo (transformação, poder) e pelo Éter (espiritualidade, transmu
 ## Aviso de Segurança
 
 O Manjericão-Roxo é seguro para uso culinário e ritual. Não há contraindicações sérias conhecidas. Como todo manjericão, moderação em lactantes. Não substitui acompanhamento médico ou psicológico em casos de crise espiritual.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Basil-Roxo — Protection do Lar, Quebra de Feitico e Sorte
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -50,3 +50,11 @@ O Ar de Owonrin é o vento que vira tempestade. Não é o suave sopro do amanhec
 ## Ação Prática
 
 Na energia de Owonrin, o movimento é a medicina. Se você está parado demais — fisica, emocional ou espiritualmente — este é o Odu que vem quebrar essa inércia. Uma ação concreta: mude um hábito diário significativo por sete dias consecutivos. Pode ser a rota que você toma para o trabalho, o horário em que você acorda, ou a primeira coisa que você faz ao acordar. Essa pequena ruptura de padrão envia um sinal ao seu sistema nervoso e ao campo espiritual de que você está aberto ao novo. Exu abre os caminhos para quem demonstra coragem de se mover.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Owonrin — O Trovao que Transforma
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

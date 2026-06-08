@@ -38,3 +38,11 @@ Regida pelo Fogo (proteção, calor) e pelo Ar (vento que varre, comunicação),
 ## Aviso de Segurança
 
 A Alfavaca é segura em uso culinário. Em doses medicinais altas pode ter efeito levemente sedativo. Óleo essencial pode ser irritante para peles sensíveis. Não usar medicinalmente em doses altas em gestantes. Pode interagir com sedativos.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Basil — Protection Forte, Abertura de Paths e Healing
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

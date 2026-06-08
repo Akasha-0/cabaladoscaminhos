@@ -50,3 +50,11 @@ O Fogo de Iwori é o fogo da consciência — ilumina os cantos escuros da psiqu
 ## Ação Prática
 
 Iwori pede que você se sente em silêncio e faça uma pergunta difícil a si mesmo — uma que você tem evitado. Não é necessário ter a resposta imediatamente; o ato de formular a pergunta com honestidade já ativa o Axé deste Odu. Xangô, como juiz supremo, premia a sinceridade acima de tudo. Se houver algo que você sabe que deveria enfrentar — uma conversa, uma decisão, um padrão — Iwori é o sinal de que o momento é agora. A visão interior é o precursor de qualquer transformação verdadeira.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Iwori — O Coracao que Ve
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

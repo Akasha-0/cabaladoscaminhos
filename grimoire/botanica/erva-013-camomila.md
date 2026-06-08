@@ -38,3 +38,11 @@ Regida pela Água (emoções, memória) e pela Terra (corpo, gestação), a Camo
 ## Aviso de Segurança
 
 A Camomila é geralmente muito segura. Pessoas com alergia a plantas da família Asteraceae (como margaridas) podem reagir. Pode interagir com anticoagulantes (varfarina) em doses altas. Raramente causa sonolência excessiva. Evitar uso medicinal intenso em gestantes no primeiro trimestre.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Chamomile — Docura, Healing Interior e Paciencia do Renascimento
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

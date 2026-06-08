@@ -38,3 +38,11 @@ Regido pelo Ar (respiração, leveza) e pela Água (fluido, ciclo), o Funcho une
 ## Aviso de Segurança
 
 O Funcho é seguro em uso culinário e em chás moderados. Em doses terapêuticas altas pode interferir com contraceptivos hormonais. Contraindicado medicinalmente em doses altas para gestantes (pode ter efeito estrogênico). Pessoas com alergias a plantas da família Apiaceae devem evitar.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Fennel — Digestion, Fertilidade e Suavidade
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -38,3 +38,11 @@ Regida pela Terra (raiz, cerrado) e pela Água (fluido digestivo, emoção), a D
 ## Aviso de Segurança
 
 A Douradinha é segura em uso moderado. Em doses altas pode causar diarreia. Contraindicada medicinalmente em doses altas para gestantes e lactantes. Não usar por períodos prolongados sem orientação. Coleta deve respeitar a sustentabilidade do cerrado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Douradinha — Healing do Estomago, Cleansing Profunda e Root
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

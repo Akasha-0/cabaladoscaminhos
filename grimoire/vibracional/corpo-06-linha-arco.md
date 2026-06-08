@@ -34,3 +34,11 @@ Quando fraca, a Linha do Arco deixa a pessoa vulnerável a manipulação, influ�
 **Cuidado com o cabelo**: Na tradição do Kundalini Yoga, manter o cabelo comprido e enrolado no topo da cabeça (especialmente para mulheres) fortalece a Linha do Arco. Massagear o couro cabeludo diariamente ativa essa energia.
 
 **Proteção antes de ambientes densos**: Visualizar um escudo de luz branca ou dourada ao redor de todo o corpo antes de entrar em ambientes com muita gente ou energia intensa.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Linha do Arco — O Escudo Aurico
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

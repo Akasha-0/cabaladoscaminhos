@@ -38,3 +38,11 @@ Regida pela Terra (raiz, mineral) e pela Água (fluido renal, diurese), a Cavali
 ## Aviso de Segurança
 
 A Cavalinha é segura em uso medicinal moderado. Em doses altas ou uso prolongado pode causar deficiência de vitamina B1 (tiamina) e desequilíbrio eletrolítico. Contraindicada para gestantes, lactantes, pessoas com doenças renais ou cardíacas, alcoolistas. Pode interagir com lítio e diuréticos. Não usar por mais de 4 semanas consecutivas.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Horsetail — Desintoxicacao, Ossos Fortes e Renewal
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

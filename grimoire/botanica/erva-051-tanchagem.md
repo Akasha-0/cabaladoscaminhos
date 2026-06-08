@@ -38,3 +38,11 @@ Regida pela Terra (roseta no chão) e pela Água (mucilagem, suco), a Tanchagem 
 ## Aviso de Segurança
 
 A Tanchagem é segura em uso tópico e em xaropes caseiros. Em doses altas pode causar desconforto gástrico. Contraindicada medicinalmente em doses altas para gestantes (pode ter efeito uterotônico). Pode interagir com anticoagulantes. Otite sempre deve ter avaliação médica — uso tópico é coadjuvante, não substitui antibiótico quando indicado.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Plantain — Healing de Feridas, Garganta e Ouvido
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

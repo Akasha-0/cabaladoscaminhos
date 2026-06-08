@@ -38,3 +38,11 @@ Regido pelo Ar (respiração, perfume) e pela Água (fluido pulmonar, muco), o G
 ## Aviso de Segurança
 
 O Guaco é seguro em uso medicinal moderado. Em doses altas ou uso prolongado pode causar náusea, vômito e diarreia. Contraindicado para gestantes, lactantes, pessoas com doenças hepáticas, anticoagulados. Pode interagir com varfarina. Sempre usar sob orientação para uso medicinal contínuo.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Guaco — Breath, Healing do Peito e Abertura
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

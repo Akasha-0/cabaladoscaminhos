@@ -38,3 +38,11 @@ Regido pelo Ar (vento, respiração, perfume) e pelo Fogo (óleo essencial poten
 ## Aviso de Segurança
 
 O Eucalipto é seguro em uso culinário (em pequenas quantidades) e em inalações. NÃO INGIRIR óleo essencial puro. Pode causar náusea, vômito e diarreia se ingerido em quantidade. Contraindicado para gestantes, lactantes, crianças menores de 6 anos, asmáticos. Uso tópico do óleo essencial puro pode ser irritante.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Eucalyptus — Cleansing do Ar, Breath e Abertura
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

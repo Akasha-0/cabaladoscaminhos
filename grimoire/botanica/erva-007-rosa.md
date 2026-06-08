@@ -40,3 +40,11 @@ Regida pela Água (emoção, profundidade, amor) e pelo Fogo (paixão, vitalidad
 ## Aviso de Segurança
 
 Use apenas rosas orgânicas ou cultivadas sem agrotóxicos para banhos e chás. Rosas comerciais de floricultura geralmente são tratadas com produtos químicos e não devem ser usadas internamente. O óleo essencial de rosa absoluta é muito concentrado — usar com extrema moderação e sempre diluído.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Rose — Love Universal e Abertura do Coracao
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

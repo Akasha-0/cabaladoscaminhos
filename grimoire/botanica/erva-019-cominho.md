@@ -38,3 +38,11 @@ Regido pela Terra (enraizamento, ventre) e pelo Fogo (calor digestivo), o Cominh
 ## Aviso de Segurança
 
 O Cominho é seguro em uso culinário. Em doses terapêuticas altas pode causar azia em pessoas sensíveis. Pode interagir com medicamentos para diabetes (potencializa o efeito). Contraindicado medicinalmente em doses altas para gestantes.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Cumin — Digestion Forte, Vinculo e Protection da Mae
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

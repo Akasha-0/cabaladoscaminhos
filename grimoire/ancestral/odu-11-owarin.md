@@ -50,3 +50,11 @@ O Ar de Owarin é o ar que flui entre duas superfícies — não pertence a nenh
 ## Ação Prática
 
 Se você está em meio a um conflito — interno ou externo — a energia de Owarin pede que você encontre a perspectiva do observador neutro. Em vez de escolher um lado imediatamente, tente articular com honestidade os pontos válidos de cada posição envolvida. Escreva os dois lados do conflito como se fosse um advogado que precisa defender ambos. Esse exercício não é para criar indecisão, mas para expandir a compreensão antes de agir. Iansã protege quem carrega a responsabilidade da mediação com integridade.
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Owarin — O Balance entre os Mundos
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

@@ -38,3 +38,11 @@ Regida pela Terra (tronco, raiz, floresta) e pelo Fogo (óleo-resina concentrado
 ## Aviso de Segurança
 
 O óleo de Copaíba é seguro para uso tópico diluído. Não usar internamente sem orientação. Pode causar alergia em peles sensíveis (testar em pequena área antes). Gestantes devem evitar uso medicinal intenso. Compra de óleo de Copaíba deve ser de fonte sustentável (certificação).
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Copaiba — Healing Profunda, Healing e Balance
+
+*English body translation pending — see Doc 25 §9 for the full plan.*

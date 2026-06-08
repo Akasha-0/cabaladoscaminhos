@@ -38,3 +38,11 @@ Regido pelo Fogo (ação, calor) e pela Terra (raiz, estabilidade), o Gengibre u
 ## Aviso de Segurança
 
 O Gengibre é seguro em uso culinário. Em doses medicinais altas pode causar azia, diarreia, irritação gástrica. Contraindicado medicinalmente em doses altas para pessoas com úlcera, gastrite aguda, cálculos biliares. Pode interagir com anticoagulantes. Gestantes devem evitar doses terapêuticas (acima de 1g/dia).
+
+## EN
+
+> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+
+### Ginger — Calor, Fogo Interno e Acao Corajosa
+
+*English body translation pending — see Doc 25 §9 for the full plan.*
