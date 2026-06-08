@@ -1,0 +1,14 @@
+{
+  "pages": {},
+  "app": {
+    "[project]/apps/akasha-portal/src/app/page": [
+      "static/media/cc014fcb166cf364-s.p.0rbrcy8kuidpb.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.0q-301v4kxxnr.woff2",
+      "static/media/8c2eb9ceedecfc8e-s.p.0oeo8epbafgia.woff2",
+      "static/media/051742360c26797e-s.p.0f97p8c3305p~.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pagesUsingSizeAdjust": false
+}

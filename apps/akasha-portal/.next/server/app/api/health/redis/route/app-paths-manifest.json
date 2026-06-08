@@ -1,0 +1,3 @@
+{
+  "/api/health/redis/route": "app/api/health/redis/route.js"
+}

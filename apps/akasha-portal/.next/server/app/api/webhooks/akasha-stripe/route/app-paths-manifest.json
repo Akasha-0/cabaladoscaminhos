@@ -1,0 +1,3 @@
+{
+  "/api/webhooks/akasha-stripe/route": "app/api/webhooks/akasha-stripe/route.js"
+}

@@ -1,0 +1,13 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_not-found/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0kzexpr._.js")
+R.c("server/chunks/ssr/0nfi_next_dist_02i.t2s._.js")
+R.c("server/chunks/ssr/0nfi_next_dist_esm_build_templates_app-page_116ux0n.js")
+R.c("server/chunks/ssr/[root-of-the-server]__11bhu~4._.js")
+R.c("server/chunks/ssr/0nfi_next_dist_0eha3yn._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0nuuv1h._.js")
+R.c("server/chunks/ssr/apps_akasha-portal_src_app_not-found_tsx_0qvsq7r._.js")
+R.c("server/chunks/ssr/0nfi_next_dist_client_components_0w0rncn._.js")
+R.c("server/chunks/ssr/0nfi_next_dist_client_components_builtin_unauthorized_0l.nyq9.js")
+R.c("server/chunks/ssr/apps_akasha-portal__next-internal_server_app__not-found_page_actions_0emnt-4.js")
+R.m(68745)
+module.exports=R.m(68745).exports

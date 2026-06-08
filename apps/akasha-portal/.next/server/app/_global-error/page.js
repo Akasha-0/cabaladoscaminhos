@@ -1,0 +1,10 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_global-error/page.js")
+R.c("server/chunks/ssr/[root-of-the-server]__0rmeneo._.js")
+R.c("server/chunks/ssr/0nfi_next_dist_02i.t2s._.js")
+R.c("server/chunks/ssr/0nfi_next_dist_esm_build_templates_app-page_0gs1.1y.js")
+R.c("server/chunks/ssr/[root-of-the-server]__11bhu~4._.js")
+R.c("server/chunks/ssr/0nfi_next_dist_0eha3yn._.js")
+R.c("server/chunks/ssr/apps_akasha-portal_src_app_global-error_tsx_0-p.h9n._.js")
+R.c("server/chunks/ssr/apps_akasha-portal__next-internal_server_app__global-error_page_actions_0-vgnaq.js")
+R.m(93723)
+module.exports=R.m(93723).exports

@@ -1,0 +1,3 @@
+{
+  "/api/akasha/auth/logout/route": "app/api/akasha/auth/logout/route.js"
+}

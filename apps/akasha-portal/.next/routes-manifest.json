@@ -1,0 +1,285 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/admin/credits/reconcile",
+      "regex": "^/api/admin/credits/reconcile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/credits/reconcile(?:/)?$"
+    },
+    {
+      "page": "/api/admin/webhooks/grimoire-sync",
+      "regex": "^/api/admin/webhooks/grimoire\\-sync(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/webhooks/grimoire\\-sync(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/auth/login",
+      "regex": "^/api/akasha/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/auth/login(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/auth/logout",
+      "regex": "^/api/akasha/auth/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/auth/logout(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/auth/me",
+      "regex": "^/api/akasha/auth/me(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/auth/me(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/auth/refresh",
+      "regex": "^/api/akasha/auth/refresh(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/auth/refresh(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/auth/register",
+      "regex": "^/api/akasha/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/auth/register(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/chart",
+      "regex": "^/api/akasha/chart(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/chart(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/checkout",
+      "regex": "^/api/akasha/checkout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/checkout(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/consult",
+      "regex": "^/api/akasha/consult(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/consult(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/credits",
+      "regex": "^/api/akasha/credits(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/credits(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/daily",
+      "regex": "^/api/akasha/daily(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/daily(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/mandala",
+      "regex": "^/api/akasha/mandala(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/mandala(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/manifesto/generate",
+      "regex": "^/api/akasha/manifesto/generate(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/manifesto/generate(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/manifesto/pdf",
+      "regex": "^/api/akasha/manifesto/pdf(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/manifesto/pdf(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/subscription",
+      "regex": "^/api/akasha/subscription(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/subscription(?:/)?$"
+    },
+    {
+      "page": "/api/akasha/transits/today",
+      "regex": "^/api/akasha/transits/today(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/akasha/transits/today(?:/)?$"
+    },
+    {
+      "page": "/api/health",
+      "regex": "^/api/health(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/health(?:/)?$"
+    },
+    {
+      "page": "/api/health/db",
+      "regex": "^/api/health/db(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/health/db(?:/)?$"
+    },
+    {
+      "page": "/api/health/live",
+      "regex": "^/api/health/live(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/health/live(?:/)?$"
+    },
+    {
+      "page": "/api/health/metrics",
+      "regex": "^/api/health/metrics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/health/metrics(?:/)?$"
+    },
+    {
+      "page": "/api/health/ready",
+      "regex": "^/api/health/ready(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/health/ready(?:/)?$"
+    },
+    {
+      "page": "/api/health/redis",
+      "regex": "^/api/health/redis(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/health/redis(?:/)?$"
+    },
+    {
+      "page": "/api/progresso",
+      "regex": "^/api/progresso(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/progresso(?:/)?$"
+    },
+    {
+      "page": "/api/push/subscribe",
+      "regex": "^/api/push/subscribe(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/push/subscribe(?:/)?$"
+    },
+    {
+      "page": "/api/search",
+      "regex": "^/api/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/search(?:/)?$"
+    },
+    {
+      "page": "/api/search/index",
+      "regex": "^/api/search/index(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/search/index(?:/)?$"
+    },
+    {
+      "page": "/api/search/spiritual",
+      "regex": "^/api/search/spiritual(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/search/spiritual(?:/)?$"
+    },
+    {
+      "page": "/api/security/headers",
+      "regex": "^/api/security/headers(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/security/headers(?:/)?$"
+    },
+    {
+      "page": "/api/webhooks/akasha-stripe",
+      "regex": "^/api/webhooks/akasha\\-stripe(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/webhooks/akasha\\-stripe(?:/)?$"
+    },
+    {
+      "page": "/conta",
+      "regex": "^/conta(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/conta(?:/)?$"
+    },
+    {
+      "page": "/diario",
+      "regex": "^/diario(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/diario(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/mandala",
+      "regex": "^/mandala(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/mandala(?:/)?$"
+    },
+    {
+      "page": "/manifesto",
+      "regex": "^/manifesto(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/manifesto(?:/)?$"
+    },
+    {
+      "page": "/onboarding",
+      "regex": "^/onboarding(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/onboarding(?:/)?$"
+    },
+    {
+      "page": "/oraculo",
+      "regex": "^/oraculo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/oraculo(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
