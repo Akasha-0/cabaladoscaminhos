@@ -4,7 +4,7 @@
 > Audit de auth (Fase 17) realizado em `src/app/**/page.tsx` e `src/app/**/route.ts`.
 > Categoriza cada página/rota como B2C User ou pública,
 > e documenta o mecanismo de auth gate de cada uma.
-**Última atualização:** 2026-06-06 (refactor-akasha-v2 — focado em B2C)
+**Última atualização:** 2026-06-07 (v0.0.4-T2 — `apps/legacy-cockpit` desligado; zero rotas/páginas B2B remanescentes)
 
 ---
 
