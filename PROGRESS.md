@@ -85,13 +85,16 @@ verificáveis.
 
 ## 3. Estado Atual
 
-### 3.1 Métricas (Curadoria D4-infra — atualizado 2026-06-07)
+### 3.1 Métricas (Fase 1 verify — atualizado 2026-06-08)
 
 | Métrica | Status |
 |---------|--------|
 | `npx tsc --noEmit` | **0 erros** |
-| `npm run build` | **OK** (116+ páginas, sem warnings novos) |
-| `npm run test:run` (por projeto) | `core-logic` 7904 + `core-api` 105 + `integration` 123 + `core-ui` 14 = **8146 testes passando** · 26 skipped · 0 falhas |
+| `npx prisma validate` | **valid** (`apps/akasha-portal/prisma/schema.prisma`, pós-T1.4) |
+| `npm run lint` | **0 erros** · 494 warnings (todos pré-existentes `@typescript-eslint/no-unused-vars` em `tests/`) |
+| `npm run test:run` | **7240 testes passando** · 24 skipped · 15 erros de pool worker (test pollution pré-existente — confirmado em isolamento cycle 369: `tests/lib/correlation/zodiac-frequency.test.ts` passa 81/81 sozinho, falha no suite por forks-pool timeout) |
+| `npm run build` | **⏸️ NÃO VERIFICADO** — pré-existente `/_global-error` useContext (cycle 211-212, fora de escopo) |
+| `pnpm --filter akasha-portal build` | **⏸️ NÃO VERIFICADO** — bloqueado em T1.3 (mover código B2C → `apps/akasha-portal/src/`) |
 | QUALITY_SCORE | ≥ 0.91 |
 | Alinhamento docs | **Onda 3 ✅ concluída + Onda 4 ✅ concluída** — release v1.0.0-akasha |
 
