@@ -16,14 +16,21 @@
  *      a chave única @@unique([userId, date]) impede duplicidade em re-execuções)
  *   3. Persiste o conteúdo no DB; o cache Redis foi removido por ser morto
  *      (chave escrita mas nunca lida em runtime).
+ *   4. (T7) Para usuários com `pushEnabled = true` e subscription ativa,
+ *      envia uma notificação Web Push genérica (Doc 22 AD-22.2: nunca
+ *      incluir conteúdo do ritual no payload).
  *
- * Doc 08 Onda 3.6 · Doc 25 §4 (Motor Diário)
+ * Doc 08 Onda 3.6 · Doc 25 §4 (Motor Diário) · Doc 25 §11 (Push)
  */
 
 import { PrismaClient } from '@prisma/client';
 import { buildDailyContent } from '../src/lib/akasha/daily-engine';
+import { configureVapid, sendPush } from '../src/lib/push/send';
+import { logSecurityEvent } from '../src/lib/logging';
 
 const prisma = new PrismaClient();
+
+const VAPID_READY = configureVapid();
 
 async function main() {
   const today = new Date();
@@ -81,6 +88,66 @@ async function main() {
       console.error(`[daily-transits-cron] Erro para userId=${user.id}:`, err);
       skipped++;
     }
+  }
+
+  // T7 / Doc 25 §11: enviar push genérico (sem conteúdo do ritual)
+  // para quem tem pushEnabled + subscription ativa.
+  if (VAPID_READY) {
+    const subscribers = await prisma.user.findMany({
+      where: {
+        pushEnabled: true,
+        pushSubscriptions: { some: {} },
+      },
+      select: {
+        id: true,
+        pushSubscriptions: {
+          select: { endpoint: true, p256dh: true, auth: true },
+        },
+      },
+    });
+
+    console.log(`[daily-transits-cron] ${subscribers.length} usuários com push ativo`);
+
+    let pushSent = 0;
+    let pushFailed = 0;
+
+    for (const sub of subscribers) {
+      for (const ps of sub.pushSubscriptions) {
+        const result = await sendPush(
+          {
+            endpoint: ps.endpoint,
+            keys: { p256dh: ps.p256dh, auth: ps.auth },
+          },
+          {
+            title: 'Akasha',
+            body: 'Seu ritual de hoje está pronto', // genérico, AD-22.2
+            url: '/diario',
+          }
+        );
+
+        if (result.ok) {
+          pushSent++;
+        } else {
+          pushFailed++;
+          // 404/410: subscription morreu — limpar para não tentar de novo amanhã.
+          if (result.expired) {
+            await prisma.pushSubscription.deleteMany({ where: { endpoint: ps.endpoint } });
+          }
+        }
+
+        logSecurityEvent('push.sent', {
+          userId: sub.id,
+          date: dateStr,
+          ok: result.ok,
+          expired: result.ok ? undefined : Boolean(result.expired),
+          error: result.ok ? undefined : result.error,
+        });
+      }
+    }
+
+    console.log(`[daily-transits-cron] Push: ${pushSent} enviados, ${pushFailed} falhos`);
+  } else {
+    console.warn('[daily-transits-cron] VAPID não configurado — push ignorado');
   }
 
   console.log(`[daily-transits-cron] Concluído: ${upserted} processados, ${skipped} com erro`);

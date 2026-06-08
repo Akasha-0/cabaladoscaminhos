@@ -40,6 +40,7 @@ export default async function ContaPage({
       subscription={subscription}
       subscriptionError={subscriptionError}
       checkoutStatus={checkoutStatus}
+      pushEnabled={Boolean(user.pushEnabled)}
     />
   );
 }

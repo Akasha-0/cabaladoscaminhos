@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { subscribeToPush, unsubscribeFromPush } from '@/lib/push/subscribe';
 
 type Subscription = {
   plan: 'FREEMIUM' | 'AKASHA_PRO';
@@ -14,6 +15,7 @@ type Props = {
   subscription: Subscription;
   subscriptionError?: boolean;
   checkoutStatus?: string;
+  pushEnabled?: boolean;
 };
 
 const glassCard: React.CSSProperties = {
@@ -29,9 +31,12 @@ const CREDIT_PACKS = [
   { type: 'credits_60', label: '60 Créditos', price: 'R$44,90', description: '60 consultas simples' },
 ];
 
-export default function ContaClient({ user, balance, subscription, subscriptionError, checkoutStatus }: Props) {
+export default function ContaClient({ user, balance, subscription, subscriptionError, checkoutStatus, pushEnabled = false }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState('');
+  const [pushOn, setPushOn] = useState(pushEnabled);
+  const [pushBusy, setPushBusy] = useState(false);
+  const [pushMsg, setPushMsg] = useState('');
 
   const isPro = subscription.plan === 'AKASHA_PRO' && subscription.status === 'ACTIVE';
 
@@ -51,6 +56,44 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
       setError(e instanceof Error ? e.message : 'Erro inesperado');
     } finally {
       setLoading(null);
+    }
+  }
+
+  async function handlePushToggle() {
+    setPushMsg('');
+    setPushBusy(true);
+    try {
+      if (pushOn) {
+        // opt-out
+        const sub = await unsubscribeFromPush();
+        const res = await fetch('/api/akasha/push/subscribe', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+        });
+        if (!res.ok) throw new Error('Falha ao desativar notificações');
+        setPushOn(false);
+        setPushMsg(sub ? 'Notificações desativadas.' : 'Notificações desativadas (já não havia subscrição ativa).');
+      } else {
+        // opt-in
+        const subscription = await subscribeToPush();
+        if (!subscription) {
+          setPushMsg('Seu navegador bloqueou as notificações ou não há suporte.');
+          return;
+        }
+        const res = await fetch('/api/akasha/push/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subscription: subscription.toJSON() }),
+        });
+        if (!res.ok) throw new Error('Falha ao ativar notificações');
+        setPushOn(true);
+        setPushMsg('Notificações ativadas. Você receberá um aviso por dia quando o ritual estiver pronto.');
+      }
+    } catch (e: unknown) {
+      setPushMsg(e instanceof Error ? e.message : 'Erro ao alterar notificações');
+    } finally {
+      setPushBusy(false);
     }
   }
 
@@ -108,6 +151,44 @@ export default function ContaClient({ user, balance, subscription, subscriptionE
             {user.name}
           </h1>
           <p className="text-sm" style={{ color: 'rgba(226,232,240,0.5)' }}>{user.email}</p>
+        </div>
+
+        {/* Notificações (T7 / opt-in LGPD) */}
+        <div style={glassCard} className="p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <h2 className="text-base font-semibold mb-1" style={{ color: '#E2E8F0' }}>
+                Notificações
+              </h2>
+              <p className="text-sm" style={{ color: 'rgba(226,232,240,0.65)' }}>
+                Receba uma notificação por dia quando seu ritual estiver pronto. Você pode desativar a qualquer momento.
+              </p>
+              <p className="text-xs mt-1" style={{ color: 'rgba(226,232,240,0.4)' }}>
+                A notificação é genérica — o conteúdo do ritual só é aberto no app.
+              </p>
+              {pushMsg && (
+                <p
+                  className="text-xs mt-2"
+                  style={{ color: pushOn ? '#34D399' : 'rgba(226,232,240,0.55)' }}
+                >
+                  {pushMsg}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={handlePushToggle}
+              disabled={pushBusy}
+              aria-pressed={pushOn}
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap disabled:opacity-50"
+              style={{
+                background: pushOn ? 'rgba(16,185,129,0.15)' : 'rgba(124,58,237,0.15)',
+                border: pushOn ? '1px solid rgba(16,185,129,0.4)' : '1px solid rgba(124,58,237,0.4)',
+                color: pushOn ? '#34D399' : '#A78BFA',
+              }}
+            >
+              {pushBusy ? 'Aguarde...' : pushOn ? 'Desativar' : 'Ativar'}
+            </button>
+          </div>
         </div>
 
         {/* Plan + Credits */}

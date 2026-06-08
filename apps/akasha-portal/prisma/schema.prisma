@@ -28,6 +28,10 @@ model User {
 
   consentAt      DateTime?  // AD-T5-C: LGPD consent timestamp (min. persistence)
 
+  // T7: opt-in flag for daily Web Push notifications.
+  // The actual endpoints live in `PushSubscription` (relation below).
+  pushEnabled        Boolean         @default(false)
+
   birthChart         BirthChart?
   subscription       Subscription?
   creditLedger       CreditEntry[]

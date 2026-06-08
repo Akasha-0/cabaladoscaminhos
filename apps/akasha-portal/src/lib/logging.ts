@@ -428,3 +428,46 @@ export function createLogger(requestId: string, route: string) {
 }
 
 export type AppLogger = ReturnType<typeof createLogger>;
+
+// ============================================================
+// K.2 — SECURITY / AUDIT EVENTS (AD-22.4)
+// ============================================================
+/**
+ * Eventos canônicos de auditoria (Doc 22 §4). Usado em rotas sensíveis
+ * (auth, push, pagamento, créditos) para emitir uma linha de log
+ * estruturada com `event` estável e `meta` sem PII.
+ */
+export type SecurityEventType =
+  | 'auth.login'
+  | 'auth.logout'
+  | 'chart.created'
+  | 'manifesto.generated'
+  | 'daily.generated'
+  | 'consult.answered'
+  | 'credits.debited'
+  | 'credits.granted'
+  | 'payment.succeeded'
+  | 'payment.failed'
+  | 'subscription.updated'
+  | 'grimoire.synced'
+  | 'push.subscribed' // T7
+  | 'push.unsubscribed' // T7
+  | 'push.sent'; // T7
+
+/**
+ * Emite um evento de auditoria como log estruturado (JSON line).
+ * Nunca inclua PII nem conteúdo do ritual em `meta` (AD-22.2).
+ */
+export function logSecurityEvent(
+  type: SecurityEventType,
+  meta: Record<string, unknown> = {}
+): void {
+  // Usa o createLogger do AD-22.3: cada linha é JSON único parseável.
+  // O `route` é vazio pois esse helper é agnóstico de rota; o caller
+  // deve passar `requestId` em `meta` se precisar correlacionar.
+  const logger = createLogger(
+    typeof meta.requestId === 'string' ? meta.requestId : 'no-req',
+    typeof meta.route === 'string' ? meta.route : 'security'
+  );
+  logger.info(type, meta);
+}

@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
 
   const user = await prisma.user.findUnique({
     where: { id: userOrResponse.id },
-    select: { id: true, email: true, name: true, emailVerified: true, locale: true },
+    select: { id: true, email: true, name: true, emailVerified: true, locale: true, pushEnabled: true },
   });
 
   if (!user) {
@@ -21,5 +21,6 @@ export async function GET(request: NextRequest) {
     name: user.name,
     emailVerified: user.emailVerified,
     locale: user.locale,
+    pushEnabled: user.pushEnabled,
   });
 }

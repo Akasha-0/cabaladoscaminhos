@@ -55,6 +55,7 @@
 > | Movimentação de créditos | `credits.debited` / `credits.granted` | userId, delta, reason, balance |
 > | Pagamento (Stripe) | `payment.succeeded` / `payment.failed` / `subscription.updated` | userId, plan, stripeEventId, amount |
 > | Sync do Grimório | `grimoire.synced` | entriesUpserted, durationMs, trigger (webhook\|admin) |
+> | Web Push (T7) | `push.subscribed` / `push.unsubscribed` / `push.sent` | userId, endpoint (truncado), date, ok, expired?, error? — sem PII nem conteúdo do ritual (AD-22.2) |
 >
 > **Conciliação crédito × custo (AD-22.5):** todo `consult.answered` que debita créditos deve casar com um `credits.debited` de mesmo `consultationId` — o ledger de créditos (`CreditEntry`, Doc 04) é a fonte de verdade financeira; o log é a trilha de auditoria.
 >
