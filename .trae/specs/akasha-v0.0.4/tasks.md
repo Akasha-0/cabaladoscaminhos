@@ -31,12 +31,10 @@
   - [x] SubTask 1.5: Configurar `pnpm-workspace.yaml` e `turbo.json` para incluir `apps/*` e `packages/*` _(cycle 360: arquivos já presentes no repo — `pnpm-workspace.yaml` lista `packages/*`+`apps/*` com `allowBuilds` para Prisma/esbuild/sharp; `turbo.json` define pipeline `build`/`test`/`test:run`/`lint`/`typecheck`/`dev` com `dependsOn: ["^build"]`. Inventário `inventario-t1.md` já documentava como ✅; só faltava o checkbox.)_
   - [ ] SubTask 1.3: Mover arquivos preservando a árvore de imports (`@/lib/akasha/*` deve resolver para `apps/akasha-portal/src/lib/akasha/*`)
   - [ ] SubTask 1.4: Mover `prisma/schema.prisma` para `apps/akasha-portal/prisma/schema.prisma` e ajustar `prisma.config.ts`
-  - [ ] SubTask 1.5: Configurar `pnpm-workspace.yaml` e `turbo.json` para incluir `apps/*` e `packages/*`
-  - [ ] SubTask 1.6: Atualizar `package.json` raiz para delegar scripts ao `apps/akasha-portal` (preservando retrocompatibilidade: `npm run build` ainda funciona do root)
   - [ ] SubTask 1.7: Mover/atualizar testes: `tests/api/akasha*`, `tests/components/mandala*`, `tests/lib/grimoire*`, `tests/integration/oraculo-rag-fechado*`, `tests/integration/daily-engine-rag*`
   - [ ] Verify: `pnpm install` + `pnpm --filter akasha-portal build` + `pnpm test:core` verdes; `npm run build` (retrocompat) também verde
 
-- [ ] **Task 2: Shutdown formal do legacy-cockpit**
+- [x] **Task 2: Shutdown formal do legacy-cockpit** _(2.1–2.7 ✅; Verify E2E curl deferido p/ após T1.3 — depende do portal ativo)_
   - [x] SubTask 2.1: Auditar `apps/legacy-cockpit/` (se ainda existir) e listar dependências _(refactor Akasha v2 `53c8501c`, cycle 334 — já removido)_
   - [x] SubTask 2.2: Remover `apps/legacy-cockpit/` definitivamente _(refactor Akasha v2 `53c8501c`, cycle 334)_
   - [x] SubTask 2.3: Auditar `apps/akasha-portal/src/middleware.ts` — remover allowlist de prefixos B2B (`/cockpit`, `/api/mesa-real`, `/api/consult`, `/api/operator`) _(audit `00d4328a`, cycle 351)_
