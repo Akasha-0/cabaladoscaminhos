@@ -49,3 +49,13 @@ Durante o Saturno Retrógrado, padrões kármicos de longa data tendem a se mani
 ## Orientações para o Período
 
 Use este período para revisar, não iniciar projetos novos. Assuntos jurídicos, contratos e questões de propriedade podem se arrastar — verifique detalhes com cuidado. A disciplina honesta é recompensada quando Saturno avança novamente.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Tension: Saturn Retrograde
+
+**Tension: Saturn Retrograde** is part of the Akasha grimoire. The full Portuguese body describes the entry in detail.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

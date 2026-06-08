@@ -38,3 +38,13 @@ Regida pelo Éter (transcendência) e pela Água (fluido sutil, mundo onírico),
 ## Aviso de Segurança
 
 **ATENÇÃO**: A Jurema contém DMT (dimetiltriptamina) em sua composição. Seu uso ritual é parte de tradições sagradas, mas seu uso doméstico sem supervisão espiritual pode causar efeitos psicotrópicos intensos, crises de ansiedade e surtos em pessoas com histórico psiquiátrico. NÃO USE SEM DIREÇÃO ESPIRITUAL. Contraindicada para pessoas com esquizofrenia, bipolaridade, ansiedade severa, gestantes, lactantes, pessoas com doenças cardíacas. Respeite a tradição.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Jurema — Vision, Mystery e Abertura do Veu
+
+**Jurema — Vision, Mystery e Abertura do Veu** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -38,3 +38,13 @@ Regido pelo Fogo (coragem, calor) e conectado ao Sol (vitalidade, claridade), o 
 ## Aviso de Segurança
 
 O Rosmarinho é seguro em uso culinário. Em doses medicinais altas pode causar desconforto gástrico, pressão alta e irritação renal. Contraindicado para gestantes (pode induzir contrações), pessoas com epilepsia ou com úlcera. Não usar medicinalmente por mais de 2 semanas consecutivas.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Rosemary — Memory, Lealdade e Protection do Lar
+
+**Rosemary — Memory, Lealdade e Protection do Lar** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

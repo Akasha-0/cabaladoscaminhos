@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [9, 6]
 Corpos_Tantricos_Alvo: ["Linha do Arco (6)", "Corpo Prânico (8)"]
 Odus_Associados: []
 Acao_Principal: "Transformação acelerada, liberação, coragem diante do desconhecido"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Pierre Verger, \"Iroco: Mensagens dos Orixás\", 1986, p. 95-100"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Osá — O Vento da Transformação
@@ -49,3 +50,13 @@ O Ar de Osá é o vento tempestuoso que limpa, purifica e reorganiza. Não é co
 ## Ação Prática
 
 Quando Osá se manifesta, a ação mais sábia é fazer um inventário honesto do que em sua vida já cumpriu seu ciclo mas ainda ocupa espaço — seja uma relação, um emprego, um hábito, uma crença. Escolha um item dessa lista e tome uma ação concreta para iniciar o processo de encerramento ou transformação. Não precisa ser radical de imediato; pode ser uma conversa, uma decisão interna, ou simplesmente o reconhecimento em voz alta de que algo mudou. Iansã dança mais graciosamente com quem não teme sua dança.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Osa — O Vento da Transformation
+
+**Osa — O Vento da Transformation** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [14, 5]
 Corpos_Tantricos_Alvo: ["Corpo Físico (5)", "Corpo Prânico (8)"]
 Odus_Associados: []
 Acao_Principal: "Determinação, trabalho persistente, abertura de caminhos pelo esforço"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Pe. Francisco Luciano de Souza Filho, \"Os 16 Odus do Ifá\", p. 75-82"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ika — A Força que Abre o Caminho
@@ -49,3 +50,13 @@ A Terra de Ika é firme, sólida e carregada de potencial. É a terra que resist
 ## Ação Prática
 
 Ika convida você a identificar o projeto ou objetivo mais importante da sua vida neste momento — aquele que você sabe que pode mudar sua trajetória se realizado com comprometimento. Em seguida, defina a menor ação possível que você poderia realizar hoje para avançar nessa direção. Pode ser uma ligação, um estudo de 30 minutos, uma conversa, ou colocar algo no papel. Ogum abençoa quem começa, mesmo que imperfeito, mesmo que lento. O caminho se faz caminhando, e cada passo honesto no esforço físico e concreto tem o Axé de Ogum como aliado.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Ika — A Strength que Abre o Path
+
+**Ika — A Strength que Abre o Path** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

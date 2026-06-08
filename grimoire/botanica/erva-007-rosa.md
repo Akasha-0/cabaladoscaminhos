@@ -40,3 +40,13 @@ Regida pela Água (emoção, profundidade, amor) e pelo Fogo (paixão, vitalidad
 ## Aviso de Segurança
 
 Use apenas rosas orgânicas ou cultivadas sem agrotóxicos para banhos e chás. Rosas comerciais de floricultura geralmente são tratadas com produtos químicos e não devem ser usadas internamente. O óleo essencial de rosa absoluta é muito concentrado — usar com extrema moderação e sempre diluído.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Rose — Love Universal e Abertura do Coracao
+
+**Rose — Love Universal e Abertura do Coracao** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

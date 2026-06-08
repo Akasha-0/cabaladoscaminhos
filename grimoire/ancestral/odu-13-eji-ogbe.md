@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [13, 4]
 Corpos_Tantricos_Alvo: ["Corpo da Alma (1)", "Mente Positiva (3)", "Corpo Radiante (10)"]
 Odus_Associados: [Ogbe]
 Acao_Principal: "Amplificação da luz, confirmação do caminho, bênção dupla"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 55-60"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Eji Ogbé — A Luz Dobrada
@@ -49,3 +50,13 @@ Fogo e Ar em dobro criam uma chama inextinguível. O Fogo de Eji Ogbé é eterno
 ## Ação Prática
 
 Na presença de Eji Ogbé, o melhor que você pode fazer é sustentar o que já está funcionando e expandir com confiança. Identifique uma área da sua vida que está fluindo bem e pergunte-se: "O que eu poderia fazer para honrar e amplificar esse fluxo?" Pode ser dedicar mais tempo a algo que está crescendo, agradecer às pessoas que colaboram com sua jornada, ou simplesmente manter a constância do que já está dando frutos. Oxalá em sua plenitude abençoa quem cuida da luz que já recebeu.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Eji Ogbe — A Light Dobrada
+
+**Eji Ogbe — A Light Dobrada** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

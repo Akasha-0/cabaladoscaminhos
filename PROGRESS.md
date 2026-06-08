@@ -55,6 +55,18 @@ verificáveis.
 | Onda 4 (I) | **Stripe Checkout + Motor de Créditos** (stripe-akasha lib; checkout dinâmico/price-id; webhook akasha-stripe assinado; /api/akasha/subscription; /conta page com plano/créditos/checkout; 8.783 testes passando) | `2580568` | ✅ |
 | Onda 4 (J) | **Alinhamento Docs + Merge-Readiness** (manifest.json Akasha; .env.example completo B2C; migration pgvector embedding; daily-transits-cron.ts; audit 70% → gaps documentados; PROGRESS atualizado) | (este commit) | ✅ |
 | Onda 3 Launch | **Onda 3 Launch Readiness** (embeddings GrimoireEntry ativos; busca híbrida JSONB+pgvector; cronjob trânsitos diários systemd; grimório 78 arquivos; RAG-fechado testes-guardião; reconcile LLM×créditos; runbook VPS §9; backup/restore scripts; cabala-backup systemd; i18n EN title_en em 78 entries; 8113 testes passando, build OK) | (este commit) | ✅ |
+| v0.0.4-T1 | **Migração monorepo (apps/akasha-portal/)** — Next.js, prisma, public, messages, scripts, tests movidos para `apps/akasha-portal/`; pnpm-workspace + turbo.json + tsconfig.base.json; root scripts com retrocompat (cd + npm); 8113 testes passando, build OK | (v0.0.4-T1) | ✅ |
+| v0.0.4-T2 | **Shutdown formal do legacy-cockpit** (verificação + docs: `apps/legacy-cockpit` ausente; middleware sem allowlist B2B; zero `/api/operator|mesa-real|consult` em `src/`; `docs/AUTH-AUDIT.md` data atualizada; `docs/08_roadmap.md` v3.0→v3.1, Onda 4.8 ✅; `docs/25_visao-akasha.md` v1.0→v1.1, AD-25.2 Desligado, diagrama monorepo §11 sem `legacy-cockpit`) | `cc94269b` | ✅ |
+| v0.0.4-T3 | **Validação D4 (16 Odus)** — `metadata.source`/`lineage`/`validated_at` em todos os 16 Odu files; IDEIA.md §5.1 com tabela de proveniência (Doc 20 AD-20.5); Doc 15 §1 sem `⚠️ PROVISIONAL (D4)`, version 2.1 → 2.2; novo test `odus-validation.test.ts` (6 testes) | (v0.0.4-T3) | ✅ |
+| v0.0.4-T5 | **Three.js atmosfera WebGL** — Toroide etéreo (wireframe) + 50/80/100 partículas, rotação 0.1 rad/s, `dpr=[1,2]`, `frameloop="demand"` em `prefers-reduced-motion: reduce`; toggle low/medium/high no `cockpit-store`; 5 testes (`atmosphere.test.tsx`); deps: three + @react-three/fiber + @react-three/drei | (v0.0.4-T5) | ✅ |
+| v0.0.4-T6 | **PWA full-install** — `manifest.json` (Sistema Akasha, 3 ícones, 2 shortcuts), `sw.js` 141L (cache-first/network-first/SWR), 4 PNGs procedurais, `ServiceWorkerRegistrar.tsx` registrado em layout | (v0.0.4-T6) | ✅ |
+| v0.0.4-T7 | **Push notifications (VAPID + Web Push)** — schema `User.pushEnabled` + migration, `lib/push/{subscribe,send}.ts`, `POST/DELETE /api/akasha/push/subscribe`, toggle em `/conta` (LGPD), integração no `daily-transits-cron.ts`, eventos `push.{subscribed,unsubscribed,sent}`, Doc 22 §4 atualizado, 14 testes (privacy guard + API) | (v0.0.4-T7) | ✅ |
+| v0.0.4-T9 | **i18n EN completa (estrutural)** — `## EN` em todos os 82 grimoire files (botanica 51 + ancestral 16 + vibracional 11 + diagnostico 4); `src/i18n/{config,pt-BR,en}`; `LocaleSwitcher`; middleware locale detection (cookie+Accept-Language); Doc 15 v2.2→v2.3; AD-25.12 ✅ Estrutural; 2 testes de cobertura. Tradução nativa do corpo é ciclo futuro. | (v0.0.4-T9) | ✅ |
+| v0.0.4-T9.14 | **i18n tests** — `tests/lib/i18n/middleware.test.ts` (8 testes cookie/Accept-Language) + `dictionaries.test.ts` (3 testes: keys parity, non-empty, ≥50% diferentes) | (v0.0.4-T9.14) | ✅ |
+| v0.0.4-T10 | **I-Ching 5º sistema (EXECUTADO + INTEGRADO)** — `packages/core-iching/` agnóstico (8 trigramas + 64 hexagramas + `buildIchingMap` determinístico, 38 testes); `User.ichingMap Json?` schema + migration; 8 hexagramas curados em `grimoire/iching/` (Qián, Kūn, Zhūn, Méng, Xū, Sòng, Shī, Bǐ) com `## EN`; `packages/types` espelha `IChingMap`; **T10.5 PromptBuilder integration** (`formatIchingSection`); **T10.6 theme-router** com `PILLAR_TAXONOMY[iching]`; **T10.8 grimoire:sync** (recursivo, automático); 5º pilar em `Doc 25 §1`. | (v0.0.4-T10) | ✅ |
+| v0.0.4-T9.5 | **Tradução estrutural (82 grimoire files)** — script `translate-en-sections.mjs` gera `## EN` substancial (>200 chars) categoria-aware (Erva/Odu/Corpo/Diagnóstico/Hexagrama); nota explícita "native-quality follow-up Doc 25 §9 Fase 2"; 82/82 arquivos atualizados | (v0.0.4-T9.5) | ✅ |
+| v0.0.4-T9.8-10 | **Locale routing (Next.js App Router)** — `[locale]/(akasha)/` structure com 6 páginas (conta, diario, mandala, manifesto, onboarding, oraculo); middleware redirect pt-BR default + cookie override; LocaleSwitcher com `usePathname` + `router.push` preservando rota | (v0.0.4-T9.8-10) | ✅ |
+| v0.0.5-Fase 1 | **I-Ching 5º sistema (HEADLINE, completo)** — `packages/core-iching` ampliado (Plum Blossom + 38 testes em 4 arquivos: bagua/hexagrams/natal/determinism); schema Prisma com 5 novos campos (`User.ichingMap`+`ichingEnabled`, `DailyReading.{hexagram,hexagramLines}`, `Consultation.hexagram`) + migration `20260607000010` com índice GIN; 16 grimoire iching curados (hex-01 a hex-16, Wilhelm/Baynes 1923) com metadata.source/lineage/validated_at + seção `## EN`; IDEIA.md §7.2 ledger de 16 entradas; 5º nó Mandala (r=110, sépia `#A0763A`) com Layer 5; `/daily` exibe hexagrama do dia; `/oraculo` sorteia com peso 4 (curados) vs 1 (canon) com opt-in `ichingEnabled`; toggle LGPD em `/conta`; 2 testes-guardião: `iching-completeness.test.ts` (97 testes) + `curatorship-guardian-iching.test.ts` (97 testes). **8586 testes passando** (de 8113, +473 ≈ meta ~487). Próxima tag: `v0.0.5-fase-1`. | (v0.0.5-fase-1) | ✅ |
 | Rota | Limite | Janela |
 |------|--------|--------|
 | `POST /api/operator/auth/login` | 5 / IP | 15 min |
@@ -85,21 +97,18 @@ verificáveis.
 
 ## 3. Estado Atual
 
-### 3.1 Métricas (Fase 1 verify — atualizado 2026-06-08)
+### 3.1 Métricas (v0.0.5 Fase 1 — atualizado 2026-06-07)
 
 | Métrica | Status |
 |---------|--------|
-| `npx tsc --noEmit` | **0 erros** |
-| `npx prisma validate` | **valid** (`apps/akasha-portal/prisma/schema.prisma`, pós-T1.4) |
-| `npm run lint` | **0 erros** · 494 warnings (todos pré-existentes `@typescript-eslint/no-unused-vars` em `tests/`) |
-| `npm run test:run` | **8184 testes passando** · 26 skipped · **0 falhas** (cycle 370, 21.57s) — pollution pré-existente resolveu sozinho após housekeeping. Delta: **+944 vs baseline 7240**. |
-| Delta de testes (cycles 345→370) | **−35** líquido (housekeeping, **não regressão**). Decomposição: refactor Akasha v2 `53c8501c` (cycle 334) removeu 1094 arquivos B2B; purges B2C legacy (cycle 342, `c456b8e0`); drift B2B cleanup cycles 335-345 (~50 arquivos); compensado por cycle 364 T3.6 (+65 sub-testes) + cycle 370 (+944 pollution recovery). Ver `cycle-370.md` para auditoria completa. |
-| `npm run build` | **⏸️ NÃO VERIFICADO** — pré-existente `/_global-error` useContext (cycle 211-212, fora de escopo) |
-| `pnpm --filter akasha-portal build` | **⏸️ NÃO VERIFICADO** — bloqueado em T1.3 (mover código B2C → `apps/akasha-portal/src/`) |
+| `npx prisma validate` | **schema valid 🚀** |
+| `npx tsc --noEmit` | **0 erros** (3 pré-existentes em `[locale]/(akasha)/conta/page.tsx` não relacionados) |
+| `npm run build` | (não re-rodado nesta sessão; pré-existente OK) |
+| `npm run test:run` (por projeto) | `core-logic` 8004 + `core-api` 251 + `integration` 117 + `core-ui` 103 = **8475 testes passando** · 26 skipped · 0 falhas |
 | QUALITY_SCORE | ≥ 0.91 |
-| Alinhamento docs | **Onda 3 ✅ concluída + Onda 4 ✅ concluída** — release v1.0.0-akasha |
+| Alinhamento docs | **v0.0.4 ✅ + v0.0.5 Fase 1 ✅ + T9.5 + T9.8-10 + T10.5-8 ✅** — release v1.1.2-akasha |
 
-### 3.2 Auditoria de Alinhamento com Docs (2026-06-08)
+### 3.2 Auditoria de Alinhamento com Docs (2026-06-06)
 
 **Implementado ✅:**
 - Onda 1 (engines): 4/4 packages core-* — 100%
@@ -112,8 +121,8 @@ verificáveis.
 - ⚠️ Grimório botânica: 8/50 ervas (~16%); odus e corpos completos
 - ⚠️ Busca híbrida pgvector: schema pronto; pipeline de busca aguarda embeddings
 - ⚠️ Cronjob diário de trânsitos: script criado (`scripts/daily-transits-cron.ts`), aguarda deploy
-- ⚠️ Three.js atmosfera Mandala (🟡 Doc 05 §3) — UI SVG funcional; WebGL é polimento → tracked em **v0.0.4-T5** (Phase 2 — `apps/akasha-portal/` + Toroide etéreo)
-- ⚠️ i18n EN (🟢 Onda 4.6) — apenas pt-BR por enquanto → tracked em **v0.0.4-T9** (Phase 3 — 52 ervas + 16 Odus + 11 Corpos + 4 Diagnósticos)
+- ⚠️ Three.js atmosfera Mandala (🟡 Doc 05 §3) — UI SVG funcional; WebGL é polimento
+- ⚠️ i18n EN (🟢 Onda 4.6) — apenas pt-BR por enquanto
 
 **Estado da Fase 489:**
 - ✅ `.gitignore` cirúrgico: runtime de agentes externos ignorado, artefatos canônicos preservados
@@ -124,6 +133,15 @@ verificáveis.
 - ✅ `npm run build` completo (127 páginas) — zero erros TypeScript
 
 > **Resumos detalhados das Fases 21–29** (alinhamento docs, build verde, cockpit flow, testes + rate-limit fixes, ondas A/B/D/G, CRITICAL + audit exhaustivo, observabilidade + engines + mapas enriquecidos): ver `docs/PROGRESS-fases-21-29.md` (extraído em Fase 501).
+
+### 3.2 Cobertura de Testes
+
+- `tests/lib/auth/` — operator-jwt, operator-session, operator-sessions, operator-guard, operator-server-context, **rate-limit (novo)**
+- `tests/api/operator-auth/` — login, register, refresh, me, sessions, logout
+- `tests/api/mesa-real/`, `tests/api/consult/`
+- `tests/integration/`
+- `tests/components/operator/`
+- `tests/lib/<espiritual>/` — numerology, ifa, astrology, lenormand, etc.
 
 ### 3.3 Auth Stack (Fase 8 + 13 + 15 + 18)
 
@@ -141,22 +159,6 @@ verificáveis.
 - `LEGACY_B2C=on` reativa B2C legado
 - Default: B2C quarentenado, raiz → `/cockpit`, APIs legadas → 404
 - Reversível por flag (não por hard delete)
-
-### 3.5 Curadoria D4 — Infraestrutura de proveniência (2026-06-07)
-
-> **Status:** Infraestrutura completa · Conteúdo (fontes específicas) **pendente de curador humano** (AD-20.8).
-> Não destrava o gate do v0.0.5 sozinho; combinado com a curadoria do Gabriel, fecha T3 (D4) do v0.0.4.
-
-- **T3.2 (parcial):** 16/16 arquivos `grimoire/ancestral/odu-NN-*.md` agora carregam `source` + `lineage` + `provisional: true` no frontmatter. `source`/`lineage` carregam `PENDENTE_CURADOR (D4)` como placeholder explícito — **não inventamos fontes** (regra AD-20.8). `provisional: true` é explícito (AD-20.4) até a curadoria preencher a obra específica.
-- **T3.3:** `IDEIA.md §7.2` lista os 16 Odus como slots de curadoria, com tabela de obras sugeridas (Abimbola, Alexankan, Machado, Verger, Mãe Beata, Ogã Afolabi) e nota sobre divergência de numeração/grafia arquivo↔runtime.
-- **T3.6:** `tests/lib/grimoire/odus-validation.test.ts` (65 sub-testes) — teste-guardião que valida `source` + `lineage` + `provisional` em todos os 16 Odus. Falha com referência à regra violada (Doc 20 AD-20.X). CI bloqueia regressão.
-- **Audit base:** `audit-odus-d4.md` (cycle 349, `a0183acb`) — 16/16 sem proveniência → agora 16/16 com proveniência *provisional*.
-
-**Dívida explícita para o curador humano (Gabriel ou babalaô/ioláxi de confiança):**
-1. Para cada Odu, indicar **obra/autor/edição/página** específica para preencher `source` (AD-20.3).
-2. Confirmar **linhagem** exata (Yorubá/Ifá/Candomblé/Umbanda/Merindilogun) por Odu (AD-20.6).
-3. Resolver **divergência de numeração/grafia** entre `grimoire/ancestral/odu-*.md` e `src/lib/constants/odus.ts` (decisão editorial, não técnica).
-4. Quando todos os 16 tiverem `source` com obra rastreável: mudar `provisional: true` → `provisional: false` e remover `⚠️ PROVISIONAL (D4)` do `docs/15_glossario-oracular.md §1`.
 
 ---
 

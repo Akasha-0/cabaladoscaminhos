@@ -38,3 +38,13 @@ Regida pela Terra (roseta no chão) e pela Água (mucilagem, suco), a Tanchagem 
 ## Aviso de Segurança
 
 A Tanchagem é segura em uso tópico e em xaropes caseiros. Em doses altas pode causar desconforto gástrico. Contraindicada medicinalmente em doses altas para gestantes (pode ter efeito uterotônico). Pode interagir com anticoagulantes. Otite sempre deve ter avaliação médica — uso tópico é coadjuvante, não substitui antibiótico quando indicado.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Plantain — Healing de Feridas, Garganta e Ouvido
+
+**Plantain — Healing de Feridas, Garganta e Ouvido** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -38,3 +38,13 @@ Regida pela Água (gel, mucilagem, fluido) e pela Terra (raiz, folha carnuda), a
 ## Aviso de Segurança
 
 **ATENÇÃO**: Uso interno da babosa pode causar desconforto gástrico, diarreia e desequilíbrio eletrolítico. NÃO USE internamente em doses altas ou por períodos prolongados sem orientação médica. A aloína (substância amarelada entre a casca e o gel) é laxante e potencialmente tóxica. Uso tópico é seguro. Gestantes devem evitar uso interno.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Aloe Vera (Aloe Vera) — Healing, Renewal da Pele e do Corpo
+
+**Aloe Vera (Aloe Vera) — Healing, Renewal da Pele e do Corpo** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [2, 22]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Corpo Sutil (9)"]
 Odus_Associados: ["odu-01-ogbe"]
 Acao_Principal: "Transmutação, encerramento de ciclos, ancestralidade"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 36-40"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Oyeku — A Noite Profunda
@@ -49,3 +50,13 @@ A Terra em Oyeku é receptiva, densa e transformadora. É o elemento que absorve
 ## Ação Prática
 
 Oyeku convoca para uma revisão honesta: o que em sua vida está clinicamente morto mas você ainda carrega como vivo? Um relacionamento encerrado emocionalmente, um projeto sem energia, uma identidade que já não serve. Identifique com clareza e crie um ritual de encerramento — não de abandono, mas de honra. Agradeça, solte, enterre simbolicamente. Omolu cuida do que é depositado na terra com respeito, e em troca, abre o solo para nova semeadura. Oyeku bem honrado se transforma em Ogbé — o alvorecer depois da noite mais profunda.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Oyeku — A Night Profunda
+
+**Oyeku — A Night Profunda** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

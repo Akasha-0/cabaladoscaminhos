@@ -38,3 +38,13 @@ Regida pelo Fogo (calor, inflamação) e pela Terra (raiz, montanha), a Arnica u
 ## Aviso de Segurança
 
 **ATENÇÃO**: A Arnica é de USO EXTERNO APENAS. NÃO INGERIR — pode causar vômitos, diarreia, alterações cardíacas e até morte em doses altas. Não aplicar sobre feridas abertas. Não usar por mais de 7 dias consecutivos sem orientação. Pode causar dermatite de contato em peles sensíveis (testar em pequena área antes). Contraindicada para gestantes, lactantes, crianças menores de 3 anos. Respeite os avisos.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Arnica — Healing de Pancadas, Dor e Inflammation Local
+
+**Arnica — Healing de Pancadas, Dor e Inflammation Local** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

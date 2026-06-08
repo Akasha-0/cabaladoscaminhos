@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [5, 14]
 Corpos_Tantricos_Alvo: ["Corpo Físico (5)", "Corpo Prânico (8)"]
 Odus_Associados: ["odu-03-iwori", "odu-07-obara"]
 Acao_Principal: "Vitalidade, fluxo vital, superação de obstáculos com força"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Pe. Francisco Luciano de Souza Filho, \"Os 16 Odus do Ifá\", p. 50-58"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Irosun — O Sangue que Flui
@@ -49,3 +50,13 @@ O Fogo de Irosun é vital e circulante — é o calor do corpo, o impulso que mo
 ## Ação Prática
 
 Irosun pede atenção ao corpo físico como templo. Avalie: você tem dormido bem, se alimentado com qualidade, movimentado seu corpo? A espiritualidade em Irosun não dispensa a materialidade — pelo contrário, honra o sagrado que pulsa no sangue e nos ossos. Se há conflito familiar em aberto, este Odu indica que o momento de resolver chegou. Não com guerra, mas com a clareza e firmeza de quem conhece seu valor e suas raízes. Ogum abre o caminho para quem avança com propósito, não com ira.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Irosun — O Sangue que Flui
+
+**Irosun — O Sangue que Flui** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

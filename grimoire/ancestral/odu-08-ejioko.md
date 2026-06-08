@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [8, 2]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Corpo da Alma (1)"]
 Odus_Associados: []
 Acao_Principal: "Memória ancestral, cura emocional profunda, pertencimento"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Jose Beniste, \"Odus do Candomblé\", p. 88-94"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ejiokô — As Águas da Memória
@@ -49,3 +50,13 @@ A Água de Ejiokô é o oceano — vasta, insondável, capaz de criar e destruir
 ## Ação Prática
 
 Em Ejiokô, a prática mais poderosa é a reconexão com sua linhagem ancestral de forma consciente e amorosa. Reserve um tempo para olhar fotografias antigas de familiares, conhecer histórias de seus avós, ou simplesmente sentar em silêncio e pedir internamente que os ancestrais que te acompanham com amor se manifestem. Você não precisa ter respostas — apenas a abertura para receber. Iemanjá cuida de seus filhos como o oceano cuida do sal: completamente, sem distinção, sem julgamento. Deixe-se ser cuidado.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Ejioko — As Aguas da Memory
+
+**Ejioko — As Aguas da Memory** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

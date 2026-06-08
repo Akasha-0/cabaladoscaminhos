@@ -40,3 +40,13 @@ Regido pelo Fogo e pelo Ar, o Alecrim combina a força purificadora do Fogo com 
 ## Aviso de Segurança
 
 O uso culinário e em chás leves é seguro para a maioria das pessoas. **Contraindicado para mulheres grávidas** em doses elevadas. Pessoas com epilepsia devem evitar o óleo essencial por ser estimulante neurológico. Não usar óleo essencial puro sobre a pele sem diluição.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Rosemary — Memory, Protection e Purification
+
+**Rosemary — Memory, Protection e Purification** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

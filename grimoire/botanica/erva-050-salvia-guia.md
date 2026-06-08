@@ -38,3 +38,13 @@ Regida pelo Ar (vento, perfume) e pelo Éter (sonho, paz), a Sálvia-Guia une o 
 ## Aviso de Segurança
 
 A Sálvia-Guia é segura em uso culinário e em chás medicinais. Em doses altas pode causar sonolência. Contraindicada medicinalmente em doses altas para gestantes, lactantes, crianças pequenas. Pode interagir com sedativos. Não usar medicinalmente por mais de 2 semanas consecutivas.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Sage-Guia — Peace do Lar, Dreams e Protection do Sono
+
+**Sage-Guia — Peace do Lar, Dreams e Protection do Sono** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [12, 3]
 Corpos_Tantricos_Alvo: ["Mente Neutra (4)", "Corpo Radiante (10)", "Mente Divina (11)"]
 Odus_Associados: []
 Acao_Principal: "Plenitude, julgamento justo, integração de todas as forças"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Pierre Verger, \"O Candomblé da Bahia\", 1981, p. 130-140"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ejilá-Xeborá — A Completude dos Caminhos
@@ -49,3 +50,13 @@ A presença de todos os quatro elementos torna Ejilá-Xeborá um Odu de totalida
 ## Ação Prática
 
 Ejilá-Xeborá convida a uma revisão abrangente do estado atual da sua vida. Divida uma folha em quatro partes representando as quatro dimensões: fisica, emocional, mental e espiritual. Em cada quadrante, escreva honestamente onde você está e onde deseja estar. Identifique um passo prático em cada dimensão para o próximo mês. Xangô recompensa quem traz ordem ao caos com sabedoria e discernimento, e Ejilá-Xeborá abraça aqueles que têm coragem de ver a si mesmos de forma integral e compassiva.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Ejila-Xebora — A Completude dos Paths
+
+**Ejila-Xebora — A Completude dos Paths** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

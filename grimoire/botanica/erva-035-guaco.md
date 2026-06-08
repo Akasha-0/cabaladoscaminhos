@@ -38,3 +38,13 @@ Regido pelo Ar (respiração, perfume) e pela Água (fluido pulmonar, muco), o G
 ## Aviso de Segurança
 
 O Guaco é seguro em uso medicinal moderado. Em doses altas ou uso prolongado pode causar náusea, vômito e diarreia. Contraindicado para gestantes, lactantes, pessoas com doenças hepáticas, anticoagulados. Pode interagir com varfarina. Sempre usar sob orientação para uso medicinal contínuo.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Guaco — Breath, Healing do Peito e Abertura
+
+**Guaco — Breath, Healing do Peito e Abertura** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

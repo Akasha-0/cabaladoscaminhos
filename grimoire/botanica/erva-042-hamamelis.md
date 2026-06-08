@@ -38,3 +38,13 @@ Regida pela Água (sangue, linfa, fluido) e pela Terra (casca, tanino), a Hamam�
 ## Aviso de Segurança
 
 A Hamamélis é segura para uso tópico e em banhos de assento. NÃO INGERIR sem orientação — pode causar desconforto gástrico, hepático e renal em doses altas. Pode interagir com medicamentos anticoagulantes. Gestantes devem evitar uso medicinal intenso.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Hamamelis — Circulation, Adstringencia e Healing de Vasos
+
+**Hamamelis — Circulation, Adstringencia e Healing de Vasos** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

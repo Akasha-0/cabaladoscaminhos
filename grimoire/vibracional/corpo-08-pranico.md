@@ -34,3 +34,13 @@ Quando o Corpo Prânico está debilitado, a pessoa experimenta fadiga crônica s
 **Prática de Yoga**: Posturas de torção suave seguidas de Savasana prolongada (10 minutos), permitindo que o Prana se redistribua pelo corpo após o trabalho energético.
 
 **Gestão de energia**: Identificar e reduzir as três maiores "drenagens de Prana" na vida atual — sejam relações, hábitos ou situações — e substituir por fontes de nutrição energética genuína.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Corpo Pranic — A Energy Vital
+
+**Corpo Pranic — A Energy Vital** is a Tantric body of consciousness referenced in the Akasha system. The full Portuguese body describes the body's location in the subtle anatomy, the kabbalistic number associated with it, the oracular aspect it governs, and the integration with the other 10 bodies in the daily diagnostic.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

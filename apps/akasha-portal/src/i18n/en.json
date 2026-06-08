@@ -1,0 +1,30 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "nav": {
+    "home": "Home",
+    "mandala": "Mandala",
+    "diario": "Diary",
+    "oraculo": "Oracle",
+    "conta": "Account",
+    "manifesto": "Manifesto"
+  },
+  "conta": {
+    "title": "My Account",
+    "notificacoes": "Notifications",
+    "notificacoes_desc": "Get a daily notification when your ritual is ready. You can disable it at any time."
+  },
+  "onboarding": {
+    "welcome": "Welcome to Akasha",
+    "start": "Start"
+  }
+}

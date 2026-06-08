@@ -38,3 +38,13 @@ Regida pela Terra (casca, raiz) e pelo Fogo (propriedades ativas potentes), a Un
 ## Aviso de Segurança
 
 A Unha-de-Gato é segura em uso medicinal moderado. Contraindicada para gestantes, lactantes, crianças, pessoas com doenças autoimunes, transplantados, pessoas em uso de imunossupressores. Pode interagir com medicamentos metabolizados pelo citocromo P450, anticoagulantes, anti-hipertensivos, antirretrovirais. Compra deve ser de fonte sustentável (certificação). Não usar por mais de 4 semanas consecutivas sem orientação.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Unha-de-Gato — Imunoestimulante, Anti-inflammatory e Defesa Profunda
+
+**Unha-de-Gato — Imunoestimulante, Anti-inflammatory e Defesa Profunda** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

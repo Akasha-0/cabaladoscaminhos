@@ -38,3 +38,13 @@ Regido pela Terra (raiz, madeira, cerrado) e pelo Fogo (floração que rompe a s
 ## Aviso de Segurança
 
 O Ipê-Roxo é seguro em uso medicinal moderado. Em doses altas pode causar desconforto gástrico. Contraindicado para gestantes, lactantes, anticoagulados. Pode interagir com medicamentos metabolizados pelo fígado. Compra de casca deve ser de fonte sustentável (manejo florestal). Não confundir com o Pau-d'Arco (que também é chamado de ipê-roxo, mas é espécie diferente — Handroanthus impetiginosus).
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Ipe-Roxo — Arvore da Healing Profunda, Micoses e Immunity
+
+**Ipe-Roxo — Arvore da Healing Profunda, Micoses e Immunity** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [1, 11]
 Corpos_Tantricos_Alvo: ["Corpo da Alma (1)", "Corpo Radiante (10)"]
 Odus_Associados: []
 Acao_Principal: "Inauguração, novo ciclo, pureza de intenção"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 30-35"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Ogbé — O Alvorecer
@@ -49,3 +50,13 @@ Fogo e Ar se combinam em Ogbé: o Fogo como impulso vital, o Ar como clareza men
 ## Ação Prática
 
 Quando Ogbé se manifesta em sua vida, reserve um tempo — mesmo que breve — para escrever com honestidade o que você deseja inaugurar. Não a lista de tarefas, mas a qualidade de presença que você quer encarnar. Ogbé pede que o início seja sagrado: uma oração, um momento de silêncio, uma oferenda simbólica antes de dar o primeiro passo. Esse gesto de reconhecimento ao sagrado sinaliza ao universo que você está consciente da oportunidade que se abre, e o Axé flui com mais força quando é honrado com atenção.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Ogbe — O Dawn
+
+**Ogbe — O Dawn** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

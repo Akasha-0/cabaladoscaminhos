@@ -40,3 +40,13 @@ Regido pela Terra e pelo Fogo, o Guiné tem a solidez da terra para ancorar a li
 ## Aviso de Segurança
 
 **IMPORTANTE**: O Guiné contém compostos potencialmente tóxicos em doses elevadas. **Não deve ser ingerido** — seu uso é restrito a banhos externos e defumação. **Contraindicado para mulheres grávidas** em qualquer forma. O odor é muito intenso e pode ser desconfortável para pessoas sensíveis — usar em ambientes ventilados. Não usar em crianças pequenas. Para banhos, lavar bem o corpo com água limpa após o descarrego.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Guinea — Cleansing Pesada e Descarrego
+
+**Guinea — Cleansing Pesada e Descarrego** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

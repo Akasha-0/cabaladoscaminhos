@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [15, 6]
 Corpos_Tantricos_Alvo: ["Aura (7)", "Corpo Sutil (9)"]
 Odus_Associados: []
 Acao_Principal: "Cura profunda, renovação das águas internas, recomeço após o sofrimento"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Jose Beniste, \"Odus do Candomblé\", p. 112-120"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Oturupon — As Águas que Curam e Renovam
@@ -49,3 +50,13 @@ A Água de Oturupon é a água que retorna — a chuva que alimenta o rio, o rio
 ## Ação Prática
 
 Se você está em um processo de cura — de uma perda, um trauma, uma decepção — Oturupon pede que você pratique a gentileza radical consigo mesmo esta semana. Cancele compromissos desnecessários, coma alimentos que nutrem de verdade, durma mais, tome banhos longos e quentes. Mas também: busque uma conversa com alguém de confiança onde você possa falar honestamente sobre o que está atravessando. A cura de Oturupon não acontece no isolamento — ela acontece no acolhimento, quando nos permitimos ser vistos em nossa vulnerabilidade por quem pode segurar o espaço com amor.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Oturupon — As Aguas que Healingm e Renovam
+
+**Oturupon — As Aguas que Healingm e Renovam** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

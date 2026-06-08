@@ -38,3 +38,13 @@ Regido pela Terra (enraizamento, ventre) e pelo Fogo (calor digestivo), o Cominh
 ## Aviso de Segurança
 
 O Cominho é seguro em uso culinário. Em doses terapêuticas altas pode causar azia em pessoas sensíveis. Pode interagir com medicamentos para diabetes (potencializa o efeito). Contraindicado medicinalmente em doses altas para gestantes.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Cumin — Digestion Forte, Vinculo e Protection da Mae
+
+**Cumin — Digestion Forte, Vinculo e Protection da Mae** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

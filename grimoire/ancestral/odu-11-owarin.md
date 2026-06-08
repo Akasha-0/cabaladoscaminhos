@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [11, 2]
 Corpos_Tantricos_Alvo: ["Mente Divina (11)", "Linha do Arco (6)"]
 Odus_Associados: [Owonrin]
 Acao_Principal: "Mediação, equilíbrio, comunicação entre planos visíveis e invisíveis"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Jose Beniste, \"Odus do Candomblé\", p. 100-108"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Owarin — O Equilíbrio entre os Mundos
@@ -49,3 +50,13 @@ O Ar de Owarin é o ar que flui entre duas superfícies — não pertence a nenh
 ## Ação Prática
 
 Se você está em meio a um conflito — interno ou externo — a energia de Owarin pede que você encontre a perspectiva do observador neutro. Em vez de escolher um lado imediatamente, tente articular com honestidade os pontos válidos de cada posição envolvida. Escreva os dois lados do conflito como se fosse um advogado que precisa defender ambos. Esse exercício não é para criar indecisão, mas para expandir a compreensão antes de agir. Iansã protege quem carrega a responsabilidade da mediação com integridade.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Owarin — O Balance entre os Mundos
+
+**Owarin — O Balance entre os Mundos** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

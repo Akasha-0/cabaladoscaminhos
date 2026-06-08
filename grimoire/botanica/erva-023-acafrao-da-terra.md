@@ -38,3 +38,13 @@ Regido pelo Fogo (sol, calor dourado) e pela Terra (rizoma, enraizamento), o Aç
 ## Aviso de Segurança
 
 O Açafrão-da-Terra é seguro em uso culinário. Em doses terapêuticas altas pode causar desconforto gástrico. Pode interagir com anticoagulantes e medicamentos para diabetes. Contraindicado em doses altas para pessoas com obstrução das vias biliares, cálculos biliares ou úlcera ativa. Gestantes devem evitar doses terapêuticas.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Acafrao-da-Earth — Healing Profunda, Sun Interior e Protection do Liver
+
+**Acafrao-da-Earth — Healing Profunda, Sun Interior e Protection do Liver** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

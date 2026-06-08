@@ -17,6 +17,9 @@ export type {
   ForestMedicineMap,
   // Cura Energética
   EnergyHealingMap,
+  // I-Ching (5º sistema oracular — v0.0.5 Fase 1)
+  IChingTrigramId,
+  IChingMap,
   // Grid
   MatrixEntry,
   MatrixData,

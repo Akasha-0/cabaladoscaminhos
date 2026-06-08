@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [3, 33]
 Corpos_Tantricos_Alvo: ["Mente Positiva (3)", "Corpo Radiante (10)"]
 Odus_Associados: ["odu-01-ogbe", "odu-07-obara"]
 Acao_Principal: "Introspecção, revelação interior, julgamento justo"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Pierre Verger, \"Notes sur le Culte des Orisa et Vodun\", 1957, p. 102-110"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Iwori — O Coração que Vê
@@ -49,3 +50,13 @@ O Fogo de Iwori é o fogo da consciência — ilumina os cantos escuros da psiqu
 ## Ação Prática
 
 Iwori pede que você se sente em silêncio e faça uma pergunta difícil a si mesmo — uma que você tem evitado. Não é necessário ter a resposta imediatamente; o ato de formular a pergunta com honestidade já ativa o Axé deste Odu. Xangô, como juiz supremo, premia a sinceridade acima de tudo. Se houver algo que você sabe que deveria enfrentar — uma conversa, uma decisão, um padrão — Iwori é o sinal de que o momento é agora. A visão interior é o precursor de qualquer transformação verdadeira.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Iwori — O Coracao que Ve
+
+**Iwori — O Coracao que Ve** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

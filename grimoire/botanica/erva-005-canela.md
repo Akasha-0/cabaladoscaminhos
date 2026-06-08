@@ -42,3 +42,13 @@ Puramente Fogo, a Canela é uma das ervas mais quentes do ponto de vista energé
 ## Aviso de Segurança
 
 Preferir a canela-do-Ceilão (*Cinnamomum verum*) para consumo frequente, pois tem menor teor de cumarina do que a canela-cássia. Consumo excessivo da cássia pode afetar a função hepática. Não usar em quantidades medicinais durante a gravidez. Externamente, o óleo essencial puro pode causar irritação na pele — sempre diluir.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Cinnamon — Abundance, Aquecimento e Aceleracao
+
+**Cinnamon — Abundance, Aquecimento e Aceleracao** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

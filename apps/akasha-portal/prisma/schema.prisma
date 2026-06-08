@@ -24,9 +24,23 @@ model User {
   birthLongitude Float?
   birthTimezone  String?
 
+  // v0.0.4 T10 (Doc 14 §2): I-Ching como 5º sistema opt-in.
+  // Cached no cadastro (Doc 09 §5.3 — "calcule uma vez"); null até o
+  // usuário solicitar a tiragem do hexagrama natal.
+  ichingMap Json?
+
+  // v0.0.5 T3 (Doc 14 §2): opt-in explícito para o sorteio de I-Ching
+  // no oráculo. Sem flag = opt-out (LGPD). Default false para usuários
+  // existentes; migração aplica @default(false) automaticamente.
+  ichingEnabled Boolean @default(false)
+
   intentionProfile Json?
 
   consentAt      DateTime?  // AD-T5-C: LGPD consent timestamp (min. persistence)
+
+  // T7: opt-in flag for daily Web Push notifications.
+  // The actual endpoints live in `PushSubscription` (relation below).
+  pushEnabled        Boolean         @default(false)
 
   birthChart         BirthChart?
   subscription       Subscription?
@@ -124,6 +138,11 @@ model DailyReading {
   alert        String
   tensionPoint Json
   llmModel     String?
+  // v0.0.5 T3 (Doc 14 §2): hexagrama do dia persistido no cronjob
+  // `cabala-transits.service`. Estrutura binária (6 linhas) em
+  // `hexagramLines` para o `MandalaChart` e o `/daily` exibirem.
+  hexagram      String?
+  hexagramLines Json?
   createdAt    DateTime @default(now())
   @@unique([userId, date])
   @@map("daily_readings")
@@ -144,6 +163,9 @@ model Consultation {
   userId    String
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   title     String?
+  // v0.0.5 T3 (Doc 14 §2): hexagrama sorteado (quando `user.ichingEnabled = true`
+  // e o consulente escolhe o pilar `iching` no /oraculo).
+  hexagram  String?
   messages  ChatMessage[]
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt

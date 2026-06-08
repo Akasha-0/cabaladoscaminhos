@@ -38,3 +38,13 @@ Regido pela Água (calmante, sedação) e pelo Éter (alívio sutil), o Mulungu 
 ## Aviso de Segurança
 
 O Mulungu é seguro em uso medicinal moderado. Em doses altas pode causar sonolência excessiva, hipotensão, bradicardia. Contraindicado para gestantes, lactantes, crianças, pessoas com hipotensão, bradicardia, depressão do sistema nervoso central. Pode potencializar efeito de sedativos, ansiolíticos, anti-hipertensivos. Não associar com álcool.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Mulungu — Calming Profundo, Anxiety e Sistema Nervoso
+
+**Mulungu — Calming Profundo, Anxiety e Sistema Nervoso** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

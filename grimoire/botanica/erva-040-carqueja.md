@@ -38,3 +38,13 @@ Regida pela Terra (raiz do cerrado) e pelo Fogo (amargor transformador), a Carqu
 ## Aviso de Segurança
 
 A Carqueja é segura em uso medicinal moderado. Em doses altas pode causar desconforto gástrico, hipotensão, hipoglicemia. Contraindicada para gestantes (pode induzir contrações), lactantes, pessoas com diabetes descompensada, hipotensão, doenças hepáticas graves. Pode interagir com medicamentos para diabetes e pressão. Não usar por mais de 4 semanas consecutivas.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Carqueja — Digestion Amarga, Desintoxicacao do Liver e Limpa
+
+**Carqueja — Digestion Amarga, Desintoxicacao do Liver e Limpa** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

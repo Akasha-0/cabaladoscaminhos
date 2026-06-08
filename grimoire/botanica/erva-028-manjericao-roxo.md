@@ -38,3 +38,13 @@ Regido pelo Fogo (transformação, poder) e pelo Éter (espiritualidade, transmu
 ## Aviso de Segurança
 
 O Manjericão-Roxo é seguro para uso culinário e ritual. Não há contraindicações sérias conhecidas. Como todo manjericão, moderação em lactantes. Não substitui acompanhamento médico ou psicológico em casos de crise espiritual.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Basil-Roxo — Protection do Lar, Quebra de Feitico e Sorte
+
+**Basil-Roxo — Protection do Lar, Quebra de Feitico e Sorte** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

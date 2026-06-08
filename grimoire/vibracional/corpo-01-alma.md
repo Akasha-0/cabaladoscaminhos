@@ -34,3 +34,13 @@ Quando o Corpo da Alma está fraco ou bloqueado, a pessoa experimenta uma sensa�
 **Meditação**: Sentar em Sukhasana (posição fácil), fechar os olhos e fazer a pergunta interna: "Quem sou eu antes de todos os meus papéis?" Observar o que surge sem julgamento por 10 minutos.
 
 **Expressão criativa**: Dedicar pelo menos 20 minutos diários a uma atividade criativa sem julgamento de qualidade — escrever, desenhar, dançar, cantar — apenas como expressão da alma sem expectativa de resultado.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Soul Body — A Creative Essence
+
+**Soul Body — A Creative Essence** is a Tantric body of consciousness referenced in the Akasha system. The full Portuguese body describes the body's location in the subtle anatomy, the kabbalistic number associated with it, the oracular aspect it governs, and the integration with the other 10 bodies in the daily diagnostic.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

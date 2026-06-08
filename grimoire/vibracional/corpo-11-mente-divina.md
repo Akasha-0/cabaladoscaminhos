@@ -34,3 +34,13 @@ Quando bloqueada ou inacessível, a Mente Divina deixa o ser humano preso na ilu
 **Prática de serviço**: Realizar um ato de serviço semanal completamente anônimo — algo que beneficie outro ser sem nenhuma possibilidade de reconhecimento. Observar como isso expande a consciência além dos limites do ego.
 
 **Meditação da gratidão profunda**: Sentar em silêncio e deixar surgir, espontaneamente, gratidão por aspectos da existência que geralmente são dados como certos — a respiração, a visão, a capacidade de pensar. Deixar essa gratidão se expandir até tocar o sagrado no ordinário.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Divine Mind — A Graca da Onipresenca
+
+**Divine Mind — A Graca da Onipresenca** is a Tantric body of consciousness referenced in the Akasha system. The full Portuguese body describes the body's location in the subtle anatomy, the kabbalistic number associated with it, the oracular aspect it governs, and the integration with the other 10 bodies in the daily diagnostic.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

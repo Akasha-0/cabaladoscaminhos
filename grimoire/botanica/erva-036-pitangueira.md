@@ -38,3 +38,13 @@ Regida pela Terra (cerrado, raiz nativa) e pelo Fogo (fruto vermelho, sol), a Pi
 ## Aviso de Segurança
 
 A Pitangueira é segura em uso culinário. Folhas em chás medicinais devem ser usadas com moderação. Não há contraindicações sérias conhecidas para uso culinário. Gestantes devem evitar uso medicinal intenso das folhas.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Pitanga — Fruto Sagrado, Fartura e Protection do Cerrado
+
+**Pitanga — Fruto Sagrado, Fartura e Protection do Cerrado** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

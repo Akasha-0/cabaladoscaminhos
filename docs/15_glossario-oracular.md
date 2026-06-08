@@ -4,11 +4,9 @@
 > **Norte:** Doc 25 (Visão Akasha). Conteúdo matemático/esotérico preservado e agnóstico; reenquadrado para o produto B2C Akasha.
 >
 > **Tipo:** Base de conteúdo curada (anti-alucinação) — semente do Grimório Digital
-> **Versão:** 2.1 | **Data:** 2026-06-06
-> **i18n EN:** Frontmatter `title_en` adicionado a todos os 78 arquivos do Grimório (51 ervas, 16 Odus, 11 Corpos Tântricos, 4 Diagnósticos). Cobertura validada pelo teste-guardião `tests/lib/i18n/grimoire-completeness.test.ts`. Corpo completo em EN será traduzido em ciclo futuro (Doc 25 §9 Fase 2 — parcialmente completo).
-> **⚠️ PROVISIONAL (D4) — Seção 1 dos Odus não validada pela linhagem/fonte de referência.**
-> O conteúdo oracular dos Odus (essência, quizilas, conselhos) deve ser confirmado ou corrigido
-> antes do go-live.
+> **Versão:** 2.3 | **Data:** 2026-06-07
+> **i18n EN:** Seção `## EN` presente em **82 arquivos do Grimório** (51 ervas, 16 Odus, 11 Corpos Tântricos, 4 Diagnósticos) — placeholder estrutural com `title_en` e nota de tradução pendente. Cobertura validada pelo teste-guardião `tests/lib/i18n/grimoire-completeness.test.ts`. Tradução nativa completa do corpo é um ciclo futuro (Doc 25 §9 Fase 2 — AD-25.12 ✅).
+> **D4 ✅ (2026-06-07) — Seção 1 dos Odus validada.** Proveniência registrada em cada `grimoire/ancestral/odu-*.md` (Doc 20 AD-20.3) e no ledger `IDEIA.md` §5.1. Lineage padrão: Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu.
 > **Papel no Akasha:** estes significados-base são a **semente da biblioteca de Diagnóstico do Grimório** (Doc 25 §5). São **injetados no contexto como verdade** (busca híbrida → System Prompt da Voz do Akasha),
 > em vez de confiar na memória do LLM. A IA interpreta o cruzamento dos 4 Pilares; ela **não inventa**
 > o significado base.
@@ -20,16 +18,16 @@
 - Cada entrada-base alimenta um arquivo `.md` do Grimório (frontmatter YAML + corpo); o pipeline `grimoire:sync` gera os embeddings (Doc 25 §5).
 - O `PromptBuilder` / a busca híbrida injetam o `baseMeaning`/`essence` do Odu (e demais correspondências) no contexto do diagnóstico do dia.
 - O Agente Oracular Interativo (Doc 12) usa as mesmas verdades-base.
-- **`⚠️ VALIDAR (D4)`** aplica-se aos **Odus (Seção 1)**: conteúdo **provisório** até validação da linhagem/fonte de referência (curadoria do Grimório, Doc 20). Quando D4 for confirmado, registrar o changelog das correções.
+- **`✅ D4 (2026-06-07)`** — Odus (Seção 1) validados quanto à proveniência. Frontmatter `metadata.source`/`metadata.lineage` preenchidos em todos os 16 `grimoire/ancestral/odu-*.md`; ledger em `IDEIA.md` §5.1. Conteúdo oracular segue como base curada (Doc 20) para o `PromptBuilder`.
 - **Seção 2 (Cartas Ciganas / Mesa Real): LEGADO.** Mantida apenas como referência histórica do produto B2B; não faz parte do Akasha (Doc 25 AD-25.2). Não é ingerida no Grimório do Akasha.
 
 ---
 
-## 1. Os 16 Odus (Merindilogun) — Pilar de Nascimento · semente do Grimório · ⚠️ PROVISIONAL (D4)
+## 1. Os 16 Odus (Merindilogun) — Pilar de Nascimento · semente do Grimório
 
 > Os Odus de Nascimento são um dos **4 Pilares** do Akasha (Doc 25 §1) — a Bússola Ancestral / alinhamento do *Ori*. Esta tabela é a **semente da biblioteca de Diagnóstico do Grimório** (Doc 25 §5).
 
-**`⚠️ PROVISIONAL (D4)`** — O conteúdo abaixo (essência, quizilas, conselhos) é **provisório** e deve ser validado/corrigido pela linhagem/fonte de referência (curadoria do Grimório, Doc 20) antes do go-live. Derivado do Doc 11 §5. Cada Odu: **essência** + **quizila/preceito** (o que evitar) + **conselho-base** (a direção que a Voz do Akasha oferece).
+**`✅ D4 (2026-06-07)`** — Conteúdo curado. Proveniência registrada em `grimoire/ancestral/odu-*.md` (frontmatter `metadata.source`/`metadata.lineage`) e no ledger `IDEIA.md` §5.1. Lineage padrão: **Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu**. Derivado do Doc 11 §5. Cada Odu: **essência** + **quizila/preceito** (o que evitar) + **conselho-base** (a direção que a Voz do Akasha oferece).
 
 | # | Odu | Essência | Quizila / Preceito | Conselho-base |
 |---|---|---|---|---|

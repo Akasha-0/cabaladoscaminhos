@@ -38,3 +38,13 @@ Regida pela Terra (raiz, folha em formato animal) e pela Água (sangue, diurese)
 ## Aviso de Segurança
 
 A Pata-de-Vaca é segura em uso moderado. Pode potencializar o efeito de medicamentos antidiabéticos (risco de hipoglicemia). Contraindicada para gestantes, lactantes, pessoas com hipoglicemia, insuficiência renal ou hepática. Sempre usar com acompanhamento médico em casos de diabetes.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Pata-de-Vaca — Diabetes, Diurese e Purification do Sangue
+
+**Pata-de-Vaca — Diabetes, Diurese e Purification do Sangue** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

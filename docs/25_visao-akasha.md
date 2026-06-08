@@ -222,10 +222,10 @@ cabaladoscaminhos/ (monorepo)
 | **AD-25.6** | Grimório Digital: Markdown (origem) + pgvector (operação) + Ollama (embeddings) | ✅ Firme |
 | **AD-25.7** | Monetização: Freemium + Assinatura Akasha Pro + Motor de Créditos (Stripe) | ✅ Firme |
 | **AD-25.8** | Onboarding como Quiz Espiritual Guiado (Labor Illusion) | ✅ Firme |
-| **AD-25.9** | Frontend mobile-first PWA; WebGL (atmosfera) + SVG/D3 (dados) + glassmorphism | ✅ Firme |
+| **AD-25.9** | Frontend mobile-first PWA; WebGL (atmosfera) + SVG/D3 (dados) + glassmorphism | ✅ WebGL+PWA (v0.0.4-T5+T6) |
 | **AD-25.10** | Infra VPS Linux (Docker + PM2 + Ollama + Redis + pgvector); Vercel/serverless descartado | ✅ Firme |
 | **AD-25.11** | Monorepo (Turborepo/pnpm); engines em `packages/core-*`; preservar os ~9k testes | ✅ Firme |
-| **AD-25.12** | i18n com `next-intl` desde o dia zero; pt-BR piloto, inglês na Fase 2 | ✅ Firme |
+| **AD-25.12** | i18n EN completa do Grimório (corpo) — placeholder estrutural primeiro, tradução nativa em ciclo dedicado (≥ 80% cobertura de títulos) | ✅ Estrutural (v0.0.4-T9) |
 | **AD-25.13** | PDF via `@react-pdf/renderer`; Puppeteer/headless Chrome proibido no VPS | ✅ Firme |
 
 ---

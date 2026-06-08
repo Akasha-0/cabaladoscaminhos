@@ -38,3 +38,13 @@ Regida pelo Fogo (sol, luz) e conectada ao astro solar, a Erva-de-São-João tra
 ## Aviso de Segurança
 
 **ATENÇÃO**: A Erva-de-São-João tem interações medicamentosas sérias. Pode reduzir o efeito de contraceptivos hormonais, anticoagulantes, antidepressivos, antirretrovirais e muitos outros medicamentos. NÃO USE sem orientação médica se tomar qualquer medicação contínua. Pode causar fotossensibilidade (queimaduras solares mais fáceis). Contraindicada para gestantes e lactantes. Respeite os avisos.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Erva-de-Sao-Joao — Light Sunar, Humor e Healing da Melancolia
+
+**Erva-de-Sao-Joao — Light Sunar, Humor e Healing da Melancolia** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -1,13 +1,20 @@
-allowBuilds:
-  '@prisma/engines': set this to true or false
-  core-js: set this to true or false
-  esbuild: set this to true or false
-  msw: set this to true or false
-  prisma: set this to true or false
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
-
 packages:
   - 'packages/*'
   - 'apps/*'
 
+allowBuilds:
+  '@prisma/engines': true
+  core-js: true
+  esbuild: true
+  prisma: true
+  sharp: true
+  unrs-resolver: true
+
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - core-js
+  - esbuild
+  - msw
+  - prisma
+  - sharp
+  - unrs-resolver

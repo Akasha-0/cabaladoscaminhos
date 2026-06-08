@@ -1,8 +1,8 @@
 # Documento 08 — Roadmap de Desenvolvimento
 ## Sistema Akasha
 
-> **Versão:** 3.1 | **Atualizado:** 2026-06-07 | **Norte:** Doc 25
-> Substitui o roadmap B2B (Fundação → Cockpit MVP → Escala), agora legado. Metodologia: ondas incrementais sobre o monorepo. **Onda 3 ✅ concluída (Oráculo Vivo)** e **Onda 4 ✅ concluída (Monetização + Global + legacy-cockpit desligado)** — release v1.0.0-akasha.
+> **Versão:** 3.2 | **Atualizado:** 2026-06-07 | **Norte:** Doc 25
+> Substitui o roadmap B2B (Fundação → Cockpit MVP → Escala), agora legado. Metodologia: ondas incrementais sobre o monorepo. **Onda 3 ✅ concluída (Oráculo Vivo)**, **Onda 4 ✅ concluída (Monetização + Global)** e **Onda 5 ✅ concluída (Pós-Launch: Conclusão, Atmosfera & Escala)** — release v1.1.0-akasha.
 
 ---
 

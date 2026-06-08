@@ -34,3 +34,13 @@ Quando dominante ou desequilibrada, a Mente Negativa produz medo crônico, paran
 **Meditação de limites**: Visualizar uma esfera de luz ao redor do corpo, definindo claramente onde "você" termina e onde o "mundo" começa. Praticar a sensação de estar contido e protegido.
 
 **Prática comportamental**: Identificar uma situação onde você tem dificuldade em estabelecer limites e praticar dizer "não" de forma gentil mas firme, começando com situações de baixo risco.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Negative Mind — O Guardiao dos Limites
+
+**Negative Mind — O Guardiao dos Limites** is a Tantric body of consciousness referenced in the Akasha system. The full Portuguese body describes the body's location in the subtle anatomy, the kabbalistic number associated with it, the oracular aspect it governs, and the integration with the other 10 bodies in the daily diagnostic.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

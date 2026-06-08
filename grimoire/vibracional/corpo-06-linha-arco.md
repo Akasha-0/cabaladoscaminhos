@@ -34,3 +34,13 @@ Quando fraca, a Linha do Arco deixa a pessoa vulnerável a manipulação, influ�
 **Cuidado com o cabelo**: Na tradição do Kundalini Yoga, manter o cabelo comprido e enrolado no topo da cabeça (especialmente para mulheres) fortalece a Linha do Arco. Massagear o couro cabeludo diariamente ativa essa energia.
 
 **Proteção antes de ambientes densos**: Visualizar um escudo de luz branca ou dourada ao redor de todo o corpo antes de entrar em ambientes com muita gente ou energia intensa.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Linha do Arco — O Escudo Aurico
+
+**Linha do Arco — O Escudo Aurico** is a Tantric body of consciousness referenced in the Akasha system. The full Portuguese body describes the body's location in the subtle anatomy, the kabbalistic number associated with it, the oracular aspect it governs, and the integration with the other 10 bodies in the daily diagnostic.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

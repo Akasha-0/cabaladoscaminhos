@@ -34,3 +34,13 @@ Quando bloqueado, o Corpo Sutil cria dificuldade com transições e mudanças �
 **Prática de percepção sutil**: Passar 10 minutos por dia em silêncio total, praticando perceber as camadas de informação que chegam pelos sentidos — sons distantes, texturas sutis, estados emocionais leves — sem julgamento ou análise.
 
 **Estudo da impermanência**: Ler, contemplar e absorver ensinamentos sobre impermanência de qualquer tradição sapiencial, usando esse conhecimento para praticar o desapego saudável no cotidiano.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Corpo Subtle — A Elegancia da Transicao
+
+**Corpo Subtle — A Elegancia da Transicao** is a Tantric body of consciousness referenced in the Akasha system. The full Portuguese body describes the body's location in the subtle anatomy, the kabbalistic number associated with it, the oracular aspect it governs, and the integration with the other 10 bodies in the daily diagnostic.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

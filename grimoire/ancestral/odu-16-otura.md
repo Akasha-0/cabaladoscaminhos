@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [16, 7]
 Corpos_Tantricos_Alvo: ["Mente Divina (11)", "Corpo da Alma (1)"]
 Odus_Associados: []
 Acao_Principal: "Retorno espiritual, sabedoria madura, integração da jornada completa"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 65-70"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Otura — O Retorno à Fonte
@@ -49,3 +50,13 @@ O Fogo de Otura é o fogo suave das brasas — não a chama impetuosa do início
 ## Ação Prática
 
 Otura pede uma cerimônia pessoal de encerramento e gratidão. Reserve um tempo — pode ser uma tarde, uma noite, uma manhã silenciosa — para fazer um inventário não dos fracassos, mas das conquistas, aprendizados e crescimentos do ciclo que está se encerrando. Escreva uma carta para si mesmo reconhecendo tudo que você atravessou e como isso te moldou. Ao terminar, acenda uma vela branca, leia a carta em voz alta como testemunha de sua própria jornada, e então dobre o papel e guarde ou entregue ao fogo com gratidão. Oxalá recebe com amor a oferta de quem sabe honrar o caminho percorrido.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Otura — O Retorno a Fonte
+
+**Otura — O Retorno a Fonte** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

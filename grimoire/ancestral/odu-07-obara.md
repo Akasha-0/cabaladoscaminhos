@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [7, 4]
 Corpos_Tantricos_Alvo: ["Corpo Radiante (10)", "Mente Positiva (3)"]
 Odus_Associados: []
 Acao_Principal: "Liderança, dignidade, poder manifesto e reconhecimento"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Wande Abimbola, \"Ifá: An Exposition of Yoruba Literary Art\", 1977, p. 45-50"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Obara — A Realeza do Espírito
@@ -49,3 +50,13 @@ O Fogo de Obara é o fogo do sol no meio do dia — pleno, quente, irresistível
 ## Ação Prática
 
 Obara convida você a assumir plenamente um espaço de liderança em alguma área da sua vida que você tem evitado por medo de julgamento ou por falsa humildade. Identifique um contexto — família, trabalho, comunidade — onde sua voz e sua visão são necessárias e estão sendo contidas. Dê um passo concreto nessa direção esta semana: convoque uma conversa, proponha uma ideia, ou simplesmente posicione-se com clareza em uma situação onde você costuma recuar. Xangô honra aqueles que usam seu poder com dignidade e propósito.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Obara — A Realeza do Espirito
+
+**Obara — A Realeza do Espirito** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

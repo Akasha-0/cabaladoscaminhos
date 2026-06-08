@@ -50,3 +50,13 @@ Durante a Lua em Escorpião, os corpos que tendem a ficar sobrecarregados são:
 ## Orientações para o Período
 
 Durante este trânsito, priorize conversas difíceis que você tem adiado, evite tomar decisões baseadas em ciúme ou suspeita sem verificação, e use a profundidade disponível para trabalhos de autoconhecimento e cura de padrões emocionais antigos.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Tension: Moon in Scorpio
+
+**Tension: Moon in Scorpio** is part of the Akasha grimoire. The full Portuguese body describes the entry in detail.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -38,3 +38,13 @@ Regido pela Terra (raiz, densidade) e pelo Fogo (madeira que arde, transformaç�
 ## Aviso de Segurança
 
 O Pau-d'Arco é seguro em uso moderado. Em doses altas pode causar náusea e desconforto gástrico. Contraindicado para gestantes, lactantes e pessoas com anticoagulantes. Pode interagir com medicamentos metabolizados pelo fígado (citocromo P450). Uso medicinal prolongado deve ser supervisionado.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Pau-d'Arco — Immunity Profunda, Ancestralidade e Resistencia
+
+**Pau-d'Arco — Immunity Profunda, Ancestralidade e Resistencia** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

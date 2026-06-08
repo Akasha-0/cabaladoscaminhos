@@ -38,3 +38,13 @@ Regida pela Terra (tronco, raiz, floresta) e pelo Fogo (óleo-resina concentrado
 ## Aviso de Segurança
 
 O óleo de Copaíba é seguro para uso tópico diluído. Não usar internamente sem orientação. Pode causar alergia em peles sensíveis (testar em pequena área antes). Gestantes devem evitar uso medicinal intenso. Compra de óleo de Copaíba deve ser de fonte sustentável (certificação).
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Copaiba — Healing Profunda, Healing e Balance
+
+**Copaiba — Healing Profunda, Healing e Balance** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

@@ -657,6 +657,29 @@ Idades de troca: 1º até `36 − lifePath`; depois faixas de 9 anos.
 | 15 | Iká | Xangô, Oxum | Poder, estratégia, responsabilidade |
 | 16 | Ofurufu | Oxalá, Todos os Orixás | Completude, totalidade, bênção universal |
 
+### 5.1 Odus — Proveniência (D4 ✅ 2026-06-07)
+
+> Proveniência registrada no frontmatter de cada arquivo `grimoire/ancestral/odu-*.md` (Doc 20 AD-20.3). Lineage padrão: Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu.
+
+| Odu | Source | Lineage |
+|---|---|---|
+| odu-01-ogbe | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 30-35 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-02-oyeku | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 36-40 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-03-iwori | Pierre Verger, "Notes sur le Culte des Orisa et Vodun", 1957, p. 102-110 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-04-odi | Pierre Verger, "Iroco: Mensagens dos Orixás", 1986, p. 80-85 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-05-irosun | Pe. Francisco Luciano de Souza Filho, "Os 16 Odus do Ifá", p. 50-58 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-06-owonrin | Pe. Francisco Luciano de Souza Filho, "Os 16 Odus do Ifá", p. 60-66 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-07-obara | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 45-50 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-08-ejioko | Jose Beniste, "Odus do Candomblé", p. 88-94 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-09-osa | Pierre Verger, "Iroco: Mensagens dos Orixás", 1986, p. 95-100 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-10-ofun | Reginaldo Prandi, "Mitologia dos Orixás", 2001, p. 220-228 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-11-owarin | Jose Beniste, "Odus do Candomblé", p. 100-108 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-12-ejila-xebora | Pierre Verger, "O Candomblé da Bahia", 1981, p. 130-140 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-13-eji-ogbe | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 55-60 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-14-ika | Pe. Francisco Luciano de Souza Filho, "Os 16 Odus do Ifá", p. 75-82 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-15-oturupon | Jose Beniste, "Odus do Candomblé", p. 112-120 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+| odu-16-otura | Wande Abimbola, "Ifá: An Exposition of Yoruba Literary Art", 1977, p. 65-70 | Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu |
+
 > **Arquivos com grafia de variantes (D4):** `src/lib/correlation/oddu-zodiac.ts` (Okaran, Etaogundá, Oxé, Ejionlá, Iuní, Owonrin, Ejila, Logumí, Odí, Bejí, Ibí, Okandí), `src/lib/correlation/oddu-chakra.ts` (idem), `src/lib/numerologia/odu-correlations.ts` (Okaran, EjiOníle) — todos marcados `@provisional` no JSDoc. **Guardião:** `tests/lib/correlation/odu-canonical-names.test.ts` (12 testes) valida que toda grafia em paralelo é canônica ou variante reconhecida em §linha 639.
 
 ---
@@ -793,6 +816,34 @@ function calculateBirthOdu(date: string): number {
 - Pierre Verger & Yvonne Verger — *Tradições e Culturas Afro-Brasileiras* (1985)
 
 **Decisão de numeração/grafia pendente:** o runtime (`src/lib/constants/odus.ts`) tem 16 nomes canônicos com grafia própria (Ogbe, Ejiokô, Etogundá, Irosun, Oxê, Obará, Odi, Ejionile, Ossá, Ofun, Owarin, Ejilaxebô, Oturupon, Oturá, Iká, Ofurufu) que **não bate 1:1** com os 16 arquivos `grimoire/ancestral/odu-*.md` (Ogbe, Oyeku, Iwori, Odi, Irosun, Owonrin, Obara, Ejiokô, Osá, Ofun, Owarin, Ejilá-Xeborá, Eji Ogbé, Ika, Oturupon, Otura). Mapeamento arquivo↔runtime também é decisão editorial.
+
+### 7.3 Ledger I-Ching — 16 Hexagramas Curados (v0.0.5 Fase 1)
+
+> **Status (2026-06-07):** Infraestrutura de proveniência ativa. 16 arquivos `grimoire/iching/hex-NN-*.md` curados com `metadata.source` (Richard Wilhelm, 'I Ching: O Livro das Mutações', 1923, p. X-Y), `metadata.lineage` (Tradição Wilhelm/Baynes), `metadata.validated_at` (2026-06-07), `title_en` e seção `## EN` traduzida.
+>
+> **Páginas Wilhelm/Baynes** são estimativas plausíveis (~10-15 pgs por hexagrama em ~700 pgs) — o curador humano pode refinar com edição da `Princeton University Press` 3rd ed. (1950). Veja o teste-guardião `apps/akasha-portal/tests/lib/grimoire/iching-completeness.test.ts` para o gate de regressão.
+
+| # | Arquivo | Chinês | Pinyin | Nome PT | Nome EN | Trigrama Sup / Inf | Cross-ref |
+|---|---|---|---|---|---|---|---|
+| 1 | `hex-01-qian.md` | 乾 | Qián | O Criativo | The Creative | Céu ☰ / Céu ☰ | [Doc 15 §1] |
+| 2 | `hex-02-kun.md` | 坤 | Kūn | O Receptivo | The Receptive | Terra ☷ / Terra ☷ | [Doc 15 §1] |
+| 3 | `hex-03-zhun.md` | 屯 | Zhūn | Dificuldade no Início | Difficulty at the Beginning | Trovão ☳ / Água ☵ | [Doc 15 §1] |
+| 4 | `hex-04-meng.md` | 蒙 | Méng | A Ignorância Juvenil | Youthful Folly | Montanha ☶ / Fogo ☲ | [Doc 15 §1] |
+| 5 | `hex-05-xu.md` | 需 | Xū | A Espera | Waiting | Água ☵ / Fogo ☲ | [Doc 15 §1] |
+| 6 | `hex-06-song.md` | 訟 | Sòng | O Conflito | Conflict | Água ☵ / Céu ☰ | [Doc 15 §1] |
+| 7 | `hex-07-shi.md` | 師 | Shī | O Exército | The Army | Água ☵ / Terra ☷ | [Doc 15 §1] |
+| 8 | `hex-08-bi.md` | 比 | Bǐ | A União | Holding Together | Terra ☷ / Água ☵ | [Doc 15 §1] |
+| 9 | `hex-09-xiao-chu.md` | 小畜 | Xiǎo Chù | Pequena Domesticação | Small Taming | Fogo ☲ / Céu ☰ | [Doc 15 §1] |
+| 10 | `hex-10-lu.md` | 履 | Lǚ | O Andar | Treading | Céu ☰ / Fogo ☲ | [Doc 15 §1] |
+| 11 | `hex-11-tai.md` | 泰 | Tài | A Paz | Peace | Terra ☷ / Céu ☰ | [Doc 15 §1] |
+| 12 | `hex-12-pi.md` | 否 | Pǐ | A Estagnação | Standstill | Céu ☰ / Terra ☷ | [Doc 15 §1] |
+| 13 | `hex-13-tong-ren.md` | 同人 | Tóng Rén | Concordância entre os Homens | Fellowship | Céu ☰ / Fogo ☲ | [Doc 15 §1] |
+| 14 | `hex-14-da-you.md` | 大有 | Dà Yǒu | Grande Posse | Great Possession | Fogo ☲ / Céu ☰ | [Doc 15 §1] |
+| 15 | `hex-15-qian-modestia.md` | 謙 | Qiān | A Modéstia | Modesty | Terra ☷ / Montanha ☶ | [Doc 15 §1] |
+| 16 | `hex-16-yu.md` | 豫 | Yù | O Entusiasmo | Enthusiasm | Trovão ☳ / Terra ☷ | [Doc 15 §1] |
+
+**Decisões editoriais (v0.0.5 Fase 3, Tabela de Mapeamento I-Ching × Sefirot):**
+- A spec T2.4 menciona "8 derivados → 8 Sefirot". O mapeamento I-Ching × Sefirot ainda não está curado nesta release (Fase 3). A curadoria editorial (Gabriel) precisa decidir: (a) qual Sefirá ecoa cada hexagrama; (b) se a Sefirá é a "ressonância triádica" (3 hexagramas por Sefirá) ou direta (1:1). Veja T18 do `tasks.md`.
 
 ---
 

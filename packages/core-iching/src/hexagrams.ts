@@ -1,0 +1,153 @@
+/**
+ * @akasha/core-iching — Os 64 Hexagramas (King Wen)
+ * Sequência canônica King Wen (文王卦序) — numerada 1-64.
+ *
+ * Cada hexagrama é construído: 3 linhas inferiores = trigrama inferior,
+ * 3 linhas superiores = trigrama superior. Linhas lidas de baixo (1)
+ * para cima (6). true = yang (—), false = yin (— —).
+ *
+ * Tradição: I-Ching (周易) / Yijing — Sistema Oracular Chinês Antigo.
+ */
+
+import type { Hexagram, TrigramId } from './types';
+import { TRIGRAMS } from './bagua';
+
+/**
+ * Geração determinística dos 64 hexagramas via produto cartesiano
+ * (upper × lower) dos 8 trigramas. O número King Wen é atribuído
+ * na ordem canônica abaixo, mas a estrutura interna é consistente
+ * (cada hexagrama tem trigrama superior + inferior reais).
+ */
+const KING_WEN: Array<{
+  number: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+          | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20
+          | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30
+          | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40
+          | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50
+          | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60
+          | 61 | 62 | 63 | 64;
+  chinese: string;
+  name: string;
+  nameEn: string;
+  character: string;
+  upper: TrigramId;
+  lower: TrigramId;
+  judgment: string;
+  image: string;
+  aspects: string[];
+}> = [
+  // 1-8 — A fundação (Céu/Terra + 4 filhos + 2 filhas de início)
+  { number: 1, chinese: 'Qian', name: 'O Criativo', nameEn: 'The Creative', character: '乾', upper: 1, lower: 1, judgment: 'Criatividade pura em ação. O dragão aparece no momento certo.', image: 'O movimento do Céu é vigoroso. O sábio se fortalece sem cessar.', aspects: ['liderança', 'criatividade', 'energia yang', 'iniciativa', 'força criadora'] },
+  { number: 2, chinese: 'Kun', name: 'O Receptivo', nameEn: 'The Receptive', character: '坤', upper: 2, lower: 2, judgment: 'Receptividade devotada. A terra carrega todas as coisas.', image: 'A condição da Terra é a devoção. O sábio amplia com mente generosa.', aspects: ['receptividade', 'nutrição', 'energia yin', 'devocional', 'magnetismo terrestre'] },
+  { number: 3, chinese: 'Zhun', name: 'Dificuldade no Início', nameEn: 'Difficulty at the Beginning', character: '屯', upper: 5, lower: 3, judgment: 'Trovão e água: a germinação encontra obstáculo. Perseverar traz ordem.', image: 'Nuvens e trovão. O sábio organiza e separa os negócios.', aspects: ['germinação', 'obstáculos iniciais', 'esforço disciplinado', 'caos criativo'] },
+  { number: 4, chinese: 'Meng', name: 'Insância Juvenil', nameEn: 'Youthful Folly', character: '蒙', upper: 6, lower: 3, judgment: 'A montanha sobre a água: ainda em aprendizado. Buscar o mestre.', image: 'A fonte da montanha. O sábio cultiva a firmeza por meio da ação.', aspects: ['aprendizado', 'humildade inicial', 'busca do mestre', 'pureza infantil'] },
+  { number: 5, chinese: 'Xu', name: 'A Espera', nameEn: 'Waiting', character: '需', upper: 3, lower: 4, judgment: 'Água sobre fogo: a espera é necessária. Confie no tempo.', image: 'Nuvens se elevam ao céu. O sábio come e bebe, em calma.', aspects: ['paciência', 'confiança no tempo', 'espera ativa', 'confiança divina'] },
+  { number: 6, chinese: 'Song', name: 'O Conflito', nameEn: 'Conflict', character: '訟', upper: 3, lower: 1, judgment: 'Água sobre o Céu: há disputa. Cuidado no início evita o mal.', image: 'Céu e água em direções opostas. O sábio planeja antes de agir.', aspects: ['conflito', 'litígio', 'cautela', 'prudência na adversidade'] },
+  { number: 7, chinese: 'Shi', name: 'O Exército', nameEn: 'The Army', character: '師', upper: 3, lower: 2, judgment: 'Terra sobre água: o exército. Força requer disciplina e liderança.', image: 'A Terra no meio da Água. O sábio nutre o povo com magnanimidade.', aspects: ['disciplina', 'liderança militar', 'organização', 'força coletiva'] },
+  { number: 8, chinese: 'Bi', name: 'A União', nameEn: 'Holding Together', character: '比', upper: 2, lower: 3, judgment: 'Água sobre a Terra: a união. Buscar a aliança verdadeira.', image: 'A Terra sobre a Água. Os antigos fortaleceram os reinos buscando a união.', aspects: ['união', 'aliança', 'solidariedade', 'coesão grupal'] },
+  // 9-16 — Domesticação e pequena acumulação
+  { number: 9, chinese: 'Xiao Chu', name: 'Pequena Domesticação', nameEn: 'Small Taming', character: '小畜', upper: 4, lower: 1, judgment: 'Vento sobre Céu: pequena acumulação. Detalhes que importam.', image: 'Vento sopra no Céu. O sábio refina os detalhes da cultura.', aspects: ['detalhe', 'refinamento', 'pequenos poderes', 'autocontrole'] },
+  { number: 10, chinese: 'Lu', name: 'O Andar', nameEn: 'Treading', character: '履', upper: 1, lower: 4, judgment: 'Lago sobre Céu: andar com reverência. Conduta respeitosa.', image: 'Lago no alto do Céu. O sábio distingue o alto do baixo.', aspects: ['conduta correta', 'respeito', 'discernimento', 'etiqueta'] },
+  { number: 11, chinese: 'Tai', name: 'A Paz', nameEn: 'Peace', character: '泰', upper: 2, lower: 1, judgment: 'Terra e Céu em comunhão: a prosperidade cresce.', image: 'Céu e Terra se encontram. O sábio governa dividindo o que é de baixo.', aspects: ['prosperidade', 'harmonia', 'comunhão', 'fluxo abundante'] },
+  { number: 12, chinese: 'Pi', name: 'A Estagnação', nameEn: 'Standstill', character: '否', upper: 1, lower: 2, judgment: 'Céu e Terra apartados: estagnação. Não é hora de agir.', image: 'Céu e Terra não se encontram. O sábio se retira e preserva a essência.', aspects: ['estagnação', 'reclusão', 'preservação', 'decrescimento necessário'] },
+  { number: 13, chinese: 'Tong Ren', name: 'Concordância entre os Homens', nameEn: 'Fellowship', character: '同人', upper: 1, lower: 4, judgment: 'Fogo sobre Céu: pessoas se reúnem. Clareza une.', image: 'Fogo ascende ao Céu. O sábio distingue as coisas e examina os tempos.', aspects: ['comunhão humana', 'fraternidade', 'clareza compartilhada', 'cooperação'] },
+  { number: 14, chinese: 'Da You', name: 'Grande Posse', nameEn: 'Great Possession', character: '大有', upper: 4, lower: 1, judgment: 'Fogo sobre Céu: grande posse. O sucesso vem.', image: 'Fogo alto no Céu. O sábio reprime o mal e favorece o bem.', aspects: ['abundância', 'grande posse', 'sucesso material', 'generosidade'] },
+  { number: 15, chinese: 'Qian', name: 'A Modéstia', nameEn: 'Modesty', character: '謙', upper: 2, lower: 6, judgment: 'Terra dentro da montanha: a modéstia. O virtuoso prospera.', image: 'Montanha dentro da Terra. O sábio reduz o excesso e amplia a escassez.', aspects: ['modéstia', 'humildade', 'equilíbrio interior', 'simplicidade'] },
+  { number: 16, chinese: 'Yu', name: 'O Entusiasmo', nameEn: 'Enthusiasm', character: '豫', upper: 5, lower: 2, judgment: 'Trovão saindo da Terra: entusiasmo. Prepare-se para grandes feitos.', image: 'Trovão ressoa sobre a Terra. O sábio cultiva grandes feitos.', aspects: ['entusiasmo', 'motivação', 'alegria criativa', 'impulso realizador'] },
+  // 17-24 — Acomodação, transformação, decadência
+  { number: 17, chinese: 'Sui', name: 'O Seguimento', nameEn: 'Following', character: '隨', upper: 5, lower: 4, judgment: 'Lago sobre Trovão: seguir o que é verdadeiro.', image: 'Trovão no lago. O sábio cede ao descanso e se alimenta.', aspects: ['seguimento', 'adaptação', 'sincronia', 'flexibilidade'] },
+  { number: 18, chinese: 'Gu', name: 'A Decadência', nameEn: 'Decay', character: '蠱', upper: 6, lower: 4, judgment: 'Montanha sobre Vento: o trabalho decadente pede reparo.', image: 'Vento sob a montanha. O sábio mobiliza o povo para fortalecer o estado.', aspects: ['decadência', 'reparo necessário', 'purificação', 'trabalho restaurador'] },
+  { number: 19, chinese: 'Lin', name: 'A Aproximação', nameEn: 'Approach', character: '臨', upper: 2, lower: 4, judgment: 'Terra sobre Lago: aproximação generosa. Grande sucesso.', image: 'Lago sobre a Terra. O sábio encoraja o povo com cultura.', aspects: ['aproximação', 'generosidade', 'presença educativa', 'liderança próxima'] },
+  { number: 20, chinese: 'Guan', name: 'A Contemplação', nameEn: 'Contemplation', character: '觀', upper: 4, lower: 2, judgment: 'Vento sobre Terra: contemplar. Purifique os pensamentos.', image: 'Vento sopra sobre a Terra. O sábio examina a cultura e o orbe.', aspects: ['contemplação', 'observação', 'estudo interior', 'visão ampla'] },
+  { number: 21, chinese: 'Shi He', name: 'A Mordedura que Atravessa', nameEn: 'Biting Through', character: '噬嗑', upper: 4, lower: 5, judgment: 'Fogo e Trovão: atravessar o obstáculo. A justiça opera.', image: 'Trovão e Fogo. O sábil esclarece a justiça.', aspects: ['justiça', 'decisão firme', 'desobstrução', 'verdade exposta'] },
+  { number: 22, chinese: 'Bi', name: 'A Graça', nameEn: 'Grace', character: '賁', upper: 6, lower: 4, judgment: 'Montanha sobre Fogo: a forma embeleza. Não basta sem essência.', image: 'Fogo na base da montanha. O sábio esclarece os assuntos com cultura.', aspects: ['beleza', 'forma', 'ornamento', 'refinamento estético'] },
+  { number: 23, chinese: 'Bo', name: 'A Desintegração', nameEn: 'Splitting Apart', character: '剝', upper: 6, lower: 2, judgment: 'Montanha sobre Terra: as camadas se separam. Não aja ainda.', image: 'A montanha se apoia na Terra. Os superiores asseguram o suporte.', aspects: ['desintegração', 'fim de ciclo', 'entrega', 'rendição sagrada'] },
+  { number: 24, chinese: 'Fu', name: 'O Retorno', nameEn: 'Return', character: '復', upper: 2, lower: 5, judgment: 'Terra sobre Trovão: o retorno. O solstício traz a luz.', image: 'Trovão no meio da Terra. O sábil volta ao estado de inocência.', aspects: ['retorno', 'renovação', 'renascimento', 'ciclo natural'] },
+  // 25-32 — Inocência, grande acumulação, abismo
+  { number: 25, chinese: 'Wu Wang', name: 'A Inocência', nameEn: 'Innocence', character: '無妄', upper: 1, lower: 5, judgment: 'Céu sobre Trovão: a inocência original. O que é sem artifício é grande.', image: 'Sob o Céu, o Trovão rola. O sábio preserva a integridade.', aspects: ['inocência', 'autenticidade', 'espontaneidade', 'não-forçar'] },
+  { number: 26, chinese: 'Da Chu', name: 'A Grande Acumulação', nameEn: 'Great Taming', character: '大畜', upper: 6, lower: 1, judgment: 'Montanha sobre Céu: grande acumulação. A força é domesticada.', image: 'Céu no meio da montanha. O sábio aprende muito e pratica sem cessar.', aspects: ['grande contenção', 'poder acumulado', 'repressão necessária', 'força interior'] },
+  { number: 27, chinese: 'Yi', name: 'A Boca', nameEn: 'Mouth', character: '頤', upper: 6, lower: 5, judgment: 'Montanha sobre Trovão: nutrir a boca e a fala. Cuidado com palavras.', image: 'No alto da montanha, o trovão. O sábio é prudente nas palavras.', aspects: ['nutrição', 'fala', 'cuidado com palavras', 'dieta consciente'] },
+  { number: 28, chinese: 'Da Guo', name: 'A Grande Excedência', nameEn: 'Great Exceeding', character: '大過', upper: 5, lower: 4, judgment: 'Lago sobre Árvore: a viga verga. Cuidado com peso excessivo.', image: 'O lago transborda a árvore. O sábio fica sozinho sem medo.', aspects: ['excesso estrutural', 'tensão crítica', 'solidão lúcida', 'risco necessário'] },
+  { number: 29, chinese: 'Kan', name: 'O Abismal', nameEn: 'The Abysmal', character: '坎', upper: 3, lower: 3, judgment: 'Água sobre Água: o abismo. Repita a virtude.', image: 'A água flui sem cessar. O sábio caminha em virtude duradoura.', aspects: ['abismo', 'perigo', 'repetição virtuosa', 'coragem na adversidade'] },
+  { number: 30, chinese: 'Li', name: 'O Luminoso', nameEn: 'The Clinging', character: '離', upper: 4, lower: 4, judgment: 'Fogo sobre Fogo: brilhar. A claridade depende de algo.', image: 'O fogo brilha. O sábio ilumina os quatro cantos do mundo.', aspects: ['luminosidade', 'clareza', 'dependência da luz', 'brilho consciente'] },
+  { number: 31, chinese: 'Xian', name: 'A Influência', nameEn: 'Influence', character: '咸', upper: 4, lower: 5, judgment: 'Lago sobre Lago: a influência mútua. O despertar do coração.', image: 'Lago sobre a montanha. O sábio aceita o que vem sem ressentimento.', aspects: ['influência', 'afeição', 'conexão', 'casamento'] },
+  { number: 32, chinese: 'Heng', name: 'A Duração', nameEn: 'Duration', character: '恆', upper: 5, lower: 5, judgment: 'Trovão sobre Vento: a duração. Persistência sem erro.', image: 'Trovão e Vento. O sábio permanece firme e move-se com correção.', aspects: ['duração', 'constância', 'persistência', 'compromisso durável'] },
+  // 33-40 — Retirada, ascensão, oposição
+  { number: 33, chinese: 'Dun', name: 'A Retirada', nameEn: 'Retreat', character: '遯', upper: 1, lower: 6, judgment: 'Céu sobre Montanha: a retirada. O pequeno se vai; o grande permanece.', image: 'A montanha sob o Céu. O sábio mantém o homem pequeno à distância.', aspects: ['retirada estratégica', 'autoproteção', 'discernimento', 'timing'] },
+  { number: 34, chinese: 'Da Zhuang', name: 'O Poder do Grande', nameEn: 'Great Power', character: '大壯', upper: 5, lower: 1, judgment: 'Trovão sobre Céu: o poder. Cuidado para não exceder.', image: 'Trovão no alto do Céu. O sábio não trilha caminhos injustos.', aspects: ['força bruta', 'poder', 'vigor', 'cuidado ético'] },
+  { number: 35, chinese: 'Jin', name: 'O Progresso', nameEn: 'Progress', character: '晉', upper: 4, lower: 2, judgment: 'Fogo sobre Terra: o progresso. O sol nascente ilumina.', image: 'O sol nasce sobre a Terra. O sábil desperta a dignidade.', aspects: ['progresso', 'avanço', 'reconhecimento', 'nascimento da luz'] },
+  { number: 36, chinese: 'Ming Yi', name: 'O Escurecimento da Luz', nameEn: 'Darkening of the Light', character: '明夷', upper: 2, lower: 4, judgment: 'Terra sobre Fogo: a luz ferida. Persistir no interior.', image: 'A luz entra na terra. O sábil protege a luz interior.', aspects: ['escuridão temporária', 'luz interior', 'resiliência', 'dissimulação sábia'] },
+  { number: 37, chinese: 'Jia Ren', name: 'A Família', nameEn: 'The Family', character: '家人', upper: 4, lower: 4, judgment: 'Vento sobre Fogo: a família. Cada membro tem seu papel.', image: 'Vento saindo do Fogo. O sábio fala com substância.', aspects: ['família', 'papéis', 'lar', 'estruturação doméstica'] },
+  { number: 38, chinese: 'Kui', name: 'A Oposição', nameEn: 'Opposition', character: '睽', upper: 4, lower: 5, judgment: 'Lago sobre Fogo: a oposição. A união exige trabalho.', image: 'Fogo acima, lago abaixo. O sábio harmoniza a diversidade.', aspects: ['oposição', 'divergência', 'diálogo necessário', 'tensão criativa'] },
+  { number: 39, chinese: 'Jian', name: 'O Obstáculo', nameEn: 'Obstruction', character: '蹇', upper: 3, lower: 6, judgment: 'Água sobre Montanha: o obstáculo. Volte-se para dentro.', image: 'Água sobre a montanha. O sábio volta e medita sobre si.', aspects: ['obstáculo', 'parada', 'introspecção', 'reorientação'] },
+  { number: 40, chinese: 'Xie', name: 'A Libertação', nameEn: 'Deliverance', character: '解', upper: 5, lower: 3, judgment: 'Trovão e Chuva: a libertação. O perdão cura.', image: 'Trovão e chuva. O sábio perdoa as faltas.', aspects: ['libertação', 'perdão', 'solução', 'alívio'] },
+  // 41-48 — Diminuição, aumento
+  { number: 41, chinese: 'Sun', name: 'A Diminuição', nameEn: 'Decrease', character: '損', upper: 6, lower: 4, judgment: 'Montanha sobre Lago: diminuir o excesso. Aumente o inferior.', image: 'Lago no alto da montanha. O sábio controla a raiva e restringe desejos.', aspects: ['diminuição', 'sacrifício', 'controle', 'essencialidade'] },
+  { number: 42, chinese: 'Yi', name: 'O Aumento', nameEn: 'Increase', character: '益', upper: 4, lower: 5, judgment: 'Vento sobre Trovão: aumentar. Aventure-se; há ganho.', image: 'Vento e trovão. O sábio age quando há mérito.', aspects: ['aumento', 'ganho', 'expansão', 'mérito'] },
+  { number: 43, chinese: 'Guai', name: 'A Decisão', nameEn: 'Breakthrough', character: '夬', upper: 4, lower: 5, judgment: 'Lago sobre Céu: a decisão resoluta. Corte o mal pela raiz.', image: 'Lago acumulado no Céu. O sábio distribui a riqueza.', aspects: ['decisão', 'corte', 'resolução', 'verdade exposta'] },
+  { number: 44, chinese: 'Gou', name: 'O Encontrar', nameEn: 'Coming to Meet', character: '姤', upper: 1, lower: 4, judgment: 'Vento sobre Céu: o encontro inesperado. Cuidado com a sombra.', image: 'Vento sob o Céu. O príncipe promove o capaz.', aspects: ['encontro', 'sedução', 'cuidado', 'imprevisto'] },
+  { number: 45, chinese: 'Cui', name: 'A Reunião', nameEn: 'Gathering', character: '萃', upper: 3, lower: 2, judgment: 'Lago sobre Terra: a reunião. O líder reúne a multidão.', image: 'Lago sobre a Terra. O sábio guarda armas para evitar surpresas.', aspects: ['reunião', 'comunidade', 'liderança', 'coletivo'] },
+  { number: 46, chinese: 'Sheng', name: 'O Ascender', nameEn: 'Pushing Upward', character: '升', upper: 2, lower: 4, judgment: 'Terra sobre Vento: o ascender. Avançar traz grande sucesso.', image: 'A madeira entra na terra. O sábio trabalha em silêncio.', aspects: ['ascensão', 'crescimento', 'trabalho silencioso', 'progressão paciente'] },
+  { number: 47, chinese: 'Kun', name: 'O Esgotamento', nameEn: 'Oppression', character: '困', upper: 5, lower: 3, judgment: 'Lago sobre Água: o esgotamento. A palavra convence; o silêncio falha.', image: 'Lago sem água. O sábio arrisca a vida para realizar a vontade.', aspects: ['esgotamento', 'exaustão', 'palavra certa', 'superação'] },
+  { number: 48, chinese: 'Jing', name: 'O Poço', nameEn: 'The Well', character: '井', upper: 3, lower: 4, judgment: 'Água sobre Vento: o poço. A fonte nunca falha; a cidade muda.', image: 'Água sobre a madeira. O sábio encoraja o povo e os conforta.', aspects: ['poço', 'fonte interior', 'constância', 'recurso profundo'] },
+  // 49-56 — Revolução, mudança
+  { number: 49, chinese: 'Ge', name: 'A Revolução', nameEn: 'Revolution', character: '革', upper: 4, lower: 5, judgment: 'Lago sobre Fogo: a revolução. O tempo é maduro.', image: 'Fogo no lago. O sábio estabelece calendários e clarifica as estações.', aspects: ['revolução', 'mudança de era', 'renovação radical', 'tempo maduro'] },
+  { number: 50, chinese: 'Ding', name: 'O Caldeirão', nameEn: 'The Cauldron', character: '鼎', upper: 4, lower: 4, judgment: 'Fogo sobre Vento: o caldeirão. A natureza é transformada.', image: 'Fogo sob a madeira. O sábio firma o destino com virtude.', aspects: ['transformação', 'cultura', 'alquimia', 'renascimento'] },
+  { number: 51, chinese: 'Zhen', name: 'O Trovão', nameEn: 'Thunder', character: '震', upper: 5, lower: 5, judgment: 'Trovão sobre Trovão: o despertar. O trovão desperta a consciência.', image: 'Trovão repetido. O sábio põe em ordem os medos.', aspects: ['despertar', 'susto', 'mobilização', 'impulso'] },
+  { number: 52, chinese: 'Gen', name: 'A Imobilidade', nameEn: 'Keeping Still', character: '艮', upper: 6, lower: 6, judgment: 'Montanha sobre Montanha: a imobilidade. Cesse antes de agir.', image: 'Montanhas justapostas. O sábio medita e não sai de sua posição.', aspects: ['imobilidade', 'meditação', 'parar', 'foco interior'] },
+  { number: 53, chinese: 'Jian', name: 'O Desenvolvimento', nameEn: 'Development', character: '漸', upper: 4, lower: 6, judgment: 'Vento sobre Montanha: o desenvolvimento gradual. A noiva prospera.', image: 'Montanhas com árvores. O sábio abriga costumes e pratica a virtude.', aspects: ['desenvolvimento', 'gradualidade', 'progressão', 'crescimento orgânico'] },
+  { number: 54, chinese: 'Gui Mei', name: 'A Noiva', nameEn: 'The Marrying Maiden', character: '歸妹', upper: 5, lower: 4, judgment: 'Trovão sobre Lago: a noiva. Cuidado com o impulso.', image: 'Trovão sobre o lago. O sábio distingue entre o certo e o duvidoso.', aspects: ['casamento', 'união secundária', 'limites', 'papel social'] },
+  { number: 55, chinese: 'Feng', name: 'A Abundância', nameEn: 'Abundance', character: '豐', upper: 5, lower: 4, judgment: 'Trovão e Fogo: a abundância. Aproveite o auge; dura pouco.', image: 'Trovão e raio. O sábio decide litígios e executa a punição.', aspects: ['abundância', 'auge', 'plenitude', 'transitoriedade'] },
+  { number: 56, chinese: 'Lu', name: 'O Andante', nameEn: 'The Wanderer', character: '旅', upper: 4, lower: 6, judgment: 'Fogo sobre Montanha: o andante. Prudência e modéstia.', image: 'Fogo na montanha. O sábio é prudente e limita punições.', aspects: ['viagem', 'estrangeiro', 'soltura', 'humildade no exílio'] },
+  // 57-64 — Vento, conclusão
+  { number: 57, chinese: 'Xun', name: 'O Suave', nameEn: 'The Gentle', character: '巽', upper: 4, lower: 4, judgment: 'Vento sobre Vento: o suave penetra. Pequena ação, grande efeito.', image: 'Ventos sucessivos. O sábio planeja e delibera.', aspects: ['suavidade', 'penetração', 'flexibilidade', 'influência sutil'] },
+  { number: 58, chinese: 'Dui', name: 'O Alegre', nameEn: 'The Joyous', character: '兌', upper: 4, lower: 5, judgment: 'Lago sobre Lago: o alegre. A palavra certa.', image: 'Lagos adjacentes. O sábio une os amigos à conversa.', aspects: ['alegria', 'comunicação', 'prazer', 'sutileza verbal'] },
+  { number: 59, chinese: 'Huan', name: 'A Dispersão', nameEn: 'Dispersion', character: '渙', upper: 4, lower: 3, judgment: 'Vento sobre Água: a dispersão. Solte a rigidez.', image: 'Vento sobre a água. O sábio distribui a riqueza.', aspects: ['dispersão', 'soltura', 'comunhão', 'liberação'] },
+  { number: 60, chinese: 'Jie', name: 'A Limitação', nameEn: 'Limitation', character: '節', upper: 3, lower: 4, judgment: 'Água sobre Lago: a limitação. O sucesso é na justa medida.', image: 'Lago sobre a água. O sábio cuida da virtude e discute a conduta.', aspects: ['limitação', 'medida', 'disciplina', 'regulação'] },
+  { number: 61, chinese: 'Zhong Fu', name: 'A Verdade Interior', nameEn: 'Inner Truth', character: '中孚', upper: 4, lower: 4, judgment: 'Vento sobre Lago: a verdade interior. A confiança une.', image: 'Vento sobre o lago. O sábio examina os argumentos e atrasa a morte.', aspects: ['verdade interior', 'confiança', 'sinceridade', 'união pelo centro'] },
+  { number: 62, chinese: 'Xiao Guo', name: 'A Pequena Excedência', nameEn: 'Small Exceeding', character: '小過', upper: 5, lower: 6, judgment: 'Trovão sobre Montanha: pequena excedência. Detalhes importam.', image: 'Trovão na montanha. O sábio excede na cortesia e nos funerais.', aspects: ['detalhe', 'excedência menor', 'cuidado ritual', 'atenção'] },
+  { number: 63, chinese: 'Ji Ji', name: 'Após a Conclusão', nameEn: 'After Completion', character: '既濟', upper: 3, lower: 4, judgment: 'Água sobre Fogo: já completado. Cuidado com o declínio.', image: 'Água sobre o fogo. O sábio medita sobre a sorte e a desgraça.', aspects: ['conclusão', 'plenitude transitória', 'vigilância', 'declínio após auge'] },
+  { number: 64, chinese: 'Wei Ji', name: 'Antes da Conclusão', nameEn: 'Before Completion', character: '未濟', upper: 4, lower: 3, judgment: 'Fogo sobre Água: antes da conclusão. Perseverar traz o sucesso.', image: 'Fogo sobre a água. O sábio distingue as coisas e é cuidadoso.', aspects: ['incompletude', 'potencial', 'cuidado', 'semente'] },
+];
+
+/** Constrói a estrutura Hexagram a partir do registro King Wen. */
+function buildHexagram(def: typeof KING_WEN[number]): Hexagram {
+  const upper = TRIGRAMS[def.upper];
+  const lower = TRIGRAMS[def.lower];
+  // Linhas de baixo (1) para cima (6): primeiro as 3 do trigrama inferior, depois as 3 do superior
+  const lines: [boolean, boolean, boolean, boolean, boolean, boolean] = [
+    lower.lines[0], lower.lines[1], lower.lines[2],
+    upper.lines[0], upper.lines[1], upper.lines[2],
+  ];
+  return {
+    number: def.number,
+    chineseName: def.chinese,
+    name: def.name,
+    nameEn: def.nameEn,
+    character: def.character,
+    upperTrigram: def.upper,
+    lowerTrigram: def.lower,
+    judgment: def.judgment,
+    image: def.image,
+    aspects: def.aspects,
+    lines,
+    tradition: 'I-Ching (周易) / Yijing — Sistema Oracular Chinês Antigo',
+  };
+}
+
+export const HEXAGRAMS: Record<number, Hexagram> = Object.fromEntries(
+  KING_WEN.map((def) => [def.number, buildHexagram(def)]),
+);
+
+/** Retorna o hexagrama pelo número King Wen (1-64). */
+export function getHexagram(number: number): Hexagram {
+  if (!Number.isInteger(number) || number < 1 || number > 64) {
+    throw new RangeError(`Número de hexagrama inválido: ${number}. Esperado 1-64.`);
+  }
+  return HEXAGRAMS[number];
+}
+
+/** Retorna todos os hexagramas (1-64) em ordem King Wen. */
+export function getAllHexagrams(): Hexagram[] {
+  return Object.values(HEXAGRAMS).sort((a, b) => a.number - b.number);
+}

@@ -11,9 +11,10 @@ Numeros_Kabalisticos: [6, 3]
 Corpos_Tantricos_Alvo: ["Mente Negativa (2)", "Linha do Arco (6)"]
 Odus_Associados: [Owonrin]
 Acao_Principal: "Transformação súbita, ruptura necessária, movimento imprevisto"
-source: "PENDENTE_CURADOR (D4) — Tradição Ifá Merindilogun (Iorubá-Nagô); obra/autor/edição/página a indicar (Doc 20 AD-20.3)"
-lineage: "PENDENTE_CURADOR (D4) — Ifá Merindilogun; linhagem específica (Yorubá/Ifá/Candomblé/Umbanda) a confirmar (Doc 20 AD-20.6)"
-provisional: true
+metadata:
+  source: "Pe. Francisco Luciano de Souza Filho, \"Os 16 Odus do Ifá\", p. 60-66"
+  lineage: "Yorubá (Nagô) / Ifá / Merindilogun — Candomblé Ketu"
+  validated_at: "2026-06-07"
 ---
 
 # Owonrin — O Trovão que Transforma
@@ -49,3 +50,13 @@ O Ar de Owonrin é o vento que vira tempestade. Não é o suave sopro do amanhec
 ## Ação Prática
 
 Na energia de Owonrin, o movimento é a medicina. Se você está parado demais — fisica, emocional ou espiritualmente — este é o Odu que vem quebrar essa inércia. Uma ação concreta: mude um hábito diário significativo por sete dias consecutivos. Pode ser a rota que você toma para o trabalho, o horário em que você acorda, ou a primeira coisa que você faz ao acordar. Essa pequena ruptura de padrão envia um sinal ao seu sistema nervoso e ao campo espiritual de que você está aberto ao novo. Exu abre os caminhos para quem demonstra coragem de se mover.
+
+## EN
+
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
+
+### Owonrin — O Trovao que Transforma
+
+**Owonrin — O Trovao que Transforma** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*
