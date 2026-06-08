@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/infrastructure/prisma';
-import { getRedisClient } from '@/lib/redis';
+import { getRedisClient } from '@/lib/infrastructure/redis';
 
 /**
  * Readiness Probe Endpoint (AD-22)

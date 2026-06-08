@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { geocodeCity } from '@/lib/geocoding/nominatim';
+import { geocodeCity } from '@/lib/infrastructure/geocoding/nominatim';
 
 type FormData = {
   name: string;

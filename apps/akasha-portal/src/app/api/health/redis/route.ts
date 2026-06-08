@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getRedisClient } from '@/lib/redis';
+import { getRedisClient } from '@/lib/infrastructure/redis';
 
 /**
  * Deep Redis Health Check (AD-22)

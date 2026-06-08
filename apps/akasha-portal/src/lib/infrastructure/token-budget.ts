@@ -10,7 +10,7 @@
  *   LLM_DAILY_TOKEN_BUDGET  — maximum tokens allowed per day (e.g. 100000).
  *                             If not set, budget checks are skipped (no limit).
  */
-import { getRedisClient } from '@/lib/redis';
+import { getRedisClient } from '@/lib/infrastructure/redis';
 
 // ----------------------------------------------------------------------------
 // Key helpers

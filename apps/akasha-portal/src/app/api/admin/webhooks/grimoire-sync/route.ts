@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/infrastructure/prisma';
 import { requireAkashaApi } from '@/lib/auth/akasha-guard';
-import { syncGrimoire } from '@/lib/grimoire/sync';
+import { syncGrimoire } from '@/lib/infrastructure/grimoire-sync';
 
 export const dynamic = 'force-dynamic';
 
