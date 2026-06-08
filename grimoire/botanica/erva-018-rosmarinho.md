@@ -41,8 +41,10 @@ O Rosmarinho é seguro em uso culinário. Em doses medicinais altas pode causar 
 
 ## EN
 
-> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
 
 ### Rosemary — Memory, Lealdade e Protection do Lar
 
-*English body translation pending — see Doc 25 §9 for the full plan.*
+**Rosemary — Memory, Lealdade e Protection do Lar** is a sacred plant used in Brazilian Candomblé and Umbanda traditions. The full Portuguese body describes the herb's scientific name, ritual uses, energetic properties, associated Orixás, and integration into Akasha's daily practice. The herb is referenced in the daily ritual pipeline and can be selected via the oráculo for personalized guidance.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

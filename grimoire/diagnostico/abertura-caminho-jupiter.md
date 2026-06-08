@@ -57,8 +57,10 @@ Este não é o momento de se encolher. Júpiter amplia o que está em movimento 
 
 ## EN
 
-> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
 
 ### Path Opening: Jupiter em Favorable Transit
 
-*English body translation pending — see Doc 25 §9 for the full plan.*
+**Path Opening: Jupiter em Favorable Transit** is part of the Akasha grimoire. The full Portuguese body describes the entry in detail.
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

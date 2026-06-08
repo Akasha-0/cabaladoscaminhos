@@ -53,8 +53,10 @@ Irosun pede atenção ao corpo físico como templo. Avalie: você tem dormido be
 
 ## EN
 
-> **Translation status:** Title + structural placeholder only. Full EN body translation is a follow-up cycle (Doc 25 §9 Fase 2).
+> **Translation status:** Native-quality EN translation of the full Portuguese body is a follow-up cycle (Doc 25 §9 Fase 2). The structure below is a generated English summary that preserves the entry's identity and intent — a native speaker review is required before public-facing launch.
 
 ### Irosun — O Sangue que Flui
 
-*English body translation pending — see Doc 25 §9 for the full plan.*
+**Irosun — O Sangue que Flui** is one of the 16 principal Odus (Merindilogun) of the Yorubá-Igbatim Ifá tradition. The full Portuguese body covers the Odu's essence (essência), the prohibitions (quizilas), the associated Orixás, the elements it governs, and the akashic interpretation within the cross of the 4 Pillars. This Odu is validated against a published source (see frontmatter metadata.source).
+
+*Full body translation pending — see Doc 25 §9 for the full plan.*

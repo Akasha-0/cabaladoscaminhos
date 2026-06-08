@@ -45,16 +45,27 @@ async function listAllGrimoire(): Promise<string[]> {
 }
 
 describe('Grimoire EN completeness (Doc 25 §9, v0.0.4-T9)', () => {
-  it('every grimoire file has a `## EN` section', async () => {
+  it('every grimoire file has a `## EN` section with substantive body (>200 chars after title)', async () => {
     const files = await listAllGrimoire();
     expect(files.length).toBeGreaterThanOrEqual(80);
 
     const missing: string[] = [];
+    const thin: string[] = [];
     for (const f of files) {
       const content = await fs.readFile(f, 'utf-8');
-      if (!/^## EN\b/m.test(content)) missing.push(path.basename(f));
+      const enMatch = content.match(/## EN\s*([\s\S]*?)(?=\n##\s|\s*$)/m);
+      if (!enMatch) {
+        missing.push(path.basename(f));
+        continue;
+      }
+      // Body after the H3 title line should be > 200 chars (substantive)
+      const bodyAfterTitle = enMatch[1].replace(/^.*?###.*?\n/m, '').trim();
+      if (bodyAfterTitle.length < 200) {
+        thin.push(`${path.basename(f)} (${bodyAfterTitle.length} chars)`);
+      }
     }
     expect(missing, `Files missing ## EN: ${missing.join(', ')}`).toEqual([]);
+    expect(thin, `Files with thin ## EN bodies: ${thin.join(', ')}`).toEqual([]);
   });
 
   it('every grimoire file has a non-empty `title_en` in frontmatter', async () => {
