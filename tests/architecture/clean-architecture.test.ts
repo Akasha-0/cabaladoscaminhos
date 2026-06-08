@@ -12,7 +12,8 @@ import { describe, it, expect } from 'vitest';
 import { execSync } from 'child_process';
 import path from 'path';
 
-const ROOT = path.resolve(process.cwd());
+// vitest runs from apps/akasha-portal, so we need to go up to monorepo root
+const ROOT = path.resolve(process.cwd(), '../..');
 
 // Padrões proibidos: imports que atravessam a fronteira domain → infrastructure
 const PROHIBITED_PATTERNS = [
