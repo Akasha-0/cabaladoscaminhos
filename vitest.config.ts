@@ -22,8 +22,8 @@ export default defineConfig({
     pool: 'forks',
     testTimeout: 15000,
     setupFiles: ['./tests/setup.ts'],
-    resolve: {
-      alias: sharedAliases,
-    },
+  },
+  resolve: {
+    alias: sharedAliases,
   },
 });
