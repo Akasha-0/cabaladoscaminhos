@@ -25,7 +25,6 @@ export type ThemeId =
   | 'karma_destino'
   | 'geral';
 
-// fallow-ignore-next-line unused-type
 export interface ThemeEntry {
   id: ThemeId;
   /** Casas primárias da Mesa Real associadas ao tema. */
@@ -196,7 +195,6 @@ export function routeQuestion(question: string, filledHouses: number[] = []): Ro
 
 export type Pillar = 'astrology' | 'kabala' | 'tantra' | 'odus' | 'iching';
 
-// fallow-ignore-next-line unused-type
 export interface PillarEntry {
   id: Pillar;
   /** Palavras-gatilho (lematizadas, sem acento) — PT e EN. */

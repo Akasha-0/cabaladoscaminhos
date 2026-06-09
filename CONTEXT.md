@@ -167,12 +167,15 @@ git tag --sort=-creatordate | head -5  # Tags recentes
 │  application/    — Casos de uso             │
 ├──────────────────────────────────────────────┤
 │  domain/         — Lógica pura (sem I/O)     │
+│  └── domain/types/ — Tipos compartilhados   │
 ├──────────────────────────────────────────────┤
 │  infrastructure/ — Prisma, Redis, external  │
 ├──────────────────────────────────────────────┤
-│  shared/         — Utils, constants, types   │
+│  shared/         — Utils, constants         │
 └──────────────────────────────────────────────┘
 ```
+
+> **Padrão de Tipos:** Tipos usados por múltiplas camadas devem residir em `domain/types/`. Ver `docs/03_architecture-spec.md` e ADR (T10).
 
 ---
 

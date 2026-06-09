@@ -14,7 +14,6 @@ import {
   calculatePersonality,
 } from './calculos';
 
-// fallow-ignore-next-line unused-type
 export interface NumerologyInput {
   name: string;
   date: string;

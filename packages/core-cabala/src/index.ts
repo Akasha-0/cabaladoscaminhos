@@ -24,7 +24,7 @@ export {
 // Numerologia auxiliar
 // Numerologia auxiliar — cálculos base
 export { somarDigitos, calcularPitagorica, calcularCaldeia, calcularCabalistica, calcularTantrica, calcularPitagoricaData, isMasterNumber, tabelaPitagorica, tabelaCaldeia, tabelaCabalistica, getInterpretacao } from './calculos';
-export { getMeaning, getMeanings, getMasterNumbers, getCoreNumbers } from './number-meanings';
+export { getMeaning, getNumberMeanings, getMasterNumbers, getCoreNumbers } from './number-meanings';
 export { getCiclosTemporais, calcularAnoPessoal } from './ciclos';
 export { calcularCaminhoVida } from './life-path';
 

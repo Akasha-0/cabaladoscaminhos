@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { generateRequestId } from '@/lib/logging';
+import { generateRequestId } from '@/lib/shared/logging';
 import { checkRateLimit } from '@/lib/rate-limit';
 import { extractIdentifier } from '@/middleware/rateLimit';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';

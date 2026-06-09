@@ -9,7 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/interface/api/spiritual-filters';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/domain/types/spiritual-filters';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
@@ -88,17 +88,11 @@ const CreditsProgressSchema = z.object({
   currentBalance: z.number().int(),
   mostExpensiveFeature: z.string().nullable(),
 });
-// fallow-ignore-next-line unused-type
 export type Achievement = z.infer<typeof AchievementSchema>;
-// fallow-ignore-next-line unused-type
 export type CreditsProgress = z.infer<typeof CreditsProgressSchema>;
-// fallow-ignore-next-line unused-type
 export type ProgressStats = z.infer<typeof ProgressStatsSchema>;
-// fallow-ignore-next-line unused-type
 export type ReadingProgress = z.infer<typeof ReadingProgressSchema>;
-// fallow-ignore-next-line unused-type
 export type RitualProgress = z.infer<typeof RitualProgressSchema>;
-// fallow-ignore-next-line unused-type
 export type MeditationProgress = z.infer<typeof MeditationProgressSchema>;
 export const dynamic = 'force-dynamic';
 

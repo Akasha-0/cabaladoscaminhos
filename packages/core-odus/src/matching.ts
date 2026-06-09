@@ -38,9 +38,9 @@ export type EboCategory =
   | 'movimento';
 
 /**
- * Ritual suggestion for an Odu
+ * Ritual match result for an Odu
  */
-export interface RitualSuggestion {
+export interface RitualMatch {
   tipo: RitualType;
   nome: string;
   descricao: string;
@@ -68,7 +68,7 @@ export interface EboSuggestion {
  */
 export interface OduMatchingResult {
   odu: OduInfo;
-  rituais: RitualSuggestion[];
+  rituais: RitualMatch[];
   ebos: EboSuggestion[];
   orixasRelacionados: string[];
   praticasDiarias: string[];
@@ -414,7 +414,7 @@ const contraindications: Record<number, string[]> = {
 /**
  * Get ritual suggestion for an Odu based on its type
  */
-function buildRitualSuggestion(odu: OduInfo): RitualSuggestion | null {
+function buildRitualMatch(odu: OduInfo): RitualMatch | null {
   const ritualConfig = oduRitualMap[odu.numero];
   if (!ritualConfig) return null;
 
@@ -479,13 +479,13 @@ function parseEboFromOdu(odu: OduInfo): EboSuggestion | null {
  * @returns Complete matching result with rituals, ebós, and suggestions
  */
 export function matchOduToRitual(odu: OduInfo): OduMatchingResult {
-  const ritualSuggestion = buildRitualSuggestion(odu);
+  const ritualMatch = buildRitualMatch(odu);
   const eboSuggestion = parseEboFromOdu(odu);
   const relatedOrixas = oduRelatedOrixas[odu.numero] || [];
   const praticas = dailyPractices[odu.numero] || [];
   const contra = contraindications[odu.numero] || [];
 
-  const rituais: RitualSuggestion[] = ritualSuggestion ? [ritualSuggestion] : [];
+  const rituais: RitualMatch[] = ritualMatch ? [ritualMatch] : [];
 
   const ebos: EboSuggestion[] = eboSuggestion ? [eboSuggestion] : [];
 

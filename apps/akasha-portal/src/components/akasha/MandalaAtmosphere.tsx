@@ -3,6 +3,7 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import type { AtmosphereIntensity } from '@/stores/cockpit-store';
 
 // Cosmic palette — Doc 26 §3
 const COLORS = {
@@ -66,8 +67,6 @@ function Particles({ count = 80 }: { count?: number }) {
     </points>
   );
 }
-
-export type AtmosphereIntensity = 'low' | 'medium' | 'high';
 
 export function MandalaAtmosphere({
   intensity = 'medium',

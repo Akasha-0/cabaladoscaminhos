@@ -7,10 +7,10 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/interface/api/spiritual-filters';
+import { SefirotSchema, ChakraSchema, ElementSchema } from '@/lib/domain/types/spiritual-filters';
 import { orixas, odus } from '@/lib/domain/data/spiritual-data';
 import { TAROT_DECK } from '@/lib/domain/tarot/cards';
-import { searchParamsToObject } from '@/lib/interface/api/query-params';
+import { searchParamsToObject } from '@/lib/shared/query-params';
 // ─── Spiritual filter schemas imported from @/lib/api/spiritual-filters ─────
 
 const SearchQuerySchema = z.object({

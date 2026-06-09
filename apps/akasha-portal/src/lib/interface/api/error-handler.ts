@@ -9,7 +9,6 @@
 
 import { NextResponse } from 'next/server';
 import type { ZodError } from 'zod';
-// fallow-ignore-next-line unused-type
 export interface APIError {
   code?: string;
   message: string;

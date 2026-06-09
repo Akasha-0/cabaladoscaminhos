@@ -5,8 +5,10 @@
  */
 
 // Dados canônicos dos 16 Odus
-export type { OduInfo } from './odus-ifa-data';
 export { ODUS_IFA, getOduPorNumero } from './odus-ifa-data';
+
+// Odu Info - fonte canônica
+export type { OduInfo } from './calculos';
 
 // Cálculos de Odu
 export { odusData, calcularOduNascimento, getQuizilasPorOdu, getPreceitosPorOdu, getEbósPorOdu } from './calculos';

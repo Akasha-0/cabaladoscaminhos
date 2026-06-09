@@ -9,12 +9,14 @@ import {
   calcularTantrica,
   calcularPitagoricaData,
   getInterpretacao,
-  calculateLifePath,
-  calculateExpression,
-  calculateSoulUrge,
-  calculatePersonality,
   type InterpretacaoNumerologia,
 } from './calculos';
+import {
+  calculateLifePath,
+  calculateExpression,
+  calculateMotivation,
+  calculateImpression,
+} from './numerology-kabalah';
 
 export interface NumerologyResult {
   numero: number;
@@ -77,10 +79,10 @@ export function calculateNumerology(name: string, date: string): NumerologyRepor
       tipo: 'destino',
       interpretacao: getInterpretacao(destinoNum),
     },
-    vida: calculateLifePath(date),
-    expressao: calculateExpression(name),
-    motivacao: calculateSoulUrge(name),
-    impressao: calculatePersonality(name),
+    vida: calculateLifePath(date).number,
+    expressao: calculateExpression(name).number,
+    motivacao: calculateMotivation(name).number,
+    impressao: calculateImpression(name).number,
   };
 }
 
@@ -106,8 +108,8 @@ export const numerologyMethods = {
     numero: calcularPitagoricaData(date),
     interpretacao: getInterpretacao(calcularPitagoricaData(date)),
   }),
-  vida: (date: string) => calculateLifePath(date),
-  expressao: (name: string) => calculateExpression(name),
-  motivacao: (name: string) => calculateSoulUrge(name),
-  impressao: (name: string) => calculatePersonality(name),
+  vida: (date: string) => calculateLifePath(date).number,
+  expressao: (name: string) => calculateExpression(name).number,
+  motivacao: (name: string) => calculateMotivation(name).number,
+  impressao: (name: string) => calculateImpression(name).number,
 };

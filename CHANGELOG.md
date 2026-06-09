@@ -1,55 +1,68 @@
-# Changelog — Cabala dos Caminhos
+# Changelog
 
-Todos os cambios notáveis deste projeto serão documentados neste ficheiro.
-
-O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
-e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
-
-## [0.1.0] - 2026-05-30
+## v0.0.9 (2026-06-08)
 
 ### Added
-- **README.md profissional** com badges, stack, e instruções de setup
-- **CONTRIBUTING.md** detalhado com convenções de código
-- **.env.example** com todas as variáveis necessárias
-- **CHANGELOG.md** para tracking de versões
+- Stubs de módulos para permitir compilação:
+  - `src/lib/grimoire/sync.ts` - syncGrimoire
+  - `src/lib/grimoire/search.ts` - searchGrimoireHybrid, GrimoireContext
+  - `src/lib/shared/logging.ts` - generateRequestId
+  - `src/lib/shared/rate-limit.ts` - checkRateLimit
+  - `src/lib/swarm.ts` - getKnowledgeBase, KnowledgeEntry
+
+### Known Issues
+- Erros de typecheck em middleware.ts e rateLimit.ts (callers sync vs função async)
+- Módulos de correlação (orixa-frequency, orixa-numerology, orixa-planet) ausentes
+- Módulo life-areas ausente
+- Estes são stubs - implementação real na Onda 3 (Oráculo Vivo)
+
+---
+
+## v0.0.8 (2026-06-08)
 
 ### Changed
-- **Estrutura do repo** organizada para melhor compreensão
-- **.gitignore** atualizado para ignorar caminhos de debug/test/prototype
+- Limpeza Fallow: 3168 → 1327 issues (-58%)
+- V001 resolvida: domain/ não importa mais de interface/
+
+### Added
+- ADRs documentados:
+  - ADR-001: Tipos compartilhados em domain/types/
+  - ADR-002: Padrão barrel files
+  - ADR-003: Resolução da violação V001
+  - ADR-004: Utilitários compartilhados em shared/
+- Análise Fallow documentada em docs/audit/
 
 ### Removed
-- Limpeza de pastas debug/test/prototype
-- Remoção de caminhos disabled/BROKEN
-- Files de teste inline removidos
+- 148 módulos de correlação órfãos
+- 146 testes de correlação órfãos
+- 8 unused dependencies
+- 12 stale suppressions
+- Barrel file redundante interface/api/spiritual-correlations.ts
 
-### Technical
-- 278 commits no histórico
-- 215 sprints completados
-- 1728 testes passando
-- 400+ API routes
-
----
-
-## Histórico de Sprints
-
-### Sprint 201-215 — Polish & Infrastructure
-- Dashboard insights frontend
-- Layout components (AppShell, PageHeader, MysticButton)
-- Landing page com animações cósmicas
-- Quality evolution tracking
-
-### Sprint 196-200 — Mapa da Alma Engine
-- Unified Spiritual Engine (Numerologia + Ifá + Astrologia + Tarot + Chakras)
-- Mapa AI Insights Engine com caching Redis
-- Mapa page components (9 componentes novos)
-- Design system completo
-
-### Sprint 197 — Pages & CI/CD
-- Login/Register/Dashboard pages
-- PWA setup (manifest, install prompt, offline indicator)
-- GitHub Actions CI pipeline
-- PDF export functionality
+### Fixed
+- Imports atualizados de interface/ para domain/types/
+- Utilitários movidos de interface/ para shared/
 
 ---
 
-*Gerado automaticamente —última atualização 2026-05-30*
+## v0.0.7 (2026-06-07)
+
+### Added
+- CONTEXT.md - índice centralizado para agentes
+- docs/adrs/ - decisões arquiteturais
+
+### Changed
+- Limpeza da raiz do monorepo
+- Refatoração de interface/ para barrel files funcionais
+
+---
+
+## v0.0.6 (2026-06-06)
+
+### Added
+- Onda 7 completa: Refatoração arquitetural em 5 camadas
+- Curadoria pendente documentada
+
+### Changed
+- Estrutura de diretórios alinhada com Clean Architecture
+- Tests movidos para tests/ na raiz

@@ -37,7 +37,7 @@ const MEANINGS: Record<number, NumberMeaning> = {
   33: { numero: 33, nome: 'Mestre Servidor', planeta: 'Cosmos', significado: 'Ensino, cura, sacrifício divino', forca: 'Devoção, unconditional love', desafio: 'Martírio, burnout', sefira: 'Kether', arco: 'XXXIII', cor: 'Branco', pedra: 'Selenita', qualidade: 'Cardeal', palavraChave: ['ensino', 'cura', 'serviço'], affirmation: 'Eu sirvo com amor incondicional' },
 }
 
-export function getMeanings(): Record<number, NumberMeaning> {
+export function getNumberMeanings(): Record<number, NumberMeaning> {
   return MEANINGS
 }
 

@@ -337,5 +337,4 @@ export function getSwarm(): SwarmOrchestrator {
   }
   return swarmInstance;
 }
-// fallow-ignore-next-line unused-type
 export type { SwarmConfig };

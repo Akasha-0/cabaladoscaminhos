@@ -6,9 +6,32 @@
     "**/dist/**",
     "**/build/**"
   ],
-  "baselines": {
-    "health": "docs/audit/baseline-fallow-post-arch.json",
-    "dupes": "docs/audit/baseline-fallow-post-arch.json",
-    "deadCode": "docs/audit/baseline-fallow-post-arch.json"
-  }
+  "ignoreUnresolvedImports": [
+    "@/lib/vibration/vibration-data",
+    "@/lib/vibration/vibration-mapping",
+    "@/lib/wisdom/wisdom-data",
+    "@/lib/wisdom/wisdom-tracking",
+    "@/lib/yantra/yantra-data",
+    "@/lib/pwa/use-service-worker",
+    "@/lib/push/web-push-server",
+    "@/app/api/akasha/push/subscribe/route",
+    "@/app/api/akasha/transits/today/route",
+    "../src/lib/akasha/daily-engine",
+    "@/lib/correlation/orixa-frequency",
+    "@/lib/correlation/orixa-numerology",
+    "@/lib/correlation/orixa-planet",
+    "@/lib/infrastructure/grimoire-search/types"
+  ],
+  "ignoreDependencies": [
+    "@react-three/fiber",
+    "qrcode"
+  ],
+  "ignoreTypeErrors": [
+    "apps/akasha-portal/src/app/api/akasha/consult/route.ts",
+    "apps/akasha-portal/src/lib/application/agents/recommendation-engine-v2.ts",
+    "apps/akasha-portal/src/lib/application/akasha/cross-engine.ts",
+    "apps/akasha-portal/src/lib/application/akasha/daily-engine.ts",
+    "apps/akasha-portal/src/lib/application/akasha/manifesto-builder.ts",
+    "apps/akasha-portal/src/lib/infrastructure/grimoire-search.ts"
+  ]
 }

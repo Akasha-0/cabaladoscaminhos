@@ -19,7 +19,6 @@ export interface SpiritualStats {
   byOrixa: Record<string, number>;
 }
 
-// fallow-ignore-next-line unused-type
 export interface HasSpiritualCorrelations {
   tipo?: string;
   type?: string;

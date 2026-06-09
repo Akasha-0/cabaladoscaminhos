@@ -2,7 +2,6 @@ import { stripe } from './stripe';
 import { prisma } from '@/lib/infrastructure/prisma';
 import Stripe from 'stripe';
 
-// fallow-ignore-next-line unused-type
 export interface PlanoInfo {
   id: string;
   nome: string;

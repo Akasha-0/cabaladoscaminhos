@@ -218,6 +218,20 @@ Puppeteer/headless Chrome consome RAM gráfica absurda no VPS (pode derrubar DB/
 
 > **Nota:** Para um índice centralizado de todo o projeto, consulte [CONTEXT.md](../CONTEXT.md)
 
+### Padrão de Tipos Compartilhados
+
+> **ADR:** A ser documentado em `docs/ADR-001-tipos-compartilhados.md` (T10)
+
+Tipos usados por múltiplas camadas doClean Architecture devem ser definidos em:
+
+```
+src/lib/domain/types/
+```
+
+**Regra:** `domain/` é a camada mais baixa (sem dependências externas). Qualquer tipo que precise ser compartilhado entre `application/`, `infrastructure/` ou `interface/` deve residir em `domain/types/` para manter a independência da camada domain.
+
+---
+
 ### Violações Detectadas
 
 #### V001: domain/ importando de interface/ (T9)
@@ -225,3 +239,4 @@ Puppeteer/headless Chrome consome RAM gráfica absurda no VPS (pode derrubar DB/
 - **Import problemático:** `import type { SpiritualCorrelations } from '@/lib/interface/api/spiritual-correlations'`
 - **Regra violada:** `src/lib/domain/` não deve importar de `src/lib/interface/`
 - **Recomendação:** Mover o tipo `SpiritualCorrelations` para `src/lib/domain/types/` ou `src/lib/shared/` para manter a independência da camada domain
+- **Status:** ✅ Resolvido (2026-06-08)

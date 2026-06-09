@@ -18,7 +18,6 @@ export interface AuthUser {
   role?: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface AuthResult {
   user: AuthUser | null;
   error: string | null;

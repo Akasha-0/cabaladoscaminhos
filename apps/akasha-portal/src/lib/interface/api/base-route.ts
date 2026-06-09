@@ -188,7 +188,6 @@ export interface AuthUser {
   email: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface AuthResult {
   user: AuthUser | null;
   error: { code: ErrorCodeType; message: string } | null;

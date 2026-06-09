@@ -19,7 +19,6 @@ interface SpreadPosition {
   sefira?: string;
 }
 
-// fallow-ignore-next-line unused-type
 export interface Spread {
   id: string;
   name: string;

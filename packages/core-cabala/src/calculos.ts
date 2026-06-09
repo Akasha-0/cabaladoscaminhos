@@ -226,15 +226,3 @@ export function getInterpretacao(numero: number): InterpretacaoNumerologia {
     sefirotRelacionado: 'A determinar'
   };
 };
-export function calculateLifePath(dataNascimento: string): number {
-  return calcularTantrica(dataNascimento);
-}
-export function calculateExpression(nome: string): number {
-  return calcularPitagorica(nome);
-}
-export function calculateSoulUrge(nome: string): number {
-  return calcularCaldeia(nome);
-}
-export function calculatePersonality(nome: string): number {
-  return calcularCabalistica(nome);
-}

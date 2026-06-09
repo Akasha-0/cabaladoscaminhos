@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { orixas, odus } from '@/lib/domain/data/spiritual-data';
 import { TAROT_DECK } from '@/lib/domain/tarot/cards';
-import { searchParamsToObject } from '@/lib/interface/api/query-params';
+import { searchParamsToObject } from '@/lib/shared/query-params';
 // ─── Zod Schemas ───────────────────────────────────────────────────────────
 const SearchTypeSchema = z.enum(['odu', 'orixa', 'ritual', 'tarot']);
 

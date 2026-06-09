@@ -50,8 +50,8 @@ export function calculateBirthOdu(birthDate: string): OduBirth {
     oduNumber,
     oduName: odu.nome,
     orixaRegency: [odu.orixaRegente],
-    elementalForce: `${odu.elemento} — ${odu.significado.split('.')[0]}`,
-    lifeLesson: odu.preceptos.join('; '),
+    elementalForce: `${odu.elementos} — ${odu.significado.split('.')[0]}`,
+    lifeLesson: odu.preceitos.join('; '),
     // Algoritmo default (dia+mês). A tabela definitiva da linhagem é decisão
     // do operador (D3, Doc 11 §4); sinalizado para a UI até ser substituído.
     provisional: true,

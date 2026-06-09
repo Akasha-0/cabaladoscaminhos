@@ -150,3 +150,20 @@ testes verdes            vê sua Mandala e          diário + conversa          
 | Ollama no VPS (RAM) | Média | Fallback de embeddings na nuvem (custo irrisório — Doc 25 §5) |
 | Curadoria do Grimório | Alta — qualidade do oráculo | Geração em lote assistida + curadoria humana (Doc 20) |
 | Tabela data→Odu (D3) | Média | Algoritmo default provisório (Doc 11 §4.1) até a linhagem |
+
+---
+
+## Histórico de Releases
+
+| Versão | Data | Status | Descrição |
+|--------|------|--------|-----------|
+| v0.0.9 | 2026-06-08 | ✅ Concluída | Stubs de módulos ausentes (grimoire, logging, rate-limit, swarm) |
+| v0.0.8 | 2026-06-08 | ✅ Concluída | Limpeza Fallow (3168→1327 issues), V001 resolvida, ADRs criados |
+| v0.0.7 | 2026-06-07 | ✅ Concluída | CONTEXT.md, limpeza da raiz, refatoração interface/ |
+| v0.0.6 | 2026-06-06 | ✅ Concluída | Onda 7 completa (arquitetura + curadoria) |
+
+### Notas de Release
+
+**v0.0.8:** Redução de 58% nos issues do Fallow. ADRs documentados para padrões arquiteturais. Violação V001 resolvida.
+
+**v0.0.9:** Módulos stubs criados para permitir typecheck e testes compilararem. Erros restantes aceitos como dívida técnica para Onda 3.
