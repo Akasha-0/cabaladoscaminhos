@@ -14,14 +14,14 @@ import {
 
 describe('Práticas Integrativas', () => {
   describe('getAllPractices', () => {
-    it('deve retornar exatamente 20 práticas', () => {
-      expect(getAllPractices()).toHaveLength(20);
+    it('deve retornar exatamente 49 práticas', () => {
+      expect(getAllPractices()).toHaveLength(49);
     });
 
     it('deve retornar uma cópia do array original', () => {
       const all = getAllPractices();
       all.push({} as never);
-      expect(getAllPractices()).toHaveLength(20);
+      expect(getAllPractices()).toHaveLength(49);
     });
   });
 
@@ -56,7 +56,7 @@ describe('Práticas Integrativas', () => {
   describe('getPracticesByTradition', () => {
     it('deve retornar práticas do Candomblé', () => {
       const candomble = getPracticesByTradition('Candomblé');
-      expect(candomble.length).toBe(4);
+      expect(candomble.length).toBe(12);
       candomble.forEach((p) => {
         expect(p.tradition).toBe('Candomblé');
       });
@@ -64,7 +64,7 @@ describe('Práticas Integrativas', () => {
 
     it('deve retornar práticas do Ifá', () => {
       const ifa = getPracticesByTradition('Ifá');
-      expect(ifa.length).toBe(1);
+      expect(ifa.length).toBe(7);
       ifa.forEach((p) => {
         expect(p.tradition).toBe('Ifá');
       });
@@ -72,19 +72,19 @@ describe('Práticas Integrativas', () => {
 
     it('deve retornar práticas da Cristaloterapia', () => {
       const cristais = getPracticesByTradition('Cristaloterapia');
-      expect(cristais.length).toBe(5);
+      expect(cristais.length).toBe(10);
     });
   });
 
   describe('getPracticesByCategory', () => {
     it('deve retornar práticas de banho_de_ervas', () => {
       const banhos = getPracticesByCategory('banho_de_ervas');
-      expect(banhos.length).toBe(2);
+      expect(banhos.length).toBe(5);
     });
 
     it('deve retornar práticas de cristal', () => {
       const cristais = getPracticesByCategory('cristal');
-      expect(cristais.length).toBe(5);
+      expect(cristais.length).toBe(10);
     });
   });
 

@@ -1,7 +1,7 @@
 /**
  * @akasha/core - Núcleo do Akasha OS
  * 
- * Exporta o Correlation Map e tipos fundamentais
+ * Exporta o Correlation Map, guardrails e tipos fundamentais
  */
 
 export {
@@ -34,3 +34,13 @@ export {
   getFullCorrelation,
   buildIchingToIfaMap,
 } from './correlation-map.js';
+
+export {
+  // Funções de guardrails
+  isSafePractice,
+  validatePractice,
+  
+  // Tipos
+  type Practice,
+  type ValidationResult,
+} from './practices-guardrails.js';
