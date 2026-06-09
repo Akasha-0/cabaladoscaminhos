@@ -1,10 +1,8 @@
-import { randomUUID } from 'crypto';
-
 /**
  * Gera um ID único para cada request (para tracing/logging)
  */
 export function generateRequestId(): string {
-  return randomUUID();
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 }
 
 /**
