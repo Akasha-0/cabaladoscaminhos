@@ -8,7 +8,10 @@
   "exports": {
     ".": "./src/index.ts",
     "./cli": "./src/cli/index.ts",
-    "./api": "./src/api/ask/route.ts"
+    "./api": "./src/api/ask/route.ts",
+    "./types": "./src/types.ts",
+    "./maps": "./src/maps.ts",
+    "./correlation": "./src/correlation.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
@@ -22,6 +25,7 @@
     "@akasha/core-odus": "workspace:*",
     "@akasha/core-tantra": "workspace:*",
     "@akasha/types": "workspace:*",
+    "@supabase/supabase-js": "^2.39.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "ink": "^5.2.1"

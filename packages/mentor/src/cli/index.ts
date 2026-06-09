@@ -1,15 +1,5 @@
-#!/usr/bin/env node
-// CLI entry point for mentor
+// CLI entry point for mentor package
 
-import { render } from 'ink';
-import React from 'react';
-import { MentorChat } from './chat';
-
-const { waitUntilExit } = render(React.createElement(MentorChat));
-
-waitUntilExit().then(() => {
-  console.log('Goodbye!');
-}).catch((err) => {
-  console.error('Error:', err);
-  process.exit(1);
-});
+export { MentorCLI } from './MentorCLI';
+export { runChat } from './chat';
+export { Login, runLogin } from './login';

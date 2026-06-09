@@ -1,55 +1,91 @@
-// Cross-system correlation engine
+// Correlation wrapper for DeepCorrelationEngine
 
-import type { Correlation, MentorContext } from './types';
-import { findCorrelations } from './maps';
+import type { UserSpiritualData } from '@/lib/application/ai/types';
+import type { UserMaps, CorrelationResult } from './types';
+import { DeepCorrelationEngine } from '@/lib/application/ai/deep-correlation-engine';
 
-export interface CorrelationResult {
-  primary: string;
-  system: string;
-  correlations: Correlation[];
+export interface CorrelationOptions {
+  maxCorrelations?: number;
+  includeInsights?: boolean;
 }
 
-export async function correlateAll(context: MentorContext): Promise<CorrelationResult[]> {
+/**
+ * Convert UserMaps to UserSpiritualData for DeepCorrelationEngine
+ */
+function mapsToSpiritualData(maps: UserMaps): UserSpiritualData {
+  return {
+    id: 'mentor-user',
+    nome: maps.cabala?.dominantSefira || 'User',
+    dataNascimento: '',
+    numeroPessoal: maps.cabala?.lifePath || maps.cabala?.sefirot?.length || 0,
+    arcoPessoal: 0,
+    odu: maps.odus?.odu || maps.odus?.primary || '',
+    orixaRegente: '',
+    sefirotDominante: maps.cabala?.sefirot || [],
+    arcoMaior: [],
+    sign: maps.astrology?.sign || '',
+    houses: maps.astrology?.houses || {},
+    rashi: maps.astrology?.rashi || '',
+  };
+}
+
+/**
+ * Get correlations using DeepCorrelationEngine
+ */
+export async function getCorrelations(
+  maps: UserMaps,
+  _question: string,
+  options: CorrelationOptions = {}
+): Promise<CorrelationResult[]> {
+  const engine = new DeepCorrelationEngine();
+  const data = mapsToSpiritualData(maps);
   const results: CorrelationResult[] = [];
-  
-  // Placeholder: correlate based on birth data
-  if (context.birthData) {
-    // Cabala correlation
+
+  // Get all system correlations
+  const systemCorrelations = engine.getAllSystemCorrelations(data);
+
+  for (const corr of systemCorrelations) {
     results.push({
-      primary: 'life-path',
-      system: 'cabala',
-      correlations: findCorrelations('life-path', 'cabala'),
-    });
-    
-    // Astrology correlation
-    results.push({
-      primary: 'sun-sign',
-      system: 'astrology',
-      correlations: findCorrelations('sun-sign', 'astrology'),
-    });
-    
-    // Odus correlation
-    results.push({
-      primary: 'birth-odu',
-      system: 'odus',
-      correlations: findCorrelations('birth-odu', 'odus'),
+      primary: `${corr.source}:${corr.target}`,
+      secondary: corr.correlationType,
+      insight: corr.explanation,
     });
   }
-  
-  return results;
+
+  // Get cross-system patterns
+  const patterns = engine.findCrossSystemPatterns(data);
+
+  for (const pattern of patterns) {
+    results.push({
+      primary: pattern.name,
+      secondary: pattern.involved_systems.join(', '),
+      insight: pattern.description,
+    });
+  }
+
+  // Limit results
+  const limit = options.maxCorrelations ?? 5;
+  return results.slice(0, limit);
 }
 
-export function findCommonThemes(correlations: Correlation[]): string[] {
-  // Find themes that appear across multiple systems
-  const themes = new Map<string, number>();
-  
-  for (const corr of correlations) {
-    // Extract theme from reference (placeholder logic)
-    const theme = corr.reference.split('-')[0];
-    themes.set(theme, (themes.get(theme) || 0) + 1);
+/**
+ * Format correlations for display
+ */
+export function formatCorrelations(correlations: CorrelationResult[]): string {
+  if (correlations.length === 0) {
+    return 'Nenhuma correlação significativa encontrada.';
   }
-  
-  return Array.from(themes.entries())
-    .filter(([, count]) => count > 1)
-    .map(([theme]) => theme);
+
+  return correlations
+    .map((c, i) => `${i + 1}. ${c.primary} ↔ ${c.secondary}\n   💡 ${c.insight}`)
+    .join('\n\n');
+}
+
+/**
+ * Convert correlations to context string for AI prompts
+ */
+export function correlationsToContext(correlations: CorrelationResult[]): string {
+  return correlations
+    .map(c => `${c.primary} e ${c.secondary}: ${c.insight}`)
+    .join(' | ');
 }

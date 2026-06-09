@@ -4,6 +4,7 @@ export interface MentorConfig {
   model?: string;
   temperature?: number;
   maxTokens?: number;
+  apiUrl?: string;
 }
 
 export interface MentorMessage {

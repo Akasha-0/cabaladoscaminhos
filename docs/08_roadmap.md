@@ -153,16 +153,36 @@ testes verdes            vê sua Mandala e          diário + conversa          
 
 ---
 
+## v0.0.11 - Agente Mentor Espiritual (Akáshico)
+
+**Status:** ✅ Implementado
+
+**Features:**
+- CLI interativo (`akasha chat`)
+- Interface web (`/oraculo`)
+- 4 mapas integrados (Cabala, Ifá, Astrologia, Tantra)
+- Correlações cruzadas entre tradições
+- LLM Router (OpenAI + Ollama fallback)
+- Rate limiting (10 msg/min)
+- Sistema de créditos
+
+**Data:** 2026-06-09
+
+---
+
 ## Histórico de Releases
 
 | Versão | Data | Status | Descrição |
 |--------|------|--------|-----------|
+| v0.0.11 | 2026-06-09 | ✅ Concluída | Agente Mentor Espiritual (Akáshico) |
 | v0.0.9 | 2026-06-08 | ✅ Concluída | Stubs de módulos ausentes (grimoire, logging, rate-limit, swarm) |
 | v0.0.8 | 2026-06-08 | ✅ Concluída | Limpeza Fallow (3168→1327 issues), V001 resolvida, ADRs criados |
 | v0.0.7 | 2026-06-07 | ✅ Concluída | CONTEXT.md, limpeza da raiz, refatoração interface/ |
 | v0.0.6 | 2026-06-06 | ✅ Concluída | Onda 7 completa (arquitetura + curadoria) |
 
 ### Notas de Release
+
+**v0.0.11:** Agente Mentor Espiritual com CLI, Web e API. Integração de 4 mapas (Cabala, Ifá, Astrologia, Tantra). LLM Router com fallback OpenAI/Ollama.
 
 **v0.0.8:** Redução de 58% nos issues do Fallow. ADRs documentados para padrões arquiteturais. Violação V001 resolvida.
 

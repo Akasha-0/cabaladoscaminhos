@@ -25,9 +25,10 @@ export class MentorEngine {
   async chat(messages: MentorMessage[], context: MentorContext): Promise<MentorMessage> {
     // Placeholder implementation
     return {
-      role: 'assistant',
+      id: crypto.randomUUID(),
+      role: 'mentor',
       content: 'Mentor is processing your message...',
-      timestamp: Date.now(),
+      createdAt: new Date(),
     };
   }
 }

@@ -31,7 +31,7 @@ export function addMessage(sessionId: string, message: MentorMessage): void {
   if (session) {
     session.messages.push({
       ...message,
-      timestamp: message.timestamp || Date.now(),
+      createdAt: message.createdAt || new Date(),
     });
   }
 }
