@@ -53,7 +53,7 @@ IDENTIDADE DO CONSULTANTE:
 - Odu de nascimento: ${(oduBirth?.oduName as string) ?? 'Desconhecido'}
 - Orixá(s) regente(s): ${((oduBirth?.orixaRegency as string[]) ?? []).join(', ') || 'Não identificado'}
 - Caminho de Vida: ${(kab?.lifePath as string | number) ?? '—'}
-- Elemento dominante: ${ctx.pillarsConsulted.includes('Botânica') ? 'identificado no Grimório' : 'calculado'}
+- Elemento dominante: ${(ctx.pillarsConsulted ?? []).includes('Botânica') ? 'identificado no Grimório' : 'calculado'}
 ${ichingSection}
 
 ${glossarySection}
@@ -159,7 +159,6 @@ export async function POST(request: NextRequest) {
   const chartCtx: ChartContext = {
     element: getDominantElement(astrologyMap),
     oduId: (oduBirth?.oduName as string) ?? undefined,
-    lifePath: ((chart?.kabalisticMap as Record<string, unknown>)?.lifePath as number) ?? undefined,
   };
 
   // 8. Buscar Grimório contextual (RAG)
@@ -200,7 +199,7 @@ export async function POST(request: NextRequest) {
         }
 
         // 11. Persist oracle response and debit credits
-        const grimoireRefs = grimoireCtx.entries.map((e) => e.titulo);
+        const grimoireRefs = grimoireCtx.entries.map((e) => e.titulo ?? e.title).filter(Boolean) as string[];
 
         await prisma.chatMessage.create({
           data: {

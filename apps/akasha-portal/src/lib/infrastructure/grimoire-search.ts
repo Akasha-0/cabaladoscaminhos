@@ -117,15 +117,20 @@ export async function searchGrimoire(
 
     return {
       entries: results.map((r) => ({
+        id: r.slug,
+        title: r.titulo ?? r.slug,
+        content: r.conteudo,
+        category: r.categoria,
+        tags: [],
         titulo: r.titulo ?? r.slug,
         conteudo: r.conteudo,
         categoria: r.categoria,
-        metadata: r.metadata,
       })),
+      library: 'grimoire',
       pillarsConsulted,
     };
   } catch {
-    return { entries: [], pillarsConsulted: [] };
+    return { entries: [], library: 'grimoire', pillarsConsulted: [] };
   }
 }
 
@@ -186,10 +191,14 @@ export async function searchGrimoireHybrid(
   q: GrimoireSearchQuery
 ): Promise<GrimoireSearchResult[]> {
   const limit = q.limit ?? 10;
-  const jsonbTags = buildJsonbTags(q.tags);
+  const tagsObj: Record<string, string | number | boolean | (string | number)[]> = {};
+  if (q.tags) {
+    q.tags.forEach(tag => { tagsObj[tag] = true; });
+  }
+  const jsonbTags = buildJsonbTags(tagsObj);
 
   // 1. Embedding da query (best-effort — degrada sem se Ollama offline)
-  const embedding = await getEmbeddingForQuery(q.query);
+  const embedding = await getEmbeddingForQuery(q.text ?? '');
   const vectorStr = embedding ? `[${embedding.join(',')}]` : null;
 
   // 2. Tenta filtro composto
@@ -229,13 +238,18 @@ export async function searchGrimoireHybrid(
       },
     });
     return byBiblioteca.map((row) => ({
-      id: row.id,
-      slug: row.slug,
-      categoria: row.categoria,
-      biblioteca: row.biblioteca,
-      conteudo: row.conteudo,
-      distance: 1.0, // sem embedding = sem similaridade
-      metadata: (row.metadata as Record<string, unknown>) ?? {},
+      entries: [{
+        id: row.id,
+        title: row.slug,
+        content: row.conteudo,
+        category: row.categoria,
+        tags: [],
+      }],
+      context: {
+        library: row.biblioteca,
+        entries: [],
+      },
+      score: 0,
     }));
   }
 
@@ -269,13 +283,18 @@ async function runHybridQuery(
       LIMIT ${limit}
     `;
     return rows.map((r) => ({
-      id: r.id,
-      slug: r.slug,
-      categoria: r.categoria,
-      biblioteca: r.biblioteca,
-      conteudo: r.conteudo,
-      distance: r.distance,
-      metadata: (r.metadata as Record<string, unknown>) ?? {},
+      entries: [{
+        id: r.id,
+        title: r.slug,
+        content: r.conteudo,
+        category: r.categoria,
+        tags: [],
+      }],
+      context: {
+        library: r.biblioteca,
+        entries: [],
+      },
+      score: 1 - r.distance,
     }));
   }
 
@@ -296,12 +315,17 @@ async function runHybridQuery(
     LIMIT ${limit}
   `;
   return rows.map((r) => ({
-    id: r.id,
-    slug: r.slug,
-    categoria: r.categoria,
-    biblioteca: r.biblioteca,
-    conteudo: r.conteudo,
-    distance: 0,
-    metadata: (r.metadata as Record<string, unknown>) ?? {},
+    entries: [{
+      id: r.id,
+      title: r.slug,
+      content: r.conteudo,
+      category: r.categoria,
+      tags: [],
+    }],
+    context: {
+      library: r.biblioteca,
+      entries: [],
+    },
+    score: 0,
   }));
 }

@@ -5,7 +5,7 @@
  */
 
 export interface ChartContext {
-  birthDate: Date;
+  birthDate?: Date;
   birthLocation?: {
     latitude: number;
     longitude: number;
@@ -17,7 +17,7 @@ export interface ChartContext {
 }
 
 export interface GrimoireContext {
-  library: string;
+  library?: string;
   entries: GrimoireEntry[];
   pillarsConsulted?: string[];
 }

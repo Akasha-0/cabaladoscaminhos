@@ -164,7 +164,7 @@ export async function generateAreaRecommendationV2(
   knowledgeUsed: number;
 }> {
   const context = await buildDailyContext(user, options.currentDate);
-  const area = LIFE_AREAS[areaId];
+  const area = LIFE_AREAS.find(a => a.id === areaId) ?? { id: areaId as LifeAreaId, name: areaId, description: '', keywords: [], emoji: '', orixa: { primary: [] }, astrology: { planets: [] } };
 
   const areaDomainMap: Record<string, string[]> = {
     sexualidade: ['lilith-casa8-sexo', 'chakras', 'corpos-pranicos', 'flora-sagrada'],
@@ -276,13 +276,16 @@ function generateSmartFallback(
   // Chakras
   const chakras = kb.filter((k) => k.domain === 'chakras').slice(0, 3);
 
+  const quizilaData = orixaQuizila?.data as { proibicoes?: string[] } | undefined;
+  const quizilaProibicao = quizilaData?.proibicoes?.[0] ?? 'respeite as restrições tradicionais';
+
   return `## 🔮 Síntese Energética — ${context.data}
 
 Olá, **${context.user.nome.split(' ')[0]}**! Com o Dia Pessoal **${context.personalDay.number}** (${context.personalDay.energy}) e a ${context.dailyEnergy.moonPhase.name} ativa, o universo convida você a **${context.personalDay.action.toLowerCase()}**.
 
 Com **${orixa}** como guardião e o Odu **${odu}** guiando, este é um momento de **${context.personalDay.keywords[0]}** e **${context.personalDay.keywords[1] || 'introspecção'}**.
 
-${orixaQuizila ? `> ⚠️ **Lembrete das quizilas de ${orixa}**: ${orixaQuizila.data.proibicoes?.[0] || 'respeite as restrições tradicionais'}.` : ''}
+${orixaQuizila ? `> ⚠️ **Lembrete das quizilas de ${orixa}**: ${quizilaProibicao}.` : ''}
 
 ## 💼 Carreira & Propósito
 
@@ -307,7 +310,10 @@ Trabalhe o chakra **${context.personalDay.chakra}** hoje. Beba água, alongue-se
 ${
   plantas.length > 0
     ? `## 🌿 Medicina Sagrada
-${plantas.map((p) => `- **${p.data.planta}**: ${p.data.indicacao?.[0] || 'uso geral'}`).join('\n')}`
+${plantas.map((p) => {
+      const plantaData = p.data as { planta?: string; indicacao?: string[] };
+      return `- **${plantaData.planta ?? 'Erva sagrada'}**: ${plantaData.indicacao?.[0] ?? 'uso geral'}`;
+    }).join('\n')}`
     : ''
 }
 

@@ -9,7 +9,11 @@ export interface OduData {
   name: string;
   meaning: string;
   verses: number;
- 元素: string;
+  element: OduElement;
+  quizilas: string[];
+  preceitos: string[];
+  essencia: string;
+  元素: string;
 }
 
 export type OduElement = 'air' | 'water' | 'fire' | 'earth';

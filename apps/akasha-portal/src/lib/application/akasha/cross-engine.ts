@@ -153,7 +153,7 @@ export function crossAnalyze(
 
   // Resolver Odu de nascimento
   const oduName = oduIn.name ?? oduIn.id ?? '';
-  const odu: OduData | undefined = getOduByName(oduName);
+  const odu: OduData | undefined = getOduByName(oduName) ?? undefined;
 
   const oduElement: OduElement = (odu?.element ??
     (oduIn.element as OduElement | undefined) ??
