@@ -121,3 +121,27 @@ export interface BuildIchingMapArgs {
   /** Hexagrama de tiragem explícita (sobrescreve o cálculo natal). */
   overrideHexagram?: number;
 }
+
+/** Asa (Wing) do I Ching — comentário/tema que agrupa hexagramas. */
+export interface Wing {
+  /** Identificador 1-10. */
+  id: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  /** Nome em chinês (pinyin). */
+  name: string;
+  /** Nome em inglês. */
+  nameEn: string;
+  /** Descrição da Asa. */
+  description: string;
+  /** Temas principais. */
+  themes: string[];
+  /** Hexagramas pertencentes a esta Asa (1-64). */
+  hexagrams: number[];
+}
+
+/** Hexagrama expandido com suas Asas. */
+export interface HexagramWithWings extends Hexagram {
+  /** Todas as Asas que contêm este hexagrama. */
+  wings: Wing[];
+  /** Asa principal (primeira a conter o hexagrama). */
+  mainWing: Wing;
+}

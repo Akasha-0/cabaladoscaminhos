@@ -15,6 +15,8 @@ export type {
   MutatingLine,
   IChingMap,
   BuildIchingMapArgs,
+  Wing,
+  HexagramWithWings,
 } from './types';
 
 // Bagua (8 trigramas)
@@ -22,6 +24,9 @@ export { TRIGRAMS, getTrigram, getTrigramByLines } from './bagua';
 
 // Hexagramas (64)
 export { HEXAGRAMS, getHexagram, getAllHexagrams } from './hexagrams';
+
+// Asas (10 Wings)
+export { WINGS, getWing, getAllWings, getWingsByHexagram, getHexagramWithWings } from './wings';
 
 // Hexagrama natal
 export { buildIchingMap } from './natal';
