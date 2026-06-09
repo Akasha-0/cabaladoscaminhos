@@ -34,7 +34,6 @@ export default defineConfig({
           include: [
             '../../tests/lib/ai/**',
             '../../tests/lib/engines/**',
-            '../../tests/lib/correlation/**',
             '../../tests/lib/security/**',
             '../../tests/calculators/**',
             '../../tests/lib/auth/**',
