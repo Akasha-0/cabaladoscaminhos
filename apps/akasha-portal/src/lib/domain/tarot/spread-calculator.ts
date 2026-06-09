@@ -9,7 +9,7 @@
 // Files: divine/connection, tarot/consulta, tarot/reading routes
 // ============================================================
 
-import type { SpiritualCorrelations } from '@/lib/interface/api/spiritual-correlations';
+import type { SpiritualCorrelations } from '@/lib/domain/types/spiritual-correlations';
 interface SpreadPosition {
   index: number;
   name: string;
