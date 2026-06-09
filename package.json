@@ -29,7 +29,11 @@
     "start:portal": "pnpm --filter akasha-portal start",
     "lint:portal": "pnpm --filter akasha-portal lint",
     "typecheck:portal": "pnpm --filter akasha-portal typecheck",
-    "test:portal": "pnpm --filter akasha-portal test:run"
+    "test:portal": "pnpm --filter akasha-portal test:run",
+    "dev:mentor": "pnpm --filter @akasha/mentor dev",
+    "chat:mentor": "pnpm --filter @akasha/mentor chat",
+    "login:mentor": "pnpm --filter @akasha/mentor login",
+    "typecheck:mentor": "pnpm --filter @akasha/mentor typecheck"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
