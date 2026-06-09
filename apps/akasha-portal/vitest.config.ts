@@ -11,6 +11,11 @@ const sharedAliases = {
   '@akasha/core-tantra': path.resolve(__dirname, '../../packages/core-tantra/src/index.ts'),
   // v0.0.5 Fase 1 (T1, T2.6) — I-Ching como 5º sistema oracular
   '@akasha/core-iching': path.resolve(__dirname, '../../packages/core-iching/src/index.ts'),
+  // v0.0.11 T8 — Mentor package (paths mais específicos primeiro)
+  '@akasha/mentor/maps': path.resolve(__dirname, '../../packages/mentor/src/maps.ts'),
+  '@akasha/mentor/types': path.resolve(__dirname, '../../packages/mentor/src/types.ts'),
+  '@akasha/mentor/correlation': path.resolve(__dirname, '../../packages/mentor/src/correlation.ts'),
+  '@akasha/mentor': path.resolve(__dirname, '../../packages/mentor/src/index.ts'),
 };
 
 export default defineConfig({
