@@ -237,8 +237,18 @@ npm run db:generate      # Após mudanças no schema Prisma
 
 ---
 
-*Última atualização: 2026-06-02 — Fase 18 (Hard final + cleanup)*
-*Versão: 1.0 — Inicial*
+*Última atualização: 2026-06-08 — v0.0.7*
+*Versão: 1.9*
+
+---
+
+## v0.0.7 — 2026-06-08
+- Limpeza arquitetural completa
+- 12 arquivos deletados da raiz
+- 2 arquivos movidos para docs/audit/
+- 1 novo arquivo (CONTEXT.md)
+- 1 violação de arquitetura documentada
+- 3166 issues no novo baseline Fallow
 
 ---
 

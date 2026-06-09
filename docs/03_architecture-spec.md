@@ -211,3 +211,17 @@ Ollama e cronjobs de madrugada são incompatíveis com funções serverless (tim
 
 ### Por que `@react-pdf/renderer` e não Puppeteer?
 Puppeteer/headless Chrome consome RAM gráfica absurda no VPS (pode derrubar DB/IA). `@react-pdf/renderer` compila PDF vetorial no backend com texto selecionável e quase zero RAM (Doc 25 §3).
+
+---
+
+## 7. Verificação de Arquitetura
+
+> **Nota:** Para um índice centralizado de todo o projeto, consulte [CONTEXT.md](../CONTEXT.md)
+
+### Violações Detectadas
+
+#### V001: domain/ importando de interface/ (T9)
+- **Arquivo:** `apps/akasha-portal/src/lib/domain/tarot/spread-calculator.ts:12`
+- **Import problemático:** `import type { SpiritualCorrelations } from '@/lib/interface/api/spiritual-correlations'`
+- **Regra violada:** `src/lib/domain/` não deve importar de `src/lib/interface/`
+- **Recomendação:** Mover o tipo `SpiritualCorrelations` para `src/lib/domain/types/` ou `src/lib/shared/` para manter a independência da camada domain

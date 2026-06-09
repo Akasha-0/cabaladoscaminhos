@@ -104,3 +104,15 @@ logs/security/
 
 # Auto Claude data directory
 .auto-claude/
+
+# ================================
+# Fallow reports and baselines
+# ================================
+fallow-report.json
+dead-code/
+dupes/
+health/
+quality-report*.json
+quality-evolution*.json
+.fallowrc.json.bak
+.fallowrc.json.orig

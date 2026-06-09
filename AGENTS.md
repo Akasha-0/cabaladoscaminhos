@@ -62,4 +62,56 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ---
 
+## Como Usar Specs
+
+### Localização
+Specs estão em `.trae/specs/` com formato `akasha-vX.Y.Z/`
+
+### Como Ler uma Spec
+1. Leia `spec.md` primeiro — contém Why, What, Impact
+2. Leia `tasks.md` para todas as tarefas
+3. Leia `checklist.md` para verificação final
+
+### Padrão de Execução
+1. Execute tarefas na ordem de prioridade definida
+2. Commits atômicos por tarefa completada
+3. Verifique typecheck e tests após cada mudança
+
+## Como Verificar Progresso
+
+### Status do Projeto
+```bash
+pnpm test:run        # Tests
+pnpm typecheck       # Typecheck
+pnpm lint            # Lint
+pnpm quality         # Quality gates
+pnpm fallow          # Código morto
+```
+
+### Commits Recentes
+```bash
+git log --oneline -15
+git tag --sort=-creatordate | head -5
+```
+
+## Padrão de Nomenclatura
+
+### Versões
+- Specs: `akasha-vMAJOR.MINOR.PATCH`
+- Tags Git: `vMAJOR.MINOR.PATCH`
+- Ciclos de memória: `cycle-[NNN]`
+
+### Commits
+- Tipo: feat, fix, refactor, docs, chore, cleanup
+- Formato: `tipo: descrição curta`
+- Exemplo: `docs: adicionar CONTEXT.md para índice centralizado`
+
+## Cross-References
+- Specs: `.trae/specs/`
+- Docs: `docs/`
+- Memory: `memory/`
+- Arquitetura: `docs/03_architecture-spec.md`
+
+---
+
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
