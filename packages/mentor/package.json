@@ -1,0 +1,35 @@
+{
+  "name": "@akasha/mentor",
+  "version": "0.0.11",
+  "description": "Akasha — Mentor AI com correlação entre sistemas oraculares",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./cli": "./src/cli/index.ts",
+    "./api": "./src/api/ask/route.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "tsx src/cli/index.ts",
+    "chat": "tsx src/cli/chat.ts",
+    "login": "tsx src/cli/login.ts"
+  },
+  "dependencies": {
+    "@akasha/core-cabala": "workspace:*",
+    "@akasha/core-astrology": "workspace:*",
+    "@akasha/core-odus": "workspace:*",
+    "@akasha/core-tantra": "workspace:*",
+    "@akasha/types": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "ink": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5.0.0",
+    "tsx": "^4.22.3"
+  }
+}
