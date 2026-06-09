@@ -9,7 +9,7 @@
 // Pattern: Filter parsing middleware
 // ============================================================
 
-import type { SpiritualCorrelations } from './spiritual-correlations';
+import type { SpiritualCorrelations } from '@/lib/domain/types/spiritual-correlations';
 
 export interface SpiritualFilterParams {
   sefirot?: string;

@@ -9,7 +9,7 @@
 // Files: energy, favorites, stats routes
 // ============================================================
 
-import type { SpiritualCorrelations } from './spiritual-correlations';
+import type { SpiritualCorrelations } from '@/lib/domain/types/spiritual-correlations';
 
 export interface SpiritualStats {
   byType?: Record<string, number>;
