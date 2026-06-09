@@ -70,6 +70,10 @@ export interface Hexagram {
   lines: [boolean, boolean, boolean, boolean, boolean, boolean];
   /** Tradição. */
   tradition: string;
+  /** IDs das Wings que contêm este hexagrama. */
+  wingIds: number[];
+  /** IDs das práticas integrativas recomendadas. */
+  practiceIds: string[];
 }
 
 /** Linha mutante de um hexagrama. */
@@ -120,4 +124,82 @@ export interface BuildIchingMapArgs {
   birthTime?: string | null;
   /** Hexagrama de tiragem explícita (sobrescreve o cálculo natal). */
   overrideHexagram?: number;
+}
+
+/** Asa (Wing) do I Ching — comentário/tema que agrupa hexagramas. */
+export interface Wing {
+  /** Identificador 1-10. */
+  id: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  /** Nome em chinês (pinyin). */
+  name: string;
+  /** Nome em inglês. */
+  nameEn: string;
+  /** Descrição da Asa. */
+  description: string;
+  /** Temas principais. */
+  themes: string[];
+  /** Hexagramas pertencentes a esta Asa (1-64). */
+  hexagrams: number[];
+}
+
+/** Hexagrama expandido com suas Asas. */
+export interface HexagramWithWings extends Hexagram {
+  /** Todas as Asas que contêm este hexagrama. */
+  wings: Wing[];
+  /** Asa principal (primeira a conter o hexagrama). */
+  mainWing: Wing;
+}
+
+// ─── Práticas Integrativas ───────────────────────────────────────────────────
+
+/** Os 5 elementos da tradição Wu-Xing expandida com madeira. */
+export type Element = 'fogo' | 'agua' | 'terra' | 'ar' | 'madeira' | 'metal';
+
+/** Categorias de práticas integrativas. */
+export type PracticeCategory =
+  | 'banho_de_ervas'
+  | 'cha'
+  | 'defumacao'
+  | 'cristal'
+  | 'cromoterapia'
+  | 'oleo_essencial'
+  | 'oracao'
+  | 'abre_alas'
+  | 'protecao';
+
+/** Associações simbólicas de uma prática. */
+export interface PracticeAssociations {
+  element?: Element;
+  orixa?: string;
+  color?: string;
+  planet?: string;
+  chakra?: number;
+  hexagrams?: number[];
+}
+
+/**
+ * Prática integrativa — conexão entre I-Ching e tradições espirituais.
+ * Cada prática tem associações com elementos, orixás e áreas da vida.
+ */
+export interface IntegrativePractice {
+  /** Identificador único. */
+  id: string;
+  /** Nome da prática. */
+  name: string;
+  /** Tradição de origem. */
+  tradition: string;
+  /** Categoria da prática. */
+  category: PracticeCategory;
+  /** Associações simbólicas. */
+  associations: PracticeAssociations;
+  /** Áreas da vida que a prática impacta. */
+  lifeAreas: string[];
+  /** Como realizar a prática. */
+  howTo: string;
+  /** Frequência recomendada. */
+  frequency: string;
+  /** Se é uma prática segura para iniciantes. */
+  isSafe: boolean;
+  /** Avisos ou contraindicações, se houver. */
+  warnings?: string[];
 }

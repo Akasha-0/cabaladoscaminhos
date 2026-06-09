@@ -9,8 +9,79 @@
  * Tradição: I-Ching (周易) / Yijing — Sistema Oracular Chinês Antigo.
  */
 
-import type { Hexagram, TrigramId } from './types';
+import type { Hexagram, TrigramId, IntegrativePractice, Wing } from './types';
 import { TRIGRAMS } from './bagua';
+
+/**
+ * Mapa de IDs das Wings que contêm cada hexagrama.
+ * Cada hexagrama pode pertencer a múltiplas Wings.
+ */
+const WING_IDS_BY_HEXAGRAM: Record<number, number[]> = {
+  1: [1],
+  2: [1, 2],
+  3: [1],
+  4: [1],
+  5: [1],
+  6: [1],
+  7: [2],
+  8: [2],
+  9: [2],
+  10: [2],
+  11: [2],
+  12: [2],
+  13: [2],
+  14: [2],
+  15: [3],
+  16: [3],
+  17: [3],
+  18: [3],
+  19: [3],
+  20: [4],
+  21: [4],
+  22: [4],
+  23: [4],
+  24: [5],
+  25: [5],
+  26: [5],
+  27: [5],
+  28: [5],
+  29: [6],
+  30: [6],
+  31: [6],
+  32: [6],
+  33: [6],
+  34: [6],
+  35: [7],
+  36: [7],
+  37: [7],
+  38: [7],
+  39: [7],
+  40: [7],
+  41: [8],
+  42: [8],
+  43: [8],
+  44: [8],
+  45: [8],
+  46: [8],
+  47: [9],
+  48: [9],
+  49: [9],
+  50: [9],
+  51: [9],
+  52: [9],
+  53: [10],
+  54: [10],
+  55: [10],
+  56: [10],
+  57: [10],
+  58: [10],
+  59: [10],
+  60: [10],
+  61: [10],
+  62: [10],
+  63: [10],
+  64: [10],
+};
 
 /**
  * Geração determinística dos 64 hexagramas via produto cartesiano
@@ -132,6 +203,8 @@ function buildHexagram(def: typeof KING_WEN[number]): Hexagram {
     aspects: def.aspects,
     lines,
     tradition: 'I-Ching (周易) / Yijing — Sistema Oracular Chinês Antigo',
+    wingIds: WING_IDS_BY_HEXAGRAM[def.number] ?? [],
+    practiceIds: [],
   };
 }
 
@@ -150,4 +223,94 @@ export function getHexagram(number: number): Hexagram {
 /** Retorna todos os hexagramas (1-64) em ordem King Wen. */
 export function getAllHexagrams(): Hexagram[] {
   return Object.values(HEXAGRAMS).sort((a, b) => a.number - b.number);
+}
+
+/**
+ * Mapa de práticas integrativas por hexagrama.
+ * Construído a partir das associações de cada prática em practices.ts.
+ */
+const PRACTICE_IDS_BY_HEXAGRAM: Record<number, string[]> = {
+  1: ['quartzo-transparente', 'afirmacao-cor'],
+  2: ['turmalina-negra'],
+  5: ['ewe-oxum', 'quartzo-rosa', 'oleo-rosa', 'luz-azul'],
+  6: ['luz-vermelha'],
+  8: ['abre-alas-iemanja'],
+  14: ['citrino', 'luz-amarela'],
+  18: ['ewe-ogum', 'turmalina-negra', 'banho-sal-alecrim'],
+  20: ['luz-verde'],
+  24: ['cha-camomila'],
+  26: ['ewe-ogum', 'citrino', 'cha-gengibre', 'luz-amarela'],
+  29: ['abre-alas-iemanja', 'ametista', 'oleo-lavanda', 'luz-azul'],
+  30: ['defumacao-palo-santo', 'quartzo-transparente', 'oleo-incenso', 'afirmacao-cor'],
+  31: ['quartzo-rosa', 'oleo-rosa'],
+  34: ['cha-gengibre', 'luz-vermelha'],
+  36: ['defumacao-palo-santo', 'oleo-incenso'],
+  41: ['banho-sal-alecrim'],
+  51: ['oleo-lavanda', 'cha-camomila'],
+  57: ['luz-verde'],
+  60: ['ewe-oxum'],
+};
+
+/** Retorna os IDs das práticas integrativas recomendadas para um hexagrama. */
+function getPracticeIdsByHexagram(hexagramNumber: number): string[] {
+  return PRACTICE_IDS_BY_HEXAGRAM[hexagramNumber] ?? [];
+}
+
+/**
+ * Hexagrama expandido com wings e práticas integrativas.
+ */
+export type HexagramWithDetails = Hexagram & {
+  wings: Wing[];
+  mainWing: Wing;
+  practices: IntegrativePractice[];
+};
+
+/**
+ * Mapa de wings por ID para lookup rápido.
+ * Definido inline para evitar dependência circular com wings.ts.
+ */
+const WINGS_BY_ID: Record<number, Wing> = {
+  1: { id: 1, name: '天璜', nameEn: 'Tian Huang (Heavenly Wing)', description: 'Céu e Ambiente — O aspecto criativo e espiritual. Governa os processos de nascimento e renovação cósmica.', themes: ['criação', 'espírito', 'movimento celestial', 'renovação cósmica'], hexagrams: [1, 2, 3, 4, 5, 6] },
+  2: { id: 2, name: '坤璜', nameEn: 'Kun Huang (Earthly Wing)', description: 'Terra — A dimensão receptiva e nutritiva. Representa o plano material e a devoção à vida.', themes: ['terra', 'nutrição', 'receptividade', 'devoção'], hexagrams: [7, 8, 9, 10, 11, 12, 13, 14] },
+  3: { id: 3, name: '同人璜', nameEn: 'Wei Ren (Social Consciousness Wing)', description: 'Consciência Social — O reconhecimento da humanidade como coletivo. Harmonia entre pessoas.', themes: ['humanidade', 'comunidade', 'cooperação', 'fraternidade'], hexagrams: [15, 16, 17, 18, 19] },
+  4: { id: 4, name: '咸璜', nameEn: 'Xian Huang (Intimacy Wing)', description: 'Intimidade — A conexão coração-a-coração. Relacionamentos, casamento e influência mútua.', themes: ['intimidade', 'relacionamento', 'casamento', 'influência'], hexagrams: [20, 21, 22, 23] },
+  5: { id: 5, name: '遯璜', nameEn: 'Dun Huang (Isolation Wing)', description: 'Isolamento — A sabedoria de recuar. Saber quando se retirar para preservar a essência.', themes: ['retirada', 'preservação', 'discernimento', 'timing'], hexagrams: [24, 25, 26, 27, 28] },
+  6: { id: 6, name: '晉璜', nameEn: 'Jin Huang (Advance Wing)', description: 'Avanço — O progresso e a ascensão. Luz nascente e expansão da consciência.', themes: ['progresso', 'ascensão', 'luz', 'avanço'], hexagrams: [29, 30, 31, 32, 33, 34] },
+  7: { id: 7, name: '損益璜', nameEn: 'Sun Yi (Flux Wing)', description: 'Fluxo — Oscilação entre diminuição e aumento. A lei do dar e receber cósmico.', themes: ['fluxo', 'diminuição', 'aumento', 'equilíbrio'], hexagrams: [35, 36, 37, 38, 39, 40] },
+  8: { id: 8, name: '夬璜', nameEn: 'Guai Huang (Resolution Wing)', description: 'Resolução — A decisão e o corte. Ação decisiva que resolve situações pendentes.', themes: ['decisão', 'resolução', 'corte', 'ação firme'], hexagrams: [41, 42, 43, 44, 45, 46] },
+  9: { id: 9, name: '豐璜', nameEn: 'Feng Huang (Abundance Wing)', description: 'Abundância — A plenitude e a transformação. Caldeirão alquímico e mudança de era.', themes: ['abundância', 'transformação', 'plenitude', 'alquimia'], hexagrams: [47, 48, 49, 50, 51, 52] },
+  10: { id: 10, name: '旅璜', nameEn: 'Lu Huang (Wanderer Wing)', description: 'Wanderer — O andante e a jornada. Viagem interior e exterior, estrangeiro e peregrino.', themes: ['viagem', 'andança', 'estrangeiro', 'peregrinação'], hexagrams: [53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64] },
+};
+
+/** Banco de práticas (importado lazily para evitar dependência circular). */
+let _PRACTICES_BY_ID: Record<string, IntegrativePractice> | null = null;
+function getPracticesById(): Record<string, IntegrativePractice> {
+  if (!_PRACTICES_BY_ID) {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { PRACTICES } = require('./practices');
+    _PRACTICES_BY_ID = Object.fromEntries(PRACTICES.map((p: IntegrativePractice) => [p.id, p]));
+  }
+  return _PRACTICES_BY_ID!;
+}
+
+/**
+ * Retorna o hexagrama expandido com suas Wings e práticas integrativas.
+ */
+export function getHexagramWithDetails(number: number): HexagramWithDetails {
+  const hexagram = getHexagram(number);
+  const wingIds = hexagram.wingIds;
+  const wings = wingIds.map((id) => WINGS_BY_ID[id]).filter(Boolean);
+  const practiceIds = getPracticeIdsByHexagram(number);
+  const practices = practiceIds.map((id) => getPracticesById()[id]).filter(Boolean);
+
+  if (wings.length === 0) {
+    throw new Error(`Hexagrama ${number} não pertence a nenhuma Asa.`);
+  }
+
+  return {
+    ...hexagram,
+    wings,
+    mainWing: wings[0],
+    practices,
+  };
 }

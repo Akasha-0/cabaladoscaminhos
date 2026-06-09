@@ -115,7 +115,6 @@ export default function OnboardingPage() {
     } catch {
       /* ignore — manter '' até geocoding preencher */
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // AD-T5-A: geocodificar birthCity no blur para preencher lat/long/timezone.
@@ -217,7 +216,7 @@ export default function OnboardingPage() {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [step]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [step]);
 
   if (step === 4) {
     return (
