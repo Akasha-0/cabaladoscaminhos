@@ -15,6 +15,7 @@ export {
   // Constantes
   IFA_ODUS,
   SEFIRot,
+  ICHING_NAMES,
   
   // Mapas
   ifaToIchingMap,
@@ -30,5 +31,6 @@ export {
   getSefirotByTrigram,
   getSefirotByIfa,
   getCorrelationStrength,
+  getFullCorrelation,
   buildIchingToIfaMap,
 } from './correlation-map.js';

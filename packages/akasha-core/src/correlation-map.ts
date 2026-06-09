@@ -265,3 +265,91 @@ export const correlationMap: CorrelationMap = {
     ([k, v]) => [k, v]
   )),
 };
+
+// Nomes dos 64 hexagramas do I Ching
+export const ICHING_NAMES: Record<number, string> = {
+  1: 'Qián (Criação)', 2: 'Kūn (Receptividade)', 3: 'Zhūn (Dificuldade Inicial)',
+  4: 'Méng (Inocência)', 5: 'Xū (Espera)', 6: 'Sòng (Conflito)',
+  7: 'Shī (Exército)', 8: 'Bǐ (União)', 9: 'Xiǎochù (Criar Pequeno)',
+  10: 'Lǚ (Andar Cauteloso)', 11: 'Tài (Paz)', 12: 'Pǐ (Estagnação)',
+  13: 'Tóngrén (Comunhão)', 14: 'Dàyǒu (Possuir Grandeza)', 15: 'Qiān (Modéstia)',
+  16: 'Yǔ (Entusiasmo)', 17: 'Suí (Seguir)', 18: 'Gǔ (Reparação)',
+  19: 'Lín (Aproximação)', 20: 'Guān (Contemplação)', 21: 'Shìkè (Morder)',
+  22: 'Bǐ (Graça)', 23: 'Bō (Desintegração)', 24: 'Fù (Retorno)',
+  25: 'Wúwàng (Inocência)', 26: 'Dàchù (Grande Força)', 27: 'Yí (Nutrição)',
+  28: 'Dàguò (Excesso)', 29: 'Kǎn (Abismo)', 30: 'Lí (Aderir)',
+  31: 'Xián (Mutual)', 32: 'Héng (Durabilidade)', 33: 'Dùn (Retirada)',
+  34: 'Dàzhuàng (Grande Potência)', 35: 'Jǐn (Progresso)', 36: 'Míngyí (Oscurecimento da Luz)',
+  37: 'Jiārén (Pessoas)', 38: 'Kuí (Oposição)', 39: 'Jiǎn (Obstrução)',
+  40: 'Xiè (Liberação)', 41: 'Sǔn (Diminuição)', 42: 'Yì (Aumento)',
+  43: 'Guài (Ruptura)', 44: 'Gòu (Encontro)', 45: 'Cuì (Reunião)',
+  46: 'Shēng (Ascensão)', 47: 'Kùn (Exaustão)', 48: 'Jǐng (Poço)',
+  49: 'Gé (Revolução)', 50: 'Dǐng (Caldeirāo)', 51: 'Zhèn (Trovao)',
+  52: 'Gèn (Montanha)', 53: 'Jiān (Desenvolvimento)', 54: 'Guīmèi (Dona)',
+  55: 'Fēng (Abundância)', 56: 'Lǚ (Viagem)', 57: 'Xùn (Suave)',
+  58: 'Duì (Lago)', 59: 'Huán (Dispersão)', 60: 'Jié (Limitação)',
+  61: 'Zhōngfú (Verdade Interior)', 62: 'Xiǎoguò (Pequena Excesso)', 63: 'Jìjì (Após Conclusão)',
+  64: 'Wèijì (Antes da Conclusão)',
+};
+
+/**
+ * Retorna o mapa completo de correlações para um arquétipo I Ching
+ */
+export function getFullCorrelation(hexagram: number): {
+  hexagram: number;
+  iching: { name: string };
+  ifas: string[];
+  sefirot: number[];
+  trigrams: number[];
+  strength: 'strong' | 'medium' | 'weak';
+} {
+  if (hexagram < 1 || hexagram > 64) {
+    return {
+      hexagram,
+      iching: { name: 'Desconhecido' },
+      ifas: [],
+      sefirot: [],
+      trigrams: [],
+      strength: 'weak',
+    };
+  }
+
+  const ifas = getIfasByIching(hexagram);
+  
+  // Agregar Sefirot de todos os Ifás relacionados
+  const sefirotSet = new Set<number>();
+  for (const odu of ifas) {
+    const oduSefirot = ifaToCabalaMap[odu as IfaOdu] || [];
+    oduSefirot.forEach(s => sefirotSet.add(s));
+  }
+  const sefirot = Array.from(sefirotSet).sort((a, b) => a - b);
+
+  // Calcular força baseado na quantidade de correlações
+  const totalCorrelations = ifas.length;
+  let strength: 'strong' | 'medium' | 'weak' = 'weak';
+  if (totalCorrelations >= 3) {
+    strength = 'strong';
+  } else if (totalCorrelations >= 2) {
+    strength = 'medium';
+  }
+
+  // Trigramas (derivados dos bits do hexagrama 1-8)
+  const trigrams: number[] = [];
+  if (hexagram <= 8) {
+    trigrams.push(hexagram);
+  } else {
+    // Hexagramas 9-64 derivam de combinações
+    const lower = hexagram % 8 || 8;
+    const upper = Math.floor((hexagram - 1) / 8) + 1;
+    trigrams.push(upper, lower);
+  }
+
+  return {
+    hexagram,
+    iching: { name: ICHING_NAMES[hexagram] || 'Desconhecido' },
+    ifas,
+    sefirot,
+    trigrams,
+    strength,
+  };
+}
