@@ -70,6 +70,10 @@ export interface Hexagram {
   lines: [boolean, boolean, boolean, boolean, boolean, boolean];
   /** Tradição. */
   tradition: string;
+  /** IDs das Wings que contêm este hexagrama. */
+  wingIds: number[];
+  /** IDs das práticas integrativas recomendadas. */
+  practiceIds: string[];
 }
 
 /** Linha mutante de um hexagrama. */

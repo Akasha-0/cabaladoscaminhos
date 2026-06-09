@@ -27,7 +27,8 @@ export type {
 export { TRIGRAMS, getTrigram, getTrigramByLines } from './bagua';
 
 // Hexagramas (64)
-export { HEXAGRAMS, getHexagram, getAllHexagrams } from './hexagrams';
+export { HEXAGRAMS, getHexagram, getAllHexagrams, getHexagramWithDetails } from './hexagrams';
+export type { HexagramWithDetails } from './hexagrams';
 
 // Asas (10 Wings)
 export { WINGS, getWing, getAllWings, getWingsByHexagram, getHexagramWithWings } from './wings';
