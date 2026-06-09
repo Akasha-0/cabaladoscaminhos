@@ -17,6 +17,10 @@ export type {
   BuildIchingMapArgs,
   Wing,
   HexagramWithWings,
+  Element,
+  PracticeCategory,
+  PracticeAssociations,
+  IntegrativePractice,
 } from './types';
 
 // Bagua (8 trigramas)
@@ -30,3 +34,14 @@ export { WINGS, getWing, getAllWings, getWingsByHexagram, getHexagramWithWings }
 
 // Hexagrama natal
 export { buildIchingMap } from './natal';
+
+// Práticas integrativas
+export {
+  PRACTICES,
+  getPractice,
+  getPracticesByElement,
+  getPracticesByTradition,
+  getPracticesByCategory,
+  getPracticesByLifeArea,
+  getAllPractices,
+} from './practices';
