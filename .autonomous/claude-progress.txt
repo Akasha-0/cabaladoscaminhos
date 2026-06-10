@@ -46,3 +46,17 @@
 - Output: .autonomous/research/systems/costar.md (~700 linhas)
 - CHECKPOINT.md + INDEX.md + feature_list.json atualizados (4/12 → 5/12 = 41.7%)
 - Próximo: RQ-008 Cabala Clássica (P0, Pilar 1 Mandato Akasha)
+
+[2026-06-10 15:50] RQ-008 ✅ Cabala Clássica / Árvore da Vida — Pilar 1 esqueleto topológico confirmado
+- 39 fontes citadas (21 primárias: Sefer Yetzirah/Bahir/Zohar/Luria; 3 gematria; 12 Golden Dawn/Hermetic; 3 acadêmica)
+- Cobre: 10 Sephirot + 22 Caminhos (Yetzirah 1:1) + 3 Pilares + 4 Mundos (Atziluth→Assiah); 4 textos canônicos detalhados; gematria 6 métodos (Mispar Hechrechi/Gadol/Katan/Katan Mispari/Siduri/Milui); Golden Dawn Liber 777 (187 colunas); 22 atribuições Tarot-Cabalísticas Golden Dawn clássica; crítica Scholem/Idel/Wolfson/Mitnagdic/Kabbalah Centre
+- Posição Akasha: Árvore = esqueleto topológico do Pilar 1 (Mandato). HERDA 10+22+4 Mundos+Golden Dawn 777+3 métodos gematria; FILTRA demonologia Qliphoth, Magia Cerimonial, Shem HaMephorash, Kabbalah Centre corporativo. CITA Sefer Yetzirah/Bahir/Zohar/Luria/Golden Dawn SEMPRE
+- Lurianic Tzimtzum/Tikkun = motor temporal (cruza com Enneagrama 9 Levels + Gene Keys Shadow→Gift→Siddhi)
+- Decisão ética: NÃO é apropriação cultural. Cita fontes, white paper público, consulta acadêmica futura
+- Mandala Akasha proposta = Árvore redesenhada com 5 anéis concêntricos (1 por pilar: Cabala/Astrologia/Tantra/Odu/I Ching)
+- Voz Mentor: I Ching + Zohar + Gene Keys compassivo (não Co-Star goth, não Kaballah Centre corporativo)
+- COT: .autonomous/research/chain-of-thought/cot-20260610-kabbalah-position.md
+- Output: .autonomous/research/systems/kabbalah.md (~550 linhas)
+- Commit: 617b9367
+- CHECKPOINT.md atualizado: 5/12 → 6/12 (50.0%), 10 lições convergentes
+- Próximo: RQ-009 Numerologia Cabalística Ocidental (P1, 45min, destrava com tabela 22 letras + 3 métodos gematria já consolidados em RQ-008)
