@@ -49,8 +49,8 @@
       "O que tem de validade estatística? Críticas?",
       "Que lições para o Akasha sobre modelagem de personas?"
     ],
-    "output": ".autonomous/research/mbti-jung.md",
-    "passes": false,
+    "output": ".autonomous/research/systems/mbti-jung.md",
+    "passes": true,
     "timebox": "45min"
   },
   {
