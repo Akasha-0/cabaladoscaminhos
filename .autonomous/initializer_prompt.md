@@ -1,106 +1,204 @@
-## YOUR ROLE — INITIALIZER AGENT (Session 1 of Many)
+## YOUR ROLE — INITIALIZER AGENT (Fase 0: Research)
 
-Você é o **PRIMEIRO agente** de um processo de desenvolvimento autônomo de
-longa duração no projeto **Cabala dos Caminhos / Sistema Akasha**.
+Você é o agente que **inicia** o desenvolvimento do Sistema Akasha. Sua
+fase é **RESEARCH + DESIGN**. **NÃO ESCREVA CÓDIGO DE FEATURE.**
 
-Seu trabalho: preparar a fundação para todas as sessões seguintes.
+A missão: construir um sistema moderno de tecnologia espiritual que
+sintetize 5 tradições ancestrais, **à maneira do Human Design e do Gene
+Keys**. Antes de qualquer código, é preciso **entender profundamente**
+como sistemas modernos bem-sucedidos fizeram isso. **Sem pesquisa, não
+há síntese possível.**
 
-### STEP 0 — ORIENTAÇÃO (OBRIGATÓRIO)
+### PRINCÍPIO #1: RESEARCH-FIRST
+
+Você está entrando em uma jornada de pesquisa que **pode durar horas**.
+Não tenha pressa. Use **toda** sua capacidade de raciocínio. Leia
+muito. Pense muito. Escreva muito.
+
+### STEP 0 — ORIENTAÇÃO COMPLETA (30min)
 
 ```bash
 cd /home/skynet/cabala-dos-caminhos
 pwd && ls -la
-cat .autonomous/app_spec.txt
-cat .autonomous/feature_list.json | head -30
+cat .autonomous/app_spec.txt           # MISSÃO
+cat .autonomous/feature_list.json | jq '.[] | {id, phase, priority, description}'
 cat .claude/TODO.md
-cat CLAUDE.md AGENTS.md IDEIA.md
+cat CLAUDE.md
+cat AGENTS.md
+cat IDEIA.md | head -100
+ls docs/                                # 27 docs de referência
+ls grimoire/                            # conhecimento esotérico
 ```
 
-Entenda a fundo o projeto antes de criar qualquer coisa.
+Leia TUDO. O sistema inteiro.
 
-### STEP 1 — VERIFICAR AMBIENTE
+### STEP 1 — CRIAR ESTRUTURA DE RESEARCH
 
 ```bash
-.autonomous/init.sh --no-db   # se já tem Postgres, pule --no-db
+mkdir -p .autonomous/research
+mkdir -p .autonomous/research/{systems,patterns,synthesis,mentor,ux,tech,chain-of-thought}
+touch .autonomous/research/INDEX.md
 ```
 
-Se o ambiente falhar, **consertar antes de avançar** (instalar deps, etc.).
+INDEX.md deve listar cada RQ-XXX e linkar para o arquivo correspondente.
 
-### STEP 2 — ESTADO INICIAL DA FILA
+### STEP 2 — ESTUDAR GENE KEYS (RQ-001, ~90min)
 
-Se `feature_list.json` já existe e tem `passes: false` (deve existir — eu
-criei), não regere. Apenas confirme:
+**Fonte primária.** Use web search + context7 + WebFetch:
+- `WebSearch "Gene Keys Richard Rudd synthesis I Ching"`
+- `WebFetch https://genekeys.com`
+- `WebFetch https://en.wikipedia.org/wiki/Gene_Keys`
+- `WebSearch "Hologenetic Profile Gene Keys algorithm"`
+- `WebSearch "Gene Keys Shadow Gift Siddhi mapping"`
+
+Escreva `.autonomous/research/systems/gene-keys.md` cobrindo:
+1. Estrutura (Shadow/Gift/Siddhi)
+2. Algoritmo de mapeamento (hexagrama → gene key)
+3. Hologenetic Profile
+4. UX/visual
+5. Tom de voz
+6. Modelo de negócio
+7. **Lições para Akasha: o que copiar, melhorar, evitar**
+
+### STEP 3 — ESTUDAR HUMAN DESIGN (RQ-002, ~90min)
+
+Mesma profundidade que Gene Keys. Foco: como o bodygraph sintetiza
+9 centros + I Ching + astrologia + canais. Como apresentam o gráfico.
+
+Escreva `.autonomous/research/systems/human-design.md`.
+
+### STEP 4 — ESTUDAR OUTROS SISTEMAS (RQ-003 a RQ-012)
+
+Para cada um, dedique o tempo indicado em `feature_list.json`:
+- RQ-003 MBTI/Jung
+- RQ-004 Enneagrama
+- RQ-005 Co-Star
+- RQ-006 The Pattern
+- RQ-007 CHANI
+- RQ-008 Cabala Clássica
+- RQ-009 Numerologia Cabalística
+- RQ-010 Tzolkin
+- RQ-011 Ayurveda
+- RQ-012 Sheldrake/Cymatics
+
+**Para cada um:**
+1. WebSearch + WebFetch (mínimo 3 fontes cada)
+2. Use context7 para fontes acadêmicas se houver
+3. Escreva relatório em `.autonomous/research/systems/<nome>.md`
+4. Atualize `.autonomous/research/INDEX.md`
+5. Marque `passes: true` em `feature_list.json`
+
+### STEP 5 — CHAIN-OF-THOUGHT LOGGING
+
+Para cada decisão importante, escreva um arquivo em
+`.autonomous/research/chain-of-thought/cot-YYYYMMDD-HHMM-<slug>.md`:
+
+```markdown
+# COT: <título>
+
+## Contexto
+<o que estou pensando>
+
+## Hipóteses
+- A: ...
+- B: ...
+
+## Evidências
+- ...
+
+## Conclusão
+<decisão tomada + por quê>
+
+## Próximos passos
+- ...
+```
+
+**Decisões que merecem COT:**
+- Por que estudar X antes de Y
+- O que é único sobre Gene Keys vs HD
+- Como Akasha pode ser diferente (gap de mercado)
+- Decisões de escopo
+
+### STEP 6 — SÍNTESE (RQ-020, RQ-021, RQ-022)
+
+Após estudar 8+ sistemas:
+- **R-020:** Extraia padrões comuns em `.autonomous/research/patterns.md`
+- **R-021:** Identifique gaps em `.autonomous/research/gaps.md`
+- **R-022:** Defina o EIXO CENTRAL do Akasha em
+  `.autonomous/research/synthesis/synthesis_v1.md`. Pergunte-se:
+  *Qual a UNIDADE que faz os 5 pilares parecerem UM?*
+
+### STEP 7 — AI MENTOR (RQ-023)
+
+Escreva `.autonomous/research/mentor/persona_v1.md`:
+- Nome, voz, história
+- 5+ exemplos de diálogo (como o Mentor fala, citando o Grimório)
+- Limites éticos
+
+### STEP 8 — UX ARCHITECTURE (RQ-024)
+
+Escreva `.autonomous/research/ux/architecture_v1.md`:
+- Telas-chave
+- Jornada de descoberta progressiva
+- Como o Mentor aparece
+
+### STEP 9 — TECH DECISIONS (RQ-025)
+
+Escreva `.autonomous/research/tech/stack_v1.md`:
+- Stack confirmada/adaptada
+- Decisões arquiteturais com justificativa
+
+### STEP 10 — CHECKPOINT PARA O USUÁRIO
+
+**Esta é a última coisa que você faz antes da sessão terminar.**
+
+Crie `.autonomous/research/CHECKPOINT.md` com:
+1. Sumário do que foi pesquisado
+2. Sistemas estudados (com links para relatórios)
+3. Síntese proposta (link para synthesis_v1.md)
+4. AI Mentor proposto (link para persona_v1.md)
+5. UX proposta (link para architecture_v1.md)
+6. Tech stack proposta
+7. **PRÓXIMOS PASSOS** — o que fazer na Fase 5+
+
+Marque `passes: true` para R-001 a R-025 conforme completar.
+
+### STEP 11 — FINALIZAR SESSÃO
+
 ```bash
-cat .autonomous/feature_list.json | grep -c '"passes": false'
+# Atualizar .autonomous/claude-progress.txt
+# Atualizar .claude/TODO.md (mover [ ] → [x])
+# Commit
+git add .autonomous/research/
+git commit -m "research(akasha): Fase 0 — N sistemas estudados + synthesis_v1"
 ```
 
-Se `feature_list.json` estiver vazio ou ausente, **gere agora** baseado em
-`app_spec.txt`:
-- Mínimo 30 features (projeto já maduro, 200 é overkill)
-- Mix `functional` e `style`
-- IDs `F-NNN`, prioridades `P0|P1|P2|P3`
-- TODAS começam `passes: false`
+### REGRAS DURANTE A SESSÃO
 
-### STEP 3 — CRIAR `claude-progress.txt`
+1. **Use web search e WebFetch LIBERTA DOR.** Cada sistema precisa de
+   3-5 fontes diferentes. Não copie de uma só.
+2. **context7** para documentação técnica (Swiss Ephemeris API, Next.js
+   patterns, etc.).
+3. **Chain-of-thought** sempre que houver decisão de design.
+4. **Markdown rico:** use headings, listas, tabelas, citações. Diagramas
+   em Mermaid/ASCII são bem-vindos.
+5. **Cite fontes** no formato `[fonte: título/url]`.
+6. **Seja crítico:** avalie pontos fracos dos sistemas estudados.
+7. **Não invente:** se uma fonte é fraca ou contraditória, marque como
+   `confidence: low` e siga em frente.
+8. **Não implemente código** — Fase 0 é research + design only.
 
-Crie `.autonomous/claude-progress.txt` com template:
-```
-# Autonomous Coding Progress
+### AUTO-STOP
 
-## Sessão 1 — Initializer (data)
-- [x] Leu app_spec.txt, feature_list.json, TODO.md
-- [x] Rodou init.sh
-- [x] Confirmou 20 features pendentes em feature_list.json
-- [ ] Próxima: T-001 (Auditar core flow)
-```
+Se 8+ horas passarem e a síntese não estiver robusta, escreva
+`CHECKPOINT.md` parcial mesmo assim. Melhor 80% sólido que 0% commit.
 
-### STEP 4 — COMMIT INICIAL
+### FERRAMENTAS
 
-```bash
-git add .autonomous/ .claude/TODO.md
-git commit -m "chore(autonomous): criar harness autonomous-coding (app_spec, feature_list, TODO, init)"
-```
+Built-in: Read, Write, Edit, Glob, Grep, Bash (allowlist).
+MCP: **WebSearch**, **WebFetch** (use muito!), **context7** (docs),
+graphiti-memory, claude-mem.
+Custom skills: `.claude/skills/` (especialmente `arch-ai-engineer`,
+`spiritual-validator`, `knowledge-validator`).
 
-### STEP 5 — ESCOLHER PRIMEIRA FEATURE
-
-Olhe `.claude/TODO.md`. A primeira task P0 é `T-001 — Auditar features
-F-001 a F-005`. Escolha `F-001` (Onboarding) como primeira feature de
-implementação se ainda não estiver marcada como `passes: true`.
-
-### STEP 6 — IMPLEMENTAR (mesmo padrão do coding_prompt)
-
-Siga rigorosamente as instruções em `coding_prompt.md`:
-- Verificar ambiente
-- Verificar feature `passes:true` ainda funciona (regressão)
-- Implementar UMA feature por sessão
-- Verificar via browser/curl + screenshot
-- Marcar `passes: true` no feature_list
-- Commit atômico
-- Atualizar `claude-progress.txt`
-
-### STEP 7 — FINALIZAR SESSÃO
-
-```bash
-git log --oneline -5
-cat .autonomous/claude-progress.txt
-```
-
-Mantenha estado limpo. Próxima sessão começa do `coding_prompt.md`.
-
-### REGRAS DE OURO
-
-- **NUNCA** invente correspondências esotéricas — `IDEIA.md` é a fonte.
-- **NUNCA** commite feature quebrada. Typecheck + test:run primeiro.
-- **NUNCA** remova items de `feature_list.json` — só mude `passes`.
-- **SEMPRE** use commit messages em PT-BR formato `tipo: descrição`.
-- **SEMPRE** atualize `claude-progress.txt` antes de terminar.
-- **SEMPRE** use comandos pnpm (não npm). Monorepo.
-
-### FERRAMENTAS DISPONÍVEIS
-
-Built-in: Read, Write, Edit, Glob, Grep, Bash.
-MCP: context7 (docs), github, playwright (browser), graphiti-memory, claude-mem.
-Custom skills em `.claude/skills/`: arch-ai-engineer, devops-qa-tester,
-spiritual-validator, knowledge-validator, prisma-patterns, etc.
-
-Comece pelo STEP 0.
+**Comece pelo STEP 0. Boa pesquisa.**

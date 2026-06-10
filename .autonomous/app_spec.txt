@@ -1,91 +1,188 @@
-# App Spec — Cabala dos Caminhos / Sistema Akasha
+# App Spec — Sistema Akasha
 
-## 1. O que é
-Sistema B2C de tecnologia espiritual (oráculo vivo, mobile-first) que cruza
-4 vertentes ancestrais (Astrologia, Numerologia Cabalística, Numerologia
-Tântrica, Odus de Ifá) para emitir diagnóstico diário personalizado.
+## 1. Missão (NORTE ABSOLUTO)
 
-- **Stack:** Next.js 16 (App Router, Turbopack) + React 19, Prisma 7 + PostgreSQL,
-  Redis (ioredis), OpenAI + Minimax (LLM), Stripe, Vitest, Zod, Zustand,
-  Tailwind 4, @base-ui/react, framer-motion, @react-pdf/renderer, web-push.
-- **Marca:** "Sistema Akasha" (produto) / "Cabala dos Caminhos" (matriz/monorepo).
-- **Domínio:** `cabala-dos-caminhos/` — monorepo pnpm + Turbo.
+Construir um **sistema moderno de tecnologia espiritual** que sintetize
+**5 tradições ancestrais** em uma linguagem unificada, **à maneira do
+Human Design e do Gene Keys** — sistemas modernos que tomaram múltiplas
+tradições e produziram uma **engenharia própria**, não uma colagem.
 
-## 2. Os 4 Pilares (motor)
-1. **Astrologia** (Céu/Macro) — Swiss Ephemeris → mapa de bordo, trânsitos.
-2. **Numerologia Cabalística** (Verbo/Identidade) — Caminho de Vida, nome, ciclos.
-3. **Numerologia Tântrica** (Anatomia/Micro) — 11 Corpos Espirituais.
-4. **Odus de Nascimento** (Terra/Ori) — Ifá/Merindilogun, Orixás, elementos.
+**O Sistema Akasha NÃO é a soma das 5 tradições. É uma síntese nova
+que emerge da pesquisa profunda e do design intencional.**
 
-**A inteligência mora no cruzamento** — não em camadas isoladas.
+A inteligência mora no cruzamento. A beleza mora na coerência. O
+produto mora na experiência do usuário.
 
-## 3. Os Produtos
-1. **Mandala Toroidal** — visualização viva (R3F + SVG/D3 + glassmorphism).
-2. **Manifesto Akáshico** — PDF gerado no onboarding (`@react-pdf/renderer`).
-3. **Oráculo de Bolso** — dashboard diário (Clima + Ritual + Alerta).
-4. **Agente Oracular** — conversa ancorada no Grimório (RAG + system prompt).
+## 2. Os 5 Pilares
 
-## 4. Arquitetura (3 Camadas)
-- **C1 — Motor Determinístico:** `packages/core-*` (sem texto, só JSON).
-- **C2 — Grafo de Conhecimento:** cruzamento, Ponto de Tensão.
-- **C3 — Agente de Síntese:** LLM (OpenAI + Minimax), voz do Akasha.
+| # | Pilar | Domínio | Sistema moderno similar |
+|---|-------|---------|------------------------|
+| 1 | **Numerologia Cabalística** | Identidade, propósito, ciclos | — (origem única) |
+| 2 | **Astrologia** | Céu, trânsitos, tempo | Co-Star, The Pattern, CHANI |
+| 3 | **Numerologia Tântrica** | Anatomia sutil, 11 corpos | Gene Keys (estrutura) |
+| 4 | **Odu de Nascimento** | Ori, ancestralidade, terra | — (origem única) |
+| 5 | **I Ching (64 hexagramas)** | Mutação, jornada, ciclos | **Gene Keys** (mapping) |
 
-## 5. Regras Invioláveis
-- **AD-20.1:** Nenhuma correspondência sem fonte. Toda entrada cita tradição.
-- **AD-20.2:** Verdade injetada, nunca lembrada. LLM *redige*, não *decide*.
-- **AD-20.5:** `IDEIA.md` precede o código. Validar contra ledger antes de adicionar.
-- **Fonte única:** divergência nome/grafia → `src/lib/constants/{lenormand-cards,odus}.ts`
-  deve coincidir com `IDEIA.md` (Doc 16 AD-02 / Doc 24 §8).
-- **Type safety:** `pnpm typecheck` deve passar sempre.
-- **Testes:** 100% verde (`pnpm test:run`). Não quebrar suíte.
-- **Commits:** atômicos, formato `tipo: descrição`. Mensagens em PT-BR.
-- **Versões:** spec `akasha-vX.Y.Z`; git tag `vX.Y.Z`; ciclo `cycle-[NNN]`.
+> **I Ching é a peça central que falta no sistema atual** — Gene Keys já
+> demonstrou como 64 hexagramas podem ser reinterpretados como jornada
+> humana (Shadow → Gift → Siddhi). Esta é a **referência primária de
+> design de síntese**.
 
-## 6. Estado Atual (jun/2026)
-- Ondas 1-7 concluídas até v0.0.6.
-- ~9k testes verdes, `QUALITY_SCORE >= 0.91`.
-- Monorepo pnpm + Turbo operacional.
-- Auth Operator + Auth B2C prontos.
-- 18 specs versionadas em `.trae/specs/`.
-- 11 skills em `.claude/skills/`, 2 agents custom.
+## 3. Sistemas Modernos a Estudar (referências)
 
-## 7. Próximas Ondas (ver `.claude/TODO.md` para fila viva)
-- **Onda 8 — Curadoria Pendente** (gap analysis do roadmap).
-- **Onda 9 — Refinamento do Agente Oracular.**
-- **Onda 10 — Hardening + Performance.**
+**Obrigatórios (estudo profundo):**
+- **Gene Keys** — Richard Rudd. 64 hexagramas do I Ching como jornada
+  Shadow/Gift/Siddhi. Hologenetic Profile. Sequence of Pearls. Genius
+  vs. Disease. **ESTE É O MODELO PRIMÁRIO DE SÍNTESE.**
+- **Human Design** — Ra Uru Hu. Bodygraph: 9 centros, 64 portas (de I
+  Ching), 36 canais, 192 linhas. Tipo/estratégia/autoridade.
+  **ESTE É O MODELO DE UX + VISUALIZAÇÃO.**
 
-## 8. Comandos Canônicos
+**Recomendados (estudo complementar):**
+- **MBTI** — 4 funções cognitivas (Jung). Teste de tipo. Enneagrama similar.
+- **Enneagrama** — 9 tipos, integrações, níveis. Tradição oral moderna.
+- **Co-Star** — UX minimalista para astrologia. Cores, micro-doses.
+- **The Pattern** — narrativa personalizada. Linguagem íntima.
+- **Astro.com / Astro-Charts** — engine técnico, Ephemeris.
+- **Mayan Calendar / Tzolkin** — outro sistema de ciclos.
+- **Numerologia.com / Numerologist.com** — tradição numerológica cab.
+- **Cabala Clássica / Árvore da Vida** — base cabalística.
+
+**Explorar (surpresa):**
+- **Ayurveda + TCM** — síntese medicina/corpo.
+- **Sheldrake (Campos Morfogenéticos)** — base conceitual.
+- **Cymatics** — som-como-forma. Vale para a parte visual.
+
+## 4. Fases de Desenvolvimento (RESEARCH-FIRST)
+
+### Fase 0 — Research (PRIORIDADE MÁXIMA, antes de qualquer código)
+
+Estudar 8+ sistemas modernos. Para cada um:
+- Como eles sintetizaram múltiplas tradições?
+- Como fizeram o **mapeamento** (ex: hexagrama → Gene Key)?
+- Como desenharam a **UX** (visualização, micro-doses)?
+- Como escreveram a **linguagem** (tom, mito, identidade)?
+- Qual o **modelo de negócio** (B2C vs B2B)?
+
+Outputs:
+- `.autonomous/research/<systemo>.md` — relatório por sistema
+- `.autonomous/research/patterns.md` — padrões comuns extraídos
+- `.autonomous/research/gaps.md` — o que nenhum sistema cobre
+
+### Fase 1 — Synthesis Design
+
+Após Fase 0: propor **Akasha Core Algorithm** — como os 5 pilares se
+cruzam em UMA leitura unificada. **Não é implementação. É design.**
+
+Output: `.autonomous/research/synthesis_v1.md` (e v2, v3… iterações)
+
+### Fase 2 — AI Mentor / Mestre
+
+Definir a personalidade e o system prompt do agente oracular. O mentor
+NÃO é um chatbot — é um **guia espiritual** com:
+- Voz própria (não generic GPT)
+- Conhecimento ancorado no Grimório (RAG)
+- Capacidade de síntese (cruza os 5 pilares em tempo real)
+- Comportamento ético (sem manipulação, sem determinismo fatal)
+
+Output: `.autonomous/research/mentor_persona.md`
+
+### Fase 3 — UX Architecture
+
+Decidir: mobile-first PWA? Web? App nativo? Multi-camada
+(micro-doses)? Como o usuário descobre progressivamente?
+
+Output: `.autonomous/research/ux_architecture.md`
+
+### Fase 4 — Tech Stack
+
+Confirmar/adaptar: Next.js 16, Prisma, Postgres, Redis, OpenAI +
+Minimax, Stripe, Vitest. Adicionar o que faltar.
+
+Output: `.autonomous/research/tech_decisions.md`
+
+### Fase 5 — Protótipo de Algoritmo (pseudo-código)
+
+Escrever Akasha Core Algorithm em TS/types ANTES de implementar
+features. Validar com casos de teste representativos.
+
+Output: `packages/akasha-core/` (criado na fase 5)
+
+### Fase 6 — Implementação (features)
+
+Somente aqui. Cada feature = 1 item em `feature_list.json` (migrar de
+R-NNN research items para F-NNN impl items).
+
+## 5. Regra de Ouro (NÃO NEGOCIÁVEL)
+
+> **Nenhum código de feature antes da Fase 5 (protótipo de algoritmo).**
+>
+> Fase 0-4 = research + design only. Commits permitidos:
+> - Markdown research files
+> - Chain-of-thought logs
+> - Diagrams (Mermaid, ASCII)
+> - Schema prototypes em YAML/JSON (não TS/JS executável)
+>
+> Commits NÃO permitidos em Fase 0-4:
+> - Código de feature em src/, apps/, packages/
+> - Mudanças em schema Prisma
+> - Componentes UI novos
+
+## 6. AI Mentor — Quem é?
+
+Baseado em estudo da Fase 2:
+- **Voz:** terceira pessoa ritualística, com pausas e ritmo.
+- **Conhecimento:** todo vindo do Grimório (`grimoire/`) — RAG
+  mandatório. LLM **redige**, não **decide**.
+- **Comportamento:**
+  - Cita fonte do Grimório em cada afirmação
+  - Nunca afirma futuro como certo
+  - Sempre pergunta antes de diagnosticar
+  - Empodera, não vicia
+  - Detecta crise emocional e oferece recurso humano
+- **Memória:** conversa tem continuidade via `memory/` do projeto.
+
+## 7. Regras Invioláveis (do projeto)
+
+- **IDEIA.md é a fonte** para correspondências. Constantes em
+  `src/lib/constants/*.ts` devem coincidir.
+- **Typecheck sempre passa:** `pnpm typecheck` antes de commit.
+- **Testes passam:** `pnpm test:run` antes de commit.
+- **Commits PT-BR:** `tipo: descrição`.
+- **Versões:** spec `akasha-vX.Y.Z`; tag git `vX.Y.Z`.
+- **AGENTS.md (DOX)** é contrato. Não quebre hierarquia.
+- **PROGRESS.md** atualizado a cada fase.
+
+## 8. Estado Atual (jun/2026)
+
+- Ondas 1-7 (v0.0.6) concluídas: monorepo, auth, grimório, agente
+  básico, PWA, Stripe, i18n. ~9k testes verdes.
+- **Sistema Akasha ainda é "soma de 4 sistemas lado a lado"** — falta
+  a síntese unificada.
+- I Ching ainda não integrado.
+- AI mentor ainda é genérico.
+
+## 9. Comandos Canônicos
+
 ```bash
-pnpm dev              # dev server (akasha-portal)
+pnpm dev              # akasha-portal
 pnpm typecheck        # tsc --noEmit
-pnpm lint             # eslint
-pnpm test:run         # vitest run
-pnpm test:e2e:browser # playwright
-pnpm quality          # quality gates
-pnpm fallow           # dead code
-pnpm grimoire:status  # grimoire sync check
-pnpm db:push          # prisma db push
-```
-
-## 9. Estrutura de Pastas (resumo)
-```
-cabala-dos-caminhos/
-├── apps/akasha-portal/    # Next.js 16 app (B2C)
-├── packages/             # core-* (motores determinísticos)
-│   ├── core-cabala/ core-astrology/ core-tantra/ core-odus/
-│   └── mentor/           # agent core
-├── grimoire/             # conhecimento (odus, iching, mentor, vibracional, botanica, ancestral)
-├── docs/                 # 27 documentos (00-26)
-├── tests/                # vitest + playwright
-├── scripts/              # utilitários
-├── memory/               # ciclos de evolução
-├── .trae/specs/          # specs versionadas
-├── .autonomous/          # ← ESTE HARNESS (autonomous-coding)
-└── CLAUDE.md AGENTS.md IDEIA.md  # contratos DOX
+pnpm test:run         # vitest
+pnpm quality          # gates
+pnpm grimoire:status  # grimoire sync
 ```
 
 ## 10. Próxima Ação do Agente
-1. Ler `.claude/TODO.md` — pegar próxima task da fila.
-2. Se `feature_list.json` tem itens `passes: false`, pegar o de maior prioridade.
-3. Se nem TODO nem feature_list tem trabalho: parar e notificar.
-4. **NUNCA inventar correspondências** sem atualizar `IDEIA.md` primeiro.
+
+**Fase 0 — R-001:** Estudar Gene Keys. Escrever relatório em
+`.autonomous/research/gene-keys.md` cobrindo:
+- Estrutura do sistema (Shadow/Gift/Siddhi)
+- Como derivou do I Ching
+- Hologenetic Profile
+- UX (Golden Path, Pearls)
+- Linguagem/tom
+- O que podemos aprender / melhorar para o Akasha
+
+**Repetir para R-002 a R-010+ (outros sistemas).**
+
+**NÃO IMPLEMENTAR NADA AINDA.**

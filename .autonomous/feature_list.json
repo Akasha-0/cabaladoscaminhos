@@ -1,278 +1,318 @@
 [
   {
-    "id": "F-001",
-    "category": "functional",
+    "id": "R-001",
+    "phase": 0,
+    "category": "research",
     "priority": "P0",
-    "description": "Onboarding completo: cadastro → coleta sagrada → quiz → 4 mapas calculados → Mandala revelada",
-    "steps": [
-      "Criar usuário teste via /onboarding",
-      "Preencher data/hora/local de nascimento",
-      "Verificar Caminho de Vida numerológico correto",
-      "Verificar Sol/Lua/Ascendente astrológicos",
-      "Verificar 11 Corpos Tântricos calculados",
-      "Verificar Odu de Ifá regente",
-      "Confirmar render da Mandala Toroidal"
+    "description": "Estudar Gene Keys (Richard Rudd) — modelo primário de síntese de múltiplas tradições em sistema unificado",
+    "questions": [
+      "Como o Gene Keys estrutura Shadow/Gift/Siddhi a partir do I Ching?",
+      "Qual o algoritmo de mapeamento hexagrama → Gene Key?",
+      "O que é o Hologenetic Profile e como cruza astrologia + I Ching + numerologia?",
+      "Sequence of Pearls: como funciona a jornada progressiva?",
+      "Como o Gene Keys lida com a UX? Golden Path?",
+      "Qual o tom de voz do livro/aplicação?",
+      "Como é o modelo de negócio?",
+      "Que pontos fracos tem? Onde o Akasha pode melhorar?"
     ],
+    "output": ".autonomous/research/gene-keys.md",
     "passes": false,
-    "evidence": "verification/onboarding.png"
+    "timebox": "60-90min"
   },
   {
-    "id": "F-002",
-    "category": "functional",
+    "id": "R-002",
+    "phase": 0,
+    "category": "research",
     "priority": "P0",
-    "description": "Manifesto Akáshico PDF gerado com 4 mapas + interpretações",
-    "steps": [
-      "Disparar geração após onboarding",
-      "Validar PDF com @react-pdf/renderer (NÃO Puppeteer)",
-      "Conter 4 seções (Astrologia, Cabala, Tantra, Odus)",
-      "Cobrir grafo de correlação cruzada",
-      "Salvar em /manifestos/[user_id].pdf"
+    "description": "Estudar Human Design (Ra Uru Hu) — modelo de UX/visualização do bodygraph",
+    "questions": [
+      "Como o Bodygraph integra 9 centros, 64 portas, 36 canais, 192 linhas?",
+      "Como mapeiam portas do I Ching para canais?",
+      "O que é Tipo/estratégia/autoridade e como calculam?",
+      "Como apresentam o gráfico? SVG? Visual orgânico?",
+      "Que modelo de UX usam no app oficial?",
+      "Quais críticas recebe? Onde o Akasha pode inovar?"
     ],
+    "output": ".autonomous/research/human-design.md",
     "passes": false,
-    "evidence": "verification/manifesto.pdf"
+    "timebox": "60-90min"
   },
   {
-    "id": "F-003",
-    "category": "functional",
+    "id": "R-003",
+    "phase": 0,
+    "category": "research",
+    "priority": "P1",
+    "description": "Estudar MBTI + funções cognitivas Jung — base psicológica moderna de tipos",
+    "questions": [
+      "Como Jung definiu as 4 funções?",
+      "Como Myers-Briggs operacionalizou em 16 tipos?",
+      "O que tem de validade estatística? Críticas?",
+      "Que lições para o Akasha sobre modelagem de personas?"
+    ],
+    "output": ".autonomous/research/mbti-jung.md",
+    "passes": false,
+    "timebox": "45min"
+  },
+  {
+    "id": "R-004",
+    "phase": 0,
+    "category": "research",
+    "priority": "P1",
+    "description": "Estudar Enneagrama — modelo de tipos com 9 fixações",
+    "questions": [
+      "Origem histórica do Enneagrama (Oral tradition / Ichazo / Naranjo)",
+      "Como funcionam triades (head/heart/gut) e níveis?",
+      "Modelo de asas, integrações, desintegrações",
+      "Que lições para Akasha sobre dinâmica de transformação?"
+    ],
+    "output": ".autonomous/research/enneagram.md",
+    "passes": false,
+    "timebox": "45min"
+  },
+  {
+    "id": "R-005",
+    "phase": 0,
+    "category": "research",
     "priority": "P0",
-    "description": "Dashboard Diário (Clima + Ritual + Alerta) — cron meia-noite UTC → Redis SETEX",
-    "steps": [
-      "Verificar job agendado meia-noite UTC",
-      "Acessar /dashboard no dia seguinte",
-      "Confirmar Clima do dia presente",
-      "Confirmar Ritual sugerido (banho/cor/mantra)",
-      "Confirmar Alerta de gatilhos emocionais"
+    "description": "Estudar Co-Star — UX minimalista para astrologia, micro-doses",
+    "questions": [
+      "Como o Co-Star usa o céu em tempo real para alimentar o app?",
+      "Tom de voz deles (sarcástico, íntimo, poético)",
+      "Visual: preto/branco, ilustração, tipografia",
+      "Como vendem o produto? (subscription, comunidade)",
+      "Que lições para o Akasha? O que NÃO copiar?"
     ],
+    "output": ".autonomous/research/costar.md",
     "passes": false,
-    "evidence": "verification/dashboard.png"
+    "timebox": "45min"
   },
   {
-    "id": "F-004",
-    "category": "functional",
+    "id": "R-006",
+    "phase": 0,
+    "category": "research",
+    "priority": "P1",
+    "description": "Estudar The Pattern — linguagem íntima, narrativa personalizada",
+    "questions": [
+      "Como o The Pattern personaliza a narrativa do usuário?",
+      "Tom íntimo/conspiratório. Funciona? Críticas?",
+      "Lições para a voz do Mentor Akasha"
+    ],
+    "output": ".autonomous/research/the-pattern.md",
+    "passes": false,
+    "timebox": "30min"
+  },
+  {
+    "id": "R-007",
+    "phase": 0,
+    "category": "research",
+    "priority": "P1",
+    "description": "Estudar CHANI App — astrologia + ritual + comunidade",
+    "questions": [
+      "Como integra astrologia com práticas (ritual)?",
+      "Que estrutura de conteúdo diário/semanal?",
+      "Que modelo de negócio? B2C premium?"
+    ],
+    "output": ".autonomous/research/chani.md",
+    "passes": false,
+    "timebox": "30min"
+  },
+  {
+    "id": "R-008",
+    "phase": 0,
+    "category": "research",
     "priority": "P0",
-    "description": "Agente Oracular conversacional ancorado no Grimório (RAG + SSE)",
-    "steps": [
-      "Abrir chat oracular",
-      "Enviar pergunta sobre dia atual",
-      "Verificar streaming SSE ativo",
-      "Verificar citação de fonte do Grimório",
-      "Verificar tom ritualístico + sem alucinação"
+    "description": "Estudar Cabala Clássica / Árvore da Vida — base para pilar 1",
+    "questions": [
+      "10 Sephiroth + 22 caminhos. Estrutura completa?",
+      "Como o pilar Numerologia Cabalística se conecta?",
+      "Que gematrias, correspondências astrológicas?",
+      "Como evitar simplificação excessiva? (respeito à fonte)"
     ],
+    "output": ".autonomous/research/kabbalah.md",
     "passes": false,
-    "evidence": "verification/oraculo.png"
+    "timebox": "60min"
   },
   {
-    "id": "F-005",
-    "category": "functional",
+    "id": "R-009",
+    "phase": 0,
+    "category": "research",
     "priority": "P1",
-    "description": "Auth B2C: cadastro/login/logout/refresh token + verificação email",
-    "steps": [
-      "POST /api/auth/register → 201 + email enviado",
-      "POST /api/auth/login → 200 + JWT",
-      "GET /api/auth/me com JWT → 200 user",
-      "POST /api/auth/refresh → novo JWT",
-      "Logout invalida sessão"
+    "description": "Estudar Numerologia Cabalística ocidental — fonte direta do pilar 1",
+    "questions": [
+      "Origem: Pitágoras, hebreus, decodificação de letras",
+      "Algoritmos: Caminho de Vida, Expressão, Motivação, Alma",
+      "Que autoridade epistêmica tem? Onde é controverso?"
     ],
+    "output": ".autonomous/research/cabalistic-numerology.md",
     "passes": false,
-    "evidence": "verification/auth.json"
+    "timebox": "45min"
   },
   {
-    "id": "F-006",
-    "category": "functional",
-    "priority": "P1",
-    "description": "Stripe checkout: compra de créditos + webhook",
-    "steps": [
-      "POST /api/stripe/checkout → session.url",
-      "Webhook stripe → atualiza user.credits",
-      "GET /api/credits/balance → reflete novo saldo"
+    "id": "R-010",
+    "phase": 0,
+    "category": "research",
+    "priority": "P2",
+    "description": "Estudar Tzolkin / Mayan Calendar — outro sistema de ciclos, inspiração para time-awareness",
+    "questions": [
+      "Estrutura: 260 dias, 13 tons, 20 selos",
+      "Como funciona o cruzamento dia-pessoa?",
+      "Que lições sobre 'ritmo' e 'ciclicidade' para o Akasha?"
     ],
+    "output": ".autonomous/research/tzolkin.md",
     "passes": false,
-    "evidence": "verification/stripe.webhook.log"
+    "timebox": "30min"
   },
   {
-    "id": "F-007",
-    "category": "functional",
-    "priority": "P1",
-    "description": "Grimório sync: Markdown→Ollama embeddings→pgvector (Camada 2)",
-    "steps": [
-      "Rodar pnpm grimoire:sync",
-      "Verificar embeddings gerados (Ollama rodando)",
-      "Buscar termo simples → retorna doc correto",
-      "Busca híbrida JSONB+pgvector retorna top-3"
+    "id": "R-011",
+    "phase": 0,
+    "category": "research",
+    "priority": "P2",
+    "description": "Estudar Ayurveda — síntese milenar de corpo/mente/espírito",
+    "questions": [
+      "Tridosha: Vata/Pitta/Kapha — como é o algoritmo?",
+      "Que paralelos com Akasha? (tipologia + ciclo)",
+      "Que estrutura de consulta/personalização?"
     ],
+    "output": ".autonomous/research/ayurveda.md",
     "passes": false,
-    "evidence": "verification/grimoire-sync.log"
+    "timebox": "30min"
   },
   {
-    "id": "F-008",
-    "category": "functional",
-    "priority": "P1",
-    "description": "PWA install + push notification (web-push)",
-    "steps": [
-      "Manifest PWA válido",
-      "Service worker registra",
-      "Push subscription criada",
-      "Receber push do cron diário"
+    "id": "R-012",
+    "phase": 0,
+    "category": "research",
+    "priority": "P2",
+    "description": "Estudar Sheldrake (Campos Morfogenéticos) + Cymatics — base conceitual para 'por que tradição funciona'",
+    "questions": [
+      "Hipótese de Sheldrake. Aceitação científica?",
+      "Cymatics: som-como-forma (Chladni patterns)",
+      "Como isso justifica o pilar 'som/nome' da Cabala?"
     ],
+    "output": ".autonomous/research/morphic-cymatics.md",
     "passes": false,
-    "evidence": "verification/pwa.png"
+    "timebox": "30min"
   },
   {
-    "id": "F-009",
-    "category": "functional",
-    "priority": "P1",
-    "description": "i18n PT-BR + EN (next-intl)",
-    "steps": [
-      "Trocar locale → recarrega strings",
-      "EN não contém texto PT hardcoded",
-      "Datas/números formatados por locale"
-    ],
-    "passes": false,
-    "evidence": "verification/i18n.png"
-  },
-  {
-    "id": "F-010",
-    "category": "functional",
-    "priority": "P1",
-    "description": "Correspondência validada via cabala-corr-validator contra IDEIA.md",
-    "steps": [
-      "Adicionar nova correspondência em código",
-      "Rodar validador → passa se casa em IDEIA.md",
-      "Bloqueia se nome/grafia divergir do ledger"
-    ],
-    "passes": false,
-    "evidence": "verification/corr-validator.log"
-  },
-  {
-    "id": "F-011",
-    "category": "style",
+    "id": "R-020",
+    "phase": 1,
+    "category": "synthesis",
     "priority": "P0",
-    "description": "Mandala Toroidal: animações suaves, glassmorphism, paleta cósmica (Doc 26)",
-    "steps": [
-      "Abrir /mandala",
-      "Verificar 4 camadas concêntricas visíveis",
-      "Verificar rotação do anel astrológico",
-      "Verificar alertas em vermelho + animações",
-      "Verificar tipografia Akasha (Doc 26)"
+    "description": "EXTRAIR PADRÕES COMUNS entre todos os sistemas estudados",
+    "dependencies": ["R-001..R-012"],
+    "questions": [
+      "Quais escolhas de design recorreram? (visualização, micro-doses, tom)",
+      "O que diferencia sistemas B2C bem-sucedidos?",
+      "Que armadilhas todos cometeram?",
+      "O que cada um resolveu que o Akasha pode herdar?"
     ],
+    "output": ".autonomous/research/patterns.md",
     "passes": false,
-    "evidence": "verification/mandala.png"
+    "timebox": "60min"
   },
   {
-    "id": "F-012",
-    "category": "style",
-    "priority": "P1",
-    "description": "Mobile-first responsivo (breakpoints sm/md/lg)",
-    "steps": [
-      "Viewport 375px (iPhone SE) → sem overflow",
-      "Viewport 768px (tablet) → grid 2col",
-      "Viewport 1280px (desktop) → grid 4col"
+    "id": "R-021",
+    "phase": 1,
+    "category": "synthesis",
+    "priority": "P0",
+    "description": "Identificar GAPS — o que nenhum sistema cobre",
+    "dependencies": ["R-020"],
+    "questions": [
+      "Que problemas os usuários de Gene Keys/HD reclamam?",
+      "Que públicos são mal servidos pelos sistemas atuais?",
+      "Que cruzamentos não foram tentados? (I Ching + Odu, p.ex.)",
+      "Onde mora a oportunidade do Akasha?"
     ],
+    "output": ".autonomous/research/gaps.md",
     "passes": false,
-    "evidence": "verification/responsive.png"
+    "timebox": "30min"
   },
   {
-    "id": "F-013",
-    "category": "style",
-    "priority": "P1",
-    "description": "Acessibilidade WCAG 2.2 AA (axe-core + keyboard nav)",
-    "steps": [
-      "axe-core scan → 0 critical violations",
-      "Tab nav cobre todos os CTAs",
-      "Focus ring visível em dark mode",
-      "Contraste >= 4.5:1 em texto pequeno"
+    "id": "R-022",
+    "phase": 1,
+    "category": "synthesis",
+    "priority": "P0",
+    "description": "Definir EIXO CENTRAL do Akasha — qual a UNIDADE de síntese?",
+    "dependencies": ["R-021"],
+    "questions": [
+      "Mapa visual (Mandala) vs linha do tempo (jornada) vs persona (mentor)?",
+      "Que narrativa única conecta os 5 pilares?",
+      "Como o usuário SENTE a unidade, não a justaposição?",
+      "Proposta inicial do Akasha Core Algorithm (markdown)"
     ],
+    "output": ".autonomous/research/synthesis_v1.md",
     "passes": false,
-    "evidence": "verification/a11y.log"
+    "timebox": "90min"
   },
   {
-    "id": "F-014",
-    "category": "functional",
-    "priority": "P2",
-    "description": "Cache de mapa natal (Redis): segundo load = < 50ms",
-    "steps": [
-      "GET /api/mapa/[user_id] primeira vez → cálculo + cache",
-      "GET /api/mapa/[user_id] segunda vez → cache hit",
-      "Métrica < 50ms no segundo load"
+    "id": "R-023",
+    "phase": 2,
+    "category": "design",
+    "priority": "P0",
+    "description": "Definir persona do AI Mentor (Mestre)",
+    "dependencies": ["R-022"],
+    "questions": [
+      "Nome? Akasha? Outro?",
+      "Voz: ritual, íntima, sibilina, compassiva?",
+      "Limites: o que NUNCA faz?",
+      "Como cita o Grimório? (sempre inline? nota de rodapé?)",
+      "5+ exemplos de diálogo real"
     ],
+    "output": ".autonomous/research/mentor_persona.md",
     "passes": false,
-    "evidence": "verification/perf-trace.json"
+    "timebox": "60min"
   },
   {
-    "id": "F-015",
-    "category": "functional",
-    "priority": "P2",
-    "description": "Cron job de mapa diário: meia-noite UTC, idempotente, retry on fail",
-    "steps": [
-      "Cron configurado em deploy/",
-      "Logs do systemd/journald sem erro",
-      "Lock distribuído (Redis SET NX) previne duplicação"
+    "id": "R-024",
+    "phase": 3,
+    "category": "design",
+    "priority": "P0",
+    "description": "UX Architecture — telas, jornada, descoberta progressiva",
+    "dependencies": ["R-022", "R-023"],
+    "questions": [
+      "Mandala Toroidal: como o usuário navega?",
+      "Que telas diárias/semanais/mensais?",
+      "Como o Mentor aparece? (chat? voz? mural?)",
+      "Onboarding: quanto tempo? quantas revelações?",
+      "Mobile-first vs desktop — propor"
     ],
+    "output": ".autonomous/research/ux_architecture.md",
     "passes": false,
-    "evidence": "verification/cron.log"
+    "timebox": "60min"
   },
   {
-    "id": "F-016",
-    "category": "functional",
-    "priority": "P2",
-    "description": "Rate limiting em /api/oraculo (10 req/min/user)",
-    "steps": [
-      "Burst 11 reqs → 11ª retorna 429",
-      "Reset após 60s",
-      "Headers RateLimit-* presentes"
+    "id": "R-025",
+    "phase": 4,
+    "category": "design",
+    "priority": "P0",
+    "description": "Tech stack final + decisões arquiteturais",
+    "dependencies": ["R-024"],
+    "questions": [
+      "Next.js 16 + Turbopack: confirmar?",
+      "pgvector para embeddings: sim?",
+      "LLM principal: gpt-4 ou opus 4.5? Minimax fallback?",
+      "Realtime: SSE ok ou WebSocket?",
+      "Auth: Supabase ou JWT próprio?",
+      "VPS ou Vercel edge?"
     ],
+    "output": ".autonomous/research/tech_decisions.md",
     "passes": false,
-    "evidence": "verification/ratelimit.log"
+    "timebox": "45min"
   },
   {
-    "id": "F-017",
-    "category": "functional",
-    "priority": "P2",
-    "description": "Audit log: ações sensíveis (auth, compra, mudança de mapa) registradas",
-    "steps": [
-      "Cadastro → audit.user.created",
-      "Compra → audit.stripe.charge",
-      "Mudança de birth data → audit.map.recalculated"
+    "id": "R-030",
+    "phase": 5,
+    "category": "prototype",
+    "priority": "P0",
+    "description": "Akasha Core Algorithm — protótipo em TS puro (NÃO integrado)",
+    "dependencies": ["R-022"],
+    "questions": [
+      "Tipos Zod para inputs (5 pilares)",
+      "Função pura akasha.calcular(pessoa) → Leitura",
+      "Validar com 3 perfis de teste",
+      "Sem persistência ainda — só tipos + lógica"
     ],
+    "output": "packages/akasha-core/src/index.ts (skeleton)",
     "passes": false,
-    "evidence": "verification/audit.log"
-  },
-  {
-    "id": "F-018",
-    "category": "functional",
-    "priority": "P3",
-    "description": "Exportar dados pessoais (LGPD/GDPR)",
-    "steps": [
-      "GET /api/me/export → JSON com todos os dados",
-      "DELETE /api/me → soft-delete + 30d purge"
-    ],
-    "passes": false,
-    "evidence": "verification/lgpd.json"
-  },
-  {
-    "id": "F-019",
-    "category": "functional",
-    "priority": "P2",
-    "description": "Webhook de verificação de email (token único, expiração 24h)",
-    "steps": [
-      "Email enviado após cadastro",
-      "Token em URL GET /verify?token=... → 200 + user.emailVerified",
-      "Token expirado → 400"
-    ],
-    "passes": false,
-    "evidence": "verification/email-verify.log"
-  },
-  {
-    "id": "F-020",
-    "category": "functional",
-    "priority": "P3",
-    "description": "Backup automático do Postgres (pg_dump diário)",
-    "steps": [
-      "deploy/backup.sh roda 03:00 UTC",
-      "Backup em /var/backups/postgres/",
-      "Restore testado uma vez por mês"
-    ],
-    "passes": false,
-    "evidence": "verification/backup.log"
+    "timebox": "90min"
   }
 ]

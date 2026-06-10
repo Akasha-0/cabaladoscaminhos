@@ -114,50 +114,85 @@ git tag --sort=-creatordate | head -5
 
 ---
 
-## Modo Autônomo (`.autonomous/`)
+## Modo Autônomo — Fase 0: RESEARCH-FIRST (`.autonomous/`)
 
-Quando a sessão for iniciada via `bash .autonomous/launch.sh`, este modo
-ativo. **Você está rodando sem supervisão humana em tempo real.**
+**MISSÃO ATUAL:** Construir o Sistema Akasha — síntese moderna de 5
+tradições (Numerologia Cabalística, Astrologia, Numerologia Tântrica,
+Odu de Nascimento, **I Ching 64 hexagramas**), à maneira do Human
+Design e Gene Keys.
 
-### Fontes de verdade (nesta ordem)
-1. **`.claude/TODO.md`** — fila viva de tarefas (lida no STEP 1).
-2. **`.autonomous/feature_list.json`** — backlog de features (pega `passes:false`).
-3. **`.autonomous/app_spec.txt`** — spec consolidado do projeto.
-4. **`IDEIA.md`** — fonte única para correspondências esotéricas.
-5. **`AGENTS.md`** — contrato DOX de hierarquia de pastas.
-6. **`docs/00-26`** — documentação canônica do projeto.
+**REGRA DE OURO:** **Nenhum código de feature antes da Fase 5 (protótipo
+de algoritmo).** Fase 0-4 = research + design only.
 
-### Protocolo por sessão
-1. **Orientação** (primeiros 60s): ler progress.txt, git log, TODO, feature_list.
-2. **Regressão** (sempre antes de novo trabalho): `pnpm typecheck && pnpm test:run`.
-3. **Trabalho:** implementar UM item por sessão. Sem scope creep.
-4. **Marcar:** mudar `[ ]` → `[x]` no TODO; mudar `"passes": false` → `true` no JSON.
-5. **Commit atômico** PT-BR: `tipo: descrição`.
-6. **Atualizar** `.autonomous/claude-progress.txt` com bullet do que foi feito.
+### Fontes de verdade (ordem de leitura)
+1. **`.autonomous/app_spec.txt`** — MISSÃO + 5 pilares + sistemas referência.
+2. **`.claude/TODO.md`** — fila viva (RQ-NN research, D-NN design).
+3. **`.autonomous/feature_list.json`** — features por fase (0-6).
+4. **`.autonomous/research/INDEX.md`** — mapa de toda a pesquisa feita.
+5. **`.autonomous/research/CHECKPOINT.md`** — status resumido.
+6. **`IDEIA.md`** — fonte para correspondências já no projeto.
+7. **`AGENTS.md`** — contrato DOX de hierarquia.
+8. **`docs/00-26`** — 27 docs de referência do projeto.
+
+### Fases de Desenvolvimento
+
+| Fase | Nome | O que fazer | Output |
+|------|------|-------------|--------|
+| **0** | **Research** | Estudar 8+ sistemas modernos via WebSearch/WebFetch/context7 | `.autonomous/research/systems/*.md` |
+| **1** | Synthesis | Extrair padrões, gaps, eixo central do Akasha | `patterns.md`, `gaps.md`, `synthesis_v1.md` |
+| **2** | AI Mentor | Definir persona, voz, limites éticos | `mentor/persona_v1.md` |
+| **3** | UX | Decisão mobile/web, jornada, telas | `ux/architecture_v1.md` |
+| **4** | Tech Stack | Confirmar/adaptar Next.js, pgvector, LLM | `tech/stack_v1.md` |
+| **5** | Protótipo | Akasha Core Algorithm em TS puro | `packages/akasha-core/src/index.ts` |
+| **6** | Implementação | Features (RQ-NN migram para F-NN) | `src/`, `apps/` |
+
+### Protocolo por sessão (Fase 0)
+1. **Orientação** (60s): INDEX, CHECKPOINT, git log, TODO.
+2. **Próximo RQ:** pega próximo `[ ]` em TODO. Marca `[~]`.
+3. **Research:** WebSearch 3-5 fontes + WebFetch páginas + context7.
+4. **Escreve:** `.autonomous/research/systems/<nome>.md` (mínimo 500
+   linhas, citar todas as fontes).
+5. **COT:** decisões importantes em `chain-of-thought/cot-YYYYMMDD-*.md`.
+6. **Marca:** `"passes": true` no feature_list.
+7. **Commit:** PT-BR, `research(akasha): RQ-NN — <título>`.
+8. **Progresso:** bullet em `claude-progress.txt`.
+
+### O que **PODE** ser commitado em Fase 0
+- ✅ Markdown research files
+- ✅ Chain-of-thought logs
+- ✅ Diagramas (Mermaid, ASCII)
+- ✅ Schema prototypes em YAML/JSON (não TS)
+- ✅ Mudanças em IDEIA.md APENAS se validadas
+
+### O que **NÃO PODE** em Fase 0
+- ❌ Código de feature em `src/`, `apps/`, `packages/*/src/`
+- ❌ Mudanças em `schema.prisma` (Fase 5+)
+- ❌ Componentes UI novos
+- ❌ Commits diretos em `main` (sempre via PR)
 
 ### Auto-stop (quando parar e notificar)
-- Mesmo erro 3x em 5 min (hook `post-bash-error-counter.sh` dispara).
-- Custo da sessão > $50 (configurável em `AUTONOMOUS_MAX_BUDGET_USD`).
-- TODO + feature_list vazios.
-- Mudança em `IDEIA.md` (sempre pare e peça validação humana).
+- Mesmo erro 3x em 5 min (hook dispara).
+- Custo da sessão > $50 (env `AUTONOMOUS_MAX_BUDGET_USD`).
+- 12+ RQs completos + synthesis_v1 + persona_v1 → checkpoint.
+- TODO + feature_list vazios na Fase 0 → impossível, pare.
 - Qualquer `pkill`, `git push`, `sudo`, `rm -rf` (bloqueado por hook).
 
-### Limites duros (NUNCA fazer)
-- ❌ Push para remote sem permissão.
-- ❌ Mudar `IDEIA.md` (ledger de correspondências).
-- ❌ Deletar/modificar steps de `feature_list.json` (só mude `passes`).
+### Limites duros (NUNCA)
+- ❌ Push para remote sem permissão humana.
+- ❌ Mudar `IDEIA.md` sem debate explícito no research.
+- ❌ Implementar feature antes da Fase 5.
 - ❌ Instalar deps globais sem aprovação.
 - ❌ Commitar `.env`, secrets, `node_modules`.
 
-### Hooks ativos (wired em `.claude_settings.json`)
-- `pre-bash-allowlist.sh` — só permite comandos dev seguros.
-- `post-bash-error-counter.sh` — 3x mesmo erro → stop signal.
-- `session-start-budget.sh` — bloqueia se budget diário > limite.
+### Hooks ativos
+- `pre-bash-allowlist.sh` — bash guard.
+- `post-bash-error-counter.sh` — 3x erro → stop.
+- `session-start-budget.sh` — bloqueia se budget > limite.
 
 ### Resposta de emergência
-Se algo parecer errado (loop infinito, custo subindo, comportamento
-estranho): escreva `bash .autonomous/launch.sh --stop` em OUTRA sessão
-para parar o orchestrator.
+```bash
+bash .autonomous/launch.sh --stop
+```
 
 ---
 
