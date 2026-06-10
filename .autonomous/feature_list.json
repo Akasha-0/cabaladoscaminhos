@@ -1,0 +1,278 @@
+[
+  {
+    "id": "F-001",
+    "category": "functional",
+    "priority": "P0",
+    "description": "Onboarding completo: cadastro → coleta sagrada → quiz → 4 mapas calculados → Mandala revelada",
+    "steps": [
+      "Criar usuário teste via /onboarding",
+      "Preencher data/hora/local de nascimento",
+      "Verificar Caminho de Vida numerológico correto",
+      "Verificar Sol/Lua/Ascendente astrológicos",
+      "Verificar 11 Corpos Tântricos calculados",
+      "Verificar Odu de Ifá regente",
+      "Confirmar render da Mandala Toroidal"
+    ],
+    "passes": false,
+    "evidence": "verification/onboarding.png"
+  },
+  {
+    "id": "F-002",
+    "category": "functional",
+    "priority": "P0",
+    "description": "Manifesto Akáshico PDF gerado com 4 mapas + interpretações",
+    "steps": [
+      "Disparar geração após onboarding",
+      "Validar PDF com @react-pdf/renderer (NÃO Puppeteer)",
+      "Conter 4 seções (Astrologia, Cabala, Tantra, Odus)",
+      "Cobrir grafo de correlação cruzada",
+      "Salvar em /manifestos/[user_id].pdf"
+    ],
+    "passes": false,
+    "evidence": "verification/manifesto.pdf"
+  },
+  {
+    "id": "F-003",
+    "category": "functional",
+    "priority": "P0",
+    "description": "Dashboard Diário (Clima + Ritual + Alerta) — cron meia-noite UTC → Redis SETEX",
+    "steps": [
+      "Verificar job agendado meia-noite UTC",
+      "Acessar /dashboard no dia seguinte",
+      "Confirmar Clima do dia presente",
+      "Confirmar Ritual sugerido (banho/cor/mantra)",
+      "Confirmar Alerta de gatilhos emocionais"
+    ],
+    "passes": false,
+    "evidence": "verification/dashboard.png"
+  },
+  {
+    "id": "F-004",
+    "category": "functional",
+    "priority": "P0",
+    "description": "Agente Oracular conversacional ancorado no Grimório (RAG + SSE)",
+    "steps": [
+      "Abrir chat oracular",
+      "Enviar pergunta sobre dia atual",
+      "Verificar streaming SSE ativo",
+      "Verificar citação de fonte do Grimório",
+      "Verificar tom ritualístico + sem alucinação"
+    ],
+    "passes": false,
+    "evidence": "verification/oraculo.png"
+  },
+  {
+    "id": "F-005",
+    "category": "functional",
+    "priority": "P1",
+    "description": "Auth B2C: cadastro/login/logout/refresh token + verificação email",
+    "steps": [
+      "POST /api/auth/register → 201 + email enviado",
+      "POST /api/auth/login → 200 + JWT",
+      "GET /api/auth/me com JWT → 200 user",
+      "POST /api/auth/refresh → novo JWT",
+      "Logout invalida sessão"
+    ],
+    "passes": false,
+    "evidence": "verification/auth.json"
+  },
+  {
+    "id": "F-006",
+    "category": "functional",
+    "priority": "P1",
+    "description": "Stripe checkout: compra de créditos + webhook",
+    "steps": [
+      "POST /api/stripe/checkout → session.url",
+      "Webhook stripe → atualiza user.credits",
+      "GET /api/credits/balance → reflete novo saldo"
+    ],
+    "passes": false,
+    "evidence": "verification/stripe.webhook.log"
+  },
+  {
+    "id": "F-007",
+    "category": "functional",
+    "priority": "P1",
+    "description": "Grimório sync: Markdown→Ollama embeddings→pgvector (Camada 2)",
+    "steps": [
+      "Rodar pnpm grimoire:sync",
+      "Verificar embeddings gerados (Ollama rodando)",
+      "Buscar termo simples → retorna doc correto",
+      "Busca híbrida JSONB+pgvector retorna top-3"
+    ],
+    "passes": false,
+    "evidence": "verification/grimoire-sync.log"
+  },
+  {
+    "id": "F-008",
+    "category": "functional",
+    "priority": "P1",
+    "description": "PWA install + push notification (web-push)",
+    "steps": [
+      "Manifest PWA válido",
+      "Service worker registra",
+      "Push subscription criada",
+      "Receber push do cron diário"
+    ],
+    "passes": false,
+    "evidence": "verification/pwa.png"
+  },
+  {
+    "id": "F-009",
+    "category": "functional",
+    "priority": "P1",
+    "description": "i18n PT-BR + EN (next-intl)",
+    "steps": [
+      "Trocar locale → recarrega strings",
+      "EN não contém texto PT hardcoded",
+      "Datas/números formatados por locale"
+    ],
+    "passes": false,
+    "evidence": "verification/i18n.png"
+  },
+  {
+    "id": "F-010",
+    "category": "functional",
+    "priority": "P1",
+    "description": "Correspondência validada via cabala-corr-validator contra IDEIA.md",
+    "steps": [
+      "Adicionar nova correspondência em código",
+      "Rodar validador → passa se casa em IDEIA.md",
+      "Bloqueia se nome/grafia divergir do ledger"
+    ],
+    "passes": false,
+    "evidence": "verification/corr-validator.log"
+  },
+  {
+    "id": "F-011",
+    "category": "style",
+    "priority": "P0",
+    "description": "Mandala Toroidal: animações suaves, glassmorphism, paleta cósmica (Doc 26)",
+    "steps": [
+      "Abrir /mandala",
+      "Verificar 4 camadas concêntricas visíveis",
+      "Verificar rotação do anel astrológico",
+      "Verificar alertas em vermelho + animações",
+      "Verificar tipografia Akasha (Doc 26)"
+    ],
+    "passes": false,
+    "evidence": "verification/mandala.png"
+  },
+  {
+    "id": "F-012",
+    "category": "style",
+    "priority": "P1",
+    "description": "Mobile-first responsivo (breakpoints sm/md/lg)",
+    "steps": [
+      "Viewport 375px (iPhone SE) → sem overflow",
+      "Viewport 768px (tablet) → grid 2col",
+      "Viewport 1280px (desktop) → grid 4col"
+    ],
+    "passes": false,
+    "evidence": "verification/responsive.png"
+  },
+  {
+    "id": "F-013",
+    "category": "style",
+    "priority": "P1",
+    "description": "Acessibilidade WCAG 2.2 AA (axe-core + keyboard nav)",
+    "steps": [
+      "axe-core scan → 0 critical violations",
+      "Tab nav cobre todos os CTAs",
+      "Focus ring visível em dark mode",
+      "Contraste >= 4.5:1 em texto pequeno"
+    ],
+    "passes": false,
+    "evidence": "verification/a11y.log"
+  },
+  {
+    "id": "F-014",
+    "category": "functional",
+    "priority": "P2",
+    "description": "Cache de mapa natal (Redis): segundo load = < 50ms",
+    "steps": [
+      "GET /api/mapa/[user_id] primeira vez → cálculo + cache",
+      "GET /api/mapa/[user_id] segunda vez → cache hit",
+      "Métrica < 50ms no segundo load"
+    ],
+    "passes": false,
+    "evidence": "verification/perf-trace.json"
+  },
+  {
+    "id": "F-015",
+    "category": "functional",
+    "priority": "P2",
+    "description": "Cron job de mapa diário: meia-noite UTC, idempotente, retry on fail",
+    "steps": [
+      "Cron configurado em deploy/",
+      "Logs do systemd/journald sem erro",
+      "Lock distribuído (Redis SET NX) previne duplicação"
+    ],
+    "passes": false,
+    "evidence": "verification/cron.log"
+  },
+  {
+    "id": "F-016",
+    "category": "functional",
+    "priority": "P2",
+    "description": "Rate limiting em /api/oraculo (10 req/min/user)",
+    "steps": [
+      "Burst 11 reqs → 11ª retorna 429",
+      "Reset após 60s",
+      "Headers RateLimit-* presentes"
+    ],
+    "passes": false,
+    "evidence": "verification/ratelimit.log"
+  },
+  {
+    "id": "F-017",
+    "category": "functional",
+    "priority": "P2",
+    "description": "Audit log: ações sensíveis (auth, compra, mudança de mapa) registradas",
+    "steps": [
+      "Cadastro → audit.user.created",
+      "Compra → audit.stripe.charge",
+      "Mudança de birth data → audit.map.recalculated"
+    ],
+    "passes": false,
+    "evidence": "verification/audit.log"
+  },
+  {
+    "id": "F-018",
+    "category": "functional",
+    "priority": "P3",
+    "description": "Exportar dados pessoais (LGPD/GDPR)",
+    "steps": [
+      "GET /api/me/export → JSON com todos os dados",
+      "DELETE /api/me → soft-delete + 30d purge"
+    ],
+    "passes": false,
+    "evidence": "verification/lgpd.json"
+  },
+  {
+    "id": "F-019",
+    "category": "functional",
+    "priority": "P2",
+    "description": "Webhook de verificação de email (token único, expiração 24h)",
+    "steps": [
+      "Email enviado após cadastro",
+      "Token em URL GET /verify?token=... → 200 + user.emailVerified",
+      "Token expirado → 400"
+    ],
+    "passes": false,
+    "evidence": "verification/email-verify.log"
+  },
+  {
+    "id": "F-020",
+    "category": "functional",
+    "priority": "P3",
+    "description": "Backup automático do Postgres (pg_dump diário)",
+    "steps": [
+      "deploy/backup.sh roda 03:00 UTC",
+      "Backup em /var/backups/postgres/",
+      "Restore testado uma vez por mês"
+    ],
+    "passes": false,
+    "evidence": "verification/backup.log"
+  }
+]

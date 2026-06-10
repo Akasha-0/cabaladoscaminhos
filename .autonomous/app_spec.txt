@@ -1,0 +1,91 @@
+# App Spec — Cabala dos Caminhos / Sistema Akasha
+
+## 1. O que é
+Sistema B2C de tecnologia espiritual (oráculo vivo, mobile-first) que cruza
+4 vertentes ancestrais (Astrologia, Numerologia Cabalística, Numerologia
+Tântrica, Odus de Ifá) para emitir diagnóstico diário personalizado.
+
+- **Stack:** Next.js 16 (App Router, Turbopack) + React 19, Prisma 7 + PostgreSQL,
+  Redis (ioredis), OpenAI + Minimax (LLM), Stripe, Vitest, Zod, Zustand,
+  Tailwind 4, @base-ui/react, framer-motion, @react-pdf/renderer, web-push.
+- **Marca:** "Sistema Akasha" (produto) / "Cabala dos Caminhos" (matriz/monorepo).
+- **Domínio:** `cabala-dos-caminhos/` — monorepo pnpm + Turbo.
+
+## 2. Os 4 Pilares (motor)
+1. **Astrologia** (Céu/Macro) — Swiss Ephemeris → mapa de bordo, trânsitos.
+2. **Numerologia Cabalística** (Verbo/Identidade) — Caminho de Vida, nome, ciclos.
+3. **Numerologia Tântrica** (Anatomia/Micro) — 11 Corpos Espirituais.
+4. **Odus de Nascimento** (Terra/Ori) — Ifá/Merindilogun, Orixás, elementos.
+
+**A inteligência mora no cruzamento** — não em camadas isoladas.
+
+## 3. Os Produtos
+1. **Mandala Toroidal** — visualização viva (R3F + SVG/D3 + glassmorphism).
+2. **Manifesto Akáshico** — PDF gerado no onboarding (`@react-pdf/renderer`).
+3. **Oráculo de Bolso** — dashboard diário (Clima + Ritual + Alerta).
+4. **Agente Oracular** — conversa ancorada no Grimório (RAG + system prompt).
+
+## 4. Arquitetura (3 Camadas)
+- **C1 — Motor Determinístico:** `packages/core-*` (sem texto, só JSON).
+- **C2 — Grafo de Conhecimento:** cruzamento, Ponto de Tensão.
+- **C3 — Agente de Síntese:** LLM (OpenAI + Minimax), voz do Akasha.
+
+## 5. Regras Invioláveis
+- **AD-20.1:** Nenhuma correspondência sem fonte. Toda entrada cita tradição.
+- **AD-20.2:** Verdade injetada, nunca lembrada. LLM *redige*, não *decide*.
+- **AD-20.5:** `IDEIA.md` precede o código. Validar contra ledger antes de adicionar.
+- **Fonte única:** divergência nome/grafia → `src/lib/constants/{lenormand-cards,odus}.ts`
+  deve coincidir com `IDEIA.md` (Doc 16 AD-02 / Doc 24 §8).
+- **Type safety:** `pnpm typecheck` deve passar sempre.
+- **Testes:** 100% verde (`pnpm test:run`). Não quebrar suíte.
+- **Commits:** atômicos, formato `tipo: descrição`. Mensagens em PT-BR.
+- **Versões:** spec `akasha-vX.Y.Z`; git tag `vX.Y.Z`; ciclo `cycle-[NNN]`.
+
+## 6. Estado Atual (jun/2026)
+- Ondas 1-7 concluídas até v0.0.6.
+- ~9k testes verdes, `QUALITY_SCORE >= 0.91`.
+- Monorepo pnpm + Turbo operacional.
+- Auth Operator + Auth B2C prontos.
+- 18 specs versionadas em `.trae/specs/`.
+- 11 skills em `.claude/skills/`, 2 agents custom.
+
+## 7. Próximas Ondas (ver `.claude/TODO.md` para fila viva)
+- **Onda 8 — Curadoria Pendente** (gap analysis do roadmap).
+- **Onda 9 — Refinamento do Agente Oracular.**
+- **Onda 10 — Hardening + Performance.**
+
+## 8. Comandos Canônicos
+```bash
+pnpm dev              # dev server (akasha-portal)
+pnpm typecheck        # tsc --noEmit
+pnpm lint             # eslint
+pnpm test:run         # vitest run
+pnpm test:e2e:browser # playwright
+pnpm quality          # quality gates
+pnpm fallow           # dead code
+pnpm grimoire:status  # grimoire sync check
+pnpm db:push          # prisma db push
+```
+
+## 9. Estrutura de Pastas (resumo)
+```
+cabala-dos-caminhos/
+├── apps/akasha-portal/    # Next.js 16 app (B2C)
+├── packages/             # core-* (motores determinísticos)
+│   ├── core-cabala/ core-astrology/ core-tantra/ core-odus/
+│   └── mentor/           # agent core
+├── grimoire/             # conhecimento (odus, iching, mentor, vibracional, botanica, ancestral)
+├── docs/                 # 27 documentos (00-26)
+├── tests/                # vitest + playwright
+├── scripts/              # utilitários
+├── memory/               # ciclos de evolução
+├── .trae/specs/          # specs versionadas
+├── .autonomous/          # ← ESTE HARNESS (autonomous-coding)
+└── CLAUDE.md AGENTS.md IDEIA.md  # contratos DOX
+```
+
+## 10. Próxima Ação do Agente
+1. Ler `.claude/TODO.md` — pegar próxima task da fila.
+2. Se `feature_list.json` tem itens `passes: false`, pegar o de maior prioridade.
+3. Se nem TODO nem feature_list tem trabalho: parar e notificar.
+4. **NUNCA inventar correspondências** sem atualizar `IDEIA.md` primeiro.
