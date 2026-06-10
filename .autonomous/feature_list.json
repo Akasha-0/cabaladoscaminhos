@@ -66,7 +66,7 @@
       "Que lições para Akasha sobre dinâmica de transformação?"
     ],
     "output": ".autonomous/research/enneagram.md",
-    "passes": false,
+    "passes": true,
     "timebox": "45min"
   },
   {

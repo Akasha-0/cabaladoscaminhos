@@ -15,3 +15,24 @@
 - Output: .autonomous/research/systems/human-design.md (~430 linhas)
 - Commit: 4f25dfbb
 - Próximo: RQ-003 MBTI/Jung (base psicológica, 4 funções cognitivas)
+
+[2026-06-10 13:30] RQ-003 ✅ MBTI / Jung — research completo
+- 30 fontes citadas (10 primárias/APTi/MBC, 6 técnicas/Big Five/Nardi, 8 críticas/Pittenger/McCrae/Stein, 6 complementares)
+- Cobre: 4 funções de Jung (T/F/S/N) + 2 atitudes (E/I) = 8 tipos junguianos; Myers adicionou J/P → 16 tipos; Briggs+Myers 1943-1980 narrativa de fundação; John Beebe 8-function model (Hero/Father/Puer/Anima + 4 shadows); McCrae & Costa 1989 crítica (MBTI mede 4/5 dimensões FFM); Pittenger 2005 crítica psicométrica; Stein & Arnau 2019 crítica filosófica; 16Personalities NERIS 100M+ testes; Myers-Briggs Company $63.7M revenue/100k+ certificados/$2.895 certificação; Dario Nardi EEG neuroscience
+- Posição Akasha: USAR Jung (funções contínuas), NÃO Myers (dicotomia forçada). 5 dimensões contínuas internas + 16 perfis mnemônicos externos. Função inferior (Beebe) = "trabalho de vida" do usuário. Certificação Akasha 3-níveis ($295/$895/$1,995). White paper cita McCrae/Pittenger/Stein como humildade epistêmica.
+- COT: .autonomous/research/chain-of-thought/cot-20260610-mbti-jung-position.md
+- Output: .autonomous/research/systems/mbti-jung.md (~700 linhas)
+- Commit: b55c1129
+- CHECKPOINT.md criado (1º da Fase 0)
+- Próximo: RQ-004 Enneagrama (modelo de transformação com níveis de saúde)
+
+[2026-06-10 14:30] RQ-004 ✅ Enneagrama (Ichazo/Naranjo/RH) — Pilar DINÂMICO confirmado
+- 43 fontes citadas (9 oficiais R-H/TNE, 8 origens Ichazo/Naranjo, 8 estrutura técnica, 4 subtypes/wings, 6 crítica, 6 business, 2 Narrative vs R-H)
+- Cobre: história Gurdjieff→Ichazo Arica 1968→Naranjo 1970→Riso 1977 Levels→Palmer/Daniels 1988; tabela 9 tipos com Paixão/Virtude/Holy Idea/Fixação; 3 tríades (Head/Heart/Gut); asas; 27 subtipos (Naranjo); linhas Integration/Disintegration; 9 Levels de Development (3 healthy + 3 average + 3 unhealthy); Hook 2020 "limited evidence" + Kastelein 2021 OEPS r=0.68/CFA CFI=0.56
+- Posição Akasha: "termômetro de saúde" — único sistema 3D (tipo fixo + 9 levels + direções). Onde Gene Keys/HD/MBTI são fotos, Enneagrama é o filme. Trifix (3 fixações) substitui tipo único do MBTI. 27 Subtypes = upsell B2B ($295-895)
+- B2B validado: iEQ9 $450/individual + $4,500/team; SAP/Cisco/NASA/FBI usam; 6-month program $350-500/pax/mês
+- COT: .autonomous/research/chain-of-thought/cot-20260610-enneagram-position.md
+- Output: .autonomous/research/systems/enneagram.md (~640 linhas)
+- Commit: pending
+- CHECKPOINT.md + INDEX.md + feature_list.json atualizados (3/12 → 4/12 = 33.3%)
+- Próximo: RQ-005 Co-Star (P0, UX minimalista astrologia)

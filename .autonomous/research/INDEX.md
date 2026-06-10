@@ -22,7 +22,7 @@
 | RQ-011 | Ayurveda | ⏳ TODO | — | 30 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ⏳ TODO | — | 30 min | P2 |
 
-**Progresso:** 3/12 sistemas (25.0%)
+**Progresso:** 4/12 sistemas (33.3%)
 
 ---
 
@@ -46,6 +46,7 @@
 | 2026-06-10 | cot-20260610-gene-keys-synthesis | Por que Gene Keys é o modelo primário de Akasha |
 | 2026-06-10 | cot-20260610-human-design-synthesis | Por que Human Design é o modelo de UX/visualização (não síntese) |
 | 2026-06-10 | cot-20260610-mbti-jung-position | Por que Akasha usa Jung (funções), não Myers (dicotomia forçada) |
+| 2026-06-10 | cot-20260610-enneagram-position | Por que Enneagrama é o Pilar DINÂMICO (tempo) do Akasha |
 
 ---
 
@@ -57,15 +58,17 @@
 ├── systems/
 │   ├── gene-keys.md                ✅ (R-001)
 │   ├── human-design.md             ✅ (R-002)
-│   └── mbti-jung.md                ✅ (R-003)
+│   ├── mbti-jung.md                ✅ (R-003)
+│   └── enneagram.md                ✅ (R-004)
 └── chain-of-thought/
     ├── cot-20260610-gene-keys-synthesis.md
     ├── cot-20260610-human-design-synthesis.md
-    └── cot-20260610-mbti-jung-position.md
+    ├── cot-20260610-mbti-jung-position.md
+    └── cot-20260610-enneagram-position.md
 ```
 
 ---
 
 ## Próximo Passo
 
-**RQ-004 — Enneagrama** — modelo de 9 fixações com **dinâmica de transformação** (níveis de saúde, asas, integrações, desintegrações). Complementa MBTI adicionando a **segunda dimensão temporal** (saúde/doença) que falta em Jung. 45 min.
+**RQ-005 — Co-Star** (P0) — UX minimalista astrologia, modelo para Pilar 2 (Astrologia Cabalística) + tom de voz do Mentor.

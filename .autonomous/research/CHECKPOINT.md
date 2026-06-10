@@ -13,17 +13,18 @@
 | RQ-001 | Gene Keys (Richard Rudd) | `cot-20260610-gene-keys-synthesis.md` | 90 min |
 | RQ-002 | Human Design (Ra Uru Hu) | `cot-20260610-human-design-synthesis.md` | 90 min |
 | RQ-003 | MBTI / Jung | `cot-20260610-mbti-jung-position.md` | 60 min |
+| RQ-004 | Enneagrama (Ichazo/Naranjo/RH) | `cot-20260610-enneagram-position.md` | 75 min |
 
 **Posição de cada sistema no Akasha (síntese executiva):**
 - **Gene Keys** = modelo de síntese multi-tradição (Shadow/Gift/Siddhi)
 - **Human Design** = modelo de UX/visualização (bodygraph)
 - **MBTI/Jung** = camada psicológica + taxonomia 16 perfis (com posição híbrida: contínuo interno, mnemônico externo)
+- **Enneagrama** = **dinâmica temporal** (9 Levels + Integration/Disintegration) — "termômetro de saúde" do usuário ao longo do tempo
 
 ## ⏳ Pendente
 
 | ID | Sistema | Prioridade | Por que importa |
 |----|---------|-----------|-----------------|
-| RQ-004 | Enneagrama | P1 | Adiciona **dinâmica de transformação** (níveis de saúde, asas) que falta no MBTI |
 | RQ-005 | Co-Star | P0 | UX minimalista astrologia — modelo para Pilar 2 |
 | RQ-006 | The Pattern | P1 | Linguagem íntima/narrativa — modelo para Mentor Akasha |
 | RQ-007 | CHANI App | P1 | Astrologia + ritual — modelo para Pilar 2 + Pilar 4 |
@@ -35,17 +36,16 @@
 
 ## 🎯 Próximos passos (em ordem)
 
-1. **RQ-004 — Enneagrama** (próxima sessão). Complementa MBTI com níveis de saúde/transformação. Origem: Oral tradition (Gurdjieff) → Ichazo → Naranjo. Modelo: 9 tipos, triades (head/heart/gut), asas, integrações (linha sólida), desintegrações (linha pontilhada), 9 níveis de saúde. **45 min.**
-2. RQ-005 Co-Star. UX minimalista.
-3. RQ-008 Cabala Clássica. Pilar 1.
-4. RQ-006 The Pattern. Linguagem Mentor.
-5. RQ-007 CHANI App.
-6. RQ-009 Numerologia Cabalística.
-7. RQ-010 Tzolkin.
-8. RQ-011 Ayurveda.
-9. RQ-012 Sheldrake + Cymatics.
+1. **RQ-005 — Co-Star** (próxima sessão). UX minimalista para astrologia — modelo para Pilar 2 (Astrologia Cabalística) e para o tom de voz do Mentor. **45 min.**
+2. RQ-008 Cabala Clássica. Pilar 1.
+3. RQ-006 The Pattern. Linguagem Mentor.
+4. RQ-007 CHANI App.
+5. RQ-009 Numerologia Cabalística.
+6. RQ-010 Tzolkin.
+7. RQ-011 Ayurveda.
+8. RQ-012 Sheldrake + Cymatics.
 
-## 📊 Síntese provisória (3 RQs feitas)
+## 📊 Síntese provisória (4 RQs feitas)
 
 **Lições convergentes dos 3 RQs:**
 
