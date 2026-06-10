@@ -5,3 +5,13 @@
 - COT: .autonomous/research/chain-of-thought/cot-20260610-gene-keys-synthesis.md
 - Output: .autonomous/research/systems/gene-keys.md (~700 linhas)
 - Próximo: RQ-002 Human Design (modelo de UX/visualização)
+
+[2026-06-10 14:00] RQ-002 ✅ Human Design (Ra Uru Hu) — research completo
+- 38 fontes citadas (7 primárias, 6 técnicas, 17 complementares, 3 críticas, 2 UX, 3 cálculo)
+- Cobre: 5 Types + 7 Authorities + 9 Centers + 36 Channels + 64 Gates + 12 Profiles + 192 Incarnation Crosses; algoritmo 88° solar arc; pseudocódigo de cálculo; 4-tradições síntese (I Ching, Cabala, Hindu, Astrologia); 2 camadas temporais (Personality + Design); UX bodygraph (mobile-friendly redesign 2010); jornada 7-etapas; metáforas Vehicle/Passenger; funil free→$350 curso→$6,650 certificação→$5,999 business; decisão judicial Florença 2020 (sem copyright sobre sistemas)
+- Posição: Human Design = modelo de UX/visualização (não síntese). Gene Keys (RQ-001) = modelo de síntese. Akasha combina os dois.
+- Lições: Mandala Akasha = bodygraph (1 diagrama, 5+ camadas); 7-etapas replicáveis; 2 snapshots temporais (natal + 88° pré-natal); crítica ética ("tema, não destino")
+- COT: .autonomous/research/chain-of-thought/cot-20260610-human-design-synthesis.md
+- Output: .autonomous/research/systems/human-design.md (~430 linhas)
+- Commit: 4f25dfbb
+- Próximo: RQ-003 MBTI/Jung (base psicológica, 4 funções cognitivas)
