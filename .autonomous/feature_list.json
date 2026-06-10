@@ -209,7 +209,7 @@
       "O que cada um resolveu que o Akasha pode herdar?"
     ],
     "output": ".autonomous/research/patterns.md",
-    "passes": false,
+    "passes": true,
     "timebox": "60min"
   },
   {
@@ -228,7 +228,7 @@
       "Onde mora a oportunidade do Akasha?"
     ],
     "output": ".autonomous/research/gaps.md",
-    "passes": false,
+    "passes": true,
     "timebox": "30min"
   },
   {

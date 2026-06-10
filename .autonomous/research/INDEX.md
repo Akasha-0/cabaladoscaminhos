@@ -56,6 +56,7 @@
 | 2026-06-10 | cot-20260610-ayurveda-position | Ayurveda = Tridosha Pilar 3 + Ritucharya Pilar 4 (escala sazonal 4m única) + 7 decisões Akasha |
 | 2026-06-10 | cot-20260610-sheldrake-cymatics-position | Sheldrake = metafora pedagógica (NÃO mecanismo) + Cymatics = visual Pilar 4 (NÃO 528/432Hz); 5 decisões éticas; memetics > morphic fields |
 | 2026-06-10 | cot-20260610-patterns-extraction | 20 patterns convergentes em 5 famílias (algorítmica/visual/temporal/linguagem/negócio) + 12 anti-padrões; 4 decisões estruturantes para RQ-022 |
+| 2026-06-10 | cot-20260610-gaps-extraction | 20 gaps em 6 famílias (multi-tradição/geografia/ética/AI/tempo/negócio) + 8 anti-gaps rejeitados; 16 HIGH + 4 MED-HIGH confidence; 5 outputs esperados para RQ-022 |
 
 ---
 

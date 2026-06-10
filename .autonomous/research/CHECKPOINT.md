@@ -41,12 +41,13 @@
 
 ~~Nenhum — Fase 0 (Research) completa.~~
 ~~RQ-020 (Patterns) — concluído nesta sessão.~~
+~~RQ-021 (Gaps) — concluído nesta sessão.~~
 
 ## 🎯 Próximos passos (Fase 1 — Synthesis)
 
 1. ✅ **RQ-020 (Patterns)** — concluído. 20 patterns convergentes extraídos em `patterns.md`.
-2. **RQ-021 (Gaps)** — desbloqueado agora. Oportunidades únicas do Akasha (multi-tradição, tradição viva BR, LGPD, 5% causa, hybrid AI+humano, escala não-celebrity).
-3. **RQ-022 (Synthesis v1)** — depende de RQ-021. Akasha Core Algorithm em markdown (número-base, modelo de integração 5 pilares, mapeamento canônico).
+2. ✅ **RQ-021 (Gaps)** — concluído. 20 oportunidades únicas do Akasha extraídas em `gaps.md` (6 famílias + 8 anti-gaps rejeitados; 16 HIGH + 4 MED-HIGH confidence).
+3. **RQ-022 (Synthesis v1)** — desbloqueado agora. Akasha Core Algorithm em markdown (número-base, modelo de integração 5 pilares, mapeamento canônico, 5 outputs: Algorithm + Mandala + Mentor + Pricing + Ethics Charter).
 4. **RQ-023 (Mentor persona v1)** — depende de RQ-022. Persona do Mentor (nome, voz, limites éticos, exemplos de diálogo).
 
 ## 📊 Síntese provisória (12 RQs feitas — 100% + RQ-020 patterns)
