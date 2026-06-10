@@ -97,8 +97,8 @@
       "Tom íntimo/conspiratório. Funciona? Críticas?",
       "Lições para a voz do Mentor Akasha"
     ],
-    "output": ".autonomous/research/the-pattern.md",
-    "passes": false,
+    "output": ".autonomous/research/systems/the-pattern.md",
+    "passes": true,
     "timebox": "30min"
   },
   {

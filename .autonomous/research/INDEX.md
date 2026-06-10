@@ -14,7 +14,7 @@
 | RQ-003 | **MBTI / Jung** | ✅ DONE | [systems/mbti-jung.md](systems/mbti-jung.md) | 60 min | P1 |
 | RQ-004 | **Enneagrama** | ✅ DONE | [systems/enneagram.md](systems/enneagram.md) | 75 min | P1 |
 | RQ-005 | **Co-Star** | ✅ DONE | [systems/costar.md](systems/costar.md) | 90 min | P0 |
-| RQ-006 | The Pattern | ⏳ TODO | — | 30 min | P1 |
+| RQ-006 | **The Pattern** (Lisa Donovan) | ✅ DONE | [systems/the-pattern.md](systems/the-pattern.md) | 30 min | P1 |
 | RQ-007 | CHANI App | ⏳ TODO | — | 30 min | P1 |
 | RQ-008 | **Cabala Clássica / Árvore da Vida** | ✅ DONE | [systems/kabbalah.md](systems/kabbalah.md) | 75 min | P0 |
 | RQ-009 | **Numerologia Cabalística Ocidental** | ✅ DONE | [systems/cabalistic-numerology.md](systems/cabalistic-numerology.md) | 60 min | P1 |
@@ -22,7 +22,7 @@
 | RQ-011 | Ayurveda | ⏳ TODO | — | 30 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ⏳ TODO | — | 30 min | P2 |
 
-**Progresso:** 7/12 sistemas (58.3%)
+**Progresso:** 8/12 sistemas (66.7%)
 
 ---
 
@@ -50,6 +50,7 @@
 | 2026-06-10 | cot-20260610-costar-position | Por que Co-Star é referência de UX/micro-dose, NÃO de voz/tom |
 | 2026-06-10 | cot-20260610-kabbalah-position | Árvore da Vida = esqueleto topológico do Pilar 1 (herda+filtra+cita) |
 | 2026-06-10 | cot-20260610-cabalistic-numerology-position | Numerologia Cabalística = engine numérica do Pilar 1 (Mispar Hechrachi + Katan Mispari) |
+| 2026-06-10 | cot-20260610-the-pattern-position | The Pattern = referência de LINGUAGEM DO MENTOR (Pilar 5), não de UX nem síntese |
 
 ---
 
@@ -65,7 +66,8 @@
 │   ├── enneagram.md                ✅ (R-004)
 │   ├── costar.md                   ✅ (R-005)
 │   ├── kabbalah.md                 ✅ (R-008)
-│   └── cabalistic-numerology.md    ✅ (R-009)
+│   ├── cabalistic-numerology.md    ✅ (R-009)
+│   └── the-pattern.md              ✅ (R-006)
 └── chain-of-thought/
     ├── cot-20260610-gene-keys-synthesis.md
     ├── cot-20260610-human-design-synthesis.md
@@ -73,11 +75,12 @@
     ├── cot-20260610-enneagram-position.md
     ├── cot-20260610-costar-position.md
     ├── cot-20260610-kabbalah-position.md
-    └── cot-20260610-cabalistic-numerology-position.md
+    ├── cot-20260610-cabalistic-numerology-position.md
+    └── cot-20260610-the-pattern-position.md
 ```
 
 ---
 
 ## Próximo Passo
 
-**RQ-006 — The Pattern** (P1) — linguagem íntima/Mentor Akasha. Modelo para tom de voz. 30 min.
+**RQ-007 — CHANI App** (P1) — astrologia + ritual. Modelo para Pilar 2 (Astrologia Ocidental) + Pilar 4 (Ritual Akasha). 30 min.

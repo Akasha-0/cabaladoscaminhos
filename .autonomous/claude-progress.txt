@@ -60,3 +60,29 @@
 - Commit: 617b9367
 - CHECKPOINT.md atualizado: 5/12 → 6/12 (50.0%), 10 lições convergentes
 - Próximo: RQ-009 Numerologia Cabalística Ocidental (P1, 45min, destrava com tabela 22 letras + 3 métodos gematria já consolidados em RQ-008)
+
+[2026-06-10 16:30] RQ-009 ✅ Numerologia Cabalística Ocidental — engine numérica Pilar 1 confirmada
+- 30 fontes citadas (12 judaicas/acadêmicas, 4 Golden Dawn/Hermetic/Liber 777, 9 prática moderna, 5 críticas honestas)
+- Cobre: 22 letras hebraicas + 10 Sephirot = 32 Caminhos (Sefer Yetzirah 4:1); 3 Mothers (Alef/Mem/Shin = Ar/Água/Fogo), 7 Doubles (planetas), 12 Simples (signos); 6 métodos Mispar (Hechrachi/Gadol/Katan/Mispari/Siduri/Milui+Atbash); 3 escolas comparadas (Pitagórica vs Caldeia vs Cabalística); Life Path/Birthday/Expression/Soul Urge/Personality; Master Numbers 11/22/33; Liber 777 Golden Dawn bridge com 22 Arcanos Maiores
+- Posição Akasha: **Pilar 1 numérico = Gematria Cabalística transposta PT-BR** (Mispar Hechrachi + Katan Mispari). Refuta Pitagorismo (UCL/Huffman 2013: "no evidence that Pythagoras practiced this") + Caldeia (vibração arbitrária para PT-BR). Herda Golden Dawn 22 letras = 22 Caminhos = 22 Tarôs = 12 signos + 7 planetas + 3 elementos
+- 5 críticas honestas citadas: UCL/Huffman, JASNH/Ninneman, ASSAP/7psi, Skepdic/Carroll, Africa Check — todas no white paper
+- Algoritmo do Mandato Numérico: 5 números primários (Life Path/Birthday/Expression/Soul Urge/Personality) + Master Numbers preservados
+- Decisão ética: transliteração PT-BR→hebraico reversível e auditável; tabela canônica em `src/lib/constants/` (Fase 5+); nada de "Pitágoras" retroativo
+- COT: .autonomous/research/chain-of-thought/cot-20260610-cabalistic-numerology-position.md
+- Output: .autonomous/research/systems/cabalistic-numerology.md (~470 linhas)
+- Commit: 06f75979
+- CHECKPOINT.md + INDEX.md + feature_list.json atualizados: 6/12 → 7/12 (58.3%)
+- Próxima sessão: RQ-007 CHANI App (P1, 30min, astrologia + ritual/Pilar 2 + 4)
+- RQ-020 (Patterns Fase 1) desbloqueado (8/12 ≥ 7)
+
+[2026-06-10 15:29] RQ-006 ✅ The Pattern (Lisa Donovan) — linguagem Mentor confirmada
+- 33 fontes citadas (7 fundadora/história Wikipedia/Bustle/VF/Time/W/Harpers/HattieCrisell, 8 reviews Newsweek/Options/Pedestrian/Bustle2/InsightGinie/Aurae/Whisper/Wozniak, 7 crítica Scroll/GEN/Skeptic/IndianNotes/AICitta/APA/CalAlumni, 3 privacidade thepattern.com, 6 acadêmica Forer/Dickson/Furnham/Rosen/ACM CHI 2023/Mayo, 2 stores)
+- Cobre: Lisa Donovan (Maker Studios→Disney $675M→2017 Pattern); 3 pilares (Foundational/Developmental/Relationship); 7 Bonds (soulmate/extraordinary/powerful/meaningful/complex/delicate/challenging); pipeline técnico (cálculo astrológico real + camada tradução proprietária que suprime jargão); 18M perfis/15M MAU/50% YoY/$0 marketing; precificação $9.99/mo ou $29.99/qtr (US) e £14.50/qtr (UK); Connect dating 2021; AI Chat "In-Depth" 2024 (backlash); 6 traços linguísticos (2ª pessoa, emocional, observation+explanation+invitation, honestidade crua, metáforas corporais, presente+condicional)
+- Crítica ética: Barnum/Forer Effect; Skeptic 2025; APA Health Advisory 2025 (sycophancy bias, AI psychosis); Channing Tatum 2019 privacy scare; LGPD mais restritiva que CCPA
+- Posição Akasha: **The Pattern = referência de LINGUAGEM DO MENTOR (Pilar 5)**, não UX nem síntese. Donovan inova em como contar, não em o que contar. Akasha COPIA 5 (2ª pessoa, supressão jargão, tradução humana, 3 pilares, 7 Afinidades qualitativas). Akasha MELHORA 6 (transparência epistêmica, disclaimer saúde mental, botão crise CVV 188, limite 3/dia, LGPD by design, multi-tradição). Akasha EVITA 4 (esconder fonte, bait emocional soulmate, AI people-pleaser, marketing celebrity)
+- Voz Mentor (draft): I Ching + Zohar + Gene Keys compassivo + The Pattern íntimo — "Você tende a fechar quando se sente encurralado" não "a energia de Saturno..."
+- 7 Gaps adicionados ao RQ-021 (LGPD, multi-tradição, transparência, saúde mental, PT-BR, Mentor com persona, cap de uso)
+- COT: .autonomous/research/chain-of-thought/cot-20260610-the-pattern-position.md
+- Output: .autonomous/research/systems/the-pattern.md (~783 linhas)
+- Commit: pending
+- Próximo: RQ-007 CHANI App (P1, 30min) — último P1 pendente
