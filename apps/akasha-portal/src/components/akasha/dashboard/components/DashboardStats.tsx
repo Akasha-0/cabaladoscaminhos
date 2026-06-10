@@ -1,0 +1,80 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { useDashboardData } from '../hooks/useDashboardData';
+import { StatsCard } from './StatsCard';
+
+interface DashboardStatsProps {
+  userId: string;
+}
+
+export function DashboardStats({ userId }: DashboardStatsProps) {
+  const { data, loading, error } = useDashboardData({ userId });
+
+  // Skeleton loading
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
+          <div
+            key={i}
+            className="h-32 animate-pulse rounded-xl bg-slate-800/50"
+          />
+        ))}
+      </div>
+    );
+  }
+
+  // Empty state
+  if (!data?.stats) {
+    return (
+      <div className="flex min-h-[200px] items-center justify-center rounded-xl bg-slate-800/30">
+        <div className="text-center">
+          <p className="text-lg font-medium text-slate-400">
+            Nenhum dado disponível
+          </p>
+          <p className="mt-1 text-sm text-slate-500">
+            Complete rituais para ver suas estatísticas
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const { stats } = data;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
+    >
+      <StatsCard
+        title="Total"
+        value={stats.totalRituals}
+        subtitle="rituais completados"
+        icon="✨"
+      />
+      <StatsCard
+        title="Sequência"
+        value={stats.currentStreak}
+        subtitle="dias consecutivos"
+        icon="🔥"
+      />
+      <StatsCard
+        title="Recorde"
+        value={stats.longestStreak}
+        subtitle="maior sequência"
+        icon="🏆"
+      />
+      <StatsCard
+        title="Taxa"
+        value={stats.completionRate}
+        suffix="%"
+        subtitle="rituais cumpridos"
+        icon="📊"
+      />
+    </motion.div>
+  );
+}
