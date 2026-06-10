@@ -23,6 +23,7 @@ export {
 } from './mocks';
 
 // Re-export components
+export { Dashboard } from './Dashboard';
 export { StatsCard } from './components/StatsCard';
 export { DashboardStats as DashboardStatsGrid } from './components/DashboardStats';
 export { CalendarDay } from './CalendarDay';
