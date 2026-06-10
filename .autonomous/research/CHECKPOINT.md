@@ -36,14 +36,13 @@
 
 ## 🎯 Próximos passos (em ordem)
 
-1. **RQ-005 — Co-Star** (próxima sessão). UX minimalista para astrologia — modelo para Pilar 2 (Astrologia Cabalística) e para o tom de voz do Mentor. **45 min.**
-2. RQ-008 Cabala Clássica. Pilar 1.
-3. RQ-006 The Pattern. Linguagem Mentor.
-4. RQ-007 CHANI App.
-5. RQ-009 Numerologia Cabalística.
-6. RQ-010 Tzolkin.
-7. RQ-011 Ayurveda.
-8. RQ-012 Sheldrake + Cymatics.
+1. **RQ-008 — Cabala Clássica** (P0). Pilar 1 (Mandato Akasha, Árvore da Vida). 60 min.
+2. RQ-006 The Pattern. Linguagem Mentor.
+3. RQ-007 CHANI App.
+4. RQ-009 Numerologia Cabalística.
+5. RQ-010 Tzolkin.
+6. RQ-011 Ayurveda.
+7. RQ-012 Sheldrake + Cymatics.
 
 ## 📊 Síntese provisória (4 RQs feitas)
 
@@ -58,10 +57,10 @@
 
 ## 📈 Métricas
 
-- **RQs completos:** 3/12 (25%)
-- **Sistemas prioritários restantes:** RQ-004 (P1), RQ-005 (P0), RQ-008 (P0)
-- **Tempo total investido:** ~4 horas
-- **Commits research:** 3 (RQ-001, RQ-002, RQ-003)
+- **RQs completos:** 5/12 (41.7%)
+- **Sistemas prioritários restantes:** RQ-008 (P0), RQ-006 (P1), RQ-007 (P1), RQ-009 (P1)
+- **Tempo total investido:** ~6.5 horas
+- **Commits research:** 5 (RQ-001..RQ-005)
 - **Custo estimado da sessão:** < $5 (research-only, sem código)
 
 ## ⚠️ Bloqueios
@@ -70,7 +69,7 @@
 
 ## 🚦 Próxima sessão
 
-**Iniciar com:** RQ-004 Enneagrama. **Tempo alvo:** 45 min. **Output esperado:** `.autonomous/research/systems/enneagram.md` (≥500 linhas) + `cot-20260610-enneagram-position.md`.
+**Iniciar com:** RQ-008 Cabala Clássica. **Tempo alvo:** 60 min. **Output esperado:** `.autonomous/research/systems/kabbalah.md` (≥500 linhas) + `cot-20260610-kabbalah-position.md`.
 
 ---
 

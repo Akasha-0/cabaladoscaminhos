@@ -36,3 +36,13 @@
 - Commit: pending
 - CHECKPOINT.md + INDEX.md + feature_list.json atualizados (3/12 → 4/12 = 33.3%)
 - Próximo: RQ-005 Co-Star (P0, UX minimalista astrologia)
+
+[2026-06-10 15:30] RQ-005 ✅ Co-Star (Banu Guler) — Pilar 2 UX/REFERÊNCIA
+- 28 fontes citadas (8 entrevistas fundadoras FFF/Vogue/Bustle/AstrologyPodcast/TeenVogue/Newsweek/Axios, 6 críticas Northeastern/ASAP/CrystalCrush/Selfgazer/Aurae/Diggit, 5 UX/design Mobbin/Pratt/DesignMatters/VP0/Ramirez, 6 business Rev.now/Statista/PlayStore/SensorTower/FAQ)
+- Cobre: 30.8M installs / 8.9% MAU / 2.3% paying / $9.57M ano / 25% women 18-25 US / $15M Series A / 5 P0+ pilares UX (restraint #000/#f7f7f7/#5e5e5e + 1 push/dia + onboarding 3-campos + AI+humanos + social progressivo); 7 críticas éticas (engagement bait, BLM meme, snippets sem síntese, epistemologia fraca, comunidade astrológica hostil)
+- Posição Akasha: **Co-Star = referência de UX/micro-dose, NÃO de voz/tom**. Copiar: restraint + 1-push + concisão + AI(humanos) + onboarding mínimo + privacy. Rejeitar: tom edgy, memes políticos, snippets isolados, loop sem progressão, B2C-only. Akasha Mentor = Gene Keys compassivo, não goth engajamento
+- Voz: I Ching + Sefer Yetzirah + Gene Keys + Euclides da Cunha (substitui Seneca/Sappho/Tumblr/Goth)
+- COT: .autonomous/research/chain-of-thought/cot-20260610-costar-position.md
+- Output: .autonomous/research/systems/costar.md (~700 linhas)
+- CHECKPOINT.md + INDEX.md + feature_list.json atualizados (4/12 → 5/12 = 41.7%)
+- Próximo: RQ-008 Cabala Clássica (P0, Pilar 1 Mandato Akasha)

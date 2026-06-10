@@ -82,9 +82,9 @@
       "Como vendem o produto? (subscription, comunidade)",
       "Que lições para o Akasha? O que NÃO copiar?"
     ],
-    "output": ".autonomous/research/costar.md",
-    "passes": false,
-    "timebox": "45min"
+    "output": ".autonomous/research/systems/costar.md",
+    "passes": true,
+    "timebox": "90min"
   },
   {
     "id": "R-006",

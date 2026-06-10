@@ -12,8 +12,8 @@
 | RQ-001 | **Gene Keys** (Richard Rudd) | ✅ DONE | [systems/gene-keys.md](systems/gene-keys.md) | 90 min | P0 |
 | RQ-002 | **Human Design** (Ra Uru Hu) | ✅ DONE | [systems/human-design.md](systems/human-design.md) | 90 min | P0 |
 | RQ-003 | **MBTI / Jung** | ✅ DONE | [systems/mbti-jung.md](systems/mbti-jung.md) | 60 min | P1 |
-| RQ-004 | Enneagrama | ⏳ TODO | — | 45 min | P1 |
-| RQ-005 | Co-Star | ⏳ TODO | — | 45 min | P0 |
+| RQ-004 | **Enneagrama** | ✅ DONE | [systems/enneagram.md](systems/enneagram.md) | 75 min | P1 |
+| RQ-005 | **Co-Star** | ✅ DONE | [systems/costar.md](systems/costar.md) | 90 min | P0 |
 | RQ-006 | The Pattern | ⏳ TODO | — | 30 min | P1 |
 | RQ-007 | CHANI App | ⏳ TODO | — | 30 min | P1 |
 | RQ-008 | Cabala Clássica / Árvore da Vida | ⏳ TODO | — | 60 min | P0 |
@@ -22,7 +22,7 @@
 | RQ-011 | Ayurveda | ⏳ TODO | — | 30 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ⏳ TODO | — | 30 min | P2 |
 
-**Progresso:** 4/12 sistemas (33.3%)
+**Progresso:** 5/12 sistemas (41.7%)
 
 ---
 
@@ -47,6 +47,7 @@
 | 2026-06-10 | cot-20260610-human-design-synthesis | Por que Human Design é o modelo de UX/visualização (não síntese) |
 | 2026-06-10 | cot-20260610-mbti-jung-position | Por que Akasha usa Jung (funções), não Myers (dicotomia forçada) |
 | 2026-06-10 | cot-20260610-enneagram-position | Por que Enneagrama é o Pilar DINÂMICO (tempo) do Akasha |
+| 2026-06-10 | cot-20260610-costar-position | Por que Co-Star é referência de UX/micro-dose, NÃO de voz/tom |
 
 ---
 
@@ -65,10 +66,11 @@
     ├── cot-20260610-human-design-synthesis.md
     ├── cot-20260610-mbti-jung-position.md
     └── cot-20260610-enneagram-position.md
+    └── cot-20260610-costar-position.md
 ```
 
 ---
 
 ## Próximo Passo
 
-**RQ-005 — Co-Star** (P0) — UX minimalista astrologia, modelo para Pilar 2 (Astrologia Cabalística) + tom de voz do Mentor.
+**RQ-008 — Cabala Clássica** (P0) — base do Pilar 1 (Mandato Akasha, Árvore da Vida). 10 Sephiroth + 22 caminhos + gematria. 60 min.
