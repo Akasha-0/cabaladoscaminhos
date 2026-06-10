@@ -1,88 +1,11 @@
-[2026-06-10 13:00] RQ-001 ✅ Gene Keys (Richard Rudd) — research completo
-- 27 fontes citadas (15 primárias, 8 terciárias, 3 críticas, 1 código)
-- Cobre: estrutura Shadow/Gift/Siddhi, Hologenetic Profile (11 spheres/3 sequences/6 lines), Codon Rings, Programming Partners, planetary mapping, UX/Living Library/Triple Flame, tom de voz contemplativo, funil freemium→retiro $1.275, críticas (pseudociência, determinismo, falta de prática diária)
-- Lições: tríade S/G/S = espinha dorsal do Mentor; 3 sequências = jornada Akasha; multi-tradição real = gap de mercado
-- COT: .autonomous/research/chain-of-thought/cot-20260610-gene-keys-synthesis.md
-- Output: .autonomous/research/systems/gene-keys.md (~700 linhas)
-- Próximo: RQ-002 Human Design (modelo de UX/visualização)
-
-[2026-06-10 14:00] RQ-002 ✅ Human Design (Ra Uru Hu) — research completo
-- 38 fontes citadas (7 primárias, 6 técnicas, 17 complementares, 3 críticas, 2 UX, 3 cálculo)
-- Cobre: 5 Types + 7 Authorities + 9 Centers + 36 Channels + 64 Gates + 12 Profiles + 192 Incarnation Crosses; algoritmo 88° solar arc; pseudocódigo de cálculo; 4-tradições síntese (I Ching, Cabala, Hindu, Astrologia); 2 camadas temporais (Personality + Design); UX bodygraph (mobile-friendly redesign 2010); jornada 7-etapas; metáforas Vehicle/Passenger; funil free→$350 curso→$6,650 certificação→$5,999 business; decisão judicial Florença 2020 (sem copyright sobre sistemas)
-- Posição: Human Design = modelo de UX/visualização (não síntese). Gene Keys (RQ-001) = modelo de síntese. Akasha combina os dois.
-- Lições: Mandala Akasha = bodygraph (1 diagrama, 5+ camadas); 7-etapas replicáveis; 2 snapshots temporais (natal + 88° pré-natal); crítica ética ("tema, não destino")
-- COT: .autonomous/research/chain-of-thought/cot-20260610-human-design-synthesis.md
-- Output: .autonomous/research/systems/human-design.md (~430 linhas)
-- Commit: 4f25dfbb
-- Próximo: RQ-003 MBTI/Jung (base psicológica, 4 funções cognitivas)
-
-[2026-06-10 13:30] RQ-003 ✅ MBTI / Jung — research completo
-- 30 fontes citadas (10 primárias/APTi/MBC, 6 técnicas/Big Five/Nardi, 8 críticas/Pittenger/McCrae/Stein, 6 complementares)
-- Cobre: 4 funções de Jung (T/F/S/N) + 2 atitudes (E/I) = 8 tipos junguianos; Myers adicionou J/P → 16 tipos; Briggs+Myers 1943-1980 narrativa de fundação; John Beebe 8-function model (Hero/Father/Puer/Anima + 4 shadows); McCrae & Costa 1989 crítica (MBTI mede 4/5 dimensões FFM); Pittenger 2005 crítica psicométrica; Stein & Arnau 2019 crítica filosófica; 16Personalities NERIS 100M+ testes; Myers-Briggs Company $63.7M revenue/100k+ certificados/$2.895 certificação; Dario Nardi EEG neuroscience
-- Posição Akasha: USAR Jung (funções contínuas), NÃO Myers (dicotomia forçada). 5 dimensões contínuas internas + 16 perfis mnemônicos externos. Função inferior (Beebe) = "trabalho de vida" do usuário. Certificação Akasha 3-níveis ($295/$895/$1,995). White paper cita McCrae/Pittenger/Stein como humildade epistêmica.
-- COT: .autonomous/research/chain-of-thought/cot-20260610-mbti-jung-position.md
-- Output: .autonomous/research/systems/mbti-jung.md (~700 linhas)
-- Commit: b55c1129
-- CHECKPOINT.md criado (1º da Fase 0)
-- Próximo: RQ-004 Enneagrama (modelo de transformação com níveis de saúde)
-
-[2026-06-10 14:30] RQ-004 ✅ Enneagrama (Ichazo/Naranjo/RH) — Pilar DINÂMICO confirmado
-- 43 fontes citadas (9 oficiais R-H/TNE, 8 origens Ichazo/Naranjo, 8 estrutura técnica, 4 subtypes/wings, 6 crítica, 6 business, 2 Narrative vs R-H)
-- Cobre: história Gurdjieff→Ichazo Arica 1968→Naranjo 1970→Riso 1977 Levels→Palmer/Daniels 1988; tabela 9 tipos com Paixão/Virtude/Holy Idea/Fixação; 3 tríades (Head/Heart/Gut); asas; 27 subtipos (Naranjo); linhas Integration/Disintegration; 9 Levels de Development (3 healthy + 3 average + 3 unhealthy); Hook 2020 "limited evidence" + Kastelein 2021 OEPS r=0.68/CFA CFI=0.56
-- Posição Akasha: "termômetro de saúde" — único sistema 3D (tipo fixo + 9 levels + direções). Onde Gene Keys/HD/MBTI são fotos, Enneagrama é o filme. Trifix (3 fixações) substitui tipo único do MBTI. 27 Subtypes = upsell B2B ($295-895)
-- B2B validado: iEQ9 $450/individual + $4,500/team; SAP/Cisco/NASA/FBI usam; 6-month program $350-500/pax/mês
-- COT: .autonomous/research/chain-of-thought/cot-20260610-enneagram-position.md
-- Output: .autonomous/research/systems/enneagram.md (~640 linhas)
-- Commit: pending
-- CHECKPOINT.md + INDEX.md + feature_list.json atualizados (3/12 → 4/12 = 33.3%)
-- Próximo: RQ-005 Co-Star (P0, UX minimalista astrologia)
-
-[2026-06-10 15:30] RQ-005 ✅ Co-Star (Banu Guler) — Pilar 2 UX/REFERÊNCIA
-- 28 fontes citadas (8 entrevistas fundadoras FFF/Vogue/Bustle/AstrologyPodcast/TeenVogue/Newsweek/Axios, 6 críticas Northeastern/ASAP/CrystalCrush/Selfgazer/Aurae/Diggit, 5 UX/design Mobbin/Pratt/DesignMatters/VP0/Ramirez, 6 business Rev.now/Statista/PlayStore/SensorTower/FAQ)
-- Cobre: 30.8M installs / 8.9% MAU / 2.3% paying / $9.57M ano / 25% women 18-25 US / $15M Series A / 5 P0+ pilares UX (restraint #000/#f7f7f7/#5e5e5e + 1 push/dia + onboarding 3-campos + AI+humanos + social progressivo); 7 críticas éticas (engagement bait, BLM meme, snippets sem síntese, epistemologia fraca, comunidade astrológica hostil)
-- Posição Akasha: **Co-Star = referência de UX/micro-dose, NÃO de voz/tom**. Copiar: restraint + 1-push + concisão + AI(humanos) + onboarding mínimo + privacy. Rejeitar: tom edgy, memes políticos, snippets isolados, loop sem progressão, B2C-only. Akasha Mentor = Gene Keys compassivo, não goth engajamento
-- Voz: I Ching + Sefer Yetzirah + Gene Keys + Euclides da Cunha (substitui Seneca/Sappho/Tumblr/Goth)
-- COT: .autonomous/research/chain-of-thought/cot-20260610-costar-position.md
-- Output: .autonomous/research/systems/costar.md (~700 linhas)
-- CHECKPOINT.md + INDEX.md + feature_list.json atualizados (4/12 → 5/12 = 41.7%)
-- Próximo: RQ-008 Cabala Clássica (P0, Pilar 1 Mandato Akasha)
-
-[2026-06-10 15:50] RQ-008 ✅ Cabala Clássica / Árvore da Vida — Pilar 1 esqueleto topológico confirmado
-- 39 fontes citadas (21 primárias: Sefer Yetzirah/Bahir/Zohar/Luria; 3 gematria; 12 Golden Dawn/Hermetic; 3 acadêmica)
-- Cobre: 10 Sephirot + 22 Caminhos (Yetzirah 1:1) + 3 Pilares + 4 Mundos (Atziluth→Assiah); 4 textos canônicos detalhados; gematria 6 métodos (Mispar Hechrechi/Gadol/Katan/Katan Mispari/Siduri/Milui); Golden Dawn Liber 777 (187 colunas); 22 atribuições Tarot-Cabalísticas Golden Dawn clássica; crítica Scholem/Idel/Wolfson/Mitnagdic/Kabbalah Centre
-- Posição Akasha: Árvore = esqueleto topológico do Pilar 1 (Mandato). HERDA 10+22+4 Mundos+Golden Dawn 777+3 métodos gematria; FILTRA demonologia Qliphoth, Magia Cerimonial, Shem HaMephorash, Kabbalah Centre corporativo. CITA Sefer Yetzirah/Bahir/Zohar/Luria/Golden Dawn SEMPRE
-- Lurianic Tzimtzum/Tikkun = motor temporal (cruza com Enneagrama 9 Levels + Gene Keys Shadow→Gift→Siddhi)
-- Decisão ética: NÃO é apropriação cultural. Cita fontes, white paper público, consulta acadêmica futura
-- Mandala Akasha proposta = Árvore redesenhada com 5 anéis concêntricos (1 por pilar: Cabala/Astrologia/Tantra/Odu/I Ching)
-- Voz Mentor: I Ching + Zohar + Gene Keys compassivo (não Co-Star goth, não Kaballah Centre corporativo)
-- COT: .autonomous/research/chain-of-thought/cot-20260610-kabbalah-position.md
-- Output: .autonomous/research/systems/kabbalah.md (~550 linhas)
-- Commit: 617b9367
-- CHECKPOINT.md atualizado: 5/12 → 6/12 (50.0%), 10 lições convergentes
-- Próximo: RQ-009 Numerologia Cabalística Ocidental (P1, 45min, destrava com tabela 22 letras + 3 métodos gematria já consolidados em RQ-008)
-
-[2026-06-10 16:30] RQ-009 ✅ Numerologia Cabalística Ocidental — engine numérica Pilar 1 confirmada
-- 30 fontes citadas (12 judaicas/acadêmicas, 4 Golden Dawn/Hermetic/Liber 777, 9 prática moderna, 5 críticas honestas)
-- Cobre: 22 letras hebraicas + 10 Sephirot = 32 Caminhos (Sefer Yetzirah 4:1); 3 Mothers (Alef/Mem/Shin = Ar/Água/Fogo), 7 Doubles (planetas), 12 Simples (signos); 6 métodos Mispar (Hechrachi/Gadol/Katan/Mispari/Siduri/Milui+Atbash); 3 escolas comparadas (Pitagórica vs Caldeia vs Cabalística); Life Path/Birthday/Expression/Soul Urge/Personality; Master Numbers 11/22/33; Liber 777 Golden Dawn bridge com 22 Arcanos Maiores
-- Posição Akasha: **Pilar 1 numérico = Gematria Cabalística transposta PT-BR** (Mispar Hechrachi + Katan Mispari). Refuta Pitagorismo (UCL/Huffman 2013: "no evidence that Pythagoras practiced this") + Caldeia (vibração arbitrária para PT-BR). Herda Golden Dawn 22 letras = 22 Caminhos = 22 Tarôs = 12 signos + 7 planetas + 3 elementos
-- 5 críticas honestas citadas: UCL/Huffman, JASNH/Ninneman, ASSAP/7psi, Skepdic/Carroll, Africa Check — todas no white paper
-- Algoritmo do Mandato Numérico: 5 números primários (Life Path/Birthday/Expression/Soul Urge/Personality) + Master Numbers preservados
-- Decisão ética: transliteração PT-BR→hebraico reversível e auditável; tabela canônica em `src/lib/constants/` (Fase 5+); nada de "Pitágoras" retroativo
-- COT: .autonomous/research/chain-of-thought/cot-20260610-cabalistic-numerology-position.md
-- Output: .autonomous/research/systems/cabalistic-numerology.md (~470 linhas)
-- Commit: 06f75979
-- CHECKPOINT.md + INDEX.md + feature_list.json atualizados: 6/12 → 7/12 (58.3%)
-- Próxima sessão: RQ-007 CHANI App (P1, 30min, astrologia + ritual/Pilar 2 + 4)
-- RQ-020 (Patterns Fase 1) desbloqueado (8/12 ≥ 7)
-
-[2026-06-10 15:29] RQ-006 ✅ The Pattern (Lisa Donovan) — linguagem Mentor confirmada
-- 33 fontes citadas (7 fundadora/história Wikipedia/Bustle/VF/Time/W/Harpers/HattieCrisell, 8 reviews Newsweek/Options/Pedestrian/Bustle2/InsightGinie/Aurae/Whisper/Wozniak, 7 crítica Scroll/GEN/Skeptic/IndianNotes/AICitta/APA/CalAlumni, 3 privacidade thepattern.com, 6 acadêmica Forer/Dickson/Furnham/Rosen/ACM CHI 2023/Mayo, 2 stores)
-- Cobre: Lisa Donovan (Maker Studios→Disney $675M→2017 Pattern); 3 pilares (Foundational/Developmental/Relationship); 7 Bonds (soulmate/extraordinary/powerful/meaningful/complex/delicate/challenging); pipeline técnico (cálculo astrológico real + camada tradução proprietária que suprime jargão); 18M perfis/15M MAU/50% YoY/$0 marketing; precificação $9.99/mo ou $29.99/qtr (US) e £14.50/qtr (UK); Connect dating 2021; AI Chat "In-Depth" 2024 (backlash); 6 traços linguísticos (2ª pessoa, emocional, observation+explanation+invitation, honestidade crua, metáforas corporais, presente+condicional)
-- Crítica ética: Barnum/Forer Effect; Skeptic 2025; APA Health Advisory 2025 (sycophancy bias, AI psychosis); Channing Tatum 2019 privacy scare; LGPD mais restritiva que CCPA
-- Posição Akasha: **The Pattern = referência de LINGUAGEM DO MENTOR (Pilar 5)**, não UX nem síntese. Donovan inova em como contar, não em o que contar. Akasha COPIA 5 (2ª pessoa, supressão jargão, tradução humana, 3 pilares, 7 Afinidades qualitativas). Akasha MELHORA 6 (transparência epistêmica, disclaimer saúde mental, botão crise CVV 188, limite 3/dia, LGPD by design, multi-tradição). Akasha EVITA 4 (esconder fonte, bait emocional soulmate, AI people-pleaser, marketing celebrity)
-- Voz Mentor (draft): I Ching + Zohar + Gene Keys compassivo + The Pattern íntimo — "Você tende a fechar quando se sente encurralado" não "a energia de Saturno..."
-- 7 Gaps adicionados ao RQ-021 (LGPD, multi-tradição, transparência, saúde mental, PT-BR, Mentor com persona, cap de uso)
-- COT: .autonomous/research/chain-of-thought/cot-20260610-the-pattern-position.md
-- Output: .autonomous/research/systems/the-pattern.md (~783 linhas)
-- Commit: pending
-- Próximo: RQ-007 CHANI App (P1, 30min) — último P1 pendente
+[2026-06-10 18:30] RQ-007 ✅ CHANI App (Chani Nicholas) — Pilar 2 (Astrologia) + Pilar 4 (Ritual) completos
+- 23+ fontes citadas (8 oficiais CHANI, 6 mídia, 4 reviews, 3 críticas, 4 técnico Hellenistic/AnnieCannons)
+- Cobre: fundação 2019/app 2020/44 func/$14M receita/2M+ downloads/4.91/5/$11.99-107.99 pricing; Whole Sign Houses (Brennan 2017 + Schmidt — Hellenistic revival, NÃO Placidus moderno); Rising>Sol>Lua (Ptolemy); bundle semanal "leitura+ritual+altar+journal+meditação" (CHANI inova aqui); zero-AI policy (44 humanos produzem tudo); 5% receita→FreeFrom ($2.5M+ gerados); AnnieCannons dev survivor-led; 7-step onboarding; soft paywall (transits como gate); 4 críticas honestas (woke politicization, retrofit Year Ahead 2024, removed features sem aviso, sem synastry, sem dark mode, zero-AI escala limitada)
+- Posição Akasha: CHANI = Pilar 2 (Astrologia) + Pilar 4 (Ritual). HERDA 7: Whole Sign, Rising>Sol>Lua, bundle semanal lunar, 5% causa, tom compassivo, cadência 1/dia+1/semana+1/mês lunar, transits como paywall. ADAPTA 5: founder brand→AI Mentor persona, zero-AI→híbrido RAG, English→PT-BR, feminist/queer explícito→cita tradições, IG comunidade→Mural opt-in. EVITA 5: retrofit, remover sem aviso, template reply, fingir ciência, esquecer LGPD
+- Híbrido AI Mentor + Grimório RAG é a chave de custo: CHANI paga 44 func para 100% humano; Akasha curadoria humana (Grimório) + LLM interpretação (Mentor) = mesma alma a 10% do custo
+- COT: .autonomous/research/chain-of-thought/cot-20260610-chani-app-position.md
+- Output: .autonomous/research/systems/chani-app.md (~588 linhas)
+- Commit: e3782da3
+- CHECKPOINT + INDEX + feature_list.json (R-007 = true) + TODO atualizados: 8/12 → 9/12 (75%)
+- Última P1 fechada. Restam 3 P2: RQ-010 Tzolkin, RQ-011 Ayurveda, RQ-012 Sheldrake
+- Próxima sessão: RQ-010 Tzolkin / Mayan Calendar (P2, 30min, sistema de ciclos alternativo para Mural)
