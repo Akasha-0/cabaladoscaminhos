@@ -15,8 +15,8 @@
       "Como é o modelo de negócio?",
       "Que pontos fracos tem? Onde o Akasha pode melhorar?"
     ],
-    "output": ".autonomous/research/gene-keys.md",
-    "passes": false,
+    "output": ".autonomous/research/systems/gene-keys.md",
+    "passes": true,
     "timebox": "60-90min"
   },
   {

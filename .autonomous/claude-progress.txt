@@ -1,0 +1,7 @@
+[2026-06-10 13:00] RQ-001 ✅ Gene Keys (Richard Rudd) — research completo
+- 27 fontes citadas (15 primárias, 8 terciárias, 3 críticas, 1 código)
+- Cobre: estrutura Shadow/Gift/Siddhi, Hologenetic Profile (11 spheres/3 sequences/6 lines), Codon Rings, Programming Partners, planetary mapping, UX/Living Library/Triple Flame, tom de voz contemplativo, funil freemium→retiro $1.275, críticas (pseudociência, determinismo, falta de prática diária)
+- Lições: tríade S/G/S = espinha dorsal do Mentor; 3 sequências = jornada Akasha; multi-tradição real = gap de mercado
+- COT: .autonomous/research/chain-of-thought/cot-20260610-gene-keys-synthesis.md
+- Output: .autonomous/research/systems/gene-keys.md (~700 linhas)
+- Próximo: RQ-002 Human Design (modelo de UX/visualização)
