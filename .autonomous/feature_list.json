@@ -188,9 +188,10 @@
       "Cymatics: som-como-forma (Chladni patterns)",
       "Como isso justifica o pilar 'som/nome' da Cabala?"
     ],
-    "output": ".autonomous/research/morphic-cymatics.md",
-    "passes": false,
-    "timebox": "30min"
+    "output": ".autonomous/research/systems/sheldrake-cymatics.md",
+    "passes": true,
+    "timebox": "30min",
+    "notes": "Citado: Sheldrake 1981/1999/2003/2012/2017/2020; criticas Maddox Nature 1981/1999, Wiseman-Smith-Milton 1998 PubMed 9734300, Shermer 2005 SAIC, Rose 1990, Skepdic, Carroll, Wikipedia 2026; cymatics Jenny 1967/1972/2001, Chladni 1787, Faraday 1831, Reid 2014 CymaScope, Park-Ji-Reid 2021 WaterJournal, McGowan-Leplatre 2017 ACM, E3S 2024; criticas 528Hz DNA repair/432Hz healing/Solfeggio Puleo 1970s. Posicao Akasha 5 decisoes: (1) morphic fields = metafora pedagogica, (2) cymatics = visual UX Pilar 4, (3) NUNCA mecanismo fisico, (4) I Ching != frequencias, (5) memetics (Dawkins 1976) > morphic fields."
   },
   {
     "id": "R-020",

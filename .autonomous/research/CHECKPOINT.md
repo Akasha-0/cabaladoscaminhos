@@ -2,7 +2,7 @@
 
 **Data:** 2026-06-10
 **Sessão:** N (continuação)
-**Status:** 🟡 Em andamento — 9/12 RQs completos (75%)
+**Status:** ✅ **FASE 0 (RESEARCH) COMPLETA — 12/12 RQs (100%)**
 
 ---
 
@@ -20,6 +20,8 @@
 | RQ-008 | Cabala Clássica / Árvore da Vida | `cot-20260610-kabbalah-position.md` | 75 min |
 | RQ-009 | Numerologia Cabalística Ocidental | `cot-20260610-cabalistic-numerology-position.md` | 60 min |
 | RQ-010 | Tzolkin / Mayan Calendar | `cot-20260610-tzolkin-position.md` | 45 min |
+| RQ-011 | Ayurveda | `cot-20260610-ayurveda-position.md` | 60 min |
+| RQ-012 | Sheldrake + Cymatics | `cot-20260610-sheldrake-cymatics-position.md` | 30 min |
 
 **Posição de cada sistema no Akasha (síntese executiva):**
 - **Gene Keys** = modelo de síntese multi-tradição (Shadow/Gift/Siddhi)
@@ -32,29 +34,23 @@
 - **Numerologia Cabalística** = **engine numérica do Pilar 1** (Mispar Hechrachi + Katan Mispari; 22 letras hebraicas = 22 Caminhos; Life Path/Birthday/Expression/Soul Urge/Personality; Masters 11/22/33; herança direta do Sefer Yetzirah + Baraita 32 Regras; PT-BR via transliteração reversível)
 - **CHANI App** = **Pilar 2 (Astrologia) + Pilar 4 (Ritual)** — Whole Sign Houses (Hellenistic revival, Brennan 2017), Rising>Sol>Lua, bundle semanal "leitura+ritual+altar+journal+meditação", 5%→FreeFrom, zero-AI policy, $14M/ano, 4.91/5. Akasha herda Whole Sign + cadência lunar + tom compassivo. **Híbrido obrigatório**: Grimório humano curado + AI Mentor com RAG.
 - **Tzolkin** = **Inspiração ESTRUTURAL Pilar 4 (não engine)** — 260 dias × 52 anos Calendar Round × 5 unidades Long Count = esqueleto aritmético NÃO-OCIDENTAL. **MAIOR AVISO ÉTICO** do projeto: Dreamspell (Argüelles 1990) vampirizou 30+ anos de percepção pública com shift 50-60 dias + Hunab Ku invented + hidden agenda (kins 11+22=33). Gran Consejo de Ajq'ij rejeita explicitamente. Akasha **NÃO adota** Tzolkin como engine; adota **nahual** (kin de nascimento) como paralelo ao orixá de cabeça (Pilar 4); adota **Calendar Round 52 anos** como 3ª escala temporal (vs Saturn/Uranus); adota **5 unidades Long Count** como paralelo aos 5 pilares. **NUNCA** calibra contagem; **SEMPRE** cita Chol Q'ij + ajq'ij; **5% receita Pilar 4 → Saq Be** (ou similar).
+- **Ayurveda** = **3ª maior contribuição NÃO-OCIDENTAL ao Akasha** (depois de Cabala e Gene Keys). Pilar 3 ganha **Tridosha (Vata/Pitta/Kapha) + Ojas/Tejas/Prana + 5 Koshas (Taittiriya Upanishad)** como taxonomia dominante — pedagogicamente superior a 7 chakras/11 corpos. BPI 2026 (Tiwari et al., N=1857, IRT-validated CFI=0.967) valida Prakriti com **divergent validity** vs Mini-IPIP → Pilar 3 separado de Pilar 1. Pilar 4 ganha **Ritucharya** como 3ª escala temporal (única sazonal 4-meses no portfolio: vs lunar CHANI 29.5d, linear Gene Keys, fixed-natal HD, 9-Levels Enneagrama). Pricing freemium+R$19-29/mo+R$199/ano+B2B. Cita Brihattrayi+WHO/NAMA/BAMS; **NÃO cita** Patanjali/Ramdev/Chopra sem qualificar. Crise saúde → BAMS+CVV 188.
+- **Sheldrake + Cymatics** = **base conceitual final** (não sistema de leitura). Morphic fields rejeitados mainstream (Nature 1981 "Burning?", Wiseman 1998 PubMed, Shermer 2005, Rose 1990, Skepdic) → Akasha cita como **METÁFORA PEDAGÓGICA**, NUNCA mecanismo. Cymatics tem **núcleo sólido** (Chladni 1787, Faraday 1831, Jenny 1967 coined, Reid 2014 CymaScope, Park-Ji-Reid 2021 cirurgia oncológica, McGowan 2017 CymaSense autismo, Codrops 2025 demos, Cymatics Lab 2025-26 mercado) + **casca pseudocientífica** (528 Hz DNA repair, 432 Hz healing, Solfeggio Puleo 1970s) → Akasha usa **NÚCLEO** (visual UX Pilar 4 com Chladni animado Three.js Web Audio), **rejeita** casca. **Memetics (Dawkins 1976) > Morphic fields (Sheldrake 1981)** no framework acadêmico. I Ching ≠ frequências místicas (Gene Keys evitou a fusão, Akasha mantém).
 
 ## ⏳ Pendente
 
-| ID | Sistema | Prioridade | Por que importa |
-|----|---------|-----------|-----------------|
-| RQ-007 | ~~CHANI App~~ | P1 | ✅ Concluído |
-| RQ-010 | ~~Tzolkin~~ | P1 | ✅ Concluído (10/12) |
-| RQ-011 | Ayurveda | P2 | ✅ Concluído (11/12) — Pilar 3 Tridosha + Pilar 4 Ritucharya |
-| RQ-012 | Sheldrake + Cymatics | P2 | Base conceitual — por que tradição funciona |
+~~Nenhum — Fase 0 (Research) completa.~~
 
-## 🎯 Próximos passos (em ordem)
+## 🎯 Próximos passos (Fase 1 — Synthesis)
 
-1. ~~RQ-010 Tzolkin. Ciclos.~~ ✅ Concluído (10/12).
-2. RQ-011 Ayurveda. Síntese corpo/mente. 30 min.
-3. RQ-012 Sheldrake + Cymatics. Base conceitual. 30 min.
-4. **RQ-020 (Patterns)** — desbloqueado agora (10/12 sistemas). Extrair padrões comuns.
-5. **RQ-021 (Gaps)** — depende de RQ-020.
-6. **RQ-022 (Synthesis v1)** — depende de RQ-021.
-7. **RQ-023 (Mentor persona v1)** — depende de RQ-022.
+1. **RQ-020 (Patterns)** — desbloqueado agora. Extrair 16+ padrões convergentes dos 12 RQs.
+2. **RQ-021 (Gaps)** — depende de RQ-020. Oportunidades únicas do Akasha.
+3. **RQ-022 (Synthesis v1)** — depende de RQ-021. Akasha Core Algorithm em markdown.
+4. **RQ-023 (Mentor persona v1)** — depende de RQ-022. Persona do Mentor.
 
-## 📊 Síntese provisória (10 RQs feitas)
+## 📊 Síntese provisória (12 RQs feitas — 100%)
 
-**Lições convergentes dos 10 RQs:**
+**Lições convergentes dos 12 RQs (100%):**
 
 1. **Certificação é lucrativa** (Gene Keys Guide, Human Design Analyst, MBTI Practitioner) — Akasha pode ter caminho profissional.
 2. **Linguagem compartilhada é viral** ("Eu sou INFP", "Sou Projector", "Sou 11.4", "Sou Tiferet") — Akasha precisa de **mnemônica forte** (4 letras + número).
@@ -75,19 +71,19 @@
 
 ## 📈 Métricas
 
-- **RQs completos:** 10/12 (83%)
-- **Sistemas prioritários restantes:** RQ-011, RQ-012 (P2)
-- **Tempo total investido:** ~11.5 horas
-- **Commits research:** 9 (RQ-001..RQ-006, RQ-007, RQ-008, RQ-009)
-- **Custo estimado da sessão:** < $14 (research-only, sem código)
+- **RQs completos:** 12/12 (100%) — **FASE 0 COMPLETA**
+- **Sistemas prioritários restantes:** nenhum
+- **Tempo total investido:** ~12.5 horas
+- **Commits research:** 11 (RQ-001..RQ-009, RQ-010, RQ-011) + RQ-012 pendente commit
+- **Custo estimado da sessão:** < $15 (research-only, sem código)
 
 ## ⚠️ Bloqueios
 
-- Nenhum. Com 10/12, RQ-020 (Patterns Fase 1) totalmente desbloqueado.
+- Nenhum. **Fase 0 (Research) totalmente desbloqueada para transição à Fase 1 (Synthesis).**
 
 ## 🚦 Próxima sessão
 
-**Iniciar com:** RQ-011 Ayurveda. **Tempo alvo:** 30 min. **Output esperado:** `.autonomous/research/systems/ayurveda.md` (~500 linhas) + COT. Síntese corpo/mente — inspiração para Pilar 4 (Ritual) e UX (cadência diária, doshas, rituais sazonais).
+**Iniciar com:** RQ-020 Patterns (Fase 1 — Synthesis). **Tempo alvo:** 45 min. **Output esperado:** `.autonomous/research/patterns.md` (16+ lições convergentes). **Pré-requisito:** 12/12 RQs ✅.
 
 ---
 

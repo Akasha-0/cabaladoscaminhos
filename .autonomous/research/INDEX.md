@@ -20,9 +20,9 @@
 | RQ-009 | **Numerologia Cabalística Ocidental** | ✅ DONE | [systems/cabalistic-numerology.md](systems/cabalistic-numerology.md) | 60 min | P1 |
 | RQ-010 | Tzolkin / Mayan Calendar | ✅ DONE | [systems/tzolkin.md](systems/tzolkin.md) | 45 min | P2 |
 | RQ-011 | Ayurveda | ✅ DONE | [systems/ayurveda.md](systems/ayurveda.md) | 60 min | P2 |
-| RQ-012 | Sheldrake + Cymatics | ⏳ TODO | — | 30 min | P2 |
+| RQ-012 | Sheldrake + Cymatics | ✅ DONE | [systems/sheldrake-cymatics.md](systems/sheldrake-cymatics.md) | 30 min | P2 |
 
-**Progresso:** 11/12 sistemas (92%)
+**Progresso:** 12/12 sistemas (100%) — **Fase 0 (Research) COMPLETA**
 
 ---
 
@@ -53,6 +53,8 @@
 | 2026-06-10 | cot-20260610-the-pattern-position | The Pattern = referência de LINGUAGEM DO MENTOR (Pilar 5), não de UX nem síntese |
 | 2026-06-10 | cot-20260610-chani-app-position | CHANI App = Pilar 2 (Astrologia) + Pilar 4 (Ritual) — Whole Sign + Rising>Sol>Lua + bundle semanal lunar |
 | 2026-06-10 | cot-20260610-tzolkin-position | Tzolkin = inspiração estrutural Pilar 4 + MAIOR aviso ético (Dreamspell = apropriação; 5 compromissos éticos) |
+| 2026-06-10 | cot-20260610-ayurveda-position | Ayurveda = Tridosha Pilar 3 + Ritucharya Pilar 4 (escala sazonal 4m única) + 7 decisões Akasha |
+| 2026-06-10 | cot-20260610-sheldrake-cymatics-position | Sheldrake = metafora pedagógica (NÃO mecanismo) + Cymatics = visual Pilar 4 (NÃO 528/432Hz); 5 decisões éticas; memetics > morphic fields |
 
 ---
 
@@ -72,6 +74,8 @@
 │   ├── the-pattern.md              ✅ (R-006)
 │   ├── chani-app.md                 ✅ (R-007)
 │   └── tzolkin.md                   ✅ (R-010)
+│   ├── ayurveda.md                  ✅ (R-011)
+│   └── sheldrake-cymatics.md        ✅ (R-012)
 └── chain-of-thought/
     ├── cot-20260610-gene-keys-synthesis.md
     ├── cot-20260610-human-design-synthesis.md
@@ -82,11 +86,13 @@
     ├── cot-20260610-cabalistic-numerology-position.md
     ├── cot-20260610-the-pattern-position.md
     ├── cot-20260610-chani-app-position.md
-    └── cot-20260610-tzolkin-position.md
+    ├── cot-20260610-tzolkin-position.md
+    ├── cot-20260610-ayurveda-position.md
+    └── cot-20260610-sheldrake-cymatics-position.md
 ```
 
 ---
 
 ## Próximo Passo
 
-**RQ-010 — Tzolkin / Mayan Calendar** (P2) — sistema de ciclos alternativo ao lunar. Inspiração para Mural temporal (Pilar 4). 45 min. **CONCLUÍDO 2026-06-10.**
+**Fase 0 (Research) COMPLETA — 12/12 RQs (100%).** Próxima fase: **RQ-020 Patterns (Fase 1 — Synthesis)**. Extrair 16+ padrões convergentes dos 12 RQs para `patterns.md`. Desbloqueado agora.
