@@ -7,6 +7,7 @@ import {
   JetBrains_Mono,
 } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from '@/components/akasha/ThemeProvider';
 import { PwaInstallPrompt } from '@/components/akasha/PwaInstallPrompt';
 import { ServiceWorkerRegistrar } from '@/components/akasha/ServiceWorkerRegistrar';
 import { LocaleSwitcher } from '@/components/akasha/LocaleSwitcher';
@@ -189,7 +190,9 @@ export default function RootLayout({
         className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen antialiased`}
         style={{ background: '#06070F', color: '#F4F5FF' }}
       >
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
         <ServiceWorkerRegistrar />
         <PwaInstallPrompt />
         <div className="fixed top-4 right-4 z-50">
