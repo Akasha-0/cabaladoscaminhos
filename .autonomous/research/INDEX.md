@@ -1,7 +1,7 @@
 # Research INDEX — Sistema Akasha (Fase 0)
 
 > **Mapa vivo** de toda a pesquisa realizada.
-> Última atualização: 2026-06-10 — RQ-007 ✅ CHANI App concluído (9/12 = 75%).
+> Última atualização: 2026-06-10 — RQ-010 ✅ Tzolkin concluído (10/12 = 83%).
 
 ---
 
@@ -18,11 +18,11 @@
 | RQ-007 | **CHANI App** (Chani Nicholas) | ✅ DONE | [systems/chani-app.md](systems/chani-app.md) | 75 min | P1 |
 | RQ-008 | **Cabala Clássica / Árvore da Vida** | ✅ DONE | [systems/kabbalah.md](systems/kabbalah.md) | 75 min | P0 |
 | RQ-009 | **Numerologia Cabalística Ocidental** | ✅ DONE | [systems/cabalistic-numerology.md](systems/cabalistic-numerology.md) | 60 min | P1 |
-| RQ-010 | Tzolkin / Mayan Calendar | ⏳ TODO | — | 30 min | P2 |
+| RQ-010 | Tzolkin / Mayan Calendar | ✅ DONE | [systems/tzolkin.md](systems/tzolkin.md) | 45 min | P2 |
 | RQ-011 | Ayurveda | ⏳ TODO | — | 30 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ⏳ TODO | — | 30 min | P2 |
 
-**Progresso:** 9/12 sistemas (75%)
+**Progresso:** 10/12 sistemas (83%)
 
 ---
 
@@ -52,6 +52,7 @@
 | 2026-06-10 | cot-20260610-cabalistic-numerology-position | Numerologia Cabalística = engine numérica do Pilar 1 (Mispar Hechrachi + Katan Mispari) |
 | 2026-06-10 | cot-20260610-the-pattern-position | The Pattern = referência de LINGUAGEM DO MENTOR (Pilar 5), não de UX nem síntese |
 | 2026-06-10 | cot-20260610-chani-app-position | CHANI App = Pilar 2 (Astrologia) + Pilar 4 (Ritual) — Whole Sign + Rising>Sol>Lua + bundle semanal lunar |
+| 2026-06-10 | cot-20260610-tzolkin-position | Tzolkin = inspiração estrutural Pilar 4 + MAIOR aviso ético (Dreamspell = apropriação; 5 compromissos éticos) |
 
 ---
 
@@ -69,7 +70,8 @@
 │   ├── kabbalah.md                 ✅ (R-008)
 │   ├── cabalistic-numerology.md    ✅ (R-009)
 │   ├── the-pattern.md              ✅ (R-006)
-│   └── chani-app.md                 ✅ (R-007)
+│   ├── chani-app.md                 ✅ (R-007)
+│   └── tzolkin.md                   ✅ (R-010)
 └── chain-of-thought/
     ├── cot-20260610-gene-keys-synthesis.md
     ├── cot-20260610-human-design-synthesis.md
@@ -78,12 +80,13 @@
     ├── cot-20260610-costar-position.md
     ├── cot-20260610-kabbalah-position.md
     ├── cot-20260610-cabalistic-numerology-position.md
-    └── cot-20260610-the-pattern-position.md
-    └── cot-20260610-chani-app-position.md
+    ├── cot-20260610-the-pattern-position.md
+    ├── cot-20260610-chani-app-position.md
+    └── cot-20260610-tzolkin-position.md
 ```
 
 ---
 
 ## Próximo Passo
 
-**RQ-010 — Tzolkin / Mayan Calendar** (P2) — sistema de ciclos alternativo ao lunar. Inspiração para Mural temporal (Pilar 4). 30 min.
+**RQ-010 — Tzolkin / Mayan Calendar** (P2) — sistema de ciclos alternativo ao lunar. Inspiração para Mural temporal (Pilar 4). 45 min. **CONCLUÍDO 2026-06-10.**

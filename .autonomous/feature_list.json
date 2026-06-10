@@ -159,7 +159,7 @@
       "Que lições sobre 'ritmo' e 'ciclicidade' para o Akasha?"
     ],
     "output": ".autonomous/research/tzolkin.md",
-    "passes": false,
+    "passes": true,
     "timebox": "30min"
   },
   {

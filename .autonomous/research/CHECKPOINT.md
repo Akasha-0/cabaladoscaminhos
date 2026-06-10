@@ -19,6 +19,7 @@
 | RQ-007 | CHANI App (Chani Nicholas) | `cot-20260610-chani-app-position.md` | 75 min |
 | RQ-008 | Cabala Clássica / Árvore da Vida | `cot-20260610-kabbalah-position.md` | 75 min |
 | RQ-009 | Numerologia Cabalística Ocidental | `cot-20260610-cabalistic-numerology-position.md` | 60 min |
+| RQ-010 | Tzolkin / Mayan Calendar | `cot-20260610-tzolkin-position.md` | 45 min |
 
 **Posição de cada sistema no Akasha (síntese executiva):**
 - **Gene Keys** = modelo de síntese multi-tradição (Shadow/Gift/Siddhi)
@@ -30,30 +31,30 @@
 - **Cabala / Árvore da Vida** = **esqueleto topológico do Pilar 1** (10+22+4 Mundos, Golden Dawn 777, Lurianic Tzimtzum/Tikkun como motor temporal)
 - **Numerologia Cabalística** = **engine numérica do Pilar 1** (Mispar Hechrachi + Katan Mispari; 22 letras hebraicas = 22 Caminhos; Life Path/Birthday/Expression/Soul Urge/Personality; Masters 11/22/33; herança direta do Sefer Yetzirah + Baraita 32 Regras; PT-BR via transliteração reversível)
 - **CHANI App** = **Pilar 2 (Astrologia) + Pilar 4 (Ritual)** — Whole Sign Houses (Hellenistic revival, Brennan 2017), Rising>Sol>Lua, bundle semanal "leitura+ritual+altar+journal+meditação", 5%→FreeFrom, zero-AI policy, $14M/ano, 4.91/5. Akasha herda Whole Sign + cadência lunar + tom compassivo. **Híbrido obrigatório**: Grimório humano curado + AI Mentor com RAG.
+- **Tzolkin** = **Inspiração ESTRUTURAL Pilar 4 (não engine)** — 260 dias × 52 anos Calendar Round × 5 unidades Long Count = esqueleto aritmético NÃO-OCIDENTAL. **MAIOR AVISO ÉTICO** do projeto: Dreamspell (Argüelles 1990) vampirizou 30+ anos de percepção pública com shift 50-60 dias + Hunab Ku invented + hidden agenda (kins 11+22=33). Gran Consejo de Ajq'ij rejeita explicitamente. Akasha **NÃO adota** Tzolkin como engine; adota **nahual** (kin de nascimento) como paralelo ao orixá de cabeça (Pilar 4); adota **Calendar Round 52 anos** como 3ª escala temporal (vs Saturn/Uranus); adota **5 unidades Long Count** como paralelo aos 5 pilares. **NUNCA** calibra contagem; **SEMPRE** cita Chol Q'ij + ajq'ij; **5% receita Pilar 4 → Saq Be** (ou similar).
 
 ## ⏳ Pendente
 
 | ID | Sistema | Prioridade | Por que importa |
 |----|---------|-----------|-----------------|
 | RQ-007 | ~~CHANI App~~ | P1 | ✅ Concluído |
-| RQ-010 | Tzolkin | P2 | Outro sistema de ciclos — inspiração para Mural |
+| RQ-010 | ~~Tzolkin~~ | P1 | ✅ Concluído (10/12) |
 | RQ-011 | Ayurveda | P2 | Síntese corpo/mente — surpresa |
 | RQ-012 | Sheldrake + Cymatics | P2 | Base conceitual — por que tradição funciona |
 
 ## 🎯 Próximos passos (em ordem)
 
-1. ~~RQ-007 CHANI App. Astrologia + ritual.~~ ✅ Concluído.
-2. RQ-010 Tzolkin. Ciclos. 30 min.
-3. RQ-011 Ayurveda. Síntese corpo/mente. 30 min.
-4. RQ-012 Sheldrake + Cymatics. Base conceitual. 30 min.
-5. **RQ-020 (Patterns)** — desbloqueado agora (8/12 sistemas). Extrair padrões comuns.
-6. **RQ-021 (Gaps)** — depende de RQ-020.
-7. **RQ-022 (Synthesis v1)** — depende de RQ-021.
-8. **RQ-023 (Mentor persona v1)** — depende de RQ-022.
+1. ~~RQ-010 Tzolkin. Ciclos.~~ ✅ Concluído (10/12).
+2. RQ-011 Ayurveda. Síntese corpo/mente. 30 min.
+3. RQ-012 Sheldrake + Cymatics. Base conceitual. 30 min.
+4. **RQ-020 (Patterns)** — desbloqueado agora (10/12 sistemas). Extrair padrões comuns.
+5. **RQ-021 (Gaps)** — depende de RQ-020.
+6. **RQ-022 (Synthesis v1)** — depende de RQ-021.
+7. **RQ-023 (Mentor persona v1)** — depende de RQ-022.
 
-## 📊 Síntese provisória (8 RQs feitas)
+## 📊 Síntese provisória (10 RQs feitas)
 
-**Lições convergentes dos 8 RQs:**
+**Lições convergentes dos 10 RQs:**
 
 1. **Certificação é lucrativa** (Gene Keys Guide, Human Design Analyst, MBTI Practitioner) — Akasha pode ter caminho profissional.
 2. **Linguagem compartilhada é viral** ("Eu sou INFP", "Sou Projector", "Sou 11.4", "Sou Tiferet") — Akasha precisa de **mnemônica forte** (4 letras + número).
@@ -74,19 +75,19 @@
 
 ## 📈 Métricas
 
-- **RQs completos:** 9/12 (75%)
-- **Sistemas prioritários restantes:** RQ-010, RQ-011, RQ-012 (todos P2)
-- **Tempo total investido:** ~10.5 horas
+- **RQs completos:** 10/12 (83%)
+- **Sistemas prioritários restantes:** RQ-011, RQ-012 (P2)
+- **Tempo total investido:** ~11.5 horas
 - **Commits research:** 9 (RQ-001..RQ-006, RQ-007, RQ-008, RQ-009)
-- **Custo estimado da sessão:** < $12 (research-only, sem código)
+- **Custo estimado da sessão:** < $14 (research-only, sem código)
 
 ## ⚠️ Bloqueios
 
-- Nenhum. Com 9/12, RQ-020 (Patterns Fase 1) totalmente desbloqueado.
+- Nenhum. Com 10/12, RQ-020 (Patterns Fase 1) totalmente desbloqueado.
 
 ## 🚦 Próxima sessão
 
-**Iniciar com:** RQ-010 Tzolkin / Mayan Calendar. **Tempo alvo:** 30 min. **Output esperado:** `.autonomous/research/systems/tzolkin.md` (~500 linhas) + COT. Sistema de ciclos alternativo — inspiração para Mural temporal (Pilar 4) e para estruturar cadência de leitura semanal.
+**Iniciar com:** RQ-011 Ayurveda. **Tempo alvo:** 30 min. **Output esperado:** `.autonomous/research/systems/ayurveda.md` (~500 linhas) + COT. Síntese corpo/mente — inspiração para Pilar 4 (Ritual) e UX (cadência diária, doshas, rituais sazonais).
 
 ---
 
