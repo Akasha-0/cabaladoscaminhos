@@ -22,6 +22,12 @@ export {
   mockDashboardData,
 } from './mocks';
 
+// Re-export components
+export { StatsCard } from './components/StatsCard';
+export { DashboardStats as DashboardStatsGrid } from './components/DashboardStats';
+export { CalendarDay } from './CalendarDay';
+export { StreakCalendar } from './StreakCalendar';
+
 // Re-export hook
 export { useDashboardData } from './hooks/useDashboardData';
 export type {
