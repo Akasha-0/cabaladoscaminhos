@@ -1,7 +1,7 @@
 # Research INDEX — Sistema Akasha (Fase 0)
 
 > **Mapa vivo** de toda a pesquisa realizada.
-> Última atualização: 2026-06-10 — RQ-003 ✅ MBTI / Jung concluído.
+> Última atualização: 2026-06-10 — RQ-008 ✅ Cabala Clássica / Árvore da Vida concluído.
 
 ---
 
@@ -16,13 +16,13 @@
 | RQ-005 | **Co-Star** | ✅ DONE | [systems/costar.md](systems/costar.md) | 90 min | P0 |
 | RQ-006 | The Pattern | ⏳ TODO | — | 30 min | P1 |
 | RQ-007 | CHANI App | ⏳ TODO | — | 30 min | P1 |
-| RQ-008 | Cabala Clássica / Árvore da Vida | ⏳ TODO | — | 60 min | P0 |
+| RQ-008 | **Cabala Clássica / Árvore da Vida** | ✅ DONE | [systems/kabbalah.md](systems/kabbalah.md) | 75 min | P0 |
 | RQ-009 | Numerologia Cabalística Ocidental | ⏳ TODO | — | 45 min | P1 |
 | RQ-010 | Tzolkin / Mayan Calendar | ⏳ TODO | — | 30 min | P2 |
 | RQ-011 | Ayurveda | ⏳ TODO | — | 30 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ⏳ TODO | — | 30 min | P2 |
 
-**Progresso:** 5/12 sistemas (41.7%)
+**Progresso:** 6/12 sistemas (50.0%)
 
 ---
 
@@ -48,6 +48,7 @@
 | 2026-06-10 | cot-20260610-mbti-jung-position | Por que Akasha usa Jung (funções), não Myers (dicotomia forçada) |
 | 2026-06-10 | cot-20260610-enneagram-position | Por que Enneagrama é o Pilar DINÂMICO (tempo) do Akasha |
 | 2026-06-10 | cot-20260610-costar-position | Por que Co-Star é referência de UX/micro-dose, NÃO de voz/tom |
+| 2026-06-10 | cot-20260610-kabbalah-position | Árvore da Vida = esqueleto topológico do Pilar 1 (herda+filtra+cita) |
 
 ---
 
@@ -60,17 +61,20 @@
 │   ├── gene-keys.md                ✅ (R-001)
 │   ├── human-design.md             ✅ (R-002)
 │   ├── mbti-jung.md                ✅ (R-003)
-│   └── enneagram.md                ✅ (R-004)
+│   ├── enneagram.md                ✅ (R-004)
+│   ├── costar.md                   ✅ (R-005)
+│   └── kabbalah.md                 ✅ (R-008)
 └── chain-of-thought/
     ├── cot-20260610-gene-keys-synthesis.md
     ├── cot-20260610-human-design-synthesis.md
     ├── cot-20260610-mbti-jung-position.md
-    └── cot-20260610-enneagram-position.md
-    └── cot-20260610-costar-position.md
+    ├── cot-20260610-enneagram-position.md
+    ├── cot-20260610-costar-position.md
+    └── cot-20260610-kabbalah-position.md
 ```
 
 ---
 
 ## Próximo Passo
 
-**RQ-008 — Cabala Clássica** (P0) — base do Pilar 1 (Mandato Akasha, Árvore da Vida). 10 Sephiroth + 22 caminhos + gematria. 60 min.
+**RQ-009 — Numerologia Cabalística Ocidental** (P1) — engine numérica que projeta a Árvore em nomes e datas. Gematria prática. 45 min.

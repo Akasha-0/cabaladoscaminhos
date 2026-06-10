@@ -2,7 +2,7 @@
 
 **Data:** 2026-06-10
 **Sessão:** N (continuação)
-**Status:** 🟡 Em andamento — 3/12 RQs completos (25%)
+**Status:** 🟡 Em andamento — 6/12 RQs completos (50.0%)
 
 ---
 
@@ -14,62 +14,68 @@
 | RQ-002 | Human Design (Ra Uru Hu) | `cot-20260610-human-design-synthesis.md` | 90 min |
 | RQ-003 | MBTI / Jung | `cot-20260610-mbti-jung-position.md` | 60 min |
 | RQ-004 | Enneagrama (Ichazo/Naranjo/RH) | `cot-20260610-enneagram-position.md` | 75 min |
+| RQ-005 | Co-Star (Banu Guler) | `cot-20260610-costar-position.md` | 90 min |
+| RQ-008 | Cabala Clássica / Árvore da Vida | `cot-20260610-kabbalah-position.md` | 75 min |
 
 **Posição de cada sistema no Akasha (síntese executiva):**
 - **Gene Keys** = modelo de síntese multi-tradição (Shadow/Gift/Siddhi)
 - **Human Design** = modelo de UX/visualização (bodygraph)
 - **MBTI/Jung** = camada psicológica + taxonomia 16 perfis (com posição híbrida: contínuo interno, mnemônico externo)
 - **Enneagrama** = **dinâmica temporal** (9 Levels + Integration/Disintegration) — "termômetro de saúde" do usuário ao longo do tempo
+- **Co-Star** = referência de **UX/micro-dose** (restraint, 1-push, concisão, AI+humanos) — **NÃO** de voz/tom
+- **Cabala / Árvore da Vida** = **esqueleto topológico do Pilar 1** (10+22+4 Mundos, Golden Dawn 777, Lurianic Tzimtzum/Tikkun como motor temporal)
 
 ## ⏳ Pendente
 
 | ID | Sistema | Prioridade | Por que importa |
 |----|---------|-----------|-----------------|
-| RQ-005 | Co-Star | P0 | UX minimalista astrologia — modelo para Pilar 2 |
 | RQ-006 | The Pattern | P1 | Linguagem íntima/narrativa — modelo para Mentor Akasha |
 | RQ-007 | CHANI App | P1 | Astrologia + ritual — modelo para Pilar 2 + Pilar 4 |
-| RQ-008 | Cabala Clássica | P0 | Pilar 1 (Árvore da Vida) — base do Mandato Akasha |
-| RQ-009 | Numerologia Cabalística | P1 | Pilar 1 (fonte direta) — base do Mandato |
+| RQ-009 | Numerologia Cabalística | P1 | Pilar 1 (fonte direta) — engine numérica que projeta Árvore em nomes/datas |
 | RQ-010 | Tzolkin | P2 | Outro sistema de ciclos — inspiração para Mural |
 | RQ-011 | Ayurveda | P2 | Síntese corpo/mente — surpresa |
 | RQ-012 | Sheldrake + Cymatics | P2 | Base conceitual — por que tradição funciona |
 
 ## 🎯 Próximos passos (em ordem)
 
-1. **RQ-008 — Cabala Clássica** (P0). Pilar 1 (Mandato Akasha, Árvore da Vida). 60 min.
+1. **RQ-009 — Numerologia Cabalística** (P1). Engine numérica do Pilar 1. Dependência direta de RQ-008. 45 min.
 2. RQ-006 The Pattern. Linguagem Mentor.
-3. RQ-007 CHANI App.
-4. RQ-009 Numerologia Cabalística.
-5. RQ-010 Tzolkin.
-6. RQ-011 Ayurveda.
-7. RQ-012 Sheldrake + Cymatics.
+3. RQ-007 CHANI App. Astrologia + ritual.
+4. RQ-010 Tzolkin. Ciclos.
+5. RQ-011 Ayurveda. Síntese corpo/mente.
+6. RQ-012 Sheldrake + Cymatics. Base conceitual.
+7. **RQ-020 (Patterns)** — desbloqueado agora (6/12 sistemas). Extrair padrões comuns.
 
-## 📊 Síntese provisória (4 RQs feitas)
+## 📊 Síntese provisória (6 RQs feitas)
 
-**Lições convergentes dos 3 RQs:**
+**Lições convergentes dos 6 RQs:**
 
 1. **Certificação é lucrativa** (Gene Keys Guide, Human Design Analyst, MBTI Practitioner) — Akasha pode ter caminho profissional.
-2. **Linguagem compartilhada é viral** ("Eu sou INFP", "Sou Projector", "Sou 11.4") — Akasha precisa de **mnemônica forte** (4 letras + número).
-3. **Visualização única é poderosa** (bodygraph, 64 gene keys, mandala) — Akasha precisa de **1 diagrama-mãe** (proposta: Mandala Akasha = 5 anéis).
-4. **Tradição dupla (Story + Algoritmo)** — todos os 3 sistemas combinam **narrativa mítica** com **cálculo determinístico**. Akasha deve ter ambos.
-5. **Ética epistêmica importa** — Akasha deve citar **todas as fontes**, incluindo as críticas (Pittenger 2005, McCrae 1989, Florença 2020). White paper público com humildade.
+2. **Linguagem compartilhada é viral** ("Eu sou INFP", "Sou Projector", "Sou 11.4", "Sou Tiferet") — Akasha precisa de **mnemônica forte** (4 letras + número).
+3. **Visualização única é poderosa** (bodygraph, 64 gene keys, mandala, Árvore da Vida) — Akasha precisa de **1 diagrama-mãe** (proposta: Mandala Akasha = 5 anéis concêntricos sobre Árvore redesenhada).
+4. **Tradição dupla (Story + Algoritmo)** — todos os 6 sistemas combinam **narrativa mítica** com **cálculo determinístico**. Akasha deve ter ambos.
+5. **Ética epistêmica importa** — Akasha deve citar **todas as fontes**, incluindo as críticas (Pittenger 2005, McCrae 1989, Florença 2020, Scholem 1941). White paper público com humildade.
 6. **Modelo freemium + B2B** — apps modernos (16Personalities) dão grátis para o consumidor; vendem para o profissional. Akasha pode espelhar (Ritual grátis, Mentor pago, B2B Mentor Certificado).
+7. **Topologia + temporalidade** — sistemas vencedores (Gene Keys, Enneagrama, Cabala Luriânica) combinam **mapa** com **processo temporal**. Akasha deve ter ambos.
+8. **Decisão ética: citar ou apropriação** — usar Árvore da Vida sem citar Sefer Yetzirah/Zohar/Luria = plágio cultural. Mentor Akasha cita SEMPRE.
+9. **Restraint vence sobrecarga** — Co-Star mostra que 1 push/dia + 3 campos onboarding > fluxo interminável. Mandato diário, não infinito.
+10. **Voz compassiva vence edgy** — Co-Star goth gera críticas; Gene Keys compassivo retém. Mentor Akasha = I Ching + Zohar + Gene Keys compassivo, não Co-Star edgy.
 
 ## 📈 Métricas
 
-- **RQs completos:** 5/12 (41.7%)
-- **Sistemas prioritários restantes:** RQ-008 (P0), RQ-006 (P1), RQ-007 (P1), RQ-009 (P1)
-- **Tempo total investido:** ~6.5 horas
-- **Commits research:** 5 (RQ-001..RQ-005)
-- **Custo estimado da sessão:** < $5 (research-only, sem código)
+- **RQs completos:** 6/12 (50.0%)
+- **Sistemas prioritários restantes:** RQ-009 (P1), RQ-006 (P1), RQ-007 (P1)
+- **Tempo total investido:** ~8 horas
+- **Commits research:** 6 (RQ-001..RQ-005, RQ-008)
+- **Custo estimado da sessão:** < $8 (research-only, sem código)
 
 ## ⚠️ Bloqueios
 
-- Nenhum no momento.
+- Nenhum no momento. Golden Dawn 777 + Liber 777 destrava RQ-009 imediatamente.
 
 ## 🚦 Próxima sessão
 
-**Iniciar com:** RQ-008 Cabala Clássica. **Tempo alvo:** 60 min. **Output esperado:** `.autonomous/research/systems/kabbalah.md` (≥500 linhas) + `cot-20260610-kabbalah-position.md`.
+**Iniciar com:** RQ-009 Numerologia Cabalística. **Tempo alvo:** 45 min. **Output esperado:** `.autonomous/research/systems/cabalistic-numerology.md` (~400 linhas) + `cot-20260610-cabalistic-numerology-position.md`. Cruzar com tabela 22 letras já consolidada em RQ-008.
 
 ---
 

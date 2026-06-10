@@ -129,7 +129,7 @@
       "Como evitar simplificação excessiva? (respeito à fonte)"
     ],
     "output": ".autonomous/research/kabbalah.md",
-    "passes": false,
+    "passes": true,
     "timebox": "60min"
   },
   {
