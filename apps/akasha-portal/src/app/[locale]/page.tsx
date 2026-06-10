@@ -297,6 +297,19 @@ export default async function HomePage({
         >
           Iniciar Jornada →
         </Link>
+
+        <div className="mt-6">
+          <Link
+            href="/dashboard"
+            style={{
+              color: '#9D86FF',
+              fontSize: '0.875rem',
+              textDecoration: 'none',
+            }}
+          >
+            Ver Dashboard →
+          </Link>
+        </div>
       </section>
 
       <footer className="py-8 text-center text-xs" style={{ color: '#5C6691' }}>
