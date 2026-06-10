@@ -19,10 +19,10 @@
 | RQ-008 | **Cabala Clássica / Árvore da Vida** | ✅ DONE | [systems/kabbalah.md](systems/kabbalah.md) | 75 min | P0 |
 | RQ-009 | **Numerologia Cabalística Ocidental** | ✅ DONE | [systems/cabalistic-numerology.md](systems/cabalistic-numerology.md) | 60 min | P1 |
 | RQ-010 | Tzolkin / Mayan Calendar | ✅ DONE | [systems/tzolkin.md](systems/tzolkin.md) | 45 min | P2 |
-| RQ-011 | Ayurveda | ⏳ TODO | — | 30 min | P2 |
+| RQ-011 | Ayurveda | ✅ DONE | [systems/ayurveda.md](systems/ayurveda.md) | 60 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ⏳ TODO | — | 30 min | P2 |
 
-**Progresso:** 10/12 sistemas (83%)
+**Progresso:** 11/12 sistemas (92%)
 
 ---
 

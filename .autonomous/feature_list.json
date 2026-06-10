@@ -173,8 +173,8 @@
       "Que paralelos com Akasha? (tipologia + ciclo)",
       "Que estrutura de consulta/personalização?"
     ],
-    "output": ".autonomous/research/ayurveda.md",
-    "passes": false,
+    "output": ".autonomous/research/systems/ayurveda.md",
+    "passes": true,
     "timebox": "30min"
   },
   {
@@ -329,5 +329,65 @@
     "output": "packages/akasha-core/src/index.ts (skeleton)",
     "passes": false,
     "timebox": "90min"
+  },
+  {
+    "id": "F-100",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "description": "Refactor — encontrar arquivos >500 linhas, funções >50 linhas, duplicação. Tooling: knip/ts-prune/manual grep.",
+    "output": ".autonomous/research/maintenance/f100-refactor-<date>.md",
+    "passes": false,
+    "timebox": "30min"
+  },
+  {
+    "id": "F-101",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "description": "Dead code — imports não usados, exports sem callers, branches mortos. Tool: pnpm fallow / ts-prune.",
+    "output": ".autonomous/research/maintenance/f101-deadcode-<date>.md",
+    "passes": false,
+    "timebox": "20min"
+  },
+  {
+    "id": "F-102",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P1",
+    "description": "Security review — OWASP top 10 nos endpoints novos. Skill: ecc:security-scan.",
+    "output": ".autonomous/research/maintenance/f102-security-<date>.md",
+    "passes": false,
+    "timebox": "40min"
+  },
+  {
+    "id": "F-103",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "description": "Performance — bundle size, TTFB, query N+1, LCP. Skill: vercel:performance-optimizer.",
+    "output": ".autonomous/research/maintenance/f103-perf-<date>.md",
+    "passes": false,
+    "timebox": "40min"
+  },
+  {
+    "id": "F-104",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "description": "Docs sync — código novo sem doc/README/AGENTS.md atualizado. Diff coverage.",
+    "output": ".autonomous/research/maintenance/f104-docs-<date>.md",
+    "passes": false,
+    "timebox": "20min"
+  },
+  {
+    "id": "F-105",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P0",
+    "description": "Meta-review perpétuo — quando fila vazia, ler git log -20, abrir 3-5 novos RQs Fase 7, reiniciar ciclo.",
+    "output": ".autonomous/state/meta_review.signal + commits",
+    "passes": true,
+    "timebox": "perpétuo"
   }
 ]
