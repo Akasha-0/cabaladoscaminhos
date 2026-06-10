@@ -39,7 +39,7 @@
 |----|---------|-----------|-----------------|
 | RQ-007 | ~~CHANI App~~ | P1 | ✅ Concluído |
 | RQ-010 | ~~Tzolkin~~ | P1 | ✅ Concluído (10/12) |
-| RQ-011 | Ayurveda | P2 | Síntese corpo/mente — surpresa |
+| RQ-011 | Ayurveda | P2 | ✅ Concluído (11/12) — Pilar 3 Tridosha + Pilar 4 Ritucharya |
 | RQ-012 | Sheldrake + Cymatics | P2 | Base conceitual — por que tradição funciona |
 
 ## 🎯 Próximos passos (em ordem)
