@@ -2,7 +2,7 @@
 
 **Data:** 2026-06-10
 **Sessão:** N (continuação)
-**Status:** 🟡 Em andamento — 8/12 RQs completos (66.7%)
+**Status:** 🟡 Em andamento — 9/12 RQs completos (75%)
 
 ---
 
@@ -16,6 +16,7 @@
 | RQ-004 | Enneagrama (Ichazo/Naranjo/RH) | `cot-20260610-enneagram-position.md` | 75 min |
 | RQ-005 | Co-Star (Banu Guler) | `cot-20260610-costar-position.md` | 90 min |
 | RQ-006 | The Pattern (Lisa Donovan) | `cot-20260610-the-pattern-position.md` | 30 min |
+| RQ-007 | CHANI App (Chani Nicholas) | `cot-20260610-chani-app-position.md` | 75 min |
 | RQ-008 | Cabala Clássica / Árvore da Vida | `cot-20260610-kabbalah-position.md` | 75 min |
 | RQ-009 | Numerologia Cabalística Ocidental | `cot-20260610-cabalistic-numerology-position.md` | 60 min |
 
@@ -28,19 +29,20 @@
 - **The Pattern** = **referência de LINGUAGEM DO MENTOR (Pilar 5)** — Donovan inova em como contar, não em o que contar. 2ª pessoa, presente, confessional, jargão suprimido. Akasha cita fontes (The Pattern esconde)
 - **Cabala / Árvore da Vida** = **esqueleto topológico do Pilar 1** (10+22+4 Mundos, Golden Dawn 777, Lurianic Tzimtzum/Tikkun como motor temporal)
 - **Numerologia Cabalística** = **engine numérica do Pilar 1** (Mispar Hechrachi + Katan Mispari; 22 letras hebraicas = 22 Caminhos; Life Path/Birthday/Expression/Soul Urge/Personality; Masters 11/22/33; herança direta do Sefer Yetzirah + Baraita 32 Regras; PT-BR via transliteração reversível)
+- **CHANI App** = **Pilar 2 (Astrologia) + Pilar 4 (Ritual)** — Whole Sign Houses (Hellenistic revival, Brennan 2017), Rising>Sol>Lua, bundle semanal "leitura+ritual+altar+journal+meditação", 5%→FreeFrom, zero-AI policy, $14M/ano, 4.91/5. Akasha herda Whole Sign + cadência lunar + tom compassivo. **Híbrido obrigatório**: Grimório humano curado + AI Mentor com RAG.
 
 ## ⏳ Pendente
 
 | ID | Sistema | Prioridade | Por que importa |
 |----|---------|-----------|-----------------|
-| RQ-007 | CHANI App | P1 | Astrologia + ritual — modelo para Pilar 2 + Pilar 4 |
+| RQ-007 | ~~CHANI App~~ | P1 | ✅ Concluído |
 | RQ-010 | Tzolkin | P2 | Outro sistema de ciclos — inspiração para Mural |
 | RQ-011 | Ayurveda | P2 | Síntese corpo/mente — surpresa |
 | RQ-012 | Sheldrake + Cymatics | P2 | Base conceitual — por que tradição funciona |
 
 ## 🎯 Próximos passos (em ordem)
 
-1. RQ-007 CHANI App. Astrologia + ritual. 30 min.
+1. ~~RQ-007 CHANI App. Astrologia + ritual.~~ ✅ Concluído.
 2. RQ-010 Tzolkin. Ciclos. 30 min.
 3. RQ-011 Ayurveda. Síntese corpo/mente. 30 min.
 4. RQ-012 Sheldrake + Cymatics. Base conceitual. 30 min.
@@ -65,22 +67,26 @@
 10. **Voz compassiva vence edgy** — Co-Star goth gera críticas; Gene Keys compassivo retém; The Pattern íntimo seduz. Mentor Akasha = I Ching + Zohar + Gene Keys compassivo + The Pattern íntimo, não Co-Star edgy, não The Pattern opaco.
 11. **AI sycophancy é anti-padrão** — APA Health Advisory 2025 confirma risco; The Pattern In-Depth backlash. Mentor Akasha: honesto > agradável, "não sei" permitido.
 12. **LGPD/Privacy by design** — The Pattern tem política fraca. Akasha é BR; LGPD desde 2020. Botão de crise (CVV 188) + cap de uso obrigatórios.
+13. **Whole Sign Houses (Hellenistic revival) > Placidus (modern)** — CHANI prova que tradição antiga é mais simples e correta. Akasha adota Whole Sign (Brennan 2017, Schmidt).
+14. **Bundle "leitura+ritual+altar+journal+meditação"** é a unidade ritualística mínima semanal — Akasha Pilar 4 segue o mesmo padrão.
+15. **Zero-AI como marca é caro** ($14M/ano) — Akasha usa híbrido: Grimório curado humano + AI Mentor com RAG obrigatório + citação de fonte.
+16. **5% para causa social** (FreeFrom model) = retenção real + marketing ético. Akasha earmark 5% a causa BR (Casa 1, Casa Chama, TransEmpregos, FLUP).
 
 ## 📈 Métricas
 
-- **RQs completos:** 8/12 (66.7%)
-- **Sistemas prioritários restantes:** RQ-007 (P1) — último P1!
-- **Tempo total investido:** ~9.5 horas
-- **Commits research:** 8 (RQ-001..RQ-005, RQ-006, RQ-008, RQ-009)
-- **Custo estimado da sessão:** < $10 (research-only, sem código)
+- **RQs completos:** 9/12 (75%)
+- **Sistemas prioritários restantes:** RQ-010, RQ-011, RQ-012 (todos P2)
+- **Tempo total investido:** ~10.5 horas
+- **Commits research:** 9 (RQ-001..RQ-006, RQ-007, RQ-008, RQ-009)
+- **Custo estimado da sessão:** < $12 (research-only, sem código)
 
 ## ⚠️ Bloqueios
 
-- Nenhum. Com 8/12, RQ-020 (Patterns Fase 1) totalmente desbloqueado.
+- Nenhum. Com 9/12, RQ-020 (Patterns Fase 1) totalmente desbloqueado.
 
 ## 🚦 Próxima sessão
 
-**Iniciar com:** RQ-007 CHANI App. **Tempo alvo:** 30 min. **Output esperado:** `.autonomous/research/systems/chani-app.md` (~500 linhas) + `cot-20260610-chani-app-position.md`. Estuda como CHANI combina astrologia técnica com ritual guiado — modelo para Pilar 2 (Astrologia) + Pilar 4 (Ritual).
+**Iniciar com:** RQ-010 Tzolkin / Mayan Calendar. **Tempo alvo:** 30 min. **Output esperado:** `.autonomous/research/systems/tzolkin.md` (~500 linhas) + COT. Sistema de ciclos alternativo — inspiração para Mural temporal (Pilar 4) e para estruturar cadência de leitura semanal.
 
 ---
 

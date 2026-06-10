@@ -113,7 +113,7 @@
       "Que modelo de negócio? B2C premium?"
     ],
     "output": ".autonomous/research/chani.md",
-    "passes": false,
+    "passes": true,
     "timebox": "30min"
   },
   {
@@ -198,7 +198,9 @@
     "category": "synthesis",
     "priority": "P0",
     "description": "EXTRAIR PADRÕES COMUNS entre todos os sistemas estudados",
-    "dependencies": ["R-001..R-012"],
+    "dependencies": [
+      "R-001..R-012"
+    ],
     "questions": [
       "Quais escolhas de design recorreram? (visualização, micro-doses, tom)",
       "O que diferencia sistemas B2C bem-sucedidos?",
@@ -215,7 +217,9 @@
     "category": "synthesis",
     "priority": "P0",
     "description": "Identificar GAPS — o que nenhum sistema cobre",
-    "dependencies": ["R-020"],
+    "dependencies": [
+      "R-020"
+    ],
     "questions": [
       "Que problemas os usuários de Gene Keys/HD reclamam?",
       "Que públicos são mal servidos pelos sistemas atuais?",
@@ -232,7 +236,9 @@
     "category": "synthesis",
     "priority": "P0",
     "description": "Definir EIXO CENTRAL do Akasha — qual a UNIDADE de síntese?",
-    "dependencies": ["R-021"],
+    "dependencies": [
+      "R-021"
+    ],
     "questions": [
       "Mapa visual (Mandala) vs linha do tempo (jornada) vs persona (mentor)?",
       "Que narrativa única conecta os 5 pilares?",
@@ -249,7 +255,9 @@
     "category": "design",
     "priority": "P0",
     "description": "Definir persona do AI Mentor (Mestre)",
-    "dependencies": ["R-022"],
+    "dependencies": [
+      "R-022"
+    ],
     "questions": [
       "Nome? Akasha? Outro?",
       "Voz: ritual, íntima, sibilina, compassiva?",
@@ -267,7 +275,10 @@
     "category": "design",
     "priority": "P0",
     "description": "UX Architecture — telas, jornada, descoberta progressiva",
-    "dependencies": ["R-022", "R-023"],
+    "dependencies": [
+      "R-022",
+      "R-023"
+    ],
     "questions": [
       "Mandala Toroidal: como o usuário navega?",
       "Que telas diárias/semanais/mensais?",
@@ -285,7 +296,9 @@
     "category": "design",
     "priority": "P0",
     "description": "Tech stack final + decisões arquiteturais",
-    "dependencies": ["R-024"],
+    "dependencies": [
+      "R-024"
+    ],
     "questions": [
       "Next.js 16 + Turbopack: confirmar?",
       "pgvector para embeddings: sim?",
@@ -304,7 +317,9 @@
     "category": "prototype",
     "priority": "P0",
     "description": "Akasha Core Algorithm — protótipo em TS puro (NÃO integrado)",
-    "dependencies": ["R-022"],
+    "dependencies": [
+      "R-022"
+    ],
     "questions": [
       "Tipos Zod para inputs (5 pilares)",
       "Função pura akasha.calcular(pessoa) → Leitura",
