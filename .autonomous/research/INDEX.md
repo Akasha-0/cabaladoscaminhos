@@ -22,7 +22,7 @@
 | RQ-011 | Ayurveda | ⏳ TODO | — | 30 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ⏳ TODO | — | 30 min | P2 |
 
-**Progresso:** 1/12 sistemas (8.3%)
+**Progresso:** 2/12 sistemas (16.7%)
 
 ---
 
@@ -44,6 +44,7 @@
 | Data | Slug | Título |
 |------|------|--------|
 | 2026-06-10 | cot-20260610-gene-keys-synthesis | Por que Gene Keys é o modelo primário de Akasha |
+| 2026-06-10 | cot-20260610-human-design-synthesis | Por que Human Design é o modelo de UX/visualização (não síntese) |
 
 ---
 
@@ -53,13 +54,15 @@
 .autonomous/research/
 ├── INDEX.md                        ← este arquivo
 ├── systems/
-│   └── gene-keys.md                ✅ (R-001)
+│   ├── gene-keys.md                ✅ (R-001)
+│   └── human-design.md             ✅ (R-002)
 └── chain-of-thought/
-    └── cot-20260610-gene-keys-synthesis.md
+    ├── cot-20260610-gene-keys-synthesis.md
+    └── cot-20260610-human-design-synthesis.md
 ```
 
 ---
 
 ## Próximo Passo
 
-**RQ-002 — Human Design (Ra Uru Hu)** — modelo de UX/visualização. 60-90 min.
+**RQ-003 — MBTI / Jung** — base psicológica (4 funções cognitivas). 45 min.
