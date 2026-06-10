@@ -9,3 +9,17 @@
 - CHECKPOINT + INDEX + feature_list.json (R-007 = true) + TODO atualizados: 8/12 → 9/12 (75%)
 - Última P1 fechada. Restam 3 P2: RQ-010 Tzolkin, RQ-011 Ayurveda, RQ-012 Sheldrake
 - Próxima sessão: RQ-010 Tzolkin / Mayan Calendar (P2, 30min, sistema de ciclos alternativo para Mural)
+
+[2026-06-10 19:30] RQ-010 ✅ Tzolkin / Mayan Calendar — Pilar 4 inspiração estrutural + MAIOR AVISO ÉTICO
+- 26+ fontes citadas (18 acadêmicas: Biémont 2025 Springer, Biémont 2008 Wiley, Klokocnik 2010, Aveni 2001+1995, Coe 1993+2005, Rice 2007, Bricker 2011, Aldana 2022, Jenkins 2010, Thompson 1950, Lounsbury 1978, Böhm 1991+1996, Hochleitner 1970-74, Tedlock 1982, Justeson 1989, Hofling 1992; 5 oficiais: NMAI Smithsonian, Davies 2016, MyMayanSign 2020, Gran Consejo Ajq'ij, Saq Be Rubel; 7 críticas: Calleman 2020 x3, Maya-Portal.net Wolak, Wikipedia Dreamspell/Argüelles, Mesoweb 2011; 4 técnicas: EECIS Delaware, Mandala.net, Encyclopedia.com, Traced-Ideas)
+- Cobre: 260 dias (13×20 coprimos), 20 nahuales (Imix→Ajaw), 13 trecenas, Calendar Round 18.980 dias (52 anos haab), Long Count 5 ciclos (k'in 1 / uinal 20 / tun 360 / katun 7.200 / baktun 144.000), 3 correlações (GMT 584283 / BB 622261 / Thompson 584285; BB+GMT=104 anos), astronomia (Vênus 584d, sol zenital, eclipses pentalunex 148d), origem Olmeca ~1100 BCE / San Bartolo III BCE
+- CONTROVÉRSIA DREAMSPELL: Argüelles 1990 reinventou Tzolkin com shift 50-60 dias + Hunab Ku invented + 13 Luas 28d. Lloydine 1997 defensividade cult-like. Gran Consejo de Ajq'ij rejeita explicitamente. Calleman 2020: "Dreamspell foi desenhado para que Argüelles+Lloydine tivessem kins 11+22=33". Apocalipse 2012 = marketing New Age, não tradição
+- Posição Akasha: Tzolkin NÃO é engine. Adota: nahual (kin de nascimento) = paralelo orixá Pilar 4; Calendar Round 52 anos = 3ª escala temporal (vs Saturn 29.5/Uranus 42); 5 unidades Long Count = paralelo aos 5 pilares; astronomia (Vênus+sol zenital) = base conceitual. NÃO adota: contagem Tzolkin, Dreamspell JAMAIS, 2012 marketing
+- 5 Compromissos Éticos derivados: (1) tradição viva = citação+parceria+consentimento; (2) calibração = proibida; (3) fusão = justificativa textual+fonte; (4) sistema alternativo = nomeado "Akasha" não tradicional; (5) 5% receita Pilar 4 → Saq Be
+- Lição para Pilar 5 I Ching: Akasha usa King Wen sequence (clássica) + cita Wilhelm/Baynes 1950 + NUNCA Argüelles (DNA 4D = pseudo-ciência)
+- COT: .autonomous/research/chain-of-thought/cot-20260610-tzolkin-position.md
+- Output: .autonomous/research/systems/tzolkin.md (~510 linhas, 11 seções, 4 críticas honestas citadas)
+- Commit: 7f0dd92e
+- CHECKPOINT + INDEX + feature_list.json (R-010 = true) + TODO atualizados: 9/12 → 10/12 (83%)
+- Restam 2 P2: RQ-011 Ayurveda, RQ-012 Sheldrake+Cymatics
+- Próxima sessão: RQ-011 Ayurveda (P2, 30min, síntese corpo/mente) OU ir direto para RQ-020 Patterns (Fase 1, desbloqueado agora com 10 sistemas)
