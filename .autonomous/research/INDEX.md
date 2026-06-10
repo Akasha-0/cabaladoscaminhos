@@ -55,6 +55,7 @@
 | 2026-06-10 | cot-20260610-tzolkin-position | Tzolkin = inspiração estrutural Pilar 4 + MAIOR aviso ético (Dreamspell = apropriação; 5 compromissos éticos) |
 | 2026-06-10 | cot-20260610-ayurveda-position | Ayurveda = Tridosha Pilar 3 + Ritucharya Pilar 4 (escala sazonal 4m única) + 7 decisões Akasha |
 | 2026-06-10 | cot-20260610-sheldrake-cymatics-position | Sheldrake = metafora pedagógica (NÃO mecanismo) + Cymatics = visual Pilar 4 (NÃO 528/432Hz); 5 decisões éticas; memetics > morphic fields |
+| 2026-06-10 | cot-20260610-patterns-extraction | 20 patterns convergentes em 5 famílias (algorítmica/visual/temporal/linguagem/negócio) + 12 anti-padrões; 4 decisões estruturantes para RQ-022 |
 
 ---
 
@@ -88,11 +89,12 @@
     ├── cot-20260610-chani-app-position.md
     ├── cot-20260610-tzolkin-position.md
     ├── cot-20260610-ayurveda-position.md
-    └── cot-20260610-sheldrake-cymatics-position.md
+    ├── cot-20260610-sheldrake-cymatics-position.md
+    └── cot-20260610-patterns-extraction.md
 ```
 
 ---
 
 ## Próximo Passo
 
-**Fase 0 (Research) COMPLETA — 12/12 RQs (100%).** Próxima fase: **RQ-020 Patterns (Fase 1 — Synthesis)**. Extrair 16+ padrões convergentes dos 12 RQs para `patterns.md`. Desbloqueado agora.
+**RQ-020 ✅ Patterns (Fase 1) COMPLETO — 20 padrões convergentes extraídos.** Próxima fase: **RQ-021 Gaps (Fase 1 — Synthesis)**. Identificar oportunidades únicas que nenhum dos 12 sistemas cobre. Desbloqueado agora.

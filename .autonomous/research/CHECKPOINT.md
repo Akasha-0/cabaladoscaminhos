@@ -40,15 +40,16 @@
 ## ⏳ Pendente
 
 ~~Nenhum — Fase 0 (Research) completa.~~
+~~RQ-020 (Patterns) — concluído nesta sessão.~~
 
 ## 🎯 Próximos passos (Fase 1 — Synthesis)
 
-1. **RQ-020 (Patterns)** — desbloqueado agora. Extrair 16+ padrões convergentes dos 12 RQs.
-2. **RQ-021 (Gaps)** — depende de RQ-020. Oportunidades únicas do Akasha.
-3. **RQ-022 (Synthesis v1)** — depende de RQ-021. Akasha Core Algorithm em markdown.
-4. **RQ-023 (Mentor persona v1)** — depende de RQ-022. Persona do Mentor.
+1. ✅ **RQ-020 (Patterns)** — concluído. 20 patterns convergentes extraídos em `patterns.md`.
+2. **RQ-021 (Gaps)** — desbloqueado agora. Oportunidades únicas do Akasha (multi-tradição, tradição viva BR, LGPD, 5% causa, hybrid AI+humano, escala não-celebrity).
+3. **RQ-022 (Synthesis v1)** — depende de RQ-021. Akasha Core Algorithm em markdown (número-base, modelo de integração 5 pilares, mapeamento canônico).
+4. **RQ-023 (Mentor persona v1)** — depende de RQ-022. Persona do Mentor (nome, voz, limites éticos, exemplos de diálogo).
 
-## 📊 Síntese provisória (12 RQs feitas — 100%)
+## 📊 Síntese provisória (12 RQs feitas — 100% + RQ-020 patterns)
 
 **Lições convergentes dos 12 RQs (100%):**
 
@@ -69,6 +70,16 @@
 15. **Zero-AI como marca é caro** ($14M/ano) — Akasha usa híbrido: Grimório curado humano + AI Mentor com RAG obrigatório + citação de fonte.
 16. **5% para causa social** (FreeFrom model) = retenção real + marketing ético. Akasha earmark 5% a causa BR (Casa 1, Casa Chama, TransEmpregos, FLUP).
 
+**RQ-020 (Patterns) — 20 patterns em 5 famílias formalizados:**
+- (1) Fundação Algorítmica: número-base canônico; 2 camadas temporais; isomorfismo entre domínios
+- (2) Visualização: 1 diagrama-mãe; restraint visual 3-4 cores; leitura progressiva 7 camadas; micro-doses 1/dia
+- (3) Temporalidade: 3+ escalas (diária/semanal/anual/macro); cadência semanal+lunar; segunda camada temporal
+- (4) Linguagem: mnemônica identidade; suprimir jargão; metáforas corporais; cita fontes
+- (5) Negócio+Ética: freemium 2-3%; cert B2B; saúde mental; tradição viva; 5% causa; LGPD
+- 3 insights bônus: PESSOA×5Pilares unidade; hybrid IA+humano curado; tradição viva > histórica
+- 12 anti-padrões documentados (quantum marketing, fatalismo, AI people-pleaser, edgy em crise, claim de cura, etc)
+- **4 decisões estruturantes para RQ-022 (synthesis_v1)**: PESSOA×5Pilares; 4 escalas temporais; mnemônica PT-BR; ética citação+5%
+
 ## 📈 Métricas
 
 - **RQs completos:** 12/12 (100%) — **FASE 0 COMPLETA**
@@ -83,7 +94,7 @@
 
 ## 🚦 Próxima sessão
 
-**Iniciar com:** RQ-020 Patterns (Fase 1 — Synthesis). **Tempo alvo:** 45 min. **Output esperado:** `.autonomous/research/patterns.md` (16+ lições convergentes). **Pré-requisito:** 12/12 RQs ✅.
+**Iniciar com:** RQ-021 Gaps (Fase 1 — Synthesis). **Tempo alvo:** 30 min. **Output esperado:** `.autonomous/research/gaps.md` (oportunidades únicas que Akasha cobre mas nenhum dos 12 sistemas referencia cobre). **Pré-requisito:** RQ-020 ✅ (Patterns). Hipóteses: multi-tradição real, tradição viva BR creditada, LGPD by design, 5% causa earmark, hybrid AI+humano, escala não-celebrity, ética epistêmica.
 
 ---
 

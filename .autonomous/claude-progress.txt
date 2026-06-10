@@ -44,3 +44,18 @@
 - Output: .autonomous/research/systems/sheldrake-cymatics.md (~16k chars, 16 seções, 32+ fontes)
 - CHECKPOINT + INDEX + feature_list.json (R-012=true, output path corrigido) + TODO (Notas de Iteração atualizada) atualizados: 11/12 → 12/12 (100%)
 - FASE 0 (RESEARCH) COMPLETA. Próxima sessão: RQ-020 Patterns (Fase 1 Synthesis) — desbloqueado agora; OU ir direto para RQ-022 synthesis_v1 (16 lições convergentes já parcialmente visíveis no CHECKPOINT)
+
+[2026-06-10 23:35] RQ-020 ✅ Patterns (Fase 1 — Synthesis) — 20 patterns convergentes extraídos dos 12 RQs
+- 600+ linhas em .autonomous/research/patterns.md; 5 famílias (Algorítmica/Visual/Temporal/Linguagem/Negócio) + 3 insights bônus + 12 anti-padrões
+- Família 1 (Algorítmica): #1 número-base 3/9/16/22/64/260; #2 2 camadas temporais (natal+dinâmica); #3 isomorfismo entre domínios (22 letras = 22 caminhos = 22 arcanos)
+- Família 2 (Visualização): #4 1 diagrama-mãe (proposta: Mandala Akasha 5 anéis sobre Árvore redesenhada); #5 restraint visual 3-4 cores; #6 leitura progressiva 7 camadas; #7 micro-doses 1 push/dia
+- Família 3 (Temporalidade): #8 3+ escalas (diária/semanal/sazonal/macro); #9 cadência semanal+lunar (New/Full Moon); #10 segunda camada temporal (Tikkun Luriânico como metáfora unificadora)
+- Família 4 (Linguagem): #11 mnemônica de identidade ("Sou Akasha nº X" PT-BR); #12 suprimir jargão com toggle Avançado; #13 metáforas corporais (roda, respiração, coração, campo); #14 cita SEMPRE (white paper público)
+- Família 5 (Negócio+Ética): #15 freemium 2-3%; #16 cert B2B 3 níveis R$295/895/1995; #17 responsabilidade saúde mental (CVV 188 + cap de uso + detecção palavras-gatilho); #18 tradição viva creditada (NÃO apropriação); #19 5% causa social earmark (Casa 1/FLUP/Saq Be/TransEmpregos); #20 LGPD by design (botão exportar + deletar + retenção 30d)
+- Bônus: PESSOA×5Pilares é unidade síntese; hybrid IA+humano curado (RAG mandatório); tradição viva > histórica
+- Anti-padrões: quantum marketing; causalidade direta; fatalismo; determinismo; edgy em crise; claim de cura; inventar correspondências; esconder fonte; AI people-pleaser; botão cura sem disclaimer; streak+gamificação; frequências mágicas 528/432Hz
+- TABELA MESTRA 20×4 (herda/melhora/evita) com 12 RQs-fontes citadas
+- 4 DECISÕES ESTRUTURANTES para RQ-022 (synthesis_v1): D1 unidade=PESSOA×5Pilares sobre Árvore; D2 tempo=4 escalas; D3 mnemônica=Akasha nº X+qualificador; D4 ética=citação+transparência+5%causa+LGPD
+- COT: .autonomous/research/chain-of-thought/cot-20260610-patterns-extraction.md
+- CHECKPOINT + INDEX + feature_list.json (R-020 = true) + TODO (Notas de Iteração + D-001 marcado [~]) atualizados
+- Próxima sessão: RQ-021 Gaps (P0, 30min) → RQ-022 Synthesis v1 → RQ-023 Mentor persona
