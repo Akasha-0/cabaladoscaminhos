@@ -143,9 +143,9 @@
       "Algoritmos: Caminho de Vida, Expressão, Motivação, Alma",
       "Que autoridade epistêmica tem? Onde é controverso?"
     ],
-    "output": ".autonomous/research/cabalistic-numerology.md",
-    "passes": false,
-    "timebox": "45min"
+    "output": ".autonomous/research/systems/cabalistic-numerology.md",
+    "passes": true,
+    "timebox": "60min"
   },
   {
     "id": "R-010",

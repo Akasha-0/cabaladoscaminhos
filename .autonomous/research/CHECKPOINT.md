@@ -16,6 +16,7 @@
 | RQ-004 | Enneagrama (Ichazo/Naranjo/RH) | `cot-20260610-enneagram-position.md` | 75 min |
 | RQ-005 | Co-Star (Banu Guler) | `cot-20260610-costar-position.md` | 90 min |
 | RQ-008 | Cabala Clássica / Árvore da Vida | `cot-20260610-kabbalah-position.md` | 75 min |
+| RQ-009 | Numerologia Cabalística Ocidental | `cot-20260610-cabalistic-numerology-position.md` | 60 min |
 
 **Posição de cada sistema no Akasha (síntese executiva):**
 - **Gene Keys** = modelo de síntese multi-tradição (Shadow/Gift/Siddhi)
@@ -24,6 +25,7 @@
 - **Enneagrama** = **dinâmica temporal** (9 Levels + Integration/Disintegration) — "termômetro de saúde" do usuário ao longo do tempo
 - **Co-Star** = referência de **UX/micro-dose** (restraint, 1-push, concisão, AI+humanos) — **NÃO** de voz/tom
 - **Cabala / Árvore da Vida** = **esqueleto topológico do Pilar 1** (10+22+4 Mundos, Golden Dawn 777, Lurianic Tzimtzum/Tikkun como motor temporal)
+- **Numerologia Cabalística** = **engine numérica do Pilar 1** (Mispar Hechrachi + Katan Mispari; 22 letras hebraicas = 22 Caminhos; Life Path/Birthday/Expression/Soul Urge/Personality; Masters 11/22/33; herança direta do Sefer Yetzirah + Baraita 32 Regras; PT-BR via transliteração reversível)
 
 ## ⏳ Pendente
 
@@ -31,24 +33,23 @@
 |----|---------|-----------|-----------------|
 | RQ-006 | The Pattern | P1 | Linguagem íntima/narrativa — modelo para Mentor Akasha |
 | RQ-007 | CHANI App | P1 | Astrologia + ritual — modelo para Pilar 2 + Pilar 4 |
-| RQ-009 | Numerologia Cabalística | P1 | Pilar 1 (fonte direta) — engine numérica que projeta Árvore em nomes/datas |
+| RQ-009 | Numerologia Cabalística | P1 | ~~Pilar 1 (fonte direta) — engine numérica que projeta Árvore em nomes/datas~~ ✅ DONE |
 | RQ-010 | Tzolkin | P2 | Outro sistema de ciclos — inspiração para Mural |
 | RQ-011 | Ayurveda | P2 | Síntese corpo/mente — surpresa |
 | RQ-012 | Sheldrake + Cymatics | P2 | Base conceitual — por que tradição funciona |
 
 ## 🎯 Próximos passos (em ordem)
 
-1. **RQ-009 — Numerologia Cabalística** (P1). Engine numérica do Pilar 1. Dependência direta de RQ-008. 45 min.
-2. RQ-006 The Pattern. Linguagem Mentor.
-3. RQ-007 CHANI App. Astrologia + ritual.
-4. RQ-010 Tzolkin. Ciclos.
-5. RQ-011 Ayurveda. Síntese corpo/mente.
-6. RQ-012 Sheldrake + Cymatics. Base conceitual.
-7. **RQ-020 (Patterns)** — desbloqueado agora (6/12 sistemas). Extrair padrões comuns.
+1. RQ-006 The Pattern. Linguagem Mentor. 30 min.
+2. RQ-007 CHANI App. Astrologia + ritual. 30 min.
+3. RQ-010 Tzolkin. Ciclos. 30 min.
+4. RQ-011 Ayurveda. Síntese corpo/mente. 30 min.
+5. RQ-012 Sheldrake + Cymatics. Base conceitual. 30 min.
+6. **RQ-020 (Patterns)** — desbloqueado agora (7/12 sistemas). Extrair padrões comuns.
 
-## 📊 Síntese provisória (6 RQs feitas)
+## 📊 Síntese provisória (7 RQs feitas)
 
-**Lições convergentes dos 6 RQs:**
+**Lições convergentes dos 7 RQs:**
 
 1. **Certificação é lucrativa** (Gene Keys Guide, Human Design Analyst, MBTI Practitioner) — Akasha pode ter caminho profissional.
 2. **Linguagem compartilhada é viral** ("Eu sou INFP", "Sou Projector", "Sou 11.4", "Sou Tiferet") — Akasha precisa de **mnemônica forte** (4 letras + número).
@@ -63,19 +64,19 @@
 
 ## 📈 Métricas
 
-- **RQs completos:** 6/12 (50.0%)
-- **Sistemas prioritários restantes:** RQ-009 (P1), RQ-006 (P1), RQ-007 (P1)
-- **Tempo total investido:** ~8 horas
-- **Commits research:** 6 (RQ-001..RQ-005, RQ-008)
-- **Custo estimado da sessão:** < $8 (research-only, sem código)
+- **RQs completos:** 7/12 (58.3%)
+- **Sistemas prioritários restantes:** RQ-006 (P1), RQ-007 (P1)
+- **Tempo total investido:** ~9 horas
+- **Commits research:** 7 (RQ-001..RQ-005, RQ-008, RQ-009)
+- **Custo estimado da sessão:** < $10 (research-only, sem código)
 
 ## ⚠️ Bloqueios
 
-- Nenhum no momento. Golden Dawn 777 + Liber 777 destrava RQ-009 imediatamente.
+- Nenhum. Com 7/12, RQ-020 (Patterns Fase 1) está desbloqueado.
 
 ## 🚦 Próxima sessão
 
-**Iniciar com:** RQ-009 Numerologia Cabalística. **Tempo alvo:** 45 min. **Output esperado:** `.autonomous/research/systems/cabalistic-numerology.md` (~400 linhas) + `cot-20260610-cabalistic-numerology-position.md`. Cruzar com tabela 22 letras já consolidada em RQ-008.
+**Iniciar com:** RQ-006 The Pattern. **Tempo alvo:** 30 min. **Output esperado:** `.autonomous/research/systems/the-pattern.md` (~300 linhas) + `cot-20260610-the-pattern-position.md`. Estuda linguagem íntima/narrativa para o Mentor Akasha.
 
 ---
 
