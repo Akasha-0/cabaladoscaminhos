@@ -19,7 +19,7 @@ if [[ -z "$COMMAND" ]]; then
 fi
 
 # Allowlist (regex no primeiro token)
-ALLOWED='^(pnpm|npm|node|npx|tsx|ts-node|esbuild|vite|next|playwright|vitest|jest|eslint|prettier|prisma|turbo|tsc|pg_isready|psql|docker|ls|cat|head|tail|wc|grep|find|file|tree|stat|which|echo|printf|date|sleep|git|init\.sh|chmod|cp|mv|mkdir|touch|jq|cargo|rustc|go|python|python3|curl|wget|ollama|redis-cli|ps|lsof|pkill|true|false|test|\[)'
+ALLOWED='^(pnpm|npm|node|npx|tsx|ts-node|esbuild|vite|next|playwright|vitest|jest|eslint|prettier|prisma|turbo|tsc|pg_isready|psql|docker|ls|cat|head|tail|wc|grep|find|file|tree|stat|which|echo|printf|date|sleep|git|init\.sh|chmod|cp|mv|mkdir|touch|jq|cargo|rustc|go|python|python3|curl|wget|ollama|redis-cli|ps|lsof|pkill|true|false|test|sed|awk|tr|sort|uniq|diff|tee|basename|dirname|realpath|readlink|xargs|env|export|cd|pwd|kill|killall|du|df|free|uname|whoami|id|hostname|uptime|tar|gzip|gunzip|zip|unzip|openssl|md5sum|sha256sum|column|kill|killall|column|du|df|free|uname|whoami|id|hostname|uptime|xargs|\[)'
 
 # Forbidden patterns (mesmo se na allowlist) — defense-in-depth
 # 2026-06-11 UPDATE: sudo UNBLOCKED (per user authorization in session).

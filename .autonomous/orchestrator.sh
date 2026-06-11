@@ -3,6 +3,12 @@
 # Uso: orchestrator.sh [--init] [--max-sessions N] [--max-runtime-seconds N]
 set -euo pipefail
 
+# 2026-06-11: Disable GateGuard/ECC fact-forcing + observer overhead for max autonomy.
+# User explicit: "desabilite" (GateGuard). Defense-in-depth (FORBIDDEN_PATTERNS)
+# intact — destructive patterns still blocked by our pre-bash-allowlist.
+export ECC_GATEGUARD=off
+export ECC_DISABLED_HOOKS="pre:bash:gateguard-fact-force pre:edit-write:gateguard-fact-force pre:read:gateguard-fact-force"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_DIR"
