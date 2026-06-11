@@ -315,8 +315,12 @@
       "VPS ou Vercel edge?"
     ],
     "output": ".autonomous/research/tech_decisions.md",
-    "passes": false,
-    "timebox": "45min"
+    "passes": true,
+    "timebox": "45min",
+    "completed_at": "2026-06-10",
+    "in_progress": false,
+    "artifact": "tech/stack_v1.md",
+    "updated": "2026-06-10"
   },
   {
     "id": "R-030",

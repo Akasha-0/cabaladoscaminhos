@@ -80,13 +80,25 @@
 
 ## FASE 4 — Tech Stack
 
-- [ ] D-030 — Confirmar Next.js 16 + Turbopack
-- [ ] D-031 — DB: Postgres + pgvector (embeddings)
-- [ ] D-032 — LLM: OpenAI (gpt-4) + Minimax fallback
-- [ ] D-033 — Realtime: SSE vs WebSocket
-- [ ] D-034 — Auth: JWT próprio vs Supabase vs Clerk
-- [ ] D-035 — Payments: Stripe (mantém)
-- [ ] D-036 — Deploy: VPS vs Vercel vs edge
+- [x] D-030 — Confirmar Next.js 16 + Turbopack
+       — ✅ tech/stack_v1.md §1 (Next.js 16.2+ Turbopack, 7168MB heap, 16.2+ mandatory)
+- [x] D-031 — DB: Postgres + pgvector (embeddings)
+       — ✅ tech/stack_v1.md §2 (Supabase Cloud sa-east-1, HNSW 1536-dim, $30-45/mo)
+- [x] D-032 — LLM: OpenAI (gpt-4) + Minimax fallback
+       — ✅ tech/stack_v1.md §3 (Sonnet 4.6 primary + Haiku 4.5 router/crise + Minimax M3 fallback, prompt cache 90%)
+- [x] D-033 — Realtime: SSE vs WebSocket
+       — ✅ tech/stack_v1.md §4 (SSE Edge Runtime; WebSocket = zero uso)
+- [x] D-034 — Auth: JWT próprio vs Supabase vs Clerk
+       — ✅ tech/stack_v1.md §5 (Supabase Auth + RLS nativo, R$ 25/mo, MFA+passkeys built-in)
+- [x] D-035 — Payments: Stripe (mantém)
+       — ✅ tech/stack_v1.md §6 (mantém; PIX/Boleto via Stripe nativo)
+- [x] D-036 — Deploy: VPS vs Vercel vs edge
+       — ✅ tech/stack_v1.md §7 (Vercel Pro + Supabase Cloud; migration Hetzner @ MAU 50k)
+- [x] **D-025 (sessão N) — Tech Stack v1 (consolidar D-030..D-036 em 1 doc)**
+       — ✅ tech/stack_v1.md (981 linhas, 14 seções, 30+ fontes 2026, 5 incertezas, 10 decisões abertas O-1..O-10)
+       — ✅ D-037 bônus: Prisma 7 mantém (não migrar Drizzle; já no stack, edge nativo)
+       — Custo MVP $50-60/mo (R$ 250-300/mo) → ano 1 10k MAU $150-250/mo → ano 3 50k MAU $1-2k/mo
+- 2026-06-10 — R-025 ✅ Tech Stack v1 (Fase 4) — 981 linhas consolidando D-030..D-036 (+ D-037 Prisma bônus). Decisão-chave: **Vercel Pro + Supabase Cloud sa-east-1 + Sonnet 4.6 + pgvector + SSE Edge + Supabase Auth RLS + Stripe mantém**. 30+ fontes 2026 citadas (next-16, devopsness pgvector 6mo prod, claudeguide benchmark, thanosk SSE, makerkit Auth 2026, techplained PaaS, encore Prisma 7). 5 incertezas honestas (Vercel viral bill, PT-BR esotérico, pgvector > 1M, Supabase MFA UX, region switch). 10 decisões abertas O-1..O-10 (gateway LLM, i18n next-intl, Highlight.io observability, Resend email, Inngest jobs, Vercel Cron). COT `cot-20260610-tech-stack-decisions.md`. Próxima sessão: R-030 Akasha Core Algorithm prototype (TS puro) — primeira tarefa de Fase 5. Paralelo: R-022b Ethics Charter v1.
 
 ## FASE 5 — Protótipo (após Fases 0-4)
 

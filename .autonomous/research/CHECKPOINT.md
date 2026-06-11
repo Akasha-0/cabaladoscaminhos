@@ -44,13 +44,16 @@
 ~~RQ-021 (Gaps) — concluído nesta sessão.~~
 ~~RQ-022 (Synthesis v1) — concluído nesta sessão.~~
 
-## 🎯 Próximos passos (Fase 1 → Fase 2)
+## 🎯 Próximos passos (Fase 4 → Fase 5)
 
 1. ✅ **RQ-020 (Patterns)** — concluído. 20 patterns convergentes extraídos em `patterns.md`.
 2. ✅ **RQ-021 (Gaps)** — concluído. 20 oportunidades únicas do Akasha extraídas em `gaps.md` (6 famílias + 8 anti-gaps rejeitados; 16 HIGH + 4 MED-HIGH confidence).
 3. ✅ **RQ-022 (Synthesis v1)** — concluído. Akasha Core Algorithm v1 em `synthesis/synthesis_v1.md` (666 linhas, 13 seções, 5 Pilares, 4 Camadas, 1 Mandala, 1 Algoritmo pseudo-código, 10 limites éticos, 3 perfis de validação, 7 decisões em aberto). COT em `cot-20260610-synthesis-v1-axis.md`.
-4. **RQ-023 (Mentor persona v1)** — desbloqueado agora. Depende de synthesis_v1.md §7. Persona do Mentor (nome, voz, limites éticos, exemplos de diálogo).
-5. **RQ-022b (Ethics Charter v1)** — pendente paralelo. 5% causa por Pilar + LGPD + crise.
+4. ✅ **RQ-023 (Mentor persona v1)** — concluído. 1091 linhas, persona, voz, system prompt, RAG, ética, samples.
+5. ✅ **RQ-024 (UX architecture v1)** — concluído. 825 linhas, PWA-first, 5 telas, WCAG 2.2 AA, i18n.
+6. ✅ **RQ-025 (Tech Stack v1)** — concluído. 981 linhas em `tech/stack_v1.md` consolidando D-030..D-036 (+ D-037 ORM). **Decisão-chave: Vercel Pro + Supabase Cloud sa-east-1 + Sonnet 4.6 + pgvector + SSE Edge + Supabase Auth RLS + Stripe mantém**. 30+ fontes 2026. 5 incertezas honestas. 10 decisões abertas O-1..O-10. Custo MVP $50-60/mo → ano 1 $150-250/mo → ano 3 $1-2k/mo. COT `cot-20260610-tech-stack-decisions.md`.
+7. **R-030 (Akasha Core Algorithm prototype)** — desbloqueado agora (Fase 5). TS puro em `packages/akasha-core/src/index.ts`. Tipos Zod + 3 perfis de teste.
+8. **R-022b (Ethics Charter v1)** — pendente paralelo. 5% causa por Pilar + LGPD + crise.
 
 ## 📊 Síntese provisória (12 RQs feitas — 100% + RQ-020 patterns)
 
