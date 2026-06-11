@@ -116,8 +116,7 @@ if [[ $ORPHAN_COUNT -gt 0 ]]; then
   log "  Recomendação: revisar e corrigir antes de commitar"
 fi
 
-# Check 3: smoke test (rodar 3 packages; timeout 60s)
-SMOKE_RESULT=$(timeout 60 pnpm exec vitest run packages/akasha-core/ packages/core-astrology/ packages/core-iching/ 2>&1 | tail -3 | grep -E "Tests +[0-9]+ passed|FAIL")
+SMOKE_RESULT=$(timeout 60 pnpm exec vitest run packages/akasha-core/ packages/core-astrology/ packages/core-iching/ 2>&1 | tail -8 | grep -E "Tests +[0-9]+ passed|FAIL")
 if [[ "$SMOKE_RESULT" == *"FAIL"* ]]; then
   log "⚠ Smoke test falhou (mas vou spawnar — supervisor decide)"
 else
@@ -172,6 +171,20 @@ TODO_PENDING=$(grep -c '^- \[ \]' "$PROJECT_DIR/.claude/TODO.md" 2>/dev/null || 
 PENDING=${PENDING:-0}
 TODO_PENDING=${TODO_PENDING:-0}
 log "Estado: $PENDING features pendentes | $TODO_PENDING TODOs pendentes"
+
+
+# ─── Telemetria: gravar métricas desta sessão (2026-06-11 N+7 turn 5) ─────
+# Roda após EXIT_CODE known + feature_list parse ok.
+# Args: session_num, exit_code, pending_before, pending_after, duration_sec, feature_id
+ELAPSED=$(( $(date +%s) - START_TS ))
+FEATURE_ID="none"
+# Tentar extrair feature_id do session log (heurística simples: linha "Research/commit message")
+if [[ -f "$SESSION_LOG" ]]; then
+  FEATURE_ID=$(grep -oE "F-[0-9]+|R-[0-9]+|D-[0-9]+" "$SESSION_LOG" 2>/dev/null | tail -1 || echo "none")
+fi
+if [[ -x "$SCRIPT_DIR/scripts/telemetry.sh" ]]; then
+  "$SCRIPT_DIR/scripts/telemetry.sh" record "$SESSION_NUM" "$EXIT_CODE" "$PENDING" "$PENDING" "$ELAPSED" "$FEATURE_ID" 2>/dev/null || true
+fi
 
 # ─── General failure-rate circuit-breaker (2026-06-11 N+7) ─────────────────
 # Além do 429, se exit != 0 E features pendentes não diminuíram, contar
