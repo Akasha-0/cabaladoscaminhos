@@ -40,6 +40,7 @@
 | R-030 | Akasha Core Algorithm (TS puro) | ✅ | packages/akasha-core/src/akasha-core.ts | R-022 |
 | D-043 | 10 perfis representativos (fixtures+tests) | ✅ | packages/akasha-core/src/profiles-fixtures.ts + profiles.test.ts | R-030 |
 | D-044 | Validação knowledge base (correlation-map) | ✅ | packages/akasha-core/src/correlation-validation.test.ts | R-030 |
+| D-040 | Schema Prisma 5 Pilares (design proposal) | 🟡 design | .autonomous/research/designs/d-040-prisma-5-pilares-design.md | R-030, D-044 |
 
 ---
 
@@ -67,6 +68,7 @@
 | 2026-06-11 | cot-20260611-ethics-charter-v1 | R-022b Ethics Charter v1: 8 decisões D1-D8 (8 Pilares de Ética exaustivos cobrindo 8 axiomas VISION; 12 regras E1-E12 subset Pilar 3-4; 5% earmark × 5 = 25% Ano 5; Crise→CVV 188 não-LLM; sem feed/gamificação; 4 aprovações governança; white paper anual+auditoria+DPO; PT-BR primeiro EN opt-in); 11 seções, ~600 linhas; governança com 4 aprovações + RFC pública 30d; 5 parcerias vivas mapeadas (Casa de Cabala/FAA/BAMS/Saq Be/Book of Changes Academy) |
 | 2026-06-11 | cot-20260611-d-043-10-perfis | D-043 10 perfis representativos: 6 decisões D1-D6 (1 vetor por perfil, contrato≠snapshot, cisão crise explícita, sem PII real, fontes whitelisted FONTES_VALIDAS, Pilar 4 ethics invariant); 11 personas = 10 normais + 1 crise; 69 testes verdes; valida R-030 antes Fase 6 |
 | 2026-06-11 | cot-20260611-d-044-correlation-validation | D-044 knowledge base: 5 decisões D1-D5 (15 canônico não 16, divergência documentada não corrigida, hook bloqueou vacuous test, tipos como auditoria, ranges>enums); 4 achados F1-F4 (Eji substitui Ogbe, stub diverge 2 Odus, ranges 100% conformes, inversão bijetiva); 90 testes verdes; 298/298 packages/akasha-core |
+| 2026-06-11 | cot-20260611-d-040-prisma-design-proposal | D-040 Prisma 5 Pilares: 6 decisões D1-D6 (DESIGN PROPOSAL não aplicação, backward compat 1 release, 3 achados, 5 riscos, feature_list status pending, 3 horizontes próximos passos); 3 achados (Pilar 5 em User.ichingMap, Mandala sem persistência, Pilar 4 ethics invariant não enforced); aguarda aprovação humana antes de pnpm db:migrate |
 
 ---
 

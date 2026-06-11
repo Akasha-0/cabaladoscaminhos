@@ -108,7 +108,13 @@
 
 ## FASE 5 — Protótipo (após Fases 0-4)
 
-- [ ] D-040 — Schema Prisma com 5 pilares
+- [~] D-040 — Schema Prisma com 5 pilares (DESIGN PROPOSAL, awaiting approval)
+       — `.autonomous/research/designs/d-040-prisma-5-pilares-design.md`
+       Proposta: unificar 5 Pilares em BirthChart (Pilar 5 sai de
+       User.ichingMap), criar MandalaSnapshot cache + MandatoDiario
+       com criseDetectada/recursoCv188, backward compat 1 release.
+       NÃO aplicado: migration prod DB sem staging test.
+       Aguarda aprovação humana antes de `pnpm db:migrate`.
 - [x] D-041 — Akasha Core Algorithm em TS puro (entregue R-030)
 - [x] D-042 — Tipos Zod para inputs/outputs (entregue R-030)
 - [x] D-043 — Testes com 10 perfis representativos ✅ 2026-06-11

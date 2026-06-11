@@ -195,3 +195,38 @@
 - feature_list D-044 phase=5 category=validation priority=P1 passes:true (D-043 re-add: orchestrator pivot reset list)
 - TODO D-044 [x]
 - Próxima sessão: D-040 (Schema Prisma 5 Pilares) — vai IMPORTAR IFA_ODUS (não hardcodar 16 nomes) — alinhamento automático com D-044
+
+[2026-06-11 08:24] F-201 ✅ API /api/akasha/mandato-do-dia (P0 Fase 6)
+- Implementado apps/akasha-portal/src/app/api/akasha/mandato-do-dia/route.ts (165 linhas)
+  - GET: auth → carregar birthChart + birthDate/Time/City → Zod validate → calcular() @akasha/core → {date, mandato, mentor_hook}
+  - PII mínima: pilares/mandala/input_normalizado omitidos do response
+  - Erros: 400/401/404/500 com mensagens PT-BR
+  - Ethics Charter §5: crise detectada → 200 + mentor_hook.recurso='CVV-188' (cliente exibe CVV, não renderiza redacao_bruta)
+  - Query param ?intencao= (default "buscar clareza para o dia")
+  - Aceita HH:MM ou HH:MM:SS; omite hora se null
+- Testes tests/api/akasha/mandato-do-dia/route.test.ts: 11/11 verde (vitest isolated)
+  - 401/404/400/500/MandatoEsqueleto shape/intenção default + query/truncar hora/omitir hora/CVV-188/PII mínima
+  - Mock de @akasha/core em AMBAS as formas (alias + path TS) para garantir aplicação
+- Verify triad:
+  - typecheck: 0 novos erros (1 pré-existente em akasha-core.ts:111 — R-030 loadEngines stub, não é meu)
+  - tests: 11/11 isolated green
+  - lint: 0 novos erros nos meus arquivos (baseline já tem 2789 erros pré-existentes)
+- Commit: 981473ee — feat(portal): F-201 — API /api/akasha/mandato-do-dia (MandatoEsqueleto via @akasha/core)
+- feature_list F-201 passes:true
+- Próxima sessão: F-202 (Página Diário Energético) ou F-203 (MandalaChart 5 Pilares cor/icon) ou F-207 (3 perfis de teste reais)
+
+## Sessão N+4 (2026-06-11) — D-040 🟡 Schema Prisma 5 Pilares (DESIGN PROPOSAL)
+- Próximo: D-040 (Fase 5) — Schema Prisma 5 Pilares
+- Decisão: NÃO aplicar migration prod. Escrever DESIGN PROPOSAL primeiro.
+- Criou `.autonomous/research/designs/d-040-prisma-5-pilares-design.md` (6 seções, 3 achados, 5 riscos, 3 horizontes)
+- 3 achados (D-040):
+  1. Pilar 5 (I Ching) em `User.ichingMap` — inconsistente com Pilar 1-4 em BirthChart
+  2. Mandala/Mandato recomputados on-the-fly — desperdiça compute
+  3. Pilar 4 ethics invariant não enforced (Json sem Zod `consentimento+terreiro`)
+- 5 riscos (D-040 R1-R5): prod migration, Pilar 4 Zod, MandalaSnapshot invalidation, MandatoDiario LGPD audit, Zod derive from akasha-core
+- Proposta: unificar 5 Pilares em BirthChart (Pilar 5 sai de User.ichingMap), criar MandalaSnapshot cache + MandatoDiario com criseDetectada/recursoCv188, backward compat 1 release
+- feature_list D-040 passes:false + status: design_proposal_pending_approval (diferencia design de aplicação)
+- TODO D-040 [~] (design proposal, awaiting approval)
+- COT `cot-20260611-d-040-prisma-design-proposal.md` (D1-D6 decisões)
+- INDEX: D-040 row + COT row
+- Aguarda revisão humana antes de `pnpm db:migrate`

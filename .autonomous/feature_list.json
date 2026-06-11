@@ -113,7 +113,7 @@
     "phase": 6,
     "category": "implementation",
     "priority": "P0",
-    "passes": false,
+    "passes": true,
     "output": "apps/akasha-portal/src/app/api/akasha/mandato-do-dia/route.ts",
     "description": "API Mandato do Dia — retorna MandatoEsqueleto + cita_fontes baseado em Pilar relevante do dia"
   },
@@ -206,5 +206,24 @@
     "passes": true,
     "timebox": "30 min",
     "completed_at": "2026-06-11"
+  },
+  {
+    "id": "D-040",
+    "phase": 5,
+    "category": "design",
+    "priority": "P1",
+    "description": "Schema Prisma com 5 Pilares. Design proposal (NÃO aplicado): unificar 5 Pilares em BirthChart (Pilar 5 sai de User.ichingMap), criar MandalaSnapshot cache, MandatoDiario com criseDetectada/recursoCv188, manter backward compat 1 release. Aguarda aprovação humana antes de migration.",
+    "questions": [
+      "Pilar 5 (I Ching) está em User.ichingMap — mover para BirthChart?",
+      "MandalaSnapshot vs recompute on-the-fly?",
+      "MandatoDiario.criseDetectada persistente (LGPD Art. 37)?",
+      "Pilar 4 Zod invariant: aviso='requer consentimento + terreiro'?",
+      "Backward compat: manter User.ichingMap por 1 release?"
+    ],
+    "output": ".autonomous/research/designs/d-040-prisma-5-pilares-design.md (seções 1-6, 3 achados, 5 riscos, 3 níveis próximos passos)",
+    "passes": false,
+    "timebox": "30 min",
+    "completed_at": null,
+    "status": "design_proposal_pending_approval"
   }
 ]
