@@ -165,3 +165,17 @@
 - Auditado R-030: 9/9 testes verdes (vitest 684ms), Zod schema + 5 Pilares + Mandala + Mandato + Mentor_hook OK
 - Sem código novo (Fase 5+ schema/Zod fica para D-040/D-042)
 - Próxima sessão: D-005 (refinar 3 perfis Ana/Bruno/Carla) OU D-040 (Prisma schema 5 pilares) OU D-042 (Zod types 10 perfis) — escolher por prioridade
+
+## Sessão N+2 (2026-06-11) — D-043 ✅ 10 perfis representativos
+- Orient: Fases 0-4 ✅ + R-030 ✅ + R-022b ✅ + 5 features F-100..F-104 Fase 7 pendentes
+- Próximo: D-043 (TODO Fase 5 protótipo) — expandir R-030 de 3 para 10 perfis + 1 crise
+- Criou `packages/akasha-core/src/profiles-fixtures.ts` (11 personas com vetor_validado declarado)
+- Criou `packages/akasha-core/src/profiles.test.ts` (69 testes verdes)
+- pnpm exec vitest run packages/akasha-core/ → 208/208 ✅ (9 R-030 + 69 D-043 + 130 correlation/ritual/recommendation/dashboard)
+- feature_list D-043 phase=5 category=prototype priority=P1 passes:true
+- COT `cot-20260611-d-043-10-perfis.md` (D1-D6 decisões: 1 vetor por perfil, contrato≠snapshot, cisão crise, sem PII real, fontes whitelisted, Pilar 4 ethics invariant)
+- TODO D-041 + D-042 [x] (entregues R-030 retroativo) + D-043 [x] + D-044 [~] (próximo)
+- INDEX: nova linha D-043 + nova COT row
+- CHECKPOINT: D-043 adicionado ao bloco "Próximos passos"
+- Commit 2aada43b (3 files: profiles-fixtures.ts + profiles.test.ts + feature_list.json, 375 insertions)
+- Próxima sessão: D-044 (cabala-corr-validator) — Pilar 1 (Cabala) + knowledge base sem invenções; alinha com AGENTS.md §5 + instinto "derive not invent correspondences"

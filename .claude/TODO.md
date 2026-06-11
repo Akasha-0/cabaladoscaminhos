@@ -109,10 +109,17 @@
 ## FASE 5 — Protótipo (após Fases 0-4)
 
 - [ ] D-040 — Schema Prisma com 5 pilares
-- [ ] D-041 — Akasha Core Algorithm em TS puro
-- [ ] D-042 — Tipos Zod para inputs/outputs
-- [ ] D-043 — Testes com 10 perfis representativos
-- [ ] D-044 — Validar com cabala-corr-validator
+- [x] D-041 — Akasha Core Algorithm em TS puro (entregue R-030)
+- [x] D-042 — Tipos Zod para inputs/outputs (entregue R-030)
+- [x] D-043 — Testes com 10 perfis representativos ✅ 2026-06-11
+       — 10 fixtures (`profiles-fixtures.ts`) + 69 testes verdes
+       (208/208 em packages/akasha-core/).
+       Cobre: Ana mainstream, Bruno sem-hora, Carla 1ª-ger, Daniel
+       sênior, Eduardo desorientação-NÃO-crise, Fernanda multi-tópico,
+       Gabriel first-toucher, Helena multi-tradição, Igor datas
+       alinhadas, Júlia identidade-trans. + PERFIL_CRISIS (CVV-188).
+       Commit 2aada43b.
+- [~] D-044 — Validar com cabala-corr-validator (próximo)
 
 ## FASE 6 — Implementação (futuro)
 
@@ -139,3 +146,27 @@
 - 2026-06-10 — RQ-010 ✅ Tzolkin / Mayan Calendar — **inspiração ESTRUTURAL Pilar 4 (não engine) + maior AVISO ÉTICO do projeto**. 26+ fontes citadas (18 acadêmicas/científicas: Biémont 2025 Springer, Biémont 2008 Wiley, Klokocnik 2010 serbian AJ, Aveni 2001 Skywatchers, Aveni 1995 JHA, Coe 1993/2005, Rice 2007 UT Press, Bricker 2011, Aldana 2022 EncyHistSci, Jenkins 2010 Tortuguero, Thompson 1950, Lounsbury 1978, Böhm 1991/1996, Hochleitner 1970-74, Tedlock 1982, Justeson 1989, Hofling 1992; 5 oficiais/culturais: NMAI Smithsonian, Davies 2016 Maya Archaeologist, MyMayanSign 2020, Gran Consejo Ajq'ij, Saq Be Adam Rubel; 7 críticas: Calleman 2020 x3, Maya-Portal.net Wolak, Wikipedia Dreamspell/Argüelles, Mesoweb 2011 Correlation; 4 técnicas: EECIS Delaware, Mandala.net, Encyclopedia.com, Traced-Ideas). **Posição Akasha**: Tzolkin NÃO é engine; é inspiração estrutural. Adota: **nahual (kin de nascimento)** como paralelo ao orixá de cabeça (Pilar 4); **Calendar Round 52 anos** como 3ª escala temporal (vs Saturn 29.5 / Uranus 42); **5 unidades Long Count** como paralelo aos 5 pilares; **astronomia (Vênus 584d, sol zenital, eclipses pentalunex 148d)** como base conceitual. NÃO adota: contagem Tzolkin (Akasha não é calendário); Dreamspell (jamais); 2012 apocalipse marketing. **MAIOR LIÇÃO ÉTICA**: Dreamspell (Argüelles 1990) vampirizou 30+ anos de percepção pública com shift 50-60 dias + Hunab Ku invented + hidden agenda (Calleman 2020: "Dreamspell foi desenhado para que Argüelles+Lloydine tivessem kins 11+22=33"). Gran Consejo de Ajq'ij rejeita explicitamente. **5 Compromissos Akasha derivados**: (1) toda referência a tradição viva = citação obrigatória + parceria + consentimento; (2) toda "calibração" = proibida; (3) toda "fusão" = justificativa textual + fonte; (4) todo sistema "alternativo" = nomeado "Akasha" (não tradicional); (5) 5% receita Pilar 4 → Saq Be (ou similar). **Aplicação a Pilar 5 (I Ching)**: Akasha usa King Wen sequence (clássica) + cita Wilhelm/Baynes (1950) como "versão popular" + NUNCA segue Argüelles (DNA 4D = pseudo-ciência). COT em `cot-20260610-tzolkin-position.md`. Próximo: RQ-011 Ayurveda.
 - 2026-06-10 — RQ-021 ✅ Gaps — **20 oportunidades únicas do Akasha** extraídas em `gaps.md`
 - 2026-06-11 — R-022b ✅ Ethics Charter v1 — **8 Pilares de Ética** consolidados em `ethics/ethics_charter_v1.md` (~600 linhas, 11 seções, sem código). Decisões D1-D8: (D1) **8 Pilares exaustivos** (Citação + Tradição Viva + LGPD by Design + Híbrido IA+Humano + Não-Objetivos + PT-BR + Atualização Opcional + Aprovação Humana) cobrindo 8 axiomas VISION + 8 anti-gaps; (D2) 12 regras E1-E12 mantidas como subset do Pilar 3-4; (D3) **5% earmark × 5 Pilares = 25% total** Ano 5 (R$ 500k, diferenciação vs CHANI 5% genérico); (D4) **Crise → CVV 188** (regex expandido, resposta não-LLM, 5 estados saúde espiritual); (D5) sem feed/gamificação/comparação como padrão técnico; (D6) **4 aprovações** (Pilar+Curador+Comitê+Usuário) para mudar Charter via RFC pública 30d; (D7) **white paper anual** + auditoria externa 1 firma + DPO mensal; (D8) PT-BR primeiro, EN opt-in, termos preservados (Tikkun/Tiferet/Odu/Tridosha/Orixá/Kether/Tzimtzum), transliteração reversível. Cita TODAS as críticas (Manohar 2018, Sheldrake, Dreamspell, Pittenger 2005, JASNH, Hufford 2003). 5 parcerias vivas mapeadas (Casa de Cabala/FAA/BAMS/Saq Be/Book of Changes Academy). Feature_list R-022b = passes:true. COT `cot-20260611-ethics-charter-v1.md`. Próxima sessão: D-005 (3 perfis refine) OU D-040 (Prisma schema 5 pilares) OU D-042 (Zod types 10 perfis) — escolhe por prioridade do fase 5 vs fase 1. (~600+ linhas, 6 famílias, 8 anti-gaps rejeitados; 16 HIGH + 4 MED-HIGH confidence). **6 famílias**: (1) **Cobertura multi-tradição** — #1 ≥3 tradições em 1 algoritmo, #2 igual dignidade epistêmica, #3 isomorfismo explícito (não sincretismo); (2) **Geografia/Sul Global** — #4 PT-BR first, #5 Tradições Matriz Africana/Indígena como Pilar vivo, #6 Ayurveda com rigor acadêmico; (3) **Ética** — #7 LGPD by design + crise, #8 burnout espiritual como estado, #9 AI Mentor transparente + híbrido humano, #10 white paper anual + auditoria externa; (4) **AI+Cert** — #11 Grimório curado + RAG mandatório, #12 memória de conversa estruturada, #13 cert 3-níveis acessível (R$295/895/1995); (5) **Temporalidade** — #14 4 escalas simultâneas, #15 Tikkun Luriânico como 2ª camada, #16 determinismo técnico + abertura existencial; (6) **Negócio** — #17 precificação escalonada ética, #18 5% causa earmark por Pilar, #19 institucional sem guru-dependência, #20 atualização opcional + leitura fixa. **8 anti-gaps rejeitados** (com razão ética explícita): feed social / gamificação+streaks / AI como espírito / eleição astrológica / 528-432Hz / MBTI dating / consulta avulsa paga / comentários públicos sobre usuários. **Princípio unificador**: Akasha = 1ª tentativa institucional brasileira de síntese multi-tradição com ética pública + LGPD nativo + AI híbrido + tradição viva creditada + 5% causa + precificação escalonada. **Conexão RQ-022**: 5 outputs esperados (Algorithm + Mandala + Mentor + Pricing + Ethics Charter). COT em `cot-20260610-gaps-extraction.md`. Próximo: RQ-022 Synthesis v1 → RQ-023 Mentor persona.
+
+---
+
+## FASE 6 — IMPLEMENTATION (NOVA — após Fases 0-5 ✅)
+
+**Regra nova:** Cada sessão entrega **código em `apps/`, `packages/`, `src/`** — não research.
+
+### FASE 7 Hardening (já abertos)
+- [ ] F-100 — Refactor (knip/ts-prune) — 30min
+- [ ] F-101 — Deadcode — 20min
+- [ ] F-102 — Security (OWASP top 10) — 40min ← P1
+- [ ] F-103 — Performance (bundle, N+1) — 40min
+- [ ] F-104 — Docs sync — 20min
+
+### FASE 6 Implementation (novos)
+- [ ] F-200 — Integrar R-030 (akasha.calcular) com engines reais — P0
+- [ ] F-201 — API `/api/akasha/mandato-do-dia` retorna MandatoEsqueleto — P0
+- [ ] F-202 — Página Diário Energético (Mandato + 3 frases + pergunta + ritual) — P1
+- [ ] F-203 — MandalaChart consome 5 Pilares (cor/icon) — P1
+- [ ] F-204 — Substituir stubs do akasha-core.ts por loadEngines() real — P2
+- [ ] F-205 — Página Sobre o Sistema (Cicatriz vira Joia) — P2
+- [ ] F-206 — Tooltip por Pilar com citação — P2
+- [ ] F-207 — 3 perfis de teste reais (Ana, Bruno, Carlos) — P1
+
