@@ -252,3 +252,13 @@
 - **Bloqueios próximos:** D-040 migration prod DB aguardando aprovação humana
 - **Custo estimado:** < $8 (research + design + tests, sem código de prod)
 - **Próxima sessão:** aprovação D-040 (humana) → staging test → `pnpm db:migrate` → D-042 (Zod validators) → wire akasha-core → Prisma
+
+## Sessão N+5 (2026-06-11) — F-205 [código]
+- [x] Verify triad: typecheck silencioso (sem erros novos); eslint 0 erros/0 warnings; core 298/298 verde
+- [x] Arquivo criado: `apps/akasha-portal/src/app/[locale]/(akasha)/sobre/page.tsx` (1 file, 463 linhas)
+- [x] Layout update: `apps/akasha-portal/src/app/[locale]/(akasha)/layout.tsx` — adicionado link "Sobre" no nav
+- [x] Feature flip: F-205 passes:true (output = sobre/page.tsx)
+- [x] Conteúdo: Hero "Cicatriz vira Joia" + 5 Pilares (P1..P5 com fonte canônica) + 4 Camadas (D/S/Z/V) + 6 Compromissos éticos (Citação, 5% causa, LGPD, Tradição viva, AI híbrido, CVV 188) + footer proveniência
+- [x] Sem auth, sem API, sem I/O — pure server component educativo
+- [x] Commit: `7cdc7729` — feat(portal): F-205 — página Sobre o Sistema (Cicatriz vira Joia + 5 Pilares + 4 Camadas + 6 Compromissos)
+- Próxima sessão: F-203 (MandalaChart cores únicas por Pilar) ou F-206 (Tooltip por Pilar com citação fonte) ou F-200 (integrar R-030 com engines reais @akasha/core-*)

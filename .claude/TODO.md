@@ -180,7 +180,12 @@
 - [ ] F-202 — Página Diário Energético (Mandato + 3 frases + pergunta + ritual) — P1
 - [ ] F-203 — MandalaChart consome 5 Pilares (cor/icon) — P1
 - [ ] F-204 — Substituir stubs do akasha-core.ts por loadEngines() real — P2
-- [ ] F-205 — Página Sobre o Sistema (Cicatriz vira Joia) — P2
+- [x] F-205 — Página Sobre o Sistema (Cicatriz vira Joia) ✅ 2026-06-11
+       — `apps/akasha-portal/src/app/[locale]/(akasha)/sobre/page.tsx`
+       (server component, sem auth, sem API). Hero + 5 Pilares (P1..P5
+       com fonte canônica) + 4 Camadas (D/S/Z/V) + 6 Compromissos
+       éticos + footer proveniência. Nav em layout.tsx atualizado.
+       Commit `7cdc7729`. 463 linhas, 1 file.
 - [ ] F-206 — Tooltip por Pilar com citação — P2
 - [ ] F-207 — 3 perfis de teste reais (Ana, Bruno, Carlos) — P1
 
