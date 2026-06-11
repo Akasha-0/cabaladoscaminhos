@@ -67,35 +67,81 @@ interface Props {
 type Layer = 1 | 2 | 3 | 4 | 5;
 
 const toXY = (angleDeg: number, r: number, cx = 200, cy = 200) => ({
-  x: cx + r * Math.cos((angleDeg - 90) * Math.PI / 180),
-  y: cy + r * Math.sin((angleDeg - 90) * Math.PI / 180),
+  x: cx + r * Math.cos(((angleDeg - 90) * Math.PI) / 180),
+  y: cy + r * Math.sin(((angleDeg - 90) * Math.PI) / 180),
 });
 
 const ZODIAC_SIGNS = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
-const ZODIAC_NAMES = ['Áries', 'Touro', 'Gêmeos', 'Câncer', 'Leão', 'Virgem', 'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes'];
+const ZODIAC_NAMES = [
+  'Áries',
+  'Touro',
+  'Gêmeos',
+  'Câncer',
+  'Leão',
+  'Virgem',
+  'Libra',
+  'Escorpião',
+  'Sagitário',
+  'Capricórnio',
+  'Aquário',
+  'Peixes',
+];
 
 const ELEMENT_COLORS: Record<string, string> = {
-  fire: '#FB5781', earth: '#F0B429', air: '#7C5CFF', water: '#2DD4BF',
+  fire: '#FB5781',
+  earth: '#F0B429',
+  air: '#7C5CFF',
+  water: '#2DD4BF',
+};
+
+// Pilar colors — keyed by VISUAL LAYER (1..5 inside-out).
+// Layer 1 = Odus core (Pilar 4) | Layer 2 = Cabala geometry (Pilar 1)
+// Layer 3 = Tantric web (Pilar 3) | Layer 4 = Astrological ring (Pilar 2)
+// Layer 5 = I-Ching node (Pilar 5)
+// Cabala usa indigo para distinguir-se de Astrologia (roxo/ar).
+const PILAR_COLORS: Record<Layer, string> = {
+  1: '#F0B429',
+  2: '#5C7CFF',
+  3: '#2DD4BF',
+  4: '#7C5CFF',
+  5: '#A0763A',
+};
+const PILAR_LABEL_BY_LAYER: Record<Layer, string> = {
+  1: 'Odus',
+  2: 'Cabala',
+  3: 'Tântrica',
+  4: 'Astrologia',
+  5: 'I-Ching',
 };
 const ELEMENT_LABELS: Record<string, string> = {
-  fire: 'Fogo', earth: 'Terra', air: 'Ar', water: 'Água',
+  fire: 'Fogo',
+  earth: 'Terra',
+  air: 'Ar',
+  water: 'Água',
 };
 const ELEMENT_GUIDANCE: Record<string, { balance: string; ritual: string }> = {
   fire: {
-    balance: 'Elemento dominante Fogo — energia de ação, liderança e expansão. Para equilibrar: aterrar com práticas de Terra (corpo, natureza, alimentos raiz).',
-    ritual: 'Ritual: banhos de ervas de terra (alecrim, patchouli), caminhar descalço, meditação com pedras.',
+    balance:
+      'Elemento dominante Fogo — energia de ação, liderança e expansão. Para equilibrar: aterrar com práticas de Terra (corpo, natureza, alimentos raiz).',
+    ritual:
+      'Ritual: banhos de ervas de terra (alecrim, patchouli), caminhar descalço, meditação com pedras.',
   },
   earth: {
-    balance: 'Elemento dominante Terra — energia de estrutura, paciência e materialização. Para equilibrar: aquecer com Fogo (movimento, expressão, criatividade).',
-    ritual: 'Ritual: dança livre, uso de cores vibrantes, incenso de canela ou cravo para ativar a chama interna.',
+    balance:
+      'Elemento dominante Terra — energia de estrutura, paciência e materialização. Para equilibrar: aquecer com Fogo (movimento, expressão, criatividade).',
+    ritual:
+      'Ritual: dança livre, uso de cores vibrantes, incenso de canela ou cravo para ativar a chama interna.',
   },
   air: {
-    balance: 'Elemento dominante Ar — energia mental, comunicação e movimento. Para equilibrar: ancorar com Água (emoção, intuição, descanso).',
+    balance:
+      'Elemento dominante Ar — energia mental, comunicação e movimento. Para equilibrar: ancorar com Água (emoção, intuição, descanso).',
     ritual: 'Ritual: banhos de água fria com pétalas de rosa, meditação aquática, chás calmantes.',
   },
   water: {
-    balance: 'Elemento dominante Água — energia emocional, intuição e profundidade. Para equilibrar: estruturar com Terra (rotinas, corpo, alimentação consciente).',
-    ritual: 'Ritual: caminhadas na natureza, dieta baseada em raízes e tubérculos, pedras de jaspe ou hematita.',
+    balance:
+      'Elemento dominante Água — energia emocional, intuição e profundidade. Para equilibrar: estruturar com Terra (rotinas, corpo, alimentação consciente).',
+    ritual:
+      'Ritual: caminhadas na natureza, dieta baseada em raízes e tubérculos, pedras de jaspe ou hematita.',
   },
 };
 
@@ -115,23 +161,43 @@ const LIFE_PATH_MEANINGS: Record<number, string> = {
 };
 
 const TANTRIC_BODY_WISDOM: Record<number, { desc: string; challenge: string; activate: string }> = {
-  1: { desc: 'Corpo da Alma', challenge: 'Encontrar propósito humilde', activate: 'Meditação Ong Namo' },
-  2: { desc: 'Mente Negativa', challenge: 'Discernir sem paralisar', activate: 'Respiração de fogo' },
+  1: {
+    desc: 'Corpo da Alma',
+    challenge: 'Encontrar propósito humilde',
+    activate: 'Meditação Ong Namo',
+  },
+  2: {
+    desc: 'Mente Negativa',
+    challenge: 'Discernir sem paralisar',
+    activate: 'Respiração de fogo',
+  },
   3: { desc: 'Mente Positiva', challenge: 'Confiar no processo', activate: 'Sat Kriya — 3 min' },
   4: { desc: 'Mente Neutra', challenge: 'Observar sem reagir', activate: 'Meditação do coração' },
   5: { desc: 'Corpo Físico', challenge: 'Encarnar totalmente', activate: 'Movimento consciente' },
-  6: { desc: 'Linha do Arco', challenge: 'Proteger o campo áurico', activate: 'Ser humano íntegro' },
+  6: {
+    desc: 'Linha do Arco',
+    challenge: 'Proteger o campo áurico',
+    activate: 'Ser humano íntegro',
+  },
   7: { desc: 'Aura', challenge: 'Expandir sem dissolver', activate: 'Projeção e Proteção' },
   8: { desc: 'Corpo Prânico', challenge: 'Sustentar a vitalidade', activate: 'Pranayama diário' },
   9: { desc: 'Corpo Sutil', challenge: 'Escutar o infinalível', activate: 'Escuta da intuição' },
-  10: { desc: 'Corpo Radiante', challenge: 'Brilhar corajosamente', activate: 'Ação corajosa cotidiana' },
-  11: { desc: 'Mente Divina', challenge: 'Manter-se aberto ao infinito', activate: 'Gratidão e rendição' },
+  10: {
+    desc: 'Corpo Radiante',
+    challenge: 'Brilhar corajosamente',
+    activate: 'Ação corajosa cotidiana',
+  },
+  11: {
+    desc: 'Mente Divina',
+    challenge: 'Manter-se aberto ao infinito',
+    activate: 'Gratidão e rendição',
+  },
 };
 
 // Stars data — fixed positions seeded deterministically
 const STARS = Array.from({ length: 30 }, (_, i) => {
   const angle = (i * 137.508) % 360; // golden angle spacing
-  const radius = 60 + (i * 47) % 130;
+  const radius = 60 + ((i * 47) % 130);
   const pos = toXY(angle, radius);
   const opacity = 0.08 + (i % 5) * 0.03;
   const delay = (i * 0.37) % 3;
@@ -153,7 +219,12 @@ function describeArc(cx: number, cy: number, r: number, startDeg: number, endDeg
   return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y}`;
 }
 
-function dominantElement(balance: { fire: number; earth: number; air: number; water: number }): string {
+function dominantElement(balance: {
+  fire: number;
+  earth: number;
+  air: number;
+  water: number;
+}): string {
   const entries = Object.entries(balance) as [string, number][];
   const sorted = entries.sort((a, b) => b[1] - a[1]);
   return sorted[0][0];
@@ -163,8 +234,7 @@ export default function MandalaChart({ data }: Props) {
   const [activeLayer, setActiveLayer] = useState<null | Layer>(null);
   const atmosphereIntensity = useCockpitStore((s) => s.atmosphereIntensity);
 
-  const opacity = (layer: Layer) =>
-    activeLayer === null ? 1 : activeLayer === layer ? 1 : 0.3;
+  const opacity = (layer: Layer) => (activeLayer === null ? 1 : activeLayer === layer ? 1 : 0.3);
 
   // Pause ring rotation when Layer 4 is selected
   const ringPaused = activeLayer === 4;
@@ -187,12 +257,24 @@ export default function MandalaChart({ data }: Props) {
     const pos = toXY(angleDeg, 138);
     const body = data.tantra.bodies.find((b) => b.index === i + 1);
     const wisdom = TANTRIC_BODY_WISDOM[i + 1];
-    return { i, angleDeg, pos, active: body?.active ?? true, label: i + 1, name: wisdom?.desc ?? `Corpo ${i + 1}` };
+    return {
+      i,
+      angleDeg,
+      pos,
+      active: body?.active ?? true,
+      label: i + 1,
+      name: wisdom?.desc ?? `Corpo ${i + 1}`,
+    };
   });
 
   const kabVerts = [
     { angleDeg: 0, value: data.kabala.lifePath, master: data.kabala.lifePathMaster, label: 'VP' },
-    { angleDeg: 120, value: data.kabala.expression, master: data.kabala.expressionMaster, label: 'EX' },
+    {
+      angleDeg: 120,
+      value: data.kabala.expression,
+      master: data.kabala.expressionMaster,
+      label: 'EX',
+    },
     { angleDeg: 240, value: data.kabala.motivation, master: false, label: 'MO' },
   ].map((v) => ({ ...v, pos: toXY(v.angleDeg, 80) }));
 
@@ -204,7 +286,16 @@ export default function MandalaChart({ data }: Props) {
   const elemGuidance = ELEMENT_GUIDANCE[elem] ?? null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem', width: '100%', maxWidth: 460 }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '1.25rem',
+        width: '100%',
+        maxWidth: 460,
+      }}
+    >
       <style>{`
         @keyframes pulse-ori {
           0%, 100% { opacity: 0.65; }
@@ -239,32 +330,30 @@ export default function MandalaChart({ data }: Props) {
         }
       `}</style>
 
-      {/* Layer selector */}
+      {/* Layer selector — ordered by Pilar number (1..5) */}
       <div className="flex gap-2 flex-wrap justify-center">
-        {([
-          { layer: 4 as Layer, label: 'Astrologia', color: '#7C5CFF' },
-          { layer: 3 as Layer, label: 'Tântrica', color: '#2DD4BF' },
-          { layer: 5 as Layer, label: 'I-Ching', color: '#A0763A' },
-          { layer: 2 as Layer, label: 'Cabala', color: '#7C5CFF' },
-          { layer: 1 as Layer, label: 'Odus', color: '#F0B429' },
-        ] as const).map(({ layer, label, color }) => (
-          <button
-            key={layer}
-            onClick={() => setActiveLayer(activeLayer === layer ? null : layer)}
-            style={{
-              fontSize: '0.75rem',
-              padding: '4px 12px',
-              borderRadius: '100px',
-              border: `1px solid ${activeLayer === layer ? color : 'rgba(38,48,79,0.8)'}`,
-              background: activeLayer === layer ? `${color}22` : 'rgba(11,14,28,0.5)',
-              color: activeLayer === layer ? color : '#A7AECF',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-          >
-            {label}
-          </button>
-        ))}
+        {([1, 2, 3, 4, 5] as Layer[]).map((layer) => {
+          const color = PILAR_COLORS[layer];
+          const label = PILAR_LABEL_BY_LAYER[layer];
+          return (
+            <button
+              key={layer}
+              onClick={() => setActiveLayer(activeLayer === layer ? null : layer)}
+              style={{
+                fontSize: '0.75rem',
+                padding: '4px 12px',
+                borderRadius: '100px',
+                border: `1px solid ${activeLayer === layer ? color : 'rgba(38,48,79,0.8)'}`,
+                background: activeLayer === layer ? `${color}22` : 'rgba(11,14,28,0.5)',
+                color: activeLayer === layer ? color : '#A7AECF',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              P{layer} · {label}
+            </button>
+          );
+        })}
       </div>
 
       <div className="relative w-full" style={{ maxWidth: 400 }}>
@@ -276,264 +365,390 @@ export default function MandalaChart({ data }: Props) {
           style={{ maxWidth: 400, display: 'block', position: 'relative', zIndex: 1 }}
           aria-label="Mandala Akáshica Toroidal"
         >
-        {/* Deep space background */}
-        <defs>
-          <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#0B0E1C" />
-            <stop offset="100%" stopColor="#06070F" />
-          </radialGradient>
-          <radialGradient id="oriGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#F0B429" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#F0B429" stopOpacity="0" />
-          </radialGradient>
-          <filter id="glow-akasha">
-            <feGaussianBlur stdDeviation="2" result="blur" />
-            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-        <circle cx="200" cy="200" r="200" fill="url(#bgGrad)" />
+          {/* Deep space background */}
+          <defs>
+            <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#0B0E1C" />
+              <stop offset="100%" stopColor="#06070F" />
+            </radialGradient>
+            <radialGradient id="oriGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#F0B429" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#F0B429" stopOpacity="0" />
+            </radialGradient>
+            <filter id="glow-akasha">
+              <feGaussianBlur stdDeviation="2" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <circle cx="200" cy="200" r="200" fill="url(#bgGrad)" />
 
-        {/* ── E — Stars background ── */}
-        {STARS.map((s, i) => (
-          <circle
-            key={`star-${i}`}
-            cx={s.x}
-            cy={s.y}
-            r="1"
-            fill="white"
-            opacity={s.opacity}
-            className="star-twinkle"
-            style={{ animationDelay: `${s.delay}s` }}
-          />
-        ))}
-
-        {/* Faint cross-layer synergy lines */}
-        {[0, 72, 144, 216, 288].map((deg, i) => {
-          const outer = toXY(deg, 178);
-          const inner = toXY(deg, 80);
-          return (
-            <line
-              key={i}
-              x1={outer.x} y1={outer.y}
-              x2={inner.x} y2={inner.y}
-              stroke="rgba(45,212,191,0.08)"
-              strokeWidth="0.5"
-              strokeDasharray="3 5"
-            />
-          );
-        })}
-
-        {/* ── Layer 4 — Astrological Ring (rotating) ── */}
-        <g
-          opacity={opacity(4)}
-          onClick={() => setActiveLayer(activeLayer === 4 ? null : 4)}
-          style={{ cursor: 'pointer' }}
-          className={ringPaused ? 'ring-astrological-paused' : 'ring-astrological'}
-        >
-          <circle cx="200" cy="200" r="196" fill="none" stroke="rgba(124,92,255,0.12)" strokeWidth="0.5" />
-          <circle cx="200" cy="200" r="170" fill="none" stroke="rgba(124,92,255,0.12)" strokeWidth="0.5" />
-          {astroSegments.map(({ startDeg, endDeg, sym, labelPos }, i) => (
-            <g key={i}>
-              <path
-                d={describeArc(200, 200, 183, startDeg, endDeg)}
-                fill="none"
-                stroke="rgba(38,48,79,0.7)"
-                strokeWidth="1"
-              />
-              <text
-                x={labelPos.x} y={labelPos.y}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize="9"
-                fill="#5C6691"
-              >
-                {sym}
-              </text>
-            </g>
-          ))}
-          {/* Planet dots with tooltip */}
-          {planetDots.map((p, i) => (
-            <g key={i} filter="url(#glow-akasha)">
-              <circle cx={p.pos.x} cy={p.pos.y} r="3.5" fill="#7C5CFF" opacity="0.9">
-                <title>{p.name}: {p.sign} casa {p.house}</title>
-              </circle>
-            </g>
-          ))}
-          {/* Ring label */}
-          <text x="200" y="14" textAnchor="middle" fontSize="7" fill="rgba(124,92,255,0.5)" letterSpacing="2">ASTROLOGIA</text>
-
-          {/* ── D — Particle dots on outer edge ── */}
-          {PARTICLES.map((pt, i) => (
+          {/* ── E — Stars background ── */}
+          {STARS.map((s, i) => (
             <circle
-              key={`particle-${i}`}
-              cx={pt.x}
-              cy={pt.y}
-              r="1.5"
+              key={`star-${i}`}
+              cx={s.x}
+              cy={s.y}
+              r="1"
               fill="white"
-              className="particle-blink"
-              style={{ animationDelay: `${pt.delay}s` }}
+              opacity={s.opacity}
+              className="star-twinkle"
+              style={{ animationDelay: `${s.delay}s` }}
             />
           ))}
-        </g>
 
-        {/* ── Layer 3 — Tantric Web ── */}
-        <g opacity={opacity(3)} onClick={() => setActiveLayer(activeLayer === 3 ? null : 3)} style={{ cursor: 'pointer' }}>
-          <circle cx="200" cy="200" r="138" fill="none" stroke="rgba(45,212,191,0.15)" strokeWidth="1" strokeDasharray="3 4" />
-          {/* Web lines between nodes */}
-          {tantricNodes.map(({ pos }, i) => {
-            const next = tantricNodes[(i + 1) % 11];
+          {/* Faint cross-layer synergy lines */}
+          {[0, 72, 144, 216, 288].map((deg, i) => {
+            const outer = toXY(deg, 178);
+            const inner = toXY(deg, 80);
             return (
               <line
                 key={i}
-                x1={pos.x} y1={pos.y}
-                x2={next.pos.x} y2={next.pos.y}
-                stroke="rgba(45,212,191,0.1)"
+                x1={outer.x}
+                y1={outer.y}
+                x2={inner.x}
+                y2={inner.y}
+                stroke="rgba(45,212,191,0.08)"
                 strokeWidth="0.5"
+                strokeDasharray="3 5"
               />
             );
           })}
-          {tantricNodes.map(({ pos, active, label }, i) => (
-            <g key={i}>
-              {!active && (
-                <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(251,87,129,0.12)" />
-              )}
-              <circle
-                cx={pos.x} cy={pos.y} r={active ? 6 : 7}
-                fill={active ? '#2DD4BF' : '#FB5781'}
-                opacity={active ? 0.9 : 0.75}
-              />
-              <text
-                x={pos.x} y={pos.y}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize="5"
-                fill="#06070F"
-                fontWeight="bold"
-              >
-                {label}
-              </text>
-            </g>
-          ))}
-        </g>
 
-        {/* ── Layer 5 — I-Ching (5º sistema, v0.0.5 T6) ── */}
-        <g opacity={opacity(5)} onClick={() => setActiveLayer(activeLayer === 5 ? null : 5)} style={{ cursor: 'pointer' }}>
-          <circle cx="200" cy="200" r="110" fill="none" stroke="rgba(160,118,58,0.2)" strokeWidth="1" strokeDasharray="2 4" />
-          {/* I-Ching node at top (200, 110) */}
-          <g>
-            <circle cx="200" cy="110" r="20" fill="rgba(160,118,58,0.12)" />
+          {/* ── Layer 4 — Astrological Ring (rotating) ── */}
+          <g
+            opacity={opacity(4)}
+            onClick={() => setActiveLayer(activeLayer === 4 ? null : 4)}
+            style={{ cursor: 'pointer' }}
+            className={ringPaused ? 'ring-astrological-paused' : 'ring-astrological'}
+          >
             <circle
-              cx="200" cy="110" r="13"
-              fill={data.iching.available ? '#A0763A' : 'rgba(160,118,58,0.35)'}
-              opacity={data.iching.available ? 0.9 : 0.6}
-              filter="url(#glow-akasha)"
-            >
-              <title>
-                {data.iching.available
-                  ? `Hexagrama ${data.iching.hexagramNumber} — ${data.iching.hexagramName} (${data.iching.hexagramChineseName})`
-                  : 'Hexagrama do Ori ainda não calculado'}
-              </title>
-            </circle>
+              cx="200"
+              cy="200"
+              r="196"
+              fill="none"
+              stroke="rgba(124,92,255,0.12)"
+              strokeWidth="0.5"
+            />
+            <circle
+              cx="200"
+              cy="200"
+              r="170"
+              fill="none"
+              stroke="rgba(124,92,255,0.12)"
+              strokeWidth="0.5"
+            />
+            {astroSegments.map(({ startDeg, endDeg, sym, labelPos }, i) => (
+              <g key={i}>
+                <path
+                  d={describeArc(200, 200, 183, startDeg, endDeg)}
+                  fill="none"
+                  stroke="rgba(38,48,79,0.7)"
+                  strokeWidth="1"
+                />
+                <text
+                  x={labelPos.x}
+                  y={labelPos.y}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize="9"
+                  fill="#5C6691"
+                >
+                  {sym}
+                </text>
+              </g>
+            ))}
+            {/* Planet dots with tooltip */}
+            {planetDots.map((p, i) => (
+              <g key={i} filter="url(#glow-akasha)">
+                <circle cx={p.pos.x} cy={p.pos.y} r="3.5" fill="#7C5CFF" opacity="0.9">
+                  <title>
+                    {p.name}: {p.sign} casa {p.house}
+                  </title>
+                </circle>
+              </g>
+            ))}
+            {/* Ring label */}
             <text
-              x="200" y="110"
+              x="200"
+              y="14"
               textAnchor="middle"
-              dominantBaseline="middle"
-              fontSize="9"
-              fill="#F4F5FF"
-              fontWeight="700"
+              fontSize="7"
+              fill="rgba(124,92,255,0.5)"
+              letterSpacing="2"
             >
-              {data.iching.hexagramNumber ?? '?'}
+              ASTROLOGIA
             </text>
-            <text
-              x="200" y="86"
-              textAnchor="middle"
-              fontSize="5.5"
-              fill="rgba(160,118,58,0.7)"
-              letterSpacing="1.5"
-            >
-              I-CHING
-            </text>
-          </g>
-        </g>
 
-        {/* ── B — Toroidal synergy lines (between Layer 3 and Layer 2) ── */}
-        {tantricNodes.map(({ pos, active }, i) => (
-          <line
-            key={`synergy-${i}`}
-            x1={pos.x} y1={pos.y}
-            x2={200} y2={200}
-            stroke={active ? '#2DD4BF' : '#FB5781'}
-            strokeWidth="0.6"
-            strokeDasharray="4 6"
-            opacity={active ? 0.35 : 0.25}
-            strokeDashoffset="0"
-            className={active ? 'synergy-active' : 'synergy-alert'}
-            style={{ animationDelay: `${(i * 0.27) % 2}s` }}
-          />
-        ))}
-
-        {/* ── Layer 2 — Kabbalistic Geometry ── */}
-        <g opacity={opacity(2)} onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)} style={{ cursor: 'pointer' }}>
-          <circle cx="200" cy="200" r="80" fill="none" stroke="rgba(124,92,255,0.2)" strokeWidth="1" strokeDasharray="2 3" />
-          <path
-            d={trianglePath}
-            fill="rgba(124,92,255,0.05)"
-            stroke="#7C5CFF"
-            strokeWidth="1.5"
-            opacity="0.8"
-          />
-          {kabVerts.map(({ pos, value, master }, i) => (
-            <g key={i}>
-              {master && (
-                <circle cx={pos.x} cy={pos.y} r="14"
-                  fill="none" stroke="#9D86FF" strokeWidth="0.75" strokeDasharray="2 2" opacity="0.6" />
-              )}
+            {/* ── D — Particle dots on outer edge ── */}
+            {PARTICLES.map((pt, i) => (
               <circle
-                cx={pos.x} cy={pos.y} r="11"
-                fill="rgba(124,92,255,0.18)"
-                stroke="#7C5CFF"
-                strokeWidth="1.2"
+                key={`particle-${i}`}
+                cx={pt.x}
+                cy={pt.y}
+                r="1.5"
+                fill="white"
+                className="particle-blink"
+                style={{ animationDelay: `${pt.delay}s` }}
               />
+            ))}
+          </g>
+
+          {/* ── Layer 3 — Tantric Web ── */}
+          <g
+            opacity={opacity(3)}
+            onClick={() => setActiveLayer(activeLayer === 3 ? null : 3)}
+            style={{ cursor: 'pointer' }}
+          >
+            <circle
+              cx="200"
+              cy="200"
+              r="138"
+              fill="none"
+              stroke="rgba(45,212,191,0.15)"
+              strokeWidth="1"
+              strokeDasharray="3 4"
+            />
+            {/* Web lines between nodes */}
+            {tantricNodes.map(({ pos }, i) => {
+              const next = tantricNodes[(i + 1) % 11];
+              return (
+                <line
+                  key={i}
+                  x1={pos.x}
+                  y1={pos.y}
+                  x2={next.pos.x}
+                  y2={next.pos.y}
+                  stroke="rgba(45,212,191,0.1)"
+                  strokeWidth="0.5"
+                />
+              );
+            })}
+            {tantricNodes.map(({ pos, active, label }, i) => (
+              <g key={i}>
+                {!active && <circle cx={pos.x} cy={pos.y} r="10" fill="rgba(251,87,129,0.12)" />}
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r={active ? 6 : 7}
+                  fill={active ? '#2DD4BF' : '#FB5781'}
+                  opacity={active ? 0.9 : 0.75}
+                />
+                <text
+                  x={pos.x}
+                  y={pos.y}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize="5"
+                  fill="#06070F"
+                  fontWeight="bold"
+                >
+                  {label}
+                </text>
+              </g>
+            ))}
+          </g>
+
+          {/* ── Layer 5 — I-Ching (5º sistema, v0.0.5 T6) ── */}
+          <g
+            opacity={opacity(5)}
+            onClick={() => setActiveLayer(activeLayer === 5 ? null : 5)}
+            style={{ cursor: 'pointer' }}
+          >
+            <circle
+              cx="200"
+              cy="200"
+              r="110"
+              fill="none"
+              stroke="rgba(160,118,58,0.2)"
+              strokeWidth="1"
+              strokeDasharray="2 4"
+            />
+            {/* I-Ching node at top (200, 110) */}
+            <g>
+              <circle cx="200" cy="110" r="20" fill="rgba(160,118,58,0.12)" />
+              <circle
+                cx="200"
+                cy="110"
+                r="13"
+                fill={data.iching.available ? '#A0763A' : 'rgba(160,118,58,0.35)'}
+                opacity={data.iching.available ? 0.9 : 0.6}
+                filter="url(#glow-akasha)"
+              >
+                <title>
+                  {data.iching.available
+                    ? `Hexagrama ${data.iching.hexagramNumber} — ${data.iching.hexagramName} (${data.iching.hexagramChineseName})`
+                    : 'Hexagrama do Ori ainda não calculado'}
+                </title>
+              </circle>
               <text
-                x={pos.x} y={pos.y}
+                x="200"
+                y="110"
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fontSize="8"
+                fontSize="9"
                 fill="#F4F5FF"
                 fontWeight="700"
               >
-                {value ?? '?'}
+                {data.iching.hexagramNumber ?? '?'}
+              </text>
+              <text
+                x="200"
+                y="86"
+                textAnchor="middle"
+                fontSize="5.5"
+                fill="rgba(160,118,58,0.7)"
+                letterSpacing="1.5"
+              >
+                I-CHING
               </text>
             </g>
-          ))}
-        </g>
+          </g>
 
-        {/* ── Layer 1 — Odus Core ── */}
-        <g opacity={opacity(1)} onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)} style={{ cursor: 'pointer' }}>
-          {/* ── C — Animated glow rings (3 concentric, phase-offset) ── */}
-          <circle cx="200" cy="200" r="50" fill="none" stroke="#F0B429" strokeWidth="0.5" opacity="0.15" className="mandala-pulse-3" />
-          <circle cx="200" cy="200" r="44" fill="none" stroke="#F0B429" strokeWidth="0.75" opacity="0.2" className="mandala-pulse-2" />
-          {/* Ori glow */}
-          <circle cx="200" cy="200" r="40" fill="url(#oriGlow)" className="mandala-pulse" />
-          <circle cx="200" cy="200" r="34" fill="rgba(240,180,41,0.08)" stroke="#F0B429" strokeWidth="1.5" className="mandala-pulse" />
-          <circle cx="200" cy="200" r="7" fill="#F0B429" filter="url(#glow-akasha)" />
-          <text x="200" y="216" textAnchor="middle" fontSize="6.5" fill="#F0B429" fontWeight="600">
-            {data.odus.oduName.length > 16 ? data.odus.oduName.slice(0, 14) + '…' : data.odus.oduName}
-          </text>
-          {data.odus.orixaRegency[0] && (
-            <text x="200" y="226" textAnchor="middle" fontSize="5.5" fill="rgba(240,180,41,0.65)">
-              {data.odus.orixaRegency[0]}
+          {/* ── B — Toroidal synergy lines (between Layer 3 and Layer 2) ── */}
+          {tantricNodes.map(({ pos, active }, i) => (
+            <line
+              key={`synergy-${i}`}
+              x1={pos.x}
+              y1={pos.y}
+              x2={200}
+              y2={200}
+              stroke={active ? '#2DD4BF' : '#FB5781'}
+              strokeWidth="0.6"
+              strokeDasharray="4 6"
+              opacity={active ? 0.35 : 0.25}
+              strokeDashoffset="0"
+              className={active ? 'synergy-active' : 'synergy-alert'}
+              style={{ animationDelay: `${(i * 0.27) % 2}s` }}
+            />
+          ))}
+
+          {/* ── Layer 2 — Kabbalistic Geometry (P1 Cabala — indigo) ── */}
+          <g
+            opacity={opacity(2)}
+            onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
+            style={{ cursor: 'pointer' }}
+          >
+            <circle
+              cx="200"
+              cy="200"
+              r="80"
+              fill="none"
+              stroke="rgba(92,124,255,0.2)"
+              strokeWidth="1"
+              strokeDasharray="2 3"
+            />
+            <path
+              d={trianglePath}
+              fill="rgba(92,124,255,0.05)"
+              stroke={PILAR_COLORS[2]}
+              strokeWidth="1.5"
+              opacity="0.8"
+            />
+            {kabVerts.map(({ pos, value, master }, i) => (
+              <g key={i}>
+                {master && (
+                  <circle
+                    cx={pos.x}
+                    cy={pos.y}
+                    r="14"
+                    fill="none"
+                    stroke="#7D9BFF"
+                    strokeWidth="0.75"
+                    strokeDasharray="2 2"
+                    opacity="0.6"
+                  />
+                )}
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r="11"
+                  fill="rgba(92,124,255,0.18)"
+                  stroke={PILAR_COLORS[2]}
+                  strokeWidth="1.2"
+                />
+                <text
+                  x={pos.x}
+                  y={pos.y}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize="8"
+                  fill="#F4F5FF"
+                  fontWeight="700"
+                >
+                  {value ?? '?'}
+                </text>
+              </g>
+            ))}
+          </g>
+
+          {/* ── Layer 1 — Odus Core ── */}
+          <g
+            opacity={opacity(1)}
+            onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
+            style={{ cursor: 'pointer' }}
+          >
+            {/* ── C — Animated glow rings (3 concentric, phase-offset) ── */}
+            <circle
+              cx="200"
+              cy="200"
+              r="50"
+              fill="none"
+              stroke="#F0B429"
+              strokeWidth="0.5"
+              opacity="0.15"
+              className="mandala-pulse-3"
+            />
+            <circle
+              cx="200"
+              cy="200"
+              r="44"
+              fill="none"
+              stroke="#F0B429"
+              strokeWidth="0.75"
+              opacity="0.2"
+              className="mandala-pulse-2"
+            />
+            {/* Ori glow */}
+            <circle cx="200" cy="200" r="40" fill="url(#oriGlow)" className="mandala-pulse" />
+            <circle
+              cx="200"
+              cy="200"
+              r="34"
+              fill="rgba(240,180,41,0.08)"
+              stroke="#F0B429"
+              strokeWidth="1.5"
+              className="mandala-pulse"
+            />
+            <circle cx="200" cy="200" r="7" fill="#F0B429" filter="url(#glow-akasha)" />
+            <text
+              x="200"
+              y="216"
+              textAnchor="middle"
+              fontSize="6.5"
+              fill="#F0B429"
+              fontWeight="600"
+            >
+              {data.odus.oduName.length > 16
+                ? data.odus.oduName.slice(0, 14) + '…'
+                : data.odus.oduName}
+            </text>
+            {data.odus.orixaRegency[0] && (
+              <text x="200" y="226" textAnchor="middle" fontSize="5.5" fill="rgba(240,180,41,0.65)">
+                {data.odus.orixaRegency[0]}
+              </text>
+            )}
+          </g>
+
+          {/* ── F — Incomplete data badge ── */}
+          {data.incomplete && (
+            <text x="200" y="390" textAnchor="middle" fontSize="7" fill="#FB5781" opacity="0.7">
+              * dados parciais — complete o perfil
             </text>
           )}
-        </g>
-
-        {/* ── F — Incomplete data badge ── */}
-        {data.incomplete && (
-          <text x="200" y="390" textAnchor="middle" fontSize="7" fill="#FB5781" opacity="0.7">
-            * dados parciais — complete o perfil
-          </text>
-        )}
-      </svg>
+        </svg>
       </div>
 
       {/* === Info Panels === */}
@@ -547,21 +762,23 @@ export default function MandalaChart({ data }: Props) {
           ))}
           <Divider />
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {(Object.entries(data.astrology.elementalBalance) as [string, number][]).map(([el, val]) => (
-              <span
-                key={el}
-                style={{
-                  padding: '3px 10px',
-                  borderRadius: '100px',
-                  fontSize: '0.6875rem',
-                  background: `${ELEMENT_COLORS[el]}18`,
-                  border: `1px solid ${ELEMENT_COLORS[el]}44`,
-                  color: ELEMENT_COLORS[el],
-                }}
-              >
-                {ELEMENT_LABELS[el]} {val}%
-              </span>
-            ))}
+            {(Object.entries(data.astrology.elementalBalance) as [string, number][]).map(
+              ([el, val]) => (
+                <span
+                  key={el}
+                  style={{
+                    padding: '3px 10px',
+                    borderRadius: '100px',
+                    fontSize: '0.6875rem',
+                    background: `${ELEMENT_COLORS[el]}18`,
+                    border: `1px solid ${ELEMENT_COLORS[el]}44`,
+                    color: ELEMENT_COLORS[el],
+                  }}
+                >
+                  {ELEMENT_LABELS[el]} {val}%
+                </span>
+              )
+            )}
           </div>
           {elemGuidance && (
             <>
@@ -574,14 +791,20 @@ export default function MandalaChart({ data }: Props) {
       )}
 
       {activeLayer === 3 && (
-        <InfoPanel color="#2DD4BF" title="Numerologia Tântrica — Os 11 Corpos" subtitle="Teia de Conexão · Camada 3">
+        <InfoPanel
+          color="#2DD4BF"
+          title="Numerologia Tântrica — Os 11 Corpos"
+          subtitle="Teia de Conexão · Camada 3"
+        >
           <Row label="Caminho Tântrico" value={data.tantra.tantricPath} />
           <Row label="Alma" value={data.tantra.soul} />
           <Row label="Karma" value={data.tantra.karma} />
           <Row label="Dom Divino" value={data.tantra.divineGift} />
           <Divider />
           {inactiveBodies.length === 0 ? (
-            <Insight color="#2DD4BF">Todos os 11 Corpos estão ativos — seu campo espiritual está em fluxo.</Insight>
+            <Insight color="#2DD4BF">
+              Todos os 11 Corpos estão ativos — seu campo espiritual está em fluxo.
+            </Insight>
           ) : (
             <>
               <p style={{ fontSize: '0.75rem', color: '#A7AECF', marginBottom: '0.5rem' }}>
@@ -606,23 +829,42 @@ export default function MandalaChart({ data }: Props) {
       )}
 
       {activeLayer === 2 && (
-        <InfoPanel color="#7C5CFF" title="Numerologia Cabalística — O Contrato de Alma" subtitle="Geometria Interna · Camada 2">
-          <Row label="Caminho de Vida" value={data.kabala.lifePath} master={data.kabala.lifePathMaster} />
-          <Row label="Expressão" value={data.kabala.expression} master={data.kabala.expressionMaster} />
+        <InfoPanel
+          color={PILAR_COLORS[2]}
+          title="Numerologia Cabalística — O Contrato de Alma"
+          subtitle="Geometria Interna · Camada 2"
+        >
+          <Row
+            label="Caminho de Vida"
+            value={data.kabala.lifePath}
+            master={data.kabala.lifePathMaster}
+          />
+          <Row
+            label="Expressão"
+            value={data.kabala.expression}
+            master={data.kabala.expressionMaster}
+          />
           <Row label="Motivação" value={data.kabala.motivation} />
           <Row label="Ano Pessoal" value={data.kabala.personalYear} />
           {lpMeaning && (
             <>
               <Divider />
-              <Insight color="#7C5CFF">{lpMeaning}</Insight>
+              <Insight color={PILAR_COLORS[2]}>{lpMeaning}</Insight>
             </>
           )}
         </InfoPanel>
       )}
 
       {activeLayer === 1 && (
-        <InfoPanel color="#F0B429" title={`Odu: ${data.odus.oduName}`} subtitle="Núcleo — Ori · Camada 1">
-          <Row label="Odu de Nascimento" value={`${data.odus.oduName}${data.odus.oduNumber ? ` (${data.odus.oduNumber})` : ''}`} />
+        <InfoPanel
+          color="#F0B429"
+          title={`Odu: ${data.odus.oduName}`}
+          subtitle="Núcleo — Ori · Camada 1"
+        >
+          <Row
+            label="Odu de Nascimento"
+            value={`${data.odus.oduName}${data.odus.oduNumber ? ` (${data.odus.oduNumber})` : ''}`}
+          />
           <Row label="Orixá(s) regente(s)" value={data.odus.orixaRegency.join(', ')} />
           <Row label="Força Elemental" value={data.odus.elementalForce} />
           {data.odus.provisional && (
@@ -633,63 +875,105 @@ export default function MandalaChart({ data }: Props) {
           {data.odus.preceitos && data.odus.preceitos.length > 0 && (
             <>
               <Divider />
-              <p style={{ fontSize: '0.75rem', color: '#F0B429', fontWeight: 600, marginBottom: '0.35rem' }}>
+              <p
+                style={{
+                  fontSize: '0.75rem',
+                  color: '#F0B429',
+                  fontWeight: 600,
+                  marginBottom: '0.35rem',
+                }}
+              >
                 Preceitos do Odu
               </p>
               {data.odus.preceitos.map((p, i) => (
-                <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>✦ {p}</p>
+                <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
+                  ✦ {p}
+                </p>
               ))}
             </>
           )}
           {data.odus.quizilas && data.odus.quizilas.length > 0 && (
             <>
               <Divider />
-              <p style={{ fontSize: '0.75rem', color: '#FB5781', fontWeight: 600, marginBottom: '0.35rem' }}>
+              <p
+                style={{
+                  fontSize: '0.75rem',
+                  color: '#FB5781',
+                  fontWeight: 600,
+                  marginBottom: '0.35rem',
+                }}
+              >
                 Quizilás (evitar)
               </p>
               {data.odus.quizilas.map((q, i) => (
-                <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>⚠ {q}</p>
+                <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
+                  ⚠ {q}
+                </p>
               ))}
             </>
           )}
           {(!data.odus.preceitos || data.odus.preceitos.length === 0) && (
             <Insight color="#F0B429">
-              As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for sincronizado.
-              Consulte o Oráculo para orientação ancestral personalizada.
+              As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for
+              sincronizado. Consulte o Oráculo para orientação ancestral personalizada.
             </Insight>
           )}
         </InfoPanel>
       )}
 
       {activeLayer === 5 && (
-        <InfoPanel color="#A0763A" title="I-Ching — O Hexagrama do Ori" subtitle="Sabedoria Ancestral Chinesa · Camada 5">
+        <InfoPanel
+          color="#A0763A"
+          title="I-Ching — O Hexagrama do Ori"
+          subtitle="Sabedoria Ancestral Chinesa · Camada 5"
+        >
           {data.iching.available ? (
             <>
               <Row
                 label="Hexagrama"
-                value={data.iching.hexagramChineseName
-                  ? `${data.iching.hexagramNumber} — ${data.iching.hexagramName} (${data.iching.hexagramChineseName})`
-                  : `${data.iching.hexagramNumber} — ${data.iching.hexagramName}`}
+                value={
+                  data.iching.hexagramChineseName
+                    ? `${data.iching.hexagramNumber} — ${data.iching.hexagramName} (${data.iching.hexagramChineseName})`
+                    : `${data.iching.hexagramNumber} — ${data.iching.hexagramName}`
+                }
               />
               <Row
                 label="Trigrama superior"
-                value={data.iching.upperTrigram != null && data.iching.upperTrigramName
-                  ? `${data.iching.upperTrigram} — ${data.iching.upperTrigramName}`
-                  : data.iching.upperTrigramName}
+                value={
+                  data.iching.upperTrigram != null && data.iching.upperTrigramName
+                    ? `${data.iching.upperTrigram} — ${data.iching.upperTrigramName}`
+                    : data.iching.upperTrigramName
+                }
               />
               <Row
                 label="Trigrama inferior"
-                value={data.iching.lowerTrigram != null && data.iching.lowerTrigramName
-                  ? `${data.iching.lowerTrigram} — ${data.iching.lowerTrigramName}`
-                  : data.iching.lowerTrigramName}
+                value={
+                  data.iching.lowerTrigram != null && data.iching.lowerTrigramName
+                    ? `${data.iching.lowerTrigram} — ${data.iching.lowerTrigramName}`
+                    : data.iching.lowerTrigramName
+                }
               />
               {Array.isArray(data.iching.lines) && data.iching.lines.length === 6 && (
                 <>
                   <Divider />
-                  <p style={{ fontSize: '0.75rem', color: '#A0763A', fontWeight: 600, marginBottom: '0.35rem' }}>
+                  <p
+                    style={{
+                      fontSize: '0.75rem',
+                      color: '#A0763A',
+                      fontWeight: 600,
+                      marginBottom: '0.35rem',
+                    }}
+                  >
                     As 6 Linhas (de baixo para cima)
                   </p>
-                  <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: '4px', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column-reverse',
+                      gap: '4px',
+                      alignItems: 'center',
+                    }}
+                  >
                     {data.iching.lines.map((yang, i) => (
                       <span
                         key={i}
@@ -717,10 +1001,9 @@ export default function MandalaChart({ data }: Props) {
             </>
           ) : (
             <Insight color="#A0763A">
-              O hexagrama do seu Ori será calculado quando você completar o perfil.
-              Forneça data e hora de nascimento para que o algoritmo determinístico
-              (akasha.v0.0.4.trigramas-mod8) revele o trigrama superior e inferior
-              do seu nascimento.
+              O hexagrama do seu Ori será calculado quando você completar o perfil. Forneça data e
+              hora de nascimento para que o algoritmo determinístico (akasha.v0.0.4.trigramas-mod8)
+              revele o trigrama superior e inferior do seu nascimento.
             </Insight>
           )}
         </InfoPanel>
@@ -735,8 +1018,16 @@ export default function MandalaChart({ data }: Props) {
   );
 }
 
-function InfoPanel({ color, title, subtitle, children }: {
-  color: string; title: string; subtitle: string; children: React.ReactNode;
+function InfoPanel({
+  color,
+  title,
+  subtitle,
+  children,
+}: {
+  color: string;
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
 }) {
   return (
     <div
@@ -750,26 +1041,53 @@ function InfoPanel({ color, title, subtitle, children }: {
         maxWidth: 400,
       }}
     >
-      <p style={{ fontSize: '0.6875rem', color, letterSpacing: '0.08em', marginBottom: '0.25rem', textTransform: 'uppercase' }}>
+      <p
+        style={{
+          fontSize: '0.6875rem',
+          color,
+          letterSpacing: '0.08em',
+          marginBottom: '0.25rem',
+          textTransform: 'uppercase',
+        }}
+      >
         {subtitle}
       </p>
-      <p style={{ fontFamily: 'var(--font-cinzel), serif', fontSize: '0.9375rem', color: '#F4F5FF', fontWeight: 600, marginBottom: '0.75rem' }}>
+      <p
+        style={{
+          fontFamily: 'var(--font-cinzel), serif',
+          fontSize: '0.9375rem',
+          color: '#F4F5FF',
+          fontWeight: 600,
+          marginBottom: '0.75rem',
+        }}
+      >
         {title}
       </p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-        {children}
-      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>{children}</div>
     </div>
   );
 }
 
-function Row({ label, value, master }: { label: string; value: string | number | null | undefined; master?: boolean }) {
+function Row({
+  label,
+  value,
+  master,
+}: {
+  label: string;
+  value: string | number | null | undefined;
+  master?: boolean;
+}) {
   if (value === null || value === undefined) return null;
   return (
     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline' }}>
-      <span style={{ fontSize: '0.75rem', color: '#5C6691', minWidth: '120px', flexShrink: 0 }}>{label}</span>
+      <span style={{ fontSize: '0.75rem', color: '#5C6691', minWidth: '120px', flexShrink: 0 }}>
+        {label}
+      </span>
       <span style={{ fontSize: '0.8125rem', color: '#F4F5FF' }}>
-        {String(value)}{master && <span style={{ color: '#9D86FF', fontSize: '0.6875rem', marginLeft: 4 }}>★ Mestre</span>}
+        {String(value)}
+        {master && (
+          <span style={{ color: '#9D86FF', fontSize: '0.6875rem', marginLeft: 4 }}>★ Mestre</span>
+        )}
       </span>
     </div>
   );
@@ -793,5 +1111,7 @@ function Insight({ color, children }: { color: string; children: React.ReactNode
 }
 
 function Divider() {
-  return <hr style={{ border: 'none', borderTop: '1px solid rgba(38,48,79,0.6)', margin: '0.5rem 0' }} />;
+  return (
+    <hr style={{ border: 'none', borderTop: '1px solid rgba(38,48,79,0.6)', margin: '0.5rem 0' }} />
+  );
 }

@@ -190,7 +190,7 @@
     "phase": 6,
     "category": "implementation",
     "priority": "P1",
-    "passes": false,
+    "passes": true,
     "output": "apps/akasha-portal/src/app/[locale]/(akasha)/diario/page.tsx",
     "description": "Página Diário Energético — renderiza Mandato do dia + 3 frases + pergunta + micro-ritual"
   },
@@ -199,7 +199,7 @@
     "phase": 6,
     "category": "implementation",
     "priority": "P1",
-    "passes": false,
+    "passes": true,
     "output": "apps/akasha-portal/src/components/akasha/MandalaChart",
     "description": "Consumir data.iching + data.odus + data.tantra + data.kabala + data.astrology no MandalaChart, 5 anéis com cor por Pilar"
   },
