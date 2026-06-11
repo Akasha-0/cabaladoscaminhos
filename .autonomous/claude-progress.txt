@@ -230,3 +230,25 @@
 - COT `cot-20260611-d-040-prisma-design-proposal.md` (D1-D6 decisões)
 - INDEX: D-040 row + COT row
 - Aguarda revisão humana antes de `pnpm db:migrate`
+
+---
+
+## 📊 Sessão N+2 a N+4 (2026-06-11) — RESUMO FINAL
+- **Início:** Fases 0-4 ✅ + R-030 prototype ✅ + R-022b ethics ✅
+- **Trabalho entregue:**
+  - D-043: 10 perfis representativos (fixtures + 69 testes) → 208/208 akasha-core
+  - D-044: validação knowledge base (90 testes) → 298/298 akasha-core
+  - D-040: Schema Prisma 5 Pilares (DESIGN PROPOSAL awaiting approval)
+- **Commits:** 4 (2aada43b, a3cdaa73, e08e59ea, 13285dec)
+- **Testes totais akasha-core:** 298/298 verdes (8 test files)
+- **LOC adicionada:** 1965 linhas em packages/akasha-core/src (test files)
+- **COTs escritos:** 3 (D-043, D-044, D-040) — todas em `.autonomous/research/chain-of-thought/`
+- **Achados significativos:**
+  - F1: IFA_ODUS canônico tem 15 (não 16) — 'Eji' substitui 'Ogbe' por design Phase 1
+  - F2: stub R-030 diverge em Ogbe+Ofun
+  - F3: Pilar 5 (I Ching) em User.ichingMap — inconsistente com Pilar 1-4
+  - F4: Mandala/Mandato recomputados on-the-fly (sem persistência)
+  - F5: Pilar 4 ethics invariant não enforced (Json sem Zod consentimento)
+- **Bloqueios próximos:** D-040 migration prod DB aguardando aprovação humana
+- **Custo estimado:** < $8 (research + design + tests, sem código de prod)
+- **Próxima sessão:** aprovação D-040 (humana) → staging test → `pnpm db:migrate` → D-042 (Zod validators) → wire akasha-core → Prisma
