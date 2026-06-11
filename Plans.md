@@ -49,5 +49,14 @@
   - `250d883e` R-016 (Enneagrama) — 500+ linhas, 10 seções, COT
   - `c8988ab6` housekeeping F-103 e F-104
   Pendente: D-040 (Prisma schema 5 Pilares — awaiting human approval)
-  Status: 24/25 features done. FASE 8 reverse-eng TRIO COMPLETO (HD/GK/Enneagrama).
   Melhoria de harness: orchestrator self-check JSON (evita feature_list quebrado)
+- [x] **PLN-016** — Supervisor takeover turn 3: F-208 (88° solar arc), F-209 + F-209b (Tríade Sombra/Dom/Graça + análise completa de aspectos), R-018 (Jyotish), R-019 (4 Temperamentos Gregos). 6 commits entregues:
+  - `e2b64e8a` F-208 88° solar arc "Momento Pré-natal Akasha" (220 linhas, 8 testes)
+  - `86de3efe` F-209 Tríade Sombra/Dom/Graça (269 linhas, 14 testes)
+  - `2b708f6e` Adicionar F-209b + R-018 + R-019 ao backlog
+  - `cf413bde` R-018 Jyotish reverse-eng (491 linhas, 11 seções + COT)
+  - `3079e680` F-209b análise completa de aspectos no Pilar 2 trinity
+  - `8ee23c8a` R-019 4 Temperamentos Gregos (433 linhas, 12 seções + COT)
+  Status: 29/30 features done. Único blocked: D-040 (Prisma).
+  Akasha agora tem 6 frameworks complementares (5 Pilares + 4 Camadas + 9 Levels + 3 Tríades + 4 Temperamentos + Tríade Sombra/Dom/Graça).
+  Triad: 363/363 verde, zero regressão.
