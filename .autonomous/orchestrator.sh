@@ -42,6 +42,16 @@ if [[ -f "$stop_signal" ]]; then
   log "Stop signal presente em $stop_signal — encerrando."
   cat "$stop_signal"
   exit 0
+# 2026-06-11: Detectar trabalho untracked significativo antes de spawn
+# (work-in-progress paralelo de outro agente que o loop não deve duplicar).
+# Se > 20 arquivos untracked em apps/ ou packages/, avisar a sessão.
+UNTRACKED_COUNT=$(git status --porcelain 2>/dev/null | grep -c "^??")
+if [[ $UNTRACKED_COUNT -gt 20 ]]; then
+  log "⚠ $UNTRACKED_COUNT arquivos untracked detectados (work-in-progress paralelo?)"
+  log "  Recomendação: revisar git status antes de modificar apps/ ou packages/"
+  log "  Lista: git status --short | head -30"
+fi
+
 fi
 
 # Selecionar prompt
