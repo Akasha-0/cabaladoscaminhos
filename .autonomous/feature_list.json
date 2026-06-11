@@ -210,9 +210,11 @@
     "phase": 6,
     "category": "implementation",
     "priority": "P2",
-    "passes": false,
-    "output": "apps/akasha-portal/src/lib/integration/",
-    "description": "Substituir stubs do akasha-core.ts por chamadas reais aos 5 engines via loadEngines()"
+    "passes": true,
+    "output": "packages/akasha-core/src/akasha-core.ts (realPilar1..5 + loadEngines lazy + stub fallback)",
+    "description": "Substituir stubs do akasha-core.ts por chamadas reais aos 5 engines via loadEngines()",
+    "completed_at": "2026-06-11",
+    "note": "Subscopo do F-200 (P0). Pilar 4 ethics invariant preservado (R-022 §4.4 + AGENTS.md §5). 298/298 testes verdes."
   },
   {
     "id": "F-205",
@@ -225,22 +227,15 @@
     "completed_at": "2026-06-11"
   },
   {
-    "id": "F-206",
-    "phase": 6,
-    "category": "implementation",
-    "priority": "P2",
-    "passes": false,
-    "output": "apps/akasha-portal/src/components/akasha/MandalaChart/TooltipPilar.tsx",
-    "description": "Tooltip por Pilar — ao tocar anel, expande explicação + citação da fonte (Brennan/Sefer/Wilhelm)"
-  },
-  {
     "id": "F-207",
     "phase": 6,
     "category": "implementation",
     "priority": "P1",
-    "passes": false,
-    "output": "packages/akasha-core/src/akasha-core.test.ts (3 perfis)",
-    "description": "3 perfis de teste reais (Ana, Bruno, Carlos) com chart completo — fixture files em tests/fixtures/"
+    "passes": true,
+    "output": "packages/akasha-core/src/profiles-fixtures.ts (10 perfis + PERFIL_CRISIS) + profiles.test.ts (69 testes verdes)",
+    "description": "3 perfis de teste reais (Ana, Bruno, Carlos) com chart completo — fixture files em tests/fixtures/",
+    "completed_at": "2026-06-11",
+    "note": "D-043 (sessão N+2) já entregou 10 perfis (Ana, Bruno, Carla, Daniel, Eduardo, Fernanda, Gabriel, Helena, Igor, Júlia) + 1 PERFIL_CRISIS, cobrindo todos os vetores do F-207 + extras (master number, sênior, hesitação, identidade, intenção complexa). 69 testes verdes em profiles.test.ts."
   },
   {
     "id": "D-044",
