@@ -21,7 +21,9 @@ fi
 # Allowlist (regex no primeiro token)
 ALLOWED='^(pnpm|npm|node|npx|tsx|ts-node|esbuild|vite|next|playwright|vitest|jest|eslint|prettier|prisma|turbo|tsc|pg_isready|psql|docker|ls|cat|head|tail|wc|grep|find|file|tree|stat|which|echo|printf|date|sleep|git|init\.sh|chmod|cp|mv|mkdir|touch|jq|cargo|rustc|go|python|python3|curl|wget|ollama|redis-cli|ps|lsof|pkill|true|false|test|\[)'
 
-# Forbidden patterns (mesmo se na allowlist)
+# Forbidden patterns (mesmo se na allowlist) — defense-in-depth
+# sudo é HARD BLOCKED — usuário roda manualmente quando precisar
+# (ver .autonomous/lessons/loop-sudo-policy.md)
 FORBIDDEN_PATTERNS=(
   'rm -rf /'
   'rm -rf ~'

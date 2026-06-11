@@ -111,6 +111,36 @@ if [[ ! -f "$PROJECT_DIR/.claude_settings.json" ]]; then
   exit 1
 fi
 
+# ═══ FIX #1: Auto-criar .env se ausente (sem credenciais hardcoded) ═══
+ENV_FILE="$PROJECT_DIR/apps/akasha-portal/.env"
+if [[ ! -f "$ENV_FILE" ]]; then
+  log "FIX #1: .env ausente — criando template vazio (gitignored)"
+  JWT_GEN=$(openssl rand -base64 48 2>/dev/null || echo "dev-jwt-fallback-please-rotate")
+  cat > "$ENV_FILE" <<ENVEOF
+# Dev-only .env (NÃO COMMITA — gitignored via Next.js default)
+# Preencha DATABASE_URL com SEU valor. JWT_SECRET já vem gerado.
+DATABASE_URL=""
+JWT_SECRET="${JWT_GEN}"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+ENVEOF
+  chmod 600 "$ENV_FILE"
+  log "✓ .env criado em $ENV_FILE (permissões 600)"
+  log "  ⚠ PREENCHA DATABASE_URL antes de iniciar o app."
+fi
+
+# ═══ FIX #2: Preflight DB check (só se DATABASE_URL preenchida) ═══
+DB_URL=$(grep -E "^DATABASE_URL" "$ENV_FILE" 2>/dev/null | grep -v '=""' | head -1 | cut -d'"' -f2 || echo "")
+if [[ -n "$DB_URL" ]] && command -v psql &>/dev/null; then
+  DB_HOST=$(echo "$DB_URL" | sed -E 's|.*@([^:/]+).*|\1|')
+  DB_PORT=$(echo "$DB_URL" | sed -E 's|.*:([0-9]+)/.*|\1|')
+  DB_USER=$(echo "$DB_URL" | sed -E 's|.*://([^:]+):.*|\1|')
+  if timeout 3 psql -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -c "SELECT 1" &>/dev/null; then
+    log "✓ DB pré-flight OK ($DB_HOST:$DB_PORT user=$DB_USER)"
+  else
+    log "⚠ DB pré-flight falhou: verifique credenciais + peer-auth"
+  fi
+fi
+
 log "Modo detectado: $MODE"
 log "Max sessions: $MAX_SESSIONS | Max runtime: ${MAX_RUNTIME}s"
 

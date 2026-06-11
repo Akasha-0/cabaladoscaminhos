@@ -98,6 +98,28 @@ git commit -m "<tipo>(<escopo>): <descrição>"
 
 Tipos: `feat`, `fix`, `refactor`, `perf`, `test`, `docs`.
 
+### STEP 5.5 — MIGRATIONS (risco de prod data)
+
+**NUNCA rodar migration sem approval humano.**
+
+Para qualquer mudança em `apps/*/prisma/schema.prisma` ou migrations:
+1. Produzir PROPOSAL (markdown com diff do schema + justificativa)
+2. Commitar PROPOSAL com `feat(schema): D-NNN — design proposal (awaiting approval)`
+3. **NÃO** rodar `prisma migrate dev` — usuário aplica manualmente
+4. Após approval, usuário roda: `pnpm exec prisma migrate dev --name <NNN>`
+5. Só então commitar migration real
+
+### STEP 5.6 — EVITAR TEST POLLUTION (lesson pré-existente)
+
+Padrões confirmados em cycles 102-113: testes passam isolados, falham no suite.
+Causas comuns:
+- Module-level state (`let cache = {}` no topo)
+- Mock global singleton não resetado
+- Factory pattern ao invés de singleton
+
+**Antes de commitar:** rode `pnpm test:run <arquivo>` E `pnpm test:run` (suite).
+Se o suite falha mas isolado passa → suspect pollution, refatore.
+
 ### STEP 6 — ATUALIZAR PROGRESS LOG
 
 `.autonomous/claude-progress.txt`:
