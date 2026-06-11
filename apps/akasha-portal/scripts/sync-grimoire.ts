@@ -1,6 +1,9 @@
 import 'dotenv/config';
-import { syncGrimoire } from '../src/lib/grimoire/sync';
-import { prisma } from '../src/lib/prisma';
+// Real implementation: parses ./grimoire/**/*.md, generates embeddings
+// via Ollama, upserts to Supabase. The stub at src/lib/grimoire/sync.ts
+// always returns { synced: 0 } — kept around for tests.
+import { syncGrimoire } from '../src/lib/infrastructure/grimoire-sync';
+import { prisma } from '../src/lib/infrastructure/prisma';
 
 async function main() {
   console.log('Starting Grimoire Synchronization...');
