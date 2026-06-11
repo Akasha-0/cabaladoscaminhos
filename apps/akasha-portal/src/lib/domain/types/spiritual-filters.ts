@@ -30,7 +30,7 @@ export const ElementSchema = z.enum(['Fogo', 'Água', 'Terra', 'Ar', 'Éter']);
 
 // ─── Sefirot with Daat (Cabala routes) ───────────────────────────
 // Daat is the hidden/knowledge sephirah — used by cabala/sefirot and divination/oracle
-export const SefirotWithDaatSchema = z.enum([
+const SefirotWithDaatSchema = z.enum([
   'Kether',
   'Chokhmah',
   'Binah',

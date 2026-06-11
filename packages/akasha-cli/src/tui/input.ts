@@ -21,7 +21,7 @@ export interface InputHandlerOptions {
 
 // ─── Comandos Padrão ──────────────────────────────────────────────────────────
 
-export const DEFAULT_COMMANDS: Command[] = [
+const DEFAULT_COMMANDS: Command[] = [
   {
     name: 'help',
     description: 'Mostra esta ajuda',

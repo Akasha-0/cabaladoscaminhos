@@ -27,7 +27,7 @@ export interface OduData {
  * Terra: Iwori, Owonrin, Ika, Irete
  * Ar: Odi, Oturupon, Otura, Ose
  */
-export const ODU_DATABASE: Record<string, OduData> = {
+const ODU_DATABASE: Record<string, OduData> = {
   ogbe: {
     id: 'ogbe',
     name: 'Ogbe',

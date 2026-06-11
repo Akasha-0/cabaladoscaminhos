@@ -8,8 +8,8 @@ import crypto from 'node:crypto';
 export const AKASHA_TOKEN_COOKIE = 'akasha_session';
 export const AKASHA_REFRESH_COOKIE = 'akasha_refresh';
 
-export const AKASHA_ACCESS_TTL_SECONDS = 15 * 60;
-export const AKASHA_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
+const AKASHA_ACCESS_TTL_SECONDS = 15 * 60;
+const AKASHA_REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
 
 // ============================================================================
 // Tipos

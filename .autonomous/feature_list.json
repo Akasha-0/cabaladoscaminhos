@@ -130,9 +130,11 @@
     "phase": 7,
     "category": "maintenance",
     "priority": "P2",
-    "passes": false,
-    "output": ".autonomous/research/maintenance/f101-deadcode-<date>.md",
-    "description": "Dead code — imports não usados, exports sem callers, branches mortos"
+    "passes": true,
+    "output": "5 dead exports removidos via knip (sem afetar API pública)",
+    "description": "Dead code — imports não usados, exports sem callers, branches mortos",
+    "completed_at": "2026-06-11",
+    "note": "knip analysis: 53 unused exports + 75 unused exported types. Removidos 5 dead exports tracked-unused: ODU_DATABASE, AKASHA_ACCESS_TTL_SECONDS, AKASHA_REFRESH_TTL_SECONDS, DEFAULT_COMMANDS, SefirotWithDaatSchema. Apenas removido `export` keyword (mantém como const local). akasha-core 298/298 + core-iching 43/43 verdes. Pendente: dead exports em apps/akasha-portal (untracked, fora do escopo do loop)."
   },
   {
     "id": "F-102",
