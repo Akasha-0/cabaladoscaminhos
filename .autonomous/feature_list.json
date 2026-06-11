@@ -161,9 +161,11 @@
     "phase": 7,
     "category": "maintenance",
     "priority": "P2",
-    "passes": false,
-    "output": ".autonomous/research/maintenance/f104-docs-<date>.md",
-    "description": "Docs sync — código novo sem doc/README/AGENTS.md atualizado"
+    "passes": true,
+    "output": "apps/akasha-portal/AGENTS.md + docs/adrs/AGENTS.md + packages/akasha-core/AGENTS.md criados (3 cross-refs quebrados); .trae/specs/AGENTS.md encoding fix (chineses → português)",
+    "description": "Docs sync — código novo sem doc/README/AGENTS.md atualizado",
+    "completed_at": "2026-06-11",
+    "note": "3 AGENTS.md files faltantes criados (apps/akasha-portal/, docs/adrs/, packages/akasha-core/). 1 encoding bug em .trae/specs/AGENTS.md corrigido (caracteres chineses 太多了). Verificação via loop: todos os child DOX Index links agora resolvem para arquivos existentes. Commit 3329e84a."
   },
   {
     "id": "F-105",
