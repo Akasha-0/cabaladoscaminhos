@@ -104,15 +104,10 @@ function detectarCrise(intencao: string): boolean {
 
 async function loadEngines() {
   // Fase 6 integra engines reais; Fase 5 só valida o shape.
-  // @ts-expect-error — engines workspace podem não estar linkados em dev
   const cabala = await import('@akasha/core-cabala').catch(() => null);
-  // @ts-expect-error
   const astro = await import('@akasha/core-astrology').catch(() => null);
-  // @ts-expect-error
   const tantra = await import('@akasha/core-tantra').catch(() => null);
-  // @ts-expect-error
   const odu = await import('@akasha/core-odus').catch(() => null);
-  // @ts-expect-error
   const iching = await import('@akasha/core-iching').catch(() => null);
   return { cabala, astro, tantra, odu, iching };
 }
