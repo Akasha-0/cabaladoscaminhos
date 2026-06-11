@@ -149,9 +149,10 @@
     "phase": 6,
     "category": "implementation",
     "priority": "P2",
-    "passes": false,
+    "passes": true,
     "output": "apps/akasha-portal/src/app/[locale]/(akasha)/sobre/page.tsx",
-    "description": "Página Sobre o Sistema — narrativa 'Cicatriz vira Joia' + 5 Pilares + 4 Camadas"
+    "description": "Página Sobre o Sistema — narrativa 'Cicatriz vira Joia' + 5 Pilares + 4 Camadas",
+    "completed_at": "2026-06-11"
   },
   {
     "id": "F-206",

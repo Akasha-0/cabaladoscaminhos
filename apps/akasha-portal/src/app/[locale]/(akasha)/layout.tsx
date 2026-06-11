@@ -43,7 +43,10 @@ export default async function AkashaLayout({
             ✦ AKASHA
           </Link>
 
-          <ul className="flex items-center gap-5 text-sm" style={{ fontFamily: 'var(--font-inter), sans-serif' }}>
+          <ul
+            className="flex items-center gap-5 text-sm"
+            style={{ fontFamily: 'var(--font-inter), sans-serif' }}
+          >
             <li>
               <Link
                 href={`/${locale}/mandala`}
@@ -69,6 +72,15 @@ export default async function AkashaLayout({
                 style={{ color: '#A7AECF' }}
               >
                 Oráculo
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={`/${locale}/sobre`}
+                className="transition-colors"
+                style={{ color: '#A7AECF' }}
+              >
+                Sobre
               </Link>
             </li>
             <li>
