@@ -383,7 +383,10 @@
     "category": "implementation",
     "priority": "P1",
     "description": "Implementar Vimshottari Dasha (R-018 D3) em packages/core-astrology/src/dasha.ts. Algoritmo deterministico: Moon longitude em Nakshatra -> starting Mahadasha + Antardasha. Cita Parashara, Varahamihira. Adiciona dimensao temporal ao Pilar 2.",
-    "output": "packages/core-astrology/src/dasha.ts (calcularVimshottari + DashaPeriod type) + dasha.test.ts (~12 testes)"
+    "output": "packages/core-astrology/src/dasha.ts (calcularVimshottari + DashaPeriod + getNakshatra + getNakshatraLord) + dasha.test.ts (27 testes verdes)",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "note": "Vimshottari Dasha implementado (R-018 D3). 27/27 testes verdes. Algoritmo deterministico: Moon longitude -> Nakshatra (27) -> regente (9 Grahas) -> starting Mahadasha + Antardashas. Cita Parashara (Brihat Parashara Hora Shastra, 7-8 CE) como fonte. Math.round para evitar float edge case. Edge cases: wrap 360, 10+ anos fora do ciclo, Mahadasha parcial no nascimento."
   },
   {
     "id": "F-211",

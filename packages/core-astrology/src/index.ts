@@ -19,6 +19,19 @@ export { toJulianDate, normalizeDegrees, getSigno, getGrauNoSigno, calcularPosic
 
 // Posições planetárias
 export type { PlanetPosition } from './planet-positions';
+// Vimshottari Dasha (F-210) — Pilar 2 dimensão temporal Jyotish
+export type { Graha, DashaPeriod, VimshottariResult } from './dasha';
+export {
+  MAHADASHA_DURATIONS,
+  DASHA_ORDER,
+  TOTAL_DASHA_YEARS,
+  NAKSHATRA_LORDS,
+  NAKSHATRA_SPAN,
+  getNakshatra,
+  getNakshatraLord,
+  calcularVimshottari,
+} from './dasha';
+
 export { getPositions } from './planet-positions';
 
 // Posições avançadas
