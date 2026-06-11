@@ -1,7 +1,7 @@
 # Research INDEX — Sistema Akasha (Fase 0)
 
 > **Mapa vivo** de toda a pesquisa realizada.
-> Última atualização: 2026-06-10 — RQ-010 ✅ Tzolkin concluído (10/12 = 83%).
+> Última atualização: 2026-06-11 — R-022b ✅ Ethics Charter v1 (governança consolidada).
 
 ---
 
@@ -35,7 +35,9 @@
 | RQ-022 | Eixo central Akasha (síntese) | ✅ | synthesis_v1.md | R-021 |
 | RQ-023 | AI Mentor persona | ✅ | mentor/persona_v1.md | R-022 |
 | RQ-024 | UX architecture | ✅ | ux/architecture_v1.md | R-022, R-023 |
-| RQ-025 | Tech stack | ✅ | tech/stack_v1.md | R-024 |
+| RQ-025 | Tech stack | ✅ | tech_decisions.md | R-024 |
+| R-022b | **Ethics Charter v1** (governança) | ✅ | ethics/ethics_charter_v1.md | R-022, R-023, R-021 |
+| R-030 | Akasha Core Algorithm (TS puro) | ✅ | packages/akasha-core/src/akasha-core.ts | R-022 |
 
 ---
 
@@ -60,6 +62,7 @@
 | 2026-06-10 | cot-20260610-synthesis-v1-axis | RQ-022 Eixo central: PESSOA × 5 PILARES sobre Mandala com 4 camadas (D/S/Z/V); narrativa "Cicatriz vira Joia" (Tikkun + Shadow→Gift→Siddhi); 7 decisões D1-D7; 10 limites éticos |
 | 2026-06-10 | cot-20260610-tech-stack-decisions | R-025 7 decisões: Next.js 16.2+Turbopack / Postgres 16+pgvector (Supabase sa-east-1) / Sonnet 4.6+Haiku 4.5+Minimax / SSE Edge / Supabase Auth+RLS / Stripe mantém / Vercel+Supabase; D-037 Prisma 7 mantém; 5 incertezas + 10 decisões abertas O-1..O-10; Custo MVP $50-60/mo; 30+ fontes 2026 |
 | 2026-06-10 | cot-20260610-mentor-persona-v1 | RQ-023 Mentor Persona v1: 6 decisões D1-D6 (sem-nome, 3ª pessoa, LLM redige, citação obrigatória, 5 estados saúde, híbrido IA+humano); 12 regras éticas E1-E12; 5 samples de diálogo; system prompt base v1; 3 camadas de memória; LGPD by design |
+| 2026-06-11 | cot-20260611-ethics-charter-v1 | R-022b Ethics Charter v1: 8 decisões D1-D8 (8 Pilares de Ética exaustivos cobrindo 8 axiomas VISION; 12 regras E1-E12 subset Pilar 3-4; 5% earmark × 5 = 25% Ano 5; Crise→CVV 188 não-LLM; sem feed/gamificação; 4 aprovações governança; white paper anual+auditoria+DPO; PT-BR primeiro EN opt-in); 11 seções, ~600 linhas; governança com 4 aprovações + RFC pública 30d; 5 parcerias vivas mapeadas (Casa de Cabala/FAA/BAMS/Saq Be/Book of Changes Academy) |
 
 ---
 
@@ -101,6 +104,8 @@
 │   └── synthesis_v1.md             ✅ (R-022)
 ├── mentor/
 │   └── persona_v1.md               ✅ (R-023)
+├── ethics/
+│   └── ethics_charter_v1.md        ✅ (R-022b)
 ```
 
 ---

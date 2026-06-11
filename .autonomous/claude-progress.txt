@@ -126,3 +126,42 @@
 - Próxima sessão: R-025 Tech stack v1 (P0, 45min) — depende desta entrega
 - Próxima sessão (paralelo): D-005 refinement com 3 perfis reais (após Akasha Core Algorithm)
 - Próxima sessão (paralelo): R-022b Ethics Charter v1 (5% causa por Pilar + LGPD + crise)
+
+## Sessão N (2026-06-10) — R-025 ✅ Tech Stack v1 (Fase 4 COMPLETA)
+- Orientação: Fases 0 (12/12), 1 (Patterns/Gaps/Synthesis), 2 (Mentor), 3 (UX) ✅ — Faltava Fase 4 Tech Stack
+- Próximo item: R-025 (D-030..D-036 + D-037 ORM bonus) — feature_list passa:false
+- WebSearch 4 fontes (Next.js 16, pgvector, LLM, SSE) + WebSearch 3 (Auth, deploy, ORM) via exa MCP
+- 30+ fontes 2026 citadas em `.autonomous/research/tech/stack_v1.md` (981 linhas, 14 seções)
+- 7 decisões fechadas:
+  - D-030 Next.js 16.2+ Turbopack (7168MB heap + Vercel 16GB enhanced)
+  - D-031 Postgres 16 + pgvector HNSW 1536-dim em Supabase Cloud sa-east-1 (RLS nativo, LGPD)
+  - D-032 Sonnet 4.6 (RAG) + Haiku 4.5 (router/crise) + Minimax M3 (fallback) — ~$6/mo LLM
+  - D-033 SSE Edge Runtime (zero WebSocket)
+  - D-034 Supabase Auth + RLS (vs Clerk $1k/mo @ 100k MAU)
+  - D-035 Stripe mantém (PIX/Boleto nativo)
+  - D-036 Vercel Pro + Supabase Cloud + AWS sa-east-1 (Hetzner @ MAU 50k)
+  - D-037 Prisma 7 mantém (edge nativo, sem migration Drizzle)
+- 5 incertezas honestas + 10 decisões abertas O-1..O-10
+- Custo: $50-60/mo MVP → $150-250/mo @ 10k MAU → $1-2k/mo @ 50k MAU
+- COT: `cot-20260610-tech-stack-decisions.md`
+- feature_list R-025 = passes:true com metadata (artifact: tech/stack_v1.md, completed_at 2026-06-10)
+- TODO D-030..D-036 + D-025 = [x] com referência a seções
+- INDEX.md R-025 ✅ + nova entrada COT
+- CHECKPOINT.md bloco Fase 4→5 (próximos: R-030 prototype + R-022b ethics)
+- Commit: 6af94765 (6 files, 1152 insertions, 13 deletions)
+- Próxima sessão: R-030 Akasha Core Algorithm prototype (TS puro, Fase 5) — D-040..D-044 desbloqueados
+- Paralelo: R-022b Ethics Charter v1 (5% causa por Pilar + LGPD + crise)
+
+## Sessão N+1 (2026-06-11) — R-022b ✅ Ethics Charter v1 (governança consolidada)
+- Orientação: Fases 0-4 ✅ + R-030 (Algorithm TS puro) ✅ + 5 features F-100..F-104 (Fase 7 maintenance) pendentes
+- Próximo item: R-022b Ethics Charter v1 (paralelo pendente desde 2026-06-10) — 8 axiomas VISION + 12 regras E1-E12 + 8 anti-gaps precisavam de 1 doc canônico de governança
+- Criou `.autonomous/research/ethics/ethics_charter_v1.md` (~600 linhas, 11 seções)
+- 8 Pilares de Ética: (1) Citação Obrigatória, (2) Tradição Viva + 5% earmark, (3) LGPD/Ética by Design, (4) Híbrido IA+Humano Curado, (5) Não-Objetivos Explícitos, (6) PT-BR Primeiro, (7) Atualização Opcional Leitura Fixa, (8) Aprovação Humana 4-approvals
+- COT: `cot-20260611-ethics-charter-v1.md` (8 decisões D1-D8)
+- feature_list R-022b = passes:true (phase 1, synthesis, P0, completed_at 2026-06-11)
+- TODO.md: R-022b [x] + nota iteração com D1-D8 + 5 parcerias vivas mapeadas
+- INDEX.md: tabela Síntese&Design +/+, nova entrada COT, novo dir ethics/ no file tree
+- CHECKPOINT.md: R-030 ✅ + R-022b ✅ no bloco "Próximos passos"
+- Auditado R-030: 9/9 testes verdes (vitest 684ms), Zod schema + 5 Pilares + Mandala + Mandato + Mentor_hook OK
+- Sem código novo (Fase 5+ schema/Zod fica para D-040/D-042)
+- Próxima sessão: D-005 (refinar 3 perfis Ana/Bruno/Carla) OU D-040 (Prisma schema 5 pilares) OU D-042 (Zod types 10 perfis) — escolher por prioridade

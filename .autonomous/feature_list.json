@@ -402,5 +402,32 @@
     "output": ".autonomous/state/meta_review.signal + commits",
     "passes": true,
     "timebox": "perpétuo"
+  },
+  {
+    "id": "R-022b",
+    "phase": 1,
+    "category": "synthesis",
+    "priority": "P0",
+    "description": "Ethics Charter v1 — consolida 8 axiomas VISION + 12 regras E1-E12 + 8 anti-gaps em documento canônico de governança",
+    "dependencies": [
+      "R-022",
+      "R-023",
+      "R-021"
+    ],
+    "output": ".autonomous/research/ethics/ethics_charter_v1.md",
+    "passes": true,
+    "timebox": "60min",
+    "completed_at": "2026-06-11",
+    "artifact": ".autonomous/research/ethics/ethics_charter_v1.md",
+    "decisions": [
+      "D1-D8 — 8 Pilares de Ética (exaustivos, sem redundância com VISION)",
+      "D2 — 12 regras E1-E12 subset do Pilar 3-4",
+      "D3 — 5% earmark por Pilar × 5 = 25% total Ano 5",
+      "D4 — Crise → CVV 188 (regex expandido, não-LLM, 5 estados)",
+      "D5 — Sem feed/gamificação/comparação (padrão técnico)",
+      "D6 — 4 aprovações (Pilar+Curador+Comitê+Usuário) para mudar Charter",
+      "D7 — White paper anual + auditoria externa + DPO mensal",
+      "D8 — PT-BR primeiro, EN opt-in com curador nomeado"
+    ]
   }
 ]
