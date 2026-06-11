@@ -85,6 +85,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </span>
           <div className="flex items-center gap-4">
             <Link
+              href={`/${locale}/login`}
+              style={{
+                color: '#A7AECF',
+                fontSize: '0.875rem',
+                textDecoration: 'none',
+              }}
+            >
+              Entrar
+            </Link>
+            <Link
               href={`/${locale}/onboarding`}
               style={{
                 background: '#7C5CFF',
@@ -309,8 +319,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         >
           Iniciar Jornada →
         </Link>
-
-        <div className="mt-6">
+        <div className="mt-6" style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', alignItems: 'center' }}>
+          <Link
+            href={`/${locale}/login`}
+            style={{
+              color: '#A7AECF',
+              fontSize: '0.875rem',
+              textDecoration: 'none',
+            }}
+          >
+            Já tem conta? <span style={{ color: '#9D86FF', fontWeight: 500 }}>Entrar</span>
+          </Link>
+          <span style={{ color: '#3D4670' }}>·</span>
           <Link
             href="/dashboard"
             style={{
