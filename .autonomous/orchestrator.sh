@@ -59,13 +59,25 @@ SETTINGS_FILE="$PROJECT_DIR/.claude_settings.json"
 SESSION_LOG="$SESSIONS_DIR/session-$(printf '%03d' "$SESSION_NUM").log"
 
 EXIT_CODE=0
-claude \
-  --append-system-prompt-file "$PROMPT_FILE" \
-  --settings "$SETTINGS_FILE" \
-  --output-format stream-json \
-  --verbose \
-  --dangerously-skip-permissions \
-  2>&1 | tee "$SESSION_LOG" || EXIT_CODE=$?
+# 2026-06-11 FIX: claude 2.1.168 em modo non-TTY falha com "Input must be provided"
+# e mostra trust dialog TUI mesmo com --dangerously-skip-permissions.
+# Solução: --print + stdin pipe de bootstrap prompt JSON. Sem `script` wrapper
+# (script consome stdin, não passa pro child). Headless puro.
+BOOTSTRAP_PROMPT="$SCRIPT_DIR/bootstrap-prompt.json"
+if [[ -f "$BOOTSTRAP_PROMPT" ]]; then
+  cat "$BOOTSTRAP_PROMPT" | claude \
+    --print \
+    --append-system-prompt-file "$PROMPT_FILE" \
+    --settings "$SETTINGS_FILE" \
+    --input-format stream-json \
+    --output-format stream-json \
+    --verbose \
+    --dangerously-skip-permissions \
+    2>&1 | tee "$SESSION_LOG" || EXIT_CODE=$?
+else
+  log "ERRO: $BOOTSTRAP_PROMPT ausente"
+  exit 1
+fi
 
 log "Sessão #$SESSION_NUM terminou com exit=$EXIT_CODE"
 

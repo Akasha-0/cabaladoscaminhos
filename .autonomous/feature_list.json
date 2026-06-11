@@ -9,6 +9,74 @@
     "artifact": "systems/gene-keys.md"
   },
   {
+    "id": "R-013",
+    "phase": 0,
+    "category": "research",
+    "priority": "P0",
+    "description": "I Ching 64 hexagramas — Pilar 5 do Akasha. Engine de mutação, King Wen sequence, Wilhelm/Baynes 1950, merton/mutual hexagrams, Hexagrama do Nascimento (astrologia chinesa 12地球 + 10天干 + 12 fases), 2ª camada temporal. Preenche GAP: 5ª tradição prometida no VISION.md sem pesquisa dedicada.",
+    "questions": [
+      "Como calcular Hexagrama do Nascimento? (ano lunar + mês + dia solar)",
+      "Mutação: 6 linhas via yarrow stalks / 3 coins / online random",
+      "King Wen sequence vs Shao Yong (Fênix) vs Jing Fang (8 trigramas × 8 palácios)",
+      "Como Gene Keys (Rudd) codificou 64→3 níveis (Shadow/Gift/Siddhi) sem copyright?",
+      "Wilhelm/Baynes 1950 ainda é referência canônica ou existem traduções melhores (Huang 2010, Kunst 1985)?"
+    ],
+    "output": ".autonomous/research/systems/iching-64.md (≥500 linhas, todas fontes citadas)",
+    "passes": false,
+    "timebox": "60 min"
+  },
+  {
+    "id": "R-014",
+    "phase": 0,
+    "category": "research",
+    "priority": "P1",
+    "description": "Reverse-engineering Human Design (Ra Uru Hu) — COMO ele unificou I Ching + Cabala + Astrologia + Quromo (Centers 9 = enneagrama corporal). Estudar algoritmo do Bodygraph, copyright (Decisão de Florença 2020), e o que Akasha pode/deve copiar vs reinventar.",
+    "questions": [
+      "Como Ra Uru Hu mapeou 64 Gates → 12 signos × 6 linhas (72 quators)?",
+      "Centers 9: como mapeou para chakra system sem ferir IP de nenhum sistema?",
+      "Decisão de Florença 2020: o que exatamente foi tornado público?",
+      "Type/Strategy/Authority/Profile/Channels/Definition/Gates/Channels/Cross of Incarnation: ordem de derivação?",
+      "Akasha precisa reinventar ou pode usar convenções HD sob fair use?"
+    ],
+    "output": ".autonomous/research/synthesis/hd-reverse-engineering.md (≥500 linhas)",
+    "passes": false,
+    "timebox": "90 min"
+  },
+  {
+    "id": "R-015",
+    "phase": 0,
+    "category": "research",
+    "priority": "P1",
+    "description": "Reverse-engineering Gene Keys (Rudd 2009) — Matriz holográfica 64×3, Sequence of Pearls, Venustic Transmission, Genius/Shadow/Gift/Siddhi. Como Rudd construiu o framework sem IP claim de HD? Akasha pode usar o vocabulário 'Cicatriz vira Joia' como genérico.",
+    "questions": [
+      "Como Rudd 2009 derivou 64 hexagramas → 3 níveis × 3 codons = 192 arestas?",
+      "Pairing/Companion: como ele criou Sequence of Pearls (Genius Line)?",
+      "Contemplation program (Path of Love/Life/Victory) — pedagogia do silêncio vs HD 'Strategy/Authority'",
+      "Gene Keys vs HD: Rudd foi aluno de Ra Uru Hu? (Sim, 1990s). Onde diverge?",
+      "Akasha adota 'Shadow/Gift/Siddhi' como vocabulário genérico OU inventa novo?"
+    ],
+    "output": ".autonomous/research/synthesis/gk-reverse-engineering.md (≥500 linhas)",
+    "passes": false,
+    "timebox": "75 min"
+  },
+  {
+    "id": "R-016",
+    "phase": 0,
+    "category": "research",
+    "priority": "P1",
+    "description": "Reverse-engineering Enneagrama (Ichazo 1950s + Naranjo + Riso-Hudson) — derivação dos 9 tipos, Levels of Development, Instinctual Subtypes, Trifix. Akasha já citou Enneagrama como Pilar (RQ-004) mas falta o algoritmo de detecção e a estrutura temporal (Levels).",
+    "questions": [
+      "Como Ichazo derivou 9 tipos de fontes sufís/escolásticas (sem IP)?",
+      "Riso-Hudson Levels 1-9 (1999): como tornar determinístico vs auto-avaliação?",
+      "Naranjo Subtypes 27 (self-pres/sexual/social): 1-1-1, 1-1-2 etc — algoritmo de combinação?",
+      "Trifix (3 fixações, 1 por centro Head/Heart/Gut): como reduzir ruído?",
+      "Akasha usa tipo fixo OU Levels como camada temporal (já que Enneagrama é o único 'filme' entre os modelos)?"
+    ],
+    "output": ".autonomous/research/synthesis/enneagram-reverse-engineering.md (≥500 linhas)",
+    "passes": false,
+    "timebox": "75 min"
+  },
+  {
     "id": "R-022b",
     "phase": 2,
     "category": "design",

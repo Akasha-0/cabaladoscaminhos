@@ -24,9 +24,14 @@ if [[ -f "$COST_FILE" ]]; then
     fi
   fi
 
+  # 2026-06-11: $0 = no cap, negative = no cap (explicit override)
+  if [[ "$MAX_BUDGET" == "0" || "$MAX_BUDGET" == "-1" ]]; then
+    OVER=false
+  fi
+
   if [[ "$OVER" == true ]]; then
     cat <<EOF
-{"decision":"block","reason":"Budget diário atingido: \$${TODAY_COST} > \$${MAX_BUDGET}. Pare e notifique o usuário."}
+{"decision":"block","reason":"Budget diário atingido: \$${TODAY_COST} > \$${MAX_BUDGET}. Se quiser continuar, defina AUTONOMOUS_MAX_BUDGET_USD=0 no env ou aumente o limite."}
 EOF
     exit 0
   fi

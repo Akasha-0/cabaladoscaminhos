@@ -141,6 +141,81 @@ Se o suite falha mas isolado passa → suspect pollution, refatore.
 - **Não quebre o que existe** — rode testes antes e depois.
 - **Tamanho de commit:** prefira 1-3 arquivos, <300 linhas diff.
 
+### STEP 0 — AUTO-CONTEXT REBUILD (antes do STEP 1)
+
+A cada respawn, o agente é stateless. **Reconstrua contexto em 30s:**
+
+```bash
+# 1. Quem sou eu, o que já foi feito?
+cd /home/skynet/cabala-dos-caminhos
+PREV=$(ls -t .autonomous/sessions/session-*.log 2>/dev/null | head -1)
+[ -n "$PREV" ] && tail -200 "$PREV"
+
+# 2. Onde estávamos? O que ficou pendente?
+tail -50 .autonomous/claude-progress.txt
+ls .autonomous/lessons/
+
+# 3. O que está na fila AGORA?
+cat .autonomous/feature_list.json | jq '[.[] | select(.passes == false) | {id, phase, priority}] | sort_by(.phase, .priority) | .[0:5]'
+
+# 4. Estado do código
+git log --oneline -5
+git status --short
+```
+
+**Por que isso:** sem rebuild, cada sessão reinventa a roda. Com rebuild,
+curva de aprendizado exponencial — cada sessão começa de onde a anterior
+parou, com lessons aprendidas.
+
+### STEP 0.5 — CADA SESSÃO ADICIONA 1 LESSON
+
+Loop não é "1 feature → exit". É "1 feature → 1 lesson → 1 commit → exit".
+
+```bash
+# A cada sessão, ANTES de exit, escreva:
+cat >> .autonomous/lessons/session-NNN-<topic>.md <<EOF
+# Lesson — <título curto>
+
+**Date:** $(date +%Y-%m-%d)
+**Session:** N
+**Commit:** <hash>
+
+## Contexto
+<o que estava fazendo>
+
+## Aprendizado
+<o que aprendi que não sabia antes>
+
+## Como aplicar
+<próxima sessão usa isso em...>
+EOF
+git add .autonomous/lessons/
+git commit -m "docs(loop): session-NNN lesson — <título>"
+```
+
+Lessons formam **memória de longo prazo cross-session**. Sem isso, loop
+esquece entre respawns e curva de aprendizado é LINEAR (cada sessão
+redescobre o mesmo). Com isso, é EXPONENCIAL.
+
+### FASE 8 — REVERSE-ENGINEERING + SELF-IMPROVEMENT (NOVO)
+
+**Quando a fila de Fase 6-7 está curta (<5 itens), abra FASE 8:**
+
+1. **Reverse-engineering de sistemas modernos** (R-013, R-014, R-015, R-016):
+   - I Ching 64 (Pilar 5 faltando)
+   - Human Design (algoritmo do Bodygraph)
+   - Gene Keys (Shadow→Gift→Siddhi)
+   - Enneagrama (Levels de Development)
+2. **Auto-cura do loop:** se a sessão teve 3+ retries, escreva lesson
+   `.autonomous/lessons/loop-friction-<date>.md` com causa-raiz.
+3. **Code archeology:** `git log --since="30 days ago" --name-only` mapeia
+   áreas de mudança; investigue divergências entre intenção original e
+   estado atual.
+
+**Regra de Fase 8:** toda research F-8 termina com 1 commit
+`research(akasha): R-NNN — <título>` + 1 entry em `feature_list.json`
+marcando `passes: true`.
+
 ### AUTO-STOP
 
 Pare e escreva CHECKPOINT.md parcial se:
