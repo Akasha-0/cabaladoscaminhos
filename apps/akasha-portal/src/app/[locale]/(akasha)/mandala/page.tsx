@@ -4,7 +4,7 @@ import MandalaChart from '@/components/akasha/MandalaChart';
 
 export const metadata = {
   title: 'Minha Mandala',
-  description: 'Sua Mandala Akáshica — os 4 pilares da sua existência.',
+  description: 'Sua Mandala Akáshica — os 5 pilares da sua existência.',
 };
 
 function getSaudacao(): string {
@@ -14,11 +14,7 @@ function getSaudacao(): string {
   return 'Boa noite —';
 }
 
-export default async function MandalaPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function MandalaPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get('akasha_session')?.value;
@@ -106,6 +102,132 @@ export default async function MandalaPage({
 
       <MandalaChart data={data} />
 
+      {/* Painel explicativo dos 5 Pilares + Mandato do dia */}
+      <section
+        aria-label="Os 5 Pilares explicados"
+        style={{
+          width: '100%',
+          maxWidth: '720px',
+          marginTop: '2.5rem',
+          padding: '1.25rem',
+          background: 'rgba(11,14,28,0.55)',
+          border: '1px solid rgba(38,48,79,0.7)',
+          borderRadius: '18px',
+          backdropFilter: 'blur(6px)',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: 'var(--font-cinzel, serif)',
+            color: '#9D86FF',
+            fontSize: '0.7rem',
+            letterSpacing: '0.2em',
+            textAlign: 'center',
+            marginBottom: '0.4rem',
+          }}
+        >
+          POR QUE ESSES 5 EIXOS?
+        </p>
+        <h2
+          style={{
+            fontFamily: 'var(--font-cinzel, serif)',
+            color: '#F4F5FF',
+            fontSize: '1.05rem',
+            textAlign: 'center',
+            marginBottom: '1.1rem',
+          }}
+        >
+          Sua Mandala lê você em cinco linguagens
+        </h2>
+        <p
+          style={{
+            color: '#A7AECF',
+            fontSize: '0.82rem',
+            lineHeight: 1.65,
+            textAlign: 'center',
+            marginBottom: '1.25rem',
+          }}
+        >
+          Akasha não funde as cinco tradições — mantém cada uma com sua voz e mostra os{' '}
+          <em>isomorfismos</em>: como o mesmo ciclo aparece em Céu, Verbo, Anatomia, Terra e
+          Mutação. <strong>“Cicatriz vira Joia”</strong>: cada Pilar ilumina uma sombra e aponta um
+          dom.
+        </p>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '0.75rem',
+          }}
+        >
+          <PilarCard
+            icone="◯"
+            cor="#7C5CFF"
+            titulo="Pilar 2 · Astrologia"
+            eixo="O Céu — Quando Agir"
+            valor={
+              data.astrology?.ascendant
+                ? `Asc ${data.astrology.ascendant}`
+                : 'Sem hora de nascimento'
+            }
+            explicacao="O mapa de bordo: Sol, Lua, Ascendente e trânsitos. Mostra o cenário do céu no momento em que você respira pela primeira vez — e como ele se move hoje."
+            fonte="Brennan 2017 (Whole Sign)"
+          />
+          <PilarCard
+            icone="△"
+            cor="#7C5CFF"
+            titulo="Pilar 1 · Numerologia Cabalística"
+            eixo="O Verbo — Identidade"
+            valor={data.kabala?.lifePath ? `Life Path ${data.kabala.lifePath}` : 'Em cálculo'}
+            explicacao="O contrato de alma: Mispar Hechrachi do seu nome e data revela propósito oculto. O número fala a frequência com que sua essência vibra."
+            fonte="Sefer Yetzirah"
+          />
+          <PilarCard
+            icone="⬡"
+            cor="#2DD4BF"
+            titulo="Pilar 3 · Numerologia Tântrica"
+            eixo="A Anatomia — Energia"
+            valor={
+              data.tantra?.soul != null
+                ? `Corpo ${data.tantra.soul} · ${data.tantra?.karma ?? '—'}`
+                : 'Mapeando 11 corpos'
+            }
+            explicacao="Seus 11 corpos espirituais (Kundalini/Yogi Bhajan): alma, mente negativa/positiva/neutra, físico, prânico, sutil, radiante, mente divina. Onde a energia trava, há trabalho."
+            fonte="Yogi Bhajan · Taittiriya Upanishad"
+          />
+          <PilarCard
+            icone="✦"
+            cor="#F0B429"
+            titulo="Pilar 4 · Odus de Nascimento"
+            eixo="A Terra — Ori"
+            valor={
+              data.odus?.oduName
+                ? `${data.odus.oduName}${data.odus?.elementalForce ? ' · ' + data.odus.elementalForce : ''}`
+                : 'Aguardando terreiro'
+            }
+            explicacao="A bússola ancestral: o Odu que rege seu Ori no Candomblé/Ifá, os Orixás regentes e os rituais de correção. Requer consentimento e vínculo com axé/terreiro."
+            fonte="Ifá 16 Odu · tradição oral iorubá"
+          />
+          <PilarCard
+            icone="☯"
+            cor="#E0E7FF"
+            titulo="Pilar 5 · I Ching"
+            eixo="A Mutação — Ciclos"
+            valor={
+              data.iching?.hexagramNumber
+                ? `Hex ${data.iching.hexagramNumber}${data.iching?.hexagramName ? ' · ' + data.iching.hexagramName : ''}`
+                : 'Calculando mutação'
+            }
+            explicacao="O oráculo de jornada: o hexagrama natal (sua semente) e o do dia (a mutação) revelam o movimento do caminho. Cada linha traz Shadow→Gift→Siddhi."
+            fonte="Wilhelm/Baynes 1950"
+          />
+        </div>
+
+        {/* Mandato do dia — citações visíveis */}
+        <MandatoCard data={data} />
+      </section>
+
       {/* Quick link to diary */}
       <a
         href={`/${locale}/diario`}
@@ -121,5 +243,150 @@ export default async function MandalaPage({
         → Ver Diário Energético de hoje
       </a>
     </main>
+  );
+}
+
+interface PilarCardProps {
+  icone: string;
+  cor: string;
+  titulo: string;
+  eixo: string;
+  valor: string;
+  explicacao: string;
+  fonte: string;
+}
+
+function PilarCard({ icone, cor, titulo, eixo, valor, explicacao, fonte }: PilarCardProps) {
+  return (
+    <article
+      style={{
+        background: 'rgba(6,7,15,0.55)',
+        border: `1px solid ${cor}33`,
+        borderLeft: `3px solid ${cor}`,
+        borderRadius: '12px',
+        padding: '0.9rem 0.95rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.35rem',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <span aria-hidden style={{ fontSize: '1.15rem', color: cor, lineHeight: 1 }}>
+          {icone}
+        </span>
+        <strong
+          style={{
+            fontFamily: 'var(--font-cinzel, serif)',
+            fontSize: '0.78rem',
+            color: '#F4F5FF',
+            letterSpacing: '0.04em',
+          }}
+        >
+          {titulo}
+        </strong>
+      </div>
+      <span style={{ fontSize: '0.7rem', color: cor, letterSpacing: '0.05em' }}>{eixo}</span>
+      <span
+        style={{
+          fontFamily: 'var(--font-cinzel, serif)',
+          fontSize: '0.95rem',
+          color: '#F4F5FF',
+          marginTop: '0.2rem',
+        }}
+      >
+        {valor}
+      </span>
+      <p style={{ fontSize: '0.78rem', color: '#A7AECF', lineHeight: 1.55, margin: 0 }}>
+        {explicacao}
+      </p>
+      <span style={{ fontSize: '0.65rem', color: '#5C6691', fontStyle: 'italic' }}>
+        via {fonte}
+      </span>
+    </article>
+  );
+}
+
+interface MandatoData {
+  iching?: { hexagramNumber?: number; hexagramName?: string | null } | null;
+  astrology?: { ascendant?: string | null } | null;
+  kabala?: { lifePath?: number | null } | null;
+  odus?: { oduName?: string } | null;
+  tantra?: { soul?: number | null } | null;
+}
+
+function MandatoCard({ data }: { data: MandatoData }) {
+  const h = new Date().getHours();
+  const saudacao = h < 12 ? 'Bom despertar' : h < 18 ? 'Boa tarde' : 'Boa noite';
+  const hex = data.iching?.hexagramNumber;
+  const hexName = data.iching?.hexagramName;
+  const lp = data.kabala?.lifePath;
+  const asc = data.astrology?.ascendant;
+  const odu = data.odus?.oduName;
+
+  const citacoes: string[] = [];
+  if (hex) citacoes.push(`via Pilar 5 (I Ching) — hexagrama ${hex}${hexName ? ' ' + hexName : ''}`);
+  if (asc) citacoes.push(`via Pilar 2 (Astrologia) — Ascendente ${asc}`);
+  if (lp != null) citacoes.push(`via Pilar 1 (Cabala) — Life Path ${lp}`);
+  if (odu) citacoes.push(`via Pilar 4 (Odus) — ${odu}`);
+
+  return (
+    <div
+      style={{
+        marginTop: '1.25rem',
+        padding: '1rem 1.1rem',
+        background: 'linear-gradient(135deg, rgba(124,92,255,0.08) 0%, rgba(45,212,191,0.05) 100%)',
+        border: '1px solid rgba(124,92,255,0.25)',
+        borderRadius: '14px',
+      }}
+    >
+      <p
+        style={{
+          fontFamily: 'var(--font-cinzel, serif)',
+          color: '#9D86FF',
+          fontSize: '0.7rem',
+          letterSpacing: '0.2em',
+          marginBottom: '0.5rem',
+        }}
+      >
+        ✦ MANDATO DE HOJE · {saudacao.toUpperCase()}
+      </p>
+      <p style={{ color: '#F4F5FF', fontSize: '0.92rem', lineHeight: 1.65, margin: 0 }}>
+        Os cinco Pilares do seu mapa convergem agora.{' '}
+        {hex
+          ? `O hexagrama ${hex}${hexName ? ' (' + hexName + ')' : ''} ilumina o movimento do dia`
+          : 'A mutação do dia será calculada em breve'}
+        {lp != null ? `, em diálogo com seu Life Path ${lp}` : ''}
+        {asc ? ` e seu Ascendente em ${asc}` : ''}
+        {odu ? ` — sob a regência de ${odu}` : ''}.
+      </p>
+      {citacoes.length > 0 && (
+        <div
+          style={{
+            marginTop: '0.75rem',
+            paddingTop: '0.6rem',
+            borderTop: '1px dashed rgba(124,92,255,0.2)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '0.4rem 0.8rem',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--font-cinzel, serif)',
+              fontSize: '0.62rem',
+              color: '#5C6691',
+              letterSpacing: '0.1em',
+            }}
+          >
+            POR QUE ISSO:
+          </span>
+          {citacoes.map((c) => (
+            <span key={c} style={{ fontSize: '0.7rem', color: '#A7AECF', fontStyle: 'italic' }}>
+              {c}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

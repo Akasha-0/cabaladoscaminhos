@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 const PILLARS = [
@@ -35,13 +35,17 @@ const PILLARS = [
     axis: 'A Terra — Ori',
     desc: 'Sua Bússola Ancestral: o Odu, os Orixás regentes e os rituais de correção do seu Ori.',
   },
+  {
+    color: '#E0E7FF',
+    glow: 'rgba(224,231,255,0.15)',
+    icon: '☯',
+    title: 'I Ching (64 Hexagramas)',
+    axis: 'A Mutação — Ciclos',
+    desc: 'Seu Oráculo de Jornada: o hexagrama natal e o do dia revelam o movimento do seu caminho em tempo real.',
+  },
 ];
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const cookieStore = await cookies();
   const session = cookieStore.get('akasha_session')?.value;
@@ -142,8 +146,9 @@ export default async function HomePage({
             margin: '0 auto 2.5rem',
           }}
         >
-          O Sistema Akasha cruza Astrologia, Numerologia Cabalística, Numerologia Tântrica e Odus
-          para entregar um diagnóstico vivo e um ritual personalizado — cada manhã, renovado com o céu de hoje.
+          O Sistema Akasha cruza Astrologia, Numerologia Cabalística, Numerologia Tântrica, Odus e I
+          Ching para entregar um diagnóstico vivo e um ritual personalizado — cada manhã, renovado
+          com o céu de hoje.
         </p>
 
         <Link
@@ -171,7 +176,7 @@ export default async function HomePage({
           className="text-center text-xs uppercase tracking-widest mb-10"
           style={{ color: '#5C6691' }}
         >
-          Os 4 Pilares da Inteligência Akasha
+          Os 5 Pilares da Inteligência Akasha
         </p>
 
         <div
@@ -216,9 +221,7 @@ export default async function HomePage({
               <p style={{ fontSize: '0.75rem', color: p.color, marginBottom: '0.5rem' }}>
                 {p.axis}
               </p>
-              <p style={{ fontSize: '0.8125rem', color: '#A7AECF', lineHeight: 1.55 }}>
-                {p.desc}
-              </p>
+              <p style={{ fontSize: '0.8125rem', color: '#A7AECF', lineHeight: 1.55 }}>{p.desc}</p>
             </div>
           ))}
         </div>
@@ -244,10 +247,12 @@ export default async function HomePage({
           >
             A Inteligência mora no Cruzamento
           </h2>
-          <p style={{ color: '#A7AECF', lineHeight: 1.7, maxWidth: '520px', margin: '0 auto 2rem' }}>
-            O Akasha não lista quatro mapas lado a lado. Ele cruza os dados e emite um diagnóstico unificado —
-            como quando seu Ori está desalinhado por um trânsito astrológico intenso e a correção não é meditar,
-            mas um banho específico para pacificar seu Corpo Tântrico.
+          <p
+            style={{ color: '#A7AECF', lineHeight: 1.7, maxWidth: '520px', margin: '0 auto 2rem' }}
+          >
+            O Akasha não lista quatro mapas lado a lado. Ele cruza os dados e emite um diagnóstico
+            unificado — como quando seu Ori está desalinhado por um trânsito astrológico intenso e a
+            correção não é meditar, mas um banho específico para pacificar seu Corpo Tântrico.
           </p>
 
           <div
@@ -260,8 +265,15 @@ export default async function HomePage({
               fontSize: '0.8125rem',
             }}
           >
-            {['Diagnóstico personalizado', 'Ritual do dia', 'Oráculo conversacional', 'Mandala interativa'].map((f) => (
-              <span key={f} style={{ color: '#A7AECF' }}>✦ {f}</span>
+            {[
+              'Diagnóstico personalizado',
+              'Ritual do dia',
+              'Oráculo conversacional',
+              'Mandala interativa',
+            ].map((f) => (
+              <span key={f} style={{ color: '#A7AECF' }}>
+                ✦ {f}
+              </span>
             ))}
           </div>
         </div>
