@@ -319,7 +319,7 @@
     "timebox": "45min",
     "completed_at": "2026-06-10",
     "in_progress": false,
-    "artifact": "tech/stack_v1.md",
+    "artifact": "tech_decisions.md",
     "updated": "2026-06-10"
   },
   {
@@ -338,8 +338,10 @@
       "Sem persistência ainda — só tipos + lógica"
     ],
     "output": "packages/akasha-core/src/index.ts (skeleton)",
-    "passes": false,
-    "timebox": "90min"
+    "passes": true,
+    "timebox": "90min",
+    "completed_at": "2026-06-10",
+    "artifact": "packages/akasha-core/src/akasha-core.ts"
   },
   {
     "id": "F-100",
