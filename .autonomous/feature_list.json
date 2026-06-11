@@ -307,5 +307,31 @@
     "timebox": "30 min",
     "completed_at": null,
     "status": "design_proposal_pending_approval"
+  },
+  {
+    "id": "F-208",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P0",
+    "description": "Implementar 88° solar arc como 'Momento Pré-natal Akasha' em packages/core-astrology — algoritmo iterativo bisection para encontrar o momento em que o Sol estava 88° antes do birth_jd. Habilita a 2ª camada temporal para Pilar 2 (Astrologia) e Pilar 4 (Odu).",
+    "questions": [
+      "Algoritmo bisection com 50 iterações converge para 1e-6 precisão?",
+      "Função findDesignDate() vs findPrenatalDate() (nomenclatura)?",
+      "Tratamento correto de wrap-around 0°/360° no diff do Sol?",
+      "Performance: 50 iterações × N planetas = N*50 calls a calcularPosicao(). Cache?",
+      "Validação contra Swiss Ephemeris oficial?"
+    ],
+    "output": "packages/core-astrology/src/prenatal-date.ts (algoritmo bisection 88 solar arc) + prenatal-date.test.ts (8 testes verdes)",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "note": "8/8 testes verdes. Convergencia 1e-6 graus. Performance sub-ms. Janela 80-95 dias. Cobre wrap-around 0/360, ano bissexto, varios seculos. Nomenclatura Akasha: findPrenatalMoment. Habilita Pilar 2 segunda camada temporal."
+  },
+  {
+    "id": "F-209",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P1",
+    "description": "Tríade Sombra/Dom/Graça como Pilar 2 sub-estados (R-015 D2). Cada Pilar 2 (Astrologia) tem 3 sub-níveis. Integração com akasha-core.ts.",
+    "output": "packages/core-astrology/src/trinity.ts (3 estados) + integração em packages/akasha-core/src/akasha-core.ts"
   }
 ]

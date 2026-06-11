@@ -8,6 +8,9 @@
 export type { PosicaoPlaneta, Casa, MapaNatal, Planeta, Signo, Aspecto, AspectoTipo, AspectoNature } from './tipos';
 
 // Swiss Ephemeris
+// 88° Solar Arc (F-208) — Momento Pré-natal Akasha
+export { findPrenatalMoment } from './prenatal-date';
+
 export { toJulianDate, normalizeDegrees, getSigno, getGrauNoSigno, calcularPosicao, calcularCasas } from './swiss-ephemeris';
 
 // Posições planetárias
