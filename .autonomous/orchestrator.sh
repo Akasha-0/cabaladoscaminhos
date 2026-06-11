@@ -109,6 +109,28 @@ if [[ -f "$stop_signal" ]]; then
   exit 0
 fi
 
+# ─── Circuit-breaker para 429 Token Plan (2026-06-11) ─────────────────────
+# Sessão morre com 429 = token plan exhausted. Sem circuit-breaker, loop
+# respawna 3+ vezes em sequência desperdiçando ~10 min wall-clock cada.
+# Fix: detectar "429" ou "Token Plan" no log + contar consecutivos em
+# state/429-counter. Após 3 consecutivos → stop.signal automático.
+STATE_429="$STATE_DIR/429-counter"
+if [[ -f "$SESSION_LOG" ]] && grep -qE "429|Token Plan|rate_limit" "$SESSION_LOG" 2>/dev/null; then
+  COUNT=$(cat "$STATE_429" 2>/dev/null || echo 0)
+  COUNT=$((COUNT + 1))
+  echo "$COUNT" > "$STATE_429"
+  log "⚠ 429 detectado (count=$COUNT) — backoff ${COUNT}0s antes do próximo respawn"
+  sleep $((COUNT * 10))
+  if [[ $COUNT -ge 3 ]]; then
+    log "✗ 3+ sessões consecutivas com 429 — escrevendo stop.signal (token plan exhausted, reset necessário)"
+    echo "Auto-stop: 3+ sessões consecutivas com 429 Token Plan exhausted em $(date -Iseconds)" > "$stop_signal"
+    exit 0
+  fi
+else
+  # Sessão bem-sucedida (sem 429) — resetar contador
+  [[ -f "$STATE_429" ]] && rm -f "$STATE_429"
+fi
+
 ELAPSED=$(( $(date +%s) - START_TS ))
 if [[ $ELAPSED -ge $MAX_RUNTIME ]]; then
   log "Runtime max atingido (${ELAPSED}s/${MAX_RUNTIME}s) — encerrando."

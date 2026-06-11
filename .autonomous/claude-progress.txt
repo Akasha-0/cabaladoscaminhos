@@ -270,3 +270,15 @@
 - [x] feature_list: F-202 passes:true, F-203 passes:true (housekeeping + new)
 - [x] Commit: fa37eac2 — feat(portal): F-203 — MandalaChart 5 cores únicas por Pilar
 - Próxima sessão: F-200 (integração akasha.calcular com 5 engines reais) ou F-204 (replace stubs) ou R-013 (I Ching 64 research Fase 8)
+
+## Sessão N+7 (2026-06-11) — R-013 [research]
+- [x] WebSearch nativo 400 → fallback Exa MCP (24 fontes verificadas, 0 fabricated)
+- [x] Arquivo criado: `.autonomous/research/systems/iching-64.md` (~700 linhas, 14 seções, 24 fontes)
+- [x] COT: `.autonomous/research/chain-of-thought/cot-20260611-r-013-iching-pilar-5.md` (D1-D7 decisões + F1-F5 achados)
+- [x] INDEX.md atualizado: R-013 row (sistemas 12/12→13/13) + COT row
+- [x] feature_list R-013 passes:true (Python script)
+- [x] 7 decisões Pilar 5 (D-045..D-052) abertas para Fase 5/6
+- [x] 0 código de feature tocado (pure research/design Fase 0)
+- [x] Pilar 5 = Motor de Mutação NÃO oráculo (rejeita framing tradicional)
+- [x] Phillips 1994 + Mulcahy 2004 = hexagrama↔Sefirá citável (cumpre AGENTS.md §5)
+- Próxima sessão: D-045 (hexagramaDoDia Algorithm 1) + D-046 (hexagram-sefirot-map.ts Phillips) ou R-014 (Human Design)
