@@ -358,7 +358,10 @@
       "Rahu/Ketu (nodos lunares): tratamento similar a Quiron/Lilith ocidental?",
       "Akasha respeita tradições indianas OU as sintetiza com Ocidental?"
     ],
-    "output": ".autonomous/research/synthesis/jyotish-reverse-engineering.md (≥500 linhas)"
+    "output": ".autonomous/research/synthesis/jyotish-reverse-engineering.md (491+ linhas, 11 secoes + COT)",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "note": "491+ linhas. Decisoes: D1 Tropical default + ayanamsa opt-in, D2 Sem Nakshatras no Pilar 2, D3 Dasha como F-210, D4 Rahu/Ketu primarios, D5 Respeita Jyotish sem sintetizar. Apropriacao seletiva com citacao explicita."
   },
   {
     "id": "R-019",

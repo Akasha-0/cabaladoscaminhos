@@ -25,6 +25,7 @@
 | R-014 | **Human Design Reverse-Engineering** (algoritmo + IP) | ✅ DONE | [synthesis/hd-reverse-engineering.md](synthesis/hd-reverse-engineering.md) | 90 min | P1 |
 | R-015 | **Gene Keys Reverse-Engineering** (tríade 64×3 + IP) | ✅ DONE | [synthesis/gk-reverse-engineering.md](synthesis/gk-reverse-engineering.md) | 75 min | P1 |
 | R-016 | **Enneagrama Reverse-Engineering** (Levels 1-9 + IP) | ✅ DONE | [synthesis/enneagram-reverse-engineering.md](synthesis/enneagram-reverse-engineering.md) | 75 min | P1 |
+| R-018 | **Jyotish Reverse-Engineering** (Astrologia Védica) | ✅ DONE | [synthesis/jyotish-reverse-engineering.md](synthesis/jyotish-reverse-engineering.md) | 90 min | P1 |
 
 **Progresso:** 13/13 sistemas (108%) — **Fase 0 (Research) EXPANDIDA** com Pilar 5.
 
