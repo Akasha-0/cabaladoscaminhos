@@ -10,6 +10,10 @@ export type { PosicaoPlaneta, Casa, MapaNatal, Planeta, Signo, Aspecto, AspectoT
 // Swiss Ephemeris
 // 88° Solar Arc (F-208) — Momento Pré-natal Akasha
 export { findPrenatalMoment } from './prenatal-date';
+// Tríade Sombra/Dom/Graça (F-209) — Pilar 2 sub-estados
+export type { TrinityLevel, TrinityCount } from './trinity';
+export { classifyAspect, countTrinity, dominantTrinity } from './trinity';
+
 
 export { toJulianDate, normalizeDegrees, getSigno, getGrauNoSigno, calcularPosicao, calcularCasas } from './swiss-ephemeris';
 

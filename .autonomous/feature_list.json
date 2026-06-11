@@ -332,6 +332,9 @@
     "category": "implementation",
     "priority": "P1",
     "description": "Tríade Sombra/Dom/Graça como Pilar 2 sub-estados (R-015 D2). Cada Pilar 2 (Astrologia) tem 3 sub-níveis. Integração com akasha-core.ts.",
-    "output": "packages/core-astrology/src/trinity.ts (3 estados) + integração em packages/akasha-core/src/akasha-core.ts"
+    "output": "packages/core-astrology/src/trinity.ts (classifyAspect/countTrinity/dominantTrinity) + integracao em packages/akasha-core/src/akasha-core.ts (PilarAstrologia.trinity)",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "note": "14/14 testes verdes (trinity) + 298/298 akasha-core. PilarAstrologia agora tem trinity: {sombra, dom, graca} e trinity_dominante. Mapeamento inicial Sol-Lua: eclipse=graca, oposicao=sombra, quadratura=dom. Nomenclatura PT-BR (nao Shadow/Gift/Siddhi). Habilita Pilar 2 sub-estados."
   }
 ]

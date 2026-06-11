@@ -34,12 +34,18 @@ export interface PilarCabala {
   ano_pessoal: number;
 }
 
+export type PilarTrinityLevel = 'sombra' | 'dom' | 'graca';
+
 export interface PilarAstrologia {
   sol_signo: string;
   asc_signo: string | null;
   lua_signo: string;
   lua_fase: 'nova' | 'crescente' | 'cheia' | 'minguante';
   hora_desconhecida: boolean;
+  // F-209: Tríade Sombra/Dom/Graça — sub-estados de frequência
+  // (R-015 §2.1: Shadow→Gift→Siddhi, com nomenclatura PT-BR R-015 D2)
+  trinity: { sombra: number; dom: number; graca: number };
+  trinity_dominante: PilarTrinityLevel;
 }
 
 export interface PilarTantrica {
@@ -268,12 +274,21 @@ async function realPilar2Astrologia(
         lua_fase = fases[Math.floor(faseIdx) % 4];
       }
       const asc_signo = input.hora_nascimento ? longitudeToSigno(bc.chart.ascendente) : null;
+      // F-209: tríade Sombra/Dom/Graça (R-015 §2.1, nomenclatura PT-BR)
+      // Mapeamento simples baseado em fase lunar + aspectos Sol-Lua:
+      // - Lua nova (eclipse) ou Sol-Lua muito próximos → Graça (alinhamento raro)
+      // - Lua cheia (oposição Sol-Lua) → Sombra
+      // - Crescente/minguante (quadraturas) → Dom
+      const trinity = computeTrinityFromSolLua(solLongitude, luaLongitude);
+      const trinity_dominante = dominantOf(trinity);
       return {
         sol_signo,
         asc_signo,
         lua_signo,
         lua_fase,
         hora_desconhecida: !input.hora_nascimento,
+        trinity,
+        trinity_dominante,
       };
     } catch (e) {
       console.warn('[akasha/core] Pilar 2 Astrologia falhou, usando stub:', e);
@@ -294,8 +309,40 @@ async function realPilar2Astrologia(
     lua_signo: signos[Math.floor((d + 7) % 12)],
     lua_fase: fases[Math.floor(faseIdx) % 4],
     hora_desconhecida: !input.hora_nascimento,
+    trinity: { sombra: 0, dom: 1, graca: 0 },
+    trinity_dominante: 'dom',
   };
 }
+
+// F-209: helper para tríade Sombra/Dom/Graça
+// Mapeamento simples Sol-Lua para sub-estados (R-015 D2).
+// Em produção futura, F-209b substitui por análise completa de aspectos via
+// @akasha/core-astrology (countTrinity + dominantTrinity).
+function computeTrinityFromSolLua(
+  solLongitude: number | undefined,
+  luaLongitude: number | undefined,
+): { sombra: number; dom: number; graca: number } {
+  if (solLongitude == null || luaLongitude == null) {
+    return { sombra: 0, dom: 1, graca: 0 };
+  }
+  const angulo = (((luaLongitude - solLongitude) % 360) + 360) % 360;
+  if (angulo < 5 || angulo > 355) {
+    // Conjunção exata Sol-Lua = eclipse solar = Graça (alinhamento raro)
+    return { sombra: 0, dom: 0, graca: 1 };
+  }
+  if (angulo >= 175 && angulo <= 185) {
+    // Oposição Sol-Lua (lua cheia) = Sombra
+    return { sombra: 1, dom: 0, graca: 0 };
+  }
+  // Crescente (45-135) ou minguante (225-315) = Dom (default)
+  return { sombra: 0, dom: 1, graca: 0 };
+}
+
+function dominantOf(count: { sombra: number; dom: number; graca: number }): PilarTrinityLevel {
+  if (count.graca > count.dom && count.graca > count.sombra) return 'graca';
+  if (count.dom >= count.sombra) return 'dom';
+  return 'sombra';
+ }
 
 async function realPilar3Tantrica(
   input: AkashaInput,
