@@ -216,13 +216,37 @@ redescobre o mesmo). Com isso, é EXPONENCIAL.
 `research(akasha): R-NNN — <título>` + 1 entry em `feature_list.json`
 marcando `passes: true`.
 
-### AUTO-STOP
+### LESSONS APRENDIDAS — N+7 (2026-06-11, supervisor takeover)
 
-Pare e escreva CHECKPOINT.md parcial se:
-- Mesma feature tentada 3h+ (provavelmente é distração)
-- 4+ horas de sessão sem commit de código
-- 5 F-100..F-104 done E nenhuma R-FASE6 aberta → meta-review
-- API é token plan, custo fixo, usuário autorizou: não parar por custo.
+1. **Feature_list.json é FRÁGIL** (L1 R-014 orphan):
+   - Edit tool pode introduzir entries órfãs (id duplicado, opening `{` sem id)
+   - **Mitigação**: orchestrator pre-flight valida JSON + detecta orphans
+   - **Recuperação**: `git checkout HEAD -- .autonomous/feature_list.json` e re-aplicar via Python json round-trip
+2. **Stub fallbacks DEVEM preservar contract** (L2):
+   - Pilar 4 (Odu) stub usa 16 nomes; real engine retorna compostos yorubás
+   - Pilares 1/3/5 stubs preservam shape dos 5 Pilares
+   - Pilar 2 (Astrologia) stub: signos[month-1%12] determinístico
+   - Regra: stub = mesma shape, valores fake-previsíveis
+3. **Naming Akasha vs Tradição** (L3):
+   - 7 chakras hindus (NÃO 9 centers HD) — IP clean
+   - Sombra/Dom/Graça (NÃO Shadow/Gift/Siddhi) — PT-BR
+   - 4 Temperamentos Gregos (NÃO MBTI/Keirsey/DISC) — domínio público milenar
+   - Mandala Akasha (NÃO Bodygraph) — próprio
+4. **Pilar 4 ethics invariant** (L4):
+   - NUNCA inventar correspondência esotérica sem curadoria
+   - Canonical whitelist (15 nomes derivados de D-044) antes de vazar real engine
+   - Stub fallback quando real engine retorna nome composto
+5. **Circuit-breaker para 429** (L5):
+   - Detectar "429" / "Token Plan" / "rate_limit" no session log
+   - 3 consecutivos → stop.signal automático
+   - Backoff exponencial entre respawns (10s, 20s, 30s)
+   - Complementar com general failure circuit-breaker (5 falhas seguidas)
+6. **Pre-flight checks ANTES de spawn** (L6):
+   - feature_list.json JSON válido
+   - feature_list sem entries órfãs
+   - Smoke test (3 packages) com timeout 60s
+   - Problemas não-bloqueantes (warning) — supervisor decide
+
 
 ### FERRAMENTAS
 
