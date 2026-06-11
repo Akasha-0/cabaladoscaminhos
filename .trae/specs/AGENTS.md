@@ -24,4 +24,4 @@ Especificações de versão do projeto Akasha.
 - Revisão de checklist antes de fechar spec
 
 ## Child DOX Index
-(20 versões de spec -太多了，mantido plano)
+(20 versões de spec listadas diretamente em .trae/specs/akasha-v*; cada uma com seu próprio AGENTS.md se necessário)
