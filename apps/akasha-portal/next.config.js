@@ -1,15 +1,28 @@
-/** @type {import('next').NextConfig} */
+// Config canônico do app. Conteúdo unificado a partir dos antigos
+// skeletons (.js + .mjs) e next.config.ts — Next.js 16 prioriza .js,
+// então mantemos aqui a config completa para que git checkout/restore
+// não recrie o crash de ESM/CommonJS.
 const nextConfig = {
-  // Skeleton mínimo (v0.0.4-T1.2). Será expandido em T1.3+ quando o código B2C for movido.
   reactStrictMode: true,
-  // Transpile os packages locais do monorepo
-  transpilePackages: [
-    '@akasha/types',
-    '@akasha/core-astrology',
-    '@akasha/core-cabala',
-    '@akasha/core-odus',
-    '@akasha/core-tantra',
+  compress: true,
+  poweredByHeader: false,
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "*.supabase.co" },
+    ],
+  },
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
+  serverExternalPackages: [
+    "@prisma/client",
+    "prisma",
+    "pg",
+    "pg-pool",
+    "pg-connection-string",
   ],
+  staticPageGenerationTimeout: 120,
 };
 
-module.exports = nextConfig;
+export default nextConfig;
