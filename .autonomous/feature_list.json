@@ -429,5 +429,24 @@
       "D7 — White paper anual + auditoria externa + DPO mensal",
       "D8 — PT-BR primeiro, EN opt-in com curador nomeado"
     ]
+  },
+  {
+    "id": "D-043",
+    "phase": 5,
+    "category": "prototype",
+    "priority": "P1",
+    "description": "10 perfis representativos (fixtures + tests) para validar o contrato do Akasha Core Algorithm v1 (R-030) antes da Fase 6 integrar engines reais. Cobre: mainstream, sem hora, crise, sênior, primeira geração, identidade, intenção complexa, multi-tradição, hesitação existencial, datas alinhadas.",
+    "questions": [
+      "O AkashaInputSchema aceita os 10 perfis?",
+      "calcular() retorna shape completo (5 Pilares + Mandala + Mandato + mentor_hook)?",
+      "É determinístico para Pilares fixos?",
+      "Pilar 4 sempre cita fonte Ifá/Candomblé + aviso de consentimento?",
+      "Perfis 'trans' e 'perdido' NÃO disparam CVV?",
+      "Cisão: PERFIL_CRISIS dispara CVV-188?"
+    ],
+    "output": "packages/akasha-core/src/profiles-fixtures.ts (11 personas: 10 normais + 1 crise) + profiles.test.ts (69 testes verdes)",
+    "passes": true,
+    "timebox": "30 min",
+    "completed_at": "2026-06-11"
   }
 ]
