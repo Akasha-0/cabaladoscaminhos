@@ -57,6 +57,17 @@
   - `cf413bde` R-018 Jyotish reverse-eng (491 linhas, 11 seções + COT)
   - `3079e680` F-209b análise completa de aspectos no Pilar 2 trinity
   - `8ee23c8a` R-019 4 Temperamentos Gregos (433 linhas, 12 seções + COT)
-  Status: 29/30 features done. Único blocked: D-040 (Prisma).
   Akasha agora tem 6 frameworks complementares (5 Pilares + 4 Camadas + 9 Levels + 3 Tríades + 4 Temperamentos + Tríade Sombra/Dom/Graça).
+  Triad: 363/363 verde, zero regressão.
+- [x] **PLN-017** — Supervisor takeover turn 4: implementações FASE 6 de R-018 D1/D3/D4. 4 commits entregues:
+  - `6c9dd2d1` F-210 Vimshottari Dasha (Jyotish 9 Grahas + 27 Nakshatras, 27 testes)
+  - `02f1eb90` F-211 Rahu/Ketu nodais lunares primários (Jyotish, 11 testes)
+  - `e2bc0f8a` F-212 Ayanamsa opt-in (Lahiri/Raman/Krishnamurti, 9 testes)
+  Status: 32 entries, 1 pending (D-040 blocked, awaiting human approval).
+  Triad: 419/419 verde. Akasha Pilar 2 agora tem:
+  - 88° solar arc (F-208)
+  - Tríade Sombra/Dom/Graça com análise completa de aspectos (F-209/F-209b)
+  - Vimshottari Dasha (F-210) — 120 anos de períodos planetários
+  - Rahu/Ketu primários (F-211) — diferenciação Jyotish
+  - Ayanamsa opt-in (F-212) — tropical default + Jyotish opt-in
   Triad: 363/363 verde, zero regressão.
