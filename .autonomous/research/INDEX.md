@@ -22,6 +22,7 @@
 | RQ-011 | Ayurveda | ✅ DONE | [systems/ayurveda.md](systems/ayurveda.md) | 60 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ✅ DONE | [systems/sheldrake-cymatics.md](systems/sheldrake-cymatics.md) | 30 min | P2 |
 | R-013 | **I Ching 64 Hexagramas** (King Wen + Wilhelm/Baynes) | ✅ DONE | [systems/iching-64.md](systems/iching-64.md) | 110 min | P0 |
+| R-014 | **Human Design Reverse-Engineering** (algoritmo + IP) | ✅ DONE | [synthesis/hd-reverse-engineering.md](synthesis/hd-reverse-engineering.md) | 90 min | P1 |
 
 **Progresso:** 13/13 sistemas (108%) — **Fase 0 (Research) EXPANDIDA** com Pilar 5.
 
