@@ -65,7 +65,7 @@
   },
   {
     "id": "R-016",
-    "phase": 0,
+    "phase": 8,
     "category": "research",
     "priority": "P1",
     "description": "Reverse-engineering Enneagrama (Ichazo 1950s + Naranjo + Riso-Hudson) — derivação dos 9 tipos, Levels of Development, Instinctual Subtypes, Trifix. Akasha já citou Enneagrama como Pilar (RQ-004) mas falta o algoritmo de detecção e a estrutura temporal (Levels).",
@@ -76,9 +76,11 @@
       "Trifix (3 fixações, 1 por centro Head/Heart/Gut): como reduzir ruído?",
       "Akasha usa tipo fixo OU Levels como camada temporal (já que Enneagrama é o único 'filme' entre os modelos)?"
     ],
-    "output": ".autonomous/research/synthesis/enneagram-reverse-engineering.md (≥500 linhas)",
-    "passes": false,
-    "timebox": "75 min"
+    "output": ".autonomous/research/synthesis/enneagram-reverse-engineering.md (500+ linhas, 10 seções + COT)",
+    "passes": true,
+    "timebox": "75 min",
+    "completed_at": "2026-06-11",
+    "note": "500+ linhas. Decisoes: (D1) Trio FASE 8 completo (HD/GK/Enneagrama), (D2) Nomenclatura PT-BR para 9 Levels, (D3) NAO usar 27 Subtypes (Naranjo qualitativo), (D4) Combinar 3 Triades Enneagrama + 7 chakras Tantra, (D5) Enneagrama contemplativo (vs HD/GK calculados), (D6) IP do Enneagrama mais fraco que HD/GK."
   },
   {
     "id": "R-022b",
