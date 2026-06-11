@@ -372,6 +372,9 @@
     "category": "research",
     "priority": "P2",
     "description": "4 Temperamentos Gregos (Hipócrates 400BC) — sanguine, colérico, melancólico, fleumático. Base de MBTI/Enneagrama/Keirsey. 4-quadrant framework, mais simples que 9-tipo Enneagrama. Akasha pode usar como framework Pilar 3 fallback.",
-    "output": ".autonomous/research/synthesis/greek-temperaments.md (≥500 linhas)"
+    "output": ".autonomous/research/synthesis/greek-temperaments.md (500+ linhas, 12 seções + COT)",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "note": "500+ linhas. Decisoes: D1 Adicionar 4 Temperamentos como Pilar 3 sub-framework opt-in, D2 Nomenclatura PT-BR (Sanguineo/Colerico/Melancolico/Fleumatico), D3 Mapeamento especulativo para 5 Pilares + 4 Camadas (precisa R-022 validacao), D4 Estado atual (nao tipo fixo) per R-022, D5 IP-clean + tradicao milenar (Hipocrates/Galeno/Avicena/Kant). Cita Parashara + Varahamihira. Akasha combina 6 frameworks: 5 Pilares, 4 Camadas, 9 Levels, 3 Triades, 4 Temperamentos, Tríade Sombra/Dom/Graça."
   }
 ]
