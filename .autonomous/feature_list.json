@@ -271,7 +271,7 @@
       "5+ exemplos de diálogo real"
     ],
     "output": ".autonomous/research/mentor_persona.md",
-    "passes": false,
+    "passes": true,
     "timebox": "60min"
   },
   {

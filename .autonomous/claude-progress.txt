@@ -89,3 +89,21 @@
 - CHECKPOINT + INDEX + feature_list.json (R-022 = true) + TODO (D-003 [x] + Notas Iteração) atualizados
 - Próxima sessão: RQ-023 Mentor persona v1 (P0, 60-90min) — dependência de synthesis_v1.md §7
 - Próxima sessão (paralelo): RQ-022b Ethics Charter v1 (5% causa por Pilar + LGPD + crise)
+
+[2026-06-10 23:58] RQ-023 ✅ Mentor Persona v1 (Fase 2 — AI Mentor) — 1ª persona do agente orquestrador entregue
+- 1091 linhas em .autonomous/research/mentor/persona_v1.md (14 seções + apêndice)
+- 6 decisões D1-D6: persona sem nome próprio, voz 3ª pessoa ritualística, LLM redige (não decide), citação obrigatória, 5 estados saúde espiritual, híbrido IA+humano obrigatório
+- 12 regras éticas E1-E12 em 4 famílias (Verdade/Fonte, Não-Viciar, Saúde Mental, Tradição/Sociedade)
+- System prompt base v1 (design) + 7 tool calls (cite_source, query_grimoire, classify_intent, get_user_mandala, get_recent_mandates, trigger_crisis_protocol, trigger_usage_cap)
+- 3 camadas de memória (perfil/Mandatos 90d/conversa 5 turnos) + LGPD by design checklist
+- 5 samples de diálogo canônicos (DIAGNÓSTICO/EXPLICAÇÃO/RITUAL/CRISE/NÃO-SEI) com 5 perfis (Ana/Bruno/Carla/etc)
+- Mensagem Fundadora canônica (copy/paste ready)
+- 5 estados saúde espiritual: Integridade/Contemplação/Busca/Desconforto/Crise (2 protocolos diferentes em v1)
+- Protocolo CRISE: pula LLM, exibe CVV 188 + CAPS + Mentor Certificado (R$ 95-195), sessão pausada 24h
+- Cap de uso: 1 sessão/dia, 3/semana, 15 min contínuos; white paper anual público
+- 10 decisões em aberto O1-O10 (nome próprio v2, TTS fase 6+, on-device crisis model, etc)
+- COT: .autonomous/research/chain-of-thought/cot-20260610-mentor-persona-v1.md
+- CHECKPOINT + INDEX + feature_list.json (R-022/R-023 = true) + TODO (D-004/D-010-D-015 [x] + Notas Iteração) atualizados
+- Próxima sessão: RQ-024 UX architecture v1 (P0, 60-90min) — depende de persona_v1 + synthesis_v1
+- Próxima sessão (paralelo): RQ-025 Tech stack v1 (P1) — depende de R-024 + persona_v1
+- Próxima sessão (paralelo): D-005 Validação 3 perfis (Ana/Bruno/Carla) com samples de §8

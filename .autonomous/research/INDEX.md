@@ -58,6 +58,7 @@
 | 2026-06-10 | cot-20260610-patterns-extraction | 20 patterns convergentes em 5 famílias (algorítmica/visual/temporal/linguagem/negócio) + 12 anti-padrões; 4 decisões estruturantes para RQ-022 |
 | 2026-06-10 | cot-20260610-gaps-extraction | 20 gaps em 6 famílias (multi-tradição/geografia/ética/AI/tempo/negócio) + 8 anti-gaps rejeitados; 16 HIGH + 4 MED-HIGH confidence; 5 outputs esperados para RQ-022 |
 | 2026-06-10 | cot-20260610-synthesis-v1-axis | RQ-022 Eixo central: PESSOA × 5 PILARES sobre Mandala com 4 camadas (D/S/Z/V); narrativa "Cicatriz vira Joia" (Tikkun + Shadow→Gift→Siddhi); 7 decisões D1-D7; 10 limites éticos |
+| 2026-06-10 | cot-20260610-mentor-persona-v1 | RQ-023 Mentor Persona v1: 6 decisões D1-D6 (sem-nome, 3ª pessoa, LLM redige, citação obrigatória, 5 estados saúde, híbrido IA+humano); 12 regras éticas E1-E12; 5 samples de diálogo; system prompt base v1; 3 camadas de memória; LGPD by design |
 
 ---
 
@@ -97,6 +98,8 @@
     └── cot-20260610-synthesis-v1-axis.md
 ├── synthesis/
 │   └── synthesis_v1.md             ✅ (R-022)
+├── mentor/
+│   └── persona_v1.md               ✅ (R-023)
 ```
 
 ---

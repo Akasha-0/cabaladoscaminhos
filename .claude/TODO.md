@@ -48,12 +48,18 @@
 
 ## FASE 2 — AI Mentor
 
-- [ ] D-010 — Definir persona do Mentor (nome, voz, história)
-- [ ] D-011 — Escrever system prompt base (com guard-rails)
-- [ ] D-012 — Protocolo de RAG (citação obrigatória do Grimório)
-- [ ] D-013 — Comportamento ético (crise, fatalismo, vício)
-- [ ] D-014 — Tom de voz: exemplos de dialog (5+ samples)
-- [ ] D-015 — Memória de conversa (estrutura)
+- [x] D-010 — Definir persona do Mentor (nome, voz, história)
+       — ✅ mentor/persona_v1.md §1
+- [x] D-011 — Escrever system prompt base (com guard-rails)
+       — ✅ mentor/persona_v1.md §7
+- [x] D-012 — Protocolo de RAG (citação obrigatória do Grimório)
+       — ✅ mentor/persona_v1.md §3
+- [x] D-013 — Comportamento ético (crise, fatalismo, vício)
+       — ✅ mentor/persona_v1.md §4 + §5 (E1-E12)
+- [x] D-014 — Tom de voz: exemplos de dialog (5+ samples)
+       — ✅ mentor/persona_v1.md §8 (5 samples canônicos)
+- [x] D-015 — Memória de conversa (estrutura)
+       — ✅ mentor/persona_v1.md §6 (3 camadas)
 
 ## FASE 3 — UX Architecture
 
