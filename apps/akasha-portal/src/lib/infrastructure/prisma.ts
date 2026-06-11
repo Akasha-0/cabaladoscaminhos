@@ -1,15 +1,24 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
 function createPrismaClient(): PrismaClient {
-  if (!process.env.DATABASE_URL) {
+  const connectionString = process.env.DATABASE_URL;
+
+  if (!connectionString) {
     throw new Error('DATABASE_URL não está definida');
   }
 
+  // Deixa o PrismaPg adapter gerenciar o pool (max=10 é o default interno
+  // do adapter). Antes construíamos um pg.Pool com max=5 para serverless;
+  // o adapter faz isso internamente com defaults sensatos para Prisma 7.
+  const adapter = new PrismaPg({ connectionString });
+
   return new PrismaClient({
+    adapter,
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   });
 }

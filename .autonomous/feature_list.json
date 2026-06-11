@@ -19,18 +19,15 @@
       "Mutação: 6 linhas via yarrow stalks / 3 coins / online random",
       "King Wen sequence vs Shao Yong (Fênix) vs Jing Fang (8 trigramas × 8 palácios)",
       "Como Gene Keys (Rudd) codificou 64→3 níveis (Shadow/Gift/Siddhi) sem copyright?",
+      "Wilhelm/Baynes 1950 ainda é referência canônica ou existem traduções melhores (Huang 2010, Kunst 1985)?"
+    ],
+    "output": ".autonomous/research/systems/iching-64.md (≥500 linhas, todas fontes citadas)",
+    "passes": true,
+    "timebox": "60 min"
+  },
   {
     "id": "R-014",
     "phase": 8,
-    "category": "research",
-    "priority": "P1",
-    "passes": true,
-    "output": ".autonomous/research/synthesis/hd-reverse-engineering.md (500 linhas, 10 seções + COT)",
-    "description": "Reverse-engineering Human Design (Ra Uru Hu) — COMO ele unificou I Ching + Cabala + Astrologia + Quromo (Centers 9 = enneagrama corporal). Estudar algoritmo do Bodygraph, copyright (Decisão de Florença 2020), e o que Akasha pode/deve copiar vs reinventar.",
-    "completed_at": "2026-06-11",
-    "note": "500 linhas. Decisões-chave: (D1) Re-priorizado por RQ-002 cobrir 95% base, (D2) Akasha usa 7 chakras hindus, não 9 centers HD (IP clean + integração com Pilar 3), (D3) Florença 2020 documentado como consenso, IP due diligence em italiano é MUST, (D4) não vira código AGORA — depende de F-208/F-209, (D5) transparência sobre inspiração técnica (64 gates, 88° arc) — técnicas matemáticas abertas, terminologia própria, (D6) R-015/R-016 próximos. COT: cot-20260611-r-014-hd-reverse-eng.md"
-  },
-    "phase": 0,
     "category": "research",
     "priority": "P1",
     "description": "Reverse-engineering Human Design (Ra Uru Hu) — COMO ele unificou I Ching + Cabala + Astrologia + Quromo (Centers 9 = enneagrama corporal). Estudar algoritmo do Bodygraph, copyright (Decisão de Florença 2020), e o que Akasha pode/deve copiar vs reinventar.",
@@ -41,9 +38,11 @@
       "Type/Strategy/Authority/Profile/Channels/Definition/Gates/Channels/Cross of Incarnation: ordem de derivação?",
       "Akasha precisa reinventar ou pode usar convenções HD sob fair use?"
     ],
-    "output": ".autonomous/research/synthesis/hd-reverse-engineering.md (≥500 linhas)",
-    "passes": false,
-    "timebox": "90 min"
+    "output": ".autonomous/research/synthesis/hd-reverse-engineering.md (500 linhas, 10 seções + COT)",
+    "passes": true,
+    "timebox": "90 min",
+    "completed_at": "2026-06-11",
+    "note": "500 linhas. Decisões-chave: (D1) Re-priorizado por RQ-002 cobrir 95% base, (D2) Akasha usa 7 chakras hindus, não 9 centers HD (IP clean + integração com Pilar 3), (D3) Florença 2020 documentado como consenso, IP due diligence em italiano é MUST, (D4) não vira código AGORA — depende de F-208/F-209, (D5) transparência sobre inspiração técnica (64 gates, 88° arc) — técnicas matemáticas abertas, terminologia própria, (D6) R-015/R-016 próximos. COT: cot-20260611-r-014-hd-reverse-eng.md"
   },
   {
     "id": "R-015",
@@ -164,11 +163,9 @@
     "phase": 7,
     "category": "maintenance",
     "priority": "P2",
-    "passes": true,
-    "output": "apps/akasha-portal/AGENTS.md + docs/adrs/AGENTS.md + packages/akasha-core/AGENTS.md criados (3 cross-refs quebrados); .trae/specs/AGENTS.md encoding fix (chineses → português)",
-    "description": "Docs sync — código novo sem doc/README/AGENTS.md atualizado",
-    "completed_at": "2026-06-11",
-    "note": "3 AGENTS.md files faltantes criados (apps/akasha-portal/, docs/adrs/, packages/akasha-core/). 1 encoding bug em .trae/specs/AGENTS.md corrigido (caracteres chineses 太多了). Verificação via loop: todos os child DOX Index links agora resolvem para arquivos existentes. Commit 3329e84a."
+    "passes": false,
+    "output": ".autonomous/research/maintenance/f104-docs-<date>.md",
+    "description": "Docs sync — código novo sem doc/README/AGENTS.md atualizado"
   },
   {
     "id": "F-105",
