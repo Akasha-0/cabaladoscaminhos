@@ -11,6 +11,15 @@ export type { PosicaoPlaneta, Casa, MapaNatal, Planeta, Signo, Aspecto, AspectoT
 // 88° Solar Arc (F-208) — Momento Pré-natal Akasha
 export { findPrenatalMoment } from './prenatal-date';
 // Tríade Sombra/Dom/Graça (F-209) — Pilar 2 sub-estados
+// Ayanamsa opt-in (F-212) — R-018 D1 (tropical default + Jyotish opt-in)
+export type { AyanamsaTipo } from './ayanamsa';
+export {
+  AYANAMSA_OFFSETS,
+  AYANAMSA_NOMES_PT,
+  tropicalParaSideral,
+  sideralParaTropical,
+} from './ayanamsa';
+
 // Rahu/Ketu nodais lunares (F-211) — Pilar 2 primários Jyotish
 export type { NodosLunares } from './nodes';
 export {
