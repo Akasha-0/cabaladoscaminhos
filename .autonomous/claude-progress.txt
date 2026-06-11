@@ -107,3 +107,22 @@
 - Próxima sessão: RQ-024 UX architecture v1 (P0, 60-90min) — depende de persona_v1 + synthesis_v1
 - Próxima sessão (paralelo): RQ-025 Tech stack v1 (P1) — depende de R-024 + persona_v1
 - Próxima sessão (paralelo): D-005 Validação 3 perfis (Ana/Bruno/Carla) com samples de §8
+
+[2026-06-10 23:59] R-024 ✅ UX Architecture v1 (Fase 3) — 1ª arquitetura de UX do Akasha entregue
+- 825 linhas em .autonomous/research/ux/architecture_v1.md (15 seções)
+- Decisão mobile-first: PWA-first (custo), nativo só Fase 7+; manifest.json + ServiceWorkerRegistrar + web-push já no portal
+- 5 telas canônicas: Mandato / Mural / Mandala / Ritual / Mentor (dados + interações + a11y por tela)
+- Descoberta progressiva 7 camadas (3 cliques âmago, 7 cliques profundeza); NN/g 2-screen sweet spot aplicado
+- WCAG 2.2 AA: 12 critérios (focus obscured, target 24×24, dragging alt, accessible auth, redundant entry, consistent help)
+- i18n: Next.js 16 [lang]/dictionaries/ pattern, pt-BR first, next-intl recomendado; termos preservados (Tikkun/Tiferet/Odu/Tridosha)
+- Interação IA: SSE para streaming, Web Speech API TTS Fase 5+; cap 1/dia free / 3/sem premium / ilimitado B2B
+- D-005 3 perfis validados (Ana/Bruno/Carla) com Mandato 1ª revelação completo (mnemônica "Akasha 5 — Tiferet" + 5 Pilares citados + 1 pergunta + 1 ritual)
+- Métricas UX 12 meses (DAU/MAU > 30%, LCP < 2.5s, Lighthouse a11y ≥ 95, NPS > 60) + 12 anti-padrões rejeitados
+- VISION.md criado (10 seções, 8 axiomas, 5 Pilares canônicos, métricas 5 anos) — canônica para o projeto
+- INDEX.md sync: RQ-020..RQ-024 ⏳→✅; feature_list.json R-002 + R-024 = passes:true
+- TODO.md: D-004, D-020..D-025 ✅ (Fase 1 + Fase 3 fechadas)
+- Commit: a6bcdd05
+- 4 fontes primárias 2026: web.dev PWA, W3C WCAG 2.2, Next.js 16 i18n, NN/g Progressive Disclosure
+- Próxima sessão: R-025 Tech stack v1 (P0, 45min) — depende desta entrega
+- Próxima sessão (paralelo): D-005 refinement com 3 perfis reais (após Akasha Core Algorithm)
+- Próxima sessão (paralelo): R-022b Ethics Charter v1 (5% causa por Pilar + LGPD + crise)
