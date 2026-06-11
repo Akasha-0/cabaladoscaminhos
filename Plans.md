@@ -38,5 +38,16 @@
   - `1a7410fd` F-100 remove 8 unused deps (-1478 LOC)
   - `fa031f40` F-101 un-export 5 dead exports
   - `df5428b6` sync project context (.trae/specs/ + 14 AGENTS.md)
-  - `99d268bc` orchestrator detecta >20 untracked
   Pendentes: R-014/015/016 (reverse-eng), F-103 (perf), F-104 (docs sync)
+- [x] **PLN-015** — Supervisor takeover turn 2: re-priorizou FASE 8 reverse-eng (R-014 HD, R-015 GK, R-016 Enneagrama) + F-103 perf (N+1 → batch). 7 commits entregues:
+  - `168e320a` housekeeping F-104 (cleanup from turn 1)
+  - `875630ed` R-014 (HD) — 500 linhas, 10 seções, COT
+  - `7dded2bd` fix feature_list.json quebrado (R-014 edit orphan) + parallel-agent prisma sync
+  - `a8968503` orchestrator self-check feature_list.json + fecha bug pre-existente (fi faltante)
+  - `2b389596` R-015 (GK) — 508 linhas, 12 seções, COT
+  - `efd0a604` F-103 perf — credit-reconciliation N+1 → batch queries (60-100x speedup)
+  - `250d883e` R-016 (Enneagrama) — 500+ linhas, 10 seções, COT
+  - `c8988ab6` housekeeping F-103 e F-104
+  Pendente: D-040 (Prisma schema 5 Pilares — awaiting human approval)
+  Status: 24/25 features done. FASE 8 reverse-eng TRIO COMPLETO (HD/GK/Enneagrama).
+  Melhoria de harness: orchestrator self-check JSON (evita feature_list quebrado)

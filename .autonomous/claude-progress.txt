@@ -308,3 +308,36 @@ Triad: 298/298 akasha-core ✅, 43/43 core-iching ✅, knip clean
 
 Próxima sessão: R-014 (Human Design reverse-eng) ou F-103 (perf)
 ou F-104 (docs sync — cross-references AGENTS.md).
+
+## Sessão N+7 Turn 2 (2026-06-11) — FASE 8 TRIO + F-103 PERF
+
+Loop continuava parado (stop.signal ativo). Supervisor retomou
+com foco em FASE 8 (reverse-engineering) + perf crítico.
+
+3 features de research entregues (trio FASE 8 COMPLETO):
+- [x] R-014 (Human Design): 500 linhas, 10 seções + COT
+  Decisão arquitetural crítica: 7 chakras hindus, NÃO 9 centers HD
+  (IP clean + integração Pilar 3)
+- [x] R-015 (Gene Keys): 508 linhas, 12 seções + COT
+  Nomenclatura PT-BR: Sombra/Dom/Graça (vs Shadow/Gift/Siddhi)
+- [x] R-016 (Enneagrama): 500+ linhas, 10 seções + COT
+  IP-cleanest dos 3. 9 Levels PT-BR (Presença/Clareza/Serviço/
+  Tensão/Atribuição/Compensação/Ruptura/Adicção/Dissolução)
+
+F-103 (Performance) entregue:
+- [x] reconcileCredits N+1 → batch queries
+- 60-100x speedup para 100+ consultations
+- 5 queries totais vs N*3+1 antes
+
+Melhoria de harness:
+- [x] orchestrator self-check JSON (evita feature_list quebrado)
+- [x] fechado bug pre-existente (fi faltante em stop_signal if)
+
+Triad: 341/341 verde (akasha-core + core-iching), zero regressão.
+
+Status final: 24/25 features done. Apenas D-040 (Prisma schema
+5 Pilares) blocked — awaiting human approval per STEP 5.5.
+
+Próxima ação recomendada: próxima FASE 8 (R-018 Astrologia Védica
+ou R-019 4 Temperamentos gregos) OU implementar F-208 (88° solar
+arc) usando R-014/R-015/R-016.
