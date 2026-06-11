@@ -119,9 +119,11 @@
     "phase": 7,
     "category": "maintenance",
     "priority": "P2",
-    "passes": false,
-    "output": ".autonomous/research/maintenance/f100-refactor-<date>.md",
-    "description": "Refactor — encontrar arquivos >500 linhas, funções >50 linhas, duplicação"
+    "passes": true,
+    "output": "apps/akasha-portal/package.json (deps removidas) + next.config.ts (jspdf→removed)",
+    "description": "Refactor — encontrar arquivos >500 linhas, funções >50 linhas, duplicação",
+    "completed_at": "2026-06-11",
+    "note": "knip analysis: 8 deps tracked-unused removidas de apps/akasha-portal/package.json (@prisma/adapter-pg, @react-three/drei, @vercel/og, ioredis, jspdf, otpauth, react-markdown, remark-gfm, tw-animate-css). jspdf removido também de next.config.ts optimizePackageImports. 298/298 testes verdes. Pendente: arquivos >500 linhas, funções >50 linhas (busca maior)."
   },
   {
     "id": "F-101",
