@@ -179,3 +179,19 @@
 - CHECKPOINT: D-043 adicionado ao bloco "Próximos passos"
 - Commit 2aada43b (3 files: profiles-fixtures.ts + profiles.test.ts + feature_list.json, 375 insertions)
 - Próxima sessão: D-044 (cabala-corr-validator) — Pilar 1 (Cabala) + knowledge base sem invenções; alinha com AGENTS.md §5 + instinto "derive not invent correspondences"
+
+## Sessão N+3 (2026-06-11) — D-044 ✅ Validação knowledge base
+- Próximo: D-044 (validar correlation-map.ts — knowledge base)
+- Criou `packages/akasha-core/src/correlation-validation.test.ts` (90 testes verdes)
+- pnpm exec vitest run packages/akasha-core/ → **298/298 ✅** (208 antes + 90 D-044)
+- 4 achados (COT `cot-20260611-d-044-correlation-validation.md`):
+  - F1: IFA_ODUS tem **15 entries** (não 16) — 'Eji' substitui 'Ogbe' por design Phase 1
+  - F2: stub R-030 (`akasha-core.ts:168-170`) diverge em 'Ogbe' + 'Ofun' (não em IFA_ODUS)
+  - F3: ranges canônicos 100% conformes (I Ching 1-64, Sefirot 1-10, Trigramas 1-8)
+  - F4: inversão getIchingsByIfa ⇄ getIfasByIching bijetiva para 15 Odus
+- Hook bloqueou vacuous test ("expect _module toBeNull") — removido. Lição: nunca mandar test que não testa nada
+- Tipos TS (IfaOdu/Sefirah) auditam drift estático (tsc falha se union divergir)
+- Decisão Phase 1 documentada: Ogbe→Eji é design consciente; Fase 6 decide se (a) conserta stub ou (b) expande map
+- feature_list D-044 phase=5 category=validation priority=P1 passes:true (D-043 re-add: orchestrator pivot reset list)
+- TODO D-044 [x]
+- Próxima sessão: D-040 (Schema Prisma 5 Pilares) — vai IMPORTAR IFA_ODUS (não hardcodar 16 nomes) — alinhamento automático com D-044

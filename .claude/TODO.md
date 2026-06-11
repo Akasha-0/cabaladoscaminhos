@@ -119,7 +119,15 @@
        Gabriel first-toucher, Helena multi-tradição, Igor datas
        alinhadas, Júlia identidade-trans. + PERFIL_CRISIS (CVV-188).
        Commit 2aada43b.
-- [~] D-044 — Validar com cabala-corr-validator (próximo)
+- [x] D-044 — Validar com cabala-corr-validator ✅ 2026-06-11
+       — `packages/akasha-core/src/correlation-validation.test.ts`
+       (90 testes verdes; 298/298 em packages/akasha-core/).
+       Valida ranges canônicos, inversão bijetiva, cobertura.
+       Achados: (F1) IFA_ODUS tem 15 (não 16) — Eji substitui Ogbe
+       por design Phase 1; (F2) stub R-030 diverge em Ogbe+Ofun;
+       (F3) ranges 100% conformes; (F4) inversão bijetiva.
+       Hook bloqueou vacuous test (removido).
+       COT `cot-20260611-d-044-correlation-validation.md`.
 
 ## FASE 6 — Implementação (futuro)
 

@@ -1,21 +1,210 @@
 [
-  {"id":"R-001","phase":0,"category":"research","priority":"P0","passes":true,"completed_at":"2026-06-10","artifact":"systems/gene-keys.md"},
-  {"id":"R-022b","phase":2,"category":"design","priority":"P0","passes":true,"completed_at":"2026-06-11","artifact":"ethics/ethics_charter_v1.md"},
-  {"id":"R-024","phase":3,"category":"design","priority":"P0","passes":true,"completed_at":"2026-06-10","artifact":"ux/architecture_v1.md"},
-  {"id":"R-025","phase":4,"category":"design","priority":"P0","passes":true,"completed_at":"2026-06-10","artifact":"tech_decisions.md"},
-  {"id":"R-030","phase":5,"category":"prototype","priority":"P0","passes":true,"completed_at":"2026-06-10","artifact":"packages/akasha-core/src/akasha-core.ts","output":"packages/akasha-core/src/index.ts (skeleton)","description":"Akasha Core Algorithm — protótipo em TS puro (NÃO integrado)"},
-  {"id":"F-100","phase":7,"category":"maintenance","priority":"P2","passes":false,"output":".autonomous/research/maintenance/f100-refactor-<date>.md","description":"Refactor — encontrar arquivos >500 linhas, funções >50 linhas, duplicação"},
-  {"id":"F-101","phase":7,"category":"maintenance","priority":"P2","passes":false,"output":".autonomous/research/maintenance/f101-deadcode-<date>.md","description":"Dead code — imports não usados, exports sem callers, branches mortos"},
-  {"id":"F-102","phase":7,"category":"maintenance","priority":"P1","passes":false,"output":".autonomous/research/maintenance/f102-security-<date>.md","description":"Security review — OWASP top 10 nos endpoints novos"},
-  {"id":"F-103","phase":7,"category":"maintenance","priority":"P2","passes":false,"output":".autonomous/research/maintenance/f103-perf-<date>.md","description":"Performance — bundle size, TTFB, query N+1, LCP"},
-  {"id":"F-104","phase":7,"category":"maintenance","priority":"P2","passes":false,"output":".autonomous/research/maintenance/f104-docs-<date>.md","description":"Docs sync — código novo sem doc/README/AGENTS.md atualizado"},
-  {"id":"F-105","phase":7,"category":"maintenance","priority":"P0","passes":true,"description":"Meta-review perpétuo — quando fila vazia, ler git log -20, abrir 3-5 novos RQs"},
-  {"id":"F-200","phase":6,"category":"implementation","priority":"P0","passes":false,"output":"apps/akasha-portal/src/app/api/akasha/calcular/route.ts + integração","description":"Integrar R-030 (akasha.calcular) com engines reais @akasha/core-cabala, -astrology, -tantra, -odus, -iching"},
-  {"id":"F-201","phase":6,"category":"implementation","priority":"P0","passes":false,"output":"apps/akasha-portal/src/app/api/akasha/mandato-do-dia/route.ts","description":"API Mandato do Dia — retorna MandatoEsqueleto + cita_fontes baseado em Pilar relevante do dia"},
-  {"id":"F-202","phase":6,"category":"implementation","priority":"P1","passes":false,"output":"apps/akasha-portal/src/app/[locale]/(akasha)/diario/page.tsx","description":"Página Diário Energético — renderiza Mandato do dia + 3 frases + pergunta + micro-ritual"},
-  {"id":"F-203","phase":6,"category":"implementation","priority":"P1","passes":false,"output":"apps/akasha-portal/src/components/akasha/MandalaChart","description":"Consumir data.iching + data.odus + data.tantra + data.kabala + data.astrology no MandalaChart, 5 anéis com cor por Pilar"},
-  {"id":"F-204","phase":6,"category":"implementation","priority":"P2","passes":false,"output":"apps/akasha-portal/src/lib/integration/","description":"Substituir stubs do akasha-core.ts por chamadas reais aos 5 engines via loadEngines()"},
-  {"id":"F-205","phase":6,"category":"implementation","priority":"P2","passes":false,"output":"apps/akasha-portal/src/app/[locale]/(akasha)/sobre/page.tsx","description":"Página Sobre o Sistema — narrativa 'Cicatriz vira Joia' + 5 Pilares + 4 Camadas"},
-  {"id":"F-206","phase":6,"category":"implementation","priority":"P2","passes":false,"output":"apps/akasha-portal/src/components/akasha/MandalaChart/TooltipPilar.tsx","description":"Tooltip por Pilar — ao tocar anel, expande explicação + citação da fonte (Brennan/Sefer/Wilhelm)"},
-  {"id":"F-207","phase":6,"category":"implementation","priority":"P1","passes":false,"output":"packages/akasha-core/src/akasha-core.test.ts (3 perfis)","description":"3 perfis de teste reais (Ana, Bruno, Carlos) com chart completo — fixture files em tests/fixtures/"}
+  {
+    "id": "R-001",
+    "phase": 0,
+    "category": "research",
+    "priority": "P0",
+    "passes": true,
+    "completed_at": "2026-06-10",
+    "artifact": "systems/gene-keys.md"
+  },
+  {
+    "id": "R-022b",
+    "phase": 2,
+    "category": "design",
+    "priority": "P0",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "artifact": "ethics/ethics_charter_v1.md"
+  },
+  {
+    "id": "R-024",
+    "phase": 3,
+    "category": "design",
+    "priority": "P0",
+    "passes": true,
+    "completed_at": "2026-06-10",
+    "artifact": "ux/architecture_v1.md"
+  },
+  {
+    "id": "R-025",
+    "phase": 4,
+    "category": "design",
+    "priority": "P0",
+    "passes": true,
+    "completed_at": "2026-06-10",
+    "artifact": "tech_decisions.md"
+  },
+  {
+    "id": "R-030",
+    "phase": 5,
+    "category": "prototype",
+    "priority": "P0",
+    "passes": true,
+    "completed_at": "2026-06-10",
+    "artifact": "packages/akasha-core/src/akasha-core.ts",
+    "output": "packages/akasha-core/src/index.ts (skeleton)",
+    "description": "Akasha Core Algorithm — protótipo em TS puro (NÃO integrado)"
+  },
+  {
+    "id": "F-100",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "passes": false,
+    "output": ".autonomous/research/maintenance/f100-refactor-<date>.md",
+    "description": "Refactor — encontrar arquivos >500 linhas, funções >50 linhas, duplicação"
+  },
+  {
+    "id": "F-101",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "passes": false,
+    "output": ".autonomous/research/maintenance/f101-deadcode-<date>.md",
+    "description": "Dead code — imports não usados, exports sem callers, branches mortos"
+  },
+  {
+    "id": "F-102",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P1",
+    "passes": false,
+    "output": ".autonomous/research/maintenance/f102-security-<date>.md",
+    "description": "Security review — OWASP top 10 nos endpoints novos"
+  },
+  {
+    "id": "F-103",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "passes": false,
+    "output": ".autonomous/research/maintenance/f103-perf-<date>.md",
+    "description": "Performance — bundle size, TTFB, query N+1, LCP"
+  },
+  {
+    "id": "F-104",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "passes": false,
+    "output": ".autonomous/research/maintenance/f104-docs-<date>.md",
+    "description": "Docs sync — código novo sem doc/README/AGENTS.md atualizado"
+  },
+  {
+    "id": "F-105",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P0",
+    "passes": true,
+    "description": "Meta-review perpétuo — quando fila vazia, ler git log -20, abrir 3-5 novos RQs"
+  },
+  {
+    "id": "F-200",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P0",
+    "passes": false,
+    "output": "apps/akasha-portal/src/app/api/akasha/calcular/route.ts + integração",
+    "description": "Integrar R-030 (akasha.calcular) com engines reais @akasha/core-cabala, -astrology, -tantra, -odus, -iching"
+  },
+  {
+    "id": "F-201",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P0",
+    "passes": false,
+    "output": "apps/akasha-portal/src/app/api/akasha/mandato-do-dia/route.ts",
+    "description": "API Mandato do Dia — retorna MandatoEsqueleto + cita_fontes baseado em Pilar relevante do dia"
+  },
+  {
+    "id": "F-202",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P1",
+    "passes": false,
+    "output": "apps/akasha-portal/src/app/[locale]/(akasha)/diario/page.tsx",
+    "description": "Página Diário Energético — renderiza Mandato do dia + 3 frases + pergunta + micro-ritual"
+  },
+  {
+    "id": "F-203",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P1",
+    "passes": false,
+    "output": "apps/akasha-portal/src/components/akasha/MandalaChart",
+    "description": "Consumir data.iching + data.odus + data.tantra + data.kabala + data.astrology no MandalaChart, 5 anéis com cor por Pilar"
+  },
+  {
+    "id": "F-204",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P2",
+    "passes": false,
+    "output": "apps/akasha-portal/src/lib/integration/",
+    "description": "Substituir stubs do akasha-core.ts por chamadas reais aos 5 engines via loadEngines()"
+  },
+  {
+    "id": "F-205",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P2",
+    "passes": false,
+    "output": "apps/akasha-portal/src/app/[locale]/(akasha)/sobre/page.tsx",
+    "description": "Página Sobre o Sistema — narrativa 'Cicatriz vira Joia' + 5 Pilares + 4 Camadas"
+  },
+  {
+    "id": "F-206",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P2",
+    "passes": false,
+    "output": "apps/akasha-portal/src/components/akasha/MandalaChart/TooltipPilar.tsx",
+    "description": "Tooltip por Pilar — ao tocar anel, expande explicação + citação da fonte (Brennan/Sefer/Wilhelm)"
+  },
+  {
+    "id": "F-207",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P1",
+    "passes": false,
+    "output": "packages/akasha-core/src/akasha-core.test.ts (3 perfis)",
+    "description": "3 perfis de teste reais (Ana, Bruno, Carlos) com chart completo — fixture files em tests/fixtures/"
+  },
+  {
+    "id": "D-044",
+    "phase": 5,
+    "category": "validation",
+    "priority": "P1",
+    "description": "Validar knowledge base (correlation-map) para garantir que Pilar 1 (Cabala) + 4 (Odu) não inventam correspondências. Testa ranges canônicos, inversão bijetiva, cobertura, e documenta divergências stub↔canônico (Ogbe/Ofun no stub R-030 vs Eji em IFA_ODUS). Alinhado com AGENTS.md §5.",
+    "questions": [
+      "Ranges canônicos: I Ching 1-64, Sefirot 1-10, Trigramas 1-8?",
+      "Inversão getIchingsByIfa ⇄ getIfasByIching?",
+      "Nenhum Odu órfão?",
+      "Divergência stub R-030 (16 com Ogbe/Ofun) vs IFA_ODUS (15 com Eji)?",
+      "Tipos IfaOdu/Sefirah cobrem arrays sem lacuna?"
+    ],
+    "output": "packages/akasha-core/src/correlation-validation.test.ts (90 testes verdes; 298/298 em packages/akasha-core/)",
+    "passes": true,
+    "timebox": "30 min",
+    "completed_at": "2026-06-11"
+  },
+  {
+    "id": "D-043",
+    "phase": 5,
+    "category": "prototype",
+    "priority": "P1",
+    "description": "10 perfis representativos (fixtures + tests) para validar o contrato do Akasha Core Algorithm v1 (R-030) antes da Fase 6.",
+    "questions": [
+      "O AkashaInputSchema aceita os 10 perfis?",
+      "calcular() retorna shape completo?",
+      "É determinístico para Pilares fixos?",
+      "Pilar 4 cita fonte Ifá/Candomblé + aviso consentimento?",
+      "Perfis 'trans'/'perdido' NÃO disparam CVV?"
+    ],
+    "output": "packages/akasha-core/src/profiles-fixtures.ts (11 personas) + profiles.test.ts (69 testes verdes)",
+    "passes": true,
+    "timebox": "30 min",
+    "completed_at": "2026-06-11"
+  }
 ]
