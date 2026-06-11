@@ -33,9 +33,10 @@
       "Que modelo de UX usam no app oficial?",
       "Quais críticas recebe? Onde o Akasha pode inovar?"
     ],
-    "output": ".autonomous/research/human-design.md",
-    "passes": false,
-    "timebox": "60-90min"
+    "output": ".autonomous/research/systems/human-design.md",
+    "passes": true,
+    "timebox": "60-90min",
+    "updated": "2026-06-10"
   },
   {
     "id": "R-003",
@@ -291,9 +292,10 @@
       "Onboarding: quanto tempo? quantas revelações?",
       "Mobile-first vs desktop — propor"
     ],
-    "output": ".autonomous/research/ux_architecture.md",
-    "passes": false,
-    "timebox": "60min"
+    "output": ".autonomous/research/ux/architecture_v1.md",
+    "passes": true,
+    "timebox": "60min",
+    "updated": "2026-06-10"
   },
   {
     "id": "R-025",

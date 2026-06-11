@@ -42,8 +42,10 @@
 - [x] D-002 — Identificar gaps que nenhum sistema cobre (RQ-021)
 - [x] D-003 — Definir eixo central do Akasha (qual a UNIDADE de
        síntese? — Mandala? Linha do tempo? Persona?)
-- [ ] D-004 — Propor Akasha Core Algorithm v1 (markdown, não código)
-- [ ] D-005 — Validar v1 com 3 perfis de teste (descrever só)
+- [x] D-004 — Propor Akasha Core Algorithm v1 (markdown, não código)
+       — ✅ synthesis/synthesis_v1.md (RQ-022)
+- [~] D-005 — Validar v1 com 3 perfis de teste (descrever só)
+       — Ana/Bruno/Carla já em synthesis §13; expandindo em R-024
 - [ ] D-006 — Iterar até v3 com feedback interno
 
 ## FASE 2 — AI Mentor
@@ -63,12 +65,18 @@
 
 ## FASE 3 — UX Architecture
 
-- [ ] D-020 — Decisão mobile-first PWA vs app nativo
-- [ ] D-021 — Estrutura de descoberta progressiva (micro-doses)
-- [ ] D-022 — Telas-chave: Mandala, Mandato, Mural, Ritual, Mentor
-- [ ] D-023 — Interação com IA (streaming, voz, texto)
-- [ ] D-024 — Acessibilidade WCAG 2.2 AA
-- [ ] D-025 — Internacionalização (PT-BR primeiro, EN depois)
+- [x] D-020 — Decisão mobile-first PWA vs app nativo
+       — ✅ ux/architecture_v1.md §3 (PWA-first, nativo Fase 7+)
+- [x] D-021 — Estrutura de descoberta progressiva (micro-doses)
+       — ✅ ux/architecture_v1.md §4 (3-7 cliques, 7 camadas)
+- [x] D-022 — Telas-chave: Mandala, Mandato, Mural, Ritual, Mentor
+       — ✅ ux/architecture_v1.md §5 (5 telas canônicas)
+- [x] D-023 — Interação com IA (streaming, voz, texto)
+       — ✅ ux/architecture_v1.md §6 (SSE + Web Speech Fase 5+)
+- [x] D-024 — Acessibilidade WCAG 2.2 AA
+       — ✅ ux/architecture_v1.md §7 (12 critérios AA + testes)
+- [x] D-025 — Internacionalização (PT-BR primeiro, EN depois)
+       — ✅ ux/architecture_v1.md §8 (Next.js 16 [lang] pattern)
 
 ## FASE 4 — Tech Stack
 

@@ -30,11 +30,11 @@
 
 | ID | Tarefa | Status | Arquivo | Dependências |
 |----|--------|--------|---------|--------------|
-| RQ-020 | Patterns (padrões comuns) | ⏳ | patterns.md | R-001..R-012 |
-| RQ-021 | Gaps (o que ninguém cobre) | ⏳ | gaps.md | R-020 |
-| RQ-022 | Eixo central Akasha (síntese) | ⏳ | synthesis_v1.md | R-021 |
-| RQ-023 | AI Mentor persona | ⏳ | mentor/persona_v1.md | R-022 |
-| RQ-024 | UX architecture | ⏳ | ux/architecture_v1.md | R-022, R-023 |
+| RQ-020 | Patterns (padrões comuns) | ✅ | patterns.md | R-001..R-012 |
+| RQ-021 | Gaps (o que ninguém cobre) | ✅ | gaps.md | R-020 |
+| RQ-022 | Eixo central Akasha (síntese) | ✅ | synthesis_v1.md | R-021 |
+| RQ-023 | AI Mentor persona | ✅ | mentor/persona_v1.md | R-022 |
+| RQ-024 | UX architecture | ✅ | ux/architecture_v1.md | R-022, R-023 |
 | RQ-025 | Tech stack | ⏳ | tech/stack_v1.md | R-024 |
 
 ---
