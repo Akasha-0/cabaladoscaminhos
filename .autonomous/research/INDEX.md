@@ -57,6 +57,7 @@
 | 2026-06-10 | cot-20260610-sheldrake-cymatics-position | Sheldrake = metafora pedagógica (NÃO mecanismo) + Cymatics = visual Pilar 4 (NÃO 528/432Hz); 5 decisões éticas; memetics > morphic fields |
 | 2026-06-10 | cot-20260610-patterns-extraction | 20 patterns convergentes em 5 famílias (algorítmica/visual/temporal/linguagem/negócio) + 12 anti-padrões; 4 decisões estruturantes para RQ-022 |
 | 2026-06-10 | cot-20260610-gaps-extraction | 20 gaps em 6 famílias (multi-tradição/geografia/ética/AI/tempo/negócio) + 8 anti-gaps rejeitados; 16 HIGH + 4 MED-HIGH confidence; 5 outputs esperados para RQ-022 |
+| 2026-06-10 | cot-20260610-synthesis-v1-axis | RQ-022 Eixo central: PESSOA × 5 PILARES sobre Mandala com 4 camadas (D/S/Z/V); narrativa "Cicatriz vira Joia" (Tikkun + Shadow→Gift→Siddhi); 7 decisões D1-D7; 10 limites éticos |
 
 ---
 
@@ -91,11 +92,15 @@
     ├── cot-20260610-tzolkin-position.md
     ├── cot-20260610-ayurveda-position.md
     ├── cot-20260610-sheldrake-cymatics-position.md
-    └── cot-20260610-patterns-extraction.md
+    ├── cot-20260610-patterns-extraction.md
+    ├── cot-20260610-gaps-extraction.md
+    └── cot-20260610-synthesis-v1-axis.md
+├── synthesis/
+│   └── synthesis_v1.md             ✅ (R-022)
 ```
 
 ---
 
 ## Próximo Passo
 
-**RQ-020 ✅ Patterns (Fase 1) COMPLETO — 20 padrões convergentes extraídos.** Próxima fase: **RQ-021 Gaps (Fase 1 — Synthesis)**. Identificar oportunidades únicas que nenhum dos 12 sistemas cobre. Desbloqueado agora.
+**RQ-022 ✅ Synthesis v1 (Fase 1) COMPLETO — Akasha Core Algorithm definido.** Eixo central: PESSOA × 5 PILARES sobre Mandala com 4 camadas temporais (D/S/Z/V); narrativa "Cicatriz vira Joia" (Tikkun + Shadow→Gift→Siddhi). Próxima fase: **RQ-023 Mentor persona v1** (Fase 2 — AI Mentor). Dependência direta: synthesis_v1.md §7.

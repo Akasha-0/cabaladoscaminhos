@@ -247,8 +247,12 @@
       "Proposta inicial do Akasha Core Algorithm (markdown)"
     ],
     "output": ".autonomous/research/synthesis_v1.md",
-    "passes": false,
-    "timebox": "90min"
+    "passes": true,
+    "timebox": "90min",
+    "in_progress": true,
+    "started_at": "2026-06-10",
+    "completed_at": "2026-06-10",
+    "artifact": "synthesis/synthesis_v1.md"
   },
   {
     "id": "R-023",

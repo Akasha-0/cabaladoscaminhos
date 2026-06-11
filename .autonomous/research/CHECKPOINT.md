@@ -42,13 +42,15 @@
 ~~Nenhum — Fase 0 (Research) completa.~~
 ~~RQ-020 (Patterns) — concluído nesta sessão.~~
 ~~RQ-021 (Gaps) — concluído nesta sessão.~~
+~~RQ-022 (Synthesis v1) — concluído nesta sessão.~~
 
-## 🎯 Próximos passos (Fase 1 — Synthesis)
+## 🎯 Próximos passos (Fase 1 → Fase 2)
 
 1. ✅ **RQ-020 (Patterns)** — concluído. 20 patterns convergentes extraídos em `patterns.md`.
 2. ✅ **RQ-021 (Gaps)** — concluído. 20 oportunidades únicas do Akasha extraídas em `gaps.md` (6 famílias + 8 anti-gaps rejeitados; 16 HIGH + 4 MED-HIGH confidence).
-3. **RQ-022 (Synthesis v1)** — desbloqueado agora. Akasha Core Algorithm em markdown (número-base, modelo de integração 5 pilares, mapeamento canônico, 5 outputs: Algorithm + Mandala + Mentor + Pricing + Ethics Charter).
-4. **RQ-023 (Mentor persona v1)** — depende de RQ-022. Persona do Mentor (nome, voz, limites éticos, exemplos de diálogo).
+3. ✅ **RQ-022 (Synthesis v1)** — concluído. Akasha Core Algorithm v1 em `synthesis/synthesis_v1.md` (666 linhas, 13 seções, 5 Pilares, 4 Camadas, 1 Mandala, 1 Algoritmo pseudo-código, 10 limites éticos, 3 perfis de validação, 7 decisões em aberto). COT em `cot-20260610-synthesis-v1-axis.md`.
+4. **RQ-023 (Mentor persona v1)** — desbloqueado agora. Depende de synthesis_v1.md §7. Persona do Mentor (nome, voz, limites éticos, exemplos de diálogo).
+5. **RQ-022b (Ethics Charter v1)** — pendente paralelo. 5% causa por Pilar + LGPD + crise.
 
 ## 📊 Síntese provisória (12 RQs feitas — 100% + RQ-020 patterns)
 
