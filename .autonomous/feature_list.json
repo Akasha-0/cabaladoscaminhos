@@ -46,7 +46,7 @@
   },
   {
     "id": "R-015",
-    "phase": 0,
+    "phase": 8,
     "category": "research",
     "priority": "P1",
     "description": "Reverse-engineering Gene Keys (Rudd 2009) — Matriz holográfica 64×3, Sequence of Pearls, Venustic Transmission, Genius/Shadow/Gift/Siddhi. Como Rudd construiu o framework sem IP claim de HD? Akasha pode usar o vocabulário 'Cicatriz vira Joia' como genérico.",
@@ -57,9 +57,11 @@
       "Gene Keys vs HD: Rudd foi aluno de Ra Uru Hu? (Sim, 1990s). Onde diverge?",
       "Akasha adota 'Shadow/Gift/Siddhi' como vocabulário genérico OU inventa novo?"
     ],
-    "output": ".autonomous/research/synthesis/gk-reverse-engineering.md (≥500 linhas)",
-    "passes": false,
-    "timebox": "75 min"
+    "output": ".autonomous/research/synthesis/gk-reverse-engineering.md (508 linhas, 12 seções + COT)",
+    "passes": true,
+    "timebox": "75 min",
+    "completed_at": "2026-06-11",
+    "note": "508 linhas. Decisões-chave: (D1) Priorizado apos R-014 (transfer learning), (D2) Triade Sombra/Dom/Graca em PT-BR, (D3) Codon Rings como framework poetico (nao bioquimica), (D4) Preservar 88 solar arc com nomenclatura propria, (D5) Trademarks Rudd identificados (Gene Keys, Hologenetic Profile, Genius Line, Sequence of Pearls, Venustic Transmission). COT: cot-20260611-r-015-gk-reverse-eng.md"
   },
   {
     "id": "R-016",

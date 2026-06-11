@@ -23,6 +23,7 @@
 | RQ-012 | Sheldrake + Cymatics | ✅ DONE | [systems/sheldrake-cymatics.md](systems/sheldrake-cymatics.md) | 30 min | P2 |
 | R-013 | **I Ching 64 Hexagramas** (King Wen + Wilhelm/Baynes) | ✅ DONE | [systems/iching-64.md](systems/iching-64.md) | 110 min | P0 |
 | R-014 | **Human Design Reverse-Engineering** (algoritmo + IP) | ✅ DONE | [synthesis/hd-reverse-engineering.md](synthesis/hd-reverse-engineering.md) | 90 min | P1 |
+| R-015 | **Gene Keys Reverse-Engineering** (tríade 64×3 + IP) | ✅ DONE | [synthesis/gk-reverse-engineering.md](synthesis/gk-reverse-engineering.md) | 75 min | P1 |
 
 **Progresso:** 13/13 sistemas (108%) — **Fase 0 (Research) EXPANDIDA** com Pilar 5.
 
