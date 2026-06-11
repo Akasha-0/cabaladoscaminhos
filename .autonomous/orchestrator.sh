@@ -78,6 +78,52 @@ fi
 SESSION_NUM=$(ls "$SESSIONS_DIR"/session-*.log 2>/dev/null | wc -l)
 SESSION_NUM=$((SESSION_NUM + 1))
 
+
+# ─── Pre-flight checks (2026-06-11 N+7 turn 4) ─────────────────────────────────
+# Antes de cada spawn, valida:
+# 1. feature_list.json é JSON válido (já existia)
+# 2. feature_list não tem entries órfãs (id duplicado ou faltando)
+# 3. core-astrology index tem exports essenciais (smoke test)
+# 4. triad roda sem falhas catastróficas (3 packages)
+# Problemas não-bloqueantes (warning) — loop continua mas supervisor pode ver.
+log "─── Pre-flight checks ───"
+
+# Check 1: JSON válido
+if ! python3 -c "import json; json.load(open('$SCRIPT_DIR/feature_list.json'))" 2>/dev/null; then
+  log "✗ FAIL: feature_list.json inválido — não posso spawnar"
+  log "  Fix: cp .autonomous/feature_list.json /tmp/x.json && python3 -c 'import json; ...'"
+  exit 1
+fi
+
+# Check 2: detectar entries órfãs (id duplicado ou faltando)
+ORPHAN_COUNT=$(python3 -c "
+import json
+data = json.load(open('$SCRIPT_DIR/feature_list.json'))
+seen = set()
+dups = 0
+missing_id = 0
+for f in data:
+    if 'id' not in f:
+        missing_id += 1
+    elif f['id'] in seen:
+        dups += 1
+    else:
+        seen.add(f['id'])
+print(missing_id + dups)
+" 2>/dev/null || echo 0)
+if [[ $ORPHAN_COUNT -gt 0 ]]; then
+  log "⚠ $ORPHAN_COUNT entries órfãs em feature_list.json (id duplicado ou faltando)"
+  log "  Recomendação: revisar e corrigir antes de commitar"
+fi
+
+# Check 3: smoke test (rodar 3 packages; timeout 60s)
+SMOKE_RESULT=$(timeout 60 pnpm exec vitest run packages/akasha-core/ packages/core-astrology/ packages/core-iching/ 2>&1 | tail -3 | grep -E "Tests +[0-9]+ passed|FAIL")
+if [[ "$SMOKE_RESULT" == *"FAIL"* ]]; then
+  log "⚠ Smoke test falhou (mas vou spawnar — supervisor decide)"
+else
+  log "✓ Smoke test: $SMOKE_RESULT"
+fi
+
 log "═══════════════════════════════════════════════════════"
 log "Sessão #$SESSION_NUM (max=$MAX_SESSIONS, runtime_max=${MAX_RUNTIME}s)"
 log "Prompt: $(basename "$PROMPT_FILE")"
@@ -114,11 +160,39 @@ if [[ "$PROMPT_FILE" == *"initializer"* ]]; then
   log "Initializer concluído — próximas sessões usarão coding_prompt.md"
 fi
 
-PENDING=$(grep -c '"passes": false' "$SCRIPT_DIR/feature_list.json" 2>/dev/null)
+PENDING=$(python3 -c "
+import json
+try:
+    data = json.load(open('$SCRIPT_DIR/feature_list.json'))
+    print(sum(1 for f in data if not f.get('passes', False)))
+except Exception:
+    print(0)
+" 2>/dev/null || echo 0)
+TODO_PENDING=$(grep -c '^- \[ \]' "$PROJECT_DIR/.claude/TODO.md" 2>/dev/null || echo 0)
 PENDING=${PENDING:-0}
-TODO_PENDING=$(grep -c '^- \[ \]' "$PROJECT_DIR/.claude/TODO.md" 2>/dev/null)
 TODO_PENDING=${TODO_PENDING:-0}
 log "Estado: $PENDING features pendentes | $TODO_PENDING TODOs pendentes"
+
+# ─── General failure-rate circuit-breaker (2026-06-11 N+7) ─────────────────
+# Além do 429, se exit != 0 E features pendentes não diminuíram, contar
+# failure consecutiva. Após 5 failures consecutivos → auto-stop.
+# (429 já tem circuit-breaker próprio; este cobre outros failure modes)
+STATE_FAIL="$STATE_DIR/fail-counter"
+if [[ $EXIT_CODE -ne 0 && $PENDING -gt 0 ]]; then
+  FAIL_COUNT=$(cat "$STATE_FAIL" 2>/dev/null || echo 0)
+  FAIL_COUNT=$((FAIL_COUNT + 1))
+  echo "$FAIL_COUNT" > "$STATE_FAIL"
+  log "⚠ Sessão falhou (exit=$EXIT_CODE, fail_count=$FAIL_COUNT)"
+  if [[ $FAIL_COUNT -ge 5 ]]; then
+    log "✗ 5+ sessões consecutivas falhando — auto-stop (loop travado em padrão de erro)"
+    echo "Auto-stop: 5+ sessões consecutivas falhando em $(date -Iseconds)" > "$stop_signal"
+    exit 0
+  fi
+else
+  # Sessão bem-sucedida (exit 0 ou fila vazia) — resetar contador
+  [[ -f "$STATE_FAIL" ]] && rm -f "$STATE_FAIL"
+fi
+
 
 if [[ $PENDING -eq 0 && $TODO_PENDING -eq 0 ]]; then
   log "✓ Fila vazia — autonomous work completo!"
