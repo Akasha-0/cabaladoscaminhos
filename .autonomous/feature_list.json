@@ -376,5 +376,21 @@
     "passes": true,
     "completed_at": "2026-06-11",
     "note": "500+ linhas. Decisoes: D1 Adicionar 4 Temperamentos como Pilar 3 sub-framework opt-in, D2 Nomenclatura PT-BR (Sanguineo/Colerico/Melancolico/Fleumatico), D3 Mapeamento especulativo para 5 Pilares + 4 Camadas (precisa R-022 validacao), D4 Estado atual (nao tipo fixo) per R-022, D5 IP-clean + tradicao milenar (Hipocrates/Galeno/Avicena/Kant). Cita Parashara + Varahamihira. Akasha combina 6 frameworks: 5 Pilares, 4 Camadas, 9 Levels, 3 Triades, 4 Temperamentos, Tríade Sombra/Dom/Graça."
+  },
+  {
+    "id": "F-210",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P1",
+    "description": "Implementar Vimshottari Dasha (R-018 D3) em packages/core-astrology/src/dasha.ts. Algoritmo deterministico: Moon longitude em Nakshatra -> starting Mahadasha + Antardasha. Cita Parashara, Varahamihira. Adiciona dimensao temporal ao Pilar 2.",
+    "output": "packages/core-astrology/src/dasha.ts (calcularVimshottari + DashaPeriod type) + dasha.test.ts (~12 testes)"
+  },
+  {
+    "id": "F-211",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P1",
+    "description": "Rahu/Ketu primarios em PilarAstrologia (R-018 D4). AkashaInput ganha incluirRahuKetu: boolean (default true). PilarAstrologia tem rahuLongitude/ketuLongitude/casa. Diferencia Akasha de horoscopos ocidentais que tratam nodos como secundarios.",
+    "output": "packages/core-astrology/src/nodes.ts (calcularRahuKetu) + packages/akasha-core/src/akasha-core.ts (PilarAstrologia.nodes)"
   }
 ]
