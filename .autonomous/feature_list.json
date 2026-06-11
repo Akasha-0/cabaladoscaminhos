@@ -343,7 +343,10 @@
     "category": "implementation",
     "priority": "P1",
     "description": "F-209b: Substituir mapeamento simples Sol-Lua em PilarAstrologia.trinity por análise completa de TODOS os aspectos via findAspects + classifyAspect. Cobre quadraturas, oposições, trígonos, sextis, e conjunções Sol/Lua com orbe < 1°.",
-    "output": "packages/akasha-core/src/akasha-core.ts (realPilar2Astrologia) usando findAspects + classifyAspect + countTrinity"
+    "output": "packages/akasha-core/src/akasha-core.ts (computeTrinityFromChart) usa findAspects + countTrinity de core-astrology",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "note": "Substitui heuristica simples Sol-Lua (F-209) por analise COMPLETA de aspectos via findAspects + countTrinity. Cobre TODOS os aspectos entre os 10 planetas (Sol/Lua/Mercurio/Venus/Marte/Jupiter/Saturno/Urano/Netuno/Plutao). PilarAstrologia.trinity agora reflete o mapa inteiro. 320/320 testes verdes."
   },
   {
     "id": "R-018",

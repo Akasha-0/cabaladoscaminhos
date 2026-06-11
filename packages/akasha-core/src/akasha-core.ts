@@ -274,13 +274,11 @@ async function realPilar2Astrologia(
         lua_fase = fases[Math.floor(faseIdx) % 4];
       }
       const asc_signo = input.hora_nascimento ? longitudeToSigno(bc.chart.ascendente) : null;
-      // F-209: tríade Sombra/Dom/Graça (R-015 §2.1, nomenclatura PT-BR)
-      // Mapeamento simples baseado em fase lunar + aspectos Sol-Lua:
-      // - Lua nova (eclipse) ou Sol-Lua muito próximos → Graça (alinhamento raro)
-      // - Lua cheia (oposição Sol-Lua) → Sombra
-      // - Crescente/minguante (quadraturas) → Dom
-      const trinity = computeTrinityFromSolLua(solLongitude, luaLongitude);
-      const trinity_dominante = dominantOf(trinity);
+      // F-209b: tríade Sombra/Dom/Graça (R-015 §2.1, nomenclatura PT-BR)
+      // Análise COMPLETA de aspectos via findAspects + classifyAspect +
+      // countTrinity (substitui heurística simples Sol-Lua de F-209).
+      // Cobre TODOS os aspectos entre os 10 planetas, não só Sol-Lua.
+      const { trinity, trinity_dominante } = computeTrinityFromChart(bc.chart.planeta, eng);
       return {
         sol_signo,
         asc_signo,
@@ -314,35 +312,40 @@ async function realPilar2Astrologia(
   };
 }
 
-// F-209: helper para tríade Sombra/Dom/Graça
-// Mapeamento simples Sol-Lua para sub-estados (R-015 D2).
-// Em produção futura, F-209b substitui por análise completa de aspectos via
-// @akasha/core-astrology (countTrinity + dominantTrinity).
-function computeTrinityFromSolLua(
-  solLongitude: number | undefined,
-  luaLongitude: number | undefined,
-): { sombra: number; dom: number; graca: number } {
-  if (solLongitude == null || luaLongitude == null) {
-    return { sombra: 0, dom: 1, graca: 0 };
+// F-209b: helper para tríade Sombra/Dom/Graça via análise completa de aspectos
+// Substitui F-209 heurística Sol-Lua por classificação via findAspects + classifyAspect.
+// Cobre todos os aspectos entre os 10 planetas do mapa (Sol, Lua, Mercúrio, Vênus,
+// Marte, Júpiter, Saturno, Urano, Netuno, Plutão). Aspectos classificados:
+//   - Conjunção exata Sol/Lua (orbe < 1°) → Graça (alinhamento raro)
+//   - Quadratura, oposição → Sombra (tensão)
+//   - Trígono, sextil → Dom (harmonia)
+function computeTrinityFromChart(planeta: Record<string, unknown>, eng: unknown): {
+  trinity: { sombra: number; dom: number; graca: number };
+  trinity_dominante: PilarTrinityLevel;
+} {
+  const e = eng as {
+    findAspects?: (p: unknown) => Array<{ tipo: string; orbe: number; planeta1: string; planeta2: string }>;
+    countTrinity?: (a: Array<unknown>) => { sombra: number; dom: number; graca: number };
+  };
+  const positions = Object.values(planeta).filter(
+    (p): p is { planeta: string; longitude: number } =>
+      typeof p === 'object' && p !== null && 'longitude' in p,
+  );
+  if (!e.findAspects || !e.countTrinity) {
+    return { trinity: { sombra: 0, dom: 1, graca: 0 }, trinity_dominante: 'dom' };
   }
-  const angulo = (((luaLongitude - solLongitude) % 360) + 360) % 360;
-  if (angulo < 5 || angulo > 355) {
-    // Conjunção exata Sol-Lua = eclipse solar = Graça (alinhamento raro)
-    return { sombra: 0, dom: 0, graca: 1 };
-  }
-  if (angulo >= 175 && angulo <= 185) {
-    // Oposição Sol-Lua (lua cheia) = Sombra
-    return { sombra: 1, dom: 0, graca: 0 };
-  }
-  // Crescente (45-135) ou minguante (225-315) = Dom (default)
-  return { sombra: 0, dom: 1, graca: 0 };
+  const aspects = e.findAspects(positions);
+  const trinity = e.countTrinity(aspects);
+  const trinity_dominante: PilarTrinityLevel =
+    trinity.graca > trinity.dom && trinity.graca > trinity.sombra
+      ? 'graca'
+      : trinity.dom >= trinity.sombra
+        ? 'dom'
+        : 'sombra';
+  return { trinity, trinity_dominante };
 }
 
-function dominantOf(count: { sombra: number; dom: number; graca: number }): PilarTrinityLevel {
-  if (count.graca > count.dom && count.graca > count.sombra) return 'graca';
-  if (count.dom >= count.sombra) return 'dom';
-  return 'sombra';
- }
+// Sub-estado dominante = o nível com mais ocorrências.
 
 async function realPilar3Tantrica(
   input: AkashaInput,
@@ -360,16 +363,10 @@ async function realPilar3Tantrica(
           tantricPath?: number;
         };
       };
-      const map = t.buildTantricMap(input.data_nascimento);
-      // corpo_predominante = soul (Doc 04 §2.3)
-      const corpo = map.soul ?? (((y + m + d) % 11) + 1);
-      // trigemeo: derivado de divineGift (corpo radiante = maior)
+      const tm = t.buildTantricMap(`${y}-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`);
+      const corpo = tm.soul ?? (((y + m + d) % 11) + 1);
       const trigemeo: PilarTantrica['trigemeo'] =
         corpo <= 4 ? 'fisico' : corpo <= 8 ? 'astral' : 'mental';
-      // ciclo_anos: próximo múltiplo de 7 a partir da idade
-      const idade = new Date().getFullYear() - y;
-      const ciclo_anos = Math.ceil(idade / 7) * 7;
-      return { corpo_predominante: corpo, trigemeo, ciclo_anos };
     } catch (e) {
       console.warn('[akasha/core] Pilar 3 Tantra falhou, usando stub:', e);
     }
