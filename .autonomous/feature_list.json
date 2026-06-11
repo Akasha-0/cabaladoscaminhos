@@ -336,5 +336,36 @@
     "passes": true,
     "completed_at": "2026-06-11",
     "note": "14/14 testes verdes (trinity) + 298/298 akasha-core. PilarAstrologia agora tem trinity: {sombra, dom, graca} e trinity_dominante. Mapeamento inicial Sol-Lua: eclipse=graca, oposicao=sombra, quadratura=dom. Nomenclatura PT-BR (nao Shadow/Gift/Siddhi). Habilita Pilar 2 sub-estados."
+  },
+  {
+    "id": "F-209b",
+    "phase": 6,
+    "category": "implementation",
+    "priority": "P1",
+    "description": "F-209b: Substituir mapeamento simples Sol-Lua em PilarAstrologia.trinity por análise completa de TODOS os aspectos via findAspects + classifyAspect. Cobre quadraturas, oposições, trígonos, sextis, e conjunções Sol/Lua com orbe < 1°.",
+    "output": "packages/akasha-core/src/akasha-core.ts (realPilar2Astrologia) usando findAspects + classifyAspect + countTrinity"
+  },
+  {
+    "id": "R-018",
+    "phase": 8,
+    "category": "research",
+    "priority": "P1",
+    "description": "Astrologia Védica (Jyotish) — origem indiana, foco em karma/dharma. Comparar com Astrologia Ocidental (Pilar 2 Akasha). Nakshatras (27 mansões lunares), Dashas (períodos planetários), Rahu/Ketu (eixo lunar nodal). Akasha precisa entender tradições indianas para evitar etnocentrismo ocidental.",
+    "questions": [
+      "Jyotish usa zodiac sideral (não tropical). Offset ~24°. Akasha deve usar tropical ou sideral?",
+      "Nakshatras 27 vs signos ocidentais 12. Akasha integra os 27?",
+      "Dashas (Vimshottari 120 anos): como derivar? Mahadasha/Antardasha estrutura?",
+      "Rahu/Ketu (nodos lunares): tratamento similar a Quiron/Lilith ocidental?",
+      "Akasha respeita tradições indianas OU as sintetiza com Ocidental?"
+    ],
+    "output": ".autonomous/research/synthesis/jyotish-reverse-engineering.md (≥500 linhas)"
+  },
+  {
+    "id": "R-019",
+    "phase": 8,
+    "category": "research",
+    "priority": "P2",
+    "description": "4 Temperamentos Gregos (Hipócrates 400BC) — sanguine, colérico, melancólico, fleumático. Base de MBTI/Enneagrama/Keirsey. 4-quadrant framework, mais simples que 9-tipo Enneagrama. Akasha pode usar como framework Pilar 3 fallback.",
+    "output": ".autonomous/research/synthesis/greek-temperaments.md (≥500 linhas)"
   }
 ]
