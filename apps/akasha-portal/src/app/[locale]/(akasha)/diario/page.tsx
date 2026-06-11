@@ -1,70 +1,73 @@
+/**
+ * Diário Energético — F-202 (Fase 6).
+ *
+ * Consome `GET /api/akasha/mandato-do-dia` (F-201) e renderiza o
+ * Mandato do Dia em 3 telas (Mandato · Pergunta · Micro-Ritual).
+ *
+ * Referências:
+ *   - VISION §4 — "Mandato = 1 push/dia 06h, 3 frases + 1 pergunta + 1 micro-ritual"
+ *   - synthesis_v1.md §5 — Mandato spec
+ *   - ethics_charter_v1.md §5 — Pilar 3 LGPD/crise: `mentor_hook.crise_detectada`
+ *     faz o cliente renderizar CVV-188 e suprimir `redacao_bruta`.
+ *
+ * F-204 (P2) substitui os stubs do `akasha-core` por `loadEngines()` real +
+ * redação LLM; o que o F-202 já trata como "esqueleto" será preenchido
+ * sem mudanças de UI.
+ */
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-type Ritual = {
-  titulo: string;
-  instrucao: string;
-  cor: string;
-  elemento: string;
-  herbs?: string[];
+type MandatoEsqueleto = {
+  escala: 'D' | 'S' | 'Z' | 'V';
+  pilares_relevantes: string[];
+  redacao_bruta: string;
+  cita_fontes: string[];
 };
 
-type TensionPoint = {
-  pillar: string;
-  theme: string;
-  intensity: number;
-  affectedBody?: number;
-  affectedElement?: string;
+type MentorHook = {
+  intencao: string;
+  crise_detectada: boolean;
+  recurso: string | null;
 };
 
-type DailyReading = {
+type MandatoDoDiaResponse = {
   date: string;
-  climate: string;
-  ritual: Ritual;
-  alert: string;
-  tensionPoint: TensionPoint;
-  moonPhase?: string | null;
-  overallTheme?: string | null;
+  mandato: MandatoEsqueleto;
+  mentor_hook: MentorHook;
 };
 
-// ── Paleta Akasha ────────────────────────────────────────────────────────────
+// ── Paleta Akasha (alinhada com MandalaChart.tsx) ────────────────────────────
 const C = {
   violeta: '#7C5CFF',
-  aurora:  '#2DD4BF',
+  aurora: '#2DD4BF',
   dourado: '#F0B429',
   magenta: '#FB5781',
-  bgVoid:  '#06070F',
-  bgDeep:  '#0B0E1C',
-  bgNeb:   '#141A33',
-  txtPri:  '#F4F5FF',
-  txtSec:  '#A7AECF',
-  txtMut:  '#5C6691',
+  bgVoid: '#06070F',
+  bgDeep: '#0B0E1C',
+  bgNeb: '#141A33',
+  txtPri: '#F4F5FF',
+  txtSec: '#A7AECF',
+  txtMut: '#5C6691',
 } as const;
 
-// ── Nomes dos pilares ────────────────────────────────────────────────────────
-const PILLAR_LABELS: Record<string, string> = {
-  astrology: 'Astrologia',
-  kabala:    'Kabala',
-  tantra:    'Tantra',
-  odus:      'Odus do Ifá',
+// ── Pilares (canônicos VISION §2 — ordem P1..P5) ─────────────────────────────
+const PILLAR_LABELS: Record<string, { nome: string; cor: string }> = {
+  cabala: { nome: 'Numerologia Cabalística', cor: C.violeta },
+  astrologia: { nome: 'Astrologia', cor: C.aurora },
+  tantrica: { nome: 'Numerologia Tântrica', cor: C.dourado },
+  odu: { nome: 'Odu de Nascimento', cor: C.magenta },
+  iching: { nome: 'I Ching', cor: '#A0763A' },
 };
 
-const TANTRIC_BODIES: Record<number, string> = {
-  1:  'Alma (Atma)',
-  2:  'Prânico',
-  3:  'Negativo',
-  4:  'Neutro',
-  5:  'Físico',
-  6:  'Arcline',
-  7:  'Aura',
-  8:  'Radiante',
-  9:  'Sutil',
-  10: 'Divino',
-  11: 'Comando (Ajna)',
+const ESCALA_LABELS: Record<MandatoEsqueleto['escala'], string> = {
+  D: 'Diário',
+  S: 'Semanal',
+  Z: 'Sazonal',
+  V: 'Vida',
 };
 
-// ── Estilos ──────────────────────────────────────────────────────────────────
+// ── Estilos (mesma linguagem do MandalaChart.tsx) ───────────────────────────
 
 const wrapStyle: React.CSSProperties = {
   background: C.bgVoid,
@@ -137,36 +140,6 @@ const badgeStyle = (color: string): React.CSSProperties => ({
   marginBottom: 8,
 });
 
-const pillStyle: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: 6,
-  background: `${C.magenta}18`,
-  border: `1px solid ${C.magenta}55`,
-  borderRadius: 8,
-  padding: '6px 14px',
-  fontSize: '0.8rem',
-  color: C.magenta,
-  marginTop: 12,
-  marginBottom: 4,
-};
-
-const mandalaStyle: React.CSSProperties = {
-  display: 'flex',
-  gap: 8,
-  marginTop: 16,
-  alignItems: 'center',
-};
-
-const dotStyle = (color: string, size = 10): React.CSSProperties => ({
-  width: size,
-  height: size,
-  borderRadius: '50%',
-  background: color,
-  boxShadow: `0 0 8px ${color}99`,
-  flexShrink: 0,
-});
-
 const dividerStyle: React.CSSProperties = {
   borderTop: `1px solid ${C.bgNeb}`,
   margin: '16px 0',
@@ -189,13 +162,6 @@ const btnStyle: React.CSSProperties = {
   marginTop: 8,
 };
 
-const stubBtnStyle: React.CSSProperties = {
-  ...btnStyle,
-  background: `linear-gradient(135deg, ${C.aurora}22 0%, ${C.dourado}14 100%)`,
-  border: `1px solid ${C.aurora}55`,
-  color: C.aurora,
-};
-
 const screenNumStyle: React.CSSProperties = {
   fontSize: '0.6rem',
   color: C.txtMut,
@@ -204,10 +170,26 @@ const screenNumStyle: React.CSSProperties = {
   marginBottom: 24,
 };
 
-const herbsStyle: React.CSSProperties = {
-  marginTop: 10,
-  fontSize: '0.78rem',
+const fonteStyle: React.CSSProperties = {
+  marginTop: 14,
+  paddingTop: 12,
+  borderTop: `1px solid ${C.bgNeb}`,
+  fontSize: '0.72rem',
   color: C.txtMut,
+  lineHeight: 1.5,
+};
+
+const stubBadge: React.CSSProperties = {
+  display: 'inline-block',
+  marginLeft: 8,
+  fontSize: '0.55rem',
+  letterSpacing: '0.1em',
+  padding: '2px 6px',
+  borderRadius: 4,
+  background: 'rgba(92,102,145,0.18)',
+  border: '1px solid rgba(92,102,145,0.4)',
+  color: C.txtMut,
+  textTransform: 'uppercase',
 };
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -224,27 +206,97 @@ function formatDate(iso: string): string {
   }
 }
 
-function buildGreeting(reading: DailyReading): string {
-  const moon = reading.moonPhase ?? 'Lua';
-  const theme = reading.overallTheme ?? 'Equilíbrio';
-  return `As energias de ${moon} revelam o tema de ${theme} no campo de hoje.`;
+/**
+ * Extrai 3 frases (heurística) da `redacao_bruta` para o Mandato.
+ * VISION §4 promete 3 frases; enquanto o LLM não redige (F-204),
+ * partimos no último ponto antes do parêntese de stub.
+ */
+function extractFrases(redacao: string): string[] {
+  const cleaned = redacao.replace(/\s*\(LLM redige.*?\)\.?\s*$/i, '').trim();
+  // Quebra em pontos finais que não sejam abreviação (sigla única).
+  const raw = cleaned
+    .split(/(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ])/g)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+  if (raw.length >= 3) return raw.slice(0, 3);
+  // Fallback: 1 frase só.
+  return raw.length > 0 ? [cleaned] : ['(Mandato vazio — tente novamente em alguns instantes)'];
+}
+
+/**
+ * Pergunta padrão derivada do Pilar principal.
+ * Quando o LLM (F-204) fornecer pergunta própria, esta vira fallback.
+ */
+function perguntaPorPilar(pilarPrincipal: string): string {
+  const mapa: Record<string, string> = {
+    cabala: 'Qual decisão de vida o seu número-base está iluminando hoje?',
+    astrologia: 'O que o céu de hoje está pedindo que você ouça em silêncio?',
+    tantrica: 'Qual corpo sutil está pedindo atenção e cuidado agora?',
+    odu: 'O que o seu Odu de nascimento está ensinando neste dia?',
+    iching: 'Que mutação o seu hexagrama está convidando a atravessar?',
+  };
+  return mapa[pilarPrincipal] ?? 'O que seu Ori te pede para olhar com mais gentileza hoje?';
+}
+
+/**
+ * Micro-ritual padrão (3 min) derivado do Pilar principal.
+ * F-204 substituirá por redação LLM com base em `pilares_relevantes` + escala.
+ */
+function ritualPorPilar(pilarPrincipal: string): { titulo: string; instrucao: string } {
+  const mapa: Record<string, { titulo: string; instrucao: string }> = {
+    cabala: {
+      titulo: 'Conta-Cantiga',
+      instrucao:
+        'Some os números do seu dia de nascimento e medite 3 minutos sobre o que esse número quer dizer na sua jornada.',
+    },
+    astrologia: {
+      titulo: 'Respiração do Céu',
+      instrucao:
+        'Respire 4-4-4-4 olhando o horizonte. Deixe a Lua e o signo do dia embalarem o silêncio.',
+    },
+    tantrica: {
+      titulo: 'Varredura dos 11',
+      instrucao:
+        'Passe 11 respirações por cada corpo sutil (alma → mente → corpo → aura). Anote o que pulsou.',
+    },
+    odu: {
+      titulo: 'Oração ao Ori',
+      instrucao:
+        'Sente-se em terreiro (real ou mental). Agradeça ao seu Odu e peça uma orientação simples para o dia.',
+    },
+    iching: {
+      titulo: 'Mutação em 3 Linhas',
+      instrucao: 'Abra o hexagrama do dia. Leia as 3 linhas mutáveis. Escreva 1 palavra para cada.',
+    },
+  };
+  return (
+    mapa[pilarPrincipal] ?? {
+      titulo: 'Silêncio de 3 min',
+      instrucao: 'Sente-se, respire e anote o primeiro pensamento que surgir.',
+    }
+  );
 }
 
 // ── Página ───────────────────────────────────────────────────────────────────
 
 export default async function DiarioPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ intencao?: string }>;
 }) {
   const { locale } = await params;
+  const { intencao } = await searchParams;
   const cookieStore = await cookies();
   const token = cookieStore.get('akasha_session')?.value;
 
   if (!token) redirect(`/${locale}/onboarding`);
 
+  const qs = intencao?.trim() ? `?intencao=${encodeURIComponent(intencao.trim())}` : '';
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/daily`,
+    `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/akasha/mandato-do-dia${qs}`,
     {
       method: 'GET',
       headers: { Cookie: `akasha_session=${token}` },
@@ -253,100 +305,167 @@ export default async function DiarioPage({
   );
 
   if (res.status === 401 || res.status === 404) redirect(`/${locale}/onboarding`);
+  if (!res.ok) {
+    return (
+      <div style={{ ...wrapStyle, padding: '48px 20px' }}>
+        <div style={innerStyle}>
+          <div style={cardStyle(C.magenta)}>
+            <span style={labelStyle(C.magenta)}>Mandato indisponível</span>
+            <p style={bodyStyle}>
+              Não conseguimos calcular o Mandato de hoje ({res.status}). Tente novamente em alguns
+              instantes. Se o problema persistir, conclua o onboarding ou atualize seus dados
+              natais.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  const reading: DailyReading = await res.json();
-
-  const ritual      = reading.ritual as Ritual;
-  const tension     = reading.tensionPoint as TensionPoint;
-  const pillarLabel = PILLAR_LABELS[tension.pillar] ?? tension.pillar;
-  const bodyLabel   = tension.affectedBody ? TANTRIC_BODIES[tension.affectedBody] : null;
-  const greeting    = buildGreeting(reading);
-
-  // Mini-mandala: 3 pontos representando Astrologia (Aurora), Odus (Dourado), Tantra (Violeta)
-  const mandalaColors = [C.aurora, C.dourado, C.violeta];
+  const payload: MandatoDoDiaResponse = await res.json();
+  const { date, mandato, mentor_hook } = payload;
+  const pilarPrincipal = mandato.pilares_relevantes[0] ?? 'cabala';
+  const pilarInfo = PILLAR_LABELS[pilarPrincipal] ?? { nome: pilarPrincipal, cor: C.txtMut };
+  const crise = mentor_hook.crise_detectada;
+  const frases = crise ? [] : extractFrases(mandato.redacao_bruta);
+  const pergunta = perguntaPorPilar(pilarPrincipal);
+  const ritual = ritualPorPilar(pilarPrincipal);
 
   return (
     <div style={wrapStyle}>
-
-      {/* ── Tela 1: Clima Energético ────────────────────────────────────────── */}
+      {/* ── Tela 1: O Mandato (3 frases) ─────────────────────────────────── */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-          <div style={screenNumStyle}>01 / 03 — Clima</div>
+          <div style={screenNumStyle}>01 / 03 — Mandato</div>
 
-          {/* Saudação magnética (Voz do Akasha) */}
-          <div style={cardStyle(C.aurora)}>
-            <span style={labelStyle(C.aurora)}>Voz do Akasha</span>
-            <p style={{ ...bodyStyle, fontStyle: 'italic', color: C.txtPri, marginBottom: 10 }}>
-              {greeting}
-            </p>
-            <div style={{ fontSize: '0.75rem', color: C.txtMut }}>
-              {formatDate(reading.date)}
+          {/* Cabeçalho: data + escala + intenção */}
+          <div style={cardStyle(pilarInfo.cor)}>
+            <span style={labelStyle(pilarInfo.cor)}>
+              Mandato · Escala {mandato.escala} ({ESCALA_LABELS[mandato.escala]})
+            </span>
+            <p style={{ ...headlineStyle, color: pilarInfo.cor }}>{formatDate(date)}</p>
+            <div style={{ marginTop: 10, fontSize: '0.78rem', color: C.txtMut }}>
+              Intenção: <em style={{ color: C.txtSec }}>{mentor_hook.intencao}</em>
             </div>
           </div>
 
-          {/* Texto de clima */}
-          <div style={cardStyle(C.violeta)}>
-            <span style={labelStyle(C.violeta)}>Clima Energético</span>
-            <p style={bodyStyle}>{reading.climate}</p>
-
-            {/* Badges: fase lunar + tema geral */}
-            <div style={{ marginTop: 14 }}>
-              {reading.moonPhase && (
-                <span style={badgeStyle(C.aurora)}>{reading.moonPhase}</span>
-              )}
-              {reading.overallTheme && (
-                <span style={badgeStyle(C.dourado)}>{reading.overallTheme}</span>
-              )}
+          {/* Saudação do Akasha — 3 frases */}
+          {crise ? (
+            // Ethics Charter §5: suprimir `redacao_bruta` em crise; renderizar CVV-188.
+            <div style={cardStyle(C.magenta)}>
+              <span style={labelStyle(C.magenta)}>Recurso humano · CVV 188</span>
+              <h2 style={{ ...headlineStyle, color: C.magenta }}>Você não está sozinho(a).</h2>
+              <p style={bodyStyle}>
+                O Mentor Akasha reconhece sinais de sofrimento emocional na sua intenção e, por
+                design ético, se afasta. Fale agora com alguém treinado para ouvir, gratuitamente e
+                24h:
+              </p>
+              <div
+                style={{
+                  marginTop: 16,
+                  padding: 16,
+                  borderRadius: 10,
+                  background: 'rgba(251,87,129,0.08)',
+                  border: '1px solid rgba(251,87,129,0.4)',
+                }}
+              >
+                <p style={{ ...bodyStyle, color: C.txtPri, fontWeight: 600, marginBottom: 4 }}>
+                  CVV — Centro de Valorização da Vida
+                </p>
+                <p
+                  style={{
+                    ...bodyStyle,
+                    fontSize: '1.4rem',
+                    fontFamily: 'var(--font-cinzel, serif)',
+                    color: C.magenta,
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  ligue 188
+                </p>
+                <p style={{ ...bodyStyle, fontSize: '0.78rem', color: C.txtMut, marginTop: 6 }}>
+                  chat também:{' '}
+                  <a
+                    href="https://cvv.org.br"
+                    target="_blank"
+                    rel="noopener"
+                    style={{ color: C.magenta }}
+                  >
+                    cvv.org.br
+                  </a>
+                </p>
+              </div>
             </div>
-
-            {/* Mini-mandala */}
-            <div style={mandalaStyle}>
-              {mandalaColors.map((color, i) => (
-                <span key={i} style={dotStyle(color)} title={['Astrologia', 'Odus', 'Tantra'][i]} />
-              ))}
-              <span style={{ fontSize: '0.65rem', color: C.txtMut, marginLeft: 4 }}>
-                pilares ativos
+          ) : (
+            <div style={cardStyle(pilarInfo.cor)}>
+              <span style={labelStyle(pilarInfo.cor)}>
+                A Voz do Akasha <span style={stubBadge}>via {pilarInfo.nome}</span>
               </span>
-            </div>
-          </div>
+              {frases.map((f, i) => (
+                <p
+                  key={i}
+                  style={{
+                    ...bodyStyle,
+                    color: C.txtPri,
+                    marginBottom: i < frases.length - 1 ? 14 : 0,
+                  }}
+                >
+                  {f}
+                </p>
+              ))}
 
-          {/* Hint de scroll */}
+              {/* Pilares relevantes como badges coloridos */}
+              {mandato.pilares_relevantes.length > 0 && (
+                <div style={{ marginTop: 16 }}>
+                  {mandato.pilares_relevantes.map((p) => {
+                    const info = PILLAR_LABELS[p];
+                    return (
+                      <span key={p} style={badgeStyle(info?.cor ?? C.txtMut)}>
+                        {info?.nome ?? p}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Fontes citadas — proveniência obrigatória (Ethics §1) */}
+              {mandato.cita_fontes.length > 0 && (
+                <div style={fonteStyle}>
+                  <span style={{ ...labelStyle(C.txtMut), marginBottom: 6 }}>Citações</span>
+                  {mandato.cita_fontes.map((c, i) => (
+                    <div key={i}>· {c}</div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           <div style={{ textAlign: 'center', marginTop: 24, color: C.txtMut, fontSize: '0.7rem' }}>
             role para baixo ↓
           </div>
         </div>
       </div>
 
-      {/* ── Tela 2: Desafio do Dia ──────────────────────────────────────────── */}
+      {/* ── Tela 2: A Pergunta do Dia ─────────────────────────────────────── */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-          <div style={screenNumStyle}>02 / 03 — Desafio</div>
+          <div style={screenNumStyle}>02 / 03 — Pergunta</div>
 
-          <div style={cardStyle(C.magenta)}>
-            <span style={labelStyle(C.magenta)}>Desafio do Dia</span>
-            <h2 style={headlineStyle}>{tension.theme}</h2>
-
-            {/* Corpo tântrico afetado */}
-            {bodyLabel && (
-              <div style={pillStyle}>
-                <span style={dotStyle(C.magenta, 8)} />
-                Corpo tântrico em tensão: <strong style={{ marginLeft: 4 }}>{bodyLabel}</strong>
-              </div>
-            )}
-
-            {/* Pilar em tensão */}
-            <div style={{ marginTop: 12, marginBottom: 4 }}>
-              <span style={badgeStyle(C.magenta)}>Pilar: {pillarLabel}</span>
-              <span style={badgeStyle(C.txtMut)}>
-                Intensidade: {tension.intensity}/100
-              </span>
-            </div>
+          <div style={cardStyle(C.violeta)}>
+            <span style={labelStyle(C.violeta)}>
+              A Pergunta do Dia <span style={stubBadge}>template (F-204: LLM)</span>
+            </span>
+            <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>{pergunta}</h2>
 
             <div style={dividerStyle} />
 
-            {/* Orientação prática */}
-            <span style={labelStyle(C.violeta)}>Orientação</span>
-            <p style={bodyStyle}>{reading.alert}</p>
+            <span style={labelStyle(C.txtMut)}>Por que esta pergunta?</span>
+            <p style={bodyStyle}>
+              A pergunta de hoje é ancorada em{' '}
+              <strong style={{ color: pilarInfo.cor }}>{pilarInfo.nome}</strong>, o pilar principal
+              da escala {mandato.escala}. A intenção de uma boa pergunta é abrir espaço de escuta —
+              não de resposta apressada. Reserve 1 minuto para deixar a resposta emergir.
+            </p>
           </div>
 
           <div style={{ textAlign: 'center', marginTop: 24, color: C.txtMut, fontSize: '0.7rem' }}>
@@ -355,44 +474,30 @@ export default async function DiarioPage({
         </div>
       </div>
 
-      {/* ── Tela 3: A Prescrição ────────────────────────────────────────────── */}
+      {/* ── Tela 3: O Micro-Ritual ────────────────────────────────────────── */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-          <div style={screenNumStyle}>03 / 03 — Prescrição</div>
+          <div style={screenNumStyle}>03 / 03 — Ritual</div>
 
-          <div style={cardStyle(C.dourado)}>
-            <span style={labelStyle(C.dourado)}>A Prescrição do Dia</span>
-            <h2 style={{ ...headlineStyle, color: C.dourado }}>{ritual.titulo}</h2>
+          <div style={cardStyle(C.aurora)}>
+            <span style={labelStyle(C.aurora)}>
+              O Micro-Ritual <span style={stubBadge}>template (F-204: LLM)</span>
+            </span>
+            <h2 style={{ ...headlineStyle, color: C.aurora }}>{ritual.titulo}</h2>
             <p style={bodyStyle}>{ritual.instrucao}</p>
 
             <div style={{ marginTop: 14 }}>
-              <span style={badgeStyle(C.dourado)}>Cor: {ritual.cor}</span>
-              <span style={badgeStyle(C.dourado)}>Elemento: {ritual.elemento}</span>
+              <span style={badgeStyle(pilarInfo.cor)}>via {pilarInfo.nome}</span>
+              <span style={badgeStyle(C.aurora)}>~ 3 min</span>
             </div>
-
-            {ritual.herbs && ritual.herbs.length > 0 && (
-              <p style={herbsStyle}>
-                Ervas sugeridas: {ritual.herbs.join(', ')}
-              </p>
-            )}
           </div>
 
-          {/* Botão stub "Realizado" */}
-          <button
-            style={stubBtnStyle}
-            aria-label="Marcar ritual como realizado"
-            onClick={undefined /* stub — POST /api/akasha/ritual/complete */}
-          >
-            Realizado ✓
-          </button>
-
-          {/* Link para o Oráculo */}
+          {/* Link para o Oráculo (pode aprofundar no Mentor) */}
           <Link href={`/${locale}/oraculo`} style={btnStyle}>
             Consultar Oráculo →
           </Link>
         </div>
       </div>
-
     </div>
   );
 }
