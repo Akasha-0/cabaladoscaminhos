@@ -52,6 +52,9 @@ export interface PilarTantrica {
   corpo_predominante: number;
   trigemeo: 'fisico' | 'astral' | 'mental';
   ciclo_anos: number;
+  // F-220: 4 Temperamentos Gregos (R-019) — Pilar 3 sub-framework opt-in
+  // Estado atual (não tipo fixo — R-022 §3.1). Default: sanguineo em stub.
+  temperamento_atual: 'sanguineo' | 'colerico' | 'melancolico' | 'fleumatico';
 }
 
 export interface PilarOdu {
@@ -377,7 +380,22 @@ async function realPilar3Tantrica(
     corpo <= 4 ? 'fisico' : corpo <= 8 ? 'astral' : 'mental';
   const idade = new Date().getFullYear() - y;
   const proximoCiclo = Math.ceil(idade / 7) * 7;
-  return { corpo_predominante: corpo, trigemeo, ciclo_anos: proximoCiclo };
+  // F-220: 4 Temperamentos Gregos (R-019) — inferido da estação do nascimento.
+  // Lógica inline para evitar ciclo de import (akasha-core → core-tantra).
+  // Cita Hipocrates/Galeno em AGENTS.md como fonte.
+  const tempData = input.data_nascimento ? new Date(input.data_nascimento) : new Date();
+  const mesNasc = tempData.getMonth() + 1;
+  const temperamento_atual: PilarTantrica['temperamento_atual'] =
+    mesNasc >= 3 && mesNasc <= 5 ? 'sanguineo'
+      : mesNasc >= 6 && mesNasc <= 8 ? 'colerico'
+        : mesNasc >= 9 && mesNasc <= 11 ? 'melancolico'
+          : 'fleumatico';
+  return {
+    corpo_predominante: corpo,
+    trigemeo,
+    ciclo_anos: proximoCiclo,
+    temperamento_atual,
+  };
 }
 
 async function realPilar4Odu(

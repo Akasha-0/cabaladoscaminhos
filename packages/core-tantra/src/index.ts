@@ -13,3 +13,13 @@ export {
   calculateTantricPath,
   buildTantricMap,
 } from './numerology-tantric';
+
+// F-220: 4 Temperamentos Gregos (R-019) — Pilar 3 sub-framework opt-in
+export type { Temperamento } from './temperaments';
+export {
+  TEMPERAMENTOS,
+  TEMPERAMENTO_PILAR_MAP,
+  TEMPERAMENTO_CARACTERISTICAS,
+  isTemperamento,
+  inferirTemperamentoAtual,
+} from './temperaments';
