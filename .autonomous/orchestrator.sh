@@ -42,6 +42,8 @@ if [[ -f "$stop_signal" ]]; then
   log "Stop signal presente em $stop_signal — encerrando."
   cat "$stop_signal"
   exit 0
+fi
+
 # 2026-06-11: Detectar trabalho untracked significativo antes de spawn
 # (work-in-progress paralelo de outro agente que o loop não deve duplicar).
 # Se > 20 arquivos untracked em apps/ ou packages/, avisar a sessão.
@@ -52,7 +54,17 @@ if [[ $UNTRACKED_COUNT -gt 20 ]]; then
   log "  Lista: git status --short | head -30"
 fi
 
+# 2026-06-11: Self-check feature_list.json antes de spawn.
+# Sessão N+7 (supervisor) perdeu ~30 min porque feature_list.json foi
+# commitado quebrado (entry R-014 orphan + R-015 missing). Esta check
+# detecta JSON inválido e avisa a próxima sessão para corrigir primeiro.
+if ! python3 -c "import json; json.load(open('$PROJECT_DIR/.autonomous/feature_list.json'))" 2>/dev/null; then
+  log "✗ feature_list.json está INVÁLIDO — corrigir ANTES de começar trabalho"
+  log "  Sintoma esperado: 'Expecting , delimiter' ou 'Illegal trailing comma'"
+  log "  Fix: cp .autonomous/feature_list.json /tmp/x.json && python3 -c 'import json; ...'"
+  log "  Ou: git checkout HEAD~K -- .autonomous/feature_list.json e re-aplicar update"
 fi
+
 
 # Selecionar prompt
 if [[ "$MODE" == "init" || ! -f "$SCRIPT_DIR/initializer_done.signal" ]]; then
