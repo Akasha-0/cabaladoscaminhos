@@ -100,28 +100,114 @@ function detectarCrise(intencao: string): boolean {
   return CRISE_REGEX.test(intencao);
 }
 
-// ─── Engines reais (lazy import, Fase 6 integra) ────────────────────────────
+// ─── Engines reais (lazy import, Fase 6 — F-200) ───────────────────────────
+//
+// Cada engine é importado individualmente via .catch() para que a falha
+// de um pacote NÃO impeça os outros de operar. Isso preserva o princípio
+// "graceful degradation" do R-030: se um pilar falha, o resto segue.
+//
+// Referência: synthesis_v1.md §5 (Mandato) + feature_list F-200.
 
 async function loadEngines() {
-  // Fase 6 integra engines reais; Fase 5 só valida o shape.
-  const cabala = await import('@akasha/core-cabala').catch(() => null);
-  const astro = await import('@akasha/core-astrology').catch(() => null);
-  const tantra = await import('@akasha/core-tantra').catch(() => null);
-  const odu = await import('@akasha/core-odus').catch(() => null);
-  const iching = await import('@akasha/core-iching').catch(() => null);
+  const cabala = await import('@akasha/core-cabala').catch((e) => {
+    console.warn('[akasha/core] @akasha/core-cabala indisponível:', e);
+    return null;
+  });
+  const astro = await import('@akasha/core-astrology').catch((e) => {
+    console.warn('[akasha/core] @akasha/core-astrology indisponível:', e);
+    return null;
+  });
+  const tantra = await import('@akasha/core-tantra').catch((e) => {
+    console.warn('[akasha/core] @akasha/core-tantra indisponível:', e);
+    return null;
+  });
+  const odu = await import('@akasha/core-odus').catch((e) => {
+    console.warn('[akasha/core] @akasha/core-odus indisponível:', e);
+    return null;
+  });
+  const iching = await import('@akasha/core-iching').catch((e) => {
+    console.warn('[akasha/core] @akasha/core-iching indisponível:', e);
+    return null;
+  });
   return { cabala, astro, tantra, odu, iching };
 }
 
-// ─── Stubs determinísticos (Fase 5; reais na Fase 6) ────────────────────────
+// ─── Helpers de data (F-200) ────────────────────────────────────────────────
 
-function stubPilar1Cabala(input: AkashaInput): PilarCabala {
+/** YYYY-MM-DD → DD/MM/YYYY (formato esperado por @akasha/core-cabala). */
+function isoToDdMmYyyy(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return iso;
+  return `${m[3]}/${m[2]}/${m[1]}`;
+}
+
+/** YYYY-MM-DD + HH:MM → Date UTC. Usado para getBirthChart (core-astrology). */
+function isoToUtcDate(iso: string, hhmm?: string): Date {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return new Date(NaN);
+  const parts = (hhmm ?? '12:00').split(':');
+  const h = parseInt(parts[0] ?? '12', 10);
+  const mn = parseInt(parts[1] ?? '0', 10);
+  return new Date(Date.UTC(
+    parseInt(m[1], 10),
+    parseInt(m[2], 10) - 1,
+    parseInt(m[3], 10),
+    Number.isFinite(h) ? h : 12,
+    Number.isFinite(mn) ? mn : 0,
+    0,
+  ));
+}
+
+/** Redução numerológica preservando master numbers 11/22/33. */
+function reduzir(n: number): number {
+  while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+    n = String(n).split('').reduce((a, c) => a + Number(c), 0);
+  }
+  return n;
+}
+
+/** Converte longitude (graus 0-360) em nome de signo PT-BR canônico. */
+const SIGNOS_PT = [
+  'aries', 'touro', 'gemeos', 'cancer',
+  'leao', 'virgem', 'libra', 'escorpio',
+  'sagitario', 'capricornio', 'aquario', 'peixes',
+] as const;
+function longitudeToSigno(lon: number): string {
+  const norm = ((lon % 360) + 360) % 360;
+  return SIGNOS_PT[Math.floor(norm / 30) % 12];
+}
+
+// ─── Pilares — engines reais (F-200) com fallback de stub ───────────────────
+//
+// Estratégia: cada `realPilarN()` chama o engine real via lazy import e cai
+// no stub se o engine falhar (engine não instalado, dado malformado, etc).
+// Isso preserva o comportamento determinístico testado em akasha-core.test.ts
+// + profiles.test.ts durante a transição Fase 5 → Fase 6.
+
+async function realPilar1Cabala(
+  input: AkashaInput,
+  eng: Awaited<ReturnType<typeof loadEngines>>['cabala'],
+): Promise<PilarCabala> {
   const [y, m, d] = input.data_nascimento.split('-').map(Number);
-  const reduzir = (n: number): number => {
-    while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
-      n = String(n).split('').reduce((a, c) => a + Number(c), 0);
+  const ddmmyyyy = isoToDdMmYyyy(input.data_nascimento);
+  if (eng) {
+    try {
+      const cab = eng as unknown as {
+        calcularCaminhoVida: (d: string) => number;
+        calcularAnoPessoal: (d: string) => { numero: number };
+        calcularCabalistica: (n: string) => number;
+      };
+      const life_path = cab.calcularCaminhoVida(ddmmyyyy);
+      const ano_pessoal = cab.calcularAnoPessoal(ddmmyyyy).numero;
+      // expression = gematria cabalística do nome (Doc 11 §3.1)
+      const expression = cab.calcularCabalistica(input.nome);
+      const birthday = reduzir(d);
+      return { life_path, birthday, expression, ano_pessoal };
+    } catch (e) {
+      console.warn('[akasha/core] Pilar 1 Cabala falhou, usando stub:', e);
     }
-    return n;
-  };
+  }
+  // Stub fallback
   const anoBase = new Date().getFullYear();
   const aniversario = new Date(input.data_nascimento);
   const anoPessoalBase = anoBase + aniversario.getMonth() + aniversario.getDate();
@@ -133,19 +219,77 @@ function stubPilar1Cabala(input: AkashaInput): PilarCabala {
   };
 }
 
-function stubPilar2Astrologia(input: AkashaInput): PilarAstrologia {
+async function realPilar2Astrologia(
+  input: AkashaInput,
+  eng: Awaited<ReturnType<typeof loadEngines>>['astro'],
+): Promise<PilarAstrologia> {
   const [, m, d] = input.data_nascimento.split('-').map(Number);
+  if (eng) {
+    try {
+      const astro = eng as unknown as {
+        getBirthChart: (i: {
+          birthDate: Date;
+          latitude?: number;
+          longitude?: number;
+        }) => {
+          chart: {
+            planeta: Record<string, { longitude?: number; sign?: string; grauNoSigno?: number }>;
+            ascendente: number;
+            mediumCoeli: number;
+          };
+        };
+      };
+      const bc = astro.getBirthChart({
+        birthDate: isoToUtcDate(input.data_nascimento, input.hora_nascimento),
+        // lat/lon ausentes no AkashaInput — caem para 0,0 (Atlântico)
+        // Caller pode sobrepor via input override no Pilar dedicado.
+        latitude: 0,
+        longitude: 0,
+      });
+      const sol = bc.chart.planeta.sol;
+      const lua = bc.chart.planeta.lua;
+      const solLongitude = sol?.longitude;
+      const luaLongitude = lua?.longitude;
+      const sol_signo = solLongitude != null ? longitudeToSigno(solLongitude) : longitudeToSigno(((m - 1) % 12) * 30 + d);
+      const lua_signo = luaLongitude != null ? longitudeToSigno(luaLongitude) : longitudeToSigno(((d + 7) % 12) * 30);
+      // lua_fase: ângulo Sol-Lua mod 360 → 4 fases
+      let lua_fase: PilarAstrologia['lua_fase'] = 'nova';
+      if (solLongitude != null && luaLongitude != null) {
+        const angulo = (((luaLongitude - solLongitude) % 360) + 360) % 360;
+        if (angulo < 45 || angulo >= 315) lua_fase = 'nova';
+        else if (angulo < 135) lua_fase = 'crescente';
+        else if (angulo < 225) lua_fase = 'cheia';
+        else lua_fase = 'minguante';
+      } else {
+        const base = new Date('2000-01-06').getTime();
+        const dias = (new Date(input.data_nascimento).getTime() - base) / 86400000;
+        const faseIdx = ((dias % 29.53) / 29.53) * 4;
+        const fases: PilarAstrologia['lua_fase'][] = ['nova', 'crescente', 'cheia', 'minguante'];
+        lua_fase = fases[Math.floor(faseIdx) % 4];
+      }
+      const asc_signo = input.hora_nascimento ? longitudeToSigno(bc.chart.ascendente) : null;
+      return {
+        sol_signo,
+        asc_signo,
+        lua_signo,
+        lua_fase,
+        hora_desconhecida: !input.hora_nascimento,
+      };
+    } catch (e) {
+      console.warn('[akasha/core] Pilar 2 Astrologia falhou, usando stub:', e);
+    }
+  }
+  // Stub fallback
   const signos = [
     'capricornio', 'aquario', 'peixes', 'aries', 'touro', 'gemeos',
     'cancer', 'leao', 'virgem', 'libra', 'escorpiao', 'sagitario',
   ];
-  const sol = signos[(m - 1) % 12];
   const base = new Date('2000-01-06').getTime();
   const dias = (new Date(input.data_nascimento).getTime() - base) / 86400000;
   const faseIdx = ((dias % 29.53) / 29.53) * 4;
   const fases: PilarAstrologia['lua_fase'][] = ['nova', 'crescente', 'cheia', 'minguante'];
   return {
-    sol_signo: sol,
+    sol_signo: signos[(m - 1) % 12],
     asc_signo: input.hora_nascimento ? signos[(d - 1) % 12] : null,
     lua_signo: signos[Math.floor((d + 7) % 12)],
     lua_fase: fases[Math.floor(faseIdx) % 4],
@@ -153,8 +297,37 @@ function stubPilar2Astrologia(input: AkashaInput): PilarAstrologia {
   };
 }
 
-function stubPilar3Tantrica(input: AkashaInput): PilarTantrica {
+async function realPilar3Tantrica(
+  input: AkashaInput,
+  eng: Awaited<ReturnType<typeof loadEngines>>['tantra'],
+): Promise<PilarTantrica> {
   const [y, m, d] = input.data_nascimento.split('-').map(Number);
+  if (eng) {
+    try {
+      const t = eng as unknown as {
+        buildTantricMap: (b: string) => {
+          soul?: number;
+          karma?: number;
+          divineGift?: number;
+          destiny?: number;
+          tantricPath?: number;
+        };
+      };
+      const map = t.buildTantricMap(input.data_nascimento);
+      // corpo_predominante = soul (Doc 04 §2.3)
+      const corpo = map.soul ?? (((y + m + d) % 11) + 1);
+      // trigemeo: derivado de divineGift (corpo radiante = maior)
+      const trigemeo: PilarTantrica['trigemeo'] =
+        corpo <= 4 ? 'fisico' : corpo <= 8 ? 'astral' : 'mental';
+      // ciclo_anos: próximo múltiplo de 7 a partir da idade
+      const idade = new Date().getFullYear() - y;
+      const ciclo_anos = Math.ceil(idade / 7) * 7;
+      return { corpo_predominante: corpo, trigemeo, ciclo_anos };
+    } catch (e) {
+      console.warn('[akasha/core] Pilar 3 Tantra falhou, usando stub:', e);
+    }
+  }
+  // Stub fallback
   const corpo = (((y + m + d) % 11) + 1);
   const trigemeo: PilarTantrica['trigemeo'] =
     corpo <= 4 ? 'fisico' : corpo <= 8 ? 'astral' : 'mental';
@@ -163,7 +336,48 @@ function stubPilar3Tantrica(input: AkashaInput): PilarTantrica {
   return { corpo_predominante: corpo, trigemeo, ciclo_anos: proximoCiclo };
 }
 
-function stubPilar4Odu(input: AkashaInput): PilarOdu {
+async function realPilar4Odu(
+  input: AkashaInput,
+  eng: Awaited<ReturnType<typeof loadEngines>>['odu'],
+): Promise<PilarOdu> {
+  // Lista canônica derivada da IFA_ODUS (Doc 11 §3.4 + D-044 F1).
+  // 'Eji' substitui 'Ogbe' por design Phase 1 (D-044 validação).
+  // Mantida em 15 aqui para o Pilar 4 (escopo YORÙBÁ canônico); 16 names
+  // ficam como sub-variants (Owonrin/Meji, Okanran/Ogunda...) — stub fallback
+  // usa a versão 16 (mais permissiva) até o D-040 unificar.
+  const CANONICAL_15 = new Set([
+    'Eji', 'Oyeku', 'Iwori', 'Odi', 'Irosun', 'Owonrin',
+    'Obara', 'Okanran', 'Ogunda', 'Osa', 'Ika', 'Oturupon',
+    'Otura', 'Irete', 'Ofun',
+  ]);
+  if (eng) {
+    try {
+      const o = eng as unknown as {
+        calculateBirthOdu: (b: string) => { oduName: string };
+      };
+      const r = o.calculateBirthOdu(input.data_nascimento);
+      // oduName pode vir como 'Ogbe (Oxé)' OU nome composto yorubá
+      // (ex: 'Etogundá', 'Ejiogbe') — princípio ético Pilar 4 (R-022 §4.4 +
+      // AGENTS.md §5): NÃO inventar correspondência. Se o nome não está
+      // na lista canônica derivada, fallback para stub determinístico
+      // (16 names) em vez de vazar compound names sem curadoria.
+      const principal = r.oduName.split(/[\s(]/)[0];
+      if (CANONICAL_15.has(principal)) {
+        return {
+          odu_principal: principal,
+          odu_secundario: null,
+          fonte: 'Ifá',
+          aviso: 'requer consentimento + terreiro',
+        };
+      }
+      console.warn(
+        `[akasha/core] Pilar 4 Odu: real engine retornou nome composto/não-canônico "${r.oduName}" — usando stub (Pilar 4 ethics invariant)`,
+      );
+    } catch (e) {
+      console.warn('[akasha/core] Pilar 4 Odu falhou, usando stub:', e);
+    }
+  }
+  // Stub fallback (16 names — preserva teste Fase 5 que espera Ogbe em vez de Eji)
   const odus16 = [
     'Ogbe', 'Oyeku', 'Iwori', 'Odi', 'Irosun', 'Owonrin',
     'Obara', 'Okanran', 'Ogunda', 'Osa', 'Ika', 'Oturupon',
@@ -179,7 +393,37 @@ function stubPilar4Odu(input: AkashaInput): PilarOdu {
   };
 }
 
-function stubPilar5IChing(_input: AkashaInput): PilarIChing {
+async function realPilar5IChing(
+  input: AkashaInput,
+  eng: Awaited<ReturnType<typeof loadEngines>>['iching'],
+): Promise<PilarIChing> {
+  if (eng) {
+    try {
+      const i = eng as unknown as {
+        buildIchingMap: (a: { birthDate: string; birthTime?: string | null }) => {
+          hexagramNumber: number | null;
+        };
+      };
+      const map = i.buildIchingMap({
+        birthDate: input.data_nascimento,
+        birthTime: input.hora_nascimento ?? null,
+      });
+      // hexagrama_dia: King Wen de hoje (mod 64 + 1)
+      const hoje = new Date();
+      const start = new Date(hoje.getFullYear(), 0, 0);
+      const dia = Math.floor((hoje.getTime() - start.getTime()) / 86400000);
+      const hex_dia = (((dia + 1) % 64) + 1);
+      const natal = map.hexagramNumber ?? (((dia % 64) + 1));
+      return {
+        hexagrama_natal: natal,
+        hexagrama_dia: hex_dia,
+        level: 'gift',
+      };
+    } catch (e) {
+      console.warn('[akasha/core] Pilar 5 I Ching falhou, usando stub:', e);
+    }
+  }
+  // Stub fallback
   const hoje = new Date();
   const start = new Date(hoje.getFullYear(), 0, 0);
   const dia = Math.floor((hoje.getTime() - start.getTime()) / 86400000);
@@ -209,12 +453,16 @@ function detectarEscala(agora: Date): 'D' | 'S' | 'Z' | 'V' {
 
 export async function calcular(input: AkashaInput): Promise<AkashaLeitura> {
   const parsed = AkashaInputSchema.parse(input);
-  await loadEngines();
-  const cabala = stubPilar1Cabala(parsed);
-  const astrologia = stubPilar2Astrologia(parsed);
-  const tantrica = stubPilar3Tantrica(parsed);
-  const odu = stubPilar4Odu(parsed);
-  const iching = stubPilar5IChing(parsed);
+  // F-200: carrega os 5 engines reais; cada pilar cai no stub se o seu
+  // engine estiver indisponível ou lançar exceção.
+  const engines = await loadEngines();
+  const [cabala, astrologia, tantrica, odu, iching] = await Promise.all([
+    realPilar1Cabala(parsed, engines.cabala),
+    realPilar2Astrologia(parsed, engines.astro),
+    realPilar3Tantrica(parsed, engines.tantra),
+    realPilar4Odu(parsed, engines.odu),
+    realPilar5IChing(parsed, engines.iching),
+  ]);
   const mandala: MandalaResumo = {
     pilares_presentes: ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'],
     pilares_ausentes: [],

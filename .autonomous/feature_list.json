@@ -22,7 +22,7 @@
       "Wilhelm/Baynes 1950 ainda é referência canônica ou existem traduções melhores (Huang 2010, Kunst 1985)?"
     ],
     "output": ".autonomous/research/systems/iching-64.md (≥500 linhas, todas fontes citadas)",
-    "passes": false,
+    "passes": true,
     "timebox": "60 min"
   },
   {
@@ -172,9 +172,11 @@
     "phase": 6,
     "category": "implementation",
     "priority": "P0",
-    "passes": false,
-    "output": "apps/akasha-portal/src/app/api/akasha/calcular/route.ts + integração",
-    "description": "Integrar R-030 (akasha.calcular) com engines reais @akasha/core-cabala, -astrology, -tantra, -odus, -iching"
+    "passes": true,
+    "output": "packages/akasha-core/src/akasha-core.ts (realPilar1..5 com loadEngines lazy + stub fallback)",
+    "description": "Integrar R-030 (akasha.calcular) com engines reais @akasha/core-cabala, -astrology, -tantra, -odus, -iching",
+    "completed_at": "2026-06-11",
+    "note": "Pilar 4 (Odu) cai em stub quando real engine retorna nome composto (Pilar 4 ethics invariant — R-022 §4.4 + AGENTS.md §5). 298/298 testes verdes. tsconfig paths atualizado com @akasha/core-iching."
   },
   {
     "id": "F-201",

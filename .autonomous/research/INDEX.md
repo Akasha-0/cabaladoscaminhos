@@ -21,8 +21,9 @@
 | RQ-010 | Tzolkin / Mayan Calendar | ✅ DONE | [systems/tzolkin.md](systems/tzolkin.md) | 45 min | P2 |
 | RQ-011 | Ayurveda | ✅ DONE | [systems/ayurveda.md](systems/ayurveda.md) | 60 min | P2 |
 | RQ-012 | Sheldrake + Cymatics | ✅ DONE | [systems/sheldrake-cymatics.md](systems/sheldrake-cymatics.md) | 30 min | P2 |
+| R-013 | **I Ching 64 Hexagramas** (King Wen + Wilhelm/Baynes) | ✅ DONE | [systems/iching-64.md](systems/iching-64.md) | 110 min | P0 |
 
-**Progresso:** 12/12 sistemas (100%) — **Fase 0 (Research) COMPLETA**
+**Progresso:** 13/13 sistemas (108%) — **Fase 0 (Research) EXPANDIDA** com Pilar 5.
 
 ---
 
@@ -69,6 +70,7 @@
 | 2026-06-11 | cot-20260611-d-043-10-perfis | D-043 10 perfis representativos: 6 decisões D1-D6 (1 vetor por perfil, contrato≠snapshot, cisão crise explícita, sem PII real, fontes whitelisted FONTES_VALIDAS, Pilar 4 ethics invariant); 11 personas = 10 normais + 1 crise; 69 testes verdes; valida R-030 antes Fase 6 |
 | 2026-06-11 | cot-20260611-d-044-correlation-validation | D-044 knowledge base: 5 decisões D1-D5 (15 canônico não 16, divergência documentada não corrigida, hook bloqueou vacuous test, tipos como auditoria, ranges>enums); 4 achados F1-F4 (Eji substitui Ogbe, stub diverge 2 Odus, ranges 100% conformes, inversão bijetiva); 90 testes verdes; 298/298 packages/akasha-core |
 | 2026-06-11 | cot-20260611-d-040-prisma-design-proposal | D-040 Prisma 5 Pilares: 6 decisões D1-D6 (DESIGN PROPOSAL não aplicação, backward compat 1 release, 3 achados, 5 riscos, feature_list status pending, 3 horizontes próximos passos); 3 achados (Pilar 5 em User.ichingMap, Mandala sem persistência, Pilar 4 ethics invariant não enforced); aguarda aprovação humana antes de pnpm db:migrate |
+| 2026-06-11 | cot-20260611-r-013-iching-pilar-5 | R-013 I Ching 64 Pilar 5: 7 decisões D1-D7 (Pilar 5 = Motor de Mutação NÃO oráculo; Hex. dia via solstício OU Jiazi 60; 12 fases 長生 como eixo D/S/Z/V; Phillips 1994 hexagrama↔Sefirá citável; tríade Shadow/Gift/Siddhi vocabulário público Rudd 2009; 24 fontes verificadas Exa; 8 decisões Pilar 5 D-045..D-052); 13/13 sistemas Akasha; fecha GAP 5ª tradição VISION.md |
 
 ---
 
