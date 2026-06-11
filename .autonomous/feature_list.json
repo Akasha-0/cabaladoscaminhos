@@ -394,6 +394,9 @@
     "category": "implementation",
     "priority": "P1",
     "description": "Rahu/Ketu primarios em PilarAstrologia (R-018 D4). AkashaInput ganha incluirRahuKetu: boolean (default true). PilarAstrologia tem rahuLongitude/ketuLongitude/casa. Diferencia Akasha de horoscopos ocidentais que tratam nodos como secundarios.",
-    "output": "packages/core-astrology/src/nodes.ts (calcularRahuKetu) + packages/akasha-core/src/akasha-core.ts (PilarAstrologia.nodes)"
+    "output": "packages/core-astrology/src/nodes.ts (calcularRahuLongitude + calcularKetuLongitude + calcularNodosLunares + longitudeToCasa) + nodes.test.ts (11 testes)",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "note": "Rahu/Ketu nodais lunares implementados (R-018 D4). 11/11 testes verdes. Algoritmo linear: meanLongitude = 125.04 - 0.0529 * daysSinceJ2000 (modelo simplificado - para precisao sub-arcmin usar Swiss Ephemeris modulo lunar). Rahu retrógrado, Ketu sempre 180 oposto. Cita Jyotish como fonte. Diferencia Akasha de horoscopos ocidentais que tratam nodos como secundarios."
   }
 ]
