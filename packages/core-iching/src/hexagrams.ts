@@ -11,6 +11,7 @@
 
 import type { Hexagram, TrigramId, IntegrativePractice, Wing } from './types';
 import { TRIGRAMS } from './bagua';
+import { PRACTICES } from './practices';
 
 /**
  * Mapa de IDs das Wings que contêm cada hexagrama.
@@ -282,16 +283,10 @@ const WINGS_BY_ID: Record<number, Wing> = {
   10: { id: 10, name: '旅璜', nameEn: 'Lu Huang (Wanderer Wing)', description: 'Wanderer — O andante e a jornada. Viagem interior e exterior, estrangeiro e peregrino.', themes: ['viagem', 'andança', 'estrangeiro', 'peregrinação'], hexagrams: [53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64] },
 };
 
-/** Banco de práticas (importado lazily para evitar dependência circular). */
-let _PRACTICES_BY_ID: Record<string, IntegrativePractice> | null = null;
-function getPracticesById(): Record<string, IntegrativePractice> {
-  if (!_PRACTICES_BY_ID) {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { PRACTICES } = require('./practices');
-    _PRACTICES_BY_ID = Object.fromEntries(PRACTICES.map((p: IntegrativePractice) => [p.id, p]));
-  }
-  return _PRACTICES_BY_ID!;
-}
+/** Índice por id das práticas integrativas. */
+const PRACTICES_BY_ID: Record<string, IntegrativePractice> = Object.fromEntries(
+  PRACTICES.map((p) => [p.id, p])
+);
 
 /**
  * Retorna o hexagrama expandido com suas Wings e práticas integrativas.
@@ -301,7 +296,7 @@ export function getHexagramWithDetails(number: number): HexagramWithDetails {
   const wingIds = hexagram.wingIds;
   const wings = wingIds.map((id) => WINGS_BY_ID[id]).filter(Boolean);
   const practiceIds = getPracticeIdsByHexagram(number);
-  const practices = practiceIds.map((id) => getPracticesById()[id]).filter(Boolean);
+  const practices = practiceIds.map((id) => PRACTICES_BY_ID[id]).filter(Boolean);
 
   if (wings.length === 0) {
     throw new Error(`Hexagrama ${number} não pertence a nenhuma Asa.`);
