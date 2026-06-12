@@ -354,15 +354,29 @@ export function deriveAkashaType(
   const dailyDirective = directiveByAreaAndFreq[mostIntenseLabel]?.[mostIntenseFreq] ??
     directiveByAreaAndFreq['propósito']['gift'];
 
-  // ── 5. oneLiner ─────────────────────────────────────────────────────────
-  const authorityShortQuestionMap: Record<AkashaAuthority, string> = {
-    emotional: 'sente calor no peito',
-    sacral: 'sente um "sim" no corpo',
-    splenic: 'ouve um "click" de intuição',
-    mental: 'a mente está clara e em paz',
+  // ── 5. oneLiner — unique deep description per type (not a template) ──
+  const ONE_LINER_BY_TYPE: Record<string, string> = {
+    catalisador:
+      'Você é O Catalisador. Sua simples presença coloca o mundo em movimento — você ativa o que estava adormecido antes mesmo de planejar. others esperam que você inicie; você começa antes de estar pronto porque a inércia é seu maior inimigo. Quando você hesita, o fogo apaga — quando você avança, sistemas inteiros acordam.',
+    receptor:
+      'Você é O Receptor. others emitem; você capta. Seu sistema nervoso é uma antena que registra o que ninguém disse — tons, micro-expressões, a energia do ambiente antes que ela se materialize em palavras. Você sabe coisas antes de saber como sabe. duvidar disso é a sua maior perda.',
+    construtor:
+      'Você é O Construtor. others têm ideias; você tem alicerces. Sua energia não é glamourosa — é paciente como água escavando pedra. Cada tijolo que você coloca hoje sustenta um edifício que ninguém mais consegue visualizar ainda. Não apresse o trabalho. A consistência é sua magia.',
+    transformador:
+      'Você é O Transformador. Você não evita o fogo — você é o fogo. Agregar, separar, reorganizar, atravessar — seu Odu é a energia que não aceita que nada permaneça como estava. others confiam em você para romper o que precisa ser rompido. Sua presença não permite kenyamanan palsu.',
+    guardiao:
+      'Você é O Guardião. others entram no território desprotegido; você é a fronteira que torna o espaço seguro para outros existirem. Sua energia não inicia, não alarga — ela sostiene e protege. Você é o que impede que sistemas vivam em caos. others Esquecem de agradecer — mas sentem sua falta quando você se ausenta.',
+    curador:
+      'Você é O Curador. Sua energia encontra a ferida antes da mente — você sabe onde dói antes da pessoa falar. Odon é um espaço emocional seguro onde outros se permittedem ser vulneráveis. Sua presença não julga, não apressa, não conserta — só presencia. Essa qualidade de presença é o que permite que outros se curem por conta própria.',
+    canal:
+      'Você é O Canal. Informações atravessam você sem que você precise segurá-las. Você recebe, traduz e transmite — o que sobra em você é pouco, o que passa por você é vasto. Não confunda o que atravessa com o que você é. Sua força está na abertura, não no acúmulo. Quando você segura, algo entope.',
+    alquimista:
+      'Você é O Alquimista. others veem obstáculos; você vê matéria-prima. O que parece bloqueado, quebrado ou impossível aos olhos comuns é, para você, apenas um estado não refinado de algo que pode ser transformado. Sua mente opera na frequência de que tudo pode ser transmutado — menos o tempo. Age enquanto a energia está quente.',
+    arquiteto:
+      'Você é O Arquiteto. others improvisam estruturas; você projeta sistemas. Você vê a interconexão entre campos que parecem separados — a carreira toca o corpo, o corpo toca o espírito, o espírito toca o dinheiro. Sua mente é geométrica: cada decisão reflete um padrão. others veem 2 + 2; você vê o sistema que contém toda a matemática.',
   };
 
-  const oneLiner = `Você é ${baseType.typeName} — ${baseType.strategy} — quando ${authorityShortQuestionMap[authority]}.`;
+  const oneLiner = ONE_LINER_BY_TYPE[typeKey] ?? ONE_LINER_BY_TYPE['arquiteto'];
 
   return {
     type: baseType.type,
@@ -552,15 +566,15 @@ export function buildAkashaSynthesis(
     date
   );
 
-  // ── Síntese geral (narrativa expandida F-226) ───────────────────────────
-  const synthesisParagraph = genSynthesisParagraph(kabalisticMap, astrologyMap, tantricMap, oduBirth);
+  // ── F-227: ONE Akasha Profile (derive first — needed for synthesis) ──────
+  const oneProfile = deriveAkashaType(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
+
+  // ── Síntese geral (narrativa integrada com tipo real) ────────────────────
+  const synthesisParagraph = genSynthesisParagraph(kabalisticMap, astrologyMap, tantricMap, oduBirth, oneProfile.typeName);
 
   // ── Perfil dominante ───────────────────────────────────────────────────
   const dominantFrequency = deriveDominantFrequency(areaVitalidade, areaConexoes, areaCarreira, areaOri, areaMissao, areaDesafios);
   const overallScore = computeOverallScore(areaVitalidade, areaConexoes, areaCarreira, areaOri, areaMissao, areaDesafios);
-
-  // ── F-227: ONE Akasha Profile ────────────────────────────────────────
-  const oneProfile = deriveAkashaType(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
 
   return {
     akashaProfile: {
