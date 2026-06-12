@@ -1,8 +1,8 @@
-# STATE.md — Akasha OS (Ciclo 519)
+# STATE.md — Akasha OS (Ciclo 520)
 
 **Versão atual**: v0.1.1
 **Última atualização**: 2026-06-12
-**Status do projeto**: FASE 0-2 CONCLUÍDAS; FASE 3 (implementação) EM ANDAMENTO
+**Status do projeto**: FASE 3 EM ANDAMENTO — auditoria de qualidade
 
 ---
 
@@ -14,60 +14,54 @@
 
 ---
 
-## Status: FASE 3 (Implementação)
+## Status: Ciclo 520 (QUALIDADE)
 
-### Ciclo 519 — Entregas
+### Achados de auditoria (AGENTS.md alignment check)
 
-| Artefato | Mudança |
-|----------|---------|
-| `synthesis-engine.ts` | `deriveChainOfReasoning()` — função que gera cadeia de raciocínio por área de vida (+160 linhas) |
-| `synthesis-engine.ts` | `chainOfReasoning` adicionado em todas as 6 `derive*` functions |
-| `useAkashaSynthesis.ts` | `chainOfReasoning?: string[]` em `AreaNarrativeUI` |
-| `packages/akasha-core/src/index.ts` | `interpretarVida`, `interpretarVidaArea`, `VidaInterpretation`, `AkashaLevel` exportados |
-| `packages/akasha-core/package.json` | `@akasha/types` adicionado como dependência (consertava type error pré-existente) |
-| `pnpm-lock.yaml` | atualizado com nova dependência |
+| Problema | Severidade | Domínio |
+|----------|-----------|---------|
+| `AkashaSignificadoCard` criado mas não importado em nenhuma página — componente órfão | P1 | w2 (UI) |
+| `chainOfReasoning` existe no motor mas não é renderizado na UI — dados disponíveis sem uso | P1 | w2 (UI) |
+| `cross-engine.ts` com params não utilizados (`_kab`, `_date`) — engenharia incompleta | P2 | w1 (motor) |
+| 127 lint warnings pré-existentes (unused vars, no-explicit-any) | P3 | w4 (qualidade) |
+| `feature/akasha-v0.0.12` — 7 commits bons mas base incompatível (50 commits atrás de main) | w2 action | w2 (UI) |
 
-### Ciclo 519 — Bugs corrigidos
+### Swarm — branch `feature/akasha-v0.0.12`
 
-- `@akasha/types` não era dependência de `@akasha/core` — type error em `interpretation-engine` ao usar `VidaInterpretation`/`AkashaLevel`. **Corrigido**: adicionada dependência + re-export consertado em `index.ts`.
-
-### Erros preexistentes (fora do domínio)
-
-- `MysticButton.tsx:48` — incompatibilidade React 19 / BaseUI
-- `card.tsx` (7 instâncias) — mesmo problema
-- `dialog.tsx:66` — mesmo problema
-- `synthesis-engine.ts` — 33 warnings lint (unused vars, @typescript-eslint/no-explicit-any) — preexistentes, não resolvidos por não pertencerem ao domínio deste ciclo
+- **Decisão**: MERGE ABORTADO — base incompatível com main atual
+- **Feedback**: `coordination/integrator/feedback-w2.md`
+- **Ação requerida**: rebase ou cherry-pick dos 6 commits bons sobre main fresco
 
 ---
 
-## 3 Próximos Passos Prioritários (FASE 3 — Ciclo 519)
+## 3 Próximos Passos Prioritários (FASE 3)
 
-1. **[P1] ✅ DONE (Ciclo 518)** — Unificar UI: `PillarContribution` removido — usuário vê só Akasha
-   - Commit: `5c14dc8f` — `AkashaLifeAreasDashboard.tsx` (-38 linhas)
-   - Impacto: usuário não vê mais colunas separadas Cabala/Tantra/Odus/Astrologia
+1. **[P1] UI — chainOfReasoning**: renderizar "Como chegamos aqui" em `AreaCard` do dashboard
+   - `chainOfReasoning?: string[]` disponível em `AreaNarrativeUI` — só falta o componente UI
+   - **Impacto**: usuário entende o "porquê" de cada interpretação
 
-2. **[P2] ✅ DONE (Ciclo 519)** — Cadeia de raciocínio: `chainOfReasoning[]` em `AreaNarrative`
-   - Impacto: interpretação explica o "porquê" (fonte → conclusão), não só o "o quê"
-   - Commit: este ciclo
+2. **[P1] UI — integrar `AkashaSignificadoCard`** na página `/mapa/significado`
+   - Componente criado no ciclo 519 mas não importado — órfão
+   - **Impacto**: números de vida com interpretação profunda visível ao usuário
 
-3. **[P3] Profundidade prática**: integrar `interpretation-engine.ts` na UI de Significado (números de vida)
-   - **Impacto**: texto do número de vida com shadow/gift/siddhi, ações práticas
+3. **[P2] Motor — limpar `cross-engine.ts`**: remover params nulos ou conectar à UI
+   - Ou usar (`_kab`, `_date`) no corpo da função ou remover
+   - **Impacto**: engenharia consistente
 
 ---
 
-## Histórico de Decisões (docs/DECISIONS.md)
+## Histórico de Decisões
 
-- **DEC-001**: Akasha type derivado de Odu family + Tantric body
-- **DEC-002**: Akasha strategy inspirada em Human Design (Strategy + Authority)
-- **DEC-003**: 6 áreas de vida cobrindo pirâmide de Maslow completa
-- **DEC-004**: Níveis shadow/gift/siddhi adaptados de Gene Keys (modelo próprio Akasha)
-- **DEC-005**: `LifeArea` expandida para 9 áreas
+- DEC-001: Akasha type derivado de Odu family + Tantric body
+- DEC-002: Akasha strategy inspirada em Human Design (Strategy + Authority)
+- DEC-003: 6 áreas de vida cobrindo pirâmide de Maslow completa
+- DEC-004: shadow/gift/siddhi adaptados de Gene Keys (modelo próprio Akasha) **[INCERTO — necesita validação]**
+- DEC-005: `LifeArea` expandida para 9 áreas
 
 ---
 
 ## Notas de Execução
 
-- **TYPECHECK**: limpo (v0.1.1)
-- **LINT**: 0 errors, 33 warnings preexistentes
-- **TESTES**: 550 suites falham por `@testing-library/dom` ausente (ambiente, não código)
-- **VERSION**: v0.1.1 (bumped 2026-06-12)
+- **TYPECHECK**: 0 erros
+- **LINT**: 0 errors, 127 warnings (preexistentes)
+- **VERSION**: v0.1.1

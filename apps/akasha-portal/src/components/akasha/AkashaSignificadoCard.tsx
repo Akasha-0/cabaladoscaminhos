@@ -14,9 +14,11 @@
 
 import { useState } from 'react';
 import { interpretarVida } from '@akasha/core';
-import type { AreaInterpretation, VidaInterpretation } from '@akasha/types';
-
+import type { AreaInterpretation, LifeArea, VidaInterpretation } from '@akasha/types';
 type Nivel = 'shadow' | 'gift' | 'siddhi';
+
+/** Áreas com aplicacao preenchida no motor de interpretação */
+const AREAS_WITH_DATA: LifeArea[] = ['proposito', 'carreira', 'financas', 'saude', 'relacionamentos'];
 
 const NIVEL_LABEL: Record<Nivel, { titulo: string; cor: string; emoji: string }> = {
   shadow: {
@@ -48,6 +50,7 @@ interface Props {
 
 export function AkashaSignificadoCard({ lifePath }: Props) {
   const [nivel, setNivel] = useState<Nivel>('gift');
+  const [area, setArea] = useState<LifeArea>('proposito');
 
   const vida: VidaInterpretation = interpretarVida(lifePath);
   const interp: AreaInterpretation = vida.levels[nivel] ?? vida.levels.gift;
@@ -159,6 +162,42 @@ export function AkashaSignificadoCard({ lifePath }: Props) {
         {NIVEL_DESCRICAO[nivel]}
       </p>
 
+      {/* Seletor de Área — P3: aplicacao por área da vida */}
+      {interp.aplicacao && Object.keys(interp.aplicacao).length > 0 && (
+        <div style={{ marginBottom: 14 }}>
+          <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 8 }}>
+            {(['proposito', 'carreira', 'financas', 'saude', 'relacionamentos'] as LifeArea[]).map((a) => {
+              if (!interp.aplicacao[a]) return null;
+              return (
+                <button
+                  key={a}
+                  onClick={() => setArea(a)}
+                  style={{
+                    padding: '4px 10px',
+                    borderRadius: 20,
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '0.68rem',
+                    fontFamily: 'var(--font-cinzel, serif)',
+                    letterSpacing: '0.04em',
+                    background: area === a ? `${NIVEL_LABEL[nivel].cor}22` : 'rgba(255,255,255,0.06)',
+                    color: area === a ? NIVEL_LABEL[nivel].cor : '#706686',
+                    borderBottom: area === a ? `1.5px solid ${NIVEL_LABEL[nivel].cor}` : '1.5px solid transparent',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  {a === 'proposito' ? '✦ Propósito' :
+                   a === 'carreira' ? '◈ Carreira' :
+                   a === 'financas' ? '◉ Finanças' :
+                   a === 'saude' ? '◐ Saúde' :
+                   '◑ Relacionamentos'}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Significado */}
       <div style={{ marginBottom: 14 }}>
         <p
@@ -172,6 +211,46 @@ export function AkashaSignificadoCard({ lifePath }: Props) {
           {interp.significado}
         </p>
       </div>
+
+      {/* Aplicacao por Área — P3: como este número se manifesta na área selecionada */}
+      {interp.aplicacao && interp.aplicacao[area] && (
+        <div
+          style={{
+            background: `linear-gradient(135deg, ${NIVEL_LABEL[nivel].cor}10, ${NIVEL_LABEL[nivel].cor}05)`,
+            border: `1px solid ${NIVEL_LABEL[nivel].cor}30`,
+            borderRadius: 10,
+            padding: '0.9rem 1rem',
+            marginBottom: 14,
+          }}
+        >
+          <p
+            style={{
+              fontSize: '0.68rem',
+              color: NIVEL_LABEL[nivel].cor,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              margin: '0 0 8px',
+              fontWeight: 600,
+            }}
+          >
+            {area === 'proposito' ? '✦ No seu Propósito' :
+             area === 'carreira' ? '◈ Na Carreira e Vocação' :
+             area === 'financas' ? '◉ Nas Finanças e Prosperidade' :
+             area === 'saude' ? '◐ Na Saúde e Corpo' :
+             '◑ Nos Relacionamentos'}
+          </p>
+          <p
+            style={{
+              fontSize: '0.82rem',
+              color: '#c8c3dc',
+              lineHeight: 1.65,
+              margin: 0,
+            }}
+          >
+            {interp.aplicacao[area]}
+          </p>
+        </div>
+      )}
 
       {/* Padrão */}
       <div
