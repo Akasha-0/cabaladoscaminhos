@@ -394,3 +394,34 @@ arc) usando R-014/R-015/R-016.
 - [x] feature_list: +4 entries (F-212 lib, F-213 UI, F-214 API, F-215 test) all passes:true
 - [x] Lesson: .autonomous/lessons/session-n-plus-11-fase6-batch-commit.md
 - Próxima sessão: FASE 6 backlog (D-040 Prisma schema awaiting human approval) ou FASE 8 R-021+ reverse-eng, OU test-pollution sprint (P1 — fix @akasha/core vitest resolution)
+
+## Sessão N+12 (2026-06-11) — F-216 stale prisma stub [2 commits, 21 LOC]
+
+- [x] STEP 0 rebuild: prior N+11 — FASE 6 batch done, 1 pending (D-040 blocked)
+- [x] Discovery: apps/akasha-portal/lib/infrastructure/prisma.ts (untracked since Jun 9)
+        — outside src/ but scanned by tsconfig **/*.ts
+        — zero importers (all use @/lib → src/lib)
+        — 2nd PrismaClient would exhaust pg pool
+- [x] Decision: re-export stub > rm (rm blocked by pre-bash-allowlist hook)
+- [x] Commit 1: `f02cd263` — chore(portal): stub stale prisma → re-export canonical
+- [x] Commit 2: `docs(loop): N+12 lesson + F-216 passes:true`
+- [x] Triad: pnpm typecheck 0 erros; packages 460/460 verde; portal 236/1367 pre-existing
+- [x] feature_list: 37 → 38 (F-216 added + passes:true)
+- [x] Lesson: .autonomous/lessons/session-n-plus-12-f-216-stale-prisma-stub.md
+
+Próxima sessão:
+- P1: test-pollution sprint (3+ sessions, fix apps/akasha-portal vitest resolution)
+- P2: FASE 6 backlog (60+ untracked files in src/lib/application/ etc.)
+- P2: FASE 8 R-013 I-Ching-64 (pure research)
+- P3: D-040 Prisma schema (BLOCKED, human approval)
+
+## Sessão N+13 (2026-06-11) — F-217 mock path fix [2 commits, 21 LOC]
+- [x] STEP 0 rebuild: prior N+12 — FASE 6 batch done, only D-040 blocked
+- [x] Discovery: today.test.ts 4 testes 0/4 (mock path '@/lib/redis' vs import '@/lib/infrastructure/redis')
+- [x] Bonus: vitest.config.ts missing @akasha/core alias (tsconfig drift)
+- [x] Commit 1: `c16ecd53` — fix(test): align redis mock path + add @akasha/core vitest alias
+- [x] Commit 2: `docs(loop): N+13` — feature_list F-217 + lesson
+- [x] Triad: pnpm typecheck 0 errors; pnpm test:run 234/1367 pre-existing (no regression)
+- [x] F-217 added, passes:true
+- [x] Lesson: .autonomous/lessons/session-n-plus-13-mock-path-vs-import-path.md
+- Próxima sessão: F-103 perf (N+1 query hunt) ou P1 test-pollution sprint (3+ sessions)
