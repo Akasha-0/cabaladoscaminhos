@@ -205,11 +205,11 @@ export function buildAkashaSynthesis(
   // ── Derivar frequências por área ──────────────────────────────────────
 
   const areaVitalidade  = deriveVitalidadeEnergia(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
-  const areaConexoes    = deriveConexoesAmor(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
-  const areaCarreira    = deriveCarreiraProsperidade(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
-  const areaOri         = deriveOriCabecaQuizilas(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
-  const areaMissao      = deriveMissaoDestino(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
-  const areaDesafios    = deriveDesafiosSombras(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
+  const areaConexoes    = deriveConexoesAmor(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
+  const areaCarreira    = deriveCarreiraProsperidade(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
+  const areaOri         = deriveOriCabecaQuizilas(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
+  const areaMissao      = deriveMissaoDestino(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
+  const areaDesafios    = deriveDesafiosSombras(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
 
   // ── Decisão diária ───────────────────────────────────────────────────
   const dailyDecision = deriveDailyDecision(
@@ -343,7 +343,8 @@ function deriveConexoesAmor(
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
-  holo: AkashicHologram
+  holo: AkashicHologram,
+  date: Date
 ): AreaNarrative {
   const data = holo.conexoesAmor.keyData;
 
@@ -392,6 +393,7 @@ function deriveConexoesAmor(
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'conexoes',
     'Você tem traído seus próprios limites emocionais para agradar o outro? O que sua intuição diz sobre esta relação agora?');
 
+  const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'conexoesAmor', date);
   const expandedNarrative = generateAreaNarrativeFull('conexoesAmor', kab, astro, tantra, odu);
   return {
     area: 'conexoesAmor',
@@ -411,6 +413,7 @@ function deriveConexoesAmor(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'conexoes'),
     dailyRitual,
     transformationPrompt,
+    dailyTransit,
     expandedNarrative,
   };
 }
@@ -420,7 +423,8 @@ function deriveCarreiraProsperidade(
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
-  holo: AkashicHologram
+  holo: AkashicHologram,
+  date: Date
 ): AreaNarrative {
   const data = holo.carreiraProsperidade.keyData;
 
@@ -463,6 +467,7 @@ function deriveCarreiraProsperidade(
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'carreira',
     'Você tem adiado uma decisão profissional por medo de não ser bom o suficiente? O que aconteceria se você agisse como se já fosse?');
 
+  const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'carreiraProsperidade', date);
   const expandedNarrative = generateAreaNarrativeFull('carreiraProsperidade', kab, astro, tantra, odu);
   return {
     area: 'carreiraProsperidade',
@@ -482,6 +487,7 @@ function deriveCarreiraProsperidade(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'carreira'),
     dailyRitual,
     transformationPrompt,
+    dailyTransit,
     expandedNarrative,
   };
 }
@@ -491,7 +497,8 @@ function deriveOriCabecaQuizilas(
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
-  holo: AkashicHologram
+  holo: AkashicHologram,
+  date: Date
 ): AreaNarrative {
   const data = holo.oriCabecaQuizilas.keyData;
 
@@ -522,6 +529,7 @@ function deriveOriCabecaQuizilas(
   const dailyRitual = buildAreaRitual(astro, kab, tantra, odu, 'ori', holo);
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'ori',
     'Você tem confiado mais em opiniões externas do que em sua própria percepção? Quando foi a última vez que você seguiu sua intuição e foi surpreendido positivamente?');
+  const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'oriCabecaQuizilas', date);
   const expandedNarrative = generateAreaNarrativeFull('oriCabecaQuizilas', kab, astro, tantra, odu);
   return {
     area: 'oriCabecaQuizilas',
@@ -541,6 +549,7 @@ function deriveOriCabecaQuizilas(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'ori'),
     dailyRitual,
     transformationPrompt,
+    dailyTransit,
     expandedNarrative,
   };
 }
@@ -550,7 +559,8 @@ function deriveMissaoDestino(
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
-  holo: AkashicHologram
+  holo: AkashicHologram,
+  date: Date
 ): AreaNarrative {
   const data = holo.missaoDestino.keyData;
 
@@ -589,6 +599,7 @@ function deriveMissaoDestino(
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'missao',
     'Você tem adiado viver sua missão autêntica por medo de não ser aceito? O que você faria se soubesse que não pode falhar?');
 
+  const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'missaoDestino', date);
   const expandedNarrative = generateAreaNarrativeFull('missaoDestino', kab, astro, tantra, odu);
   return {
     area: 'missaoDestino',
@@ -608,6 +619,7 @@ function deriveMissaoDestino(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'missao'),
     dailyRitual,
     transformationPrompt,
+    dailyTransit,
     expandedNarrative,
   };
 }
@@ -617,7 +629,8 @@ function deriveDesafiosSombras(
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
-  holo: AkashicHologram
+  holo: AkashicHologram,
+  date: Date
 ): AreaNarrative {
   // This area is about transformation — the Shadow is the入口
   const shadowSymptoms = buildShadowSymptoms(astro, kab, tantra, odu, 'desafios');
@@ -647,6 +660,7 @@ function deriveDesafiosSombras(
   const plutoStr = data.pluto
     ? `Plutão em ${data.pluto.sign} na Casa ${data.pluto.house} é onde você transforma dolorosamente. É também onde está seu maior poder de renascimento.`
     : '';
+  const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'desafiosSombras', date);
   const expandedNarrative = generateAreaNarrativeFull('desafiosSombras', kab, astro, tantra, odu);
   return {
     area: 'desafiosSombras',
@@ -666,6 +680,7 @@ function deriveDesafiosSombras(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'desafios'),
     dailyRitual,
     transformationPrompt,
+    dailyTransit,
     expandedNarrative,
   };
 }
