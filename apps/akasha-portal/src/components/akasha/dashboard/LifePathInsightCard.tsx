@@ -26,10 +26,12 @@ const NIVEL_CONFIG: Record<Nivel, { label: string; cor: string; emoji: string }>
 
 interface Props {
   lifePath: number;
+  /** Frequência dominante do perfil Akasha — usado como default para o nível */
+  defaultNivel?: 'shadow' | 'gift' | 'siddhi';
 }
 
-export function LifePathInsightCard({ lifePath }: Props) {
-  const [nivel, setNivel] = useState<Nivel>('gift');
+export function LifePathInsightCard({ lifePath, defaultNivel = 'gift' }: Props) {
+  const [nivel, setNivel] = useState<Nivel>(defaultNivel);
 
   const vida: VidaInterpretation = interpretarVida(lifePath);
   const interp: AreaInterpretation = vida.levels[nivel] ?? vida.levels.gift;

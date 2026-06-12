@@ -1,40 +1,51 @@
 # coordination/w-main/requests.md
 
-## Escalação ao Integrador — Ciclo 521
+## Escalação ao Integrador — Ciclo 523
 
 **De**: w-main (main branch, executor + integrator)
 **Data**: 2026-06-12
-**Ciclo**: 521
+**Ciclo**: 523
 
 ---
 
-### Observação: P1 (chainOfReasoning) JÁ ESTÁ FEITO
+### AÇÃO REQUERIDA DO HUMANO: `./setup-swarm.sh 2`
 
-O backlog do STATE.md global marca P1 como "⏳ Pendente", mas a cadeia de raciocínio **já está renderizada** no dashboard desde o commit `f728e8b6`:
+O rebase do `feature/akasha-v0.0.12` (I Ching Wings, Correlation Map) **não pode ser executado de `main`** — requer branch isolada com worktree.
 
-```
-apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx:476
-  {narrative.chainOfReasoning && narrative.chainOfReasoning.length > 0 && (
-```
-
-**Ação requerida**: Remover P1 do backlog ou marcá-lo como ✅ DONE no STATE.md global.
+`setup-swarm.sh` existe na raiz mas não foi executado. Sem isso:
+- w1 (motor) não tem worktree
+- w2 (UI) não tem worktree
+- Todo trabalho de integração fica bloqueado
 
 ---
 
-### Itens restantes do backlog — domínio alheio
+### Auditoria de Testes — Cycle 523
 
-| Prioridade | Item | Domínio | Ação |
-|-----------|------|---------|------|
-| P2 | `cross-engine.ts`: params `_kab`, `_date` não utilizados | w1 | Roteado para `coordination/w1/requests.md` |
-| P3 | Capacitor APK: `npx cap sync` nunca executado | w2 | Aguarda P2 para integrar dados |
+**Resumo**: 480 failed / 1200 passed / 1455 total
+
+| Problema | Severidade | Domínio w4? |
+|----------|-----------|--------------|
+| Rotas `api/chat/oracle` e `api/mapa` não existem | P1 | w4 (testes) |
+| `@akasha/core` não resolúvel de `packages/mentor/src/mentor.ts` | P1 | w1 (motor) |
+| `vitest --project core-logic` não existe (sem projetos no workspace) | P2 | w4 |
+| `cookies()` fora de contexto de request (Next.js 16 async) | P2 | w4 (testes) |
+
+**Nota**: w4 (qualidade) não existe como worktree — domínio não pode ser ativado sem `./setup-swarm.sh 4`
+
+---
+
+### Status anterior (Ciclo 521)
+
+- P1 chainOfReasoning: ✅ JÁ IMPLEMENTADO
+- P2 cross-engine.ts: Bloqueado sem w1
+- P3 Capacitor APK: Bloqueado sem w2
+- w4 (qualidade): Não pode ser ativado sem setup
 
 ---
 
 ### Minha situação (w-main / main)
 
-- Domínio: UI mobile (`apps/akasha-portal/src/components/**`, `apps/akasha-portal/src/app/**`)
-- Último ciclo: 520 — `LifePathInsightCard` ✅
-- Backlog do meu domínio: **vazio** (tudo feito)
-- cycleCount: 521
-
-**Recomendação**: Não há trabalho remaining no meu domínio. Aguardando ordens do integrador ou ativação de novo ciclo de auditoria.
+- **Domínio**: `coordination/w-main/**` + implementação livre (sem worktree)
+- **Último ciclo**: 523 — auditoria + catalogação de falhas
+- **Backlog do meu domínio**: nenhum item implementável sem worktree ou acesso a código de outros domínios
+- **Tipo de ciclo**: conversão para AUDITORIA LOCAL (backlog vazio + sem worktree)

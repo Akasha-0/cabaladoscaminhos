@@ -241,7 +241,7 @@ export function deriveAkashaType(
   }
 
   // Strong fire element in astro → emphasise "fogo" in strategy
-  let strategy = baseType.strategy;
+  const strategy = baseType.strategy;
   let strategyDetail = baseType.strategyDetail;
   const hasFireSign = astro?.planets?.some(p =>
     ['aries', 'leao', 'leo', 'sagitario', 'áries', 'leão', 'sargitário'].includes(p.sign?.toLowerCase() ?? '')

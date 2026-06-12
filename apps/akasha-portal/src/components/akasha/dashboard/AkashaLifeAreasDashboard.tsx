@@ -646,7 +646,12 @@ export function AkashaLifeAreasDashboard({
       </div>
 
       {/* P3 — Profundidade prática: Número de Vida com interpretação */}
-      {synthesis.lifePath > 0 && <LifePathInsightCard lifePath={synthesis.lifePath} />}
+      {synthesis.lifePath > 0 && (
+        <LifePathInsightCard
+          lifePath={synthesis.lifePath}
+          defaultNivel={akashaProfile.dominantFrequency}
+        />
+      )}
 
       {/* Decisão diária */}
       {dailyDecision && <DailyDecisionCard decision={dailyDecision} />}

@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import MandalaChart from '@/components/akasha/MandalaChart';
 import { MandalaNarrativeLoader } from '@/components/akasha/MandalaNarrativeLoader';
 
@@ -234,8 +235,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
         <MandatoCard data={data} />
       </section>
 
-      {/* Quick link to diary */}
-      <a
+      <Link
         href="/dashboard"
         style={{
           display: 'inline-block',
@@ -253,8 +253,8 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
         }}
       >
         → Análise Completa de Vida
-      </a>
-      <a
+      </Link>
+      <Link
         href={`/${locale}/diario`}
         style={{
           display: 'block',
@@ -267,7 +267,7 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
         }}
       >
         → Ver Diário Energético de hoje
-      </a>
+      </Link>
     </main>
   );
 }

@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   const content = manifesto.content as unknown as ManifestoContent;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const element = React.createElement(ManifestoPDF, { content }) as any;
   const buffer = await renderToBuffer(element);
 
