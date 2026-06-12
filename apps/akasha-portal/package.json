@@ -27,6 +27,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@akasha/core": "workspace:*",
+    "@akasha/mentor": "workspace:*",
     "@akasha/core-astrology": "workspace:*",
     "@akasha/core-cabala": "workspace:*",
     "@akasha/core-iching": "workspace:*",

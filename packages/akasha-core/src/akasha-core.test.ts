@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { calcular, AkashaInputSchema, type AkashaInput } from './akasha-core.js';
+import { calcular, AkashaInputSchema, type AkashaInput } from './akasha-core';
 
 const ana: AkashaInput = {
   nome: 'Ana Silva',

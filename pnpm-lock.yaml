@@ -168,6 +168,9 @@ importers:
 
   apps/akasha-portal:
     dependencies:
+      '@akasha/core':
+        specifier: workspace:*
+        version: link:../../packages/akasha-core
       '@akasha/core-astrology':
         specifier: workspace:*
         version: link:../../packages/core-astrology
@@ -183,6 +186,9 @@ importers:
       '@akasha/core-tantra':
         specifier: workspace:*
         version: link:../../packages/core-tantra
+      '@akasha/mentor':
+        specifier: workspace:*
+        version: link:../../packages/mentor
       '@akasha/types':
         specifier: workspace:*
         version: link:../../packages/types

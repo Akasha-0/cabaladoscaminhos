@@ -15,8 +15,8 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { calcular, AkashaInputSchema } from './akasha-core.js';
-import { PERFIS, PERFIL_BY_ID, PERFIL_CRISIS } from './profiles-fixtures.js';
+import { calcular, AkashaInputSchema } from './akasha-core';
+import { PERFIS, PERFIL_BY_ID, PERFIL_CRISIS } from './profiles-fixtures';
 
 const FONTES_VALIDAS = [
   'Pilar 1, Gematria (Sefer Yetzirah)',

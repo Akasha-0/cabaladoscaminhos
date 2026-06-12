@@ -35,7 +35,7 @@ import {
   getSefirotByIfa,
   type IfaOdu,
   type Sefirah,
-} from './correlation-map.js';
+} from './correlation-map';
 
 // Stub de R-030: extract the canonical 16-Odu list from akasha-core.ts
 // (kept in sync manually — divergence IS the test target)

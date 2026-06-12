@@ -23,7 +23,7 @@
  * Não modifique: o conteúdo é a verdade-base do D-043.
  */
 
-import type { AkashaInput } from './akasha-core.js';
+import type { AkashaInput } from './akasha-core';
 
 export interface Perfil {
   id: string;

@@ -11,7 +11,8 @@
     "./api": "./src/api/ask/route.ts",
     "./types": "./src/types.ts",
     "./maps": "./src/maps.ts",
-    "./correlation": "./src/correlation.ts"
+    "./correlation": "./src/correlation.ts",
+    "./rag": "./src/rag/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

@@ -33,7 +33,7 @@ export {
   getCorrelationStrength,
   getFullCorrelation,
   buildIchingToIfaMap,
-} from './correlation-map.js';
+} from './correlation-map';
 
 export {
   // Funções de guardrails
@@ -43,7 +43,7 @@ export {
   // Tipos
   type Practice,
   type ValidationResult,
-} from './practices-guardrails.js';
+} from './practices-guardrails';
 
 export {
   // Classes
@@ -60,7 +60,7 @@ export {
   type ScoredPractice,
   type PracticeRecommendation,
   type RecommendationContext,
-} from './correlation-engine.js';
+} from './correlation-engine';
 
 export {
   // Classes
@@ -75,7 +75,7 @@ export {
   // Tipos
   type RecommendationSource,
   type PracticeRecommendationWithConfidence,
-} from './recommendation-generator.js';
+} from './recommendation-generator';
 
 export {
   // Funções
@@ -83,7 +83,7 @@ export {
   buildRitual,
   getAfirmacaoDoDia,
   getOracaoDoDia,
-} from './ritual-calculator.js';
+} from './ritual-calculator';
 
 export {
   // Tipos
@@ -93,7 +93,7 @@ export {
   type RitualResponse,
   type Quizila,
   type CodeOfDayResult,
-} from './ritual-types.js';
+} from './ritual-types';
 
 export {
   // Tipos
@@ -103,7 +103,7 @@ export {
   type RitualCompletionData,
   type RitualCompletionResponse,
   type DashboardViewConfig,
-} from './dashboard-types.js';
+} from './dashboard-types';
 
 export {
   // Classes
@@ -111,7 +111,7 @@ export {
 
   // Funções
   calculateStreak,
-} from './dashboard-service.js';
+} from './dashboard-service';
 
 // ─── R-030: Akasha Core Algorithm (orquestrador) ────────────────────────────
 
@@ -132,4 +132,4 @@ export {
   type PilarIChing,
   type MandalaResumo,
   type MandatoEsqueleto,
-} from './akasha-core.js';
+} from './akasha-core';
