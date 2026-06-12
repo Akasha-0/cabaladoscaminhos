@@ -3,7 +3,10 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
+  /** F-228: Static export for Capacitor PWA — pre-renders all routes to HTML */
+  output: 'export',
   images: {
+    unoptimized: true,  // Required for static export with img tags
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "*.supabase.co" },
