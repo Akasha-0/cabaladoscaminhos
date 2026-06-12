@@ -357,3 +357,14 @@ arc) usando R-014/R-015/R-016.
 - [x] Commit: 50a68f6b — fix(typecheck): alinhar contratos mentor + trinity + paths tsconfig
 - [x] Lesson: .autonomous/lessons/session-n-plus-8-typecheck-fixes.md
 - Próxima sessão: declarar framer-motion em package.json (safe, no install) ou stub via types/ (recomendado) — requer decisão humana
+
+## Sessão N+9 (2026-06-11) — RECOVERY [3 commits código]
+- [x] STEP 0 rebuild: prior session 037 left 11 M + ~50 ?? in tree
+- [x] Identify: index.ts re-exports pointed at untracked correlation-engine/ritual-calculator/recommendation-generator
+- [x] Commit 1: `4b302865` — fix(build): wire @akasha/core + @akasha/mentor to portal (transpile + workspace deps + .js suffix drop)
+- [x] Commit 2: `d66c28d0` — feat(akasha-core): 6 new modules (correlation-engine, ritual-calculator, recommendation-generator, dashboard-service + 3 test files + types) — 298/298 vitest
+- [x] Commit 3: `820e6497` — chore(portal): re-add transpilePackages (pnpm install clobbered it on dep add)
+- [x] Commit 4: `7ff7a9bf` — feat(mentor): intent-detector + rag/ + llm/ + context/ + 30 tests — 41/41 vitest
+- [x] Triad: 298/298 akasha-core + 41/41 mentor, typecheck no new errors (8 pre-existing in mentor/core-iching per N+8 lesson)
+- [x] Lesson: .autonomous/lessons/session-n-plus-9-recovery-uncommitted-code.md
+- Próxima sessão: commit `apps/akasha-portal/src/lib/` (~60 files application layer) ou `apps/akasha-portal/src/app/api/akasha/{chat,dashboard,rag,ritual}/` (8 new API routes) ou `apps/akasha-portal/src/components/akasha/*` (10 new UI components)
