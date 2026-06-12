@@ -469,3 +469,18 @@ Próxima sessão:
         em paralelo (untracked no working tree) — não toquei,留给 orchestrator
 - Próxima sessão: F-100 (refactor), F-103 (perf) — hardening backlog ou
         D-040 (Prisma, blocked human) ou F-206 tooltip (Pilar com citação)
+
+## Sessão N+17 (2026-06-12) — F-206 TOOLTIP MANDALA [2 commits, +115 LOC + 88 lesson]
+- [x] STEP 0 rebuild: feature_list 43/45 passing; queue só D-040 (Prisma blocked)
+- [x] STEP 1: FASE 7 hardening F-100..F-104 abertos, F-206 P2 priorizado
+       (lesson N+16 já apontava F-206 como next)
+- [x] F-206: MandalaChart 5 <g> anéis ganharam <title> SVG nativo com
+       significado curado (resolveSig reaproveita F-221 helper)
+- [x] Mapeamento layer→Pilar: 1→4, 2→1, 3→3, 4→2, 5→5
+- [x] Pilar 5 fallback: "requer Pilar 5" quando iching.available=false
+- [x] Commit 1: `aeeeefab` — feat(portal) F-206 +115 LOC
+- [x] Commit 2: <lesson + feature_list>
+- [x] Triad: typecheck 0; test 235 fail = baseline pré-existente (zero regressão)
+- [x] Lesson: session-n-plus-17-f-206-tooltip-mandala.md (88 linhas)
+- Próxima sessão: F-207 (3 perfis reais), F-100 refactor knip/ts-prune,
+       ou D-040 (Prisma, awaiting human approval)
