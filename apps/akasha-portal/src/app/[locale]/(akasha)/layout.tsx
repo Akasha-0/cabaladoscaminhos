@@ -76,6 +76,15 @@ export default async function AkashaLayout({
             </li>
             <li>
               <Link
+                href={`/${locale}/mural`}
+                className="transition-colors"
+                style={{ color: '#A7AECF' }}
+              >
+                Mural
+              </Link>
+            </li>
+            <li>
+              <Link
                 href={`/${locale}/sobre`}
                 className="transition-colors"
                 style={{ color: '#A7AECF' }}

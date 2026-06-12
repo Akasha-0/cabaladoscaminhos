@@ -1,5 +1,5 @@
 // LLM Factory — Abstraction layer for LLM providers
-// Supports: Ollama (local), OpenAI (cloud), Mock (fallback)
+// Supports: Ollama (local), OpenAI (cloud), MiniMax (F-236), Mock (fallback)
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -7,8 +7,6 @@
 export interface LLMStreamResponse {
   stream(prompt: string, systemPrompt?: string): AsyncIterable<string>;
 }
-
-/** Core LLM provider interface. */
 export interface LLMProvider {
   readonly name: string;
   readonly model: string;
@@ -20,6 +18,9 @@ export interface LLMProvider {
 export interface LLMConfig {
   openaiApiKey?: string;
   ollamaUrl?: string;
+  /** F-236 — MiniMax Global Token Plan. Quando presente, o factory usa M3. */
+  minimaxApiKey?: string;
+  minimaxModel?: string;
   model?: string;
   temperature?: number;
 }
@@ -243,21 +244,39 @@ class MockProvider implements LLMProvider {
 const DEFAULT_OLLAMA_MODEL = 'llama3.2:latest';
 const DEFAULT_OPENAI_MODEL = 'gpt-4';
 
+const DEFAULT_MINIMAX_MODEL = 'MiniMax-M3';
+
+// ─── MiniMax Provider (F-236) ────────────────────────────────────────────────
+
+// Re-exporta MiniMaxProvider para uso externo sem precisar importar o módulo
+// interno. A factory abaixo cria a instância com base no config.
+export { MiniMaxProvider, MINIMAX_DEFAULT_MODEL, MINIMAX_DEFAULT_URL } from './minimax';
+
 /**
  * Creates an LLM provider with auto-detection fallback.
- * Priority: Ollama → OpenAI → Mock
+ * Priority: Ollama → MiniMax (F-236) → OpenAI → Mock
  */
 export async function createProvider(config: LLMConfig = {}): Promise<LLMProvider> {
-  const { openaiApiKey, ollamaUrl, model, temperature } = config;
+  const { openaiApiKey, ollamaUrl, minimaxApiKey, minimaxModel, model, temperature } = config;
 
-  // 1. Try Ollama (local)
+  // 1. Try Ollama (local) — sempre tem prioridade se estiver rodando
   const ollamaEndpoint = ollamaUrl ?? OLLAMA_DEFAULT_URL;
 
   if (await isOllamaAvailable(ollamaEndpoint)) {
     return new OllamaProvider(model ?? DEFAULT_OLLAMA_MODEL, ollamaEndpoint);
   }
 
-  // 2. Fallback to OpenAI (if API key provided)
+  // 2. MiniMax Global Token Plan (F-236) — M3 raciocínio profundo, plano global
+  if (minimaxApiKey) {
+    const { MiniMaxProvider } = await import('./minimax');
+    return new MiniMaxProvider({
+      apiKey: minimaxApiKey,
+      model: minimaxModel ?? DEFAULT_MINIMAX_MODEL,
+      temperature: temperature ?? 0.7,
+    });
+  }
+
+  // 3. OpenAI (cloud) — fallback se o usuário trouxer chave própria
   if (openaiApiKey) {
     return new OpenAIProvider(
       openaiApiKey,
@@ -267,7 +286,7 @@ export async function createProvider(config: LLMConfig = {}): Promise<LLMProvide
     );
   }
 
-  // 3. Fallback to Mock (always available)
+  // 4. Mock (sempre disponível, devolve resposta pré-pronta)
   return new MockProvider();
 }
 

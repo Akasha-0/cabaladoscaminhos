@@ -1,7 +1,3 @@
-// Config canônico do app. Conteúdo unificado a partir dos antigos
-// skeletons (.js + .mjs) e next.config.ts — Next.js 16 prioriza .js,
-// então mantemos aqui a config completa para que git checkout/restore
-// não recrie o crash de ESM/CommonJS.
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
@@ -23,6 +19,12 @@ const nextConfig = {
     "pg-connection-string",
   ],
   staticPageGenerationTimeout: 120,
+  /**
+   * Standalone output — Required for Capacitor.
+   * Creates a minimal Node.js server in .next/standalone
+   * that can serve the app inside the Android WebView.
+   */
+  output: 'standalone',
 };
 
 export default nextConfig;

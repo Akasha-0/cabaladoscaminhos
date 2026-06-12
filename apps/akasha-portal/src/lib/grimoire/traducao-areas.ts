@@ -83,6 +83,36 @@ export interface TraducaoArea {
   /** Apenas Pilar 4 (Odu) — R-022 §4.4. */
   requer_terreiro?: boolean;
 }
+// ─── Conteúdo Detalhado por Pilar × Área (F-232) ────────────────────────────
+
+/**
+ * Conteúdo profundo por Pilar × Área — estrutura de 8 párrafos:
+ *  P1: Explicação central — o que este Pilar PEDE nesta área
+ *  P2: Convergência — quando pilares concordam
+ *  P3: Tensão — quando pilares pedem coisas diferentes
+ *  P4: O que evitar
+ *  P5: Prática concreta com timing
+ *
+ * Fallback: se não existir, usar TraducaoArea.frase (conteúdo de 1-2 frases).
+ */
+export interface TraducaoAreaDetalhada {
+  pilar: Pilar;
+  area: Area;
+  /** Frase curta (backward compat — ementa) */
+  frase: string;
+  /** P1: Explicação central — 5-8 frases sobre o que o Pilar PEDE nesta área */
+  explicacao: string;
+  /** P2: Convergência — 3-5 frases sobre quando pilares concordam */
+  convergencia: string;
+  /** P3: Tensão — 3-5 frases sobre quando pilares CONFLITAM */
+  tensao: string;
+  /** P4: O que evitar — 2-3 frases, específico */
+  evitar: string;
+  /** P5: Prática concreta — 1-2 frases com timing específico */
+  pratica: string;
+  fonte: string;
+  requer_terreiro?: boolean;
+}
 const CABALA: TraducaoArea[] = [
   { pilar: 'cabala', area: 'paz',
     frase: 'Sua paz interior vem de alinhar vida externa com número interno. Quando você age CONTRA o seu número, a inquietação aparece. Quando você age A PARTIR dele, há silêncio — mesmo no caos.',
@@ -253,18 +283,67 @@ export function traducoesDoPilar(pilar: Pilar): TraducaoArea[] {
   return MATRIZ.filter((t) => t.pilar === pilar);
 }
 
-/** Estatísticas para curadores. Pilares e Áreas são estáticos; só total
- *  e com_terreiro precisam ser computados em runtime. */
-export function coberturaTraducaoAreas(): {
-  pilares: number;
-  areas: number;
-  total: number;
-  com_terreiro: number;
-} {
-  return {
-    pilares: 5,
-    areas: 8,
-    total: MATRIZ.length,
-    com_terreiro: MATRIZ.filter((t) => t.requer_terreiro).length,
-  };
+// ─── Conteúdo Detalhado — 5 Pilares × 9 Áreas (F-232) ──────────────────────
+// Conteúdo profundo: 5 campos por entrada (explicacao/convergencia/tensao/
+// evitar/pratica). Fallback: se não existir, usar TraducaoArea.frase.
+//
+// Formato: TRADUCOES_DETALHADO[pilar][area] = TraducaoAreaDetalhada
+// Pilares: 'cabala' | 'astrologia' | 'tantrica' | 'odu' | 'iching'
+// Áreas:   'saude' | 'trabalho' | 'amor' | 'sexualidade' | 'criacao' |
+//           'proposito' | 'familia' | 'espiritualidade' | 'superacao'
+
+export const TRADUCOES_DETALHADO: Partial<
+  Record<Pilar, Partial<Record<Area, Omit<TraducaoAreaDetalhada, 'pilar' | 'area' | 'fonte' | 'requer_terreiro'>>>>
+> = {};
+
+// ─── Helpers de Conteúdo Detalhado ─────────────────────────────────────────
+
+/** Devolve conteúdo detalhado para um Pilar + Área. Fallback: frase curta. */
+export type TraducaoDetalhadaEntry = {
+  pilar: Pilar;
+  frase: string;
+  explicacao: string;
+  convergencia: string;
+  tensao: string;
+  evitar: string;
+  pratica: string;
+};
+
+/** Devolve conteúdo detalhado para um Pilar + Área. Fallback: frase curta. */
+export function traducaoDetalhadaPara(pilar: Pilar, area: Area): TraducaoDetalhadaEntry | null {
+  const pilarEntry = TRADUCOES_DETALHADO[pilar];
+  if (pilarEntry && pilarEntry[area]) {
+    const e = pilarEntry[area]!;
+    return {
+      pilar,
+      frase: e.frase,
+      explicacao: e.explicacao,
+      convergencia: e.convergencia,
+      tensao: e.tensao,
+      evitar: e.evitar,
+      pratica: e.pratica,
+    };
+  }
+  // Fallback: frase curta do MATRIZ
+  const basic = traducaoPara(pilar, area);
+  if (basic) {
+    return {
+      pilar,
+      frase: basic.frase,
+      explicacao: basic.frase,
+      convergencia: '',
+      tensao: '',
+      evitar: '',
+      pratica: '',
+    };
+  }
+  return null;
+}
+
+/** Devolve conteúdo detalhado de TODOS os pilares para uma Área. */
+export function traducoesDetalhadasDaArea(area: Area): TraducaoDetalhadaEntry[] {
+  const pilares: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
+  return pilares
+    .map((p) => traducaoDetalhadaPara(p, area))
+    .filter((t): t is NonNullable<typeof t> => t !== null);
 }

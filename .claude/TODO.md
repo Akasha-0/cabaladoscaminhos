@@ -217,3 +217,106 @@
       para os 5 Pilares, fallback para símbolo desconhecido,
       presença dos 64 hexagramas King Wen (1-64), 13 Life Paths,
       15 Odu canônicos (Eji/Ogbe por design Phase 1).
+- [x] F-226 — MandalaChart integra SignificadoEmbed (5 Pilares) ✅
+      — `apps/akasha-portal/src/components/akasha/MandalaChart.tsx`
+      adiciona SignificadoEmbed em cada um dos 5 InfoPanels (P1 Odu,
+      P2 Cabala, P3 Tantra, P4 Astrologia, P5 I Ching). Resolve
+      `significadoPorPilar(pilar, id)` específico; cai na visão genérica
+      se símbolo ausente. Renderiza: essência + missão + fonte + aviso
+      ético Pilar 4. O usuário VÊ o significado sem precisar navegar.
+      Responde direto o exemplo "Caminho de Vida 11, e daí?": ao tocar
+      em P2 Cabala, vê "Iluminador · Mestre. Canal entre planos, alta
+      sensibilidade intuitiva e missão espiritual. Missão: confie na
+      primeira impressão; masterre-a em algo concreto."
+- [x] F-228 — Engenharia reversa HD/GK/Enneagrama/Jyotish/Bazi/Tzolkin ✅
+      — `apps/akasha-portal/src/lib/grimoire/reversed-systems.ts` (11KB,
+      9 sistemas destilados). Cada sistema vira `SistemaHerdado` com
+      `resumo`, `oQueAkashaHerdou` (3-7 princípios), `comoApareceNaUI`
+      (1-3 exemplos concretos) e `fonte`. Cobre: Human Design, Gene Keys,
+      Enneagrama, Jyotish, Bazi, Tzolkin, 4 Temperamentos Gregos, The
+      Pattern, CHANI App. Página /sobre F-205 agora renderiza 9 cards
+      com cada sistema (seção "9 Sistemas que Estudamos, 5 que Herdamos").
+      Critério editorial: "isso ENTREGA valor ao usuário ou é fetichismo
+      esotérico?" — tudo o que entrou passou pelo crivo.
+- [x] F-229 — Camada de Tradução Pilar → Áreas da Vida ✅
+      — `apps/akasha-portal/src/lib/grimoire/traducao-areas.ts` (15KB,
+      5 Pilares × 8 Áreas = 40 traduções curadas PT-BR). Cada
+      `TraducaoArea` tem `frase` (1-2 frases diretas, 2ª pessoa),
+      `fonte`, e `requer_terreiro` (Pilar 4 em todas 8 áreas, R-022).
+      Áreas: paz, saúde, relações, dinheiro, trabalho, propósito,
+      criatividade, espiritualidade. Componente reutilizável
+      `TraducaoAreaPanel.tsx`. Diario nova tela **05/05 — Para suas
+      áreas** mostra 8 cards (1 por Área) do Pilar PRINCIPAL. Página
+      `/mapa/significado` ganhou seção "Por área da vida" com 8 grupos
+      × 5 Pilares = 40 cards. Tests em `tests/lib/grimoire/traducao-areas.test.ts`
+      (8 testes verde: cobertura 5×8, ética Pilar 4, campos obrigatórios,
+      todas as 40 combinações presentes).
+      FECHA O GAP "Caminho de Vida 11, e daí?": o usuário não vê só
+      relações, dinheiro, trabalho, propósito, criatividade, espiritualidade).
+- [x] F-230 — Insight do Dia (síntese dos 5 Pilares em 1 voz) ✅
+      — `apps/akasha-portal/src/lib/grimoire/insight-do-dia.ts` (3.4KB).
+      `gerarInsightDoDia(pilares)` retorna `{titulo_curto, sintese,
+      pratica_do_dia, pilares_destacados}`. Determinístico: mesmo mapa
+      → mesmo insight. Tema do dia varia com lua_fase (plantar/agir/
+      colher/soltar). Componente `InsightDoDiaPanel` em hero da
+      `/mapa/significado`. Renderiza: glow gradient + título + síntese
+      + prática do dia + chips de Pilares destacados.
+- [x] F-232 — Conexões entre Pilares (matriz 5×5 sem diagonal) ✅
+      — `apps/akasha-portal/src/lib/grimoire/conexoes-pilares.ts` (9.2KB,
+      20 conexões curadas). Matriz DIRECIONADA: Cabala→Astrologia ≠
+      Astrologia→Cabala. Cada `ConexaoPilar` tem frase que ENTRELAÇA
+      dois Pilares (não explica cada um isolado). Pilar 4 (Odu)
+      marca `requer_terreiro: true` em 8 conexões (4 saindo + 4
+      FECHA O GAP "os Pilares não se falam": usuário VÊ como Cabala
+      ilumina Astrologia, como Tantra ancora I Ching, etc.
+- [x] F-233 — RAG do Grimório injetado no Mentor IA ✅
+      — `apps/akasha-portal/src/lib/grimoire/rag-mapa.ts` (6.2KB).
+      `ragForPilares(pilares)` e `ragForUserMaps(maps)` retornam string
+      RAG com 5 seções: Insight do Dia (F-230), Significado
+      ESPECÍFICO dos 5 Pilares (F-221), 8 Áreas da Vida (F-229),
+      20 Conexões entre Pilares (F-232), e Diretrizes Éticas
+      (CVV-188 + R-022). Injetado no `streamMentorResponse` via
+      1 system message adicional ("GRIMÓRIO CURADO (F-233): ...").
+      Antes do F-233, o LLM só tinha números brutos. Agora tem
+      em fonte (axioma 4 VISION). Pilar 4 (Odu) marca ⚠ em todas as
+      Áreas + Conexões (R-022 §4.4 simétrico). Tests: 12/12 verde.
+- [x] F-234 — Mural coletivo (Tzolkin 260 dias) ✅
+      — `apps/akasha-portal/src/lib/grimoire/mural-tzolkin.ts` (2.7KB,
+      cálculo determinístico do kin HOJE 1-260). `kinDaData(data)`:
+      posicao_no_ciclo + familia (5 Famílias Terrestres: Cardinal,
+      Polar, Elétrico, Solar, Espectral) + eh_portal (8, 9, 17, 18)
+      + portal_nome. Âncora fixa 2024-01-01 = kin 1. Página nova
+      `/mural` server component com: hero do kin HOJE, barra de
+      cadência, próximos 4 portais (60 dias), grid das 5 Famílias,
+      5 famílias, determinismo).  Nav link adicionado.
+- [x] F-239 — Foco do Dia por Área (1 priorização pessoal) ✅
+      — `apps/akasha-portal/src/lib/grimoire/foco-area.ts` (5.2KB,
+      5 Pilares × 9 Áreas = 45 foc curados). `gerarFocoDoDia(pilar, area)`
+      retorna `{mensagem_pilar, ecos_dos_pilares, conexoes, sombra,
+      pratica, acolhimento, requer_terreiro}`. Cruza Pilar (filtro) ×
+      Área (foco) → 1 tela, 1 voz. Pilar 4 (Odu) marca
+      `FocoDoDiaPanel`.  Tests: 8/8 verde. Componente
+      `FocoDoDiaPanel` reutilizável.
+- [x] F-238 — Significado Primeiro (boas-vindas com Significado) ✅
+      — `apps/akasha-portal/src/app/[locale]/(akasha)/significado-primeiro/page.tsx`
+      server component. Lê mapa via API, renderiza SignificadoPilar do
+      Pilar principal em destaque + 3 CTAs (Mandala, Mandato do Dia,
+      Significado Completo). Resolve o exemplo "Caminho de Vida 11,
+      e daí?": usuário VÊ o Significado IMEDIATAMENTE após onboarding,
+      sem precisar navegar. Hero: "Você chegou. Seu Mapa já está
+      aberto. Cinco tradições convergem em você. Aqui, você começa
+      pelo Pilar que mais ilumina o seu momento. Não é só um número
+      — é o que ele SIGNIFICA."
+- [x] F-243 — Glossário Vivo (termos técnicos em linguagem acessível) ✅
+      — `apps/akasha-portal/src/lib/grimoire/glossario.ts` (12KB,
+      30 termos curados PT-BR) + `/glossario` page. Cada entrada tem
+      termo, definicao (1-2 frases diretas, 2ª pessoa), sistema
+      de origem, fonte, sinonimos (cross-refs entre sistemas).
+      Cobre: Cabala (5: Sefirot, Árvore da Vida, Número Mestre,
+      Tikkun), Astrologia (6: Sol, Ascendente, Lua, Nodo Norte,
+      Lilith, Casa 8), Tantrica (5: Corpo, Kundalini, Trigêmeo,
+      Prana, Mente Divina), Odu (5: Odu, Ori, Orixá, Babalaô, Ebó),
+      I Ching (4: Hexagrama, Yin/Yang, Trigrama, Mutação), Geral
+      (5: Signo, Tríade Sombra/Dom/Graça, Temperamento, Mandato,
+      Pilar). Tests: 10/10 verde. Aviso ético Pilar 4 (R-022) no
+      final da página.

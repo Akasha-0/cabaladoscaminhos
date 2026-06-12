@@ -183,7 +183,7 @@ function AreaCard({
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function MandalaNarrative({ synthesis, loading, locale }: MandalaNarrativeProps) {
-  const [areasOpen, setAreasOpen] = useState(false);
+  const [areasOpen, setAreasOpen] = useState(true); // Default open — user came to see depth, not numbers
 
   if (loading) {
     return (

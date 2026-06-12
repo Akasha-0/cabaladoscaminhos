@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#0B0E1C" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Akasha</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0B0E1C;
+      color: #E8E0FF;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .splash {
+      text-align: center;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .splash-logo {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .splash-text {
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash">
+    <div class="splash-logo">✦</div>
+    <div class="splash-text">Akasha</div>
+  </div>
+  <script>
+    /**
+     * Redirect to the default locale route.
+     * The actual app is a Next.js SSR app — this file is a shell
+     * that redirects to the proper Next.js entry point.
+     *
+     * For Capacitor, we use a server approach: the Next.js standalone
+     * server is started by the Android app, and this WebView loads
+     * http://localhost:<PORT>/pt-BR/meu-dia
+     *
+     * The actual navigation happens via the server-rendered HTML.
+     */
+    (function() {
+      // Check if we're running inside Capacitor
+      var isCapacitor = window.Capacitor !== undefined;
+      var isFileProtocol = window.location.protocol === 'file:';
+
+      // Get the server base URL from Capacitor config, or default to a known port
+      var SERVER_PORT = window.__CAPACITOR_SERVER_PORT__ || '3131';
+      var BASE_URL = 'http://localhost:' + SERVER_PORT;
+
+      // Redirect to the Meu Dia page
+      window.location.href = BASE_URL + '/pt-BR/meu-dia';
+    })();
+  </script>
+</body>
+</html>

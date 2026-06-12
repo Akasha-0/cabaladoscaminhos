@@ -18,6 +18,16 @@ export async function GET(request: NextRequest) {
   });
 
   if (existing) {
+    // Cached — compute synthesis on the fly since it's not stored
+    const birthChart = await prisma.birthChart.findUnique({ where: { userId } });
+    if (!birthChart) return NextResponse.json({ error: 'Mapa não encontrado' }, { status: 404 });
+    const content = buildDailyContent(
+      birthChart.astrologyMap,
+      birthChart.kabalisticMap,
+      birthChart.tantricMap,
+      birthChart.oduBirth,
+      today
+    );
     return NextResponse.json({
       date: existing.date.toISOString().split('T')[0],
       climate: existing.climate,
@@ -26,6 +36,7 @@ export async function GET(request: NextRequest) {
       tensionPoint: existing.tensionPoint,
       hexagram: existing.hexagram,
       hexagramLines: existing.hexagramLines,
+      synthesis: content.synthesis ?? null,
     });
   }
 
@@ -70,5 +81,7 @@ export async function GET(request: NextRequest) {
     tensionPoint: record.tensionPoint,
     hexagram: record.hexagram,
     hexagramLines: record.hexagramLines,
+    /** §SYNTHESIS-F1: síntese narrativa Akasha — 6 áreas de vida + decisão diária */
+    synthesis: content.synthesis ?? null,
   });
 }

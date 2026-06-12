@@ -1,0 +1,138 @@
+{
+  "started_at": "2026-06-11T20:41:39",
+  "last_updated": "2026-06-12T07:55:04",
+  "sessions": [
+    {
+      "session_num": 36,
+      "ts": "2026-06-11T20:41:39",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 2,
+      "pending_after": 1,
+      "features_completed_this_session": true,
+      "duration_sec": 600,
+      "feature_id": "F-208"
+    },
+    {
+      "session_num": 36,
+      "ts": "2026-06-11T20:51:06",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 2,
+      "pending_after": 1,
+      "features_completed_this_session": true,
+      "duration_sec": 600,
+      "feature_id": "F-208"
+    },
+    {
+      "session_num": 36,
+      "ts": "2026-06-11T21:19:00",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 1,
+      "pending_after": 1,
+      "features_completed_this_session": false,
+      "duration_sec": 1773,
+      "feature_id": "F-206"
+    },
+    {
+      "session_num": 37,
+      "ts": "2026-06-11T21:29:09",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 1,
+      "pending_after": 1,
+      "features_completed_this_session": false,
+      "duration_sec": 596,
+      "feature_id": "D-040"
+    },
+    {
+      "session_num": 38,
+      "ts": "2026-06-11T21:39:52",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 1,
+      "pending_after": 1,
+      "features_completed_this_session": false,
+      "duration_sec": 620,
+      "feature_id": "D-040"
+    },
+    {
+      "session_num": 39,
+      "ts": "2026-06-11T22:02:12",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 1,
+      "pending_after": 1,
+      "features_completed_this_session": false,
+      "duration_sec": 571,
+      "feature_id": "R-021"
+    },
+    {
+      "session_num": 40,
+      "ts": "2026-06-11T22:09:43",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 1,
+      "pending_after": 1,
+      "features_completed_this_session": false,
+      "duration_sec": 438,
+      "feature_id": "F-216"
+    },
+    {
+      "session_num": 41,
+      "ts": "2026-06-11T22:20:09",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 1,
+      "pending_after": 1,
+      "features_completed_this_session": false,
+      "duration_sec": 603,
+      "feature_id": "F-217"
+    },
+    {
+      "session_num": 42,
+      "ts": "2026-06-11T22:42:14",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 2,
+      "pending_after": 2,
+      "features_completed_this_session": false,
+      "duration_sec": 796,
+      "feature_id": "R-021"
+    },
+    {
+      "session_num": 44,
+      "ts": "2026-06-12T07:02:41",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 2,
+      "pending_after": 2,
+      "features_completed_this_session": false,
+      "duration_sec": 413,
+      "feature_id": "F-100"
+    },
+    {
+      "session_num": 45,
+      "ts": "2026-06-12T07:29:16",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 2,
+      "pending_after": 2,
+      "features_completed_this_session": false,
+      "duration_sec": 779,
+      "feature_id": "F-206"
+    },
+    {
+      "session_num": 46,
+      "ts": "2026-06-12T07:55:04",
+      "exit_code": 0,
+      "success": true,
+      "pending_before": 2,
+      "pending_after": 2,
+      "features_completed_this_session": false,
+      "duration_sec": 723,
+      "feature_id": "D-040"
+    }
+  ]
+}

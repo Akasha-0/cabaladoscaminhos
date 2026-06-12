@@ -17,6 +17,7 @@
  * Não requer auth — é educativa, não pessoal.
  */
 import type { Metadata } from 'next';
+import { resumoSistemasHerdados } from '@/lib/grimoire/reversed-systems';
 
 export const metadata: Metadata = {
   title: 'Sobre o Sistema · Akasha',
@@ -425,6 +426,24 @@ export default function SobrePage() {
             <p style={bodyStyle}>{c.texto}</p>
           </div>
         ))}
+
+        {/* ── Sistemas que Estudamos (F-228) ──────────────────────── */}
+        <h2 style={sectionTitleStyle(C.bronze)}>
+          <span>9 Sistemas que Estudamos, 5 que Herdamos</span>
+        </h2>
+        <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 18 }}>
+          Antes de construir qualquer coisa, estudamos o que já existe. Destilamos
+          o que ENTREGA valor real ao usuário — não fetichismo esotérico. Veja
+          cada herança em <code>.autonomous/research/synthesis/</code>.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
+          {resumoSistemasHerdados().map((s) => (
+            <div key={s.nome} style={cardStyle(C.bronze)}>
+              <span style={labelStyle(C.bronze)}>{s.nome}</span>
+              <p style={{ ...bodyStyle, fontSize: '0.85rem', margin: '4px 0 0' }}>{s.resumo}</p>
+            </div>
+          ))}
+        </div>
 
         {/* ── Footer / Proveniência ─────────────────────────────────── */}
         <footer style={footerStyle}>

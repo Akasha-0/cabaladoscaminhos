@@ -115,8 +115,8 @@ function buildAstrologyNarrative(astro: AstrologyMap | null, area: string): stri
       desafiosSombras: 'Rigidez é sua sombra. Você resiste a mudanças mesmo quando o terreno já mudou. Pergunte-se: estou construindo ou estou preso?',
     },
     ar: {
-      vitalidadeEnergia: 'Seu corpo é instrumento de intercâmbio — isolá-lo gera tensão. Você precisa de movimento, conversa, variação. O静(no ar) é seu inimigo.',
-      conexoesAmor: 'Você ama pela mente. A conexão intelectual é seu pré-requisito. Sem ela, o corpo não responde. Mas só mente sem corpo éfriend zone.',
+      vitalidadeEnergia: 'Seu corpo é instrumento de intercâmbio — isolá-lo gera tensão. Você precisa de movimento, conversa, variação. A quietude é seu inimigo.',
+      conexoesAmor: 'Você ama pela mente. A conexão intelectual é seu pré-requisito. Sem ela, o corpo não responde. Mas só mente sem corpo é zona de amigo.',
       carreiraProsperidade: 'Você prospera através de ideias, comunicação, conexões. Sua carreira floresce quando envolve outras pessoas — sozinho, a mente dispersa.',
       oriCabecaQuizilas: 'Sua mente é rápida, versátil, brilhante. O risco é superficialidade: você sabe muito, demora a dominar. Encontre 1 assunto e aprofunde.',
       missaoDestino: 'Você veio para comunicar. Sua missão é traduzir — o complexo para o simples, o oculto para o acessível. Você é ponte entre mundos.',
@@ -126,9 +126,9 @@ function buildAstrologyNarrative(astro: AstrologyMap | null, area: string): stri
       vitalidadeEnergia: 'Você sente antes de pensar — seu corpo é receptor. A tensão aparece quando você absorve o que não é seu. Defina fronteiras energéticas.',
       conexoesAmor: 'Você ama com o corpo inteiro — absorve o outro. Isso é profundo e perigoso. Você precisa aprender o que é seu e o que é do outro.',
       carreiraProsperidade: 'Você prospera pela intuição, não pela lógica. Seu timing é emocional — quando algo "certa" no ventre, é porque é. Confie mais no corpo.',
-      oriCabecaQuizilas: 'Sua mente é profunda, perceptiva, simbologica. Você entende o que others only feel. O risco é ficar no feeling sem traduzir para ação.',
-      missaoDestino: 'Você veio para sentir o que outros não conseguem nomear. Sua missão é ser ocontainer — guardar o que others cannot hold. Mas não se perca no que guarda.',
-      desafiosSombras: 'Fuga emocional é sua armadilha. Você analise para não sentir. Mas o corpo não mente — a emoção reprimida vira sintoma. Sinta primeiro.',
+      oriCabecaQuizilas: 'Sua mente é profunda, perceptiva, simbólica. Você entende o que outros só sentem. O risco é ficar na sensação sem traduzir para ação.',
+      missaoDestino: 'Você veio para sentir o que outros não conseguem nomear. Sua missão é ser o receptáculo — guardar o que outros não conseguem segurar. Mas não se perca no que guarda.',
+      desafiosSombras: 'Fuga emocional é sua armadilha. Você analisa para não sentir. Mas o corpo não mente — a emoção reprimida vira sintoma. Sinta primeiro.',
     },
   };
 
@@ -489,7 +489,7 @@ export function generateAreaNarrativeFull(
         `acabou de acontecer. Não foi raiva — foi o corpo reconhecendo ` +
         `que a outra pessoa está num campo que não é seu. O Tantra ` +
         `distingue o que é desejo seu do que é eco do outro; ` +
-        `essa fronteira, quando mal traçada, é onde Relationships se perdem.`,
+        `essa fronteira, quando mal traçada, é onde os vínculos se perdem.`,
 
       (k, a, t, o) =>
         `Sua prática hoje: antes de qualquer conversa importante com ` +
@@ -755,17 +755,17 @@ export function generateSynthesisParagraph(
   // ── Frase de abertura: tipo Akasha + essência ─────────────────────────────
   if (typeName) {
     const typeOpening: Record<string, string> = {
-      'O Catalisador': 'Você é O Catalisador — o que inicia antes de estar pronto, que coloca o mundo em movimento só por estar presente.',
-      'O Receptor': 'Você é O Receptor — o que capta o que outros emitem, que sabe antes de saber como sabe.',
-      'O Construtor': 'Você é O Construtor — o que transforma esforço diário em estruturas que ninguém mais consegue ver ainda.',
-      'O Transformador': 'Você é O Transformador — o que atravessa o fogo e ajuda outros a atravessar também.',
-      'O Guardião': 'Você é O Guardião — o que sostiene o espaço para que outros possam existir.',
-      'O Curador': 'Você é O Curador — o que presencia o que outros não conseguem nomear.',
-      'O Canal': 'Você é O Canal — o que recebe, traduz e transmite sem segurar para si.',
-      'O Alquimista': 'Você é O Alquimista — o que vê matéria-prima onde outros veem apenas bloqueio.',
-      'O Arquiteto': 'Você é O Arquiteto — o que projeta sistemas onde outros improvisam.',
+      'O Catalisador': 'Você é O Catalisador — o que inicia antes de estar pronto, que coloca o mundo em movimento só por estar presente',
+      'O Receptor': 'Você é O Receptor — o que capta o que outros emitem, que sabe antes de saber como sabe',
+      'O Construtor': 'Você é O Construtor — o que transforma esforço diário em estruturas que ninguém mais consegue ver ainda',
+      'O Transformador': 'Você é O Transformador — o que atravessa o fogo e ajuda outros a atravessar também',
+      'O Guardião': 'Você é O Guardião — o que sustenta o espaço para que outros possam existir',
+      'O Curador': 'Você é O Curador — o que presencia o que outros não conseguem nomear',
+      'O Canal': 'Você é O Canal — o que recebe, traduz e transmite sem segurar para si',
+      'O Alquimista': 'Você é O Alquimista — o que vê matéria-prima onde outros veem apenas bloqueio',
+      'O Arquiteto': 'Você é O Arquiteto — o que projeta sistemas onde outros improvisam',
     };
-    parts.push(typeOpening[typeName] ?? `Seu Tipo Akasha é ${typeName}.`);
+    parts.push(typeOpening[typeName] ?? `Seu Tipo Akasha é ${typeName}`);
   }
 
   // ── Kabala: missão de vida ────────────────────────────────────────────────
