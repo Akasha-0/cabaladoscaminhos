@@ -181,47 +181,6 @@ export function DimensaoCard({ sintese, index }: DimensaoCardProps) {
             </div>
           </section>
 
-          {/* Contribuições dos pilares */}
-          {sintese.contribuicoes.length > 0 && (
-            <section>
-              <h4
-                style={{
-                  fontSize: '0.72rem',
-                  color: 'rgba(232,224,255,0.4)',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  margin: '0 0 8px',
-                }}
-              >
-                Como cada tradição fala desta área
-              </h4>
-              {sintese.contribuicoes.map((c) => (
-                <div
-                  key={c.pilar}
-                  style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'flex-start' }}
-                >
-                  <span style={{ color: sintese.chakraCor, fontSize: '0.9rem', flexShrink: 0, marginTop: 2 }}>
-                    {PILAR_ICONE[c.pilar] ?? '◈'}
-                  </span>
-                  <div>
-                    <span
-                      style={{
-                        fontSize: '0.78rem',
-                        fontWeight: 600,
-                        color: c.nivel === 'primario' ? 'rgba(232,224,255,0.9)' : 'rgba(232,224,255,0.6)',
-                      }}
-                    >
-                      {PILAR_NOME[c.pilar] ?? c.pilar}
-                    </span>
-                    <p style={{ fontSize: '0.82rem', color: 'rgba(232,224,255,0.65)', margin: '1px 0 0', lineHeight: 1.4 }}>
-                      {c.frase}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </section>
-          )}
-
           {/* Prática */}
           {sintese.praktika && (
             <section>

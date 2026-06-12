@@ -133,6 +133,8 @@ export interface AkashaSynthesisUI {
   };
   /** F-227: ONE Akasha Profile — tipo unificado dos 5 pilares */
   oneProfile?: AkashaTypeProfileUI;
+  /** Número de Caminho de Vida (Cabala) — passado ao interpretation-engine no client */
+  lifePath: number;
   areas: Record<string, AreaNarrativeUI>;
   dailyDecision: DailyDecisionUI;
   synthesisParagraph: string;

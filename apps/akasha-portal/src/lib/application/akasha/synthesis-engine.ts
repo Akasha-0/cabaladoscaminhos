@@ -590,6 +590,7 @@ export function buildAkashaSynthesis(
       activeSequence: deriveActiveSequence(areaConexoes, areaMissao, areaCarreira),
     },
     oneProfile,
+    lifePath: kab?.lifePath ?? 1,
     areas: {
       vitalidadeEnergia: areaVitalidade,
       conexoesAmor: areaConexoes,
@@ -624,8 +625,8 @@ export function buildAkashaSynthesis(
         oneLiner: 'Você é O Arquiteto. Sua mente constrói pontes entre mundos — você vê o que outros não veem antes de ter provas.',
         dominantPillar: 'cabala',
         growthEdge: 'Agir mais, pensar menos.',
-        shadowTrap: 'Paralisia por análise excessiva.',
       },
+      lifePath: 1,
       areas: {
         vitalidadeEnergia: buildFallbackArea('vitalidadeEnergia'),
         conexoesAmor: buildFallbackArea('conexoesAmor'),
