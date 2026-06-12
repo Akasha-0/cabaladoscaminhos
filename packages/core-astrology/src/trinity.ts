@@ -55,7 +55,7 @@ export function classifyAspect(aspect: Aspecto): TrinityLevel {
   // Graça: conjunção exata com luminares (Sol/Lua) é alinhamento raro
   if (
     aspect.tipo === 'conjunção' &&
-    aspect.orbe < 1.0 &&
+    aspect.orb < 1.0 &&
     (aspect.planeta1 === 'sol' || aspect.planeta1 === 'lua' ||
      aspect.planeta2 === 'sol' || aspect.planeta2 === 'lua')
   ) {
@@ -63,7 +63,7 @@ export function classifyAspect(aspect: Aspecto): TrinityLevel {
   }
 
   // Sombra: aspectos tensos
-  const tensos: AspectoTipo[] = ['quadratura', 'oposicao'];
+  const tensos: AspectoTipo[] = ['quadratura', 'oposição'];
   if (tensos.includes(aspect.tipo)) {
     return 'sombra';
   }

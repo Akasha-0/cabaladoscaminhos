@@ -149,3 +149,92 @@ export interface LegacyMentorMessage {
   content: string;
   timestamp?: number;
 }
+
+// ============================================================================
+// Chat API — F-205 Mentor (R-023 persona + R-022b ética)
+// ============================================================================
+
+/**
+ * Intenção detectada da mensagem do usuário.
+ * Usada por `detectIntent()` e `chat()` para rotear a resposta.
+ *
+ * - 'practice'  → sugestões de práticas (meditação, banho, oração)
+ * - 'ritual'    → ritual completo com hexagrama do dia
+ * - 'guidance'  → orientação reflexiva sem prática
+ * - 'general'   → conversa aberta
+ */
+export type ChatIntent = 'practice' | 'ritual' | 'guidance' | 'general';
+
+/**
+ * Request payload para `MentorEngine.chat()`.
+ *
+ * `userCode` é o código do dia do usuário (formato "hex-lev-area" ou número
+ * puro de hexagrama) — quando presente, o mentor personaliza a resposta
+ * com base no Pilar 5 (I Ching 64).
+ *
+ * `conversationHistory` permite manter contexto de turnos anteriores
+ * (limitado a N mensagens pelo caller — o mentor não persiste estado).
+ */
+export interface ChatRequest {
+  message: string;
+  intent?: ChatIntent;
+  userCode?: string;
+  conversationHistory?: Array<{
+    role: 'user' | 'mentor' | 'assistant';
+    content: string;
+    timestamp?: number;
+  }>;
+}
+
+/**
+ * Referência a uma prática espiritual curada (Grimório Akasha).
+ * Usado pelo RAG para devolver práticas similares ao hexagrama do dia.
+ */
+export interface IntegrativePracticeRef {
+  id: string;
+  name: string;
+  category: string;
+  description?: string;
+  tags?: string[];
+}
+
+/**
+ * Prática sugerida pelo mentor (subset de IntegrativePracticeRef).
+ */
+export interface SuggestedPractice {
+  id: string;
+  name: string;
+  category: string;
+}
+
+/**
+ * Ritual sugerido pelo mentor (referência ao hexagrama do dia).
+ */
+export interface MentorRitual {
+  id: string;
+  name: string;
+  level: 'shadow' | 'gift' | 'siddhi' | 'sombra' | 'dom' | 'graca';
+}
+
+/**
+ * Quizila (proibição ritual) relevante ao contexto do usuário.
+ */
+export interface MentorQuizila {
+  texto: string;
+  tipo?: 'proibicao' | 'cuidado' | 'observacao';
+}
+
+/**
+ * Response payload de `MentorEngine.chat()`.
+ *
+ * Campos opcionais — populados apenas quando o intent detectado
+ * (ou explícito) é 'practice' ou 'ritual'.
+ */
+export interface ChatResponse {
+  message: string;
+  intent: ChatIntent;
+  suggestedPractices?: SuggestedPractice[];
+  ritual?: MentorRitual;
+  relevantQuizilas?: MentorQuizila[];
+}
+

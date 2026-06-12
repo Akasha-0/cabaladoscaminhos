@@ -19,8 +19,8 @@ function makeAspect(overrides: Partial<Aspecto>): Aspecto {
     planeta1: 'sol',
     planeta2: 'venus',
     tipo: 'trino',
-    orbe: 2.0,
-    natureza: 'harmonioso',
+    orb: 2.0,
+    nature: 'harmony',
     ...overrides,
   } as Aspecto;
 }
@@ -32,7 +32,7 @@ describe('F-209: Tríade Sombra/Dom/Graça', () => {
     });
 
     it('oposição → Sombra', () => {
-      expect(classifyAspect(makeAspect({ tipo: 'oposicao' }))).toBe('sombra');
+      expect(classifyAspect(makeAspect({ tipo: 'oposição' }))).toBe('sombra');
     });
 
     it('trígono → Dom', () => {
@@ -46,7 +46,7 @@ describe('F-209: Tríade Sombra/Dom/Graça', () => {
     it('conjunção exata Sol-Lua (orbe < 1°) → Graça', () => {
       expect(
         classifyAspect(
-          makeAspect({ tipo: 'conjunção', orbe: 0.5, planeta1: 'sol', planeta2: 'lua' }),
+          makeAspect({ tipo: 'conjunção', orb: 0.5, planeta1: 'sol', planeta2: 'lua' }),
         ),
       ).toBe('graca');
     });
@@ -54,7 +54,7 @@ describe('F-209: Tríade Sombra/Dom/Graça', () => {
     it('conjunção Sol-Vênus com orbe grande → Dom (não Graça)', () => {
       expect(
         classifyAspect(
-          makeAspect({ tipo: 'conjunção', orbe: 3.0, planeta1: 'sol', planeta2: 'venus' }),
+          makeAspect({ tipo: 'conjunção', orb: 3.0, planeta1: 'sol', planeta2: 'venus' }),
         ),
       ).toBe('dom');
     });
@@ -62,7 +62,7 @@ describe('F-209: Tríade Sombra/Dom/Graça', () => {
     it('conjunção Mercúrio-Marte (não luminares) → Dom', () => {
       expect(
         classifyAspect(
-          makeAspect({ tipo: 'conjunção', orbe: 0.3, planeta1: 'mercurio', planeta2: 'marte' }),
+          makeAspect({ tipo: 'conjunção', orb: 0.3, planeta1: 'mercurio', planeta2: 'marte' }),
         ),
       ).toBe('dom');
     });
@@ -72,10 +72,10 @@ describe('F-209: Tríade Sombra/Dom/Graça', () => {
     it('conta corretamente em cada nível', () => {
       const aspects: Aspecto[] = [
         makeAspect({ tipo: 'quadratura' }),
-        makeAspect({ tipo: 'oposicao' }),
+        makeAspect({ tipo: 'oposição' }),
         makeAspect({ tipo: 'trino' }),
         makeAspect({ tipo: 'sextil' }),
-        makeAspect({ tipo: 'conjunção', orbe: 0.5, planeta1: 'sol', planeta2: 'lua' }),
+        makeAspect({ tipo: 'conjunção', orb: 0.5, planeta1: 'sol', planeta2: 'lua' }),
       ];
       const count = countTrinity(aspects);
       expect(count.sombra).toBe(2);
