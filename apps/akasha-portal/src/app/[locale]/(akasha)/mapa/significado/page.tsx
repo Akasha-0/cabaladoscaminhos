@@ -16,6 +16,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { AkashaSignificadoCard } from '@/components/akasha/AkashaSignificadoCard';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
 import { TraducaoAreaPanel } from '@/components/akasha/TraducaoAreaPanel';
 import {
@@ -166,6 +167,11 @@ export default async function SignificadoPage({
 
         {/* F-230 — Insight do Dia */}
         {insight && <InsightDoDiaPanel insight={insight} />}
+
+        {/* Akasha Unificado — FASE 3 Ciclo 2: interpretação profunda do Número de Vida */}
+        {pilares ? (
+          <AkashaSignificadoCard lifePath={pilares.cabala.life_path} />
+        ) : null}
 
         {/* 5 Pilares em sequência */}
         {pilares ? (

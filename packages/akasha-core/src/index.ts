@@ -133,3 +133,15 @@ export {
   type MandalaResumo,
   type MandatoEsqueleto,
 } from './akasha-core';
+
+export {
+  // Funções
+  interpretarVida,
+  interpretarVidaArea,
+} from './interpretation-engine';
+
+export type {
+  // Tipos — vivem em @akasha/types, não em interpretation-engine
+  VidaInterpretation,
+  AkashaLevel,
+} from '@akasha/types';

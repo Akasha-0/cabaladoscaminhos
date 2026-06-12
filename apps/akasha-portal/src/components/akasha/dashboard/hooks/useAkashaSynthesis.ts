@@ -78,6 +78,12 @@ export interface AreaNarrativeUI {
   dailyTransit?: DailyTransitUI;
   /** F-226: Narrativas expandidas por pilar (4 blocos + síntese integrada) */
   expandedNarrative?: ExpandedNarrativeUI;
+  /**
+   * F-230: Cadeia de raciocínio — "como chegamos aqui"
+   * Lista ordenada de passos lógicos: [fator1] + [fator2] → [conclusão]
+   * Ex: "Venus em Touro (Astrologia) + Lua em 4º (Astrologia) → afeto profundo pelo lar"
+   */
+  chainOfReasoning?: string[];
 }
 
 export interface ExpandedNarrativeUI {

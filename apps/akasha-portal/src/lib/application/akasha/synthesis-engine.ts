@@ -486,6 +486,11 @@ export interface AreaNarrative {
   sexualidade?: SexualArchetype;
   /** F-226: Narrativas expandidas por pilar (4 blocos + síntese integrada) */
   expandedNarrative?: AreaNarrativeFull;
+  /**
+   * F-230: Cadeia de raciocínio — "como chegamos aqui"
+   * [fator1] + [fator2] → [conclusão] por área de vida
+   */
+  chainOfReasoning?: string[];
 }
 
 // ─── Full Synthesis Output ─────────────────────────────────────────────────
@@ -749,9 +754,9 @@ function deriveVitalidadeEnergia(
     dailyTransit,
     sexualidade,
     expandedNarrative,
+    chainOfReasoning: deriveChainOfReasoning('vitalidadeEnergia', astro, kab, tantra, odu),
   };
 }
-
 function deriveConexoesAmor(
   astro: AstrologyMap | null,
   kab: KabalisticMap | null,
@@ -829,6 +834,7 @@ function deriveConexoesAmor(
     transformationPrompt,
     dailyTransit,
     expandedNarrative,
+    chainOfReasoning: deriveChainOfReasoning('conexoesAmor', astro, kab, tantra, odu),
   };
 }
 
@@ -903,6 +909,7 @@ function deriveCarreiraProsperidade(
     transformationPrompt,
     dailyTransit,
     expandedNarrative,
+    chainOfReasoning: deriveChainOfReasoning('carreiraProsperidade', astro, kab, tantra, odu),
   };
 }
 
@@ -964,7 +971,7 @@ function deriveOriCabecaQuizilas(
     dailyRitual,
     transformationPrompt,
     dailyTransit,
-    expandedNarrative,
+    chainOfReasoning: deriveChainOfReasoning('oriCabecaQuizilas', astro, kab, tantra, odu),
   };
 }
 
@@ -1035,6 +1042,7 @@ function deriveMissaoDestino(
     transformationPrompt,
     dailyTransit,
     expandedNarrative,
+    chainOfReasoning: deriveChainOfReasoning('missaoDestino', astro, kab, tantra, odu),
   };
 }
 
@@ -1096,7 +1104,159 @@ function deriveDesafiosSombras(
     transformationPrompt,
     dailyTransit,
     expandedNarrative,
+    chainOfReasoning: deriveChainOfReasoning('desafiosSombras', astro, kab, tantra, odu),
   };
+}
+
+// ─── F-230: Chain of Reasoning ──────────────────────────────────────────────
+
+/**
+ * Deriva a cadeia de raciocínio para uma área de vida.
+ * Cada passo: "[fator da tradição] → [conclusão]"
+ * Mostra como os 5 mapas convergem para o insight da área.
+ */
+function deriveChainOfReasoning(
+  area: string,
+  astro: AstrologyMap | null,
+  kab: KabalisticMap | null,
+  tantra: TantricMap | null,
+  odu: OduBirth | null,
+): string[] {
+  const steps: string[] = [];
+
+  if (area === 'vitalidadeEnergia') {
+    if (astro?.dominantPlanet) {
+      steps.push(`${astro.dominantPlanet} é seu planeta dominante (Astrologia) → governa como você canaliza energia`);
+    }
+    if (astro?.elementalChart) {
+      const el = astro.elementalChart;
+      const dominant = Object.entries(el).sort((a, b) => b[1] - a[1])[0];
+      if (dominant && dominant[1] > 0) {
+        steps.push(`Elemento ${dominant[0]} predominante (${dominant[1]}/4) → seu corpo responde ao mundo por ${dominant[0]}`);
+      }
+    }
+    if (tantra?.bodies?.pranic) {
+      steps.push(`Corpo Prânico ${tantra.bodies.pranic.number}/11 (Tantra) → nível de energia vital funcional`);
+    }
+    if (tantra?.bodies?.fisico) {
+      steps.push(`Corpo Físico ${tantra.bodies.fisico.number}/11 (Tantra) → como você habita seu corpo`);
+    }
+    if (kab?.lifePath) {
+      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → seu ritmo cíclico de regeneração`);
+    }
+    if (odu?.elementalForce) {
+      steps.push(`Força Elemental ${odu.elementalForce} (Ifá) → o elemento que seu corpo mais precisa nutrir`);
+    }
+    if (steps.length > 0) {
+      steps.push(`${steps.length} sinais convergentes dos 5 mapas → Vitalidade é sua área de transformação primária neste ciclo`);
+    }
+  } else if (area === 'conexoesAmor') {
+    const venus = astro?.planets?.find(p => p.planet === 'Vênus');
+    if (venus) {
+      steps.push(`Vênus em ${venus.sign} (Astrologia) → como você ama e o que você precisa no vínculo`);
+    }
+    if (astro?.planets?.find(p => p.planet === 'Lua')) {
+      const moon = astro.planets.find(p => p.planet === 'Lua')!;
+      steps.push(`Lua em ${moon.sign} (Astrologia) → seu mundo emocional e estilo de потребность cuidado`);
+    }
+    if (tantra?.soul) {
+      steps.push(`Alma Tântrica ${tantra.soul} (Tantra) → seu padrão de vínculo e profundidade emocional`);
+    }
+    if (kab?.lifePath) {
+      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → como você coopera ou compete nos relacionamentos`);
+    }
+    if (odu?.oduName) {
+      steps.push(`Odu ${odu.oduName} (Ifá) → sua lição de vida no campo relacional`);
+    }
+    if (steps.length > 0) {
+      steps.push(`${steps.length} mapas convergentes → Conexões é onde sua frequência de transformação se manifesta primeiro`);
+    }
+  } else if (area === 'carreiraProsperidade') {
+    if (astro?.midheaven) {
+      steps.push(`Meio do Céu em ${astro.midheaven} (Astrologia) → sua vocação pública e caminho de prosperidade`);
+    }
+    if (kab?.expression) {
+      steps.push(`Expressão ${kab.expression} (Cabala) → como você manifesta seus dons no mundo`);
+    }
+    if (kab?.lifePath) {
+      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → seu propósito de contribuição`);
+    }
+    if (tantra?.divineGift) {
+      steps.push(`Dom Divino ${tantra.divineGift} (Tantra) → talento inato que se expressa no trabalho`);
+    }
+    if (odu?.lifeLesson) {
+      steps.push(`Lição de Vida ${odu.lifeLesson} (Ifá) → o que você está aqui para aprender e ensinar`);
+    }
+    if (steps.length > 0) {
+      steps.push(`${steps.length} sinais de vocação convergentes → Carreira é sua área de expressão de propósito`);
+    }
+  } else if (area === 'oriCabecaQuizilas') {
+    if (odu?.oduName) {
+      steps.push(`Odu ${odu.oduName} (Ifá) → sua linha de intuição e comando interior`);
+    }
+    if (odu?.orixaRegency?.length) {
+      steps.push(`Orixá ${odu.orixaRegency[0]} (Ifá) → a energia que governa sua cabeça e decisões`);
+    }
+    if (tantra?.karma) {
+      steps.push(`Carma Tântrico ${tantra.karma} (Tantra) → padrão que precisa ser consciência antes de ação`);
+    }
+    if (kab?.lifePath) {
+      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → o tipo de autoridade que você reconhece`);
+    }
+    if (astro?.planets?.find(p => p.planet === 'Mercúrio')) {
+      const merc = astro.planets.find(p => p.planet === 'Mercúrio')!;
+      steps.push(`Mercúrio em ${merc.sign} (Astrologia) → como sua mente processa e comunica`);
+    }
+    if (steps.length > 0) {
+      steps.push(`${steps.length} mapas da mente convergem → Ori é sua área de integração do comando`);
+    }
+  } else if (area === 'missaoDestino') {
+    if (kab?.mission) {
+      steps.push(`Missão ${kab.mission} (Cabala) → o chamado central da sua jornada`);
+    }
+    if (kab?.lifePath) {
+      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → o arco de transformação ao longo da vida`);
+    }
+    if (tantra?.destiny) {
+      steps.push(`Destino Tântrico ${tantra.destiny} (Tantra) → o que sua alma veio realizar`);
+    }
+    if (astro?.planets?.find(p => p.planet === 'Sol')) {
+      const sol = astro.planets.find(p => p.planet === 'Sol')!;
+      steps.push(`Sol em ${sol.sign} (Astrologia) → seu centro de identidade e brilho autêntico`);
+    }
+    if (odu?.oduName) {
+      steps.push(`Odu ${odu.oduName} (Ifá) → seu alinhamento com o destino cósmico`);
+    }
+    if (steps.length > 0) {
+      steps.push(`${steps.length} mapas do destino convergem → Missão é sua área de alinhamento com o propósito maior`);
+    }
+  } else if (area === 'desafiosSombras') {
+    if (astro?.planets?.find((p: { planet: string; sign: string }) => p.planet === 'Saturno')) {
+      const sat = astro.planets.find((p: { planet: string; sign: string }) => p.planet === 'Saturno')!;
+      steps.push(`Saturno em ${sat.sign} (Astrologia) → sua lição de vida e o que cobra de você`);
+    }
+    if (astro?.planets?.find(p => p.planet === 'Plutão')) {
+      const pl = astro.planets.find(p => p.planet === 'Plutão')!;
+      steps.push(`Plutão em ${pl.sign} (Astrologia) → seu campo de transformação forçada e regeneração`);
+    }
+    if (kab?.karmicLessons?.length) {
+      steps.push(`Lições Kármicas ${kab.karmicLessons.join(', ')} (Cabala) → padrões a serem integrados`);
+    }
+    if (kab?.challenges?.main) {
+      steps.push(`Desafio Principal ${kab.challenges.main} (Cabala) → a sombra que bloqueia seu potencial`);
+    }
+    if (tantra?.karma) {
+      steps.push(`Carma Tântrico ${tantra.karma} (Tantra) → padrão tântrico a ser transmutado`);
+    }
+    if (odu?.lifeLesson) {
+      steps.push(`Lição de Vida ${odu.lifeLesson} (Ifá) → o desafio que o Odu coloca para sua evolução`);
+    }
+    if (steps.length > 0) {
+      steps.push(`${steps.length} mapas da sombra convergem → Desafios é onde a transformação precisa acontecer primeiro`);
+    }
+  }
+
+  return steps;
 }
 
 // ─── Daily Decision Engine ───────────────────────────────────────────────────

@@ -30,7 +30,7 @@ const mysticButtonVariants = cva(
 );
 
 export interface MysticButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'size'>,
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'size' | 'ref'>,
     VariantProps<typeof mysticButtonVariants> {
   loading?: boolean;
 }

@@ -1,30 +1,24 @@
-# Changelog
+## v0.1.1 (2026-06-12)
 
-## v0.1.0 (2026-06-12)
+### Fixed
+- **typecheck: 0 erros** (antes: 59):
+  +  - `MysticButton.tsx`: `Omit<..., 'size'>` → `Omit<..., 'size' | 'ref'>` — compatibilidade React 19
+  +  - `card.tsx` (6 componentes): `ComponentProps` → `ComponentPropsWithoutRef`
+  +  - `dialog.tsx` DialogHeader: idem
+  +  - `mapa/significado/page.tsx`: syntax error `) : ( : (` → `) : (` em ternário JSX
+- **P1 Unificar UI**: `PillarContribution` removido do dashboard — usuário vê só Akasha
+- **P2 Cadeia de raciocínio**: `chainOfReasoning[]` implementado nas 6 áreas de vida
 
 ### Added
-- **Loop autônomo**: `run-loop.sh` + `KICKOFF.md` + `AGENTS.md` bootstrap
-- **Pesquisa FASE 1**: 3 documentos em `docs/pesquisa/`
-  - `sintese-sistemas.md` — análise Human Design + Gene Keys (547 ln)
-  - `benchmark-apps.md` — 13 apps concorrentes, 4 tabelas comparativas (692 ln)
-  - `profundidade-interpretativa.md` — Depth Layers Framework (501 ln)
-- **Síntese FASE 2**: 2 documentos em `docs/sintese/`
-  - `cadeia-sintese.md` — arquitetura 3 camadas, correlações 5 mapas, vocabulário unificado
-  - `arquitetura-motor.md` — evolução do motor em 5 camadas
-- **Decisões**: `docs/DECISIONS.md` com DEC-001 a DEC-003
-- **Akasha Interpretation Engine**: +141 linhas em `packages/types/src/index.ts`
-- **Filtro de ruído**: `narrative-generator.ts` — pula sentenças-título
-
-### Changed
-- `VERSION`: bump v0.0.9 → v0.1.0
-- `STATE.md`: estado atual com inventário completo e próximos passos
+- **Swarm readiness**: `coordination/DOMAINS.md`, `coordination/integrator/feedback-w*.md`, `setup-swarm.sh`
+- `AreaNarrativeUI.chainOfReasoning?: string[]` — cadeia de raciocínio por área
+- `interpretation-engine.ts`: exports `VidaInterpretation`, `AkashaLevel` via `@akasha/types`
+- `packages/akasha-core/package.json`: `@akasha/types` como workspace dep
 
 ### Notes
-- typecheck: limpo
-- Testes falham por `@testing-library/dom` ausente (ambiente, não código)
-- FASE 3 (implementação) pendente: unificar UI, cadeia de raciocínio, profundidade prática
+- typecheck: limpo (0 erros)
+- P3 (profundidade prática — integrar interpretation-engine na UI) pendente
 
----
 
 ## v0.0.9 (2026-06-08)
 

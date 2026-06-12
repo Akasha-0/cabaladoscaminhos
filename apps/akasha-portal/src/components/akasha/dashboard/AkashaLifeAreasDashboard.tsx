@@ -26,7 +26,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, Star,
-  ArrowRight, Lightbulb, RefreshCw, Route,
+  ArrowRight, Lightbulb, RefreshCw, Route, GitBranch,
   type LucideIcon,
 } from 'lucide-react';
 import type {
@@ -472,8 +472,35 @@ function AreaCard({ areaKey, narrative }: {
                   </div>
                 )}
               </div>
-
-
+              {narrative.chainOfReasoning && narrative.chainOfReasoning.length > 0 && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <GitBranch size={12} className="text-[#64D2FF]" />
+                    <span className="text-xs font-semibold text-[#64D2FF]/90 uppercase tracking-wider">Como chegamos aqui</span>
+                  </div>
+                  <div className="space-y-1">
+                    {narrative.chainOfReasoning.map((step, i) => {
+                      const [factor, conclusion] = step.split('→');
+                      return (
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="text-xs text-[#64D2FF]/60 shrink-0 mt-px">{i + 1}.</span>
+                          <div className="flex-1 min-w-0">
+                            {factor && (
+                              <span className="text-xs text-white/60">{factor.trim()}</span>
+                            )}
+                            {conclusion && (
+                              <div className="flex items-start gap-1 mt-0.5">
+                                <ArrowRight size={10} className="text-[#64D2FF] mt-0.5 shrink-0" />
+                                <span className="text-xs text-[#64D2FF]/90 font-medium leading-relaxed">{conclusion.trim()}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
               {/* F-226: Expanded Narrative — Akasha Synthesis */}
               {narrative.expandedNarrative && (
                 <div className="bg-gradient-to-br from-[#AF52DE]/10 to-[#64D2FF]/10 border border-[#AF52DE]/20 rounded-xl p-3 space-y-2">
