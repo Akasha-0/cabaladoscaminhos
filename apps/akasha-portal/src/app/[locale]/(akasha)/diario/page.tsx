@@ -17,6 +17,14 @@
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
+import {
+  significadosEspecificos,
+  significadoGenericoDoPilar,
+  type Pilar,
+} from '@/lib/grimoire/significados-curados';
+
+const PILARES_VALIDOS: readonly Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'] as const;
 
 type MandatoEsqueleto = {
   escala: 'D' | 'S' | 'Z' | 'V';
@@ -30,10 +38,18 @@ type MentorHook = {
   crise_detectada: boolean;
   recurso: string | null;
 };
+type PilaresDoMandato = {
+  cabala: { life_path: number; birthday: number; expression: number; ano_pessoal: number };
+  astrologia: { sol_signo: string; asc_signo: string | null; lua_signo: string; lua_fase: 'nova' | 'crescente' | 'cheia' | 'minguante'; trinity: { sombra: number; dom: number; graca: number }; trinity_dominante: 'sombra' | 'dom' | 'graca' };
+  tantrica: { corpo_predominante: number; trigemeo: 'fisico' | 'astral' | 'mental'; ciclo_anos: number; temperamento_atual: 'sanguineo' | 'colerico' | 'melancolico' | 'fleumatico' };
+  odu: { odu_principal: string; odu_secundario: string | null; fonte: 'Ifá' | 'Candomblé'; aviso: string };
+  iching: { hexagrama_natal: number; hexagrama_dia: number; level: 'shadow' | 'gift' | 'siddhi' };
+};
 
 type MandatoDoDiaResponse = {
   date: string;
   mandato: MandatoEsqueleto;
+  pilares: PilaresDoMandato;
   mentor_hook: MentorHook;
 };
 
@@ -336,7 +352,7 @@ export default async function DiarioPage({
       {/* ── Tela 1: O Mandato (3 frases) ─────────────────────────────────── */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-          <div style={screenNumStyle}>01 / 03 — Mandato</div>
+        <div style={screenNumStyle}>01 / 04 — Mandato</div>
 
           {/* Cabeçalho: data + escala + intenção */}
           <div style={cardStyle(pilarInfo.cor)}>
@@ -446,19 +462,16 @@ export default async function DiarioPage({
         </div>
       </div>
 
-      {/* ── Tela 2: A Pergunta do Dia ─────────────────────────────────────── */}
+      {/* Tela 2: A Pergunta do Dia */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-          <div style={screenNumStyle}>02 / 03 — Pergunta</div>
-
+          <div style={screenNumStyle}>02 / 04 — Pergunta</div>
           <div style={cardStyle(C.violeta)}>
             <span style={labelStyle(C.violeta)}>
               A Pergunta do Dia <span style={stubBadge}>template (F-204: LLM)</span>
             </span>
             <h2 style={{ ...headlineStyle, color: C.violeta, fontSize: '1.35rem' }}>{pergunta}</h2>
-
             <div style={dividerStyle} />
-
             <span style={labelStyle(C.txtMut)}>Por que esta pergunta?</span>
             <p style={bodyStyle}>
               A pergunta de hoje é ancorada em{' '}
@@ -467,37 +480,67 @@ export default async function DiarioPage({
               não de resposta apressada. Reserve 1 minuto para deixar a resposta emergir.
             </p>
           </div>
-
           <div style={{ textAlign: 'center', marginTop: 24, color: C.txtMut, fontSize: '0.7rem' }}>
             role para baixo ↓
           </div>
         </div>
       </div>
 
-      {/* ── Tela 3: O Micro-Ritual ────────────────────────────────────────── */}
+      {/* Tela 3: O Micro-Ritual */}
       <div style={screenStyle}>
         <div style={innerStyle}>
-          <div style={screenNumStyle}>03 / 03 — Ritual</div>
-
+          <div style={screenNumStyle}>03 / 04 — Ritual</div>
           <div style={cardStyle(C.aurora)}>
             <span style={labelStyle(C.aurora)}>
               O Micro-Ritual <span style={stubBadge}>template (F-204: LLM)</span>
             </span>
             <h2 style={{ ...headlineStyle, color: C.aurora }}>{ritual.titulo}</h2>
             <p style={bodyStyle}>{ritual.instrucao}</p>
-
             <div style={{ marginTop: 14 }}>
               <span style={badgeStyle(pilarInfo.cor)}>via {pilarInfo.nome}</span>
               <span style={badgeStyle(C.aurora)}>~ 3 min</span>
             </div>
           </div>
-
-          {/* Link para o Oráculo (pode aprofundar no Mentor) */}
           <Link href={`/${locale}/oraculo`} style={btnStyle}>
             Consultar Oráculo →
           </Link>
         </div>
       </div>
+
+      {/* Tela 4: O Significado (F-222) — ESPECÍFICO do símbolo, não visão geral */}
+      {(() => {
+        const sigs = significadosEspecificos(payload.pilares);
+        const ordem: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
+        const coresPorPilar: Record<Pilar, string> = {
+          cabala: C.violeta,
+          astrologia: C.aurora,
+          tantrica: C.dourado,
+          odu: C.magenta,
+          iching: '#A0763A',
+        };
+        return (
+          <div style={screenStyle}>
+            <div style={innerStyle}>
+              <div style={screenNumStyle}>04 / 04 — Significado</div>
+              <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
+                Cinco leituras, uma pessoa. Toque em cada Pilar para refletir.
+              </p>
+              {ordem.map((p) => (
+                <div key={p} style={{ marginBottom: 14 }}>
+                  <SignificadoPilar
+                    significado={sigs[p]}
+                    cor={coresPorPilar[p]}
+                    destaque={p === pilarPrincipal}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+
+
     </div>
   );
 }

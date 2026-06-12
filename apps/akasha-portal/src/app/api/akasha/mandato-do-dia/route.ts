@@ -1,21 +1,21 @@
 /**
  * GET /api/akasha/mandato-do-dia
- * Retorna o Mandato do Dia (MandatoEsqueleto) calculado pelo
- * @akasha/core `calcular()` para o usuário autenticado.
+ * Retorna o Mandato do Dia (MandatoEsqueleto) + os 5 Pilares calculados.
  *
  * Referência: .autonomous/research/synthesis/synthesis_v1.md §5 (Mandato)
  * F-201 — P0 da Fase 6.
+ * F-222 — inclui `pilares` (akasha-core `leitura.pilares`) para que o
+ * cliente renderize Significado ESPECÍFICO do símbolo (ex: Life Path 11
+ * → "Iluminador", Sol em Escorpião → descrição) e não só GENÉRICO.
  *
  * Query params:
  *   intencao?: string  (default: "buscar clareza para o dia")
  *
- * Response 200 (Mandato do Dia):
+ * Response 200 (Mandato do Dia + Pilares):
  *   {
  *     date: 'YYYY-MM-DD',
- *     escala: 'D' | 'S' | 'Z' | 'V',
- *     pilares_relevantes: string[],
- *     redacao_bruta: string,
- *     cita_fontes: string[],
+ *     mandato: MandatoEsqueleto,
+ *     pilares: { cabala, astrologia, tantrica, odu, iching },
  *     mentor_hook: { intencao, crise_detectada, recurso }
  *   }
  *
@@ -108,15 +108,18 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Falha ao calcular Mandato do Dia' }, { status: 500 });
   }
 
-  // 6. Devolver apenas o Mandato (PII mínima) + hook do Mentor.
-  const { mandato, mentor_hook } = leitura;
+  // 6. Devolver Mandato + Pilares (F-222) + hook do Mentor.
+  // `pilares` é NON-BREAKING: campos adicionais não invalidam clientes
+  // que só leem `mandato`. Permite ao Diario renderizar Significado
+  // ESPECÍFICO (cabala.life_path → Significado do Life Path específico).
+  const { mandato, mentor_hook, pilares } = leitura;
   const date = formatISODate(new Date());
 
   const response: {
     date: string;
     mandato: MandatoEsqueleto;
+    pilares: typeof pilares;
     mentor_hook: typeof mentor_hook;
-  } = { date, mandato, mentor_hook };
-
+  } = { date, mandato, pilares, mentor_hook };
   return NextResponse.json(response);
 }
