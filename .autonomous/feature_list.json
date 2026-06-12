@@ -463,5 +463,17 @@
     "description": "FASE 7 cleanup: delete stale apps/akasha-portal/lib/infrastructure/prisma.ts (unreferenced dup outside src/, would create 2nd PrismaClient). -1 file.",
     "passes": true,
     "completed_at": "2026-06-11"
+  },
+  {
+    "id": "F-217",
+    "phase": 7,
+    "category": "fix",
+    "priority": "P2",
+    "description": "Fix redis mock path mismatch in today.test.ts + add @akasha/core vitest alias. Root cause: route imports @/lib/infrastructure/redis but test mocks @/lib/redis. Symptom: 4 tests fail (503 vs 200, Cache-Control null). Fix: align mock path with import. Second issue: vitest.config.ts sharedAliases missing @akasha/core alias (tsconfig had it), could cause silent resolution failures for routes importing from @akasha/core.",
+    "output": "tests/api/akasha/transits/today.test.ts (1 line) + apps/akasha-portal/vitest.config.ts (1 line)",
+    "passes": true,
+    "timebox": "10 min",
+    "completed_at": "2026-06-11",
+    "note": "4/4 transit tests pass. Full suite: 234→234 (pre-existing pollution, no regression). Typecheck 0 errors. Lesson session-n-plus-13-mock-path-vs-import-path.md"
   }
 ]
