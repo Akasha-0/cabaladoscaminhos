@@ -341,3 +341,19 @@ Status final: 24/25 features done. Apenas D-040 (Prisma schema
 Próxima ação recomendada: próxima FASE 8 (R-018 Astrologia Védica
 ou R-019 4 Temperamentos gregos) OU implementar F-208 (88° solar
 arc) usando R-014/R-015/R-016.
+
+## Sessão N+8 (2026-06-11) — typecheck hardening
+
+- [x] Triad: pnpm test:run packages/{mentor,core-astrology} = 110/110 verde
+- [x] typecheck: 106 → 8 erros (todos framer-motion pre-existing, requer human approval)
+- [x] Fixes:
+  - packages/mentor/src/types.ts: +89 linhas (ChatIntent/ChatRequest/ChatResponse/IntegrativePracticeRef/SuggestedPractice/MentorRitual/MentorQuizila)
+  - packages/mentor/src/mentor.ts: chat(ChatRequest) + chatLegacy(messages, context) + wire-up @akasha/core
+  - packages/mentor/src/rag/{openai,cohere}-embedder.ts: highlights: string[] (não (string|undefined)[])
+  - packages/core-astrology/src/trinity.ts: orb + 'oposição' (alinhar com tipos.ts)
+  - packages/core-astrology/src/trinity.test.ts: mesmo
+  - apps/akasha-portal/tsconfig.json: path @akasha/core
+  - tsconfig.json: path @akasha/core (root)
+- [x] Commit: 50a68f6b — fix(typecheck): alinhar contratos mentor + trinity + paths tsconfig
+- [x] Lesson: .autonomous/lessons/session-n-plus-8-typecheck-fixes.md
+- Próxima sessão: declarar framer-motion em package.json (safe, no install) ou stub via types/ (recomendado) — requer decisão humana
