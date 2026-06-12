@@ -448,3 +448,24 @@ Próxima sessão:
 - [x] D-040 (Prisma migration) untouched — awaiting human approval per STEP 5.5
 - [x] Fila Fase 6+7 vazia no início; itens extraídos da working tree
 - Próxima sessão: F-100 series (refactor) ou F-103 (performance) — pre-existing eslint @eslint/js missing + test pollution 477 files = hardening backlog
+
+## Sessão N+16 (2026-06-12) — F-221/F-222 SIGNIFICADOS CURADOS [3 commits, 2185 LOC]
+- [x] STEP 0 rebuild: working tree tinha F-221 in-flight do supervisor
+        (significados-curados.ts 1203ln + SignificadoPilar.tsx 268ln +
+        diario/page.tsx 521ln + mandato-do-dia/route.ts modified)
+- [x] STEP 1: feature_list 41/43 passing — D-040 D-040-progress bloqueados
+        (human approval); F-221/F-222 ausentes, criação nesta sessão
+- [x] Identify: coberturaSignificados() missing close brace (typecheck falhava)
+- [x] Fix: 1 char (`}`) para fechar função
+- [x] Commit 1: `f2d222ee` — feat(portal) F-221 lib + component (2090 LOC)
+- [x] Commit 2: `3b9d19d9` — feat(portal) F-221 Tela 04 + F-222 API (+70/-24)
+- [x] Commit 3: `9cb73fe9` — docs(loop) N+16 lesson + feature_list (124 LOC)
+- [x] Triad: pnpm typecheck 0 errors; pnpm test:run 1374 (235 pre-existing pollution unchanged)
+- [x] Smoke test: cobertura {cabala:43, astrologia:19, tantrica:18, odu:15, iching:64}
+        LP11=Iluminador·Mestre; Escorpião=Sol em Escorpião
+- [x] Feature_list: 43 → 45 (F-221 P0 + F-222 P1, both passes:true)
+- [x] Lesson: .autonomous/lessons/session-n-plus-16-f-221-significados-curados.md
+- [x] Conflito com orchestrator: orchestrator criou F-223 /mapa/significado + F-225 tests
+        em paralelo (untracked no working tree) — não toquei,留给 orchestrator
+- Próxima sessão: F-100 (refactor), F-103 (perf) — hardening backlog ou
+        D-040 (Prisma, blocked human) ou F-206 tooltip (Pilar com citação)
