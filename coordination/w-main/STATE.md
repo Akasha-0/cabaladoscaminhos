@@ -1,8 +1,8 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 521)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 522)
 
 **Versão atual**: v0.1.1
 **Última atualização**: 2026-06-12
-**Ciclo**: 521
+**Ciclo**: 522
 
 ---
 
@@ -15,32 +15,45 @@
 | `synthesis-engine.ts` | `lifePath: kabalisticMap?.lifePath ?? 1` na response + `AkashaSynthesis.lifePath: number` |
 | `AkashaLifeAreasDashboard.tsx` | `LifePathInsightCard` renderizado após Perfil Akasha, antes Decisão Diária |
 
-**Impacto**: usuário vê o significado do seu Número de Vida diretamente no dashboard — interpretação profunda com shadow/gift/siddhi + ação prática.
+**Impacto**: usuário vê o significado do seu Número de Vida diretamente no dashboard.
 
-**Commit**: `4095b47c` — "feat(dashboard): P3 — LifePathInsightCard: Número de Vida com interpretação"
+---
+
+## Ciclo 522 — Auditoria Local
+
+**Typecheck**: 0 erros ✅
+
+**P1 chainOfReasoning** — já implementado (motor E UI):
+- Motor: `deriveChainOfReasoning()` em `synthesis-engine.ts:1094-1236` — conteúdo real para todas as 6 áreas
+- UI: `AkashaLifeAreasDashboard.tsx:476-504` — rendering com parsing `fator → conclusão`
+- **Status**: ✅ COMPLETO (nenhum trabalho adicional necessário)
+
+**P1 AkashaSynthesis type** — já corrigido:
+- Commit `03b43c9c` resolve: `kab→kabalisticMap`, `lifePath?: number` no tipo, `shadowTrap` no fallback
+
+**Branch main**: 13 commits à frente de origin/main — requer push
 
 ---
 
 ## Histórico de ciclos
 
+- **Ciclo 522** ✅: Auditoria — P1 chainOfReasoning COMPLETO, typecheck 0 erros
 - **Ciclo 520** ✅: P3 — LifePathInsightCard integrado no dashboard
 
 ---
 
-## Próximos Passos (do backlog STATE.md global)
+## Próximos Passos
 
-1. **P2 — cross-engine.ts cleanup**: params não utilizados `_kab`, `_date`
-   - Domínio: w1 (motor)
-   - Solicitar em `coordination/w1/requests.md`
-
-2. **P3 — Capacitor APK** (F-228): build Android via `npx cap sync`
+1. **P2 — cross-engine.ts cleanup**: params `_kab`, `_date` não utilizados
+   - Domínio: w1 (motor) — requer worktree w1
+2. **P3 — Capacitor APK** (F-228): `npx cap sync` → APK Android
    - Domínio: w2 (UI)
-   - Necessário após P2
+3. **w2 feedback**: integrar I Ching Wings do `feature/akasha-v0.0.12` (commits `c2e30f55`, `53500b6f`)
 
 ---
 
 ## Notas
 
-- Agindo como `w-main` (main branch) — equivalente a integrator + executor
+- Agindo como `w-main` (main branch)
 - STATE.md global não pode ser modificado por mim (restrição de worker)
-- Feedback files em `coordination/integrator/feedback-w*.md` estão vazios
+- Feedback w2 atualizado: 6 commits bons para rebase sobre main
