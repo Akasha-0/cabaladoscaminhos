@@ -96,9 +96,6 @@ export interface ExpandedNarrativeUI {
   sourceLabel: string;
 }
 
-export interface TensionPointUI {
-}
-
 export interface DailyDecisionUI {
   strategy: string;
   strategyExplanation: string;
