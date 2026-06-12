@@ -12,7 +12,6 @@ export { Onboarding } from './Onboarding';
 // Utilitários e demais componentes
 export { LocaleSwitcher } from './LocaleSwitcher';
 export { MandalaAtmosphere } from './MandalaAtmosphere';
-export { PwaInstallPrompt } from './PwaInstallPrompt';
 export { ServiceWorkerRegistrar } from './ServiceWorkerRegistrar';
 
 // Re-exports com default (para compatibilidade)
