@@ -1,5 +1,4 @@
 'use client';
-
 /**
  * AkashaLifeAreasDashboard — Dashboard de Áreas de Vida do Akasha
  *
@@ -16,7 +15,6 @@
  * Cada área mostra:
  *  - Frequência atual (Shadow / Dom / Siddhi)
  *  - Narrativa em 2ª pessoa (prática, não técnica)
- *  - Contribuição de cada pilar (Cabala, Tantra, Odus, Astrologia)
  *  - Ritual diário personalizado
  *  - Pergunta de transformação
  *
@@ -28,7 +26,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, Star,
-  ArrowRight, Lightbulb, RefreshCw,
+  ArrowRight, Lightbulb, RefreshCw, Route,
   type LucideIcon,
 } from 'lucide-react';
 import type {
@@ -298,34 +296,6 @@ function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
   );
 }
 
-function PillarContribution({
-  cabala, tantra, odus, astrologia
-}: { cabala: string; tantra: string; odus: string; astrologia: string }) {
-  const pillars = [
-    { label: 'Cabala', text: cabala, color: '#FFD60A' },
-    { label: 'Tantra', text: tantra, color: '#FF9F0A' },
-    { label: 'Odus', text: odus, color: '#30D158' },
-    { label: 'Astrologia', text: astrologia, color: '#64D2FF' },
-  ].filter(p => p.text && p.text.trim().length > 0);
-
-  if (pillars.length === 0) return null;
-
-  return (
-    <div className="space-y-1.5">
-      <p className="text-xs text-white/40 font-medium uppercase tracking-wider">Contribuição dos Pilares</p>
-      {pillars.map(p => (
-        <div key={p.label} className="flex gap-2">
-          <span
-            className="text-xs font-semibold shrink-0 mt-px"
-            style={{ color: p.color }}
-          >{p.label}:</span>
-          <span className="text-xs text-white/60 leading-relaxed">{p.text}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function RitualBadge({ ritual }: {
   ritual: { title: string; instruction: string; duration: string; element: string; color: string }
 }) {
@@ -503,13 +473,6 @@ function AreaCard({ areaKey, narrative }: {
                 )}
               </div>
 
-              {/* Pillar contributions */}
-              <PillarContribution
-                cabala={narrative.pillarContribution.cabala}
-                tantra={narrative.pillarContribution.tantra}
-                odus={narrative.pillarContribution.odus}
-                astrologia={narrative.pillarContribution.astrologia}
-              />
 
               {/* F-226: Expanded Narrative — Akasha Synthesis */}
               {narrative.expandedNarrative && (
