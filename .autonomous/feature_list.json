@@ -499,5 +499,27 @@
     ],
     "passes": false,
     "status": "migration_setup_complete_awaiting_human_apply"
+  },
+  {
+    "id": "F-219",
+    "phase": 7,
+    "category": "fix",
+    "priority": "P1",
+    "description": "getOduByName em apps/akasha-portal/src/lib/domain/odu-data.ts não resolvia nomes ODUS_IFA com parentético (ex.: Ogbe (Oxé)) emitidos por @akasha/core-odus/calculateBirthOdu. Lookup exato retornava undefined → buildOduGlossary section null no system prompt da IA → alucinação sobre Pilar 4 (Odu). Fix: strip parentético + rebusca prefixo canônico (preserva Pilar 4 ethics invariant: não inventa correspondência, strip é fallback seguro). Test: tests/lib/akashic/odu-glossary-lookup.test.ts 7 casos isolados verdes.",
+    "output": "odu-data.ts:518-528 (8 linhas, strip + rebusca) + tests/lib/akashic/odu-glossary-lookup.test.ts (64 linhas, 7 testes)",
+    "passes": true,
+    "completed_at": "2026-06-12",
+    "note": "7/7 testes isolados verde. Full suite: pre-existing pollution unchanged (477 fail pre, 477 post). Pilar 4 truth-base fix (sem isto, IA alucinava sobre 16 Odus)."
+  },
+  {
+    "id": "F-220",
+    "phase": 7,
+    "category": "chore",
+    "priority": "P3",
+    "description": "Remover PwaInstallPrompt.tsx (UI banner instalar-como-app). Portal é web (Next.js + Vercel), não PWA instalável. ServiceWorkerRegistrar + use-service-worker.ts preservados (engine SW, não UI prompt). Mudanças: layout.tsx (import + uso), components/akasha/index.ts (export), ServiceWorkerRegistrar.tsx (comentário). -110 LOC.",
+    "output": "-110 LOC em 4 arquivos (1 deletado)",
+    "passes": true,
+    "completed_at": "2026-06-12",
+    "note": "Cleanup de componente órfão. Akasha portal não é app instalável — home page é a entrada, /sw.js faz cache offline."
   }
 ]
