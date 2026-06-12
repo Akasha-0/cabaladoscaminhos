@@ -18,11 +18,14 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
+import { TraducaoAreaPanel } from '@/components/akasha/TraducaoAreaPanel';
 import {
   significadosEspecificos,
   significadoGenericoDoPilar,
   type Pilar,
+  type PilaresDados,
 } from '@/lib/grimoire/significados-curados';
+import { AREAS, traducaoPara } from '@/lib/grimoire/traducao-areas';
 
 const PILARES_VALIDOS: readonly Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'] as const;
 
@@ -40,8 +43,17 @@ type MentorHook = {
 };
 type PilaresDoMandato = {
   cabala: { life_path: number; birthday: number; expression: number; ano_pessoal: number };
-  astrologia: { sol_signo: string; asc_signo: string | null; lua_signo: string; lua_fase: 'nova' | 'crescente' | 'cheia' | 'minguante'; trinity: { sombra: number; dom: number; graca: number }; trinity_dominante: 'sombra' | 'dom' | 'graca' };
-  tantrica: { corpo_predominante: number; trigemeo: 'fisico' | 'astral' | 'mental'; ciclo_anos: number; temperamento_atual: 'sanguineo' | 'colerico' | 'melancolico' | 'fleumatico' };
+  astrologia: {
+    sol_signo: string;
+    asc_signo: string | null;
+    lua_signo: string;
+    lua_fase: 'nova' | 'crescente' | 'cheia' | 'minguante';
+    trinity: { sombra: number; dom: number; graca: number };
+    trinity_dominante: 'sombra' | 'dom' | 'graca';
+    // F-235 — Sexualidade (Lilith + Casa 8). Pode vir undefined em respostas antigas.
+    lilith_signo?: string | null;
+    casa_8_signo?: string | null;
+  };
   odu: { odu_principal: string; odu_secundario: string | null; fonte: 'Ifá' | 'Candomblé'; aviso: string };
   iching: { hexagrama_natal: number; hexagrama_dia: number; level: 'shadow' | 'gift' | 'siddhi' };
 };
@@ -506,10 +518,11 @@ export default async function DiarioPage({
           </Link>
         </div>
       </div>
-
       {/* Tela 4: O Significado (F-222) — ESPECÍFICO do símbolo, não visão geral */}
       {(() => {
-        const sigs = significadosEspecificos(payload.pilares);
+        // Cast seguro: API pode omitir `ciclo_anos` (F-220 stub) ou `aviso` (F-235),
+        // mas significadosEspecificos só lê os campos obrigatórios.
+        const sigs = significadosEspecificos(payload.pilares as unknown as PilaresDados);
         const ordem: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
         const coresPorPilar: Record<Pilar, string> = {
           cabala: C.violeta,
@@ -521,7 +534,7 @@ export default async function DiarioPage({
         return (
           <div style={screenStyle}>
             <div style={innerStyle}>
-              <div style={screenNumStyle}>04 / 04 — Significado</div>
+              <div style={screenNumStyle}>04 / 05 — Significado</div>
               <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
                 Cinco leituras, uma pessoa. Toque em cada Pilar para refletir.
               </p>
@@ -534,6 +547,38 @@ export default async function DiarioPage({
                   />
                 </div>
               ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Tela 5: Para suas áreas (F-229) — Significado do Pilar PRINCIPAL traduzido para 8 áreas da vida */}
+      {(() => {
+        const p = (PILARES_VALIDOS as readonly string[]).includes(pilarPrincipal)
+          ? (pilarPrincipal as Pilar)
+          : ('cabala' as Pilar);
+        const cor: Record<Pilar, string> = {
+          cabala: C.violeta,
+          astrologia: C.aurora,
+          tantrica: C.dourado,
+          odu: C.magenta,
+          iching: '#A0763A',
+        };
+        return (
+          <div style={screenStyle}>
+            <div style={innerStyle}>
+              <div style={screenNumStyle}>05 / 05 — Para suas áreas</div>
+              <p style={{ ...bodyStyle, color: C.txtSec, marginBottom: 8 }}>
+                O Significado do Pilar principal traduzido para 8 áreas da sua vida.
+                Você vive em áreas — paz, saúde, relações, dinheiro, trabalho, propósito, criatividade, espiritualidade — e cada área pede uma leitura própria.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 10 }}>
+                {AREAS.map((a) => {
+                  const t = traducaoPara(p, a);
+                  if (!t) return null;
+                  return <TraducaoAreaPanel key={a} traducao={t} cor={cor[p]} />;
+                })}
+              </div>
             </div>
           </div>
         );

@@ -36,6 +36,17 @@ export interface SignificadoPilarProps {
   cor: string;
   /** Indica que veio do Pilar principal (destaque visual). */
   destaque?: boolean;
+  /**
+   * F-235 — Pilar 2 (Astrologia) ganha seção extra de Sexualidade quando
+   * há dados disponíveis. Renderiza apenas se:
+   *   - significado.pilar === 'astrologia'
+   *   - pelo menos um de lilith/casa8 for fornecido
+   * Outros Pilares ignoram essa prop.
+   */
+  sexualidade?: {
+    lilith_signo?: string | null;
+    casa_8_signo?: string | null;
+  };
 }
 
 const PILAR_ICONE: Record<SignificadoCurado['pilar'], string> = {
@@ -54,10 +65,20 @@ const PILAR_NOME: Record<SignificadoCurado['pilar'], string> = {
   iching: 'I Ching',
 };
 
-export function SignificadoPilar({ significado, cor, destaque = false }: SignificadoPilarProps) {
+export function SignificadoPilar({
+  significado,
+  cor,
+  destaque = false,
+  sexualidade,
+}: SignificadoPilarProps) {
   const { pilar, titulo, essencia, missao, sombra, pratica, conexao, fonte, requer_terreiro } =
     significado;
 
+  // F-235: Sexualidade só renderiza para Pilar 2 (Astrologia) com dados.
+  const showSexualidade =
+    pilar === 'astrologia' &&
+    !!sexualidade &&
+    !!(sexualidade.lilith_signo || sexualidade.casa_8_signo);
   return (
     <article
       data-pilar={pilar}
@@ -178,6 +199,77 @@ export function SignificadoPilar({ significado, cor, destaque = false }: Signifi
           {sombra}
         </p>
       </section>
+
+      {/* F-235 — Sexualidade: Lilith + Casa 8 (apenas Pilar 2 Astrologia) */}
+      {showSexualidade && sexualidade && (
+        <section
+          data-f="f-235-sexualidade"
+          style={{
+            background: `linear-gradient(135deg, ${cor}10 0%, rgba(251,87,129,0.06) 100%)`,
+            border: `1px solid ${cor}44`,
+            borderRadius: '10px',
+            padding: '0.7rem 0.85rem',
+          }}
+        >
+          <span
+            style={{
+              fontSize: '0.65rem',
+              color: '#FB5781',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              fontWeight: 600,
+            }}
+          >
+            ⟁ Sexualidade · Lilith + Casa 8
+          </span>
+          <div style={{ marginTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {sexualidade.lilith_signo && (
+              <p
+                style={{
+                  fontSize: '0.78rem',
+                  color: '#F4F5FF',
+                  lineHeight: 1.45,
+                  margin: 0,
+                }}
+              >
+                <strong style={{ color: '#FB5781' }}>Lilith em {sexualidade.lilith_signo}:</strong>{' '}
+                o que te excita em segredo. Black Moon Lilith = o lado sombrio, indômito, da
+                sua sexualidade — fetiches, desejos que você raramente verbaliza, intensidade
+                que te assusta e atrai.
+              </p>
+            )}
+            {sexualidade.casa_8_signo && (
+              <p
+                style={{
+                  fontSize: '0.78rem',
+                  color: '#F4F5FF',
+                  lineHeight: 1.45,
+                  margin: 0,
+                }}
+              >
+                <strong style={{ color: '#FB5781' }}>Casa 8 em {sexualidade.casa_8_signo}:</strong>{' '}
+                como você se entrega, transforma e se FUNDE. Casa 8 é sexo, tabu, heranças,
+                morte-simbólica. O signo na cúspide diz o tom da sua intimidade profunda.
+              </p>
+            )}
+            {sexualidade.lilith_signo &&
+              sexualidade.casa_8_signo &&
+              sexualidade.lilith_signo === sexualidade.casa_8_signo && (
+                <p
+                  style={{
+                    fontSize: '0.75rem',
+                    color: '#A7AECF',
+                    fontStyle: 'italic',
+                    margin: '4px 0 0',
+                  }}
+                >
+                  Lilith e Casa 8 no MESMO signo: intensidade dobrada. Sua sexualidade tem uma
+                  assinatura única — não é meio termo, é profunda, total. Aceite e explore.
+                </p>
+              )}
+          </div>
+        </section>
+      )}
 
       {/* Prática */}
       <section

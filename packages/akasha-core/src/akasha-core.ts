@@ -46,6 +46,16 @@ export interface PilarAstrologia {
   // (R-015 §2.1: Shadow→Gift→Siddhi, com nomenclatura PT-BR R-015 D2)
   trinity: { sombra: number; dom: number; graca: number };
   trinity_dominante: PilarTrinityLevel;
+  // F-235: Sexualidade (Lilith + Casa 8) — pilares que iluminam desejos
+  // ocultos, fetiches, sexualidade livre, não-monogamia consensual,
+  // intensidade erótica. Derivado do mapa astral real.
+  // - `lilith_signo`: Black Moon Lilith (apogeu lunar médio).
+  // - `casa_8_signo`: signo na cúspide da Casa 8 (sexualidade, tabu,
+  //   transformações, heranças, morte-simbólica).
+  // Ambos são nullable: astrologia stub ou hora_desconhecida podem
+  // impossibilitar o cálculo. Não inventar dados — devolver null.
+  lilith_signo: string | null;
+  casa_8_signo: string | null;
 }
 
 export interface PilarTantrica {
@@ -282,6 +292,18 @@ async function realPilar2Astrologia(
       // countTrinity (substitui heurística simples Sol-Lua de F-209).
       // Cobre TODOS os aspectos entre os 10 planetas, não só Sol-Lua.
       const { trinity, trinity_dominante } = computeTrinityFromChart(bc.chart.planeta, eng);
+      // F-235: Lilith + Casa 8 — sexualidade e desejos ocultos.
+      // Lilith existe em bc.chart.planeta (calcularLilith em swiss-ephemeris).
+      // Casa 8 é derivada de bc.chart.ascendente (casa 8 = 7 signos após ASC,
+      // ou seja, ASC + 210°; usa whole-sign de Brennan 2017 cap. 7).
+      const lilithLongitude = bc.chart.planeta.lilith?.longitude;
+      const lilith_signo: string | null =
+        lilithLongitude != null ? longitudeToSigno(lilithLongitude) : null;
+      // Casa 8: signo 7 após o Ascendente (Whole Sign Houses — Brennan 2017).
+      // Só calculável se hora_nascimento for conhecida (ASC é dependente de hora).
+      const casa_8_signo: string | null = input.hora_nascimento
+        ? longitudeToSigno((bc.chart.ascendente + 210) % 360)
+        : null;
       return {
         sol_signo,
         asc_signo,
@@ -290,6 +312,8 @@ async function realPilar2Astrologia(
         hora_desconhecida: !input.hora_nascimento,
         trinity,
         trinity_dominante,
+        lilith_signo,
+        casa_8_signo,
       };
     } catch (e) {
       console.warn('[akasha/core] Pilar 2 Astrologia falhou, usando stub:', e);
@@ -312,6 +336,8 @@ async function realPilar2Astrologia(
     hora_desconhecida: !input.hora_nascimento,
     trinity: { sombra: 0, dom: 1, graca: 0 },
     trinity_dominante: 'dom',
+    lilith_signo: null,
+    casa_8_signo: null,
   };
 }
 
@@ -407,10 +433,21 @@ async function realPilar4Odu(
   // Mantida em 15 aqui para o Pilar 4 (escopo YORÙBÁ canônico); 16 names
   // ficam como sub-variants (Owonrin/Meji, Okanran/Ogunda...) — stub fallback
   // usa a versão 16 (mais permissiva) até o D-040 unificar.
-  const CANONICAL_15 = new Set([
-    'Eji', 'Oyeku', 'Iwori', 'Odi', 'Irosun', 'Owonrin',
-    'Obara', 'Okanran', 'Ogunda', 'Osa', 'Ika', 'Oturupon',
-    'Otura', 'Irete', 'Ofun',
+  // CANONICAL_NAMES — grafias canônicas retornadas por `calculateBirthOdu`
+  // em @akasha/core-odus/odu-birth.ts (fonte: ODUS_IFA em odus-ifa-data.ts).
+  // Inclui TODAS as grafias possíveis (com e sem acento/til, nomes simples e
+  // compostos) para que o split de `oduName` (ex: 'Ogbe (Oxé)' → 'Ogbe')
+  // sempre encontre correspondência — sem cair no stub arbitrário.
+  // Pilar 4 ethics invariant: nunca inventar correspondência. Se chegar
+  // nome fora desta lista, fallback para stub em vez de vazar.
+  const CANONICAL_NAMES = new Set([
+    // Grafia canônica ODUS_IFA (esquerda do split)
+    'Ogbe', 'Ejiokô', 'Etogundá', 'Irosun', 'Oxê', 'Obará', 'Odi',
+    'Ejionile', 'Ossá', 'Ofun', 'Owarin', 'Ejilaxebô', 'Oturupon',
+    'Oturá', 'Iká', 'Ofurufu',
+    // Variantes yorùbá plenas (sub-variants 16) — R-022 §4.4 fallback
+    'Eji', 'Oyeku', 'Iwori', 'Owonrin', 'Obara', 'Okanran', 'Ogunda',
+    'Osa', 'Ika', 'Otura', 'Irete',
   ]);
   if (eng) {
     try {
@@ -424,7 +461,7 @@ async function realPilar4Odu(
       // na lista canônica derivada, fallback para stub determinístico
       // (16 names) em vez de vazar compound names sem curadoria.
       const principal = r.oduName.split(/[\s(]/)[0];
-      if (CANONICAL_15.has(principal)) {
+      if (CANONICAL_NAMES.has(principal)) {
         return {
           odu_principal: principal,
           odu_secundario: null,
