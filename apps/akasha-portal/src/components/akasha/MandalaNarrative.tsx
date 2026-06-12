@@ -259,7 +259,7 @@ export function MandalaNarrative({ synthesis, loading, locale }: MandalaNarrativ
             </div>
             <div>
               <p className="text-xs text-white/40 uppercase tracking-wider mb-1 font-medium">Autoridade</p>
-              <p className="text-sm text-white/80 italic leading-snug">"{oneProfile.authorityPractice}"</p>
+              <p className="text-sm text-white/80 italic leading-snug">&ldquo;{oneProfile.authorityPractice}&rdquo;</p>
             </div>
           </div>
         </div>

@@ -176,7 +176,7 @@ function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
 
       <div className="bg-white/5 rounded-xl p-3 space-y-2">
         <p className="text-xs text-white/50 font-medium uppercase tracking-wider">Autoridade</p>
-        <p className="text-sm text-white/80 italic">"{decision.authorityQuestion}"</p>
+        <p className="text-sm text-white/80 italic">&ldquo;{decision.authorityQuestion}&rdquo;</p>
       </div>
 
       <div className="grid grid-cols-1 gap-2">
@@ -236,7 +236,7 @@ function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
             <div>
               <p className="text-xs text-white/40 uppercase tracking-widest font-medium">Seu Tipo Akasha</p>
               <h2 className="text-xl font-bold text-white leading-tight">{profile.typeName}</h2>
-              <p className="text-sm text-white/60 mt-0.5 italic">"{profile.corePattern}"</p>
+              <p className="text-sm text-white/60 mt-0.5 italic">&ldquo;{profile.corePattern}&rdquo;</p>
             </div>
           </div>
           <span
@@ -266,7 +266,7 @@ function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
           <p className="text-xs text-white/40 uppercase tracking-wider mb-1.5">
             {AUTHORITY_LABELS[profile.authority] ?? 'Autoridade'}
           </p>
-          <p className="text-sm text-white/80 leading-relaxed italic">"{profile.authorityPractice}"</p>
+          <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{profile.authorityPractice}&rdquo;</p>
         </div>
       </div>
 
@@ -544,7 +544,7 @@ function AreaCard({ areaKey, narrative }: {
                   <Sparkles size={12} className="text-[#5856D6]" />
                   <span className="text-xs font-semibold text-[#5856D6]/80 uppercase tracking-wider">Pergunta de Transformação</span>
                 </div>
-                <p className="text-sm text-white/70 italic leading-relaxed">"{narrative.transformationPrompt}"</p>
+                <p className="text-sm text-white/70 italic leading-relaxed">&ldquo;{narrative.transformationPrompt}&rdquo;</p>
               </div>
 
             </div>
@@ -634,7 +634,7 @@ export function AkashaLifeAreasDashboard({
             )}
           </div>
         </div>
-        <p className="text-sm text-white/80 leading-relaxed italic">"{synthesisParagraph}"</p>
+        <p className="text-sm text-white/80 leading-relaxed italic">&ldquo;{synthesisParagraph}&rdquo;</p>
         <div className="flex items-center gap-3 mt-3">
           <span className="text-xs text-white/40">
             Estágio: <span className="text-white/60 capitalize">{akashaProfile.transformationStage}</span>
