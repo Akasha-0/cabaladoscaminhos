@@ -52,8 +52,334 @@ export interface DailyDecision {
   recommendation: string;           // "Hoje: não inicie conversas importantes. Deixe que venham até você."
   avoid: string;                   // "Evite: forçar situações de controle no trabalho."
 }
+// ─── F-227: ONE Akasha Profile Type System ──────────────────────────────────
 
-// ─── F-225: Sexualidade Profunda ─────────────────────────────────────────────
+export interface AkashaTypeProfile {
+  type: string;           // e.g. "catalisador"
+  typeName: string;        // e.g. "O Catalisador"
+  typeIcon: string;        // e.g. "🔥"
+  corePattern: string;    // 1-sentence description of the type's core energy
+  strategy: string;       // What to do in the world (imperative)
+  strategyDetail: string; // 1-2 sentences of explanation
+  authority: AkashaAuthority; // How to make decisions
+  authorityPractice: string; // Concrete daily practice for this authority
+  dailyDirective: string; // What to focus on TODAY (imperative, 1 sentence)
+  oneLiner: string;      // "Você é [Tipo] — [Strategy] — quando [Authority]"
+  dominantPillar: string; // Which of the 4 pillars defines this type
+  growthEdge: string;     // The key growth area for this type
+  shadowTrap: string;     // The main shadow pattern to watch
+}
+
+// ─── ONE Akasha Types: 9 types derived from Odu family + Tantric body ───────
+
+const AKASHA_TYPES: Record<string, Omit<AkashaTypeProfile, 'authority' | 'authorityPractice' | 'dailyDirective' | 'oneLiner'>> = {
+  catalisador: {
+    type: 'catalisador',
+    typeName: 'O Catalisador',
+    typeIcon: '🔥',
+    corePattern: 'Energia de criação e início — você ativa processos apenas pelo fato de estar presente.',
+    strategy: 'Inicie antes de estar pronto.',
+    strategyDetail: 'Você tem a rara capacidade de pôr fogo em situações estagnadas. Não espere o momento perfeito — o momento perfeito é agora. Sua presença alone catalyzes reaction, even in resistant systems.',
+    dominantPillar: 'Astrologia — Odu de criação (Ogbe, Oje, Oros)',
+    growthEdge: 'Aprenda a descansar no vazio entre iniciativas. Não tudo precisa ser acelerado.',
+    shadowTrap: 'Acelerar por medo de estagnação. Forçar começos onde o ciclo pede espera.',
+  },
+  receptor: {
+    type: 'receptor',
+    typeName: 'O Receptor',
+    typeIcon: '🌊',
+    corePattern: 'Energia de receptividade profunda — você capta o que outros emitem sem filtro.',
+    strategy: 'Aguarde a resposta antes de agir.',
+    strategyDetail: 'Seu poder está em recibir, processar e responder — não em iniciar. Permita que a informação chegue antes de reagir. Você ouve o que ninguém disse.',
+    dominantPillar: 'Tantra — Odu de recepção (Oxu, Alavaye)',
+    growthEdge: 'Confie na sua percepção mesmo quando não tem provas concretas. Sua recepção é dados.',
+    shadowTrap: 'Aguardar eternamente. Paralisia por excesso de informação não processada.',
+  },
+  construtor: {
+    type: 'construtor',
+    typeName: 'O Construtor',
+    typeIcon: '🌱',
+    corePattern: 'Energia de Planting e cultivo — você transforma esforço diário em estruturas duradouras.',
+    strategy: 'Plante sementes; colha amanhã.',
+    strategyDetail: 'Grandes resultados vêm de pequenos gestos consistentes. Você não precisa de urgência — precisa de persistência. Cada ação que parece pequena é um tijolo no edificio que ninguém mais consegue ver.',
+    dominantPillar: 'Cabala — Odu de plantação (Oyeku, Otura)',
+    growthEdge: 'Honre o processo visível. Resultados invisíveis ainda são resultados.',
+    shadowTrap: 'Comparar sua colheita com a do vizinho. Desistir antes do primeiro broto.',
+  },
+  transformador: {
+    type: 'transformador',
+    typeName: 'O Transformador',
+    typeIcon: '⚡',
+    corePattern: 'Energia de dissolução e renascimento — você dissolve o que não serve para criar espaço ao novo.',
+    strategy: 'Destrua o que não serve; renasça.',
+    strategyDetail: 'Você vive nos ciclos de fim-e-início. O que precisa morrer não é um fracasso — é libertação. Cada transformação exige que você solte algo que amava, mesmo que só um pouco.',
+    dominantPillar: 'Odus — Odu de transformação (Ogunda, Owonrin)',
+    growthEdge: 'Honre o luto da destruição antes de celebrar o novo. Ambas são sagradas.',
+    shadowTrap: 'Destruir por hábito ou por medo de amar. Confundir transformação com fuga.',
+  },
+  guardiao: {
+    type: 'guardiao',
+    typeName: 'O Guardião',
+    typeIcon: '🛡️',
+    corePattern: 'Energia de preservação e sustentabilidade — você mantém vivo o que outros abandonam.',
+    strategy: 'Preserve o que importa; proteja sem sufocar.',
+    strategyDetail: 'Sua função é sustentar — não permitir que o que foi construído se dissolva. Você é o guardião da memória viva, do elo que não se rompe, da chama que não se apaga. Preservar não é parar de evoluir.',
+    dominantPillar: 'Tantra — Odu de sustentabilidade (Okanran, Logbara)',
+    growthEdge: 'Proteger é também saber soltar. A preservação que vira prisão não é guardiã.',
+    shadowTrap: 'Proteger por medo de perda. Confundir guarda com controle.',
+  },
+  curador: {
+    type: 'curador',
+    typeName: 'O Curador',
+    typeIcon: '💚',
+    corePattern: 'Energia de ponte entre matéria e essência — você traduz o invisível em visível.',
+    strategy: 'Conecte essência à matéria.',
+    strategyDetail: 'Você tem a capacidade rara de perceber o que algo ou alguém realmente é e tornar isso palpável para os outros. Suas mãos curam porque suas palavras curam. Você é ponte entre o que se sente e o que se diz.',
+    dominantPillar: 'Odus + Astrologia — Odu de recção + transformação (Irosun, Owonrin)',
+    growthEdge: 'Cuide de si antes de cuidar dos outros. A ponte não pode estar deteriorada.',
+    shadowTrap: 'Curar os outros para evitar a própria ferida. Dar o que não se tem.',
+  },
+  canal: {
+    type: 'canal',
+    typeName: 'O Canal',
+    typeIcon: '📡',
+    corePattern: 'Energia de transmissão e escuta cósmica — você conecta frequencies above and below.',
+    strategy: 'Transmita; escute antes de falar.',
+    strategyDetail: 'Você existe na fronteira entre o que se diz e o que se cala, entre o que é humano e o que é maior. Sua voz é um instrumento de precisão — afine antes de tocar. Quando falar sem escutar primeiro, perde a frequência.',
+    dominantPillar: 'Astrologia — Odu de akasha/ar (Oji, Ate)',
+    growthEdge: 'Use a escuta como ferramenta, não como refúgio. Falar também é seu trabalho.',
+    shadowTrap: 'Falar demais por medo do silêncio. Escutar sem filtrar vaza energia vital.',
+  },
+  alquimista: {
+    type: 'alquimista',
+    typeName: 'O Alquimista',
+    typeIcon: '⚗️',
+    corePattern: 'Energia de transmutação da resistência — você transforma dificuldade em sabedoria pelo simples ato de não resistir.',
+    strategy: 'Transforme resistência em ouro.',
+    strategyDetail: 'Sua matéria-prima é a dificuldade. Onde outros veem problema, você vê ingrediente. A arte está em não forçar a transformação — em deixar que o calor faça o trabalho. O que te queima é o que te purifica.',
+    dominantPillar: 'Tantra + Cabala — Odu de água/consciência (Ica, Idia)',
+    growthEdge: 'A resistência que você transmutou precisa ser integrada, não abandonada. O ouro fica.',
+    shadowTrap: 'Buscar resistência desnecessária. Criar problemas para sentir que se transforma.',
+  },
+  arquiteto: {
+    type: 'arquiteto',
+    typeName: 'O Arquiteto',
+    typeIcon: '🏛️',
+    corePattern: 'Energia de desenho de sistemas — você cria estruturas que permitem que outros floresçam.',
+    strategy: 'Desenhe sistemas que duram.',
+    strategyDetail: 'Você não faz o trabalho dos outros — cria o sistema em que o trabalho acontece. Pense em regras, padrões e fundações. O que você desenha hoje será a casa de gerações futuras. Desenhe com humildade — a ruína mais rápida é o orgulho do arquiteto.',
+    dominantPillar: 'Cabala + Odus — Odu especial (Ejila)',
+    growthEdge: 'Um arquiteto que não habita sua própria criação perde a conexão com o que desenha.',
+    shadowTrap: 'Desenhar sem consultar a terra. Sistemas perfeitos para pessoas impossíveis.',
+  },
+};
+
+// ─── Full Synthesis Output ─────────────────────────────────────────────────
+
+export interface AkashaSynthesis {
+  // Perfil unificado
+  akashaProfile: {
+    dominantFrequency: FrequencyLevel;
+    overallFrequencyScore: number;  // 0-100
+    transformationStage: 'surface' | 'deepening' | 'embodying';
+    activeSequence: 'vitality' | 'heart' | 'purpose';
+  };
+
+  /** F-227: ONE Akasha Profile — tipo unificado dos 5 pilares */
+  oneProfile?: AkashaTypeProfile;
+
+  // Narrativas por área de vida
+  areas: Record<LifeArea, AreaNarrative>;
+
+  // Decisão diária
+  dailyDecision: DailyDecision;
+
+  // Síntese geral (3-5 frases que resumem o perfil)
+  synthesisParagraph: string;
+
+  // A ser implementado: sequência de transformação (Activation/Venus/Pearl)
+  transformationSequence?: {
+    currentPhase: string;
+    nextPhase: string;
+    integrationNote: string;
+  };
+}
+
+// ─── Helpers internos ───────────────────────────────────────────────────────
+
+/**
+ * deriveAkashaType — derives the ONE Akasha Profile type from Odu family.
+ *
+ * Primary axis: Odu family (ogbe/oye/osi line)
+ * Secondary refinement: Tantric dominant body + elemental chart
+ * Authority: reused from deriveAuthority()
+ * Daily directive: based on dominant area frequency
+ */
+export function deriveAkashaType(
+  astro: AstrologyMap | null,
+  kab: KabalisticMap | null,
+  tantra: TantricMap | null,
+  odu: OduBirth | null,
+  holo: AkashicHologram
+): AkashaTypeProfile {
+  // ── 1. Primary: Odu family → type key ───────────────────────────────────
+  const oduName = odu?.oduName?.toLowerCase() ?? '';
+
+  let typeKey: string;
+  if (['oje', 'ogbe', 'oros'].includes(oduName)) {
+    typeKey = 'catalisador';
+  } else if (['ox', 'alavaye', 'oxu'].includes(oduName)) {
+    typeKey = 'receptor';
+  } else if (['oyeku', 'otura'].includes(oduName)) {
+    typeKey = 'construtor';
+  } else if (['ogunda', 'owonrin'].includes(oduName)) {
+    typeKey = 'transformador';
+  } else if (['okanran', 'logbara'].includes(oduName)) {
+    typeKey = 'guardiao';
+  } else if (['irosun'].includes(oduName)) {
+    typeKey = 'curador';
+  } else if (['oji', 'ate'].includes(oduName)) {
+    typeKey = 'canal';
+  } else if (['ica', 'idia'].includes(oduName)) {
+    typeKey = 'alquimista';
+  } else {
+    // Default / Ejila / unknown → arquiteto
+    typeKey = 'arquiteto';
+  }
+
+  const baseType = AKASHA_TYPES[typeKey];
+
+  // ── 2. Secondary: Tantric body refinement ────────────────────────────────
+  let dominantBody: number | undefined;
+  if (tantra?.bodies) {
+    const bodies = tantra.bodies;
+    const bodyNumbers: Array<{ key: string; number: number }> = [
+      { key: 'fisico', number: bodies.fisico?.number ?? 0 },
+      { key: 'pranic', number: bodies.pranic?.number ?? 0 },
+      { key: 'emocional', number: bodies.emocional?.number ?? 0 },
+      { key: 'mental', number: bodies.mental?.number ?? 0 },
+      { key: 'espiritual', number: bodies.espiritual?.number ?? 0 },
+    ];
+    bodyNumbers.sort((a, b) => b.number - a.number);
+    dominantBody = bodyNumbers[0]?.number;
+  }
+
+  // High tantric bodies add a mental/air nuance to core pattern
+  let corePattern = baseType.corePattern;
+  if (dominantBody !== undefined && dominantBody >= 7) {
+    corePattern = baseType.corePattern.replace('.', ' Sua mente é uma ferramenta de precisão cósmica — pense antes de agir, mas não pense demais.');
+  }
+
+  // Strong fire element in astro → emphasise "fogo" in strategy
+  let strategy = baseType.strategy;
+  let strategyDetail = baseType.strategyDetail;
+  const hasFireSign = astro?.planets?.some(p =>
+    ['aries', 'leao', 'leo', 'sagitario', 'áries', 'leão', 'sargitário'].includes(p.sign?.toLowerCase() ?? '')
+  );
+  if (hasFireSign && typeKey === 'catalisador') {
+    strategyDetail += ' Seu signo de fogo amplifica sua capacidade de iniciar — use isso com consciência.';
+  }
+
+  // ── 3. Authority: reuse deriveAuthority() ────────────────────────────────
+  const authority = deriveAuthority(astro, kab, tantra, odu);
+
+  const authorityPracticeMap: Record<AkashaAuthority, string> = {
+    emotional: 'Diário: pause antes de decisões importantes e pergunte — como meu peito se sente com isso?',
+    sacral: 'Diário: antes de agir, sinta a resposta do seu corpo abaixo do umbigo — sim, não ou talvez.',
+    splenic: 'Diário: preste atenção a insights súbitos. Não duvide do seu "click" quando ele vier.',
+    mental: 'Diário: questione a urgência do pensamento. Pergunte — isto é verdade ou só ruído familiar?',
+  };
+
+  // ── 4. Daily directive: based on dominant area + frequency ───────────────
+  // Find the most intense area
+  const areas = [
+    { key: 'vitalidadeEnergia', label: 'vitalidade', holo: holo.vitalidadeEnergia },
+    { key: 'conexoesAmor', label: 'conexões', holo: holo.conexoesAmor },
+    { key: 'carreiraProsperidade', label: 'carreira', holo: holo.carreiraProsperidade },
+    { key: 'oriCabecaQuizilas', label: 'propósito', holo: holo.oriCabecaQuizilas },
+    { key: 'missaoDestino', label: 'missão', holo: holo.missaoDestino },
+    { key: 'desafiosSombras', label: 'transformação', holo: holo.desafiosSombras },
+  ];
+
+  let mostIntenseLabel = 'propósito';
+  let mostIntenseFreq: FrequencyLevel = 'gift';
+
+  if (dominantBody !== undefined) {
+    if (dominantBody <= 3) mostIntenseLabel = 'vitalidade';
+    else if (dominantBody <= 5) mostIntenseLabel = 'conexões';
+    else if (dominantBody <= 7) mostIntenseLabel = 'carreira';
+    else mostIntenseLabel = 'missão';
+  }
+
+  // Determine frequency from area holograms
+  if (dominantBody !== undefined && dominantBody >= 7) {
+    mostIntenseFreq = 'gift';
+  } else if (dominantBody !== undefined && dominantBody <= 3) {
+    mostIntenseFreq = 'shadow';
+  }
+
+  const directiveByAreaAndFreq: Record<string, Record<FrequencyLevel, string>> = {
+    vitalidade: {
+      shadow: 'Hoje: observe sua energia sem forçar. Se o corpo pede descanso, honre isso.',
+      gift: 'Hoje: canalize sua energia vital para um projeto que importa. O corpo está pronto.',
+      siddhi: 'Hoje: compartilhe sua energia com alguém que precisa. A vitalidade circulando é sagrada.',
+    },
+    conexoes: {
+      shadow: 'Hoje: observe seus padrões nos relacionamentos sem julgamento. Só observe.',
+      gift: 'Hoje: inicie uma conversa genuína com alguém importante. Conexão se cria, não se espera.',
+      siddhi: 'Hoje: ofereça presença plena a quem está com você. Sem tela, sem pressa.',
+    },
+    carreira: {
+      shadow: 'Hoje: não force resultados. Faça uma coisa pequena que avance o que importa.',
+      gift: 'Hoje: tome uma decisão profissional que você vem adiando. O timing é agora.',
+      siddhi: 'Hoje: ajude um colega a avançar. Sua abundância se expande ao compartilhar.',
+    },
+    propósito: {
+      shadow: 'Hoje: preste atenção no que sua intuição sussurra. Não descarte o insight por ser pequeno.',
+      gift: 'Hoje: siga um insight, mesmo que pareça irracional. Sua mente sabe mais que você.',
+      siddhi: 'Hoje: compartilhe o que descobriu consigo mesmo. A clareza se consolida ao ser dita.',
+    },
+    missão: {
+      shadow: 'Hoje: pergunte a si mesmo — estou vivendo minha própria vida ou a expectativa de outros?',
+      gift: 'Hoje: tome uma ação que honre quem você realmente é. Pequenos passos são válidos.',
+      siddhi: 'Hoje: inspire outros pelo que você é, não pelo que você faz. Sein é suficiente.',
+    },
+    transformação: {
+      shadow: 'Hoje: nomeie o padrão que você está vendo em você mesmo. Sair do invisível é o primeiro passo.',
+      gift: 'Hoje: transforme uma tensão antiga em algo criativo. O que te incomodou pode virar arte.',
+      siddhi: 'Hoje: ajude alguém a ver seu próprio padrão. Ensinar é a forma mais alta de transformação.',
+    },
+  };
+
+  const dailyDirective = directiveByAreaAndFreq[mostIntenseLabel]?.[mostIntenseFreq] ??
+    directiveByAreaAndFreq['propósito']['gift'];
+
+  // ── 5. oneLiner ─────────────────────────────────────────────────────────
+  const authorityShortQuestionMap: Record<AkashaAuthority, string> = {
+    emotional: 'sente calor no peito',
+    sacral: 'sente um "sim" no corpo',
+    splenic: 'ouve um "click" de intuição',
+    mental: 'a mente está clara e em paz',
+  };
+
+  const oneLiner = `Você é ${baseType.typeName} — ${baseType.strategy} — quando ${authorityShortQuestionMap[authority]}.`;
+
+  return {
+    type: baseType.type,
+    typeName: baseType.typeName,
+    typeIcon: baseType.typeIcon,
+    corePattern,
+    strategy,
+    strategyDetail,
+    authority,
+    authorityPractice: authorityPracticeMap[authority],
+    dailyDirective,
+    oneLiner,
+    dominantPillar: baseType.dominantPillar,
+    growthEdge: baseType.growthEdge,
+    shadowTrap: baseType.shadowTrap,
+  };
+}
 
 export interface SexualFantasy {
   archetype: string;
@@ -233,6 +559,9 @@ export function buildAkashaSynthesis(
   const dominantFrequency = deriveDominantFrequency(areaVitalidade, areaConexoes, areaCarreira, areaOri, areaMissao, areaDesafios);
   const overallScore = computeOverallScore(areaVitalidade, areaConexoes, areaCarreira, areaOri, areaMissao, areaDesafios);
 
+  // ── F-227: ONE Akasha Profile ────────────────────────────────────────
+  const oneProfile = deriveAkashaType(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
+
   return {
     akashaProfile: {
       dominantFrequency,
@@ -240,6 +569,7 @@ export function buildAkashaSynthesis(
       transformationStage: overallScore < 40 ? 'surface' : overallScore < 70 ? 'deepening' : 'embodying',
       activeSequence: deriveActiveSequence(areaConexoes, areaMissao, areaCarreira),
     },
+    oneProfile,
     areas: {
       vitalidadeEnergia: areaVitalidade,
       conexoesAmor: areaConexoes,

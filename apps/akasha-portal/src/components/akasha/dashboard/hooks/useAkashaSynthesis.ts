@@ -102,6 +102,22 @@ export interface DailyDecisionUI {
   avoid: string;
 }
 
+export interface AkashaTypeProfileUI {
+  type: string;
+  typeName: string;
+  typeIcon: string;
+  corePattern: string;
+  strategy: string;
+  strategyDetail: string;
+  authority: string;
+  authorityPractice: string;
+  dailyDirective: string;
+  oneLiner: string;
+  dominantPillar: string;
+  growthEdge: string;
+  shadowTrap: string;
+}
+
 export interface AkashaSynthesisUI {
   akashaProfile: {
     dominantFrequency: 'shadow' | 'gift' | 'siddhi';
@@ -109,6 +125,8 @@ export interface AkashaSynthesisUI {
     transformationStage: 'surface' | 'deepening' | 'embodying';
     activeSequence: 'vitality' | 'heart' | 'purpose';
   };
+  /** F-227: ONE Akasha Profile — tipo unificado dos 5 pilares */
+  oneProfile?: AkashaTypeProfileUI;
   areas: Record<string, AreaNarrativeUI>;
   dailyDecision: DailyDecisionUI;
   synthesisParagraph: string;

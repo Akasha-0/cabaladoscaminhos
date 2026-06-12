@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 import type {
   AkashaSynthesisUI,
+  AkashaTypeProfileUI,
   AreaNarrativeUI,
   DailyDecisionUI,
   SexualidadeUI,
@@ -187,6 +188,110 @@ function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
         <div className="flex items-start gap-2">
           <XCircle size={14} className="text-[#FF2D55] mt-0.5 shrink-0" />
           <p className="text-sm text-white/60">{decision.avoid}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── F-227: ONE Akasha Profile Card ───────────────────────────────────────────
+
+const AUTHORITY_ICONS: Record<string, string> = {
+  emotional: '❤️',
+  sacral: '🟠',
+  splenic: '🟣',
+  mental: '🔵',
+};
+
+const AUTHORITY_LABELS: Record<string, string> = {
+  emotional: 'Autoridade Emocional',
+  sacral: 'Autoridade Sacral',
+  splenic: 'Autoridade Esplênica',
+  mental: 'Autoridade Mental',
+};
+
+function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
+  const iconMap: Record<string, string> = {
+    catalisador: '#FF6B35',
+    receptor: '#0A84FF',
+    construtor: '#30D158',
+    transformador: '#BF5AF2',
+    guardiao: '#64D2FF',
+    curador: '#FF375F',
+    canal: '#FFD60A',
+    alquimista: '#AC8E68',
+    arquiteto: '#8E8E93',
+  };
+  const accentColor = iconMap[profile.type] ?? '#FF9500';
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] overflow-hidden">
+      {/* Header: type + icon */}
+      <div
+        className="px-5 pt-5 pb-4"
+        style={{ background: `linear-gradient(135deg, ${accentColor}22 0%, transparent 60%)` }}
+      >
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-4xl">{profile.typeIcon}</span>
+            <div>
+              <p className="text-xs text-white/40 uppercase tracking-widest font-medium">Seu Tipo Akasha</p>
+              <h2 className="text-xl font-bold text-white leading-tight">{profile.typeName}</h2>
+              <p className="text-sm text-white/60 mt-0.5 italic">"{profile.corePattern}"</p>
+            </div>
+          </div>
+          <span
+            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold"
+            style={{ backgroundColor: `${accentColor}22`, color: accentColor }}
+          >
+            {profile.dominantPillar.split('—')[0].trim()}
+          </span>
+        </div>
+
+        {/* One-liner — a frase que o usuário lembra o dia todo */}
+        <div className="mt-4 bg-black/20 rounded-xl p-4">
+          <p className="text-base text-white font-semibold leading-snug">
+            {profile.oneLiner}
+          </p>
+        </div>
+      </div>
+
+      {/* Strategy + Authority */}
+      <div className="px-5 py-4 border-t border-white/8 grid grid-cols-2 gap-3">
+        <div>
+          <p className="text-xs text-white/40 uppercase tracking-wider mb-1.5">Estratégia</p>
+          <p className="text-sm font-semibold text-white">{profile.strategy}</p>
+          <p className="text-xs text-white/50 mt-1 leading-relaxed">{profile.strategyDetail}</p>
+        </div>
+        <div>
+          <p className="text-xs text-white/40 uppercase tracking-wider mb-1.5">
+            {AUTHORITY_LABELS[profile.authority] ?? 'Autoridade'}
+          </p>
+          <p className="text-sm text-white/80 leading-relaxed italic">"{profile.authorityPractice}"</p>
+        </div>
+      </div>
+
+      {/* Daily Directive */}
+      <div className="mx-5 mb-4 bg-[#FF9500]/10 border border-[#FF9500]/20 rounded-xl px-4 py-3">
+        <p className="text-xs text-[#FF9500]/80 uppercase tracking-wider font-semibold mb-1">Diretiva de Hoje</p>
+        <p className="text-sm text-white font-medium leading-snug">{profile.dailyDirective}</p>
+      </div>
+
+      {/* Growth + Shadow */}
+      <div className="px-5 pb-5 grid grid-cols-1 gap-2">
+        <div className="flex items-start gap-2">
+          <ArrowRight size={14} className="text-[#30D158] mt-0.5 shrink-0" />
+          <p className="text-xs text-white/60">
+            <span className="text-[#30D158] font-medium">Crescimento: </span>
+            {profile.growthEdge}
+          </p>
+        </div>
+        <div className="flex items-start gap-2">
+          <AlertTriangle size={14} className="text-[#FF375F] mt-0.5 shrink-0" />
+          <p className="text-xs text-white/60">
+            <span className="text-[#FF375F] font-medium">Armadilha: </span>
+            {profile.shadowTrap}
+          </p>
         </div>
       </div>
     </div>
@@ -509,11 +614,16 @@ export function AkashaLifeAreasDashboard({
     );
   }
 
+  // F-227: ONE Profile Card — primeira coisa que o usuário vê
+  const { oneProfile } = synthesis;
+
   const { akashaProfile, areas, dailyDecision, synthesisParagraph } = synthesis;
 
   return (
     <div className="space-y-5">
 
+      {/* F-227: ONE Akasha Profile Card — tipo unificado visível primeiro */}
+      {oneProfile && <OneProfileCard profile={oneProfile} />}
       {/* Perfil unificado — síntese geral */}
       <div className="rounded-2xl border border-[#FF9500]/30 bg-gradient-to-br from-[#FF9500]/8 to-transparent p-5">
         <div className="flex items-center justify-between mb-3">
