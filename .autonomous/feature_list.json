@@ -398,5 +398,21 @@
     "passes": true,
     "completed_at": "2026-06-11",
     "note": "Rahu/Ketu nodais lunares implementados (R-018 D4). 11/11 testes verdes. Algoritmo linear: meanLongitude = 125.04 - 0.0529 * daysSinceJ2000 (modelo simplificado - para precisao sub-arcmin usar Swiss Ephemeris modulo lunar). Rahu retrógrado, Ketu sempre 180 oposto. Cita Jyotish como fonte. Diferencia Akasha de horoscopos ocidentais que tratam nodos como secundarios."
+  },
+  {
+    "id": "R-020",
+    "phase": 8,
+    "category": "research",
+    "priority": "P1",
+    "description": "Astrologia Chinesa (Bazi / 4 Pillars) — origem taoista, complemento a Jyotish (R-018) e Ocidental (Pilar 2). 4 Pilares (ano, mês, dia, hora) + 10 Heavenly Stems + 12 Earthly Branches + 5 elementos (Madeira, Fogo, Terra, Metal, Água) + 12 animais (Rato, Boi, Tigre...). Akasha pode integrar 5 elementos chineses como mais uma camada elementar (junto com 7 chakras hindus).",
+    "questions": [
+      "Bazi usa 4 Pilares (ano/mês/dia/hora) — como calcular a partir de data de nascimento?",
+      "10 Heavenly Stems (10 Troncos Celestiais) + 12 Earthly Branches (12 Ramos Terrestres) = 60 Jiazi (sexagenary cycle). Como mapear para Akasha?",
+      "5 Elementos chineses vs 4 Elementos gregos vs 7 chakras hindus — como reconciliar?",
+      "12 animais chineses (Year of the Dragon, etc.) — usar como framework Pilar 6 opt-in?",
+      "Bazi e Jyotish compartilham ayanamsa/hora sideral — convergência?",
+      "Akasha respeita tradições chinesas OU as sintetiza com Ocidental/Jyotish?"
+    ],
+    "output": ".autonomous/research/synthesis/bazi-reverse-engineering.md (≥500 linhas)"
   }
 ]
