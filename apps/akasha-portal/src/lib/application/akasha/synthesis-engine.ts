@@ -542,6 +542,7 @@ export function buildAkashaSynthesis(
   hologram: AkashicHologram,
   date: Date = new Date()
 ): AkashaSynthesis {
+  try {
   // ── Derivar frequências por área ──────────────────────────────────────
 
   const areaVitalidade  = deriveVitalidadeEnergia(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
@@ -594,6 +595,75 @@ export function buildAkashaSynthesis(
     },
     dailyDecision,
     synthesisParagraph,
+  };
+  } catch (err) {
+    // Log error so we can fix it, but return a graceful fallback so dashboard still shows content
+    console.error('[buildAkashaSynthesis] Error building synthesis — returning minimal fallback:', err);
+    return {
+      akashaProfile: {
+        dominantFrequency: 'shadow' as const,
+        overallFrequencyScore: 50,
+        transformationStage: 'deepening' as const,
+        activeSequence: 'vitality' as const,
+      },
+      oneProfile: {
+        type: 'arquiteto',
+        typeName: 'O Arquiteto',
+        typeIcon: '🔮',
+        corePattern: 'Você é O Arquiteto — cria estruturas de significado onde antes só havia caos.',
+        strategy: 'Aguardar',
+        strategyDetail: 'Aguarde até que a situação se revele completamente antes de agir.',
+        authority: 'mental',
+        authorityPractice: 'Diário: questione a urgência do pensamento. Pergunte — isto é verdade ou só ruído familiar?',
+        dailyDirective: 'Hoje: preste atenção no que sua intuição sussurra.',
+        oneLiner: 'Você é O Arquiteto. Sua mente constrói pontes entre mundos — você vê o que outros não veem antes de ter provas.',
+        dominantPillar: 'cabala',
+        growthEdge: 'Agir mais, pensar menos.',
+        shadowTrap: 'Paralisia por análise excessiva.',
+      },
+      areas: {
+        vitalidadeEnergia: buildFallbackArea('vitalidadeEnergia'),
+        conexoesAmor: buildFallbackArea('conexoesAmor'),
+        carreiraProsperidade: buildFallbackArea('carreiraProsperidade'),
+        oriCabecaQuizilas: buildFallbackArea('oriCabecaQuizilas'),
+        missaoDestino: buildFallbackArea('missaoDestino'),
+        desafiosSombras: buildFallbackArea('desafiosSombras'),
+      },
+      dailyDecision: {
+        strategy: 'observe',
+        strategyExplanation: 'O sistema de síntese encontrou um erro técnico. Retorne em breve para sua síntese completa.',
+        authority: 'mental',
+        authorityQuestion: 'O que sua mente está tentando dizer sobre esta situação?',
+        recommendation: 'Continue seu dia normalmente.',
+        avoid: 'Decisões importantes baseadas em informação incompleta.',
+      },
+      synthesisParagraph: 'O sistema Akasha está atualizando. Retorne em alguns minutos para sua síntese completa.',
+    };
+  }
+}
+
+function buildFallbackArea(area: string): AreaNarrative {
+  const labels: Record<string, string> = {
+    vitalidadeEnergia: 'Vitalidade & Energia',
+    conexoesAmor: 'Conexões & Amor',
+    carreiraProsperidade: 'Carreira & Prosperidade',
+    oriCabecaQuizilas: 'Orixá & Quizilas',
+    missaoDestino: 'Missão & Destino',
+    desafiosSombras: 'Desafios & Sombras',
+  };
+  return {
+    area: area as any,
+    title: labels[area] ?? area,
+    frequency: 'shadow' as FrequencyLevel,
+    intensity: 2 as 1 | 2 | 3,
+    shadowPattern: 'Área em carregamento. O sistema está sendo corrigido.',
+    shadowSymptoms: [],
+    giftPattern: '',
+    giftStrengths: [],
+    pillarContribution: { cabala: '', tantra: '', odus: '', astrologia: '' },
+    practicalAdvice: 'Aguarde a correção do sistema.',
+    dailyRitual: { title: 'Aguardar', instruction: 'Aguarde', duration: '5 min', element: 'ar', color: '#888888' },
+    transformationPrompt: 'O sistema está corrigindo esta área.',
   };
 }
 
