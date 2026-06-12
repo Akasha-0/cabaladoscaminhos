@@ -437,3 +437,14 @@ Próxima sessão:
 - [x] Lesson: .autonomous/lessons/session-n-plus-14-f-218-require-to-esm.md
 - [x] feature_list: 38 → 39 (F-218 added passes:true, completed_at 2026-06-11)
 - Próxima sessão: F-218b (mentor/src/rag/* `process not found`) ou FASE 8 reverse-eng deepening (R-013 já tem engine; abrir R-021 akasha-core-deep-dive) ou test-pollution sprint
+
+## Sessão N+15 (2026-06-12) — F-219 PILAR 4 TRUTH-BASE [3 commits código]
+- [x] STEP 0 rebuild: working tree tinha in-flight F-219 fix + PWA cleanup não commitados
+- [x] Identify: getOduByName não resolvia 'Ogbe (Oxé)' → buildOduGlossary null → IA alucinava Pilar 4
+- [x] Commit 1: `16096e1c` — fix(domain): F-219 — getOduByName resolve nomes parentetizados + test 7/7
+- [x] Commit 2: `2da6b204` — chore(portal): remove PwaInstallPrompt UI (portal=web, não PWA) -110 LOC
+- [x] Commit 3: `181ee4b2` — docs(loop): N+15 lesson + feature_list F-219/F-220
+- [x] Triad: typecheck 0 errors; test isolado 7/7 verde; full suite pollution pre-existing 477 fail (zero regressão)
+- [x] D-040 (Prisma migration) untouched — awaiting human approval per STEP 5.5
+- [x] Fila Fase 6+7 vazia no início; itens extraídos da working tree
+- Próxima sessão: F-100 series (refactor) ou F-103 (performance) — pre-existing eslint @eslint/js missing + test pollution 477 files = hardening backlog
