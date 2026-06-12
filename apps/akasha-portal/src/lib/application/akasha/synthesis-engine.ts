@@ -176,37 +176,7 @@ const AKASHA_TYPES: Record<string, Omit<AkashaTypeProfile, 'authority' | 'author
 
 // ─── Full Synthesis Output ─────────────────────────────────────────────────
 
-export interface AkashaSynthesis {
-  // Perfil unificado
-  akashaProfile: {
-    dominantFrequency: FrequencyLevel;
-    overallFrequencyScore: number;  // 0-100
-    transformationStage: 'surface' | 'deepening' | 'embodying';
-    activeSequence: 'vitality' | 'heart' | 'purpose';
-  };
-
-  /** Número de Caminho de Vida Cabalístico — disponibilizado para o client */
-  lifePath?: number;
-
-  // Narrativas por área de vida
-  areas: Record<LifeArea, AreaNarrative>;
-
-  // Decisão diária
-  dailyDecision: DailyDecision;
-
-  // Síntese geral (3-5 frases que resumem o perfil)
-  synthesisParagraph: string;
-
-  // A ser implementado: sequência de transformação (Activation/Venus/Pearl)
-  transformationSequence?: {
-    currentPhase: string;
-    nextPhase: string;
-    integrationNote: string;
-  };
-}
-
 // ─── Helpers internos ───────────────────────────────────────────────────────
-
 /**
  * deriveAkashaType — derives the ONE Akasha Profile type from Odu family.
  *
@@ -506,11 +476,17 @@ export interface AkashaSynthesis {
 
   /** F-227: ONE Akasha Profile — tipo unificado dos 5 pilares */
   oneProfile?: AkashaTypeProfile;
-  /** Número de Caminho de Vida (Cabala) — usado pelo AkashaSignificadoCard */
-  lifePath: number;
+  lifePath?: number;
 
   // Narrativas por área de vida
   areas: Record<LifeArea, AreaNarrative>;
+
+  // Decisão diária
+  dailyDecision: DailyDecision;
+
+  // Síntese geral (3-5 frases que resumem o perfil)
+  synthesisParagraph: string;
+
   // A ser implementado: sequência de transformação (Activation/Venus/Pearl)
   transformationSequence?: {
     currentPhase: string;
