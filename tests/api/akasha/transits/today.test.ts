@@ -10,7 +10,7 @@ import os from 'os';
 const mockRedisGet = vi.fn();
 const mockRedisPing = vi.fn();
 
-vi.mock('@/lib/redis', () => ({
+vi.mock('@/lib/infrastructure/redis', () => ({
   getRedisClient: () =>
     Promise.resolve({
       get: (...args: unknown[]) => mockRedisGet(...args),

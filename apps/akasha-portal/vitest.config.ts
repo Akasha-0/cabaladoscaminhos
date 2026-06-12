@@ -5,6 +5,7 @@ import { defineConfig } from 'vitest/config';
 const sharedAliases = {
   '@': path.resolve(__dirname, './src'),
   '@akasha/types': path.resolve(__dirname, '../../packages/types/src/index.ts'),
+  '@akasha/core': path.resolve(__dirname, '../../packages/akasha-core/src/index.ts'),
   '@akasha/core-astrology': path.resolve(__dirname, '../../packages/core-astrology/src/index.ts'),
   '@akasha/core-cabala': path.resolve(__dirname, '../../packages/core-cabala/src/index.ts'),
   '@akasha/core-odus': path.resolve(__dirname, '../../packages/core-odus/src/index.ts'),
