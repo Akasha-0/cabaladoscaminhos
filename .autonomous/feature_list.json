@@ -475,5 +475,27 @@
     "timebox": "10 min",
     "completed_at": "2026-06-11",
     "note": "4/4 transit tests pass. Full suite: 234→234 (pre-existing pollution, no regression). Typecheck 0 errors. Lesson session-n-plus-13-mock-path-vs-import-path.md"
+  },
+  {
+    "id": "F-218",
+    "phase": 7,
+    "category": "maintenance",
+    "priority": "P2",
+    "description": "Typecheck fixes em packages/core-iching/src/hexagrams.ts (require not found) e packages/mentor/src/rag/* (process not found). 6+ errors TS2591 — falta @types/node nos packages que usam Node API. Fix: adicionar @types/node em packages/mentor e packages/core-iching, ou usar ESM imports.",
+    "output": "tsconfig.json fixes + @types/node installation + ESM conversion onde aplicavel"
+  },
+  {
+    "id": "D-040-progress",
+    "phase": 5,
+    "category": "design",
+    "priority": "P1",
+    "description": "D-040 Prisma migration setup COMPLETO (migrations/20260611000000_init_akasha_v3 criada via sessão #37 do loop). Awaiting HUMAN APPROVAL para rodar `prisma migrate dev --name 040` per STEP 5.5. Migration consolida 5 migrations antigas (v2 → v3 single migration). Após approval, marcar D-040 como passes:true e rodar migration.",
+    "questions": [
+      "Migration setup está em migrations/20260611000000_init_akasha_v3/",
+      "Schema consolidado em schema.prisma",
+      "Aguardando humano revisar e rodar `pnpm exec prisma migrate dev --name 040`"
+    ],
+    "passes": false,
+    "status": "migration_setup_complete_awaiting_human_apply"
   }
 ]
