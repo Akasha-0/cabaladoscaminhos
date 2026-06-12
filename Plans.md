@@ -85,9 +85,30 @@
 - [x] `components/akasha/dashboard/AkashaLifeAreasDashboard.tsx` — UI mobile-first das 6 áreas (expandível, 2ª pessoa)
 - [x] `app/api/akasha/daily/route.ts` — API expõe synthesis field no JSON
 - [x] `components/akasha/dashboard/Dashboard.tsx` — AkashaLifeAreasDashboard integrado
-- [x] **PLN-020** — F-224 (deriveDailyTransitOverlay) + F-225 (deriveSexualArchetype) em synthesis-engine.ts + types em useAkashaSynthesis.ts
+
+- [x] **PLN-021** — F-226 Narrative Generator (Deep Life-Area Narratives)
+  - `lib/application/akasha/narrative-generator.ts` — 364 linhas de motor narrativo:
+    - LIFE_PATH_NARRATIVES: 12 Camdenhos completos (1-9, 11, 22, 33) com essencia/missao/sombra/pratica
+    - buildKabalaNarrative(): 6 áreas × Camino de Vida + nuance por área
+    - buildAstrologyNarrative(): 4 elementos × 6 áreas + nota lunar
+    - buildTantraNarrative(): 11 corps × 6 áreas + corpo emocional
+    - buildOduNarrative(): Ejioko, Ogundá × 6 áreas + genérico
+    - generateAreaNarrativeFull(): 4 blocos pilar + síntese integrada + prática
+    - generateSynthesisParagraph(): parágrafo geral de 50-100 palavras
+    - generateAllAreaNarratives(): todas as 6 áreas
+  - `synthesis-engine.ts`: expandedNarrative integrado em todas as 6 áreas
+  - Typecheck: 0 errors | Build: Turbopack sucesso
+  - Commit: 615a87a5 (+397 -14, 2 files)
+  Pendentes: F-224/F-225 UI, F-227 Authority, F-228 Mobile Strategy
+** — F-224 (deriveDailyTransitOverlay) + F-225 (deriveSexualArchetype) em synthesis-engine.ts + types em useAkashaSynthesis.ts
   - deriveDailyTransitOverlay: trânsitos planetários por área + Odu do dia + energia tântrica do dia
   - deriveSexualArchetype: Lilith/Vênus/Marte/Odu → 11 arquétipos sexuais com fantasias, fetiches, turnOn/turnOff
   - Syntax bugs corrigidos (duplicate ternary, missing positiveTransit)
   - Typecheck: 0 errors ✅
-  Pendentes: F-224/F-225 UI, F-226 LLM Narrative, F-227 Authority, F-228 Mobile Strategy
+  - [x] **PLN-022** — F-224/F-225/F-226 UI Integration
+    Competitor research: AstroLink, Numerologia Redescubra-se, Human Design, Gene Keys
+    Gaps: (1) Caixa unificada por área de vida, (2) Authority framework, (3) Sexualidade deep
+    SexualidadeSection: turnOn/turnOff, desejos ocultos, fantasia, fetiches, chave transformacao
+    Núcleo Akasha card: expandedNarrative.integratedNarrative + practicalExample
+    Typecheck: 0 errors | Build: sucesso ✅ | Commit: 32f9ac73
+    Pendentes: F-227 Authority, F-228 Mobile Strategy (Capacitor PWA)
