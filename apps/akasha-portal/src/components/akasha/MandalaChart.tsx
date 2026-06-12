@@ -2,8 +2,63 @@
 
 import { useState } from 'react';
 import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
+import {
+  significadoPorPilar,
+  significadoGenericoDoPilar,
+  type Pilar,
+  type SignificadoCurado,
+} from '@/lib/grimoire/significados-curados';
 import { useCockpitStore } from '@/stores/cockpit-store';
 
+function resolveSig(pilar: Pilar, id: string | number | null | undefined): SignificadoCurado {
+  if (id == null) return significadoGenericoDoPilar(pilar);
+  return significadoPorPilar(pilar, id) ?? significadoGenericoDoPilar(pilar);
+}
+
+function SignificadoEmbed({
+  significado,
+  color,
+}: {
+  significado: SignificadoCurado;
+  color: string;
+}) {
+  return (
+    <div
+      style={{
+        marginTop: 10,
+        padding: '10px 12px',
+        background: `${color}10`,
+        border: `1px solid ${color}33`,
+        borderLeft: `3px solid ${color}`,
+        borderRadius: 8,
+        fontSize: '0.8rem',
+        lineHeight: 1.45,
+      }}
+    >
+      <p
+        style={{
+          color: '#F4F5FF',
+          margin: 0,
+          fontStyle: 'italic',
+          fontFamily: 'var(--font-lora, serif)',
+        }}
+      >
+        {significado.essencia}
+      </p>
+      <p style={{ color: '#A7AECF', margin: '6px 0 0', fontSize: '0.75rem' }}>
+        <strong style={{ color }}>Missão:</strong> {significado.missao}
+      </p>
+      {significado.requer_terreiro && (
+        <p style={{ color: '#FB5781', margin: '6px 0 0', fontSize: '0.7rem', fontStyle: 'italic' }}>
+          ⚠ Interpretação profunda requer babalaô/yaô de confiança (R-022 §4.4).
+        </p>
+      )}
+      <p style={{ color: '#5C6691', margin: '6px 0 0', fontSize: '0.65rem' }}>
+        via {significado.fonte}
+      </p>
+    </div>
+  );
+}
 interface MandalaData {
   incomplete: boolean;
   odus: {
@@ -239,6 +294,41 @@ export default function MandalaChart({ data }: Props) {
   // Pause ring rotation when Layer 4 is selected
   const ringPaused = activeLayer === 4;
 
+  // Per-layer curated tooltip text (F-206) — maps visual layer → Pilar id
+  // and resolves a short essence from the grimoire for native <title> hover.
+  // Per-layer curated tooltip text (F-206) — maps visual layer → Pilar id
+  // and resolves a short essence from the grimoire for native <title> hover.
+  const tooltipByLayer: Record<Layer, string> = {
+    1: (() => {
+      // Layer 1 = Odus core → Pilar 4 (odu)
+      const sig = resolveSig('odu', data.odus.oduName);
+      return `Pilar 4 · ${PILAR_LABEL_BY_LAYER[1]} (${data.odus.oduName}) — ${sig.essencia}`;
+    })(),
+    2: (() => {
+      // Layer 2 = Cabala → Pilar 1 (cabala)
+      const sig = resolveSig('cabala', data.kabala.lifePath);
+      return `Pilar 1 · ${PILAR_LABEL_BY_LAYER[2]} (Vida ${data.kabala.lifePath ?? '?'}) — ${sig.essencia}`;
+    })(),
+    3: (() => {
+      // Layer 3 = Tantra → Pilar 3 (tantrica)
+      const sig = resolveSig('tantrica', data.tantra.soul);
+      return `Pilar 3 · ${PILAR_LABEL_BY_LAYER[3]} (Alma ${data.tantra.soul ?? '?'}) — ${sig.essencia}`;
+    })(),
+    4: (() => {
+      // Layer 4 = Astrologia → Pilar 2 (astrologia)
+      const sig = resolveSig('astrologia', data.astrology.ascendant);
+      return `Pilar 2 · ${PILAR_LABEL_BY_LAYER[4]} (Asc ${data.astrology.ascendant ?? '?'}) — ${sig.essencia}`;
+    })(),
+    5: (() => {
+      // Layer 5 = I-Ching → Pilar 5 (iching)
+      const sig = resolveSig('iching', data.iching.hexagramNumber);
+      const hex = data.iching.available
+        ? `Hex ${data.iching.hexagramNumber} · ${data.iching.hexagramName}`
+        : 'Hex do dia (requer Pilar 5)';
+      return `Pilar 5 · ${PILAR_LABEL_BY_LAYER[5]} (${hex}) — ${sig.essencia}`;
+    })(),
+  };
+
   const astroSegments = ZODIAC_SIGNS.map((sym, i) => {
     const startDeg = i * 30;
     const endDeg = (i + 1) * 30;
@@ -424,6 +514,7 @@ export default function MandalaChart({ data }: Props) {
             style={{ cursor: 'pointer' }}
             className={ringPaused ? 'ring-astrological-paused' : 'ring-astrological'}
           >
+            <title>{tooltipByLayer[4]}</title>
             <circle
               cx="200"
               cy="200"
@@ -502,6 +593,7 @@ export default function MandalaChart({ data }: Props) {
             onClick={() => setActiveLayer(activeLayer === 3 ? null : 3)}
             style={{ cursor: 'pointer' }}
           >
+            <title>{tooltipByLayer[3]}</title>
             <circle
               cx="200"
               cy="200"
@@ -557,6 +649,7 @@ export default function MandalaChart({ data }: Props) {
             onClick={() => setActiveLayer(activeLayer === 5 ? null : 5)}
             style={{ cursor: 'pointer' }}
           >
+            <title>{tooltipByLayer[5]}</title>
             <circle
               cx="200"
               cy="200"
@@ -631,6 +724,7 @@ export default function MandalaChart({ data }: Props) {
             onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
             style={{ cursor: 'pointer' }}
           >
+            <title>{tooltipByLayer[2]}</title>
             <circle
               cx="200"
               cy="200"
@@ -690,6 +784,7 @@ export default function MandalaChart({ data }: Props) {
             onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
             style={{ cursor: 'pointer' }}
           >
+            <title>{tooltipByLayer[1]}</title>
             {/* ── C — Animated glow rings (3 concentric, phase-offset) ── */}
             <circle
               cx="200"
@@ -787,6 +882,13 @@ export default function MandalaChart({ data }: Props) {
               <Insight color="#2DD4BF">{elemGuidance.ritual}</Insight>
             </>
           )}
+          <SignificadoEmbed
+            significado={resolveSig(
+              'astrologia',
+              data.astrology.ascendant ?? data.astrology.dominantPlanet
+            )}
+            color="#7C5CFF"
+          />
         </InfoPanel>
       )}
 
@@ -825,6 +927,10 @@ export default function MandalaChart({ data }: Props) {
               })}
             </>
           )}
+          <SignificadoEmbed
+            significado={resolveSig('tantrica', data.tantra.destiny ?? data.tantra.soul ?? 1)}
+            color="#2DD4BF"
+          />
         </InfoPanel>
       )}
 
@@ -852,6 +958,10 @@ export default function MandalaChart({ data }: Props) {
               <Insight color={PILAR_COLORS[2]}>{lpMeaning}</Insight>
             </>
           )}
+          <SignificadoEmbed
+            significado={resolveSig('cabala', data.kabala.lifePath)}
+            color={PILAR_COLORS[2]}
+          />
         </InfoPanel>
       )}
 
@@ -918,6 +1028,7 @@ export default function MandalaChart({ data }: Props) {
               sincronizado. Consulte o Oráculo para orientação ancestral personalizada.
             </Insight>
           )}
+          <SignificadoEmbed significado={resolveSig('odu', data.odus.oduName)} color="#F0B429" />
         </InfoPanel>
       )}
 
@@ -998,6 +1109,10 @@ export default function MandalaChart({ data }: Props) {
                   * Cálculo provisório — hora de nascimento não informada.
                 </p>
               )}
+              <SignificadoEmbed
+                significado={resolveSig('iching', data.iching.hexagramNumber)}
+                color="#A0763A"
+              />
             </>
           ) : (
             <Insight color="#A0763A">
