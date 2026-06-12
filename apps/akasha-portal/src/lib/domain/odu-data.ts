@@ -468,9 +468,18 @@ export function getOduByName(name: string): OduData | undefined {
   // Tentativa direta pela chave
   if (ODU_DATABASE[normalized]) return ODU_DATABASE[normalized];
   // Busca por nome (campo name)
-  return Object.values(ODU_DATABASE).find(
-    (odu) => odu.name.toLowerCase() === normalized
-  );
+  const direct = Object.values(ODU_DATABASE).find((odu) => odu.name.toLowerCase() === normalized);
+  if (direct) return direct;
+  // F-219: nomes canônicos ODUS_IFA vêm com parentético (ex.: 'Ogbe (Oxé)'
+  // via calculateBirthOdu em @akasha/core-odus/odu-birth.ts). Strip
+  // "(...)" e reaplica. Sem isso, o lookup falha e o glossary section
+  // retorna null no system prompt da IA — alucinação do LLM.
+  const stripped = normalized.replace(/\s*\(.*?\)\s*/g, '').trim();
+  if (stripped && stripped !== normalized) {
+    if (ODU_DATABASE[stripped]) return ODU_DATABASE[stripped];
+    return Object.values(ODU_DATABASE).find((odu) => odu.name.toLowerCase() === stripped);
+  }
+  return undefined;
 }
 
 export function getOduByNumber(number: number): OduData | undefined {
