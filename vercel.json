@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "buildCommand": "npm run build --prefix apps/akasha-portal",
+  "devCommand": "npm run dev --prefix apps/akasha-portal",
+  "installCommand": "npm install --legacy-peer-deps",
   "crons": [
     {
       "path": "/api/cron/cleanup-tokens",

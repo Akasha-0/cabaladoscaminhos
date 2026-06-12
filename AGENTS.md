@@ -1,117 +1,36 @@
-# AGENTS.md
+# AKASHA — Constituição do Projeto (lida em toda sessão)
 
-Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+## O que é o Akasha
+O Akasha NÃO é um app de numerologia cabalística, numerologia tântrica, dia de nascimento ou astrologia. O Akasha é um **sistema novo e unificado** — uma tecnologia espiritual de ponta — criado a partir da síntese dos fundamentos de 5 tradições/mapas, traduzidos em UMA linguagem universal comum. Assim como o Human Design nasceu da síntese de I Ching + astrologia + chakras + Cabala, e os Gene Keys nasceram de uma síntese própria, o Akasha deve nascer como um sistema próprio que **supera todos os existentes**.
 
-**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+## Problema atual (estado conhecido)
+- O sistema entrega informação dividida em 5 mapas separados, não 1 sistema unificado.
+- As interpretações são superficiais ("seu número é 11" — e daí?). O usuário não entende o que isso significa NA PRÁTICA para a vida dele.
+- A experiência não é mobile-first.
 
-## 1. Think Before Coding
+## Visão de produto
+1. **Mobile-first**: a experiência primária é no celular (evoluir para app instalável iOS + Android — PWA primeiro, depois nativo se a stack permitir). Desktop é secundário.
+2. **Profundidade prática**: cada insight deve responder "o que isso significa para MIM, hoje, na minha vida?" — nunca jargão técnico solto.
+3. **Cobertura completa da vida** (espelhar a pirâmide de Maslow até a autorrealização): propósito, destino, dons, talentos, vocação, carreira e melhores trabalhos, finanças/prosperidade, amor e relacionamentos, sexualidade (padrões, desejos, o que a pessoa gosta), saúde, corpo-mente-espírito-alma, paz, harmonia, alinhamento energético, alegria.
+4. **Linguagem unificada**: o usuário nunca deve ver "isto veio da numerologia cabalística, isto da tântrica". Ele vê apenas O AKASHA. As tradições são camadas internas do motor, invisíveis na UI.
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+## Princípios de engenharia (INEGOCIÁVEIS)
+- **Fazer mais com menos**: melhorar UI/funcionalidades EXISTENTES antes de criar páginas/recursos novos. Preferir modais e expansões na mesma página a criar novas páginas. Mais profundidade e qualidade de informação com menos páginas. Arquitetura limpa. Isso NÃO significa design minimalista — significa aproveitamento inteligente de recursos.
+- **Verificar fundamentos**: antes de correlacionar tradições, validar que a base de conhecimento de cada mapa está correta. Gerar cadeia de raciocínio explícita (em `docs/sintese/`) documentando cada correlação descoberta entre os 5 mapas.
+- **Cada entrega deve ser funcional**: nada de código pela metade. Testar antes de marcar como concluído.
 
-Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+## Protocolo de versionamento (OBRIGATÓRIO)
+- Sempre que o projeto evoluir significativamente, incrementar a versão: v0.0.1 → v0.0.2 → ... → v0.0.99 → v0.1.0 → ... → v0.99.99 → v1.0.0 → v1.0.1 → ...
+- A cada bump: atualizar `VERSION`, adicionar entrada no `CHANGELOG.md` (o que mudou, por quê, impacto para o usuário) e fazer commit com mensagem convencional contendo a versão.
 
-## 2. Simplicity First
+## Protocolo de autonomia (OBRIGATÓRIO)
+- **NUNCA usar a tool `ask` nem parar para fazer perguntas ao usuário.** Diante de ambiguidade: tomar a decisão mais alinhada a esta constituição, registrar em `docs/DECISIONS.md` (decisão, alternativas, justificativa) e seguir.
+- Manter `STATE.md` na raiz SEMPRE atualizado ao fim de cada ciclo: versão atual, o que foi feito, o que está em andamento, próximos 3 passos priorizados. Este arquivo é a memória de longo prazo do loop — qualquer sessão nova deve conseguir retomar o trabalho lendo apenas STATE.md + CHANGELOG.md.
+- Usar a tool `todo_write` para estruturar cada ciclo em fases. Nunca encerrar o turno com todos pendentes sem atualizar STATE.md.
+- Usar subagentes (`task` com agente `explore`) para pesquisas longas (Play Store, benchmarks, engenharia reversa de sistemas), trazendo apenas as conclusões para o contexto principal.
+- Antes de qualquer feature, rodar a suíte de validação do projeto (build + lint + testes). Se quebrar, consertar antes de prosseguir.
 
-**Minimum code that solves the problem. Nothing speculative.**
-
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
-
-## 3. Surgical Changes
-
-**Touch only what you must. Clean up only your own mess.**
-
-When editing existing code:
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
-
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
-
-## 4. Goal-Driven Execution
-
-**Define success criteria. Loop until verified.**
-
-Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan:
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
-
----
-
-## Como Usar Specs
-
-### Localização
-Specs estão em `.trae/specs/` com formato `akasha-vX.Y.Z/`
-
-### Como Ler uma Spec
-1. Leia `spec.md` primeiro — contém Why, What, Impact
-2. Leia `tasks.md` para todas as tarefas
-3. Leia `checklist.md` para verificação final
-
-### Padrão de Execução
-1. Execute tarefas na ordem de prioridade definida
-2. Commits atômicos por tarefa completada
-3. Verifique typecheck e tests após cada mudança
-
-## Como Verificar Progresso
-
-### Status do Projeto
-```bash
-pnpm test:run        # Tests
-pnpm typecheck       # Typecheck
-pnpm lint            # Lint
-pnpm quality         # Quality gates
-pnpm fallow          # Código morto
-```
-
-### Commits Recentes
-```bash
-git log --oneline -15
-git tag --sort=-creatordate | head -5
-```
-
-## Padrão de Nomenclatura
-
-### Versões
-- Specs: `akasha-vMAJOR.MINOR.PATCH`
-- Tags Git: `vMAJOR.MINOR.PATCH`
-- Ciclos de memória: `cycle-[NNN]`
-
-### Commits
-- Tipo: feat, fix, refactor, docs, chore, cleanup
-- Formato: `tipo: descrição curta`
-- Exemplo: `docs: adicionar CONTEXT.md para índice centralizado`
-
-## Cross-References
-- Specs: `.trae/specs/`
-- Docs: `docs/`
-- Memory: `memory/`
-- Arquitetura: `docs/03_architecture-spec.md`
-
----
-
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+## Regra anti-ociosidade (CRÍTICA)
+- Mensagens recebidas em loop são SEMPRE ordens de execução, nunca documentação para arquivar.
+- É PROIBIDO responder apenas com confirmações ("pronto", "aguardando", "configurado"). Se um turno terminar sem nenhum arquivo do projeto modificado, o turno FALHOU.
+- Não existe estado "aguardando instruções": as instruções permanentes são AGENTS.md + KICKOFF.md + STATE.md. Se não souber o que fazer, leia STATE.md e execute o próximo passo listado.

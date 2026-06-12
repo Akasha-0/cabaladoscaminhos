@@ -400,13 +400,11 @@ export function generateAreaNarrativeFull(
   // rather than gluing together the first sentence of each block.
 
   /**
-   * Extracts a usable 1-2 sentence core from a pillar block, stripping trailing
-   * filler and avoiding empty strings when a block is just a placeholder.
-   */
-  /**
    * coreOf — extract the first meaningful narrative sentence from a block.
    * Skips single-word titles (e.g. "Iluminador · Mestre", "fogo")
    * and finds the first real descriptive sentence (≥3 words, ≥18 chars).
+   * Also skips title-like sentences that follow the pattern:
+   * "Caminho de Vida N — Titulo" or "N — title".
    */
   function coreOf(block: string, preferSecond = false): string {
     const sentences = block.split(/[.!]/).map(s => s.trim()).filter(s => s.length > 10);
@@ -414,7 +412,12 @@ export function generateAreaNarrativeFull(
     // Skip title-only sentences: < 3 words OR < 18 chars
     function isNarrative(s: string): boolean {
       const words = s.split(/\s+/).filter(w => w.length > 0).length;
-      return words >= 3 && s.length >= 18;
+      if (words < 3 || s.length < 18) return false;
+      // Skip title-like sentences: "Caminho de Vida N — Titulo" or "N — Titulo"
+      // These are labels, not narrative content
+      if (/Caminho\s+de\s+Vida\s+\d+.*?—/.test(s)) return false;
+      if (/^\d{1,2}\s*—/.test(s)) return false;
+      return true;
     }
     const narrativeSentences = sentences.filter(isNarrative);
     if (narrativeSentences.length === 0) return sentences[0];

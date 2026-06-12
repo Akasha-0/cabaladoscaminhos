@@ -23,4 +23,10 @@ export type {
   // Grid
   MatrixEntry,
   MatrixData,
+  // Akasha Interpretation Engine (v0.1.0)
+  AkashaLevel,
+  LifeArea,
+  AreaInterpretation,
+  VidaInterpretation,
 } from './index';
+export { LIFE_AREA_LABELS } from './index';

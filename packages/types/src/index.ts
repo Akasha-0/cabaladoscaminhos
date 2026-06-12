@@ -323,3 +323,144 @@ export interface IChingMap {
   error?: string;
 }
 
+
+
+// ============================================================================
+// §X Akasha Interpretation Engine — Modelo de Interpretação Profunda
+// Baseado em: Gene Keys (Shadow→Gift→Siddhi) + Human Design (Strategy+Authority)
+// + pesquisa de benchmark (Astrolink, Mirofox) — Ciclo 517
+// ============================================================================
+
+/**
+ * Níveis de frequência de expressão Akasha.
+ * Inspirado nos Gene Keys (Shadow/Gift/Siddhi) mas renomeado para
+ * não parecer "copy-paste" e manter identidade Akasha.
+ *
+ * shadow  = padrão inconsciente, reativo, herdado (frequência baixa)
+ * gift    = talento consciente, recurso disponível (frequência média)
+ * siddhi  = estado desperto, o que você É, não o que você FAZ (frequência alta)
+ */
+export type AkashaLevel = 'shadow' | 'gift' | 'siddhi';
+
+/**
+ * Área da vida coberta pelo modelo Akasha (espelha pirâmide de Maslow
+ * até a autorrealização — see AGENTS.md §Visão de produto 3).
+ */
+export type LifeArea =
+  | 'proposito'       // Para que você existe
+  | 'destino'         // Para onde você vai
+  | 'dons'            // O que você tem para oferecer
+  | 'relacionamentos' // Como você se conecta
+  | 'sexualidade'     // Quais seus padrões e desejos
+  | 'carreira'        // Onde você manifesta
+  | 'financas'        // Como o fluxo opera
+  | 'saude'           // Onde seu corpo pede atenção
+  | 'espiritualidade'; // Seu caminho de integração
+
+/** Rótulos PT-BR para cada LifeArea. */
+export const LIFE_AREA_LABELS: Record<LifeArea, string> = {
+  proposito: 'Propósito',
+  destino: 'Destino',
+  dons: 'Dons e Talentos',
+  relacionamentos: 'Relacionamentos',
+  sexualidade: 'Sexualidade',
+  carreira: 'Carreira e Vocação',
+  financas: 'Finanças e Prosperidade',
+  saude: 'Saúde e Corpo',
+  espiritualidade: 'Espiritualidade',
+};
+
+/**
+ * Interpretação profunda para UMA área da vida.
+ * Segue o modelo de 4 camadas validado na pesquisa:
+ *   dado → significado → padrão → aplicação
+ *
+ * Inspirado em: Gene Keys (Shadow→Gift→Siddhi) +
+ *               Human Design (Strategy/Authority) +
+ *               Astrolink/Mirofox (interpretação prática por área).
+ */
+export interface AreaInterpretation {
+  /** Área da vida a que esta interpretação se refere. */
+  area: LifeArea;
+  /** Número/nível Akasha (shadow | gift | siddhi). */
+  nivel: AkashaLevel;
+  /** Código canônico, ex: "vida-11-shadow". Usado para tracking. */
+  codigo: string;
+  /** Cabeçalho POOL-READY: "Seu Dom de [Área]" — max 8 palavras. */
+  tituloPool: string;
+  /**
+   * Camada 1 — DADO:
+   * "Seu número de Vida é 11" (o que o dado ASTROLÓGICO diz).
+   * Frase FROZEN — não usar diretamente na UI, usar tituloPool + aplicacao.
+   */
+  dado: string;
+  /**
+   * Camada 2 — SIGNIFICADO:
+   * "O 11 é o Visionário — você vê o que outros não veem."
+   * Significado central do número/tradição.
+   */
+  significado: string;
+  /**
+   * Camada 3 — PADRÃO (a chain de raciocínio central):
+   * "Seu padrão é IDEALIZAR: você projeta perfectionismo em tudo,
+   *  especialmente em parceiros e em você mesmo."
+   * É aqui que o usuário se RECONHECE.
+   * Max ~150 palavras.
+   */
+  padrao: string;
+  /**
+   * Camada 4 — APLICAÇÃO POR SUBCATEGORIA:
+   * Como este padrão se manifesta em cada subcategoria da área.
+   * Segue o modelo "no [contexto], você [padrão], [consequência], [indício]".
+   * Max ~80 palavras por entrada.
+   */
+  aplicacao: Partial<Record<LifeArea, string>>;
+  /**
+   * Frase de conexão com outro Pilar (cross-validation).
+   * Ex: "Este 11 ressoa com seu Odu Ogbe (odu-01): ambos falam de INICIAR."
+   * Máximo 60 palavras.
+   */
+  conexao?: string;
+  /**
+   * Ação prática 3-2-1 (estilo coaching) para mover do nível atual.
+   * 3 coisas que amplificam / 2 armadilhas a evitar / 1 ritual mínimo.
+   */
+  acaoPratica?: {
+    amplificar: string[];
+    evitar: string[];
+    ritual: string;
+  };
+  /**
+   * Afirmação PT-BR no presente (estilo Mirofox/Numerologia - Redescubra-se).
+   * Max 30 palavras.
+   */
+  afirmacao: string;
+  /**
+   * Mapa deOther Pilares que corroboram esta interpretação.
+   * key = pilar ('astrologia'|'tantrica'|'odu'|'iching')
+   * value = descrição curta da correlação (max 40 palavras)
+   */
+  corroboracao?: Partial<Record<string, string>>;
+}
+
+/**
+ * Interpretação de Número de Vida (Pilar 1 — Cabala Numérica).
+ * Este é o PILOTO do motor de interpretação Akasha.
+ * Expande o shallow "número X" em AreaInterpretation completa.
+ */
+export interface VidaInterpretation {
+  /** O número de vida (1-9 | 11 | 22 | 33). */
+  numero: number;
+  /** É master number (reduzido a 2 mas mantido por decisão de interpretação)? */
+  isMaster: boolean;
+  /** Interpretação completa para cada nível. */
+  levels: {
+    shadow: AreaInterpretation;
+    gift: AreaInterpretation;
+    siddhi: AreaInterpretation;
+  };
+  /** Síntese Akasha: o "MANDATO" — frase que unifica os 3 níveis. */
+  mandato: string;
+  /** Nome arquetípico Akasha (não "Líder" — algo mais profundo). */
+  arquetipoAkasha: string;
+}
