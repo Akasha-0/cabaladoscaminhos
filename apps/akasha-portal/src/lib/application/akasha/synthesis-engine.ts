@@ -18,6 +18,12 @@
 
 import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@/types';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
+import {
+  generateSynthesisParagraph as genSynthesisParagraph,
+  generateAreaNarrativeFull,
+  LIFE_AREA_LABELS,
+  type AreaNarrativeFull,
+} from './narrative-generator';
 
 // ─── Life Areas (Maslow + Akasha) ──────────────────────────────────────────
 
@@ -138,6 +144,8 @@ export interface AreaNarrative {
   dailyTransit?: DailyTransitOverlay;
   /** F-225: Perfil sexual profundo (só preenche na área Vitalidade) */
   sexualidade?: SexualArchetype;
+  /** F-226: Narrativas expandidas por pilar (4 blocos + síntese integrada) */
+  expandedNarrative?: AreaNarrativeFull;
 }
 
 // ─── Full Synthesis Output ─────────────────────────────────────────────────
@@ -218,15 +226,8 @@ export function buildAkashaSynthesis(
     date
   );
 
-  // ── Síntese geral ─────────────────────────────────────────────────────
-  const synthesisParagraph = buildSynthesisParagraph(
-    areaVitalidade,
-    areaConexoes,
-    areaCarreira,
-    areaOri,
-    areaMissao,
-    areaDesafios
-  );
+  // ── Síntese geral (narrativa expandida F-226) ───────────────────────────
+  const synthesisParagraph = genSynthesisParagraph(kabalisticMap, astrologyMap, tantricMap, oduBirth);
 
   // ── Perfil dominante ───────────────────────────────────────────────────
   const dominantFrequency = deriveDominantFrequency(areaVitalidade, areaConexoes, areaCarreira, areaOri, areaMissao, areaDesafios);
@@ -304,6 +305,15 @@ function deriveVitalidadeEnergia(
   // ── F-225: Perfil sexual profundo ─────────────────────────────────────
   const sexualidade = deriveSexualArchetype(astro, kab, tantra, odu);
 
+  // ── F-226: Narrativas expandidas por pilar ─────────────────────────────
+  const expandedNarrative = generateAreaNarrativeFull(
+    'vitalidadeEnergia',
+    kab,
+    astro,
+    tantra,
+    odu
+  );
+
   return {
     area: 'vitalidadeEnergia',
     title: 'Vitalidade & Energia',
@@ -324,6 +334,7 @@ function deriveVitalidadeEnergia(
     transformationPrompt,
     dailyTransit,
     sexualidade,
+    expandedNarrative,
   };
 }
 
@@ -381,6 +392,7 @@ function deriveConexoesAmor(
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'conexoes',
     'Você tem traído seus próprios limites emocionais para agradar o outro? O que sua intuição diz sobre esta relação agora?');
 
+  const expandedNarrative = generateAreaNarrativeFull('conexoesAmor', kab, astro, tantra, odu);
   return {
     area: 'conexoesAmor',
     title: 'Conexões & Amor',
@@ -399,6 +411,7 @@ function deriveConexoesAmor(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'conexoes'),
     dailyRitual,
     transformationPrompt,
+    expandedNarrative,
   };
 }
 
@@ -450,6 +463,7 @@ function deriveCarreiraProsperidade(
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'carreira',
     'Você tem adiado uma decisão profissional por medo de não ser bom o suficiente? O que aconteceria se você agisse como se já fosse?');
 
+  const expandedNarrative = generateAreaNarrativeFull('carreiraProsperidade', kab, astro, tantra, odu);
   return {
     area: 'carreiraProsperidade',
     title: 'Carreira & Prosperidade',
@@ -460,14 +474,15 @@ function deriveCarreiraProsperidade(
     giftPattern,
     giftStrengths,
     pillarContribution: {
-      cabala: `${lifePathStr} ${expressionStr}`.trim(),
+      cabala: lifePathStr || expressionStr,
       tantra: divineGiftStr,
       odus: '',
-      astrologia: `${midheavenStr} ${jupiterStr}`.trim(),
+      astrologia: midheavenStr || jupiterStr,
     },
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'carreira'),
     dailyRitual,
     transformationPrompt,
+    expandedNarrative,
   };
 }
 
@@ -506,8 +521,8 @@ function deriveOriCabecaQuizilas(
   const { frequency, intensity } = assessAreaFrequency(astro, kab, tantra, odu, 'ori');
   const dailyRitual = buildAreaRitual(astro, kab, tantra, odu, 'ori', holo);
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'ori',
-    'Você tem confiado mais em Outside opiniões do que em sua própria percepção? Quando foi a última vez que você seguiu sua intuição e foi surpreendido positivamente?');
-
+    'Você tem confiado mais em opiniões externas do que em sua própria percepção? Quando foi a última vez que você seguiu sua intuição e foi surpreendido positivamente?');
+  const expandedNarrative = generateAreaNarrativeFull('oriCabecaQuizilas', kab, astro, tantra, odu);
   return {
     area: 'oriCabecaQuizilas',
     title: 'Ori, Cabeça & Quizilas',
@@ -526,6 +541,7 @@ function deriveOriCabecaQuizilas(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'ori'),
     dailyRitual,
     transformationPrompt,
+    expandedNarrative,
   };
 }
 
@@ -573,6 +589,7 @@ function deriveMissaoDestino(
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'missao',
     'Você tem adiado viver sua missão autêntica por medo de não ser aceito? O que você faria se soubesse que não pode falhar?');
 
+  const expandedNarrative = generateAreaNarrativeFull('missaoDestino', kab, astro, tantra, odu);
   return {
     area: 'missaoDestino',
     title: 'Missão & Destino',
@@ -591,6 +608,7 @@ function deriveMissaoDestino(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'missao'),
     dailyRitual,
     transformationPrompt,
+    expandedNarrative,
   };
 }
 
@@ -629,7 +647,7 @@ function deriveDesafiosSombras(
   const plutoStr = data.pluto
     ? `Plutão em ${data.pluto.sign} na Casa ${data.pluto.house} é onde você transforma dolorosamente. É também onde está seu maior poder de renascimento.`
     : '';
-
+  const expandedNarrative = generateAreaNarrativeFull('desafiosSombras', kab, astro, tantra, odu);
   return {
     area: 'desafiosSombras',
     title: 'Desafios & Sombras',
@@ -648,6 +666,7 @@ function deriveDesafiosSombras(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'desafios'),
     dailyRitual,
     transformationPrompt,
+    expandedNarrative,
   };
 }
 
