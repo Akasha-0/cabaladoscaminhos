@@ -454,5 +454,13 @@
     "passes": true,
     "completed_at": "2026-06-11",
     "note": "11/11 chat tests fail, ritual tests likely fail same, dashboard component test status unknown. Committed for tracking; fix is multi-session refactor."
+  },
+  {
+    "id": "F-216",
+    "phase": 7,
+    "category": "chore",
+    "priority": "P3",
+    "description": "FASE 7 cleanup: delete stale apps/akasha-portal/lib/infrastructure/prisma.ts (unreferenced dup outside src/, would create 2nd PrismaClient). -1 file.",
+    "passes": false
   }
 ]
