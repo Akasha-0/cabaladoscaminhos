@@ -111,4 +111,4 @@
     SexualidadeSection: turnOn/turnOff, desejos ocultos, fantasia, fetiches, chave transformacao
     Núcleo Akasha card: expandedNarrative.integratedNarrative + practicalExample
     Typecheck: 0 errors | Build: sucesso ✅ | Commit: 32f9ac73
-    Pendentes: F-227 Authority, F-228 Mobile Strategy (Capacitor PWA)
+    Pendentes: F-227 Authority (decision framework), F-228 Mobile Strategy (Capacitor PWA — android/ios dirs já existem, falta build APK)
