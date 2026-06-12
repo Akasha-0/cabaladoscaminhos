@@ -47,6 +47,57 @@ export interface DailyDecision {
   avoid: string;                   // "Evite: forçar situações de controle no trabalho."
 }
 
+// ─── F-225: Sexualidade Profunda ─────────────────────────────────────────────
+
+export interface SexualFantasy {
+  archetype: string;
+  description: string;
+  trigger: string;
+}
+
+export interface SexualFetish {
+  type: string;
+  description: string;
+  chakraRelated: string;
+}
+
+export interface SexualHiddenDesire {
+  desire: string;
+  fear: string;
+  healing: string;
+}
+
+export interface SexualArchetype {
+  name: string;
+  description: string;
+  bodyTantric: string;
+  desirePattern: string;
+  fantasy: SexualFantasy;
+  fetishes: SexualFetish[];
+  hiddenDesires: SexualHiddenDesire[];
+  turnOn: string[];
+  turnOff: string[];
+  relationshipPattern: string;
+  transformationKey: string;
+}
+
+// ─── F-224: Trânsito Diário por Área ────────────────────────────────────────
+
+export interface TransitAspectOverlay {
+  planet: string;
+  aspect: string;
+  energy: 'harmonioso' | 'desafiador' | 'neutro';
+  description: string;
+  recommendation: string;
+}
+
+export interface DailyTransitOverlay {
+  astrologiaTransito: TransitAspectOverlay[];
+  oduTransito: { odu: string; meaning: string; advice: string } | null;
+  tantraEnergia: { element: string; quality: string; recommendation: string };
+  todayPhrase: string;
+}
+
 // ─── Area Narrative ─────────────────────────────────────────────────────────
 
 export interface AreaNarrative {
@@ -83,6 +134,10 @@ export interface AreaNarrative {
 
   // Integração com a frequência de transformação
   transformationPrompt: string;  // Uma pergunta para autoreflectão
+  /** F-224: Trânsito astrológico + Ifá + Tantra HOJE para esta área */
+  dailyTransit?: DailyTransitOverlay;
+  /** F-225: Perfil sexual profundo (só preenche na área Vitalidade) */
+  sexualidade?: SexualArchetype;
 }
 
 // ─── Full Synthesis Output ─────────────────────────────────────────────────
@@ -141,7 +196,7 @@ export function buildAkashaSynthesis(
 ): AkashaSynthesis {
   // ── Derivar frequências por área ──────────────────────────────────────
 
-  const areaVitalidade  = deriveVitalidadeEnergia(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
+  const areaVitalidade  = deriveVitalidadeEnergia(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram, date);
   const areaConexoes    = deriveConexoesAmor(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
   const areaCarreira    = deriveCarreiraProsperidade(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
   const areaOri         = deriveOriCabecaQuizilas(astrologyMap, kabalisticMap, tantricMap, oduBirth, hologram);
@@ -204,7 +259,8 @@ function deriveVitalidadeEnergia(
   kab: KabalisticMap | null,
   tantra: TantricMap | null,
   odu: OduBirth | null,
-  holo: AkashicHologram
+  holo: AkashicHologram,
+  date: Date = new Date(),
 ): AreaNarrative {
   const data = holo.vitalidadeEnergia.keyData;
 
@@ -242,6 +298,12 @@ function deriveVitalidadeEnergia(
   // ── Transformation prompt ───────────────────────────────────────────────
   const transformationPrompt = buildTransformationPrompt(astro, kab, tantra, odu, 'vitalidade', 'Você percebe que vem ignorando os sinais de exaustão do seu corpo? Como seria respeitar seus ciclos de energia hoje?');
 
+  // ── F-224: Trânsito diário desta área ─────────────────────────────────
+  const dailyTransit = deriveDailyTransitOverlay(astro, kab, tantra, odu, 'vitalidadeEnergia', date);
+
+  // ── F-225: Perfil sexual profundo ─────────────────────────────────────
+  const sexualidade = deriveSexualArchetype(astro, kab, tantra, odu);
+
   return {
     area: 'vitalidadeEnergia',
     title: 'Vitalidade & Energia',
@@ -260,6 +322,8 @@ function deriveVitalidadeEnergia(
     practicalAdvice: buildPracticalAdvice(astro, kab, tantra, odu, 'vitalidade'),
     dailyRitual,
     transformationPrompt,
+    dailyTransit,
+    sexualidade,
   };
 }
 
@@ -1301,4 +1365,259 @@ function buildTransformationPrompt(
   defaultPrompt: string
 ): string {
   return defaultPrompt;
+}
+
+// ─── F-225: Sexualidade Profunda ─────────────────────────────────────────────
+
+function deriveSexualArchetype(
+  astro: AstrologyMap | null,
+  kab: KabalisticMap | null,
+  tantra: TantricMap | null,
+  odu: OduBirth | null,
+): SexualArchetype {
+  const bodyNum = tantra?.bodies?.fisico?.number ?? 5;
+  const soulBody = tantra?.soulBody ?? 5;
+  const bodyDesc = tantra?.bodies?.fisico?.description ?? '';
+  const soulDesc = tantra?.soulDescription ?? '';
+
+  const lilithSign = (astro as any)?.planets?.find((p: any) =>
+    p.planet === 'Lilith' || p.planet === 'Asteroides'
+  )?.sign ?? '';
+  const venusSign = (astro as any)?.planets?.find((p: any) =>
+    p.planet === 'Venus' || p.planet === 'Venus'
+  )?.sign ?? '';
+  const marsSign = (astro as any)?.planets?.find((p: any) =>
+    p.planet === 'Mars' || p.planet === 'Marte'
+  )?.sign ?? '';
+  const casa8Sign = (astro as any)?.houses?.find((h: any) => h.house === 8)?.sign ?? '';
+  const oduForce = odu?.elementalForce ?? odu?.oduName ?? String(odu?.oduNumber ?? '');
+
+  const TANTRA_SEXUAL_ARCHETYPES: Record<number, { name: string; base: string; desirePattern: string }> = {
+    1:  { name: 'Alma Primordial', base: 'Puramente instintivo, busca fusão total com a energia', desirePattern: 'Busca reconectar com a essência — sente falta de profundidade em tudo' },
+    2:  { name: 'Criador Sagrado', base: 'Sexualidade como criação — fogo interno intenso de gerar', desirePattern: 'Deseja criar, construir, plantar — frustra-se quando não pode gerar' },
+    3:  { name: 'Mente Quádrupla', base: 'Variação constante, curiosidade erótica ilimitada', desirePattern: 'Busca novidade, estímulos — teme o tédio acima de tudo' },
+    4:  { name: 'Estabilidade Terrestre', base: 'Poder de atração gravitacional, conexão profunda com o corpo', desirePattern: 'Quer posse, segurança, marcar território — teme perder o que conquistou' },
+    5:  { name: 'Intelecto Sagrado', base: 'Sedução mental, palavras como afrodisíaco', desirePattern: 'Sente que se não entender não se entrega — precisa decifrar para sentir' },
+    6:  { name: 'Harmonia dos Opostos', base: 'Busca equilíbrio entre dar e receber no corpo a corpo', desirePattern: 'Oscila entre sacrifício e exigência — não sabe receber sem sentir culpa' },
+    7:  { name: 'Mente Invertida', base: 'Sexualidade como transcendência, corpo como veículo', desirePattern: 'Transmuta desejo em espiritualidade — teme a matéria e a carne' },
+    8:  { name: 'Poder do Abismo', base: 'Intensidade máxima, limites como território sagrado', desirePattern: 'Quer posse total, controle, profundidade — teme ser dominada' },
+    9:  { name: 'Amor Universal', base: 'Compromisso total, sexualidade como oferenda', desirePattern: 'Deseja fundir-se, pertencer, servir — frustra-se com a superficialidade' },
+    10: { name: 'Vontade Inabalável', base: 'Sexualidade como afirmação de poder e presença', desirePattern: 'Quer ser reconhecido, admirado, seguido — teme a invisibilidade' },
+    11: { name: 'Luz da Renovação', base: 'Transformação permanente, sexualidade como renascimento', desirePattern: 'Liberta-se de padrões, busca o novo — teme ficar presa ao velho' },
+  };
+  const baseArchetype = TANTRA_SEXUAL_ARCHETYPES[bodyNum] ?? TANTRA_SEXUAL_ARCHETYPES[5];
+
+  const LILITH_DESIRES: Record<string, { fantasy: string; trigger: string; description: string }> = {
+    aries:       { fantasy: 'Guerreira Sexual', trigger: 'Confronto, resistência, adrenalina', description: 'Você é ativada quando sente oposição — quanto mais resistem, mais quer. Seu desejo é ser conquistada à força de um guerreiro.' },
+    touro:       { fantasy: 'Sacrário da Carne', trigger: 'Texturas, aromas, presença física dominante', description: 'Você é ativada pela matéria — precisa sentir o corpo inteiro. Seu desejo é ser devorada com paciência e fome.' },
+    gemeos:      { fantasy: 'Mente Erótica', trigger: 'Conversas proibidas, palavras cruzadas com duplo sentido', description: 'Você é ativada pela mente — precisa de história, mistério. Seu desejo é ser decifrada.' },
+    cancer:      { fantasy: 'Útero Cósmico', trigger: 'Proteção, cuidado prévio, segurança emocional', description: 'Você é ativada quando se sente em casa — antes de qualquer coisa. Seu desejo é ser acolhida antes de ser desejada.' },
+    leo:         { fantasy: 'Espetáculo Sagrado', trigger: 'Admiração, plateia, ser o centro do desejo do outro', description: 'Você é ativada pela adoração — precisa ser vista como extraordinária. Seu desejo é ser a fantasia de alguém.' },
+    virgem:      { fantasy: 'Serva Mestra', trigger: 'Dedicação, atenção ao detalhe, ordem como prélúdio', description: 'Você é ativada pelo cuidado meticuloso — precisa de limpeza, preparo. Seu desejo é ser servida com perfeição.' },
+    libra:       { fantasy: 'Juíza dos Prazeres', trigger: 'Beleza, harmonia, atmosfera, préludio longo', description: 'Você é ativada pela estética — precisa de atmosfera, ritmo. Seu desejo é ser a experiência mais refinada.' },
+    escorpiao:   { fantasy: 'Senhora do Abismo', trigger: 'Profundidade, segredos, destruição como prélúdio', description: 'Você é ativada pelo que é proibido — precisa de mistério e intensidade. Seu desejo é ser conhecedora absoluta do outro.' },
+    sagitario:   { fantasy: 'Sacerdotisa Viajante', trigger: 'Viagem, aventura, diálogo filosófico, expansão', description: 'Você é ativada pela perspectiva ampla — precisa de sentido. Seu desejo é ser levada para novos mundos.' },
+    capricornio: { fantasy: 'Imperatriz do Poder', trigger: 'Status, controle, reconhecimento de posição', description: 'Você é ativada pelo poder — precisa de alguém que também é alguém. Seu desejo é ser a consorte do rei.' },
+    aquario:     { fantasy: 'Alquimista do Coletivo', trigger: 'Ideias inovadoras, causa social, rebeldia compartilhada', description: 'Você é ativada pela causa — precisa de propósito compartilhado. Seu desejo é transcender o pessoal.' },
+    peixes:      { fantasy: 'Oceano Vermelho', trigger: 'Dissolução de limites, música, estado alterado', description: 'Você é ativada pela dissolução — precisa de estado alterado para gozar. Seu desejo é fundir-se no infinito.' },
+  };
+  const lilithData = LILITH_DESIRES[lilithSign.toLowerCase()] ?? LILITH_DESIRES['escorpiao'];
+
+  const VENUS_VALUES: Record<string, string> = {
+    aries: 'atuação direta, conquista, pioneirismo',
+    touro: 'prazer sensorial, estabilidade, posse',
+    gemeos: 'comunicação, variação, intelectual',
+    cancer: 'segurança emocional, família, intimidade',
+    leo: 'adoração, criação, reconhecimento',
+    virgem: 'qualidade, saúde, utilidade',
+    libra: 'harmonia, beleza, parceria',
+    escorpiao: 'profundidade, intensidade, mistério',
+    sagitario: 'liberdade, expansão, aventuras',
+    capricornio: 'status, ambição, compromisso',
+    aquario: 'originalidade, liberdade, amizade',
+    peixes: 'completo, romantismo, transcendência',
+  };
+
+  const MARS_STYLES: Record<string, string> = {
+    aries: 'direto, impaciente, conquista rápida',
+    touro: 'persistente, cálido, possessivo',
+    gemeos: 'versátil, curioso, sedução verbal',
+    cancer: 'indireto, emocional, proteção como prélúdio',
+    leo: 'dramático, generoso, teatral',
+    virgem: 'preciso, crítico, preparo como prélúdio',
+    libra: 'indireto, encantador, evita confronto',
+    escorpiao: 'intenso, demorado, obsessivo',
+    sagitario: 'aventureiro, honesto, direto',
+    capricornio: 'estratégico, focado, paciente',
+    aquario: 'imprevisível, intelectual, distante',
+    peixes: 'difuso, emocional, difícil de localizar',
+  };
+
+  const BODY_FETISHES: Record<number, SexualFetish[]> = {
+    1:  [{ type: 'Fusão Energética', description: 'Desaparecer o ego no outro — ser possuída pela energia, não pelo corpo', chakraRelated: 'Sahasrara (coroa)' }],
+    2:  [{ type: 'Poder Criativo', description: 'Sexualidade como criação — precisa gerar algo, alguém, uma experiência nova', chakraRelated: 'Svadhisthana (sacro)' }],
+    3:  [{ type: 'Variedade Divina', description: 'Colecionar experiências — cada parceiro é um capítulo diferente', chakraRelated: 'Manipura (plexo)' }],
+    4:  [{ type: 'Templo Terrestre', description: 'O corpo como altar — exige devoção ao corpo e à matéria', chakraRelated: 'Muladhara (raiz)' }],
+    5:  [{ type: 'Jogo Mental', description: 'Dominação intelectual — precisa ganhar do outro mentalmente primeiro', chakraRelated: 'Vishuddha (garganta)' }],
+    6:  [{ type: 'Ordem como Prelúdio', description: 'Ambiente perfeito, ritual prévio, controle como linguagem', chakraRelated: 'Ajna (terceiro olho)' }],
+    7:  [{ type: 'Transcendência', description: 'Transmutar o sexual em espiritual — o corpo como veículo de sagrado', chakraRelated: 'Sahasrara (coroa)' }],
+    8:  [{ type: 'Poder Total', description: 'Conhecer o outro até o osso — intimidade como investigação', chakraRelated: 'Svadhisthana (sacro)' }],
+    9:  [{ type: 'Entrega Total', description: 'Abandono completo — entrega sem reserva, totalidade da fusão', chakraRelated: 'Anahata (coração)' }],
+    10: [{ type: 'Reconhecimento', description: 'Ser desejada pelo que representa, não só pelo que faz — status como afrodisíaco', chakraRelated: 'Manipura (plexo)' }],
+    11: [{ type: 'Renovação', description: 'Destruição criativa — precisa queimar o padrão anterior a cada encontro', chakraRelated: 'Sahasrara (coroa)' }],
+  };
+  const baseFetishes = BODY_FETISHES[bodyNum] ?? BODY_FETISHES[5];
+  const lilithFetish: SexualFetish = {
+    type: `Escravidão do ${lilithData.fantasy}`,
+    description: `Lilith em ${lilithSign || 'Escorpião'} ativa o desejo de ${lilithData.trigger.toLowerCase()} — ${lilithData.description.split('.')[0].toLowerCase()}.`,
+    chakraRelated: 'Muladhara + Svadhisthana (raiz + sacro)',
+  };
+
+  const hiddenDesires: SexualHiddenDesire[] = [
+    {
+      desire: 'Ser completamente conhecida (não apenas desejada)',
+      fear: 'De ser explorada se mostrar a verdade do desejo',
+      healing: 'Quando aceita que ser conhecida é mais íntimo que ser possuída, sua sexualidade se transforma em poder de cura.',
+    },
+    {
+      desire: `Aprofundar através de ${casa8Sign || 'intimidade transformadora'}`,
+      fear: `A intensidade de ${casa8Sign || 'profundidade'} que emerge na intimidade`,
+      healing: 'Quando para de temer a profundidade e aceita que o outro pode segurar sua intensidade, o sexo vira experiência de renascimento.',
+    },
+  ];
+
+  const turnOn = [
+    `Corpo tântrico ${soulBody}: ${soulDesc || baseArchetype.base}`,
+    venusSign  ? `Venus em ${venusSign}: ${VENUS_VALUES[venusSign.toLowerCase()] || 'valoriza a profundidade'}` : '',
+    marsSign   ? `Marte em ${marsSign}: age com ${MARS_STYLES[marsSign.toLowerCase()] || 'intensidade'}` : '',
+    lilithSign ? `Lilith em ${lilithSign}: ativada por ${lilithData.trigger.toLowerCase()}` : '',
+    oduForce   ? `Odu ${oduForce}: força elemental sexual` : '',
+  ].filter(Boolean);
+
+  const turnOff = [
+    'Superficialidade — ser tratada como objeto sem profundidade',
+    'Pressa — não ter tempo para aquecer e criar intimidade',
+    'Comparação — ser medida contra outra pessoa',
+    'Indiferença — parceiro que não demonstra interesse genuíno',
+    bodyNum >= 7 ? 'Excesso de razão — parceiro que só quer entender, não sentir' : 'Excesso de matéria — parceiro que ignora a dimensão espiritual',
+  ];
+
+  const relationshipPattern = `No íntimo, você ${baseArchetype.desirePattern.split('—')[1]?.trim() || 'busca profundidade acima de tudo'}. Com Venus em ${venusSign || 'desconhecido'}: ${VENUS_VALUES[venusSign?.toLowerCase()] || 'busca conexão genuína'}. Com Marte em ${marsSign || 'desconhecido'}: ${MARS_STYLES[marsSign?.toLowerCase()] || 'age com intensidade'}.`;
+
+  const transformationKey = `A chave da sua sexualidade é integrar o ${baseArchetype.name} com Lilith em ${lilithSign || 'Escorpião'}. Quando você para de usar a sexualidade para controlar ou preencher vazios, e começa a usá-la para ${soulBody >= 7 ? 'transcender o corpo e acessar a essência' : soulBody >= 4 ? 'criar vínculo e pertencimento' : 'reconectar com a energia primordial'}, você ativa o Dom (Gift) do seu corpo tântrico.`;
+
+  return {
+    name: `${baseArchetype.name}${lilithSign ? ` × Lilith em ${lilithSign}` : ''}`,
+    description: `Você é ${baseArchetype.name.toLowerCase()}. ${baseArchetype.base}. Lilith em ${lilithSign || 'Escorpião'} ativa em você um padrão de desejo oculto: ${lilithData.description} No fundo, você busca ${hiddenDesires[0].desire.toLowerCase()}.`,
+    bodyTantric: `Corpo ${bodyNum}/11: ${bodyDesc || baseArchetype.base}`,
+    desirePattern: baseArchetype.desirePattern,
+    fantasy: {
+      archetype: lilithData.fantasy,
+      description: lilithData.description,
+      trigger: `Você é ativada quando ${lilithData.trigger.toLowerCase()}.`,
+    },
+    fetishes: [lilithFetish, ...baseFetishes],
+    hiddenDesires,
+    turnOn,
+    turnOff,
+    relationshipPattern,
+    transformationKey,
+  };
+}
+
+// ─── F-224: Trânsito Diário por Área ────────────────────────────────────────
+
+function deriveDailyTransitOverlay(
+  astro: AstrologyMap | null,
+  kab: KabalisticMap | null,
+  tantra: TantricMap | null,
+  odu: OduBirth | null,
+  area: LifeArea,
+  date: Date = new Date(),
+): DailyTransitOverlay {
+  const AREA_PLANETS: Record<LifeArea, string[]> = {
+    vitalidadeEnergia:    ['Sol', 'Marte', 'Venus'],
+    conexoesAmor:         ['Venus', 'Lua', 'Júpiter'],
+    carreiraProsperidade:  ['Saturno', 'Júpiter', 'Mercúrio'],
+    oriCabecaQuizilas:    ['Mercúrio', 'Netuno', 'Lua'],
+    missaoDestino:        ['Sol', 'Plutão', 'Netuno'],
+    desafiosSombras:      ['Saturno', 'Quíron', 'Plutão'],
+  };
+
+  const relevantPlanets = AREA_PLANETS[area] ?? [];
+
+  const PLANET_INTERPRETATIONS: Record<string, { harmonioso: string; desafiador: string; harmonioso_rec: string; desafiador_rec: string }> = {
+    sol:       { harmonioso: 'Hoje você brilha naturalmente nesta área. Sua energia está clara e irradiante.', desafiador: 'Tensão entre seu eu interior e como você se expressa.', harmonioso_rec: 'Apresente suas ideias. Lidere.', desafiador_rec: 'Não force a validação externa.' },
+    venus:     { harmonioso: 'Energia de atrativo, cooperação e prazer. Relaciones nesta área fluem com graça.', desafiador: 'Tensão em relações ou valores.', harmonioso_rec: 'Convide alguém para um momento compartilhado.', desafiador_rec: 'Evite negociar valores importantes hoje.' },
+    marte:     { harmonioso: 'Energia de ação, coragem e iniciativa. Bom dia para avançar.', desafiador: 'Irritação, impaciência ou frustração.', harmonioso_rec: 'Use a energia para agir com propósito.', desafiador_rec: 'Evite conflitos. Faça exercício físico.' },
+    saturno:   { harmonioso: 'Estrutura e disciplina trabalham a seu favor.', desafiador: 'Restrições, cobranças ou sentimentos de incapacidade.', harmonioso_rec: 'Faça o trabalho de longo prazo.', desafiador_rec: 'Não se cobre em excesso.' },
+    jupiter:   { harmonioso: 'Expansão, sorte e otimismo. Tudo tende a dar certo nesta área.', desafiador: 'Exagero, complacência ou gastos desnecessários.', harmonioso_rec: 'Aproveite para investir, viajar ou estudar.', desafiador_rec: 'Moderese.' },
+    mercurio:  { harmonioso: 'Comunicação clara, negócios fluem, ideias se concretizam.', desafiador: 'Mal-entendidos e falhas de comunicação.', harmonioso_rec: 'Negocie e comunique-se claramente.', desafiador_rec: 'Evite assinar contratos hoje.' },
+    lua:       { harmonioso: 'Intuição forte, emoções estáveis.', desafiador: 'Instabilidade emocional e hipersensibilidade.', harmonioso_rec: 'Confie na sua intuição.', desafiador_rec: 'Evite decisões emocionais.' },
+    netuno:    { harmonioso: 'Inspiração, criatividade, espiritualidade.', desafiador: 'Ilusões, confusão, autoengan.', harmonioso_rec: 'Dedique-se à espiritualidade ou arte.', desafiador_rec: 'Não assine nada sem ler.' },
+    plutão:    { harmonioso: 'Transformação profunda, poder pessoal, renascimento.', desafiador: 'Forças obscuras, ciúmes, manipulação.', harmonioso_rec: 'Use o poder para se transformar.', desafiador_rec: 'Evite situações de poder.' },
+  };
+
+  const astrologiaTransito: TransitAspectOverlay[] = relevantPlanets.map(planet => {
+    const natalPlanet = (astro as any)?.planets?.find((p: any) => p.planet === planet);
+    const pData = PLANET_INTERPRETATIONS[planet.toLowerCase()] ?? {
+      harmonioso: `Energia de ${planet} favorece esta área.`,
+      desafiador: `Tensão de ${planet} nesta área.`,
+      harmonioso_rec: 'Aproveite a energia positiva.',
+      desafiador_rec: 'Moderese e pratique autocompaixão.',
+    };
+    return {
+      planet,
+      aspect: natalPlanet?.sign ?? 'trânsito em curso',
+      energy: 'neutro' as const,
+      description: pData.harmonioso,
+      recommendation: pData.harmonioso_rec,
+    };
+  });
+
+  const ODU_TRANSITO: Record<string, { odu: string; meaning: string; advice: string }> = {
+    'Eji':     { odu: 'Eji',    meaning: '量大 — Fortuna. O dia favorece o que é coletivo e generoso.', advice: 'Compartilhe. O que você retém hoje, perde amanhã.' },
+    'Ogbe':    { odu: 'Ogbe',   meaning: 'Criação — O primeiro Odu. Favorece iniciativa e liderança.', advice: 'Comece algo novo. O momento é propício para ação.' },
+    'Awon':    { odu: 'Awon',   meaning: 'Reflexão — Parceria e espelho.', advice: 'Observe mais do que fala. A verdade está no silêncio.' },
+    'Iwon':    { odu: 'Iwon',   meaning: 'Disciplina — Sabedoria difícil.', advice: 'A resposta não vem depressa. Aguarde com quietude.' },
+    'Akran':   { odu: 'Akran',  meaning: 'Captura — Magnetismo pessoal em alta.', advice: 'Manifeste o que quer. Use sua voz com autoridade.' },
+    'Mejí':    { odu: 'Mejí',   meaning: 'Duplo — Iluminação.', advice: 'Escolha com coerência. A duplicidade prejudica.' },
+    'Owonrin': { odu: 'Owonrin', meaning: 'Lamento — O que sai pela boca se cumpre.', advice: 'Fale com intenção. Palavras têm poder hoje.' },
+    'Obara':   { odu: 'Obara',  meaning: 'Força — Lei e ordem.', advice: 'Ajuste o que está torto. Organize sua casa e pensamentos.' },
+    'Ica':     { odu: 'Ica',    meaning: 'Bênção — Proteção divina.', advice: 'Receba com gratidão. O bem está chegando.' },
+  };
+  const oduName = odu?.oduName ?? String(odu?.oduNumber ?? '');
+  const oduTransito = oduName
+    ? ODU_TRANSITO[oduName] ?? { odu: oduName, meaning: `${oduName} influencia seu dia.`, advice: 'Respeite a energia do seu Odu.' }
+    : null;
+
+  const dayOfWeek = date.getDay();
+  const TANTRA_DAY_ENERGY: Record<number, { element: string; quality: string; recommendation: string }> = {
+    0: { element: 'Fogo',        quality: 'Renovação e purificação',        recommendation: 'Pratique respirações de fogo ou sauna seca.' },
+    1: { element: 'Terra',       quality: 'Estabilização e ancoragem',      recommendation: 'Caminhe descalça. Conecte-se com o chão.' },
+    2: { element: 'Ar',           quality: 'Comunicação e clareza mental',   recommendation: 'Pratique kapalabhati ou respire ao ar livre.' },
+    3: { element: 'Água',         quality: 'Fluxo emocional e intimidade',  recommendation: 'Beba água em abundância. Tome banho de imersão.' },
+    4: { element: 'Akasha',       quality: 'Consciência e integração',       recommendation: 'Medite em silêncio. Pratique yoga nidra.' },
+    5: { element: 'Fogo+Terra',   quality: 'Poder pessoal e manifestação',   recommendation: 'Faça exercício físico intenso seguido de alongamento.' },
+    6: { element: 'Akasha+Água',  quality: 'Transformação e transcendência',  recommendation: 'Pratique tantra yoga ou massagem relaxante profunda.' },
+  };
+  const tantraDay = TANTRA_DAY_ENERGY[dayOfWeek] ?? TANTRA_DAY_ENERGY[4];
+
+  const positiveTransit = astrologiaTransito.find(t => t.energy === 'harmonioso');
+  const todayPhrase = positiveTransit
+    ? `Hoje: ${positiveTransit.recommendation}`
+    : oduTransito
+    ? `Odu ${oduTransito.odu}: ${oduTransito.advice}`
+    : `Hoje: ${tantraDay.recommendation}`;
+
+  return {
+    astrologiaTransito,
+    oduTransito,
+    tantraEnergia: {
+      element: tantraDay.element,
+      quality: tantraDay.quality,
+      recommendation: tantraDay.recommendation,
+    },
+    todayPhrase,
+  };
 }

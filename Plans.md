@@ -71,3 +71,23 @@
   - Rahu/Ketu primários (F-211) — diferenciação Jyotish
   - Ayanamsa opt-in (F-212) — tropical default + Jyotish opt-in
   Triad: 363/363 verde, zero regressão.
+- [x] **PLN-018** — Akasha Evolution Phase 1 (v0.0.19): Pesquisa completa + Spec v0.0.19 criada + R-023 Synthesis Framework + F-223 Caixa Akasha. 5 arquivos criados:
+  - `.autonomous/research/synthesis/akasha-evolution-research.md` (25KB)
+  - `.trae/specs/akasha-v0.0.19/` (spec.md + tasks.md + checklist.md)
+  - `lib/grimoire/synthesis/dimensoes.ts` (9 dimensões + matriz)
+  - `lib/grimoire/synthesis/synthesizer.ts` (motor de síntese)
+  - `components/akasha/CaixaUnificada/` + `minha-caixa/page.tsx`
+  Pendentes: F-226 LLM Narrativa, F-227 Authority, F-228 Mobile Strategy.
+- [x] **PLN-019** — AkashaNarrativeEngine v1 (Síntese de 5 pilares em 6 áreas de vida)
+- [x] `lib/application/akasha/synthesis-engine.ts` — Motor de síntese narrativa (Shadow→Gift→Siddhi, Strategy+Authority, 6 áreas Maslow)
+- [x] `lib/application/akasha/daily-engine.ts` — Integração do motor (synthesis field adicionado a DailyContent)
+- [x] `components/akasha/dashboard/hooks/useAkashaSynthesis.ts` — Hook React para buscar síntese
+- [x] `components/akasha/dashboard/AkashaLifeAreasDashboard.tsx` — UI mobile-first das 6 áreas (expandível, 2ª pessoa)
+- [x] `app/api/akasha/daily/route.ts` — API expõe synthesis field no JSON
+- [x] `components/akasha/dashboard/Dashboard.tsx` — AkashaLifeAreasDashboard integrado
+- [x] **PLN-020** — F-224 (deriveDailyTransitOverlay) + F-225 (deriveSexualArchetype) em synthesis-engine.ts + types em useAkashaSynthesis.ts
+  - deriveDailyTransitOverlay: trânsitos planetários por área + Odu do dia + energia tântrica do dia
+  - deriveSexualArchetype: Lilith/Vênus/Marte/Odu → 11 arquétipos sexuais com fantasias, fetiches, turnOn/turnOff
+  - Syntax bugs corrigidos (duplicate ternary, missing positiveTransit)
+  - Typecheck: 0 errors ✅
+  Pendentes: F-224/F-225 UI, F-226 LLM Narrative, F-227 Authority, F-228 Mobile Strategy

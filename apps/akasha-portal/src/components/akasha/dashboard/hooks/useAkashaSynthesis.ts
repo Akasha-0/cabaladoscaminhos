@@ -21,6 +21,35 @@ export interface TensionPointUI {
   intensity: number;
 }
 
+export interface SexualidadeUI {
+  name: string;
+  description: string;
+  bodyTantric: string;
+  desirePattern: string;
+  fantasy: { archetype: string; description: string; trigger: string };
+  fetishes: Array<{ type: string; description: string; chakraRelated: string }>;
+  hiddenDesires: Array<{ desire: string; fear: string; healing: string }>;
+  turnOn: string[];
+  turnOff: string[];
+  relationshipPattern: string;
+  transformationKey: string;
+}
+
+export interface TransitOverlayUI {
+  planet: string;
+  aspect: string;
+  energy: string;
+  description: string;
+  recommendation: string;
+}
+
+export interface DailyTransitUI {
+  astrologiaTransito: TransitOverlayUI[];
+  oduTransito: { odu: string; meaning: string; advice: string } | null;
+  tantraEnergia: { element: string; quality: string; recommendation: string };
+  todayPhrase: string;
+}
+
 export interface AreaNarrativeUI {
   area: string;
   title: string;
@@ -45,6 +74,8 @@ export interface AreaNarrativeUI {
     color: string;
   };
   transformationPrompt: string;
+  sexualidade?: SexualidadeUI;
+  dailyTransit?: DailyTransitUI;
 }
 
 export interface DailyDecisionUI {
