@@ -413,6 +413,9 @@
       "Bazi e Jyotish compartilham ayanamsa/hora sideral — convergência?",
       "Akasha respeita tradições chinesas OU as sintetiza com Ocidental/Jyotish?"
     ],
-    "output": ".autonomous/research/synthesis/bazi-reverse-engineering.md (≥500 linhas)"
+    "output": ".autonomous/research/synthesis/bazi-reverse-engineering.md (545 linhas, 12 secoes + COT)",
+    "passes": true,
+    "completed_at": "2026-06-11",
+    "note": "545 linhas. Decisoes: D1 Pilar 6 opt-in (4 Pilares Bazi), D2 5 Elementos complementam 7 chakras (Pilar 3), D3 12 Animais NAO substituem IFA_ODUS, D4 60 Jiazi complementa 64 hexagramas (Pilar 5), D5 Akasha respeita tradicoes chinesas. Cita Ling Shu (104 BCE), Suo Shu Chen Shu, Ba Zi Yu Jue. Isomorfismo 1:1 com Akasha (4 Pilares ↔ 4 Camadas, 10 Deuses ↔ 10 Planetas, 5 Elementos ↔ 7 chakras). Proximas: F-230/231/232/233."
   }
 ]
