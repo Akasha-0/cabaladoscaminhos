@@ -1,0 +1,268 @@
+/**
+ * SignificadoPilar — F-219 (Camada de Significado)
+ *
+ * Renderiza um SignificadoCurado com layout consistente, mostrando o que o
+ * símbolo SIGNIFICA (não apenas o número/código). Aplica o princípio
+ * VISION §3 axioma 3: a curadoria transforma o dado em compreensão.
+ *
+ * Layout:
+ *   ┌─────────────────────────────────────────┐
+ *   │ ✦ Pilar · Título                        │
+ *   │                                         │
+ *   │  O que é:                               │
+ *   │  Essência (significado central)         │
+ *   │                                         │
+ *   │  O que pedir:                           │
+ *   │  Missão (direção de movimento)          │
+ *   │                                         │
+ *   │  ⚠ Sombra:                              │
+ *   │  Risco a observar                       │
+ *   │                                         │
+ *   │  ▸ Prática (3-5 min):                   │
+ *   │  Ação concreta em 2ª pessoa             │
+ *   │                                         │
+ *   │  ↔ Conexão:                             │
+ *   │  Como ressoa com os outros Pilares      │
+ *   │                                         │
+ *   │ via Fonte                               │
+ *   └─────────────────────────────────────────┘
+ */
+
+import type { SignificadoCurado } from '@/lib/grimoire/significados-curados';
+
+export interface SignificadoPilarProps {
+  significado: SignificadoCurado;
+  /** Cor do Pilar (mesma paleta do MandalaChart/Diario). */
+  cor: string;
+  /** Indica que veio do Pilar principal (destaque visual). */
+  destaque?: boolean;
+}
+
+const PILAR_ICONE: Record<SignificadoCurado['pilar'], string> = {
+  cabala: '✡',
+  astrologia: '☉',
+  tantrica: '◈',
+  odu: '✺',
+  iching: '☯',
+};
+
+const PILAR_NOME: Record<SignificadoCurado['pilar'], string> = {
+  cabala: 'Cabala',
+  astrologia: 'Astrologia',
+  tantrica: 'Tântrica',
+  odu: 'Odu',
+  iching: 'I Ching',
+};
+
+export function SignificadoPilar({ significado, cor, destaque = false }: SignificadoPilarProps) {
+  const { pilar, titulo, essencia, missao, sombra, pratica, conexao, fonte, requer_terreiro } =
+    significado;
+
+  return (
+    <article
+      data-pilar={pilar}
+      data-destaque={destaque || undefined}
+      style={{
+        background: destaque ? `${cor}0d` : 'rgba(6,7,15,0.55)',
+        border: `1px solid ${cor}${destaque ? '66' : '33'}`,
+        borderLeft: `3px solid ${cor}`,
+        borderRadius: '12px',
+        padding: '1.1rem 1.15rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.75rem',
+      }}
+    >
+      {/* Cabeçalho: Pilar + Título */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+        <span aria-hidden style={{ fontSize: '1.2rem', color: cor, lineHeight: 1 }}>
+          {PILAR_ICONE[pilar]}
+        </span>
+        <strong
+          style={{
+            fontFamily: 'var(--font-cinzel, serif)',
+            fontSize: '0.78rem',
+            color: '#F4F5FF',
+            letterSpacing: '0.04em',
+          }}
+        >
+          {PILAR_NOME[pilar]} · {titulo}
+        </strong>
+        {destaque && (
+          <span
+            style={{
+              fontSize: '0.6rem',
+              color: cor,
+              border: `1px solid ${cor}66`,
+              borderRadius: '4px',
+              padding: '1px 6px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+            }}
+          >
+            HOJE
+          </span>
+        )}
+      </div>
+
+      {/* Essência — significado central */}
+      <section>
+        <span
+          style={{
+            fontSize: '0.65rem',
+            color: cor,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          O que é
+        </span>
+        <p
+          style={{
+            fontSize: '0.95rem',
+            color: '#F4F5FF',
+            lineHeight: 1.5,
+            margin: '0.2rem 0 0',
+            fontFamily: 'var(--font-lora, serif)',
+          }}
+        >
+          {essencia}
+        </p>
+      </section>
+
+      {/* Missão */}
+      <section>
+        <span
+          style={{
+            fontSize: '0.65rem',
+            color: cor,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          O que pede a você
+        </span>
+        <p
+          style={{
+            fontSize: '0.85rem',
+            color: '#D5D7F0',
+            lineHeight: 1.5,
+            margin: '0.2rem 0 0',
+          }}
+        >
+          {missao}
+        </p>
+      </section>
+
+      {/* Sombra */}
+      <section>
+        <span
+          style={{
+            fontSize: '0.65rem',
+            color: '#A7AECF',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          ⚠ Sombra
+        </span>
+        <p
+          style={{
+            fontSize: '0.8rem',
+            color: '#A7AECF',
+            lineHeight: 1.5,
+            margin: '0.2rem 0 0',
+            fontStyle: 'italic',
+          }}
+        >
+          {sombra}
+        </p>
+      </section>
+
+      {/* Prática */}
+      <section
+        style={{
+          background: `${cor}14`,
+          borderRadius: '8px',
+          padding: '0.6rem 0.7rem',
+        }}
+      >
+        <span
+          style={{
+            fontSize: '0.65rem',
+            color: cor,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          ▸ Prática · 3-5 min
+        </span>
+        <p
+          style={{
+            fontSize: '0.85rem',
+            color: '#F4F5FF',
+            lineHeight: 1.45,
+            margin: '0.2rem 0 0',
+          }}
+        >
+          {pratica}
+        </p>
+      </section>
+
+      {/* Conexão com os outros Pilares */}
+      <section>
+        <span
+          style={{
+            fontSize: '0.65rem',
+            color: '#A7AECF',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          ↔ Conexão com os outros Pilares
+        </span>
+        <p
+          style={{
+            fontSize: '0.78rem',
+            color: '#A7AECF',
+            lineHeight: 1.5,
+            margin: '0.2rem 0 0',
+          }}
+        >
+          {conexao}
+        </p>
+      </section>
+
+      {/* Footer: fonte + ética Pilar 4 */}
+      <footer
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '0.5rem',
+          alignItems: 'center',
+          borderTop: `1px solid ${cor}22`,
+          paddingTop: '0.55rem',
+        }}
+      >
+        <span style={{ fontSize: '0.65rem', color: '#5C6691', fontStyle: 'italic' }}>
+          via {fonte}
+        </span>
+        {requer_terreiro && (
+          <span
+            style={{
+              fontSize: '0.6rem',
+              color: '#FB5781',
+              border: '1px solid rgba(251,87,129,0.4)',
+              borderRadius: '4px',
+              padding: '1px 6px',
+              letterSpacing: '0.05em',
+            }}
+            title="Interpretação profunda requer consentimento + terreiro (R-022 §4.4)"
+          >
+            ⚠ requer terreiro + consentimento
+          </span>
+        )}
+      </footer>
+    </article>
+  );
+}

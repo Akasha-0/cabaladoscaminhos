@@ -1,0 +1,1822 @@
+/**
+ * Significados Curados — Camada de Significado do Grimório (F-219, F-220)
+ *
+ * Cada Pilar retorna **números e símbolos** (vida = 11, sol = Escorpião,
+ * corpo = 7, hexagrama = 51, etc.). O que o sistema entrega ao usuário
+ * HOJE é o número; o que ENTREGA SIGNIFICADO é esta camada.
+ *
+ * Princípios (VISION.md §3 axiomas):
+ * - Axioma 3: Curadoria contínua de dados/fundamentos. O Grimório é vivo.
+ * - Axioma 4: Citação obrigatória. Toda afirmação cita fonte.
+ * - Axioma 8: PT-BR primeiro.
+ *
+ * Estrutura: cada entrada tem 5 campos curados.
+ *   - essencia: significado central (o que É)
+ *   - missao:   o que PEDE à pessoa (o que FAZER)
+ *   - sombra:   risco/sombra (o que EVITAR)
+ *   - pratica:  1 ação concreta de 3-5 min
+ *   - conexao:  como ressoa com os outros 4 Pilares
+ *
+ * Pilar 4 (Odu) carrega `requer_terreiro: true` — respeitar R-022 §4.4
+ * (ética Ifá: informação geral, mas interpretação profunda vem de
+ *  babalaô/yaô com consentimento do consulente e da tradição).
+ *
+ * Fontes citadas (axioma 4):
+ *   - Cabala: Sefer Yetzirah (séc. III-IV), Mispar Hechrachi (trad. Goldschmidt 2021)
+ *   - Astrologia: Brennan, *Hellenistic Astrology* (2017) + trad. PT-BR de Raffaelli
+ *   - Tantra: Yogi Bhajan, *The Aquarian Teacher* (KRI 2007); integração com
+ *             4 Temperamentos Gregos (R-019) via Hipócrates *Sobre a Natureza
+ *             do Homem* (c. 400 a.C.) e Kant *Antropologia* (1798)
+ *   - Odu Ifá: Verger, *Dieux d'Afrique* (1973); Mbiti, *African Religions* (1969)
+ *   - I Ching: Wilhelm/Baynes (1950) — King Wen sequence canônica
+ *   - Escala: VISION §4 (Mandato: Dia/Semana/Zodíaco/Vida)
+ *
+ * Critério editorial: cada `essencia` cabe em uma respiração (≤22 palavras
+ * PT-BR). Cada `pratica` cabe em 1 linha de UI. Sem jargão esotérico sem
+ * tradução; todo termo técnico é seguido de explicação em itálico.
+ */
+
+// ─── Tipos ────────────────────────────────────────────────────────────────
+
+export type Pilar = 'cabala' | 'astrologia' | 'tantrica' | 'odu' | 'iching';
+
+export interface SignificadoCurado {
+  /** Identificador canônico: número, signo, nome Odu, número hexagrama, etc. */
+  id: string | number;
+  /** Pilar a que pertence. */
+  pilar: Pilar;
+  /** Título em PT-BR (1-3 palavras, exibido em destaque). */
+  titulo: string;
+  /** Significado central (≤22 palavras). O que É. */
+  essencia: string;
+  /** O que esse símbolo PEDE à pessoa. Direção de movimento. */
+  missao: string;
+  /** Risco/sombra. O que observar/cuidar. */
+  sombra: string;
+  /** 1 ação concreta (3-5 min), escrita em 2ª pessoa. */
+  pratica: string;
+  /** Como ressoa com os outros 4 Pilares (1 frase cruzada). */
+  conexao: string;
+  /** Fonte primária. Curadores Akasha devem poder auditar. */
+  fonte: string;
+  /** Apenas Pilar 4 (Odu). Veja R-022 §4.4. */
+  requer_terreiro?: boolean;
+}
+
+// ─── Pilar 1 · Cabala · 4 séries numéricas ───────────────────────────────
+// Mispar Hechrachi (Goldschmidt 2021) + Sefer Yetzirah cap. 4.
+
+const PILAR_1: SignificadoCurado[] = [
+  // ── Life Path (Caminho de Vida) — 1-9, 11, 22, 33
+  {
+    id: 1,
+    pilar: 'cabala',
+    titulo: 'Pioneiro',
+    essencia: 'Liderar pelo exemplo. Iniciar caminhos onde não há trilha, com coragem solitária.',
+    missao: 'Comece. Aja primeiro. Sua presença abre portas para outros.',
+    sombra: 'Solidão, autoritarismo, medo de precisar dos outros.',
+    pratica: 'Escolha 1 ideia que você defende em silêncio e a declare em voz alta hoje.',
+    conexao:
+      'Pioneiro (P1) precisa do Diplomata (P1·2) para ouvir, e do Buscador (P1·7) para parar.',
+    fonte: 'Sefer Yetzirah 4:1-3; Mispar Hechrachi, 1 = unidade primordial',
+  },
+  {
+    id: 2,
+    pilar: 'cabala',
+    titulo: 'Diplomata',
+    essencia: 'Construir pontes. Sua força é a escuta, a cooperação, o trabalho em par.',
+    missao: 'Conecte. Una. Traduza o que um sente e o outro não sabe dizer.',
+    sombra: 'Dependência, indecisão, fusão com o outro perdendo a si.',
+    pratica: 'Antes de responder a alguém hoje, repita mentalmente o que ouviu. Só então fale.',
+    conexao: 'Diplomata (P1·2) é o par do Pioneiro (P1·1) — juntos, início + sustentação.',
+    fonte: 'Sefer Yetzirah 4:1-3',
+  },
+  {
+    id: 3,
+    pilar: 'cabala',
+    titulo: 'Criador',
+    essencia: 'Expressar. A palavra, a imagem, o som, o gesto. Criar é oração.',
+    missao: 'Mostre algo seu. Diário, voz, desenho, dança — o canal importa menos que a verdade.',
+    sombra: 'Dispersão, superficialidade, medo de ser profundo.',
+    pratica: 'Crie 1 coisa em 3 minutos sem editar. Foto, frase, rabisco. Não mostre a ninguém.',
+    conexao: 'Criador (P1·3) fala com o Realizador (P1·8) — expressão vira obra concreta.',
+    fonte: 'Sefer Yetzirah 4:1-3',
+  },
+  {
+    id: 4,
+    pilar: 'cabala',
+    titulo: 'Construtor',
+    essencia: 'Estruturar. Onde outros improvisam, você ergue o alicerce. Paciência é sua oração.',
+    missao: 'Faça o que prometeu terminar. Mesmo pequeno. O hábito constrói o templo.',
+    sombra: 'Rigidez, medo de mudar, trabalho por medo (não por visão).',
+    pratica: 'Escolha 1 tarefa inacabada e dê 25 min focados a ela, sem notificação.',
+    conexao: 'Construtor (P1·4) serve ao Humanista (P1·9) — estrutura para servir ao coletivo.',
+    fonte: 'Sefer Yetzirah 4:1-3',
+  },
+  {
+    id: 5,
+    pilar: 'cabala',
+    titulo: 'Libertador',
+    essencia: 'Mudar. Inquietude santa. Onde há sistema preso, você traz ar e movimento.',
+    missao: 'Liberte-se de UMA coisa hoje. Pode ser crença, agenda, objeto, conversa.',
+    sombra: 'Fuga, vício, liberdade que é só medo disfarçado.',
+    pratica: 'Diga "não" para 1 compromisso hoje que você aceitaria por hábito.',
+    conexao: 'Libertador (P1·5) precisa do Buscador (P1·7) para não dispersar sem direção.',
+    fonte: 'Sefer Yetzirah 4:1-3',
+  },
+  {
+    id: 6,
+    pilar: 'cabala',
+    titulo: 'Guardião',
+    essencia: 'Cuidar. Lar, família, comunidade, beleza. Você é o tecido que une.',
+    missao: 'Sirva. Mas primeiro verifique: estou servindo por amor ou por dever?',
+    sombra: 'Sacrifício excessivo, controle, culpa, assumir o peso do outro.',
+    pratica:
+      'Ofereça 1 ato de cuidado a alguém, e refuse 1 pedido de cuidado a si mesmo por vergonha.',
+    conexao: 'Guardião (P1·6) complementa a Mente Divina (P3·11) — cuidar e transcender.',
+    fonte: 'Sefer Yetzirah 4:1-3',
+  },
+  {
+    id: 7,
+    pilar: 'cabala',
+    titulo: 'Buscador',
+    essencia: 'Investigar. Ir para dentro. Perguntar antes de responder. Sua casa é o silêncio.',
+    missao: 'Questione 1 crença que você carrega há mais de 5 anos. Só questione; não decida.',
+    sombra: 'Isolamento, ceticismo, fuga do mundo em nome da espiritualidade.',
+    pratica: 'Fique 10 min em silêncio hoje. Sem música, sem tela, sem companhia.',
+    conexao: 'Buscador (P1·7) conversa com Hexagrama 51 (P5) — o trovão que desperta.',
+    fonte: 'Sefer Yetzirah 4:1-3',
+  },
+  {
+    id: 8,
+    pilar: 'cabala',
+    titulo: 'Realizador',
+    essencia:
+      'Manifestar no mundo. Poder com propósito. Dinheiro, autoridade, escala são seus materiais.',
+    missao:
+      'Assuma 1 decisão que você vem adiando. Decida com os 3 corpos: cabeça, coração, ventre.',
+    sombra: 'Materialismo, controle, sucesso que esvazia.',
+    pratica:
+      'Liste 3 conquistas suas que não dependeram só de esforço. Reconheça a força que veio de fora.',
+    conexao: 'Realizador (P1·8) com Corpo Radiante (P3·10) — brilhar com poder responsável.',
+    fonte: 'Sefer Yetzirah 4:1-3',
+  },
+  {
+    id: 9,
+    pilar: 'cabala',
+    titulo: 'Humanista',
+    essencia: 'Cuidar do todo. Visão ampla, compaixão universal, ciclos de conclusão.',
+    missao: 'Abra o círculo. Inclua quem você costuma excluir. Acolha o ciclo que se encerra.',
+    sombra: 'Idealismo, mártir, dificuldade de agir no local e específico.',
+    pratica:
+      'Agradeça 1 pessoa, 1 lugar, 1 capítulo da sua vida. O que termina bem libera caminho.',
+    conexao: 'Humanista (P1·9) é par do Pioneiro (P1·1) — fim que abre novo início.',
+    fonte: 'Sefer Yetzirah 4:1-3',
+  },
+  // ── Master Numbers (Mispar Hechrachi preserva 11, 22, 33)
+  {
+    id: 11,
+    pilar: 'cabala',
+    titulo: 'Iluminador · Mestre',
+    essencia: 'Canal entre planos. Intuição aguda, visão, inspiração. Você sente antes de saber.',
+    missao: 'Confie na primeira impressão. Masterre-a em algo concreto. Visão sem ação esvai.',
+    sombra: 'Nervosismo, autoquestionamento, mediunidade sem proteção.',
+    pratica: 'Anote 1 insight ao acordar, antes do celular. Releia-o no fim do dia.',
+    conexao: 'Iluminador (P1·11) com Mente Divina (P3·11) — visão + transcendência.',
+    fonte: 'Mispar Hechrachi; numerologia mestre (cap. Pinnock 2010)',
+  },
+  {
+    id: 22,
+    pilar: 'cabala',
+    titulo: 'Construtor de Mundos · Mestre',
+    essencia:
+      'Visão grandiosa que vira matéria. O mais prático dos mestres. O mais visionário dos práticos.',
+    missao: 'Escolha 1 projeto de 5 anos. Divida-o em 12 marcos mensais. Comece o primeiro.',
+    sombra: 'Pressão interna enorme, sensação de "deveria estar mais à frente".',
+    pratica: 'Escreva o que seria uma vida plena em 1 parágrafo. Releia daqui a 30 dias.',
+    conexao: 'Mestre 22 (P1) com Construtor (P1·4) — visão alinhada à estrutura.',
+    fonte: 'Mispar Hechrachi',
+  },
+  {
+    id: 33,
+    pilar: 'cabala',
+    titulo: 'Mestre Cósmico · Mestre',
+    essencia: 'Serviço incondicional. Cura, ensino, amor universal encarnado. Raro e exigente.',
+    missao: 'Sirva sem esperar reconhecimento. Verifique: ainda há alegria no servir?',
+    sombra: 'Burnout espiritual, onipotência, salvar o outro para não olhar para si.',
+    pratica:
+      'Hoje, sirva-se primeiro. 1 refeição em silêncio, 1 banho consciente, 1 sono completo.',
+    conexao: 'Mestre 33 (P1) com Humanista (P1·9) e 4 Temperamentos: Fleumático em ação.',
+    fonte: 'Mispar Hechrachi',
+  },
+];
+
+// Pilar 1 — séries secundárias (birthday, expression, ano pessoal) — versões
+// compactas. Mantemos o mesmo shape; curadoria profunda virá em F-220.
+const PILAR_1_BIRTHDAY: SignificadoCurado[] = Array.from({ length: 9 }, (_, i) => {
+  const n = i + 1;
+  return {
+    id: n,
+    pilar: 'cabala' as const,
+    titulo: `Talento ${n}`,
+    essencia: 'Dom natural dado pelo dia de nascimento. Lição a ser vivida com leveza.',
+    missao: 'Use-o hoje em algo concreto, sem esperar perfeição.',
+    sombra: 'Desenvolver pouco por não reconhecer o dom como dom.',
+    pratica: 'Nomeie 1 situação onde esse dom apareceu naturalmente.',
+    conexao: 'O dom do dia complementa o Caminho de Vida — o dom é o dom; o caminho é a travessia.',
+    fonte: 'Mispar Hechrachi, derivação dia',
+  };
+});
+
+const PILAR_1_EXPRESSION: SignificadoCurado[] = Array.from({ length: 9 }, (_, i) => {
+  const n = i + 1;
+  return {
+    id: n,
+    pilar: 'cabala' as const,
+    titulo: `Expressão ${n}`,
+    essencia: 'Como você se mostra ao mundo. Ferramenta natural de ação e comunicação.',
+    missao: 'Use esse canal — escrita, fala, gesto, técnica — sem diminuir.',
+    sombra: 'Adequar-se demais ao que os outros esperam, perdendo o estilo próprio.',
+    pratica: 'Observe 1 momento em que agiu no piloto automático. Como seria no seu estilo real?',
+    conexao: 'A Expressão dá forma visível à missão do Caminho de Vida.',
+    fonte: 'Mispar Hechrachi, derivação letras do nome',
+  };
+});
+
+const PILAR_1_ANO_PESSOAL: SignificadoCurado[] = Array.from({ length: 9 }, (_, i) => {
+  const n = i + 1;
+  return {
+    id: n,
+    pilar: 'cabala' as const,
+    titulo: `Ano ${n}`,
+    essencia: `Tema dos próximos 12 meses a partir do seu aniversário. Ciclo ${n} ativo.`,
+    missao: 'Siga o que esse ano pede — sem pressa de pular para o próximo.',
+    sombra: 'Viver no ciclo errado: já planejando o que o ano ainda não trouxe.',
+    pratica: 'Revise suas metas dos últimos 12 meses. O que cabe agora? O que já passou?',
+    conexao: 'O Ano Pessoal colore o Mandato: 1 frase a mais no Diário para esse ciclo.',
+    fonte: 'Mispar Hechrachi, ano pessoal (cálculo modular: dia+mês+ano)',
+  };
+});
+
+// ─── Pilar 2 · Astrologia · signos + fases + tríade ──────────────────────
+
+const PILAR_2_SIGNOS: SignificadoCurado[] = [
+  {
+    id: 'Áries',
+    pilar: 'astrologia',
+    titulo: 'Sol em Áries',
+    essencia: 'Iniciar, liderar, abrir caminhos. Sua luz é coragem nova.',
+    missao: 'Comece algo hoje, mesmo pequeno. O ímpeto é sua oração.',
+    sombra: 'Impaciência, conflito, começar sem terminar.',
+    pratica: 'Acenda 1 vela ou inicie 1 lista com a mão dominante. Sinal físico de início.',
+    conexao: 'Áries fala com Pioneiro (P1·1) — dois começos convergindo.',
+    fonte: 'Brennan 2017, cap. 8',
+  },
+  {
+    id: 'Touro',
+    pilar: 'astrologia',
+    titulo: 'Sol em Touro',
+    essencia: 'Estabilidade, corpo, beleza, presença. Sua luz é o que permanece.',
+    missao: 'Ande devagar hoje. Sinta o chão. Coma com atenção.',
+    sombra: 'Teimosia, apego, medo de mudar.',
+    pratica: 'Pare 1 vez hoje e sinta os pés no chão por 30 segundos.',
+    conexao: 'Touro com Construtor (P1·4) — paciência materializada.',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Gêmeos',
+    pilar: 'astrologia',
+    titulo: 'Sol em Gêmeos',
+    essencia: 'Conexão, palavra, curiosidade. Sua luz é a ponte entre ideias.',
+    missao: 'Pergunte mais. Escute mais. Conecte o que parece desconexo.',
+    sombra: 'Dispersão, fofoca, falar sem escutar.',
+    pratica: 'Converse 1 vez hoje perguntando só — sem dar sua opinião.',
+    conexao: 'Gêmeos com Diplomata (P1·2) — duas pontes em diálogo.',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Câncer',
+    pilar: 'astrologia',
+    titulo: 'Sol em Câncer',
+    essencia: 'Cuidar, sentir, lembrar. Sua luz é o lar e o vínculo.',
+    missao: 'Vá ao encontro de quem você ama hoje. Recorde quem te formou.',
+    sombra: 'Defensividade, apego ao passado, confundir cuidar com controlar.',
+    pratica: 'Ligue para 1 pessoa da família. Só escute, sem corrigir.',
+    conexao: 'Câncer com Guardião (P1·6) — cuidar como vocação compartilhada.',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Leão',
+    pilar: 'astrologia',
+    titulo: 'Sol em Leão',
+    essencia: 'Brilhar, criar, liderar pelo coração. Sua luz é a cena.',
+    missao: 'Mostre-se. Não peça desculpa por ocupar espaço.',
+    sombra: 'Vaidade, medo de não ser visto, drama.',
+    pratica: 'Vista 1 peça que te faça sentir inteiro. Não esconda sua luz hoje.',
+    conexao: 'Leão com Realizador (P1·8) e Corpo Radiante (P3·10).',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Virgem',
+    pilar: 'astrologia',
+    titulo: 'Sol em Virgem',
+    essencia: 'Discernir, organizar, servir nos detalhes. Sua luz é o ofício.',
+    missao: 'Faça 1 coisa com maestria hoje. Pequena, mas inteira.',
+    sombra: 'Autocrítica, perfeccionismo paralisante, preocupação crônica.',
+    pratica: 'Termine 1 tarefa simples sem revisar. E aceite o resultado como suficiente.',
+    conexao: 'Virgem com Construtor (P1·4) — ofício e estrutura.',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Libra',
+    pilar: 'astrologia',
+    titulo: 'Sol em Libra',
+    essencia: 'Equilibrar, harmonizar, relacionar. Sua luz é o espelho.',
+    missao: 'Equilibre 1 polaridade na sua vida. Dê tempo igual a 2 partes.',
+    sombra: 'Indecisão, dependência, perder-se no outro.',
+    pratica: 'Tome 1 decisão adiada hoje. Decida em 5 minutos. Siga em frente.',
+    conexao: 'Libra com Diplomata (P1·2) — justiça + cooperação.',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Escorpião',
+    pilar: 'astrologia',
+    titulo: 'Sol em Escorpião',
+    essencia: 'Ir ao fundo, transformar, morrer e renascer. Sua luz é a profundidade.',
+    missao: 'Encare 1 verdade que você vem evitando. Não a solte. Apenas veja.',
+    sombra: 'Controle, ciúme, guardar mágoas como troféu.',
+    pratica:
+      'Escreva 1 coisa que você ainda não disse a ninguém. Queime o papel (ou guarde em local seguro).',
+    conexao: 'Escorpião com Libertador (P1·5) — morte e renascimento.',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Sagitário',
+    pilar: 'astrologia',
+    titulo: 'Sol em Sagitário',
+    essencia: 'Buscar sentido, expandir horizontes, dizer a verdade com amor.',
+    missao: 'Diga 1 verdade hoje. Com corpo, com presença, com cuidado.',
+    sombra: 'Pés no ar, prometer mais do que cumpre, dogmatismo.',
+    pratica: 'Leia 1 página de algo que amplia sua visão (não sua timeline).',
+    conexao: 'Sagitário com Buscador (P1·7) — sentido e introspecção.',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Capricórnio',
+    pilar: 'astrologia',
+    titulo: 'Sol em Capricórnio',
+    essencia: 'Estruturar, perseverar, construir tempo. Sua luz é o longo prazo.',
+    missao: 'Honre o tempo. Faça o que precisa ser feito mesmo sem vontade.',
+    sombra: 'Frieza, rigidez, viver para o trabalho.',
+    pratica: 'Celebre 1 pequena vitória sua de meses atrás. Reconhecer também é estrutura.',
+    conexao: 'Capricórnio com Construtor (P1·4) e Realizador (P1·8).',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Aquário',
+    pilar: 'astrologia',
+    titulo: 'Sol em Aquário',
+    essencia: 'Inovar, libertar, servir ao futuro. Sua luz é o que ainda não existe.',
+    missao: 'Imagine. Proponha. Não peça permissão para pensar diferente.',
+    sombra: 'Frieza emocional, distância, rebeldia por rebeldia.',
+    pratica: 'Conecte-se a 1 comunidade alinhada aos seus valores. Você não precisa fazer sozinho.',
+    conexao: 'Aquário com Libertador (P1·5) e Humanista (P1·9).',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'Peixes',
+    pilar: 'astrologia',
+    titulo: 'Sol em Peixes',
+    essencia: 'Sonhar, compadecer, dissolver fronteiras. Sua luz é o invisível.',
+    missao: 'Confie na intuição. Permita-se sentir sem racionalizar.',
+    sombra: 'Fuga, confusão, perder a si no mar dos outros.',
+    pratica: 'Ande 10 min sem destino. Deixe seu corpo escolher o caminho.',
+    conexao: 'Peixes com Iluminador (P1·11) e Mente Divina (P3·11).',
+    fonte: 'Brennan 2017',
+  },
+];
+
+const PILAR_2_FASES_LUA: SignificadoCurado[] = [
+  {
+    id: 'nova',
+    pilar: 'astrologia',
+    titulo: 'Lua Nova',
+    essencia: 'Início. Semente plantada no escuro. A intenção cria o campo.',
+    missao: 'Escolha 1 intenção para as próximas 4 semanas. Escreva à mão.',
+    sombra: 'Iniciar e esquecer, plantar sem regar.',
+    pratica: 'Acenda 1 vela. Escreva 1 frase de intenção. Olhe-a 1 vez por dia.',
+    conexao: 'Lua Nova fala com Pioneiro (P1·1) e Hexagrama 1 (P5) — o Criador.',
+    fonte: 'Brennan 2017, cap. 14 (fases lunares)',
+  },
+  {
+    id: 'crescente',
+    pilar: 'astrologia',
+    titulo: 'Lua Crescente',
+    essencia: 'Crescer. A semente rompe a terra. Tensões pedem ação.',
+    missao: 'Atue. Faça ajustes. A fase convida ao movimento intencional.',
+    sombra: 'Pular etapas, crescer sem raiz.',
+    pratica: 'Dê 1 passo concreto hoje na direção do que você iniciou na Lua Nova.',
+    conexao: 'Lua Crescente com Construtor (P1·4) — paciência ativa.',
+    fonte: 'Brennan 2017',
+  },
+  {
+    id: 'cheia',
+    pilar: 'astrologia',
+    titulo: 'Lua Cheia',
+    essencia: 'Colheita. Revelação. O que estava escondido aparece. Iluminação e tensão.',
+    missao: 'Olhe. Veja. Liberte o que já não cabe. Não force — apenas observe e solte.',
+    sombra: 'Drama, reatividade, expor o que precisa de calma.',
+    pratica: 'Escreva 3 realizações dos últimos 14 dias. Agradeça. Solte 3 tensões.',
+    conexao: 'Lua Cheia com Humanista (P1·9) — colheita e visão do todo.',
+    fonte: 'Brennan 2017',
+  } as SignificadoCurado,
+  {
+    id: 'minguante',
+    pilar: 'astrologia',
+    titulo: 'Lua Minguante',
+    essencia: 'Soltar. O que termina abre espaço. Desapego consciente.',
+    missao: 'Abandone 1 hábito, crença, objeto ou pessoa que já não serve.',
+    sombra: 'Forçar término antes da hora, melancolia sem movimento.',
+    pratica: 'Limpe 1 gaveta ou arquivo digital. Solte 5 itens. Sinta o espaço.',
+    conexao: 'Minguante com Libertador (P1·5) e Humanista (P1·9) — fim que precede início.',
+    fonte: 'Brennan 2017',
+  },
+];
+
+const PILAR_2_TRINITY: SignificadoCurado[] = [
+  {
+    id: 'sombra',
+    pilar: 'astrologia',
+    titulo: 'Tríade · Sombra',
+    essencia: 'Tensão. Onde os planetas pedem trabalho. O desconforto que ensina.',
+    missao: 'Não fuja. Aproxime-se. Pergunte: o que essa tensão quer de mim?',
+    sombra: 'Fingir que a tensão não existe, projeção no outro.',
+    pratica: 'Nomeie 1 tensão atual em 1 frase. Escreva o que ela pode estar te ensinando.',
+    conexao: 'Sombra (P2) com Construtor (P1·4) e Hexagrama 36 (P5) — escuro iluminado.',
+    fonte: 'R-015 §2.1 (Shadow→Gift→Siddhi), nomenclatura PT-BR R-015 D2',
+  },
+  {
+    id: 'dom',
+    pilar: 'astrologia',
+    titulo: 'Tríade · Dom',
+    essencia: 'Harmonia. Onde os planetas fluem. Recurso natural, talento encarnado.',
+    missao: 'Use. Não espere permissão. Seus dons são responsabilidade.',
+    sombra: 'Dormir no talento, repetir sem crescer.',
+    pratica: 'Use 1 dom seu hoje em algo concreto. Note o que flui.',
+    conexao: 'Dom (P2) com Realizador (P1·8) e Corpo Radiante (P3·10).',
+    fonte: 'R-015 §2.1',
+  },
+  {
+    id: 'graca',
+    pilar: 'astrologia',
+    titulo: 'Tríade · Graça',
+    essencia: 'Alinhamento raro. Onde cosmos e intenção coincidem. Ato que transcende técnica.',
+    missao: 'Reconheça. Agradeça. Não pegue para si — a Graça é presente, não posse.',
+    sombra: 'Apropriar-se da Graça, querer replicar o que é irrepetível.',
+    pratica: 'Hoje, ao receber 1 momento de sincronicidade, pare, respire e diga obrigado(a).',
+    conexao: 'Graça (P2) com Iluminador (P1·11) e Mente Divina (P3·11).',
+    fonte: 'R-015 §2.1 (Siddhi)',
+  },
+];
+
+// ─── Pilar 3 · Tântrica · 11 corpos + 3 trigemeos + 4 temperamentos ───────
+
+const PILAR_3_CORPOS: SignificadoCurado[] = [
+  {
+    id: 1,
+    pilar: 'tantrica',
+    titulo: 'Corpo da Alma',
+    essencia: 'Você. Núcleo. Identidade. Presença que sustenta todos os outros corpos.',
+    missao: 'Sente-se. Respire. Volte a si. Tudo começa aqui.',
+    sombra: 'Buscar a si nos outros. Solidão que pede reconhecimento.',
+    pratica: 'Coloque a mão no coração. Sinta o bater por 1 minuto.',
+    conexao: 'Corpo 1 (P3) fala com Hexagrama 1 (P5) — fundamento, semente.',
+    fonte: 'KRI 2007, Aquarian Teacher: 10 corpos + Mente Divina (11)',
+  },
+  {
+    id: 2,
+    pilar: 'tantrica',
+    titulo: 'Mente Negativa',
+    essencia: 'Discernimento. Capacidade de dizer não, filtrar, proteger.',
+    missao: 'Use o "não" como ferramenta. Recuse 1 coisa hoje.',
+    sombra: 'Paralisia, ceticismo, medo travestido de prudência.',
+    pratica: 'Quando o "não" surgir, antes de justificar, apenas diga: "Não, hoje não."',
+    conexao: 'Mente Negativa (P3·2) com Construtor (P1·4) — estrutura interna.',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 3,
+    pilar: 'tantrica',
+    titulo: 'Mente Positiva',
+    essencia: 'Expansão. Capacidade de dizer sim, de confiar, de abrir.',
+    missao: 'Diga sim a 1 possibilidade nova. Mesmo com medo.',
+    sombra: 'Sim excessivo, ingenuidade, dispersão.',
+    pratica: 'Diga sim a 1 convite ou ideia que você costuma recusar por reflexo.',
+    conexao: 'Mente Positiva (P3·3) com Pioneiro (P1·1) — abertura ao novo.',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 4,
+    pilar: 'tantrica',
+    titulo: 'Mente Neutra',
+    essencia: 'Mediadora. Onde a negativa e a positiva dialogam. Centro.',
+    missao: 'Observe. Não julgue. Apenas veja o que surge e o que passa.',
+    sombra: 'Apatia confundida com paz, neutralidade cúmplice.',
+    pratica: 'Quando opinião forte surgir, espere 30 segundos antes de falar.',
+    conexao: 'Mente Neutra (P3·4) com Buscador (P1·7) — presença que escuta.',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 5,
+    pilar: 'tantrica',
+    titulo: 'Corpo Físico',
+    essencia: 'Templo. A casa onde tudo acontece. Honre o corpo, honre a jornada.',
+    missao: 'Mexa-se. Coma com presença. Durma com propósito.',
+    sombra: 'Negligência ou obsessão. Corpo como máquina ou como fardo.',
+    pratica: 'Caminhe 15 min hoje sem fone, sem tela. Apenas ande.',
+    conexao: 'Corpo Físico (P3·5) com Touro (P2) e Construtor (P1·4).',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 6,
+    pilar: 'tantrica',
+    titulo: 'Linha do Arco',
+    essencia: 'Integridade. A linha invisível entre céu e terra que você sustenta.',
+    missao: 'Fique reto. Palavra e ato alinhados. O que você diz, seja o que você faz.',
+    sombra: 'Desvio, incoerência, promessa vazia.',
+    pratica: 'Releia 1 conversa recente. Você disse o que quis dizer?',
+    conexao: 'Linha do Arco (P3·6) com Capricórnio (P2) e Construtor (P1·4).',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 7,
+    pilar: 'tantrica',
+    titulo: 'Aura',
+    essencia: 'Campo. O que você irradia além do corpo. Sua atmosfera.',
+    missao: 'Note o que você emite. Limpe o que carrega. Proteja o que é seu.',
+    sombra: 'Vampirismo, deixar o campo ser invadido.',
+    pratica: 'Pare 1 vez hoje. Imagine uma luz de 1 metro ao seu redor. Respire dentro dela.',
+    conexao: 'Aura (P3·7) com Escorpião (P2) e Buscador (P1·7).',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 8,
+    pilar: 'tantrica',
+    titulo: 'Corpo Prânico',
+    essencia: 'Vitalidade. Energia que anima. Respiração, vigor, sexo, ânimo.',
+    missao: 'Respire fundo. Recarregue. Sinta a energia que você tem.',
+    sombra: 'Esgotamento, dispersão da energia, sedentarismo.',
+    pratica: 'Faça 3 respirações longas hoje. Inspirar 4, segurar 4, soltar 6.',
+    conexao: 'Corpo Prânico (P3·8) com Leão (P2) e Realizador (P1·8).',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 9,
+    pilar: 'tantrica',
+    titulo: 'Corpo Sutil',
+    essencia: 'Intuição. Onde o não-dito se mostra. Voz dos sonhos, pressentimentos.',
+    missao: 'Escute. O corpo sutil fala baixo, mas sempre fala. Anote 1 sinal hoje.',
+    sombra: 'Ignorar a intuição, viver só do racional.',
+    pratica: 'Ao acordar, antes de pensar, pergunte: "O que preciso saber hoje?" Anote o que vier.',
+    conexao: 'Corpo Sutil (P3·9) com Peixes (P2) e Iluminador (P1·11).',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 10,
+    pilar: 'tantrica',
+    titulo: 'Corpo Radiante',
+    essencia: 'Brilho. Onde você é visto. A expressão da alma no mundo.',
+    missao: 'Brilhe com coragem. Não diminua seu fogo para caber em ambientes pequenos.',
+    sombra: 'Apagar-se para ser aceito, medo de ser visto.',
+    pratica: 'Hoje, vista 1 peça que te faça sentir radiante. Saia com ela.',
+    conexao: 'Corpo Radiante (P3·10) com Leão (P2) e Realizador (P1·8).',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 11,
+    pilar: 'tantrica',
+    titulo: 'Mente Divina',
+    essencia: 'Transcendência. Você como canal. Inspiração, visão, silêncio que fala.',
+    missao: 'Confie no invisível. Receba. Não force. A Mente Divina responde ao silêncio.',
+    sombra: 'Onipotência, mediunidade sem ancoragem.',
+    pratica: 'Sente-se 5 min em silêncio absoluto. Não peça nada. Apenas esteja.',
+    conexao: 'Mente Divina (P3·11) com Iluminador (P1·11) e Graça (P2·graca).',
+    fonte: 'KRI 2007',
+  },
+];
+
+const PILAR_3_TRIGEMEO: SignificadoCurado[] = [
+  {
+    id: 'fisico',
+    pilar: 'tantrica',
+    titulo: 'Trigêmeo · Físico',
+    essencia: 'Ação no corpo. Serviço direto, presença, mãos no mundo.',
+    missao: 'Sirva com o corpo hoje. Mexa, carregue, prepare, esteja presente.',
+    sombra: 'Ativismo sem reflexão, cansaço por não saber parar.',
+    pratica: 'Caminhe 1 km com atenção em cada passo. Termine com 3 respirações.',
+    conexao: 'Trigêmeo Físico (P3) com Corpo Físico (P3·5) e Touro (P2).',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 'astral',
+    pilar: 'tantrica',
+    titulo: 'Trigêmeo · Astral',
+    essencia: 'Coração. Onde se sente. Amor, devoção, presença emocional.',
+    missao: 'Vá ao coração. Antes de agir, sinta. Antes de decidir, ame.',
+    sombra: 'Drama, dependência emocional, confundir sentir com ser.',
+    pratica: 'Coloque a mão no coração. Sinta 1 gratidão. Apenas isso, por 1 minuto.',
+    conexao: 'Trigêmeo Astral (P3) com Câncer (P2) e Guardião (P1·6).',
+    fonte: 'KRI 2007',
+  },
+  {
+    id: 'mental',
+    pilar: 'tantrica',
+    titulo: 'Trigêmeo · Mental',
+    essencia: 'Clareza. Onde se compreende. Discernimento, visão, comunicação.',
+    missao: 'Pense com clareza. Pergunte antes de afirmar. Ouça antes de ensinar.',
+    sombra: 'Cerebralidade excessiva, frieza, paralisia por análise.',
+    pratica: 'Escreva 1 frase que resuma o que você vem pensando há dias.',
+    conexao: 'Trigêmeo Mental (P3) com Gêmeos (P2) e Buscador (P1·7).',
+    fonte: 'KRI 2007',
+  },
+];
+
+const PILAR_3_TEMPERAMENTO: SignificadoCurado[] = [
+  {
+    id: 'sanguineo',
+    pilar: 'tantrica',
+    titulo: 'Temperamento · Sanguíneo',
+    essencia: 'Ar + umidade. Social, comunicativo, otimista. Conecta pessoas.',
+    missao: 'Use seu dom de unir. Mas ancore com escuta profunda.',
+    sombra: 'Superficialidade, dispersão, falar demais.',
+    pratica: 'Em 1 conversa hoje, escute até o fim antes de responder.',
+    conexao: 'Sanguíneo (P3) com Diplomata (P1·2) e Gêmeos (P2).',
+    fonte: 'Hipócrates, *Sobre a Natureza do Homem* c. 400 a.C.; Kant 1798',
+  },
+  {
+    id: 'colerico',
+    pilar: 'tantrica',
+    titulo: 'Temperamento · Colérico',
+    essencia: 'Fogo + seco. Líder, decidido, executa. Energia para abrir caminhos.',
+    missao: 'Lidere, mas verifique: estou liderando para servir ou para controlar?',
+    sombra: 'Autoritarismo, impaciência, conflito desnecessário.',
+    pratica: 'Antes de decidir hoje, espere 3 respirações. Só então aja.',
+    conexao: 'Colérico (P3) com Pioneiro (P1·1) e Áries (P2).',
+    fonte: 'Hipócrates c. 400 a.C.',
+  },
+  {
+    id: 'melancolico',
+    pilar: 'tantrica',
+    titulo: 'Temperamento · Melancólico',
+    essencia: 'Terra + seco. Profundo, analítico, sensível. Vê o que outros não veem.',
+    missao: 'Aprofunde. Mas não se perca no fundo. Volte ao corpo e à ação.',
+    sombra: 'Inação, autocrítica, isolamento.',
+    pratica: 'Compartilhe 1 pensamento seu com 1 pessoa de confiança.',
+    conexao: 'Melancólico (P3) com Buscador (P1·7) e Escorpião (P2).',
+    fonte: 'Hipócrates c. 400 a.C.',
+  },
+  {
+    id: 'fleumatico',
+    pilar: 'tantrica',
+    titulo: 'Temperamento · Fleumático',
+    essencia: 'Água + umidade. Pacífico, constante, acolhedor. Presença que acalma.',
+    missao: 'Estabilize. Mas ancore com iniciativa — não espere demais.',
+    sombra: 'Passividade, inércia, evitar conflito a qualquer custo.',
+    pratica: 'Tome 1 iniciativa hoje, mesmo pequena, sem pedir aprovação.',
+    conexao: 'Fleumático (P3) com Guardião (P1·6) e Câncer (P2).',
+    fonte: 'Hipócrates c. 400 a.C.',
+  },
+];
+
+// ─── Pilar 4 · Odu · 16 principais (Ifá/Candomblé) ───────────────────────
+// R-022 §4.4: interpretação profunda requer terreiro + consentimento.
+// Aqui oferecemos APENAS o nome e a essência geral, com `requer_terreiro:true`.
+
+const PILAR_4: SignificadoCurado[] = [
+  {
+    id: 'Ogbe',
+    pilar: 'odu',
+    titulo: 'Odu Ogbe (Ògúndá)',
+    essencia: 'Claridade, luz, vitória. Odu de abertura. Fala com o Sol e a coroa.',
+    missao: 'Comece com verdade. A clareza que você busca já mora em você.',
+    sombra: 'Vaidade, rigidez moral, autossuficiência.',
+    pratica: 'Agradeça ao sol ao amanhecer. 1 minuto de silêncio voltado ao leste.',
+    conexao: 'Ogbe fala com Sol em Leão (P2) e Pioneiro (P1·1).',
+    fonte: 'Verger 1973; Mbiti 1969',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Oyeku',
+    pilar: 'odu',
+    titulo: 'Odu Oyeku (Ọ̀yẹ̀kú)',
+    essencia: 'Noite, ancestralidade, mistério. Odu da morte e do renascimento.',
+    missao: 'Honre quem veio antes. O invisível sustenta o visível.',
+    sombra: 'Medo do escuro, apego ao conhecido, evitar a morte simbólica.',
+    pratica: 'Acenda 1 vela preta ou branca. Fale o nome de 1 ancestral.',
+    conexao: 'Oyeku fala com Lua Minguante (P2) e Hexagrama 36 (P5).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Iwori',
+    pilar: 'odu',
+    titulo: 'Odu Iwori (Ìwòrì)',
+    essencia: 'Sutileza, comunicação, caminho tortuoso. Odu da diplomacia.',
+    missao: 'Fale com cuidado. Sua palavra constrói ou destrói reinos.',
+    sombra: 'Manipulação, ambiguidade, falar de mais para esconder.',
+    pratica: 'Hoje, só diga o que diria olhando nos olhos da pessoa.',
+    conexao: 'Iwori fala com Diplomata (P1·2) e Gêmeos (P2).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Odi',
+    pilar: 'odu',
+    titulo: 'Odu Odi (Ọ̀dí)',
+    essencia: 'Feminino, intuição, profundidade. Odu da noite lunar.',
+    missao: 'Confie no invisível. A intuição é sua bússola.',
+    sombra: 'Vitimização, ressentimento, magnetizar conflito.',
+    pratica: 'Tome 1 decisão intuitiva hoje, sem racionalizar.',
+    conexao: 'Odi fala com Escorpião (P2) e Corpo Sutil (P3·9).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Irosu',
+    pilar: 'odu',
+    titulo: 'Odu Irosu (Ìròsùn)',
+    essencia: 'Prosperidade, fecundidade, bens. Odu da abundância.',
+    missao: 'Receba. A prosperidade é direito, não prêmio.',
+    sombra: 'Avareza, medo de perder, confundir abundância com acúmulo.',
+    pratica: 'Receba 1 elogio hoje sem devolver. Apenas "obrigado(a)".',
+    conexao: 'Irosu fala com Realizador (P1·8) e Corpo Radiante (P3·10).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Owonrin',
+    pilar: 'odu',
+    titulo: 'Odu Owonrin (Ọ̀wọ́nrín)',
+    essencia: 'Caminho estreito, decisão, transição. Odu da encruzilhada.',
+    missao: 'Escolha. O caminho se faz ao caminhar.',
+    sombra: 'Indecisão, medo de errar, paralisia na encruzilhada.',
+    pratica: 'Tome 1 decisão que você vem adiando. Em 5 minutos, decida.',
+    conexao: 'Owonrin fala com Libertador (P1·5) e Sagitário (P2).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Obará',
+    pilar: 'odu',
+    titulo: 'Odu Obará (Ọ̀bàrà)',
+    essencia: 'Realeza, justiça, liderança. Odu do trono e do escudo.',
+    missao: 'Lidere com responsabilidade. O poder é sagrado.',
+    sombra: 'Autoritarismo, justiça sem compaixão, frieza.',
+    pratica: 'Use sua autoridade 1 vez hoje para proteger, não para punir.',
+    conexao: 'Obará fala com Realizador (P1·8) e Capricórnio (P2).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Okanran',
+    pilar: 'odu',
+    titulo: 'Odu Okanran (Ọ̀kànràn)',
+    essencia: 'Conflito, justiça, lei. Odu da espada e da verdade cortante.',
+    missao: 'Corte. Às vezes o amor exige dizer não.',
+    sombra: 'Conflito, litigância, raiva represada.',
+    pratica: 'Escreva 1 carta que você não vai enviar. Deixe a raiva sair no papel.',
+    conexao: 'Okanran fala com Escorpião (P2) e Colérico (P3).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Ogunda',
+    pilar: 'odu',
+    titulo: 'Odu Ogunda (Ògúndá)',
+    essencia: 'Trabalho, forja, ofício. Odu do ferro, do caminho, da luta.',
+    missao: 'Trabalhe. O trabalho dignifica. Construa com as mãos.',
+    sombra: 'Esgotamento, vício em produtividade, viver só para o ofício.',
+    pratica: 'Pare 1 vez no meio do trabalho. Respire. Volte com presença.',
+    conexao: 'Ogunda fala com Construtor (P1·4) e Virgem (P2).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Osa',
+    pilar: 'odu',
+    titulo: 'Odu Osa (Ọ̀ṣá)',
+    essencia: 'Água doce, beleza, sentimento. Odu do feminino e do rio.',
+    missao: 'Sinta. A água não nega o que sente — flui.',
+    sombra: 'Drama, instabilidade, prender-se a quem não corresponde.',
+    pratica: 'Ande perto de água hoje (rio, mar, fonte). Se não houver, ouça 1 chuva gravada.',
+    conexao: 'Osa fala com Câncer (P2) e Trigêmeo Astral (P3).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Ika',
+    pilar: 'odu',
+    titulo: 'Odu Ika (Ìkà)',
+    essencia: 'Morte simbólica, fim de ciclo, transformação. Odu do necessário.',
+    missao: 'Termine o que precisa terminar. A morte é parte da vida.',
+    sombra: 'Apego, medo de perder, autossabotagem.',
+    pratica: 'Escreva 1 coisa que você precisa deixar morrer. Não a execute ainda; apenas nomeie.',
+    conexao: 'Ika fala com Lua Minguante (P2) e Hexagrama 23 (P5).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Oturupon',
+    pilar: 'odu',
+    titulo: 'Odu Oturupon (Ọ̀túrúpọ̀n)',
+    essencia: 'Doença e cura, prova e superação. Odu do que precisa ser atravessado.',
+    missao: 'Atravesse. A prova é a cura. A travessia, o remédio.',
+    sombra: 'Vitimismo, identificação com a dor, recusar o movimento.',
+    pratica: 'Identifique 1 prova sua atual. Pergunte: o que ela quer me ensinar?',
+    conexao: 'Oturupon fala com Capricórnio (P2) e Mente Neutra (P3·4).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Otua',
+    pilar: 'odu',
+    titulo: 'Odu Otua (Ọ̀túá)',
+    essencia: 'Espiritualidade, retiro, mundo invisível. Odu do orixá da criação.',
+    missao: 'Recolha-se. O mundo precisa de você inteiro, não disperso.',
+    sombra: 'Isolamento, espiritualidade como fuga, frieza.',
+    pratica: 'Reserve 30 min hoje em silêncio total. Sem música, sem tela, sem palavras.',
+    conexao: 'Otua fala com Buscador (P1·7) e Mente Divina (P3·11).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Irete',
+    pilar: 'odu',
+    titulo: 'Odu Irete (Ìrẹ́tẹ̀)',
+    essencia: 'Emboscada, cilada, provação. Odu do que vem sem aviso.',
+    missao: 'Vigie. O caminho tem sombras. Não ande desatento.',
+    sombra: 'Paranoia, vitimismo, ver cilada em tudo.',
+    pratica: 'Hoje, duvide de 1 certeza sua. Não a abandone, apenas questione.',
+    conexao: 'Irete fala com Cauteloso. Pergunte ao Mente Negativa (P3·2).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+  {
+    id: 'Ofun',
+    pilar: 'odu',
+    titulo: 'Odu Ofun (Ọ̀fún)',
+    essencia: 'Maturidade, ancianidade, conselho. Odu da sabedoria do tempo.',
+    missao: 'Escute os mais velhos. Sua sabedoria também amadurece.',
+    sombra: 'Conservadorismo, julgamento, fechar-se ao novo.',
+    pratica: 'Converse 10 min hoje com alguém com 20+ anos a mais que você. Só escute.',
+    conexao: 'Ofun fala com Humanista (P1·9) e Mente Neutra (P3·4).',
+    fonte: 'Verger 1973',
+    requer_terreiro: true,
+  },
+];
+
+// ─── Pilar 5 · I Ching · 64 hexagramas (King Wen, Wilhelm/Baynes 1950) ────
+// Cada hexagrama: nome canônico PT-BR + 1 linha de essência.
+// Profundidade completa (todas as linhas, mutação) virá em F-220.
+
+const PILAR_5_HEXAGRAMAS: SignificadoCurado[] = [
+  {
+    id: 1,
+    pilar: 'iching',
+    titulo: '1. O Criador (Qian)',
+    essencia: 'Pureza, força criadora, céu. Início absoluto. Liderança cósmica.',
+    missao: 'Comece com integridade. A força que cria exige verdade.',
+    sombra: 'Arrogância, força bruta, criar sem consciência.',
+    pratica: 'Hoje, crie algo — uma frase, uma decisão, uma semente. Co-crie com o cosmos.',
+    conexao: 'Hexagrama 1 (P5) com Pioneiro (P1·1) e Ogbe (P4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 2,
+    pilar: 'iching',
+    titulo: '2. O Receptivo (Kun)',
+    essencia: 'Terra, acolhimento, devoção. A força que recebe e nutre.',
+    missao: 'Receba. Sustente. Seja terra para outros recomeçarem.',
+    sombra: 'Subserviência, passividade, dissolução no outro.',
+    pratica: 'Acolha 1 pessoa ou ideia hoje sem corrigir, ensinar ou ajustar.',
+    conexao: 'Hexagrama 2 (P5) com Guardião (P1·6) e Câncer (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 3,
+    pilar: 'iching',
+    titulo: '3. A Dificuldade Inicial (Zhun)',
+    essencia: 'Início difícil, germinação. Força antes da forma.',
+    missao: 'Persevere no começo. O caos inicial é solo fértil.',
+    sombra: 'Confusão paralisante, desistência cedo demais.',
+    pratica: 'Identifique 1 projeto em dificuldade inicial. Dê 1 passo, mesmo mínimo.',
+    conexao: 'Hexagrama 3 (P5) com Pioneiro (P1·1) e Mente Negativa (P3·2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 4,
+    pilar: 'iching',
+    titulo: '4. A Insensatez Juvenil (Meng)',
+    essencia: 'Aprendizado, inocência, discípulo. Porta de entrada do saber.',
+    missao: 'Aprenda algo novo. Volte à postura de aluno. Humildade.',
+    sombra: 'Ignorância confortável, recusa de mestre.',
+    pratica: 'Peça ajuda 1 vez hoje. Aceite não saber.',
+    conexao: 'Hexagrama 4 (P5) com Buscador (P1·7) e Mente Positiva (P3·3).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 5,
+    pilar: 'iching',
+    titulo: '5. A Esperança (Xu)',
+    essencia: 'Nutrição paciente, água que espera. Preparação serena.',
+    missao: 'Espere o momento. Forçar é desperdiçar. Confie no tempo.',
+    sombra: 'Inércia, passividade disfarçada de paciência.',
+    pratica: 'Espere 24h antes de decidir algo. Só então decida.',
+    conexao: 'Hexagrama 5 (P5) com Mente Neutra (P3·4) e Capricórnio (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 6,
+    pilar: 'iching',
+    titulo: '6. O Conflito (Song)',
+    essencia: 'Disputa, tensão entre opostos. Aprender a conviver com o diferente.',
+    missao: 'Confronte com justiça. Não fuja do conflito necessário.',
+    sombra: 'Litígio, conflito por ego, guerra sem propósito.',
+    pratica: 'Tenha 1 conversa difícil que você vem evitando. Com respeito, mas tenha.',
+    conexao: 'Hexagrama 6 (P5) com Okanran (P4) e Colérico (P3).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 7,
+    pilar: 'iching',
+    titulo: '7. O Exército (Shi)',
+    essencia: 'Disciplina coletiva, ordem, comando. Força organizada.',
+    missao: 'Organize. Estruture. Lidere com clareza de papéis.',
+    sombra: 'Autoritarismo, militarismo, obediência cega.',
+    pratica: 'Organize 1 espaço hoje. Mesa, agenda, projeto. Estrutura liberta.',
+    conexao: 'Hexagrama 7 (P5) com Construtor (P1·4) e Obará (P4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 8,
+    pilar: 'iching',
+    titulo: '8. A Solidão (Bi)',
+    essencia: 'União verdadeira exige individuação. Unir-se sem perder-se.',
+    missao: 'Verifique: estou me unindo ou me dissolvendo?',
+    sombra: 'Fusão, dependência, perder-se no coletivo.',
+    pratica: 'Passe 1 hora sozinho(a) hoje. Só você consigo mesmo(a).',
+    conexao: 'Hexagrama 8 (P5) com Diplomata (P1·2) e Mente Neutra (P3·4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 9,
+    pilar: 'iching',
+    titulo: '9. A Força Domesticadora (Xiao Chu)',
+    essencia: 'Pequeno domínio, modéstia, freios. Suavidade que governa.',
+    missao: 'Use força pequena, em momento certo. Vencem os flexíveis.',
+    sombra: 'Timidez, autossabotagem, medo de crescer.',
+    pratica: 'Avance 1 passo maior do que se sente pronto(a). Verifique o resultado.',
+    conexao: 'Hexagrama 9 (P5) com Diplomata (P1·2) e Libra (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 10,
+    pilar: 'iching',
+    titulo: '10. O Passo do Javali (Lu)',
+    essencia: 'Cuidado com a pose. Atitude superficial é risco real.',
+    missao: 'Vá além da aparência. Aja com substância, não com forma.',
+    sombra: 'Hipocrisia, performance, viver de imagem.',
+    pratica: 'Pergunte-se: estou vivendo isso de verdade ou apenas parecendo?',
+    conexao: 'Hexagrama 10 (P5) com Hexagrama 61 (P5) — verdade interna.',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 11,
+    pilar: 'iching',
+    titulo: '11. A Paz (Tai)',
+    essencia: 'Céu e terra em harmonia. Prosperidade. Colheita.',
+    missao: 'Aproveite. A paz pede ação, não inércia. Use o tempo.',
+    sombra: 'Preguiça, conformismo, paz que é estagnação.',
+    pratica: 'Celebre 1 paz sua. Reconheça. Use o fôlego para 1 projeto.',
+    conexao: 'Hexagrama 11 (P5) com Lua Cheia (P2) e Realizador (P1·8).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 12,
+    pilar: 'iching',
+    titulo: '12. O Estagnamento (Pi)',
+    essencia: 'Céu e terra desconectados. Bloqueio. Estagnação.',
+    missao: 'Espere. Não force. Quando o sistema trava, reverencie o tempo.',
+    sombra: 'Depressão, inércia, desistência.',
+    pratica: 'Reconheça 1 área estagnada. Sem pressão, apenas veja. O que ela pede?',
+    conexao: 'Hexagrama 12 (P5) com Hexagrama 11 (P5) — par de opostos.',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 13,
+    pilar: 'iching',
+    titulo: '13. A Comunhão (Tong Ren)',
+    essencia: 'Pessoas em torno de um princípio. Comunidade de almas.',
+    missao: 'Reúna quem vibra na mesma frequência. Sem máscaras.',
+    sombra: 'Tribalismo, seita, comunidade que exclui.',
+    pratica: 'Conecte-se a 1 comunidade alinhada com seus valores hoje.',
+    conexao: 'Hexagrama 13 (P5) com Aquário (P2) e Diplomata (P1·2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 14,
+    pilar: 'iching',
+    titulo: '14. A Grande Posse (Da You)',
+    essencia: 'Abundância, poder acumulado. Risco e oportunidade.',
+    missao: 'Compartilhe. A grande posse exige grande responsabilidade.',
+    sombra: 'Avareza, exibição, poder sem propósito.',
+    pratica: 'Compartilhe 1 recurso seu (tempo, saber, dinheiro, atenção).',
+    conexao: 'Hexagrama 14 (P5) com Realizador (P1·8) e Irosu (P4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 15,
+    pilar: 'iching',
+    titulo: '15. A Modéstia (Qian)',
+    essencia: 'Humildade, simplicidade, discrição. O que é modesto prospera.',
+    missao: 'Diminua. O que parece pequeno carrega a maior força.',
+    sombra: 'Falsa modéstia, apagamento, esconder talento.',
+    pratica: 'Reconheça 1 qualidade sua sem diminuir. Apenas nomeie.',
+    conexao: 'Hexagrama 15 (P5) com Humanista (P1·9) e Mente Neutra (P3·4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 16,
+    pilar: 'iching',
+    titulo: '16. O Entusiasmo (Yu)',
+    essencia: 'Alegria que move. Energia que se propaga sem forçar.',
+    missao: 'Anime-se. A alegria genuína é contagiosa — use com propósito.',
+    sombra: 'Euforia fugaz, animação sem fundamento.',
+    pratica: 'Cultive 1 alegria simples hoje. Música, riso, dança, banho de sol.',
+    conexao: 'Hexagrama 16 (P5) com Criador (P1·3) e Sanguíneo (P3).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 17,
+    pilar: 'iching',
+    titulo: '17. O Acompanhamento (Sui)',
+    essencia: 'Seguir e ser seguido. Adaptação inteligente.',
+    missao: 'Acompanhe o que é maior. Adapte-se sem perder a si.',
+    sombra: 'Subserviência, camaleão, seguir multidão.',
+    pratica: 'Identifique quem você admira. Observe o que pode aprender.',
+    conexao: 'Hexagrama 17 (P5) com Diplomata (P1·2) e Sanguíneo (P3).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 18,
+    pilar: 'iching',
+    titulo: '18. A Obra que se Corrige (Gu)',
+    essencia: 'Decadência, trabalho a fazer. Consertar antes que seja tarde.',
+    missao: 'Repare. Volte ao que foi abandonado. Não finja que está tudo bem.',
+    sombra: 'Negligência, negação, esperar crise em vez de prevenir.',
+    pratica: 'Identifique 1 área da vida pedindo reparo. Dê 30 min a ela hoje.',
+    conexao: 'Hexagrama 18 (P5) com Construtor (P1·4) e Virgem (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 19,
+    pilar: 'iching',
+    titulo: '19. A Aproximação (Lin)',
+    essencia: 'Aproximar-se, presença que nutre. Grande em início.',
+    missao: 'Aproxime-se. Mas saiba: o auge exige recuo consciente.',
+    sombra: 'Apego, sucumbir ao outro, perder autonomia.',
+    pratica: 'Esteja mais perto de 1 pessoa importante hoje. Escuta profunda.',
+    conexao: 'Hexagrama 19 (P5) com Guardião (P1·6) e Câncer (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 20,
+    pilar: 'iching',
+    titulo: '20. A Contemplação (Guan)',
+    essencia: 'Ver, observar, contemplar. Olhar que transforma.',
+    missao: 'Observe. Saia do ruído. Contemple o que é maior.',
+    sombra: 'Passividade, alheamento, observação como fuga.',
+    pratica: 'Pare 10 min em lugar alto ou aberto. Olhe o horizonte. Não faça nada.',
+    conexao: 'Hexagrama 20 (P5) com Buscador (P1·7) e Mente Neutra (P3·4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 21,
+    pilar: 'iching',
+    titulo: '21. A Mordedura que Quebra (Shi He)',
+    essencia: 'Justiça que decide. Julgamento claro, sem ambiguidade.',
+    missao: 'Decida. Julgue o que precisa ser julgado. Veredito claro.',
+    sombra: 'Rigidez, crítica destrutiva, sentença sem misericórdia.',
+    pratica: 'Tome 1 decisão judicial hoje (interna ou externa). Seja claro(a) e justo(a).',
+    conexao: 'Hexagrama 21 (P5) com Obará (P4) e Capricórnio (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 22,
+    pilar: 'iching',
+    titulo: '22. A Graça (Bi)',
+    essencia: 'Beleza, ornamento, forma. O que seduz precisa de substância.',
+    missao: 'Decore com verdade. Beleza sem conteúdo é vazia.',
+    sombra: 'Vaidade, forma sem essência, aparência.',
+    pratica: 'Cuide de 1 detalhe estético hoje. Forma honrando o que ela veste.',
+    conexao: 'Hexagrama 22 (P5) com Touro (P2) e Realizador (P1·8).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 23,
+    pilar: 'iching',
+    titulo: '23. A Desintegração (Bo)',
+    essencia: 'A montanha desmorona. Fim de estrutura. Risco.',
+    missao: 'Reconheça o fim. Não segure o que caiu. Volte ao essencial.',
+    sombra: 'Negação, apego, reconstruir sem entender.',
+    pratica: 'Identifique 1 estrutura sua desmoronando. Não conserte ainda. Apenas veja.',
+    conexao: 'Hexagrama 23 (P5) com Ika (P4) e Lua Minguante (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 24,
+    pilar: 'iching',
+    titulo: '24. O Retorno (Fu)',
+    essencia: 'Volta, renovação. O solstício de inverno. Início que volta.',
+    missao: 'Retorne. Volte ao que é seu. Não reinvente, re-encontre.',
+    sombra: 'Nostalgia, estagnação, voltar para evitar o novo.',
+    pratica: 'Retome 1 prática antiga que você abandonou. 5 min. Só 5.',
+    conexao: 'Hexagrama 24 (P5) com Lua Nova (P2) e Hexagrama 1 (P5).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 25,
+    pilar: 'iching',
+    titulo: '25. A Inocência (Wu Wang)',
+    essencia: 'Pureza original, sem artifício. Verdade que se basta.',
+    missao: 'Seja. Não finja. O que é verdadeiro é simples.',
+    sombra: 'Ingênuo, inocente desprotegido, espontâneo sem ética.',
+    pratica: 'Hoje, diga 1 verdade sem cálculo. Sem estratégia, sem cálculo.',
+    conexao: 'Hexagrama 25 (P5) com Hexagrama 2 (P5) — par; com Iluminador (P1·11).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 26,
+    pilar: 'iching',
+    titulo: '26. A Força Domesticadora do Grande (Da Chu)',
+    essencia: 'Acumular com moderação. Conter a abundância com disciplina.',
+    missao: 'Domine. Contenha. Não queime a energia acumulada.',
+    sombra: 'Acúmulo, repressão, contenção que sufoca.',
+    pratica: 'Defina 1 limite claro hoje. Mantenha-o sem negociar.',
+    conexao: 'Hexagrama 26 (P5) com Construtor (P1·4) e Obará (P4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 27,
+    pilar: 'iching',
+    titulo: '27. A Boca (Yi)',
+    essencia: 'Nutrição, fala, alimentação. O que entra e o que sai.',
+    missao: 'Alimente-se bem. Fale o que precisa ser falado. Calcule o silêncio.',
+    sombra: 'Gula, fala excessiva, má nutrição.',
+    pratica: 'Faça 1 refeição em silêncio absoluto. Apenas coma. Apenas esteja.',
+    conexao: 'Hexagrama 27 (P5) com Corpo Físico (P3·5) e Gêmeos (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 28,
+    pilar: 'iching',
+    titulo: '28. A Excesso (Da Guo)',
+    essencia: 'Viga mestra vergada. Excesso de carga. Pressão extrema.',
+    missao: 'Reconheça o peso. Sustente enquanto pode. Solte antes de quebrar.',
+    sombra: 'Excesso crônico, sobrecarga, negação do limite.',
+    pratica: 'Recuse 1 demanda que você aceitaria por incapacidade de dizer não.',
+    conexao: 'Hexagrama 28 (P5) com Hexagrama 2 (P5) — risco sob sustentação.',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 29,
+    pilar: 'iching',
+    titulo: '29. O Abismo (Kan)',
+    essencia: 'Água sobre água. Repetição do risco. Coragem para atravessar.',
+    missao: 'Atravesse. Não há como contornar. A água ensina quem entra.',
+    sombra: 'Medo paralisante, vitimismo, sucessão de crises.',
+    pratica: 'Encare 1 medo pequeno hoje. Não o herói — apenas o encare.',
+    conexao: 'Hexagrama 29 (P5) com Escorpião (P2) e Melancólico (P3).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 30,
+    pilar: 'iching',
+    titulo: '30. O Aderente (Li)',
+    essencia: 'Fogo que brilha e queima. Clareza que une, mas pode ferir.',
+    missao: 'Ilumine. Mas respeite o espaço. Nem tudo deve ser iluminado.',
+    sombra: 'Intensidade excessiva, queimar para ser visto.',
+    pratica: 'Diminua 1 luz hoje — tela, exposição, opinião. Note o que ganha.',
+    conexao: 'Hexagrama 30 (P5) com Leão (P2) e Corpo Radiante (P3·10).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 31,
+    pilar: 'iching',
+    titulo: '31. A Influência (Xian)',
+    essencia: 'Atração, magnetismo, mútuo. Conectar com leveza.',
+    missao: 'Aproxime. O que é magnético atrai. Não force.',
+    sombra: 'Dependência, codependência, busca por validação.',
+    pratica: 'Diga 1 elogio verdadeiro hoje. Sem objetivo. Só verdade.',
+    conexao: 'Hexagrama 31 (P5) com Hexagrama 32 (P5) — par.',
+    fonte: 'Wilhelm/Baynes 1950',
+  } as SignificadoCurado,
+  {
+    id: 32,
+    pilar: 'iching',
+    titulo: '32. A Duração (Heng)',
+    essencia: 'Continuidade, constância, permanência no tempo.',
+    missao: 'Persevere. A duração constrói o que o entusiasmo começa.',
+    sombra: 'Estagnação, medo de mudar, duração como tédio.',
+    pratica: 'Mantenha 1 compromisso de longo prazo hoje. 1 ano de algo seu.',
+    conexao: 'Hexagrama 32 (P5) com Construtor (P1·4) e Touro (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 33,
+    pilar: 'iching',
+    titulo: '33. A Retirada (Dun)',
+    essencia: 'Recuo estratégico, preservação. A montanha sobre o céu.',
+    missao: 'Recue quando preciso. Não é covardia — é sabedoria.',
+    sombra: 'Fuga, isolamento, recuo prematuro.',
+    pratica: 'Diga 1 "não" sagrado hoje. Saia de 1 ambiente que te esvazia.',
+    conexao: 'Hexagrama 33 (P5) com Otua (P4) e Buscador (P1·7).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 34,
+    pilar: 'iching',
+    titulo: '34. O Poder do Grande (Da Zhuang)',
+    essencia: 'Força em ascensão. O trovão que cresce. Energia bruta.',
+    missao: 'Use a força com discernimento. Poder sem ética é violência.',
+    sombra: 'Força bruta, autoritarismo, potência sem propósito.',
+    pratica: 'Hoje, use 1 força sua (física, emocional, mental) com cuidado explícito.',
+    conexao: 'Hexagrama 34 (P5) com Colérico (P3) e Áries (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 35,
+    pilar: 'iching',
+    titulo: '35. O Progresso (Jin)',
+    essencia: 'Avanço, sol sobre a terra. Visibilidade e reconhecimento.',
+    missao: 'Avance. Seja visto(a). O progresso pede presença pública.',
+    sombra: 'Vaidade, exposição sem preparo, sucesso precoce.',
+    pratica: 'Mostre 1 trabalho seu. Publique, compartilhe, apresente.',
+    conexao: 'Hexagrama 35 (P5) com Corpo Radiante (P3·10) e Realizador (P1·8).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 36,
+    pilar: 'iching',
+    titulo: '36. O Escurecimento da Luz (Ming Yi)',
+    essencia: 'Luz ferida. Perseguição do brilho. Tempo de proteção.',
+    missao: 'Proteja a luz. Não brilhe onde será apagado(a). Recue.',
+    sombra: 'Iluminação forçada, vitimismo luminoso.',
+    pratica: 'Esconda 1 brilho seu hoje. Não precisa ser visto(a) o tempo todo.',
+    conexao: 'Hexagrama 36 (P5) com Oyeku (P4) e Mente Negativa (P3·2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 37,
+    pilar: 'iching',
+    titulo: '37. A Família (Jia Ren)',
+    essencia: 'Clareza nos papéis, lar, sustento. Estrutura íntima.',
+    missao: 'Cuide do lar. Defina papéis com amor e clareza.',
+    sombra: 'Disfunção familiar, papéis invertidos, sufocamento.',
+    pratica: 'Faça 1 gesto doméstico hoje. Cozinhar, arrumar, ouvir. Em casa.',
+    conexao: 'Hexagrama 37 (P5) com Câncer (P2) e Guardião (P1·6).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 38,
+    pilar: 'iching',
+    titulo: '38. A Oposição (Kui)',
+    essencia: 'Divergência, polaridades. Dois olhares, mesmo céu.',
+    missao: 'Honre o diferente. A oposição não é inimiga — é complementar.',
+    sombra: 'Ruptura, polarização, conflito sem síntese.',
+    pratica: 'Converse 5 min com quem pensa diferente de você. Escute o que puder.',
+    conexao: 'Hexagrama 38 (P5) com Hexagrama 39 (P5) — par de opostos.',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 39,
+    pilar: 'iching',
+    titulo: '39. O Obstáculo (Jian)',
+    essencia: 'Dificuldade, água na montanha. Voltar para avançar.',
+    missao: 'Contorne quando possível, atravesse quando inevitável.',
+    sombra: 'Paralisia, vitimismo, regressão crônica.',
+    pratica: 'Identifique 1 obstáculo seu. Pergunte: posso contornar? Devo atravessar?',
+    conexao: 'Hexagrama 39 (P5) com Hexagrama 38 (P5) — solução por via complementar.',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 40,
+    pilar: 'iching',
+    titulo: '40. A Libertação (Jie)',
+    essencia: 'Desatar, absolvição. Tempo de solução. Fardo aliviado.',
+    missao: 'Liberte. Solte. Volte ao caminho. O perdão começa em você.',
+    sombra: 'Voltar à culpa, autoinfligir, não merecer.',
+    pratica: 'Perdoe 1 pessoa ou a si mesmo(a) por 1 coisa específica. Em voz alta.',
+    conexao: 'Hexagrama 40 (P5) com Ika (P4) e Libertador (P1·5).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 41,
+    pilar: 'iching',
+    titulo: '41. A Diminuição (Sun)',
+    essencia: 'Encolhimento, oferta. Diminuir para aumentar.',
+    missao: 'Reduza. O que parece perda pode ser preparo.',
+    sombra: 'Autodiminuição excessiva, perda sem sentido.',
+    pratica: 'Corte 1 gasto ou hábito hoje. Sinta o espaço que abre.',
+    conexao: 'Hexagrama 41 (P5) com Hexagrama 42 (P5) — par de opostos.',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 42,
+    pilar: 'iching',
+    titulo: '42. O Aumento (Yi)',
+    essencia: 'Crescimento, acréscimo. Tempo de expandir.',
+    missao: 'Expanda. Aproveite o tempo de favor. Mas sem arrogância.',
+    sombra: 'Crescimento sem raiz, expansão sem lastro.',
+    pratica: 'Invista em 1 área sua de crescimento hoje. Tempo, dinheiro, atenção.',
+    conexao: 'Hexagrama 42 (P5) com Realizador (P1·8) e Irosu (P4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 43,
+    pilar: 'iching',
+    titulo: '43. A Decisão (Guai)',
+    essencia: 'Transbordar, decidir. Tempo de cortar e avançar.',
+    missao: 'Decida. Saia do limbo. O aguardo se esgotou.',
+    sombra: 'Decisão prematura, cortar sem motivo, impulsividade.',
+    pratica: 'Tome 1 decisão importante. Sem hesitação. Confirme o que já sabe.',
+    conexao: 'Hexagrama 43 (P5) com Owonrin (P4) e Libertador (P1·5).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 44,
+    pilar: 'iching',
+    titulo: '44. O Encontrar (Gou)',
+    essencia: 'Sedução, encontro com o oculto. Risco de ser pego.',
+    missao: 'Cuidado com o que seduz. O brilho pode ser armadilha.',
+    sombra: 'Ceder à tentação, confusão, encantamento.',
+    pratica: 'Hoje, recuse 1 tentação específica. Pequena, mas específica.',
+    conexao: 'Hexagrama 44 (P5) com Irete (P4) e Melancólico (P3).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 45,
+    pilar: 'iching',
+    titulo: '45. A Colheita (Gathering)',
+    essencia: 'Reunião, congregação. Suco da oferta. Colheita comunitária.',
+    missao: 'Colha. Una. Mas o líder verdadeiro sabe também servir.',
+    sombra: 'Centralismo, culto à personalidade, multidão cega.',
+    pratica: 'Reúna 1 grupo pequeno para 1 propósito simples. Sem agenda oculta.',
+    conexao: 'Hexagrama 45 (P5) com Humanista (P1·9) e Irosu (P4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 46,
+    pilar: 'iching',
+    titulo: '46. A Subida (Sheng)',
+    essencia: 'Crescer, avançar, penetrar. Madeira sobre a terra.',
+    missao: 'Suba. Reconheça. Avance sem perder a simplicidade.',
+    sombra: 'Ambição desmedida, perder a raiz no caminho.',
+    pratica: 'Dê 1 passo de ascensão hoje. Pode ser pequeno, mas consistente.',
+    conexao: 'Hexagrama 46 (P5) com Pioneiro (P1·1) e Sagitário (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 47,
+    pilar: 'iching',
+    titulo: '47. O Esgotamento (Kun)',
+    essencia: 'Lago seco, cansaço. Tempo de retiro e silêncio.',
+    missao: 'Descanse. A exaustão tem mensagem. O corpo sabe.',
+    sombra: 'Negação do limite, trabalhar até quebrar, apatia.',
+    pratica: 'Durma 30 min a mais hoje. Permita-se parar.',
+    conexao: 'Hexagrama 47 (P5) com Hexagrama 48 (P5) — par de opostos.',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 48,
+    pilar: 'iching',
+    titulo: '48. O Poço (Jing)',
+    essencia: 'Água que serve a todos. Fonte perene. O saber ancestral.',
+    missao: 'Aprofunde. Sirva. O poço alimenta sem distinção.',
+    sombra: 'Esgotamento do poço (recurso interno),serviço sem cuidado.',
+    pratica: 'Beba água com presença hoje. Sinta o que cada gole nutre.',
+    conexao: 'Hexagrama 48 (P5) com Otua (P4) e Buscador (P1·7).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 49,
+    pilar: 'iching',
+    titulo: '49. A Revolução (Ge)',
+    essencia: 'Mudança radical. Fogo sobre o lago. Tempo de transformação.',
+    missao: 'Mude. Não reforme — revolucione. O que serve de novo precisa nascer.',
+    sombra: 'Revolução sem propósito, destruição por paixão.',
+    pratica: 'Mude 1 hábito hoje. Não ajuste — troque. Outro, completamente outro.',
+    conexao: 'Hexagrama 49 (P5) com Escorpião (P2) e Libertador (P1·5).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 50,
+    pilar: 'iching',
+    titulo: '50. O Cachimbo (Ding)',
+    essencia: 'Vaso sagrado, alimento espiritual. O que oferece sustento sutil.',
+    missao: 'Ofereça. Sustente. A nutrição sutil vem do que você serve.',
+    sombra: 'Vazio disfarçado de oferta, ritual sem conteúdo.',
+    pratica: 'Ofereça 1 nutrição sutil hoje: música, silêncio, presença.',
+    conexao: 'Hexagrama 50 (P5) com Irosu (P4) e Guardião (P1·6).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 51,
+    pilar: 'iching',
+    titulo: '51. O Trovão (Zhen)',
+    essencia: 'O despertar, o choque que acorda. Início impulsivo e fecundo.',
+    missao: 'Desperte. Assuste-se com o que precisa assustar. Acorde.',
+    sombra: 'Trovão sem conteúdo, choque por choque.',
+    pratica: 'Acorde sem o celular. 1 minuto de silêncio antes da tela.',
+    conexao: 'Hexagrama 51 (P5) com Pioneiro (P1·1) e Áries (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 52,
+    pilar: 'iching',
+    titulo: '52. O Quietivo (Gen)',
+    essencia: 'Montanha, quietude, parar. O tempo é dentro.',
+    missao: 'Pare. Quietude. A montanha não se move para existir.',
+    sombra: 'Estagnação, inércia, parar por medo.',
+    pratica: 'Sente-se 15 min sem fazer nada. Sem celular, sem agenda, sem música.',
+    conexao: 'Hexagrama 52 (P5) com Buscador (P1·7) e Mente Neutra (P3·4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 53,
+    pilar: 'iching',
+    titulo: '53. O Desenvolvimento Gradual (Jian)',
+    essencia: 'Progresso lento, madeira sobre a montanha. O tempo amadurece.',
+    missao: 'Avance devagar. A árvore não apressa a floresta.',
+    sombra: 'Preguiça, lentidão disfarçada, medo de acelerar.',
+    pratica: 'Avance 1% a mais em 1 projeto longo. Sem pressa, mas com constância.',
+    conexao: 'Hexagrama 53 (P5) com Construtor (P1·4) e Touro (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 54,
+    pilar: 'iching',
+    titulo: '54. A Donzela (Gui Mei)',
+    essencia: 'Casamento, aliança, presença feminina. O que se move com leveza.',
+    missao: 'Alie-se. Busque parcerias com propósito. Mas sem perder a si.',
+    sombra: 'Dependência, aliança sem verdade, fusão.',
+    pratica: 'Renove 1 aliança ou promessa hoje. Pequena, mas consciente.',
+    conexao: 'Hexagrama 54 (P5) com Libra (P2) e Diplomata (P1·2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 55,
+    pilar: 'iching',
+    titulo: '55. A Abundância (Feng)',
+    essencia: 'Plenitude, auge, presença total. Mas efêmero.',
+    missao: 'Aproveite. A abundância é passagem — não se agarra.',
+    sombra: 'Apogeu que se eterniza, negação do declínio.',
+    pratica: 'Reconheça 1 auge seu. Celebre. Mas saiba: passará.',
+    conexao: 'Hexagrama 55 (P5) com Hexagrama 56 (P5) — par; Lua Cheia (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 56,
+    pilar: 'iching',
+    titulo: '56. O Andarilho (Lu)',
+    essencia: 'Estrangeiro, passageiro, sem lugar fixo. Perspectiva.',
+    missao: 'Não se fixe. A perspectiva vem de não estar totalmente em lugar nenhum.',
+    sombra: 'Indisponibilidade, não pertencer como defesa.',
+    pratica: 'Ande 1 caminho diferente hoje. Literal ou metaforicamente.',
+    conexao: 'Hexagrama 56 (P5) com Sagitário (P2) e Libertador (P1·5).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 57,
+    pilar: 'iching',
+    titulo: '57. O Suave (Xun)',
+    essencia: 'Vento, suavidade, penetração. O que entra sem forçar.',
+    missao: 'Suavize. A água vence a rocha não por força — por constância.',
+    sombra: 'Passividade, indecisão, dissolver-se no ambiente.',
+    pratica: 'Resolva 1 conflito com suavidade hoje. Escuta antes da fala.',
+    conexao: 'Hexagrama 57 (P5) com Diplomata (P1·2) e Sanguíneo (P3).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 58,
+    pilar: 'iching',
+    titulo: '58. O Alegre (Dui)',
+    essencia: 'Lago, contentamento, troca. A alegria que se compartilha.',
+    missao: 'Alegre-se. Compartilhe. A alegria dobra quando dividida.',
+    sombra: 'Alegria superficial, contentamento como fuga.',
+    pratica: 'Compartilhe 1 alegria genuína hoje. Conte a 1 pessoa, em voz alta.',
+    conexao: 'Hexagrama 58 (P5) com Criador (P1·3) e Sanguíneo (P3).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 59,
+    pilar: 'iching',
+    titulo: '59. A Dispersão (Huan)',
+    essencia: 'Dissolução de barreiras. Vento sobre a água. Abrir o sistema.',
+    missao: 'Abra. Permeie. O sistema se renova quando se deixa atravessar.',
+    sombra: 'Dispersão, fragmentação, perder o centro.',
+    pratica: 'Atravesse 1 barreira hoje. Converse com quem você evita.',
+    conexao: 'Hexagrama 59 (P5) com Aquário (P2) e Libertador (P1·5).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 60,
+    pilar: 'iching',
+    titulo: '60. A Limitação (Jie)',
+    essencia: 'Demarcar, limitar, definir. O que estabelece fronteiras.',
+    missao: 'Limite. Sem limite não há forma, não há cuidado, não há foco.',
+    sombra: 'Restrição excessiva, contenção sem propósito.',
+    pratica: 'Defina 1 limite claro hoje. Mantenha sem negociar.',
+    conexao: 'Hexagrama 60 (P5) com Construtor (P1·4) e Capricórnio (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 61,
+    pilar: 'iching',
+    titulo: '61. A Verdade Interior (Zhong Fu)',
+    essencia: 'Confiança no centro. Vento sobre o lago. Verdade silenciosa.',
+    missao: 'Confie no centro. A verdade interna se manifesta sem esforço.',
+    sombra: 'Ingênuo, confiante demais, ausência de discernimento.',
+    pratica: 'Tome 1 decisão pelo centro hoje. Não pela opinião dos outros.',
+    conexao: 'Hexagrama 61 (P5) com Iluminador (P1·11) e Hexagrama 10 (P5).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 62,
+    pilar: 'iching',
+    titulo: '62. O Pequeno Excedente (Xiao Guo)',
+    essencia: 'Pequeno demais para o peso. Trovão sobre a montanha. Cuidado.',
+    missao: 'Atue pequeno. Excesso de ambição esmaga o que é leve.',
+    sombra: 'Autodiminuição, medo de expandir.',
+    pratica: 'Faça 1 coisa pequena, mas com excelência. Não busque o grande.',
+    conexao: 'Hexagrama 62 (P5) com Virgem (P2) e Construtor (P1·4).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 63,
+    pilar: 'iching',
+    titulo: '63. Depois da Conclusão (Ji Ji)',
+    essencia: 'Depois da ordem, antes da desordem. Janela curta.',
+    missao: 'Aja agora. A ordem estabelecida é passagem. Prepare o próximo ciclo.',
+    sombra: 'Preguiça, achar que está tudo pronto, complacência.',
+    pratica: 'Identifique 1 conquista sua. Já preparou o próximo passo?',
+    conexao: 'Hexagrama 63 (P5) com Hexagrama 64 (P5) — par; Lua Minguante (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+  {
+    id: 64,
+    pilar: 'iching',
+    titulo: '64. Antes da Conclusão (Wei Ji)',
+    essencia: 'Antes da ordem. Trovão sobre a água. O momento crítico.',
+    missao: 'Vigie. Cuidado. Pequena falha agora derruba o que virá.',
+    sombra: 'Negligência, crer que tudo está garantido.',
+    pratica: 'Revise 1 detalhe importante hoje. A ordem se constrói nos detalhes.',
+    conexao: 'Hexagrama 64 (P5) com Hexagrama 63 (P5) — par; Lua Nova (P2).',
+    fonte: 'Wilhelm/Baynes 1950',
+  },
+];
+
+// ─── Escala temporal (D/S/Z/V) — Mandato ────────────────────────────────
+
+const ESCALA_TEMPORAL: SignificadoCurado[] = [
+  {
+    id: 'D',
+    pilar: 'cabala',
+    titulo: 'Escala · Dia',
+    essencia: 'Mandato para as próximas 24h. O ritmo do dia. Atenção ao instante.',
+    missao: 'O que faço AGORA? O que diz a respiração do dia?',
+    sombra: 'Reagir a tudo, viver em emergência.',
+    pratica: 'Verifique 1 vez: o que este dia está pedindo de você, em 1 frase.',
+    conexao: 'Dia fala com Lua (P2), Hexagrama do dia (P5) e Pilar 1 ativo.',
+    fonte: 'VISION §4 (Mandato); synthesis_v1 §5',
+  },
+  {
+    id: 'S',
+    pilar: 'cabala',
+    titulo: 'Escala · Semana',
+    essencia: 'Mandato para os próximos 7 dias. O ritmo de um arco semanal.',
+    missao: 'Onde estou nesta semana? O que se completa, o que começa?',
+    sombra: 'Acelerar demais, não respeitar o tempo da semana.',
+    pratica: 'Revise o que você plantou 7 dias atrás. O que brotou?',
+    conexao: 'Semana fala com Ano Pessoal (P1) e fases da Lua (P2).',
+    fonte: 'VISION §4',
+  },
+  {
+    id: 'Z',
+    pilar: 'cabala',
+    titulo: 'Escala · Zodíaco',
+    essencia: 'Mandato para o ciclo de 30 dias (trânsito solar). O ritmo do mês.',
+    missao: 'Que trânsito solar me atravessa este mês? O que ativa, o que pede atenção?',
+    sombra: 'Viver em função do calendário, perder o tempo interior.',
+    pratica: 'Verifique o trânsito do Sol. 1 planeta em aspecto forte. 1 prática em 1 frase.',
+    conexao: 'Zodíaco fala com signos (P2) e Dasha (P2·Védica).',
+    fonte: 'VISION §4',
+  },
+  {
+    id: 'V',
+    pilar: 'cabala',
+    titulo: 'Escala · Vida',
+    essencia: 'Mandato para o ciclo maior (ano pessoal, ciclo 9, fase da vida).',
+    missao: 'Que fase da vida estou vivendo? O que o ciclo maior pede?',
+    sombra: 'Projetar futuro infinito, perder o presente.',
+    pratica: 'Identifique o Ano Pessoal em que você está. 1 tema. 1 ação.',
+    conexao: 'Vida fala com Ano Pessoal (P1), Saturno retorna (P2), Mente Divina (P3·11).',
+    fonte: 'VISION §4',
+  },
+];
+
+// ─── Helpers de busca ────────────────────────────────────────────────────
+
+// ─── Visão geral por Pilar (entrada agregada) ────────────────────────────
+// Usada quando a API entrega apenas o Pilar ativo (ex: 'cabala') sem
+// o símbolo específico (ex: 11, 22). Permite entregar significado já
+// na página Diario, sem esperar F-220 expandir o contrato da API.
+
+export function significadoGenericoDoPilar(pilar: Pilar): SignificadoCurado {
+  const visoes: Record<Pilar, Omit<SignificadoCurado, 'id' | 'pilar'>> = {
+    cabala: {
+      titulo: 'Caminho de Vida',
+      essencia:
+        'Sua missão no mundo, lida pelo cálculo numerológico cabalístico. O número que emerge do seu nascimento revela o tema central desta encarnação.',
+      missao:
+        'Caminhe o número. Não a carreira, não o status — o número como prática diária de alinhamento.',
+      sombra:
+        'Viver o número do outro (família, expectativa, comparação) e não o seu. Confundir missão com performance.',
+      pratica:
+        'Anote 1 decisão sua recente. Ela veio do que você É (número), ou do que esperam de você?',
+      conexao:
+        'O Pilar 1 (Cabala) é o eixo — o número sintetiza o que os outros 4 Pilares detalhham.',
+      fonte: 'Sefer Yetzirah; Mispar Hechrachi',
+    },
+    astrologia: {
+      titulo: 'Céu do seu nascimento',
+      essencia:
+        'O mapa do céu no momento em que você nasceu. Sol, Lua, Ascendente, planetas, casas, aspectos — o cosmos fotografado no seu primeiro suspiro.',
+      missao:
+        'Use o céu como espelho, não como destino. O mapa mostra POTENCIAL; você escolhe o que cultivar.',
+      sombra: 'Determinismo, fatalismo, viver pelo horóscopo em vez de pelo livre-arbítrio.',
+      pratica: 'Leia 1 trânsito do dia. Não como previsão — como convite. O que ele ativa em você?',
+      conexao:
+        'O Pilar 2 (Astrologia) é a TEMPORALIDADE — o céu se move, o Pilar 1 (Cabala) é fixo.',
+      fonte: 'Brennan, Hellenistic Astrology (2017)',
+    },
+    tantrica: {
+      titulo: 'Anatomia sutil',
+      essencia:
+        'Os 11 corpos tântricos (kundalini yoga): do físico ao divino. Sua anatomia invisível, cotidiana, à mão.',
+      missao: 'Sinta o que está vivo. Cada corpo fala. Você tem 11 canais — use mais do que 1.',
+      sombra: 'Viver só no corpo 5 (físico), achar que "corpo sutil" é metáfora e não prática.',
+      pratica:
+        'Pare 1 min. Pergunte: qual corpo está mais ativo AGORA em mim? Físico? Emocional? Intuitivo?',
+      conexao: 'O Pilar 3 (Tântrica) é o CORPO — o que sente, o que respira, o que vibra.',
+      fonte: 'KRI 2007, Aquarian Teacher (Yogi Bhajan)',
+    },
+    odu: {
+      titulo: 'Ori do seu nascimento',
+      essencia:
+        'O Odu que rege sua chegada ao mundo. Fornece ancestralidade, Ori (cabeça), caminho de realização dentro da tradição iorubá.',
+      missao:
+        'Receba com respeito. O Odu não é "seu" — é um vínculo com terreiro, com ancestrais, com a tradição viva. Aprofunde com babalaô/yaô de sua confiança.',
+      sombra:
+        'Tratar Odu como produto, como curiosidade esotérica, como se pudesse ser interpretado sem terreiro e sem rito.',
+      pratica:
+        'Pesquise 1 Odu ancestral seu (pai, mãe, avó) e pergunte a 1 mais velho o que ele lembra. Comece pelo vínculo familiar.',
+      conexao: 'O Pilar 4 (Odu) é ANCESTRALIDADE — o que veio antes e sustenta o que está aqui.',
+      fonte: 'Verger 1973; Mbiti 1969',
+      requer_terreiro: true,
+    },
+    iching: {
+      titulo: 'Mutação do seu caminho',
+      essencia:
+        'O hexagrama (1-64) que rege sua jornada. Muda com o dia, com o mês, com a vida. Não é destino — é cenário do agora.',
+      missao:
+        'Consulte com regularidade. Não para "prever" — para ESCUTAR. O I Ching é o espelho da mudança.',
+      sombra: 'Viver consultando 100x por dia, viciar a leitura, substituir ação por consulta.',
+      pratica:
+        'Jogue 1 moeda 6 vezes (ouça o I Ching por 3 moedas). Anote o hexagrama. Releia em 7 dias.',
+      conexao:
+        'O Pilar 5 (I Ching) é MUTAÇÃO — o que muda no tempo, entre os outros 4 Pilares fixos.',
+      fonte: 'Wilhelm/Baynes, I Ching: O Livro das Mutações (1950)',
+    },
+  };
+  const v = visoes[pilar];
+  return { id: pilar, pilar, ...v };
+}
+
+const TODOS: SignificadoCurado[] = [
+  ...PILAR_1,
+  ...PILAR_1_BIRTHDAY,
+  ...PILAR_1_EXPRESSION,
+  ...PILAR_1_ANO_PESSOAL,
+  ...PILAR_2_SIGNOS,
+  ...PILAR_2_FASES_LUA,
+  ...PILAR_2_TRINITY,
+  ...PILAR_3_CORPOS,
+  ...PILAR_3_TRIGEMEO,
+  ...PILAR_3_TEMPERAMENTO,
+  ...PILAR_4,
+  ...PILAR_5_HEXAGRAMAS,
+  ...ESCALA_TEMPORAL,
+];
+
+/** Busca significado por pilar + identificador. Retorna undefined se ausente. */
+export function significadoPorPilar(
+  pilar: Pilar,
+  id: string | number
+): SignificadoCurado | undefined {
+  return TODOS.find((s) => s.pilar === pilar && String(s.id) === String(id));
+}
+
+/** Lista todas as entradas de um Pilar (sem séries repetidas, ex: 1-9 birthday). */
+export function significadosDoPilar(pilar: Pilar): SignificadoCurado[] {
+  return TODOS.filter((s) => s.pilar === pilar);
+}
+
+/** Estatísticas para curadores e cobertura. */
+export function coberturaSignificados(): Record<Pilar, number> {
+  return {
+    cabala: TODOS.filter((s) => s.pilar === 'cabala').length,
+    astrologia: TODOS.filter((s) => s.pilar === 'astrologia').length,
+    tantrica: TODOS.filter((s) => s.pilar === 'tantrica').length,
+    odu: TODOS.filter((s) => s.pilar === 'odu').length,
+    iching: TODOS.filter((s) => s.pilar === 'iching').length,
+  };
+}
+
+// ─── Significados específicos por Pilar (F-222) ────────────────────────────
+// ─── Significados específicos por Pilar (F-222) ────────────────────────────
+// Recebe os 5 Pilares (shape do core) e devolve 5 SignificadoCurado,
+// cada um referente ao SÍMBOLO ESPECÍFICO do Pilar (não visão genérica).
+// Ex.: life_path=11 → Significado "Iluminador"; sol_signo="Escorpião" →
+// "Sol em Escorpião". Fallback para visão genérica se símbolo ausente.
+
+// Shape mínimo dos 5 Pilares que o helper consome. Definido localmente
+// para evitar acoplamento ao core — só precisa dos campos de id.
+export interface PilarDadosCabala {
+  life_path: number;
+  birthday: number;
+  expression: number;
+  ano_pessoal: number;
+}
+export interface PilarDadosAstrologia {
+  sol_signo: string;
+  asc_signo: string | null;
+  lua_signo: string;
+  lua_fase: 'nova' | 'crescente' | 'cheia' | 'minguante';
+  trinity: { sombra: number; dom: number; graca: number };
+  trinity_dominante: 'sombra' | 'dom' | 'graca';
+}
+export interface PilarDadosTantrica {
+  corpo_predominante: number;
+  trigemeo: 'fisico' | 'astral' | 'mental';
+  temperamento_atual: 'sanguineo' | 'colerico' | 'melancolico' | 'fleumatico';
+}
+export interface PilarDadosOdu {
+  odu_principal: string;
+  odu_secundario: string | null;
+  fonte: 'Ifá' | 'Candomblé';
+}
+export interface PilarDadosIChing {
+  hexagrama_natal: number;
+  hexagrama_dia: number;
+  level: 'shadow' | 'gift' | 'siddhi';
+}
+export interface PilaresDados {
+  cabala: PilarDadosCabala;
+  astrologia: PilarDadosAstrologia;
+  tantrica: PilarDadosTantrica;
+  odu: PilarDadosOdu;
+  iching: PilarDadosIChing;
+}
+
+/** Resolve 1 SignificadoCurado específico OU a visão genérica do Pilar. */
+function resolverSignificado(pilar: Pilar, id: string | number): SignificadoCurado {
+  return significadoPorPilar(pilar, id) ?? significadoGenericoDoPilar(pilar);
+}
+
+/** Devolve os 5 Significados específicos (1 por Pilar) para um mapa. */
+export function significadosEspecificos(pilares: PilaresDados): {
+  cabala: SignificadoCurado;
+  astrologia: SignificadoCurado;
+  tantrica: SignificadoCurado;
+  odu: SignificadoCurado;
+  iching: SignificadoCurado;
+} {
+  return {
+    cabala: resolverSignificado('cabala', pilares.cabala.life_path),
+    astrologia: resolverSignificado('astrologia', pilares.astrologia.sol_signo),
+    tantrica: resolverSignificado('tantrica', pilares.tantrica.corpo_predominante),
+    odu: resolverSignificado('odu', pilares.odu.odu_principal),
+    iching: resolverSignificado('iching', pilares.iching.hexagrama_dia),
+  };
+}
