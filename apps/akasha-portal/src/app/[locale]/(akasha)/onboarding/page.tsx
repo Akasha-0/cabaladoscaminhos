@@ -205,7 +205,7 @@ export default function OnboardingPage() {
         await fetch('/api/akasha/chart', { method: 'POST' });
 
         if (intervalRef.current) clearInterval(intervalRef.current);
-        router.push(`/${locale}/mandala`);
+        router.push('/dashboard');
       } catch (e: unknown) {
         if (intervalRef.current) clearInterval(intervalRef.current);
         setError(e instanceof Error ? e.message : 'Ocorreu um erro inesperado.');

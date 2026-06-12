@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import MandalaChart from '@/components/akasha/MandalaChart';
+import { MandalaNarrativeLoader } from '@/components/akasha/MandalaNarrativeLoader';
 
 export const metadata = {
   title: 'Minha Mandala',
@@ -99,6 +100,11 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
           ⚠ Dados incompletos — complete seu perfil para uma leitura plena
         </a>
       )}
+
+      {/* F-229: ONE Profile + Síntese Narrativa — experiência primária */}
+      <div className="w-full max-w-xl">
+        <MandalaNarrativeLoader locale={locale} />
+      </div>
 
       <MandalaChart data={data} />
 
@@ -230,11 +236,31 @@ export default async function MandalaPage({ params }: { params: Promise<{ locale
 
       {/* Quick link to diary */}
       <a
+        href="/dashboard"
+        style={{
+          display: 'inline-block',
+          marginTop: '1rem',
+          padding: '8px 20px',
+          borderRadius: '100px',
+          background: 'rgba(124,92,255,0.15)',
+          border: '1px solid rgba(124,92,255,0.3)',
+          color: '#9D86FF',
+          fontSize: '0.8rem',
+          fontWeight: 600,
+          textDecoration: 'none',
+          letterSpacing: '0.03em',
+          transition: 'all 0.2s',
+        }}
+      >
+        → Análise Completa de Vida
+      </a>
+      <a
         href={`/${locale}/diario`}
         style={{
-          marginTop: '1.25rem',
+          display: 'block',
+          marginTop: '0.75rem',
           color: '#5C6691',
-          fontSize: '0.75rem',
+          fontSize: '0.7rem',
           textDecoration: 'none',
           letterSpacing: '0.03em',
           transition: 'color 0.2s',
