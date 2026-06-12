@@ -425,3 +425,15 @@ Próxima sessão:
 - [x] F-217 added, passes:true
 - [x] Lesson: .autonomous/lessons/session-n-plus-13-mock-path-vs-import-path.md
 - Próxima sessão: F-103 perf (N+1 query hunt) ou P1 test-pollution sprint (3+ sessions)
+
+## Sessão N+14 (2026-06-11) — F-218 require→ESM [2 commits, 17 LOC delta]
+- [x] STEP 0 rebuild: prior N+13 — feature_list só D-040 (BLOCKED human) + F-218 passes:null
+- [x] Discovery: F-218 typecheck stale; hexagrams.ts usa `require('./practices')` em módulo ESM sem ciclo real
+- [x] Decision: top-level import > lazy require (practices.ts só importa type de types.ts)
+- [x] Commit 1: `1dfd7881` — fix(core-iching): replace lazy require('./practices') com top-level ESM import (-11/+6)
+- [x] Commit 2: `docs(loop): N+14` — lesson + F-218 passes:true (a seguir)
+- [x] Triad: pnpm typecheck 0 errors; packages/core-iching 43/43 vitest; root 234/1367 (pre-existing pollution)
+- [x] Hook PostToolUse:Edit caught call site órfão após remover getPracticesById() — fixed inline
+- [x] Lesson: .autonomous/lessons/session-n-plus-14-f-218-require-to-esm.md
+- [x] feature_list: 38 → 39 (F-218 added passes:true, completed_at 2026-06-11)
+- Próxima sessão: F-218b (mentor/src/rag/* `process not found`) ou FASE 8 reverse-eng deepening (R-013 já tem engine; abrir R-021 akasha-core-deep-dive) ou test-pollution sprint

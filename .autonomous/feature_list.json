@@ -482,7 +482,9 @@
     "category": "maintenance",
     "priority": "P2",
     "description": "Typecheck fixes em packages/core-iching/src/hexagrams.ts (require not found) e packages/mentor/src/rag/* (process not found). 6+ errors TS2591 — falta @types/node nos packages que usam Node API. Fix: adicionar @types/node em packages/mentor e packages/core-iching, ou usar ESM imports.",
-    "output": "tsconfig.json fixes + @types/node installation + ESM conversion onde aplicavel"
+    "output": "tsconfig.json fixes + @types/node installation + ESM conversion onde aplicavel",
+    "passes": true,
+    "completed_at": "2026-06-11"
   },
   {
     "id": "D-040-progress",
