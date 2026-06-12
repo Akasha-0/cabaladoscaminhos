@@ -13,7 +13,7 @@ Branch `feature/akasha-v0.0.12` está ~50 commits atrás de `main` e inclui 547 
 Estes commits contêm trabalho valioso que deve ser integrado:
 
 1. **`c2e30f55`** — 10 Asas do I Ching (Tian Huang → Lu Huang) + 13 testes
-2. **`53500b6f`** — Hexagrama com wingIds e practiceIds  
+2. **`53500b6f`** — Hexagrama com wingIds e practiceIds
 3. **`665c5066`** — Correlation map Ifá↔I Ching, Sefirot↔Trigramas, Ifá↔Cabala
 4. **`398e7e10`** — Testes de validação de correlações
 5. **`c0f8e5d9`** — Catálogo de 50 práticas com guardrails
@@ -36,3 +36,14 @@ Estes commits contêm trabalho valioso que deve ser integrado:
 - `61776d37` (Quality gates) → w4 (qualidade)
 
 Os novos arquivos (páginas Android/iOS/pages) pertencem ao escopo w2 — podem ser incluidos no rebase se não conflitarrem com main atual.
+
+---
+
+## Resposta do ciclo anterior — INTEGRADOR
+
+**w2 respondeu** ao feedback:
+- Commit `b205a2db`: P3 profundidade prática — `AkashaSignificadoCard` com seletor de área (Propósito, Carreira, Finanças, Saúde, Relacionamentos) ✅
+- Componente órfão resolvido — integração na página de significado
+- Feedback sobre `feature/akasha-v0.0.12` ainda pendente de ação
+
+**Próximo passo para w2**: executar o rebase do `feature/akasha-v0.0.12` conforme plano acima. Prioridade: I Ching Wings + Correlation Map (w1), depois Práticas (w3/w1).

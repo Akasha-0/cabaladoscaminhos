@@ -1,8 +1,8 @@
-# STATE.md — Akasha OS (Ciclo 520)
+# STATE.md — Akasha OS (Ciclo 521)
 
 **Versão atual**: v0.1.1
 **Última atualização**: 2026-06-12
-**Status do projeto**: FASE 3 EM ANDAMENTO — auditoria de qualidade
+**Status do projeto**: FASE 3 EM ANDAMENTO
 
 ---
 
@@ -14,48 +14,51 @@
 
 ---
 
-## Status: Ciclo 520 (QUALIDADE)
+## Status: Ciclo 521
 
-### Achados de auditoria (AGENTS.md alignment check)
+### Ciclo 520 — Auditoria de qualidade (AGENTS.md)
 
-| Problema | Severidade | Domínio |
-|----------|-----------|---------|
-| `AkashaSignificadoCard` criado mas não importado em nenhuma página — componente órfão | P1 | w2 (UI) |
-| `chainOfReasoning` existe no motor mas não é renderizado na UI — dados disponíveis sem uso | P1 | w2 (UI) |
-| `cross-engine.ts` com params não utilizados (`_kab`, `_date`) — engenharia incompleta | P2 | w1 (motor) |
-| 127 lint warnings pré-existentes (unused vars, no-explicit-any) | P3 | w4 (qualidade) |
-| `feature/akasha-v0.0.12` — 7 commits bons mas base incompatível (50 commits atrás de main) | w2 action | w2 (UI) |
+| Achado | Severidade | Domínio | Status |
+|--------|-----------|---------|--------|
+| `AkashaSignificadoCard` órfão | P1 | w2 | ✅ Resolvido por w2 (`b205a2db`) |
+| `chainOfReasoning` no motor mas não na UI | P1 | w2 | ⏳ Pendente |
+| `cross-engine.ts` params nulos | P2 | w1 | ⏳ Pendente |
+| 127 lint warnings | P3 | w4 | ⏳ Dívida técnica |
+| `feature/akasha-v0.0.12` stale | w2 | w2 | ⏳ Rebase requerido |
 
-### Swarm — branch `feature/akasha-v0.0.12`
+### Swarm — feedback recebido
 
-- **Decisão**: MERGE ABORTADO — base incompatível com main atual
-- **Feedback**: `coordination/integrator/feedback-w2.md`
-- **Ação requerida**: rebase ou cherry-pick dos 6 commits bons sobre main fresco
+- **w2** respondeu a feedback e integrou P3 em `b205a2db`
+- `AkashaSignificadoCard` agora com seletor de área (Propósito, Carreira, Finanças, Saúde, Relacionamentos)
+- `feedback-w2.md` atualizado com plano de rebase para `feature/akasha-v0.0.12`
 
 ---
 
 ## 3 Próximos Passos Prioritários (FASE 3)
 
-1. **[P1] UI — chainOfReasoning**: renderizar "Como chegamos aqui" em `AreaCard` do dashboard
-   - `chainOfReasoning?: string[]` disponível em `AreaNarrativeUI` — só falta o componente UI
-   - **Impacto**: usuário entende o "porquê" de cada interpretação
+1. **[P1] UI — chainOfReasoning**: renderizar "Como chegamos aqui" em `AreaCard`
+   - Campo `chainOfReasoning?: string[]` disponível em `AreaNarrativeUI`
+   - UI não renderiza — seção colapsável "Como chegamos aqui" precisa ser construída
+   - **Impacto**: usuário entende o "porquê" de cada síntese Akasha
 
-2. **[P1] UI — integrar `AkashaSignificadoCard`** na página `/mapa/significado`
-   - Componente criado no ciclo 519 mas não importado — órfão
-   - **Impacto**: números de vida com interpretação profunda visível ao usuário
+2. **[P2] Motor — limpar `cross-engine.ts`**: params não utilizados ou conectar à UI
+   - `_kab`, `_date` em `cross-engine.ts` sem uso
+   - Ou consumir no corpo ou remover — engineering hygiene
+   - **Impacto**: código consistente
 
-3. **[P2] Motor — limpar `cross-engine.ts`**: remover params nulos ou conectar à UI
-   - Ou usar (`_kab`, `_date`) no corpo da função ou remover
-   - **Impacto**: engenharia consistente
+3. **[P3] Mobile — Capacitor APK**: build Android via Capacitor
+   - Capacitor configurado mas `sync` nunca executado
+   - `F-228` do backlog original
+   - **Impacto**: APK instalável para teste real
 
 ---
 
 ## Histórico de Decisões
 
-- DEC-001: Akasha type derivado de Odu family + Tantric body
-- DEC-002: Akasha strategy inspirada em Human Design (Strategy + Authority)
-- DEC-003: 6 áreas de vida cobrindo pirâmide de Maslow completa
-- DEC-004: shadow/gift/siddhi adaptados de Gene Keys (modelo próprio Akasha) **[INCERTO — necesita validação]**
+- DEC-001: Akasha type de Odu family + Tantric body
+- DEC-002: Akasha strategy inspirada em Human Design
+- DEC-003: 6 áreas de vida cobrindo Maslow
+- DEC-004: shadow/gift/siddhi — **[INCERTO]** modelo próprio inspirado em Gene Keys
 - DEC-005: `LifeArea` expandida para 9 áreas
 
 ---
