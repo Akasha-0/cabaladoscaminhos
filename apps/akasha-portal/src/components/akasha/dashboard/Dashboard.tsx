@@ -2,7 +2,7 @@
 
 /**
  * @akasha/portal — Dashboard Container
- * 
+ *
  * Container principal do Dashboard que orquestra todos os componentes.
  */
 
@@ -14,6 +14,8 @@ import { StreakCalendar } from './StreakCalendar';
 import { ProgressChart } from './ProgressChart';
 import { RitualHistory } from './RitualHistory';
 import { useDashboardData } from './hooks/useDashboardData';
+import { useAkashaSynthesis } from './hooks/useAkashaSynthesis';
+import { AkashaLifeAreasDashboard } from './AkashaLifeAreasDashboard';
 
 interface DashboardProps {
   userId: string;
@@ -134,9 +136,9 @@ const containerVariants = {
     },
   },
 };
-
 export function Dashboard({ userId }: DashboardProps) {
   const { data, loading, error, refetch } = useDashboardData({ userId });
+  const { synthesis, loading: synthesisLoading, refetch: refetchSynthesis } = useAkashaSynthesis({ userId });
 
   // Loading state
   if (loading) {
@@ -208,6 +210,15 @@ export function Dashboard({ userId }: DashboardProps) {
           animate="visible"
           className="space-y-6"
         >
+          {/* §SYNTHESIS-F1: 6 Áreas de Vida — Motor de Síntese Akasha */}
+          <section>
+            <AkashaLifeAreasDashboard
+              synthesis={synthesis ?? null}
+              loading={synthesisLoading}
+              onRefetch={refetchSynthesis}
+            />
+          </section>
+
           {/* Stats Grid */}
           <section>
             <DashboardStats userId={userId} />

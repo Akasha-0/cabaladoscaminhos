@@ -184,6 +184,43 @@ export default function RootLayout({
         <link key="canonical" rel="canonical" href={BASE_URL} />
         <link key="sitemap" rel="sitemap" href="/sitemap.xml" type="application/xml" />
         <link key="robots" rel="robots" href="/robots.txt" />
+        {/* iOS splash screens — Doc 26 §5 / F-228 */}
+        <link
+          key="splash-14promax"
+          rel="apple-touch-startup-image"
+          href="/splash/splash-iphone-14-pro-max-portrait.png"
+          media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+        />
+        <link
+          key="splash-14pro"
+          rel="apple-touch-startup-image"
+          href="/splash/splash-iphone-14-pro-portrait.png"
+          media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+        />
+        <link
+          key="splash-se"
+          rel="apple-touch-startup-image"
+          href="/splash/splash-iphone-se-portrait.png"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          key="splash-11pro-max"
+          rel="apple-touch-startup-image"
+          href="/splash/splash-iphone-11-pro-max-portrait.png"
+          media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+        />
+        <link
+          key="splash-ipad-11"
+          rel="apple-touch-startup-image"
+          href="/splash/splash-ipad-pro-11-portrait.png"
+          media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
+        <link
+          key="splash-ipad-129"
+          rel="apple-touch-startup-image"
+          href="/splash/splash-ipad-pro-129-portrait.png"
+          media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+        />
       </head>
       <body
         className={`${cinzel.variable} ${cormorant.variable} ${inter.variable} ${lora.variable} ${jetbrainsMono.variable} min-h-screen antialiased`}

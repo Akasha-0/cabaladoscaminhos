@@ -2,6 +2,10 @@ import type { BirthChart } from '@akasha/core-astrology';
 import { buildDailyEnergy } from '@/lib/application/agents/transit-engine';
 import { crossAnalyze } from './cross-engine';
 import { buildOduGlossary, formatGlossarySection } from './glossary';
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@/types';
+import type { AkashaSynthesis } from './synthesis-engine';
+import { aggregateHologram } from '@/lib/domain/mapa/hologram-aggregator';
+import { buildAkashaSynthesis } from './synthesis-engine';
 
 export interface DailyContent {
   date: string;
@@ -25,8 +29,9 @@ export interface DailyContent {
   overallTheme: string;
   /** AD-T5-F (AD-20.2): bloco de glossário injetado para downstream IA. */
   glossarySection?: string;
+  /** §SYNTHESIS-F1: síntese narrativa completa — 6 áreas de vida + decisão diária. */
+  synthesis?: AkashaSynthesis;
 }
-
 export function buildDailyContent(
   astrologyMap: unknown,
   kabalisticMap: unknown,
@@ -54,7 +59,29 @@ export function buildDailyContent(
     overallTheme: energy.overallTheme,
   };
 
+  // crossAnalyze legado — mantém interface Prisma inalterada
   const cross = crossAnalyze(enrichedAstroMap, kabalisticMap, tantricMap, oduBirth, date);
+
+  // §SYNTHESIS-F1: motor de síntese narrativa — 6 áreas de vida unificadas
+  let synthesis: AkashaSynthesis | undefined;
+  try {
+    const astro = astrologyMap as AstrologyMap | null;
+    const kab   = kabalisticMap as KabalisticMap | null;
+    const tantra = tantricMap as TantricMap | null;
+    const odu   = oduBirth as OduBirth | null;
+
+    const hologram = aggregateHologram({
+      astrologyMap: astro ?? null,
+      kabalisticMap: kab ?? null,
+      tantricMap: tantra ?? null,
+      oduBirth: odu ?? null,
+    });
+
+    synthesis = buildAkashaSynthesis(astro, kab, tantra, odu, hologram, date);
+  } catch (err) {
+    // Não quebra a API — síntese é enhancement, não bloco
+    console.warn('[daily-engine] AkashaSynthesis unavailable:', err);
+  }
 
   return {
     date: dateStr,
@@ -64,8 +91,8 @@ export function buildDailyContent(
     tensionPoint: cross.tensionPoint,
     moonPhase: energy.moonPhase?.name ?? 'Lua',
     overallTheme: energy.overallTheme ?? 'Equilíbrio',
-    // AD-T5-F (AD-20.2): glossário mínimo do Odu injetado no payload
     glossarySection: formatGlossarySection(buildOduGlossary(oduBirth)),
+    synthesis,
   };
 }
 
