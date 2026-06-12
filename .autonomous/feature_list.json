@@ -521,5 +521,27 @@
     "passes": true,
     "completed_at": "2026-06-12",
     "note": "Cleanup de componente órfão. Akasha portal não é app instalável — home page é a entrada, /sw.js faz cache offline."
+  },
+  {
+    "id": "F-221",
+    "phase": 6,
+    "category": "feature",
+    "priority": "P0",
+    "description": "Camada de Significado (Grimório) — 159 entradas PT-BR curadas (essencia, missao, sombra, pratica, conexao) cobrindo 5 Pilares: 43 Cabala, 19 Astrologia, 18 Tântrica, 15 Odu (requer_terreiro:true), 64 I Ching. Lib significados-curados.ts (1203 linhas) + componente SignificadoPilar.tsx (268 linhas). Função significadosEspecificos(pilares) resolve Significado ESPECÍFICO por símbolo (LP11 → Iluminador; Escorpião → Sol em Escorpião). Diario ganha Tela 04/04 que renderiza os 5 Significados. Cita fontes canônicas (Sefer Yetzirah, Brennan 2017, Yogi Bhajan KRI 2007, Verger 1973, Wilhelm/Baynes 1950).",
+    "output": "1471 LOC em 4 arquivos (2 novos, 2 modificados)",
+    "passes": true,
+    "completed_at": "2026-06-12",
+    "note": "VISION axioma 3: curadoria transforma dado em compreensão. Sem isso, usuário recebe números sem saber o que SIGNIFICAM. Pilar 4 (Odu) carrega requer_terreiro:true respeitando R-022 §4.4."
+  },
+  {
+    "id": "F-222",
+    "phase": 6,
+    "category": "feature",
+    "priority": "P1",
+    "description": "/api/akasha/mandato-do-dia expõe campo non-breaking `pilares` (shape: PilaresDados — 5 Pilares computados pelo akasha-core) ao lado de `mandato` e `mentor_hook`. Permite ao cliente resolver Significado ESPECÍFICO via significadosEspecificos(pilares). Backward compat preservada: campo `mandato` continua presente e idêntico.",
+    "output": "Adição non-breaking de 1 campo no response payload",
+    "passes": true,
+    "completed_at": "2026-06-12",
+    "note": "Pattern: novos campos em payload são sempre seguros se opcionais. Diario usa payload.pilares na Tela 04."
   }
 ]

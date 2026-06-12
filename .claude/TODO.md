@@ -188,4 +188,32 @@
        Commit `7cdc7729`. 463 linhas, 1 file.
 - [ ] F-206 — Tooltip por Pilar com citação — P2
 - [ ] F-207 — 3 perfis de teste reais (Ana, Bruno, Carlos) — P1
-
+- [x] F-221 — Camada de Significado (significados-curados) ✅ 2026-06-12
+      — `apps/akasha-portal/src/lib/grimoire/significados-curados.ts`
+      (70KB, 165 entradas PT-BR curadas) + `SignificadoPilar.tsx`
+      (componente reutilizável) + Diário Energético nova tela 04/04.
+      Cobre: 13 Life Path (P1), 9 Birthday/Expression/AnoPessoal,
+      12 signos solares (P2), 4 fases Lua, 3 tríade Sombra/Dom/Graça,
+      11 corpos tântricos (P3), 3 trigêmeos, 4 temperamentos gregos,
+      15 Odu (P4, requer_terreiro: true), 64 hexagramas (P5),
+      4 escala temporal (D/S/Z/V) + 5 visões gerais agregadas.
+      Gap central resolvido: usuário via só números; agora vê SIGNIFICADO.
+- [x] F-222 — Significado ESPECÍFICO (api expandida + Diario 5 cards) ✅
+      — API `/api/akasha/mandato-do-dia` agora retorna `pilares` (5 inteiros).
+      Diario Tela 4/4 renderiza Significado ESPECÍFICO dos 5 Pilares
+      (cabala.life_path → "Iluminador", sol_signo → "Sol em Escorpião",
+      corpo_predominante → "Aura", odu_principal → "Odu Ogbe",
+      hexagrama_dia → "51. O Trovão"). Pilar do dia com badge "HOJE".
+      NON-BREAKING: clientes que só leem `mandato` continuam ok.
+- [x] F-223 — Página `/mapa/significado` (5 Pilares lado a lado) ✅
+      — `apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx`
+      (server component). Renderiza Significado COMPLETO dos 5 Pilares
+      (não só visão geral) com hierarquia visual (título + subtítulo).
+      Footer ético Pilar 4 (R-022 §4.4) abaixo. Link "Ver Mandala visual".
+- [x] F-225 — Testes significados-curados (22/22 verde) ✅
+      — `tests/lib/grimoire/significados-curados.test.ts` (215 LOC).
+      Cobre: helpers básicos, cobertura por Pilar, campos obrigatórios,
+      ética Pilar 4 (15 Odu com requer_terreiro), visão genérica
+      para os 5 Pilares, fallback para símbolo desconhecido,
+      presença dos 64 hexagramas King Wen (1-64), 13 Life Paths,
+      15 Odu canônicos (Eji/Ogbe por design Phase 1).
