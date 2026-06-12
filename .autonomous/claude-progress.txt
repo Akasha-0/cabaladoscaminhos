@@ -368,3 +368,16 @@ arc) usando R-014/R-015/R-016.
 - [x] Triad: 298/298 akasha-core + 41/41 mentor, typecheck no new errors (8 pre-existing in mentor/core-iching per N+8 lesson)
 - [x] Lesson: .autonomous/lessons/session-n-plus-9-recovery-uncommitted-code.md
 - Próxima sessão: commit `apps/akasha-portal/src/lib/` (~60 files application layer) ou `apps/akasha-portal/src/app/api/akasha/{chat,dashboard,rag,ritual}/` (8 new API routes) ou `apps/akasha-portal/src/components/akasha/*` (10 new UI components)
+
+## Sessão N+10 (2026-06-11) — TYPECHECK UNBLOCK [2 commits]
+- [x] STEP 0 rebuild: prior session N+9 left 11 M + ~50 ?? in tree (FASE 6 lib/api/components, recovery)
+- [x] Identify: 8 TS2307 framer-motion errors blocking pnpm typecheck (session N+8 lesson recommendation)
+- [x] Decision: ambient .d.ts stub in apps/akasha-portal/src/types/framer-motion.d.ts (recomendado path)
+- [x] Commit 1: `7edbf67a` — fix(typecheck): add framer-motion ambient stub (96 LOC, motion.div/span/... + AnimatePresence mode=wait/sync/popLayout)
+- [x] Commit 2: `4d2d2324` — docs(loop): session-N+10 lesson
+- [x] Triad: pnpm typecheck 8→0 errors; pnpm test:run packages/ 460/460 verde (regression-free)
+- [x] Pre-existing infra issues NOT resolved (out of scope):
+  - `@eslint/js` missing → lint can't run
+  - 236/1367 tests failing in apps/akasha-portal (pre-existing pollution, cycles 102-113)
+- [x] Lesson: .autonomous/lessons/session-n-plus-10-typecheck-unblock.md
+- Próxima sessão: commit 4 top-level `apps/akasha-portal/src/lib/*` stubs (swarm.ts/life-areas.ts/rate-limit.ts/ritual-storage.ts) + 7 application/akasha/ files como FASE 6 lib-layer batch. NÃO tentar 236 testes quebrados; não tentar 8 API routes (precisa sprint separado). NÃO instalar framer-motion real (decisão humana pendente).
