@@ -1,8 +1,8 @@
-# STATE.md — Akasha OS (Ciclo 521)
+# STATE.md — Akasha OS (Ciclo 522)
 
-**Versão atual**: v0.1.1
+**Versão atual**: v0.1.2
 **Última atualização**: 2026-06-12
-**Status do projeto**: FASE 3 EM ANDAMENTO
+**Status do projeto**: FASE 3 EM ANDAMENTO — próximo: chainOfReasoning UI + Capacitor
 
 ---
 
@@ -14,42 +14,39 @@
 
 ---
 
-## Status: Ciclo 521
+## Status: Ciclo 522
 
-### Ciclo 520 — Auditoria de qualidade (AGENTS.md)
+### Ciclo 521 — Integração swarm w2
 
-| Achado | Severidade | Domínio | Status |
-|--------|-----------|---------|--------|
-| `AkashaSignificadoCard` órfão | P1 | w2 | ✅ Resolvido por w2 (`b205a2db`) |
-| `chainOfReasoning` no motor mas não na UI | P1 | w2 | ⏳ Pendente |
-| `cross-engine.ts` params nulos | P2 | w1 | ⏳ Pendente |
-| 127 lint warnings | P3 | w4 | ⏳ Dívida técnica |
-| `feature/akasha-v0.0.12` stale | w2 | w2 | ⏳ Rebase requerido |
+- w2 commitou 3 branches: `AkashaSignificadoCard` + seletor de área, `DimensaoCard` cleanup, `LifePathInsightCard`
+- Integrador consertou 3 type errors introduzidos por w2: `kab` → `kabalisticMap`, `lifePath` em tipo, `shadowTrap` em fallback
+- CHANGELOG consolidado em v0.1.2
+- w2 requests limpos (lifePath consertado)
 
-### Swarm — feedback recebido
+### FASE 3 — Estado
 
-- **w2** respondeu a feedback e integrou P3 em `b205a2db`
-- `AkashaSignificadoCard` agora com seletor de área (Propósito, Carreira, Finanças, Saúde, Relacionamentos)
-- `feedback-w2.md` atualizado com plano de rebase para `feature/akasha-v0.0.12`
+| Passo | Status | Commit |
+|-------|--------|--------|
+| P1 Unificar UI | ✅ Done | `5c14dc8f` |
+| P2 Cadeia de raciocínio (motor) | ✅ Done | `f728e8b6` |
+| P3 Profundidade prática (UI) | ✅ Done | `4095b47c`, `b205a2db` |
 
 ---
 
 ## 3 Próximos Passos Prioritários (FASE 3)
 
 1. **[P1] UI — chainOfReasoning**: renderizar "Como chegamos aqui" em `AreaCard`
-   - Campo `chainOfReasoning?: string[]` disponível em `AreaNarrativeUI`
-   - UI não renderiza — seção colapsável "Como chegamos aqui" precisa ser construída
+   - Campo `chainOfReasoning?: string[]` disponível em `AreaNarrativeUI` mas UI não renderiza
    - **Impacto**: usuário entende o "porquê" de cada síntese Akasha
 
-2. **[P2] Motor — limpar `cross-engine.ts`**: params não utilizados ou conectar à UI
-   - `_kab`, `_date` em `cross-engine.ts` sem uso
-   - Ou consumir no corpo ou remover — engineering hygiene
-   - **Impacto**: código consistente
+2. **[P2] Capacitor APK**: build Android funcional via Capacitor
+   - F-228 do backlog original
+   - `sync` nunca executado em produção
+   - **Impacto**: APK instalável para teste real em dispositivo
 
-3. **[P3] Mobile — Capacitor APK**: build Android via Capacitor
-   - Capacitor configurado mas `sync` nunca executado
-   - `F-228` do backlog original
-   - **Impacto**: APK instalável para teste real
+3. **[P3] Feedback loop**: coletar reação do usuário após 1ª síntese
+   - [INCERTO] — não implementado ainda
+   - **Impacto**: sistema aprende com uso real
 
 ---
 
@@ -65,6 +62,6 @@
 
 ## Notas de Execução
 
-- **TYPECHECK**: 0 erros
+- **TYPECHECK**: 0 erros em todos os 11 workspaces
 - **LINT**: 0 errors, 127 warnings (preexistentes)
-- **VERSION**: v0.1.1
+- **VERSION**: v0.1.2

@@ -1,23 +1,24 @@
-## v0.1.1 (2026-06-12)
+## v0.1.2 (2026-06-12)
 
 ### Fixed
-- **typecheck: 0 erros** (antes: 59):
-  +  - `MysticButton.tsx`: `Omit<..., 'size'>` → `Omit<..., 'size' | 'ref'>` — compatibilidade React 19
-  +  - `card.tsx` (6 componentes): `ComponentProps` → `ComponentPropsWithoutRef`
-  +  - `dialog.tsx` DialogHeader: idem
-  +  - `mapa/significado/page.tsx`: syntax error `) : ( : (` → `) : (` em ternário JSX
-- **P1 Unificar UI**: `PillarContribution` removido do dashboard — usuário vê só Akasha
+- **typecheck: 0 erros em todo o workspace** (antes: 59)
+- **P1 Unificar UI**: `PillarContribution` removido do dashboard e `DimensaoCard` — usuário vê só Akasha
 - **P2 Cadeia de raciocínio**: `chainOfReasoning[]` implementado nas 6 áreas de vida
+- **synthesis-engine.ts**: `kab` → `kabalisticMap`, `lifePath` no tipo `AkashaSynthesis` (ambas interfaces), `shadowTrap` no fallback
 
 ### Added
 - **Swarm readiness**: `coordination/DOMAINS.md`, `coordination/integrator/feedback-w*.md`, `setup-swarm.sh`
+- **P3 Profundidade prática**: `AkashaSignificadoCard` — Número de Vida com shadow/gift/siddhi, seletor interativo, ações práticas, afirmação
+- **P3 integração**: `AkashaSignificadoCard` na página `/mapa/significado`
+- **Dashboard**: `LifePathInsightCard` — Número de Vida com insight interpretativo no dashboard
+- `AkashaSynthesis.lifePath?: number` — exposto para o client
 - `AreaNarrativeUI.chainOfReasoning?: string[]` — cadeia de raciocínio por área
 - `interpretation-engine.ts`: exports `VidaInterpretation`, `AkashaLevel` via `@akasha/types`
 - `packages/akasha-core/package.json`: `@akasha/types` como workspace dep
 
 ### Notes
-- typecheck: limpo (0 erros)
-- P3 (profundidade prática — integrar interpretation-engine na UI) pendente
+- P1, P2, P3 da FASE 3 estão concluídos
+- typecheck: limpo em todos os 11 workspaces
 
 
 ## v0.0.9 (2026-06-08)
