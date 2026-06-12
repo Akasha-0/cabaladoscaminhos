@@ -34,22 +34,30 @@
 
 ## Status
 
-**Migration inicial Akasha v2:** `prisma/migrations/20260606000000_init_akasha_v2/`
-- Cria **10 modelos** do núcleo B2C canônico (User, BirthChart, Subscription, CreditEntry, Manifesto, DailyReading, RitualCompletion, Consultation, ChatMessage, GrimoireEntry)
+**Migration inicial Akasha v3:** `prisma/migrations/20260611000000_init_akasha_v3/`
+- Cria **11 modelos** do núcleo B2C canônico (User, BirthChart, Subscription, CreditEntry, Manifesto, DailyReading, RitualCompletion, Consultation, ChatMessage, PushSubscription, GrimoireEntry)
 - Cria **4 enums** (UserRole, Plan, SubStatus, ChatRole)
-- Cria **12 indexes** + **4 unique indexes** + **9 foreign keys**
-- **Ativa pgvector (Doc 25 §5):** `CREATE EXTENSION IF NOT EXISTS "vector"`, coluna `embedding vector(768)` em `grimoire`, índice `grimoire_embedding_idx` (`ivfflat` + `vector_cosine_ops`, `lists = 100`)
-- ⚠️ Substitui qualquer esquema anterior — a migração inicial canônica do
-  Akasha v2 destrói e recria as tabelas. Garanta backup antes de aplicar.
+- Cria **17 indexes** + **4 unique indexes** + **9 foreign keys** (todos apontando pra `akasha_users`)
+- `User` mapeia pra `akasha_users` (`@@map("akasha_users")`) — separado da
+  tabela `users` do Supabase Auth (GoTrue) pra evitar conflito de schema
+- Ativa a extensão `vector` (pgvector) — coluna `embedding vector(768)` em
+  `grimoire` é criada pelo sync script (`pnpm grimoire:sync`), não pela
+  migration (Drizzle/PgVector não tipa `vector` nativamente; coluna é
+  `Unsupported` no Prisma)
 
-**Migration de consentimento LGPD:** `prisma/migrations/20260606000001_add_user_consent_at/`
-- Adiciona coluna `consentAt DateTime?` em `users` (AD-T5-C: timestamp de consentimento LGPD)
+**Histórico:** a `20260611000000_init_akasha_v3` é a primeira migration versionada
+do schema B2C. As 5 tentativas anteriores (em `20260606*` e `20260607*`) foram
+removidas do diretório porque nunca foram aplicadas — o time usou
+`prisma db push` no lugar, e o `_prisma_migrations` table no Supabase tinha
+entradas de um schema legado (Operator/OperatorSession) que nada tinham a
+ver com o B2C atual. Foi feito um reset limpo: `_prisma_migrations` dropada,
+novas FKs recriadas manualmente pra apontar pra `akasha_users`, e a v3
+gerada via `prisma migrate diff --from-empty --to-schema` e marcada como
+aplicada com `prisma migrate resolve --applied`.
 
-A migration `20260606000000_init_akasha_v2` é a **fonte canônica de ativação do pgvector**: a coluna `embedding vector(768)` e o índice `ivfflat` são criados nela (não em uma migration separada). A coluna é `Unsupported` no Prisma (não tipa nativamente) — populada via `$executeRaw` por `src/lib/grimoire/sync.ts` (Ollama `nomic-embed-text`).
-
-Esta migration **ainda não foi aplicada** — o `DATABASE_URL` configurado em
-`.env` é um placeholder. Para um ambiente real, edite `.env` e rode
-`npx prisma migrate deploy` (prod) ou `npx prisma migrate dev` (dev).
+**Aviso:** `prisma db push` continua sendo perigoso — vai tentar
+`DROP TABLE "users"` (Supabase Auth) e quebrar o Auth. Use `prisma migrate`
+para mudanças daqui em diante.
 
 ## Workflow
 
@@ -129,23 +137,24 @@ npx prisma generate              # client gerado
 ## Estrutura atual
 
 ```
-prisma/
-├── schema.prisma                 # Fonte canônica (10 models)
-├── seed.ts                       # Seed (carrega dados iniciais)
-├── migrations/
-│   ├── README.md                 # Doc antiga (mantida p/ contexto)
-│   ├── migration_lock.toml       # Lock do provider
-│   ├── 20260606000000_init_akasha_v2/
-│   │   └── migration.sql         # ⭐ Migration inicial — 10 models B2C + pgvector
-│   └── 20260606000001_add_user_consent_at/
-│       └── migration.sql         # LGPD — coluna consentAt em users
+apps/akasha-portal/
+├── prisma.config.ts              # Prisma 7 config (datasource URL, schema path)
+├── prisma/
+│   ├── schema.prisma             # Fonte canônica (11 models)
+│   ├── migrations/
+│   │   ├── README.md             # Histórico
+│   │   ├── migration_lock.toml   # Lock do provider
+│   │   └── 20260611000000_init_akasha_v3/
+│   │       └── migration.sql     # ⭐ Migration inicial — 11 models B2C, akasha_users
+│   └── ...
 └── ...
 ```
 
 ## Próximas migrations (quando aplicável)
 
-- ⏳ **`grimoire` + pgvector** — model `GrimoireEntry` + **migration SQL manual** da
-  coluna `embedding vector(768)` e índice `ivfflat`/`hnsw` (ver a nota do topo).
-  A coluna e o índice já são criados pela `20260606000000_init_akasha_v2`; resta
-  validar a rotina de sincronização Ollama (`src/lib/grimoire/sync.ts`) e a
-  busca híbrida.
+⏳ **grimoire embeddings** — coluna `embedding vector(768)` e índice
+`ivfflat`/`hnsw` são criados pelo script de sync, não pela migration.
+Para promover pra migration versionada: criar
+`20260612000000_grimoire_pgvector/migration.sql` com `CREATE EXTENSION` +
+`ALTER TABLE grimoire ADD COLUMN embedding vector(768)` + `CREATE INDEX
+... USING ivfflat`.

@@ -1,3 +1,4 @@
+◇ injected env (0) from ../../.env // tip: ⌘ enable debugging { debug: true }
 -- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "public";
 
@@ -17,7 +18,7 @@ CREATE TYPE "SubStatus" AS ENUM ('ACTIVE', 'PAST_DUE', 'CANCELED');
 CREATE TYPE "ChatRole" AS ENUM ('USER', 'ORACLE');
 
 -- CreateTable
-CREATE TABLE "users" (
+CREATE TABLE "akasha_users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
@@ -31,11 +32,15 @@ CREATE TABLE "users" (
     "birthLatitude" DOUBLE PRECISION,
     "birthLongitude" DOUBLE PRECISION,
     "birthTimezone" TEXT,
+    "ichingMap" JSONB,
+    "ichingEnabled" BOOLEAN NOT NULL DEFAULT false,
     "intentionProfile" JSONB,
+    "consentAt" TIMESTAMP(3),
+    "pushEnabled" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "akasha_users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -105,6 +110,8 @@ CREATE TABLE "daily_readings" (
     "alert" TEXT NOT NULL,
     "tensionPoint" JSONB NOT NULL,
     "llmModel" TEXT,
+    "hexagram" TEXT,
+    "hexagramLines" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "daily_readings_pkey" PRIMARY KEY ("id")
@@ -125,6 +132,7 @@ CREATE TABLE "consultations" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "title" TEXT,
+    "hexagram" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -146,6 +154,20 @@ CREATE TABLE "chat_messages" (
 );
 
 -- CreateTable
+CREATE TABLE "push_subscriptions" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "endpoint" TEXT NOT NULL,
+    "p256dh" TEXT NOT NULL,
+    "auth" TEXT NOT NULL,
+    "userAgent" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "push_subscriptions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "grimoire" (
     "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
@@ -161,7 +183,7 @@ CREATE TABLE "grimoire" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+CREATE UNIQUE INDEX "akasha_users_email_key" ON "akasha_users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "birth_charts_userId_key" ON "birth_charts"("userId");
@@ -188,6 +210,12 @@ CREATE INDEX "consultations_userId_idx" ON "consultations"("userId");
 CREATE INDEX "chat_messages_consultationId_idx" ON "chat_messages"("consultationId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "push_subscriptions_endpoint_key" ON "push_subscriptions"("endpoint");
+
+-- CreateIndex
+CREATE INDEX "push_subscriptions_userId_idx" ON "push_subscriptions"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "grimoire_slug_key" ON "grimoire"("slug");
 
 -- CreateIndex
@@ -196,30 +224,30 @@ CREATE INDEX "grimoire_categoria_idx" ON "grimoire"("categoria");
 -- CreateIndex
 CREATE INDEX "grimoire_biblioteca_idx" ON "grimoire"("biblioteca");
 
--- CreateIndex
-CREATE INDEX "grimoire_embedding_idx"
-  ON "grimoire" USING ivfflat ("embedding" vector_cosine_ops) WITH (lists = 100);
+-- AddForeignKey
+ALTER TABLE "birth_charts" ADD CONSTRAINT "birth_charts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "akasha_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "birth_charts" ADD CONSTRAINT "birth_charts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "akasha_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "subscriptions" ADD CONSTRAINT "subscriptions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "credit_entries" ADD CONSTRAINT "credit_entries_userId_fkey" FOREIGN KEY ("userId") REFERENCES "akasha_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "credit_entries" ADD CONSTRAINT "credit_entries_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "manifestos" ADD CONSTRAINT "manifestos_userId_fkey" FOREIGN KEY ("userId") REFERENCES "akasha_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "manifestos" ADD CONSTRAINT "manifestos_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "daily_readings" ADD CONSTRAINT "daily_readings_userId_fkey" FOREIGN KEY ("userId") REFERENCES "akasha_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "daily_readings" ADD CONSTRAINT "daily_readings_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ritual_completions" ADD CONSTRAINT "ritual_completions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "akasha_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ritual_completions" ADD CONSTRAINT "ritual_completions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "consultations" ADD CONSTRAINT "consultations_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "consultations" ADD CONSTRAINT "consultations_userId_fkey" FOREIGN KEY ("userId") REFERENCES "akasha_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "chat_messages" ADD CONSTRAINT "chat_messages_consultationId_fkey" FOREIGN KEY ("consultationId") REFERENCES "consultations"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "push_subscriptions" ADD CONSTRAINT "push_subscriptions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "akasha_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
