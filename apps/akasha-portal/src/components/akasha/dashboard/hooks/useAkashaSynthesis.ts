@@ -76,6 +76,21 @@ export interface AreaNarrativeUI {
   transformationPrompt: string;
   sexualidade?: SexualidadeUI;
   dailyTransit?: DailyTransitUI;
+  /** F-226: Narrativas expandidas por pilar (4 blocos + síntese integrada) */
+  expandedNarrative?: ExpandedNarrativeUI;
+}
+
+export interface ExpandedNarrativeUI {
+  cabalaNarrative: string;
+  astrologiaNarrative: string;
+  tantraNarrative: string;
+  oduNarrative: string;
+  integratedNarrative: string;
+  practicalExample: string;
+  sourceLabel: string;
+}
+
+export interface TensionPointUI {
 }
 
 export interface DailyDecisionUI {

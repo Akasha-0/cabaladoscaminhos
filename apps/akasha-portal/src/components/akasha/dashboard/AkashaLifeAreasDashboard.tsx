@@ -28,11 +28,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, Star,
-  ArrowRight, Lightbulb, RefreshCw
+  ArrowRight, Lightbulb, RefreshCw,
+  type LucideIcon,
 } from 'lucide-react';
-import type { AkashaSynthesisUI, AreaNarrativeUI, DailyDecisionUI } from './hooks/useAkashaSynthesis';
-import type { LucideProps } from 'lucide-react';
-type LucideIcon = React.ComponentType<LucideProps>;
+import type {
+  AkashaSynthesisUI,
+  AreaNarrativeUI,
+  DailyDecisionUI,
+  SexualidadeUI,
+} from './hooks/useAkashaSynthesis';
 
 // ─── Área config ─────────────────────────────────────────────────────────────
 
@@ -240,6 +244,72 @@ function RitualBadge({ ritual }: {
   );
 }
 
+function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
+  const [showDetails, setShowDetails] = useState(false);
+  return (
+    <div className="border-t border-[#FF2D55]/20 pt-2 mt-2">
+      <button
+        onClick={() => setShowDetails(v => !v)}
+        className="flex items-center gap-2 w-full"
+      >
+        <span className="text-xs font-semibold text-[#FF2D55]/90 uppercase tracking-wider">Sexualidade</span>
+        <span className="text-xs text-white/40">{sexualidade.name}</span>
+        <span className="text-xs text-white/30 ml-auto">{showDetails ? '▲' : '▼'}</span>
+      </button>
+      {showDetails && (
+        <div className="mt-2 space-y-2">
+          {sexualidade.description && (
+            <p className="text-xs text-white/60 leading-relaxed">{sexualidade.description}</p>
+          )}
+          {sexualidade.desirePattern && (
+            <div className="bg-[#FF2D55]/08 rounded-lg p-2">
+              <p className="text-xs text-[#FF2D55]/80 font-medium">Padrão de Desejo</p>
+              <p className="text-xs text-white/50 mt-0.5">{sexualidade.desirePattern}</p>
+            </div>
+          )}
+          {sexualidade.turnOn.length > 0 && (
+            <div>
+              <p className="text-xs text-[#34C759]/80 font-medium mb-1">LIGA</p>
+              <div className="flex flex-wrap gap-1">
+                {sexualidade.turnOn.map((t, i) => (
+                  <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-[#34C759]/15 text-[#34C759]/80">{t}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          {sexualidade.turnOff.length > 0 && (
+            <div>
+              <p className="text-xs text-[#FF2D55]/80 font-medium mb-1">DESLIGA</p>
+              <div className="flex flex-wrap gap-1">
+                {sexualidade.turnOff.map((t, i) => (
+                  <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-[#FF2D55]/15 text-[#FF2D55]/80">{t}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          {sexualidade.hiddenDesires.length > 0 && (
+            <div>
+              <p className="text-xs text-[#FFD60A]/80 font-medium mb-1">Desejos Ocultos</p>
+              {sexualidade.hiddenDesires.map((d, i) => (
+                <div key={i} className="text-xs text-white/50 mb-1">
+                  <span className="text-white/70">{d.desire}</span>
+                  <span className="text-white/30"> → medo: {d.fear}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          {sexualidade.transformationKey && (
+            <div className="bg-[#AF52DE]/08 rounded-lg p-2">
+              <p className="text-xs text-[#AF52DE]/80 font-medium">Chave de Transformação</p>
+              <p className="text-xs text-white/50 mt-0.5">{sexualidade.transformationKey}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AreaCard({ areaKey, narrative }: {
   areaKey: string;
   narrative: AreaNarrativeUI;
@@ -335,6 +405,30 @@ function AreaCard({ areaKey, narrative }: {
                 odus={narrative.pillarContribution.odus}
                 astrologia={narrative.pillarContribution.astrologia}
               />
+
+              {/* F-226: Expanded Narrative — Akasha Synthesis */}
+              {narrative.expandedNarrative && (
+                <div className="bg-gradient-to-br from-[#AF52DE]/10 to-[#64D2FF]/10 border border-[#AF52DE]/20 rounded-xl p-3 space-y-2">
+                  <div className="flex items-center gap-1.5">
+                    <Star size={12} className="text-[#AF52DE]" />
+                    <span className="text-xs font-semibold text-[#AF52DE]/90 uppercase tracking-wider">Núcleo Akasha</span>
+                    <span className="text-xs text-white/30 ml-auto">{narrative.expandedNarrative.sourceLabel}</span>
+                  </div>
+                  <p className="text-xs text-white/80 leading-relaxed italic">
+                    {narrative.expandedNarrative.integratedNarrative}
+                  </p>
+                  {narrative.expandedNarrative.practicalExample && (
+                    <div className="flex items-start gap-1.5 mt-1">
+                      <Lightbulb size={10} className="text-[#FFD60A] mt-0.5 shrink-0" />
+                      <p className="text-xs text-[#FFD60A]/80 leading-relaxed">{narrative.expandedNarrative.practicalExample}</p>
+                    </div>
+                  )}
+                  {/* Sexualidade (F-225) — só na área Vitalidade */}
+                  {areaKey === 'vitalidadeEnergia' && narrative.sexualidade && (
+                    <SexualidadeSection sexualidade={narrative.sexualidade} />
+                  )}
+                </div>
+              )}
 
               {/* Practical advice */}
               <div className="bg-[#FF9500]/10 border border-[#FF9500]/20 rounded-xl p-3 space-y-1.5">
