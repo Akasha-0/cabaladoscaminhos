@@ -384,7 +384,14 @@ importers:
         specifier: ^5.5.4
         version: 5.9.3
 
-  packages/akasha-core: {}
+  packages/akasha-core:
+    dependencies:
+      '@akasha/mentor':
+        specifier: workspace:*
+        version: link:../mentor
+      zod:
+        specifier: ^3.25.76
+        version: 3.25.76
 
   packages/core-astrology:
     devDependencies:
