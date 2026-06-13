@@ -75,3 +75,8 @@
 - Auditoria local completa: typecheck 0, lint 0 errors em w2 domain (components/ + src/app/[locale]/)
 - Conflito dominio: src/app/api/** (backend/w1) no glob w2; reportado em requests.md
 - Commit requests.md: domain conflict filed
+
+## Ciclo 16 (2026-06-12)
+- Hygiene round 4: meu-dia/page.tsx - variavel dimComAutoridade + autoridade removida (dead code, sintese.autoridade usado no template)
+- Commit aea899b9
+- lint: 296 -> 295 warnings
