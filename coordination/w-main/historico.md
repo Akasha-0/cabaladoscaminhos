@@ -638,4 +638,8 @@
 
 - DEC-009: CRITICO — aguardando acao humana
 - Git: clean | Typecheck: 0 erros
+### Ciclo 652 — Auditoria Local (2026-06-12)
+
+- DEC-009: CRITICO — aguardando acao humana
+- Git: clean | Typecheck: 0 erros
 
