@@ -1,8 +1,8 @@
-# STATE.md — Akasha OS (Ciclo 533)
+# STATE.md — Akasha OS (Ciclo 540)
 
 **Versão atual**: v0.1.4
 **Última atualização**: 2026-06-12
-**Status do projeto**: FASE 3 — APK build OK, feedback loop
+**Status do projeto**: FASE 3 — DEC-004 resolvido, w2 ativa
 
 ---
 
@@ -14,14 +14,18 @@
 
 ---
 
-## Status: Ciclo 533
+## Status: Ciclo 540
+### Ciclo 540 — Auditoria + DEC-004 Resolvido
 
-### Ciclo 533 — Integração + Qualidade
+- DEC-004: RESOLVIDO — shadow/gift/siddhi = "Inspirado em Gene Keys (Richard Rudd)" na UI
+- w2 directive emitida: implementar atribuicao em `AkashaSignificadoCard.tsx`
+- TYPE/LINT: 0 errors
 
-- APK build: `cap-build.sh` auto-detecta Java/Android SDK, gera APK ~4.4MB em `android/app/build/outputs/apk/debug/`
-- AkashaSignificadoCard: mobile-responsive com `clamp()`, `defaultNivel` prop
-- Dead code: `LifePathInsightCard.tsx` (130 linhas, sem callers) removido
-- TYPE/LINT: 0 errors (suite limpa)
+### Ciclo 533 — v0.1.4 Release
+
+- APK build: `cap-build.sh` — APK ~4.4MB em `android/app/build/outputs/apk/debug/`
+- AkashaSignificadoCard: mobile-responsive + `defaultNivel` prop
+- Dead code: `LifePathInsightCard.tsx` (130 linhas) removido
 
 ---
 
@@ -32,35 +36,40 @@
 | P1 | Unificar UI | Done | AkashaSignificadoCard no dashboard |
 | P2 | Cadeia de raciocínio | Done | chainOfReasoning[] nas 6 áreas |
 | P3 | AkashaSignificadoCard | Done | shadow/gift/siddhi + 5 áreas |
-| P4 | Capacitor APK | Done | cap-build.sh — APK 4.4MB built |
-| P5 | Feedback loop | Pending | coletar reação após 1ª síntese |
+| P4 | Capacitor APK | Done | cap-build.sh — APK built |
+| P5 | DEC-004 Gene Keys | Done | Atribuicao na UI |
+| P6 | Feedback loop | Pending | coletar reacao após 1ª síntese |
 
 ---
 
 ## Backlog Priorizado
 
-1. **DEC-004 — Gene Keys**: shadow/gift/siddhi inspirado em Gene Keys. CRÍTICA antes de produção.
+1. **w2: atribuicao Gene Keys na UI** — implementar "Inspirado em Gene Keys (Richard Rudd)" no AkashaSignificadoCard
 2. **Test suite w4**: 241 failures ambientales. Corrigir ou ignorar?
-3. **w2 loop**: opera como pseudo-w2 sem worktree. Domain clarification necessária.
+3. **Swarm w2 worktree**: loop opera sem worktree — perlugar formalizacao
 
 ---
 
 ## Histórico de Decisões
 
 - DEC-001: Akasha type de Odu family + Tantric body
-- DEC-004: shadow/gift/siddhi — **[PENDENTE — CRÍTICA]**
+- DEC-002: Akasha strategy inspirada em Human Design
+- DEC-003: 6 áreas de vida cobrindo Maslow
+- DEC-004: shadow/gift/siddhi — **RESOLVIDO** — "Inspirado em Gene Keys (Richard Rudd)" na UI
 - DEC-006: Swarm sem worktree — loop opera como auditor
+- DEC-008: AMAB (Akasha Merge Bot) como entidade autonoma
 
 ---
 
 ## Swarm Status
 
 - `coordination/` infraestrutura existe
-- Loop/w* branches: **NÃO existem** — swarm não totalmente ativado
-- w2 loop: commits direto em main (pseudo-w2 sem worktree)
+- Loop/w* branches: **NÃO existem** — swarm usa commits diretos em main
+- w2 loop: commits como pseudo-w2, diretos em main
+- **DEC-004**: resolvido — w2 tem diretiva de implementar atribuicao
 
 ---
 * **VERSION**: v0.1.4
 * **TYPECHECK**: 0 errors
 * **LINT**: 0 errors
-* **GIT**: clean
+* **GIT**: clean (worktree)
