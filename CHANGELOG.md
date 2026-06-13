@@ -4,6 +4,15 @@ Todas as mudanças significativas são documentadas aqui — reverts e regressõ
 
 ---
 
+---
+
+## v0.1.6 (2026-06-12) — Ciclo 11
+
+### fix(w2): dead code cleanup
+- Removidos 7 warnings de codigo nao-utilizado: `DailyTransitUI` e `AUTHORITY_ICONS` de `AkashaLifeAreasDashboard`, `PILAR_ICONE` e `PILAR_NOME` de `DimensaoCard`, `locale` de `MandalaNarrative`
+- Lint: 306 → 299 warnings
+- **Impacto**: code hygiene, zero impacto para usuario
+
 ## v0.1.6 (2026-06-12) — Ciclo 10
 
 ### docs(w2): Ciclo 10 — auditoria local completa
