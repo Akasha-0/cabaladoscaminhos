@@ -10,6 +10,24 @@
 ### Removed
 - **LifePathInsightCard.tsx**: 130 linhas de dead code sem callers — `AkashaSignificadoCard` já cobre o caso de uso.
 
+## v0.1.5 (2026-06-12)
+
+### Added
+- **feat(w2): AkashaSignificadoCard no dashboard** (Ciclo 2): seletor shadow/gift/siddhi + 5 áreas no dashboard.
+- **feat(w2): cap-build.sh — APK Android completo** (Ciclo 6): APK ~4.4MB via `./cap-build.sh`.
+
+### Changed
+- **fix(w2): HTML entities + Next.js Link** (Ciclo 2): &ldquo;/&rdquo; corrigidos; <a> → <Link>.
+- **feat(w2): AkashaSignificadoCard mobile-responsive** (Ciclo 3): clamp() padding, maxWidth 100%.
+- **feat(w2): defaultNivel prop** (Ciclo 3): defaultNivel?: 'shadow'|'gift'|'siddhi'.
+
+### Removed
+- **chore(w2): LifePathInsightCard.tsx** (Ciclo 4): 130 linhas dead code.
+
+### Infrastructure
+- **docs: DEC-004 Gene Keys** — motor/glossário attribution ✅; UI pendente w2.
+- **docs: DEC-009 AMAB reset loop** — CRÍTICO, aguardando decisão humana.
+
 ## v0.1.3 (2026-06-12)
 
 ### Added
