@@ -1,34 +1,34 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 569)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 570)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 569
+**Ciclo**: 570
 
 ---
 
-## Ciclo 569 — Auditoria Local
+## Ciclo 570 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
 **v0.1.6**: release `c5e03f1b`
 **DEC-009**: CRITICO — AMAB reset loop, 3 opcoes no CHECKPOINT
-**DEC-004**: IMPLEMENTADO por w2 em Ciclo 14 — DEC counter reset
 
 ### Estado atual
 - w-main backlog: vazio — SEM dominio de codigo
 - DEC-009: CRITICO — human decision necessaria
-- DEC-004: **RESOLVIDO** — w2 Ciclo 14 implementou atribuicao Gene Keys
+- DEC-004: **RESOLVIDO** — w2 Ciclo 14
 - Auditoria features: todas intactas em main
 
 ### Estrutura Swarm
 - w-main: coordinator + integrator — audit only
-- w2: Ciclo 14 ativo — DEC-004 implementado
+- w2: Ciclo 14 ativo
 - w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
 ---
 
 ## Historico resumido
 
-- **569**: Auditoria | DEC-009 CRITICO, DEC-004 RESOLVIDO, v0.1.6
+- **570**: Auditoria | DEC-009 CRITICO, v0.1.6
+- **569**: Auditoria | DEC-009 CRITICO, DEC-004 RESOLVIDO
 - **568**: Auditoria | DEC-009 CRITICO, DEC-004 28 ciclos (w2 Ciclo 14 implementou)
 - **567**: Auditoria | DEC-009 CRITICO, DEC-004 27 ciclos
 - **566**: Auditoria | DEC-009 CRITICO, DEC-004 26 ciclos
@@ -49,15 +49,13 @@
 - **551**: Auditoria | DEC-009 CRITICO, DEC-004 11 ciclos
 - **550**: Auditoria | DEC-009 CRITICO, DEC-004 10 ciclos
 - **546**: Auditoria | v0.1.5 release
-- **538**: DEC-004 RESOLVIDO pelo integrator
-- **528**: DEC-004 CRITICA identificada
 - Detalhado: `historico.md`
 
 ## Proximos Passos
 
 1. **HUMAN**: decidir sobre AMAB reset loop (DEC-009) — 3 opcoes no CHECKPOINT
-2. **w2**: proximo item de backlog
-3. **HUMAN**: `./setup-swarm.sh` para worktrees
+2. **HUMAN**: `./setup-swarm.sh` para worktrees
+3. **w2**: proximo item de backlog
 
 ## Notas
 

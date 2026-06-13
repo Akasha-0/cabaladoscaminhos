@@ -3,20 +3,18 @@
 ## Pendente — aguardando integrador consolidar
 
 DEC-009 (AMAB reset loop): CRITICO — 3 opcoes no CHECKPOINT.md.
-DEC-004 (Gene Keys): **RESOLVIDO** — w2 Ciclo 14 implementou atribuicao UI.
 
-## Ciclo 569 (2026-06-12)
+## Ciclo 570 (2026-06-12)
 
 **Tipo**: Auditoria Local
 
 ### O que mudou
-- Cycle advanced: Ciclo 568 -> 569
-- DEC-004: w2 Ciclo 14 implementou atribuicao Gene Keys (commit 3f64039e)
+- Cycle advanced: Ciclo 569 -> 570
 - Typecheck: 0 erros | Git: clean
 
 ### Impacto para o usuario
-DEC-004: usuarios agora veem atribuicao "Inspirado em Gene Keys (Richard Rudd)" na UI.
+Nenhuma mudanca de funcionalidade.
 
 ### Status
-- [x] STATE.md atualizado (Ciclo 569)
+- [x] STATE.md atualizado (Ciclo 570)
 - [x] Typecheck verified
