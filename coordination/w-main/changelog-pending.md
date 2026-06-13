@@ -2,8 +2,8 @@
 
 ## Pendente — aguardando integrador consolidar
 
+DEC-004 (Gene Keys): RESOLVIDO — w2 NAO IMPLEMENTOU atribuicao ha 3 ciclos. Follow-up CRITICO emitido.
 DEC-004: w2 implementa atribuicao Gene Keys na UI.
-v0.1.4: release feito pelo integrator.
 
 ## Ciclo 541 (2026-06-12)
 
@@ -11,12 +11,15 @@ v0.1.4: release feito pelo integrator.
 
 ### O que mudou
 - Cycle advanced: Ciclo 540 -> 541
-- STATE.md: versao atualizada para v0.1.4 (release visivel em `9ab63f53`)
-- Typecheck: 0 erros | Git: clean
+- TYPECHECK: 4 erros em AkashaSignificadoCard.tsx (LifeArea import removida)
+- requests.md: novo item CRITICO adicionado — typecheck quebrado
+- STATE.md: Ciclo 541, typecheck quebrado documentado
+- Git: clean (tracked)
 
 ### Impacto para o usuario
-Nenhuma mudanca de funcionalidade.
+Build quebrado — nenhum deploy possivel ate w2 corrigir.
 
 ### Status
-- [x] STATE.md atualizado (Ciclo 541, v0.1.4)
-- [x] Typecheck verified
+- [x] STATE.md atualizado (Ciclo 541)
+- [x] requests.md atualizado (type error CRITICO)
+- [x] Typecheck documentado (4 erros)
