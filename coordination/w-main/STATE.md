@@ -1,50 +1,44 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 538)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 539)
 
 **Versao atual**: v0.1.3
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 538
+**Ciclo**: 539
 
 ---
 
-## Ciclo 538 — Auditoria Local
+## Ciclo 539 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
-**DEC-004**: CRITICA — Gene Keys, pendente ha 14 ciclos
-**w2**: historico.md untracked detectado (worktree ativa?)
-
----
-
-## Ciclo 537 — Auditoria Local
-
-**Typecheck**: 0 erros | **Git**: clean
-**DEC-004**: CRITICA — Gene Keys, pendente ha 13 ciclos
+**DEC-004**: CRITICA — Gene Keys, pendente ha 15 ciclos
+**w2**: Ciclo 7 ativo (`e0e29b0c`)
 
 ### Estado atual
 - w-main backlog: vazio — SEM dominio de codigo
-- DEC-004: CRITICA ha 13 ciclos — unico blocker para release
-- DEC-008: AMAB documentado — entidade autonoma que reverte violacoes de dominio
+- DEC-004: CRITICA ha 15 ciclos — unico blocker para release
 - Historico: 135 linhas (ciclos 522-536 arquivados)
 
 ### Estrutura Swarm
 - w-main: coordinator + integrator — audit only
-- w2: ATIVO — `daf61082` Ciclo 6, `4e0d96f3` APK build
+- w2: ATIVO — Ciclo 7 (`e0e29b0c`)
 - w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
 ---
 
 ## Historico resumido
 
-- **537**: Auditoria | DEC-004 CRITICA ha 13 ciclos
-- **536**: Auditoria | w2 ativo; AMAB documentado
+- **539**: Auditoria | DEC-004 CRITICA ha 15 ciclos
+- **538**: Auditoria | w2 Ciclo 7 ativo
+- **537**: Auditoria | historico 135 linhas
+- **536**: Auditoria | w2 visivel como ativo
 - **535**: Auditoria | domain confirmado zero globs
 - **534**: Auditoria | domain clarification
 - **533**: Auditoria + re-implementacao pillarContribution
 - **532**: Auditoria + ARCHITECTURE.md
-- Detalhado: `historico.md` (135 linhas)
+- Detalhado: `historico.md`
 
 ## Proximos Passos
 
-1. **DEC-004**: decisao humana CRITICA — shadow/gift/siddhi vs Gene Keys (ha 13 ciclos)
+1. **DEC-004**: decisao humana CRITICA — shadow/gift/siddhi vs Gene Keys (ha 15 ciclos)
 2. **w2**: AkashaSignificadoCard defaultNivel + Capacitor APK
 3. **w1**: cross-engine cleanup | **w4**: test failures
 
