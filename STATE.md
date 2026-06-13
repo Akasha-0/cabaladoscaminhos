@@ -1,7 +1,7 @@
-# STATE.md — Akasha OS (Ciclo 566)
+# STATE.md — Akasha OS (Ciclo 568)
 
 **Versao**: v0.1.6 | **Atualizacao**: 2026-06-12
-**Status**: FASE 3 — DEC-004 w2 UI 27 ciclos, PillarContribution 13+ ciclos
+**Status**: FASE 3 — DEC-004 w2 UI 29 ciclos, PillarContribution 15+ ciclos
 
 ---
 
@@ -21,15 +21,15 @@
 | P2 | Cadeia de raciocinio | Done |
 | P3 | AkashaSignificadoCard | Done |
 | P4 | Capacitor APK | Done |
-| P5 | DEC-004 Gene Keys UI | **PENDENTE — 27 ciclos** |
+| P5 | DEC-004 Gene Keys UI | **PENDENTE — 29 ciclos** |
 | P6 | Feedback loop | Pending |
 
 ---
 
 ## Backlog Priorizado
 
-1. **PillarContribution DOMAIN VIOLATION**: w2 w1 domain ao dashboard — 13+ ciclos
-2. **DEC-004 w2 UI attribution**: Gene Keys — 27 ciclos
+1. **PillarContribution DOMAIN VIOLATION**: w2 w1 domain ao dashboard — 15+ ciclos
+2. **DEC-004 w2 UI attribution**: Gene Keys — 29 ciclos
 3. **DEC-009 AMAB reset loop**: CRITICO
 4. **P1 offline APK**: bloqueado
 

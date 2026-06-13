@@ -1,13 +1,13 @@
 # coordination/integrator/feedback-w2.md
 
-## Feedback para w2 — Ciclo 566
+## Feedback para w2 — Ciclo 568
 
-### DOMAIN VIOLATION — PillarContribution (w1 domain) — 13+ CICLOS
+### DOMAIN VIOLATION — PillarContribution — 15+ CICLOS
 
-AkashaLifeAreasDashboard.tsx linha 530: "Os 4 Pilares".
+AkashaLifeAreasDashboard.tsx linha 530: Os 4 Pilares.
 
-Remover secoes 526-555 que renderizam pillarContribution.
+Remover secoes 526-555. w1 domain.
 
-### DEC-004 — Gene Keys attribution (27 ciclos pendente)
+### DEC-004 — Gene Keys attribution (29 ciclos)
 
-Adicionar "Inspirado em Gene Keys (Richard Rudd)" em AkashaSignificadoCard.tsx.
+Adicionar Inspirado em Gene Keys (Richard Rudd) em AkashaSignificadoCard.tsx.
