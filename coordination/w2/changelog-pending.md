@@ -11,5 +11,7 @@
 - **feat(w2): AkashaSignificadoCard prop defaultNivel** — `defaultNivel?: 'shadow' | 'gift' | 'siddhi'` adicionado ao componente; dashboard passa `akashaProfile.dominantFrequency` para abrir no nível correto do perfil (commit `6b4977f1`).
 
 ### Ciclo 5 (2026-06-12)
-- **feat(w2): cap-build.sh + Capacitor build local** — script `apps/akasha-portal/cap-build.sh` que copia `.next/standalone/` → `capacitor/` e roda `npx cap sync android` (commit `a61267da`). Scripts `cap:sync` e `cap:build` adicionados ao `package.json`. Usuário consegue gerar APK local com `pnpm cap:build`.
-- **fix(w2): .gitignore** — removida entrada `apps/akasha-portal/cap-build.sh` que acidentalmente ignorava o script de build (só o dir `capacitor/` build output deve ser ignorado).
+- **fix(w2): .gitignore** — removida entrada `apps/akasha-portal/cap-build.sh` que inadvertidamente ignorava o script (só o dir `capacitor/` build output deve ser ignorado).
+
+### Ciclo 6 (2026-06-12)
+- **feat(w2): cap-build.sh — APK build completo** — script `apps/akasha-portal/cap-build.sh` que auto-detecta Java (`/home/skynet/java/jdk-*`) e Android SDK, copia `.next/standalone/` → `capacitor/`, roda `npx cap sync android` e `./gradlew assembleDebug` (commit `4e0d96f3`). APK de 4.4MB gerado em `android/app/build/outputs/apk/debug/app-debug.apk`. Usuário consegue build local com `./cap-build.sh`.
