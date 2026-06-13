@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 25 | **Atualizacao**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 26 | **Atualizacao**: 2026-06-12
 
 ---
 
@@ -9,7 +9,7 @@
 
 ---
 
-## Status: Ciclo 25 — Auditoria Local (w2 clean, 3 bloqueados)
+## Status: Ciclo 26 — Auditoria Local (feedback Ciclo 592, DEC-009 15ciclos)
 
 | Verificação | Resultado |
 |-------------|-----------|
