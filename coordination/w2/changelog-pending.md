@@ -9,3 +9,7 @@
 ### Ciclo 3 (2026-06-12)
 - **feat(w2): AkashaSignificadoCard mobile-responsive** — padding com `clamp()` para adaptação automática sem media queries; `maxWidth: '100%'` + `overflow: 'hidden'` + `box-sizing: 'border-box'` no container outer (commit `6b4977f1`).
 - **feat(w2): AkashaSignificadoCard prop defaultNivel** — `defaultNivel?: 'shadow' | 'gift' | 'siddhi'` adicionado ao componente; dashboard passa `akashaProfile.dominantFrequency` para abrir no nível correto do perfil (commit `6b4977f1`).
+
+### Ciclo 5 (2026-06-12)
+- **feat(w2): cap-build.sh + Capacitor build local** — script `apps/akasha-portal/cap-build.sh` que copia `.next/standalone/` → `capacitor/` e roda `npx cap sync android` (commit `a61267da`). Scripts `cap:sync` e `cap:build` adicionados ao `package.json`. Usuário consegue gerar APK local com `pnpm cap:build`.
+- **fix(w2): .gitignore** — removida entrada `apps/akasha-portal/cap-build.sh` que acidentalmente ignorava o script de build (só o dir `capacitor/` build output deve ser ignorado).
