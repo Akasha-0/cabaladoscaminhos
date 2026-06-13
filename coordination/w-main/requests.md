@@ -64,3 +64,12 @@ Decisao: **Opcao (a) — Atribuicao + label "Inspirado em Gene Keys (Richard Rud
 - Ciclo 540: DEC-004 RESOLVIDO pelo integrator
 - Ciclo 538: DEC-004 CRITICA resolvida
 - Ciclo 528: DEC-004 CRITICA identificada
+
+---
+
+## ARQUIVO UNTRACKED — test_write.txt (w2 domain)
+
+**Dominio**: w2
+**Arquivo**: `apps/akasha-portal/src/components/akasha/test_write.txt`
+**Impacto**: nenhum (provavelmente debug) — mas indica que AMAB ou outro processo escreveu em w2 domain
+**Acao**: w2 — remover ou commit como parte do dominio w2
