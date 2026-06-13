@@ -1,7 +1,7 @@
-# STATE.md — Akasha OS (Ciclo 577)
+# STATE.md — Akasha OS (Ciclo 578)
 
 **Versao**: v0.1.6 | **Atualizacao**: 2026-06-12
-**Status**: FASE 3 — DEC-009 AMAB CRITICO, dominio API w1/w2 resolvido
+**Status**: FASE 3 — DEC-009 AMAB CRITICO, w2 domain 100% clean
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Backlog Priorizado
 
-1. **DEC-009 AMAB reset loop**: CRITICO — humano decide (3 opcoes CHECKPOINT)
+1. **DEC-009 AMAB reset loop**: CRITICO — humano decide (CHECKPOINT Ciclo 577)
 2. **P1 offline APK**: bloqueado (server.url online-only)
-3. **DOMAINS.md**: `src/app/api/**` transferido w2 -> w1 (lint warnings now w1 owner)
+3. **w1 lint warnings (295)**: ownership definida (src/app/api/** dominio w1)
 
 ---
 
@@ -38,12 +38,12 @@
 
 - DEC-004: Gene Keys attribution — **RESOLVIDO**
 - DEC-006: Swarm sem worktree
-- DEC-008/009: AMAB — CRITICO
-- Ciclo 577: src/app/api/** dominio w2->w1 (domain conflict w2 granted)
+- Ciclo 577: src/app/api/** dominio w2->w1
 
 ---
 
 ## Swarm Status
 
 - Loop/w* branches: NAO existem
-- Suite: 0 TS errors; 1 lint pre-existente
+- Suite: 0 TS errors; ~295 lint warnings (todos w1/w3)
+- w2 domain: **100% clean** (Ciclo 17 auditoria)
