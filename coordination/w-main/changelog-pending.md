@@ -3,19 +3,19 @@
 ## Pendente — aguardando integrador consolidar
 
 DEC-009 (AMAB reset loop): CRITICO — 3 opcoes no CHECKPOINT.md.
-DEC-004 (Gene Keys): w2 sem implementacao UI ha 23 ciclos.
+DEC-004 (Gene Keys): w2 sem implementacao UI ha 24 ciclos.
 
-## Ciclo 563 (2026-06-12)
+## Ciclo 564 (2026-06-12)
 
 **Tipo**: Auditoria Local
 
 ### O que mudou
-- Cycle advanced: Ciclo 562 -> 563
+- Cycle advanced: Ciclo 563 -> 564
 - Typecheck: 0 erros | Git: clean
 
 ### Impacto para o usuario
 Nenhuma mudanca de funcionalidade.
 
 ### Status
-- [x] STATE.md atualizado (Ciclo 563)
+- [x] STATE.md atualizado (Ciclo 564)
 - [x] Typecheck verified
