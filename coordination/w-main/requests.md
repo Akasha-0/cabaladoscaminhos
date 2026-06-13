@@ -1,10 +1,10 @@
 # coordination/w-main/requests.md
 
-## Escalacao ao Integrador — Ciclo 530 (v0.1.2)
+## Escalacao ao Integrador — Ciclo 533 (v0.1.2 vs STATE v0.1.3)
 
 **De**: w-main (main branch, executor + integrator)
 **Data**: 2026-06-12
-**Ciclo**: 530
+**Ciclo**: 533
 
 ---
 
@@ -12,11 +12,30 @@
 
 | # | Dominio | Item | Impacto | Prioridade |
 |---|---------|------|---------|-----------|
-| 1 | w-main | DEC-004 Gene Keys — decisao | Plagio vs confluencia natural vs renomear | CRITICA |
-| 2 | w2 | DOMÍNIO VIOLATION — AkashaSignificadoCard | w-main modificou dominio w2 ciclos 526-529 | CRITICA |
-| 3 | w-main | Capacitor APK (`npx cap sync`) | APK Android funcional, nunca executado | ALTA |
-| 4 | w4 | 241 test failures ambientais | Rotas ausentes + mock cookies + vitest | MEDIA |
-| 5 | w1 | cross-engine `_kab`/`_date` | Remover params orfaos | BAIXA |
+| 1 | integrator | **INCONSISTENCIA VERSION**: `VERSION`=v0.1.2, `STATE.md`=v0.1.3 | Desalinhamento de versao pode causar conflitos em releases | CRITICA |
+| 2 | w-main | DEC-004 Gene Keys — decisao | Plagio vs confluencia natural vs renomear | CRITICA |
+| 3 | w2 | AkashaSignificadoCard: defaultNivel ausente na pagina /mapa/significado | Bug: cartao sempre abre em 'gift' mesmo se perfil em sombra | ALTA |
+| 4 | w2 | DOMÍNIO VIOLATION — AkashaSignificadoCard | w-main modificou dominio w2 ciclos 526-529 | ALTA |
+| 5 | w4 | 241 test failures ambientais | Rotas ausentes + mock cookies + vitest | MEDIA |
+| 6 | w1 | cross-engine `_kab`/`_date` | Remover params orfaos | BAIXA |
+
+---
+
+### INCONSISTENCIA VERSION (CRITICA — Ciclo 533)
+
+**Problema**: `VERSION` file diz `v0.1.2` mas `coordination/w-main/STATE.md` (HEAD) diz `**Versao atual**: v0.1.3`.
+
+**Arquivos envolvidos**:
+- `VERSION`: `v0.1.2` (ultima atualizacao: ciclo 527)
+- `coordination/w-main/STATE.md` HEAD: `v0.1.3` (commit `2b1db054`)
+- `coordination/w-main/requests.md` this file: `v0.1.2` (ciclos anteriores)
+- `coordination/w-main/ARCHITECTURE.md`: `v0.1.2` (criado ciclo 532)
+
+**Provavel causa**: Processo automatizado (Akasha Merge Bot) atualizou STATE.md para v0.1.3 sem atualizar VERSION.
+
+**Acao requerida**: Integrador decide: (a) VERSAO=v0.1.3 e changelog atualizado, (b) VERSAO=v0.1.2 e STATE.md corrigido, (c) nova versao v0.1.4 com changelog.
+
+**NOTA**: w-main NAO pode modificar VERSION (PROIBIDO).
 
 ---
 
@@ -34,32 +53,19 @@
 
 ---
 
-### VIOLACAO DE DOMÍNIO — Ciclos 526-529
+### AkashaSignificadoCard defaultNivel BUG (w2)
 
-**Arquivo**: `apps/akasha-portal/src/components/akasha/AkashaSignificadoCard.tsx`
-**Arquivo**: `apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx`
-**Globs w2**: `apps/akasha-portal/src/components/**` — MATCHES
-**w-main modificou**: ciclos 526, 527, 528, 529 (defaultNivel fix, responsive CSS, dead import removal)
+**Problema**: `/mapa/significado` nao passa `defaultNivel` para `AkashaSignificadoCard`. Cartao SEMPRE abre em 'gift'.
 
-**Problema**: w-main vem modificando arquivos do dominio w2 sem autoridade. DOMAINS.md nao concede permissao para `apps/` em w-main.
-
-**Historico das mudancas w-main em dominio w2**:
-- Ciclo 526: AkashaSignificadoCard defaultNivel prop added
-- Ciclo 527: AkashaLifeAreasDashboard dead import removido
-- Ciclo 527: AkashaSignificadoCard padding responsivo (clamp, maxWidth, overflow)
-- Ciclo 529: akasha-significado-card.tsx defaultNivel fix (ja em w2 domain)
-
-**Acao requerida**: Integrador decide:
-(a) w2 absorve as mudancas como suas (worktree `loop/w2`)
-(b) w2 valida e rejeita se necessario
-(c) DOMAINS.md clarificado para evitar violacoes futuras
+**Arquivo**: `apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx`
+**Dominio**: w2
+**Acao**: w2 worktree — adicionar prop `defaultNivel` a partir do perfil Akasha do usuario
 
 ---
 
 ## Historico
 
-- Ciclo 529: TYPE VIOLATION detectada — w-main violou dominio w2
-- Ciclo 528: v0.1.3 released, DEC-004 pendente
-- Ciclo 527: Features (PriorityAreasQuickView, F-224, F-225)
-- Ciclo 526: defaultNivel regression fix (DOMINIO w2 — VIOLACAO)
-- Ciclo 523-525: P1 chainOfReasoning, audit cycles
+- Ciclo 533: INCONSISTENCIA VERSION detectada; AkashaSignificadoCard bug identificado
+- Ciclo 532: ARCHITECTURE.md criado
+- Ciclo 530-531: TYPE VIOLATION documentada; swarm blocker
+- Ciclo 528: DEC-004 CRITICA identificada
