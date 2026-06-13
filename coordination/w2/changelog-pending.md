@@ -2,11 +2,5 @@
 
 ## Entradas pendentes de changelog
 
-_Tudo integrado em v0.1.6 (Ciclo 10). Nenhuma entrada pendente._
+_Tudo integrado em v0.1.6. Nenhuma entrada pendente._
 
-
-### Ciclo 11 (2026-06-12)
-- **fix(w2): dead code cleanup** — removidos 7 warnings de codigo nao-utilizado: DailyTransitUI e AUTHORITY_ICONS de AkashaLifeAreasDashboard, PILAR_ICONE e PILAR_NOME de DimensaoCard, locale de MandalaNarrative. lint: 306 -> 299 warnings. Commit bd9de5c5. Impacto: code hygiene, zero impacto para usuario.
-
-### Ciclo 12 (2026-06-12)
-- **fix(w2): hygiene round 2** — removidos 3 imports nao-utilizados: significadoGenericoDoPilar de diario/page.tsx, GLOSSARIO de glossario/page.tsx, redirect de mural/page.tsx. lint: 299 -> 296 warnings. Commit 5c4c91be. Impacto: code hygiene, zero impacto para usuario.
