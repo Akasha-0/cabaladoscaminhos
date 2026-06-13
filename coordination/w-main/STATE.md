@@ -1,42 +1,41 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 597)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 599)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 597
+**Ciclo**: 599
 
 ---
 
-## Ciclo 597 — Auditoria Local
+## Ciclo 599 — Auditoria Local
 
-**Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: 0 errors, 293 warnings (pre-existentes)
-**Git**: clean
+**Typecheck**: 0 erros | **Git**: clean
+**DEC-009**: CRITICO — AMAB race (concurrent processes stepping on coordination files)
+**DEC-004**: ✅ RESOLVIDO — attribution visivel em AkashaSignificadoCard.tsx:130
+**TYPE MISMATCH**: LifeArea w1 — proposito/sexualidade/carreira nao estao no tipo
 
-### Auditoria: TYPE MISMATCH LifeArea — URGENTE, w1 domain
-- `LifeArea` em `correlation-engine.ts` = 3 valores: saude/financas/relacionamentos
-- `AkashaSignificadoCard.tsx:25` usa 9 valores via cast: proposito/carreira/sexualidade/espiritualidade
-- `as LifeArea` suprime TypeScript — build passa mas tipo nao reflete realidade
-- w1 domain: packages/akasha-core/src/correlation-engine.ts
+### Estrutura Swarm
+- w-main: concurrent processes (DEC-009 race confirmed)
+- w2: Ciclo 28 ativo
+- w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
-### itens de auditoria
+### Auditoria itens
 | Item | Status | Evidencia |
 |------|--------|-----------|
 | DEC-004 Gene Keys | ✅ RESOLVIDO | AkashaSignificadoCard.tsx:130 |
-| DEC-009 AMAB race | ⚠️ CRITICO | Working tree sobrescrita entre write/commit |
-| TYPE LifeArea | ⚠️ w1 URGENTE | 3 valores tipo vs 9 valores em uso |
-| DEC-008 Swarm | ⚠️ SEM worktree | ./setup-swarm.sh nunca executado |
+| DEC-009 AMAB race | ⚠️ CRITICO | Concurrent w-main processes |
+| PillarContribution UI | ✅ Removida | w2 Ciclo 14 |
+| TYPE LifeArea mismatch | ⚠️ w1 PENDING | AkashaSignificadoCard.tsx:24 |
 
----
-
-## Historico resumido
-- **597**: Auditoria | TYPE MISMATCH LifeArea concreto, DEC-009 race
-- **596**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1
-- Detalhado: historico.md
+## Historico
+- **599**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1, DEC-009 CRITICO
+- **597**: Auditoria | DEC-004 RESOLVIDO
+- Detalhado: `historico.md`
 
 ## Proximos Passos
-1. **HUMAN**: DEC-009 — 3 opcoes no CHECKPOINT (16 ciclos pendente)
-2. **w1**: TYPE LifeArea — expandir tipo para 9 valores
-3. **HUMAN**: ./setup-swarm.sh
+1. **HUMAN**: DEC-009 — 3 opcoes no CHECKPOINT
+2. **w1**: TYPE LifeArea — adicionar proposito/sexualidade/carreira, remover familia/criatividade
+3. **w2**: LifeArea type cast cleanup quando w1 publicar tipo corrigido
 
 ## Notas
-- w-main domain: coordination/w-main/** + docs/DECISIONS.md
+- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md`
 - PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
