@@ -119,3 +119,10 @@
 - Attribution DEC-004 (linha 130 JSX) sobreviveu ao loop
 - Feedback Ciclo 586: todos items resolvidos (PillarContribution, DEC-004, domain conflict)
 - DEC-009: CRITICO (reset loop w-main, nao w2)
+
+## Ciclo 23 (2026-06-12)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- sw.js verificado: cache-first estaticos, network-first transitos, stale-while-revalidate HTML, bypass sensivel — offline-ready no codigo
+- P1: server.url em capacitor.config.ts aguarda decisao (online-only vs offline-ready APK)
+- Attribution DEC-004 JSX (linha 130) sobreviveu
+- Feedback Ciclo 586: todos items resolvidos
