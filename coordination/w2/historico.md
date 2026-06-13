@@ -88,3 +88,8 @@
   - lint total: 295 warnings (todos w1/w3: src/app/api/, src/lib/, scripts/, android/)
 - 0 hygiene items remaining em w2 domain
 - Backlog: 3 itens bloqueados (P1 Offline APK, P3 E2E, P3 LifeArea)
+
+## Ciclo 18 (2026-06-12)
+- Domain glob corrigido: src/app/api/** transferido para w1 (feedback Ciclo 577 do integrator)
+- Glob w2 agora: components/** + [locale]/** + dashboard/** + root app files + public/**
+- Commit 3b044e2a
