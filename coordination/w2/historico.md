@@ -108,3 +108,8 @@
 - lint total: 295 (todos w1/w3)
 - requests.md: limpo (todos resolvidos)
 - 4 auditorias consecutivas clean (Ciclos 15, 17, 19, 20)
+
+## Ciclo 21 (2026-06-12)
+- DEC-004 REABERTO: attribution "Inspirado em Gene Keys (Richard Rudd)" agora visivel em AkashaSignificadoCard.tsx (JSX, nao so JSDoc)
+- Commit d250f893
+- typecheck: 0; lint: 295 (sem mudanca)

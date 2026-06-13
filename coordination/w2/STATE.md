@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 20 | **Atualizacao**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 21 | **Atualizacao**: 2026-06-12
 
 ---
 
@@ -9,7 +9,7 @@
 
 ---
 
-## Status: Ciclo 20 — Auditoria Local (w2 100% clean, 4 auditorias consecutivas clean)
+## Status: Ciclo 21 — DEC-004 attribution visible in JSX
 
 | Verificação | Resultado |
 |-------------|-----------|
