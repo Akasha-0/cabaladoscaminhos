@@ -47,3 +47,11 @@
   - MandalaNarrative: locale
 - test_write.txt removido
 - Commit bd9de5c5
+
+## Ciclo 12 (2026-06-12)
+- Hygiene round 2: removed 3 more unused imports
+  - diario/page.tsx: significadoGenericoDoPilar
+  - glossario/page.tsx: GLOSSARIO
+  - mural/page.tsx: redirect
+- lint: 299 -> 296 warnings
+- Commit 5c4c91be
