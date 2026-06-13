@@ -6,43 +6,54 @@
 
 ---
 
-## Ciclo 526 — Auditoria Local (compacto)
+## Ciclo 526 — defaultNivel regression + auditoria
 
-**Build**: ✅ `cd apps/akasha-portal && pnpm build` — 46 páginas, exit 0
 **Typecheck**: 0 erros ✅
-**Test suite**: 480 failed / 1200 passed — falhas pré-existentes (domínio w4)
-**Tipo**: CICLO DE AUDITORIA LOCAL
+**Commit**: `6b4977f1`
 
-### Ações deste ciclo
+**Item**: Corrigir AkashaSignificadoCard — `defaultNivel` hardcoded 'gift'.
 
-- `historico.md` criado — archiva ciclos 522-525 (STATE compactado de ~90 para ~50 linhas)
-- `requests.md` atualizado — escalation `./setup-swarm.sh` mais clara e prioritária
-- Git status: clean
+- `AkashaSignificadoCard` SEMPRE abria em 'gift' mesmo se o perfil estava em sombra
+- Padrão idêntico ao que foi corrigido no `LifePathInsightCard` no ciclo 524
+- Adicionado prop `defaultNivel?: 'shadow' | 'gift' | 'siddhi'`
+- Dashboard passa `akashaProfile.dominantFrequency`
+- Also: padding responsivo com clamp() + maxWidth: 100% + overflow: hidden
+- **Impacto**: usuário vê a interpretação no nível real do perfil dele
 
-### cross-engine.ts — P2 pendente
+**Auditoria adicional**:
+- `./setup-swarm.sh` bloqueado há 4 ciclos — escalar para integrador humano
+-historico.md criado por outro processo (não modificar)
+- LifePathInsightCard importado mas não usado na render (w2 substituiu por AkashaSignificadoCard — decisão de design, não regressão)
 
-- `_kab` em `detectTension` e `detectSync` — param não utilizado
-- `_date` em `buildRitual` — param não utilizado
-- Domínio w1 — requer worktree `loop/w-main` para isolar trabalho
+---
+
+## Ciclo 525 — F-224 dailyTransit rendering
+
+**Typecheck**: 0 erros ✅
+**Commit**: `6b541bf0`
+
+**Item**: Renderizar `dailyTransit.todayPhrase` em cada Área expandida.
+- `deriveDailyTransitOverlay()` gera dados para todas as 6 áreas — nunca renderizados
+- **Impacto**: usuário vê trânsito de HOJE (astrologia/Odu/Tantra) antes da prática
 
 ---
 
 ## Histórico de ciclos
 
-- **Ciclo 526** ✅: Auditoria — historico.md criado, requests.md atualizado
-- **Ciclo 525** ✅: Auditoria — build verify, coordination files
-- **Ciclo 524** ✅: PriorityAreasQuickView — top 3 áreas, regressão corrigida
-- **Ciclo 523** ✅: Auditoria — 480 test failures, blocker swarm identificado
+- **Ciclo 526** ✅: defaultNivel fix + auditoria
+- **Ciclo 525** ✅: dailyTransit.todayPhrase renderizado na UI
+- **Ciclo 524** ✅: PriorityAreasQuickView
+- **Ciclo 523** ✅: Auditoria — 480 test failures (pré-existentes)
 - **Ciclo 522** ✅: Auditoria — P1 chainOfReasoning COMPLETO
-- Detalhes completos: `historico.md`
+- Detalhes: `historico.md`
 
 ---
 
 ## Próximos Passos
 
-1. **HUMAN ACTION**: `./setup-swarm.sh` para criar worktrees — desbloqueia todo o swarm
-2. **w1 (motor)**: P2 cross-engine.ts cleanup (`_kab`, `_date`) — após worktree
-3. **w2 (UI)**: P3 Capacitor APK — `npx cap sync`
+1. **HUMAN ACTION**: `./setup-swarm.sh` — desbloqueia w1/w2/w4
+2. **w1 (motor)**: P2 cross-engine.ts cleanup (`_kab`, `_date`)
+3. **w2 (UI)**: P3 Capacitor APK
 4. **w4 (qualidade)**: corrigir 480 test failures
 
 ---
@@ -51,5 +62,4 @@
 
 - Agindo como `w-main` (main branch = integrator)
 - PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
-- Swarm infrastructure não configurada — sem worktrees dedicadas
-- Ciclo de auditoria convertido: backlog vazio dentro do meu domínio sem worktree
+- Swarm infrastructure não configurada — `./setup-swarm.sh` requer ação humana
