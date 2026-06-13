@@ -2,20 +2,22 @@
 
 Todas as entradas pendentes foram consolidadas no CHANGELOG.md principal (v0.1.3, Ciclo 528).
 
-## Ciclo 529 (2026-06-12)
+## Ciclo 530 (2026-06-12)
 
 **Tipo**: Auditoria Local
 
 ### O que mudou
-- Cycle advanced: Ciclo 528 -> 529
-- Typecheck: 0 erros
-- Git: clean
-- Swarm blocker: `./setup-swarm.sh` nao executado ha 6 ciclos
+- Cycle advanced: Ciclo 529 -> 530
+- TYPE VIOLATION detectada: w-main modificou dominio w2 (AkashaSignificadoCard.tsx ciclos 526-528)
+- Historico.md: arquivado ciclos 526-527 (antes ausentes do historico)
+- STATE.md: compactado de 116 para 53 linhas (limite ~60 respeitado)
+- Typecheck: 0 erros | Git: clean
 
 ### Impacto para o usuario
-Nenhuma mudanca de funcionalidade.
+Nenhuma mudanca de funcionalidade. Documentacao interna atualizada.
 
 ### Status
+- [x] TYPE VIOLATION documentada em STATE.md e requests.md
+- [x] Historico.md atualizado
+- [x] STATE.md compactado (53 linhas)
 - [x] Typecheck verified
-- [x] Git clean
-- [x] STATE.md updated to Ciclo 529

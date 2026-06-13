@@ -54,3 +54,19 @@
 - Commit: `fc069e10`, `c7fa138c`
 - Tipo: Auditoria + Integracao
 
+### Ciclo 527 — Auditoria Local + Dead Code (2026-06-12)
+
+- AkashaSignificadoCard: defaultNivel corrigido ciclo 526
+- Dead import LifePathInsightCard removido de AkashaLifeAreasDashboard.tsx
+- Impacto: menos ruido no bundle
+- Commit: `b1b97b75`
+- Tipo: Auditoria Local
+
+### Ciclo 526 — defaultNivel Regression Fix (2026-06-12)
+
+- AkashaSignificadoCard: defaultNivel hardcoded 'gift' causa regresão
+- Prop `defaultNivel?: 'shadow' | 'gift' | 'siddhi'` adicionada
+- Padding responsivo clamp() + maxWidth: 100% + overflow: hidden
+- Commit: `6b4977f1`
+- Tipo: Bug Fix
+
