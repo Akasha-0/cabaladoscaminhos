@@ -80,3 +80,11 @@
 - Hygiene round 4: meu-dia/page.tsx - variavel dimComAutoridade + autoridade removida (dead code, sintese.autoridade usado no template)
 - Commit aea899b9
 - lint: 296 -> 295 warnings
+
+## Ciclo 17 (2026-06-12)
+- Auditoria local: w2 domain 100% clean
+  - typecheck: 0 errors
+  - lint: 0 warnings em w2 domain (src/components/akasha/ + src/app/[locale]/(akasha)/)
+  - lint total: 295 warnings (todos w1/w3: src/app/api/, src/lib/, scripts/, android/)
+- 0 hygiene items remaining em w2 domain
+- Backlog: 3 itens bloqueados (P1 Offline APK, P3 E2E, P3 LifeArea)
