@@ -81,3 +81,17 @@
 - Alternativa: aria-label ou tooltip com mesma mensagem
 
 **Proximo**: w2 implementa na UI; w-main verifica em proximo ciclo de auditoria.
+
+---
+
+### 2026-06-12 — DEC-009: AMAB Reset Loop (CRITICA, Ciclo 542)
+
+**Dominio**: AMAB (autonomous process)
+**Problema**: Akasha Merge Bot faz `git reset --hard` que sobrescreve commits w-main. Reflog mostra:
+```
+7ea6fb37 HEAD@{0}: reset: moving to HEAD   <- AMAB sobrescreve
+9e36b6bb HEAD@{1}: commit: docs(w-main): Ciclo 541 <- SOBRESCRITO
+```
+**Impacto**: w-main nao consegue manter Historico连续性 ou documentacao propria.
+**Acao requerida**: HUMAN configura AMAB para NAO fazer reset --hard em commits feitos por w-main.
+**Regra aplicada**: AGENTS.md — w-main deve poder commit com prefixo [w-main] sem sobreposicao.

@@ -139,3 +139,11 @@
 - w2 estagnado: Ciclo 7 (e0e29b0c) ha varios ciclos
 - Tipo: Auditoria + Follow-up
 - Git: clean | Typecheck: 0 erros
+### Ciclo 542 — DEC-009 AMAB Reset Loop CRITICA (2026-06-12)
+
+- DEC-009: CRITICA — AMAB reset loop sobrescreve commits w-main (evidenciado no reflog)
+- AkashaSignificadoCard.tsx: AMAB working copy com type errors — RESTAURADO a HEAD
+- Typecheck: 0 erros ✅ (apos restore)
+- Git: clean
+- DEC-004: NAO implementada ha 4 ciclos — w2 sem worktree
+- Tipo: Auditoria + DECISION

@@ -1,34 +1,38 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 541)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 542)
 
 **Versao atual**: v0.1.4
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 541
+**Ciclo**: 542
 
 ---
 
-## Ciclo 541 — Auditoria Local + Follow-up DEC-004
+## Ciclo 542 — DEC-009 AMAB Reset Loop (CRITICA)
 
-**Typecheck**: 0 erros | **Git**: clean
-**DEC-004**: DIRETIVA NAO IMPLEMENTADA ha 3 ciclos — follow-up emitido
-**w2**: Ciclo 7 estagnado — backlog P2 9 areas nao executado
+**Typecheck**: 0 erros ✅ | **Git**: clean
+**DEC-009**: CRITICA — AMAB reset loop sobrescreve commits w-main
+**DEC-004**: NAO IMPLEMENTADA ha 4 ciclos — w2 sem worktree
+**AMAB working copy**: AkashaSignificadoCard.tsx com type errors — RESTAURADO a HEAD
+
+### DEC-009 — AMAB Reset Loop (CRITICA)
+AMAB faz `git reset --hard` que sobrescreve commits w-main. Evidenciado no reflog.
+**Impacto**: w-main nao consegue manter historico confiavel.
+**Acao**: HUMAN configura AMAB para NAO fazer reset em commits w-main.
 
 ### Auditoria Features (main)
 - pillarContribution: ✅ `a7cb2064` intacto
 - PriorityAreasQuickView: ✅ `d7401237` intacto
 - dailyTransit.todayPhrase: ✅ `6b541bf0` intacto
-- AkashaSignificadoCard: ⚠️ DEC-004 NAO implementado (sem worktree w2)
 
 ---
 
 ## Historico
 
-- **541**: Auditoria | DEC-004 follow-up, features intactas
-- **540**: Auditoria | DEC-004 RESOLVIDO
-- **538**: DEC-004 RESOLVIDO como integrator (opcao a)
-- Detalhado: `historico.md` (140+ linhas)
+- **542**: DEC-009 CRITICA | AMAB reset loop documentado
+- **541**: Auditoria | DEC-004 follow-up CRITICO
+- Detalhado: `historico.md`
 
 ## Proximos Passos
 
-1. **w2 CRITICO**: implementar DEC-004 atribuicao Gene Keys na UI (3 ciclos atrasado)
-2. **w2**: corrigir `/mapa/significado` defaultNivel
-3. **HUMAN**: `./setup-swarm.sh` — worktrees w1/w3/w4
+1. **HUMAN CRITICO**: configurar AMAB para nao fazer reset em commits w-main
+2. **w2**: implementar DEC-004 (atribuicao Gene Keys) — 4 ciclos atrasado
+3. **HUMAN**: `./setup-swarm.sh` para worktrees
