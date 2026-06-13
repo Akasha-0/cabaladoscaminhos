@@ -46,15 +46,16 @@ const NIVEL_DESCRICAO: Record<Nivel, string> = {
 
 interface Props {
   lifePath: number;
+  /** Frequência dominante do perfil Akasha — usado como default para o nível */
+  defaultNivel?: 'shadow' | 'gift' | 'siddhi';
 }
 
-export function AkashaSignificadoCard({ lifePath }: Props) {
-  const [nivel, setNivel] = useState<Nivel>('gift');
+export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props) {
+  const [nivel, setNivel] = useState<Nivel>(defaultNivel);
   const [area, setArea] = useState<LifeArea>('proposito');
 
   const vida: VidaInterpretation = interpretarVida(lifePath);
   const interp: AreaInterpretation = vida.levels[nivel] ?? vida.levels.gift;
-
   return (
     <section
       style={{
@@ -62,8 +63,11 @@ export function AkashaSignificadoCard({ lifePath }: Props) {
         border: '1px solid rgba(124,92,255,0.25)',
         borderLeft: '3px solid #7c5cff',
         borderRadius: 16,
-        padding: '1.5rem 1.4rem',
+        padding: 'clamp(1rem, 4vw, 1.5rem) clamp(0.875rem, 3vw, 1.4rem)',
         marginBottom: 24,
+        maxWidth: '100%',
+        boxSizing: 'border-box',
+        overflow: 'hidden',
       }}
     >
       {/* Header */}

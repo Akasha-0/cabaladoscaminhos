@@ -717,7 +717,7 @@ export function AkashaLifeAreasDashboard({
 
       {/* P3 — Interpretação profunda: AkashaSignificadoCard */}
       {synthesis.lifePath > 0 && (
-        <AkashaSignificadoCard lifePath={synthesis.lifePath} />
+        <AkashaSignificadoCard lifePath={synthesis.lifePath} defaultNivel={akashaProfile.dominantFrequency} />
       )}
 
       {/* Decisão diária */}
