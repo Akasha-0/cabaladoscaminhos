@@ -48,3 +48,36 @@
 **Decisao**: Documentar AMAB como entidade autonome. w-main deve operar em coordenação com AMAB — aceitar que AMAB commitara cycle docs antes de w-main. w-main pode fazer trabajo de documentacao independiente se nao ha overlap.
 **Regra aplicada**: DOMAINS.md + AGENTS.md — w-main nao tem glob em `apps/`.
 **Proximo**: HUMANO configura AMAB para ter comportamento mais previsivel, ou w-main recebe dominio explicito em DOMAINS.md.
+
+---
+
+### 2026-06-12 — DEC-004 RESOLVIDO: Gene Keys shadow/gift/siddhi attribution (Cycle 538)
+
+**Dominio**: integrator (w-main como executor)
+**Problema**: shadow/gift/siddhi de Akasha e semanticamente identico a Gene Keys de Richard Rudd (2009). Pendente ha 14 ciclos. Risco: publicacao sem decisao = plagio confirmado.
+
+**Analise**:
+- Motor JA TEM atribuicao: `synthesis-engine.ts:38` → `// Frequencia (Gene Keys inspired)`
+- Glossario JA TEM entrada: `glossario.ts:235` → Gene Keys (Rudd) com sinonimos
+- `reversed-systems.ts` JA MAPEIA Gene Keys como sistema moderno com credit
+- Camada de motor: ATRIBUIDA ✅
+- Camada de UI (labels visiveis ao usuario): NAO ha atribuicao
+
+**4 opcoes avaliadas**:
+- (a) **Atribuir + Fortalecer**: Manter shadow/gift/siddhi + adicionar nota "Inspirado em Gene Keys (Richard Rudd)" no seletor de nivel da UI. Custo: 1-2 linhas. Protecao: maxima.
+- (b) **Renomear**: Mudar labels para "Padrao/Oferta/Realizacao". Custo: alto (mudar em toda a UI). Risco: confunde usuarios.
+- (c) **Confluencia natural**: arriscado sem advogado.
+- (d) **Remover**: abandona o modelo. Nao recomendado.
+
+**DECISAO (integrator)**:
+- Opcao **(a)** — Atribuicao + rotulo de inspiracao na UI
+- Justificativa: custo minimo, protecao maxima, preserva a experiencia do usuario
+- Gene Keys e estrutura 3-niveis (Shadow→Gift→Siddhi) e bem conhecida em sistemas esotericos — a attribuicao a Richard Rudd e suficiente para uso legitimo
+
+**Implementacao requerida (w2)**:
+- Arquivo: `apps/akasha-portal/src/components/akasha/AkashaSignificadoCard.tsx`
+- Locacao: abaixo do seletor de nivel (nivelTabs ou similar)
+- Texto: pequeno texto `<span style={{fontSize:'0.75em', color:'var(--muted)'}}>Inspirado em Gene Keys (Richard Rudd)</span>` ou similar
+- Alternativa: aria-label ou tooltip com mesma mensagem
+
+**Proximo**: w2 implementa na UI; w-main verifica em proximo ciclo de auditoria.
