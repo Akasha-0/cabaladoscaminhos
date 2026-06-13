@@ -1,7 +1,7 @@
-# STATE.md — Akasha OS (Ciclo 568)
+# STATE.md — Akasha OS (Ciclo 577)
 
 **Versao**: v0.1.6 | **Atualizacao**: 2026-06-12
-**Status**: FASE 3 — DEC-004 w2 UI 29 ciclos, PillarContribution 15+ ciclos
+**Status**: FASE 3 — DEC-009 AMAB CRITICO, dominio API w1/w2 resolvido
 
 ---
 
@@ -21,25 +21,25 @@
 | P2 | Cadeia de raciocinio | Done |
 | P3 | AkashaSignificadoCard | Done |
 | P4 | Capacitor APK | Done |
-| P5 | DEC-004 Gene Keys UI | **PENDENTE — 29 ciclos** |
+| P5 | DEC-004 Gene Keys UI | **RESOLVIDO** |
 | P6 | Feedback loop | Pending |
 
 ---
 
 ## Backlog Priorizado
 
-1. **PillarContribution DOMAIN VIOLATION**: w2 w1 domain ao dashboard — 15+ ciclos
-2. **DEC-004 w2 UI attribution**: Gene Keys — 29 ciclos
-3. **DEC-009 AMAB reset loop**: CRITICO
-4. **P1 offline APK**: bloqueado
+1. **DEC-009 AMAB reset loop**: CRITICO — humano decide (3 opcoes CHECKPOINT)
+2. **P1 offline APK**: bloqueado (server.url online-only)
+3. **DOMAINS.md**: `src/app/api/**` transferido w2 -> w1 (lint warnings now w1 owner)
 
 ---
 
 ## Historico de Decisoes
 
-- DEC-004: Gene Keys — UI pendente w2
+- DEC-004: Gene Keys attribution — **RESOLVIDO**
 - DEC-006: Swarm sem worktree
 - DEC-008/009: AMAB — CRITICO
+- Ciclo 577: src/app/api/** dominio w2->w1 (domain conflict w2 granted)
 
 ---
 

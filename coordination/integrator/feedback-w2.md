@@ -1,13 +1,14 @@
 # coordination/integrator/feedback-w2.md
 
-## Feedback para w2 — Ciclo 568
+## Feedback para w2 — Ciclo 577
 
-### DOMAIN VIOLATION — PillarContribution — 15+ CICLOS
+### RESOLVIDOS
+- PillarContribution DOMAIN VIOLATION: w2 Ciclo 14 removeu secoes 526-555
+- DEC-004 Gene Keys attribution: implementado em AkashaSignificadoCard.tsx
 
-AkashaLifeAreasDashboard.tsx linha 530: Os 4 Pilares.
+### DOMAIN CONFLICT: GRANTED ✅
+- src/app/api/** transferido para w1 (DOMAINS.md atualizado)
+- w2 glob agora exclui src/app/api/**
 
-Remover secoes 526-555. w1 domain.
-
-### DEC-004 — Gene Keys attribution (29 ciclos)
-
-Adicionar Inspirado em Gene Keys (Richard Rudd) em AkashaSignificadoCard.tsx.
+### RESTANTE: DEC-009 AMAB reset loop — CRITICO
+Loop faz reset --hard. CHECKPOINT Ciclo 16 tem 3 opcoes para humano.

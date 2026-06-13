@@ -7,12 +7,13 @@
 ## w1 — MOTOR AKASHA (lógica e síntese)
 Escopo: motor de cálculo dos 5 mapas, camada de síntese/correlações, base de
 conhecimento dos fundamentos, modelos de dados, docs/sintese/.
-Globs iniciais: packages/akasha-core/** src/lib/** src/engine/** src/data/** docs/sintese/**
+Globs iniciais: packages/akasha-core/** src/lib/** src/engine/** src/data/** docs/sintese/** apps/akasha-portal/src/app/api/**
 
 ## w2 — EXPERIÊNCIA MOBILE (UI)
 Escopo: páginas, componentes, modais, navegação, estilos, responsividade
 mobile-first, apresentação das interpretações na interface.
-Globs iniciais: apps/akasha-portal/src/components/** apps/akasha-portal/src/app/** public/**
+Globs iniciais: apps/akasha-portal/src/components/** apps/akasha-portal/src/app/**
+！但 apps/akasha-portal/src/app/api/** public/**
 
 ## w3 — CONTEÚDO INTERPRETATIVO (ativo a partir de 4 terminais)
 Escopo: textos profundos por área da vida (carreira, amor, saúde, sexualidade,

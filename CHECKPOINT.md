@@ -1,63 +1,86 @@
-# CHECKPOINT — Akasha OS — Ciclo 16 (Ciclo 566)
+# CHECKPOINT — Akasha OS — Ciclo 577
 
 **Data**: 2026-06-12 | **Versao**: v0.1.6 | **Integrador**: main branch
 
 ---
 
-## O que evoluiu (Ciclo 555/10 → Ciclo 566/16, 11 ciclos de integracao)
+## Ultimo CHECKPOINT
 
-### Loop ciclos 10→16 (11 integracoes)
-
-- **hygiene continuos**: Ciclo 11 dead code cleanup (7 vars), Ciclo 12+ hygiene lokal
-- **APK PWA**: manifest + service worker OK, 4.4MB
-- **Suite**: 0 TypeScript errors, 1 lint pre-existente (require-yield)
-- **TYPE**: sempre 0 errors
+Ciclo 16 (Ciclo 566) — CHECKPOINT anterior com 3 perguntas para humano.
 
 ---
 
-## O que NAO evoluiu (mesmos problemas ha 16 ciclos)
+## Resumo por Worker (Ciclo 16 -> Ciclo 577, 11 ciclos)
 
-### DEC-004 w2 UI — 27 ciclos sem implementacao
+### w1 — Motor (lógica/síntese)
+-什么都没有 (noop from integrator perspective)
+- domain: motor de calculo, base de conhecimento, modelos de dados
+- pending: lint warnings em src/app/api/** (agora seu dominio)
 
-Gene Keys attribution nunca foi para producao. w2 loop nunca implementou. AkashaSignificadoCard.tsx ainda nao tem "Inspirado em Gene Keys (Richard Rudd)".
+### w2 — Experiencia Mobile (UI)
+- Ciclo 14: removeu PillarContribution DOMAIN VIOLATION (secoes 526-555)
+- Ciclo 14: implementou DEC-004 Gene Keys attribution em AkashaSignificadoCard.tsx
+- Ciclo 16: hygiene round 4 (dead code removal)
+- Ciclo 15: auditoria local, domain 100% clean
+- Ciclo 16: domain conflict filed -> src/app/api/** -> INTEGRADOR GRANTOU
 
-### PillarContribution DOMAIN VIOLATION — 13+ ciclos
-
-AkashaLifeAreasDashboard.tsx linha 530: "Os 4 Pilares". w2 adicionou codigo w1 domain ao dashboard. Reverts nao seguram. w2 loop nunca removeu.
-
-### DEC-009 AMAB reset loop — CRITICO
-
-AMAB sobrescreve commits w-main. Sem controle.
+### Loop (Akasha Merge Bot)
+- Ciclo 573-577: historico填补 auto-commits (docs only)
+- Preserva v0.1.6 em todos os commits
 
 ---
 
-## Decisoes autonomas
+## Decisoes Autonomas (Ciclo 566 -> Ciclo 577)
 
-- DEC-004: attribution na UI — diretiva Ha 27 ciclos a w2, w2 loop nao implementa
-- DEC-006: Swarm sem worktree — loop opera como pseudo-w2, sem branch pressure
-- DEC-008/009: AMAB CRITICO — aguardando humano
+| Decisao | Status | Detalhe |
+|---------|--------|---------|
+| PillarContribution REMOCAO | RESOLVIDO | w2 Ciclo 14, secoes 526-555 apagadas |
+| DEC-004 Gene Keys UI | RESOLVIDO | w2 Ciclo 14, attribution em producao |
+| src/app/api/** dominio | RESOLVIDO | domain conflict w2 granted, w1 agora owner |
+| DEC-009 AMAB | NAO RESOLVIDO | reset --hard persiste, 3 opcoes CHECKPOINT Ciclo 16 |
 
 ---
 
 ## Riscos
 
-1. **DEC-004 w2 UI**: producao sem credit Gene Keys — risco de plagio percebido
-2. **PillarContribution DOMAIN VIOLATION**: 13+ ciclos — loop w2 nao segue domain boundaries
-3. **AMAB reset loop**: historico w-main se perde
-4. **Swarm sem worktree**: w2 opera fora de qualquer branch constraint
+1. **DEC-009 AMAB reset loop**: Loop faz reset --hard a cada ciclo, sobrescreve commits. Nao e violacao de dominio mas destrutivo. Humano nunca respondeu.
+2. **P1 offline APK**: server.url e online-only, bloqueia APK offline.
+3. **Loop atividade intensa**: 9+ commits/h, a maioria historico填补 docs — baixa utilidade liquida.
 
 ---
 
-## 3 perguntas para o humano
+## CHECKPOINT Anterior: 3 Perguntas Nao Respondidas
 
-### 1. DEC-004 — w2 UI attribution [27 ciclos pendente]
-w2 loop (pseudo-w2, sem worktree) nunca implementou attribution.
-**Opcoes**: (a) criar worktree loop/w2 com branch protection; (b) eu implemento (violacao de dominio); (c) aceitar risco de producao sem attribution.
+### 1. DEC-009 AMAB — o que fazer com o loop de reset?
+CHECKPOINT Ciclo 16 ofereceu 3 opcoes: matar, modificar, aceitar.
+**Nenhuma resposta em 11 ciclos.** Continua CRITICO.
 
-### 2. PillarContribution — DOMAIN VIOLATION [13+ ciclos]
-w2 adicionou, w2 nao remove. Loop w2 nao responde a feedback.
-**Opcoes**: (a) criar worktree loop/w2, forcar remocao; (b) eu removo (violacao); (c) aceitar que w2 owns isso agora.
+### 2. PillarContribution DOMAIN VIOLATION
+**RESOLVIDO** pelo loop (w2 Ciclo 14) sem intervencao humana.
 
-### 3. DEC-009 — AMAB reset loop [CRITICO]
-Sem controle, historico de integracao se perde.
-**Opcoes**: (a) matar orchestrator.sh; (b) modificar para nao fazer reset --hard; (c) aceitar.
+### 3. DEC-004 w2 UI attribution
+**RESOLVIDO** pelo loop (w2 Ciclo 14) sem intervencao humana.
+
+---
+
+## 3 Perguntas para Este CHECKPOINT (Ciclo 577)
+
+### 1. DEC-009: Matar ou modificar o loop de reset?
+O Akasha Merge Bot faz `git reset --hard` a cada ciclo, sobrescrevendo commits.
+Se o loop parar de fazer reset, o historico acumula infinitamente.
+Se continuar, commits sao perdidos.
+**Opcao integrada**: modificar o loop para fazer `git merge --ff-only` em vez de `git reset --hard`.
+
+### 2. w1 ownership: quem e responsavel por apps/akasha-portal/src/app/api/**?
+Integrei a transferencia w2->w1. Quem implementa as correcoes de lint warnings em API routes?
+
+### 3. F-227 (Authority) e F-228 (Capacitor APK) — o status?
+Memoria indica ambos pendentes. Ha interesse em continuar com eles?
+
+---
+
+## Estado da Suite
+
+- TYPE errors: 0
+- Lint warnings: ~295 (pre-existente, nao-bloqueantes)
+- origin/main: synced (Ciclo 577)
