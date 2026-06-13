@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 29 | **Atualizacao**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 30 | **Atualizacao**: 2026-06-12
 
 ---
 
@@ -9,7 +9,7 @@
 
 ---
 
-## Status: Ciclo 29 — Auditoria Local (suite clean, estrutural OK)
+## Status: Ciclo 30 — Auditoria Local (DEC-009 expired, 10 audits consecutive clean)
 
 | Verificação | Resultado |
 |-------------|-----------|

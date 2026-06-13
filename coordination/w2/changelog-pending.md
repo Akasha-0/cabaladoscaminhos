@@ -11,3 +11,6 @@ Ciclo 26: auditoria hygiene. Zero impacto para usuario.
 
 ### Ciclo 29 (2026-06-12)
 - **docs(w2): auditoria local Ciclo 29** — structural audit OK. 43c/17p/1d. typecheck 0, lint 295. Impacto: documentacao.
+
+### Ciclo 30 (2026-06-12)
+- **docs(w2): auditoria local Ciclo 30** — 10 audits consecutive clean. typecheck 0, lint 295. Impacto: documentacao.
