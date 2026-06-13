@@ -1,37 +1,36 @@
-# CHECKPOINT — Akasha OS — Ciclo 555
+# CHECKPOINT — Akasha OS — Ciclo 10
 
-**Data**: 2026-06-12 | **Versão**: v0.1.5 | **Integrador**: main branch
+**Data**: 2026-06-12 | **Versao**: v0.1.6 | **Integrador**: main branch
 
 ---
 
-## O que evoluiu desde o último checkpoint (Ciclo 541)
+## O que evoluiu (Ciclo 555→10, 14 ciclos do loop)
 
-### Ciclo 541→555 (14 ciclos do loop)
+### Ciclo 555→10 (14 ciclos do loop)
 
-- **Loop ciclos 549-555**: auditorias locais continuas, requests atualizados
-- **DEC-004 UI**: 15 ciclos sem implementacao w2 — attribution "Inspirado em Gene Keys (Richard Rudd)" pendente
-- **PillarContribution DOMAIN VIOLATION**: w2 adicionou "Os 4 Pilares" ao dashboard (w1 domain) — reverts continuam
-- **APK build**: funcional em cap-build.sh ~4.4MB
-- **AkashaSignificadoCard**: 7 areas (sexualidade + espiritualidade) integradas
-- **TYPE/LINT**: 0 TypeScript errors; 1 lint error pre-existente (require-yield)
-- **Suite testes**: 480 falhas ambientais (Ollama/DB offline) — nao bloqueante
+- **Suite validada w2**: typecheck 0 errors, build 46/46, lint 0 errors + 306 warnings (w1/w3)
+- **APK 4.4MB**: PWA manifest + service worker OK
+- **DEC-004 w2 UI**: attribution Gene Keys ainda pendente — 19 ciclos sem follow-up
+- **PillarContribution DOMAIN VIOLATION**: w2 adicionou w1 domain ao dashboard
+- **AMAB reset loop**: CRITICO — aguardando humano
+- **TYPE/LINT**: 0 TypeScript errors; 1 lint pre-existente
+- **Suite testes**: 480 falhas ambientais — nao bloqueante
 
 ---
 
 ## Decisoes autonomas relevantes
 
-- DEC-004: attribution Gene Keys na UI — diretiva dada a w2 desde Ciclo 538, 15 ciclos sem follow-up
+- DEC-004: attribution Gene Keys na UI — diretiva a w2 ha 19 ciclos
 - DEC-006: Swarm sem worktree — loop opera como pseudo-w2 direto em main
-- DEC-008/009: AMAB documentado e CRITICO — aguardando humano
+- DEC-009: AMAB CRITICO — aguardando humano
 
 ---
 
 ## Riscos
 
-1. **DEC-004 w2 UI attribution**: 15 ciclos sem follow-up — risco producao sem credit Gene Keys
-2. **AMAB reset loop**: commits w-main sobrescritos — humano precisa decidir
-3. **PillarContribution DOMAIN VIOLATION**: w2 adiciona w1 domain ao dashboard
-4. **Test suite w4**: 480 falhas ambientais — w4 nao existe
+1. **DEC-004 w2 UI attribution**: sem follow-up em 19 ciclos
+2. **AMAB reset loop**: commits sobrescritos
+3. **PillarContribution DOMAIN VIOLATION**: w2 adiciona w1 domain
 
 ---
 
@@ -39,12 +38,12 @@
 
 ### 1. DEC-009 — AMAB reset loop [CRITICO]
 Loop faz `git reset --hard` sobrescrevendo commits w-main.
-**Opcoes**: (a) matar loop; (b) modificar loop para nao resetar em commits alheios; (c) aceitar.
+**Opcoes**: (a) matar loop; (b) modificar loop; (c) aceitar.
 
-### 2. DEC-004 — w2 UI attribution [15 ciclos pendente]
-w2 nao implementou attribution Gene Keys na UI.
-**Opcoes**: (a) criar w2 worktree com pressao de branch; (b) aceitar sem attribution; (c) integrador implementa (violacao de dominio).
+### 2. DEC-004 — w2 UI attribution [19 ciclos pendente]
+w2 nao implementou attribution.
+**Opcoes**: (a) criar w2 worktree; (b) aceitar; (c) integrador viola dominio.
 
 ### 3. PillarContribution — DOMAIN VIOLATION
-w2 adicionou "Os 4 Pilares" ao dashboard (w1 domain) sem w1 validar.
-**Opcoes**: (a) w2 remove imediatamente; (b) w1 valida e assume; (c) deixar como esta.
+w2 adicionou pilares ao dashboard (w1 domain).
+**Opcoes**: (a) w2 remove; (b) w1 valida; (c) deixar.
