@@ -4,7 +4,4 @@
 
 _Tudo integrado em v0.1.6. Nenhuma entrada pendente._
 
-Ciclos 32-98: auditoria hygiene. Zero impacto para usuario.
-
-### Ciclo 99 (2026-06-13)
-- **docs(w2): auditoria local Ciclo 99** — typecheck 0, lint 295. Impacto: documentacao.
+Ciclos 32-99: auditoria hygiene. Zero impacto para usuario.
