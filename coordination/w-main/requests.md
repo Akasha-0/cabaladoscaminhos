@@ -1,10 +1,10 @@
 # coordination/w-main/requests.md
 
-## Escalacao ao Integrador — Ciclo 579 (v0.1.6)
+## Escalacao ao Integrador — Ciclo 586 (v0.1.6)
 
 **De**: w-main (main branch, executor + integrator)
 **Data**: 2026-06-13
-**Ciclo**: 579
+**Ciclo**: 586
 
 ---
 
@@ -18,31 +18,28 @@ Commits individuais persistem, mas proximo ciclo o AMAB sobrescreve a working tr
 
 ---
 
-## DEC-004: Gene Keys Attribution — CONTRADICAO [URGENTE]
+## DEC-004: Gene Keys Attribution — RESOLVIDO ✅
 
-**Problema**: Contradicao entre documentos:
-- `feedback-w2.md` (integrator Ciclo 578): "DEC-004 Gene Keys attribution: em producao"
-- `w-main/requests.md` (Ciclo 572+): "FALSO RESOLVIDO — attribution apenas em comment"
-
-**Verificacao concreta Ciclo 579**:
-- AkashaSignificadoCard.tsx:14: `* DEC-004:shadow/gift/siddhi inspirado em Gene Keys (Richard Rudd).`
-- O cartao renderiza NIVEL_LABEL (shadow/gift/siddhi) e area content
-- NENHUMA string "Gene Keys", "Richard Rudd", ou "Inspirado em Gene Keys" aparece no JSX renderizado
-- Attribution existe apenas como comment JSDoc, NAO visivel para o usuario
-
-**Acao necessaria**: Humano deve decidir: qual documento reflete a verdade?
-Se attribution visivel e necessaria: w2 deve adicionar texto em AkashaSignificadoCard.tsx (w2 domain).
-Se comment basta: atualizar feedback-w2.md para refletir que e apenas comment.
+**Confirmado**: w2 Ciclo 21 (`6b99b794`) implementou atribuicao visivel em AkashaSignificadoCard.tsx:126-131.
+String "Inspirado em Gene Keys (Richard Rudd)" agora visivel no JSX renderizado.
+**Status**: RESOLVIDO.
 
 ---
 
-## PillarContribution: DOMAIN VIOLATION — RESOLVIDO
+## TYPE MISMATCH: LifeArea w1 — PENDENTE [w1 domain]
 
-w2 Ciclo 14 removeu a renderizacao de pillarContribution do dashboard.
-Tipo em useAkashaSynthesis.ts (w1 domain) persiste mas nao e mais usado na UI.
+**Problema**: AkashaSignificadoCard.tsx:22-25: `proposito`, `sexualidade`, `carreira` usados como `LifeArea` mas NAO existem no tipo `LifeArea` de w1.
+```typescript
+const AREAS_WITH_DATA: string[] = ['proposito', 'carreira', 'financas', 'saude', 'relacionamentos', 'sexualidade', 'espiritualidade'];
+// proposito/sexualidade/carreira NAO sao LifeArea
+// familia/criatividade EXISTEM no tipo mas nao estao no array
+```
+**Dominio**: w1 (motor de tipos)
+**Impacto**: potencial bug de tipo se motor nao cobre esses valores.
 
 ---
 
 ## DEC-008: Swarm sem worktree
 
 ./setup-swarm.sh nunca executado. w2 opera como "pseudo-w2" sem branch constraint.
+w2 Ciclo 21 commitou de main mesmo assim (funciona mas sem isolamento).
