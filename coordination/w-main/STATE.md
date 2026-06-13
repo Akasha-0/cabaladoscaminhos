@@ -1,56 +1,41 @@
 # coordination/w-main/STATE.md — Integrator / Main (Ciclo 533)
 
-**Versao atual**: v0.1.2
-**Ultima atualizacao**: 2026-06-12
+**Versão atual**: v0.1.3
+**Última atualização**: 2026-06-12
 **Ciclo**: 533
 
 ---
 
-## Ciclo 533 — Auditoria Local + Arquitetura
+## Ciclo 533 — Auditoria Local + Re-implementação
 
-**Typecheck**: 0 erros | **Git**: clean (tracked)
-**Swarm**: `./setup-swarm.sh` blocker ha 10 ciclos
+**Typecheck**: 0 erros ✅
+**Commits**: `a7cb2064` (re-implementação), `2b1db054` (dead code removal)
 
-### O que foi feito neste ciclo
-- `historico.md`: arquivado ciclos 530-531 (total: 90 linhas)
-- `ARCHITECTURE.md` criado: documento estrutural sobre papel w-main
-- Arquitetura do Swarm documentada: dominios, bloqueios, capacidades
+### Auditoria — ACHADOS:
 
-### Estado atual
-- Cycle count: 531 -> 532
-- 34 untracked capacitor files (w2 domain — aguardando w2 worktree)
-- w-main backlog: vazio — sem worktree, sem dominio de codigo
-- DEC-004 (Gene Keys): pendente ha 9 ciclos
-- TYPE VIOLATION w2: pendente ha 6 ciclos
+1. **Akasha Merge Bot reverts**: Reverteu `b56a8e36` (pillarContribution) e `a61267da` (cap-build.sh)
+   - Motivo: conflito de domínio w-main vs w2 em AkashaLifeAreasDashboard.tsx
+   - PilarContribution re-implementado em `a7cb2064`
+   
+2. **LifePathInsightCard.tsx**: Dead code de 130 linhas — removido (`2b1db054`)
+   
+3. **AkashaSignificadoCard em /mapa/significado**: Não passa `defaultNivel` — bug w2
 
-### Estrutura do Swarm
-- w-main (main): coordination + integrator — SEM worktree
-- w1 (loop/w1): motor — BLOQUEADO (sem worktree)
-- w2 (loop/w2): UI — BLOQUEADO (sem worktree)
-- w3 (loop/w3): conteudo — NAO INICIADO
-- w4 (loop/w4): qualidade — BLOQUEADO (sem worktree)
+### DEC-004 (shadow/gift/siddhi vs Gene Keys): CRITICA — pendente há 9 ciclos
+### ./setup-swarm.sh: blocker há 9+ ciclos
 
 ---
 
-## Historico
+## Histórico
 
-- **532**: Auditoria | ARCHITECTURE.md criado; historico 90 linhas
-- **531**: Auditoria | STATE 47 linhas; 34 untracked capacitor
-- **530**: Auditoria | TYPE VIOLATION detectada
-- **529**: Auditoria | Typecheck 0; git clean
-- **528**: CHECKPOINT | DEC-004 CRITICA; v0.1.3
-- **527**: Auditoria | Dead import removido
-- **526**: Bug Fix | defaultNivel regression corrigido
+- **533**: Auditoria + re-implementação pillarContribution + dead code removal
+- **532**: Auditoria + ARCHITECTURE.md
+- Detalhado: `historico.md`
 
-## Proximos Passos
+---
 
-1. **HUMAN**: `./setup-swarm.sh` — desbloqueia w1/w2/w3/w4 (blocker ha 10 ciclos)
-2. **w2**: processar 34 untracked capacitor files (commit ou remove)
-3. **DEC-004**: decisao humana sobre shadow/gift/siddhi vs Gene Keys
+## Próximos Passos
 
-## Notas
-
-- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md`
-- ARQUITECTURA.md novo: `coordination/w-main/ARCHITECTURE.md`
-- Historico completo: `coordination/w-main/historico.md` (90 linhas)
-- PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
+1. **HUMAN**: `./setup-swarm.sh` + decisão DEC-004
+2. **w2**: processar AkashaSignificadoCard defaultNivel em /mapa/significado
+3. **w1**: P2 cross-engine cleanup
