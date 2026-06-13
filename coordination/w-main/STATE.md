@@ -8,12 +8,13 @@
 
 ## Ciclo 688 — Auditoria Local
 
-**Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: 0 errors, 293 warnings (pre-existentes)
+**Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: ❌ FALHA (erro de sintaxe externo em traducao-areas.ts:298)
 **Git**: clean
 
 ### itens de auditoria
 | Item | Status | Evidencia |
 |------|--------|-----------|
+| traducao-areas.ts | ❌ SYNTAX ERROR | traducao-areas.ts:298 (d'exigences) |
 | DEC-004 Gene Keys | ✅ RESOLVIDO | AkashaSignificadoCard.tsx:130 |
 | DEC-009 AMAB race | ⚠️ CRITICO | Fonte EXTERNAL, daemon cycling, 3 opcoes CHECKPOINT |
 | TYPE LifeArea mismatch | ⚠️ w1 PENDING | 3 valores tipo vs 9 valores em uso |

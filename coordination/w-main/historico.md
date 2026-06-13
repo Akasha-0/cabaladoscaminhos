@@ -791,5 +791,7 @@
 ### Ciclo 688 — Auditoria Local (2026-06-13)
 
 - Typecheck: 0 erros
+- Lint: falha decorrente de erro de sintaxe externo em `traducao-areas.ts:298` (aspa sem escape em `d'exigences`)
 - Git: clean (pre-existing test failure baseline confirmed)
 - Tipo: Auditoria Local
+
