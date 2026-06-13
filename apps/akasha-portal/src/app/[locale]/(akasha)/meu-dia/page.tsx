@@ -167,13 +167,6 @@ export default async function MeuDiaPage({
   // Área foco = primeira dimensão (sem sexualidade, que é especial)
   const dimFoco = sintese?.dimensoes.find((d) => d.dimensoesId !== 'sexualidade') ?? null;
 
-  // Decisão akasha = primeira dimensão com autoridade válida
-  const dimComAutoridade = sintese?.dimensoes.find(
-    (d) => d.dimensoesId !== 'sexualidade' && d.autoridadeAkasha.aplicavel
-  ) ?? dimFoco;
-
-  const autoridade = dimComAutoridade?.autoridadeAkasha;
-
   return (
     <main style={{ background: C.bg, minHeight: '100vh', paddingBottom: 100 }}>
       {/* Background glow effects */}
