@@ -41,3 +41,24 @@ Nenhuma mudanca de funcionalidade.
 - [x] Typecheck: 0 erros
 - [x] Git: clean
 
+---
+
+## Ciclo 689 (2026-06-13)
+
+**Tipo**: Integracao Swarm
+
+### O que mudou
+- Consolidou correção no motor `w1`: Escapada aspa simples em `d'exigences` na linha 298 de `traducao-areas.ts`.
+- Consolidou correção no front/UI `w2`: Mapeados cabeçalhos corretos para as abas `sexualidade` e `espiritualidade` no `AkashaSignificadoCard.tsx`.
+- Merged branches `loop/w1` e `loop/w2` em `main`.
+
+### Impacto para o usuario
+- Correção de visualização das abas de 'Sexualidade' e 'Espiritualidade' que antes mostravam incorretamente o cabeçalho 'Relacionamentos'.
+- Correção do erro que causava travamentos de build/lint no pipeline.
+
+### Status
+- [x] STATE.md Ciclo 689 atualizado
+- [x] Typecheck: 0 erros
+- [x] Git: clean
+
+
