@@ -647,4 +647,8 @@
 - DEC-009: CRITICO — aguardando acao humana
 - AMAB race: STATE.md + w2/STATE.md + w2/changelog-pending.md + w2/historico.md RESTORED
 - Git: clean | Typecheck: 0 erros
+### Ciclo 654 — Auditoria Local (2026-06-12)
+
+- DEC-009: CRITICO — aguardando acao humana
+- Git: clean | Typecheck: 0 erros
 
