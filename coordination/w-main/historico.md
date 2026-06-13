@@ -86,4 +86,12 @@
 - STATE: 116 -> 53 linhas
 - Commit: `059c486e`
 - Tipo: Auditoria Local + Documentacao
+### Ciclo 532 — PillarContribution: Os 4 Pilares na UI (2026-06-12)
+
+- `pillarContribution` de cada AreaNarrative agora renderizado na UI
+- Chips coloridos: CABALA (âmbar), TANTRA (vermelho), IFÁ (roxo), ASTRO (azul)
+- Inserido entre "Dons" e "Como chegamos aqui" no expanded view
+- Tipo: Feature (profundidade prática + unificação)
+- Commit: `b56a8e36`
+- Impacto: princípio "Linguagem Unificada" concretizado na UI
 
