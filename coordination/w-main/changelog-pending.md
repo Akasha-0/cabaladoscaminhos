@@ -2,30 +2,27 @@
 
 ## Pendente — aguardando integrador consolidar
 
-DEC-004 (Gene Keys): RESOLVIDO — w2 NAO IMPLEMENTOU atribuicao ha 3 ciclos. Follow-up CRITICO emitido.
-DEC-004: w2 implementa atribuicao Gene Keys na UI.
+DEC-004 (Gene Keys): RESOLVIDO — w2 NAO IMPLEMENTOU atribuicao ha 4 ciclos. Follow-up CRITICO.
+DEC-009: AMAB reset loop — w-main inoperante sem controle de ciclo.
 
-## Ciclo 541 (2026-06-12)
+## Ciclo 542 (2026-06-12)
 
-**Tipo**: Auditoria Local
+**Tipo**: Auditoria Local + Verificacao
 
 ### O que mudou
-- Cycle advanced: Ciclo 540 -> 541
-- TYPECHECK: 4 erros em AkashaSignificadoCard.tsx (LifeArea import removida)
-- requests.md: novo item CRITICO adicionado — typecheck quebrado
-- STATE.md: Ciclo 541, typecheck quebrado documentado
-- Git: clean (tracked)
+- Cycle advanced: Ciclo 541 -> 542 (por processo autonomo)
+- DEC-009: AMAB reset loop documentado como CRITICO
+- AkashaSignificadoCard.tsx: RESTAURADO a HEAD, typecheck 0 erros ✅
+- Typecheck: 0 erros | Git: clean
 
 ### Impacto para o usuario
-Build quebrado — nenhum deploy possivel ate w2 corrigir.
+Nenhuma mudanca de funcionalidade.
 
 ### Status
-- [x] STATE.md atualizado (Ciclo 541)
-- [x] requests.md atualizado (type error CRITICO)
-- [x] Typecheck documentado (4 erros)
+- [x] Typecheck verified (0 erros)
+- [x] Git clean verificado
+- [x] DEC-009 documentado em requests.md e STATE.md
 
-## Ciclo 542
+## Ciclo 541
 
-- DEC-009 CRITICA: AMAB reset loop sobrescreve commits w-main. HUMAN requerido.
-- AkashaSignificadoCard.tsx: AMAB working copy tem type errors — RESTAURADO a HEAD. w2 domain.
-- DEC-004: Gene Keys attribution NAO implementada ha 4 ciclos.
+Documentado pelo processo autonomo.
