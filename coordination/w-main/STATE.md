@@ -1,15 +1,14 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 549)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 550)
 
 **Versao atual**: v0.1.5
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 549
+**Ciclo**: 550
 
 ---
 
-## Ciclo 549 — Auditoria Local
+## Ciclo 550 — Auditoria Local
 
-**Typecheck**: 0 erros | **Git**: clean
-**v0.1.5**: release `e19e00db`
+**Typecheck**: 0 erros | **Git**: clean (untracked test_write.txt w2 domain)
 **DEC-009**: CRITICO — AMAB reset loop, 3 opcoes no CHECKPOINT
 **DEC-004**: 10 ciclos sem implementacao UI por w2
 
@@ -27,6 +26,7 @@
 
 ## Historico resumido
 
+- **550**: Auditoria | DEC-009 CRITICO, DEC-004 10 ciclos
 - **549**: Auditoria | DEC-009 CRITICO, DEC-004 10 ciclos
 - **548**: Auditoria | DEC-009 CRITICO, DEC-004 9 ciclos
 - **547**: Auditoria | DEC-009 CRITICO, DEC-004 8 ciclos
