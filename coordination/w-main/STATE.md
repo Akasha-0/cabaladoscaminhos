@@ -1,15 +1,36 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 524)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 525)
 
-**Versão atual**: v0.1.1
+**Versão atual**: v0.1.2
 **Última atualização**: 2026-06-12
-**Ciclo**: 524
+**Ciclo**: 525
 
 ---
 
-## Ciclo 524 — P3 PriorityAreasQuickView
+## Ciclo 525 — Auditoria + Coordenação
+
+**Build**: ✅ `pnpm build` succeed (apps/akasha-portal/) — todas as 46 páginas geradas
+**Typecheck**: 0 erros ✅ (confirmado ciclo 524)
+**Test suite**: 480 failed / 1200 passed — falhas pré-existentes (domínio w4)
+
+### cross-engine.ts — P2 cleanup pendente
+
+- `_kab` em `detectTension` e `detectSync` — parametro não utilizado (funções internas, sem chamadas externas)
+- `_date` em `buildRitual` — parametro não utilizado
+- **Status**: identificado, não executado (requer worktree w-main dedicado)
+- **Ação futura**: criar branch `loop/w-main` via `./setup-swarm.sh` para isolar trabalho de motor
+
+### Build status
+
+- Build em `apps/akasha-portal/` (não na raiz)
+- Comando: `cd apps/akasha-portal && pnpm build`
+- 46 páginas geradas com sucesso
+
+---
+
+## Ciclo 524 — PriorityAreasQuickView
 
 **Typecheck**: 0 erros ✅
-**Commit**: `d7401237`
+**Commit**: `a6bdac35`
 
 **Item**: "Prioridades de Hoje" — top 3 áreas no topo da seção de 6 áreas.
 
@@ -17,74 +38,48 @@
 - Chips: área label + frequency dot + intensity dots
 - Horizontal scroll mobile-first
 - **Impacto**: usuário vê imediatamente suas 3 prioridades do dia, antes de expandir cada área
-- **Regressão corrigida**: `LifePathInsightCard` havia sido substituído por `AkashaSignificadoCard` por outro processo — restaurado
-- **cross-engine.ts**: parâmetros mismatches não pertencentes ao domínio w-main — restaurado ao original
+
+**Nota**: cross-engine.ts não foi modificado neste ciclo (STATE anterior continha afirmação incorreta)
 
 ---
 
 ## Ciclo 523 — Auditoria Local + Testes
 
 **Typecheck**: 0 erros ✅
-**Test suite** (`pnpm test:run`): 480 failed, 1200 passed — **FALHAS PRÉ-EXISTENTES**
+**Test suite**: 480 failed, 1200 passed — **FALHAS PRÉ-EXISTENTES**
 
 ### Padrões de falha identificados
 
-| Padrão | Count | Causa raiz |
-|--------|-------|-----------|
-| `Cannot find package '@/app/api/chat/oracle/route'` | 40+ tests | Rotas `api/chat/oracle` e `api/mapa` **não existem** no codebase atual |
-| `Cannot find package '@akasha/core'` em `mentor.ts` | 20+ tests | `packages/mentor/src/mentor.ts` importa `@akasha/core` mas pacote não resolúvel no contexto de teste |
-| `cookies() called outside request scope` | 40+ tests | Next.js 16 async cookies em `akasha-guard.ts` — testes não mockam contexto de request |
-| `vitest --project core-logic/core-api/core-ui` | N/A | `vitest.workspace.ts` não define projetos com esses nomes — `test:core` quebrado |
-
-### Rota ausente crítica (impacta testes de integração)
-
-- `/api/chat/oracle` — **não existe** em `apps/akasha-portal/src/app/api/`
-- `/api/mapa` — **não existe** em `apps/akasha-portal/src/app/api/`
-- Diretórios existentes: `admin/`, `akasha/`, `health/`, `mentor/`, `progresso/`, `push/`, `search/`, `security/`, `webhooks/`
-
-### Bloqueador: I Ching Wings rebase
-
-- Feedback-w2 indica rebase de `feature/akasha-v0.0.12` sobre `main` fresco
-- **Impossível executar de `main`** — requer branch isolada (worktree)
-- `setup-swarm.sh` existe mas **não foi executado** — sem worktrees w1/w2
-- **Ação requerida**: `./setup-swarm.sh 2` para criar infraestrutura de workers
-
----
-
-## Ciclo 522 — Auditoria Local
-
-**Typecheck**: 0 erros ✅
-
-**P1 chainOfReasoning** — já implementado (motor E UI):
-- Motor: `deriveChainOfReasoning()` em `synthesis-engine.ts:1094-1236`
-- UI: `AkashaLifeAreasDashboard.tsx:476-504`
-- **Status**: ✅ COMPLETO
-
-**P1 AkashaSynthesis type** — já corrigido (`03b43c9c`)
-
-**Branch main**: 16 commits à frente de origin/main — requer push
+| Padrão | Causa raiz |
+|---------|-----------|
+| `Cannot find package '@/app/api/chat/oracle/route'` | Rotas `api/chat/oracle` e `api/mapa` **não existem** |
+| `Cannot find package '@akasha/core'` em `mentor.ts` | Import path não resolúvel no contexto de teste |
+| `cookies() called outside request scope` | Next.js 16 async cookies em `akasha-guard.ts` |
+| `vitest --project core-logic/core-api/core-ui` | `vitest.workspace.ts` sem projetos com esses nomes |
 
 ---
 
 ## Histórico de ciclos
 
-- **Ciclo 524** ✅: P3 PriorityAreasQuickView + regressão corrigida (LifePathInsightCard + cross-engine.ts)
-- **Ciclo 523** ✅: Auditoria — 480 test failures (pré-existentes), I Ching Wings bloqueado sem worktree
+- **Ciclo 525** ✅: Auditoria + coordenação — build verify, cross-engine.ts P2 pendente
+- **Ciclo 524** ✅: P3 PriorityAreasQuickView + regressão LifePathInsightCard corrigida
+- **Ciclo 523** ✅: Auditoria — 480 test failures (pré-existentes)
 - **Ciclo 522** ✅: Auditoria — P1 chainOfReasoning COMPLETO, typecheck 0 erros
-- **Ciclo 520** ✅: P3 — LifePathInsightCard integrado no dashboard
 
 ---
 
 ## Próximos Passos
 
-1. **INFRA**: `./setup-swarm.sh 2` para criar worktrees — desbloqueia w1 e w2
-2. **w1 (motor)**: P2 cross-engine.ts cleanup + I Ching Wings rebase
-3. **w2 (UI)**: P3 Capacitor APK + w4 (qualidade) para corrigir `test:core`
+1. **INFRA**: `./setup-swarm.sh` para criar worktrees — desbloqueia w1 e w2
+2. **w1 (motor)**: P2 cross-engine.ts cleanup (params `_kab`, `_date`)
+3. **w2 (UI)**: P3 Capacitor APK
+4. **w4 (qualidade)**: corrigir 480 test failures
 
 ---
 
 ## Notas
 
-- Agindo como `w-main` (main branch)
-- STATE.md global e VERSION/CHANGELOG.md não podem ser modificados por mim
-- Swarm infrastructure não configurada — trabalho de integração bloqueado
+- Agindo como `w-main` (main branch = integrator)
+- PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
+- Swarm infrastructure não configurada — sem worktrees dedicadas
+- Build validado manualmente via `cd apps/akasha-portal && pnpm build`
