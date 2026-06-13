@@ -34,6 +34,7 @@ import type {
   AkashaTypeProfileUI,
   AreaNarrativeUI,
   DailyDecisionUI,
+  DailyTransitUI,
   SexualidadeUI,
 } from './hooks/useAkashaSynthesis';
 import { AkashaSignificadoCard } from '@/components/akasha/AkashaSignificadoCard';
@@ -578,6 +579,20 @@ function AreaCard({ areaKey, narrative }: {
                   {areaKey === 'vitalidadeEnergia' && narrative.sexualidade && (
                     <SexualidadeSection sexualidade={narrative.sexualidade} />
                   )}
+                </div>
+              )}
+
+              {/* F-224: Trânsito de Hoje — dados gerados pelo motor mas nunca renderizados */}
+              {narrative.dailyTransit && (
+                <div
+                  className="rounded-xl p-3 flex items-start gap-2.5"
+                  style={{ background: 'linear-gradient(135deg, #64D2FF08 0%, #AF52DE08 100%)', border: '1px solid #64D2FF25' }}
+                >
+                  <Sparkles size={12} className="text-[#64D2FF] mt-0.5 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold text-[#64D2FF]/70 uppercase tracking-wider mb-0.5">Trânsito de Hoje</p>
+                    <p className="text-xs text-white/75 leading-relaxed">{narrative.dailyTransit.todayPhrase}</p>
+                  </div>
                 </div>
               )}
 
