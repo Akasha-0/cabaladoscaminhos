@@ -24,3 +24,11 @@
 - requests.md: type mismatch LifeArea vs aplicacao reportado a w1
 - Commit `056edbeb`: typecheck 0, build 46/46, lint 0 errors
 
+
+## Ciclo 9 (2026-06-12)
+- PWA audit: manifest.json + sw.js + icons em public/ verificados
+- manifest: completo (name, short_name, icons 192/512/maskable, shortcuts, categories)
+- sw.js: cache-first estaticos, network-first transitos, stale-while-revalidate HTML
+- capacitor/: manifest.json + sw.js syncados via cap-build.sh
+- server.url: Vercel production — APK online-only, offline bloqueada por architecture
+- requests.md: offline APK architecture reportado como P1 para integrador
