@@ -1,17 +1,17 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 564)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 565)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 564
+**Ciclo**: 565
 
 ---
 
-## Ciclo 564 — Auditoria Local
+## Ciclo 565 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
 **v0.1.6**: release `c5e03f1b`
 **DEC-009**: CRITICO — AMAB reset loop, 3 opcoes no CHECKPOINT
-**DEC-004**: 24 ciclos sem implementacao UI por w2
+**DEC-004**: 25 ciclos sem implementacao UI por w2
 
 ### Estado atual
 - w-main backlog: vazio — SEM dominio de codigo
@@ -20,13 +20,14 @@
 
 ### Estrutura Swarm
 - w-main: coordinator + integrator — audit only
-- w2: Ciclo 11 ativo
+- w2: Ciclo 12 ativo — hygiene round 2
 - w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
 ---
 
 ## Historico resumido
 
+- **565**: Auditoria | DEC-009 CRITICO, DEC-004 25 ciclos, v0.1.6
 - **564**: Auditoria | DEC-009 CRITICO, DEC-004 24 ciclos, v0.1.6
 - **563**: Auditoria | DEC-009 CRITICO, DEC-004 23 ciclos, v0.1.6
 - **562**: Auditoria | DEC-009 CRITICO, DEC-004 22 ciclos, v0.1.6
@@ -50,7 +51,7 @@
 ## Proximos Passos
 
 1. **HUMAN**: decidir sobre AMAB reset loop (DEC-009) — 3 opcoes no CHECKPOINT
-2. **w2**: implementar DEC-004 UI attribution (Gene Keys) — 24 ciclos atrasado
+2. **w2**: implementar DEC-004 UI attribution (Gene Keys) — 25 ciclos atrasado
 3. **HUMAN**: `./setup-swarm.sh` para worktrees
 
 ## Notas
