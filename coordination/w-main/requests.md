@@ -1,6 +1,6 @@
 # coordination/w-main/requests.md
 
-## Escalação ao Integrador — Ciclo 528 (v0.1.2)
+## Escalacao ao Integrador — Ciclo 528 (v0.1.3)
 
 **De**: w-main (main branch, executor + integrator)
 **Data**: 2026-06-12
@@ -8,47 +8,34 @@
 
 ---
 
-### Itens pendentes por domínio
+### Itens pendentes por dominio
 
-| # | Domínio | Item | Impacto | Prioridade |
+| # | Dominio | Item | Impacto | Prioridade |
 |---|---------|------|---------|-----------|
-| 1 | w-main | DEC-004 Gene Keys — decisão | Plágio vs confluência natural vs renomear | 🔴 CRÍTICA |
-| 2 | w-main | Capacitor APK (`npx cap sync`) | APK Android funcional, nunca executado | 🔴 ALTA |
-| 3 | w4 | 241 test failures ambientais | Rotas ausentes + mock cookies + vitest | 🟡 MÉDIA |
-| 4 | w1 | cross-engine `_kab`/`_date` | Remover params órfãos — 0 chamadas externas | 🟢 BAIXA |
-| 5 | w2 | feature/akasha-v0.0.12 rebase | I Ching Wings + Correlation Map — 50 commits atrás | 🟢 BAIXA |
+| 1 | w-main | DEC-004 Gene Keys — decisao | Plagio vs confluencia natural vs renomear | CRITICA |
+| 2 | w-main | Capacitor APK (`npx cap sync`) | APK Android funcional, nunca executado | ALTA |
+| 3 | w4 | 241 test failures ambientais | Rotas ausentes + mock cookies + vitest | MEDIA |
+| 4 | w1 | cross-engine `_kab`/`_date` | Remover params orfaos | BAIXA |
+| 5 | w2 | feature/akasha-v0.0.12 rebase | I Ching Wings + Correlation Map | BAIXA |
 
 ---
 
 ### DEC-004 — shadow/gift/siddhi vs Gene Keys
 
-**Problema**: shadow/gift/siddhi de Akasha é semanticamente idêntico a Gene Keys de Richard Rudd.
-O nome "Gene Keys" é marca registrada. Estrutura de 3 níveis (shadow/gift/siddhi) é a mesma.
+**Problema**: shadow/gift/siddhi de Akasha e semanticamente identico a Gene Keys de Richard Rudd.
 
-**4 opções**:
-- (a) **Atribuir**: mencionar Gene Keys como inspiração, creditar Richard Rudd
-- (b) **Renomear**: mudar terminologia (ex: obscuridade/oferta/transcendência)
-- (c) **Confluência natural**: manter, argumentando estrutura como folclore espiritual
-- (d) **Remover**: abandonar shadow/gift/siddhi, substituindo por modelo puramente 5 tradições
+**4 opcoes**:
+- (a) **Atribuir**: mencionar Gene Keys como inspiracao, creditar Richard Rudd
+- (b) **Renomear**: mudar terminologia (ex: obscuridade/oferta/transcendencia)
+- (c) **Confluencia natural**: manter, argumentando estrutura como folclore espiritual
+- (d) **Remover**: abandonar shadow/gift/siddhi
 
-**Risco**: Publicação sem decisão → plágio confirmado → DMCA/dano reputacional.
+**Risco**: Publicacao sem decisao → plagio confirmado → DMCA/dano reputacional.
 
 ---
 
-## Escalação ao Integrador — Ciclo 526 (RESOLVIDO)
+## Historico
 
-### AÇÕES RESOLVIDAS
-
-| Item | Status | Ação |
-|------|--------|------|
-| P1 chainOfReasoning | ✅ RESOLVIDO | Confirmado em `AkashaLifeAreasDashboard.tsx:476` |
-| `./setup-swarm.sh` | ✅ JÁ EXISTE | `coordination/` infraestrutura existe |
-| feature/akasha-v0.0.12 | ⏳ PENDENTE | 50 commits atrás — baixa prioridade |
-| Test failures (241) | ⏳ PENDENTE | w4 necessário |
-| cross-engine _kab/_date | ⏳ PENDENTE | Backlog w1 |
-
-### Histórico
-
-- Ciclo 523: P1 chainOfReasoning ✅ RESOLVIDO, CHECKPOINT written
+- Ciclo 523: P1 chainOfReasoning RESOLVIDO, CHECKPOINT written
 - Ciclo 524-527: Features (PriorityAreasQuickView, F-224, F-225), quality cycles
-- Ciclo 528: v0.1.3 released, 3 decisões críticas pendentes (DEC-004, Capacitor, tests)
+- Ciclo 528: v0.1.3 released, 3 decisoes criticas pendentes
