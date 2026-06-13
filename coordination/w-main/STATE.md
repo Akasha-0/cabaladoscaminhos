@@ -1,12 +1,12 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 638)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 640)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 638
+**Ciclo**: 640
 
 ---
 
-## Ciclo 638 — Auditoria Local
+## Ciclo 640 — Auditoria Local
 
 **Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: 0 errors, 293 warnings (pre-existentes)
 **Git**: clean
@@ -21,14 +21,14 @@
 
 ### Estrutura Swarm
 - w-main: coordinator + integrator (main branch)
-- w2: Ciclo 64 ativo
+- w2: Ciclo 66 ativo
 - w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
 ---
 
 ## Historico resumido
-- **638**: Auditoria | Suite OK, all items stable
-- **637**: Auditoria | Suite OK
+- **640**: Auditoria | Suite OK, all items stable
+- **638**: Auditoria | Suite OK
 - Detalhado: historico.md
 
 ## Proximos Passos
