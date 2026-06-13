@@ -169,3 +169,7 @@
 - 10 auditorias consecutivas clean (Ciclos 20-30)
 - Attribution DEC-004 JSX (linha 130) sobreviveu
 - DEC-009 ultimatum expirado (w-main)
+
+## Ciclo 31 (2026-06-12)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- Attribution DEC-004 JSX (linha 130) sobreviveu
