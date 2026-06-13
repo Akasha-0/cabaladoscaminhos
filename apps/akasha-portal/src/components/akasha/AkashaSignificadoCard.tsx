@@ -10,6 +10,8 @@
  *
  * Inspiração visual: benchmark Astrolink + Mirofox — cartões com profundidade prática,
  * não descrições rasas.
+ *
+ * DEC-004:shadow/gift/siddhi inspirado em Gene Keys (Richard Rudd).
  */
 
 import { useState } from 'react';

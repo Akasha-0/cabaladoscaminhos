@@ -26,7 +26,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, Star,
-  ArrowRight, Lightbulb, RefreshCw, GitBranch, GitMerge,
+  ArrowRight, Lightbulb, RefreshCw, GitBranch,
   type LucideIcon,
 } from 'lucide-react';
 import type {
