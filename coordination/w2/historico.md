@@ -398,3 +398,7 @@
 ## Ciclo 89 (2026-06-13)
 - Auditoria local: typecheck 0, lint 295 (todos w1/w3)
 - Attribution DEC-004 JSX (linha 130) sobreviveu
+
+## Ciclo 90 (2026-06-13)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- Attribution DEC-004 JSX (linha 130) sobreviveu
