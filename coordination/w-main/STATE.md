@@ -1,8 +1,24 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 523)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 524)
 
 **Versão atual**: v0.1.1
 **Última atualização**: 2026-06-12
-**Ciclo**: 523
+**Ciclo**: 524
+
+---
+
+## Ciclo 524 — P3 PriorityAreasQuickView
+
+**Typecheck**: 0 erros ✅
+**Commit**: `d7401237`
+
+**Item**: "Prioridades de Hoje" — top 3 áreas no topo da seção de 6 áreas.
+
+- Sort: frequency (siddhi > gift > shadow) + intensity desc
+- Chips: área label + frequency dot + intensity dots
+- Horizontal scroll mobile-first
+- **Impacto**: usuário vê imediatamente suas 3 prioridades do dia, antes de expandir cada área
+- **Regressão corrigida**: `LifePathInsightCard` havia sido substituído por `AkashaSignificadoCard` por outro processo — restaurado
+- **cross-engine.ts**: parâmetros mismatches não pertencentes ao domínio w-main — restaurado ao original
 
 ---
 
@@ -52,6 +68,7 @@
 
 ## Histórico de ciclos
 
+- **Ciclo 524** ✅: P3 PriorityAreasQuickView + regressão corrigida (LifePathInsightCard + cross-engine.ts)
 - **Ciclo 523** ✅: Auditoria — 480 test failures (pré-existentes), I Ching Wings bloqueado sem worktree
 - **Ciclo 522** ✅: Auditoria — P1 chainOfReasoning COMPLETO, typecheck 0 erros
 - **Ciclo 520** ✅: P3 — LifePathInsightCard integrado no dashboard
