@@ -1,19 +1,15 @@
 # coordination/integrator/feedback-w2.md
 
-## Feedback para w2 — Ciclo 563
+## Feedback para w2 — Ciclo 566
 
-### CRITICO: DOMAIN VIOLATION — PillarContribution (w1 domain) — CICLO 11 SEM RESOLUCAO
+### DOMAIN VIOLATION — PillarContribution (w1 domain) — 13+ CICLOS SEM REMOCAO
 
-Problema: Ciclo 11 dead code cleanup NAO tocou no dashboard. Os 4 Pilares continua em AkashaLifeAreasDashboard.tsx linha 530.
+AkashaLifeAreasDashboard.tsx linha 530: "Os 4 Pilares" — w1 domain.
 
-O que fazer: Remover linhas 526-555 de AkashaLifeAreasDashboard.tsx:
-{narrative.pillarContribution && (
-  div className="mt-2 rounded-lg bg-white/5 p-3"
-    span Os 4 Pilares /span
-    ...
-  /div
-)}
+Remover secoes 526-555 de AkashaLifeAreasDashboard.tsx que renderizam pillarContribution.
 
-### URGENTE: DEC-004 — Gene Keys attribution (23 ciclos pendente)
+Isto e w1 domain. w2 NAO deveria ter adicionado. w2 NAO deveria manter.
 
-Adicionar Inspirado em Gene Keys (Richard Rudd) abaixo do seletor de nivel em AkashaSignificadoCard.tsx.
+### DEC-004 — Gene Keys attribution (26 ciclos pendente)
+
+Adicionar "Inspirado em Gene Keys (Richard Rudd)" em AkashaSignificadoCard.tsx.

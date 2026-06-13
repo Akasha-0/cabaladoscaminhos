@@ -1,7 +1,7 @@
-# STATE.md — Akasha OS (Ciclo 563)
+# STATE.md — Akasha OS (Ciclo 566)
 
 **Versao**: v0.1.6 | **Atualizacao**: 2026-06-12
-**Status**: FASE 3 — DEC-004 w2 UI 23 ciclos, PillarContribution DOMAIN VIOLATION
+**Status**: FASE 3 — DEC-004 w2 UI 26 ciclos, PillarContribution DOMAIN VIOLATION 13+ ciclos
 
 ---
 
@@ -21,24 +21,23 @@
 | P2 | Cadeia de raciocinio | Done |
 | P3 | AkashaSignificadoCard | Done |
 | P4 | Capacitor APK | Done |
-| P5 | DEC-004 Gene Keys UI | **PENDENTE — w2 23 ciclos** |
+| P5 | DEC-004 Gene Keys UI | **PENDENTE — w2 26 ciclos** |
 | P6 | Feedback loop | Pending |
 
 ---
 
 ## Backlog Priorizado
 
-1. **PillarContribution DOMAIN VIOLATION**: w2 adicionou w1 domain ao dashboard (linha 530) — remove-lo
-2. **DEC-004 w2 UI attribution**: Gene Keys — 23 ciclos sem follow-up
+1. **PillarContribution DOMAIN VIOLATION**: w2 adicionou w1 domain ao dashboard (linha 530) — 13+ ciclos
+2. **DEC-004 w2 UI attribution**: Gene Keys — 26 ciclos sem follow-up
 3. **DEC-009 AMAB reset loop**: CRITICO — humano decide
 4. **P1 offline APK**: bloqueado
-5. **LifeArea type fix**: w1 aguardado por w2
 
 ---
 
 ## Historico de Decisoes
 
-- DEC-004: Gene Keys — UI pendente w2
+- DEC-004: Gene Keys — UI pendente w2 (26 ciclos)
 - DEC-006: Swarm sem worktree
 - DEC-008/009: AMAB — CRITICO
 
