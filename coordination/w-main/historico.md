@@ -704,4 +704,9 @@
 
 - DEC-009: CRITICO — aguardando acao humana
 - Git: clean | Typecheck: 0 erros
+### Ciclo 668 — Auditoria Local (2026-06-12)
+
+- DEC-009: CRITICO — aguardando acao humana
+- AMAB race: w2/changelog-pending.md RESTORED
+- Git: clean | Typecheck: 0 erros
 
