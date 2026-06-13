@@ -1,63 +1,54 @@
 # coordination/w-main/requests.md
 
-## Escalação ao Integrador — Ciclo 526 (BLOQUEADOR CRÍTICO)
+## Escalação ao Integrador — Ciclo 528 (v0.1.2)
 
 **De**: w-main (main branch, executor + integrator)
 **Data**: 2026-06-12
-**Ciclo**: 526
+**Ciclo**: 528
 
 ---
 
-### AÇÃO CRÍTICA REQUERIDA: `./setup-swarm.sh`
+### Itens pendentes por domínio
 
-**Blocker presente há 4 ciclos (522-525)**. Sem worktrees, nenhum worker pode implementar features.
-
-**O que `./setup-swarm.sh` faz**:
-- Cria `../cabala-dos-caminhos-w1` (branch `loop/w1`)
-- Cria `../cabala-dos-caminhos-w2` (branch `loop/w2`)
-- Você continua neste terminal como main/integrator
-- Cada worker opera em branch isolado — sem poluir main
-
-**Pré-requisito**: `git status` clean
-
-**Após executar**:
-- w1: P2 cross-engine.ts `_kab`/`_date` cleanup
-- w2: P3 Capacitor APK
-- w4: corrigir 480 test failures
-
-**Alternativa** (sem swarm): w-main precisa de branch `loop/w-main` próprio para isolar trabalho de motor.
+| # | Domínio | Item | Impacto | Prioridade |
+|---|---------|------|---------|-----------|
+| 1 | w-main | DEC-004 Gene Keys — decisão | Plágio vs confluência natural vs renomear | 🔴 CRÍTICA |
+| 2 | w-main | Capacitor APK (`npx cap sync`) | APK Android funcional, nunca executado | 🔴 ALTA |
+| 3 | w4 | 241 test failures ambientais | Rotas ausentes + mock cookies + vitest | 🟡 MÉDIA |
+| 4 | w1 | cross-engine `_kab`/`_date` | Remover params órfãos — 0 chamadas externas | 🟢 BAIXA |
+| 5 | w2 | feature/akasha-v0.0.12 rebase | I Ching Wings + Correlation Map — 50 commits atrás | 🟢 BAIXA |
 
 ---
 
-### Items pendentes por domínio (quando worktrees existirem)
+### DEC-004 — shadow/gift/siddhi vs Gene Keys
 
-| Domínio | Item | Impacto |
-|---------|------|---------|
-| w1 (motor) | P2 cross-engine.ts `_kab`/`_date` | Remover params órfãos — 0 chamadas externas |
-| w1 (motor) | I Ching Wings | Já integrado em main (确认) |
-| w2 (UI) | P3 Capacitor APK | `npx cap sync` + APK instalável |
-| w4 (qualidade) | 480 test failures | Rotas ausentes + mock cookies + vitest projects |
+**Problema**: shadow/gift/siddhi de Akasha é semanticamente idêntico a Gene Keys de Richard Rudd.
+O nome "Gene Keys" é marca registrada. Estrutura de 3 níveis (shadow/gift/siddhi) é a mesma.
+
+**4 opções**:
+- (a) **Atribuir**: mencionar Gene Keys como inspiração, creditar Richard Rudd
+- (b) **Renomear**: mudar terminologia (ex: obscuridade/oferta/transcendência)
+- (c) **Confluência natural**: manter, argumentando estrutura como folclore espiritual
+- (d) **Remover**: abandonar shadow/gift/siddhi, substituindo por modelo puramente 5 tradições
+
+**Risco**: Publicação sem decisão → plágio confirmado → DMCA/dano reputacional.
 
 ---
 
-## Escalação ao Integrador — Ciclo 523 (RESOLVIDO)
+## Escalação ao Integrador — Ciclo 526 (RESOLVIDO)
 
-**De**: w-main (main branch, executor + integrator)
-**Data**: 2026-06-12
-**Ciclo**: 523
-
-### AÇÕES RESOLVIDAS NESTE CICLO
+### AÇÕES RESOLVIDAS
 
 | Item | Status | Ação |
 |------|--------|------|
 | P1 chainOfReasoning | ✅ RESOLVIDO | Confirmado em `AkashaLifeAreasDashboard.tsx:476` |
-| `./setup-swarm.sh` | ✅ JÁ EXISTE | `coordination/` criado |
-| feature/akasha-v0.0.12 stale | ✅ RESOLVIDO | 6 commits ja em main (ciclo 524) |
-| Test failures (480 failed) | ⏳ PENDENTE | w4 não pode ser ativado sem setup-swarm |
-| cross-engine _kab/_date | ⏳ PENDENTE | Domínio w1 — backlog |
+| `./setup-swarm.sh` | ✅ JÁ EXISTE | `coordination/` infraestrutura existe |
+| feature/akasha-v0.0.12 | ⏳ PENDENTE | 50 commits atrás — baixa prioridade |
+| Test failures (241) | ⏳ PENDENTE | w4 necessário |
+| cross-engine _kab/_date | ⏳ PENDENTE | Backlog w1 |
 
 ### Histórico
 
-- Ciclo 521: w2 integrado, P3 AKASHA completo
-- Ciclo 522: Hygiene (Link, const, eslint), w2 requests limpos
-- Ciclo 523: Qualidade + auditoria AGENTS.md + CHECKPOINT.md
+- Ciclo 523: P1 chainOfReasoning ✅ RESOLVIDO, CHECKPOINT written
+- Ciclo 524-527: Features (PriorityAreasQuickView, F-224, F-225), quality cycles
+- Ciclo 528: v0.1.3 released, 3 decisões críticas pendentes (DEC-004, Capacitor, tests)

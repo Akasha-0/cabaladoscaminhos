@@ -1,8 +1,36 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 527)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 528)
 
-**Versão atual**: v0.1.3
+**Versão atual**: v0.1.2
 **Última atualização**: 2026-06-12
-**Ciclo**: 527
+**Ciclo**: 528
+
+---
+
+## Ciclo 528 — Auditoria + Integracao (CHECKPOINT sync)
+
+**Typecheck**: 0 erros | **Build**: 46 paginas
+**CHECKPOINT.md** written by integration process: Ciclo 528
+
+### 3 Decisoes criticas identificadas (CHECKPOINT)
+
+| # | Decisao | Dominio | Prioridade |
+|---|---------|---------|------------|
+| 1 | DEC-004 shadow/gift/siddhi vs Gene Keys (IP/plagio) | w-main | CRITICA |
+| 2 | Capacitor APK build (nunca executado) | w2 | ALTA |
+| 3 | Test suite 241 falhas ambientais | w4 | MEDIA |
+
+### DEC-004 — Gene Keys
+
+* shadow/gift/siddhi de Akasha e semanticamente idêntico a Gene Keys de Richard Rudd
+* Nome 'Gene Keys' e marca registrada
+* 4 opcoes: (a) Atribuir (b) Renomear (c) Confluencia natural (d) Remover
+* **Risco**: publicacao sem decisao = plagio confirmado
+
+### Swarm Status
+
+* `./setup-swarm.sh` nao executado — blocker ha 5+ ciclos
+* w-main backlog: vazio (features em w1/w2/w4)
+* Ciclo 528 nao pode avancar sem decisao humana sobre DEC-004
 
 ---
 
