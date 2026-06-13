@@ -95,3 +95,14 @@
 **Impacto**: w-main nao consegue manter Historico连续性 ou documentacao propria.
 **Acao requerida**: HUMAN configura AMAB para NAO fazer reset --hard em commits feitos por w-main.
 **Regra aplicada**: AGENTS.md — w-main deve poder commit com prefixo [w-main] sem sobreposicao.
+
+---
+
+### 2026-06-12 — DEC-010: AMAB Working Copy Race Condition (CRITICA, Ciclo 543)
+
+**Dominio**: AMAB (autonomous process)
+**Problema**: AMAB modifica a working copy de `AkashaSignificadoCard.tsx` (w2 domain) entre ciclos, introduzindo type errors. w-main precisa fazer `git checkout HEAD --` no final de todo ciclo para restaurar.
+**Evidencia**: todo ciclo desde 541, working copy de AkashaSignificadoCard.tsx tem changes que NAO estao em HEAD.
+**Impacto**: typecheck quebra a cada ciclo se w-main nao restaurar; w-main desperdiça tempo restaurando arquivos de dominio w2.
+**Nota**: arquivo `apps/akasha-portal/src/components/akasha/test_write.txt` tambem aparece como untracked (w2 domain, possivelmente do mesmo processo).
+**Acao requerida**: HUMAN configura AMAB para NAO modificar working copy de nenhum dominio; ou cria worktree para w2 para isolar dominios.
