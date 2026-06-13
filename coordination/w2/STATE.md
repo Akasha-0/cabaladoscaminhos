@@ -4,8 +4,8 @@
 
 ---
 
-## Domínio
-`apps/akasha-portal/src/components/**`, `apps/akasha-portal/src/app/**`, `public/**`
+## Domínio (w1: src/app/api/** por decision Ciclo 577)
+`apps/akasha-portal/src/components/**`, `apps/akasha-portal/src/app/[locale]/**`, `apps/akasha-portal/src/app/dashboard/**`, `apps/akasha-portal/src/app/page.tsx`, `apps/akasha-portal/src/app/layout.tsx`, `apps/akasha-portal/src/app/not-found.tsx`, `apps/akasha-portal/src/app/global-error.tsx`, `public/**`
 
 ---
 
