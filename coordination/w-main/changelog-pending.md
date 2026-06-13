@@ -8,19 +8,19 @@ DEC-008: ./setup-swarm.sh nunca executado — SEM worktree formal.
 
 ---
 
-## Ciclo 616 (2026-06-13)
+## Ciclo 617 (2026-06-13)
 
 **Tipo**: Auditoria Local
 
 ### O que mudou
-- Ciclo advanced: 615 -> 616
+- Ciclo advanced: 616 -> 617
 - DEC-004: RESOLVIDO ✅
-- w2 Ciclo 43 ativo
+- w2 Ciclo 44 ativo
 
 ### Impacto para o usuario
 Nenhuma mudanca de funcionalidade.
 
 ### Status
-- [x] STATE.md Ciclo 616 committed (3055862f)
+- [x] STATE.md Ciclo 617 committed (2349d60e)
 - [x] Typecheck: 0 erros
 - [x] Git: clean
