@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 10 | **Atualizacao**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 11 | **Atualizacao**: 2026-06-12
 
 ---
 
@@ -9,11 +9,11 @@
 
 ---
 
-## Status: Ciclo 10 — Auditoria Local Completa
+## Status: Ciclo 11 — Dead Code Cleanup
 
 | Verificação | Resultado |
 |-------------|-----------|
-| typecheck / build / lint | ✅ 0 errors, 46/46 páginas, 0 errors + 306 warnings (todos pré-existentes w1/w3) |
+| typecheck / build / lint | ✅ 0 errors, 46/46 páginas, 0 errors + 299 warnings (-7 w2 domain) (todos pré-existentes w1/w3) |
 | AkashaSignificadoCard | ✅ 7 áreas: proposito, carreira, finanças, saúde, relacionamentos, sexualidade, espiritualidade |
 | type mismatch w1 | ⚠️ `proposito`/`sexualidade` não estão no tipo `LifeArea` mas são usados em `aplicacao` — reportado em `requests.md` |
 | APK build | ✅ `4e0d96f3` — 4.4MB APK |

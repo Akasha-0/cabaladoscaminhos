@@ -39,3 +39,11 @@
 - APK 4.4MB (4e0d96f3) + cap-build.sh OK
 - Backlog: P1 offline APK blocked by architecture decision; P3 E2E blocked by auth; P3 LifeArea wait w1
 - PWA manifest + sw.js: OK (online-only APK, offline blocked by server.url decision)
+
+## Ciclo 11 (2026-06-12)
+- Dead code cleanup: 7 warnings removidos (306 -> 299 warnings)
+  - AkashaLifeAreasDashboard: DailyTransitUI, AUTHORITY_ICONS, ak, bk
+  - DimensaoCard: PILAR_ICONE, PILAR_NOME
+  - MandalaNarrative: locale
+- test_write.txt removido
+- Commit bd9de5c5
