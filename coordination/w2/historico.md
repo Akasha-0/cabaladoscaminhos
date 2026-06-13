@@ -70,3 +70,8 @@
 - typecheck: 0 errors ✅
 - lint: 296 warnings (pillarContribution removido nao afetou contagem)
 - Commits: 3f64039e (Gene Keys), a7b5ab9b (pillarContribution)
+
+## Ciclo 15 (2026-06-12)
+- Auditoria local completa: typecheck 0, lint 0 errors em w2 domain (components/ + src/app/[locale]/)
+- Conflito dominio: src/app/api/** (backend/w1) no glob w2; reportado em requests.md
+- Commit requests.md: domain conflict filed

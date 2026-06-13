@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 14 | **Atualizacao**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 15 | **Atualizacao**: 2026-06-12
 
 ---
 
@@ -9,11 +9,11 @@
 
 ---
 
-## Status: Ciclo 14 — Feedback Integrator + Hygiene Round 4
+## Status: Ciclo 15 — Auditoria Local (w2 domain clean)
 
 | Verificação | Resultado |
 |-------------|-----------|
-| typecheck / build / lint | ✅ 0 errors, 46/46 páginas, 0 errors + 296 warnings (-11 w2 domain from Ciclo 11+12+13) (-10 w2 domain from Ciclo 11+12) (todos pré-existentes w1/w3) |
+| typecheck / build / lint | ✅ 0 errors, 46/46 páginas, 0 errors + 296 warnings (0 warnings em w2 domain — todos em w1/w3) (-11 w2 domain from Ciclo 11+12+13) (-10 w2 domain from Ciclo 11+12) (todos pré-existentes w1/w3) |
 | AkashaSignificadoCard | ✅ 7 áreas: proposito, carreira, finanças, saúde, relacionamentos, sexualidade, espiritualidade |
 | type mismatch w1 | ⚠️ `proposito`/`sexualidade` não estão no tipo `LifeArea` mas são usados em `aplicacao` — reportado em `requests.md` |
 | APK build | ✅ `4e0d96f3` — 4.4MB APK |
@@ -42,4 +42,5 @@
 - **viewport**: maximumScale: 1, userScalable: false ---previne zoom acidental (PWA)
 - **PWA manifest**: completo com icons, shortcuts, categories; sync para capacitor/ via cap-build.sh
 - **service worker**: sw.js com cache-first estaticos, network-first transitos, stale-while-revalidate HTML
+- **Auditoria local**: w2 domain 100% clean — 0 warnings em components/ + src/app/[locale]/. Conflito de dominio: src/app/api/** (backend/w1) no glob w2 reportado em requests.md.
 - **server.url**: Vercel production ---APK online-only; offline capability bloqueada por P1 decision
