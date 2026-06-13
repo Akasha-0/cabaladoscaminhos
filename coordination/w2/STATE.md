@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 105 | **Atualizacao**: 2026-06-13
+**Versao atual**: v0.1.2 | **Ciclo**: 106 | **Atualizacao**: 2026-06-13
 
 ---
 
@@ -9,11 +9,11 @@
 
 ---
 
-## Status: Ciclo 105 — Bug Fix
+## Status: Ciclo 106 — LifeArea type alignment
 
 | Verificação | Resultado |
 |-------------|-----------|
-| typecheck / lint | ✅ 0 errors, 295 warnings (todos w1/w3) |
+| typecheck / lint | ✅ 0 errors |
 | w2 domain warnings | ✅ 0 |
 | Attribution DEC-004 | ✅ JSX linha 130 |
 | APK build | ✅ `4e0d96f3` — 4.4MB |
@@ -26,7 +26,7 @@
 
 1. **[P1] Offline APK** — server.url capacitor.config.ts aguarda decisão humana. Impacto: APK offline vs online-only.
 2. **[P3] E2E mobile** — Playwright 375×812 requer auth. Impacto: garantia mobile-first.
-3. **[P3] LifeArea type** — Alinhamento final da UI com types. Impacto: remove `as LifeArea` cast se/quando o input string virar union nativa.
+3. **[P4] UI performance check** — Monitorar carregamento de componentes pesados na UI. Impacto: UX mobile fluida.
 
 ---
 
@@ -38,4 +38,4 @@
 - **service worker**: sw.js offline-ready (cache-first + network-first + stale-while-revalidate)
 - **server.url**: Vercel production → APK online-only
 - **AkashaSignificadoCard header fix**: Corrigido mapeamento de abas para as áreas `sexualidade` e `espiritualidade` na UI.
-
+- **AkashaSignificadoCard type cast removal**: Modificado `AREAS_WITH_DATA` para `LifeArea[]` e o estado `area` para `LifeArea` para remover todos os casts redundantes `as LifeArea` na indexação do objeto `interp.aplicacao`.
