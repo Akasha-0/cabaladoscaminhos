@@ -119,3 +119,4 @@ quality-evolution*.json
 
 # Capacitor build output
 apps/akasha-portal/capacitor/
+apps/akasha-portal/cap-build.sh
