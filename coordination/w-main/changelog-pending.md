@@ -7,21 +7,21 @@ TYPE MISMATCH: LifeArea w1 nao cobre proposito/sexualidade/carreira.
 
 ---
 
-## Ciclo 603 (2026-06-13)
+## Ciclo 604 (2026-06-13)
 
 **Tipo**: Auditoria Local
 
 ### O que mudou
-- Ciclo advanced: 599 -> 603
+- Ciclo advanced: 603 -> 604
 - DEC-004: RESOLVIDO ✅ — attribution visivel em AkashaSignificadoCard.tsx:130
 - TYPE MISMATCH: LifeArea w1 ainda nao corrigido
-- w2 Ciclo 32 ativo
+- w2 Ciclo 33 ativo
 - DEC-009: CRITICO — race entre processos w-main
 
 ### Impacto para o usuario
 Nenhuma mudanca de funcionalidade.
 
 ### Status
-- [x] STATE.md Ciclo 603 committed (9faf9f8f)
+- [x] STATE.md Ciclo 604 committed (d7677231)
 - [x] Typecheck: 0 erros
 - [x] Git: clean
