@@ -1,41 +1,41 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 608)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 609)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 608
+**Ciclo**: 609
 
 ---
 
-## Ciclo 608 — Auditoria Local
+## Ciclo 609 — Auditoria Local
 
-**Typecheck**: 0 erros | **Git**: clean
-**DEC-009**: CRITICO — AMAB race (concurrent processes stepping on coordination files)
-**DEC-004**: ✅ RESOLVIDO — attribution visivel em AkashaSignificadoCard.tsx:130
-**TYPE MISMATCH**: LifeArea w1 — proposito/sexualidade/carreira nao estao no tipo
+**Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: 0 errors, 293 warnings (pre-existentes)
+**Git**: clean
 
-### Estrutura Swarm
-- w-main: concurrent processes (DEC-009 race confirmed)
-- w2: Ciclo 36 ativo
-- w1/w3/w4: BLOQUEADOS (sem worktree formal)
-
-### Auditoria itens
+### itens de auditoria
 | Item | Status | Evidencia |
 |------|--------|-----------|
 | DEC-004 Gene Keys | ✅ RESOLVIDO | AkashaSignificadoCard.tsx:130 |
-| DEC-009 AMAB race | ⚠️ CRITICO | Concurrent w-main processes |
-| PillarContribution UI | ✅ Removida | w2 Ciclo 14 |
-| TYPE LifeArea mismatch | ⚠️ w1 PENDING | AkashaSignificadoCard.tsx:24 |
+| DEC-009 AMAB race | ⚠️ CRITICO | Fonte EXTERNAL, daemon cycling, 3 opcoes CHECKPOINT |
+| TYPE LifeArea mismatch | ⚠️ w1 PENDING | 3 valores tipo vs 9 valores em uso |
+| DEC-008 Swarm | ⚠️ SEM worktree | ./setup-swarm.sh nunca executado |
 
-## Historico
-- **608**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1, DEC-009 CRITICO
-- **607**: Auditoria | DEC-004 RESOLVIDO
-- Detalhado: `historico.md`
+### Estrutura Swarm
+- w-main: coordinator + integrator (main branch)
+- w2: Ciclo 37 ativo
+- w1/w3/w4: BLOQUEADOS (sem worktree formal)
+
+---
+
+## Historico resumido
+- **609**: Auditoria | Suite OK, all items stable
+- **607**: Auditoria | Suite OK
+- Detalhado: historico.md
 
 ## Proximos Passos
 1. **HUMAN**: DEC-009 — 3 opcoes no CHECKPOINT
-2. **w1**: TYPE LifeArea — adicionar proposito/sexualidade/carreira, remover familia/criatividade
-3. **w2**: LifeArea type cast cleanup quando w1 publicar tipo corrigido
+2. **w1**: TYPE LifeArea — expandir tipo para 9 valores
+3. **HUMAN**: ./setup-swarm.sh
 
 ## Notas
-- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md`
+- w-main domain: coordination/w-main/** + docs/DECISIONS.md
 - PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
