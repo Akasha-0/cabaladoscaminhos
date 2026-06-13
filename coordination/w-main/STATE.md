@@ -1,8 +1,16 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 537)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 538)
 
 **Versao atual**: v0.1.3
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 537
+**Ciclo**: 538
+
+---
+
+## Ciclo 538 — Auditoria Local
+
+**Typecheck**: 0 erros | **Git**: clean
+**DEC-004**: CRITICA — Gene Keys, pendente ha 14 ciclos
+**w2**: historico.md untracked detectado (worktree ativa?)
 
 ---
 
