@@ -123,6 +123,14 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
         </p>
       </div>
 
+
+      {/* Attribution — DEC-004 */}
+      <div style={{ marginBottom: 12 }}>
+        <span style={{ fontSize: '0.68rem', color: '#6b6480', letterSpacing: '0.04em' }}>
+          Inspirado em Gene Keys (Richard Rudd)
+        </span>
+      </div>
+
       {/* Seletor de Nível */}
       <div
         style={{
