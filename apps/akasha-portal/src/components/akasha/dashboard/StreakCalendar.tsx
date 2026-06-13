@@ -74,7 +74,7 @@ export function StreakCalendar({ streak, loading }: StreakCalendarProps) {
         <SkeletonCalendar />
       ) : (
         <div className="flex justify-between gap-2">
-          {weekDays.map((date, index) => {
+          {weekDays.map((date) => {
             const dateKey = formatDateKey(date);
             const streakDay = streakMap.get(dateKey);
             const isToday = date.getTime() === today.getTime();

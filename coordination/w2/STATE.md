@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 106 | **Atualizacao**: 2026-06-13
+**Versao atual**: v0.1.2 | **Ciclo**: 107 | **Atualizacao**: 2026-06-13
 
 ---
 
@@ -9,7 +9,7 @@
 
 ---
 
-## Status: Ciclo 106 — LifeArea type alignment
+## Status: Ciclo 107 — UI code hygiene & warnings cleanup
 
 | Verificação | Resultado |
 |-------------|-----------|
@@ -39,3 +39,4 @@
 - **server.url**: Vercel production → APK online-only
 - **AkashaSignificadoCard header fix**: Corrigido mapeamento de abas para as áreas `sexualidade` e `espiritualidade` na UI.
 - **AkashaSignificadoCard type cast removal**: Modificado `AREAS_WITH_DATA` para `LifeArea[]` e o estado `area` para `LifeArea` para remover todos os casts redundantes `as LifeArea` na indexação do objeto `interp.aplicacao`.
+- **UI code hygiene**: Removidos todos os 10 warnings de linter e compilador na pasta de componentes UI (StreakCalendar, DashboardStats, ErrorState, card, city-autocomplete, dialog, progress, SupabaseProvider) garantindo 0 warnings e 0 errors no domínio w2.

@@ -9,7 +9,7 @@ interface DashboardStatsProps {
 }
 
 export function DashboardStats({ userId }: DashboardStatsProps) {
-  const { data, loading, error } = useDashboardData({ userId });
+  const { data, loading } = useDashboardData({ userId });
 
   // Skeleton loading
   if (loading) {

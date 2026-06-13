@@ -89,15 +89,6 @@ export function CityAutocomplete({
           const addr = item.address ?? {};
           const name =
             addr.city ?? addr.town ?? addr.village ?? item.display_name.split(',')[0];
-          // Extract state abbreviation from ISO3166-2 (e.g. "BR-SP" -> "SP") or use full state name
-          const stateRaw = item['display_name']
-            ?.split(',')
-            .find((part) => {
-              const s = part.trim();
-              // Brazilian state abbreviations are 2 uppercase letters
-              return /^[A-Z]{2}$/.test(s) || /^[A-Z][a-záéíóúàèìòùãõñâêîôû]+(\s+[A-Z][a-záéíóúàèìòùãõñâêîôû]+)*$/.test(s.trim());
-            });
-
           // Extract state from display_name (usually the second-to-last segment for BR)
           const parts = item.display_name.split(',').map((p) => p.trim());
           let state = addr.state ?? '';
@@ -182,12 +173,7 @@ export function CityAutocomplete({
     setSelectedIndex(-1);
   };
 
-  const getCityLabel = (city: CityResult) => {
-    const parts = [city.name];
-    if (city.state) parts.push(city.state);
-    if (city.country) parts.push(city.country);
-    return parts.join(', ');
-  };
+
 
   return (
     <div className={cn('relative', className)}>

@@ -86,6 +86,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
 
 export {
   Dialog,
+  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
