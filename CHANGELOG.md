@@ -1,3 +1,15 @@
+## v0.1.3 (2026-06-12)
+
+### Added
+- **Dashboard PriorityAreasQuickView** (w2): top 3 áreas da vida visíveis no topo da seção de 6 áreas — ordenação siddhi > gift > shadow + intensidade, chips horizontais com scroll mobile-first.
+- **F-224 — Trânsito de Hoje na UI**: `dailyTransit.todayPhrase` renderizado em cada Área expandida com ícone Sparkles antes da prática do dia.
+
+### Changed
+- **AkashaSignificadoCard substitui LifePathInsightCard no dashboard**: seletor de 5 áreas de vida e 3 níveis (shadow/gift/siddhi) diretamente na página principal.
+
+### Fixed
+- **JSX entity bug**: `&ldquo;`/`&rdquo;` corrigidos para `{...}` em 3 componentes.
+
 ## v0.1.2 (2026-06-12)
 
 ### Fixed
