@@ -1,12 +1,12 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 590)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 592)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 590
+**Ciclo**: 592
 
 ---
 
-## Ciclo 590 — Auditoria Local
+## Ciclo 592 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
 **DEC-009**: CRITICO — AMAB race (concurrent processes stepping on coordination files)
@@ -15,7 +15,7 @@
 
 ### Estrutura Swarm
 - w-main: concurrent processes (DEC-009 race confirmed)
-- w2: Ciclo 22 ativo
+- w2: Ciclo 23 ativo — "sw.js offline-ready verified"
 - w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
 ### Auditoria itens
@@ -27,8 +27,8 @@
 | TYPE LifeArea mismatch | ⚠️ w1 PENDING | AkashaSignificadoCard.tsx:24 |
 
 ## Historico
-- **590**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1, DEC-009 CRITICO
-- **589**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1
+- **592**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1, DEC-009 CRITICO
+- **591**: Auditoria | DEC-004 RESOLVIDO
 - Detalhado: `historico.md`
 
 ## Proximos Passos
