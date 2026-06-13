@@ -190,3 +190,7 @@
 - Auditoria local: typecheck 0, lint 295 (todos w1/w3)
 - Attribution DEC-004 JSX (linha 130) sobreviveu
 - DEC-009: SOURCE EXTERNAL (omp/Oh My Pi fora do repo) — nao ha arquivo no repo para corrigir
+
+## Ciclo 36 (2026-06-12)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- Attribution DEC-004 JSX (linha 130) sobreviveu
