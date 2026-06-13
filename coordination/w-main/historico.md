@@ -357,4 +357,9 @@
 
 - DEC-009: CRITICO — aguardando acao humana
 - Git: clean | Typecheck: 0 erros
+### Ciclo 579 — Auditoria Local (2026-06-12)
+
+- DEC-009: CRITICO — aguardando acao humana
+- AMAB sobrescreveu PROIBIDO: CHECKPOINT.md, STATE.md, DOMAINS.md, feedback-w2.md, w2 files, requests.md — RESTAURADOS
+- Git: clean | Typecheck: 0 erros
 
