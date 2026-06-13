@@ -1,8 +1,20 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 528)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 529)
 
 **Versão atual**: v0.1.2
 **Última atualização**: 2026-06-12
-**Ciclo**: 528
+**Ciclo**: 529
+
+---
+
+## Ciclo 529 — Auditoria Local (sem worktree)
+
+**Typecheck**: 0 erros | **Build**: verificado ciclo 527
+**Git**: clean | **Swarm**: `./setup-swarm.sh` nao executado ha 6 ciclos
+
+### Estado atual
+- Ciclo 528: CHECKPOINT written, DEC-004 pendente
+- Cycle count advanced: 527 -> 528 -> 529 (3 ciclos de auditoria + Integracao)
+- Arquivos w-main de dominio: limpos e sincronizados com HEAD
 
 ---
 
