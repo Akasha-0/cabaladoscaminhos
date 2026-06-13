@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { geocodeCity } from '@/lib/infrastructure/geocoding/nominatim';
 
 type FormData = {
@@ -91,8 +91,7 @@ const labelStyle: React.CSSProperties = {
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const params = useParams<{ locale: string }>();
-    const [step, setStep] = useState(0);
+      const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormData>(INITIAL);
   const [error, setError] = useState('');
   const [phraseIdx, setPhraseIdx] = useState(0);
