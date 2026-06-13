@@ -30,6 +30,16 @@
 - (c) **Confluencia natural**: manter, argumentando estrutura como folclore espiritual
 - (d) **Remover**: abandonar shadow/gift/siddhi
 
+
+
+### CONFITO DE DOMÍNIO — Ciclo 529
+
+**Arquivo**: `apps/akasha-portal/src/components/akasha/AkashaSignificadoCard.tsx`
+**Globs w2**: `apps/akasha-portal/src/components/**` — MATCHES
+**w-main modificado**: ciclos 526, 527, 528 (defaultNivel fix, responsive CSS)
+**Problema**: w-main vem modificando arquivo do domínio w2
+**Ação requerida**: Integrador decide se (a) w2 absorve as mudanças, (b) w-main para de tocar, ou (c) domínio Clarificado em DOMAINS.md
+
 **Risco**: Publicacao sem decisao → plagio confirmado → DMCA/dano reputacional.
 
 ---
