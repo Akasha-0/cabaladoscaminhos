@@ -21,3 +21,4 @@
 w2 não implementou attribution "Inspirado em Gene Keys (Richard Rudd)" após 4 ciclos.
 Feedbackemitido em `coordination/integrator/feedback-w2.md`.
 Se w2 não existir como worktree, HUMAN decide se integrator implementa (violacao) ou aceita risco.
+2026-06-12 | apps/akasha-portal/src/components/akasha/dashboard/AkashaLifeAreasDashboard.tsx | w2 removeu pillarContribution (DOMINIO w1) + DEC-004 attribution (DOMINIO w2/w-main) — w2 NAO deve mexer em dominio de outro worker | ALTA — regressao feature unificacao

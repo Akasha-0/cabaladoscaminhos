@@ -317,4 +317,11 @@
 - DEC-009: CRITICO — aguardando acao humana
 - AkashaSignificadoCard.tsx: working copy clean
 - Git: clean | Typecheck: 0 erros
+### Ciclo 570 — Auditoria Local (2026-06-12)
+
+- DEC-009: CRITICO — aguardando acao humana
+- w2 commit a7b5ab9b: REMOVEU pillarContribution de AkashaLifeAreasDashboard (DOMINIO w1) — DOMAIN VIOLATION
+- w2 commit 3f64039e: removeu pillarContribution + DEC-004 attribution (Gene Keys)
+- REQUISICAO logged em requests.md: w2 nao deve mexer em dominio de outro worker
+- Git: clean | Typecheck: 0 erros
 
