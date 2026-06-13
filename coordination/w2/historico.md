@@ -113,3 +113,9 @@
 - DEC-004 REABERTO: attribution "Inspirado em Gene Keys (Richard Rudd)" agora visivel em AkashaSignificadoCard.tsx (JSX, nao so JSDoc)
 - Commit d250f893
 - typecheck: 0; lint: 295 (sem mudanca)
+
+## Ciclo 22 (2026-06-12)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- Attribution DEC-004 (linha 130 JSX) sobreviveu ao loop
+- Feedback Ciclo 586: todos items resolvidos (PillarContribution, DEC-004, domain conflict)
+- DEC-009: CRITICO (reset loop w-main, nao w2)
