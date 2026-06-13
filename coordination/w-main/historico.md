@@ -111,4 +111,14 @@
 - DEC-004: CRITICA pendente ha 10+ ciclos
 - Tipo: Auditoria Local
 - Git: clean | Typecheck: 0 erros
+### Ciclo 535 — Auditoria Local (2026-06-12)
+
+- DOMAINS.md: w-main SEM globs de codigo — violacao ciclos 526-529
+- Akasha Merge Bot: reverte commits w-main em `apps/` autonomamente
+- ARCHITECTURE.md atualizado: papel AMAB documentado
+- Backlog: vazio (sem dominio de codigo)
+- DEC-004: CRITICA pendente ha 11 ciclos
+- `./setup-swarm.sh`: blocker ha 11 ciclos
+- Tipo: Auditoria Local
+- Git: clean | Typecheck: 0 erros
 
