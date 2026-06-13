@@ -8,18 +8,18 @@ DEC-008: ./setup-swarm.sh nunca executado — SEM worktree formal.
 
 ---
 
-## Ciclo 654 (2026-06-13)
+## Ciclo 655 (2026-06-13)
 
 **Tipo**: Auditoria Local
 
 ### O que mudou
-- Ciclo advanced: 653 -> 654 (concurrent process)
+- Ciclo advanced: 654 -> 655 (concurrent process)
 - DEC-004: RESOLVIDO ✅
 
 ### Impacto para o usuario
 Nenhuma mudanca de funcionalidade.
 
 ### Status
-- [x] STATE.md Ciclo 654 committed by concurrent process
+- [x] STATE.md Ciclo 655 committed by concurrent process
 - [x] Typecheck: 0 erros
 - [x] Git: clean
