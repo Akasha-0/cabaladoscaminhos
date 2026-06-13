@@ -1,34 +1,50 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 538)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 540)
 
 **Versao atual**: v0.1.3
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 538
+**Ciclo**: 540
 
 ---
 
-## Ciclo 538 — DEC-004 RESOLVIDO (integrator)
+## Ciclo 540 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
-**DEC-004**: ✅ RESOLVIDO — decisao (a) tomada como integrator
-**AkashaSignificadoCard defaultNivel**: PARCIAL — dashboard ok, /mapa/significado pendente (w2)
-**w2 directive**: emitida para implementacao de atribuicao Gene Keys
+**DEC-004**: RESOLVIDO — w2 implementa atribuicao UI ("Inspirado em Gene Keys")
+**w2**: Ciclo 7 ativo — backlog: P2 9 areas
 
-### Decisoes tomadas neste ciclo
-- **DEC-004**: shadow/gift/siddhi — opcao (a) atribuicao "Inspirado em Gene Keys (Richard Rudd)"
-- Motor: JA ATRIBUIDO (synthesis-engine.ts:38)
-- UI: w2 DIRECTED para adicionar label de atribuicao
+### Estado atual
+- w-main backlog: vazio — SEM dominio de codigo
+- DEC-004: RESOLVIDO (Ciclo 538) — w2 implementa atribuicao na UI
+- DEC-008: AMAB documentado — entidade autonoma
+- Historico: 135 linhas (ciclos 522-536 arquivados)
+
+### Estrutura Swarm
+- w-main: coordinator + integrator — audit only
+- w2: ATIVO — Ciclo 7 (`e0e29b0c`)
+- w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
 ---
 
-## Historico
+## Historico resumido
 
-- **538**: DEC-004 RESOLVIDO | integrator directive emitida
-- **537**: Auditoria | DEC-004 CRITICA ha 13 ciclos
-- **536**: Auditoria | w2 ativo; AMAB documentado
-- Detalhado: `historico.md` (135+ linhas)
+- **540**: Auditoria | DEC-004 RESOLVIDO — w2 implementa
+- **538**: DEC-004 RESOLVIDO pelo integrator
+- **537**: Auditoria | historico 135 linhas
+- **536**: Auditoria | w2 visivel como ativo
+- **535**: Auditoria | domain confirmado zero globs
+- **534**: Auditoria | domain clarification
+- **533**: Auditoria + re-implementacao pillarContribution
+- **532**: Auditoria + ARCHITECTURE.md
+- Detalhado: `historico.md`
 
 ## Proximos Passos
 
-1. **w2**: implementar DEC-004 (attribuicao Gene Keys na UI) — PROXIMO CICLO
-2. **w2**: corrigir /mapa/significado defaultNivel (ja tem no dashboard)
-3. **HUMAN**: `./setup-swarm.sh` para worktrees w1/w3/w4
+1. **w2**: implementar atribuicao Gene Keys na UI (DEC-004)
+2. **w2**: AkashaSignificadoCard defaultNivel
+3. **w1**: cross-engine cleanup | **w4**: test failures
+
+## Notas
+
+- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md`
+- Historico: `coordination/w-main/historico.md`
+- PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
