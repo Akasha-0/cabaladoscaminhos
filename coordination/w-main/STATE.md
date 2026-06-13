@@ -1,12 +1,12 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 679)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 680)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 679
+**Ciclo**: 680
 
 ---
 
-## Ciclo 679 — Auditoria Local
+## Ciclo 680 — Auditoria Local
 
 **Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: 0 errors, 293 warnings (pre-existentes)
 **Git**: clean
@@ -27,8 +27,8 @@
 ---
 
 ## Historico resumido
-- **679**: Auditoria | Suite OK, all items stable
-- **678**: Auditoria | Suite OK
+- **680**: Auditoria | Suite OK, all items stable
+- **679**: Auditoria | Suite OK
 - Detalhado: historico.md
 
 ## Proximos Passos
