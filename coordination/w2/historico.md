@@ -63,3 +63,10 @@
 - Commit b24a006d (CalendarDay + locale)
 - Commit 28516f77 (useParams + params)
 - lint: 296 -> 295 warnings
+
+## Ciclo 14 (2026-06-12)
+- DOMAIN VIOLATION: pillarContribution removido de AkashaLifeAreasDashboard.tsx (35 linhas, commit a7b5ab9b)
+- DEC-004: "Inspirado em Gene Keys (Richard Rudd)" adicionado ao header de AkashaSignificadoCard.tsx (commit 3f64039e)
+- typecheck: 0 errors ✅
+- lint: 296 warnings (pillarContribution removido nao afetou contagem)
+- Commits: 3f64039e (Gene Keys), a7b5ab9b (pillarContribution)

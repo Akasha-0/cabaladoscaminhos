@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 13 | **Atualizacao**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 14 | **Atualizacao**: 2026-06-12
 
 ---
 
@@ -9,15 +9,14 @@
 
 ---
 
-## Status: Ciclo 13 — Hygiene Round 3
+## Status: Ciclo 14 — Feedback Integrator + Hygiene Round 4
 
 | Verificação | Resultado |
 |-------------|-----------|
-| typecheck / build / lint | ✅ 0 errors, 46/46 páginas, 0 errors + 295 warnings (-11 w2 domain from Ciclo 11+12+13) (-10 w2 domain from Ciclo 11+12) (todos pré-existentes w1/w3) |
+| typecheck / build / lint | ✅ 0 errors, 46/46 páginas, 0 errors + 296 warnings (-11 w2 domain from Ciclo 11+12+13) (-10 w2 domain from Ciclo 11+12) (todos pré-existentes w1/w3) |
 | AkashaSignificadoCard | ✅ 7 áreas: proposito, carreira, finanças, saúde, relacionamentos, sexualidade, espiritualidade |
 | type mismatch w1 | ⚠️ `proposito`/`sexualidade` não estão no tipo `LifeArea` mas são usados em `aplicacao` — reportado em `requests.md` |
 | APK build | ✅ `4e0d96f3` — 4.4MB APK |
-| Feedback-w2 | ✅ OBSOLETO — feature/akasha-v0.0.12 integrado em main |
 
 ### Histórico: ver `historico.md`
 
