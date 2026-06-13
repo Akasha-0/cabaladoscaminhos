@@ -152,3 +152,8 @@
 - Auditoria local: typecheck 0, lint 295 (todos w1/w3)
 - Attribution DEC-004 JSX (linha 130) sobreviveu
 - DEC-009: CRITICO (16+ ciclos sem resposta humana)
+
+## Ciclo 28 (2026-06-12)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- Attribution DEC-004 JSX (linha 130) sobreviveu
+- DEC-009: CRITICO ultimatum 5 ciclos
