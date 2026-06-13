@@ -20,8 +20,7 @@ import type { AreaInterpretation, LifeArea, VidaInterpretation } from '@akasha/t
 type Nivel = 'shadow' | 'gift' | 'siddhi';
 
 /** Áreas com aplicacao preenchida no motor de interpretação (7 de 9 áreas DEC-005).
- * familia e criatividade existem no tipo LifeArea mas não têm aplicacao em VIDA_CONTENT.
- * proposito e sexualidade NÃO são LifeArea mas são usados em aplicacao — mismatch reportado a w1. */
+ * familia e criatividade existem no tipo LifeArea mas não têm aplicacao em VIDA_CONTENT. */
 const AREAS_WITH_DATA: string[] = ['proposito', 'carreira', 'financas', 'saude', 'relacionamentos', 'sexualidade', 'espiritualidade'];
 
 const NIVEL_LABEL: Record<Nivel, { titulo: string; cor: string; emoji: string }> = {
@@ -256,6 +255,9 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
              area === 'carreira' ? '◈ Na Carreira e Vocação' :
              area === 'financas' ? '◉ Nas Finanças e Prosperidade' :
              area === 'saude' ? '◐ Na Saúde e Corpo' :
+             area === 'relacionamentos' ? '◑ Nos Relacionamentos' :
+             area === 'sexualidade' ? '✧ Na Sexualidade' :
+             area === 'espiritualidade' ? '✦ Na Espiritualidade' :
              '◑ Nos Relacionamentos'}
           </p>
           <p
