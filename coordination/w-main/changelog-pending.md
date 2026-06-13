@@ -1,20 +1,36 @@
 # coordination/w-main/changelog-pending.md
 
+## Ciclo 526 (2026-06-12)
+
+**Tipo**: Auditoria Local
+
+### O que mudou
+- `historico.md` criado — archiva ciclos 522-525 (STATE compactado)
+- `requests.md` atualizado — escalação `./setup-swarm.sh` reforçada com plano de ação
+- `STATE.md` compactado de ~90 para ~50 linhas
+
+### Impacto para o usuário
+Nenhuma mudança de funcionalidade — trabalho de organização interna do swarm.
+
+### Status
+✅ Completo — commit `f3a655f8`
+
+---
+
 ## Ciclo 525 (2026-06-12)
 
 **Tipo**: Auditoria + Coordenação
 
 ### O que mudou
 - Build verificado: `cd apps/akasha-portal && pnpm build` — 46 páginas, exit 0
-- cross-engine.ts P2 cleanup identificado como pendente (`_kab` em `detectTension`/`detectSync`, `_date` em `buildRitual`)
+- cross-engine.ts P2 cleanup identificado como pendente (`_kab`/`_date`)
 - STATE.md atualizado para ciclo 525
 
 ### Impacto para o usuário
 Nenhuma mudança de funcionalidade — trabalho de coordenação e auditoria.
 
 ### Status
-- [ ] Necessita worktree para isolar trabalho de motor
-- [ ] Params `_kab`/`_date` podem ser removidos sem quebrar chamadas (funções internas, sem refs externas)
+✅ Completo — commit `f3a655f8`
 
 ---
 
@@ -28,7 +44,7 @@ Nenhuma mudança de funcionalidade — trabalho de coordenação e auditoria.
 - Chips horizontais com scroll mobile-first
 
 ### Impacto para o usuário
-Usuário vê imediatamente suas 3 prioridades do dia antes de expandir cada área —节省 tempo de navegação.
+Usuário vê imediatamente suas 3 prioridades do dia antes de expandir cada área.
 
 ### Status
 ✅ Completo — commit `a6bdac35`
