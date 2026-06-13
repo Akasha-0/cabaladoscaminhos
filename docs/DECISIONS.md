@@ -38,3 +38,13 @@
 **Regra aplicada**: PROIBIDO modificar archivos fuera del dominio.
 **Proximo**: w2 worktree — commit ou remove.
 
+---
+
+### 2026-06-12 — DEC-008: Akasha Merge Bot (AMAB) como agente autonomo (Cycle 535)
+
+**Dominio**: w-main (integrator)
+**Problema**: AMAB e um processo autonomo que (a) reverte commits w-main que tocam `apps/`, (b) faz commits autonomos em `coordination/w-main/` como se fosse integrador.
+**Impacto**: w-main nao pode modificar `apps/akasha-portal/src/components/**` — revert automatico. Cycle documentation e commits w-main sao sobrepostos por AMAB.
+**Decisao**: Documentar AMAB como entidade autonome. w-main deve operar em coordenação com AMAB — aceitar que AMAB commitara cycle docs antes de w-main. w-main pode fazer trabajo de documentacao independiente se nao ha overlap.
+**Regra aplicada**: DOMAINS.md + AGENTS.md — w-main nao tem glob em `apps/`.
+**Proximo**: HUMANO configura AMAB para ter comportamento mais previsivel, ou w-main recebe dominio explicito em DOMAINS.md.
