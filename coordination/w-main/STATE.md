@@ -1,8 +1,29 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 526)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 527)
 
-**Versão atual**: v0.1.2
+**Versão atual**: v0.1.3
 **Última atualização**: 2026-06-12
-**Ciclo**: 526
+**Ciclo**: 527
+
+---
+
+## Ciclo 527 — Auditoria Local + Dead Code
+
+**Typecheck**: 0 erros ✅
+**Commit**: `b1b97b75`
+
+**Item**: Remover import `LifePathInsightCard` não utilizado.
+
+- AkashaSignificadoCard substituiu LifePathInsightCard no dashboard (w2, commit `0e1ef333`)
+- Import em `AkashaLifeAreasDashboard.tsx` era dead code — removido
+- **Impacto**: menos ruído no bundle, zero impacto funcional
+
+**Auditoria completa do domínio UI dashboard**:
+- DailyTransit rendering (F-224): ✅ funcionando — dado do motor finalmente visível
+- PriorityAreasQuickView: ✅ funcionando — top 3 prioridades no topo
+- AkashaSignificadoCard defaultNivel: ✅ corrigido ciclo 526
+- LifePathInsightCard.tsx: existe mas não é usado em nenhuma página (w2 substituiu)
+- `AkashaSignificadoCard` importado e usado corretamente
+- Backlog w-main: vazio
 
 ---
 
@@ -12,18 +33,9 @@
 **Commit**: `6b4977f1`
 
 **Item**: Corrigir AkashaSignificadoCard — `defaultNivel` hardcoded 'gift'.
-
-- `AkashaSignificadoCard` SEMPRE abria em 'gift' mesmo se o perfil estava em sombra
-- Padrão idêntico ao que foi corrigido no `LifePathInsightCard` no ciclo 524
+- AkashaSignificadoCard SEMPRE abria em 'gift' mesmo se perfil em sombra
 - Adicionado prop `defaultNivel?: 'shadow' | 'gift' | 'siddhi'`
-- Dashboard passa `akashaProfile.dominantFrequency`
-- Also: padding responsivo com clamp() + maxWidth: 100% + overflow: hidden
-- **Impacto**: usuário vê a interpretação no nível real do perfil dele
-
-**Auditoria adicional**:
-- `./setup-swarm.sh` bloqueado há 4 ciclos — escalar para integrador humano
--historico.md criado por outro processo (não modificar)
-- LifePathInsightCard importado mas não usado na render (w2 substituiu por AkashaSignificadoCard — decisão de design, não regressão)
+- Also: padding responsivo clamp() + maxWidth: 100% + overflow: hidden
 
 ---
 
@@ -32,20 +44,18 @@
 **Typecheck**: 0 erros ✅
 **Commit**: `6b541bf0`
 
-**Item**: Renderizar `dailyTransit.todayPhrase` em cada Área expandida.
-- `deriveDailyTransitOverlay()` gera dados para todas as 6 áreas — nunca renderizados
-- **Impacto**: usuário vê trânsito de HOJE (astrologia/Odu/Tantra) antes da prática
+`dailyTransit.todayPhrase` renderizado em cada Área expandida.
 
 ---
 
 ## Histórico de ciclos
 
+- **Ciclo 527** ✅: Auditoria — dead import removido, backlog vazio identificado
 - **Ciclo 526** ✅: defaultNivel fix + auditoria
 - **Ciclo 525** ✅: dailyTransit.todayPhrase renderizado na UI
 - **Ciclo 524** ✅: PriorityAreasQuickView
 - **Ciclo 523** ✅: Auditoria — 480 test failures (pré-existentes)
 - **Ciclo 522** ✅: Auditoria — P1 chainOfReasoning COMPLETO
-- Detalhes: `historico.md`
 
 ---
 
@@ -63,3 +73,4 @@
 - Agindo como `w-main` (main branch = integrator)
 - PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
 - Swarm infrastructure não configurada — `./setup-swarm.sh` requer ação humana
+- Backlog vazio: todo item P1-P3 está em domínio w1/w2/w4
