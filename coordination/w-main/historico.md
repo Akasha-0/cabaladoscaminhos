@@ -558,4 +558,8 @@
 
 - DEC-009: CRITICO — aguardando acao humana
 - Git: clean | Typecheck: 0 erros
+### Ciclo 629 — Auditoria Local (2026-06-12)
+
+- DEC-009: CRITICO — aguardando acao humana
+- Git: clean | Typecheck: 0 erros
 
