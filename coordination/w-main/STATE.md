@@ -1,20 +1,20 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 539)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 540)
 
 **Versao atual**: v0.1.3
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 539
+**Ciclo**: 540
 
 ---
 
-## Ciclo 539 — Auditoria Local
+## Ciclo 540 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
-**DEC-004**: CRITICA — Gene Keys, pendente ha 15 ciclos
-**w2**: Ciclo 7 ativo (`e0e29b0c`)
+**DEC-004**: CRITICA — Gene Keys, pendente ha 16 ciclos
+**w2**: Ciclo 7 ativo
 
 ### Estado atual
 - w-main backlog: vazio — SEM dominio de codigo
-- DEC-004: CRITICA ha 15 ciclos — unico blocker para release
+- DEC-004: CRITICA ha 16 ciclos — unico blocker para release
 - Historico: 135 linhas (ciclos 522-536 arquivados)
 
 ### Estrutura Swarm
@@ -26,7 +26,8 @@
 
 ## Historico resumido
 
-- **539**: Auditoria | DEC-004 CRITICA ha 15 ciclos
+- **540**: Auditoria | DEC-004 CRITICA ha 16 ciclos
+- **539**: Auditoria | DEC-004 ha 15 ciclos
 - **538**: Auditoria | w2 Ciclo 7 ativo
 - **537**: Auditoria | historico 135 linhas
 - **536**: Auditoria | w2 visivel como ativo
@@ -38,7 +39,7 @@
 
 ## Proximos Passos
 
-1. **DEC-004**: decisao humana CRITICA — shadow/gift/siddhi vs Gene Keys (ha 15 ciclos)
+1. **DEC-004**: decisao humana CRITICA — shadow/gift/siddhi vs Gene Keys (ha 16 ciclos)
 2. **w2**: AkashaSignificadoCard defaultNivel + Capacitor APK
 3. **w1**: cross-engine cleanup | **w4**: test failures
 
