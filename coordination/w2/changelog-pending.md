@@ -5,4 +5,4 @@
 _Tudo integrado em v0.1.6. Nenhuma entrada pendente._
 
 Ciclo 19: domain audit, zero user impact.
-Ciclo 584: DEC-004 reopened — attribution visivel em AkashaSignificadoCard.tsx (PENDENTE w2).
+Ciclo 584: DEC-004 attribution visivel — PENDENTE w2.
