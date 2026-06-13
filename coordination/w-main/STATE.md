@@ -1,41 +1,47 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 599)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 600)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 599
+**Ciclo**: 600
 
 ---
 
-## Ciclo 599 — Auditoria Local
+## Ciclo 600 — Auditoria Local
 
-**Typecheck**: 0 erros | **Git**: clean
-**DEC-009**: CRITICO — AMAB race (concurrent processes stepping on coordination files)
-**DEC-004**: ✅ RESOLVIDO — attribution visivel em AkashaSignificadoCard.tsx:130
-**TYPE MISMATCH**: LifeArea w1 — proposito/sexualidade/carreira nao estao no tipo
+**Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: 0 errors, 293 warnings (pre-existentes)
+**Git**: clean
 
-### Estrutura Swarm
-- w-main: concurrent processes (DEC-009 race confirmed)
-- w2: Ciclo 28 ativo
-- w1/w3/w4: BLOQUEADOS (sem worktree formal)
+### Auditoria: Swarm em ciclo acelerado
 
-### Auditoria itens
+**DEC-009 AMAB**: Ultimatum de 5 ciclos no feedback-w2. Daemon esta causando 3-4 commits/segundo.
+Processos w-main concurrentes facillima sobrecrescrevem a arvore de trabalho.
+**Ciclos 597-599**: Commits w-main feitos, working tree sobrescrita por processo seguinte.
+
+### itens de auditoria
 | Item | Status | Evidencia |
 |------|--------|-----------|
 | DEC-004 Gene Keys | ✅ RESOLVIDO | AkashaSignificadoCard.tsx:130 |
-| DEC-009 AMAB race | ⚠️ CRITICO | Concurrent w-main processes |
-| PillarContribution UI | ✅ Removida | w2 Ciclo 14 |
-| TYPE LifeArea mismatch | ⚠️ w1 PENDING | AkashaSignificadoCard.tsx:24 |
+| DEC-009 AMAB race | ⚠️ CRITICO | Ultimatum 5 ciclos, working tree instavel |
+| TYPE LifeArea mismatch | ⚠️ w1 PENDING | 3 valores tipo vs 9 valores em uso |
+| DEC-008 Swarm | ⚠️ SEM worktree | ./setup-swarm.sh nunca executado |
 
-## Historico
-- **599**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1, DEC-009 CRITICO
-- **597**: Auditoria | DEC-004 RESOLVIDO
-- Detalhado: `historico.md`
+### Estrutura Swarm
+- w-main: concurrent processes (DEC-009 race confirmed)
+- w2: Ciclo 29 ativo
+- w1/w3/w4: BLOQUEADOS (sem worktree formal)
+
+---
+
+## Historico resumido
+- **600**: Auditoria | DEC-009 ultimatum 5 ciclos, AMAB cycling
+- **599**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1
+- Detalhado: historico.md
 
 ## Proximos Passos
-1. **HUMAN**: DEC-009 — 3 opcoes no CHECKPOINT
-2. **w1**: TYPE LifeArea — adicionar proposito/sexualidade/carreira, remover familia/criatividade
-3. **w2**: LifeArea type cast cleanup quando w1 publicar tipo corrigido
+1. **HUMAN**: DEC-009 — URGENTE ultimatum 5 ciclos, 3 opcoes no CHECKPOINT
+2. **w1**: TYPE LifeArea — expandir tipo para 9 valores
+3. **HUMAN**: ./setup-swarm.sh — criar worktrees formais
 
 ## Notas
-- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md`
+- w-main domain: coordination/w-main/** + docs/DECISIONS.md
 - PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
