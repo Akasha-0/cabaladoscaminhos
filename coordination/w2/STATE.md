@@ -1,8 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versão atual**: v0.1.2
-**Última atualização**: 2026-06-12
-**Ciclo**: 5
+**Versão atual**: v0.1.2 | **Ciclo**: 7 | **Atualização**: 2026-06-12
 
 ---
 
@@ -11,45 +9,35 @@
 
 ---
 
-## Status: Ciclo 5 — COMPLETO ✅
+## Status: Ciclo 7 — AUDITORIA LOCAL COMPLETA ✅
 
-### Feito neste ciclo
+| Verificação | Resultado |
+|-------------|-----------|
+| typecheck / build / lint | ✅ 0 errors, 46/46 páginas, 0 warnings w2 domain |
+| APK build | ✅ `4e0d96f3` — 4.4MB em `android/app/build/outputs/apk/debug/app-debug.apk` |
+| AkashaSignificadoCard | ✅ mobile: clamp(), maxWidth:100%, overflow:hidden, flexWrap:wrap |
+| defaultNivel prop | ✅ `dominantFrequency` do perfil usado como default |
+| Feedback-w2 | ✅ OBSOLETO — feature/akasha-v0.0.12 integrado em main |
 
-| Item | Status |
-|------|--------|
-| `cap-build.sh` criado em `apps/akasha-portal/` — copia `.next/standalone/apps/akasha-portal/public/` → `capacitor/`, roda `npx cap sync android` | ✅ Commitado `a61267da` |
-| `package.json`: scripts `cap:sync` e `cap:build` adicionados | ✅ Commitado `a61267da` |
-| `.gitignore`: removida entrada `apps/akasha-portal/cap-build.sh` (só o dir `capacitor/` build output deve ser ignorado) | ✅ Commitado `a61267da` |
-| Script testado: `./cap-build.sh` executado — 31 arquivos copiados para `capacitor/`, sync android feito | ✅ |
-| typecheck: 0 errors | ✅ Exit 0 |
-| build: 46/46 páginas, compiled 11.0s | ✅ Exit 0 |
-| lint: 0 errors, 305 warnings (pre-existentes w1/w3) | ✅ |
-
-### Feedback Integrador — Resolvido
-- `feedback-w2.md`: OBSOLETO — todos os 6 commits de `feature/akasha-v0.0.12` já integrados em main
-
-### Bloqueadores
-_Nenhum_
+### Histórico: ver `historico.md`
 
 ---
 
 ## 3 Próximos Passos (w2)
 
-1. **[P3] APK build test** — rodar `cd android && ./gradlew assembleDebug` para verificar APK compila com assets syncados
-   - **Impacto**: confirmação de APK gerável localmente
+1. **[P2] 9 áreas da vida** — motor fornece 5 áreas mas DEC-005 menciona 9; verificar se há 4 faltando (sexualidade, família, espiritualidade, comunidade)
+   - **Impacto**: profundidade prática — coverage completa das áreas de vida
 
-2. **[P3] Lint hygiene em w2 domain** — lint mostra 305 warnings todos em w1/w3; w2 domain (components + app) está limpo de warnings
-   - **Impacto**: code quality; não bloqueia build
+2. **[P3] PWA manifest + service worker** — auditar `public/manifest.json` e `public/sw.js` para app instalável
+   - **Impacto**: PWA instalável no celular
 
-3. **[P3] Test E2E mobile** — Playwright viewport 375×812 para verificar `AkashaSignificadoCard` no dashboard (requer auth)
+3. **[P3] E2E mobile test** — Playwright viewport 375×812 (requer auth)
    - **Impacto**: garantia mobile-first antes de release
 
 ---
 
-## Decisões Autônomas (w2)
+## Decisões Autônomas
 
-- **cap-build.sh**: script auto-contido; resolve paths via `$(dirname "$0")`; verifica build standalone antes de copiar; `set -e` fail-fast
-- **Gitignore capacitor/**: `apps/akasha-portal/capacitor/` é build output gitignored; `android/app/src/main/assets/public/` tb gitignored (android/.gitignore); sync é reprodutível via `cap:sync`
-- **webDir: capacitor**: CI/CD deve rodar `cap:sync` após `pnpm build` para popular assets Android locais
-- **Mobile CSS via clamp()**: padding responsivo `clamp(1rem, 4vw, 1.5rem)` — adapta de 320px a 1440px sem media queries
-- **defaultNivel prop**: `AkashaSignificadoCard` aceita `defaultNivel` para inicializar no nível dominante do perfil; padrão `'gift'`
+- **cap-build.sh**: auto-detecta Java 21 + Android SDK; APK em `android/app/build/outputs/apk/debug/`
+- **Mobile clamp()**: padding `clamp(1rem, 4vw, 1.5rem)` — adapta 320px→1440px sem media queries
+- **viewport**: `maximumScale: 1, userScalable: false` — previne zoom acidental (PWA)
