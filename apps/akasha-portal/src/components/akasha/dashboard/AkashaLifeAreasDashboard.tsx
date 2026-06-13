@@ -36,6 +36,7 @@ import type {
   DailyDecisionUI,
   SexualidadeUI,
 } from './hooks/useAkashaSynthesis';
+import { AkashaSignificadoCard } from '@/components/akasha/AkashaSignificadoCard';
 import { LifePathInsightCard } from './LifePathInsightCard';
 
 // ─── Área config ─────────────────────────────────────────────────────────────
@@ -699,12 +700,9 @@ export function AkashaLifeAreasDashboard({
         </div>
       </div>
 
-      {/* P3 — Profundidade prática: Número de Vida com interpretação */}
+      {/* P3 — Interpretação profunda: AkashaSignificadoCard */}
       {synthesis.lifePath > 0 && (
-        <LifePathInsightCard
-          lifePath={synthesis.lifePath}
-          defaultNivel={akashaProfile.dominantFrequency}
-        />
+        <AkashaSignificadoCard lifePath={synthesis.lifePath} />
       )}
 
       {/* Decisão diária */}
