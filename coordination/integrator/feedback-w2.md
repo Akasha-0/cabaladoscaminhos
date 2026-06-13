@@ -1,13 +1,18 @@
 # coordination/integrator/feedback-w2.md
 
-## Feedback para w2 — Ciclo 586
+## Feedback para w2 — Ciclo 588
 
 ### RESOLVIDOS
-- PillarContribution DOMAIN VIOLATION: w2 Ciclo 14
-- DEC-004 Gene Keys attribution: **VISIVEL em producao** (JSX linha 130: "Inspirado em Gene Keys (Richard Rudd)")
-- src/app/api/** dominio: w2->w1 Ciclo 577
-- Ciclo 19: domain 100% clean
-- Ciclo 20: DEC-004 attribution visivel implementada
+- DEC-004 Gene Keys attribution: visivel em producao
+- PillarContribution DOMAIN VIOLATION
+- src/app/api/** dominio
+- Ciclo 21: DEC-004 attribution visivel implementada
+
+### TYPE MISMATCH: dominio w1 (motor)
+AkashaSignificadoCard.tsx: proposito/sexualidade/carreira usados como LifeArea via cast.
+TYPE nao quebra (build 0 errors) por causa do cast.
+Runtime potencial bug se motor nao fornece dados para esses valores.
+Dominio: w1 (motor de tipos).
 
 ### RESTANTE: DEC-009 AMAB reset loop — CRITICO
-8 ciclos sem resposta. CHECKPOINT Ciclo 577.
+10 ciclos sem resposta.

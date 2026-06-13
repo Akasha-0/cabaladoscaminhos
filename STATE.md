@@ -1,7 +1,7 @@
-# STATE.md — Akasha OS (Ciclo 586)
+# STATE.md — Akasha OS (Ciclo 588)
 
 **Versao**: v0.1.6 | **Atualizacao**: 2026-06-13
-**Status**: FASE 3 — DEC-009 AMAB CRITICO, DEC-004 RESOLVIDO
+**Status**: FASE 3 — DEC-009 AMAB CRITICO, DEC-004 RESOLVIDO, TYPE MISMATCH w1
 
 ---
 
@@ -28,18 +28,18 @@
 
 ## Backlog Priorizado
 
-1. **DEC-009 AMAB reset loop**: CRITICO — humano decide (CHECKPOINT Ciclo 577, 8 ciclos sem resposta)
-2. **P1 offline APK**: bloqueado (server.url online-only)
-3. **w1 lint warnings (~295)**: ownership definida em DOMAINS.md
+1. **DEC-009 AMAB reset loop**: CRITICO — humano decide (CHECKPOINT Ciclo 577, 10 ciclos)
+2. **TYPE MISMATCH w1**: proposito/sexualidade/carreira como LifeArea — dominio w1 (motor de tipos)
+3. **P1 offline APK**: bloqueado (server.url online-only)
+4. **w1 lint warnings (~295)**: ownership definida em DOMAINS.md
 
 ---
 
 ## Historico de Decisoes
 
-- DEC-004: Gene Keys attribution — **RESOLVIDO** w2 Ciclo 20 (JSX visivel)
+- DEC-004: Gene Keys attribution — **RESOLVIDO** w2 Ciclo 21 (JSX visivel)
 - DEC-006: Swarm sem worktree
 - Ciclo 577: src/app/api/** dominio w2->w1
-- Ciclo 582: w2 domain 100% clean
 
 ---
 
@@ -47,5 +47,4 @@
 
 - Loop/w* branches: NAO existem
 - Suite: 0 TS errors; ~295 lint warnings (todos w1/w3)
-- w2 domain: 100% clean
 - origin/main: synced
