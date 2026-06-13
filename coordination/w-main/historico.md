@@ -121,4 +121,14 @@
 - `./setup-swarm.sh`: blocker ha 11 ciclos
 - Tipo: Auditoria Local
 - Git: clean | Typecheck: 0 erros
+### Ciclo 536 — Auditoria Local (2026-06-12)
+
+- Cycle advanced: 535 -> 536
+- DEC-004 Gene Keys: CRITICA ha 12 ciclos
+- w2 visivel como ativo em main: commits `daf61082`, `4e0d96f3`
+- VERSION vs STATE: CONSISTENTE (v0.1.3)
+- Backlog: vazio
+- Git: clean | Typecheck: 0 erros
+- Commit: `8d21f4cc`
+- Tipo: Auditoria Local
 

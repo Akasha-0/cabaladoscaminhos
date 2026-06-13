@@ -19,18 +19,28 @@
 
 ---
 
-### DEC-004 — shadow/gift/siddhi vs Gene Keys (CRITICA)
+### DEC-004 — shadow/gift/siddhi vs Gene Keys (CRITICA) — ATUALIZADO Ciclo 536
 
 **Problema**: shadow/gift/siddhi de Akasha e semanticamente identico a Gene Keys de Richard Rudd.
 
-**4 opcoes**:
-- (a) **Atribuir**: mencionar Gene Keys como inspiracao, creditar Richard Rudd
-- (b) **Renomear**: mudar terminologia (ex: obscuridade/oferta/transcendencia)
-- (c) **Confluencia natural**: manter, argumentando estrutura como folclore espiritual
-- (d) **Remover**: abandonar shadow/gift/siddhi
+**DESCOBERTA CHAVE** (Ciclo 536):
+- Motor JA TEM atribuicao em `synthesis-engine.ts:38`: `// Frequencia (Gene Keys inspired)`
+- Glossario JA TEM entrada completa para Gene Keys com credit a Richard Rudd
+- `reversed-systems.ts` ja mapeia Gene Keys como sistema moderno com atribuicao
+- **Camada de motor: ATRIBUIDA CORRETAMENTE**
+- **Camada de UI (labels): shadow/gift/siddhi visiveis para usuario**
 
-**Risco**: publicacao sem decisao = plagio confirmado = DMCA/dano reputacional.
-**Pendente**: ha 11+ ciclos
+**Recomendacao w-main (nao e decisao — e análise para integrator)**:
+- (a) **Atribuir + Fortalecer**: Manter shadow/gift/siddhi na UI + adicionar nota de atribuicao
+  "Inspirado em Gene Keys (Richard Rudd)" abaixo do seletor de nivel.
+  Custo: 1 linha de codigo. Protecao: maxima.
+- (b) **Renomear**: Mudar labels para "Padrao/Oferta/Realizacao" ou "Sombra/Dom/Transcendência".
+  Custo: alto (mudar em toda a UI). Risco: confunde usuarios existentes.
+- (c) **Confluencia natural**: arriscado sem advogado.
+- (d) **Remover**: abandona o modelo — nao recomendado.
+
+**Acao requerida do INTEGRADOR**: Escolher opcao (a) ou (b). w-main implementa.
+**Pendente**: ha 12 ciclos
 
 ---
 
