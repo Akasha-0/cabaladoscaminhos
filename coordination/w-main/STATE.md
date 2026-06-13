@@ -1,6 +1,6 @@
 # coordination/w-main/STATE.md — Integrator / Main (Ciclo 561)
 
-**Versao atual**: v0.1.5
+**Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-12
 **Ciclo**: 561
 
@@ -9,7 +9,7 @@
 ## Ciclo 561 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
-**v0.1.5**: release `e19e00db`
+**v0.1.6**: release `c5e03f1b` — Ciclo 10 integrated, w2 PWA + offline APK
 **DEC-009**: CRITICO — AMAB reset loop, 3 opcoes no CHECKPOINT
 **DEC-004**: 21 ciclos sem implementacao UI por w2
 
@@ -20,14 +20,14 @@
 
 ### Estrutura Swarm
 - w-main: coordinator + integrator — audit only
-- w2: Ciclo 10 ativo
+- w2: Ciclo 10 ativo — v0.1.6 released
 - w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
 ---
 
 ## Historico resumido
 
-- **561**: Auditoria | DEC-009 CRITICO, DEC-004 21 ciclos
+- **561**: Auditoria | DEC-009 CRITICO, DEC-004 21 ciclos, v0.1.6
 - **560**: Auditoria | DEC-009 CRITICO, DEC-004 20 ciclos
 - **559**: Auditoria | DEC-009 CRITICO, DEC-004 19 ciclos
 - **558**: Auditoria | DEC-009 CRITICO, DEC-004 18 ciclos
@@ -39,9 +39,6 @@
 - **552**: Auditoria | DEC-009 CRITICO, DEC-004 12 ciclos
 - **551**: Auditoria | DEC-009 CRITICO, DEC-004 11 ciclos
 - **550**: Auditoria | DEC-009 CRITICO, DEC-004 10 ciclos
-- **549**: Auditoria | DEC-009 CRITICO, DEC-004 10 ciclos
-- **548**: Auditoria | DEC-009 CRITICO, DEC-004 9 ciclos
-- **547**: Auditoria | DEC-009 CRITICO, DEC-004 8 ciclos
 - **546**: Auditoria | v0.1.5 release
 - **538**: DEC-004 RESOLVIDO pelo integrator
 - **528**: DEC-004 CRITICA identificada
