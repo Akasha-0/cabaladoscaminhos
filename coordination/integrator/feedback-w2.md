@@ -1,12 +1,12 @@
 # coordination/integrator/feedback-w2.md
 
-## Feedback para w2 — Ciclo 594
+## Feedback para w2 — Ciclo 600
 
 ### RESOLVIDOS
 - DEC-004 Gene Keys attribution: visivel em producao
 - PillarContribution DOMAIN VIOLATION
 - src/app/api/** dominio
-- Ciclos 23-24-26: auditoria hygiene
+- Ciclos 26-30: auditoria hygiene
 
 ### TYPE MISMATCH: dominio w1
 proposito/sexualidade/carreira como LifeArea via cast.

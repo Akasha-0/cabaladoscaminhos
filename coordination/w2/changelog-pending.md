@@ -4,16 +4,4 @@
 
 _Tudo integrado em v0.1.6. Nenhuma entrada pendente._
 
-Ciclo 26: auditoria hygiene. Zero impacto para usuario.
-
-### Ciclo 28 (2026-06-12)
-- **docs(w2): auditoria local Ciclo 28** — typecheck 0, lint 295. Impacto: documentacao.
-
-### Ciclo 29 (2026-06-12)
-- **docs(w2): auditoria local Ciclo 29** — structural audit OK. 43c/17p/1d. typecheck 0, lint 295. Impacto: documentacao.
-
-### Ciclo 30 (2026-06-12)
-- **docs(w2): auditoria local Ciclo 30** — 10 audits consecutive clean. typecheck 0, lint 295. Impacto: documentacao.
-
-### Ciclo 31 (2026-06-12)
-- **docs(w2): auditoria local Ciclo 31** — typecheck 0, lint 295. Impacto: documentacao.
+Ciclos 28-30: auditoria hygiene. Zero impacto para usuario.

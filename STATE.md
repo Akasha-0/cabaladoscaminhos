@@ -1,4 +1,4 @@
-# STATE.md — Akasha OS (Ciclo 594)
+# STATE.md — Akasha OS (Ciclo 600)
 
 **Versao**: v0.1.6 | **Atualizacao**: 2026-06-13
 **Status**: FASE 3 — DEC-009 AMAB CRITICO, DEC-004 RESOLVIDO, TYPE MISMATCH w1
@@ -47,4 +47,4 @@
 
 - Loop/w* branches: NAO existem
 - Suite: 0 TS errors; ~295 lint warnings (todos w1/w3)
-- origin/main: synced
+- origin/main: synced (Ciclo 600)
