@@ -1,10 +1,10 @@
 # coordination/w-main/requests.md
 
-## Escalacao ao Integrador — Ciclo 533 (v0.1.2 vs STATE v0.1.3)
+## Escalacao ao Integrador — Ciclo 536 (v0.1.3)
 
 **De**: w-main (main branch, executor + integrator)
 **Data**: 2026-06-12
-**Ciclo**: 533
+**Ciclo**: 536
 
 ---
 
@@ -12,34 +12,14 @@
 
 | # | Dominio | Item | Impacto | Prioridade |
 |---|---------|------|---------|-----------|
-| 1 | integrator | **INCONSISTENCIA VERSION**: `VERSION`=v0.1.2, `STATE.md`=v0.1.3 | Desalinhamento de versao pode causar conflitos em releases | CRITICA |
-| 2 | w-main | DEC-004 Gene Keys — decisao | Plagio vs confluencia natural vs renomear | CRITICA |
-| 3 | w2 | AkashaSignificadoCard: defaultNivel ausente na pagina /mapa/significado | Bug: cartao sempre abre em 'gift' mesmo se perfil em sombra | ALTA |
-| 4 | w2 | DOMÍNIO VIOLATION — AkashaSignificadoCard | w-main modificou dominio w2 ciclos 526-529 | ALTA |
-| 5 | w4 | 241 test failures ambientais | Rotas ausentes + mock cookies + vitest | MEDIA |
-| 6 | w1 | cross-engine `_kab`/`_date` | Remover params orfaos | BAIXA |
+| 1 | integrator | DEC-004 Gene Keys — decisao | Plagio vs confluencia natural vs renomear | CRITICA |
+| 2 | w2 | AkashaSignificadoCard: defaultNivel ausente na pagina /mapa/significado | Bug: cartao sempre abre em 'gift' mesmo se perfil em sombra | ALTA |
+| 3 | w4 | 241 test failures ambientais | Rotas ausentes + mock cookies + vitest | MEDIA |
+| 4 | w1 | cross-engine `_kab`/`_date` | Remover params orfaos | BAIXA |
 
 ---
 
-### INCONSISTENCIA VERSION (CRITICA — Ciclo 533)
-
-**Problema**: `VERSION` file diz `v0.1.2` mas `coordination/w-main/STATE.md` (HEAD) diz `**Versao atual**: v0.1.3`.
-
-**Arquivos envolvidos**:
-- `VERSION`: `v0.1.2` (ultima atualizacao: ciclo 527)
-- `coordination/w-main/STATE.md` HEAD: `v0.1.3` (commit `2b1db054`)
-- `coordination/w-main/requests.md` this file: `v0.1.2` (ciclos anteriores)
-- `coordination/w-main/ARCHITECTURE.md`: `v0.1.2` (criado ciclo 532)
-
-**Provavel causa**: Processo automatizado (Akasha Merge Bot) atualizou STATE.md para v0.1.3 sem atualizar VERSION.
-
-**Acao requerida**: Integrador decide: (a) VERSAO=v0.1.3 e changelog atualizado, (b) VERSAO=v0.1.2 e STATE.md corrigido, (c) nova versao v0.1.4 com changelog.
-
-**NOTA**: w-main NAO pode modificar VERSION (PROIBIDO).
-
----
-
-### DEC-004 — shadow/gift/siddhi vs Gene Keys
+### DEC-004 — shadow/gift/siddhi vs Gene Keys (CRITICA)
 
 **Problema**: shadow/gift/siddhi de Akasha e semanticamente identico a Gene Keys de Richard Rudd.
 
@@ -50,6 +30,7 @@
 - (d) **Remover**: abandonar shadow/gift/siddhi
 
 **Risco**: publicacao sem decisao = plagio confirmado = DMCA/dano reputacional.
+**Pendente**: ha 11+ ciclos
 
 ---
 
@@ -59,13 +40,25 @@
 
 **Arquivo**: `apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx`
 **Dominio**: w2
-**Acao**: w2 worktree — adicionar prop `defaultNivel` a partir do perfil Akasha do usuario
+**Acao**: w2 — adicionar prop `defaultNivel` a partir do perfil Akasha do usuario
+
+---
+
+### STATUS w2 (visivel por auditoria)
+
+w2 trabalho recente (commits visiveis em main):
+- `daf61082`: Ciclo 6 — APK build completo, STATE + changelog
+- `4e0d96f3`: cap-build.sh com auto-detect Java/Android SDK
+
+w2 worktree aparentemente ativo. w-main NAO pode intervir.
 
 ---
 
 ## Historico
 
-- Ciclo 533: INCONSISTENCIA VERSION detectada; AkashaSignificadoCard bug identificado
+- Ciclo 535: Auditoria — w2 ativo (commits visiveis em main)
+- Ciclo 534: Auditoria — domain clarification
+- Ciclo 533: INCONSISTENCIA VERSION resolvida (v0.1.3)
 - Ciclo 532: ARCHITECTURE.md criado
 - Ciclo 530-531: TYPE VIOLATION documentada; swarm blocker
 - Ciclo 528: DEC-004 CRITICA identificada

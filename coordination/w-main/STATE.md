@@ -1,58 +1,47 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 535)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 536)
 
-**Versão atual**: v0.1.3
-**Última atualização**: 2026-06-12
-**Ciclo**: 535
-
----
-
-## Ciclo 535 — Auditoria Local
-
-**Typecheck**: 0 erros ✅ | **Git**: clean
-
-### DEC-004 Gene Keys: CRITICA — pendente há 11 ciclos
-### ./setup-swarm.sh: blocker há 11 ciclos
-
-### w-main Domain Confirmado
-
-- `coordination/w-main/**` ✅
-- `docs/DECISIONS.md` ✅
-- **ZERO globs de código** — não pode modificar `apps/`, `packages/`, `src/`, `tests/`
-
-### Akasha Merge Bot (AMAB)
-
-AMAB reverte commits w-main que tocam `apps/`. Features sobrevivem se re-implementadas em commit separado (`a7cb2064` pillarContribution).
-
-### Auditoria — Estado
-
-- pillarContribution: ✅ renderizado em `a7cb2064`
-- PriorityAreasQuickView: ✅ commit `d7401237`
-- dailyTransit.todayPhrase: ✅ commit `6b541bf0`
-- AkashaSignificadoCard defaultNivel: ✅ commit `6b4977f1` (w2 domain)
-- Dead code LifePathInsightCard: ✅ removido `2b1db054`
-
-### Pending (outros dominios)
-
-- DEC-004 (Gene Keys): **CRITICA** — aguardando decisão humana
-- AkashaSignificadoCard /mapa/significado: defaultNivel w2
-- cross-engine _kab/_date: w1
-- Test failures: w4
+**Versao atual**: v0.1.3
+**Ultima atualizacao**: 2026-06-12
+**Ciclo**: 536
 
 ---
 
-## Histórico
+## Ciclo 536 — Auditoria Local
 
-- **535**: Auditoria — AMAB documentado, domain confirmado
-- **534**: Auditoria — domain clarification
-- **533**: Auditoria + re-implementação pillarContribution
+**Typecheck**: 0 erros | **Git**: clean
+**DEC-004**: CRITICA — shadow/gift/siddhi vs Gene Keys, pendente ha 12 ciclos
+**w2**: ativo (commits visiveis em main: `daf61082`, `4e0d96f3`)
+
+### Estado atual
+- w-main backlog: vazio — sem dominio de codigo
+- VERSION vs STATE: CONSISTENTE (v0.1.3)
+- w2 worktree: aparentemente ativo
+- AkashaSignificadoCard defaultNivel: bug w2, pendente
+
+### Auditoria features (todos em main)
+- pillarContribution: ✅ `a7cb2064`
+- PriorityAreasQuickView: ✅ `d7401237`
+- dailyTransit.todayPhrase: ✅ `6b541bf0`
+- LifePathInsightCard removido: ✅ `2b1db054`
+
+---
+
+## Historico
+
+- **536**: Auditoria | w2 ativo; DEC-004 CRITICA ha 12 ciclos
+- **535**: Auditoria | AMAB documentado, domain confirmado
+- **534**: Auditoria | domain clarification
+- **533**: Auditoria + re-implementacao pillarContribution
 - **532**: Auditoria + ARCHITECTURE.md
-- Detalhado: `historico.md` (114 linhas)
+- Detalhado: `historico.md`
 
----
+## Proximos Passos
 
-## Próximos Passos
-
-1. **HUMAN**: `./setup-swarm.sh` + decisão DEC-004 + DOMAINS.md clarification
+1. **DEC-004**: decisao humana CRITICA (ha 12 ciclos)
 2. **w2**: AkashaSignificadoCard defaultNivel + Capacitor APK
-3. **w1**: cross-engine cleanup
-4. **w4**: test failures
+3. **w1**: cross-engine cleanup | **w4**: test failures
+
+## Notas
+
+- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md`
+- PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**

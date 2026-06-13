@@ -3,22 +3,22 @@
 ## Pendente — aguardando integrador consolidar
 
 Nenhuma entrada pendente no dominio w-main.
-Todas as features do backlog estao em dominio de outro worker.
+DEC-004 (Gene Keys) aguardando decisao humana — CRITICA.
 
-## Ciclo 535 (2026-06-12)
+## Ciclo 536 (2026-06-12)
 
 **Tipo**: Auditoria Local
 
 ### O que mudou
-- Cycle advanced: Ciclo 534 -> 535
-- Typecheck: 0 erros
-- Git: clean (tracked files)
-- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md` — SEM globs de codigo
+- Cycle advanced: Ciclo 535 -> 536
+- requests.md: atualizado, DEC-004 destacada como #1 CRITICA
+- STATE.md: Ciclo 536, w2 visivel como ativo
+- Typecheck: 0 erros | Git: clean
 
 ### Impacto para o usuario
-Nenhuma mudanca de funcionalidade. Documentacao interna atualizada.
+Nenhuma mudanca de funcionalidade.
 
 ### Status
-- [x] Typecheck verified (0 erros)
-- [x] Git clean
-- [x] Backlog: vazio — todos os itens em dominio w1/w2/w4 ou aguardando acao humana
+- [x] requests.md atualizado (Ciclo 536)
+- [x] STATE.md atualizado (Ciclo 536)
+- [x] Typecheck verified
