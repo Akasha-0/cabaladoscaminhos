@@ -1,86 +1,63 @@
-# CHECKPOINT — Akasha OS — Ciclo 592
+# CHECKPOINT.md — Ciclo 611
 
-**Data**: 2026-06-13 | **Versao**: v0.1.6 | **Integrador**: main branch
-
----
-
-## Ultimo CHECKPOINT
-
-Ciclo 577 — 15 ciclos atras.
+**Data**: 2026-06-13
+**Versao**: v0.1.6
+**Integrador**: Ciclo 611
 
 ---
 
-## Resumo por Worker (Ciclo 577 -> Ciclo 592, 15 ciclos)
+## Resumo
 
-### w1 — Motor (logica/sintese)
--什么都没有 (operacao minima)
-- dominio: motor de calculo, base de conhecimento, modelos de dados
-- TYPE MISMATCH reportado: proposito/sexualidade/carreira como LifeArea
-
-### w2 — Experiencia Mobile (UI)
-- Ciclo 21: implementou DEC-004 Gene Keys attribution VISIVEL em JSX ✅
-- Ciclo 23: auditoria local, sw.js offline-ready verificado
-- Ciclo 24: auditoria local, feedback Ciclo 588 all resolved
-- dominio 100% clean
-
-### Loop (Akasha Merge Bot)
-- Ciclo 589-592: historico填补 auto-commits
-- 15+ ciclos de atividade, maioria historico填补
+Akasha OS em v0.1.6. Swarm opera como loop autonomo no main.
+O loop cria commits de auditoria a cada ~30s. Suite: 0 TS errors.
 
 ---
 
-## Decisoes Autonomas (Ciclo 577 -> Ciclo 592)
+## Evolucao por Worker
 
-| Decisao | Status | Detalhe |
-|---------|--------|---------|
-| PillarContribution REMOCAO | RESOLVIDO | w2 Ciclo 14, secoes 526-555 apagadas |
-| DEC-004 Gene Keys UI | RESOLVIDO | w2 Ciclo 21, attribution visivel em JSX |
-| src/app/api/** dominio | RESOLVIDO | Ciclo 577, w1 agora owner |
-| TYPE MISMATCH LifeArea | ABERTO | w1 domain, reportado mas nao corrigido |
-| DEC-009 AMAB | NAO RESOLVIDO | reset --hard persiste, 15 ciclos sem resposta |
+### w2 (documentacao + components)
+- Ciclos 26-41: auditoria hygiene continua
+- DEC-004: RESOLVIDO (Gene Keys attribution JSX)
+- PillarContribution: RESOLVIDO
+
+### w-main (integracao)
+- Ciclos 607-611: auditoria, sync loop
+- Suite maintenance
+
+---
+
+## Decisoes Autonomas
+
+1. **DEC-009 SOURCE ENCONTRADA**: Ciclo 602. O `git reset --hard` NAO vem de nenhum arquivo no repo. Vem da ferramenta `omp` (Oh My Pi) que roda o loop autonomo. Configuracao do omp esta FORA do repo.
+
+2. **DEC-009 STATUS**: EXTERNAL. Nao ha arquivo no repo que contenha o reset. Para resolver definitivamente: modificar a config do omp para usar `git merge --ff-only` em vez de `git reset --hard`. Essa config nao esta em nenhum arquivo versionado.
+
+3. **TYPE MISMATCH w1**: Ciclo 588. `proposito/sexualidade/carreira` usados como `LifeArea` via cast em AkashaSignificadoCard.tsx. Build 0 errors. Runtime potencial bug. Dominio w1. Aguardando resposta.
+
+---
+
+## Itens [INCERTO]
+
+1. **DEC-009 fix**: Como o reset vem do omp (ferramenta externa), há 3 opcoes:
+   a) Modificar config do omp (requer acesso ao sistema de arquivos do host)
+   b) Criar um wrapper que faz `git merge --ff-only` antes de cada ciclo do omp
+   c) Conviver com o reset (commits do loop survive in git ancestry)
+
+2. **TYPE MISMATCH**: Proposito/sexualidade/carreira vs LifeArea. Build nao quebra. Motor funciona? Validar com teste real.
 
 ---
 
 ## Riscos
 
-1. **DEC-009 AMAB reset loop**: Loop faz reset --hard a cada ciclo, sobrescrevendo commits. 15 ciclos sem resposta do humano. CONTINUA CRITICO.
-2. **P1 offline APK**: server.url online-only, bloqueia APK offline.
-3. **TYPE MISMATCH**: `proposito`/`sexualidade`/`carreira` usados como LifeArea via cast. Build 0 errors. Runtime pode bugar se motor nao cobre esses valores.
+1. **Loop desync**: origin/main avanca mais rapido que o loop consegue acompanhar. Integra commits entre push e pull.
+2. **Lint warnings (~295)**: Todos dominio w1. Sem ownership clara, nao serao corrigidos.
 
 ---
 
-## CHECKPOINTs Anteriores: 3 Perguntas Nao Respondidas
+## 3 Perguntas para o Humano
 
-### 1. DEC-009 AMAB — o que fazer com o loop de reset?
-**0 respostas em 15 ciclos.** Continua CRITICO.
+1. **DEC-009**: O reset do omp é aceitável como está (commits survive in git ancestry, just need more sync cycles), ou você quer que eu crie um wrapper do omp no repo que use `git merge --ff-only`?
 
-### 2. w1 ownership: quem e responsavel por src/app/api/** e TYPE MISMATCH?
-TYPE MISMATCH reportado em Ciclo 588. Nao houve resposta nem correcao.
+2. **TYPE MISMATCH**: Os valores `proposito`, `sexualidade`, `carreira` devem ser adicionados ao tipo `LifeArea` (expansao), ou o codigo em AkashaSignificadoCard.tsx deve ser alterado para usar um tipo diferente?
 
-### 3. F-227/F-228: Authority e Capacitor APK
-Nenhuma resposta em 15 ciclos.
-
----
-
-## 3 Perguntas para Este CHECKPOINT (Ciclo 592)
-
-### 1. DEC-009: Modificar loop para git merge --ff-only?
-O loop atual faz `git reset --hard` sobrescrevendo commits.
-Modificar para `git merge --ff-only` resolve sem matar o loop.
-**Se nao houver resposta em 5 ciclos, integrador vai modificar o loop autonomamente.**
-
-### 2. TYPE MISMATCH LifeArea: corrigir ou aceitar?
-`proposito`/`sexualidade`/`carreira` sao usados como LifeArea em AkashaSignificadoCard.tsx via cast.
-Build 0 errors mas runtime pode falhar se motor nao tem dados.
-**Se nao houver resposta em 5 ciclos, integrador vai corrigir para w1 domain.**
-
-### 3. Offline APK: ainda e prioridade?
-server.url online-only bloqueia APK offline. Ha interesse em continuar com isso?
-
----
-
-## Estado da Suite
-
-- TYPE errors: 0
-- Lint warnings: ~295 (pre-existente, nao-bloqueantes)
-- origin/main: synced (Ciclo 592)
+3. **Versao**: v0.1.6 esta estavel há 15+ ciclos. Quando faco bump para v0.2.0?
