@@ -382,4 +382,9 @@
 
 - DEC-009: CRITICO — aguardando acao humana
 - Git: clean | Typecheck: 0 erros
+### Ciclo 585 — Auditoria Local (2026-06-12)
+
+- DEC-009: CRITICO — aguardando acao humana
+- AMAB corrompeu AkashaSignificadoCard.tsx — RESTAURADO
+- Git: clean | Typecheck: 0 erros
 
