@@ -4,3 +4,6 @@
 
 _Tudo integrado em v0.1.6. Nenhuma entrada pendente._
 
+
+### Ciclo 13 (2026-06-12)
+- **fix(w2): hygiene round 3** — CalendarDay.tsx: motion import removido; onboarding/page.tsx: locale var, params const, useParams import removidos. lint: 296 -> 295 warnings. Commits b24a006d, 28516f77. Impacto: code hygiene, zero impacto para usuario.

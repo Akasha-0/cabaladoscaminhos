@@ -55,3 +55,11 @@
   - mural/page.tsx: redirect
 - lint: 299 -> 296 warnings
 - Commit 5c4c91be
+
+## Ciclo 13 (2026-06-12)
+- Hygiene round 3: 3 files + 4 items removed
+  - CalendarDay.tsx: motion import unused
+  - onboarding/page.tsx: locale var + params const + useParams import (all unused)
+- Commit b24a006d (CalendarDay + locale)
+- Commit 28516f77 (useParams + params)
+- lint: 296 -> 295 warnings
