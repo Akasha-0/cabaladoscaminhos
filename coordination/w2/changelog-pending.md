@@ -16,3 +16,6 @@ Ciclos 32-71: auditoria hygiene. Zero impacto para usuario.
 - **docs(w2): auditoria local Ciclo 76** — typecheck 0, lint 295. Impacto: documentacao.
 ### Ciclo 77 (2026-06-13)
 - **docs(w2): auditoria local Ciclo 77** — typecheck 0, lint 295. Impacto: documentacao.
+
+### Ciclo 78 (2026-06-13)
+- **docs(w2): auditoria local Ciclo 78** — typecheck 0, lint 295. Impacto: documentacao.
