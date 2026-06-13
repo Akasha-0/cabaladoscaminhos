@@ -21,7 +21,6 @@ import { SignificadoPilar } from '@/components/akasha/SignificadoPilar';
 import { TraducaoAreaPanel } from '@/components/akasha/TraducaoAreaPanel';
 import {
   significadosEspecificos,
-  significadoGenericoDoPilar,
   type Pilar,
   type PilaresDados,
 } from '@/lib/grimoire/significados-curados';

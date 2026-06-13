@@ -17,7 +17,6 @@
  */
 
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { kinDaData, familias, type KinTzolkin } from '@/lib/grimoire/mural-tzolkin';
 import { significadoGenericoDoPilar, type Pilar } from '@/lib/grimoire/significados-curados';

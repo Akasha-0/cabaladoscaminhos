@@ -14,7 +14,7 @@
  * Pilar 4 (Odu) marca `requer_terreiro` em TODOS os termos (R-022).
  */
 
-import { GLOSSARIO, glossarioPorSistema, coberturaGlossario, type SistemaGlossario } from '@/lib/grimoire/glossario';
+import { glossarioPorSistema, coberturaGlossario, type SistemaGlossario } from '@/lib/grimoire/glossario';
 
 export const metadata = {
   title: 'Glossário — o que cada termo significa',
