@@ -446,4 +446,8 @@
 - DEC-009: CRITICO — aguardando acao humana
 - Nota: Ciclo 592 missing no historico grep (AMAB overwrite); inserted during w-main cycle 600
 - Git: clean | Typecheck: 0 erros
+### Ciclo 601 — Auditoria Local (2026-06-12)
+
+- DEC-009: CRITICO — aguardando acao humana
+- Git: clean | Typecheck: 0 erros
 
