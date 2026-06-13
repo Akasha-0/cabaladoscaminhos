@@ -1,5 +1,26 @@
 # coordination/w-main/changelog-pending.md
 
+## Ciclo 527 (2026-06-12)
+
+**Tipo**: Auditoria + Integracao
+
+### O que mudou
+- Typecheck: 0 erros verificados
+- Build: 46 paginas geradas com sucesso
+- Root STATE.md atualizado para Ciclo 527 (estava em Ciclo 523)
+- `./setup-swarm.sh` blocker documentado em Notas de Execucao do root STATE
+- Swarm Status adicionado ao root STATE.md
+
+### Impacto para o usuario
+Nenhuma mudanca de funcionalidade — organizacao interna do swarm e auditoria.
+
+### Status
+- [x] Typecheck + Build verificados
+- [x] Root STATE.md atualizado (Ciclo 523 -> 527)
+- [x] Swarm blocker documentado
+
+---
+
 ## Ciclo 526 (2026-06-12)
 
 **Tipo**: Auditoria Local

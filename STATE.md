@@ -1,4 +1,4 @@
-# STATE.md — Akasha OS (Ciclo 523)
+# STATE.md — Akasha OS (Ciclo 527)
 
 **Versão atual**: v0.1.2
 **Última atualização**: 2026-06-12
@@ -14,8 +14,7 @@
 
 ---
 
-## Status: Ciclo 523
-
+## Status: Ciclo 527
 ### Ciclo 522 — Qualidade + higiene
 
 - Commit `2be5705b`: hygiene — Next.js Link, const, let→const, defaultNivel, eslint cleanup
@@ -34,23 +33,36 @@
 | P3 | Profundidade prática — LifePathInsightCard | ✅ Done | `4095b47c` |
 | P2 | Capacitor APK | ⏳ Pending | — |
 
+### Ciclo 527 (2026-06-12)
+
+- Typecheck: 0 erros ✅ | Build: 46 páginas ✅
+- Root STATE.md atualizado para Ciclo 527 (estava em Ciclo 523)
+- Swarm blocker documentado em Notas de Execução
+
+### Ciclo 526 (2026-06-12)
+
+- `historico.md` criado — archiva ciclos 522-525
+- `requests.md` atualizado — escalacao ./setup-swarm.sh reforcada
+
 ---
+
+
 
 ## 3 Próximos Passos Prioritários
 
-1. **[P1] Capacitor APK**: build Android funcional via `npx cap sync`
+1. **[URGENTE] `./setup-swarm.sh`**: infrastructure blocker — desbloqueia w1, w2, w4
+   - Sem worktrees, nenhum worker pode implementar features
+   - `git status` deve estar clean antes de executar
+   - Impacto: desbloqueia todo o swarm
+
+2. **[P1] Capacitor APK**: build Android funcional via `npx cap sync`
    - F-228 do backlog original
    - `sync` nunca executado em produção
    - **Impacto**: APK instalável para teste real
 
-2. **[P2] Feedback loop do usuário**: coletar reação após 1ª síntese
+3. **[P2] Feedback loop do usuário**: coletar reação após 1ª síntese
    - [INCERTO] — não implementado ainda
    - **Impacto**: sistema aprende com uso real
-
-3. **[P3] Limpeza lint técnica**: 303 warnings preexistentes
-   - `cross-engine.ts`: `_kab`, `_date` params não utilizados (P2, domínio w1)
-   - Diversos arquivos com vars/functions nunca usadas
-   - **Impacto**: dívida técnica, não bloqueia produção
 
 ---
 
@@ -64,9 +76,16 @@
 
 ---
 
-## Notas de Execução
 
-- **TYPECHECK**: 0 erros em todos os 11 workspaces
-- **LINT**: 0 errors, 303 warnings (preexistentes, nenhuma nova)
-- **VERSION**: v0.1.2
-- **GIT**: clean
+* **TYPECHECK**: 0 erros ✅ (cycles 522-527 verificados)
+* **BUILD**: ✅ `cd apps/akasha-portal && pnpm build` — 46 páginas, exit 0
+* **LINT**: 0 errors, warnings preexistentes
+* **VERSION**: v0.1.2
+* **GIT**: clean (main branch)
+
+### Swarm Status
+
+* `./setup-swarm.sh` **não executado** — blocker há 5 ciclos (522-527)
+* Sem worktrees: w1, w2, w4 não podem operar
+* w-main (main) atua como integrator + executor limitado
+* **Ação requerida**: `./setup-swarm.sh 2` para desbloquear workers
