@@ -1,8 +1,8 @@
-# STATE.md — Akasha OS (Ciclo 528)
+# STATE.md — Akasha OS (Ciclo 533)
 
-**Versão atual**: v0.1.3
+**Versão atual**: v0.1.4
 **Última atualização**: 2026-06-12
-**Status do projeto**: FASE 3 — Capacitor APK + Feedback loop
+**Status do projeto**: FASE 3 — APK build OK, feedback loop
 
 ---
 
@@ -10,72 +10,57 @@
 
 - Sistema espiritual unificado: 5 tradições (Cabala, Astrologia, Tantra, Ifá, I Ching) sintetizadas em 1 linguagem Akasha.
 - Mobile-first PWA com profundidade prática: cada insight responde "o que isso significa PARA MIM, na minha vida?".
-- Arquitetura limpa: motor de síntese → interpretação profunda → UI unificada.
+- APK Android funcional via `./cap-build.sh` — primeira build completa end-to-end.
 
 ---
 
-## Status: Ciclo 528
-### Ciclo 528 — Qualidade (v0.1.3)
+## Status: Ciclo 533
 
-- CHANGELOG.md: v0.1.3 consolidado — PriorityAreasQuickView, F-224 dailyTransit UI, AkashaSignificadoCard substitui LifePathInsightCard, JSX entity bug fix
-- VERSION: v0.1.2 → v0.1.3
-- Lint: 0 errors (5629 preexistentes / 1540 warnings — nenhuma nova)
-- Typecheck: 0 errors
+### Ciclo 533 — Integração + Qualidade
 
-### Ciclo 527 — Qualidade
-
-- Empty quality commit `69d7ed01` — git limpo, typecheck 0, suite verde
-
-### Ciclo 525 — Docs
-
-- Commit `f3a655f8`: Cycle summary docs
-
-### FASE 3 — Estado
-
-| Passo | Descrição | Status | Commit |
-|-------|-----------|--------|--------|
-| P1 | Unificar UI (remover contrib-pilar) | Done | `5c14dc8f` |
-| P2 | Cadeia de raciocínio no motor | Done | `f728e8b6` |
-| P2-UI | Cadeia de raciocínio na UI | Done | `AkashaLifeAreasDashboard.tsx:476` |
-| P3 | AkashaSignificadoCard | Done | `b205a2db`, `0e1ef333` |
-| P3 | LifePathInsightCard | Done | `4095b47c` |
-| P3 | PriorityAreasQuickView | Done | `d7401237` |
-| P3 | F-224 dailyTransit.todayPhrase | Done | `6b541bf0` |
-| P2 | Capacitor APK | Pending | — |
+- APK build: `cap-build.sh` auto-detecta Java/Android SDK, gera APK ~4.4MB em `android/app/build/outputs/apk/debug/`
+- AkashaSignificadoCard: mobile-responsive com `clamp()`, `defaultNivel` prop
+- Dead code: `LifePathInsightCard.tsx` (130 linhas, sem callers) removido
+- TYPE/LINT: 0 errors (suite limpa)
 
 ---
 
-## 3 Próximos Passos Prioritários
+## FASE 3 — Estado
 
-1. **[P1] Capacitor APK**: build Android funcional via `npx cap sync`
-   - F-228 do backlog original, nunca executado em produção
+| Passo | Descrição | Status | Detalhe |
+|-------|-----------|--------|---------|
+| P1 | Unificar UI | Done | AkashaSignificadoCard no dashboard |
+| P2 | Cadeia de raciocínio | Done | chainOfReasoning[] nas 6 áreas |
+| P3 | AkashaSignificadoCard | Done | shadow/gift/siddhi + 5 áreas |
+| P4 | Capacitor APK | Done | cap-build.sh — APK 4.4MB built |
+| P5 | Feedback loop | Pending | coletar reação após 1ª síntese |
 
-2. **[P2] DEC-004 — Gene Keys decisão**: shadow/gift/siddhi inspirado em Gene Keys de Richard Rudd
-   - É plágio, modelo próprio, ou confluência natural?
-   - Decisão necessária antes de produção
+---
 
-3. **[P3] Feedback loop do usuário**: coletar reação após 1ª síntese
+## Backlog Priorizado
+
+1. **DEC-004 — Gene Keys**: shadow/gift/siddhi inspirado em Gene Keys. CRÍTICA antes de produção.
+2. **Test suite w4**: 241 failures ambientales. Corrigir ou ignorar?
+3. **w2 loop**: opera como pseudo-w2 sem worktree. Domain clarification necessária.
 
 ---
 
 ## Histórico de Decisões
 
 - DEC-001: Akasha type de Odu family + Tantric body
-- DEC-002: Akasha strategy inspirada em Human Design
-- DEC-003: 6 áreas de vida cobrindo Maslow
-- DEC-004: shadow/gift/siddhi — **[DECISÃO PENDENTE]**
-- DEC-005: `LifeArea` expandida para 9 áreas
+- DEC-004: shadow/gift/siddhi — **[PENDENTE — CRÍTICA]**
+- DEC-006: Swarm sem worktree — loop opera como auditor
 
 ---
 
-* **TYPECHECK**: 0 erros (cycles 522-528 verificados)
-* **BUILD**: 46 páginas, exit 0
-* **LINT**: 0 errors, 5629 warnings preexistentes
-* **VERSION**: v0.1.3
+## Swarm Status
+
+- `coordination/` infraestrutura existe
+- Loop/w* branches: **NÃO existem** — swarm não totalmente ativado
+- w2 loop: commits direto em main (pseudo-w2 sem worktree)
+
+---
+* **VERSION**: v0.1.4
+* **TYPECHECK**: 0 errors
+* **LINT**: 0 errors
 * **GIT**: clean
-
-### Swarm Status
-
-* `coordination/` infraestrutura existe
-* feature/akasha-v0.0.12: 50 commits atrás — stale
-* **Ação requerida**: DEC-004, Capacitor APK, test suite w4

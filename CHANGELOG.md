@@ -1,3 +1,15 @@
+## v0.1.4 (2026-06-12)
+
+### Added
+- **cap-build.sh — APK build completo**: script em `apps/akasha-portal/cap-build.sh` com auto-detect de Java/Android SDK, gera APK ~4.4MB em `android/app/build/outputs/apk/debug/`. Executa `./cap-build.sh` da raiz.
+
+### Changed
+- **AkashaSignificadoCard mobile-responsive**: padding com `clamp()`; `maxWidth: '100%'` + `overflow: 'hidden'`.
+- **AkashaSignificadoCard defaultNivel prop**: componente aceita `defaultNivel?: 'shadow' | 'gift' | 'siddhi'`; dashboard passa `dominantFrequency`.
+
+### Removed
+- **LifePathInsightCard.tsx**: 130 linhas de dead code sem callers — `AkashaSignificadoCard` já cobre o caso de uso.
+
 ## v0.1.3 (2026-06-12)
 
 ### Added
