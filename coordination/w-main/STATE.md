@@ -1,12 +1,12 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 587)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 589)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 587
+**Ciclo**: 589
 
 ---
 
-## Ciclo 587 — Auditoria Local
+## Ciclo 589 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
 **DEC-009**: CRITICO — AMAB race (concurrent processes stepping on coordination files)
@@ -15,21 +15,20 @@
 
 ### Estrutura Swarm
 - w-main: concurrent processes (DEC-009 race confirmed)
-- w2: Ciclo 21 ativo — DEC-004 attribution visible
+- w2: Ciclo 22 ativo — "w2 clean"
 - w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
 ### Auditoria itens
 | Item | Status | Evidencia |
 |------|--------|-----------|
-| DEC-004 Gene Keys | ✅ RESOLVIDO | AkashaSignificadoCard.tsx:130 — attribution visivel em JSX |
+| DEC-004 Gene Keys | ✅ RESOLVIDO | AkashaSignificadoCard.tsx:130 |
 | DEC-009 AMAB race | ⚠️ CRITICO | Concurrent w-main processes |
 | PillarContribution UI | ✅ Removida | w2 Ciclo 14 |
 | TYPE LifeArea mismatch | ⚠️ w1 PENDING | AkashaSignificadoCard.tsx:24 |
 
 ## Historico
-- **587**: Auditoria | DEC-004 RESOLVIDO ✅, TYPE MISMATCH w1, DEC-009 CRITICO
-- **585**: Auditoria | DEC-004 comment-only
-- **581**: Auditoria | DEC-004 escalado, TYPE MISMATCH w1
+- **589**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1, DEC-009 CRITICO
+- **587**: Auditoria | DEC-004 RESOLVIDO, TYPE MISMATCH w1
 - Detalhado: `historico.md`
 
 ## Proximos Passos
