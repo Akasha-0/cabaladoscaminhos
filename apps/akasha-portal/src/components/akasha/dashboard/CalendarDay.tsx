@@ -1,7 +1,6 @@
 'use client';
 
 import { PulseDiv } from '../animations';
-import { motion } from 'framer-motion';
 
 interface CalendarDayProps {
   date: Date;

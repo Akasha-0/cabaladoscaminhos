@@ -92,8 +92,7 @@ const labelStyle: React.CSSProperties = {
 export default function OnboardingPage() {
   const router = useRouter();
   const params = useParams<{ locale: string }>();
-  const locale = params?.locale ?? 'pt-BR';
-  const [step, setStep] = useState(0);
+    const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormData>(INITIAL);
   const [error, setError] = useState('');
   const [phraseIdx, setPhraseIdx] = useState(0);
