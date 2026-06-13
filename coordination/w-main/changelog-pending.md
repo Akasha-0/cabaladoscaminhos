@@ -23,3 +23,9 @@ Build quebrado — nenhum deploy possivel ate w2 corrigir.
 - [x] STATE.md atualizado (Ciclo 541)
 - [x] requests.md atualizado (type error CRITICO)
 - [x] Typecheck documentado (4 erros)
+
+## Ciclo 542
+
+- DEC-009 CRITICA: AMAB reset loop sobrescreve commits w-main. HUMAN requerido.
+- AkashaSignificadoCard.tsx: AMAB working copy tem type errors — RESTAURADO a HEAD. w2 domain.
+- DEC-004: Gene Keys attribution NAO implementada ha 4 ciclos.
