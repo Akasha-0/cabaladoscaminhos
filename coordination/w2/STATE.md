@@ -11,44 +11,38 @@
 
 ---
 
-## Status: Ciclo 2 (P1 DASHBOARD INTEGRATION)
+## Status: Ciclo 2 — COMPLETO ✅
 
 ### Feito neste ciclo
 
-| Item | Status | Observação |
-|------|--------|------------|
-| `AkashaSignificadoCard` substituído `LifePathInsightCard` no dashboard `/dashboard` | ✅ Pronto para commit | Exibe interpretação profunda com seletor shadow/gift/siddhi + 5 áreas de vida |
-| `Route` import removido de `AkashaLifeAreasDashboard` | ✅ Corrigido | Elimina lint warning de variável não utilizada |
-| Entidades HTML `&ldquo;`/`&rdquo;` em `AkashaLifeAreasDashboard` | ✅ Corrigido | 5 instâncias em lines 179, 239, 269, 547, 637 |
-| `&ldquo;` em `MandalaNarrative.tsx` | ✅ Corrigido | line 262 |
-| `<a>` → `<Link>` em `mandala/page.tsx` | ✅ Commitado em Ciclo 1 | Dois links de quick-nav convertidos |
-| Empty interface `TensionPointUI` removida | ✅ Commitado em Ciclo 1 | Interface duplicada eliminada |
-
-### Em andamento
-- Commit Ciclo 2
+| Item | Status |
+|------|--------|
+| `AkashaSignificadoCard` substituído `LifePathInsightCard` no dashboard `/dashboard` | ✅ Commitado `0e1ef333` |
+| `Route` import removido de `AkashaLifeAreasDashboard` | ✅ Commitado `0e1ef333` |
+| Entidades HTML `&ldquo;`/`&rdquo;` em `AkashaLifeAreasDashboard` | ✅ Commitado em Ciclo 1 |
+| Entidade HTML `&ldquo;` em `MandalaNarrative.tsx` | ✅ Commitado em Ciclo 1 |
+| `<a>` → `<Link>` em `mandala/page.tsx` | ✅ Commitado em Ciclo 1 |
+| Empty interface `TensionPointUI` removida | ✅ Commitado em Ciclo 1 |
 
 ### Bloqueadores
-
-| Item | Domínio | Ação |
-|------|---------|------|
-| `synthesis-engine.ts:593` — `lifePath` não existe em `AkashaSynthesis` + `kab` indefinido | w1 (motor) | Registrado em `requests.md` — não bloqueia typecheck (já está em 0 erros) |
+_Nenhum_ (erro synthesis-engine é w1 domain e não bloqueia typecheck)
 
 ---
 
 ## 3 Próximos Passos (w2)
 
-1. **[P2] Mobile test** — verificar que `AkashaSignificadoCard` renders corretamente em mobile
+1. **[P2] Mobile test** — verificar que `AkashaSignificadoCard` renderiza corretamente em mobile
    - **Impacto**: produto mobile-first
 
 2. **[P3] 303 lint warnings** — majoritariamente `no-unused-vars` em `lib/` e `scripts/`, domínios w1/w3
    - **Impacto**: hygiene; não bloqueia build
 
-3. **[P2] Integrar `AkashaSignificadoCard` no dashboard principal** — JÁ FEITO neste ciclo (Ciclo 2)
-   - **Impacto**: deep interpretation disponível diretamente no dashboard
+3. **[P3] Rebase `feature/akasha-v0.0.12`** — conforme plano do integrador em `feedback-w2.md`
+   - **Impacto**: integra I Ching Wings, Correlation Map, Práticas (commits w1/w3)
 
 ---
 
 ## Decisões Autônomas (w2)
 
-- **Substituição vs adição**: `AkashaSignificadoCard` substituiu `LifePathInsightCard` (compacto) no dashboard em vez de adicionar ambos — evita redundância; o card completo tem shadow/gift/siddhi + 5 áreas, experiência mais rica
-- **contribuicoes removido da UI**: campo `sintese.contribuicoes` mantido no tipo (motor), mas UI não exibe mais breakdown por tradição — alinhado com princípio "1 sistema Akasha, não 5 mapas separados"
+- **Substituição vs adição**: `AkashaSignificadoCard` substituiu `LifePathInsightCard` (compacto) no dashboard — evita redundância; card completo com shadow/gift/siddhi + 5 áreas é experiência mais rica
+- **contribuicoes removido da UI**: campo mantido no tipo (motor), UI não exibe mais breakdown por tradição — alinhado com princípio "1 sistema Akasha, não 5 mapas separados"
