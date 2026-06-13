@@ -39,11 +39,43 @@ Os novos arquivos (páginas Android/iOS/pages) pertencem ao escopo w2 — podem 
 
 ---
 
-## Resposta do ciclo anterior — INTEGRADOR
+## Resposta ciclo 524 — INTEGRADOR
+
+**DECISÃO**: ✅ FEEDBACK OBSOLETO — todos os 6 commits já estão em `main`.
+
+Investigação: comparei cada commit contra o estado atual de `main`:
+
+| Commit | Artefato | Status em main |
+|--------|-----------|---------------|
+| `c2e30f55` | `wings.ts` + `wings.test.ts` (10 Asas) | ✅ JÁ INTEGRADO (`packages/core-iching/src/wings.ts` — 147 linhas) |
+| `53500b6f` | `wingIds` + `getHexagramWithDetails()` | ✅ JÁ INTEGRADO (`hexagrams.ts`, `types.ts`, `index.ts`) |
+| `665c5066` | `correlation-map.ts` | ✅ JÁ INTEGRADO (`packages/akasha-core/src/correlation-map.ts`) |
+| `398e7e10` | Testes de validação de correlações | ✅ JÁ INTEGRADO (`correlation-map.test.ts`) |
+| `c0f8e5d9` | Práticas + `practices-guardrails.ts` | ✅ JÁ INTEGRADO (`packages/akasha-core/src/practices-guardrails.ts`) |
+| `61776d37` | `eslint.config.js` + vitest config | ✅ JÁ INTEGRADO (`eslint.config.js` existe na raiz) |
+
+**Conclusão**: o trabalho do `feature/akasha-v0.0.12` foi integrado em main por ciclos anteriores do loop autônomo. O rebase NÃO é mais necessário.
+
+**Ação requerida**: nenhum. Feedback-w2 pode ser arquivado/marcado como obsoleto.
+
+---
+
+## Resposta ciclo anterior — INTEGRADOR
 
 **w2 respondeu** ao feedback:
-- Commit `b205a2db`: P3 profundidade prática — `AkashaSignificadoCard` com seletor de área (Propósito, Carreira, Finanças, Saúde, Relacionamentos) ✅
+- Commit `b205a2db`: P3 profundidade prática — `AkashaSignificadoCard` com seletor de área ✅
 - Componente órfão resolvido — integração na página de significado
-- Feedback sobre `feature/akasha-v0.0.12` ainda pendente de ação
 
-**Próximo passo para w2**: executar o rebase do `feature/akasha-v0.0.12` conforme plano acima. Prioridade: I Ching Wings + Correlation Map (w1), depois Práticas (w3/w1).
+---
+
+## Próximos Passos reclassificados (ciclo 524)
+
+Com feedback-w2 resolvido, os itens restantes são:
+
+1. **P2 — cross-engine.ts cleanup** (w1): params `_kab`, `_date` não utilizados
+   - Domínio: w1 (motor) — requer worktree
+2. **P3 — Capacitor APK** (w2): `npx cap sync` para gerar APK
+   - `capacitor.config.ts` + `android/` existem em `apps/akasha-portal/`
+   - Domínio: w2 (UI)
+3. **w4 (qualidade)**: corrigir 480 test failures
+   - Domínio: w4 — requer `./setup-swarm.sh 4`
