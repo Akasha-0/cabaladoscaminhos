@@ -1,15 +1,15 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 532)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 533)
 
 **Versao atual**: v0.1.2
 **Ultima atualizacao**: 2026-06-12
-**Ciclo**: 532
+**Ciclo**: 533
 
 ---
 
-## Ciclo 532 — Auditoria Local + Arquitetura
+## Ciclo 533 — Auditoria Local + Arquitetura
 
 **Typecheck**: 0 erros | **Git**: clean (tracked)
-**Swarm**: `./setup-swarm.sh` blocker ha 9 ciclos
+**Swarm**: `./setup-swarm.sh` blocker ha 10 ciclos
 
 ### O que foi feito neste ciclo
 - `historico.md`: arquivado ciclos 530-531 (total: 90 linhas)
@@ -44,7 +44,7 @@
 
 ## Proximos Passos
 
-1. **HUMAN**: `./setup-swarm.sh` — desbloqueia w1/w2/w3/w4 (blocker ha 9 ciclos)
+1. **HUMAN**: `./setup-swarm.sh` — desbloqueia w1/w2/w3/w4 (blocker ha 10 ciclos)
 2. **w2**: processar 34 untracked capacitor files (commit ou remove)
 3. **DEC-004**: decisao humana sobre shadow/gift/siddhi vs Gene Keys
 
