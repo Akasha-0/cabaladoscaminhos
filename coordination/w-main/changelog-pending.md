@@ -7,12 +7,12 @@ TYPE MISMATCH: LifeArea w1 nao cobre proposito/sexualidade/carreira.
 
 ---
 
-## Ciclo 596 (2026-06-13)
+## Ciclo 597 (2026-06-13)
 
 **Tipo**: Auditoria Local
 
 ### O que mudou
-- Ciclo advanced: 594 -> 596
+- Ciclo advanced: 596 -> 597
 - DEC-004: RESOLVIDO ✅ — attribution visivel em AkashaSignificadoCard.tsx:130
 - TYPE MISMATCH: LifeArea w1 ainda nao corrigido
 - DEC-009: CRITICO — race entre processos w-main
@@ -21,6 +21,6 @@ TYPE MISMATCH: LifeArea w1 nao cobre proposito/sexualidade/carreira.
 Nenhuma mudanca de funcionalidade.
 
 ### Status
-- [x] STATE.md Ciclo 596 committed (be2cc144)
+- [x] STATE.md Ciclo 597 committed (0c4fa8f4)
 - [x] Typecheck: 0 erros
 - [x] Git: clean
