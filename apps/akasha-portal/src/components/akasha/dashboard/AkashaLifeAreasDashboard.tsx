@@ -26,7 +26,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, Star,
-  ArrowRight, Lightbulb, RefreshCw, GitBranch,
+  ArrowRight, Lightbulb, RefreshCw, GitBranch, GitMerge,
   type LucideIcon,
 } from 'lucide-react';
 import type {
@@ -528,7 +528,44 @@ function AreaCard({ areaKey, narrative }: {
                   </div>
                 )}
               </div>
-              {narrative.chainOfReasoning && narrative.chainOfReasoning.length > 0 && (
+              
+              {/* F-230+: Contribuição de cada pilar — Unificação Akasha */}
+              {narrative.pillarContribution && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-1.5">
+                    <GitMerge size={12} className="text-[#FFD60A]" />
+                    <span className="text-xs font-semibold text-[#FFD60A]/90 uppercase tracking-wider">Os 4 Pilares</span>
+                  </div>
+                  <div className="grid gap-2">
+                    {narrative.pillarContribution.cabala && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0 mt-px font-semibold" style={{ background: "#F59E0B20", color: "#F59E0B" }}>CABALA</span>
+                        <p className="text-xs text-white/65 leading-relaxed">{narrative.pillarContribution.cabala}</p>
+                      </div>
+                    )}
+                    {narrative.pillarContribution.tantra && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0 mt-px font-semibold" style={{ background: "#EF444420", color: "#EF4444" }}>TANTRA</span>
+                        <p className="text-xs text-white/65 leading-relaxed">{narrative.pillarContribution.tantra}</p>
+                      </div>
+                    )}
+                    {narrative.pillarContribution.odus && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0 mt-px font-semibold" style={{ background: "#A855F720", color: "#A855F7" }}>IFÁ</span>
+                        <p className="text-xs text-white/65 leading-relaxed">{narrative.pillarContribution.odus}</p>
+                      </div>
+                    )}
+                    {narrative.pillarContribution.astrologia && (
+                      <div className="flex items-start gap-2">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded shrink-0 mt-px font-semibold" style={{ background: "#3B82F620", color: "#60A5FA" }}>ASTRO</span>
+                        <p className="text-xs text-white/65 leading-relaxed">{narrative.pillarContribution.astrologia}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+{narrative.chainOfReasoning && narrative.chainOfReasoning.length > 0 && (
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-1.5">
                     <GitBranch size={12} className="text-[#64D2FF]" />
