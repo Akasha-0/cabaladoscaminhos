@@ -17,8 +17,10 @@ import { interpretarVida } from '@akasha/core';
 import type { AreaInterpretation, LifeArea, VidaInterpretation } from '@akasha/types';
 type Nivel = 'shadow' | 'gift' | 'siddhi';
 
-/** Áreas com aplicacao preenchida no motor de interpretação */
-const AREAS_WITH_DATA: LifeArea[] = ['proposito', 'carreira', 'financas', 'saude', 'relacionamentos'];
+/** Áreas com aplicacao preenchida no motor de interpretação (7 de 9 áreas DEC-005).
+ * familia e criatividade existem no tipo LifeArea mas não têm aplicacao em VIDA_CONTENT.
+ * proposito e sexualidade NÃO são LifeArea mas são usados em aplicacao — mismatch reportado a w1. */
+const AREAS_WITH_DATA: string[] = ['proposito', 'carreira', 'financas', 'saude', 'relacionamentos', 'sexualidade', 'espiritualidade'];
 
 const NIVEL_LABEL: Record<Nivel, { titulo: string; cor: string; emoji: string }> = {
   shadow: {
@@ -52,7 +54,7 @@ interface Props {
 
 export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props) {
   const [nivel, setNivel] = useState<Nivel>(defaultNivel);
-  const [area, setArea] = useState<LifeArea>('proposito');
+  const [area, setArea] = useState<string>('proposito');
 
   const vida: VidaInterpretation = interpretarVida(lifePath);
   const interp: AreaInterpretation = vida.levels[nivel] ?? vida.levels.gift;
@@ -170,8 +172,8 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
       {interp.aplicacao && Object.keys(interp.aplicacao).length > 0 && (
         <div style={{ marginBottom: 14 }}>
           <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginBottom: 8 }}>
-            {(['proposito', 'carreira', 'financas', 'saude', 'relacionamentos'] as LifeArea[]).map((a) => {
-              if (!interp.aplicacao[a]) return null;
+            {AREAS_WITH_DATA.map((a) => {
+              if (!interp.aplicacao[a as LifeArea]) return null;
               return (
                 <button
                   key={a}
@@ -194,7 +196,10 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
                    a === 'carreira' ? '◈ Carreira' :
                    a === 'financas' ? '◉ Finanças' :
                    a === 'saude' ? '◐ Saúde' :
-                   '◑ Relacionamentos'}
+                   a === 'relacionamentos' ? '◑ Relacionamentos' :
+                   a === 'sexualidade' ? '✧ Sexualidade' :
+                   a === 'espiritualidade' ? '✦ Espiritualidade' :
+                   a}
                 </button>
               );
             })}
@@ -217,7 +222,7 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
       </div>
 
       {/* Aplicacao por Área — P3: como este número se manifesta na área selecionada */}
-      {interp.aplicacao && interp.aplicacao[area] && (
+      {interp.aplicacao && interp.aplicacao[area as LifeArea] && (
         <div
           style={{
             background: `linear-gradient(135deg, ${NIVEL_LABEL[nivel].cor}10, ${NIVEL_LABEL[nivel].cor}05)`,
@@ -251,7 +256,7 @@ export function AkashaSignificadoCard({ lifePath, defaultNivel = 'gift' }: Props
               margin: 0,
             }}
           >
-            {interp.aplicacao[area]}
+            {interp.aplicacao[area as LifeArea]}
           </p>
         </div>
       )}
