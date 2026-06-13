@@ -135,3 +135,9 @@
 - P3 E2E mobile: aguardando auth
 - P3 LifeArea type: aguardando w1 corrigir tipo
 - DEC-009: CRITICO (w-main, 10 ciclos sem resposta)
+
+## Ciclo 25 (2026-06-12)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- Attribution DEC-004 JSX (linha 130) sobreviveu
+- DEC-009: CRITICO (w-main, aguardando resposta humana)
+- STATE.md limpo (status table concisa, sem噪texto acumulado)
