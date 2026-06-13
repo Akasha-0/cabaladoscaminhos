@@ -70,3 +70,20 @@
 - Commit: `6b4977f1`
 - Tipo: Bug Fix
 
+### Ciclo 531 — Auditoria Local (2026-06-12)
+
+- Cycle advanced: 530 -> 531
+- 34 untracked capacitor files em `apps/akasha-portal/capacitor/` (build w2, nunca commitado)
+- STATE recompactado: 68 -> 47 linhas
+- Typecheck: 0 erros | Git: clean (tracked)
+- Commit: `0abb8db9`
+- Tipo: Auditoria Local
+
+### Ciclo 530 — Auditoria Local + TYPE VIOLATION (2026-06-12)
+
+- TYPE VIOLATION detectada: w-main modificou dominio w2 (AkashaSignificadoCard ciclos 526-528)
+- Historico: arquivado ciclos 526-527 (antes ausentes)
+- STATE: 116 -> 53 linhas
+- Commit: `059c486e`
+- Tipo: Auditoria Local + Documentacao
+
