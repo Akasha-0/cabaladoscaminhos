@@ -1,63 +1,72 @@
-# CHECKPOINT.md — Ciclo 611
+# CHECKPOINT.md — Akasha OS (Ciclo 642)
 
-**Data**: 2026-06-13
-**Versao**: v0.1.6
-**Integrador**: Ciclo 611
-
----
-
-## Resumo
-
-Akasha OS em v0.1.6. Swarm opera como loop autonomo no main.
-O loop cria commits de auditoria a cada ~30s. Suite: 0 TS errors.
+**CHECKPOINT**: Ciclo 642 | **Versao**: v0.1.6
+**Data**: 2026-06-13 | **Anterior**: Ciclo 611
 
 ---
 
-## Evolucao por Worker
+## Visao do Projeto
 
-### w2 (documentacao + components)
-- Ciclos 26-41: auditoria hygiene continua
-- DEC-004: RESOLVIDO (Gene Keys attribution JSX)
-- PillarContribution: RESOLVIDO
+Sistema espiritual unificado — 5 tradicoes em 1 linguagem Akasha.
+Mobile-first PWA com profundidade pratica. APK Android funcional via ./cap-build.sh.
 
-### w-main (integracao)
-- Ciclos 607-611: auditoria, sync loop
-- Suite maintenance
+---
+
+## O que evoluiu desde Ciclo 611
+
+### w2 (integrator/hygiene)
+- Ciclos 611-642: 31 ciclos de auditoria hygiene
+- DEC-004: RESOLVIDO — "Inspirado em Gene Keys" visivel em producao
+- w2 dominio: 100% clean (0 lint warnings)
+- Suite mantida verde: 0 TS errors em todos os ciclos
+
+### Loop autonomo
+- Opera diretamente em main (sem branches loop/w*)
+- Múltiplos commits por minuto
+- Absorve e recommit hygiene do integrator
+
+### Pending issues (sem resposta humana em 31 ciclos)
+1. **DEC-009 AMAB CRITICO**: Loop faz git reset --hard entre ciclos.
+   SOURCE: config do omp (Oh My Pi), fora do repo git.
+   3 opcoes: (a) desativar reset no omp, (b) o humano faz reset manualmente, (c) ignorar.
+2. **TYPE MISMATCH w1** (desde Ciclo 588): proposito/sexualidade/carreira
+   usadas como LifeArea via cast em AkashaSignificadoCard.tsx.
+   Build 0 errors. Runtime potential bug. Dominio w1.
+3. **w1 lint warnings (~295)**: sem owner definido
 
 ---
 
 ## Decisoes Autonomas
 
-1. **DEC-009 SOURCE ENCONTRADA**: Ciclo 602. O `git reset --hard` NAO vem de nenhum arquivo no repo. Vem da ferramenta `omp` (Oh My Pi) que roda o loop autonomo. Configuracao do omp esta FORA do repo.
-
-2. **DEC-009 STATUS**: EXTERNAL. Nao ha arquivo no repo que contenha o reset. Para resolver definitivamente: modificar a config do omp para usar `git merge --ff-only` em vez de `git reset --hard`. Essa config nao esta em nenhum arquivo versionado.
-
-3. **TYPE MISMATCH w1**: Ciclo 588. `proposito/sexualidade/carreira` usados como `LifeArea` via cast em AkashaSignificadoCard.tsx. Build 0 errors. Runtime potencial bug. Dominio w1. Aguardando resposta.
-
----
-
-## Itens [INCERTO]
-
-1. **DEC-009 fix**: Como o reset vem do omp (ferramenta externa), há 3 opcoes:
-   a) Modificar config do omp (requer acesso ao sistema de arquivos do host)
-   b) Criar um wrapper que faz `git merge --ff-only` antes de cada ciclo do omp
-   c) Conviver com o reset (commits do loop survive in git ancestry)
-
-2. **TYPE MISMATCH**: Proposito/sexualidade/carreira vs LifeArea. Build nao quebra. Motor funciona? Validar com teste real.
+| Decisao | Dominio | Status |
+|---------|---------|--------|
+| DEC-004 Gene Keys attribution | w2 | RESOLVIDO |
+| PillarContribution 4 Pilares | w2 | RESOLVIDO |
+| TYPE MISMATCH proposito/sexualidade/carreira | w1 | PENDENTE |
+| DEC-009 AMAB reset loop | EXTERNAL | PENDENTE |
+| w1 lint warnings ownership | w1 | PENDENTE |
 
 ---
 
 ## Riscos
 
-1. **Loop desync**: origin/main avanca mais rapido que o loop consegue acompanhar. Integra commits entre push e pull.
-2. **Lint warnings (~295)**: Todos dominio w1. Sem ownership clara, nao serao corrigidos.
+1. **DEC-009 CRITICO**: Reset loop destrói trabalho do integrator entre ciclos.
+   Resolvedor: humano (SOURCE externa ao repo).
+2. **TYPE MISMATCH**: Potential runtime bug em AkashaSignificadoCard.tsx.
+3. **Sem version bump desde Ciclo 592**: v0.1.6 ha 50 ciclos.
 
 ---
 
 ## 3 Perguntas para o Humano
 
-1. **DEC-009**: O reset do omp é aceitável como está (commits survive in git ancestry, just need more sync cycles), ou você quer que eu crie um wrapper do omp no repo que use `git merge --ff-only`?
+1. **DEC-009 AMAB**: Como resolver o reset loop? (a) desativar no omp, (b) fazer reset manualmente antes de cada ciclo, (c) aceitar e ignorar?
+2. **TYPE MISMATCH**: Proposito/sexualidade/carreira devem ser adicionados ao tipo LifeArea, ou o cast as LifeArea deve ser removido?
+3. **v0.1.6 ha 50 ciclos**: Quando devo fazer o bump para v0.2.0?
 
-2. **TYPE MISMATCH**: Os valores `proposito`, `sexualidade`, `carreira` devem ser adicionados ao tipo `LifeArea` (expansao), ou o codigo em AkashaSignificadoCard.tsx deve ser alterado para usar um tipo diferente?
+---
 
-3. **Versao**: v0.1.6 esta estavel há 15+ ciclos. Quando faco bump para v0.2.0?
+## Suite Status
+
+- TypeScript: 0 errors
+- Lint: ~295 warnings (w1/w3 ownership)
+- origin/main: synced (Ciclo 642)
