@@ -1,53 +1,47 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 530)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 531)
 
 **Versão atual**: v0.1.2
 **Última atualização**: 2026-06-12
-**Ciclo**: 530
+**Ciclo**: 531
 
 ---
 
-## Ciclo 530 — Auditoria Local (worktree unavailable)
+## Ciclo 531 — Auditoria Local (dominio restrito w-main)
 
-**Typecheck**: 0 erros | **Git**: clean
-**Swarm**: `./setup-swarm.sh` blocker ha 7 ciclos | **Historico**: arquivado cycles 525-529
+**Typecheck**: 0 erros | **Git**: clean (tracked)
+**Swarm**: `./setup-swarm.sh` blocker ha 8 ciclos
 
 ### Estado atual
-- Ciclo 529: TYPE VIOLATION detectada (w-main modificou dominio w2 — AkashaSignificadoCard.tsx ciclos 526-528)
-- Historico atualizado com ciclos 526-527 (antes ausentes)
-- w-main backlog: vazio (worktree unavailable)
-- DEC-004 (Gene Keys): pendente ha 7 ciclos — risco de plágio intelectual
+- Cycle count: 530 -> 531
+- 34 untracked files em `apps/akasha-portal/capacitor/` (build w2, nunca commitado)
+- `cap-build.sh` em `apps/akasha-portal/` (w2 domain)
+- w-main backlog: vazio — sem worktree, sem dominio de codigo
+- DEC-004 (Gene Keys): pendente ha 8 ciclos — risco de plagio intelectual
 
-### VIOLAÇÃO DE DOMÍNIO (Ciclos 526-528)
-- AkashaSignificadoCard.tsx e dominio w2 (`apps/akasha-portal/src/components/akasha/**`)
-- w-main modificou indevidamente (defaultNivel fix ciclos 526-527)
-- w2 worktree inexistente — w2 nao pode validar/corrigir
-
----
-
-## Histórico resumido
-
-| Ciclo | Tipo | Destaque |
-|-------|------|----------|
-| 530 | Auditoria | VIOLACAO dominio detectada; historico arquivado |
-| 529 | Auditoria | Typecheck 0; git clean; swarm blocker 6 ciclos |
-| 528 | CHECKPOINT | DEC-004 CRITICA; v0.1.3 |
-| 527 | Auditoria | Dead import removido |
-| 526 | Bug Fix | defaultNivel regression corrigido |
-| 525 | Feature | dailyTransit.todayPhrase na UI |
+### VIOLACAO DE DOMÍNIO (Ciclos 526-528)
+- `AkashaSignificadoCard.tsx` e `AkashaLifeAreasDashboard.tsx` — dominio w2
+- w-main modificou sem autoridade — escalado ao integrador
 
 ---
 
-## Próximos Passos
+## Historico
 
-1. **HUMAN**: `./setup-swarm.sh` — desbloqueia w1/w2/w4 (blocker ha 7 ciclos)
+- **531**: Auditoria | 34 untracked capacitor files; dominio w-main restrito
+- **530**: Auditoria | VIOLACAO dominio detectada; STATE 116->53 linhas
+- **529**: Auditoria | Typecheck 0; git clean
+- **528**: CHECKPOINT | DEC-004 CRITICA; v0.1.3
+- **527**: Auditoria | Dead import removido
+- **526**: Bug Fix | defaultNivel regression corrigido
+- **525**: Feature | dailyTransit.todayPhrase na UI
+
+## Proximos Passos
+
+1. **HUMAN**: `./setup-swarm.sh` — desbloqueia w1/w2/w4 (blocker ha 8 ciclos)
 2. **w2**: validar/corrigir AkashaSignificadoCard.tsx (dominio w2)
 3. **DEC-004**: decisao humana sobre shadow/gift/siddhi vs Gene Keys
 
----
-
 ## Notas
 
-- Agindo como `w-main` (main = integrator)
+- w-main domain: `coordination/w-main/**` apenas
 - PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
 - Historico completo: `coordination/w-main/historico.md`
-- Historico tem 73 linhas; STATE.md compactado para ~55 linhas
