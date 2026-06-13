@@ -37,3 +37,20 @@
 - Typecheck: 0 erros
 - Commit: `c13a544d`
 - Tipo: Auditoria Local
+### Ciclo 529 — Auditoria Local + Dominio Conflito (2026-06-12)
+
+- Ciclo 528 processado paralelamente (commits ja em main)
+- DEC-004: shadow/gift/siddhi vs Gene Keys — CRITICA, aguardando decisao humana
+- AkashaSignificadoCard: dominio conflito (w2 owns via glob, w-main modificou ciclos 526-528)
+- Backlog w-main: vazio
+- Commit: `0806004f`
+- Tipo: Auditoria Local
+
+### Ciclo 528 — Auditoria + Integracao CHECKPOINT (2026-06-12)
+
+- CHECKPOINT written por processo de integracao
+- DEC-004 Gene Keys: CRITICA
+- ./setup-swarm.sh nao executado — blocker ha 5+ ciclos
+- Commit: `fc069e10`, `c7fa138c`
+- Tipo: Auditoria + Integracao
+
