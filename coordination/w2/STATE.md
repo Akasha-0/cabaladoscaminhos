@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 104 | **Atualizacao**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 105 | **Atualizacao**: 2026-06-13
 
 ---
 
@@ -9,7 +9,7 @@
 
 ---
 
-## Status: Ciclo 104 — Auditoria Local
+## Status: Ciclo 105 — Bug Fix
 
 | Verificação | Resultado |
 |-------------|-----------|
@@ -26,7 +26,7 @@
 
 1. **[P1] Offline APK** — server.url capacitor.config.ts aguarda decisão humana. Impacto: APK offline vs online-only.
 2. **[P3] E2E mobile** — Playwright 375×812 requer auth. Impacto: garantia mobile-first.
-3. **[P3] LifeArea type** — aguarda w1 corrigir tipo. Impacto: remove `as LifeArea` cast.
+3. **[P3] LifeArea type** — Alinhamento final da UI com types. Impacto: remove `as LifeArea` cast se/quando o input string virar union nativa.
 
 ---
 
@@ -37,3 +37,5 @@
 - **PWA viewport**: maximumScale: 1, userScalable: false
 - **service worker**: sw.js offline-ready (cache-first + network-first + stale-while-revalidate)
 - **server.url**: Vercel production → APK online-only
+- **AkashaSignificadoCard header fix**: Corrigido mapeamento de abas para as áreas `sexualidade` e `espiritualidade` na UI.
+

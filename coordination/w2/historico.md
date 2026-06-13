@@ -458,3 +458,9 @@
 ## Ciclo 104 (2026-06-13)
 - Auditoria local: typecheck 0, lint 295 (todos w1/w3)
 - Attribution DEC-004 JSX (linha 130) sobreviveu
+
+## Ciclo 105 (2026-06-13)
+- AkashaSignificadoCard: Corrigido mapeamento de cabeçalho das abas `sexualidade` e `espiritualidade` na UI (bug fix).
+- Removido comentário obsoleto sobre mismatch de tipo do core.
+- typecheck: 0 erros ✅
+
