@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versão atual**: v0.1.2 | **Ciclo**: 7 | **Atualização**: 2026-06-12
+**Versão atual**: v0.1.2 | **Ciclo**: 8 | **Atualização**: 2026-06-12
 
 ---
 
@@ -9,14 +9,14 @@
 
 ---
 
-## Status: Ciclo 7 — AUDITORIA LOCAL COMPLETA ✅
+## Status: Ciclo 8 — 7 Áreas da Vida ✅
 
 | Verificação | Resultado |
 |-------------|-----------|
 | typecheck / build / lint | ✅ 0 errors, 46/46 páginas, 0 warnings w2 domain |
-| APK build | ✅ `4e0d96f3` — 4.4MB em `android/app/build/outputs/apk/debug/app-debug.apk` |
-| AkashaSignificadoCard | ✅ mobile: clamp(), maxWidth:100%, overflow:hidden, flexWrap:wrap |
-| defaultNivel prop | ✅ `dominantFrequency` do perfil usado como default |
+| AkashaSignificadoCard | ✅ 7 áreas: proposito, carreira, finanças, saúde, relacionamentos, sexualidade, espiritualidade |
+| type mismatch w1 | ⚠️ `proposito`/`sexualidade` não estão no tipo `LifeArea` mas são usados em `aplicacao` — reportado em `requests.md` |
+| APK build | ✅ `4e0d96f3` — 4.4MB APK |
 | Feedback-w2 | ✅ OBSOLETO — feature/akasha-v0.0.12 integrado em main |
 
 ### Histórico: ver `historico.md`

@@ -15,3 +15,7 @@
 
 ### Ciclo 6 (2026-06-12)
 - **feat(w2): cap-build.sh — APK build completo** — script `apps/akasha-portal/cap-build.sh` que auto-detecta Java (`/home/skynet/java/jdk-*`) e Android SDK, copia `.next/standalone/` → `capacitor/`, roda `npx cap sync android` e `./gradlew assembleDebug` (commit `4e0d96f3`). APK de 4.4MB gerado em `android/app/build/outputs/apk/debug/app-debug.apk`. Usuário consegue build local com `./cap-build.sh`.
+### Ciclo 7 (2026-06-12)
+- **feat(w2): AkashaSignificadoCard — 7 áreas da vida** — expandido `AREAS_WITH_DATA` de 5 para 7 áreas, adicionando `sexualidade` e `espiritualidade` (que têm `aplicacao` em `VIDA_CONTENT`). DEC-005 menciona 9 áreas — `familia` e `criatividade` existem no tipo `LifeArea` mas não têm `aplicacao` em `interpretarVida`. Commit `056edbeb`. Usuário agora vê interpretação em todas as 7 áreas com dado.
+- **fix(w2): type mismatch LifeArea** — `area` state alterado de `LifeArea` para `string`; casts `as LifeArea` adicionados onde `aplicacao` é indexada (3 lugares). Motivo: `proposito` e `sexualidade` não estão no tipo `LifeArea` mas são usados em `aplicacao` — mismatch reportado a w1 em `requests.md`.
+

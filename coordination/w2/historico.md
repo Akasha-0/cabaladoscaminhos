@@ -18,3 +18,9 @@
 - AkashaSignificadoCard mobile-responsive (clamp padding)
 - AkashaSignificadoCard defaultNivel prop com dominantFrequency
 - HTML entities, <a>→<Link>, dead imports removidos
+## Ciclo 8 (2026-06-12)
+- AkashaSignificadoCard: AREAS_WITH_DATA 5→7 (sexualidade + espiritualidade)
+- area state: LifeArea→string + as LifeArea casts (3 lugares)
+- requests.md: type mismatch LifeArea vs aplicacao reportado a w1
+- Commit `056edbeb`: typecheck 0, build 46/46, lint 0 errors
+
