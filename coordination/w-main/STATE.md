@@ -1,12 +1,12 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 622)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 623)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 622
+**Ciclo**: 623
 
 ---
 
-## Ciclo 622 — Auditoria Local
+## Ciclo 623 — Auditoria Local
 
 **Typecheck**: 0 erros | **Git**: clean
 
@@ -26,8 +26,8 @@
 ---
 
 ## Historico resumido
-- **622**: Auditoria | Suite OK, all items stable
-- **621**: Auditoria | Suite OK
+- **623**: Auditoria | Suite OK, all items stable
+- **622**: Auditoria | Suite OK
 - Detalhado: historico.md
 
 ## Proximos Passos
