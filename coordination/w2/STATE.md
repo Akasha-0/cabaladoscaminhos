@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versao atual**: v0.1.2 | **Ciclo**: 23 | **Atualizacao**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 24 | **Atualizacao**: 2026-06-12
 
 ---
 
@@ -9,7 +9,7 @@
 
 ---
 
-## Status: Ciclo 23 — Auditoria Local (sw.js offline-ready, P1 decision pending)
+## Status: Ciclo 24 — Auditoria Local (feedback Ciclo 588 all resolved, 3 bloqueados)
 
 | Verificação | Resultado |
 |-------------|-----------|

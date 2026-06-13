@@ -126,3 +126,12 @@
 - P1: server.url em capacitor.config.ts aguarda decisao (online-only vs offline-ready APK)
 - Attribution DEC-004 JSX (linha 130) sobreviveu
 - Feedback Ciclo 586: todos items resolvidos
+
+## Ciclo 24 (2026-06-12)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- Feedback Ciclo 588: TYPE MISMATCH confirmado w1 (motor), nao w2
+- Attribution DEC-004 JSX (linha 130) sobreviveu ao loop
+- P1 Offline APK: aguardando decisao humana
+- P3 E2E mobile: aguardando auth
+- P3 LifeArea type: aguardando w1 corrigir tipo
+- DEC-009: CRITICO (w-main, 10 ciclos sem resposta)
