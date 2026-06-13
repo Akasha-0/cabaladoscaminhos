@@ -34,7 +34,6 @@ import type {
   AkashaTypeProfileUI,
   AreaNarrativeUI,
   DailyDecisionUI,
-  DailyTransitUI,
   SexualidadeUI,
 } from './hooks/useAkashaSynthesis';
 import { AkashaSignificadoCard } from '@/components/akasha/AkashaSignificadoCard';
@@ -196,12 +195,6 @@ function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
 
 // ─── F-227: ONE Akasha Profile Card ───────────────────────────────────────────
 
-const AUTHORITY_ICONS: Record<string, string> = {
-  emotional: '❤️',
-  sacral: '🟠',
-  splenic: '🟣',
-  mental: '🔵',
-};
 
 const AUTHORITY_LABELS: Record<string, string> = {
   emotional: 'Autoridade Emocional',
@@ -394,7 +387,7 @@ const FREQUENCY_SORT: Record<string, number> = { siddhi: 3, gift: 2, shadow: 1 }
 function PriorityAreasQuickView({ areas }: { areas: Record<string, AreaNarrativeUI> }) {
   const sorted = Object.entries(areas)
     .filter(([, n]) => n != null)
-    .sort(([ak, a], [bk, b]) => {
+    .sort(([, a], [, b]) => {
       const fa = FREQUENCY_SORT[a.frequency] ?? 1;
       const fb = FREQUENCY_SORT[b.frequency] ?? 1;
       if (fa !== fb) return fb - fa;

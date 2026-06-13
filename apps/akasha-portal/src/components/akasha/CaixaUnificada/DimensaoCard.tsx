@@ -14,21 +14,7 @@ import { useState } from 'react';
 import type { DimensaoSintese } from '@/lib/grimoire/synthesis/synthesizer';
 import { DIMENSAO_BG, DIMENSAO_BORDER, DIMENSAO_POR_ID } from '@/lib/grimoire/synthesis/dimensoes';
 
-const PILAR_ICONE: Record<string, string> = {
-  cabala: '✦',
-  astrologia: '☉',
-  tantrica: '◉',
-  odu: '⬡',
-  iching: '☰',
-};
 
-const PILAR_NOME: Record<string, string> = {
-  cabala: 'Cabala',
-  astrologia: 'Astrologia',
-  tantrica: 'Tântrica',
-  odu: 'Odu',
-  iching: 'I Ching',
-};
 
 export interface DimensaoCardProps {
   sintese: DimensaoSintese;
