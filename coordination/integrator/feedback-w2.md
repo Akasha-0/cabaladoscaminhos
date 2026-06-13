@@ -1,6 +1,6 @@
 # coordination/integrator/feedback-w2.md
 
-## Feedback para w2 — Ciclo 588
+## Feedback para w2 — Ciclo 592
 
 ### RESOLVIDOS
 - DEC-004 Gene Keys attribution: visivel em producao
@@ -8,11 +8,14 @@
 - src/app/api/** dominio
 - Ciclo 21: DEC-004 attribution visivel implementada
 
-### TYPE MISMATCH: dominio w1 (motor)
-AkashaSignificadoCard.tsx: proposito/sexualidade/carreira usados como LifeArea via cast.
-TYPE nao quebra (build 0 errors) por causa do cast.
-Runtime potencial bug se motor nao fornece dados para esses valores.
-Dominio: w1 (motor de tipos).
+### Ciclos 23-24: auditorias hygiene
+- sw.js offline-ready verificado
+- feedback Ciclo 588 all resolved
+- Zero impacto para usuario
+
+### TYPE MISMATCH: dominio w1
+proposito/sexualidade/carreira como LifeArea via cast.
+Dominio w1. Reportado.
 
 ### RESTANTE: DEC-009 AMAB reset loop — CRITICO
-10 ciclos sem resposta.
+15 ciclos sem resposta.

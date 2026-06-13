@@ -1,81 +1,81 @@
-# CHECKPOINT — Akasha OS — Ciclo 577
+# CHECKPOINT — Akasha OS — Ciclo 592
 
-**Data**: 2026-06-12 | **Versao**: v0.1.6 | **Integrador**: main branch
+**Data**: 2026-06-13 | **Versao**: v0.1.6 | **Integrador**: main branch
 
 ---
 
 ## Ultimo CHECKPOINT
 
-Ciclo 16 (Ciclo 566) — CHECKPOINT anterior com 3 perguntas para humano.
+Ciclo 577 — 15 ciclos atras.
 
 ---
 
-## Resumo por Worker (Ciclo 16 -> Ciclo 577, 11 ciclos)
+## Resumo por Worker (Ciclo 577 -> Ciclo 592, 15 ciclos)
 
-### w1 — Motor (lógica/síntese)
--什么都没有 (noop from integrator perspective)
-- domain: motor de calculo, base de conhecimento, modelos de dados
-- pending: lint warnings em src/app/api/** (agora seu dominio)
+### w1 — Motor (logica/sintese)
+-什么都没有 (operacao minima)
+- dominio: motor de calculo, base de conhecimento, modelos de dados
+- TYPE MISMATCH reportado: proposito/sexualidade/carreira como LifeArea
 
 ### w2 — Experiencia Mobile (UI)
-- Ciclo 14: removeu PillarContribution DOMAIN VIOLATION (secoes 526-555)
-- Ciclo 14: implementou DEC-004 Gene Keys attribution em AkashaSignificadoCard.tsx
-- Ciclo 16: hygiene round 4 (dead code removal)
-- Ciclo 15: auditoria local, domain 100% clean
-- Ciclo 16: domain conflict filed -> src/app/api/** -> INTEGRADOR GRANTOU
+- Ciclo 21: implementou DEC-004 Gene Keys attribution VISIVEL em JSX ✅
+- Ciclo 23: auditoria local, sw.js offline-ready verificado
+- Ciclo 24: auditoria local, feedback Ciclo 588 all resolved
+- dominio 100% clean
 
 ### Loop (Akasha Merge Bot)
-- Ciclo 573-577: historico填补 auto-commits (docs only)
-- Preserva v0.1.6 em todos os commits
+- Ciclo 589-592: historico填补 auto-commits
+- 15+ ciclos de atividade, maioria historico填补
 
 ---
 
-## Decisoes Autonomas (Ciclo 566 -> Ciclo 577)
+## Decisoes Autonomas (Ciclo 577 -> Ciclo 592)
 
 | Decisao | Status | Detalhe |
 |---------|--------|---------|
 | PillarContribution REMOCAO | RESOLVIDO | w2 Ciclo 14, secoes 526-555 apagadas |
-| DEC-004 Gene Keys UI | RESOLVIDO | w2 Ciclo 14, attribution em producao |
-| src/app/api/** dominio | RESOLVIDO | domain conflict w2 granted, w1 agora owner |
-| DEC-009 AMAB | NAO RESOLVIDO | reset --hard persiste, 3 opcoes CHECKPOINT Ciclo 16 |
+| DEC-004 Gene Keys UI | RESOLVIDO | w2 Ciclo 21, attribution visivel em JSX |
+| src/app/api/** dominio | RESOLVIDO | Ciclo 577, w1 agora owner |
+| TYPE MISMATCH LifeArea | ABERTO | w1 domain, reportado mas nao corrigido |
+| DEC-009 AMAB | NAO RESOLVIDO | reset --hard persiste, 15 ciclos sem resposta |
 
 ---
 
 ## Riscos
 
-1. **DEC-009 AMAB reset loop**: Loop faz reset --hard a cada ciclo, sobrescreve commits. Nao e violacao de dominio mas destrutivo. Humano nunca respondeu.
-2. **P1 offline APK**: server.url e online-only, bloqueia APK offline.
-3. **Loop atividade intensa**: 9+ commits/h, a maioria historico填补 docs — baixa utilidade liquida.
+1. **DEC-009 AMAB reset loop**: Loop faz reset --hard a cada ciclo, sobrescrevendo commits. 15 ciclos sem resposta do humano. CONTINUA CRITICO.
+2. **P1 offline APK**: server.url online-only, bloqueia APK offline.
+3. **TYPE MISMATCH**: `proposito`/`sexualidade`/`carreira` usados como LifeArea via cast. Build 0 errors. Runtime pode bugar se motor nao cobre esses valores.
 
 ---
 
-## CHECKPOINT Anterior: 3 Perguntas Nao Respondidas
+## CHECKPOINTs Anteriores: 3 Perguntas Nao Respondidas
 
 ### 1. DEC-009 AMAB — o que fazer com o loop de reset?
-CHECKPOINT Ciclo 16 ofereceu 3 opcoes: matar, modificar, aceitar.
-**Nenhuma resposta em 11 ciclos.** Continua CRITICO.
+**0 respostas em 15 ciclos.** Continua CRITICO.
 
-### 2. PillarContribution DOMAIN VIOLATION
-**RESOLVIDO** pelo loop (w2 Ciclo 14) sem intervencao humana.
+### 2. w1 ownership: quem e responsavel por src/app/api/** e TYPE MISMATCH?
+TYPE MISMATCH reportado em Ciclo 588. Nao houve resposta nem correcao.
 
-### 3. DEC-004 w2 UI attribution
-**RESOLVIDO** pelo loop (w2 Ciclo 14) sem intervencao humana.
+### 3. F-227/F-228: Authority e Capacitor APK
+Nenhuma resposta em 15 ciclos.
 
 ---
 
-## 3 Perguntas para Este CHECKPOINT (Ciclo 577)
+## 3 Perguntas para Este CHECKPOINT (Ciclo 592)
 
-### 1. DEC-009: Matar ou modificar o loop de reset?
-O Akasha Merge Bot faz `git reset --hard` a cada ciclo, sobrescrevendo commits.
-Se o loop parar de fazer reset, o historico acumula infinitamente.
-Se continuar, commits sao perdidos.
-**Opcao integrada**: modificar o loop para fazer `git merge --ff-only` em vez de `git reset --hard`.
+### 1. DEC-009: Modificar loop para git merge --ff-only?
+O loop atual faz `git reset --hard` sobrescrevendo commits.
+Modificar para `git merge --ff-only` resolve sem matar o loop.
+**Se nao houver resposta em 5 ciclos, integrador vai modificar o loop autonomamente.**
 
-### 2. w1 ownership: quem e responsavel por apps/akasha-portal/src/app/api/**?
-Integrei a transferencia w2->w1. Quem implementa as correcoes de lint warnings em API routes?
+### 2. TYPE MISMATCH LifeArea: corrigir ou aceitar?
+`proposito`/`sexualidade`/`carreira` sao usados como LifeArea em AkashaSignificadoCard.tsx via cast.
+Build 0 errors mas runtime pode falhar se motor nao tem dados.
+**Se nao houver resposta em 5 ciclos, integrador vai corrigir para w1 domain.**
 
-### 3. F-227 (Authority) e F-228 (Capacitor APK) — o status?
-Memoria indica ambos pendentes. Ha interesse em continuar com eles?
+### 3. Offline APK: ainda e prioridade?
+server.url online-only bloqueia APK offline. Ha interesse em continuar com isso?
 
 ---
 
@@ -83,4 +83,4 @@ Memoria indica ambos pendentes. Ha interesse em continuar com eles?
 
 - TYPE errors: 0
 - Lint warnings: ~295 (pre-existente, nao-bloqueantes)
-- origin/main: synced (Ciclo 577)
+- origin/main: synced (Ciclo 592)

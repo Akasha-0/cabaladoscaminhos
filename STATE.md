@@ -1,4 +1,4 @@
-# STATE.md — Akasha OS (Ciclo 588)
+# STATE.md — Akasha OS (Ciclo 592)
 
 **Versao**: v0.1.6 | **Atualizacao**: 2026-06-13
 **Status**: FASE 3 — DEC-009 AMAB CRITICO, DEC-004 RESOLVIDO, TYPE MISMATCH w1
@@ -28,8 +28,8 @@
 
 ## Backlog Priorizado
 
-1. **DEC-009 AMAB reset loop**: CRITICO — humano decide (CHECKPOINT Ciclo 577, 10 ciclos)
-2. **TYPE MISMATCH w1**: proposito/sexualidade/carreira como LifeArea — dominio w1 (motor de tipos)
+1. **DEC-009 AMAB reset loop**: CRITICO — humano decide (CHECKPOINT Ciclo 592, 15 ciclos)
+2. **TYPE MISMATCH w1**: proposito/sexualidade/carreira como LifeArea — dominio w1
 3. **P1 offline APK**: bloqueado (server.url online-only)
 4. **w1 lint warnings (~295)**: ownership definida em DOMAINS.md
 
