@@ -32,3 +32,10 @@
 - capacitor/: manifest.json + sw.js syncados via cap-build.sh
 - server.url: Vercel production — APK online-only, offline bloqueada por architecture
 - requests.md: offline APK architecture reportado como P1 para integrador
+
+## Ciclo 10 (2026-06-12) — AUDITORIA LOCAL
+- typecheck 0 errors, build 46/46, lint 0 errors + 306 warnings (todos pre-existentes w1/w3)
+- Warnings w2 domain: 4 hygiene items non-blocking (DailyTransitUI, PILAR_ICONE, locale, motion)
+- APK 4.4MB (4e0d96f3) + cap-build.sh OK
+- Backlog: P1 offline APK blocked by architecture decision; P3 E2E blocked by auth; P3 LifeArea wait w1
+- PWA manifest + sw.js: OK (online-only APK, offline blocked by server.url decision)
