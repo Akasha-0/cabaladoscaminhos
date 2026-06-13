@@ -3,12 +3,22 @@
 ## Pendente — aguardando integrador consolidar
 
 Nenhuma entrada pendente no dominio w-main.
-Todas as features do backlog foram comprometidas em commits w-main
-ou estao em dominio de outro worker.
+Todas as features do backlog estao em dominio de outro worker.
 
-## Entrada — Ciclo 533 (2026-06-12)
+## Ciclo 535 (2026-06-12)
 
-- **PillarContribution na UI**: 4 pilares (Cabala/Tantra/Ifá/Astro) renderizados
-  por area de vida no dashboard — commit `a7cb2064`
-- **Impacto**: usuario ve a contribuicao de cada tradicao em vez de resultado unificado
-- **Status**: ja comprometido
+**Tipo**: Auditoria Local
+
+### O que mudou
+- Cycle advanced: Ciclo 534 -> 535
+- Typecheck: 0 erros
+- Git: clean (tracked files)
+- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md` — SEM globs de codigo
+
+### Impacto para o usuario
+Nenhuma mudanca de funcionalidade. Documentacao interna atualizada.
+
+### Status
+- [x] Typecheck verified (0 erros)
+- [x] Git clean
+- [x] Backlog: vazio — todos os itens em dominio w1/w2/w4 ou aguardando acao humana

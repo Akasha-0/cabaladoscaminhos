@@ -78,3 +78,43 @@ Ciclos 523-532: w-main executou **10 ciclos consecutivos** sem implementar nenhu
 | 524-527 | 4 | Features + Quality |
 
 **Media**: ~1 ciclo/dia desde 2026-06-12
+---
+
+## Ciclo 533-535 — Akasha Merge Bot + Domain Conflict
+
+### Akasha Merge Bot (AMAB)
+
+AMAB e um processo autonomo que:
+1. Monitora branches `loop/w{N}` por commits
+2. Quando detecta conflito de dominio (w-main modificando `apps/`), faz **revert automatico**
+3. Tambem faz commits autonomos em `coordination/w-main/` (STATE.md, requests.md, etc.)
+
+**Comportamento observado**:
+- Cycle 532: AMAB reverteu `b56a8e36` (pillarContribution w-main) e `a61267da` (cap-build.sh)
+- Cycle 534: AMAB fez commits autonomos em coordination/w-main/ como se fosse integrador
+- **Consequencia**: w-main NAO pode modificar `apps/akasha-portal/src/components/**`
+
+### Domain Violation Confirmado
+
+- DOMAINS.md NAO concede nenhum glob de codigo a w-main
+- w-main modificou `AkashaLifeAreasDashboard.tsx` ciclos 526-529 (violacao)
+- AMAB revertou os commits w-main que tocavam `apps/`
+- **Regra**: w-main so pode modificar `coordination/w-main/**` + `docs/DECISIONS.md`
+
+### Features Sobrevivent aos Reverts
+
+O AMAB reverte commits w-main, mas quando w-main re-implementa em um commit separado, o codigo sobrevive:
+- `a7cb2064`: pillarContribution re-implementado (sobreviveu ao revert de `b56a8e36`)
+
+### Version Consistency
+
+- Ciclo 531: VERSION=v0.1.2, STATE.md=v0.1.3 (INCONSISTENCIA)
+- Ciclo 532: VERSION=v0.1.3 (resolvido por AMAB ou outro processo)
+
+### Ciclo 535
+
+- DEC-004: CRITICA pendente ha 11 ciclos
+- `./setup-swarm.sh`: blocker ha 11 ciclos
+- w-main: NAO pode fazer implementacao de codigo
+- BACKLOG: vazio (todos os items em dominio de outro worker)
+
