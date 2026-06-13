@@ -116,3 +116,7 @@ quality-report*.json
 quality-evolution*.json
 .fallowrc.json.bak
 .fallowrc.json.orig
+
+# Capacitor build output
+apps/akasha-portal/capacitor/
+apps/akasha-portal/cap-build.sh
