@@ -1,6 +1,6 @@
 # coordination/w2/STATE.md — Worker w2 (UI/Mobile)
 
-**Versão atual**: v0.1.2 | **Ciclo**: 8 | **Atualização**: 2026-06-12
+**Versao atual**: v0.1.2 | **Ciclo**: 9 | **Atualizacao**: 2026-06-12
 
 ---
 
@@ -9,7 +9,7 @@
 
 ---
 
-## Status: Ciclo 8 — 7 Áreas da Vida ✅
+## Status: Ciclo 9 — Auditoria PWA Completa
 
 | Verificação | Resultado |
 |-------------|-----------|
@@ -23,21 +23,24 @@
 
 ---
 
-## 3 Próximos Passos (w2)
+## 3 Proximos Passos (w2)
 
-1. **[P2] 9 áreas da vida** — motor fornece 5 áreas mas DEC-005 menciona 9; verificar se há 4 faltando (sexualidade, família, espiritualidade, comunidade)
-   - **Impacto**: profundidade prática — coverage completa das áreas de vida
+1. **[P1] Offline APK architecture** — server.url em capacitor.config.ts aponta para Vercel; APK online-only. Decision needed: (a) empty server.url for offline-ready APK, (b) keep as online-only production. Blocking PWA offline feature.
+   - **Impacto**: APK funciona offline sem internet vs. requer conexao
 
-2. **[P3] PWA manifest + service worker** — auditar `public/manifest.json` e `public/sw.js` para app instalável
-   - **Impacto**: PWA instalável no celular
-
-3. **[P3] E2E mobile test** — Playwright viewport 375×812 (requer auth)
+2. **[P3] E2E mobile test** — Playwright viewport 375x812 (requer auth)
    - **Impacto**: garantia mobile-first antes de release
+
+3. **[P3] LifeArea type fix wait** — aguardando w1 corrigir tipo LifeArea (proposito/sexualidade in, familia/criatividade out). Remover as LifeArea casts de AkashaSignificadoCard.tsx quando w1 publicar tipo corrigido.
+   - **Impacto**: type safety nao depende de cast
 
 ---
 
-## Decisões Autônomas
+## Decisoes Autonomas
 
-- **cap-build.sh**: auto-detecta Java 21 + Android SDK; APK em `android/app/build/outputs/apk/debug/`
-- **Mobile clamp()**: padding `clamp(1rem, 4vw, 1.5rem)` — adapta 320px→1440px sem media queries
-- **viewport**: `maximumScale: 1, userScalable: false` — previne zoom acidental (PWA)
+- **cap-build.sh**: auto-detecta Java 21 + Android SDK; APK em android/app/build/outputs/apk/debug/
+- **Mobile clamp()**: padding clamp(1rem, 4vw, 1.5rem) ---adapta 320px->1440px sem media queries
+- **viewport**: maximumScale: 1, userScalable: false ---previne zoom acidental (PWA)
+- **PWA manifest**: completo com icons, shortcuts, categories; sync para capacitor/ via cap-build.sh
+- **service worker**: sw.js com cache-first estaticos, network-first transitos, stale-while-revalidate HTML
+- **server.url**: Vercel production ---APK online-only; offline capability bloqueada por P1 decision
