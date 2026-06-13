@@ -1,20 +1,21 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 625)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 626)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 625
+**Ciclo**: 626
 
 ---
 
-## Ciclo 625 — Auditoria Local
+## Ciclo 626 — Auditoria Local
 
-**Typecheck**: 0 erros | **Git**: clean
+**Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: 0 errors, 293 warnings (pre-existentes)
+**Git**: clean
 
 ### itens de auditoria
 | Item | Status | Evidencia |
 |------|--------|-----------|
 | DEC-004 Gene Keys | ✅ RESOLVIDO | AkashaSignificadoCard.tsx:130 |
-| DEC-009 AMAB race | ⚠️ CRITICO | Fonte EXTERNAL, daemon cycling |
+| DEC-009 AMAB race | ⚠️ CRITICO | Fonte EXTERNAL, daemon cycling, 3 opcoes CHECKPOINT |
 | TYPE LifeArea mismatch | ⚠️ w1 PENDING | 3 valores tipo vs 9 valores em uso |
 | DEC-008 Swarm | ⚠️ SEM worktree | ./setup-swarm.sh nunca executado |
 
@@ -26,8 +27,8 @@
 ---
 
 ## Historico resumido
-- **625**: Auditoria | Suite OK, all items stable
-- **624**: Auditoria | Suite OK
+- **626**: Auditoria | Suite OK, all items stable
+- **625**: Auditoria | Suite OK
 - Detalhado: historico.md
 
 ## Proximos Passos
