@@ -38,7 +38,6 @@ import type {
   SexualidadeUI,
 } from './hooks/useAkashaSynthesis';
 import { AkashaSignificadoCard } from '@/components/akasha/AkashaSignificadoCard';
-import { LifePathInsightCard } from './LifePathInsightCard';
 
 // ─── Área config ─────────────────────────────────────────────────────────────
 
