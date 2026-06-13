@@ -157,3 +157,9 @@
 - Auditoria local: typecheck 0, lint 295 (todos w1/w3)
 - Attribution DEC-004 JSX (linha 130) sobreviveu
 - DEC-009: CRITICO ultimatum 5 ciclos
+
+## Ciclo 29 (2026-06-12)
+- Auditoria local: typecheck 0, lint 295 (todos w1/w3)
+- Structural: 43 components, 17 pages [locale], 1 dashboard page
+- PWA: sw.js + manifest.json + icons/ OK
+- Attribution DEC-004 JSX (linha 130) sobreviveu
