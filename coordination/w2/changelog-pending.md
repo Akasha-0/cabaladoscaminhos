@@ -11,3 +11,6 @@ Ciclos 32-35: auditoria hygiene. Zero impacto para usuario.
 
 ### Ciclo 37 (2026-06-12)
 - **docs(w2): auditoria local Ciclo 37** — typecheck 0, lint 295. Impacto: documentacao.
+
+### Ciclo 38 (2026-06-12)
+- **docs(w2): auditoria local Ciclo 38** — typecheck 0, lint 295. Impacto: documentacao.
