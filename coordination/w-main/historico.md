@@ -103,4 +103,12 @@
 - Tipo: Auditoria Local + Bug Fix
 - Commits: `a7cb2064`, `2b1db054`
 - Impacto: Linguagem Unificada restaurada
+### Ciclo 534 — Auditoria Local + Domain Clarification (2026-06-12)
+
+- w-main domain clarificado: SEM globs de codigo em DOMAINS.md
+- Akasha Merge Bot reverte commits w-main em dashboard por dominio nao autorizado
+- w-main NAO pode mais modificar `apps/akasha-portal/src/components/**`
+- DEC-004: CRITICA pendente ha 10+ ciclos
+- Tipo: Auditoria Local
+- Git: clean | Typecheck: 0 erros
 

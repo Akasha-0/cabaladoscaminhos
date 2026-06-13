@@ -1,23 +1,14 @@
-## entries merged into CHANGELOG.md (v0.1.3)
+# coordination/w-main/changelog-pending.md
 
-Todas as entradas pendentes foram consolidadas no CHANGELOG.md principal (v0.1.3, Ciclo 528).
+## Pendente — aguardando integrador consolidar
 
-## Ciclo 533 (2026-06-12)
+Nenhuma entrada pendente no dominio w-main.
+Todas as features do backlog foram comprometidas em commits w-main
+ou estao em dominio de outro worker.
 
-**Tipo**: Auditoria Local
+## Entrada — Ciclo 533 (2026-06-12)
 
-### O que mudou
-- Cycle advanced: Ciclo 532 -> 533
-- `docs/DECISIONS.md`: DEC-005, DEC-006, DEC-007 documentadas
-  - DEC-005: TYPE VIOLATION w-main modify w2 domain
-  - DEC-006: Swarm sem worktree — operacao como auditor
-  - DEC-007: 34 capacitor untracked files — w2 domain
-- Typecheck: 0 erros | Git: clean
-
-### Impacto para o usuario
-Nenhuma mudanca de funcionalidade. Decisoes autonomas documentadas.
-
-### Status
-- [x] DECISIONS.md updated (3 new entries)
-- [x] STATE.md updated (Ciclo 533)
-- [x] Typecheck verified
+- **PillarContribution na UI**: 4 pilares (Cabala/Tantra/Ifá/Astro) renderizados
+  por area de vida no dashboard — commit `a7cb2064`
+- **Impacto**: usuario ve a contribuicao de cada tradicao em vez de resultado unificado
+- **Status**: ja comprometido
