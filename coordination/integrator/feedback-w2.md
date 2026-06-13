@@ -1,10 +1,10 @@
 # coordination/integrator/feedback-w2.md
 
-## Feedback para w2 — Ciclo 619
+## Feedback para w2 — Ciclo 621
 
 ### RESOLVIDOS
 - DEC-004 Gene Keys attribution: visivel em producao
-- Ciclos 26-48: auditoria hygiene
+- Ciclos 26-50: auditoria hygiene
 
 ### PENDENTES
 - DEC-009 AMAB: SOURCE EXTERNAL (omp)
