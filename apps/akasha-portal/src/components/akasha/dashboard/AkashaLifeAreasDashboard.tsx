@@ -26,7 +26,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap, Heart, TrendingUp, Brain, Sparkles, AlertTriangle,
   ChevronDown, ChevronUp, CheckCircle2, XCircle, Star,
-  ArrowRight, Lightbulb, RefreshCw, Route, GitBranch,
+  ArrowRight, Lightbulb, RefreshCw, GitBranch,
   type LucideIcon,
 } from 'lucide-react';
 import type {
@@ -386,6 +386,60 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
   );
 }
 
+// ─── Priority Quick View ─────────────────────────────────────────────────────
+
+const FREQUENCY_SORT: Record<string, number> = { siddhi: 3, gift: 2, shadow: 1 };
+
+function PriorityAreasQuickView({ areas }: { areas: Record<string, AreaNarrativeUI> }) {
+  const sorted = Object.entries(areas)
+    .filter(([, n]) => n != null)
+    .sort(([ak, a], [bk, b]) => {
+      const fa = FREQUENCY_SORT[a.frequency] ?? 1;
+      const fb = FREQUENCY_SORT[b.frequency] ?? 1;
+      if (fa !== fb) return fb - fa;
+      return (b.intensity ?? 0) - (a.intensity ?? 0);
+    })
+    .slice(0, 3);
+
+  if (sorted.length === 0) return null;
+
+  return (
+    <div className="bg-[#1C1C1E]/80 rounded-2xl border border-white/8 p-3 space-y-2">
+      <div className="flex items-center gap-1.5">
+        <Sparkles size={11} className="text-[#FFD60A]" />
+        <span className="text-[10px] font-semibold text-[#FFD60A]/80 uppercase tracking-wider">
+          Prioridades de Hoje
+        </span>
+      </div>
+      <div className="flex gap-2 overflow-x-auto pb-0.5 -mx-0.5 px-0.5">
+        {sorted.map(([areaKey, narrative]) => {
+          const cfg = AREA_CONFIG[areaKey] ?? AREA_CONFIG.desafiosSombras;
+          const freqCfg = FREQUENCY_CONFIG[narrative.frequency];
+          return (
+            <div
+              key={areaKey}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border shrink-0"
+              style={{
+                backgroundColor: `${cfg.color}12`,
+                borderColor: `${cfg.color}30`,
+              }}
+            >
+              <span style={{ color: cfg.color }}>{cfg.label}</span>
+              <div
+                className="w-1.5 h-1.5 rounded-full shrink-0"
+                style={{ backgroundColor: freqCfg.color }}
+                title={narrative.frequency}
+              />
+              <IntensityDots intensity={narrative.intensity} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ─── AreaCard ──────────────────────────────────────────────────────────────────
 function AreaCard({ areaKey, narrative }: {
   areaKey: string;
   narrative: AreaNarrativeUI;
@@ -663,6 +717,9 @@ export function AkashaLifeAreasDashboard({
           <span className="text-xs text-white/30 uppercase tracking-widest">6 Áreas de Vida</span>
           <div className="h-px flex-1 bg-white/10" />
         </div>
+
+        {/* Prioridades de Hoje — top 3 áreas por frequency + intensity */}
+        <PriorityAreasQuickView areas={areas} />
 
         <div className="space-y-2">
           {areaKeys.map((key) => {
