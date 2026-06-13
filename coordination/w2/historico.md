@@ -93,3 +93,12 @@
 - Domain glob corrigido: src/app/api/** transferido para w1 (feedback Ciclo 577 do integrator)
 - Glob w2 agora: components/** + [locale]/** + dashboard/** + root app files + public/**
 - Commit 3b044e2a
+
+## Ciclo 19 (2026-06-12)
+- Auditoria local: w2 domain 100% clean
+  - typecheck: 0 errors
+  - lint: 0 warnings em w2 domain
+  - lint total: 295 warnings (todos w1/w3)
+- capacitor.config.ts: server.url = Vercel prod (P1 blocked)
+- public/: manifest.json + sw.js PWA OK (audited Ciclo 9)
+- Backlog: 3 itens bloqueados (P1 Offline APK, P3 E2E, P3 LifeArea)
