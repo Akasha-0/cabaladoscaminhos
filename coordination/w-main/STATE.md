@@ -1,46 +1,42 @@
-# coordination/w-main/STATE.md — Integrator / Main (Ciclo 580)
+# coordination/w-main/STATE.md — Integrator / Main (Ciclo 585)
 
 **Versao atual**: v0.1.6
 **Ultima atualizacao**: 2026-06-13
-**Ciclo**: 580
+**Ciclo**: 585
 
 ---
 
-## Ciclo 580 — Auditoria Local
+## Ciclo 585 — Auditoria Local
 
-**Typecheck**: 0 erros | **Build**: 46/46 | **Lint**: 0 errors, 293 warnings (pre-existentes)
-**Git**: clean
-
-### Estado atual
-- w-main backlog: vazio — SEM dominio de codigo
-- DEC-009: CRITICO — AMAB race entre processos concurrentes
-- DEC-004 Gene Keys: ATRIBUICAO NAO VISIVEL — apenas JSDoc comment
-  - AkashaSignificadoCard.tsx:14: comment, ZERO texto renderizado no cartao
-  - Contradicao: feedback-w2.md Ciclo 578 diz "em producao"
-  - requests.md Ciclo 579: impropriamente resolvido
-- Suite: typecheck 0, build 46/46, lint 0 errors, Git clean
+**Typecheck**: 0 erros | **Git**: clean
+**DEC-009**: CRITICO — AMAB race (concurrent processes stepping on coordination files)
+**DEC-004**: Gene Keys attribution — comment-only em AkashaSignificadoCard.tsx:14, NAO visivel em UI
+**TYPE MISMATCH**: LifeArea w1 — proposito/sexualidade/carreira nao estao no tipo
 
 ### Estrutura Swarm
-- w-main: coordinator + integrator — audit only (sem worktree)
-- w2: Ciclo 18+ ativo
+- w-main: concurrent processes (DEC-009 race confirmed)
+- w2: Ciclo 20 ativo — "100% clean, 4 auditorias consecutivas"
 - w1/w3/w4: BLOQUEADOS (sem worktree formal)
 
----
+### Auditoria itens
+| Item | Status | Evidencia |
+|------|--------|-----------|
+| DEC-004 Gene Keys | ❌ Comment only | AkashaSignificadoCard.tsx:14 |
+| DEC-009 AMAB race | ⚠️ CRITICO | Concurrent w-main processes |
+| PillarContribution UI | ✅ Removida | w2 Ciclo 14 |
+| TYPE LifeArea mismatch | ⚠️ w1 PENDING | AkashaSignificadoCard.tsx:24 |
 
-## Historico resumido
-
-- **580**: Auditoria | DEC-009 CRITICO race, DEC-004 attribution NAO visivel, suite OK
-- **579**: Auditoria | DEC-004 CONTRADICAO documentada
-- **578**: Auditoria | DEC-009 CRITICO race, DEC-004 escalado
+## Historico
+- **585**: Auditoria | DEC-004 comment-only, TYPE MISMATCH w1, DEC-009 CRITICO
+- **580**: Auditoria | DEC-004 NAO visivel em UI, suite OK
+- **581**: Auditoria | DEC-004 escalado, TYPE MISMATCH w1
 - Detalhado: `historico.md`
 
 ## Proximos Passos
-
 1. **HUMAN**: DEC-009 — 3 opcoes no CHECKPOINT
-2. **HUMAN**: DEC-004 — contradicao feedback-w2 vs w-main requests, decidir verdade
-3. **w2**: adicionar atribuicao Gene Keys VISIVEL em AkashaSignificadoCard
+2. **w2**: DEC-004 attribution visivel em UI (NAO comment)
+3. **w1**: TYPE LifeArea — adicionar proposito/sexualidade/carreira, remover familia/criatividade
 
 ## Notas
-
-- w-main domain: coordination/w-main/** + docs/DECISIONS.md
+- w-main domain: `coordination/w-main/**` + `docs/DECISIONS.md`
 - PROIBIDO: VERSION, CHANGELOG.md, STATE.md raiz, CHECKPOINT.md, coordination/DOMAINS.md, coordination/integrator/**
