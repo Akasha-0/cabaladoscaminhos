@@ -232,6 +232,8 @@
 - DEC-009: CRITICO — aguardando acao humana
 - DEC-004: NAO implementada ha 17 ciclos — w2 sem worktree
 - Tipo: Auditoria Local
+- Git: clean | Typecheck: 0 erros
+
 ### Ciclo 559 — Auditoria Local (2026-06-12)
 
 - Auditoria features: pillarContribution ✅ PriorityAreasQuickView ✅ dailyTransit.todayPhrase ✅
@@ -240,6 +242,4 @@
 - test_write.txt: ainda untracked (w2 domain)
 - DEC-009: CRITICO — aguardando acao humana
 - DEC-004: NAO implementada ha 19 ciclos — w2 sem worktree
-- Tipo: Auditoria Local
-
 - Git: clean | Typecheck: 0 erros
