@@ -102,3 +102,9 @@
 - capacitor.config.ts: server.url = Vercel prod (P1 blocked)
 - public/: manifest.json + sw.js PWA OK (audited Ciclo 9)
 - Backlog: 3 itens bloqueados (P1 Offline APK, P3 E2E, P3 LifeArea)
+
+## Ciclo 20 (2026-06-12)
+- Auditoria local: typecheck 0, lint 0 warnings em w2 domain
+- lint total: 295 (todos w1/w3)
+- requests.md: limpo (todos resolvidos)
+- 4 auditorias consecutivas clean (Ciclos 15, 17, 19, 20)
