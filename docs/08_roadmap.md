@@ -177,7 +177,7 @@ testes verdes            vê sua Mandala e          diário + conversa          
 | v0.0.11 | 2026-06-09 | ✅ Concluída | Agente Mentor Espiritual (Akáshico) |
 | v0.0.9 | 2026-06-08 | ✅ Concluída | Stubs de módulos ausentes (grimoire, logging, rate-limit, swarm) |
 | v0.0.8 | 2026-06-08 | ✅ Concluída | Limpeza Fallow (3168→1327 issues), V001 resolvida, ADRs criados |
-| v0.0.7 | 2026-06-07 | ✅ Concluída | CONTEXT.md, limpeza da raiz, refatoração interface/ |
+| v0.0.7 | 2026-06-07 | ✅ Concluída | Índice central do projeto, limpeza da raiz, refatoração interface/ |
 | v0.0.6 | 2026-06-06 | ✅ Concluída | Onda 7 completa (arquitetura + curadoria) |
 
 ### Notas de Release

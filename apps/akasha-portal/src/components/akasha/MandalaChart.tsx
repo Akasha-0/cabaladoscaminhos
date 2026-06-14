@@ -162,11 +162,11 @@ const PILAR_COLORS: Record<Layer, string> = {
   5: '#A0763A',
 };
 const PILAR_LABEL_BY_LAYER: Record<Layer, string> = {
-  1: 'Odus',
-  2: 'Cabala',
-  3: 'Tântrica',
-  4: 'Astrologia',
-  5: 'I-Ching',
+  1: 'Ori',
+  2: 'Contrato',
+  3: 'Vitalidade',
+  4: 'Céu',
+  5: 'Chave',
 };
 const ELEMENT_LABELS: Record<string, string> = {
   fire: 'Fogo',
@@ -285,6 +285,21 @@ function dominantElement(balance: {
   return sorted[0][0];
 }
 
+export function formatDegreeToZodiac(deg: number | string | null | undefined): string {
+  if (deg == null) return '';
+  const num = typeof deg === 'string' ? parseFloat(deg) : deg;
+  if (isNaN(num)) return String(deg);
+  
+  const signs = [
+    'Áries', 'Touro', 'Gêmeos', 'Câncer', 'Leão', 'Virgem',
+    'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes'
+  ];
+  
+  const signIndex = Math.floor(num / 30) % 12;
+  const degInSign = Math.floor(num % 30);
+  return `${signs[signIndex]} ${degInSign}°`;
+}
+
 export default function MandalaChart({ data }: Props) {
   const [activeLayer, setActiveLayer] = useState<null | Layer>(null);
   const atmosphereIntensity = useCockpitStore((s) => s.atmosphereIntensity);
@@ -302,22 +317,23 @@ export default function MandalaChart({ data }: Props) {
     1: (() => {
       // Layer 1 = Odus core → Pilar 4 (odu)
       const sig = resolveSig('odu', data.odus.oduName);
-      return `Pilar 4 · ${PILAR_LABEL_BY_LAYER[1]} (${data.odus.oduName}) — ${sig.essencia}`;
+      return `Camada 1 · Ori (${data.odus.oduName}) — ${sig.essencia}`;
     })(),
     2: (() => {
       // Layer 2 = Cabala → Pilar 1 (cabala)
       const sig = resolveSig('cabala', data.kabala.lifePath);
-      return `Pilar 1 · ${PILAR_LABEL_BY_LAYER[2]} (Vida ${data.kabala.lifePath ?? '?'}) — ${sig.essencia}`;
+      return `Camada 2 · Contrato de Alma (Vida ${data.kabala.lifePath ?? '?'}) — ${sig.essencia}`;
     })(),
     3: (() => {
       // Layer 3 = Tantra → Pilar 3 (tantrica)
       const sig = resolveSig('tantrica', data.tantra.soul);
-      return `Pilar 3 · ${PILAR_LABEL_BY_LAYER[3]} (Alma ${data.tantra.soul ?? '?'}) — ${sig.essencia}`;
+      return `Camada 3 · Vitalidade (Alma ${data.tantra.soul ?? '?'}) — ${sig.essencia}`;
     })(),
     4: (() => {
       // Layer 4 = Astrologia → Pilar 2 (astrologia)
       const sig = resolveSig('astrologia', data.astrology.ascendant);
-      return `Pilar 2 · ${PILAR_LABEL_BY_LAYER[4]} (Asc ${data.astrology.ascendant ?? '?'}) — ${sig.essencia}`;
+      const formattedAsc = formatDegreeToZodiac(data.astrology.ascendant);
+      return `Camada 4 · Céu (Ascendente: ${formattedAsc || '?'}) — ${sig.essencia}`;
     })(),
     5: (() => {
       // Layer 5 = I-Ching → Pilar 5 (iching)
@@ -325,7 +341,7 @@ export default function MandalaChart({ data }: Props) {
       const hex = data.iching.available
         ? `Hex ${data.iching.hexagramNumber} · ${data.iching.hexagramName}`
         : 'Hex do dia (requer Pilar 5)';
-      return `Pilar 5 · ${PILAR_LABEL_BY_LAYER[5]} (${hex}) — ${sig.essencia}`;
+      return `Camada 5 · Chave de Origem (${hex}) — ${sig.essencia}`;
     })(),
   };
 
@@ -440,7 +456,7 @@ export default function MandalaChart({ data }: Props) {
                 transition: 'all 0.2s',
               }}
             >
-              P{layer} · {label}
+              C{layer} · {label}
             </button>
           );
         })}

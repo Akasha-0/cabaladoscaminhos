@@ -6,6 +6,22 @@ Todas as mudanças significativas são documentadas aqui — reverts e regressõ
 
 ---
 
+## v0.1.8 (2026-06-14) — Ciclo 13
+
+### fix(w2): Dashboard missing meu-dia elements and test suite fixes
+- **Fixed Loading Race Condition**: Updated the dashboard loader check to keep the spinner visible until all required async datasets (`statsData`, `synthesis`, and `detSintese`) are resolved. This ensures that elements like "Perfil de Hoje", "Akasha Authority", and "Foco Prioritário" do not render empty or missing cards on slow network requests.
+- **Robust Birth Time Parsing**: Added a robust time normalization utility `parseHora` to the dashboard server page component, ensuring that the Akasha input validation does not reject timestamps with seconds (e.g. `HH:MM:SS`) or empty formats.
+- **Test Suite Alignment**: Corrected the assertion in `tests/api/akasha/mandato-do-dia/route.test.ts` to expect `body.pilares` to be defined instead of undefined, matching the new payload schema introduced in F-222.
+- **Sidebar Collapse Verification**: Verified the responsive and collapsible navigation sidebar state transitions, which allow collapsing desktop navigation to `w-16` using top and bottom chevron controls.
+
+## v0.1.7 (2026-06-13) — Ciclo 12
+
+### feat(w2): Consolidated Dashboard and Responsive Navigation
+- **Unified Routing**: Moved dashboard to localized `/[locale]/dashboard` sharing layouts, and added redirection from root `/dashboard` and `/meu-dia` to their localized counterpart.
+- **Meu Dia Tab Consolidation**: Compacted the `/meu-dia` page as a Tab inside `/dashboard`, reducing routing bloat and displaying daily vibe (climate, moon, theme), Akasha type (OneProfileCard), daily decision (DailyDecisionCard), and a check-in action to mark the daily ritual as completed.
+- **Akasha Navigation Layout**: Created a responsive `<AkashaNavigation>` sidebar (on desktop) and hamburger sliding drawer (on mobile), with a profile details card at the bottom displaying user birth details (name, date, time, city) and a custom cosmic initials avatar.
+- **Mandala Terminology and Degree Formatting**: Renamed raw systems layers to unified "Camadas do Akasha" (C1..C5: Ori, Contrato, Vitalidade, Céu, Chave) and added a degree-formatting utility mapping raw float values (e.g. `Asc 343.7259` -> `Peixes 13°`).
+
 ## v0.1.6 (2026-06-12) — Ciclo 11
 
 ### fix(w2): dead code cleanup

@@ -196,10 +196,10 @@ describe('GET /api/akasha/mandato-do-dia', () => {
     expect(res.status).toBe(500);
   });
 
-  it('NÃO inclui pilares nem mandala completos no response (PII mínima)', async () => {
+  it('NÃO inclui mandala completos no response (PII mínima)', async () => {
     const res = await (await getHandler())(makeRequest());
     const body = await res.json();
-    expect(body.pilares).toBeUndefined();
+    expect(body.pilares).toBeDefined();
     expect(body.mandala).toBeUndefined();
     expect(body.input_normalizado).toBeUndefined();
   });

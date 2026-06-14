@@ -159,7 +159,7 @@ function StrategyBadge({ strategy }: { strategy: string }) {
   );
 }
 
-function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
+export function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-[#1C1C1E] to-[#2C2C2E] p-5 space-y-4">
       <div className="flex items-center justify-between">
@@ -186,7 +186,7 @@ function DailyDecisionCard({ decision }: { decision: DailyDecisionUI }) {
         </div>
         <div className="flex items-start gap-2">
           <XCircle size={14} className="text-[#FF2D55] mt-0.5 shrink-0" />
-          <p className="text-sm text-white/60">{decision.avoid}</p>
+          <p className="text-sm text-white/80">{decision.avoid}</p>
         </div>
       </div>
     </div>
@@ -203,7 +203,7 @@ const AUTHORITY_LABELS: Record<string, string> = {
   mental: 'Autoridade Mental',
 };
 
-function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
+export function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
   const iconMap: Record<string, string> = {
     catalisador: '#FF6B35',
     receptor: '#0A84FF',
