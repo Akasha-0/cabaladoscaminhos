@@ -30,6 +30,11 @@ Pacotes principais:
 - `pnpm test:run`
 
 ## Child DOX Index
-- [akasha-core](file:///home/skynet/cabala-dos-caminhos/packages/akasha-core/AGENTS.md) (se existir)
-- [akasha-cli](file:///home/skynet/cabala-dos-caminhos/packages/akasha-cli/AGENTS.md) (se existir)
-- [mentor](file:///home/skynet/cabala-dos-caminhos/packages/mentor/AGENTS.md) (se existir)
+- [akasha-core](file:///home/skynet/cabala-dos-caminhos/packages/akasha-core/AGENTS.md) — 5 Pilares orchestrator
+- [akasha-cli](file:///home/skynet/cabala-dos-caminhos/packages/akasha-cli/AGENTS.md) — Standalone CLI (blessed TUI)
+- [mentor](file:///home/skynet/cabala-dos-caminhos/packages/mentor/AGENTS.md) — Mentor AI (RAG + correlation + intent)
+- [core-astrology](file:///home/skynet/cabala-dos-caminhos/packages/core-astrology/AGENTS.md) — Pilar 2 (Swiss Ephemeris)
+- [core-cabala](file:///home/skynet/cabala-dos-caminhos/packages/core-cabala/AGENTS.md) — Pilar 1 (Numerologia Cabalística)
+- [core-iching](file:///home/skynet/cabala-dos-caminhos/packages/core-iching/AGENTS.md) — Pilar 5 (I-Ching)
+- [core-odus](file:///home/skynet/cabala-dos-caminhos/packages/core-odus/AGENTS.md) — Pilar 4 (15 Odus)
+- [core-tantra](file:///home/skynet/cabala-dos-caminhos/packages/core-tantra/AGENTS.md) — Pilar 3 (11 corpos + 5 koshas)

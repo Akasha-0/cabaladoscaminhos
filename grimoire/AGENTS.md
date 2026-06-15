@@ -25,8 +25,9 @@ Conhecimento esotérico codificado: odus, hexagramas, botânica, mentores.
 - Scripts de validação em `scripts/add-en-sections.mjs`
 
 ## Child DOX Index
-- [ancestral](file:///home/skynet/cabala-dos-caminhos/grimoire/ancestral/AGENTS.md) — Odus de Ifá
+- [ancestral](file:///home/skynet/cabala-dos-caminhos/grimoire/ancestral/AGENTS.md) — Odus de Ifá (Pilar 4, 15 entries canônicas)
 - [iching](file:///home/skynet/cabala-dos-caminhos/grimoire/iching/AGENTS.md) — Hexagramas I Ching
 - [botanica](file:///home/skynet/cabala-dos-caminhos/grimoire/botanica/AGENTS.md) — Ervas sagradas
 - [mentor](file:///home/skynet/cabala-dos-caminhos/grimoire/mentor/AGENTS.md) — System prompts
 - [vibracional](file:///home/skynet/cabala-dos-caminhos/grimoire/vibracional/AGENTS.md) — Corpo sutil
+- [diagnostico](file:///home/skynet/cabala-dos-caminhos/grimoire/diagnostico/AGENTS.md) — Alertas e diagnósticos astrológicos

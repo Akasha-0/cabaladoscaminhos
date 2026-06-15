@@ -44,4 +44,4 @@ acessível aos usuários com Mandala, Mandato, Mentor, e dashboards.
 - F-102 OWASP audit antes de prod deploy
 
 ## Child DOX Index
-(Nenhum subdiretório com AGENTS.md dedicado no momento)
+- [prisma](file:///home/skynet/cabala-dos-caminhos/apps/akasha-portal/prisma/AGENTS.md) — DB schema, migrations, D-040 design proposal (awaiting human approval)

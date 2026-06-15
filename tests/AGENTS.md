@@ -27,4 +27,5 @@ Suite completa de testes para o projeto Akasha.
 - `pnpm quality` - lint + typecheck
 
 ## Child DOX Index
-- [architecture tests](file:///home/skynet/cabala-dos-caminhos/tests/architecture/AGENTS.md) (se existir)
+- [architecture tests](file:///home/skynet/cabala-dos-caminhos/tests/architecture/AGENTS.md) — clean architecture + package boundary checks
+- [infrastructure tests](file:///home/skynet/cabala-dos-caminhos/tests/infrastructure/AGENTS.md) — Redis, rate limit, cache integration tests
