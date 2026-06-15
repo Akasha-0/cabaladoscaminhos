@@ -104,26 +104,30 @@
 
 ## WS-4: i18n EN completion (F-241)
 
+**Status:** ✅ PARITY JÁ ALCANÇADA — script `pnpm i18n:check` exit 0 (35/35 chaves)
+
 ### 4.1 Audit
-- [ ] Script `scripts/i18n-audit.ts`:
-  - Compare `messages/en.json` vs `messages/pt-BR.json`
-  - Output: % de chaves traduzidas, lista de gaps
-- [ ] Rodar + commitar output em `scripts/i18n-audit-report.json`
+- [x] Script `scripts/check-i18n-parity.mjs` já existe (F-231 spec, Fase C)
+- [x] `pnpm i18n:check` retorna "PARITY OK" — sem gaps
+- [x] 35 chaves em cada arquivo, todas sincronizadas
 
 ### 4.2 Translation
-- [ ] Traduzir gaps (manual ou batch com LLM):
-  - Priorizar UI strings (botões, labels, mensagens de erro)
-  - Deixar conteúdo curado (significados, práticas) como translation-status note
-- [ ] Validar: `pnpm i18n:check` (paridade 80%+)
+- [x] PT-BR completo (textos originais)
+- [x] EN com translation-status notes + summaries (padrão estabelecido)
+- [x] Não-traduzido intencional: nomes próprios (Babalaô, Orixás), citações bíblicas
 
 ### 4.3 CI integration
-- [ ] Adicionar step no GitHub Actions / Vercel build:
-  - Falha se paridade < 80%
-  - Log detalhado dos gaps
+- [x] `pnpm i18n:check` já é gate de CI (lesson N+15/N+18 fix)
+- [ ] (Opcional) Adicionar step dedicado no GitHub Actions
 
 ### 4.4 Verification
-- [ ] `pnpm i18n:check` exit 0
-- [ ] Manual: trocar `?locale=en` e ver UI em inglês
+- [x] `pnpm i18n:check` exit 0
+- [ ] Manual: trocar `?locale=en` e ver UI em inglês (deploy pendente)
+
+### Conclusão
+F-241 está RESOLVIDO pelo F-231 spec (qualidade-i18n-en, Fases A-C).
+Não há trabalho adicional a fazer para WS-4. Marcamos como ✅
+e passamos para WS-5.
 
 ---
 
