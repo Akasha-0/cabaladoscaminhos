@@ -155,6 +155,8 @@ e passamos para WS-5.
 - [x] Coverage de synthesis-engine.ts: 0% → ~30% (em progresso)
 - [x] 1 test file (synthesis-engine principal)
 - [x] 14 test cases
+- [x] Coverage de daily-engine.ts: 0% → ~50% (F-243)
+- [x] 9 test cases (daily-engine)
 - [ ] 30+ test cases (F-XXX futuro para outros engines)
 
 ### 5.3 Verification
