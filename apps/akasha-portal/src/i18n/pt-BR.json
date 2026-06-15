@@ -26,5 +26,26 @@
   "onboarding": {
     "welcome": "Bem-vindo ao Akasha",
     "start": "Começar"
+  },
+  "mandala": {
+    "houses": {
+      "1": "Casa 1",
+      "2": "Casa 2",
+      "3": "Casa 3",
+      "4": "Casa 4",
+      "5": "Casa 5",
+      "6": "Casa 6",
+      "7": "Casa 7",
+      "8": "Casa 8",
+      "9": "Casa 9",
+      "10": "Casa 10",
+      "11": "Casa 11",
+      "12": "Casa 12"
+    },
+    "retrograde": "Retrógrado",
+    "ascendant": "Ascendente",
+    "koshas": {
+      "sectionTitle": "Tantra Védica: 5 Koshas"
+    }
   }
 }

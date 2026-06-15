@@ -9,6 +9,7 @@ import {
   type SignificadoCurado,
 } from '@/lib/grimoire/significados-curados';
 import { useCockpitStore } from '@/stores/cockpit-store';
+import { formatDegreeToZodiac, GLYPHS_BY_PLANET, PLANET_COLORS, longitudeToSvgAngle } from '@/lib/shared/zodiac';
 
 function resolveSig(pilar: Pilar, id: string | number | null | undefined): SignificadoCurado {
   if (id == null) return significadoGenericoDoPilar(pilar);
@@ -59,6 +60,14 @@ function SignificadoEmbed({
     </div>
   );
 }
+interface AstrologyAspect {
+  planet1: string;
+  planet2: string;
+  aspect: string;
+  orb: number;
+  interpretation: string;
+}
+
 interface MandalaData {
   incomplete: boolean;
   odus: {
@@ -76,7 +85,26 @@ interface MandalaData {
     expression: number | null;
     expressionMaster: boolean;
     motivation: number | null;
+    impression: number | null;
+    mission: number | null;
     personalYear: number | null;
+    personalMonth: number | null;
+    personalDay: number | null;
+    sefira: string | null;
+    hebrewLetter: string | null;
+    tarotCard: { major: number; name: string; meaning: string } | null;
+    challenges: { first: number; second: number; main: number; last: number } | null;
+    pinnacles: {
+      first: { number: number; ageEnd: number; meaning: string } | null;
+      second: { number: number; ageStart: number; ageEnd: number; meaning: string } | null;
+      third: { number: number; ageStart: number; ageEnd: number; meaning: string } | null;
+      fourth: { number: number; ageStart: number; meaning: string } | null;
+    } | null;
+    lifeCycles: {
+      first: { number: number; ageStart: number; ageEnd: number } | null;
+      second: { number: number; ageStart: number; ageEnd: number } | null;
+      third: { number: number; ageStart: number } | null;
+    } | null;
   };
   tantra: {
     soul: number | null;
@@ -90,7 +118,19 @@ interface MandalaData {
     ascendant: string | null;
     midheaven: string | null;
     dominantPlanet: string | null;
-    planets: Array<{ name: string; sign: string; degree: number; house: number }>;
+    // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra):
+    // absoluteLongitude (0-360°) é usado pelo MandalaChart para posicionar
+    // os planetas na eclíptica. `degree` permanece para InfoPanel
+    // (compat: grau dentro do signo, 0-30°).
+    planets: Array<{
+      name: string;
+      sign: string;
+      degree: number;
+      absoluteLongitude: number | null;
+      retrograde?: boolean;
+      house: number;
+    }>;
+    aspects: AstrologyAspect[];
     elementalBalance: { fire: number; earth: number; air: number; water: number };
   };
   iching: {
@@ -199,6 +239,13 @@ const ELEMENT_GUIDANCE: Record<string, { balance: string; ritual: string }> = {
       'Ritual: caminhadas na natureza, dieta baseada em raízes e tubérculos, pedras de jaspe ou hematita.',
   },
 };
+const ASPECT_SYMBOLS: Record<string, string> = {
+  conjunção: '☌',
+  oposição: '☍',
+  trino: '△',
+  quadratura: '□',
+  sextil: '✶',
+};
 
 const LIFE_PATH_MEANINGS: Record<number, string> = {
   1: 'Caminho do Pioneiro — sua missão é liderar e inaugurar novos caminhos. Aprenda a agir independentemente.',
@@ -285,21 +332,6 @@ function dominantElement(balance: {
   return sorted[0][0];
 }
 
-export function formatDegreeToZodiac(deg: number | string | null | undefined): string {
-  if (deg == null) return '';
-  const num = typeof deg === 'string' ? parseFloat(deg) : deg;
-  if (isNaN(num)) return String(deg);
-  
-  const signs = [
-    'Áries', 'Touro', 'Gêmeos', 'Câncer', 'Leão', 'Virgem',
-    'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes'
-  ];
-  
-  const signIndex = Math.floor(num / 30) % 12;
-  const degInSign = Math.floor(num % 30);
-  return `${signs[signIndex]} ${degInSign}°`;
-}
-
 export default function MandalaChart({ data }: Props) {
   const [activeLayer, setActiveLayer] = useState<null | Layer>(null);
   const atmosphereIntensity = useCockpitStore((s) => s.atmosphereIntensity);
@@ -353,10 +385,23 @@ export default function MandalaChart({ data }: Props) {
     return { sym, name: ZODIAC_NAMES[i], startDeg, endDeg, midDeg, labelPos };
   });
 
-  const planetDots = data.astrology.planets.map((p) => ({
-    ...p,
-    pos: toXY((p.degree / 360) * 360, 178),
-  }));
+  // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra):
+  // - Usa `absoluteLongitude` (0-360°) em vez de `degree` (0-30°) para distribuir
+  //   os planetas na eclíptica corretamente.
+  // - longitudeToSvgAngle aplica a convenção 0° = 9 horas do relógio.
+  // - Se absoluteLongitude é null, faz fallback para degree (compat).
+  const planetDots = data.astrology.planets.map((p) => {
+    const lon = p.absoluteLongitude;
+    const angle = lon != null && Number.isFinite(lon)
+      ? longitudeToSvgAngle(lon)
+      : longitudeToSvgAngle(p.degree); // fallback: degree tratado como longitude
+    return {
+      ...p,
+      pos: toXY(angle, 178),
+      glyph: GLYPHS_BY_PLANET[p.name] ?? '?',
+      color: PLANET_COLORS[p.name] ?? '#FFFFFF',
+    };
+  });
 
   const tantricNodes = Array.from({ length: 11 }, (_, i) => {
     const angleDeg = i * (360 / 11);
@@ -425,8 +470,8 @@ export default function MandalaChart({ data }: Props) {
         .mandala-pulse { animation: pulse-ori 3s ease-in-out infinite; }
         .mandala-pulse-2 { animation: pulse-ori 3s ease-in-out infinite; animation-delay: 0.5s; }
         .mandala-pulse-3 { animation: pulse-ori 3s ease-in-out infinite; animation-delay: 1s; }
-        .ring-astrological { animation: ring-rotate 120s linear infinite; }
-        .ring-astrological-paused { animation: ring-rotate 120s linear infinite; animation-play-state: paused; }
+        .ring-astrological { animation: none; }
+        .ring-astrological-paused { animation: none; }
         .synergy-active { animation: dash-flow 3s linear infinite; }
         .synergy-alert { animation: dash-flow 1.5s linear infinite; }
         .star-twinkle { animation: twinkle 4s ease-in-out infinite; }
@@ -567,14 +612,59 @@ export default function MandalaChart({ data }: Props) {
                 </text>
               </g>
             ))}
-            {/* Planet dots with tooltip */}
+            {/* Mandala Fase 3: 12 casas astrológicas (linha tracejada + número) */}
+            {Array.from({ length: 12 }, (_, h) => {
+              const houseLong = h * 30; // casa 1 = 0° (ascendente), incrementa 30°
+              const angle = longitudeToSvgAngle(houseLong);
+              const innerPos = toXY(angle, 152);
+              const outerPos = toXY(angle, 168);
+              return (
+                <g key={`house-${h + 1}`}>
+                  <line
+                    x1={innerPos.x}
+                    y1={innerPos.y}
+                    x2={outerPos.x}
+                    y2={outerPos.y}
+                    stroke="rgba(255,255,255,0.20)"
+                    strokeWidth="0.5"
+                    strokeDasharray="2 3"
+                  />
+                  <text
+                    x={toXY(angle, 145).x}
+                    y={toXY(angle, 145).y}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontSize="6"
+                    fill="rgba(255,255,255,0.45)"
+                    fontWeight="500"
+                  >
+                    {h + 1}
+                  </text>
+                </g>
+              );
+            })}
+
+            {/* Planet glifos (Fase 3) — 10 planetas com glifos unicode + cor + aria-label */}
             {planetDots.map((p, i) => (
-              <g key={i} filter="url(#glow-akasha)">
-                <circle cx={p.pos.x} cy={p.pos.y} r="3.5" fill="#7C5CFF" opacity="0.9">
+              <g key={`planet-${p.name}-${i}`} filter="url(#glow-akasha)">
+                <text
+                  x={p.pos.x}
+                  y={p.pos.y}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontSize="13"
+                  fontWeight="600"
+                  fill={p.color}
+                  opacity="0.95"
+                  role="img"
+                  aria-label={`${p.name} em ${p.sign} casa ${p.house}${p.retrograde ? ' retrógrado' : ''}`}
+                >
+                  {p.glyph}
+                  {p.retrograde ? '℞' : ''}
                   <title>
                     {p.name}: {p.sign} casa {p.house}
                   </title>
-                </circle>
+                </text>
               </g>
             ))}
             {/* Ring label */}
@@ -872,6 +962,38 @@ export default function MandalaChart({ data }: Props) {
             <Row key={p.name} label={p.name} value={`${p.sign} — casa ${p.house}`} />
           ))}
           <Divider />
+          <p
+            style={{
+              fontSize: '0.75rem',
+              color: '#7C5CFF',
+              fontWeight: 600,
+              marginBottom: '0.35rem',
+            }}
+          >
+            Aspectos Principais
+          </p>
+          {data.astrology.aspects.slice(0, 5).length === 0 ? (
+            <Insight color="#7C5CFF">Sem aspectos principais calculados.</Insight>
+          ) : (
+            data.astrology.aspects.slice(0, 5).map((a, i) => {
+              const symbol = ASPECT_SYMBOLS[a.aspect.toLowerCase()] ?? a.aspect;
+              return (
+                <div key={i} style={{ marginBottom: '0.35rem' }}>
+                  <p
+                    style={{
+                      fontSize: '0.8125rem',
+                      color: '#F4F5FF',
+                      lineHeight: 1.5,
+                      margin: 0,
+                    }}
+                  >
+                    {a.planet1} {symbol} {a.planet2} —{' '}
+                    <span style={{ color: '#A7AECF' }}>{a.interpretation}</span>
+                  </p>
+                </div>
+              );
+            })
+          )}
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             {(Object.entries(data.astrology.elementalBalance) as [string, number][]).map(
               ([el, val]) => (
@@ -967,11 +1089,139 @@ export default function MandalaChart({ data }: Props) {
             master={data.kabala.expressionMaster}
           />
           <Row label="Motivação" value={data.kabala.motivation} />
+          <Row label="Impressão" value={data.kabala.impression} />
+          <Row label="Missão" value={data.kabala.mission} />
           <Row label="Ano Pessoal" value={data.kabala.personalYear} />
+          <Row label="Mês Pessoal" value={data.kabala.personalMonth} />
+          <Row label="Dia Pessoal" value={data.kabala.personalDay} />
+          <Row label="Sefira" value={data.kabala.sefira} />
+          <Row label="Letra Hebraica" value={data.kabala.hebrewLetter} />
+          {data.kabala.tarotCard && (
+            <>
+              <Row
+                label="Carta de Tarot"
+                value={`${data.kabala.tarotCard.name} (#${data.kabala.tarotCard.major})`}
+              />
+              {data.kabala.tarotCard.meaning && (
+                <Insight color={PILAR_COLORS[2]}>{data.kabala.tarotCard.meaning}</Insight>
+              )}
+            </>
+          )}
           {lpMeaning && (
             <>
               <Divider />
               <Insight color={PILAR_COLORS[2]}>{lpMeaning}</Insight>
+            </>
+          )}
+          {data.kabala.challenges && (
+            <>
+              <Divider />
+              <p
+                style={{
+                  fontSize: '0.75rem',
+                  color: PILAR_COLORS[2],
+                  fontWeight: 600,
+                  marginBottom: '0.35rem',
+                }}
+              >
+                Desafios
+              </p>
+              <Row label="Primeiro Desafio" value={data.kabala.challenges.first} />
+              <Row label="Segundo Desafio" value={data.kabala.challenges.second} />
+              <Row label="Desafio Principal" value={data.kabala.challenges.main} />
+              <Row label="Último Desafio" value={data.kabala.challenges.last} />
+            </>
+          )}
+          {data.kabala.pinnacles && (
+            <>
+              <Divider />
+              <p
+                style={{
+                  fontSize: '0.75rem',
+                  color: PILAR_COLORS[2],
+                  fontWeight: 600,
+                  marginBottom: '0.35rem',
+                }}
+              >
+                Pináculos
+              </p>
+              {data.kabala.pinnacles.first && (
+                <>
+                  <Row
+                    label="1º Pináculo"
+                    value={`${data.kabala.pinnacles.first.number} (até ${data.kabala.pinnacles.first.ageEnd})`}
+                  />
+                  {data.kabala.pinnacles.first.meaning && (
+                    <Insight color={PILAR_COLORS[2]}>{data.kabala.pinnacles.first.meaning}</Insight>
+                  )}
+                </>
+              )}
+              {data.kabala.pinnacles.second && (
+                <>
+                  <Row
+                    label="2º Pináculo"
+                    value={`${data.kabala.pinnacles.second.number} (${data.kabala.pinnacles.second.ageStart}–${data.kabala.pinnacles.second.ageEnd})`}
+                  />
+                  {data.kabala.pinnacles.second.meaning && (
+                    <Insight color={PILAR_COLORS[2]}>{data.kabala.pinnacles.second.meaning}</Insight>
+                  )}
+                </>
+              )}
+              {data.kabala.pinnacles.third && (
+                <>
+                  <Row
+                    label="3º Pináculo"
+                    value={`${data.kabala.pinnacles.third.number} (${data.kabala.pinnacles.third.ageStart}–${data.kabala.pinnacles.third.ageEnd})`}
+                  />
+                  {data.kabala.pinnacles.third.meaning && (
+                    <Insight color={PILAR_COLORS[2]}>{data.kabala.pinnacles.third.meaning}</Insight>
+                  )}
+                </>
+              )}
+              {data.kabala.pinnacles.fourth && (
+                <>
+                  <Row
+                    label="4º Pináculo"
+                    value={`${data.kabala.pinnacles.fourth.number} (depois de ${data.kabala.pinnacles.fourth.ageStart})`}
+                  />
+                  {data.kabala.pinnacles.fourth.meaning && (
+                    <Insight color={PILAR_COLORS[2]}>{data.kabala.pinnacles.fourth.meaning}</Insight>
+                  )}
+                </>
+              )}
+            </>
+          )}
+          {data.kabala.lifeCycles && (
+            <>
+              <Divider />
+              <p
+                style={{
+                  fontSize: '0.75rem',
+                  color: PILAR_COLORS[2],
+                  fontWeight: 600,
+                  marginBottom: '0.35rem',
+                }}
+              >
+                Ciclos de Vida
+              </p>
+              {data.kabala.lifeCycles.first && (
+                <Row
+                  label="1º Ciclo"
+                  value={`${data.kabala.lifeCycles.first.number} (${data.kabala.lifeCycles.first.ageStart}–${data.kabala.lifeCycles.first.ageEnd})`}
+                />
+              )}
+              {data.kabala.lifeCycles.second && (
+                <Row
+                  label="2º Ciclo"
+                  value={`${data.kabala.lifeCycles.second.number} (${data.kabala.lifeCycles.second.ageStart}–${data.kabala.lifeCycles.second.ageEnd})`}
+                />
+              )}
+              {data.kabala.lifeCycles.third && (
+                <Row
+                  label="3º Ciclo"
+                  value={`${data.kabala.lifeCycles.third.number} (a partir de ${data.kabala.lifeCycles.third.ageStart})`}
+                />
+              )}
             </>
           )}
           <SignificadoEmbed
