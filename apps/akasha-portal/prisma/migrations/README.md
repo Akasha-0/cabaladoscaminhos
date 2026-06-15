@@ -4,6 +4,26 @@
 
 This project uses Prisma with PostgreSQL for database management. All migrations are stored in `apps/akasha-portal/prisma/migrations/`.
 
+## ⚠️ PROPOSAL-ONLY Policy (lesson N+22)
+
+Some migrations are **proposals** that need human review before applying:
+- D-040 (Prisma schema with 5 Pilares) — awaiting human approval
+- F-238, F-239 (idempotency + timezone) — proposals from v0.0.20 spec
+
+**Apply via `prisma migrate deploy` ONLY when:**
+1. Migration is approved by human reviewer
+2. Migration has been tested in dev/staging
+3. Migration is in `20260611000000_init_akasha_v3/` or another already-approved location
+
+## Current Migrations
+
+### Approved (can apply)
+- `20260611000000_init_akasha_v3/` — initial schema (D-040 v3)
+
+### Proposals (NEED human approval before deploy)
+- `20260615000000_push_last_pushed_at/` — F-238 idempotency (adds column to PushSubscription)
+- `20260615000000_user_timezone/` — F-239 timezone-aware push (adds column to User)
+
 ## Environment Variables
 
 Create a `.env` file in the project root with the following variables:
