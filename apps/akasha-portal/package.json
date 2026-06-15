@@ -22,6 +22,7 @@
     "grimoire:sync": "tsx scripts/sync-grimoire.ts",
     "grimoire:status": "tsx scripts/grimoire-status.ts",
     "grimoire:audit": "tsx scripts/grimoire-audit.ts",
+    "i18n:check": "node ../../scripts/check-i18n-parity.mjs",
     "fallow": "fallow --skip dupes,health",
     "fallow:all": "fallow",
     "typecheck": "tsc --noEmit"

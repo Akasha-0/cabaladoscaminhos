@@ -35,6 +35,7 @@ acessível aos usuários com Mandala, Mandato, Mentor, e dashboards.
 - LGPD by design: mínimo PII em responses (omitir pilares quando sensível)
 - Não inventar correspondências esotéricas (AGENTS.md §5)
 - MandalaChart: rotação contínua do anel zodiacal é PROIBIDA — torna a leitura impossível. Posição fixa com `longitudeToSvgAngle(0)=180°SVG` (ascendente à esquerda).
+- i18n: rodar `pnpm i18n:check` antes de commitar mudanças em `en.json` ou `pt-BR.json` (valida paridade de chaves). Rodar em CI também.
 
 ## Verification
 - `pnpm test:run` antes de commit

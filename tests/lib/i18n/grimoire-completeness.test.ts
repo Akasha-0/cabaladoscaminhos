@@ -4,15 +4,16 @@ import path from 'node:path';
 
 const CATEGORIES = ['botanica', 'ancestral', 'vibracional', 'diagnostico'] as const;
 
-// Grimoire lives at the monorepo root; tests run from apps/akasha-portal/tests.
-// Search upward for a `grimoire/` directory from cwd (vitest sets cwd to the
-// repo root when invoked from the worktree, but tests/ is also searched first).
+// Grimoire lives at the monorepo root. This test runs from either
+// `apps/akasha-portal/` (when pnpm --filter is used) or the repo root
+// (when vitest is invoked directly). Try cwd-relative first, then a
+// path anchored at the source file (tests/lib/i18n/), which is stable
+// across cwd: 3 `..` lands at the repo root.
 function findGrimoireRoot(): string {
-  // Try the canonical monorepo location first.
   const candidates = [
     path.resolve(process.cwd(), 'grimoire'),
-    path.resolve(__dirname, '..', '..', '..', '..', '..', 'grimoire'),
-    path.resolve(__dirname, '..', '..', '..', '..', 'grimoire'),
+    path.resolve(process.cwd(), '..', '..', 'grimoire'),
+    path.resolve(__dirname, '..', '..', '..', 'grimoire'),
   ];
   for (const c of candidates) {
     try {
@@ -35,7 +36,8 @@ async function listAllGrimoire(): Promise<string[]> {
     try {
       const files = await fs.readdir(dir);
       for (const f of files) {
-        if (f.endsWith('.md')) all.push(path.join(dir, f));
+        // Exclude AGENTS.md — it's a DOX doc, not a grimoire entry.
+        if (f.endsWith('.md') && f !== 'AGENTS.md') all.push(path.join(dir, f));
       }
     } catch {
       // category dir missing is acceptable

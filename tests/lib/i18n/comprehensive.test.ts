@@ -3,9 +3,9 @@
  * Cobre: LocaleSwitcher, theme-router, dictionaries exhaustivamente.
  */
 import { describe, it, expect } from 'vitest';
-import ptBR from '../../../src/i18n/pt-BR.json';
-import en from '../../../src/i18n/en.json';
-import { locales, defaultLocale, localeLabels } from '../../../src/i18n/config';
+import ptBR from '../../../apps/akasha-portal/src/i18n/pt-BR.json';
+import en from '../../../apps/akasha-portal/src/i18n/en.json';
+import { locales, defaultLocale, localeLabels } from '../../../apps/akasha-portal/src/i18n/config';
 
 describe('i18n config comprehensive', () => {
   it('locale labels match locales list', () => {
