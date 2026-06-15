@@ -4,6 +4,20 @@
 > Sessão única 4-8h, totalmente autônoma.
 > Implementa 3 fases focadas no gap real de i18n.
 
+## Status
+
+✅ **CLOSED 2026-06-15** — all 3 phases complete via ralph-loop iters 1-3.
+
+- **Fase A** (i18n test infrastructure): real bug was `findGrimoireRoot()` path resolution
+  (4 `..` should be 3 `..`), not the AGENTS.md filter the spec described. Fixed in
+  commit `c5b8276f`. Lesson: `session-n-plus-18-f-231-grimoire-path-pollution.md`.
+- **Fase B** (grimoire mentor EN): added frontmatter + `## EN` section to
+  `grimoire/mentor/system-prompt.md`. Commit `876d358a`. Lesson:
+  `session-n-plus-19-f-231-mentor-grimoire-coverage.md`.
+- **Fase C** (parity CI script): `pnpm i18n:check` script and
+  `apps/akasha-portal/AGENTS.md` documentation were already in place before
+  this iteration started. Verified working.
+
 ## Por que
 
 CodeGraph check + análise manual revelaram o gap real:
