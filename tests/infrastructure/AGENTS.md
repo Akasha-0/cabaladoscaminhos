@@ -17,6 +17,23 @@ real + fallbacks.
 (Outros arquivos virão conforme a infra crescer — `redis.test.ts`,
 `cache.test.ts`, `queue.test.ts`, etc.)
 
+## Note on test duplication
+
+Existe também `apps/akasha-portal/src/lib/infrastructure/rate-limit.test.ts`
+(co-located unit test, ?? untracked). Esse é **diferente** do
+`tests/infrastructure/rate-limit.test.ts`:
+- **tests/infrastructure/**: integration test — Redis + memory fallback,
+  `vi.mock` de redis, `vi.useFakeTimers`, 3 cenários completos
+- **apps/akasha-portal/src/lib/infrastructure/**: unit test — só memory,
+  sem mock de Redis, 2 cenários simples (limite de maxRequests + mensagem
+  de erro do mentor)
+
+São complementares, não duplicados. O unit test roda no vitest
+co-located config (sem setup de integration). O integration test
+requer redis mock. Future cycle: consolidar via test config ou
+mover unit test para `tests/infrastructure/` (mas unidade co-located
+é o padrão atual).
+
 ## Local Contracts
 
 - **Mocks centralizados em `vi.mock()`** com factory function (não object
