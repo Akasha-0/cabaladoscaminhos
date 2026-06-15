@@ -12,10 +12,10 @@
     "priority": "P1"
   },
   "phase": "RESEARCH",
-  "iteration": 2,
+  "iteration": 3,
   "snapshot": {
-    "generated_at": "2026-06-15T22:14:49.718128+00:00",
-    "version": "0.2.0",
+    "generated_at": "2026-06-15T22:18:52.632085+00:00",
+    "version": "0.3.0",
     "features": {
       "pending_count": 8,
       "done_count": 44,
@@ -58,8 +58,8 @@
       },
       "tests": {
         "pass": false,
-        "passed": 50,
-        "failed": 5
+        "passed": 51,
+        "failed": 6
       },
       "lint": {
         "pass": true
@@ -82,8 +82,8 @@
     },
     "git": {
       "untracked": 0,
-      "modified": 3,
-      "total": 3,
+      "modified": 2,
+      "total": 2,
       "has_changes": true
     },
     "decision_factors": {
