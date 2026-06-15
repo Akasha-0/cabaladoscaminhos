@@ -7,7 +7,7 @@ deve ler ANTES de tentar trabalho similar.
 **Como usar:** antes de cada feature nova, passe o olho no tema mais
 próximo. Se a lesson soa relevante, leia inteira.
 
-**Total:** 23 lessons (Jun 11 – Jun 15, 2026).
+**Total:** 24 lessons (Jun 11 – Jun 15, 2026).
 
 ---
 
@@ -125,7 +125,7 @@ lint suppressions.
   `ls` before marking items done. Closing 1 spec = multiple F-XXX + DOX
   updates + checklist refresh.
 
-## 10. F-XXX ship complete (1 lesson)
+## 10. F-XXX ship complete (2 lessons)
 
 - **`session-n-plus-28-v0-0-19-spec-complete.md`** (Jun 15) — v0.0.19 spec
   (Akasha Evolution) COMPLETE: F-224 meu-dia + F-227 Authority + F-228
@@ -133,6 +133,12 @@ lint suppressions.
   Pattern: 1 spec closure = 3+ F-XXX + multi-DOX + checklist refresh.
   Includes `headroom: not found` PATH fix and security-review response
   pattern (PII redaction, drop ?secret= query branch, idempotency claim).
+- **`session-n-plus-29-test-coverage-pattern.md`** (Jun 15) — Coverage
+  sweep pattern: 4 engine test files (58 cases) added in 1 session.
+  Co-locate per lesson N+24. Mock heavy deps at module level. Test
+  ASSERTIONS, not assumptions. Always include fallback (null/undefined)
+  tests. Anti-patterns: mocks per-test, heavy fixtures, mocking
+  module under test, integration tests requiring network/DB.
 
 ## 9. Spec chain audit (1 lesson)
 
@@ -164,4 +170,5 @@ Lessons sobre auditar o spec chain vs realidade do código.
 | Spec closure / multi-F-XXX | N+27, N+28 |
 | Security review response | N+28 (PII redaction, secret-in-URL, idempotency claim) |
 | PWA / Web Push / Mobile | N+28 (manifest shortcuts, cron guard) |
+| Test coverage sweep | N+29 (co-locate + module mocks + range assertions) |
 | Spec chain audit / next-work pick | N+27 |
