@@ -2,7 +2,7 @@
 
 **Data:** 2026-06-10
 **Versão:** akasha-v0.0.18
-**Status:** ⏳ Pronta para implementação
+**Status:** ✅ Completa (verified 2026-06-15: packages/mentor/src/llm/{openai,ollama,mock,minimax,index}.ts all exist)
 **Handoff:** Baseada em `/tmp/handoff-akasha-v0.0.18.md` + sessão grill-with-docs
 
 ---
