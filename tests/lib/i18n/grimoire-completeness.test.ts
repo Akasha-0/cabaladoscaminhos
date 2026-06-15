@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 
 const CATEGORIES = ['botanica', 'ancestral', 'vibracional', 'diagnostico'] as const;
@@ -16,13 +17,7 @@ function findGrimoireRoot(): string {
     path.resolve(__dirname, '..', '..', '..', 'grimoire'),
   ];
   for (const c of candidates) {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      require('node:fs').accessSync(c);
-      return c;
-    } catch {
-      // try next
-    }
+    if (existsSync(c)) return c;
   }
   return candidates[0];
 }
