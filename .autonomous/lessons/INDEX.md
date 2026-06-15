@@ -7,7 +7,7 @@ deve ler ANTES de tentar trabalho similar.
 **Como usar:** antes de cada feature nova, passe o olho no tema mais
 próximo. Se a lesson soa relevante, leia inteira.
 
-**Total:** 22 lessons (Jun 11 – Jun 15, 2026).
+**Total:** 23 lessons (Jun 11 – Jun 15, 2026).
 
 ---
 
@@ -118,6 +118,22 @@ lint suppressions.
   noise. Audit antes de remover. "Surface, don't hide" quando não pode
   fixar com segurança.
 
+## 9. Spec closure + multi-F-XXX (1 lesson)
+
+- **`session-n-plus-27-spec-chain-staleness-audit.md`** (Jun 15) —
+  Spec chain `Status:` drifts from on-disk reality. Always verify with
+  `ls` before marking items done. Closing 1 spec = multiple F-XXX + DOX
+  updates + checklist refresh.
+
+## 10. F-XXX ship complete (1 lesson)
+
+- **`session-n-plus-28-v0-0-19-spec-complete.md`** (Jun 15) — v0.0.19 spec
+  (Akasha Evolution) COMPLETE: F-224 meu-dia + F-227 Authority + F-228
+  Mobile Strategy + checklist + 5 stale DOX + PWA manifest (5 Pilares).
+  Pattern: 1 spec closure = 3+ F-XXX + multi-DOX + checklist refresh.
+  Includes `headroom: not found` PATH fix and security-review response
+  pattern (PII redaction, drop ?secret= query branch, idempotency claim).
+
 ## 9. Spec chain audit (1 lesson)
 
 Lessons sobre auditar o spec chain vs realidade do código.
@@ -145,4 +161,7 @@ Lessons sobre auditar o spec chain vs realidade do código.
 | Recovery / respawn | N+9 |
 | Loop ralph infra | loop-sudo-policy, pre-existing-errors, N+25, N+26 |
 | Code archeology (audit decisions) | N+26 |
+| Spec closure / multi-F-XXX | N+27, N+28 |
+| Security review response | N+28 (PII redaction, secret-in-URL, idempotency claim) |
+| PWA / Web Push / Mobile | N+28 (manifest shortcuts, cron guard) |
 | Spec chain audit / next-work pick | N+27 |
