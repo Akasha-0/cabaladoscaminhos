@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:10:46.227911+00:00",
-  "version": "v0.1.8",
+  "generated_at": "2026-06-15T22:12:47.666982+00:00",
+  "version": "0.1.0",
   "plans": {
     "pending": [],
     "done": [
@@ -164,9 +164,9 @@
     ]
   },
   "git": {
-    "untracked": 8,
-    "modified": 103,
-    "total": 111,
+    "untracked": 0,
+    "modified": 4,
+    "total": 4,
     "has_changes": true
   },
   "triad": {
@@ -176,7 +176,7 @@
     "tests": {
       "pass": false,
       "passed": 50,
-      "failed": 3
+      "failed": 4
     },
     "lint": {
       "pass": true
@@ -188,17 +188,15 @@
       "\u001b[1mindex_statistics": "\u001b[0m",
       "files": "934",
       "nodes": "6.306",
-      "edges": "17.723",
+      "edges": "17.726",
       "db_size": "22.25 MB",
       "backend": "\u001b[32mnode:sqlite — built-in (full WAL)\u001b[0m",
       "journal": "\u001b[32mwal\u001b[0m",
       "\u001b[1mnodes_by_kind": "\u001b[0m",
-      "\u001b[1mfiles_by_language": "\u001b[0m",
-      "\u001b[1mpending_changes": "\u001b[0m",
-      "added": "1 files"
+      "\u001b[1mfiles_by_language": "\u001b[0m"
     },
-    "pending_files": 1,
-    "needs_sync": true,
+    "pending_files": 0,
+    "needs_sync": false,
     "ok": true
   },
   "decision_factors": {
@@ -210,8 +208,8 @@
       "tests": false,
       "lint": true
     },
-    "codegraph_needs_sync": true,
+    "codegraph_needs_sync": false,
     "git_has_changes": true,
-    "untracked_files": 8
+    "untracked_files": 0
   }
 }

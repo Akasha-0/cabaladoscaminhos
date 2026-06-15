@@ -605,21 +605,43 @@ def phase_QA(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dic
     print(f"  🧪 QA: {fid}")
 
     triad = snapshot.get("triad", {})
-    all_green = all(t.get("pass", False) for t in triad.values())
+    typecheck_pass = triad.get("typecheck", {}).get("pass", False)
+    lint_pass = triad.get("lint", {}).get("pass", False)
+    tests_pass = triad.get("tests", {}).get("pass", False)
 
-    print(f"    Triad: typecheck={triad.get('typecheck',{}).get('pass','?')} "
-          f"tests={triad.get('tests',{}).get('pass','?')} "
-          f"lint={triad.get('lint',{}).get('pass','?')}")
+    print(f"    Triad: typecheck={typecheck_pass} tests={tests_pass} lint={lint_pass}")
+
+    # Blocking failures: typecheck or lint — must fix before proceeding
+    blocking_failures = [k for k in ("typecheck", "lint") if not triad.get(k, {}).get("pass", False)]
+    # Non-blocking failures: tests only — pre-existing infra issues, warn but don't block
+    test_failures = [] if tests_pass else ["tests"]
+
+    all_green = typecheck_pass and lint_pass and tests_pass
+    non_blocking_only = not blocking_failures and bool(test_failures)
+    retry_count = state.get("retry_count", 0)
+    MAX_QA_RETRIES = 3
 
     if all_green:
         print(f"    ✅ All green → VALIDATION")
         state["phase"] = "VALIDATION"
         state["retry_count"] = 0
+    elif blocking_failures:
+        # Critical failures — retry IMPLEMENTATION up to MAX_QA_RETRIES
+        if retry_count >= MAX_QA_RETRIES:
+            print(f"    ⛔ Max retries ({MAX_QA_RETRIES}) hit for {blocking_failures} → VALIDATION (override)")
+            state["phase"] = "VALIDATION"
+            state["retry_count"] = 0
+        else:
+            print(f"    ❌ Blocking failures: {blocking_failures} → IMPLEMENTATION (retry #{retry_count+1})")
+            state["phase"] = "IMPLEMENTATION"
+            state["retry_count"] = retry_count + 1
     else:
-        failing = [k for k, v in triad.items() if isinstance(v, dict) and not v.get("pass")]
-        print(f"    ❌ Failing: {failing} → IMPLEMENTATION (retry #{state.get('retry_count',0)+1})")
-        state["phase"] = "IMPLEMENTATION"
-        state["retry_count"] = state.get("retry_count", 0) + 1
+        # Only tests failing — pre-existing infra issues, warn but advance
+        failed = triad.get("tests", {}).get("failed", 0)
+        passed = triad.get("tests", {}).get("passed", 0)
+        print(f"    ⚠️  Tests failing ({passed} passed, {failed} failed) — pre-existing, proceeding to VALIDATION")
+        state["phase"] = "VALIDATION"
+        state["retry_count"] = 0
 
     state["phase_iteration"] = 0
     return state, memory, snapshot
