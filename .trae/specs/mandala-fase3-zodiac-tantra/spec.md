@@ -1,5 +1,18 @@
 # Mandala Fase 3 — Anel Zodiacal Expandido + Tantra 5 Koshas
 
+## Status
+
+✅ **CLOSED 2026-06-15** — see `memory/cycle-518.md` for the full implementation
+report. Key commits:
+- `7f37a8cf` feat(mandala): Fase 3 - anel zodiacal expandido (10 planetas + 12 casas + glifos)
+- `3639518d` feat(mandala): Fase 4 - InfoPanel Tantra enriquecido com 5 Koshas védicas
+- `3457b2a2` docs(mandala-fase3): DOX pass + cycle 518 (F-230 closure)
+
+Spec was corrected in 2 docs commits (`c6b279e4`, `c416a6f1`) after a
+CodeGraph check revealed the original "Council" assumption was wrong.
+11 bodies Yogi Bhajan were preserved as valid data; 5 koshas védicas
+added as parallel InfoPanel enrichment without modifying the SVG.
+
 > **Multi-spec roadmap**: este é o spec 1/4 do ciclo de evolução contínua.
 > Ordem de execução: **Mandala (este) → Qualidade → Grimoire → RAG/Mentor**.
 > Janela: **sessão única de 4-8h, totalmente autônoma**.
