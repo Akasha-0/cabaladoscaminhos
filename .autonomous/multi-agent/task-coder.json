@@ -12,10 +12,10 @@
     "priority": "P1"
   },
   "phase": "RESEARCH",
-  "iteration": 0,
+  "iteration": 2,
   "snapshot": {
-    "generated_at": "2026-06-15T22:07:53.554839+00:00",
-    "version": "v0.1.8",
+    "generated_at": "2026-06-15T22:14:49.718128+00:00",
+    "version": "0.2.0",
     "features": {
       "pending_count": 8,
       "done_count": 44,
@@ -59,7 +59,7 @@
       "tests": {
         "pass": false,
         "passed": 50,
-        "failed": 6
+        "failed": 5
       },
       "lint": {
         "pass": true
@@ -71,21 +71,19 @@
         "\u001b[1mindex_statistics": "\u001b[0m",
         "files": "934",
         "nodes": "6.306",
-        "edges": "17.723",
+        "edges": "17.726",
         "db_size": "22.25 MB",
         "backend": "\u001b[32mnode:sqlite — built-in (full WAL)\u001b[0m",
         "journal": "\u001b[32mwal\u001b[0m",
         "\u001b[1mnodes_by_kind": "\u001b[0m",
-        "\u001b[1mfiles_by_language": "\u001b[0m",
-        "\u001b[1mpending_changes": "\u001b[0m",
-        "added": "1 files"
+        "\u001b[1mfiles_by_language": "\u001b[0m"
       },
-      "needs_sync": true
+      "needs_sync": false
     },
     "git": {
-      "untracked": 8,
-      "modified": 103,
-      "total": 111,
+      "untracked": 0,
+      "modified": 3,
+      "total": 3,
       "has_changes": true
     },
     "decision_factors": {
@@ -97,9 +95,9 @@
         "tests": false,
         "lint": true
       },
-      "codegraph_needs_sync": true,
+      "codegraph_needs_sync": false,
       "git_has_changes": true,
-      "untracked_files": 8
+      "untracked_files": 0
     }
   },
   "project_root": "/home/skynet/cabala-dos-caminhos",

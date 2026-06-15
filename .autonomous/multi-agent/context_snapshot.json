@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:12:47.666982+00:00",
-  "version": "0.1.0",
+  "generated_at": "2026-06-15T22:18:16.843458+00:00",
+  "version": "0.2.0",
   "plans": {
     "pending": [],
     "done": [
@@ -165,8 +165,8 @@
   },
   "git": {
     "untracked": 0,
-    "modified": 4,
-    "total": 4,
+    "modified": 9,
+    "total": 9,
     "has_changes": true
   },
   "triad": {
@@ -175,8 +175,8 @@
     },
     "tests": {
       "pass": false,
-      "passed": 50,
-      "failed": 4
+      "passed": 51,
+      "failed": 5
     },
     "lint": {
       "pass": true
