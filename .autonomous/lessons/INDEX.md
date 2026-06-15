@@ -105,20 +105,34 @@ Lessons sobre coordenar com outras sessões autonomous no mesmo branch.
   TODO generator. Chain gaps (AGENTS.md faltando) são trabalho autônomo
   safe. "Awaiting human approval" ≠ "blocked" — pre-conditions são.
 
+## 8. Loop discipline (2 lessons)
+
+Lessons sobre o loop autonomous em si — quando pausar, como auditar
+lint suppressions.
+
+- **`session-n-plus-25-when-to-pause-loop.md`** — Knowing when to PAUSE
+  a ralph-loop run. Pattern completion > grinding. User controls actual
+  loop termination via cancel-ralph; agent signals completion clearly.
+- **`session-n-plus-26-fallow-ignore-audit.md`** — Lint suppressions
+  (`eslint-disable`, `fallow-ignore`, `@ts-ignore`) são decisions, not
+  noise. Audit antes de remover. "Surface, don't hide" quando não pode
+  fixar com segurança.
+
 ---
 
 ## Quick reference: "I'm doing X, which lessons should I read?"
 
 | Se vou trabalhar em... | Ler primeiro |
 |---|---|
-| Typecheck / build infra | N+8, N+10, N+13, N+14, N+18, N+24 |
+| Typecheck / build infra | N+8, N+10, N+13, N+14, N+18, N+24, N+26 |
 | Mocks / vitest | N+13 |
 | ESM refactor | N+14 |
-| Refactor / batch commit | N+11, N+12 |
+| Refactor / batch commit | N+11, N+12, N+26 |
 | Mandala / SVG | N+6, N+17 |
 | Pilar 4 (Odu) | N+15, N+16 |
 | i18n / locale | N+18, N+19, N+20 |
 | Multi-session same branch | N+21, N+23, N+24 |
 | DOX / AGENTS.md | N+22 |
 | Recovery / respawn | N+9 |
-| Loop ralph infra | loop-sudo-policy, pre-existing-errors |
+| Loop ralph infra | loop-sudo-policy, pre-existing-errors, N+25, N+26 |
+| Code archeology (audit decisions) | N+26 |
