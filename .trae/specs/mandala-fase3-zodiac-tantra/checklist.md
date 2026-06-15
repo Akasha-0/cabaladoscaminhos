@@ -92,27 +92,28 @@
 - [ ] Labels centralizados nos segmentos
 - [ ] Koshas não competem visualmente com o anel zodiacal
 
-### Council removido do SVG
+### 11 nodes removidos, 5 koshas renderizados
 
-- [ ] `renderCouncilPoints` removido (ou comentado se há risco de regressão)
-- [ ] Dados do Council não renderizam como pontos
-- [ ] Council preservado no InfoPanel como tabela colapsável
+- [ ] `Array.from({ length: 11 })` substituído por iteração em `data.tantra.bodies` (5 entries)
+- [ ] 5 koshas renderizam como segmentos de 72° no raio 138
+- [ ] Cores corretas aplicadas
+- [ ] Constante `TANTRIC_BODY_WISDOM` depreciada (ou migrada, decisão de implementação)
 
 ### InfoPanel Tantra
 
 - [ ] Título: "5 Koshas (Tantra)"
 - [ ] Lista das 5 koshas com nome sânscrito, tradução PT, descrição
 - [ ] Fonte: tradição tântrica (não inventada)
-- [ ] Seção colapsável "Conselho Espiritual" abaixo
-- [ ] Estado vazio: "Sem dados do conselho" quando `data.council === null`
+- [ ] Badge "Ativo" / "Inativo" para cada kosha baseado em `data.tantra.bodies[i].active`
+- [ ] Estado vazio: "Sem dados dos corpos" quando `data.tantra.bodies.length === 0`
 - [ ] SignificadoEmbed com source attribution se houver correspondência
 
 ### i18n
 
 - [ ] `en.json` tem `mandala.koshas.anna/prana/mano/vijnana/ananda` com traduções EN
 - [ ] `pt-BR.json` tem `mandala.koshas.*` com traduções PT
-- [ ] `en.json` tem `mandala.council.title` ("Spiritual Council")
-- [ ] `pt-BR.json` tem `mandala.council.title` ("Conselho Espiritual")
+- [ ] `en.json` tem `mandala.koshas.sectionTitle`
+- [ ] `pt-BR.json` tem `mandala.koshas.sectionTitle`
 - [ ] Descrições das 5 koshas em ambos os idiomas
 
 ### Testes
@@ -130,7 +131,7 @@
 
 ### Commit
 
-- [ ] Mensagem: `feat(mandala): Fase 4 - Tantra 5 Koshas (substitui Council na Camada 5)`
+- [ ] Mensagem: `feat(mandala): Fase 4 - Tantra 5 Koshas (substitui 11 nodes no Layer 3)`
 - [ ] Arquivos modificados: `MandalaChart.tsx`, `koshas.ts`, `i18n/*.json`, `MandalaChart.test.tsx`
 - [ ] Commit no log
 

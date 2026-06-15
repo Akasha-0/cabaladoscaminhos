@@ -10,16 +10,16 @@
 
 ---
 
-## Task 1: Mapear consumidores de `planets` e Council
+## Task 1: Mapear consumidores de `planets` e `bodies`
 
-CodeGraph: identificar todos os lugares que consomem `data.astrology.planets` e dados do Council. Resultado vira "Risks and Mitigations" do spec.
+CodeGraph: identificar todos os lugares que consomem `data.astrology.planets` e `data.tantra.bodies`. Resultado vira "Risks and Mitigations" do spec.
 
 - [ ] Task 1.1: `codegraph explore "who consumes data.astrology.planets"`
-- [ ] Task 1.2: `codegraph explore "who consumes MandalaData.council or council data"`
+- [ ] Task 1.2: `codegraph explore "who consumes data.tantra.bodies or tantricNodes"`
 - [ ] Task 1.3: Listar arquivos consumidores em comentário no spec ou em handoff
-- [ ] Task 1.4: Decidir se Council precisa ser preservado (sim → InfoPanel; não → remover)
+- [ ] Task 1.4: Decidir se `data.tantra.bodies` tem semântica fixa de 5 entries (sim → replace 11 nodes; não → manter retrocompat)
 
-**Verificação**: lista de consumidores identificada, decisão de Council documentada
+**Verificação**: lista de consumidores identificada, decisão sobre 11→5 documentada
 
 ---
 
@@ -115,15 +115,15 @@ Rodar todos os checks e fazer commit.
 
 ## Task 8: Adicionar `KOSHAS` data e renderizar Camada 5 (Fase 4)
 
-Substituir Council por 5 Koshas.
+Substituir 11 nodes hardcoded do Layer 3 por 5 Koshas (data-driven).
 
 - [ ] Task 8.1: Criar `apps/akasha-portal/src/lib/shared/koshas.ts` com `KOSHAS: Kosha[]` (5 entradas)
 - [ ] Task 8.2: Exportar de `lib/shared/index.ts`
-- [ ] Task 8.3: Editar `MandalaChart.tsx`: substituir render da Camada 5 (Council) por render de 5 segmentos
+- [ ] Task 8.3: Editar `MandalaChart.tsx`: substituir `Array.from({ length: 11 })` por iteração em `data.tantra.bodies` (5 entries)
 - [ ] Task 8.4: Cada segmento ocupa 72° do anel externo
 - [ ] Task 8.5: Aplicar cor de cada kosha com opacidade 0.15-0.20
 - [ ] Task 8.6: Adicionar label da kosha (nome PT) centralizado no segmento
-- [ ] Task 8.7: Remover `renderCouncilPoints` e dados relacionados do SVG
+- [ ] Task 8.7: Remover a constante `TANTRIC_BODY_WISDOM` (depreciada) se nenhuma outra parte do código usar
 
 **Verificação**: visualmente, 5 koshas visíveis no anel externo com cores e labels
 
@@ -131,16 +131,16 @@ Substituir Council por 5 Koshas.
 
 ## Task 9: InfoPanel Tantra (Fase 4)
 
-Atualizar o InfoPanel da Camada 5 para mostrar koshas + council colapsável.
+Atualizar o InfoPanel da Camada 3 (Tantra) para mostrar as 5 koshas com badge ativo/inativo.
 
 - [ ] Task 9.1: Editar o componente do InfoPanel (em `MandalaChart.tsx` ou extraído)
 - [ ] Task 9.2: Adicionar seção "5 Koshas (Tantra)" com lista das 5 koshas
 - [ ] Task 9.3: Para cada kosha: nome sânscrito, tradução PT, descrição curta
-- [ ] Task 9.4: Adicionar seção colapsável "Conselho Espiritual" com tabela dos 5 membros
-- [ ] Task 9.5: Se `data.council` for null, mostrar "Sem dados do conselho"
-- [ ] Task 9.6: Usar SignificadoEmbed se houver correspondências esotéricas (com source attribution)
+- [ ] Task 9.4: Mostrar badge "Ativo" / "Inativo" para cada kosha baseado em `data.tantra.bodies[i].active`
+- [ ] Task 9.5: Se `data.tantra.bodies` for vazio, mostrar "Sem dados dos corpos"
+- [ ] Task 9.6: Usar SignificadoEmbed com `pilar: 'tantrica'` para os textos das koshas (não inventar, usar significadoPorPilar)
 
-**Verificação**: InfoPanel renderiza corretamente em ambos os estados (com/sem council)
+**Verificação**: InfoPanel renderiza corretamente em ambos os estados (com/sem bodies)
 
 ---
 
@@ -151,8 +151,8 @@ Adicionar entradas de koshas em en.json e pt-BR.json.
 - [ ] Task 10.1: `en.json`: adicionar `mandala.koshas.anna` (Physical), `prana` (Energetic), `mano` (Mental), `vijnana` (Wisdom), `ananda` (Bliss)
 - [ ] Task 10.2: `pt-BR.json`: adicionar `mandala.koshas.anna` (Físico), `prana` (Energético), `mano` (Mental), `vijnana` (Sabedoria), `ananda` (Beatitude)
 - [ ] Task 10.3: `en.json` + `pt-BR.json`: adicionar descrições curtas (1-2 frases) de cada kosha
-- [ ] Task 10.4: `en.json`: adicionar `mandala.council.title` ("Spiritual Council")
-- [ ] Task 10.5: `pt-BR.json`: adicionar `mandala.council.title` ("Conselho Espiritual")
+- [ ] Task 10.4: `en.json`: adicionar `mandala.koshas.sectionTitle` ("Tantra: 5 Koshas")
+- [ ] Task 10.5: `pt-BR.json`: adicionar `mandala.koshas.sectionTitle` ("Tantra: 5 Koshas")
 
 **Verificação**: typecheck passa; ambos os idiomas sincronizados
 
@@ -163,7 +163,7 @@ Adicionar entradas de koshas em en.json e pt-BR.json.
 Atualizar snapshot com novo render.
 
 - [ ] Task 11.1: Atualizar `MandalaChart.test.tsx` para incluir mock de `data.koshas` (ou KOSHAS import)
-- [ ] Task 11.2: Atualizar snapshot para refletir Camada 5 = koshas (não council)
+- [ ] Task 11.2: Atualizar snapshot para refletir Camada 3 = 5 koshas (substitui 11 nodes)
 - [ ] Task 11.3: Verificar que snapshot inclui "Anna", "Prana", "Mano", "Vijnana", "Ananda" (nomes)
 
 **Verificação**: snapshot test passa com novo render
@@ -180,7 +180,7 @@ Rodar todos os checks e fazer commit.
 - [ ] Task 12.4: Verificar visualmente que a Camada 5 mostra koshas
 - [ ] Task 12.5: Verificar que InfoPanel Tantra renderiza
 - [ ] Task 12.6: `git add` dos arquivos modificados
-- [ ] Task 12.7: `git commit -m "feat(mandala): Fase 4 - Tantra 5 Koshas (substitui Council na Camada 5)"`
+- [ ] Task 12.7: `git commit -m "feat(mandala): Fase 4 - Tantra 5 Koshas (substitui 11 nodes no Layer 3)"`
 - [ ] Task 12.8: Verificar que commit foi criado
 
 **Verificação**: commit no log; todos os checks passam

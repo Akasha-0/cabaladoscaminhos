@@ -5,13 +5,22 @@
 > Janela: **sessão única de 4-8h, totalmente autônoma**.
 > Implementa: **Fases 3 e 4**. Fases 5 e 6 detalhadas ao fim do spec para sessões futuras.
 
+> **⚠️ CORREÇÃO PÓS-CODEGRAPH-CHECK (Task 1.1)**: a versão original deste spec assumia que existia um "Council" no `MandalaData` que precisava ser removido. **Não existe**. O que parecia ser Council era o layer de partículas decorativas. Estrutura real:
+> - **Layer 1**: Ori (Odu) - centro
+> - **Layer 2**: Contrato (Cabala) - triângulo interno (raio 80)
+> - **Layer 3**: Vitalidade (Tantra) - **web tântrica com 11 nodes no raio 138** ← aqui entram as 5 koshas
+> - **Layer 4**: Céu (Astrologia) - **anel zodiacal com 12 signos + 10 planetas** ← aqui entra o fix
+> - **Layer 5**: Chave (I-Ching) - hexagrama externo
+>
+> **Fase 4 reorientada**: as 5 koshas passam a ser uma sub-visualização no Layer 3 (Tantra), **substituindo os 11 nodes atuais** por 5 segmentos coloridos de 72° cada. `data.tantra.bodies` (5 entries) é a fonte de verdade.
+
 ## Por que
 
-O MandalaChart hoje tem dois problemas estruturais no anel astrológico (Camada 4) e ausência de representação visual do pilar Tantra (Camada 5):
+O MandalaChart hoje tem dois problemas estruturais:
 
 1. **Bug de longitude absoluta** (linha 379 de `MandalaChart.tsx`): `pos: toXY((p.degree / 360) * 360, 178)` é matematicamente igual a `toXY(p.degree, 178)`. Como `p.degree` é o grau DENTRO do signo (0-29.99°), todos os 10 planetas ficam clusterizados no arco de 0-30° em vez de distribuídos ao longo da eclíptica inteira. Resultado: o mapa astral é visualmente incorreto.
-2. **Camada 5 (Tantra) não existe como conceito visual**: o pilar Tantra é mencionado no InfoPanel da Camada 5 (Council), mas o Council é uma abstração do sistema, não um conceito tantra. O Council é rebaixado para InfoPanel + tabela; Tantra 5 koshas passa a ocupar a Camada 5 do anel.
-3. **Ausência de casas astrológicas**: mapa astral de rodas clássicas mostra 12 casas (1-12) e 12 signos. O Mandala atual só mostra signos. Sem casas, não há leitura de "onde na vida" cada planeta atua.
+2. **Ausência de casas astrológicas**: mapa astral de rodas clássicas mostra 12 casas (1-12) e 12 signos. O Mandala atual só mostra signos. Sem casas, não há leitura de "onde na vida" cada planeta atua.
+3. **Tantra (Layer 3) tem 11 nodes mas o dado tem 5 bodies**: o código renderiza 11 nodes com `Array.from({ length: 11 })` e depois faz `data.tantra.bodies.find(...)` que só encontra 5. Inconsistência visual/dados. Substituir 11 nodes por 5 koshas (72° cada) é mais coerente com o dado.
 
 ## O que muda
 
@@ -27,10 +36,10 @@ O MandalaChart hoje tem dois problemas estruturais no anel astrológico (Camada 
 
 ### Fase 4 — Tantra 5 Koshas (implementada nesta sessão)
 
-- Camada 5 do Mandala passa de "Council" (5 pontos) para "5 Koshas" (5 segmentos de 72° cada)
+- Camada 3 (Tantra) do Mandala passa de 11 nodes hardcoded para 5 koshas (5 segmentos de 72° cada)
 - Cores fixas por kosha: Anna (físico), Prana (energético), Mano (mental), Vijnana (sabedoria), Ananda (beatitude)
-- Council vira interpretação textual no InfoPanel lateral (sem SVG)
-- i18n en.json + pt-BR.json
+- `data.tantra.bodies` (5 entries) é a fonte de verdade para nomes/active status
+- i18n en.json + pt-BR.json para as 5 koshas
 
 ### Fases 5 e 6 (detalhadas, NÃO implementadas nesta sessão)
 
@@ -150,13 +159,13 @@ O sistema DEVERÁ renderizar o MandalaChart em < 16ms por frame.
 - **Medição**: usar React DevTools Profiler ou `performance.mark()`
 - **POR QUÊ**: Mandala renderiza uma vez por page load, mas precisa ser snappy em mobile
 
-### Requisito 4.1: Camada 5 = 5 Koshas (não Council)
+### Requisito 4.1: Camada 3 (Tantra) = 5 Koshas
 
-O sistema DEVERÁ renderizar a Camada 5 como 5 segmentos correspondentes aos 5 koshas (camadas do ser na tradição tântrica).
+O sistema DEVERÁ renderizar a Camada 3 (Tantra/Vitalidade) como 5 segmentos correspondentes aos 5 koshas (camadas do ser na tradição tântrica), substituindo os 11 nodes atuais.
 
 #### Cenário: Renderização dos 5 koshas
 - **QUANDO** o MandalaChart é renderizado
-- **ENTÃO** a Camada 5 (raio ~198, entre os planetas e o limite externo) tem 5 segmentos de 72° cada
+- **ENTÃO** a Camada 3 (raio ~138, onde estavam os 11 nodes) tem 5 segmentos de 72° cada
 - **E** cada segmento tem cor fixa:
   - Anna (físico): `#E27D60` (terracota)
   - Prana (energético): `#C38D9E` (rosa pálido)
@@ -165,27 +174,29 @@ O sistema DEVERÁ renderizar a Camada 5 como 5 segmentos correspondentes aos 5 k
   - Ananda (beatitude): `#FFD166` (dourado)
 - **E** cada kosha tem label centralizado no segmento
 - **E** opacidade do segmento é 0.15-0.20 (sutis, não competem com o anel zodiacal)
+- **E** se `data.tantra.bodies[i].active === false`, o segmento fica com opacidade 0.05 (inativo)
 
-### Requisito 4.2: Council Removido do SVG, Mantido no InfoPanel
+### Requisito 4.2: Remoção dos 11 Nodes Hardcoded
 
-O sistema NÃO DEVERÁ renderizar o Council como pontos no MandalaChart. Os dados do Council continuam disponíveis no InfoPanel lateral como tabela.
+O sistema NÃO DEVERÁ renderizar 11 nodes hardcoded no Layer 3. Os nodes devem vir de `data.tantra.bodies` (5 entries).
 
-#### Cenário: Council como interpretação
-- **QUANDO** o usuário toca na Camada 5 (que agora é Koshas)
-- **ENTÃO** o InfoPanel lateral mostra:
-  - "5 Koshas (Tantra)" como título da seção ativa
-  - Lista das 5 koshas com nome sânscrito, tradução PT, e descrição curta
-  - **E ABAIXO**, seção colapsável "Conselho Espiritual" com a tabela dos 5 membros (se existirem dados)
+#### Cenário: Substituição 11 → 5
+- **QUANDO** o MandalaChart é renderizado
+- **ENTÃO** o array `tantricNodes` usa `data.tantra.bodies` em vez de `Array.from({ length: 11 })`
+- **E** se `data.tantra.bodies` tiver 5 entradas, renderiza 5 koshas
+- **E** se `data.tantra.bodies` tiver 0 entradas, renderiza 5 koshas com nomes genéricos ("Corpo 1", ..., "Corpo 5") e opacidade 0.05 (estado vazio)
+- **E** a constante `TANTRIC_BODY_WISDOM` é depreciada ou migrada para `KOSHAS` (preferência: depreciada)
 
 ### Requisito 4.3: InfoPanel Tantra com Texto
 
-O sistema DEVERÁ exibir descrição das 5 koshas no InfoPanel lateral quando Camada 5 está ativa.
+O sistema DEVERÁ exibir descrição das 5 koshas no InfoPanel lateral quando Camada 3 está ativa.
 
 #### Cenário: Conteúdo do InfoPanel Tantra
-- **QUANDO** `activeLayer === 5`
+- **QUANDO** `activeLayer === 3`
 - **ENTÃO** o InfoPanel lateral exibe:
   - Título: "5 Koshas (Tantra)"
-  - Para cada kosha: nome sânscrito, tradução, descrição de 1-2 frases
+  - Lista das 5 koshas com nome sânscrito, tradução PT, descrição de 1-2 frases
+  - Estado `active` mostrado como badge "Ativo" / "Inativo"
   - Fonte: tradição tântrica (não-inventada)
   - Nenhuma correspondência esotérica fabricada (LGPD by design + Pilar 1)
 
@@ -261,7 +272,7 @@ const KOSHAS: Kosha[] = [
 ## Constraints
 
 - **Pilar 1 (Cabala)**: koréby, não inventar correspondências esotéricas — usar fontes tântricas reconhecidas para koshas
-- **Pilar 4 (Odu) ethics**: avisar se Kosha/Council toca em "requer consentimento + terreiro" (não se aplica aqui)
+- **Pilar 4 (Odu) ethics**: avisar se kosha toca em "requer consentimento + terreiro" (não se aplica aqui)
 - **LGPD by design**: mínimo PII; não expor datas completas; sem PII nos glifos ou labels
 - **Performance**: render < 16ms; sem memo prematuro
 - **i18n**: en.json + pt-BR.json sincronizados
@@ -277,7 +288,7 @@ const KOSHAS: Kosha[] = [
 | `packages/core-astrology/src/types.ts` | 3 | Adicionar `absoluteLongitude` ou `signIndex` em `Planet` |
 | `packages/core-astrology/src/birth-chart.ts` | 3 | Calcular `absoluteLongitude` ao construir `Planet` |
 | `apps/akasha-portal/src/lib/shared/zodiac.ts` | 3 | Adicionar `GLYPHS_BY_PLANET`, `longitudeToAngle` |
-| `apps/akasha-portal/src/components/akasha/MandalaChart.tsx` | 3+4 | Refatorar renderZodiac, renderPlanets, adicionar renderHouses, renderKoshas; remover renderCouncilPoints e rotação contínua |
+| `apps/akasha-portal/src/components/akasha/MandalaChart.tsx` | 3+4 | Refatorar renderZodiac, renderPlanets, adicionar renderHouses, renderKoshas; remover rotação contínua e os 11 nodes hardcoded (Layer 3) |
 | `apps/akasha-portal/src/lib/i18n/en.json` | 3+4 | Adicionar `mandala.koshas.*`, `mandala.houses.*` |
 | `apps/akasha-portal/src/lib/i18n/pt-BR.json` | 3+4 | Espelho do en.json |
 | `apps/akasha-portal/src/components/akasha/MandalaChart.test.tsx` | 3+4 | Novo snapshot test com planetas + koshas |
@@ -296,13 +307,13 @@ const KOSHAS: Kosha[] = [
 | i18n keys faltando | Baixa | Baixo | Adicionar todas no mesmo commit |
 | Rotation removal quebra UX esperada | Baixa | Baixo | Verificar se rotação é intencional em algum lugar; se for, substituir por rotação on-hover |
 | Koshas coloridas poluem visual | Média | Médio | Opacidade 0.15-0.20; só ativo quando Camada 5 selecionada |
-| Council data é usada em outro lugar | Baixa | Médio | CodeGraph check antes de remover; se sim, mover para InfoPanel |
+| 11 nodes do Tantra são usados em outro lugar | Baixa | Médio | CodeGraph check antes de remover; se sim, manter compatibilidade com `data.tantra.bodies` |
 
 ## Plano de Execução (sessão 4-8h)
 
 ### Bloco 1 — Fase 3 (3-4h)
 
-1. CodeGraph check: quem consome `data.astrology.planets` e Council
+1. CodeGraph check: quem consome `data.astrology.planets` e `data.tantra.bodies`
 2. Adicionar `absoluteLongitude` à API (`core-astrology`)
 3. Adicionar helper `longitudeToAngle(absoluteLongitude, ringOffset)` em `zodiac.ts`
 4. Refatorar `renderZodiac` em `MandalaChart.tsx`:
@@ -318,11 +329,11 @@ const KOSHAS: Kosha[] = [
 
 ### Bloco 2 — Fase 4 (2-3h)
 
-10. CodeGraph check: quem consome Council além do MandalaChart
+10. CodeGraph check: quem consome `data.tantra.bodies` além do MandalaChart
 11. Adicionar `KOSHAS` data em `MandalaChart.tsx` (ou arquivo `koshas.ts` separado)
 12. Refatorar render da Camada 5: 5 segmentos coloridos com labels
-13. Remover `renderCouncilPoints` do SVG
-14. Atualizar InfoPanel da Camada 5: seção koshas + seção colapsável council
+13. Substituir `Array.from({ length: 11 })` por iteração sobre `data.tantra.bodies` (5 entries)
+14. Atualizar InfoPanel da Camada 3: seção koshas com badge ativo/inativo
 15. Atualizar en.json + pt-BR.json
 16. Rodar typecheck + lint + test:unit
 17. **Commit Fase 4**
@@ -345,7 +356,7 @@ const KOSHAS: Kosha[] = [
 - [ ] Sem regressão em InfoPanels da Fase 2
 - [ ] Anel zodiacal mostra 10 planetas em posições eclípticas corretas
 - [ ] Camada 5 mostra 5 koshas com cores e labels
-- [ ] Council vira InfoPanel + tabela (não SVG)
+- [ ] Camada 3 renderiza 5 koshas (substitui 11 nodes)
 - [ ] en.json e pt-BR.json sincronizados
 - [ ] AGENTS.md atualizados
 - [ ] Memory cycle registrado
