@@ -141,6 +141,19 @@ export default defineConfig({
       },
       {
         test: {
+          name: 'unit',
+          environment: 'node',
+          setupFiles: ['../../tests/setup.ts'],
+          testTimeout: 15000,
+          include: ['src/lib/**/*.test.ts'],
+          exclude: ['**/*.snap', '**/__snapshots__/**'],
+        },
+        resolve: {
+          alias: sharedAliases,
+        },
+      },
+      {
+        test: {
           name: 'e2e',
           environment: 'node',
           setupFiles: ['../../tests/setup.ts'],

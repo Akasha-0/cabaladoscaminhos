@@ -25,12 +25,12 @@ vi.mock('@/lib/prisma', () => ({
 }));
 
 // Mock das funções de rate-limit e credits
-const mockRateLimit = { allowed: true, remaining: 9, resetAt: Date.now() + 60000 };
+const mockRateLimit = { allowed: true, remaining: 9, resetIn: 60000, resetAt: new Date(Date.now() + 60000), limit: 10 };
 const mockCredits = { hasCredits: true, balance: 5 };
 
-vi.mock('@/lib/application/mentor/rate-limit', () => ({
+vi.mock('@/lib/infrastructure/rate-limit', () => ({
   checkRateLimit: vi.fn().mockResolvedValue(mockRateLimit),
-  rateLimitErrorMessage: vi.fn().mockReturnValue('Rate limit exceeded'),
+  MENTOR_RATE_LIMIT_CONFIG: { keyPrefix: 'rate:mentor', windowMs: 60000, maxRequests: 10 },
 }));
 
 vi.mock('@/lib/application/mentor/credits', () => ({

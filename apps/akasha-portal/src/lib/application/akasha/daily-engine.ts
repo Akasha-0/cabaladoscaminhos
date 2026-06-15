@@ -2,7 +2,7 @@ import type { BirthChart } from '@akasha/core-astrology';
 import { buildDailyEnergy } from '@/lib/application/agents/transit-engine';
 import { crossAnalyze } from './cross-engine';
 import { buildOduGlossary, formatGlossarySection } from './glossary';
-import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@/types';
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AkashaSynthesis } from './synthesis-engine';
 import { aggregateHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import { buildAkashaSynthesis } from './synthesis-engine';

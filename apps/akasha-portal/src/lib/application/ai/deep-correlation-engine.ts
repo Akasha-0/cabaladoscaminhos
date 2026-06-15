@@ -976,9 +976,9 @@ Forneça:
     try {
       const response = await generateMinimaxResponse(messages, {
         temperature: 0.8,
-        max_tokens: 600,
+        maxTokens: 600,
       });
-      return response.content;
+      return response;
     } catch {
       return pattern.recommendation;
     }

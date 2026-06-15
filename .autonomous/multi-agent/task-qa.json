@@ -1,0 +1,108 @@
+{
+  "agent": "qa",
+  "role": {
+    "name": "qa",
+    "description": "Test execution, quality gates, regression analysis",
+    "focus": "quality, test coverage, regression, triad"
+  },
+  "feature": {
+    "id": "D-040",
+    "phase": 5,
+    "title": "Schema Prisma com 5 Pilares. Design proposal (NÃO aplicado): unificar 5 Pilares ",
+    "priority": "P1"
+  },
+  "phase": "RESEARCH",
+  "iteration": 0,
+  "snapshot": {
+    "generated_at": "2026-06-15T22:07:53.554839+00:00",
+    "version": "v0.1.8",
+    "features": {
+      "pending_count": 8,
+      "done_count": 44,
+      "top_pending": [
+        {
+          "id": "D-040",
+          "phase": 5,
+          "title": "Schema Prisma com 5 Pilares. Design proposal (NÃO aplicado): unificar 5 Pilares ",
+          "priority": "P1"
+        },
+        {
+          "id": "D-040-progress",
+          "phase": 5,
+          "title": "D-040 Prisma migration setup COMPLETO (migrations/20260611000000_init_akasha_v3 ",
+          "priority": "P1"
+        },
+        {
+          "id": "F-223",
+          "phase": 9,
+          "title": "A 'Caixa' Akasha — Página ÚNICA unificada com 9 dimensões de vida. Substitui nav",
+          "priority": "P0"
+        },
+        {
+          "id": "F-224",
+          "phase": 9,
+          "title": "'Meu Dia' — Homepage mobile redesenhada (inspiração Co-Star + AstroSage). ONE SC",
+          "priority": "P0"
+        },
+        {
+          "id": "F-225",
+          "phase": 9,
+          "title": "Sexualidade Deep Dive — Expandir Sexualidade de 1 frase/pilar para análise COMPL",
+          "priority": "P0"
+        }
+      ]
+    },
+    "triad": {
+      "typecheck": {
+        "pass": true
+      },
+      "tests": {
+        "pass": false,
+        "passed": 50,
+        "failed": 6
+      },
+      "lint": {
+        "pass": true
+      }
+    },
+    "codegraph": {
+      "stats": {
+        "\u001b[36mproject": "\u001b[0m /home/skynet/cabala-dos-caminhos",
+        "\u001b[1mindex_statistics": "\u001b[0m",
+        "files": "934",
+        "nodes": "6.306",
+        "edges": "17.723",
+        "db_size": "22.25 MB",
+        "backend": "\u001b[32mnode:sqlite — built-in (full WAL)\u001b[0m",
+        "journal": "\u001b[32mwal\u001b[0m",
+        "\u001b[1mnodes_by_kind": "\u001b[0m",
+        "\u001b[1mfiles_by_language": "\u001b[0m",
+        "\u001b[1mpending_changes": "\u001b[0m",
+        "added": "1 files"
+      },
+      "needs_sync": true
+    },
+    "git": {
+      "untracked": 8,
+      "modified": 103,
+      "total": 111,
+      "has_changes": true
+    },
+    "decision_factors": {
+      "has_pending_features": true,
+      "pending_count": 8,
+      "triad_all_green": false,
+      "triad_status": {
+        "typecheck": true,
+        "tests": false,
+        "lint": true
+      },
+      "codegraph_needs_sync": true,
+      "git_has_changes": true,
+      "untracked_files": 8
+    }
+  },
+  "project_root": "/home/skynet/cabala-dos-caminhos",
+  "output_file": "/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/result-qa.json",
+  "log_dir": "/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/logs"
+}

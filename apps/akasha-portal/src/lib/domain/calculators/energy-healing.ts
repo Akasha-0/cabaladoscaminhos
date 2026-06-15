@@ -11,7 +11,7 @@
 // - Apometria: protocolos focados em dissolver amarras kármicas de vidas
 //   passadas ligadas diretamente às dívidas cabalísticas (13, 14, 16, 19).
 
-import type { EnergyHealingMap } from '@/types';
+import type { EnergyHealingMap } from '@akasha/types';
 import { buildKabalisticMap } from '@akasha/core-cabala';
 
 export function buildEnergyHealingMap(

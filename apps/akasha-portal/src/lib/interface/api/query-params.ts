@@ -1,8 +1,6 @@
 /**
- * Query Parameters utilities
- * 
- * STUB: Módulo movido para shared/query-params.ts
- * Este arquivo mantido para retrocompatibilidade
+ * Query param utilities.
+ * @deprecated Moved to shared/query-params.ts
  */
 
-export * from '@/lib/shared/query-params';
+export { searchParamsToObject } from '@/lib/shared/query-params';

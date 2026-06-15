@@ -7,42 +7,17 @@
  * Ver Doc 14 (Extensibilidade Oracular) §2 — I-Ching como 5º sistema opt-in.
  */
 
-// Tipos
+// Tipos públicos
 export type {
-  TrigramId,
-  Trigram,
-  Hexagram,
-  MutatingLine,
   IChingMap,
-  BuildIchingMapArgs,
   Wing,
+  Hexagram,
+  TrigramId,
   HexagramWithWings,
-  Element,
-  PracticeCategory,
-  PracticeAssociations,
-  IntegrativePractice,
 } from './types';
 
-// Bagua (8 trigramas)
-export { TRIGRAMS, getTrigram, getTrigramByLines } from './bagua';
-
-// Hexagramas (64)
-export { HEXAGRAMS, getHexagram, getAllHexagrams, getHexagramWithDetails } from './hexagrams';
-export type { HexagramWithDetails } from './hexagrams';
-
-// Asas (10 Wings)
-export { WINGS, getWing, getAllWings, getWingsByHexagram, getHexagramWithWings } from './wings';
+// Hexagramas (64) — funcoes publicas
+export { HEXAGRAMS, getHexagram, getAllHexagrams } from './hexagrams';
 
 // Hexagrama natal
 export { buildIchingMap } from './natal';
-
-// Práticas integrativas
-export {
-  PRACTICES,
-  getPractice,
-  getPracticesByElement,
-  getPracticesByTradition,
-  getPracticesByCategory,
-  getPracticesByLifeArea,
-  getAllPractices,
-} from './practices';

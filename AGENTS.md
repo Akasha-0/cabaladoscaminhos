@@ -3,20 +3,34 @@
 - DOX is highly performant AGENTS.md hierarchy installed here
 - Agent must follow DOX instructions across any edits
 
+## Primary Rule
+
+> **CodeGraph-first**: before any Grep/Glob/Read for architecture, dependency, or discovery questions, use `codegraph_explore`. See `.trae/rules/project_rules.md` for the full rule and index commands.
+
 ## Core Contract
 
 - AGENTS.md files are binding work contracts for their subtrees
 - Work products, source materials, instructions, records, assets, and durable docs must stay understandable from the nearest applicable AGENTS.md plus every parent AGENTS.md above it
 
+## CodeGraph
+
+CodeGraph is the primary codebase exploration tool. Index is maintained at `.codegraph/`.
+
+- Use `codegraph_explore` (MCP) for architecture questions, dependency traces, and discovery — not Grep/Glob/Read
+- Use `codegraph query` for symbol searches
+- Run `codegraph sync` after bulk file changes
+- Full commands and index health: see `.trae/rules/project_rules.md`
+
 ## Read Before Editing
 
-1. Read the root AGENTS.md
-2. Identify every file or folder you expect to touch
-3. Walk from the repository root to each target path
-4. Read every AGENTS.md found along each route
-5. If a parent AGENTS.md lists a child AGENTS.md whose scope contains the path, read that child and continue from there
-6. Use the nearest AGENTS.md as the local contract and parent docs for repo-wide rules
-7. If docs conflict, the closer doc controls local work details, but no child doc may weaken DOX
+1. Read `.trae/rules/project_rules.md` (project-wide rules)
+2. Read the root AGENTS.md
+3. Identify every file or folder you expect to touch
+4. Walk from the repository root to each target path
+5. Read every AGENTS.md found along each route
+6. If a parent AGENTS.md lists a child AGENTS.md whose scope contains the path, read that child and continue from there
+7. Use the nearest AGENTS.md as the local contract and parent docs for repo-wide rules
+8. If docs conflict, the closer doc controls local work details, but no child doc may weaken DOX
 
 Do not rely on memory. Re-read the applicable DOX chain in the current session before editing.
 
@@ -78,6 +92,34 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
+- **akasha-evolution** (PRIMARY): Autonomous 6-phase loop with 5 parallel agents.
+  Activates via `/loop 9999999999` + "start akasha-evolution".
+  Scripts: `.autonomous/multi-agent/akasha-evolution-loop.py`.
+  Start: `bash .autonomous/multi-agent/start-akasha-evolution.sh`.
+  Skill: `.autonomous/skills/akasha-evolution/SKILL.md`.
+  Agents: researcher, architect, coder, qa, validator (via `task` in parallel).
+  Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
+  Intelligence: `intelligence.py` (evidence-based decisions, exponential learning).
+  Bootstrap: `context_bootstrap.py` (fresh project context every iteration).
+  Memory: `memory.json` (learnings accumulate exponentially over iterations).
+- **Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
+  Scripts: `.autonomous/ralph-loop/akasha-ralph-loop.py`.
+- **Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
+- **CodeGraph**: Primary exploration tool — `codegraph_explore` before Read/Grep/Glob.
+
 ## Child DOX Index
 
-This project is not yet indexed. Before continuing you must scan the project, build the DOX tree and replace this message with the actual index. Go deep and scan files recursively to properly evaluate complexity and create nested DOX files where needed.
+- `.autonomous/` — pesquisa autônoma e guardrails operacionais
+  - `multi-agent/akasha-evolution-loop.py` — 5-agent parallel loop (primary, OMP-native)
+  - `multi-agent/intelligence.py` — evidence-based decisions + exponential learning
+  - `multi-agent/context_bootstrap.py` — fresh project context every iteration
+  - `ralph-loop/` — Ralph-style 6-phase autonomous loop (fallback)
+  - `skills/akasha-evolution/` — OMP skill for autonomous evolution loop
+- `apps/` — aplicações do produto
+- `packages/` — workspaces compartilhados e engines
+- `docs/` — documentação canônica
+- `grimoire/` — base de conhecimento
+- `tests/` — verificações automatizadas
+- `deploy/` — infraestrutura
+- `scripts/` — automações
+- `memory/` — histórico de ciclos

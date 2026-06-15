@@ -38,7 +38,11 @@ if [[ ! -x "$HEADROOM" ]]; then
 fi
 
 echo "[headroom-wrap] iniciando proxy na porta $PROXY_PORT..." >&2
-"$HEADROOM" proxy --port "$PROXY_PORT" >"$PROXY_LOG" 2>&1 &
+"$HEADROOM" proxy \
+  --port "$PROXY_PORT" \
+  --backend anthropic \
+  --anthropic-api-url "https://api.minimax.io/anthropic" \
+  >"$PROXY_LOG" 2>&1 &
 PROXY_PID=$!
 
 # Aguarda o proxy responder

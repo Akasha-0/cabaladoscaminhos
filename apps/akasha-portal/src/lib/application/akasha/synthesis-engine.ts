@@ -16,7 +16,7 @@
  * É uma INTERPRETAÇÃO de vida por área de vida.
  */
 
-import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@/types';
+import type { AstrologyMap, KabalisticMap, TantricMap, OduBirth } from '@akasha/types';
 import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 import {
   generateSynthesisParagraph as genSynthesisParagraph,

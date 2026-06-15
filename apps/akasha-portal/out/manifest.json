@@ -1,0 +1,51 @@
+{
+  "name": "Sistema Akasha",
+  "short_name": "Akasha",
+  "description": "Oráculo vivo — cruzamento dos 4 Pilares: Astrologia, Numerologia Cabalística, Tantra, Odus de Nascimento",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06070F",
+  "theme_color": "#06070F",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["lifestyle", "spirituality", "health"],
+  "shortcuts": [
+    {
+      "name": "Oráculo",
+      "short_name": "Oráculo",
+      "description": "Pergunte ao Oráculo Akáshico",
+      "url": "/oraculo",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Diário",
+      "short_name": "Diário",
+      "description": "Diário Energético de hoje",
+      "url": "/diario",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

@@ -1,7 +1,8 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import MandalaChart, { formatDegreeToZodiac } from '@/components/akasha/MandalaChart';
+import MandalaChart from '@/components/akasha/MandalaChart';
+import { formatDegreeToZodiac } from '@/lib/shared/zodiac';
 import { MandalaNarrativeLoader } from '@/components/akasha/MandalaNarrativeLoader';
 
 export const metadata = {

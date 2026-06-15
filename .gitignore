@@ -119,3 +119,8 @@ quality-evolution*.json
 
 # Capacitor build output
 apps/akasha-portal/capacitor/
+
+# Headroom (local-only venv + artifacts)
+.headroom-venv/
+.headroom-venv/proxy.log
+*.compressed.md

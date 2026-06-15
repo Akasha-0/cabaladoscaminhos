@@ -9,7 +9,7 @@
  * Padrão: deterministic template synthesis — conteúdo existe nos mapas.
  * A síntese é a composição inteligente desses dados em prosa significativa.
  */
-import type { KabalisticMap, AstrologyMap, TantricMap, OduBirth } from '@/types';
+import type { KabalisticMap, AstrologyMap, TantricMap, OduBirth } from '@akasha/types';
 
 // ─── Life Area labels ─────────────────────────────────────────────────────────
 

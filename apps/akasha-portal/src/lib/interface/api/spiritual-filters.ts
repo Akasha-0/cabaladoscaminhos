@@ -1,8 +1,10 @@
 /**
- * Spiritual Filters
- * 
- * STUB: Módulo movido para domain/types/spiritual-filters.ts
- * Este arquivo mantido para retrocompatibilidade
+ * Spiritual filter schemas — re-export from domain/types.
+ * @deprecated Use @/lib/domain/types/spiritual-filters directly.
  */
 
-export * from '@/lib/domain/types/spiritual-filters';
+export {
+  SefirotSchema,
+  ChakraSchema,
+  ElementSchema,
+} from '@/lib/domain/types/spiritual-filters';

@@ -1,24 +1,9 @@
 /**
- * Orixá Frequency Correlations
- * 
- * STUB: Implementação real virá do Grimório
+ * Orixá frequency calculations.
+ * STUB: Lógica de correlação vibrational de Orixás.
  */
 
-export interface OrixaFrequency {
-  orixa: string;
-  frequency: number;
-  octave: number;
-  resonance: number;
-}
-
-/**
- * Retorna a frequência vibracional de um orixá
- */
-export function getOrixaFrequency(orixa: string): OrixaFrequency {
-  return {
-    orixa,
-    frequency: 432, // Frequência base (Hz)
-    octave: 0,
-    resonance: 1.0,
-  };
+export function getOrixaFrequency(orixaName: string): number {
+  // Stub: retorna frequência arbitrária
+  return orixaName.length * 7.83;
 }
