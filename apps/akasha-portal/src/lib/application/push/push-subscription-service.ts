@@ -51,3 +51,26 @@ export async function getUserPushSubscriptions(userId: string): Promise<PushSubs
     keys: { p256dh: r.p256dh, auth: r.auth },
   }));
 }
+
+/** F-237: Lista TODAS as subscriptions ativas (para o cron diário). */
+export async function getAllActivePushSubscriptions(): Promise<
+  Array<PushSubscriptionJSON & { userId: string }>
+> {
+  const rows = await prisma.pushSubscription.findMany({
+    where: { user: { pushEnabled: true } },
+    select: { userId: true, endpoint: true, p256dh: true, auth: true },
+  });
+
+  return rows.map((r) => ({
+    userId: r.userId,
+    endpoint: r.endpoint,
+    keys: { p256dh: r.p256dh, auth: r.auth },
+  }));
+}
+
+/** F-237: Conta quantos usuários têm push ativo (métrica de health). */
+export async function countActivePushSubscribers(): Promise<number> {
+  return prisma.pushSubscription.count({
+    where: { user: { pushEnabled: true } },
+  });
+}
