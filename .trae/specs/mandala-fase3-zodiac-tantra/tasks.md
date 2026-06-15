@@ -1,7 +1,12 @@
-# Tasks — Mandala Fase 3: Anel Zodiacal Expandido + Tantra 5 Koshas
+# Tasks — Mandala Fase 3: Anel Zodiacal Expandido + InfoPanel Tantra
 
 > Sessão única 4-8h, totalmente autônoma. Cada Fase vira 1 commit.
 > Sequencial (sem subagentes paralelos). Auto-recovery + reportar falhas.
+>
+> **Nota**: tasks.md foi reescrito após CodeGraph check (Task 1) revelar:
+> - `data.tantra.bodies` tem 11 entries (Yogi Bhajan), não 5
+> - `p.longitude` (longitude absoluta) já existe no `core-astrology`, só precisa ser passada pelo route handler
+> - SVG Layer 3 NÃO é modificado; Fase 4 vira enriquecimento do InfoPanel
 
 ## Dependências
 
@@ -10,43 +15,43 @@
 
 ---
 
-## Task 1: Mapear consumidores de `planets` e `bodies`
+## Task 1: Mapear consumidores de `planets` e `bodies` ✓ COMPLETO
 
-CodeGraph: identificar todos os lugares que consomem `data.astrology.planets` e `data.tantra.bodies`. Resultado vira "Risks and Mitigations" do spec.
+CodeGraph: identificar todos os lugares que consomem `data.astrology.planets` e `data.tantra.bodies`.
 
-- [ ] Task 1.1: `codegraph explore "who consumes data.astrology.planets"`
-- [ ] Task 1.2: `codegraph explore "who consumes data.tantra.bodies or tantricNodes"`
-- [ ] Task 1.3: Listar arquivos consumidores em comentário no spec ou em handoff
-- [ ] Task 1.4: Decidir se `data.tantra.bodies` tem semântica fixa de 5 entries (sim → replace 11 nodes; não → manter retrocompat)
+- [x] Task 1.1: `codegraph explore "who consumes data.astrology.planets"`
+- [x] Task 1.2: `codegraph explore "who consumes data.tantra.bodies or tantricNodes"`
+- [x] Task 1.3: Listar consumidores — encontrado: apenas `MandalaChart.tsx` + `MandalaChart.fase2.tsx` (InfoPanel)
+- [x] Task 1.4: Decisão: `data.tantra.bodies` é 11 entries (Yogi Bhajan) e devem permanecer no SVG. 5 koshas vão como InfoPanel.
 
-**Verificação**: lista de consumidores identificada, decisão sobre 11→5 documentada
-
----
-
-## Task 2: Adicionar `absoluteLongitude` à API (Fase 3)
-
-Estender o tipo `Planet` em `core-astrology` para incluir longitude absoluta.
-
-- [ ] Task 2.1: Editar `packages/core-astrology/src/types.ts`: adicionar `absoluteLongitude: number` em `Planet`
-- [ ] Task 2.2: Editar `packages/core-astrology/src/birth-chart.ts`: calcular `signIndex * 30 + degree` ao construir cada planeta
-- [ ] Task 2.3: Adicionar unit test: `planet.absoluteLongitude === signIndex * 30 + planet.degree`
-- [ ] Task 2.4: Adicionar `houses: HouseCusp[]` ao tipo `AstrologyData` (com `absoluteLongitude` por cusp)
-- [ ] Task 2.5: Verificar que API `/api/akasha/mandala` retorna os novos campos
-
-**Verificação**: typecheck de `core-astrology` passa; testes novos passam
+**Verificação**: ✓ decisão documentada; sem risco de regressão em outros consumidores
 
 ---
 
-## Task 3: Helpers de longitude e glifos em `zodiac.ts` (Fase 3)
+## Task 2: Passar `absoluteLongitude` pelo route handler (Fase 3)
 
-Adicionar funções utilitárias para conversão e mapeamento de glifos.
+O dado `p.longitude` (longitude absoluta) já existe em `core-astrology`. O route handler só precisa passá-lo adiante, junto com o campo `degree` atual.
 
-- [ ] Task 3.1: Adicionar `GLYPHS_BY_PLANET: Record<string, string>` com 10 planetas (☉ ☽ ☿ ♀ ♂ ♃ ♄ ♅ ♆ ♇)
-- [ ] Task 3.2: Adicionar `longitudeToAngle(absoluteLongitude, ringOffset)` — converte longitude para ângulo SVG, considerando o ponto 0° = esquerda do relógio (não topo)
-- [ ] Task 3.3: Adicionar `KOSHAS` data em arquivo separado `apps/akasha-portal/src/lib/shared/koshas.ts` (não em `zodiac.ts`)
-- [ ] Task 3.4: Exportar de `index.ts` da pasta `lib/shared`
+- [ ] Task 2.1: Editar `apps/akasha-portal/src/app/api/akasha/mandala/route.ts`: na linha que mapeia `p` para o planet shape, adicionar `absoluteLongitude: p.longitude`
+- [ ] Task 2.2: Verificar typecheck do `MandalaData.astrology.planets[].absoluteLongitude`
+- [ ] Task 2.3: Adicionar unit test do mapper: `planet.absoluteLongitude === astrologiaMap.planeta[planetKey].longitude`
+- [ ] Task 2.4: NÃO modificar `core-astrology` (já tem o dado, é só transporte)
 
-**Verificação**: typecheck passa; helpers são pure functions (testáveis)
+**Verificação**: typecheck passa; planet shape inclui `absoluteLongitude`
+
+---
+
+## Task 3: Helpers de glifos em `zodiac.ts` (Fase 3)
+
+Adicionar mapeamento de glifos astrológicos.
+
+- [ ] Task 3.1: Adicionar `GLYPHS_BY_PLANET: Record<string, string>` em `apps/akasha-portal/src/lib/shared/zodiac.ts`:
+  - `Sol: '☉'`, `Lua: '☽'`, `Mercúrio: '☿'`, `Vênus: '♀'`, `Marte: '♂'`, `Júpiter: '♃'`, `Saturno: '♄'`, `Urano: '♅'`, `Netuno: '♆'`, `Plutão: '♇'`
+- [ ] Task 3.2: Adicionar `PLANET_COLORS: Record<string, string>` com cores fixas
+- [ ] Task 3.3: Adicionar `longitudeToAngle(absoluteLongitude: number): number` que retorna SVG angle com 0° = 9 horas (esquerda), fórmula `(180 - longitude + 360) % 360`
+- [ ] Task 3.4: Adicionar unit tests para `longitudeToAngle`
+
+**Verificação**: typecheck passa; helpers são pure functions
 
 ---
 
@@ -56,7 +61,7 @@ Corrigir o bug de longitude e adicionar 12 casas.
 
 - [ ] Task 4.1: Editar `MandalaChart.tsx`: na função que renderiza planetas, usar `absoluteLongitude` em vez de `degree`
 - [ ] Task 4.2: Trocar dots por glifos unicode (`GLYPHS_BY_PLANET[planet.name]`)
-- [ ] Task 4.3: Adicionar cor fixa por planeta (Sol/Lua = dourado/prata; clássicos = branco; modernos = cinza claro)
+- [ ] Task 4.3: Aplicar cor fixa por planeta (Sol/Lua = dourado/prata; clássicos = branco; modernos = cinza claro)
 - [ ] Task 4.4: Adicionar sufixo ℞ se `planet.retrograde === true`
 - [ ] Task 4.5: Adicionar `aria-label` em cada `<g>` de planeta (e.g., "Sol em Gêmeos, 15°")
 - [ ] Task 4.6: Adicionar 12 casas numeradas no anel zodiacal (linha tracejada + número)
@@ -86,13 +91,13 @@ Adicionar entradas em en.json e pt-BR.json.
 
 Teste de regressão visual.
 
-- [ ] Task 6.1: Criar `apps/akasha-portal/src/components/akasha/MandalaChart.test.tsx` (se não existir)
-- [ ] Task 6.2: Renderizar MandalaChart com mock de `data.astrology.planets` (10 planetas)
-- [ ] Task 6.3: Renderizar com mock de `data.astrology.houses` (12 casas)
-- [ ] Task 6.4: Snapshot do SVG renderizado (incluindo glifos, casas, sem rotação)
-- [ ] Task 6.5: Verificar que snapshot inclui "Sol", "Lua", "Mercúrio" (em glifos) e "1", "2", ..., "12" (casas)
+- [ ] Task 6.1: Verificar se `apps/akasha-portal/src/components/akasha/MandalaChart.test.tsx` existe
+- [ ] Task 6.2: Adicionar/atualizar mock de `data.astrology.planets` para incluir `absoluteLongitude`
+- [ ] Task 6.3: Adicionar mock de `data.astrology.houses` (12 casas)
+- [ ] Task 6.4: Atualizar snapshot do SVG renderizado
+- [ ] Task 6.5: Verificar que snapshot inclui glifos (☉ ☽ ☿ ♀ ♂ ♃ ♄ ♅ ♆ ♇) e casas (1-12)
 
-**Verificação**: snapshot test passa; git diff mostra novo arquivo
+**Verificação**: snapshot test passa
 
 ---
 
@@ -103,44 +108,39 @@ Rodar todos os checks e fazer commit.
 - [ ] Task 7.1: `pnpm --filter akasha-portal typecheck` → exit 0
 - [ ] Task 7.2: `pnpm --filter akasha-portal lint` → exit 0
 - [ ] Task 7.3: `pnpm --filter akasha-portal test:unit` → exit 0
-- [ ] Task 7.4: Verificar visualmente (se possível) que o anel zodiacal renderiza planetas
-- [ ] Task 7.5: Verificar que InfoPanel da Camada 4 (Fase 2) não regrediu
-- [ ] Task 7.6: `git add` dos arquivos modificados
-- [ ] Task 7.7: `git commit -m "feat(mandala): Fase 3 - anel zodiacal expandido (10 planetas + 12 casas + glifos)"`
-- [ ] Task 7.8: Verificar que commit foi criado
+- [ ] Task 7.4: Verificar que InfoPanel da Camada 4 (Fase 2) não regrediu
+- [ ] Task 7.5: `git add` dos arquivos modificados
+- [ ] Task 7.6: `git commit -m "feat(mandala): Fase 3 - anel zodiacal expandido (10 planetas + 12 casas + glifos)"`
+- [ ] Task 7.7: Verificar que commit foi criado
 
 **Verificação**: commit no log; todos os checks passam
 
 ---
 
-## Task 8: Adicionar `KOSHAS` data e renderizar Camada 5 (Fase 4)
+## Task 8: Criar `KOSHAS` data (Fase 4)
 
-Substituir 11 nodes hardcoded do Layer 3 por 5 Koshas (data-driven).
+Constante separada para 5 koshas védicas.
 
 - [ ] Task 8.1: Criar `apps/akasha-portal/src/lib/shared/koshas.ts` com `KOSHAS: Kosha[]` (5 entradas)
-- [ ] Task 8.2: Exportar de `lib/shared/index.ts`
-- [ ] Task 8.3: Editar `MandalaChart.tsx`: substituir `Array.from({ length: 11 })` por iteração em `data.tantra.bodies` (5 entries)
-- [ ] Task 8.4: Cada segmento ocupa 72° do anel externo
-- [ ] Task 8.5: Aplicar cor de cada kosha com opacidade 0.15-0.20
-- [ ] Task 8.6: Adicionar label da kosha (nome PT) centralizado no segmento
-- [ ] Task 8.7: Remover a constante `TANTRIC_BODY_WISDOM` (depreciada) se nenhuma outra parte do código usar
+- [ ] Task 8.2: Cada kosha tem: id, name (pt/en/sanskrit), color, description (pt/en)
+- [ ] Task 8.3: Exportar de `lib/shared/index.ts`
+- [ ] Task 8.4: Adicionar unit test que valida 5 entries com IDs únicos
 
-**Verificação**: visualmente, 5 koshas visíveis no anel externo com cores e labels
+**Verificação**: typecheck passa; KOSHAS é importável
 
 ---
 
-## Task 9: InfoPanel Tantra (Fase 4)
+## Task 9: InfoPanel Tantra enriquecido (Fase 4)
 
-Atualizar o InfoPanel da Camada 3 (Tantra) para mostrar as 5 koshas com badge ativo/inativo.
+Atualizar o InfoPanel da Camada 3 para mostrar as 5 koshas ao lado dos 11 bodies.
 
-- [ ] Task 9.1: Editar o componente do InfoPanel (em `MandalaChart.tsx` ou extraído)
-- [ ] Task 9.2: Adicionar seção "5 Koshas (Tantra)" com lista das 5 koshas
-- [ ] Task 9.3: Para cada kosha: nome sânscrito, tradução PT, descrição curta
-- [ ] Task 9.4: Mostrar badge "Ativo" / "Inativo" para cada kosha baseado em `data.tantra.bodies[i].active`
-- [ ] Task 9.5: Se `data.tantra.bodies` for vazio, mostrar "Sem dados dos corpos"
-- [ ] Task 9.6: Usar SignificadoEmbed com `pilar: 'tantrica'` para os textos das koshas (não inventar, usar significadoPorPilar)
+- [ ] Task 9.1: Localizar componente do InfoPanel do Layer 3 (em `MandalaChart.fase2.tsx` ou similar)
+- [ ] Task 9.2: Adicionar seção "5 Koshas (Tantra Védica)" abaixo dos 11 bodies
+- [ ] Task 9.3: Para cada kosha: nome sânscrito, tradução PT, badge de cor, descrição de 1-2 frases
+- [ ] Task 9.4: Estado vazio: "Sem dados" se `KOSHAS` não importou (não deveria acontecer)
+- [ ] Task 9.5: Não mexer no SVG do Layer 3 — 11 nodes de Yogi Bhajan permanecem
 
-**Verificação**: InfoPanel renderiza corretamente em ambos os estados (com/sem bodies)
+**Verificação**: InfoPanel renderiza com 2 seções (11 bodies + 5 koshas)
 
 ---
 
@@ -148,11 +148,9 @@ Atualizar o InfoPanel da Camada 3 (Tantra) para mostrar as 5 koshas com badge at
 
 Adicionar entradas de koshas em en.json e pt-BR.json.
 
-- [ ] Task 10.1: `en.json`: adicionar `mandala.koshas.anna` (Physical), `prana` (Energetic), `mano` (Mental), `vijnana` (Wisdom), `ananda` (Bliss)
-- [ ] Task 10.2: `pt-BR.json`: adicionar `mandala.koshas.anna` (Físico), `prana` (Energético), `mano` (Mental), `vijnana` (Sabedoria), `ananda` (Beatitude)
-- [ ] Task 10.3: `en.json` + `pt-BR.json`: adicionar descrições curtas (1-2 frases) de cada kosha
-- [ ] Task 10.4: `en.json`: adicionar `mandala.koshas.sectionTitle` ("Tantra: 5 Koshas")
-- [ ] Task 10.5: `pt-BR.json`: adicionar `mandala.koshas.sectionTitle` ("Tantra: 5 Koshas")
+- [ ] Task 10.1: `en.json`: adicionar `mandala.koshas.sectionTitle` ("Tantra Védica: 5 Koshas")
+- [ ] Task 10.2: `pt-BR.json`: adicionar `mandala.koshas.sectionTitle` ("Tantra Védica: 5 Koshas")
+- [ ] Task 10.3: `en.json` + `pt-BR.json`: descrições das koshas vêm de KOSHAS (não precisam de i18n adicional)
 
 **Verificação**: typecheck passa; ambos os idiomas sincronizados
 
@@ -160,13 +158,12 @@ Adicionar entradas de koshas em en.json e pt-BR.json.
 
 ## Task 11: Atualizar snapshot test (Fase 4)
 
-Atualizar snapshot com novo render.
+Atualizar snapshot com InfoPanel Tantra enriquecido.
 
-- [ ] Task 11.1: Atualizar `MandalaChart.test.tsx` para incluir mock de `data.koshas` (ou KOSHAS import)
-- [ ] Task 11.2: Atualizar snapshot para refletir Camada 3 = 5 koshas (substitui 11 nodes)
-- [ ] Task 11.3: Verificar que snapshot inclui "Anna", "Prana", "Mano", "Vijnana", "Ananda" (nomes)
+- [ ] Task 11.1: Atualizar snapshot se necessário (InfoPanel muda)
+- [ ] Task 11.2: Verificar que snapshot inclui "Anna", "Prana", "Mano", "Vijnana", "Ananda" (nomes das koshas)
 
-**Verificação**: snapshot test passa com novo render
+**Verificação**: snapshot test passa com InfoPanel atualizado
 
 ---
 
@@ -177,10 +174,10 @@ Rodar todos os checks e fazer commit.
 - [ ] Task 12.1: `pnpm --filter akasha-portal typecheck` → exit 0
 - [ ] Task 12.2: `pnpm --filter akasha-portal lint` → exit 0
 - [ ] Task 12.3: `pnpm --filter akasha-portal test:unit` → exit 0
-- [ ] Task 12.4: Verificar visualmente que a Camada 5 mostra koshas
-- [ ] Task 12.5: Verificar que InfoPanel Tantra renderiza
+- [ ] Task 12.4: Verificar que InfoPanel Tantra renderiza com 2 seções
+- [ ] Task 12.5: Verificar que SVG do Layer 3 (11 nodes) NÃO regrediu
 - [ ] Task 12.6: `git add` dos arquivos modificados
-- [ ] Task 12.7: `git commit -m "feat(mandala): Fase 4 - Tantra 5 Koshas (substitui 11 nodes no Layer 3)"`
+- [ ] Task 12.7: `git commit -m "feat(mandala): Fase 4 - InfoPanel Tantra enriquecido com 5 Koshas védicas"`
 - [ ] Task 12.8: Verificar que commit foi criado
 
 **Verificação**: commit no log; todos os checks passam
@@ -191,10 +188,9 @@ Rodar todos os checks e fazer commit.
 
 Atualizar a documentação da hierarquia AGENTS.md.
 
-- [ ] Task 13.1: `apps/akasha-portal/src/components/akasha/AGENTS.md`: documentar nova estrutura visual (5 koshas, 12 casas, 10 glifos)
-- [ ] Task 13.2: `packages/core-astrology/AGENTS.md`: documentar `absoluteLongitude` em `Planet`
-- [ ] Task 13.3: `apps/akasha-portal/AGENTS.md`: atualizar scope/ownership
-- [ ] Task 13.4: Verificar que docs refletem o estado real do código (sem DOX drift)
+- [ ] Task 13.1: `apps/akasha-portal/src/components/akasha/AGENTS.md`: documentar nova estrutura visual (10 glifos, 12 casas, rotação removida, koshas no InfoPanel)
+- [ ] Task 13.2: `apps/akasha-portal/AGENTS.md`: atualizar scope/ownership
+- [ ] Task 13.3: Verificar que docs refletem o estado real do código (sem DOX drift)
 
 **Verificação**: AGENTS.md bate com o código
 
@@ -222,7 +218,7 @@ Sequencial obrigatório:
 
 1. Tasks 1-7 = **Fase 3** (commit após Task 7)
 2. Tasks 8-12 = **Fase 4** (commit após Task 12)
-3. Tasks 13-14 = **Fechamento** (sem commit adicional; mudanças em AGENTS.md e memory cycle)
+3. Tasks 13-14 = **Fechamento** (sem commit adicional)
 
 ## Auto-recovery
 

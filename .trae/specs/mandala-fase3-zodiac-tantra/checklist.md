@@ -1,16 +1,18 @@
-# Checklist — Mandala Fase 3: Anel Zodiacal Expandido + Tantra 5 Koshas
+# Checklist — Mandala Fase 3: Anel Zodiacal Expandido + InfoPanel Tantra
 
 ## Fase 3 — Anel Zodiacal Expandido
 
 ### Bug fix de longitude
 
-- [ ] `absoluteLongitude` adicionado ao tipo `Planet` em `core-astrology`
-- [ ] `signIndex * 30 + degree` calculado corretamente em `birth-chart.ts`
-- [ ] Unit test confirma: `Sol em Gêmeos 15°` → `absoluteLongitude === 75`
+- [ ] `absoluteLongitude` adicionado ao planet shape no route handler
+- [ ] `core-astrology` NÃO é modificado (longitude já existe)
 - [ ] MandalaChart usa `absoluteLongitude` em vez de `degree` para renderizar planeta
-- [ ] Sol em Áries 0° renderiza em ângulo 0° (esquerda do relógio)
-- [ ] Sol em Peixes 29° renderiza em ângulo 359° (à esquerda, perto de 0°)
+- [ ] `longitudeToAngle(0)` retorna 180° SVG (esquerda, 9 horas)
+- [ ] `longitudeToAngle(90)` retorna 90° SVG (baixo, 6 horas)
+- [ ] `longitudeToAngle(180)` retorna 0° SVG (direita, 3 horas)
+- [ ] `longitudeToAngle(270)` retorna 270° SVG (cima, 12 horas)
 - [ ] Planetas não estão mais clusterizados no arco 0-30°
+- [ ] Unit tests para `longitudeToAngle` passam
 
 ### Glifos astrológicos
 
@@ -18,18 +20,16 @@
 - [ ] Glifos não renderizam como dots genéricos
 - [ ] Cores fixas por planeta (Sol/Lua = dourado/prata; clássicos = branco; modernos = cinza)
 - [ ] Tamanho do glifo: 12-14px (legível)
-- [ ] Tooltip no hover mostra: "Planeta em Signo, grau°"
 - [ ] Sufixo ℞ aparece se `planet.retrograde === true`
 - [ ] Glifos não conflitam visualmente com os signos (camadas separadas)
 
 ### 12 Casas Astrológicas
 
 - [ ] 12 linhas radiais dividem o anel zodiacal em segmentos
-- [ ] Casa 1 começa no ascendente (ângulo 0°)
-- [ ] Casas incrementam anti-horário (sistema Placidus simplificado)
+- [ ] Casa 1 começa no ascendente (ângulo 0° longitude)
 - [ ] Números das casas (1-12) visíveis no centro de cada segmento
 - [ ] Linha cheia para signos, linha tracejada para casas (diferenciação visual)
-- [ ] Casa 1 e Casa 10 (ascendente e meio do céu) com marca visual especial
+- [ ] Casa 1 (ascendente) e Casa 10 (meio do céu) com marca visual especial
 
 ### Rotação
 
@@ -43,8 +43,6 @@
 - [ ] Contraste dos textos ≥ 4.5:1 (WCAG AA)
 - [ ] Cada planeta tem `<g role="img" aria-label="...">` com nome + signo + grau
 - [ ] `<svg>` tem `<title>` e `<desc>` nativos
-- [ ] Tab navega entre planetas (focus order segue o anel)
-- [ ] Sem dependência de cor para identificar planetas (forma + cor)
 
 ### i18n
 
@@ -59,7 +57,7 @@
 - [ ] Snapshot test do MandalaChart passa
 - [ ] Snapshot inclui 10 glifos
 - [ ] Snapshot inclui 12 casas numeradas
-- [ ] Unit tests de `absoluteLongitude` passam
+- [ ] Unit tests de `longitudeToAngle` passam
 - [ ] Testes anteriores (Fase 1, 2) não regrediram
 
 ### Verificação técnica
@@ -72,67 +70,52 @@
 ### Commit
 
 - [ ] Mensagem: `feat(mandala): Fase 3 - anel zodiacal expandido (10 planetas + 12 casas + glifos)`
-- [ ] Arquivos modificados: `core-astrology`, `MandalaChart.tsx`, `zodiac.ts`, `i18n/*.json`, `MandalaChart.test.tsx`
+- [ ] Arquivos modificados: `route.ts` (mandala), `MandalaChart.tsx`, `zodiac.ts`, `i18n/*.json`, `MandalaChart.test.tsx`
 - [ ] Commit no log
 
 ---
 
-## Fase 4 — Tantra 5 Koshas
+## Fase 4 — InfoPanel Tantra enriquecido
 
-### Camada 5 visual
+### KOSHAS data
 
-- [ ] Camada 5 renderiza 5 segmentos de 72° cada
-- [ ] Cores corretas:
-  - [ ] Anna (físico): `#E27D60`
-  - [ ] Prana (energético): `#C38D9E`
-  - [ ] Mano (mental): `#9DADE3`
-  - [ ] Vijnana (sabedoria): `#7C5CFF`
-  - [ ] Ananda (beatitude): `#FFD166`
-- [ ] Opacidade dos segmentos: 0.15-0.20 (sutis)
-- [ ] Labels centralizados nos segmentos
-- [ ] Koshas não competem visualmente com o anel zodiacal
-
-### 11 nodes removidos, 5 koshas renderizados
-
-- [ ] `Array.from({ length: 11 })` substituído por iteração em `data.tantra.bodies` (5 entries)
-- [ ] 5 koshas renderizam como segmentos de 72° no raio 138
-- [ ] Cores corretas aplicadas
-- [ ] Constante `TANTRIC_BODY_WISDOM` depreciada (ou migrada, decisão de implementação)
+- [ ] Arquivo `apps/akasha-portal/src/lib/shared/koshas.ts` criado
+- [ ] `KOSHAS: Kosha[]` com 5 entradas (Anna, Prana, Mano, Vijnana, Ananda)
+- [ ] Cada kosha tem: id, name (pt/en/sanskrit), color, description (pt/en)
+- [ ] Exportado de `lib/shared/index.ts`
+- [ ] Unit test valida 5 entries com IDs únicos
 
 ### InfoPanel Tantra
 
-- [ ] Título: "5 Koshas (Tantra)"
-- [ ] Lista das 5 koshas com nome sânscrito, tradução PT, descrição
-- [ ] Fonte: tradição tântrica (não inventada)
-- [ ] Badge "Ativo" / "Inativo" para cada kosha baseado em `data.tantra.bodies[i].active`
-- [ ] Estado vazio: "Sem dados dos corpos" quando `data.tantra.bodies.length === 0`
-- [ ] SignificadoEmbed com source attribution se houver correspondência
+- [ ] InfoPanel do Layer 3 localizado
+- [ ] Seção 1 (existente): 11 bodies de Yogi Bhajan permanece
+- [ ] Seção 2 (NOVA): "5 Koshas (Tantra Védica)" adicionada abaixo
+- [ ] Cada kosha mostra: nome sânscrito, tradução PT, badge de cor, descrição
+- [ ] SVG do Layer 3 INTOCADO (11 nodes permanecem)
 
 ### i18n
 
-- [ ] `en.json` tem `mandala.koshas.anna/prana/mano/vijnana/ananda` com traduções EN
-- [ ] `pt-BR.json` tem `mandala.koshas.*` com traduções PT
 - [ ] `en.json` tem `mandala.koshas.sectionTitle`
 - [ ] `pt-BR.json` tem `mandala.koshas.sectionTitle`
-- [ ] Descrições das 5 koshas em ambos os idiomas
+- [ ] Ambos os idiomas sincronizados
 
 ### Testes
 
-- [ ] Snapshot test atualizado passa
+- [ ] Snapshot test passa com InfoPanel atualizado
 - [ ] Snapshot inclui "Anna", "Prana", "Mano", "Vijnana", "Ananda"
 - [ ] Testes anteriores não regrediram
+- [ ] SVG do Layer 3 não regrediu (11 nodes presentes)
 
 ### Verificação técnica
 
 - [ ] `pnpm --filter akasha-portal typecheck` exit 0
 - [ ] `pnpm --filter akasha-portal lint` exit 0
 - [ ] `pnpm --filter akasha-portal test:unit` exit 0
-- [ ] Sem regressão nos InfoPanels
 
 ### Commit
 
-- [ ] Mensagem: `feat(mandala): Fase 4 - Tantra 5 Koshas (substitui 11 nodes no Layer 3)`
-- [ ] Arquivos modificados: `MandalaChart.tsx`, `koshas.ts`, `i18n/*.json`, `MandalaChart.test.tsx`
+- [ ] Mensagem: `feat(mandala): Fase 4 - InfoPanel Tantra enriquecido com 5 Koshas védicas`
+- [ ] Arquivos modificados: `koshas.ts`, `lib/shared/index.ts`, `MandalaChart.fase2.tsx` (InfoPanel), `i18n/*.json`, `MandalaChart.test.tsx`
 - [ ] Commit no log
 
 ---
@@ -141,8 +124,7 @@
 
 ### AGENTS.md (DOX pass)
 
-- [ ] `apps/akasha-portal/src/components/akasha/AGENTS.md` documenta nova estrutura visual
-- [ ] `packages/core-astrology/AGENTS.md` documenta `absoluteLongitude` em `Planet`
+- [ ] `apps/akasha-portal/src/components/akasha/AGENTS.md` documenta nova estrutura visual (10 glifos, 12 casas, rotação removida, koshas no InfoPanel)
 - [ ] `apps/akasha-portal/AGENTS.md` atualiza scope/ownership
 - [ ] Docs batem com o código (sem DOX drift)
 
@@ -163,11 +145,11 @@
 
 ## Constraints Verificados
 
-- [ ] Pilar 1 (Cabala) koréby: descrições das koshas de fontes tântricas, não inventadas
+- [ ] Pilar 1 (Cabala) koréby: descrições das koshas de fontes tântricas védicas (Taittiriya Upanishad), não inventadas
 - [ ] Pilar 4 (Odu) ethics: koshas não tocam em "consentimento + terreiro"
-- [ ] LGPD by design: nenhum PII exposto (datas completas, locais)
-- [ ] Performance: render < 16ms (medido com React DevTools Profiler)
-- [ ] i18n: en.json + pt-BR.json sincronizados (sem chaves faltando)
+- [ ] LGPD by design: nenhum PII exposto
+- [ ] Performance: render < 16ms (medido com React DevTools Profiler, sem memo prematuro)
+- [ ] i18n: en.json + pt-BR.json sincronizados
 - [ ] Acessibilidade: WCAG AA mínimo
 - [ ] Build: typecheck + lint + test:unit + build passam
 - [ ] Commit: 1 por fase (2 commits total); conventional commits
@@ -183,3 +165,4 @@
 - ❌ E2E tests — overhead alto para sessão autônoma
 - ❌ Code-splitting / SSR optimization — risco alto, spec futuro
 - ❌ Specs de Qualidade, Grimoire, RAG/Mentor — outras specs do roadmap
+- ❌ Substituir 11 bodies (Yogi Bhajan) por 5 koshas — seriam dados distintos; optou-se por InfoPanel

@@ -8,11 +8,11 @@
 > **⚠️ CORREÇÃO PÓS-CODEGRAPH-CHECK (Task 1.1)**: a versão original deste spec assumia que existia um "Council" no `MandalaData` que precisava ser removido. **Não existe**. O que parecia ser Council era o layer de partículas decorativas. Estrutura real:
 > - **Layer 1**: Ori (Odu) - centro
 > - **Layer 2**: Contrato (Cabala) - triângulo interno (raio 80)
-> - **Layer 3**: Vitalidade (Tantra) - **web tântrica com 11 nodes no raio 138** ← aqui entram as 5 koshas
+> - **Layer 3**: Vitalidade (Tantra) - **web tântrica com 11 nodes no raio 138** (sistema Yogi Bhajan, 11 corpos)
 > - **Layer 4**: Céu (Astrologia) - **anel zodiacal com 12 signos + 10 planetas** ← aqui entra o fix
 > - **Layer 5**: Chave (I-Ching) - hexagrama externo
 >
-> **Fase 4 reorientada**: as 5 koshas passam a ser uma sub-visualização no Layer 3 (Tantra), **substituindo os 11 nodes atuais** por 5 segmentos coloridos de 72° cada. `data.tantra.bodies` (5 entries) é a fonte de verdade.
+> **Fase 4 simplificada**: as 11 bodies de Yogi Bhajan **NÃO** são destruídas (são dados válidos). O que mudou: adicionar **info adicional sobre as 5 koshas** (conceito tântrico védico paralelo) no InfoPanel do Layer 3, sem mexer no SVG. As 5 koshas ficam como metadado textual. Spec original (que propunha substituir 11 nodes) foi abandonado.
 
 ## Por que
 
@@ -20,7 +20,7 @@ O MandalaChart hoje tem dois problemas estruturais:
 
 1. **Bug de longitude absoluta** (linha 379 de `MandalaChart.tsx`): `pos: toXY((p.degree / 360) * 360, 178)` é matematicamente igual a `toXY(p.degree, 178)`. Como `p.degree` é o grau DENTRO do signo (0-29.99°), todos os 10 planetas ficam clusterizados no arco de 0-30° em vez de distribuídos ao longo da eclíptica inteira. Resultado: o mapa astral é visualmente incorreto.
 2. **Ausência de casas astrológicas**: mapa astral de rodas clássicas mostra 12 casas (1-12) e 12 signos. O Mandala atual só mostra signos. Sem casas, não há leitura de "onde na vida" cada planeta atua.
-3. **Tantra (Layer 3) tem 11 nodes mas o dado tem 5 bodies**: o código renderiza 11 nodes com `Array.from({ length: 11 })` e depois faz `data.tantra.bodies.find(...)` que só encontra 5. Inconsistência visual/dados. Substituir 11 nodes por 5 koshas (72° cada) é mais coerente com o dado.
+3. **Tantra (Layer 3) — 5 koshas como InfoPanel**: as 11 bodies (Yogi Bhajan) já são renderizadas. Adicionar 5 koshas (tântrica védica, pancha-kosha) como InfoPanel enriquecido, sem mexer no SVG.
 
 ## O que muda
 
@@ -34,12 +34,14 @@ O MandalaChart hoje tem dois problemas estruturais:
 - Manter contraste WCAG AA mínimo
 - i18n en.json + pt-BR.json para rótulos novos
 
-### Fase 4 — Tantra 5 Koshas (implementada nesta sessão)
+### Fase 4 — InfoPanel Tantra enriquecido (implementada nesta sessão)
 
-- Camada 3 (Tantra) do Mandala passa de 11 nodes hardcoded para 5 koshas (5 segmentos de 72° cada)
-- Cores fixas por kosha: Anna (físico), Prana (energético), Mano (mental), Vijnana (sabedoria), Ananda (beatitude)
-- `data.tantra.bodies` (5 entries) é a fonte de verdade para nomes/active status
-- i18n en.json + pt-BR.json para as 5 koshas
+- Camada 3 (Tantra) do Mandala: **SVG INTOCADO** (os 11 bodies de Yogi Bhajan permanecem)
+- Adicionar seção "5 Koshas (Tantra Védica)" no InfoPanel do Layer 3, **ao lado** (não substituir) dos 11 bodies
+- Cores fixas por kosha exibidas como small badges (não segmentos de anel)
+- `data.tantra.bodies` (11 entries Yogi Bhajan) continua sendo a fonte de verdade para o SVG
+- `KOSHAS` é uma constante nova, separada, para o InfoPanel
+- i18n en.json + pt-BR.json para as 5 koshas (textos do InfoPanel)
 
 ### Fases 5 e 6 (detalhadas, NÃO implementadas nesta sessão)
 
@@ -159,46 +161,45 @@ O sistema DEVERÁ renderizar o MandalaChart em < 16ms por frame.
 - **Medição**: usar React DevTools Profiler ou `performance.mark()`
 - **POR QUÊ**: Mandala renderiza uma vez por page load, mas precisa ser snappy em mobile
 
-### Requisito 4.1: Camada 3 (Tantra) = 5 Koshas
+### Requisito 4.1: InfoPanel Tantra mostra 5 Koshas (Tantra Védica)
 
-O sistema DEVERÁ renderizar a Camada 3 (Tantra/Vitalidade) como 5 segmentos correspondentes aos 5 koshas (camadas do ser na tradição tântrica), substituindo os 11 nodes atuais.
+O sistema DEVERÁ exibir informação textual sobre as 5 koshas (pancha-kosha) no InfoPanel do Layer 3, **ao lado** (não substituindo) a lista das 11 bodies de Yogi Bhajan.
 
-#### Cenário: Renderização dos 5 koshas
-- **QUANDO** o MandalaChart é renderizado
-- **ENTÃO** a Camada 3 (raio ~138, onde estavam os 11 nodes) tem 5 segmentos de 72° cada
-- **E** cada segmento tem cor fixa:
-  - Anna (físico): `#E27D60` (terracota)
-  - Prana (energético): `#C38D9E` (rosa pálido)
-  - Mano (mental): `#9DADE3` (azul claro)
-  - Vijnana (sabedoria): `#7C5CFF` (violeta)
-  - Ananda (beatitude): `#FFD166` (dourado)
-- **E** cada kosha tem label centralizado no segmento
-- **E** opacidade do segmento é 0.15-0.20 (sutis, não competem com o anel zodiacal)
-- **E** se `data.tantra.bodies[i].active === false`, o segmento fica com opacidade 0.05 (inativo)
-
-### Requisito 4.2: Remoção dos 11 Nodes Hardcoded
-
-O sistema NÃO DEVERÁ renderizar 11 nodes hardcoded no Layer 3. Os nodes devem vir de `data.tantra.bodies` (5 entries).
-
-#### Cenário: Substituição 11 → 5
-- **QUANDO** o MandalaChart é renderizado
-- **ENTÃO** o array `tantricNodes` usa `data.tantra.bodies` em vez de `Array.from({ length: 11 })`
-- **E** se `data.tantra.bodies` tiver 5 entradas, renderiza 5 koshas
-- **E** se `data.tantra.bodies` tiver 0 entradas, renderiza 5 koshas com nomes genéricos ("Corpo 1", ..., "Corpo 5") e opacidade 0.05 (estado vazio)
-- **E** a constante `TANTRIC_BODY_WISDOM` é depreciada ou migrada para `KOSHAS` (preferência: depreciada)
-
-### Requisito 4.3: InfoPanel Tantra com Texto
-
-O sistema DEVERÁ exibir descrição das 5 koshas no InfoPanel lateral quando Camada 3 está ativa.
-
-#### Cenário: Conteúdo do InfoPanel Tantra
+#### Cenário: InfoPanel Tantra enriquecido
 - **QUANDO** `activeLayer === 3`
 - **ENTÃO** o InfoPanel lateral exibe:
-  - Título: "5 Koshas (Tantra)"
-  - Lista das 5 koshas com nome sânscrito, tradução PT, descrição de 1-2 frases
-  - Estado `active` mostrado como badge "Ativo" / "Inativo"
-  - Fonte: tradição tântrica (não-inventada)
-  - Nenhuma correspondência esotérica fabricada (LGPD by design + Pilar 1)
+  - **Seção 1** (já existente): 11 bodies de Yogi Bhajan com nomes e active/inactive
+  - **Seção 2** (NOVA): "5 Koshas (Tantra Védica)" — lista das 5 koshas:
+    - Anna (físico): `#E27D60` (badge de cor)
+    - Prana (energético): `#C38D9E`
+    - Mano (mental): `#9DADE3`
+    - Vijnana (sabedoria): `#7C5CFF`
+    - Ananda (beatitude): `#FFD166`
+  - **E** cada kosha tem nome sânscrito, tradução PT, descrição de 1-2 frases
+  - **E** as 5 koshas são **somente texto** (não alteram o SVG)
+  - **E** fonte: tradição tântrica védica (Taittiriya Upanishad / Vivekachudamani)
+  - **E** nenhuma correspondência esotérica fabricada (LGPD by design + Pilar 1)
+
+### Requisito 4.2: SVG do Layer 3 NÃO é modificado
+
+O sistema NÃO DEVERÁ alterar o render SVG dos 11 nodes de Yogi Bhajan.
+
+#### Cenário: SVG intocado
+- **QUANDO** o MandalaChart é renderizado
+- **ENTÃO** os 11 nodes permanecem no raio 138 com `Array.from({ length: 11 })`
+- **E** a constante `TANTRIC_BODY_WISDOM` permanece intacta
+- **E** `data.tantra.bodies` continua sendo mapeado 1-1 para os nodes
+- **POR QUÊ**: 11 bodies são dados válidos do sistema Yogi Bhajan; destruir seria perda de informação
+
+### Requisito 4.3: Constante KOSHAS separada
+
+O sistema DEVERÁ ter uma constante `KOSHAS` em arquivo separado (`koshas.ts`) que define as 5 koshas védicas.
+
+#### Cenário: Definição de dados
+- **QUANDO** o componente InfoPanel renderiza a seção de koshas
+- **ENTÃO** ele importa `KOSHAS` de `apps/akasha-portal/src/lib/shared/koshas.ts`
+- **E** cada kosha tem: id, name (pt/en/sanskrit), color, description (pt/en)
+- **E** é puramente dado (sem lógica de UI)
 
 ### Requisito 5.1 (FUTURO): Mandato/Dashboard Cards
 
