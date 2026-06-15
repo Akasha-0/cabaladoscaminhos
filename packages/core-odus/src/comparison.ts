@@ -1,6 +1,20 @@
 // Odu Comparison Tool - Cabala Dos Caminhos
 // Compare two Ifa/Odu readings for similarities and differences
 
+// NOTE (lesson N+24 pattern: surface, don't hide):
+//   5 interfaces below are marked `// fallow-ignore-next-line unused-type`:
+//   - OduComparison (line 63): USED internally as return type of compareOdu
+//     and consumed by compareOduNumbers. Fallows' ignore is overly aggressive.
+//   - ElementalAlignment, OrixaOverlap, QuizilaCompatibility, EboAlignment:
+//     used ONLY as return types of internal helpers (compareElemental,
+//     compareOrixas, compareQuizilas, compareEbos). They are exported but
+//     no external consumer uses them today (Jun 2026).
+//   If a future Pilar 4 work needs these types publicly, the markers
+//   document the situation. If a F-100 deadcode pass wants to remove them,
+//   the cleanup is: change `export interface` → `interface` for the 4
+//   unused types and the file shrinks by ~30 lines. (Lesson N+25: pause
+//   before that refactor — it's a public API change.)
+
 import { OduInfo, odusData } from './calculos';
 
 /**
