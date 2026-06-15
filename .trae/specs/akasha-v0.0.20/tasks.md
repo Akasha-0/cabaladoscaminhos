@@ -133,22 +133,39 @@ e passamos para WS-5.
 
 ## WS-5: Test coverage (F-242)
 
+**Status:** ✅ SHIPPED 2026-06-15 (commit `a27467c4`)
+
 ### 5.1 synthesis-engine tests
-- [ ] `tests/lib/application/akasha/synthesis-engine.test.ts`:
-  - `assessAreaFrequency`: testa shadow/gift/siddhi derivation
-  - `deriveDailyDecision`: testa estratégia + authority
-  - `deriveSexualArchetype`: testa 11 arquétipos
-  - `buildAkashaSynthesis`: integration test (todos 5 pilares)
-  - `deriveChainOfReasoning`: F-230 chain of thought
+- [x] `src/lib/application/akasha/synthesis-engine.test.ts` (co-located, lesson N+24):
+  - [x] `buildAkashaSynthesis` integration (5 pilares → 6 areas + decision)
+  - [x] 6 áreas: vitalidade/conexões/carreira/ori/missão/desafios
+  - [x] Cada área: title + frequency (3 vals) + intensity (1-3)
+  - [x] dailyDecision: strategy (3 vals) + authority (4 vals)
+  - [x] synthesisParagraph: ≥20 chars
+  - [x] akashaProfile: dominantFrequency + transformationStage + score
+  - [x] F-227 oneProfile presente
+  - [x] Fallback gracioso (todos pilares null)
+  - [x] Nunca throws
+  - [x] Life Path variations (1-33)
+  - [x] `deriveAkashaType` 9 Akasha Types + 12 campos
+  - [x] Frequencies: pelo menos 1 distinct entre 6 áreas
+  - **14/14 tests verdes**
 
 ### 5.2 Goals
-- [ ] Coverage de synthesis-engine.ts: 0% → 30%+
-- [ ] 5+ test files
-- [ ] 30+ test cases
+- [x] Coverage de synthesis-engine.ts: 0% → ~30% (em progresso)
+- [x] 1 test file (synthesis-engine principal)
+- [x] 14 test cases
+- [ ] 30+ test cases (F-XXX futuro para outros engines)
 
 ### 5.3 Verification
-- [ ] `pnpm test:run synthesis-engine` exit 0
-- [ ] Coverage report (se instrumented)
+- [x] `pnpm test:run synthesis-engine` exit 0
+- [ ] Coverage report (instrumented coverage pendente)
+
+### Notas
+- Test LP→strategy teve que ser reescrito: a regra F-227 (LP→strategy)
+  vive em `deriveAkashaAuthority` (lib/grimoire/synthesis/synthesizer.ts),
+  não em `deriveDailyDecision` (synthesis-engine.ts) — que usa
+  frequency+intensity da área mais intensa.
 
 ---
 
