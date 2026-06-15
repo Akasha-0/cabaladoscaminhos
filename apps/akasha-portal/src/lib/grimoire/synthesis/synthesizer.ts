@@ -86,7 +86,7 @@ export interface AkashaAuthority {
  * - Autoridade: derivada do Corpo Tântrico + Casa 8 (intuição corporal)
  * - Área de foco: a área com mais marcadores activos nos pilares
  */
-export function deriveAkashaAuthority(pilares: PilaresDados): AkashaAuthority {
+export function deriveAkashaAuthority(pilares: Partial<PilaresDados>): AkashaAuthority {
   const lp = pilares.cabala?.life_path;
   const luaSigno = pilares.astrologia?.lua_signo;
   const casa8Signo = pilares.astrologia?.casa_8_signo;

@@ -21,12 +21,16 @@
  */
 
 import { deriveAkashaAuthority } from './synthesis/synthesizer';
+import type { PilaresDados } from './significados-curados';
 
 /** Estado emocional do momento — entrada do prompt. */
 export type EstadoAkasha = 'paz' | 'ansiedade' | 'neutro';
 
 /** Tipos de autoridade Akasha — re-exportados de synthesizer para API plana. */
 export type { AkashaAuthority, EstrategiaAkasha, AutoridadeAkasha } from './synthesis/synthesizer';
+
+/** Tipo parcial para uso em UI — só precisa dos campos que o deriveAkashaAuthority consulta. */
+export type PilaresParciais = Partial<PilaresDados>;
 
 /**
  * Regra-mãe do F-227:
@@ -70,7 +74,7 @@ export function recomendarAcaoPorEstado(estado: EstadoAkasha): {
  * Esta é a pergunta que o `AkashaAuthorityPrompt` exibe antes de qualquer
  * ação importante: "Qual é o seu estado AGORA?".
  */
-export function perguntaAkashaHoje(pilares: Parameters<typeof deriveAkashaAuthority>[0]): {
+export function perguntaAkashaHoje(pilares: PilaresParciais): {
   pergunta: string;
   opcoes: { estado: EstadoAkasha; label: string; cor: string }[];
   contexto: string;
@@ -96,7 +100,7 @@ export function perguntaAkashaHoje(pilares: Parameters<typeof deriveAkashaAuthor
  */
 export function avaliarDecisao(args: {
   estado: EstadoAkasha;
-  pilares: Parameters<typeof deriveAkashaAuthority>[0];
+  pilares: PilaresParciais;
   intencao: string;
 }): { deveAgir: boolean; razao: string; alternativa: string } {
   const { estado, pilares, intencao } = args;
@@ -147,7 +151,7 @@ export function avaliarDecisao(args: {
  * Prática concreta do dia segundo a Authority. Frase curta que o usuário
  * repete ao acordar (ou antes de qualquer decisão) para calibrar o corpo.
  */
-export function praticaAuthorityDiaria(pilares: Parameters<typeof deriveAkashaAuthority>[0]): string {
+export function praticaAuthorityDiaria(pilares: PilaresParciais): string {
   const authority = deriveAkashaAuthority(pilares);
   switch (authority.autoridade) {
     case 'sagrada':
