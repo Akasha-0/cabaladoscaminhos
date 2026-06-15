@@ -16,7 +16,14 @@
  *
  * Outputs:
  * - 200 + JSON { sent, failed, expired, skipped } para monitoramento
- * - Logs em stderr (capturados pelo Vercel logs)
+ * - Logs em stderr (capturados pelo Vercel logs) — APENAS userId + endpoint
+ *   host (NUNCA a URL completa, NUNCA p256dh/auth, NUNCA err stack trace)
+ *
+ * Idempotência:
+ * - Roda 1x/dia via Vercel cron. Re-rodar o mesmo dia ENVIA DE NOVO
+ *   (não há `lastPushedAt` no schema — adicionar é F-XX futuro).
+ * - Para re-rodar manualmente, basta chamar de novo — não há side-effects
+ *   além de 1 push extra por sub.
  *
  * Frequência alvo: 1x/dia às 7h BRT (= 10h UTC, verão) ou 11h UTC (inverno).
  * Cron Vercel: "0 10 * * *" (ajustar com DST manualmente).
@@ -34,6 +41,18 @@ import { verifyCronSecret } from '@/lib/application/auth/cron-guard';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // 60s — Vercel Fluid Compute default
+
+/**
+ * Redacta endpoint para LOG SEGURO: apenas o host (ex: "fcm.googleapis.com").
+ * NUNCA loga path completo (contém tokens de autenticação em alguns push services).
+ */
+function hostOnly(endpoint: string): string {
+  try {
+    return new URL(endpoint).host;
+  } catch {
+    return '<invalid-url>';
+  }
+}
 
 export async function GET(request: NextRequest) {
   // 1. Validação do secret
@@ -110,11 +129,13 @@ export async function GET(request: NextRequest) {
         expired++;
       } else {
         failed++;
-        console.error(`[cron/daily-push] Falha para ${sub.userId}:`, result.error);
+        // Log SEGURO: userId + host (NUNCA endpoint completo, NUNCA error stack)
+        console.error(`[cron/daily-push] fail userId=${sub.userId} host=${hostOnly(sub.endpoint)}`);
       }
-    } catch (err) {
+    } catch {
+      // SEMPRE redacted: userId + host, nunca `err` (pode conter PII, keys, etc)
       failed++;
-      console.error(`[cron/daily-push] Erro inesperado para ${sub.userId}:`, err);
+      console.error(`[cron/daily-push] exception userId=${sub.userId} host=${hostOnly(sub.endpoint)}`);
     }
   }
 

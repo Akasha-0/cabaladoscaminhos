@@ -1,11 +1,15 @@
 /**
  * cron-guard.ts — validação de segredo para cron endpoints
  *
- * Vercel Cron envia header `Authorization: Bearer <CRON_SECRET>` OU
- * query `?secret=<CRON_SECRET>`. Se nenhum match, retorna 401.
+ * Vercel Cron envia header `Authorization: Bearer <CRON_SECRET>`.
+ * Se nenhum match, retorna 401.
  *
- * SECURITY: nunca log CRON_SECRET. Use apenas === comparison.
- * CRON_SECRET é definido no Vercel dashboard (env var) e nunca commitado.
+ * SECURITY:
+ * - Nunca log CRON_SECRET.
+ * - Use apenas === comparison (constant-time via timingSafeEqual idealmente,
+ *   mas para CRON_SECRET de 32+ chars, === é suficiente).
+ * - NÃO aceitamos ?secret= query (vazaria em logs do proxy/cdn).
+ * - CRON_SECRET é definido no Vercel dashboard (env var) e nunca commitado.
  *
  * Uso:
  *   const guard = verifyCronSecret(request);
@@ -20,8 +24,8 @@ const UNAUTHORIZED = NextResponse.json(
 );
 
 /**
- * Verifica o segredo do cron. Retorna `NextResponse` 401 se inválido,
- * ou `null` se OK (request pode prosseguir).
+ * Verifica o segredo do cron via header `Authorization: Bearer <secret>`.
+ * Retorna `NextResponse` 401 se inválido, ou `null` se OK.
  */
 export function verifyCronSecret(request: NextRequest): NextResponse | null {
   const expected = process.env.CRON_SECRET;
@@ -30,17 +34,12 @@ export function verifyCronSecret(request: NextRequest): NextResponse | null {
     return UNAUTHORIZED;
   }
 
-  // 1. Header `Authorization: Bearer <secret>`
+  // Header `Authorization: Bearer <secret>` (única forma aceita)
   const authHeader = request.headers.get('authorization');
   if (authHeader) {
     const match = /^Bearer\s+(.+)$/.exec(authHeader);
     if (match && match[1] === expected) return null;
   }
-
-  // 2. Query `?secret=<secret>` (Vercel Cron alternative)
-  const url = new URL(request.url);
-  const querySecret = url.searchParams.get('secret');
-  if (querySecret && querySecret === expected) return null;
 
   return UNAUTHORIZED;
 }

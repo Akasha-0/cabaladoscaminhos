@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { NextRequest } from 'next/server';
 import { verifyCronSecret } from './cron-guard';
 
@@ -47,9 +47,10 @@ describe('verifyCronSecret', () => {
     expect(verifyCronSecret(req)).toBeNull();
   });
 
-  it('retorna null (OK) quando ?secret= query param bate', () => {
+  it('retorna 401 quando ?secret= query param é fornecido (legado removido por leak em logs)', () => {
+    // Não aceitamos ?secret= query — vazaria em logs de proxy/cdn.
     const req = makeRequest({ querySecret: 'test-secret-123' });
-    expect(verifyCronSecret(req)).toBeNull();
+    expect(verifyCronSecret(req)?.status).toBe(401);
   });
 
   it('retorna 401 quando Authorization Bearer está errado', () => {
