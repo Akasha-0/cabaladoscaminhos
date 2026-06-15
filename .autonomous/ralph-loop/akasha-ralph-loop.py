@@ -85,22 +85,82 @@ def next_phase(current: str) -> str:
     return PHASES[(idx + 1) % len(PHASES)]
 
 def bump_version(ver: dict, phase: str) -> dict:
-    """Bump version based on release phase."""
+    """
+    Bump version based on release phase.
+
+    Version progression (per user convention, see memory
+    `autonomous-versioning-strategy`):
+        v0.0.1 → v0.0.2 → ... → v0.0.99
+                                    ↓ patch overflow
+                          v0.1.0 → ... → v0.1.99
+                                              ↓ patch overflow
+                                v0.2.0 → ... → v0.99.99
+                                                  ↓ surface to user
+                                            v1.0.0 (HUMAN APPROVAL)
+
+    Rules:
+      - RELEASE phase → patch++
+      - Patch overflow (>99) → minor++, patch=0
+      - Minor overflow + major==0 → STOP and surface to user for v1.0.0
+      - Major bump NEVER auto-applied
+    """
     if phase == "RELEASE":
-        ver["patch"] += 1
-    elif phase == "VALIDATION":
-        ver["minor"] += 1
-        ver["patch"] = 0
-    elif phase == "IMPLEMENTATION":
-        ver["major"] += 1
-        ver["minor"] = 0
-        ver["patch"] = 0
+        # patch++ with overflow handling
+        if ver["patch"] >= 99:
+            # Patch exhausted — bump minor, reset patch
+            if ver["minor"] >= 99:
+                # Both patch and minor exhausted at major=0 → STOP
+                # Do NOT auto-bump to v1.0.0
+                entry = {
+                    "version": f"{ver['major']}.{ver['minor']}.{ver['patch']}",
+                    "phase": "SURFACE_TO_USER",
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "note": "v0.99.99 reached — HUMAN APPROVAL required for v1.0.0",
+                }
+                ver["changelog"].insert(0, entry)
+                return ver
+            ver["minor"] += 1
+            ver["patch"] = 0
+        else:
+            ver["patch"] += 1
+    # VALIDATION / IMPLEMENTATION / RESEARCH / PLANNING / QA — no version bump
     entry = {
         "version": f"{ver['major']}.{ver['minor']}.{ver['patch']}",
         "phase": phase,
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
     ver["changelog"].insert(0, entry)
+    return ver
+
+
+def init_fresh_version() -> dict:
+    """
+    Initialize version at v0.0.1 for a FRESH run (per user convention).
+    Called when version.json is missing or is at the sentinel 0.0.0.
+    """
+    return {
+        "major": 0,
+        "minor": 0,
+        "patch": 1,  # Start at v0.0.1, NOT v0.0.0
+        "changelog": [
+            {
+                "version": "0.0.1",
+                "phase": "INIT",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "note": "Fresh ralph-loop run — starting at v0.0.1 per user convention",
+            }
+        ],
+    }
+
+
+def get_or_init_version() -> dict:
+    """Load version, or init at v0.0.1 for fresh runs."""
+    ver = load_version()
+    if ver["major"] == 0 and ver["minor"] == 0 and ver["patch"] == 0:
+        # Sentinel 0.0.0 → fresh run, init at v0.0.1
+        fresh = init_fresh_version()
+        save_version(fresh)
+        return fresh
     return ver
 
 def log_session(state: dict, message: str) -> None:
@@ -425,7 +485,7 @@ def do_RELEASE(state: dict) -> dict:
     state["phase_iteration"] += 1
 
     iteration = state["iteration"]
-    ver = load_version()
+    ver = get_or_init_version()  # Fresh runs init at v0.0.1 per user convention
     new_ver = bump_version(ver, "RELEASE")
     version_str = f"{new_ver['major']}.{new_ver['minor']}.{new_ver['patch']}"
     save_version(new_ver)

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-15T22:22:57.175726+00:00",
-  "version": "0.3.0",
+  "generated_at": "2026-06-15T22:26:43.394094+00:00",
+  "version": "0.4.0",
   "plans": {
     "pending": [],
     "done": [
@@ -164,9 +164,9 @@
     ]
   },
   "git": {
-    "untracked": 0,
-    "modified": 9,
-    "total": 9,
+    "untracked": 1,
+    "modified": 10,
+    "total": 11,
     "has_changes": true
   },
   "triad": {
@@ -186,9 +186,9 @@
     "stats": {
       "\u001b[36mproject": "\u001b[0m /home/skynet/cabala-dos-caminhos",
       "\u001b[1mindex_statistics": "\u001b[0m",
-      "files": "934",
-      "nodes": "6.306",
-      "edges": "17.726",
+      "files": "935",
+      "nodes": "6.315",
+      "edges": "17.750",
       "db_size": "22.25 MB",
       "backend": "\u001b[32mnode:sqlite — built-in (full WAL)\u001b[0m",
       "journal": "\u001b[32mwal\u001b[0m",
@@ -210,6 +210,6 @@
     },
     "codegraph_needs_sync": false,
     "git_has_changes": true,
-    "untracked_files": 0
+    "untracked_files": 1
   }
 }

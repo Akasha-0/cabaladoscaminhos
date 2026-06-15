@@ -12,10 +12,10 @@
     "priority": "P1"
   },
   "phase": "RESEARCH",
-  "iteration": 3,
+  "iteration": 4,
   "snapshot": {
-    "generated_at": "2026-06-15T22:18:52.632085+00:00",
-    "version": "0.3.0",
+    "generated_at": "2026-06-15T22:23:30.321589+00:00",
+    "version": "0.4.0",
     "features": {
       "pending_count": 8,
       "done_count": 44,
@@ -59,7 +59,7 @@
       "tests": {
         "pass": false,
         "passed": 51,
-        "failed": 6
+        "failed": 5
       },
       "lint": {
         "pass": true
