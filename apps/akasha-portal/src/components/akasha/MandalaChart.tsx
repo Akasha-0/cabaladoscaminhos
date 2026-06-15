@@ -10,6 +10,7 @@ import {
 } from '@/lib/grimoire/significados-curados';
 import { useCockpitStore } from '@/stores/cockpit-store';
 import { formatDegreeToZodiac, GLYPHS_BY_PLANET, PLANET_COLORS, longitudeToSvgAngle } from '@/lib/shared/zodiac';
+import { KOSHAS } from '@/lib/shared/koshas';
 
 function resolveSig(pilar: Pilar, id: string | number | null | undefined): SignificadoCurado {
   if (id == null) return significadoGenericoDoPilar(pilar);
@@ -1069,6 +1070,41 @@ export default function MandalaChart({ data }: Props) {
             significado={resolveSig('tantrica', data.tantra.destiny ?? data.tantra.soul ?? 1)}
             color="#2DD4BF"
           />
+          {/* Mandala Fase 4 (spec mandala-fase3-zodiac-tantra): 5 Koshas védicas
+              como enriquecimento textual. SVG Layer 3 permanece com 11 bodies
+              de Yogi Bhajan. As 5 koshas são conceito tântrico védico paralelo. */}
+          <Divider />
+          <p style={{ fontSize: '0.75rem', color: '#2DD4BF', fontWeight: 600, marginBottom: '0.5rem' }}>
+            5 Koshas (Tantra Védica)
+          </p>
+          {KOSHAS.map((k) => (
+            <div
+              key={k.id}
+              data-testid={`kosha-${k.id}`}
+              style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}
+            >
+              <span
+                aria-hidden
+                style={{
+                  display: 'inline-block',
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: k.color,
+                  marginTop: 6,
+                  flexShrink: 0,
+                }}
+              />
+              <div>
+                <p style={{ fontSize: '0.8125rem', color: '#FFFFFF', fontWeight: 600, margin: 0 }}>
+                  {k.name.pt} <span style={{ color: '#A7AECF', fontWeight: 400 }}>({k.name.sanskrit})</span>
+                </p>
+                <p style={{ fontSize: '0.75rem', color: '#A7AECF', margin: 0 }}>
+                  {k.description.pt}
+                </p>
+              </div>
+            </div>
+          ))}
         </InfoPanel>
       )}
 
