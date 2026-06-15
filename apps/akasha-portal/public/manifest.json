@@ -1,8 +1,8 @@
 {
   "name": "Sistema Akasha",
   "short_name": "Akasha",
-  "description": "Oráculo vivo — cruzamento dos 4 Pilares: Astrologia, Numerologia Cabalística, Tantra, Odus de Nascimento",
-  "start_url": "/",
+  "description": "Oráculo vivo — cruzamento dos 5 Pilares: Astrologia, Numerologia Cabalística, Tantra, Odus de Nascimento, I Ching. ONE SCREEN com síntese diária, decisão Akasha Authority, e Caixa de 9 dimensões.",
+  "start_url": "/meu-dia",
   "display": "standalone",
   "background_color": "#06070F",
   "theme_color": "#06070F",
@@ -32,6 +32,20 @@
   ],
   "categories": ["lifestyle", "spirituality", "health"],
   "shortcuts": [
+    {
+      "name": "Meu Dia",
+      "short_name": "Meu Dia",
+      "description": "Síntese do dia — clima, prática, autoridade, janela de clareza",
+      "url": "/meu-dia",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Minha Caixa",
+      "short_name": "Caixa",
+      "description": "9 dimensões de vida — saúde, dinheiro, amor, sexualidade, propósito, espiritualidade",
+      "url": "/minha-caixa",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
     {
       "name": "Oráculo",
       "short_name": "Oráculo",
