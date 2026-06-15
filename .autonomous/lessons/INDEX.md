@@ -7,7 +7,7 @@ deve ler ANTES de tentar trabalho similar.
 **Como usar:** antes de cada feature nova, passe o olho no tema mais
 próximo. Se a lesson soa relevante, leia inteira.
 
-**Total:** 21 lessons (Jun 11 – Jun 15, 2026).
+**Total:** 22 lessons (Jun 11 – Jun 15, 2026).
 
 ---
 
@@ -118,6 +118,15 @@ lint suppressions.
   noise. Audit antes de remover. "Surface, don't hide" quando não pode
   fixar com segurança.
 
+## 9. Spec chain audit (1 lesson)
+
+Lessons sobre auditar o spec chain vs realidade do código.
+
+- **`session-n-plus-27-spec-chain-staleness-audit.md`** — Spec chain
+  status (✅/⏳/Draft) drifts from on-disk reality. 7 specs marked
+  "Draft"/"Proposta"/"Pronta" mas código já shipped. Audit `Status:`
+  line contra filesystem antes de escolher next-work target.
+
 ---
 
 ## Quick reference: "I'm doing X, which lessons should I read?"
@@ -136,3 +145,4 @@ lint suppressions.
 | Recovery / respawn | N+9 |
 | Loop ralph infra | loop-sudo-policy, pre-existing-errors, N+25, N+26 |
 | Code archeology (audit decisions) | N+26 |
+| Spec chain audit / next-work pick | N+27 |
