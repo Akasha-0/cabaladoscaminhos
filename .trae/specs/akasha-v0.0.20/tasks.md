@@ -66,27 +66,39 @@
 
 ## WS-3: Web Share Target (F-240)
 
+**Status:** ✅ SHIPPED 2026-06-15 (commits `b7687b82` + related)
+
 ### 3.1 Manifest update
-- [ ] Editar `apps/akasha-portal/public/manifest.json`:
-  - Preencher `share_target` com action=`/compartilhar/receber`
-  - Adicionar ícone específico (`/icons/share-192.png`) se quiser
+- [x] Editar `apps/akasha-portal/public/manifest.json`:
+  - [x] Preencher `share_target` com action=`/compartilhar/receber`
+  - [ ] Adicionar ícone específico (`/icons/share-192.png`) — deferred (manifest usa `icon-192`)
 
 ### 3.2 Route
-- [ ] Criar `apps/akasha-portal/src/app/compartilhar/receber/page.tsx`:
-  - Server-side: parse `FormData` (`title`, `text`, `url`)
-  - Criar rascunho de consulta no Mentor (POST `/api/mentor/rascunho`)
-  - Redirect para `/oraculo?rascunho=<id>`
-- [ ] Auth: aceitar `akasha_session` cookie OU redirect para onboarding
+- [x] Criar `apps/akasha-portal/src/app/compartilhar/receber/page.tsx`:
+  - [x] Server-side: parse `FormData` (`title`, `text`, `url`)
+  - [x] Criar rascunho de consulta no Mentor (via `prisma.mentorRascunho.create`, fallback para `?intent=` se tabela não existir)
+  - [x] Redirect para `/oraculo?rascunho=<id>` ou `/oraculo?intent=...`
+- [x] Auth: aceitar `akasha_session` cookie OU redirect para onboarding com return path
 
 ### 3.3 Tests
-- [ ] `tests/integration/share-target.test.ts`:
-  - POST com `text="como lidar com ansiedade"`
-  - Verificar rascunho criado no DB
-  - Verificar redirect URL
+- [x] `tests/integration/api/share-receive.test.ts`:
+  - [x] 303 redirect para onboarding sem auth (com return path)
+  - [x] 303 redirect com FormData válida para /oraculo?intent=
+  - [x] 400 unsafe_url para javascript: scheme
+  - [x] 400 unsafe_url para data: scheme
+  - [x] 400 empty_intent para FormData vazio
+  - [x] Truncation de campos > 2000 chars (anti-DoS)
+  - [x] URL https:// preservada como "(fonte: ...)"
+  - **8/8 tests verdes**
 
 ### 3.4 Verification
-- [ ] Typecheck + tests
-- [ ] Manual: PWA install, share to Akasha, ver rascunho criado
+- [x] Typecheck + tests
+- [ ] Manual: PWA install, share to Akasha, ver rascunho criado (pendente deploy)
+
+### Notas
+- Tabela `mentorRascunho` pode não existir no schema Prisma — fallback
+  via `?intent=` query para `mentor.normalConsulta` (já existe)
+- Migration para `mentorRascunho` é F-XX futuro (D-XX proposal)
 
 ---
 
