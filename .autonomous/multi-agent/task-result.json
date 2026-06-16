@@ -1,39 +1,23 @@
 {
-  "all_ok": false,
-  "summary": "2/3 agents succeeded in 463.8s",
+  "all_ok": true,
+  "summary": "2/2 agents succeeded in 442.8s",
   "results": [
     {
-      "agent_id": "bdf76451",
-      "type": "missing_tests",
-      "success": true,
-      "message": "Agent bdf76451 completed missing_tests",
-      "exit_code": 0
-    },
-    {
-      "agent_id": "32dfb3e0",
+      "agent_id": "f6855a6a",
       "type": "tech_debt",
       "success": true,
-      "message": "Agent 32dfb3e0 completed tech_debt",
+      "message": "Agent f6855a6a completed tech_debt",
       "exit_code": 0
     },
     {
-      "agent_id": "8d59626c",
+      "agent_id": "dd074abf",
       "type": "large_file",
-      "success": false,
-      "message": "[Errno 2] No such file or directory: '/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/agent-results/result-8d59626c.json'"
+      "success": true,
+      "message": "Agent dd074abf completed large_file",
+      "exit_code": 0
     }
   ],
   "improvements": [
-    {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "3 changed files lack tests",
-      "files": [
-        "apps/akasha-portal/src/components/akasha/dashboard/hooks/useAkashaSynthesis.test.ts",
-        "apps/akasha-portal/src/lib/application/akasha/narrative-generator.test.ts",
-        "apps/akasha-portal/vitest.config.ts"
-      ]
-    },
     {
       "type": "tech_debt",
       "priority": 5,
@@ -50,7 +34,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 1437
+          "lines": 1394
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",

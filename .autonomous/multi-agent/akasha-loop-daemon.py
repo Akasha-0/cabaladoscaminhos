@@ -242,7 +242,7 @@ def wait_implementation(state, memory):
 
 def phase_qa(state):
     """QA phase: collect agent results, run typecheck, decide next phase."""
-    snap = _bootstrap(use_cache=False)
+    snap = _bootstrap(use_cache=True)
     triad = snap.get("triad", {})
     tc_pass = triad.get("typecheck", {}).get("pass", False)
     tests = triad.get("tests", {})
@@ -252,7 +252,8 @@ def phase_qa(state):
     for f in AGENT_RESULTS_DIR.glob("result-*.json"):
         try:
             all_results.append(json.loads(f.read_text()))
-    snap = _bootstrap(use_cache=True)
+        except Exception:
+            pass
     save_json(RESULTS_FILE, {"results": all_results})
     for r in all_results:
         _add_lr(state.get("_memory", {}), "task-agent", "IMPLEMENTATION",
@@ -348,8 +349,22 @@ def phase_release(state, memory):
         if f.exists():
             f.unlink()
 
-    log(f"  -> RESEARCH (iter {state['iteration']})")
+    # Write metrics
+    task_data = load_json(TASK_FILE, {})
+    improvements = task_data.get("improvements", [])
+    results = load_json(RESULTS_FILE, {"results": []})
+    agents_total = len(improvements)
+    agents_ok = sum(1 for r in results.get("results", []) if r.get("success"))
+    metrics = {
+        "iteration": iteration,
+        "phase_durations": state.get("_phase_durations", {}),
+        "agents_total": agents_total,
+        "agents_ok": agents_ok,
+        "ts": datetime.now(timezone.utc).isoformat(),
+    }
+    save_json(MA / "metrics.json", metrics)
 
+    log(f"  -> RESEARCH (iter {state['iteration']})")
 
 # ── Socket command handler ───────────────────────────────────────────────────
 
@@ -607,9 +622,7 @@ def main():
             elif ph == "IMPLEMENTATION":
                 phase_implementation(st, mem)
             elif ph == "IMPLEMENTATION_WAIT":
-                done = wait_implementation(st, mem)
-                if done:
-                    phase_qa(st)
+                wait_implementation(st, mem)
             elif ph == "QA":
                 phase_qa(st)
             elif ph == "VALIDATION":
