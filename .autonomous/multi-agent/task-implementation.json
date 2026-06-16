@@ -6,19 +6,19 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "packages/core-iching/src/practices-data.ts",
-          "lines": 928
-        },
-        {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
           "lines": 918
         },
         {
           "file": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
           "lines": 867
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
+          "lines": 851
         }
       ]
     }
   ],
-  "iteration": 44
+  "iteration": 45
 }

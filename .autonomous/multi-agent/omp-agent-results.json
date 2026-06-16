@@ -2,7 +2,7 @@
   "results": [
     {
       "success": true,
-      "message": "Extracted helper from packages/core-iching/src/practices-data.ts",
+      "message": "Extracted helper from apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
       "type": "large_file"
     }
   ]

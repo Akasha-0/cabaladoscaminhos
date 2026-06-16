@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T20:11:06.764503+00:00",
-  "version": "0.47.0",
+  "generated_at": "2026-06-16T20:20:05.245014+00:00",
+  "version": "0.48.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -962,10 +962,11 @@
       "- [~] **PLN-042[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-043[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-044[1]** -- large_file | 27 oversized files",
+      "- [~] **PLN-045[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 961
+    "pending_count": 962
   },
   "git": {
     "untracked": 2,
@@ -1036,16 +1037,16 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-          "lines": 918
-        },
-        {
           "file": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
           "lines": 867
         },
         {
           "file": "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
           "lines": 851
+        },
+        {
+          "file": "packages/core-iching/src/practices-data.ts",
+          "lines": 841
         }
       ]
     },
@@ -1054,8 +1055,8 @@
       "priority": 6,
       "description": "2 changed files lack tests",
       "files": [
-        "packages/core-iching/src/practices-cristais.ts",
-        "packages/core-iching/src/practices-data.ts"
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
+        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/types.ts"
       ]
     },
     {
@@ -1066,7 +1067,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "4f9e5968c2c999f304ff045726eafa872a74b736",
+  "git_head": "2380964a1d16a18002323002c98cc7cebb27674d",
   "decision_factors": {
     "has_pending_features": true
   }
