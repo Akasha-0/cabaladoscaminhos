@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 16 — Revisão de Arquitetura & Plano de Decisões
 
 ## Cabala dos Caminhos — LEGADO B2B

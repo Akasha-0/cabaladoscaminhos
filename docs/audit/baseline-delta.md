@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Baseline Delta — Pré vs Pós Refatoração Arquitetural (v0.0.6)
 
 > **Data:** 2026-06-08

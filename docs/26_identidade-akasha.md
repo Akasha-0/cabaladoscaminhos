@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 26 — Identidade Akasha & Design System Cósmico
 ## Sistema Akasha
 

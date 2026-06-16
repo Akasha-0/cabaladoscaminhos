@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 22 — Observabilidade & Operação
 ## Sistema Akasha
 > **Norte:** Doc 25.

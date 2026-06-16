@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 21 — Registro de Decisões de Arquitetura (ADR Index) & Roadmap de Execução
 ## Cabala dos Caminhos — LEGADO B2B
 

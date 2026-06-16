@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Pacote Agente Frontend — Sistema Akasha
 
 > **Norte:** Doc 25 + Doc 26.

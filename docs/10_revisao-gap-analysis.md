@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 10 — Revisão, Validação e Gap Analysis
 ## Cabala dos Caminhos — LEGADO B2B
 

@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # ADR-004: Utilitários Compartilhados em `shared/`
 
 **Data:** 2026-06-08

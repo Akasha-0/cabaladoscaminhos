@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Spec — Akasha: Prisma `user/*` + `name` canônico nas APIs
 
 Data: 2026-06-06

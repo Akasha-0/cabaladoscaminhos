@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 18 — Blueprint Técnico da Interface Única & Contratos
 
 ## Cabala dos Caminhos — LEGADO B2B

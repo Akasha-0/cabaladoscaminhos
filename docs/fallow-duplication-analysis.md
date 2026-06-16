@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Análise de Duplicação de Código - Cabala dos Caminhos
 
 > 🗄️ **HISTÓRICO.** Análise de duplicação no código legado B2B. Referência de manutenção do apps/legacy-cockpit. Norte vigente: Doc 25.

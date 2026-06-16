@@ -95,6 +95,35 @@ Todas as mudanças significativas são documentadas aqui — reverts e regressõ
 - `historico.md` por dominio para auditoria
 
 ---
+## [0.2.1] — 2026-06-15
+
+### feat(loop): 5 changed files lack tests
+- Added test coverage for changed files identified by akasha-evolution loop
+
+## [0.3.1] — 2026-06-15
+
+### feat(loop): 5 files with TODO
+- Resolved TODO comments in 5 files
+
+## [0.4.1] — 2026-06-15
+
+### feat(loop): 28 oversized files
+- Addressed 28 oversized files (>500 LOC)
+
+## [0.5.1] — 2026-06-15
+
+### feat(loop): 12 changed files lack tests
+- Added test coverage for 12 changed files
+
+## [0.6.1] — 2026-06-15
+
+### feat(loop): TypeScript typecheck is clean
+- Verified pnpm typecheck passes with 0 errors
+
+## [0.7.1] — 2026-06-15
+
+### feat(loop): 5 files with TODO
+- Resolved remaining TODO comments in codebase
 
 ## v0.1.0 (2026-06-12) — Ciclo 500
 

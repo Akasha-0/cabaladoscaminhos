@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # PROGRESS — Fases 21–29 (resumos detalhados)
 
 > 🗄️ **HISTÓRICO B2B.** Registro das fases do Cockpit Oracular (legado). Para a visão vigente, ver Doc 25. As fases do Akasha B2C começam pela Cirurgia de Extração (Doc 08).

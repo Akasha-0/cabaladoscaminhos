@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Documento 23 — Auditoria de Completude dos Mapas Natais, Geolocalização & Precisão da IA
 ## Sistema Akasha
 > **Norte:** Doc 25.

@@ -1,3 +1,4 @@
+<!-- NOTE: This document may be outdated. Review needed before relying on it. -->
 # Architecture Decision Records (ADRs)
 
 Decisões arquiteturais documentadas para referência futura.
