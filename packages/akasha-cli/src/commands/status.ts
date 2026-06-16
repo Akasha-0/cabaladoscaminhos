@@ -48,38 +48,46 @@ export async function getStatus(): Promise<SystemStatus> {
 }
 
 export async function status(): Promise<void> {
-  console.log();
-  console.log(pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')));
-  console.log(pc.bold(pc.cyan('  📊  Status do Sistema Akasha')));
-  console.log(pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')));
-  console.log();
-
   const status = await getStatus();
 
   // Versão
-  console.log(`  ${pc.dim('Versão:')} ${pc.white(status.version)}`);
-  console.log();
+  const versionLine = `  ${pc.dim('Versão:')} ${pc.white(status.version)}`;
 
   // PostgreSQL
   const pgIcon = status.postgres === 'ok' ? pc.green('✓') : pc.red('✗');
   const pgLabel = status.postgres === 'ok' ? pc.green('Conectado') :
                   status.postgres === 'not_found' ? pc.yellow('Não encontrado') :
                   pc.red('Erro');
-  console.log(`  ${pgIcon} ${pc.bold('PostgreSQL:')} ${pgLabel}`);
+  const pgLine = `  ${pgIcon} ${pc.bold('PostgreSQL:')} ${pgLabel}`;
 
   // Configuração
   const envIcon = status.env === 'ok' ? pc.green('✓') : pc.red('✗');
   const envLabel = status.env === 'ok' ? pc.green('Configurado') : pc.red('Não configurado');
-  console.log(`  ${envIcon} ${pc.bold('Configuração:')} ${envLabel}`);
+  const envLine = `  ${envIcon} ${pc.bold('Configuração:')} ${envLabel}`;
 
   // Migrations
   const migIcon = status.migrations === 'ok' ? pc.green('✓') :
                   status.migrations === 'pending' ? pc.yellow('!') : pc.red('✗');
   const migLabel = status.migrations === 'ok' ? pc.green('OK') :
                    status.migrations === 'pending' ? pc.yellow('Pendentes') : pc.red('Erro');
-  console.log(`  ${migIcon} ${pc.bold('Migrations:')} ${migLabel}`);
+  const migLine = `  ${migIcon} ${pc.bold('Migrations:')} ${migLabel}`;
 
-  console.log();
-  console.log(pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')));
-  console.log();
+  const divider = pc.bold(pc.cyan('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));
+  const header = [
+    '',
+    divider,
+    pc.bold(pc.cyan('  📊  Status do Sistema Akasha')),
+    divider,
+    '',
+    versionLine,
+    '',
+    pgLine,
+    envLine,
+    migLine,
+    '',
+    divider,
+    '',
+  ].join('\n');
+
+  process.stdout.write(header + '\n');
 }
