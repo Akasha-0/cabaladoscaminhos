@@ -34,8 +34,7 @@ export type Area =
   | 'trabalho'
   | 'proposito'
   | 'criatividade'
-  | 'espiritualidade'
-  | 'sexualidade';
+  | 'espiritualidade';
 
 export const AREAS: Area[] = [
   'paz',
@@ -46,7 +45,6 @@ export const AREAS: Area[] = [
   'proposito',
   'criatividade',
   'espiritualidade',
-  'sexualidade',
 ];
 
 export const AREA_LABEL: Record<Area, string> = {
@@ -58,7 +56,6 @@ export const AREA_LABEL: Record<Area, string> = {
   proposito: 'Propósito',
   criatividade: 'Criatividade',
   espiritualidade: 'Espiritualidade',
-  sexualidade: 'Sexualidade',
 };
 
 export const AREA_ICONE: Record<Area, string> = {
@@ -70,7 +67,6 @@ export const AREA_ICONE: Record<Area, string> = {
   proposito: '✶',
   criatividade: '✎',
   espiritualidade: '✦',
-  sexualidade: '⟁',
 };
 
 export interface TraducaoArea {
@@ -138,12 +134,8 @@ const CABALA: TraducaoArea[] = [
   { pilar: 'cabala', area: 'espiritualidade',
     frase: 'Prática espiritual = 1 ato por dia coerente com seu número. Não é técnica universal — é a SUA oração. Meditação, oração, ritual, silêncio: o que ressoa com seu número?',
     fonte: 'Sefer Yetzirah; Cabala prática contemporânea' },
-  { pilar: 'cabala', area: 'sexualidade',
-    frase: 'Números Mestres (11, 22, 33) carregam energia sexual/espiritual amplificada. O 11 é o Canal — sexualidade vista como portal, fusão de corpos e visões. Você não quer só prazer: quer SIGNIFICADO. Recuse sexo que esvazia; busque o que ilumina.',
-    fonte: 'Mispar Hechrachi; numerologia mestre (Pinnock 2010); Zohar Bereshit 49b' },
 ];
 
-// ─── Pilar 2 · Astrologia · céu do nascimento ──────────────────────────────
 
 const ASTROLOGIA: TraducaoArea[] = [
   { pilar: 'astrologia', area: 'paz',
@@ -167,9 +159,9 @@ const ASTROLOGIA: TraducaoArea[] = [
   { pilar: 'astrologia', area: 'espiritualidade',
     frase: 'A prática espiritual muda com o trânsito lunar. Lua Nova = plantar; Crescente = agir; Cheia = colher e soltar; Minguante = descansar. Não force a fase errada. O céu te guia.',
     fonte: 'Brennan 2017, cap. 14 (Fases Lunares)' },
-  { pilar: 'astrologia', area: 'sexualidade',
-    frase: 'Sua sexualidade é descrita por 3 marcadores: Sol (quem você é na cama), Lilith (o que te excita em segredo), Casa 8 (o que transforma sua intimidade). Sol + Lilith no mesmo signo = intensidade dobrada — você não é meio termo. Casa 8 no signo X = a forma como você DESEJA, e o que te faz perder o controle.',
-    fonte: 'Brennan 2017, cap. 7-8 (Casas + planetas); Cafe Astrology (Lilith)' },
+  { pilar: 'astrologia', area: 'criatividade',
+    frase: 'Astrologia não é destino — é mapa. Seu mapa mostra onde sua energia criativa VAI quando você está no fluxo. Crie a partir do que o céu já sabe sobre você.',
+    fonte: 'Brennan 2017, cap. 5 (Signos como archetypes criativos)' },
 ];
 
 const TANTRICA: TraducaoArea[] = [
@@ -197,11 +189,7 @@ const TANTRICA: TraducaoArea[] = [
   { pilar: 'tantrica', area: 'espiritualidade',
     frase: 'A Mente Divina (corpo 11) é o canal. Pratique hoje 5 min de silêncio TOTAL — sem música, sem mantra, sem intenção. Apenas esteja. É a partir desse silêncio que a voz fala.',
     fonte: 'KRI 2007; Sahaja Yoga como referência' },
-  { pilar: 'tantrica', area: 'sexualidade',
-    frase: 'Sexualidade tântrica = subir a kundalini pelo corpo 6 (linha do arco) até o 10 (radiante) e o 11 (mente divina). Não se trata de técnica — trata-se de PRESENÇA. O corpo 2 (mente negativa) aprende a dizer sim E não com verdade. A não-monogamia consensual é honrosa quando acordada entre corpos que se respeitam.',
-    fonte: 'KRI 2007; tantra Kashmir Shaivism; consciente não-monogamia como ética (Relações)' },
 ];
-// ─── Pilar 4 · Odu · ancestralidade iorubá ─────────────────────────────────
 const ODU: TraducaoArea[] = [
   { pilar: 'odu', area: 'paz',
     frase: 'O Odu que rege seu nascimento traz uma QUALIDADE DE PAZ específica. Para conhecer a sua, procure babalaô/yaô de sua confiança.',
@@ -226,9 +214,6 @@ const ODU: TraducaoArea[] = [
     fonte: 'Verger 1973', requer_terreiro: true },
   { pilar: 'odu', area: 'espiritualidade',
     frase: 'A prática espiritual do seu Odu inclui oferendas (ebós), preces e ritmos específicos. A tradição iorubá é viva e não se aprende em app. Comece: visite um terreiro, peça a bênção, escute.',
-    fonte: 'Verger 1973; Mbiti 1969', requer_terreiro: true },
-  { pilar: 'odu', area: 'sexualidade',
-    frase: 'Cada Odu traz uma energia sexual-espiritual específica. Alguns pedem contenção, outros celebração; alguns abençoam a não-monogamia, outros a monogamia sagrada. A leitura detalhada do seu Odu nesta área requer babalaô/yaô — não invente sozinho.',
     fonte: 'Verger 1973; Mbiti 1969', requer_terreiro: true },
 ];
 
@@ -259,9 +244,6 @@ const ICHING: TraducaoArea[] = [
   { pilar: 'iching', area: 'espiritualidade',
     frase: 'A meditação sobre 1 hexagrama HOJE = prática espiritual completa. Escolha o do dia, leia o nome + essência, sente 10 min com a imagem. O I Ching é livro vivo: muda com você.',
     fonte: 'Wilhelm/Baynes 1950; tradição confuciana + taoísta' },
-  { pilar: 'iching', area: 'sexualidade',
-    frase: 'Hexagrama 31 (Influência/Atração) fala de magnetismo; 44 (Encontrar/Sedução) de jogo de sedução; 53 (Desenvolvimento) de amadurecimento erótico. Seu hexagrama NATAL indica o TOM da sua sexualidade — como você busca, como encontra, como se entrega. Leia-o com paciência.',
-    fonte: 'Wilhelm/Baynes 1950; King Wen sequence' },
 ];
 
 // ─── Matriz completa ──────────────────────────────────────────────────────
@@ -283,14 +265,17 @@ export function traducoesDoPilar(pilar: Pilar): TraducaoArea[] {
   return MATRIZ.filter((t) => t.pilar === pilar);
 }
 
-// ─── Conteúdo Detalhado — 5 Pilares × 9 Áreas (F-232) ──────────────────────
-// Conteúdo profundo: 5 campos por entrada (explicacao/convergencia/tensao/
-// evitar/pratica). Fallback: se não existir, usar TraducaoArea.frase.
-//
+/** Métricas estáticas da matriz F-229 */
+export function coberturaTraducaoAreas() {
+  const pilares = new Set(MATRIZ.map((t) => t.pilar)).size;
+  const areas = new Set(MATRIZ.map((t) => t.area)).size;
+  const total = MATRIZ.length;
+  const com_terreiro = MATRIZ.filter((t) => t.requer_terreiro === true).length;
+  return { pilares, areas, total, com_terreiro };
+}
+
+// ─── Conteúdo Detalhado — 5 Pilares × 8 Áreas (F-232) ──────────────────────
 // Formato: TRADUCOES_DETALHADO[pilar][area] = TraducaoAreaDetalhada
-// Pilares: 'cabala' | 'astrologia' | 'tantrica' | 'odu' | 'iching'
-// Áreas:   'saude' | 'trabalho' | 'amor' | 'sexualidade' | 'criacao' |
-//           'proposito' | 'familia' | 'espiritualidade' | 'superacao'
 
 export const TRADUCOES_DETALHADO: Partial<
   Record<Pilar, Partial<Record<Area, Omit<TraducaoAreaDetalhada, 'pilar' | 'area' | 'fonte' | 'requer_terreiro'>>>>
@@ -360,14 +345,6 @@ export const TRADUCOES_DETALHADO: Partial<
       evitar: 'Evite espiritualidade de performance — praticar para mostrar, não para ser. Evite também espiritualidade de escape — praticar para fugir do mundo, não para habitá-lo melhor.',
       pratica: 'Pergunte: "Qual é o meu número?" A resposta indica a prática: initiate (1), construa (4), investigue (7), ou solte (9). Pratique HOJE 5 minutos nesse modo.',
     },
-    sexualidade: {
-      frase: 'Números Mestres (11, 22, 33) carregam energia sexual/espiritual amplificada. O 11 é o Canal — sexualidade vista como portal, fusão de corpos e visões. Você não quer só prazer: quer SIGNIFICADO. Recuse sexo que esvazia; busque o que ilumina.',
-      explicacao: 'Na numerologia cabalística, números mestres não somam — são energia pura. O 11 é o canal entre o mundo material e o espiritual; o 22 é o mestre construtor; o 33 é o mestre ensinante. Quando esses números estão ativos na sua energia, a sexualidade não é só física — é um portal. Isso significa que o sexo com essa pessoa ou nessa relação tem consequência espiritual: ou ilumina ou esvazia. Não existe meio termo com números mestres. Para quem não tem número mestre, a lição é a mesma: sexualidade é energia criativa e tem qualidade — prânica ou dissolvente. Escolha com consciência.',
-      convergencia: 'O Tantra diz: sexualidade é subir a kundalini pelo corpo 6 ao corpo 11 — busca de presença, não de prazer. A Astrologia diz: Sol + Lilith no mesmo signo é intensidade sexual dobrada. O I Ching diz: Hexagrama 31 (Influência/Atração) é magnetismo. Todos apontam para o mesmo: sexualidade é energia — tem direção, tem qualidade, tem consequência.',
-      tensao: 'A Cabala pode gerar repressão sutil: "tenho número mestre, então minha sexualidade é sagrada demais para ser vivida". O Tantra pode gerar excesso: "tudo é sexual, tudo é tântrico, tudo é permissível". O ponto médio é honesto e difícil: sexualidade é energia sagrada que deve ser vivida com presença e responsabilidade — não negada, não desperdiçada.',
-      evitar: 'Evite usar o número mestre como desculpa para reprimir ou paraitar sem limites. A energia sexual é poderosa — tanto na contenção quanto na expressão.',
-      pratica: 'Hoje, observe: sua energia sexual está sendo canalizada para algo que ilumina ou para algo que esvazia? Uma mudança de 1% já é um começo.',
-    },
   },
   tantrica: {
     paz: {
@@ -433,14 +410,6 @@ export const TRADUCOES_DETALHADO: Partial<
       tensao: 'O Tantra pode gerar espiritualidade de performance: "eu medito 2 horas por dia" — o que é ego disfarçado de espiritualidade. Ou o oposto: "eu não preciso de prática, sou muito desenvolvido" — o que é ego disfarçado de não-prática. O ponto: o corpo 11 não se auto-identifica. Quando você sabe que está no corpo 11, provavelmente está no corpo 3.',
       evitar: 'Evite spiritualidade de炫耀 (xuan yao — ostentar, em mandarim). O corpo 11 não se anuncia. Quando você sabe que está nele, provavelmente está no 3.',
       pratica: 'Hoje, 5 minutos de silêncio total. Sem mantra, sem música, sem intenção. Apenas estar. Sem registrar depois o que sentiu.',
-    },
-    sexualidade: {
-      frase: 'Sexualidade tântrica = subir a kundalini pelo corpo 6 (linha do arco) até o 10 (radiante) e o 11 (mente divina). Não se trata de técnica — trata-se de PRESENÇA. O corpo 2 (mente negativa) aprende a dizer sim E não com verdade. A não-monogamia consensual é honrosa quando acordada entre corpos que se respeitam.',
-      explicacao: 'No Tantra, sexualidade não é técnica — é caminho. A kundalini sobe pela coluna quando a presença sexual é mantida com consciência, não dissipada na busca por prazer. O corpo 6 (linha do arco) é o canal; o corpo 10 (radiante) é o que brilha quando a energia chega; o corpo 11 (Mente Divina) é o que percebe a totalidade do processo. O corpo 2 (mente negativa) entra na sexualidade com medo, culpa, dependência — e esses são os bloqueios que impedem a subida da kundalini. O trabalho tântrico com o corpo 2 é ensiná-lo a dizer sim com verdade E não com verdade — sem medo, sem manipulação. Quando o sim e o não são honestos, a sexualidade é ética — seja monógama ou não. A não-monogamia consensual é honesta quando cada corpo envolvido sabe dizer sim e não com clareza.',
-      convergencia: 'A Cabala diz: números mestres têm sexualidade amplificada — portal, não só prazer. A Astrologia diz: Sol + Lilith + Casa 8 descrevem sua sexualidade — mapa, não julgamento. O I Ching diz: hexagrama 31 (Atração) é sobre influência mútua. Todas dizem: sexualidade é energia com qualidade e consequência — não recreational sem custo.',
-      tensao: 'O Tantra pode gerar uma sexualização de tudo: "se não é tântrico, não é espiritual" — o que é uma forma de repressão sofisticada invertida. Ou o oposto: "tudo é sexual, tudo é permissível, sem consequência" — o que é uma forma de negação da dimensão sagrada. O ponto: sexualidade é energia — tem poder, tem direção, tem consequência. Usá-la com presença não é repressão; é responsabilidade.',
-      evitar: 'Evite tanto a repressão ("sexualidade é baixa") quanto a banalização ("é só energia"). Sexualidade é energia sagrada com poder real — use com presença e responsabilidade.',
-      pratica: 'Hoje, observe: quando você diz sim a algo sexual, é a partir do corpo 2 (mente negativa — medo, necessidade) ou do corpo 1 (alma — presença, escolha)?',
     },
   },
   astrologia: {
@@ -508,14 +477,6 @@ export const TRADUCOES_DETALHADO: Partial<
       evitar: 'Evite espiritualidade de fuga: "não preciso de nada material, sou muito espiritual". Evite também espiritualidade de muleta: usar Neptuno para fugir de responsabilidades concretas. A espiritualidade autêntica sustenta a vida, não a substitui.',
       pratica: 'Hoje, 10 minutos de silêncio com a pergunta: "O que é meu e o que é do mar?" Não precisa responder — só permitir que a água se estabeleça. A distinção costuma aparecer depois, quando o corpo está em repouso.',
     },
-    sexualidade: {
-      frase: 'Marte é o drive; Vênus é a atração; a Casa 8 é a transformação. A sexualidade astrológica é energia com direção — não recreacional sem custo. O que você canaliza, define quem você se torna.',
-      explicacao: 'A Astrologia é precisa sobre sexualidade: Marte é como você vai atrás do que quer — direto, indireto, agressivo, passivo. Vênus é como você atrai e é atraído — pela beleza, pelo poder, pela segurança, pela liberdade. A Casa 8 é o que acontece quando a energia sexual encontra o mundo profundo — transformação ou dissipação. Quando Marte e Vênus estão em aspecto harmonioso no seu mapa, há fluidez na expressão sexual. Quando estão em tensão, há uma dinâmica de poder que precisa ser navegada — ou um puxa-empurra que drenaa energia em vez de canalizá-la. A Casa 8 indica se a sua sexualidade é veículo de transformação (alquimia) ou de dissipação (consumo). Não existe caminho neutro: a energia sexual ou transforma ou esgota. Escolher com consciência é possível quando você conhece o seu mapa.',
-      convergencia: 'O Número de Vida diz: números mestres têm sexualidade amplificada — portal, não só prazer. O Movimento Celeste diz: Sol + Lilith + Casa 8 descrevem a geometria sexual — mapa, não julgamento. O Corpo & Energia diz: kundalini sobe quando há presença, não dissipação. A Ancestralidade diz: àiyé é a força que cria mundos — canalize com consciência. A Mutação do Caminho diz: hexagrama 52 (Quietude) é contenção que transforma. Todas dizem: sexualidade é energia real com consequência real.',
-      tensao: 'A Astrologia pode gerar culpa sexual sofisticada — "tenho Plutão na Casa 8, então minha sexualidade é muito intensa e perigosa" — o que serve como desculpa para não viver a sexualidade. Ou o inverso: achar que sexualidade é só recreacional porque "não tem aspecto difícil". O ponto: o mapa indica a intensidade, não o julgamento. A energia existe para ser canalizada, não julgada.',
-      evitar: 'Evite usar o mapa para culpabilizar ou restringir a sexualidade. O mapa mostra a geometria — não a moralidade. Evite também a banalização: sexualidade é energia transformadora, não recreational sem custo. Conheça o seu mapa e escolha com consciência.',
-      pratica: 'Consulte: onde está Marte no seu mapa (drive)? Onde está Vênus (atração)? E o que a Casa 8 indica sobre transformação? A resposta mostra a geometria sexual — não é julgamento, é mapa. Hoje, observe: sua energia sexual está sendo canalizada para transformação ou para consumo?',
-    },
   },
   odu: {
     paz: {
@@ -580,15 +541,7 @@ export const TRADUCOES_DETALHADO: Partial<
       convergencia: 'O Número de Vida diz: prática espiritual é a SUA oração — personalizada ao número. O Movimento Celeste diz: mude a prática com o trânsito. A Ancestralidade diz: a prática mais alta é a relação com a corrente. Todas apontam para algo vivo, adaptativo, pessoal. A diferença do Ifá é que a relação é com os que já viveram — não com uma abstração, mas com pessoas que amaram, erraram, e deixaram um mapa.',
       tensao: 'O Ifá pode gerar dependência da corrente: "se não tenho babalawo, não tenho acesso" — o que é terceirização. A corrente está no seu sangue, não só no sacerdote. O Odu que rege a sua espiritualidade mostra se você precisa de mediação externa ou se o seu Ori já tem acesso direto. Alguns Odu pedem babalawo; outros são de acesso direto ao Ori. A diferença é o Odu, não a fé.',
       evitar: 'Evite espiritualidade como performance ou como mercantilização. O Ifá não se vende — ele se recebe. Evite também negação da corrente: "eu não preciso de ancestrais, eu sou autônomo" — o que é negação de uma dimensão real. A corrente existe quer você a reconheça ou não.',
-      pratica: 'Hoje, lembre-se de uma pessoa que já morreu e que você sente que faz parte da sua vida. Pode ser familiar, pode ser figura histórica, pode ser alguém que você nunca conheceu mas que sente como presente. Faça uma pequena oferenda mental: o que você agradece a essa pessoa? O que ela sabe que você está aprendendo?',
-    },
-    sexualidade: {
-      frase: 'Àiyé é a força da vida — a energia que cria mundos. No sêmen e no sangue menstrual, àiyé está presente. O Odu revela como você canaliza essa força: para criar ou para dissipar.',
-      explicacao: 'Na cosmologia Yoruba, àiyé é a força vital — a energia que traz existence into being. A criação de uma criança é a manifestação mais óbvia de àiyé, mas não é a única: toda vez que você cria algo — uma ideia, uma obra, uma decisão — está canalizando àiyé. O sêmen carrega àiyé concentrado; o sangue menstrual carrega àiyé em cycl; ambos são sagrados na tradição Yoruba porque são os veículos através dos quais a vida se manifesta. O Odu que rege a sua sexualidade mostra como o seu Ori lida com essa força: se àiyé é canalizada com consciência (união sexual com presença, cri活动中 com propósito), ela eleva a consciência e sustenta o Ori. Se àiyé é dissipada sem consciência (masturbação sem propósito, sexo sem presença, consumo de pornografia), ela esgota o Ori — não moralmente, energeticamente. A diferença não é moral — é consciência. Alguns Odu carregam àiyé intensa e pedem canalização ativa; outros são mais contidos e pedem que àiyé seja sublimada em trabalho criativo. Conhecer o seu Odu é saber o que fazer com a força mais poderosa que você carrega.',
-      convergencia: 'O Número de Vida diz: números mestres carregam àiyé amplificada — portal, não só prazer. O Movimento Celeste diz: Vênus + Marte + Casa 8 mostram como àiyé se manifesta. A Ancestralidade diz: àiyé é a força que cria mundos — sua sexualidade é como você a canaliza. Todas dizem: sexualidade é energia criativa, não recreacional. A diferença do Ifá é a literalidade: no Yoruba, sêmen e sangue menstrual são àiyé em forma física.',
-      tensao: 'O Ifá pode gerar repressão sofisticada: "àiyé é sagrada demais para ser vivida" — o que é o mesmo mecanismo da repressão religiosa, com vocabulário espiritual. Ou o inverso: "àiyé é natural, então sem limites" — o que é dissipação. O ponto: àiyé é força real e tem consequências reais. Canalizar com consciência não é reprimir — é usar o poder com responsabilidade.',
-      evitar: 'Evite tanto a repressão (sexualidade é suja, baixa, distractiva) quanto a banalização (é só energia, sem consequência). Àiyé é a força que cria a sua próxima existência — use-a com o mesmo respeito que daria a um ritual sagrado.',
-      pratica: 'Hoje, observe para onde a sua energia sexual está fluindo. Não julgue — apenas observe. Se está sendo canalizada para algo que eleva (criatividade, conexão, propósito), dê thanks ao Ori. Se está sendo dissipada sem consciência, pergunte ao Ori: "Para onde essa energia deveria ir?"',
+      pratica: 'Hoje, em silêncio, pergunte ao seu Ori: "O que eu já sei que estou evitando?" Ouça a primeira resposta que vem — não a mais racional, a mais visceral.',
     },
   },
   iching: {
@@ -655,14 +608,6 @@ export const TRADUCOES_DETALHADO: Partial<
       tensao: 'O I Ching pode gerar espiritualidade de guru: "eu sei o hexagrama que você precisa". Isso é o inverso do hexagrama 4 — é colocar a montanha sobre a água em vez de deixar a água sob a montanha. O hexagrama 4 nuclear (25 — Incerteza) lembra: a única coisa que a espiritualidade séria tem a oferecer é mais perguntas, não mais certezas.',
       evitar: 'Evite a espiritualidade que já sabe tudo. Evite também a espiritualidade que usa o oráculo como muleta — perguntando para cada decisão em vez de desenvolver a capacidade de decidir sozinho. O oráculo é água buscando a passagem — não a passagem já encontrada.',
       pratica: 'Hoje, permita-se não saber algo que você acha que deveria saber. Em vez de consultar o oráculo, sente com a pergunta. A água sob a montanha encontra a passagem por persistência — não por consulta repetida.',
-    },
-    sexualidade: {
-      frase: 'Hexagrama 52 (Gên — Quietude): montanha sobre montanha — ainda se move, mas a ESSÊNCIA está parada. Sexualidade é energia poderosa que precisa de contenção para ser transformada. O que não é contido, explode.',
-      explicacao: 'O hexagrama 52 (Gên — Quietude, com hexagrama nuclear 31 — Atração/ Xian) é montanha sobre montanha — duas montanhas uma sobre a outra, a imagem de quietude absoluta. Mas o hexagrama nuclear 31 (Atração) lembra: sob a quietude, a atração não desaparece — ela está lá, contida. O I Ching ensina que sexualidade é energia de fogo que, sem contenção, se dissipa ou destrói. A quietude do hexagrama 52 não é repressão — é capacidade de conter antes de liberar. É a represa que permite que a água vire eletricidade, não inundação. A energia sexual contida se transforma — em criatividade, em presença, em poder de ação. A energia sexual liberada sem presença se dissipa — em prazer sem registro, em encontro sem encontro. A diferença não é a energia — é a consciência com que ela é manejada.',
-      convergencia: 'O Número de Vida diz: números mestres (11, 22, 33) têm sexualidade amplificada — portal, não só prazer. O Movimento Celeste diz: Sol + Lilith no mesmo signo = intensidade dobrada. O Corpo & Energia diz: kundalini sobe pelo corpo 6 quando há presença, não dissipação. A Ancestralidade diz: o Odu comanda o padrão sexual. Todas dizem: sexualidade é energia com poder real — tanto para transformar quanto para dissipar.',
-      tensao: 'O I Ching pode gerar repressão sofisticada: "estou no hexagrama 52, então preciso ficar quieto". Quietude não é ausência — é presença contenida. O risco é confundir contenção com negação, ou liberação com dissipação. O ponto é sutil e difícil: a mesma energia que, contida, transforma, quando dissipada não transforma nada.',
-      evitar: 'Evite tanto a repressão ("sexualidade é baixa, preciso contê-la") quanto a dissipação ("sexualidade é só energia, sem consequência"). A energia sexual é o fogo do caldeirão — precisa do caldeirão para se transformar em algo que nutre.',
-      pratica: 'Hoje, observe: sua energia sexual está contida com presença (hexagrama 52) ou dissipada sem registro? Se for dissipação, uma prática de contenção — uma pausa de 3 respirações antes de qualquer ato — já redireciona a energia.',
     },
   },
 };

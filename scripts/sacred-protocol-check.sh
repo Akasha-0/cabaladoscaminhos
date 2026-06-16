@@ -21,7 +21,20 @@ if [[ ! -d "$CG_INDEX" ]]; then
 fi
 
 echo "[sacred-protocol] verificando Headroom proxy (porta $PROXY_PORT)..." >&2
-if ! curl -fsS --connect-timeout 3 "$PROXY_URL/healthz" >/dev/null 2>&1; then
+# Polling: proxy demora ~10s para inicializar (baixa modelo Kompress ONNX)
+wait_for_proxy() {
+    local max_attempts="${1:-30}"  # 30 * 1s = 30s total
+    local i
+    for ((i=0; i<max_attempts; i++)); do
+        if curl -fsS --connect-timeout 2 "$PROXY_URL/healthz" >/dev/null 2>&1; then
+            return 0
+        fi
+        sleep 1
+    done
+    return 1
+}
+
+if ! wait_for_proxy 1; then
     # Tenta subir o proxy
     if [[ -x ".headroom-venv/bin/headroom" ]]; then
         echo "[sacred-protocol] proxy down — iniciando..." >&2
@@ -30,9 +43,8 @@ if ! curl -fsS --connect-timeout 3 "$PROXY_URL/healthz" >/dev/null 2>&1; then
             --backend anthropic \
             --anthropic-api-url "https://api.minimax.io/anthropic" \
             >/dev/null 2>&1 &
-        sleep 2
-        if ! curl -fsS --connect-timeout 5 "$PROXY_URL/healthz" >/dev/null 2>&1; then
-            echo "[sacred-protocol] ERRO: proxy nao subiu" >&2
+        if ! wait_for_proxy 30; then
+            echo "[sacred-protocol] ERRO: proxy nao subiu em 30s" >&2
             exit 1
         fi
     else

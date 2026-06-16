@@ -821,18 +821,7 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
 export { getLifeArea, getAllLifeAreas } from './queries';
 export { getLifeAreasByPlanet, getLifeAreasByHouse, getLifeAreasByOdu, getLifeAreasByOrixa } from './queries';
 
-// Ordem de exibição recomendada
-const LIFE_AREA_ORDER: LifeAreaId[] = [
-  'proposito',
-  'carreira',
-  'financas',
-  'saude',
-  'relacionamentos',
-  'sexualidade',
-  'familia',
-  'espiritualidade',
-  'criatividade',
-  'amizades',
-  'conhecimento',
-  'autoconhecimento',
-];
+// ============================================================
+// RE-EXPORTS from order helper
+// ============================================================
+export { LIFE_AREA_ORDER, getLifeAreaOrderIndex, sortLifeAreasByOrder } from './life-areas-order';

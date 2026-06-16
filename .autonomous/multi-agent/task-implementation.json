@@ -5,28 +5,28 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "packages/akasha-cli/src/commands/diagnostico.test.ts"
+        "tests/lib/grimoire/sync.test.ts"
       ]
     },
     {
       "type": "large_file",
       "priority": 4,
-      "description": "27 oversized files",
+      "description": "26 oversized files",
       "files": [
         {
-          "file": "packages/core-iching/src/practices-data.ts",
-          "lines": 841
-        },
-        {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-          "lines": 838
+          "lines": 827
         },
         {
           "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
           "lines": 785
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 773
         }
       ]
     }
   ],
-  "iteration": 50
+  "iteration": 51
 }

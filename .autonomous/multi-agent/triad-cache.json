@@ -1,8 +1,10 @@
 {
   "triad": {
     "typecheck": {
-      "pass": true,
-      "errors": []
+      "pass": false,
+      "errors": [
+        "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
+      ]
     },
     "lint": {
       "pass": true,
@@ -10,10 +12,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1643,
-      "failed": 239
+      "passed": 1663,
+      "failed": 222
     }
   },
-  "git_head": "d9713a7f9475d9112a484e4c615e7c9d2317a18c",
-  "cached_at": 1781644829.5148535
+  "git_head": "3057973ae9b35cce86db52be3b53de4faf82f6a4",
+  "cached_at": 1781653904.8181586
 }

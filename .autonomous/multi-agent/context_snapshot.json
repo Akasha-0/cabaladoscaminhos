@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T21:17:25.466869+00:00",
-  "version": "0.54.0",
+  "generated_at": "2026-06-16T23:51:46.828781+00:00",
+  "version": "0.55.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -971,21 +971,94 @@
       "- [~] **PLN-049[2]** -- large_file | 27 oversized files",
       "- [~] **PLN-050[1]** -- missing_tests | 1 changed files lack tests",
       "- [~] **PLN-050[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-050[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-050[2]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-051[2]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 27 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — large_file | 26 oversized files",
+      "- [~] **PLN-051[1]** — missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-051[2]** — large_file | 26 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
-      "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
+      "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2",
+      "- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)"
     ],
-    "pending_count": 970
+    "pending_count": 1041
   },
   "git": {
-    "untracked": 1,
-    "modified": 6,
-    "total": 7,
+    "untracked": 70,
+    "modified": 32,
+    "total": 102,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
-      "pass": true,
-      "errors": []
+      "pass": false,
+      "errors": [
+        "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
+      ]
     },
     "lint": {
       "pass": true,
@@ -993,8 +1066,8 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1643,
-      "failed": 239
+      "passed": 1663,
+      "failed": 222
     }
   },
   "codegraph": {
@@ -1002,6 +1075,14 @@
     "ok": true
   },
   "improvement_candidates": [
+    {
+      "type": "typecheck_errors",
+      "priority": 9,
+      "description": "1 TypeScript errors",
+      "errors": [
+        "apps/akasha-portal/src/lib/grimoire/sync.ts(16,46): error TS2304: Cannot find name 'SyncOptions'."
+      ]
+    },
     {
       "type": "tech_debt",
       "priority": 5,
@@ -1014,11 +1095,11 @@
     {
       "type": "large_file",
       "priority": 4,
-      "description": "27 oversized files",
+      "description": "26 oversized files",
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-          "lines": 838
+          "lines": 827
         },
         {
           "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
@@ -1033,10 +1114,9 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "2 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/pattern-detectors.test.ts",
-        "packages/akasha-core/src/akasha-core.test.ts"
+        "tests/lib/grimoire/sync.test.ts"
       ]
     },
     {
@@ -1047,7 +1127,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "d9713a7f9475d9112a484e4c615e7c9d2317a18c",
+  "git_head": "3057973ae9b35cce86db52be3b53de4faf82f6a4",
   "decision_factors": {
     "has_pending_features": true
   }

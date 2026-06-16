@@ -306,6 +306,537 @@
       "outcome": "success",
       "summary": "Agent 8942b4f1 completed large_file",
       "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:22:29.490465+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 0 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:38:32.573732+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "failure",
+      "summary": "Agent ca93af68 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:38:32.577685+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent a4664104 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:40:07.199346+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 2 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:43:10.072258+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 2ab430c9 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:43:10.072337+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "failure",
+      "summary": "Agent 53c7d3f5 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:46:13.090719+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 2 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:49:05.318012+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 203818e6 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:50:28.176096+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T21:59:59.011104+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 149fc7eb failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:01:59.528541+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:04:59.384980+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent e37a7432 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:06:55.145604+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:09:52.327319+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 5e91d065 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:11:55.051891+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:14:54.475151+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 38d0cfb4 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:16:23.262819+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:19:24.283540+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent ffb0af80 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:20:42.504842+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:23:46.902838+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent b78c78c3 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:25:02.677965+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:28:05.783424+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 87b0d853 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:30:08.812304+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:33:09.904820+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent f0d802b5 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:34:23.654720+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:37:23.334822+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent d0cbc95b failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:38:40.607341+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:41:45.692395+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 225247bb failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:43:12.737851+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:46:10.054389+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 5e55da21 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:48:03.815745+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:51:14.831345+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 1d16df5c failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:52:34.456751+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:55:38.259324+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 6c92e540 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T22:57:14.167467+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:00:17.725395+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 34a68e50 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:01:37.703176+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:04:36.223153+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 3314a7d5 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:06:01.069272+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:09:09.278453+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent f29c73c6 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:10:27.923727+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:13:34.378649+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 5203c6e6 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:14:51.723884+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:17:58.635836+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 976625b6 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:20:01.616267+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:22:58.131145+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent f3b55c98 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:24:16.272491+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:27:27.759453+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent b69902e0 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:28:46.628662+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:32:01.205575+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 4d7a0eb3 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:33:20.858605+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:36:19.821073+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 6072b4ad failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:37:43.072412+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:40:51.520460+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent fd616ec8 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:42:18.071409+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:45:25.050434+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 8a4f81f4 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:48:33.387228+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "all_agents_failed",
+      "outcome": "failure",
+      "summary": "All 1 agents failed",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:50:15.986758+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "success",
+      "summary": "Agent f099f72f completed large_file",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T23:50:15.986822+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "success",
+      "summary": "Agent ee994ee3 completed missing_tests",
+      "details": {}
     }
   ],
   "task_history": [],
@@ -1095,66 +1626,66 @@
     }
   ],
   "error_patterns": {
-    "b55c038d": 2,
-    "f2d048e4": 3,
+    "b55c038d": 4,
+    "f2d048e4": 30,
     "d92babc3": 1
   },
   "success_patterns": {
     "e796b93c": 3,
-    "b55c038d": 5,
+    "b55c038d": 6,
     "d92babc3": 8,
-    "f2d048e4": 5
+    "f2d048e4": 6
   },
   "recent_decisions": [
     {
-      "ts": "2026-06-16T12:20:06.760338+00:00",
-      "type": "tech_debt",
-      "description": "2 files with TODO"
-    },
-    {
-      "ts": "2026-06-16T12:20:06.760340+00:00",
+      "ts": "2026-06-16T23:10:28.909427+00:00",
       "type": "large_file",
-      "description": "28 oversized files"
+      "description": "26 oversized files"
     },
     {
-      "ts": "2026-06-16T12:33:19.372586+00:00",
-      "type": "tech_debt",
-      "description": "2 files with TODO"
-    },
-    {
-      "ts": "2026-06-16T12:33:19.372600+00:00",
+      "ts": "2026-06-16T23:14:52.731864+00:00",
       "type": "large_file",
-      "description": "28 oversized files"
+      "description": "26 oversized files"
     },
     {
-      "ts": "2026-06-16T12:44:39.685763+00:00",
-      "type": "tech_debt",
-      "description": "2 files with TODO"
-    },
-    {
-      "ts": "2026-06-16T12:44:39.685776+00:00",
+      "ts": "2026-06-16T23:20:02.599593+00:00",
       "type": "large_file",
-      "description": "28 oversized files"
+      "description": "26 oversized files"
     },
     {
-      "ts": "2026-06-16T12:50:37.829459+00:00",
-      "type": "tech_debt",
-      "description": "2 files with TODO"
-    },
-    {
-      "ts": "2026-06-16T12:50:37.829473+00:00",
+      "ts": "2026-06-16T23:24:17.205546+00:00",
       "type": "large_file",
-      "description": "28 oversized files"
+      "description": "26 oversized files"
     },
     {
-      "ts": "2026-06-16T13:00:18.052217+00:00",
-      "type": "tech_debt",
-      "description": "2 files with TODO"
-    },
-    {
-      "ts": "2026-06-16T13:00:18.052230+00:00",
+      "ts": "2026-06-16T23:28:47.615039+00:00",
       "type": "large_file",
-      "description": "28 oversized files"
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-16T23:33:21.818992+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-16T23:37:44.123026+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-16T23:42:19.206993+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
+    },
+    {
+      "ts": "2026-06-16T23:48:34.421351+00:00",
+      "type": "missing_tests",
+      "description": "1 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-16T23:48:34.421368+00:00",
+      "type": "large_file",
+      "description": "26 oversized files"
     }
   ]
 }

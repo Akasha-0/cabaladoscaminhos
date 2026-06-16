@@ -49,7 +49,6 @@ function IChingSignificado(hex: number): SignificadoCurado | undefined {
 const DIM_AREA_MAP: Record<DimensaoId, Area[]> = {
   saude: ['saude', 'paz'],
   trabalho: ['trabalho', 'dinheiro'],
-  sexualidade: ['sexualidade'],
   amor: ['relacoes'],
   criacao: ['criatividade'],
   proposito: ['proposito'],
@@ -122,15 +121,6 @@ function buildIdentidadeV3(
       if (sCabala) return `Seu caminho de vida ${lp} é ${sCabala.titulo.toLowerCase()} — ${sCabala.missao}`;
       return null;
 
-    case 'sexualidade': {
-      const lilith = pilares.astrologia?.lilith_signo;
-      const casa8 = pilares.astrologia?.casa_8_signo;
-      if (sTantra && lilith && casa8) {
-        return `Sexualidade: seu corpo energético #${corpo} é ${sTantra.titulo} — ${sTantra.essencia} Seu desejo oculto: Lilith em ${lilith}. Zona de transformação: Casa 8 em ${casa8}. I Ching ${pilares.iching?.hexagrama_dia}: ${sIChing.essencia}`;
-      }
-      if (sTantra) return `${sTantra.titulo} é seu corpo energético predominante — ${sTantra.essencia} ${sTantra.missao}`;
-      return null;
-    }
 
     case 'amor':
       if (sAstro && sCabala) {
@@ -407,16 +397,6 @@ export function gerarNarrativaSexualidade(pilares: PilaresDados): string {
     lines.push('');
   }
 
-  // Cabala: Número e sexualidade
-  if (cabala?.life_path) {
-    const t = traducaoPara('cabala', 'sexualidade');
-    lines.push(`**Life Path ${cabala.life_path} e Sexualidade**`);
-    if (t) lines.push(t.frase);
-    if ([11, 22, 33].includes(cabala.life_path)) {
-      lines.push(`Número Mestre ${cabala.life_path}: você opera em frequência elevada na sexualidade — isso traz profundidade mas também pode criar bloqueio por medo de não estar à altura.`);
-    }
-    lines.push('');
-  }
 
   // Odu: consentimento e ritual
   if (odu?.odu_principal && sOdu) {

@@ -1,0 +1,7 @@
+{
+  "agent_id": "e37a7432",
+  "type": "large_file",
+  "success": false,
+  "message": "Agent e37a7432 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+  "exit_code": 1
+}

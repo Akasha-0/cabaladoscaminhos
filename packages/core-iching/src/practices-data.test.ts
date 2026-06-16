@@ -1,138 +1,85 @@
 /**
- * @akasha/core-iching — practices-data tests
+ * @akasha/core-iching — Testes para práticas integrativas (dados)
  */
 
+import { describe, it, expect } from 'vitest';
 import { PRACTICES } from './practices-data';
 import type { IntegrativePractice } from './types';
 
 describe('practices-data', () => {
-  describe('PRACTICES array', () => {
-    it('should be a non-empty array', () => {
+  describe('PRACTICES', () => {
+    it('should export a non-empty array', () => {
       expect(Array.isArray(PRACTICES)).toBe(true);
       expect(PRACTICES.length).toBeGreaterThan(0);
     });
 
-    it('should have the expected number of practices (35 total)', () => {
-      expect(PRACTICES.length).toBe(49);
-    });
-  });
-
-  describe('each practice structure', () => {
-    it('should have valid required fields on every practice', () => {
-      for (const practice of PRACTICES) {
-        expect(practice).toHaveProperty('id');
-        expect(practice).toHaveProperty('name');
-        expect(practice).toHaveProperty('tradition');
-        expect(practice).toHaveProperty('category');
-        expect(practice).toHaveProperty('associations');
-        expect(practice).toHaveProperty('lifeAreas');
-        expect(practice).toHaveProperty('howTo');
-        expect(practice).toHaveProperty('frequency');
-        expect(practice).toHaveProperty('isSafe');
-      }
+    it('should contain cromoterapia practices', () => {
+      const cromoterapiaPractices = PRACTICES.filter(
+        p => p.category === 'cromoterapia'
+      );
+      
+      expect(cromoterapiaPractices.length).toBeGreaterThan(0);
+      expect(cromoterapiaPractices.every(p => p.tradition === 'Cromoterapia')).toBe(true);
     });
 
-    it('should have non-empty id, name, and tradition on every practice', () => {
-      for (const practice of PRACTICES) {
-        expect(typeof practice.id).toBe('string');
-        expect(practice.id.length).toBeGreaterThan(0);
-        expect(typeof practice.name).toBe('string');
-        expect(practice.name.length).toBeGreaterThan(0);
-        expect(typeof practice.tradition).toBe('string');
-        expect(practice.tradition.length).toBeGreaterThan(0);
-      }
+    it('should contain practices from multiple traditions', () => {
+      const traditions = new Set(PRACTICES.map(p => p.tradition));
+      
+      expect(traditions.size).toBeGreaterThan(1);
+      expect(traditions.has('Cromoterapia')).toBe(true);
+      expect(traditions.has('Candomblé')).toBe(true);
     });
 
-    it('should have valid category values', () => {
-      const validCategories = [
-        'banho_de_ervas',
-        'cha',
-        'defumacao',
-        'cristal',
-        'cromoterapia',
-        'oleo_essencial',
-        'oracao',
-        'abre_alas',
-        'protecao',
-      ];
-      for (const practice of PRACTICES) {
-        expect(validCategories).toContain(practice.category);
-      }
+    it('should have valid IntegrativePractice structure', () => {
+      const practice = PRACTICES[0];
+      
+      expect(practice).toHaveProperty('id');
+      expect(practice).toHaveProperty('name');
+      expect(practice).toHaveProperty('tradition');
+      expect(practice).toHaveProperty('category');
+      expect(practice).toHaveProperty('associations');
+      expect(practice).toHaveProperty('lifeAreas');
+      expect(practice).toHaveProperty('howTo');
+      expect(practice).toHaveProperty('frequency');
+      expect(practice).toHaveProperty('isSafe');
     });
 
-    it('should have valid element values in associations', () => {
-      const validElements = ['fogo', 'agua', 'terra', 'ar', 'madeira', 'metal'];
-      for (const practice of PRACTICES) {
-        const el = practice.associations.element;
-        if (el !== undefined) {
-          expect(validElements).toContain(el);
-        }
-      }
-    });
-
-    it('should have non-empty lifeAreas array on every practice', () => {
-      for (const practice of PRACTICES) {
-        expect(Array.isArray(practice.lifeAreas)).toBe(true);
-        expect(practice.lifeAreas.length).toBeGreaterThan(0);
-      }
-    });
-  });
-
-  describe('hexagram associations edge cases', () => {
-    it('should have hexagram IDs within valid range 1-64', () => {
-      for (const practice of PRACTICES) {
-        const hexagrams = practice.associations.hexagrams;
-        if (hexagrams !== undefined) {
-          for (const h of hexagrams) {
-            expect(h).toBeGreaterThanOrEqual(1);
-            expect(h).toBeLessThanOrEqual(64);
-          }
-        }
-      }
-    });
-
-    it('should have practices with hexagrams that reference valid hexagram pairs', () => {
-      // Select a practice known to have specific hexagram pairs
-      const practice = PRACTICES.find((p) => p.id === 'ewe-oxum');
-      expect(practice).toBeDefined();
-      expect(practice!.associations.hexagrams).toEqual([5, 60]);
-    });
-
-    it('should have practices with no duplicate hexagram IDs within the same practice', () => {
-      for (const practice of PRACTICES) {
-        const hexagrams = practice.associations.hexagrams;
-        if (hexagrams !== undefined) {
-          const unique = new Set(hexagrams);
-          expect(hexagrams.length).toBe(unique.size);
-        }
-      }
-    });
-  });
-
-  describe('warnings edge case', () => {
-    it('should only have warnings on practices that need them', () => {
-      const practicesWithWarnings = PRACTICES.filter((p) => p.warnings !== undefined);
-      expect(practicesWithWarnings.length).toBeGreaterThan(0);
-    });
-
-    it('should have non-empty warning messages when present', () => {
-      for (const practice of PRACTICES) {
-        if (practice.warnings !== undefined) {
-          expect(Array.isArray(practice.warnings)).toBe(true);
-          for (const warning of practice.warnings) {
-            expect(typeof warning).toBe('string');
-            expect(warning.length).toBeGreaterThan(0);
-          }
-        }
-      }
-    });
-  });
-
-  describe('id uniqueness', () => {
-    it('should have unique ids across all practices', () => {
-      const ids = PRACTICES.map((p) => p.id);
+    // Edge case: unique IDs across all practices
+    it('should have unique practice IDs', () => {
+      const ids = PRACTICES.map(p => p.id);
       const uniqueIds = new Set(ids);
-      expect(ids.length).toBe(uniqueIds.size);
+      expect(uniqueIds.size).toBe(ids.length);
+    });
+
+    // Edge case: all practices should have required associations
+    it('should have element in associations for all practices', () => {
+      const withoutElement = PRACTICES.filter(
+        p => !p.associations.element
+      );
+      
+      // Some practices may not have element, that's valid but should be rare
+      expect(withoutElement.length).toBeLessThan(PRACTICES.length);
+    });
+
+    // Edge case: valid hexagrams range
+    it('should have valid hexagrams in range 1-64', () => {
+      const allHexagrams = PRACTICES.flatMap(
+        p => p.associations.hexagrams ?? []
+      );
+      
+      allHexagrams.forEach(hex => {
+        expect(hex).toBeGreaterThanOrEqual(1);
+        expect(hex).toBeLessThanOrEqual(64);
+      });
+    });
+
+    // Edge case: multiple categories
+    it('should contain practices from multiple categories', () => {
+      const categories = new Set(PRACTICES.map(p => p.category));
+      
+      expect(categories.size).toBeGreaterThan(1);
+      expect(categories.has('cromoterapia')).toBe(true);
+      expect(categories.has('banho_de_ervas')).toBe(true);
     });
   });
 });

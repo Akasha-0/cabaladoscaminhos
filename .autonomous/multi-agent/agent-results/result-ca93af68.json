@@ -1,0 +1,7 @@
+{
+  "agent_id": "ca93af68",
+  "type": "missing_tests",
+  "success": false,
+  "message": "Agent ca93af68 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+  "exit_code": 1
+}

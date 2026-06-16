@@ -73,11 +73,10 @@ describe('sintetizarMapa (F-246)', () => {
     }
   });
 
-  it('CaixaSintese inclui caminhoDeVida, perfilGeral, sexualidadeNarrativa, autoridade', () => {
+  it('CaixaSintese inclui caminhoDeVida, perfilGeral, autoridade', () => {
     const result = sintetizarMapa(PILARES_COMPLETOS);
     expect(result.caminhoDeVida).toBeTruthy();
     expect(result.perfilGeral).toBeTruthy();
-    expect(result.sexualidadeNarrativa).toBeTruthy();
     expect(result.autoridade).toBeDefined();
   });
 

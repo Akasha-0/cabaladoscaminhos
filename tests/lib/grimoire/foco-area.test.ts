@@ -70,8 +70,8 @@ describe('F-239 Foco: ética Pilar 4 (R-022 §4.4)', () => {
   });
 });
 
-describe('F-239 Foco: cobertura da matriz 5 Pilares × 9 Áreas', () => {
-  it('existe foco para TODAS as 45 combinações (5 × 9)', () => {
+describe('F-239 Foco: cobertura da matriz 5 Pilares × 8 Áreas', () => {
+  it('existe foco para TODAS as 40 combinações (5 × 8)', () => {
     const PILARES: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
     let count = 0;
     PILARES.forEach((p) => {
@@ -82,6 +82,6 @@ describe('F-239 Foco: cobertura da matriz 5 Pilares × 9 Áreas', () => {
         count += 1;
       });
     });
-    expect(count).toBe(45);
+    expect(count).toBe(40); // 5 Pilares × 8 Áreas
   });
 });

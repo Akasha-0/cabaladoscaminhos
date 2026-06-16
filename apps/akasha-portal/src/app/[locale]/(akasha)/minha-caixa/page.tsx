@@ -149,48 +149,11 @@ export default async function MinhaCaixaPage({
           </section>
         )}
 
-        {/* ── Sexualidade Deep Dive ── */}
-        {sintese && sintese.sexualidadeNarrativa && (
-          <section
-            style={{
-              background: 'rgba(196,62,142,0.08)',
-              border: '1px solid rgba(196,62,142,0.25)',
-              borderRadius: 16,
-              padding: '18px 20px',
-              marginBottom: 24,
-            }}
-          >
-            {/* Header */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-              <span style={{ fontSize: '1.4rem', color: '#C43E8E', lineHeight: 1 }} aria-hidden>◉</span>
-              <div>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-cinzel, serif)',
-                    color: '#E8E0FF',
-                    fontSize: '1.05rem',
-                    margin: 0,
-                    lineHeight: 1.2,
-                  }}
-                >
-                  Sexualidade & Desejo
-                </h2>
-                <p style={{ fontSize: '0.78rem', color: 'rgba(232,224,255,0.5)', margin: '3px 0 0', lineHeight: 1.3 }}>
-                  Mapa completo — seus 3 marcadores astrológicos + Tantra + Cabala
-                </p>
-              </div>
-            </div>
-
-            {/* Narrativa deep */}
-            <NarrativeText text={sintese.sexualidadeNarrativa} />
-          </section>
-        )}
 
         {/* 9 Dimensões — accordion mobile-first */}
         {sintese ? (
           <nav aria-label="9 dimensões de vida" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {sintese.dimensoes
-              .filter((d) => d.dimensoesId !== 'sexualidade') // já shown above
               .map((dim, i) => (
                 <DimensaoCard key={dim.dimensoesId} sintese={dim} index={i} />
               ))}
@@ -239,42 +202,5 @@ export default async function MinhaCaixaPage({
         </footer>
       </div>
     </main>
-  );
-}
-
-// ─── Server component — renderiza markdown simples ─────────────────────────
-
-function renderNarrative(text: string): React.ReactNode[] {
-  if (!text) return [];
-  const paragraphs = text.split('\n\n').filter(Boolean);
-  return paragraphs.map((para, i) => {
-    const parts = para.split(/\*\*(.+?)\*\*/g);
-    const isBold = parts.length > 1;
-    if (!isBold) {
-      return (
-        <span key={i} style={{ display: 'block', marginBottom: 6, fontSize: '0.88rem', lineHeight: 1.6, color: 'rgba(232,224,255,0.8)' }}>
-          {para}
-        </span>
-      );
-    }
-    return (
-      <span key={i} style={{ display: 'block', marginBottom: 6, fontSize: '0.88rem', lineHeight: 1.6, color: 'rgba(232,224,255,0.8)' }}>
-        {parts.map((part, j) =>
-          j % 2 === 1 ? (
-            <strong key={j} style={{ color: '#E8D0FF' }}>{part}</strong>
-          ) : (
-            <span key={j}>{part}</span>
-          )
-        )}
-      </span>
-    );
-  });
-}
-
-function NarrativeText({ text }: { text: string }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      {renderNarrative(text)}
-    </div>
   );
 }

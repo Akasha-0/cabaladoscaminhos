@@ -1,1 +1,49 @@
-{"task": "test:diagnostico", "status": "completed", "files": ["packages/akasha-cli/src/commands/diagnostico.test.ts"], "tests": 3, "passed": 3, "commit": "35d0e387"}
+{
+  "all_ok": true,
+  "summary": "2/2 agents succeeded in 99.5s",
+  "results": [
+    {
+      "agent_id": "f099f72f",
+      "type": "large_file",
+      "success": true,
+      "message": "Agent f099f72f completed large_file",
+      "exit_code": 0
+    },
+    {
+      "agent_id": "ee994ee3",
+      "type": "missing_tests",
+      "success": true,
+      "message": "Agent ee994ee3 completed missing_tests",
+      "exit_code": 0
+    }
+  ],
+  "improvements": [
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "tests/lib/grimoire/sync.test.ts"
+      ]
+    },
+    {
+      "type": "large_file",
+      "priority": 4,
+      "description": "26 oversized files",
+      "files": [
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
+          "lines": 827
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
+          "lines": 785
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 773
+        }
+      ]
+    }
+  ]
+}

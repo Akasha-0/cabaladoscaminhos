@@ -1,0 +1,7 @@
+{
+  "agent_id": "b69902e0",
+  "type": "large_file",
+  "success": false,
+  "message": "Agent b69902e0 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+  "exit_code": 1
+}

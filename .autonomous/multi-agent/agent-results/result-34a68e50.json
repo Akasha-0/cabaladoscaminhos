@@ -1,0 +1,7 @@
+{
+  "agent_id": "34a68e50",
+  "type": "large_file",
+  "success": false,
+  "message": "Agent 34a68e50 failed: API Error: Unable to connect to API (ConnectionRefused)\n",
+  "exit_code": 1
+}
