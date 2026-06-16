@@ -98,8 +98,7 @@ export async function POST(request: NextRequest) {
           }
 
           // Deduct credit after successful response
-          const newBalance = await deductCredit(userId);
-          console.log(`Mentor chat: deducted 1 credit from ${userId}, new balance: ${newBalance}`);
+          await deductCredit(userId);
 
           controller.close();
         } catch (error) {
