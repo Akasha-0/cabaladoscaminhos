@@ -1,9 +1,3 @@
 {
-  "results": [
-    {
-      "success": true,
-      "message": "Extracted helper from apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
-      "type": "large_file"
-    }
-  ]
+  "results": []
 }

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T20:27:24.974833+00:00",
-  "version": "0.49.0",
+  "generated_at": "2026-06-16T20:39:54.330657+00:00",
+  "version": "0.50.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -964,15 +964,16 @@
       "- [~] **PLN-044[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-045[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-046[1]** -- large_file | 27 oversized files",
+      "- [~] **PLN-047[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 963
+    "pending_count": 964
   },
   "git": {
-    "untracked": 2,
+    "untracked": 1,
     "modified": 11,
-    "total": 13,
+    "total": 12,
     "has_changes": true
   },
   "triad": {
@@ -1038,16 +1039,16 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
-          "lines": 851
-        },
-        {
           "file": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
           "lines": 845
         },
         {
           "file": "packages/core-iching/src/practices-data.ts",
           "lines": 841
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
+          "lines": 838
         }
       ]
     },
@@ -1056,8 +1057,8 @@
       "priority": 6,
       "description": "2 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
-        "apps/akasha-portal/src/lib/application/agents/personal-cycle-numerology.ts"
+        "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/odu-narrative-engine.ts"
       ]
     },
     {
@@ -1068,7 +1069,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "51245a1477026dd5cff4811f5fc5d0a1cf7f3252",
+  "git_head": "e188758bb68296785ebf35a589f313b9515f7634",
   "decision_factors": {
     "has_pending_features": true
   }

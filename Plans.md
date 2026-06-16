@@ -1060,6 +1060,7 @@
 - [~] **PLN-044[1]** -- large_file | 27 oversized files
 - [~] **PLN-045[1]** -- large_file | 27 oversized files
 - [~] **PLN-046[1]** -- large_file | 27 oversized files
+- [~] **PLN-047[1]** -- large_file | 27 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
