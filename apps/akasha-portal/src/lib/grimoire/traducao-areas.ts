@@ -340,7 +340,7 @@ export function traducaoDetalhadaPara(pilar: Pilar, area: Area): TraducaoDetalha
   return null;
 }
 
-/** Devolve conteúdo detalhado de TODOS os pilares para uma Área. */
+/** Devolve conteúdo detalhado de todos os pilares para uma Área. */
 export function traducoesDetalhadasDaArea(area: Area): TraducaoDetalhadaEntry[] {
   const pilares: Pilar[] = ['cabala', 'astrologia', 'tantrica', 'odu', 'iching'];
   return pilares

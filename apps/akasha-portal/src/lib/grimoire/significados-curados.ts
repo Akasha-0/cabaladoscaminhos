@@ -1727,7 +1727,7 @@ export function significadoGenericoDoPilar(pilar: Pilar): SignificadoCurado {
   return { id: pilar, pilar, ...v };
 }
 
-const TODOS: SignificadoCurado[] = [
+const SIGNIFICADOS: SignificadoCurado[] = [
   ...PILAR_1,
   ...PILAR_1_BIRTHDAY,
   ...PILAR_1_EXPRESSION,
@@ -1748,22 +1748,22 @@ export function significadoPorPilar(
   pilar: Pilar,
   id: string | number
 ): SignificadoCurado | undefined {
-  return TODOS.find((s) => s.pilar === pilar && String(s.id) === String(id));
+  return SIGNIFICADOS.find((s) => s.pilar === pilar && String(s.id) === String(id));
 }
 
 /** Lista todas as entradas de um Pilar (sem séries repetidas, ex: 1-9 birthday). */
 export function significadosDoPilar(pilar: Pilar): SignificadoCurado[] {
-  return TODOS.filter((s) => s.pilar === pilar);
+  return SIGNIFICADOS.filter((s) => s.pilar === pilar);
 }
 
 /** Estatísticas para curadores e cobertura. */
 export function coberturaSignificados(): Record<Pilar, number> {
   return {
-    cabala: TODOS.filter((s) => s.pilar === 'cabala').length,
-    astrologia: TODOS.filter((s) => s.pilar === 'astrologia').length,
-    tantrica: TODOS.filter((s) => s.pilar === 'tantrica').length,
-    odu: TODOS.filter((s) => s.pilar === 'odu').length,
-    iching: TODOS.filter((s) => s.pilar === 'iching').length,
+    cabala: SIGNIFICADOS.filter((s) => s.pilar === 'cabala').length,
+    astrologia: SIGNIFICADOS.filter((s) => s.pilar === 'astrologia').length,
+    tantrica: SIGNIFICADOS.filter((s) => s.pilar === 'tantrica').length,
+    odu: SIGNIFICADOS.filter((s) => s.pilar === 'odu').length,
+    iching: SIGNIFICADOS.filter((s) => s.pilar === 'iching').length,
   };
 }
 

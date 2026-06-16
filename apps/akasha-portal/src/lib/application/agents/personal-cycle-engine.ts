@@ -1,7 +1,7 @@
 // ============================================================
 // PERSONAL CYCLE ENGINE
 // ============================================================
-// Motor que calcula dinamicamente TODOS os ciclos pessoais:
+// Motor que calcula dinamicamente todos os ciclos pessoais:
 // - Dia Pessoal (muda a cada dia)
 // - Mês Pessoal (muda a cada mês)
 // - Ano Pessoal (muda a cada ano)

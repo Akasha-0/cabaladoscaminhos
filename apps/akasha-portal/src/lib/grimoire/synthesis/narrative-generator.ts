@@ -1,6 +1,6 @@
 /**
  * Akasha Synthesis — Narrative Generator v3
- * F-232 · Síntese Profunda: TODOS os 5 pilares por dimensão
+ * F-232 · Síntese Profunda: todos os 5 pilares por dimensão
  *
  * Princípio: o usuário não quer "teu número é 11".
  * Quer: "O que isso SIGNIFICA na minha vida e o que eu FAÇO com isso?"

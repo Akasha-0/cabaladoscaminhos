@@ -202,7 +202,7 @@ describe('buildAkashaSynthesis — integração completa (F-226/227/242)', () =>
 // ─── Graceful fallback (todos pilares null) ────────────────────────────────
 
 describe('buildAkashaSynthesis — fallback gracioso', () => {
-  it('retorna estrutura válida mesmo com TODOS pilares null', () => {
+  it('retorna estrutura válida mesmo com todos pilares null', () => {
     const synth = buildAkashaSynthesis(null, null, null, null, makeHolo(makeAstro()), TODAY);
     expect(synth.areas).toBeDefined();
     expect(Object.keys(synth.areas)).toHaveLength(6);
