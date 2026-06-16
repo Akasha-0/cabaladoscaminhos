@@ -1,0 +1,44 @@
+{
+  "improvements": [
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "3 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/components/akasha/dashboard/hooks/useAkashaSynthesis.test.ts",
+        "apps/akasha-portal/src/lib/application/akasha/narrative-generator.test.ts",
+        "apps/akasha-portal/vitest.config.ts"
+      ]
+    },
+    {
+      "type": "tech_debt",
+      "priority": 5,
+      "description": "2 files with TODO",
+      "files": [
+        "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
+      ]
+    },
+    {
+      "type": "large_file",
+      "priority": 4,
+      "description": "28 oversized files",
+      "files": [
+        {
+          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+          "lines": 1394
+        },
+        {
+          "file": "packages/akasha-core/src/interpretation-engine.ts",
+          "lines": 1198
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 1141
+        }
+      ]
+    }
+  ],
+  "agent_count": 3,
+  "timestamp": "2026-06-16T12:22:58.629361+00:00"
+}

@@ -1,3 +1,25 @@
 {
-  "results": []
+  "results": [
+    {
+      "agent_id": "478ae67b",
+      "type": "tech_debt",
+      "success": true,
+      "message": "Agent 478ae67b completed tech_debt",
+      "exit_code": 0
+    },
+    {
+      "agent_id": "9791c192",
+      "type": "missing_tests",
+      "success": true,
+      "message": "Agent 9791c192 completed missing_tests",
+      "exit_code": 0
+    },
+    {
+      "agent_id": "40bde90f",
+      "type": "large_file",
+      "success": true,
+      "message": "Agent 40bde90f completed large_file",
+      "exit_code": 0
+    }
+  ]
 }
