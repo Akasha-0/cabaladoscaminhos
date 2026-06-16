@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T14:20:12.222462+00:00",
-  "version": "0.3.0",
+  "generated_at": "2026-06-16T14:28:27.527705+00:00",
+  "version": "0.4.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -879,15 +879,21 @@
       "- [~] **PLN-002[1]** -- missing_tests | 1 changed files lack tests",
       "- [~] **PLN-002[2]** -- tech_debt | 2 files with TODO",
       "- [~] **PLN-002[3]** -- large_file | 28 oversized files",
+      "- [~] **PLN-003[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-003[2]** -- tech_debt | 2 files with TODO",
+      "- [~] **PLN-003[3]** -- large_file | 28 oversized files",
+      "- [~] **PLN-003[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-003[2]** -- tech_debt | 2 files with TODO",
+      "- [~] **PLN-003[3]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 878
+    "pending_count": 884
   },
   "git": {
-    "untracked": 6,
-    "modified": 17,
-    "total": 23,
+    "untracked": 8,
+    "modified": 14,
+    "total": 22,
     "has_changes": true
   },
   "triad": {
@@ -901,7 +907,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1525,
+      "passed": 1530,
       "failed": 238
     }
   },
@@ -943,11 +949,11 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "packages/akasha-core/src/interpretation-engine.test.ts"
+        "packages/akasha-core/src/interpretation-engine/mestres.test.ts"
       ]
     }
   ],
-  "git_head": "348b4b39875a9b5f32b69fa595a0eb64e1d2409c",
+  "git_head": "642349cfd9785986a3dc95caf5622c71ec345528",
   "decision_factors": {
     "has_pending_features": true
   }

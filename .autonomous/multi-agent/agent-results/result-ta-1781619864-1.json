@@ -1,0 +1,1 @@
+{"success": true, "message": "Fixed 0 tech_debt comments in 0 files — both target files are clean (no TODO/FIXME/XXX/HACK markers found; only false-positive matches on the legitimate Portuguese constant `TODOS_PILARES`).", "type": "tech_debt"}
