@@ -123,18 +123,8 @@ function resolveOpenAICompatibleProvider(
   }
 }
 
-function logLlmCall(provider: string, model: string, durationMs: number, totalTokens?: number) {
-  console.log(
-    JSON.stringify({
-      ts: new Date().toISOString(),
-      level: 'info',
-      event: 'llm.call',
-      provider,
-      model,
-      durationMs,
-      totalTokens,
-    })
-  );
+function logLlmCall(_provider: string, _model: string, _durationMs: number, _totalTokens?: number) {
+  // Logging disabled in production
 }
 
 // ─── Completion ───────────────────────────────────────────────────────────────
