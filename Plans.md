@@ -168,6 +168,806 @@
   - Files: apps/akasha-portal/src/components/akasha/MandalaChart.tsx, packages/akasha-core/src/interpretation-engine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
 - [~] **PLN-000[1]** -- tech_debt | 2 files with TODO
 - [~] **PLN-000[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** — tech_debt | 2 files with TODO
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts, apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts
+- [~] **PLN-001[2]** — large_file | 28 oversized files
+  - Files: packages/akasha-core/src/interpretation-engine.ts, apps/akasha-portal/src/components/akasha/MandalaChart.tsx, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[3]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[2]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[2]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[2]** -- large_file | 28 oversized files
+- [~] **PLN-001[1]** -- missing_tests | 1 changed files lack tests
+- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-001[3]** -- large_file | 28 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

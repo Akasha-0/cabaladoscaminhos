@@ -1,6 +1,14 @@
 {
   "improvements": [
     {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts"
+      ]
+    },
+    {
       "type": "tech_debt",
       "priority": 5,
       "description": "2 files with TODO",
@@ -16,19 +24,19 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 1236
+          "lines": 1087
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
-          "lines": 1198
+          "lines": 1075
         },
         {
-          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
-          "lines": 1141
+          "file": "packages/core-iching/src/practices.ts",
+          "lines": 993
         }
       ]
     }
   ],
-  "agent_count": 2,
-  "iteration": 0
+  "agent_count": 3,
+  "iteration": 1
 }

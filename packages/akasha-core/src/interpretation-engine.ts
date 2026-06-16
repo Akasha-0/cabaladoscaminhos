@@ -16,17 +16,20 @@
  * e prática que responde "o que isso significa PARA MIM, na minha vida?".
  */
 
-import type {
-  AreaInterpretation,
-  VidaInterpretation,
-  AkashaLevel,
-  LifeArea,
-} from '@akasha/types';
-import { buildInterpretation, buildFallback } from './interpretation-engine/builders';
+import type { LifeArea } from '@akasha/types';
+
+// ─── API pública (queries) ─────────────────────────────────────────────────
+// Re-exporta as funções públicas do motor. A implementação vive em
+// ./interpretation-engine/queries.ts para isolar a API do catálogo de
+// dados, que domina o tamanho deste arquivo.
+export {
+  interpretarVida,
+  interpretarVidaArea,
+} from './interpretation-engine/queries';
 
 // ─── Constantes ──────────────────────────────────────────────────────────────
 
-const MASTER_NUMBERS = new Set([11, 22, 33]);
+export const MASTER_NUMBERS = new Set([11, 22, 33]);
 
 // ─── Conteúdo Profundo por Número ──────────────────────────────────────────
 // Cada entrada contém 3 níveis × 9 áreas da vida.
@@ -63,7 +66,7 @@ type NumeroContent = {
   };
 };
 
-const VIDA_CONTENT: Record<number, NumeroContent> = {
+export const VIDA_CONTENT: Record<number, NumeroContent> = {
   // ── 1: O INICIADOR ───────────────────────────────────────────────────────
   1: {
     arquetipoAkasha: 'O Fundador',
@@ -1070,76 +1073,3 @@ const VIDA_CONTENT: Record<number, NumeroContent> = {
     },
   },
 };
-
-// ─── Funções Públicas ──────────────────────────────────────────────────────
-
-/**
- * Gera a interpretação profunda de um Número de Vida.
- *
- * @param numero - número de vida (1-9, 11, 22, 33)
- * @returns VidaInterpretation completa com 3 níveis (shadow/gift/siddhi)
- *          para cada uma das 9 áreas da vida.
- *
- * PILOTO: esta função é a primeira implementação do motor de interpretação
- * Akasha. Estende a shallow "descrição de número" para o modelo de 4 camadas:
- *   dado → significado → padrão → aplicação
- *
- * Os níveis shadow/gift/siddhi seguem o modelo Gene Keys adaptado para Akasha.
- */
-export function interpretarVida(numero: number): VidaInterpretation {
-  // Normalizar master numbers
-  const n = numero;
-  const isMaster = MASTER_NUMBERS.has(n);
-
-  // Fallback para números fora do intervalo coberto
-  if (!VIDA_CONTENT[n]) {
-    return {
-      numero: n,
-      isMaster: false,
-      levels: {
-        shadow: buildFallback(n, 'shadow'),
-        gift: buildFallback(n, 'gift'),
-        siddhi: buildFallback(n, 'siddhi'),
-      },
-      mandato: `Seu Número de Vida é ${n}. Este número carrega uma energia única que convida você a descobrir seu significado através da experiência.`,
-      arquetipoAkasha: `Número ${n}`,
-    };
-  }
-
-  const content = VIDA_CONTENT[n];
-  return {
-    numero: n,
-    isMaster,
-    levels: {
-      shadow: buildInterpretation(n, isMaster, content, 'shadow'),
-      gift: buildInterpretation(n, isMaster, content, 'gift'),
-      siddhi: buildInterpretation(n, isMaster, content, 'siddhi'),
-    },
-    mandato: content.mandato,
-    arquetipoAkasha: content.arquetipoAkasha,
-  };
-}
-
-/**
- * Gera a interpretação para uma área de vida específica de um Número de Vida.
- * Útil para mostrar apenas uma área (ex: "como este número afeta meus relacionamentos?").
- *
- * @param numero - número de vida
- * @param area - área de vida desejada
- * @param nivel - nível de profundidade (shadow | gift | siddhi)
- */
-export function interpretarVidaArea(
-  numero: number,
-  area: LifeArea,
-  nivel: AkashaLevel = 'gift',
-): AreaInterpretation | null {
-  const vida = interpretarVida(numero);
-  const interp = vida.levels[nivel];
-  if (!interp) return null;
-
-  // Se a área existe na aplicação, usar
-  if (interp.aplicacao[area]) {
-    return interp;
-  }
-  return interp;
-}

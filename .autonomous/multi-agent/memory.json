@@ -1,5 +1,5 @@
 {
-  "iteration": 16,
+  "iteration": 17,
   "learnings": [
     {
       "ts": "2026-06-15T23:25:37.276925+00:00",
@@ -417,6 +417,13 @@
       "ts": "2026-06-16T12:43:20.581019+00:00",
       "improvement": "tech_debt, large_file",
       "version": "0.11.1",
+      "agents": 2,
+      "triad_green": false
+    },
+    {
+      "ts": "2026-06-16T12:59:14.643378+00:00",
+      "improvement": "tech_debt, large_file",
+      "version": "0.12.1",
       "agents": 2,
       "triad_green": false
     }
@@ -1097,16 +1104,6 @@
   },
   "recent_decisions": [
     {
-      "ts": "2026-06-16T12:03:30.125322+00:00",
-      "type": "large_file",
-      "description": "28 oversized files"
-    },
-    {
-      "ts": "2026-06-16T12:20:06.760324+00:00",
-      "type": "missing_tests",
-      "description": "3 changed files lack tests"
-    },
-    {
       "ts": "2026-06-16T12:20:06.760338+00:00",
       "type": "tech_debt",
       "description": "2 files with TODO"
@@ -1143,6 +1140,16 @@
     },
     {
       "ts": "2026-06-16T12:50:37.829473+00:00",
+      "type": "large_file",
+      "description": "28 oversized files"
+    },
+    {
+      "ts": "2026-06-16T13:00:18.052217+00:00",
+      "type": "tech_debt",
+      "description": "2 files with TODO"
+    },
+    {
+      "ts": "2026-06-16T13:00:18.052230+00:00",
       "type": "large_file",
       "description": "28 oversized files"
     }

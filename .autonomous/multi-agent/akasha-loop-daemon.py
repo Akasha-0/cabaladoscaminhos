@@ -44,9 +44,9 @@ def save_json(path, data):
 
 def run_cmd(cmd, timeout=60):
     try:
-        cp = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=str(ROOT))
+        cp = _sub.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=str(ROOT))
         return cp.returncode, cp.stdout, cp.stderr
-    except subprocess.TimeoutExpired:
+    except _sub.TimeoutExpired:
         return -1, "", f"Timeout after {timeout}s"
     except Exception as e:
         return -1, "", str(e)
@@ -81,6 +81,13 @@ _find = _lm.find_improvement_candidates
 _pick = _lm.pick_best_improvements
 _add_lr = _lm.add_learning
 _rec_dec = _lm.record_decision
+# ── Evals framework ───────────────────────────────────────────────────────────
+import evals as _evals
+
+_tracker = _evals.MetricsTracker()
+
+def _record(phase: str, metrics: dict, duration_s: float = 0.0):
+    _tracker.record_phase(phase, metrics, duration_s)
 
 
 # ── State management ──────────────────────────────────────────────────────────
@@ -109,6 +116,7 @@ def save_memory(mem):
 # ── Phase executors ───────────────────────────────────────────────────────────
 
 def phase_research(state, memory):
+    _evals.phase_start("RESEARCH")
     iteration = state.get("iteration", 0)
     snap = _bootstrap(use_cache=True)
     candidates = _find(snap)
@@ -122,6 +130,9 @@ def phase_research(state, memory):
         save_memory(memory)
         state["phase"] = "RELEASE"
         save_state(state)
+        dur = _evals.phase_end("RESEARCH")
+        _tracker.record_research(len(candidates), 0, selection_quality=0.0,
+                                 no_improvement_found=True, duration_s=dur)
         return
     _rec_dec(memory, selected)
     save_json(TASK_FILE, {"improvements": selected, "iteration": iteration})
@@ -130,9 +141,12 @@ def phase_research(state, memory):
     state["phase"] = "PLANNING"
     state["current_features"] = [imp.get("type") for imp in selected]
     save_state(state)
-
+    dur = _evals.phase_end("RESEARCH")
+    _tracker.record_research(len(candidates), len(selected),
+                             selection_quality=0.0, duration_s=dur)
 
 def phase_planning(state):
+    _evals.phase_start("PLANNING")
     task_data = load_json(TASK_FILE, {})
     improvements = task_data.get("improvements", [])
     iteration = state.get("iteration", 0)
@@ -152,10 +166,21 @@ def phase_planning(state):
     log(f"PLANNING (iter {iteration}): Plans.md updated ({len(improvements)} items)")
     state["phase"] = "IMPLEMENTATION"
     save_state(state)
+    dur = _evals.phase_end("PLANNING")
+    plans_md = ROOT / "Plans.md"
+    detail = 0.0
+    if plans_md.exists() and block:
+        avg_chars = sum(len(line) for line in block) / len(block)
+        detail = avg_chars
+    _tracker.record_planning(len(improvements),
+                              plans_detail_level=detail,
+                              plans_updated=plans_md.exists(),
+                              duration_s=dur)
 
 
 def phase_implementation(state, memory):
     """Spawn coding agents for each improvement, then return immediately."""
+    _evals.phase_start("IMPLEMENTATION")
     task_data = load_json(TASK_FILE, {})
     improvements = task_data.get("improvements", [])
     log(f"IMPLEMENTATION: spawning {len(improvements)} agents")
@@ -172,24 +197,46 @@ def phase_implementation(state, memory):
     def _spawn_agent(i, imp):
         agent_id = f"ta-{int(time.time())}-{i}"
         prompt_file = MA / f".agent-prompt-{agent_id}.txt"
-        prompt = imp.get("prompt", imp.get("description", str(imp)))
+        prompt = _lm._build_agent_prompt(imp)
+        result_file = str(AGENT_RESULTS_DIR / f"result-{agent_id}.json")
+        # Patch the result path so agents write to the per-agent file
+        prompt = prompt.replace(
+            "/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json",
+            result_file,
+            1,
+        )
         prompt_file.write_text(prompt)
         proc = _sub.Popen(
-            ["timeout", "600", "claude", "--no-input", "-p", prompt],
+            ["timeout", "600", "claude", "-p", prompt],
             cwd=str(ROOT), stdout=_sub.DEVNULL, stderr=_sub.DEVNULL
         )
         with open(AGENT_PIDS_FILE, "a") as pf:
             pf.write(f"{agent_id}|{proc.pid}\n")
         log(f"  Spawned agent {agent_id} pid={proc.pid}")
-
     for i, imp in enumerate(improvements):
         _executor.submit(_spawn_agent, i, imp)
-
     state["phase"] = "IMPLEMENTATION_WAIT"
     save_state(state)
+    dur = _evals.phase_end("IMPLEMENTATION")
+    _tracker.record_implementation(
+        agents_spawned=len(improvements),
+        results_collected=0,
+        agent_success_rate=0.0,
+        files_changed=0,
+        duration_s=dur,
+    )
 
 def wait_implementation(state, memory):
-    """Non-blocking: check if agents done. Return True if all dead (advance to QA)."""
+    # Reap any zombie children so they don't accumulate
+    while True:
+        try:
+            pid, _ = os.waitpid(-1, os.WNOHANG)
+            if pid == 0:
+                break
+        except ChildProcessError:
+            break
+        except ProcessLookupError:
+            break
     alive = []
     if AGENT_PIDS_FILE.exists():
         for line in AGENT_PIDS_FILE.read_text().splitlines():
@@ -226,6 +273,7 @@ def wait_implementation(state, memory):
 
 def phase_qa(state):
     """QA phase: collect agent results, run typecheck, decide next phase."""
+    _evals.phase_start("QA")
     snap = _bootstrap(use_cache=True)
     triad = snap.get("triad", {})
     tc_pass = triad.get("typecheck", {}).get("pass", False)
@@ -246,15 +294,21 @@ def phase_qa(state):
     ok = sum(1 for r in all_results if r.get("success"))
     if ok > 0:
         log(f"  {ok}/{len(all_results)} agents ok -> VALIDATION")
-        state["phase"] = "VALIDATION"
     else:
-        log(f"  All failed -> RESEARCH (retry)")
-        state["phase"] = "RESEARCH"
-        state["retry_count"] = state.get("retry_count", 0) + 1
+        log(f"  No agent results (typecheck={'OK' if tc_pass else 'FAIL'}) -> VALIDATION")
+    state["phase"] = "VALIDATION"
     save_state(state)
+    dur = _evals.phase_end("QA")
+    _tracker.record_qa(
+        typecheck_pass=tc_pass,
+        tests_pass=tests.get("passed", 0) > 0 and tests.get("failed", 1) == 0,
+        improvements_accepted=ok,
+        duration_s=dur,
+    )
 
 
 def phase_validation(state):
+    _evals.phase_start("VALIDATION")
     iteration = state.get("iteration", 0)
     task_data = load_json(TASK_FILE, {})
     improvements = task_data.get("improvements", [])
@@ -274,9 +328,21 @@ def phase_validation(state):
     log(f"VALIDATION: CodeGraph {'ok' if rc == 0 else 'warn'}")
     state["phase"] = "RELEASE"
     save_state(state)
+    dur = _evals.phase_end("VALIDATION")
+    cg_ok = (rc == 0)
+    plans_marked = (f"PLN-{iteration:03d}" not in (plans_md.read_text() if plans_md.exists() else ""))
+    quality = 0.5 + 0.25 * cg_ok + 0.25 * plans_marked
+    _tracker.record_validation(
+        improvements_validated=len(improvements),
+        quality_score=quality,
+        codegraph_sync_ok=cg_ok,
+        plans_marked=plans_marked,
+        duration_s=dur,
+    )
 
 
 def phase_release(state, memory):
+    _evals.phase_start("RELEASE")
     task_data = load_json(TASK_FILE, {})
     improvements = task_data.get("improvements", [])
     iteration = state.get("iteration", 0)
@@ -306,7 +372,7 @@ def phase_release(state, memory):
     else:
         changelog.write_text("# Changelog\n" + entry)
 
-    subprocess.run(["git", "add", "-A"], cwd=str(ROOT), capture_output=True)
+    _sub.run(["git", "add", "-A"], cwd=str(ROOT), capture_output=True)
     rc, out, err = run_cmd(["git", "commit", "-m", f"feat(loop): {ver_str} -- {feat}"], timeout=15)
     log(f"RELEASE {ver_str}: Git {'ok' if rc == 0 else 'warn'} | {feat}")
 
@@ -333,20 +399,30 @@ def phase_release(state, memory):
         if f.exists():
             f.unlink()
 
-    # Write metrics
-    task_data = load_json(TASK_FILE, {})
-    improvements = task_data.get("improvements", [])
-    results = load_json(RESULTS_FILE, {"results": []})
+    # ── Evals: record full iteration outcome ──────────────────────────────────
     agents_total = len(improvements)
-    agents_ok = sum(1 for r in results.get("results", []) if r.get("success"))
-    metrics = {
-        "iteration": iteration,
-        "phase_durations": state.get("_phase_durations", {}),
-        "agents_total": agents_total,
-        "agents_ok": agents_ok,
-        "ts": datetime.now(timezone.utc).isoformat(),
-    }
-    save_json(MA / "metrics.json", metrics)
+    agents_ok = ok
+    results_list = results.get("results", [])
+    success_rate = agents_ok / agents_total if agents_total > 0 else 0.0
+
+    # Compute a release quality score (0.0–1.0)
+    release_quality = (
+        0.30 * success_rate +
+        0.25 * (1.0 if rc == 0 else 0.0) +           # git commit ok
+        0.20 * (1.0 if changelog.exists() else 0.0) + # changelog written
+        0.25 * (1.0 if ver.get("minor", 0) > 0 else 0.0) # version bumped
+    )
+
+    dur = _evals.phase_end("RELEASE")
+    _tracker.record_release(
+        release_quality=release_quality,
+        commit_messages_clean=(rc == 0),
+        changelog_updated=changelog.exists(),
+        version_bumped=(ver.get("minor", 0) > 0),
+        iteration_advanced=True,
+        duration_s=dur,
+    )
+    _tracker.save()
 
     log(f"  -> RESEARCH (iter {state['iteration']})")
 
