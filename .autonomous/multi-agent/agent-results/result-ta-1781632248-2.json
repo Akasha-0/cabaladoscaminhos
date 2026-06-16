@@ -1,1 +1,0 @@
-{"success": false, "message": "Skipped: packages/core-iching/src/practices.ts is modified in working tree (large PRACTICES data already split into practices-data.ts and practices-lookup.ts in this branch). Not a candidate for extraction.", "type": "large_file"}

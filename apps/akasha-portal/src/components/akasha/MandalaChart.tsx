@@ -2,20 +2,13 @@
 
 import { useState } from 'react';
 import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
-import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
 import { AstrologyInfoPanel, type AstrologyAspect } from '@/components/akasha/AstrologyInfoPanel';
 import { OduInfoPanel } from '@/components/akasha/OduInfoPanel';
 import { ELEMENT_GUIDANCE, dominantElement } from '@/components/akasha/mandala-elements';
-import {
-  LIFE_PATH_MEANINGS,
-  resolveSig,
-  SignificadoEmbed,
-  TANTRIC_BODY_WISDOM,
-} from '@/components/akasha/mandala-meanings';
+import { LIFE_PATH_MEANINGS } from '@/components/akasha/mandala-meanings';
 import { useCockpitStore } from '@/stores/cockpit-store';
 import { formatDegreeToZodiac, GLYPHS_BY_PLANET, PLANET_COLORS, longitudeToSvgAngle } from '@/lib/shared/zodiac';
-import { KOSHAS } from '@/lib/shared/koshas';
 import {
   describeArc,
   PARTICLES,
@@ -35,6 +28,7 @@ import {
   buildTooltipByLayer,
   buildTrianglePath,
 } from '@/components/akasha/mandala-layers';
+import { KabalaInfoPanel, TantricBodyInfoPanel } from '@/components/akasha/MandalaInfoPanels';
 
 interface MandalaData {
   incomplete: boolean;
@@ -688,239 +682,11 @@ export default function MandalaChart({ data }: Props) {
       )}
 
       {activeLayer === 3 && (
-        <InfoPanel
-          color="#2DD4BF"
-          title="Corpo e Energia — Os 11 Corpos"
-          subtitle="Teia de Conexão · Camada 3"
-        >
-          <Row label="Caminho Tântrico" value={data.tantra.tantricPath} />
-          <Row label="Alma" value={data.tantra.soul} />
-          <Row label="Karma" value={data.tantra.karma} />
-          <Row label="Dom Divino" value={data.tantra.divineGift} />
-          <Divider />
-          {inactiveBodies.length === 0 ? (
-            <Insight color="#2DD4BF">
-              Todos os 11 Corpos estão ativos — seu campo espiritual está em fluxo.
-            </Insight>
-          ) : (
-            <>
-              <p style={{ fontSize: '0.75rem', color: '#A7AECF', marginBottom: '0.5rem' }}>
-                Corpos em tensão (indicados em magenta na Mandala):
-              </p>
-              {inactiveBodies.map((n) => {
-                const w = TANTRIC_BODY_WISDOM[n.i + 1];
-                return (
-                  <div key={n.i} style={{ marginBottom: '0.5rem' }}>
-                    <p style={{ fontSize: '0.8125rem', color: '#FB5781', fontWeight: 600 }}>
-                      Corpo {n.i + 1} — {w?.desc}
-                    </p>
-                    <p style={{ fontSize: '0.75rem', color: '#A7AECF' }}>
-                      Desafio: {w?.challenge} · Ativar: {w?.activate}
-                    </p>
-                  </div>
-                );
-              })}
-            </>
-          )}
-          <SignificadoEmbed
-            significado={resolveSig('tantrica', data.tantra.destiny ?? data.tantra.soul ?? 1)}
-            color="#2DD4BF"
-          />
-          {/* Mandala Fase 4 (spec mandala-fase3-zodiac-tantra): 5 Koshas védicas
-              como enriquecimento textual. SVG Layer 3 permanece com 11 bodies
-              de Yogi Bhajan. As 5 koshas são conceito tântrico védico paralelo. */}
-          <Divider />
-          <p style={{ fontSize: '0.75rem', color: '#2DD4BF', fontWeight: 600, marginBottom: '0.5rem' }}>
-            5 Koshas (Tantra Védica)
-          </p>
-          {KOSHAS.map((k) => (
-            <div
-              key={k.id}
-              data-testid={`kosha-${k.id}`}
-              style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}
-            >
-              <span
-                aria-hidden
-                style={{
-                  display: 'inline-block',
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: k.color,
-                  marginTop: 6,
-                  flexShrink: 0,
-                }}
-              />
-              <div>
-                <p style={{ fontSize: '0.8125rem', color: '#FFFFFF', fontWeight: 600, margin: 0 }}>
-                  {k.name.pt} <span style={{ color: '#A7AECF', fontWeight: 400 }}>({k.name.sanskrit})</span>
-                </p>
-                <p style={{ fontSize: '0.75rem', color: '#A7AECF', margin: 0 }}>
-                  {k.description.pt}
-                </p>
-              </div>
-            </div>
-          ))}
-        </InfoPanel>
+        <TantricBodyInfoPanel tantra={data.tantra} inactiveBodies={inactiveBodies} />
       )}
 
       {activeLayer === 2 && (
-        <InfoPanel
-          color={PILAR_COLORS[2]}
-          title="Número de Vida — Geometria Sagrada"
-          subtitle="Geometria Interna · Camada 2"
-        >
-          <Row
-            label="Caminho de Vida"
-            value={data.kabala.lifePath}
-            master={data.kabala.lifePathMaster}
-          />
-          <Row
-            label="Expressão"
-            value={data.kabala.expression}
-            master={data.kabala.expressionMaster}
-          />
-          <Row label="Motivação" value={data.kabala.motivation} />
-          <Row label="Impressão" value={data.kabala.impression} />
-          <Row label="Missão" value={data.kabala.mission} />
-          <Row label="Ano Pessoal" value={data.kabala.personalYear} />
-          <Row label="Mês Pessoal" value={data.kabala.personalMonth} />
-          <Row label="Dia Pessoal" value={data.kabala.personalDay} />
-          <Row label="Sefira" value={data.kabala.sefira} />
-          <Row label="Letra Hebraica" value={data.kabala.hebrewLetter} />
-          {data.kabala.tarotCard && (
-            <>
-              <Row
-                label="Carta de Tarot"
-                value={`${data.kabala.tarotCard.name} (#${data.kabala.tarotCard.major})`}
-              />
-              {data.kabala.tarotCard.meaning && (
-                <Insight color={PILAR_COLORS[2]}>{data.kabala.tarotCard.meaning}</Insight>
-              )}
-            </>
-          )}
-          {lpMeaning && (
-            <>
-              <Divider />
-              <Insight color={PILAR_COLORS[2]}>{lpMeaning}</Insight>
-            </>
-          )}
-          {data.kabala.challenges && (
-            <>
-              <Divider />
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  color: PILAR_COLORS[2],
-                  fontWeight: 600,
-                  marginBottom: '0.35rem',
-                }}
-              >
-                Desafios
-              </p>
-              <Row label="Primeiro Desafio" value={data.kabala.challenges.first} />
-              <Row label="Segundo Desafio" value={data.kabala.challenges.second} />
-              <Row label="Desafio Principal" value={data.kabala.challenges.main} />
-              <Row label="Último Desafio" value={data.kabala.challenges.last} />
-            </>
-          )}
-          {data.kabala.pinnacles && (
-            <>
-              <Divider />
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  color: PILAR_COLORS[2],
-                  fontWeight: 600,
-                  marginBottom: '0.35rem',
-                }}
-              >
-                Pináculos
-              </p>
-              {data.kabala.pinnacles.first && (
-                <>
-                  <Row
-                    label="1º Pináculo"
-                    value={`${data.kabala.pinnacles.first.number} (até ${data.kabala.pinnacles.first.ageEnd})`}
-                  />
-                  {data.kabala.pinnacles.first.meaning && (
-                    <Insight color={PILAR_COLORS[2]}>{data.kabala.pinnacles.first.meaning}</Insight>
-                  )}
-                </>
-              )}
-              {data.kabala.pinnacles.second && (
-                <>
-                  <Row
-                    label="2º Pináculo"
-                    value={`${data.kabala.pinnacles.second.number} (${data.kabala.pinnacles.second.ageStart}–${data.kabala.pinnacles.second.ageEnd})`}
-                  />
-                  {data.kabala.pinnacles.second.meaning && (
-                    <Insight color={PILAR_COLORS[2]}>{data.kabala.pinnacles.second.meaning}</Insight>
-                  )}
-                </>
-              )}
-              {data.kabala.pinnacles.third && (
-                <>
-                  <Row
-                    label="3º Pináculo"
-                    value={`${data.kabala.pinnacles.third.number} (${data.kabala.pinnacles.third.ageStart}–${data.kabala.pinnacles.third.ageEnd})`}
-                  />
-                  {data.kabala.pinnacles.third.meaning && (
-                    <Insight color={PILAR_COLORS[2]}>{data.kabala.pinnacles.third.meaning}</Insight>
-                  )}
-                </>
-              )}
-              {data.kabala.pinnacles.fourth && (
-                <>
-                  <Row
-                    label="4º Pináculo"
-                    value={`${data.kabala.pinnacles.fourth.number} (depois de ${data.kabala.pinnacles.fourth.ageStart})`}
-                  />
-                  {data.kabala.pinnacles.fourth.meaning && (
-                    <Insight color={PILAR_COLORS[2]}>{data.kabala.pinnacles.fourth.meaning}</Insight>
-                  )}
-                </>
-              )}
-            </>
-          )}
-          {data.kabala.lifeCycles && (
-            <>
-              <Divider />
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  color: PILAR_COLORS[2],
-                  fontWeight: 600,
-                  marginBottom: '0.35rem',
-                }}
-              >
-                Ciclos de Vida
-              </p>
-              {data.kabala.lifeCycles.first && (
-                <Row
-                  label="1º Ciclo"
-                  value={`${data.kabala.lifeCycles.first.number} (${data.kabala.lifeCycles.first.ageStart}–${data.kabala.lifeCycles.first.ageEnd})`}
-                />
-              )}
-              {data.kabala.lifeCycles.second && (
-                <Row
-                  label="2º Ciclo"
-                  value={`${data.kabala.lifeCycles.second.number} (${data.kabala.lifeCycles.second.ageStart}–${data.kabala.lifeCycles.second.ageEnd})`}
-                />
-              )}
-              {data.kabala.lifeCycles.third && (
-                <Row
-                  label="3º Ciclo"
-                  value={`${data.kabala.lifeCycles.third.number} (a partir de ${data.kabala.lifeCycles.third.ageStart})`}
-                />
-              )}
-            </>
-          )}
-          <SignificadoEmbed
-            significado={resolveSig('cabala', data.kabala.lifePath)}
-            color={PILAR_COLORS[2]}
-          />
-        </InfoPanel>
+        <KabalaInfoPanel kabala={data.kabala} lpMeaning={lpMeaning} />
       )}
 
       {activeLayer === 1 && <OduInfoPanel odu={data.odus} />}

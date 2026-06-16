@@ -1,18 +1,13 @@
 {
   "results": [
     {
-      "success": false,
-      "message": "Skipped: packages/core-iching/src/practices.ts is modified in working tree (large PRACTICES data already split into practices-data.ts and practices-lookup.ts in this branch). Not a candidate for extraction.",
-      "type": "large_file"
-    },
-    {
       "success": true,
       "message": "Removed console statements",
       "type": "console_cleanup"
     },
     {
       "success": true,
-      "message": "Added tests for packages/core-iching/src/practices-data.ts",
+      "message": "Added tests for packages/core-iching/src/practices.ts",
       "type": "missing_tests"
     }
   ]

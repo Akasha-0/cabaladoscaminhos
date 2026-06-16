@@ -5,29 +5,22 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "packages/core-iching/src/practices-data.ts"
+        "packages/core-iching/src/practices.ts"
       ]
     },
     {
       "type": "console_cleanup",
       "priority": 5,
-      "description": "4 files with console statements",
+      "description": "1 files with console statements",
       "files": [
-        "apps/akasha-portal/src/lib/infrastructure/grimoire-search.ts",
-        "apps/akasha-portal/src/lib/infrastructure/geocoding/nominatim.ts",
-        "apps/akasha-portal/src/lib/domain/engines/spiritual-engine.ts",
         "apps/akasha-portal/prisma/seed.ts"
       ]
     },
     {
       "type": "large_file",
       "priority": 4,
-      "description": "28 oversized files",
+      "description": "27 oversized files",
       "files": [
-        {
-          "file": "packages/core-iching/src/practices.ts",
-          "lines": 937
-        },
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
           "lines": 937
@@ -35,10 +28,14 @@
         {
           "file": "packages/core-iching/src/practices-data.ts",
           "lines": 928
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
+          "lines": 918
         }
       ]
     }
   ],
   "agent_count": 3,
-  "iteration": 17
+  "iteration": 18
 }

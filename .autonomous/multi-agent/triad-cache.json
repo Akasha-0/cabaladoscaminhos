@@ -3,6 +3,8 @@
     "typecheck": {
       "pass": false,
       "errors": [
+        "apps/akasha-portal/src/components/akasha/MandalaInfoPanels.tsx(4,3): error TS2305: Module '\"@/components/akasha/mandala-meanings\"' has no exported member 'PILAR_COLORS'.",
+        "apps/akasha-portal/src/components/akasha/MandalaInfoPanels.tsx(10,15): error TS2614: Module '\"./MandalaChart\"' has no exported member 'MandalaData'. Did you mean to use 'import MandalaData from \"./MandalaChart\"' instead?",
         "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(118,54): error TS2345: Argument of type '\"unknown_source\"' is not assignable to parameter of type 'SpiritualSource'.",
         "packages/akasha-cli/src/commands/diagnostico.test.ts(51,3): error TS18046: 'mockedExec' is of type 'unknown'.",
         "packages/akasha-cli/src/commands/diagnostico.test.ts(68,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
@@ -19,10 +21,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1591,
+      "passed": 1609,
       "failed": 241
     }
   },
-  "git_head": "0f46c7226a822492174725917608e071fee035b6",
-  "cached_at": 1781632788.0233355
+  "git_head": "535566afebf3c9a08e8a5507de11247ed8a32701",
+  "cached_at": 1781633512.7772923
 }
