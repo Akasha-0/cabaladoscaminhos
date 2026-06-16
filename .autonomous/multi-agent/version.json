@@ -1,8 +1,14 @@
 {
   "major": 0,
-  "minor": 19,
+  "minor": 20,
   "patch": 0,
   "changelog": [
+    {
+      "version": "0.20.0",
+      "ts": "2026-06-16T17:49:34.217261+00:00",
+      "improvement": "console_cleanup, large_file",
+      "agents": 2
+    },
     {
       "version": "0.19.0",
       "ts": "2026-06-16T17:41:14.221457+00:00",
