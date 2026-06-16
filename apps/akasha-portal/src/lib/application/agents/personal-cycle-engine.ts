@@ -129,29 +129,7 @@ export interface PersonalCycleSnapshot {
 // CORE CALCULATIONS
 // ============================================================
 
-function reduce(num: number, keepMaster = true): number {
-  if (keepMaster && (num === 11 || num === 22 || num === 33)) return num;
-  if (num < 10) return num;
-  let sum = 0;
-  while (num > 0) {
-    sum += num % 10;
-    num = Math.floor(num / 10);
-  }
-  return reduce(sum, keepMaster);
-}
-
-function sumDigits(num: number): number {
-  return String(num).split('').reduce((sum, d) => sum + parseInt(d, 10), 0);
-}
-
-function ageInYears(birthDate: Date, targetDate: Date): number {
-  let age = targetDate.getFullYear() - birthDate.getFullYear();
-  const m = targetDate.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && targetDate.getDate() < birthDate.getDate())) {
-    age--;
-  }
-  return age;
-}
+import { reduce, sumDigits, ageInYears } from './personal-cycle-numerology';
 
 // ============================================================
 // DIA PESSOAL
