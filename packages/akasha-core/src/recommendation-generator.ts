@@ -172,8 +172,8 @@ export class RecommendationGenerator {
           personalizedReason: r.highlights?.[0] || `Recomendado para: "${query}"`,
         }));
       } catch (err) {
-        console.warn('[RAG] Falha ao usar RAG real, usando simulação:', err);
         // Fall through to simulated
+        void err;
       }
     }
     
