@@ -5,6 +5,7 @@ import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
 import { AstrologyInfoPanel, type AstrologyAspect } from '@/components/akasha/AstrologyInfoPanel';
+import { OduInfoPanel } from '@/components/akasha/OduInfoPanel';
 import { ELEMENT_GUIDANCE, dominantElement } from '@/components/akasha/mandala-elements';
 import {
   LIFE_PATH_MEANINGS,
@@ -922,72 +923,7 @@ export default function MandalaChart({ data }: Props) {
         </InfoPanel>
       )}
 
-      {activeLayer === 1 && (
-        <InfoPanel
-          color="#F0B429"
-          title={`Odu: ${data.odus.oduName}`}
-          subtitle="Núcleo — Ancestralidade · Camada 1"
-        >
-          <Row
-            label="Odu de Nascimento"
-            value={`${data.odus.oduName}${data.odus.oduNumber ? ` (${data.odus.oduNumber})` : ''}`}
-          />
-          <Row label="Orixá(s) regente(s)" value={data.odus.orixaRegency.join(', ')} />
-          <Row label="Força Elemental" value={data.odus.elementalForce} />
-          {data.odus.provisional && (
-            <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
-              * Cálculo provisório — confirmar com linhagem de referência.
-            </p>
-          )}
-          {data.odus.preceitos && data.odus.preceitos.length > 0 && (
-            <>
-              <Divider />
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  color: '#F0B429',
-                  fontWeight: 600,
-                  marginBottom: '0.35rem',
-                }}
-              >
-                Preceitos do Odu
-              </p>
-              {data.odus.preceitos.map((p, i) => (
-                <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
-                  ✦ {p}
-                </p>
-              ))}
-            </>
-          )}
-          {data.odus.quizilas && data.odus.quizilas.length > 0 && (
-            <>
-              <Divider />
-              <p
-                style={{
-                  fontSize: '0.75rem',
-                  color: '#FB5781',
-                  fontWeight: 600,
-                  marginBottom: '0.35rem',
-                }}
-              >
-                Quizilás (evitar)
-              </p>
-              {data.odus.quizilas.map((q, i) => (
-                <p key={i} style={{ fontSize: '0.8125rem', color: '#A7AECF' }}>
-                  ⚠ {q}
-                </p>
-              ))}
-            </>
-          )}
-          {(!data.odus.preceitos || data.odus.preceitos.length === 0) && (
-            <Insight color="#F0B429">
-              As quizilás e preceitos específicos do seu Odu serão exibidos quando o Grimório for
-              sincronizado. Consulte o Oráculo para orientação ancestral personalizada.
-            </Insight>
-          )}
-          <SignificadoEmbed significado={resolveSig('odu', data.odus.oduName)} color="#F0B429" />
-        </InfoPanel>
-      )}
+      {activeLayer === 1 && <OduInfoPanel odu={data.odus} />}
 
       {activeLayer === 5 && <IchingInfoPanel iching={data.iching} />}
 
