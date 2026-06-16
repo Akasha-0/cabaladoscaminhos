@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
+import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
 import {
   ELEMENT_COLORS,
   ELEMENT_GUIDANCE,
@@ -1074,97 +1075,7 @@ export default function MandalaChart({ data }: Props) {
         </InfoPanel>
       )}
 
-      {activeLayer === 5 && (
-        <InfoPanel
-          color="#A0763A"
-          title="Mutação do Caminho — Hexagrama do Ori"
-          subtitle="Sabedoria Ancestral Chinesa · Camada 5"
-        >
-          {data.iching.available ? (
-            <>
-              <Row
-                label="Hexagrama"
-                value={
-                  data.iching.hexagramChineseName
-                    ? `${data.iching.hexagramNumber} — ${data.iching.hexagramName} (${data.iching.hexagramChineseName})`
-                    : `${data.iching.hexagramNumber} — ${data.iching.hexagramName}`
-                }
-              />
-              <Row
-                label="Trigrama superior"
-                value={
-                  data.iching.upperTrigram != null && data.iching.upperTrigramName
-                    ? `${data.iching.upperTrigram} — ${data.iching.upperTrigramName}`
-                    : data.iching.upperTrigramName
-                }
-              />
-              <Row
-                label="Trigrama inferior"
-                value={
-                  data.iching.lowerTrigram != null && data.iching.lowerTrigramName
-                    ? `${data.iching.lowerTrigram} — ${data.iching.lowerTrigramName}`
-                    : data.iching.lowerTrigramName
-                }
-              />
-              {Array.isArray(data.iching.lines) && data.iching.lines.length === 6 && (
-                <>
-                  <Divider />
-                  <p
-                    style={{
-                      fontSize: '0.75rem',
-                      color: '#A0763A',
-                      fontWeight: 600,
-                      marginBottom: '0.35rem',
-                    }}
-                  >
-                    As 6 Linhas (de baixo para cima)
-                  </p>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column-reverse',
-                      gap: '4px',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {data.iching.lines.map((yang, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          fontFamily: 'monospace',
-                          fontSize: '0.875rem',
-                          color: yang ? '#F4F5FF' : '#A0763A',
-                          letterSpacing: '0.15em',
-                        }}
-                      >
-                        {yang ? '———' : '— — —'}
-                      </span>
-                    ))}
-                  </div>
-                </>
-              )}
-              <Divider />
-              <Row label="Data de nascimento" value={data.iching.birthDate} />
-              {data.iching.birthTime && <Row label="Hora" value={data.iching.birthTime} />}
-              {data.iching.provisional && (
-                <p style={{ fontSize: '0.6875rem', color: '#5C6691', marginTop: '0.25rem' }}>
-                  * Cálculo provisório — hora de nascimento não informada.
-                </p>
-              )}
-              <SignificadoEmbed
-                significado={resolveSig('iching', data.iching.hexagramNumber)}
-                color="#A0763A"
-              />
-            </>
-          ) : (
-            <Insight color="#A0763A">
-              O hexagrama do seu Ori será calculado quando você completar o perfil. Forneça data e
-              hora de nascimento para que o algoritmo determinístico (akasha.v0.0.4.trigramas-mod8)
-              revele o trigrama superior e inferior do seu nascimento.
-            </Insight>
-          )}
-        </InfoPanel>
-      )}
+      {activeLayer === 5 && <IchingInfoPanel iching={data.iching} />}
 
       {activeLayer === null && (
         <p style={{ fontSize: '0.75rem', color: '#5C6691', textAlign: 'center' }}>
