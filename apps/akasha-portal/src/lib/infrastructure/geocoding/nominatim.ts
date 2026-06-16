@@ -55,7 +55,6 @@ export async function geocodeCity(
       signal: controller.signal,
     });
     if (!res.ok) {
-      console.warn('[geocode] nominatim returned', res.status);
       return null;
     }
     const data = (await res.json()) as Array<{
@@ -72,7 +71,6 @@ export async function geocodeCity(
     };
   } catch (err) {
     if (controller.signal.aborted) return null;
-    console.warn('[geocode] failed:', err);
     return null;
   } finally {
     clearTimeout(timeout);
