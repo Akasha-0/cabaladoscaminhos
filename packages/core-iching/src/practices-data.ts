@@ -11,6 +11,7 @@ import type {
   IntegrativePractice,
 } from './types';
 import { CRISTAIS_PRACTICES } from './practices-cristais';
+import { CROMOTERAPIA_PRACTICES } from './practices-cromoterapia';
 
 const PRACTICES: IntegrativePractice[] = [
   // ── Ifá/Candomblé (5) ─────────────────────────────────────────────────────
@@ -203,95 +204,7 @@ const PRACTICES: IntegrativePractice[] = [
     isSafe: true,
   },
 
-  // ── Cromoterapia (5) ─────────────────────────────────────────────────────
-
-  {
-    id: 'luz-amarela',
-    name: 'Banho de Luz Amarela',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'fogo',
-      color: 'amarelo',
-      planet: 'Sol',
-      chakra: 3,
-      hexagrams: [14, 26],
-    },
-    lifeAreas: ['prosperidade', 'abundância', 'confiança', 'otimismo'],
-    howTo: 'Sente-se em ambiente escuro e exponha-se à luz amarela (lâmpada ou filtro) por 15 minutos. Visualize energia dourada entrando.',
-    frequency: 'Manhãs ensolaradas, 3 vezes por semana.',
-    isSafe: true,
-  },
-
-  {
-    id: 'luz-azul',
-    name: 'Banho de Luz Azul',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'agua',
-      color: 'azul',
-      planet: 'Lua',
-      chakra: 5,
-      hexagrams: [5, 29],
-    },
-    lifeAreas: ['calma', 'comunicação', 'verdade', 'paz interior'],
-    howTo: 'Exponha-se à luz azul por 20 minutos em ambiente tranquilo. Ideal ao entardecer quando há transições de energia.',
-    frequency: 'Diariamente ao entardecer por 15-20 dias.',
-    isSafe: true,
-  },
-
-  {
-    id: 'luz-verde',
-    name: 'Banho de Luz Verde',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'madeira',
-      color: 'verde',
-      planet: 'Vênus',
-      chakra: 4,
-      hexagrams: [20, 57],
-    },
-    lifeAreas: ['cura', 'equilíbrio', 'crescimento', 'natureza'],
-    howTo: 'Sente-se na natureza ou exponha-se à luz verde artificial por 15 minutos. Idealmente ao ar livre, próximo a plantas.',
-    frequency: 'Diariamente por 21 dias, preferencialmente manhãs.',
-    isSafe: true,
-  },
-
-  {
-    id: 'luz-vermelha',
-    name: 'Banho de Luz Vermelha',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'fogo',
-      color: 'vermelho',
-      planet: 'Marte',
-      chakra: 1,
-      hexagrams: [6, 34],
-    },
-    lifeAreas: ['energia', 'coragem', 'vitalidade', 'força'],
-    howTo: 'Exponha-se à luz vermelha por 10 minutos, preferencialmente pela manhã. Não exceder 15 minutos para evitar hiperestimulação.',
-    frequency: 'Manhãs, 2-3 vezes por semana.',
-    isSafe: true,
-  },
-
-  {
-    id: 'afirmacao-cor',
-    name: 'Afirmação com Cor',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      color: 'branco',
-      chakra: 7,
-      hexagrams: [1, 30],
-    },
-    lifeAreas: ['alinhamento', 'intenção', 'manifestação', 'propósito'],
-    howTo: 'Visualize a cor associada à sua intenção enquanto repete sua afirmação 21 vezes. Por exemplo: "Sou próspero" com visualização dourada.',
-    frequency: 'Ao acordar e antes de dormir, por 40 dias.',
-    isSafe: true,
-  },
+  ...CROMOTERAPIA_PRACTICES,
 
   // ── Ifá/Candomblé Adicionais (11) ─────────────────────────────────────────
 
@@ -746,96 +659,6 @@ const PRACTICES: IntegrativePractice[] = [
     isSafe: true,
   },
 
-  // ── Cromoterapia Adicional (5) ───────────────────────────────────────────
-
-  {
-    id: 'luz-laranja',
-    name: 'Banho de Luz Laranja',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'fogo',
-      color: 'laranja',
-      planet: 'Marte',
-      chakra: 2,
-      hexagrams: [17, 43],
-    },
-    lifeAreas: ['criatividade', 'sexualidade', 'vitalidade', 'paixão'],
-    howTo: 'Sente-se em ambiente escuro e exponha-se à luz laranja (lâmpada ou filtro) por 15 minutos. Visualize energia laranja.',
-    frequency: 'Pôr do sol, 3 vezes por semana.',
-    isSafe: true,
-  },
-
-  {
-    id: 'luz-indigo',
-    name: 'Banho de Luz Índigo',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'agua',
-      color: 'índigo',
-      planet: 'Netuno',
-      chakra: 6,
-      hexagrams: [29, 36],
-    },
-    lifeAreas: ['intuição', 'sonhos', 'clareza interior', 'meditação'],
-    howTo: 'Exponha-se à luz índigo em ambiente escuro por 20 minutos com olhos fechados. Ideal ao entardecer.',
-    frequency: 'Antes de dormir ou durante práticas de introspecção.',
-    isSafe: true,
-  },
-
-  {
-    id: 'luz-violeta',
-    name: 'Banho de Luz Violeta',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'agua',
-      color: 'violeta',
-      planet: 'Netuno',
-      chakra: 7,
-      hexagrams: [30, 36],
-    },
-    lifeAreas: ['espiritualidade', 'transformação', 'cura', 'libertação'],
-    howTo: 'Sente-se em ambiente escuro e exponha-se à luz violeta por 15 minutos. Visualize cura espiritual.',
-    frequency: 'Uma vez ao dia, durante 21 dias para transformação profunda.',
-    isSafe: true,
-  },
-
-  {
-    id: 'luz-rosa',
-    name: 'Banho de Luz Rosa',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'agua',
-      color: 'rosa',
-      planet: 'Vênus',
-      chakra: 4,
-      hexagrams: [5, 31],
-    },
-    lifeAreas: ['amor próprio', 'cura emocional', 'ternura', 'reconciliação'],
-    howTo: 'Exponha-se à luz rosa por 20 minutos em ambiente tranquilo. Ideal para momentos de autocompaixão.',
-    frequency: 'Diariamente ao entardecer, especialmente após dias difíceis.',
-    isSafe: true,
-  },
-
-  {
-    id: 'luz-branca',
-    name: 'Banho de Luz Branca',
-    tradition: 'Cromoterapia',
-    category: 'cromoterapia',
-    associations: {
-      element: 'agua',
-      color: 'branco',
-      planet: 'Sol',
-      chakra: 7,
-      hexagrams: [1, 30],
-    },
-    lifeAreas: ['purificação', ' Clareza', 'alinhamento', 'renovação'],
-    howTo: 'Sente-se em ambiente fechado e exponha-se à luz branca por 15 minutos ao amanhecer. Visualize luz branca purificadora.',
-    frequency: 'Manhãs, diariamente para manutenção espiritual.',
-    isSafe: true,
-  },
+  ...CROMOTERAPIA_PRACTICES,
 ];
 export { PRACTICES };
