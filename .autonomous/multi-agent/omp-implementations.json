@@ -3,9 +3,8 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "2 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts",
         "packages/akasha-cli/src/commands/diagnostico.test.ts"
       ]
     },
@@ -30,5 +29,5 @@
     }
   ],
   "agent_count": 2,
-  "iteration": 49
+  "iteration": 50
 }

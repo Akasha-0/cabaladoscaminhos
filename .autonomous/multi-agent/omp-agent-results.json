@@ -1,14 +1,3 @@
 {
-  "results": [
-    {
-      "success": false,
-      "message": "Skip: packages/core-iching/src/practices-data.ts is pure data (841 lines, no functions). Only contains the PRACTICES array. Nothing to extract.",
-      "type": "large_file"
-    },
-    {
-      "success": true,
-      "message": "Both target files already have passing tests: correlation-maps.test.ts (20 tests) and diagnostico.test.ts (3 tests, modified by another agent - skipped per rules)",
-      "type": "missing_tests"
-    }
-  ]
+  "results": []
 }

@@ -1,1 +1,0 @@
-{"success": false, "message": "Skip: packages/core-iching/src/practices-data.ts is pure data (841 lines, no functions). Only contains the PRACTICES array. Nothing to extract.", "type": "large_file"}

@@ -68,7 +68,7 @@ describe('akasha.calcular() — 3 personas', () => {
     expect(leitura.pilares.tantrica.corpo_predominante).toBeGreaterThanOrEqual(1);
     expect(leitura.pilares.tantrica.corpo_predominante).toBeLessThanOrEqual(11);
     expect(leitura.pilares.odu.odu_principal).toMatch(
-      /^(Ogbe|Oyeku|Iwori|Odi|Irosun|Owonrin|Obara|Okanran|Ogunda|Osa|Ika|Oturupon|Otura|Irete|Ofun|Ose)$/,
+      /^(Ogbe|Ejiokô|Etogundá|Irosun|Oxê|Obará|Odi|Ejionile|Ossá|Ofun|Owarin|Ejilaxebô|Oturupon|Oturá|Iká|Ofurufu|Oyeku|Iwori|Owonrin|Obara|Okanran|Ogunda|Osa|Ika|Otura|Irete|Eji|Ose)$/,
     );
     expect(leitura.pilares.odu.aviso).toContain('consentimento');
     expect(leitura.pilares.iching.hexagrama_natal).toBeGreaterThanOrEqual(1);

@@ -1065,6 +1065,8 @@
 - [~] **PLN-048[2]** -- large_file | 27 oversized files
 - [~] **PLN-049[1]** -- missing_tests | 2 changed files lack tests
 - [~] **PLN-049[2]** -- large_file | 27 oversized files
+- [~] **PLN-050[1]** -- missing_tests | 1 changed files lack tests
+- [~] **PLN-050[2]** -- large_file | 27 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

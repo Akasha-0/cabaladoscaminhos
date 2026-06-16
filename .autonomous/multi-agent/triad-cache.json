@@ -1,10 +1,8 @@
 {
   "triad": {
     "typecheck": {
-      "pass": false,
-      "errors": [
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(52,5): error TS2345: Argument of type '(cmd: string, _opts: unknown, cb: ((err: Error | null, stdout: string, stderr: string) => void) | undefined) => { on: Mock<Procedure>; stdout: { on: Mock<Procedure>; }; stderr: { ...; }; }' is not assignable to parameter of type '(command: string, options: ExecOptions | null | undefined, callback?: ((error: ExecException | null, stdout: string | NonSharedBuffer, stderr: string | NonSharedBuffer) => void) | undefined) => ChildProcess'."
-      ]
+      "pass": true,
+      "errors": []
     },
     "lint": {
       "pass": true,
@@ -12,10 +10,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1641,
-      "failed": 241
+      "passed": 1644,
+      "failed": 238
     }
   },
-  "git_head": "12ddb563a33eb7b2f42ecf5297ad71a79a626781",
-  "cached_at": 1781643534.7146742
+  "git_head": "8be2ec199e1cd17717f5f9e4ec1329f79ef20894",
+  "cached_at": 1781644038.4666026
 }
