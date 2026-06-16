@@ -130,6 +130,7 @@ export interface PersonalCycleSnapshot {
 // ============================================================
 
 import { reduce, sumDigits, ageInYears } from './personal-cycle-numerology';
+import { PERSONAL_DAY_DATA } from './personal-cycle-day-data';
 
 // ============================================================
 // DIA PESSOAL
@@ -154,130 +155,9 @@ function calculatePersonalDay(
     9: 'completion', 11: 'spiritual', 22: 'spiritual', 33: 'spiritual',
   };
 
-  const dayData: Record<number, Omit<PersonalDay, 'number' | 'universalDay' | 'combined' | 'masterNumber'>> = {
-    1: {
-      energy: 'leadership',
-      keywords: ['iniciativa', 'novoscomeços', 'liderança', 'independência'],
-      chakra: '3º Plexo Solar',
-      color: 'Vermelho/Laranja',
-      affirmation: 'Eu abraço novos começos com coragem.',
-      action: 'Inicie um projeto importante hoje.',
-      avoid: 'Hesitação e dependência de outros',
-      favorable: 'Ações decisivas, decisões pessoais',
-    },
-    2: {
-      energy: 'diplomacy',
-      keywords: ['cooperação', 'paciência', 'diplomacia', 'parceria'],
-      chakra: '2º Sacro',
-      color: 'Laranja suave',
-      affirmation: 'Eu confio no poder da colaboração.',
-      action: 'Cultive parcerias e ouça ativamente.',
-      avoid: 'Forçar situações ou agir sozinho',
-      favorable: 'Negociação, mediação, conexão',
-    },
-    3: {
-      energy: 'creativity',
-      keywords: ['criatividade', 'expressão', 'alegria', 'comunicação'],
-      chakra: '5º Laríngeo',
-      color: 'Amarelo',
-      affirmation: 'Minha expressão única ilumina o mundo.',
-      action: 'Crie, escreva, cante, dance — se expresse!',
-      avoid: 'Rotina excessiva e rigidez',
-      favorable: 'Arte, escrita, comunicação, brincadeira',
-    },
-    4: {
-      energy: 'foundation',
-      keywords: ['disciplina', 'estrutura', 'trabalho', 'estabilidade'],
-      chakra: '1º Básico',
-      color: 'Verde/Terra',
-      affirmation: 'Eu construo bases sólidas para meu futuro.',
-      action: 'Organize, planeje, trabalhe com foco.',
-      avoid: 'Improviso e dispersão',
-      favorable: 'Rotina produtiva, construção, saúde',
-    },
-    5: {
-      energy: 'change',
-      keywords: ['mudança', 'liberdade', 'aventura', 'transformação'],
-      chakra: '2º Sacro + 3º Plexo',
-      color: 'Azul claro',
-      affirmation: 'Eu abraço a mudança como crescimento.',
-      action: 'Rompa padrões, viaje, experimente o novo.',
-      avoid: 'Estagnação e rotina rígida',
-      favorable: 'Mudanças, viagens, inovação, sensualidade',
-    },
-    6: {
-      energy: 'nurturing',
-      keywords: ['amor', 'família', 'responsabilidade', 'harmonia'],
-      chakra: '4º Cardíaco',
-      color: 'Rosa/Rosa antigo',
-      affirmation: 'Eu sou amor em ação.',
-      action: 'Cuide de quem você ama e de você.',
-      avoid: 'Negligência consigo mesmo',
-      favorable: 'Família, romance, cura, beleza',
-    },
-    7: {
-      energy: 'introspection',
-      keywords: ['introspecção', 'sabedoria', 'espiritualidade', 'análise'],
-      chakra: '6º Frontal + 7º Coronário',
-      color: 'Violeta/Índigo',
-      affirmation: 'Eu mergulho fundo para encontrar a verdade.',
-      action: 'Medite, estude, faça terapia, reflita.',
-      avoid: 'Multitarefa e superficialidade',
-      favorable: 'Estudo, meditação, pesquisa, silêncio',
-    },
-    8: {
-      energy: 'power',
-      keywords: ['poder', 'abundância', 'autoridade', 'manifestação'],
-      chakra: '3º Plexo Solar',
-      color: 'Dourado/Marrom',
-      affirmation: 'Eu mereço e atraio abundância.',
-      action: 'Negocie valores, tome decisões financeiras.',
-      avoid: 'Gastar por impulso ou medo',
-      favorable: 'Negócios, investimentos, reconhecimento',
-    },
-    9: {
-      energy: 'completion',
-      keywords: ['completude', 'serviço', 'humanitarismo', 'encerramento'],
-      chakra: '4º Cardíaco + 6º Frontal',
-      color: 'Violeta profundo',
-      affirmation: 'Eu completo ciclos com gratidão.',
-      action: 'Termine projetos, perdoe, sirva ao próximo.',
-      avoid: 'Iniciar coisas novas grandes',
-      favorable: 'Encerramentos, perdão, compaixão, arte',
-    },
-    11: {
-      energy: 'spiritual',
-      keywords: ['intuição', 'inspiração', 'mestria', 'iluminação'],
-      chakra: '6º Frontal + 7º Coronário',
-      color: 'Branco/prateado',
-      affirmation: 'Eu sou canal da luz divina.',
-      action: 'Confie na intuição, canalize visões.',
-      avoid: 'Ignorar pressentimentos',
-      favorable: 'Meditação profunda, ensino, cura',
-    },
-    22: {
-      energy: 'spiritual',
-      keywords: ['manifestação prática', 'construtor mestre', 'legado'],
-      chakra: '1º + 7º',
-      color: 'Dourado',
-      affirmation: 'Eu construo legados que transcendem.',
-      action: 'Inicie grandes projetos práticos.',
-      avoid: 'Visão sem ação',
-      favorable: 'Construção, planejamento, impacto',
-    },
-    33: {
-      energy: 'spiritual',
-      keywords: ['mestre curador', 'serviço compassivo', 'amor incondicional'],
-      chakra: '4º + 6º + 7º',
-      color: 'Ouro rosa',
-      affirmation: 'Eu sirvo com amor incondicional.',
-      action: 'Curar, ensinar, servir com compaixão.',
-      avoid: 'Esquecer de si mesmo no servir',
-      favorable: 'Cura, ensino espiritual, arte curativa',
-    },
-  };
+  // dayData moved to personal-cycle-day-data.ts → PERSONAL_DAY_DATA
 
-  const data = dayData[personalDay] || dayData[1];
+  const data = PERSONAL_DAY_DATA[personalDay] || PERSONAL_DAY_DATA[1];
 
   return {
     number: personalDay,
