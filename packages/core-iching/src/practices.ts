@@ -7,11 +7,19 @@
  * o alcance terapêutico e espiritual do sistema oracular.
  */
 
-import type {
-  IntegrativePractice,
-  Element,
-  PracticeCategory,
-} from './types';
+import type { IntegrativePractice } from './types';
+
+// Re-exporta os helpers de lookup (índice, agrupamentos, filtros) a partir do
+// módulo dedicado. Mantemos a API pública de `practices.ts` inalterada para
+// que consumidores existentes (testes, etc.) não precisem migrar imports.
+export {
+  getPractice,
+  getPracticesByElement,
+  getPracticesByTradition,
+  getPracticesByCategory,
+  getPracticesByLifeArea,
+  getAllPractices,
+} from './practices-lookup';
 
 /** Banco de práticas integrativas. */
 const PRACTICES: IntegrativePractice[] = [

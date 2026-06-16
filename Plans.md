@@ -984,6 +984,10 @@
 - [~] **PLN-005[3]** -- tech_debt | 2 files with TODO
 - [~] **PLN-005[4]** -- console_cleanup | 5 files with console statements
 - [~] **PLN-005[5]** -- large_file | 28 oversized files
+- [~] **PLN-006[1]** -- missing_tradition | ODUS missing from traducao-areas
+- [~] **PLN-006[2]** -- tech_debt | 2 files with TODO
+- [~] **PLN-006[3]** -- console_cleanup | 5 files with console statements
+- [~] **PLN-006[4]** -- large_file | 28 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

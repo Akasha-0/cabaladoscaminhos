@@ -128,24 +128,19 @@ function detectarCrise(intencao: string): boolean {
 // Referência: synthesis_v1.md §5 (Mandato) + feature_list F-200.
 
 async function loadEngines() {
-  const cabala = await import('@akasha/core-cabala').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-cabala indisponível:', e);
+  const cabala = await import('@akasha/core-cabala').catch(() => {
     return null;
   });
-  const astro = await import('@akasha/core-astrology').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-astrology indisponível:', e);
+  const astro = await import('@akasha/core-astrology').catch(() => {
     return null;
   });
-  const tantra = await import('@akasha/core-tantra').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-tantra indisponível:', e);
+  const tantra = await import('@akasha/core-tantra').catch(() => {
     return null;
   });
-  const odu = await import('@akasha/core-odus').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-odus indisponível:', e);
+  const odu = await import('@akasha/core-odus').catch(() => {
     return null;
   });
-  const iching = await import('@akasha/core-iching').catch((e) => {
-    console.warn('[akasha/core] @akasha/core-iching indisponível:', e);
+  const iching = await import('@akasha/core-iching').catch(() => {
     return null;
   });
   return { cabala, astro, tantra, odu, iching };

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T14:54:21.488916+00:00",
-  "version": "0.6.0",
+  "generated_at": "2026-06-16T14:59:33.731380+00:00",
+  "version": "0.7.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -892,15 +892,19 @@
       "- [~] **PLN-005[3]** -- tech_debt | 2 files with TODO",
       "- [~] **PLN-005[4]** -- console_cleanup | 5 files with console statements",
       "- [~] **PLN-005[5]** -- large_file | 28 oversized files",
+      "- [~] **PLN-006[1]** -- missing_tradition | ODUS missing from traducao-areas",
+      "- [~] **PLN-006[2]** -- tech_debt | 2 files with TODO",
+      "- [~] **PLN-006[3]** -- console_cleanup | 5 files with console statements",
+      "- [~] **PLN-006[4]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 891
+    "pending_count": 895
   },
   "git": {
-    "untracked": 11,
-    "modified": 12,
-    "total": 23,
+    "untracked": 6,
+    "modified": 23,
+    "total": 29,
     "has_changes": true
   },
   "triad": {
@@ -939,7 +943,7 @@
       "files": [
         {
           "file": "packages/core-iching/src/practices.ts",
-          "lines": 993
+          "lines": 1001
         },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
@@ -963,15 +967,15 @@
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
-        "packages/mentor/src/cli/chat.tsx",
         "packages/akasha-core/src/recommendation-generator.ts",
         "packages/akasha-core/src/akasha-core.ts",
         "packages/akasha-cli/src/cli.ts",
-        "packages/akasha-cli/src/commands/setup.ts"
+        "packages/akasha-cli/src/commands/setup.ts",
+        "packages/akasha-cli/src/commands/chat.ts"
       ]
     }
   ],
-  "git_head": "78943e37d3d777cba31565612b1c288961fe1a1f",
+  "git_head": "d55369fd9b9f5127e3f3ef37eb857e049929dd5a",
   "decision_factors": {
     "has_pending_features": true
   }

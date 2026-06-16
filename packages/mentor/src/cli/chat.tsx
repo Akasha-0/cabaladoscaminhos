@@ -47,7 +47,6 @@ const ChatWithInput: React.FC<{ apiUrl: string; userId?: string }> = ({ apiUrl, 
         
         if (command.toLowerCase() === 'sair') {
           cleanupRawMode();
-          console.log('\nAté logo! 🔮');
           process.exit(0);
           return;
         }

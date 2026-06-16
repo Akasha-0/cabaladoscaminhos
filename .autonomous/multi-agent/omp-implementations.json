@@ -8,15 +8,6 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     },
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "2 changed files lack tests",
-      "files": [
-        "packages/akasha-core/src/interpretation-engine.ts",
-        "packages/akasha-core/src/interpretation-engine/vida-numero-9.ts"
-      ]
-    },
-    {
       "type": "tech_debt",
       "priority": 5,
       "description": "2 files with TODO",
@@ -30,11 +21,11 @@
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
-        "packages/mentor/src/context/system-prompt.ts",
-        "packages/mentor/src/rag/openai-embedder.ts",
-        "packages/mentor/src/rag/cohere-embedder.ts",
         "packages/mentor/src/cli/chat.tsx",
-        "packages/akasha-core/src/recommendation-generator.ts"
+        "packages/akasha-core/src/recommendation-generator.ts",
+        "packages/akasha-core/src/akasha-core.ts",
+        "packages/akasha-cli/src/cli.ts",
+        "packages/akasha-cli/src/commands/setup.ts"
       ]
     },
     {
@@ -43,20 +34,20 @@
       "description": "28 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 1001
-        },
-        {
           "file": "packages/core-iching/src/practices.ts",
           "lines": 993
         },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
           "lines": 991
+        },
+        {
+          "file": "packages/akasha-core/src/interpretation-engine.ts",
+          "lines": 973
         }
       ]
     }
   ],
-  "agent_count": 5,
-  "iteration": 5
+  "agent_count": 4,
+  "iteration": 6
 }

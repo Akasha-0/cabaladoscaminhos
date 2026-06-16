@@ -212,10 +212,11 @@ class MetricsTracker:
                         changelog_updated: bool = False,
                         version_bumped: bool = False,
                         iteration_advanced: bool = False,
+                        iteration: int | None = None,
                         duration_s: float = 0.0) -> None:
         """Called at end of phase_release(). Records the full iteration outcome."""
-        iteration = _load_json(STATE_FILE, {}).get("iteration", 0)
-
+        # Accept explicit iteration to avoid timing bug when state is incremented first
+        iteration = iteration if iteration is not None else _load_json(STATE_FILE, {}).get("iteration", 0)
         # Fetch what we can from this iteration's phase_history
         iter_records = [r for r in self.data.get("phase_history", [])
                         if r.get("iteration") == iteration]

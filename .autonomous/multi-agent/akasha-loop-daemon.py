@@ -199,20 +199,19 @@ def phase_implementation(state, memory):
         prompt_file = MA / f".agent-prompt-{agent_id}.txt"
         prompt = _lm._build_agent_prompt(imp)
         result_file = str(AGENT_RESULTS_DIR / f"result-{agent_id}.json")
-        # Patch the result path so agents write to the per-agent file
         prompt = prompt.replace(
             "/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json",
-            result_file,
-            1,
+            result_file, 1,
         )
         prompt_file.write_text(prompt)
         proc = _sub.Popen(
             ["timeout", "600", "claude", "-p", prompt],
-            cwd=str(ROOT), stdout=_sub.DEVNULL, stderr=_sub.DEVNULL
+            cwd=str(ROOT), stdout=_sub.DEVNULL, stderr=_sub.DEVNULL,
         )
         with open(AGENT_PIDS_FILE, "a") as pf:
             pf.write(f"{agent_id}|{proc.pid}\n")
         log(f"  Spawned agent {agent_id} pid={proc.pid}")
+
     for i, imp in enumerate(improvements):
         _executor.submit(_spawn_agent, i, imp)
     state["phase"] = "IMPLEMENTATION_WAIT"
@@ -390,6 +389,8 @@ def phase_release(state, memory):
     memory["context_window"] = memory["context_window"][-20:]
     save_memory(memory)
 
+    # Capture iteration BEFORE increment — record_release reads state for iteration lookup
+    current_iteration = state["iteration"]
     state["iteration"] += 1
     state["phase"] = "RESEARCH"
     state["current_features"] = []
@@ -426,6 +427,7 @@ def phase_release(state, memory):
         changelog_updated=changelog.exists(),
         version_bumped=(ver.get("minor", 0) > 0),
         iteration_advanced=True,
+        iteration=current_iteration,
         duration_s=dur,
     )
     _tracker.save()
