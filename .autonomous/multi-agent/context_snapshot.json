@@ -1,19 +1,20 @@
 {
-  "generated_at": "2026-06-16T01:39:00.269695+00:00",
-  "version": "0.4.1",
+  "generated_at": "2026-06-16T01:47:51.068047+00:00",
+  "version": "0.5.1",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
       "- [~] **PLN-002** — tech_debt | 0.2.1",
       "- [~] **PLN-003** — large_file | 0.3.1",
       "- [~] **PLN-004** — missing_tests | 0.4.1",
+      "- [~] **PLN-005** — typecheck_clean | 0.5.1",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)"
     ],
-    "pending_count": 5
+    "pending_count": 6
   },
   "git": {
-    "untracked": 1,
-    "modified": 7,
+    "untracked": 0,
+    "modified": 8,
     "total": 8,
     "has_changes": true
   },
@@ -81,19 +82,9 @@
           "lines": 1198
         }
       ]
-    },
-    {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "3 changed files lack tests",
-      "files": [
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/__tests__/akasha-types-catalog.test.ts",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/__tests__/area-builders.test.ts",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/__tests__/synthesis-engine.test.ts"
-      ]
     }
   ],
-  "git_head": "1bfb4ccfa2e11c7141a63b3320858dce2453f7aa",
+  "git_head": "4a0e7152e54f63154736f09806158d9ac2009fc3",
   "decision_factors": {
     "has_pending_features": true
   }

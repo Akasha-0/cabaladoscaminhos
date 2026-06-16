@@ -1,20 +1,13 @@
 {
   "phase": "IMPLEMENTATION",
   "improvement": {
-    "type": "missing_tests",
-    "priority": 6,
-    "description": "12 changed files lack tests",
-    "files": [
-      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
-      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/akasha-types-catalog.ts",
-      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/area-builders.ts",
-      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-akasha-type.ts",
-      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-area-narratives.ts"
-    ]
+    "type": "typecheck_clean",
+    "priority": 1,
+    "description": "TypeScript typecheck is clean"
   },
-  "iteration": 4,
+  "iteration": 5,
   "snapshot_summary": {
-    "version": "0.4.1",
+    "version": "0.5.1",
     "triad": {
       "typecheck": {
         "pass": true,
@@ -26,7 +19,7 @@
       },
       "tests": {
         "pass": false,
-        "passed": 1295,
+        "passed": 1390,
         "failed": 232
       }
     },
@@ -74,18 +67,6 @@
             "file": "packages/akasha-core/src/interpretation-engine.ts",
             "lines": 1198
           }
-        ]
-      },
-      {
-        "type": "missing_tests",
-        "priority": 6,
-        "description": "12 changed files lack tests",
-        "files": [
-          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
-          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/akasha-types-catalog.ts",
-          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/area-builders.ts",
-          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-akasha-type.ts",
-          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-area-narratives.ts"
         ]
       }
     ]

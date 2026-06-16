@@ -357,8 +357,15 @@ def pick_best_improvement(snapshot: dict, memory: dict) -> Optional[dict]:
     if not candidates:
         return None
 
+    # Filter out non-actionable status indicators (not real improvements)
+    SKIP_TYPES = {"typecheck_clean", "typecheck_errors"}
+    candidates = [c for c in candidates if c.get("type") not in SKIP_TYPES]
+
+    if not candidates:
+        return None
+
     # Filter out things we've already done recently
-    recent = [e.get("improvement") for e in memory.get("decisions", [])[-5:]]
+    recent = [e.get("improvement") for e in memory.get("decisions", [])[-10:]]
 
     # Sort by priority (descending)
     candidates = sorted(candidates, key=lambda c: c.get("priority", 5), reverse=True)

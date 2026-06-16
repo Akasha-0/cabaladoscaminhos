@@ -46,6 +46,14 @@
   - File: `apps/akasha-portal/src/lib/application/akasha/synthesis-engine/akasha-types-catalog.ts`
   - File: `apps/akasha-portal/src/lib/application/akasha/synthesis-engine/area-builders.ts`
 
+
+## cc: AKASHA-loop iter 5 | typecheck_clean (2026-06-16T01:40:32Z)
+- [~] **PLN-005** — typecheck_clean | 0.5.1
+  - Improvement: TypeScript typecheck is clean
+  - Type: typecheck_clean
+  - Priority: 1
+  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
+
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
