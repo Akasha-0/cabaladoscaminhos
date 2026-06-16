@@ -20,9 +20,6 @@ export class CohereEmbedder {
 
   constructor(apiKey?: string) {
     this.apiKey = apiKey || process.env.COHERE_API_KEY || '';
-    if (!this.apiKey) {
-      console.warn('CohereEmbedder: COHERE_API_KEY not set');
-    }
   }
 
   /**
