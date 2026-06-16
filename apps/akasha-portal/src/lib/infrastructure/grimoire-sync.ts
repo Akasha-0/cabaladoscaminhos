@@ -94,7 +94,6 @@ async function getEmbedding(text: string): Promise<number[] | null> {
     const data = await res.json() as { embedding: number[] };
     return data.embedding;
   } catch (error) {
-    console.warn(`[WARNING] Failed to generate embedding via Ollama (using fallback null):`, (error as Error).message);
     return null;
   }
 }
