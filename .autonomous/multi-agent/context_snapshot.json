@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T20:55:46.137561+00:00",
-  "version": "0.52.0",
+  "generated_at": "2026-06-16T21:05:49.105897+00:00",
+  "version": "0.53.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -967,26 +967,28 @@
       "- [~] **PLN-047[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-048[1]** -- missing_tests | 1 changed files lack tests",
       "- [~] **PLN-048[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-049[1]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-049[2]** -- large_file | 27 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 966
+    "pending_count": 968
   },
   "git": {
-    "untracked": 3,
+    "untracked": 4,
     "modified": 16,
-    "total": 19,
+    "total": 20,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
       "errors": [
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(5,9): error TS1005: ',' expected."
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(52,5): error TS2345: Argument of type '(cmd: string, _opts: unknown, cb: ((err: Error | null, stdout: string, stderr: string) => void) | undefined) => { on: Mock<Procedure>; stdout: { on: Mock<Procedure>; }; stderr: { ...; }; }' is not assignable to parameter of type '(command: string, options: ExecOptions | null | undefined, callback?: ((error: ExecException | null, stdout: string | NonSharedBuffer, stderr: string | NonSharedBuffer) => void) | undefined) => ChildProcess'."
       ]
     },
     "lint": {
-      "pass": false,
+      "pass": true,
       "warnings": 0
     },
     "tests": {
@@ -1005,7 +1007,7 @@
       "priority": 9,
       "description": "1 TypeScript errors",
       "errors": [
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(5,9): error TS1005: ',' expected."
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(52,5): error TS2345: Argument of type '(cmd: string, _opts: unknown, cb: ((err: Error | null, stdout: string, stderr: string) => void) | undefined) => { on: Mock<Procedure>; stdout: { on: Mock<Procedure>; }; stderr: { ...; }; }' is not assignable to parameter of type '(command: string, options: ExecOptions | null | undefined, callback?: ((error: ExecException | null, stdout: string | NonSharedBuffer, stderr: string | NonSharedBuffer) => void) | undefined) => ChildProcess'."
       ]
     },
     {
@@ -1039,9 +1041,10 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "1 changed files lack tests",
+      "description": "2 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/agents/personal-cycle-day-data.test.ts"
+        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts"
       ]
     },
     {
@@ -1052,7 +1055,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "5a7152c8273cf81af6e33f5d9568f9c89ff0fd6b",
+  "git_head": "12ddb563a33eb7b2f42ecf5297ad71a79a626781",
   "decision_factors": {
     "has_pending_features": true
   }

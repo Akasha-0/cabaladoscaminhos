@@ -54,7 +54,7 @@ function createExecMock(responses: Array<{ pattern: (cmd: string) => boolean; st
       if (match && cb) {
         setImmediate(() => cb(match.error ?? null, match.stdout, match.stderr ?? ''));
       }
-      return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } };
+      return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } } as unknown as ReturnType<typeof exec>;
     }
   );
 }

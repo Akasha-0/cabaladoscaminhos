@@ -3,11 +3,11 @@
     "typecheck": {
       "pass": false,
       "errors": [
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(5,9): error TS1005: ',' expected."
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(52,5): error TS2345: Argument of type '(cmd: string, _opts: unknown, cb: ((err: Error | null, stdout: string, stderr: string) => void) | undefined) => { on: Mock<Procedure>; stdout: { on: Mock<Procedure>; }; stderr: { ...; }; }' is not assignable to parameter of type '(command: string, options: ExecOptions | null | undefined, callback?: ((error: ExecException | null, stdout: string | NonSharedBuffer, stderr: string | NonSharedBuffer) => void) | undefined) => ChildProcess'."
       ]
     },
     "lint": {
-      "pass": false,
+      "pass": true,
       "warnings": 0
     },
     "tests": {
@@ -16,6 +16,6 @@
       "failed": 241
     }
   },
-  "git_head": "5a7152c8273cf81af6e33f5d9568f9c89ff0fd6b",
-  "cached_at": 1781643439.2444355
+  "git_head": "12ddb563a33eb7b2f42ecf5297ad71a79a626781",
+  "cached_at": 1781643534.7146742
 }

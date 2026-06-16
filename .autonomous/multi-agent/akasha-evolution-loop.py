@@ -713,6 +713,34 @@ def _build_agent_prompt(improvement: dict) -> str:
             f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
         )
 
+    elif imp_type == "ui_improvement":
+        target = files[0] if files else "various UI files"
+        target_file = target.get("file", str(target)) if isinstance(target, dict) else str(target)
+        return (
+            f"You are improving UI/UX design in the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
+            f"Target: {target_file}\n\n"
+            f"UI/UX MANDATE:\n"
+            f"- Use codegraph_explore to understand the component structure BEFORE touching any UI\n"
+            f"- Use headroom for outputs > 5k tokens\n"
+            f"- Review the page against AKASHA's spiritual/journey design principles\n"
+            f"- Improve visual hierarchy, spacing, typography, and color consistency\n"
+            f"- Ensure mobile responsiveness and accessibility (contrast, focus states)\n"
+            f"- Add meaningful micro-interactions (hover states, transitions, feedback)\n"
+            f"- Simplify complex layouts — reduce cognitive load\n"
+            f"- Align visual language with the sacred/journey spirit of AKASHA\n\n"
+            f"RULES:\n"
+            f"1. Run `git status` before starting — if file was modified, skip it\n"
+            f"2. Use codegraph_explore to map the component's props, children, and dependencies\n"
+            f"3. Identify ONE specific UI improvement (spacing, color, typography, layout, interaction)\n"
+            f"4. Implement the visual change — verify with `pnpm typecheck`\n"
+            f"5. Run `pnpm test:run` to ensure no regressions\n"
+            f"6. Commit: `git add <file> && git commit -m 'ui: improve UX in <target_file>'`\n"
+            f"7. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
+            f'{{"success": true, "message": "UI improvement in {target_file}", "type": "ui_improvement"}}\n'
+            f"8. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
+            f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
+        )
+
     else:
         return (
             f"Implement the following improvement in the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"

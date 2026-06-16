@@ -3,9 +3,10 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "1 changed files lack tests",
+      "description": "2 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/agents/personal-cycle-day-data.ts"
+        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts"
       ]
     },
     {
@@ -14,20 +15,20 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
-          "lines": 846
-        },
-        {
           "file": "packages/core-iching/src/practices-data.ts",
           "lines": 841
         },
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
           "lines": 838
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
+          "lines": 785
         }
       ]
     }
   ],
   "agent_count": 2,
-  "iteration": 48
+  "iteration": 49
 }

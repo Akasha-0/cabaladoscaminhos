@@ -700,6 +700,20 @@
       "version_bumped": true,
       "iteration_advanced": true,
       "phase_count": 5
+    },
+    {
+      "ts": "2026-06-16T20:57:20.807936+00:00",
+      "iteration": 48,
+      "duration_s": 0.065,
+      "release_quality": 0.85,
+      "impl_quality": 0.5,
+      "qa_quality": 0.0,
+      "loop_quality": 0.49,
+      "commit_messages_clean": true,
+      "changelog_updated": true,
+      "version_bumped": true,
+      "iteration_advanced": true,
+      "phase_count": 5
     }
   ],
   "phase_history": [
@@ -10216,6 +10230,64 @@
       "phase": "VALIDATION",
       "iteration": 48,
       "duration_s": 0.323,
+      "metrics": {
+        "improvements_validated": 2,
+        "quality_score": 0.75,
+        "codegraph_sync_ok": true,
+        "plans_marked": false
+      }
+    },
+    {
+      "ts": "2026-06-16T20:58:55.090892+00:00",
+      "phase": "RESEARCH",
+      "iteration": 49,
+      "duration_s": 93.778,
+      "metrics": {
+        "candidates_found": 5,
+        "candidates_selected": 2,
+        "selection_quality": 0.0,
+        "no_improvement_found": false
+      }
+    },
+    {
+      "ts": "2026-06-16T20:58:55.094039+00:00",
+      "phase": "PLANNING",
+      "iteration": 49,
+      "duration_s": 0.001,
+      "metrics": {
+        "plans_created": 2,
+        "plans_detail_level": 61.5,
+        "plans_updated": true
+      }
+    },
+    {
+      "ts": "2026-06-16T21:05:49.085748+00:00",
+      "phase": "IMPLEMENTATION",
+      "iteration": 49,
+      "duration_s": 413.488,
+      "metrics": {
+        "agents_spawned": 2,
+        "results_collected": 2,
+        "agent_success_rate": 0.5,
+        "files_changed": 0
+      }
+    },
+    {
+      "ts": "2026-06-16T21:05:50.844655+00:00",
+      "phase": "QA",
+      "iteration": 49,
+      "duration_s": 1.751,
+      "metrics": {
+        "typecheck_pass": false,
+        "tests_pass": false,
+        "improvements_accepted": 1
+      }
+    },
+    {
+      "ts": "2026-06-16T21:05:52.215055+00:00",
+      "phase": "VALIDATION",
+      "iteration": 49,
+      "duration_s": 0.86,
       "metrics": {
         "improvements_validated": 2,
         "quality_score": 0.75,
