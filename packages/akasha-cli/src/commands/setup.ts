@@ -30,12 +30,6 @@ export async function setup(options: SetupOptions = {}): Promise<void> {
       cwd: join(__dirname, '../../../../'),
     });
 
-    if (stdout) {
-      console.log(stdout);
-    }
-    if (stderr) {
-      console.error(pc.yellow(stderr));
-    }
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(pc.red(`❌ Erro ao executar setup: ${errorMessage}`));
