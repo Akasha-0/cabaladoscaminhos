@@ -1,12 +1,11 @@
 {
   "phase": "RELEASE",
-  "iteration": 10,
+  "iteration": 12,
   "current_features": [
     "console_cleanup",
     "large_file"
   ],
   "retry_count": 0,
   "running": true,
-  "phase_iteration": 0,
-  "daemon_pid": 750704
+  "daemon_pid": 828315
 }

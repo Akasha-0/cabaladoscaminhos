@@ -19,7 +19,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
-          "lines": 991
+          "lines": 979
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
@@ -32,5 +32,5 @@
       ]
     }
   ],
-  "iteration": 10
+  "iteration": 12
 }

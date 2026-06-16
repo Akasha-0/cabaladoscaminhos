@@ -1009,6 +1009,10 @@
   - Files: packages/core-iching/src/practices.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts, packages/akasha-core/src/interpretation-engine.ts
 - [~] **PLN-010[1]** -- console_cleanup | 5 files with console statements
 - [~] **PLN-010[2]** -- large_file | 27 oversized files
+- [~] **PLN-011[1]** -- console_cleanup | 5 files with console statements
+- [~] **PLN-011[2]** -- large_file | 27 oversized files
+- [~] **PLN-012[1]** -- console_cleanup | 5 files with console statements
+- [~] **PLN-012[2]** -- large_file | 27 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

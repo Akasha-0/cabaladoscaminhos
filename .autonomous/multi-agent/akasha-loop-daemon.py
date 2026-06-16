@@ -681,15 +681,23 @@ def main():
             log(f"Accept error: {e}")
             time.sleep(1)
 
-        # Run current phase
+        # Run current phase (guard: track last phase to prevent re-execution)
         ph = load_state().get("phase", "RESEARCH")
+        _last_ph = getattr(phase_research, '_last_ph', None)
+        if ph == _last_ph and ph in ("PLANNING", "IMPLEMENTATION_WAIT", "QA", "VALIDATION", "RELEASE"):
+            # Already ran this phase — skip to avoid re-execution
+            time.sleep(5)
+            continue
+        log(f"MAIN: phase={ph} iter={load_state().get('iteration', 0)}")
+
         try:
             mem = load_memory()
             st = load_state()
+            ph = st.get("phase", "RESEARCH")  # re-read after potential save
 
             if ph == "RESEARCH":
+                phase_research._last_ph = "RESEARCH"
                 phase_research(st, mem)
-            elif ph == "PLANNING":
                 phase_planning(st)
             elif ph == "IMPLEMENTATION":
                 phase_implementation(st, mem)

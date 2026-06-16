@@ -10,6 +10,12 @@ import {
   calculateSystemHarmony,
   calculatePairHarmony,
 } from './deep-correlation-engine/system-helpers';
+import {
+  detectRecurringNumberPatterns,
+  detectElementalImbalance,
+  detectKarmicThemes,
+  detectSpiritualBlocks,
+} from './deep-correlation-engine/pattern-detectors';
 
 // ============================================================
 // TYPES
@@ -159,26 +165,8 @@ const LIFE_PATH_ZODIAC_MAP: Record<number, string[]> = {
   22: ['Capricorn', 'Aquarius', 'Aries'],
 };
 
-// 16 Odús to Tarot Major Arcana — canonical names from constants/odus.ts
-// Arcano numbers follow Merindilogun position: Ogbe=0, Ejiokô=1, Etogundá=2, etc.
-const ODU_TAROT_MAP: Record<string, number[]> = {
-  'Ogbe': [0],
-  'Ejiokô': [1],
-  'Etogundá': [2],
-  'Irosun': [3],
-  'Oxê': [4],
-  'Obará': [5],
-  'Odi': [6],
-  'Ejionile': [7],
-  'Ossá': [8],
-  'Ofun': [9],
-  'Owarin': [10],
-  'Ejilaxebô': [11],
-  'Oturupon': [12],
-  'Oturá': [13],
-  'Iká': [14],
-  'Ofurufu': [15],
-};
+// 16 Odús to Tarot Major Arcana — moved to ./deep-correlation-engine/pattern-detectors.ts
+// (used only by detectRecurringNumberPatterns, which was extracted alongside it).
 
 // Odú to Kabbalah Sephirot paths — canonical names from constants/odus.ts
 const ODU_SEPHIROT_MAP: Record<string, string[]> = {

@@ -752,10 +752,11 @@ def _run_single_agent(improvement: dict, agent_id: str, timeout_secs: int = 600)
     sub_env = dict(os.environ)
     sub_env["CLAUDE_CODE_SIMPLE"] = "1"
     sub_env["CLAUDE_NO_DAEMON"] = "1"
+    sub_env["ANTHROPIC_MODEL"] = "MiniMax-M2.7-highspeed"
 
     try:
         cp = subprocess.run(
-            ["claude", "--print", prompt],
+            ["claude", "--print", "--model", "MiniMax-M2.7-highspeed", prompt],
             cwd=str(ROOT),
             input=prompt + "\n",
             capture_output=True,

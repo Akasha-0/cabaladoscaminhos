@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T16:12:03.421359+00:00",
-  "version": "0.11.0",
+  "generated_at": "2026-06-16T16:21:08.791324+00:00",
+  "version": "0.12.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -913,15 +913,19 @@
       "- [~] **PLN-009[5]** — large_file | 28 oversized files",
       "- [~] **PLN-010[1]** -- console_cleanup | 5 files with console statements",
       "- [~] **PLN-010[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-011[1]** -- console_cleanup | 5 files with console statements",
+      "- [~] **PLN-011[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-012[1]** -- console_cleanup | 5 files with console statements",
+      "- [~] **PLN-012[2]** -- large_file | 27 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 912
+    "pending_count": 916
   },
   "git": {
-    "untracked": 2,
-    "modified": 17,
-    "total": 19,
+    "untracked": 5,
+    "modified": 15,
+    "total": 20,
     "has_changes": true
   },
   "triad": {
@@ -935,8 +939,8 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1534,
-      "failed": 240
+      "passed": 1536,
+      "failed": 238
     }
   },
   "codegraph": {
@@ -960,7 +964,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
-          "lines": 991
+          "lines": 979
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
@@ -992,7 +996,7 @@
       ]
     }
   ],
-  "git_head": "6866e1fcf761059fca682c38cf36ff1eb610feb5",
+  "git_head": "9e975beb78c400ffa80006992d6df5e963a100b5",
   "decision_factors": {
     "has_pending_features": true
   }
