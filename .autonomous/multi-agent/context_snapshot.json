@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T20:02:15.360790+00:00",
-  "version": "0.46.0",
+  "generated_at": "2026-06-16T20:11:06.764503+00:00",
+  "version": "0.47.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -961,15 +961,16 @@
       "- [~] **PLN-041[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-042[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-043[1]** -- large_file | 27 oversized files",
+      "- [~] **PLN-044[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 960
+    "pending_count": 961
   },
   "git": {
     "untracked": 2,
-    "modified": 10,
-    "total": 12,
+    "modified": 11,
+    "total": 13,
     "has_changes": true
   },
   "triad": {
@@ -1035,17 +1036,26 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "packages/core-iching/src/practices-data.ts",
-          "lines": 928
-        },
-        {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
           "lines": 918
         },
         {
           "file": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
           "lines": 867
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
+          "lines": 851
         }
+      ]
+    },
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "2 changed files lack tests",
+      "files": [
+        "packages/core-iching/src/practices-cristais.ts",
+        "packages/core-iching/src/practices-data.ts"
       ]
     },
     {
@@ -1056,7 +1066,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "8c2532c33f7cb933beca079e66fff445824ee6ae",
+  "git_head": "4f9e5968c2c999f304ff045726eafa872a74b736",
   "decision_factors": {
     "has_pending_features": true
   }
