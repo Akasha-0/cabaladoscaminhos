@@ -73,7 +73,7 @@ function isMaster(n: number): boolean {
 // ============================================================================
 // 1. CAMINHO DE VIDA
 // ============================================================================
-// Soma TODOS os dígitos da data de nascimento, reduzida.
+// Soma todos os dígitos da data de nascimento, reduzida.
 // Para 20/08/1986: 2+0+0+8+1+9+8+6 = 34 → 3+4 = 7
 export function calculateLifePath(birthDate: string): { number: number; master: boolean } {
   const digits = birthDate.replace(/\D/g, '');
@@ -103,7 +103,7 @@ function calculateMission(birthDate: string): { number: number; master: boolean 
 // ============================================================================
 // 3. NÚMERO DE EXPRESSÃO
 // ============================================================================
-// Soma de TODAS as letras do nome completo (consonantes + vogais).
+// Soma de todas as letras do nome completo (consonantes + vogais).
 export function calculateExpression(fullName: string): { number: number; master: boolean } {
   const sum = normalizeName(fullName)
     .split('')

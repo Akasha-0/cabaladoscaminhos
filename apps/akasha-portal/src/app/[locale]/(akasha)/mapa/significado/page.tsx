@@ -215,7 +215,7 @@ export default async function SignificadoPage({
               Como os 5 Pilares se falam
             </h2>
             <p style={{ color: C.txtSec, fontSize: '0.85rem', lineHeight: 1.5, margin: '0 0 18px' }}>
-              A Mandala é UM TODO. Cabala ilumina Astrologia; Astrologia ilumina Tantra;
+              A Mandala é UM INTEIRO. Cabala ilumina Astrologia; Astrologia ilumina Tantra;
               Tantra ancora I Ching. São 20 conexões entre os 5 Pilares (a diagonal,
               Pilar consigo mesmo, é vazia). Leia em pares e medite.
             </p>

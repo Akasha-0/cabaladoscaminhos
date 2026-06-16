@@ -290,7 +290,7 @@ async function realPilar2Astrologia(
       // F-209b: tríade Sombra/Dom/Graça (R-015 §2.1, nomenclatura PT-BR)
       // Análise COMPLETA de aspectos via findAspects + classifyAspect +
       // countTrinity (substitui heurística simples Sol-Lua de F-209).
-      // Cobre TODOS os aspectos entre os 10 planetas, não só Sol-Lua.
+      // Cobre todos os aspectos entre os 10 planetas, não só Sol-Lua.
       const { trinity, trinity_dominante } = computeTrinityFromChart(bc.chart.planeta, eng);
       // F-235: Lilith + Casa 8 — sexualidade e desejos ocultos.
       // Lilith existe em bc.chart.planeta (calcularLilith em swiss-ephemeris).
@@ -435,7 +435,7 @@ async function realPilar4Odu(
   // usa a versão 16 (mais permissiva) até o D-040 unificar.
   // CANONICAL_NAMES — grafias canônicas retornadas por `calculateBirthOdu`
   // em @akasha/core-odus/odu-birth.ts (fonte: ODUS_IFA em odus-ifa-data.ts).
-  // Inclui TODAS as grafias possíveis (com e sem acento/til, nomes simples e
+  // Inclui todas as grafias possíveis (com e sem acento/til, nomes simples e
   // compostos) para que o split de `oduName` (ex: 'Ogbe (Oxé)' → 'Ogbe')
   // sempre encontre correspondência — sem cair no stub arbitrário.
   // Pilar 4 ethics invariant: nunca inventar correspondência. Se chegar

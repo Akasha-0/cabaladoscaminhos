@@ -794,7 +794,7 @@ const VIDA_CONTENT: Record<number, NumeroContent> = {
       gift: {
         tituloPool: 'O Dom de Ver a Dor e Responde',
         significado:
-          'O 9 em dom é a CAPACIDADE DE SENTIR O TODO. Você carrega a sensibilidade de quem vê o que others overlook — e tem a força de responder sem se perder. O dom do 9 é a COMPAIXÃO COM FRONTEIRAS.',
+          'O 9 em dom é a CAPACIDADE DE SENTIR A TOTALIDADE. Você carrega a sensibilidade de quem vê o que others overlook — e tem a força de responder sem se perder. O dom do 9 é a COMPAIXÃO COM FRONTEIRAS.',
         padrao:
           'Seu dom é a SABEDORIA DA COMPREENSÃO. Você entende o sofrimento não como fracasso, mas como parte do caminho. Isso permite que você esteja com o outro na dor sem ser consumido por ela — e sem minimizar o que o outro sente. A diferença crucial: você não sente POR o outro; você sente COM o outro. E isso libera você para действительно ajudar em vez de se tornar outra vítima.',
         aplicacao: {
