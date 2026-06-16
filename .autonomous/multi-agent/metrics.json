@@ -56,6 +56,20 @@
       "version_bumped": true,
       "iteration_advanced": true,
       "phase_count": 0
+    },
+    {
+      "ts": "2026-06-16T14:43:15.755444+00:00",
+      "iteration": 5,
+      "duration_s": 0.075,
+      "release_quality": 0.85,
+      "impl_quality": 0.0,
+      "qa_quality": 0.0,
+      "loop_quality": 0.34,
+      "commit_messages_clean": true,
+      "changelog_updated": true,
+      "version_bumped": true,
+      "iteration_advanced": true,
+      "phase_count": 0
     }
   ],
   "phase_history": [
@@ -7080,6 +7094,64 @@
       "duration_s": 0.307,
       "metrics": {
         "improvements_validated": 2,
+        "quality_score": 0.75,
+        "codegraph_sync_ok": true,
+        "plans_marked": false
+      }
+    },
+    {
+      "ts": "2026-06-16T14:44:19.960145+00:00",
+      "phase": "RESEARCH",
+      "iteration": 5,
+      "duration_s": 63.701,
+      "metrics": {
+        "candidates_found": 6,
+        "candidates_selected": 5,
+        "selection_quality": 0.0,
+        "no_improvement_found": false
+      }
+    },
+    {
+      "ts": "2026-06-16T14:44:20.467216+00:00",
+      "phase": "PLANNING",
+      "iteration": 5,
+      "duration_s": 0.003,
+      "metrics": {
+        "plans_created": 5,
+        "plans_detail_level": 65.6,
+        "plans_updated": true
+      }
+    },
+    {
+      "ts": "2026-06-16T14:54:21.483887+00:00",
+      "phase": "IMPLEMENTATION",
+      "iteration": 5,
+      "duration_s": 600.513,
+      "metrics": {
+        "agents_spawned": 5,
+        "results_collected": 4,
+        "agent_success_rate": 0.6,
+        "files_changed": 0
+      }
+    },
+    {
+      "ts": "2026-06-16T14:55:30.961175+00:00",
+      "phase": "QA",
+      "iteration": 5,
+      "duration_s": 69.475,
+      "metrics": {
+        "typecheck_pass": true,
+        "tests_pass": false,
+        "improvements_accepted": 3
+      }
+    },
+    {
+      "ts": "2026-06-16T14:55:32.718454+00:00",
+      "phase": "VALIDATION",
+      "iteration": 5,
+      "duration_s": 1.253,
+      "metrics": {
+        "improvements_validated": 5,
         "quality_score": 0.75,
         "codegraph_sync_ok": true,
         "plans_marked": false

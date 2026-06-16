@@ -1,8 +1,11 @@
 {
   "phase": "RELEASE",
-  "iteration": 4,
+  "iteration": 5,
   "current_features": [
+    "missing_tradition",
+    "missing_tests",
     "tech_debt",
+    "console_cleanup",
     "large_file"
   ],
   "retry_count": 0,

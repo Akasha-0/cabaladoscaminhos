@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T14:43:12.151788+00:00",
-  "version": "0.5.0",
+  "generated_at": "2026-06-16T14:54:21.488916+00:00",
+  "version": "0.6.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -887,15 +887,20 @@
       "- [~] **PLN-003[3]** -- large_file | 28 oversized files",
       "- [~] **PLN-004[1]** -- tech_debt | 2 files with TODO",
       "- [~] **PLN-004[2]** -- large_file | 28 oversized files",
+      "- [~] **PLN-005[1]** -- missing_tradition | ODUS missing from traducao-areas",
+      "- [~] **PLN-005[2]** -- missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-005[3]** -- tech_debt | 2 files with TODO",
+      "- [~] **PLN-005[4]** -- console_cleanup | 5 files with console statements",
+      "- [~] **PLN-005[5]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 886
+    "pending_count": 891
   },
   "git": {
-    "untracked": 4,
-    "modified": 21,
-    "total": 25,
+    "untracked": 11,
+    "modified": 12,
+    "total": 23,
     "has_changes": true
   },
   "triad": {
@@ -909,7 +914,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1530,
+      "passed": 1536,
       "failed": 238
     }
   },
@@ -933,16 +938,16 @@
       "description": "28 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 1001
-        },
-        {
           "file": "packages/core-iching/src/practices.ts",
           "lines": 993
         },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
           "lines": 991
+        },
+        {
+          "file": "packages/akasha-core/src/interpretation-engine.ts",
+          "lines": 973
         }
       ]
     },
@@ -958,15 +963,15 @@
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
-        "packages/mentor/src/context/system-prompt.ts",
-        "packages/mentor/src/rag/openai-embedder.ts",
-        "packages/mentor/src/rag/cohere-embedder.ts",
         "packages/mentor/src/cli/chat.tsx",
-        "packages/akasha-core/src/recommendation-generator.ts"
+        "packages/akasha-core/src/recommendation-generator.ts",
+        "packages/akasha-core/src/akasha-core.ts",
+        "packages/akasha-cli/src/cli.ts",
+        "packages/akasha-cli/src/commands/setup.ts"
       ]
     }
   ],
-  "git_head": "13c8cb5ca1fef5b125e35f51471fead58601bf01",
+  "git_head": "78943e37d3d777cba31565612b1c288961fe1a1f",
   "decision_factors": {
     "has_pending_features": true
   }

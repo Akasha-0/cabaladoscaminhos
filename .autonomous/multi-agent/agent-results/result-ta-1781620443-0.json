@@ -1,1 +1,0 @@
-{"success": true, "message": "Audited 2 files (significados-curados-helpers.test.ts 176L, significados-curados.test.ts 296L) — 0 actionable tech_debt markers found. Only 'TODO' substring matches were for the constant TODOS_PILARES (a list of pillars, not a TODO comment). Files clean, no fixes needed. Matches prior audits at 13:19 and 13:38 today.", "type": "tech_debt"}

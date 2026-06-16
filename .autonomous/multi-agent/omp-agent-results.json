@@ -2,8 +2,37 @@
   "results": [
     {
       "success": true,
-      "message": "Audited 2 files (significados-curados-helpers.test.ts 176L, significados-curados.test.ts 296L) — 0 actionable tech_debt markers found. Only 'TODO' substring matches were for the constant TODOS_PILARES (a list of pillars, not a TODO comment). Files clean, no fixes needed. Matches prior audits at 13:19 and 13:38 today.",
+      "message": "Fixed 0 tech_debt comments in 0 files (0 actionable markers — TODOS_PILARES é constante de fixture, não comentário TODO; ambos os arquivos já estão limpos)",
       "type": "tech_debt"
+    },
+    {
+      "success": false,
+      "message": "ODUS ja existe no arquivo como ODU_DETALHADO (linha 123) com a estrutura Record<Area, {requer_terreiro, explicacao, convergencia, tensao, evitar, pratica}>. A premissa do task (ODUS missing) esta incorreta. Nenhuma alteracao feita. Typecheck (pnpm typecheck) passa limpo. Arquivo ja contem: ASTROLOGIA_DETALHADO, ODU_DETALHADO, CABALA_DETALHADO, TANTRA_DETALHADO, ICHING_DETALHADO. O task parece confundir este arquivo (que usa Record<Area, ...>) com apps/akasha-portal/src/lib/grimoire/traducao-areas.ts (que usa name/keywords/contextPatterns).",
+      "type": "missing_tradition",
+      "status": "already_present",
+      "evidence": {
+        "file": "traducao-areas.ts",
+        "odu_constant": "ODU_DETALHADO",
+        "odu_line": 123,
+        "all_traditions": [
+          "ASTROLOGIA_DETALHADO (L12)",
+          "ODU_DETALHADO (L123)",
+          "CABALA_DETALHADO (L248)",
+          "TANTRA_DETALHADO (L364)",
+          "ICHING_DETALHADO (L625)"
+        ],
+        "typecheck": "clean"
+      }
+    },
+    {
+      "success": true,
+      "message": "Removed console statements",
+      "type": "console_cleanup"
+    },
+    {
+      "success": true,
+      "message": "Added tests for 1 file (vida-numero-9.ts); interpretation-engine.ts already covered by existing interpretation-engine.test.ts (commit 348b4b39 covers MASTER_NUMBERS, VIDA_CONTENT, interpretarVida, interpretarVidaArea). New file: 6 tests, all pass (vitest 424ms, typecheck clean for target). Edge cases: VIDA_CONTENT[9] reference equality + type-level NumeroContent assignment. Committed: a50f0118",
+      "type": "missing_tests"
     }
   ]
 }
