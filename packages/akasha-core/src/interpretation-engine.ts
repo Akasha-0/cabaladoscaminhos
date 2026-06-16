@@ -17,6 +17,8 @@
  */
 
 import type { LifeArea } from '@akasha/types';
+import type { NumeroContent } from './interpretation-engine/types';
+import { MESTRES_CONTENT } from './interpretation-engine/mestres';
 
 // ─── API pública (queries) ─────────────────────────────────────────────────
 // Re-exporta as funções públicas do motor. A implementação vive em
@@ -34,37 +36,10 @@ export const MASTER_NUMBERS = new Set([11, 22, 33]);
 // ─── Conteúdo Profundo por Número ──────────────────────────────────────────
 // Cada entrada contém 3 níveis × 9 áreas da vida.
 // Formato: { shadow: { significado, padrao, aplicacao, afirmacao }, gift: {...}, siddhi: {...} }
-
-type NumeroContent = {
-  arquetipoAkasha: string;
-  mandato: string;
-  levels: {
-    shadow: {
-      tituloPool: string;
-      significado: string;
-      padrao: string;
-      aplicacao: Partial<Record<LifeArea, string>>;
-      acaoPratica: { amplificar: string[]; evitar: string[]; ritual: string };
-      afirmacao: string;
-    };
-    gift: {
-      tituloPool: string;
-      significado: string;
-      padrao: string;
-      aplicacao: Partial<Record<LifeArea, string>>;
-      acaoPratica: { amplificar: string[]; evitar: string[]; ritual: string };
-      afirmacao: string;
-    };
-    siddhi: {
-      tituloPool: string;
-      significado: string;
-      padrao: string;
-      aplicacao: Partial<Record<LifeArea, string>>;
-      acaoPratica?: { amplificar: string[]; evitar: string[]; ritual: string };
-      afirmacao: string;
-    };
-  };
-};
+//
+// O tipo `NumeroContent` vive em ./interpretation-engine/types.ts para que
+// módulos de conteúdo (mestres.ts, futuros numeros-*.ts) possam referenciar
+// o tipo sem importar o motor de interpretação (evita ciclos de import).
 
 export const VIDA_CONTENT: Record<number, NumeroContent> = {
   // ── 1: O INICIADOR ───────────────────────────────────────────────────────

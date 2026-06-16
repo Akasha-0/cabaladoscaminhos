@@ -5,7 +5,7 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts"
+        "packages/akasha-core/src/interpretation-engine.ts"
       ]
     },
     {
@@ -23,12 +23,12 @@
       "description": "28 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 1087
-        },
-        {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
           "lines": 1075
+        },
+        {
+          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+          "lines": 1001
         },
         {
           "file": "packages/core-iching/src/practices.ts",
@@ -38,5 +38,5 @@
     }
   ],
   "agent_count": 3,
-  "iteration": 1
+  "iteration": 2
 }

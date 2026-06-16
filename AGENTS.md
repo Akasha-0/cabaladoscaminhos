@@ -98,28 +98,31 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
-- **akasha-evolution** (PRIMARY): Autonomous 6-phase loop with 5 parallel coding agents (v2).
-  Activates via `/loop 9999999999` + "start akasha-evolution".
-  Script: `.autonomous/multi-agent/akasha-evolution-loop.py` (v2, 5-agent parallel).
-  Start: `bash .autonomous/multi-agent/start-akasha-evolution.sh`.
-  Skill: `.autonomous/skills/akasha-evolution/SKILL.md`.
-  Flow: RESEARCH → PLANNING → IMPLEMENTATION(5-parallel) → QA → VALIDATION → RELEASE.
-  Intelligence: `intelligence.py` (evidence-based decisions, exponential learning).
+**akasha-loop-daemon** (PRIMARY): Socket daemon v3 with supervisor watchdog.
+  Script: `.autonomous/multi-agent/akasha-loop-daemon.py` (v3, async socket daemon).
+  Start: `bash .autonomous/multi-agent/run-loop-supervised.sh`.
+  Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
+  Intelligence: `memory.json` with exponential learning (34 learnings, 40 decisions).
   Bootstrap: `context_bootstrap.py` (fresh project context every iteration).
-  Memory: `memory.json` (learnings accumulate exponentially over iterations).
   Triad cache: `triad-cache.json` with 300s TTL + git HEAD invalidation.
-  Parallel execution: ThreadPoolExecutor(max_workers=5), each agent writes unique result to `agent-results/`.
-- **Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
+  Supervised by: `run-loop-supervised.sh` (watchdog auto-restarts daemon on death).
+  Evals: `evals.py` + `eval-report.py` for loop quality measurement.
+**akasha-evolution-loop** (LEGACY): Ralph-style continuous loop, 5-agent parallel v2.
+  Script: `.autonomous/multi-agent/akasha-evolution-loop.py`.
+  Start: `bash .autonomous/multi-agent/start-akasha-evolution.sh`.
+  Use: fallback only. Primary loop is the daemon above.
+**Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
   Scripts: `.autonomous/ralph-loop/akasha-ralph-loop.py`.
-- **Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
-- **CodeGraph**: Primary exploration tool — `codegraph_explore` before Read/Grep/Glob.
+**Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
+**CodeGraph**: Primary exploration tool — `codegraph_explore` before Read/Grep/Glob.
 
 ## Child DOX Index
 
-- `.autonomous/` — pesquisa autônoma e guardrails operacionais
-  - `multi-agent/akasha-evolution-loop.py` — 5-agent parallel loop v2 (primary, OMP-native)
+  - `multi-agent/akasha-loop-daemon.py` — socket daemon v3 with supervisor (PRIMARY)
+  - `multi-agent/akasha-evolution-loop.py` — 5-agent parallel loop v2 (legacy, fallback)
   - `multi-agent/intelligence.py` — evidence-based decisions + exponential learning
   - `multi-agent/context_bootstrap.py` — fresh project context every iteration
+  - `multi-agent/evals.py` + `eval-report.py` — loop quality measurement
   - `ralph-loop/` — Ralph-style 6-phase autonomous loop (fallback)
   - `skills/akasha-evolution/` — OMP skill for autonomous evolution loop
 - `apps/` — aplicações do produto

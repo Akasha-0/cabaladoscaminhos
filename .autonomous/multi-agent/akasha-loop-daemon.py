@@ -217,14 +217,6 @@ def phase_implementation(state, memory):
         _executor.submit(_spawn_agent, i, imp)
     state["phase"] = "IMPLEMENTATION_WAIT"
     save_state(state)
-    dur = _evals.phase_end("IMPLEMENTATION")
-    _tracker.record_implementation(
-        agents_spawned=len(improvements),
-        results_collected=0,
-        agent_success_rate=0.0,
-        files_changed=0,
-        duration_s=dur,
-    )
 
 def wait_implementation(state, memory):
     # Reap any zombie children so they don't accumulate
@@ -266,6 +258,20 @@ def wait_implementation(state, memory):
             pass
     save_json(RESULTS_FILE, {"results": all_results})
     log(f"  Collected {len(all_results)} results")
+    # Record impl metrics with real data after agents finished
+    task_data = load_json(TASK_FILE, {})
+    improvements = task_data.get("improvements", [])
+    agents_total = len(improvements)
+    agents_ok = sum(1 for r in all_results if r.get("success"))
+    success_rate = agents_ok / agents_total if agents_total > 0 else 0.0
+    dur = _evals.phase_end("IMPLEMENTATION")
+    _tracker.record_implementation(
+        agents_spawned=agents_total,
+        results_collected=len(all_results),
+        agent_success_rate=success_rate,
+        files_changed=0,
+        duration_s=dur,
+    )
     state["phase"] = "QA"
     save_state(state)
     return True

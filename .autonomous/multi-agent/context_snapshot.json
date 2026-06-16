@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T14:07:22.898770+00:00",
-  "version": "0.2.0",
+  "generated_at": "2026-06-16T14:20:12.222462+00:00",
+  "version": "0.3.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -876,15 +876,18 @@
       "- [~] **PLN-001[1]** -- missing_tests | 1 changed files lack tests",
       "- [~] **PLN-001[2]** -- tech_debt | 2 files with TODO",
       "- [~] **PLN-001[3]** -- large_file | 28 oversized files",
+      "- [~] **PLN-002[1]** -- missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-002[2]** -- tech_debt | 2 files with TODO",
+      "- [~] **PLN-002[3]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 875
+    "pending_count": 878
   },
   "git": {
     "untracked": 6,
-    "modified": 37,
-    "total": 43,
+    "modified": 17,
+    "total": 23,
     "has_changes": true
   },
   "triad": {
@@ -898,7 +901,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1517,
+      "passed": 1525,
       "failed": 238
     }
   },
@@ -923,7 +926,7 @@
       "files": [
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
-          "lines": 1075
+          "lines": 1050
         },
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
@@ -934,9 +937,17 @@
           "lines": 993
         }
       ]
+    },
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "packages/akasha-core/src/interpretation-engine.test.ts"
+      ]
     }
   ],
-  "git_head": "7cf74aaebb4cce36dfb0af5184f6dc8c73089491",
+  "git_head": "348b4b39875a9b5f32b69fa595a0eb64e1d2409c",
   "decision_factors": {
     "has_pending_features": true
   }
