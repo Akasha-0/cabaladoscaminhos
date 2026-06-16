@@ -329,6 +329,24 @@ def find_improvement_candidates(triad: dict) -> list:
                          "description": f"{len(files)} files with console statements",
                          "files": files})
 
+    # 7. UI improvement candidates — find TSX files with inline styles or old visual patterns
+    rc, out, _ = run_cmd([
+        "grep", "-r", "--include=*.tsx",
+        "-l", "style={{", "apps/", "-n"
+    ], timeout=15)
+    if rc == 0 and out.strip():
+        ui_files = []
+        for line in out.splitlines()[:5]:
+            if ":" in line:
+                ui_files.append(line.strip().split(":")[0])
+        if ui_files:
+            candidates.append({
+                "type": "ui_improvement",
+                "priority": 7,
+                "description": f"UI components with inline styles — modernizar para Tailwind/CSS",
+                "files": [{"file": f, "reason": "inline style → Tailwind"} for f in ui_files]
+            })
+
     return candidates
 
 
