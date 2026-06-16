@@ -1,8 +1,14 @@
 {
   "major": 0,
-  "minor": 30,
+  "minor": 31,
   "patch": 0,
   "changelog": [
+    {
+      "version": "0.31.0",
+      "ts": "2026-06-16T18:51:40.396075+00:00",
+      "improvement": "large_file",
+      "agents": 0
+    },
     {
       "version": "0.30.0",
       "ts": "2026-06-16T18:47:15.299497+00:00",
