@@ -30,6 +30,14 @@ import {
   ZODIAC_SIGNS,
   type Layer,
 } from '@/components/akasha/mandala-geometry';
+import {
+  buildAstroSegments,
+  buildKabVerts,
+  buildPlanetDots,
+  buildTantricNodes,
+  buildTooltipByLayer,
+  buildTrianglePath,
+} from '@/components/akasha/mandala-layers';
 
 interface AstrologyAspect {
   planet1: string;
@@ -142,95 +150,27 @@ export default function MandalaChart({ data }: Props) {
   // Pause ring rotation when Layer 4 is selected
   const ringPaused = activeLayer === 4;
 
-  // Per-layer curated tooltip text (F-206) — maps visual layer → Pilar id
-  // and resolves a short essence from the grimoire for native <title> hover.
-  // Per-layer curated tooltip text (F-206) — maps visual layer → Pilar id
-  // and resolves a short essence from the grimoire for native <title> hover.
-  const tooltipByLayer: Record<Layer, string> = {
-    1: (() => {
-      // Layer 1 = Ancestralidade
-      const sig = resolveSig('odu', data.odus.oduName);
-      return `Camada 1 · Ancestralidade (${data.odus.oduName}) — ${sig.essencia}`;
-    })(),
-    2: (() => {
-      // Layer 2 = Número de Vida
-      const sig = resolveSig('cabala', data.kabala.lifePath);
-      return `Camada 2 · Número de Vida (Vida ${data.kabala.lifePath ?? '?'}) — ${sig.essencia}`;
-    })(),
-    3: (() => {
-      // Layer 3 = Corpo e Energia
-      const sig = resolveSig('tantrica', data.tantra.soul);
-      return `Camada 3 · Corpo e Energia (Alma ${data.tantra.soul ?? '?'}) — ${sig.essencia}`;
-    })(),
-    4: (() => {
-      // Layer 4 = Movimento Celeste
-      const sig = resolveSig('astrologia', data.astrology.ascendant);
-      const formattedAsc = formatDegreeToZodiac(data.astrology.ascendant);
-      return `Camada 4 · Movimento Celeste (Ascendente: ${formattedAsc || '?'}) — ${sig.essencia}`;
-    })(),
-    5: (() => {
-      // Layer 5 = Mutação do Caminho
-      const sig = resolveSig('iching', data.iching.hexagramNumber);
-      const hex = data.iching.available
-        ? `Hex ${data.iching.hexagramNumber} · ${data.iching.hexagramName}`
-        : 'Hex do dia (requer Mutação do Caminho)';
-      return `Camada 5 · Mutação do Caminho (${hex}) — ${sig.essencia}`;
-    })(),
-  };
+  // Per-layer derivations (extracted to @/components/akasha/mandala-layers
+  // to keep this component focused on rendering). See mandala-layers.ts
+  // for the implementations of tooltipByLayer, astroSegments, planetDots,
+  // tantricNodes, kabVerts and trianglePath.
 
-  const astroSegments = ZODIAC_SIGNS.map((sym, i) => {
-    const startDeg = i * 30;
-    const endDeg = (i + 1) * 30;
-    const midDeg = startDeg + 15;
-    const labelPos = toXY(midDeg, 190);
-    return { sym, name: ZODIAC_NAMES[i], startDeg, endDeg, midDeg, labelPos };
-  });
+  // Per-layer curated tooltip text (F-206) — maps visual layer → Pilar id
+  // and resolves a short essence from the grimoire for native <title> hover.
+  const tooltipByLayer = buildTooltipByLayer(data);
+
+  const astroSegments = buildAstroSegments();
 
   // Mandala Fase 3 (spec mandala-fase3-zodiac-tantra):
-  // - Usa `absoluteLongitude` (0-360°) em vez de `degree` (0-30°) para distribuir
-  //   os planetas na eclíptica corretamente.
-  // - longitudeToSvgAngle aplica a convenção 0° = 9 horas do relógio.
-  // - Se absoluteLongitude é null, faz fallback para degree (compat).
-  const planetDots = data.astrology.planets.map((p) => {
-    const lon = p.absoluteLongitude;
-    const angle = lon != null && Number.isFinite(lon)
-      ? longitudeToSvgAngle(lon)
-      : longitudeToSvgAngle(p.degree); // fallback: degree tratado como longitude
-    return {
-      ...p,
-      pos: toXY(angle, 178),
-      glyph: GLYPHS_BY_PLANET[p.name] ?? '?',
-      color: PLANET_COLORS[p.name] ?? '#FFFFFF',
-    };
-  });
+  // - Uses `absoluteLongitude` (0-360°) to distribute planets on the
+  //   ecliptic correctly; falls back to `degree` for backwards compat.
+  const planetDots = buildPlanetDots(data.astrology.planets);
 
-  const tantricNodes = Array.from({ length: 11 }, (_, i) => {
-    const angleDeg = i * (360 / 11);
-    const pos = toXY(angleDeg, 138);
-    const body = data.tantra.bodies.find((b) => b.index === i + 1);
-    const wisdom = TANTRIC_BODY_WISDOM[i + 1];
-    return {
-      i,
-      angleDeg,
-      pos,
-      active: body?.active ?? true,
-      label: i + 1,
-      name: wisdom?.desc ?? `Corpo ${i + 1}`,
-    };
-  });
+  const tantricNodes = buildTantricNodes(data.tantra.bodies);
 
-  const kabVerts = [
-    { angleDeg: 0, value: data.kabala.lifePath, master: data.kabala.lifePathMaster, label: 'VP' },
-    {
-      angleDeg: 120,
-      value: data.kabala.expression,
-      master: data.kabala.expressionMaster,
-      label: 'EX',
-    },
-    { angleDeg: 240, value: data.kabala.motivation, master: false, label: 'MO' },
-  ].map((v) => ({ ...v, pos: toXY(v.angleDeg, 80) }));
+  const kabVerts = buildKabVerts(data.kabala);
 
-  const trianglePath = `M ${kabVerts[0].pos.x} ${kabVerts[0].pos.y} L ${kabVerts[1].pos.x} ${kabVerts[1].pos.y} L ${kabVerts[2].pos.x} ${kabVerts[2].pos.y} Z`;
+  const trianglePath = buildTrianglePath(kabVerts);
 
   const elem = dominantElement(data.astrology.elementalBalance);
   const inactiveBodies = tantricNodes.filter((n) => !n.active);
