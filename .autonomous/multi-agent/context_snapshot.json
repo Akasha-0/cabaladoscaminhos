@@ -1,215 +1,106 @@
 {
-  "generated_at": "2026-06-15T22:26:43.394094+00:00",
-  "version": "0.4.0",
-  "plans": {
-    "pending": [],
-    "done": [
-      "PLN-002",
-      "PLN-003",
-      "PLN-004",
-      "PLN-005",
-      "PLN-006",
-      "PLN-007",
-      "PLN-008",
-      "PLN-009",
-      "PLN-010",
-      "PLN-011",
-      "PLN-012",
-      "PLN-013",
-      "PLN-014",
-      "PLN-015",
-      "PLN-016",
-      "PLN-017",
-      "PLN-018",
-      "PLN-019",
-      "PLN-021",
-      "PLN-022"
-    ]
-  },
+  "generated_at": "2026-06-16T00:24:13.558437+00:00",
+  "version": "0.0.1",
   "features": {
-    "total": 52,
-    "pending": [
-      "D-040",
-      "D-040-progress",
-      "F-223",
-      "F-224",
-      "F-225",
-      "F-226",
-      "F-227",
-      "F-228"
+    "pending_features": [
+      "- [~] **PLN-000** — typecheck_clean | 0.0.1",
+      "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)"
     ],
-    "pending_count": 8,
-    "done_count": 44,
-    "by_phase": {
-      "0": [
-        "R-001",
-        "R-013"
-      ],
-      "8": [
-        "R-014",
-        "R-015",
-        "R-016",
-        "R-018",
-        "R-019",
-        "R-020"
-      ],
-      "2": [
-        "R-022b"
-      ],
-      "3": [
-        "R-024"
-      ],
-      "4": [
-        "R-025"
-      ],
-      "5": [
-        "R-030",
-        "D-044",
-        "D-043",
-        "D-040",
-        "D-040-progress"
-      ],
-      "7": [
-        "F-100",
-        "F-101",
-        "F-102",
-        "F-103",
-        "F-104",
-        "F-105",
-        "F-216",
-        "F-217",
-        "F-218",
-        "F-219",
-        "F-220"
-      ],
-      "6": [
-        "F-200",
-        "F-201",
-        "F-202",
-        "F-203",
-        "F-204",
-        "F-205",
-        "F-207",
-        "F-208",
-        "F-209",
-        "F-209b",
-        "F-210",
-        "F-211",
-        "F-212",
-        "F-213",
-        "F-214",
-        "F-215",
-        "F-221",
-        "F-222"
-      ],
-      "9": [
-        "R-023",
-        "F-223",
-        "F-224",
-        "F-225",
-        "F-226",
-        "F-227",
-        "F-228"
-      ]
-    },
-    "top_pending": [
-      {
-        "id": "D-040",
-        "phase": 5,
-        "title": "Schema Prisma com 5 Pilares. Design proposal (NÃO aplicado): unificar 5 Pilares ",
-        "priority": "P1"
-      },
-      {
-        "id": "D-040-progress",
-        "phase": 5,
-        "title": "D-040 Prisma migration setup COMPLETO (migrations/20260611000000_init_akasha_v3 ",
-        "priority": "P1"
-      },
-      {
-        "id": "F-223",
-        "phase": 9,
-        "title": "A 'Caixa' Akasha — Página ÚNICA unificada com 9 dimensões de vida. Substitui nav",
-        "priority": "P0"
-      },
-      {
-        "id": "F-224",
-        "phase": 9,
-        "title": "'Meu Dia' — Homepage mobile redesenhada (inspiração Co-Star + AstroSage). ONE SC",
-        "priority": "P0"
-      },
-      {
-        "id": "F-225",
-        "phase": 9,
-        "title": "Sexualidade Deep Dive — Expandir Sexualidade de 1 frase/pilar para análise COMPL",
-        "priority": "P0"
-      },
-      {
-        "id": "F-226",
-        "phase": 9,
-        "title": "Narrative Generator — Motor de Síntese conectando dados brutos → narrativa de vi",
-        "priority": "P1"
-      },
-      {
-        "id": "F-227",
-        "phase": 9,
-        "title": "Akasha Authority — Framework de decisão: 'Antes de decisão importante: isso vem ",
-        "priority": "P1"
-      },
-      {
-        "id": "F-228",
-        "phase": 9,
-        "title": "Mobile App Strategy — Comparar React Native (Expo) vs Capacitor vs Flutter vs PW",
-        "priority": "P1"
-      }
-    ]
+    "pending_count": 2
   },
   "git": {
-    "untracked": 1,
-    "modified": 10,
-    "total": 11,
+    "untracked": 3,
+    "modified": 15,
+    "total": 18,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
-      "pass": true
+      "pass": false,
+      "errors": [
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(21,3): error TS2459: Module '\"./synthesis-engine\"' declares 'AstrologyMap' locally, but it is not exported.",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(22,3): error TS2459: Module '\"./synthesis-engine\"' declares 'KabalisticMap' locally, but it is not exported.",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(23,3): error TS2459: Module '\"./synthesis-engine\"' declares 'TantricMap' locally, but it is not exported.",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(24,3): error TS2459: Module '\"./synthesis-engine\"' declares 'OduBirth' locally, but it is not exported.",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(26,38): error TS2307: Cannot find module '@/lib/domain/engines/holo-aggregator' or its corresponding type declarations."
+      ]
+    },
+    "lint": {
+      "pass": true,
+      "warnings": 0
     },
     "tests": {
       "pass": false,
-      "passed": 51,
-      "failed": 5
-    },
-    "lint": {
-      "pass": true
+      "passed": 1285,
+      "failed": 232
     }
   },
   "codegraph": {
-    "stats": {
-      "\u001b[36mproject": "\u001b[0m /home/skynet/cabala-dos-caminhos",
-      "\u001b[1mindex_statistics": "\u001b[0m",
-      "files": "935",
-      "nodes": "6.315",
-      "edges": "17.750",
-      "db_size": "22.25 MB",
-      "backend": "\u001b[32mnode:sqlite — built-in (full WAL)\u001b[0m",
-      "journal": "\u001b[32mwal\u001b[0m",
-      "\u001b[1mnodes_by_kind": "\u001b[0m",
-      "\u001b[1mfiles_by_language": "\u001b[0m"
-    },
     "pending_files": 0,
-    "needs_sync": false,
     "ok": true
   },
-  "decision_factors": {
-    "has_pending_features": true,
-    "pending_count": 8,
-    "triad_all_green": false,
-    "triad_status": {
-      "typecheck": true,
-      "tests": false,
-      "lint": true
+  "improvement_candidates": [
+    {
+      "type": "typecheck_errors",
+      "priority": 9,
+      "description": "5 TypeScript errors",
+      "errors": [
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(21,3): error TS2459: Module '\"./synthesis-engine\"' declares 'AstrologyMap' locally, but it is not exported.",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(22,3): error TS2459: Module '\"./synthesis-engine\"' declares 'KabalisticMap' locally, but it is not exported.",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(23,3): error TS2459: Module '\"./synthesis-engine\"' declares 'TantricMap' locally, but it is not exported.",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(24,3): error TS2459: Module '\"./synthesis-engine\"' declares 'OduBirth' locally, but it is not exported.",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(26,38): error TS2307: Cannot find module '@/lib/domain/engines/holo-aggregator' or its corresponding type declarations."
+      ]
     },
-    "codegraph_needs_sync": false,
-    "git_has_changes": true,
-    "untracked_files": 1
+    {
+      "type": "tech_debt",
+      "priority": 5,
+      "description": "5 files with TODO",
+      "files": [
+        "packages/core-cabala/src/numerology-kabalah.ts",
+        "packages/akasha-core/src/interpretation-engine.ts",
+        "packages/akasha-core/src/correlation-engine.ts",
+        "packages/akasha-core/src/akasha-core.ts",
+        "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx"
+      ]
+    },
+    {
+      "type": "tech_debt",
+      "priority": 5,
+      "description": "1 files with XXX",
+      "files": [
+        "packages/core-cabala/src/number-meanings.ts"
+      ]
+    },
+    {
+      "type": "large_file",
+      "priority": 4,
+      "description": "27 oversized files",
+      "files": [
+        {
+          "file": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
+          "lines": 2207
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
+          "lines": 1840
+        },
+        {
+          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+          "lines": 1534
+        }
+      ]
+    },
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/lib/grimoire/rag-mapa.test.ts"
+      ]
+    }
+  ],
+  "decision_factors": {
+    "has_pending_features": true
   }
 }

@@ -10,14 +10,27 @@
 // Tipos públicos
 export type {
   IChingMap,
+  Trigram,
   Wing,
   Hexagram,
   TrigramId,
   HexagramWithWings,
 } from './types';
 
-// Hexagramas (64) — funcoes publicas
+// Trigramas (Bagua) — 8 trigramas + funções
+export { TRIGRAMS, getTrigram, getTrigramByLines } from './bagua';
+
+// Hexagramas (64) — funções públicas
 export { HEXAGRAMS, getHexagram, getAllHexagrams } from './hexagrams';
+
+// Asas (Wings) — 10 wings do I Ching
+export {
+  WINGS,
+  getWing,
+  getAllWings,
+  getWingsByHexagram,
+  getHexagramWithWings,
+} from './wings';
 
 // Hexagrama natal
 export { buildIchingMap } from './natal';

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  type Trigram,
   buildIchingMap,
   TRIGRAMS,
   HEXAGRAMS,
@@ -14,7 +15,7 @@ describe('@akasha/core-iching', () => {
       expect(Object.keys(TRIGRAMS).length).toBe(8);
     });
     it('contains all 8 expected Chinese names', () => {
-      const names = Object.values(TRIGRAMS).map((t) => t.chineseName);
+      const names = Object.values(TRIGRAMS).map((t: Trigram) => t.chineseName);
       expect(names).toEqual(
         expect.arrayContaining(['Qian', 'Kun', 'Kan', 'Li', 'Zhen', 'Gen', 'Xun', 'Dui']),
       );

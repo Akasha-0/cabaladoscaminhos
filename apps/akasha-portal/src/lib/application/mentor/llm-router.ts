@@ -86,7 +86,7 @@ export async function* streamMentorResponse(
   try {
     switch (provider) {
       case 'minimax':
-        yield* streamWithMiniMax(messages, config);
+        yield await streamWithMiniMax(messages, config);
         return;
       case 'openai':
         yield* streamWithOpenAI(messages, config);
@@ -111,10 +111,10 @@ export async function* streamMentorResponse(
 
 // ─── MiniMax provider (F-236) ──────────────────────────────────────────────
 
-async function* streamWithMiniMax(
+async function streamWithMiniMax(
   messages: { role: string; content: string }[],
   config: LLMConfig
-): AsyncGenerator<string> {
+): Promise<string> {
   const apiToken = process.env.MINIMAX_API_TOKEN;
   if (!apiToken) {
     throw new Error('MINIMAX_API_TOKEN not set');
@@ -138,10 +138,10 @@ async function* streamWithMiniMax(
     throw new Error(`MiniMax ${response.status}: ${body.slice(0, 200)}`);
   }
 
-  if (!response.body) return;
   const data = (await response.json()) as {
     choices?: Array<{ message?: { content?: string } }>;
   };
+  return data.choices?.[0]?.message?.content ?? '';
 }
 
 async function* streamWithOpenAI(
