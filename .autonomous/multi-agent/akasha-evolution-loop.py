@@ -42,6 +42,7 @@ os.makedirs(AGENT_RESULTS_DIR, exist_ok=True)
 # ─── Parallelism constants ──────────────────────────────────────────────────────
 MAX_PARALLEL = 5   # Max parallel coding agents per iteration
 TRIAD_CACHE_TTL = 3600  # 5 minutes
+SKIP_PATTERNS_FILE = MA / "skip_patterns.json"
 
 
 def load_json(path: Path, default=None):
@@ -377,6 +378,35 @@ RECENT_DECISIONS_KEY = "recent_decisions"
 RECENT_WINDOW = 10
 
 
+def load_skip_patterns() -> dict:
+    """Load skip_patterns.json — patterns confirmed as 0_fixes or already_present."""
+    if SKIP_PATTERNS_FILE.exists():
+        try:
+            return json.loads(SKIP_PATTERNS_FILE.read_text())
+        except Exception:
+            return {"patterns": []}
+    return {"patterns": []}
+
+
+def is_in_skip_list(candidate: dict, skip_data: dict) -> bool:
+    """Check if a candidate matches any pattern in skip_patterns.json."""
+    ctype = candidate.get("type", "?")
+    desc = candidate.get("description", "")
+    files = candidate.get("files", [])
+    for entry in skip_data.get("patterns", []):
+        if entry.get("type") != ctype:
+            continue
+        marker = entry.get("marker", "")
+        if marker and marker.lower() in desc.lower():
+            return True
+        if marker and isinstance(files, list):
+            for f in files:
+                f_str = f if isinstance(f, str) else (f.get("file", "") if isinstance(f, dict) else "")
+                if marker.lower() in f_str.lower():
+                    return True
+    return False
+
+
 def pick_best_improvements(candidates: list, memory: dict, max_count: int = MAX_PARALLEL) -> list:
     """
     Pick up to max_count improvements from candidates.
@@ -388,6 +418,12 @@ def pick_best_improvements(candidates: list, memory: dict, max_count: int = MAX_
 
     # Filter out SKIP_TYPES
     filtered = [c for c in candidates if c.get("type") not in SKIP_TYPES]
+    if not filtered:
+        return []
+
+    # Filter out patterns confirmed as 0_fixes / already_present
+    skip_data = load_skip_patterns()
+    filtered = [c for c in filtered if not is_in_skip_list(c, skip_data)]
     if not filtered:
         return []
 
