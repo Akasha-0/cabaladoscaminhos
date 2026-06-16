@@ -561,7 +561,7 @@ function attachDeepCorrelations(
     const energyHarmony = deepEngine.calculateEnergyHarmony(userData);
     mapa.deepCorrelations = { correlations, patterns, energyHarmony };
   } catch (err) {
-    console.warn('[MapaAlma] Deep correlation analysis failed:', err instanceof Error ? err.message : String(err));
+    // silently ignore
   }
 }
 /** Builds the UserSpiritualData shape required by DeepCorrelationEngine. */
