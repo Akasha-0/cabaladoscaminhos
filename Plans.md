@@ -24,6 +24,17 @@
   - File: `packages/akasha-core/src/interpretation-engine.ts`
   - File: `packages/akasha-core/src/correlation-engine.ts`
 
+
+## cc: AKASHA-loop iter 3 | large_file (2026-06-16T01:14:20Z)
+- [~] **PLN-003** — large_file | 0.3.1
+  - Improvement: 28 oversized files
+  - Type: large_file
+  - Priority: 4
+  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
+  - File: `{'file': 'apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts', 'lines': 2207}`
+  - File: `{'file': 'apps/akasha-portal/src/lib/grimoire/significados-curados.ts', 'lines': 1840}`
+  - File: `{'file': 'apps/akasha-portal/src/components/akasha/MandalaChart.tsx', 'lines': 1534}`
+
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

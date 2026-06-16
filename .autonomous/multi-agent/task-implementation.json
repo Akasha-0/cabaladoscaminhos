@@ -1,20 +1,27 @@
 {
   "phase": "IMPLEMENTATION",
   "improvement": {
-    "type": "tech_debt",
-    "priority": 5,
-    "description": "5 files with TODO",
+    "type": "large_file",
+    "priority": 4,
+    "description": "28 oversized files",
     "files": [
-      "packages/core-cabala/src/numerology-kabalah.ts",
-      "packages/akasha-core/src/interpretation-engine.ts",
-      "packages/akasha-core/src/correlation-engine.ts",
-      "packages/akasha-core/src/akasha-core.ts",
-      "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx"
+      {
+        "file": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
+        "lines": 2207
+      },
+      {
+        "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
+        "lines": 1840
+      },
+      {
+        "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+        "lines": 1534
+      }
     ]
   },
-  "iteration": 2,
+  "iteration": 3,
   "snapshot_summary": {
-    "version": "0.2.1",
+    "version": "0.3.1",
     "triad": {
       "typecheck": {
         "pass": true,
@@ -26,7 +33,7 @@
       },
       "tests": {
         "pass": false,
-        "passed": 1286,
+        "passed": 1295,
         "failed": 232
       }
     },
@@ -43,23 +50,24 @@
         "files": [
           "packages/core-cabala/src/numerology-kabalah.ts",
           "packages/akasha-core/src/interpretation-engine.ts",
-          "packages/akasha-core/src/correlation-engine.ts",
           "packages/akasha-core/src/akasha-core.ts",
-          "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx"
+          "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx",
+          "apps/akasha-portal/src/app/[locale]/(akasha)/glossario/page.tsx"
         ]
       },
       {
         "type": "tech_debt",
         "priority": 5,
-        "description": "1 files with XXX",
+        "description": "2 files with XXX",
         "files": [
-          "packages/core-cabala/src/number-meanings.ts"
+          "packages/core-cabala/src/number-meanings.ts",
+          "packages/akasha-core/src/correlation-engine.test.ts"
         ]
       },
       {
         "type": "large_file",
         "priority": 4,
-        "description": "27 oversized files",
+        "description": "28 oversized files",
         "files": [
           {
             "file": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
@@ -73,15 +81,6 @@
             "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
             "lines": 1534
           }
-        ]
-      },
-      {
-        "type": "missing_tests",
-        "priority": 6,
-        "description": "2 changed files lack tests",
-        "files": [
-          "apps/akasha-portal/__tests__/lib/application/mentor/llm-router.ts.test.ts",
-          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts"
         ]
       }
     ]

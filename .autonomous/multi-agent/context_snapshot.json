@@ -1,18 +1,19 @@
 {
-  "generated_at": "2026-06-16T01:10:51.566287+00:00",
-  "version": "0.2.1",
+  "generated_at": "2026-06-16T01:27:18.374603+00:00",
+  "version": "0.3.1",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
       "- [~] **PLN-002** — tech_debt | 0.2.1",
+      "- [~] **PLN-003** — large_file | 0.3.1",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)"
     ],
-    "pending_count": 3
+    "pending_count": 4
   },
   "git": {
-    "untracked": 2,
-    "modified": 7,
-    "total": 9,
+    "untracked": 1,
+    "modified": 9,
+    "total": 10,
     "has_changes": true
   },
   "triad": {
@@ -67,31 +68,21 @@
       "description": "28 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
-          "lines": 2207
-        },
-        {
           "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
           "lines": 1840
         },
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
           "lines": 1534
+        },
+        {
+          "file": "packages/akasha-core/src/interpretation-engine.ts",
+          "lines": 1198
         }
-      ]
-    },
-    {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "3 changed files lack tests",
-      "files": [
-        "packages/akasha-core/src/correlation-engine.test.ts",
-        "packages/akasha-core/src/correlation-engine.ts",
-        "packages/akasha-core/src/index.ts"
       ]
     }
   ],
-  "git_head": "fe3873760efb974aa630a2a8978f8964ede11304",
+  "git_head": "aa99f12c46b364555c20b262de798f959fdbde2d",
   "decision_factors": {
     "has_pending_features": true
   }
