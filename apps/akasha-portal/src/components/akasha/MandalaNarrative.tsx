@@ -44,7 +44,7 @@ interface MandalaNarrativeProps {
       dailyDirective: string;
       growthEdge: string;
       shadowTrap: string;
-      dominantPillar: string;
+      dimensionOrigin: string | null;
     } | null;
     areas: Record<string, AreaNarrative>;
     synthesisParagraph: string;
@@ -236,10 +236,9 @@ export function MandalaNarrative({ synthesis, loading }: MandalaNarrativeProps) 
               className="px-3 py-1 rounded-full text-xs font-semibold shrink-0"
               style={{ backgroundColor: `${accentColor}22`, color: accentColor }}
             >
-              {oneProfile.dominantPillar.split('—')[0].trim()}
+              {oneProfile.dimensionOrigin ? oneProfile.dimensionOrigin.split('—')[0].trim() : 'Akasha'}
             </span>
           </div>
-
           {/* Power phrase */}
           <div
             className="rounded-2xl p-5 mb-5"

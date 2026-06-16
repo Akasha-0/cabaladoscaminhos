@@ -3,21 +3,18 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "5 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts",
-        "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-        "apps/akasha-portal/src/lib/grimoire/synthesis/narrative-generator.ts",
-        "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts"
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
       ]
     },
     {
       "type": "tech_debt",
       "priority": 5,
-      "description": "1 files with XXX",
+      "description": "2 files with TODO",
       "files": [
-        "packages/core-cabala/src/number-meanings.ts"
+        "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
       ]
     },
     {
@@ -26,19 +23,19 @@
       "description": "28 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-          "lines": 1840
-        },
-        {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
           "lines": 1534
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
           "lines": 1198
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 1141
         }
       ]
     }
   ],
-  "iteration": 8
+  "iteration": 0
 }

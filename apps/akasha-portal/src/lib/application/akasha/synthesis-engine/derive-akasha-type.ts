@@ -167,7 +167,7 @@ export function deriveAkashaType(
     authorityPractice: AUTHORITY_PRACTICE[authority],
     dailyDirective,
     oneLiner,
-    dominantPillar: baseType.dominantPillar,
+    dimensionOrigin: baseType.dimensionOrigin ?? null,
     growthEdge: baseType.growthEdge,
     shadowTrap: baseType.shadowTrap,
   };

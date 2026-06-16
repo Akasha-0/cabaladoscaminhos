@@ -131,12 +131,9 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
         >
           <div className="flex items-center gap-2 mb-2">
             <Sparkles size={14} className="text-[#FF9500]" aria-hidden />
-            <span className="text-xs text-white/60 uppercase tracking-widest font-medium">Hoje no céu</span>
+            <span className="text-xs text-white/60 uppercase tracking-widest font-medium">Clima Energético</span>
           </div>
           <p className="text-sm text-white/85 leading-relaxed">{data.overallTheme}</p>
-          {data.moonPhase && (
-            <p className="text-xs text-white/50 mt-2 leading-relaxed italic">Lua: {data.moonPhase}</p>
-          )}
         </div>
 
         {/* 3. Prática + Janela de Clareza + Alerta (3-up) */}
@@ -219,7 +216,7 @@ export function MyDayScreen({ userName, locale }: MyDayScreenProps) {
               Tensão ativa
             </span>
             <p className="text-sm text-white/80 leading-relaxed">
-              {data.tensionPoint.pillar} · {data.tensionPoint.theme}
+              {data.tensionPoint.theme}
             </p>
           </div>
         )}

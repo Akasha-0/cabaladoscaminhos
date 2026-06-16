@@ -221,7 +221,7 @@ export function buildAkashaSynthesis(
         authorityPractice: 'Diário: questione a urgência do pensamento. Pergunte — isto é verdade ou só ruído familiar?',
         dailyDirective: 'Hoje: preste atenção no que sua intuição sussurra.',
         oneLiner: 'Você é O Arquiteto. Sua mente constrói pontes entre mundos — você vê o que outros não veem antes de ter provas.',
-        dominantPillar: 'cabala',
+        dimensionOrigin: 'Estrutura Numérica',
         growthEdge: 'Agir mais, pensar menos.',
         shadowTrap: 'Paralisia por análise excessiva.',
       },

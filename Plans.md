@@ -88,6 +88,44 @@
   - Files: packages/core-cabala/src/number-meanings.ts
 - [~] **PLN-008[3]** — large_file | 28 oversized files
   - Files: apps/akasha-portal/src/lib/grimoire/significados-curados.ts, apps/akasha-portal/src/components/akasha/MandalaChart.tsx, packages/akasha-core/src/interpretation-engine.ts
+- [~] **PLN-009[1]** — missing_tests | 2 changed files lack tests
+  - Files: packages/akasha-core/src/correlation-engine.test.ts, packages/akasha-core/src/interpretation-engine/types.ts
+- [~] **PLN-009[2]** — tech_debt | 1 files with XXX
+  - Files: packages/core-cabala/src/number-meanings.ts
+- [~] **PLN-009[3]** — large_file | 28 oversized files
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados.ts, apps/akasha-portal/src/components/akasha/MandalaChart.tsx, packages/akasha-core/src/interpretation-engine.ts
+- [~] **PLN-009[1]** — missing_tests | 2 changed files lack tests
+- [~] **PLN-009[2]** — tech_debt | 1 files with XXX
+- [~] **PLN-009[3]** — large_file | 29 oversized files
+- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** — tech_debt | 1 files with XXX
+- [~] **PLN-000[3]** — large_file | 29 oversized files
+- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** — tech_debt | 1 files with XXX
+- [~] **PLN-000[3]** — large_file | 29 oversized files
+- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** — tech_debt | 1 files with XXX
+- [~] **PLN-000[3]** — large_file | 29 oversized files
+- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** — tech_debt | 1 files with XXX
+- [~] **PLN-000[3]** — large_file | 29 oversized files
+- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** — tech_debt | 1 files with XXX
+- [~] **PLN-000[3]** — large_file | 29 oversized files
+- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** — tech_debt | 1 files with TODO
+- [~] **PLN-000[3]** — tech_debt | 1 files with XXX
+- [~] **PLN-000[4]** — large_file | 29 oversized files
+- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests
+- [~] **PLN-000[2]** — tech_debt | 1 files with TODO
+- [~] **PLN-000[3]** — tech_debt | 1 files with XXX
+- [~] **PLN-000[4]** — large_file | 29 oversized files
+- [~] **PLN-000[1]** — missing_tests | 1 changed files lack tests
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts
+- [~] **PLN-000[2]** — tech_debt | 2 files with TODO
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts, apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts
+- [~] **PLN-000[3]** — large_file | 28 oversized files
+  - Files: apps/akasha-portal/src/components/akasha/MandalaChart.tsx, packages/akasha-core/src/interpretation-engine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

@@ -1,0 +1,18 @@
+You are implementing: large_file
+
+## Context
+29 oversized files
+
+## Files to examine (use codegraph first):
+apps/akasha-portal/src/lib/grimoire/significados-curados.ts
+
+## Instructions
+1. cd /home/skynet/cabala-dos-caminhos && codegraph explore "large_file"
+2. cd /home/skynet/cabala-dos-caminhos && git status
+3. Implement the fix for: large_file
+   Details: 29 oversized files
+4. cd /home/skynet/cabala-dos-caminhos && pnpm typecheck 2>&1 | head -30
+5. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/agent-results/result-ta-1781608300-2.json:
+{"agent_id": "ta-1781608300-2", "type": "large_file", "success": True, "message": "done"}
+
+Working: /home/skynet/cabala-dos-caminhos

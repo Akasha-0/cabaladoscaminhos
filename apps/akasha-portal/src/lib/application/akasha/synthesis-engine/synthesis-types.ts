@@ -49,7 +49,8 @@ export interface AkashaTypeProfile {
   authorityPractice: string;
   dailyDirective: string;
   oneLiner: string;
-  dominantPillar: string;
+  /** @internal Dimensão que mais contribui para este tipo */
+  dimensionOrigin?: string | null;
   growthEdge: string;
   shadowTrap: string;
 }

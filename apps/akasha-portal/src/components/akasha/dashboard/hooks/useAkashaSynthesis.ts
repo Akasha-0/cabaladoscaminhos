@@ -16,7 +16,7 @@ export interface DailyRitualUI {
 }
 
 export interface TensionPointUI {
-  pillar: string;
+  dimension: string;
   theme: string;
   intensity: number;
 }
@@ -116,7 +116,7 @@ export interface AkashaTypeProfileUI {
   authorityPractice: string;
   dailyDirective: string;
   oneLiner: string;
-  dominantPillar: string;
+  dimensionOrigin: string | null;
   growthEdge: string;
   shadowTrap: string;
 }

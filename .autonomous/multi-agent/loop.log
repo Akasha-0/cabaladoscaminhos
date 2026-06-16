@@ -338,3 +338,67 @@ BOOTSTRAP: loading project context
 ITERATION 8 | PHASE: RELEASE
 Features: missing_tests, tech_debt, large_file
 ============================================================
+  ✅ Git commit: feat(loop): 0.8.1 — missing_tests, tech_debt, large_file
+
+============================================================
+  🚀 RELEASE: 0.8.1 | iter=9 | missing_tests, tech_debt, large_file
+  Learnings: 22 | Context window: 13
+============================================================
+
+============================================================
+BOOTSTRAP: loading project context
+============================================================
+
+============================================================
+ITERATION 9 | PHASE: RESEARCH
+Features: none
+============================================================
+
+============================================================
+🔬 RESEARCH (iter 9)
+============================================================
+  Found 3 candidate(s)
+  Selected 3 improvement(s) for parallel execution:
+    [1] missing_tests: 2 changed files lack tests
+    [2] tech_debt: 1 files with XXX
+    [3] large_file: 28 oversized files
+
+============================================================
+BOOTSTRAP: loading project context
+============================================================
+
+============================================================
+ITERATION 9 | PHASE: PLANNING
+Features: missing_tests, tech_debt, large_file
+============================================================
+
+============================================================
+📋 PLANNING (iter 9)
+============================================================
+  📋 PLANNING: Plans.md updated with 3 improvement(s)
+  → missing_tests: 2 changed files lack tests
+  → tech_debt: 1 files with XXX
+  → large_file: 28 oversized files
+
+============================================================
+BOOTSTRAP: loading project context
+============================================================
+
+============================================================
+ITERATION 9 | PHASE: IMPLEMENTATION
+Features: missing_tests, tech_debt, large_file
+============================================================
+
+============================================================
+💻 IMPLEMENTATION (iter 9)
+============================================================
+
+  💻 IMPLEMENTATION: 3 parallel agent(s)
+  ⏱️  Max workers: 5 | Timeout per agent: 600s
+    🤖 Agent-88c9398f: missing_tests — 2 changed files lack tests
+    🤖 Agent-49b3cc4d: large_file — 28 oversized files    🤖 Agent-720fd3c6: tech_debt — 1 files with XXX
+
+      6. **typecheck** — passes (`tsc --noEmit` exit 0)
+      7. **No commit required** — file is already clean
+      8. **task-result.json** — written with success status
+    ✅ Agent-720fd3c6 [tech_debt]: Agent 720fd3c6 completed tech_debt

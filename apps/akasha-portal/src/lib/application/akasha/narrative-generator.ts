@@ -66,7 +66,7 @@ function getElement(sign: string | null | undefined): string {
 
 // ─── Narrative builders per pillar ─────────────────────────────────────────────
 
-function buildKabalaNarrative(kab: KabalisticMap | null, area: string): string {
+function buildAncestralidadeNarrative(kab: KabalisticMap | null, area: string): string {
   if (!kab?.lifePath) return 'A Cabala não registrou seu número de vida. O número existe — está por descobrir.';
   const n = reduceMasterNumber(kab.lifePath);
   const lp = LIFE_PATH_NARRATIVES[n];
@@ -88,7 +88,7 @@ function buildKabalaNarrative(kab: KabalisticMap | null, area: string): string {
   return `Seu Camino de Vida ${kab.lifePath} — ${lp.titulo}${masterNote}. ${lp.essencia} Você é chamado a: ${lp.missao} A armadilha: ${lp.sombra.split(',')[0]}. ${areaNuances[area] ?? ''}`;
 }
 
-function buildAstrologyNarrative(astro: AstrologyMap | null, area: string): string {
+function buildMovimentoCelesteNarrative(astro: AstrologyMap | null, area: string): string {
   if (!astro) return 'O mapa astral não foi calculado. Os astros guardam silêncio — por enquanto.';
 
   const sol = astro.planets?.find(p => p.planet === 'Sol')?.sign ?? null;
@@ -138,7 +138,7 @@ function buildAstrologyNarrative(astro: AstrologyMap | null, area: string): stri
   return `${base}${luaNote}`;
 }
 
-function buildTantraNarrative(tantra: TantricMap | null, area: string): string {
+function buildCorpoEnergiaNarrative(tantra: TantricMap | null, area: string): string {
   if (!tantra?.soul) return 'O Tantra não registrou seu corpo principal. O corpo guarda sabedoria — nomeá-la é primeiro passo.';
 
   const BODY_MAP: Record<number, { name: string; essencia: string; mission: string; shadow: string }> = {
@@ -171,7 +171,7 @@ function buildTantraNarrative(tantra: TantricMap | null, area: string): string {
   return areaMap[area] ?? `Corpo ${tantra.soul}: ${body.name}. ${body.essencia} ${body.mission}`;
 }
 
-function buildOduNarrative(odu: OduBirth | null, area: string): string {
+function buildAncestralidadeOduNarrative(odu: OduBirth | null, area: string): string {
   if (!odu?.oduName) return 'O Odu de nascimento não foi registrado. A ancestralidade fala mesmo em silêncio — ouça o corpo.';
 
   const name = odu.oduName;
@@ -375,10 +375,10 @@ export function generateAreaNarrativeFull(
   tantra: TantricMap | null,
   odu: OduBirth | null
 ): AreaNarrativeFull {
-  const kabBlock = buildKabalaNarrative(kab, area);
-  const astroBlock = buildAstrologyNarrative(astro, area);
-  const tantraBlock = buildTantraNarrative(tantra, area);
-  const oduBlock = buildOduNarrative(odu, area);
+  const kabBlock = buildAncestralidadeNarrative(kab, area);
+  const astroBlock = buildMovimentoCelesteNarrative(astro, area);
+  const tantraBlock = buildCorpoEnergiaNarrative(tantra, area);
+  const oduBlock = buildAncestralidadeOduNarrative(odu, area);
 
   const kabSoul = kab?.soulUrgeNumber ?? kab?.lifePath;
   const tantraBody = tantra?.soul;

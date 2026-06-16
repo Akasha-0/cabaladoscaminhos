@@ -41,7 +41,7 @@ os.makedirs(AGENT_RESULTS_DIR, exist_ok=True)
 
 # ─── Parallelism constants ──────────────────────────────────────────────────────
 MAX_PARALLEL = 5   # Max parallel coding agents per iteration
-TRIAD_CACHE_TTL = 300  # 5 minutes
+TRIAD_CACHE_TTL = 3600  # 5 minutes
 
 
 def load_json(path: Path, default=None):

@@ -5,6 +5,12 @@
 
 ## Primary Rule
 
+> **Sacred Protocol** (non-negotiable): Before ANY task — coding, design, research, planning, architecture:
+> ```bash
+> source scripts/sacred-protocol-check.sh   # validates CodeGraph + Headroom
+> ```
+> Then use `codegraph_explore` (MCP) for all code intelligence before `Read`/`Grep`/`Glob`.
+
 > **CodeGraph-first**: before any Grep/Glob/Read for architecture, dependency, or discovery questions, use `codegraph_explore`. See `.trae/rules/project_rules.md` for the full rule and index commands.
 
 ## Core Contract

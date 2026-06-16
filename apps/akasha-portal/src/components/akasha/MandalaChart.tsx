@@ -190,11 +190,11 @@ const ELEMENT_COLORS: Record<string, string> = {
   water: '#2DD4BF',
 };
 
-// Pilar colors — keyed by VISUAL LAYER (1..5 inside-out).
-// Layer 1 = Odus core (Pilar 4) | Layer 2 = Cabala geometry (Pilar 1)
-// Layer 3 = Tantric web (Pilar 3) | Layer 4 = Astrological ring (Pilar 2)
-// Layer 5 = I-Ching node (Pilar 5)
-// Cabala usa indigo para distinguir-se de Astrologia (roxo/ar).
+// Layer colors — keyed by VISUAL LAYER (1..5 inside-out).
+// Layer 1 = Ancestralidade | Layer 2 = Número de Vida
+// Layer 3 = Corpo e Energia | Layer 4 = Movimento Celeste
+// Layer 5 = Mutação do Caminho
+// Número de Vida usa indigo para distinguir-se de Movimento Celeste (roxo/ar).
 const PILAR_COLORS: Record<Layer, string> = {
   1: '#F0B429',
   2: '#5C7CFF',
@@ -203,11 +203,11 @@ const PILAR_COLORS: Record<Layer, string> = {
   5: '#A0763A',
 };
 const PILAR_LABEL_BY_LAYER: Record<Layer, string> = {
-  1: 'Ori',
-  2: 'Contrato',
-  3: 'Vitalidade',
-  4: 'Céu',
-  5: 'Chave',
+  1: 'Ancestralidade',
+  2: 'Número de Vida',
+  3: 'Corpo e Energia',
+  4: 'Movimento Celeste',
+  5: 'Mutação do Caminho',
 };
 const ELEMENT_LABELS: Record<string, string> = {
   fire: 'Fogo',
@@ -348,33 +348,33 @@ export default function MandalaChart({ data }: Props) {
   // and resolves a short essence from the grimoire for native <title> hover.
   const tooltipByLayer: Record<Layer, string> = {
     1: (() => {
-      // Layer 1 = Odus core → Pilar 4 (odu)
+      // Layer 1 = Ancestralidade
       const sig = resolveSig('odu', data.odus.oduName);
-      return `Camada 1 · Ori (${data.odus.oduName}) — ${sig.essencia}`;
+      return `Camada 1 · Ancestralidade (${data.odus.oduName}) — ${sig.essencia}`;
     })(),
     2: (() => {
-      // Layer 2 = Cabala → Pilar 1 (cabala)
+      // Layer 2 = Número de Vida
       const sig = resolveSig('cabala', data.kabala.lifePath);
-      return `Camada 2 · Contrato de Alma (Vida ${data.kabala.lifePath ?? '?'}) — ${sig.essencia}`;
+      return `Camada 2 · Número de Vida (Vida ${data.kabala.lifePath ?? '?'}) — ${sig.essencia}`;
     })(),
     3: (() => {
-      // Layer 3 = Tantra → Pilar 3 (tantrica)
+      // Layer 3 = Corpo e Energia
       const sig = resolveSig('tantrica', data.tantra.soul);
-      return `Camada 3 · Vitalidade (Alma ${data.tantra.soul ?? '?'}) — ${sig.essencia}`;
+      return `Camada 3 · Corpo e Energia (Alma ${data.tantra.soul ?? '?'}) — ${sig.essencia}`;
     })(),
     4: (() => {
-      // Layer 4 = Astrologia → Pilar 2 (astrologia)
+      // Layer 4 = Movimento Celeste
       const sig = resolveSig('astrologia', data.astrology.ascendant);
       const formattedAsc = formatDegreeToZodiac(data.astrology.ascendant);
-      return `Camada 4 · Céu (Ascendente: ${formattedAsc || '?'}) — ${sig.essencia}`;
+      return `Camada 4 · Movimento Celeste (Ascendente: ${formattedAsc || '?'}) — ${sig.essencia}`;
     })(),
     5: (() => {
-      // Layer 5 = I-Ching → Pilar 5 (iching)
+      // Layer 5 = Mutação do Caminho
       const sig = resolveSig('iching', data.iching.hexagramNumber);
       const hex = data.iching.available
         ? `Hex ${data.iching.hexagramNumber} · ${data.iching.hexagramName}`
-        : 'Hex do dia (requer Pilar 5)';
-      return `Camada 5 · Chave de Origem (${hex}) — ${sig.essencia}`;
+        : 'Hex do dia (requer Mutação do Caminho)';
+      return `Camada 5 · Mutação do Caminho (${hex}) — ${sig.essencia}`;
     })(),
   };
 
@@ -482,7 +482,7 @@ export default function MandalaChart({ data }: Props) {
         }
       `}</style>
 
-      {/* Layer selector — ordered by Pilar number (1..5) */}
+      {/* Layer selector — ordered by layer (1..5) */}
       <div className="flex gap-2 flex-wrap justify-center">
         {([1, 2, 3, 4, 5] as Layer[]).map((layer) => {
           const color = PILAR_COLORS[layer];
@@ -569,7 +569,7 @@ export default function MandalaChart({ data }: Props) {
             );
           })}
 
-          {/* ── Layer 4 — Astrological Ring (rotating) ── */}
+          {/* ── Layer 4 — Movimento Celeste (rotating) ── */}
           <g
             opacity={opacity(4)}
             onClick={() => setActiveLayer(activeLayer === 4 ? null : 4)}
@@ -677,7 +677,7 @@ export default function MandalaChart({ data }: Props) {
               fill="rgba(124,92,255,0.5)"
               letterSpacing="2"
             >
-              ASTROLOGIA
+              MOVIMENTO CELESTE
             </text>
 
             {/* ── D — Particle dots on outer edge ── */}
@@ -694,7 +694,7 @@ export default function MandalaChart({ data }: Props) {
             ))}
           </g>
 
-          {/* ── Layer 3 — Tantric Web ── */}
+          {/* ── Layer 3 — Corpo e Energia ── */}
           <g
             opacity={opacity(3)}
             onClick={() => setActiveLayer(activeLayer === 3 ? null : 3)}
@@ -750,7 +750,7 @@ export default function MandalaChart({ data }: Props) {
             ))}
           </g>
 
-          {/* ── Layer 5 — I-Ching (5º sistema, v0.0.5 T6) ── */}
+          {/* ── Layer 5 — Mutação do Caminho ── */}
           <g
             opacity={opacity(5)}
             onClick={() => setActiveLayer(activeLayer === 5 ? null : 5)}
@@ -802,7 +802,7 @@ export default function MandalaChart({ data }: Props) {
                 fill="rgba(160,118,58,0.7)"
                 letterSpacing="1.5"
               >
-                I-CHING
+                MUTAÇÃO DO CAMINHO
               </text>
             </g>
           </g>
@@ -825,7 +825,7 @@ export default function MandalaChart({ data }: Props) {
             />
           ))}
 
-          {/* ── Layer 2 — Kabbalistic Geometry (P1 Cabala — indigo) ── */}
+          {/* ── Layer 2 — Número de Vida ── */}
           <g
             opacity={opacity(2)}
             onClick={() => setActiveLayer(activeLayer === 2 ? null : 2)}
@@ -885,7 +885,7 @@ export default function MandalaChart({ data }: Props) {
             ))}
           </g>
 
-          {/* ── Layer 1 — Odus Core ── */}
+          {/* ── Layer 1 — Ancestralidade ── */}
           <g
             opacity={opacity(1)}
             onClick={() => setActiveLayer(activeLayer === 1 ? null : 1)}
@@ -955,7 +955,7 @@ export default function MandalaChart({ data }: Props) {
 
       {/* === Info Panels === */}
       {activeLayer === 4 && (
-        <InfoPanel color="#7C5CFF" title="Astrologia — O Céu" subtitle="Anel Cósmico · Camada 4">
+        <InfoPanel color="#7C5CFF" title="Movimento Celeste — O Céu" subtitle="Anel Cósmico · Camada 4">
           <Row label="Ascendente" value={data.astrology.ascendant} />
           <Row label="Meio do Céu" value={data.astrology.midheaven} />
           <Row label="Planeta dominante" value={data.astrology.dominantPlanet} />
@@ -1034,7 +1034,7 @@ export default function MandalaChart({ data }: Props) {
       {activeLayer === 3 && (
         <InfoPanel
           color="#2DD4BF"
-          title="Numerologia Tântrica — Os 11 Corpos"
+          title="Corpo e Energia — Os 11 Corpos"
           subtitle="Teia de Conexão · Camada 3"
         >
           <Row label="Caminho Tântrico" value={data.tantra.tantricPath} />
@@ -1111,7 +1111,7 @@ export default function MandalaChart({ data }: Props) {
       {activeLayer === 2 && (
         <InfoPanel
           color={PILAR_COLORS[2]}
-          title="Numerologia Cabalística — O Contrato de Alma"
+          title="Número de Vida — Geometria Sagrada"
           subtitle="Geometria Interna · Camada 2"
         >
           <Row
@@ -1271,7 +1271,7 @@ export default function MandalaChart({ data }: Props) {
         <InfoPanel
           color="#F0B429"
           title={`Odu: ${data.odus.oduName}`}
-          subtitle="Núcleo — Ori · Camada 1"
+          subtitle="Núcleo — Ancestralidade · Camada 1"
         >
           <Row
             label="Odu de Nascimento"
@@ -1337,7 +1337,7 @@ export default function MandalaChart({ data }: Props) {
       {activeLayer === 5 && (
         <InfoPanel
           color="#A0763A"
-          title="I-Ching — O Hexagrama do Ori"
+          title="Mutação do Caminho — Hexagrama do Ori"
           subtitle="Sabedoria Ancestral Chinesa · Camada 5"
         >
           {data.iching.available ? (

@@ -275,7 +275,7 @@ describe('deriveAkashaType — 9 Akasha Types', () => {
     expect(profile.authority).toBeTruthy();
     expect(profile.dailyDirective).toBeTruthy();
     expect(profile.oneLiner).toBeTruthy();
-    expect(profile.dominantPillar).toBeTruthy();
+    expect(profile.dimensionOrigin).toBeTruthy();
     expect(profile.growthEdge).toBeTruthy();
     expect(profile.shadowTrap).toBeTruthy();
   });

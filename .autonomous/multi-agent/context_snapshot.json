@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T02:23:15.881492+00:00",
-  "version": "0.7.1",
+  "generated_at": "2026-06-16T12:02:24.516632+00:00",
+  "version": "0.8.1",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -16,15 +16,47 @@
       "- [~] **PLN-008[1]** — missing_tests | 5 changed files lack tests",
       "- [~] **PLN-008[2]** — tech_debt | 1 files with XXX",
       "- [~] **PLN-008[3]** — large_file | 28 oversized files",
+      "- [~] **PLN-009[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-009[2]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-009[3]** — large_file | 28 oversized files",
+      "- [~] **PLN-009[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-009[2]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-009[3]** — large_file | 29 oversized files",
+      "- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-000[2]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-000[3]** — large_file | 29 oversized files",
+      "- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-000[2]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-000[3]** — large_file | 29 oversized files",
+      "- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-000[2]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-000[3]** — large_file | 29 oversized files",
+      "- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-000[2]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-000[3]** — large_file | 29 oversized files",
+      "- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-000[2]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-000[3]** — large_file | 29 oversized files",
+      "- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-000[2]** — tech_debt | 1 files with TODO",
+      "- [~] **PLN-000[3]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-000[4]** — large_file | 29 oversized files",
+      "- [~] **PLN-000[1]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-000[2]** — tech_debt | 1 files with TODO",
+      "- [~] **PLN-000[3]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-000[4]** — large_file | 29 oversized files",
+      "- [~] **PLN-000[1]** — missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-000[2]** — tech_debt | 2 files with TODO",
+      "- [~] **PLN-000[3]** — large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 15
+    "pending_count": 47
   },
   "git": {
-    "untracked": 3,
-    "modified": 7,
-    "total": 10,
+    "untracked": 30,
+    "modified": 35,
+    "total": 65,
     "has_changes": true
   },
   "triad": {
@@ -38,7 +70,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1398,
+      "passed": 1479,
       "failed": 232
     }
   },
@@ -50,9 +82,10 @@
     {
       "type": "tech_debt",
       "priority": 5,
-      "description": "1 files with XXX",
+      "description": "2 files with TODO",
       "files": [
-        "packages/core-cabala/src/number-meanings.ts"
+        "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
       ]
     },
     {
@@ -61,30 +94,29 @@
       "description": "28 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-          "lines": 1781
-        },
-        {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
           "lines": 1534
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
           "lines": 1198
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 1141
         }
       ]
     },
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "2 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-        "apps/akasha-portal/src/lib/grimoire/significados-especificos.ts"
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
       ]
     }
   ],
-  "git_head": "c2b80f26b080db7166e7796db5db155bfd0cd469",
+  "git_head": "84da2d07959bb9420146a91bc7052000923b4df5",
   "decision_factors": {
     "has_pending_features": true
   }

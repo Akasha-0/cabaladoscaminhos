@@ -59,7 +59,7 @@ function deriveChainOfReasoning(
 
   if (area === 'vitalidadeEnergia') {
     if (astro?.dominantPlanet) {
-      steps.push(`${astro.dominantPlanet} é seu planeta dominante (Astrologia) → governa como você canaliza energia`);
+      steps.push(`${astro.dominantPlanet} é seu planeta dominante (Akasha) → governa como você canaliza energia`);
     }
     if (astro?.elementalChart) {
       const el = astro.elementalChart;
@@ -69,123 +69,123 @@ function deriveChainOfReasoning(
       }
     }
     if (tantra?.bodies?.pranic) {
-      steps.push(`Corpo Prânico ${tantra.bodies.pranic.number}/11 (Tantra) → nível de energia vital funcional`);
+      steps.push(`Corpo Prânico ${tantra.bodies.pranic.number}/11 (Energia) → nível de energia vital funcional`);
     }
     if (tantra?.bodies?.fisico) {
-      steps.push(`Corpo Físico ${tantra.bodies.fisico.number}/11 (Tantra) → como você habita seu corpo`);
+      steps.push(`Corpo Físico ${tantra.bodies.fisico.number}/11 (Energia) → como você habita seu corpo`);
     }
     if (kab?.lifePath) {
-      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → seu ritmo cíclico de regeneração`);
+      steps.push(`Caminho de Vida ${kab.lifePath} (Akasha) → seu ritmo cíclico de regeneração`);
     }
     if (odu?.elementalForce) {
-      steps.push(`Força Elemental ${odu.elementalForce} (Ifá) → o elemento que seu corpo mais precisa nutrir`);
+      steps.push(`Força Elemental ${odu.elementalForce} (Akasha) → o elemento que seu corpo mais precisa nutrir`);
     }
     if (steps.length > 0) {
-      steps.push(`${steps.length} sinais convergentes dos 5 mapas → Vitalidade é sua área de transformação primária neste ciclo`);
+      steps.push(`${steps.length} sinais convergentes → Vitalidade é sua área de transformação primária neste ciclo`);
     }
   } else if (area === 'conexoesAmor') {
     const venus = astro?.planets?.find(p => p.planet === 'Vênus');
     if (venus) {
-      steps.push(`Vênus em ${venus.sign} (Astrologia) → como você ama e o que você precisa no vínculo`);
+      steps.push(`Vênus em ${venus.sign} (Akasha) → como você ama e o que você precisa no vínculo`);
     }
     if (astro?.planets?.find(p => p.planet === 'Lua')) {
       const moon = astro.planets.find(p => p.planet === 'Lua')!;
-      steps.push(`Lua em ${moon.sign} (Astrologia) → seu mundo emocional e estilo de necessidade de cuidado`);
+      steps.push(`Lua em ${moon.sign} (Akasha) → seu mundo emocional e estilo de necessidade de cuidado`);
     }
     if (tantra?.soul) {
-      steps.push(`Alma Tântrica ${tantra.soul} (Tantra) → seu padrão de vínculo e profundidade emocional`);
+      steps.push(`Alma Tântrica ${tantra.soul} (Energia) → seu padrão de vínculo e profundidade emocional`);
     }
     if (kab?.lifePath) {
-      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → como você coopera ou compete nos relacionamentos`);
+      steps.push(`Caminho de Vida ${kab.lifePath} (Akasha) → como você coopera ou compete nos relacionamentos`);
     }
     if (odu?.oduName) {
-      steps.push(`Odu ${odu.oduName} (Ifá) → sua lição de vida no campo relacional`);
+      steps.push(`Odu ${odu.oduName} (Akasha) → sua lição de vida no campo relacional`);
     }
     if (steps.length > 0) {
-      steps.push(`${steps.length} mapas convergentes → Conexões é onde sua frequência de transformação se manifesta primeiro`);
+      steps.push(`${steps.length} sinais convergentes → Conexões é onde sua frequência de transformação se manifesta primeiro`);
     }
   } else if (area === 'carreiraProsperidade') {
     if (astro?.midheaven) {
-      steps.push(`Meio do Céu em ${astro.midheaven} (Astrologia) → sua vocação pública e caminho de prosperidade`);
+      steps.push(`Meio do Céu em ${astro.midheaven} (Akasha) → sua vocação pública e caminho de prosperidade`);
     }
     if (kab?.expression) {
-      steps.push(`Expressão ${kab.expression} (Cabala) → como você manifesta seus dons no mundo`);
+      steps.push(`Expressão ${kab.expression} (Akasha) → como você manifesta seus dons no mundo`);
     }
     if (kab?.lifePath) {
-      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → seu propósito de contribuição`);
+      steps.push(`Caminho de Vida ${kab.lifePath} (Akasha) → seu propósito de contribuição`);
     }
     if (tantra?.divineGift) {
-      steps.push(`Dom Divino ${tantra.divineGift} (Tantra) → talento inato que se expressa no trabalho`);
+      steps.push(`Dom Divino ${tantra.divineGift} (Energia) → talento inato que se expressa no trabalho`);
     }
     if (odu?.lifeLesson) {
-      steps.push(`Lição de Vida ${odu.lifeLesson} (Ifá) → o que você está aqui para aprender e ensinar`);
+      steps.push(`Lição de Vida ${odu.lifeLesson} (Akasha) → o que você está aqui para aprender e ensinar`);
     }
     if (steps.length > 0) {
-      steps.push(`${steps.length} sinais de vocação convergentes → Carreira é sua área de expressão de propósito`);
+      steps.push(`${steps.length} sinais convergentes → Carreira é sua área de expressão de propósito`);
     }
   } else if (area === 'oriCabecaQuizilas') {
     if (odu?.oduName) {
-      steps.push(`Odu ${odu.oduName} (Ifá) → sua linha de intuição e comando interior`);
+      steps.push(`Odu ${odu.oduName} (Akasha) → sua linha de intuição e comando interior`);
     }
     if (odu?.orixaRegency?.length) {
-      steps.push(`Orixá ${odu.orixaRegency[0]} (Ifá) → a energia que governa sua cabeça e decisões`);
+      steps.push(`Orixá ${odu.orixaRegency[0]} (Akasha) → a energia que governa sua cabeça e decisões`);
     }
     if (tantra?.karma) {
-      steps.push(`Carma Tântrico ${tantra.karma} (Tantra) → padrão que precisa ser consciência antes de ação`);
+      steps.push(`Carma Tântrico ${tantra.karma} (Energia) → padrão que precisa ser consciência antes de ação`);
     }
     if (kab?.lifePath) {
-      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → o tipo de autoridade que você reconhece`);
+      steps.push(`Caminho de Vida ${kab.lifePath} (Akasha) → o tipo de autoridade que você reconhece`);
     }
     if (astro?.planets?.find(p => p.planet === 'Mercúrio')) {
       const merc = astro.planets.find(p => p.planet === 'Mercúrio')!;
-      steps.push(`Mercúrio em ${merc.sign} (Astrologia) → como sua mente processa e comunica`);
+      steps.push(`Mercúrio em ${merc.sign} (Akasha) → como sua mente processa e comunica`);
     }
     if (steps.length > 0) {
-      steps.push(`${steps.length} mapas da mente convergem → Ori é sua área de integração do comando`);
+      steps.push(`${steps.length} sinais da mente convergem → Ori é sua área de integração do comando`);
     }
   } else if (area === 'missaoDestino') {
     if (kab?.mission) {
-      steps.push(`Missão ${kab.mission} (Cabala) → o chamado central da sua jornada`);
+      steps.push(`Missão ${kab.mission} (Akasha) → o chamado central da sua jornada`);
     }
     if (kab?.lifePath) {
-      steps.push(`Caminho de Vida ${kab.lifePath} (Cabala) → o arco de transformação ao longo da vida`);
+      steps.push(`Caminho de Vida ${kab.lifePath} (Akasha) → o arco de transformação ao longo da vida`);
     }
     if (tantra?.destiny) {
-      steps.push(`Destino Tântrico ${tantra.destiny} (Tantra) → o que sua alma veio realizar`);
+      steps.push(`Destino Tântrico ${tantra.destiny} (Energia) → o que sua alma veio realizar`);
     }
     if (astro?.planets?.find(p => p.planet === 'Sol')) {
       const sol = astro.planets.find(p => p.planet === 'Sol')!;
-      steps.push(`Sol em ${sol.sign} (Astrologia) → seu centro de identidade e brilho autêntico`);
+      steps.push(`Sol em ${sol.sign} (Akasha) → seu centro de identidade e brilho autêntico`);
     }
     if (odu?.oduName) {
-      steps.push(`Odu ${odu.oduName} (Ifá) → seu alinhamento com o destino cósmico`);
+      steps.push(`Odu ${odu.oduName} (Akasha) → seu alinhamento com o destino cósmico`);
     }
     if (steps.length > 0) {
-      steps.push(`${steps.length} mapas do destino convergem → Missão é sua área de alinhamento com o propósito maior`);
+      steps.push(`${steps.length} sinais do destino convergem → Missão é sua área de alinhamento com o propósito maior`);
     }
   } else if (area === 'desafiosSombras') {
     if (astro?.planets?.find((p: { planet: string; sign: string }) => p.planet === 'Saturno')) {
       const sat = astro.planets.find((p: { planet: string; sign: string }) => p.planet === 'Saturno')!;
-      steps.push(`Saturno em ${sat.sign} (Astrologia) → sua lição de vida e o que cobra de você`);
+      steps.push(`Saturno em ${sat.sign} (Akasha) → sua lição de vida e o que cobra de você`);
     }
     if (astro?.planets?.find(p => p.planet === 'Plutão')) {
       const pl = astro.planets.find(p => p.planet === 'Plutão')!;
-      steps.push(`Plutão em ${pl.sign} (Astrologia) → seu campo de transformação forçada e regeneração`);
+      steps.push(`Plutão em ${pl.sign} (Akasha) → seu campo de transformação forçada e regeneração`);
     }
     if (kab?.karmicLessons?.length) {
-      steps.push(`Lições Kármicas ${kab.karmicLessons.join(', ')} (Cabala) → padrões a serem integrados`);
+      steps.push(`Lições Kármicas ${kab.karmicLessons.join(', ')} (Akasha) → padrões a serem integrados`);
     }
     if (kab?.challenges?.main) {
-      steps.push(`Desafio Principal ${kab.challenges.main} (Cabala) → a sombra que bloqueia seu potencial`);
+      steps.push(`Desafio Principal ${kab.challenges.main} (Akasha) → a sombra que bloqueia seu potencial`);
     }
     if (tantra?.karma) {
-      steps.push(`Carma Tântrico ${tantra.karma} (Tantra) → padrão tântrico a ser transmutado`);
+      steps.push(`Carma Tântrico ${tantra.karma} (Energia) → padrão tântrico a ser transmutado`);
     }
     if (odu?.lifeLesson) {
-      steps.push(`Lição de Vida ${odu.lifeLesson} (Ifá) → o desafio que o Odu coloca para sua evolução`);
+      steps.push(`Lição de Vida ${odu.lifeLesson} (Akasha) → o desafio que o Odu coloca para sua evolução`);
     }
     if (steps.length > 0) {
-      steps.push(`${steps.length} mapas da sombra convergem → Desafios é onde a transformação precisa acontecer primeiro`);
+      steps.push(`${steps.length} sinais da sombra convergem → Desafios é onde a transformação precisa acontecer primeiro`);
     }
   }
 

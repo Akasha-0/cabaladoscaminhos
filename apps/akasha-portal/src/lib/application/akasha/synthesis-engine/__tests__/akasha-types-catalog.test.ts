@@ -34,7 +34,7 @@ const REQUIRED_BASE_FIELDS: Array<keyof Omit<AkashaTypeProfile, 'authority' | 'a
   'corePattern',
   'strategy',
   'strategyDetail',
-  'dominantPillar',
+  'dimensionOrigin',
   'growthEdge',
   'shadowTrap',
 ];
@@ -95,15 +95,12 @@ describe('akasha-types-catalog — qualidade do conteúdo', () => {
     expect(new Set(names).size).toBe(names.length);
   });
 
-  it('dominantPillar referencia pelo menos uma das 4 fontes (cabala/tantra/odus/astrologia)', () => {
+  it('dimensionOrigin é uma string não-vazia', () => {
     for (const [typeKey, typeData] of Object.entries(AKASHA_TYPES)) {
-      const pillar = typeData.dominantPillar.toLowerCase();
-      const hasKnownPillar =
-        pillar.includes('cabala') ||
-        pillar.includes('tantra') ||
-        pillar.includes('odu') ||
-        pillar.includes('astrologia');
-      expect(hasKnownPillar, `dominantPillar de ${typeKey} deve referenciar uma fonte conhecida`).toBe(true);
+      expect(
+        typeof typeData.dimensionOrigin === 'string' && typeData.dimensionOrigin.length > 0,
+        `dimensionOrigin de ${typeKey} deve ser string não-vazia`,
+      ).toBe(true);
     }
   });
 
@@ -132,7 +129,7 @@ describe('akasha-types-catalog — tipo arquiteto (referência)', () => {
     expect(last).toBe('arquiteto');
     const arquiteto = AKASHA_TYPES.arquiteto;
     expect(arquiteto.typeName).toBe('O Arquiteto');
-    expect(arquiteto.dominantPillar.toLowerCase()).toContain('cabala');
+    expect(typeof arquiteto.dimensionOrigin === 'string' && arquiteto.dimensionOrigin.length > 0).toBe(true);
   });
 });
 

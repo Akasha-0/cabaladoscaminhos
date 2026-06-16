@@ -7,7 +7,7 @@
  *
  * Layout:
  *   ┌─────────────────────────────────┐
- *   │ ☮ Paz · Cabala                  │
+ *   │ ☮ Paz · Ancestralidade                  │
  *   │                                 │
  *   │ Frase direta de COMO o Pilar    │
  *   │ fala dessa área (1-2 frases)    │
@@ -22,12 +22,12 @@ import {
   type TraducaoArea,
 } from '@/lib/grimoire/traducao-areas';
 
-const PILAR_LABEL: Record<TraducaoArea['pilar'], string> = {
-  cabala: 'Cabala',
-  astrologia: 'Astrologia',
-  tantrica: 'Tântrica',
-  odu: 'Odu',
-  iching: 'I Ching',
+const DIMENSAO_NOME: Record<TraducaoArea['pilar'], string> = {
+  cabala: 'Ancestralidade',
+  astrologia: 'Movimento Celeste',
+  tantrica: 'Corpo & Energia',
+  odu: 'Ancestralidade',
+  iching: 'Mutação do Caminho',
 };
 
 export interface TraducaoAreaPanelProps {
@@ -81,7 +81,7 @@ export function TraducaoAreaPanel({
             textTransform: 'uppercase',
           }}
         >
-          · {PILAR_LABEL[pilar]}
+          · {DIMENSAO_NOME[pilar]}
         </span>
       </div>
 

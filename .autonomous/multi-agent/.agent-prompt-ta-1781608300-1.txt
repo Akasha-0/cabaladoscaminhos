@@ -1,0 +1,18 @@
+You are implementing: tech_debt
+
+## Context
+1 files with XXX
+
+## Files to examine (use codegraph first):
+packages/core-cabala/src/number-meanings.ts
+
+## Instructions
+1. cd /home/skynet/cabala-dos-caminhos && codegraph explore "tech_debt"
+2. cd /home/skynet/cabala-dos-caminhos && git status
+3. Implement the fix for: tech_debt
+   Details: 1 files with XXX
+4. cd /home/skynet/cabala-dos-caminhos && pnpm typecheck 2>&1 | head -30
+5. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/agent-results/result-ta-1781608300-1.json:
+{"agent_id": "ta-1781608300-1", "type": "tech_debt", "success": True, "message": "done"}
+
+Working: /home/skynet/cabala-dos-caminhos

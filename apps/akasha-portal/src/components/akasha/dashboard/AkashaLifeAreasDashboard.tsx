@@ -37,6 +37,22 @@ import type {
   SexualidadeUI,
 } from './hooks/useAkashaSynthesis';
 import { AkashaSignificadoCard } from '@/components/akasha/AkashaSignificadoCard';
+// Map legacy tradition names to Akasha-native labels used in chainOfReasoning
+const TRADITION_MAP: Record<string, string> = {
+  'Cabala':        'Número de Vida',
+  'Astrologia':    'Movimento Celeste',
+  'Odus':         'Ancestralidade',
+  'Odu':          'Ancestralidade',
+  'Tantra':       'Corpo e Energia',
+  'I Ching':      'Mutação do Caminho',
+};
+function cleanTraditionName(text: string): string {
+  let result = text;
+  for (const [legacy, akasha] of Object.entries(TRADITION_MAP)) {
+    result = result.replace(new RegExp(`\\b${legacy}\\b`, 'g'), akasha);
+  }
+  return result;
+}
 
 // ─── Área config ─────────────────────────────────────────────────────────────
 
@@ -233,12 +249,6 @@ export function OneProfileCard({ profile }: { profile: AkashaTypeProfileUI }) {
               <p className="text-sm text-white/60 mt-0.5 italic">&ldquo;{profile.corePattern}&rdquo;</p>
             </div>
           </div>
-          <span
-            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold"
-            style={{ backgroundColor: `${accentColor}22`, color: accentColor }}
-          >
-            {profile.dominantPillar.split('—')[0].trim()}
-          </span>
         </div>
 
         {/* One-liner — a frase que o usuário lembra o dia todo */}
@@ -323,7 +333,6 @@ function SexualidadeSection({ sexualidade }: { sexualidade: SexualidadeUI }) {
         className="flex items-center gap-2 w-full"
       >
         <span className="text-xs font-semibold text-[#FF2D55]/90 uppercase tracking-wider">Sexualidade</span>
-        <span className="text-xs text-white/40">{sexualidade.name}</span>
         <span className="text-xs text-white/30 ml-auto">{showDetails ? '▲' : '▼'}</span>
       </button>
       {showDetails && (
@@ -537,12 +546,12 @@ function AreaCard({ areaKey, narrative }: {
                           <span className="text-xs text-[#64D2FF]/60 shrink-0 mt-px">{i + 1}.</span>
                           <div className="flex-1 min-w-0">
                             {factor && (
-                              <span className="text-xs text-white/60">{factor.trim()}</span>
+                              <span className="text-xs text-white/60">{cleanTraditionName(factor.trim())}</span>
                             )}
                             {conclusion && (
                               <div className="flex items-start gap-1 mt-0.5">
                                 <ArrowRight size={10} className="text-[#64D2FF] mt-0.5 shrink-0" />
-                                <span className="text-xs text-[#64D2FF]/90 font-medium leading-relaxed">{conclusion.trim()}</span>
+                                <span className="text-xs text-[#64D2FF]/90 font-medium leading-relaxed">{cleanTraditionName(conclusion.trim())}</span>
                               </div>
                             )}
                           </div>
@@ -558,7 +567,6 @@ function AreaCard({ areaKey, narrative }: {
                   <div className="flex items-center gap-1.5">
                     <Star size={12} className="text-[#AF52DE]" />
                     <span className="text-xs font-semibold text-[#AF52DE]/90 uppercase tracking-wider">Núcleo Akasha</span>
-                    <span className="text-xs text-white/30 ml-auto">{narrative.expandedNarrative.sourceLabel}</span>
                   </div>
                   <p className="text-xs text-white/80 leading-relaxed italic">
                     {narrative.expandedNarrative.integratedNarrative}
