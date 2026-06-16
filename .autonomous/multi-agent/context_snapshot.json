@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T17:40:10.265187+00:00",
-  "version": "0.18.0",
+  "generated_at": "2026-06-16T17:58:42.636151+00:00",
+  "version": "0.20.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -930,15 +930,18 @@
       "- [~] **PLN-015[3]** -- large_file | 27 oversized files",
       "- [~] **PLN-016[1]** -- console_cleanup | 5 files with console statements",
       "- [~] **PLN-016[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-017[1]** -- missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-017[2]** -- console_cleanup | 4 files with console statements",
+      "- [~] **PLN-017[3]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 929
+    "pending_count": 932
   },
   "git": {
-    "untracked": 4,
-    "modified": 12,
-    "total": 16,
+    "untracked": 6,
+    "modified": 14,
+    "total": 20,
     "has_changes": true
   },
   "triad": {
@@ -961,7 +964,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1578,
+      "passed": 1591,
       "failed": 241
     }
   },
@@ -1000,12 +1003,12 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "packages/core-iching/src/practices.ts",
+          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
           "lines": 937
         },
         {
-          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 937
+          "file": "packages/core-iching/src/practices-data.ts",
+          "lines": 928
         },
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
@@ -1016,10 +1019,9 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "2 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
-        "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/queries.ts"
+        "apps/akasha-portal/src/lib/domain/engines/spiritual-engine.ts"
       ]
     },
     {
@@ -1032,17 +1034,13 @@
     {
       "type": "console_cleanup",
       "priority": 5,
-      "description": "5 files with console statements",
+      "description": "1 files with console statements",
       "files": [
-        "apps/akasha-portal/src/lib/application/ai/llm-router.ts",
-        "apps/akasha-portal/src/lib/infrastructure/grimoire-sync.ts",
-        "apps/akasha-portal/src/lib/infrastructure/rate-limit-monitor.ts",
-        "apps/akasha-portal/src/lib/infrastructure/grimoire-search.ts",
-        "apps/akasha-portal/src/lib/infrastructure/geocoding/nominatim.ts"
+        "apps/akasha-portal/prisma/seed.ts"
       ]
     }
   ],
-  "git_head": "174b6563f66703a74b60bbca4a833bb7a7a63b71",
+  "git_head": "0f46c7226a822492174725917608e071fee035b6",
   "decision_factors": {
     "has_pending_features": true
   }

@@ -224,6 +224,34 @@
       "version_bumped": true,
       "iteration_advanced": true,
       "phase_count": 5
+    },
+    {
+      "ts": "2026-06-16T17:41:14.277146+00:00",
+      "iteration": 16,
+      "duration_s": 0.056,
+      "release_quality": 1.0,
+      "impl_quality": 1.0,
+      "qa_quality": 0.0,
+      "loop_quality": 0.7,
+      "commit_messages_clean": true,
+      "changelog_updated": true,
+      "version_bumped": true,
+      "iteration_advanced": true,
+      "phase_count": 5
+    },
+    {
+      "ts": "2026-06-16T17:49:34.274203+00:00",
+      "iteration": 16,
+      "duration_s": 0.0,
+      "release_quality": 1.0,
+      "impl_quality": 1.0,
+      "qa_quality": 0.0,
+      "loop_quality": 0.7,
+      "commit_messages_clean": true,
+      "changelog_updated": true,
+      "version_bumped": true,
+      "iteration_advanced": true,
+      "phase_count": 5
     }
   ],
   "phase_history": [
@@ -7886,6 +7914,64 @@
       "duration_s": 0.322,
       "metrics": {
         "improvements_validated": 2,
+        "quality_score": 0.75,
+        "codegraph_sync_ok": true,
+        "plans_marked": false
+      }
+    },
+    {
+      "ts": "2026-06-16T17:42:18.489738+00:00",
+      "phase": "RESEARCH",
+      "iteration": 17,
+      "duration_s": 63.708,
+      "metrics": {
+        "candidates_found": 5,
+        "candidates_selected": 2,
+        "selection_quality": 0.0,
+        "no_improvement_found": false
+      }
+    },
+    {
+      "ts": "2026-06-16T17:42:18.491872+00:00",
+      "phase": "PLANNING",
+      "iteration": 17,
+      "duration_s": 0.001,
+      "metrics": {
+        "plans_created": 2,
+        "plans_detail_level": 65.0,
+        "plans_updated": true
+      }
+    },
+    {
+      "ts": "2026-06-16T17:58:42.630348+00:00",
+      "phase": "IMPLEMENTATION",
+      "iteration": 17,
+      "duration_s": 983.636,
+      "metrics": {
+        "agents_spawned": 3,
+        "results_collected": 3,
+        "agent_success_rate": 0.667,
+        "files_changed": 0
+      }
+    },
+    {
+      "ts": "2026-06-16T17:59:48.159222+00:00",
+      "phase": "QA",
+      "iteration": 17,
+      "duration_s": 65.526,
+      "metrics": {
+        "typecheck_pass": false,
+        "tests_pass": false,
+        "improvements_accepted": 2
+      }
+    },
+    {
+      "ts": "2026-06-16T17:59:48.992537+00:00",
+      "phase": "VALIDATION",
+      "iteration": 17,
+      "duration_s": 0.329,
+      "metrics": {
+        "improvements_validated": 3,
         "quality_score": 0.75,
         "codegraph_sync_ok": true,
         "plans_marked": false
