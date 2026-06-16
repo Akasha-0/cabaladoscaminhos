@@ -1,16 +1,18 @@
 {
-  "generated_at": "2026-06-16T00:42:08.024617+00:00",
-  "version": "0.1.1",
+  "generated_at": "2026-06-16T01:10:51.566287+00:00",
+  "version": "0.2.1",
   "features": {
     "pending_features": [
+      "- [~] **PLN-002** — missing_tests | 0.2.1",
+      "- [~] **PLN-002** — tech_debt | 0.2.1",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)"
     ],
-    "pending_count": 1
+    "pending_count": 3
   },
   "git": {
-    "untracked": 1,
-    "modified": 11,
-    "total": 12,
+    "untracked": 2,
+    "modified": 7,
+    "total": 9,
     "has_changes": true
   },
   "triad": {
@@ -24,7 +26,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1286,
+      "passed": 1295,
       "failed": 232
     }
   },
@@ -45,23 +47,24 @@
       "files": [
         "packages/core-cabala/src/numerology-kabalah.ts",
         "packages/akasha-core/src/interpretation-engine.ts",
-        "packages/akasha-core/src/correlation-engine.ts",
         "packages/akasha-core/src/akasha-core.ts",
-        "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx"
+        "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx",
+        "apps/akasha-portal/src/app/[locale]/(akasha)/glossario/page.tsx"
       ]
     },
     {
       "type": "tech_debt",
       "priority": 5,
-      "description": "1 files with XXX",
+      "description": "2 files with XXX",
       "files": [
-        "packages/core-cabala/src/number-meanings.ts"
+        "packages/core-cabala/src/number-meanings.ts",
+        "packages/akasha-core/src/correlation-engine.test.ts"
       ]
     },
     {
       "type": "large_file",
       "priority": 4,
-      "description": "27 oversized files",
+      "description": "28 oversized files",
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
@@ -80,15 +83,15 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "4 changed files lack tests",
+      "description": "3 changed files lack tests",
       "files": [
-        "packages/core-iching/src/__tests__/iching.test.ts",
-        "packages/core-iching/src/__tests__/wings.test.ts",
-        "packages/core-iching/src/index.ts",
-        "traducao-areas.ts"
+        "packages/akasha-core/src/correlation-engine.test.ts",
+        "packages/akasha-core/src/correlation-engine.ts",
+        "packages/akasha-core/src/index.ts"
       ]
     }
   ],
+  "git_head": "fe3873760efb974aa630a2a8978f8964ede11304",
   "decision_factors": {
     "has_pending_features": true
   }

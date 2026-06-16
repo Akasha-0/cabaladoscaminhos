@@ -3,6 +3,27 @@
 > Task ledger for this thread. Background autonomous loop (PID 958587) tracks its own progress in `.autonomous/sessions/` and `.autonomous/claude-progress.txt` — out of scope here.
 
 
+
+## cc: AKASHA-loop iter 2 | missing_tests (2026-06-16T00:53:04Z)
+- [~] **PLN-002** — missing_tests | 0.2.1
+  - Improvement: 2 changed files lack tests
+  - Type: missing_tests
+  - Priority: 6
+  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
+  - File: `apps/akasha-portal/__tests__/lib/application/mentor/llm-router.ts.test.ts`
+  - File: `apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts`
+
+
+## cc: AKASHA-loop iter 2 | tech_debt (2026-06-16T01:00:39Z)
+- [~] **PLN-002** — tech_debt | 0.2.1
+  - Improvement: 5 files with TODO
+  - Type: tech_debt
+  - Priority: 5
+  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
+  - File: `packages/core-cabala/src/numerology-kabalah.ts`
+  - File: `packages/akasha-core/src/interpretation-engine.ts`
+  - File: `packages/akasha-core/src/correlation-engine.ts`
+
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

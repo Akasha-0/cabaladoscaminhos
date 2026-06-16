@@ -1,5 +1,5 @@
 {
-  "iteration": 6,
+  "iteration": 7,
   "learnings": [
     {
       "ts": "2026-06-15T23:25:37.276925+00:00",
@@ -42,6 +42,33 @@
       "agent": "qa",
       "phase": "QA",
       "feature_id": "missing_tests",
+      "outcome": "success",
+      "summary": "Triad green: typecheck=True lint=True tests=False",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T00:53:15.363106+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "failure",
+      "summary": "Coding agent failed (exit 1)",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T01:06:59.783248+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "tech_debt",
+      "outcome": "success",
+      "summary": "Fixed tech_debt in 1 file",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T01:10:42.281232+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "tech_debt",
       "outcome": "success",
       "summary": "Triad green: typecheck=True lint=True tests=False",
       "details": {}
@@ -93,6 +120,12 @@
       "ts": "2026-06-16T00:25:21.464280+00:00",
       "improvement": "typecheck_clean",
       "version": "0.1.1",
+      "triad_green": false
+    },
+    {
+      "ts": "2026-06-16T00:43:13.966487+00:00",
+      "improvement": "missing_tests",
+      "version": "0.2.1",
       "triad_green": false
     }
   ],
@@ -722,11 +755,24 @@
       "ts": "2026-06-16T00:33:31.995498+00:00",
       "action": "EXECUTE",
       "improvement": "missing_tests"
+    },
+    {
+      "ts": "2026-06-16T00:44:24.898459+00:00",
+      "action": "EXECUTE",
+      "improvement": "missing_tests"
+    },
+    {
+      "ts": "2026-06-16T01:00:33.778153+00:00",
+      "action": "EXECUTE",
+      "improvement": "tech_debt"
     }
   ],
-  "error_patterns": {},
+  "error_patterns": {
+    "b55c038d": 1
+  },
   "success_patterns": {
     "e796b93c": 2,
-    "b55c038d": 1
+    "b55c038d": 1,
+    "d92babc3": 1
   }
 }

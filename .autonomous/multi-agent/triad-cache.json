@@ -1,0 +1,19 @@
+{
+  "triad": {
+    "typecheck": {
+      "pass": true,
+      "errors": []
+    },
+    "lint": {
+      "pass": true,
+      "warnings": 0
+    },
+    "tests": {
+      "pass": false,
+      "passed": 1295,
+      "failed": 232
+    }
+  },
+  "git_head": "fe3873760efb974aa630a2a8978f8964ede11304",
+  "cached_at": 1781572242.2810214
+}
