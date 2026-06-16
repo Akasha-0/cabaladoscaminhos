@@ -91,7 +91,6 @@ class RateLimitMonitor {
           timestamp: Date.now(),
         });
 
-        console.warn(`[RateLimit Alert] ${identifier} blocked ${recentBlocked} requests in last minute`);
       }
     }
   }
