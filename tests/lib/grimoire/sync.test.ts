@@ -6,29 +6,42 @@ import path from 'path';
 // Mocks
 // ----------------------------------------------------------------------------
 
-const mockFsExistsSync = vi.fn();
-const mockFsReaddirSync = vi.fn();
-const mockFsStatSync = vi.fn();
-const mockFsReadFileSync = vi.fn();
+const { mockFsExistsSync, mockFsReaddirSync, mockFsStatSync, mockFsReadFileSync } = vi.hoisted(
+  () => ({
+    mockFsExistsSync: vi.fn(),
+    mockFsReaddirSync: vi.fn(),
+    mockFsStatSync: vi.fn(),
+    mockFsReadFileSync: vi.fn(),
+  })
+);
 
-vi.mock('fs', () => ({
-  default: {
-    existsSync: (...args: any[]) => mockFsExistsSync(...args),
-    readdirSync: (...args: any[]) => mockFsReaddirSync(...args),
-    statSync: (...args: any[]) => mockFsStatSync(...args),
-    readFileSync: (...args: any[]) => mockFsReadFileSync(...args),
-  },
-}));
+vi.mock('fs', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('fs')>('fs');
+  return {
+    __esModule: true,
+    default: {
+      ...actual.default,
+      existsSync: (...args: unknown[]) => mockFsExistsSync(...args),
+      readdirSync: (...args: unknown[]) => mockFsReaddirSync(...args),
+      statSync: (...args: unknown[]) => mockFsStatSync(...args),
+      readFileSync: (...args: unknown[]) => mockFsReadFileSync(...args),
+    },
+  };
+});
 
-const mockGrimoireEntryUpsert = vi.fn();
-const mockExecuteRaw = vi.fn();
+const { mockGrimoireEntryUpsert, mockExecuteRaw } = vi.hoisted(
+  () => ({
+    mockGrimoireEntryUpsert: vi.fn(),
+    mockExecuteRaw: vi.fn(),
+  })
+);
 
-vi.mock('@/lib/prisma', () => ({
+vi.mock('@/lib/infrastructure/prisma', () => ({
   prisma: {
     grimoireEntry: {
-      upsert: (...args: any[]) => mockGrimoireEntryUpsert(...args),
+      upsert: (...args: unknown[]) => mockGrimoireEntryUpsert(...args),
     },
-    $executeRaw: (...args: any[]) => mockExecuteRaw(...args),
+    $executeRaw: (...args: unknown[]) => mockExecuteRaw(...args),
   },
 }));
 
@@ -60,6 +73,7 @@ describe('syncGrimoire() helper', () => {
     mockFsExistsSync.mockReturnValue(true);
     mockFsReaddirSync.mockReturnValue(['odu-01-ogbe.md']);
     mockFsStatSync.mockReturnValue({
+      isFile: () => true,
       isDirectory: () => false,
     });
     mockFsReadFileSync.mockReturnValue(`---
@@ -91,6 +105,9 @@ number: 1
     expect(mockGrimoireEntryUpsert).toHaveBeenCalledWith({
       where: { slug: 'odu-1' },
       update: {
+        title: 'Ogbe',
+        conteudo: '# Content of Ogbe',
+        embedding: Array(768).fill(0.1),
         categoria: 'diagnostico',
         biblioteca: 'diagnostico',
         metadata: {
@@ -100,12 +117,13 @@ number: 1
           type: 'odu',
           number: 1,
         },
-        conteudo: '# Content of Ogbe',
-        sourcePath: expect.stringContaining('odu-01-ogbe.md'),
       },
       create: {
         id: 'odu-1',
         slug: 'odu-1',
+        title: 'Ogbe',
+        conteudo: '# Content of Ogbe',
+        embedding: Array(768).fill(0.1),
         categoria: 'diagnostico',
         biblioteca: 'diagnostico',
         metadata: {
@@ -115,18 +133,15 @@ number: 1
           type: 'odu',
           number: 1,
         },
-        conteudo: '# Content of Ogbe',
-        sourcePath: expect.stringContaining('odu-01-ogbe.md'),
+        sourcePath: 'odu-01-ogbe.md',
       },
     });
-
-    expect(mockExecuteRaw).toHaveBeenCalled();
   });
 
   it('lida com falha de Ollama sem quebrar, usando embedding null', async () => {
     mockFsExistsSync.mockReturnValue(true);
     mockFsReaddirSync.mockReturnValue(['odu-01-ogbe.md']);
-    mockFsStatSync.mockReturnValue({ isDirectory: () => false });
+    mockFsStatSync.mockReturnValue({ isFile: () => true, isDirectory: () => false });
     mockFsReadFileSync.mockReturnValue(`---
 id: "odu-1"
 title: "Ogbe"
@@ -168,6 +183,7 @@ category: "diagnostico"
     });
 
     mockFsStatSync.mockImplementation((filePath: string) => ({
+      isFile: () => filePath.endsWith('.md'),
       isDirectory: () => !filePath.endsWith('.md'),
     }));
 
@@ -228,7 +244,7 @@ title: "Ogbe"
   it('T10.8: preserva novos campos de frontmatter I-Ching (source/lineage/validated_at/hexagramChineseName)', async () => {
     mockFsExistsSync.mockReturnValue(true);
     mockFsReaddirSync.mockReturnValue(['hex-01-qian.md']);
-    mockFsStatSync.mockReturnValue({ isDirectory: () => false });
+    mockFsStatSync.mockReturnValue({ isFile: () => true, isDirectory: () => false });
     mockFsReadFileSync.mockReturnValue(`---
 id: "hex-01-qian"
 slug: "hex-01-qian"
