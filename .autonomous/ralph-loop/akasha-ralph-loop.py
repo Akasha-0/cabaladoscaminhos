@@ -537,12 +537,63 @@ def do_RELEASE(state: dict) -> dict:
     return state
 
 
-def run_cmd(cmd: list, timeout: int = 60, cwd: str = None) -> __import__("subprocess").CompletedProcess:
-    """Run a command, return CompletedProcess."""
-    return __import__("subprocess").run(
-        cmd, capture_output=True, text=True, timeout=timeout,
-        cwd=cwd or str(ROOT)
+async def _run_cmd_async(cmd: list, timeout: int = 60, cwd: str = None):
+    """Async subprocess with proper timeout — kills process group on timeout."""
+    import asyncio
+    import signal
+    import subprocess
+
+    workdir = cwd or str(ROOT)
+    proc = await asyncio.create_subprocess_exec(
+        *cmd,
+        cwd=workdir,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
     )
+
+    async def _wait_with_timeout():
+        try:
+            await asyncio.wait_for(proc.wait(), timeout=timeout)
+            return True
+        except asyncio.TimeoutError:
+            return False
+
+    timed_out = not await _wait_with_timeout()
+
+    if timed_out:
+        # Kill the whole process group (SIGTERM first, then SIGKILL)
+        try:
+            os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
+            await asyncio.wait_for(proc.wait(), timeout=5)
+        except (ProcessLookupError, asyncio.TimeoutError):
+            try:
+                os.killpg(os.getpgid(proc.pid), signal.SIGKILL)
+                await asyncio.wait_for(proc.wait(), timeout=5)
+            except (ProcessLookupError, asyncio.TimeoutError):
+                pass
+        stdout_data, stderr_data = b"", b""
+        try:
+            stdout_data, stderr_data = await asyncio.wait_for(
+                proc.communicate(), timeout=10
+            )
+        except asyncio.TimeoutError:
+            pass
+    else:
+        stdout_data = await proc.stdout.read()
+        stderr_data = await proc.stderr.read()
+
+    return subprocess.CompletedProcess(
+        args=cmd,
+        returncode=proc.returncode,
+        stdout=stdout_data.decode(errors="replace"),
+        stderr=stderr_data.decode(errors="replace"),
+    )
+
+
+def run_cmd(cmd: list, timeout: int = 60, cwd: str = None):
+    """Run a command synchronously via asyncio event loop."""
+    import asyncio
+    return asyncio.run(_run_cmd_async(cmd, timeout=timeout, cwd=cwd))
 
 def load_pending_features() -> list:
     """Load pending features from feature_list.json."""
