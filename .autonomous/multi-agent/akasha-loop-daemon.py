@@ -189,40 +189,25 @@ def phase_implementation(state, memory):
     save_state(state)
 
 def wait_implementation(state, memory):
-    """Blocking: wait until all agent pids are dead, collect results, advance to QA."""
-    start = time.time()
-    max_wait_per_agent = 600
-    while True:
-        alive = []
-        if AGENT_PIDS_FILE.exists():
-            for line in AGENT_PIDS_FILE.read_text().splitlines():
-                if "|" not in line:
-                    continue
-                parts = line.strip().split("|")
-                if len(parts) != 2:
-                    continue
-                agent_id, pid = parts
-                try:
-                    pid_int = int(pid)
-                    os.kill(pid_int, 0)  # alive?
-                    alive.append((agent_id, pid_int))
-                except (ValueError, ProcessLookupError, PermissionError):
-                    pass  # dead = ignore
-
-        if not alive:
-            break  # all dead
-
-        elapsed = time.time() - start
-        oldest = alive[0]
-        if elapsed > max_wait_per_agent:
-            log(f"  Timeout waiting for agents after {elapsed:.0f}s, killing {oldest[0]}")
+    """Non-blocking: check if agents done. Return True if all dead (advance to QA)."""
+    alive = []
+    if AGENT_PIDS_FILE.exists():
+        for line in AGENT_PIDS_FILE.read_text().splitlines():
+            if "|" not in line:
+                continue
+            parts = line.strip().split("|")
+            if len(parts) != 2:
+                continue
+            agent_id, pid = parts
             try:
-                os.kill(oldest[1], 9)
-            except Exception:
-                pass
-            start = time.time()  # reset for remaining agents
-        else:
-            time.sleep(5)
+                pid_int = int(pid)
+                os.kill(pid_int, 0)  # alive?
+                alive.append((agent_id, pid_int))
+            except (ValueError, ProcessLookupError, PermissionError):
+                pass  # dead
+
+    if alive:
+        return False  # NOT done yet -- caller polls
 
     # All dead: collect results and advance to QA
     log("  All agents finished, collecting results")
@@ -234,7 +219,6 @@ def wait_implementation(state, memory):
             pass
     save_json(RESULTS_FILE, {"results": all_results})
     log(f"  Collected {len(all_results)} results")
-
     state["phase"] = "QA"
     save_state(state)
     return True
@@ -622,7 +606,11 @@ def main():
             elif ph == "IMPLEMENTATION":
                 phase_implementation(st, mem)
             elif ph == "IMPLEMENTATION_WAIT":
-                wait_implementation(st, mem)
+                done = wait_implementation(st, mem)
+                if done:
+                    phase_qa(st)
+                else:
+                    time.sleep(5)
             elif ph == "QA":
                 phase_qa(st)
             elif ph == "VALIDATION":

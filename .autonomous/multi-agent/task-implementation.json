@@ -16,7 +16,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 1334
+          "lines": 1236
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",

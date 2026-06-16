@@ -1,12 +1,12 @@
 {
   "phase": "RELEASE",
-  "iteration": 2,
+  "iteration": 0,
   "current_features": [
     "tech_debt",
     "large_file"
   ],
   "retry_count": 0,
-  "running": false,
-  "daemon_pid": 3830000,
+  "running": true,
+  "daemon_pid": 3913607,
   "phase_iteration": 0
 }

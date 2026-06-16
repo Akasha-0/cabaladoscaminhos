@@ -1,19 +1,19 @@
 {
   "all_ok": true,
-  "summary": "2/2 agents succeeded in 442.8s",
+  "summary": "2/2 agents succeeded in 392.0s",
   "results": [
     {
-      "agent_id": "f6855a6a",
+      "agent_id": "a38b2a09",
       "type": "tech_debt",
       "success": true,
-      "message": "Agent f6855a6a completed tech_debt",
+      "message": "Agent a38b2a09 completed tech_debt",
       "exit_code": 0
     },
     {
-      "agent_id": "dd074abf",
+      "agent_id": "8942b4f1",
       "type": "large_file",
       "success": true,
-      "message": "Agent dd074abf completed large_file",
+      "message": "Agent 8942b4f1 completed large_file",
       "exit_code": 0
     }
   ],
@@ -34,7 +34,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 1394
+          "lines": 1236
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",

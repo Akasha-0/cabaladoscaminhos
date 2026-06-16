@@ -156,6 +156,18 @@
 - [~] **PLN-000[2]** -- large_file | 28 oversized files
 - [~] **PLN-000[1]** -- tech_debt | 2 files with TODO
 - [~] **PLN-000[2]** -- large_file | 28 oversized files
+- [~] **PLN-003[1]** — tech_debt | 2 files with TODO
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts, apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts
+- [~] **PLN-003[2]** — large_file | 28 oversized files
+  - Files: apps/akasha-portal/src/components/akasha/MandalaChart.tsx, packages/akasha-core/src/interpretation-engine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-000[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[2]** -- large_file | 28 oversized files
+- [~] **PLN-000[1]** — tech_debt | 2 files with TODO
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts, apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts
+- [~] **PLN-000[2]** — large_file | 28 oversized files
+  - Files: apps/akasha-portal/src/components/akasha/MandalaChart.tsx, packages/akasha-core/src/interpretation-engine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-000[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-000[2]** -- large_file | 28 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
