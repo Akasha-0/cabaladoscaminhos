@@ -2,12 +2,12 @@
   "results": [
     {
       "success": true,
-      "message": "Removed console statements",
-      "type": "console_cleanup"
+      "message": "Extracted helper from packages/akasha-core/src/interpretation-engine.ts",
+      "type": "large_file"
     },
     {
       "success": true,
-      "message": "Added tests for correlation-maps.ts",
+      "message": "Added tests for 2 files",
       "type": "missing_tests"
     }
   ]

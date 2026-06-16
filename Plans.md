@@ -1021,6 +1021,9 @@
 - [~] **PLN-014[1]** -- missing_tests | 1 changed files lack tests
 - [~] **PLN-014[2]** -- console_cleanup | 5 files with console statements
 - [~] **PLN-014[3]** -- large_file | 27 oversized files
+- [~] **PLN-015[1]** -- missing_tests | 3 changed files lack tests
+- [~] **PLN-015[2]** -- console_cleanup | 5 files with console statements
+- [~] **PLN-015[3]** -- large_file | 27 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
