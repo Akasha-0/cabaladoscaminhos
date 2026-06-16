@@ -171,6 +171,33 @@
       "outcome": "failure",
       "summary": "Agent 55f17824 failed: ",
       "details": {}
+    },
+    {
+      "ts": "2026-06-16T02:20:05.099913+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "success",
+      "summary": "Agent f1cf60e9 completed missing_tests",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T02:20:05.099938+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "tech_debt",
+      "outcome": "success",
+      "summary": "Agent 7ea0176a completed tech_debt",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T02:20:05.099944+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "success",
+      "summary": "Agent c7e3bb81 completed large_file",
+      "details": {}
     }
   ],
   "task_history": [],
@@ -928,8 +955,9 @@
   },
   "success_patterns": {
     "e796b93c": 3,
-    "b55c038d": 2,
-    "d92babc3": 2
+    "b55c038d": 3,
+    "d92babc3": 3,
+    "f2d048e4": 1
   },
   "recent_decisions": [
     {

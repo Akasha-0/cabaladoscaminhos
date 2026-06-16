@@ -1,1 +1,68 @@
-{"success": true, "message": "Fixed tech_debt in 5 files", "type": "tech_debt"}
+{
+  "all_ok": true,
+  "summary": "3/3 agents succeeded in 177.4s",
+  "results": [
+    {
+      "agent_id": "f1cf60e9",
+      "type": "missing_tests",
+      "success": true,
+      "message": "Agent f1cf60e9 completed missing_tests",
+      "exit_code": 0
+    },
+    {
+      "agent_id": "7ea0176a",
+      "type": "tech_debt",
+      "success": true,
+      "message": "Agent 7ea0176a completed tech_debt",
+      "exit_code": 0
+    },
+    {
+      "agent_id": "c7e3bb81",
+      "type": "large_file",
+      "success": true,
+      "message": "Agent c7e3bb81 completed large_file",
+      "exit_code": 0
+    }
+  ],
+  "improvements": [
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "5 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
+        "apps/akasha-portal/src/lib/grimoire/synthesis/narrative-generator.ts",
+        "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts"
+      ]
+    },
+    {
+      "type": "tech_debt",
+      "priority": 5,
+      "description": "1 files with XXX",
+      "files": [
+        "packages/core-cabala/src/number-meanings.ts"
+      ]
+    },
+    {
+      "type": "large_file",
+      "priority": 4,
+      "description": "28 oversized files",
+      "files": [
+        {
+          "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
+          "lines": 1840
+        },
+        {
+          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+          "lines": 1534
+        },
+        {
+          "file": "packages/akasha-core/src/interpretation-engine.ts",
+          "lines": 1198
+        }
+      ]
+    }
+  ]
+}

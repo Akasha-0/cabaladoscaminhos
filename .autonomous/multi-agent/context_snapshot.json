@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16T02:17:07.206269+00:00",
+  "generated_at": "2026-06-16T02:23:15.881492+00:00",
   "version": "0.7.1",
   "features": {
     "pending_features": [
@@ -22,9 +22,9 @@
     "pending_count": 15
   },
   "git": {
-    "untracked": 2,
-    "modified": 13,
-    "total": 15,
+    "untracked": 3,
+    "modified": 7,
+    "total": 10,
     "has_changes": true
   },
   "triad": {
@@ -38,12 +38,12 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1391,
-      "failed": 231
+      "passed": 1398,
+      "failed": 232
     }
   },
   "codegraph": {
-    "pending_files": 1,
+    "pending_files": 0,
     "ok": true
   },
   "improvement_candidates": [
@@ -62,7 +62,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-          "lines": 1840
+          "lines": 1781
         },
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
@@ -77,17 +77,14 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "5 changed files lack tests",
+      "description": "2 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts",
         "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-        "apps/akasha-portal/src/lib/grimoire/synthesis/narrative-generator.ts",
-        "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts"
+        "apps/akasha-portal/src/lib/grimoire/significados-especificos.ts"
       ]
     }
   ],
-  "git_head": "fbc391dff4774e30a5e888fac4a671f472e60c8d",
+  "git_head": "c2b80f26b080db7166e7796db5db155bfd0cd469",
   "decision_factors": {
     "has_pending_features": true
   }

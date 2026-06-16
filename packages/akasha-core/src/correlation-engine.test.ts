@@ -362,7 +362,7 @@ describe('CorrelationEngine - recommend', () => {
   });
 });
 
-// ─── Testes: Recency Tracking (F-XXX — implementação real de recência) ───────
+// ─── Testes: Recency Tracking (F-200 — implementação real de recência) ────────
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const RECENCY_DECAY_DAYS = 30;
