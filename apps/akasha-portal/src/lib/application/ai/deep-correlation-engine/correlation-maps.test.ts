@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import type { SpiritualSource } from '../deep-correlation-engine';
 import {
   LIFE_PATH_ZODIAC_MAP,
   TAROT_ORIXA_MAP,
@@ -115,7 +115,7 @@ describe('correlation-maps', () => {
 
     it('retorna valor padrão 0.3 para combinação fonte/alvo desconhecida', () => {
       const unknownSource = calculateBaseCorrelation('kabbalah', 'unknown_target');
-      const unknownTarget = calculateBaseCorrelation('unknown_source', 'sefirot');
+      const unknownTarget = calculateBaseCorrelation('unknown_source' as SpiritualSource, 'sefirot');
       expect(unknownSource).toBe(0.3);
       expect(unknownTarget).toBe(0.3);
     });

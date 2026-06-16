@@ -1,24 +1,32 @@
 {
   "improvements": [
     {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/lib/application/agents/personal-cycle-day-data.ts"
+      ]
+    },
+    {
       "type": "large_file",
       "priority": 4,
       "description": "27 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
-          "lines": 851
-        },
-        {
           "file": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
-          "lines": 845
+          "lines": 846
         },
         {
           "file": "packages/core-iching/src/practices-data.ts",
           "lines": 841
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
+          "lines": 838
         }
       ]
     }
   ],
-  "iteration": 47
+  "iteration": 48
 }

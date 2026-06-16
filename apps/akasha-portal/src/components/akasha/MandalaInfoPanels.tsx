@@ -1,9 +1,7 @@
 'use client';
 
-import {
-  PILAR_COLORS,
-  TANTRIC_BODY_WISDOM,
-} from '@/components/akasha/mandala-meanings';
+import { PILAR_COLORS } from '@/components/akasha/mandala-geometry';
+import { TANTRIC_BODY_WISDOM } from '@/components/akasha/mandala-meanings';
 import { resolveSig, SignificadoEmbed } from '@/components/akasha/mandala-meanings';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { KOSHAS } from '@/lib/shared/koshas';

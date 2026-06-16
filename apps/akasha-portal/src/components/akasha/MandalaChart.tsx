@@ -30,7 +30,7 @@ import {
 } from '@/components/akasha/mandala-layers';
 import { KabalaInfoPanel, TantricBodyInfoPanel } from '@/components/akasha/MandalaInfoPanels';
 
-interface MandalaData {
+export interface MandalaData {
   incomplete: boolean;
   odus: {
     oduName: string;

@@ -14,9 +14,9 @@ vi.mock('child_process', () => ({
 
 import { diagnostico } from './diagnostico';
 
-const mockedExec = exec as ReturnType<typeof vi.mocked>;
-const mockedExistsSync = existsSync as ReturnType<typeof vi.mocked>;
-const mockedReadFileSync = readFileSync as ReturnType<typeof vi.mocked>;
+const mockedExec = vi.mocked(exec, true);
+const mockedExistsSync = vi.mocked(existsSync, true);
+const mockedReadFileSync = vi.mocked(readFileSync, true);
 
 // Collect stdout during diagnostico runs
 let stdoutChunks: string[] = [];
@@ -49,9 +49,9 @@ afterEach(() => {
 
 function createExecMock(responses: Array<{ pattern: (cmd: string) => boolean; stdout: string; stderr?: string; error?: Error }>) {
   mockedExec.mockImplementation(
-    (cmd: string, _opts: unknown, cb: (err: Error | null, stdout: string, stderr: string) => void) => {
+    (cmd: string, _opts: unknown, cb: ((err: Error | null, stdout: string, stderr: string) => void) | undefined) => {
       const match = responses.find(r => r.pattern(cmd));
-      if (match) {
+      if (match && cb) {
         setImmediate(() => cb(match.error ?? null, match.stdout, match.stderr ?? ''));
       }
       return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } };

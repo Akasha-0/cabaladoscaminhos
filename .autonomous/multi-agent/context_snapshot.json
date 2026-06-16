@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T20:39:54.330657+00:00",
-  "version": "0.50.0",
+  "generated_at": "2026-06-16T20:55:46.137561+00:00",
+  "version": "0.52.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -965,40 +965,33 @@
       "- [~] **PLN-045[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-046[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-047[1]** -- large_file | 27 oversized files",
+      "- [~] **PLN-048[1]** -- missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-048[2]** -- large_file | 27 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 964
+    "pending_count": 966
   },
   "git": {
-    "untracked": 1,
-    "modified": 11,
-    "total": 12,
+    "untracked": 3,
+    "modified": 16,
+    "total": 19,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
       "pass": false,
       "errors": [
-        "apps/akasha-portal/src/components/akasha/MandalaInfoPanels.tsx(4,3): error TS2305: Module '\"@/components/akasha/mandala-meanings\"' has no exported member 'PILAR_COLORS'.",
-        "apps/akasha-portal/src/components/akasha/MandalaInfoPanels.tsx(10,15): error TS2614: Module '\"./MandalaChart\"' has no exported member 'MandalaData'. Did you mean to use 'import MandalaData from \"./MandalaChart\"' instead?",
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(118,54): error TS2345: Argument of type '\"unknown_source\"' is not assignable to parameter of type 'SpiritualSource'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(51,3): error TS18046: 'mockedExec' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(68,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(69,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(89,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(90,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(106,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(107,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'."
+        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(5,9): error TS1005: ',' expected."
       ]
     },
     "lint": {
-      "pass": true,
+      "pass": false,
       "warnings": 0
     },
     "tests": {
       "pass": false,
-      "passed": 1609,
+      "passed": 1641,
       "failed": 241
     }
   },
@@ -1010,18 +1003,9 @@
     {
       "type": "typecheck_errors",
       "priority": 9,
-      "description": "10 TypeScript errors",
+      "description": "1 TypeScript errors",
       "errors": [
-        "apps/akasha-portal/src/components/akasha/MandalaInfoPanels.tsx(4,3): error TS2305: Module '\"@/components/akasha/mandala-meanings\"' has no exported member 'PILAR_COLORS'.",
-        "apps/akasha-portal/src/components/akasha/MandalaInfoPanels.tsx(10,15): error TS2614: Module '\"./MandalaChart\"' has no exported member 'MandalaData'. Did you mean to use 'import MandalaData from \"./MandalaChart\"' instead?",
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(118,54): error TS2345: Argument of type '\"unknown_source\"' is not assignable to parameter of type 'SpiritualSource'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(51,3): error TS18046: 'mockedExec' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(68,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(69,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(89,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(90,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(106,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
-        "packages/akasha-cli/src/commands/diagnostico.test.ts(107,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'."
+        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(5,9): error TS1005: ',' expected."
       ]
     },
     {
@@ -1039,26 +1023,25 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
-          "lines": 845
-        },
-        {
           "file": "packages/core-iching/src/practices-data.ts",
           "lines": 841
         },
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
           "lines": 838
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts",
+          "lines": 785
         }
       ]
     },
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "2 changed files lack tests",
+      "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/application/akasha/narrative-generator.ts",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/odu-narrative-engine.ts"
+        "apps/akasha-portal/src/lib/application/agents/personal-cycle-day-data.test.ts"
       ]
     },
     {
@@ -1069,7 +1052,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "e188758bb68296785ebf35a589f313b9515f7634",
+  "git_head": "5a7152c8273cf81af6e33f5d9568f9c89ff0fd6b",
   "decision_factors": {
     "has_pending_features": true
   }

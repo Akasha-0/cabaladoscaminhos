@@ -1,0 +1,1 @@
+{"success": false, "message": "Skipped: apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts is modified (not clean) — rule #1 forbids extraction when target file has local changes", "type": "large_file"}

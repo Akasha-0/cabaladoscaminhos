@@ -102,8 +102,16 @@
     }
   ],
   "last_action": null,
-  "last_updated": "2026-06-15T21:26:44.144806+00:00",
-  "errors": [],
+  "last_updated": "2026-06-16T20:54:13.009014+00:00",
+  "errors": [
+    {
+      "iteration": 0,
+      "phase": "QA",
+      "typecheck": false,
+      "tests": false,
+      "lint": true
+    }
+  ],
   "tokens_saved_headroom": 0,
   "codegraph_queries": 1,
   "start_time": "2026-06-15T21:26:38.262200+00:00"
