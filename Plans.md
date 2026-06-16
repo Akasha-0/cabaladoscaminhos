@@ -998,6 +998,15 @@
 - [~] **PLN-008[3]** -- tech_debt | 2 files with TODO
 - [~] **PLN-008[4]** -- console_cleanup | 5 files with console statements
 - [~] **PLN-008[5]** -- large_file | 28 oversized files
+- [~] **PLN-009[1]** — missing_tradition | ODUS missing from traducao-areas
+- [~] **PLN-009[2]** — missing_tests | 2 changed files lack tests
+  - Files: packages/core-iching/src/practices-lookup.ts, packages/core-iching/src/practices.ts
+- [~] **PLN-009[3]** — tech_debt | 2 files with TODO
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts, apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts
+- [~] **PLN-009[4]** — console_cleanup | 5 files with console statements
+  - Files: packages/akasha-cli/src/cli.ts, packages/akasha-cli/src/commands/setup.ts, packages/akasha-cli/src/commands/status.ts
+- [~] **PLN-009[5]** — large_file | 28 oversized files
+  - Files: packages/core-iching/src/practices.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts, packages/akasha-core/src/interpretation-engine.ts
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

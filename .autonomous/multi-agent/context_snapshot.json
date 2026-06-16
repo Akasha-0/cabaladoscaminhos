@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T15:40:05.818708+00:00",
-  "version": "0.9.0",
+  "generated_at": "2026-06-16T16:01:48.662026+00:00",
+  "version": "0.10.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -906,15 +906,20 @@
       "- [~] **PLN-008[3]** -- tech_debt | 2 files with TODO",
       "- [~] **PLN-008[4]** -- console_cleanup | 5 files with console statements",
       "- [~] **PLN-008[5]** -- large_file | 28 oversized files",
+      "- [~] **PLN-009[1]** — missing_tradition | ODUS missing from traducao-areas",
+      "- [~] **PLN-009[2]** — missing_tests | 2 changed files lack tests",
+      "- [~] **PLN-009[3]** — tech_debt | 2 files with TODO",
+      "- [~] **PLN-009[4]** — console_cleanup | 5 files with console statements",
+      "- [~] **PLN-009[5]** — large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 905
+    "pending_count": 910
   },
   "git": {
     "untracked": 10,
-    "modified": 34,
-    "total": 44,
+    "modified": 19,
+    "total": 29,
     "has_changes": true
   },
   "triad": {
@@ -933,7 +938,7 @@
     }
   },
   "codegraph": {
-    "pending_files": 1,
+    "pending_files": 0,
     "ok": true
   },
   "improvement_candidates": [
@@ -949,12 +954,8 @@
     {
       "type": "large_file",
       "priority": 4,
-      "description": "28 oversized files",
+      "description": "27 oversized files",
       "files": [
-        {
-          "file": "packages/core-iching/src/practices.ts",
-          "lines": 1016
-        },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
           "lines": 991
@@ -962,6 +963,10 @@
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
           "lines": 973
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine.ts",
+          "lines": 957
         }
       ]
     },
@@ -994,7 +999,7 @@
       ]
     }
   ],
-  "git_head": "0fbafd34f10b4117f0e3f5cd358ea597844c3a19",
+  "git_head": "da336fcbde19b4dc24a518006280df14bfa66f0a",
   "decision_factors": {
     "has_pending_features": true
   }

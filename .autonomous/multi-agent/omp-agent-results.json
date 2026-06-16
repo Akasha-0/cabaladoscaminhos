@@ -2,45 +2,65 @@
   "results": [
     {
       "success": true,
-      "message": "Audited 2 target files (significados-curados-helpers.test.ts 176L + significados-curados.test.ts 296L); 0 actionable tech_debt markers found. The only 'TODO' substring matches are inside the const name 'TODOS_PILARES' (legitimate variable meaning 'all pillars' in PT-BR). No commits required — files already clean per prior cycle audits (N+30 refactor work also touched this code). Single weak 'placeholder' match is a test assertion comment ('// Não pode ser placeholder genérico') describing the invariant, not a TODO marker.",
+      "message": "Fixed 0 tech_debt comments in 0 files",
       "type": "tech_debt",
-      "files_audited": [
-        "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
-        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
-      ],
-      "findings": {
-        "tech_debt_count": 0,
-        "todo_count": 0,
-        "fixme_count": 0,
-        "xxx_count": 0,
-        "hack_count": 0
-      },
-      "notes": "ast_grep not installed in this env (used grep fallback). Both target files are post-F-219/F-220 refactor test code and have no actionable tech debt. 'TODOS_PILARES' const is a legitimate variable name, not a TODO comment."
+      "details": {
+        "scanned": [
+          "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
+          "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
+        ],
+        "findings": 0,
+        "note": "No real tech_debt/TODO/FIXME/XXX/HACK comments present. All 'TODO' matches in grep were the constant TODOS_PILARES (PT-BR for 'all pillars'), not technical debt markers. Files are clean — consistent with prior audits at 13:19 and 13:38 today."
+      }
     },
     {
       "success": false,
-      "message": "Skipped: target files do not exist (reverted in commit 3046a6ba)",
-      "type": "missing_tests",
-      "agent": "ta-1781623805-1",
-      "target_files": [
-        "packages/core-iching/src/practices-cromoterapia.ts",
-        "packages/core-iching/src/practices-lookup.test.ts"
-      ],
-      "skip_reason": "Both files were deleted by commit 3046a6ba 'fix: revert broken refactor of core-iching/practices.ts' on 2026-06-16 12:21. The large_file agent (ta-1781622042-4, iter 7) extracted lookup helpers and Cromoterapia practices to separate files but introduced a circular import (practices ↔ practices-lookup), 27 TypeScript redeclaration errors, and missing data wiring for 5 Cromoterapia practices. The revert restored the monolithic practices.ts. The remaining 993-line practices.ts already has comprehensive test coverage in packages/core-iching/src/__tests__/practices.test.ts (49 practices, all 6 main exports: getPractice, getPracticesByElement, getPracticesByTradition, getPracticesByCategory, getPracticesByLifeArea, getAllPractices — all green).",
-      "task_queue_status": "Stale: task-implementation.json#improvements[1].files lists 4 paths of which 3 no longer exist; the surviving practices.ts is already covered. The missing_tests queue entry for core-iching can be closed.",
-      "files_audited": [
-        "packages/core-iching/src/practices-cromoterapia.ts (NOT FOUND)",
-        "packages/core-iching/src/practices-lookup.test.ts (NOT FOUND)",
-        "packages/core-iching/src/practices-lookup.ts (NOT FOUND — also in revert)",
-        "packages/core-iching/src/practices.ts (EXISTS, 993L, already tested)"
-      ],
-      "fixes_applied": 0,
-      "result_file": ".autonomous/multi-agent/agent-results/result-ta-1781623805-1.json"
+      "message": "ODU section already exists at line 123 of traducao-areas.ts as ODU_DETALHADO: Record<Area, {requer_terreiro, explicacao, convergencia, tensao, evitar, pratica}>. Task template expected a name/keywords/contextPatterns (RegExp[]) section that does not exist in this file — ASTROLOGIA_DETALHADO uses Record<Area, {explicacao, convergencia, tensao, evitar, pratica}>, not a tradition-detection array. Grep across the entire repo confirms 0 occurrences of 'contextPatterns' or 'name:.*keywords' in any .ts file. No commit made: adding a duplicate ODU_DETALHADO or inventing a non-existent pattern would be incorrect. Recommend updating the akasha-evolution-loop.py template to match the actual structure, or sourcing missing_tradition data from a different file.",
+      "type": "missing_tradition",
+      "findings": {
+        "odu_detalhado_present": true,
+        "odu_detalhado_line": 123,
+        "odu_detalhado_fields": [
+          "requer_terreiro",
+          "explicacao",
+          "convergencia",
+          "tensao",
+          "evitar",
+          "pratica"
+        ],
+        "astrologia_detalhado_fields": [
+          "explicacao",
+          "convergencia",
+          "tensao",
+          "evitar",
+          "pratica"
+        ],
+        "requested_pattern_found_anywhere": false,
+        "all_exported_constants": [
+          "ASTROLOGIA_DETALHADO",
+          "ODU_DETALHADO",
+          "CABALA_DETALHADO",
+          "TANTRA_DETALHADO",
+          "ICHING_DETALHADO"
+        ]
+      }
     },
     {
-      "success": true,
-      "message": "Removed console statements",
-      "type": "console_cleanup"
+      "success": false,
+      "message": "Skipped: both target files already have test coverage or don't exist. packages/core-iching/src/practices-lookup.ts does not exist (reverted in commit da336fcb 'fix: revert broken refactor of core-iching/practices.ts'). packages/core-iching/src/practices.ts already has comprehensive coverage in __tests__/practices.test.ts (129 lines, 13 tests across getAllPractices, getPractice, getPracticesByElement, getPracticesByTradition, getPracticesByCategory, getPracticesByLifeArea + data integrity for isSafe/unique IDs/valid hexagrams). No new test file created to avoid duplication.",
+      "type": "missing_tests",
+      "files_checked": [
+        {
+          "path": "packages/core-iching/src/practices-lookup.ts",
+          "status": "skipped_does_not_exist",
+          "reason": "File absent — refactor that created it was reverted in commit da336fcb"
+        },
+        {
+          "path": "packages/core-iching/src/practices.ts",
+          "status": "skipped_already_covered",
+          "reason": "Existing test file __tests__/practices.test.ts (129 lines) already covers all 6 exported functions and data integrity invariants"
+        }
+      ]
     }
   ]
 }

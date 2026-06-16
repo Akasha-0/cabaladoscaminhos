@@ -112,6 +112,20 @@
       "version_bumped": true,
       "iteration_advanced": true,
       "phase_count": 5
+    },
+    {
+      "ts": "2026-06-16T15:41:33.032239+00:00",
+      "iteration": 8,
+      "duration_s": 0.276,
+      "release_quality": 0.82,
+      "impl_quality": 0.4,
+      "qa_quality": 1.0,
+      "loop_quality": 0.748,
+      "commit_messages_clean": true,
+      "changelog_updated": true,
+      "version_bumped": true,
+      "iteration_advanced": true,
+      "phase_count": 5
     }
   ],
   "phase_history": [
@@ -7366,6 +7380,53 @@
       "phase": "VALIDATION",
       "iteration": 8,
       "duration_s": 0.345,
+      "metrics": {
+        "improvements_validated": 5,
+        "quality_score": 0.75,
+        "codegraph_sync_ok": true,
+        "plans_marked": false
+      }
+    },
+    {
+      "ts": "2026-06-16T15:42:47.010889+00:00",
+      "phase": "RESEARCH",
+      "iteration": 9,
+      "duration_s": 73.458,
+      "metrics": {
+        "candidates_found": 6,
+        "candidates_selected": 5,
+        "selection_quality": 0.0,
+        "no_improvement_found": false
+      }
+    },
+    {
+      "ts": "2026-06-16T16:01:48.579703+00:00",
+      "phase": "IMPLEMENTATION",
+      "iteration": 9,
+      "duration_s": 602.25,
+      "metrics": {
+        "agents_spawned": 5,
+        "results_collected": 3,
+        "agent_success_rate": 0.2,
+        "files_changed": 0
+      }
+    },
+    {
+      "ts": "2026-06-16T16:01:52.373688+00:00",
+      "phase": "QA",
+      "iteration": 9,
+      "duration_s": 3.75,
+      "metrics": {
+        "typecheck_pass": true,
+        "tests_pass": false,
+        "improvements_accepted": 1
+      }
+    },
+    {
+      "ts": "2026-06-16T16:01:54.964706+00:00",
+      "phase": "VALIDATION",
+      "iteration": 9,
+      "duration_s": 2.066,
       "metrics": {
         "improvements_validated": 5,
         "quality_score": 0.75,

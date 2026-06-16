@@ -10,10 +10,8 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "4 changed files lack tests",
+      "description": "2 changed files lack tests",
       "files": [
-        "packages/core-iching/src/practices-cromoterapia.ts",
-        "packages/core-iching/src/practices-lookup.test.ts",
         "packages/core-iching/src/practices-lookup.ts",
         "packages/core-iching/src/practices.ts"
       ]
@@ -34,9 +32,9 @@
       "files": [
         "packages/akasha-cli/src/cli.ts",
         "packages/akasha-cli/src/commands/setup.ts",
-        "packages/akasha-cli/src/commands/chat.ts",
         "packages/akasha-cli/src/commands/status.ts",
-        "packages/akasha-cli/src/commands/diagnostico.ts"
+        "packages/akasha-cli/src/commands/diagnostico.ts",
+        "apps/akasha-portal/scripts/grimoire-audit.ts"
       ]
     },
     {
@@ -60,5 +58,5 @@
     }
   ],
   "agent_count": 5,
-  "iteration": 8
+  "iteration": 9
 }
