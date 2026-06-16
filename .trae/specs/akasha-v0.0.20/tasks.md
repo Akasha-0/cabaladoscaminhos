@@ -66,9 +66,11 @@
 
 ### 2.4 Tests
 - [ ] `tests/lib/application/push/get-users-in-local-morning.test.ts`:
-  - SP user em SP 7am: included
-  - NY user em SP 7am: excluded (NY é 3h atrás = 4am)
-  - Tokyo user em SP 7am: included (Tokyo é +12h = 19pm, próximo push será 7am Tokyo)
+  - SP user em SP 7am: included (timezone BRT, local 7am)
+  - NY user em SP 7am: excluded (NY 3h atrás = 4am local)
+  - Tokyo user em SP 7am: excluded (Tokyo 12h ahead = 19pm local)
+  - **Helper contract**: retorna users cujo LOCAL TIME é a hora fornecida
+  - **Cron runs hourly** (every 1h); in 12h, all 3 users will be covered
 
 ### 2.5 Verification
 - [ ] Typecheck + tests verdes
