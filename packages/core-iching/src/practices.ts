@@ -7,94 +7,11 @@
  * o alcance terapêutico e espiritual do sistema oracular.
  */
 
-/** Banco de práticas integrativas. */
-const PRACTICES: IntegrativePractice[] = [
-  // ── Ifá/Candomblé (5) ─────────────────────────────────────────────────────
-
-  {
-    id: 'ewe-oxum',
-    name: 'Ewé de Oxum',
-    tradition: 'Candomblé',
-    category: 'banho_de_ervas',
-    associations: {
-      element: 'agua',
-      orixa: 'Oxum',
-      color: 'dourado',
-      planet: 'Vênus',
-      chakra: 4,
-      hexagrams: [5, 60],
-    },
-    lifeAreas: ['amor', 'prosperidade', 'fertilidade', 'autoestima'],
-    howTo: 'Ferva folhas de oxum fresco em 1 litro de água por 15 minutos. Coe e reserve a água. Tome um banho de imersão por 20 minutos ao amanhecer.',
-    frequency: 'Uma vez por semana, preferencialmente sextas-feiras.',
-    isSafe: true,
-  },
-  {
-    id: 'ewe-ogum',
-    name: 'Ewé de Ogum',
-    tradition: 'Candomblé',
-    category: 'protecao',
-    associations: {
-      element: 'madeira',
-      orixa: 'Ogum',
-      color: 'verde',
-      planet: 'Marte',
-      chakra: 1,
-      hexagrams: [1, 34],
-    },
-    lifeAreas: ['protecao', 'forca', 'coragem', 'determinacao'],
-    howTo: 'Ferva folhas de ogum em 1 litro de água por 15 minutos. Coe e reserve. Tome um banho de aspersão ao amanhecer, banhando-se da cabeça para baixo.',
-    frequency: 'Toda terça-feira ou em momentos de necessidade de proteção.',
-    isSafe: true,
-  },
-  {
-    id: 'canto-oxum',
-    name: 'Canto de Oxum',
-    tradition: 'Ifá',
-    category: 'ritual_sagrado',
-    associations: {
-      element: 'agua',
-      orixa: 'Oxum',
-      color: 'dourado',
-      planet: 'Vênus',
-      chakra: 4,
-      hexagrams: [5, 60],
-    },
-    lifeAreas: ['amor', 'fertilidade', 'saude', 'prosperidade'],
-    howTo: 'Cante o padê de Oxum em ambiente sagrado, oferecendo água doce e flores amarelas. Ritual deve ser realizado com reverência e devoção.',
-    frequency: 'Sextas-feiras e durante o mês de outubro.',
-    isSafe: true,
-  },
-  {
-    id: 'ervas-oxum',
-    name: 'Ervas de Oxum',
-    tradition: 'Candomblé',
-    category: 'banho_de_ervas',
-    associations: {
-      element: 'agua',
-      orixa: 'Oxum',
-      color: 'dourado',
-      planet: 'Vênus',
-      chakra: 4,
-      hexagrams: [5, 60],
-    },
-    lifeAreas: ['amor', 'saude', 'beleza', 'autoestima'],
-    howTo: 'Prepare um banho com folhas de oxum, cidreira e boldo. Ferva por 15 minutos, coe e tome um banho de imersão por 20 minutos.',
-    frequency: 'Uma vez por semana ou conforme necessidade.',
-    isSafe: true,
-  },
-  {
-    id: 'lamber OK - we trimmed it. But the original PRACTICES array has 935 lines! I can't realistically edit this with such a large body. The original PRACTICES array has 935 lines. I need a different approach.
-
-Let me think about the best way to do this. The PRACTICES array spans from line 20 to line 935. I need to move it before lines 11-18. But this is a massive swap - 916 lines.
-
-The edit tool is the right approach for surgical changes, but for a 900+ line move, I should use Python to handle the file manipulation directly.
-</think>
-
-The `PRACTICES` array is 900+ lines. A Python script is the right approach here — I'll read the file, reorder the sections, and write it back.
-<minimax:tool_call>
-<invoke name="bash">
-<parameter name="_i">Analyze practices.ts structure
+import type {
+  IntegrativePractice,
+  Element,
+  PracticeCategory,
+} from './types';
 
 /** Banco de práticas integrativas. */
 const PRACTICES: IntegrativePractice[] = [
@@ -1013,4 +930,64 @@ const PRACTICES: IntegrativePractice[] = [
   },
 ];
 
+/** Mapa de práticas por ID para busca rápida. */
+const PRACTICES_BY_ID = Object.fromEntries(PRACTICES.map((p) => [p.id, p]));
+
+/** Agrupa práticas por elemento. */
+const PRACTICES_BY_ELEMENT: Partial<Record<Element, IntegrativePractice[]>> = {};
+for (const p of PRACTICES) {
+  const el = p.associations.element;
+  if (el) {
+    if (!PRACTICES_BY_ELEMENT[el]) PRACTICES_BY_ELEMENT[el] = [];
+    PRACTICES_BY_ELEMENT[el]!.push(p);
+  }
+}
+
+/** Agrupa práticas por tradição. */
+const PRACTICES_BY_TRADITION: Record<string, IntegrativePractice[]> = {};
+for (const p of PRACTICES) {
+  if (!PRACTICES_BY_TRADITION[p.tradition]) PRACTICES_BY_TRADITION[p.tradition] = [];
+  PRACTICES_BY_TRADITION[p.tradition].push(p);
+}
+
+/** Agrupa práticas por categoria. */
+const PRACTICES_BY_CATEGORY: Partial<Record<PracticeCategory, IntegrativePractice[]>> = {};
+for (const p of PRACTICES) {
+  if (!PRACTICES_BY_CATEGORY[p.category]) PRACTICES_BY_CATEGORY[p.category] = [];
+  PRACTICES_BY_CATEGORY[p.category]!.push(p);
+}
+
 export { PRACTICES };
+
+/** Retorna uma prática pelo ID. */
+export function getPractice(id: string): IntegrativePractice | undefined {
+  return PRACTICES_BY_ID[id];
+}
+
+/** Retorna todas as práticas de um elemento. */
+export function getPracticesByElement(element: Element): IntegrativePractice[] {
+  return PRACTICES_BY_ELEMENT[element] ?? [];
+}
+
+/** Retorna todas as práticas de uma tradição. */
+export function getPracticesByTradition(tradition: string): IntegrativePractice[] {
+  return PRACTICES_BY_TRADITION[tradition] ?? [];
+}
+
+/** Retorna todas as práticas de uma categoria. */
+export function getPracticesByCategory(category: PracticeCategory): IntegrativePractice[] {
+  return PRACTICES_BY_CATEGORY[category] ?? [];
+}
+
+/** Retorna todas as práticas que afetam uma área da vida. */
+export function getPracticesByLifeArea(lifeArea: string): IntegrativePractice[] {
+  const normalized = lifeArea.toLowerCase().trim();
+  return PRACTICES.filter((p) =>
+    p.lifeAreas.some((area) => area.toLowerCase().includes(normalized))
+  );
+}
+
+/** Retorna todas as 20 práticas integrativas. */
+export function getAllPractices(): IntegrativePractice[] {
+  return [...PRACTICES];
+}
