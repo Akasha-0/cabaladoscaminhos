@@ -26,7 +26,6 @@ function getCorsOrigin(requestOrigin: string | null): string | null {
     return null;
   }
   // Production without ALLOWED_ORIGINS: reject all cross-origin requests
-  console.warn('[middleware] ALLOWED_ORIGINS não definido — CORS desabilitado em produção');
   return null;
 }
 function buildCorsHeaders(origin: string | null): Record<string, string> {
