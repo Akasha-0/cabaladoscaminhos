@@ -4,12 +4,8 @@ import { useState } from 'react';
 import { MandalaAtmosphere } from '@/components/akasha/MandalaAtmosphere';
 import { Divider, InfoPanel, Insight, Row } from '@/components/akasha/MandalaChartInfoPanel';
 import { IchingInfoPanel } from '@/components/akasha/IchingInfoPanel';
-import {
-  ELEMENT_COLORS,
-  ELEMENT_GUIDANCE,
-  ELEMENT_LABELS,
-  dominantElement,
-} from '@/components/akasha/mandala-elements';
+import { AstrologyInfoPanel, type AstrologyAspect } from '@/components/akasha/AstrologyInfoPanel';
+import { ELEMENT_GUIDANCE, dominantElement } from '@/components/akasha/mandala-elements';
 import {
   LIFE_PATH_MEANINGS,
   resolveSig,
@@ -20,7 +16,6 @@ import { useCockpitStore } from '@/stores/cockpit-store';
 import { formatDegreeToZodiac, GLYPHS_BY_PLANET, PLANET_COLORS, longitudeToSvgAngle } from '@/lib/shared/zodiac';
 import { KOSHAS } from '@/lib/shared/koshas';
 import {
-  ASPECT_SYMBOLS,
   describeArc,
   PARTICLES,
   PILAR_COLORS,
@@ -39,14 +34,6 @@ import {
   buildTooltipByLayer,
   buildTrianglePath,
 } from '@/components/akasha/mandala-layers';
-
-interface AstrologyAspect {
-  planet1: string;
-  planet2: string;
-  aspect: string;
-  orb: number;
-  interpretation: string;
-}
 
 interface MandalaData {
   incomplete: boolean;
@@ -696,80 +683,7 @@ export default function MandalaChart({ data }: Props) {
 
       {/* === Info Panels === */}
       {activeLayer === 4 && (
-        <InfoPanel color="#7C5CFF" title="Movimento Celeste — O Céu" subtitle="Anel Cósmico · Camada 4">
-          <Row label="Ascendente" value={data.astrology.ascendant} />
-          <Row label="Meio do Céu" value={data.astrology.midheaven} />
-          <Row label="Planeta dominante" value={data.astrology.dominantPlanet} />
-          {data.astrology.planets.slice(0, 5).map((p) => (
-            <Row key={p.name} label={p.name} value={`${p.sign} — casa ${p.house}`} />
-          ))}
-          <Divider />
-          <p
-            style={{
-              fontSize: '0.75rem',
-              color: '#7C5CFF',
-              fontWeight: 600,
-              marginBottom: '0.35rem',
-            }}
-          >
-            Aspectos Principais
-          </p>
-          {data.astrology.aspects.slice(0, 5).length === 0 ? (
-            <Insight color="#7C5CFF">Sem aspectos principais calculados.</Insight>
-          ) : (
-            data.astrology.aspects.slice(0, 5).map((a, i) => {
-              const symbol = ASPECT_SYMBOLS[a.aspect.toLowerCase()] ?? a.aspect;
-              return (
-                <div key={i} style={{ marginBottom: '0.35rem' }}>
-                  <p
-                    style={{
-                      fontSize: '0.8125rem',
-                      color: '#F4F5FF',
-                      lineHeight: 1.5,
-                      margin: 0,
-                    }}
-                  >
-                    {a.planet1} {symbol} {a.planet2} —{' '}
-                    <span style={{ color: '#A7AECF' }}>{a.interpretation}</span>
-                  </p>
-                </div>
-              );
-            })
-          )}
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {(Object.entries(data.astrology.elementalBalance) as [string, number][]).map(
-              ([el, val]) => (
-                <span
-                  key={el}
-                  style={{
-                    padding: '3px 10px',
-                    borderRadius: '100px',
-                    fontSize: '0.6875rem',
-                    background: `${ELEMENT_COLORS[el]}18`,
-                    border: `1px solid ${ELEMENT_COLORS[el]}44`,
-                    color: ELEMENT_COLORS[el],
-                  }}
-                >
-                  {ELEMENT_LABELS[el]} {val}%
-                </span>
-              )
-            )}
-          </div>
-          {elemGuidance && (
-            <>
-              <Divider />
-              <Insight color="#7C5CFF">{elemGuidance.balance}</Insight>
-              <Insight color="#2DD4BF">{elemGuidance.ritual}</Insight>
-            </>
-          )}
-          <SignificadoEmbed
-            significado={resolveSig(
-              'astrologia',
-              data.astrology.ascendant ?? data.astrology.dominantPlanet
-            )}
-            color="#7C5CFF"
-          />
-        </InfoPanel>
+        <AstrologyInfoPanel astrology={data.astrology} elemGuidance={elemGuidance} />
       )}
 
       {activeLayer === 3 && (
