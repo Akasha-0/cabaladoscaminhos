@@ -1,8 +1,8 @@
 {
   "phase": "RELEASE",
-  "iteration": 5,
+  "iteration": 6,
   "phase_iteration": 0,
-  "current_feature": "typecheck_clean",
+  "current_feature": "tech_debt",
   "retry_count": 0,
   "running": true,
   "improvements_made": []

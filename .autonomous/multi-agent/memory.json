@@ -1,5 +1,5 @@
 {
-  "iteration": 10,
+  "iteration": 11,
   "learnings": [
     {
       "ts": "2026-06-15T23:25:37.276925+00:00",
@@ -126,6 +126,24 @@
       "outcome": "success",
       "summary": "Triad green: typecheck=True lint=True tests=False",
       "details": {}
+    },
+    {
+      "ts": "2026-06-16T01:54:43.320639+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "tech_debt",
+      "outcome": "success",
+      "summary": "Fixed tech_debt in 5 files",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T01:57:37.550022+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "tech_debt",
+      "outcome": "success",
+      "summary": "Triad green: typecheck=True lint=True tests=False",
+      "details": {}
     }
   ],
   "task_history": [],
@@ -198,6 +216,12 @@
       "ts": "2026-06-16T01:39:00.754030+00:00",
       "improvement": "missing_tests",
       "version": "0.5.1",
+      "triad_green": false
+    },
+    {
+      "ts": "2026-06-16T01:47:51.567082+00:00",
+      "improvement": "typecheck_clean",
+      "version": "0.6.1",
       "triad_green": false
     }
   ],
@@ -852,6 +876,11 @@
       "ts": "2026-06-16T01:40:31.374089+00:00",
       "action": "EXECUTE",
       "improvement": "typecheck_clean"
+    },
+    {
+      "ts": "2026-06-16T01:49:24.047844+00:00",
+      "action": "EXECUTE",
+      "improvement": "tech_debt"
     }
   ],
   "error_patterns": {
@@ -861,6 +890,6 @@
   "success_patterns": {
     "e796b93c": 3,
     "b55c038d": 2,
-    "d92babc3": 1
+    "d92babc3": 2
   }
 }

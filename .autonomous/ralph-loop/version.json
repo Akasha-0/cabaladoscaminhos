@@ -1,8 +1,13 @@
 {
   "major": 0,
-  "minor": 6,
+  "minor": 7,
   "patch": 1,
   "changelog": [
+    {
+      "version": "0.7.1",
+      "ts": "2026-06-16T01:57:41.110090+00:00",
+      "improvement": "tech_debt"
+    },
     {
       "version": "0.6.1",
       "ts": "2026-06-16T01:47:51.512249+00:00",

@@ -54,6 +54,17 @@
   - Priority: 1
   - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
 
+
+## cc: AKASHA-loop iter 6 | tech_debt (2026-06-16T01:49:25Z)
+- [~] **PLN-006** — tech_debt | 0.6.1
+  - Improvement: 5 files with TODO
+  - Type: tech_debt
+  - Priority: 5
+  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
+  - File: `packages/core-cabala/src/numerology-kabalah.ts`
+  - File: `packages/akasha-core/src/interpretation-engine.ts`
+  - File: `packages/akasha-core/src/akasha-core.ts`
+
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

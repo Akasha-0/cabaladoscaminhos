@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T01:47:51.068047+00:00",
-  "version": "0.5.1",
+  "generated_at": "2026-06-16T01:57:40.663509+00:00",
+  "version": "0.6.1",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -8,9 +8,10 @@
       "- [~] **PLN-003** — large_file | 0.3.1",
       "- [~] **PLN-004** — missing_tests | 0.4.1",
       "- [~] **PLN-005** — typecheck_clean | 0.5.1",
+      "- [~] **PLN-006** — tech_debt | 0.6.1",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)"
     ],
-    "pending_count": 6
+    "pending_count": 7
   },
   "git": {
     "untracked": 0,
@@ -48,11 +49,11 @@
       "priority": 5,
       "description": "5 files with TODO",
       "files": [
-        "packages/core-cabala/src/numerology-kabalah.ts",
-        "packages/akasha-core/src/interpretation-engine.ts",
-        "packages/akasha-core/src/akasha-core.ts",
-        "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx",
-        "apps/akasha-portal/src/app/[locale]/(akasha)/glossario/page.tsx"
+        "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
+        "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts",
+        "apps/akasha-portal/src/lib/grimoire/synthesis/narrative-generator.ts"
       ]
     },
     {
@@ -82,9 +83,19 @@
           "lines": 1198
         }
       ]
+    },
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "3 changed files lack tests",
+      "files": [
+        "packages/akasha-core/src/akasha-core.ts",
+        "packages/akasha-core/src/interpretation-engine.ts",
+        "packages/core-cabala/src/numerology-kabalah.ts"
+      ]
     }
   ],
-  "git_head": "4a0e7152e54f63154736f09806158d9ac2009fc3",
+  "git_head": "8dec12e990b5fa48148a0ac6b917a7add6d0137c",
   "decision_factors": {
     "has_pending_features": true
   }

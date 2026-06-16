@@ -1,13 +1,20 @@
 {
   "phase": "IMPLEMENTATION",
   "improvement": {
-    "type": "typecheck_clean",
-    "priority": 1,
-    "description": "TypeScript typecheck is clean"
+    "type": "tech_debt",
+    "priority": 5,
+    "description": "5 files with TODO",
+    "files": [
+      "packages/core-cabala/src/numerology-kabalah.ts",
+      "packages/akasha-core/src/interpretation-engine.ts",
+      "packages/akasha-core/src/akasha-core.ts",
+      "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx",
+      "apps/akasha-portal/src/app/[locale]/(akasha)/glossario/page.tsx"
+    ]
   },
-  "iteration": 5,
+  "iteration": 6,
   "snapshot_summary": {
-    "version": "0.5.1",
+    "version": "0.6.1",
     "triad": {
       "typecheck": {
         "pass": true,
