@@ -10,9 +10,10 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "3 changed files lack tests",
+      "description": "4 changed files lack tests",
       "files": [
-        "packages/akasha-core/src/akasha-core.ts",
+        "packages/core-iching/src/practices-cromoterapia.ts",
+        "packages/core-iching/src/practices-lookup.test.ts",
         "packages/core-iching/src/practices-lookup.ts",
         "packages/core-iching/src/practices.ts"
       ]
@@ -31,11 +32,11 @@
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
-        "packages/akasha-core/src/recommendation-generator.ts",
-        "packages/akasha-core/src/akasha-core.ts",
         "packages/akasha-cli/src/cli.ts",
         "packages/akasha-cli/src/commands/setup.ts",
-        "packages/akasha-cli/src/commands/chat.ts"
+        "packages/akasha-cli/src/commands/chat.ts",
+        "packages/akasha-cli/src/commands/status.ts",
+        "packages/akasha-cli/src/commands/diagnostico.ts"
       ]
     },
     {
@@ -45,7 +46,7 @@
       "files": [
         {
           "file": "packages/core-iching/src/practices.ts",
-          "lines": 1001
+          "lines": 993
         },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
@@ -58,5 +59,5 @@
       ]
     }
   ],
-  "iteration": 7
+  "iteration": 8
 }

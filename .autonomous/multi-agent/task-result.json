@@ -1,1 +1,15 @@
-{"success": true, "message": "Tech_debt audit (agent ta-1781621060-2) of significados-curados-helpers.test.ts (176L) and significados-curados.test.ts (296L): 0 actionable markers. ast_grep not on PATH; used grep -rEn with word-boundary regex over both target files and the broader grimoire directory for: tech_debt, TODO, FIXME, XXX, HACK, TECH_DEBT, @ts-ignore, @ts-expect-error. All 'TODO' substring matches are the const TODOS_PILARES (Portuguese: 'all pillars' = [cabala, astrologia, tantrica, odu, iching]) used as a test fixture constant. Broader project scan: grep -rn 'tech_debt' over .ts/.tsx (excluding node_modules, .next) returned 0 hits. No code changes or commits needed — files are clean. Result written to agent-results/result-ta-1781621060-2.json. This is the fourth audit today (previous: ta-1781616038-0, ta-1781616651-0, ta-1781617606-0, ta-1781620443-0) — all confirm 0 actionable markers; the task-implementation.json queue entry is stale and can be closed.", "type": "tech_debt", "agent": "ta-1781621060-2", "files_audited": ["apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts", "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"], "fixes_applied": 0, "false_positives_identified": ["TODOS_PILARES const (Portuguese: 'all pillars' = [cabala, astrologia, tantrica, odu, iching])"], "tooling_note": "ast_grep CLI not on PATH (also absent at .headroom-venv/bin/ast-grep in this session); used grep -rEn with word-boundary regex as equivalent detection", "result_file": ".autonomous/multi-agent/agent-results/result-ta-1781621060-2.json"}
+{
+  "success": true,
+  "message": "Missing_tests agent (ta-1781623805-1): skipped — target files do not exist. Both practices-cromoterapia.ts and practices-lookup.test.ts (and also practices-lookup.ts) were deleted by commit 3046a6ba 'fix: revert broken refactor of core-iching/practices.ts' on 2026-06-16 12:21, which rolled back the broken large_file extraction from iter 7 (ta-1781622042-4) that introduced a circular import + 27 TypeScript errors. The remaining packages/core-iching/src/practices.ts (993L) already has comprehensive test coverage in __tests__/practices.test.ts (49 practices, 6 main exports, all green). task-implementation.json#improvements[1] (missing_tests for core-iching) is stale and can be closed — the only survivor of the file list is already tested.",
+  "type": "missing_tests",
+  "agent": "ta-1781623805-1",
+  "target_files": [
+    "packages/core-iching/src/practices-cromoterapia.ts",
+    "packages/core-iching/src/practices-lookup.test.ts"
+  ],
+  "files_existing": [
+    "packages/core-iching/src/practices.ts (covered by __tests__/practices.test.ts)"
+  ],
+  "fixes_applied": 0,
+  "result_file": ".autonomous/multi-agent/agent-results/result-ta-1781623805-1.json"
+}

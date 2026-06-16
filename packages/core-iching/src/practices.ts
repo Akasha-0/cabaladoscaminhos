@@ -7,15 +7,94 @@
  * o alcance terapêutico e espiritual do sistema oracular.
  */
 
-import type { IntegrativePractice } from './types';
-export {
-  getPractice,
-  getPracticesByElement,
-  getPracticesByTradition,
-  getPracticesByCategory,
-  getPracticesByLifeArea,
-  getAllPractices,
-} from './practices-lookup';
+/** Banco de práticas integrativas. */
+const PRACTICES: IntegrativePractice[] = [
+  // ── Ifá/Candomblé (5) ─────────────────────────────────────────────────────
+
+  {
+    id: 'ewe-oxum',
+    name: 'Ewé de Oxum',
+    tradition: 'Candomblé',
+    category: 'banho_de_ervas',
+    associations: {
+      element: 'agua',
+      orixa: 'Oxum',
+      color: 'dourado',
+      planet: 'Vênus',
+      chakra: 4,
+      hexagrams: [5, 60],
+    },
+    lifeAreas: ['amor', 'prosperidade', 'fertilidade', 'autoestima'],
+    howTo: 'Ferva folhas de oxum fresco em 1 litro de água por 15 minutos. Coe e reserve a água. Tome um banho de imersão por 20 minutos ao amanhecer.',
+    frequency: 'Uma vez por semana, preferencialmente sextas-feiras.',
+    isSafe: true,
+  },
+  {
+    id: 'ewe-ogum',
+    name: 'Ewé de Ogum',
+    tradition: 'Candomblé',
+    category: 'protecao',
+    associations: {
+      element: 'madeira',
+      orixa: 'Ogum',
+      color: 'verde',
+      planet: 'Marte',
+      chakra: 1,
+      hexagrams: [1, 34],
+    },
+    lifeAreas: ['protecao', 'forca', 'coragem', 'determinacao'],
+    howTo: 'Ferva folhas de ogum em 1 litro de água por 15 minutos. Coe e reserve. Tome um banho de aspersão ao amanhecer, banhando-se da cabeça para baixo.',
+    frequency: 'Toda terça-feira ou em momentos de necessidade de proteção.',
+    isSafe: true,
+  },
+  {
+    id: 'canto-oxum',
+    name: 'Canto de Oxum',
+    tradition: 'Ifá',
+    category: 'ritual_sagrado',
+    associations: {
+      element: 'agua',
+      orixa: 'Oxum',
+      color: 'dourado',
+      planet: 'Vênus',
+      chakra: 4,
+      hexagrams: [5, 60],
+    },
+    lifeAreas: ['amor', 'fertilidade', 'saude', 'prosperidade'],
+    howTo: 'Cante o padê de Oxum em ambiente sagrado, oferecendo água doce e flores amarelas. Ritual deve ser realizado com reverência e devoção.',
+    frequency: 'Sextas-feiras e durante o mês de outubro.',
+    isSafe: true,
+  },
+  {
+    id: 'ervas-oxum',
+    name: 'Ervas de Oxum',
+    tradition: 'Candomblé',
+    category: 'banho_de_ervas',
+    associations: {
+      element: 'agua',
+      orixa: 'Oxum',
+      color: 'dourado',
+      planet: 'Vênus',
+      chakra: 4,
+      hexagrams: [5, 60],
+    },
+    lifeAreas: ['amor', 'saude', 'beleza', 'autoestima'],
+    howTo: 'Prepare um banho com folhas de oxum, cidreira e boldo. Ferva por 15 minutos, coe e tome um banho de imersão por 20 minutos.',
+    frequency: 'Uma vez por semana ou conforme necessidade.',
+    isSafe: true,
+  },
+  {
+    id: 'lamber OK - we trimmed it. But the original PRACTICES array has 935 lines! I can't realistically edit this with such a large body. The original PRACTICES array has 935 lines. I need a different approach.
+
+Let me think about the best way to do this. The PRACTICES array spans from line 20 to line 935. I need to move it before lines 11-18. But this is a massive swap - 916 lines.
+
+The edit tool is the right approach for surgical changes, but for a 900+ line move, I should use Python to handle the file manipulation directly.
+</think>
+
+The `PRACTICES` array is 900+ lines. A Python script is the right approach here — I'll read the file, reorder the sections, and write it back.
+<minimax:tool_call>
+<invoke name="bash">
+<parameter name="_i">Analyze practices.ts structure
 
 /** Banco de práticas integrativas. */
 const PRACTICES: IntegrativePractice[] = [

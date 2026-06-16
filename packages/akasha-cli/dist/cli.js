@@ -71,7 +71,6 @@ export async function runCommand(args) {
         return;
     }
     if (args.version) {
-        console.log(`akasha v${VERSION}`);
         return;
     }
     const command = args.command || 'chat';

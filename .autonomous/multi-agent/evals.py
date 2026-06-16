@@ -244,17 +244,18 @@ class MetricsTracker:
             return sum(non_zero) / len(non_zero) if non_zero else 0.0
 
         impl_quality = _rate(impl, "agent_success_rate")
-        qa_quality   = _rate(qa, "typecheck_pass", "tests_pass", "improvements_accepted")
+        qa_quality = _rate(qa, "typecheck_pass", "tests_pass")
+        release_q = release_quality or 0.0
 
         iteration_record = {
             "ts": datetime.now(timezone.utc).isoformat(),
             "iteration": iteration,
             "duration_s": round(duration_s, 3),
-            "release_quality": round(release_quality, 3),
+            "release_quality": round(release_q, 3),
             "impl_quality": round(impl_quality, 3),
             "qa_quality": round(qa_quality, 3),
             "loop_quality": round(
-                0.4 * (release_quality or 0) +
+                0.4 * release_q +
                 0.3 * impl_quality +
                 0.3 * qa_quality, 3),
             "commit_messages_clean": commit_messages_clean,

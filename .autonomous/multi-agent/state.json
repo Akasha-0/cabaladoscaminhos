@@ -1,6 +1,6 @@
 {
   "phase": "RELEASE",
-  "iteration": 7,
+  "iteration": 8,
   "current_features": [
     "missing_tradition",
     "missing_tests",
@@ -11,5 +11,5 @@
   "retry_count": 0,
   "running": true,
   "phase_iteration": 0,
-  "daemon_pid": 417719
+  "daemon_pid": 0
 }

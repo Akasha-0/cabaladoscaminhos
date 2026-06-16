@@ -2,89 +2,45 @@
   "results": [
     {
       "success": true,
-      "message": "Extracted helper from packages/core-iching/src/practices.ts",
-      "type": "large_file"
-    },
-    {
-      "success": true,
-      "message": "Added tests for 1 file: practices-lookup.ts (12 tests pass). Skipped akasha-core.ts — existing akasha-core.test.ts already provides comprehensive coverage (130 lines, tests AkashaInputSchema, calcular(), and ethical limits).",
-      "type": "missing_tests"
-    },
-    {
-      "success": true,
-      "message": "Audited 2 target test files for tech_debt markers (TODO/FIXME/XXX/HACK); 0 actionable markers found — files are clean. The only matches were the constant identifier TODOS_PILARES (an array of 5 Pilar strings: cabala/astrologia/tantrica/odu/iching), which is just a variable name, not a TODO comment. No code changes required. Pre-existing typecheck errors in packages/core-iching/src/practices.ts are unrelated to target files (test files typecheck clean when scoped). Consistent with prior audit notes from 13:19 and 13:38 today.",
+      "message": "Audited 2 target files (significados-curados-helpers.test.ts 176L + significados-curados.test.ts 296L); 0 actionable tech_debt markers found. The only 'TODO' substring matches are inside the const name 'TODOS_PILARES' (legitimate variable meaning 'all pillars' in PT-BR). No commits required — files already clean per prior cycle audits (N+30 refactor work also touched this code). Single weak 'placeholder' match is a test assertion comment ('// Não pode ser placeholder genérico') describing the invariant, not a TODO marker.",
       "type": "tech_debt",
       "files_audited": [
         "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
         "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
       ],
-      "fixes_applied": 0,
-      "false_positives": [
-        "TODOS_PILARES (constant identifier, not TODO)"
-      ],
-      "tool_note": "ast_grep not installed in this environment; fell back to grep which is the documented fallback for the same audit pattern used in prior cycles."
+      "findings": {
+        "tech_debt_count": 0,
+        "todo_count": 0,
+        "fixme_count": 0,
+        "xxx_count": 0,
+        "hack_count": 0
+      },
+      "notes": "ast_grep not installed in this env (used grep fallback). Both target files are post-F-219/F-220 refactor test code and have no actionable tech debt. 'TODOS_PILARES' const is a legitimate variable name, not a TODO comment."
     },
     {
       "success": false,
-      "message": "ODUS (ODU_DETALHADO) already exists at traducao-areas.ts:123-247 covering all 9 areas (saude, trabalho, amor, sexualidade, criacao, proposito, familia, espiritualidade, superacao). Task premise of 'Missing: ODUS' is incorrect. The file's actual pattern uses {explicacao, convergencia, tensao, evitar, pratica} (+ requer_terreiro for ODU), not the {name, keywords, contextPatterns} schema described in the task. ASTROLOGIA_DETALHADO uses the same pattern as ODU/CABALA/TANTRA/ICHING. No-op performed: no duplicate added, no commit made.",
-      "type": "missing_tradition",
-      "findings": {
-        "file": "traducao-areas.ts",
-        "odu_section": {
-          "exists": true,
-          "line_start": 123,
-          "line_end": 247,
-          "areas_covered": [
-            "saude",
-            "trabalho",
-            "amor",
-            "sexualidade",
-            "criacao",
-            "proposito",
-            "familia",
-            "espiritualidade",
-            "superacao"
-          ]
-        },
-        "astrologia_pattern": {
-          "actual_fields": [
-            "explicacao",
-            "convergencia",
-            "tensao",
-            "evitar",
-            "pratica"
-          ],
-          "task_described_fields": [
-            "name",
-            "keywords",
-            "contextPatterns"
-          ],
-          "mismatch": true
-        },
-        "git_status_modified": false,
-        "conclusion": "Task is a no-op; ODUS already fully present in committed file. Adding a second ODUS section with the wrong schema would corrupt the curated structure."
-      }
+      "message": "Skipped: target files do not exist (reverted in commit 3046a6ba)",
+      "type": "missing_tests",
+      "agent": "ta-1781623805-1",
+      "target_files": [
+        "packages/core-iching/src/practices-cromoterapia.ts",
+        "packages/core-iching/src/practices-lookup.test.ts"
+      ],
+      "skip_reason": "Both files were deleted by commit 3046a6ba 'fix: revert broken refactor of core-iching/practices.ts' on 2026-06-16 12:21. The large_file agent (ta-1781622042-4, iter 7) extracted lookup helpers and Cromoterapia practices to separate files but introduced a circular import (practices ↔ practices-lookup), 27 TypeScript redeclaration errors, and missing data wiring for 5 Cromoterapia practices. The revert restored the monolithic practices.ts. The remaining 993-line practices.ts already has comprehensive test coverage in packages/core-iching/src/__tests__/practices.test.ts (49 practices, all 6 main exports: getPractice, getPracticesByElement, getPracticesByTradition, getPracticesByCategory, getPracticesByLifeArea, getAllPractices — all green).",
+      "task_queue_status": "Stale: task-implementation.json#improvements[1].files lists 4 paths of which 3 no longer exist; the surviving practices.ts is already covered. The missing_tests queue entry for core-iching can be closed.",
+      "files_audited": [
+        "packages/core-iching/src/practices-cromoterapia.ts (NOT FOUND)",
+        "packages/core-iching/src/practices-lookup.test.ts (NOT FOUND)",
+        "packages/core-iching/src/practices-lookup.ts (NOT FOUND — also in revert)",
+        "packages/core-iching/src/practices.ts (EXISTS, 993L, already tested)"
+      ],
+      "fixes_applied": 0,
+      "result_file": ".autonomous/multi-agent/agent-results/result-ta-1781623805-1.json"
     },
     {
       "success": true,
-      "message": "Removed console statements from recommendation-generator.ts (1 console.warn) and akasha-core.ts (7 console.warn across 5 pilares: Cabala, Astrologia, Tantra, Odu, I-Ching). cli.ts had no debug console statements to remove: 3 console.error are real errors (kept per rule), 3 console.log are user-facing CLI output for printHelp() and version display (kept as functional output). Both edited files typecheck clean. Pre-existing typecheck errors in packages/core-iching/ are unrelated.",
-      "type": "console_cleanup",
-      "files_changed": [
-        "packages/akasha-core/src/recommendation-generator.ts",
-        "packages/akasha-core/src/akasha-core.ts"
-      ],
-      "files_skipped": [
-        {
-          "path": "packages/akasha-cli/src/cli.ts",
-          "reason": "No debug console statements. console.error (3x) are real errors; console.log (3x) are user-facing CLI output (printHelp + version display)."
-        }
-      ],
-      "commits": [
-        "20b6ed03 chore: remove console statements from recommendation-generator.ts",
-        "5fc1fe54 chore: remove console statements from akasha-core.ts"
-      ],
-      "console_statements_removed": 8,
-      "typecheck_clean": true
+      "message": "Removed console statements",
+      "type": "console_cleanup"
     }
   ]
 }

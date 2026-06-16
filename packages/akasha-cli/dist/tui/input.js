@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 // ─── Comandos Padrão ──────────────────────────────────────────────────────────
-export const DEFAULT_COMMANDS = [
+const DEFAULT_COMMANDS = [
     {
         name: 'help',
         description: 'Mostra esta ajuda',

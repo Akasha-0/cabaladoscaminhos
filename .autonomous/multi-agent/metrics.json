@@ -98,6 +98,20 @@
       "version_bumped": true,
       "iteration_advanced": true,
       "phase_count": 5
+    },
+    {
+      "ts": "2026-06-16T15:12:49.978568+00:00",
+      "iteration": 7,
+      "duration_s": 0.063,
+      "release_quality": 0.94,
+      "impl_quality": 0.8,
+      "qa_quality": 4.0,
+      "loop_quality": 1.816,
+      "commit_messages_clean": true,
+      "changelog_updated": true,
+      "version_bumped": true,
+      "iteration_advanced": true,
+      "phase_count": 5
     }
   ],
   "phase_history": [
@@ -7294,6 +7308,64 @@
       "phase": "VALIDATION",
       "iteration": 7,
       "duration_s": 0.348,
+      "metrics": {
+        "improvements_validated": 5,
+        "quality_score": 0.75,
+        "codegraph_sync_ok": true,
+        "plans_marked": false
+      }
+    },
+    {
+      "ts": "2026-06-16T15:13:54.980521+00:00",
+      "phase": "RESEARCH",
+      "iteration": 8,
+      "duration_s": 64.498,
+      "metrics": {
+        "candidates_found": 5,
+        "candidates_selected": 4,
+        "selection_quality": 0.0,
+        "no_improvement_found": false
+      }
+    },
+    {
+      "ts": "2026-06-16T15:30:04.977026+00:00",
+      "phase": "PLANNING",
+      "iteration": 8,
+      "duration_s": 0.001,
+      "metrics": {
+        "plans_created": 5,
+        "plans_detail_level": 65.6,
+        "plans_updated": true
+      }
+    },
+    {
+      "ts": "2026-06-16T15:40:05.813361+00:00",
+      "phase": "IMPLEMENTATION",
+      "iteration": 8,
+      "duration_s": 600.332,
+      "metrics": {
+        "agents_spawned": 5,
+        "results_collected": 3,
+        "agent_success_rate": 0.4,
+        "files_changed": 0
+      }
+    },
+    {
+      "ts": "2026-06-16T15:41:31.400003+00:00",
+      "phase": "QA",
+      "iteration": 8,
+      "duration_s": 85.584,
+      "metrics": {
+        "typecheck_pass": true,
+        "tests_pass": false,
+        "improvements_accepted": 2
+      }
+    },
+    {
+      "ts": "2026-06-16T15:41:32.251739+00:00",
+      "phase": "VALIDATION",
+      "iteration": 8,
+      "duration_s": 0.345,
       "metrics": {
         "improvements_validated": 5,
         "quality_score": 0.75,

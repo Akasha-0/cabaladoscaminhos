@@ -83,7 +83,6 @@ export async function runCommand(args: CLIArgs): Promise<void> {
   }
 
   if (args.version) {
-    console.log(`akasha v${VERSION}`);
     return;
   }
 

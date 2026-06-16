@@ -174,3 +174,18 @@
 [2026-06-16T15:11:33Z] [SUP] ✅ DAEMON RUNNING PID=417719
 [2026-06-16T15:11:33Z] [SUP] ⚠️  DAEMON ALREADY RUNNING PID=417719 (not restarting)
 [2026-06-16T15:11:36Z] [SUP] Daemon confirmed alive PID=417719 (attempt 1009)
+[2026-06-16T15:13:55Z] [SUP] Stopping daemon PID=417719
+[2026-06-16T15:13:55Z] [SUP] Supervisor stop complete
+[2026-06-16T15:13:57Z] [SUP] Cleaning stale state...
+[2026-06-16T15:13:57Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T15:13:57Z] [SUP]   Cleanup complete.
+[2026-06-16T15:13:57Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T15:13:57Z] [SUP] ✅ DAEMON RUNNING PID=432213
+[2026-06-16T15:29:40Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T15:29:40Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T15:29:40Z] [SUP] ✅ DAEMON RUNNING PID=494079
+[2026-06-16T15:29:43Z] [SUP] Daemon confirmed alive PID=494079 (attempt 1225)
+[2026-06-16T15:30:03Z] [SUP] 🔄 RESTART reason=daemon_dead_or_missing delay=5s
+[2026-06-16T15:30:03Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T15:30:03Z] [SUP] ✅ DAEMON RUNNING PID=495596
+[2026-06-16T15:30:06Z] [SUP] Daemon confirmed alive PID=495596 (attempt 1229)

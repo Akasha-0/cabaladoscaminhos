@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T15:11:33.728748+00:00",
-  "version": "0.8.0",
+  "generated_at": "2026-06-16T15:40:05.818708+00:00",
+  "version": "0.9.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -901,42 +901,26 @@
       "- [~] **PLN-007[3]** -- tech_debt | 2 files with TODO",
       "- [~] **PLN-007[4]** -- console_cleanup | 5 files with console statements",
       "- [~] **PLN-007[5]** -- large_file | 28 oversized files",
+      "- [~] **PLN-008[1]** -- missing_tradition | ODUS missing from traducao-areas",
+      "- [~] **PLN-008[2]** -- missing_tests | 4 changed files lack tests",
+      "- [~] **PLN-008[3]** -- tech_debt | 2 files with TODO",
+      "- [~] **PLN-008[4]** -- console_cleanup | 5 files with console statements",
+      "- [~] **PLN-008[5]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 900
+    "pending_count": 905
   },
   "git": {
-    "untracked": 11,
-    "modified": 16,
-    "total": 27,
+    "untracked": 10,
+    "modified": 34,
+    "total": 44,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
-      "pass": false,
-      "errors": [
-        "packages/core-iching/src/__tests__/practices.test.ts(43,52): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Element'.",
-        "packages/core-iching/src/__tests__/practices.test.ts(51,49): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Element'.",
-        "packages/core-iching/src/practices.ts(17,3): error TS2323: Cannot redeclare exported variable 'getPractice'.",
-        "packages/core-iching/src/practices.ts(17,3): error TS2484: Export declaration conflicts with exported declaration of 'getPractice'.",
-        "packages/core-iching/src/practices.ts(18,3): error TS2323: Cannot redeclare exported variable 'getPracticesByElement'.",
-        "packages/core-iching/src/practices.ts(18,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByElement'.",
-        "packages/core-iching/src/practices.ts(19,3): error TS2323: Cannot redeclare exported variable 'getPracticesByTradition'.",
-        "packages/core-iching/src/practices.ts(19,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByTradition'.",
-        "packages/core-iching/src/practices.ts(20,3): error TS2323: Cannot redeclare exported variable 'getPracticesByCategory'.",
-        "packages/core-iching/src/practices.ts(20,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByCategory'.",
-        "packages/core-iching/src/practices.ts(21,3): error TS2323: Cannot redeclare exported variable 'getPracticesByLifeArea'.",
-        "packages/core-iching/src/practices.ts(21,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByLifeArea'.",
-        "packages/core-iching/src/practices.ts(22,3): error TS2323: Cannot redeclare exported variable 'getAllPractices'.",
-        "packages/core-iching/src/practices.ts(22,3): error TS2484: Export declaration conflicts with exported declaration of 'getAllPractices'.",
-        "packages/core-iching/src/practices.ts(861,44): error TS2344: Type 'Element' does not satisfy the constraint 'string | number | symbol'.",
-        "packages/core-iching/src/practices.ts(865,10): error TS7053: Element implicitly has an 'any' type because expression of type 'Element' can't be used to index type 'Partial<Record<Element, IntegrativePractice[]>>'.",
-        "packages/core-iching/src/practices.ts(865,36): error TS7053: Element implicitly has an 'any' type because expression of type 'Element' can't be used to index type 'Partial<Record<Element, IntegrativePractice[]>>'.",
-        "packages/core-iching/src/practices.ts(866,5): error TS7053: Element implicitly has an 'any' type because expression of type 'Element' can't be used to index type 'Partial<Record<Element, IntegrativePractice[]>>'.",
-        "packages/core-iching/src/practices.ts(878,45): error TS2304: Cannot find name 'PracticeCategory'.",
-        "packages/core-iching/src/practices.ts(887,17): error TS2323: Cannot redeclare exported variable 'getPractice'."
-      ]
+      "pass": true,
+      "errors": []
     },
     "lint": {
       "pass": true,
@@ -944,32 +928,15 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1355,
-      "failed": 244
+      "passed": 1536,
+      "failed": 238
     }
   },
   "codegraph": {
-    "pending_files": 0,
+    "pending_files": 1,
     "ok": true
   },
   "improvement_candidates": [
-    {
-      "type": "typecheck_errors",
-      "priority": 9,
-      "description": "20 TypeScript errors",
-      "errors": [
-        "packages/core-iching/src/__tests__/practices.test.ts(43,52): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Element'.",
-        "packages/core-iching/src/__tests__/practices.test.ts(51,49): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Element'.",
-        "packages/core-iching/src/practices.ts(17,3): error TS2323: Cannot redeclare exported variable 'getPractice'.",
-        "packages/core-iching/src/practices.ts(17,3): error TS2484: Export declaration conflicts with exported declaration of 'getPractice'.",
-        "packages/core-iching/src/practices.ts(18,3): error TS2323: Cannot redeclare exported variable 'getPracticesByElement'.",
-        "packages/core-iching/src/practices.ts(18,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByElement'.",
-        "packages/core-iching/src/practices.ts(19,3): error TS2323: Cannot redeclare exported variable 'getPracticesByTradition'.",
-        "packages/core-iching/src/practices.ts(19,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByTradition'.",
-        "packages/core-iching/src/practices.ts(20,3): error TS2323: Cannot redeclare exported variable 'getPracticesByCategory'.",
-        "packages/core-iching/src/practices.ts(20,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByCategory'."
-      ]
-    },
     {
       "type": "tech_debt",
       "priority": 5,
@@ -985,25 +952,26 @@
       "description": "28 oversized files",
       "files": [
         {
+          "file": "packages/core-iching/src/practices.ts",
+          "lines": 1016
+        },
+        {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
           "lines": 991
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
           "lines": 973
-        },
-        {
-          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine.ts",
-          "lines": 957
         }
       ]
     },
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "1 changed files lack tests",
+      "description": "2 changed files lack tests",
       "files": [
-        "packages/core-iching/src/practices-lookup.test.ts"
+        "packages/core-iching/src/practices-lookup.ts",
+        "packages/core-iching/src/practices.ts"
       ]
     },
     {
@@ -1020,13 +988,13 @@
       "files": [
         "packages/akasha-cli/src/cli.ts",
         "packages/akasha-cli/src/commands/setup.ts",
-        "packages/akasha-cli/src/commands/chat.ts",
         "packages/akasha-cli/src/commands/status.ts",
-        "packages/akasha-cli/src/commands/diagnostico.ts"
+        "packages/akasha-cli/src/commands/diagnostico.ts",
+        "apps/akasha-portal/scripts/grimoire-audit.ts"
       ]
     }
   ],
-  "git_head": "738fac94ea3b2c3c87603c7ae45cf464a90bd724",
+  "git_head": "0fbafd34f10b4117f0e3f5cd358ea597844c3a19",
   "decision_factors": {
     "has_pending_features": true
   }
