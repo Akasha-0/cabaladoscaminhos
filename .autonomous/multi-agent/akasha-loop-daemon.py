@@ -206,8 +206,9 @@ def phase_implementation(state, memory):
         )
         prompt_file.write_text(prompt)
         proc = _sub.Popen(
-            ["timeout", "600", "claude", "-p", prompt],
+            ["timeout", "600", "claude", "-p", "--model", "MiniMax-M2.7-highspeed", prompt],
             cwd=str(ROOT), stdout=_sub.DEVNULL, stderr=_sub.DEVNULL,
+            env={**os.environ, "ANTHROPIC_MODEL": "MiniMax-M2.7-highspeed"},
         )
         with open(AGENT_PIDS_FILE, "a") as pf:
             pf.write(f"{agent_id}|{proc.pid}\n")
