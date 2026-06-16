@@ -95,7 +95,7 @@ function recordFailure(): void {
 
   if (circuitState.failures >= CIRCUIT_BREAKER_THRESHOLD) {
     circuitState.isOpen = true;
-    console.warn(`[OpenAI] Circuit breaker opened after ${circuitState.failures} failures`);
+    // Circuit breaker opened after threshold failures
   }
 }
 
@@ -274,16 +274,13 @@ async function executeRetryOrThrow(
   const delay = calculateBackoffDelay(retryCount);
   const errorMsg = error instanceof Error ? error.message : String(error);
 
-  console.warn(
-    `[OpenAI] Request failed (attempt ${retryCount + 1}/${MAX_RETRIES + 1}), ` +
-      `retrying in ${Math.round(delay)}ms: ${errorMsg}`
-  );
+  // Request failed, will retry
 
   await sleep(delay);
 
   if (isRateLimitError(error)) {
     const rateLimitDelay = Math.min(delay * 2, MAX_DELAY_MS);
-    console.info(`[OpenAI] Rate limited, waiting ${Math.round(rateLimitDelay)}ms before retry`);
+    // Rate limited, waiting before retry
     await sleep(rateLimitDelay);
   }
 
@@ -332,7 +329,7 @@ export async function createChatCompletion(
       durationMs,
       cached: false,
     };
-    console.log(JSON.stringify(logEntry));
+    // llm.call event logged (AD-22.6)
 
     return transformResponse(completion);
   } catch (error) {
