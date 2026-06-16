@@ -102,7 +102,11 @@ export default defineConfig({
           name: 'core-ui',
           environment: 'jsdom',
           setupFiles: ['../../tests/setup.ts'],
-          include: ['../../tests/cockpit/**', '../../tests/components/**'],
+          include: [
+            '../../tests/cockpit/**',
+            '../../tests/components/**',
+            'src/components/**/hooks/**/*.test.ts',
+          ],
           exclude: [
             '**/*.snap',
             '**/__snapshots__/**',
