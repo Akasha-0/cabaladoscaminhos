@@ -4,9 +4,11 @@ import {
   CorrelationEngine,
   createCorrelationEngine,
   quickScore,
+  PracticeUsageTracker,
   type AkashaCode,
   type LifeArea,
   type RecommendationContext,
+  type PracticeUsageMap,
 } from './correlation-engine';
 
 // ─── Dados de Teste ───────────────────────────────────────────────────────────
@@ -357,5 +359,126 @@ describe('CorrelationEngine - recommend', () => {
       expect(rec.validation).toHaveProperty('warnings');
       expect(rec.validation).toHaveProperty('recommendations');
     }
+  });
+});
+
+// ─── Testes: Recency Tracking (F-XXX — implementação real de recência) ───────
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const RECENCY_DECAY_DAYS = 30;
+
+describe('PracticeUsageTracker', () => {
+  it('registra e recupera último uso', () => {
+    const tracker = new PracticeUsageTracker();
+    const t0 = 1_700_000_000_000;
+    tracker.record('p1', t0);
+    expect(tracker.getLastUsed('p1')).toBe(t0);
+  });
+
+  it('retorna undefined para prática nunca usada', () => {
+    const tracker = new PracticeUsageTracker();
+    expect(tracker.getLastUsed('nunca')).toBeUndefined();
+  });
+
+  it('snapshot retorna cópia somente-leitura', () => {
+    const initial: PracticeUsageMap = { p1: 100, p2: 200 };
+    const tracker = new PracticeUsageTracker(initial);
+    const snap = tracker.snapshot();
+    expect(snap).toEqual(initial);
+    // mutar snapshot não afeta tracker
+    snap.p1 = 999;
+    expect(tracker.getLastUsed('p1')).toBe(100);
+  });
+
+  it('usa Date.now() por padrão quando nenhum timestamp é passado', () => {
+    const tracker = new PracticeUsageTracker();
+    const before = Date.now();
+    tracker.record('p1');
+    const after = Date.now();
+    const stored = tracker.getLastUsed('p1')!;
+    expect(stored).toBeGreaterThanOrEqual(before);
+    expect(stored).toBeLessThanOrEqual(after);
+  });
+});
+
+describe('CorrelationEngine - Recency Score', () => {
+  const code: AkashaCode = { hexagram: 1, level: 'gift', lifeArea: 'espiritualidade' };
+  const now = 1_700_000_000_000;
+
+  it('prática nunca usada recebe score mais alto que prática recém-usada', () => {
+    const fresh = new CorrelationEngine({ userCode: code, now });
+    const recent = new CorrelationEngine({
+      userCode: code,
+      now,
+      practiceUsage: { 'test-1': now - 1 * MS_PER_DAY },
+    });
+
+    const practice = makePractice();
+    const freshScore = fresh.scorePractice(practice).score;
+    const recentScore = recent.scorePractice(practice).score;
+
+    expect(freshScore).toBeGreaterThan(recentScore);
+  });
+
+  it('aceita PracticeUsageTracker como prática de uso', () => {
+    const tracker = new PracticeUsageTracker();
+    tracker.record('test-1', now - 15 * MS_PER_DAY);
+
+    const engine = new CorrelationEngine({
+      userCode: code,
+      now,
+      practiceUsage: tracker,
+    });
+    const scored = engine.scorePractice(makePractice());
+    expect(scored.score).toBeGreaterThan(0);
+    expect(scored.score).toBeLessThanOrEqual(100);
+  });
+
+  it('uso há mais de RECENCY_DECAY_DAYS satura recência em 100', () => {
+    const veryOld = new CorrelationEngine({
+      userCode: code,
+      now,
+      practiceUsage: {
+        'test-1': now - (RECENCY_DECAY_DAYS + 5) * MS_PER_DAY,
+      },
+    });
+    const fresh = new CorrelationEngine({ userCode: code, now });
+    const practice = makePractice();
+
+    expect(veryOld.scorePractice(practice).score).toBe(
+      fresh.scorePractice(practice).score
+    );
+  });
+
+  it('uso no mesmo instante (now == lastUsed) zera a recência', () => {
+    const justUsed = new CorrelationEngine({
+      userCode: code,
+      now,
+      practiceUsage: { 'test-1': now },
+    });
+    const fresh = new CorrelationEngine({ userCode: code, now });
+    const practice = makePractice();
+
+    expect(justUsed.scorePractice(practice).score).toBeLessThan(
+      fresh.scorePractice(practice).score
+    );
+  });
+
+  it('recência cresce linearmente entre uso recente e saturação', () => {
+    const day5 = new CorrelationEngine({
+      userCode: code,
+      now,
+      practiceUsage: { 'test-1': now - 5 * MS_PER_DAY },
+    });
+    const day15 = new CorrelationEngine({
+      userCode: code,
+      now,
+      practiceUsage: { 'test-1': now - 15 * MS_PER_DAY },
+    });
+    const practice = makePractice();
+
+    expect(day15.scorePractice(practice).score).toBeGreaterThan(
+      day5.scorePractice(practice).score
+    );
   });
 });

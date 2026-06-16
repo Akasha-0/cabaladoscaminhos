@@ -65,6 +65,18 @@ export interface RecommendationContext {
   userCode: AkashaCode;
   lifeArea?: LifeArea;
   context?: string;
+  /**
+   * Mapa opcional de uso de práticas para o cálculo de recência.
+   * Forneça um `PracticeUsageMap` ou um `PracticeUsageTracker` para que
+   * o score de recência penalize práticas recém-utilizadas e favoreça
+   * as que ainda não foram feitas (ou foram feitas há mais tempo).
+   */
+  practiceUsage?: PracticeUsageMap | PracticeUsageTracker;
+  /**
+   * Momento de referência (ms) para o cálculo de recência. Útil para
+   * testes determinísticos. Padrão: `Date.now()`.
+   */
+  now?: number;
 }
 
 // ─── Pesos do Algoritmo de Scoring ───────────────────────────────────────────
@@ -76,6 +88,48 @@ const SCORING_WEIGHTS = {
   relevance: 0.2,
   recency: 0.1,
 };
+
+/**
+ * Número de dias para a recência saturar de volta em 100.
+ * Após este período, a prática é considerada "fresca" novamente para sugestão.
+ */
+const RECENCY_DECAY_DAYS = 30;
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+/**
+ * Mapa de uso de práticas: id → timestamp (ms) da última vez que a prática
+ * foi usada pelo usuário. Ausência da chave = nunca usada → score máximo.
+ */
+export type PracticeUsageMap = Record<string, number>;
+
+/**
+ * Tracker in-memory para registrar uso de práticas ao longo do tempo.
+ * Projetado para funcionar standalone (sem persistência) — pode ser
+ * adaptado a um repositório (Prisma, Redis, etc.) trocando o Map por store.
+ */
+export class PracticeUsageTracker {
+  private readonly usage: PracticeUsageMap;
+
+  constructor(initial: PracticeUsageMap = {}) {
+    this.usage = { ...initial };
+  }
+
+  /** Registra uso de uma prática no momento atual (ou em `at`). */
+  record(practiceId: string, at: number = Date.now()): void {
+    this.usage[practiceId] = at;
+  }
+
+  /** Retorna o timestamp (ms) do último uso, ou undefined se nunca usada. */
+  getLastUsed(practiceId: string): number | undefined {
+    return this.usage[practiceId];
+  }
+
+  /** Visão somente-leitura do mapa completo de uso. */
+  snapshot(): PracticeUsageMap {
+    return { ...this.usage };
+  }
+}
 
 // ─── Funções Auxiliares ──────────────────────────────────────────────────────
 
@@ -191,6 +245,51 @@ function calculateRelevanceScore(
 }
 
 /**
+ * Normaliza o mapa de uso para um `PracticeUsageMap` simples, aceitando
+ * tanto um `Record` quanto um `PracticeUsageTracker`.
+ */
+function normalizeUsageMap(
+  usage?: PracticeUsageMap | PracticeUsageTracker
+): PracticeUsageMap | undefined {
+  if (!usage) return undefined;
+  if (usage instanceof PracticeUsageTracker) return usage.snapshot();
+  return usage;
+}
+
+/**
+ * Calcula o score de recência para uma prática, considerando quando ela
+ * foi usada pela última vez pelo usuário.
+ *
+ * Retorna um valor entre 0 e 100:
+ * - 100 quando a prática nunca foi usada (máxima novidade).
+ * - 0   quando a prática foi usada há muito pouco tempo (saturação).
+ * - Cresce linearmente até 100 ao longo de `RECENCY_DECAY_DAYS` dias.
+ *
+ * Se nenhum mapa de uso for fornecido, retorna 100 (assume novidade
+ * total — comportamento equivalente ao placeholder anterior).
+ */
+function calculateRecencyScore(
+  practiceId: string,
+  usage?: PracticeUsageMap | PracticeUsageTracker,
+  now: number = Date.now()
+): number {
+  const usageMap = normalizeUsageMap(usage);
+  if (!usageMap) return 100;
+
+  const lastUsed = usageMap[practiceId];
+  if (typeof lastUsed !== 'number') return 100;
+
+  const elapsedMs = Math.max(0, now - lastUsed);
+  const elapsedDays = elapsedMs / MS_PER_DAY;
+
+  if (elapsedDays >= RECENCY_DECAY_DAYS) return 100;
+  if (elapsedDays <= 0) return 0;
+
+  // Crescimento linear de 0 → 100 ao longo de RECENCY_DECAY_DAYS
+  return Math.round((elapsedDays / RECENCY_DECAY_DAYS) * 100);
+}
+
+/**
  * Gera razão descritiva para o score.
  */
 function generateReason(
@@ -244,11 +343,15 @@ export class CorrelationEngine {
   private readonly userCode: AkashaCode;
   private readonly lifeArea?: LifeArea;
   private readonly context?: string;
+  private readonly practiceUsage?: PracticeUsageMap | PracticeUsageTracker;
+  private readonly now: number;
 
   constructor(context: RecommendationContext) {
     this.userCode = context.userCode;
     this.lifeArea = context.lifeArea;
     this.context = context.context;
+    this.practiceUsage = context.practiceUsage;
+    this.now = context.now ?? Date.now();
   }
 
   /**
@@ -277,13 +380,18 @@ export class CorrelationEngine {
     const correlationScore = calculateCorrelationScore(this.userCode, practice);
     const safetyScore = calculateSafetyScore(practice);
     const relevanceScore = calculateRelevanceScore(practice, this.lifeArea);
+    const recencyScore = calculateRecencyScore(
+      practice.id,
+      this.practiceUsage,
+      this.now
+    );
 
     // Score final ponderado (spec 13.2) — pesos somam 1.0
     const score = Math.round(
       SCORING_WEIGHTS.correlation * correlationScore +
         SCORING_WEIGHTS.safety * safetyScore +
         SCORING_WEIGHTS.relevance * relevanceScore +
-        SCORING_WEIGHTS.recency * 100 // TODO: implementar tracking de uso para recência real
+        SCORING_WEIGHTS.recency * recencyScore
     );
 
     const reason = generateReason(this.userCode, practice, correlationScore);
