@@ -1,8 +1,16 @@
 {
   "triad": {
     "typecheck": {
-      "pass": true,
-      "errors": []
+      "pass": false,
+      "errors": [
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(51,3): error TS18046: 'mockedExec' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(68,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(69,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(89,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(90,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(106,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(107,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'."
+      ]
     },
     "lint": {
       "pass": true,
@@ -10,10 +18,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1536,
-      "failed": 238
+      "passed": 1558,
+      "failed": 241
     }
   },
-  "git_head": "9e975beb78c400ffa80006992d6df5e963a100b5",
-  "cached_at": 1781626652.3635948
+  "git_head": "41b837b714dc5641663bbe92ed42c00876b48d17",
+  "cached_at": 1781628838.6963775
 }

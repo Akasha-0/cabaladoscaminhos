@@ -1,15 +1,23 @@
 {
   "improvements": [
     {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/scripts/grimoire-audit.ts"
+      ]
+    },
+    {
       "type": "console_cleanup",
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
         "packages/akasha-cli/src/cli.ts",
-        "packages/akasha-cli/src/commands/setup.ts",
-        "packages/akasha-cli/src/commands/status.ts",
-        "packages/akasha-cli/src/commands/diagnostico.ts",
-        "apps/akasha-portal/scripts/grimoire-audit.ts"
+        "apps/akasha-portal/scripts/sync-grimoire.ts",
+        "apps/akasha-portal/scripts/run-evolution.ts",
+        "apps/akasha-portal/scripts/run-quality-eval.ts",
+        "apps/akasha-portal/middleware.ts"
       ]
     },
     {
@@ -19,7 +27,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
-          "lines": 979
+          "lines": 980
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
@@ -32,5 +40,5 @@
       ]
     }
   ],
-  "iteration": 12
+  "iteration": 13
 }

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T16:21:08.791324+00:00",
-  "version": "0.12.0",
+  "generated_at": "2026-06-16T16:52:02.277282+00:00",
+  "version": "0.14.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -917,21 +917,32 @@
       "- [~] **PLN-011[2]** -- large_file | 27 oversized files",
       "- [~] **PLN-012[1]** -- console_cleanup | 5 files with console statements",
       "- [~] **PLN-012[2]** -- large_file | 27 oversized files",
+      "- [~] **PLN-013[1]** -- missing_tests | 1 changed files lack tests",
+      "- [~] **PLN-013[2]** -- console_cleanup | 5 files with console statements",
+      "- [~] **PLN-013[3]** -- large_file | 27 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 916
+    "pending_count": 919
   },
   "git": {
-    "untracked": 5,
-    "modified": 15,
+    "untracked": 6,
+    "modified": 14,
     "total": 20,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
-      "pass": true,
-      "errors": []
+      "pass": false,
+      "errors": [
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(51,3): error TS18046: 'mockedExec' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(68,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(69,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(89,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(90,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(106,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(107,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'."
+      ]
     },
     "lint": {
       "pass": true,
@@ -939,8 +950,8 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1536,
-      "failed": 238
+      "passed": 1558,
+      "failed": 241
     }
   },
   "codegraph": {
@@ -948,6 +959,20 @@
     "ok": true
   },
   "improvement_candidates": [
+    {
+      "type": "typecheck_errors",
+      "priority": 9,
+      "description": "7 TypeScript errors",
+      "errors": [
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(51,3): error TS18046: 'mockedExec' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(68,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(69,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(89,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(90,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(106,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
+        "packages/akasha-cli/src/commands/diagnostico.test.ts(107,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'."
+      ]
+    },
     {
       "type": "tech_debt",
       "priority": 5,
@@ -964,7 +989,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
-          "lines": 979
+          "lines": 980
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
@@ -974,6 +999,14 @@
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine.ts",
           "lines": 957
         }
+      ]
+    },
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "1 changed files lack tests",
+      "files": [
+        "packages/akasha-cli/src/cli.ts"
       ]
     },
     {
@@ -988,15 +1021,15 @@
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
-        "packages/akasha-cli/src/cli.ts",
-        "packages/akasha-cli/src/commands/setup.ts",
-        "packages/akasha-cli/src/commands/status.ts",
-        "packages/akasha-cli/src/commands/diagnostico.ts",
-        "apps/akasha-portal/scripts/grimoire-audit.ts"
+        "apps/akasha-portal/scripts/run-quality-eval.ts",
+        "apps/akasha-portal/middleware.ts",
+        "apps/akasha-portal/src/app/api/mentor/ask/route.ts",
+        "apps/akasha-portal/src/app/api/akasha/transits/today/route.ts",
+        "apps/akasha-portal/src/components/providers/SupabaseProvider.tsx"
       ]
     }
   ],
-  "git_head": "9e975beb78c400ffa80006992d6df5e963a100b5",
+  "git_head": "41b837b714dc5641663bbe92ed42c00876b48d17",
   "decision_factors": {
     "has_pending_features": true
   }

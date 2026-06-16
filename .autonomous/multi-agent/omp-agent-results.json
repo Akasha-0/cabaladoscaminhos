@@ -1,3 +1,19 @@
 {
-  "results": []
+  "results": [
+    {
+      "success": true,
+      "message": "Removed console statements",
+      "type": "console_cleanup"
+    },
+    {
+      "success": false,
+      "message": "Skipped: apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts was modified (git status dirty)",
+      "type": "large_file"
+    },
+    {
+      "success": true,
+      "message": "Added tests for 1 file",
+      "type": "missing_tests"
+    }
+  ]
 }
