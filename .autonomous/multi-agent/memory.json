@@ -1,5 +1,5 @@
 {
-  "iteration": 53,
+  "iteration": 54,
   "learnings": [
     {
       "ts": "2026-06-15T23:25:37.276925+00:00",
@@ -311,12 +311,6 @@
   "task_history": [],
   "context_window": [
     {
-      "ts": "2026-06-16T18:11:54.286280+00:00",
-      "improvement": "missing_tests, console_cleanup, large_file",
-      "version": "0.22.0",
-      "agents": 2
-    },
-    {
       "ts": "2026-06-16T18:16:30.425029+00:00",
       "improvement": "large_file",
       "version": "0.23.0",
@@ -428,6 +422,12 @@
       "ts": "2026-06-16T19:34:55.259131+00:00",
       "improvement": "large_file",
       "version": "0.41.0",
+      "agents": 0
+    },
+    {
+      "ts": "2026-06-16T19:39:14.959020+00:00",
+      "improvement": "large_file",
+      "version": "0.42.0",
       "agents": 0
     }
   ],
