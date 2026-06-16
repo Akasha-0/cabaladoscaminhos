@@ -6,7 +6,7 @@ Fully async: all phase commands return immediately,
 heavy work runs in ThreadPoolExecutor.
 """
 
-import json, os, signal, socket, subprocess, sys, time
+import json, os, signal, socket, subprocess as _sub, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
@@ -155,13 +155,10 @@ def phase_planning(state):
 
 
 def phase_implementation(state, memory):
-    """Signal that implementation should start. Agents spawned by script."""
+    """Spawn coding agents for each improvement, then return immediately."""
     task_data = load_json(TASK_FILE, {})
     improvements = task_data.get("improvements", [])
-    log(f"IMPLEMENTATION: {len(improvements)} improvements queued")
-    # Write agent spawning manifest (script reads this)
-    save_json(IMPL_FILE, {"improvements": improvements, "agent_count": len(improvements),
-                           "timestamp": datetime.now(timezone.utc).isoformat()})
+    log(f"IMPLEMENTATION: spawning {len(improvements)} agents")
     # Clean old results and PIDs for fresh start
     save_json(RESULTS_FILE, {"results": []})
     for f in AGENT_RESULTS_DIR.glob("result-*.json"):
@@ -171,34 +168,73 @@ def phase_implementation(state, memory):
             pass
     if AGENT_PIDS_FILE.exists():
         AGENT_PIDS_FILE.unlink()
-    # Signal script to spawn agents
+
+    def _spawn_agent(i, imp):
+        agent_id = f"ta-{int(time.time())}-{i}"
+        prompt_file = MA / f".agent-prompt-{agent_id}.txt"
+        prompt = imp.get("prompt", imp.get("description", str(imp)))
+        prompt_file.write_text(prompt)
+        proc = _sub.Popen(
+            ["timeout", "600", "claude", "--no-input", "-p", prompt],
+            cwd=str(ROOT), stdout=_sub.DEVNULL, stderr=_sub.DEVNULL
+        )
+        with open(AGENT_PIDS_FILE, "a") as pf:
+            pf.write(f"{agent_id}|{proc.pid}\n")
+        log(f"  Spawned agent {agent_id} pid={proc.pid}")
+
+    for i, imp in enumerate(improvements):
+        _executor.submit(_spawn_agent, i, imp)
+
     state["phase"] = "IMPLEMENTATION_WAIT"
     save_state(state)
 
-
 def wait_implementation(state, memory):
-    """Non-blocking: check if agents done, set phase to QA if all dead."""
-    alive = []
-    if AGENT_PIDS_FILE.exists():
-        for line in AGENT_PIDS_FILE.read_text().splitlines():
-            if "|" not in line:
-                continue
-            parts = line.strip().split("|")
-            if len(parts) != 2:
-                continue
-            agent_id, pid = parts
+    """Blocking: wait until all agent pids are dead, collect results, advance to QA."""
+    start = time.time()
+    max_wait_per_agent = 600
+    while True:
+        alive = []
+        if AGENT_PIDS_FILE.exists():
+            for line in AGENT_PIDS_FILE.read_text().splitlines():
+                if "|" not in line:
+                    continue
+                parts = line.strip().split("|")
+                if len(parts) != 2:
+                    continue
+                agent_id, pid = parts
+                try:
+                    pid_int = int(pid)
+                    os.kill(pid_int, 0)  # alive?
+                    alive.append((agent_id, pid_int))
+                except (ValueError, ProcessLookupError, PermissionError):
+                    pass  # dead = ignore
+
+        if not alive:
+            break  # all dead
+
+        elapsed = time.time() - start
+        oldest = alive[0]
+        if elapsed > max_wait_per_agent:
+            log(f"  Timeout waiting for agents after {elapsed:.0f}s, killing {oldest[0]}")
             try:
-                pid_int = int(pid)
-                os.kill(pid_int, 0)  # alive?
-                alive.append((agent_id, pid_int))
-            except (ValueError, ProcessLookupError):
-                pass  # dead = ignore
+                os.kill(oldest[1], 9)
+            except Exception:
+                pass
+            start = time.time()  # reset for remaining agents
+        else:
+            time.sleep(5)
 
-    if alive:
-        return False  # still running
+    # All dead: collect results and advance to QA
+    log("  All agents finished, collecting results")
+    all_results = []
+    for f in sorted(AGENT_RESULTS_DIR.glob("result-*.json")):
+        try:
+            all_results.append(json.loads(f.read_text()))
+        except Exception:
+            pass
+    save_json(RESULTS_FILE, {"results": all_results})
+    log(f"  Collected {len(all_results)} results")
 
-    # All dead: collect results and advance
-    log("  All agents finished")
     state["phase"] = "QA"
     save_state(state)
     return True
@@ -216,8 +252,7 @@ def phase_qa(state):
     for f in AGENT_RESULTS_DIR.glob("result-*.json"):
         try:
             all_results.append(json.loads(f.read_text()))
-        except Exception:
-            pass
+    snap = _bootstrap(use_cache=True)
     save_json(RESULTS_FILE, {"results": all_results})
     for r in all_results:
         _add_lr(state.get("_memory", {}), "task-agent", "IMPLEMENTATION",

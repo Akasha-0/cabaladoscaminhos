@@ -1,1 +1,66 @@
-{"success": true, "message": "No tech_debt comments found in target files (significados-curados-helpers.test.ts, significados-curados.test.ts) — 0 instances to fix", "type": "tech_debt"}
+{
+  "all_ok": false,
+  "summary": "2/3 agents succeeded in 463.8s",
+  "results": [
+    {
+      "agent_id": "bdf76451",
+      "type": "missing_tests",
+      "success": true,
+      "message": "Agent bdf76451 completed missing_tests",
+      "exit_code": 0
+    },
+    {
+      "agent_id": "32dfb3e0",
+      "type": "tech_debt",
+      "success": true,
+      "message": "Agent 32dfb3e0 completed tech_debt",
+      "exit_code": 0
+    },
+    {
+      "agent_id": "8d59626c",
+      "type": "large_file",
+      "success": false,
+      "message": "[Errno 2] No such file or directory: '/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/agent-results/result-8d59626c.json'"
+    }
+  ],
+  "improvements": [
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "3 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/components/akasha/dashboard/hooks/useAkashaSynthesis.test.ts",
+        "apps/akasha-portal/src/lib/application/akasha/narrative-generator.test.ts",
+        "apps/akasha-portal/vitest.config.ts"
+      ]
+    },
+    {
+      "type": "tech_debt",
+      "priority": 5,
+      "description": "2 files with TODO",
+      "files": [
+        "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
+      ]
+    },
+    {
+      "type": "large_file",
+      "priority": 4,
+      "description": "28 oversized files",
+      "files": [
+        {
+          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+          "lines": 1437
+        },
+        {
+          "file": "packages/akasha-core/src/interpretation-engine.ts",
+          "lines": 1198
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 1141
+        }
+      ]
+    }
+  ]
+}

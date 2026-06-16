@@ -1,8 +1,7 @@
 {
-  "phase": "QA",
-  "iteration": 0,
+  "phase": "RELEASE",
+  "iteration": 1,
   "current_features": [
-    "missing_tests",
     "tech_debt",
     "large_file"
   ],

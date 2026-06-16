@@ -225,6 +225,33 @@
       "outcome": "success",
       "summary": "Agent 478ae67b completed tech_debt",
       "details": {}
+    },
+    {
+      "ts": "2026-06-16T12:27:52.373984+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "success",
+      "summary": "Agent bdf76451 completed missing_tests",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T12:27:52.374165+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "tech_debt",
+      "outcome": "success",
+      "summary": "Agent 32dfb3e0 completed tech_debt",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T12:27:52.374242+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "[Errno 2] No such file or directory: '/home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/agent-results/result-8d59626c.json'",
+      "details": {}
     }
   ],
   "task_history": [],
@@ -991,13 +1018,13 @@
   ],
   "error_patterns": {
     "b55c038d": 2,
-    "f2d048e4": 2,
+    "f2d048e4": 3,
     "d92babc3": 1
   },
   "success_patterns": {
     "e796b93c": 3,
-    "b55c038d": 4,
-    "d92babc3": 4,
+    "b55c038d": 5,
+    "d92babc3": 5,
     "f2d048e4": 2
   },
   "recent_decisions": [
