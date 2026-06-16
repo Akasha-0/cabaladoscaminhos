@@ -81,16 +81,28 @@ COMPOSITE_SCORES = {
 
 # ── Phase duration tracking ────────────────────────────────────────────────────
 
-_phase_timers: dict[str, float] = {}  # phase -> start time
+_phase_timers: dict[str, float] = {}   # phase -> start time (idempotent)
+_active_phase: str | None = None       # one active phase at a time
 
 
 def phase_start(phase: str) -> None:
-    _phase_timers[phase] = _now_ms()
+    """Idempotent: only starts if no phase is currently active."""
+    global _active_phase
+    if _active_phase is None:
+        _phase_timers[phase] = _now_ms()
+        _active_phase = phase
 
 
 def phase_end(phase: str) -> float:
-    """Returns duration in seconds."""
+    """
+    Idempotent: only ends the phase that is currently active.
+    Returns 0.0 and records nothing if no matching phase is active.
+    """
+    global _active_phase
+    if _active_phase != phase:
+        return 0.0
     start = _phase_timers.pop(phase, None)
+    _active_phase = None
     if start is None:
         return 0.0
     return (_now_ms() - start) / 1000.0

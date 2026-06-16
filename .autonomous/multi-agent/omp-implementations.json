@@ -1,15 +1,6 @@
 {
   "improvements": [
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "2 changed files lack tests",
-      "files": [
-        "packages/akasha-core/src/interpretation-engine.ts",
-        "packages/akasha-core/src/interpretation-engine/mestres.ts"
-      ]
-    },
-    {
       "type": "tech_debt",
       "priority": 5,
       "description": "2 files with TODO",
@@ -38,6 +29,6 @@
       ]
     }
   ],
-  "agent_count": 3,
-  "iteration": 3
+  "agent_count": 2,
+  "iteration": 4
 }

@@ -303,17 +303,30 @@ def find_improvement_candidates(triad: dict) -> list:
                          "description": f"{len(untested)} changed files lack tests",
                          "files": untested[:5]})
 
-    # 5. Check traducao-areas coverage
+    # 5. Check traducao-areas coverage — ALL 5 traditions
     for trad_path in [ROOT / "traducao-areas.ts",
                       ROOT / "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts"]:
         if trad_path.exists():
             content = trad_path.read_text()
-            for trad in ["CABALA", "TANTRA"]:
+            missing = []
+            for trad in ["CABALA", "TANTRA", "ASTROLOGIA", "ODUS", "ICHING"]:
                 if trad not in content:
-                    candidates.append({"type": "missing_translation", "priority": 8,
-                                     "description": f"{trad} missing from traducao-areas",
-                                     "trad": trad, "file": str(trad_path)})
+                    missing.append(trad)
+            for trad in missing:
+                candidates.append({"type": "missing_tradition", "priority": 8,
+                                 "description": f"{trad} missing from traducao-areas",
+                                 "trad": trad, "file": str(trad_path)})
             break
+
+    # 6. Find files with console.log/debug/info statements
+    rc, out, _ = run_cmd(["grep", "-r", "--include=*.ts", "--include=*.tsx",
+                          "-n", "console\\.\\(log\\|debug\\|info\\|warn\\)",
+                          "packages/", "apps/", "-l"], timeout=15)
+    if rc == 0 and out.strip():
+        files = [f.strip() for f in out.splitlines() if f.strip()][:5]
+        candidates.append({"type": "console_cleanup", "priority": 5,
+                         "description": f"{len(files)} files with console statements",
+                         "files": files})
 
     return candidates
 
@@ -357,7 +370,7 @@ def should_proceed(snapshot: dict) -> tuple[bool, str]:
 SKIP_TYPES = {"typecheck_clean", "typecheck_errors"}
 
 # Types that are singular (only one instance per iteration)
-SINGULAR_TYPES = {"typecheck_errors", "missing_translation"}
+SINGULAR_TYPES = {"typecheck_errors", "missing_tradition"}
 
 # Recent decisions window for deduplication
 RECENT_DECISIONS_KEY = "recent_decisions"
@@ -599,7 +612,7 @@ def _build_agent_prompt(improvement: dict) -> str:
             f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
         )
 
-    elif imp_type == "missing_translation":
+    elif imp_type in ("missing_translation", "missing_tradition"):
         trad = improvement.get("trad", "?")
         file_path = improvement.get("file", "?")
         return (
@@ -607,13 +620,33 @@ def _build_agent_prompt(improvement: dict) -> str:
             f"File: {file_path}\n"
             f"Missing: {trad}\n\n"
             f"RULES:\n"
-            f"1. Read {file_path} and find the traducao-areas pattern for ASTROLOGIA, ODUS, ICHING\n"
-            f"2. Add CABALA and TANTRA entries: name (string), keywords (string[]), contextPatterns (RegExp[])\n"
+            f"1. Read {file_path} to understand the existing structure (ASTROLOGIA section as reference)\n"
+            f"2. Add {trad} section following the same pattern as ASTROLOGIA:\n"
+            f"   - name: the tradition name\n"
+            f"   - keywords: relevant terms (string[])\n"
+            f"   - contextPatterns: where this tradition applies (RegExp[])\n"
             f"3. Run `pnpm typecheck` to verify no errors\n"
-            f"4. Commit: `git commit -m 'feat: add {trad} translation areas'`\n"
-            f"5. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
-            f'{{"success": true, "message": "Added {trad} translation", "type": "missing_translation"}}\n'
+            f"4. Commit: `git add {file_path} && git commit -m 'feat: add {trad} to traducao-areas'`\n"
+            f'5. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n'
+            f'{{"success": true, "message": "Added {trad} to traducao-areas", "type": "missing_tradition"}}\n'
             f"6. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
+            f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
+        )
+
+    elif imp_type == "console_cleanup":
+        file_list = ", ".join(files[:3]) if files else "various files"
+        return (
+            f"You are removing console.log/debug/info statements from production code in AKASHA.\n"
+            f"Files: {file_list}\n\n"
+            f"RULES:\n"
+            f"1. Run `git status` before starting to avoid conflicts\n"
+            f"2. Find ALL console statements: grep -rn 'console\\.' <files>\n"
+            f"3. Remove console.log/debug/info/warn statements (keep console.error if used for real errors)\n"
+            f"4. For each file: remove the console line, verify with `pnpm typecheck`\n"
+            f"5. Commit EACH file separately: `git add <file> && git commit -m 'chore: remove console statements from <file>'`\n"
+            f'6. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n'
+            f'{{"success": true, "message": "Removed console statements", "type": "console_cleanup"}}\n'
+            f"7. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
             f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
         )
 

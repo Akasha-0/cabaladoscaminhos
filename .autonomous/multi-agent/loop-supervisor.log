@@ -146,3 +146,11 @@
 [2026-06-16T14:28:26Z] [SUP]   Cleanup complete.
 [2026-06-16T14:28:26Z] [SUP] 🚀 STARTING DAEMON
 [2026-06-16T14:28:26Z] [SUP] ✅ DAEMON RUNNING PID=109140
+[2026-06-16T14:43:09Z] [SUP] Stopping daemon PID=109140
+[2026-06-16T14:43:09Z] [SUP] Supervisor stop complete
+[2026-06-16T14:43:11Z] [SUP] Cleaning stale state...
+[2026-06-16T14:43:11Z] [SUP]   Killing stale agent ta-1781620443-1 (PID=133087)
+[2026-06-16T14:43:11Z] [SUP]   Cleared stale daemon_pid from state.json
+[2026-06-16T14:43:11Z] [SUP]   Cleanup complete.
+[2026-06-16T14:43:11Z] [SUP] 🚀 STARTING DAEMON
+[2026-06-16T14:43:11Z] [SUP] ✅ DAEMON RUNNING PID=191454

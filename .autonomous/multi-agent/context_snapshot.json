@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T14:28:27.527705+00:00",
-  "version": "0.4.0",
+  "generated_at": "2026-06-16T14:43:12.151788+00:00",
+  "version": "0.5.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -885,15 +885,17 @@
       "- [~] **PLN-003[1]** -- missing_tests | 2 changed files lack tests",
       "- [~] **PLN-003[2]** -- tech_debt | 2 files with TODO",
       "- [~] **PLN-003[3]** -- large_file | 28 oversized files",
+      "- [~] **PLN-004[1]** -- tech_debt | 2 files with TODO",
+      "- [~] **PLN-004[2]** -- large_file | 28 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 884
+    "pending_count": 886
   },
   "git": {
-    "untracked": 8,
-    "modified": 14,
-    "total": 22,
+    "untracked": 4,
+    "modified": 21,
+    "total": 25,
     "has_changes": true
   },
   "triad": {
@@ -931,29 +933,40 @@
       "description": "28 oversized files",
       "files": [
         {
-          "file": "packages/akasha-core/src/interpretation-engine.ts",
-          "lines": 1050
-        },
-        {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
           "lines": 1001
         },
         {
           "file": "packages/core-iching/src/practices.ts",
           "lines": 993
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
+          "lines": 991
         }
       ]
     },
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "1 changed files lack tests",
+      "type": "missing_tradition",
+      "priority": 8,
+      "description": "ODUS missing from traducao-areas",
+      "trad": "ODUS",
+      "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
+    },
+    {
+      "type": "console_cleanup",
+      "priority": 5,
+      "description": "5 files with console statements",
       "files": [
-        "packages/akasha-core/src/interpretation-engine/mestres.test.ts"
+        "packages/mentor/src/context/system-prompt.ts",
+        "packages/mentor/src/rag/openai-embedder.ts",
+        "packages/mentor/src/rag/cohere-embedder.ts",
+        "packages/mentor/src/cli/chat.tsx",
+        "packages/akasha-core/src/recommendation-generator.ts"
       ]
     }
   ],
-  "git_head": "642349cfd9785986a3dc95caf5622c71ec345528",
+  "git_head": "13c8cb5ca1fef5b125e35f51471fead58601bf01",
   "decision_factors": {
     "has_pending_features": true
   }

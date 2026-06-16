@@ -977,6 +977,8 @@
 - [~] **PLN-003[1]** -- missing_tests | 2 changed files lack tests
 - [~] **PLN-003[2]** -- tech_debt | 2 files with TODO
 - [~] **PLN-003[3]** -- large_file | 28 oversized files
+- [~] **PLN-004[1]** -- tech_debt | 2 files with TODO
+- [~] **PLN-004[2]** -- large_file | 28 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
