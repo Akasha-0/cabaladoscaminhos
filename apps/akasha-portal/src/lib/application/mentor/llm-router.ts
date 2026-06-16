@@ -98,9 +98,8 @@ export async function* streamMentorResponse(
         yield* streamWithMock(messages as { role: 'user' | 'assistant' | 'system'; content: string }[]);
         return;
     }
-  } catch (err) {
-    console.warn(`[mentor] ${provider} falhou, tentando fallback:`, err);
-    // Fallback chain
+  } catch (_err) {
+    // Fallback chain handles provider failures silently
     if (provider !== 'openai' && process.env.OPENAI_API_KEY) {
       yield* streamWithOpenAI(messages, config);
       return;
