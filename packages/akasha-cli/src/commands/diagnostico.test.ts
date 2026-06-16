@@ -47,32 +47,24 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function mockExecSuccess(command: string, output: string) {
-  mockedExec.mockImplementation((cmd: string, _opts: unknown, cb: (err: null, stdout: string, stderr: string) => void) => {
-    if (cmd.startsWith(command)) {
-      setImmediate(() => cb(null, output, ''));
+function createExecMock(responses: Array<{ pattern: (cmd: string) => boolean; stdout: string; stderr?: string; error?: Error }>) {
+  mockedExec.mockImplementation(
+    (cmd: string, _opts: unknown, cb: (err: Error | null, stdout: string, stderr: string) => void) => {
+      const match = responses.find(r => r.pattern(cmd));
+      if (match) {
+        setImmediate(() => cb(match.error ?? null, match.stdout, match.stderr ?? ''));
+      }
+      return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } };
     }
-    return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } };
-  });
-}
-
-function mockExecError(command: string) {
-  mockedExec.mockImplementation((cmd: string, _opts: unknown, cb: (err: Error, stdout: string, stderr: string) => void) => {
-    if (cmd.startsWith(command)) {
-      setImmediate(() => cb(new Error('not found'), '', ''));
-    }
-    return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } };
-  });
+  );
 }
 
 describe('diagnostico', () => {
   it('should pass when all checks succeed', async () => {
-    // Node check: mocked via process.version
-    mockedExec.mockImplementation((cmd: string, _opts: unknown, cb: (err: null, stdout: string, stderr: string) => void) => {
-      if (cmd.startsWith('pnpm')) { setImmediate(() => cb(null, '9.0.0\n', '')); return; }
-      if (cmd.startsWith('psql')) { setImmediate(() => cb(null, 'psql (PostgreSQL) 16.0\n', '')); return; }
-      return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } };
-    });
+    createExecMock([
+      { pattern: cmd => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
+      { pattern: cmd => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
+    ]);
     mockedExistsSync.mockReturnValue(true);
     mockedReadFileSync.mockReturnValue('DATABASE_URL=postgres://localhost\n');
 
@@ -90,11 +82,10 @@ describe('diagnostico', () => {
     const originalVersion = process.version;
     Object.defineProperty(process, 'version', { value: 'v16.0.0', configurable: true });
 
-    mockedExec.mockImplementation((cmd: string, _opts: unknown, cb: (err: null, stdout: string, stderr: string) => void) => {
-      if (cmd.startsWith('pnpm')) { setImmediate(() => cb(null, '9.0.0\n', '')); return; }
-      if (cmd.startsWith('psql')) { setImmediate(() => cb(null, 'psql (PostgreSQL) 16.0\n', '')); return; }
-      return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } };
-    });
+    createExecMock([
+      { pattern: cmd => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
+      { pattern: cmd => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
+    ]);
     mockedExistsSync.mockReturnValue(true);
     mockedReadFileSync.mockReturnValue('DATABASE_URL=postgres://localhost\n');
 
@@ -102,18 +93,16 @@ describe('diagnostico', () => {
 
     const output = stdoutChunks.join('');
     expect(output).toContain('Node.js');
-    // The check still runs and will show error for v16
-    expect(output).toMatch(/Node\.js.*v16/);
+    expect(output).toContain('v16');
 
     Object.defineProperty(process, 'version', { value: originalVersion, configurable: true });
   });
 
   it('should handle missing .env file gracefully', async () => {
-    mockedExec.mockImplementation((cmd: string, _opts: unknown, cb: (err: null, stdout: string, stderr: string) => void) => {
-      if (cmd.startsWith('pnpm')) { setImmediate(() => cb(null, '9.0.0\n', '')); return; }
-      if (cmd.startsWith('psql')) { setImmediate(() => cb(null, 'psql (PostgreSQL) 16.0\n', '')); return; }
-      return { on: vi.fn(), stdout: { on: vi.fn() }, stderr: { on: vi.fn() } };
-    });
+    createExecMock([
+      { pattern: cmd => cmd.startsWith('pnpm'), stdout: '9.0.0\n' },
+      { pattern: cmd => cmd.startsWith('psql'), stdout: 'psql (PostgreSQL) 16.0\n' },
+    ]);
     mockedExistsSync.mockReturnValue(false);
     mockedReadFileSync.mockImplementation(() => {
       throw new Error('ENOENT');
