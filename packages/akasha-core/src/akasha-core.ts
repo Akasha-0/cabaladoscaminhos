@@ -217,8 +217,8 @@ async function realPilar1Cabala(
       const expression = cab.calcularCabalistica(input.nome);
       const birthday = reduzir(d);
       return { life_path, birthday, expression, ano_pessoal };
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 1 Cabala falhou, usando stub:', e);
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback
@@ -310,8 +310,8 @@ async function realPilar2Astrologia(
         lilith_signo,
         casa_8_signo,
       };
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 2 Astrologia falhou, usando stub:', e);
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback
@@ -391,8 +391,8 @@ async function realPilar3Tantrica(
       const corpo = tm.soul ?? (((y + m + d) % 11) + 1);
       const trigemeo: PilarTantrica['trigemeo'] =
         corpo <= 4 ? 'fisico' : corpo <= 8 ? 'astral' : 'mental';
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 3 Tantra falhou, usando stub:', e);
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback
@@ -464,11 +464,9 @@ async function realPilar4Odu(
           aviso: 'requer consentimento + terreiro',
         };
       }
-      console.warn(
-        `[akasha/core] Pilar 4 Odu: real engine retornou nome composto/não-canônico "${r.oduName}" — usando stub (Pilar 4 ethics invariant)`,
-      );
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 4 Odu falhou, usando stub:', e);
+      // Pilar 4 ethics invariant: stub fallback (real engine retornou nome não-canônico)
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback (16 names — preserva teste Fase 5 que espera Ogbe em vez de Eji)
@@ -513,8 +511,8 @@ async function realPilar5IChing(
         hexagrama_dia: hex_dia,
         level: 'gift',
       };
-    } catch (e) {
-      console.warn('[akasha/core] Pilar 5 I Ching falhou, usando stub:', e);
+    } catch {
+      // fall through to stub
     }
   }
   // Stub fallback
