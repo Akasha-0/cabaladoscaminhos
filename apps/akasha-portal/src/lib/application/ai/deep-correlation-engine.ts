@@ -15,6 +15,7 @@ import {
   detectElementalImbalance,
   detectKarmicThemes,
   detectSpiritualBlocks,
+  ODU_TAROT_MAP,
 } from './deep-correlation-engine/pattern-detectors';
 
 // ============================================================

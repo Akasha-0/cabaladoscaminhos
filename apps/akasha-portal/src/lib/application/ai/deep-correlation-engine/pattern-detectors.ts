@@ -6,7 +6,7 @@ import type { DetectedPattern } from '../deep-correlation-engine';
 // ============================================================
 // 16 Odús → Tarot Major Arcana — canonical names per constants/odus.ts
 // Arcano numbers follow Merindilogun position: Ogbe=0, Ejiokô=1, Etogundá=2, etc.
-const ODU_TAROT_MAP: Record<string, number[]> = {
+export const ODU_TAROT_MAP: Record<string, number[]> = {
   'Ogbe': [0],
   'Ejiokô': [1],
   'Etogundá': [2],
