@@ -1,9 +1,7 @@
 {
   "phase": "RELEASE",
-  "iteration": 18,
+  "iteration": 19,
   "current_features": [
-    "missing_tests",
-    "console_cleanup",
     "large_file"
   ],
   "retry_count": 0,

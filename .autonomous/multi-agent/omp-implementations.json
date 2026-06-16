@@ -1,30 +1,10 @@
 {
   "improvements": [
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "1 changed files lack tests",
-      "files": [
-        "packages/core-iching/src/practices.ts"
-      ]
-    },
-    {
-      "type": "console_cleanup",
-      "priority": 5,
-      "description": "1 files with console statements",
-      "files": [
-        "apps/akasha-portal/prisma/seed.ts"
-      ]
-    },
-    {
       "type": "large_file",
       "priority": 4,
       "description": "27 oversized files",
       "files": [
-        {
-          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 937
-        },
         {
           "file": "packages/core-iching/src/practices-data.ts",
           "lines": 928
@@ -32,10 +12,14 @@
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts",
           "lines": 918
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
+          "lines": 867
         }
       ]
     }
   ],
-  "agent_count": 3,
-  "iteration": 18
+  "agent_count": 1,
+  "iteration": 19
 }
