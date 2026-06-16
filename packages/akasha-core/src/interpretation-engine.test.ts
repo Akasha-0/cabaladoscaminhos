@@ -12,7 +12,12 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { interpretarVida, interpretarVidaArea } from './interpretation-engine';
+import {
+  interpretarVida,
+  interpretarVidaArea,
+  MASTER_NUMBERS,
+  VIDA_CONTENT,
+} from './interpretation-engine';
 import type { VidaInterpretation, AreaInterpretation } from '@akasha/types';
 
 // ─── Testes: interpretarVida ───────────────────────────────────────────────
@@ -105,5 +110,89 @@ describe('interpretarVidaArea', () => {
     expect(interp!.codigo).toBe('vida-99-gift');
     // O fallback sempre popula aplicacao.proposito
     expect(interp!.aplicacao.proposito).toBeDefined();
+  });
+});
+
+describe('MASTER_NUMBERS', () => {
+  it('contém exatamente os três master numbers canônicos da numerologia (11, 22, 33)', () => {
+    expect(MASTER_NUMBERS.size).toBe(3);
+    expect(MASTER_NUMBERS.has(11)).toBe(true);
+    expect(MASTER_NUMBERS.has(22)).toBe(true);
+    expect(MASTER_NUMBERS.has(33)).toBe(true);
+  });
+
+  it('não inclui números de caminho de vida comuns (1-9)', () => {
+    for (let n = 1; n <= 9; n++) {
+      expect(MASTER_NUMBERS.has(n)).toBe(false);
+    }
+  });
+
+  it('edge case: master numbers fora do conjunto canônico (ex: 44) não estão presentes', () => {
+    expect(MASTER_NUMBERS.has(44)).toBe(false);
+    expect(MASTER_NUMBERS.has(13)).toBe(false);
+  });
+});
+
+describe('VIDA_CONTENT', () => {
+  const EXPECTED_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33] as const;
+  const EXPECTED_LEVELS = ['shadow', 'gift', 'siddhi'] as const;
+
+  it('cobre todos os 12 números canônicos: 1-9, 11, 22, 33', () => {
+    for (const n of EXPECTED_NUMBERS) {
+      expect(VIDA_CONTENT[n]).toBeDefined();
+    }
+    // Exatamente estes e mais nenhum
+    const keys = Object.keys(VIDA_CONTENT).map(Number).sort((a, b) => a - b);
+    expect(keys).toEqual([...EXPECTED_NUMBERS].sort((a, b) => a - b));
+  });
+
+  it('cada entrada tem arquetipoAkasha e mandato (metadados do Pilar)', () => {
+    for (const n of EXPECTED_NUMBERS) {
+      const c = VIDA_CONTENT[n];
+      expect(typeof c.arquetipoAkasha).toBe('string');
+      expect(c.arquetipoAkasha.length).toBeGreaterThan(0);
+      expect(typeof c.mandato).toBe('string');
+      expect(c.mandato.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('cada entrada tem os 3 níveis (shadow/gift/siddhi) com todos os campos obrigatórios', () => {
+    for (const n of EXPECTED_NUMBERS) {
+      const c = VIDA_CONTENT[n];
+      for (const nivel of EXPECTED_LEVELS) {
+        const l = c.levels[nivel];
+        expect(l, `número ${n} nível ${nivel} ausente`).toBeDefined();
+        expect(typeof l.tituloPool).toBe('string');
+        expect(l.tituloPool.length).toBeGreaterThan(0);
+        expect(typeof l.significado).toBe('string');
+        expect(l.significado.length).toBeGreaterThan(0);
+        expect(typeof l.padrao).toBe('string');
+        expect(l.padrao.length).toBeGreaterThan(0);
+        expect(typeof l.afirmacao).toBe('string');
+        expect(l.afirmacao.length).toBeGreaterThan(0);
+        expect(typeof l.aplicacao).toBe('object');
+      }
+    }
+  });
+
+  it('cada nível cobre a área "proposito" na aplicacao (camada obrigatória)', () => {
+    for (const n of EXPECTED_NUMBERS) {
+      for (const nivel of EXPECTED_LEVELS) {
+        const aplicacao = VIDA_CONTENT[n].levels[nivel].aplicacao;
+        expect(
+          aplicacao.proposito,
+          `número ${n} nível ${nivel} sem aplicacao.proposito`,
+        ).toBeDefined();
+        expect(typeof aplicacao.proposito).toBe('string');
+        expect((aplicacao.proposito as string).length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it('edge case: números fora do catálogo canônico (ex: 0, 10, 99) não estão em VIDA_CONTENT', () => {
+    expect(VIDA_CONTENT[0]).toBeUndefined();
+    expect(VIDA_CONTENT[10]).toBeUndefined();
+    expect(VIDA_CONTENT[99]).toBeUndefined();
+    expect(VIDA_CONTENT[13]).toBeUndefined();
   });
 });
