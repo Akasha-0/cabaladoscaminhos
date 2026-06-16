@@ -237,13 +237,6 @@ export async function searchGrimoireHybrid(
     const relaxed: Record<string, unknown> = { elemento };
     const relaxedResults = await runHybridQuery(relaxed, vectorStr, limit);
     if (relaxedResults.length > 0) {
-      console.info(
-        JSON.stringify({
-          event: 'grimoire.search.fallback',
-          reason: 'composite_filter_zero_results',
-          relaxedTag: 'elemento',
-        })
-      );
       return relaxedResults;
     }
   }
