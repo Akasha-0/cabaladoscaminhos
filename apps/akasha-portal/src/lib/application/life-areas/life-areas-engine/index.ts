@@ -896,16 +896,10 @@ export const LIFE_AREAS: Record<LifeAreaId, LifeArea> = {
 };
 
 // ============================================================
-// HELPER: getLifeArea
+// RE-EXPORTS from queries helper
 // ============================================================
-
-function getLifeArea(id: LifeAreaId): LifeArea {
-  return LIFE_AREAS[id];
-}
-
-export function getAllLifeAreas(): LifeArea[] {
-  return Object.values(LIFE_AREAS);
-}
+export { getLifeArea, getAllLifeAreas } from './queries';
+export { getLifeAreasByPlanet, getLifeAreasByHouse, getLifeAreasByOdu, getLifeAreasByOrixa } from './queries';
 
 // Ordem de exibição recomendada
 const LIFE_AREA_ORDER: LifeAreaId[] = [
@@ -922,36 +916,3 @@ const LIFE_AREA_ORDER: LifeAreaId[] = [
   'conhecimento',
   'autoconhecimento',
 ];
-
-// ============================================================
-// HELPER: getLifeAreasByPlanet
-// ============================================================
-
-function getLifeAreasByPlanet(planet: string): LifeArea[] {
-  const lower = planet.toLowerCase();
-  return getAllLifeAreas().filter(area =>
-    area.astrology.planets.some(p => p.toLowerCase().includes(lower))
-  );
-}
-
-function getLifeAreasByHouse(house: number): LifeArea[] {
-  return getAllLifeAreas().filter(area =>
-    area.astrology.houses.includes(house)
-  );
-}
-
-function getLifeAreasByOdu(odu: string): LifeArea[] {
-  const lower = odu.toLowerCase();
-  return getAllLifeAreas().filter(area =>
-    area.odu.primaryOdus.some(o => o.toLowerCase().includes(lower)) ||
-    area.odu.favorableOdus.some(o => o.toLowerCase().includes(lower))
-  );
-}
-
-function getLifeAreasByOrixa(orixa: string): LifeArea[] {
-  const lower = orixa.toLowerCase();
-  return getAllLifeAreas().filter(area =>
-    area.orixa.primary.some(o => o.toLowerCase().includes(lower)) ||
-    area.orixa.secondary.some(o => o.toLowerCase().includes(lower))
-  );
-}
