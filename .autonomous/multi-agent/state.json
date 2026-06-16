@@ -1,5 +1,5 @@
 {
-  "phase": "RELEASE",
+  "phase": "QA",
   "iteration": 0,
   "current_features": [
     "missing_tests",

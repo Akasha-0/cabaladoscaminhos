@@ -125,6 +125,8 @@ def phase_research(state, memory):
         return
     _rec_dec(memory, selected)
     save_json(TASK_FILE, {"improvements": selected, "iteration": iteration})
+    save_json(IMPL_FILE, {"improvements": selected, "agent_count": len(selected),
+                           "iteration": iteration})
     state["phase"] = "PLANNING"
     state["current_features"] = [imp.get("type") for imp in selected]
     save_state(state)
@@ -396,9 +398,14 @@ def handle(conn):
 
         # ── run / continuous: full loop ───────────────────────────
         elif cmd == "run" or cmd == "continuous":
-            _send_json(conn, {"status": "running", "phase": state.get("phase")})
+            # Daemon already runs continuously in main loop
+            _send_json(conn, {
+                "status": "running",
+                "phase": state.get("phase"),
+                "iteration": state.get("iteration"),
+                "running": state.get("running", False),
+            })
             conn.close()
-            _run_full_loop()
             return
 
         # ── phase <name>: execute ONE phase synchronously ───────────
@@ -504,17 +511,18 @@ def main():
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.bind(str(SOCKET_FILE))
     sock.listen(5)
-    sock.settimeout(1.0)
+    sock.settimeout(0.5)  # short timeout for responsive socket checks
 
     log(f"Daemon started PID={os.getpid()} socket={SOCKET_FILE}")
 
-    # Startup recovery
+    # Startup recovery: collect stale agents if in IMPLEMENTATION_WAIT
     state = load_state()
     if state.get("phase") in ("IMPLEMENTATION", "IMPLEMENTATION_WAIT"):
         results = list(AGENT_RESULTS_DIR.glob("result-*.json"))
         if results:
             log(f"Startup recovery: collecting {len(results)} stale results")
-            wait_implementation(load_state(), load_memory())
+            wait_implementation(state, load_memory())
+            state = load_state()
 
     state["running"] = True
     state["daemon_pid"] = os.getpid()
@@ -538,30 +546,49 @@ def main():
     signal.signal(signal.SIGINT, sig_handler)
     signal.signal(signal.SIGTERM, sig_handler)
 
+    # ── Main loop: phases run synchronously, socket handled in threads ──
     while load_state().get("running", False):
+        # Check socket (non-blocking, 0.5s timeout)
         try:
             conn, _ = sock.accept()
             t = Thread(target=handle, args=(conn,), daemon=True)
             t.start()
         except socket.timeout:
-            if not load_state().get("running", False):
-                break
-            # Periodic: auto-advance IMPLEMENTATION_WAIT -> QA
-            try:
-                st = load_state()
-                if st.get("phase") == "IMPLEMENTATION_WAIT":
-                    wait_implementation(st, load_memory())
-                    new_state = load_state()
-                    if new_state.get("phase") == "QA":
-                        phase_qa(new_state)
-                        save_state(new_state)
-                        log("Periodic: IMPLEMENTATION -> QA auto-advance")
-            except Exception as e:
-                log(f"Periodic wait error: {e}")
-            continue
+            pass  # no connection
         except Exception as e:
             log(f"Accept error: {e}")
             time.sleep(1)
+
+        # Run current phase
+        ph = load_state().get("phase", "RESEARCH")
+        try:
+            mem = load_memory()
+            st = load_state()
+
+            if ph == "RESEARCH":
+                phase_research(st, mem)
+            elif ph == "PLANNING":
+                phase_planning(st)
+            elif ph == "IMPLEMENTATION":
+                phase_implementation(st, mem)
+            elif ph == "IMPLEMENTATION_WAIT":
+                done = wait_implementation(st, mem)
+                if done:
+                    phase_qa(st)
+            elif ph == "QA":
+                phase_qa(st)
+            elif ph == "VALIDATION":
+                phase_validation(st)
+            elif ph == "RELEASE":
+                phase_release(st, mem)
+            else:
+                log(f"Unknown phase: {ph}, resetting to RESEARCH")
+                st["phase"] = "RESEARCH"
+                save_state(st)
+
+        except Exception as e:
+            log(f"Phase {ph} error: {e}")
+            time.sleep(5)
 
     sock.close()
     try:

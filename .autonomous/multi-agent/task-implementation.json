@@ -3,9 +3,11 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "1 changed files lack tests",
+      "description": "3 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
+        "apps/akasha-portal/src/components/akasha/dashboard/hooks/useAkashaSynthesis.test.ts",
+        "apps/akasha-portal/src/lib/application/akasha/narrative-generator.test.ts",
+        "apps/akasha-portal/vitest.config.ts"
       ]
     },
     {
@@ -24,7 +26,7 @@
       "files": [
         {
           "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-          "lines": 1534
+          "lines": 1394
         },
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
