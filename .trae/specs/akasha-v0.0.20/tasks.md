@@ -2,11 +2,14 @@
 
 ## WS-1: Daily Push Idempotency (F-238)
 
+**Status:** 🟡 PROPOSAL ONLY — migration written, awaiting human approval per lesson N+22
+
 ### 1.1 Schema migration
-- [ ] Criar `apps/akasha-portal/prisma/migrations/20260615000000_push_last_pushed_at/migration.sql`
-- [ ] Adicionar `lastPushedAt DateTime?` em `pushSubscription`
-- [ ] Rodar `prisma migrate dev` local + `prisma generate`
-- [ ] Documentar migration em `apps/akasha-portal/prisma/AGENTS.md`
+- [x] Criar `apps/akasha-portal/prisma/migrations/20260615000000_push_last_pushed_at/migration.sql`
+- [x] Adicionar `lastPushedAt TIMESTAMP(3)` em `PushSubscription`
+- [x] Index em `lastPushedAt` para performance do cron
+- [ ] Rodar `prisma migrate dev` local + `prisma generate` (PENDENTE human approval)
+- [ ] Aplicar em prod via `prisma migrate deploy` (PENDENTE human approval)
 
 ### 1.2 Cron update
 - [ ] Em `apps/akasha-portal/src/app/api/cron/daily-push/route.ts`:
@@ -29,14 +32,23 @@
 - [ ] `pnpm --filter akasha-portal test:run daily-push`
 - [ ] Manual: deploy em preview, simular cron, verificar push real
 
+### Notas
+- Migration `lastPushedAt` é PROPOSAL ONLY (lesson N+22). Não aplicar
+  via `prisma migrate deploy` sem aprovação humana.
+- O código da cron update também depende da migration; bloquear até
+  approval.
+
 ---
 
 ## WS-2: Timezone-aware cron (F-239)
 
+**Status:** 🟡 PROPOSAL ONLY — migration written, awaiting human approval per lesson N+22
+
 ### 2.1 Schema migration
-- [ ] Criar migration `20260615000000_user_timezone`
-- [ ] Adicionar `timezone String @default("America/Sao_Paulo")` em `User`
-- [ ] Doc update em `apps/akasha-portal/prisma/AGENTS.md`
+- [x] Criar migration `20260615000000_user_timezone/migration.sql`
+- [x] Adicionar `timezone TEXT NOT NULL DEFAULT 'America/Sao_Paulo'` em `User`
+- [ ] Rodar `prisma migrate dev` local + `prisma generate` (PENDENTE human approval)
+- [ ] Aplicar em prod via `prisma migrate deploy` (PENDENTE human approval)
 
 ### 2.2 Helper
 - [ ] `apps/akasha-portal/src/lib/application/push/get-users-in-local-morning.ts`:
@@ -61,6 +73,12 @@
 ### 2.5 Verification
 - [ ] Typecheck + tests verdes
 - [ ] Manual: deploy, triggar cron, verificar logs
+
+### Notas
+- Migration `timezone` é PROPOSAL ONLY (lesson N+22). Não aplicar
+  via `prisma migrate deploy` sem aprovação humana.
+- Cron `hourly-push` precisa da migration aplicada para funcionar
+  corretamente. Bloquear até approval.
 
 ---
 
