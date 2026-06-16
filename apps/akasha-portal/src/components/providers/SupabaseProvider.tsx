@@ -103,12 +103,10 @@ export function SupabaseProvider({
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
-      console.log('[SupabaseProvider] Auth event:', event);
       setUser(session?.user ?? null);
       setIsLoading(false);
 
       if (event === 'SIGNED_OUT') {
-        console.log('[SupabaseProvider] User signed out');
         router.push('/login');
       }
     });
