@@ -3,6 +3,7 @@
     "typecheck": {
       "pass": false,
       "errors": [
+        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.test.ts(118,54): error TS2345: Argument of type '\"unknown_source\"' is not assignable to parameter of type 'SpiritualSource'.",
         "packages/akasha-cli/src/commands/diagnostico.test.ts(51,3): error TS18046: 'mockedExec' is of type 'unknown'.",
         "packages/akasha-cli/src/commands/diagnostico.test.ts(68,5): error TS18046: 'mockedExistsSync' is of type 'unknown'.",
         "packages/akasha-cli/src/commands/diagnostico.test.ts(69,5): error TS18046: 'mockedReadFileSync' is of type 'unknown'.",
@@ -18,10 +19,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1558,
+      "passed": 1578,
       "failed": 241
     }
   },
-  "git_head": "41b837b714dc5641663bbe92ed42c00876b48d17",
-  "cached_at": 1781628838.6963775
+  "git_head": "ba00213a619e98363dc96de1d54a153179cb3614",
+  "cached_at": 1781630201.3256047
 }

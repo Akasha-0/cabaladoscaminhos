@@ -6,13 +6,8 @@
       "type": "console_cleanup"
     },
     {
-      "success": false,
-      "message": "Skipped: apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts was modified (git status dirty)",
-      "type": "large_file"
-    },
-    {
       "success": true,
-      "message": "Added tests for 1 file",
+      "message": "Added tests for correlation-maps.ts",
       "type": "missing_tests"
     }
   ]

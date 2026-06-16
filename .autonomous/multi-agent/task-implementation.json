@@ -5,7 +5,7 @@
       "priority": 6,
       "description": "1 changed files lack tests",
       "files": [
-        "apps/akasha-portal/scripts/grimoire-audit.ts"
+        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine/correlation-maps.ts"
       ]
     },
     {
@@ -13,11 +13,11 @@
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
-        "packages/akasha-cli/src/cli.ts",
-        "apps/akasha-portal/scripts/sync-grimoire.ts",
-        "apps/akasha-portal/scripts/run-evolution.ts",
-        "apps/akasha-portal/scripts/run-quality-eval.ts",
-        "apps/akasha-portal/middleware.ts"
+        "apps/akasha-portal/src/app/api/akasha/transits/today/route.ts",
+        "apps/akasha-portal/src/components/providers/SupabaseProvider.tsx",
+        "apps/akasha-portal/src/components/akasha/dashboard/hooks/useDashboardData.ts",
+        "apps/akasha-portal/src/lib/shared/logging.ts",
+        "apps/akasha-portal/src/lib/application/mentor/llm-router.ts"
       ]
     },
     {
@@ -26,19 +26,19 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
-          "lines": 980
-        },
-        {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
           "lines": 973
         },
         {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine.ts",
           "lines": 957
+        },
+        {
+          "file": "packages/core-iching/src/practices.ts",
+          "lines": 937
         }
       ]
     }
   ],
-  "iteration": 13
+  "iteration": 14
 }

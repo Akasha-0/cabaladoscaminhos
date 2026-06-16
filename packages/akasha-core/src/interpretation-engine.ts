@@ -20,6 +20,7 @@ import type { LifeArea } from '@akasha/types';
 import type { NumeroContent } from './interpretation-engine/types';
 import { MESTRES_CONTENT } from './interpretation-engine/mestres';
 import { VIDA_NUMERO_9 } from './interpretation-engine/vida-numero-9';
+import { VIDA_NUMEROS_6_8 } from './interpretation-engine/vida-numeros-6-8';
 
 // ─── API pública (queries) ─────────────────────────────────────────────────
 // Re-exporta as funções públicas do motor. A implementação vive em
