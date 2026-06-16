@@ -1,25 +1,15 @@
 {
   "improvements": [
     {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "3 changed files lack tests",
-      "files": [
-        "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
-        "packages/akasha-core/src/interpretation-engine.ts",
-        "packages/akasha-core/src/interpretation-engine/vida-numeros-6-8.ts"
-      ]
-    },
-    {
       "type": "console_cleanup",
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
         "apps/akasha-portal/src/lib/shared/logging.ts",
-        "apps/akasha-portal/src/lib/application/mentor/llm-router.ts",
-        "apps/akasha-portal/src/lib/application/push/subscribe.ts",
         "apps/akasha-portal/src/lib/application/akasha/daily-engine.ts",
-        "apps/akasha-portal/src/lib/application/ai/openai.ts"
+        "apps/akasha-portal/src/lib/application/ai/openai.ts",
+        "apps/akasha-portal/src/lib/application/ai/llm-router.ts",
+        "apps/akasha-portal/src/lib/infrastructure/grimoire-sync.ts"
       ]
     },
     {
@@ -28,20 +18,20 @@
       "description": "27 oversized files",
       "files": [
         {
-          "file": "packages/akasha-core/src/interpretation-engine.ts",
-          "lines": 974
-        },
-        {
           "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine.ts",
           "lines": 957
         },
         {
           "file": "packages/core-iching/src/practices.ts",
           "lines": 937
+        },
+        {
+          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+          "lines": 937
         }
       ]
     }
   ],
-  "agent_count": 3,
-  "iteration": 15
+  "agent_count": 2,
+  "iteration": 16
 }

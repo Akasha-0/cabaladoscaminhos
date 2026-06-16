@@ -2,13 +2,13 @@
   "results": [
     {
       "success": true,
-      "message": "Extracted helper from packages/akasha-core/src/interpretation-engine.ts",
+      "message": "Extracted helper from apps/akasha-portal/src/lib/application/life-areas/life-areas-engine.ts",
       "type": "large_file"
     },
     {
       "success": true,
-      "message": "Added tests for 2 files",
-      "type": "missing_tests"
+      "message": "Removed console statements",
+      "type": "console_cleanup"
     }
   ]
 }
