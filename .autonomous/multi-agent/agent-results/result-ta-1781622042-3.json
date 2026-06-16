@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "message": "Removed console statements from recommendation-generator.ts (1 console.warn) and akasha-core.ts (7 console.warn across 5 pilares: Cabala, Astrologia, Tantra, Odu, I-Ching). cli.ts had no debug console statements to remove: 3 console.error are real errors (kept per rule), 3 console.log are user-facing CLI output for printHelp() and version display (kept as functional output). Both edited files typecheck clean. Pre-existing typecheck errors in packages/core-iching/ are unrelated.",
+  "type": "console_cleanup",
+  "files_changed": [
+    "packages/akasha-core/src/recommendation-generator.ts",
+    "packages/akasha-core/src/akasha-core.ts"
+  ],
+  "files_skipped": [
+    {
+      "path": "packages/akasha-cli/src/cli.ts",
+      "reason": "No debug console statements. console.error (3x) are real errors; console.log (3x) are user-facing CLI output (printHelp + version display)."
+    }
+  ],
+  "commits": [
+    "20b6ed03 chore: remove console statements from recommendation-generator.ts",
+    "5fc1fe54 chore: remove console statements from akasha-core.ts"
+  ],
+  "console_statements_removed": 8,
+  "typecheck_clean": true
+}

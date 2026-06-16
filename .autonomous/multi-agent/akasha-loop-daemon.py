@@ -132,7 +132,8 @@ def phase_research(state, memory):
         save_state(state)
         dur = _evals.phase_end("RESEARCH")
         _tracker.record_research(len(candidates), 0, selection_quality=0.0,
-                                 no_improvement_found=True, duration_s=dur)
+                                 no_improvement_found=True, duration_s=dur,
+                                 iteration=state["iteration"])
         return
     _rec_dec(memory, selected)
     save_json(TASK_FILE, {"improvements": selected, "iteration": iteration})
@@ -140,11 +141,10 @@ def phase_research(state, memory):
                            "iteration": iteration})
     state["phase"] = "PLANNING"
     state["current_features"] = [imp.get("type") for imp in selected]
-    save_state(state)
     dur = _evals.phase_end("RESEARCH")
     _tracker.record_research(len(candidates), len(selected),
-                             selection_quality=0.0, duration_s=dur)
-
+                             selection_quality=0.0, duration_s=dur,
+                             iteration=state["iteration"])
 def phase_planning(state):
     _evals.phase_start("PLANNING")
     task_data = load_json(TASK_FILE, {})
@@ -175,7 +175,8 @@ def phase_planning(state):
     _tracker.record_planning(len(improvements),
                               plans_detail_level=detail,
                               plans_updated=plans_md.exists(),
-                              duration_s=dur)
+                              duration_s=dur,
+                              iteration=state["iteration"])
 
 
 def phase_implementation(state, memory):
@@ -270,6 +271,7 @@ def wait_implementation(state, memory):
         agent_success_rate=success_rate,
         files_changed=0,
         duration_s=dur,
+        iteration=state["iteration"],
     )
     state["phase"] = "QA"
     save_state(state)
@@ -309,6 +311,7 @@ def phase_qa(state):
         tests_pass=tests.get("passed", 0) > 0 and tests.get("failed", 1) == 0,
         improvements_accepted=ok,
         duration_s=dur,
+        iteration=state["iteration"],
     )
 
 
@@ -343,6 +346,7 @@ def phase_validation(state):
         codegraph_sync_ok=cg_ok,
         plans_marked=plans_marked,
         duration_s=dur,
+        iteration=state["iteration"],
     )
 
 

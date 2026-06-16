@@ -1,5 +1,5 @@
 {
-  "iteration": 22,
+  "iteration": 23,
   "learnings": [
     {
       "ts": "2026-06-15T23:25:37.276925+00:00",
@@ -311,14 +311,6 @@
   "task_history": [],
   "context_window": [
     {
-      "ts": "2026-06-15T22:18:46.235192+00:00",
-      "decision": "RELEASE",
-      "feature": "D-040",
-      "confidence": "high",
-      "next_phase": "RESEARCH",
-      "triad_green": false
-    },
-    {
       "ts": "2026-06-15T22:23:30.160176+00:00",
       "decision": "RELEASE",
       "feature": "D-040",
@@ -440,6 +432,12 @@
       "improvement": "missing_tradition, missing_tests, tech_debt, console_cleanup, large_file",
       "version": "0.7.0",
       "agents": 3
+    },
+    {
+      "ts": "2026-06-16T14:59:35.604759+00:00",
+      "improvement": "missing_tradition, tech_debt, console_cleanup, large_file",
+      "version": "0.8.0",
+      "agents": 1
     }
   ],
   "decisions": [

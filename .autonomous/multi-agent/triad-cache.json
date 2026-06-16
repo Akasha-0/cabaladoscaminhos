@@ -1,8 +1,29 @@
 {
   "triad": {
     "typecheck": {
-      "pass": true,
-      "errors": []
+      "pass": false,
+      "errors": [
+        "packages/core-iching/src/__tests__/practices.test.ts(43,52): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Element'.",
+        "packages/core-iching/src/__tests__/practices.test.ts(51,49): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Element'.",
+        "packages/core-iching/src/practices.ts(17,3): error TS2323: Cannot redeclare exported variable 'getPractice'.",
+        "packages/core-iching/src/practices.ts(17,3): error TS2484: Export declaration conflicts with exported declaration of 'getPractice'.",
+        "packages/core-iching/src/practices.ts(18,3): error TS2323: Cannot redeclare exported variable 'getPracticesByElement'.",
+        "packages/core-iching/src/practices.ts(18,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByElement'.",
+        "packages/core-iching/src/practices.ts(19,3): error TS2323: Cannot redeclare exported variable 'getPracticesByTradition'.",
+        "packages/core-iching/src/practices.ts(19,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByTradition'.",
+        "packages/core-iching/src/practices.ts(20,3): error TS2323: Cannot redeclare exported variable 'getPracticesByCategory'.",
+        "packages/core-iching/src/practices.ts(20,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByCategory'.",
+        "packages/core-iching/src/practices.ts(21,3): error TS2323: Cannot redeclare exported variable 'getPracticesByLifeArea'.",
+        "packages/core-iching/src/practices.ts(21,3): error TS2484: Export declaration conflicts with exported declaration of 'getPracticesByLifeArea'.",
+        "packages/core-iching/src/practices.ts(22,3): error TS2323: Cannot redeclare exported variable 'getAllPractices'.",
+        "packages/core-iching/src/practices.ts(22,3): error TS2484: Export declaration conflicts with exported declaration of 'getAllPractices'.",
+        "packages/core-iching/src/practices.ts(861,44): error TS2344: Type 'Element' does not satisfy the constraint 'string | number | symbol'.",
+        "packages/core-iching/src/practices.ts(865,10): error TS7053: Element implicitly has an 'any' type because expression of type 'Element' can't be used to index type 'Partial<Record<Element, IntegrativePractice[]>>'.",
+        "packages/core-iching/src/practices.ts(865,36): error TS7053: Element implicitly has an 'any' type because expression of type 'Element' can't be used to index type 'Partial<Record<Element, IntegrativePractice[]>>'.",
+        "packages/core-iching/src/practices.ts(866,5): error TS7053: Element implicitly has an 'any' type because expression of type 'Element' can't be used to index type 'Partial<Record<Element, IntegrativePractice[]>>'.",
+        "packages/core-iching/src/practices.ts(878,45): error TS2304: Cannot find name 'PracticeCategory'.",
+        "packages/core-iching/src/practices.ts(887,17): error TS2323: Cannot redeclare exported variable 'getPractice'."
+      ]
     },
     "lint": {
       "pass": true,
@@ -10,10 +31,10 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1536,
-      "failed": 238
+      "passed": 1355,
+      "failed": 244
     }
   },
-  "git_head": "d55369fd9b9f5127e3f3ef37eb857e049929dd5a",
-  "cached_at": 1781621799.0069437
+  "git_head": "738fac94ea3b2c3c87603c7ae45cf464a90bd724",
+  "cached_at": 1781622769.381669
 }

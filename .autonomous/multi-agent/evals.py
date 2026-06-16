@@ -131,11 +131,19 @@ class MetricsTracker:
     # ── Recording ─────────────────────────────────────────────────────────────
 
     def record_phase(self, phase: str, metrics: dict[str, Any],
-                     duration_s: float = 0.0) -> None:
+                     duration_s: float = 0.0,
+                     iteration: int | None = None) -> None:
         """
-        Record metrics for a single phase completion.
+        Idempotent: skip if (phase, iteration) already recorded.
+        Accepts explicit iteration to avoid state.json timing issues.
         """
-        iteration = _load_json(STATE_FILE, {}).get("iteration", 0)
+        iteration = iteration if iteration is not None else _load_json(STATE_FILE, {}).get("iteration", 0)
+
+        # Idempotency: skip if already recorded for this (phase, iteration)
+        existing = [r for r in self.data.get("phase_history", [])
+                    if r.get("phase") == phase and r.get("iteration") == iteration]
+        if existing:
+            return
 
         record = {
             "ts": datetime.now(timezone.utc).isoformat(),
@@ -151,60 +159,65 @@ class MetricsTracker:
     def record_research(self, candidates_found: int, candidates_selected: int,
                         selection_quality: float = 0.0,
                         no_improvement_found: bool = False,
-                        duration_s: float = 0.0) -> None:
+                        duration_s: float = 0.0,
+                        iteration: int | None = None) -> None:
         self.record_phase("RESEARCH", {
             "candidates_found": candidates_found,
             "candidates_selected": candidates_selected,
             "selection_quality": selection_quality,
             "no_improvement_found": no_improvement_found,
-        }, duration_s)
+        }, duration_s, iteration=iteration)
 
     def record_planning(self, plans_created: int,
                         plans_detail_level: float = 0.0,
                         plans_updated: bool = False,
-                        duration_s: float = 0.0) -> None:
+                        duration_s: float = 0.0,
+                        iteration: int | None = None) -> None:
         self.record_phase("PLANNING", {
             "plans_created": plans_created,
             "plans_detail_level": round(plans_detail_level, 3),
             "plans_updated": plans_updated,
-        }, duration_s)
+        }, duration_s, iteration=iteration)
 
     def record_implementation(self,
                                agents_spawned: int,
                                results_collected: int,
                                agent_success_rate: float = 0.0,
                                files_changed: int = 0,
-                               duration_s: float = 0.0) -> None:
+                               duration_s: float = 0.0,
+                               iteration: int | None = None) -> None:
         self.record_phase("IMPLEMENTATION", {
             "agents_spawned": agents_spawned,
             "results_collected": results_collected,
             "agent_success_rate": round(agent_success_rate, 3),
             "files_changed": files_changed,
-        }, duration_s)
+        }, duration_s, iteration=iteration)
 
     def record_qa(self,
                    typecheck_pass: bool,
                    tests_pass: bool,
                    improvements_accepted: int = 0,
-                   duration_s: float = 0.0) -> None:
+                   duration_s: float = 0.0,
+                   iteration: int | None = None) -> None:
         self.record_phase("QA", {
             "typecheck_pass": typecheck_pass,
             "tests_pass": tests_pass,
             "improvements_accepted": improvements_accepted,
-        }, duration_s)
+        }, duration_s, iteration=iteration)
 
     def record_validation(self,
                           improvements_validated: int,
                           quality_score: float = 0.0,
                           codegraph_sync_ok: bool = False,
                           plans_marked: bool = False,
-                          duration_s: float = 0.0) -> None:
+                          duration_s: float = 0.0,
+                          iteration: int | None = None) -> None:
         self.record_phase("VALIDATION", {
             "improvements_validated": improvements_validated,
             "quality_score": round(quality_score, 3),
             "codegraph_sync_ok": codegraph_sync_ok,
             "plans_marked": plans_marked,
-        }, duration_s)
+        }, duration_s, iteration=iteration)
 
     def record_release(self,
                         release_quality: float = 0.0,

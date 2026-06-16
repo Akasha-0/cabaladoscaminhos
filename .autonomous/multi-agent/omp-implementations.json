@@ -8,6 +8,16 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     },
     {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "3 changed files lack tests",
+      "files": [
+        "packages/akasha-core/src/akasha-core.ts",
+        "packages/core-iching/src/practices-lookup.ts",
+        "packages/core-iching/src/practices.ts"
+      ]
+    },
+    {
       "type": "tech_debt",
       "priority": 5,
       "description": "2 files with TODO",
@@ -21,11 +31,11 @@
       "priority": 5,
       "description": "5 files with console statements",
       "files": [
-        "packages/mentor/src/cli/chat.tsx",
         "packages/akasha-core/src/recommendation-generator.ts",
         "packages/akasha-core/src/akasha-core.ts",
         "packages/akasha-cli/src/cli.ts",
-        "packages/akasha-cli/src/commands/setup.ts"
+        "packages/akasha-cli/src/commands/setup.ts",
+        "packages/akasha-cli/src/commands/chat.ts"
       ]
     },
     {
@@ -35,7 +45,7 @@
       "files": [
         {
           "file": "packages/core-iching/src/practices.ts",
-          "lines": 993
+          "lines": 1001
         },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
@@ -48,6 +58,6 @@
       ]
     }
   ],
-  "agent_count": 4,
-  "iteration": 6
+  "agent_count": 5,
+  "iteration": 7
 }

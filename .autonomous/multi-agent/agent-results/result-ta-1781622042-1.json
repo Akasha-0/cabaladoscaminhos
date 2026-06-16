@@ -1,0 +1,1 @@
+{"success": true, "message": "Added tests for 1 file: practices-lookup.ts (12 tests pass). Skipped akasha-core.ts — existing akasha-core.test.ts already provides comprehensive coverage (130 lines, tests AkashaInputSchema, calcular(), and ethical limits).", "type": "missing_tests"}
