@@ -18,6 +18,18 @@ import {
 import { useCockpitStore } from '@/stores/cockpit-store';
 import { formatDegreeToZodiac, GLYPHS_BY_PLANET, PLANET_COLORS, longitudeToSvgAngle } from '@/lib/shared/zodiac';
 import { KOSHAS } from '@/lib/shared/koshas';
+import {
+  ASPECT_SYMBOLS,
+  describeArc,
+  PARTICLES,
+  PILAR_COLORS,
+  PILAR_LABEL_BY_LAYER,
+  STARS,
+  toXY,
+  ZODIAC_NAMES,
+  ZODIAC_SIGNS,
+  type Layer,
+} from '@/components/akasha/mandala-geometry';
 
 function resolveSig(pilar: Pilar, id: string | number | null | undefined): SignificadoCurado {
   if (id == null) return significadoGenericoDoPilar(pilar);
@@ -167,56 +179,6 @@ interface Props {
   data: MandalaData;
 }
 
-type Layer = 1 | 2 | 3 | 4 | 5;
-
-const toXY = (angleDeg: number, r: number, cx = 200, cy = 200) => ({
-  x: cx + r * Math.cos(((angleDeg - 90) * Math.PI) / 180),
-  y: cy + r * Math.sin(((angleDeg - 90) * Math.PI) / 180),
-});
-
-const ZODIAC_SIGNS = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
-const ZODIAC_NAMES = [
-  'Áries',
-  'Touro',
-  'Gêmeos',
-  'Câncer',
-  'Leão',
-  'Virgem',
-  'Libra',
-  'Escorpião',
-  'Sagitário',
-  'Capricórnio',
-  'Aquário',
-  'Peixes',
-];
-
-// Layer colors — keyed by VISUAL LAYER (1..5 inside-out).
-// Layer 1 = Ancestralidade | Layer 2 = Número de Vida
-// Layer 3 = Corpo e Energia | Layer 4 = Movimento Celeste
-// Layer 5 = Mutação do Caminho
-// Número de Vida usa indigo para distinguir-se de Movimento Celeste (roxo/ar).
-const PILAR_COLORS: Record<Layer, string> = {
-  1: '#F0B429',
-  2: '#5C7CFF',
-  3: '#2DD4BF',
-  4: '#7C5CFF',
-  5: '#A0763A',
-};
-const PILAR_LABEL_BY_LAYER: Record<Layer, string> = {
-  1: 'Ancestralidade',
-  2: 'Número de Vida',
-  3: 'Corpo e Energia',
-  4: 'Movimento Celeste',
-  5: 'Mutação do Caminho',
-};
-const ASPECT_SYMBOLS: Record<string, string> = {
-  conjunção: '☌',
-  oposição: '☍',
-  trino: '△',
-  quadratura: '□',
-  sextil: '✶',
-};
-
 const LIFE_PATH_MEANINGS: Record<number, string> = {
   1: 'Caminho do Pioneiro — sua missão é liderar e inaugurar novos caminhos. Aprenda a agir independentemente.',
   2: 'Caminho do Diplomata — cooperação, harmonia e parceria são seu veículo de crescimento.',
@@ -266,30 +228,8 @@ const TANTRIC_BODY_WISDOM: Record<number, { desc: string; challenge: string; act
   },
 };
 
-// Stars data — fixed positions seeded deterministically
-const STARS = Array.from({ length: 30 }, (_, i) => {
-  const angle = (i * 137.508) % 360; // golden angle spacing
-  const radius = 60 + ((i * 47) % 130);
-  const pos = toXY(angle, radius);
-  const opacity = 0.08 + (i % 5) * 0.03;
-  const delay = (i * 0.37) % 3;
-  return { x: pos.x, y: pos.y, opacity, delay };
-});
-
-// Particle dots on outer edge
-const PARTICLES = Array.from({ length: 12 }, (_, i) => {
-  const angle = i * 30;
-  const pos = toXY(angle, 198);
-  const delay = (i * 0.4) % 4;
-  return { x: pos.x, y: pos.y, delay };
-});
-
-function describeArc(cx: number, cy: number, r: number, startDeg: number, endDeg: number): string {
-  const start = toXY(startDeg, r, cx, cy);
-  const end = toXY(endDeg, r, cx, cy);
-  const largeArc = endDeg - startDeg > 180 ? 1 : 0;
-  return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${end.x} ${end.y}`;
-}
+// Stars, particles and arc helper are imported from
+// @/components/akasha/mandala-geometry.
 
 export default function MandalaChart({ data }: Props) {
   const [activeLayer, setActiveLayer] = useState<null | Layer>(null);
