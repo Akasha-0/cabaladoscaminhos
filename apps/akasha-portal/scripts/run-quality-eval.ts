@@ -6,19 +6,13 @@
 import { runAllEvals } from '../src/lib/quality/runner.js'
 
 async function main() {
-  console.log('\n🔮 Executando Avaliação de Qualidade - Cabala dos Caminhos\n')
-  
   const report = await runAllEvals({
     output: 'console',
     verbose: false,
   })
 
   if (report) {
-    console.log('\n✨ Avaliação concluída com sucesso!')
-    console.log(`📊 Score Overall: ${report.score.toFixed(1)}% (Grade: ${report.grade})`)
-    console.log('\n📄 Relatório JSON salvo em: ./quality-report-latest.json')
     if (report.score < 70) {
-      console.log('\n⚠️  Score overall abaixo do threshold (70%).')
       process.exit(1)
     }
   } else {
