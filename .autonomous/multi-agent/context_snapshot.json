@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T19:57:03.733005+00:00",
-  "version": "0.45.0",
+  "generated_at": "2026-06-16T20:02:15.360790+00:00",
+  "version": "0.46.0",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -960,15 +960,16 @@
       "- [~] **PLN-040[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-041[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-042[1]** -- large_file | 27 oversized files",
+      "- [~] **PLN-043[1]** -- large_file | 27 oversized files",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
       "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 959
+    "pending_count": 960
   },
   "git": {
-    "untracked": 1,
-    "modified": 9,
-    "total": 10,
+    "untracked": 2,
+    "modified": 10,
+    "total": 12,
     "has_changes": true
   },
   "triad": {
@@ -1055,7 +1056,7 @@
       "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
     }
   ],
-  "git_head": "009c8561ccf2795d9834017627ab15b437ca9d9f",
+  "git_head": "8c2532c33f7cb933beca079e66fff445824ee6ae",
   "decision_factors": {
     "has_pending_features": true
   }
