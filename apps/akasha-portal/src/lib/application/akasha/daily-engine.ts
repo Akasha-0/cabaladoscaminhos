@@ -80,7 +80,7 @@ export function buildDailyContent(
     synthesis = buildAkashaSynthesis(astro, kab, tantra, odu, hologram, date);
   } catch (err) {
     // Não quebra a API — síntese é enhancement, não bloco
-    console.warn('[daily-engine] AkashaSynthesis unavailable:', err);
+    // AkashaSynthesis unavailable — non-fatal enhancement
   }
 
   return {
