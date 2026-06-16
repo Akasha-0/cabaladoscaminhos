@@ -1,5 +1,5 @@
 {
-  "iteration": 8,
+  "iteration": 9,
   "learnings": [
     {
       "ts": "2026-06-15T23:25:37.276925+00:00",
@@ -90,6 +90,24 @@
       "outcome": "success",
       "summary": "Triad green: typecheck=True lint=True tests=False",
       "details": {}
+    },
+    {
+      "ts": "2026-06-16T01:36:03.454729+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "success",
+      "summary": "Added tests for 3 files",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T01:38:57.225887+00:00",
+      "agent": "qa",
+      "phase": "QA",
+      "feature_id": "missing_tests",
+      "outcome": "success",
+      "summary": "Triad green: typecheck=True lint=True tests=False",
+      "details": {}
     }
   ],
   "task_history": [],
@@ -150,6 +168,12 @@
       "ts": "2026-06-16T01:10:52.083260+00:00",
       "improvement": "tech_debt",
       "version": "0.3.1",
+      "triad_green": false
+    },
+    {
+      "ts": "2026-06-16T01:27:18.915611+00:00",
+      "improvement": "large_file",
+      "version": "0.4.1",
       "triad_green": false
     }
   ],
@@ -794,6 +818,11 @@
       "ts": "2026-06-16T01:14:18.721613+00:00",
       "action": "EXECUTE",
       "improvement": "large_file"
+    },
+    {
+      "ts": "2026-06-16T01:28:45.947284+00:00",
+      "action": "EXECUTE",
+      "improvement": "missing_tests"
     }
   ],
   "error_patterns": {
@@ -802,7 +831,7 @@
   },
   "success_patterns": {
     "e796b93c": 2,
-    "b55c038d": 1,
+    "b55c038d": 2,
     "d92babc3": 1
   }
 }

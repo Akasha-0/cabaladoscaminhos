@@ -1,27 +1,20 @@
 {
   "phase": "IMPLEMENTATION",
   "improvement": {
-    "type": "large_file",
-    "priority": 4,
-    "description": "28 oversized files",
+    "type": "missing_tests",
+    "priority": 6,
+    "description": "12 changed files lack tests",
     "files": [
-      {
-        "file": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
-        "lines": 2207
-      },
-      {
-        "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-        "lines": 1840
-      },
-      {
-        "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-        "lines": 1534
-      }
+      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
+      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/akasha-types-catalog.ts",
+      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/area-builders.ts",
+      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-akasha-type.ts",
+      "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-area-narratives.ts"
     ]
   },
-  "iteration": 3,
+  "iteration": 4,
   "snapshot_summary": {
-    "version": "0.3.1",
+    "version": "0.4.1",
     "triad": {
       "typecheck": {
         "pass": true,
@@ -70,17 +63,29 @@
         "description": "28 oversized files",
         "files": [
           {
-            "file": "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
-            "lines": 2207
-          },
-          {
             "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
             "lines": 1840
           },
           {
             "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
             "lines": 1534
+          },
+          {
+            "file": "packages/akasha-core/src/interpretation-engine.ts",
+            "lines": 1198
           }
+        ]
+      },
+      {
+        "type": "missing_tests",
+        "priority": 6,
+        "description": "12 changed files lack tests",
+        "files": [
+          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts",
+          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/akasha-types-catalog.ts",
+          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/area-builders.ts",
+          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-akasha-type.ts",
+          "apps/akasha-portal/src/lib/application/akasha/synthesis-engine/derive-area-narratives.ts"
         ]
       }
     ]

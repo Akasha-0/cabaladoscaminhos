@@ -35,6 +35,17 @@
   - File: `{'file': 'apps/akasha-portal/src/lib/grimoire/significados-curados.ts', 'lines': 1840}`
   - File: `{'file': 'apps/akasha-portal/src/components/akasha/MandalaChart.tsx', 'lines': 1534}`
 
+
+## cc: AKASHA-loop iter 4 | missing_tests (2026-06-16T01:28:47Z)
+- [~] **PLN-004** — missing_tests | 0.4.1
+  - Improvement: 12 changed files lack tests
+  - Type: missing_tests
+  - Priority: 6
+  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
+  - File: `apps/akasha-portal/src/lib/application/akasha/synthesis-engine.ts`
+  - File: `apps/akasha-portal/src/lib/application/akasha/synthesis-engine/akasha-types-catalog.ts`
+  - File: `apps/akasha-portal/src/lib/application/akasha/synthesis-engine/area-builders.ts`
+
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
