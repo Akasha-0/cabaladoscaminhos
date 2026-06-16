@@ -1,8 +1,12 @@
 {
-  "phase": "RELEASE",
-  "iteration": 6,
+  "phase": "IMPLEMENTATION",
+  "iteration": 8,
   "phase_iteration": 0,
-  "current_feature": "tech_debt",
+  "current_features": [
+    "missing_tests",
+    "tech_debt",
+    "large_file"
+  ],
   "retry_count": 0,
   "running": true,
   "improvements_made": []

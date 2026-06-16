@@ -92,16 +92,17 @@ Default section order:
 
 When the user requests a durable behavior change, record it here or in the relevant child AGENTS.md
 
-- **akasha-evolution** (PRIMARY): Autonomous 6-phase loop with 5 parallel agents.
+- **akasha-evolution** (PRIMARY): Autonomous 6-phase loop with 5 parallel coding agents (v2).
   Activates via `/loop 9999999999` + "start akasha-evolution".
-  Scripts: `.autonomous/multi-agent/akasha-evolution-loop.py`.
+  Script: `.autonomous/multi-agent/akasha-evolution-loop.py` (v2, 5-agent parallel).
   Start: `bash .autonomous/multi-agent/start-akasha-evolution.sh`.
   Skill: `.autonomous/skills/akasha-evolution/SKILL.md`.
-  Agents: researcher, architect, coder, qa, validator (via `task` in parallel).
-  Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE.
+  Flow: RESEARCH → PLANNING → IMPLEMENTATION(5-parallel) → QA → VALIDATION → RELEASE.
   Intelligence: `intelligence.py` (evidence-based decisions, exponential learning).
   Bootstrap: `context_bootstrap.py` (fresh project context every iteration).
   Memory: `memory.json` (learnings accumulate exponentially over iterations).
+  Triad cache: `triad-cache.json` with 300s TTL + git HEAD invalidation.
+  Parallel execution: ThreadPoolExecutor(max_workers=5), each agent writes unique result to `agent-results/`.
 - **Ralph-loop** (legacy/fallback): Single-agent 6-phase loop.
   Scripts: `.autonomous/ralph-loop/akasha-ralph-loop.py`.
 - **Headroom proxy**: Running on port 8787. All large tool outputs (>5k tokens) use Headroom compression.
@@ -110,7 +111,7 @@ When the user requests a durable behavior change, record it here or in the relev
 ## Child DOX Index
 
 - `.autonomous/` — pesquisa autônoma e guardrails operacionais
-  - `multi-agent/akasha-evolution-loop.py` — 5-agent parallel loop (primary, OMP-native)
+  - `multi-agent/akasha-evolution-loop.py` — 5-agent parallel loop v2 (primary, OMP-native)
   - `multi-agent/intelligence.py` — evidence-based decisions + exponential learning
   - `multi-agent/context_bootstrap.py` — fresh project context every iteration
   - `ralph-loop/` — Ralph-style 6-phase autonomous loop (fallback)

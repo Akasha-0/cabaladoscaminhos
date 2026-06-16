@@ -65,6 +65,29 @@
   - File: `packages/akasha-core/src/interpretation-engine.ts`
   - File: `packages/akasha-core/src/akasha-core.ts`
 
+
+## cc: AKASHA-loop iter 7 | tech_debt (2026-06-16T01:59:11Z)
+- [~] **PLN-007** — tech_debt | 0.7.1
+  - Improvement: 5 files with TODO
+  - Type: tech_debt
+  - Priority: 5
+  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
+  - File: `apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts`
+  - File: `apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts`
+  - File: `apps/akasha-portal/src/lib/grimoire/significados-curados.ts`
+
+- [~] **PLN-008[1]** — missing_tests | 5 changed files lack tests
+  - Files: apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts, apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts, apps/akasha-portal/src/lib/grimoire/significados-curados.ts
+- [~] **PLN-008[2]** — tech_debt | 2 files with XXX
+  - Files: packages/core-cabala/src/number-meanings.ts, packages/akasha-core/src/correlation-engine.test.ts
+- [~] **PLN-008[3]** — large_file | 28 oversized files
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados.ts, apps/akasha-portal/src/components/akasha/MandalaChart.tsx, packages/akasha-core/src/interpretation-engine.ts
+- [~] **PLN-008[1]** — missing_tests | 5 changed files lack tests
+  - Files: apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts, apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts, apps/akasha-portal/src/lib/grimoire/significados-curados.ts
+- [~] **PLN-008[2]** — tech_debt | 1 files with XXX
+  - Files: packages/core-cabala/src/number-meanings.ts
+- [~] **PLN-008[3]** — large_file | 28 oversized files
+  - Files: apps/akasha-portal/src/lib/grimoire/significados-curados.ts, apps/akasha-portal/src/components/akasha/MandalaChart.tsx, packages/akasha-core/src/interpretation-engine.ts
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
@@ -185,3 +208,21 @@
     - traducao-areas.ts: TANTRA_DETALHADO + CABALA_DETALHADO added (9 areas × 5 fields each)
   - Running: PID 2928880, continuous 8h mode
   - Pending improvements: tech_debt (5 files), XXX (1 file), large_file (27 files), missing_tests (1 file)
+
+## cc: AKASHA-evolution loop v2 status (2026-06-16)
+
+- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2
+  - Major redesign complete:
+    - RESEARCH finds up to MAX_PARALLEL=5 independent improvements
+    - IMPLEMENTATION executes all in parallel via ThreadPoolExecutor(max_workers=5)
+    - Each agent writes unique result to `agent-results/` (no file collisions)
+    - `pick_best_improvements()` ensures variety (no duplicate types, recent dedup)
+    - `execute_parallel_improvements()` collects all results, commits once
+    - `phase_QA` validates all improvements together
+    - State tracks `current_features` (list) instead of `current_feature` (string)
+  - Running: PID 3401473, continuous 8h mode
+  - Current: iter 8, IMPLEMENTATION phase, 3 parallel agents running
+    - Agent-aef4e7bc: missing_tests (5 changed files lack tests)
+    - Agent-55f17824: tech_debt (2 files with XXX)
+    - Agent-890ee91e: large_file (28 oversized files)
+  - Triad cache: enabled (TTL=300s, git HEAD invalidation)

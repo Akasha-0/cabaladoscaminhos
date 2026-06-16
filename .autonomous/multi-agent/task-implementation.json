@@ -1,81 +1,44 @@
 {
-  "phase": "IMPLEMENTATION",
-  "improvement": {
-    "type": "tech_debt",
-    "priority": 5,
-    "description": "5 files with TODO",
-    "files": [
-      "packages/core-cabala/src/numerology-kabalah.ts",
-      "packages/akasha-core/src/interpretation-engine.ts",
-      "packages/akasha-core/src/akasha-core.ts",
-      "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx",
-      "apps/akasha-portal/src/app/[locale]/(akasha)/glossario/page.tsx"
-    ]
-  },
-  "iteration": 6,
-  "snapshot_summary": {
-    "version": "0.6.1",
-    "triad": {
-      "typecheck": {
-        "pass": true,
-        "errors": []
-      },
-      "lint": {
-        "pass": true,
-        "warnings": 0
-      },
-      "tests": {
-        "pass": false,
-        "passed": 1390,
-        "failed": 232
-      }
+  "improvements": [
+    {
+      "type": "missing_tests",
+      "priority": 6,
+      "description": "5 changed files lack tests",
+      "files": [
+        "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
+        "apps/akasha-portal/src/lib/grimoire/synthesis/narrative-generator.ts",
+        "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts"
+      ]
     },
-    "candidates": [
-      {
-        "type": "typecheck_clean",
-        "priority": 1,
-        "description": "TypeScript typecheck is clean"
-      },
-      {
-        "type": "tech_debt",
-        "priority": 5,
-        "description": "5 files with TODO",
-        "files": [
-          "packages/core-cabala/src/numerology-kabalah.ts",
-          "packages/akasha-core/src/interpretation-engine.ts",
-          "packages/akasha-core/src/akasha-core.ts",
-          "apps/akasha-portal/src/app/[locale]/(akasha)/mapa/significado/page.tsx",
-          "apps/akasha-portal/src/app/[locale]/(akasha)/glossario/page.tsx"
-        ]
-      },
-      {
-        "type": "tech_debt",
-        "priority": 5,
-        "description": "2 files with XXX",
-        "files": [
-          "packages/core-cabala/src/number-meanings.ts",
-          "packages/akasha-core/src/correlation-engine.test.ts"
-        ]
-      },
-      {
-        "type": "large_file",
-        "priority": 4,
-        "description": "28 oversized files",
-        "files": [
-          {
-            "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-            "lines": 1840
-          },
-          {
-            "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
-            "lines": 1534
-          },
-          {
-            "file": "packages/akasha-core/src/interpretation-engine.ts",
-            "lines": 1198
-          }
-        ]
-      }
-    ]
-  }
+    {
+      "type": "tech_debt",
+      "priority": 5,
+      "description": "1 files with XXX",
+      "files": [
+        "packages/core-cabala/src/number-meanings.ts"
+      ]
+    },
+    {
+      "type": "large_file",
+      "priority": 4,
+      "description": "28 oversized files",
+      "files": [
+        {
+          "file": "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
+          "lines": 1840
+        },
+        {
+          "file": "apps/akasha-portal/src/components/akasha/MandalaChart.tsx",
+          "lines": 1534
+        },
+        {
+          "file": "packages/akasha-core/src/interpretation-engine.ts",
+          "lines": 1198
+        }
+      ]
+    }
+  ],
+  "iteration": 8
 }

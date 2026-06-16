@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-06-16T01:57:40.663509+00:00",
-  "version": "0.6.1",
+  "generated_at": "2026-06-16T02:17:07.206269+00:00",
+  "version": "0.7.1",
   "features": {
     "pending_features": [
       "- [~] **PLN-002** — missing_tests | 0.2.1",
@@ -9,14 +9,22 @@
       "- [~] **PLN-004** — missing_tests | 0.4.1",
       "- [~] **PLN-005** — typecheck_clean | 0.5.1",
       "- [~] **PLN-006** — tech_debt | 0.6.1",
-      "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)"
+      "- [~] **PLN-007** — tech_debt | 0.7.1",
+      "- [~] **PLN-008[1]** — missing_tests | 5 changed files lack tests",
+      "- [~] **PLN-008[2]** — tech_debt | 2 files with XXX",
+      "- [~] **PLN-008[3]** — large_file | 28 oversized files",
+      "- [~] **PLN-008[1]** — missing_tests | 5 changed files lack tests",
+      "- [~] **PLN-008[2]** — tech_debt | 1 files with XXX",
+      "- [~] **PLN-008[3]** — large_file | 28 oversized files",
+      "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)",
+      "- [~] **PLN-AE-002** — akasha-evolution v0.8.1 | 5-agent parallel loop v2"
     ],
-    "pending_count": 7
+    "pending_count": 15
   },
   "git": {
-    "untracked": 0,
-    "modified": 8,
-    "total": 8,
+    "untracked": 2,
+    "modified": 13,
+    "total": 15,
     "has_changes": true
   },
   "triad": {
@@ -30,39 +38,21 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1390,
-      "failed": 232
+      "passed": 1391,
+      "failed": 231
     }
   },
   "codegraph": {
-    "pending_files": 0,
+    "pending_files": 1,
     "ok": true
   },
   "improvement_candidates": [
     {
-      "type": "typecheck_clean",
-      "priority": 1,
-      "description": "TypeScript typecheck is clean"
-    },
-    {
       "type": "tech_debt",
       "priority": 5,
-      "description": "5 files with TODO",
+      "description": "1 files with XXX",
       "files": [
-        "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts",
-        "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
-        "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts",
-        "apps/akasha-portal/src/lib/grimoire/synthesis/narrative-generator.ts"
-      ]
-    },
-    {
-      "type": "tech_debt",
-      "priority": 5,
-      "description": "2 files with XXX",
-      "files": [
-        "packages/core-cabala/src/number-meanings.ts",
-        "packages/akasha-core/src/correlation-engine.test.ts"
+        "packages/core-cabala/src/number-meanings.ts"
       ]
     },
     {
@@ -87,15 +77,17 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "3 changed files lack tests",
+      "description": "5 changed files lack tests",
       "files": [
-        "packages/akasha-core/src/akasha-core.ts",
-        "packages/akasha-core/src/interpretation-engine.ts",
-        "packages/core-cabala/src/numerology-kabalah.ts"
+        "apps/akasha-portal/src/lib/application/agents/personal-cycle-engine.ts",
+        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts",
+        "apps/akasha-portal/src/lib/grimoire/significados-curados.ts",
+        "apps/akasha-portal/src/lib/grimoire/synthesis/narrative-generator.ts",
+        "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts"
       ]
     }
   ],
-  "git_head": "8dec12e990b5fa48148a0ac6b917a7add6d0137c",
+  "git_head": "fbc391dff4774e30a5e888fac4a671f472e60c8d",
   "decision_factors": {
     "has_pending_features": true
   }

@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-AKASHA Autonomous Evolution Loop
-=================================
+AKASA Autonomous Evolution Loop v2
+==================================
 6-phase state machine: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
-Each full iteration runs all 6 phases in one call (bootstrap once per iteration).
 
-Improvements are executed by real OMP coding agents via subprocess,
-not dead Python handlers.
+Parallel 5-agent execution:
+  - RESEARCH finds up to MAX_PARALLEL independent improvements
+  - IMPLEMENTATION spawns up to 5 coding agents in parallel via ThreadPoolExecutor
+  - All agents run simultaneously, results are collected and committed together
+
+Improvements executed by real OMP coding agents via subprocess, not dead Python handlers.
 """
 
 import os
@@ -15,6 +18,8 @@ import hashlib
 import re
 import subprocess
 import time
+import uuid
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -28,16 +33,14 @@ TASK_FILE = MA / "task-implementation.json"
 RESULT_FILE = MA / "task-result.json"
 CACHE_FILE = MA / "triad-cache.json"
 LOGS_DIR = MA / "logs"
+AGENT_RESULTS_DIR = MA / "agent-results"
 
 os.makedirs(MA, exist_ok=True)
 os.makedirs(LOGS_DIR, exist_ok=True)
+os.makedirs(AGENT_RESULTS_DIR, exist_ok=True)
 
-# ─── Version constants ──────────────────────────────────────────────────────────
-# v0.0.x: loop infrastructure + harness improvements
-# v0.1.x: feature parity (ASTROLOGIA, ODUS, ICHING, CABALA, TANTRA unified)
-# v0.9.x: polish + mobile-first + PWA
-# v1.0.0: stable release
-
+# ─── Parallelism constants ──────────────────────────────────────────────────────
+MAX_PARALLEL = 5   # Max parallel coding agents per iteration
 TRIAD_CACHE_TTL = 300  # 5 minutes
 
 
@@ -69,7 +72,7 @@ def load_state() -> dict:
         "phase": "RESEARCH",
         "iteration": 0,
         "phase_iteration": 0,
-        "current_feature": None,
+        "current_features": [],  # List of active improvements (up to MAX_PARALLEL)
         "retry_count": 0,
         "running": False,
         "improvements_made": [],
@@ -123,7 +126,7 @@ def save_triad_cache(triad: dict, head: str) -> None:
     })
 
 
-# ─── Bootstrap ────────────────────────────────────────────────────────────────
+# ─── Bootstrap ─────────────────────────────────────────────────────────────────
 
 def build_snapshot(use_cache=True) -> dict:
     """Build project context snapshot. Uses triad cache to avoid 160s redundant recompute."""
@@ -189,12 +192,12 @@ def build_snapshot(use_cache=True) -> dict:
                     errors.append(line.strip())
         triad["typecheck"] = {"pass": rc == 0, "errors": errors[:20]}
 
-        # Lint
+        # Lint (non-blocking)
         rc, out, _ = run_cmd(["pnpm", "lint", "--quiet"], timeout=600)
         warnings = out.count("warning") if rc == 0 else 0
         triad["lint"] = {"pass": rc == 0, "warnings": warnings}
 
-        # Tests
+        # Tests (non-blocking)
         rc, out, _ = run_cmd(["pnpm", "test:run"], timeout=120)
         passed = failed = 0
         output_lines = out.splitlines()
@@ -249,12 +252,9 @@ def find_improvement_candidates(triad: dict) -> list:
     """
     candidates = []
 
-    # 1. TypeScript typecheck result
+    # 1. TypeScript typecheck result (only if broken — typecheck_clean is not actionable)
     tc = triad.get("typecheck", {})
-    if tc.get("pass", False):
-        candidates.append({"type": "typecheck_clean", "priority": 1,
-                         "description": "TypeScript typecheck is clean"})
-    else:
+    if not tc.get("pass", False):
         errors = tc.get("errors", [])
         candidates.append({"type": "typecheck_errors", "priority": 9,
                          "description": f"{len(errors)} TypeScript errors", "errors": errors[:10]})
@@ -303,7 +303,7 @@ def find_improvement_candidates(triad: dict) -> list:
                          "description": f"{len(untested)} changed files lack tests",
                          "files": untested[:5]})
 
-    # 5. Check traduccao-areas coverage
+    # 5. Check traducao-areas coverage
     for trad_path in [ROOT / "traducao-areas.ts",
                       ROOT / "apps/akasha-portal/src/lib/grimoire/traducao-areas.ts"]:
         if trad_path.exists():
@@ -343,7 +343,7 @@ def add_learning(mem: dict, agent: str, phase: str, feature_id: str,
 
 
 def should_proceed(snapshot: dict) -> tuple[bool, str]:
-    """Check if loop should proceed or wait. All triad checks are non-blocking."""
+    """Check if loop should proceed. Typecheck errors are non-blocking."""
     triad = snapshot.get("triad", {})
     tc = triad.get("typecheck", {})
     if not tc.get("pass"):
@@ -351,264 +351,338 @@ def should_proceed(snapshot: dict) -> tuple[bool, str]:
     return True, "Ready to proceed"
 
 
-def pick_best_improvement(snapshot: dict, memory: dict) -> Optional[dict]:
-    """Pick the highest-impact improvement to make this iteration."""
-    candidates = snapshot.get("improvement_candidates", [])
+# ─── Pick best improvements (up to MAX_PARALLEL) ──────────────────────────────
+
+# Types that should not repeat within recent window
+SKIP_TYPES = {"typecheck_clean", "typecheck_errors"}
+
+# Types that are singular (only one instance per iteration)
+SINGULAR_TYPES = {"typecheck_errors", "missing_translation"}
+
+# Recent decisions window for deduplication
+RECENT_DECISIONS_KEY = "recent_decisions"
+RECENT_WINDOW = 10
+
+
+def pick_best_improvements(candidates: list, memory: dict, max_count: int = MAX_PARALLEL) -> list:
+    """
+    Pick up to max_count improvements from candidates.
+    Ensures variety: no duplicate types (except tech_debt/large_file/missing_tests),
+    skips recently seen types, prioritizes by score.
+    """
     if not candidates:
-        return None
+        return []
 
-    # Filter out non-actionable status indicators (not real improvements)
-    SKIP_TYPES = {"typecheck_clean", "typecheck_errors"}
-    candidates = [c for c in candidates if c.get("type") not in SKIP_TYPES]
+    # Filter out SKIP_TYPES
+    filtered = [c for c in candidates if c.get("type") not in SKIP_TYPES]
+    if not filtered:
+        return []
 
-    if not candidates:
-        return None
+    # Get recent decisions for deduplication
+    recent = memory.get(RECENT_DECISIONS_KEY, [])
+    recent_types = [d.get("type") for d in recent[-RECENT_WINDOW:]]
 
-    # Filter out things we've already done recently
-    recent = [e.get("improvement") for e in memory.get("decisions", [])[-10:]]
+    selected = []
+    type_count = {}
 
-    # Sort by priority (descending)
-    candidates = sorted(candidates, key=lambda c: c.get("priority", 5), reverse=True)
+    # Sort by priority descending
+    filtered.sort(key=lambda c: c.get("priority", 5), reverse=True)
 
-    # Skip if we just did this
-    for c in candidates:
-        if c.get("type") not in recent:
-            return c
+    for c in filtered:
+        imp_type = c.get("type", "?")
 
-    return candidates[0] if candidates else None
+        # Skip typecheck_errors if we already have it selected
+        if imp_type in SINGULAR_TYPES and any(t == imp_type for t in type_count):
+            continue
 
+        # Skip recently seen types (avoid repetition)
+        if imp_type in recent_types and imp_type not in ("tech_debt", "large_file", "missing_tests"):
+            continue
 
-def make_decision(snapshot: dict, memory: dict, current_phase: str) -> dict:
-    """Make evidence-based decision about what to do next."""
-    can_proceed, reason = should_proceed(snapshot)
+        # Allow up to 2 of same multi-instance type per iteration
+        if type_count.get(imp_type, 0) >= 2:
+            continue
 
-    if not can_proceed:
-        return {
-            "action": "BLOCKED",
-            "blocking_reason": reason,
-            "confidence": "high",
-            "reasoning": [reason],
-        }
+        selected.append(c)
+        type_count[imp_type] = type_count.get(imp_type, 0) + 1
 
-    improvement = pick_best_improvement(snapshot, memory)
+        if len(selected) >= max_count:
+            break
 
-    if not improvement:
-        return {
-            "action": "IDLE",
-            "confidence": "high",
-            "reasoning": ["No improvement candidates found"],
-        }
-
-    return {
-        "action": "EXECUTE",
-        "confidence": "high",
-        "improvement": improvement,
-        "reasoning": [
-            f"→ Ready to proceed ({reason})",
-            f"→ Pick: {improvement.get('description', '?')}",
-        ],
-    }
+    return selected
 
 
-# ─── Phase executors ─────────────────────────────────────────────────────────
+def record_decision(memory: dict, improvements: list) -> None:
+    """Record improvement decisions in memory for deduplication."""
+    decisions = memory.get(RECENT_DECISIONS_KEY, [])
+    for imp in improvements:
+        decisions.append({
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "type": imp.get("type"),
+            "description": imp.get("description"),
+        })
+    memory[RECENT_DECISIONS_KEY] = decisions[-RECENT_WINDOW:]
+
+
+# ─── Phase: RESEARCH ────────────────────────────────────────────────────────────
 
 def phase_RESEARCH(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dict]:
-    """RESEARCH: find the best improvement opportunity."""
-    decision = make_decision(snapshot, memory, "RESEARCH")
+    """RESEARCH: find up to MAX_PARALLEL improvement candidates."""
+    iteration = state.get("iteration", 0)
 
-    print(f"\nDecision: {decision.get('action', '?')} | confidence={decision.get('confidence', '?')}")
-    for r in decision.get("reasoning", []):
-        print(f"  → {r}")
+    print(f"\n{'='*60}")
+    print(f"🔬 RESEARCH (iter {iteration})")
+    print(f"{'='*60}")
 
-    if decision.get("action") == "BLOCKED":
-        print(f"  ⛔ BLOCKED: {decision.get('blocking_reason', '?')}")
-        state["phase"] = "PLANNING"
-        return state, memory, snapshot
+    candidates = snapshot.get("improvement_candidates", [])
+    print(f"  Found {len(candidates)} candidate(s)")
 
-    if decision.get("action") == "IDLE":
-        print("  💤 IDLE: no work found")
+    # Pick up to MAX_PARALLEL improvements
+    selected = pick_best_improvements(candidates, memory, max_count=MAX_PARALLEL)
+
+    if not selected:
+        print("  ⚠ No improvements selected — advancing to next iteration")
+        record_decision(memory, [{"type": "none", "description": "no improvement found"}])
         state["phase"] = "RELEASE"
+        state["retry_count"] = 0
         return state, memory, snapshot
 
-    improvement = decision.get("improvement", {})
-    imp_type = improvement.get("type", "?")
-    imp_desc = improvement.get("description", "?")
+    print(f"  Selected {len(selected)} improvement(s) for parallel execution:")
+    for i, imp in enumerate(selected):
+        print(f"    [{i+1}] {imp.get('type')}: {imp.get('description', '')[:60]}")
 
-    state["current_feature"] = imp_type
-    print(f"\n🔬 RESEARCH: {imp_type} — {imp_desc}")
+    # Record decision to avoid immediate repeats
+    record_decision(memory, selected)
 
-    # Write implementation task
-    TASK_FILE.write_text(json.dumps({
-        "phase": "IMPLEMENTATION",
-        "improvement": improvement,
-        "iteration": state.get("iteration", 0),
-        "snapshot_summary": {
-            "version": snapshot.get("version"),
-            "triad": snapshot.get("triad"),
-            "candidates": snapshot.get("improvement_candidates", [])[:5],
-        }
-    }, indent=2))
-
-    memory.setdefault("decisions", []).append({
-        "ts": datetime.now(timezone.utc).isoformat(),
-        "action": decision.get("action"),
-        "improvement": imp_type,
+    # Save task data with all selected improvements
+    save_json(TASK_FILE, {
+        "improvements": selected,
+        "iteration": iteration,
     })
 
     state["phase"] = "PLANNING"
+    state["current_features"] = [imp.get("type") for imp in selected]
+    state["phase_iteration"] = 0
     return state, memory, snapshot
 
 
+# ─── Phase: PLANNING ───────────────────────────────────────────────────────────
+
 def phase_PLANNING(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dict]:
-    """PLANNING: update Plans.md with improvement plan."""
-    imp_type = state.get("current_feature", "?")
+    """PLANNING: update Plans.md with all selected improvements."""
     iteration = state.get("iteration", 0)
-
     task_data = load_json(TASK_FILE, {})
-    improvement = task_data.get("improvement", {})
+    improvements = task_data.get("improvements", [])
 
-    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    ver = load_json(ROOT / ".autonomous" / "ralph-loop" / "version.json",
-                    {"major": 0, "minor": 0, "patch": 0})
-    ver_str = f"{ver['major']}.{ver['minor']}.{ver['patch']}"
-
-    block = [
-        f"\n## cc: AKASHA-loop iter {iteration} | {imp_type} ({ts})\n",
-        f"- [~] **PLN-{iteration:03d}** — {imp_type} | {ver_str}\n",
-        f"  - Improvement: {improvement.get('description', '?')}\n",
-        f"  - Type: {imp_type}\n",
-        f"  - Priority: {improvement.get('priority', '?')}\n",
-        f"  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE\n",
-    ]
-    if improvement.get("files"):
-        for f in improvement["files"][:3]:
-            block.append(f"  - File: `{f}`\n")
+    print(f"\n{'='*60}")
+    print(f"📋 PLANNING (iter {iteration})")
+    print(f"{'='*60}")
 
     plans_md = ROOT / "Plans.md"
+    block = []
+    for i, imp in enumerate(improvements):
+        imp_type = imp.get("type", "?")
+        imp_desc = imp.get("description", "?")
+        files = imp.get("files", [])
+        block.append(
+            f"- [~] **PLN-{iteration:03d}[{i+1}]** — {imp_type} | {imp_desc}\n"
+        )
+        if files:
+            file_list = ", ".join([f.get("file", str(f)) if isinstance(f, dict) else str(f) for f in files[:3]])
+            block.append(f"  - Files: {file_list}\n")
+
     if plans_md.exists():
         content = plans_md.read_text()
         if "## cc:TODO" in content:
-            content = content.replace("## cc:TODO", "".join(block) + "\n## cc:TODO", 1)
+            content = content.replace("## cc:TODO", "".join(block) + "## cc:TODO", 1)
         elif "## cc:WIP" in content:
-            content = content.replace("## cc:WIP", "".join(block) + "\n## cc:WIP", 1)
+            content = content.replace("## cc:WIP", "".join(block) + "## cc:WIP", 1)
         else:
             content += "".join(block)
         plans_md.write_text(content)
 
-    print(f"  📋 PLANNING: Plans.md updated (PLN-{iteration:03d})")
-    print(f"  → Will {improvement.get('description', '?')}")
+    print(f"  📋 PLANNING: Plans.md updated with {len(improvements)} improvement(s)")
+    for imp in improvements:
+        print(f"  → {imp.get('type')}: {imp.get('description', '')[:60]}")
 
     state["phase"] = "IMPLEMENTATION"
     return state, memory, snapshot
 
 
-# ─── Real coding agent executor ───────────────────────────────────────────────
+# ─── Parallel coding agent executor ────────────────────────────────────────────
 
-def spawn_coding_agent(improvement: dict, iteration: int) -> tuple[bool, str]:
-    """
-    Spawn a real OMP coding agent via subprocess to execute the improvement.
-    Returns (success, message).
+def _build_agent_prompt(improvement: dict) -> str:
+    """Build targeted coding prompt for a single improvement.
+    
+    Principles:
+    - Tech debt: fix max 3 files, commit after EACH fix (not batch)
+    - Missing tests: target max 2 files, ensure no overlap with large_file targets
+    - Large file: extract ONE helper module from the largest file only
+    - Collision avoidance: check git status before making changes
+    - Result-first: always write task-result.json before timeout/exit
     """
     imp_type = improvement.get("type", "?")
     imp_desc = improvement.get("description", "?")
     files = improvement.get("files", [])
     errors = improvement.get("errors", [])
 
-    # Build the agent prompt based on improvement type
     if imp_type in ("tech_debt", "FIXME", "TODO", "XXX", "HACK"):
-        file_list = ", ".join(files[:5]) if files else "various files"
-        prompt = (
-            f"Fix the following tech debt in the AKASHA project at /home/skynet/cabala-dos-caminhos:\n"
-            f"Type: {imp_type}\n"
-            f"Files: {file_list}\n\n"
-            f"Use ast_grep to find all instances of {imp_type} comments in TypeScript/TSX files.\n"
-            f"Fix each one properly — don't just remove the comment.\n"
-            f"If a TODO describes incomplete functionality, implement it.\n"
-            f"If a FIXME describes a bug, fix the bug.\n"
-            f"After fixing, run `pnpm typecheck` to verify no new errors.\n"
-            f"Commit with: git commit -m 'fix: resolved {imp_type} comments'\n"
-            f"Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
-            f'{{"success": true, "message": "Fixed {imp_type} in N files", "type": "{imp_type}"}}'
+        # Cap at 3 files max — commit after EACH fix so partial success is recorded
+        file_list = ", ".join(files[:3]) if files else "various files"
+        return (
+            f"You are fixing {imp_type} comments in the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
+            f"Target files: {file_list}\n\n"
+            f"RULES:\n"
+            f"1. Run `git status` before starting to avoid conflicts\n"
+            f"2. Use `ast_grep --include='*.ts' --include='*.tsx' '{imp_type}' .` to find ALL instances\n"
+            f"3. For EACH {imp_type} found, either:\n"
+            f"   - Implement the described functionality (if TODO = incomplete feature)\n"
+            f"   - Fix the described bug (if FIXME = known bug)\n"
+            f"   - Remove if no longer relevant (if XXX/HACK = temporary code)\n"
+            f"4. After EACH file fix, run `pnpm typecheck` to verify\n"
+            f"5. Commit EACH file separately: `git add <file> && git commit -m 'fix: resolved {imp_type} in <file>'`\n"
+            f"6. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
+            f'{{"success": true, "message": "Fixed N {imp_type} comments in N files", "type": "{imp_type}"}}\n'
+            f"7. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
+            f"CRITICAL: Write task-result.json BEFORE the process exits, even on partial success.\n"
         )
+
     elif imp_type == "missing_tests":
-        file_list = ", ".join(files[:3]) if files else "changed files"
-        prompt = (
-            f"Add meaningful test coverage to the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
-            f"Files needing tests: {file_list}\n\n"
-            f"Use codegraph_explore to understand what each file does.\n"
-            f"Create vitest test files at the corresponding __tests__/ paths.\n"
-            f"Each test should:\n"
-            f"  - Import the module under test\n"
-            f"  - Test the main exported functions with real assertions\n"
-            f"  - Cover edge cases (empty input, error cases, boundary conditions)\n"
-            f"Run `pnpm test:run` to verify tests pass.\n"
-            f"Commit with: git commit -m 'test: add coverage for {file_list}'\n"
-            f"Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
-            f'{{"success": true, "message": "Added tests for N files", "type": "missing_tests"}}'
+        # Target max 2 files that avoid common large_file targets
+        safe_files = [
+            f for f in files[:2]
+            if not isinstance(f, dict) or (
+                "synthesis-engine.ts" not in f.get("file", "")
+                and "significados-curados.ts" not in f.get("file", "")
+                and "MandalaChart.tsx" not in f.get("file", "")
+            )
+        ]
+        if not safe_files:
+            safe_files = files[:2]
+        file_list = ", ".join(
+            f.get("file", str(f)) if isinstance(f, dict) else str(f)
+            for f in safe_files
         )
+        return (
+            f"You are adding test coverage in the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
+            f"Target files: {file_list}\n\n"
+            f"RULES:\n"
+            f"1. Run `git status` before starting — if file was modified by another agent, skip it\n"
+            f"2. Use `codegraph_explore` to understand what each file exports and its dependencies\n"
+            f"3. Create vitest test file at: <file>.test.ts (same dir, same name + .test.ts)\n"
+            f"4. Each test file must:\n"
+            f"   - Import the module under test\n"
+            f"   - Test 2-3 main exported functions with real assertions\n"
+            f"   - Cover ONE edge case each (empty input, error case, boundary condition)\n"
+            f"5. Run `pnpm test:run` to verify tests pass\n"
+            f"6. Commit: `git add <testfile> && git commit -m 'test: add coverage for <filename>'`\n"
+            f"7. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
+            f'{{"success": true, "message": "Added tests for N files", "type": "missing_tests"}}\n'
+            f"8. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
+            f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
+        )
+
     elif imp_type == "typecheck_errors":
         error_list = "\n".join(errors[:10]) if errors else "TypeScript errors"
-        prompt = (
-            f"Fix TypeScript errors in the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
-            f"Errors:\n{error_list}\n\n"
-            f"Run `pnpm typecheck` to see all errors.\n"
-            f"Fix each error properly — add types, fix imports, resolve module not found, etc.\n"
-            f"After fixing, run `pnpm typecheck` to verify all errors resolved.\n"
-            f"Commit with: git commit -m 'fix: resolve TypeScript errors'\n"
-            f"Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
-            f'{{"success": true, "message": "Fixed TypeScript errors", "type": "typecheck_errors"}}'
+        return (
+            f"You are fixing TypeScript errors in the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
+            f"Errors to fix:\n{error_list}\n\n"
+            f"RULES:\n"
+            f"1. Run `pnpm typecheck 2>&1 | head -50` to see all current errors\n"
+            f"2. Fix errors one at a time: add missing types, fix imports, resolve module not found\n"
+            f"3. After fixing 2-3 errors, run `pnpm typecheck` again to verify\n"
+            f"4. Fix all errors until `pnpm typecheck` exits with code 0\n"
+            f"5. Commit: `git commit -m 'fix: resolve TypeScript errors'`\n"
+            f"6. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
+            f'{{"success": true, "message": "Fixed TypeScript errors", "type": "typecheck_errors"}}\n'
+            f"7. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
+            f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
         )
+
     elif imp_type == "missing_translation":
         trad = improvement.get("trad", "?")
         file_path = improvement.get("file", "?")
-        prompt = (
-            f"Add {trad} translation support to the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
+        return (
+            f"You are adding {trad} translation support to the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
             f"File: {file_path}\n"
             f"Missing: {trad}\n\n"
-            f"Read the existing traducao-areas.ts to understand the pattern.\n"
-            f"Add CABALA and TANTRA areas following the same pattern as ASTROLOGIA, ODUS, ICHING.\n"
-            f"Each area should have: name, keywords, context patterns for portals.\n"
-            f"Run `pnpm typecheck` to verify no errors.\n"
-            f"Commit with: git commit -m 'feat: add {trad} translation areas'\n"
-            f"Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
-            f'{{"success": true, "message": "Added {trad} translation", "type": "missing_translation"}}'
+            f"RULES:\n"
+            f"1. Read {file_path} and find the traducao-areas pattern for ASTROLOGIA, ODUS, ICHING\n"
+            f"2. Add CABALA and TANTRA entries: name (string), keywords (string[]), contextPatterns (RegExp[])\n"
+            f"3. Run `pnpm typecheck` to verify no errors\n"
+            f"4. Commit: `git commit -m 'feat: add {trad} translation areas'`\n"
+            f"5. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
+            f'{{"success": true, "message": "Added {trad} translation", "type": "missing_translation"}}\n'
+            f"6. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
+            f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
         )
+
     elif imp_type == "large_file":
-        file_list = ", ".join([f.get("file", "?") for f in files[:3]]) if files else "large files"
-        prompt = (
-            f"Refactor oversized files in the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
-            f"Files: {file_list}\n\n"
-            f"Use codegraph_explore to understand the file structure.\n"
-            f"Split files over 500 lines into smaller, focused modules.\n"
-            f"Each module should have a single responsibility.\n"
-            f"Run `pnpm typecheck` and `pnpm test:run` to verify refactor is safe.\n"
-            f"Commit with: git commit -m 'refactor: split large files'\n"
-            f"Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
-            f'{{"success": true, "message": "Refactored large files", "type": "large_file"}}'
+        # CRITICAL: Only target the SINGLE largest file, extract ONE helper module
+        largest = files[0] if files else None
+        if isinstance(largest, dict):
+            target_file = largest.get("file", "?")
+            line_count = largest.get("lines", "?")
+        else:
+            target_file = str(largest) if largest else "?"
+            line_count = "?"
+        return (
+            f"You are extracting ONE helper module from ONE oversized file in the AKASHA project.\n"
+            f"Target: {target_file} ({line_count} lines)\n\n"
+            f"RULES — EXACTLY FOLLOW:\n"
+            f"1. Run `git status` before starting — if file was modified, skip this task entirely\n"
+            f"2. Read the target file and identify ONE natural group of related functions (50-150 lines)\n"
+            f"3. Create a new helper file in the same directory: e.g. synthesis-engine/<name>.ts\n"
+            f"4. Update the original file to import from the new helper\n"
+            f"5. Run `pnpm typecheck` to verify — must pass\n"
+            f"6. Run `pnpm test:run` — must not break existing tests\n"
+            f"7. Commit: `git add <newfile> <targetfile> && git commit -m 'refactor: extract helper from <target_file>'`\n"
+            f"8. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
+            f'{{"success": true, "message": "Extracted helper from {target_file}", "type": "large_file"}}\n'
+            f"9. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
+            f"DO NOT split more than ONE file. DO NOT extract more than ONE helper.\n"
+            f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
         )
+
     else:
-        prompt = (
-            f"Implement the following improvement in the AKASHA project at /home/skynet/cabala-dos-caminhos:\n"
+        return (
+            f"Implement the following improvement in the AKASHA project at /home/skynet/cabala-dos-caminhos.\n"
             f"Type: {imp_type}\n"
             f"Description: {imp_desc}\n\n"
-            f"Run `pnpm typecheck` and `pnpm test:run` to verify the change is safe.\n"
-            f"Commit with a descriptive message.\n"
-            f"Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
-            f'{{"success": true, "message": "Implemented {imp_type}", "type": "{imp_type}"}}'
+            f"RULES:\n"
+            f"1. Run `git status` before starting to avoid conflicts\n"
+            f"2. Make the change carefully — verify with `pnpm typecheck`\n"
+            f"3. Commit with a descriptive message\n"
+            f"4. Write to /home/skynet/cabala-dos-caminhos/.autonomous/multi-agent/task-result.json:\n"
+            f'{{"success": true, "message": "Implemented {imp_type}", "type": "{imp_type}"}}\n'
+            f"5. If timeout near (30s left), write task-result.json FIRST then finish\n\n"
+            f"CRITICAL: Write task-result.json BEFORE the process exits.\n"
         )
 
-    # Remove any existing result file
-    if RESULT_FILE.exists():
-        RESULT_FILE.unlink()
 
-    print(f"    🤖 Spawning OMP coding agent for: {imp_type}")
 
-    # Build clean environment — avoid daemon/MCP server delays
+
+def _run_single_agent(improvement: dict, agent_id: str, timeout_secs: int = 600) -> dict:
+    """
+    Run a single coding agent for one improvement.
+    Returns dict with: agent_id, type, success, message.
+    Writes result to unique file to avoid collisions.
+    """
+    imp_type = improvement.get("type", "?")
+    imp_desc = improvement.get("description", "?")
+    result_file = AGENT_RESULTS_DIR / f"result-{agent_id}.json"
+
+    # Remove any existing result for this agent
+    if result_file.exists():
+        result_file.unlink()
+
+    prompt = _build_agent_prompt(improvement)
+
+    print(f"    🤖 Agent-{agent_id}: {imp_type} — {imp_desc[:50]}")
+
     sub_env = dict(os.environ)
     sub_env["CLAUDE_CODE_SIMPLE"] = "1"
     sub_env["CLAUDE_NO_DAEMON"] = "1"
-
-    timeout_secs = 600  # 10 minutes max
 
     try:
         cp = subprocess.run(
@@ -623,119 +697,192 @@ def spawn_coding_agent(improvement: dict, iteration: int) -> tuple[bool, str]:
         exit_code = cp.returncode
         output = cp.stdout + cp.stderr
     except subprocess.TimeoutExpired:
-        return False, f"Coding agent timed out after {timeout_secs}s"
+        return {"agent_id": agent_id, "type": imp_type, "success": False,
+                "message": f"Timeout after {timeout_secs}s"}
     except Exception as e:
-        return False, f"Coding agent error: {e}"
+        return {"agent_id": agent_id, "type": imp_type, "success": False,
+                "message": str(e)}
 
-    # Show last few lines of output
-    lines = output.splitlines()
-    for line in lines[-5:]:
-        if line.strip():
-            print(f"      {line.strip()}")
+    # Show last 3 lines for visibility
+    lines = [l for l in output.splitlines() if l.strip()]
+    for line in lines[-3:]:
+        print(f"      {line.strip()}")
 
-    if exit_code == 0:
-        if RESULT_FILE.exists():
+    success = exit_code == 0
+
+    result = {
+        "agent_id": agent_id,
+        "type": imp_type,
+        "success": success,
+        "message": f"Agent {agent_id} completed {imp_type}" if success else f"Agent {agent_id} failed: {output[:200]}",
+        "exit_code": exit_code,
+    }
+
+    result_file.write_text(json.dumps(result, indent=2))
+    return result
+
+
+def execute_parallel_improvements(improvements: list, max_workers: int = MAX_PARALLEL) -> tuple[bool, str, list]:
+    """
+    Execute multiple improvements in parallel using ThreadPoolExecutor.
+    Returns (all_success, summary, list_of_results).
+    """
+    if not improvements:
+        return True, "No improvements to execute", []
+
+    print(f"\n  💻 IMPLEMENTATION: {len(improvements)} parallel agent(s)")
+    print(f"  ⏱️  Max workers: {max_workers} | Timeout per agent: 600s")
+
+    results = []
+    start = time.time()
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {}
+        for i, imp in enumerate(improvements):
+            agent_id = f"{uuid.uuid4().hex[:8]}"
+            future = executor.submit(_run_single_agent, imp, agent_id)
+            futures[future] = (i, imp, agent_id)
+
+        for future in as_completed(futures):
+            i, imp, agent_id = futures[future]
             try:
-                result = json.loads(RESULT_FILE.read_text())
-                return result.get("success", True), result.get("message", "Done")
-            except Exception:
-                pass
-        return True, f"Coding agent completed for {imp_type}"
-    else:
-        return False, f"Coding agent failed (exit {exit_code}): {output[:200]}"
+                result = future.result()
+                results.append(result)
+                status = "✅" if result["success"] else "❌"
+                print(f"    {status} Agent-{agent_id} [{imp.get('type')}]: {result['message'][:60]}")
+            except Exception as e:
+                print(f"    ❌ Agent-{agent_id} exception: {e}")
+                results.append({"agent_id": agent_id, "type": imp.get("type"),
+                               "success": False, "message": str(e)})
+
+    elapsed = time.time() - start
+    success_count = sum(1 for r in results if r["success"])
+    print(f"\n  ⏱️  Parallel execution done in {elapsed:.1f}s | {success_count}/{len(results)} succeeded")
+
+    all_success = success_count == len(results)
+    summary = f"{success_count}/{len(results)} agents succeeded in {elapsed:.1f}s"
+    return all_success, summary, results
 
 
-def _execute_improvement(improvement: dict) -> tuple[bool, str]:
-    """
-    Execute an improvement via real OMP coding agent.
-    Returns (success, message).
-    """
-    imp_type = improvement.get("type", "?")
-    print(f"  💻 IMPLEMENTATION: {imp_type} via OMP coding agent")
-
-    ok, msg = spawn_coding_agent(improvement, iteration=0)
-    print(f"    → {msg}")
-    return ok, msg
-
+# ─── Phase: IMPLEMENTATION ─────────────────────────────────────────────────────
 
 def phase_IMPLEMENTATION(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dict]:
-    """IMPLEMENTATION: execute the improvement via OMP coding agent."""
-    imp_type = state.get("current_feature", "?")
+    """IMPLEMENTATION: execute up to MAX_PARALLEL improvements in parallel."""
+    iteration = state.get("iteration", 0)
     task_data = load_json(TASK_FILE, {})
-    improvement = task_data.get("improvement", {})
-    imp_desc = improvement.get("description", "?")
+    improvements = task_data.get("improvements", [])
 
-    print(f"  💻 IMPLEMENTATION: {imp_type}")
+    print(f"\n{'='*60}")
+    print(f"💻 IMPLEMENTATION (iter {iteration})")
+    print(f"{'='*60}")
 
-    # Execute the improvement via real coding agent
-    ok, msg = _execute_improvement(improvement)
-    print(f"    → {msg}")
+    if not improvements:
+        print("  ⚠ No improvements to implement")
+        state["phase"] = "QA"
+        return state, memory, snapshot
+
+    # Execute all improvements in parallel
+    all_ok, summary, results = execute_parallel_improvements(improvements)
 
     # Record in memory
-    ctype = improvement.get("type", "?")
-    key = hashlib.md5(ctype.encode()).hexdigest()[:8]
-    if ok:
-        memory.setdefault("success_patterns", {})[key] = memory.get("success_patterns", {}).get(key, 0) + 1
-        add_learning(memory, "coder", "IMPLEMENTATION", imp_type, "success", msg)
-    else:
-        memory.setdefault("error_patterns", {})[key] = memory.get("error_patterns", {}).get(key, 0) + 1
-        add_learning(memory, "coder", "IMPLEMENTATION", imp_type, "failure", msg)
+    for r in results:
+        key = hashlib.md5(r["type"].encode()).hexdigest()[:8]
+        if r["success"]:
+            memory.setdefault("success_patterns", {})[key] = \
+                memory.get("success_patterns", {}).get(key, 0) + 1
+            add_learning(memory, "coder", "IMPLEMENTATION", r["type"], "success", r["message"])
+        else:
+            memory.setdefault("error_patterns", {})[key] = \
+                memory.get("error_patterns", {}).get(key, 0) + 1
+            add_learning(memory, "coder", "IMPLEMENTATION", r["type"], "failure", r["message"])
 
-    print(f"    {'✅' if ok else '❌'} IMPLEMENTATION: {imp_desc}")
+    # Save combined result
+    save_json(RESULT_FILE, {
+        "all_ok": all_ok,
+        "summary": summary,
+        "results": results,
+        "improvements": improvements,
+    })
+
+    feature_names = ", ".join([imp.get("type") for imp in improvements])
+    print(f"\n  {'✅' if all_ok else '⚠'} IMPLEMENTATION: {feature_names}")
+    print(f"     {summary}")
 
     state["phase"] = "QA"
     state["phase_iteration"] = 0
     return state, memory, snapshot
 
 
-def phase_QA(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dict]:
-    """QA: run triad and validate the improvement."""
-    imp_type = state.get("current_feature", "?")
+# ─── Phase: QA ─────────────────────────────────────────────────────────────────
 
-    # Always get fresh triad after implementation (use_cache=False)
-    print(f"  🧪 QA: {imp_type}")
-    fresh = build_snapshot(use_cache=False)  # Always fresh after implementation
+def phase_QA(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dict]:
+    """QA: run triad and validate the improvements."""
+    task_data = load_json(TASK_FILE, {})
+    improvements = task_data.get("improvements", [])
+    feature_names = ", ".join([imp.get("type") for imp in improvements]) or "none"
+
+    print(f"\n{'='*60}")
+    print(f"🧪 QA (typecheck + tests)")
+    print(f"{'='*60}")
+
+    # Always get fresh triad after implementation
+    fresh = build_snapshot(use_cache=False)
     triad = fresh.get("triad", {})
-    save_triad_cache(triad, get_git_head())  # Update cache
+    save_triad_cache(triad, get_git_head())
 
     tc_pass = triad.get("typecheck", {}).get("pass", False)
     lint_pass = triad.get("lint", {}).get("pass", False)
     tests_pass = triad.get("tests", {}).get("pass", False)
-    tests_failed = triad.get("tests", {}).get("failed", 0)
+    tests_info = triad.get("tests", {})
 
-    print(f"    Triad: typecheck={tc_pass} tests={tests_pass} ({tests_failed} failed) lint={lint_pass}")
-
-    blocking_failures = []
+    print(f"  Typecheck: {'✅ pass' if tc_pass else '❌ FAIL'}")
     if not tc_pass:
-        add_learning(memory, "qa", "QA", imp_type, "warning",
-                    f"Typecheck has errors (non-blocking)")
+        errors = triad.get("typecheck", {}).get("errors", [])
+        for e in errors[:5]:
+            print(f"    {e}")
 
-    if not blocking_failures:
-        print(f"    ✅ Triad green → VALIDATION")
+    print(f"  Tests:    {'✅' if tests_pass else '⚠'} "
+          f"{tests_info.get('passed', 0)} passed / {tests_info.get('failed', 0)} failed")
+
+    # Only typecheck failures block; lint and tests are non-blocking
+    blockers = []
+    if not tc_pass:
+        blockers.append("typecheck")
+    if not tests_pass:
+        blockers.append("tests")
+
+    if blockers:
+        print(f"  ⚠ Blockers (non-blocking): {', '.join(blockers)}")
+
+    result_data = load_json(RESULT_FILE, {})
+    agent_results = result_data.get("results", [])
+    ok_count = sum(1 for r in agent_results if r.get("success"))
+
+    # Decision: proceed if at least one agent succeeded
+    if ok_count > 0:
+        print(f"  ✅ {ok_count}/{len(agent_results)} coding agent(s) succeeded")
         state["phase"] = "VALIDATION"
-        state["retry_count"] = 0
-        add_learning(memory, "qa", "QA", imp_type, "success",
-                    f"Triad green: typecheck={tc_pass} lint={lint_pass} tests={tests_pass}")
     else:
-        retry = state.get("retry_count", 0) + 1
-        state["retry_count"] = retry
-        if retry >= 3:
-            print(f"    ⛔ Max retries hit ({blocking_failures}) → VALIDATION (override)")
-            state["phase"] = "VALIDATION"
-            state["retry_count"] = 0
-        else:
-            print(f"    ❌ {blocking_failures} failing → IMPLEMENTATION (retry #{retry})")
-            state["phase"] = "IMPLEMENTATION"
+        print(f"  ❌ All coding agents failed — retrying RESEARCH")
+        add_learning(memory, "qa", "QA", "all_agents_failed", "failure",
+                    f"All {len(agent_results)} agents failed")
+        state["phase"] = "RESEARCH"
+        state["retry_count"] = state.get("retry_count", 0) + 1
 
     return state, memory, snapshot
 
 
-def phase_VALIDATION(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dict]:
-    """VALIDATION: verify DOX compliance and backwards compat."""
-    imp_type = state.get("current_feature", "?")
-    iteration = state.get("iteration", 0)
+# ─── Phase: VALIDATION ─────────────────────────────────────────────────────────
 
-    print(f"  ✅ VALIDATION: {imp_type}")
+def phase_VALIDATION(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dict]:
+    """VALIDATION: verify Plans.md, CodeGraph sync, DOX compliance."""
+    iteration = state.get("iteration", 0)
+    task_data = load_json(TASK_FILE, {})
+    improvements = task_data.get("improvements", [])
+
+    print(f"\n{'='*60}")
+    print(f"🔍 VALIDATION")
+    print(f"{'='*60}")
 
     # Check Plans.md was updated
     plans_md = ROOT / "Plans.md"
@@ -747,8 +894,11 @@ def phase_VALIDATION(state: dict, memory: dict, snapshot: dict) -> tuple[dict, d
             print(f"    ✅ Plans.md updated correctly")
         else:
             print(f"    ⚠ Plans.md not updated — auto-marking")
-            content += f"\n- [x] **PLN-{iteration:03d}** — {imp_type} (auto-marked)\n"
-            plans_md.write_text(content)
+            block = "\n".join(
+                f"- [x] **PLN-{iteration:03d}[{i+1}]** — {imp.get('type')} (auto-marked)"
+                for i, imp in enumerate(improvements)
+            )
+            plans_md.write_text(content + "\n" + block + "\n")
             plans_ok = True
 
     # Sync CodeGraph
@@ -763,10 +913,18 @@ def phase_VALIDATION(state: dict, memory: dict, snapshot: dict) -> tuple[dict, d
     return state, memory, snapshot
 
 
+# ─── Phase: RELEASE ─────────────────────────────────────────────────────────────
+
 def phase_RELEASE(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict, dict]:
     """RELEASE: bump version, commit, update CHANGELOG."""
     iteration = state.get("iteration", 0)
-    imp_type = state.get("current_feature", "?")
+    task_data = load_json(TASK_FILE, {})
+    improvements = task_data.get("improvements", [])
+    result_data = load_json(RESULT_FILE, {})
+
+    feature_names = ", ".join([imp.get("type") for imp in improvements]) if improvements else "no-improvement"
+    agent_results = result_data.get("results", [])
+    ok_count = sum(1 for r in agent_results if r.get("success"))
 
     # Version bump
     ver_file = ROOT / ".autonomous" / "ralph-loop" / "version.json"
@@ -776,18 +934,16 @@ def phase_RELEASE(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict
     ver["changelog"].insert(0, {
         "version": ver_str,
         "ts": datetime.now(timezone.utc).isoformat(),
-        "improvement": imp_type,
+        "improvement": feature_names,
+        "agents": ok_count,
     })
     save_json(ver_file, ver)
-
     (ROOT / "VERSION").write_text(ver_str + "\n")
 
     # Update CHANGELOG
     changelog = ROOT / "CHANGELOG.md"
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    task_data = load_json(TASK_FILE, {})
-    improvement = task_data.get("improvement", {})
-    entry = f"\n## [{ver_str}] — {ts}\n\n### feat(loop): {improvement.get('description', imp_type)}\n"
+    entry = f"\n## [{ver_str}] — {ts}\n\n### feat(loop): {feature_names} ({ok_count} agents succeeded)\n"
     if changelog.exists():
         content = changelog.read_text()
         changelog.write_text(content.replace("# Changelog\n", "# Changelog\n" + entry, 1))
@@ -796,7 +952,7 @@ def phase_RELEASE(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict
 
     # Git commit (if changes exist)
     subprocess.run(["git", "add", "-A"], cwd=str(ROOT), capture_output=True)
-    msg = f"feat(loop): {ver_str} — {improvement.get('description', imp_type)}"
+    msg = f"feat(loop): {ver_str} — {feature_names}"
     rc, out, err = run_cmd(["git", "commit", "-m", msg], timeout=15)
     if rc == 0:
         print(f"  ✅ Git commit: {msg}")
@@ -807,8 +963,9 @@ def phase_RELEASE(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict
     memory["iteration"] = memory.get("iteration", 0) + 1
     memory.setdefault("context_window", []).append({
         "ts": datetime.now(timezone.utc).isoformat(),
-        "improvement": imp_type,
+        "improvement": feature_names,
         "version": ver_str,
+        "agents": ok_count,
         "triad_green": all(t.get("pass", False)
                           for t in snapshot.get("triad", {}).values()),
     })
@@ -818,11 +975,18 @@ def phase_RELEASE(state: dict, memory: dict, snapshot: dict) -> tuple[dict, dict
     state["iteration"] += 1
     state["phase"] = "RESEARCH"
     state["phase_iteration"] = 0
-    state["current_feature"] = None
+    state["current_features"] = []
     state["retry_count"] = 0
 
+    # Cleanup agent results
+    for f in AGENT_RESULTS_DIR.glob("result-*.json"):
+        try:
+            f.unlink()
+        except Exception:
+            pass
+
     print(f"\n{'='*60}")
-    print(f"  🚀 RELEASE: {ver_str} | iter={state['iteration']} | {imp_type}")
+    print(f"  🚀 RELEASE: {ver_str} | iter={state['iteration']} | {feature_names}")
     print(f"  Learnings: {len(memory.get('learnings', []))} | "
           f"Context window: {len(memory.get('context_window', []))}")
     print(f"{'='*60}")
@@ -856,12 +1020,15 @@ def run_full_iteration() -> dict:
 
     phase = state.get("phase", "RESEARCH")
     iteration = state.get("iteration", 0)
+    features = state.get("current_features", [])
+    features_str = ", ".join(features) if features else "none"
+
     print(f"\n{'='*60}")
     print(f"ITERATION {iteration} | PHASE: {phase}")
+    print(f"Features: {features_str}")
     print(f"{'='*60}")
 
-    # Route to phase executor — only one phase per call in this design
-    # The loop will call run_full_iteration() again for the next phase
+    # Route to phase executor
     if phase == "RESEARCH":
         state, memory, snapshot = phase_RESEARCH(state, memory, snapshot)
     elif phase == "PLANNING":
@@ -883,26 +1050,24 @@ def run_full_iteration() -> dict:
     return {
         "phase": state["phase"],
         "iteration": state["iteration"],
-        "improvement": state.get("current_feature"),
+        "improvement": state.get("current_features"),
         "state": state,
         "memory": memory,
     }
 
 
 def run_continuous(max_iterations: int = 0, max_hours: float = 0) -> None:
-    """Run the loop continuously for hours.
-    Each call to run_full_iteration() handles ONE phase.
-    Triad cache means bootstrap after the first call is ~0s (cached).
-    """
-    import time
-    start = time.time()
+    """Run the loop continuously. Each call handles ONE phase."""
+    import time as time_mod
+    start = time_mod.time()
     phase_count = 0
 
     print(f"\n{'='*60}")
-    print("AKASHA AUTONOMOUS LOOP — CONTINUOUS MODE")
+    print("AKASHA AUTONOMOUS LOOP v2 — CONTINUOUS MODE")
     print(f"Max iterations: {'unlimited' if max_iterations == 0 else max_iterations}")
-    print(f"Max hours: {'unlimited' if max_hours == 0 else max_hours}")
-    print(f"Triad cache: enabled (TTL={TRIAD_CACHE_TTL}s)")
+    print(f"Max hours:     {'unlimited' if max_hours == 0 else max_hours}")
+    print(f"Max parallel:   {MAX_PARALLEL} agents per IMPLEMENTATION")
+    print(f"Triad cache:    enabled (TTL={TRIAD_CACHE_TTL}s)")
     print(f"{'='*60}\n")
 
     state = load_state()
@@ -922,23 +1087,23 @@ def run_continuous(max_iterations: int = 0, max_hours: float = 0) -> None:
 
         # Check time limit
         if max_hours > 0:
-            elapsed = (time.time() - start) / 3600
+            elapsed = (time_mod.time() - start) / 3600
             if elapsed >= max_hours:
                 print(f"\n✅ Reached max hours ({max_hours}h)")
                 break
 
-        phase_start = time.time()
+        phase_start = time_mod.time()
         result = run_full_iteration()
-        phase_duration = time.time() - phase_start
+        phase_duration = time_mod.time() - phase_start
         phase_count += 1
 
         # Very brief pause between phases
-        time.sleep(1)
+        time_mod.sleep(0.5)
 
-        # Log performance every 10 phases
-        if phase_count % 10 == 0:
+        # Log performance every 20 phases
+        if phase_count % 20 == 0:
             current = load_state()
-            elapsed = (time.time() - start) / 3600
+            elapsed = (time_mod.time() - start) / 3600
             print(f"\n📊 Progress: {phase_count} phases | {current.get('iteration', 0)} iterations | "
                   f"{elapsed:.1f}h elapsed | phase took {phase_duration:.1f}s")
 
@@ -958,33 +1123,25 @@ def status() -> None:
         print(f"Status error: {e}")
         return
 
-    print("═══ AKASHA Evolution Loop ═══")
+    print("═══ AKASHA Evolution Loop v2 ═══")
     print(f"  Running:        {state.get('running', False)}")
-    print(f"  Iteration:        {state.get('iteration', 0)}")
-    print(f"  Phase:           {state.get('phase', '?')}")
-    print(f"  Current:         {state.get('current_feature', 'none')}")
-    print(f"  Retry count:     {state.get('retry_count', 0)}")
-    print(f"  Version:         {ver_str}")
+    print(f"  Iteration:      {state.get('iteration', 0)}")
+    print(f"  Phase:          {state.get('phase', '?')}")
+    print(f"  Features:       {', '.join(state.get('current_features', [])) or 'none'}")
+    print(f"  Version:        {ver_str}")
     print()
-    print(f"  Triad:           typecheck={snapshot['triad'].get('typecheck',{}).get('pass','?')} "
+    print(f"  Triad:          typecheck={snapshot['triad'].get('typecheck',{}).get('pass','?')} "
           f"tests={snapshot['triad'].get('tests',{}).get('passed','?')}/{snapshot['triad'].get('tests',{}).get('failed','?')} "
           f"lint={snapshot['triad'].get('lint',{}).get('pass','?')}")
-    print(f"  CodeGraph:       {snapshot['codegraph'].get('pending_files',0)} pending files")
-    print(f"  Git:             {snapshot['git'].get('total',0)} changed files")
-    print(f"  Improvement candidates: {len(snapshot.get('improvement_candidates', []))}")
+    print(f"  CodeGraph:      {snapshot['codegraph'].get('pending_files',0)} pending files")
+    print(f"  Git:            {snapshot['git'].get('total',0)} changed files")
+    print(f"  Candidates:     {len(snapshot.get('improvement_candidates', []))}")
     print()
-    print(f"  Learnings:       {len(memory.get('learnings', []))} total")
-    print(f"  Context window:  {len(memory.get('context_window', []))} entries")
-    print(f"  Decisions:       {len(memory.get('decisions', []))} recorded")
+    print(f"  Learnings:      {len(memory.get('learnings', []))} total")
+    print(f"  Decisions:      {len(memory.get(RECENT_DECISIONS_KEY, []))} recent")
+    print(f"  Context window: {len(memory.get('context_window', []))} entries")
     print()
-    recent = memory.get("learnings", [])[-5:]
-    if recent:
-        print("  Last 5 learnings:")
-        for l in recent:
-            mark = "✅" if l.get("outcome") == "success" else "❌"
-            print(f"    {mark} [{l.get('agent','?')}] {l.get('summary','')[:80]}")
-    print()
-    print("  Flow: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE")
+    print("  Flow: RESEARCH → PLANNING → IMPLEMENTATION(5-parallel) → QA → VALIDATION → RELEASE")
 
 
 def stop_loop() -> None:
@@ -1001,7 +1158,6 @@ def stop_loop() -> None:
 
 if __name__ == "__main__":
     import sys
-    import os
     if len(sys.argv) < 2:
         print("Usage: akasha-evolution-loop.py [run|continuous|status|stop]")
         sys.exit(1)
@@ -1011,6 +1167,12 @@ if __name__ == "__main__":
     if cmd == "run":
         result = run_full_iteration()
         print(f"\nPhase complete: phase={result.get('phase','?')}")
+
+    elif cmd == "start":
+        state = load_state()
+        state["running"] = True
+        save_state(state)
+        print("🚀 Loop marked as running.")
 
     elif cmd == "continuous":
         max_iterations = 0

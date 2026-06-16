@@ -1,5 +1,5 @@
 {
-  "iteration": 11,
+  "iteration": 12,
   "learnings": [
     {
       "ts": "2026-06-15T23:25:37.276925+00:00",
@@ -144,6 +144,33 @@
       "outcome": "success",
       "summary": "Triad green: typecheck=True lint=True tests=False",
       "details": {}
+    },
+    {
+      "ts": "2026-06-16T02:15:05.433973+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "missing_tests",
+      "outcome": "failure",
+      "summary": "Agent aef4e7bc failed: ",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T02:15:05.433998+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "large_file",
+      "outcome": "failure",
+      "summary": "Agent 890ee91e failed: ",
+      "details": {}
+    },
+    {
+      "ts": "2026-06-16T02:15:05.434003+00:00",
+      "agent": "coder",
+      "phase": "IMPLEMENTATION",
+      "feature_id": "tech_debt",
+      "outcome": "failure",
+      "summary": "Agent 55f17824 failed: ",
+      "details": {}
     }
   ],
   "task_history": [],
@@ -222,6 +249,12 @@
       "ts": "2026-06-16T01:47:51.567082+00:00",
       "improvement": "typecheck_clean",
       "version": "0.6.1",
+      "triad_green": false
+    },
+    {
+      "ts": "2026-06-16T01:57:41.165174+00:00",
+      "improvement": "tech_debt",
+      "version": "0.7.1",
       "triad_green": false
     }
   ],
@@ -881,15 +914,53 @@
       "ts": "2026-06-16T01:49:24.047844+00:00",
       "action": "EXECUTE",
       "improvement": "tech_debt"
+    },
+    {
+      "ts": "2026-06-16T01:59:09.976063+00:00",
+      "action": "EXECUTE",
+      "improvement": "tech_debt"
     }
   ],
   "error_patterns": {
-    "b55c038d": 1,
-    "f2d048e4": 1
+    "b55c038d": 2,
+    "f2d048e4": 2,
+    "d92babc3": 1
   },
   "success_patterns": {
     "e796b93c": 3,
     "b55c038d": 2,
     "d92babc3": 2
-  }
+  },
+  "recent_decisions": [
+    {
+      "ts": "2026-06-16T02:09:13.259537+00:00",
+      "type": "missing_tests",
+      "description": "5 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-16T02:09:13.259554+00:00",
+      "type": "tech_debt",
+      "description": "2 files with XXX"
+    },
+    {
+      "ts": "2026-06-16T02:09:13.259557+00:00",
+      "type": "large_file",
+      "description": "28 oversized files"
+    },
+    {
+      "ts": "2026-06-16T02:17:05.711000+00:00",
+      "type": "missing_tests",
+      "description": "5 changed files lack tests"
+    },
+    {
+      "ts": "2026-06-16T02:17:05.711015+00:00",
+      "type": "tech_debt",
+      "description": "1 files with XXX"
+    },
+    {
+      "ts": "2026-06-16T02:17:05.711018+00:00",
+      "type": "large_file",
+      "description": "28 oversized files"
+    }
+  ]
 }
