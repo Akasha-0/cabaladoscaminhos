@@ -75,7 +75,6 @@ export function useDashboardData({
       } catch (err) {
         if (!cancelled) {
           // Fallback para mock data em caso de erro
-          console.warn('[useDashboardData] API error, using mock data:', err);
           setData({
             stats: mockStats,
             streak: mockStreak,
