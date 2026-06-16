@@ -1,26 +1,33 @@
 {
   "phase": "IMPLEMENTATION",
   "improvement": {
-    "type": "typecheck_clean",
-    "priority": 1,
-    "description": "TypeScript typecheck is clean",
-    "score": 900
+    "type": "missing_tests",
+    "priority": 6,
+    "description": "5 changed files lack tests",
+    "files": [
+      "apps/akasha-portal/src/lib/application/mentor/llm-router.ts",
+      "packages/core-iching/src/__tests__/iching.test.ts",
+      "packages/core-iching/src/__tests__/wings.test.ts",
+      "packages/core-iching/src/index.ts",
+      "traducao-areas.ts"
+    ],
+    "score": 600
   },
-  "iteration": 0,
+  "iteration": 1,
   "snapshot_summary": {
-    "version": "0.0.1",
+    "version": "0.1.1",
     "triad": {
       "typecheck": {
         "pass": true,
         "errors": []
       },
       "lint": {
-        "pass": false,
+        "pass": true,
         "warnings": 0
       },
       "tests": {
         "pass": false,
-        "passed": 1203,
+        "passed": 1285,
         "failed": 232
       }
     },
@@ -28,8 +35,7 @@
       {
         "type": "typecheck_clean",
         "priority": 1,
-        "description": "TypeScript typecheck is clean",
-        "score": 900
+        "description": "TypeScript typecheck is clean"
       },
       {
         "type": "tech_debt",
@@ -73,10 +79,15 @@
       {
         "type": "missing_tests",
         "priority": 6,
-        "description": "1 changed files lack tests",
+        "description": "5 changed files lack tests",
         "files": [
-          "apps/akasha-portal/src/lib/grimoire/akasha-authority.test.ts"
-        ]
+          "apps/akasha-portal/src/lib/application/mentor/llm-router.ts",
+          "packages/core-iching/src/__tests__/iching.test.ts",
+          "packages/core-iching/src/__tests__/wings.test.ts",
+          "packages/core-iching/src/index.ts",
+          "traducao-areas.ts"
+        ],
+        "score": 600
       }
     ]
   }

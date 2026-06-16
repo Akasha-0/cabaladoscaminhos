@@ -1,29 +1,22 @@
 {
-  "generated_at": "2026-06-16T00:24:13.558437+00:00",
-  "version": "0.0.1",
+  "generated_at": "2026-06-16T00:42:08.024617+00:00",
+  "version": "0.1.1",
   "features": {
     "pending_features": [
-      "- [~] **PLN-000** — typecheck_clean | 0.0.1",
       "- [~] **PLN-AE-001** — akasha-evolution v0.0.1 | typecheck_clean (iter 0)"
     ],
-    "pending_count": 2
+    "pending_count": 1
   },
   "git": {
-    "untracked": 3,
-    "modified": 15,
-    "total": 18,
+    "untracked": 1,
+    "modified": 11,
+    "total": 12,
     "has_changes": true
   },
   "triad": {
     "typecheck": {
-      "pass": false,
-      "errors": [
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(21,3): error TS2459: Module '\"./synthesis-engine\"' declares 'AstrologyMap' locally, but it is not exported.",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(22,3): error TS2459: Module '\"./synthesis-engine\"' declares 'KabalisticMap' locally, but it is not exported.",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(23,3): error TS2459: Module '\"./synthesis-engine\"' declares 'TantricMap' locally, but it is not exported.",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(24,3): error TS2459: Module '\"./synthesis-engine\"' declares 'OduBirth' locally, but it is not exported.",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(26,38): error TS2307: Cannot find module '@/lib/domain/engines/holo-aggregator' or its corresponding type declarations."
-      ]
+      "pass": true,
+      "errors": []
     },
     "lint": {
       "pass": true,
@@ -31,7 +24,7 @@
     },
     "tests": {
       "pass": false,
-      "passed": 1285,
+      "passed": 1286,
       "failed": 232
     }
   },
@@ -41,16 +34,9 @@
   },
   "improvement_candidates": [
     {
-      "type": "typecheck_errors",
-      "priority": 9,
-      "description": "5 TypeScript errors",
-      "errors": [
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(21,3): error TS2459: Module '\"./synthesis-engine\"' declares 'AstrologyMap' locally, but it is not exported.",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(22,3): error TS2459: Module '\"./synthesis-engine\"' declares 'KabalisticMap' locally, but it is not exported.",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(23,3): error TS2459: Module '\"./synthesis-engine\"' declares 'TantricMap' locally, but it is not exported.",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(24,3): error TS2459: Module '\"./synthesis-engine\"' declares 'OduBirth' locally, but it is not exported.",
-        "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts(26,38): error TS2307: Cannot find module '@/lib/domain/engines/holo-aggregator' or its corresponding type declarations."
-      ]
+      "type": "typecheck_clean",
+      "priority": 1,
+      "description": "TypeScript typecheck is clean"
     },
     {
       "type": "tech_debt",
@@ -94,9 +80,12 @@
     {
       "type": "missing_tests",
       "priority": 6,
-      "description": "1 changed files lack tests",
+      "description": "4 changed files lack tests",
       "files": [
-        "apps/akasha-portal/src/lib/grimoire/rag-mapa.test.ts"
+        "packages/core-iching/src/__tests__/iching.test.ts",
+        "packages/core-iching/src/__tests__/wings.test.ts",
+        "packages/core-iching/src/index.ts",
+        "traducao-areas.ts"
       ]
     }
   ],

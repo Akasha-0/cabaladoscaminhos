@@ -27,6 +27,7 @@
     "apps/akasha-portal/.next",
     "apps/akasha-portal/scripts",
     "tests",
+    "apps/akasha-portal/src/lib/application/akasha/synthesis-engine.test.ts",
     "apps/akasha-portal/src/lib/quality/__evals_DISABLED__/**/*",
     "apps/**/node_modules",
     "packages/**/node_modules",

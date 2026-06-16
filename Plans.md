@@ -3,52 +3,6 @@
 > Task ledger for this thread. Background autonomous loop (PID 958587) tracks its own progress in `.autonomous/sessions/` and `.autonomous/claude-progress.txt` — out of scope here.
 
 
-## cc: Ralph-loop iter 0 (2026-06-15T21:26:43Z)
-
-- [x] **PLN-000** — Ralph-loop iteration 0
-  - Phase: PLANNING → RESEARCH → ... → RELEASE
-  - Features analyzed: 1
-  - CodeGraph queries: 1
-  - Headroom tokens saved: 0
-
-
-## cc: Ralph-loop iter 0 | None (2026-06-15T21:57:30Z)
-- [x] **PLN-000** — None | ver 0.0.0
-  - Phase: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
-  - Recent learnings: 0
-
-
-## cc: Ralph-loop iter 0 | D-040 (2026-06-15T22:08:55Z)
-- [x] **PLN-000** — D-040 | ver 0.0.0
-  - Phase: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
-  - Recent learnings: 0
-
-
-## cc: Ralph-loop iter 2 | D-040 (2026-06-15T22:15:55Z)
-- [x] **PLN-002** — D-040 | ver 0.2.0
-  - Phase: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
-  - Recent learnings: 0
-
-
-## cc: Ralph-loop iter 3 | D-040 (2026-06-15T22:20:23Z)
-- [x] **PLN-003** — D-040 | ver 0.3.0
-  - Phase: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
-  - Recent learnings: 0
-
-
-## cc: Ralph-loop iter 4 | D-040 (2026-06-15T22:24:36Z)
-- [x] **PLN-004** — D-040 | ver 0.4.0
-  - Phase: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
-  - Recent learnings: 0
-
-
-## cc: AKASHA-loop iter 0 | typecheck_clean (2026-06-15T23:12:43Z)
-- [~] **PLN-000** — typecheck_clean | 0.0.1
-  - Improvement: TypeScript typecheck is clean
-  - Type: typecheck_clean
-  - Priority: 1
-  - Phases: RESEARCH → PLANNING → IMPLEMENTATION → QA → VALIDATION → RELEASE
-
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

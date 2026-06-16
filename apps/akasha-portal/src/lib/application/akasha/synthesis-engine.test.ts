@@ -22,8 +22,8 @@ import type {
   KabalisticMap,
   TantricMap,
   OduBirth,
-} from './synthesis-engine';
-import type { AkashicHologram } from '@/lib/domain/engines/holo-aggregator';
+} from '@akasha/types';
+import type { AkashicHologram } from '@/lib/domain/mapa/hologram-aggregator';
 
 // ─── Fixtures ───────────────────────────────────────────────────────────────
 
