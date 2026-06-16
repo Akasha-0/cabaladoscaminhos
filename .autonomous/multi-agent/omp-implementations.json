@@ -1,31 +1,6 @@
 {
   "improvements": [
     {
-      "type": "missing_tradition",
-      "priority": 8,
-      "description": "ODUS missing from traducao-areas",
-      "trad": "ODUS",
-      "file": "/home/skynet/cabala-dos-caminhos/traducao-areas.ts"
-    },
-    {
-      "type": "missing_tests",
-      "priority": 6,
-      "description": "2 changed files lack tests",
-      "files": [
-        "packages/core-iching/src/practices-lookup.ts",
-        "packages/core-iching/src/practices.ts"
-      ]
-    },
-    {
-      "type": "tech_debt",
-      "priority": 5,
-      "description": "2 files with TODO",
-      "files": [
-        "apps/akasha-portal/src/lib/grimoire/significados-curados-helpers.test.ts",
-        "apps/akasha-portal/src/lib/grimoire/significados-curados.test.ts"
-      ]
-    },
-    {
       "type": "console_cleanup",
       "priority": 5,
       "description": "5 files with console statements",
@@ -40,12 +15,8 @@
     {
       "type": "large_file",
       "priority": 4,
-      "description": "28 oversized files",
+      "description": "27 oversized files",
       "files": [
-        {
-          "file": "packages/core-iching/src/practices.ts",
-          "lines": 993
-        },
         {
           "file": "apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts",
           "lines": 991
@@ -53,10 +24,14 @@
         {
           "file": "packages/akasha-core/src/interpretation-engine.ts",
           "lines": 973
+        },
+        {
+          "file": "apps/akasha-portal/src/lib/application/life-areas/life-areas-engine.ts",
+          "lines": 957
         }
       ]
     }
   ],
-  "agent_count": 5,
-  "iteration": 9
+  "agent_count": 2,
+  "iteration": 10
 }

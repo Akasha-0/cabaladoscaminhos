@@ -1007,6 +1007,8 @@
   - Files: packages/akasha-cli/src/cli.ts, packages/akasha-cli/src/commands/setup.ts, packages/akasha-cli/src/commands/status.ts
 - [~] **PLN-009[5]** — large_file | 28 oversized files
   - Files: packages/core-iching/src/practices.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts, packages/akasha-core/src/interpretation-engine.ts
+- [~] **PLN-010[1]** -- console_cleanup | 5 files with console statements
+- [~] **PLN-010[2]** -- large_file | 27 oversized files
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)

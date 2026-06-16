@@ -1,15 +1,12 @@
 {
   "phase": "RELEASE",
-  "iteration": 9,
+  "iteration": 10,
   "current_features": [
-    "missing_tradition",
-    "missing_tests",
-    "tech_debt",
     "console_cleanup",
     "large_file"
   ],
   "retry_count": 0,
   "running": true,
   "phase_iteration": 0,
-  "daemon_pid": 612102
+  "daemon_pid": 750704
 }
