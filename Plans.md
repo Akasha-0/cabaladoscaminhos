@@ -1067,6 +1067,66 @@
 - [~] **PLN-049[2]** -- large_file | 27 oversized files
 - [~] **PLN-050[1]** -- missing_tests | 1 changed files lack tests
 - [~] **PLN-050[2]** -- large_file | 27 oversized files
+- [~] **PLN-050[1]** — missing_tests | 2 changed files lack tests
+  - Files: packages/core-iching/src/practices-cromoterapia.ts, packages/core-iching/src/practices-data.ts
+- [~] **PLN-050[2]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests
+  - Files: packages/core-iching/src/practices-cromoterapia.ts, packages/core-iching/src/practices-data.ts
+- [~] **PLN-051[2]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests
+  - Files: packages/core-iching/src/practices-cromoterapia.ts, packages/core-iching/src/practices-data.ts
+- [~] **PLN-051[2]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests
+  - Files: packages/core-iching/src/practices-cromoterapia.ts, packages/core-iching/src/practices-data.ts
+- [~] **PLN-051[2]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** -- missing_tests | 2 changed files lack tests
+- [~] **PLN-051[2]** -- large_file | 27 oversized files
+- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests
+  - Files: packages/core-iching/src/practices-cromoterapia.ts, packages/core-iching/src/practices-data.ts
+- [~] **PLN-051[2]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-051[1]** — missing_tests | 2 changed files lack tests
+  - Files: packages/core-iching/src/practices-cromoterapia.ts, packages/core-iching/src/practices-data.ts
+- [~] **PLN-051[2]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-051[1]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-051[1]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
+- [~] **PLN-051[1]** — large_file | 27 oversized files
+  - Files: apps/akasha-portal/src/lib/application/life-areas/life-areas-engine/index.ts, apps/akasha-portal/src/lib/domain/orixa/HyperCorrelationEngine.ts, apps/akasha-portal/src/lib/application/ai/deep-correlation-engine.ts
 ## cc:TODO
 
 (nenhuma task pendente nesta thread)
@@ -1205,3 +1265,18 @@
     - Agent-55f17824: tech_debt (2 files with XXX)
     - Agent-890ee91e: large_file (28 oversized files)
   - Triad cache: enabled (TTL=300s, git HEAD invalidation)
+## cc: Ralph-loop continuous running (2026-06-16 evening)
+- [~] **PLN-AE-003** — Ralph-loop continuous | QA cycling (v0.12.1)
+  - Ralph-loop fix: async run_cmd with SIGTERM→SIGKILL on timeout
+    - Replaced blocking subprocess.run(timeout=N) with asyncio.create_subprocess_exec
+    - Prevents deadlock when pnpm typecheck hangs >90s
+    - Commit: f85ad681
+  - Continuous runner: .autonomous/ralph-loop/run-continuous.sh (singleton with flock)
+  - Current state: Ralph loop at iter 0, QA phase
+    - typecheck=✅ (fixed this session: MandalaInfoPanels.tsx, MandalaChart.tsx, correlation-maps.test.ts, diagnostico.test.ts, akasha-core.test.ts, pattern-detectors.test.ts)
+    - tests=❌ (237 pre-existing infrastructure failures — jsdom document, missing route files, cookies() scope, Redis)
+    - lint=✅
+  - Ralph loop cycles QA: do_QA() fails on test failures, will retry next iteration
+  - Evolution loop (PID 2065601): running continuous, stuck in IMPLEMENTATION agents failing with ConnectionRefused
+  - Running PIDs: Ralph continuous 2213485, Ralph loop 2218086, Evolution loop 2065601
+  - Promise: NÃO PARE, CONTINUE EVOLVENDO O PROJETO SEM PARAR. SEMPRE FAZENDO MELHORIAS.
