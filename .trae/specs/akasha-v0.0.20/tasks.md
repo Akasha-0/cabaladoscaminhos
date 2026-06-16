@@ -172,12 +172,21 @@ e passamos para WS-5.
   - **14/14 tests verdes**
 
 ### 5.2 Goals
-- [x] Coverage de synthesis-engine.ts: 0% → ~30% (em progresso)
-- [x] 1 test file (synthesis-engine principal)
-- [x] 14 test cases
+- [x] Coverage de synthesis-engine.ts: 0% → ~30% (F-242)
+- [x] 14 test cases (synthesis-engine)
 - [x] Coverage de daily-engine.ts: 0% → ~50% (F-243)
 - [x] 9 test cases (daily-engine)
-- [ ] 30+ test cases (F-XXX futuro para outros engines)
+- [x] Coverage de cross-engine.ts: 0% → ~40% (F-244)
+- [x] 8 test cases (cross-engine)
+- [x] Coverage de manifesto-builder.ts: 0% → ~40% (F-245)
+- [x] 11 test cases (manifesto-builder)
+- [x] Coverage de synthesizer.ts (sintetizarMapa): 0% → ~40% (F-246)
+- [x] 8 test cases (synthesizer)
+- [x] Coverage de glossary.ts (STUB lock): 13 test cases
+- [x] Co-located F-227 akasha-authority tests: 11 cases
+- [x] Co-located cron-guard tests: 8 cases
+- [x] Co-located F-240 share-receive tests: 8 cases
+- **Total: 89+ test cases added this session**
 
 ### 5.3 Verification
 - [x] `pnpm test:run synthesis-engine` exit 0
